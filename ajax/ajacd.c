@@ -66,6 +66,7 @@ static AjBool acdDoHelp = 0;
 static AjBool acdDoLog = 0;
 static AjBool acdDoPretty = 0;
 static AjBool acdDoTable = 0;
+static AjBool acdDoValid = 0;
 static AjBool acdVerbose = 0;
 static AjBool acdAuto = 0;
 static AjBool acdFilter = 0;
@@ -77,7 +78,8 @@ static ajint acdInFile = 0;
 static ajint acdOutFile = 0;
 static ajint acdPromptTry = 2;
 static AjPStr acdInFName = NULL;
-static AjPStr acdInTypename = NULL;
+static AjPStr acdInTypeFeatName = NULL;
+static AjPStr acdInTypeSeqName = NULL;
 /*static AjPStr acdOutFName = NULL;*/
 static AjPStr acdExpTmpstr = NULL;
 
@@ -254,6 +256,7 @@ typedef struct AcdSAcd
     AjBool Assoc;
     ajint LineNum;
     struct AcdSAcd* AssocQuals;
+    AjPStr StdPrompt;			/* Standard prompt if none is given */
     AjPStr OrigStr;
     AjPStr ValStr;
     void* Value;
@@ -327,6 +330,7 @@ typedef struct AcdSType
     AcdPAttr Attr;			/* type-specific attributes */
     void (*TypeSet)(AcdPAcd thys); /* function to set value and prompt user */
     AcdPQual Quals;	           /* type-specific associated qualifiers */
+    AjBool Stdprompt;			/* Expect a standard prompt */
     char* Valid;			/* Valid data help message */
 } AcdOType, *AcdPType;			/*  */
 
@@ -431,8 +435,11 @@ static void      acdHelpValid (AcdPAcd thys, AjPStr *str);
 static AjBool    acdHelpVarResolve (AjPStr* str, AjPStr src);
 static AjBool    acdInFilename (AjPStr* infname);
 static AjBool    acdInFileSave (AjPStr infname);
-static AjBool    acdInType (AjPStr* intype);
-static AjBool    acdInTypeSave (AjPStr intype);
+static AjBool    acdInTypeFeat (AjPStr* intype);
+static AjBool    acdInTypeFeatSave (AjPStr intype);
+static AjBool    acdInTypeFeatSaveC (char* intype);
+static AjBool    acdInTypeSeq (AjPStr* intype);
+static AjBool    acdInTypeSeqSave (AjPStr intype);
 static AjBool    acdIsLeftB (AjPList listwords);
 static AjBool    acdIsParam (char* arg, AjPStr* param, ajint* iparam,
 			     AcdPAcd* acd);
@@ -504,6 +511,8 @@ static AjBool    acdQualToSeqbegin (AcdPAcd thys, char *qual,
 static AjBool    acdQualToSeqend   (AcdPAcd thys, char *qual,
 				    ajint defval, ajint *result,
 				    AjPStr* valstr);
+static AjPTable  acdReadGroups (void);
+static void      acdReadSections (AjPTable* typetable, AjPTable* infotable);
 static AjBool    acdReplyInit (AcdPAcd thys, char *defval, AjPStr* reply);
 static AjBool    acdSet (AcdPAcd thys, AjPStr* attrib, AjPStr value);
 static void      acdSetAll (void);
@@ -527,6 +536,10 @@ static AjBool    acdTextFormat (AjPStr* text);
 static void      acdTokenToLower (char *token, ajint* number);
 static AjBool    acdUserGet (AcdPAcd thys, AjPStr* reply);
 static AjBool    acdUserGetPrompt (char* prompt, AjPStr* reply);
+static void      acdValidAppl (AcdPAcd thys);
+static void      acdValidApplGroup (AjPStr groups);
+static void      acdValidSection (AcdPAcd thys);
+static void      acdValidQual (AcdPAcd thys);
 static AjBool    acdValIsBool (char* arg);
 static AjBool    acdVarResolve (AjPStr* str);
 static AjBool    acdVarSplit (AjPStr var, AjPStr* name, AjPStr* attrname);
@@ -743,6 +756,7 @@ AcdOAttr acdAttrAppl[] =
     {"groups", VT_STR, "(Not used by ACD) Groups for use by EMBOSS wossname"},
     {"gui", VT_STR, "(Not used by ACD) Suitability for launching in a GUI"},
     {"batch", VT_STR, "(Not used by ACD) Suitability for running in batch"},
+    {"external", VT_STR, "(Not used by ACD) Third party tool(s) required"},
     {"cpu", VT_STR, "(Not used by ACD) Estimated maximum CPU usage"},
     {"comment", VT_STR, "(Not used by ACD) Comment"},
     {NULL, VT_NULL, NULL}
@@ -820,6 +834,7 @@ AcdOAttr acdAttrEndsec[] =
 
 AcdOAttr acdAttrFeat[] =
 {
+    {"type", VT_STR, "Feature type (protein, nucleotide, etc.)"},
     {NULL, VT_NULL, NULL}
 };
 
@@ -827,6 +842,7 @@ AcdOAttr acdAttrFeatout[] =
 {
     {"name", VT_STR, "Default base file name (-ofname preferred)"},
     {"extension", VT_STR, "Default file extension (-offormat preferred)"},
+    {"type", VT_STR, "Feature type (protein, nucleotide, etc.)"},
     {NULL, VT_NULL, NULL}
 };
 
@@ -946,7 +962,7 @@ AcdOAttr acdAttrScop[] =
 
 AcdOAttr acdAttrSec[] =
 {
-    {"info", VT_STR, "(Not used by ACD) Section description"},
+    {"information", VT_STR, "(Not used by ACD) Section description"},
     {"type", VT_STR, "(Not used by ACD) Type (frame, page)"},
     {"comment", VT_STR, "(Not used by ACD) Free text comment"},
     {"border", VT_INT, "(Not used by ACD) Border width default:1"},
@@ -1376,101 +1392,101 @@ AcdOType acdType[] =
 {
     {"align",              "output",           acdSecOutput,
 	 acdAttrAlign,     acdSetAlign,        acdQualAlign,
-	 "Alignment output file" },
+	 AJTRUE,  "Alignment output file" },
     {"array",              "simple",           NULL,
 	 acdAttrArray,     acdSetArray,        NULL,
-	 "List of floating point numbers" },
+	 AJFALSE, "List of floating point numbers" },
     {"boolean",            "simple",           NULL,
 	 acdAttrBool,      acdSetBool,         NULL,
-	 "Boolean value Yes/No" },
+	 AJFALSE, "Boolean value Yes/No" },
     {"codon",	           "input",            acdSecInput,
 	 acdAttrCodon,     acdSetCodon,        NULL,
-	 "Codon usage file in EMBOSS data path" },
+	 AJFALSE, "Codon usage file in EMBOSS data path" },
     {"cpdb",	           "input",            acdSecInput,
 	 acdAttrCpdb,      acdSetCpdb,         NULL,
-	 "Cleaned PDB file in EMBOSS data path" },
+	 AJFALSE, "Cleaned PDB file in EMBOSS data path" },
     {"datafile",           "input",            NULL,
 	 acdAttrDatafile,  acdSetDatafile,     NULL,
-	 "Data file" },
+	 AJFALSE, "Data file" },
     {"directory",          "input",            acdSecInput,
 	 acdAttrDirectory, acdSetDirectory,    NULL,
-	 "Directory" },
+	 AJFALSE, "Directory" },
     {"dirlist",	           "input",            acdSecInput,
 	 acdAttrDirlist,   acdSetDirlist,      NULL,
-	 "Directory with files" },
+	 AJFALSE, "Directory with files" },
     {"features",           "input",            acdSecInput,
 	 acdAttrFeat,      acdSetFeat,         acdQualFeat,
-	 "Readable feature table" },
+	 AJTRUE,  "Readable feature table" },
     {"featout",            "output",           acdSecOutput,
 	 acdAttrFeatout,   acdSetFeatout,      acdQualFeatout,
-	 "Writeable feature table" },
+	 AJTRUE,  "Writeable feature table" },
     {"filelist",	   "input",            NULL,
 	 acdAttrFilelist,  acdSetFilelist,     NULL,
-	 "Comma-separated file list" },
+	 AJFALSE, "Comma-separated file list" },
     {"float",              "simple",           NULL,
 	 acdAttrFloat,     acdSetFloat,        NULL,
-	 "Floating point number" },
+	 AJFALSE, "Floating point number" },
     {"graph",              "graph",            acdSecOutput,
 	 acdAttrGraph,     acdSetGraph,        acdQualGraph,
-	 "Graph device for a general graph" },
+	 AJTRUE,  "Graph device for a general graph" },
     {"infile",      "      input",             acdSecInput,
 	 acdAttrInfile,    acdSetInfile,       NULL,
-	 "Input file" },
+	 AJFALSE, "Input file" },
     {"integer",            "simple",           NULL,
 	 acdAttrInt,       acdSetInt,          NULL,
-	 "Integer" },
+	 AJFALSE, "Integer" },
     {"list",               "selection",        NULL,
 	 acdAttrList,      acdSetList,         NULL,
-	 "Choose from menu list of values" },
+	 AJFALSE, "Choose from menu list of values" },
     {"matrix",             "input",            acdSecInput,
 	 acdAttrMatrix,    acdSetMatrix,       NULL,
-	 "Comparison matrix file in EMBOSS data path" },
+	 AJFALSE, "Comparison matrix file in EMBOSS data path" },
     {"matrixf",            "input",            acdSecInput,
 	 acdAttrMatrixf,   acdSetMatrixf,      NULL,
-	 "Comparison matrix file in EMBOSS data path" },
+	 AJFALSE, "Comparison matrix file in EMBOSS data path" },
     {"outfile",            "output",           acdSecOutput,
 	 acdAttrOutfile,   acdSetOutfile,   acdQualOutfile,
-	 "Output file" },
+	 AJTRUE,  "Output file" },
     {"range",	           "simple",           NULL,
 	 acdAttrRange,     acdSetRange,        NULL,
-	 "Sequence range" },
+	 AJFALSE, "Sequence range" },
     {"regexp",	           "input",            acdSecInput,
 	 acdAttrRegexp,    acdSetRegexp,       NULL,
-	 "Regular expression pattern" },
+	 AJFALSE, "Regular expression pattern" },
     {"report",             "output",           acdSecOutput,
 	 acdAttrReport,    acdSetReport,       acdQualReport,
-	 "Report output file" },
+	 AJTRUE,  "Report output file" },
     {"scop",	           "input",            acdSecInput,
 	 acdAttrScop,      acdSetScop,         NULL,
-	 "Scop entry in EMBOSS data path" },
+	 AJFALSE, "Scop entry in EMBOSS data path" },
     {"selection",          "selection",        NULL,
 	 acdAttrSelect,    acdSetSelect,       NULL,
-	 "Choose from selection list of values" },
+	 AJFALSE, "Choose from selection list of values" },
     {"sequence",           "input",            acdSecInput,
 	 acdAttrSeq,       acdSetSeq,          acdQualSeq,
-	 "Readable sequence" },
+	 AJTRUE,  "Readable sequence" },
     {"seqall",             "input",            acdSecInput,
 	 acdAttrSeqall,    acdSetSeqall,       acdQualSeqall,
-	 "Readable sequence(s)" },
+	 AJTRUE,  "Readable sequence(s)" },
     {"seqout",             "output",           acdSecOutput,
 	 acdAttrSeqout,    acdSetSeqout,       acdQualSeqout,
-	 "Writeable sequence" },
+	 AJTRUE,  "Writeable sequence" },
     {"seqoutall",          "output",           acdSecOutput,
 	 acdAttrSeqoutall, acdSetSeqoutall,    acdQualSeqoutall,
-	 "Writeable sequence(s)" },
+	 AJTRUE,  "Writeable sequence(s)" },
     {"seqoutset",          "output",           acdSecOutput,
 	 acdAttrSeqoutset, acdSetSeqoutset,    acdQualSeqoutset,
-	 "Writeable sequences" },
+	 AJTRUE,  "Writeable sequences" },
     {"seqset",             "input",            acdSecInput,
 	 acdAttrSeqset,    acdSetSeqset,       acdQualSeqset,
-	 "Readable sequences" },
+	 AJTRUE,  "Readable sequences" },
     {"string",             "simple",           NULL,
 	 acdAttrString,    acdSetString,       NULL,
-	 "String value" },
+	 AJFALSE, "String value" },
     {"xygraph",            "graph",            acdSecOutput,
 	 acdAttrGraphxy,   acdSetGraphxy,      acdQualGraphxy,
-	 "Graph device for a 2D graph" },
-    {NULL, NULL, NULL, NULL, NULL, NULL, NULL}
+	 AJTRUE,  "Graph device for a 2D graph" },
+    {NULL, NULL, NULL, NULL, NULL, NULL, AJFALSE, NULL}
 };
 
 /* @datastatic AcdPValid ******************************************************
@@ -1495,14 +1511,14 @@ typedef struct AcdSValid
     void (*Expect) (AcdPAcd thys, AjPStr* str);
 } AcdOValid, *AcdPValid;
 
-/* @funclist acdValid *********************************************************
+/* @funclist acdValue *********************************************************
 **
 ** ACD type help processing, includes functions to describe valid
 ** values and expected values in -help output and -acdtable output
 **
 ******************************************************************************/
 
-AcdOValid acdValid[] =
+AcdOValid acdValue[] =
 {
     {"sequence",  acdHelpValidSeq,      acdHelpExpectSeq},
     {"seqset",    acdHelpValidSeq,      acdHelpExpectSeq},
@@ -1682,7 +1698,7 @@ AjStatus ajAcdInitP (char *pgm, ajint argc, char *argv[], char *package)
     ajListstrDel (&acdListWords);
     ajListDel (&acdListCount);
     
-    if (acdDoPretty)
+    if (acdDoPretty || acdDoValid)
 	ajExit ();
     
     /* Fill in incomplete information like parameter numbers */
@@ -1871,6 +1887,11 @@ static void acdParse (AjPList listwords, AjPList listcount)
 	{
 	    
 	case APPL_STAGE:
+	    if (acdWordNum != 1)
+	    {
+		acdError ("Application definition allowed only at start");
+	    }
+
 	    /* application: then the appl name */
 	    acdParseName (listwords, &acdStrName);
 	    
@@ -1880,6 +1901,8 @@ static void acdParse (AjPList listwords, AjPList listcount)
 		       acdKeywords[acdCurrentStage].Name, acdStrName);
 	    
 	    acdParseAttributes (acdNewCurr, listwords);
+
+	    acdValidAppl (acdNewCurr);
 	    
 	    /* automatic $(today) variable */
 	    (void) ajStrAssC (&acdStrName, "today");
@@ -1920,6 +1943,8 @@ static void acdParse (AjPList listwords, AjPList listcount)
 	    
 	    acdParseAttributes (acdNewCurr, listwords);
 	    
+	    acdValidQual (acdNewCurr);
+
 	    break;
 	    
 	case SEC_STAGE:
@@ -1933,6 +1958,8 @@ static void acdParse (AjPList listwords, AjPList listcount)
 	    
 	    acdParseAttributes (acdNewCurr, listwords);
 	    
+	    acdValidSection (acdNewCurr);
+
 	    acdPrettyShift ();
 	    
 	    break;
@@ -1942,6 +1969,7 @@ static void acdParse (AjPList listwords, AjPList listcount)
 	    /* remove from list of current sections */
 	    acdParseName (listwords, &acdStrName);
 	    acdNewCurr = acdNewEndsec (acdStrName);
+	    acdValidSection (acdNewCurr);
 	    acdPrettyUnShift ();
 	    acdPretty ("\n%s: %S\n",
 		       acdKeywords[acdCurrentStage].Name, acdStrName);
@@ -3353,6 +3381,9 @@ static AjBool acdUserGet (AcdPAcd thys, AjPStr* reply)
 	else if (ajStrLen(help))
 	    (void) ajStrAssS (&msg, help);
 	
+	else if (ajStrLen(thys->StdPrompt))
+	    (void) ajStrAssS (&msg, thys->StdPrompt);
+	
 	else
 	{
 	    if (!acdCodeDef (thys, &msg))
@@ -3666,7 +3697,7 @@ static void acdSetSec (AcdPAcd thys)
 		   thys->Name);
     }
     
-    (void) acdAttrToStr(thys, "info", "", &info);
+    (void) acdAttrToStr(thys, "information", "", &info);
     
     if (acdAttrToStr(thys, "side", "", &side))
     {
@@ -4616,7 +4647,6 @@ AjPFeattable ajAcdGetFeat (char *token)
 **
 ** @param [u] thys [AcdPAcd] ACD item.
 ** @return [void]
-** @see ajFeatRead
 ** @@
 ******************************************************************************/
 
@@ -4632,6 +4662,7 @@ static void acdSetFeat (AcdPAcd thys)
     ajint itry;
     
     static AjPStr infname = NULL;
+    static AjPStr type = NULL;
     
     ajint fbegin=0;
     ajint fend=0;
@@ -4644,6 +4675,17 @@ static void acdSetFeat (AcdPAcd thys)
     required = acdIsRequired(thys);
     (void) acdQualToBool (thys, "fask", ajFalse, &fprompt, &defreply);
     
+    if (acdAttrToStr(thys, "type", "", &type))
+    {
+	if (!ajFeattabInSetType(tabin, type))
+	    acdError ("Invalid type for feature input");
+	acdInTypeFeatSave(type);
+    }
+    else
+    {
+	acdInTypeFeatSave(NULL);
+    }
+
     (void) acdInFilename (&infname);
     (void) acdReplyInit (thys, ajStrStr(infname), &defreply);
     acdPromptFeat (thys);
@@ -4797,7 +4839,8 @@ static void acdSetFeatout (AcdPAcd thys)
     static AjPStr name = NULL;
     static AjPStr ext = NULL;
     static AjPStr outfname = NULL;
-    
+    static AjPStr type = NULL;
+   
     required = acdIsRequired(thys);
     val = ajFeattabOutNew();
     
@@ -4809,7 +4852,21 @@ static void acdSetFeatout (AcdPAcd thys)
 	(void) acdAttrResolve (thys, "extension", &ext);
     if (!ajStrLen(ext))
 	(void) ajFeatOutFormatDefault(&ext);
-    
+
+    ajDebug("acdSetFeatout checking type\n");
+
+    if (!acdAttrToStr(thys, "type", "", &type))
+    {
+	ajDebug("no type, try '%S'\n", type);
+ 	if (!acdInTypeFeat(&type))
+	    ajWarn("No output type specified for '%S'", thys->Name);
+    }
+
+    ajDebug("Type '%S' try ajFeattabOutSetType\n", type);
+
+    if (!ajFeattabOutSetType(val, type))
+	acdError ("Invalid type for feature output");
+
     (void) acdOutDirectory (&val->Directory);
     (void) acdOutFilename (&outfname, name, ext);
     (void) acdReplyInit (thys, ajStrStr(outfname), &defreply);
@@ -6582,9 +6639,9 @@ static void acdSetSeq (AcdPAcd thys)
 	ajSeqinUsa (&seqin, reply);
 	
 	if (acdAttrToStr(thys, "type", "", &seqin->Inputtype))
-	    acdInTypeSave(seqin->Inputtype);
+	    acdInTypeSeqSave(seqin->Inputtype);
 	else
-	    acdInTypeSave(NULL);
+	    acdInTypeSeqSave(NULL);
 	
 	(void) acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
 	(void) acdAttrToBool(thys, "entry", ajFalse, &seqin->Text);
@@ -6852,9 +6909,9 @@ static void acdSetSeqset (AcdPAcd thys)
 	ajSeqinUsa (&seqin, reply);
 	
 	if (acdAttrToStr(thys, "type", "", &seqin->Inputtype))
-	    acdInTypeSave(seqin->Inputtype);
+	    acdInTypeSeqSave(seqin->Inputtype);
 	else
-	    acdInTypeSave(NULL);
+	    acdInTypeSeqSave(NULL);
 	
 	(void) acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
 	
@@ -7121,9 +7178,9 @@ static void acdSetSeqall (AcdPAcd thys)
 	ajSeqinUsa (&seqin, reply);
 	
 	if (acdAttrToStr(thys, "type", "", &seqin->Inputtype))
-	    acdInTypeSave(seqin->Inputtype);
+	    acdInTypeSeqSave(seqin->Inputtype);
 	else
-	    acdInTypeSave(NULL);
+	    acdInTypeSeqSave(NULL);
 	
 	(void) acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
 	(void) acdAttrToBool(thys, "entry", ajFalse, &seqin->Text);
@@ -7414,7 +7471,7 @@ static void acdSetSeqout (AcdPAcd thys)
 	
 	if (!acdAttrToStr(thys, "type", "", &val->Outputtype))
 	{
-	    if (!acdInType(&val->Outputtype))
+	    if (!acdInTypeSeq(&val->Outputtype))
 		ajWarn("No output type specified for '%S'", thys->Name);
 	}
 	
@@ -7562,7 +7619,7 @@ static void acdSetSeqoutset (AcdPAcd thys)
 	
 	if (!acdAttrToStr(thys, "type", "", &val->Outputtype))
 	{
-	    if (!acdInType(&val->Outputtype))
+	    if (!acdInTypeSeq(&val->Outputtype))
 		ajWarn("No output type specified for '%S'", thys->Name);
 	}
 	
@@ -7716,7 +7773,7 @@ static void acdSetSeqoutall (AcdPAcd thys)
 	
 	if (!acdAttrToStr(thys, "type", "", &val->Outputtype))
 	{
-	    if (!acdInType(&val->Outputtype))
+	    if (!acdInTypeSeq(&val->Outputtype))
 		ajWarn("No output type specified for '%S'", thys->Name);
 	}
 	
@@ -8963,12 +9020,12 @@ static void acdHelpValid (AcdPAcd thys, AjPStr* str)
 
     /* special processing for sequences, outseq, outfile */
 
-    for (i=0; acdValid[i].Name; i++)
+    for (i=0; acdValue[i].Name; i++)
     {
-	if (ajStrMatchCC (acdType[thys->Type].Name, acdValid[i].Name))
+	if (ajStrMatchCC (acdType[thys->Type].Name, acdValue[i].Name))
 	{
-	    /* Calling funclist acdValid() */
-	    if (acdValid[i].Valid) acdValid[i].Valid(thys, str);
+	    /* Calling funclist acdValue() */
+	    if (acdValue[i].Valid) acdValue[i].Valid(thys, str);
 	    break;
 	}
     }
@@ -9368,12 +9425,12 @@ static void acdHelpExpect (AcdPAcd thys, AjPStr* str)
     
     /* special processing for sequences, outseq, outfile */
     
-    for (i=0; acdValid[i].Name; i++)
+    for (i=0; acdValue[i].Name; i++)
     {
-	if (ajStrMatchCC (acdType[thys->Type].Name, acdValid[i].Name))
+	if (ajStrMatchCC (acdType[thys->Type].Name, acdValue[i].Name))
 	{
-	    /* Calling funclist acdValid() */
-	    if (acdValid[i].Expect) acdValid[i].Expect(thys, str);
+	    /* Calling funclist acdValue() */
+	    if (acdValue[i].Expect) acdValue[i].Expect(thys, str);
 	    break;
 	}
     }
@@ -11808,7 +11865,7 @@ static AjBool acdExpCase (AjPStr* result, AjPStr str)
 
 /* @funcstatic acdExpFilename *************************************************
 **
-** Looks for an expression @(filename string) and returns a trimmed
+** Looks for an expression @(file: string) and returns a trimmed
 ** lower case file name prefix or suffix.
 **
 ** @param [r] result [AjPStr*] Expression result
@@ -12041,7 +12098,7 @@ static AjBool acdAttrValueStr (AcdPAcd thys, char *attrib, char* def,
 **
 ** Sets special internal variables to reflect their presence.
 **
-** Currently these are "acdlog", "acdpretty", "acdtable"
+** Currently these are "acdlog", "acdpretty", "acdtable", "acdvalid"
 **
 ** @param [r] optionName [char*] option name
 ** @return [AjBool] ajTrue if option was recognised
@@ -12064,6 +12121,12 @@ AjBool ajAcdSetControl (char* optionName)
     if (!ajStrCmpCaseCC(optionName, "acdtable"))
     {
 	acdDoTable = ajTrue;
+	return ajTrue;
+    }
+
+    if (!ajStrCmpCaseCC(optionName, "acdvalid"))
+    {
+	acdDoValid = ajTrue;
 	return ajTrue;
     }
 
@@ -13495,7 +13558,7 @@ static void acdPromptCodon (AcdPAcd thys)
     if (ajStrLen(*prompt))
 	return;
 
-    (void) ajFmtPrintS (prompt, "Codon usage file");
+    (void) ajFmtPrintS (&thys->StdPrompt, "Codon usage file");
     return;
 }
 
@@ -13520,7 +13583,7 @@ static void acdPromptDirlist (AcdPAcd thys)
     if (ajStrLen(*prompt))
 	return;
 
-    (void) ajFmtPrintS (prompt, "Directory with files");
+    (void) ajFmtPrintS (&thys->StdPrompt, "Directory with files");
     return;
 }
 
@@ -13544,7 +13607,7 @@ static void acdPromptFilelist (AcdPAcd thys)
     if (ajStrLen(*prompt))
 	return;
 
-    (void) ajFmtPrintS (prompt, "Comma-separated file list");
+    (void) ajFmtPrintS (&thys->StdPrompt, "Comma-separated file list");
     return;
 }
 
@@ -13574,20 +13637,24 @@ static void acdPromptFeat (AcdPAcd thys)
     count++;
     switch (count)
     {
-    case 1: (void) ajFmtPrintS (prompt, "Input features"); break;
-    case 2: (void) ajFmtPrintS (prompt, "Second features"); break;
-    case 3: (void) ajFmtPrintS (prompt, "Third features"); break;
+    case 1: (void) ajFmtPrintS (&thys->StdPrompt, "Input features"); break;
+    case 2: (void) ajFmtPrintS (&thys->StdPrompt, "Second features"); break;
+    case 3: (void) ajFmtPrintS (&thys->StdPrompt, "Third features"); break;
     case 11:
     case 12:
     case 13:
-	(void) ajFmtPrintS (prompt, "%dth features", count); break;
+	(void) ajFmtPrintS (&thys->StdPrompt, "%dth features", count); break;
     default:
 	switch (count % 10)
 	{
-	case 1: (void) ajFmtPrintS (prompt, "%dst features", count); break;
-	case 2: (void) ajFmtPrintS (prompt, "%dnd features", count); break;
-	case 3: (void) ajFmtPrintS (prompt, "%drd features", count); break;
-	default: (void) ajFmtPrintS (prompt, "%dth features", count); break;
+	case 1: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%dst features", count); break;
+	case 2: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%dnd features", count); break;
+	case 3: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%drd features", count); break;
+	default: (void) ajFmtPrintS (&thys->StdPrompt,
+				     "%dth features", count); break;
 	}
 	break;
     }
@@ -13614,7 +13681,7 @@ static void acdPromptCpdb (AcdPAcd thys)
     if (ajStrLen(*prompt))
 	return;
 
-    (void) ajFmtPrintS (prompt, "Clean PDB file");
+    (void) ajFmtPrintS (&thys->StdPrompt, "Clean PDB file");
     return;
 }
 
@@ -13638,7 +13705,7 @@ static void acdPromptScop (AcdPAcd thys)
     if (ajStrLen(*prompt))
 	return;
 
-    (void) ajFmtPrintS (prompt, "Scop entry");
+    (void) ajFmtPrintS (&thys->StdPrompt, "Scop entry");
     return;
 }
 
@@ -13667,28 +13734,32 @@ static void acdPromptSeq (AcdPAcd thys)
     count++;
     switch (count)
     {
-    case 1: (void) ajFmtPrintS (prompt, "Input sequence"); break;
-    case 2: (void) ajFmtPrintS (prompt, "Second sequence"); break;
-    case 3: (void) ajFmtPrintS (prompt, "Third sequence"); break;
+    case 1: (void) ajFmtPrintS (&thys->StdPrompt, "Input sequence"); break;
+    case 2: (void) ajFmtPrintS (&thys->StdPrompt, "Second sequence"); break;
+    case 3: (void) ajFmtPrintS (&thys->StdPrompt, "Third sequence"); break;
     case 11:
     case 12:
     case 13:
-	(void) ajFmtPrintS (prompt, "%dth sequence", count); break;
+	(void) ajFmtPrintS (&thys->StdPrompt, "%dth sequence", count); break;
     default:
 	switch (count % 10)
 	{
-	case 1: (void) ajFmtPrintS (prompt, "%dst sequence", count); break;
-	case 2: (void) ajFmtPrintS (prompt, "%dnd sequence", count); break;
-	case 3: (void) ajFmtPrintS (prompt, "%drd sequence", count); break;
-	default: (void) ajFmtPrintS (prompt, "%dth sequence", count); break;
+	case 1: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%dst sequence", count); break;
+	case 2: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%dnd sequence", count); break;
+	case 3: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%drd sequence", count); break;
+	default: (void) ajFmtPrintS (&thys->StdPrompt,
+				     "%dth sequence", count); break;
 	}
 	break;
     }
 
     if (ajStrMatchCC(acdType[thys->Type].Name, "seqset"))
-	ajStrAppC (prompt, " set");
+	ajStrAppC (&thys->StdPrompt, " set");
     if (ajStrMatchCC(acdType[thys->Type].Name, "seqall"))
-	ajStrAppC (prompt, "(s)");
+	ajStrAppC (&thys->StdPrompt, "(s)");
 
     return;
 }
@@ -13714,7 +13785,7 @@ static void acdPromptGraph (AcdPAcd thys)
     if (ajStrLen(*prompt))
 	return;
 
-    (void) ajFmtPrintS (prompt, "Graph type");
+    (void) ajFmtPrintS (&thys->StdPrompt, "Graph type");
     return;
 }
 
@@ -13743,23 +13814,31 @@ static void acdPromptFeatout (AcdPAcd thys)
     count++;
     switch (count)
     {
-    case 1: (void) ajFmtPrintS (prompt, "Output features"); break;
-    case 2: (void) ajFmtPrintS (prompt, "Second output features"); break;
-    case 3: (void) ajFmtPrintS (prompt, "Third output features"); break;
+    case 1: (void) ajFmtPrintS (&thys->StdPrompt,
+				"Output features"); break;
+    case 2: (void) ajFmtPrintS (&thys->StdPrompt,
+				"Second output features"); break;
+    case 3: (void) ajFmtPrintS (&thys->StdPrompt,
+				"Third output features"); break;
     case 11:
     case 12:
     case 13:
-	(void) ajFmtPrintS (prompt, "%dth output features", count); break;
+	(void) ajFmtPrintS (&thys->StdPrompt,
+			    "%dth output features", count); break;
     default:
 	switch (count % 10)
 	{
-	case 1: (void) ajFmtPrintS (prompt, "%dst output features", count);
+	case 1: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%dst output features", count);
 	    break;
-	case 2: (void) ajFmtPrintS (prompt, "%dnd output features", count);
+	case 2: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%dnd output features", count);
 	    break;
-	case 3: (void) ajFmtPrintS (prompt, "%drd output features", count);
+	case 3: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%drd output features", count);
 	    break;
-	default: (void) ajFmtPrintS (prompt, "%dth output features", count);
+	default: (void) ajFmtPrintS (&thys->StdPrompt,
+				     "%dth output features", count);
 	    break;
 	}
 	break;
@@ -13792,23 +13871,31 @@ static void acdPromptAlign (AcdPAcd thys)
     count++;
     switch (count)
     {
-    case 1: (void) ajFmtPrintS (prompt, "Output alignment"); break;
-    case 2: (void) ajFmtPrintS (prompt, "Second output alignment"); break;
-    case 3: (void) ajFmtPrintS (prompt, "Third output alignment"); break;
+    case 1: (void) ajFmtPrintS (&thys->StdPrompt,
+				"Output alignment"); break;
+    case 2: (void) ajFmtPrintS (&thys->StdPrompt,
+				"Second output alignment"); break;
+    case 3: (void) ajFmtPrintS (&thys->StdPrompt,
+				"Third output alignment"); break;
     case 11:
     case 12:
     case 13:
-	(void) ajFmtPrintS (prompt, "%dth output alignment", count); break;
+	(void) ajFmtPrintS (&thys->StdPrompt,
+			    "%dth output alignment", count); break;
     default:
 	switch (count % 10)
 	{
-	case 1: (void) ajFmtPrintS (prompt, "%dst output alignment", count);
+	case 1: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%dst output alignment", count);
 	    break;
-	case 2: (void) ajFmtPrintS (prompt, "%dnd output alignment", count);
+	case 2: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%dnd output alignment", count);
 	    break;
-	case 3: (void) ajFmtPrintS (prompt, "%drd output alignment", count);
+	case 3: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%drd output alignment", count);
 	    break;
-	default: (void) ajFmtPrintS (prompt,"%dth output alignment", count);
+	default: (void) ajFmtPrintS (&thys->StdPrompt,
+				     "%dth output alignment", count);
 	    break;
 	}
 	break;
@@ -13841,23 +13928,31 @@ static void acdPromptReport (AcdPAcd thys)
     count++;
     switch (count)
     {
-    case 1: (void) ajFmtPrintS (prompt, "Output report"); break;
-    case 2: (void) ajFmtPrintS (prompt, "Second output report"); break;
-    case 3: (void) ajFmtPrintS (prompt, "Third output report"); break;
+    case 1: (void) ajFmtPrintS (&thys->StdPrompt,
+				"Output report"); break;
+    case 2: (void) ajFmtPrintS (&thys->StdPrompt,
+				"Second output report"); break;
+    case 3: (void) ajFmtPrintS (&thys->StdPrompt,
+				"Third output report"); break;
     case 11:
     case 12:
     case 13:
-	(void) ajFmtPrintS (prompt, "%dth output report", count); break;
+	(void) ajFmtPrintS (&thys->StdPrompt,
+			    "%dth output report", count); break;
     default:
 	switch (count % 10)
 	{
-	case 1: (void) ajFmtPrintS (prompt, "%dst output report", count);
+	case 1: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%dst output report", count);
 	    break;
-	case 2: (void) ajFmtPrintS (prompt, "%dnd output report", count);
+	case 2: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%dnd output report", count);
 	    break;
-	case 3: (void) ajFmtPrintS (prompt, "%drd output report", count);
+	case 3: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%drd output report", count);
 	    break;
-	default: (void) ajFmtPrintS (prompt, "%dth output report", count);
+	default: (void) ajFmtPrintS (&thys->StdPrompt,
+				     "%dth output report", count);
 	    break;
 	}
 	break;
@@ -13890,23 +13985,31 @@ static void acdPromptSeqout (AcdPAcd thys)
     count++;
     switch (count)
     {
-    case 1: (void) ajFmtPrintS (prompt, "Output sequence"); break;
-    case 2: (void) ajFmtPrintS (prompt, "Second output sequence"); break;
-    case 3: (void) ajFmtPrintS (prompt, "Third output sequence"); break;
+    case 1: (void) ajFmtPrintS (&thys->StdPrompt,
+				"Output sequence"); break;
+    case 2: (void) ajFmtPrintS (&thys->StdPrompt,
+				"Second output sequence"); break;
+    case 3: (void) ajFmtPrintS (&thys->StdPrompt,
+				"Third output sequence"); break;
     case 11:
     case 12:
     case 13:
-	(void) ajFmtPrintS (prompt, "%dth output sequence", count); break;
+	(void) ajFmtPrintS (&thys->StdPrompt,
+			    "%dth output sequence", count); break;
     default:
 	switch (count % 10)
 	{
-	case 1: (void) ajFmtPrintS (prompt, "%dst output sequence", count);
+	case 1: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%dst output sequence", count);
 	    break;
-	case 2: (void) ajFmtPrintS (prompt, "%dnd output sequence", count);
+	case 2: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%dnd output sequence", count);
 	    break;
-	case 3: (void) ajFmtPrintS (prompt, "%drd output sequence", count);
+	case 3: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%drd output sequence", count);
 	    break;
-	default: (void) ajFmtPrintS (prompt, "%dth output sequence", count);
+	default: (void) ajFmtPrintS (&thys->StdPrompt,
+				     "%dth output sequence", count);
 	    break;
 	}
 	break;
@@ -13949,27 +14052,33 @@ static void acdPromptOutfile (AcdPAcd thys)
     acdLog("acdPromptOutfile count %d\n", count);
     switch (count)
     {
-    case 1: (void) ajFmtPrintS (prompt, "Output file"); break;
-    case 2: (void) ajFmtPrintS (prompt, "Second output file"); break;
-    case 3: (void) ajFmtPrintS (prompt, "Third output file"); break;
+    case 1: (void) ajFmtPrintS (&thys->StdPrompt,
+				"Output file"); break;
+    case 2: (void) ajFmtPrintS (&thys->StdPrompt,
+				"Second output file"); break;
+    case 3: (void) ajFmtPrintS (&thys->StdPrompt,
+				"Third output file"); break;
     case 11:
     case 12:
     case 13:
-	(void) ajFmtPrintS (prompt, "%dth output file", count); break;
+	(void) ajFmtPrintS (&thys->StdPrompt,
+			    "%dth output file", count); break;
     default:
 	switch (count % 10)
 	{
-	case 1: (void) ajFmtPrintS (prompt, "%dst output file", count); break;
-	case 2: (void) ajFmtPrintS (prompt, "%dnd output file", count); break;
-	case 3: (void) ajFmtPrintS (prompt, "%drd output file", count); break;
-	default: (void) ajFmtPrintS (prompt, "%dth output file", count); break;
+	case 1: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%dst output file", count); break;
+	case 2: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%dnd output file", count); break;
+	case 3: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%drd output file", count); break;
+	default: (void) ajFmtPrintS (&thys->StdPrompt,
+				     "%dth output file", count); break;
 	}
 	break;
     }
     /*(void) ajStrTrace (*prompt);*/
     /*(void) ajStrTrace (thys->DefStr[DEF_PROMPT]);*/
-    acdLog("acdPromptOutfile set thys->DefStr[DEF_PROMPT] '%S' '%S'\n",
-	   *prompt, thys->DefStr[DEF_PROMPT]);
     return;
 }
 
@@ -13998,20 +14107,24 @@ static void acdPromptInfile (AcdPAcd thys)
     count++;
     switch (count)
     {
-    case 1: (void) ajFmtPrintS (prompt, "Input file"); break;
-    case 2: (void) ajFmtPrintS (prompt, "Second input file"); break;
-    case 3: (void) ajFmtPrintS (prompt, "Third input file"); break;
+    case 1: (void) ajFmtPrintS (&thys->StdPrompt, "Input file"); break;
+    case 2: (void) ajFmtPrintS (&thys->StdPrompt, "Second input file"); break;
+    case 3: (void) ajFmtPrintS (&thys->StdPrompt, "Third input file"); break;
     case 11:
     case 12:
     case 13:
-	(void) ajFmtPrintS (prompt, "%dth input file", count); break;
+	(void) ajFmtPrintS (&thys->StdPrompt, "%dth input file", count); break;
     default:
 	switch (count % 10)
 	{
-	case 1: (void) ajFmtPrintS (prompt, "%dst input file", count); break;
-	case 2: (void) ajFmtPrintS (prompt, "%dnd input file", count); break;
-	case 3: (void) ajFmtPrintS (prompt, "%drd input file", count); break;
-	default: (void) ajFmtPrintS (prompt, "%dth input file", count); break;
+	case 1: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%dst input file", count); break;
+	case 2: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%dnd input file", count); break;
+	case 3: (void) ajFmtPrintS (&thys->StdPrompt,
+				    "%drd input file", count); break;
+	default: (void) ajFmtPrintS (&thys->StdPrompt,
+				     "%dth input file", count); break;
 	}
 	break;
     }
@@ -14917,7 +15030,7 @@ static AjBool acdInFilename (AjPStr* infname)
 /* @funcstatic acdOutDirectory ************************************************
 **
 ** Sets a default output file directory. Uses the _OUTDIRECTORY variable
-** as a default value, but any niput string overrides it.
+** as a default value, but any input string overrides it.
 **
 ** The recommendation is that the directory should always be provided
 ** in the emboss.defaults file or by an environment variable.
@@ -15072,7 +15185,7 @@ static AjBool acdInFileSave (AjPStr infname)
     return ajTrue;
 }
 
-/* @funcstatic acdInTypeSave **************************************************
+/* @funcstatic acdInTypeSeqSave ***********************************************
 **
 ** For the first call, saves the input filename for use in building output
 ** file name(s).
@@ -15082,31 +15195,41 @@ static AjBool acdInFileSave (AjPStr infname)
 ** @@
 ******************************************************************************/
 
-static AjBool acdInTypeSave (AjPStr intype)
+static AjBool acdInTypeSeqSave (AjPStr intype)
 {
-    if (acdInTypename)
+    if (acdInTypeSeqName)
 	return ajFalse;
 
-    acdLog ("acdInTypeSave (%S)\n",
+    acdLog ("acdInTypeSeqSave (%S)\n",
 	    intype);
 
     if (!ajStrLen(intype))
     {
-	ajStrAssC (&acdInTypename, "");
-	acdLog("Input sequence type defaults to ''\n", acdInTypename);
+	ajStrAssC (&acdInTypeSeqName, "");
+	acdLog("Input sequence type defaults to ''\n", acdInTypeSeqName);
+	acdInTypeFeatSave(NULL);
     }
     else
-	(void) ajStrAssS (&acdInTypename, intype);
-
-    (void) ajStrToLower(&acdInTypename);
-
-    acdLog ("acdInTypeSave (%S) input type set to '%S'\n",
-	    intype, acdInTypename);
+    {
+	(void) ajStrAssS (&acdInTypeSeqName, intype);
+	(void) ajStrToLower(&acdInTypeSeqName);
+	if (ajSeqTypeIsAny(intype))
+	    acdInTypeFeatSaveC("");
+	else if (ajSeqTypeIsProt(intype))
+	    acdInTypeFeatSaveC("protein");
+	else if (ajSeqTypeIsNuc(intype))
+	    acdInTypeFeatSaveC("nucleotide");
+	else
+	    acdInTypeFeatSaveC("");
+   }
+ 
+    acdLog ("acdInTypeSeqSave (%S) input type set to '%S'\n",
+	    intype, acdInTypeSeqName);
 
     return ajTrue;
 }
 
-/* @funcstatic acdInType **************************************************
+/* @funcstatic acdInTypeSeq **************************************************
 **
 ** Returns the input sequence type (if known)
 **
@@ -15115,20 +15238,103 @@ static AjBool acdInTypeSave (AjPStr intype)
 ** @@
 ******************************************************************************/
 
-static AjBool acdInType (AjPStr* infname)
+static AjBool acdInTypeSeq (AjPStr* typename)
 {
     AjBool ret = ajFalse;
 
-    acdLog("acdInType saved acdInTypename '%S'\n", acdInTypename);
+    acdLog("acdInTypeSeq saved acdInTypeSeqName '%S'\n", acdInTypeSeqName);
 
-    if (acdInTypename)			/* could be an empty string */
+    if (acdInTypeSeqName)			/* could be an empty string */
     {
-	(void) ajStrAssS (infname, acdInTypename);
+	(void) ajStrAssS (typename, acdInTypeSeqName);
 	ret = ajTrue;
     }
     else
     {
-	(void) ajStrAssC (infname, "");	/* allow anything, return ajFalse */
+	(void) ajStrAssC (typename, ""); /* allow anything, return ajFalse */
+	ret = ajFalse;
+    }
+
+    return ret;
+}
+
+/* @funcstatic acdInTypeFeatSave **********************************************
+**
+** Saves the input feature type for use in setting the default output type
+**
+** @param [P] intype [AjPStr] Input feature type
+** @return [AjBool] ajTrue if a type was successfully set
+** @@
+******************************************************************************/
+
+static AjBool acdInTypeFeatSave (AjPStr intype)
+{
+    if (acdInTypeFeatName)
+	return ajFalse;
+
+    acdLog ("acdInTypeFeatSave (%S)\n",
+	    intype);
+
+    if (!ajStrLen(intype))
+    {
+	ajStrAssC (&acdInTypeFeatName, "");
+	acdLog("Input feature type defaults to '%S'\n", acdInTypeFeatName);
+    }
+    else
+	(void) ajStrAssS (&acdInTypeFeatName, intype);
+
+    (void) ajStrToLower(&acdInTypeFeatName);
+
+    acdLog ("acdInTypeFeatSave (%S) input feature type set to '%S'\n",
+	    intype, acdInTypeFeatName);
+
+    return ajTrue;
+}
+
+/* @funcstatic acdInTypeFeatSaveC *********************************************
+**
+** Saves the input feature type for use in setting the default output type
+**
+** @param [P] intype [char*] Input feature type
+** @return [AjBool] ajTrue if a type was successfully set
+** @@
+******************************************************************************/
+
+static AjBool acdInTypeFeatSaveC (char* intype)
+{
+    AjBool ret;
+    AjPStr tmpstr = NULL;
+
+    tmpstr = ajStrNewC(intype);
+    ret = acdInTypeFeatSave(tmpstr);
+    ajStrDel(&tmpstr);
+
+    return ret;
+}
+
+/* @funcstatic acdInTypeFeat **************************************************
+**
+** Returns the input feature type (if known)
+**
+** @param [wP] typename [AjPStr*] Input feature type
+** @return [AjBool] ajTrue if a type was successfully set
+** @@
+******************************************************************************/
+
+static AjBool acdInTypeFeat (AjPStr* typename)
+{
+    AjBool ret = ajFalse;
+
+    acdLog("acdInTypeFeat saved acdInTypeFeatName '%S'\n", acdInTypeFeatName);
+
+    if (acdInTypeFeatName)		/* could be an empty string */
+    {
+	(void) ajStrAssS (typename, acdInTypeFeatName);
+	ret = ajTrue;
+    }
+    else
+    {
+	(void) ajStrAssC (typename, ""); /* allow anything, return ajFalse */
 	ret = ajFalse;
     }
 
@@ -15542,7 +15748,7 @@ static AjBool acdVocabCheck (AjPStr str, char** vocab)
 
 /* @funcstatic acdError *******************************************************
 **
-** Formatted write as an error message.
+** Formatted write as an error message, then exits with ajExitBad
 **
 ** @param [P] fmt [char*] Format string
 ** @param [v] [...] Format arguments.
@@ -15579,7 +15785,45 @@ static void acdError (char* fmt, ...)
     return;
 }
 
-/* @funcstatic acdError *******************************************************
+/* @funcstatic acdErrorValid **************************************************
+**
+** Formatted write as an error message, then continues (acdError exits)
+**
+** @param [P] fmt [char*] Format string
+** @param [v] [...] Format arguments.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdErrorValid (char* fmt, ...)
+{
+    va_list args ;
+    AjPStr errstr=NULL;
+    ajint linenum;
+    acdErrorCount++;
+
+    va_start (args, fmt) ;
+    ajFmtVPrintS (&errstr, fmt, args);
+    va_end (args) ;
+
+    if (acdLineNum > 0)
+	linenum = acdLineNum;
+    else if (acdSetCurr)
+	linenum = acdSetCurr->LineNum;
+    else if (acdProcCurr)
+	linenum = acdProcCurr->LineNum;
+    else if (acdListCurr)
+	linenum = acdListCurr->LineNum;
+    else
+	linenum = 0;
+
+    ajErr ("File %S line %d: %S", acdFName, linenum, errstr);
+    ajStrDel(&errstr);
+
+    return;
+}
+
+/* @funcstatic acdWarn *******************************************************
 **
 ** Formatted write as an error message.
 **
@@ -15780,3 +16024,693 @@ void ajAcdExit (AjBool silent)
 //    return;
 //}
 */
+
+/* @funcstatic acdValidAppl ***************************************************
+**
+** Validation for an application definition
+**
+** @param [R] thys [AcdPAcd] ACD object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdValidAppl (AcdPAcd thys)
+{
+    ajint i;
+
+    if (!acdDoValid)
+	return;
+
+    /* must have a documentation attribute */
+
+    i = acdFindAttrC (acdAttrAppl, "documentation");
+    if (!ajStrLen(thys->AttrStr[i]))
+	acdErrorValid ("Application has no documentation defined");
+
+    /* must have a group attribute */
+
+    i = acdFindAttrC (acdAttrAppl, "groups");
+    if (!ajStrLen(thys->AttrStr[i]))
+	acdErrorValid ("Application has no groups defined");
+
+    /* group must be a known group (and subgroup) */
+
+    acdValidApplGroup(thys->AttrStr[i]);
+
+    return;
+}
+
+/* @funcstatic acdValidSection ************************************************
+**
+** Validation for a section definition
+**
+** @param [R] thys [AcdPAcd] ACD object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdValidSection (AcdPAcd thys)
+{
+    AjPTable typeTable = NULL;
+    AjPTable infoTable = NULL;
+    static ajint sectLevel=0;
+    AjPStr sectType = NULL;
+    AjPStr sectInfo = NULL;
+    static AjPStr sectNameTop;
+    AjPStr tmpstr = NULL;
+
+    if (!acdDoValid)
+	return;
+
+    if (!typeTable)
+	acdReadSections(&typeTable, &infoTable);
+
+    if (ajStrMatchCC(acdKeywords[thys->Type].Name, "endsection"))
+    {
+	--sectLevel;
+	if (sectLevel < 0)
+	    acdErrorValid("too many endsections");
+	return;
+    }
+
+    ++sectLevel;
+
+    if (sectLevel == 1) {
+	ajStrAssS (&sectNameTop, thys->Name);
+    }
+
+   /* should have a known name */
+
+    sectType = ajTableGet(typeTable, thys->Name);
+    tmpstr = acdAttrValue(thys, "type");
+
+    if (!sectType)
+    {
+	if (sectLevel == 1)
+	    acdErrorValid("Section '%S' not defined in sections.standard file",
+		thys->Name);
+	else
+	    acdWarn("Sub level section '%S' not defined in "
+		    "sections.standard file",
+		    thys->Name);
+	/* if unknown, must be distinctive - check for common words? */
+
+	return;
+    }
+
+    else
+    {
+
+    /* if known, must have a standard type */
+
+	if (sectLevel == 1)
+	{
+	    if (!ajStrMatchC(tmpstr, "page"))
+		acdErrorValid("Top level section '%S' not of type 'page'",
+			      thys->Name);
+
+	    else if (!ajStrMatchC(sectType, "page"))
+		acdErrorValid("Top level section '%S' defined as "
+			      "sub type of '%S' in sections.standard",
+			      thys->Name, sectType);
+	}
+	else
+	{
+	    if (ajStrMatchC(tmpstr, "page"))
+		acdErrorValid("Sub level section '%S' not of type 'frame'",
+			      thys->Name);
+	    else if (!ajStrPrefixC(sectType, "frame"))
+		acdErrorValid("Sub level section '%S' not defined "
+			      "as type 'frame' in sections.standard",
+			      thys->Name);
+	    else if (!ajStrMatch(sectType, sectNameTop))
+		acdErrorValid("Sub level section '%S' should be under '%S'",
+			      thys->Name, sectType);
+	}
+    }
+
+    sectInfo = ajTableGet(infoTable, thys->Name);
+    tmpstr = acdAttrValue(thys, "information");
+
+    /* must have an information attribute */
+
+    if (!ajStrLen(tmpstr))
+	acdWarn("Section has no information string");
+
+     /* if known, must have a standard info string */
+
+   else
+    {
+	if (!ajStrMatch(sectInfo, tmpstr))
+	{
+	    if (ajStrMatchCase(sectInfo, tmpstr))
+		acdWarn("Section info '%S' expected, case mismatch",
+			sectInfo);
+	    else
+		acdErrorValid("Section info '%S' expected, found '%S'",
+			      sectInfo, tmpstr);
+	}
+    }
+
+
+}
+
+/* @funcstatic acdValidQual ************************************************
+**
+** Validation for a qualifier definition
+**
+** @param [R] thys [AcdPAcd] ACD object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdValidQual (AcdPAcd thys)
+{
+    ajint itype;
+    AjBool isparam = ajFalse;
+    AjBool boolval;
+    static AjPStr tmpstr = NULL;
+    static AjPStr tmpinfo = NULL;
+    static AjPStr tmpprompt = NULL;
+    static ajint qualCountSeq = 0;
+ /*   static ajint qualCountSeqall = 0; */
+ /*   static ajint qualCountSeqset = 0; */
+    static ajint qualCountSeqout = 0;
+/*    static ajint qualCountSeqoutall = 0; */
+ /*   static ajint qualCountSeqoutset = 0; */
+    static ajint qualCountInfile = 0;
+    static ajint qualCountOutfile = 0;
+    static AjPStr qualName = NULL;
+    static AjPStr qualSeqFirst = NULL;
+    static AjPStr qualSeqoutFirst = NULL;
+    static AjPStr seqTypeIn = NULL;
+    static AjBool seqMulti = AJFALSE;
+    static AjBool inMulti = AJFALSE;
+    static AjBool outMulti = AJFALSE;
+    static AjBool seqoutMulti = AJFALSE;
+
+    if (!acdDoValid)
+	return;
+
+    /* parameter, required, optional only once, with 'Y' */
+
+    itype = 0;
+
+    tmpstr = acdAttrValue(thys, "parameter");
+    if (ajStrLen(tmpstr))
+    {
+	itype++;
+	if (acdVarTest(tmpstr))
+	{
+	    acdErrorValid ("Calculated parameter value");
+	}
+	else
+	{
+	    if (ajStrToBool(tmpstr,&isparam))
+	    {
+		if (!isparam)
+		{
+		    acdErrorValid ("parameter defined as false '%S'", tmpstr);
+		    itype--;
+		}
+	    }
+	}
+    }
+
+    tmpstr = acdAttrValue(thys, "required");
+    if (ajStrLen(tmpstr))
+    {
+	itype++;
+	if (acdVarTest(tmpstr))
+	{
+	    acdWarn ("Calculated required value");
+	}
+	else
+	{
+	    if (ajStrToBool(tmpstr,&boolval))
+	    {
+		if (!boolval)
+		{
+		    acdErrorValid ("required defined as false '%S'", tmpstr);
+		    itype--;
+		}
+	    }
+	}
+    }
+
+    tmpstr = acdAttrValue(thys, "optional");
+    if (ajStrLen(tmpstr))
+    {
+	itype++;
+	if (acdVarTest(tmpstr))
+	{
+	    acdWarn ("Calculated optional value");
+	}
+	else
+	{
+	    if (ajStrToBool(tmpstr,&boolval))
+	    {
+		if (!boolval)
+		{
+		    acdErrorValid ("optional defined as false '%S'", tmpstr);
+		    itype--;
+		}
+	    }
+	}
+    }
+
+    if (itype > 1)
+    {
+	acdErrorValid("Multiple definition of parametere/required/optional");
+    }
+
+    tmpinfo = acdAttrValue(thys, "information");
+    tmpprompt = acdAttrValue(thys, "prompt");
+    if (ajStrLen(tmpprompt) && !ajStrLen(tmpinfo))
+    {
+	acdErrorValid("prompt specified but no information");
+    }
+
+    /* if known, must have a standard info string */
+
+    if (acdType[thys->Type].Stdprompt &&
+	(ajStrLen(tmpinfo) || ajStrLen(tmpprompt)))
+    {
+	acdErrorValid("Unexpected information value for type '%s'",
+	       acdType[thys->Type].Name);
+    }
+
+    /* else it must have an info attribute */
+
+    if (!acdType[thys->Type].Stdprompt &&
+	!ajStrLen(tmpinfo) && !ajStrLen(tmpprompt))
+    {
+	acdErrorValid("Missing information value for type '%s'",
+	       acdType[thys->Type].Name);
+    }
+
+    /* if known, must have a standard type */
+
+    /* expected types should have a known name */
+/* sequence seqset seqall see below - need to do seqout, infile, outfile */
+
+    if (ajStrMatchCC(acdType[thys->Type].Name, "sequence") ||
+	ajStrMatchCC(acdType[thys->Type].Name, "seqall") ||
+	ajStrMatchCC(acdType[thys->Type].Name, "seqset"))
+    {
+	if (!isparam)
+	    acdWarn("sequence input is not a parameter");
+	qualCountSeq++;
+	if (qualCountSeq == 1)
+	    ajStrAssS (&qualSeqFirst, thys->Token);
+	ajFmtPrintS(&qualName, "%csequence",
+		    (char) ('a' - 1 + qualCountSeq));
+	if (!ajStrSuffixC(thys->Token, "sequence"))
+	{
+	    acdWarn("sequence qualifier '%S' is not 'sequence' or '*sequence'",
+		    thys->Token);
+	}
+	else
+	{
+	    if ((qualCountSeq > 1) ||
+		!ajStrMatchC(thys->Token, "sequence"))
+		seqMulti = ajTrue;
+	    if (seqMulti)
+	    {
+		if (!ajStrMatch(thys->Token, qualName))
+		    acdWarn("Expected sequence qualifier is '%S' found '%S'",
+			    qualName, thys->Token);
+	    }
+	}
+	
+	/* still to do - check for type */
+
+	tmpstr = acdAttrValue(thys, "type");
+	if (!ajStrLen(tmpstr))
+	    acdErrorValid ("No type specified for input sequence");
+	else
+	    if (qualCountSeq == 1)
+		ajStrAssS(&seqTypeIn, tmpstr);
+
+   }
+
+    /* infile - assume parameter  -infile */
+    /* check for type */
+
+    if (ajStrMatchCC(acdType[thys->Type].Name, "infile"))
+    {
+	if (!isparam)
+	    acdWarn("input file is not a parameter");
+	qualCountInfile++;
+	if (!ajStrSuffixC(thys->Token, "file"))
+	    acdWarn("infile qualifier '%S' is not 'infile' or '*file'",
+		    thys->Token);
+	else
+	{
+	    if ((qualCountInfile > 1) ||
+		!ajStrMatchC(thys->Token, "infile"))
+		inMulti = ajTrue;
+	    if ((qualCountInfile == 1) &&
+		!ajStrMatchC(thys->Token, "infile"))
+		acdWarn ("First input file qualifier is not 'infile'");
+	}
+
+	/* still to do - check for type */
+
+	tmpstr = acdAttrValue(thys, "standardtype");
+	if (!ajStrLen(tmpstr))
+	    acdWarn ("No standardtype specified for input file");
+
+   }
+    /* outfile - assume parameter unless default is stdout -outfile */
+    /* check for type */
+
+    if (ajStrMatchCC(acdType[thys->Type].Name, "outfile"))
+    {
+	if (!isparam)
+	    acdWarn("output file is not a parameter");
+	qualCountOutfile++;
+	if (!ajStrSuffixC(thys->Token, "file"))
+	    acdWarn("outfile qualifier '%S' is not 'outfile' or '*file'",
+		    thys->Token);
+	else
+	{
+	    if ((qualCountOutfile > 1) ||
+		!ajStrMatchC(thys->Token, "outfile"))
+		outMulti = ajTrue;
+	    if ((qualCountOutfile == 1) &&
+		!ajStrMatchC(thys->Token, "outfile"))
+		acdWarn ("First output file qualifier is not 'outfile'");
+	}
+	
+	/* still to do - check for type */
+
+	tmpstr = acdAttrValue(thys, "standardtype");
+	if (!ajStrLen(tmpstr))
+	    acdWarn ("No standardtype specified for output file");
+   }
+
+    /* align - as for outfile? */
+
+     if (ajStrMatchCC(acdType[thys->Type].Name, "align"))
+    {
+	if (!isparam)
+	    acdWarn("alignment file is not a parameter");
+	qualCountOutfile++;
+	if (!ajStrSuffixC(thys->Token, "file"))
+	    acdWarn("align qualifier '%S' is not 'outfile' or '*file'",
+		    thys->Token);
+	else
+	{
+	    if ((qualCountOutfile > 1) ||
+		!ajStrMatchC(thys->Token, "outfile"))
+		outMulti = ajTrue;
+	    if ((qualCountOutfile == 1) &&
+		!ajStrMatchC(thys->Token, "outfile"))
+		acdWarn ("First alignment file qualifier is not 'outfile'");
+	}
+   }
+
+   /* report - as for outfile? */
+
+    if (ajStrMatchCC(acdType[thys->Type].Name, "report"))
+    {
+	if (!isparam)
+	    acdWarn("report file is not a parameter");
+	qualCountOutfile++;
+	if (!ajStrSuffixC(thys->Token, "file"))
+	    acdWarn("report qualifier '%S' is not 'outfile' or '*file'",
+		    thys->Token);
+	else
+	{
+	    if ((qualCountOutfile > 1) ||
+		!ajStrMatchC(thys->Token, "outfile"))
+		outMulti = ajTrue;
+	    if ((qualCountOutfile == 1) &&
+		!ajStrMatchC(thys->Token, "outfile"))
+		acdWarn ("First report file qualifier is not 'outfile'");
+	}	
+   }
+
+    /* seqout* - assume parameter - what names? -outseq? */
+    /* type only if there is no sequence input */
+
+    if (ajStrMatchCC(acdType[thys->Type].Name, "seqout") ||
+	ajStrMatchCC(acdType[thys->Type].Name, "seqoutall") ||
+	ajStrMatchCC(acdType[thys->Type].Name, "seqoutset"))
+    {
+	if (!isparam)
+	    acdWarn("sequence output is not a parameter");
+	qualCountSeqout++;
+	if (qualCountSeqout == 1)
+	    ajStrAssS (&qualSeqoutFirst, thys->Token);
+	ajFmtPrintS(&qualName, "%coutseq",
+		    (char) ('a' - 1 + qualCountSeq));
+
+	if (!ajStrSuffixC(thys->Token, "outseq"))
+	    acdWarn("sequence output qualifier '%S' is not 'outseq' "
+		    "or '*outseq'",
+		    thys->Token);
+
+	else
+	{
+	    if ((qualCountSeq > 1) ||
+		!ajStrMatchC(thys->Token, "outseq"))
+		seqoutMulti = ajTrue;
+	    if (seqoutMulti)
+	    {
+		if (!ajStrMatch(thys->Token, qualName))
+		    acdWarn("Expected sequence output qualifier is '%S' "
+			    "found '%S'",
+			    qualName, thys->Token);
+	    }
+	}
+	
+	/* still to do - check for type */
+
+	tmpstr = acdAttrValue(thys, "type");
+	if (!ajStrLen(tmpstr) && !ajStrLen(seqTypeIn))
+	    acdErrorValid ("No type specified for output sequence, "
+			   "and no input sequence type as a default");
+
+   }
+
+    return;
+}
+
+/* @funcstatic acdValidApplGroup **********************************************
+**
+** Validation for application groups
+**
+** @param [R] groups [AjPStr] Group name(s)
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdValidApplGroup (AjPStr groups)
+{
+    static AjPTable grpTable = NULL;
+    AjPRegexp grpexp = NULL;
+    AjPStr tmpGroups = NULL;
+    AjPStr grpName = NULL;
+    AjPStr grpDesc = NULL;
+
+    if (!acdDoValid) return;
+
+    grpTable = acdReadGroups();
+
+    ajStrAssS (&tmpGroups, groups);
+
+    /* step through each group */
+    grpexp = ajRegCompC("([^,]+),?");
+
+    while (ajRegExec(grpexp, tmpGroups))
+    {
+	ajRegSubI(grpexp, 1, &grpName);
+	ajStrClean(&grpName);
+	grpDesc = ajTableGet(grpTable, grpName);
+	if (!grpDesc)
+	    acdErrorValid("Unknown group '%S' for application", grpName);
+	ajRegPost(grpexp, &tmpGroups);
+    }
+
+    return;
+}
+
+/* @funcstatic acdReadGroups **************************************************
+**
+** Read standard table of application groups
+**
+** @return [AjPTable] String table of group names and descriptions
+** @@
+******************************************************************************/
+
+static AjPTable acdReadGroups (void)
+{
+    AjPTable ret = ajStrTableNewCase(50);
+
+    AjPFile grpFile = NULL;
+    AjPStr grpFName = NULL;
+    AjPStr grpRoot = NULL;
+    AjPStr grpRootInst = NULL;
+    AjPStr grpPack = NULL;
+    AjPStr grpLine = NULL;
+    AjPRegexp grpxp = NULL;
+    AjPStr grpName = NULL;
+    AjPStr grpDesc = NULL;
+
+    (void) ajNamRootPack (&grpPack);
+    (void) ajNamRootInstall (&grpRootInst);
+    (void) ajFileDirFix (&grpRootInst);
+    
+    if (ajNamGetValueC ("acdroot", &grpRoot))
+    {
+	(void) ajFileDirFix (&grpRoot);
+	ajFmtPrintS (&grpFName, "%Sgroups.standard", grpRoot);
+	grpFile = ajFileNewIn (grpFName);
+	acdLog ("Group file in acdroot: '%S'\n", grpFName);
+    }
+    else
+    {
+	ajFmtPrintS (&grpFName, "%Sshare/%S/acd/groups.standard",
+		     grpRootInst, grpPack);
+	acdLog ("Group file installed: '%S'\n", grpFName);
+	grpFile = ajFileNewIn (grpFName);
+	if (!grpFile)
+	{
+	    acdLog ("Grp file '%S' not opened\n", grpFName);
+	    (void) ajNamRoot (&grpRoot);
+	    (void) ajFileDirFix (&grpRoot);
+	    ajFmtPrintS (&grpFName, "%Sacd/groups.standard", grpRoot);
+	    acdLog ("Grp file from source dir: '%S'\n", grpFName);
+	    grpFile = ajFileNewIn (grpFName);
+	}
+    }
+    
+    if (!grpFile)		/* test acdc-grpmissing */
+	ajDie ("Group file %S not found", grpFName);
+    else
+	acdLog ("Group file %F used\n", grpFile);
+    
+    grpxp = ajRegCompC ("([^ ]+) +([^ ].*)");
+    while (grpFile && ajFileReadLine(grpFile, &grpLine))
+    {
+	if (ajStrUncomment(&grpLine))
+	{
+	    ajStrClean (&grpLine);
+
+	    if (ajRegExec(grpxp, grpLine))
+	    {
+		ajRegSubI (grpxp, 1, &grpName);
+		ajRegSubI (grpxp, 2, &grpDesc);
+		ajStrSubstituteKK(&grpName, '_', ' ');
+		if (ajTablePut (ret, grpName, grpDesc))
+		    ajWarn ("Duplicate group name in file %S",
+			    grpFName);
+		grpName = NULL;
+		grpDesc = NULL;
+	    }
+	    else
+		ajErr ("Bad record in file %S:\n%S",
+		       grpFName, grpLine);
+	}
+    }
+    ajFileClose (&grpFile);
+
+    return ret;
+}
+    
+/* @funcstatic acdReadGroupSections *******************************************
+**
+** Read standard table of ACD sections
+**
+** @param [C] typetable [AjPTable] String table of section names and types
+** @param [C] infotable [AjPTable] String table of section names and
+**                                 descriptions
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdReadSections (AjPTable* typetable, AjPTable* infotable)
+{
+
+    AjPFile sectFile = NULL;
+    AjPStr sectFName = NULL;
+    AjPStr sectRoot = NULL;
+    AjPStr sectRootInst = NULL;
+    AjPStr sectPack = NULL;
+    AjPStr sectLine = NULL;
+    AjPRegexp sectxp = NULL;
+    AjPStr sectName = NULL;
+    AjPStr sectType = NULL;
+    AjPStr sectDesc = NULL;
+
+    (void) ajNamRootPack (&sectPack);
+    (void) ajNamRootInstall (&sectRootInst);
+    (void) ajFileDirFix (&sectRootInst);
+    
+    *typetable = ajStrTableNewCase(50);
+    *infotable = ajStrTableNewCase(50);
+
+    if (ajNamGetValueC ("acdroot", &sectRoot))
+    {
+	(void) ajFileDirFix (&sectRoot);
+	ajFmtPrintS (&sectFName, "%Ssections.standard", sectRoot);
+	sectFile = ajFileNewIn (sectFName);
+	acdLog ("Section file in acdroot: '%S'\n", sectFName);
+    }
+    else
+    {
+	ajFmtPrintS (&sectFName, "%Sshare/%S/acd/sections.standard",
+		     sectRootInst, sectPack);
+	acdLog ("Section file installed: '%S'\n", sectFName);
+	sectFile = ajFileNewIn (sectFName);
+	if (!sectFile)
+	{
+	    acdLog ("Sect file '%S' not opened\n", sectFName);
+	    (void) ajNamRoot (&sectRoot);
+	    (void) ajFileDirFix (&sectRoot);
+	    ajFmtPrintS (&sectFName, "%Sacd/sections.standard", sectRoot);
+	    acdLog ("Sect file from source dir: '%S'\n", sectFName);
+	    sectFile = ajFileNewIn (sectFName);
+	}
+    }
+    
+    if (!sectFile)		/* test acdc-sectmissing */
+	ajDie ("Section file %S not found", sectFName);
+    else
+	acdLog ("Section file %F used\n", sectFile);
+    
+    sectxp = ajRegCompC ("([^ ]+) +([^ ]+) +([^ ].*)");
+    while (sectFile && ajFileReadLine(sectFile, &sectLine))
+    {
+	if (ajStrUncomment(&sectLine))
+	{
+	    ajStrClean (&sectLine);
+
+	    if (ajRegExec(sectxp, sectLine))
+	    {
+		ajRegSubI (sectxp, 1, &sectName);
+		ajRegSubI (sectxp, 2, &sectType);
+		ajRegSubI (sectxp, 3, &sectDesc);
+		ajStrSubstituteKK(&sectName, '_', ' ');
+		if (ajTablePut (*typetable, sectName, sectType))
+		    ajWarn ("Duplicate section name in file %S",
+			    sectFName);
+		if (ajTablePut (*infotable, sectName, sectDesc))
+		    ajWarn ("Duplicate section name in file %S",
+			    sectFName);
+		sectName = NULL;
+		sectType = NULL;
+		sectDesc = NULL;
+	    }
+	    else
+		ajErr ("Bad record in file %S:\n%S",
+		       sectFName, sectLine);
+	}
+    }
+    ajFileClose (&sectFile);
+
+    return;
+}
+    
