@@ -34,9 +34,7 @@ bool: explainflag  [
   help: "If this flag is non-0, produce LEFT-EXPLAIN, RIGHT-EXPLAIN, and
 INTERNAL-OLIGO-EXPLAIN output tags, which are intended to provide
 information on the number of oligos and primer pairs that Primer3
-examined, and statistics on the number discarded for various reasons. 
-If -format-output is set similar information is produced in the
-user-oriented output."
+examined, and statistics on the number discarded for various reasons."
 ]
 
 bool: fileflag  [
