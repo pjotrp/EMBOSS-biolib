@@ -9639,15 +9639,17 @@ AjBool       ajXyzHitlistPriorityLow(AjPHitlist *list)
 **
 ** Checks to see if the Target element of a Scophit object == ajTrue.
 **
-** @param [r] ptr [AjPScophit] Scophit object pointer
+** @param [r] ptr [const void*] Scophit object pointer
 **
 ** @return [AjBool] Returns ajTrue if the Target element of the Scophit object 
 ** == ajTrue, returns ajFalse otherwise.
 ** @@
 ******************************************************************************/
-AjBool   ajXyzScophitCheckTarget(AjPScophit ptr)
+AjBool   ajXyzScophitCheckTarget(const void *ptr)
 {
-    return ptr->Target;
+    AjPScophit sh = (AjPScophit)ptr;
+    
+    return sh->Target;
 }
 
 

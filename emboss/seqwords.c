@@ -649,7 +649,7 @@ static AjBool seqwords_keysearch(AjPFile inf, AjPTerms terms,
 		    
 
 	    /* Put id into structure */
-	    ajStrAss(&(*hits)->hits[(*hits)->N - 1]->Id, id);
+	    ajStrAss(&(*hits)->hits[(*hits)->N - 1]->Acc, id);
 
 
 	    /* In seqwords the Type field will always be set to OTHER */
@@ -676,7 +676,7 @@ static AjBool seqwords_keysearch(AjPFile inf, AjPTerms terms,
 
 
 	    /* Put id into structure */
-	    ajStrAss(&(*hits)->hits[(*hits)->N - 1]->Id, id);
+	    ajStrAss(&(*hits)->hits[(*hits)->N - 1]->Acc, id);
 
 
 	    /* In seqwords the Type field will always be set to OTHER */

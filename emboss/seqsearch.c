@@ -185,9 +185,9 @@ static AjPFile seqsearch_ajXyzScopalgPsiblast(AjPScopalg scopalg, AjPFile alignf
 static AjPFile seqsearch_ajXyzScopPsiblast(AjPStr singlet, AjPStr *psiname, 
                                            ajint niter, ajint maxhits, 
                                            float evalue,  AjPStr database);
-AjBool ajXyzFindSunId(ajint id, AjPStr *seq, AjPList list);
-ajint ajXyzSunIdBinSearch(ajint id, AjPScop *arr, ajint siz);
-ajint ajXyzCompSunId(const void *entry1, const void *entry2);
+static AjBool ajXyzFindSunId(ajint id, AjPStr *seq, AjPList list);
+static ajint ajXyzSunIdBinSearch(ajint id, AjPScop *arr, ajint siz);
+static ajint ajXyzCompSunId(const void *entry1, const void *entry2);
 
 
 
@@ -316,13 +316,15 @@ int main(int argc, char **argv)
                 ajFatal("The bin search does not work! email rranasin@hgmp.mrc.ac.uk\n");
             
             /* Generate input files for psiblast from a singlet and callpsiblast */
-            if(!(psif = seqsearch_ajXyzScopPsiblast(singlet,&psiname,niter,maxhits,evalue,database)))
+            if(!(psif = seqsearch_ajXyzScopPsiblast(singlet,&psiname,niter,maxhits,
+						    evalue,database)))
                 ajFatal("Error creating psiblast file"); 
         }
 
         else
             /* Generate input files from an alignment for psiblast and callpsiblast */
-            if(!(psif = seqsearch_ajXyzScopalgPsiblast(scopalg,alignf,&psiname,niter,maxhits,evalue,database)))
+            if(!(psif = seqsearch_ajXyzScopalgPsiblast(scopalg,alignf,&psiname,niter,
+						       maxhits,evalue,database)))
                 ajFatal("Error creating psiblast file");
 
         /*  Parse the Psi-Blast output file and write a Hitlist object */
@@ -330,6 +332,9 @@ int main(int argc, char **argv)
         
         /* Close alignment file and delete psiblast output file*/
         ajFileClose(&alignf);
+	
+	ajFmtPrintS(&temp, "rm %S", psiname);
+	system(ajStrStr(temp));
 
 	/*
         ajFmtPrint("***NAME OF PSIBLAST OUTPUT FILE ---> %S", psiname); 
@@ -717,7 +722,7 @@ static AjPHitlist seqsearch_ajXyzHitlistPsiblast(AjPScopalg scopalg, AjPFile psi
             {
                 hitlist->hits[hitn-1]->Start = start;
                 hitlist->hits[hitn-1]->End = fragend;
-                ajStrAss(&hitlist->hits[hitn-1]->Id, acc);
+                ajStrAss(&hitlist->hits[hitn-1]->Acc, acc);
                 ajStrAss(&hitlist->hits[hitn-1]->Seq, fullseq);
                 ajStrDegap(&hitlist->hits[hitn-1]->Seq);
                 ajStrAssC(&hitlist->hits[hitn-1]->Typeobj, "HIT");
@@ -762,7 +767,7 @@ static AjPHitlist seqsearch_ajXyzHitlistPsiblast(AjPScopalg scopalg, AjPFile psi
     {
         hitlist->hits[hitn-1]->Start = start;
         hitlist->hits[hitn-1]->End = fragend;
-        ajStrAss(&hitlist->hits[hitn-1]->Id, acc);
+        ajStrAss(&hitlist->hits[hitn-1]->Acc, acc);
         ajStrAss(&hitlist->hits[hitn-1]->Seq, fullseq);
         ajStrDegap(&hitlist->hits[hitn-1]->Seq);
         ajStrAssC(&hitlist->hits[hitn-1]->Typeobj, "HIT");
@@ -779,7 +784,7 @@ static AjPHitlist seqsearch_ajXyzHitlistPsiblast(AjPScopalg scopalg, AjPFile psi
     return hitlist;
 }
 
-/* @func ajXyzFindSunId *********************************************************
+/* @funcstatic ajXyzFindSunId *********************************************************
 **
 ** Read a pdb identifier code and writes the equivalent accession number.
 ** Relies on list of Pdbtosp objects sorted by PDB code, which is usually obtained 
@@ -792,7 +797,7 @@ static AjPHitlist seqsearch_ajXyzHitlistPsiblast(AjPScopalg scopalg, AjPFile psi
 ** @return [AjBool]  True if a swissprot identifier code was found for the Pdb code.
 ** @@
 ******************************************************************************/
-AjBool ajXyzFindSunId(ajint id, AjPStr *seq, AjPList list)
+static AjBool ajXyzFindSunId(ajint id, AjPStr *seq, AjPList list)
 {
     AjPScop *arr = NULL;  /* Array derived from list */
     ajint    dim =0;      /* Size of array */
@@ -830,7 +835,7 @@ AjBool ajXyzFindSunId(ajint id, AjPStr *seq, AjPList list)
     }
 }
 
-/* @func ajXyzSunIdBinSearch *************************************************
+/* @funcstatic ajXyzSunIdBinSearch *************************************************
 **
 ** Performs a binary search for a scop sunid over an array of Scop
 ** structures (which of course must first have been sorted). This is a 
@@ -844,7 +849,7 @@ AjBool ajXyzFindSunId(ajint id, AjPStr *seq, AjPList list)
 ** matching id, or -1 if id is not found.
 ** @@
 ******************************************************************************/
-ajint ajXyzSunIdBinSearch(ajint id, AjPScop *arr, ajint siz)
+static ajint ajXyzSunIdBinSearch(ajint id, AjPScop *arr, ajint siz)
 {
     int l;
     int m;
@@ -866,7 +871,7 @@ ajint ajXyzSunIdBinSearch(ajint id, AjPScop *arr, ajint siz)
     return -1;
 }
 
-/* @func ajXyzCompSunId ******************************************************
+/* @funcstatic ajXyzCompSunId ******************************************************
 **
 ** Function to sort AjOScop object by Start Sunid_Family.
 **
@@ -877,7 +882,7 @@ ajint ajXyzSunIdBinSearch(ajint id, AjPScop *arr, ajint siz)
 ** should sort first. 0 if they are identical.
 ** @@
 ******************************************************************************/
-ajint ajXyzCompSunId(const void *entry1, const void *entry2)
+static ajint ajXyzCompSunId(const void *entry1, const void *entry2)
 {
     AjPScop p  = NULL;
     AjPScop q  = NULL;

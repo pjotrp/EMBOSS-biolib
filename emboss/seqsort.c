@@ -162,6 +162,8 @@ int main(int argc, char **argv)
     }
 
 
+    ajFmtPrint("List length (main)= %d\n", ajListLength(famlist));
+
 
     /* Write output file */
 /*    if((outf=ajFileNewOut(outfile))==NULL)
@@ -171,6 +173,7 @@ int main(int argc, char **argv)
     seqsort_WriteOutputFiles(validf, hitsf, famlist, supfamlist, foldlist);
 	ajFileClose(&validf);
 /*    } */
+    
     
     
 	    
@@ -412,7 +415,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
 
     /* sort list, first by Family, then by Accession number, and 
        finally by Start */
-    ajListSort3(*famlist, ajXyzScophitCompFam, ajXyzScophitCompId, 
+    ajListSort3(*famlist, ajXyzScophitCompFam, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);
 
         
@@ -451,13 +454,13 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     /* The end of the list been reached */
     /* Delete hits in the list that are targetted for removal */
     ajListGarbageCollect(*famlist, ajXyzScophitDelWrap, 
-			 (const void *) ajXyzScophitCheckTarget);
+			 ajXyzScophitCheckTarget);
     
 
 
     /* sort list , first by accession number,then by start and finally 
        by family */
-    ajListSort3(*famlist, ajXyzScophitCompId, ajXyzScophitCompStart, 
+    ajListSort3(*famlist, ajXyzScophitCompAcc, ajXyzScophitCompStart, 
 		ajXyzScophitCompFam);
 
 
@@ -510,13 +513,13 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     /* The end of the list been reached */
     /* Delete hits in the list that are targetted for removal */
     ajListGarbageCollect(*famlist, ajXyzScophitDelWrap, 
-			 (const void *) ajXyzScophitCheckTarget);
+			 ajXyzScophitCheckTarget);
 
 
 
     /* sort list, first by Family, then by accession number, and 
        finally by Start */
-    ajListSort3(*famlist, ajXyzScophitCompFam, ajXyzScophitCompId, 
+    ajListSort3(*famlist, ajXyzScophitCompFam, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);
 
 
@@ -532,7 +535,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     
     /* sort list, first by superfamily, then by accession number and 
        finally by the start */
-    ajListSort3(*supfamlist, ajXyzScophitCompSfam, ajXyzScophitCompId, 
+    ajListSort3(*supfamlist, ajXyzScophitCompSfam, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);
     
     /* get the first node in the list, only once */ 
@@ -563,10 +566,10 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     /* The end of the list been reached */
     /* Delete hits in the list that are targetted for removal */
     ajListGarbageCollect(*supfamlist, ajXyzScophitDelWrap, 
-			 (const void *) ajXyzScophitCheckTarget);
+			 ajXyzScophitCheckTarget);
 
     /* sort list , first by accession number,then by start and finally by family */
-    ajListSort3(*supfamlist, ajXyzScophitCompId, ajXyzScophitCompStart,        	
+    ajListSort3(*supfamlist, ajXyzScophitCompAcc, ajXyzScophitCompStart,        	
 		ajXyzScophitCompSfam);
     
     ajListIterFree(iter);
@@ -611,11 +614,11 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     /* The end of the list has been reached */
     /* Delete hits in the list that are targeted for removal */
     ajListGarbageCollect(*supfamlist, ajXyzScophitDelWrap, 
-			 (const void *) ajXyzScophitCheckTarget);
+			 ajXyzScophitCheckTarget);
 
     /* sort list, first by Family, then by accession number, and 
        finally by Start */
-    ajListSort3(*supfamlist, ajXyzScophitCompSfam, ajXyzScophitCompId, 
+    ajListSort3(*supfamlist, ajXyzScophitCompSfam, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);
     
     ajListIterFree(iter);
@@ -629,7 +632,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     
     /* sort list, first by fold, then by accession number and 
        finally by the start */
-    ajListSort3(*foldlist, ajXyzScophitCompFold, ajXyzScophitCompId, 
+    ajListSort3(*foldlist, ajXyzScophitCompFold, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);
     
     /* get the first node in the list, only once */ 
@@ -664,9 +667,9 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     /* The end of the list has been reached */
     /* Delete hits in the list that are targeted for removal */
     ajListGarbageCollect(*foldlist, ajXyzScophitDelWrap, 
-			 (const void *) ajXyzScophitCheckTarget);
+			 ajXyzScophitCheckTarget);
     
-    ajListSort3(*foldlist, ajXyzScophitCompSfam, ajXyzScophitCompId, 
+    ajListSort3(*foldlist, ajXyzScophitCompSfam, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);
     
     ajListIterFree(iter);
@@ -747,7 +750,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     
     /* sort list, first by Family, then by Accession number and finally 
        by the Start */
-    ajListSort3(*famlist, ajXyzScophitCompFam, ajXyzScophitCompId, 
+    ajListSort3(*famlist, ajXyzScophitCompFam, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);
     
     /* get the first node in the list, only once */
@@ -792,10 +795,10 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     /* the end of the list has been reached */
     /* delete hits in the list that are targeted for removal */
     ajListGarbageCollect(*famlist, ajXyzScophitDelWrap, 
-			 (const void *) ajXyzScophitCheckTarget);
+			 ajXyzScophitCheckTarget);
     
     /* Sort list again */
-    ajListSort3(*famlist, ajXyzScophitCompFam, ajXyzScophitCompId, 
+    ajListSort3(*famlist, ajXyzScophitCompFam, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);
     
     ajListIterFree(iter);
@@ -810,7 +813,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     iter = ajListIter(*supfamlist);
     /* sort list, first by superfamily, then by accession number and 
        finally by the start */
-    ajListSort3(*supfamlist, ajXyzScophitCompSfam, ajXyzScophitCompId, 
+    ajListSort3(*supfamlist, ajXyzScophitCompSfam, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);
     
     
@@ -853,10 +856,10 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     /* the end of the list has been reached */
     /* delete hits in the list that are targeted for removal */
     ajListGarbageCollect(*supfamlist, ajXyzScophitDelWrap, 
-			 (const void *) ajXyzScophitCheckTarget);
+			 ajXyzScophitCheckTarget);
     
     /* Sort list again */
-    ajListSort3(*supfamlist, ajXyzScophitCompSfam, ajXyzScophitCompId, 
+    ajListSort3(*supfamlist, ajXyzScophitCompSfam, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);
     
     ajListIterFree(iter);
@@ -870,7 +873,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     iter = ajListIter(*foldlist);
     /* sort list, first by fold, then by accession number and finally by 
        the start */
-    ajListSort3(*foldlist, ajXyzScophitCompFold, ajXyzScophitCompId, 
+    ajListSort3(*foldlist, ajXyzScophitCompFold, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);
     
     
@@ -903,10 +906,10 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     /* the end of the list has been reached */
     /* delete hits in the list that are targeted for removal */
     ajListGarbageCollect(*foldlist, ajXyzScophitDelWrap, 
-			 (const void *) ajXyzScophitCheckTarget);
+			 ajXyzScophitCheckTarget);
     
     /* Sort list again */
-    ajListSort3(*foldlist, ajXyzScophitCompFold, ajXyzScophitCompId, 
+    ajListSort3(*foldlist, ajXyzScophitCompFold, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);
     
     ajListIterFree(iter);
@@ -930,7 +933,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     
     /* sort list, first by superfamily, then by accession number and 
        finally by the start */
-    ajListSort3(*supfamlist, ajXyzScophitCompSfam, ajXyzScophitCompId, 
+    ajListSort3(*supfamlist, ajXyzScophitCompSfam, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);;
     
     iter = ajListIter(*supfamlist);
@@ -962,10 +965,10 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     /* the end of the list has been reached */
     /* delete hits in the list that are targeted for removal. */
     ajListGarbageCollect(*supfamlist, ajXyzScophitDelWrap, 
-			 (const void *) ajXyzScophitCheckTarget);
+			 ajXyzScophitCheckTarget);
     
     /* Sort list again */
-    ajListSort3(*supfamlist, ajXyzScophitCompSfam, ajXyzScophitCompId, 
+    ajListSort3(*supfamlist, ajXyzScophitCompSfam, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);
     
     ajListIterFree(iter);
@@ -1006,7 +1009,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
 
     /* sort list, first by superfamily, then by accession number and 
        finally by the start */
-    ajListSort3(*foldlist, ajXyzScophitCompFold, ajXyzScophitCompId, 
+    ajListSort3(*foldlist, ajXyzScophitCompFold, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);
 
     hit  = (AjPScophit)ajListIterNext(iter);
@@ -1036,10 +1039,10 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     /* the end of the list has been reached */
     /* delete hits in the list that are targeted for removal. */
     ajListGarbageCollect(*foldlist, ajXyzScophitDelWrap, 
-			 (const void *) ajXyzScophitCheckTarget);
+			 ajXyzScophitCheckTarget);
 	
     /* Sort list again */
-    ajListSort3(*foldlist, ajXyzScophitCompFold, ajXyzScophitCompId, 
+    ajListSort3(*foldlist, ajXyzScophitCompFold, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);
 
     ajListIterFree(iter);
@@ -1080,17 +1083,17 @@ static AjBool seqsort_IdentifyMembers(AjPList* list, ajint node,
 
     /* sort list */
     if(node == SEQSORT_FAMILY)
-	ajListSort3(*list, ajXyzScophitCompFam, ajXyzScophitCompId, 
+	ajListSort3(*list, ajXyzScophitCompFam, ajXyzScophitCompAcc, 
 		    ajXyzScophitCompStart);
 
 
     else if(node == SEQSORT_SUPERFAMILY)
-	ajListSort3(*list, ajXyzScophitCompSfam, ajXyzScophitCompId, 
+	ajListSort3(*list, ajXyzScophitCompSfam, ajXyzScophitCompAcc, 
 		    ajXyzScophitCompStart);
 
 
     else if(node  == SEQSORT_FOLD)
-	ajListSort3(*list, ajXyzScophitCompFold, ajXyzScophitCompId, 
+	ajListSort3(*list, ajXyzScophitCompFold, ajXyzScophitCompAcc, 
 		    ajXyzScophitCompStart);
 	
 
@@ -1135,22 +1138,22 @@ static AjBool seqsort_IdentifyMembers(AjPList* list, ajint node,
 
     /* Remove hits that are targetted for removal */
     ajListGarbageCollect(*list, ajXyzScophitDelWrap, 
-			 (const void *) ajXyzScophitCheckTarget);
+			 ajXyzScophitCheckTarget);
 
 
     /* the end of the list has been reached */
     /* sort the list */
      if(node == SEQSORT_FAMILY)
 	 ajListSort3(*list, ajXyzScophitCompFam, 
-		     ajXyzScophitCompId, ajXyzScophitCompStart);
+		     ajXyzScophitCompAcc, ajXyzScophitCompStart);
 	
     else if(node == SEQSORT_SUPERFAMILY)
 	 ajListSort3(*list, ajXyzScophitCompSfam, 
-		     ajXyzScophitCompId, ajXyzScophitCompStart);
+		     ajXyzScophitCompAcc, ajXyzScophitCompStart);
 
     else if(node == SEQSORT_FOLD)
 	ajListSort3(*list, ajXyzScophitCompFold, 
-		    ajXyzScophitCompId, ajXyzScophitCompStart);
+		    ajXyzScophitCompAcc, ajXyzScophitCompStart);
 
     else
 	ajFatal("incompatible scop node\n");
@@ -1259,7 +1262,7 @@ static AjBool  seqsort_MergeHitSort(AjPList* famlist,AjPList* supfamlist,
     
     /* sort list, first by superfamily, then by accession number and 
        finally by the start */
-    ajListSort3(*supfamlist, ajXyzScophitCompSfam, ajXyzScophitCompId, 
+    ajListSort3(*supfamlist, ajXyzScophitCompSfam, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);
     
     
@@ -1291,11 +1294,11 @@ static AjBool  seqsort_MergeHitSort(AjPList* famlist,AjPList* supfamlist,
     /* the end of the list has been reached */
     /* delete hits in the list that are targeted for removal. */
     ajListGarbageCollect(*supfamlist, ajXyzScophitDelWrap, 
-			 (const void *) ajXyzScophitCheckTarget);
+			 ajXyzScophitCheckTarget);
 
 	
     /* Sort list again */
-    ajListSort3(*supfamlist, ajXyzScophitCompSfam, ajXyzScophitCompId, 
+    ajListSort3(*supfamlist, ajXyzScophitCompSfam, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);
 
     ajListIterFree(iter);
@@ -1333,7 +1336,7 @@ static AjBool  seqsort_MergeHitSort(AjPList* famlist,AjPList* supfamlist,
     iter = ajListIter(*foldlist);
     /* sort list, first by superfamily, then by accession number and 
        finally by the start */
-    ajListSort3(*foldlist, ajXyzScophitCompFold, ajXyzScophitCompId, 
+    ajListSort3(*foldlist, ajXyzScophitCompFold, ajXyzScophitCompAcc, 
 		ajXyzScophitCompStart);
 
     hit  = (AjPScophit)ajListIterNext(iter);
@@ -1363,11 +1366,11 @@ static AjBool  seqsort_MergeHitSort(AjPList* famlist,AjPList* supfamlist,
     /* the end of the list has been reached */
     /* delete hits in the list that are targeted for removal. */
     ajListGarbageCollect(*foldlist, ajXyzScophitDelWrap, 
-			 (const void *) ajXyzScophitCheckTarget);
+			 ajXyzScophitCheckTarget);
 
 	
     ajListSort3(*foldlist, ajXyzScophitCompFold, 
-		ajXyzScophitCompId, ajXyzScophitCompStart);
+		ajXyzScophitCompAcc, ajXyzScophitCompStart);
     ajListIterFree(iter);
 
       
@@ -1396,8 +1399,9 @@ static AjBool  seqsort_MergeHitSort(AjPList* famlist,AjPList* supfamlist,
  **
  ** Writes the contents of three lists of Scophit objects (for families, 
  ** superfamilies and folds) to file.  A validation file (containing all 
- ** the hits) and a hits file (containing only hits that were uniquely
- ** assigned to a single family) are written.
+ ** the hits that could NOT be uniquely assigned to a single family) and a 
+ ** hits file (containing only hits that were uniquely assigned to a single 
+ ** family) are written.
  **
  ** @param [w] fptr1      [AjPStr ]   Name of validation file
  ** @param [w] fptr2      [AjPStr ]   Name of hits file
@@ -1447,10 +1451,19 @@ static AjBool seqsort_WriteOutputFiles(AjPFile fptr1, AjPFile fptr2,
 	ajListIterFree(iter);
 	iter=NULL;
     }
+
+    ajFmtPrint("List length (func) = %d\n", ajListLength(famlist));
+
     
     while((ajXyzScophitsToHitlist(famlist, &hitlist, &iter)))
     {
-	ajXyzHitlistWrite(fptr1, hitlist);
+	/* Hits that could be uniquely assigned to a family are no longer 
+	   written to the validation file */
+	/* ajXyzHitlistWrite(fptr1, hitlist); */
+
+	ajFmtPrint("Hitlist length (func) = %d\n", hitlist->N);
+	
+
 	ajXyzHitlistWrite(fptr2, hitlist);
 	ajXyzHitlistDel(&hitlist);
 	hitlist=NULL;
