@@ -19,9 +19,8 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
-
-
 #include "emboss.h"
+
 
 
 
@@ -41,16 +40,16 @@ int main(int argc, char **argv)
     AjPFile oout = NULL;
     AjPFile fp   = NULL;
 
-    AjPStr  line;
-    AjPStr  acc;
-    AjPStr  id;
-    AjPStr  pattern;
-    AjPStr  pfname;
+    AjPStr line;
+    AjPStr acc;
+    AjPStr id;
+    AjPStr pattern;
+    AjPStr pfname;
 
-    char    *p;
+    char *p;
 
-    AjBool  gid=ajFalse;
-    AjBool  done=ajFalse;
+    AjBool gid=ajFalse;
+    AjBool done=ajFalse;
 
     embInit("tfextract",argc,argv);
 
@@ -81,67 +80,74 @@ int main(int argc, char **argv)
 
     while(ajFileReadLine(inf,&line))
     {
-	p=ajStrStr(line);
+	p = ajStrStr(line);
 	if(ajStrPrefixC(line,"ID"))
 	{
-	    gid=ajTrue;
-	    done=ajFalse;
-	    fp=oout;
-	    p=strtok(p," \t\n");
-	    p=strtok(NULL," \t\n");
+	    gid  = ajTrue;
+	    done = ajFalse;
+	    fp = oout;
+	    p = strtok(p," \t\n");
+	    p = strtok(NULL," \t\n");
 	    ajStrAssC(&id,p);
 	}
+
 	if(ajStrPrefixC(line,"AC"))
 	{
-	    p=strtok(p," \t\n");
-	    p=strtok(NULL," \t\n");
+	    p = strtok(p," \t\n");
+	    p = strtok(NULL," \t\n");
 	    ajStrAssC(&acc,p);
 	}
+
 	if(ajStrPrefixC(line,"SQ") || ajStrPrefixC(line,"SE"))
 	{
-	    p=strtok(p," .\t\n");
-	    p=strtok(NULL," .\t\n");
+	    p = strtok(p," .\t\n");
+	    p = strtok(NULL," .\t\n");
 	    if(!p)
 		ajStrAssC(&pattern,"");
 	    else
 		ajStrAssC(&pattern,p);
-	    p=ajStrStr(pattern);
+	    p = ajStrStr(pattern);
+
 	    while(*p)
 	    {
-		if(*p=='[') *p='(';
-		if(*p==':') *p=',';
-		if(*p==']') *p=')';
+		if(*p=='[')
+		    *p = '(';
+
+		if(*p==':')
+		    *p = ',';
+
+		if(*p==']')
+		    *p = ')';
 		++p;
 	    }
 	}
+
 	if(ajStrPrefixC(line,"OC") && !done)
 	{
-/* GWW 11 Dec 2000 - this keyword no longer occurs in the site.dat entries
-	    if(strstr(p,"thallobionta"))
-*/
 	    if(strstr(p,"Fungi"))
 	    {
-		done=ajTrue;
-		fp=fout;
+		done = ajTrue;
+		fp = fout;
 	    }
 	    else if(strstr(p,"saccharomycetaceae"))
 	    {
-		done=ajTrue;
-		fp=fout;
+		done = ajTrue;
+		fp = fout;
 	    }
 	    else if(strstr(p,"arthropoda"))
 	    {
-		done=ajTrue;
-		fp=iout;
+		done = ajTrue;
+		fp = iout;
 	    }
 	    else if(strstr(p,"vertebrata"))
 	    {
 		done=ajTrue;
-		fp=vout;
+		fp = vout;
 	    }
 	    else if(strstr(p,"plantae"))
-		fp=pout;
+		fp = pout;
 	}
+
 	if(ajStrPrefixC(line,"//") && ajStrLen(pattern) && gid)
 	    ajFmtPrintF(fp,"%-20s %s %s\n",ajStrStr(id),ajStrStr(pattern),
 			ajStrStr(acc));
@@ -162,5 +168,6 @@ int main(int argc, char **argv)
 
 
     ajExit();
+
     return 0;
 }

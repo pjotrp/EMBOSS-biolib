@@ -21,9 +21,10 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
-
 #include "emboss.h"
 #include "string.h"
+
+
 
 
 static void tfscan_print_hits(AjPStr name, AjPList *l, ajint hits,
@@ -42,27 +43,27 @@ static void tfscan_print_hits(AjPStr name, AjPList *l, ajint hits,
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;
-    AjPSeq    seq=NULL;
-    AjPFile   outf=NULL;
-    AjPFile   inf=NULL;
+    AjPSeq seq   = NULL;
+    AjPFile outf = NULL;
+    AjPFile inf  = NULL;
 
     ajint begin;
     ajint end;
 
-    AjPList   l=NULL;
+    AjPList l = NULL;
 
-    AjPStr    strand=NULL;
-    AjPStr    substr=NULL;
-    AjPStr    line=NULL;
-    AjPStr    name=NULL;
-    AjPStr    acc=NULL;
-    AjPStr    *menu;
-    AjPStr    pattern=NULL;
-    AjPStr    opattern=NULL;
-    AjPStr    pname=NULL;
-    AjPStr    key=NULL;
-    AjPStr    value=NULL;
-    AjPTable  atable=NULL;
+    AjPStr strand = NULL;
+    AjPStr substr = NULL;
+    AjPStr line   = NULL;
+    AjPStr name   = NULL;
+    AjPStr acc    = NULL;
+    AjPStr *menu;
+    AjPStr pattern  = NULL;
+    AjPStr opattern = NULL;
+    AjPStr pname    = NULL;
+    AjPStr key      = NULL;
+    AjPStr value    = NULL;
+    AjPTable atable = NULL;
 
     ajint mismatch;
     ajint minlength;
@@ -83,23 +84,26 @@ int main(int argc, char **argv)
 
     pname = ajStrNew();
     p=ajStrStr(*menu);
-    if(*p=='F') ajStrAssC(&pname,"tffungi");
-    else if(*p=='I')  ajStrAssC(&pname,"tfinsect");
-    else if(*p=='O')  ajStrAssC(&pname,"tfother");
-    else if(*p=='P')  ajStrAssC(&pname,"tfplant");
-    else if(*p=='V')  ajStrAssC(&pname,"tfvertebrate");
+
+    if(*p=='F')
+	ajStrAssC(&pname,"tffungi");
+    else if(*p=='I')
+	ajStrAssC(&pname,"tfinsect");
+    else if(*p=='O')
+	ajStrAssC(&pname,"tfother");
+    else if(*p=='P')
+	ajStrAssC(&pname,"tfplant");
+    else if(*p=='V')
+	ajStrAssC(&pname,"tfvertebrate");
     ajFileDataNew(pname,&inf);
     if(!inf)
 	ajFatal("Either EMBOSS_DATA undefined or TFEXTRACT needs running");
 
-
-
-
-    name    = ajStrNew();
-    acc     = ajStrNew();
-    substr  = ajStrNew();
-    line    = ajStrNew();
-    pattern = ajStrNewC("AA");
+    name     = ajStrNew();
+    acc      = ajStrNew();
+    substr   = ajStrNew();
+    line     = ajStrNew();
+    pattern  = ajStrNewC("AA");
     opattern = ajStrNew();
 
     while(ajSeqallNext(seqall, &seq))
@@ -118,15 +122,17 @@ int main(int argc, char **argv)
 	sum=0;
 	while(ajFileReadLine(inf,&line))
 	{
-	    p=ajStrStr(line);
+	    p = ajStrStr(line);
+
 	    if(!*p || *p=='#' || *p=='\n' || *p=='!')
 		continue;
-	    p=strtok(p," \t\n");
+
+	    p = strtok(p," \t\n");
 	    ajStrAssC(&pname,p);
-	    p=strtok(NULL," \t\n");
+	    p = strtok(NULL," \t\n");
 	    ajStrAssC(&pattern,p);
 	    ajStrAssC(&opattern,p);
-	    p=strtok(NULL," \t\n");
+	    p = strtok(NULL," \t\n");
 	    ajStrAssC(&acc,p);
 	    v = embPatVariablePattern(&pattern,opattern,substr,pname,l,0,
 				      mismatch,begin);
@@ -141,14 +147,12 @@ int main(int argc, char **argv)
 
 	if(sum)
 	    tfscan_print_hits(name,&l,sum,outf,begin,end,atable,seq,minlength);
+
 	ajFileSeek(inf,0L,0);
 	ajListDel(&l);
 	ajStrTableFree(&atable);
 	ajStrDel(&strand);
     }
-
-
-
 
     ajStrDel(&line);
     ajStrDel(&name);
@@ -159,9 +163,14 @@ int main(int argc, char **argv)
     ajSeqDel(&seq);
     ajFileClose(&inf);
     ajFileClose(&outf);
+
     ajExit();
+
     return 0;
 }
+
+
+
 
 /* @funcstatic tfscan_print_hits **********************************************
 **
@@ -179,7 +188,6 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-
 static void tfscan_print_hits(AjPStr name, AjPList *l,
 			      ajint hits, AjPFile outf,
 			      ajint begin, ajint end, AjPTable t,
@@ -187,8 +195,8 @@ static void tfscan_print_hits(AjPStr name, AjPList *l,
 {
     ajint i;
     EmbPMatMatch m;
-    AjPStr acc=NULL;
-    AjPStr s=NULL;
+    AjPStr acc = NULL;
+    AjPStr s   = NULL;
 
     s = ajStrNew();
 

@@ -24,8 +24,9 @@
 
 
 
-static void tfm_FindAppDocRoot (AjPStr* docroot);
-static AjBool tfm_FindAppDoc (AjPStr program, AjBool html, AjPStr* path);
+
+static void tfm_FindAppDocRoot(AjPStr* docroot);
+static AjBool tfm_FindAppDoc(AjPStr program, AjBool html, AjPStr* path);
 
 
 
@@ -40,30 +41,30 @@ int main(int argc, char **argv)
 {
 
     AjPFile outfile = NULL;
-    AjPStr program = NULL;
+    AjPStr program  = NULL;
     AjBool html;
     AjBool more;
     AjPStr path = NULL;			/* path of file to be displayed */
-    AjPStr cmd = NULL;			/* command line for running 'more' */
+    AjPStr cmd  = NULL;			/* command line for running 'more' */
     AjPFile infile = NULL;
-    AjPStr line = NULL;			/* buffer for infile lines */
+    AjPStr line    = NULL;		/* buffer for infile lines */
 
-    (void) embInit ("tfm", argc, argv);
-
-    program = ajAcdGetString ("program");
-    outfile = ajAcdGetOutfile ("outfile");
-    html = ajAcdGetBool("html");
-    more = ajAcdGetBool("more");
-
+    embInit("tfm", argc, argv);
+    
+    program = ajAcdGetString("program");
+    outfile = ajAcdGetOutfile("outfile");
+    html    = ajAcdGetBool("html");
+    more    = ajAcdGetBool("more");
+    
     /* is a search string specified - should be tested in tfm.acd file */
-    if (!ajStrLen(program))
-	ajFatal ("No program name specified.");
-
-    if (!tfm_FindAppDoc(program, html, &path))
-	ajFatal ("The documentation for program '%S' was not found.", program);
-
-    /* are we outputting to STDOUT and piping through 'more'? */
-    if (ajFileStdout(outfile) && more)
+    if(!ajStrLen(program))
+	ajFatal("No program name specified.");
+    
+    if(!tfm_FindAppDoc(program, html, &path))
+	ajFatal("The documentation for program '%S' was not found.", program);
+    
+    /* outputting to STDOUT and piping through 'more'? */
+    if(ajFileStdout(outfile) && more)
     {
 	ajStrAssC(&cmd, "more ");
 	ajStrApp(&cmd, path);
@@ -73,17 +74,20 @@ int main(int argc, char **argv)
     {
 	/* output file as-is */
 	infile = ajFileNewIn(path);
+
 	while(ajFileGets(infile, &line))
 	    ajFmtPrintF(outfile, "%S", line);
-	(void) ajFileClose(&infile);
+
+	ajFileClose(&infile);
     }
+    
+    ajFileClose(&outfile);
+    
+    ajExit();
 
-    /* close file */
-    (void) ajFileClose(&outfile);
-
-    (void) ajExit();
     return 0;
 }
+
 
 
 
@@ -95,7 +99,7 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static void tfm_FindAppDocRoot (AjPStr* docroot)
+static void tfm_FindAppDocRoot(AjPStr* docroot)
 {
 
     AjPStr docrootinst = NULL;
@@ -105,36 +109,36 @@ static void tfm_FindAppDocRoot (AjPStr* docroot)
     /* look at EMBOSS doc files */
 
     /* try to open the installed doc directory */
-    if (!ajStrLen(*docroot))
+    if(!ajStrLen(*docroot))
     {
-      (void) ajNamRootInstall (&docrootinst);
-      (void) ajFileDirFix (&docrootinst);
-      ajFmtPrintS (docroot, "%Sshare/EMBOSS/doc/",
-		   docrootinst);
+	ajNamRootInstall(&docrootinst);
+	ajFileDirFix(&docrootinst);
+	ajFmtPrintS(docroot, "%Sshare/EMBOSS/doc/",
+		    docrootinst);
     }
-    (void) ajFileDirFix (docroot);
+    ajFileDirFix(docroot);
     ajFmtPrintAppS(docroot, "programs/");
-    if (!ajFileDir(docroot))
+
+    if(!ajFileDir(docroot))
     {
 	/*
-	 *  if that didn't work then try the doc directory from the
-	 *  distribution tarball
-	 */
+	**  if that didn't work then try the doc directory from the
+	**  distribution tarball
+	*/
 	ajNamRootBase(docroot);
-	(void) ajFileDirFix (docroot);
+	ajFileDirFix(docroot);
 
-	if (ajFileDir(docroot))
-	    (void) ajStrAppC (docroot, "doc/programs/");
-	else
-	{
-	    /*ajDebug ("EMBOSS root directory '%S' not opened\n", *docroot); */
-	}
+	if(ajFileDir(docroot))
+	    ajStrAppC(docroot, "doc/programs/");
     }
 
     ajStrDel(&docrootinst);
 
     return;
 }
+
+
+
 
 /* @funcstatic tfm_FindAppDoc *************************************************
 **
@@ -147,34 +151,34 @@ static void tfm_FindAppDocRoot (AjPStr* docroot)
 ** @@
 ******************************************************************************/
 
-static AjBool tfm_FindAppDoc (AjPStr program, AjBool html, AjPStr* path)
+static AjBool tfm_FindAppDoc(AjPStr program, AjBool html, AjPStr* path)
 {
     AjPStr docroot = NULL;
 
     docroot = ajStrNew();
+
     tfm_FindAppDocRoot(&docroot);
 
-    if (html)
+    if(html)
     {
-	(void) ajStrAppC (&docroot, "html/");
-	(void) ajStrAss (path, docroot);
-	(void) ajStrApp (path, program);
-	(void) ajStrAppC (path, ".html");
+	ajStrAppC(&docroot, "html/");
+	ajStrAss(path, docroot);
+	ajStrApp(path, program);
+	ajStrAppC(path, ".html");
     }
     else
     {
-	(void) ajStrAppC (&docroot, "text/");
-	(void) ajStrAss (path, docroot);
-	(void) ajStrApp (path, program);
-	(void) ajStrAppC (path, ".txt");
+	ajStrAppC(&docroot, "text/");
+	ajStrAss(path, docroot);
+	ajStrApp(path, program);
+	ajStrAppC(path, ".txt");
     }
 
     ajStrDel(&docroot);
 
     /* does the file exist and is it readable? */
-    if (ajFileStat(path, AJ_FILE_R))
+    if(ajFileStat(path, AJ_FILE_R))
 	return ajTrue;
 
     return ajFalse;
 }
-
