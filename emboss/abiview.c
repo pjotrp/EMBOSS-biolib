@@ -140,8 +140,8 @@ int main(int argc, char **argv)
         numBases = base_end;
 
     if(numBases < base_start)
-        ajFatal("-startbase (%d) larger than -endbase (%d) parameter",
-                 base_start,base_end);
+        ajFatal("-startbase (%d) larger than the number of bases (%d).",
+                 base_start,numBases);
 
     if(graphs->displaytype == 17)
 	window = numBases+1;
