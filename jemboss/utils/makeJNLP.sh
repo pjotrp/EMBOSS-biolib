@@ -106,7 +106,7 @@ keytool -genkey -alias signFiles -dname "CN=$NAME, \
 
 echo
 echo
-echo "Each of the jar files will now be signed"
+echo "Each of the jar files will now be signed...."
 echo
 for i in *.jar; do 
   echo "Signing $i"
@@ -159,14 +159,15 @@ echo '       </jnlp>'                                   >> $JNLP
 #
  
 echo
-echo "*** Created the signed jar files, index.html and $JNLP "
-echo "*** in the directory $CWPWD/jnlp."
+echo
+echo "*** The signed jar files, index.html and $JNLP have been"
+echo "*** created in the directory $CWPWD/jnlp."
 echo "*** "
-echo "*** Please edit the codebase line in $JNLP."
+echo "*** Please edit the 'codebase' line in $JNLP."
 echo "*** Also, edit the 'Click here' line in index.html to point"
 echo "*** href at $JNLP."
 echo "*** The 'jnlp' directory will then need to be added to your HTTP"
-echo "*** server configuration file or move it into the www data"
+echo "*** server configuration file or moved into the www data"
 echo "*** directories."
 echo
 
