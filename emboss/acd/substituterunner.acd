@@ -1,6 +1,6 @@
 application: substituterunner
 [
-  documentation: "runs substitute on directory of traces and writes substituted sequences to two more"
+  documentation: "runs substitute on directory of traces and writes substituted sequences to another"
   groups: "protein: global alignment"
 ]
 
@@ -21,10 +21,12 @@ section: input
   [
     parameter: "Y"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/nawalign/55_60"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/needle/55_60"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/needle/55_60"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_input_sequences/gold/55_60"
     information: "directory containing paired traces"
 #    extension: "nawalign"
-    extension: "needle"
+#    extension: "needle"
+    extension: "gold"
   ]
 
 endsection: input
@@ -56,8 +58,9 @@ section: output
   [
     parameter: "Y"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/nawalign/55_60"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/needle/55_60"
-    information: "directory containing aligned sequences"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/needle/55_60"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/gold/55_60"
+    information: "directory to write substituted sequences to"
     extension: "sbs"
   ]
 
