@@ -79,9 +79,21 @@ public class DragTree extends JTree implements DragGestureListener,
     // Popup menu
     addMouseListener(new PopupListener());
     popup = new JPopupMenu();
+    
     JMenuItem menuItem = new JMenuItem("Refresh");
     menuItem.addActionListener(this);
     popup.add(menuItem);
+    popup.add(new JSeparator());
+//open menu
+    JMenu openMenu = new JMenu("Open With");
+    popup.add(openMenu);
+    menuItem = new JMenuItem("Jemboss Aligmnment Editor");
+    menuItem.addActionListener(this);
+    openMenu.add(menuItem);
+    menuItem = new JMenuItem("Text Editor");
+    menuItem.addActionListener(this);
+    openMenu.add(menuItem);
+
     menuItem = new JMenuItem("Rename...");
     menuItem.addActionListener(this);
     popup.add(menuItem);
@@ -169,7 +181,11 @@ public class DragTree extends JTree implements DragGestureListener,
     
     final File f = node.getFile();
 
-    if(source.getText().equals("New Folder..."))
+    if(source.getText().equals("Jemboss Aligmnment Editor"))
+      new org.emboss.jemboss.editor.AlignJFrame(f);
+    else if(source.getText().equals("Text Editor"))
+      showFilePane(f.getAbsolutePath(), mysettings);
+    else if(source.getText().equals("New Folder..."))
     {
       String path = null;
       if(isFileSelection())

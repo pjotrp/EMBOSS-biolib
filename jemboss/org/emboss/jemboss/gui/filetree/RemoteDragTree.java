@@ -80,6 +80,17 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
     JMenuItem menuItem = new JMenuItem("Refresh");
     menuItem.addActionListener(this);
     popup.add(menuItem);
+    popup.add(new JSeparator());
+//open menu
+    JMenu openMenu = new JMenu("Open With");
+    popup.add(openMenu);
+    menuItem = new JMenuItem("Jemboss Aligmnment Editor");
+    menuItem.addActionListener(this);
+    openMenu.add(menuItem);
+    menuItem = new JMenuItem("Text Editor");
+    menuItem.addActionListener(this);
+    openMenu.add(menuItem);
+
     menuItem = new JMenuItem("Rename...");
     menuItem.addActionListener(this);
     popup.add(menuItem);
@@ -176,6 +187,27 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
     {
       refreshRoot();
     }
+    else if(source.getText().equals("Jemboss Aligmnment Editor"))
+    {
+      Vector params = new Vector();
+      String options= "fileroot=" + froots.getCurrentRoot();
+      params.addElement(options);
+      params.addElement(fn);
+  
+      try
+      {
+        PrivateRequest gReq = new PrivateRequest(mysettings,"EmbreoFile",
+                                                    "get_file",params);
+        new org.emboss.jemboss.editor.AlignJFrame((String)gReq.getHash().get("contents"),
+                                                  fn);
+      }
+      catch(JembossSoapException eae)
+      {
+        System.out.println("RemoteDragTree :: JembossSoapException "+fn);
+      }
+    }
+    else if(source.getText().equals("Text Editor"))
+      showFilePane(fn, mysettings);
     else if(source.getText().equals("New Folder..."))
     {
       final String inputValue = JOptionPane.showInputDialog(null,
