@@ -962,8 +962,13 @@ public class SectionPanel
 //            +" : "+ parseAcd.getParamValueStr(dep[i].getDependentField(),0));
       int h = parseAcd.getGuiHandleNumber(field);
 
+
+      // ACD changes:
+      // required is now standard
+      // optional is now additional
       if( (att.equals("list")     || att.equals("select")) && 
-          (type.startsWith("req") || type.startsWith("opt")) ) 
+          (type.startsWith("stand") || type.startsWith("add")) ) 
+//        (type.startsWith("req") || type.startsWith("opt")) ) 
       {
         double max = 1.;
         if(parseAcd.isMaxParamValue(field))
@@ -992,10 +997,10 @@ public class SectionPanel
               att.startsWith("codon")   || att.startsWith("dirlist") )
       {
 
-        if( (type.startsWith("opt") || type.startsWith("req")) 
+        if( (type.startsWith("add") || type.startsWith("stand")) 
                                     && result.equals("false"))
           setShadingAndVisibility(textf[h], false, field);
-        else if ( (type.startsWith("opt") || type.startsWith("req")) 
+        else if ( (type.startsWith("add") || type.startsWith("stand")) 
                                            && result.equals("true"))
           setShadingAndVisibility(textf[h], true, field);
 
@@ -1022,10 +1027,10 @@ public class SectionPanel
       }
       else if(att.startsWith("int"))
       {
-        if( (type.startsWith("opt") || type.startsWith("req"))
+        if( (type.startsWith("add") || type.startsWith("stand"))
                                     && result.equals("false"))
           setShadingAndVisibility(textInt[h], false, field);
-        else if ( (type.startsWith("opt") || type.startsWith("req"))
+        else if ( (type.startsWith("add") || type.startsWith("stand"))
                                            && result.equals("true"))
           setShadingAndVisibility(textInt[h], true, field);
         
@@ -1034,10 +1039,10 @@ public class SectionPanel
       }
       else if(att.startsWith("float"))
       {
-        if( (type.startsWith("opt") || type.startsWith("req"))
+        if( (type.startsWith("add") || type.startsWith("stand"))
                                     && result.equals("false"))
           setShadingAndVisibility(textFloat[h], false, field);
-        else if ( (type.startsWith("opt") || type.startsWith("req"))
+        else if ( (type.startsWith("add") || type.startsWith("stand"))
                                            && result.equals("true"))
           setShadingAndVisibility(textFloat[h], true, field);
         
@@ -1046,7 +1051,7 @@ public class SectionPanel
       }
       else if(att.startsWith("bool"))
       {
-        if(type.startsWith("opt") || type.startsWith("req")) 
+        if(type.startsWith("add") || type.startsWith("stand")) 
         {
           if(result.equals("false"))
             setShadingAndVisibility(checkBox[h], false, field);
@@ -1108,6 +1113,7 @@ public class SectionPanel
   private void setShadingAndVisibility(Component c, 
                         boolean useThis, int field)
   {
+
     if( c != null)
     {
       if(isShadedGUI)
