@@ -9,8 +9,8 @@ pkgdata_DATA =  abiview0.gif banana0.gif chaos0.gif cpgplot0.gif \
                alignment_differences_group.html \
                alignment_dot_plots_group.html alignment_global_group.html \
                alignment_local_group.html alignment_multiple_group.html \
-               antigenic.html backtranseq.html banana.html biosed.html \
-               btwisted.html cai.html chaos.html charge.html \
+               alignwrap.html antigenic.html backtranseq.html banana.html \
+               biosed.html btwisted.html cai.html chaos.html charge.html \
                checktrans.html chips.html cirdna.html clique.html \
                codcmp.html coderet.html compseq.html cons.html \
                consense.html contacts.html contml.html contrast.html \
