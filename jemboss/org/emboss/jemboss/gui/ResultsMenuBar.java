@@ -459,17 +459,12 @@ public class ResultsMenuBar extends JMenuBar
         public void actionPerformed(ActionEvent e)
         {
           JTextComponent jtc = getJTextComponentAt(rtb,rtb.getSelectedIndex());      
-
+          String tabTitle = rtb.getTitleAt(rtb.getSelectedIndex());
           Vector params = new Vector();
-//        params.addElement(new Parameter("project", String.class,
-//                          project, null));
-//        params.addElement(new Parameter("filename", String.class,
-//                          rtb.getTitleAt(rtb.getSelectedIndex()), null));
-//        params.addElement(new Parameter("filecontent", String.class,
-//                          jtc.getText(), null));
           params.addElement(project);
-          params.addElement(rtb.getTitleAt(rtb.getSelectedIndex()));
+          params.addElement(tabTitle);
           params.addElement(jtc.getText());
+
           try
           {
             PrivateRequest gReq = new PrivateRequest(mysettings,
@@ -590,23 +585,18 @@ public class ResultsMenuBar extends JMenuBar
 
   private JTextComponent getJTextComponentAt(JTabbedPane rtb, int index)
   {
-    JPanel jp;
+//  try
+//  {
+//    return (JTextComponent)rtb.getComponentAt(index);
+//  } catch(ClassCastException cce) {}
+
     try
     {
       JScrollPane jsp = (JScrollPane)(rtb.getComponentAt(index));
-      jp = (JPanel)(jsp.getViewport().getView());
+      return (JTextComponent)(jsp.getViewport().getView());
+    } catch(ClassCastException cce) {}
 
-    }
-    catch(ClassCastException cce)
-    {
-      jp = (JPanel)(rtb.getComponentAt(index));
-    }
-
-    try
-    {
-      return (JTextComponent)jp.getComponent(0);
-    }
-    catch(ClassCastException cce){}
+    
     return null;
   }
   

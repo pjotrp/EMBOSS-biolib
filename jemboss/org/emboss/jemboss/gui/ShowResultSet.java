@@ -45,7 +45,8 @@ public class ShowResultSet extends JFrame
 * @param the result data to display
 *
 */
-  public ShowResultSet(Hashtable reslist, String project, JembossParams mysettings)
+  public ShowResultSet(Hashtable reslist, String project, 
+                                JembossParams mysettings)
   {
     this(reslist,null,project,mysettings);
   }
@@ -67,8 +68,8 @@ public class ShowResultSet extends JFrame
 * @param the input data to display
 *
 */
-  public ShowResultSet(Hashtable reslist, Hashtable inputFiles, String project,
-                       JembossParams mysettings)
+  public ShowResultSet(Hashtable reslist, Hashtable inputFiles, 
+                       String project, JembossParams mysettings)
   {
     super("Saved Results on the Server");
     JTabbedPane rtp = new JTabbedPane();
@@ -102,14 +103,10 @@ public class ShowResultSet extends JFrame
     String cmd = "cmd";
     if(reslist.containsKey(cmd))
     {
-      s1 = new ScrollPanel(new GridLayout());
-      r1 = new JScrollPane(s1);
-      r1.getViewport().setBackground(Color.white);
-
       FileEditorDisplay fed = new FileEditorDisplay(null,cmd,
                                          reslist.get(cmd));
       fed.setCaretPosition(0);
-      s1.add(fed);
+      r1 = new JScrollPane(fed);
       rtp.add(cmd,r1);
     }
 
@@ -136,12 +133,11 @@ public class ShowResultSet extends JFrame
       String thiskey = (String)enum.nextElement().toString();
       if(!thiskey.equals(cmd))
       {
-        s1 = new ScrollPanel(new GridLayout());
-        r1 = new JScrollPane(s1);
-        r1.getViewport().setBackground(Color.white);
-
         if (thiskey.endsWith("png") || thiskey.endsWith("html"))
         {
+          s1 = new ScrollPanel(new GridLayout());
+          r1 = new JScrollPane(s1);
+          r1.getViewport().setBackground(Color.white);
           int index = findInt(thiskey);
           if(index>0)
           {
@@ -161,7 +157,7 @@ public class ShowResultSet extends JFrame
           FileEditorDisplay fed = new FileEditorDisplay(null,thiskey,
                                                      h.get(thiskey));
           fed.setCaretPosition(0);
-          s1.add(fed);
+          r1 = new JScrollPane(fed);
           rtp.add(thiskey,r1);
         }
       }
