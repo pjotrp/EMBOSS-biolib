@@ -1130,13 +1130,13 @@ static AjBool blastopenlib (AjPStr name, PBlastDb* pdb) {
 
 
 
-/* @funcstatic stripncbi ********************************************
+/* #funcstatic stripncbi ********************************************
 **
 ** trim the ncbi line.
 **
-** @param [r] line [AjPStr*] Input line
-** @return [void] 
-** @@
+** #param [r] line [AjPStr*] Input line
+** #return [void] 
+** ##
 ******************************************************************************/
 
 /* static void stripncbi (AjPStr* line) {
