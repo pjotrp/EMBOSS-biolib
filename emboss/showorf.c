@@ -402,7 +402,7 @@ static void showorf_CalcProteinPos(ajint **ppos, AjPStr *pseqs, ajint len)
 
 
 
-/* @funcstatic  showorf showTrans ********************************************
+/* @funcstatic  showorf_showTrans ********************************************
 **
 ** Output translations using given width
 **
