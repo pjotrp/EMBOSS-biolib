@@ -1,6 +1,9 @@
 appl: ekitsch [
     doc: "Fitch-Margoliash method with contemporary tips"
     group: "phylip"
+    gui: yes
+    batch: yes
+    cpu: high
    ]
 
 infile: infile [

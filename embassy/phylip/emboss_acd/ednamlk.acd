@@ -2,6 +2,9 @@ appl: ednamlk [
     doc: "Estimates phylogenies from nucleic acid sequence Maximum
     Likelihood with molecular clock"
     group: "phylip"
+    gui: yes
+    batch: yes
+    cpu: high
    ]
 
 seqset: msf [ 

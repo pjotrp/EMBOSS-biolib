@@ -1,6 +1,9 @@
 appl: econtml [
     doc: "Continuous character Maximum Likelihood method"
     group: "phylip"
+    gui: yes
+    batch: yes
+    cpu: high
    ]
 
 infile: infile [ 

@@ -1,6 +1,9 @@
 appl: eneighbor [
     doc: "Phylogenies from distance matrix by N-J or UPGMA method"
     group: "phylip"
+    gui: yes
+    batch: yes
+    cpu: high
    ]
 
 infile: infile [ 

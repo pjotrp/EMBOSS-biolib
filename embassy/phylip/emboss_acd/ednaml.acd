@@ -1,6 +1,9 @@
 appl: ednaml [
     doc: "Estimates phylogenies from nucleic acid sequence Maximum Likelihood"
     group: "phylip"
+    gui: yes
+    batch: yes
+    cpu: high
    ]
 
 seqset: msf [ 

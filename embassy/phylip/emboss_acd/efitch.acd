@@ -1,6 +1,9 @@
 appl: efitch [
     doc: "Fitch-Margoliash and Least-Squares Distance Methods"
     group: "phylip"
+    gui: yes
+    batch: yes
+    cpu: high
    ]
 
 infile: infile [
