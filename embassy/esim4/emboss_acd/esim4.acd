@@ -3,16 +3,27 @@ application: esim4 [
   groups: "Alignment:Global"
 ]
 
-sequence: sequence  [
-  parameter: "Y"
-  type: "dna"
-  information: "mRNA sequence"
+section: input [
+  information: "Input section"
+  type: "page"
 ]
 
-seqall: genome  [
+sequence: asequence  [
+  parameter: "Y"
+  type: "dna"
+]
+
+seqall: bsequence  [
   parameter: "Y"
   type: "dna"
   information: "Genomic sequence"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
 outfile: outfile  [
@@ -20,17 +31,24 @@ outfile: outfile  [
   knowntype: "sim4 output"
 ]
 
+endsection: output
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
 integer: word  [
   additional: "Y"
   default: "12"
-  information: "(W) Sets the word size for blast hits. Default
+  information: "Sets the word size (W) for blast hits. Default
                 value: 12."
 ]
 
 integer: extend  [
   additional: "Y"
   default: "12"
-  information: "(X) Sets the word extension termination limit
+  information: "Sets the word extension termination limit (X)
                 for the blast-like stage of the algorithm. Default value:
                 12."
 ]
@@ -39,10 +57,10 @@ integer: cutoff  [
   additional: "Y"
   default: "3"
   maximum: "10"
-  information: "(E) Sets the cutoff in range [3,10]."
+  information: "Sets the cutoff (E) in range [3,10]."
 ]
 
-boolean: usermspa  [
+toggle: usermspa  [
   additional: "Y"
   default: "N"
   information: "False: esim4 calculates mspA, True: value from
@@ -50,11 +68,11 @@ boolean: usermspa  [
 ]
 
 integer: mspa  [
-  additional: "$(usermspA)"
+  additional: "$(usermspa)"
   default: "16"
-  information: "(K) MSP score threshold for the first stage of
+  information: "MSP score threshold (K) for the first stage of
                 the algorithm."
-  help: "(K) MSP score threshold for the first stage of the algorithm.
+  help: "MSP score threshold (K) for the first stage of the algorithm.
          (If this option is not specified, the threshold is computed from
          the lengths of the sequences, using statistical criteria.) For
          example, a good value for genomic sequences in the range of a few
@@ -62,7 +80,7 @@ integer: mspa  [
          may be needed for longer sequences."
 ]
 
-boolean: usermspb  [
+toggle: usermspb  [
   additional: "Y"
   default: "N"
   information: "False: esim4 calculates mspB, True: value from
@@ -70,11 +88,11 @@ boolean: usermspb  [
 ]
 
 integer: mspb  [
-  standard: "$(usermspB)"
+  additional: "$(usermspb)"
   default: "12"
-  information: "(C) Sets the MSP score threshold during the
+  information: "MSP score threshold (C) during the
                 second stage of the algorithm."
-  help: "(C) Sets the threshold for the MSP scores when aligning the
+  help: "Sets the threshold for the MSP scores (C) when aligning the
          as-yet-unmatched fragments, during the second stage of the
          algorithm. By default, the smaller of the constant 12 and a
          statistics-based threshold is chosen."
@@ -83,22 +101,22 @@ integer: mspb  [
 integer: weight  [
   additional: "Y"
   default: "0"
-  information: "(H) Sets the weight value (undocumented). 0
+  information: "Weight value (H) (undocumented). 0
                 uses a default, >0 is a value"
 ]
 
 integer: diagonal  [
   additional: "Y"
   default: "10"
-  information: "(K) Sets the bound for the diagonal distance
+  information: "Bound (K) for the diagonal distance
                 within consecutive MSPs in an exon."
 ]
 
 string: strand  [
   additional: "Y"
   default: "both"
-  information: "(R) Align mRNA to specified genome strand(s)."
-  help: "(R) This determines the strand of the genome with which the
+  information: "Align mRNA to specified (R) genome strand(s)."
+  help: "This determines the strand of the genome (R) with which the
          mRNA will be aligned. The default value is 'both', in which case
          both strands of the genome are attempted. The other allowed modes
          are 'forward' and 'reverse'."
@@ -109,8 +127,8 @@ integer: format  [
   minimum: "0"
   maximum: "5"
   default: "0"
-  information: "(A) Sets the output format"
-  help: "(A) Sets the output format. Exon endpoints only (format=0),
+  information: "Output format (A) "
+  help: "Sets the output format (A). Exon endpoints only (format=0),
          exon endpoints and boundaries of the coding region (CDS) in the
          genomic sequence, when specified for the input mRNA (-format=5),
          alignment text (-format=1), alignment in lav-block format
@@ -129,8 +147,8 @@ integer: format  [
 boolean: cliptails  [
   additional: "Y"
   default: "N"
-  information: "(P) Trim poly-A tails"
-  help: "(P) Trim poly-A tails. Specifies whether or not the program
+  information: "Trim poly-A tails (P)"
+  help: "Trim poly-A tails (P). Specifies whether or not the program
          should report the fragment of the alignment containing the poly-A
          tail (if found). By default (-nocliptails) the alignment is
          displayed as computed. When this feature is enabled (-cliptails),
@@ -141,8 +159,8 @@ boolean: cliptails  [
 boolean: smallexons  [
   additional: "Y"
   default: "N"
-  information: "(N) Search for small marginal exons"
-  help: "(N) Requests an additional search for small marginal exons
+  information: "Search for small marginal exons (N)"
+  help: "Requests an additional search for small marginal exons (N)
          (N=1) guided by the splice-site recognition signals. This option can
          be used when a high accuracy match is expected. The default value
          is N=0, specifying no additional search."
@@ -151,18 +169,18 @@ boolean: smallexons  [
 boolean: ambiguity  [
   additional: "Y"
   default: "Y"
-  information: "(B) Disallow ambiguity characters"
-  help: "(B) Controls the set of characters allowed in the input
-         sequences. By default (-ambiguity), ambiguity characters
+  information: "Disallow ambiguity characters (B)"
+  help: "Controls the set of characters allowed in the input
+         sequences (B). By default (-ambiguity), ambiguity characters
          (ABCDGHKMNRSTVWXY) are allowed. By specifying -noambiguity, the set
          of acceptable characters is restricted to A,C,G,T,N and X only."
 ]
 
 string: cdsregion  [
   additional: "Y"
-  information: "(S) Define CDS ends in mRNA"
-  help: "(S) Allows the user to specify the endpoints of the CDS in
-         the input mRNA, with the syntax: -cdsregion=n1..n2. This option is
+  information: "Define CDS ends in mRNA (S)"
+  help: "Allows the user to specify the endpoints of the CDS in
+         the input mRNA (S), with the syntax: -cdsregion=n1..n2. This option is
          only available with the -format=5 flag, which produces output in the
          format required by PipMaker. Alternatively, the CDS coordinates
          could appear in a construct CDS=n1..n2 in the FastA header of the
@@ -173,24 +191,26 @@ string: cdsregion  [
 
 integer: offseta  [
   additional: "Y"
-  information: "(f) Undocumented - some sort of offset in first
+  information: "Undocumented (f) - some sort of offset in first
                 sequence."
 ]
 
 integer: offsetb  [
   additional: "Y"
-  information: "(F) Undocumented - some sort of offset in
+  information: "Undocumented (F) - some sort of offset in
                 second sequence."
 ]
 
 integer: toa  [
   additional: "Y"
-  information: "(t) Undocumented - offset end of first
+  information: " Undocumented (t)- offset end of first
                 sequence?"
 ]
 
 integer: tob  [
   additional: "Y"
-  information: "(T) Undocumented - offset end of second
+  information: "Undocumented (T) - offset end of second
                 sequence?"
 ]
+
+endsection: additional

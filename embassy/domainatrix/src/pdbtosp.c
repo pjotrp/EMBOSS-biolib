@@ -232,7 +232,7 @@ int main(int argc, char **argv)
     /* Read data from acd*/
     ajNamInit("emboss");
     ajAcdInitP("pdbtosp", argc, argv, "DOMAINATRIX");
-    inf1  =  ajAcdGetInfile("infilea");
+    inf1  =  ajAcdGetInfile("infile");
     outf  =  ajAcdGetOutfile("outfile");
 
 

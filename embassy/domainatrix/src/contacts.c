@@ -364,11 +364,11 @@ int main(ajint argc, char **argv)
     cpdb_extn     = ajAcdGetString("cpdbextn");
     con_path      = ajAcdGetString("con");
     con_extn      = ajAcdGetString("conextn");
-    logf          = ajAcdGetOutfile("conerrf");
+    logf          = ajAcdGetOutfile("outfile");
     thresh        = ajAcdGetFloat("thresh");
     ignore        = ajAcdGetFloat("ignore");
-/*    vdwfstr       = ajAcdGetString("vdwf");*/
-    vdwf       = ajAcdGetInfile("vdwf");
+/*    vdwfstr       = ajAcdGetString("vdwfile");*/
+    vdwf       = ajAcdGetDatafile("vdwfile");
 
 
     /* Check directories*/

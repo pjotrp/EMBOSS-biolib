@@ -36,10 +36,11 @@ string: cpdb  [
     default: ".pxyz"
   ]
 
-  infile: vdwf  [
+  datafile: vdwfile  [
     standard: "Y"
     information: "Name of data file with van der Waals radii"
     default: "Evdw.dat"
+    knowntype: "van der Waals radii"
   ]
 endsection: input
 
@@ -65,8 +66,8 @@ endsection: required
 
 
 
-section: advanced [
-  information: "Advanced section"
+section: additional [
+  information: "Additional section"
   type: "page"
 ]
 
@@ -81,7 +82,7 @@ section: advanced [
     default: "20.0"
   ]
 
-endsection: advanced
+endsection: additional
 
 
 
@@ -107,12 +108,12 @@ string: conextn  [
   default: ".con"
 ]
 
-  outfile: conerrf  [
+  outfile: outfile  [
     standard: "Y"
-    information: "Name of log file for the build"
     default: "contacts.log"
     help: "The log file contains messages about any errors arising
            while contacts ran."
+    knowntype: "contacts log"
   ]
 endsection: output
 

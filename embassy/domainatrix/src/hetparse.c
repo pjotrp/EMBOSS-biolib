@@ -248,9 +248,9 @@ int main(int argc, char **argv)
     ajAcdInitP("hetparse", argc, argv, "DOMAINATRIX");
 
     /* Get values from acd */
-    fin    = ajAcdGetInfile("inf");
-    fout   = ajAcdGetOutfile("outf");
-    dogrep = ajAcdGetBool("dogrep");
+    fin    = ajAcdGetInfile("infile");
+    fout   = ajAcdGetOutfile("outfile");
+    dogrep = ajAcdGetToggle("dogrep");
     path   = ajAcdGetString("path");
     extn   = ajAcdGetString("extn");
     

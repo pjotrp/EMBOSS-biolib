@@ -278,11 +278,11 @@ int main(ajint argc, char **argv)
     out_EMBLpdbpath = ajAcdGetString("outputemblpdbpath");
     out_EMBLpdbextn = ajAcdGetString("outputemblpdbextn");
     mode            = ajAcdGetList("mode");
-    errf            = ajAcdGetOutfile("errf");
+    errf            = ajAcdGetOutfile("errfile");
     if(ajStrChar(*mode, 0) != '2')
-      serrf         = ajAcdGetOutfile("serrf");
+      serrf         = ajAcdGetOutfile("serrfile");
     if(ajStrChar(*mode, 0) != '1')
-      nerrf         = ajAcdGetOutfile("nerrf");
+      nerrf         = ajAcdGetOutfile("nerrfile");
     tS              = ajAcdGetInt("thresholdsize");
  
     /* 

@@ -13,12 +13,13 @@ section: input [
 ]
 
 
-  infile: infilea  [
+  infile: infile  [
     information: "Name of raw swissprot:pdb equivalence file
                   (input)"
-    help: "pdbtosp parses the swissprot:pdb equivalence table
+    help: "Parses the swissprot:pdb equivalence table
            available at URL http://www.expasy.ch/cgi-bin/lists?pdbtosp.txt"
     parameter: "Y"
+    knowntype: "swissprot:pdb equivalence table"
   ]
 
 
@@ -33,10 +34,11 @@ section: output [
 
 
   outfile: outfile  [
-    information: "Name of swissprot:pdb equivalence file (embl
+    help: "Name of swissprot:pdb equivalence file (embl
                   format output)"
     default: "Epdbtosp.dat"
     parameter: "Y"
+    knowntype: "embl format swissprot:pdb equivalence file"
   ]
 
 endsection: output

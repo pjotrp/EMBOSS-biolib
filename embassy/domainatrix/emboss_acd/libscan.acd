@@ -31,7 +31,7 @@ list: mode  [
 
 seqset: db  [
   standard: "Y"
-  prompt: "File containing sequences to search or screen"
+  information: "File containing sequences to search or screen"
   help: "In database search mode libscan scans each discriminating
          element against a sequence set. In library screen mode, libscan
          reads a sequence set and screens each sequence against the library
@@ -236,7 +236,7 @@ string: sigoutextn  [
 
 infile: scopf  [
   standard: "Y"
-  prompt: "SCOP classification file (input)"
+  information: "SCOP classification file (input)"
   help: "In either mode, a 'scop classification file' is required as a
          source of family classification data. A scop classification file
          contains classification and other data for domains from the scop
@@ -247,7 +247,7 @@ infile: scopf  [
 
 
 infile: targetf  [
-  prompt: "Name of validation file (input)"
+  information: "Name of validation file (input)"
   help: "A 'scop validation file' contains sequence relatives (hits)
          for each of a number of different scop families, superfamilies and
          folds. The file contains the collated results from psiblast searches

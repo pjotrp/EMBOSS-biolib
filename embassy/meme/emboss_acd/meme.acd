@@ -3,21 +3,21 @@ application: meme [
   groups: "Protein:Motifs"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 seqall: sequence  [
   parameter: "Y"
   type: "any"
 ]
 
-list: ntype  [
-  additional: "Y"
-  default: "pair"
-  minimum: "1"
-  maximum: "1"
-  header: "How to use negative examples"
-  values: "pair:Pairwise method, blend:Blending method"
-  delimiter: ","
-  codedelimiter: ":"
-  information: "Method to use"
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
 ]
 
 list: model  [
@@ -31,6 +31,31 @@ list: model  [
   delimiter: ","
   codedelimiter: ":"
   information: "Model to use"
+]
+
+integer: nmotifs  [
+  standard: "Y"
+  default: "1"
+  information: "Maximum number of motifs to find"
+]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+list: ntype  [
+  additional: "Y"
+  default: "pair"
+  minimum: "1"
+  maximum: "1"
+  header: "How to use negative examples"
+  values: "pair:Pairwise method, blend:Blending method"
+  delimiter: ","
+  codedelimiter: ":"
+  information: "Method to use"
 ]
 
 boolean: protein  [
@@ -99,12 +124,6 @@ integer: maxw  [
   information: "Maximum starting motif width to try"
 ]
 
-integer: nmotifs  [
-  standard: "Y"
-  default: "1"
-  information: "Maximum number of motifs to find"
-]
-
 list: prior  [
   additional: "Y"
   default: "dirichlet"
@@ -169,7 +188,7 @@ string: cons  [
 float: chi  [
   additional: "Y"
   default: "1.0"
-  information: "p-value cutoff"
+  information: "Cutoff for p-value"
 ]
 
 list: adj  [
@@ -298,7 +317,16 @@ integer: timer  [
   information: "Timer type"
 ]
 
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
 outfile: outfile  [
   parameter: "Y"
   knowntype: "meme output"
 ]
+
+endsection: output

@@ -12,12 +12,13 @@ section: input [
   type: "page"
 ]
 
-  infile: inf  [
+  infile: infile  [
     parameter: "Y"
     information: "Name of input file (raw dictionary of
                   heterogen groups)"
-    help: "hetparse parse the dictionary of heterogen groups available
+    help: "Parse the dictionary of heterogen groups available
            at http://pdb.rutgers.edu/het_dictionary.txt"
+	   knowntype: "raw dictionary of heterogen groups"
   ]
 
 endsection: input
@@ -28,7 +29,7 @@ section: required [
 ]
 
 
-  boolean: dogrep  [
+  toggle: dogrep  [
     standard: "Y"
     information: "Search a directory of files with keywords?"
     help: "Optionally, hetparse will search a directory of pdb files
@@ -60,10 +61,10 @@ section: output [
   type: "page"
 ]
 
-  outfile: outf  [
+  outfile: outfile  [
     parameter: "Y"
-    information: "Name of output file (embl format)"
     default: "Ehet.dat"
+    knowntype: "embl format dictionary of heterogen groups"
   ]
 
 endsection: output

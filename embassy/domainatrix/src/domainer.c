@@ -313,18 +313,16 @@
 
 int main(int argc, char **argv)
 {
-    AjPStr   cpdb_path     =NULL;	/* Path of cpdb files */
-    AjPStr   cpdb_extn     =NULL;	/* Extn. of cpdb files (protein) */
-    AjPStr   pdb_extn      =NULL;	/* Extn. of pdb files */
-    AjPStr   pdbscop_path  =NULL;	/* Path of pdbscop files */
-    AjPStr   cpdbscop_path =NULL;	/* Path of cpdbscop files */
-    AjPStr   cpdbscop_extn =NULL;	/* Extn. of cpdbscop files (domain)*/
     AjPStr   cpdb_name     =NULL;	/* Name of cpdb file */
     AjPStr   pdbscop_name  =NULL;	/* Name of pdbscop file */
     AjPStr   cpdbscop_name =NULL;	/* Name of cpdbscop file */
+    AjPStr   scop_name =NULL;	/* Name of cpdbscop file */
     AjPStr   msg           =NULL;	/* Error message */
     AjPStr   temp          =NULL;	/* Error message */
 
+    AjPDir   cpdbscop_dir  =NULL;
+    AjPDir   pdbscop_dir   =NULL;
+    AjPDir   cpdb_dir      =NULL;
     AjPFile  scop_inf      =NULL;
     AjPFile  cpdb_inf      =NULL;
     AjPFile  pdbscop_outf  =NULL;
@@ -338,44 +336,28 @@ int main(int argc, char **argv)
     
     /* Initialise strings */
     msg           = ajStrNew();
-    cpdb_path     = ajStrNew();
-    cpdb_extn     = ajStrNew();
-    cpdbscop_extn = ajStrNew();
-    pdb_extn      = ajStrNew();
-    pdbscop_path  = ajStrNew();
-    cpdbscop_path = ajStrNew();
     cpdb_name     = ajStrNew();
     pdbscop_name  = ajStrNew();
     cpdbscop_name = ajStrNew();
+    scop_name = ajStrNew();
     temp          = ajStrNew();
 
 
     /* Read data from acd */
     ajNamInit("emboss");
     ajAcdInitP("domainer",argc,argv,"DOMAINATRIX"); 
-    cpdb_path     = ajAcdGetString("cpdb");
+    cpdb_dir     = ajAcdGetDirectory("cpdb");
+/*
     cpdb_extn     = ajAcdGetString("cpdbextn");
     cpdbscop_extn = ajAcdGetString("cpdbscopextn");
     pdb_extn      = ajAcdGetString("pdbextn");
-    pdbscop_path  = ajAcdGetString("pdbscop");
-    cpdbscop_path = ajAcdGetString("cpdbscop");
-    scop_inf      = ajAcdGetInfile("scop");
-    errf1         = ajAcdGetOutfile("pdberrf");
-    errf2         = ajAcdGetOutfile("cpdberrf");
+*/
+    pdbscop_dir  = ajAcdGetOutdir("pdboutdir");
+    cpdbscop_dir = ajAcdGetOutdir("cpdboutdir");
+    scop_inf      = ajAcdGetInfile("scopfile");
+    errf1         = ajAcdGetOutfile("pdberrfile");
+    errf2         = ajAcdGetOutfile("cpdberrfile");
     
-
-    /* Check directories*/
-    if(!ajFileDir(&cpdb_path))
-	ajFatal("Could not open cpdb directory");
-
-    if(!ajFileDir(&pdbscop_path))
-	ajFatal("Could not open pdbscop directory");
-
-    if(!ajFileDir(&cpdbscop_path))
-	ajFatal("Could not open cpdbscop directory");
-
-
-
 
 
 
@@ -387,11 +369,11 @@ int main(int argc, char **argv)
 
      
 	/* Read clean coordinate file*/
-	ajStrAss(&cpdb_name, scop->Pdb);
-	ajStrToLower(&cpdb_name);
-	ajStrApp(&cpdb_name, cpdb_extn);
-	if(!(cpdb_inf=ajFileNewDF(cpdb_path, cpdb_name)))
+	ajStrAss(&scop_name, scop->Pdb);
+	ajStrToLower(&scop_name);
+	if(!(cpdb_inf=ajFileNewDirF(cpdb_dir, scop_name)))
 	{
+	    ajFileNameDir(&cpdb_name, cpdb_dir, scop_name);
 	    ajFmtPrintS(&msg, "Could not open for reading cpdb file %S", 
 			cpdb_name);
 	    ajWarn(ajStrStr(msg));
@@ -422,12 +404,11 @@ int main(int argc, char **argv)
 	
 
 	/* Open pdb format file for writing*/
-	ajStrAss(&pdbscop_name, pdbscop_path);
-	ajStrApp(&pdbscop_name, scop->Entry);
-	ajStrToLower(&pdbscop_name);
-	ajStrAppC(&pdbscop_name, ajStrStr(pdb_extn));
-	if(!(pdbscop_outf=ajFileNewOut(pdbscop_name)))
+	ajStrAss(&scop_name, scop->Entry);
+	ajStrToLower(&scop_name);
+	if(!(pdbscop_outf=ajFileNewOutDir(pdbscop_dir,scop_name)))
 	{
+	    ajFileNameDir(&pdbscop_name, pdbscop_dir, scop_name);
 	    ajFmtPrintS(&msg, "Could not open for writing pdbscop file %S", 
 			pdbscop_name);
 	    ajWarn(ajStrStr(msg));
@@ -442,12 +423,11 @@ int main(int argc, char **argv)
 
 
 	/* Open embl-like format file for writing*/
-	ajStrAss(&cpdbscop_name, cpdbscop_path);
-	ajStrApp(&cpdbscop_name, scop->Entry);
-	ajStrToLower(&cpdbscop_name);
-	ajStrApp(&cpdbscop_name, cpdbscop_extn);
-	if(!(cpdbscop_outf=ajFileNewOut(cpdbscop_name)))
+	ajStrAssS(&scop_name, scop->Entry);
+	ajStrToLower(&scop_name);
+	if(!(cpdbscop_outf=ajFileNewOutDir(cpdbscop_dir, scop_name)))
 	{
+	    ajFileNameDir(&cpdbscop_name, cpdbscop_dir, scop_name);
 	    ajFmtPrintS(&msg, "Could not open for writing cpdbscop file %S", 
 			cpdbscop_name);
 	    ajWarn(ajStrStr(msg));
@@ -504,15 +484,10 @@ int main(int argc, char **argv)
 
 
     /*Tidy up */
-    ajStrDel(&cpdb_path);
-    ajStrDel(&cpdb_extn);
-    ajStrDel(&cpdbscop_extn);
-    ajStrDel(&pdb_extn);
-    ajStrDel(&pdbscop_path);
-    ajStrDel(&cpdbscop_path);
     ajStrDel(&cpdb_name);
     ajStrDel(&pdbscop_name);
     ajStrDel(&cpdbscop_name);
+    ajStrDel(&scop_name);
     ajStrDel(&msg);
     ajStrDel(&temp);
     ajFileClose(&scop_inf);

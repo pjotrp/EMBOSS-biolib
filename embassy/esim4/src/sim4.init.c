@@ -62,7 +62,7 @@
 #ifndef __lint     
 /*@unused@*/       
 static const char rcsid[] =
-"$Id: sim4.init.c,v 1.3 2002/05/10 16:10:17 rice Exp $";
+"$Id: sim4.init.c,v 1.4 2004/01/26 12:36:50 rice Exp $";
 #endif         
            
 
@@ -767,8 +767,8 @@ static void sim4_argvals(sim4_args_t *args)
 AjPStr   esim4_strand;
 AjPStr   esim4_cdsregion;
         
-        esim4_sequence    = ajAcdGetSeq ("sequence");
-        esim4_seqall      = ajAcdGetSeqall ("genome");
+        esim4_sequence    = ajAcdGetSeq ("asequence");
+        esim4_seqall      = ajAcdGetSeqall ("bsequence");
         ESIM4_OUTDEV      = ajAcdGetOutfile ("outfile");
         SIM4_OUTDEV       = ESIM4_OUTDEV->fp;
         args->ali_flag    = ajAcdGetInt ("format");
@@ -785,8 +785,8 @@ AjPStr   esim4_cdsregion;
         args->B           = ajAcdGetBool ("ambiguity");
         esim4_cdsregion   = ajAcdGetString ("cdsregion");
         args->S           = ajStrStr(esim4_cdsregion);  
-        args->set_K       = ajAcdGetBool ("usermspa");
-        args->set_C       = ajAcdGetBool ("usermspb");
+        args->set_K       = ajAcdGetToggle ("usermspa");
+        args->set_C       = ajAcdGetToggle ("usermspb");
 	if(args->weight == 0 ){
            args->set_H  = SIMFALSE;  
         }
