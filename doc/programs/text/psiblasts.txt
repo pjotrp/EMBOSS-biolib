@@ -54,7 +54,7 @@ Command line arguments
    [-niter]
    (Parameter 3) Number of PSIBLAST iterations Any integer value 1
    [-evalue]
-   (Parameter 4) Threshold E-value for inclusion in family Any integer
+   (Parameter 4) Threshold E-value for inclusion in family Any numeric
    value 0.001
    [-maxhits]
    (Parameter 5) Maximum number of hits Any integer value 1000

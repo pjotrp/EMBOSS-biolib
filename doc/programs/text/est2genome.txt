@@ -136,7 +136,7 @@ Command line arguments
    to control the memory requirements. In this way very long sequences
    can be aligned. If you have a machine with plenty of memory you can
    raise this parameter (but do not exceed the machine's physical RAM)
-   Any integer value 10.0
+   Any numeric value 10.0
    -shuffle Shuffle Any integer value 0
    -seed Random number seed Any integer value 20825
    -align Show the alignment. The alignment includes the first and last 5

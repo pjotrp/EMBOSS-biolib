@@ -122,7 +122,7 @@ Command line arguments
    (Parameter 3) File extension of clean domain coordinate files Any
    string is accepted .pxyz
    [-thresh]
-   (Parameter 4) The % sequence identity redundancy threshold Any integer
+   (Parameter 4) The % sequence identity redundancy threshold Any numeric
    value 95.0
    [-datafile]
    (Parameter 5) Residue substitution matrix Comparison matrix file in

@@ -80,7 +80,7 @@ Command line arguments
    [-cpdbextn]
    (Parameter 2) Extension of coordinate files Any string is accepted
    .pxyz
-   -thresh Threshold contact distance Any integer value 1.0
+   -thresh Threshold contact distance Any numeric value 1.0
    -vdwf Name of data file with van der Waals radii Any string is
    accepted Evdw.dat
    [-con]
@@ -95,7 +95,7 @@ Command line arguments
    -ignore If any two atoms from two different residues are at least this
    distance apart then no futher inter-atomic contacts will be checked
    for for that residue pair . This speeds the calculation up
-   considerably. Any integer value 20.0
+   considerably. Any numeric value 20.0
    
 Input file format
 

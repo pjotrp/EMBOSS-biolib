@@ -52,7 +52,7 @@ Command line arguments
    Mandatory qualifiers Allowed values Default
    [-infile]
    (Parameter 1) Molecular weight file input Input file Required
-   -tolerance ppm tolerance Any integer value 50.0
+   -tolerance ppm tolerance Any numeric value 50.0
    [-outfile]
    (Parameter 2) Output file name Output file <sequence>.mwfilter
    Optional qualifiers Allowed values Default

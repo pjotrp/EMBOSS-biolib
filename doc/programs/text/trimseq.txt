@@ -115,7 +115,7 @@ Command line arguments
    done only if there is a greater or equal percentage of ambiguity than
    the threshold percentage. Any integer value 1
    -percent This is the threshold of the percentage ambiguity in the
-   window required in order to trim a sequence. Any integer value 100.0
+   window required in order to trim a sequence. Any numeric value 100.0
    -strict In nucleic sequences, trim off not only N's and X's, but also
    the nucleotide IUPAC ambiguity codes M, R, W, S, Y, K, V, H, D and B.
    In protein sequences, trim off not only X's but also B and Z. Yes/No

@@ -109,23 +109,23 @@ Command line arguments
    -ticklines do you want vertical lines at the ruler's ticks (Y or N)
    Any string is accepted N
    -textheight height of text. Enter a number <1 or >1 to decrease or
-   increase the size, respectively Any integer value 1
+   increase the size, respectively Any numeric value 1
    -textlength length of text. Enter a number <1 or >1 to decrease or
-   increase the size, respectively Any integer value 1
+   increase the size, respectively Any numeric value 1
    -margin width of left margin. This is the region left to the groups
    where the names of the groups are displayed. Enter a number <1 or >1
    to decrease or increase the size, respectively Number 0.000 or more 1
    -tickheight height of ticks. Enter a number <1 or >1 to decrease or
-   increase the size, respectively Any integer value 1
+   increase the size, respectively Any numeric value 1
    -blockheight height of blocks. Enter a number <1 or >1 to decrease or
-   increase the size, respectively Any integer value 1
+   increase the size, respectively Any numeric value 1
    -rangeheight height of range ends. Enter a number <1 or >1 to decrease
-   or increase the size, respectively Any integer value 1
+   or increase the size, respectively Any numeric value 1
    -gapgroup space between groups. Enter a number <1 or >1 to decrease or
-   increase the size, respectively Any integer value 1
+   increase the size, respectively Any numeric value 1
    -postext space between text and ticks, blocks, and ranges. Enter a
    number <1 or >1 to decrease or increase the size, respectively Any
-   integer value 1
+   numeric value 1
    Advanced qualifiers Allowed values Default
    (none)
    

@@ -49,8 +49,8 @@ Command line arguments
    75
    -datafile Scoring matrix Comparison matrix file in EMBOSS data path
    'Epprofile' for Gribskov type, or EBLOSUM62
-   -open Gap opening penalty Any integer value 3.0
-   -extension Gap extension penalty Any integer value 0.3
+   -open Gap opening penalty Any numeric value 3.0
+   -extension Gap extension penalty Any numeric value 0.3
    [-outf]
    (Parameter 2) Output file name Output file <sequence>.prophecy
    Optional qualifiers Allowed values Default

@@ -85,7 +85,7 @@ Command line arguments
    -bangle Beta sheet angle (degrees) Any integer value 160
    Advanced qualifiers Allowed values Default
    -aangle Alpha helix angle (degrees) Any integer value 100
-   -baseline Graph marker line Any integer value 0.35
+   -baseline Graph marker line Any numeric value 0.35
    -plot Produce graphic Yes/No No
    -double Plot two graphs Yes/No No
    

@@ -1,9 +1,150 @@
 
-                                   Forbidden
-                                       
-   You don't have permission to access /Software/EMBOSS/Apps//funky.html
-   on this server.
+                               EMBOSS: funky
      _________________________________________________________________
    
+                                 Program funky
+                                       
+Function
+
+   Reads clean coordinate files and writes file of protein-heterogen
+   contact data
    
-    Apache/1.3.20 Server at www.uk.embnet.org Port 80
+Description
+
+   This is part of Jon Ison's protein structure analysis package.
+   
+   This package is still being developed.
+   
+   Please ignore this program until further details can be documented.
+   
+   All further queries should go to Jon Ison. (Jon Ison)
+   
+Usage
+
+   Here is a sample session with funky:
+
+% funky
+
+Command line arguments
+
+   Mandatory qualifiers: (none)
+   Optional qualifiers: (none)
+   Advanced qualifiers:
+   -prot               string     Location of protein coordinate files for
+                                  input (embl-like format)
+   -protextn           string     Extension of protein coordinate files
+                                  (embl-like format)
+   -dom                string     Location of domain coordinate files for
+                                  input (embl-like format)
+   -domextn            string     Extension of domain coordinate files
+                                  (embl-like format)
+   -dic                infile     Name of dictionary of heterogen groups
+   -scop               infile     Name of scop file for input (embl-like
+                                  format)
+   -vdwf               infile     Name of data file with van der Waals radii
+   -thresh             float      Threshold contact distance
+   -outf               outfile    Name of output file
+   -logf               outfile    Name of log file
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   
+
+   Mandatory qualifiers Allowed values Default
+   (none)
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   -prot Location of protein coordinate files for input (embl-like
+   format) Any string is accepted
+   /packages/emboss_dev/jison/emboss/emboss/emboss/waqas
+   -protextn Extension of protein coordinate files (embl-like format) Any
+   string is accepted .full
+   -dom Location of domain coordinate files for input (embl-like format)
+   Any string is accepted /data/structure/cpdbscop_embl
+   -domextn Extension of domain coordinate files (embl-like format) Any
+   string is accepted .pxyz
+   -dic Name of dictionary of heterogen groups Input file
+   /packages/emboss_dev/jison/emboss/emboss/emboss/waqas/het_dictionary.o
+   ut
+   -scop Name of scop file for input (embl-like format) Input file
+   /data/structure/scop/Escop.dat
+   -vdwf Name of data file with van der Waals radii Input file
+   /data/structure/dat/Evdw.dat
+   -thresh Threshold contact distance Any numeric value 1.0
+   -outf Name of output file Output file
+   /packages/emboss_dev/jison/emboss/emboss/emboss/waqas/funky.out
+   -logf Name of log file Output file
+   /packages/emboss_dev/jison/emboss/emboss/emboss/waqas/funky.log
+   
+Input file format
+
+Output file format
+
+Data files
+
+Notes
+
+   None.
+   
+References
+
+   None.
+   
+Warnings
+
+   None.
+   
+Diagnostic Error Messages
+
+   None.
+   
+Exit status
+
+   It always exits with status 0.
+   
+Known bugs
+
+   None.
+   
+See also
+
+   Program name Description
+   cutgextract Extract data from CUTG
+   domainer Reads protein coordinate files and writes domains coordinate
+   files
+   groups Removes redundant hits from a scop families file
+   hetparse Converts raw dictionary of heterogen groups to a file in
+   embl-like format
+   nrscope Converts redundant EMBL-format SCOP file to non-redundant one
+   pdbparse Parses pdb files and writes cleaned-up protein coordinate
+   files
+   pdbtosp Convert raw swissprot:pdb equivalence file to embl-like format
+   printsextract Extract data from PRINTS
+   prosextract Builds the PROSITE motif database for patmatmotifs to
+   search
+   rebaseextract Extract data from REBASE
+   scope Convert raw scop classification file to embl-like format
+   scopnr Removes redundant domains from a scop classification file
+   scopparse Converts raw scop classification files to a file in
+   embl-like format
+   scopseqs Adds pdb and swissprot sequence records to a scop
+   classification file
+   tfextract Extract data from TRANSFAC
+   
+Author(s)
+
+   This application was written by Jon Ison (jison@hgmp.mrc.ac.uk)
+   
+History
+
+   Written (date) - author.
+   
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+   
+Comments

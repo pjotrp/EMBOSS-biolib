@@ -134,7 +134,7 @@ Command line arguments
    -maxnamelen Margin size for the sequence name. Any integer value 10
    -[no]number Display the residue number Yes/No Yes
    -[no]listoptions Display the date and options used Yes/No Yes
-   -plurality Plurality check value (totweight/2) Any integer value Half
+   -plurality Plurality check value (totweight/2) Any numeric value Half
    the total sequence weighting
    -consensus Display the consensus Yes/No No
    -[no]collision Allow collisions in calculating consensus Yes/No Yes

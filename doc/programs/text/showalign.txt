@@ -290,7 +290,7 @@ Command line arguments
    0.000 to 100.000 50.0
    -setcase Sets the threshold for the scores of the positive matches
    above which the consensus is is upper-case and below which the
-   consensus is in lower-case. Any integer value 0
+   consensus is in lower-case. Any numeric value 0
    -identity Provides the facility of setting the required number of
    identities at a position for it to give a consensus. Therefore, if
    this is set to 100% only columns of identities contribute to the
