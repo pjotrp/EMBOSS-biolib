@@ -207,9 +207,6 @@ int main(int argc, char **argv)
     AjPScop scop      = NULL;
     
     
-
-
-
     /* Compile regular expressions */
     rexp  = ajRegCompC("^([^ \t\r\n]+)[ \t\n\r]+([^ \t\r\n]+)[ \t\r\n]+"
 		       "([^ \t\r\n]+)[ \t\n\r]+([^ \t\n\r]+)[ \t\n\r]+");
@@ -233,10 +230,6 @@ int main(int argc, char **argv)
     text    = ajStrNew();
     token   = ajStrNew();
     
-
-
-
-
     
     /* Start of main application loop */
     while(ajFileReadLine(inf,&line))
@@ -359,8 +352,6 @@ int main(int argc, char **argv)
     ajFileClose(&inf);
     ajFileClose(&outf);
 
-
-    /* Bye Bye */
     ajExit();
     return 0;
 }
