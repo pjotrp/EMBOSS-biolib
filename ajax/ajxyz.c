@@ -59,6 +59,185 @@
 **
 ******************************************************************************/
 
+
+
+
+
+
+/* @func ajXyzScorealgNew ***********************************************************
+**
+** Scorealg object constructor. 
+** Fore-knowledge of the length of the alignment is required.
+**
+** @return [AjPScorealg] Pointer to a Scorealg object
+** @param  [r] len [ajint]   Length of alignment
+** 
+** @@
+******************************************************************************/
+AjPScorealg  ajXyzScorealgNew(ajint len)
+{
+    AjPScorealg ret=NULL;
+        
+
+    AJNEW0(ret);
+
+
+    /* Create the scoring arrays */
+    ret->seq_score    = ajIntNewL((ajint)len);
+    ret->post_similar = ajIntNewL((ajint)len);
+    ret->ncon_score   = ajIntNewL((ajint)len);
+    ret->ccon_score   = ajIntNewL((ajint)len);
+    ret->nccon_score = ajIntNewL((ajint)len);
+    ret->combi_score  = ajIntNewL((ajint)len);
+
+    ret->seq_do    = ajFalse;
+    ret->filter    = ajFalse;
+    ret->ncon_do   = ajFalse;
+    ret->ccon_do   = ajFalse;
+    ret->nccon_do = ajFalse;
+    
+    return ret;
+}
+
+
+
+
+
+
+
+/* @func ajXyzVdwallNew ********************************************************
+**
+** Vdwall object constructor. This is normally called by the ajXyzVdwallRead
+** function. Fore-knowledge of the number of residues is required.
+**
+** @return [AjPVdwall] Pointer to a Vdwall object
+** @param  [r] n [ajint]  Number of residues
+** @@
+******************************************************************************/
+AjPVdwall  ajXyzVdwallNew(ajint n)
+{
+    AjPVdwall ret=NULL;
+    
+    AJNEW0(ret);
+
+    ret->N=n;
+
+    AJCNEW0(ret->Res, n);
+
+    return ret;
+}
+
+
+
+
+
+/* @func ajXyzVdwresNew ********************************************************
+**
+** Vdwres object constructor. This is normally called by the ajXyzVdwallRead
+** function. Fore-knowledge of the number of atoms is required.
+**
+** @return [AjPVdwres] Pointer to a Vdwres object
+** @param  [r] n [ajint]  Number of atoms
+** @@
+******************************************************************************/
+AjPVdwres  ajXyzVdwresNew(ajint n)
+{
+    ajint x;
+    AjPVdwres ret=NULL;
+    
+    AJNEW0(ret);
+
+    ret->Id3=ajStrNew();    
+    ret->N=n;
+
+    AJCNEW0(ret->Atm, n);
+    for(x=0;x<n;++x)
+	ret->Atm[x]=ajStrNew();
+
+    AJCNEW0(ret->Rad, n);
+
+
+    return ret;
+}
+
+
+
+
+/* @func ajXyzCmapNew ***********************************************************
+**
+** Cmap object constructor. This is normally called by the ajXyzCmapRead
+** function. Fore-knowledge of the dimension (number of residues) for the 
+** contact map is required.
+**
+** @return [AjPCmap] Pointer to a Cmap object
+** @param  [r] dim [ajint]   Dimenion of contact map
+** 
+** @@
+******************************************************************************/
+AjPCmap  ajXyzCmapNew(ajint dim)
+{
+    AjPCmap ret=NULL;
+    ajint z=0;
+    
+
+    AJNEW0(ret);
+
+    ret->Id=ajStrNew();    
+
+    /* Create the SQUARE contact map */
+    ret->Mat = ajInt2dNewL((ajint)dim);
+    for(z=0;z<dim;++z)
+	ajInt2dPut(&ret->Mat, z, dim-1, (ajint) 0);
+
+
+    ret->Dim=dim;
+    ret->Ncon=0;
+
+
+    return ret;
+}
+
+
+/* @func ajXyzScopalgNew ***********************************************************
+**
+** Scopalg object constructor. This is normally called by the ajXyzScopalgRead
+** function. Fore-knowledge of the number of sequences is required.
+**
+** @param [r] n [int]   Number of sequences
+** 
+** @return [AjPScopalg] Pointer to a Scopalg object
+** @@
+******************************************************************************/
+AjPScopalg  ajXyzScopalgNew(int n)
+{
+    AjPScopalg ret = NULL;
+    ajint i=0;
+    
+
+    AJNEW0(ret);
+    ret->Class=ajStrNew();
+    ret->Fold=ajStrNew();
+    ret->Superfamily=ajStrNew();
+    ret->Family=ajStrNew();
+    ret->Post_similar=ajStrNew();
+    ret->width=0;
+    ret->N=n;
+
+    AJCNEW0(ret->Codes,n);
+    for(i=0;i<n;++i)
+	ret->Codes[i] = ajStrNew();
+
+    AJCNEW0(ret->Seqs,n);
+    for(i=0;i<n;++i)
+	ret->Seqs[i] = ajStrNew();
+    
+    return ret;
+}
+
+
+
+
+
 /* @func ajXyzHitNew *********************************************************
 **
 ** Hit object constructor. This is normally called by the ajXyzHitlistNew
@@ -244,6 +423,142 @@ AjPScop ajXyzScopNew(ajint chains)
 /* ==================================================================== */
 
 
+
+
+/* @func ajXyzScorealgDel *******************************************************
+**
+** Destructor for Scorealg object.
+**
+** @param [w] pthis [AjPScorealg*] Scorealg object pointer
+**
+** @return [void]
+** @@
+******************************************************************************/
+void ajXyzScorealgDel(AjPScorealg *pthis)
+{
+    ajIntDel(&(*pthis)->seq_score);
+    ajIntDel(&(*pthis)->post_similar);
+    ajIntDel(&(*pthis)->ncon_score);
+    ajIntDel(&(*pthis)->ccon_score);
+    ajIntDel(&(*pthis)->nccon_score);
+    ajIntDel(&(*pthis)->combi_score);
+
+    AJFREE(*pthis);    
+
+    return;
+}	
+
+
+
+
+/* @func ajXyzVdwresDel *******************************************************
+**
+** Destructor for Vdwres object.
+**
+** @param [w] pthis [AjPVdwres*] Vdwres object pointer
+**
+** @return [void]
+** @@
+******************************************************************************/
+void ajXyzVdwresDel(AjPVdwres *pthis)
+{
+    ajint x=0;
+    
+    ajStrDel(&(*pthis)->Id3);
+    
+    for(x=0;x<(*pthis)->N; ++x)
+	ajStrDel(&(*pthis)->Atm[x]);
+    
+    AJFREE((*pthis)->Atm);
+    AJFREE((*pthis)->Rad);
+    AJFREE(*pthis);    
+
+    return;
+}	
+
+
+
+/* @func ajXyzVdwallDel *******************************************************
+**
+** Destructor for Vdwall object.
+**
+** @param [w] pthis [AjPVdwall*] Vdwall object pointer
+**
+** @return [void]
+** @@
+******************************************************************************/
+void ajXyzVdwallDel(AjPVdwall *pthis)
+{
+    ajint x=0;
+    
+    for(x=0;x<(*pthis)->N; ++x)
+	ajXyzVdwresDel(&(*pthis)->Res[x]);
+    
+    AJFREE((*pthis)->Res);
+    AJFREE(*pthis);    
+
+    return;
+}	
+
+
+
+
+/* @func ajXyzCmapDel *******************************************************
+**
+** Destructor for Cmap object.
+**
+** @param [w] pthis [AjPCmap*] Cmap object pointer
+**
+** @return [void]
+** @@
+******************************************************************************/
+void ajXyzCmapDel(AjPCmap *pthis)
+{
+    ajStrDel(&(*pthis)->Id);
+    ajInt2dDel(&(*pthis)->Mat);
+    AJFREE(*pthis);    
+
+    return;
+}	
+
+
+
+/* @func ajXyzScopalgDel *******************************************************
+**
+** Destructor for Scopalg object.
+**
+** @param [w] pthis [AjPScopalg*] Scopalg object pointer
+**
+** @return [void]
+** @@
+******************************************************************************/
+void ajXyzScopalgDel(AjPScopalg *pthis)
+{
+    int x=0;  /* Counter */
+    
+    ajStrDel(&(*pthis)->Class);
+    ajStrDel(&(*pthis)->Fold);
+    ajStrDel(&(*pthis)->Superfamily);
+    ajStrDel(&(*pthis)->Family);
+    ajStrDel(&(*pthis)->Post_similar);
+
+    for(x=0;x<(*pthis)->N; x++)
+    {
+	ajStrDel(&(*pthis)->Codes[x]);
+	ajStrDel(&(*pthis)->Seqs[x]);
+    }
+    
+    AJFREE((*pthis)->Codes);
+    AJFREE((*pthis)->Seqs);
+    
+    AJFREE(*pthis);
+    
+    return;
+}
+
+
+
+
 /* @func ajXyzHitDel ***********************************************************
 **
 ** Destructor for hit object.
@@ -287,6 +602,8 @@ void ajXyzHitlistDel(AjPHitlist *pthis)
     for(x=0;x<(*pthis)->N; x++)
 	ajXyzHitDel(&(*pthis)->hits[x]);
 
+    AJFREE((*pthis)->hits);
+    
     AJFREE(*pthis);
     
     return;
@@ -2605,6 +2922,224 @@ void   ajXyzScopToPdb(AjPStr scop, AjPStr *pdb)
 
 
 
+/* @func ajXyzScopalgRead ****************************************************
+**
+** Read a Scopalg object from a file in embl-like format.
+** 
+** @param [r] inf      [AjPFile] Input file stream
+** @param [w] thys     [AjPScopalg*]  Scopalg object
+**
+** @return [AjBool] True on success (an alignment was read)
+** @@
+******************************************************************************/
+AjBool   ajXyzScopalgRead(AjPFile inf, AjPScopalg *thys)
+{
+    static   AjPStr line    =NULL;     /* Line of text */
+    static   AjPStr class   =NULL;
+    static   AjPStr fold    =NULL;
+    static   AjPStr super   =NULL;
+    static   AjPStr family  =NULL;
+    static   AjPStr postsim =NULL;     /* Post-similar line */
+    static   AjPStr posttmp =NULL;     /* Temp. storage for post-similar line */
+    
+    AjBool  done_1st_blk    =ajFalse;  /* Flag for whether we've read first block of sequences */
+    ajint   x               =0;        /* Loop counter */
+    ajint   y               =0;        /* Loop counter */
+    ajint   cnt             =0;
+    
+    AjPList list_seqs    =NULL;     /* List of sequences */
+    AjPList list_codes   =NULL;     /* List of codes */
+    AjPStr  *arr_seqs       =NULL;     /* Array of sequences */
+    AjPStr  seq             =NULL;     
+    AjPStr  code            =NULL;     /* Id code of sequence */
+    AjPStr  seq1            =NULL;
+
+
+    /* Check args */	
+    if(!inf)
+	return ajFalse;
+    
+
+    /* Allocate strings */
+    /* Only initialise strings if this is called for the first time*/
+    if(!line)
+    {
+	class   = ajStrNew();
+	fold    = ajStrNew();
+	super   = ajStrNew();
+	family  = ajStrNew();
+	line    = ajStrNew();
+	postsim = ajStrNew();
+	posttmp = ajStrNew();
+	seq1    = ajStrNew();
+    }
+
+    
+    /* Create new lists */
+    list_seqs = ajListstrNew();
+    list_codes = ajListstrNew();
+
+
+    /* Start of code for reading input file */
+    /*Ignore everything up to first line beginning with 'Number'*/
+    while(ajFileReadLine(inf,&line))
+    {
+	if(ajStrPrefixC(line,"Number"))
+	    break;
+    }
+
+    /* Read the rest of the file */
+    while(ajFileReadLine(inf,&line))
+    {
+	/* Ignore 'Number' lines */
+	if((ajStrPrefixC(line,"Number")))
+	    continue;
+    	else if(ajStrPrefixC(line,"CL"))
+	    ajStrAssC(&class,ajStrStr(line)+3);
+	else if(ajStrPrefixC(line,"FO"))
+	{
+	    ajStrAssC(&fold,ajStrStr(line)+3);
+	    while((ajFileReadLine(inf,&line)))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&fold,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&fold);
+	}
+	else if(ajStrPrefixC(line,"SF"))
+	{
+	    ajStrAssC(&super,ajStrStr(line)+3);
+	    while((ajFileReadLine(inf,&line)))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&super,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&super);
+	}
+	else if(ajStrPrefixC(line,"FA"))
+	{
+	    ajStrAssC(&family,ajStrStr(line)+3);
+	    while((ajFileReadLine(inf,&line)))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&family,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&family);
+	}
+	else if(ajStrPrefixC(line,"XX"))
+	    continue;
+	else if (ajStrPrefixC(line,"Post_similar"))
+	{
+	    /* Parse post_similar line */
+	    ajFmtScanS(line, "%*s%S", &posttmp);
+	    if(done_1st_blk == ajTrue)
+		ajStrApp(&postsim, posttmp);
+	    else
+		ajStrAss(&postsim, posttmp);
+	    
+	    continue;
+	}
+	else if(ajStrChar(line,1)=='\0')
+	{ 
+	    /* If we are on a blank line */
+	    /* ajFileReadLine will trim the tailing \n */
+
+	    done_1st_blk=ajTrue;
+	    cnt = 0;
+	    y++;
+
+	    if(y == 1)
+	    {
+		x = ajListstrToArray(list_seqs, &arr_seqs); 
+	    }
+	    continue;
+	}
+	else
+	{
+	    /* Parse a line of sequence */
+	    if(done_1st_blk == ajTrue)
+	    {
+		/* We have already read in the first block of sequences */
+		ajFmtScanS(line, "%*s%S", &seq1);
+		ajStrApp(&arr_seqs[cnt], seq1);
+		cnt++;
+		continue;
+	    }	
+	    else
+	    {
+		/* It is a sequence line from the first block */
+		/* Read in sequence */
+		seq = ajStrNew();		
+		code = ajStrNew();		
+		ajFmtScanS(line, "%S%S", &code, &seq);
+		
+		/* Push strings onto lists */
+		ajListstrPushApp(list_seqs,seq);
+		ajListstrPushApp(list_codes,code);
+		continue;
+	    }
+	}	
+    }
+
+
+    if(!cnt)
+    {
+	ajWarn("No sequences in alignment !\n");
+	ajListstrDel(&list_seqs); 
+	return ajFalse;
+    }
+    
+
+    /* Allocate memory for Scopalg structure */
+    (*thys) = ajXyzScopalgNew(cnt);
+
+
+    /* Assign SCOP records */
+    ajStrAssS(&(*thys)->Class,class);
+    ajStrAssS(&(*thys)->Fold,fold);
+    ajStrAssS(&(*thys)->Superfamily,super);
+    ajStrAssS(&(*thys)->Family,family); 
+    
+    /* Assign width */
+    (*thys)->width = ajStrLen((*thys)->Seqs[0]);
+
+    
+    /* Assign sequences and free memory */
+    for(x=0; x<cnt; x++)
+	{
+	    ajStrAssS(&(*thys)->Seqs[x],arr_seqs[x]); 
+	    AJFREE(arr_seqs[x]);
+	}
+    /* Free array */
+    AJFREE(arr_seqs);
+
+
+    for(x=0; ajListstrPop(list_codes,&code); x++)
+	ajStrAssS(&(*thys)->Codes[x],arr_seqs[x]); 	
+
+
+    /* Assign Post_similar line */
+    ajStrAssS(&(*thys)->Post_similar,postsim); 
+
+
+    /* Clean up */
+    ajListstrDel(&list_seqs); 
+    ajListstrDel(&list_codes); 
+    
+
+    /* Return */
+    ajExit();
+    return ajTrue;
+}
+
+
+
+
+
+
 
 /* @func ajXyzHitlistRead ****************************************************
 **
@@ -2783,6 +3318,181 @@ AjBool ajXyzHitlistWrite(AjPFile outf, AjPHitlist thys)
 	ajSeqWriteCdb(outf, thys->hits[x]->Seq);
 	ajFmtPrintF(outf, "XX\n//\n");
     }
+    
+
+    /* Return */
+    return ajTrue;
+}
+
+
+
+
+
+
+/* @func ajXyzCmapRead ****************************************************
+**
+** Read a Cmap object from a file in embl-like format. 
+** 
+** @param [r] inf     [AjPFile]  Input file stream
+** @param [r] chn     [ajint]    Chain number
+** @param [r] mod     [ajint]    Model number
+** @param [w] thys    [AjPCmap*] Pointer to Cmap object
+**
+** @return [AjBool] True on success (a list of hits was read)
+** @@
+******************************************************************************/
+AjBool   ajXyzCmapRead(AjPFile inf, ajint chn, ajint mod, AjPCmap *thys)
+{	
+    static   AjPStr line    =NULL;   /* Line of text */
+    static   AjPStr temp_id =NULL;   /* Temp location for protein id */
+    
+    ajint    num_res   	    =0;      /* No. of residues in domain */	
+    ajint    num_con   	    =0;      /* Total no. of contacts in domain */	
+    ajint    x		    =0;      /* No. of first residue making contact */	
+    ajint    y              =0;      /* No. of second residue making contact */	
+    ajint    md             =-1;     /* Model number */
+    ajint    cn             =-1;     /* Chain number */
+
+
+    /* Check args */	
+    if(!inf)
+    {	
+	ajWarn("Invalid args to ajXyzCmapRead");	
+	return ajFalse;
+    }
+    
+
+    /* Initialise strings */
+    if(!line)
+    {
+	line     = ajStrNew();
+	temp_id  = ajStrNew();
+    }
+    
+
+    /* Start of main loop */
+    while((ajFileReadLine(inf, &line)))
+    {
+	/* Parse ID line */
+	if(ajStrPrefixC(line, "ID"))
+	    ajFmtScanS(line, "%*s %S", &temp_id);
+	/* Parse model number */
+	else if(ajStrPrefixC(line, "MO"))
+	    ajFmtScanS(line, "%*s[%d]", &md);
+	/* Parse chain number */
+	else if(ajStrPrefixC(line, "CN"))
+	    ajFmtScanS(line, "%*s[%d]", &cn);
+	/* Read IN line */	    
+	/* Parse number of residues and total number of contacts */
+	else if((ajStrPrefixC(line, "IN")) && (md==mod) && (cn==chn))
+	{
+	    ajFmtScanS(line, "%*s %*s %*s %*s %d; %*s %d;", 
+		       &num_res, &num_con);
+
+
+	    /* Allocate contact map and write values */
+	    (*thys)=ajXyzCmapNew(num_res);
+	    (*thys)->Ncon = num_con;
+	    ajStrAssS(&(*thys)->Id, temp_id);
+	}
+	/* Read and parse residue contacts */
+	else if((ajStrPrefixC(line, "SM")) && (md==mod) && (cn==chn))
+	{
+	    ajFmtScanS(line, "%*s %*s %d %*c %*s %d", &x, &y);
+
+	    /* Check residue number is in range */
+	    if((x>(*thys)->Dim) || (y>(*thys)->Dim))
+		ajFatal("Fatal attempt to write bad data in ajXyzCmapRead\nEmail culprit: jison@hgmp.mrc.ac.uk\n");
+	    
+
+	    /* Enter '1' in matrix to indicate contact */
+	    ajInt2dPut(&(*thys)->Mat, x-1, y-1, 1);
+	    ajInt2dPut(&(*thys)->Mat, y-1, x-1, 1);
+	}
+    }	
+    
+    /* Return */
+    return ajTrue;	
+}	
+
+
+
+
+
+/* @func ajXyzVdwallRead ****************************************************
+**
+** Read a Vdwall object from a file in embl-like format. 
+** 
+** @param [r] inf     [AjPFile]  Input file stream
+** @param [w] thys    [AjPVdwall*] Pointer to Vdwall object
+**
+** @return [AjBool] True on success (a list of hits was read)
+** @@
+******************************************************************************/
+AjBool   ajXyzVdwallRead(AjPFile inf, AjPVdwall *thys)
+{
+    AjPStr line    =NULL;   /* Line of text */
+    ajint  nres    =0;      /* No. residues */
+    ajint  natm    =0;      /* No. atoms */
+    ajint  rcnt    =0;      /* Residue count */
+    ajint  acnt    =0;      /* Atom count */
+    char   id1     ='\0';             /* Residue 1 char id code */
+    AjPStr id3     =NULL;   /* Residue 3 char id code */
+    
+    
+    /* Allocate strings */
+    line     = ajStrNew();
+    id3      = ajStrNew();
+
+
+    /* Start of main loop */
+    while((ajFileReadLine(inf, &line)))
+    {
+	/* Parse ID line */
+	if(ajStrPrefixC(line, "NR"))
+	    {	
+		ajFmtScanS(line, "%*s %d", &nres);
+		
+		/* Allocate Vdwall object */
+		(*thys)=ajXyzVdwallNew(nres);
+		
+	    }
+	/* Parse residue id 3 char */
+	else if(ajStrPrefixC(line, "AA"))
+	    {	
+		rcnt++;
+		acnt=0;
+		ajFmtScanS(line, "%*s %S", &id3);
+	    }
+	/* Parse residue id 1 char */
+	else if(ajStrPrefixC(line, "ID"))
+	    ajFmtScanS(line, "%*s %c", &id1);
+	/* Parse number of atoms */
+	else if(ajStrPrefixC(line, "NN"))
+	{
+	    ajFmtScanS(line, "%*s %d", &natm);
+	    
+	    /* Allocate next Vdwres object */
+	    (*thys)->Res[rcnt-1]=ajXyzVdwresNew(natm);
+	    
+	    /* Write members of Vdwres object */
+	    (*thys)->Res[rcnt-1]->Id1=id1;
+	    ajStrAss(&(*thys)->Res[rcnt-1]->Id3, id3);
+	    
+	}
+	/* Parse atom line */
+	else if(ajStrPrefixC(line, "AT"))
+	{
+	    acnt++;
+	    ajFmtScanS(line, "%*s %S %*c %f", 
+		       &(*thys)->Res[rcnt-1]->Atm[acnt-1], 
+		       &(*thys)->Res[rcnt-1]->Rad[acnt-1]);	
+	}
+    }	
+
+    /* Clear up */
+    ajStrDel(&line);
+    ajStrDel(&id3);
     
 
     /* Return */
