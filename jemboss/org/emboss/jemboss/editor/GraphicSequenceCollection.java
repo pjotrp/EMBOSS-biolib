@@ -52,21 +52,23 @@ public class GraphicSequenceCollection extends JPanel
   private Hashtable colorScheme;   
   /** Consensus plot  */
   private PlotConsensus pc = null; 
-  private int lenName;
-  private int hgtName;
   private int hgt;
   private int len; 
   private int MAXSEQLENGTH = 0;
   /** number of residues on each line for print */
   private int numResiduePerLine = 0;   
+  /** panel for sequence numbers */
   private SequenceJPanel numberDraw;
   /** sequence scrollpane */
   private JScrollPane jspSequence; 
+  /** sequence name panel */ 
   private JPanel seqNamePanel;
+  /** container for sequences */
   private Box seqBox;
+  /** container for sequence names */
   private Box seqNameBox;
+  /** container for consensus plot */
   private Box plotconsSeqBox = null;
-
   /** draw the sequence */
   private boolean drawSequence;
   /** draw black square around residues */
@@ -75,7 +77,9 @@ public class GraphicSequenceCollection extends JPanel
   private boolean drawColorBox;
   /** draw sequence position number */
   private boolean drawNumber;
+  /** draw as per prettplot */
   private boolean prettPlot = false;
+  /** gap between sequences and consensus plot */
   private int plotConStrut = 20;
 
 
@@ -159,6 +163,17 @@ public class GraphicSequenceCollection extends JPanel
 
   }
  
+  /**
+  *
+  * @param seqs         vector of sequences
+  * @param jspSequence  sequence scrollpane
+  * @param drawSequence true to draw the sequence
+  * @param drawBlackBox true to draw black square around residues
+  * @param drawColorBox true to colour residues
+  * @param drawNumber   true to draw sequence position number
+  * @param statusField  status field in the editor
+  *
+  */
   public GraphicSequenceCollection(Vector seqs, JScrollPane jspSequence,
                          boolean drawSequence, boolean drawBlackBox,
                          boolean drawColorBox, boolean drawNumber,
@@ -168,16 +183,34 @@ public class GraphicSequenceCollection extends JPanel
          drawBlackBox,drawColorBox,drawNumber,statusField);
   }
 
+  /**
+  *
+  * Get the vector of Sequences
+  * @return 	vector of Sequences
+  *
+  */
   protected Vector getSequenceCollection()
   {
     return seqs;
   }
 
+  /**
+  *
+  * Get the position of the sequence JViewPort 
+  * @return 	position of the sequence JViewPort
+  *
+  */
   protected Point getViewPosition() 
   {
     return jspSequence.getViewport().getViewPosition();
   }
 
+  /**
+  *
+  * Get the Rectangle being displayed by the sequence JViewPort
+  * @return     rectangle being displayed by the sequence JViewPort
+  *
+  */
   protected Rectangle getViewRect()
   {
     Rectangle r = jspSequence.getViewport().getViewRect();
@@ -189,12 +222,13 @@ public class GraphicSequenceCollection extends JPanel
     return r;
   }
 
-/**
-*
-* @param File matrix - scoring matrix
-* @param int wsize window size to average scores over
-*
-*/
+  /**
+  *
+  * Calculate and display the consensus plot
+  * @param File matrix - scoring matrix
+  * @param int wsize window size to average scores over
+  *
+  */
   protected void showConsensusPlot(File matrix, int wsize)
   {
     deleteConsensusPlot();
@@ -216,12 +250,13 @@ public class GraphicSequenceCollection extends JPanel
     setJScrollPaneViewportView();
   }
 
-/**
-*
-* @param File matrix - scoring matrix
-* @param int wsize window size to average scores over
-*
-*/
+  /**
+  *
+  * Calculate and display the consensus plot
+  * @param File matrix - scoring matrix
+  * @param int wsize window size to average scores over
+  *
+  */
   protected void showConsensusPlot(Matrix mat, int wsize)
   {
     deleteConsensusPlot();
@@ -243,6 +278,11 @@ public class GraphicSequenceCollection extends JPanel
     setJScrollPaneViewportView();
   }
 
+  /**
+  *
+  *  Remove the consensus plot from the sequence editor
+  *
+  */
   protected void deleteConsensusPlot()
   {
     plotconsSeqBox.removeAll();
@@ -513,9 +553,8 @@ public class GraphicSequenceCollection extends JPanel
 */
   public Dimension getNameViewSize()
   {
-   
-    hgtName = getNameHeight();
-    lenName = getNameWidth();
+    int hgtName = getNameHeight();
+    int lenName = getNameWidth();
     return new Dimension(lenName,hgtName);
   }
 
@@ -527,7 +566,7 @@ public class GraphicSequenceCollection extends JPanel
 
   public int getNameHeight()
   {
-    hgtName = 0;
+    int hgtName = 0;
     Enumeration enum = graphicName.elements();
     while(enum.hasMoreElements())
       hgtName = hgtName+
@@ -537,7 +576,7 @@ public class GraphicSequenceCollection extends JPanel
 
   public int getNameWidth()
   {
-    lenName = 0;
+    int lenName = 0;
     Enumeration enum = graphicName.elements();
     while(enum.hasMoreElements())
     {
