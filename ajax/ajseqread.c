@@ -6968,6 +6968,37 @@ AjBool ajSeqGetFromUsa (AjPStr thys, AjBool protein, AjPSeq *seq)
     return ajTrue;
 }
 
+
+/* @func ajSeqsetGetFromUsa *****************************************
+**
+** Return a seqset given a usa
+**
+** @param [r] thys [AjPStr] usa
+** @param [w] seq [AjPSeqset*] seqset
+** @return [AjBool] ajTrue on success
+******************************************************************************/
+
+AjBool ajSeqsetGetFromUsa(AjPStr thys, AjPSeqset *seq)
+{
+    AjPSeqin seqin;
+    AjBool ok;
+
+    seqin = ajSeqinNew();
+    seqin->multi = ajTrue;
+    seqin->Text  = ajFalse;
+
+    ajSeqinUsa (&seqin, thys);
+    ok = ajSeqsetRead(*seq, seqin);
+    ajSeqinDel (&seqin);
+
+
+    if(!ok)
+	return ajFalse;
+
+    return ajTrue;
+}
+
+
 /* @funcstatic seqTextSeq *****************************************************
 **
 ** Saves a sequence from a string into the text output pointer
