@@ -1,4 +1,8 @@
 Version 2.7.0
+	ACD parsing internals are rewritten to find and report errors more
+	cleanly and to make the syntax stricter for other ACD parsers used
+	by (for example) GUI developers.
+
 	Sequence output types now have a 'type:' attribute which defaults
 	to the type of the first input sequence. For most applications
 	this is good enough as a default. For those which add gaps or
