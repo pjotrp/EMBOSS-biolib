@@ -13168,7 +13168,6 @@ AP wossname
 CL '' -html -prelink
 CL 'http://www.uk.embnet.org/Software/EMBOSS/Apps/'
 CL -postlink '.html' -out wossname.html
-IN
 FI stderr
 FC = 1
 FP 0 /Warning: /
