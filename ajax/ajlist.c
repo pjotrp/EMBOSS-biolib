@@ -659,6 +659,8 @@ AjBool ajListLast(const AjPList thys, void** x)
 
     if(!thys)
 	return ajFalse;
+    if(!thys->Count)
+	return ajFalse;
 
     for(rest = thys->First; rest->Next; rest = rest->Next)
 	if(!rest->Next->Next)
