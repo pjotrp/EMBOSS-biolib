@@ -1,5 +1,27 @@
 Version 2.5.0
 
+	Cleaned up code for chunk HTML input. Added a new variable
+	EMBOSS_HTTPVERSION which defaults to 1.0 (so HTTP is not chunked)
+	and a DB attribute httpversion. This must be a floating point
+	number, and is included in the HTTP header to specify the HTTP
+	protocol version to be used. There is no check in the code to
+	change behaviour for different versions. This is used in the
+	SRSWWW and URL access methods.
+
+	Added check to qatest.pl to report any EMBOSS (rather than
+	EMBASSY) applications for which there is no defined test. The
+	EMBASSY test uses wossname results, checked against the names of
+	ACD files in the source tree, as qatest always runs in the test/qa
+	directory.
+	
+	Allowed sequences as values for EMBL rpt_unit feature qualifiers
+	because so many entries have them. They are illegal according to
+	the Version 4.0 (current) feature table document.
+
+	Allow ? before from and to feature locations in SwissProt. For
+	now, these are ignored, though we could ad dsomething to hold them
+	for accurate output.
+	
 	Added modified Harrison solubility probability to PEPSTATS
 	
 	ACD attributes now have descriptions in the ajacd.c code which are
