@@ -350,7 +350,7 @@ static void showfeat_ShowFeatSeq (AjPFile outfile, AjPSeq seq, ajint beg,
 
 
     /* tidy up */
-    (void) ajFeattabDel(&feat);
+/*    (void) ajFeattabDel(&feat); ajb */
 
     ajStrDel(&tagsout);
     ajStrDel(&posout);

@@ -294,6 +294,8 @@ int main(int argc, char **argv)
 
 	if (html)
 	    (void) ajFmtPrintF(outfile, "<PRE>");
+
+	ajStrTableFree(&retable);
     }
 
     /* tidy up */
