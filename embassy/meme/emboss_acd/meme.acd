@@ -1,0 +1,241 @@
+appl: meme [
+        doc: "Motif detection"
+        groups: "PROTEIN: protein structure"
+]
+
+
+seqall: datafile [
+	param: Y
+]
+
+#seqall: negfile [ param: N nullok: Y
+#]
+
+
+list: ntype [
+	opt: Y
+	default: "pair"
+	min: 1
+	max: 1
+	header: "How to use negative examples"
+	values:
+		"pair:Pairwise method,
+		 blend:Blending method"
+	delim: ","
+	codedelim: ":"
+	prompt: "Method to use"
+]
+
+list: model [
+	req: Y
+	default: "zoops"
+	min: 1
+	max: 1
+	header: "Motif Distribution"
+	values:
+		"oops:Oops Distribution,
+		 zoops:Zoops Distribution,
+		 tcm:TCM Distribution"
+	delim: ","
+	codedelim: ":"
+	prompt: "Model to use"
+]
+
+
+bool: protein [ opt: Y def: N info: "Assume sequences are proteins"
+]
+
+bool: nucleic [ opt: Y def: N info: "Assume sequences are DNA"
+]
+
+bool: palindromes [ opt: Y def: N info: "Allow palindromes"
+]
+
+bool: ponly [ opt: Y def: N info: "Force palindromes"
+]
+
+bool: shorten [ opt: Y def: Y info: "Allow motifs shorter than MINW"
+]
+
+float: nsites [ opt: Y def: 0.
+	info: "Expected number of sites for each motif"
+]
+
+float: minsites [ opt: Y def: 0.
+	info: "Minimum number of sites for each motif"
+]
+
+float: maxsites [ opt: Y def: 0.
+	info: "Maximum number of sites for each motif"
+]
+
+int: w [ opt: Y def: 0
+	info: "Starting motif width to try"
+]
+
+int: minw [ opt: Y def: 8
+	info: "Minimum starting motif width to try"
+]
+
+int: maxw [ opt: Y def: 57
+	info: "Maximum starting motif width to try"
+]
+
+int: nmotifs [ req: Y def: 1
+	info: "Maximum number of motifs to find"
+]
+
+#seqall: mfile [ param: N nullok: Y
+#]
+
+list: prior [
+	opt: Y
+	default: "dirichlet"
+	min: 1
+	max: 1
+	header: "Prior"
+	values:
+		"dirichlet:Dirichlet prior,
+		 dmix:dmix prior,
+		 mega:mega prior,
+		 megap:megap prior,
+		 addone:addone prior"
+	delim: ","
+	codedelim: ":"
+	prompt: "Prior to use"
+]
+
+bool: brief [ opt: Y def: Y
+	info: "Don't print documemtation"
+]
+
+float: b [ opt: Y def: -1.0
+	info: "Strength of the prior"
+]
+
+list: spmap [
+	opt: Y
+	default: "uni"
+	min: 1
+	max: 1
+	header: "Starting point seq to theta mapping type"
+	values:
+		"uni:uni map type,
+		 pam:pam map type"
+	delim: ","
+	codedelim: ":"
+	prompt: "Mapping start"
+]
+
+float: spfuzz [ opt: Y def: -1.0
+	info: "Fuzziness of sequence to theta mapping"
+]
+
+int: maxiter [ opt: Y def: 50
+	info: "Maximum EM iterations to run"
+]
+
+float: distance [ opt: Y def: 1e-3
+	info: "EM convergence criterion"
+]
+
+string: cons [ opt: Y def: ""
+	info: "Consensus sequence to start EM from"
+]
+
+float: chi [ opt: Y def: 1.0
+	info: "p-value cutoff"
+]
+
+list: adj [
+	opt: Y
+	default: "root"
+	min: 1
+	max: 1
+	header: "LRT adjustment type"
+	values:
+		"none:no LRT,
+		 bon:bon LRT,
+		 root:root LRT"
+	delim: ","
+	codedelim: ":"
+	prompt: "Type"
+]
+
+int: maxsize [ opt: Y def: 100000
+	info: "Maximum dataset size in characters"
+]
+
+int: page [ opt: Y def: 80
+	info: "Width of page"
+]
+
+bool: status [ opt: Y def: N
+	info: "Print progress reports"
+]
+
+
+bool: V [ opt: Y def: N info: "Verbose mode"
+]
+
+bool: cfive [ opt: Y def: N
+	info: "Use 5' to 3' complementary strand as well"
+]
+
+bool: cthree [ opt: Y def: N
+	info: "Use 3' to 5' complementary strand as well"
+]
+
+bool: wthree [ opt: Y def: N
+	info: "Use 3' to 5' main strand as well"
+]
+
+float: prob [ opt: Y def: 1.0
+	info: "Starting point confidence level"
+]
+
+int: seed [ opt: Y def: 0
+	info: "Seed for random numbers in sampling"
+]
+
+float: seqfrac [ opt: Y def: 1.0
+	info: "Fraction of sequences to use"
+]
+
+bool: align [ opt: Y def: Y
+	info: "Print aligned motif occurrences"
+]
+
+bool: trace [ opt: Y def: N
+	info: "Trace starting points"
+]
+
+bool: allprint [ opt: Y def: N
+	info: "Print all debugging information"
+]
+
+bool: wprint [ opt: Y def: N
+	info: "Print erasure matrix"
+]
+
+bool: zprint [ opt: Y def: N
+	info: "Print missing information matrix"
+]
+
+bool: llprint [ opt: Y def: N
+	info: "Print log likelihood during EM"
+]
+
+bool: startsprint [ opt: Y def: N
+	info: "Print starting points"
+]
+
+bool: fastaprint [ opt: Y def: N
+	info: "Print sites in FASTA format"
+]
+
+int: timer [ opt: Y def: 0
+	info: "Timer type"
+]
+
+outfile: outfile [ param: Y ]
