@@ -4,12 +4,14 @@ appl: siggen
         groups: "PROTEIN:3D STRUCTURE"
 ]
 
+
 string: algpath
 [
         param: Y
         prompt: "Location of alignment files for input"
         def: "./"
 ]
+
 
 string: algextn
 [
@@ -18,83 +20,125 @@ string: algextn
         def: ".align"
 ]
 
-string: conpath
-[ 
+
+string: sigpath
+[
         param: Y
-        info: "Location of contact files for input"
+        prompt: "Location of signature files for output"
         def: "./"
 ]
 
-string: conextn
-[ 
+
+string: sigextn
+[
         param: Y
-        info: "Extension of contact files"
-        def: ".con"
+        prompt: "Extension of signature files for output"
+        def: ".sig"
 ]
+
 
 int: sparsity
 [
         param: Y
-        info: "% sparsity of signature"
+	prompt: "% sparsity of signature"
         def: 10
 ]
 
-bool: randomize
+
+bool: randomise
 [
         param: Y
-        info: "Generate a randomized signature"
+        prompt: "Generate a randomised signature"
         def: N
 ]
+
+
+list: seqoption
+[
+# Only prompt for this if randomise==N
+	req: @(!$(randomise))
+        default: "3"
+        minimum: "1"
+        maximum: "3"
+        delimiter: ","
+        codedelim: ":"
+	values: "1: Substitution matrix, 2: Residue class, 3: None"
+        header: "Sequence variability scoring method"
+        prompt: "Select number"
+]
+
 
 matrixf: datafile
 [
-        param: Y
-        info: "Substitution matrix to be used"
-        def: "./EBLOSUM62"
-]
-
-bool: scoreseq
-[
-        param: Y
-        info: "Score alignment on basis of residue conservation"
-        def: Y
+# Only prompt for this if randomise==N
+	req: @($(seqoption)==1)
+        prompt: "Substitution matrix to be used"
+	def: "./EBLOSUM62"
 ]
 
 
-bool: scorencon
+list conoption 
 [
-        param: Y
-        info: "Score alignment on basis of number of contacts"
-
-        def: Y
+	req: @(!$(randomise))
+	default: "4"
+	minimum: "1"
+        maximum: "4"
+        delimiter: ","
+        codedelim: ":"
+	values: "1: Number, 2: Conservation, 3: Number and conservation, 4: None"
+        header: "Residue contacts scoring method"
+        prompt: "Select number"
 ]
 
-bool: scoreccon
-[
-        param: Y
 
-        info: "Score alignment on basis of conservation of contacts"
-        def: Y
-]
 
-bool: scoreboth
+bool: filtercon
 [
-        param: Y
-        info: "Score alignment on a combined measure of number and conservation of contacts"
+	req: @(!$(randomise))
+	prompt: "Ignore alignment positions making less than a threshold number of contacts"
         def: N
 ]
 
-bool: postsim
+
+int: conthresh
 [
-        param: Y
-        info: "Ignore alignment postitions with post_similar value of 0"
-        def: Y
+	req: $(filtercon)
+	prompt: "Threshold contact number"
+	def: 10
 ]
 
 
-outfile: sigfile
+
+string: conpath
 [ 
-        param: Y
-        prompt: "Name of signature file for output"
-        def: "sig.sig"
+	req: @($(filtercon)||@($(conoption)!=4))
+        prompt: "Location of contact files for input"
+        def: "/data/contacts/"
 ]
+
+
+string: conextn
+[ 
+	req: @($(filtercon)||@($(conoption)!=4))
+        prompt: "Extension of contact files"
+        def: ".con"
+]
+
+
+
+bool: filterpsim
+[
+	req: @(!$(randomise))
+        prompt: "Ignore alignment postitions with post_similar value of 0"
+        def: N
+]
+
+
+
+
+
+
+
+
+
+
