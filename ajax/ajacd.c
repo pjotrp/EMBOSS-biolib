@@ -610,7 +610,7 @@ AcdOAttr acdAttrAppl[] = {
 };
 
 AcdOAttr acdAttrAlign[] = {
-  {"type", VT_STR, "Protein or nucleotide"},
+  {"type", VT_STR, "[P]rotein or [N]ucleotide"},
   {"taglist", VT_STR, "Extra tags to report"},
   {"minseqs", VT_INT, "Minimum number of extra tags default:0"},
   {"maxseqs", VT_INT, "Maximum number of extra tags default:0"},
@@ -654,7 +654,7 @@ AcdOAttr acdAttrDatafile[] = {
 };
 
 AcdOAttr acdAttrDirectory[] = {
-  {"fullpath", VT_BOOL, "Require full path in valuedefault:N"},
+  {"fullpath", VT_BOOL, "Require full path in value default:N"},
   {"nullok", VT_BOOL, "Can accept a null filename as 'no file' default:N"},
   {NULL, VT_NULL, NULL}
 };
@@ -759,7 +759,7 @@ AcdOAttr acdAttrOutfile[] = {
   {"extension", VT_STR, "Default file extension"},
   {"standardtype", VT_STR, "(Not used by ACD) Standard named file type"},
   {"nullok", VT_BOOL, "Can accept a null filename as 'no file' default:N"},
-  {"append", VT_BOOL, "Append to an existing file"},
+  {"append", VT_BOOL, "Append to an existing file default:N"},
   {NULL, VT_NULL, NULL}
 };
 
@@ -768,19 +768,19 @@ AcdOAttr acdAttrRange[] = {
 };
 
 AcdOAttr acdAttrRegexp[] = {
-  {"minlength", VT_INT, "Minimum pattern length (default:1)"},
-  {"maxlength", VT_INT, "Maximum pattern length (default:INT_MAX)"},
+  {"minlength", VT_INT, "Minimum pattern length default:1"},
+  {"maxlength", VT_INT, "Maximum pattern length default:INT_MAX"},
   {"upper", VT_BOOL, "Convert to upper case default:N"},
   {"lower", VT_BOOL, "Convert to lower case default:N"},
   {NULL, VT_NULL, NULL}
 };
 
 AcdOAttr acdAttrReport[] = {
-  {"type", VT_STR, "Protein or nucleotide"},
+  {"type", VT_STR, "[P]rotein or [N]ucleotide"},
   {"taglist", VT_STR, "Extra tag names to report "},
-  {"mintags", VT_INT, "Minimum number extra tags (default: 0)"},
+  {"mintags", VT_INT, "Minimum number extra tags default:0"},
   {"multiple", VT_BOOL, "Multiple sequences in one report"},
-  {"precision", VT_INT, "Score precision (default: 3)"},
+  {"precision", VT_INT, "Score precision default:3"},
   {NULL, VT_NULL, NULL}
 };
 
@@ -793,7 +793,7 @@ AcdOAttr acdAttrSec[] = {
   {"info", VT_STR, "(Not used by ACD) Section description"},
   {"type", VT_STR, "(Not used by ACD) Type (frame, page)"},
   {"comment", VT_STR, "(Not used by ACD) Free text comment"},
-  {"border", VT_INT, "(Not used by ACD) Border width default: 1"},
+  {"border", VT_INT, "(Not used by ACD) Border width default:1"},
   {"side", VT_STR, "(Not used by ACD) Side (top, bottom, left, right) for type:frame"},
   {"folder", VT_STR, "(Not used by ACD) Folder name for type:page"},
   {NULL, VT_NULL, NULL}
@@ -1097,13 +1097,13 @@ AcdOType acdType[] =
 {
   {"align",       "output",           acdSecOutput,
    acdAttrAlign,  acdSetAlign,        acdQualAlign,
-   "Alignment file" },
-  {"array",       NULL,               NULL,
+   "Alignment output file" },
+  {"array",       "simple",           NULL,
    acdAttrArray,     acdSetArray,     NULL,
-   "List of numbers" },
-  {"boolean",     NULL,               NULL,
+   "List of floating point numbers" },
+  {"boolean",     "simple",           NULL,
    acdAttrBool,      acdSetBool,      NULL,
-   "Yes/No" },
+   "Boolean value Yes/No" },
   {"codon",	  "input",            acdSecInput,
    acdAttrCodon,     acdSetCodon,     NULL,
    "Codon usage file in EMBOSS data path" },
@@ -1125,19 +1125,19 @@ AcdOType acdType[] =
   {"featout",     "output",           acdSecOutput,
    acdAttrFeatout,   acdSetFeatout,   acdQualFeatout,
    "Writeable feature table" },
-  {"filelist",	  NULL,               NULL,
+  {"filelist",	  "input",            NULL,
    acdAttrFilelist,  acdSetFilelist,  NULL,
    "Comma-separated file list" },
-  {"float",       NULL,               NULL,
+  {"float",       "simple",           NULL,
    acdAttrFloat,     acdSetFloat,     NULL,
    "Floating point number" },
   {"graph",       "graph",            acdSecOutput,
    acdAttrGraph,     acdSetGraph,     acdQualGraph,
-   "Graph device" },
+   "Graph device for a general graph" },
   {"infile",      "input",            acdSecInput,
-   acdAttrInfile,  acdSetInfile,      NULL,
+   acdAttrInfile,    acdSetInfile,    NULL,
    "Input file" },
-  {"integer",     NULL,               NULL,
+  {"integer",     "simple",           NULL,
    acdAttrInt,       acdSetInt,       NULL,
    "Integer" },
   {"list",        "selection",        NULL,
@@ -1152,7 +1152,7 @@ AcdOType acdType[] =
   {"outfile",     "output",           acdSecOutput,
    acdAttrOutfile,   acdSetOutfile,   NULL,
    "Output file" },
-  {"range",	  NULL,               NULL,
+  {"range",	  "simple",           NULL,
    acdAttrRange,     acdSetRange,     NULL,
    "Sequence range" },
   {"regexp",	  "input",            acdSecInput,
@@ -1160,7 +1160,7 @@ AcdOType acdType[] =
    "Regular expression pattern" },
   {"report",      "output",           acdSecOutput,
    acdAttrReport,     acdSetReport,   acdQualReport,
-   "Report file" },
+   "Report output file" },
   {"scop",	  "input",            acdSecInput,
    acdAttrScop,     acdSetScop,       NULL,
    "Scop entry in EMBOSS data path" },
@@ -1185,12 +1185,12 @@ AcdOType acdType[] =
   {"seqset",      "input",            acdSecInput,
    acdAttrSeqset,    acdSetSeqset,    acdQualSeqset,
    "Readable sequences" },
-  {"string",      NULL,               NULL,
+  {"string",      "simple",           NULL,
    acdAttrString,    acdSetString,    NULL,
    "String value" },
   {"xygraph",     "graph",            acdSecOutput,
    acdAttrGraphxy,   acdSetGraphxy,   acdQualGraphxy,
-   "Graph device" },
+   "Graph device for a 2D graph" },
   {NULL, NULL, NULL, NULL, NULL, NULL, NULL}
 };
 
@@ -4277,6 +4277,7 @@ static void acdSetFeat (AcdPAcd thys)
     (void) ajStrFromInt (&thys->SetStr[iattr++], fend);
     (void) ajStrFromInt (&thys->SetStr[iattr++], ajFeatLen(val));
     (void) ajStrFromBool (&thys->SetStr[iattr++], ajFeatIsProt(val));
+    (void) ajStrFromBool (&thys->SetStr[iattr++], !ajFeatIsProt(val));
     (void) ajStrAssS (&thys->SetStr[iattr++], val->Name);
     (void) ajStrFromInt (&thys->SetStr[iattr++], ajFeatSize(val));
 
@@ -4339,16 +4340,6 @@ static void acdSetFeatout (AcdPAcd thys)
     static AjPStr ext = NULL;
     static AjPStr outfname = NULL;
 
-    static AcdOAttr setattr[] =
-    {
-	{"begin", VT_INT},
-	{"end", VT_INT},
-	{"length", VT_INT},
-	{"protein", VT_BOOL},
-	{"nucleic", VT_BOOL},
-	{"name", VT_STR},
-	{NULL, VT_NULL} };
-
     required = acdIsRequired(thys);
     val = ajFeattabOutNew();
 
@@ -4380,21 +4371,6 @@ static void acdSetFeatout (AcdPAcd thys)
     }
     if (!ok)
 	acdBadRetry (thys);
-
-    /* features tables have special set attributes */
-
-    thys->SAttr = acdAttrListCount (setattr);
-    thys->SetAttr = &setattr[0];
-    thys->SetStr = AJCALLOC0 (thys->SAttr, sizeof (AjPStr));
-
-    /*
-       (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_BEGIN], ajSeqBegin(val));
-       (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_END], ajSeqEnd(val));
-       (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_LENGTH], ajSeqLen(val));
-       (void) ajStrFromBool (&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqIsProt(val));
-       (void) ajStrFromBool (&thys->SetStr[ACD_SEQ_NUCLEIC], ajSeqIsNuc(val));
-       (void) ajStrAssS (&thys->SetStr[ACD_SEQ_NAME], val->Name);
-       */
 
     thys->Value = val;
     (void) ajStrAssS (&thys->ValStr, reply);
@@ -4668,9 +4644,9 @@ static void acdSetGraph (AcdPAcd thys)
 	(void) call("ajGraphSet",val, reply,&ok);
 	if (!ok)
 	{
+	    (void) call("ajGraphDumpDevices");
 	    acdBadVal (thys, required,
 		       "Invalid graph value '%S'", reply);
-	    (void) call("ajGraphDumpDevices");
 	}
     }
     if (!ok)
@@ -4780,9 +4756,9 @@ static void acdSetGraphxy (AcdPAcd thys)
 
 	(void) call("ajGraphxySet",val, reply, &ok);
 	if (!ok){
+	    (void) call("ajGraphDumpDevices");
 	    acdBadVal (thys, required,
 		       "Invalid XY graph value '%S'", reply);
-	    (void) call("ajGraphDumpDevices");
 	}
     }
     if (!ok)
@@ -13886,7 +13862,8 @@ void ajAcdDummyFunction(void)
 
 /* @func ajAcdPrintType *******************************************************
 **
-** Report details of all known ACD types
+** Report details of all known ACD types.
+** For use by EMBOSS entrails.
 **
 ** @param [r] outf [AjPFile] Output file
 ** @param [r] full [AjBool] Full report
@@ -13911,6 +13888,8 @@ void ajAcdPrintType (AjPFile outf, AjBool full) {
   for (i=0; acdType[i].Name; i++)  {
     pat = &acdType[i];
     ajFmtPrintF (outf, "  %-15s", pat->Name);
+	ajFmtPrintF (outf, "  %-10s", pat->Group);
+	ajFmtPrintF (outf, " \"%s\"", pat->Valid);
     ajFmtPrintF (outf, "\n");
     if (full && pat->Attr) {
       ajFmtPrintF (outf, "    attributes {\n");
@@ -13936,6 +13915,15 @@ void ajAcdPrintType (AjPFile outf, AjBool full) {
   }
   ajFmtPrintF (outf, "}\n");
   
+  ajFmtPrintF (outf, "# ACD Default attributes\n");
+  ajFmtPrintF (outf, "# Name   Type   Comment\n");
+  for (i=0; acdAttrDef[i].Name; i++)  {
+    ajFmtPrintF (outf, "  %-15s", acdAttrDef[i].Name);
+    ajFmtPrintF (outf, "  %-10s", acdValNames[acdAttrDef[i].Type]);
+    ajFmtPrintF (outf, " \"%s\"", acdAttrDef[i].Help);
+    ajFmtPrintF (outf, "\n");
+  }
+
   return;
 }
 
