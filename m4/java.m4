@@ -15,16 +15,19 @@ AC_ARG_WITH(java,
 [if test "$withval" != no ; then
   AC_MSG_RESULT(yes)
   ALT_HOME="$withval"
+  ALT_HOME="${ALT_HOME} -DHAVE_JAVA"
 else
   AC_MSG_RESULT(no)
+
 fi], [
+
 AC_MSG_RESULT(yes)
-ALT_HOME=/usr/java/jdk1.3.1/include
+
 ])
 
 if test -n "${ALT_HOME}"
 then
-	CPPFLAGS="$CPPFLAGS -I${ALT_HOME} -DHAVE_JAVA"
+	CPPFLAGS="$CPPFLAGS -I${ALT_HOME}"
 fi
 
 ])
@@ -45,7 +48,7 @@ else
   AC_MSG_RESULT(no)
 fi], [
 AC_MSG_RESULT(yes)
-ALT_HOMEOS=/usr/java/jdk1.3.1/include/linux
+
 ])
 
 if test -n "${ALT_HOMEOS}"
