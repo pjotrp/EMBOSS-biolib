@@ -3,7 +3,7 @@
 SUBDIRS =
 
 bin_PROGRAMS = contacts domainer fraggle hetparse hmmgen interface libscan \
-               pdbparse pdbtosp profgen scopalign scopnr scopparse \
+               pdbparse pdbplus pdbtosp profgen scopalign scopnr scopparse \
                scoprep scopreso scopseqs seqalign seqnr seqsearch seqsort \
                seqwords siggen sigplot sigscan
 
@@ -25,6 +25,7 @@ hmmgen_SOURCES = hmmgen.c
 interface_SOURCES = interface.c
 libscan_SOURCES = libscan.c
 pdbparse_SOURCES = pdbparse.c
+pdbplus_SOURCES = pdbplus.c
 pdbtosp_SOURCES = pdbtosp.c
 profgen_SOURCES = profgen.c
 scopalign_SOURCES = scopalign.c
