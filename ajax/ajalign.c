@@ -970,6 +970,8 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
     ajStrDel(&mrkcons);
     ajStrDel(&mrkstr);
     ajStrDel(&tmpstr);
+    ajStrDel(&tmphdr);
+    ajStrDel(&tmpnum);
     AJFREE(ipos);
     AJFREE(incs);
     AJFREE(num);
@@ -1466,6 +1468,7 @@ static void alignWriteSrsAny(AjPAlign thys, ajint imax, AjBool mark)
     ajStrDel(&mrkstr);
     ajStrDel(&cons);
     AJFREE(ipos);
+    AJFREE(incs);
     AJFREE(pdata);
     
     return;
@@ -1654,28 +1657,41 @@ AjBool ajAlignDefineSS(AjPAlign thys, AjPSeq seqa, AjPSeq seqb)
     AlignPData data = NULL;
     AjPSeq seq;
 
-    AJNEW0(data);
-
-    if(!thys->Nseqs)
+    if (!thys->Nseqs)
 	thys->Nseqs = 2;
 
-    AJCNEW0(data->Start, 2);
-    AJCNEW0(data->End, 2);
-    AJCNEW0(data->Len, 2);
-    AJCNEW0(data->Offset, 2);
-    AJCNEW0(data->Offend, 2);
-    AJCNEW0(data->SubOffset, 2);
-    AJCNEW0(data->Rev, 2);
-    AJCNEW0(data->Seq, 2);
+    if(thys->Nseqs != 2)
+    {
+	ajErr("ajAlignDefineSS called with %d sequences in alignment",
+	      thys->Nseqs);
+    }
 
-    ajSeqTraceT(seqa, "ajAlignDefineSS before seqa");
-    ajSeqTraceT(seqb, "ajAlignDefineSS before seqb");
+    AJNEW0(data);
+
+    data->Nseqs = 2;
+
+    if (!data->Start)
+    {
+	AJCNEW0(data->Start, 2);
+	AJCNEW0(data->End, 2);
+	AJCNEW0(data->Len, 2);
+	AJCNEW0(data->Offset, 2);
+	AJCNEW0(data->Offend, 2);
+	AJCNEW0(data->SubOffset, 2);
+	AJCNEW0(data->Rev, 2);
+	AJCNEW0(data->Seq, 2);
+    }
+
+    ajDebug("ajAlignDefineSS '%S' '%S'\n",
+	    ajSeqGetName(seqa), ajSeqGetName(seqb));
     if(thys->SeqExternal)
     {
 	data->Seq[0] = seqa;
     }
     else
     {
+	if (data->Seq[0])
+	    ajSeqDel(&data->Seq[0]);
 	data->Seq[0] = ajSeqNewS(seqa);
 	ajSeqGapStandard(data->Seq[0], '-');
 	if (!ajSeqIsTrimmed(data->Seq[0]))
@@ -1696,6 +1712,8 @@ AjBool ajAlignDefineSS(AjPAlign thys, AjPSeq seqa, AjPSeq seqb)
 	data->Seq[1] = seqb;
     else
     {
+	if (data->Seq[1])
+	    ajSeqDel(&data->Seq[1]);
 	data->Seq[1] = ajSeqNewS(seqb);
 	ajSeqGapStandard(data->Seq[1], '-');
 	if (!ajSeqIsTrimmed(data->Seq[1]))
@@ -1715,9 +1733,6 @@ AjBool ajAlignDefineSS(AjPAlign thys, AjPSeq seqa, AjPSeq seqb)
     data->LenAli = AJMIN(ajSeqLen(seqa), ajSeqLen(seqb));
 
     ajListPushApp(thys->Data, data);
-
-    ajSeqTraceT(data->Seq[0], "ajAlignDefineSS after seqa");
-    ajSeqTraceT(data->Seq[1], "ajAlignDefineSS after seqab");
 
     ajAlignTraceT(thys, "ajAlignDefineSS result");
 
@@ -1820,6 +1835,7 @@ void ajAlignDel(AjPAlign* pthys)
 
     thys = *pthys;
 
+    ajDebug("ajAlignDel %d seqs\n", thys->Nseqs);
     ajStrDel(&thys->Formatstr);
     ajStrDel(&thys->Type);
     ajStrDel(&thys->Header);
@@ -3519,12 +3535,14 @@ static void alignDataDel(AlignPData* pthys, AjBool external)
     AJFREE(thys->Start);
     AJFREE(thys->End);
     AJFREE(thys->Len);
-    AJFREE(thys->Rev);
     AJFREE(thys->Offset);
+    AJFREE(thys->Offend);
     AJFREE(thys->SubOffset);
+    AJFREE(thys->Rev);
 
     ajStrDel(&thys->Score);
-    ajDebug("alignDataDel NSeqs: %d\n", thys->Nseqs);
+    ajDebug("alignDataDel NSeqs: %d External: %B\n",
+	    thys->Nseqs, external);
     if(!external)
 	for(i=0;i<thys->Nseqs;++i)
 	{
