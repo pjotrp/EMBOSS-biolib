@@ -1434,7 +1434,7 @@ static void namListParse(AjPList listwords, AjPList listcount,
 ** Looks for name as an environment variable.
 ** the AjPStr for this in "value". If not found returns NULL;
 **
-** @param [r] name [const AjPStr] character string find in hash table.
+** @param [r] name [const AjPStr] character string to find in getenv list
 ** @param [w] value [AjPStr*] String for the value.
 ** @return [AjBool] True if name was defined.
 ** @@
@@ -1444,9 +1444,30 @@ static void namListParse(AjPList listwords, AjPList listcount,
 AjBool ajNamGetenv(const AjPStr name,
 		    AjPStr* value)
 {
+    return ajNamGetenvC(ajStrStr(name), value);
+}
+
+
+
+
+/* @func ajNamGetenvC *********************************************************
+**
+** Looks for name as an environment variable.
+** the AjPStr for this in "value". If not found returns NULL;
+**
+** @param [r] name [const char*] character string to find in getenv list
+** @param [w] value [AjPStr*] String for the value.
+** @return [AjBool] True if name was defined.
+** @@
+**
+******************************************************************************/
+
+AjBool ajNamGetenvC(const char* name,
+		    AjPStr* value)
+{
     char *envval;
 
-    envval = getenv(ajStrStr(name));
+    envval = getenv(name);
     if(envval)
     {
 	ajStrAssC(value, envval);
