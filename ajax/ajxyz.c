@@ -1825,9 +1825,9 @@ AjBool        ajXyzSignatureAlignWrite(AjPFile outf, AjPSignature sig,
 	x<hits->N; 
 	x++)
     {
-	if((wid1=AJSTRLEN(hits->hits[x]->Id))>mwid1)
+	if((wid1=MAJSTRLEN(hits->hits[x]->Id))>mwid1)
 	    mwid1=wid1; 
-	if((len=AJSTRLEN(hits->hits[x]->Seq))>mlen)
+	if((len=MAJSTRLEN(hits->hits[x]->Seq))>mlen)
 	    mlen=len;
     }
 
@@ -1865,7 +1865,7 @@ AjBool        ajXyzSignatureAlignWrite(AjPFile outf, AjPSignature sig,
 	    ptrs=ajStrStr(hits->hits[x]->Alg);
 
 	    /*There is some of the sequence left to print*/
-	    if(idx<AJSTRLEN(hits->hits[x]->Seq))
+	    if(idx<MAJSTRLEN(hits->hits[x]->Seq))
 		{
 		    ajFmtPrintF(outf,"%-*S%-*d%-*.*s %d\n", 
 				mwid1, hits->hits[x]->Id, fwid2, 
