@@ -1419,15 +1419,13 @@ AjBool embHitsOverlap(const AjPHit hit1, const AjPHit hit2, ajint n)
 
 AjPHit embHitReadFasta(AjPFile inf) 
 {
-    AjPHit     hit       = NULL;    /* Current hit */
-    AjBool     donefirst = ajFalse;
-    
-    ajint     ntok     = 0;       /* No. tokens in a line */
-    AjPStr    token   = NULL;
-    AjPStr    line     = NULL;    /* Line of text */
+    AjPHit    hit       = NULL;    /* Current hit */
+    AjBool    donefirst = ajFalse; /* First '>' line has been read */
+    ajint     ntok      = 0;       /* No. tokens in a line */
+    AjPStr    token     = NULL;
+    AjPStr    line      = NULL;    /* Line of text */
     AjPStr    subline   = NULL;
-    AjBool    ok       = ajFalse;
-    AjBool    parseok  = ajFalse;
+    AjBool    ok        = ajFalse; /* Line was not NULL */
     
 
 
@@ -1442,8 +1440,15 @@ AjPHit embHitReadFasta(AjPFile inf)
 	{
 	    /* Process the last hit */
 	    if(donefirst)
+	    {
 		ajStrCleanWhite(&hit->Seq);
-	    
+		ajStrDel(&line);
+		ajStrDel(&subline);
+		return hit;
+	    }	
+	    else
+		hit = embHitNew();
+
 	    /* Check line has correct no. of tokens and allocate Hit */
 	    ajStrAssSub(&subline, line, 1, -1);
 	    if( (ntok=ajStrTokenCount(subline, "^")) != 16)
@@ -1451,16 +1456,14 @@ AjPHit embHitReadFasta(AjPFile inf)
 		ajWarn("Wrong no. (%d) of tokens for a DHF file on line %S\n", ntok, line);
 		ajStrDel(&line);
 		ajStrDel(&subline);
+		embHitDel(&hit);
 		return NULL;
 	    }
-	    
 	    else
 	    {
-		parseok = ajTrue;
-		hit     = embHitNew();
+		hit = embHitNew();
 	    }
-	    
-	    
+	    	    
 	    /* Acc */
 	    token = ajStrTokC(subline, "^");
 	    ajStrAssS(&hit->Acc, token);
@@ -1486,32 +1489,12 @@ AjPHit embHitReadFasta(AjPFile inf)
 	       a new block of hits in a file with multiple hitlists, but we only 
 	       want a single hit so don't need this. */
 	    token = ajStrTokC(NULL, "^");
-
-
-	    /* Domain identifier differs therefore we have come to the end of 
-	       the list */
-	    if((donefirst))
-	    {
-		/* Delete the hit we've just read in ... which is of the wrong family */
-		embHitDel(&hit);
-		
-		ajStrDel(&line);
-		ajStrDel(&subline);
-		return hit;
-	    }
-	    else
-	    {
-		if((!donefirst))
-		    hit = embHitNew();
-	    }	    
-
 	    token = ajStrTokC(NULL, "^");
 	    token = ajStrTokC(NULL, "^");
 	    token = ajStrTokC(NULL, "^");
 	    token = ajStrTokC(NULL, "^");
 	    token = ajStrTokC(NULL, "^");
 	    token = ajStrTokC(NULL, "^");
-
 
 	    token = ajStrTokC(NULL, "^");
 	    ajStrAssS(&hit->Model, token);
@@ -1534,21 +1517,18 @@ AjPHit embHitReadFasta(AjPFile inf)
     }
 
     /* EOF therefore process last hit */
-    if((!ok) && (parseok))
+    if(donefirst)
     {
 	ajStrCleanWhite(&hit->Seq);
-	ajStrDel(&subline);
 	ajStrDel(&line);
+	ajStrDel(&subline);
 	return hit;
     }
-
+    
 
     /* Tidy up */
     ajStrDel(&line);
     ajStrDel(&subline);
-    
-    
-    /* File read error */
     return NULL;
 }
 
