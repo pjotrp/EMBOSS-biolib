@@ -280,6 +280,9 @@ public class BuildJembossForm implements ActionListener
 //  JRadioButton rpaste[] = new JRadioButton [nseqs];
     Box lab[] = new Box[numofFields];
 
+    for(int j=0;j<nbool;j++)
+      checkBox[j] = new JCheckBox();
+
     for(int j=0;j<ntextf;j++)
     {
       textf[j] = new TextFieldSink();
