@@ -1220,7 +1220,16 @@ static AjBool seqReadNbrf (AjPSeq thys, AjPSeqin seqin)
 	else
 	{
 	    if (ajStrChar(rdline,0) == 'R')
-		ok = ajFileBuffGet (buff, &rdline);
+	    {
+		while((ok=ajFileBuffGet(buff,&rdline)))
+		{
+		    ++bufflines;
+		    if(ajStrChar(rdline,1)==';' || ajStrChar(rdline,0)=='>')
+			break;
+		}
+		if(ok)
+		    continue;
+	    }
 	}
 	if (ok)
 	    ok = ajFileBuffGet (buff, &rdline);
