@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl -w
+#!/usr/bin/perl -w
 
 # creates and commits the Makefile.am for the text and html doc directories
 # the default is to do the text directory.
@@ -70,6 +70,7 @@ close (M);
 system("mv make.temp Makefile.am");
 
 # cvs commit it
-system("cvs commit -m'new makefile' Makefile.am");
+print "cvs commit -m'new makefile' Makefile.am\n";
+#system("cvs commit -m'new makefile' Makefile.am");
 
 
