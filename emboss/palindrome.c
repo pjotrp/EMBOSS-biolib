@@ -63,7 +63,7 @@ int main(int argc, char **argv)
   ajint endPos;
   ajint maxmismatches;
 
-  AjPStr seqstr = NULL;
+  AjPStr seqstr;
   ajint current;
   ajint rev;
   ajint count;
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
   ajint ic;
   ajint ir;
 
-  Palindrome pfirstpal = NULL;
+  Palindrome pfirstpal;
   Palindrome plastpal = NULL;
   Palindrome ppal = NULL;
   Palindrome pnext = NULL;
@@ -101,6 +101,9 @@ int main(int argc, char **argv)
 
     beginPos = ajSeqallBegin( seqall );
     endPos = ajSeqallEnd( seqall );
+
+    /* set to NULL to indicate that we have no first palindrome find yet */
+    pfirstpal = NULL;
 
     /* write header to file */
 
@@ -232,6 +235,10 @@ int main(int argc, char **argv)
     }
   
   
+    /* make nice gap beween outputs of different sequences */
+    ajFmtPrintF( outfile, "\n\n\n");
+
+
     /*free memory used for palindrome list*/
     ppal = pfirstpal;
     while (ppal != NULL)
@@ -241,8 +248,8 @@ int main(int argc, char **argv)
       ppal = pnext;
     }
 
-/* make nice gap beween outputs of different sequences */
-    ajFmtPrintF( outfile, "\n\n\n");
+    ajStrDel(&seqstr);
+
   }
 
 
