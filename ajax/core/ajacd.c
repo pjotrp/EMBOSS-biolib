@@ -1161,6 +1161,7 @@ AcdOQual acdQualReport[] =
   {"rdirectory", "",  "string",  "Output directory"},
   {"raccshow",   "N", "boolean", "Show accession number in the report"},
   {"rdesshow",   "N", "boolean", "Show description in the report"},
+  {"rscoreshow", "Y", "boolean", "Show the score in the report"},
   {"rusashow",   "N", "boolean", "Show the full USA in the report"},
   {NULL, NULL, NULL, NULL}
 };
@@ -5995,9 +5996,14 @@ static void acdSetReport (AcdPAcd thys)
     (void) acdGetValueAssoc (thys, "rextension", &ext);
     (void) acdGetValueAssoc (thys, "rname", &name);
     (void) acdGetValueAssoc (thys, "rformat", &val->Formatstr);
-    (void) acdQualToBool (thys, "raccshow", ajFalse, &val->Showacc, &defreply);
-    (void) acdQualToBool (thys, "rdesshow", ajFalse, &val->Showdes, &defreply);
-    (void) acdQualToBool (thys, "rusashow", ajFalse, &val->Showusa, &defreply);
+    (void) acdQualToBool (thys, "raccshow", ajFalse,
+			  &val->Showacc, &defreply);
+    (void) acdQualToBool (thys, "rdesshow", ajFalse,
+			  &val->Showdes, &defreply);
+    (void) acdQualToBool (thys, "rscorehow", ajTrue,
+			  &val->Showscore, &defreply);
+    (void) acdQualToBool (thys, "rusashow", ajFalse,
+			  &val->Showusa, &defreply);
 
     if (!ajReportSetTags (val, taglist, mintags)) {
       ajErr("Bad tag list for report");
