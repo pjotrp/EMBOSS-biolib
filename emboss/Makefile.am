@@ -17,7 +17,7 @@ demoalign demofeatures demolist demoreport demosequence demostring demotable \
 entrails histogramtest intconv \
 patmattest \
 prima primers \
-seqinfo seqretsingle \
+seqinfo seqretall seqretallfeat seqretset seqretsingle \
 sigplot \
 testplot treetypedisplay
 
@@ -46,7 +46,7 @@ prettyplot prettyseq primer3 primersearch printsextract \
 profit prophecy prophet \
 prosextract pscan psiblasts \
 rebaseextract recoder redata remap restover restrict revseq scope \
-seealso seqmatchall seqnr seqret seqretall seqretallfeat seqretset seqretsplit seqsort\
+seealso seqmatchall seqnr seqret seqretsplit seqsort\
 showalign showdb showfeat showorf showseq \
 shuffleseq sigcleave siggen sigscan silent splitter scopalign stretcher \
 stssearch supermatcher swissparse syco \
