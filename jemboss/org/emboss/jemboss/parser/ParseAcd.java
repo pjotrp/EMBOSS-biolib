@@ -529,8 +529,11 @@ public class ParseAcd
     }
     else if (dataType.startsWith("report"))
     {
-      appF.setGuiHandleNumber(nlist);
-      nlist++;
+      appF.setGuiHandleNumber(nlist); 
+      nlist++;               // -rformat   report format
+      nbool++;               // -raccshow  show accession number
+      nbool++;               // -rdesshow  show description
+      nbool++;               // -rusashow  show the full USA
     }
     else if (dataType.startsWith("range"))
     {
@@ -1140,9 +1143,8 @@ public class ParseAcd
 
         // check if it is a default value
         for(int i=0;i<def.size();i++)
-          if (key.equals((String)def.get(i)))
+          if(key.equals((String)def.get(i)))
             listdefault.add(new Integer(n));
-        
       }
       item = item.substring(1,item.length()).trim();
       list[n] = new String(item); 
@@ -1245,6 +1247,18 @@ public class ParseAcd
 
     list = new String[n];
    
+    boolean ldef = false;
+    Vector def = new Vector();
+    //put the default values into a vector
+    if(isDefaultParamValueStr(field))
+    {
+      ldef = true;
+      String sdef = getDefaultParamValueStr(field);
+      StringTokenizer stdef = new StringTokenizer(sdef);
+      while(stdef.hasMoreTokens())
+        def.add(stdef.nextToken(delim).trim());
+    }
+
     st = new StringTokenizer(listAll);
     n = 0;
     listdefault = new Vector();
@@ -1252,10 +1266,15 @@ public class ParseAcd
     while (st.hasMoreTokens()) 
     {
       item = st.nextToken(delim);
-      if(isDefaultParamValueStr(field))
+      if(ldef)
       {
-        if (item.endsWith(getDefaultParamValueStr(field)))
-          listdefault.add(new Integer(n));
+//      if (item.endsWith(getDefaultParamValueStr(field)))
+//        listdefault.add(new Integer(n));
+
+        for(int i=0;i<def.size();i++)
+          if( item.equals((String)def.get(i)) ||
+              Integer.toString(n+1).equals((String)def.get(i)) )
+            listdefault.add(new Integer(n));
       }
 
       item = item.substring(0,item.length()).trim();
