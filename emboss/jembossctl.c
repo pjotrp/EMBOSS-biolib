@@ -30,6 +30,7 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <fcntl.h>
+#include <grp.h>
 
 #include <sys/file.h>
 #include <sys/resource.h>
@@ -68,6 +69,7 @@ static void jctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
 static AjBool jctl_check_buffer(char *buf, int mlen);
 static AjBool jcntl_check_socket_owner(char *pname);
 static AjBool jctl_chdir(char *file);
+static AjBool jctl_initgroups(char *buf, int gid);
 
 
 #include <pwd.h>
@@ -723,7 +725,7 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
     AjPStr enviro = NULL;
     AjPStr dir    = NULL;
     AjPStrTok handle=NULL;
-
+    
     char *p=NULL;
 
 
@@ -754,6 +756,13 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
     dir    = ajStrNew();
 
 
+    if(!jctl_initgroups(buf,gid))
+    {
+	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	return ajFalse;
+    }
+
+    
     /* Skip over authentication stuff */
     p=buf;
     while(*p)
@@ -776,8 +785,7 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
     handle = ajStrTokenInit(cl," \t\n");
     ajStrToken(&prog,&handle,NULL);
     ajStrTokenClear(&handle);
-
-
+    
     argp = jctl_make_array(cl);
     envp = jctl_make_array(enviro);
 
@@ -969,6 +977,12 @@ static AjBool jctl_do_directory(char *buf, int uid, int gid)
 
     dir    = ajStrNew();
 
+    if(!jctl_initgroups(buf,gid))
+    {
+	fprintf(stderr,"Initgroups failure (do_directory)\n");
+	ajStrDel(&dir);
+	return ajFalse;
+    }
 
     /* Skip over authentication stuff */
     p=buf;
@@ -1036,6 +1050,12 @@ static AjBool jctl_do_deletefile(char *buf, int uid, int gid)
 
     ufile    = ajStrNew();
 
+    if(!jctl_initgroups(buf,gid))
+    {
+	fprintf(stderr,"Initgroups failure (do_deletefile)\n");
+	ajStrDel(&ufile);
+	return ajFalse;
+    }
 
     /* Skip over authentication stuff */
     p=buf;
@@ -1100,6 +1120,12 @@ static AjBool jctl_do_deletedir(char *buf, int uid, int gid)
 
     dir    = ajStrNew();
 
+    if(!jctl_initgroups(buf,gid))
+    {
+	fprintf(stderr,"Initgroups failure (do_deletedir)\n");
+	ajStrDel(&dir);
+	return ajFalse;
+    }
 
     /* Skip over authentication stuff */
     p=buf;
@@ -1174,6 +1200,14 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
 
     dir     = ajStrNew();
     full    = ajStrNew();
+
+    if(!jctl_initgroups(buf,gid))
+    {
+	fprintf(stderr,"Initgroups failure (do_listfiles)\n");
+	ajStrDel(&dir);
+	ajStrDel(&full);
+	return ajFalse;
+    }
 
     /* Skip over authentication stuff */
     p=buf;
@@ -1265,6 +1299,14 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 
     dir     = ajStrNew();
     full    = ajStrNew();
+
+    if(!jctl_initgroups(buf,gid))
+    {
+	fprintf(stderr,"Initgroups failure (do_listdirs)\n");
+	ajStrDel(&dir);
+	ajStrDel(&full);
+	return ajFalse;
+    }
 
     /* Skip over authentication stuff */
     p=buf;
@@ -1359,6 +1401,13 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     int fd;
     
     file     = ajStrNew();
+
+    if(!jctl_initgroups(buf,gid))
+    {
+	fprintf(stderr,"Initgroups failure (do_getfile)\n");
+	ajStrDel(&file);
+	return ajFalse;
+    }
 
     /* Skip over authentication stuff */
     p=buf;
@@ -1494,6 +1543,13 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid, int sockdes)
     then = tv.tv_sec;
     
     file     = ajStrNew();
+
+    if(!jctl_initgroups(buf,gid))
+    {
+	fprintf(stderr,"Initgroups failure (do_putfile)\n");
+	ajStrDel(&file);
+	return ajFalse;
+    }
 
     /* Skip over authentication stuff */
     p=buf;
@@ -1829,6 +1885,36 @@ static AjBool jctl_chdir(char *file)
     return ajTrue;
 }
 
+
+/* @funcstatic jctl_initgroups ***********************************************
+**
+** Initialise groups
+**
+** @param [r] buf [char*] socket buffer
+** @param [r] gid [char*] gid
+**
+** @return [AjBool] true if sane
+******************************************************************************/
+
+static AjBool jctl_initgroups(char *buf, int gid)
+{
+    AjPStr str=NULL;
+    AjPStr user=NULL;
+    
+    str = ajStrNewC(buf);
+    user = ajStrNew();
+    ajFmtScanS(str,"%*d%S",&user);
+    ajStrDel(&str);
+
+    if(initgroups(ajStrStr(user),gid)==-1)
+    {
+	ajStrDel(&user);
+	return ajFalse;
+    }
+    ajStrDel(&user);
+
+    return ajTrue;
+}
 
 #else
 #include <stdio.h>
