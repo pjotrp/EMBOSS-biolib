@@ -75,7 +75,7 @@ int main(int argc, char **argv)
 	megamerger_Merge(matchlist, seq1, seq2, seqout, outfile);
   
 	/* tidy up */
-	embWordMatchListDelete(matchlist); /* free the match structures */
+	embWordMatchListDelete(&matchlist); /* free the match structures */
     }
 
     /* tidy up */   

@@ -33,7 +33,7 @@ void    embWordClear (void);
 void    embWordFreeTable( AjPTable table);
 ajint     embWordGetTable (AjPTable *table, AjPSeq seq);
 void    embWordLength (ajint wordlen);
-void    embWordMatchListDelete (AjPList list);
+void    embWordMatchListDelete (AjPList* plist);
 void    embWordMatchListPrint (AjPFile file, AjPList list);
 void    embWordPrintTable  (AjPTable table);
 void    embWordPrintTableF (AjPTable table, AjPFile outf);

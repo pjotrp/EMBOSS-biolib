@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 	(void) diffseq_diff (matchlist, seq1, seq2, outfile, columns);
     
 	/* tidy up */
-	embWordMatchListDelete(matchlist); /* free the match structures */
+	embWordMatchListDelete(&matchlist); /* free the match structures */
     }
    
     /* tidy up */

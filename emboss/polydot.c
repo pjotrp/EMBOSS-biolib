@@ -146,7 +146,7 @@ int main(int argc, char **argv)
 					       seq2);
      
 		if(matchlist)  /* free the match structures */
-		    embWordMatchListDelete(matchlist);
+		    embWordMatchListDelete(&matchlist);
 
 		if(j==0)
 		{

@@ -80,7 +80,7 @@ int main(int argc, char **argv)
 			{
 			    seqmatchall_listPrint(outfile, matchlist);
 			    /* free the match structures */
-			    embWordMatchListDelete(matchlist);
+			    embWordMatchListDelete(&matchlist);
 			}
 		    }
 		}

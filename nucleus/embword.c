@@ -283,15 +283,17 @@ static void matchListDelete(void **x,void *cl)
 **
 ** delete the word table.
 **
-** @param [Pw] list [AjPList] list to be deleted.
+** @param [Pw] plist [AjPList*] list to be deleted.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void embWordMatchListDelete(AjPList list)
+void embWordMatchListDelete(AjPList* plist)
 {
-    ajListMap(list,matchListDelete, NULL);
-    ajListFree(&list);
+    if (!*plist) return;
+
+    ajListMap(*plist,matchListDelete, NULL);
+    ajListFree(plist);
 
     return;
 }
@@ -413,7 +415,8 @@ ajint embWordGetTable(AjPTable *table, AjPSeq seq)
     ajint *k;
     EmbPWord rec;
 
-    ajint iwatch[] = {48, 5509, 2328, 2127, 5249, 2647, 5287, 5571, -1};
+    ajint iwatch[] = {-1};
+    /*ajint iwatch[] = {48, 5509, 2328, 2127, 5249, 2647, 5287, 5571, -1};*/
     ajint iw;
     AjBool dowatch;
 
@@ -465,8 +468,8 @@ ajint embWordGetTable(AjPTable *table, AjPSeq seq)
 	    rec->fword = startptr;
 	    rec->list = ajListNew();
 	    (void) ajTablePut(*table, startptr, rec);
-	    if (dowatch)
-		ajDebug ("   %.*s first time\n", wordLength, startptr);
+	    /*if (dowatch)
+	      ajDebug ("   %.*s first time\n", wordLength, startptr);*/
 	}
 
 	AJNEW0(k);
@@ -770,7 +773,7 @@ AjPList embWordBuildMatchTable (AjPTable *seq1MatchTable,  AjPSeq seq2,
     startptr = ajSeqChar(seq2);
     ilast = ajSeqLen(seq2) - wordLength;
 
-    ajDebug ("ilast: %d\n", ilast);
+    /*ajDebug ("ilast: %d\n", ilast);*/
 
     while (i <= ilast)
     {
@@ -795,8 +798,10 @@ AjPList embWordBuildMatchTable (AjPTable *seq1MatchTable,  AjPSeq seq2,
 	    wordNewListTrace(i, newlist);
 	    */
 
+	    /*
 	    ajDebug ("\nIterate at %d list size %d %.*s\n",
 		     i, ajListLength(newlist), wordLength, startptr);
+	    */
 
 	    newiter = ajListIter(newlist);
 
@@ -804,7 +809,7 @@ AjPList embWordBuildMatchTable (AjPTable *seq1MatchTable,  AjPSeq seq2,
 
 	    if (ajListLength(curlist))
 	    {
-		ajDebug ("CurList size %d\n",ajListLength(curlist));
+	      /* ajDebug ("CurList size %d\n",ajListLength(curlist)); */
 		/*wordCurListTrace(curlist);*/
 		curiter = ajListIter(curlist);
 
@@ -823,10 +828,10 @@ AjPList embWordBuildMatchTable (AjPTable *seq1MatchTable,  AjPSeq seq2,
 
 		while (curiter && (kcur < knew))
 		{
-		    ajDebug ("..skip knew: %d kcur: %d start1: %d start2: %d "
+		  /*ajDebug ("..skip knew: %d kcur: %d start1: %d start2: %d "
 			     "len: %d\n",
 			     knew, kcur, curmatch->seq1start,
-			     curmatch->seq2start,curmatch->length);
+			     curmatch->seq2start,curmatch->length);*/
 		    ajListRemove(curiter);
 
 		    curmatch = ajListIterNext(curiter);
@@ -834,7 +839,7 @@ AjPList embWordBuildMatchTable (AjPTable *seq1MatchTable,  AjPSeq seq2,
 		    {
 			kcur = curmatch->seq1start + curmatch->length -
 			    wordLength + 1;
-			ajDebug ("curiter next kcur: %d\n", kcur);
+			/*ajDebug ("curiter next kcur: %d\n", kcur);*/
 		    }
 		    else
 		    {
@@ -843,15 +848,15 @@ AjPList embWordBuildMatchTable (AjPTable *seq1MatchTable,  AjPSeq seq2,
 		    }
 		}
 
-		ajDebug("kcur: %d knew: %d\n", kcur, knew);
+		/*ajDebug("kcur: %d knew: %d\n", kcur, knew);*/
 		if (kcur && kcur == knew)
 		{			/* check continued matches */
 		    while (curiter && (kcur == knew))
 		    {
-			ajDebug ("**match knew: %d kcur: %d start1: %d "
+		      /* ajDebug ("**match knew: %d kcur: %d start1: %d "
 				 "start2: %d len: %d\n",
 				 knew, kcur, curmatch->seq1start,
-				 curmatch->seq2start,curmatch->length);
+				 curmatch->seq2start,curmatch->length); */
 			curmatch->length++;
 			curmatch = ajListIterNext(curiter);
 			if (curmatch)
@@ -871,35 +876,35 @@ AjPList embWordBuildMatchTable (AjPTable *seq1MatchTable,  AjPSeq seq2,
 		    match2->seq1start = knew;
 		    match2->seq2start = i;
 		    match2->length = wordLength;
-		    ajDebug ("save start1: %d start2: %d len: %d\n",
+		    /* ajDebug ("save start1: %d start2: %d len: %d\n",
 			     match2->seq1start, match2->seq2start,
-			     match2->length);
-		    ajDebug("Pushapp to hitlist\n");
+			     match2->length);*/
+		    /*ajDebug("Pushapp to hitlist\n");*/
 		    ajListPushApp(hitlist, match2); /* add to hitlist */
 		    if (curiter)
 		    {			/* add to curlist */
-			ajDebug("ajListInsert using curiter\n");
+		      /*ajDebug("ajListInsert using curiter\n");*/
 			listInsertOld(curiter, match2);
 			/*wordCurListTrace(curlist);*/
 			/*wordCurIterTrace(curiter);*/
 		    }
 		    else
 		    {
-			ajDebug("ajListPushApp to curlist\n");
+		      /*ajDebug("ajListPushApp to curlist\n");*/
 			ajListPushApp(curlist, match2);
 			/*wordCurListTrace(curlist);*/
 		    }
 		}
-		ajDebug ("k: %d i: %d\n", *k, i);
+		/*ajDebug ("k: %d i: %d\n", *k, i);*/
 	    }
 	    ajListIterFree(newiter);
 
 	    while (curiter)
 	    {
-		ajDebug ("..ignore knew: %d kcur: %d start1: %d "
+	      /*ajDebug ("..ignore knew: %d kcur: %d start1: %d "
 			 "start2: %d len: %d\n",
 			 knew, kcur, curmatch->seq1start, curmatch->seq2start,
-			 curmatch->length);
+			 curmatch->length);*/
 		ajListRemove(curiter);
 
 		curmatch = ajListIterNext(curiter);
@@ -907,11 +912,11 @@ AjPList embWordBuildMatchTable (AjPTable *seq1MatchTable,  AjPSeq seq2,
 		{
 		    kcur = curmatch->seq1start +
 			curmatch->length - wordLength + 1;
-		    ajDebug ("curiter next kcur: %d\n", kcur);
+		    /*ajDebug ("curiter next kcur: %d\n", kcur);*/
 		}
 		else
 		{
-		    ajDebug ("curiter finished - free it\n");
+		  /*ajDebug ("curiter finished - free it\n");*/
 		    ajListIterFree(curiter);
 		    curiter = 0;
 		}
@@ -1380,6 +1385,7 @@ void embWordUnused(void)
     positionListDelete((void *)&x,(void *)y);
     wordCurListTrace(NULL);
     wordCurIterTrace(NULL);
+    wordNewListTrace (0, NULL);
 
     return;
 }

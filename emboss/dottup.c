@@ -205,7 +205,7 @@ int main(int argc, char **argv)
     }
   
     if(matchlist) 
-	embWordMatchListDelete(matchlist); /* free the match structures */
+	embWordMatchListDelete(&matchlist); /* free the match structures */
  
     ajExit();
     return 0;

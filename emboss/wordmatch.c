@@ -61,7 +61,7 @@ int main(int argc, char **argv)
     embWordMatchListPrint(outf, matchlist);
     embWordMatchListConvToFeat(matchlist,&Tab1,&Tab2,seq1, seq2);
     
-    embWordMatchListDelete(matchlist); /* free the match structures */
+    embWordMatchListDelete(&matchlist); /* free the match structures */
   }
   ajFeaturesWrite(seq1out, Tab1);
   ajFeaturesWrite(seq2out, Tab2);
