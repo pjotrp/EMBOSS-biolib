@@ -45,8 +45,7 @@ extern "C"
 **
 **
 **
-** The variables have the following meaning:
-**
+** Variables are described below:
 ** @attr Entry              [AjPStr]  Domain identifer code.
 ** @attr Pdb                [AjPStr]  Corresponding pdb identifier code.
 ** @attr Class              [AjPStr]  SCOP class name as an AjPStr.
@@ -81,15 +80,45 @@ extern "C"
 **
 **
 **
-** The following functions use this object:
 **
-** @new ajScopNew Scop object constructor.
-** @delete ajScopDel Destructor for scop object.
-** @ass ajScopCopy Copies one Scop object to another.
-** @use ajScopMatchSunid Sort Scop object by Sunid_Family element.
-** @use ajScopMatchScopid Sort Scop object by Entry element.
-** @use ajScopMatchPdbId Sort Scop object by Pdb element.
-**
+** Functions that use this object are described below:
+** @new    ajScopNew Scop default constructor.
+** @new    ajScopReadNew Scop constructor from reading dcf format file.
+** @new    ajScopReadCNew Cath constructor from reading dcf format file.
+** @new    ajCathNew Cath default constructor.
+** @new    ajCathReadCNew Cath constructor from reading dcf format file.
+** @new    ajCathReadNew Cath constructor from reading dcf format file.
+** @delete ajScopDel Default Scop destructor.
+** @delete ajCathDel Default Cath destructor.
+** @ass    ajScopCopy Replicates a Scop object.
+** @use    ajScopMatchSunid Sort Scop objects by Sunid_Family element.
+** @use    ajScopMatchScopid Sort Scop objects by Entry element.
+** @use    ajScopMatchPdbId Sort Scop objects by Pdb element.
+** @use    ajCathMatchPdbId Sort Cath objects by Pdb element.
+** @use    embScopToPdbid  Read a scop identifier code and writes the 
+**         equivalent PDB identifier code.
+** @use    embScopToSp  Read a scop identifier code and writes the 
+**         equivalent swissprot identifier code.
+** @use    embScopToAcc  Read a scop identifier code and writes the 
+**         equivalent accession number.
+** @attr   ajScopArrFindScopid Binary search for Entry element over array 
+**         of Scop objects. 
+** @attr   ajScopArrFindSunid Binary search for Sunid_Family element over 
+**         array of Scop objects. 
+** @attr   ajScopArrFindPdbid Binary search for Pdb element over array of
+**         Scop objects. 
+** @attr   ajCathArrFindPdbid Binary search for Pdb element over array of
+**         Cath objects. 
+** @other  ajScopReadAllNew Construct list of Scop objects from reading dcf
+**         format file.
+** @other  ajScopReadAllRawNew Construct list of Scop objects from reading 
+**         raw SCOP parsable files.
+** @other  ajCathReadAllNew Construct list of Cath objects from reading dcf
+**         format file.
+** @other  ajCathReadAllRawNew Construct list of Cath objects from reading 
+**         raw CATH parsable files.
+** @other  ajScopWrite Write Scop object to dcf format file.
+** @other  ajCathWrite Write Cath object to dcf format file.
 **
 **
 ** AjPScop is implemented as a pointer to a C data structure.
@@ -141,11 +170,8 @@ typedef struct AjSScop
 **
 ** Holds cath database data
 **
-** @alias AjSCath
-** @alias AjOCath
 **
-** The variables have the following meaning:
-**
+** Variables are described below:
 ** @attr DomainID       [AjPStr]  Domain identifer code        
 ** @attr Pdb            [AjPStr]  Corresponding pdb identifer code
 ** @attr Class          [AjPStr]  CATH class name as an AjPStr
@@ -165,7 +191,23 @@ typedef struct AjSScop
 ** @attr NIFamily_Id    [ajint]   CATH near identical family no. as an ajint 
 ** @attr IFamily_Id     [ajint]   CATH identical family no. as an ajint 
 **
-**  @@
+** 
+** Functions that use this object are described below:
+** @new
+** @delete
+** @ass
+** @mod
+** @use 
+** @attr
+** @cast
+** @other
+** @io
+** 
+**
+** @alias AjSCath
+** @alias AjOCath
+**
+** @@
 ****************************************************************************/
 
 typedef struct AjSCath
@@ -212,6 +254,16 @@ ajint    ajScopMatchScopid(const void *hit1, const void *hit2);
 ajint    ajScopMatchPdbId(const void *hit1, const void *hit2);
 ajint    ajScopMatchSunid(const void *entry1, const void *entry2);
 
+AjPScop  ajScopReadCNew(AjPFile inf, char *entry);
+AjPScop  ajScopReadNew(AjPFile inf, AjPStr entry);
+AjPList  ajScopReadAllNew(AjPFile inf); 
+AjPList  ajScopReadAllRawNew(AjPFile claf, AjPFile desf, AjBool outputall);
+AjBool   ajScopWrite(AjPFile outf, AjPScop obj);
+
+AjBool   ajPdbWriteDomain(AjPFile outf, AjPPdb pdb,
+			   AjPScop scop, AjPFile errf);
+
+
 
 
 
@@ -225,8 +277,12 @@ void      ajCathDel(AjPCath *ptr);
 ajint     ajCathArrFindPdbid(AjPStr id, AjPCath *arr, ajint siz);
 ajint     ajCathMatchPdbid(const void *hit1, const void *hit2);
 
-
-
+AjPCath   ajCathReadCNew(AjPFile inf, char *entry);
+AjPCath   ajCathReadNew(AjPFile inf, AjPStr entry);
+AjPList   ajCathReadAllNew(AjPFile inf); 
+AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, 
+			      AjPFile namesf, AjPFile logf);
+AjBool    ajCathWrite(AjPFile outf, AjPCath obj);
 
 
 #endif

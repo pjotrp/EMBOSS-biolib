@@ -44,7 +44,9 @@ extern "C"
 **
 ** Holds protein atom data
 **
-**  Variables for coordinate and related data.
+**
+** Variables are described below:
+** Variables for coordinate and related data.
 ** @attr  Mod     [ajint]  Model number.
 ** @attr  Chn     [ajint]  Chain number. 
 ** @attr  Gpn     [ajint]  Group number. 
@@ -66,7 +68,7 @@ extern "C"
 ** @attr  Area    [float]  Residue solvent accessible area. 
 **  
 **
-**  Variables for secondary structure from the PDB file.
+** Variables for secondary structure from the PDB file.
 ** @attr  eNum    [ajint]  Element serial number.
 ** @attr  eId     [AjPStr] Element identifier. 
 ** @attr  eType   [char]   Element type COIL ('C'), HELIX ('H'), SHEET ('E')
@@ -75,7 +77,7 @@ extern "C"
 **	  http://www.rcsb.org/pdb/docs/format/pdbguide2.2/guide2.2_frame.html
 **
 **
-**  Variables for data derived by using the STRIDE program.
+** Variables for data derived by using the STRIDE program.
 ** @attr  eStrideNum   [ajint]  Number of the element (sequential count from 
 **                              N-term) 
 ** @attr  eStrideType  [char]   Element type:  ALPHA HELIX ('H'), 3-10 HELIX
@@ -85,7 +87,7 @@ extern "C"
 **                              STRIDE).
 **
 ** 
-**  Variables for data derived by using the NACCESS program.
+** Variables for data derived by using the NACCESS program.
 ** @attr  all_abs   [float]  Absolute accessibility, all atoms. 
 ** @attr  all_rel   [float]  Relative accessibility, all atoms. 
 ** @attr  side_abs  [float]  Absolute accessibility, atoms in sidechain. 
@@ -98,6 +100,110 @@ extern "C"
 ** @attr  pol_rel   [float]  Relative accessibility, polar atoms. 
 **
 ** 
+** Functions that use this object are described below:
+** @new     ajPdbReadRawNew Pdb constructor from reading pdb format file.
+** @new     ajPdbReadNew Pdb constructor from reading ccf format file.
+** @new     ajPdbReadFirstModelNew Pdb constructor from reading ccf format 
+**          file (retrive data for 1st model only).
+** @new     ajAtomNew Default Atom constructor.
+** @new     ajChainNew Default Chain constructor.
+** @new     ajPdbNew Default Pdb constructor.
+** @new     ajHetentNew Default Hetent constructor.
+** @new     ajHetNew Default Het constructor.
+** @new     ajVdwallNew Default Vdwall constructor.
+** @new     ajVdwresNew Default Vdwres constructor.
+** @new     ajCmapNew Default Cmap constructor.
+** @new     ajPdbtospNew Default Pdbtosp constructor.
+** @new     ajHetReadRawNew Het constructor from reading dictionary of 
+**          heterogen groups in raw format.
+** @new     ajHetReadNew Het constructor from reading dictionary of 
+**          heterogen groups in clean format (see documentation for the 
+**          EMBASSY DOMAINATRIX package).
+** @new     ajVdwallReadNew Vdwall constructor from reading file in embl-like
+**          format (see documentation for the EMBASSY DOMAINATRIX package).
+** @new     ajCmapReadINew Cmap constructor from reading file in embl-like
+**          format (see documentation for the EMBASSY DOMAINATRIX package).
+** @new     ajCmapReadCNew Cmap constructor from reading file in embl-like
+**          format (see documentation for the EMBASSY DOMAINATRIX package).
+** @new     ajCmapReadNew Cmap constructor from reading file in embl-like
+**          format (see documentation for the EMBASSY DOMAINATRIX package).
+** @new     ajPdbtospReadAllRawNew Pdbtosp constructor from reading swissprot-
+**          pdb equivalence table in raw format.
+** @new     ajPdbtospReadNew Pdbtosp constructor from reading file in 
+**          embl-like format (see documentation for the EMBASSY DOMAINATRIX
+**          package).
+** @new     ajPdbtospReadCNew Pdbtosp constructor from reading file in 
+**          embl-like format (see documentation for the EMBASSY DOMAINATRIX
+**          package).
+** @delete  ajAtomDel Default Atom destructor.
+** @delete  ajChainDel Default Chain destructor.
+** @delete  ajPdbDel Default Pdb destructor.
+** @delete  ajHetentDel Default Hetent destructor.
+** @delete  ajHetDel Default Het destructor.
+** @delete  ajVdwallDel Default Vdwall destructor.
+** @delete  ajVdwresDel Default Vdwres destructor.
+** @delete  ajCmapDel Default Cmap destructor.
+** @delete  ajPdbtospDel Default Pdbtosp destructor.
+** @ass     ajAtomCopy Replicates an Atom object.
+** @ass     ajAtomListCopy Replicates a list of Atom objects.
+** @ass     ajPdbCopy Replicates a Pdb object.
+** @use     embAtomInContact Determines whether two atoms are in physical 
+**          contact.
+** @use     embAtomDistance Returns the distance (Angstroms) between two 
+**          atoms.
+** @use     embPdbidToSp  Read a pdb identifier code and writes the equivalent
+**          swissprot identifier code. 
+** @use     embPdbidToAcc Read a pdb identifier code and writes the equivalent
+**          accession number.
+** @use     embPdbidToScop Writes a list of scop identifier codes for the 
+**          domains that a Pdb object contains.
+** @attr    ajPdbChnidToNum Finds the chain number for a given chain 
+**          identifier.
+** @attr    ajPdbtospArrFindPdbid Binary search for Pdb element over array
+**          of Pdbtosp objects. 
+** @attr    embPdbToIdx Reads a Pdb object and writes an integer which gives
+**          the index into the protein sequence for a residue with a 
+**          specified pdb residue number and a specified chain number.
+** @attr    embVdwRad Returns the van der Waals radius of an atom.
+** @other   ajPdbWriteDomainRecordRaw Writes lines to a pdb format file for 
+**          a domain.
+** @other   ajPdbWriteRecordRaw Writes lines to a pdb format file for a
+**          protein.
+** @other   ajPdbWriteAllRaw Writes a pdb-format file for a protein.
+** @other   ajPdbWriteDomainRaw Writes a pdb-format file for a domain.
+** @other   ajPdbWriteAll Writes a ccf-format file for a protein.
+** @other   ajPdbWriteDomain See ajdomain.h!!! (writes a ccf-format file for
+**          a domain).
+** @other   ajPdbWriteSegment Writes a ccf-format file for a segment of a 
+**          protein.
+** @other   ajHetWrite Write Het object to file in clean format (see 
+**          documentation for the EMBASSY DOMAINATRIX package).
+** @other   ajPdbtospReadAllNew Constructor for list of Pdbtosp objects from
+**          reading file in embl-like format (see documentation for the 
+**          EMBASSY DOMAINATRIX package).
+** @other   ajPdbtospWrite Write Pdbtosp object to file in embl-like format 
+**          (see documentation for the EMBASSY DOMAINATRIX package).
+** @other   embPdbAtomIndexI Reads a Pdb object and writes an integer array 
+**          which gives the index into the protein sequence for structured 
+**          residues (residues for which electron density was determined) for
+**          a given chain.
+** @other   embPdbAtomIndexICA Reads a Pdb object and writes an integer array 
+**          which gives the index into the protein sequence for structured 
+**          residues (residues for which electron density was determined) for
+**          a given chain, EXCLUDING those residues for which CA atoms are 
+**          missing.
+** @other   embPdbAtomIndexCCA Reads a Pdb object and writes an integer array 
+**          which gives the index into the protein sequence for structured 
+**          residues (residues for which electron density was determined) for
+**          a given chain, EXCLUDING those residues for which CA atoms are 
+**          missing.
+** @other   embPdbListHeterogens Construct a list of arrays of Atom objects 
+**          for ligands in the current Pdb object (a single array for each
+**          ligand). 
+** 
+** 
+** 
+**
 ** AjPAtom is implemented as a pointer to a C data structure.
 **
 ** @alias AjSAtom
@@ -156,6 +262,8 @@ typedef struct AjSAtom
 **
 ** Holds protein chain data
 **
+**
+** Variables are described below:
 ** @attr  Id          [char]     Chain id, ('.' if one wasn't specified in 
 **                               the PDB file).
 ** @attr  Nres        [ajint]    No. of amino acid residues.
@@ -171,6 +279,19 @@ typedef struct AjSAtom
 **                               models) of the polypeptide chain and any 
 **                               groups (ligands) that could be uniquely 
 **                               associated with a chain.
+**
+** 
+** Functions that use this object are described below:
+** @new
+** @delete
+** @ass
+** @mod
+** @use 
+** @attr
+** @cast
+** @other
+** @io
+** 
 **
 ** AjPChain is implemented as a pointer to a C data structure.
 **
@@ -201,6 +322,8 @@ typedef struct AjSChain
 **
 ** Holds arrays describing pdb data
 **
+**
+** Variables are described below:
 ** @attr  Pdb     [AjPStr]  PDB code.
 ** @attr  Compnd  [AjPStr]  Text from COMPND records in PDB file.
 ** @attr  Source  [AjPStr]  Text from SOURCE records in PDB file.
@@ -219,6 +342,19 @@ typedef struct AjSChain
 **
 ** AjPPdb is implemented as a pointer to a C data structure.
 **
+** 
+** Functions that use this object are described below:
+** @new
+** @delete
+** @ass
+** @mod
+** @use 
+** @attr
+** @cast
+** @other
+** @io
+** 
+** 
 ** @alias AjSPdb
 ** @alias AjOPdb
 **
@@ -251,11 +387,26 @@ typedef struct AjSPdb
 **
 ** Holds a single entry from a dictionary of heterogen groups.
 **
+**
+** Variables are described below:
 ** @attr  abv [AjPStr]  3-letter abbreviation of heterogen.
 ** @attr  syn [AjPStr]  Synonym.
 ** @attr  ful [AjPStr]  Full name. 
 ** @attr  cnt [ajint]   No. of occurences (files) of this heterogen in a 
 **                      directory.
+** 
+** 
+** Functions that use this object are described below:
+** @new
+** @delete
+** @ass
+** @mod
+** @use 
+** @attr
+** @cast
+** @other
+** @io
+**
 ** 
 ** AjPHetent is implemented as a pointer to a C data structure.
 **
@@ -281,10 +432,25 @@ typedef struct AjSHetent
 ** Ajax Het object.
 ** Holds a dictionary of heterogen groups.
 **
+**
+** Variables are described below:
 ** @attr  n        [ajint]     Number of entries.
 ** @attr  entries  [AjPHetent] Array of entries. 
 **
 ** AjPHet is implemented as a pointer to a C data structure.
+**
+** 
+** Functions that use this object are described below:
+** @new
+** @delete
+** @ass
+** @mod
+** @use 
+** @attr
+** @cast
+** @other
+** @io
+** 
 **
 ** @alias AjSHet
 ** @alias AjOHet
@@ -307,6 +473,7 @@ typedef struct AjSHet
 **
 ** Holds the Van der Waals radius for atoms in a residue 
 **
+** Variables are described below:
 ** @attr  Id1  [char]   Standard residue identifier or 'X' for unknown.
 ** @attr  Id3  [AjPStr] 3 character residue identifier.
 ** @attr  N    [ajint]  Nummber of atoms in residue. 
@@ -314,6 +481,19 @@ typedef struct AjSHet
 ** @attr  Rad  [float]  Array of van der Waals radii.
 ** 
 ** AjPVdwres is implemented as a pointer to a C data structure.
+**
+** 
+** Functions that use this object are described below:
+** @new
+** @delete
+** @ass
+** @mod
+** @use 
+** @attr
+** @cast
+** @other
+** @io
+** 
 **
 ** @alias AjSVdwres
 ** @alias AjOVdwres
@@ -339,10 +519,24 @@ typedef struct AjSVdwres
 **
 ** Holds the Van der Waals radii for all types of protein atoms
 **
+** Variables are described below:
 ** @attr  N    [ajint]      Number of residues.
 ** @attr  Res  [AjPVdwres]  Array of Vdwres structures.
 ** 
 ** AjPVdwall is implemented as a pointer to a C data structure.
+**
+** 
+** Functions that use this object are described below:
+** @new
+** @delete
+** @ass
+** @mod
+** @use 
+** @attr
+** @cast
+** @other
+** @io
+** 
 **
 ** @alias AjSVdwall
 ** @alias AjOVdwall
@@ -365,6 +559,7 @@ typedef struct AjSVdwall
 **
 ** Holds a contact map and associated data for a protein domain / chain.
 **
+** Variables are described below:
 ** @attr  Id    [AjPStr]   Protein id code. 
 ** @attr  Seq   [AjPStr]   The sequence of the domain or chain. 
 ** @attr  Mat   [AjPInt2d] Contact map. 
@@ -372,6 +567,19 @@ typedef struct AjSVdwall
 ** @attr  Ncon  [ajint]    No. of contacts (1's in contact map). 
 ** 
 ** AjPCmap is implemented as a pointer to a C data structure.
+**
+** 
+** Functions that use this object are described below:
+** @new
+** @delete
+** @ass
+** @mod
+** @use 
+** @attr
+** @cast
+** @other
+** @io
+** 
 **
 ** @alias AjSCmap
 ** @alias AjOCmap
@@ -397,12 +605,26 @@ typedef struct AjSCmap
 **
 ** Holds swissprot codes and accession numbers for a PDB code.
 **
+** Variables are described below:
 ** @attr  Pdb  [AjPStr]   PDB code
 ** @attr  n    [ajint]    No. entries for this pdb code 
 ** @attr  Acc  [AjPStr*]  Accession numbers 
 ** @attr  Spr  [AjPStr*]  Swissprot codes 
 ** 
 ** AjPPdbtosp is implemented as a pointer to a C data structure.
+**
+** 
+** Functions that use this object are described below:
+** @new
+** @delete
+** @ass
+** @mod
+** @use 
+** @attr
+** @cast
+** @other
+** @io
+** 
 **
 ** @alias AjSPdbtosp
 ** @alias AjOPdbtosp
@@ -512,6 +734,56 @@ AjPPdb       ajPdbNew(ajint n);
 void         ajPdbDel(AjPPdb *ptr);
 AjBool       ajPdbCopy(AjPPdb *to, AjPPdb from);
 AjBool       ajPdbChnidToNum(char id, AjPPdb pdb, ajint *chn);
+
+AjPPdb       ajPdbReadNew(AjPFile inf);
+AjPPdb       ajPdbReadFirstModelNew(AjPFile inf);
+AjBool       ajPdbWriteAll(AjPFile out, AjPPdb obj);
+AjBool       ajPdbWriteSegment(AjPFile outf, AjPPdb pdb, 
+				AjPStr seq, char chn, AjPStr domain, 
+				AjPFile errf);
+
+
+
+
+/* ======================================================================= */
+/* ====================== Het & Hetent objects =========================== */
+/* ======================================================================= */
+AjPHet       ajHetReadRawNew(AjPFile inf);
+AjPHet       ajbHetReadNew(AjPFile inf);
+AjBool       ajHetWrite(AjPFile outf, AjPHet ptr, AjBool dogrep);
+
+
+
+
+
+/* ======================================================================= */
+/* ================ Vdwall, Vdwres object ================================ */
+/* ======================================================================= */
+AjPVdwall    ajVdwallReadNew(AjPFile inf);
+
+
+
+
+
+/* ======================================================================= */
+/* =========================== Cmap object =============================== */
+/* ======================================================================= */
+AjPCmap      ajCmapReadCNew(AjPFile inf, char chn, ajint mod);
+AjPCmap      ajCmapReadINew(AjPFile inf, ajint chn, ajint mod);
+AjPCmap      ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod);
+
+
+
+
+
+/* ======================================================================= */
+/* ======================== Pdbtosp object =============================== */
+/* ======================================================================= */
+AjPList      ajPdbtospReadAllRawNew(AjPFile inf);
+AjPPdbtosp   ajPdbtospReadNew(AjPFile inf, AjPStr entry);
+AjPPdbtosp   ajPdbtospReadCNew(AjPFile inf, char *entry);
+AjPList      ajPdbtospReadAllNew(AjPFile inf);
+AjBool       ajPdbtospWrite(AjPFile outf, AjPList list);
 
 
 

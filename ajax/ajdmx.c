@@ -1,6 +1,8 @@
 /****************************************************************************
 ** 
-** @source AJAX library code for some of the DOMAINATRIX EMBASSY applications. 
+** @source ajdmx.c 
+**
+** AJAX library code for some of the DOMAINATRIX EMBASSY applications. 
 ** For use with the Scophit and Scopalign objects.  The code is disparate 
 ** including low-level functions and algorithms.  The functionality will 
 ** eventually be subsumed by other AJAX and NUCLEUS libraries. 

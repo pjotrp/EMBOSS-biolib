@@ -63,6 +63,7 @@ extern "C"
   /*#include "ajhist.h"*/
 #include "ajpdb.h"
 #include "ajdomain.h"
+#include "ajpdbio.h"
 #include "ajdmx.h"
 #include "ajacd.h"
 #include "ajcall.h"
