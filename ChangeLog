@@ -68,6 +68,9 @@ Version 2.4.0
 	syntax is because empro.dat-id:eclaci looks like a filename ending
 	in -id)
 
+        Application 'tranalign' added. 
+        This aligns nucleic coding regions based on a set of aligned proteins.
+
 	
 Version 2.3.1
 
