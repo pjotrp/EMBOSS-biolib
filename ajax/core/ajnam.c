@@ -1118,13 +1118,15 @@ void ajNamInit (char* prefix)
 
     /* static namPrefixStr is the prefix for all variable names */
 
-    namPrefixStr = ajStrNewC(prefix);
+    ajStrAssC(&namPrefixStr, prefix);
+
     (void) ajStrAppC(&namPrefixStr, "_");
 
     /* local prefixRoot is the root directory */
     /* it is the value of (PREFIX)_ROOT (if set) or namFixedRoot */
 
-    prefixStr = ajStrNewC(prefix);
+    ajStrAssC(&prefixStr, prefix);
+
     (void) ajStrAppC(&prefixStr, "_ROOT");
     (void) ajStrToUpper (&prefixStr);
 
@@ -1313,9 +1315,13 @@ static ajint namDbAttrC (char* str) {
 
 void ajNamExit (void){
 
-  namListStandardsDelete();       /* Delete elements from database structure */
+  namListStandardsDelete();    /* Delete elements from database structure */
   ajTableFree(&standardNames); /* free table and database structures */
-
+  ajStrDel(&namFixedRootBaseStr);       /* allocated in ajNamInit */
+  ajStrDel(&namPrefixStr);       /* allocated in ajNamInit */
+  ajStrDel(&namFileOrig);       /* allocated in ajNamInit */
+  ajStrDel(&namRootStr);       /* allocated in ajNamInit */
+  ajDebug("ajNamExit done\n");
   return;
 }
 
