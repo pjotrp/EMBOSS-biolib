@@ -81,7 +81,7 @@ char *out, *ptr=string;
 	
 	out = string;
 	while ( *string ) {
-	  if ( !isspace(*string) ) *out++ = *string;
+	  if ( !isspace((int)*string) ) *out++ = *string;
 	  string++;
 	}
 	*out = '\0';
@@ -107,10 +107,10 @@ char *StrCompress(char *String)
 char *Out, *ptr=String;
 	
 	Out = String;
-	while ( *Out = *String++ ) {
-	  if ( isspace(*Out) ) {
+	while ( (*Out = *String++) ) {
+	  if ( isspace((int)*Out) ) {
 	   *Out = SPACE;
-	   while ( isspace(*String) )
+	   while ( isspace((int)*String) )
 	     String++;
 	  }
 	  Out++;
@@ -160,7 +160,7 @@ char *pPos, *sPos;
 Boolean StrIsBlank(char *String )
 {
 	while ( *String )
-	  if ( isspace(*String++) == false ) return(false);
+	  if ( isspace((int)*String++) == false ) return(false);
 
 	return(true);
 
@@ -180,7 +180,7 @@ char *StrToLower(char *String )
 {
 char *ptr = String;
 
-	while ( *String = tolower(*String) ) 
+	while ( (*String = tolower(*String)) ) 
 	  String++;
 
 	return(ptr);
@@ -201,7 +201,7 @@ char *StrToUpper(char *string )
 {
 char *ptr=string;
 
-	while ( *string = toupper(*string) ) 
+	while ( (*string = toupper(*string)) ) 
 	  string++;
 
 	return(ptr);
@@ -245,7 +245,7 @@ char *StrTrim(char *String)
 
 char *Out, *ptr=String;
 	
-	while ( isspace(*String) )          /* Find first non-space character */
+	while ( isspace((int)*String) )          /* Find first non-space character */
 	  String++;
 
 	if ( *String == '\0' ) {            /* End reached with all "space"*/
@@ -254,10 +254,10 @@ char *Out, *ptr=String;
 	}
 
 	Out = ptr;
-	while ( *Out = *String++ )        /* Copy what's left */
+	while ( (*Out = *String++) )        /* Copy what's left */
 	  Out++;
 
-	while ( isspace(*--Out) )         /* Back up over blanks  */
+	while ( isspace((int)*--Out) )         /* Back up over blanks  */
 	  *Out = '\0';
 
 	return(ptr);
@@ -282,7 +282,7 @@ char *Out, *ptr=String;
 	  ;
 
 	Out = String;
-	while ( isspace(*--Out) )         /* Back up over space chars */
+	while ( isspace((int)*--Out) )         /* Back up over space chars */
 	  *Out = '\0';
 
 	return(ptr);
@@ -361,7 +361,7 @@ char *cPos;
 */
 
 	if ( (cPos = strchr(Pattern, ' ')) ) *cPos = '\0';
-	if ( cPos = strchr(String, ' ') ) *cPos = '\0';
+	if ( (cPos = strchr(String, ' ')) ) *cPos = '\0';
 
 /*
 ** Deal with special case of "*" where everything matches
@@ -414,8 +414,8 @@ char *cPos;
 	    if ( *Pattern == '\0' ) return(true);
 
 	    strcpy(SubStr, Pattern);
-	    if ( cPos = strchr(SubStr, '%') ) *cPos = '\0';
-	    if ( cPos = strchr(SubStr, '*') ) *cPos = '\0';
+	    if ( (cPos = strchr(SubStr, '%')) ) *cPos = '\0';
+	    if ( (cPos = strchr(SubStr, '*')) ) *cPos = '\0';
 
 	    if ( (cPos = StrIndex(SubStr, String)) == 0 ) return(false);
 	    String = cPos;
@@ -454,12 +454,14 @@ char *NextToken(char *String, char *cPos, char *Token, char *Sep)
 char *pPos,*tPos;
 
 	if ( (pPos = strpbrk(cPos,Sep)) == NULL )
+        {
 	  if ( *cPos == '\0' ) 
 	    return(NULL);
 	  else {
 	    strcpy(Token, cPos);
 	    return(strchr(cPos,'\0'));
 	  }
+        }
 
 	for ( tPos=Token; cPos < pPos; tPos++, cPos++)
 	  *tPos = *cPos;

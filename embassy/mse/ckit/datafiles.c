@@ -16,6 +16,8 @@
 
 extern Boolean StrIsBlank(char *);                          /* Strings.c */
 extern char *GetInput(char *), *StrUnComment(char *);      /* Strings.c */
+extern    char *DePath(char *);
+extern char *StrIndex(char *Pattern, char *String );
 
 /*
 ** Function declarations and prototypes
@@ -54,7 +56,7 @@ FILE *file;
 ** to the local directory.
 */
 
-	if ( file = fopen(fName, "r") ) return(file);
+	if ( (file = fopen(fName, "r")) ) return(file);
 
 /*
 ** Strip off the pathname and file name
@@ -70,7 +72,7 @@ FILE *file;
 
 	strcpy(trialName, "SYS$LOGIN:");
 	strcat(trialName, fileName);
-	if ( file = fopen(trialName, "r") ) return(file);
+	if ( (file = fopen(trialName, "r")) ) return(file);
 
 /*
 ** Next look in the logical "GrpData", or GroupWide data
@@ -78,7 +80,7 @@ FILE *file;
 
 	strcpy(trialName, "GrpData:");
 	strcat(trialName, fileName);
-	if ( file = fopen(trialName, "r") ) return(file);
+	if ( (file = fopen(trialName, "r")) ) return(file);
 
 /*
 ** Finally, look in "CKitData", system data files, similar to "GenRunData"
@@ -87,7 +89,7 @@ FILE *file;
 
 	strcpy(trialName, "CKitData:");
 	strcat(trialName, fileName);
-	if ( file = fopen(trialName, "r") ) return(file);
+	if ( (file = fopen(trialName, "r")) ) return(file);
 
 	return(NULL);
 
@@ -118,7 +120,7 @@ FILE *file;
 ** to the local directory.
 */
 
-	if ( file = fopen(fName, "r") ) return(file);
+	if ( (file = fopen(fName, "r")) ) return(file);
 
 /*
 ** Strip off the pathname and file name
@@ -134,7 +136,7 @@ FILE *file;
 
 	strcpy(trialName, "PIRSYSTEM:");
 	strcat(trialName, fileName);
-	if ( file = fopen(trialName, "r") ) return(file);
+	if ( (file = fopen(trialName, "r")) ) return(file);
 
 	return(NULL);
 
@@ -166,7 +168,7 @@ FILE *file;
 */
 
 	*where = LOCAL;
-	if ( file = fopen(fName, "r") ) return(file);
+	if ( (file = fopen(fName, "r")) ) return(file);
 
 /*
 ** Strip off the pathname and file name
@@ -182,7 +184,7 @@ FILE *file;
 	*where = MYDATA;
 	strcpy(trialName, "MyData:");
 	strcat(trialName, fileName);
-	if ( file = fopen(trialName, "r") ) return(file);
+	if ( (file = fopen(trialName, "r")) ) return(file);
 
 /*
 ** Finally, look in "GenRunData".
@@ -191,7 +193,7 @@ FILE *file;
 	*where = GENRUNDATA;
 	strcpy(trialName, "GenRunData:");
 	strcat(trialName, fileName);
-	if ( file = fopen(trialName, "r") ) return(file);
+	if ( (file = fopen(trialName, "r")) ) return(file);
 
 	return(NULL);
 
@@ -229,12 +231,14 @@ FILE *enzFile;
 	printf("\n\n");
 	while ( fgets(line,511,enzFile) != NULL ) {
 	  StrUnComment(line);
-	  if ( cPos = strchr(line,' ') ) *cPos = '\0';
-	  if ( cPos = strchr(line,';') ) 
+	  if ( (cPos = strchr(line,' ')) ) *cPos = '\0';
+	  if ( (cPos = strchr(line,';')) )
+	  {
 	    if ( doSchiz )
 	      strcpy(line,cPos+1);
 	    else
 	      continue;
+ 	  }
 	  if ( StrIsBlank(line) ) continue;
 	  printf("%-10s",line);
 	  i++;

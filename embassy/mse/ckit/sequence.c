@@ -65,7 +65,7 @@ char *RevComp(char *strand, Choice type)
 {
 char *ptr=strand;
 int begin, end;
-int i,temp;
+int i,temp=0;
 
 	begin = 1;
 	end = strlen(strand);
@@ -111,8 +111,8 @@ static int comp[26] = {
 	  '-', 'Y', 'S', 'A', 'A', 'B', 'W', 'X',   /* - R S T U V W X */
  	  'R', '-'};                                /* Y -             */
 
-	if ( isalpha(base) )
-	   base = islower(base) ? comp[base-'a'] + ' ' : comp[base-'A'] ;
+	if ( isalpha((int)base) )
+	   base = islower((int)base) ? comp[base-'a'] + ' ' : comp[base-'A'] ;
 
 	return(base);
 
@@ -266,7 +266,7 @@ int nNuc[3], nAlt;
 	seqLength = strlen(strand);
 	while( base <= seqLength-3 ) {
 	  for ( index=0, i=0; i<3; i++)
-	    if ( pPos = strchr(nonAmbigBases,strand[base+i]) )
+	    if ( (pPos = strchr(nonAmbigBases,strand[base+i])) )
 	      index += indx[i][pPos-nonAmbigBases];
 	    else
 	      index += 65;   /* Amibiguous base pushes total out of range */

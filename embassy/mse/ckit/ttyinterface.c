@@ -17,6 +17,9 @@
 #include "seqentry.h"
 #include "ckittypes.h"
 #include "macros.h"
+#include <unistd.h>
+#include <stdlib.h>
+
 /*
 **  Declaration and prototypes for functions within this file
 */
@@ -38,6 +41,7 @@ extern    char *StrCollapse(char *);                       /* Strings.c */
 extern Boolean  StrIsBlank(char *);                        /* Strings.c */
 extern    char *BooleanToStr(Boolean value, Choice style); /* Strings.c */
 extern Boolean GetOSSymbol(char* , char*);           /* <os>.c */
+extern    char  *StrTrim(char *String);
 
 
 /**  GetInput  ************************************************************
@@ -154,13 +158,13 @@ Try:	if ( StrIsBlank(StrCollapse(GetInput(prompt,string))) )
 	value = 0;
 	for ( i=0; string[i]; i++ ) {
 	  if ( string[i] == '.' ) break;
-	  if ( isdigit(string[i]) )
+	  if ( isdigit((int)string[i]) )
 	    value = (value * 10.) + (string[i] -'0');
 	}
 
 	power = 1.0;
 	for (; string[i]; i++ )
-	  if ( isdigit(string[i]) ) {
+	  if ( isdigit((int)string[i]) ) {
 	    value = (value * 10.) + (string[i] -'0');
 	    power *= 10.0;
 	  }
@@ -205,11 +209,11 @@ Try:	if ( StrIsBlank(StrCollapse(GetInput(prompt,string))) )
 	if ( string[0] == '+' || string[0] == '-')
 	  sign = (string[0]=='+') ? 1: -1;
 
-	if ( cPos = strchr(string,'.') ) *cPos = '\0';
+	if ( (cPos = strchr(string,'.')) ) *cPos = '\0';
 
 	value = 0;
 	for ( i=0; string[i]; i++ )
-	  if ( isdigit(string[i]) )
+	  if ( isdigit((int)string[i]) )
 	    value = (value * 10) + (string[i] -'0');
 
 	value *= sign;
@@ -251,7 +255,7 @@ Boolean reverse;
 
 	sprintf(temp,"End [%ld] ?  ", *end);
 	sprintf(format,"%30s",temp);
-	if ( cPos = strrchr(format,'[') ) *(cPos-1) = EOS;
+	if ( (cPos = strrchr(format,'[')) ) *(cPos-1) = EOS;
 
 	*end = GetInteger(format, *end, *begin, seq->length);
 

@@ -12,6 +12,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <math.h>
+#include <unistd.h>
 
 #include "ckittypes.h"
 #include "seqspec.h"
@@ -176,7 +177,7 @@ static char code[20];
 	  return(code);
 	}
 
-end:	initialized = false;
+	initialized = false;
 	return(NULL);
 
 }  /* End of NextGCGCode */

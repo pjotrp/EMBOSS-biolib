@@ -22,6 +22,9 @@
 #include "mse.h"         /* MSE global variables and definitions  */
 
 
+extern long DeGap(char * strand);
+
+
 /*FILE *debug;*/
 int DEFAULTFORMAT;
 /*AjPStr FORMATSTR=NULL;*/
@@ -146,7 +149,7 @@ void Initscr(){
   TEXTMARK = MARK2+4;
 }
 
-main(int argc, char *argv[], char **env)
+int main(int argc, char *argv[], char **env)
 {
 char OneLine[132];
 char ComStr[132], ArgStr[132];
@@ -246,6 +249,8 @@ Loop:
 
 	UpDate();
 	goto Loop;
+
+return 0;
 
 }  /* End of MSE Main */
 
@@ -463,7 +468,7 @@ Parse:
 */
 
             case KEY_ENTER:
-              if ( isdigit(LastChar) ) LinePos = Seq[Strand].Offset + Rep;
+              if ( isdigit((int)LastChar) ) LinePos = Seq[Strand].Offset + Rep;
 	      Rep = 1;
 	      break;
 
@@ -731,7 +736,7 @@ Parse:
 	    case '7':
 	    case '8':
 	    case '9':
-              if ( isdigit(LastChar) == false ) Rep = 0;
+              if ( isdigit((int)LastChar) == false ) Rep = 0;
 	      Rep = 10*Rep + (Keystroke - '0');
 	      sprintf(OneLine," %d",Rep);
 	      ShowError(OneLine);
@@ -1122,12 +1127,12 @@ char *cPos, *tPos;
 /* skip leading white space */
 
 	cPos = OneLine;
-	while( isspace(*cPos) )
+	while( isspace((int)*cPos) )
 	   cPos++;
 
 /* scan a number from the start of the command if it is there */
 	tPos = TempStr;
-	while( *cPos == '-' || isdigit(*cPos) ) {
+	while( *cPos == '-' || isdigit((int)*cPos) ) {
 	  *tPos = *cPos;
 	  cPos++; tPos++;
 	}
@@ -1136,13 +1141,13 @@ char *cPos, *tPos;
 
 /* skip white space, comma and more white space */
 
-	while( isspace(*cPos) || *cPos == ',' )
+	while( isspace((int)*cPos) || *cPos == ',' )
 	    cPos++;
 
 /* scan another number off the command line */	
 
 	tPos = TempStr;
-	while( *cPos == '-' || isdigit(*cPos) ) {
+	while( *cPos == '-' || isdigit((int)*cPos) ) {
 	  *tPos = *cPos;
 	  cPos++; tPos++;
 	}
@@ -1154,13 +1159,13 @@ char *cPos, *tPos;
 
 /* skip white space */
 
-	while( isspace(*cPos) )
+	while( isspace((int)*cPos) )
 	   cPos++;
 
 /* get the command */
 
 	tPos = ComStr;
-	while( isalnum(*cPos) ) {
+	while( isalnum((int)*cPos) ) {
 	   *tPos = *cPos;
 	   cPos++; tPos++;
 	}
@@ -1168,7 +1173,7 @@ char *cPos, *tPos;
 
 /* skip more white space */
 	
-	while( isspace(*cPos) )
+	while( isspace((int)*cPos) )
 	   cPos++;
 
 /* save any text argument */
@@ -1465,12 +1470,14 @@ int i,j;
 	  return;
 	}
 
-	if ( s == NOADDR ) 
+	if ( s == NOADDR )
+        { 
 	  if ( SelectStr == Strand ) {
 	    s = SelectPos;
 	    f = SeqPos;
 	  } else
 	    s = 1;
+        }
 
 	i = LIMIT(1,AJMIN(s,f),Seq[Strand].Length);
 	j = LIMIT(1,AJMAX(s,f),Seq[Strand].Length);
@@ -1501,12 +1508,15 @@ int i,j;
 	  return;
 	}
 
-	if ( s == NOADDR ) 
+        if ( s == NOADDR ) 
+        {
+    
 	  if ( SelectStr == Strand ) {
 	    s = SelectPos;
 	    f = SeqPos;
 	  } else
-	    s = 1;
+	      s = 1;
+        }
 
 	i = LIMIT(1,AJMIN(s,f),Seq[Strand].Length);
 	j = LIMIT(1,AJMAX(s,f),Seq[Strand].Length);
@@ -1982,7 +1992,7 @@ char OneLine[132];
 	
 	SeqPos = LinePos - Seq[Strand].Offset;
 	sprintf( OneLine, 
-	  " \"%s\", %s in %s format.  Now at symbol %d of %d",
+	  " \"%s\", %s in %s format.  Now at symbol %ld of %ld",
 	  Seq[Strand].Name, DecodeType(Seq[Strand].Type),
           DecodeFormat(Seq[Strand].Format), SeqPos, Seq[Strand].Length);
 
@@ -2188,10 +2198,10 @@ int Pos, Pool;
 	  RevComp(RCTarget,Seq[1].Type);
 	  Pool = 1;
 	  while ( NextPool(&Pool) ) {
-	    if ( Loc = StrIndex(Target,Seq[Pool].Mem) ) {
+	    if ( (Loc = StrIndex(Target,Seq[Pool].Mem)) ) {
 	      Seq[Pool].Offset = Seq[Frag].Offset + Pos - (Loc - Seq[Pool].Mem+1);
 	      GelFind(Pool,Tuple,Shift);
-	    } else if ( Loc = StrIndex(RCTarget,Seq[Pool].Mem) ) {
+	    } else if ( (Loc = StrIndex(RCTarget,Seq[Pool].Mem)) ) {
 	      DoReverse(Pool);
 	      Seq[Pool].Offset = Seq[Frag].Offset + Pos - ((Seq[Pool].Length - (Loc-Seq[Pool].Mem)-Tuple)+1);
 	      GelFind(Pool,Tuple,Shift);
@@ -2249,7 +2259,7 @@ void DoMeld(int Start, int Finish, char *ArgStr )
 char MeldName[132];
 char OneLine[132], OutLine[132];
 char *ptr;
-int Left, Right, Name;
+int Left, Right, Name=0;
 int s,f,i, NumBad;
 int save;
 Boolean Bad, NotContig, AGroup;
@@ -2648,7 +2658,7 @@ int pos;
 
 	if ( string[pos] ) return(false);
 
-	if ( islower(cmdstr[pos]) || cmdstr[pos] == EOS ) 
+	if ( islower((int)cmdstr[pos]) || cmdstr[pos] == EOS ) 
 	   return(true);
 	else
 	   return(false);
@@ -3523,7 +3533,7 @@ char Consensus[256], LeftChar, RightChar;
 int MaxLen, NOut, Pos, CharPos;
 int i, ii, n, Step, SeqBarOffset, SeqBarLen;
 int TotalSeqs, BlocksPerPage, Block, Lines;
-Boolean Diff;
+Boolean Diff=0;
 FILE *OutFile;
 
 /*-------------------------------------------------------------------*/
@@ -3567,10 +3577,12 @@ FILE *OutFile;
 
 	ShowText("Show differences from the Plurality [Yes]?");
 	getstr(OutLine);
-	if ( StrIsBlank(OutLine) == false )
+        if ( StrIsBlank(OutLine) == false )
+        {
 	  if ( toupper(OutLine[0]) == 'N' ) Diff = false;
 	else
 	 Diff = true;
+        }
 
 /*
 ** Write out the file, Header, graph and then the sequences.
@@ -3913,20 +3925,20 @@ FILE *InFile;
 	 /* Get the first word which should be "CHANGE". */
 
 	  tPos = OneLine;
-	  if ( cPos = strchr(tPos, ' ') ) *cPos = '\0';	else continue;
+	  if ( (cPos = strchr(tPos, ' ')) ) *cPos = '\0';	else continue;
 	  StrToUpper(tPos);
 	  if ( strcmp(tPos, "CHANGE") != 0 ) continue;
 
 	 /* Get the next character which will be the keystroke to change */
 
 	  tPos = cPos + 1;
-	  if ( cPos = strchr(tPos, ' ') ) *cPos = '\0';	else continue;
+	  if ( (cPos = strchr(tPos, ' ')) ) *cPos = '\0';	else continue;
 	  InChar = *tPos;
 	
 	 /* Skip the next word, should be "INTO" */
 
 	  tPos = cPos + 1;
-	  if ( cPos = strchr(tPos, ' ') ) *cPos = '\0';	else continue;
+	  if ( (cPos = strchr(tPos, ' ')) ) *cPos = '\0';	else continue;
 	  StrToUpper(tPos);
 	  if ( strcmp(tPos, "INTO") != 0 ) continue;
 
@@ -3939,7 +3951,7 @@ FILE *InFile;
 	    OutChar = *tPos;
 
 	  if ( OutChar == BACKSPACE ) OutChar = DEL;
-	  CharMap[XFORM][InChar] = OutChar;
+	  CharMap[XFORM][(int)InChar] = OutChar;
 
 	}
 	CharMap[XFORM][127] = DEL;    /* Always map <DEL> to Delete key*/
@@ -3984,11 +3996,11 @@ void DoFind(int Start, int Finish, char *Pattern )
 	for ( i=s; i<=f; i++ ) {
 	  if ( OkToEdit[i] == false ) continue;
 	  if ( i == s && s == Strand ) {
-	    if ( Loc = StrIndex(OneLine, &Seq[i].Strand[SeqPos+1]) ) {
+	    if ( (Loc = StrIndex(OneLine, &Seq[i].Strand[SeqPos+1])) ) {
 	      LinePos = Seq[i].Offset + (Loc - &Seq[i].Strand[1]) + 1;
 	      return;
 	    }
-	  } else if ( Loc = StrIndex(OneLine, &Seq[i].Strand[1]) ) {
+	  } else if ( (Loc = StrIndex(OneLine, &Seq[i].Strand[1])) ) {
 	    LinePos = Seq[i].Offset + (Loc - &Seq[i].Strand[1]) + 1;
 	    Strand = i;
 	    return;
@@ -4003,11 +4015,11 @@ void DoFind(int Start, int Finish, char *Pattern )
 	  if ( OkToEdit[i] == false ) continue;
 	  if ( Seq[i].Type < DNA ) continue;
 	  if ( i == s && s == Strand ) {
-	    if ( Loc = StrIndex(OneLine, &Seq[i].Strand[SeqPos+1]) ) {
+	    if ( (Loc = StrIndex(OneLine, &Seq[i].Strand[SeqPos+1])) ) {
 	      LinePos = Seq[i].Offset + (Loc - &Seq[i].Strand[1]) + 1;
 	      return;
 	    }
-	  } else if ( Loc = StrIndex(OneLine, &Seq[i].Strand[1]) ) {
+	  } else if ( (Loc = StrIndex(OneLine, &Seq[i].Strand[1])) ) {
 	    LinePos = Seq[i].Offset + (Loc - &Seq[i].Strand[1]) + 1;
 	    Strand = i;
 	    ShowError(" Rev-comp of pattern found.");
@@ -4573,11 +4585,11 @@ Try:	ShowText(PStr);
 	if ( String[0] == '+' || String[0] == '-')
 	  Sign = (String[0]=='+') ? 1: -1;
 
-	if ( cPos = strchr(String,'.') ) *cPos = '\0';
+	if ( (cPos = strchr(String,'.')) ) *cPos = '\0';
 
 	Val = 0;
 	for ( i=0; String[i]; i++ )
-	  if ( isdigit(String[i]) )
+	  if ( isdigit((int)String[i]) )
 	    Val = (Val * 10) + (String[i] -'0');
 
 	Val *= Sign;

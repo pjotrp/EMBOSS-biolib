@@ -109,7 +109,7 @@ static Boolean dbIsOpen=false;
 	strcpy(dbLogical, "DB$");
 	strcat(dbLogical, dbName);
 
-	ajDebug("dblogical = %s\n",dbLogical);
+/*	ajDebug("dblogical = %s\n",dbLogical); */
 	if( TransName(translation, dbLogical) ) {
 	  dbIndex = PIR;
 	  if( OpenPIRDatabase(translation) ) {

@@ -16,6 +16,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <math.h>
+#include <unistd.h>
 
 #include "seqspec.h"
 #include "seqentry.h"
@@ -100,7 +101,7 @@ char errMsg[80];
 long line[8];
 
 
- ajDebug(" OpenPIRDatabase entered\n");
+/*  ajDebug(" OpenPIRDatabase entered\n"); */
 /*
 ** Open Database Index (.inx), Sequence (.seq) and Text (.ref) files.
 ** If any errors occur then return DBOpenFiles as false.
@@ -171,7 +172,9 @@ long line[8];
 	seqOffset  = line[6];
 	hashOffset = line[7];
 
-	ajDebug("OpenPIRDatabase %d %d %d %d %d %d %d\n",dbType,dbFormat,entries,codeLength,prime,seqOffset,hashOffset);
+/*	ajDebug("OpenPIRDatabase %d %d %d %d %d %d %d\n",dbType,dbFormat,
+	entries,codeLength,prime,seqOffset,hashOffset);
+*/
 	return(true);
 
 } /* End of OpenPIRDatabase */

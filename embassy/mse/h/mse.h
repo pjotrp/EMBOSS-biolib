@@ -65,7 +65,7 @@ char DefaultDB[]="Nucleic";  /* Default database for codewords */
 char IncSeq[10000];          /* Use by cut and paste */
 char FindSeq[256];           /* Target search pattern, remember it */
 
-char CharMap[2][128]=   /* Remap keystrokes to nucleic acid symbols */
+unsigned char CharMap[2][128]=   /* Remap keystrokes to nucleic acid symbols */
                         /* Fill the PLAIN array with IUPAC symbols  */
 {
 {255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,

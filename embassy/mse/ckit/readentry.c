@@ -62,6 +62,7 @@ extern     char *NucToProtein(int, char *, long *);        /* Sequence.c */
 extern      int  CheckSum(char *);                         /* Sequence.c */
 extern      int  CompBase(char);                           /* Sequence.c */
 extern     char *DePath(char *);                           /* VMS.c      */
+extern     void DeleteSeqEntry(SeqEntry *seq);
 
 /*
 **  Function declarations and prototypes for this file.  This file has only
@@ -151,7 +152,7 @@ GetLine:
 	  }
 
 	  cPtr = oneLine;
-	  while( seqChar=seqCharSet[(spec->format)-1][(*cPtr)&0x7F] ) {
+	  while( (seqChar=seqCharSet[(spec->format)-1][(*cPtr)&0x7F]) ) {
 	    cPtr++;
 	    switch (seqChar) {
 	      case ENDSEQ:
@@ -227,12 +228,14 @@ Done:
 ** Process any fragment spec, if the sequence was Circular, set it to Linear 
 */
 
-	if ( spec->frag )
+	if ( (spec->frag) )
+        {
      	  if( Fragment(spec->frag, seq) ) {
 	    seq->circular = false;
 	    seq->checkSum = CheckSum(seq->mem);
 	  } else
 	    return (NULL);
+        }
 
 /*
 ** read and process Options flags here 
@@ -265,10 +268,10 @@ Done:
 	    StrChange(seq->mem, '-', ' ');
 	    seq->length = strlen(StrCollapse(seq->mem));
 	    strcpy(oneLine, StrIndex("/TRA",spec->options)+1);
-	    if ( pPos = strchr(oneLine,'/') ) *pPos = '\0';
-	    if ( pPos = StrIndex("=SGC",oneLine) )
+	    if ( (pPos = strchr(oneLine,'/')) ) *pPos = '\0';
+	    if ( (pPos = StrIndex("=SGC",oneLine)) )
 	      sgCode = (*(pPos+4))-48;
-	    else if ( pPos = StrIndex("(SGC", seq->title) )
+	    else if ( (pPos = StrIndex("(SGC", seq->title)) )
 	      sgCode = (*(pPos+4))-48;
 	    else 
 	      sgCode = 0;
@@ -379,7 +382,7 @@ char *cPos;
 	  switch (spec->format) {
 	    case  PIR:
 	      if ( fgets(title, 256, userFile) ) {
-	        if ( cPos = strchr(title, '\n') ) *cPos = '\0';
+	        if ( (cPos = strchr(title, '\n')) ) *cPos = '\0';
 	      } else {
 	        strcpy(errMsg,"Code not found in user-entry file");
 	        PostError(1,errMsg);
@@ -422,9 +425,9 @@ char *cPos;
 
 	  if( (*SetDBPointers)(spec) ) {
 	      fgets(headerLine, 512, seqFile);
-	      if ( cPos = strchr(headerLine, '\n') ) *cPos = '\0';
+	      if ( (cPos = strchr(headerLine, '\n')) ) *cPos = '\0';
 	      fgets(title, 512, seqFile);
-	      if ( cPos = strchr(title, '\n') ) *cPos = '\0';
+	      if ( (cPos = strchr(title, '\n')) ) *cPos = '\0';
 	  } else
 	    return (false);
 
@@ -443,7 +446,7 @@ char *cPos;
 	  case STRIDER:
 	   strcpy(spec->code, spec->file);
 	   DePath(spec->code);
-	   if ( cPos = strchr(spec->code,'.') ) *cPos = '\0';
+	   if ( (cPos = strchr(spec->code,'.')) ) *cPos = '\0';
 	}
 
 /*
@@ -543,7 +546,7 @@ Boolean reverse;
 */
 
 	reverse = false;
-	if ( cPos = StrIndex("(C)", fSpec) ) {  /* Test for rev-comp */
+	if ( (cPos = StrIndex("(C)", fSpec)) ) {  /* Test for rev-comp */
 	  for ( k=0; k<3; k++ )
 	   *(cPos+k) = ' ';
 	  reverse = true;
@@ -580,7 +583,7 @@ Boolean reverse;
 	workSize = 0;
 	tokens = numTokens;
 	for (pFSpec = fSpec;  tokens; tokens--) {
-	  if ( cPos = strchr(pFSpec, ',') ) *cPos = '\0';
+	  if ( (cPos = strchr(pFSpec, ',')) ) *cPos = '\0';
 	  if ( *pFSpec == '\"' || *pFSpec == '\'' ) { /* Literal */
 	    for (k=1; *(pFSpec+k+1) ; k++)
 	      workSize++;
@@ -588,7 +591,7 @@ Boolean reverse;
 	    continue;
 	  }
 
-	  if ( pPos = strchr(pFSpec, '-') ) {           /* Range */
+	  if ( (pPos = strchr(pFSpec, '-')) ) {           /* Range */
             strcpy(stopTok,pPos+1);
 	    *pPos = '\0';
 	    strcpy(startTok,pFSpec);
@@ -643,7 +646,7 @@ Boolean reverse;
 
 	tokens = numTokens;
 	for (pFSpec = fSave;  tokens; tokens--) {
-	  if ( cPos = strchr(pFSpec, ',') ) *cPos = '\0';
+	  if ( (cPos = strchr(pFSpec, ',')) ) *cPos = '\0';
 	  if ( *pFSpec == '\"' || *pFSpec == '\'' ) { /* Literal */
 	    for (k=1; *(pFSpec+k+1) ; k++)
 	      *seqPos++ = *(pFSpec+k);
@@ -651,7 +654,7 @@ Boolean reverse;
 	    continue;
 	  }
 
-	  if ( pPos = strchr(pFSpec, '-') ) {           /* Range */
+	  if ( (pPos = strchr(pFSpec, '-')) ) {           /* Range */
             strcpy(stopTok,pPos+1);
 	    *pPos = '\0';
 	    strcpy(startTok,pFSpec);
@@ -757,7 +760,7 @@ FILE *file;
 	strcpy(seq->text,"");
 	backRec = ftell(file);
 
-GetLine:
+
 	while ( fgets(oneLine, 512, file) != NULL ) {
 	  n += strlen(oneLine);
 	  if ( n > seq->tSize ) {

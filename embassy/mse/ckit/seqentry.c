@@ -5,6 +5,7 @@
 **
 *****************************************************************************/
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "seqentry.h"
@@ -17,6 +18,7 @@
 */
 
 extern char *StrToUpper(char *), *StrCollapse(char *);          /* Strings.c */
+extern void DeleteSeqSpec(SeqSpec *spec);
 
 /*
 ** Functions declarations and prototypes for this file
@@ -122,7 +124,7 @@ char temp[256];
 	  strncat(temp, &seq->spec->frag[1], strlen(seq->spec->frag)-2);
 	}
 
-	sprintf(&temp[strlen(temp)],"  Length: %d  Check: %d",
+	sprintf(&temp[strlen(temp)],"  Length: %ld  Check: %d",
 	        seq->length, seq->checkSum);
 
 	seq->desc = CALLOC(strlen(temp)+1,char);

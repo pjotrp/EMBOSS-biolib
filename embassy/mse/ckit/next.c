@@ -39,7 +39,7 @@
 #include "ckit.h"
 #include "ttyinterface.h"
 
-main()
+int main()
 {
 SeqSpec *wildSpec;
 SeqEntry *seq;
@@ -54,7 +54,7 @@ Boolean ask = true;
 
 ReTry:	wildSpec = GetSeqSpec("NEXT on which sequence(s)","TestSpec", "PIR1");
 
-	while ( seq = NextSeqEntry(wildSpec) ) {
+	while ( (seq = NextSeqEntry(wildSpec)) ) {
 
 	  printf("\n\n %s\n %s\n %s\n", seq->name, seq->title, seq->desc);
 
@@ -104,5 +104,5 @@ printf("\n%ld,%ld",begin,end);
 
 	ClearErrors();
 	goto ReTry;
-
+        return 0;
 }
