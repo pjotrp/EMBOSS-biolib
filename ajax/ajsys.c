@@ -625,13 +625,13 @@ char* ajSysStrdup(const char *s)
 
 AjBool ajSysIsRegular(const char *s)
 {
-#if defined (HAVE64)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux)
     static struct stat64 buf;
 #else
     static struct stat buf;
 #endif
 
-#if defined (HAVE64)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux)
     if(stat64(s,&buf)==-1)
 	return ajFalse;
 #else
@@ -659,13 +659,13 @@ AjBool ajSysIsRegular(const char *s)
 
 AjBool ajSysIsDirectory(const char *s)
 {
-#if defined (HAVE64)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux)
     static struct stat64 buf;
 #else
     static struct stat buf;
 #endif
 
-#if defined (HAVE64)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux)
     if(stat64(s,&buf)==-1)
 	return ajFalse;
 #else

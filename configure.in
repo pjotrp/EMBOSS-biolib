@@ -9,8 +9,20 @@ AC_INIT(ajax/ajacd.c)
 AM_INIT_AUTOMAKE(EMBOSS, 2.8.0)
 
 
+dnl Test whether --with-sgiabi given for IRIX (n32m3 n32m4 64m3 64m4)
+if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64" ; then
+if test "$CC" != "gcc"; then
+  CC=cc
+  CHECK_SGI
+fi
+fi
+
+
 dnl Use libtool to make a shared library.
 AM_PROG_LIBTOOL
+
+dnl endian test for indexing system
+AC_C_BIGENDIAN(CPPFLAGS="$CPPFLAGS -DBENDIAN",CPPFLAGS="$CPPFLAGS -DLENDIAN")
 
 dnl PCRE library definitions - see the MAJOR and MINOR values
 dnl to see which version's configure.in these lines come from
@@ -84,6 +96,7 @@ AC_CHECK_LIB(c, socket, LIBS="$LIBS" , LIBS="$LIBS -lsocket")
 AC_CHECK_LIB(m, main)
 
 AM_CONDITIONAL(AMPNG, false)
+
 CHECK_GENERAL
 CHECK_JAVA
 CHECK_JAVAOS
@@ -128,7 +141,7 @@ fi
 
 
 dnl Turn off irritating linker warnings in IRIX
-if test "`uname`" = "IRIX"; then
+if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64"; then
 CFLAGS="-Wl,-LD_MSG:off=85:off=84:off=16:off=134 $CFLAGS"
 fi
 
@@ -136,6 +149,11 @@ fi
 
 
 dnl Test if --enable-large is given
+if test "${enable_large+set}" != set; then
+enable_large=yes
+fi
+
+
 AC_ARG_ENABLE(large,
 [ --enable-large   large ])
 if test "${enable_large}" = "yes" ; then
@@ -143,7 +161,7 @@ AC_MSG_CHECKING(for large file support)
 
 dnl Test for Linux large file support
 if test "`uname`" = "Linux"; then
-CPPFLAGS="-DAJ_LinuxLF -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE $CPPFLAGS"
+CPPFLAGS="-DAJ_LinuxLF -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE $CPPFLAGS"
 fi
 
 dnl Test for Solaris large file support
@@ -157,12 +175,22 @@ CPPFLAGS="-DAJ_OSF1LF $CPPFLAGS"
 fi
 
 dnl Test for SGI large file support
-dnl CPPFLAGS="-DAJ_IRIXLF -D_OFF64_T -D_LFAPI -D_NO_ANSIMODE $CPPFLAGS"
-if test "`uname`" = "IRIX"; then
-CPPFLAGS="-DAJ_IRIXLF $CPPFLAGS"
+dnl CPPFLAGS="-DAJ_IRIXLF -D_LARGEFILE64_SOURCE $CPPFLAGS"
+if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64"; then
+CPPFLAGS="-DAJ_IRIXLF -D_LARGEFILE64_SOURCE $CPPFLAGS"
 fi
 
+dnl Test for AIX large file support
+dnl CPPFLAGS="-DAJ_AIXLF $CPPFLAGS"
+if test "`uname`" = "AIX"; then
+CPPFLAGS="-DAJ_AIXLF -D_LARGE_FILES $CPPFLAGS"
+fi
 
+dnl Test for HP-UX large file support
+dnl CPPFLAGS="-DAJ_HPUXLF -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 $CPPFLAGS"
+if test "`uname`" = "HP-UX"; then
+CPPFLAGS="-DAJ_HPUXLF -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 $CPPFLAGS"
+fi
 
 AC_MSG_RESULT(done)
 fi
@@ -173,6 +201,11 @@ fi
 
 
 dnl Test if --enable-64 is given
+if test "${enable_64+set}" != set; then
+enable_64=yes
+fi
+
+
 AC_ARG_ENABLE(64,
 [ --enable-64   64 ])
 if test "${enable_64}" = "yes" ; then
@@ -194,8 +227,18 @@ CPPFLAGS="-DAJ_OSF164 $CPPFLAGS"
 fi
 
 dnl Test for SGI 64 bit
-if test "`uname`" = "IRIX"; then
-CPPFLAGS="-DAJ_IRIX64 -mabi=64 $CPPFLAGS"
+if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64"; then
+CPPFLAGS="-DAJ_IRIX64 $CPPFLAGS"
+fi
+
+dnl Test for AIX 64 bit
+if test "`uname`" = "AIX"; then
+CPPFLAGS="-DAJ_AIX64 $CPPFLAGS"
+fi
+
+dnl Test for HP-UX 64 bit
+if test "`uname`" = "HP-UX"; then
+CPPFLAGS="-DAJ_HPUX64 $CPPFLAGS"
 fi
 
 AC_MSG_RESULT(done)

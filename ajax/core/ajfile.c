@@ -2041,13 +2041,13 @@ AjPStr ajFileGetName(const AjPFile thys)
 
 AjBool ajFileStat(AjPStr *fname, ajint mode)
 {
-#if defined (HAVE64)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux)
     struct stat64 buf;
 #else
     struct stat buf;
 #endif
 
-#if defined (HAVE64)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux)
     if(!stat64(ajStrStr(*fname), &buf))
 #else
 	if(!stat(ajStrStr(*fname), &buf))
@@ -2072,13 +2072,13 @@ AjBool ajFileStat(AjPStr *fname, ajint mode)
 
 ajlong ajFileLength(AjPStr fname)
 {
-#if defined (HAVE64)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux)
     struct stat64 buf;
 #else
     struct stat buf;
 #endif
 
-#if defined (HAVE64)
+#if defined (HAVE64) && !defined (_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux)
     if(!stat64(ajStrStr(fname), &buf))
 	return (ajlong)buf.st_size;
 #else
@@ -2441,7 +2441,7 @@ AjPFileBuff ajFileBuffNewDW(const AjPStr dir, const AjPStr wildfile)
 {
     DIR* dp;
     static AjPStr dirfix = NULL;
-#if defined (HAVE64)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !(defined (__SVR4) && defined (__sun))
     struct dirent64 *de;
 #else
     struct dirent* de;
@@ -2466,7 +2466,7 @@ AjPFileBuff ajFileBuffNewDW(const AjPStr dir, const AjPStr wildfile)
     dirsize = 0;
     list = ajListstrNew();
 
-#if defined (HAVE64)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !(defined (__SVR4) && defined (__sun))
     while((de = readdir64(dp)))
     {
 #else
@@ -2574,7 +2574,7 @@ AjPFile ajFileNewDW(const AjPStr dir, const AjPStr wildfile)
 {
     DIR* dp;
     static AjPStr dirfix = NULL;
-#if defined (HAVE64)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !(defined (__SVR4) && defined (__sun))
     struct dirent64 *de;
 #else
     struct dirent* de;
@@ -2599,7 +2599,7 @@ AjPFile ajFileNewDW(const AjPStr dir, const AjPStr wildfile)
     dirsize = 0;
     list = ajListstrNew();
     
-#if defined (HAVE64)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !(defined (__SVR4) && defined (__sun))
     while((de = readdir64(dp)))
     {
 #else
@@ -4083,7 +4083,7 @@ ajint ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
     AjPList dirs = NULL;
     AjIList iter = NULL;
     DIR *indir;
-#if defined (HAVE64)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !(defined (__SVR4) && defined (__sun))
     struct dirent64 *dp;
 #else
     struct dirent *dp;
@@ -4124,7 +4124,7 @@ ajint ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
     s = ajStrNew();
     dirs = ajListNew();
     
-#if defined (HAVE64)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !(defined (__SVR4) && defined (__sun))
     while((dp=readdir64(indir)))
 #else
     while((dp=readdir(indir)))
@@ -4325,7 +4325,7 @@ AjBool ajFileDirTrim(AjPStr* name)
 
 char* ajFileTempName(const char *dir)
 {
-#if defined (HAVE64)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux)
     struct  stat64 buf;
 #else
     struct  stat buf;
@@ -4355,7 +4355,7 @@ char* ajFileTempName(const char *dir)
     retry = 5;
     ok    = ajTrue;
     
-#if defined (HAVE64)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux)
     while(!stat64(ajStrStr(dt),&buf) && retry)
 #else
 	while(!stat(ajStrStr(dt),&buf) && retry)

@@ -1,4 +1,10 @@
 Version 2.8.0
+	Compilation now uses large file handling by default. To disable use
+	--disable-large when configuring. An effect is to make the default
+	size of ajlongs 64 bits.
+
+	Pepstats modified to allow multiple sequences
+
 	Major (well, obvious impact on ACD authors) ACD change - the
 	"required" attribute is renamed "standard" and the "optional"
 	attribute is renamed "additional". They have exactly the same
