@@ -160,7 +160,7 @@ typedef struct SeqSListUsa
 
 
 
-enum fmtcode {FMT_OK, FMT_NOMATCH, FMT_BADTYPE, FMT_FAIL};
+enum fmtcode {FMT_OK, FMT_NOMATCH, FMT_BADTYPE, FMT_FAIL, FMT_EOF};
 
 
 
@@ -1508,6 +1508,12 @@ static ajint seqReadFmt(AjPSeq thys, AjPSeqin seqin,
     }
     else
     {
+	ajDebug("Testing input buffer: IsBuff: %B Eof: %B\n",
+		ajFileBuffIsBuffered(seqin->Filebuff),
+		ajFileBuffEof(seqin->Filebuff));
+	if (!ajFileBuffIsBuffered(seqin->Filebuff) &&
+	    ajFileBuffEof(seqin->Filebuff))
+	    return FMT_EOF;
 	ajFileBuffResetStore(seqin->Filebuff, seqin->Text, &thys->TextPtr);
 	ajDebug("Format %d (%s) failed, file buffer reset by seqReadFmt\n",
 		format, seqInFormatDef[format].Name);
@@ -1598,6 +1604,9 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 	    case FMT_NOMATCH:
 		ajDebug("seqRead: (c1) seqReadFmt stat==NOMATCH try again\n");
 		break;
+	    case FMT_EOF:
+		ajDebug("seqRead: (d1) seqReadFmt stat == EOF *failed*\n");
+		return ajFalse;			/* EOF and unbuffered */
 	    default:
 		ajDebug("unknown code %d from seqReadFmt\n", stat);
 	    }
@@ -1629,10 +1638,13 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 	    return ajFalse;
 	case FMT_FAIL:
 	    ajDebug("seqRead: (b2) seqReadFmt stat == FAIL *failed*\n");
-	    break;		     /* could be simply end-of-file */
+	    return ajFalse;
 	case FMT_NOMATCH:
 	    ajDebug("seqRead: (c2) seqReadFmt stat == NOMATCH *try again*\n");
 	    break;
+	case FMT_EOF:
+	    ajDebug("seqRead: (d2) seqReadFmt stat == EOF *try again*\n");
+	    break;		     /* simply end-of-file */
 	default:
 	    ajDebug("unknown code %d from seqReadFmt\n", stat);
 	}
@@ -1662,6 +1674,9 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 	case FMT_NOMATCH:
 	    ajDebug("seqRead: (c3) seqReadFmt stat == NOMATCH *try again*\n");
 	    break;
+	case FMT_EOF:
+	    ajDebug("seqRead: (d3) seqReadFmt stat == EOF *failed*\n");
+	    break;			/* we already tried again */
 	default:
 	    ajDebug("unknown code %d from seqReadFmt\n", stat);
 	}
@@ -3195,8 +3210,9 @@ static AjBool seqReadText(AjPSeq thys, AjPSeqin seqin)
 /* @funcstatic seqReadRaw *****************************************************
 **
 ** Given data in a sequence structure, tries to read everything needed
-** using raw format, which accepts only alphanumeric and whietspace
-** characters and rejects anything else.
+** using raw format, which accepts only alphanumeric and whitespace
+** characters or '-' for gap or '*' for a protein stop
+** and rejects anything else.
 **
 ** @param [w] thys [AjPSeq] Sequence object
 ** @param [u] seqin [AjPSeqin] Sequence input object
@@ -3216,7 +3232,7 @@ static AjBool seqReadRaw(AjPSeq thys, AjPSeqin seqin)
     buff = seqin->Filebuff;
 
     if(!rawexp)
-	rawexp = ajRegCompC("[^A-Za-z0-9 \t\n\r]");
+	rawexp = ajRegCompC("[^A-Za-z0-9 \t\n\r*-]");
 
     while(ajFileBuffGetStore(buff, &rdline,
 			     seqin->Text, &thys->TextPtr))
@@ -3224,7 +3240,7 @@ static AjBool seqReadRaw(AjPSeq thys, AjPSeqin seqin)
 	ajDebug("read '%S'\n", rdline);
 	if(ajRegExec(rawexp, rdline))
 	{
-	    ajDebug("Bad character found in line: %S\n", rdline);
+	    ajDebug("seqReadRaw: Bad character found in line: %S\n", rdline);
 	    ajFileBuffReset(buff);
 	    return ajFalse;
 	}
@@ -4399,7 +4415,7 @@ static AjBool seqReadNexus(AjPSeq thys, AjPSeqin seqin)
 	iseq = 0;
 	seqin->multidone = ajFalse;
 
-	ajFileBuffIsbuff(buff);
+	ajFileBuffBuff(buff);
 
 	ok = ajFileBuffGetStore(buff, &rdline,
 				seqin->Text, &thys->TextPtr);
@@ -5315,6 +5331,26 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
 
     bufflines++;
 
+    /* for GCG formatted databases */
+
+    while(ajStrPrefixC(rdline, "WP "))
+    {
+	if(!ajFileBuffGetStore(buff, &rdline,
+			       seqin->Text, &thys->TextPtr))
+	    return ajFalse;
+	bufflines++;
+    }
+
+    /* extra blank lines */
+
+    while(ajStrIsWhite(rdline))
+    {
+	if(!ajFileBuffGetStore(buff, &rdline,
+			       seqin->Text, &thys->TextPtr))
+	    return ajFalse;
+	bufflines++;
+    }
+
     ajDebug("seqReadSwiss first line '%S'\n", rdline);
 
     if(!ajStrPrefixC(rdline, "ID   "))
@@ -5494,6 +5530,16 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
     /* for GCG formatted databases */
 
     while(ajStrPrefixC(rdline, "WP "))
+    {
+	if(!ajFileBuffGetStore(buff, &rdline,
+			       seqin->Text, &thys->TextPtr))
+	    return ajFalse;
+	bufflines++;
+    }
+
+    /* extra blank lines */
+
+    while(ajStrIsWhite(rdline))
     {
 	if(!ajFileBuffGetStore(buff, &rdline,
 			       seqin->Text, &thys->TextPtr))
