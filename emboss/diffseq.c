@@ -379,8 +379,8 @@ static void diffseq_diff (AjPList matchlist, AjPSeq seq1, AjPSeq seq2, AjPFile
     ajint len1, len2;
 
     /* get the feature table of the sequences */
-    AjPFeattable feat1 = ajSeqGetFeat(seq1);
-    AjPFeattable feat2 = ajSeqGetFeat(seq2);
+    AjPFeattable feat1 = ajSeqCopyFeat(seq1);
+    AjPFeattable feat2 = ajSeqCopyFeat(seq2);
 
 
     /* title line */
@@ -550,8 +550,8 @@ static void diffseq_diff (AjPList matchlist, AjPSeq seq1, AjPSeq seq2, AjPFile
     ajStrDel(&s1);
     ajStrDel(&s2);
     ajStrDel(&tmp);
-    (void) ajFeattabDel(&feat1);
-    (void) ajFeattabDel(&feat2);
+    (void) ajFeattableDel(&feat1);
+    (void) ajFeattableDel(&feat2);
 
     return;
 }
