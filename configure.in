@@ -64,7 +64,7 @@ AC_ARG_ENABLE(corba,
 [ --enable-corba	   corba (need glib and orbit)])
 if test "${enable_corba}" = "yes" ; then
 AC_MSG_CHECKING(for ORBit and glib)
-CPPFLAGS="$CPPFLAGS -I/usr/lib/glib/include"
+CPPFLAGS="$CPPFLAGS -I/usr/lib/glib/include -I/usr/local/lib/glib/include"
 
 AC_CHECK_HEADERS(glib.h)
 AC_CHECK_HEADERS(orb/orbit.h)

@@ -549,11 +549,13 @@ AjPStr ajSeqCorbaEmbl(char *code, char **exerr, int *exint, AjPCorbafeat *feat,
 	    }
 
 	    ntags = Efptr->_length;
+	    printf("NLOCS=%d\n",nlocs);
 	    (*feat)->Types[fcnt] = ajCorbatypeNew(ntags,nlocs);
 
 	    for(i=0;i<nlocs;++i)
 	    {
-		(*feat)->Types[fcnt]->LStrand[i] = Esfl->strand;
+		(*feat)->Types[fcnt]->LStrand[i] = (int) ((short)Esfl->strand);
+		printf("STRAND=%d\n", (int) ((short)Esfl->strand));
 		(*feat)->Types[fcnt]->LSpos[i]   = Esfl->start.position;
 		(*feat)->Types[fcnt]->LEpos[i]   = Esfl->end.position;
 		(*feat)->Types[fcnt]->LSex[i]    = Esfl->start.extension;
@@ -651,6 +653,11 @@ AjPStr ajSeqCorbaEmbl(char *code, char **exerr, int *exint, AjPCorbafeat *feat,
 	    org_biocorba_seqcore_SeqFeature_unref(Cseqfeat,&Cenv);
 	    CORBA_Object_release(Cseqfeat, &Cenv);
 	}
+
+	org_biocorba_seqcore_SeqFeatureIterator_unref(Cseqfeatiter,&Cenv);
+	org_biocorba_seqcore_SeqFeatureVector_unref(Cseqfeatvec,&Cenv);
+	CORBA_Object_release(Cseqfeatiter, &Cenv);
+	CORBA_Object_release(Cseqfeatvec, &Cenv);
     }
     
     sequence = ajStrNewC(sq);
@@ -668,15 +675,11 @@ AjPStr ajSeqCorbaEmbl(char *code, char **exerr, int *exint, AjPCorbafeat *feat,
 
 
 
-    org_biocorba_seqcore_SeqFeatureIterator_unref(Cseqfeatiter,&Cenv);
-    org_biocorba_seqcore_SeqFeatureVector_unref(Cseqfeatvec,&Cenv);
     org_biocorba_seqcore_PrimarySeq_unref(Cpriseq,&Cenv);
     org_biocorba_seqcore_Seq_unref(Cseq,&Cenv);
     org_biocorba_seqcore_SeqDB_unref(CseqDB,&Cenv);
     
 
-    CORBA_Object_release(Cseqfeatiter, &Cenv);
-    CORBA_Object_release(Cseqfeatvec, &Cenv);
     CORBA_Object_release(Cpriseq, &Cenv);
     CORBA_Object_release(Cseq, &Cenv);
     CORBA_Object_release(CseqDB, &Cenv);
