@@ -30,8 +30,10 @@ import java.awt.geom.AffineTransform;
 import java.util.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
+import java.net.URL;
 
 import org.emboss.jemboss.gui.ScrollPanel;
+import org.emboss.jemboss.gui.Browser;
 
 public class DNADraw extends ScrollPanel
                      implements Printable, DragGestureListener,
@@ -909,6 +911,31 @@ public class DNADraw extends ScrollPanel
       }
     });
     optionMenu.add(reSites);
+
+// help manu
+    JMenu helpMenu = new JMenu("Help");
+    menuBar.add(helpMenu);
+   
+    JMenuItem aboutMenu = new JMenuItem("About");
+    helpMenu.add(aboutMenu);
+    aboutMenu.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        ClassLoader cl = this.getClass().getClassLoader();
+        try
+        {
+          URL inURL = cl.getResource("resources/readmeDNADraw.html");
+          new Browser(inURL,"resources/readmeAlign.html");
+        }
+        catch (Exception ex)
+        {
+          JOptionPane.showMessageDialog(null,
+                              "Jemboss Alignment Viewer Guide not found!",
+                              "Error", JOptionPane.ERROR_MESSAGE);
+        }
+      }
+    });
 
     return menuBar;
   }
