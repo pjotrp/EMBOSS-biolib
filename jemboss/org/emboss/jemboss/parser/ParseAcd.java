@@ -138,6 +138,8 @@ public class ParseAcd
         if(colonPos < 0) continue;
 
         String dataType = line.substring(0,colonPos).toLowerCase();
+        if(dataType.equals("toggle"))
+          dataType = "boolean";
         braketPos = line.indexOf('[');
 
         if(braketPos >= 0) 
