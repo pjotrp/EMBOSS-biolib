@@ -71,7 +71,7 @@ A 'simple frequency matrix' is simply a count of the number of times any
 particular amino acid occurs at each position in the alignment used to
 create it.  Simple frequency matrices are created using the program
 <b>prophecy</b> with the option '-type F' to create the correct type of
-matrix. 
+matrix. The alignment should not have gaps in it.
 
 <p>
 
@@ -469,7 +469,10 @@ None.
     Warnings
 </H2>
 
-None.
+The aligned set of sequences used to make the simple frquency matrix
+should not have gaps in it.  <b>profit</b> will let you use a matrix
+made from a gapped alignment, but the results will probably not be
+sensible. 
 
 <H2>
     Diagnostic Error Messages

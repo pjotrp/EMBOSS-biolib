@@ -21,7 +21,7 @@ Description
    any particular amino acid occurs at each position in the alignment
    used to create it. Simple frequency matrices are created using the
    program prophecy with the option '-type F' to create the correct type
-   of matrix.
+   of matrix. The alignment should not have gaps in it.
    
    The resulting matrix is moved to each position in the sequence(s) you
    are searching. At each position in the sequence, the frequencies of
@@ -330,7 +330,9 @@ References
    
 Warnings
 
-   None.
+   The aligned set of sequences used to make the simple frquency matrix
+   should not have gaps in it. profit will let you use a matrix made from
+   a gapped alignment, but the results will probably not be sensible.
    
 Diagnostic Error Messages
 
