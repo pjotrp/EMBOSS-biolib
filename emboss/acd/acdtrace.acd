@@ -1,0 +1,10 @@
+application: acdtrace [
+  documentation: "ACD compiler on-screen trace"
+  groups: "Acd"
+]
+
+string: program [
+  parameter: "Y"
+  information: "Program name, followed by command line"
+  knowntype: "Program name"
+]
