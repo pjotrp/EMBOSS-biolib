@@ -163,6 +163,9 @@ int main(int argc, char **argv)
 			 start1, start2, gapopen, gapextend,
 			 score, matrix, begina, beginb);
 
+    ajAlignWrite (align);
+    ajAlignReset(align);
+
     /* write the merged sequence */
     (void) ajSeqReplace(a, merged);
     (void) ajSeqWrite (seqout, a);

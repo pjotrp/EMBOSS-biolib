@@ -254,6 +254,8 @@ int main(int argc, char **argv)
 				    m,n,start1,start2,
 				    gapopen, gapextend,
 				    score,matrix, begina, beginb);
+		ajAlignWrite (align);
+		ajAlignReset(align);
 	    }
 	    ajStrDel(&n);
 	}

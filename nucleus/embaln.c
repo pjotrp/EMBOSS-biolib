@@ -3044,9 +3044,6 @@ void embAlignReportGlobal(AjPAlign align, AjPSeq seqa, AjPSeq seqb,
   /* ajAlignSetRange (align, start1+1, end1+1, start2+1, end2);*/
   ajAlignSetRange (align, offset1, end1+1, offset2, end2);
 
-  ajAlignWrite (align);
-  ajAlignReset(align);
-
   ajStrDel(&fa);
   ajStrDel(&fb);
   ajSeqsetDel(&seqset);
@@ -3115,9 +3112,6 @@ void embAlignReportLocal(AjPAlign align, AjPSeq seqa, AjPSeq seqb,
   end1 = start1 - ajStrCountK(m, '-') + ajStrLen(m);
   end2 = start2 - ajStrCountK(n, '-') + ajStrLen(n);
   ajAlignSetRange (align, start1+offset1, end1+1, start2+offset2, end2);
-
-  ajAlignWrite (align);
-  ajAlignReset(align);
 
   ajSeqsetDel(&seqset);
   ajSeqDel(&res1);
