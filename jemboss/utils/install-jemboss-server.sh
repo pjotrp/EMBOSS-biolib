@@ -97,7 +97,14 @@ embassy_install()
   USER_CONFIG=$5
 
   echo
-  echo 
+  echo "--------------------------------------------------------------"
+  echo
+  echo "EMBASSY packages can optionally be installed along with"
+  echo "the EMBOSS applications, see:"
+  echo "http://www.hgmp.mrc.ac.uk/Software/EMBOSS/EMBASSY/index.html"
+  echo
+  echo "--------------------------------------------------------------"
+  echo
   echo "Install EMBASSY packages (y,n) [y]?"
   read EMBASSY
 
@@ -193,7 +200,8 @@ ssl_print_notes()
 
  fi
 
- echo "$NUM) COPY & PASTE THE FOLLOWING INTO "$TOMCAT_ROOT/conf/server.xml
+ echo "$NUM) COPY & PASTE THE FOLLOWING INTO "
+ echo "   $TOMCAT_ROOT/conf/server.xml"
  echo 
  echo
 
@@ -332,8 +340,8 @@ deploy_axis_services()
 
   echo
   echo "Deploying $SERVICE "
-  echo "$JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 \\ "
-  echo " org.apache.axis.client.AdminClient -l$URL/axis/services JembossServer.wsdd"
+# echo "$JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 \\ "
+# echo " org.apache.axis.client.AdminClient -l$URL/axis/services JembossServer.wsdd"
   echo
 
   $JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 \
@@ -399,15 +407,20 @@ output_auth_xml()
 
 }
 
-echo
+clear
 echo
 echo "--------------------------------------------------------------"
-echo " "
-echo "         Type of installation [1] :"
-echo "         (1) CLIENT-SERVER"
-echo "         (2) STANDALONE"
-echo " "
+echo "         EMBOSS and Jemboss Server installation script"
 echo "--------------------------------------------------------------"
+echo " "
+echo "Note: any default values are given in square brackets []. "
+echo " "
+echo "There are two types of installation see details at: "
+echo "http://www.rfcgr.mrc.ac.uk/Software/EMBOSS/Jemboss/install/setup.html"
+echo " "
+echo "(1) CLIENT-SERVER"
+echo "(2) STANDALONE"
+echo "Enter type of installation [1] :"
 read INSTALL_TYPE
 
 if (test "$INSTALL_TYPE" != "1") && (test "$INSTALL_TYPE" != "2"); then
@@ -480,7 +493,8 @@ esac
 
 
 echo 
-echo "Select your platform from 1-6 [$PLATTMP]:"
+echo "Select the platform that your Jemboss server will be"
+echo "run on from 1-6 [$PLATTMP]:"
 echo "(1)  linux"
 echo "(2)  aix"
 echo "(3)  irix"
@@ -496,24 +510,32 @@ fi
 
 echo "$PLAT" >> $RECORD
 
+AUTH_TYPE_TMP=1
 AIX="n"
 MACOSX="n"
 if [ "$PLAT" = "1" ]; then
   PLATFORM="linux"
+  AUTH_TYPE_TMP=1
 elif [ "$PLAT" = "2" ]; then
   PLATFORM="aix"
   AIX="y"
+  AUTH_TYPE_TMP=4
 elif [ "$PLAT" = "3" ]; then
   PLATFORM="irix"
+  AUTH_TYPE_TMP=1
 elif [ "$PLAT" = "4" ]; then
   PLATFORM="hpux"
+  AUTH_TYPE_TMP=5
 elif [ "$PLAT" = "5" ]; then
   PLATFORM="solaris"
+  AUTH_TYPE_TMP=6
 elif [ "$PLAT" = "6" ]; then
   PLATFORM="macos"
   MACOSX="y"
+  AUTH_TYPE_TMP=2
 elif [ "$PLAT" = "7" ]; then
   PLATFORM="osf"
+  AUTH_TYPE_TMP=7
 else
   echo "Platform not selected from 1-6."
   exit 1
@@ -525,6 +547,8 @@ if [ $INSTALL_TYPE = "1" ]; then
 # localhost name
 #
   echo
+  echo "The IP address is needed by Jemboss to access"
+  echo "the Tomcat web server."
   echo "Enter IP of server machine [localhost]:"
   read LOCALHOST
 
@@ -537,8 +561,8 @@ if [ $INSTALL_TYPE = "1" ]; then
 # SSL
 #
   echo
-  echo "Enter if you want the Jemboss (SOAP) server to use"
-  echo "data encryption with Secure Socket Layer (y,n) [y]?"
+  echo "Enter if you want the Jemboss server to use data"
+  echo "encryption (https/SSL) (y,n) [y]?"
   read SSL
 
   echo "$SSL" >> $RECORD
@@ -573,6 +597,7 @@ if [ $INSTALL_TYPE = "1" ]; then
   echo "$PORT" >> $RECORD
 
 fi
+echo
 
 #
 # JAVA_HOME
@@ -593,8 +618,7 @@ do
   echo "Enter java (1.3 or above) location (/usr/java/jdk1.3.1/): "
   read JAVA_HOME
 done
-
-
+echo
 echo "$JAVA_HOME" >> $RECORD
 
 #
@@ -662,7 +686,7 @@ do
   echo "Enter EMBOSS download directory (e.g. /usr/emboss/EMBOSS-2.x.x): "
   read EMBOSS_DOWNLOAD
 done
-
+echo
 echo "$EMBOSS_DOWNLOAD" >> $RECORD
 
 echo "Enter where EMBOSS should be installed [/usr/local/emboss]: "
@@ -680,7 +704,7 @@ if [ -d "$EMBOSS_INSTALL/share/EMBOSS/jemboss" ]; then
   echo "To continue press return."
   read BLANK
 fi
-
+echo
 echo "$EMBOSS_INSTALL" >> $RECORD
 
 if [ $INSTALL_TYPE = "1" ]; then
@@ -694,6 +718,7 @@ fi
 if [ "$EMBOSS_URL" = "" ]; then
   EMBOSS_URL="http://www.uk.embnet.org/Software/EMBOSS/Apps/"
 fi
+echo
 
 #
 # set JSSE_HOME to the EMBOSS install dir
@@ -714,7 +739,7 @@ fi
 if [ "$AUTH" = "" ]; then
   AUTH="y"
 fi
-
+echo
 
 if [ "$AUTH" = "y" ]; then
 
@@ -747,16 +772,21 @@ if [ "$AUTH" = "y" ]; then
   CC="$CC -DTOMCAT_UID=$UUID "; export CC
 
   echo
+  echo "Unix Authentication Method, see:"
+  echo "http://www.rfcgr.mrc.ac.uk/Software/EMBOSS/Jemboss/install/authentication.html"
   echo
   echo "(1) shadow      (3) PAM         (5) HP-UX shadow"
   echo "(2) no shadow   (4) AIX shadow  (6) Re-entrant shadow"
   echo "(7) Plain re-entrant"  
   echo 
   echo "Type of unix password method being used "
-  echo "(select 1, 2, 3, 4, 5, 6 or 7 )[1]"
-
+  echo "(select 1, 2, 3, 4, 5, 6 or 7 )[$AUTH_TYPE_TMP]"
   read AUTH_TYPE
   
+  if [ "$AUTH_TYPE" = "" ]; then
+     AUTH_TYPE="$AUTH_TYPE_TMP"
+  fi
+
   echo "$AUTH_TYPE" >> $RECORD
 
   if [ "$AUTH_TYPE" = "1" ]; then
@@ -777,6 +807,7 @@ if [ "$AUTH" = "y" ]; then
     JEMBOSS_SERVER_AUTH=" --with-auth=shadow"
   fi
 fi
+echo
  
 if [ $INSTALL_TYPE = "1" ]; then
 #
@@ -794,6 +825,7 @@ if [ $INSTALL_TYPE = "1" ]; then
   else
     setDataDirectory $EMBOSS_DOWNLOAD/jemboss $AUTH /tmp/SOAP/emboss
   fi
+  echo
 
 #
 #
@@ -807,7 +839,7 @@ if [ $INSTALL_TYPE = "1" ]; then
     read TOMCAT_ROOT
   done
   echo "$TOMCAT_ROOT" >> $RECORD
-
+  echo
 #
 # Apache AXIS (SOAP)
 #
@@ -815,12 +847,11 @@ if [ $INSTALL_TYPE = "1" ]; then
 
   while [ ! -d "$SOAP_ROOT/webapps/axis" ]
   do
-    echo "Enter Apache AXIS (SOAP) root directory (e.g. /usr/local/xml-axis-xx)"
+    echo "Enter Apache AXIS (SOAP) root directory (e.g. /usr/local/axis-xx)"
     read SOAP_ROOT
   done
-
   echo "$SOAP_ROOT" >> $RECORD
-
+  echo
   cp -R $SOAP_ROOT/webapps/axis $TOMCAT_ROOT/webapps
 fi
 #
@@ -828,7 +859,7 @@ fi
 #
 
 USER_CONFIG=""
-echo "Enter any other configuration options (e.g. --with-pngdriver=pathname"
+echo "Enter any other EMBOSS configuration options (e.g. --with-pngdriver=pathname"
 echo "or press return to leave blank):"
 read USER_CONFIG
 
@@ -850,10 +881,10 @@ echo
 echo "./configure --with-java=$JAVA_INCLUDE \\"
 echo "            --with-javaos=$JAVA_INCLUDE_OS \\"
 echo "            --with-thread=$PLATFORM \\"
-echo "            --prefix=$EMBOSS_INSTALL $JEMBOSS_SERVER_AUTH \\"
-echo "            $USER_CONFIG"
+echo "            --prefix=$EMBOSS_INSTALL \\"
+echo "           $JEMBOSS_SERVER_AUTH $USER_CONFIG"
 echo
-sleep 3
+sleep 1
 
 WORK_DIR=`pwd`
 cd $EMBOSS_DOWNLOAD
@@ -1075,8 +1106,9 @@ output_auth_xml JembossServer.wsdd $AUTH
 if [ "$SSL" != "y" ]; then
 
   echo
-  echo "Tomcat XML deployment descriptors have been created for the Jemboss Server."
-  echo "Would you like an automatic deployment of these to be tried (y/n) [y]?"
+  echo "Tomcat XML deployment descriptors have been created for"
+  echo "the Jemboss Server. Would you like an automatic deployment"
+  echo "of the Jemboss web services to be tried (y/n) [y]?"
   read DEPLOYSERVICE
 
   if (test "$DEPLOYSERVICE" = "y") || (test "$DEPLOYSERVICE" = ""); then
@@ -1090,9 +1122,17 @@ if [ "$SSL" != "y" ]; then
 else
 
   echo
-  echo "*** Generating client and server certificates. These are then"
-  echo "*** imported into keystores. The keystores act as databases"
-  echo "*** for security certificates."
+  echo "--------------------------------------------------------------"
+  echo
+  echo "Client and server certificates need to be generated for the"
+  echo "secure (https) connection. These are then imported into"
+  echo "keystores. The keystores act as databases for security the"
+  echo "certificates."
+  echo  
+  echo "For details see:"
+  echo "http://www.rfcgr.mrc.ac.uk/Software/EMBOSS/Jemboss/install/ssl.html"
+  echo
+  echo "--------------------------------------------------------------"
   echo 
   PASSWD=""
   while [ "$PASSWD" = "" ]
@@ -1102,10 +1142,8 @@ else
   done
 
   echo
-  echo
-  echo "Provide the validity period for these certificates,"
-  echo "(see http://www.rfcgr.mrc.ac.uk/Software/EMBOSS/Jemboss/install/ssl.html for details)"
-  echo "i.e. the number of days before they expire and new ones regenerated [90]:"
+  echo "Provide the validity period for these certificates, i.e. the"
+  echo "number of days before they expire and new ones regenerated [90]:"
   read VALID
   echo
 
@@ -1118,6 +1156,10 @@ else
 
   ssl_import $JEMBOSS/resources/server.cer $JEMBOSS/resources/client.keystore $PASSWD
   ssl_import $JEMBOSS/resources/client.cer $JEMBOSS/resources/server.keystore $PASSWD
+
+  cd $JEMBOSS/resources
+  $JAVA_HOME/bin/jar cvf client.jar client.keystore
+  cd $WORK_DIR
 
   echo
   echo "Tomcat XML deployment descriptors have been created for the Jemboss Server."
