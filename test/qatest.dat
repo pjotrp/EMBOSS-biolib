@@ -9020,6 +9020,18 @@ FZ = 565
 FP /^HindIII     AAGCTT         267       A\.A    268      A->T  \n/
 //
 
+ID sirna-ex
+AP sirna
+CC No documentation
+IN tembl:hsfau
+IN 
+FI stderr
+FC = 2
+FI hsfau.sirna
+FZ = 2641
+FP /GAAGAAGACAGGUCGGGCUdTdT AGCCCGACCUGUCUUCUUCdTdT/
+//
+
 ID skipseq-ex
 UC This does not skip any sequences. It is exactly equivalent to seqret:
 AP skipseq
