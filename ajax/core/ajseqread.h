@@ -48,7 +48,7 @@ AjBool       ajSeqsetRead (AjPSeqset thys, AjPSeqin seqin);
 AjBool 	     ajSeqABITest(AjPFile fp);
 AjBool 	     ajSeqABIReadSeq(AjPFile fp,long int baseO,long int numBases,
                              AjPStr* nseq);
-AjBool 	     ajSeqABIMachineName(AjPFile fp,AjPStr machine);
+AjBool 	     ajSeqABIMachineName(AjPFile fp,AjPStr* machine);
 int 	     ajSeqABIGetNData(AjPFile fp);
 int	     ajSeqABIGetNBase(AjPFile fp);
 void 	     ajSeqABIGetData(AjPFile fp,long int *Offset,long int numPoints, 

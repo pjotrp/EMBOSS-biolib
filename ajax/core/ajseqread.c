@@ -4572,12 +4572,12 @@ AjBool ajSeqABIReadSeq(AjPFile fp,long int baseO,long int numBases,
 ** Get the name of the machine used to obtain an ABI trace file.
 **
 ** @param [r] fp [AjPStr ] ABI datafile name
-** @param [w] machine [AjPStr ] machine name
+** @param [w] machine [AjPStr* ] machine name
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqABIMachineName(AjPFile fp,AjPStr machine)
+AjBool ajSeqABIMachineName(AjPFile fp,AjPStr *machine)
 {
     long int mchn;
     const long MCHNtag = ((long) ((((('M'<<8)+'C')<<8)+'H')<<8)+'N');
@@ -4589,8 +4589,9 @@ AjBool ajSeqABIMachineName(AjPFile fp,AjPStr machine)
        if (ajFileSeek(fp,mchn,SEEK_SET) >= 0)
        {
         ajFileRead(&l,sizeof(char),1,fp);
-        ajFileRead(machine,l,1,fp);
-        ajUser("Machine Name = %.*s",l,machine); 
+        *machine = ajStrNewL(l+1);
+        ajFileRead((void*)ajStrStr(*machine),l,1,fp);
+        *(ajStrStr(*machine)+l)='\0';
        } else
        {
          return ajFalse;
@@ -5212,6 +5213,7 @@ static AjBool seqABISampleName(AjPFile fp, AjPStr *sample)
     const long SMPLtag = ((long) ((((('S'<<8)+'M')<<8)+'P')<<8)+'L');
     unsigned char l;
 
+
     if((seqABIGetFlag(fp,SMPLtag,1,5,&mchn)) &&
        (ajFileSeek(fp,mchn,SEEK_SET) >= 0)){
        ajFileRead(&l,sizeof(char),1,fp);
@@ -5243,7 +5245,10 @@ static AjBool seqReadAbi (AjPSeq thys, AjPSeqin seqin)
     long int baseO=0L;
     long int numBases=0L;
     AjPStr sample=NULL;
-    
+    AjPStr smpl=NULL;
+    static AjPRegexp dotsexp = NULL;
+
+
     fp = buff->File;
     if(!ajSeqABITest(fp))
     {
@@ -5259,8 +5264,23 @@ static AjBool seqReadAbi (AjPSeq thys, AjPSeqin seqin)
     /* Read in sequence         */
     ok = ajSeqABIReadSeq(fp,baseO,numBases,&thys->Seq);
 
-
+    sample = ajStrNew();
     seqABISampleName(fp, &sample);
+
+    /* replace dots in the sample name with undescore */
+    dotsexp = ajRegCompC ("^(.*)[.](.*)$");
+    smpl = ajStrNew();
+
+    while(ajRegExec(dotsexp,sample))
+    {
+      ajStrClear(&sample);
+      ajRegSubI(dotsexp,1,&smpl);
+      ajStrAppC(&smpl,"_");
+      ajStrApp(&sample,smpl);
+      ajRegSubI(dotsexp,2,&smpl);
+      ajStrApp(&sample,smpl);
+    }
+
     ajStrAssC(&thys->Name,ajStrStr(sample));
     
     ajSeqSetNuc (thys);
@@ -5268,6 +5288,7 @@ static AjBool seqReadAbi (AjPSeq thys, AjPSeqin seqin)
     ajFileNext(buff->File);
     buff->File->End=ajTrue;
 
+    ajStrDel(&smpl);
     ajStrDel(&sample);
     
     return ajTrue;
