@@ -368,8 +368,11 @@ public class SectionPanel
         }
         else if(att.startsWith("sequence") || att.startsWith("seqall"))
         {
-          inSeq[h] = new SetInFileCard(sectionPane,h,db,
-                                "Sequence Filename",
+          String tit = parseAcd.getInfoParamValue(nf);
+          if(tit.equals(""))
+            tit = "Sequence Filename";
+
+          inSeq[h] = new SetInFileCard(sectionPane,h,db,tit,
                                 appName,inSeqAttr,true);
           pan.add(inSeq[h].getInCard());
         }
