@@ -1,4 +1,4 @@
-#!/bin/perl -w
+#!/usr/bin/perl -w
 
 @validfile = ("acdvalid.txt", "acdvalidreport.txt",
 	      "myall.csh", "myconfig.csh", "mydoc.csh", "myembassyall.csh",
