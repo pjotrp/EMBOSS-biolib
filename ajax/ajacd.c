@@ -1127,6 +1127,8 @@ AcdOAttr acdAttrDirlist[] =
 	 "Require full path in value"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null filename as 'no file'"},
+    {"extension", VT_STR, "",
+	 "Default file extension"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -5899,6 +5901,7 @@ static void acdSetDirlist(AcdPAcd thys)
 
     AjBool nullok = ajFalse;
     AjBool dopath;
+    static AjPStr ext = NULL;
     ajint n;
     ajint i;
     
@@ -5906,7 +5909,8 @@ static void acdSetDirlist(AcdPAcd thys)
     
     acdAttrToBool(thys, "fullpath", ajFalse, &dopath);
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
-    
+    acdAttrResolve(thys, "extension", &ext);
+
     required = acdIsRequired(thys);
     acdReplyInit(thys, ".", &defreply);
     acdPromptDirlist(thys);
@@ -5949,13 +5953,17 @@ static void acdSetDirlist(AcdPAcd thys)
     ajFileScan(reply,t,&val,ajFalse,ajFalse,NULL,NULL,ajFalse,NULL);
     
     n = ajListLength(val);
+
     for(i=0;i<n;++i)
     {
 	ajFmtPrintS(&t,"");
 	ajListPop(val,(void **)&v);
 	ajStrApp(&t,v);
 	ajStrAssC(&v,ajStrStr(t));
-	ajListPushApp(val,(void *)v);
+	if(ajStrSuffix(v, ext))
+	    ajListPushApp(val,(void *)v);
+	else
+	    ajStrDel(&v);
     }
     
     ajStrDel(&t);
