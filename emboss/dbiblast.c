@@ -1082,6 +1082,7 @@ static AjBool dbiblast_parseNcbi (AjPStr line, PBlastDb db, AjPStr* id,
     if(!ajStrLen(tmpac))
 	(void) ajFmtPrintS(&tmpac,"ZZ%07d",v++);
   
+    (void) ajStrToUpper(id);
 
     /*ajDebug ("parseNCBI success\n");*/
 
@@ -1128,7 +1129,8 @@ static AjBool dbiblast_parseGcg (AjPStr line, PBlastDb db, AjPStr* id,
 
     ajRegSubI (idexp, 1, id);
     ajRegSubI (idexp, 3, &tmpac);
-    ajStrToUpper (&tmpac);	/* GCG mixes case on new SwissProt acnums */
+    (void) ajStrToUpper(id);
+    (void) ajStrToUpper (&tmpac); /* GCG mixes case on new SwissProt acnums */
 
     if (systemsort)
 	ajFmtPrintF (alistfile, "%S %S\n", *id, tmpac);
@@ -1173,7 +1175,8 @@ static AjBool dbiblast_parseSimple (AjPStr line, PBlastDb db, AjPStr* id,
 
     ajRegSubI (idexp, 1, id);
     ajRegSubI (idexp, 3, &tmpac);
-    ajStrToUpper (&tmpac);	/* GCG mixes case on new SwissProt acnums */
+    (void) ajStrToUpper(id);
+    (void) ajStrToUpper (&tmpac); /* GCG mixes case on new SwissProt acnums */
 
     if (systemsort)
 	ajFmtPrintF (alistfile, "%S %S\n", *id, tmpac);
