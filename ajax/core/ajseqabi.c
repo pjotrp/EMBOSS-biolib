@@ -813,3 +813,19 @@ static AjBool seqReadAbi (AjPSeq thys, AjPSeqin seqin)
     
     return ajTrue;
 }
+
+/* @func seqAbiUnused ****************************************************
+**
+** Unused functions for clean compile
+** @@
+******************************************************************************/
+
+void seqAbiUnused(void)
+{
+    AjPSeq seq=NULL;
+    AjPSeqin seqin=NULL;
+
+    seqReadAbi(seq,seqin);
+
+    return;
+}
