@@ -8,6 +8,9 @@ install-exec-hook:
 	          rm -f $(DESTDIR)/$(prefix)/share/$(PACKAGE)/jemboss/resources/acdstore.jar; \
 		  cd $(EMBOSS_TOP)/emboss/acd; \
 		  jar cvf $(DESTDIR)/$(prefix)/share/$(PACKAGE)/jemboss/resources/acdstore.jar *.acd; \
+                  rm -f $(DESTDIR)/$(prefix)/share/$(PACKAGE)/jemboss/resources/Ajax.jar; \
+                  cd $(DESTDIR)/$(prefix)/share/$(PACKAGE)/jemboss; \
+                  jar cvf $(DESTDIR)/$(prefix)/share/$(PACKAGE)/jemboss/resources/Ajax.jar org/emboss/jemboss/parser/Ajax.class; \
 	  fi
 
 
