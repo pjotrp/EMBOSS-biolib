@@ -703,12 +703,12 @@ public class BuildJembossForm implements ActionListener
       else if ( att.startsWith("report") )
       {
         options = options.concat(" -rformat "+fieldOption[h].getSelectedItem());
-        if( checkBox[h].isSelected() )
-          options = options.concat(" -raccshow ");
-        if( checkBox[h+1].isSelected() )
-          options = options.concat(" -rdesshow ");
-        if( checkBox[h+2].isSelected() )
-          options = options.concat(" -rusashow ");
+//      if( checkBox[h].isSelected() )
+//        options = options.concat(" -raccshow ");
+//      if( checkBox[h+1].isSelected() )
+//        options = options.concat(" -rdesshow ");
+//      if( checkBox[h+2].isSelected() )
+//        options = options.concat(" -rusashow ");
       }
       else if ( att.startsWith("bool") && checkBox[h].isVisible()
                                        && checkBox[h].isEnabled())
