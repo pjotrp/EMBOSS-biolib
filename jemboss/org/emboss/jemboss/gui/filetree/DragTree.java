@@ -38,7 +38,7 @@ import org.emboss.jemboss.JembossParams;
 
 /**
 *
-* Creates a local file tree for Jemboss. This acts as a drag 
+* Creates a local file tree manager for Jemboss. This acts as a drag 
 * source and sink for files.
 *
 */
@@ -46,15 +46,29 @@ public class DragTree extends JTree implements DragGestureListener,
                  DragSourceListener, DropTargetListener, ActionListener 
 {
 
+  /** jemboss properties */
   private JembossParams mysettings;
+  /** root directory */
   private File root;
+  /** store of directories that are opened */
   private Vector openNode;
+  /** file separator */
   private String fs = new String(System.getProperty("file.separator"));
+  /** popup menu */
   private JPopupMenu popup;
+  /** busy cursor */
   private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
+  /** done cursor */
   private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
 
+  /**
+  *
+  * @param rt		root directory
+  * @param f		frame
+  * @param mysettings 	jemboss properties
+  *
+  */
   public DragTree(File rt, final JFrame f, final JembossParams mysettings) 
   {
     this.mysettings = mysettings;
@@ -151,6 +165,7 @@ public class DragTree extends JTree implements DragGestureListener,
   /**
   *
   * Popup menu actions
+  * @param e	action event
   * 
   */
   public void actionPerformed(ActionEvent e) 
@@ -259,14 +274,14 @@ public class DragTree extends JTree implements DragGestureListener,
     }
   }
 
-/**
-*
-* Method to rename a file and update the filenode's.
-* @param File oldFile file to rename
-* @param FileNode oldNode filenode to be removed
-* @param String newFullName name of the new file
-*
-*/
+  /**
+  *
+  * Method to rename a file and update the filenode's.
+  * @param oldFile 	file to rename
+  * @param oldNode 	filenode to be removed
+  * @param newFullName 	name of the new file
+  *
+  */
   private void renameFile(final File oldFile, final FileNode oldNode, 
                           String newFullName)
   {
@@ -299,12 +314,13 @@ public class DragTree extends JTree implements DragGestureListener,
     return;
   }
 
-/**
-* 
-* @param String newRoot directory yo use as the root for
-*        the tree.
-*
-*/
+  /**
+  * 
+  * Define a directory root for the file tree
+  * @param newRoot 	directory to use as the root for
+  *        		the tree.
+  *
+  */
   public void newRoot(String newRoot)
   {
     root = new File(newRoot);
@@ -313,11 +329,12 @@ public class DragTree extends JTree implements DragGestureListener,
     setModel(model);
   }
 
-/**
-*
-* @param FileNode node to refresh 
-*
-*/
+  /**
+  *
+  * Refresh
+  * @param FileNode node to refresh 
+  *
+  */
   public void refresh(FileNode node)
   {
     node.reExplore();
@@ -453,13 +470,13 @@ public class DragTree extends JTree implements DragGestureListener,
 
   }
 
-/**
-*
-* When a suitable DataFlavor is offered over a remote file
-* node the node is highlighted/selected and the drag
-* accepted. Otherwise the drag is rejected.
-*
-*/
+  /**
+  *
+  * When a suitable DataFlavor is offered over a remote file
+  * node the node is highlighted/selected and the drag
+  * accepted. Otherwise the drag is rejected.
+  *
+  */
   public void dragOver(DropTargetDragEvent e)
   {
     if (e.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE))
@@ -501,11 +518,12 @@ public class DragTree extends JTree implements DragGestureListener,
   public void dropActionChanged(DropTargetDragEvent e) {}
   public void dragExit(DropTargetEvent e){}
 
-/**
-*
-* @return String path name to file that is currently selected
-*
-*/
+  /**
+  *
+  * Get path of selected node
+  * @return 	path name to file that is currently selected
+  *
+  */
   public String getFilename()
   {
     TreePath path = getLeadSelectionPath();
@@ -513,11 +531,12 @@ public class DragTree extends JTree implements DragGestureListener,
     return ((File)node.getUserObject()).getAbsolutePath();
   }
 
-/**
-*
-* @return FileNode node that is currently selected
-*
-*/
+  /**
+  *
+  * Get FileNode of selected node
+  * @return 	node that is currently selected
+  *
+  */
   public FileNode getSelectedNode()
   {
     TreePath path = getLeadSelectionPath();
@@ -528,12 +547,13 @@ public class DragTree extends JTree implements DragGestureListener,
     return node;
   }
 
-/**
-*
-* @return boolean true is a file is selected, false if
-*         a directory is selected
-*
-*/
+  /**
+  *
+  * Return true if selected node is a file
+  * @return true is a file is selected, false if
+  *         a directory is selected
+  *
+  */
   public boolean isFileSelection() 
   {
     TreePath path = getLeadSelectionPath();
@@ -544,15 +564,15 @@ public class DragTree extends JTree implements DragGestureListener,
     return !node.isDirectory();
   }
 
-/**
-*
-* Make the given directory the root and create a new
-* DefaultTreeModel.
-* @param File root the root directory
-* @param DefaultTreeModel with the root node set to the
-*        given directory
-*
-*/
+  /**
+  *
+  * Make the given directory the root and create a new
+  * DefaultTreeModel.
+  * @param root 	root directory
+  * @param 		tree model with the root node set 
+  *        		to the given directory
+  *
+  */
   private DefaultTreeModel createTreeModel(File root) 
   {
     FileNode rootNode = new FileNode(root);
@@ -563,14 +583,16 @@ public class DragTree extends JTree implements DragGestureListener,
   }
 
 
-/**
-*
-* Adding a file (or directory) to the file tree manager.
-* This looks to see if the directory has already been opened
-* and updates the filetree if it has.
-* @param file to add to the tree
-*
-*/
+  /**
+  *
+  * Adding a file (or directory) to the file tree manager.
+  * This looks to see if the directory has already been opened
+  * and updates the filetree if it has.
+  * @param child	new child to add in
+  * @param path		path to where child is to be added
+  * @param node		node to add child to
+  *
+  */
   public DefaultMutableTreeNode addObject(String child,
                             String path, FileNode node)
   {
@@ -612,14 +634,14 @@ public class DragTree extends JTree implements DragGestureListener,
     return childNode;
   }
 
-/**
-*
-* Gets the node from the existing explored nodes.
-* @param String path to a file or directory
-* @return FileNode node the corresponding node if the 
-*         directory or file is visible otherwise returns null.
-*
-*/
+  /**
+  *
+  * Gets the node from the existing explored nodes.
+  * @param path 	path to a file or directory
+  * @return 		corresponding node if the directory or
+  *         		file is visible otherwise returns null.
+  *
+  */
   private FileNode getNode(String path)
   {
     Enumeration en = openNode.elements();
@@ -634,14 +656,14 @@ public class DragTree extends JTree implements DragGestureListener,
     return null;
   }
 
-/**
-*
-* Finds a new index for adding a new file to the file manager.
-* @param FileNode parentNode directory node
-* @param String child
-* @return int childIndex the index of the child in the directory
-*
-*/
+  /**
+  *
+  * Finds a new index for adding a new file to the file manager.
+  * @param parentNode 	parent directory node
+  * @param child	new child node
+  * @return 		index of the child in the directory
+  *
+  */
   private int getAnIndex(FileNode parentNode, String child)
   {
     //find the index for the child
@@ -665,12 +687,12 @@ public class DragTree extends JTree implements DragGestureListener,
     return childIndex;
   }
 
-/**
-*
-* Delete a node from the JTree
-* @param FileNode node for deletion
-*
-*/
+  /**
+  *
+  * Delete a node from the JTree
+  * @param node 	node for deletion
+  *
+  */
   public void deleteObject(FileNode node)
   {
     DefaultTreeModel model =(DefaultTreeModel)getModel();
@@ -679,12 +701,13 @@ public class DragTree extends JTree implements DragGestureListener,
     model.nodeStructureChanged(parentNode);
   }
 
-/**
-*
-* Opens a JFrame with the file contents displayed.
-* @param the file name
-*
-*/
+  /**
+  *
+  * Opens a JFrame with the file contents displayed.
+  * @param filename	file name to display
+  * @param mysettings	jemboss properties
+  *
+  */
   public static void showFilePane(String filename, JembossParams mysettings)
   {
     JFrame ffile = new JFrame(filename);
@@ -701,6 +724,11 @@ public class DragTree extends JTree implements DragGestureListener,
     ffile.setVisible(true);
   }
 
+  /**
+  *
+  * Popup menu listener
+  *
+  */
   class PopupListener extends MouseAdapter
   {
     public void mousePressed(MouseEvent e)
