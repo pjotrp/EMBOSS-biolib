@@ -2314,30 +2314,46 @@ AjBool ajStrClean(AjPStr *s) {
   p=ajStrStr(t);
   len=strlen(p);
 
+  /* if string was already empty, no need to do anything */
+
   if(!len)
-      return ajFalse;
+    return ajFalse;
+
+  /* tabs converted to spaces */
 
   for(i=0;i<len;++i) if(p[i]=='\t') p[i]=' ';
+
+  /* remove leading spaces */
 
   i=0;
   while(p[i]) {
     if(p[i]!=' ') break;
     ++i;
   }
-  (void) strcpy(p,&p[i]);
 
-  len=strlen(p);
-  if(!len)
-      return ajFalse;
+  if (i) {
+    (void) strcpy(p,&p[i]);
+    len=strlen(p);
+    if(!len) {			/* if that emptied it, so be it */
+      ret = ajStrAssC(s,"");
+      return ret;
+    }
+  }
+
+  /* remove newline at the end (if any) */
 
   if(p[len-1]=='\n') {
     p[len-1]='\0';
     --len;
   }
 
-  if(!len)
-      return ajFalse;
+  if(!len) {			/* if that emptied it, so be it */
+    ret = ajStrAssC(s,"");
+    return ret;
+  }
     
+  /* clean up any space at the end */
+
   for(i=len-1;i>-1;--i)
     if(p[i]!=' ') break;
   p[i+1]='\0';
