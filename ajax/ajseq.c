@@ -2590,6 +2590,8 @@ void ajSeqoutDel (AjPSeqout* pthis) {
 
   ajListDel(&thys->Savelist);
 
+  AJFREE(thys->Ftquery);
+
   AJFREE(*pthis);
   return;
 }
