@@ -727,6 +727,9 @@ AjPSeq ajTrnNewPep(AjPSeq nucleicSeq, ajint frame) {
   trnPeptide = ajSeqNew ();
   ajSeqSetProt (trnPeptide);
 
+  name  = ajStrNew();
+  value = ajStrNew();
+
 /* create a nice name for the subsequence */
   (void) ajStrAss(&name, ajSeqGetName(nucleicSeq));
 
@@ -745,6 +748,10 @@ make it unique */
 /* set the description of the translation */
   ajSeqAssDesc(trnPeptide, ajSeqGetDesc(nucleicSeq));
 
+
+  ajStrDel(&name);
+  ajStrDel(&value);
+  
 
   return trnPeptide;
 }
