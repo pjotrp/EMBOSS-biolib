@@ -96,6 +96,9 @@ public class BuildProgramMenu
         {
           splashing.doneSomething("Connecting with server");
           boolean calling = true;
+
+          int iloop = 0;
+
           while(calling)
           {
             try
@@ -107,17 +110,28 @@ public class BuildProgramMenu
             } 
             catch(Exception e)
             {
-              splashing.doneSomething("Cannot connect!");
-              ServerSetup ss = new ServerSetup(mysettings);
-              int sso = JOptionPane.showConfirmDialog(f,ss,
+              if(mysettings.getPublicSoapURL().startsWith("https") &&
+                 iloop == 0)
+              {
+                String settings[] = new String[1];
+                settings[0] = new String("proxy.override=true");
+                mysettings.updateJembossPropStrings(settings);
+              }
+              else
+              { 
+                splashing.doneSomething("Cannot connect!");
+                ServerSetup ss = new ServerSetup(mysettings);
+                int sso = JOptionPane.showConfirmDialog(f,ss,
                              "Check Public Server Settings",
                              JOptionPane.OK_CANCEL_OPTION,
                              JOptionPane.ERROR_MESSAGE,null);
-              if(sso == JOptionPane.OK_OPTION)
-                ss.setNewSettings();
-              else
-                System.exit(0);
+                if(sso == JOptionPane.OK_OPTION)
+                  ss.setNewSettings();
+                else
+                  System.exit(0);
+              }
             }
+            iloop++;
           }
         } 
         else 
