@@ -3846,12 +3846,13 @@ static AjBool seqReadGenbank (AjPSeq thys, AjPSeqin seqin)
     }
 
     /* This loop necessary owing to headers on GB distro files */
-    while (!ajStrPrefixC(rdline, "LOCUS"))
-    {
-	if (!ajFileBuffGet (buff, &rdline))
-	    return ajFalse;
-	bufflines++;
-    }
+    if(ajStrFindC(rdline,"Genetic Sequence Data Bank") >= 0)
+	while (!ajStrPrefixC(rdline, "LOCUS"))
+	{
+	    if (!ajFileBuffGet (buff, &rdline))
+		return ajFalse;
+	    bufflines++;
+	}
 
     if (!ajStrPrefixC(rdline, "LOCUS"))
     {
