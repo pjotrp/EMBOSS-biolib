@@ -112,17 +112,29 @@ public class BuildProgramMenu
         if(withSoap) 
         {
           splashing.doneSomething("Connecting with server");
-          try
+          boolean calling = true;
+          while(calling)
           {
-            GetWossname ewoss = new GetWossname(mysettings);
-            woss = ewoss.getDBText(); 
-            splashing.doneSomething("Found EMBOSS applications");
-          } 
-          catch(Exception e)
-          {
-            splashing.doneSomething("ERROR can't connect!");
+            try
+            {
+              GetWossname ewoss = new GetWossname(mysettings);
+              woss = ewoss.getDBText(); 
+              splashing.doneSomething("Found EMBOSS applications");
+              calling = false;
+            } 
+            catch(Exception e)
+            {
+              splashing.doneSomething("Cannot connect!");
+              ServerSetup ss = new ServerSetup(mysettings);
+              int sso = JOptionPane.showConfirmDialog(f,ss,"Check Public Server Settings",
+                             JOptionPane.OK_CANCEL_OPTION,
+                             JOptionPane.ERROR_MESSAGE,null);
+              if(sso == JOptionPane.OK_OPTION)
+                ss.setNewSettings();
+              else
+                System.exit(0);
+            }
           }
-
         } 
         else 
         {
@@ -321,29 +333,29 @@ public class BuildProgramMenu
         p1.setVisible(false);
         p1.setVisible(true);
 
+        if(withSoap)
+        {
+          SwingWorker databaseworker = new SwingWorker()
+          {
+            public Object construct()
+            {
+              EmbreoShowDB showdb = new EmbreoShowDB(mysettings);
+              showdbOut = showdb.getDBText();
+              Database d = new Database(showdbOut);
+              db = d.getDB();
+              JLabel jl = new JLabel("<html>"); // not used but speeds first
+                                                // ACD form being loaded
+                                                // which uses html
+              return null;
+            }
+          };
+          databaseworker.start();
+        }
+
 
       }
     };
     groupworker.start();
-
-    if(withSoap)
-    {
-      SwingWorker databaseworker = new SwingWorker()
-      {
-        public Object construct()
-        {
-          EmbreoShowDB showdb = new EmbreoShowDB(mysettings);
-          showdbOut = showdb.getDBText();
-          Database d = new Database(showdbOut);
-          db = d.getDB();
-          JLabel jl = new JLabel("<html>"); // not used but speeds first 
-                                            // ACD form being loaded
-                                            // which uses html 
-          return null;
-        }
-      };
-      databaseworker.start();
-    }
 
   }
 
