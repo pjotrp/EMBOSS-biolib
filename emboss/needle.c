@@ -38,7 +38,7 @@ int main(int argc, char **argv)
     AjPStr n;
     AjPStr ss;
     
-    AjPFile outf;
+    AjPFile outf=NULL;
     AjBool show;
     
     ajint    lena;
