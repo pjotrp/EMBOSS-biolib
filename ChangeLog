@@ -1,8 +1,12 @@
-Version 2.4.2
+Version 2.5.0
+	Lindna/cirdna can now draw filled boxes and the user can change the
+ 	text size on the command-line. They can also read and display
+ 	complete genomic sequences.
 
-        Major new revision of protein structure applications - w/o full documentation.
+        Major new revision of protein structure applications - w/o full
+ 	documentation.
 
-	New applications have been cvs add'ed:  
+	New applications have been added:  
 	     pdbparse.c / acd
 	     scopseqs.c / acd
 	     scopnr.c / acd
@@ -16,7 +20,7 @@ Version 2.4.2
 	     funky.c / acd
 	     hmmgen.c / acd
 	     
-	Some applications have been cvs delete'd: 
+	Some applications have been deleted: 
 	     scope.c / acd
 	     nrscope.c / acd
 	     psiblasts.c / acd
@@ -32,7 +36,7 @@ Version 2.4.2
 	     swissparse --> seqwords
 	     alignwrap  --> seqalign
 
-	New versions of code have been cvs commit'ed: 
+	New versions of code have been committed: 
 	     pdbparse.c / acd
 	     domainer.c / acd
 	     contacts.c / acd
