@@ -1070,7 +1070,7 @@ AcdOQual acdQualAppl[] =	/* careful: index numbers used in*/
   {"warning",    "Y", "boolean", "Report warnings"},
   {"error",      "Y", "boolean", "Report errors"},
   {"fatal",      "Y", "boolean", "Report fatal errors"},
-  {"die",        "N", "boolean", "Report deaths"},
+  {"die",        "Y", "boolean", "Report deaths"},
   {NULL, NULL, NULL, NULL}
 };
 
@@ -3187,7 +3187,7 @@ static AjBool acdUserGetPrompt (char* prompt, AjPStr* reply)
 
 static void acdBadRetry (AcdPAcd thys)
 {
-    ajFatal ("%S terminated: Bad value for '-%S' and no more retries\n",
+    ajDie ("%S terminated: Bad value for '-%S' and no more retries\n",
 	     acdProgram, thys->Name);
 }
 
@@ -3226,11 +3226,11 @@ static void acdBadVal (AcdPAcd thys, AjBool required, char *fmt, ...)
     va_end (args) ;
 
     if (!required)
-	ajFatal ("%S terminated: Bad value for option [%S] and no prompt\n",
+	ajDie ("%S terminated: Bad value for option [%S] and no prompt\n",
 		 acdProgram,name);
 
     if (acdAuto)
-	ajFatal ("%S terminated: Bad value with -auto defined.\n",
+	ajDie ("%S terminated: Bad value with -auto defined.\n",
 		 acdProgram);
 
     return;
@@ -11286,6 +11286,14 @@ static void acdArgsScan (ajint argc, char *argv[]) {
     if (!strcmp(argv[i], "-acdlog"))   acdDoLog = ajTrue;
     if (!strcmp(argv[i], "-acdpretty"))  acdDoPretty = ajTrue;
     if (!strcmp(argv[i], "-acdtable")) acdTable = ajTrue;
+    if (!strcmp(argv[i], "-warning"))   AjErrorLevel.warning = ajTrue;
+    if (!strcmp(argv[i], "-nowarning")) AjErrorLevel.warning = ajFalse;
+    if (!strcmp(argv[i], "-error"))     AjErrorLevel.error = ajTrue;
+    if (!strcmp(argv[i], "-noerror"))   AjErrorLevel.error = ajFalse;
+    if (!strcmp(argv[i], "-fatal"))     AjErrorLevel.fatal = ajTrue;
+    if (!strcmp(argv[i], "-nofatal"))   AjErrorLevel.fatal = ajFalse;
+    if (!strcmp(argv[i], "-die"))       AjErrorLevel.die = ajTrue;
+    if (!strcmp(argv[i], "-nodie"))     AjErrorLevel.die = ajFalse;
 
     if (!strcmp(argv[i], "-help")) {
 	ajDebug("acdArgsScan -help argv[%d]\n", i);
@@ -11635,7 +11643,7 @@ static ajint acdIsQual (char* arg, char* arg2, ajint *iparam, AjPStr *pqual,
   }
 
   if (!*acd)
-    ajFatal ("unknown qualifier %s\n", arg);
+    ajDie ("unknown qualifier %s\n", arg);
 
   if ((*acd)->AssocQuals) {	/* this one is a new master */
     acdLog ("acdMasterQual set to -%S\n", (*acd)->Name);
@@ -11644,7 +11652,7 @@ static ajint acdIsQual (char* arg, char* arg2, ajint *iparam, AjPStr *pqual,
 
   if (gotvalue) {
     if (ajStrPrefix ((*acd)->Name, noqual)) { /* we have a -noqual matched */
-      ajFatal ("'no' prefix used with value for %s\n", arg);
+      ajDie ("'no' prefix used with value for %s\n", arg);
     }
   }
   else {
@@ -11675,7 +11683,7 @@ static ajint acdIsQual (char* arg, char* arg2, ajint *iparam, AjPStr *pqual,
 	return ret;
       }
       else {			/* oops: -no prefix not allowed  */
-	  ajFatal ("'no' prefix invalid for %s\n", arg);
+	  ajDie ("'no' prefix invalid for %s\n", arg);
       }
     }
 
@@ -11694,7 +11702,7 @@ static ajint acdIsQual (char* arg, char* arg2, ajint *iparam, AjPStr *pqual,
       if (!arg2) {
 	(void) ajStrToBool ((*acd)->DefStr[DEF_MISSING], &ismissing);
 	if (!ismissing) {
-	  ajFatal ("value required for %s\n", arg);
+	  ajDie ("value required for %s\n", arg);
 	}
       }
       /* test for known qualifiers */
@@ -11706,7 +11714,7 @@ static ajint acdIsQual (char* arg, char* arg2, ajint *iparam, AjPStr *pqual,
 	  else {
 	    (void) ajStrToBool ((*acd)->DefStr[DEF_MISSING], &ismissing);
 	    if (!ismissing) {
-	      ajFatal ("value required for %s\n", arg);
+	      ajDie ("value required for %s\n", arg);
 	    }
 	  }
 	}
