@@ -213,7 +213,7 @@ FZ = 0
 FI paamir.out2
 FZ = 0
 FI qatest.dbg
-FP / acdDebug Yes /
+FP /USA to test: 'tembl:paamir'/
 FP 2 /^Memory usage /
 //
 
@@ -5611,7 +5611,7 @@ ID feat-pir-togff
 AP seqret
 CL -feat ../../data/featprot.fasta -ufo ../../data/feat.pir gff::test.out -auto
 FI test.out
-FZ = 5023
+FZ = 5019
 ## active site two locations with copied annotation (note and comment)
 FP /^OPSD_HUMAN\tPIR\tact_site\t38\t38\t0\.000\t\+\t\.\tSequence "OPSD_HUMAN\.11" ; note "Cys, His" ; comment "status experimental"\n/
 FP /^OPSD_HUMAN\tPIR\tact_site\t90\t90\t0\.000\t\+\t\.\tSequence "OPSD_HUMAN.11" ; FeatFlags "0x4"\n/
@@ -5621,7 +5621,7 @@ ID feat-pir-topir
 AP seqret
 CL -feat ../../data/featprot.fasta -ufo ../../data/feat.pir pir::test.out -auto
 FI test.out
-FZ = 1921
+FZ = 1917
 ## active site two locations with copied annotation (note and comment)
 FP /^F;38,90\/Active site: Cys, His, act_site #status experimental\n/
 //
@@ -10405,6 +10405,594 @@ FP /^BLAST$/
 FZ = 46
 //
 
+###############################################
+# seqret (sequence input) associated qualifiers
+###############################################
+
+ID seq-end-fasta
+AQ seqretsingle
+CL tembl:eclaci -send 100 -out test.out -auto
+FI test.out
+FZ = 168
+FP 1 /^>/
+FP /^gagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+//
+
+ID seq-begin-fasta
+AQ seqretsingle
+CL tembl:eclaci -sbegin 51 -send 100 -out test.out -auto
+FI test.out
+FZ = 117
+FP 1 /^>/
+FP /^cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+//
+
+ID seq-rev-fasta
+AQ seqretsingle
+CL tembl:eclaci -sbegin 51 -send 100 -srev -out test.out -auto
+FI test.out
+FZ = 117
+FP 1 /^>/
+FP /^ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
+//
+
+ID seq-end-msf
+AQ seqretsingle
+CL tembl:eclaci -send 100 -out test.out -osf msf -auto
+FI test.out
+FZ = 391
+FP 1 /^ +Name: /
+FP  / +Name: ECLACI .* Check: 8066/
+FP /^ECLACI     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+//
+
+ID seq-begin-msf
+AQ seqretsingle
+CL tembl:eclaci -sbegin 51 -send 100 -out test.out -osf msf -auto
+FI test.out
+FZ = 264
+FP 1 / +Name: /
+FP  / +Name: ECLACI .* Check: 2937/
+FP /^ECLACI     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+//
+
+ID seq-rev-msf
+AQ seqretsingle
+CL tembl:eclaci -sbegin 51 -send 100 -srev -out test.out -osf msf -auto
+FI test.out
+FZ = 264
+FP 1 / +Name: /
+FP  / +Name: ECLACI .* Check: 9768/
+FP /^ECLACI     ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
+//
+
+ID seqall-end-fasta
+AP seqret
+CL tembl:eclac\* -send 100 -out test.out -auto
+FI test.out
+FZ = 876
+FP 5 /^>/
+FP /^caattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
+FP /^gagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+//
+
+ID seqall-begin-fasta
+AP seqret
+CL tembl:eclac\* -sbegin 51 -send 100 -out test.out -auto
+FI test.out
+FZ = 621
+FP 5 /^>/
+FP /^ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
+FP /^cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+//
+
+ID seqall-rev-fasta
+AP seqret
+CL tembl:eclac\* -sbegin 51 -send 100 -srev -out test.out -auto
+FI test.out
+FZ = 621
+FP 5 /^>/
+FP /^cgtataacgttactggtttcacattcaccaccctgaattgactctcttcc\n/
+FP /^ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
+//
+
+ID seqall-end-msf
+AP seqret
+CL tembl:eclac\* -send 100 -out test.out -osf msf -auto
+FI test.out
+FZ = 1086
+FP 5 / +Name: /
+FP  / +Name: ECLAC .* Check: 4203/
+FP  / +Name: ECLACI .* Check: 8066/
+FP /^ECLAC      ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
+FP /^ECLACI     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+//
+
+ID seqall-begin-msf
+AP seqret
+CL tembl:eclac\* -sbegin 51 -send 100 -out test.out -osf msf -auto
+FI test.out
+FZ = 707
+FP 5 / +Name: /
+FP  / +Name: ECLAC .* Check: 1328/
+FP  / +Name: ECLACI .* Check: 2937/
+FP /^ECLAC      ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
+FP /^ECLACI     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+//
+
+ID seqall-rev-msf
+AP seqret
+CL tembl:eclac\* -sbegin 51 -send 100 -srev -out test.out -osf msf -auto
+FI test.out
+FZ = 707
+FP 5 / +Name: /
+FP  / +Name: ECLAC .* Check: 2885/
+FP  / +Name: ECLACI .* Check: 9768/
+FP /^ECLAC      cgtataacgttactggtttcacattcaccaccctgaattgactctcttcc\n/
+FP /^ECLACI     ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
+//
+
+ID seqset-end-fasta
+AQ seqretset
+CL tembl:eclac\* -send 100 -out test.out -auto
+FI test.out
+FZ = 876
+FP 5 /^>/
+FP /^caattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
+FP /^gagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+//
+
+ID seqset-begin-fasta
+AQ seqretset
+CL tembl:eclac\* -sbegin 51 -send 100 -out test.out -auto
+FI test.out
+FZ = 621
+FP 5 /^>/
+FP /^ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
+FP /^cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+//
+
+ID seqset-rev-fasta
+AQ seqretset
+CL tembl:eclac\* -sbegin 51 -send 100 -srev -out test.out -auto
+FI test.out
+FZ = 621
+FP 5 /^>/
+FP /^cgtataacgttactggtttcacattcaccaccctgaattgactctcttcc\n/
+FP /^ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
+//
+
+ID seqset-end-msf
+AQ seqretset
+CL tembl:eclac\* -send 100 -out test.out -osf msf -auto
+FI test.out
+FZ = 1086
+FP 5 / +Name: /
+FP  / +Name: ECLAC .* Check: 4203/
+FP  / +Name: ECLACI .* Check: 8066/
+FP /^ECLAC      ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
+FP /^ECLACI     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+//
+
+ID seqset-begin-msf
+AQ seqretset
+CL tembl:eclac\* -sbegin 51 -send 100 -out test.out -osf msf -auto
+FI test.out
+FZ = 707
+FP 5 / +Name: /
+FP  / +Name: ECLAC .* Check: 1328/
+FP  / +Name: ECLACI .* Check: 2937/
+FP /^ECLAC      ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
+FP /^ECLACI     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+//
+
+ID seqset-rev-msf
+AQ seqretset
+CL tembl:eclac\* -sbegin 51 -send 100 -srev -out test.out -osf msf -auto
+FI test.out
+FZ = 707
+FP 5 / +Name: /
+FP  / +Name: ECLAC .* Check: 2885/
+FP  / +Name: ECLACI .* Check: 9768/
+FP /^ECLAC      cgtataacgttactggtttcacattcaccaccctgaattgactctcttcc\n/
+FP /^ECLACI     ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
+//
+
+######################################################
+# end of seqret (sequence input) associated qualifiers
+######################################################
+
+
+###########################################################
+# seqret (sequence and feature input) associated qualifiers
+###########################################################
+
+ID featseq-end-fasta
+AQ seqretsingle
+CL -feat tembl:eclaci -send 100 -out test.out -auto
+FI test.out
+FZ = 168
+FP 1 /^>/
+FP /^gagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+FI test.gff
+FZ = 724
+FP /^##Type DNA ECLACI\n/
+FP /^ECLACI\tEMBL\tCDS\t31\t100\t0[.]000\t[+]\t[.].*FeatFlags "0x2"/
+//
+
+ID featseq-begin-fasta
+AQ seqretsingle
+CL -feat tembl:eclaci -sbegin 51 -send 100 -out test.out -auto
+FI test.out
+FP 1 /^>/
+FZ = 117
+FP /^cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+FI test.gff
+FZ = 721
+FP /^##Type DNA ECLACI\n/
+FP /^ECLACI\tEMBL\tCDS\t1\t50\t0[.]000\t[+]\t[.].*FeatFlags "0x3"/
+//
+
+ID featseq-rev-fasta
+AQ seqretsingle
+CL -feat tembl:eclaci -sbegin 51 -send 100 -srev -out test.out -auto
+FI test.out
+FZ = 117
+FP 1 /^>/
+FP /^ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
+FI test.gff
+FZ = 721
+FP /^##Type DNA ECLACI\n/
+FP /^ECLACI\tEMBL\tCDS\t1\t50\t0[.]000\t[-]\t[.].*FeatFlags "0x3"/
+//
+
+ID featseq-end-embl
+AQ seqretsingle
+CL -feat tembl:eclaci -send 100 -out test.out -osf embl -auto
+FI test.out
+FZ = 1393
+FP 1 /^ID   /
+FP 1 /^FH   /
+FP /^ +gagtatgccg gtgtctctta tcagaccgtt tcccgcgtgg +100\n/
+FP /^FT   CDS             31..>100\n/
+//
+
+ID featseq-begin-embl
+AQ seqretsingle
+CL -feat tembl:eclaci -sbegin 51 -send 100 -out test.out -osf embl -auto
+FI test.out
+FZ = 1308
+FP 1 /^ID   /
+FP 1 /^FH   /
+FP /^ +cgatgtcgca gagtatgccg gtgtctctta tcagaccgtt tcccgcgtgg +50/
+FP /^FT   CDS             <1..>50\n/
+//
+
+ID featseq-rev-embl
+AQ seqretsingle
+CL -feat tembl:eclaci -sbegin 51 -send 100 -srev -out test.out -osf embl -auto
+FI test.out
+FZ = 1332
+FP 1 /^ID   /
+FP 1 /^FH   /
+FP /^ +ccacgcggga aacggtctga taagagacac cggcatactc tgcgacatcg +50\n/
+FP /^FT   CDS             complement[(]<1..>50[)]\n/
+//
+
+ID featseq-end-msf
+AQ seqretsingle
+CL -feat tembl:eclaci -send 100 -out test.out -osf msf -auto
+FI test.out
+FZ = 391
+FP 1 /^ +Name: /
+FP  / +Name: ECLACI .* Check: 8066/
+FP /^ECLACI     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+FI test.gff
+FZ = 724
+FP /^##Type DNA ECLACI\n/
+FP /^ECLACI\tEMBL\tCDS\t31\t100\t0[.]000\t[+]\t[.].*FeatFlags "0x2"/
+//
+
+ID featseq-begin-msf
+AQ seqretsingle
+CL -feat tembl:eclaci -sbegin 51 -send 100 -out test.out -osf msf -auto
+FI test.out
+FZ = 264
+FP 1 / +Name: /
+FP  / +Name: ECLACI .* Check: 2937/
+FP /^ECLACI     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+FI test.gff
+FZ = 721
+FP /^##Type DNA ECLACI\n/
+FP /^ECLACI\tEMBL\tCDS\t1\t50\t0[.]000\t[+]\t[.].*FeatFlags "0x3"/
+//
+
+ID featseq-rev-msf
+AQ seqretsingle
+CL -feat tembl:eclaci -sbegin 51 -send 100 -srev -out test.out -osf msf -auto
+FI test.out
+FZ = 264
+FP 1 / +Name: /
+FP  / +Name: ECLACI .* Check: 9768/
+FP /^ECLACI     ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
+FI test.gff
+FZ = 721
+FP /^##Type DNA ECLACI\n/
+FP /^ECLACI\tEMBL\tCDS\t1\t50\t0[.]000\t[-]\t[.].*FeatFlags "0x3"/
+//
+
+ID featseqall-end-fasta
+AP seqret
+CL -feat tembl:eclac\* -send 100 -out test.out -auto
+FI test.out
+FZ = 876
+FP 5 /^>/
+FP /^caattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
+FP /^gagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+FI test.gff
+FZ = 4450
+FP 5 /^##Type DNA/
+FP /^ECLAC\tEMBL\tCDS\t79\t100\t0[.]000\t[+]\t[.].*FeatFlags "0x2" .*gene "lacI"/
+FP /^ECLACI\tEMBL\tCDS\t31\t100\t0[.]000\t[+]\t[.].*FeatFlags "0x2"/
+//
+
+ID featseqall-begin-fasta
+AP seqret
+CL -feat tembl:eclac\* -sbegin 51 -send 100 -out test.out -auto
+FI test.out
+FZ = 621
+FP 5 /^>/
+FP /^ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
+FP /^cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+FI test.gff
+FZ = 4089
+FP 5 /^##Type DNA/
+FP /^ECLAC\tEMBL\tCDS\t29\t50\t0[.]000\t[+]\t[.].*FeatFlags "0x2" .*gene "lacI"/
+FP /^ECLACI\tEMBL\tCDS\t1\t50\t0[.]000\t[+]\t[.].*FeatFlags "0x3"/
+//
+
+ID featseqall-rev-fasta
+AP seqret
+CL -feat tembl:eclac\* -sbegin 51 -send 100 -srev -out test.out -auto
+FI test.out
+FZ = 621
+FP 5 /^>/
+FP /^cgtataacgttactggtttcacattcaccaccctgaattgactctcttcc\n/
+FP /^ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
+FI test.gff
+FZ = 4089
+FP 5 /^##Type DNA/
+FP /^ECLAC\tEMBL\tCDS\t1\t22\t0[.]000\t[-]\t[.].*FeatFlags "0x1" .*gene "lacI"/
+FP /^ECLACI\tEMBL\tCDS\t1\t50\t0[.]000\t[-]\t[.].*FeatFlags "0x3"/
+//
+
+ID featseqall-end-embl
+AP seqret
+CL -feat tembl:eclac\* -send 100 -out test.out -osf embl -auto
+FI test.out
+FZ = 8202
+FP 5 /^ID   /
+FP 5 /^FH   /
+FP /^ +caattcaggg tggtgaatgt gaaaccagta acgttatacg +100\n/
+FP /^ +gagtatgccg gtgtctctta tcagaccgtt tcccgcgtgg +100\n/
+FP /^FT   CDS             31..>100\n/
+//
+
+ID featseqall-begin-embl
+AP seqret
+CL -feat tembl:eclac\* -sbegin 51 -send 100 -out test.out -osf embl -auto
+FI test.out
+FZ = 7381
+FP 5 /^ID   /
+FP 5 /^FH   /
+FP /^ +ggaagagagt caattcaggg tggtgaatgt gaaaccagta acgttatacg +50/
+FP /^ +cgatgtcgca gagtatgccg gtgtctctta tcagaccgtt tcccgcgtgg +50/
+FP /^FT   CDS             29..>50\n/
+FP /^FT   CDS             <1..>50\n/
+//
+
+ID featseqall-rev-embl
+AP seqret
+CL -feat tembl:eclac\* -sbegin 51 -send 100 -srev -out test.out -osf embl -auto
+FI test.out
+FZ = 7525
+FP 5 /^ID   /
+FP 5 /^FH   /
+FP /^ +cgtataacgt tactggtttc acattcacca ccctgaattg actctcttcc +50\n/
+FP /^ +ccacgcggga aacggtctga taagagacac cggcatactc tgcgacatcg +50\n/
+FP /^FT   CDS             complement[(]<1..22[)]\n/
+FP /^FT   CDS             complement[(]<1..>50[)]\n/
+//
+
+ID featseqall-end-msf
+AP seqret
+CL -feat tembl:eclac\* -send 100 -out test.out -osf msf -auto
+FI test.out
+FZ = 1086
+FP 5 / +Name: /
+FP  / +Name: ECLAC .* Check: 4203/
+FP  / +Name: ECLACI .* Check: 8066/
+FP /^ECLAC      ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
+FP /^ECLACI     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+FI test.gff
+FZ = 4450
+FP 5 /^##Type DNA/
+FP /^ECLAC\tEMBL\tCDS\t79\t100\t0[.]000\t[+]\t[.].*FeatFlags "0x2" .*gene "lacI"/
+FP /^ECLACI\tEMBL\tCDS\t31\t100\t0[.]000\t[+]\t[.].*FeatFlags "0x2"/
+//
+
+ID featseqall-begin-msf
+AP seqret
+CL -feat tembl:eclac\* -sbegin 51 -send 100 -out test.out -osf msf -auto
+FI test.out
+FZ = 707
+FP 5 / +Name: /
+FP  / +Name: ECLAC .* Check: 1328/
+FP  / +Name: ECLACI .* Check: 2937/
+FP /^ECLAC      ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
+FP /^ECLACI     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+FI test.gff
+FZ = 4089
+FP 5 /^##Type DNA/
+FP /^ECLAC\tEMBL\tCDS\t29\t50\t0[.]000\t[+]\t[.].*FeatFlags "0x2" .*gene "lacI"/
+FP /^ECLACI\tEMBL\tCDS\t1\t50\t0[.]000\t[+]\t[.].*FeatFlags "0x3"/
+//
+
+ID featseqall-rev-msf
+AP seqret
+CL -feat tembl:eclac\* -sbegin 51 -send 100 -srev -out test.out -osf msf -auto
+FI test.out
+FZ = 707
+FP 5 / +Name: /
+FP  / +Name: ECLAC .* Check: 2885/
+FP  / +Name: ECLACI .* Check: 9768/
+FP /^ECLAC      cgtataacgttactggtttcacattcaccaccctgaattgactctcttcc\n/
+FP /^ECLACI     ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
+FI test.gff
+FZ = 4089
+FP 5 /^##Type DNA/
+FP /^ECLAC\tEMBL\tCDS\t1\t22\t0[.]000\t[-]\t[.].*FeatFlags "0x1" .*gene "lacI"/
+FP /^ECLACI\tEMBL\tCDS\t1\t50\t0[.]000\t[-]\t[.].*FeatFlags "0x3"/
+//
+
+ID featseqset-end-fasta
+AQ seqretset
+CL -feat tembl:eclac\* -send 100 -out test.out -auto
+FI test.out
+FZ = 876
+FP 5 /^>/
+FP /^caattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
+FP /^gagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+FI test.gff
+FZ = 4450
+FP 5 /^##Type DNA/
+FP /^ECLAC\tEMBL\tCDS\t79\t100\t0[.]000\t[+]\t[.].*FeatFlags "0x2" .*gene "lacI"/
+FP /^ECLACI\tEMBL\tCDS\t31\t100\t0[.]000\t[+]\t[.].*FeatFlags "0x2"/
+//
+
+ID featseqset-begin-fasta
+AQ seqretset
+CL -feat tembl:eclac\* -sbegin 51 -send 100 -out test.out -auto
+FI test.out
+FZ = 621
+FP 5 /^>/
+FP /^ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
+FP /^cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+FI test.gff
+FZ = 4089
+FP 5 /^##Type DNA/
+FP /^ECLAC\tEMBL\tCDS\t29\t50\t0[.]000\t[+]\t[.].*FeatFlags "0x2" .*gene "lacI"/
+FP /^ECLACI\tEMBL\tCDS\t1\t50\t0[.]000\t[+]\t[.].*FeatFlags "0x3"/
+//
+
+ID featseqset-rev-fasta
+AQ seqretset
+CL -feat tembl:eclac\* -sbegin 51 -send 100 -srev -out test.out -auto
+FI test.out
+FZ = 621
+FP 5 /^>/
+FP /^cgtataacgttactggtttcacattcaccaccctgaattgactctcttcc\n/
+FP /^ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
+FI test.gff
+FZ = 4089
+FP 5 /^##Type DNA/
+FP /^ECLAC\tEMBL\tCDS\t1\t22\t0[.]000\t[-]\t[.].*FeatFlags "0x1" .*gene "lacI"/
+FP /^ECLACI\tEMBL\tCDS\t1\t50\t0[.]000\t[-]\t[.].*FeatFlags "0x3"/
+//
+
+ID featseqset-end-embl
+AQ seqretset
+CL -feat tembl:eclac\* -send 100 -out test.out -osf embl -auto
+FI test.out
+FZ = 8202
+FP 5 /^ID   /
+FP 5 /^FH   /
+FP /^ +caattcaggg tggtgaatgt gaaaccagta acgttatacg +100\n/
+FP /^ +gagtatgccg gtgtctctta tcagaccgtt tcccgcgtgg +100\n/
+FP /^FT   CDS             31..>100\n/
+//
+
+ID featseqset-begin-embl
+AQ seqretset
+CL -feat tembl:eclac\* -sbegin 51 -send 100 -out test.out -osf embl -auto
+FI test.out
+FZ = 7381
+FP 5 /^ID   /
+FP 5 /^FH   /
+FP /^ +ggaagagagt caattcaggg tggtgaatgt gaaaccagta acgttatacg +50/
+FP /^ +cgatgtcgca gagtatgccg gtgtctctta tcagaccgtt tcccgcgtgg +50/
+FP /^FT   CDS             29..>50\n/
+FP /^FT   CDS             <1..>50\n/
+//
+
+ID featseqset-rev-embl
+AQ seqretset
+CL -feat tembl:eclac\* -sbegin 51 -send 100 -srev -out test.out -osf embl -auto
+FI test.out
+FZ = 7525
+FP 5 /^ID   /
+FP 5 /^FH   /
+FP /^ +cgtataacgt tactggtttc acattcacca ccctgaattg actctcttcc +50\n/
+FP /^ +ccacgcggga aacggtctga taagagacac cggcatactc tgcgacatcg +50\n/
+FP /^FT   CDS             complement[(]<1..22[)]\n/
+FP /^FT   CDS             complement[(]<1..>50[)]\n/
+//
+
+ID featseqset-end-msf
+AQ seqretset
+CL -feat tembl:eclac\* -send 100 -out test.out -osf msf -auto
+FI test.out
+FZ = 1086
+FP 5 / +Name: /
+FP  / +Name: ECLAC .* Check: 4203/
+FP  / +Name: ECLACI .* Check: 8066/
+FP /^ECLAC      ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
+FP /^ECLACI     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+FI test.gff
+FZ = 4450
+FP 5 /^##Type DNA/
+FP /^ECLAC\tEMBL\tCDS\t79\t100\t0[.]000\t[+]\t[.].*FeatFlags "0x2" .*gene "lacI"/
+FP /^ECLACI\tEMBL\tCDS\t31\t100\t0[.]000\t[+]\t[.].*FeatFlags "0x2"/
+//
+
+ID featseqset-begin-msf
+AQ seqretset
+CL -feat tembl:eclac\* -sbegin 51 -send 100 -out test.out -osf msf -auto
+FI test.out
+FZ = 707
+FP 5 / +Name: /
+FP  / +Name: ECLAC .* Check: 1328/
+FP  / +Name: ECLACI .* Check: 2937/
+FP /^ECLAC      ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
+FP /^ECLACI     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
+FI test.gff
+FZ = 4089
+FP 5 /^##Type DNA/
+FP /^ECLAC\tEMBL\tCDS\t29\t50\t0[.]000\t[+]\t[.].*FeatFlags "0x2" .*gene "lacI"/
+FP /^ECLACI\tEMBL\tCDS\t1\t50\t0[.]000\t[+]\t[.].*FeatFlags "0x3"/
+//
+
+ID featseqset-rev-msf
+AQ seqretset
+CL -feat tembl:eclac\* -sbegin 51 -send 100 -srev -out test.out -osf msf -auto
+FI test.out
+FZ = 707
+FP 5 / +Name: /
+FP  / +Name: ECLAC .* Check: 2885/
+FP  / +Name: ECLACI .* Check: 9768/
+FP /^ECLAC      cgtataacgttactggtttcacattcaccaccctgaattgactctcttcc\n/
+FP /^ECLACI     ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
+FI test.gff
+FZ = 4089
+FP 5 /^##Type DNA/
+FP /^ECLAC\tEMBL\tCDS\t1\t22\t0[.]000\t[-]\t[.].*FeatFlags "0x1" .*gene "lacI"/
+FP /^ECLACI\tEMBL\tCDS\t1\t50\t0[.]000\t[-]\t[.].*FeatFlags "0x3"/
+//
+
+###########################################################
+# seqret (sequence and feature input) associated qualifiers
+###########################################################
+
 ID showalign-ex
 AP showalign
 IN ../../data/globins.msf
@@ -11302,6 +11890,7 @@ FP /^<tr><td>tembl-id:ECLAC</td><td>ECLAC</td><td>J01636</td>\s+<td>E.coli lacto
 //
 
 ID tfextract-keep
+## Note: yeast is now fungi rather than plant.
 DL keep
 AP tfextract
 PP EMBOSS_DATA=./
@@ -11315,7 +11904,8 @@ FP 0 /Died: /
 FI stdout
 FZ = 0
 FI tffungi
-FZ = 0
+FZ = 54
+FP /^Y\$ADH1_02/
 FI tfinsect
 FZ = 0
 FI tfvertebrate
@@ -11325,8 +11915,7 @@ FP /^HS\$ALBU_01/
 FP 5 /^HS\$ALBU/
 FP 2 /^MOUSE/
 FI tfplant
-FZ = 54
-FP /^Y\$ADH1_02/
+FZ = 0
 FI tfother
 FZ = 0
 //
