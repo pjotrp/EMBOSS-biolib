@@ -1,6 +1,6 @@
 # ACD file for QA testing - bad application name
 #
-appl: run123 [ doc: "testing" group: "testing" ]
+appl: run*123 [ doc: "testing" group: "testing" ]
 
 sequence: asequence 
 
