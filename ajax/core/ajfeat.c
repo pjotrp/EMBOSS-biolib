@@ -5506,7 +5506,10 @@ void ajFeattableCopy (AjPFeattable* pthys, AjPFeattable orig) {
   AjPFeature feat = NULL;
 
   ajFeattableDel(pthys);
-  *pthys = featTableNew();;
+
+  if (!orig) return;
+
+  *pthys = featTableNew();
 
   thys = *pthys;
 
