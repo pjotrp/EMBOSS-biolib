@@ -285,8 +285,13 @@ public class SequenceList extends JFrame
     if(ndef<0)
       return null;
 
-    return (String)seqModel.getValueAt(ndef,
+    String seqName = (String)seqModel.getValueAt(ndef,
              SequenceListTableModel.COL_NAME);
+
+    if(table.isListFile(ndef).booleanValue())
+      seqName = "@".concat(seqName);
+
+    return seqName;
   }
 
 /**
