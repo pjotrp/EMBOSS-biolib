@@ -27,11 +27,14 @@
 #include "emboss.h"
 #include <math.h>
 
+/* DDDDEBUG */
+#define DEBUG_LEVEL 0
+
 /* [XXXX ajIntCount1, ajIntCount2 SHOULD BE REPLACED WITH MORE MEANINGFUL NAMES] */
 static AjPFeature write_count(AjPFeattable ajpFeattableCounts,
-				ajint ajIntFeatureResidueType,
-				ajint ajIntCount1,
-				ajint ajIntCount2);
+			      ajint ajIntFeatureResidueType,
+			      ajint ajIntCount1,
+			      ajint ajIntCount2);
 
 
 
@@ -91,7 +94,7 @@ int main( int argc , char **argv )
     AjPFeattable ajpFeattableCounts  = NULL;
     AjPFeature ajpFeatCurrent        = NULL;
 
-    embInit( "contactcount", argc ,argv );
+    embInit( "contactcount", argc, argv );
 
     /* get contact file directory from ACD */
     ajpListCmapFiles = ajAcdGetDirlist("cmapdir");
@@ -111,7 +114,7 @@ int main( int argc , char **argv )
     {
 	for(ajIntColumn = 0;ajIntColumn < ajIntNumberOfResidueTypes;ajIntColumn++)
 	{
-	    ajInt2dPut(&ajpInt2dCounts,ajIntRow,ajIntColumn,0);
+	    ajInt2dPut(&ajpInt2dCounts, ajIntRow, ajIntColumn,0);
 	}
     }
 
@@ -144,21 +147,26 @@ int main( int argc , char **argv )
 	ajpInt2dContactMap = ajpCmapCurrent->Mat;
 
 	/* get dimensions of contact map */
-	ajInt2dLen(ajpInt2dContactMap,&ajIntRowMax,&ajIntColumnMax);
+	ajInt2dLen(ajpInt2dContactMap, &ajIntRowMax, &ajIntColumnMax);
 
 	/* loop through all cells in map */
 	for(ajIntRow = 0;ajIntRow<ajIntRowMax;ajIntRow++)
 	{
-	    cFirstResidueType = ajStrChar(ajpStrChainSeq,ajIntRow);
+	    cFirstResidueType = ajStrChar(ajpStrChainSeq, ajIntRow);
 	    for(ajIntColumn = 0;ajIntColumn < ajIntColumnMax;ajIntColumn++)
 	    {
-		cSecondResidueType = ajStrChar(ajpStrChainSeq,ajIntColumn);
+		cSecondResidueType = ajStrChar(ajpStrChainSeq, ajIntColumn);
 		ajIntFirstResidueType = ajAZToInt(cFirstResidueType);
 		ajIntSecondResidueType = ajAZToInt(cSecondResidueType);
-		if(ajInt2dGet(ajpInt2dContactMap,ajIntRow,ajIntColumn))
+		if(ajInt2dGet(ajpInt2dContactMap, ajIntRow, ajIntColumn))
 		{
-		    ajIntTempCount = ajInt2dGet(ajpInt2dCounts, ajIntFirstResidueType, ajIntSecondResidueType);
-		    ajInt2dPut(&ajpInt2dCounts, ajIntFirstResidueType, ajIntSecondResidueType, ajIntTempCount+1);
+		    ajIntTempCount = ajInt2dGet(ajpInt2dCounts,
+						ajIntFirstResidueType,
+						ajIntSecondResidueType);
+		    ajInt2dPut(&ajpInt2dCounts,
+			       ajIntFirstResidueType,
+			       ajIntSecondResidueType,
+			       ajIntTempCount+1);
 		}	    
 	    }
 	}
@@ -173,7 +181,7 @@ int main( int argc , char **argv )
 	ajFmtPrint("=======================\n");
 
 	/* get dimensions of count array */
-	ajInt2dLen(ajpInt2dCounts,&ajIntRowMax,&ajIntColumnMax);
+	ajInt2dLen(ajpInt2dCounts, &ajIntRowMax, &ajIntColumnMax);
 
 	/* chain info for head of report */
 	ajFmtPrintS(&ajpStrReportHeader, "Chain: %S", (ajpStrChainId));
@@ -202,10 +210,16 @@ int main( int argc , char **argv )
 	/* close the input file */
 	ajFileClose(&ajpFileCmapCurrent);
     }
+
     /* END LOOP OVER CONTACT MAP FILES IN CURRENT DIRECTORY */
 
-    /* DEBUGGING */
-    ajFmtPrint("AFTER AND OUTSIDE LOOP: ajIntNumberOfResidueTypes:\t%d\n", ajIntNumberOfResidueTypes);
+    /* DDDDEBUGGING */
+    if(DEBUG_LEVEL)
+    {
+	ajFmtPrint("AFTER AND OUTSIDE LOOP: ajIntNumberOfResidueTypes:\t%d\n",
+		   ajIntNumberOfResidueTypes);
+    }
+    
     
     /* read elements in count array */
     for(ajIntRow = 0;ajIntRow < ajIntNumberOfResidueTypes;ajIntRow++)
@@ -269,9 +283,9 @@ int main( int argc , char **argv )
 ******************************************************************************/
 
 static AjPFeature write_count (AjPFeattable ajpFeattableCounts,
-				 ajint ajIntFeatureResidueType,
-				 ajint ajIntCount1,
-				 ajint ajIntCount2)
+			       ajint ajIntFeatureResidueType,
+			       ajint ajIntCount1,
+			       ajint ajIntCount2)
 {
     AjPFeature ajpFeatCounts;
     AjPStr ajpStrFeatTemp;
@@ -280,8 +294,8 @@ static AjPFeature write_count (AjPFeattable ajpFeattableCounts,
 
     /* create feature for count and write per residue and per type frequency */
     ajpFeatCounts = ajFeatNewII(ajpFeattableCounts,
-				       ajIntFeatureResidueType,
-				       ajIntFeatureResidueType);
+				ajIntFeatureResidueType,
+				ajIntFeatureResidueType);
     ajFmtPrintS(&ajpStrFeatTemp, "*count1 %d", ajIntCount1);
     ajFeatTagAdd(ajpFeatCounts, NULL, ajpStrFeatTemp);
     ajFmtPrintS(&ajpStrFeatTemp, "*count2 %d", ajIntCount2);
