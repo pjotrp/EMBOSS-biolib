@@ -1,5 +1,9 @@
 Version 2.6.0
 
+        Showdb now can display the presence of any of the extra sv, des,
+	org, and key search fields that can be used to index and search in
+	databases. 
+
 	Added twofeat - Finds neighbouring pairs of features in sequences
 
 	Extractfeat - added option (-featinname) to include the name of
