@@ -4181,7 +4181,7 @@ FC = 2
 FI stdout 
 FZ = 0
 FI supermatcher.error
-FP /\ANo wordmatch start points for ECLACA vs ECLACI. No alignment\n/
+FZ = 0
 FI eclac.supermatcher
 FZ = 77788
 FP /^ECLAC           9/
@@ -4621,7 +4621,7 @@ CL 'http://www.sanger.ac.uk/Software/EMBOSS/Apps/'
 CL -postlink '.shtml'
 IN
 FI stderr
-FC = 1
+FC = 2
 FI stdout
 FP /<a href="http:\/\/www\.sanger\.ac\.uk\/Software\/EMBOSS\/Apps\/abiview\.shtml"/
 //
