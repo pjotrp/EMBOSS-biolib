@@ -532,29 +532,38 @@ AjBool ajSeqallNext (AjPSeqall seqall, AjPSeq* retseq)
     {
 	seqall->Count = 1;
 	ajSeqSetRange (seqall->Seq, seqall->Begin, seqall->End);
+
 	/*
-	seqall->Seq->Begin = seqall->Begin;
-	seqall->Seq->End = seqall->End;
+//	seqall->Seq->Begin = seqall->Begin;
+//	seqall->Seq->End = seqall->End;
 	*/
+
 	*retseq = seqall->Seq;
 	return ajTrue;
     }
 
-    ajMemStat("ajSeqAllNext starting");
-    ajStrStat("ajSeqAllNext starting");
+    /*
+//    ajMemStat("ajSeqAllNext starting");
+//    ajStrStat("ajSeqAllNext starting");
+    */
 
     if (ajSeqRead (seqall->Seq, seqall->Seqin))
     {
 	seqall->Count++;
 	ajSeqSetRange (seqall->Seq, seqall->Begin, seqall->End);
+
 	/*
-	seqall->Seq->Begin = seqall->Begin;
-	seqall->Seq->End = seqall->End;
+//	seqall->Seq->Begin = seqall->Begin;
+//	seqall->Seq->End = seqall->End;
 	*/
 
 	*retseq = seqall->Seq;
-	ajMemStat("ajSeqAllNext done");
-	ajStrStat("ajSeqAllNext done");
+
+	/*
+//	ajMemStat("ajSeqAllNext done");
+//	ajStrStat("ajSeqAllNext done");
+	*/
+
 	ajDebug("ajSeqallNext success\n");
 	return ajTrue;
     }
@@ -711,11 +720,17 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 	if (ajListLength (seqin->List))
 	{
 	    (void) ajListPop (seqin->List, (void**) &node);
+
+	    ajDebug("++pop from list '%S'\n", node->Usa);
 	    ajSeqinUsa (&seqin, node->Usa);
-	    seqUsaSave(keepnode, seqin);
+	    ajDebug("++SAVE SEQIN '%S' %d..%d(%b) '%S' %d\n",
+		    seqin->Usa, seqin->Begin, seqin->End, seqin->Rev,
+		    seqin->Formatstr, seqin->Format);
+ 	    /* seqUsaSave(keepnode, seqin); */
 	    seqUsaRestore(seqin, node);
 
 	    ajStrDel(&node->Usa);
+	    ajStrDel(&node->Formatstr);
 	    AJFREE (node);
 
 	    ajDebug("ajSeqRead: open list, try '%S'\n", seqin->Usa);
@@ -737,11 +752,16 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
     {
 	/* Failed, but we have a list still - keep trying it */
 	(void) ajListPop (seqin->List, (void**) &node);
+	ajDebug("++try again: pop from list '%S'\n", node->Usa);
 	ajSeqinUsa (&seqin, node->Usa);
-	seqUsaSave(keepnode, seqin);
+	ajDebug("++SAVE (AGAIN) SEQIN '%S' %d..%d(%b) '%S' %d\n",
+		seqin->Usa, seqin->Begin, seqin->End, seqin->Rev,
+		seqin->Formatstr, seqin->Format);
+	/* seqUsaSave(keepnode, seqin); */
 	seqUsaRestore(seqin, node);
 
 	ajStrDel(&node->Usa);
+	ajStrDel(&node->Formatstr);
 	AJFREE (node);
 
 /*	if (!seqUsaProcess (thys, seqin))
@@ -749,7 +769,10 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 */
 	seqUsaProcess (thys, seqin);
 	ret = seqRead (thys, seqin);
-	seqUsaRestore(seqin, keepnode);
+	/* seqUsaRestore(seqin, keepnode);
+	ajDebug("++RESTORE SEQIN '%S' %d..%d(%b) '%S' %d\n",
+		seqin->Usa, seqin->Begin, seqin->End, seqin->Rev,
+		seqin->Formatstr, seqin->Format); */
     }
 
     if (!ret)
@@ -760,6 +783,9 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
     /* if values are missing in the sequence object, we can use defaults
        from seqin or calculate where possible */
 
+    ajDebug ("++keep restored %d..%d (%b) '%S' %d\n",
+	     seqin->Begin, seqin->End, seqin->Rev,
+	     seqin->Formatstr, seqin->Format);
     ajDebug ("ajSeqRead: thys->Db '%S', seqin->Db '%S'\n",
 	     thys->Db, seqin->Db);
     ajDebug ("ajSeqRead: thys->Name '%S'\n",
@@ -1009,6 +1035,9 @@ ajint ajSeqsetApp (AjPSeqset thys, AjPSeq seq)
 static ajint seqReadFmt (AjPSeq thys, AjPSeqin seqin, SeqPInFormat inform,
 		       ajint format)
 {
+    ajDebug ("++seqReadFmt format %d (%s) '%S'\n",
+		 format, inform[format].Name, seqin->Usa);
+
     if (inform[format].Read (thys, seqin))
     {
 	ajDebug ("seqReadFmt success with format %d (%s)\n",
@@ -1076,6 +1105,7 @@ static ajint seqReadFmt (AjPSeq thys, AjPSeqin seqin, SeqPInFormat inform,
 	      format, inform[format].Name);
       ajFileBuffTraceFull(seqin->Filebuff, 10, 10);
     }
+    ajDebug ("++seqReadFmt failed - nothing read\n");
     return FMT_FAIL;
 }
 
@@ -1140,6 +1170,7 @@ static AjBool seqRead (AjPSeq thys, AjPSeqin seqin)
 	    stat = seqReadFmt (thys, seqin, inform, i);
 	    switch (stat) {
 	    case FMT_OK:
+	      ajDebug("++seqRead OK, set format %d\n", seqin->Format);
 	      return ajTrue;
 	    case FMT_BADTYPE:
 	      ajDebug ("seqRead: (a1) seqReadFmt stat == BADTYPE *failed*\n");
@@ -1162,11 +1193,13 @@ static AjBool seqRead (AjPSeq thys, AjPSeqin seqin)
 	    ajDebug ("seqRead:all default formats failed, give up\n");
 	    return ajFalse;
 	}
+	ajDebug("++seqRead set format %d\n", seqin->Format);
     }
     else
     {	/* one format specified */
 	ajFileBuffNobuff (seqin->Filebuff);
 
+	ajDebug ("++seqRead known format %d\n", seqin->Format);
 	stat = seqReadFmt (thys, seqin, inform, seqin->Format);
 	switch (stat) {
 	case FMT_OK:
@@ -1283,6 +1316,7 @@ static AjBool seqReadFasta (AjPSeq thys, AjPSeqin seqin)
 
     if (ajStrLen(seqin->Inseq))
     {	/* we have a sequence to use */
+        ajDebug("++fasta use Inseq '%S'\n", seqin->Inseq);
 	ajStrAssS (&thys->Seq, seqin->Inseq);
 	ajFileBuffClear (buff, 0);
     }
@@ -1293,6 +1327,7 @@ static AjBool seqReadFasta (AjPSeq thys, AjPSeqin seqin)
 	{
 	    (void) seqAppend (&thys->Seq, rdline);
 	    bufflines++;
+	    ajDebug("++fasta append line '%S'\n", rdline);
 	    ok = ajFileBuffGetL (buff, &rdline, &fposb);
 	}
 	if (ok)
@@ -4085,7 +4120,7 @@ static AjBool seqReadAbi (AjPSeq thys, AjPSeqin seqin)
     static AjPRegexp dotsexp = NULL;
     AjPFile fp = ajFileBuffFile (buff);
 
-    ajFileBuffTraceFull(buff, 10, 10);
+    /* ajFileBuffTraceFull(buff, 10, 10); */
     if(!ajSeqABITest(fp))
     {
 	ajFileBuffResetPos(buff);
@@ -4561,13 +4596,16 @@ static AjBool seqGcgMsfHeader (AjPStr line, SeqPMsfItem* pmsfitem)
 **
 ** Converts a USA Universal Sequence Address into an open file.
 **
-** First tests for "format::" and sets this if it is found
+** First tests for "[n:n:r]" range and sets this if it is found
+**
+** Then tests for asis:: in which the "filename" is really the sequence
+** and no format is needed.
+**
+** Then tests for "format::" and sets this if it is found
 **
 ** Then tests for "list:" or "@" and processes as a list file
 ** using seqListProcess which in turn invokes seqUsaProcess
 ** until a valid USA is found.
-**
-** Then tests for asis:: in which the "filename" is really the sequence
 **
 ** Then tests for dbname:query and opens the file (at the correct position
 ** if the database definition defines it)
@@ -4607,7 +4645,7 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
     AjBool regstat = ajFalse;
     AjBool dbstat = ajFalse;
     AjBool methstat = ajFalse;
-    AjBool accstat = ajFalse;
+    AjBool accstat = ajFalse;	/* return status from reading something */
     AjBool liststat = ajFalse;
     AjBool asisstat = ajFalse;
     AjBool rangestat = ajFalse;
@@ -4618,7 +4656,11 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
     AjBool irev=ajFalse;
     */
 
-    ajDebug("seqUsaProcess\n");
+    ajStrDel(&qrylevel);	/* clear it. we test this for regstat */
+
+    ajDebug("++seqUsaProcess '%S' %d..%d(%b) '%S' %d \n",
+	    seqin->Usa, seqin->Begin, seqin->End, seqin->Rev,
+	    seqin->Formatstr, seqin->Format);
 
     if (!fmtexp)
 	fmtexp = ajRegCompC ("^([A-Za-z0-9]*)::(.*)$");
@@ -4671,14 +4713,6 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
 	       seqin->Begin, seqin->End, seqin->Rev);
     }
 
-    liststat = ajRegExec (listexp, usatest);
-    if (liststat)
-    {
-	ajRegSubI (listexp, 2, &qrylist);
-	ajDebug ("list found @%S\n", qrylist);
-	return seqListProcess (thys, seqin, qrylist);
-    }
-
     asisstat = ajRegExec (asisexp, usatest);
     if (asisstat)
     {
@@ -4713,11 +4747,25 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
 
     (void) seqFormatSet (thys, seqin);
 
+    liststat = ajRegExec (listexp, usatest);
+    if (liststat)
+    {
+	ajRegSubI (listexp, 2, &qrylist);
+	ajDebug ("list found @%S fmt:%B range:%B\n",
+		 qrylist, fmtstat, rangestat);
+	if (seqin->Count && fmtstat)
+	  ajWarn("List includes another list with format. Results undefined\n");
+	if (seqin->Count && rangestat)
+	  ajWarn("List includes another list with range. Results undefined\n");
+	return seqListProcess (thys, seqin, qrylist);
+    }
+
     regstat = ajRegExec (dbexp, usatest);
     ajDebug("dbname dbexp: %B\n", regstat);
 
     if (regstat)
     {
+	ajRegSubI (dbexp, 3, &qrylevel);
 	ajRegSubI (dbexp, 1, &qrydb);
 	if (!ajNamDatabase(qrydb))
 	{
@@ -4727,7 +4775,6 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
     }
     if (regstat)
     {
-	ajRegSubI (dbexp, 3, &qrylevel);
 	ajRegSubI (dbexp, 5, &qryid);
 	(void) ajStrAss (&qry->DbName, qrydb);
 	ajDebug ("found dbname %S\n", qry->DbName);
@@ -4776,13 +4823,14 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
 	    else
 	    {
 		/* ajDebug ("trying access method '%S'\n", qry->Method); */
+	      /* calls seqAccess(function) */
 		accstat = qry->Access->Access (seqin);
-		if (!accstat)
-		{
-		    ajDebug ("Database '%S' : access method '%s' failed",
-			   qry->DbName, qry->Access->Name);
-		    return ajFalse;
-		}
+		if (accstat)
+		  return ajTrue;
+
+		ajDebug ("Database '%S' : access method '%s' failed",
+			 qry->DbName, qry->Access->Name);
+		return ajFalse;
 	    }
 	}
 	else
@@ -4813,24 +4861,43 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
 	    if (ajStrMatchC(qrychr, "%")) {
 		ajStrToLong(qryid, &qry->Fpos);
 		accstat = ajSeqAccessOffset (seqin);
+		if (accstat)
+		  return ajTrue;
 	    }
 	    else
 	    {
-		if (ajStrLen(qryid))
-		{
-		    ajDebug ("  qryid %S qrychr %S\n", qryid, qrychr);
+	      if (ajStrLen(qryid))
+	      {
+		  ajDebug ("  qryid %S qrychr %S\n", qryid, qrychr);
+		  if (ajStrLen(qrylevel)) /* set by dbname above */
+		  {
+		    /* ajDebug ("    qrylevel %S\n", qrylevel); */
+		    if (ajStrMatchCaseC (qrylevel, "id"))
+		      (void) ajStrAss (&qry->Id, qryid);
+		    else if (ajStrMatchCaseC (qrylevel, "acc"))
+		      (void) ajStrAss (&qry->Acc, qryid);
+		    else if (ajStrMatchCaseC (qrylevel, "des"))
+		      (void) ajStrAss (&qry->Des, qryid);
+		    else	/* assume it was part of the filename */
+		    {
+		      (void) ajStrAss (&qry->Id, qryid);
+		      (void) ajStrAss (&qry->Acc, qryid);
+		    }
+		  }
+		  else
+		  {
 		    (void) ajStrAss (&qry->Id, qryid);
 		    (void) ajStrAss (&qry->Acc, qryid);
-		}
-		accstat = ajSeqAccessFile (seqin);
+		  }
+	      }
+	      accstat = ajSeqAccessFile (seqin);
+	      if (accstat)
+		return ajTrue;
 	    }
-	    if (!accstat)
-	    {
-		ajErr ("failed to open filename %S ", qry->Filename);
-		return ajFalse;
-	    }
+	    ajErr ("failed to open filename %S ", qry->Filename);
+	    return ajFalse;
 	}
-	else
+	else			/* dbstat and regstat both failed */
 	{
 	    ajDebug ("no filename specified\n");
 	}
@@ -4894,8 +4961,9 @@ static void seqUsaListTrace (AjPList list) {
   ajDebug ("SeqUsaListTrace %d nodes\n", ajListLength(list));
   while (ajListIterMore(iter)) {
     node = (SeqPListUsa) ajListIterNext(iter);
-    ajDebug ("%3d: '%S' %4d..%d (%b)\n",
-	     ++i, node->Usa, node->Begin, node->End, node->Rev);
+    ajDebug ("%3d: '%S' %4d..%d (%b) '%S' %d\n",
+	     ++i, node->Usa, node->Begin, node->End, node->Rev,
+	     node->Formatstr, node->Format);
   }
   ajListIterFree(iter);
   ajDebug("...Done...\n");
@@ -4936,7 +5004,7 @@ static AjBool seqListProcess (AjPSeq seq, AjPSeqin seqin, AjPStr listfile)
     static ajint MAXDEPTH = 16;
 
     depth++;
-    ajDebug ("seqListProcess %S depth %d\n", listfile, depth);
+    ajDebug ("++seqListProcess %S depth %d\n", listfile, depth);
     if (depth > MAXDEPTH)
 	ajFatal ("USA List too deep");
 
@@ -4959,13 +5027,14 @@ static AjBool seqListProcess (AjPSeq seq, AjPSeqin seqin, AjPStr listfile)
 	{
 	    (void) ajStrTokenAss (&handle, rdline, " \t\n\r");
 	    (void) ajStrToken (&token, &handle, NULL);
-	    ajDebug ("Line  '%S'\ntoken '%S'\n", rdline, token);
+	    /* (void) ajDebug ("Line  '%S'\ntoken '%S'\n", rdline, token); */
 	    if (ajStrLen(token))
 	    {
+	        ajDebug("++Add to list: '%S'\n", token);
 	        AJNEW0 (node);
-		ajStrAssS(&node->Usa, token);
-		seqUsaSave(node, seqin);
-		ajListPushApp(list, node);
+	        ajStrAssS(&node->Usa, token);
+	        seqUsaSave(node, seqin);
+	        ajListPushApp(list, node);
 	    }
 	    token = NULL;
 	}
@@ -4988,8 +5057,10 @@ static AjBool seqListProcess (AjPSeq seq, AjPSeqin seqin, AjPStr listfile)
 
     if (ajListPop (seqin->List, (void**) &node))
     {
+        ajDebug("++pop first item '%S'\n", node->Usa);
 	ajSeqinUsa (&seqin, node->Usa);
 	ajStrDel (&node->Usa);
+	ajStrDel (&node->Formatstr);
 	AJFREE (node);
 	ajDebug ("descending with usa '%S'\n", seqin->Usa);
 	ret = seqUsaProcess (seq, seqin);
@@ -4997,6 +5068,7 @@ static AjBool seqListProcess (AjPSeq seq, AjPSeqin seqin, AjPStr listfile)
 
     (void) ajStrTokenReset (&handle);
     depth--;
+    ajDebug("++seqListProcess depth: %d returns: %B\n", depth, ret);
     return ret;
 }
 
