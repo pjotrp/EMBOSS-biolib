@@ -3556,6 +3556,10 @@ ajint embPatGetType(AjPStr *pattern, ajint mismatch, AjBool protein, ajint *m,
 	    type=7;
 	else
 	    type = 5;
+	/* Fix for broken Henry Spencer using <M( patterns */
+	q = ajStrStr(*pattern);
+	if(*(q+1)=='(')
+	    type = 7;
     }
     else if(mismatch && !range && (fclass || compl))
     {
