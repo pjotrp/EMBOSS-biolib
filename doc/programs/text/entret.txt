@@ -27,6 +27,12 @@ Description
    error message to be written (e.g. '-osformat') or will be quietly
    ignored (e.g. '-sbegin', '-send').
    
+   If you have defined a database to use GCG indexed databases, then
+   entret will currently only return the annotation and not the sequence.
+   entret will currently only reproduce the original entry, including the
+   sequence, for databases which hold the whole entry in one file (e.g.
+   the original flatfiles or SRS indexed databases).
+   
 Usage
 
    Here is a sample session with entret:
