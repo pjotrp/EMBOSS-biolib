@@ -1,5 +1,19 @@
 #!/usr/local/bin/perl -w
 
+##########################
+# THINGS TO DO
+##########################
+# Timeout (TI line to set) default 60secs, diffseq needs more
+# Preprocess (PP line) command
+# Postprocess (QQ line) command - e.g. testing database builds, reusing output
+#
+##########################
+# THINGS TO DO
+##########################
+#
+# EMBOSS_RC variable to read and extra .embossrc file (for new test dbs)
+#
+
 # EMBOSS QA Test Processing
 #
 # Test line types:
@@ -7,7 +21,7 @@
 # AP Application name (for the command line and for statistics)
 # CL Command line (rest of the command line)
 # ER error return code
-# ## Comment
+# ## Comment (required double #)
 # CC Comment
 # IN Line(s) of standard input
 # FI File name (stdout and stderr assumed to exist and be empty unless stated)
@@ -25,6 +39,10 @@ $testdef = "";
 $tcount=0;
 $tfail=0;
 
+$timeoutdef=60;			# default timeout in seconds
+
+$SIG{ALRM} = sub { die "timeout" };
+
 %retcode = (
 	    "1" => "Bad definition line ",
 	    "2" => "Failed to run",
@@ -35,7 +53,8 @@ $tfail=0;
 	    "7" => "Failed size",
 	    "8" => "Failed linecount",
 	    "9" => "Failed unwanted pattern",
-	    "10" => "Failed counted pattern"
+	    "10" => "Failed counted pattern",
+	    "11" => "Timeout"
 );
 
 open (LOG, ">qatest.log") || die "Cannot open qatest.log";
@@ -63,6 +82,7 @@ while (<IN>) {
     undef %outfilepatt;
     undef %pattest;
     undef %patcount;
+    undef %patcode;
     undef %outcount;
     undef %outsize;
 
@@ -90,6 +110,9 @@ sub runtest ($) {
   my $testret = 0;
   my $testid = "";
   my $testin = "";
+  my $timeout = $timeoutdef;
+  my $ppcmd = "";
+  my $qqcmd = "";
 
   foreach $line  (split (/^/, $testdef)) {
     ###print "<$line>\n";
@@ -112,8 +135,11 @@ sub runtest ($) {
     }
     elsif ($line =~ /^\#\#/) {next}
     elsif ($line =~ /^CC/) {next}
+    elsif ($line =~ /^TI\s+(\d+)/) {$timeout = $1}
     elsif ($line =~ /^ER\s+(\d+)/) {$testret = $1}
     elsif ($line =~ /^AP\s+(\S+)/) {$testapp = $1}
+    elsif ($line =~ /^PP\s+(\S+)/) {$ppcmd .= "$1;"}
+    elsif ($line =~ /^QQ\s+(\S+)/) {$qqcmd .= "$1;"}
     elsif ($line =~ /^IN\s+(\S*)/) {$testin .= "$1\n"}
     elsif ($line =~ /^CL\s+(.*)/) {
       if ($cmdline ne "") {$cmdline .= " "}
@@ -125,9 +151,10 @@ sub runtest ($) {
       print LOG "Known file [$ifile] <$1>\n";
       $ifile++;
     }
-    elsif ($line =~ /^FP\s+((\d+)\s+)?\/(.*)\/$/) {
+    elsif ($line =~ /^FP\s+((\d+)\s+)?(([si]+)\s+)?\/(.*)\/$/) {
       if (defined($2)) {$patcount{$ipatt}=$2}
-      $pat = $3;
+      if (defined($4)) {$patcode{$ipatt}=$4}
+      $pat = $5;
       $pattest{$ipatt} = $pat;
       $ipatt++;
     }
@@ -152,10 +179,31 @@ sub runtest ($) {
     $stdin = "< stdin";
   }
   else {$stdin = ""}
+  $timealarm=0;
   $starttime = time();
-  $sysstat = system( "$testapp $cmdline > stdout 2> stderr $stdin");
-  $status = $sysstat >> 8;
-  if ($status) {
+
+  eval {
+    alarm($timeout);
+    $sysstat = system( "$ppcmd $testapp $cmdline > stdout 2> stderr $stdin $qqcmd");
+    alarm(0);
+    $status = $sysstat >> 8;
+  };
+  if ($@) {
+    if ($@ =~ /timeout/) {
+      $timealarm = 1;
+    }
+    else {
+      die;
+    }
+  }
+
+  if ($timealarm) {
+    $testerr = "$retcode{11} ($timeout secs) '$testapp $cmdline $stdin', status $status/$testret\n";
+    print STDERR $testerr;
+    chdir ("..");
+    return 11;
+  }
+  elsif ($status) {
     if ($status != $testret) {
       $testerr = "$retcode{2} '$testapp $cmdline $stdin', status $status/$testret\n";
       print STDERR $testerr;
@@ -230,35 +278,47 @@ sub runtest ($) {
       else {$iq = $outfilepatt{$j}}
       ###print LOG "Patterns $ip .. ", $iq-1, "\n";
       for ($k=$ip; $k < $iq; $k++) {
+	if (defined($patcode{$k})) {
+	  ##print STDERR "special /m$patcode{$k} pattern '$pattest{$k}'\n";
+	  if ($patcode{$k} eq "s") {$qpat = qr/$pattest{$k}/ms}
+	  elsif ($patcode{$k} eq "i") {$qpat = qr/$pattest{$k}/mi}
+	  elsif ($patcode{$k} eq "is") {$qpat = qr/$pattest{$k}/mis}
+	  elsif ($patcode{$k} eq "si") {$qpat = qr/$pattest{$k}/mis}
+	}
+	else {
+	  ##print STDERR "standard /m pattern '$pattest{$k}'\n";
+	  $qpat = qr/$pattest{$k}/m;
+	}
 	if (defined($patcount{$k})) {
 	  $pcount = $patcount{$k};
-	  print LOG "Test pattern [$k] '$pattest{$k}' ($pcount times) $testid/$file\n";
-	  $qpat = qr/$pattest{$k}/ms;
+	  ##print STDERR "Test pattern [pat $k] '$pattest{$k}' ($pcount times) $testid/$file\n";
+	  print LOG "Test pattern [pat $k] '$pattest{$k}' ($pcount times) $testid/$file\n";
 	  $pc = 0;
 	  while ($odata =~ /$qpat/g) {
 	    $pc++;
 	  }
 	  if ($pc && !$pcount) {
-	    print LOG "Failed pattern [$k] '$pattest{$k}' $testid/$file\n";
-	    $testerr = "$retcode{9} [$k] '$pattest{$k}' $testid/$file\n";
+	    print LOG "$retcode{9} [pat $k] '$pattest{$k}' $testid/$file\n";
+	    $testerr = "$retcode{9} [pat $k] '$pattest{$k}' $testid/$file\n";
 	    print STDERR $testerr;
 	    chdir ("..");
 	    return 9;
 	  }
 	  elsif ($pc != $pcount) {
-	    print LOG "$retcode{10} [$k] '$pattest{$k}' found $pc/$pcount times $testid/$file\n";
-	    $testerr = "$retcode{10} [$k] '$pattest{$k}' found $pc/$pcount times $testid/$file\n";
+	    print LOG "$retcode{10} [pat $k] '$pattest{$k}' found $pc/$pcount times $testid/$file\n";
+	    $testerr = "$retcode{10} [pat $k] '$pattest{$k}' found $pc/$pcount times $testid/$file\n";
 	    print STDERR $testerr;
 	    chdir ("..");
 	    return 10;
 	  }
 	}
 	else {
-	  print LOG "Test pattern [$k] '$pattest{$k}' $testid/$file\n";
-	  $qpat = qr/$pattest{$k}/ms;
-	  if ($odata !~ /$qpat/) {
-	    print LOG "$retcode{4} [$k] '$pattest{$k}' $testid/$file\n";
-	    $testerr = "$retcode{4} [$k] '$pattest{$k}' $testid/$file\n";
+	  print LOG "Test pattern [pat $k] '$pattest{$k}' $testid/$file\n";
+	  ###print STDERR "Test pattern [pat $k] '$pattest{$k}' $testid/$file\n";
+	  if ($odata !~ $qpat) {
+	    print LOG "$retcode{4} [pat $k] '$pattest{$k}' $testid/$file\n";
+	    print LOG "\$odata: '\n$odata'\n";
+	    $testerr = "$retcode{4} [pat $k] '$pattest{$k}' $testid/$file\n";
 	    print STDERR $testerr;
 	    chdir ("..");
 	    return 4;
