@@ -47,7 +47,7 @@ string: alignextn  [
 
 string: database    
 [ 
-      param: Y
+      parameter: Y
       information: "Name of BLAST-indexed database to search"
       default: "swissprot"
 ]
