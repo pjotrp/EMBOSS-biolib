@@ -181,16 +181,16 @@ void ajCodBacktranslate(AjPStr *b, AjPStr a, AjPCod thys)
 	    continue;
 	}
 
-	if(toupper(*p)==(int)'X')
+	if(toupper((int)*p)==(int)'X')
 	{
 	    (void) ajStrAppC(b,"NNN");
 	    ++p;
 	    continue;
 	}
 
-	if(toupper(*p)==(int)'B')
+	if(toupper((int)*p)==(int)'B')
 	  *p = 'D';
-	if(toupper(*p)==(int)'Z')
+	if(toupper((int)*p)==(int)'Z')
 	  *p = 'E';
 
 	idx=thys->back[ajAZToInt(*p)];
