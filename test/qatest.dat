@@ -5263,7 +5263,8 @@ IN tembl:paamir
 IN ggtacc
 IN
 FI paamir.dreg
-FP /PAAMIR +1 +GGTACC/
+FZ = 482
+FP /     1       6 ggtacc\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -5929,6 +5930,29 @@ FP /Error: Unable to read sequence 'stdin'/
 FP 0 /Warning: /
 FP 1 /Error: /
 FP 1 /Died: /
+//
+
+ID epestfind-ex
+AP epestfind
+CL -graph cps -invalid
+IN ../../data/exu2_drops.embl
+IN 
+IN 
+IN 
+FI stderr
+FC = 6
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FZ = 21
+FP /^Created epestfind.ps\n/
+FI exu2_drops.epestfind
+FZ = 3194
+FP /238 KMVYEMALQLIESESTESPESFESPESSESSEAEVK 273/
+FI epestfind.ps
+FZ = 26891
+FP /^%%Title: PLplot Graph\n/
 //
 
 ID eprimer3-ex
@@ -7845,29 +7869,6 @@ FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
 
-ID pestfind-ex
-AP pestfind
-CL -graph cps -invalid
-IN ../../data/exu2_drops.embl
-IN 
-IN 
-IN 
-FI stderr
-FC = 6
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FZ = 20
-FP /^Created pestfind.ps\n/
-FI exu2_drops.pestfind
-FZ = 3194
-FP /238 KMVYEMALQLIESESTESPESFESPESSESSEAEVK 273/
-FI pestfind.ps
-FZ = 27060
-FP /^%%Title: PLplot Graph\n/
-//
-
 # change example to use globins.msf
 ID plotcon-ex
 AP plotcon
@@ -7994,8 +7995,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI 100k_rat.preg
-FZ = 94
-FP /^       100K_RAT   390 IAQA\n/
+FZ = 485
+FP /^    390     393 IAQA\n/
 //
 
 ID prettyplot-ex
@@ -8301,8 +8302,28 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hsfau.recoder
-FZ = 2563
-FP 3 /^EcoRII      CCWGG          77        P\.P    78       C->[ACGT]  \n/
+FZ = 3275
+FP 3 / +77 +81 . +EcoRII +CCWGG +78 P.P +C->[ACGT] +\n/
+//
+
+ID recoder-seqs
+AP recoder
+## split export EMBOSS_DATA=../rebaseextract-keep/ into two statements
+PP EMBOSS_DATA=../rebaseextract-keep/
+PP export EMBOSS_DATA
+CL -sshow -tshow
+IN tembl:hsfau
+IN EcoRII
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI hsfau.recoder
+FZ = 5102
+FP 3 / +77 +81 . +EcoRII +CCWGG +78 P.P +C->[ACGT] +\n/
+FP /# 61 +AGCTCTTTGT CCGCGCCCAG GAGCTACACA CCTTCGAGGT GACCGGCCAG GAAACGGTCG \n/
 //
 
 # make bamhi explicit in reply to prompt
@@ -12618,8 +12639,27 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hsfau.silent 
-FZ = 565
-FP /^HindIII     AAGCTT         267       A\.A    268      A->T  \n/
+FZ = 897
+FP /^ +272 +267 Rev +HindIII +AAGCTT +268 A.A +Yes +A->T +\n/
+//
+
+ID silent-seqs
+PP EMBOSS_DATA=../rebaseextract-keep/
+PP export EMBOSS_DATA
+AP silent
+CL -sshow -tshow
+IN tembl:hsfau
+IN ecori,hindiii
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI hsfau.silent 
+FZ = 2713
+FP /^ +272 +267 Rev +HindIII +AAGCTT +268 A.A +Yes +A->T +\n/
+FP /^\n/
 //
 
 ID sixpack-ex
