@@ -35,11 +35,11 @@ profit prophecy prophet \
 prosextract pscan \
 rebaseextract recoder redata remap restover restrict revseq scope \
 seealso seqmatchall seqret seqretall seqretset seqretsplit \
-showalign showdb showfeat showorf showseq \
+showdb showfeat showorf showseq \
 shuffleseq sigcleave silent splitter scopalign stretcher \
 stssearch supermatcher syco \
 textsearch tfextract tfm tfscan \
-tmap transeq transsplice trimseq \
+tmap transeq trimseq \
 vectorstrip \
 water wobble wordcount wordmatch \
 wossname
@@ -166,7 +166,6 @@ seqretall_SOURCES = seqretall.c
 seqretset_SOURCES = seqretset.c
 seqretsplit_SOURCES = seqretsplit.c
 scope_SOURCES = scope.c
-showalign_SOURCES = showalign.c
 showdb_SOURCES = showdb.c
 showfeat_SOURCES = showfeat.c
 showorf_SOURCES = showorf.c
@@ -186,7 +185,6 @@ tfm_SOURCES = tfm.c
 tfscan_SOURCES = tfscan.c
 tmap_SOURCES = tmap.c
 transeq_SOURCES = transeq.c
-transsplice_SOURCES = transsplice.c
 trimseq_SOURCES = trimseq.c
 vectorstrip_SOURCES = vectorstrip.c
 water_SOURCES = water.c
