@@ -99,6 +99,7 @@ AjPDir ajDirNew(const AjPStr name)
 
     AJNEW0(thys);
     ajStrAssS(&thys->Name, name);
+    thys->Prefix = NULL;
     thys->Extension = NULL;
     thys->Output = ajFalse;
 
@@ -123,6 +124,34 @@ AjPDir ajDirNewS(const AjPStr name, const AjPStr ext)
 
     AJNEW0(thys);
     ajStrAssS(&thys->Name, name);
+    if (ajStrLen(ext))
+	ajStrAssS(&thys->Extension, ext);
+    thys->Output = ajFalse;
+
+    return thys;
+}
+
+
+
+/* @func ajDirNewSS ***********************************************************
+**
+** Creates a new directory object.
+**
+** @param [r] name [const AjPStr] Directory name
+** @param [r] prefix [const AjPStr] Filename prefix
+** @param [r] ext [const AjPStr] Filename extension
+** @return [AjPDir] New directory object.
+** @@
+******************************************************************************/
+
+AjPDir ajDirNewSS(const AjPStr name, const AjPStr prefix, const AjPStr ext)
+{
+    AjPDir thys;
+
+    AJNEW0(thys);
+    ajStrAssS(&thys->Name, name);
+    if (ajStrLen(prefix))
+	ajStrAssS(&thys->Prefix, prefix);
     if (ajStrLen(ext))
 	ajStrAssS(&thys->Extension, ext);
     thys->Output = ajFalse;
@@ -171,6 +200,34 @@ AjPDir ajDiroutNewS(const AjPStr name, const AjPStr ext)
 
     AJNEW0(thys);
     ajStrAssS(&thys->Name, name);
+    if (ajStrLen(ext))
+	ajStrAssS(&thys->Extension, ext);
+    thys->Output = ajTrue;
+
+    return thys;
+}
+
+
+
+/* @func ajDiroutNewS *********************************************************
+**
+** Creates a new directory output object.
+**
+** @param [r] name [const AjPStr] Directory name
+** @param [r] prefix [const AjPStr] Filename prefix
+** @param [r] ext [const AjPStr] File extension
+** @return [AjPDir] New directory object.
+** @@
+******************************************************************************/
+
+AjPDir ajDiroutNewSS(const AjPStr name, const AjPStr prefix, const AjPStr ext)
+{
+    AjPDir thys;
+
+    AJNEW0(thys);
+    ajStrAssS(&thys->Name, name);
+    if (ajStrLen(prefix))
+	ajStrAssS(&thys->Prefix, prefix);
     if (ajStrLen(ext))
 	ajStrAssS(&thys->Extension, ext);
     thys->Output = ajTrue;
