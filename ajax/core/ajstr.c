@@ -1951,7 +1951,7 @@ AjBool ajStrTrimC (AjPStr* pthis, const char* chars) {
 
   cp = &thys->Ptr[thys->Len-1];
   i = 0;
-  while (strchr(chars, *cp)) {
+  while (strchr(chars, *cp) && thys->Len) {
     thys->Len--;
     cp--;
     i++;
@@ -1987,7 +1987,7 @@ AjBool ajStrTrimEndC (AjPStr* pthis, const char* chars) {
 
   cp = &thys->Ptr[thys->Len-1];
   i = 0;
-  while (strchr(chars, *cp)) {
+  while (strchr(chars, *cp) && thys->Len) {
     thys->Len--;
     cp--;
     i++;
