@@ -406,12 +406,16 @@ AjPFile ajFileNewOut (const AjPStr name) {
 
   return thys;
 }
+
 /* @func ajFileNewOutD ********************************************************
 **
 ** Creates a new output file object with a specified directory and name.
 **
 ** 'stdout' and 'stderr' are special names for standard output and
 ** standard error respectively.
+**
+** If the filename already has a directory specified,
+** the "dir" argument is ignored.
 **
 ** @param [rN] dir [const AjPStr] Directory (optional, can be empty or NULL).
 ** @param [r] name [const AjPStr] File name.
@@ -424,6 +428,8 @@ AjPFile ajFileNewOutD (const AjPStr dir, const AjPStr name) {
   AjPFile thys;
   static AjPStr dirfix = NULL;
 
+  ajDebug("ajFileNewOutD ('%S' '%S')\n", dir, name);
+
   if (ajStrMatchC(name, "stdout"))
     return ajFileNewF(stdout);
   if (ajStrMatchC(name, "stderr"))
@@ -432,15 +438,21 @@ AjPFile ajFileNewOutD (const AjPStr dir, const AjPStr name) {
   AJNEW0(thys);
 
   if (!ajStrLen(dir)) {
-
     thys->fp = fopen (ajStrStr(name), "w");
+    ajDebug("ajFileNewOutD open name '%S'\n", name);
   }
   else {
-    ajStrAssS(&dirfix, dir);
-    if (ajStrChar(dir, -1) != '/')
-      ajStrAppC (&dirfix, "/");
-    ajStrApp (&dirfix, name);
+    if (ajFileHasDir(name)) {
+      ajStrAssS (&dirfix, name);
+    }
+    else {
+      ajStrAssS(&dirfix, dir);
+      if (ajStrChar(dir, -1) != '/')
+	ajStrAppC (&dirfix, "/");
+      ajStrApp (&dirfix, name);
+    }
     thys->fp = fopen (ajStrStr(dirfix), "w");
+    ajDebug("ajFileNewOutD open dirfix '%S'\n", dirfix);
   }
 
   if (!thys->fp) {
@@ -458,6 +470,68 @@ AjPFile ajFileNewOutD (const AjPStr dir, const AjPStr name) {
     fileOpenMax = fileOpenCnt;
 
   return thys;
+}
+
+/* @func ajFileSetDir ********************************************************
+**
+** Adds a default directory to a filename.
+** If the filename already has a directory, then this is left unchanged.
+**
+** 'stdout' and 'stderr' are special names for standard output and
+** standard error respectively which need no directory.
+**
+** @param [r] pname [AjPStr*] File name.
+** @param [rN] dir [const AjPStr] Directory (optional, can be empty or NULL).
+** @return [AjBool] ajTrue if the filename was changed
+** @@
+******************************************************************************/
+
+AjBool ajFileSetDir (AjPStr *pname, const AjPStr dir) {
+
+  static AjPStr dirfix = NULL;
+  AjBool ret = ajFalse;
+
+  ajDebug ("ajFileSetDir name '%S' dir '%S'\n", *pname, dir);
+
+  if (ajStrMatchC(*pname, "stdout"))
+    return ret;
+  if (ajStrMatchC(*pname, "stderr"))
+    return ret;
+
+  if (!ajStrLen(dir))
+    return ret;
+
+  if (ajFileHasDir(*pname))
+    return ret;
+
+  ajStrAssS(&dirfix, dir);
+  if (ajStrChar(dir, -1) != '/')
+    ajStrAppC (&dirfix, "/");
+  ajStrApp (&dirfix, *pname);
+  
+  ajStrAssS (pname, dirfix);
+  ret = ajTrue;
+
+  ajDebug ("ajFileSetDir changed name '%S'\n", *pname);
+
+  return ret;
+}
+
+/* @func ajFileHasDir ********************************************************
+**
+** Tests whether a filename includes a directory specification.
+**
+** @param [r] name [AjPStr] File name.
+** @return [AjBool] ajTrue if directory filename syntax was found
+** @@
+******************************************************************************/
+
+AjBool ajFileHasDir (const AjPStr name) {
+  if (ajStrFindC(name, "/") < 0)
+    return ajFalse;
+
+  return ajTrue;
+
 }
 
 /* @func ajFileNewF ***********************************************************
