@@ -501,25 +501,38 @@ fi
 
 if [ "$AUTH" = "y" ]; then
 
+  echo "#include <stdio.h>" > dummy.c
+  echo 'int main(){ printf("%d\n",getuid()); }' >> dummy.c
+  if (cc dummy.c -o dummy >/dev/null 2>&1); then
+    UUIDTMP=`dummy`
+    CC="cc"; 
+  else
+    gcc dummy.c -o dummy >/dev/null 2>&1
+    UUIDTMP=`dummy`
+    CC="gcc";
+  fi
+  rm -f dummy.c dummy
+
+  if [ "$UUIDTMP" = "" ]; then
+    UUIDTMP="506"
+  fi
+
+  if [ "$UUIDTMP" = "0" ]; then
+    UUIDTMP="506"
+  fi
+
+ 
   echo "Provide the UID of the account (non-priveleged) to run Tomcat,"
-  echo "it has to be greater than 100 [506]:"
+  echo "it has to be greater than 100 [$UUIDTMP]:"
   read UUID
 
   echo "$UUID" >> $RECORD
 
   if [ "$UUID" = "" ]; then
-    UUID="506"
+    UUID="$UUIDTMP"
   fi
 
-  if [ "$UUID" != "" ]; then
-    echo "int dummy(){}" > dummy.c
-    if (cc dummy.c -c -o dummy.o >/dev/null 2>&1); then
-      CC="cc -DTOMCAT_UID=$UUID "; export CC
-    else
-      CC="gcc -DTOMCAT_UID=$UUID "; export CC
-    fi
-    rm -f dummy.c dummy.o 
-  fi
+  CC="$CC -DTOMCAT_UID=$UUID "; export CC
 
   echo
   echo
