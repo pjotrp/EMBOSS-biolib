@@ -200,14 +200,27 @@ static void messDump (char *message);
 ** structure elements are retrieved using access functions.
 ******************************************************************************/
 
-typedef struct _MessErrorInfo {
-  char *progname ;		/* Name of executable reporting error. */
-  char *filename ;		/* Filename where error reported */
+/* @datastatic MessPErrorInfo *************************************************
+**
+** Message error information
+**
+** @alias MessSErrorInfo
+** @alias MessOErrorInfo
+**
+** @attr progname [char*] Name of executable reporting error
+** @attr filename [char*] Filename where error was reported
+** @attr line_num [ajint] line number of file where error was reported.
+** @@
+******************************************************************************/
+
+typedef struct MessSErrorInfo {
+  char* progname ;		/* Name of executable reporting error. */
+  char* filename ;		/* Filename where error reported */
   ajint line_num ;		/* line number of file where error
 				   reported. */
-} MessErrorInfo ;
+} MessOErrorInfo, *MessPErrorInfo ;
 
-static MessErrorInfo messageG = {NULL, NULL, 0} ;
+static MessOErrorInfo messageG = {NULL, NULL, 0} ;
 
 static ajint messGetErrorLine(void) ;
 static char *messGetErrorFile(void) ;
