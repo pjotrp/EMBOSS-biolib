@@ -543,6 +543,8 @@ public class SectionPanel
     appName = parseAcd.getParamValueStr(nf,0).toUpperCase();
     Box bylabP = new Box(BoxLayout.Y_AXIS);
     Box bxlabP = new Box(BoxLayout.X_AXIS);
+  
+    JScrollPane mainScroller = (JScrollPane)(p3.getParent().getParent().getParent());
 
     JPanel jTitle = new JPanel(new BorderLayout());
     jTitle.setBackground(Color.white);
@@ -562,7 +564,8 @@ public class SectionPanel
     bylabP.add(bxlabP);
 
     jTitle.add(bylabP, BorderLayout.WEST);
-    p3.add(jTitle, BorderLayout.NORTH);
+//  p3.add(jTitle, BorderLayout.NORTH);
+    mainScroller.setColumnHeaderView(jTitle);
 
 //  appName = parseAcd.getParamValueStr(nf,0).toUpperCase();
 //  Box bylabP = new Box(BoxLayout.Y_AXIS);
