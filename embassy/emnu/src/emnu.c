@@ -3080,7 +3080,7 @@ int main (int argc, char * argv[], char **env) {
 **  don't want to ignore applications that don't work in GUIs 
 **  (emnu is not a GUI!)
 */
-    embGrpGetProgGroups (glist, alpha, env, ajTrue, ajTrue, explode, 
+    embGrpGetProgGroups (glist, alpha, env, ajTrue, ajTrue, NULL, explode, 
     	ajFalse, ajFalse);
 
 
