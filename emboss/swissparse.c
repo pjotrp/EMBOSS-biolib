@@ -62,21 +62,23 @@
 ** the scop classification file (see scope documentation).
 ** (4)  SF - Domain superfamily.  It is identical to the text given after 
 ** 'Superfamily' in the scop classification file (see scope documentation).
-** (5)  FA - Domain family. It is identical to the text given after 'Family' in 
-** the scop classification file (see scope documentation).
+** (5)  FA - Domain family. It is identical to the text given after 'Family'
+** in the scop classification file (see scope documentation).
 ** (6)  NS - Number in set. The number of sequences retrieved by the search 
 ** for this family or superfamily. The file will have a section containing an 
 ** NN, AC, CL, RA and SQ records (see below) for each sequence in the set for 
 ** each family / superfamily.
 ** (7) NN - Sequence number.  The number given in brackets after this record 
-** indicates the start of the data for the relevent sequence in the current set.
+** indicates the start of the data for the relevent sequence in the current
+** set.
 ** (8) AC - Accession number of the hit.
 ** (9) TY - Classification of hit.  Always has the value 'OTHER' (the values 
 ** HIT or ALIGN are used for psiblasts output (see psiblasts documentation).
-** (10) RA - Sequence range. The numbers before START and END give the start and 
-** end positions respectively of the domain relative to the full length sequence 
-** in the swissprot database.  A '1' and the length (amino acids) of the 
-** sequence are given in cases where an entire protein sequence is given.
+** (10) RA - Sequence range. The numbers before START and END give the start
+** and end positions respectively of the domain relative to the full length
+** sequence in the swissprot database.  A '1' and the length (amino acids)
+** of the sequence are given in cases where an entire protein sequence is
+** given.
 ** (11) SQ - protein sequence. The number of residues is given before AA on the
 ** first line. The protein sequence is given on subsequent lines. 
 ** (12) XX - used for spacing.
@@ -214,7 +216,7 @@ static void     swissparse_TermsDel(AjPTerms *pthis);
 static AjBool   swissparse_keysearch(AjPFile inf, AjPTerms terms,
 				     AjPHitlist *hits);
 
-/* @prog swissparse *******************************************************
+/* @prog swissparse ***********************************************************
 **
 ** Retrieves sequences from swissprot using keyword search
 **
@@ -223,7 +225,8 @@ static AjBool   swissparse_keysearch(AjPFile inf, AjPTerms terms,
 int main(int argc, char **argv)
 {
     AjPFile     key_inf=NULL;		/* File pointer for keywords file */ 
-    AjPFile     sp_inf =NULL;		/* File pointer for swissprot database */ 
+    AjPFile     sp_inf =NULL;		/* File pointer for swissprot
+                                           database */
     AjPFile     outf   =NULL;		/* File pointer for output file */ 
     AjPTerms    keyptr =NULL;		/* Pointer to terms structure */
     AjPHitlist  hitptr =NULL;		/* Pointer to hitlist structure */
@@ -290,13 +293,13 @@ int main(int argc, char **argv)
 
 
 /* @funcstatic swissparse_TermsNew ********************************************
- **
- ** Terms object constructor. This is normally called by the TermsRead
- **  function.
- **
- ** @return [AjPTerms] Pointer to a Terms object
- ** @@
- ******************************************************************************/
+**
+** Terms object constructor. This is normally called by the TermsRead
+**  function.
+**
+** @return [AjPTerms] Pointer to a Terms object
+** @@
+******************************************************************************/
 static AjPTerms swissparse_TermsNew(void)
 {
     AjPTerms  ret =NULL;		/* Pointer to terms structure */    
@@ -318,15 +321,15 @@ static AjPTerms swissparse_TermsNew(void)
 
 
 
-/* @funcstatic swissparse_TermsDel *******************************************
- **
- ** Destructor for terms object.
- **
- ** @param [w] pthis [AjPTerms*] Terms object pointer
- **
- ** @return [void]
+/* @funcstatic swissparse_TermsDel ********************************************
+**
+** Destructor for terms object.
+**
+** @param [w] pthis [AjPTerms*] Terms object pointer
+**
+** @return [void]
  ** @@
- ******************************************************************************/
+******************************************************************************/
 static void swissparse_TermsDel(AjPTerms *pthis)
 {
     int x=0;				/* Counter */
@@ -351,17 +354,17 @@ static void swissparse_TermsDel(AjPTerms *pthis)
 
 
 
-/* @funcstatic swissparse_TermsRead ******************************************
- **
- ** Read the next Terms object from a file in embl-like format. The search 
- ** terms are modified with a leading and trailing space.
- **
- ** @param [r] inf [AjPFile] Input file stream
- ** @param [w] thys [AjPTerms*] Terms object
- **
- ** @return [AjBool] True on succcess
- ** @@
- ******************************************************************************/
+/* @funcstatic swissparse_TermsRead *******************************************
+**
+** Read the next Terms object from a file in embl-like format. The search 
+** terms are modified with a leading and trailing space.
+**
+** @param [r] inf [AjPFile] Input file stream
+** @param [w] thys [AjPTerms*] Terms object
+**
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
 static AjBool swissparse_TermsRead(AjPFile inf, AjPTerms *thys)
 {    
     AjPStr   line           =NULL;	/* Line of text */
@@ -477,17 +480,17 @@ static AjBool swissparse_TermsRead(AjPFile inf, AjPTerms *thys)
 
 
 
-/* @funcstatic swissparse_keysearch  *****************************************
- **
- ** Search swissprot with terms structure and writes a hitlist structure
- **
- ** @param [r] inf   [AjPFile]     File pointer to swissprot database
- ** @param [r] terms [AjPTerms]    Terms object pointer
- ** @param [w] hits  [AjPHitlist*] Hitlist object pointer
- **
- ** @return [AjBool] True on success
- ** @@
- ******************************************************************************/
+/* @funcstatic swissparse_keysearch *******************************************
+**
+** Search swissprot with terms structure and writes a hitlist structure
+**
+** @param [r] inf   [AjPFile]     File pointer to swissprot database
+** @param [r] terms [AjPTerms]    Terms object pointer
+** @param [w] hits  [AjPHitlist*] Hitlist object pointer
+**
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
 static AjBool swissparse_keysearch(AjPFile inf, AjPTerms terms,
 				   AjPHitlist *hits)
 {

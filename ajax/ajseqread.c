@@ -5882,7 +5882,7 @@ static void seqTaxSave (AjPSeq thys, AjPStr tax)
 ** Adds a sequence version number to the stored data for a sequence.
 **
 ** @param [u] thys [AjPSeq] Sequence object
-** @param [r] acc [AjPStr] SeqVersion number
+** @param [r] sv [AjPStr] SeqVersion number
 ** @return [void]
 ** @@
 ******************************************************************************/
