@@ -3480,7 +3480,7 @@ static AjBool featEmblOperOut(const AjPStr loc, AjPStr* opnam, AjPStr* value)
     ajint left=0;
     ajint right=0;
     ajint ipos=0;
-    ajint bracepos = 0;;
+    ajint bracepos = 0;
     const char* cp = ajStrStr(loc);
 
     if (*cp == '(') return ajFalse;	/* starts with '(' */
@@ -3549,7 +3549,7 @@ static AjBool featEmblOperIn(const AjPStr loc, AjPStr* opnam, AjPStr* value,
     ajint right=0;
     ajint depth;
     ajint ipos=0;
-    ajint bracepos = 0;;
+    ajint bracepos = 0;
     const char* cp = ajStrStr(loc);
 
     if (*cp == '(') return ajFalse;	/* starts with '(' */
