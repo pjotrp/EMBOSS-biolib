@@ -2395,9 +2395,6 @@ void ajSeqReverse (AjPSeq thys)
 
 void ajSeqReverseForce (AjPSeq thys)
 {
-    ajint ibegin = thys->Begin;
-    ajint iend = thys->End;
-
     ajDebug ("ajSeqReverse len: %d Begin: %d End: %d Rev: %B Reversed: %B\n",
 	     ajSeqLen(thys), thys->Begin, thys->End,
 	     thys->Rev, thys->Reversed);
