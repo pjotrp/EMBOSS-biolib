@@ -2078,8 +2078,10 @@ void ajFileBuffDel (AjPFileBuff* pthis) {
   if (!thys)
     return;
 
+/* Causes seqfault with asis::ACDEFGH
   ajDebug("ajFileBuffDel %x '%F' Buff %x Name %x\n",
 	  thys, thys->File, thys->File->Buff->Ptr, thys->File->Name->Ptr);
+*/
 
   ajFileBuffClear (thys, -1);
   ajFileBuffFreeClear (thys);
