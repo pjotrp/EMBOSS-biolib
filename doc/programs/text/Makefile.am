@@ -37,11 +37,11 @@ pkgdata2_DATA = lindna.txt marscan.txt maskfeat.txt maskseq.txt matcher.txt \
                seqmatchall.txt seqret.txt seqretall.txt seqretfeat.txt \
                seqretset.txt seqretsplit.txt showalign.txt showdb.txt \
                showfeat.txt showorf.txt showseq.txt shuffleseq.txt \
-               sigcleave.txt silent.txt splitter.txt stretcher.txt \
-               stssearch.txt supermatcher.txt syco.txt textsearch.txt \
-               tfextract.txt tfm.txt tfscan.txt tmap.txt topo.txt \
-               transeq.txt trimseq.txt vectorstrip.txt water.txt wobble.txt \
-               wordcount.txt wordmatch.txt wossname.txt
+               sigcleave.txt silent.txt splitter.txt stamps.txt \
+               stretcher.txt stssearch.txt supermatcher.txt syco.txt \
+               textsearch.txt tfextract.txt tfm.txt tfscan.txt tmap.txt \
+               topo.txt transeq.txt trimseq.txt vectorstrip.txt water.txt \
+               wobble.txt wordcount.txt wordmatch.txt wossname.txt
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/programs/text
 pkgdata2dir=$(prefix)/share/$(PACKAGE)/doc/programs/text

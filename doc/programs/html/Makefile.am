@@ -68,10 +68,11 @@ pkgdata2_DATA = kitsch.html lindna.html marscan.html maskfeat.html \
                seqretall.html seqretfeat.html seqretset.html \
                seqretsplit.html showalign.html showdb.html showfeat.html \
                showorf.html showseq.html shuffleseq.html sigcleave.html \
-               silent.html splitter.html stretcher.html stssearch.html \
-               supermatcher.html syco.html test_group.html textsearch.html \
-               tfextract.html tfm.html tfscan.html tmap.html topo.html \
-               transeq.html trimseq.html utils_database_creation_group.html \
+               silent.html splitter.html stamps.html stretcher.html \
+               stssearch.html supermatcher.html syco.html test_group.html \
+               textsearch.html tfextract.html tfm.html tfscan.html \
+               tmap.html topo.html transeq.html trimseq.html \
+               utils_database_creation_group.html \
                utils_database_indexing_group.html utils_misc_group.html \
                vectorstrip.html water.html wobble.html wordcount.html \
                wordmatch.html wossname.html
