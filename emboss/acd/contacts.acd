@@ -1,0 +1,48 @@
+appl: contacts
+[
+	doc: "Build contact files"
+	groups: "PROTEIN: structure"
+]
+
+string: cpdb
+[ 
+	param: Y
+	info: "Location of coordinate files for input (embl-like format)"
+	def: "/data/contacts"
+]
+
+string: cpdbextn
+[ 
+	param: Y
+	info: "Extension of coordinate files (embl-like format)"
+	def: ".pxyz"
+]
+
+string: con	 	
+[ 
+	param: Y
+	info: "Location of contact files for output"
+	def: "/data/contacts"
+]
+
+string: conextn
+[ 
+	param: Y
+	info: "Extension of contact files"
+	def: ".con"
+]
+
+float: thresh
+[
+	param: Y
+	info: "Threshold contact distance"
+	def: 1.0
+]
+
+outfile: conerrf
+[ 
+	param: Y
+	prompt: "Name of log file for the build"
+	def: "contacts.log"
+]
+
