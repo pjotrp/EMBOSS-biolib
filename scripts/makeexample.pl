@@ -191,10 +191,12 @@ foreach $dir (@dirs) {
 # ignore qualifiers - words starting with a '-'
         if ($f =~ /^-/) {next;}
 # split on '::' to get files embedded in a format::file USA
-#print "CL line=$f\n";
-        @fm = split /\:\:/, $f;
-        $f = pop @fm;
-#print "CL f=$f\n";
+        if ($f =~ /\:\:/) {
+print "CL line=$f\n";
+            @fm = split /\:\:/, $f;
+            $f = pop @fm;
+print "CL f=$f\n";
+        }
 # deal with '@' in list files
         $f =~ s/\@//;
 # check to see if this is an output file existing in the -ex directory
