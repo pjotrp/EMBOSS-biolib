@@ -954,15 +954,15 @@ static void sirna_output (AjPList list, AjPFeattable TabRpt, AjPSeq seq, AjBool 
   AjPStr subseq = ajStrNew();
   AjPStr source = ajStrNewC("siRNA");
   AjPStr type   = ajStrNewC("misc_feature");
-  AjPStr name = ajStrNew();	/* new name of the 23 base sequence */
-  AjPStr desc = ajStrNew();	/* new description of 23 base sequence */
-  AjPSeq seq23 = NULL;
+  AjPStr name = ajStrNew();	/* new name of the 23 base target sequence */
+  AjPStr desc = ajStrNew();	/* new description of 23 base target sequence */
+  AjPSeq seq23 = ajSeqNewL(24);	/* 23-base target sequence */
 
    /* if no hits then ignore much of this routine */
   if (ajListLength(list)) {
       iter = ajListIter(list);
       while ((value = ajListIterNext(iter)) != NULL) {
-/*ajDebug("(%d) %d %d\n", value->pos+1, value->score, value->GCcount); */
+        /*ajDebug("(%d) %d %d\n", value->pos+1, value->score, value->GCcount); */
 
 	gf = ajFeatNew (TabRpt, source, type, value->pos+1,
 		value->pos+23, value->score, '+', 0);
@@ -993,14 +993,13 @@ static void sirna_output (AjPList list, AjPFeattable TabRpt, AjPSeq seq, AjBool 
 	ajFeatTagAdd(gf,  NULL, tmpStr);
 
 /* now write out the 23 base bit of sequence to the seqout file */
-/* get sequence */
+        /* get sequence */
         ajDebug("Now write sequence file\n");
-        seq23 = ajSeqNew();
         ajStrAssSub(&subseq, ajSeqStr(seq), value->pos, value->pos+22);
         ajSeqReplace (seq23, subseq);
         ajSeqSetNuc (seq23);
 
-/* give it a name */
+        /* give it a name */
         ajDebug("Doing name\n");
         ajStrAss(&name, ajSeqGetName(seq));
         ajStrAppC(&name, "_");
@@ -1008,7 +1007,7 @@ static void sirna_output (AjPList list, AjPFeattable TabRpt, AjPSeq seq, AjBool 
         ajStrApp(&name, tmpStr);
         ajSeqAssName(seq23, name);
 
-/* get description */
+        /* get description */
         ajDebug("Doing description\n");
         ajFmtPrintS(&desc, "%%GC %4.1f Score %d ", 
         	((float)value->GCcount*100.0)/20.0,
@@ -1019,7 +1018,7 @@ static void sirna_output (AjPList list, AjPFeattable TabRpt, AjPSeq seq, AjBool 
         ajDebug("Write seq23\n");
         ajSeqAllWrite (seqout, seq23);
 
-        /* prepare for re-use */
+        /* prepare sequence string for re-use */
         ajStrClear(&subseq);
       }
       (void) ajListIterFree(iter);
