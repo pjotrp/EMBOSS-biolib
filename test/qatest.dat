@@ -26,6 +26,10 @@ AP acdc
 CL qatest tembl:paamir tembl:paamir x.x -auto
 FI x.x
 FZ = 0
+FI paamir.fasta
+FZ = 0
+FI paamir.out2
+FZ = 0
 //
 
 ID acdc-0002
@@ -33,12 +37,20 @@ AP acdc
 CL qatest tembl:paamir tembl:paamir x.x -aint 5 -auto
 FI x.x
 FZ = 0
+FI paamir.fasta
+FZ = 0
+FI paamir.out2
+FZ = 0
 //
 
 ID acdc-0003
 AP acdc
 CL qatest tembl:paamir tembl:paamir x.x -ai 5 -auto
 FI x.x
+FZ = 0
+FI paamir.fasta
+FZ = 0
+FI paamir.out2
 FZ = 0
 //
 
@@ -56,6 +68,10 @@ AP acdc
 CL qatest tembl:paamir -sbegin 5 -send 1000 tembl:paamir x.x -auto
 FI x.x
 FZ = 0
+FI paamir.fasta
+FZ = 0
+FI paamir.out2
+FZ = 0
 //
 
 
@@ -64,6 +80,10 @@ AP acdc
 CL qatest tembl:paamir tembl:paamir -sbegin 5 -send 1000 x.x -auto
 FI x.x
 FZ = 0
+FI paamir.fasta
+FZ = 0
+FI paamir.out2
+FZ = 0
 //
 
 ID acdc-0007
@@ -71,12 +91,20 @@ AP acdc
 CL qatest -sbegin 5 -send 1000 tembl:paamir tembl:paamir x.x -auto
 FI x.x
 FZ = 0
+FI paamir.fasta
+FZ = 0
+FI paamir.out2
+FZ = 0
 //
 
 ID acdc-0008
 AP acdc
 CL qatest tembl:paamir tembl:paamir x.x -sbegin 5 -send 1000  -auto
 FI x.x
+FZ = 0
+FI paamir.fasta
+FZ = 0
+FI paamir.out2
 FZ = 0
 //
 
@@ -86,12 +114,20 @@ CL qatest tembl:paamir tembl:paamir x.x
 CL  -sbegin_asequence 5 -send_asequence 1000 -auto
 FI x.x
 FZ = 0
+FI paamir.fasta
+FZ = 0
+FI paamir.out2
+FZ = 0
 //
 
 ID acdc-0010
 AP acdc
 CL qatest tembl:paamir tembl:paamir x.x -sbegin_as 5 -send_as 1000  -auto
 FI x.x
+FZ = 0
+FI paamir.fasta
+FZ = 0
+FI paamir.out2
 FZ = 0
 //
 
@@ -109,16 +145,16 @@ ID acdc-0012
 AP acdc
 CL qatest -acdpretty
 FI qatest.acdpretty
-FZ = 498
-FP 2 /^string:/
-FP 8 /^[a-z]+: /
+FZ = 743
+FP 3 /^string:/
+FP 11 /^[a-z]+: /
 //
 
 ID acdc-0013
 AP acdc
 CL qatest -help
 FI stderr
-FZ = 670
+FZ = 826
 FP 3 / qualifiers:\n/
 FP 4 / qualifiers:/
 FP 1 /^ +\[-asequence\] +sequence +Sequence USA\n/
@@ -131,10 +167,10 @@ ID acdc-0014
 AP acdc
 CL qatest -help -verbose
 FI stderr
-FZ = 3142
-FP 26 /   boolean /
+FZ = 4020
+FP 27 /   boolean /
 FP  6 /   integer /
-FP 16 /   string /
+FP 28 /   string /
 FP 0 /Warning:/
 //
 
@@ -143,10 +179,16 @@ AP acdc
 CL qatest tembl:paamir tembl:paamir x.x -debug
 IN
 IN
+IN
+IN
 FI stderr
 FC = 2
 FP 0 /Warning:/
 FI x.x
+FZ = 0
+FI paamir.fasta
+FZ = 0
+FI paamir.out2
 FZ = 0
 FI qatest.dbg
 FP / acdDebug Yes /
@@ -379,7 +421,7 @@ FI paamir_1.fasta
 FZ = 375
 FP /\A>PAAMIR_1_7\n/
 FP /^PPARRRWRRWRVTWQRGRWWSRLTSPASIRPPAGPSSRPAMVSSRRTRPSPPGPRRPTGR\n/
-FI paamir_1.out3
+FI paamir_1.gff
 FZ = 133
 FP /^PAAMIR_1.*278\t634\t0\.000/
 //
@@ -536,7 +578,7 @@ FP /RNU68037 from 1 to 1218/
 FP /Observed\/Expected ratio > 0\.60/
 FP /Length 406 \(104\.\.509\)/
 FP /Length 329 \(596\.\.924\)/
-FI rnu68037.out2
+FI rnu68037.gff
 FP /^##Type DNA RNU68037/
 FI cpgplot.ps
 FP /^%%Title: PLplot Graph/
@@ -559,7 +601,7 @@ FP /RNU68037 from 1 to 1218/
 FP /Observed\/Expected ratio > 0\.60/
 FP /Length 406 \(104\.\.509\)/
 FP /Length 329 \(596\.\.924\)/
-FI rnu68037.out2
+FI rnu68037.gff
 FZ = 196
 FP /^RNU68037.*\t104\t509\t/
 FP /^RNU68037.*\t596\t924\t/
@@ -586,7 +628,7 @@ FI rnu68037.cpgreport
 FP /CPGREPORT of RNU68037 from 1 to 1218/
 FP /RNU68037                 12     13    17          1 100\.0    -/
 FP /RNU68037               1183   1193    26          2  72\.7   2\.00/
-FI rnu68037.out2
+FI rnu68037.gff
 FZ = 497
 FP /^RNU68037\tcpgreport\tmisc_feature\t96\t1032\t630\.000\t/
 //
@@ -4224,6 +4266,23 @@ FZ = 691
 FP /^msf::\S+\s+HBA_HORSE\s+144\s+147\s+2\s+3\s+54\s+18\s+72\s+62.500000\s+\n/
 //
 
+ID infoalign-ex8
+AP infoalign
+CL -auto tembl:eclac* -out test.out
+FI test.out
+FZ = 712
+FP /tembl-id:ECLAC\s+ECLAC\s+7477\s+7477\s+0\s+0\s+65\s+0\s+7412\s+99[.]130[0-9]+\s+E.*/
+FP /tembl-id:ECLACZ\s+ECLACZ\s+3078\s+3078\s+0\s+0\s+72\s+0\s+3006\s+97[.]660[0-9]+\s+E.*/
+//
+
+ID infoalign-ex9
+AP infoalign
+CL -auto tembl:eclacz -out test.out
+FI test.out
+FZ = 229
+FP /tembl-id:ECLACZ\s+ECLACZ\s+3078\s+3078\s+0\s+0\s+0\s+0\s+3078\s+100[.]0+\s+E.*/
+//
+
 ID infoseq-ex
 UC Display information on a sequence:
 AP infoseq
@@ -6536,7 +6595,7 @@ ID seqret-outusa-debug
 AP seqret
 CL -auto ../../data/dna.embl debug::test.out
 FI test.out
-FZ = 847
+FZ = 863
 FP /^  Name: 'EMBL'\n/
 FP /^  Accession: 'E10002'\n/
 FP /^  SeqVersion: 'E10002.34'\n/
@@ -6570,7 +6629,7 @@ ID seqret-out-debug
 AP seqret
 CL -auto ../../data/dna.embl test.out -osf debug
 FI test.out
-FZ = 840
+FZ = 856
 FP /^  Name: 'EMBL'\n/
 FP /^  Accession: 'E10002'\n/
 FP /^  SeqVersion: 'E10002.34'\n/
@@ -6980,7 +7039,7 @@ ID seqret-outmultiusa-debug
 AP seqret
 CL -auto ../../data/dna.m-embl debug::test.out
 FI test.out
-FZ = 2102
+FZ = 2150
 FP 3 /^  Name: 'FASTAM[1-3]'\n/
 FP 3 /^  Accession: 'F3000[1-3]'\n/
 FP /^  Entryname: 'FASTAM3'\n/
@@ -6996,7 +7055,7 @@ ID seqret-outmulti-debug
 AP seqret
 CL -auto ../../data/dna.m-embl test.out -osf debug
 FI test.out
-FZ = 2081
+FZ = 2129
 FP 3 /^  Name: 'FASTAM[1-3]'\n/
 FP 3 /^  Accession: 'F3000[1-3]'\n/
 FP /^  Entryname: 'FASTAM3'\n/
@@ -7898,7 +7957,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-ID:AB000095
 FI test.out
-FZ = 3664
+FZ = 3678
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -7910,7 +7969,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-ACC:AB000095
 FI test.out
-FZ = 3664
+FZ = 3678
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -7922,7 +7981,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-SV:AB000095.1
 FI test.out
-FZ = 3664
+FZ = 3678
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -7934,7 +7993,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs:AB000095
 FI test.out
-FZ = 3664
+FZ = 3678
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -7947,9 +8006,10 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-id:OLD
 FI stderr
-FZ = 46
+FZ = 118
 FP /^Error: Unable to read sequence 'qasrs-id:OLD'/
 FP 1 /^Error: /
+FP 1 /^Died: /
 FP 0 /Warning:/
 //
 
@@ -8009,9 +8069,10 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrsfasta-id:OLD
 FI stderr
-FZ = 51
+FZ = 123
 FP /^Error: Unable to read sequence 'qasrsfasta-id:OLD'/
 FP 1 /^Error: /
+FP 1 /^Died: /
 FP 0 /Warning:/
 //
 
@@ -8213,7 +8274,7 @@ UC slightly faster performance.  If however you wish to read in features
 UC with your sequence and write them out on output, using '-feature' will
 UC change the default behaviour to use any features present in the sequence. 
 UC N.B. use embl format for the output file as the default format 'fasta'
-UC reports the features in gff (file "unknown.gff")
+UC reports the features in gff (file "<seqname>.gff")
 AP seqret
 CL -feature
 IN tembl:hsfau
@@ -8229,23 +8290,6 @@ FP /HSFAU/
 # end of seqret examples for documentation
 ####################################################
 
-
-ID infoalign-ex
-AP infoalign
-CL -auto tembl:eclac* -out test.out
-FI test.out
-FZ = 712
-FP /tembl-id:ECLAC\s+ECLAC\s+7477\s+7477\s+0\s+0\s+65\s+0\s+7412\s+99[.]130[0-9]+\s+E.*/
-FP /tembl-id:ECLACZ\s+ECLACZ\s+3078\s+3078\s+0\s+0\s+72\s+0\s+3006\s+97[.]660[0-9]+\s+E.*/
-//
-
-ID infoalign-ex1
-AP infoalign
-CL -auto tembl:eclacz -out test.out
-FI test.out
-FZ = 229
-FP /tembl-id:ECLACZ\s+ECLACZ\s+3078\s+3078\s+0\s+0\s+0\s+0\s+3078\s+100[.]0+\s+E.*/
-//
 
 ID seqretall-ex
 AP seqret
@@ -8990,6 +9034,8 @@ AP sirna
 IN tembl:hsfau
 IN 
 IN 
+FI stderr
+FC = 2
 FI hsfau.sirna
 FZ = 7238
 FP /GAAGAAGACAGGUCGGGCUdTdT AGCCCGACCUGUCUUCUUCdTdT/
@@ -9226,7 +9272,7 @@ FI stderr
 FC = 1
 FP 0 /Warning:/
 FI stdout
-FZ = 47851
+FZ = 47928
 FP 1 /^ +Finds programs by keywords in their one-line documentation\n/
 FP 2 /^ +-explode/
 //
@@ -10645,11 +10691,11 @@ FC = 2
 FI complex.ujtable
 FZ = 0
 FI hs989235.complex
-FZ = 3584
+FZ = 3658
 FP /^ +10 +HSHT +1658 +0[.]7314 +\n/
 FI hs989235.fasta
-FZ = 531797
-FP 41 /^>/
+FZ = 536690
+FP 42 /^>/
 //
 
 ID corbatest-check
