@@ -1467,12 +1467,8 @@ static AjBool seqsort_WriteOutputFiles(AjPFile fptr1, AjPFile fptr2,
 
 
 
-
-
-
-
-
-
-
-
-
+void seqsort_unused()
+{
+  seqsort_SwissparseHitSort(NULL, NULL, NULL, 0, NULL, NULL); 
+  return;
+}
