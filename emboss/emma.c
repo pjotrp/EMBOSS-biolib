@@ -49,7 +49,7 @@ int main(int argc, char **argv, char **env)
     AjPSeqin  seqin  = NULL;
 
     AjBool only_dend;
-    AjBool are_prot;
+    AjBool are_prot = ajFalse;
     AjBool insist;
     AjBool do_slow;
     AjBool use_dend;
