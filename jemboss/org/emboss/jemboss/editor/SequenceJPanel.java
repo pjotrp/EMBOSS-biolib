@@ -209,8 +209,11 @@ public class SequenceJPanel extends JPanel
 //  setMaximumSize(getPreferredSize());
   }
 
-
- 
+  /**
+  *
+  * Add the mouse listener's
+  *
+  */
   public void init()
   {
     if(!drawNumber)
@@ -255,6 +258,12 @@ public class SequenceJPanel extends JPanel
 
   }
 
+  /**
+  *
+  * Override paintComponent
+  * @param g	graphics
+  *
+  */
   public void paintComponent(Graphics g)
   {
 // let UI delegate paint first (incl. background filling)
@@ -351,13 +360,17 @@ public class SequenceJPanel extends JPanel
     }
   }
 
-/**
-*
-* Find all occurences of the pattern in the sequence between
-* the start and stop positions. Returning all positions of these
-* in a vector.
-*
-*/
+  /**
+  *
+  * Find all occurences of the pattern in the sequence between
+  * the start and stop positions. Returning all positions of these
+  * in a vector.
+  * @param istart	start search from
+  * @param istop	stop search from
+  * @param seqS		sequence string to search
+  * @return		vector of all positions which match 
+  *
+  */
   private Vector getPatternPositions(int istart, int istop,
                                      String seqS)
   {
@@ -382,13 +395,16 @@ public class SequenceJPanel extends JPanel
     return pvec;
   }
 
-/**
-*
-* Find all occurences of the pattern in the sequence between
-* the start and stop positions. Returning all positions of these
-* in a vector.
-*
-*/
+  /**
+  *
+  * Find all occurences of the pattern in the sequence between
+  * the start and stop positions. Returning all positions of these
+  * in a vector.
+  * @param subseqStart	index of the start of the (sub)sequence
+  * @param subseq       sequence string to search
+  * @return             vector of all positions which match
+  *
+  */
   private Vector getPatternPositions(int subseqStart,
                                      String subseq)
   {
@@ -408,17 +424,36 @@ public class SequenceJPanel extends JPanel
     return pvec;
   }
 
+  /**
+  *
+  * Set pattern to high light
+  * @param pattern	pattern to high light
+  *
+  */
   protected void showPattern(String pattern)
   {
     highlightPattern = true;
     this.pattern = pattern.toLowerCase();
   }
   
+  /**
+  *
+  * Set prettyplot display
+  * @param prettyPlot	true if the prettyplot display is to
+  *			be used
+  */
   public void setPrettyPlot(boolean prettyPlot)
   {
     this.prettyPlot = prettyPlot;
   }
 
+  /**
+  *
+  * Determine the tool tip to display
+  * @param e	mouse event
+  * @return	tool tip
+  *
+  */
   public String getToolTipText(MouseEvent e)
   {
     Point loc = e.getPoint();
@@ -440,6 +475,13 @@ public class SequenceJPanel extends JPanel
            "Position: "+Integer.toString(resPos+1);
   }
 
+  /**
+  *
+  * Get the tool tip location
+  * @param e    mouse event
+  * @return     point on the display
+  *
+  */
   public Point getToolTipLocation(MouseEvent e)
   {
     Point loc = e.getPoint();
@@ -448,6 +490,13 @@ public class SequenceJPanel extends JPanel
     return new Point(x,y);
   }
 
+  /**
+  *
+  * Get a residues colouor
+  * @param s	residue
+  * @return	colour of the residue s
+  *
+  */
   private Color getColor(String s)
   {
     s = s.toUpperCase();
@@ -456,7 +505,12 @@ public class SequenceJPanel extends JPanel
        
     return getBackground();
   }
-
+ 
+  /**
+  *
+  * Set a default colour scheme 
+  *
+  */ 
   public void setDefaultColorHashtable()
   {
     colorTable = new Hashtable();
@@ -466,7 +520,12 @@ public class SequenceJPanel extends JPanel
     colorTable.put("G",Color.white);
   }
 
-
+  /**
+  *
+  * Set whether to draw boxes around residues
+  * @param drawBlackBox	true to draw boxes
+  *
+  */
   public void setDrawBoxes(boolean drawBlackBox)
   {
     if(drawNumber)
@@ -475,6 +534,12 @@ public class SequenceJPanel extends JPanel
     paintComponent(getGraphics());
   }
 
+  /**
+  *
+  * Set whether to colour residues
+  * @param drawColorBox true to colour residues
+  *
+  */
   public void setDrawColor(boolean drawColorBox)
   {
     if(drawNumber)
@@ -483,6 +548,12 @@ public class SequenceJPanel extends JPanel
     paintComponent(getGraphics());
   }
 
+  /**
+  *
+  * Set the font size and set the size
+  * @param size		font size
+  *
+  */
   public void setFontSize(int size)
   {
     fontSize = size;
@@ -500,27 +571,55 @@ public class SequenceJPanel extends JPanel
     paintComponent(getGraphics());
   }
  
+  /**
+  *
+  * Get the width of a residue
+  * @return	residue width
+  *
+  */
   public int getResidueWidth()
   {
     return resWidth;
   }
 
+  /**
+  *
+  * Set the colour scheme 
+  * @param colorHash	colour scheme to use
   public void setColorScheme(Hashtable colorHash)
   {
     this.colorTable = colorHash;
 //  paintComponent(getGraphics());
   }
 
+  /**
+  *
+  * Get the font size
+  * @return font size
+  *
+  */
   public int getFontSize()
   {
     return fontSize;
   }
 
+  /**
+  *
+  * Get the preferred size dimension
+  * @return 	preferred dimension for this component
+  *
+  */
   public Dimension getPreferredSize()
   {
     return new Dimension(getSequenceWidth(),getSequenceHeight());
   }
 
+  /**
+  *
+  * Re-size the sequence alignment panel if the width of 
+  * this sequence pane increases
+  *
+  */
   protected void viewPaneResize()
   {
     Dimension dpane = viewPane.getPreferredSize();
@@ -534,32 +633,65 @@ public class SequenceJPanel extends JPanel
     gsc.setJScrollPaneViewportView();
   }
 
-
+  /**
+  *
+  * Get the sequence panel height
+  * @return 	sequence height
+  *
+  */
   public int getSequenceHeight()
   {
     return seqHeight+ypad;
   }
 
+  /**
+  *
+  * Get the sequence panel width
+  * @return     sequence width
+  *
+  */
   public int getSequenceWidth()
   {
     return resWidth*seqLength;
   }
 
+  /**
+  *
+  * Get the width of a residue
+  * @return 	residue width
+  *
+  */
   public int getSequenceResidueWidth()
   {
     return resWidth;
   }
 
+  /**
+  *
+  * Set the sequence length
+  * @param s	sequence length
+  *
+  */
   public void setSequenceLength(int s)
   {
     seqLength = s;
   }
 
+  /**
+  *
+  *
+  */
   public String getDescription()
   {
     return getName();
   }
 
+  /**
+  *
+  * Render the sequence name graphic
+  * @param g2d	graphic
+  *
+  */
   public void getNamePrintGraphic(Graphics g2d)
   {
     if(seq == null)
@@ -573,6 +705,15 @@ public class SequenceJPanel extends JPanel
     g2d.drawString(name,0,seqHeight-boundWidth2);
   }
  
+  /**
+  *
+  * Render the sequence graphic
+  * @param g2d  	graphic
+  * @param MAXSEQNAME	maximum size for a sequence name
+  * @param istart	sequence start position for graphic
+  * @param istop	sequence stop position for graphic
+  *
+  */
   public void getSequencePrintGraphic(Graphics g2d, int MAXSEQNAME, 
                                       int istart, int istop) 
   {
@@ -625,7 +766,13 @@ public class SequenceJPanel extends JPanel
       }
     }
   }
-
+ 
+  /**
+  *
+  * Override actionPerformed for popup menu actions
+  * @param e	action event
+  * 
+  */
   public void actionPerformed(ActionEvent e)
   {
     JMenuItem source = (JMenuItem)(e.getSource());
@@ -650,6 +797,11 @@ public class SequenceJPanel extends JPanel
     }
   }
 
+  /**
+  *
+  * Popup listener
+  *
+  */
   class PopupListener extends MouseAdapter
   {
     public void mousePressed(MouseEvent e)
