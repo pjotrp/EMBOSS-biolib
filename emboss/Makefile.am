@@ -26,7 +26,7 @@ bin_PROGRAMS = aaindexextract abiview acdc acdpretty acdtable acdvalid \
 antigenic \
 backtranseq banana biosed btwisted \
 cai chaos charge checktrans chips cirdna codcmp coderet \
-compseq cons contacts cpgplot cpgreport cusp cutgextract cutseq \
+compseq cons cpgplot cpgreport cusp cutgextract cutseq \
 dan dbiblast dbifasta dbiflat dbigcg \
 degapseq descseq diffseq digest distmat \
 dotmatcher dotpath dottup dreg \
@@ -82,7 +82,6 @@ codcmp_SOURCES = codcmp.c
 coderet_SOURCES = coderet.c
 compseq_SOURCES = compseq.c
 cons_SOURCES = cons.c
-contacts_SOURCES = contacts.c
 cpgplot_SOURCES = cpgplot.c
 cpgreport_SOURCES = cpgreport.c
 cusp_SOURCES = cusp.c
