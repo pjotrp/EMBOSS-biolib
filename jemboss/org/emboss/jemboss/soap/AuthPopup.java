@@ -283,18 +283,19 @@ public class AuthPopup
   {
     // hide the splash so it doesn't obscure the dialogs
     //splashf.setVisible(false);
-    EmbreoUtils.errorPopup(null, "Embreo startup failed. Please check\n"
-                           +"your server and proxy settings");
+    JOptionPane.showMessageDialog(null, "Connection failed. Please check\n"
+                           +"your server and proxy settings", "Connection Error",
+                                  JOptionPane.ERROR_MESSAGE);
+
     mysettings.editFrame();
     Object[] options = {"Try again", "Exit"};
     int itry = JOptionPane.showOptionDialog(null,
-                                 "Would you like to start over?",
-                                 "Restart?",
-                                 JOptionPane.YES_NO_OPTION,
-                                 JOptionPane.QUESTION_MESSAGE,
-                                 null,
-                                 options,
-                                 options[0]);
+                "Would you like to start over?",
+                "Restart?",
+                 JOptionPane.YES_NO_OPTION,
+                 JOptionPane.QUESTION_MESSAGE,
+                 null,options,options[0]);
+
     if (itry == JOptionPane.YES_OPTION) 
       return;
     else 
