@@ -726,7 +726,8 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 	loff=il*llen;
 	lend=AJMIN(llen,nc-loff);
 
-	ll0 = ajFalse; ll1 = ajFalse;
+	ll0 = ajFalse;
+	ll1 = ajFalse;
 	
 	for(i=0; i<2; i++)
 	    memset(cline[i],' ', maxout);

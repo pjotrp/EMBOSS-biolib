@@ -329,8 +329,11 @@ static void printsextract_skipToDn(AjPFile *inf, AjPStr *s)
 {
     while(ajFileReadLine(*inf,s))
     {
-	if(ajStrPrefixC(*s,"gc;")) ajFatal("Missing dn; line");
-	if(ajStrPrefixC(*s,"dn;")) return;
+	if(ajStrPrefixC(*s,"gc;"))
+	    ajFatal("Missing dn; line");
+
+	if(ajStrPrefixC(*s,"dn;"))
+	    return;
     }
     ajFatal("Premature EOF");
 

@@ -1743,7 +1743,8 @@ static ajint matcher_Discons(char *seqc0, char *seqc1, ajint nc)
 	loff=il*llen;
 	lend=AJMIN(llen,nc-loff);
 
-	ll0 = ajFalse; ll1 = ajFalse;
+	ll0 = ajFalse;
+	ll1 = ajFalse;
 
 	for(i=0; i<2; i++) memset(cline[i],' ',MAXOUT);
 

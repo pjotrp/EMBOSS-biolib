@@ -302,7 +302,8 @@ static void etandem_finalReport(AjPFeattable tab, AjPFile outfile)
 	/* report that */
 	etandem_basicReport(tab, outfile, top);
 	/* destroy all overlapping entries, including self  */
-	start = top->start; end = top->ibest;
+	start = top->start;
+	end = top->ibest;
 	olda = reportRoot;
 	for(a = olda->next; a; olda = a, a = a->next)
 	    if(a->ibest >= start && a->start <= end)

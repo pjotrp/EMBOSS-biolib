@@ -357,15 +357,20 @@ static void einverted_report(ajint max, ajint imax)
 #endif
 	if(t1[j-1] == max + gap)
 	{
-	    max += gap; ++ngap;
-	    --j; continue;
+	    max += gap;
+	    ++ngap;
+	    --j;
+	    continue;
 	}
 
 	t1 = (matrix->Ptr[(i-1) % maxsave]->Ptr);
 	if(t1[j-1] == max + gap)
 	{
-	    max += gap; ++ngap;
-	    --i; --j; continue;
+	    max += gap;
+	    ++ngap;
+	    --i;
+	    --j;
+	    continue;
 	}
 
 	max -= revmatch[(ajint)sq[i]][length-i+j];

@@ -122,7 +122,8 @@ int main(int argc, char **argv)
 
     for(gap = 1; gap <= maxrepeat; ++gap)
     {
-	back = sq; front = back + gap;
+	back = sq;
+	front = back + gap;
 	score = max = 0;
 	while(front-sq<=len)
 	{
@@ -132,12 +133,14 @@ int main(int argc, char **argv)
 		{
 		    equicktandem_print(outfile, begin);
 		    equicktandem_report(tab, begin);
-		    back = maxfront; front = back + gap;
+		    back = maxfront;
+		    front = back + gap;
 		    score = max = 0;
 		}
 		else
 		{
-		    back = front; front = back + gap;
+		    back = front;
+		    front = back + gap;
 		    score = max = 0;
 		}
 	    }
@@ -149,7 +152,8 @@ int main(int argc, char **argv)
 		{
 		    equicktandem_print(outfile, begin);
 		    equicktandem_report(tab, begin);
-		    back = maxfront; front = back + gap;
+		    back = maxfront;
+		    front = back + gap;
 		    score = max = 0;
 		}
 		else
@@ -164,7 +168,8 @@ int main(int argc, char **argv)
 		max = score;
 		maxfront = front;
 	    }
-	    ++back; ++front;
+	    ++back;
+	    ++front;
 	}
 
 	if(max >= thresh)
