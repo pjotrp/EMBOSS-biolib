@@ -5125,15 +5125,18 @@ AjBool ajFileDirTrim(AjPStr* name)
 AjBool ajFileExtnTrim(AjPStr* name)
 {
     ajint i;
+    ajint len;
 
     if(!ajStrLen(*name))
 	return ajFalse;
 
+    len = ajStrLen(*name);
     i = ajStrRFindC(*name, ".");
+
     if(i < 0)
 	return ajFalse;
 
-    ajStrTrim(name, i+1);
+    ajStrTrim(name, (len-i)*-1);
 
     return ajTrue;
 }
@@ -5153,15 +5156,17 @@ AjBool ajFileDirExtnTrim(AjPStr* name)
 {
     ajint i;
     ajint j;
-
+    ajint len;
+    
     if(!ajStrLen(*name))
 	return ajFalse;
 
-    i = ajStrRFindC(*name, ".");
+    i = ajStrRFindC(*name, "/");
     ajStrTrim(name, i+1);
 
-    j = ajStrRFindC(*name, "/");
-    ajStrTrim(name, j+1);
+    len = ajStrLen(*name);
+    j = ajStrRFindC(*name, ".");
+    ajStrTrim(name, (len-j)*-1);
 
 
     if((i < 0) && (j < 0))
