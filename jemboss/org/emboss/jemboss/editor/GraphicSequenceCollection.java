@@ -39,33 +39,58 @@ public class GraphicSequenceCollection extends JPanel
                                        implements Printable, Scrollable
 {
 
+  /** Vector of sequences removed from panel */
   private Vector removedSeqs = 
-                     new Vector(); // Vector of seqs removed from panel
-  private Vector seqs;             // Vector containing Sequence objects
-  private Vector graphicSequence;  // Vector containing graphical seqs
-  private Vector graphicName;      // Vector containing graphical names of seqs
-  private Hashtable colorScheme;   // Colour scheme to use
-  private PlotConsensus pc = null; // Consensus plot
+                     new Vector(); 
+  /** Vector containing Sequence objects     */
+  private Vector seqs;             
+  /** Vector containing graphical sequences  */
+  private Vector graphicSequence;  
+  /** Vector containing graphical names of sequences */
+  private Vector graphicName;      
+  /** Colour scheme to use                   */
+  private Hashtable colorScheme;   
+  /** Consensus plot  */
+  private PlotConsensus pc = null; 
   private int lenName;
   private int hgtName;
   private int hgt;
   private int len; 
   private int MAXSEQLENGTH = 0;
-  private int numResiduePerLine = 0;   // no. of res on each line for print
+  /** number of residues on each line for print */
+  private int numResiduePerLine = 0;   
   private SequenceJPanel numberDraw;
-  private JScrollPane jspSequence; // Seq scrollpane
+  /** sequence scrollpane */
+  private JScrollPane jspSequence; 
   private JPanel seqNamePanel;
   private Box seqBox;
   private Box seqNameBox;
   private Box plotconsSeqBox = null;
 
+  /** draw the sequence */
   private boolean drawSequence;
+  /** draw black square around residues */
   private boolean drawBlackBox;
+  /** colour residues   */
   private boolean drawColorBox;
+  /** draw sequence position number */
   private boolean drawNumber;
   private boolean prettPlot = false;
   private int plotConStrut = 20;
 
+
+  /**
+  *
+  * @param seqs		vector of sequences
+  * @param colorScheme	sequence colour scheme
+  * @param jspSequence 	sequence scrollpane
+  * @param drawSequence true to draw the sequence
+  * @param drawBlackBox true to draw black square around residues
+  * @param drawColorBox true to colour residues
+  * @param drawNumber   true to draw sequence position number
+  * @param statusField	status field in the editor
+  *
+  */
   public GraphicSequenceCollection(Vector seqs, Hashtable colorScheme,
                          JScrollPane jspSequence,
                          boolean drawSequence, boolean drawBlackBox,
