@@ -483,12 +483,14 @@ static void vectorstrip_process_hits(AjPList fivelist, AjPList threelist,
 	break;
       
     case 2:
-	/* generally, every 5' hit will be matched against every 3' hit to
-	   produce subsequences. Special case: 3' pattern matches upstream
-	   of 5' pattern - to be consistent, this will cause everything 
-	   from the start of the sequence to the 3' hit to be written out, 
-	   and also everything from the 5' hit to the end of the sequence.
-	   It's a bit back to front ... */
+	/*
+	 * generally, every 5' hit will be matched against every 3' hit to
+	 * produce subsequences. Special case: 3' pattern matches upstream
+	 * of 5' pattern - to be consistent, this will cause everything 
+	 * from the start of the sequence to the 3' hit to be written out, 
+	 * and also everything from the 5' hit to the end of the sequence.
+	 * It's a bit back to front ...
+	 */
 	for(i=0; i<ajIntLen(five); i++)
 	{
 	    ajint hit = 0;

@@ -24,8 +24,8 @@
 
 #include "emboss.h"
 
-static void GetRegions(AjPRange regions, AjPSeq seq);
-static void Trim (AjPSeq seq);
+static void transeq_GetRegions(AjPRange regions, AjPSeq seq);
+static void transeq_Trim (AjPSeq seq);
 
 
 /* @prog transeq **************************************************************
@@ -47,8 +47,8 @@ int main(int argc, char **argv)
     ajint table;
     AjPRange regions;
     AjBool trim;
-    AjBool defr=ajFalse;    /* true if the range covers the whole sequence */
-    AjBool first=ajTrue;    /* true is this is the first sequence done */
+    AjBool defr=ajFalse; /* true if the range covers the whole sequence */
+    AjBool first=ajTrue; /* true if this is the first sequence done     */
     
     ajint frameno;
   
@@ -61,131 +61,155 @@ int main(int argc, char **argv)
     regions = ajAcdGetRange ("regions");
     trim = ajAcdGetBool ("trim");
 
-/* get first item from the frames list */
+    /* get first item from the frames list */
     frame = framelist[0];
 
-/* initialise the translation table */
+    /* initialise the translation table */
     (void) ajStrToInt(tablelist[0], &table);
     trnTable = ajTrnNewI (table);
 
-/* shift values of translate region to match -sbegin=n parameter */
-/*  (void) ajRangeBegin (regions, ajSeqallBegin(seqall));*/
+    /* shift values of translate region to match -sbegin=n parameter */
+    /*  (void) ajRangeBegin (regions, ajSeqallBegin(seqall));*/
 
-/* get multi-frame special cases */
-    if (!ajStrCmpC(frame, "F")) {
-      while (ajSeqallNext(seqall, &seq)) {
-        if (first) {
-          first=ajFalse;
-          if (ajRangeDefault(regions, ajSeqStr(seq))) {
-            defr = ajTrue;
-          }
-        }
+    /* get multi-frame special cases */
+    if (!ajStrCmpC(frame, "F"))
+    {
+	while (ajSeqallNext(seqall, &seq))
+	{
+	    if (first)
+	    {
+		first=ajFalse;
+		if (ajRangeDefault(regions, ajSeqStr(seq)))
+		    defr = ajTrue;
+	    }
 
-/* get regions to translate */
-        if (!defr) {
-          (void) GetRegions(regions, seq);
-        }
+	    /* get regions to translate */
+	    if (!defr)
+		(void) transeq_GetRegions(regions, seq);
 
-        pep = ajTrnSeqOrig(trnTable, seq, 1);
-        if (trim) Trim(pep);
-        (void) ajSeqAllWrite (seqout, pep);
-        (void) ajSeqDel (&pep);
-        pep = ajTrnSeqOrig(trnTable, seq, 2);
-        if (trim) Trim(pep);
-        (void) ajSeqAllWrite (seqout, pep);
-        (void) ajSeqDel (&pep);
-        pep = ajTrnSeqOrig(trnTable, seq, 3);
-        if (trim) Trim(pep);
-        (void) ajSeqAllWrite (seqout, pep);
-        (void) ajSeqDel (&pep);
-      }
-    } else if (!ajStrCmpC(frame, "R")) {
-      while (ajSeqallNext(seqall, &seq)) {
-        if (first) {
-          first=ajFalse;
-          if (ajRangeDefault(regions,ajSeqStr(seq))) {
-            defr = ajTrue;
-          }
-        }
+	    pep = ajTrnSeqOrig(trnTable, seq, 1);
+	    if (trim)
+		transeq_Trim(pep);
+	    (void) ajSeqAllWrite (seqout, pep);
+	    (void) ajSeqDel (&pep);
+	    pep = ajTrnSeqOrig(trnTable, seq, 2);
+	    if (trim)
+		transeq_Trim(pep);
+	    (void) ajSeqAllWrite (seqout, pep);
+	    (void) ajSeqDel (&pep);
+	    pep = ajTrnSeqOrig(trnTable, seq, 3);
+	    if (trim)
+		transeq_Trim(pep);
+	    (void) ajSeqAllWrite (seqout, pep);
+	    (void) ajSeqDel (&pep);
+	}
+    }
+    else if (!ajStrCmpC(frame, "R"))
+    {
+	while (ajSeqallNext(seqall, &seq))
+	{
+	    if (first)
+	    {
+		first=ajFalse;
+		if (ajRangeDefault(regions,ajSeqStr(seq)))
+		    defr = ajTrue;
+	    }
 
-/* get regions to translate */
-        if (!defr) {
-          (void) GetRegions(regions, seq);
-        }
-        pep = ajTrnSeqOrig(trnTable, seq, -1);
-        if (trim) Trim(pep);
-        (void) ajSeqAllWrite (seqout, pep);
-        (void) ajSeqDel (&pep);
-        pep = ajTrnSeqOrig(trnTable, seq, -2);
-        if (trim) Trim(pep);
-        (void) ajSeqAllWrite (seqout, pep);
-        (void) ajSeqDel (&pep);
-        pep = ajTrnSeqOrig(trnTable, seq, -3);
-        if (trim) Trim(pep);
-        (void) ajSeqAllWrite (seqout, pep);
-        (void) ajSeqDel (&pep);
-      }
-    } else if (!ajStrCmpC(frame, "6")) {
-      while (ajSeqallNext(seqall, &seq)) {
-        if (first) {
-          first=ajFalse;
-          if (ajRangeDefault(regions,ajSeqStr(seq))) {
-            defr = ajTrue;
-          }
-        }
-/* get regions to translate */
-        if (!defr) {
-          (void) GetRegions(regions, seq);
-        }
+	    /* get regions to translate */
+	    if (!defr)
+		(void) transeq_GetRegions(regions, seq);
+
+	    pep = ajTrnSeqOrig(trnTable, seq, -1);
+	    if (trim)
+		transeq_Trim(pep);
+	    (void) ajSeqAllWrite (seqout, pep);
+	    (void) ajSeqDel (&pep);
+	    pep = ajTrnSeqOrig(trnTable, seq, -2);
+	    if (trim)
+		transeq_Trim(pep);
+	    (void) ajSeqAllWrite (seqout, pep);
+	    (void) ajSeqDel (&pep);
+	    pep = ajTrnSeqOrig(trnTable, seq, -3);
+	    if (trim)
+		transeq_Trim(pep);
+	    (void) ajSeqAllWrite (seqout, pep);
+	    (void) ajSeqDel (&pep);
+	}
+    }
+    else if (!ajStrCmpC(frame, "6"))
+    {
+	while (ajSeqallNext(seqall, &seq))
+	{
+	    if (first)
+	    {
+		first=ajFalse;
+		if (ajRangeDefault(regions,ajSeqStr(seq)))
+		    defr = ajTrue;
+	    }
+
+	    /* get regions to translate */
+	    if (!defr)
+		(void) transeq_GetRegions(regions, seq);
   
-        pep = ajTrnSeqOrig(trnTable, seq, 1);
-        if (trim) Trim(pep);
-        (void) ajSeqAllWrite (seqout, pep);
-        (void) ajSeqDel (&pep);
-        pep = ajTrnSeqOrig(trnTable, seq, 2);
-        if (trim) Trim(pep);
-        (void) ajSeqAllWrite (seqout, pep);
-        (void) ajSeqDel (&pep);
-        pep = ajTrnSeqOrig(trnTable, seq, 3);
-        if (trim) Trim(pep);
-        (void) ajSeqAllWrite (seqout, pep);
-        (void) ajSeqDel (&pep);
-        pep = ajTrnSeqOrig(trnTable, seq, -1);
-        if (trim) Trim(pep);
-        (void) ajSeqAllWrite (seqout, pep);
-        (void) ajSeqDel (&pep);
-        pep = ajTrnSeqOrig(trnTable, seq, -2);
-        if (trim) Trim(pep);
-        (void) ajSeqAllWrite (seqout, pep);
-        (void) ajSeqDel (&pep);
-        pep = ajTrnSeqOrig(trnTable, seq, -3);
-        if (trim) Trim(pep);
-        (void) ajSeqAllWrite (seqout, pep);
-        (void) ajSeqDel (&pep);
-      }
-    } else {
-      (void) ajStrToInt(frame, &frameno);
-      while (ajSeqallNext(seqall, &seq)) {
-        if (first) {
-          first=ajFalse;
-          if (ajRangeDefault(regions,ajSeqStr(seq))) {
-            defr = ajTrue;
-          }
-        }
-/* get regions to translate */
-        if (!defr) {
-          (void) GetRegions(regions, seq);
-        }
-        pep = ajTrnSeqOrig(trnTable, seq, frameno);
-        if (trim) Trim(pep);
-        (void) ajSeqAllWrite (seqout, pep);
-        (void) ajSeqDel (&pep);
-      }
+	    pep = ajTrnSeqOrig(trnTable, seq, 1);
+	    if (trim)
+		transeq_Trim(pep);
+	    (void) ajSeqAllWrite (seqout, pep);
+	    (void) ajSeqDel (&pep);
+	    pep = ajTrnSeqOrig(trnTable, seq, 2);
+	    if (trim)
+		transeq_Trim(pep);
+	    (void) ajSeqAllWrite (seqout, pep);
+	    (void) ajSeqDel (&pep);
+	    pep = ajTrnSeqOrig(trnTable, seq, 3);
+	    if (trim)
+		transeq_Trim(pep);
+	    (void) ajSeqAllWrite (seqout, pep);
+	    (void) ajSeqDel (&pep);
+	    pep = ajTrnSeqOrig(trnTable, seq, -1);
+	    if (trim)
+		transeq_Trim(pep);
+	    (void) ajSeqAllWrite (seqout, pep);
+	    (void) ajSeqDel (&pep);
+	    pep = ajTrnSeqOrig(trnTable, seq, -2);
+	    if (trim)
+		transeq_Trim(pep);
+	    (void) ajSeqAllWrite (seqout, pep);
+	    (void) ajSeqDel (&pep);
+	    pep = ajTrnSeqOrig(trnTable, seq, -3);
+	    if (trim)
+		transeq_Trim(pep);
+	    (void) ajSeqAllWrite (seqout, pep);
+	    (void) ajSeqDel (&pep);
+	}
+    }
+    else
+    {
+	(void) ajStrToInt(frame, &frameno);
+	while (ajSeqallNext(seqall, &seq))
+	{
+	    if (first)
+	    {
+		first=ajFalse;
+		if (ajRangeDefault(regions,ajSeqStr(seq)))
+		    defr = ajTrue;
+	    }
+
+	    /* get regions to translate */
+	    if (!defr)
+		(void) transeq_GetRegions(regions, seq);
+
+	    pep = ajTrnSeqOrig(trnTable, seq, frameno);
+	    if (trim)
+		transeq_Trim(pep);
+	    (void) ajSeqAllWrite (seqout, pep);
+	    (void) ajSeqDel (&pep);
+	}
     }
   
     (void) ajSeqWriteClose (seqout);
 
-/* tidy up */
+    /* tidy up */
     (void) ajTrnDel(&trnTable);
 
     (void) ajExit ();
@@ -193,11 +217,7 @@ int main(int argc, char **argv)
 }
 
 
-
-
-
-
-/* @funcstatic GetRegions *****************************************************
+/* @funcstatic transeq_GetRegions ********************************************
 **
 ** Changes a sequence to only the specified regions
 ** A set of regions is specified by a set of pairs of positions.
@@ -214,24 +234,23 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static void GetRegions(AjPRange regions, AjPSeq seq)
+static void transeq_GetRegions(AjPRange regions, AjPSeq seq)
 {
 
-  AjPStr newstr = NULL;
+    AjPStr newstr = NULL;
 
-  (void) ajRangeStrExtract (&newstr, regions, ajSeqStr(seq));
-  (void) ajSeqReplace(seq, newstr);
-  (void) ajStrDel(&newstr);  
+    newstr = ajStrNew();
 
-  return;
+    (void) ajRangeStrExtract (&newstr, regions, ajSeqStr(seq));
+    (void) ajSeqReplace(seq, newstr);
+
+    (void) ajStrDel(&newstr);  
+
+    return;
 }
 
 
-
-
-
-
-/* @funcstatic Trim ***********************************************************
+/* @funcstatic transeq_Trim **************************************************
 **
 ** Removes X, and/or * characters from the end of the translation
 **
@@ -241,20 +260,23 @@ static void GetRegions(AjPRange regions, AjPSeq seq)
 ** @@
 ******************************************************************************/
 
-static void Trim (AjPSeq seq)
+static void transeq_Trim (AjPSeq seq)
 {
-  AjPStr s = ajSeqStr(seq);
-  char * p = ajStrStr(s);
-  char c;
-  ajint i;
-  ajint len = ajStrLen(s)-1;
+    AjPStr s = ajSeqStr(seq);
+    char * p = ajStrStr(s);
+    char c;
+    ajint i;
+    ajint len = ajStrLen(s)-1;
   
-  for (i=len; i>=0; i--) {
-    c = *(p+i);
-    if (c != 'X' && c != '*' ) break;
-  }
+    for (i=len; i>=0; i--)
+    {
+	c = *(p+i);
+	if (c != 'X' && c != '*' )
+	    break;
+    }
 
-  if (i < len) ajStrTruncate(&s, i+1);
+    if (i < len)
+	ajStrTruncate(&s, i+1);
 
-  return;
+    return;
 }
