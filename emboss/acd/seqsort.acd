@@ -1,5 +1,5 @@
 appl: seqsort [
-  documentation: "Removes ambiguities from a database search"
+  documentation: "Removes ambiguities from database search results"
   groups: "PROTEIN: 3D STRUCTURE"
 ]
 
