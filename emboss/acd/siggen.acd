@@ -21,6 +21,7 @@ string: sigpath  [
   default: "./"
 ]
 
+
 string: sigextn  [
   parameter: "Y"
   prompt: "Extension of signature files for output"
@@ -82,15 +83,28 @@ integer: conthresh  [
 ]
 
 string: conpath  [
-  required: "@($(filtercon)||@($(conoption)!=4))"
+  required: "@(!$(randomise))"
   prompt: "Location of contact files for input"
   default: "/data/contacts/"
 ]
 
 string: conextn  [
-  required: "@($(filtercon)||@($(conoption)!=4))"
+  required: "@(!$(randomise))"
   prompt: "Extension of contact files"
   default: ".con"
+]
+
+string: cpdbpath  [
+  required: "@(!$(randomise))"
+  information: "Location of coordinate files for input (embl-like format)"
+  default: "/data/cpdbscop/"
+
+]
+
+string: cpdbextn  [
+  required: "@(!$(randomise))"
+  information: "Extension of coordinate files (embl-like format)"
+  default: ".pxyz"
 ]
 
 bool: filterpsim  [

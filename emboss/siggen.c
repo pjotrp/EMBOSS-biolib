@@ -155,12 +155,11 @@ AjPSignature  siggen_SigSelect(AjPScopalg alg, AjPScorealg scores,
                                AjPInt2d seq_pos, ajint sig_sparse);
 AjBool siggen_CalcSeqpos(AjPScopalg alg, AjPInt2d *seq_pos);
 AjBool siggen_ScoreAlignment(AjPScorealg *scores, AjPScopalg alg, AjPCmap *cmaps, 
-                             AjPMatrixf  mat, AjPInt2d seq_pos);
+                             AjPMatrixf  mat, AjBool *ace, AjPInt2d seq_pos);
 AjBool  siggen_ScoreNcon_Filter(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, 
                          AjPInt2d seq_pos);                  
 AjBool siggen_Con_Thresh(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, ajint conthresh,
-
-                         AjPInt2d seq_pos);
+			 AjBool *ace, AjPInt2d seq_pos);
 
 
 
@@ -181,6 +180,9 @@ int main(ajint argc, char **argv)
     AjPStr      alg_path      =NULL;    /* Location of alignment files for input */
     AjPStr      alg_extn      =NULL;    /* Extn. of alignment files */
     AjPStr      alg_name      =NULL;    /* Name of alignment file */
+    AjPStr      cpdb_path     =NULL;    /* Location of coordinate files for input */
+    AjPStr      cpdb_extn     =NULL;    /* Extn. of coordinate files */
+    AjPStr      cpdb_name     =NULL;    /* Name of coordinate file */
     AjPStr      con_path      =NULL;    /* Location of contact files for input */
     AjPStr      con_extn      =NULL;    /* Extn. of contact files */
     AjPStr      con_name      =NULL;    /* Name of contact file */
@@ -195,6 +197,7 @@ int main(ajint argc, char **argv)
 
     AjPFile     fptr_alg      =NULL;    /* Pointer to alignment file */
     AjPFile     fptr_con      =NULL;    /* Pointer to current contact file */
+    AjPFile     fptr_cpdb     =NULL;    /* Pointer to current coordinate file */
     AjPFile     sig_outf      =NULL;    /* File pointer for output file */
 
     AjPList     list          =NULL;    /* List of files in alignment directory */   
@@ -221,9 +224,20 @@ int main(ajint argc, char **argv)
     AjPStr      *conoption    =NULL;    /* Holds contact scoring options from acd*/
 
     char        id            ='.';     /* Chain identifier for a scop domain*/
+    ajint       idn           =0;       /* Chain identifier as a number */
     ajint       x             =0;       /* Loop counter */
     ajint       sig_sparse    =0;       /* Sparsity of signature */
-
+    AjBool      idok          =ajFalse; /* Whether chain identifier could be determined ok */
+    AjPPdb      pdb           =NULL;    /* Pdb object pointer*/
+    AjPAtom     atom          =NULL;    /* Atom object pointer*/    
+    AjBool      *ace          =NULL;    /* Array whose elements are True if the relevant sequence in 
+					   the alignment contained an ACE grouyp in the original pdb
+					   file */
+    AjPInt     *atom_idx=NULL;          /* Array of AjPInt's which hold the indeces into the full 
+					   length sequences for sequences in the alignment (alignment
+					   sequences are for structured residues (residues with electron
+					   density) only) */
+    
     
     
 
@@ -239,10 +253,11 @@ int main(ajint argc, char **argv)
     alg_extn      = ajStrNew();
     alg_name      = ajStrNew();
     con_path      = ajStrNew();
-
     con_extn      = ajStrNew();
     con_name      = ajStrNew();
-
+    cpdb_path     = ajStrNew();
+    cpdb_extn     = ajStrNew();
+    cpdb_name     = ajStrNew();
     pair_mat      = ajStrNew();
     temp          = ajStrNew();
     temp1         = ajStrNew();
@@ -264,6 +279,8 @@ int main(ajint argc, char **argv)
     conthresh     = ajAcdGetInt("conthresh");
     con_path      = ajAcdGetString("conpath");    
     con_extn      = ajAcdGetString("conextn");    
+    cpdb_path     = ajAcdGetString("cpdbpath");    
+    cpdb_extn     = ajAcdGetString("cpdbextn");    
     filterpsim    = ajAcdGetBool("filterpsim");
 
 
@@ -280,9 +297,13 @@ int main(ajint argc, char **argv)
         ajFatal("Could not open alignments directory");
 
     if((ajStrChar(*conoption, 0)) != '4' || filtercon)
+    {
         if(!ajFileDir(&con_path))
             ajFatal("Could not open contacts directory");
-
+        if(!ajFileDir(&cpdb_path))
+            ajFatal("Could not open coordinate file directory");
+    }
+    
     
     /* Assign ajtrue to score_seq_var if seqoption  from acd is == 1 */
     if(ajStrChar(*seqoption, 0) == '1')
@@ -378,13 +399,22 @@ int main(ajint argc, char **argv)
         AJCNEW0(cmaps, alg->N);
         
 
-        /* Start of loop for reading contact data. Only entered
-         if contact data is to be used.*/
+	/* Allocate array of bool's for ace array */
+	AJCNEW0(ace, alg->N);
+	
+	/* Allocate array of AjPInt for indeces into sequences */
+	AJCNEW0(atom_idx, alg->N);
+	
+
+        /* Start of loop for reading contact data and coordinate files. 
+	   Only entered if contact data is to be used.*/
         if((ajStrChar(*conoption, 0)) != '4' || filtercon)
         {
             for(x=0; x<alg->N; ++x)
 
             {
+		idok=ajFalse;
+		
                 /* Get name of contact data file */
                 ajStrAss(&temp1, con_path);
                 ajStrApp(&temp1, alg->Codes[x]);
@@ -401,7 +431,6 @@ int main(ajint argc, char **argv)
                 /* Open contact data file */
                 if((fptr_con=ajFileNewIn(temp1))==NULL)
                 {
-                    ajFileClose(&fptr_con);
                     ajWarn("Could not open contact file");
                     continue;           
                 }   
@@ -420,14 +449,85 @@ int main(ajint argc, char **argv)
                     if(id=='_') id='.';
                     
                     ajXyzCmapReadC(fptr_con, id, 1, &cmaps[x]);
+
+		    idok=ajTrue;
                 }
                 else  
-                    /*Not sure of a chain identifier so read the first chain*/
-                    ajXyzCmapReadI(fptr_con, 1,1, &cmaps[x]);
-                
+		{
+		    /*Not sure of a chain identifier so read the first chain*/
+		    ajWarn("Uncertain of chain identifier so reading first chain");
+		    ajXyzCmapReadI(fptr_con, 1,1, &cmaps[x]);
+                }
+		
                 
                 /* Close contact data file */
                 ajFileClose(&fptr_con);
+
+
+
+		/* Get name of coordinate data file */
+                ajStrAss(&temp1, cpdb_path);
+                ajStrApp(&temp1, alg->Codes[x]);
+                
+                if((ajStrChar(cpdb_extn, 0)=='.'))
+                    ajStrApp(&temp1, cpdb_extn);    
+                else
+                {
+                    ajStrAppC(&temp1, ".");    
+                    ajStrApp(&temp1, cpdb_extn);    
+                }
+		
+                /* Open coordinate file */
+                if((fptr_cpdb=ajFileNewIn(temp1))==NULL)
+                {
+		    ajWarn("Could not open coordinate file");
+                    continue;           
+                }   
+
+		/* Read coordinate data file */ 
+		ajXyzCpdbRead(fptr_cpdb, &pdb);
+		
+
+		/* Determine the chain number */
+                if(idok)
+		{
+		    if(!ajXyzPdbChain(id, pdb, &idn))
+		    {
+			ajWarn("Could not find chain in siggen");
+			ajXyzPdbDel(&pdb);
+			ajFileClose(&fptr_cpdb);
+			continue;
+		    }
+		}
+                else  
+		{
+		    /*Not sure of a chain identifier so read the first chain*/
+		    idn=1;
+		}
+		
+		/* Check for N-terminal ACE in appropriate chain, hard-coded 
+		   to read data for model 1 */
+		ajListPop(pdb->Chains[idn-1]->Atoms, (void **)&atom);
+		if(ajStrMatchC(atom->Id3, "ACE"))
+		    ace[x]=ajTrue;
+		
+
+		if(!ajXyzPdbAtomIndexI(pdb, idn, &atom_idx[x]))
+		{
+		    ajWarn("Could not find chain in siggen");
+		    ajXyzPdbDel(&pdb);
+		    ajFileClose(&fptr_cpdb);
+		    continue;
+		}
+
+		
+		
+
+		
+                
+                /* Close coordinate file and free Pdb object*/
+		ajXyzPdbDel(&pdb);
+		ajFileClose(&fptr_cpdb);
             }
         }
                 
@@ -447,7 +547,7 @@ int main(ajint argc, char **argv)
 
         /* Determine positions with > conthresh no. of contacts*/
         if(filtercon == ajTrue)
-            siggen_Con_Thresh(alg, &scores, cmaps, conthresh, seq_pos);        
+            siggen_Con_Thresh(alg, &scores, cmaps, conthresh, ace, seq_pos);        
 
 /*      if(scores->filtercon == ajTrue)
             printf("filtercon = true!!\n");
@@ -456,7 +556,7 @@ int main(ajint argc, char **argv)
             printf("filtercon = false!!\n");*/
         
         /* Score alignement - write Scorealg structure */
-        siggen_ScoreAlignment(&scores, alg, cmaps, mat, seq_pos);
+        siggen_ScoreAlignment(&scores, alg, cmaps, mat, ace, seq_pos);
 
         /* Generate signature */
         sig = siggen_SigSelect(alg, scores, seq_pos, sig_sparse);
@@ -556,6 +656,12 @@ int main(ajint argc, char **argv)
         if((ajStrChar(*conoption, 0)) != '4' || filtercon)
             for(x=0; x<alg->N; ++x)
                 ajXyzCmapDel(&cmaps[x]);
+
+	for(x=0; x<alg->N; ++x)
+	    ajIntDel(&atom_idx[x]);
+	AJFREE(atom_idx);
+		
+        AJFREE(ace);
         AJFREE(cmaps);
         ajXyzScorealgDel(&scores); 
         ajXyzScopalgDel(&alg);
@@ -2189,13 +2295,15 @@ AjPSignature  siggen_SigSelect(AjPScopalg alg, AjPScorealg scores,
  ** @param [w] scores  [AjPScorealg*]   Scores for alignment
  ** @param [r] cmaps   [AjPCmap*]       Residue contacts
  ** @param [r] mat     [AjPMatrixf]     Subsitution matrix
+ ** @param [r] ace     [AjBool *]       Bool array for ACE groups
  ** @param [r] seq_pos [AjPInt2d]       Index for alignment
  **
  ** @return [AjBool] True on succcess
  ** @@
  ******************************************************************************/
 AjBool siggen_ScoreAlignment(AjPScorealg *scores, AjPScopalg alg, 
-                             AjPCmap *cmaps, AjPMatrixf  mat, AjPInt2d seq_pos)
+                             AjPCmap *cmaps, AjPMatrixf  mat, 
+			     AjBool *ace, AjPInt2d seq_pos)
 {
     /*Check args */
     if( !(*scores) || !alg || !mat || !seq_pos)
@@ -2342,12 +2450,14 @@ AjBool siggen_CalcSeqpos(AjPScopalg alg, AjPInt2d *seq_pos)
  ** @param [w] scores      [AjPScorealg*] Scores for alignment
  ** @param [r] cmaps       [AjPCmap*]     Residue contacts
  ** @param [r] conthresh   [ajint]        contact threshold
+ ** @param [r] ace         [AjBool *]     Bool array for ACE groups
+ ** @param [r] seq_pos     [AjPInt2d]     Index for alignment
  **
  ** @return [AjBool] True on succcess
  ** @@
  ******************************************************************************/
 AjBool siggen_Con_Thresh(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, 
-ajint conthresh, AjPInt2d seq_pos)
+ajint conthresh, AjBool *ace, AjPInt2d seq_pos)
 {
 
     ajint       memb_cnt     =0;    /* Counter for members of the family (alignment) */
