@@ -10,14 +10,14 @@ section: input [
 
   dirlist: cmapdir [
     parameter: "Y"
-    default: "."
+    default: "./test_contact_maps"
     information: "directory of cleaned-chain contact files"
   ]
 
-  outfile: dummyfile [
+  outfile: matrixfile [
     parameter: "Y"
-    default: "./dummy.dat"
-    information: "dummy output file"
+    default: "./contacttest/contactscore.dat"
+    information: "file containing contact-based scoring matrix"
   ]
 endsection: input
 
@@ -47,7 +47,9 @@ section: output [
     multiple: "N"
     precision: "1"
     prompt: "counts file for output"
+    default: "./contacttest/contactcount.report"
     taglist: "int:count1 float:count2"
+    information: "dummy report file for later development"
   ]
 
 endsection: output
