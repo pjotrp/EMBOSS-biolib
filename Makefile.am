@@ -19,3 +19,4 @@ dist-hook:
 	tar cBf - emboss/data | ( cd $(distdir); tar xBf - ; cd emboss/data; rm -rf CVS */CVS */*/CVS ) 
 	tar cBf - plplot/lib | ( cd $(distdir); tar xBf - ; cd emboss/data; rm -rf CVS */CVS */*/CVS ) 
 	tar cBf - doc | ( cd $(distdir); tar xBf - ; cd emboss/data; rm -rf CVS */CVS */*/CVS ) 
+	tar cBf - jemboss | ( cd $(distdir); tar xBf - ; find jemboss -name CVS -exec rm -rf {} \;; find jemboss -name Makefile -exec rm -rf {} \; )
