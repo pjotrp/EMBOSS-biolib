@@ -1909,8 +1909,8 @@ void ajFmtPutd(const char* str, ajint len, int put(int c, void* cl), void* cl,
 
 	if(len < precision)
 	    n = precision;
-	else if(precision == 0 && len == 1 && str[0] == '0')
-	    n = 0;
+	/*else if(precision == 0 && len == 1 && str[0] == '0')
+	    n = 0;*/
 	else
 	    n = len;
 
