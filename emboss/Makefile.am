@@ -7,7 +7,7 @@ check_PROGRAMS = ajtest \
 contacts complex corbatest \
 demofeatures demolist demosequence demostring demotable \
 entrails histogramtest intconv \
-patmattest proteinmotifsearch \
+patmattest \
 seqinfo \
 seqretallfeat seqretfeat seqtofeat \
 swissparse testplot treetypedisplay 
@@ -153,7 +153,6 @@ profit_SOURCES = profit.c
 prophecy_SOURCES = prophecy.c
 prophet_SOURCES = prophet.c
 prosextract_SOURCES = prosextract.c
-proteinmotifsearch_SOURCES = proteinmotifsearch.c
 pscan_SOURCES = pscan.c
 rebaseextract_SOURCES = rebaseextract.c
 recoder_SOURCES = recoder.c
