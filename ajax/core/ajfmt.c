@@ -2121,10 +2121,10 @@ ajint ajFmtScanC(const char* thys, const char* fmt, ...)
 
 /* @func ajFmtScanF **********************************************************
 **
-** Scan a string according to fmt and load the ... variable pointers
-** Like C function sscanf.
+** Scan an AjPFile object according to fmt and load the ... variable pointers
+** Like C function fscanf.
 **
-** @param [r] thys [const char*] String.
+** @param [u] thys [AjPFile] Input file object
 ** @param [r] fmt [const char*] Format string.
 ** @param [v] [...] Variable length argument list
 ** @return [ajint] number of successful conversions
