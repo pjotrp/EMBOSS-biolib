@@ -215,9 +215,9 @@ AP banana
 CL -graph data
 IN tembl:rnu68037
 FI banana.profile
-FZ = 25580
-FP /^t +0.0 +0.0\ng +17.7 +0.0\na +21.1 +0.0\ng +28.5 +0.0\n/
-FP /^c +17.7 +0.0\nc +15.7 +19.2\nt +15.7 +18.5\ng +17.7 +17.9\n/
+FZ = 25601
+FP /^a +0.0 +0.0\nt +19.7 +0.0\ng +17.7 +0.0\na +21.1 +0.0\n/
+FP /^a +14.9 +0.0\nc +17.7 +20.0\nc +15.7 +19.2\nt +15.7 +18.5\n/
 FI stderr
 FC = 2
 FP 0 /Warning:/
@@ -549,7 +549,7 @@ FP /^tgctcgatcaccaccagccgggcgacgggaactgcacgatctacctggcgagcctggagc\n/
 
 ID cutseq-ex3
 AP cutseq
-CL tembl:paamir starta.seq -sbeg=-100 -send=1290
+CL tembl:paamir starta.seq -sbeg=-1000 -send=1290
 IN
 IN
 FI stderr
@@ -3197,6 +3197,7 @@ FP /^>PAXI_HUMAN_118_118 \[mod_res\] PAXILLIN\.\n/
 FP /^EHVYSFP\n/
 //
 
+# use database entry in example
 ID extractseq-ex
 AP extractseq
 CL tembl:hsfau result.seq -regions '10-20'
@@ -3208,17 +3209,19 @@ FZ = 47
 FP /^ctcgactccat\n/
 //
 
+# use database entry in example
 ID extractseq-ex2
 AP extractseq
-CL tembl:hsfau result2.seq -regions '10-20 30-45 533-537'
+CL tembl:hsfau1 result2.seq -regions '10-20 30-45 533-537'
 FI stderr
 FC = 1
 FP 0 /Warning:/
 FI result2.seq
-FZ = 63
-FP /^ctcgactccatagctgggaccgccgtt\n/
+FZ = 71
+FP /^tccctctcgatacactcgggacaagttagggc\n/
 //
 
+# use database entry in example
 ID extractseq-ex3
 AP extractseq
 CL tembl:hsfau1 -reg "782..856,951..1095,1557..1612,1787..1912" stdout
@@ -4384,11 +4387,11 @@ FI stderr
 FC = 2
 FP 0 /Warning:/
 FI laci_ecoli.pepstats
-FZ = 1295
+FZ = 1315
 FP /^Molecular weight = 38563\.97/
 FP /^Average Residue Weight  = 107\.122\s+Charge\s+= 1\.5\s+\n/
 FP /^Isoelectric Point = 6\.8820\n/
-FP /^Probability of insolubility = 0\.670\n/
+FP /^Improbability of expression in inclusion bodies = 0\.670\n/
 FP /^A = Ala\s+44\s+12\.222\s+1\.421\s+\n/
 FP /^Tiny\s+\(A\+C\+G\+S\+T\)\s+121\s+33\.611\n/
 //
@@ -7864,6 +7867,7 @@ ID skipseq-ex
 AP skipseq
 CC No documentation
 IN tembl:eclac*
+IN
 IN
 FI stderr
 FC = 2
