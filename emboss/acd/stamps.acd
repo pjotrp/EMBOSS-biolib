@@ -1,0 +1,20 @@
+appl: stamps
+[
+        doc: "Reads embl-like format scop file and calls STAMP to generate alignments for each SCOP family"
+	groups: "PROTEIN: structure"
+]
+
+infile: scopf 	
+[ 
+	param: Y
+	prompt: "Name of scop file for input (embl-like format)"
+	def: "Escop.dat"
+]
+
+string: path
+[
+	param: Y
+	prompt: "Location of alignment files for output"
+	def: "./"
+]
+
