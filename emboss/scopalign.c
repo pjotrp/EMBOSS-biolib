@@ -259,7 +259,7 @@ int main(int argc, char **argv)
 		  be the same as the SCOP family but with ' ' and '&' replaced by '_'*/
 		ajStrAss(&align, last_fam);	
 		ajStrSubstituteCC(&align, " ", "_");
-		ajStrSubstituteCC(&sig_name, "&", "_");
+		ajStrSubstituteCC(&align, "&", "_");
 		ajStrInsert(&align, 0, path);	
 		ajStrAppC(&align, ".align");
 
