@@ -5207,6 +5207,7 @@ void ajSeqoutDel(AjPSeqout* pthis)
 	ajSeqDel(&seq);
     ajListDel(&thys->Savelist);
 
+    AJFREE(thys->Accuracy);
     AJFREE(thys->Ftquery);
     AJFREE(*pthis);
 

@@ -105,6 +105,7 @@ typedef struct AjSSeqout {
   AjBool Features;
   AjPStr Extension;
   ajint Count;
+  ajint* Accuracy;
   AjPList Savelist;
 } AjOSeqout;
 
