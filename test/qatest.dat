@@ -405,7 +405,7 @@ IN
 IN
 IN
 FI stderr
-FC = 2
+FC = 9
 FP 0 /Warning:/
 FI cirdna.ps
 FZ = 23067
@@ -4009,7 +4009,7 @@ ID feat-pir
 AP seqret
 CL -feat ../../data/featprot.fasta -ufo ../../data/feat.pir sw::test.out -auto
 FI test.out
-FZ = 4834
+FZ = 4842
 ## active site two locations with copied annotation (note and comment)
 FP /^FT   ACT_SITE     38     38       Cys, His \(status experimental\)\.\n/
 FP /^FT   ACT_SITE     90     90       Cys, His \(status experimental\)\.\n/
@@ -4038,7 +4038,7 @@ ID feat-swiss
 AP seqret
 CL -feat tsw:laci_ecoli sw::test.out -auto
 FI test.out
-FZ = 1234
+FZ = 1242
 FP /^FT   DNA_BIND      6     25       H-T-H MOTIF\.\n/
 FP /^FT   HELIX        32     44\n/
 //
@@ -4373,7 +4373,7 @@ FI stdout
 FZ = 18
 FP /^Created lindna.ps\n/
 FI stderr
-FC = 2
+FC = 5
 FP 0 /Warning:/
 FI lindna.ps
 FZ = 14370
@@ -4766,10 +4766,10 @@ FI stderr
 FC = 5
 FP 0 /Warning:/
 FI mycc.pep
-FZ = 154
+FZ = 162
 FP /^ID   cytoc          STANDARD;      PRT;    12 AA\.\n/
 FP /^DE   fragment of cytochrome c\n/
-FP /^SQ   SEQUENCE    12 AA;   1464 MW;  2BF1DB53 CRC32;\n/
+FP /^SQ   SEQUENCE    12 AA;   1464 MW;  6F142FA88DADC40B CRC64;/
 //
 
 ID noreturn-ex
@@ -5776,9 +5776,9 @@ ID seqret-inlist-good
 AP seqret
 CL -auto @../../data/good.list test.out -osf embl
 FI test.out
-FZ = 482
+FZ = 506
 FP 3 /^ID   .* AA\.\n/
-FP /^SQ   SEQUENCE    56 AA;   6466 MW;  17E148E4 CRC32;/
+FP /^SQ   SEQUENCE    56 AA;   6466 MW;  48CB2E252357CBF6 CRC64;/
 //
 
 ID seqret-inlist-bad
@@ -5790,7 +5790,7 @@ FP /^Error: failed to open filename \.\.\/\.\.\/data\/alignc\.prot \n/
 FP 0 /Warning:/
 FI test.out
 FP 3 /^ID   .* AA\.\n/
-FP /^SQ   SEQUENCE    56 AA;   6466 MW;  17E148E4 CRC32;/
+FP /^SQ   SEQUENCE    56 AA;   6466 MW;  48CB2E252357CBF6 CRC64;/
 //
 
 ID seqret-inlist-ugly
@@ -6030,30 +6030,30 @@ ID seqret-inauto-nbrf
 AP seqret
 CL -auto ../../data/prot.nbrf test.out -osf swiss
 FI test.out
-FZ = 238
+FZ = 246
 FP /^ID   pir .* 90 AA\.\n/
 FP /^DE   example pir format\n/
-FP /^SQ   SEQUENCE    90 AA;   9815 MW;  12E48C24 CRC32;\n/
+FP /^SQ   SEQUENCE    90 AA;   9815 MW;  5B548D9C397EC1FE CRC64;/
 //
 
 ID seqret-inusa-nbrf
 AP seqret
 CL -auto nbrf::../../data/prot.nbrf test.out -osf swiss
 FI test.out
-FZ = 238
+FZ = 246
 FP /^ID   pir .* 90 AA\.\n/
 FP /^DE   example pir format\n/
-FP /^SQ   SEQUENCE    90 AA;   9815 MW;  12E48C24 CRC32;\n/
+FP /^SQ   SEQUENCE    90 AA;   9815 MW;  5B548D9C397EC1FE CRC64;/
 //
 
 ID seqret-in-nbrf
 AP seqret
 CL -auto ../../data/prot.nbrf -sf nbrf test.out -osf swiss
 FI test.out
-FZ = 238
+FZ = 246
 FP /^ID   pir .* 90 AA\.\n/
 FP /^DE   example pir format\n/
-FP /^SQ   SEQUENCE    90 AA;   9815 MW;  12E48C24 CRC32;\n/
+FP /^SQ   SEQUENCE    90 AA;   9815 MW;  5B548D9C397EC1FE CRC64;/
 //
 
 ID seqret-inauto-raw
@@ -7504,10 +7504,10 @@ ID seqret-outmultiusa-swiss
 AP seqret
 CL -auto ../../data/prot.m-swiss swiss::test.out
 FI test.out
-FZ = 769
+FZ = 793
 FP 3 /^ID   SWISSM[1-3]        STANDARD;      PRT; +[0-9]+ AA\.\n/
 FP /^ID   SWISSM2        STANDARD;      PRT;    80 AA\.\n/
-FP /^SQ   SEQUENCE    60 AA;   7151 MW;  3AD3EB8C CRC32;\n/
+FP /^SQ   SEQUENCE    60 AA;   7151 MW;  FF73258FFC19CF5B CRC64;/
 FP 3 /^\/\/\n/
 //
 
@@ -7515,10 +7515,10 @@ ID seqret-outmulti-swiss
 AP seqret
 CL -auto ../../data/prot.m-swiss test.out -osf swiss
 FI test.out
-FZ = 769
+FZ = 793
 FP 3 /^ID   SWISSM[1-3]        STANDARD;      PRT; +[0-9]+ AA\.\n/
 FP /^ID   SWISSM2        STANDARD;      PRT;    80 AA\.\n/
-FP /^SQ   SEQUENCE    60 AA;   7151 MW;  3AD3EB8C CRC32;\n/
+FP /^SQ   SEQUENCE    60 AA;   7151 MW;  FF73258FFC19CF5B CRC64;/
 FP 3 /^\/\/\n/
 //
 
@@ -9249,7 +9249,7 @@ FI stderr
 FC = 1
 FP 0 /Warning:/
 FI stdout
-FZ = 15612
+FZ = 47463
 FP 1 /^ +Finds programs by keywords in their one-line documentation\n/
 FP 2 /^ +-explode/
 //
