@@ -2686,6 +2686,10 @@ AjBool        ajXyzSignatureAlignSeq(AjPSignature S, AjPSeq seq, AjPHit *hit,
     (*hit)->Start=thisp;
     (*hit)->End=maxp;
     ajStrAssS(&(*hit)->Acc, ajSeqGetAcc(seq));
+    if(!MAJSTRLEN((*hit)->Acc))
+	ajStrAssS(&(*hit)->Acc, ajSeqGetName(seq));
+    if(!MAJSTRLEN((*hit)->Acc))
+	ajWarn("Could not find an accession number or name for a sequence in ajXyzSignatureAlignSeq");
     (*hit)->Score=score;
     
 
@@ -13250,7 +13254,7 @@ AjBool ajXyzSunidToScopInfo (ajint sunid, AjPStr *family, AjPStr *superfamily, A
 
 
 
-/* @func  ajXyzDbaseNew **************************************************
+/* @static  ajXyzDbaseNew **************************************************
 **
 ** Constructor for Dbase object
 ** @param [r] n [ajint] number of entries in database
@@ -13279,7 +13283,7 @@ AjPDbase  ajXyzDbaseNew(ajint n)
 }
 
 
-/* @func  ajXyzDbaseDel ***********************************************
+/* @static  ajXyzDbaseDel ***********************************************
 **
 ** Destructor for Dbase object 
 ** @param [r] ptr [AjPDbase*] Pointer to the Dbase object
@@ -13320,7 +13324,7 @@ void ajXyzDbaseDel(AjPDbase *ptr)
   return;
 }
 
-/* @func ajXyzDbaseEntNew *******************************************
+/* @static  ajXyzDbaseEntNew *******************************************
 **
 ** Constructor for DbaseEnt object 
 ** @param [r] n [ajint] number of entries in array of domain contact residues
@@ -13352,7 +13356,7 @@ AjPDbaseEnt ajXyzDbaseEntNew(ajint n)
   return ret;
 }
 
-/* @func ajXyzDbaseEntDel *******************************************
+/* @static  ajXyzDbaseEntDel *******************************************
 **
 ** Destructor for DbaseEnt object 
 ** @param [w] ptr [AjPDbaseEnt *] DbaseEnt object pointer
@@ -13396,7 +13400,7 @@ void ajXyzDbaseEntDel(AjPDbaseEnt *ptr)
 }
 
 
-/* @func ajXyzDomContsNew *******************************************
+/* @static  ajXyzDomContsNew *******************************************
 **
 ** Constructor for DomConts object
 ** @param [r] n [ajint] no. of amino acids that make contact with the ligand
@@ -13436,7 +13440,7 @@ AjPDomConts ajXyzDomContsNew(ajint n)
 }
 
          
-/* @func ajXyzDomContsDel *******************************************
+/* @static  ajXyzDomContsDel *******************************************
 **
 ** Destructor for DomConts object
 ** @param [r]  ptr [AjPDomConts *] pointer to AjPDomConts object
@@ -13479,6 +13483,9 @@ void ajXyzDomContsDel(AjPDomConts *ptr)
 
 
 
+
+
+
 /* @func ajXyzFunkyRead ***********************************************
 **
 ** Undocumented
@@ -13489,8 +13496,6 @@ void ajXyzDomContsDel(AjPDomConts *ptr)
 ** @return [AjBool] Undocumented
 ** @@
 ******************************************************************************/
-
-
 AjBool ajXyzFunkyRead(AjPFile funky_fptr, AjPList *all_entries)
 {
   AjPStr          line=NULL;        /*Current line*/
