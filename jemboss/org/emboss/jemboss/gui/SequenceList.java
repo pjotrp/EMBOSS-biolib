@@ -31,18 +31,22 @@ import javax.swing.table.*;
 import javax.swing.border.*;
 import java.awt.event.*;
 
+import org.emboss.jemboss.gui.filetree.*;
+import java.awt.datatransfer.*;
+import java.awt.dnd.*;
+
 
 public class SequenceList extends JFrame
 {
 
-  private JTable table;
+  private DragJTable table;
   private SequenceListTableModel seqModel;
 
   public SequenceList()
   {
     super("Sequence List");
-    setSize(500,200);
-    table = new JTable();
+    setSize(400,200);
+    table = new DragJTable();
     seqModel = new SequenceListTableModel();
     table.setModel(seqModel);
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -83,15 +87,103 @@ public class SequenceList extends JFrame
     });
     buttonPanel.add(deleteSeq);
 
+    JButton closeFrame = new JButton("Close");
+    closeFrame.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        setVisible(false);
+      }
+    });
+    buttonPanel.add(closeFrame);
+
     getContentPane().add(buttonPanel, BorderLayout.SOUTH);
   }
 
 }
 
 
+class DragJTable extends JTable implements DragGestureListener,
+                           DragSourceListener, DropTargetListener
+{
+
+  public DragJTable()
+  {
+    super();
+    DragSource dragSource = DragSource.getDefaultDragSource();
+    dragSource.createDefaultDragGestureRecognizer(
+           this,                             // component where drag originates
+           DnDConstants.ACTION_COPY_OR_MOVE, // actions
+           this);
+    setDropTarget(new DropTarget(this,this));
+  }
+
+// drag source
+  public void dragGestureRecognized(DragGestureEvent e)
+  {
+  }
+  public void dragDropEnd(DragSourceDropEvent e) {}
+  public void dragEnter(DragSourceDragEvent e) {}
+  public void dragExit(DragSourceEvent e) {}
+  public void dragOver(DragSourceDragEvent e) {}
+  public void dropActionChanged(DragSourceDragEvent e) {}
+
+// drop sink
+  public void dragEnter(DropTargetDragEvent e)
+  {
+    if(e.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE) ||
+       e.isDataFlavorSupported(FileNode.FILENODE))
+      e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+  }
+
+  public void drop(DropTargetDropEvent e)
+  {
+    Transferable t = e.getTransferable();
+
+    if(t.isDataFlavorSupported(FileNode.FILENODE))
+    {
+      try
+      {
+        final FileNode fn =
+           (FileNode)t.getTransferData(FileNode.FILENODE);
+        System.out.println("Detected local drop of " + fn.getFile().getCanonicalPath()); 
+      }
+      catch(UnsupportedFlavorException ufe){}
+      catch(IOException ioe){}
+    }
+    else if(t.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE))
+    {
+      try
+      {
+        Point ploc = e.getLocation();
+        int row = rowAtPoint(ploc);
+        final RemoteFileNode fn =
+            (RemoteFileNode)t.getTransferData(RemoteFileNode.REMOTEFILENODE);
+        e.getDropTargetContext().dropComplete(true);
+        System.out.println("Detected remote drop of " + fn.getRootDir() + "/" + fn.getFile());
+        System.out.println("Detected remote drop of " + fn.getServerName());
+      }
+      catch (Exception exp)
+      {
+        e.rejectDrop();
+      }
+    }
+  }
+
+  public void dragOver(DropTargetDragEvent e)
+  { 
+    Point ploc = e.getLocation();
+    int row = rowAtPoint(ploc);
+    setRowSelectionInterval(row,row);
+  }
+  public void dropActionChanged(DropTargetDragEvent e) {}
+  public void dragExit(DropTargetEvent e){}
+
+}
+
 /**
 *
-* Content of each column in the JTable
+* Content of each column in the DragJTable
 *
 */
 class ColumnData
@@ -109,7 +201,7 @@ class ColumnData
 
 /**
 *
-* Content of each row in the JTable
+* Content of each row in the DragJTable
 *
 */
 class SequenceData
@@ -147,13 +239,13 @@ class SequenceListTableModel extends AbstractTableModel
 
   public static final ColumnData modelColumns[] =
   {
-    new ColumnData("Name",100,JLabel.LEFT),
+    new ColumnData("File",100,JLabel.LEFT),
     new ColumnData("Path",150,JLabel.LEFT),
     new ColumnData("Default",15,JLabel.LEFT)
   };
 
 /*
-* JTable uses this method to determine the default renderer/
+* DragJTable uses this method to determine the default renderer/
 * editor for each cell.  If we didn't implement this method,
 * then the last column would contain text ("true"/"false"),
 * rather than a check box.
@@ -171,6 +263,8 @@ class SequenceListTableModel extends AbstractTableModel
   public void setDefaultData()
   {
     modelVector.removeAllElements();
+    modelVector.addElement(new SequenceData("-","-",new Boolean(false))); 
+    modelVector.addElement(new SequenceData("-","-",new Boolean(false))); 
     modelVector.addElement(new SequenceData("-","-",new Boolean(false))); 
   }
   
