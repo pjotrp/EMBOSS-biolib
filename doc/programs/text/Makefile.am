@@ -26,9 +26,9 @@ pkgdata_DATA =  SITE-DIRECTED.txt abiview.txt ajtest.txt alignwrap.txt \
 pkgdata2_DATA = isochore.txt jembossctl.txt kitsch.txt lindna.txt listor.txt \
                marscan.txt maskfeat.txt maskseq.txt matcher.txt \
                megamerger.txt merger.txt mix.txt msbar.txt mse.txt \
-               mwfilter.txt needle.txt neighbor.txt newcpgreport.txt \
-               newcpgseek.txt newseq.txt noreturn.txt notseq.txt \
-               nrscope.txt nthseq.txt octanol.txt oddcomp.txt \
+               mwcontam.txt mwfilter.txt needle.txt neighbor.txt \
+               newcpgreport.txt newcpgseek.txt newseq.txt noreturn.txt \
+               notseq.txt nrscope.txt nthseq.txt octanol.txt oddcomp.txt \
                palindrome.txt pasteseq.txt patmatdb.txt patmatmotifs.txt \
                pdbparse.txt pdbtosp.txt penny.txt pepcoil.txt pepinfo.txt \
                pepnet.txt pepstats.txt pepwheel.txt pepwindow.txt \

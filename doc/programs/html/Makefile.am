@@ -42,9 +42,10 @@ pkgdata_DATA =  abiview0.gif banana0.gif chaos0.gif cirdna.gif cpgplot0.gif \
 pkgdata2_DATA = kitsch.html lindna.html listor.html marscan.html \
                maskfeat.html maskseq.html matcher.html megamerger.html \
                menus_group.html merger.html mix.html msbar.html mse.html \
-               mwfilter.html needle.html neighbor.html newcpgreport.html \
-               newcpgseek.html newseq.html noreturn.html notseq.html \
-               nrscope.html nthseq.html nucleic_2d_structure_group.html \
+               mwcontam.html mwfilter.html needle.html neighbor.html \
+               newcpgreport.html newcpgseek.html newseq.html noreturn.html \
+               notseq.html nrscope.html nthseq.html \
+               nucleic_2d_structure_group.html \
                nucleic_codon_usage_group.html \
                nucleic_composition_group.html \
                nucleic_cpg_islands_group.html \
