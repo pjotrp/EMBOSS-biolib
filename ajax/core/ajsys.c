@@ -565,7 +565,7 @@ char* ajSysStrdup(const char *s)
 AjBool ajSysIsRegular(const char *s)
 {
 #if defined (HAVE64)
-    static struct stat buf;
+    static struct stat64 buf;
 #else
     static struct stat buf;
 #endif
