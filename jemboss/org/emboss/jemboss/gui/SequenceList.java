@@ -102,8 +102,8 @@ public class SequenceList extends JFrame
         int row = table.getSelectedRow();
         if(seqModel.deleteRow(row))
         {
-          table.tableChanged(new TableModelEvent(seqModel, row+1, row+1,
-                TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT));
+          table.tableChanged(new TableModelEvent(seqModel, row, row,
+                TableModelEvent.ALL_COLUMNS, TableModelEvent.DELETE));
 //        table.repaint();
         }
       }
