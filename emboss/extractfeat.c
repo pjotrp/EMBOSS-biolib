@@ -21,6 +21,16 @@
 ******************************************************************************/
 
 
+/*
+**  Required enhancements:
+**
+**  When the feature is a join(), concatenate all the members of the
+**  join into one sequence and write them out
+**
+**  When the feature is a remote ID, read it in from the current database???
+*/
+
+
 #include "emboss.h"
 
 
@@ -28,8 +38,8 @@ static void extractfeat_FeatSeqExtract (AjPSeq seq, AjPSeqout seqout,
 	AjPFeattable featab, ajint before, ajint after);
 
 static void extractfeat_WriteFeat (AjPSeq seq, AjPSeqout seqout, 
-	AjPStr type, ajint start, ajint end, ajint before, ajint after);
-
+	AjPStr type, ajint start, ajint end, ajint before, ajint after,
+	char sense);
 
 static AjBool extractfeat_MatchFeature (AjPFeature gf, AjPStr
         source, AjPStr type, ajint sense, float minscore,
@@ -139,8 +149,11 @@ static void extractfeat_FeatSeqExtract (AjPSeq seq, AjPSeqout seqout,
 	while(ajListIterMore(iter))
 	{
 	    gf = ajListIterNext (iter) ;
+            if (! ajFeatIsLocal(gf))	/* don't process Remote IDs */
+            	continue;
 	    extractfeat_WriteFeat (seq, seqout, gf->Type, 
-		    		gf->Start, gf->End, before, after);
+		    		gf->Start, gf->End, before, after,
+		    		gf->Strand);
 	}
 	ajListIterFree(iter) ;
     }
@@ -162,12 +175,14 @@ static void extractfeat_FeatSeqExtract (AjPSeq seq, AjPSeqout seqout,
 ** @param [r] end [ajint] end of sequence to write
 ** @param [r] before [ajint] region before feature to add to extraction
 ** @param [r] after [ajint] region after feature to add to extraction
+** @param [r] sense [char] sense of feature: '+' or '-'
 ** @return [void] 
 ** @@
 ******************************************************************************/
 
 static void extractfeat_WriteFeat (AjPSeq seq, AjPSeqout seqout, 
-	AjPStr type, ajint start, ajint end, ajint before, ajint after)
+	AjPStr type, ajint start, ajint end, ajint before, ajint after,
+	char sense)
 {
 
     AjPSeq newseq = NULL;
@@ -177,9 +192,18 @@ static void extractfeat_WriteFeat (AjPSeq seq, AjPSeqout seqout,
     AjPStr substr = NULL;	/* sequence sub-string */
     AjPStr desc = NULL;		/* sequence description */
     ajint pad;
+    ajint tmp;
 
     /* new sequence */
     newseq = ajSeqNew ();
+
+    /* if the feature is reverse sense, swap 'before' and 'after' */
+    if (sense == '-') {
+        tmp = before;
+        before = after;
+        after = tmp;
+    }
+
 
     str = ajSeqStr(seq);	/* NB don't alter this sequence string */
     /* get required region around the start of the feature */
@@ -252,6 +276,10 @@ static void extractfeat_WriteFeat (AjPSeq seq, AjPSeqout seqout,
     else
         ajSeqSetProt (newseq);
 
+    /* if feature was in reverse sense, then get reverse complement */
+    if (sense == '-') {
+    	ajSeqReverse(newseq);
+    }
 
     /* write this region of the sequence */
     (void) ajSeqAllWrite (seqout, newseq);
