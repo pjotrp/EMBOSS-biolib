@@ -7707,10 +7707,12 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI laci_ecoli.pepstats
-FZ = 1316
+FZ = 1410
 FP /^Molecular weight = 38563\.97/
 FP /^Average Residue Weight  = 107\.122\s+Charge\s+= 1\.5\s+\n/
 FP /^Isoelectric Point = 6\.8820\n/
+FP /^A280 Molar Extinction Coefficient  = 21620\s+\n/
+FP /^A280 Extinction Coefficient 1mg/ml = 0.56\s+\n/
 FP /^Improbability of expression in inclusion bodies = 0\.670\n/
 FP /^A = Ala\s+44\s+12\.222\s+1\.421\s+\n/
 FP /^Tiny\s+\(A\+C\+G\+S\+T\)\s+121\s+33\.611\n/
@@ -12975,14 +12977,14 @@ FP 0 /Died: /
 FI stdout
 FZ = 0
 FI tffungi
-FZ = 54
+FZ = 121
 FP /^Y\$ADH1_02/
 FI tfinsect
 FZ = 0
 FI tfvertebrate
-FZ = 276
+FZ = 676
 FC = 7
-FP /^HS\$ALBU_01/
+FP /^HS\$ALBU_01 +tGGTTAGtaattactaa R00077 T01951; HNF-1C;Quality: 1; Species: human, Homo sapiens./
 FP 5 /^HS\$ALBU/
 FP 2 /^MOUSE/
 FI tfplant
@@ -13022,9 +13024,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hsfos.tfscan
-FZ = 466
-FC = 11
+FZ = 623
+FC = 13
 FP /^MOUSE\$FCGR3A_02      R04413   3287  3292  ttcctc\n/
+FP /^ +T00702; PU.1;Quality: 3; Species: mouse, Mus musculus.\n/
 //
 
 ID tmap-ex
