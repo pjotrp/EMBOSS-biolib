@@ -67,6 +67,7 @@ CDS
                       /product
                       /protein_id
                       /pseudo
+		      /sequence
                       /standard_name
                       /translation
                       /transl_except
@@ -130,6 +131,7 @@ exon
                       /partial
                       /product
                       /pseudo
+		      /sequence
                       /standard_name
                       /usedin
 GC_signal
@@ -184,6 +186,7 @@ intron
                       /note
                       /number
                       /partial
+		      /sequence
                       /standard_name
                       /usedin
 J_segment
@@ -859,9 +862,9 @@ Clone_right_end
 Clone_left_end
 	/note
 	/clone
-intron
-	/sequence
-exon
-	/sequence
-cds
-	/sequence
+#intron
+#	/sequence
+#exon
+#	/sequence
+#cds
+#	/sequence
