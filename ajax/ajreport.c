@@ -2279,3 +2279,35 @@ void ajReportFileAdd (AjPReport thys, AjPFile file, AjPStr type) {
   return;
 }
  
+/* @func ajReportPrintFormat ************************************************
+**
+** Reports the internal data structures
+**
+** @param [r] outf [AjPFile] Output file
+** @param [r] full [AjBool] Full report (usually ajFalse)
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajReportPrintFormat (AjPFile outf, AjBool full)
+{
+    ajint i=0;
+
+    ajFmtPrintF (outf, "\n");
+    ajFmtPrintF (outf, "# report output formats\n");
+    ajFmtPrintF (outf, "# Name         Mintags Showseq Nuc Pro\n");
+    ajFmtPrintF (outf, "\n");
+    ajFmtPrintF (outf, "RFormat {\n");
+    for (i=0; reportFormat[i].Name; i++)
+    {
+	ajFmtPrintF (outf, "  %-12s %7d     %3B %3B %3B\n",
+		     reportFormat[i].Name,
+		     reportFormat[i].Mintags,
+		     reportFormat[i].Showseq,
+		     reportFormat[i].Nuc,
+		     reportFormat[i].Prot);
+    }
+    ajFmtPrintF (outf, "}\n\n");
+
+    return;
+}

@@ -4484,3 +4484,32 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 
     return ajFalse;
 }
+
+/* @func ajSeqPrintAccess ************************************************
+**
+** Reports the internal data structures
+**
+** @param [r] outf [AjPFile] Output file
+** @param [r] full [AjBool] Full report (usually ajFalse)
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqPrintAccess (AjPFile outf, AjBool full)
+{
+    ajint i=0;
+
+    ajFmtPrintF (outf, "\n");
+    ajFmtPrintF (outf, "# sequence access methods\n");
+    ajFmtPrintF (outf, "# Name\n");
+    ajFmtPrintF (outf, "\n");
+    ajFmtPrintF (outf, "method {\n");
+    for (i=0; seqAccess[i].Name; i++)
+    {
+	ajFmtPrintF (outf, "  %-12s\n",
+		     seqAccess[i].Name);
+    }
+    ajFmtPrintF (outf, "}\n\n");
+
+    return;
+}

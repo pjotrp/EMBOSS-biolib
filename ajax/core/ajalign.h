@@ -63,6 +63,7 @@ AjBool       ajAlignOpen (AjPAlign thys, AjPStr name);
 AjBool       ajAlignFindFormat (AjPStr format, ajint* iformat);
 AjBool       ajAlignFormatDefault (AjPStr* pformat);
 AjPAlign     ajAlignNew (void);
+void         ajAlignPrintFormat (AjPFile outf, AjBool full);
 void         ajAlignReset (AjPAlign thys);
 void         ajAlignSetExternal (AjPAlign thys, AjBool external);
 void         ajAlignSetHeader (AjPAlign thys, AjPStr header);

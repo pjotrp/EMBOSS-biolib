@@ -3038,3 +3038,36 @@ static void alignTraceData (AjPAlign thys) {
 
   return;
 }
+
+/* @func ajAlignPrintFormat ************************************************
+**
+** Reports the internal data structures
+**
+** @param [r] outf [AjPFile] Output file
+** @param [r] full [AjBool] Full report (usually ajFalse)
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajAlignPrintFormat (AjPFile outf, AjBool full)
+{
+    ajint i=0;
+
+    ajFmtPrintF (outf, "\n");
+    ajFmtPrintF (outf, "# alignment output formats\n");
+    ajFmtPrintF (outf, "# Name         Minseq Maxseq Nuc Pro\n");
+    ajFmtPrintF (outf, "\n");
+    ajFmtPrintF (outf, "AFormat {\n");
+    for (i=0; alignFormat[i].Name; i++)
+    {
+	ajFmtPrintF (outf, "  %-12s %6d %6d %3B %3B\n",
+		     alignFormat[i].Name,
+		     alignFormat[i].Minseq,
+		     alignFormat[i].Maxseq,
+		     alignFormat[i].Nuc,
+		     alignFormat[i].Prot);
+    }
+    ajFmtPrintF (outf, "}\n\n");
+
+    return;
+}
