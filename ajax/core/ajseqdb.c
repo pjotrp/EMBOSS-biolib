@@ -385,6 +385,7 @@ static AjBool seqAccessEmblcd (AjPSeqin seqin)
 /*	    if(seqin->Ftquery->Handle)
 		ajFileBuffClear(seqin->Ftquery->Handle,0); */
 	    AJFREE(qry->QryData);
+	    qryd = NULL;
 	}
 
     }
@@ -1576,7 +1577,9 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
 
 /* @funcstatic seqCdQryReuse **************************************************
 **
-** Tests whether Cd index query data can be reused or whether we are finished
+** Tests whether Cd index query data can be reused or whether we are finished.
+**
+** Clears qryData structure when finished.
 **
 ** @param [r] qry [AjPSeqQuery] Query data
 ** @return [AjBool] ajTrue if we can continue,
@@ -1598,7 +1601,7 @@ static AjBool seqCdQryReuse (AjPSeqQuery qry)
     {
 	ajDebug ("query data all finished\n");
 	AJFREE (qry->QryData);
-	qry->QryData = NULL;
+	qryd = NULL;
 	return ajFalse;
     }
     else
