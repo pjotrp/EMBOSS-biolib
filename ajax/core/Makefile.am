@@ -6,12 +6,12 @@ INCLUDES = -DAJAX_FIXED_ROOT=$(AJAX_FIXED_ROOT) -DPREFIX=\"$(prefix)\" -I$(top_s
 LDFLAGS = -no-undefined
 LIBS =
 
-AJAXSRC = ajfeat.c ajacd.c ajarr.c ajassert.c \
+AJAXSRC = ajacd.c ajalign.c ajarr.c ajassert.c \
 ajbase.c \
 ajcall.c ajcod.c \
 ajcorba.c ajcorbaemc.c ajcorbaems.c \
 ajdan.c ajexcept.c \
-ajfile.c ajfmt.c ajlist.c \
+ajfeat.c ajfile.c ajfmt.c ajlist.c \
 ajmath.c ajmatrices.c ajmem.c ajmess.c ajnam.c \
 ajposreg.c ajrange.c ajreg.c ajreport.c \
 ajseq.c ajseqabi.c ajseqdb.c ajseqread.c ajseqtype.c ajseqwrite.c \
@@ -24,7 +24,7 @@ hsregerror.c hsregexp.c hsregsub.c
 AJAXGSRC = ajgraph.c ajhist.c
 
 noinst_HEADERS = ajax.h ajarch.h ajdefine.h \
-ajacd.h ajarr.h ajassert.h \
+ajacd.h ajalign.h ajarr.h ajassert.h \
 ajbase.h ajcall.h ajcod.h \
 ajcorba.h ajcorbaembl.h \
 ajdan.h ajexcept.h ajfeat.h ajfeatdata.h ajfile.h ajfmt.h \
