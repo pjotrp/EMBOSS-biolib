@@ -83,6 +83,7 @@ typedef struct SeqSMsfData
     ajint Count;
     ajint Nseq;
     ajint Bufflines;
+    AjPNexus Nexus;
 } SeqOMsfData;
 
 #define SeqPMsfData SeqOMsfData*
@@ -201,14 +202,11 @@ static AjBool     seqReadGff(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadHennig86(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadIg(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadJackknifer(AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadJackknifernon(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadMega(AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadMeganon(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadMsf(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadNbrf(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadNcbi(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadNexus(AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadNexusnon(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadPhylip(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadRaw(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadSelex(AjPSeq thys, AjPSeqin seqin);
@@ -306,22 +304,14 @@ static SeqOInFormat seqInFormatDef[] = { /* AJFALSE = ignore (duplicates) */
        AJFALSE, AJTRUE, AJFALSE, seqReadHennig86},
   {"jackknifer", AJTRUE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE, AJFALSE, seqReadJackknifer},
-  {"jackknifernon", AJTRUE, AJTRUE,  AJTRUE,
-       AJFALSE, AJTRUE, AJFALSE, seqReadJackknifernon},
   {"nexus",      AJTRUE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE, AJFALSE, seqReadNexus},
-  {"nexusnon",   AJTRUE, AJTRUE,  AJTRUE,
-       AJFALSE, AJTRUE, AJFALSE, seqReadNexusnon},
   {"paup",       AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE, AJFALSE, seqReadNexus}, /* alias for nexus */
-  {"paupnon",    AJFALSE, AJTRUE,  AJTRUE,
-       AJFALSE, AJTRUE, AJFALSE, seqReadNexusnon}, /* alias for nexusnon */
   {"treecon",    AJTRUE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE, AJFALSE, seqReadTreecon},
   {"mega",       AJTRUE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE, AJFALSE, seqReadMega},
-  {"meganon",    AJTRUE, AJTRUE,  AJTRUE,
-       AJFALSE, AJTRUE, AJFALSE, seqReadMeganon},
   {"ig",         AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE, AJFALSE, seqReadIg}, /* can read almost anything */
   {"experiment", AJFALSE, AJTRUE,  AJTRUE,
@@ -1966,7 +1956,7 @@ static AjBool seqReadNbrf(AjPSeq thys, AjPSeqin seqin)
     /*
      ** token has the NBRF 2-char type. First char is the type
      ** and second char is Linear, Circular, or 1
-     ** or, for GCG databases, thys is just '>>'
+     ** or, for GCG databases, this is just '>>'
      */
 
     switch(toupper((ajint) ajStrChar(token, 0)))
@@ -3586,7 +3576,8 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 		return ajFalse;
 	    }
 	    AJNEW0(phyitem);
-	    ajRegSubI(headexp, 1, &phyitem->Name);
+	    ajRegSubI(headexp, 1, &tmpstr);
+	    seqSetName(&phyitem->Name, tmpstr);
 	    phyitem->Weight = 1.0;
 	    ajRegPost(headexp, &seqstr);
 	    seqAppend(&phyitem->Seq, seqstr);
@@ -4047,6 +4038,7 @@ static AjBool seqReadTreecon(AjPSeq thys, AjPSeqin seqin)
     AjBool ok       = ajFalse;
     ajint len       = 0;
     ajint ilen      = 0;
+    ajint iseq;
     ajint i;
     AjPFileBuff buff;
 
@@ -4067,6 +4059,7 @@ static AjBool seqReadTreecon(AjPSeq thys, AjPSeqin seqin)
 
     if(!seqin->Data)			/* first time - read the data */
     {
+	iseq = 0;
 	seqin->multidone = ajFalse;
 	ok = ajFileBuffGetStore(buff, &rdline,
 				seqin->Text, &thys->TextPtr);
@@ -4087,7 +4080,6 @@ static AjBool seqReadTreecon(AjPSeq thys, AjPSeqin seqin)
 		rdline, len);
 
 	seqin->Data = AJNEW0(phydata);
-	AJNEW0(phyitem);
 	phydata->Table = phytable = ajTableNew(0, ajStrTableCmp,
 					       ajStrTableHash);
 	phylist = ajListstrNew();
@@ -4096,18 +4088,25 @@ static AjBool seqReadTreecon(AjPSeq thys, AjPSeqin seqin)
 	ok = ajFileBuffGetStore(buff, &rdline,
 				seqin->Text, &thys->TextPtr);
 	bufflines++;
-	ilen = 0;
+	ilen = -1;
 	while (ok)
 	{
-	   if (!ilen)
+	   if (ilen < 0)
 	   {
 	       ajStrClean(&rdline);
 	       if (!ajStrLen(rdline))	/* empty line after a sequence */
-		   break;
-	       ajStrAssS(&phyitem->Name, rdline);
+	       {
+		   ok = ajFileBuffGetStore(buff, &rdline,
+					   seqin->Text, &thys->TextPtr);
+		   continue;
+	       }
+	       AJNEW0(phyitem);
+	       phyitem->Weight = 1.0;
+	       seqSetName(&phyitem->Name, rdline);
 	       ajTablePut(phytable, phyitem->Name, phyitem);
 	       ajListstrPushApp(phylist, phyitem->Name);
 	       iseq++;
+	       ilen = 0;
 	   }
 	   else
 	   {
@@ -4125,14 +4124,14 @@ static AjBool seqReadTreecon(AjPSeq thys, AjPSeqin seqin)
 	       }
 	       if (ilen == len)
 	       {
-		   ilen = 0;
+		   ilen = -1;
 	       }
 	   }
 
 	   ok = ajFileBuffGetStore(buff, &rdline,
 				   seqin->Text, &thys->TextPtr);
 	}
-	if (ilen)
+	if (ilen >= 0)
 	{
 	    ajDebug("Treecon format: unfinished sequence '%S' read %d/%d\n",
 		    phyitem->Name, ilen, len);
@@ -4191,7 +4190,16 @@ static AjBool seqReadTreecon(AjPSeq thys, AjPSeqin seqin)
 **
 ** Tries to read input in Jackknifer format.
 **
-** To be implemented
+** The Jackknifer program by Farris is a parsimony program that also
+** implements the jackknife method to test the reliability of branches. 
+** The format is similar to the MEGA format.
+**
+** On the first line a title/description is placed in between single quotes.
+** The alignment can be written in sequential or interleaved format,
+** but the sequence names have to be placed between brackets.
+** Also no blanks are allowed in the names.
+** They should be replaced by underscores ( _ ).
+** The file is ended by a semicolon.
 **
 ** @param [w] thys [AjPSeq] Sequence object
 ** @param [u] seqin [AjPSeqin] Sequence input object
@@ -4201,27 +4209,143 @@ static AjBool seqReadTreecon(AjPSeq thys, AjPSeqin seqin)
 
 static AjBool seqReadJackknifer(AjPSeq thys, AjPSeqin seqin)
 {
-    return ajFalse;
-}
+    static AjPStr rdline = NULL;
+    static AjPStr tmpstr = NULL;
+    static AjPStr tmpname = NULL;
+    ajint bufflines = 0;
+    AjBool ok       = ajFalse;
+    ajint iseq;
+    ajint i;
+    AjPFileBuff buff;
 
+    AjPTable phytable        = NULL;
+    SeqPMsfItem phyitem      = NULL;
+    AjPList phylist          = NULL;
+    SeqPMsfData phydata      = NULL;
+    static AjPRegexp topexp  = NULL;
+    static AjPRegexp seqexp  = NULL;
 
+    buff = seqin->Filebuff;
 
+    if(!topexp)
+	topexp = ajRegCompC("^'(.*)'\\s*$");
 
-/* @funcstatic seqReadJackknifernon *******************************************
-**
-** Tries to read input in Jackknifer non-interleaved format.
-**
-** To be implemented
-**
-** @param [w] thys [AjPSeq] Sequence object
-** @param [u] seqin [AjPSeqin] Sequence input object
-** @return [AjBool] ajTrue on success
-** @@
-******************************************************************************/
+    if(!seqexp)
+	seqexp = ajRegCompC("^[(]([^)]+)(.*)$");
 
-static AjBool seqReadJackknifernon(AjPSeq thys, AjPSeqin seqin)
-{
-    return ajFalse;
+    if(!seqin->Data)			/* first time - read the data */
+    {
+	iseq = 0;
+	seqin->multidone = ajFalse;
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+	if(!ok)
+	    return ajFalse;
+	bufflines++;
+
+	if(!ajRegExec(topexp, rdline))
+	{				/* first line test */
+	    ajFileBuffReset(buff);
+	    return ajFalse;
+	}
+	ajDebug("JackKnifer format: First line ok '%S'\n", rdline);
+
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+
+	seqin->Data = AJNEW0(phydata);
+	phydata->Table = phytable = ajTableNew(0, ajStrTableCmp,
+					       ajStrTableHash);
+	phylist = ajListstrNew();
+	seqin->Filecount = 0;
+
+	while (ok)
+	{
+	    if (!ajStrLen(rdline))	/* empty line after a sequence */
+	    {
+		ok = ajFileBuffGetStore(buff, &rdline,
+					seqin->Text, &thys->TextPtr);
+		continue;
+	    }
+	    if (ajStrPrefixC(rdline, ";"))
+		break;			/* done */
+	    if (ajStrPrefixC(rdline, "("))
+	    {
+		if (!ajRegExec(seqexp, rdline))
+		{
+		    ajDebug("JackKnifer format: bad (id) line\n");
+		    AJFREE(seqin->Data);
+		    return ajFalse;
+		}
+
+		ajRegSubI(seqexp, 1, &tmpstr);
+		seqSetName(&tmpname, tmpstr);
+		phyitem = ajTableGet(phytable, tmpname);
+		if (!phyitem)
+		{
+		    ajDebug("JackKnifer format: new (id) '%S'\n", tmpname);
+		    AJNEW0(phyitem);
+		    phyitem->Weight = 1.0;
+		    ajStrAssS(&phyitem->Name,tmpname);
+		    ajTablePut(phytable, phyitem->Name, phyitem);
+		    ajListstrPushApp(phylist, phyitem->Name);
+		    iseq++;
+		}
+		else
+		{
+		    ajDebug("JackKnifer format: More for (id) '%S'\n",
+			    tmpname);
+
+		}
+		ajRegSubI(seqexp, 2, &tmpstr);
+		ajStrAssS(&rdline, tmpstr);
+	    }
+	    seqAppend(&phyitem->Seq, rdline);
+
+	    ok = ajFileBuffGetStore(buff, &rdline,
+				   seqin->Text, &thys->TextPtr);
+	}
+
+	phydata->Names = AJCALLOC(iseq, sizeof(*phydata->Names));
+	for(i=0; i < iseq; i++)
+	{
+	    ajListstrPop(phylist, &phydata->Names[i]);
+	    ajDebug("list [%d] '%S'\n", i, phydata->Names[i]);
+	}
+	ajListstrFree(&phylist);
+	phydata->Nseq = iseq;
+	phydata->Count = 0;
+	phydata->Bufflines = bufflines;
+	ajDebug("JackKnifer format read %d lines\n", bufflines);
+    }
+
+    phydata = seqin->Data;
+    phytable = phydata->Table;
+
+    i = phydata->Count;
+    ajDebug("returning [%d] '%S'\n", i, phydata->Names[i]);
+    phyitem = ajTableGet(phytable, phydata->Names[i]);
+    ajStrAss(&thys->Name, phydata->Names[i]);
+    ajStrDel(&phydata->Names[i]);
+
+    thys->Weight = phyitem->Weight;
+    ajStrAss(&thys->Seq, phyitem->Seq);
+    ajStrDel(&phyitem->Seq);
+
+    phydata->Count++;
+    if(phydata->Count >=phydata->Nseq)
+    {
+	seqin->multidone = ajTrue;
+	ajDebug("seqReadJackKnifer multidone\n");
+	ajFileBuffClear(seqin->Filebuff, 0);
+	ajTableMap(phytable, seqMsfTabDel, NULL);
+	ajTableFree(&phytable);
+	AJFREE(phydata->Names);
+	AJFREE(phydata);
+	seqin->Data = NULL;
+    }
+
+    return ajTrue;
 }
 
 
@@ -4231,7 +4355,10 @@ static AjBool seqReadJackknifernon(AjPSeq thys, AjPSeqin seqin)
 **
 ** Tries to read input in Nexus format.
 **
-** To be implemented
+** Nexus files contain many things.
+** All Nexus files begin with a #NEXUS line
+** Data is in begin ... end blocks
+** Sequence data is in a "begin character" block
 **
 ** @param [w] thys [AjPSeq] Sequence object
 ** @param [u] seqin [AjPSeqin] Sequence input object
@@ -4241,37 +4368,113 @@ static AjBool seqReadJackknifernon(AjPSeq thys, AjPSeqin seqin)
 
 static AjBool seqReadNexus(AjPSeq thys, AjPSeqin seqin)
 {
-    return ajFalse;
+    static AjPStr rdline = NULL;
+    ajint bufflines = 0;
+    AjBool ok       = ajFalse;
+    ajint iseq;
+    ajint i;
+    AjPFileBuff buff;
+    AjPStr* seqs = NULL;
+    AjPNexus nexus = NULL;
+
+    SeqPMsfData phydata      = NULL;
+
+    buff = seqin->Filebuff;
+
+    if(!seqin->Data)			/* first time - read the data */
+    {
+	iseq = 0;
+	seqin->multidone = ajFalse;
+
+	ajFileBuffIsbuff(buff);
+
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+	ajDebug("Nexus format: Testing first line '%S'\n", rdline);
+	if(!ok)
+	    return ajFalse;
+	bufflines++;
+
+	if(!ajStrPrefixCaseC(rdline, "#NEXUS"))
+	{				/* first line test */
+	    ajFileBuffReset(buff);
+	    return ajFalse;
+	}
+	ajDebug("Nexus format: First line ok '%S'\n", rdline);
+
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+	while(ok && !ajStrPrefixCaseC(rdline, "#NEXUS"))
+	{
+	    ok = ajFileBuffGetStore(buff, &rdline,
+				    seqin->Text, &thys->TextPtr);
+	}
+
+	ajFileBuffReset(buff);
+
+	AJNEW0(phydata);
+	phydata->Nexus = ajNexusParse(buff);
+	if (!phydata->Nexus)
+	{
+	    ajFileBuffReset(buff);
+	    return ajFalse;
+	}
+	phydata->Count = 0;
+	phydata->Nseq = ajNexusGetNtaxa(phydata->Nexus);
+	/* GetTaxa may fail if names are only defined in the sequences */
+	phydata->Names = ajNexusGetTaxa(phydata->Nexus);
+	seqin->Data = phydata;
+    }
+
+    phydata = seqin->Data;
+    nexus = phydata->Nexus;
+
+    i = phydata->Count;
+
+    seqs = ajNexusGetSequences(nexus);
+    if (!seqs)
+    {
+	ajNexusDel(&phydata->Nexus);
+	AJFREE(phydata);
+	seqin->Data = NULL;
+	return ajFalse;
+    }
+
+    if (!phydata->Names)		/* finally set from the sequences */
+	phydata->Names = ajNexusGetTaxa(phydata->Nexus);
+    ajDebug("returning [%d] '%S'\n", i, phydata->Names[i]);
+
+    ajStrAss(&thys->Name, phydata->Names[i]);
+
+    thys->Weight = 1.0;
+    ajStrAss(&thys->Seq, seqs[i]);
+
+    phydata->Count++;
+    if(phydata->Count >= phydata->Nseq)
+    {
+	seqin->multidone = ajTrue;
+	ajDebug("seqReadNexus multidone\n");
+	ajFileBuffClear(seqin->Filebuff, 0);
+	ajTableFree(&phydata->Table);		/* unused */
+	phydata->Names = NULL;
+	ajNexusDel(&phydata->Nexus);
+	AJFREE(phydata);
+	seqin->Data = NULL;
+    }
+
+    return ajTrue;
 }
-
-
-
-
-/* @funcstatic seqReadNexusnon ************************************************
-**
-** Tries to read input in Nexus non-interleaved format.
-**
-** To be implemented
-**
-** @param [w] thys [AjPSeq] Sequence object
-** @param [u] seqin [AjPSeqin] Sequence input object
-** @return [AjBool] ajTrue on success
-** @@
-******************************************************************************/
-
-static AjBool seqReadNexusnon(AjPSeq thys, AjPSeqin seqin)
-{
-    return ajFalse;
-}
-
-
 
 
 /* @funcstatic seqReadMega ****************************************************
 **
-** Tries to read input in Mega format.
+** Tries to read input in Mega non-interleaved format.
 **
-** To be implemented
+** The Molecular Evolutionary Genetic Analysis program by
+** Kumar, Tamura & Nei is a tree construction program
+** based on distance- and parsimony methods.
+**
+** http://evolgen.biol.metro-u.ac.jp/MEGA/manual/DataFormat.html
 **
 ** @param [w] thys [AjPSeq] Sequence object
 ** @param [u] seqin [AjPSeqin] Sequence input object
@@ -4281,27 +4484,175 @@ static AjBool seqReadNexusnon(AjPSeq thys, AjPSeqin seqin)
 
 static AjBool seqReadMega(AjPSeq thys, AjPSeqin seqin)
 {
-    return ajFalse;
-}
+    static AjPStr rdline = NULL;
+    static AjPStr tmpstr = NULL;
+    static AjPStr tmpname = NULL;
+    static AjPStr prestr = NULL;
+    static AjPStr poststr = NULL;
+    ajint bufflines = 0;
+    AjBool ok       = ajFalse;
+    ajint iseq;
+    ajint i;
+    AjPFileBuff buff;
+
+    AjPTable phytable        = NULL;
+    SeqPMsfItem phyitem      = NULL;
+    AjPList phylist          = NULL;
+    SeqPMsfData phydata      = NULL;
+    static AjPRegexp featexp  = NULL;
+    static AjPRegexp seqexp  = NULL;
+
+    buff = seqin->Filebuff;
+
+    if(!featexp)
+	featexp = ajRegCompC("^(.*)\"[^\"]*\"(.*)$");
+
+    if(!seqexp)
+	seqexp = ajRegCompC("^#([^ \t\n\r]+)(.*)$");
+
+    if(!seqin->Data)			/* first time - read the data */
+    {
+	iseq = 0;
+	seqin->multidone = ajFalse;
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+	ajDebug("Mega format: Testing first line '%S'\n", rdline);
+	if(!ok)
+	    return ajFalse;
+	bufflines++;
+
+	if(!ajStrMatchCaseC(rdline, "#MEGA\n"))
+	{				/* first line test */
+	    ajFileBuffReset(buff);
+	    return ajFalse;
+	}
+	ajDebug("Mega format: First line ok '%S'\n", rdline);
+
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+	if(!ok)
+	    return ajFalse;
+	bufflines++;
+
+	if(!ajStrPrefixCaseC(rdline, "TITLE"))
+	{				/* first line test */
+	    ajFileBuffReset(buff);
+	    return ajFalse;
+	}
+	ajDebug("Mega format: Second line ok '%S'\n", rdline);
+
+	while(ok && !ajStrPrefixC(rdline, "#"))
+	{				/* skip comments in header */
+	    ok = ajFileBuffGetStore(buff, &rdline,
+				    seqin->Text, &thys->TextPtr);
+	}
 
 
+	/*
+        ** read through looking for #id
+	** Some day we could stop at #mega and read multiple files
+	*/
 
+	
+	seqin->Data = AJNEW0(phydata);
+	phydata->Table = phytable = ajTableNew(0, ajStrTableCmp,
+					       ajStrTableHash);
+	phylist = ajListstrNew();
+	seqin->Filecount = 0;
 
-/* @funcstatic seqReadMeganon *************************************************
-**
-** Tries to read input in Mega non-interleaved format.
-**
-** To be implemented
-**
-** @param [w] thys [AjPSeq] Sequence object
-** @param [u] seqin [AjPSeqin] Sequence input object
-** @return [AjBool] ajTrue on success
-** @@
-******************************************************************************/
+	while (ok)
+	{
+	    if (!ajStrLen(rdline))	/* empty line after a sequence */
+	    {
+		ok = ajFileBuffGetStore(buff, &rdline,
+					seqin->Text, &thys->TextPtr);
+		continue;
+	    }
+	    if (ajStrPrefixC(rdline, "#"))
+	    {
+		if (!ajRegExec(seqexp, rdline))
+		{
+		    ajDebug("Mega format: bad #id line\n");
+		    AJFREE(seqin->Data);
+		    return ajFalse;
+		}
 
-static AjBool seqReadMeganon(AjPSeq thys, AjPSeqin seqin)
-{
-    return ajFalse;
+		ajRegSubI(seqexp, 1, &tmpstr);
+		seqSetName(&tmpname, tmpstr);
+		phyitem = ajTableGet(phytable, tmpname);
+		if (!phyitem)
+		{
+		    ajDebug("Mega format: new #id '%S'\n", tmpname);
+		    AJNEW0(phyitem);
+		    phyitem->Weight = 1.0;
+		    ajStrAssS(&phyitem->Name,tmpname);
+		    ajTablePut(phytable, phyitem->Name, phyitem);
+		    ajListstrPushApp(phylist, phyitem->Name);
+		    iseq++;
+		}
+		else
+		{
+		    ajDebug("Mega format: More for #id '%S'\n", tmpname);
+
+		}
+		ajRegSubI(seqexp, 2, &tmpstr);
+		ajStrAssS(&rdline, tmpstr);
+	    }
+	    while (ajRegExec(featexp, rdline))
+	    {
+		ajDebug("Quotes found: '%S'\n", rdline);
+		ajRegSubI(featexp, 1, &prestr);
+		ajRegSubI(featexp, 2, &poststr);
+		ajStrAssS(&rdline, prestr);
+		ajStrApp(&rdline, poststr);
+		ajDebug("Quotes removed: '%S'\n", rdline);
+	    }
+	    seqAppend(&phyitem->Seq, rdline);
+
+	    ok = ajFileBuffGetStore(buff, &rdline,
+				   seqin->Text, &thys->TextPtr);
+	}
+
+	phydata->Names = AJCALLOC(iseq, sizeof(*phydata->Names));
+	for(i=0; i < iseq; i++)
+	{
+	    ajListstrPop(phylist, &phydata->Names[i]);
+	    ajDebug("list [%d] '%S'\n", i, phydata->Names[i]);
+	}
+	ajListstrFree(&phylist);
+	phydata->Nseq = iseq;
+	phydata->Count = 0;
+	phydata->Bufflines = bufflines;
+	ajDebug("Mega format read %d lines\n", bufflines);
+    }
+
+    phydata = seqin->Data;
+    phytable = phydata->Table;
+
+    i = phydata->Count;
+    ajDebug("returning [%d] '%S'\n", i, phydata->Names[i]);
+    phyitem = ajTableGet(phytable, phydata->Names[i]);
+    ajStrAss(&thys->Name, phydata->Names[i]);
+    ajStrDel(&phydata->Names[i]);
+
+    thys->Weight = phyitem->Weight;
+    ajStrAss(&thys->Seq, phyitem->Seq);
+    ajStrDel(&phyitem->Seq);
+
+    phydata->Count++;
+    if(phydata->Count >=phydata->Nseq)
+    {
+	seqin->multidone = ajTrue;
+	ajDebug("seqReadMega multidone\n");
+	ajFileBuffClear(seqin->Filebuff, 0);
+	ajTableMap(phytable, seqMsfTabDel, NULL);
+	ajTableFree(&phytable);
+	AJFREE(phydata->Names);
+	AJFREE(phydata);
+	seqin->Data = NULL;
+    }
+
+    return ajTrue;
 }
 
 
@@ -6888,9 +7239,12 @@ static void seqSetName(AjPStr* name, const AjPStr str)
     else
     {
 	ajStrAssS(name, str);
-	if (ajStrClean(name))
+	ajDebug("seqSetName default '%S'\n", str);
+	if (!ajStrIsWord(*name))
 	{
+	    ajStrClean(name);
 	    ajStrSubstituteKK(name, ' ', '_');
+	    ajDebug("seqSetName cleaned '%S'\n", *name);
 	}
     }
     ajDebug("seqSetName '%S' result: '%S'\n", str, *name);
