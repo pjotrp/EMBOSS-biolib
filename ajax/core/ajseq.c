@@ -3769,6 +3769,51 @@ AjPSeqCvt ajSeqCvtNewZero(char* bases)
 
 
 
+/* @func ajSeqCvtNewZeroS *****************************************************
+**
+** Generates a new conversion table in which the first character of the first 
+** string in the array provided is converted to 1, the first character of the 
+** second string is converted to 2, the first character of the third string is
+** converted to 3 and so on.
+** Upper and lower case characters are converted to the same numbers.
+** All other characters are set to zero.
+**
+** @param [r] bases [AjPStr*] Allowed sequence character strings.
+** @return [AjPSeqCvt] Conversion table.
+** @@
+******************************************************************************/
+
+AjPSeqCvt ajSeqCvtNewZeroS (AjPStr* bases, int n)
+{
+    static AjPSeqCvt ret;
+    ajint i;
+    
+
+    AJNEW0(ret);
+    ret->len = n;
+    ret->size = CHAR_MAX - CHAR_MIN + 1;
+    ret->table = AJCALLOC0(ret->size, sizeof(char));
+    ret->bases = ajStrNew();
+    ret->missing = 0;
+    AJCNEW0(ret->labels, n);
+    for(i=0; i<n; i++)
+	ret->labels[i] = ajStrNew();
+
+
+    for(i=0; i<n; i++)
+    {
+	ajStrAssS(&ret->labels[i], bases[i]);
+	ajStrAppK(&ret->bases, ajStrChar(bases[i], 0));
+	ret->table[toupper((ajint) ajStrChar(bases[i], 0))] = ajSysItoC(i+1);
+	ret->table[tolower((ajint) ajStrChar(bases[i], 0))] = ajSysItoC(i+1);
+    }
+
+    return ret;
+}
+
+
+
+
 /* @func ajSeqCvtNew **********************************************************
 **
 ** Generates a new conversion table in which the first character in the
@@ -3827,13 +3872,23 @@ AjPSeqCvt ajSeqCvtNew(char* bases)
 ** @@
 ******************************************************************************/
 
-void ajSeqCvtDel(AjPSeqCvt* thys)
+void ajSeqCvtDel (AjPSeqCvt* thys)
 {
+    ajint i=0;
+    
     if(!*thys || !thys)
 	return;
 
     AJFREE((*thys)->table);
     ajStrDel(&(*thys)->bases);
+
+    if((*thys)->labels)
+    {
+	for(i=0;i<(*thys)->len;i++)
+	    ajStrDel(&(*thys)->labels[i]);
+	AJFREE((*thys)->labels);
+    }
+    
     AJFREE(*thys);
 
     return;
@@ -3927,6 +3982,33 @@ ajint ajSeqCvtLen(const AjPSeqCvt thys)
 ajint ajSeqCvtK(const AjPSeqCvt thys, char ch)
 {
     return thys->table[(ajint)ch];
+}
+
+
+
+
+/* @func ajSeqCvtKS ***********************************************************
+**
+** Returns the integer code corresponding to a sequence character string
+** in a conversion tabkle
+**
+** @param [r] thys [const AjPSeqCvt] Conversion table
+** @param [r] ch [AjPStr] Sequence character string
+**
+** @return [ajint] Conversion code
+** @@
+******************************************************************************/
+
+ajint ajSeqCvtKS (const AjPSeqCvt thys, AjPStr ch)
+{
+    ajint i=0;
+    
+    for(i=0;i<thys->len;i++)
+	if(ajStrMatch(ch, thys->labels[i]))
+	    return i;
+
+    ajWarn("Sequence character string not found in ajSeqCvtKS");
+    return 0;
 }
 
 
@@ -4897,7 +4979,13 @@ AjBool ajSeqsetConsStats(AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     AjBool isgap;
     AjPSeq* seqs;
     ajint numres;		 /* number of residues (not spaces) */
+    AjPStr debugstr1=NULL;
+    AjPStr debugstr2=NULL;
     
+    
+    debugstr1=ajStrNew();
+    debugstr2=ajStrNew();
+
     if(mymatrix)
 	imatrix = mymatrix;
 
@@ -5097,19 +5185,23 @@ AjBool ajSeqsetConsStats(AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
 	khpos = kkpos;
 	himatch = matching[ajSeqCvtK(cvt,seqcharptr[highindex][khpos])];
 	
-	ajDebug("index[%d] ident:%d '%c' %.1f matching:%d '%c' %.1f %.1f "
+	ajMatrixChar(imatrix, identicalmaxindex-1, &debugstr1);
+	ajMatrixChar(imatrix, matchingmaxindex-1, &debugstr2);
+	
+
+	ajDebug("index[%d] ident:%d '%S' %.1f matching:%d '%S' %.1f %.1f "
 		"high:%d '%c' %.1f\n",
 		kkpos,
 		identicalmaxindex,
-		ajMatrixChar(imatrix, identicalmaxindex-1),
+		debugstr1, 
 		identical[identicalmaxindex],
 		matchingmaxindex,
-		ajMatrixChar(imatrix, matchingmaxindex-1),
+		debugstr2, 
 		matching[matchingmaxindex],
 		himatch,
 		highindex, seqcharptr[highindex][khpos],
 		seqs[highindex]->Weight);
-	
+
 	if(identical[identicalmaxindex] >= ident) isident=ajTrue;
 	if(matching[matchingmaxindex] >= fplural) issim=ajTrue;
 	
@@ -5153,6 +5245,8 @@ AjBool ajSeqsetConsStats(AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     AJFREE(matching);
     AJFREE(identical);
     ajFloatDel(&posScore);
-    
+    ajStrDel(&debugstr1);
+    ajStrDel(&debugstr2);
+
     return ajTrue;    
 }

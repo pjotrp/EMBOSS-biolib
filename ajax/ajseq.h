@@ -16,6 +16,7 @@ extern "C"
 ** @new ajSeqCvtNew Creates from a character string of valid bases.
 ** @new ajSeqCvtNewText Creates from a character string of valid bases.
 ** @new ajSeqCvtNewZero Creates from a character string of valid bases.
+** @new ajSeqCvtNewZeroS Creates from an array of strings of valid bases.
 ** @use ajSeqNum Convert sequence to numbers
 ** @use ajSeqCvtTrace Reports on contents for debugging
 ** @@
@@ -26,6 +27,7 @@ typedef struct AjSSeqCvt {
   ajint len;
   ajint missing;
   AjPStr bases;
+  AjPStr* labels;
   char *table;
 } AjOSeqCvt;
 
@@ -99,10 +101,12 @@ void         ajSeqCount (const AjPStr thys, ajint *b);
 ajuint       ajSeqCrc(const AjPStr seq );
 void         ajSeqCvtDel (AjPSeqCvt* thys);
 ajint        ajSeqCvtK (const AjPSeqCvt thys, char ch);
+ajint        ajSeqCvtKS (const AjPSeqCvt thys, AjPStr ch);
 ajint        ajSeqCvtLen (const AjPSeqCvt thys);
 AjPSeqCvt    ajSeqCvtNew (char* bases);
 AjPSeqCvt    ajSeqCvtNewText (char* bases);
 AjPSeqCvt    ajSeqCvtNewZero (char* bases);
+AjPSeqCvt    ajSeqCvtNewZeroS (AjPStr* bases, int n);
 ajint        ajSeqCvtSize (const AjPSeqCvt cvt);
 void         ajSeqCvtTrace (const AjPSeqCvt cvt);
 void         ajSeqDel (AjPSeq* pthis);

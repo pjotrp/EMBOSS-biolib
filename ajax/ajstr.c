@@ -4815,6 +4815,63 @@ AjPStr ajStrTokC(const AjPStr thys, const char* delim)
 
 
 
+/* @func ajStrTokCC ***********************************************************
+**
+** Simple token parsing using specified set of delimiters.
+**
+** @param [r] thys [const char*] String to be parsed (first call) or
+**        NULL for followup calls using the same string, as for the
+**        C RTL function strtok which is eventually called.
+** @param [r] delim [const char*] Delimiter(s) to be used betwen tokens.
+** @return [AjPStr] Token
+** @error NULL if no further token is found.
+** @@
+******************************************************************************/
+
+AjPStr ajStrTokCC (const char* thys, const char* delim)
+{
+    static AjPStr strp = 0; /* internal AjPStr - do not try to destroy */
+    static char* cp    = NULL;
+
+    if (!strp)
+    {
+	if (!thys)
+	{
+	    ajWarn("Error in ajStrTokC: NULL argument and not initialised");
+	    return NULL;
+	}
+	strp = ajStrNew();
+	AJFREE(strp->Ptr);
+    }
+
+    if (thys)
+    {
+	if (cp) (void) ajCharFree(cp);
+	cp = ajCharNewC(strlen(thys), thys);
+	strp->Ptr = ajSysStrtok (cp, delim);
+    }
+    else
+    {
+	strp->Ptr = ajSysStrtok (NULL, delim);
+    }
+
+    if (strp->Ptr)
+    {
+	strp->Len = strlen(strp->Ptr);
+	strp->Res = strp->Len + 1;
+	return strp;
+    }
+    else
+    {
+	strp->Len=0;
+    }
+
+    return NULL;
+}
+
+
+
+
 /* @func ajStrIsBool **********************************************************
 **
 ** Simple test for a string having a valid Boolean value.

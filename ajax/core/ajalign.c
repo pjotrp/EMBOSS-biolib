@@ -3035,7 +3035,13 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     AjPSeq* seqs;
     ajint numres;		 /* number of residues (not spaces) */
     AlignPData data;
+    AjPStr debugstr1 = NULL;
+    AjPStr debugstr2 = NULL;
     
+    
+    debugstr1=ajStrNew();
+    debugstr2=ajStrNew();
+
     data = alignData(thys, iali);
     
     if(!thys->IMatrix && !thys->FMatrix)
@@ -3261,32 +3267,42 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 	himatch = matching[ajSeqCvtK(cvt,seqcharptr[highindex][khpos])];
 	
 	if(thys->IMatrix)
-	    ajDebug("index[%d] ident:%d '%c' %.1f matching:%d '%c' %.1f %.1f "
+	{
+	    ajMatrixChar(thys->IMatrix, identicalmaxindex-1, &debugstr1);
+	    ajMatrixChar(thys->IMatrix, matchingmaxindex-1, &debugstr2);
+	    
+
+	    ajDebug("index[%d] ident:%d '%S' %.1f matching:%d '%S' %.1f %.1f "
 		    "high:%d '%c' %.1f\n",
 		    kkpos,
 		    identicalmaxindex,
-		    ajMatrixChar(thys->IMatrix, identicalmaxindex-1),
+		    debugstr1, 
 		    identical[identicalmaxindex],
 		    matchingmaxindex,
-		    ajMatrixChar(thys->IMatrix, matchingmaxindex-1),
+		    debugstr2,      
 		    matching[matchingmaxindex],
 		    himatch,
 		    highindex, seqcharptr[highindex][khpos],
 		    seqs[highindex]->Weight);
+	}
 	else
-	    ajDebug("index[%d] ident:%d '%c' %.1f matching:%d '%c' %.1f %.1f "
+	{
+	    ajMatrixfChar(thys->FMatrix, identicalmaxindex-1, &debugstr1);
+	    ajMatrixfChar(thys->FMatrix, matchingmaxindex-1, &debugstr2);	    
+	    ajDebug("index[%d] ident:%d '%S' %.1f matching:%d '%S' %.1f %.1f "
 		    "high:%d '%c' %.1f\n",
 		    kkpos,
 		    identicalmaxindex,
-		    ajMatrixfChar(thys->FMatrix, identicalmaxindex-1),
+		    debugstr1, 
 		    identical[identicalmaxindex],
 		    matchingmaxindex,
-		    ajMatrixfChar(thys->FMatrix, matchingmaxindex-1),
+		    debugstr2, 
 		    matching[matchingmaxindex],
 		    himatch,
 		    highindex, seqcharptr[highindex][khpos],
 		    seqs[highindex]->Weight);
-	
+	}
+		
 	if(identical[identicalmaxindex] >= ident)
 	    isident=ajTrue;
 	if(matching[matchingmaxindex] >= fplural)
@@ -3340,7 +3356,9 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     AJFREE(matching);
     AJFREE(identical);
     ajFloatDel(&posScore);
-    
+    ajStrDel(&debugstr1);
+    ajStrDel(&debugstr2);
+
     return;    
 }
 

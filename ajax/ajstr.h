@@ -164,6 +164,8 @@ extern "C"
 **                 with the previous delimiter set
 ** @cast ajStrTokC Returns a static next string from token parsing of a
 **                 string with a new delimiter set
+** @cast ajStrTokCC Returns a static next string from token parsing of a
+**                 string with a new delimiter set
 ** @cast ajStrIsBool returns true if the string is a valid AjBool
 ** @cast ajStrIsInt returns true if the string is a valid int
 ** @cast ajStrIsLong returns true if the string is a valid ajlong int
@@ -447,6 +449,7 @@ AjBool     ajStrToHex (const AjPStr thys, ajint* result);
 AjBool     ajStrToInt (const AjPStr thys, ajint* result);
 AjPStr     ajStrTok (const AjPStr thys);
 AjPStr     ajStrTokC (const AjPStr thys, const char* delim);
+AjPStr     ajStrTokCC (const char* thys, const char* delim);
 AjBool     ajStrToken (AjPStr* pthis, AjPStrTok *ptoken, const char *delim);
 AjBool     ajStrTokenAss (AjPStrTok *ptok, const AjPStr thys,
 			  const char *delim);
