@@ -238,12 +238,24 @@ public class JembossAuthServer
       return vans;
 
     boolean afile = false;
+    boolean fexists = false;
     String fn = null;
+
+    // local file exists?
+    if(fileContent.startsWith(fs))
+    {
+      int ind = fileContent.lastIndexOf(fs);
+      String fdir  = fileContent.substring(0,ind);
+      String ffile = fileContent.substring(ind+1).trim(); 
+      aj.listFiles(userName,passwd,environ,fdir);
+      if(aj.getOutStd().indexOf(ffile+"\n") > -1)
+        fexists = true;
+    }
 
     // create temporary file
     if( ((fileContent.indexOf(":") < 0) || 
          (fileContent.indexOf("\n") > 0) ) &&
-       !((new File(fileContent)).exists()) ) 
+         (!fexists) ) 
     {
       try
       {
@@ -266,9 +278,10 @@ public class JembossAuthServer
       fn = fileContent;     //looks like db entry or local file name
     }
 
+
     boolean ok = false;
-    if( ((new File(fn)).exists()) ||    //call ajax if sequence file
-         (fn.indexOf(":") > 0) )        //or db
+    if( fexists  ||             //call ajax if sequence file
+        fn.indexOf(":") > 0 )   //or db
     {
       try
       {
