@@ -1,0 +1,9 @@
+1.0.0
+	Added ':' to switch to command mode in addition to control-Z as
+	used in VMS versions and also useful when defining QA tests.
+
+	Redefined the way help redraws the screen to simply call MSE's
+	redraw function with a reset layout. The previous method used
+	curses calls and caused trouble when ncurses was linked.
+
+	Trimmed the help text to be no more than 80 characters wide.
