@@ -337,6 +337,8 @@ Test if button-2 was clicked
 RETURNS
 	1 if BUTTON2 was CLICKED, else 0
 */
+
+/*
 static int
 button2()
 {
@@ -349,6 +351,7 @@ button2()
 #endif
     return 0;
 }
+*/
 
 /*****************************************************************************/
 /*****************************************************************************/
@@ -504,7 +507,7 @@ prompt(WINDOW *curwin, char *title, char *msg)
     int finished = FALSE;
     int chr, c;
     int res;
-    char *buffer;
+    char *buffer = NULL;
 
     box(w, ACS_VLINE, ACS_HLINE);
     mvwaddstr(w, 1, 35 - strlen(title)/2, title);
@@ -698,7 +701,7 @@ file_size(struct stat finfo, char *size)
   size[0] = '\0';
 
   if (finfo.st_size == -1) {
-    sprintf(size, "");
+      size[0] = '\0';
   } else if (!finfo.st_size) {
     sprintf(size, "   0  b");
   } else if(finfo.st_size < 1024) {
@@ -2302,7 +2305,7 @@ static int
 command_virtualise(FORM *form)
 {
     char *buffer;
-    int c;
+    int c = 0;
     
 
     static const struct {
@@ -3049,7 +3052,7 @@ ajDebug("ending form\n");
 /*****************************************************************************/
 /* MAIN                                                                      */
 /*****************************************************************************/
-main (int argc, char * argv[], char **env) {
+int main (int argc, char * argv[], char **env) {
 	
     AjBool explode;
 
