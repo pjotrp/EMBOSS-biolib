@@ -3171,7 +3171,9 @@ static void GraphOpenXwin(AjPGraph thys, char *ext )
 
 static void GraphOpenXml(AjPGraph thys, char *ext )
 {
+#ifdef GROUT
     thys->xml = ajXmlFileNew();
+#endif
     return;
 }
 
