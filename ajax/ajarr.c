@@ -1746,10 +1746,14 @@ float* ajArrFloatLine(AjPStr *line, const char *delim, ajint cols,
     static float *ret;
     ajint ncols;
     ajint i;
+    AjPStr tmpline = NULL;
 
-    ajStrClean(line);
+    tmpline = ajStrNew();
+    ajStrAssS(&tmpline,*line);
+    
+    ajStrClean(&tmpline);
 
-    t     = ajStrTokenInit(*line, delim);
+    t     = ajStrTokenInit(tmpline, delim);
     tmp   = ajStrNew();
     ncols = (endcol-startcol)+1;
 
@@ -1769,6 +1773,7 @@ float* ajArrFloatLine(AjPStr *line, const char *delim, ajint cols,
     }
 
     ajStrDel(&tmp);
+    ajStrDel(&tmpline);
     ajStrTokenClear(&t);
 
     return ret;
