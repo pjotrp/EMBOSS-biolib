@@ -27,6 +27,7 @@ import org.emboss.jemboss.*;
 import org.emboss.jemboss.soap.*;
 import uk.ac.mrc.hgmp.embreo.*;
 import uk.ac.mrc.hgmp.embreo.filemgr.*;
+import org.emboss.jemboss.gui.filetree.*;
 
 import java.net.URL;
 
@@ -82,8 +83,7 @@ public class SetUpMenuBar
         try
         {
           JFrame fres = new JFrame();
-          fres.getContentPane().add(new EmbreoFileTreePanel(mysettings));
-          fres.setSize(400,400);
+          fres.getContentPane().add(new RemoteFileTreePanel(mysettings));
           fres.pack();
           fres.setVisible(true);
         }

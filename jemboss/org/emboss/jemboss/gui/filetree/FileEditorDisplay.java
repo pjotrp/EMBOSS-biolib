@@ -30,9 +30,6 @@ import javax.swing.event.*;
 import java.io.*;
 import java.net.URL;
 
-import uk.ac.mrc.hgmp.embreo.EmbreoParams; 
-import uk.ac.mrc.hgmp.embreo.filemgr.*;
-
 /**
 *
 * Display for text, sequence editing, html, gif, png, jpeg.
@@ -48,17 +45,34 @@ public class FileEditorDisplay
    private String text;
    private byte[] pngContent = null;
 
+
+   public FileEditorDisplay(final String filename)
+   {
+     this.filename = filename;
+     seqText = new JTextPane();
+     doc = seqText.getDocument();
+     initStylesForTextPane(seqText);
+
+     popup = new JPopupMenu();
+     MouseListener popupListener = new PopupListener();
+
+     JMenuItem menuItem = new JMenuItem("Save",KeyEvent.VK_S);
+     seqText.addMouseListener(popupListener);
+     menuItem.addActionListener(new ActionListener()
+     {
+       public void actionPerformed(ActionEvent e)
+       {
+         new FileSaving(seqText,pngContent);
+       }
+     });
+     popup.add(menuItem);
+   }
+
+
    public FileEditorDisplay(JFrame ffile, final String filename)
    {
 
-     this.filename = filename;
-     seqText = new JTextPane();
- 
-     popup = new JPopupMenu();
-     final JMenuItem menuItem = new JMenuItem("Save",KeyEvent.VK_S);
-
-     doc = seqText.getDocument();
-     initStylesForTextPane(seqText);
+     this(filename);
  
      text = "";
      try
@@ -73,9 +87,6 @@ public class FileEditorDisplay
        System.out.println("Cannot read file: " + filename);
      }
 
-     MouseListener popupListener = new PopupListener();
-     seqText.addMouseListener(popupListener);
-
      if(filename.endsWith(".html"))
        setText(text,"html",seqText);
      else if( filename.toLowerCase().endsWith(".png") || 
@@ -86,15 +97,50 @@ public class FileEditorDisplay
      else
        setText(text,"regular",seqText);
 
+   }
 
-     menuItem.addActionListener(new ActionListener()
+
+   public FileEditorDisplay(JFrame ffile, final String filename,
+                            Object contents)
+   {
+     this(filename);
+    
+     if(contents.getClass().equals(String.class))
      {
-       public void actionPerformed(ActionEvent e)
+       try
        {
-         new FileSaving(seqText,pngContent);
+         doc.insertString(0, (String)contents, null);
        }
-     });
-     popup.add(menuItem);
+       catch (BadLocationException ble)
+       {
+         System.err.println("Couldn't insert initial text.");
+       }
+     }
+     else if( filename.toLowerCase().endsWith(".png") ||
+              filename.toLowerCase().endsWith(".gif") ||
+              filename.toLowerCase().endsWith(".jpeg") ||
+              filename.endsWith(".tif") || filename.endsWith(".ps") )
+     {
+       ImageIcon icon = new ImageIcon((byte [])contents);
+       seqText.insertIcon(icon);
+       pngContent = (byte [])contents;
+     }
+     else if(filename.endsWith(".html"))
+     {
+       try
+       {
+         seqText.setPage((URL)contents);
+         seqText.setEditable(false);
+       }
+       catch (IOException e)
+       {
+         System.err.println("Attempted to read a bad URL: " + text);
+       }
+       catch (Exception e)
+       {
+         System.err.println("Couldn't create help URL: " + text);
+       }
+     }
 
    }
 
