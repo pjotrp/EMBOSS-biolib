@@ -31,6 +31,7 @@ import javax.swing.table.*;
 import javax.swing.border.*;
 import java.awt.event.*;
 
+import org.emboss.jemboss.parser.Ajax;
 import org.emboss.jemboss.gui.filetree.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
@@ -43,7 +44,7 @@ public class SequenceList extends JFrame
   private SequenceListTableModel seqModel;
 //private JPopupMenu popMenu = new JPopupMenu();
 
-  public SequenceList()
+  public SequenceList(final boolean withSoap)
   {
     super("Sequence List");
     setSize(400,200);
@@ -74,8 +75,10 @@ public class SequenceList extends JFrame
     setJMenuBar(menuPanel);
 
     JMenu fileMenu = new JMenu("File");
+    fileMenu.setMnemonic(KeyEvent.VK_F);
     menuPanel.add(fileMenu);
     JMenu toolMenu = new JMenu("Tools");
+    toolMenu.setMnemonic(KeyEvent.VK_T);
     menuPanel.add(toolMenu);
 
     JMenuItem openMenuItem = new JMenuItem("Open");
@@ -86,17 +89,19 @@ public class SequenceList extends JFrame
         int nrow = table.getSelectedRow();
         String fileName = (String)table.getValueAt(nrow,
                 table.convertColumnIndexToView(SequenceListTableModel.COL_NAME));
-        System.out.println("FILE NAME IS " +fileName);
+
         SequenceData row = (SequenceData)seqModel.modelVector.elementAt(nrow);
+
         if(!(row.s_remote.booleanValue()))
-          DragTree.showFilePane(fileName);
+          DragTree.showFilePane(fileName);        //local file
         else
-          RemoteDragTree.showFilePane(fileName);
+          RemoteDragTree.showFilePane(fileName);  //remote file
       }
     });
     fileMenu.add(openMenuItem);
 
     JMenuItem addSeq = new JMenuItem("Add sequence");
+    addSeq.setMnemonic(KeyEvent.VK_A);
     addSeq.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -105,7 +110,6 @@ public class SequenceList extends JFrame
         seqModel.insertRow(row+1);
         table.tableChanged(new TableModelEvent(seqModel, row+1, row+1, 
                 TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT));
-//      table.repaint();
       }
     });
     toolMenu.add(addSeq);
@@ -117,11 +121,9 @@ public class SequenceList extends JFrame
       {
         int row = table.getSelectedRow();
         if(seqModel.deleteRow(row))
-        {
           table.tableChanged(new TableModelEvent(seqModel, row, row,
                 TableModelEvent.ALL_COLUMNS, TableModelEvent.DELETE));
-//        table.repaint();
-        }
+        
       }
     });
     toolMenu.add(deleteSeq);
@@ -131,7 +133,10 @@ public class SequenceList extends JFrame
     {
       public void actionPerformed(ActionEvent e)
       {
-        System.out.println("CALLING AJAX");
+        int row = table.getSelectedRow();
+        String fn = table.getFileName(row);
+        Ajax.getFileOrDatabaseForAjax(fn,BuildProgramMenu.getDatabaseList(),null,withSoap);
+        System.out.println("CALLING AJAX "+fn);
       }
     });
     toolMenu.add(ajaxSeq);
@@ -378,10 +383,10 @@ class SequenceListTableModel extends AbstractTableModel
   {
     modelVector.removeAllElements();
     Boolean bdef = new Boolean(false);
-    modelVector.addElement(new SequenceData("-","","",bdef,bdef)); 
-    modelVector.addElement(new SequenceData("-","","",bdef,bdef)); 
-    modelVector.addElement(new SequenceData("-","","",bdef,bdef)); 
-    modelVector.addElement(new SequenceData("-","","",bdef,bdef)); 
+    modelVector.addElement(new SequenceData("","","",bdef,bdef)); 
+    modelVector.addElement(new SequenceData("","","",bdef,bdef)); 
+    modelVector.addElement(new SequenceData("","","",bdef,bdef)); 
+    modelVector.addElement(new SequenceData("","","",bdef,bdef)); 
   }
   
   public int getRowCount()
