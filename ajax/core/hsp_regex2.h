@@ -1,19 +1,19 @@
 /*
  * First, the stuff that ends up in the outside-world include file
- = typedef off_t regoff_t;
+ = typedef off_t hsp_regoff_t;
  = typedef struct {
  = 	ajint re_magic;
  = 	size_t re_nsub;		// number of parenthesized subexpressions
- = 	const char *re_endp;	// end pointer for REG_PEND
+ = 	const char *re_endp;	// end pointer for HSREG_PEND
  = 	REGUTSSTRUCT *re_g;	// none of your business :-)
- = } regex_t;
+ = } hsp_regex_t;
  = typedef struct {
- = 	regoff_t rm_so;		// start of match
- = 	regoff_t rm_eo;		// end of match
- = } regmatch_t;
+ = 	hsp_regoff_t rm_so;		// start of match
+ = 	hsp_regoff_t rm_eo;		// end of match
+ = } hsp_regmatch_t;
  */
 /*
- * internals of regex_t
+ * internals of hsp_regex_t
  */
 #define	MAGIC1	((('r'^0200)<<8) | 'e')
 

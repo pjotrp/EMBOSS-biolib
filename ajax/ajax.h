@@ -51,6 +51,7 @@ extern "C"
 #include "ajnam.h"
 #include "ajmess.h"
 
+#include "ajhsreg.h"
 #include "ajposreg.h"
 #include "ajreg.h"
 #include "ajtranslate.h"

@@ -21,17 +21,17 @@ static char *regchar(ajint ch);
 **
 ** print a regexp for debugging
 **
-** N.B: Was....  void hsp_regprint(regex_t r, FILE *d){ but r has to
+** N.B: Was....  void hsp_regprint(hsp_regex_t r, FILE *d){ but r has to
 **    be a pointer. REALLY BAD to use "r" as a variable in a routine
 **    of this length - it's a pity to find it in the code with a
 **    search!
 **
-** @param [r] r [regex_t*] Undocumented
+** @param [r] r [hsp_regex_t*] Undocumented
 ** @param [r] d [FILE*] Undocumented
 ** @return [void]
 ******************************************************************************/
 
-void hsp_regprint(regex_t *r, FILE *d)
+void hsp_regprint(hsp_regex_t *r, FILE *d)
 {
 	register REGUTSSTRUCT *g = r->re_g;
 	register ajint i;

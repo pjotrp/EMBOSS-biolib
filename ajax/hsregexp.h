@@ -12,29 +12,29 @@
 
 #define NSUBEXP  10
 
-/* @data AjPRegexp ************************************************************
+/* @data AjPHsRegexp **********************************************************
 **
 ** Regular expression data structure, based on the Henry Spencer
 ** regexp library.
 **
 ** Regular expressions must be compiled before they can be used.
 **
-** @new ajRegComp Compiles a regular expression from an AjPStr string.
-** @new ajRegCompC Compiles a regular expression from a char* string.
-** @delete ajRegFree Clears and frees a compiled regular expression.
-** @set ajRegExec Compares a regular expression to an AjPStr string.
-** @set ajRegExecC Compares a regular expression to a char* string.
-** @use ajRegSub Parses a string and substitues matches and submatches.
-** @use ajRegSubC Parses a string and substitues matches and submatches.
-** @use ajRegTrace Traces a compiled and used regular expression.
-** @cast ajRegOffset Returns the offset of a match to an AjPStr.
-** @cast ajRegOffsetI Returns the offset of the nth substring match.
-** @cast ajRegOffsetC Returns the offset of a match to char*.
-** @cast ajRegOffsetIC Returns the offset of the nth substring match.
-** @cast ajRegLenI Returns the length of the nth substring match.
-** @cast ajRegPost Returns the remainder of the string.
-** @cast ajRegPostC Returns the remainder of the string as char*.
-** @cast ajRegSubI Returns the nth substring match.
+** @new ajHsRegComp Compiles a regular expression from an AjPStr string.
+** @new ajHsRegCompC Compiles a regular expression from a char* string.
+** @delete ajHsRegFree Clears and frees a compiled regular expression.
+** @set ajHsRegExec Compares a regular expression to an AjPStr string.
+** @set ajHsRegExecC Compares a regular expression to a char* string.
+** @use ajHsRegSub Parses a string and substitues matches and submatches.
+** @use ajHsRegSubC Parses a string and substitues matches and submatches.
+** @use ajHsRegTrace Traces a compiled and used regular expression.
+** @cast ajHsRegOffset Returns the offset of a match to an AjPStr.
+** @cast ajHsRegOffsetI Returns the offset of the nth substring match.
+** @cast ajHsRegOffsetC Returns the offset of a match to char*.
+** @cast ajHsRegOffsetIC Returns the offset of the nth substring match.
+** @cast ajHsRegLenI Returns the length of the nth substring match.
+** @cast ajHsRegPost Returns the remainder of the string.
+** @cast ajHsRegPostC Returns the remainder of the string as char*.
+** @cast ajHsRegSubI Returns the nth substring match.
 ** @@
 ******************************************************************************/
 
@@ -53,7 +53,7 @@ typedef struct regexp {
 	char *regmust;		/* Internal use only. */
 	ajint regmlen;		/* Internal use only. */
 	char program[1];	/* more chumminess with compiler. */
-} regexp, AjORegexp, *AjPRegexp;
+} regexp, AjOHsRegexp, *AjPHsRegexp;
 
 extern regexp *hsregcomp(const char *re);
 extern ajint hsregexec(regexp *rp, const char *s);

@@ -212,7 +212,7 @@ EmbPPatMatch embPatMatchFindC(AjPStr regexp, char *sptr){
   while(*sptr != '\0' && ajRegExecC(regcomp,sptr)){
     /*    ajRegTrace(regcomp);*/
     AJNEW (pos);
-    *pos = posi = ajRegOffsetC(regcomp);
+    *pos = posi = ajRegOffset(regcomp);
     AJNEW (len);
     *len = ajRegLenI(regcomp,0);
     *pos +=sptr-ptr;
@@ -467,7 +467,7 @@ EmbPPatMatch embPatPosMatchFindC(AjPStr regexp, char *sptr){
   while(*sptr != '\0' && ajPosRegExecC(regcomp,sptr)){
     /*    ajPosRegTrace(regcomp);*/
     AJNEW (pos);
-    *pos = posi = ajPosRegOffsetC(regcomp);
+    *pos = posi = ajPosRegOffset(regcomp);
     AJNEW (len);
     *len = ajPosRegLenI(regcomp,0);
     *pos +=sptr-ptr;

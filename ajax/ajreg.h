@@ -13,8 +13,22 @@ extern "C"
 #define ajreg_h
 
 #include "ajax.h"
-#include "hsregexp.h"
-#include "hsregmagic.h"
+#include "pcre_internal.h"
+#include "pcreposix.h"
+
+#define AJREG_OVECSIZE 30
+
+/* @data AjPRegexp ************************************************************
+**
+******************************************************************************/
+
+typedef struct AjSRegexp {
+    real_pcre *pcre;
+    pcre_extra *extra;
+    int ovecsize;
+    int *ovector;
+    const char* orig;
+} AjORegExp, *AjPRegexp;
 
 /* constructors */
 
@@ -29,19 +43,14 @@ AjBool ajRegExecC (AjPRegexp prog, const char* str);
 /* test substrings */
 
 ajint  ajRegLenI (AjPRegexp rp, ajint isub);
-AjBool ajRegPost (AjPRegexp rp, AjPStr* post);
-AjBool ajRegPostC (AjPRegexp rp, const char** post);
-
 ajint  ajRegOffset (AjPRegexp rp);
 ajint  ajRegOffsetI (AjPRegexp rp, ajint isub);
-ajint  ajRegOffsetC (AjPRegexp rp);
-ajint  ajRegOffsetIC (AjPRegexp rp, ajint isub);
 
-/* substitute substrings */
+/* get substrings */
 
-void   ajRegSub (AjPRegexp rp, AjPStr source, AjPStr* dest);
+AjBool ajRegPost (AjPRegexp rp, AjPStr* post);
+AjBool ajRegPostC (AjPRegexp rp, const char** post);
 void   ajRegSubI (AjPRegexp rp, ajint isub, AjPStr* dest);
-void   ajRegSubC (AjPRegexp rp, const char* source, AjPStr* dest);
 
 /* destructor */
 

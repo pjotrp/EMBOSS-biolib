@@ -6,7 +6,7 @@ extern "C"
 /* === engine.c === */
 
 static ajint matcher(register REGUTSSTRUCT *g, char *string, size_t nmatch,
-		   regmatch_t pmatch[], ajint eflags);
+		   hsp_regmatch_t pmatch[], ajint eflags);
 static char *dissect(register struct match *m, char *start, char *stop,
 		     sopno startst, sopno stopst);
 static char *backref(register struct match *m, char *start, char *stop,

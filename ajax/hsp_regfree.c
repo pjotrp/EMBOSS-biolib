@@ -10,11 +10,11 @@
 **
 ** free everything
 **
-** @param [r] preg [regex_t*] Undocumented
+** @param [r] preg [hsp_regex_t*] Undocumented
 ** @return [void]
 ******************************************************************************/
 
-void hsp_regfree(regex_t *preg)
+void hsp_regfree(hsp_regex_t *preg)
 {
     register REGUTSSTRUCT *g;
 

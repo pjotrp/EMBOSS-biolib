@@ -91,9 +91,9 @@ static AjPPosRegexp posregCompFlagsC (const char* exp, ajint cflags) {
   AJNEW0(ret->Regex);
 
   /* ajDebug ("posregCompFlagsC '%s' %x\n", exp, cflags); */
-  rval = hsp_regcomp (ret->Regex, exp, cflags|REG_EXTENDED);
+  rval = hsp_regcomp (ret->Regex, exp, cflags|HSREG_EXTENDED);
 
-  if (cflags & REG_NOSUB)
+  if (cflags & HSREG_NOSUB)
     nsub = 1;
   else
     nsub = ret->Regex->re_nsub + 1;
@@ -121,7 +121,7 @@ static AjPPosRegexp posregCompFlagsC (const char* exp, ajint cflags) {
 ******************************************************************************/
 
 AjPPosRegexp ajPosRegCompCase (AjPStr exp) {
-  return posregCompFlagsC (ajStrStr(exp), REG_ICASE);
+  return posregCompFlagsC (ajStrStr(exp), HSREG_ICASE);
 }
 
 /* @func ajPosRegCompCaseC ****************************************************
@@ -134,7 +134,7 @@ AjPPosRegexp ajPosRegCompCase (AjPStr exp) {
 ******************************************************************************/
 
 AjPPosRegexp ajPosRegCompCaseC (const char* exp) {
-  return posregCompFlagsC (exp, REG_ICASE);
+  return posregCompFlagsC (exp, HSREG_ICASE);
 }
 
 /* @func ajPosRegCompNosub ****************************************************
@@ -147,7 +147,7 @@ AjPPosRegexp ajPosRegCompCaseC (const char* exp) {
 ******************************************************************************/
 
 AjPPosRegexp ajPosRegCompNosub (AjPStr exp) {
-  return posregCompFlagsC (ajStrStr(exp), REG_NOSUB);
+  return posregCompFlagsC (ajStrStr(exp), HSREG_NOSUB);
 }
 
 /* @func ajPosRegCompNosubC ***************************************************
@@ -160,7 +160,7 @@ AjPPosRegexp ajPosRegCompNosub (AjPStr exp) {
 ******************************************************************************/
 
 AjPPosRegexp ajPosRegCompNosubC (const char* exp) {
-  return posregCompFlagsC (exp, REG_NOSUB);
+  return posregCompFlagsC (exp, HSREG_NOSUB);
 }
 
 /* @func ajPosRegCompNewline **************************************************
@@ -173,7 +173,7 @@ AjPPosRegexp ajPosRegCompNosubC (const char* exp) {
 ******************************************************************************/
 
 AjPPosRegexp ajPosRegCompNewline (AjPStr exp) {
-  return posregCompFlagsC (ajStrStr(exp), REG_NEWLINE);
+  return posregCompFlagsC (ajStrStr(exp), HSREG_NEWLINE);
 }
 
 /* @func ajPosRegCompNewlineC *************************************************
@@ -186,7 +186,7 @@ AjPPosRegexp ajPosRegCompNewline (AjPStr exp) {
 ******************************************************************************/
 
 AjPPosRegexp ajPosRegCompNewlineC (const char* exp) {
-  return posregCompFlagsC (exp, REG_NEWLINE);
+  return posregCompFlagsC (exp, HSREG_NEWLINE);
 }
 
 /* execute expression match */
@@ -242,9 +242,9 @@ AjBool ajPosRegExecC (AjPPosRegexp prog, const char* str) {
   /* ajDebug ("   result %d\n", ret); */
 
   switch (ret) {
-  case REG_OKAY:
+  case HSREG_OKAY:
      return ajTrue;
-  case REG_NOMATCH:
+  case HSREG_NOMATCH:
     return ajFalse;
   default:
     ajPosRegErr (prog, ret);

@@ -78,7 +78,7 @@ ajint nope=0;
 #define	EQ(a, b)	(memcmp(a, b, m->g->nstates) == 0)
 #define	STATEVARS	ajint vn; char *space
 #define	STATESETUP(m, nv)	{ (m)->space = malloc((nv)*(m)->g->nstates); \
-				if ((m)->space == NULL) return(REG_ESPACE); \
+				if ((m)->space == NULL) return(HSREG_ESPACE); \
 				(m)->vn = 0; }
 #define	STATETEARDOWN(m)	{ free((m)->space); }
 #define	SETUP(v)	((v) = &m->space[m->vn++ * m->g->nstates])
@@ -106,39 +106,39 @@ ajint nope=0;
 **
 ** interface for matching
 **
-** = #define	REG_NOTBOL	00001<br>
-** = #define	REG_NOTEOL	00002<br>
-** = #define	REG_STARTEND	00004<br>
-** = #define	REG_TRACE	00400	// tracing of execution<br>
-** = #define	REG_LARGE	01000	// force large representation<br>
-** = #define	REG_BACKR	02000	// force use of backref code<br>
+** = #define	HSREG_NOTBOL	00001<br>
+** = #define	HSREG_NOTEOL	00002<br>
+** = #define	HSREG_STARTEND	00004<br>
+** = #define	HSREG_TRACE	00400	// tracing of execution<br>
+** = #define	HSREG_LARGE	01000	// force large representation<br>
+** = #define	HSREG_BACKR	02000	// force use of backref code<br>
 **
-** @param [r] preg [const regex_t*] Undocumented
+** @param [r] preg [const hsp_regex_t*] Undocumented
 ** @param [r] string [const char*] Undocumented
 ** @param [r] nmatch [size_t] Undocumented
-** @param [r] pmatch [regmatch_t[]] Undocumented
+** @param [r] pmatch [hsp_regmatch_t[]] Undocumented
 ** @param [r] eflags [ajint] Undocumented
-** @return [ajint] 0 success, REG_NOMATCH failure
+** @return [ajint] 0 success, HSREG_NOMATCH failure
 ******************************************************************************/
 
-ajint hsp_regexec(const regex_t *preg, const char *string, size_t nmatch,
-		regmatch_t pmatch[], ajint eflags)
+ajint hsp_regexec(const hsp_regex_t *preg, const char *string, size_t nmatch,
+		hsp_regmatch_t pmatch[], ajint eflags)
 {
     register REGUTSSTRUCT *g = preg->re_g;
 #ifdef REDEBUG
 #	define	GOODFLAGS(f)	(f)
 #else
-#	define	GOODFLAGS(f)	((f)&(REG_NOTBOL|REG_NOTEOL|REG_STARTEND))
+#	define	GOODFLAGS(f)	((f)&(HSREG_NOTBOL|HSREG_NOTEOL|HSREG_STARTEND))
 #endif
 
     if (preg->re_magic != MAGIC1 || g->magic != MAGIC2)
-	return(REG_BADPAT);
+	return(HSREG_BADPAT);
     assert(!(g->iflags&BAD));
     if (g->iflags&BAD)			/* backstop for no-debug case */
-	return(REG_BADPAT);
+	return(HSREG_BADPAT);
     eflags = GOODFLAGS(eflags);
 
-    if (g->nstates <= CHAR_BIT*sizeof(states1) && !(eflags&REG_LARGE))
+    if (g->nstates <= CHAR_BIT*sizeof(states1) && !(eflags&HSREG_LARGE))
 	return(hsp_smatcher(g, (char *)string, nmatch, pmatch, eflags));
 
     return(hsp_lmatcher(g, (char *)string, nmatch, pmatch, eflags));

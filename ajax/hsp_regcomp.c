@@ -120,14 +120,14 @@ static ajint never = 0;		/* for use in asserts; shuts lint up */
 **
 ** interface for parser and compilation
 **
-** @param [?] preg [regex_t*] Undocumented
+** @param [?] preg [hsp_regex_t*] Undocumented
 ** @param [?] pattern [const char*] Undocumented
 ** @param [?] cflags [ajint] Undocumented
-** @return [ajint] 0 success, otherwise REG_something
+** @return [ajint] 0 success, otherwise HSREG_something
 ** @@
 ******************************************************************************/
 
-ajint hsp_regcomp(regex_t *preg, const char *pattern, ajint cflags)
+ajint hsp_regcomp(hsp_regex_t *preg, const char *pattern, ajint cflags)
 {
     struct parse pa;
     register REGUTSSTRUCT *g;
@@ -137,17 +137,17 @@ ajint hsp_regcomp(regex_t *preg, const char *pattern, ajint cflags)
 #ifdef REDEBUG
 #	define	GOODFLAGS(f)	(f)
 #else
-#	define	GOODFLAGS(f)	((f)&~REG_DUMP)
+#	define	GOODFLAGS(f)	((f)&~HSREG_DUMP)
 #endif
 
     cflags = GOODFLAGS(cflags);
-    if ((cflags&REG_EXTENDED) && (cflags&REG_NOSPEC))
-	return(REG_INVARG);
+    if ((cflags&HSREG_EXTENDED) && (cflags&HSREG_NOSPEC))
+	return(HSREG_INVARG);
 
-    if (cflags&REG_PEND)
+    if (cflags&HSREG_PEND)
     {
 	if (preg->re_endp < pattern)
-	    return(REG_INVARG);
+	    return(HSREG_INVARG);
 	len = preg->re_endp - pattern;
     }
     else
@@ -157,14 +157,14 @@ ajint hsp_regcomp(regex_t *preg, const char *pattern, ajint cflags)
     g = (REGUTSSTRUCT *)malloc(sizeof(REGUTSSTRUCT) +
 			       (NC-1)*sizeof(cat_t));
     if (g == NULL)
-	return(REG_ESPACE);
+	return(HSREG_ESPACE);
     p->ssize = len/(size_t)2*(size_t)3 + (size_t)1; /* ugh */
     p->strip = (sop *)malloc(p->ssize * sizeof(sop));
     p->slen = 0;
     if (p->strip == NULL)
     {
 	free((char *)g);
-	return(REG_ESPACE);
+	return(HSREG_ESPACE);
     }
 
     /* set things up */
@@ -197,9 +197,9 @@ ajint hsp_regcomp(regex_t *preg, const char *pattern, ajint cflags)
     /* do it */
     EMIT(OEND, 0);
     g->firststate = THERE();
-    if (cflags&REG_EXTENDED)
+    if (cflags&HSREG_EXTENDED)
 	p_ere(p, OUT);
-    else if (cflags&REG_NOSPEC)
+    else if (cflags&HSREG_NOSPEC)
 	p_str(p);
     else
 	p_bre(p, OUT, OUT);
@@ -217,7 +217,7 @@ ajint hsp_regcomp(regex_t *preg, const char *pattern, ajint cflags)
     preg->re_magic = MAGIC1;
 #ifndef REDEBUG
     /* not debugging, so can't rely on the assert() in regexec() */
-    if (g->iflags&BAD) (void) SETERROR(REG_ASSERT);
+    if (g->iflags&BAD) (void) SETERROR(HSREG_ASSERT);
 #endif
 
     /* win or lose, we're done */
@@ -253,7 +253,7 @@ static void p_ere(register struct parse *p, ajint stop)
 	conc = HERE();
 	while (MORE() && (c = PEEK()) != '|' && c != stop)
 	    p_ere_exp(p);
-	(void)REQUIRE(HERE() != conc, REG_EMPTY); /* require nonempty */
+	(void)REQUIRE(HERE() != conc, HSREG_EMPTY); /* require nonempty */
 
 	if (!EAT('|'))
 	    break;			/* NOTE BREAK OUT */
@@ -310,7 +310,7 @@ static void p_ere_exp(register struct parse *p)
     switch (c)
     {
     case '(':
-	(void)REQUIRE(MORE(), REG_EPAREN);
+	(void)REQUIRE(MORE(), HSREG_EPAREN);
 	p->g->nsub++;
 	subno = p->g->nsub;
 	if (subno < NPAREN)
@@ -324,7 +324,7 @@ static void p_ere_exp(register struct parse *p)
 	    assert(p->pend[subno] != 0);
 	}
 	EMIT(ORPAREN, subno);
-	(void)MUSTEAT(')', REG_EPAREN);
+	(void)MUSTEAT(')', HSREG_EPAREN);
 	break;
 #ifndef POSIX_MISTAKE
     case ')':		/* happens only if no current unmatched ( */
@@ -335,7 +335,7 @@ static void p_ere_exp(register struct parse *p)
 	 * all.  So an unmatched ) is legal POSIX, at least until
 	 * we can get it fixed.
 	 */
-	(void) SETERROR(REG_EPAREN);
+	(void) SETERROR(HSREG_EPAREN);
 	break;
 #endif
     case '^':
@@ -350,15 +350,15 @@ static void p_ere_exp(register struct parse *p)
 	p->g->neol++;
 	break;
     case '|':
-	(void) SETERROR(REG_EMPTY);
+	(void) SETERROR(HSREG_EMPTY);
 	break;
     case '*':
     case '+':
     case '?':
-	(void) SETERROR(REG_BADRPT);
+	(void) SETERROR(HSREG_BADRPT);
 	break;
     case '.':
-	if (p->g->cflags&REG_NEWLINE)
+	if (p->g->cflags&HSREG_NEWLINE)
 	    nonnewline(p);
 	else
 	    EMIT(OANY, 0);
@@ -367,12 +367,12 @@ static void p_ere_exp(register struct parse *p)
 	p_bracket(p);
 	break;
     case '\\':
-	(void)REQUIRE(MORE(), REG_EESCAPE);
+	(void)REQUIRE(MORE(), HSREG_EESCAPE);
 	c = GETNEXT();
 	ordinary(p, c);
 	break;
     case '{':		/* okay as ordinary except if digit follows */
-	(void)REQUIRE(!MORE() || !isdigit((ajint)PEEK()), REG_BADRPT);
+	(void)REQUIRE(!MORE() || !isdigit((ajint)PEEK()), HSREG_BADRPT);
 	/* FALLTHROUGH */
     default:
 	ordinary(p, c);
@@ -388,7 +388,7 @@ static void p_ere_exp(register struct parse *p)
 	return;				/* no repetition, we're done */
     NEXT();
 
-    (void)REQUIRE(!wascaret, REG_BADRPT);
+    (void)REQUIRE(!wascaret, HSREG_BADRPT);
     switch (c)
     {
     case '*':				/* implemented as +? */
@@ -417,7 +417,7 @@ static void p_ere_exp(register struct parse *p)
 	    if (isdigit((ajint)PEEK()))
 	    {
 		count2 = p_count(p);
-		(void)REQUIRE(count <= count2, REG_BADBR);
+		(void)REQUIRE(count <= count2, HSREG_BADBR);
 	    }
 	    else			/* single number with comma */
 		count2 = INFINITY;
@@ -429,8 +429,8 @@ static void p_ere_exp(register struct parse *p)
 	{				/* error heuristics */
 	    while (MORE() && PEEK() != '}')
 		NEXT();
-	    (void)REQUIRE(MORE(), REG_EBRACE);
-	    (void) SETERROR(REG_BADBR);
+	    (void)REQUIRE(MORE(), HSREG_EBRACE);
+	    (void) SETERROR(HSREG_BADBR);
 	}
 	break;
     }
@@ -441,7 +441,7 @@ static void p_ere_exp(register struct parse *p)
     if (!( c == '*' || c == '+' || c == '?' ||
 	  (c == '{' && MORE2() && isdigit((ajint)PEEK2())) ) )
 	return;
-    (void) SETERROR(REG_BADRPT);
+    (void) SETERROR(HSREG_BADRPT);
 }
 
 
@@ -459,7 +459,7 @@ static void p_ere_exp(register struct parse *p)
 
 static void p_str(register struct parse *p)
 {
-    (void)REQUIRE(MORE(), REG_EMPTY);
+    (void)REQUIRE(MORE(), HSREG_EMPTY);
     while (MORE())
 	ordinary(p, GETNEXT());
 }
@@ -511,7 +511,7 @@ static void p_bre( register struct parse *p, register ajint end1,
 	p->g->neol++;
     }
 
-    (void)REQUIRE(HERE() != start, REG_EMPTY); /* require nonempty */
+    (void)REQUIRE(HERE() != start, HSREG_EMPTY); /* require nonempty */
 }
 
 
@@ -545,13 +545,13 @@ static ajint p_simp_re(register struct parse *p, ajint starordinary)
     c = GETNEXT();
     if (c == '\\')
     {
-	(void)REQUIRE(MORE(), REG_EESCAPE);
+	(void)REQUIRE(MORE(), HSREG_EESCAPE);
 	c = BACKSL | (unsigned char)GETNEXT();
     }
     switch (c)
     {
     case '.':
-	if (p->g->cflags&REG_NEWLINE)
+	if (p->g->cflags&HSREG_NEWLINE)
 	    nonnewline(p);
 	else
 	    EMIT(OANY, 0);
@@ -560,7 +560,7 @@ static ajint p_simp_re(register struct parse *p, ajint starordinary)
 	p_bracket(p);
 	break;
     case BACKSL|'{':
-	(void) SETERROR(REG_BADRPT);
+	(void) SETERROR(HSREG_BADRPT);
 	break;
     case BACKSL|'(':
 	p->g->nsub++;
@@ -577,11 +577,11 @@ static ajint p_simp_re(register struct parse *p, ajint starordinary)
 	    assert(p->pend[subno] != 0);
 	}
 	EMIT(ORPAREN, subno);
-	(void)REQUIRE(EATTWO('\\', ')'), REG_EPAREN);
+	(void)REQUIRE(EATTWO('\\', ')'), HSREG_EPAREN);
 	break;
     case BACKSL|')':	       	/* should not get here -- must be user */
     case BACKSL|'}':
-	(void) SETERROR(REG_EPAREN);
+	(void) SETERROR(HSREG_EPAREN);
 	break;
     case BACKSL|'1':
     case BACKSL|'2':
@@ -605,11 +605,11 @@ static ajint p_simp_re(register struct parse *p, ajint starordinary)
 	    EMIT(O_BACK, i);
 	}
 	else
-	    (void) SETERROR(REG_ESUBREG);
+	    (void) SETERROR(HSREG_ESUBREG);
 	p->g->backrefs = 1;
 	break;
     case '*':
-	(void)REQUIRE(starordinary, REG_BADRPT);
+	(void)REQUIRE(starordinary, HSREG_BADRPT);
 	/* FALLTHROUGH */
     default:
 	ordinary(p, c &~ BACKSL);
@@ -632,7 +632,7 @@ static ajint p_simp_re(register struct parse *p, ajint starordinary)
 	    if (MORE() && isdigit((ajint)PEEK()))
 	    {
 		count2 = p_count(p);
-		(void)REQUIRE(count <= count2, REG_BADBR);
+		(void)REQUIRE(count <= count2, HSREG_BADBR);
 	    }
 	    else			/* single number with comma */
 		count2 = INFINITY;
@@ -644,8 +644,8 @@ static ajint p_simp_re(register struct parse *p, ajint starordinary)
 	{				/* error heuristics */
 	    while (MORE() && !SEETWO('\\', '}'))
 		NEXT();
-	    (void)REQUIRE(MORE(), REG_EBRACE);
-	    (void) SETERROR(REG_BADBR);
+	    (void)REQUIRE(MORE(), HSREG_EBRACE);
+	    (void) SETERROR(HSREG_BADBR);
 	}
     }
     else if (c == (unsigned char)'$')	/* $ (but not \$) ends it */
@@ -678,7 +678,7 @@ static ajint p_count(register struct parse *p)
 	ndigits++;
     }
 
-    (void)REQUIRE(ndigits > 0 && count <= DUPMAX, REG_BADBR);
+    (void)REQUIRE(ndigits > 0 && count <= DUPMAX, HSREG_BADBR);
     return(count);
 }
 
@@ -727,12 +727,12 @@ static void p_bracket(register struct parse *p)
 	p_b_term(p, cs);
     if (EAT('-'))
 	CHadd(cs, '-');
-    (void)MUSTEAT(']', REG_EBRACK);
+    (void)MUSTEAT(']', HSREG_EBRACK);
 
     if (p->error != 0)			/* don't mess things up further */
 	return;
 
-    if (p->g->cflags&REG_ICASE)
+    if (p->g->cflags&HSREG_ICASE)
     {
 	register ajint i;
 	register ajint ci;
@@ -756,7 +756,7 @@ static void p_bracket(register struct parse *p)
 		CHsub(cs, i);
 	    else
 		CHadd(cs, i);
-	if (p->g->cflags&REG_NEWLINE)
+	if (p->g->cflags&HSREG_NEWLINE)
 	    CHsub(cs, '\n');
 	if (cs->multis != NULL)
 	    mcinvert(p, cs);
@@ -800,7 +800,7 @@ static void p_b_term(register struct parse *p, register cset *cs)
 	c = (MORE2()) ? PEEK2() : '\0';
 	break;
     case '-':
-	(void) SETERROR(REG_ERANGE);
+	(void) SETERROR(HSREG_ERANGE);
 	return;				/* NOTE RETURN */
 /*	break;*/
     default:
@@ -811,21 +811,21 @@ static void p_b_term(register struct parse *p, register cset *cs)
     switch (c) {
     case ':':				/* character class */
 	NEXT2();
-	(void)REQUIRE(MORE(), REG_EBRACK);
+	(void)REQUIRE(MORE(), HSREG_EBRACK);
 	c = PEEK();
-	(void)REQUIRE(c != '-' && c != ']', REG_ECTYPE);
+	(void)REQUIRE(c != '-' && c != ']', HSREG_ECTYPE);
 	p_b_cclass(p, cs);
-	(void)REQUIRE(MORE(), REG_EBRACK);
-	(void)REQUIRE(EATTWO(':', ']'), REG_ECTYPE);
+	(void)REQUIRE(MORE(), HSREG_EBRACK);
+	(void)REQUIRE(EATTWO(':', ']'), HSREG_ECTYPE);
 	break;
     case '=':				/* equivalence class */
 	NEXT2();
-	(void)REQUIRE(MORE(), REG_EBRACK);
+	(void)REQUIRE(MORE(), HSREG_EBRACK);
 	c = PEEK();
-	(void)REQUIRE(c != '-' && c != ']', REG_ECOLLATE);
+	(void)REQUIRE(c != '-' && c != ']', HSREG_ECOLLATE);
 	p_b_eclass(p, cs);
-	(void)REQUIRE(MORE(), REG_EBRACK);
-	(void)REQUIRE(EATTWO('=', ']'), REG_ECOLLATE);
+	(void)REQUIRE(MORE(), HSREG_EBRACK);
+	(void)REQUIRE(EATTWO('=', ']'), HSREG_ECOLLATE);
 	break;
     default:	/* symbol, ordinary character, or range */
 	        /* xxx revision needed for multichar stuff */
@@ -842,7 +842,7 @@ static void p_b_term(register struct parse *p, register cset *cs)
 	else
 	    finish = start;
 	/* xxx what about signed chars here... */
-	(void)REQUIRE(start <= finish, REG_ERANGE);
+	(void)REQUIRE(start <= finish, HSREG_ERANGE);
 	for (i = start; i <= finish; i++)
 	    CHadd(cs, i);
 	break;
@@ -880,7 +880,7 @@ static void p_b_cclass(register struct parse *p, register cset *cs)
     if (cp->name == NULL)
     {
 	/* oops, didn't find it */
-	(void) SETERROR(REG_ECTYPE);
+	(void) SETERROR(HSREG_ECTYPE);
 	return;
     }
 
@@ -932,13 +932,13 @@ static char p_b_symbol(register struct parse *p)
 {
     register char value;
 
-    (void)REQUIRE(MORE(), REG_EBRACK);
+    (void)REQUIRE(MORE(), HSREG_EBRACK);
     if (!EATTWO('[', '.'))
 	return(GETNEXT());
 
     /* collating symbol */
     value = p_b_coll_elem(p, '.');
-    (void)REQUIRE(EATTWO('.', ']'), REG_ECOLLATE);
+    (void)REQUIRE(EATTWO('.', ']'), HSREG_ECOLLATE);
     return(value);
 }
 
@@ -966,7 +966,7 @@ static char p_b_coll_elem(register struct parse *p, ajint endc)
 	NEXT();
     if (!MORE())
     {
-	(void) SETERROR(REG_EBRACK);
+	(void) SETERROR(HSREG_EBRACK);
 	return(0);
     }
     len = p->next - sp;
@@ -975,7 +975,7 @@ static char p_b_coll_elem(register struct parse *p, ajint endc)
 	    return(cp->code);		/* known name */
     if (len == 1)
 	return(*sp);			/* single character */
-    (void) SETERROR(REG_ECOLLATE);	/* neither */
+    (void) SETERROR(HSREG_ECOLLATE);	/* neither */
     return(0);
 }
 
@@ -1055,7 +1055,7 @@ static void ordinary(register struct parse *p, register ajint ch)
 {
     register cat_t *cap = p->g->categories;
 
-    if ((p->g->cflags&REG_ICASE) && isalpha(ch) && othercase(ch) != ch)
+    if ((p->g->cflags&HSREG_ICASE) && isalpha(ch) && othercase(ch) != ch)
 	bothcases(p, ch);
     else
     {
@@ -1071,7 +1071,7 @@ static void ordinary(register struct parse *p, register ajint ch)
 
 /* @funcstatic  nonnewline ****************************************************
 **
-** emit REG_NEWLINE version of OANY
+** emit HSREG_NEWLINE version of OANY
 **
 ** Boy, is this implementation ever a kludge...
 **
@@ -1174,7 +1174,7 @@ static void repeat( register struct parse *p, sopno start,
 	repeat(p, copy, from-1, to);
 	break;
     default:				/* "can't happen" */
-	(void) SETERROR(REG_ASSERT);	/* just in case */
+	(void) SETERROR(HSREG_ASSERT);	/* just in case */
 	break;
     }
 }
@@ -1251,7 +1251,7 @@ static cset* allocset(register struct parse *p)
 	else
 	{
 	    no = 0;
-	    (void) SETERROR(REG_ESPACE);
+	    (void) SETERROR(HSREG_ESPACE);
 	    /* caller's responsibility not to do set ops */
 	}
     }
@@ -1303,7 +1303,7 @@ static void freeset(register struct parse *p, register cset *cs)
 **
 ** The main task here is merging identical sets.  This is usually a waste
 ** of time (although the hash code minimizes the overhead), but can win
-** big if REG_ICASE is being used.  REG_ICASE, by the way, is why the hash
+** big if HSREG_ICASE is being used.  HSREG_ICASE, by the way, is why the hash
 ** is done using addition rather than xor -- all ASCII [aA] sets xor to
 ** the same value!
 **
@@ -1421,7 +1421,7 @@ static void mcadd(register struct parse *p,register cset *cs,
 	cs->multis = realloc(cs->multis, cs->smultis);
     if (cs->multis == NULL)
     {
-	(void) SETERROR(REG_ESPACE);
+	(void) SETERROR(HSREG_ESPACE);
 	return;
     }
 
@@ -1810,7 +1810,7 @@ static void enlarge(register struct parse *p, register sopno size)
 
     sp = (sop *)realloc(p->strip, size*sizeof(sop));
     if (sp == NULL) {
-	(void) SETERROR(REG_ESPACE);
+	(void) SETERROR(HSREG_ESPACE);
 	return;
     }
     p->strip = sp;
@@ -1837,7 +1837,7 @@ static void stripsnug(register struct parse *p,register REGUTSSTRUCT *g)
     g->strip = (sop *)realloc((char *)p->strip, p->slen * sizeof(sop));
     if (g->strip == NULL)
     {
-	(void) SETERROR(REG_ESPACE);
+	(void) SETERROR(HSREG_ESPACE);
 	g->strip = p->strip;
     }
 }

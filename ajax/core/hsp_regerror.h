@@ -5,7 +5,7 @@ extern "C" {
 #ifndef hsp_regerror_h
 #define hsp_regerror_h
 /* === regerror.c === */
-static char *regatoi(const regex_t *preg, char *localbuf);
+static char *regatoi(const hsp_regex_t *preg, char *localbuf);
 
 #endif
 
