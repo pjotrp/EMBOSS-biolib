@@ -280,6 +280,13 @@ string: matchvalue  [
   help: "Tag values are the values associated with a feature tag. Tags are the types of extra values that a feature may have. For example in the EMBL feature table, a 'CDS' type of feature may have the tags '/codon', '/codon_start', '/db_xref', '/EC_number', '/evidence', '/exception', '/function', '/gene', '/label', '/map', '/note', '/number', '/partial', '/product', '/protein_id', '/pseudo', '/standard_name', '/translation', '/transl_except', '/transl_table', or '/usedin'. Only some of these tags can have values, for example '/gene' can have the value of the gene name. By default any feature tag value in the feature table is shown. You can set this to match any feature tag valueyou wish to show. \ The tag value may be wildcarded by using '*'. \ If you wish to show more than one tag value, separate their names with the character '|', eg: \ pax* | 10"
 ]
 
+bool: stricttags  [
+  optional: "Y"
+  default: "N"
+  information: "Only display the matching tags"
+  help: "By default if any tag/value pair in a feature matches the specified tag and value, then all the tags/value pairs of that feature will be displayed. If this is set to be true, then only those tag/value pairs in a feature that match the specified tag and value will be displayed."
+]    
+
 endsection: featuresection
 
 endsection: advanced
