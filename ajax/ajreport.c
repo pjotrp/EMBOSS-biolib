@@ -1335,6 +1335,7 @@ static void reportWriteTable (AjPReport thys,
     feature = (AjPFeature)ajListIterNext (iterft) ;
     istart = feature->Start;
     iend = feature->End;
+    score = feature->Score;
     ajStrAssSub(&subseq, ajSeqStr(seq), istart-1, iend-1);
 
     ajFmtPrintF (outf, "%-15.15S %7d %7d %7.3f",
