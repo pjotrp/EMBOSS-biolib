@@ -277,6 +277,7 @@ static AjBool     seqAccessBlast (AjPSeqin seqin);
 /* static AjBool     seqAccessCmd (AjPSeqin seqin);*/ /* not implemented */
 static AjBool     seqAccessDirect (AjPSeqin seqin);
 static AjBool     seqAccessEmblcd (AjPSeqin seqin);
+static AjBool     seqAccessFreeEmblcd (void* qryd);
 static AjBool     seqAccessGcg (AjPSeqin seqin);
 /* static AjBool     seqAccessNbrf (AjPSeqin seqin); */ /* obsolete */
 static AjBool     seqAccessSrs (AjPSeqin seqin);
@@ -345,22 +346,22 @@ static AjBool     seqGcgReadSeq (const AjPSeqin seqin);
 
 static SeqOAccess seqAccess[] =
 {
-  {"emblcd", seqAccessEmblcd},
-  {"srs",seqAccessSrs},
-  {"srsfasta",seqAccessSrsfasta},
-  {"srswww",seqAccessSrswww},
-  {"url",seqAccessUrl},
-  /* {"cmd",seqAccessCmd}, */		/* not yet implemented */
-  {"app",seqAccessApp},
-  {"external",seqAccessApp},
-  /* {"asis",ajSeqAccessAsis}, */      /* called directly by seqUsaProcess */
-  /* {"file",ajSeqAccessFile}, */      /* called directly by seqUsaProcess */
-  /* {"offset",ajSeqAccessOffset}, */  /* called directly by seqUsaProcess */
-  {"direct",seqAccessDirect},
-  /* {"nbrf",seqAccessNbrf}, */	       /* obsolete */
-  {"gcg",seqAccessGcg},
-  {"blast",seqAccessBlast},
-  {NULL, NULL}
+  {"emblcd", seqAccessEmblcd, seqAccessFreeEmblcd},
+  {"srs",seqAccessSrs, NULL},
+  {"srsfasta",seqAccessSrsfasta, NULL},
+  {"srswww",seqAccessSrswww, NULL},
+  {"url",seqAccessUrl, NULL},
+  /* {"cmd",seqAccessCmd, NULL}, */		/* not yet implemented */
+  {"app",seqAccessApp, NULL},
+  {"external",seqAccessApp, NULL},
+  /* {"asis",ajSeqAccessAsis, NULL}, */        /* called by seqUsaProcess */
+  /* {"file",ajSeqAccessFile, NULL}, */        /* called by seqUsaProcess */
+  /* {"offset",ajSeqAccessOffset, NULL}, */    /* called by seqUsaProcess */
+  {"direct",seqAccessDirect, NULL},
+  /* {"nbrf",seqAccessNbrf, NULL}, */	       /* obsolete */
+  {"gcg",seqAccessGcg, NULL},
+  {"blast",seqAccessBlast, NULL},
+  {NULL, NULL, NULL}
 };
 
 static char aa_btoa[27] = {"-ARNDCQEGHILKMFPSTWYVBZX*"};
@@ -533,6 +534,28 @@ static AjBool seqAccessEmblcd (AjPSeqin seqin)
     }
 
     (void) ajStrAssS (&seqin->Db, qry->DbName);
+
+    return retval;
+}
+
+/* @funcstatic seqAccessFreeEmblcd ********************************************
+**
+** Frees data specific to reading EMBL CD-ROM index files.
+**
+** @param [r] qrydata [void*] query data specific to EMBLCD
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+static AjBool seqAccessFreeEmblcd (void* qrydata)
+{
+    SeqPCdQry qryd = qrydata;
+    AjBool retval = ajTrue;
+
+    ajDebug("seqAccessFreeEmblcd\n");
+
+    ajFileClose(&qryd->libr);
+    ajFileClose(&qryd->libs);
 
     return retval;
 }
@@ -711,8 +734,8 @@ static ajint seqCdFileSeek (SeqPCdFile fil, ajuint ipos)
 
     jpos = 300 + ipos*fil->RecSize;
     ret = ajFileSeek(fil->File, jpos, 0);
-    ajDebug("seqCdFileSeek rec %u pos %u tell %ld returns %d\n",
-	    ipos, jpos, ajFileTell(fil->File), ret);
+    /* ajDebug("seqCdFileSeek rec %u pos %u tell %ld returns %d\n",
+       ipos, jpos, ajFileTell(fil->File), ret); */
 
     return ret;
 }
@@ -754,10 +777,10 @@ static size_t seqCdFileReadName (char* name, size_t namesize,
     size_t ret;
     char* sp;
 
-    ajDebug("seqCdFileReadName pos %ld\n", ajFileTell(thys->File));
+    /* ajDebug("seqCdFileReadName pos %ld\n", ajFileTell(thys->File)); */
     ret =  ajFileRead (name, namesize, 1, thys->File);
 
-    ajDebug("seqCdFileReadName was '%s' ret %d\n", name, ret);
+    /* ajDebug("seqCdFileReadName was '%s' ret %d\n", name, ret); */
 
     name[namesize] = '\0';
     sp = &name[strlen(name)];
@@ -769,7 +792,7 @@ static size_t seqCdFileReadName (char* name, size_t namesize,
 	*sp = '\0';
     }
 
-    ajDebug("seqCdFileReadName now '%s'\n", name);
+    /* ajDebug("seqCdFileReadName now '%s'\n", name); */
     return ret;
 }
 
@@ -1842,7 +1865,7 @@ static AjBool seqCdQryOpen (AjPSeqQuery qry)
     ajint i;
     short j;
     static char *name;
-    static AjPStr fullName = NULL;
+    AjPStr fullName = NULL;
 
     if (!ajStrLen(qry->IndexDir))
     {
@@ -1891,7 +1914,7 @@ static AjBool seqCdQryOpen (AjPSeqQuery qry)
     if (!qryd->ifp)
 	ajFatal("Cannot open index file '%S'", qryd->idxfile);
 
-    ajStrDelReuse (&fullName);
+    ajStrDel (&fullName);
     ajCharFree (name);
 
     return ajTrue;
@@ -2373,6 +2396,10 @@ static AjBool seqCdQryClose (AjPSeqQuery qry)
 
     seqCdFileClose (&qryd->ifp);
     seqCdFileClose (&qryd->dfp);
+    /*
+    ajFileClose(&qryd->libr);
+    ajFileClose(&qryd->libs);
+    */
     ajListFree(&qryd->List);
     AJFREE(qryd->trgLine);
     AJFREE (qryd->idxLine);
