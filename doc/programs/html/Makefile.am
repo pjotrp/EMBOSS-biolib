@@ -54,13 +54,14 @@ pkgdata2_DATA = lindna.html listor.html marscan.html maskfeat.html \
                nucleic_transcription_group.html \
                nucleic_translation_group.html octanol.html oddcomp.html \
                palindrome.html pasteseq.html patmatdb.html \
-               patmatmotifs.html penny.html pepcoil.html pepinfo.html \
-               pepnet.html pepstats.html pepwheel.html pepwindow.html \
-               pepwindowall.html phylogeny_group.html plotcon.html \
-               plotorf.html polydot.html preg.html prettyplot.html \
-               prettyseq.html primersearch.html printsextract.html \
-               profit.html prophecy.html prophet.html prosextract.html \
-               protdist.html protein_2d_structure_group.html \
+               patmatmotifs.html pdbtosp.html penny.html pepcoil.html \
+               pepinfo.html pepnet.html pepstats.html pepwheel.html \
+               pepwindow.html pepwindowall.html phylogeny_group.html \
+               plotcon.html plotorf.html polydot.html preg.html \
+               prettyplot.html prettyseq.html primersearch.html \
+               printsextract.html profit.html prophecy.html prophet.html \
+               prosextract.html protdist.html \
+               protein_2d_structure_group.html \
                protein_3d_structure_group.html \
                protein_composition_group.html protein_motifs_group.html \
                protein_mutation_group.html protein_profiles_group.html \

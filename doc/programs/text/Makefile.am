@@ -28,24 +28,25 @@ pkgdata2_DATA = jembossctl.txt kitsch.txt lindna.txt listor.txt marscan.txt \
                neighbor.txt newcpgreport.txt newcpgseek.txt newseq.txt \
                noreturn.txt notseq.txt nrscope.txt nthseq.txt octanol.txt \
                oddcomp.txt palindrome.txt pasteseq.txt patmatdb.txt \
-               patmatmotifs.txt penny.txt pepcoil.txt pepinfo.txt \
-               pepnet.txt pepstats.txt pepwheel.txt pepwindow.txt \
-               pepwindowall.txt plotcon.txt plotorf.txt polydot.txt \
-               preg.txt prettyplot.txt prettyseq.txt primersearch.txt \
-               printsextract.txt profit.txt prophecy.txt prophet.txt \
-               prosextract.txt protdist.txt pscan.txt rebaseextract.txt \
-               recode.txt recoder.txt redata.txt remap.txt restml.txt \
-               restover.txt restrict.txt revseq.txt scopalign.txt scope.txt \
-               seealso.txt seqboot.txt seqmatchall.txt seqret.txt \
-               seqretall.txt seqretallfeat.txt seqretfeat.txt seqretset.txt \
-               seqretsplit.txt showalign.txt showdb.txt showfeat.txt \
-               showorf.txt showseq.txt shuffleseq.txt sigcleave.txt \
-               siggen.txt sigscan.txt silent.txt splitter.txt stamps.txt \
-               stretcher.txt stssearch.txt supermatcher.txt swissparse.txt \
-               syco.txt textsearch.txt tfextract.txt tfm.txt tfscan.txt \
-               tmap.txt topo.txt tranalign.txt transeq.txt trimest.txt \
-               trimseq.txt union.txt vectorstrip.txt water.txt whichdb.txt \
-               wobble.txt wordcount.txt wordmatch.txt wossname.txt yank.txt
+               patmatmotifs.txt pdbtosp.txt penny.txt pepcoil.txt \
+               pepinfo.txt pepnet.txt pepstats.txt pepwheel.txt \
+               pepwindow.txt pepwindowall.txt plotcon.txt plotorf.txt \
+               polydot.txt preg.txt prettyplot.txt prettyseq.txt \
+               primersearch.txt printsextract.txt profit.txt prophecy.txt \
+               prophet.txt prosextract.txt protdist.txt pscan.txt \
+               rebaseextract.txt recode.txt recoder.txt redata.txt \
+               remap.txt restml.txt restover.txt restrict.txt revseq.txt \
+               scopalign.txt scope.txt seealso.txt seqboot.txt \
+               seqmatchall.txt seqret.txt seqretall.txt seqretallfeat.txt \
+               seqretfeat.txt seqretset.txt seqretsplit.txt showalign.txt \
+               showdb.txt showfeat.txt showorf.txt showseq.txt \
+               shuffleseq.txt sigcleave.txt siggen.txt sigscan.txt \
+               silent.txt splitter.txt stamps.txt stretcher.txt \
+               stssearch.txt supermatcher.txt swissparse.txt syco.txt \
+               textsearch.txt tfextract.txt tfm.txt tfscan.txt tmap.txt \
+               topo.txt tranalign.txt transeq.txt trimest.txt trimseq.txt \
+               union.txt vectorstrip.txt water.txt whichdb.txt wobble.txt \
+               wordcount.txt wordmatch.txt wossname.txt yank.txt
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/programs/text
 pkgdata2dir=$(prefix)/share/$(PACKAGE)/doc/programs/text
