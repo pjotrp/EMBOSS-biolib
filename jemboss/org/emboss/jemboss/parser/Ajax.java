@@ -71,10 +71,41 @@ public class Ajax
   public native int geteuid();
   public native int getegid();
 
+/** new methods */
+  public native boolean userAuth(String username,
+          byte[] password, String environment);
+  public native boolean forkEmboss(String username,
+               byte[] password, String environment,
+               String commandline, String directory);
+  public native boolean makeDir(String username,
+               byte[] password, String environment,
+               String directory);
+  public native boolean delFile(String username,
+               byte[] password, String environment,
+               String filename);
+  public native boolean delDir(String username,
+               byte[] password, String environment,
+               String directory);
+  public native boolean listFiles(String username,
+               byte[] password, String environment,
+               String directory);
+  public native boolean listDirs(String username,
+               byte[] password, String environment,
+               String directory);
+  public native byte[] getFile(String username,
+               byte[] password, String environment,
+               String filename);
+  public native boolean putFile(String username,
+               byte[] password, String environment,
+               String filename, byte[] bytearray);
 
 /** stdout & stderr from fork */
   public String outStd;
   public String errStd;
+  public static int size;
+  public static int prnt;
+  public static int fileok;
+//public byte[] fbuf;
 
   public native boolean fork(String cmdLine, String envp,
                           String dir, int uid, int gid);
