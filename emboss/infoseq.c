@@ -100,11 +100,12 @@ int main(int argc, char **argv)
     {
 	ajSeqTrim(seq);
 	ajSeqTrace(seq);
+
+        /* is this a protein or nucleic sequence? */
+        type = ajSeqIsProt(seq);
+
 	if(firsttime)
 	{
-	    /* is this a protein or nucleic sequence? */
-	    type = ajSeqIsProt(seq);
-
 	    /* print the header information */
 	    if(doheader)
 	    {
