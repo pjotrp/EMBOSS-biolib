@@ -2278,11 +2278,20 @@ AjBool ajStrCleanWhite(AjPStr *s) {
   (void) ajStrAssS (&t,*s);		/* make a buffer in t */
     
   p=ajStrStr(t);
-  len=strlen(p);
+  len=ajStrLen(t);
 
-  for(i=0;i<len;++i) if(p[i]=='\t' || p[i]=='\n') p[i]=' ';
   for(i=0;i<len;++i)
-      if(p[i]!=' ') p[j++]=p[i];
+      if(p[i]=='\t' || p[i]=='\n')
+	  p[i]=' ';
+  for(i=0;i<len;++i)
+  {
+      if(p[i]!=' ')
+      {
+	  p[j++]=p[i];
+      }
+      else
+	  --t->Len;
+  }
   p[j]='\0';
 
   ret = ajStrAssC(s,p);
