@@ -173,7 +173,7 @@ static SeqOType seqType[] =
     {"gapdna",         AJTRUE,  AJTRUE,  ISNUC,  "?XxUu", "NNNTt",
 	 seqTypeCharNucGap,
 	 "DNA sequence with gaps"},
-    {"gapdnaphylo",     AJTRUE,  AJTRUE,  ISPROT, "Uu",  "Tt",
+    {"gapdnaphylo",     AJTRUE,  AJTRUE,  ISNUC, "Uu",  "Tt",
 	 seqTypeCharNucGapPhylo,
 	 "DNA sequence with gaps and queries"},
     {"rna",            AJFALSE, AJTRUE,  ISNUC,  "?XxTt", "NNNUu",
@@ -185,7 +185,7 @@ static SeqOType seqType[] =
     {"gaprna",         AJTRUE,  AJTRUE,  ISNUC,  "?XxTt", "NNNUu",
 	 seqTypeCharNucGap,
 	 "RNA sequence with gaps"},
-    {"gaprnaphylo",     AJTRUE,  AJTRUE,  ISPROT, "Tt",  "Uu",
+    {"gaprnaphylo",     AJTRUE,  AJTRUE,  ISNUC, "Tt",  "Uu",
 	 seqTypeCharNucGapPhylo,
 	 "RNA sequence with gaps and queries"},
     {"nucleotide",     AJFALSE, AJTRUE,  ISNUC,  "?Xx",   "NNN",
@@ -428,7 +428,7 @@ static AjBool seqTypeFixReg(AjPSeq thys, ajint itype, char fixchar)
 
 static void seqTypeSet(AjPSeq thys, const AjPStr Type)
 {
-    char* cp;
+    const char* cp;
 
     ajDebug("seqTypeSet '%S'\n", Type);
 
@@ -954,25 +954,25 @@ static void seqGapSL(AjPStr* seq, char gapc, char padc, ajint ilen)
     {				/* start and end characters updated */
 	endc = padc;
 	/* pad start */
-	for(cp = ajStrStr(*seq); strchr(seqCharGapTest, *cp); cp++)
+	for(cp = ajStrStrMod(seq); strchr(seqCharGapTest, *cp); cp++)
 	    *cp = padc;
 
-	cp = ajStrStr(*seq);
+	cp = ajStrStrMod(seq);
 	for(i=ajStrLen(*seq) - 1; i && strchr(seqCharGapTest, cp[i]);  i--)
 	    cp[i] = padc;
     }
     
     if(ajStrLen(*seq) < ilen)	   /* ilen can be zero to skip this */
     {
-	cp = ajStrStr(*seq);
+	cp = ajStrStrMod(seq);
 	for(i=ajStrLen(*seq); i < ilen; i++)
 	    cp[i] = endc;
 	cp[ilen] = '\0';
-	ajStrFix(*seq);
+	ajStrFix(seq);
     }
     
     /*  ajDebug("seqGapSL after  '%S'\n", *seq); */
-    
+
     return;
 }
 
