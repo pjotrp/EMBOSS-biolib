@@ -60,13 +60,13 @@ Command line arguments
    Optional qualifiers:
    -datafile           datafile   White-Wimley data file (Ewhite-wimley.dat)
    -width              integer    window size
-   -octanolplot        bool       Display the octanol plot
-   -interfaceplot      bool       Display the interface plot
-   -[no]differenceplot bool       Display the difference plot
+   -octanolplot        boolean    Display the octanol plot
+   -interfaceplot      boolean    Display the interface plot
+   -[no]differenceplot boolean    Display the difference plot
 
    Advanced qualifiers: (none)
    General qualifiers:
-  -help                bool       report command line options. More
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    

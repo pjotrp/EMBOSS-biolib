@@ -27,11 +27,11 @@ Usage
 Command line arguments
 
    
-   EMBOSS An error in ajacd.c at line 9015:
+   EMBOSS An error in ajacd.c at line 9137:
 attribute gui unknown
 
 
-   EMBOSS An error in ajacd.c at line 9015: attribute gui unknown
+   EMBOSS An error in ajacd.c at line 9137: attribute gui unknown
    
 Input file format
 

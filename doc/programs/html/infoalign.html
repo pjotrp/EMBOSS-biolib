@@ -182,7 +182,7 @@ Use the first sequence as the reference sequence to compare to
                                   'EDNAFULL' (for nucleic sequences). These
                                   files are found in the 'data' directory of
                                   the EMBOSS installation.
-   -html               bool       Format output as an HTML table
+   -html               boolean    Format output as an HTML table
 
    Advanced qualifiers:
    -plurality          float      Set a cut-off for the % of positive scoring
@@ -195,7 +195,7 @@ Use the first sequence as the reference sequence to compare to
                                   for it to give a consensus. Therefore, if
                                   this is set to 100% only columns of
                                   identities contribute to the consensus.
-   -only               bool       This is a way of shortening the command line
+   -only               boolean    This is a way of shortening the command line
                                   if you only want a few things to be
                                   displayed. Instead of specifying:
                                   '-nohead -nousa -noname -noalign -nogaps
@@ -204,21 +204,21 @@ Use the first sequence as the reference sequence to compare to
                                   to get only the sequence length output, you
                                   can specify
                                   '-only -seqlength'
-   -heading            bool       Display column headings
-   -usa                bool       Display the USA of the sequence
-   -name               bool       Display 'name' column
-   -seqlength          bool       Display 'seqlength' column
-   -alignlength        bool       Display 'alignlength' column
-   -gaps               bool       Display number of gaps
-   -gapcount           bool       Display number of gap positions
-   -idcount            bool       Display number of identical positions
-   -simcount           bool       Display number of similar positions
-   -diffcount          bool       Display number of different positions
-   -change             bool       Display % number of changed positions
-   -description        bool       Display 'description' column
+   -heading            boolean    Display column headings
+   -usa                boolean    Display the USA of the sequence
+   -name               boolean    Display 'name' column
+   -seqlength          boolean    Display 'seqlength' column
+   -alignlength        boolean    Display 'alignlength' column
+   -gaps               boolean    Display number of gaps
+   -gapcount           boolean    Display number of gap positions
+   -idcount            boolean    Display number of identical positions
+   -simcount           boolean    Display number of similar positions
+   -diffcount          boolean    Display number of different positions
+   -change             boolean    Display % number of changed positions
+   -description        boolean    Display 'description' column
 
    General qualifiers:
-  -help                bool       report command line options. More
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
 

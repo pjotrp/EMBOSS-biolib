@@ -234,12 +234,12 @@ Output file [align.showalign]:
                                   consensus sequence will be used as the
                                   reference sequence. By default the consensus
                                   sequence is used as the reference sequence.
-   -[no]bottom         bool       If this is true then the refernce sequence
+   -[no]bottom         boolean    If this is true then the refernce sequence
                                   is displayed at the bottom of the alignment
                                   as well as at the top.
    -show               menu       What to show
    -order              menu       Output order of the sequences
-   -[no]similarcase    bool       If this is set True, then when -show is set
+   -[no]similarcase    boolean    If this is set True, then when -show is set
                                   to 'Similarities' or 'Non-identities' and a
                                   residue is similar but not identical to the
                                   reference sequence residue, it will be
@@ -255,7 +255,7 @@ Output file [align.showalign]:
                                   'EDNAFULL' (for nucleic sequences). These
                                   files are found in the 'data' directory of
                                   the EMBOSS installation.
-   -[no]consensus      bool       If this is true then the consensus line is
+   -[no]consensus      boolean    If this is true then the consensus line is
                                   displayed at the bottom.
 
    Advanced qualifiers:
@@ -271,10 +271,10 @@ Output file [align.showalign]:
                                   24-45, 56-78
                                   1:45, 67=99;765..888
                                   1,5,8,10,23,45,57,99
-   -[no]number         bool       If this option is true then a line giving
+   -[no]number         boolean    If this option is true then a line giving
                                   the positions in the alignment is displayed
                                   every 10 characters above the alignment.
-   -[no]ruler          bool       If this option is true then a ruler line
+   -[no]ruler          boolean    If this option is true then a ruler line
                                   marking every 5th and 10th character in the
                                   alignment is displayed.
    -width              integer    Width of sequence to display
@@ -290,9 +290,7 @@ Output file [align.showalign]:
                                   sequence names to be displayed in full plus
                                   a space at the end of the name will
                                   automatically be selected.
-   -[no]names          bool       Set this to be false if you do not wish to
-                                  display the ID name of the sequences
-   -html               bool       Use HTML formatting
+   -html               boolean    Use HTML formatting
    -highlight          range      Regions to colour if formatting for HTML.
                                   If this is left blank, then the sequence is
                                   left alone.
@@ -322,7 +320,7 @@ Output file [align.showalign]:
                                   identities contribute to the consensus.
 
    General qualifiers:
-  -help                bool       report command line options. More
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
 
@@ -453,13 +451,6 @@ Examples of region specifications are:
 <td>This sets the length of the left-hand margin for sequence names. If the margin is set at 0 then no margin and no names are displayed. If the margin is set to a value that is less than the length of a sequence name then the sequence name is displayed truncated to the length of the margin. If the margin is set to -1 then the minimum margin width that will allow all the sequence names to be displayed in full plus a space at the end of the name will automatically be selected.</td>
 <td>Integer -1 or more</td>
 <td>-1</td>
-</tr>
-
-<tr>
-<td>-[no]names</td>
-<td>Set this to be false if you do not wish to display the ID name of the sequences</td>
-<td>Yes/No</td>
-<td>Yes</td>
 </tr>
 
 <tr>

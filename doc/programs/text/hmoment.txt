@@ -62,11 +62,11 @@ Command line arguments
    Advanced qualifiers:
    -aangle             integer    Alpha helix angle (degrees)
    -baseline           float      Graph marker line
-   -plot               bool       Produce graphic
-   -double             bool       Plot two graphs
+   -plot               boolean    Produce graphic
+   -double             boolean    Plot two graphs
 
    General qualifiers:
-  -help                bool       report command line options. More
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    

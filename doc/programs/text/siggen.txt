@@ -71,7 +71,7 @@ Command line arguments
 *  -datafile           matrixf    This is the scoring matrix file used when
                                   comparing sequences.
 *  -conoption          menu       Select number
-*  -filtercon          bool       Ignore alignment positions making less than
+*  -filtercon          boolean    Ignore alignment positions making less than
                                   a threshold number of contacts
 *  -conthresh          integer    Threshold contact number
 *  -conpath            string     Location of contact files (input)
@@ -79,17 +79,17 @@ Command line arguments
 *  -cpdbpath           string     Location of domain coordinate files (embl
                                   format input)
 *  -cpdbextn           string     Extension of coordinate files
-*  -filterpsim         bool       Ignore alignment postitions with
+*  -filterpsim         boolean    Ignore alignment postitions with
                                   post_similar value of 0
   [-sigpath]           string     Location of signature files (output)
   [-sigextn]           string     Extension of signature files
 
    Optional qualifiers: (none)
    Advanced qualifiers:
-   -randomise          bool       Generate a randomised signature
+   -randomise          boolean    Generate a randomised signature
 
    General qualifiers:
-  -help                bool       report command line options. More
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    

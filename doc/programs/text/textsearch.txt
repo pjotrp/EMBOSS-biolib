@@ -40,24 +40,24 @@ Command line arguments
                                   into that file.
 
    Optional qualifiers:
-   -casesensitive      bool       Do a case-sensitive search
-   -html               bool       Format output as an HTML table
+   -casesensitive      boolean    Do a case-sensitive search
+   -html               boolean    Format output as an HTML table
 
    Advanced qualifiers:
-   -only               bool       This is a way of shortening the command line
+   -only               boolean    This is a way of shortening the command line
                                   if you only want a few things to be
                                   displayed. Instead of specifying:
                                   '-nohead -noname -nousa -noacc -nodesc'
                                   to get only the name output, you can specify
                                   '-only -name'
-   -heading            bool       Display column headings
-   -usa                bool       Display the USA of the sequence
-   -accession          bool       Display 'accession' column
-   -name               bool       Display 'name' column
-   -description        bool       Display 'description' column
+   -heading            boolean    Display column headings
+   -usa                boolean    Display the USA of the sequence
+   -accession          boolean    Display 'accession' column
+   -name               boolean    Display 'name' column
+   -description        boolean    Display 'description' column
 
    General qualifiers:
-  -help                bool       report command line options. More
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    

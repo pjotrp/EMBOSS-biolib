@@ -59,8 +59,8 @@ Command line arguments
                                   threshold score.
 
    Advanced qualifiers:
-   -reverse            bool       Reverse the orientation of the EST sequence
-   -[no]splice         bool       Use donor and acceptor splice sites. If you
+   -reverse            boolean    Reverse the orientation of the EST sequence
+   -[no]splice         boolean    Use donor and acceptor splice sites. If you
                                   want to ignore donor-acceptor sites then set
                                   this to be false.
    -mode               string     This determines the comparion mode. The
@@ -73,7 +73,7 @@ Command line arguments
                                   'forward', when just the forward strand is
                                   searched, and 'reverse', ditto for the
                                   reverse strand.
-   -[no]best           bool       You can print out all comparisons instead of
+   -[no]best           boolean    You can print out all comparisons instead of
                                   just the best one by setting this to be
                                   false.
    -space              float      for linear-space recursion. If product of
@@ -86,7 +86,7 @@ Command line arguments
                                   exceed the machine's physical RAM)
    -shuffle            integer    Shuffle
    -seed               integer    Random number seed
-   -align              bool       Show the alignment. The alignment includes
+   -align              boolean    Show the alignment. The alignment includes
                                   the first and last 5 bases of each intron,
                                   together with the intron width. The
                                   direction of splicing is indicated by angle
@@ -95,7 +95,7 @@ Command line arguments
    -width              integer    Alignment width
 
    General qualifiers:
-  -help                bool       report command line options. More
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    

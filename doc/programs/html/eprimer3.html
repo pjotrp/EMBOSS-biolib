@@ -501,14 +501,14 @@ Here is a sample session with eprimer3:
                                   AAAAAA.
 
    Advanced qualifiers:
-   -explainflag        bool       If this flag is non-0, produce LEFT-EXPLAIN,
+   -explainflag        boolean    If this flag is non-0, produce LEFT-EXPLAIN,
                                   RIGHT-EXPLAIN, and INTERNAL-OLIGO-EXPLAIN
                                   output tags, which are intended to provide
                                   information on the number of oligos and
                                   primer pairs that EPrimer3 examined, and
                                   statistics on the number discarded for
                                   various reasons.
-   -fileflag           bool       If the associated value is non-0, then
+   -fileflag           boolean    If the associated value is non-0, then
                                   EPrimer3 creates two output files for each
                                   input SEQUENCE. File (sequence-id).for lists
                                   all acceptable forward primers for
@@ -530,7 +530,7 @@ Here is a sample session with eprimer3:
                                   affects the indexes in the contents of the
                                   files produced when the primer file flag is
                                   set.)
-   -pickanyway         bool       If true pick a primer pair even if
+   -pickanyway         boolean    If true pick a primer pair even if
                                   LEFT-INPUT, RIGHT-INPUT, or
                                   INTERNAL-OLIGO-INPUT violates specific
                                   constraints.
@@ -706,7 +706,7 @@ Here is a sample session with eprimer3:
                                   specified in INTERNAL-OLIGO-MISHYB-LIBRARY.
 
    General qualifiers:
-  -help                bool       report command line options. More
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
 

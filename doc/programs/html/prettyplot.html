@@ -98,12 +98,12 @@ IT IS DONE FOR YOU.
    -residuesperline    integer    The number of residues to be displayed on
                                   each line
    -resbreak           integer    Residues before a space
-   -[no]ccolours       bool       Colour residues by their consensus value.
+   -[no]ccolours       boolean    Colour residues by their consensus value.
    -cidentity          string     Colour to display identical residues (RED)
    -csimilarity        string     Colour to display similar residues (GREEN)
    -cother             string     Colour to display other residues (BLACK)
-   -docolour           bool       Colour residues by table oily, amide etc.
-   -[no]title          bool       Do not display the title
+   -docolour           boolean    Colour residues by table oily, amide etc.
+   -[no]title          boolean    Do not display the title
    -shade              string     Set to BPLW for normal shading
                                   so for pair = 1.5,1.0,0.5 and shade = BPLW
                                   Residues score Colour
@@ -117,16 +117,16 @@ IT IS DONE FOR YOU.
                                   related
    -identity           integer    Only match those which are identical in all
                                   sequences.
-   -[no]box            bool       Display prettyboxes
-   -boxcol             bool       Colour the background in the boxes
+   -[no]box            boolean    Display prettyboxes
+   -boxcol             boolean    Colour the background in the boxes
    -boxcolval          string     Colour to be used for background. (GREY)
-   -[no]name           bool       Display the sequence names
+   -[no]name           boolean    Display the sequence names
    -maxnamelen         integer    Margin size for the sequence name.
-   -[no]number         bool       Display the residue number
-   -[no]listoptions    bool       Display the date and options used
+   -[no]number         boolean    Display the residue number
+   -[no]listoptions    boolean    Display the date and options used
    -plurality          float      Plurality check value (totweight/2)
-   -consensus          bool       Display the consensus
-   -[no]collision      bool       Allow collisions in calculating consensus
+   -consensus          boolean    Display the consensus
+   -[no]collision      boolean    Allow collisions in calculating consensus
    -alternative        integer    Use alternative collisions routine
                                   0) Normal collision check. (default)
                                   1) checks identical scores with the max
@@ -147,13 +147,13 @@ IT IS DONE FOR YOU.
                                   files are found in the 'data' directory of
                                   the EMBOSS installation.
    -showscore          integer    Print residue scores
-   -portrait           bool       Set page to Portrait
+   -portrait           boolean    Set page to Portrait
 
    Advanced qualifiers:
-   -data               bool       (no help text) bool value
+   -data               boolean    (no help text) boolean value
 
    General qualifiers:
-  -help                bool       report command line options. More
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
 
@@ -383,7 +383,7 @@ The only four letters allowed are BPLW, in any order.</td>
 
 <tr>
 <td>-data</td>
-<td>(no help text) bool value</td>
+<td>(no help text) boolean value</td>
 <td>Yes/No</td>
 <td>No</td>
 </tr>

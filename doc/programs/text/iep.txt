@@ -41,12 +41,12 @@ Command line arguments
    Advanced qualifiers:
    -step               float      pH step value
    -amino              integer    Number of N-termini
-   -[no]termini        bool       Include charge at N and C terminus
-   -plot               bool       Plot charge vs pH
-   -[no]report         bool       Write results to a file
+   -[no]termini        boolean    Include charge at N and C terminus
+   -plot               boolean    Plot charge vs pH
+   -[no]report         boolean    Write results to a file
 
    General qualifiers:
-  -help                bool       report command line options. More
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    

@@ -29,12 +29,12 @@ Command line arguments
    -wildspec           string     Type of codon file
 
    General qualifiers:
-  -help                bool       report command line options. More
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    
 
-   EMBOSS An error in ajacd.c at line 10951: unknown attribute 'name' for
+   EMBOSS An error in ajacd.c at line 11074: unknown attribute 'name' for
    'directory'
    
 Input file format

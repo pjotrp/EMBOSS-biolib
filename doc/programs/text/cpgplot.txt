@@ -100,19 +100,19 @@ Command line arguments
 
    Optional qualifiers: (none)
    Advanced qualifiers:
-   -[no]obsexp         bool       If this is set to true then the graph of the
+   -[no]obsexp         boolean    If this is set to true then the graph of the
                                   observed to expected ratio of C plus G to
                                   CpG within a window is displayed.
-   -[no]cg             bool       If this is set to true then the graph of the
+   -[no]cg             boolean    If this is set to true then the graph of the
                                   regions which have been determined to be
                                   CpG islands is displayed.
-   -[no]pc             bool       If this is set to true then the graph of the
+   -[no]pc             boolean    If this is set to true then the graph of the
                                   percentage C plus G within a window is
                                   displayed.
    -featout            featout    File for output features
 
    General qualifiers:
-  -help                bool       report command line options. More
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    

@@ -34,16 +34,16 @@ Command line arguments
    -graph              xygraph    Graph type
 
    Optional qualifiers:
-   -yticks             bool       Display y-axis ticks
-   -[no]sequence       bool       Display the sequence on the graph
+   -yticks             boolean    Display y-axis ticks
+   -[no]sequence       boolean    Display the sequence on the graph
    -window             integer    Sequence display window size
    -bases              string     Base graphs to be displayed
 
    Advanced qualifiers:
-   -separate           bool       Separate the trace graphs for the 4 bases
+   -separate           boolean    Separate the trace graphs for the 4 bases
 
    General qualifiers:
-  -help                bool       report command line options. More
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    

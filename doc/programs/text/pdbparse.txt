@@ -28,12 +28,12 @@ Command line arguments
    Mandatory qualifiers:
   [-pdb]               string     Location of pdb files (pdb format input)
   [-pdbextn]           string     Extension of pdb files (pdb format input)
-   -nocamask           bool       The group will not appear in either the CO
+   -nocamask           boolean    The group will not appear in either the CO
                                   or SQ records of the clean coordinate file
-   -nocamaska          bool       The amino acid will not appear in the CO
+   -nocamaska          boolean    The amino acid will not appear in the CO
                                   record but will still be present in the SQ
                                   record of the clean coordinate file
-   -atommask           bool       The amino acid will appear not appear in the
+   -atommask           boolean    The amino acid will appear not appear in the
                                   CO record but will still be present in the
                                   SQ record of the clean coordinate file
   [-cpdb]              string     Location of coordinate files (embl format
@@ -47,12 +47,12 @@ Command line arguments
                                   to be parsed
 
    Advanced qualifiers:
-   -[no]cpdbnaming     bool       Use pdbid code to name files
+   -[no]cpdbnaming     boolean    Use pdbid code to name files
    -maxmis             integer    Maximum number of permissible mismatches
                                   between the ATOM and SEQRES sequences
 
    General qualifiers:
-  -help                bool       report command line options. More
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    

@@ -170,7 +170,7 @@ Command line arguments
                                   separate their names with a space or the
                                   character '|', eg:
                                   pax* | 10
-   -join               bool       Some features, such as CDS (coding sequence)
+   -join               boolean    Some features, such as CDS (coding sequence)
                                   and mRNA are composed of introns
                                   concatenated together. There may be other
                                   forms of 'joined' sequence, depending on the
@@ -183,7 +183,7 @@ Command line arguments
 
    Advanced qualifiers: (none)
    General qualifiers:
-  -help                bool       report command line options. More
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    
@@ -356,7 +356,7 @@ See also
    seqret       Reads and writes (returns) sequences
    seqretsplit  Reads and writes (returns) sequences in individual files
    showfeat     Show features of a sequence
-   skipseq      Reads and writes (returns) sequences
+   skipseq      Reads and writes (returns) sequences, skipping the first few
    splitter     Split a sequence into (overlapping) smaller sequences
    swissparse   Retrieves sequences from swissprot using keyword search
    trimest      Trim poly-A tails off EST sequences
