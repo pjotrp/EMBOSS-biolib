@@ -32,6 +32,7 @@ public class ShowDB
   private String statusmsg;
   private String status;
   private String dbText;
+  private Vector matrices;
 
 /**
 *
@@ -46,7 +47,11 @@ public class ShowDB
     statusmsg = dbReq.getVal("msg");
     status = dbReq.getVal("status");
     dbText= dbReq.getVal("showdb");
-    
+    String mat = dbReq.getVal("matrices");
+    matrices = new Vector();
+    StringTokenizer stMat = new StringTokenizer(mat,"\n");
+    while (stMat.hasMoreTokens())
+      matrices.add(stMat.nextToken());
   }
 
 /**
@@ -82,5 +87,16 @@ public class ShowDB
   public String getDBText() 
   {
     return dbText;
+  }
+
+/**
+*
+* The matrices available
+* @return  Vector containing matrices names
+*
+*/
+  public Vector getMatrices()
+  {
+    return matrices;
   }
 }

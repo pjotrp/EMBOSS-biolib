@@ -51,6 +51,8 @@ public class BuildProgramMenu
 {
   /** database names */
   private static String db[];
+  /** matrices */
+  private static Vector matrices;
   /** acd files cache */
   private Hashtable acdStore = new Hashtable();   
 
@@ -141,6 +143,20 @@ public class BuildProgramMenu
           }
           Database d = new Database(showdbOut);
           db = d.getDB();
+
+          // get the available matrices
+          String dataFile[] = (new File(mysettings.getEmbossData())).list(new FilenameFilter()
+          {
+            public boolean accept(File dir, String name)
+            {
+              File fileName = new File(dir, name);
+              return !fileName.isDirectory();
+            };
+          });
+
+          matrices = new Vector();
+          for(int i=0;i<dataFile.length;i++)
+            matrices.add(dataFile[i]);
           
         }
 
@@ -353,9 +369,12 @@ public class BuildProgramMenu
               String showdbOut = showdb.getDBText();
               Database d = new Database(showdbOut);
               db = d.getDB();
+
+              matrices = showdb.getMatrices();  // get the available matrices
+
               JLabel jl = new JLabel("<html>"); // not used but speeds first
-                                                // ACD form being loaded
-                                                // which uses html
+                                                // ACD form loading which
+                                                // uses html
               return null;
             }
           };
@@ -377,6 +396,12 @@ public class BuildProgramMenu
   {
     return db;
   }
+
+  public static Vector getMatrices()
+  {
+    return matrices;
+  }
+
 
 
 /**
