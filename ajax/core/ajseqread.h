@@ -1,4 +1,3 @@
-/*  Last edited: Mar  3 14:17 2000 (pmr) */
 #ifdef __cplusplus
 extern "C"
 {
@@ -33,6 +32,7 @@ typedef struct SeqSAccess {
 } SeqOAccess, *SeqPAccess;
 
 AjBool       ajSeqAllRead (AjPSeq thys, AjPSeqin seqin);
+AjBool       ajSeqGetFromUsa (AjPStr thys, AjBool protein, AjPSeq *seq);
 void         ajSeqinClear (AjPSeqin thys);
 void         ajSeqinDel (AjPSeqin* pthis);
 AjPSeqin     ajSeqinNew (void);

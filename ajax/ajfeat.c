@@ -117,6 +117,9 @@ static AjPFeatLexicon EMBL_Dictionary ();
 static AjPFeatLexicon GFF_Dictionary ();
 static AjPFeatLexicon dummyDict ();
 
+static AjBool featGetUsaSection(AjPStr* tmp, AjPStr token, int* begin,
+				int* end, AjPStr usa);
+
 
 static AjPFeatLexicon ajFeatVocNew(void) ;
 static AjPFeatVocFeat ajFeatVocAddFeat(AjPFeatLexicon thys, AjPStr tag, int flag) ;
@@ -6146,12 +6149,12 @@ void ajFeatTabInClear (AjPFeatTabIn thys)
 ** @param [r] seq [AjPStr] sequence
 ** @param [r] line [AjPStr] location
 ** @param [w] res [AjPStr*] sequence construct
-
+** @param [r] usa [AjPStr] usa of query
 ** @return [AjBool] true on success
 ** @@
 ******************************************************************************/
 
-AjBool ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res)
+AjBool ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res, AjPStr usa)
 {
     static AjPStr str=NULL;
     char *p;
@@ -6162,6 +6165,8 @@ AjBool ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res)
     int off;
     static AjPStr token=NULL;
     static AjPStr tmp=NULL;
+    static AjPStr ent=NULL;
+    
     AjPRegexp exp_ndotn = NULL;
     AjPRegexp exp_brnbr = NULL;
     AjPRegexp exp_compbrndashnbr = NULL;
@@ -6171,7 +6176,8 @@ AjBool ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res)
     AjBool isglobcomp=ajFalse;
     AjBool isjoin=ajFalse;
     AjBool docomp=ajFalse;
-
+    AjBool dbentry=ajFalse;
+    
     int begin=0;
     int end=0;
     
@@ -6180,15 +6186,11 @@ AjBool ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res)
 	token = ajStrNew();
 	str   = ajStrNew();
 	tmp   = ajStrNew();
+	ent   = ajStrNew();
     }
 
     ajStrAssS(&str,line);
 
-    /* Cannot cope with inclusion of other entries yet */
-    p = ajStrStr(str);
-    while(*p)
-	if(*(p++)==':')
-	    return ajFalse;
 
     /* Remove chevrons */
     p=ajStrStr(str);
@@ -6321,12 +6323,35 @@ AjBool ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res)
 	}
 	else
 	    docomp=ajFalse;
-	if(sscanf(p,"%d-%d",&begin,&end)!=2)
+
+	q=p;
+	dbentry = ajFalse;
+	while(*q)
+	    if(*(q++)==':')
+	    {
+		dbentry = ajTrue;
+		break;
+	    }
+
+	if(dbentry)
 	{
-	    ajWarn("LocToSeq: Unpaired range");
-	    return ajFalse;
+	    if(!featGetUsaSection(&ent,token,&begin,&end,usa))
+	    {
+		ajWarn("Couldn't find embedded entry\n");
+		return ajFalse;
+	    }
+	    ajStrAssSubC(&tmp,ajStrStr(ent),--begin,--end);
 	}
-	ajStrAssSubC(&tmp,ajStrStr(seq),--begin,--end);
+	else
+	{
+	    if(sscanf(p,"%d-%d",&begin,&end)!=2)
+	    {
+		ajWarn("LocToSeq: Unpaired range");
+		return ajFalse;
+	    }
+	    ajStrAssSubC(&tmp,ajStrStr(seq),--begin,--end);
+	}
+
 	if(docomp)
 	    ajSeqReverseStr(&tmp);
 	ajStrAppC(res,ajStrStr(tmp));
@@ -6495,4 +6520,50 @@ int ajFeatGetTrans(AjPStr str, AjPStr **cds)
     AJFREE(entry);
 
     return ncds;
+}
+
+
+static AjBool featGetUsaSection(AjPStr* thys, AjPStr token, int* begin,
+				int* end, AjPStr usa)
+{
+    AjPStrTok handle=NULL;
+    AjPStr db=NULL;
+    AjPStr entry=NULL;
+    AjPStr numbers=NULL;
+    AjBool ok=ajTrue;
+    char   *p=NULL;
+    AjPSeq seq=NULL;
+    
+    db      = ajStrNew();
+    entry   = ajStrNew();
+    numbers = ajStrNew();
+    seq     = ajSeqNew();
+    
+    handle = ajStrTokenInit(usa,":");
+    ajStrToken(&db,&handle,NULL);
+    ajStrTokenClear(&handle);
+    ajStrAppC(&db,":");
+    
+    handle = ajStrTokenInit(token,":");
+    ajStrToken(&entry,&handle,NULL);
+    ajStrToken(&numbers,&handle,NULL);
+    ajStrTokenClear(&handle);
+
+    p = ajStrStr(numbers);
+    if(sscanf(p,"(%d-%d)",begin,end)!=2)
+	ok = ajFalse;
+
+    ajStrApp(&db,entry);
+
+    if(!ajSeqGetFromUsa(db,0,&seq))
+	ok = ajFalse;
+
+    ajStrAssC(thys,ajSeqChar(seq));
+
+    ajStrDel(&db);
+    ajStrDel(&entry);
+    ajStrDel(&numbers);
+    ajSeqDel(&seq);
+
+    return ok;
 }

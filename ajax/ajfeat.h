@@ -649,7 +649,7 @@ AjPFeatVocTag        CheckDictForTag(AjPFeatTable table, AjPStr tag);
 void                 ajFeatDickTracy(AjPFeatLexicon dictionary);
 AjPFeatLexicon       ajFeatTableDict(AjPFeatTable thys);
 
-AjBool ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res);
+AjBool ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res, AjPStr usa);
 int    ajFeatGetLocs(AjPStr str, AjPStr **cds, char *type);
 int    ajFeatGetTrans(AjPStr str, AjPStr **cds);
 

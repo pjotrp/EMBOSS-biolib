@@ -25,6 +25,9 @@
 void put_seq(AjPSeq seq, AjPStr strseq, int n, char *name, int type,
 	     AjPSeqout seqout);
 
+AjBool ajSeqGetFromUsa (AjPStr entry, AjBool protein, AjPSeq *fred);
+
+
 
 int main(int argc, char **argv)
 {
@@ -39,6 +42,7 @@ int main(int argc, char **argv)
 
     AjPStr cds=NULL;
     AjPStr mrna=NULL;
+    AjPStr usa=NULL;
     
     AjBool ret=ajFalse;
     AjPStr *cdslines=NULL;
@@ -61,6 +65,10 @@ int main(int argc, char **argv)
     
     cds  = ajStrNew();
     mrna = ajStrNew();
+    usa  = ajStrNew();
+
+
+    ajStrAssC(&usa,ajStrStr(seqall->Seqin->Usa));
     
     while(ajSeqallNext(seqall,&seq))
     {
@@ -70,10 +78,10 @@ int main(int argc, char **argv)
     
 	    for(i=0;i<ncds;++i)
 	    {
-		ret = ajFeatLocToSeq(ajSeqStr(seq),cdslines[i],&cds);
+		ret = ajFeatLocToSeq(ajSeqStr(seq),cdslines[i],&cds,usa);
 		if(!ret)
 		{
-		    ajWarn("Cannot extract");
+		    ajWarn("Cannot extract %s\n",ajSeqName(seq));
 		    continue;
 		}
 		put_seq(seq,cds,i,"cds",0,seqout);
@@ -89,10 +97,10 @@ int main(int argc, char **argv)
     
 	    for(i=0;i<nmrna;++i)
 	    {
-		ret = ajFeatLocToSeq(ajSeqStr(seq),mrnalines[i],&mrna);
+		ret = ajFeatLocToSeq(ajSeqStr(seq),mrnalines[i],&mrna,usa);
 		if(!ret)
 		{
-		    ajWarn("Cannot extract");
+		    ajWarn("Cannot extract %s",ajSeqName(seq));
 		    continue;
 		}
 		put_seq(seq,mrna,i,"mrna",0,seqout);
@@ -125,7 +133,7 @@ int main(int argc, char **argv)
 
     ajStrDel(&cds);
     ajStrDel(&mrna);
-    
+    ajStrDel(&usa);
 
     ajExit();
     return 0;
@@ -162,6 +170,7 @@ void put_seq(AjPSeq seq, AjPStr strseq, int n, char *name, int type,
 
     ajSeqDel(&nseq);
     ajStrDel(&fn);
+
     
     return;
 }

@@ -4415,3 +4415,41 @@ AjBool ajSeqParseNcbi(AjPStr str, AjPStr* id, AjPStr* acc, AjPStr* desc)
     return ajTrue;
 }
 
+
+/* @funcstatic ajSeqGetFromUsa ***********************************************
+**
+** Returns a sequence given a USA
+**
+** @param [r] thys [AjPStr] USA
+** @param [r] protein [AjBool] True if protein
+** @param [w] thys [AjPSeq*] sequence
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+AjBool ajSeqGetFromUsa (AjPStr thys, AjBool protein, AjPSeq *seq)
+{
+    AjPSeqin seqin;
+    AjBool ok;
+  
+  
+    seqin = ajSeqinNew();
+    seqin->multi = ajFalse;
+    seqin->Text  = ajFalse;
+  
+    if(!protein)
+	ajSeqinSetNuc (seqin);
+    else
+	ajSeqinSetProt (seqin);
+
+    ajSeqinUsa (&seqin, thys);
+    ok = ajSeqRead(*seq, seqin);
+    ajSeqinDel (&seqin);
+
+
+    if(!ok)
+	return ajFalse;
+
+    return ajTrue;
+}
