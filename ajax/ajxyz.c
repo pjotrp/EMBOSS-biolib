@@ -2493,7 +2493,7 @@ AjBool        ajXyzSignatureAlignSeq(AjPSignature S, AjPSeq seq, AjPHit *hit,
     /* INITIALISE PATH MATRIX
        Only necessary to initilise <try> element to ajFalse*/
     for(cnt=0;cnt<dim;cnt++)
-	path[cnt].try = ajFalse;
+	path[cnt].visited = ajFalse;
     
     
 
@@ -2541,7 +2541,7 @@ AjBool        ajXyzSignatureAlignSeq(AjPSignature S, AjPSeq seq, AjPHit *hit,
 	{
 	    path[this].val=S->pos[0]->subs[(ajint) ((ajint)p[this] - (ajint)'A')];
 	    path[this].prev=0;
-	    path[this].try=ajTrue;
+	    path[this].visited=ajTrue;
 	}
 	break;
 	
@@ -2556,7 +2556,7 @@ AjBool        ajXyzSignatureAlignSeq(AjPSignature S, AjPSeq seq, AjPHit *hit,
 	{
 	    path[this].val=S->pos[0]->subs[(ajint) ((ajint)p[this] - (ajint)'A')];
 	    path[this].prev=0;
-	    path[this].try=ajTrue;
+	    path[this].visited=ajTrue;
 	}
 	start=startp=0;
 	stop=nresm1;
@@ -2580,7 +2580,7 @@ AjBool        ajXyzSignatureAlignSeq(AjPSignature S, AjPSeq seq, AjPHit *hit,
 	    this=S->pos[0]->gsiz[gidx];
 	    path[this].val=S->pos[0]->subs[(ajint) ((ajint)p[this] - (ajint)'A')];
 	    path[this].prev=0;
-	    path[this].try=ajTrue;
+	    path[this].visited=ajTrue;
 	}
 	startp=start=S->pos[0]->gsiz[0];
 	stop=S->pos[0]->gsiz[gidx-1];
@@ -2602,7 +2602,7 @@ AjBool        ajXyzSignatureAlignSeq(AjPSignature S, AjPSeq seq, AjPHit *hit,
 	/*Loop for permissible region of previous row*/
 	for(last=start, lastp=startp; last<=stop; last++, lastp++)
 	{
-	    if(path[last].try==ajFalse)
+	    if(path[last].visited==ajFalse)
 		continue;
 
 	    /*Loop for each permissible gap in current row*/
@@ -2618,18 +2618,18 @@ AjBool        ajXyzSignatureAlignSeq(AjPSignature S, AjPSeq seq, AjPHit *hit,
 			S->pos[sidx]->gpen[gidx];
 		
 
-		if((path[this].try==ajTrue)&&(val > path[this].val))
+		if((path[this].visited==ajTrue)&&(val > path[this].val))
 		{
 		    path[this].val=val;
 		    path[this].prev=last;
 		    continue;
 		}				
 		/*The cell hasn't been visited before so give it a score*/
-		if(path[this].try==ajFalse)
+		if(path[this].visited==ajFalse)
 		{
 		    path[this].val=val;
 		    path[this].prev=last;
-		    path[this].try=ajTrue;
+		    path[this].visited=ajTrue;
 		    continue;
 		}	
 	    }
@@ -2657,7 +2657,7 @@ AjBool        ajXyzSignatureAlignSeq(AjPSignature S, AjPSeq seq, AjPHit *hit,
      so it is assigned at least once*/
     for(mval=-1000000 ; thisp>=0; this--, thisp--)
     {
-	if(path[this].try==ajFalse)
+	if(path[this].visited==ajFalse)
 	    continue;
 	if(path[this].val > mval)
 	{
@@ -8585,16 +8585,18 @@ AjBool   ajXyzHitlistRead(AjPFile inf, char *delim, AjPHitlist *thys)
 ** @param [r] fam       [AjPStr   ]      Family.
 ** @param [r] sfam      [AjPStr   ]      Superfamily.
 ** @param [r] fold      [AjPStr   ]      Fold.
-** @param [r] class     [AjPStr   ]      Class
+** @param [r] klass     [AjPStr   ]      Class
 ** 
 ** @return [AjBool] True on success (a list of hits was read)
 ** @@
 ******************************************************************************/
 
-AjBool ajXyzHitlistReadNode(AjPFile scopf, AjPList *list, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class)
+AjBool ajXyzHitlistReadNode(AjPFile scopf, AjPList *list, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr klass)
 {
     AjBool donemem=ajFalse;   
+    AjPStr class = NULL;
 
+    class = klass;
 
     if(!scopf)
     {
@@ -8700,18 +8702,20 @@ AjBool ajXyzHitlistReadNode(AjPFile scopf, AjPList *list, AjPStr fam, AjPStr sfa
 ** @param [r] fam       [AjPStr  ]     Family
 ** @param [r] sfam      [AjPStr  ]     Superfamily
 ** @param [r] fold      [AjPStr  ]     Fold
-** @param [r] class     [AjPStr  ]     Class
+** @param [r] klass     [AjPStr  ]     Class
 ** @param [w] list      [AjPList*]     A list of hitlist structures.
 ** 
 ** @return [AjBool] True on success (a file has been written)
 ** @@
 ********************************************************************************/
 
-AjBool ajXyzHitlistReadFam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class, AjPList* list)
+AjBool ajXyzHitlistReadFam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr klass, AjPList* list)
 {
     AjPHitlist hitlist = NULL; 
     AjBool done=ajFalse;
-    
+    AjPStr class = NULL;
+
+    class = klass;
 
     /* if family is specified then the other fields also have to be specified. */
     /* check that the other fields are populated */ 
@@ -8754,18 +8758,21 @@ AjBool ajXyzHitlistReadFam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, 
 ** @param [r] fam       [AjPStr   ]       Family
 ** @param [r] sfam      [AjPStr   ]       Superfamily
 ** @param [r] fold      [AjPStr   ]       Fold
-** @param [r] class     [AjPStr   ]       Class
+** @param [r] klass     [AjPStr   ]       Class
 ** @param [w] list      [AjPList *]       A list of hitlist structures.
 ** 
 ** @return [AjBool] True on success (a file has been written)
 ** @@
 ******************************************************************************/
 
-AjBool ajXyzHitlistReadSfam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class, AjPList* list)
+AjBool ajXyzHitlistReadSfam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr klass, AjPList* list)
 {
     AjPHitlist hitlist = NULL; 
     AjBool done=ajFalse;
+    AjPStr class = NULL;
 
+    class = klass;
+    
     /* if family is specified then the other fields also have to be specified. */
     /* check that the other fields are populated */ 
     if(!sfam || !fold || !class)
@@ -8803,16 +8810,19 @@ AjBool ajXyzHitlistReadSfam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold,
 ** @param [r] fam       [AjPStr   ]       Family
 ** @param [r] sfam      [AjPStr   ]       Superfamily
 ** @param [r] fold      [AjPStr   ]       Fold
-** @param [r] class     [AjPStr   ]       Class
+** @param [r] klass     [AjPStr   ]       Class
 ** @param [w] list      [AjPList *]       A list of hitlist structures.
 ** @@
 ******************************************************************************/
 
-AjBool ajXyzHitlistReadFold(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class,AjPList* list)
+AjBool ajXyzHitlistReadFold(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr klass, AjPList* list)
 {
     AjPHitlist hitlist = NULL; 
     AjBool done=ajFalse;
+    AjPStr class = NULL;
 
+    class = klass;
+    
     /* if family is specified then the other fields also have to be specified. */
     /* check that the other fields are populated */ 
     if(!fold || !class)
@@ -13810,11 +13820,15 @@ ajint ajXyzCoordBinSearchScore(float score, AjPCoord *arr, ajint siz)
  ** @return [AjBool]  True if a swissprot identifier code was found for the Scop code.
  ** @@
  *************************************************************************************/
-AjBool ajXyzSunidToScopInfo (ajint sunid, AjPStr *family, AjPStr *superfamily, AjPStr *fold, AjPStr *class, AjPList list)
+AjBool ajXyzSunidToScopInfo (ajint sunid, AjPStr *family, AjPStr *superfamily, AjPStr *fold, AjPStr *klass, AjPList list)
 {
     AjPScop *arr    = NULL;             /* array derived from list */
     ajint  dim      = 0;                /* size of the array */
     ajint  idx      = 0;                /* index into the array for the Sunid_family */
+    AjPStr *class = NULL;
+
+    class = klass;
+    
     
     if(!sunid || !list)
     {

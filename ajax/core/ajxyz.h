@@ -784,7 +784,7 @@ typedef struct AjSSigcell
 {
     float  val;            /* Value for this cell */
     ajint  prev;           /* Index in path matrix of prev. highest value */
-    AjBool try;            /* == ajTrue if this cell has been visited */
+    AjBool visited;        /* == ajTrue if this cell has been visited */
 } AjOSigcell, *AjPSigcell;
 
 
@@ -1012,7 +1012,7 @@ AjBool ajXyzDiscordToCoords(AjPDiscord dis_cord, AjPList *out);
 void ajXyzCoordDel(AjPCoord *pthis);
 AjPCoord ajXyzCoordNew(void);
 
-AjBool ajXyzSunidToScopInfo (ajint sunid, AjPStr *family, AjPStr *superfamily, AjPStr *fold, AjPStr *class, AjPList list);
+AjBool ajXyzSunidToScopInfo (ajint sunid, AjPStr *family, AjPStr *superfamily, AjPStr *fold, AjPStr *klass, AjPList list);
 
 
 AjPPdbtosp ajXyzPdbtospNew(ajint n);
@@ -1164,10 +1164,10 @@ ajint         ajXyzCompId(const void *hit1, const void *hit2);
 AjPHitlist    ajXyzHitlistNew(ajint n);
 void          ajXyzHitlistDel(AjPHitlist *pthis);
 AjBool        ajXyzHitlistRead(AjPFile inf, char *delim, AjPHitlist *thys);
-AjBool        ajXyzHitlistReadNode(AjPFile scopf, AjPList *list, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class);
-AjBool        ajXyzHitlistReadFam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class, AjPList* list);
-AjBool        ajXyzHitlistReadSfam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class,AjPList* list);
-AjBool        ajXyzHitlistReadFold(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class,AjPList* list);
+AjBool        ajXyzHitlistReadNode(AjPFile scopf, AjPList *list, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr klass);
+AjBool        ajXyzHitlistReadFam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr klass, AjPList* list);
+AjBool        ajXyzHitlistReadSfam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr klass,AjPList* list);
+AjBool        ajXyzHitlistReadFold(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr klass,AjPList* list);
 AjBool        ajXyzHitlistWrite(AjPFile outf, AjPHitlist thys);
 AjBool ajXyzHitlistWriteSubset(AjPFile outf, AjPHitlist thys, AjPInt ok);
 
