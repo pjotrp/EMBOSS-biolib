@@ -96,6 +96,8 @@ AjPContact ajContactNew (void);
 AjBool embContactWriteScoringMatrix (AjPInt2d ajpInt2dCounts,
 				     AjPFile ajpFileScoringMatrix);
 
+ajint embAjintToScoringMatrixIndex (ajint ajIntResType);
+
 ajint embCharToScoringMatrixIndex (char cResType);
 
 ajint embScoringMatrixIndexToChar (ajint ajIntBlosumIndex);
@@ -121,23 +123,35 @@ AjBool embLoadHeaderLine (AjPStr *pAjpStrCmapLine,
 AjBool embLoadContactLine (AjPStr *pAjpStrCmapLine,
 			   AjPContact *pAjpContactLoaded);
 
-AjBool embWriteCmapFile (AjPFile ajpFileUpdatedCmap,
-			       ajint ajIntSeqLen,
-			       AjPInt2d *pAjPInt2dSummary,
-			       AjPCmapHeader *pAjpFileUpdatedCmapHeader,
-			       AjPInt2d *pAjPInt2dCmapResTypes,
-			       AjPInt2d *pAjPInt2dCmapPositions);
+AjBool embWriteCmapFile (AjPFile ajpFileCmap,
+			 ajint ajIntSeqLen,
+			 AjPInt2d *pAjPInt2dSummary,
+			 AjPCmapHeader *pAjpFileCmapHeader,
+			 AjPInt2d *pAjPInt2dCmapResTypes,
+			 AjPInt2d *pAjPInt2dCmapPositions);
+
+AjBool embWriteUpdatedCmapFile (AjPFile ajpFileUpdatedCmap,
+				ajint ajIntSeqLen,
+				AjPInt2d *pAjPInt2dSummary,
+				AjPCmapHeader *pAjpFileUpdatedCmapHeader,
+				AjPInt2d *pAjPInt2dCmapResTypes,
+				AjPInt2d *pAjPInt2dCmapPositions,
+				AjPMatrixf *pAjpMatrixfContactScoring);
 
 AjBool embPrintContact (AjPContact ajpContactToPrint);
 
 AjBool embWriteCmapHeader (AjPFile ajpFileUpdatedCmap,
-				 AjPCmapHeader ajpHeaderToWrite);
+			   AjPCmapHeader ajpHeaderToWrite);
 
 AjBool  embWriteCmapLine (AjPFile ajpFileUpdatedCmap,
-			       AjPStr *pAjpStrLineToWrite);
+			  AjPStr *pAjpStrLineToWrite);
 
 void embWriteContact (AjPFile ajpFileUpdatedCmap,
-			   AjPContact ajpContactToWrite);
+		      AjPContact ajpContactToWrite);
+
+void embWriteUpdatedContact (AjPFile ajpFileUpdatedCmap,
+			     AjPContact ajpContactToWrite,
+			     float fContactScore);
 
 AjPCmapHeader ajCmapHeaderNew ();
 
