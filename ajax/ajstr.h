@@ -397,6 +397,7 @@ AjBool     ajStrSet   (AjPStr* pthis, const AjPStr str);
 AjBool     ajStrSetC  (AjPStr* pthis, const char* str);
 ajint      ajStrSize (const AjPStr thys);
 #define    MAJSTRSIZE(str) str->Res
+#define    MAJSTRSUBK(str,pos,c) str->Ptr[pos]=c
 void       ajStrStat (char* title);
 char*      ajStrStr (const AjPStr thys);
 #define    MAJSTRSTR(str) str->Ptr
