@@ -4970,7 +4970,7 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg, AjPScorealg *scores,
     if( !(*scores) || !alg || !seq_pos)
     {
         printf("Bad args passed to siggen_SigSelectManual\n");
-        return ajFalse;
+        return NULL;
     }
 
 
