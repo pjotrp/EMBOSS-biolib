@@ -43,6 +43,7 @@ AjBool       ajSeqAllRead (AjPSeq thys, AjPSeqin seqin);
 AjBool       ajSeqGetFromUsa (const AjPStr thys, AjBool protein, AjPSeq *seq);
 AjBool       ajSeqFormatTest (const AjPStr format);
 void         ajSeqinClear (AjPSeqin thys);
+void         ajSeqinClearPos(AjPSeqin thys);
 void         ajSeqinDel (AjPSeqin* pthis);
 AjPSeqin     ajSeqinNew (void);
 void         ajSeqinSetNuc (AjPSeqin seqin);
