@@ -5,6 +5,7 @@
 #include "ajgraph.h"
 #include "embaln.h"
 #include "embcom.h"
+#include "embdbi.h"
 #include "embread.h"
 #include "embiep.h"
 #include "embprop.h"
