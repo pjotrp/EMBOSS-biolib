@@ -10,7 +10,7 @@ INCLUDES = -I../h -I../../../ajax -I../../../plplot
 
 if ISSHARED
 if ISAIXIA64
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../ajax/.libs -lajax -lajaxg
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../ajax/.libs -lajax
 else
 AM_CFLAGS =
 endif
@@ -21,6 +21,6 @@ topo_SOURCES = topo.c
 
 noinst_HEADERS = common.h
 
-LDADD = ../../../ajax/libajaxg.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
+LDADD = ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
 
 

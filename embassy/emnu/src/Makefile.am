@@ -8,7 +8,7 @@ INCLUDES = -I../../../plplot -I../../../nucleus -I../../../ajax
 
 if ISSHARED
 if ISAIXIA64
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../ajax/.libs -lajax -lajaxg
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../ajax/.libs -lajax
 else
 AM_CFLAGS =
 endif

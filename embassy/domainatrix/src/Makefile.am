@@ -44,4 +44,4 @@ siggen_SOURCES = siggen.c
 sigplot_SOURCES = sigplot.c
 sigscan_SOURCES = sigscan.c
 
-LDADD = ../../../plplot/libplplot.la ../../../ajax/libajaxg.la ../../../nucleus/libnucleus.la $(XLIB) ../../../ajax/libajax.la
+LDADD = ../../../plplot/libplplot.la ../../../nucleus/libnucleus.la $(XLIB) ../../../ajax/libajax.la
