@@ -76,35 +76,12 @@ Command line arguments
 
    Optional qualifiers: (none)
    Advanced qualifiers: (none)
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
-   Mandatory qualifiers Allowed values Default
-   [-outseq]
-   (Parameter 1) Output sequence USA Writeable sequence <sequence>.format
-   [-name]
-   (Parameter 2) The name of of the sequence should be a single word that
-   you will use to identify the sequence. It should have no (or few)
-   punctuation characters in it. Any string is accepted An empty string
-   is accepted
-   [-description]
-   (Parameter 3) Enter any description of the sequence that you require.
-   Any string is accepted An empty string is accepted
-   [-type]
-   (Parameter 4) Type of sequence
-   N (Nucleic)
-   P (Protein)
-   N
-   [-sequence]
-   (Parameter 5) The sequence itself. Because of the limitation of the
-   operating system, you will only be able to type in a short sequence of
-   (typically) 250 characters, or so. The keyboard will beep at you when
-   you have reached this limit and you will not be able to press the
-   RETURN/ENTER key until you have deleted a few characters. Any string
-   is accepted An empty string is accepted
-   Optional qualifiers Allowed values Default
-   (none)
-   Advanced qualifiers Allowed values Default
-   (none)
-   
+
 Input file format
 
    None.

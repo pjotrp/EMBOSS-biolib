@@ -160,21 +160,12 @@ Command line arguments
 
    Optional qualifiers: (none)
    Advanced qualifiers: (none)
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
-   Mandatory qualifiers Allowed values Default
-   [-sequences]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   [-primers]
-   (Parameter 2) Primer file Input file Required
-   [-out]
-   (Parameter 3) Output file name Output file <sequence>.primersearch
-   [-mismatchpercent]
-   (Parameter 4) Allowed percent mismatch Any integer value 0
-   Optional qualifiers Allowed values Default
-   (none)
-   Advanced qualifiers Allowed values Default
-   (none)
-   
+
 Input file format
 
    The input primer file used in the example above has the following
@@ -183,6 +174,7 @@ Input file format
    Comment lines start with a '#'
    Lines with primer information have three fields separated by spaces or
    TAB characters. The columns contain:
+   
     1. The name of the primer pair - this is reported in the output.
     2. The sequence of the first primer.
     3. The sequence of the second primer.

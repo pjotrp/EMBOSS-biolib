@@ -144,94 +144,13 @@ Command line arguments
                                   display the description of the sequence
    -offset             integer    Offset to start numbering the sequence from
    -html               bool       Use HTML formatting
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   [-outfile]
-   (Parameter 2) If you enter the name of a file here then this program
-   will write the sequence details into that file. Output file
-   <sequence>.remap
-   -enzymes The name 'all' reads in all enzyme names from the REBASE
-   database. You can specify enzymes by giving their names with commas
-   between then, such as: 'HincII,hinfI,ppiI,hindiii'. The case of the
-   names is not important. You can specify a file of enzyme names to read
-   in by giving the name of the file holding the enzyme names with a '@'
-   character in front of it, for example, '@enz.list'. Blank lines and
-   lines starting with a hash character or '!' are ignored and all other
-   lines are concatenated together with a comma character ',' and then
-   treated as the list of enzymes to search for. An example of a file of
-   enzyme names is: ! my enzymes HincII, ppiII ! other enzymes hindiii
-   HinfI PpiI Any string is accepted all
-   -sitelen Minimum recognition site length Integer from 2 to 20 4
-   Optional qualifiers Allowed values Default
-   -[no]cutlist List the enzymes that cut Yes/No Yes
-   -flatreformat Display RE sites in flat format Yes/No No
-   -mincuts Minimum cuts per RE Integer from 1 to 1000 1
-   -maxcuts Maximum cuts per RE Integer up to 2000000000 2000000000
-   -single Force single site only cuts Yes/No No
-   -[no]blunt Allow blunt end cutters Yes/No Yes
-   -[no]sticky Allow sticky end cutters Yes/No Yes
-   -[no]ambiguity Allow ambiguous matches Yes/No Yes
-   -plasmid Allow circular DNA Yes/No No
-   -[no]commercial Only enzymes with suppliers Yes/No Yes
-   -[no]limit Limits reports to one isoschizomer Yes/No Yes
-   -preferred Report preferred isoschizomers Yes/No No
-   -table Code to use
-   0 (Standard)
-   1 (Standard (with alternative initiation codons))
-   2 (Vertebrate Mitochondrial)
-   3 (Yeast Mitochondrial)
-   4 (Mold, Protozoan, Coelenterate Mitochondrial and
-   Mycoplasma/Spiroplasma)
-   5 (Invertebrate Mitochondrial)
-   6 (Ciliate Macronuclear and Dasycladacean)
-   9 (Echinoderm Mitochondrial)
-   10 (Euplotid Nuclear)
-   11 (Bacterial)
-   12 (Alternative Yeast Nuclear)
-   13 (Ascidian Mitochondrial)
-   14 (Flatworm Mitochondrial)
-   15 (Blepharisma Macronuclear)
-   16 (Chlorophycean Mitochondrial)
-   21 (Trematode Mitochondrial)
-   22 (Scenedesmus obliquus)
-   23 (Thraustochytrium Mitochondrial)
-   0
-   Advanced qualifiers Allowed values Default
-   -[no]translation Display translation Yes/No Yes
-   -[no]reverse Display cut sites and translation of reverse sense Yes/No
-   Yes
-   -orfminsize Minimum size of Open Reading Frames (ORFs) to display in
-   the translations. Integer 0 or more 0
-   -uppercase Regions to put in uppercase. If this is left blank, then
-   the sequence case is left alone. A set of regions is specified by a
-   set of pairs of positions. The positions are integers. They are
-   separated by any non-digit, non-alpha character. Examples of region
-   specifications are: 24-45, 56-78 1:45, 67=99;765..888
-   1,5,8,10,23,45,57,99 Sequence range If this is left blank, then the
-   sequence case is left alone.
-   -highlight Regions to colour if formatting for HTML. If this is left
-   blank, then the sequence is left alone. A set of regions is specified
-   by a set of pairs of positions. The positions are integers. They are
-   followed by any valid HTML font colour. Examples of region
-   specifications are: 24-45 blue 56-78 orange 1-100 green 120-156 red A
-   file of ranges to colour (one range per line) can be specifed as
-   '@filename'. Sequence range full sequence
-   -threeletter Display protein sequences in three-letter code Yes/No No
-   -number Number the sequences Yes/No No
-   -width Width of sequence to display Integer 1 or more 60
-   -length Line length of page (0 for indefinite) Integer 0 or more 0
-   -margin Margin around sequence for numbering Integer 0 or more 10
-   -[no]name Set this to be false if you do not wish to display the ID
-   name of the sequence Yes/No Yes
-   -[no]description Set this to be false if you do not wish to display
-   the description of the sequence Yes/No Yes
-   -offset Offset to start numbering the sequence from Any integer value
-   1
-   -html Use HTML formatting Yes/No No
-   
 Input file format
 
    You can specifiy a file of ranges to display in uppercase by giving

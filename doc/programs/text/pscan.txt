@@ -68,20 +68,12 @@ Command line arguments
 
    Optional qualifiers: (none)
    Advanced qualifiers: (none)
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   -emin Minimum number of elements per fingerprint Integer from 1 to 20
-   2
-   -emax Maximum number of elements per fingerprint Integer up to 20 20
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.pscan
-   Optional qualifiers Allowed values Default
-   (none)
-   Advanced qualifiers Allowed values Default
-   (none)
-   
+
 Input file format
 
    The input sequence can be one or more protein sequences.

@@ -48,21 +48,13 @@ Command line arguments
 
    Advanced qualifiers:
    -bases              string     Bases used
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence USA Readable sequence Required
-   -graph Graph type EMBOSS has a list of known devices, including
-   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
-   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm
-   EMBOSS_GRAPHICS value, or x11
-   -outf Output file name Output file <sequence>.wobble
-   Optional qualifiers Allowed values Default
-   -window Window size in codons Integer 1 or more 30
-   Advanced qualifiers Allowed values Default
-   -bases Bases used Any string is accepted GC
-   
 Input file format
 
    Normal nucleic acid sequence USA.

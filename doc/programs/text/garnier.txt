@@ -47,18 +47,13 @@ Command line arguments
    Optional qualifiers: (none)
    Advanced qualifiers:
    -idc                integer    idc param
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-sequencea]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.garnier
-   Optional qualifiers Allowed values Default
-   (none)
-   Advanced qualifiers Allowed values Default
-   -idc idc param Integer from 0 to 6 0
-   
    The meaning and use of the parameter 'idc' is currently being
    investigated. The original author, Bill Pearson writes:
    

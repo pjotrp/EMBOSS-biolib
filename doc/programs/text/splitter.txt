@@ -34,19 +34,12 @@ Command line arguments
    -overlap            integer    Overlap between split sequences
 
    Advanced qualifiers: (none)
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   [-outseq]
-   (Parameter 2) Output sequence(s) USA Writeable sequence(s)
-   <sequence>.format
-   Optional qualifiers Allowed values Default
-   -size Size to split at Any integer value 10000
-   -overlap Overlap between split sequences Any integer value 0
-   Advanced qualifiers Allowed values Default
-   (none)
-   
+
 Input File Format
 
    One or more sequences

@@ -86,58 +86,13 @@ Command line arguments
                                   specifying it with a '@' in front of the
                                   filename.
    -descshow           bool       Show descriptions
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   -pattern Search pattern Any string is accepted An empty string is
-   accepted
-   -mismatch Number of mismatches Integer 0 or more 0
-   [-outf]
-   (Parameter 2) Output file name Output file <sequence>.fuzztran
-   Optional qualifiers Allowed values Default
-   -frame Frame(s) to translate
-   1  (1)
-   2  (2)
-   3  (3)
-   F  (Forward three frames)
-   -1 (-1)
-   -2 (-2)
-   -3 (-3)
-   R  (Reverse three frames)
-   6  (All six frames)
-   1
-   -table Code to use
-   0 (Standard)
-   1 (Standard (with alternative initiation codons))
-   2 (Vertebrate Mitochondrial)
-   3 (Yeast Mitochondrial)
-   4 (Mold, Protozoan, Coelenterate Mitochondrial and
-   Mycoplasma/Spiroplasma)
-   5 (Invertebrate Mitochondrial)
-   6 (Ciliate Macronuclear and Dasycladacean)
-   9 (Echinoderm Mitochondrial)
-   10 (Euplotid Nuclear)
-   11 (Bacterial)
-   12 (Alternative Yeast Nuclear)
-   13 (Ascidian Mitochondrial)
-   14 (Flatworm Mitochondrial)
-   15 (Blepharisma Macronuclear)
-   16 (Chlorophycean Mitochondrial)
-   21 (Trematode Mitochondrial)
-   22 (Scenedesmus obliquus)
-   23 (Thraustochytrium Mitochondrial)
-   0
-   Advanced qualifiers Allowed values Default
-   -mmshow Show mismatches Yes/No No
-   -accshow Show accession numbers Yes/No No
-   -usashow Showing the USA (Uniform Sequence Address) of the matching
-   sequences will turn your output file into a 'list' file that can then
-   be read in by many other EMBOSS programs by specifying it with a '@'
-   in front of the filename. Yes/No No
-   -descshow Show descriptions Yes/No No
-   
 Input file format
 
    Patterns for fuzztran are based on the format of pattern used in the

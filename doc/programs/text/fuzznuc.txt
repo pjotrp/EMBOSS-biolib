@@ -50,28 +50,13 @@ Command line arguments
                                   specifying it with a '@' in front of the
                                   filename.
    -complement         bool       Search complementary strand
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   -pattern Search pattern Any string is accepted An empty string is
-   accepted
-   -mismatch Number of mismatches Integer 0 or more 0
-   [-outf]
-   (Parameter 2) Output file name Output file <sequence>.fuzznuc
-   Optional qualifiers Allowed values Default
-   (none)
-   Advanced qualifiers Allowed values Default
-   -mmshow Show mismatches Yes/No No
-   -accshow Show accession numbers Yes/No No
-   -descshow Show descriptions Yes/No No
-   -usashow Showing the USA (Uniform Sequence Address) of the matching
-   sequences will turn your output file into a 'list' file that can then
-   be read in by many other EMBOSS programs by specifying it with a '@'
-   in front of the filename. Yes/No No
-   -complement Search complementary strand Yes/No No
-   
 Input file format
 
    Patterns for fuzznuc are based on the format of pattern used in the

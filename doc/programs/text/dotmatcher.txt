@@ -58,28 +58,13 @@ Command line arguments
    Advanced qualifiers:
    -data               bool       Output the match data to a file instead of
                                   plotting it
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-sequencea]
-   (Parameter 1) Sequence USA Readable sequence Required
-   [-sequenceb]
-   (Parameter 2) Sequence USA Readable sequence Required
-   -graph Graph type EMBOSS has a list of known devices, including
-   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
-   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm
-   EMBOSS_GRAPHICS value, or x11
-   -outfile Display as data Output file <sequence>.dotmatcher
-   Optional qualifiers Allowed values Default
-   -windowsize window size over which to test threshhold Integer 3 or
-   more 10
-   -threshold threshold Number 0.000 or more 17.0
-   -matrixfile Matrix file Comparison matrix file in EMBOSS data path
-   EBLOSUM62 for protein
-   EDNAFULL for DNA
-   Advanced qualifiers Allowed values Default
-   -data Output the match data to a file instead of plotting it Yes/No No
-   
 Input file format
 
    Any 2 sequence USAs of the same type (DNA or protein).

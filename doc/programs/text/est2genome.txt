@@ -94,51 +94,13 @@ Command line arguments
                                   exceed the machine's physical RAM)
    -shuffle            integer    Shuffle
    -seed               integer    Random number seed
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-est]
-   (Parameter 1) EST sequence(s) Readable sequence(s) Required
-   [-genome]
-   (Parameter 2) Genomic sequence Readable sequence Required
-   -outfile Output file name Output file <sequence>.est2genome
-   Optional qualifiers Allowed values Default
-   -match Score for matching two bases Any integer value 1
-   -mismatch Cost for mismatching two bases Any integer value 1
-   -gappenalty Cost for deleting a single base in either sequence,
-   excluding introns Any integer value 2
-   -intronpenalty Cost for an intron, independent of length. Any integer
-   value 40
-   -splicepenalty Cost for an intron, independent of length and
-   starting/ending on donor-acceptor sites Any integer value 20
-   -minscore You can exclude alignments with scores below a threshold by
-   setting this to be false. Any integer value 30
-   Advanced qualifiers Allowed values Default
-   -reverse Reverse the orientation of the EST sequence Yes/No No
-   -[no]splice Use donor and acceptor splice sites. If you want to ignore
-   donor-acceptor sites then set this to be false. Yes/No Yes
-   -align Show the alignment. The alignment includes the first and last 5
-   bases of each intron, together with the intron width. The direction of
-   splicing is indicated by angle brackets (forward or reverse) or ????
-   (unknown). Yes/No No
-   -width Alignment width Any integer value 50
-   -mode This determines the comparion mode. The default value is 'both',
-   in which case both strands of the est are compared assuming a forward
-   gene direction (ie GT/AG splice sites), and the best comparsion redone
-   assuming a reversed (CT/AC) gene splicing direction. The other allowed
-   modes are 'forward', when just the forward strand is searched, and
-   'reverse', ditto for the reverse strand. Any string is accepted both
-   -[no]best You can print out all comparisons instead of just the best
-   one by setting this to be false. Yes/No Yes
-   -space for linear-space recursion. If product of sequence lengths
-   divided by 4 exceeds this then a divide-and-conquer strategy is used
-   to control the memory requirements. In this way very long sequences
-   can be aligned. If you have a machine with plenty of memory you can
-   raise this parameter (but do not exceed the machine's physical RAM)
-   Any integer value 10.0
-   -shuffle Shuffle Any integer value 0
-   -seed Random number seed Any integer value 20825
-   
 Input file format
 
    est2genome reads two nucleotide sequences. The first is an EST
@@ -147,9 +109,10 @@ Input file format
    
 Output file format
 
-  MSP type segments
-  
+MSP type segments
+
    There are four types of segment,
+   
     1. each gapped Exon
     2. each Intron (marked with a ? if it does not start GT and end AG)
     3. the complete alignment Span

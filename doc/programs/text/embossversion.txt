@@ -35,7 +35,12 @@ Command line arguments
    -outfile            outfile    Output file
 
    Advanced qualifiers: (none)
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
+
    Mandatory qualifiers  Allowed values Default
    (none)
    Optional qualifiers   Allowed values Default

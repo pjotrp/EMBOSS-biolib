@@ -79,36 +79,13 @@ Command line arguments
                                   potential cut site within it.
    -allpartials        bool       As for overlap but fragments containing more
                                   than one potential cut site are included.
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-sequencea]
-   (Parameter 1) Sequence USA Readable sequence Required
-   -menu Select number
-   1 (Trypsin)
-   2 (Lys-C)
-   3 (Arg-C)
-   4 (Asp-N)
-   5 (V8-bicarb)
-   6 (V8-phosph)
-   7 (Chymotrypsin)
-   8 (CNBr)
-   1
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.digest
-   Optional qualifiers Allowed values Default
-   (none)
-   Advanced qualifiers Allowed values Default
-   -unfavoured Trypsin will not normally cut after a K if it is followed
-   by (e.g.) another K or a P. Specifying this shows those cuts. as well
-   as the favoured ones. Yes/No No
-   -overlap Used for partial digestion. Shows all cuts from favoured cut
-   sites plus 1..3, 2..4, 3..5 etc but not (e.g.) 2..5. Overlaps are
-   therefore fragments with exactly one potential cut site within it.
-   Yes/No No
-   -allpartials As for overlap but fragments containing more than one
-   potential cut site are included. Yes/No No
-   
 Input file format
 
    Any protein sequence.

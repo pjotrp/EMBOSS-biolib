@@ -79,34 +79,12 @@ Command line arguments
    -name               string     Name of the consensus sequence
 
    Advanced qualifiers: (none)
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
-   Mandatory qualifiers Allowed values Default
-   [-msf]
-   (Parameter 1) File containing a sequence alignment. Readable sequences
-   Required
-   [-outseq]
-   (Parameter 2) Output sequence USA Writeable sequence <sequence>.format
-   Optional qualifiers Allowed values Default
-   -datafile Scoring matrix Comparison matrix file in EMBOSS data path
-   EBLOSUM62 for protein
-   EDNAFULL for DNA
-   -plurality Set a cut-off for the number of positive matches below
-   which there is no consensus. The default plurality is taken as half
-   the total weight of all the sequences in the alignment. Any integer
-   value Half the total sequence weighting
-   -setcase Sets the threshold for the positive matches above which the
-   consensus is is upper-case and below which the consensus is in
-   lower-case. Any integer value 0
-   -identity Provides the facility of setting the required number of
-   identities at a site for it to give a consensus at that position.
-   Therefore, if this is set to the number of sequences in the alignment
-   only columns of identities contribute to the consensus. Integer 0 or
-   more 0
-   -name Name of the consensus sequence Any string is accepted An empty
-   string is accepted
-   Advanced qualifiers Allowed values Default
-   (none)
-   
+
 Input file format
 
    The USA of a set of aligned sequences.

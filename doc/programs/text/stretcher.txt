@@ -61,26 +61,12 @@ Command line arguments
    -length             integer    number per line
 
    Advanced qualifiers: (none)
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
-   Mandatory qualifiers Allowed values Default
-   [-sequencea]
-   (Parameter 1) Sequence USA Readable sequence Required
-   [-sequenceb]
-   (Parameter 2) Sequence USA Readable sequence Required
-   [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.stretcher
-   Optional qualifiers Allowed values Default
-   -datafile Matrix file Comparison matrix file in EMBOSS data path
-   EBLOSUM62 for protein
-   EDNAFULL for DNA
-   -gappenalty gappenalty Positive integer 12 for protein, 16 for nucleic
-   -gaplength gap length penalty Positive integer 2 for protein, 4 for
-   nucleic
-   -markx alternative displays Positive integer up to 10 0
-   -length number per line Positive integer 60
-   Advanced qualifiers Allowed values Default
-   (none)
-   
+
 Input file format
 
    Any 2 sequence USAs of the same type (DNA or protein).

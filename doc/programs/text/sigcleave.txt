@@ -43,24 +43,13 @@ Command line arguments
    -nval               integer    specifies the number of columns after the
                                   residue at the cleavage site in the weight
                                   matrix table
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.sigcleave
-   -minweight Minimum scoring weight value for the predicted cleavage
-   site Number from 0.000 to 100.000 3.5
-   Optional qualifiers Allowed values Default
-   -prokaryote Specifies the sequence is prokaryotic and changes the
-   default scoring data file name Yes/No No
-   Advanced qualifiers Allowed values Default
-   -pval Specifies the number of columns before the residue at the
-   cleavage site in the weight matrix table Integer from -13 to -1 -13
-   -nval specifies the number of columns after the residue at the
-   cleavage site in the weight matrix table Integer 1 or more Pval+15 (2)
-   
 Input file format
 
    The input sequence can be one or more protein sequences.

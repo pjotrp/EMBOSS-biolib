@@ -42,22 +42,13 @@ Command line arguments
                                   reverse the output sequence
    -[no]complement     bool       Set this to be false if you do not wish to
                                   complement the output sequence
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   [-outseq]
-   (Parameter 2) Output sequence(s) USA Writeable sequence(s)
-   <sequence>.format
-   Optional qualifiers Allowed values Default
-   (none)
-   Advanced qualifiers Allowed values Default
-   -[no]reverse Set this to be false if you do not wish to reverse the
-   output sequence Yes/No Yes
-   -[no]complement Set this to be false if you do not wish to complement
-   the output sequence Yes/No Yes
-   
 Input file format
 
    The input sequence can be one or more sequences.

@@ -38,28 +38,20 @@ Command line arguments
 
    Mandatory qualifiers:
   [-sequence]          seqall     Sequence database USA
+  [-outfile]           featout    Feature file for output
    -orfml              integer    Minimum ORF Length to report
-  [-report]            outfile    Output file name
    -outseq             seqoutall  Sequence file to hold output ORF sequences
 
-   Optional qualifiers: (none)
-   Advanced qualifiers:
-   -featout            featout    File for output features
+   Optional qualifiers:
+   -oldreport          outfile    Old format output report file
+
+   Advanced qualifiers: (none)
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   -orfml Minimum ORF Length to report Integer 1 or more 100
-   [-report]
-   (Parameter 2) Output file name Output file <sequence>.checktrans
-   -outseq Sequence file to hold output ORF sequences Writeable
-   sequence(s) <sequence>.format
-   Optional qualifiers Allowed values Default
-   (none)
-   Advanced qualifiers Allowed values Default
-   -featout File for output features Writeable feature table unknown.gff
-   
 Input file format
 
    This program reads the USA of a protein sequence with STOP codons in

@@ -83,21 +83,12 @@ Command line arguments
 
    Optional qualifiers: (none)
    Advanced qualifiers: (none)
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   [-outf]
-   (Parameter 2) File for output of MAR/SAR recognition signature (MRS)
-   regions. This contains details of the MRS in normal GFF format. The
-   MRS consists of two recognition sites, one of 8 bp and one of 16 bp on
-   either sense strand of the genomic DNA, within 200 bp of each other.
-   Writeable feature table unknown.gff
-   Optional qualifiers Allowed values Default
-   (none)
-   Advanced qualifiers Allowed values Default
-   (none)
-   
+
 Input file format
 
    Normal genomic DNA USA.

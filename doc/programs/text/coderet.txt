@@ -187,20 +187,13 @@ Command line arguments
    -[no]cds            bool       Extract CDS sequences
    -[no]mrna           bool       Extract mrna sequences
    -[no]translation    bool       Extract translated sequences
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-seqall]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   [-seqout]
-   (Parameter 2) Output sequence USA Writeable sequence <sequence>.format
-   Optional qualifiers Allowed values Default
-   (none)
-   Advanced qualifiers Allowed values Default
-   -[no]cds Extract CDS sequences Yes/No Yes
-   -[no]mrna Extract mrna sequences Yes/No Yes
-   -[no]translation Extract translated sequences Yes/No Yes
-   
 Input file format
 
    USA of one or more nucleic sequences having CDS, mRNA or translation

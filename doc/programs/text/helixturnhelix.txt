@@ -38,20 +38,12 @@ Command line arguments
    -eightyseven        bool       Use the old (1987) weight data
 
    Advanced qualifiers: (none)
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   [-outfile]
-   (Parameter 2) Output file name Output file seqname.hth
-   Optional qualifiers Allowed values Default
-   -mean Mean value Number from 1.000 to 10000.000 238.71
-   -sd Standard Deviation value Number from 1.000 to 10000.000 293.61
-   -minsd Minimum SD Number from 0.000 to 100.000 2.5
-   -eightyseven Use the old (1987) weight data Yes/No No
-   Advanced qualifiers Allowed values Default
-   (none)
-   
+
 Input file format
 
    The input sequence can be one or more protein sequences.

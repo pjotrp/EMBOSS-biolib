@@ -41,23 +41,13 @@ Command line arguments
 
    Advanced qualifiers:
    -plot               bool       Produce graphic
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-seqall]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   -letters Residue letters Any string is accepted gc
-   -graph Graph type EMBOSS has a list of known devices, including
-   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
-   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm
-   EMBOSS_GRAPHICS value, or x11
-   -outfile Output file name Output file <sequence>.freak
-   Optional qualifiers Allowed values Default
-   -step Stepping value Any integer value 1
-   -window Averaging window Any integer value 30
-   Advanced qualifiers Allowed values Default
-   -plot Produce graphic Yes/No No
-   
 Input file format
 
    Normal sequence USAs.

@@ -41,21 +41,13 @@ Command line arguments
    -sshow              bool       Display untranslated sequence
    -tshow              bool       Display translated sequence
    -allmut             bool       Display all mutations
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-seq]
-   (Parameter 1) Sequence USA Readable sequence Required
-   -enzymes Comma separated enzyme list Any string is accepted all
-   [-outf]
-   (Parameter 2) Output file name Output file <sequence>.silent
-   Optional qualifiers Allowed values Default
-   (none)
-   Advanced qualifiers Allowed values Default
-   -sshow Display untranslated sequence Yes/No No
-   -tshow Display translated sequence Yes/No No
-   -allmut Display all mutations Yes/No No
-   
 Input file format
 
    Nucleic acid sequence USA.

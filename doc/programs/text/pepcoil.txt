@@ -45,21 +45,13 @@ Command line arguments
    -[no]coil           bool       Report coiled coil regions
    -frame              bool       Show coil frameshifts
    -[no]other          bool       Report non coiled coil regions
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   -window Window size Integer from 7 to 28 28
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.pepcoil
-   Optional qualifiers Allowed values Default
-   (none)
-   Advanced qualifiers Allowed values Default
-   -[no]coil Report coiled coil regions Yes/No Yes
-   -frame Show coil frameshifts Yes/No Yes if -coil is true
-   -[no]other Report non coiled coil regions Yes/No Yes
-   
 Input file format
 
    It reads in a protein sequence.

@@ -511,19 +511,13 @@ Command line arguments
    Optional qualifiers: (none)
    Advanced qualifiers:
    -firstonly          bool       Read one sequence and stop
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   [-outseq]
-   (Parameter 2) Output sequence(s) USA Writeable sequence(s)
-   <sequence>.format
-   Optional qualifiers Allowed values Default
-   (none)
-   Advanced qualifiers Allowed values Default
-   -firstonly Read one sequence and stop Yes/No No
-   
 Input file format
 
    The USA of one or more sequences.

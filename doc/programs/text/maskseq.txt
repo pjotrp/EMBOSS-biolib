@@ -60,24 +60,12 @@ Command line arguments
                                   for nucleic sequences.
 
    Advanced qualifiers: (none)
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence USA Readable sequence Required
-   [-outseq]
-   (Parameter 2) Output sequence USA Writeable sequence <sequence>.format
-   -regions Regions to mask. A set of regions is specified by a set of
-   pairs of positions. The positions are integers. They are separated by
-   any non-digit, non-alpha character. Examples of region specifications
-   are: 24-45, 56-78 1:45, 67=99;765..888 1,5,8,10,23,45,57,99 Sequence
-   range None
-   Optional qualifiers Allowed values Default
-   -maskchar Character to use when masking. Default is 'X' for protein
-   sequences, 'N' for nucleic sequences. Any string is accepted 'X' for
-   protein, 'N' for nucleic
-   Advanced qualifiers Allowed values Default
-   (none)
-   
+
 Input file format
 
    This program reads in a single sequence file.

@@ -30,29 +30,12 @@ Command line arguments
 
    Optional qualifiers: (none)
    Advanced qualifiers: (none)
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence set USA Readable sequences Required
-   -type Select type
-   F (Frequency)
-   G (Gribskov)
-   H (Henikoff)
-   F
-   -name Enter a name for the profile Any string is accepted mymatrix
-   -threshold Enter threshold reporting percentage Integer from 1 to 100
-   75
-   -datafile Scoring matrix Comparison matrix file in EMBOSS data path
-   'Epprofile' for Gribskov type, or EBLOSUM62
-   -open Gap opening penalty Any integer value 3.0
-   -extension Gap extension penalty Any integer value 0.3
-   [-outf]
-   (Parameter 2) Output file name Output file <sequence>.prophecy
-   Optional qualifiers Allowed values Default
-   (none)
-   Advanced qualifiers Allowed values Default
-   (none)
-   
+
 Input file format
 
 Output file format

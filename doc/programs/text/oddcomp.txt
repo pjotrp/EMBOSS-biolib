@@ -82,29 +82,13 @@ Command line arguments
                                   may wish not to count words containing them,
                                   just noting them in the count of 'Other'
                                   words.
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   [-outfile]
-   (Parameter 2) This is the results file. Output file <sequence>.oddcomp
-   [-compdata]
-   (Parameter 3) This is a file in the format of the output produced by
-   'compseq' that is used to set the minimum frequencies of words in this
-   analysis. Input file Required
-   [-window]
-   (Parameter 4) This is the size of window in which to count. Thus if
-   you want to count frequencies in a 40 aa stretch you should enter 40
-   here. Integer 10 or more 30
-   Optional qualifiers Allowed values Default
-   (none)
-   Advanced qualifiers Allowed values Default
-   -[no]ignorebz The amino acid code B represents Asparagine or Aspartic
-   acid and the code Z represents Glutamine or Glutamic acid. These are
-   not commonly used codes and you may wish not to count words containing
-   them, just noting them in the count of 'Other' words. Yes/No Yes
-   
 Input file format
 
    The data file ('test.comp') used in the example follows:

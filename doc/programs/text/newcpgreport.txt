@@ -46,25 +46,13 @@ Command line arguments
    -[no]obsexp         bool       Show observed/expected threshold line
    -[no]cg             bool       Show CpG rich regions
    -[no]pc             bool       Show percentage line
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   -window Window size Integer 1 or more 100
-   -shift Shift increment Integer 1 or more 1
-   -minlen Minimum Length Integer 1 or more 200
-   -minoe Minimum observed/expected Number from 0.000 to 10.000 0.6
-   -minpc Minimum percentage Number from 0.000 to 100.000 50.
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.newcpgreport
-   Optional qualifiers Allowed values Default
-   (none)
-   Advanced qualifiers Allowed values Default
-   -[no]obsexp Show observed/expected threshold line Yes/No Yes
-   -[no]cg Show CpG rich regions Yes/No Yes
-   -[no]pc Show percentage line Yes/No Yes
-   
 Input file format
 
    One or more nucleic acid sequences.

@@ -51,23 +51,13 @@ Command line arguments
                                   description you have given on to the end of
                                   the existing name or description of the
                                   sequence.
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence USA Readable sequence Required
-   [-outseq]
-   (Parameter 2) Output sequence USA Writeable sequence <sequence>.format
-   Optional qualifiers Allowed values Default
-   -name Name of the sequence Any string is accepted An empty string is
-   accepted
-   -description Description of the sequence Any string is accepted An
-   empty string is accepted
-   Advanced qualifiers Allowed values Default
-   -append This allows you to append the name or description you have
-   given on to the end of the existing name or description of the
-   sequence. Yes/No No
-   
 Input file format
 
    Normal sequence.

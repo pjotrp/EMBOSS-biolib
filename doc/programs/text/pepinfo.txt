@@ -52,27 +52,13 @@ Command line arguments
    Advanced qualifiers:
    -[no]generalplot    bool       plot histogram of general properties
    -[no]hydropathyplot bool       plot graphs of hydropathy
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-inseq]
-   (Parameter 1) Sequence USA Readable sequence Required
-   -graph Graph type EMBOSS has a list of known devices, including
-   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
-   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm
-   EMBOSS_GRAPHICS value, or x11
-   [-outfile]
-   (Parameter 2) Output file name Output file pepinfo.out
-   Optional qualifiers Allowed values Default
-   -hwindow Window size for hydropathy averaging Integer 1 or more 9
-   -aaproperties User defined amino acid properties Any string is
-   accepted Eaa_properties.dat
-   -aahydropathy User defined hydropathy data Any string is accepted
-   Eaa_hydropathy.dat
-   Advanced qualifiers Allowed values Default
-   -[no]generalplot plot histogram of general properties Yes/No Yes
-   -[no]hydropathyplot plot graphs of hydropathy Yes/No Yes
-   
 Input file format
 
    It reads in a protein sequence.

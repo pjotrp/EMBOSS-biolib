@@ -60,25 +60,12 @@ Command line arguments
 
    Optional qualifiers: (none)
    Advanced qualifiers: (none)
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   -menu Select class
-   F (fungi)
-   I (insect)
-   P (plant)
-   V (vertebrate)
-   O (other)
-   V
-   -mismatch Number of mismatches Integer 0 or more 0
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.tfscan
-   Optional qualifiers Allowed values Default
-   (none)
-   Advanced qualifiers Allowed values Default
-   (none)
-   
+
 Input file format
 
    Normal nucleic acid sequence USA.

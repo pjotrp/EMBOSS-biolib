@@ -131,108 +131,17 @@ IT IS DONE FOR YOU.
    -data               bool       Output the match data to a file instead of
                                   plotting it
 
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+
 
 </pre>
 </td></tr></table>
 <P>
 
 <table border cellspacing=0 cellpadding=3 bgcolor="#f5f5ff">
-<tr bgcolor="#FFFFD0">
-<th align="left" colspan=2>Mandatory qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
-</tr>
-
-<tr>
-<td>[-sequence]<br>(Parameter 1)</td>
-<td>Sequence USA</td>
-<td>Readable sequence</td>
-<td><b>Required</b></td>
-</tr>
-
-<tr>
-<td>-graph</td>
-<td>Graph type</td>
-<td>EMBOSS has a list of known devices, including postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows, x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm</td>
-<td><i>EMBOSS_GRAPHICS</i> value, or x11</td>
-</tr>
-
-<tr>
-<td>-outfile</td>
-<td>Output file name</td>
-<td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.pepwheel</td>
-</tr>
-
-<tr bgcolor="#FFFFD0">
-<th align="left" colspan=2>Optional qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
-</tr>
-
-<tr>
-<td>-steps</td>
-<td>The number of residues plotted per turn is this value divided by the 'turns' value.</td>
-<td>Integer from 2 to 100</td>
-<td>18</td>
-</tr>
-
-<tr>
-<td>-turns</td>
-<td>The number of residues plotted per turn is the 'steps' value divided by this value.</td>
-<td>Integer from 1 to 100</td>
-<td>5</td>
-</tr>
-
-<tr>
-<td>-squares</td>
-<td>By default the aliphatic residues ILVM are marked with squares.</td>
-<td>Any string is accepted</td>
-<td>ILVM</td>
-</tr>
-
-<tr>
-<td>-diamonds</td>
-<td>By default the residues DENQST are marked with diamonds.</td>
-<td>Any string is accepted</td>
-<td>DENQST</td>
-</tr>
-
-<tr>
-<td>-octags</td>
-<td>By default the positively charged residues HKR are marked with octagons.</td>
-<td>Any string is accepted</td>
-<td>HKR</td>
-</tr>
-
-<tr bgcolor="#FFFFD0">
-<th align="left" colspan=2>Advanced qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
-</tr>
-
-<tr>
-<td>-amphipathic</td>
-<td>If this is true then the residues ACFGILMVWY are marked as squares and all other residues are unmarked. This overrides any other markup that you may have specified using the qualifiers '-squares', '-diamonds' and '-octags'.</td>
-<td>Yes/No</td>
-<td>No</td>
-</tr>
-
-<tr>
-<td>-[no]wheel</td>
-<td>Plot the wheel</td>
-<td>Yes/No</td>
-<td>Yes</td>
-</tr>
-
-<tr>
-<td>-data</td>
-<td>Output the match data to a file instead of plotting it</td>
-<td>Yes/No</td>
-<td>No</td>
-</tr>
-
-</table>
 
 
 

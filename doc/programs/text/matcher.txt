@@ -106,53 +106,12 @@ Command line arguments
    -length             integer    number of residues per line
 
    Advanced qualifiers: (none)
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
-   Mandatory qualifiers Allowed values Default
-   [-sequencea]
-   (Parameter 1) Sequence USA Readable sequence Required
-   [-sequenceb]
-   (Parameter 2) Sequence USA Readable sequence Required
-   [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.matcher
-   Optional qualifiers Allowed values Default
-   -datafile Matrix file Comparison matrix file in EMBOSS data path
-   EBLOSUM62 for protein
-   EDNAFULL for DNA
-   -alternatives This sets the number of alternative matches output. By
-   default only the highest scoring alignment is shown. A value of 2 gves
-   you other reasonable alignments. In some cases, for example
-   multidomain proteins of cDNA and gemomic DNA comparisons, there may be
-   other interesting and significant alignments. Integer 1 or more 1
-   -gappenalty The gap penalty is the score taken away when a gap is
-   created. The best value depends on the choice of comparison matrix.
-   The default value of 14 assumes you are using the EBLOSUM62 matrix for
-   protein sequences, or a value of 16 and the EDNAFULL matrix for
-   nucleotide sequences. Positive integer 14 for protein, 16 for nucleic
-   -gaplength The gap length, or gap extension, penalty is added to the
-   standard gap penalty for each base or residue in the gap. This is how
-   long gaps are penalized. Usually you will expect a few long gaps
-   rather than many short gaps, so the gap extension penalty should be
-   lower than the gap penalty. An exception is where one or both
-   sequences are single reads with possible sequencing errors in which
-   case you would expect many single base gaps. You can get this result
-   by setting the gap penalty to zero (or very low) and using the gap
-   extension penalty to control gap scoring. Positive integer 4 for any
-   sequence
-   -markx This sets the alternate display of matches and mismatches in
-   alignments. -markx=0 uses ':','.',' ', for identities, conservative
-   replacements, and non-conservative replacements, respectively.
-   -markx=1 uses ' ','x', and 'X'. -markx=2 does not show the second
-   sequence, but uses the second alignment line to display matches with a
-   '.' for identity, or with the mismatched residue for mismatches.
-   -markx=3 outputs a title line with the percentage identity and score
-   and then outputs the gapped sequences in multiple FASTA format.
-   -markx=4 outputs only the title line with the percentage identity and
-   score. -markx=5,6,7,8 and 9 are the same as -markx=1 -markx=10 outputs
-   a parseable output. Integer up to 10 0
-   -length number of residues per line Integer from 1 to 200 60
-   Advanced qualifiers Allowed values Default
-   (none)
-   
+
 Input file format
 
    Any 2 sequence USAs or the same type (DNA or protein).

@@ -88,39 +88,13 @@ Command line arguments
    Advanced qualifiers:
    -[no]similarity     bool       Display percent identity and similarity
    -fasta              bool       Output overlap as fasta sequences
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-sequencea]
-   (Parameter 1) Sequence USA Readable sequence Required
-   [-seqall]
-   (Parameter 2) Sequence database USA Readable sequence(s) Required
-   -gapopen The gap open penalty is the score taken away when a gap is
-   created. The best value depends on the choice of comparison matrix.
-   The default value assumes you are using the EBLOSUM62 matrix for
-   protein sequences, and the EDNAFULL matrix for nucleotide sequences.
-   Number from 1.000 to 100.000 10.0 for any sequence
-   -gapextend The gap extension, penalty is added to the standard gap
-   penalty for each base or residue in the gap. This is how long gaps are
-   penalized. Usually you will expect a few long gaps rather than many
-   short gaps, so the gap extension penalty should be lower than the gap
-   penalty. An exception is where one or both sequences are single reads
-   with possible sequencing errors in which case you would expect many
-   single base gaps. You can get this result by setting the gap open
-   penalty to zero (or very low) and using the gap extension penalty to
-   control gap scoring. Number from 0.100 to 10.000 0.5 for any sequence
-   [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.water
-   Optional qualifiers Allowed values Default
-   -datafile Matrix file Comparison matrix file in EMBOSS data path
-   EBLOSUM62 for protein
-   EDNAFULL for DNA
-   -showinternals Show debugging information on the internal state of the
-   search. Yes/No No
-   Advanced qualifiers Allowed values Default
-   -[no]similarity Display percent identity and similarity Yes/No Yes
-   -fasta Output overlap as fasta sequences Yes/No No
-   
 Input file format
 
    Any two sequence USAs of the same type (DNA or protein).

@@ -58,21 +58,13 @@ Command line arguments
    Advanced qualifiers:
    -start              string     Start codons
    -stop               string     Stop codons
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence USA Readable sequence Required
-   -graph Graph type EMBOSS has a list of known devices, including
-   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
-   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm
-   EMBOSS_GRAPHICS value, or x11
-   Optional qualifiers Allowed values Default
-   (none)
-   Advanced qualifiers Allowed values Default
-   -start Start codons Any string is accepted ATG
-   -stop Stop codons Any string is accepted TAA,TAG,TGA
-   
 Input file format
 
    Any nucleic acid sequence.

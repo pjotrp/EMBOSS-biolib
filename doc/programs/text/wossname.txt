@@ -126,6 +126,11 @@ programname.shtml
                                   people who wish the programs to be outside
                                   of the GNU Public Licence sheme, ie. they
                                   may wish to charge money for them.
+
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
 
    Mandatory qualifiers Allowed values Default
@@ -254,6 +259,7 @@ Known bugs
 See also
 
    Program name Description
+   infoalign Information on a multiple sequence alignment
    infoseq Displays some simple information about sequences
    seealso Finds programs sharing group names
    showdb Displays information on the currently available databases
