@@ -26,9 +26,9 @@ import javax.swing.tree.*;
 import java.io.*;
 import java.util.*;
 
+import org.emboss.jemboss.soap.FileRoots;
 import uk.ac.mrc.hgmp.embreo.EmbreoParams;
 import uk.ac.mrc.hgmp.embreo.EmbreoAuthException;
-import uk.ac.mrc.hgmp.embreo.filemgr.EmbreoFileRoots;
 import uk.ac.mrc.hgmp.embreo.filemgr.EmbreoFileList;
 
 
@@ -45,7 +45,7 @@ public class RemoteFileNode extends DefaultMutableTreeNode
     private String rootdir;   
     private transient EmbreoFileList parentList;  // make transient for
     private transient EmbreoParams mysettings;    // Transferable to work
-    private transient EmbreoFileRoots froots;
+    private transient FileRoots froots;
 
 //  private String fs = new String(System.getProperty("file.separator"));
     private String fs = "/";
@@ -55,7 +55,7 @@ public class RemoteFileNode extends DefaultMutableTreeNode
     static DataFlavor flavors[] = { REMOTEFILENODE, DataFlavor.stringFlavor };
 
 
-    public RemoteFileNode(EmbreoParams mysettings, EmbreoFileRoots froots,
+    public RemoteFileNode(EmbreoParams mysettings, FileRoots froots,
                     String file, EmbreoFileList parentList, String parent)
     { 
       this.mysettings = mysettings;

@@ -27,6 +27,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Hashtable;
+
+import org.emboss.jemboss.soap.FileRoots;
+import org.emboss.jemboss.soap.JembossSoapException;
+
 import uk.ac.mrc.hgmp.embreo.*;
 import uk.ac.mrc.hgmp.embreo.filemgr.*;
 
@@ -43,14 +47,14 @@ public class RemoteFileTreePanel extends JPanel
 *
 * @param mysettings EmbreoParams with settings information
 */
-  public RemoteFileTreePanel(final EmbreoParams mysettings) throws EmbreoAuthException
+  public RemoteFileTreePanel(final EmbreoParams mysettings) throws JembossSoapException
   {
 
     jp = this;
     setLayout(new BorderLayout());
 
     final Hashtable rootsdone = new Hashtable();                 //record where we are
-    final EmbreoFileRoots efr = new EmbreoFileRoots(mysettings); //roots list
+    final FileRoots efr = new FileRoots(mysettings); //roots list
     final JPanel filep = new JPanel();
     final CardLayout fileLayout = new CardLayout();
     filep.setLayout(fileLayout);
