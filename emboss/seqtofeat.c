@@ -44,9 +44,13 @@ int main(int argc, char **argv)
     pattern = ajAcdGetString ("pattern");
     outft = ajAcdGetFeatout ("outfeat");
 
+    ajStrToLower(&pattern);
+
     exp = ajRegComp(pattern);
 
     cpyseq = ajSeqStrCopy (seq);
+    ajStrToLower(&cpyseq);
+    
     ajUser ("using pattern '%S' cpyseq len %d", pattern, ajStrLen(cpyseq));
 
     ftab = ajFeattableNewSeq (seq);
@@ -54,6 +58,7 @@ int main(int argc, char **argv)
     src = ajStrNewC ("seqtofeat");
     ftname = ajStrNewC ("pattern");
 
+    
     while (ajStrLen(cpyseq) && ajRegExec (exp, cpyseq))
     {
 	istart = ioffset + ajRegOffset(exp);
@@ -69,6 +74,8 @@ int main(int argc, char **argv)
     }
 
     ajFeaturesWrite(outft, ftab);
+
+    ajRegFree(&exp);
 
     ajExit ();
     return 0;
