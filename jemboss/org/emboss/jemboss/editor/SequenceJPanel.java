@@ -125,11 +125,15 @@ public class SequenceJPanel extends JPanel
     boundWidth = metrics.stringWidth("A");
     boundWidth2 = boundWidth/2;
 
-    resWidth  = metrics.stringWidth("A")+boundWidth;
+//tjc
+//    resWidth  = metrics.stringWidth("A")+boundWidth;
+    resWidth  = metrics.stringWidth("A")+boundWidth2;
     if(seq != null)
       seqLength = seq.getLength();
-    
-    seqHeight = resWidth;
+ 
+//tjc 
+//  seqHeight = resWidth;
+    seqHeight = metrics.stringWidth("A")+boundWidth;
     init();
 
     // Popup menu
@@ -202,8 +206,13 @@ public class SequenceJPanel extends JPanel
     FontMetrics metrics = getFontMetrics(font);
     boundWidth = metrics.stringWidth("A");
     boundWidth2 = boundWidth/2;
-    resWidth  = metrics.stringWidth("A")+boundWidth;
-    seqHeight = resWidth;
+//tjc
+//  resWidth  = metrics.stringWidth("A")+boundWidth;
+    resWidth  = metrics.stringWidth("A")+boundWidth2;
+
+//tjc
+//  seqHeight = resWidth;
+    seqHeight = metrics.stringWidth("A")+boundWidth;
 
     setPreferredSize(getPreferredSize());
 //  setMaximumSize(getPreferredSize());
@@ -272,8 +281,15 @@ public class SequenceJPanel extends JPanel
     FontMetrics metrics = g.getFontMetrics();
     boundWidth  = metrics.stringWidth("A");
     boundWidth2 = boundWidth/2;
-    resWidth  = metrics.stringWidth("A")+boundWidth;
-    seqHeight = resWidth;
+    int boundWidth4 = boundWidth2/2;
+//tjc
+//    resWidth = metrics.stringWidth("A")+boundWidth;
+    resWidth = metrics.stringWidth("A")+boundWidth2;
+
+//tjc
+//    seqHeight = resWidth;
+    seqHeight = metrics.stringWidth("A")+boundWidth;
+
     String sName = null;
     if(drawSequence)
       sName = seq.getName();
@@ -340,7 +356,7 @@ public class SequenceJPanel extends JPanel
           leftResidue = prettyDraw(i,ipos,istop,res,seqHeight,leftResidue,g);
         
         g.drawString(res, 
-                     ipos+boundWidth2,
+                     ipos+boundWidth4,
                      seqHeight-boundWidth2);
         if(highlightPattern)
           g.setFont(font);
@@ -543,7 +559,7 @@ public class SequenceJPanel extends JPanel
 
   /**
   *
-  * Get a residues colouor
+  * Get a residue colour
   * @param s	residue
   * @return	colour of the residue s
   *
@@ -612,8 +628,13 @@ public class SequenceJPanel extends JPanel
                       Font.PLAIN, fontSize);
     FontMetrics metrics = getFontMetrics(font);
     boundWidth = metrics.stringWidth("A");
-    resWidth  = metrics.stringWidth("A")+boundWidth;
-    seqHeight = resWidth;
+
+//tjc
+//    resWidth = metrics.stringWidth("A")+boundWidth;
+    resWidth = metrics.stringWidth("A")+boundWidth/2;
+//tjc
+//  seqHeight = resWidth;
+    seqHeight = metrics.stringWidth("A")+boundWidth;
 
     setPreferredSize(getPreferredSize());
 //  setMaximumSize(getPreferredSize());
@@ -786,6 +807,7 @@ public class SequenceJPanel extends JPanel
         istop = seqLength;
     }
 
+    int boundWidth4 = boundWidth2/2;
     boolean leftResidue = false;
     FontMetrics metrics = getFontMetrics(font);
     for(int i=istart;i<istop;i++)
@@ -808,7 +830,7 @@ public class SequenceJPanel extends JPanel
           leftResidue = prettyDraw(i,ipos,istop,res,seqHeight,leftResidue,g2d);
 
         g2d.drawString(res,
-                      ((i-istart)*resWidth)+boundWidth2+MAXSEQNAME,
+                      ((i-istart)*resWidth)+boundWidth4+MAXSEQNAME,
                       seqHeight-boundWidth2);
       
       }

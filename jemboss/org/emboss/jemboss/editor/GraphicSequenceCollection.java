@@ -1130,8 +1130,9 @@ public class GraphicSequenceCollection extends JPanel
   public int getResiduesPerLine(PageFormat format)
   {
     double pwidth = format.getImageableWidth()-(double)getNameWidth();
-    int residueWidth = ((SequenceJPanel)graphicSequence.get(0)).getSequenceHeight();
-    return (int)(pwidth/(double)residueWidth);
+//  int resWidth = ((SequenceJPanel)graphicSequence.get(0)).getSequenceHeight();
+    int resWidth = ((SequenceJPanel)graphicSequence.get(0)).getSequenceResidueWidth();
+    return (int)(pwidth/(double)resWidth);
   }
 
   /**

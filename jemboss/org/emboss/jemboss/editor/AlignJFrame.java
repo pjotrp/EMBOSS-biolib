@@ -384,10 +384,40 @@ public class AlignJFrame extends JFrame
       {
         setCursor(cbusy);
         gsc.deleteSequence("Consensus");
+
+        float wgt = 0.f;
+        Vector vseq = gsc.getSequenceCollection();
+        Enumeration enum = vseq.elements();
+        while(enum.hasMoreElements())
+        {
+          Sequence s = (Sequence)enum.nextElement();
+          if(!s.getName().equals("Consensus"))
+            wgt+=s.getWeight();
+        }
+
+        float plu = 0.f;
+        try
+        {
+          plu = options.getPlurality();
+        }
+        catch(NumberFormatException nfe)
+        {
+          plu = wgt/2.f;
+        }
+
+        float cas = 0.f;
+        try
+        {
+          cas = options.getCase();
+        }
+        catch(NumberFormatException nfe)
+        {
+          cas = wgt/2.f;
+        }
+
         Consensus conseq = new Consensus(mat,   
                     gsc.getSequenceCollection(),
-                    options.getPlurality(),
-                    options.getCase(),
+                    plu,cas,
                     options.getIdentity());
 
         int fontSize = gsc.getFontSize();
@@ -784,6 +814,48 @@ public class AlignJFrame extends JFrame
     viewMenu.add(new JSeparator());
 
   }
+
+
+  /**
+  *
+  *
+  *  red, blue, cyan, darkGray, gray , green, lightGray,
+  *  magenta , orange, pink, white, yellow, black
+  *
+  */
+  private static Color resolveColor(String[] args,int index)
+  {
+    if(args[index].equalsIgnoreCase("red"))
+      return Color.red;
+    else if(args[index].equalsIgnoreCase("blue"))
+      return Color.blue;
+    else if(args[index].equalsIgnoreCase("black"))
+      return Color.black;
+    else if(args[index].equalsIgnoreCase("cyan"))
+      return Color.cyan;
+    else if(args[index].equalsIgnoreCase("darkGray"))
+      return Color.darkGray;
+    else if(args[index].equalsIgnoreCase("gray"))
+      return Color.gray;
+    else if(args[index].equalsIgnoreCase("green"))
+      return Color.green;
+    else if(args[index].equalsIgnoreCase("lightGray"))
+      return Color.lightGray;
+    else if(args[index].equalsIgnoreCase("magenta"))
+      return Color.magenta;
+    else if(args[index].equalsIgnoreCase("orange"))
+      return Color.orange;
+    else if(args[index].equalsIgnoreCase("pink"))
+      return Color.pink;
+    else if(args[index].equalsIgnoreCase("white"))
+      return Color.white;
+    else if(args[index].equalsIgnoreCase("yellow"))
+      return Color.yellow;
+    else if(args[index].equalsIgnoreCase("black"))
+      return Color.black;
+
+    return null;
+  }
   
   /**
   *
@@ -810,13 +882,15 @@ public class AlignJFrame extends JFrame
         if(args[i].indexOf("-help") > -1)
         {
           System.out.println(
-              "                  Jemboss Alignment Editor\n\n"+
+              "\n                  Jemboss Alignment Editor\n\n"+
               "DESCRIPTION\n"+
               "The Jemboss Alignment Editor can be used interactively to\n"+
               "edit a sequence alignment (read in fasta or MSF format). It can\n"+
               "also be used from the command line to produce image files\n"+
               "of the alignment.\n\nUSAGE\n"+
               "java org/emboss/jemboss/editor/AlignJFrame file [options]\n\n"+
+              "file       This is the multiple sequence alignment in\n"+
+              "           fasta or MSF format.\n\n"+
               "OPTIONS\n"+
               "-calc      Calculate consensus and display under the alignment.\n"+
               "           The following 3 flags can be used to define values\n"+
@@ -844,7 +918,16 @@ public class AlignJFrame extends JFrame
               "-id        Display a percentage ID pair table.\n"+
               "-noshow    Turns of the alignment display.\n"+
               "-nres      Number of residues to each line is a print out.\n"+
-              "-pretty    Prettyplot colour scheme.\n"+
+              "-pretty    EMBOSS prettyplot colour scheme. The -matrix flag option\n"+
+              "           can be used to define a scoring matrix for identifying\n"+
+              "           positive matches.\n"+
+              "           -noBox     switch off box drawing around identical and\n"+
+              "                      positive matches.\n"+
+              "           -colID     define a colour for identities.\n"+
+              "           -colMatch  define a colour for positive matches.\n"+  
+              "           Available colour options:\n"+  
+              "           red, blue, cyan, darkGray, gray , green, lightGray,\n"+
+              "           magenta , orange, pink, white, yellow, black\n"+     
               "-print     Print the alignment image. The following 2 flags can be\n"+
               "           used along with the print flag\n"+
               "           -prefix    prefix for image file.\n"+
@@ -853,7 +936,7 @@ public class AlignJFrame extends JFrame
               "           option.\n"+
               "-list      List the available scoring matrix files.\n\n"+
               "EXAMPLE\n"+
-              "java org/emboss/jemboss/editor/AlignJFrame file -matrix EBLOSUM80 \\\n"+
+              "java org.emboss.jemboss.editor.AlignJFrame file -matrix EBLOSUM80 \\\n"+
               "                             -pretty -noshow -id -print -type png\n");
           System.exit(0);
         }
@@ -876,6 +959,57 @@ public class AlignJFrame extends JFrame
       boolean show  = true;
       boolean print = false;
       int nresiduesPerLine = 20;
+
+      float wgt = 0.f;
+      Vector vseq = gsc.getSequenceCollection();
+      Enumeration enum = vseq.elements();
+      while(enum.hasMoreElements())
+      {
+        Sequence s = (Sequence)enum.nextElement();
+        if(!s.getName().equals("Consensus"))
+          wgt+=s.getWeight();
+      }
+
+      float plu = wgt/2.f;
+      float cas = wgt/2.f;
+      int ident = 0;
+      Color colID    = Color.red;
+      Color colMatch = Color.blue;
+      boolean prettyBox = true;
+
+      for(int i=0;i<args.length;i++)
+      {
+        if(args[i].indexOf("-matrix") > -1)
+        {
+          mat = new Matrix("resources/resources.jar",
+                           args[i+1]);
+          gsc.setMatrix(mat);
+          statusField.setText("Current matrix: "+args[i+1]);
+        }
+        else if(args[i].indexOf("-plu") > -1)
+          plu = Float.parseFloat(args[i+1]);
+        else if(args[i].indexOf("-case") > -1)
+          cas = Float.parseFloat(args[i+1]);
+        else if(args[i].indexOf("-numid") > -1)
+          ident = Integer.parseInt(args[i+1]);
+        else if(args[i].indexOf("-colID") > -1)
+          colID = resolveColor(args,i+1);
+        else if(args[i].indexOf("-colMatch") > -1)
+        {
+          Color col = resolveColor(args,i+1);
+          if(col != null)
+            colMatch = col;
+        }
+        else if(args[i].indexOf("-colID") > -1)
+        {
+          Color col = resolveColor(args,i+1);
+          if(col != null)
+            colID = col;
+        }
+        else if(args[i].indexOf("-noBox") > -1)
+          prettyBox = false;
+      }
+
       for(int i=0;i<args.length;i++)
       {
         if(args[i].indexOf("-color") > -1)
@@ -906,36 +1040,6 @@ public class AlignJFrame extends JFrame
         }
         else if(args[i].indexOf("-calc") > -1)
         {
-          float wgt = 0.f;
-
-          Vector vseq = gsc.getSequenceCollection();
-          Enumeration enum = vseq.elements();
-          while(enum.hasMoreElements())
-          {
-            Sequence s = (Sequence)enum.nextElement();
-            if(!s.getName().equals("Consensus"))
-              wgt+=s.getWeight();
-          }
-         
-          float plu = wgt/2.f;
-          float cas = wgt/2.f;
-          int ident = 0;
-          for(int j=0;j<args.length;j++)
-          {
-            if(args[j].indexOf("-plu") > -1)
-              plu = Float.parseFloat(args[j+1]);
-            else if(args[j].indexOf("-case") > -1)
-              cas = Float.parseFloat(args[j+1]);
-            else if(args[j].indexOf("-numid") > -1)
-              ident = Integer.parseInt(args[j+1]);
-            else if(args[j].indexOf("-matrix") > -1)
-            {
-              mat = new Matrix("resources/resources.jar",
-                           args[i+1]);
-              gsc.setMatrix(mat);
-              statusField.setText("Current matrix: "+args[i+1]);
-            }
-          }
           Consensus conseq = new Consensus(mat,
                     gsc.getSequenceCollection(),
                     plu,cas,ident);
@@ -950,13 +1054,6 @@ public class AlignJFrame extends JFrame
         else if(args[i].indexOf("-list") > -1)
           System.out.println("AVAILABLE DATABASES:\n"+
                              mat.getKeyNamesString());
-        else if(args[i].indexOf("-matrix") > -1)
-        {
-          mat = new Matrix("resources/resources.jar",
-                           args[i+1]);
-          gsc.setMatrix(mat);
-          statusField.setText("Current matrix: "+args[i+1]);
-        }
         else if(args[i].indexOf("-id") > -1)
         {
           IDTableJFrame idtab = new IDTableJFrame(gsc.getSequenceCollection()); 
@@ -972,7 +1069,7 @@ public class AlignJFrame extends JFrame
         {
           int minID = gsc.getNumberSequences();
           PrettyPlotJFrame pretty = new PrettyPlotJFrame(minID,
-                                     Color.red,Color.blue,true);
+                                     colID,colMatch,prettyBox);
           gsc.setPrettyPlot(true,pretty);
           gsc.setDrawBoxes(false);
           gsc.setDrawColor(false);

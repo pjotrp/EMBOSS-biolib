@@ -60,7 +60,7 @@ public class ConsensusOptions extends JFrame
 
     Box bacross = Box.createHorizontalBox();
     pluralFloat = new TextFieldFloat();
-    pluralFloat.setText("1.0");
+//    pluralFloat.setText("1.0");
     Dimension d = new Dimension(65,30);
     pluralFloat.setPreferredSize(d);
     pluralFloat.setMaximumSize(d);
@@ -95,7 +95,7 @@ public class ConsensusOptions extends JFrame
 
     bacross = Box.createHorizontalBox();
     caseFloat = new TextFieldFloat();
-    caseFloat.setText("0.0");
+//    caseFloat.setText("0.0");
     caseFloat.setPreferredSize(d);
     caseFloat.setMaximumSize(d);
     bacross.add(caseFloat);
