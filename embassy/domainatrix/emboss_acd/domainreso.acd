@@ -4,6 +4,7 @@ application: domainreso [
   gui: "yes"
   batch: "yes"
   cpu: "low"
+  embassy: "domainatrix"
 ]
 
 section: input [

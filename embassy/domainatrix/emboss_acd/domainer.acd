@@ -4,6 +4,7 @@ application: domainer [
   gui: "yes"
   batch: "yes"
   cpu: "low"
+  embassy: "domainatrix"
 ]
 
 section: input [
