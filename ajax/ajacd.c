@@ -641,6 +641,7 @@ static void      acdPrintCalcAttr(const AjPFile outf, const AjBool full,
 static void      acdProcess(void);
 static void      acdPromptAlign(AcdPAcd thys);
 static void      acdPromptCodon(AcdPAcd thys);
+static void      acdPromptCpdb(AcdPAcd thys);
 static void      acdPromptDirlist(AcdPAcd thys);
 static void      acdPromptFeat(AcdPAcd thys);
 static void      acdPromptFeatout(AcdPAcd thys);
@@ -660,6 +661,7 @@ static void      acdPromptOutproperties(AcdPAcd thys);
 static void      acdPromptOutscop(AcdPAcd thys);
 static void      acdPromptOuttree(AcdPAcd thys);
 static void      acdPromptReport(AcdPAcd thys);
+static void      acdPromptScop(AcdPAcd thys);
 static void      acdPromptSeq(AcdPAcd thys);
 static void      acdPromptSeqout(AcdPAcd thys);
 static void      acdPromptStandard(AcdPAcd thys, char* type, ajint* count);
@@ -839,6 +841,7 @@ static void acdSetAlign(AcdPAcd thys);
 static void acdSetArray(AcdPAcd thys);
 static void acdSetBool(AcdPAcd thys);
 static void acdSetCodon(AcdPAcd thys);
+static void acdSetCpdb(AcdPAcd thys);
 static void acdSetDirlist(AcdPAcd thys);
 static void acdSetDatafile(AcdPAcd thys);
 static void acdSetDirectory(AcdPAcd thys);
@@ -869,13 +872,12 @@ static void acdSetOutmatrixf(AcdPAcd thys);
 static void acdSetOutproperties(AcdPAcd thys);
 static void acdSetOutscop(AcdPAcd thys);
 static void acdSetOuttree(AcdPAcd thys);
-static void acdSetCpdb(AcdPAcd thys);
-static void acdSetScop(AcdPAcd thys);
 static void acdSetProperties(AcdPAcd thys);
 static void acdSetRange(AcdPAcd thys);
 static void acdSetRegexp(AcdPAcd thys);
 static void acdSetReport(AcdPAcd thys);
 /*static void acdSetRegions(AcdPAcd thys);*/
+static void acdSetScop(AcdPAcd thys);
 static void acdSetSelect(AcdPAcd thys);
 static void acdSetSeq(AcdPAcd thys);
 static void acdSetSeqall(AcdPAcd thys);
@@ -1082,6 +1084,14 @@ AcdOAttr acdAttrCodon[] =
 };
 
 
+
+AcdOAttr acdAttrCpdb[] =
+{
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
+    {NULL, VT_NULL, NULL,
+	 NULL}
+};
 
 AcdOAttr acdAttrDatafile[] =
 {
@@ -1508,6 +1518,14 @@ AcdOAttr acdAttrReport[] =
 };
 
 
+
+AcdOAttr acdAttrScop[] =
+{
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
+    {NULL, VT_NULL, NULL,
+	 NULL}
+};
 
 AcdOAttr acdAttrSec[] =
 {
@@ -2038,6 +2056,12 @@ AcdOQual acdQualAlign[] =
     {NULL, NULL, NULL, NULL}
 };
 
+AcdOQual acdQualCpdb[] =
+{
+    {"format",    "",  "string",   "Data format"},
+    {NULL, NULL, NULL, NULL}
+};
+
 AcdOQual acdQualFeat[] =
 {
     {"fformat",    "",  "string",  "Features format"},
@@ -2177,6 +2201,12 @@ AcdOQual acdQualReport[] =
     {"rdesshow",   "N", "boolean", "Show description in the report"},
     {"rscoreshow", "Y", "boolean", "Show the score in the report"},
     {"rusashow",   "N", "boolean", "Show the full USA in the report"},
+    {NULL, NULL, NULL, NULL}
+};
+
+AcdOQual acdQualScop[] =
+{
+    {"format",    "",  "string",   "Data format"},
     {NULL, NULL, NULL, NULL}
 };
 
@@ -2340,6 +2370,9 @@ AcdOType acdType[] =
     {"codon",	           "input",            acdSecInput,
 	 acdAttrCodon,     acdSetCodon,        NULL,
 	 AJTRUE,  &acdUseData, "Codon usage file in EMBOSS data path" },
+    {"cpdb",               "input",            acdSecInput,
+	 acdAttrCpdb,      acdSetCpdb,         acdQualCpdb,
+	 AJFALSE, &acdUseInfile, "Clean PDB file" },
     {"datafile",           "input",            acdSecInput,
 	 acdAttrDatafile,  acdSetDatafile,     NULL,
 	 AJFALSE, &acdUseData, "Data file" },
@@ -2439,6 +2472,9 @@ AcdOType acdType[] =
     {"report",             "output",           acdSecOutput,
 	 acdAttrReport,    acdSetReport,       acdQualReport,
 	 AJTRUE,  &acdUseReport, "Report output file" },
+    {"scop",               "input",            acdSecInput,
+	 acdAttrScop,      acdSetScop,         acdQualScop,
+	 AJFALSE, &acdUseInfile, "Clean PDB file" },
     {"selection",          "selection",        NULL,
 	 acdAttrSelect,    acdSetSelect,       NULL,
 	 AJFALSE, &acdUseMisc, "Choose from selection list of values" },
@@ -5475,6 +5511,104 @@ static void acdSetCodon(AcdPAcd thys)
 
 
 
+/* @func ajAcdGetCpdb *********************************************************
+**
+** Returns an item of type Cpdb as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPFile] Cpdb input file.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPFile ajAcdGetCpdb(const char *token)
+{
+    return acdGetValue(token, "cpdb");
+}
+
+
+
+
+/* @funcstatic acdSetCpdb *****************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD clean pdb file item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdSetCpdb(AcdPAcd thys)
+{
+    AjPFile val;
+
+    AjPStr name     = NULL;
+    AjBool required = ajFalse;
+    AjBool ok       = ajFalse;
+
+    static AjPStr defreply = NULL;
+    static AjPStr reply    = NULL;
+    ajint itry;
+
+    val = NULL;				/* set the default value */
+
+    acdAttrResolve(thys, "name", &name);
+    if(!ajStrLen(name))
+	ajStrAssC(&name,DEFCODON);
+
+    required = acdIsRequired(thys);
+    acdReplyInit(thys, ajStrStr(name), &defreply);
+    acdPromptCpdb(thys);
+
+    for(itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+
+	ajStrAss(&reply, defreply);
+
+	if(required)
+	    acdUserGet(thys, &reply);
+
+	if(ajStrLen(reply))
+	{
+	    val = ajFileNewIn(reply);
+	    if(!val)
+	    {
+		acdBadVal(thys, required,
+			  "Unable to read cleaned PDB data '%S'", reply);
+		ok = ajFalse;
+	    }
+	}
+	else
+	{
+	    acdBadVal(thys, required, "Cleaned PDB data file is required");
+	    ok = ajFalse;
+	}
+    }
+
+    if(!ok)
+	acdBadRetry(thys);
+
+    thys->Value = val;
+    ajStrAssS(&thys->ValStr, reply);
+
+    ajStrDel(&name);
+    return;
+}
+
+
+
+
+
+
+
 /* @func ajAcdGetDatafile *****************************************************
 **
 ** Returns an item of type Datafile as defined in a named ACD item.
@@ -7720,7 +7854,8 @@ static void acdSetMatrixf(AcdPAcd thys)
 ** are stored in the object and applied to the data on output.
 **
 ** @param [u] thys [AcdPAcd] ACD item.
-** @return [void]
+** @param [r] type [const char*] Standard output type name.
+** @return [AjPOutfile] Output file object of the specified type
 ** @@
 ******************************************************************************/
 
@@ -7847,7 +7982,7 @@ static AjPOutfile acdSetOutType(AcdPAcd thys, const char* type)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPFile] File object. The file was already opened by
+** @return [AjPOutfile] File object. The file was already opened by
 **         acdSetOut so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
@@ -7896,7 +8031,7 @@ static void acdSetOutcodon(AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPFile] File object. The file was already opened by
+** @return [AjPOutfile] File object. The file was already opened by
 **         acdSetOut so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
@@ -7946,7 +8081,7 @@ static void acdSetOutcpdb(AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPFile] File object. The file was already opened by
+** @return [AjPOutfile] File object. The file was already opened by
 **         acdSetOut so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
@@ -8127,7 +8262,7 @@ static void acdSetOutdir(AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPFile] File object. The file was already opened by
+** @return [AjPOutfile] File object. The file was already opened by
 **         acdSetOut so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
@@ -8177,7 +8312,7 @@ static void acdSetOutdiscrete(AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPFile] File object. The file was already opened by
+** @return [AjPOutfile] File object. The file was already opened by
 **         acdSetOut so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
@@ -8363,7 +8498,7 @@ static void acdSetOutfile(AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPFile] File object. The file was already opened by
+** @return [AjPOutfile] File object. The file was already opened by
 **         acdSetOut so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
@@ -8413,7 +8548,7 @@ static void acdSetOutfreq(AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPFile] File object. The file was already opened by
+** @return [AjPOutfile] File object. The file was already opened by
 **         acdSetOut so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
@@ -8463,7 +8598,7 @@ static void acdSetOutmatrix(AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPFile] File object. The file was already opened by
+** @return [AjPOutfile] File object. The file was already opened by
 **         acdSetOut so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
@@ -8513,7 +8648,7 @@ static void acdSetOutmatrixf(AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPFile] File object. The file was already opened by
+** @return [AjPOutfile] File object. The file was already opened by
 **         acdSetOut so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
@@ -8563,7 +8698,7 @@ static void acdSetOutproperties(AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPFile] File object. The file was already opened by
+** @return [AjPOutfile] File object. The file was already opened by
 **         acdSetOut so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
@@ -8613,7 +8748,7 @@ static void acdSetOutscop(AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPFile] File object. The file was already opened by
+** @return [AjPOutfile] File object. The file was already opened by
 **         acdSetOut so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
@@ -9152,6 +9287,104 @@ static void acdSetReport(AcdPAcd thys)
     
     return;
 }
+
+
+
+
+
+
+/* @func ajAcdGetScop *********************************************************
+**
+** Returns an item of type Scop as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPFile] Scop input file.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPFile ajAcdGetScop(const char *token)
+{
+    return acdGetValue(token, "scop");
+}
+
+
+
+
+/* @funcstatic acdSetScop *****************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD clean pdb file item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdSetScop(AcdPAcd thys)
+{
+    AjPFile val;
+
+    AjPStr name     = NULL;
+    AjBool required = ajFalse;
+    AjBool ok       = ajFalse;
+
+    static AjPStr defreply = NULL;
+    static AjPStr reply    = NULL;
+    ajint itry;
+
+    val = NULL;				/* set the default value */
+
+    acdAttrResolve(thys, "name", &name);
+    if(!ajStrLen(name))
+	ajStrAssC(&name,DEFCODON);
+
+    required = acdIsRequired(thys);
+    acdReplyInit(thys, ajStrStr(name), &defreply);
+    acdPromptScop(thys);
+
+    for(itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+
+	ajStrAss(&reply, defreply);
+
+	if(required)
+	    acdUserGet(thys, &reply);
+
+	if(ajStrLen(reply))
+	{
+	    val = ajFileNewIn(reply);
+	    if(!val)
+	    {
+		acdBadVal(thys, required,
+			  "Unable to read scop data '%S'", reply);
+		ok = ajFalse;
+	    }
+	}
+	else
+	{
+	    acdBadVal(thys, required, "Scop data file is required");
+	    ok = ajFalse;
+	}
+    }
+
+    if(!ok)
+	acdBadRetry(thys);
+
+    thys->Value = val;
+    ajStrAssS(&thys->ValStr, reply);
+
+    ajStrDel(&name);
+    return;
+}
+
 
 
 
@@ -21662,7 +21895,7 @@ static void acdValidSectionFull(AjPStr* secname)
 **
 ** Tests the output format for an outcodon ACD type
 **
-** @param [R] format [AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
@@ -21688,7 +21921,7 @@ static ajint acdOutFormatCodon(AjPStr name)
 **
 ** Tests the output format for an outcpdb ACD type
 **
-** @param [R] format [AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
@@ -21714,7 +21947,7 @@ static ajint acdOutFormatCpdb(AjPStr name)
 **
 ** Tests the output format for an out ACD type
 **
-** @param [R] format [AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
@@ -21740,7 +21973,7 @@ static ajint acdOutFormatData(AjPStr name)
 **
 ** Tests the output format for an out ACD type
 **
-** @param [R] format [AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
@@ -21766,7 +21999,7 @@ static ajint acdOutFormatDiscrete(AjPStr name)
 **
 ** Tests the output format for an outdistance ACD type
 **
-** @param [R] format [AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
@@ -21792,7 +22025,7 @@ static ajint acdOutFormatDistance(AjPStr name)
 **
 ** Tests the output format for an outfreq ACD type
 **
-** @param [R] format [AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
@@ -21818,7 +22051,7 @@ static ajint acdOutFormatFreq(AjPStr name)
 **
 ** Tests the output format for an outmatrix ACD type
 **
-** @param [R] format [AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
@@ -21844,7 +22077,7 @@ static ajint acdOutFormatMatrix(AjPStr name)
 **
 ** Tests the output format for an outmatrixf ACD type
 **
-** @param [R] format [AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
@@ -21870,7 +22103,7 @@ static ajint acdOutFormatMatrixf(AjPStr name)
 **
 ** Tests the output format for an outproperties ACD type
 **
-** @param [R] format [AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
@@ -21896,7 +22129,7 @@ static ajint acdOutFormatProperties(AjPStr name)
 **
 ** Tests the output format for an outscop ACD type
 **
-** @param [R] format [AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
@@ -21922,7 +22155,7 @@ static ajint acdOutFormatScop(AjPStr name)
 **
 ** Tests the output format for an outtree ACD type
 **
-** @param [R] format [AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
