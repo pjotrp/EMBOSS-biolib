@@ -67,6 +67,7 @@ static AjPSeq* alignSeqs (AjPAlign thys, ajint iali);
 static void    alignSim (AjPStr* pmark, const char idch, const char simch,
 			 const char misch, const char gapch);
 static float   alignTotweight (AjPAlign thys, ajint iali);
+static void    alignWriteFasta (AjPAlign thys);
 static void    alignWriteMsf (AjPAlign thys);
 
 static void    alignWriteEmboss (AjPAlign thys);
@@ -91,10 +92,12 @@ static void    alignWriteSimple (AjPAlign thys);
 **
 ******************************************************************************/
 
-static AlignOFormat alignFormat[] = { 
+static AlignOFormat alignFormat[] = {
+  /* name       dna      protein min max function */ 
   /* standard sequence formats */
   {"unknown",   AJFALSE, AJFALSE, 0, 0, alignWriteSimple},
-  {"msf",       AJTRUE,  AJFALSE, 0, 0, alignWriteMsf},
+  {"fasta",     AJTRUE,  AJTRUE,  0, 0, alignWriteFasta},
+  {"msf",       AJTRUE,  AJTRUE,  0, 0, alignWriteMsf},
   /* trace  for debug */
   {"trace",     AJTRUE,  AJTRUE,  0, 0, alignWriteTrace},
   /* alignment formats */
@@ -156,6 +159,8 @@ static void alignWriteMsf (AjPAlign thys) {
   if (!sqfmt)
     ajStrAssC (&sqfmt, "msf");
 
+  thys->SeqOnly = ajTrue;
+
   ajStrAssS (&seqout->Formatstr, sqfmt);
   seqout->File = thys->File;
 
@@ -163,6 +168,48 @@ static void alignWriteMsf (AjPAlign thys) {
 
   seqset = ajSeqsetNew();
   for (i=0; i< thys->Nseqs; i++) {
+    ajSeqsetApp (seqset, alignSeq(thys, i, 0));
+  }
+
+  ajSeqsetWrite (seqout, seqset);
+  ajSeqWriteClose (seqout);
+  seqout->File = NULL;
+
+  ajSeqsetDel(&seqset);
+  ajSeqoutDel(&seqout);
+
+  return;
+}
+
+/* @funcstatic alignWriteFasta ************************************************
+**
+** Writes an alignment in FASTA format
+**
+** @param [R] thys [AjPAlign] Alignment object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void alignWriteFasta (AjPAlign thys) {
+
+  static AjPStr sqfmt = NULL;
+  AjPSeqout seqout = ajSeqoutNewF(thys->File);
+  AjPSeqset seqset = NULL;
+  ajint i;
+
+  if (!sqfmt)
+    ajStrAssC (&sqfmt, "fasta");
+
+  thys->SeqOnly = ajTrue;
+
+  ajStrAssS (&seqout->Formatstr, sqfmt);
+  seqout->File = thys->File;
+
+  ajSeqoutOpen(seqout);
+
+  seqset = ajSeqsetNew();
+  for (i=0; i< thys->Nseqs; i++) {
+    /* ajSeqGapStandard(alignSeq(thys, i, 0), '.'); */
     ajSeqsetApp (seqset, alignSeq(thys, i, 0));
   }
 
@@ -316,7 +363,7 @@ static void alignWriteEmboss (AjPAlign thys) {
 	    }
 
 	    /*
-//	    ajFmtPrintF(outf,"%-15.15s ",namea);
+//	    ajFmtPrintF(outf,"%-13.13s ",namea);
 //	    if(aend!=acnt)
 //		ajFmtPrintF(outf,"%-8d ",acnt);
 //	    else
@@ -334,7 +381,7 @@ static void alignWriteEmboss (AjPAlign thys) {
 //	    if(mark)
 //		ajFmtPrintF(outf,"                         %s\n",ajStrStr(mp));
 //		
-//	    ajFmtPrintF(outf,"%-15.15s ",nameb);
+//	    ajFmtPrintF(outf,"%-13.13s ",nameb);
 //	    if(bend!=bcnt)
 //		ajFmtPrintF(outf,"%-8d ",bcnt);
 //	    else
@@ -367,7 +414,7 @@ static void alignWriteEmboss (AjPAlign thys) {
 	}
 	
 	/*
-//	ajFmtPrintF(outf,"%-15.15s ",namea);
+//	ajFmtPrintF(outf,"%-13.13s ",namea);
 //	if(aend!=acnt)
 //	    ajFmtPrintF(outf,"%-8d ",acnt);
 //	else
@@ -385,7 +432,7 @@ static void alignWriteEmboss (AjPAlign thys) {
 //	if(mark)
 //	    ajFmtPrintF(outf,"                         %s\n",ajStrStr(mp));
 //	
-//	ajFmtPrintF(outf,"%-15.15s ",nameb);
+//	ajFmtPrintF(outf,"%-13.13s ",nameb);
 //	if(bend!=bcnt)
 //	    ajFmtPrintF(outf,"%-8d ",bcnt);
 //	else
@@ -574,8 +621,8 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
   ajint llen = thys->Width;
 
   AjPSeqCvt cvt = NULL;	/* cvt = ajMatrixCvt(matrix); */
-  ajint **sub;		/* sub = ajMatrixArray(matrix); */
-  float **fsub;		/* sub = ajMatrixArray(matrix); */
+  ajint **sub=NULL;	/* sub = ajMatrixArray(matrix); */
+  float **fsub=NULL;	/* sub = ajMatrixArray(matrix); */
 
   ajint nc;
   AjPSeq seq = NULL;
@@ -1040,18 +1087,18 @@ static void alignWriteSimple (AjPAlign thys) {
 
 	if (nseq==2 && iseq==1) /* 2 seqs, markup between them */
 	  ajFmtPrintF (outf,
-		       "                       %S\n",
+		       "                     %S\n",
 		       mrkcons);
 
 	ajFmtPrintF (outf,
-		     "%-15.15S %6d %S %6d\n",
+		     "%-13.13S %6d %S %6d\n",
 		     alignSeqName(thys, iseq),
 		     ipos[iseq]+1, tmpstr, ipos[iseq]+icnt);
 	ipos[iseq] += icnt;
       }
       if (nseq > 2) {		/* 3 or more seqs, markup under */
 	ajFmtPrintF (outf,
-		     "                       %S\n",
+		     "                     %S\n",
 		     mrkcons);
       }
       ajFmtPrintF (outf, "\n");
@@ -1235,18 +1282,18 @@ static void alignWriteSrsAny (AjPAlign thys, ajint imax, AjBool mark) {
 
 	if (pair && iseq==1) /* 2 seqs, markup between them */
 	  ajFmtPrintF (outf,
-		       "                       %S\n",
+		       "                     %S\n",
 		       mrkcons);
 
 	ajFmtPrintF (outf,
-		     "%-15.15S %6d %S %6d\n",
+		     "%-13.13S %6d %S %6d\n",
 		     alignSeqName(thys, iseq),
 		     ipos[iseq]+1, tmpstr, ipos[iseq]+icnt);
 	ipos[iseq] += icnt;
       }
       if (mark && !pair) {		/* 3 or more seqs, markup under */
 	ajFmtPrintF (outf,
-		     "                       %S\n",
+		     "                     %S\n",
 		     mrkcons);
       }
       ajFmtPrintF (outf, "\n");
@@ -1510,21 +1557,21 @@ AjBool ajAlignValid (AjPAlign thys) {
 
   if (!thys->Format) {
     if (!ajAlignFindFormat(thys->Formatstr, &thys->Format)) {
-      ajWarn("Unknown alignment format '%S'", thys->Formatstr);
+      ajFatal("Unknown alignment format '%S'", thys->Formatstr);
       return ajFalse;
     }
   }
 
   if ( alignFormat[thys->Format].Minseq  &&
        thys->Nmin < alignFormat[thys->Format].Minseq) {
-    ajWarn("Alignment format specifies at least %d sequences, alignment has only %d",
+    ajFatal("Alignment format specifies at least %d sequences, alignment has only %d",
 	   alignFormat[thys->Format].Minseq, thys->Nmin);
     return ajFalse;
   }
 
   if ( alignFormat[thys->Format].Maxseq  &&
        thys->Nmax > alignFormat[thys->Format].Maxseq) {
-    ajWarn("Alignment format specifies at most %d sequences, alignment has  %d",
+    ajFatal("Alignment format specifies at most %d sequences, alignment has  %d",
 	   alignFormat[thys->Format].Minseq, thys->Nmin);
     return ajFalse;
   }
@@ -1608,7 +1655,8 @@ void ajAlignClose (AjPAlign thys) {
 
   ajDebug ("ajAlignClose '%F'\n", thys->File);
 
-  ajAlignWriteTail (thys);
+  if (!thys->SeqOnly)
+    ajAlignWriteTail (thys);
 
   ajFileClose (&thys->File);
 
@@ -2024,14 +2072,14 @@ void ajAlignSetGapR (AjPAlign thys, float gappen, float extpen) {
   ajint precision=3;
   ajint i;
 
-  ajFmtPrintS (&tmpstr, "%.3f", gappen);
+  ajFmtPrintS (&tmpstr, "%.*f", precision, gappen);
   for (i=1; i<precision; i++) {
     if (ajStrChar(tmpstr, -1) != '0') break;
     ajStrTrim(&tmpstr, -1);
   }
   ajStrAssS (&thys->GapPen, tmpstr);
 
-  ajFmtPrintS (&tmpstr, "%.3f", extpen);
+  ajFmtPrintS (&tmpstr, "%.*f", precision, extpen);
   for (i=1; i<precision; i++) {
     if (ajStrChar(tmpstr, -1) != '0') break;
     ajStrTrim(&tmpstr, -1);
@@ -2083,7 +2131,7 @@ void ajAlignSetScoreR (AjPAlign thys, float score) {
   AlignPData data;
 
   ajListLast(thys->Data, (void**) &data);
-  ajFmtPrintS (&tmpstr, "%.3f", score);
+  ajFmtPrintS (&tmpstr, "%.*f", precision, score);
   for (i=1; i<precision; i++) {
     if (ajStrChar(tmpstr, -1) != '0') break;
     ajStrTrim(&tmpstr, -1);

@@ -48,6 +48,7 @@ typedef struct AjSAlign {
   AjPStr Matrix;		/* Matrix name */
   AjPStr GapPen;		/* Gap penalty (converted to string)  */
   AjPStr ExtPen;		/* Gap extend penalty (to string) */
+  AjBool SeqOnly;		/* Sequence output only, no head or tail */
 } AjOAlign, *AjPAlign;
 
 void         ajAlignClose (AjPAlign thys);
