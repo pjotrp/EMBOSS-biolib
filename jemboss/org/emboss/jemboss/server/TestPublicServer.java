@@ -26,6 +26,14 @@ import org.emboss.jemboss.JembossJarUtil;
 import java.security.Security; //ssl
 import java.net.*;
 
+/**
+*
+* This can be used to test the public server. It is run from
+* the command line:
+*
+* java org.emboss.jemboss.server.TestPublicServer
+*
+*/
 public class TestPublicServer
 {
     private static JembossParams mysettings;
