@@ -21,6 +21,7 @@ properties: ancestral [
   knowntype: "ancestral states"
   nullok: "Y"
   default: ""
+  information: "Ancestral properties file"
 ]
 
 properties: multistate [
@@ -30,6 +31,7 @@ properties: multistate [
   knowntype: "multistate factors"
   nullok: "Y"
   default: ""
+  information: "Multistate factors file"
 ]
 
 properties: weights [
@@ -39,6 +41,7 @@ properties: weights [
   knowntype: "Weights"
   nullok: "Y"
   default: ""
+  information: "Weights file"
 ]
 
 endsection: input
