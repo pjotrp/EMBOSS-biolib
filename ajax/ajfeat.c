@@ -1120,7 +1120,7 @@ static AjPFeature featFeatNewProt (AjPFeattable thys,
 
   featInit();
 
-  /* Allocate the object... */
+  /* Allocate the object... and a new Tags list */
   ret = featFeatureNew() ;
 
   if(flags & FEATFLAG_CHILD){
@@ -1144,8 +1144,6 @@ static AjPFeature featFeatNewProt (AjPFeattable thys,
 
   ret->Flags = flags;
   
-  ret->Tags = ajListNew() ;        /* Assume empty until otherwise needed */
-
   ret->Strand = '\0' ;
     
   ret->Frame  = 0 ;
@@ -5045,12 +5043,11 @@ AjPFeature ajObsFeatNew (AjPFeattable thys,
 
   ajDebug ("ajFeatNew '%S' %d .. %d\n", type, start, end);
 
-  /* Allocate the object... */
+  /* Allocate the object... and a new Tags list*/
   ret = featFeatureNew() ;
 
   ajStrCopy (&ret->Type, type);
 
-  ret->Tags = ajListNew();
   thys->Groups++;
   ret->Group = thys->Groups;
   ret->Exon = 0;
