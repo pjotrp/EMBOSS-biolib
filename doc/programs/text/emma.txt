@@ -756,27 +756,16 @@ Data files
        
 Notes
 
-   In the GCG package, there is a program called PILEUP which uses a very
-   similar algorithm to the one in ClustalW. There are 2 main differences
-   between the programs: 1) the metric used to compare the sequences for
-   the initial "guide tree" uses a full global, optimal alignment in
-   PILEUP instead of the fast, approximate ones in ClustalW. This makes
-   PILEUP much slower for the comparison of long sequences. In principle,
-   the distances calculated from PILEUP will be more sensitive than
-   ClustalW's, but in practice it will not make much difference, except
-   in difficult cases. 2) During the multiple alignment, terminal gaps
-   are penalised in ClustalW but not in PILEUP. This will make the PILEUP
-   alignments better when the sequences are of very different lengths
-   (has no effect if there are no large terminal gaps).
-   
 References
 
-   The main reference for ClustalW is:
-   Thompson, J.D., Higgins, D.G. and Gibson, T.J. (1994) "CLUSTAL W:
-   improving the sensitivity of progressive multiple sequence alignment
-   through sequence weighting, positions-specific gap penalties and
-   weight matrix choice." Nucleic Acids Research, 22:4673-4680. Other
-   refernces for methods, etc. are:
+   The main reference for ClustalW is: Thompson, J.D., Higgins, D.G. and
+   Gibson, T.J. (1994) "CLUSTAL W: improving the sensitivity of
+   progressive multiple sequence alignment through sequence weighting,
+   positions-specific gap penalties and weight matrix choice." Nucleic
+   Acids Research, 22:4673-4680. 
+   
+   Other refernces for methods, etc. are:
+   
     1. Feng, D.-F. and Doolittle, R.F. (1987). J. Mol. Evol. 25, 351-360.
     2. Needleman, S.B. and Wunsch, C.D. (1970). J. Mol. Biol. 48,
        443-453.
