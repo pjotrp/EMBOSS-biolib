@@ -44,9 +44,9 @@ extern "C"
 
 typedef struct AjS3dVector
 {
-    float X;
-    float Y;
-    float Z;
+    float x;
+    float y;
+    float z;
 } AjO3dVector;
 #define AjP3dVector AjO3dVector*
 
@@ -57,7 +57,7 @@ typedef struct AjS3dVector
 /* =================== All functions in alphabetical order ================= */
 /* ========================================================================= */
 
-/* aj3dvector.h () $Date: 2003/10/15 10:40:57 $                    DJC Oct03 */
+/* aj3dvector.h () $Date: 2003/10/16 16:40:25 $                    DJC Oct03 */
 
 float       aj3dVectorAngle(AjP3dVector ajp3dVectorFirst,
 			    AjP3dVector ajp3dVectorSecond);
@@ -72,10 +72,10 @@ void        aj3dVectorCrossProduct(AjP3dVector ajp3dVectorFirst,
 float       aj3dVectorDihedralAngle(AjP3dVector ajp3dVectorA,
 				    AjP3dVector ajp3dVectorB,
 				    AjP3dVector ajp3dVectorC);
+void        aj3dVectorDel(AjP3dVector* ajp3dVectorToBeDestroyed);
 float       aj3dVectorDotProduct(AjP3dVector ajp3dVectorFirst,
 				 AjP3dVector ajp3dVectorSecond);
-void        aj3dVectorDel(AjP3dVector* ajp3dVectorToBeDestroyed);
-float       aj3dVectorLength(AjP3dVector ajp3dVectorToBeMeasured);
+float       aj3dVectorLength(AjP3dVector ajp3dVectorToBeSized);
 AjP3dVector aj3dVectorNew(void);
 
 #endif
