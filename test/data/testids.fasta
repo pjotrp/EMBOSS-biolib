@@ -1,0 +1,14 @@
+>simple Fasta format simple id name
+SIMPLE
+>database:entry Database name prefix
+DATABASEENTRY
+>database:idacc A12345 Database name prefix with accession number
+DATABASEIDACC
+>sanger S67890 Sanger Centre style (from ACEDB) with simple id and accession
+SANGER
+>fragment.12 Sanger contig with clone name and contig number
+FRAGMENT
+> Nameless
+NAMELESS
+>
+BLANK
