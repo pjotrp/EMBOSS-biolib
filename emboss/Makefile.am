@@ -11,7 +11,7 @@ patmattest \
 psiblasts \
 seqinfo seqretsingle \
 sigplot sigscan \
-testplot treetypedisplay 
+testplot treetypedisplay
 
 bin_PROGRAMS = abiview acdc antigenic \
 backtranseq banana btwisted \
@@ -33,7 +33,7 @@ palindrome pasteseq patmatdb patmatmotifs \
 pepcoil pepinfo pepnet pepstats \
 pepwheel pepwindow pepwindowall \
 plotcon plotorf polydot preg \
-prettyplot prettyseq prima primer3 primersearch printsextract \
+prettyplot prettyseq prima primer3 primers primersearch printsextract \
 profit prophecy prophet \
 prosextract pscan \
 rebaseextract recoder redata remap restover restrict revseq scope \
@@ -151,6 +151,7 @@ prettyplot_SOURCES = prettyplot.c
 prettyseq_SOURCES = prettyseq.c
 prima_SOURCES = prima.c
 primer3_SOURCES = primer3.c
+primers_SOURCES = primers.c
 primersearch_SOURCES = primersearch.c
 printsextract_SOURCES = printsextract.c
 profit_SOURCES = profit.c
