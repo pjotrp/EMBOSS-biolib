@@ -4,8 +4,8 @@
 **  writes the resulting alignments into a new directory
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.2 $
-** @modified $Date: 2004/07/14 15:37:48 $
+** @version $Revision: 1.3 $
+** @modified $Date: 2004/09/08 10:45:59 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -55,22 +55,19 @@ int main( int argc , char **argv )
     const char *pcFirstCommandLine   = NULL;
     const char *pcSecondCommandLine  = NULL;
 
-    /* alignments */
-    AjPStr ajpStrSeqPairFileName     = NULL; /* name of...  */
-    AjPFile ajpFileSeqPair           = NULL; /*
-					      * ...file containing current
-                                              * pair of unaligned input
-                                              * sequences
-                                              */
-    AjPList ajpListSeqPairFiles      = NULL; /* list of alignment files  */
-    AjPSeqset ajpSeqsetUnalignedPair = NULL; /* object holding both seqs */
+    /* all unaligned input sequences in directory */
+    AjPList ajpListSeqPairFiles      = NULL;
+    /* current pair of unaligned input sequences */
+    AjPStr ajpStrSeqPairFileName     = NULL; 
+    AjPFile ajpFileSeqPair           = NULL; 
+    AjPSeqset ajpSeqsetUnalignedPair = NULL;
 
     /* alignment parameters */
-    AjPStr ajpStrPathToCommand        = NULL;
+    AjPStr ajpStrPathToCommands       = NULL;
     AjPStr ajpStrFirstCommandName     = NULL;
     AjPStr ajpStrSecondCommandName    = NULL;
     AjPStr ajpStrPathToScoringMatrix  = NULL;
-    AjPStr ajpStrScoringMatrix        = NULL;
+    AjPStr ajpStrScoringMatrixName    = NULL;
     AjPStr ajpStrFirstPathToOutfile   = NULL; /* directories for aligned files... */
     AjPStr ajpStrSecondPathToOutfile  = NULL; /*   ...from two alignment progs    */
     AjPStr ajpStrFirstOutfileName     = NULL; /* full name of output file of aligned sequences */
@@ -80,38 +77,23 @@ int main( int argc , char **argv )
     AjPStr ajpStrAlignmentFormat      = NULL; /* format for output alignment file              */
     AjPStr ajpStrFirstCommandLine     = NULL; /* command line given to alignment program       */
     AjPStr ajpStrSecondCommandLine    = NULL; /* command line given to alignment program       */
+    embInit("alignrunner", argc, argv);
 
-    /* DDDDEBUGGING: TEMPORARY PARAMETER VALUES BELOW */
-    ajStrAssC(&ajpStrPathToCommand,
-	      "/users/damian/EMBOSS/emboss/emboss/emboss");
-    ajStrAssC(&ajpStrFirstCommandName,
-	      "needle");
-    ajStrAssC(&ajpStrSecondCommandName,
-	      "contactalign");
-    ajStrAssC(&ajpStrPathToScoringMatrix,
-	      "/users/damian/EMBOSS/emboss/emboss/emboss/data");
-    ajStrAssC(&ajpStrScoringMatrix,
-	      "EBLOSUM62");
-    fExtensionPenalty = 0.5;
-    fGapPenalty = 10.0;
-    ajStrAssC(&ajpStrFirstPathToOutfile,
-	      "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_output_alignments/needle");
-    ajStrAssC(&ajpStrSecondPathToOutfile,
-	      "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_output_alignments/contactalign");
-    ajStrAssC(&ajpStrFirstOutfileSuffix,
-	      ".needle");
-    ajStrAssC(&ajpStrSecondOutfileSuffix,
-	      ".contactalign");
-    ajStrAssC(&ajpStrAlignmentFormat,
-	      "fasta");
 
-    embInit( "alignrunner", argc, argv );
-
-    /*
-     * get list unaligned files containing unaligned sequences
-     * and directory of aligned sequences directory from ACD
-     */
+    /* get command-line parameters from ACD */     
+    ajpStrPathToCommands = ajAcdGetDirectoryName("pathtocommands");
+    ajpStrFirstCommandName = ajAcdGetString("firstcommandname");
+    ajpStrSecondCommandName = ajAcdGetString("secondcommandname");
+    ajpStrPathToScoringMatrix = ajAcdGetDirectoryName("scoringmatrixdirname");
+    ajpStrScoringMatrixName = ajAcdGetString("scoringmatrixname");
+    fGapPenalty = ajAcdGetFloat("gapopen");
+    fExtensionPenalty = ajAcdGetFloat("gapextend");
+    ajpStrFirstPathToOutfile = ajAcdGetOutdirName("firstalignedseqsoutdir");
+    ajpStrSecondPathToOutfile = ajAcdGetOutdirName("secondalignedseqsoutdir");
     ajpListSeqPairFiles = ajAcdGetDirlist("seqpairsdir");
+    ajpStrFirstOutfileSuffix = ajAcdGetString("firstoutfilesuffix");
+    ajpStrSecondOutfileSuffix = ajAcdGetString("secondoutfilesuffix");
+    ajpStrAlignmentFormat = ajAcdGetString("outfileformat");
 
     /* count the number of sequence pairs to be aligned */
     ajIntNumberOfSeqPairFiles = ajListLength(ajpListSeqPairFiles);
@@ -161,19 +143,19 @@ int main( int argc , char **argv )
 
 	/* obtain sequences as modifiable strings */
 	ajFmtPrintS(&ajpStrFirstCommandLine,
-		    "%S/%S -asequence asis::%S  -bsequence asis::%S -datafile %S/%S -gapopen %2.1f -gapextend %2.1f -outfile %S/%S -aformat3 %S",
-		    ajpStrPathToCommand, ajpStrFirstCommandName,
+		    "%S/%S -asequence asis::%S  -bsequence asis::%S -datafile %S%S -gapopen %2.1f -gapextend %2.1f -outfile %S/%S -aformat3 %S",
+		    ajpStrPathToCommands, ajpStrFirstCommandName,
 		    ajpStrQuerySeq, ajpStrTemplateSeq,
-		    ajpStrPathToScoringMatrix, ajpStrScoringMatrix,
+		    ajpStrPathToScoringMatrix, ajpStrScoringMatrixName,
 		    fGapPenalty, fExtensionPenalty,
 		    ajpStrFirstPathToOutfile, ajpStrFirstOutfileName,
 		    ajpStrAlignmentFormat);
 
 	ajFmtPrintS(&ajpStrSecondCommandLine,
-		    "%S/%S -down asis::%S -across asis::%S -substitution %S/%S -gapo %2.1f -gape %2.1f -aligned %S/%S",
-		    ajpStrPathToCommand, ajpStrSecondCommandName,
+		    "%S/%S -down asis::%S -across asis::%S -substitution %S%S -gapo %2.1f -gape %2.1f -aligned %S/%S",
+		    ajpStrPathToCommands, ajpStrSecondCommandName,
 		    ajpStrQuerySeq, ajpStrTemplateSeq,
-		    ajpStrPathToScoringMatrix, ajpStrScoringMatrix,
+		    ajpStrPathToScoringMatrix, ajpStrScoringMatrixName,
 		    fGapPenalty, fExtensionPenalty,
 		    ajpStrSecondPathToOutfile, ajpStrSecondOutfileName);
 
