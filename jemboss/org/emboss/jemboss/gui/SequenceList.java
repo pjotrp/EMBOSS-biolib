@@ -306,17 +306,9 @@ class DragJTable extends JTable implements DragGestureListener,
     if(ncol == convertColumnIndexToView(SequenceListTableModel.COL_NAME))
     {
       int nrow = getSelectedRow();
-//    String fileName = getFileName(nrow);
-//    if(isListFile(nrow).booleanValue())
-//      fileName="@".concat(fileName);
-
       e.startDrag(DragSource.DefaultCopyDrop,             // cursor
             (Transferable)seqModel.getSequenceData(nrow), // transferable data
                   this);                                  // drag source listener
-
-//    e.startDrag(DragSource.DefaultCopyDrop,  // cursor
-//       new StringSelection(fileName),        // transferable data
-//                               this);        // drag source listener
     }
   }
   public void dragDropEnd(DragSourceDropEvent e) {}
@@ -358,6 +350,7 @@ class DragJTable extends JTable implements DragGestureListener,
         final FileNode fn =
            (FileNode)t.getTransferData(FileNode.FILENODE);
         insertData(seqModel,e.getLocation(),fn.getFile().getCanonicalPath(),
+                   "","",new Boolean(false),new Boolean(false),
                    new Boolean(false));
         e.getDropTargetContext().dropComplete(true);
       }
@@ -369,7 +362,9 @@ class DragJTable extends JTable implements DragGestureListener,
       try
       {
         String dropS = (String)t.getTransferData(DataFlavor.stringFlavor);
-        insertData(seqModel,e.getLocation(),dropS,new Boolean(true));
+        insertData(seqModel,e.getLocation(),dropS,
+                   "","",new Boolean(false),new Boolean(false),
+                   new Boolean(true));
         e.getDropTargetContext().dropComplete(true);
       }
       catch (Exception exp)
@@ -377,18 +372,19 @@ class DragJTable extends JTable implements DragGestureListener,
         e.rejectDrop();
       }
     }
-    else if(t.isDataFlavorSupported(DataFlavor.stringFlavor))
-    {
-      System.out.println("HERE DataFlavor.stringFlavor");
-    }
     else if(t.isDataFlavorSupported(SequenceData.SEQUENCEDATA))
     {
       try
       {
         SequenceData seqData = (SequenceData)
            t.getTransferData(SequenceData.SEQUENCEDATA);
-        System.out.println(seqData.s_name);
-        System.out.println(seqData.s_beg);
+
+        String seqName = seqData.s_name;
+
+        insertData(seqModel,e.getLocation(),seqData.s_name,
+                   seqData.s_beg,seqData.s_end,
+                   seqData.s_listFile,seqData.s_default,
+                   seqData.s_remote);
       }
       catch (UnsupportedFlavorException ufe){}
       catch (IOException ioe){}
@@ -398,11 +394,12 @@ class DragJTable extends JTable implements DragGestureListener,
 
 
   public void insertData(SequenceListTableModel seqModel, Point ploc,
-                         String fileName, Boolean bremote)
+                         String fileName, String sbeg, String send,
+                         Boolean lis, Boolean def, Boolean bremote)
   {
     int row = rowAtPoint(ploc);
-    seqModel.modelVector.insertElementAt(new SequenceData(fileName,"","",
-                      new Boolean(false), new Boolean(false),bremote),row);
+    seqModel.modelVector.insertElementAt(new SequenceData(fileName,
+                                   sbeg,send,lis,def,bremote),row);
 
     tableChanged(new TableModelEvent(seqModel, row+1, row+1,
             TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT));
@@ -487,7 +484,7 @@ class SequenceListTableModel extends AbstractTableModel
   }
   
 
-  public SequenceData getSequenceData(int nrow)
+  protected SequenceData getSequenceData(int nrow)
   {
     return (SequenceData)modelVector.get(nrow);
   }
