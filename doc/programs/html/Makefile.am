@@ -49,7 +49,8 @@ pkgdata2_DATA = isochore.html kitsch.html lindna.html marscan.html \
                msbar.html mse.html mutation_group.html needle.html \
                neighbor.html new_group_group.html newcpgreport.html \
                newcpgseek.html newseq.html noreturn.html notseq.html \
-               nrscope.html nthseq.html nucleic_codon_usage_group.html \
+               nrscope.html nthseq.html nucleic_2d_structure_group.html \
+               nucleic_codon_usage_group.html \
                nucleic_composition_group.html \
                nucleic_cpg_islands_group.html \
                nucleic_gene_finding_group.html nucleic_motifs_group.html \
@@ -67,6 +68,8 @@ pkgdata2_DATA = isochore.html kitsch.html lindna.html marscan.html \
                primers_group.html primersearch.html printsextract.html \
                profiles_group.html profit.html prophecy.html prophet.html \
                prosextract.html protdist.html \
+               protein_2d_structure_group.html \
+               protein_3d_structure_group.html \
                protein_composition_group.html protein_motifs_group.html \
                protein_mutation_group.html protein_profiles_group.html \
                protein_sequence_composition_group.html \
