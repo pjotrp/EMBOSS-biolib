@@ -34,6 +34,8 @@
 ajint aj_hist_mark=GRAPH_HIST;
 
 
+
+
 /* @func ajHistDisplay ********************************************************
 **
 ** Display the histogram.
@@ -43,12 +45,24 @@ ajint aj_hist_mark=GRAPH_HIST;
 ** @@
 ******************************************************************************/
 
-void ajHistDisplay (AjPHist hist)
+void ajHistDisplay(AjPHist hist)
 {
-    PLFLT *data=NULL,*totals=NULL,*totals2=NULL;
-    float ptsperbin,max=FLT_MIN,min=0.0;
-    ajint i,j,ratioint,num,old;
-    float bin_range,bar_width,offset,start,tot;
+    PLFLT *data    = NULL;
+    PLFLT *totals  = NULL;
+    PLFLT *totals2 = NULL;
+    float ptsperbin;
+    float max = FLT_MIN;
+    float min = 0.0;
+    ajint i;
+    ajint j;
+    ajint ratioint;
+    ajint num;
+    ajint old;
+    float bin_range;
+    float bar_width;
+    float offset;
+    float start;
+    float tot;
     float percent5;
     
     /* Sanity check */
@@ -59,6 +73,7 @@ void ajHistDisplay (AjPHist hist)
 	      hist->numofdatapoints,hist->numofsets,hist->bins);
 	return;
     }
+
     /* what multiple is the bins to numofdatasets */
     /* as i may have to take an average if not identical */
     ptsperbin = (float)hist->numofdatapoints/(float)hist->bins;
@@ -69,6 +84,7 @@ void ajHistDisplay (AjPHist hist)
 	return;
     }
     /* is the ratio a whole number? */
+
     ratioint = (ajint)ptsperbin;
     if((ptsperbin - (float)ratioint) != 0.0)
     {
@@ -80,18 +96,6 @@ void ajHistDisplay (AjPHist hist)
     /* Add spacing either side */
     percent5 = (hist->xmax-hist->xmin)*(float)0.025;
     
-    /* check to see if data is okay */
-    /*  for(i=0;i<hist->numofsets;i++)
-	{
-	    (void) printf("\n");
-	    data = hist->hists[i]->data;
-	    for(j=0;j<hist->numofdatapoints;j++)
-	    {
-		(void) printf("%d %f\t",i+1,data[j]);
-	    }
-	    (void) printf("\n");
-	}
-	*/
     
     /* calculate max and min for each set */
     if(hist->numofsets != 1)
@@ -191,14 +195,14 @@ void ajHistDisplay (AjPHist hist)
     
     if(hist->displaytype != HIST_SEPARATE)
     {
-	if (max <= 0.01)
+	if(max <= 0.01)
 	{
-	    if (max < 0.0)
+	    if(max < 0.0)
 		max = 0.0;
 	    else
 		max = 1.0;
 	}
-	ajGraphOpenPlot (hist->graph, 1);
+	ajGraphOpenPlot(hist->graph, 1);
 	ajGraphPlenv(hist->xmin-percent5, hist->xmax+percent5, min,
 		     max*((float)1.025), aj_hist_mark);
 	ajGraphLabel(ajStrStr(hist->xaxis) ,
@@ -208,9 +212,7 @@ void ajHistDisplay (AjPHist hist)
 	ajGraphLabelYRight(ajStrStr(hist->yaxisright));
     }
     else 
-    {
 	ajGraphOpenPlot(hist->graph, hist->numofsets);
-    }
     
     if(hist->displaytype == HIST_SIDEBYSIDE)
     {
@@ -236,9 +238,9 @@ void ajHistDisplay (AjPHist hist)
 		    ajGraphRectFill(start+offset,0.0,
 				    start+offset+bar_width,tot);
 		    if(hist->BaW)
-			(void) ajGraphSetFillPat(old);
+			ajGraphSetFillPat(old);
 		    else
-			(void) ajGraphSetFore(old);
+			ajGraphSetFore(old);
 		    ajGraphRect(start+offset,0.0,start+offset+bar_width,tot);
 		    num = 0;
 		    tot = 0;
@@ -252,9 +254,9 @@ void ajHistDisplay (AjPHist hist)
 	bar_width = bin_range;
 	for(i=0;i<hist->numofsets;i++)
 	{	    
-	    if (totals[i] <= 0.01)
+	    if(totals[i] <= 0.01)
 	    {			       /* apparently the ymin value */
-		if (totals[i] < 0.0)
+		if(totals[i] < 0.0)
 		    totals[i] = 0.0;
 		else
 		    totals[i] = 1.0;
@@ -285,9 +287,9 @@ void ajHistDisplay (AjPHist hist)
 		    ajGraphRectFill(start+offset,0.0,
 				    start+offset+bar_width,tot);
 		    if(hist->BaW)
-			(void) ajGraphSetFillPat(old);
+			ajGraphSetFillPat(old);
 		    else
-			(void) ajGraphSetFore(old);
+			ajGraphSetFore(old);
 		    ajGraphRect(start+offset,0.0,start+offset+bar_width,tot);
 		    num = 0;
 		    tot = 0;
@@ -321,9 +323,9 @@ void ajHistDisplay (AjPHist hist)
 		    ajGraphRectFill(start,totals[j],
 				    start+bin_range,tot+totals[j]);
 		    if(hist->BaW)
-			(void) ajGraphSetFillPat(old);
+			ajGraphSetFillPat(old);
 		    else
-			(void) ajGraphSetFore(old);
+			ajGraphSetFore(old);
 		    ajGraphRect(start,totals[j],
 				start+bin_range,tot+totals[j]);
 		    totals[j] += tot;
@@ -338,8 +340,12 @@ void ajHistDisplay (AjPHist hist)
 	if(hist->displaytype == HIST_SEPARATE)
 	    AJFREE(totals2);
     }
+
     return;
 }
+
+
+
 
 /* @func ajHistClose **********************************************************
 **
@@ -349,11 +355,16 @@ void ajHistDisplay (AjPHist hist)
 **
 ** @@
 ******************************************************************************/
-void ajHistClose (void)
+
+void ajHistClose(void)
 {
     ajGraphCloseWin();
+
     return;
 }
+
+
+
 
 /* @func ajHistDelete *********************************************************
 **
@@ -387,6 +398,9 @@ void ajHistDelete(AjPHist hist)
     return;
 }
 
+
+
+
 /* @func ajHistNew ************************************************************
 **
 ** Create a histogram Object. Which can hold "numofsets" set of data of which
@@ -397,15 +411,16 @@ void ajHistDelete(AjPHist hist)
 ** @return [AjPHist] histogram structure.
 ** @@
 ******************************************************************************/
+
 AjPHist ajHistNew(ajint numofsets, ajint numofpoints)
 {
-    static AjPHist hist=NULL;
+    static AjPHist hist = NULL;
     ajint i;
 
     AJNEW0(hist);
 
     hist->numofsets = 0;
-    hist->numofsetsmax = numofsets;
+    hist->numofsetsmax    = numofsets;
     hist->numofdatapoints = numofpoints;
     hist->xmin = 0;
     hist->xmax = 0;
@@ -413,28 +428,30 @@ AjPHist ajHistNew(ajint numofsets, ajint numofpoints)
 					    multiple histograms
 					    side by side */
     hist->bins = 0;
-    hist->BaW = AJFALSE;
-    (void) ajStrSetC(&hist->title,"");
-    (void) ajStrSetC(&hist->xaxis,"");
-    (void) ajStrSetC(&hist->yaxisleft,"");
-    (void) ajStrSetC(&hist->yaxisright,"");
+    hist->BaW  = AJFALSE;
+    ajStrSetC(&hist->title,"");
+    ajStrSetC(&hist->xaxis,"");
+    ajStrSetC(&hist->yaxisleft,"");
+    ajStrSetC(&hist->yaxisright,"");
 
     AJCNEW0(hist->hists,numofsets);
     for(i=0;i<numofsets; i++)
     {
 	AJNEW0((hist->hists[i]));
-	(hist->hists)[i]->data = NULL;
+	(hist->hists)[i]->data       = NULL;
 	(hist->hists)[i]->deletedata = AJFALSE;
-	(hist->hists)[i]->colour = i+2;
+	(hist->hists)[i]->colour  = i+2;
 	(hist->hists)[i]->pattern = 0;
 	(hist->hists)[i]->title = NULL;
 	(hist->hists)[i]->xaxis = NULL;
 	(hist->hists)[i]->yaxis = NULL;
-	/*    (hist->hists)[i]->label = NULL;*/
     }
 
     return hist;
 }
+
+
+
 
 /* @func ajHistNewG ***********************************************************
 **
@@ -447,15 +464,20 @@ AjPHist ajHistNew(ajint numofsets, ajint numofpoints)
 ** @return [AjPHist] histogram structure.
 ** @@
 ******************************************************************************/
-AjPHist ajHistNewG (ajint numofsets, ajint numofpoints, AjPGraph graph)
+
+AjPHist ajHistNewG(ajint numofsets, ajint numofpoints, AjPGraph graph)
 {
-    AjPHist hist = ajHistNew (numofsets, numofpoints);
+    AjPHist hist = ajHistNew(numofsets, numofpoints);
     hist->graph = graph;
-    ajGraphSetDevice (graph);
-    ajGraphSetMulti (graph, numofsets);
-    ajGraphSetName (graph);
+    ajGraphSetDevice(graph);
+    ajGraphSetMulti(graph, numofsets);
+    ajGraphSetName(graph);
+
     return hist;
 }
+
+
+
 
 /* @func ajHistSetMultiTitle **************************************************
 **
@@ -467,6 +489,7 @@ AjPHist ajHistNewG (ajint numofsets, ajint numofpoints, AjPGraph graph)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajHistSetMultiTitle(AjPHist hist, ajint index, AjPStr title)
 {
     if(index >= hist->numofdatapoints || index < 0)
@@ -476,8 +499,12 @@ void ajHistSetMultiTitle(AjPHist hist, ajint index, AjPStr title)
 	return;
     }
     hist->hists[index]->title = title;
+
     return;
 }
+
+
+
 
 /* @func ajHistSetMultiTitleC *************************************************
 **
@@ -489,6 +516,7 @@ void ajHistSetMultiTitle(AjPHist hist, ajint index, AjPStr title)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajHistSetMultiTitleC(AjPHist hist, ajint index, char *title)
 {
     if(index >= hist->numofdatapoints || index < 0)
@@ -497,9 +525,13 @@ void ajHistSetMultiTitleC(AjPHist hist, ajint index, char *title)
 	      hist->numofdatapoints-1,index);
 	return;
     }
-    (void) ajStrAssC(&hist->hists[index]->title,title);
+    ajStrAssC(&hist->hists[index]->title,title);
+
     return;
 }
+
+
+
 
 /* @func ajHistSetMultiXTitle *************************************************
 **
@@ -511,6 +543,7 @@ void ajHistSetMultiTitleC(AjPHist hist, ajint index, char *title)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajHistSetMultiXTitle(AjPHist hist, ajint index, AjPStr title)
 {
     if(index >= hist->numofdatapoints || index < 0)
@@ -520,8 +553,12 @@ void ajHistSetMultiXTitle(AjPHist hist, ajint index, AjPStr title)
 	return;
     }
     hist->hists[index]->xaxis = title;
+
     return;
 }
+
+
+
 
 /* @func ajHistSetMultiXTitleC ************************************************
 **
@@ -533,6 +570,7 @@ void ajHistSetMultiXTitle(AjPHist hist, ajint index, AjPStr title)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajHistSetMultiXTitleC(AjPHist hist, ajint index, char *title)
 {
     if(index >= hist->numofdatapoints || index < 0)
@@ -541,9 +579,13 @@ void ajHistSetMultiXTitleC(AjPHist hist, ajint index, char *title)
 	      hist->numofdatapoints-1,index);
 	return;
     }
-    (void) ajStrAssC(&hist->hists[index]->xaxis,title);
+    ajStrAssC(&hist->hists[index]->xaxis,title);
+
     return;
 }
+
+
+
 
 /* @func ajHistSetMultiYTitle *************************************************
 **
@@ -555,6 +597,7 @@ void ajHistSetMultiXTitleC(AjPHist hist, ajint index, char *title)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajHistSetMultiYTitle(AjPHist hist, ajint index, AjPStr title)
 {
     if(index >= hist->numofdatapoints || index < 0)
@@ -564,8 +607,12 @@ void ajHistSetMultiYTitle(AjPHist hist, ajint index, AjPStr title)
 	return;
     }
     hist->hists[index]->yaxis = title;
+
     return;
 }
+
+
+
 
 /* @func ajHistSetMultiYTitleC ************************************************
 **
@@ -577,6 +624,7 @@ void ajHistSetMultiYTitle(AjPHist hist, ajint index, AjPStr title)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajHistSetMultiYTitleC(AjPHist hist, ajint index, char *title)
 {
     if(index >= hist->numofdatapoints || index < 0)
@@ -585,9 +633,13 @@ void ajHistSetMultiYTitleC(AjPHist hist, ajint index, char *title)
 	      hist->numofdatapoints-1,index);
 	return;
     }
-    (void) ajStrAssC(&hist->hists[index]->yaxis,title);
+    ajStrAssC(&hist->hists[index]->yaxis,title);
+
     return;
 }
+
+
+
 
 /* @func ajHistSetPtrToData ***************************************************
 **
@@ -599,6 +651,7 @@ void ajHistSetMultiYTitleC(AjPHist hist, ajint index, char *title)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajHistSetPtrToData(AjPHist hist, ajint index, PLFLT *data)
 {
     if(index >= hist->numofdatapoints || index < 0)
@@ -610,8 +663,12 @@ void ajHistSetPtrToData(AjPHist hist, ajint index, PLFLT *data)
     if(!hist->hists[index]->data)
 	hist->numofsets++;
     hist->hists[index]->data = data;
+
     return;
 }
+
+
+
 
 /* @func ajHistCopyData *******************************************************
 **
@@ -623,6 +680,7 @@ void ajHistSetPtrToData(AjPHist hist, ajint index, PLFLT *data)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajHistCopyData(AjPHist hist, ajint index, PLFLT *data)
 {
     ajint i;
@@ -640,8 +698,12 @@ void ajHistCopyData(AjPHist hist, ajint index, PLFLT *data)
 
     hist->hists[index]->deletedata = AJTRUE;
     hist->numofsets++;
+
     return;
 }
+
+
+
 
 /* @func ajHistSetTitleC ******************************************************
 **
@@ -652,11 +714,16 @@ void ajHistCopyData(AjPHist hist, ajint index, PLFLT *data)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajHistSetTitleC(AjPHist hist, char* string)
 {
-    (void) ajStrAssC(&hist->title,string);
+    ajStrAssC(&hist->title,string);
+
     return;
 }
+
+
+
 
 /* @func ajHistSetXAxisC ******************************************************
 **
@@ -667,11 +734,16 @@ void ajHistSetTitleC(AjPHist hist, char* string)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajHistSetXAxisC(AjPHist hist, char* string)
 {
-    (void) ajStrAssC(&hist->xaxis,string);
+    ajStrAssC(&hist->xaxis,string);
+
     return;
 }
+
+
+
 
 /* @func ajHistSetYAxisLeftC **************************************************
 **
@@ -682,11 +754,16 @@ void ajHistSetXAxisC(AjPHist hist, char* string)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajHistSetYAxisLeftC(AjPHist hist, char* string)
 {
-    (void) ajStrAssC(&hist->yaxisleft,string);
+    ajStrAssC(&hist->yaxisleft,string);
+
     return;
 }
+
+
+
 
 /* @func ajHistSetYAxisRightC**************************************************
 **
@@ -697,11 +774,16 @@ void ajHistSetYAxisLeftC(AjPHist hist, char* string)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajHistSetYAxisRightC(AjPHist hist, char* string)
 {
-    (void) ajStrAssC(&hist->yaxisright,string);
+    ajStrAssC(&hist->yaxisright,string);
+
     return;
 }
+
+
+
 
 /* @func  ajHistSetColour *****************************************************
 **
@@ -713,6 +795,7 @@ void ajHistSetYAxisRightC(AjPHist hist, char* string)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajHistSetColour(AjPHist hist, ajint index, ajint colour)
 {
     if(index >= hist->numofdatapoints || index < 0)
@@ -723,8 +806,12 @@ void ajHistSetColour(AjPHist hist, ajint index, ajint colour)
     }
 
     hist->hists[index]->colour = colour;
+
     return;
 }
+
+
+
 
 /* @func  ajHistSetPattern ****************************************************
 **
@@ -736,6 +823,7 @@ void ajHistSetColour(AjPHist hist, ajint index, ajint colour)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajHistSetPattern(AjPHist hist, ajint index, ajint style)
 {
     if(index >= hist->numofdatapoints || index < 0)
@@ -746,8 +834,12 @@ void ajHistSetPattern(AjPHist hist, ajint index, ajint style)
     }
 
     hist->hists[index]->pattern = style;
+
     return;
 }
+
+
+
 
 /* @func  ajHistSetBlackandWhite **********************************************
 **
@@ -758,8 +850,10 @@ void ajHistSetPattern(AjPHist hist, ajint index, ajint style)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajHistSetBlackandWhite(AjPHist hist, AjBool set)
 {
     hist->BaW = set;
+
     return;
 }
