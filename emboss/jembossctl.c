@@ -88,6 +88,8 @@ static AjBool jctl_check_buffer(char *buf, int mlen);
 static AjBool jctl_chdir(char *file);
 static AjBool jctl_initgroups(char *buf, int gid);
 static void jctl_zero(char *buf);
+static time_t jctl_Datestr(AjPStr s);
+static int    jctl_date(const void* str1, const void* str2);
 
 
 #include <pwd.h>
@@ -142,6 +144,8 @@ static int jctl_rcv(char *buf);
 
 static int java_block(int chan, unsigned long flag);
 
+
+extern char *strptime(const char *s, const char *format, struct tm *tm);
 
 #if defined (__SVR4) && defined (__sun)
 #define exit(a) _exit(a)
@@ -2004,6 +2008,7 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
     
     char *p=NULL;
     DIR  *dirp;
+    time_t t;
     struct dirent *dp;
     struct stat sbuf;
     AjPList list=NULL;
@@ -2105,9 +2110,18 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 	    ajListPush(list,(void *)tstr);
 	}
     }
-    
-    ajListSort(list,ajStrCmp);
-    
+
+    if(ajListLength(list) > 1)
+    {
+	ajListPop(list,(void **)&tstr);
+	ajListPush(list,(void *)tstr);
+	t = jctl_Datestr(tstr);
+	if(t)
+	    ajListSort(list,jctl_date);
+	else
+	    ajListSort(list,ajStrCmp);
+    }
+
     while(ajListPop(list,(void **)&tstr))
     {
 	ajStrApp(retlist,tstr);
@@ -3234,6 +3248,81 @@ static int java_block(int chan, unsigned long flag)
     return 0;
 }
 
+
+/* @funcstatic jctl_Datestr ************************************************
+**
+** Test string for valid Jemboss date. Return time_t
+** or 0 if invalid string
+**
+** @param [r] s [AjPStr] potential date string
+**
+** @return [time_t] failure=0
+** @@
+******************************************************************************/
+
+static time_t jctl_Datestr(AjPStr s)
+{
+    AjPStr tmp = NULL;
+    struct tm tm;
+    char *p = NULL;
+    AjPStr mon=NULL;
+    ajint day=0;
+    ajint hr=0;
+    ajint min=0;
+    ajint sec=0;
+    ajint yr=0;
+
+    tmp = ajStrNew();
+    ajStrAssS(&tmp,s);
+    p = ajStrStr(tmp);
+    while(*p)
+    {
+	if(*p == '_')
+	    *p=' ';
+	++p;
+    }
+    
+    mon = ajStrNew();
+    if(ajFmtScanS(tmp,"%*s %*s %S %d %d:%d:%d %*s %d",&mon,&day,&hr,&min,
+		  &sec,&yr) !=  6)
+    {
+	ajStrDel(&mon);
+	return 0;
+    }
+    
+    
+
+    ajFmtPrintS(&tmp,"%S %d %d:%d:%d %d",mon,day,hr,min,sec,yr);
+    ajStrDel(&mon);
+    
+    p = strptime(ajStrStr(tmp),"%B %d %T %Y",&tm);
+    ajStrDel(&tmp);
+
+    if(!p)
+	return 0;
+    
+    return mktime(&tm);
+}
+
+
+/* @funcstatic jctl_date ************************************************
+**
+** Date comparison for ajListSort
+**
+** @param [r] str1 [const void*] date string
+** @param [r] str2 [const void*] date string
+**
+** @return [int] comparison
+** @@
+******************************************************************************/
+
+static int jctl_date(const void* str1, const void* str2)
+{
+    AjPStr *a = (AjPStr*)str1;
+    AjPStr *b = (AjPStr*)str2;
+    
+    return (int)(jctl_Datestr(*b) - jctl_Datestr(*a));
+}
 
 
 #else
