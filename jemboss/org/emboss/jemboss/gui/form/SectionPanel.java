@@ -1202,7 +1202,8 @@ public class SectionPanel
       else
       {
         c.setVisible(useThis);
-        lab[field].setVisible(useThis);
+        if(lab[field] != null)
+          lab[field].setVisible(useThis);
       }
     }
   }
