@@ -3305,7 +3305,7 @@ AjBool   ajXyzHitlistRead(AjPFile inf, char *delim, AjPHitlist *thys)
 	    if(n>nset)
 		ajFatal("Dangerous error in input file caught in ajXyzHitlistRead.\n Email jison@hgmp.mrc.ac.uk");
 	}
-	else if(ajStrPrefixC(line,"ID"))
+	else if(ajStrPrefixC(line,"AC"))
 	    ajStrAssC(&(*thys)->hits[n-1]->Id,ajStrStr(line)+3);
 	else if(ajStrPrefixC(line,"TY"))
 	    ajStrAssC(&(*thys)->hits[n-1]->Type,ajStrStr(line)+3);
@@ -3363,7 +3363,7 @@ AjBool ajXyzHitlistWrite(AjPFile outf, AjPHitlist thys)
     for(x=0;x<thys->N;x++)
     {
 	ajFmtPrintF(outf, "%-5s[%d]\nXX\n", "NN", x+1);
-	ajFmtPrintF(outf, "%-5s%S\n", "ID", thys->hits[x]->Id);
+	ajFmtPrintF(outf, "%-5s%S\n", "AC", thys->hits[x]->Id);
 	ajFmtPrintF(outf, "XX\n");
 	ajFmtPrintF(outf, "%-5s%S\n", "TY", thys->hits[x]->Type);
 	ajFmtPrintF(outf, "XX\n");
@@ -3507,7 +3507,7 @@ AjBool   ajXyzVdwallRead(AjPFile inf, AjPVdwall *thys)
     /* Start of main loop */
     while((ajFileReadLine(inf, &line)))
     {
-	/* Parse ID line */
+	/* Parse NR line */
 	if(ajStrPrefixC(line, "NR"))
 	    {	
 		ajFmtScanS(line, "%*s %d", &nres);
