@@ -36,7 +36,7 @@ pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd needle.acd \
 	restover.acd restrict.acd revseq.acd \
 	scopalign.acd scope.acd seealso.acd \
 	seqinfo.acd seqmatchall.acd seqret.acd seqretall.acd \
-	seqretallfeat.acd seqretset.acd \
+	seqretallfeat.acd seqretset.acd seqretsingle.acd \
 	seqretsplit.acd seqrettype.acd showalign.acd\
 	showdb.acd showfeat.acd showorf.acd showseq.acd shuffleseq.acd \
 	sigcleave.acd siggen.acd sigscan.acd silent.acd splitter.acd \

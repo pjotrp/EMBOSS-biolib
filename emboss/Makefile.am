@@ -9,7 +9,7 @@ demoalign demofeatures demolist demoreport demosequence demostring demotable \
 entrails histogramtest intconv \
 patmattest \
 psiblasts \
-seqinfo \
+seqinfo seqretsingle \
 sigscan \
 testplot treetypedisplay 
 
@@ -170,6 +170,7 @@ seqmatchall_SOURCES = seqmatchall.c
 seqret_SOURCES = seqret.c
 seqinfo_SOURCES = seqinfo.c
 seqretall_SOURCES = seqretall.c
+seqretallfeat_SOURCES = seqretallfeat.c
 seqretset_SOURCES = seqretset.c
 seqretsplit_SOURCES = seqretsplit.c
 showalign_SOURCES = showalign.c
@@ -213,7 +214,7 @@ demotable_SOURCES = demotable.c
 histogramtest_SOURCES = histogramtest.c
 patmattest_SOURCES = patmattest.c
 psiblasts_SOURCES = psiblasts.c
-seqretallfeat_SOURCES = seqretallfeat.c
+seqretsingle_SOURCES = seqretsingle.c
 sigscan_SOURCES = sigscan.c
 testplot_SOURCES = testplot.c
 treetypedisplay_SOURCES = treetypedisplay.c
