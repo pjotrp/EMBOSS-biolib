@@ -1187,8 +1187,8 @@ static char seqTypeTest(const AjPStr thys, AjPRegexp badchars)
 
     ajRegSubI(badchars, 1, &tmpstr);
     ret = ajStrChar(tmpstr, 0);
-    ajDebug(
-     "seqTypeTest, Sequence had bad character '%c' (%x) at %d of %d/%d\n '%S'",
+    ajDebug("seqTypeTest, Sequence had bad character '%c' (%x) "
+	    "at %d of %d/%d\n '%S'\n",
 	    ret, ret,
 	    ajRegOffset(badchars),
 	    ajStrLen(thys), strlen(ajStrStr(thys)), tmpstr);
