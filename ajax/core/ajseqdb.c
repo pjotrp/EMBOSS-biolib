@@ -1414,13 +1414,15 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
     ajNamGetValueC ("httpversion", &httpver);
     ajDebug ("httpver getValueC '%S'\n", httpver);
 
+    ajStrAssC (&httpver, "1.0");
     if (ajStrLen(qry->DbHttpVer))
       ajStrAssS (&httpver, qry->DbHttpVer);
     ajDebug("httpver after qry '%S'\n", httpver);
 
-    if (!ajStrIsFloat(httpver))
-      ajStrAssC (&httpver, "1.0");
-
+    if (!ajStrIsFloat(httpver)) {
+      ajWarn ("Invalid HTTPVERSION '%S', reset to 1.0", httpver);
+      ajStrAssC(&httpver, "1.0");
+    }
     ajDebug ("httpver final '%S'\n", httpver);
 
     proxexp = ajRegCompC("^([a-z0-9.-]+):([0-9]+)$");
@@ -3367,13 +3369,15 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
     ajNamGetValueC ("httpversion", &httpver);
     ajDebug ("httpver getValueC '%S'\n", httpver);
 
+    ajStrAssC(&httpver, "1.0");
     if (ajStrLen(qry->DbHttpVer))
       ajStrAssS (&httpver, qry->DbHttpVer);
     ajDebug("httpver after qry '%S'\n", httpver);
 
-    if (!ajStrIsFloat(httpver))
+    if (!ajStrIsFloat(httpver)) {
+      ajWarn ("Invalid HTTPVERSION '%S', reset to 1.0", httpver);
       ajStrAssC(&httpver, "1.0");
-
+    }
     ajDebug("httpver final: '%S'\n", httpver);
 
     proxexp = ajRegCompC("^([a-z0-9.-]+):([0-9]+)$");
