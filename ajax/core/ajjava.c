@@ -904,7 +904,7 @@ JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_setuid
 JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_seteuid
 (JNIEnv *env, jclass j, jint uid)
 {
-#ifndef _INCLUDE_HPUX_SOURCE
+#ifndef __hpux
     return((jint)seteuid((uid_t)uid));
 #else
     return -1;
@@ -946,7 +946,7 @@ JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_setgid
 JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_setegid
 (JNIEnv *env, jclass j, jint gid)
 {
-#ifndef _INCLUDE_HPUX_SOURCE
+#ifndef __hpux
     return((jint)setegid((gid_t)gid));
 #else
     return -1;
