@@ -80,6 +80,12 @@ code),
 <br>set the environment variable LD_LIBRARY_PATH:
 <p>setenv LD_LIBRARY_PATH $emboss/ajax/.libs (where $emboss is the directory
 of your local EMBOSS installation).
+<p><b>Note:&nbsp; </b>To configure EMBOSS to use the Java Native Interface
+in Jemboss a "--with-java" and "--with-javaos" need to be used, and pointed
+at the java (1.3) installation. For example:
+<p>./configure --enable-warnings --with-pngdriver=/packages/emboss/png
+--with-java=/packages/java/jdk1.3/include&nbsp; --with-javaos=/packages/java/jdk1.3/include/solaris
+<p>and must not be configured using the --disable-shared configure option.
 <p>5. Also, if you are running the standalone version the jemboss.properties
 file needs to be setup. This file needs to be in the users home directory
 or the Jemboss resources directory. This file contains the environment
