@@ -869,7 +869,7 @@ AjBool ajFileReadLine (const AjPFile thys, AjPStr* pdest) {
 **
 ** @param [r] thys [const AjPFile] Input file.
 ** @param [w] pdest [AjPStr*] Buffer to hold the current line.
-** @param [w] fpos [long*] File position before the read.
+** @param [w] fpos [ajlong*] File position before the read.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
@@ -943,7 +943,7 @@ AjBool ajFileGets (const AjPFile thys, AjPStr* pdest) {
 **
 ** @param [r] thys [const AjPFile] Input file.
 ** @param [w] pdest [AjPStr*] Buffer to hold the current line.
-** @param [w] fpos [long*] File position before the read.
+** @param [w] fpos [ajlong*] File position before the read.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
@@ -1476,7 +1476,7 @@ AjBool ajFileStat(AjPStr *fname, ajint mode)
     struct stat buf;
 
     if(!stat(ajStrStr(*fname), &buf))
-	if((unsigned int)buf.st_mode & mode)
+	if((ajuint)buf.st_mode & mode)
 	    return ajTrue;
 
     return ajFalse;
@@ -2109,7 +2109,7 @@ AjBool ajFileBuffGetStore (const AjPFileBuff thys, AjPStr* pdest,
 **
 ** @param [r] thys [const AjPFileBuff] Buffered input file.
 ** @param [w] pdest [AjPStr*] Buffer to hold results.
-** @param [w] fpos [long*] File position before the read.
+** @param [w] fpos [ajlong*] File position before the read.
 ** @return [AjBool] ajTrue if data was read.
 ** @@
 ******************************************************************************/
@@ -2302,31 +2302,32 @@ void ajFileBuffStripHtml (const AjPFileBuff thys) {
       ajRegSubI (tagexp, 3, &s3);
       ajDebug ("removing '%S' [%d]\n", s2, ajStrRef(plist->Line));
       (void) ajFmtPrintS (&plist->Line, "%S%S", s1, s3);
+      ajDebug ("leaving '%S''%S'\n", s1,s3);
     }
-      if(ajRegExec(srsdbexp, plist->Line))
-      {
-	  ajRegSubI(srsdbexp,1,&s1);
-	  ajRegSubI(srsdbexp,2,&s2);
-	  ajRegSubI(srsdbexp,3,&s3);
-	  ajDebug ("removing '%S%S%S' [%d]\n",s1,s2,s3,ajStrRef(plist->Line));
-	  pdellist = plist;
-	  if (plast)
-	  {
-	      plast->Next = plist->Next;
-	      plist = plast->Next;
-	  }
-	  else
-	  {			/* we are on the first line */
-	      plist = thys->Lines = thys->Curr = plist->Next;
-	  }
-	  ajStrDel(&pdellist->Line);
-	  AJFREE (pdellist);
-	  thys->Size--;
-	  if (thys->Pos > i)
-	      thys->Pos--;
-	  ++i;
-	  continue;
-      }
+    if(ajRegExec(srsdbexp, plist->Line))
+    {
+      ajRegSubI(srsdbexp,1,&s1);
+      ajRegSubI(srsdbexp,2,&s2);
+      ajRegSubI(srsdbexp,3,&s3);
+      ajDebug ("removing '%S%S%S' [%d]\n",s1,s2,s3,ajStrRef(plist->Line));
+      pdellist = plist;
+      if (plast)
+	{
+	  plast->Next = plist->Next;
+	  plist = plast->Next;
+	}
+      else
+	{			/* we are on the first line */
+	  plist = thys->Lines = thys->Curr = plist->Next;
+	}
+      ajStrDel(&pdellist->Line);
+      AJFREE (pdellist);
+      thys->Size--;
+      if (thys->Pos > i)
+	thys->Pos--;
+      ++i;
+      continue;
+    }
 
     if (ajRegExec(nullexp, plist->Line)) { /* allow for newline */
       ajDebug ("<blank line deleted> [%d]\n", ajStrRef(plist->Line));
@@ -3112,13 +3113,13 @@ AjBool ajFileTestSkip (AjPStr fullname, AjPStr exc, AjPStr inc,
 ** successful or the file cannot be opened for writing.
 ** This function returns only the filename, not a file pointer.
 **
-** @param [r] dir [char*] Directory for filename or NULL for current dir (.)
-**                          inc is matched.
+** @param [r] dir [const char*] Directory for filename
+**                              or NULL for current dir (.)
 ** @return [char*] available filename or NULL if error.
 ** @@
 ******************************************************************************/
 
-char *ajFileTempName(const char *dir)
+char* ajFileTempName(const char *dir)
 {
     struct  stat buf;
     static  AjPStr  dt=NULL;
