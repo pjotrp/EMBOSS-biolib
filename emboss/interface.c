@@ -120,15 +120,12 @@
 ** WARN  Could not open for reading cpdb file s002.pxyz
 ** //
 **
-** Notes
+** Important Note
 **
-
-ajax
-make
-emcd
-make interface
-interface -in pdbtest/14gs.pxyz -out interface.con
-
+** Interface is designed to work with OLD FORMAT clean pdb files - i.e. the 
+** ones currently found in /data/cpdb/ on the HGMP server.  To convert to 
+** parsing of new format files (when available) change ajXyzCpdbReadOld to 
+** ajXyzCpdbRead().
 ******************************************************************************/
 
 
@@ -643,13 +640,6 @@ static AjBool interface_ContactMapCalc(AjPInt2d *mat, ajint *ncon,
   */
   
 
-
-    /*JC*/	
-    /*
-    ajFmtPrintF(xxxtemp, "%5S\n", pdb->Pdb);
-    ajFmtPrintF(xxxtemp, "siz : %d\n", siz);
-*/
-    
 
     /*
     for(x=0;x<siz;x++)
