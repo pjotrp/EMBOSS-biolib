@@ -29,29 +29,40 @@ import java.util.*;
 
 /**
 *
-* Jemboss Authenticated Server for SOAP
+* Jemboss Authenticated Server for Apache Axis (SOAP)
+* web services
 *
 */
 public class JembossAuthServer
 {
 
-//SOAP results directory
+  /** SOAP results directory */
   private String tmproot = new String("/tmp/SOAP/emboss/");
+  /** Jemboss log file       */
   private String logFile = new String(tmproot+"/jemboss.log");
+  /** Jemboss error log file */
   private String errorLog = new String(tmproot+"/jemboss_error.log");
-
+  /** file separator */
   private String fs = new String(System.getProperty("file.separator"));
+  /** path separator */
   private String ps = new String(System.getProperty("path.separator"));
 
 //get paths to EMBOSS
+  /** jemboss properties */
   JembossParams jp  = new JembossParams();
+  /** plplot path */
   String plplot     = jp.getPlplot();
+  /** emboss data path */
   String embossData = jp.getEmbossData();
+  /** emboss binary path */
   String embossBin  = jp.getEmbossBin();
+  /** path environment variable */
   String embossPath = embossBin + ps + jp.getEmbossPath();
+  /** acd directory */
   String acdDirToParse     = jp.getAcdDirToParse();
 //String embossEnvironment = jp.getEmbossEnvironment();
 
+  /** emboss run environment */
   private String[] env = 
   {
     "PATH=" + embossPath,
@@ -60,7 +71,8 @@ public class JembossAuthServer
 //  ,"LD_LIBRARY_PATH=/usr/local/lib"
 // FIX FOR SOME SUNOS
   };
-  
+ 
+  /** emboss run environment as a string */ 
   private String environ = "PATH=" + embossPath+ " "+
                            "PLPLOT_LIB=" + plplot +" "+
                            "EMBOSS_DATA=" + embossData +" "+
@@ -129,13 +141,13 @@ public class JembossAuthServer
   }
 
 
-/**
-*
-* Retrieves the ACD file of an application.
-* @param  application name
-* @return Vector of containing the ACD string
-*
-*/
+  /**
+  *
+  * Retrieves the ACD file of an application.
+  * @param appName 	application name
+  * @return 		Vector of containing the ACD string
+  *
+  */
   public Vector show_acd(String appName)
   {
 
@@ -170,12 +182,12 @@ public class JembossAuthServer
     return acd;
   }
 
-/**
-*
-* Returns the output of the EMBOSS utility wossname
-* @return wossname output
-*
-*/
+  /**
+  *
+  * Returns the output of the EMBOSS utility wossname
+  * @return 	wossname output
+  *
+  */
   public Vector getWossname()
   {
     String[] envp = jp.getEmbossEnvironmentArray(env);
@@ -195,13 +207,13 @@ public class JembossAuthServer
   }
 
 
-/**
-*
-* Returns the help for an application as given by 'tfm'
-* @param String application name
-* @return help 
-*
-*/
+  /**
+  *
+  * Returns the help for an application as given by 'tfm'
+  * @param applName	application name
+  * @return 		help 
+  *
+  */
   public Vector show_help(String applName)
   {
     String[] envp = jp.getEmbossEnvironmentArray(env);
@@ -221,13 +233,16 @@ public class JembossAuthServer
   }
 
 
-/**
-*
-* Uses JNI to calculate sequence attributes using EMBOSS library call. 
-* @param sequence filename or database entry
-* @return sequence length, weight & type (protein/nucleotide)
-*
-*/
+  /**
+  *
+  * Uses JNI to calculate sequence attributes using EMBOSS library call. 
+  * @param fileContent	sequence filename or database entry
+  * @param seqtype	sequence type (seqset/sequence)
+  * @param userName	username
+  * @param passwd       passwd
+  * @return 	sequence length, weight & type (protein/nucleotide)
+  *
+  */
   public Vector call_ajax(String fileContent, String seqtype,
                           String userName, byte[] passwd)
   {
@@ -337,13 +352,14 @@ public class JembossAuthServer
   }
 
 
-/**
-*
-* Uses JNI to calculate sequence attributes using EMBOSS library call. 
-* @param sequence filename or database entry
-* @return sequence length, weight & type (protein/nucleotide)
-*
-*/
+  /**
+  *
+  * Uses JNI to calculate sequence attributes using EMBOSS library call. 
+  * @param fileContent  sequence filename or database entry
+  * @param seqtype      sequence type (seqset/sequence)
+  * @return 		sequence length, weight & type (protein/nucleotide)
+  *
+  */
   public Vector call_ajax(String fileContent, String seqtype)
   {
     boolean afile = false;
@@ -434,12 +450,12 @@ public class JembossAuthServer
   }
 
 
-/**
-*
-* Returns the databases held on the server
-* @return output from 'showdb'
-*
-*/
+  /**
+  *
+  * Returns the databases held on the server
+  * @return 	output from 'showdb'
+  *
+  */
   public Vector show_db()
   {
     String[] envp = jp.getEmbossEnvironmentArray(env);
@@ -487,6 +503,17 @@ public class JembossAuthServer
     return showdbOut;
   }
 
+  /**
+  *
+  * Run an emboss application
+  * @param embossCommand	command line to run
+  * @param options		options
+  * @param inFiles		input files
+  * @param userName		userName
+  * @param passwd		passwd
+  * @return                     output files from application run
+  *
+  */
   public synchronized Vector run_prog(String embossCommand, String options,
                              Vector inFiles,String userName, byte[] passwd)
   {
@@ -494,6 +521,12 @@ public class JembossAuthServer
     return run_prog(embossCommand,options,hashInFiles,userName,passwd);
   }
 
+  /**
+  *
+  * Convert contents from a Vector to a Hashtable
+  * @param v	Vector
+  *
+  */ 
   private Hashtable getHashtable(Vector v)
   {
     Hashtable h = new Hashtable();
@@ -505,17 +538,17 @@ public class JembossAuthServer
     return h;
   }
 
-/**
-*
-* Private Authenticated Server
-* 
-* Run an EMBOSS application
-* @param command line to run
-* @param unused 
-* @param Hashtable of input files
-* @return output files from application run
-*
-*/
+  /**
+  *
+  * Run an emboss application
+  * @param embossCommand        command line to run
+  * @param options              options
+  * @param inFiles              input files
+  * @param userName             userName
+  * @param passwd               passwd
+  * @return 			output files from application run
+  *
+  */
   public synchronized Vector run_prog(String embossCommand, String options,
                           Hashtable inFiles,String userName, byte[] passwd)
   {
@@ -742,11 +775,13 @@ public class JembossAuthServer
   }
 
 
-/**
-*
-* Quote all tokens ready for shell scripts
-*
-*/
+  /**
+  *
+  * Quote all tokens ready for shell scripts
+  * @param s	text to quote
+  * @return	quoted text
+  *
+  */
   private String quoteMe(String s)
   {
     String qs = "";
@@ -761,12 +796,17 @@ public class JembossAuthServer
     return qs;
   }
 
-/**
-*
-* Submit to a OpenPBS batch queue. This method creates a script for
-* submission to a batch queueing system.
-*
-*/
+  /**
+  *
+  * Submit to a OpenPBS batch queue. This method creates a script for
+  * submission to a batch queueing system.
+  * @param aj			ajax/jni
+  * @param userName		username
+  * @param passwd		passwd
+  * @param project		project directory
+  * @param embossCommand	emboss command
+  *
+  */
   private void runAsPBSBatch(Ajax aj, String userName, byte[] passwd,
                               String project, String embossCommand)
   {
@@ -811,12 +851,17 @@ public class JembossAuthServer
     return;
   }
 
-/**
-*
-* Submit to a Generic NQS batch queue. This method creates a script for
-* submission to a batch queueing system.
-*
-*/
+  /**
+  *
+  * Submit to a Generic NQS batch queue. This method creates a script for
+  * submission to a batch queueing system.
+  * @param aj                   ajax/jni
+  * @param userName             username
+  * @param passwd               passwd
+  * @param project              project directory
+  * @param embossCommand        emboss command
+  *
+  */
   private void runAsGNQSBatch(Ajax aj, String userName, byte[] passwd,
                               String project, String embossCommand)
   {
@@ -861,7 +906,16 @@ public class JembossAuthServer
     return;
   }
 
-
+  /**
+  *
+  * Submit to a batch queue
+  * @param aj                   ajax/jni
+  * @param userName             username
+  * @param passwd               passwd
+  * @param project              project directory
+  * @param embossCommand        emboss command
+  *
+  */
   private void runAsBatch(Ajax aj, String userName, byte[] passwd,
                     String project, String embossCommand)
   {
@@ -907,17 +961,18 @@ public class JembossAuthServer
     return;
   }
 
-/**
-*
-* Private Server
-*
-* Returns the results for a saved project.
-* @param project/directory name
-* @param unused if showing all results otherwise this
-*        is the name of the file to display
-* @return saved results files
-*
-*/
+  /**
+  *
+  * Returns the results for a saved project.
+  * @param project 	project directory name
+  * @param cl		unused if showing all results 
+  *			otherwise this is the name of 
+  *    			the file to display
+  * @param userName	username
+  * @param passwd	passwd
+  * @return 		saved results files
+  *
+  */
   public Vector show_saved_results(String project, String cl,
                               String userName, byte[] passwd)
   {
@@ -962,14 +1017,12 @@ public class JembossAuthServer
     return ssr;
   }
 
-/**
-*  
-* Private server
-*
-* Save a file to a project directory on the server.
-* @return message
-*
-*/
+  /**
+  *  
+  * Save a file to a project directory on the server.
+  * @return 	message
+  *
+  */
   public Vector save_project_file(String project, String filename, 
                     String notes, String userName, byte[] passwd)
   {
@@ -998,16 +1051,16 @@ public class JembossAuthServer
     return v;
   }
 
-/**
-*  
-* Private server
-*
-* Deletes a projects saved results.
-* @param project/directory name
-* @param unused
-* @return message
-*
-*/
+  /**
+  *  
+  * Deletes a projects saved results.
+  * @param project	project directory name
+  * @param cl		unused
+  * @param userName	username
+  * @param passwd	passwd
+  * @return message
+  *
+  */
   public Vector delete_saved_results(String project, String cl,
                                 String userName, byte[] passwd)
   {
@@ -1040,14 +1093,14 @@ public class JembossAuthServer
   }
 
 
-/**
-*
-* Private Server
-*
-* List of the saved results on the server.
-* @return list of the saved results.
-*
-*/
+  /**
+  *
+  * List of the saved results on the server.
+  * @param userName     username
+  * @param passwd       passwd
+  * @return 		list of the saved results.
+  *
+  */
   public Vector list_saved_results(String userName, byte[] passwd)
   {
     Ajax aj = new Ajax();
@@ -1098,11 +1151,13 @@ public class JembossAuthServer
   }
 
 
-/**
-*
-* Appends a log entry to the log file
-*
-*/ 
+  /**
+  *
+  * Appends a log entry to the log file
+  * @param logEntry	entry to add to log file
+  * @param logFileName 	log file name
+  *
+  */ 
   private void appendToLogFile(String logEntry, String logFileName)
   {
     BufferedWriter bw = null;
@@ -1131,11 +1186,19 @@ public class JembossAuthServer
   }
 
 
-/**
-*
-* Reads in files from EMBOSS output
-*
-*/
+  /**
+  *
+  * Reads in files from EMBOSS output
+  * @param aj		ajax/jni
+  * @param userName	username
+  * @param passwd	passwd
+  * @param projectDir	project directory
+  * @param project     	project name
+  * @param result	results
+  * @param inFiles	input files
+  * @return		result
+  *
+  */
   private Vector loadFilesContent(Ajax aj, String userName, 
             byte[] passwd, File projectDir, String project,
             Vector result, Hashtable inFiles)
@@ -1205,13 +1268,17 @@ public class JembossAuthServer
   }
 
 
-/**
-*
-* Used to provide information on the batch/background
-* processes.
-*
-*/
-
+  /**
+  *
+  * Used to provide information on the batch/background
+  * processes.
+  * @param prog		program
+  * @param opt		options
+  * @param resToQuery 	results to query
+  * @param userName  	username
+  * @param passwd	passwd
+  *
+  */
   public Vector update_result_status(String prog, String opt,
                         Vector resToQuery,String userName,
                         byte[] passwd)
@@ -1220,6 +1287,17 @@ public class JembossAuthServer
                                 userName,passwd);
   }
 
+  /**
+  *
+  * Used to provide information on the batch/background
+  * processes.
+  * @param prog         program
+  * @param opt          options
+  * @param resToQuery   results to query
+  * @param userName     username
+  * @param passwd       passwd
+  *
+  */
   public Vector update_result_status(String prog, String opt,
                         Hashtable resToQuery,String userName,
                         byte[] passwd)
@@ -1273,6 +1351,16 @@ public class JembossAuthServer
   }
 
 
+  /**
+  *
+  * Verify the username/passwd
+  * @param aj		ajax/jni
+  * @param userName 	username
+  * @param passwd	password
+  * @param res		results vector
+  * @return		true if authenticated ok
+  *
+  */
   private boolean verifyUser(Ajax aj, String userName, 
                             byte[] passwd, Vector res)
   {
@@ -1315,11 +1403,14 @@ public class JembossAuthServer
     return true;
   }
 
-/**
-*
-* Report the stderr and stdout to error logs
-*
-*/
+  /**
+  *
+  * Report the stderr and stdout to error logs
+  * @param aj	ajax/jni
+  * @param msg 	message
+  * @return	vector containing the message 
+  *
+  */
   private Vector returnError(Ajax aj, String msg)
   {
     appendToLogFile("STDERR "+aj.getErrStd(),errorLog);
