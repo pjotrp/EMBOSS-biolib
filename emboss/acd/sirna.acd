@@ -17,14 +17,14 @@ section: selection [ info: "selection Section" type: page ]
 
 bool: poliii [
   optional: "Y"
-  default: "Y"
+  default: "N"
   information: "Select probes for Pol III expression vectors"
   help: "This option allows you to select the 21 base probes that start with a purine and so can be expressed from Pol III expression vectors."
 ]
 
 bool: aa [
   optional: "Y"
-  default: "N"
+  default: "Y"
   information: "Select regions that start with AA"
   help: "This option allows you to select the 23 base regions that start with 
 AA. "
