@@ -73,7 +73,7 @@ static void reportWriteTrace (AjPReport thys) {
   return;
 }
 
-/* @funcstatic reportWriteAntigenic *********************************************
+/* @func reportWriteAntigenic *********************************************
 **
 ** Writes a report in the format of the original antigenic program
 **
@@ -82,18 +82,21 @@ static void reportWriteTrace (AjPReport thys) {
 ** @@
 ******************************************************************************/
 
-static void reportWriteAntigenic (AjPReport thys) {
+void reportWriteAntigenic (AjPReport thys) {
 
   ajint i, j, k, m;
-  ajint nhits;
-  ajint maxpos;
-  ajint istart, iend;
-  ajint minlen, maxlen;
-  ajint begin;
-  ajint end;
-  float minap, averap;
+  ajint nhits=0;
+  ajint istart=0;
+  ajint iend=0;
+  ajint minlen=0;
+  ajint maxlen=0;
+  ajint begin=0;
+  ajint end=0;
+  float minap=0.;
+  float averap=0.;
 
-  ajint fpos, lpos;
+  ajint fpos=0;
+  ajint lpos=0;
   static AjPStr sstr = NULL;
   static AjPStr stmp = NULL;
 
@@ -306,7 +309,7 @@ AjBool ajReportOpen (AjPReport thys, AjPStr name) {
   if (thys->File)
     return ajTrue;
 
-  return;
+  return ajFalse;
 }
 
 /* @func ajReportFormatDefault ************************************************
