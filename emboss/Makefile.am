@@ -6,7 +6,7 @@ cluster \
 demofeatures demolist demosequence demostring demotable \
 entrails histogramtest messtest \
 patmattest plplottest proteinmotifsearch \
-seqinfo \
+scope seqinfo \
 seqretallfeat seqretfeat seqtofeat \
 simplesw testplot treetypedisplay 
 
@@ -153,6 +153,7 @@ seqinfo_SOURCES = seqinfo.c
 seqretall_SOURCES = seqretall.c
 seqretset_SOURCES = seqretset.c
 seqretsplit_SOURCES = seqretsplit.c
+scope_SOURCES = scope.c
 showdb_SOURCES = showdb.c
 showfeat_SOURCES = showfeat.c
 showorf_SOURCES = showorf.c
