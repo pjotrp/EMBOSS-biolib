@@ -1,4 +1,4 @@
-application: fseqboot [
+application: ffactboot [
   documentation: "Bootstrapped sequences algorithm"
   groups: "Phylogeny:Molecular sequence"
 ]

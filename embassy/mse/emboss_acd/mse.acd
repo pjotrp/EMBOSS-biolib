@@ -4,13 +4,27 @@ application: mse [
   gui: "N"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 seqset: sequence  [
   parameter: "Y"
   help: "File containing a sequence alignment"
   type: "gapany"
 ]
 
-string: tmpdir  [
-  default: "/tmp"
-  information: "temp directory"
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
 ]
+
+directory: tmpdir  [
+  default: "/tmp"
+  information: "Temp directory"
+]
+
+endsection: advanced

@@ -1,4 +1,4 @@
-application: fseqboot [
+application: ffreqboot [
   documentation: "Bootstrapped sequences algorithm"
   groups: "Phylogeny:Molecular sequence"
 ]

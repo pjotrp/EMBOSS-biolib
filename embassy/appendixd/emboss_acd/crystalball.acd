@@ -16,8 +16,8 @@ section: input [
 
 endsection: input
 
-section: advanced [
-  information: "Advanced section"
+section: additional [
+  information: "Additional section"
   type: "page"
 ]
 
@@ -66,6 +66,13 @@ section: advanced [
     information: "How much will we make after the drug gets to
                   market?"
   ]
+
+endsection: additional
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
 
   boolean: everythingelse  [
     information: "Tell us everything else we'd really like to

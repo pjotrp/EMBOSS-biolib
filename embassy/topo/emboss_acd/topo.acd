@@ -3,13 +3,21 @@ application: topo [
   groups: "PROTEIN:2D STRUCTURE"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 sequence: sequence  [
   parameter: "Y"
   type: "protein"
 ]
 
-graph: graph  [
-  standard: "Y"
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
 ]
 
 range: sections  [
@@ -25,6 +33,27 @@ boolean: membrane  [
   standard: "Y"
   information: "First membrane from the outside"
   default: "Y"
+]
+
+boolean: signature  [
+  additional: "Y"
+  default: "N"
+  information: "Are there any signature areas to be marked"
+]
+
+range: sigrange  [
+  standard: "$(signature)"
+  information: "Signature Sections"
+  help: "Examples of ranges specifications are: \
+         10-10 CF, 56-78 SY\ 1:45 SR, 67=99 HY;765..888 SF \
+         1,5,HG,8,10,HY,23,45,SR,57,99,UG"
+]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
 ]
 
 list: cyssymbol  [
@@ -218,22 +247,21 @@ list: proline  [
   information: "Symbol to display prolines"
 ]
 
-boolean: signature  [
-  additional: "Y"
-  default: "N"
-  information: "Are there any signature areas to be marked"
-]
-
-range: sigrange  [
-  standard: "$(signature)"
-  information: "Signature Sections"
-  help: "Examples of ranges specifications are: \
-         10-10 CF, 56-78 SY\ 1:45 SR, 67=99 HY;765..888 SF \
-         1,5,HG,8,10,HY,23,45,SR,57,99,UG"
-]
-
 boolean: draft  [
   additional: "Y"
   default: "N"
   information: "Is this a draft plot"
 ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+graph: graph  [
+  standard: "Y"
+]
+
+endsection: output

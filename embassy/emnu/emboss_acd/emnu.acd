@@ -4,6 +4,11 @@ application: emnu [
   gui: "N"
 ]
 
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
 boolean: morefiles  [
   additional: "Y"
   default: "Y"
@@ -28,3 +33,5 @@ boolean: explode  [
          combinations of the names as: 'NAME1', 'NAME2', 'NAME1 NAME2', NAME2
          NAME1'. The non-expanded names are simply like: 'NAME1 NAME2'."
 ]
+
+endsection: additional

@@ -1,4 +1,4 @@
-application: fdnapars [
+application: fpars [
   documentation: "Discrete character parsimony"
   groups: "Phylogeny:Discrete characters"
 ]
