@@ -59,85 +59,62 @@ public class SetUpMenuBar
 
     JMenu fileMenu = new JMenu("File");
     fileMenu.setMnemonic(KeyEvent.VK_F);
-    JMenuItem fileMenuShowres = new JMenuItem("Saved Results");
-    fileMenuShowres.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e) 
-      {
-	f.setCursor(cbusy);
-        new ShowSavedResults(mysettings,f);
-	f.setCursor(cdone);
-      }
-    });
-    fileMenu.add(fileMenuShowres);
 
-//  JMenuItem showRemoteFile = new JMenuItem("Remote Files");
-//  showRemoteFile.addActionListener(new ActionListener()
-//  {
-//    public void actionPerformed(ActionEvent e)
-//    {
-//      f.setCursor(cbusy);
-//      try
-//      {
-//        JFrame fres = new JFrame();
-//        RemoteFileTreePanel rtree = new RemoteFileTreePanel(mysettings,false);
-//        fres.getContentPane().add(rtree);
-//        JMenuBar rtreeBar = new JMenuBar();
-//        rtreeBar.add(rtree.getRootSelect());
-//        fres.setJMenuBar(rtreeBar);
-//        fres.pack();
-//        fres.setVisible(true);
-//      }
-//      catch (Exception expf) 
-//      {
-//        f.setCursor(cdone); 
-//        new AuthPopup(mysettings,f);
-//      }
-//      f.setCursor(cdone);
-//    }
-//  });
-//  fileMenu.add(showRemoteFile);
-
-    JMenuItem showLocalRemoteFile = new JMenuItem("Local and Remote Files");
-    showLocalRemoteFile.addActionListener(new ActionListener()
+    if(withSoap)
     {
-      public void actionPerformed(ActionEvent e)
+      JMenuItem fileMenuShowres = new JMenuItem("Saved Results");
+      fileMenuShowres.addActionListener(new ActionListener()
       {
-        f.setCursor(cbusy);
-     
-        if(localAndRemoteTree == null)
+        public void actionPerformed(ActionEvent e) 
         {
-          try
-          {
-            localAndRemoteTree = new LocalAndRemoteFileTreeFrame(mysettings);
-            Dimension d = f.getToolkit().getScreenSize();
-            int locY = (int)(d.getHeight()-localAndRemoteTree.getHeight())/2;
-            int wid1 = (int)localAndRemoteTree.getPreferredSize().getWidth();
-            int wid2 = f.getWidth();
-            wid1 = (int)d.getWidth()-wid1;
-            if(wid2 < wid1)
-              wid1 = wid2;     
-            localAndRemoteTree.setLocation(wid1,locY);
-            localAndRemoteTree.setVisible(true);
-          }
-          catch(JembossSoapException jse)
-          {
-            localAndRemoteTree = null;
-            AuthPopup ap = new AuthPopup(mysettings,f); 
-            ap.setBottomPanel();
-            ap.setSize(380,170);
-            ap.pack();
-            ap.setVisible(true);
-          }
+	  f.setCursor(cbusy);
+          new ShowSavedResults(mysettings,f);
+	  f.setCursor(cdone);
         }
-        else
-          localAndRemoteTree.setVisible(true);
-        f.setCursor(cdone);
-      }
-    });
-    fileMenu.add(showLocalRemoteFile);
-    fileMenu.addSeparator();
-
+      });
+      fileMenu.add(fileMenuShowres);
+ 
+      JMenuItem showLocalRemoteFile = new JMenuItem(
+                                      "Local and Remote Files");
+      showLocalRemoteFile.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent e)
+        {
+          f.setCursor(cbusy);
+     
+          if(localAndRemoteTree == null)
+          {
+            try
+            {
+              localAndRemoteTree = new LocalAndRemoteFileTreeFrame(mysettings);
+              Dimension d = f.getToolkit().getScreenSize();
+              int locY = (int)(d.getHeight()-localAndRemoteTree.getHeight())/2;
+              int wid1 = (int)localAndRemoteTree.getPreferredSize().getWidth();
+              int wid2 = f.getWidth();
+              wid1 = (int)d.getWidth()-wid1;
+              if(wid2 < wid1)
+                wid1 = wid2;     
+              localAndRemoteTree.setLocation(wid1,locY);
+              localAndRemoteTree.setVisible(true);
+            }
+            catch(JembossSoapException jse)
+            {
+              localAndRemoteTree = null;
+              AuthPopup ap = new AuthPopup(mysettings,f); 
+              ap.setBottomPanel();
+              ap.setSize(380,170);
+              ap.pack();
+              ap.setVisible(true);
+            }
+          }
+          else
+            localAndRemoteTree.setVisible(true);
+          f.setCursor(cdone);
+        }
+      });
+      fileMenu.add(showLocalRemoteFile);
+      fileMenu.addSeparator();
+    }
 
     JMenuItem fileMenuExit = new JMenuItem("Exit");
     fileMenuExit.addActionListener(new ActionListener()
