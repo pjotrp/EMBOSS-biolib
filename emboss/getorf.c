@@ -154,8 +154,24 @@ int main(int argc, char **argv)
 
 
 
-/******************************************************************************/
-/* finds all orfs in the current sense and writes them out */
+
+/* @funcstatic FindORFs *******************************************************
+**
+** finds all orfs in the current sense and writes them out
+**
+** @param [?] seq [AjPSeq] Undocumented
+** @param [?] len [ajint] Undocumented
+** @param [?] trnTable [AjPTrn] Undocumented
+** @param [?] minsize [ajint] Undocumented
+** @param [?] seqout [AjPSeqout] Undocumented
+** @param [?] sense [AjBool] Undocumented
+** @param [?] circular [AjBool] Undocumented
+** @param [?] find [ajint] Undocumented
+** @param [?] orf_no [ajint*] Undocumented
+** @param [?] methionine [AjBool] Undocumented
+** @param [?] around [ajint] Undocumented
+** @@
+******************************************************************************/
 
 static void FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable, ajint minsize,
 		     AjPSeqout seqout, AjBool sense, AjBool circular,
@@ -425,7 +441,24 @@ static void FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable, ajint minsize,
     return;
 }
 
-/******************************************************************************/
+/* @funcstatic  WriteORF ******************************************************
+**
+** Undocumented.
+**
+** @param [?] seq [AjPSeq] Undocumented
+** @param [?] len [ajint] Undocumented
+** @param [?] seqlen [ajint] Undocumented
+** @param [?] sense [AjBool] Undocumented
+** @param [?] find [ajint] Undocumented
+** @param [?] orf_no [ajint*] Undocumented
+** @param [?] start [ajint] Undocumented
+** @param [?] pos [ajint] Undocumented
+** @param [?] str [AjPStr] Undocumented
+** @param [?] seqout [AjPSeqout] Undocumented
+** @param [?] around [ajint] Undocumented
+** @@
+******************************************************************************/
+
 static void WriteORF(AjPSeq seq, ajint len, ajint seqlen, AjBool sense,
 		     ajint find, ajint *orf_no, ajint start, ajint pos, AjPStr str,
 		     AjPSeqout seqout, ajint around)
@@ -572,8 +605,18 @@ static void WriteORF(AjPSeq seq, ajint len, ajint seqlen, AjBool sense,
 
 
 
-/***************************************************************************/
-/* append aa to ORF sequence string */
+/* @funcstatic AppORF *********************************************************
+**
+** append aa to ORF sequence string
+**
+** @param [?] find [ajint] Undocumented
+** @param [?] str [AjPStr*] Undocumented
+** @param [?] chrseq [char*] Undocumented
+** @param [?] pos [ajint] Undocumented
+** @param [?] aa [char] Undocumented
+** @@
+******************************************************************************/
+
 static void AppORF(ajint find, AjPStr *str, char *chrseq, ajint pos, char aa)
 {
 

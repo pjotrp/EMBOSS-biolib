@@ -467,7 +467,7 @@ static void FeatOut(AjPFile outfile, AjPStr lineout, char strandout,
 
 }
 
-/** @funcstatic CompareFeatSource ***********************************************
+/* @funcstatic CompareFeatSource ***********************************************
 **
 ** Compare two feature node to sort as: sense, source, type, start
 **
@@ -515,7 +515,7 @@ static ajint CompareFeatSource (const void * a, const void * b) {
 
 }
 
-/** @funcstatic CompareFeatType ***********************************************
+/* @funcstatic CompareFeatType ***********************************************
 **
 ** Compare two feature node to sort as: sense, type, source, start
 **
@@ -562,7 +562,7 @@ static ajint CompareFeatType (const void * a, const void * b) {
 }
 
 
-/** @funcstatic CompareFeatPos ***********************************************
+/* @funcstatic CompareFeatPos ***********************************************
 **
 ** Compare two feature node to sort as: sense, start, type, source
 **
@@ -609,7 +609,7 @@ static ajint CompareFeatPos (const void * a, const void * b) {
 
 }
 
-/** @funcstatic showfeatMatchPatternTags **************************************
+/* @funcstatic showfeatMatchPatternTags **************************************
 **
 ** Checks for a match of the tagpattern and valuepattern to at least one
 ** tag=value pair
@@ -656,7 +656,7 @@ allow this as a match */
   return val;
 
 }
-/** @funcstatic AddPos ***********************************************
+/* @funcstatic AddPos ***********************************************
 **
 ** writes the positions to the positions string
 **
@@ -677,7 +677,7 @@ static void AddPos(AjPStr *posout, ajint start, ajint end) {
   ajFmtPrintAppS(posout, "%d-%d", start, end);
 
 }
-/** @funcstatic AddTagsStr ***********************************************
+/* @funcstatic AddTagsStr ***********************************************
 **
 ** writes the tags to the tagsout string
 **

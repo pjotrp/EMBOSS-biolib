@@ -380,6 +380,26 @@ main( ajint argc, char *argv[])
 }
 
 
+/* @func make_output **********************************************************
+**
+** Undocumented.
+**
+** @param [?] ofile [AjPFile] Undocumented
+** @param [?] genome [AjPSeq] Undocumented
+** @param [?] est [AjPSeq] Undocumented
+** @param [?] ge [EmbPEstAlign] Undocumented
+** @param [?] match [ajint] Undocumented
+** @param [?] mismatch [ajint] Undocumented
+** @param [?] gap_penalty [ajint] Undocumented
+** @param [?] intron_penalty [ajint] Undocumented
+** @param [?] splice_penalty [ajint] Undocumented
+** @param [?] minscore [ajint] Undocumented
+** @param [?] align [ajint] Undocumented
+** @param [?] width [ajint] Undocumented
+** @param [?] reverse [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 void make_output( AjPFile ofile, AjPSeq genome, AjPSeq est, EmbPEstAlign ge,
 		  ajint match, ajint mismatch, ajint gap_penalty,

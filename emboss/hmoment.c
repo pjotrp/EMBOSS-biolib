@@ -180,6 +180,22 @@ int main(int argc, char **argv)
 }
 
 
+/* @funcstatic  addgraph ******************************************************
+**
+** Undocumented.
+**
+** @param [?] graph [AjPGraph] Undocumented
+** @param [?] limit [ajint] Undocumented
+** @param [?] x [float*] Undocumented
+** @param [?] y [float*] Undocumented
+** @param [?] ymax [float] Undocumented
+** @param [?] colour [ajint] Undocumented
+** @param [?] angle [ajint] Undocumented
+** @param [?] window [ajint] Undocumented
+** @param [?] baseline [float] Undocumented
+** @@
+******************************************************************************/
+
 
 static void addgraph(AjPGraph graph, ajint limit, float *x, float *y,
 		     float ymax, ajint colour, ajint angle, ajint window,
@@ -219,6 +235,18 @@ static void addgraph(AjPGraph graph, ajint limit, float *x, float *y,
     return;
 }
 
+
+/* @funcstatic  calchm ********************************************************
+**
+** Undocumented.
+**
+** @param [?] p [char*] Undocumented
+** @param [?] pos [int] Undocumented
+** @param [?] window [int] Undocumented
+** @param [?] angle [ajint] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
 
 static float calchm(char *p, int pos, int window, ajint angle)

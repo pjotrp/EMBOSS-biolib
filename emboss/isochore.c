@@ -170,6 +170,15 @@ int main(int argc, char **argv)
 }
 
 
+/* @funcstatic  ajFltarrNew0 **************************************************
+**
+** Undocumented.
+**
+** @param [?] size [size_t] Undocumented
+** @return [AjPFltarr] Undocumented
+** @@
+******************************************************************************/
+
 static AjPFltarr ajFltarrNew0(size_t size) {
   AjPFltarr ret;
   AJNEW(ret);

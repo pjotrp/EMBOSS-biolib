@@ -172,7 +172,34 @@ int main(int argc, char **argv)
 
 
 
-
+/* @func findgc *******************************************************
+**
+** Undocumented
+**
+**
+** @param [R] strand [AjPStr*] Undocumented
+** @param [R] begin [ajint] Undocumented
+** @param [R] end [ajint] Undocumented
+** @param [R] window [ajint] Undocumented
+** @param [R] shift [ajint] Undocumented
+** @param [R] formamide [float] Undocumented
+** @param [R] mismatch [float] Undocumented
+** @param [R] prodLen [ajint] Undocumented
+** @param [R] dna [float] Undocumented
+** @param [R] salt [float] Undocumented
+** @param [R] temperature [float] Undocumented
+** @param [R] isDNA [AjBool] Undocumented
+** @param [R] isproduct [AjBool] Undocumented
+** @param [R] dothermo [AjBool] Undocumented
+** @param [R] outf [AjPFile] Undocumented
+** @param [R] doplot [AjBool] Undocumented
+** @param [R] xa [float*] Undocumented
+** @param [R] ta [float*] Undocumented
+** @param [R] tpa [float*] Undocumented
+** @param [R] cga [float*] Undocumented
+** @param [R] np [ajint*] Undocumented
+** @@
+******************************************************************************/
 
 
 
@@ -275,6 +302,17 @@ void findgc(AjPStr *strand, ajint begin, ajint end, ajint window, ajint shift,
 
 
 
+/* @func unfmall **************************************************************
+**
+** Undocumented.
+**
+** @param [?] xa [float*] Undocumented
+** @param [?] ta [float*] Undocumented
+** @param [?] tpa [float*] Undocumented
+** @param [?] cga [float*] Undocumented
+** @@
+******************************************************************************/
+
 
 
 void unfmall(float *xa, float *ta, float *tpa, float *cga)
@@ -286,6 +324,23 @@ void unfmall(float *xa, float *ta, float *tpa, float *cga)
 }
 
     
+/* @func plotit ***************************************************************
+**
+** Undocumented.
+**
+** @param [?] seq [AjPSeq*] Undocumented
+** @param [?] xa [float*] Undocumented
+** @param [?] ta [float*] Undocumented
+** @param [?] cga [float*] Undocumented
+** @param [?] tpa [float*] Undocumented
+** @param [?] npoints [ajint] Undocumented
+** @param [?] ibegin [ajint] Undocumented
+** @param [?] iend [ajint] Undocumented
+** @param [?] graphs [AjPGraph] Undocumented
+** @param [?] mintemp [float] Undocumented
+** @@
+******************************************************************************/
+
 
 
 void plotit(AjPSeq *seq, float *xa, float *ta, float *cga, float *tpa,

@@ -387,9 +387,24 @@ int main(int argc, char **argv)
 
 
 
+/* @func TextRuler ***********************************************************
+**
+** compute the character size that fits all elements of the ruler
+** provided that the height and the length of all strings are at
+** most TextHeight and TextLength, respectively
+**
+** @param [?] Start [float] Undocumented
+** @param [?] End [float] Undocumented
+** @param [?] GapSize [ajint] Undocumented
+** @param [?] TextLength [float] Undocumented
+** @param [?] TextHeight [float] Undocumented
+** @param [?] PosTicks [AjPStr] Undocumented
+** @param [?] NumGroups [ajint] Undocumented
+** @param [?] NumLabels [ajint*] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
-/* compute the character size that fits all elements of the ruler provided that
-   the height and the length of all strings are at most TextHeight and TextLength, respectively */
 float TextRuler(float Start, float End, ajint GapSize, float TextLength,
 		float TextHeight, AjPStr PosTicks, ajint NumGroups,
 		ajint *NumLabels)
@@ -438,16 +453,22 @@ float TextRuler(float Start, float End, ajint GapSize, float TextLength,
     return minsize;
 }
 
+/* @func TextRulerStr ********************************************************
+**
+** compute the character size that fits all elements of the ruler provided
+** that the height and the length of all strings are multiplied by TextCoef
+**
+** @param [?] Start [float] Undocumented
+** @param [?] End [float] Undocumented
+** @param [?] GapSize [ajint] Undocumented
+** @param [?] TextCoef [float] Undocumented
+** @param [?] PosTicks [AjPStr] Undocumented
+** @param [?] NumGroups [ajint] Undocumented
+** @param [?] NumLabels [ajint*] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-
-/*
- *  compute the character size that fits all elements of the ruler provided
- *  that the height and the length of all strings are multiplied by TextCoef
- */
 float TextRulerStr(float Start, float End, ajint GapSize, float TextCoef,
 		   AjPStr PosTicks, ajint NumGroups, ajint *NumLabels)
 {
@@ -502,12 +523,22 @@ float TextRulerStr(float Start, float End, ajint GapSize, float TextCoef,
     return minsize;
 }
 
+/* @func HeightRuler *********************************************************
+**
+** compute the ruler's height
+**
+** @param [?] Start [float] Undocumented
+** @param [?] End [float] Undocumented
+** @param [?] GapSize [ajint] Undocumented
+** @param [?] postext [float] Undocumented
+** @param [?] TickHeight [float] Undocumented
+** @param [?] PosTicks [AjPStr] Undocumented
+** @param [?] NumGroups [ajint] Undocumented
+** @param [?] NumLabels [ajint*] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* compute the ruler's height */
 float HeightRuler(float Start, float End, ajint GapSize, float postext,
 		  float TickHeight, AjPStr PosTicks, ajint NumGroups,
 		  ajint *NumLabels)
@@ -559,10 +590,31 @@ float HeightRuler(float Start, float End, ajint GapSize, float postext,
 
 
 
+/* @func DrawRuler ***********************************************************
+**
+** draw a ruler
+**
+** @param [?] xDraw [float] Undocumented
+** @param [?] yDraw [float] Undocumented
+** @param [?] Start [float] Undocumented
+** @param [?] End [float] Undocumented
+** @param [?] RealLength [float] Undocumented
+** @param [?] Radius [float] Undocumented
+** @param [?] TickHeight [float] Undocumented
+** @param [?] OriginAngle [float] Undocumented
+** @param [?] GapSize [ajint] Undocumented
+** @param [?] TickLines [AjPStr] Undocumented
+** @param [?] TextLength [float] Undocumented
+** @param [?] TextHeight [float] Undocumented
+** @param [?] postext [float] Undocumented
+** @param [?] NumGroups [ajint] Undocumented
+** @param [?] NumLabels [ajint*] Undocumented
+** @param [?] From [float*] Undocumented
+** @param [?] PosTicks [AjPStr] Undocumented
+** @param [?] Color [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-/* draw a ruler */
 void DrawRuler(float xDraw, float yDraw, float Start, float End,
 	       float RealLength, float Radius, float TickHeight,
 	       float OriginAngle, ajint GapSize, AjPStr TickLines,
@@ -616,12 +668,28 @@ void DrawRuler(float xDraw, float yDraw, float Start, float End,
     return;
 }
 
+/* @func DrawTicks ***********************************************************
+**
+** draw a Tick
+** 
+** @param [?] xDraw [float] Undocumented
+** @param [?] yDraw [float] Undocumented
+** @param [?] RealLength [float] Undocumented
+** @param [?] Radius [float] Undocumented
+** @param [?] TickHeight [float] Undocumented
+** @param [?] From [float] Undocumented
+** @param [?] Name2 [AjPStr] Undocumented
+** @param [?] OriginAngle [float] Undocumented
+** @param [?] TextLength [float] Undocumented
+** @param [?] TextHeight [float] Undocumented
+** @param [?] postext [float] Undocumented
+** @param [?] PosTicks [AjPStr] Undocumented
+** @param [?] NumNames [ajint] Undocumented
+** @param [?] Adjust [ajint] Undocumented
+** @param [?] Color [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* draw a Tick */
 void DrawTicks(float xDraw, float yDraw, float RealLength, float Radius,
 	       float TickHeight, float From, AjPStr Name2, float OriginAngle,
 	       float TextLength, float TextHeight, float postext,
@@ -681,12 +749,27 @@ void DrawTicks(float xDraw, float yDraw, float RealLength, float Radius,
     return;
 }
 
+/* @func DrawBlocks **********************************************************
+**
+** draw a Block
+**
+** @param [?] xDraw [float] Undocumented
+** @param [?] yDraw [float] Undocumented
+** @param [?] RealLength [float] Undocumented
+** @param [?] Radius [float] Undocumented
+** @param [?] BlockHeight [ajint] Undocumented
+** @param [?] From [float] Undocumented
+** @param [?] To [float] Undocumented
+** @param [?] Name2 [AjPStr] Undocumented
+** @param [?] postext [float] Undocumented
+** @param [?] OriginAngle [float] Undocumented
+** @param [?] PosBlocks [AjPStr] Undocumented
+** @param [?] NumNames [ajint] Undocumented
+** @param [?] Adjust [ajint] Undocumented
+** @param [?] Color [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* draw a Block */
 void DrawBlocks(float xDraw, float yDraw, float RealLength, float Radius,
 		ajint BlockHeight, float From, float To, AjPStr Name2,
 		float postext, float OriginAngle, AjPStr PosBlocks,
@@ -723,12 +806,28 @@ void DrawBlocks(float xDraw, float yDraw, float RealLength, float Radius,
     return;
 }
 
+/* @func DrawRanges **********************************************************
+**
+** draw a Range
+**
+** @param [?] xDraw [float] Undocumented
+** @param [?] yDraw [float] Undocumented
+** @param [?] RealLength [float] Undocumented
+** @param [?] Radius [float] Undocumented
+** @param [?] RangeHeight [float] Undocumented
+** @param [?] From [float] Undocumented
+** @param [?] To [float] Undocumented
+** @param [?] FromSymbol [char] Undocumented
+** @param [?] ToSymbol [char] Undocumented
+** @param [?] Name2 [AjPStr] Undocumented
+** @param [?] OriginAngle [float] Undocumented
+** @param [?] NumNames [ajint] Undocumented
+** @param [?] postext [float] Undocumented
+** @param [?] Adjust [ajint] Undocumented
+** @param [?] Color [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* draw a Range */
 void DrawRanges(float xDraw, float yDraw, float RealLength, float Radius,
 		float RangeHeight, float From, float To, char FromSymbol,
 		char ToSymbol, AjPStr Name2, float OriginAngle,
@@ -796,12 +895,23 @@ void DrawRanges(float xDraw, float yDraw, float RealLength, float Radius,
     return;
 }
 
+/* @func InterBlocks *********************************************************
+**
+** draw an InterBlock
+**
+** @param [?] xDraw [float] Undocumented
+** @param [?] yDraw [float] Undocumented
+** @param [?] RealLength [float] Undocumented
+** @param [?] Radius [float] Undocumented
+** @param [?] BlockHeight [float] Undocumented
+** @param [?] From [float] Undocumented
+** @param [?] To [float] Undocumented
+** @param [?] OriginAngle [float] Undocumented
+** @param [?] InterSymbol [AjPStr] Undocumented
+** @param [?] Color [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* draw an InterBlock */
 void InterBlocks(float xDraw, float yDraw, float RealLength, float Radius,
 		 float BlockHeight, float From, float To, float OriginAngle,
 		 AjPStr InterSymbol, ajint Color)
@@ -821,13 +931,17 @@ void InterBlocks(float xDraw, float yDraw, float RealLength, float Radius,
 			  EndAngle);
 }
 
+/* @func ComputeAngle ********************************************************
+**
+** compute the angle knowing the length
+**
+** @param [?] RealLength [float] Undocumented
+** @param [?] Length [float] Undocumented
+** @param [?] OriginAngle [float] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-
-/* compute the angle knowing the length */
 float ComputeAngle(float RealLength, float Length, float OriginAngle)
 {
     float i;
@@ -839,13 +953,22 @@ float ComputeAngle(float RealLength, float Length, float OriginAngle)
     return 360-j;
 }
 
+/* @func DrawArrowHeadsOnCurve ***********************************************
+**
+** draw arrowheads on a curve
+**
+** @param [?] xDraw [float] Undocumented
+** @param [?] yDraw [float] Undocumented
+** @param [?] RealLength [float] Undocumented
+** @param [?] Height [float] Undocumented
+** @param [?] Length [float] Undocumented
+** @param [?] Radius [float] Undocumented
+** @param [?] Angle [float] Undocumented
+** @param [?] OriginAngle [float] Undocumented
+** @param [?] Way [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-
-/* draw arrowheads on a curve*/
 void DrawArrowHeadsOnCurve(float xDraw, float yDraw, float RealLength,
 			   float Height, float Length, float Radius,
 			   float Angle, float OriginAngle, ajint Way)
@@ -884,13 +1007,22 @@ void DrawArrowHeadsOnCurve(float xDraw, float yDraw, float RealLength,
     return;
 }
 
+/* @func DrawBracketsOnCurve *************************************************
+**
+** draw brackets on a curve
+**
+** @param [?] xDraw [float] Undocumented
+** @param [?] yDraw [float] Undocumented
+** @param [?] RealLength [float] Undocumented
+** @param [?] Height [float] Undocumented
+** @param [?] Length [float] Undocumented
+** @param [?] Radius [float] Undocumented
+** @param [?] Angle [float] Undocumented
+** @param [?] OriginAngle [float] Undocumented
+** @param [?] Way [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-
-/* draw brackets on a curve*/
 void DrawBracketsOnCurve(float xDraw, float yDraw, float RealLength,
 			 float Height, float Length, float Radius,
 			 float Angle, float OriginAngle, ajint Way)
@@ -929,13 +1061,21 @@ void DrawBracketsOnCurve(float xDraw, float yDraw, float RealLength,
     return;
 }
 
+/* @func HorTextPile *********************************************************
+**
+** write a pile of horizontal text strings
+**
+** @param [?] x [float] Undocumented
+** @param [?] y [float] Undocumented
+** @param [?] Radius [float] Undocumented
+** @param [?] StartAngle [float] Undocumented
+** @param [?] EndAngle [float] Undocumented
+** @param [?] Name2 [AjPStr] Undocumented
+** @param [?] postext [float] Undocumented
+** @param [?] NumNames [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-
-/* write a pile of horizontal text strings */
 void HorTextPile(float x, float y, float Radius, float StartAngle,
 		 float EndAngle, AjPStr Name2, float postext,
 		 ajint NumNames)
@@ -964,12 +1104,16 @@ void HorTextPile(float x, float y, float Radius, float StartAngle,
     return;
 }
 
+/* @func HorTextPileHeight ***************************************************
+**
+** compute the height of a pile of horizontal text strings
+**
+** @param [?] postext [float] Undocumented
+** @param [?] NumNames [ajint] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* compute the height of a pile of horizontal text strings */
 float HorTextPileHeight(float postext, ajint NumNames)
 {
     float stringHeight;
@@ -986,15 +1130,17 @@ float HorTextPileHeight(float postext, ajint NumNames)
     return totalHeight;
 }
 
+/* @func HorTextPileLengthMax ************************************************
+**
+** compute the maximum length of a pile of horizontal text strings 
+** (this is the length of the longest string)
+**
+** @param [?] Name2 [AjPStr] Undocumented
+** @param [?] NumNames [ajint] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/*
- *  compute the maximum length of a pile of horizontal text strings 
- *  (this is the length of the longest string)
- */
 float HorTextPileLengthMax(AjPStr Name2, ajint NumNames)
 {
     float stringLength;
@@ -1015,13 +1161,16 @@ float HorTextPileLengthMax(AjPStr Name2, ajint NumNames)
     return maxLength;
 }
 
+/* @func ReadInput ***********************************************************
+**
+** read the beginning of the input file
+**
+** @param [?] infile [AjPFile] Undocumented
+** @param [?] Start [float*] Undocumented
+** @param [?] End [float*] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-
-/* read the beginning of the input file */
 void ReadInput(AjPFile infile, float *Start, float *End)
 {
     AjPStr line;

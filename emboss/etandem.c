@@ -67,6 +67,14 @@ static void finalReport (void);
 
 static ajint nCons = 0 ;
 
+/* @funcstatic  consCreate ****************************************************
+**
+** Undocumented.
+**
+** @return [Cons] Undocumented
+** @@
+******************************************************************************/
+
 static Cons consCreate (void) {
   static Cons res;
 
@@ -77,6 +85,14 @@ static Cons consCreate (void) {
   ++nCons ;
   return res ;
 }
+
+/* @funcstatic  consDestroy ***************************************************
+**
+** Undocumented.
+**
+** @param [?] cons [Cons] Undocumented
+** @@
+******************************************************************************/
 
 static void consDestroy (Cons cons) {
   if (!cons)
@@ -92,6 +108,14 @@ static void consDestroy (Cons cons) {
 
 static struct cons reportRootStruct ;
 static Cons reportRoot = &reportRootStruct ;
+
+/* @funcstatic  basicReport ***************************************************
+**
+** Undocumented.
+**
+** @param [?] a [Cons] Undocumented
+** @@
+******************************************************************************/
 
 static void basicReport (Cons a) {
   ajint j, copies, n = a->repeat ;
@@ -119,6 +143,14 @@ static void basicReport (Cons a) {
    ajFmtPrintF (outfile, "\n") ;
 }
 
+/* @funcstatic  report ********************************************************
+**
+** Undocumented.
+**
+** @param [?] a [Cons] Undocumented
+** @@
+******************************************************************************/
+
 static void report (Cons a) { 
   ajint j ;
   ajint firstchar ;
@@ -142,6 +174,13 @@ static void report (Cons a) {
   reportRoot->next = a ;
   return ;
 }
+
+/* @funcstatic  finalReport ***************************************************
+**
+** Undocumented.
+**
+** @@
+******************************************************************************/
 
 static void finalReport (void) {
   ajint start, end ; 

@@ -220,6 +220,15 @@ int main(int argc, char **argv)
 
 
 
+/* @funcstatic  check_dir *****************************************************
+**
+** Undocumented.
+**
+** @param [?] d [AjPStr] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @@
+******************************************************************************/
+
 
 
 static void check_dir(AjPStr d, AjPFile outf)
@@ -234,6 +243,16 @@ static void check_dir(AjPStr d, AjPFile outf)
 
 
 
+
+/* @funcstatic  check_file ****************************************************
+**
+** Undocumented.
+**
+** @param [?] d [AjPStr] Undocumented
+** @param [?] file [AjPStr] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @@
+******************************************************************************/
 
 
 static void check_file(AjPStr d, AjPStr file, AjPFile outf)
@@ -254,6 +273,14 @@ static void check_file(AjPStr d, AjPStr file, AjPFile outf)
     return;
 }
 
+
+/* @funcstatic  data_dir ******************************************************
+**
+** Undocumented.
+**
+** @return [AjPStr] Undocumented
+** @@
+******************************************************************************/
 
 
 static AjPStr data_dir(void)

@@ -1,4 +1,4 @@
-/** @source findkm.c
+/* @source findkm.c
 ** @author: Copyright (C) Sinead O'Leary (soleary@hgmp.mrc.ac.uk), David Martin (david.martin@biotek.uio.no)
 ** @@
 ** Application to calculate the Michaelis Menton Constants (Km) of different 
@@ -292,7 +292,17 @@ int main(int argc, char **argv)
         
  
 
-       
+ /* @func summation ************************************************************
+**
+** Undocumented.
+**
+** @param [?] arr [float*] Undocumented
+** @param [?] number [ajint] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
+
+      
 float summation(float *arr, ajint number)
 {
 ajint i;
@@ -304,6 +314,17 @@ float sum=0;
 } 
 
        
+/* @func multisum *************************************************************
+**
+** Undocumented.
+**
+** @param [?] arr1 [float*] Undocumented
+** @param [?] arr2 [float*] Undocumented
+** @param [?] number [ajint] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
+
 float multisum(float *arr1, float *arr2, ajint number)
 {
 ajint i;
@@ -314,6 +335,16 @@ float sum=0;
     return sum;
    
 }
+
+/* @func findmax **************************************************************
+**
+** Undocumented.
+**
+** @param [?] arr [float*] Undocumented
+** @param [?] number [ajint] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
 float findmax(float *arr, ajint number)
 {
@@ -326,6 +357,16 @@ float max=arr[0];
     }
     return max;
 }
+
+/* @func findmin **************************************************************
+**
+** Undocumented.
+**
+** @param [?] arr [float*] Undocumented
+** @param [?] number [ajint] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
 float findmin(float *arr, ajint number)
 {

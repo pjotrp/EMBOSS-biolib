@@ -1,5 +1,11 @@
 #include "emboss.h"
 
+/* @prog demofeatures *******************************************************
+**
+** Testing
+**
+******************************************************************************/
+
 int main (int argc, char **argv) {
   AjPFeattable feattable;
   AjPStr name=NULL,desc=NULL,source=NULL,type=NULL;

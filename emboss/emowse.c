@@ -168,6 +168,15 @@ int main(int argc, char **argv)
 
 
 
+/* @func read_freqs ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] ffile [AjPStr] Undocumented
+** @param [?] freqs [AjPDouble*] Undocumented
+** @@
+******************************************************************************/
+
 
 void read_freqs(AjPStr ffile, AjPDouble *freqs)
 {
@@ -200,6 +209,17 @@ void read_freqs(AjPStr ffile, AjPDouble *freqs)
 
 
 
+/* @func molwt_outofrange *****************************************************
+**
+** Undocumented.
+**
+** @param [?] thys [double] Undocumented
+** @param [?] given [double] Undocumented
+** @param [?] range [double] Undocumented
+** @return [AjBool] Undocumented
+** @@
+******************************************************************************/
+
 AjBool molwt_outofrange(double thys, double given, double range)
 {
     double diff;
@@ -212,6 +232,16 @@ AjBool molwt_outofrange(double thys, double given, double range)
 }
 
 
+
+/* @func read_data ************************************************************
+**
+** Undocumented.
+**
+** @param [?] inf [AjPFile] Undocumented
+** @param [?] data [EmbPMdata**] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 ajint read_data(AjPFile inf, EmbPMdata** data)
 {
@@ -253,12 +283,28 @@ ajint read_data(AjPFile inf, EmbPMdata** data)
 
 
 
+/* @func sort_data ************************************************************
+**
+** Undocumented.
+**
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 ajint sort_data(const void *a, const void *b)
 {
     return (ajint)((*(EmbPMdata*)a)->mwt - (*(EmbPMdata*)b)->mwt);
 }
 
 
+
+/* @func hit_sort *************************************************************
+**
+** Undocumented.
+**
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 ajint hit_sort(const void *a, const void *b)
 {
@@ -276,6 +322,24 @@ ajint hit_sort(const void *a, const void *b)
 }
 
 
+
+/* @func match ****************************************************************
+**
+** Undocumented.
+**
+** @param [?] data [EmbPMdata*] Undocumented
+** @param [?] dno [ajint] Undocumented
+** @param [?] flist [AjPList] Undocumented
+** @param [?] nfrags [ajint] Undocumented
+** @param [?] tol [double] Undocumented
+** @param [?] seq [AjPSeq] Undocumented
+** @param [?] hlist [AjPList*] Undocumented
+** @param [?] partials [double] Undocumented
+** @param [?] cmw [double] Undocumented
+** @param [?] rno [ajint] Undocumented
+** @param [?] freqs [AjPDouble] Undocumented
+** @@
+******************************************************************************/
 
 void match(EmbPMdata* data, ajint dno, AjPList flist, ajint nfrags,
 	   double tol, AjPSeq seq, AjPList* hlist, double partials,
@@ -448,6 +512,24 @@ void match(EmbPMdata* data, ajint dno, AjPList flist, ajint nfrags,
 
 
 
+/* @func get_index ************************************************************
+**
+** Undocumented.
+**
+** @param [?] actmw [double] Undocumented
+** @param [?] maxmw [double] Undocumented
+** @param [?] minmw [double] Undocumented
+** @param [?] frags [EmbPMolFrag*] Undocumented
+** @param [?] fno [ajint] Undocumented
+** @param [?] bestmw [double*] Undocumented
+** @param [?] index [ajint*] Undocumented
+** @param [?] thys [ajint] Undocumented
+** @param [?] seq [AjPSeq] Undocumented
+** @param [?] data [EmbPMdata*] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 ajint get_index(double actmw, double maxmw, double minmw, EmbPMolFrag *frags,
 	      ajint fno, double *bestmw, ajint *index, ajint thys, AjPSeq seq,
 	      EmbPMdata *data)
@@ -574,6 +656,19 @@ ajint get_index(double actmw, double maxmw, double minmw, EmbPMolFrag *frags,
 
 
 
+/* @func seq_comp *************************************************************
+**
+** Undocumented.
+**
+** @param [?] bidx [ajint] Undocumented
+** @param [?] thys [ajint] Undocumented
+** @param [?] seq [AjPSeq] Undocumented
+** @param [?] data [EmbPMdata*] Undocumented
+** @param [?] frags [EmbPMolFrag*] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 ajint seq_comp(ajint bidx, ajint thys, AjPSeq seq, EmbPMdata *data,
 	     EmbPMolFrag *frags)
 {
@@ -637,6 +732,14 @@ ajint seq_comp(ajint bidx, ajint thys, AjPSeq seq, EmbPMdata *data,
 }
 
 
+/* @func mreverse *************************************************************
+**
+** Undocumented.
+**
+** @param [?] s [char*] Undocumented
+** @@
+******************************************************************************/
+
 void mreverse(char *s)
 {
     ajint i;
@@ -667,6 +770,16 @@ void mreverse(char *s)
 }
 
 
+
+/* @func seq_search ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] substr [AjPStr] Undocumented
+** @param [?] s [char*] Undocumented
+** @return [AjBool] Undocumented
+** @@
+******************************************************************************/
 
 AjBool seq_search(AjPStr substr, char *s)
 {
@@ -710,6 +823,17 @@ AjBool seq_search(AjPStr substr, char *s)
     return ajTrue;
 }
 
+
+/* @func msearch **************************************************************
+**
+** Undocumented.
+**
+** @param [?] seq [char*] Undocumented
+** @param [?] pat [char*] Undocumented
+** @param [?] term [AjBool] Undocumented
+** @return [AjBool] Undocumented
+** @@
+******************************************************************************/
 
 AjBool msearch(char *seq, char *pat, AjBool term)
 {
@@ -796,6 +920,16 @@ AjBool msearch(char *seq, char *pat, AjBool term)
 }
 
 	       
+/* @func comp_search **********************************************************
+**
+** Undocumented.
+**
+** @param [?] substr [AjPStr] Undocumented
+** @param [?] s [char*] Undocumented
+** @return [AjBool] Undocumented
+** @@
+******************************************************************************/
+
 AjBool comp_search(AjPStr substr, char *s)
 {
     AjPInt arr;
@@ -889,6 +1023,17 @@ AjBool comp_search(AjPStr substr, char *s)
 }
 
 
+/* @func get_orc **************************************************************
+**
+** Undocumented.
+**
+** @param [?] orc [AjPStr*] Undocumented
+** @param [?] s [char*] Undocumented
+** @param [?] pos [ajint] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 ajint get_orc(AjPStr *orc, char *s, ajint pos)
 {
     ajint i;
@@ -910,6 +1055,17 @@ ajint get_orc(AjPStr *orc, char *s, ajint pos)
 
 
 
+
+/* @func print_hits ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] hlist [AjPList] Undocumented
+** @param [?] dno [ajint] Undocumented
+** @param [?] data [EmbPMdata*] Undocumented
+** @@
+******************************************************************************/
 
 void print_hits(AjPFile outf, AjPList hlist, ajint dno, EmbPMdata* data)
 {

@@ -24,6 +24,19 @@ ajint rest (ajint c);
 ajint compare(const void *x, const void *y);
  void vfree(const void *, void **, void *);
 
+/* @func getword *************************************************************
+**
+** Undocumented.
+**
+** @param [?] fp [FILE*] Undocumented
+** @param [?] buf [char*] Undocumented
+** @param [?] size [ajint] Undocumented
+** @param [?] first [ajint function] Undocumented
+** @param [?] rest [ajint function] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 ajint getword(FILE *fp, char *buf, ajint size,
         ajint first(ajint c), ajint rest(ajint c)) {
         ajint i = 0, c;
@@ -53,6 +66,12 @@ ajint getword(FILE *fp, char *buf, ajint size,
 }
 
 
+/* @prog ajtest ***************************************************************
+**
+** testing, and subjest to frequent change
+**
+******************************************************************************/
+
 
 int main(int argc, char **argv)
 {
@@ -75,6 +94,15 @@ int main(int argc, char **argv)
         ajExit();
 	return 0;
 }
+
+/* @func wf ******************************************************************
+**
+** Undocumented.
+**
+** @param [?] name [char*] Undocumented
+** @param [?] fp [FILE*] Undocumented
+** @@
+******************************************************************************/
 
 void wf(char *name, FILE *fp) {
         AjPTable table = ajStrTableNew(50);
@@ -110,13 +138,38 @@ void wf(char *name, FILE *fp) {
         ajTableFree(&table);
 }
 
+/* @func first ***************************************************************
+**
+** Undocumented.
+**
+** @param [?] c [ajint] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 ajint first(ajint c) {
         return isalpha(c);
 }
 
+/* @func rest ****************************************************************
+**
+** Undocumented.
+**
+** @param [?] c [ajint] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 ajint rest(ajint c) {
         return isalpha(c) || c == '_';
 }
+
+/* @func vfree ***************************************************************
+**
+** Undocumented.
+**
+** @@
+******************************************************************************/
 
 void vfree(const void *key, void **count, void *cl) {
   AjPStr sy = (AjPStr) key;
@@ -124,6 +177,15 @@ void vfree(const void *key, void **count, void *cl) {
   AJFREE(*count);
   ajStrDel(&sy);
 }
+
+/* @func compare *************************************************************
+**
+** Undocumented.
+**
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 ajint compare(const void *x, const void *y) {
   AjPStr sx = (AjPStr) x;
   AjPStr sy = (AjPStr) y;

@@ -110,6 +110,15 @@ int main(int argc, char **argv)
   return 0;
 }
 
+/* @funcstatic  report ********************************************************
+**
+** Undocumented.
+**
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @@
+******************************************************************************/
+
 static void report (AjPFile outf, ajint begin) {
   char* cp;
   ajFmtPrintF (outf, "%6d %10d %10d %2d %3d\n",

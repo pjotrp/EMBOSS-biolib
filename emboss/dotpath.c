@@ -36,6 +36,13 @@ static void objtofile2(void **x,void *cl);
 #ifndef NO_PLOT
 #include "ajgraph.h"
 
+/* @funcstatic  drawPlotlines *************************************************
+**
+** Undocumented.
+**
+** @@
+******************************************************************************/
+
 static void drawPlotlines(void **x, void *cl)
 {
     EmbPWordMatch p  = (EmbPWordMatch)*x;
@@ -49,6 +56,14 @@ static void drawPlotlines(void **x, void *cl)
     ajGraphLine(x1, y1, x2, y2);
 }
 
+
+/* @funcstatic  plotMatches ***************************************************
+**
+** Undocumented.
+**
+** @param [?] list [AjPList] Undocumented
+** @@
+******************************************************************************/
 
 
 static void plotMatches(AjPList list)
@@ -261,6 +276,13 @@ int main(int argc, char **argv)
 
 
 
+/* @funcstatic  objtofile1 ****************************************************
+**
+** Undocumented.
+**
+** @@
+******************************************************************************/
+
 
 
 static void objtofile1(void **x,void *cl)
@@ -281,6 +303,13 @@ static void objtofile1(void **x,void *cl)
 		     (float)x1,(float)y1,(float)x2,(float)y2,RED);
   return;
 }
+
+/* @funcstatic  objtofile2 ****************************************************
+**
+** Undocumented.
+**
+** @@
+******************************************************************************/
 
 
 static void objtofile2(void **x,void *cl)

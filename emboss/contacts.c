@@ -152,9 +152,11 @@ AjBool  ajXyzInContact(AjPAtom atm1, AjPAtom atm2, float thresh,
 
 
 
-
-
-
+/* @prog contacts *******************************************************
+**
+** Testing
+**
+******************************************************************************/
 
 int main(ajint argc, char **argv)
 {

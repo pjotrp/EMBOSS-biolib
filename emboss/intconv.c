@@ -27,6 +27,11 @@ void modLineInt(AjPStr *line, ajint pos);
 void modLineLong(AjPStr *line, ajint pos);
 
 
+/* @prog intconv *******************************************************
+**
+** Testing
+**
+******************************************************************************/
 
 int main(int argc, char **argv)
 {
@@ -151,6 +156,15 @@ int main(int argc, char **argv)
     return 0;
 }
 
+/* @func modLineInt ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] line [AjPStr*] Undocumented
+** @param [?] pos [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 void modLineInt(AjPStr *line, ajint pos)
 {
@@ -175,6 +189,15 @@ void modLineInt(AjPStr *line, ajint pos)
     ajStrDel(&t);
     return;
 }
+
+/* @func modLineLong **********************************************************
+**
+** Undocumented.
+**
+** @param [?] line [AjPStr*] Undocumented
+** @param [?] pos [ajint] Undocumented
+** @@
+******************************************************************************/
 
 
 void modLineLong(AjPStr *line, ajint pos)

@@ -345,6 +345,20 @@ int main(int argc, char **argv)
     return 0;
 }
 
+/* @func dogarnier ************************************************************
+**
+** Undocumented.
+**
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] from [ajint] Undocumented
+** @param [?] to [ajint] Undocumented
+** @param [?] seq [char*] Undocumented
+** @param [?] name [char*] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] Idc [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 void dogarnier(AjPFile outf, ajint from, ajint to, char *seq, char *name,
 	       ajint begin, ajint Idc)
@@ -480,6 +494,16 @@ void dogarnier(AjPFile outf, ajint from, ajint to, char *seq, char *name,
     
 
 }
+
+/* @func makemap **************************************************************
+**
+** Undocumented.
+**
+** @param [?] input [char*] Undocumented
+** @param [?] map [ajint*] Undocumented
+** @param [?] n [ajint] Undocumented
+** @@
+******************************************************************************/
 
 
 void makemap (char *input, ajint *map, ajint n)

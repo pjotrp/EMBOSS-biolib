@@ -20,6 +20,16 @@
 
 #include "emboss.h"
 
+/* @funcstatic  getsubfromstring **********************************************
+**
+** Undocumented.
+**
+** @param [?] line [AjPStr] Undocumented
+** @param [?] which [ajint] Undocumented
+** @return [AjPStr] Undocumented
+** @@
+******************************************************************************/
+
 static AjPStr getsubfromstring(AjPStr line, ajint which){
   static AjPRegexp gffexp=NULL;
   AjPStr temp =NULL;
@@ -33,12 +43,26 @@ static AjPStr getsubfromstring(AjPStr line, ajint which){
   return temp;
 }
 
+/* @funcstatic  typePrint *****************************************************
+**
+** Undocumented.
+**
+** @@
+******************************************************************************/
+
 static void typePrint (const void* key, void** value, void* cl){
   AjPStr keystr = (AjPStr) key;
   ajint    *valptr = (ajint *) *value;
 
   ajUser("type '%S' found %d times", keystr, *valptr);
 }
+
+/* @funcstatic  freetype ******************************************************
+**
+** Undocumented.
+**
+** @@
+******************************************************************************/
 
 static void freetype (const void* key, void** value, void* cl){
   AjPStr keystr = (AjPStr) key;
@@ -48,6 +72,12 @@ static void freetype (const void* key, void** value, void* cl){
   AJFREE(valptr);
 }
  
+/* @prog demotable *******************************************************
+**
+** Testing
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   AjPStr temp;

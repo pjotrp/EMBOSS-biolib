@@ -212,7 +212,7 @@ static void WordMatchListConvDiffToFeat(AjPList list, AjPFeattable *tab1,
   return;
 }
 
-/** @funcstatic AddTags ***********************************************
+/* @funcstatic AddTags ***********************************************
 **  
 ** Writes the tags to the output file
 ** Don't write out the translation - is it often far too long!

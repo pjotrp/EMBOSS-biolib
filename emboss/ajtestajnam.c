@@ -5,6 +5,12 @@
 */
 #include "emboss.h"
 
+/* @prog ajtestajnam **********************************************************
+**
+** testing ajnam functions
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 { 
   AjPStr value = 0;

@@ -188,6 +188,16 @@ int main(int argc, char **argv)
 
 
 
+/* @func readNab **************************************************************
+**
+** Undocumented.
+**
+** @param [?] matrix [AjPInt2d*] Undocumented
+** @param [?] eightyseven [AjBool] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 ajint readNab(AjPInt2d *matrix,AjBool eightyseven)
 {
@@ -321,6 +331,19 @@ ajint readNab(AjPInt2d *matrix,AjBool eightyseven)
 
 
 
+
+/* @func print_hits ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] ajb [AjPList*] Undocumented
+** @param [?] n [ajint] Undocumented
+** @param [?] minsd [float] Undocumented
+** @param [?] lastcol [ajint] Undocumented
+** @param [?] eightyseven [AjBool] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @@
+******************************************************************************/
 
 
 void print_hits(AjPList *ajb, ajint n, float minsd, ajint lastcol,

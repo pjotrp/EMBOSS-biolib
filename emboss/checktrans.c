@@ -102,6 +102,21 @@ int main(int argc, char **argv)
 
 /* findorfs - finds ORFs and prints report. */
 
+/* @func findorfs ************************************************************
+**
+** Undocumented.
+**
+** @param [?] outseq [AjPSeqout*] Undocumented
+** @param [?] outf [AjPFile*] Undocumented
+** @param [?] from [ajint] Undocumented
+** @param [?] to [ajint] Undocumented
+** @param [?] p [char*] Undocumented
+** @param [?] name [char*] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] min_orflength [ajint] Undocumented
+** @@
+******************************************************************************/
+
 void findorfs (AjPSeqout *outseq, AjPFile *outf, ajint from, ajint to,
 	char *p, char *name, ajint begin, ajint min_orflength)
 
@@ -139,6 +154,19 @@ void findorfs (AjPSeqout *outseq, AjPFile *outf, ajint from, ajint to,
 }
 
 
+/* @func ajbseq **************************************************************
+**
+** Undocumented.
+**
+** @param [?] outseq [AjPSeqout*] Undocumented
+** @param [?] seq [char*] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] end [int] Undocumented
+** @param [?] name [char*] Undocumented
+** @param [?] count [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 
 void ajbseq(AjPSeqout *outseq, char *seq, ajint begin, int
@@ -165,6 +193,20 @@ void ajbseq(AjPSeqout *outseq, char *seq, ajint begin, int
     
     return;
 }
+
+/* @func dumptofeat **********************************************************
+**
+** Undocumented.
+**
+** @param [?] featout [AjPFeattabOut] Undocumented
+** @param [?] from [ajint] Undocumented
+** @param [?] to [ajint] Undocumented
+** @param [?] p [char*] Undocumented
+** @param [?] seqname [char*] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] min_orflength [ajint] Undocumented
+** @@
+******************************************************************************/
 
 void dumptofeat(AjPFeattabOut featout, ajint from, ajint to,
 	char *p, char *seqname, ajint begin, ajint min_orflength){

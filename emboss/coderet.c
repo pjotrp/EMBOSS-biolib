@@ -149,6 +149,18 @@ int main(int argc, char **argv)
 }
 
 
+/* @func put_seq **************************************************************
+**
+** Undocumented.
+**
+** @param [?] seq [AjPSeq] Undocumented
+** @param [?] strseq [AjPStr] Undocumented
+** @param [?] n [ajint] Undocumented
+** @param [?] name [char*] Undocumented
+** @param [?] type [ajint] Undocumented
+** @param [?] seqout [AjPSeqout] Undocumented
+** @@
+******************************************************************************/
 
 void put_seq(AjPSeq seq, AjPStr strseq, ajint n, char *name, ajint type,
 	     AjPSeqout seqout)

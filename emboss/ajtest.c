@@ -1,5 +1,11 @@
 #include "emboss.h"
 
+/* @prog ajtest ***************************************************************
+**
+** testing, and subjest to frequent change
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

@@ -349,6 +349,27 @@ int main(int argc, char **argv)
 
 
 
+/* @func print_hits ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] l [AjPList*] Undocumented
+** @param [?] hits [ajint] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] seq [AjPStr] Undocumented
+** @param [?] mms [AjBool] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] fnum [ajint] Undocumented
+** @param [?] end [ajint] Undocumented
+** @param [?] desc [AjPStr] Undocumented
+** @param [?] dodesc [AjBool] Undocumented
+** @param [?] acc [AjPStr] Undocumented
+** @param [?] doacc [AjBool] Undocumented
+** @param [?] usa [AjPStr] Undocumented
+** @param [?] dousa [AjBool] Undocumented
+** @@
+******************************************************************************/
+
 
 void print_hits(AjPList *l, ajint hits, AjPFile outf, AjPStr seq, AjBool mms,
 		ajint begin, ajint fnum, ajint end, AjPStr desc, AjBool dodesc,

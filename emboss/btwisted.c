@@ -128,6 +128,15 @@ int main(int argc, char **argv)
 
 
 
+/* @func getdinucdata ********************************************************
+**
+** Undocumented.
+**
+** @param [?] inf [AjPFile] Undocumented
+** @return [AjPTable] Undocumented
+** @@
+******************************************************************************/
+
 
 
 AjPTable getdinucdata(AjPFile inf)

@@ -247,6 +247,15 @@ int main(int argc, char **argv)
 }
 
 
+/* @func report ***************************************************************
+**
+** Undocumented.
+**
+** @param [?] max [ajint] Undocumented
+** @param [?] imax [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 void report (ajint max, ajint imax)
 {

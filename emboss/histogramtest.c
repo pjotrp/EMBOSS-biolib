@@ -6,6 +6,13 @@ void ajGraphHistogram
 (ajint numofdatapoints, ajint numofsets, PLFLT *data, ajint sidebyside,
  ajint xmin, ajint xmax, ajint bins);
 
+
+/* @prog histogramtest *******************************************************
+**
+** Testing histogram plot functions
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   AjPHist hist=NULL;

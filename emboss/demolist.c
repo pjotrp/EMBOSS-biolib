@@ -35,7 +35,13 @@ typedef struct sgff{
 gffptr creategff(AjPStr line);
 
 
-/* Comparison routines used for sorting */
+/* @func sourcecomp ***********************************************************
+**
+** Comparison routines used for sorting
+**
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 ajint sourcecomp(const void *a, const void *b){
   gffptr *gfa = (gffptr *) a;  
   gffptr *gfb = (gffptr *) b;  
@@ -43,12 +49,28 @@ ajint sourcecomp(const void *a, const void *b){
   return ajStrCmp(&(*gfa)->source,&(*gfb)->source);
 }
 
+/* @func typecomp *************************************************************
+**
+** Undocumented.
+**
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 ajint typecomp(const void *a, const void *b){
   gffptr *gfa = (gffptr *) a;  
   gffptr *gfb = (gffptr *) b;  
 
   return ajStrCmp(&(*gfa)->type,&(*gfb)->type);
 }
+
+/* @func startcomp ************************************************************
+**
+** Undocumented.
+**
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 ajint startcomp(const void *a, const void *b){
   gffptr *gfa = (gffptr *) a;  
@@ -64,12 +86,27 @@ ajint startcomp(const void *a, const void *b){
 
 /* END of Comparison routines */
 
+/* @funcstatic  dumpOut *******************************************************
+**
+** Undocumented.
+**
+** @@
+******************************************************************************/
+
 static void  dumpOut(void **x, void *cl){
   gffptr gffnew = (gffptr)*x;
 
   ajUser("%S\t%S\t%S\t%d\t%d\t%d",gffnew->clone,gffnew->source,gffnew->type,
 	 gffnew->start,gffnew->end,gffnew->score);
 }
+
+/* @funcstatic  freegff *******************************************************
+**
+** Undocumented.
+**
+** @@
+******************************************************************************/
+
 static void  freegff (void **x, void *cl){
   gffptr gffnew = (gffptr)*x;
 
@@ -79,6 +116,11 @@ static void  freegff (void **x, void *cl){
   AJFREE(gffnew);
 }
 
+/* @prog demolist *******************************************************
+**
+** Testing
+**
+******************************************************************************/
 
 int main(int argc, char **argv)
 {

@@ -161,6 +161,21 @@ int main(int argc, char **argv)
     return 0;
 }
 
+/* @funcstatic  addgraph *****************************************************
+**
+** Undocumented.
+**
+** @param [?] graph [AjPGraph] Undocumented
+** @param [?] limit [ajint] Undocumented
+** @param [?] x [float*] Undocumented
+** @param [?] y [float*] Undocumented
+** @param [?] ymax [float] Undocumented
+** @param [?] ymin [float] Undocumented
+** @param [?] window [ajint] Undocumented
+** @param [?] sname [char*] Undocumented
+** @@
+******************************************************************************/
+
 
 
 static void  addgraph(AjPGraph graph, ajint limit, float *x, float *y,
@@ -205,6 +220,14 @@ static void  addgraph(AjPGraph graph, ajint limit, float *x, float *y,
 
     return;
 }
+
+/* @funcstatic  read_amino ***************************************************
+**
+** Undocumented.
+**
+** @return [AjPFloat] Undocumented
+** @@
+******************************************************************************/
 
 
 static AjPFloat read_amino(void)

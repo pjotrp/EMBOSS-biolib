@@ -5,6 +5,12 @@
 void print_hits(AjPList *l, ajint hits, AjPFile outf);
 
 
+/* @prog ajtest2 ***************************************************************
+**
+** testing, and subjest to frequent change
+**
+******************************************************************************/
+
 
 int main(int argc, char **argv)
 {

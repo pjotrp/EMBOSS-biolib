@@ -34,12 +34,29 @@ struct homol {
   char *seq;
 };
 
+/* @funcstatic  compare *******************************************************
+**
+** Undocumented.
+**
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 static ajint compare(const void *x, const void *y) {
   EmbPWord x1 = ((EmbPWord2)x)->fword;
   EmbPWord y1 = ((EmbPWord2)y)->fword;
   
   return (y1->count-x1->count);
 }
+
+/* @func tempTable ************************************************************
+**
+** Undocumented.
+**
+** @param [?] table [AjPTable] Undocumented
+** @param [?] wordlen [ajint] Undocumented
+** @@
+******************************************************************************/
 
 void tempTable(AjPTable table, ajint wordlen){
   void **array = ajTableToarray(table, NULL);
@@ -64,6 +81,15 @@ void tempTable(AjPTable table, ajint wordlen){
   }
   AJFREE(array); 
 }
+
+/* @func efetchSeq ************************************************************
+**
+** Undocumented.
+**
+** @param [?] name [char*] Undocumented
+** @return [AjPSeq] Undocumented
+** @@
+******************************************************************************/
 
 AjPSeq efetchSeq(char *name)
 {
@@ -107,6 +133,17 @@ AjPSeq efetchSeq(char *name)
   
   return seq;
 }
+
+/* @func getsseq **************************************************************
+**
+** Undocumented.
+**
+** @param [?] sequencePartsList [AjPList] Undocumented
+** @param [?] size [ajint] Undocumented
+** @param [?] verbose [ajint] Undocumented
+** @return [char*] Undocumented
+** @@
+******************************************************************************/
 
 char * getsseq(AjPList sequencePartsList, ajint size, ajint verbose)
 {
@@ -240,6 +277,14 @@ char * getsseq(AjPList sequencePartsList, ajint size, ajint verbose)
 
 }
 
+/* @func cleanup_Cluster ******************************************************
+**
+** Undocumented.
+**
+** @param [?] list [AjPList] Undocumented
+** @@
+******************************************************************************/
+
 void cleanup_Cluster(AjPList list){
   AjIList iter = ajListIter(list);
 
@@ -263,6 +308,16 @@ void cleanup_Cluster(AjPList list){
   ajListIterFree(iter);
   ajListFree(&list);
 }
+
+/* @func consensus_output *****************************************************
+**
+** Undocumented.
+**
+** @param [?] unorderedlist [AjPList] Undocumented
+** @param [?] addblanks [ajint] Undocumented
+** @param [?] number [ajint] Undocumented
+** @@
+******************************************************************************/
 
 void consensus_output(AjPList unorderedlist, ajint addblanks, ajint number) {
 
@@ -884,16 +939,14 @@ void consensus_output(AjPList unorderedlist, ajint addblanks, ajint number) {
   AJFREE(array);
 }
 
-/*
-void match_Print(void **x,void *cl){ 
-  struct record *match = (struct record *)*x; 
+/* @func cluster_Print_Ace ****************************************************
+**
+** Undocumented.
+**
+** @param [?] cluster [struct tableTop*] Undocumented
+** @@
+******************************************************************************/
 
-  ajDebug ("%d %f %d %d %s %d %d %s\n",             ?? print out the data ??
-	 match->score,match->ident, 
-	 match->start1,match->end1,match->name1, 
-	 match->start2,match->end2,match->name2); 
-} 
-*/ 
 void cluster_Print_Ace(struct tableTop *cluster){
   AjIList iter = ajListIter(cluster->matches);
   AjPTable hashTable;
@@ -922,6 +975,17 @@ void cluster_Print_Ace(struct tableTop *cluster){
   ajListIterFree(iter);
   ajTableFree(&hashTable);
 }
+
+/* @func mergeTwoClusters *****************************************************
+**
+** Undocumented.
+**
+** @param [?] list [AjPList] Undocumented
+** @param [?] cluster1 [struct tableTop*] Undocumented
+** @param [?] cluster2 [struct tableTop*] Undocumented
+** @param [?] match [struct record*] Undocumented
+** @@
+******************************************************************************/
 
 void mergeTwoClusters(AjPList list, struct tableTop *cluster1,
 		      struct tableTop *cluster2, struct record *match) {
@@ -955,6 +1019,16 @@ void mergeTwoClusters(AjPList list, struct tableTop *cluster1,
 
 }
 
+/* @func isTheReverse *********************************************************
+**
+** Undocumented.
+**
+** @param [?] match [struct record*] Undocumented
+** @param [?] cluster1 [struct tableTop*] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 ajint isTheReverse(struct record *match, struct tableTop *cluster1){
   AjIList iter = ajListIter(cluster1->matches);
 
@@ -974,7 +1048,11 @@ ajint isTheReverse(struct record *match, struct tableTop *cluster1){
     return 0;
 }
 
-
+/* @prog cluster *******************************************************
+**
+** Testing clustering
+**
+******************************************************************************/
 
 int main(int argc, char **argv)
 {

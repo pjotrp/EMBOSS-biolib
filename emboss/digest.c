@@ -128,6 +128,17 @@ int main(int argc, char **argv)
 }
 
 
+/* @func print_hits ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] l [AjPList] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] be [ajint] Undocumented
+** @param [?] s [char*] Undocumented
+** @@
+******************************************************************************/
+
 
 
 void print_hits(AjPList l, AjPFile outf, ajint be, char *s)

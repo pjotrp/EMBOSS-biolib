@@ -275,7 +275,15 @@ giving each word an equal frequency
   return 0;
 }
 
-/******************************************************/
+/* @func makebigarray *********************************************************
+**
+** Undocumented.
+**
+** @param [?] no_elements [ajulong] Undocumented
+** @param [?] bigarray [ajulong**] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 ajint makebigarray(ajulong no_elements, ajulong **bigarray) {
 
@@ -283,7 +291,18 @@ ajint makebigarray(ajulong no_elements, ajulong **bigarray) {
   AJCNEW(*bigarray, no_elements);
   return 0;
 }
-/******************************************************/
+
+/* @func readexpfreq **********************************************************
+**
+** Undocumented.
+**
+** @param [?] exptable [AjPTable*] Undocumented
+** @param [?] infile [AjPFile] Undocumented
+** @param [?] size [ajint] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 ajint readexpfreq(AjPTable *exptable, AjPFile infile, ajint size) {
 
   AjPStr line = NULL;

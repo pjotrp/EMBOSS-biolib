@@ -163,6 +163,24 @@ int main(int argc, char **argv)
 
 
 
+/* @func findbases ************************************************************
+**
+** Undocumented.
+**
+** @param [?] substr [AjPStr*] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] len [ajint] Undocumented
+** @param [?] window [ajint] Undocumented
+** @param [?] shift [ajint] Undocumented
+** @param [?] obsexp [float*] Undocumented
+** @param [?] xypc [float*] Undocumented
+** @param [?] bases [AjPStr*] Undocumented
+** @param [?] obsexpmax [float*] Undocumented
+** @param [?] plstart [ajint*] Undocumented
+** @param [?] plend [ajint*] Undocumented
+** @@
+******************************************************************************/
+
 void findbases(AjPStr *substr, ajint begin, ajint len, ajint window,
 	       ajint shift, float *obsexp, float *xypc, AjPStr *bases,
 	       float *obsexpmax, ajint *plstart, ajint *plend)
@@ -215,6 +233,19 @@ void findbases(AjPStr *substr, ajint begin, ajint len, ajint window,
 
 
 
+/* @func countbases ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] seq [char*] Undocumented
+** @param [?] bases [char*] Undocumented
+** @param [?] window [ajint] Undocumented
+** @param [?] cx [ajint*] Undocumented
+** @param [?] cy [ajint*] Undocumented
+** @param [?] cxpy [ajint*] Undocumented
+** @@
+******************************************************************************/
+
 
 
 void countbases(char *seq, char *bases, ajint window, ajint *cx, ajint *cy,
@@ -249,14 +280,29 @@ void countbases(char *seq, char *bases, ajint window, ajint *cx, ajint *cy,
     return;
 }
 
-/*
+/* @func identify *************************************************************
+**
 **    This subroutine identifies the CpG line, identifying the possible
 **    dinucleotide 'islands' in the sequence. These are defined as
 **    base positions where, over an average of 10 windows, the calculated
 **    % composition is over 50% and the calculated Obs/Exp ratio is over 0.6
 **    and the conditions hold for a minimum of 200 bases.
 **
-*/
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] obsexp [float*] Undocumented
+** @param [?] xypc [float*] Undocumented
+** @param [?] thresh [AjBool*] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] len [ajint] Undocumented
+** @param [?] shift [ajint] Undocumented
+** @param [?] bases [char*] Undocumented
+** @param [?] name [char*] Undocumented
+** @param [?] minlen [ajint] Undocumented
+** @param [?] minobsexp [float] Undocumented
+** @param [?] minpc [float] Undocumented
+** @param [?] featout [AjPFeattabOut] Undocumented
+** @@
+******************************************************************************/
 
 void identify(AjPFile outf, float *obsexp, float *xypc, AjBool *thresh,
 	      ajint begin, ajint len, ajint shift, char *bases, char *name,
@@ -323,6 +369,22 @@ void identify(AjPFile outf, float *obsexp, float *xypc, AjBool *thresh,
 }
 
 
+/* @func reportislands ********************************************************
+**
+** Undocumented.
+**
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] thresh [AjBool*] Undocumented
+** @param [?] bases [char*] Undocumented
+** @param [?] name [char*] Undocumented
+** @param [?] minobsexp [float] Undocumented
+** @param [?] minpc [float] Undocumented
+** @param [?] minlen [ajint] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] len [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 
 void reportislands(AjPFile outf, AjBool *thresh, char *bases, char *name,
@@ -378,6 +440,28 @@ void reportislands(AjPFile outf, AjBool *thresh, char *bases, char *name,
 
 
 
+
+/* @func plotit ***************************************************************
+**
+** Undocumented.
+**
+** @param [?] seq [char*] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] len [ajint] Undocumented
+** @param [?] shift [ajint] Undocumented
+** @param [?] obsexp [float*] Undocumented
+** @param [?] xypc [float*] Undocumented
+** @param [?] thresh [AjBool*] Undocumented
+** @param [?] bases [char*] Undocumented
+** @param [?] obsexpmax [float] Undocumented
+** @param [?] plstart [ajint] Undocumented
+** @param [?] plend [ajint] Undocumented
+** @param [?] doobsexp [AjBool] Undocumented
+** @param [?] docg [AjBool] Undocumented
+** @param [?] dopc [AjBool] Undocumented
+** @param [?] graphs [AjPGraph] Undocumented
+** @@
+******************************************************************************/
 
 
 
@@ -509,6 +593,18 @@ void plotit(char *seq, ajint begin, ajint len, ajint shift, float *obsexp,
     if(docg)
 	AJFREE (tmp);
 }
+
+/* @func dumpfeatout **********************************************************
+**
+** Undocumented.
+**
+** @param [?] featout [AjPFeattabOut] Undocumented
+** @param [?] thresh [AjBool*] Undocumented
+** @param [?] seqname [char*] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] len [ajint] Undocumented
+** @@
+******************************************************************************/
 
 void dumpfeatout(AjPFeattabOut featout, AjBool *thresh, char *seqname,
 		 ajint begin, ajint len)

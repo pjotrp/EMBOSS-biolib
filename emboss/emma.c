@@ -363,15 +363,14 @@ int main(int argc, char **argv, char **env)
     return 0;
 }
 
-
-
-
-
-
-/*
- *  routine to return an AjPFile of a unique file; the  unique file name is the
- *  process id
- */
+* @func getUniqueFileName ****************************************************
+**
+** routine to return a name of a unique file; the  unique file name is the
+** process id
+**
+** @return [AjPStr] Undocumented
+** @@
+******************************************************************************/
 
 AjPStr getUniqueFileName()
 {

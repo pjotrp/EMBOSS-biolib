@@ -372,16 +372,22 @@ int main(int argc, char **argv)
     return 0;
 }
 
+/* @func TextRuler ************************************************************
+**
+**  compute the character size that fits all elements of the ruler provided
+** that the height and the length of all strings are at most TextHeight and
+**  TextLength, respectively
+**
+** @param [?] Start [float] Undocumented
+** @param [?] End [float] Undocumented
+** @param [?] GapSize [ajint] Undocumented
+** @param [?] TextLength [float] Undocumented
+** @param [?] TextHeight [float] Undocumented
+** @param [?] TextOri [char] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/*
- *  compute the character size that fits all elements of the ruler provided
- * that the height and the length of all strings are at most TextHeight and
- *  TextLength, respectively
- */
 float TextRuler(float Start, float End, ajint GapSize, float TextLength,
 		float TextHeight, char TextOri)
 {
@@ -430,15 +436,20 @@ float TextRuler(float Start, float End, ajint GapSize, float TextLength,
     return minsize;
 }
 
+/* @func TextRulerStr *********************************************************
+**
+**  compute the character size that fits all elements of the ruler provided
+**  that the height and the length of all strings are multiplied by TextCoef
+**
+** @param [?] Start [float] Undocumented
+** @param [?] End [float] Undocumented
+** @param [?] GapSize [ajint] Undocumented
+** @param [?] TextOri [char] Undocumented
+** @param [?] TextCoef [float] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/*
- *  compute the character size that fits all elements of the ruler provided
- *  that the height and the length of all strings are multiplied by TextCoef
- */
 float TextRulerStr(float Start, float End, ajint GapSize, char TextOri,
 		   float TextCoef)
 {
@@ -525,10 +536,20 @@ float TextRulerStr(float Start, float End, ajint GapSize, char TextOri,
 
 
 
+/* @func HeightRuler **********************************************************
+**
+** compute the ruler's height
+**
+** @param [?] Start [float] Undocumented
+** @param [?] End [float] Undocumented
+** @param [?] GapSize [ajint] Undocumented
+** @param [?] postext [float] Undocumented
+** @param [?] TickHeight [float] Undocumented
+** @param [?] TextOri [char] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
-
-
-/* compute the ruler's height */
 float HeightRuler(float Start, float End, ajint GapSize, float postext,
 		  float TickHeight, char TextOri)
 {
@@ -565,11 +586,29 @@ float HeightRuler(float Start, float End, ajint GapSize, float postext,
 }
 
 
+/* @func DrawRuler ************************************************************
+**
+** draw a ruler
+**
+** @param [?] xDraw [float] Undocumented
+** @param [?] yDraw [float] Undocumented
+** @param [?] Start [float] Undocumented
+** @param [?] End [float] Undocumented
+** @param [?] ReduceCoef [float] Undocumented
+** @param [?] TickHeight [float] Undocumented
+** @param [?] DrawLength [float] Undocumented
+** @param [?] RealLength [float] Undocumented
+** @param [?] Border [float] Undocumented
+** @param [?] GapSize [ajint] Undocumented
+** @param [?] TickLines [AjPStr] Undocumented
+** @param [?] TextLength [float] Undocumented
+** @param [?] TextHeight [float] Undocumented
+** @param [?] postext [float] Undocumented
+** @param [?] TextOri [char] Undocumented
+** @param [?] Color [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-/* draw a ruler */
 void DrawRuler(float xDraw, float yDraw, float Start, float End,
 	       float ReduceCoef, float TickHeight, float DrawLength,
 	       float RealLength, float Border, ajint GapSize,
@@ -618,12 +657,25 @@ void DrawRuler(float xDraw, float yDraw, float Start, float End,
     return;
 }
 
+/* @func DrawTicks ************************************************************
+**
+** draw a Tick
+**
+** @param [?] xDraw [float] Undocumented
+** @param [?] yDraw [float] Undocumented
+** @param [?] TickHeight [float] Undocumented
+** @param [?] From [float] Undocumented
+** @param [?] Name [AjPStr] Undocumented
+** @param [?] TextLength [float] Undocumented
+** @param [?] TextHeight [float] Undocumented
+** @param [?] postext [float] Undocumented
+** @param [?] TextOri [char] Undocumented
+** @param [?] NumNames [ajint] Undocumented
+** @param [?] Adjust [ajint] Undocumented
+** @param [?] Color [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* draw a Tick */
 void DrawTicks(float xDraw, float yDraw, float TickHeight, float From,
 	       AjPStr Name, float TextLength, float TextHeight,
 	       float postext, char TextOri, ajint NumNames, ajint Adjust,
@@ -650,12 +702,25 @@ void DrawTicks(float xDraw, float yDraw, float TickHeight, float From,
     return;
 }
 
+/* @func DrawBlocks ***********************************************************
+**
+**  draw a Block
+**
+** @param [?] xDraw [float] Undocumented
+** @param [?] yDraw [float] Undocumented
+** @param [?] BlockHeight [float] Undocumented
+** @param [?] TextHeight [float] Undocumented
+** @param [?] From [float] Undocumented
+** @param [?] To [float] Undocumented
+** @param [?] Name [AjPStr] Undocumented
+** @param [?] postext [float] Undocumented
+** @param [?] TextOri [char] Undocumented
+** @param [?] NumNames [ajint] Undocumented
+** @param [?] Adjust [ajint] Undocumented
+** @param [?] Color [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* draw a Block */
 void DrawBlocks(float xDraw, float yDraw, float BlockHeight,
 		float TextHeight, float From, float To, AjPStr Name,
 		float postext, char TextOri, ajint NumNames, ajint Adjust,
@@ -682,12 +747,28 @@ void DrawBlocks(float xDraw, float yDraw, float BlockHeight,
     return;
 }
 
+/* @func DrawRanges ***********************************************************
+**
+** draw a Range
+**
+** @param [?] xDraw [float] Undocumented
+** @param [?] yDraw [float] Undocumented
+** @param [?] RangeHeight [float] Undocumented
+** @param [?] From [float] Undocumented
+** @param [?] To [float] Undocumented
+** @param [?] Name [AjPStr] Undocumented
+** @param [?] FromSymbol [char] Undocumented
+** @param [?] ToSymbol [char] Undocumented
+** @param [?] TextLength [float] Undocumented
+** @param [?] TextHeight [float] Undocumented
+** @param [?] postext [float] Undocumented
+** @param [?] TextOri [char] Undocumented
+** @param [?] NumNames [ajint] Undocumented
+** @param [?] Adjust [ajint] Undocumented
+** @param [?] Color [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* draw a Range */
 void DrawRanges(float xDraw, float yDraw, float RangeHeight, float From,
 		float To, AjPStr Name, char FromSymbol, char ToSymbol,
 		float TextLength, float TextHeight, float postext,
@@ -745,12 +826,20 @@ void DrawRanges(float xDraw, float yDraw, float RangeHeight, float From,
     return;
 }
 
+/* @func InterBlocks **********************************************************
+**
+** draw an InterBlock
+**
+** @param [?] xDraw [float] Undocumented
+** @param [?] yDraw [float] Undocumented
+** @param [?] BlockHeight [float] Undocumented
+** @param [?] From [float] Undocumented
+** @param [?] To [float] Undocumented
+** @param [?] InterSymbol [AjPStr] Undocumented
+** @param [?] Color [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* draw an InterBlock */
 void InterBlocks(float xDraw, float yDraw, float BlockHeight, float From,
 		 float To, AjPStr InterSymbol, ajint Color)
 {
@@ -780,12 +869,18 @@ void InterBlocks(float xDraw, float yDraw, float BlockHeight, float From,
     return;
 }
 
+/* @func DrawArrowHeadsOnLine *************************************************
+**
+** draw arrowheads on a line
+**
+** @param [?] xDraw [float] Undocumented
+** @param [?] yDraw [float] Undocumented
+** @param [?] Height [float] Undocumented
+** @param [?] Length [float] Undocumented
+** @param [?] Way [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* draw arrowheads on a line */
 void DrawArrowHeadsOnLine(float xDraw, float yDraw, float Height,
 			  float Length, ajint Way)
 {
@@ -805,12 +900,18 @@ void DrawArrowHeadsOnLine(float xDraw, float yDraw, float Height,
     return;
 }
 
+/* @func DrawBracketsOnLine ***************************************************
+**
+** draw brackets on a line
+**
+** @param [?] xDraw [float] Undocumented
+** @param [?] yDraw [float] Undocumented
+** @param [?] Height [float] Undocumented
+** @param [?] Length [float] Undocumented
+** @param [?] Way [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* draw brackets on a line */
 void DrawBracketsOnLine(float xDraw, float yDraw, float Height, float Length,
 			ajint Way)
 {
@@ -832,12 +933,18 @@ void DrawBracketsOnLine(float xDraw, float yDraw, float Height, float Length,
     return;
 }
 
+/* @func HorTextPile **********************************************************
+**
+** write a pile of horizontal text strings
+**
+** @param [?] x [float] Undocumented
+** @param [?] y [float] Undocumented
+** @param [?] Name [AjPStr] Undocumented
+** @param [?] postext [float] Undocumented
+** @param [?] NumNames [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* write a pile of horizontal text strings */
 void HorTextPile(float x, float y, AjPStr Name, float postext, ajint NumNames)
 {
     float yupper;
@@ -865,12 +972,16 @@ void HorTextPile(float x, float y, AjPStr Name, float postext, ajint NumNames)
     return;
 }
 
+/* @func HorTextPileHeight ****************************************************
+**
+** compute the height of a pile of horizontal text strings
+**
+** @param [?] postext [float] Undocumented
+** @param [?] NumNames [ajint] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* compute the height of a pile of horizontal text strings */
 float HorTextPileHeight(float postext, ajint NumNames)
 {
     float stringHeight, totalHeight;
@@ -886,12 +997,18 @@ float HorTextPileHeight(float postext, ajint NumNames)
     return totalHeight;
 }
 
+/* @func VerTextPile **********************************************************
+**
+** write a pile of vertical text strings
+**
+** @param [?] x [float] Undocumented
+** @param [?] y [float] Undocumented
+** @param [?] Name [AjPStr] Undocumented
+** @param [?] postext [float] Undocumented
+** @param [?] NumNames [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* write a pile of vertical text strings */
 void VerTextPile(float x, float y, AjPStr Name, float postext, ajint NumNames)
 {
     float stringLength, totalLength;
@@ -915,12 +1032,17 @@ void VerTextPile(float x, float y, AjPStr Name, float postext, ajint NumNames)
     return;
 }
 
+/* @func VerTextPileHeight ****************************************************
+**
+** compute the height of a pile of vertical text strings
+**
+** @param [?] Name [AjPStr] Undocumented
+** @param [?] postext [float] Undocumented
+** @param [?] NumNames [ajint] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* compute the height of a pile of vertical text strings */
 float VerTextPileHeight(AjPStr Name, float postext, ajint NumNames)
 {
     float stringLength;
@@ -942,12 +1064,18 @@ float VerTextPileHeight(AjPStr Name, float postext, ajint NumNames)
     return totalLength;
 }
 
+/* @func VerTextSeq ***********************************************************
+**
+** write a sequence of vertical text strings
+**
+** @param [?] x [float] Undocumented
+** @param [?] y [float] Undocumented
+** @param [?] Name [AjPStr] Undocumented
+** @param [?] postext [float] Undocumented
+** @param [?] NumNames [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* write a sequence of vertical text strings */
 void VerTextSeq(float x, float y, AjPStr Name, float postext, ajint NumNames)
 {
     float stringHeight;
@@ -973,12 +1101,18 @@ void VerTextSeq(float x, float y, AjPStr Name, float postext, ajint NumNames)
     return;
 }
 
+/* @func VerTextSeqHeightMax **************************************************
+**
+** compute the height of a sequence of vertical text strings
+** (this is the height of the longest string)
+**
+** @param [?] Name [AjPStr] Undocumented
+** @param [?] postext [float] Undocumented
+** @param [?] NumNames [ajint] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* compute the height of a sequence of vertical text strings (this is the height of the longest string) */
 float VerTextSeqHeightMax(AjPStr Name, float postext, ajint NumNames)
 {
     float stringLength;
@@ -1001,12 +1135,16 @@ float VerTextSeqHeightMax(AjPStr Name, float postext, ajint NumNames)
     return (maxLength+postext);
 }
 
+/* @func VerTextSeqLength *****************************************************
+**
+** compute the length of a sequence of vertical text strings
+**
+** @param [?] postext [float] Undocumented
+** @param [?] NumNames [ajint] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* compute the length of a sequence of vertical text strings */
 float VerTextSeqLength(float postext, ajint NumNames)
 {
     float stringHeight;
@@ -1023,12 +1161,16 @@ float VerTextSeqLength(float postext, ajint NumNames)
     return (totalHeight-postext);
 }
 
+/* @func ReadInput ************************************************************
+**
+** read the beginning of the input file
+**
+** @param [?] infile [AjPFile] Undocumented
+** @param [?] Start [float*] Undocumented
+** @param [?] End [float*] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* read the beginning of the input file */
 void ReadInput(AjPFile infile, float *Start, float *End)
 {
     AjPStr line;
@@ -1047,12 +1189,25 @@ void ReadInput(AjPFile infile, float *Start, float *End)
     return;
 }
 
+/* @func ReadGroup ************************************************************
+**
+** read a group
+**
+** @param [?] infile [AjPFile] Undocumented
+** @param [?] From [float*] Undocumented
+** @param [?] To [float*] Undocumented
+** @param [?] Name [AjPStr*] Undocumented
+** @param [?] FromSymbol [char*] Undocumented
+** @param [?] ToSymbol [char*] Undocumented
+** @param [?] Style [AjPStr*] Undocumented
+** @param [?] TextOri [char*] Undocumented
+** @param [?] NumLabels [ajint*] Undocumented
+** @param [?] NumNames [ajint*] Undocumented
+** @param [?] Color [ajint*] Undocumented
+** @return [AjPStr] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* read a group */
 AjPStr ReadGroup(AjPFile infile, float *From, float *To, AjPStr *Name,
 		 char *FromSymbol, char *ToSymbol, AjPStr *Style,
 		 char *TextOri, ajint *NumLabels, ajint *NumNames, ajint *Color)
@@ -1154,16 +1309,24 @@ AjPStr ReadGroup(AjPFile infile, float *From, float *To, AjPStr *Name,
     return GroupName;
 }
 
+/* @func TextGroup ************************************************************
+**
+** compute the character size that fits all elements of a group provided that
+** the height and the length of all strings are at most TextHeight and
+** TextLength, respectively
+**
+** @param [?] Margin [float] Undocumented
+** @param [?] TextHeight [float] Undocumented
+** @param [?] TextLength [float] Undocumented
+** @param [?] Name [AjPStr*] Undocumented
+** @param [?] TextOri [char*] Undocumented
+** @param [?] NumLabels [ajint] Undocumented
+** @param [?] NumNames [ajint*] Undocumented
+** @param [?] GroupName [AjPStr] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/*
- *  compute the character size that fits all elements of a group provided that
- *  the height and the length of all strings are at most TextHeight and
- *  TextLength, respectively
- */
 float TextGroup(float Margin, float TextHeight, float TextLength,
 		AjPStr *Name, char *TextOri, ajint NumLabels, ajint *NumNames,
 		AjPStr GroupName)
@@ -1201,15 +1364,23 @@ float TextGroup(float Margin, float TextHeight, float TextLength,
     return minsize;
 }
 
+/* @func TextGroupStr *********************************************************
+**
+**  compute the character size that fits all elements of a group provided that
+**  the height and the length of all strings are multiplied by TextCoef
+**
+** @param [?] Margin [float] Undocumented
+** @param [?] TextHeight [float] Undocumented
+** @param [?] Name [AjPStr*] Undocumented
+** @param [?] TextOri [char*] Undocumented
+** @param [?] NumLabels [ajint] Undocumented
+** @param [?] NumNames [ajint*] Undocumented
+** @param [?] GroupName [AjPStr] Undocumented
+** @param [?] TextCoef [float] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/*
- *  compute the character size that fits all elements of a group provided that
- *  the height and the length of all strings are multiplied by TextCoef
- */
 float TextGroupStr(float Margin, float TextHeight, AjPStr *Name,
 		   char *TextOri, ajint NumLabels, ajint *NumNames,
 		   AjPStr GroupName, float TextCoef)
@@ -1262,12 +1433,26 @@ float TextGroupStr(float Margin, float TextHeight, AjPStr *Name,
     return minsize;
 }
 
+/* @func HeightGroup **********************************************************
+**
+** compute the height of a group depending on what's in it
+**
+** @param [?] posblock [float] Undocumented
+** @param [?] posrange [float] Undocumented
+** @param [?] postext [float] Undocumented
+** @param [?] TickHeight [float] Undocumented
+** @param [?] BlockHeight [float] Undocumented
+** @param [?] RangeHeight [float] Undocumented
+** @param [?] Name [AjPStr*] Undocumented
+** @param [?] Style [AjPStr*] Undocumented
+** @param [?] TextOri [char*] Undocumented
+** @param [?] NumLabels [ajint] Undocumented
+** @param [?] NumNames [ajint*] Undocumented
+** @param [?] Adjust [ajint] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* compute the height of a group depending on what's in it */
 float HeightGroup(float posblock, float posrange, float postext,
 		  float TickHeight, float BlockHeight, float RangeHeight,
 		  AjPStr *Name, AjPStr *Style, char *TextOri, ajint NumLabels,
@@ -1331,13 +1516,21 @@ float HeightGroup(float posblock, float posrange, float postext,
     return GroupHeight;
 }
 
+/* @func OverlapTextGroup *****************************************************
+**
+** find whether horizontal text strings overlap within a group
+**
+** @param [?] Name [AjPStr*] Undocumented
+** @param [?] Style [AjPStr*] Undocumented
+** @param [?] TextOri [char*] Undocumented
+** @param [?] NumLabels [ajint] Undocumented
+** @param [?] From [float*] Undocumented
+** @param [?] To [float*] Undocumented
+** @param [?] Adjust [ajint*] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-
-/* find whether horizontal text strings overlap within a group */
 ajint OverlapTextGroup(AjPStr *Name, AjPStr *Style, char *TextOri,
 		     ajint NumLabels, float *From, float *To, ajint *Adjust)
 {
@@ -1451,12 +1644,40 @@ ajint OverlapTextGroup(AjPStr *Name, AjPStr *Style, char *TextOri,
     return AdjustMax;
 }
 
+/* @func DrawGroup ************************************************************
+**
+** draw a group
+**
+** @param [?] xDraw [float] Undocumented
+** @param [?] yDraw [float] Undocumented
+** @param [?] Border [float] Undocumented
+** @param [?] posblock [float] Undocumented
+** @param [?] posrange [float] Undocumented
+** @param [?] postext [float] Undocumented
+** @param [?] DrawLength [float] Undocumented
+** @param [?] TickHeight [float] Undocumented
+** @param [?] BlockHeight [float] Undocumented
+** @param [?] RangeHeight [float] Undocumented
+** @param [?] TextLength [float] Undocumented
+** @param [?] TextHeight [float] Undocumented
+** @param [?] From [float*] Undocumented
+** @param [?] To [float*] Undocumented
+** @param [?] Name [AjPStr*] Undocumented
+** @param [?] FromSymbol [char*] Undocumented
+** @param [?] ToSymbol [char*] Undocumented
+** @param [?] Style [AjPStr*] Undocumented
+** @param [?] InterSymbol [AjPStr] Undocumented
+** @param [?] InterTicks [AjPStr] Undocumented
+** @param [?] TextOri [char*] Undocumented
+** @param [?] NumLabels [ajint] Undocumented
+** @param [?] NumNames [ajint*] Undocumented
+** @param [?] GroupName [AjPStr] Undocumented
+** @param [?] Adjust [ajint*] Undocumented
+** @param [?] InterColor [ajint] Undocumented
+** @param [?] Color [ajint*] Undocumented
+** @@
+******************************************************************************/
 
-
-
-
-
-/* draw a group */
 void DrawGroup(float xDraw, float yDraw, float Border, float posblock,
 	       float posrange, float postext, float DrawLength,
 	       float TickHeight, float BlockHeight, float RangeHeight,

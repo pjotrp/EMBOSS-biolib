@@ -273,6 +273,14 @@ int main(int argc, char **argv)
 
 
 
+/* @func readAunty ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] agp [AjPFloat*] Undocumented
+** @@
+******************************************************************************/
+
 
 void readAunty(AjPFloat *agp)
 {
@@ -364,6 +372,16 @@ void readAunty(AjPFloat *agp)
 }
 
 
+/* @func padit ***************************************************************
+**
+** Undocumented.
+**
+** @param [?] outf [AjPFile*] Undocumented
+** @param [?] b [ajint] Undocumented
+** @param [?] e [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 void padit(AjPFile *outf, ajint b, ajint e)
 {
@@ -374,6 +392,22 @@ void padit(AjPFile *outf, ajint b, ajint e)
 
 }
 
+
+/* @func dumptoFeat **********************************************************
+**
+** Undocumented.
+**
+** @param [?] nhits [ajint] Undocumented
+** @param [?] hp [AjPInt] Undocumented
+** @param [?] hpos [AjPInt] Undocumented
+** @param [?] hlen [AjPInt] Undocumented
+** @param [?] thisap [AjPFloat] Undocumented
+** @param [?] hwt [AjPFloat] Undocumented
+** @param [?] featout [AjPFeattabOut] Undocumented
+** @param [?] seqname [char*] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @@
+******************************************************************************/
 
 void dumptoFeat(ajint nhits, AjPInt hp, AjPInt hpos, AjPInt hlen,
 		AjPFloat thisap, AjPFloat hwt, AjPFeattabOut featout,

@@ -903,7 +903,7 @@ correctly, so ...  */
   return 0;
 }
 
-/** @funcstatic CompareTwoSeqNames **********************************************
+/* @funcstatic CompareTwoSeqNames *********************************************
 **
 ** Compare two Sequences' Names
 **
@@ -919,7 +919,7 @@ static ajint CompareTwoSeqNames(const void * a, const void * b)
 }
                
               
-/** @funcstatic  CompareTwoSeqSimilarities **********************************************
+/* @funcstatic  CompareTwoSeqSimilarities *************************************
 **
 ** Compare two Sequences by their similarity to the reference sequence
 **

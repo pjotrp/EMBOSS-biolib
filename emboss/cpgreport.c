@@ -111,6 +111,22 @@ int main(int argc, char **argv)
 
 
 
+/* @func cpgsearch ************************************************************
+**
+** Undocumented.
+**
+** @param [?] outf [AjPFile*] Undocumented
+** @param [?] from [ajint] Undocumented
+** @param [?] to [ajint] Undocumented
+** @param [?] p [char*] Undocumented
+** @param [?] name [char*] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] score [ajint*] Undocumented
+** @param [?] featout [AjPFeattabOut] Undocumented
+** @param [?] feattable [AjPFeattable*] Undocumented
+** @@
+******************************************************************************/
+
 
 
 void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
@@ -232,6 +248,19 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
 
 
 
+
+/* @func calcgc ***************************************************************
+**
+** Undocumented.
+**
+** @param [?] from [ajint] Undocumented
+** @param [?] to [ajint] Undocumented
+** @param [?] p [char*] Undocumented
+** @param [?] dcg [ajint*] Undocumented
+** @param [?] dgc [ajint*] Undocumented
+** @param [?] gc [ajint*] Undocumented
+** @@
+******************************************************************************/
 
 
 
