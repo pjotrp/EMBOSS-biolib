@@ -329,7 +329,7 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest -help
 FI stderr
-FZ = 933
+FZ = 932
 FP 3 / qualifiers:\n/
 FP 4 / qualifiers:/
 FP 1 /^ +\[-asequence\] +sequence +Sequence USA\n/
@@ -347,7 +347,7 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest -help -verbose
 FI stderr
-FZ = 3929
+FZ = 3878
 FP 26 /   boolean /
 FP  6 /   integer /
 FP 26 /   string /
@@ -2654,7 +2654,7 @@ CL temblall:* test.out -auto
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 FI test.out
-FP 42 /^>/
+FP 44 /^>/
 //
 
 ID direct-filename
@@ -2663,7 +2663,7 @@ CL temblvrt:* test.out -auto
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 FI test.out
-FP 23 /^>/
+FP 25 /^>/
 //
 
 ID direct-exclude
@@ -3754,9 +3754,9 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL tembl:* test.out -auto
 FI test.out
-FZ = 536690
+FZ = 540075
 FP 3 />GM/
-FP 42 />/
+FP 44 />/
 //
 
 ID dbiflat-tembl-wild
@@ -7519,96 +7519,17 @@ FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI eclacy.out2 
+FI eclacy.merger
 FZ > 1445
 FP /^# Score: 795\.0\n/
 FP /^ECLACY +1301 +cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa +1350\n/
-FP /^ECLACA +1 +gtgaatgaa +9\n/
-##
-## starts with eclacy, ends with eclaca, small overlap
-##
+FP /^ECLACA +1 [-]+gtgaatgaa +9\n/
 FI eclacy.fasta
+FC = 54
 FZ = 3291
-FP /^ttccagctgagcgccggtcgctaccattaccagttggtctggtgtcaaaaataataataa\n/
+FP 1 /^>/
 FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
-//
-
-ID merger-aformat-srspair
-AP merger
-CL -aformat srspair
-IN tembl:eclacy
-IN tembl:eclaca
-IN
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI eclacy.out2
-FZ > 1445
-FP /^# Score: 795\.0\n/
-FP /^ECLACY +1301 +cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa +1350\n/
-FP /^ECLACA +1 +gtgaatgaa +9\n/
-##
-## starts with eclacy, ends with eclaca, small overlap
-##
-FI eclacy.fasta
-FZ = 3291
-FP /^ttccagctgagcgccggtcgctaccattaccagttggtctggtgtcaaaaataataataa\n/
-FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
-//
-
-ID merger-aformat-markx0
-AP merger
-CL -af markx0
-IN tembl:eclacy
-IN tembl:eclaca
-IN
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI eclacy.out2
-FZ > 1445
-FP /^# Score: 795\.0\n/
-FP /^ECLACY +cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa\n/
-FP /^ECLACA +gtgaatgaa\n/
-##
-## starts with eclacy, ends with eclaca, small overlap
-##
-FI eclacy.fasta
-FZ = 3291
-FP /^ttccagctgagcgccggtcgctaccattaccagttggtctggtgtcaaaaataataataa\n/
-FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
-//
-
-ID merger-aformat-pair
-AP merger
-CL -aformat pair
-IN tembl:eclacy
-IN tembl:eclaca
-IN
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI eclacy.out2
-FZ > 1445
-FP /^# Score: 795\.0\n/
-FP /^ECLACY +1301 +cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa +1350\n/
-FP /^ECLACA +1 +gtgaatgaa +9\n/
-##
-## starts with eclacy, ends with eclaca, small overlap
-##
-FI eclacy.fasta
-FZ = 3291
-FP /^ttccagctgagcgccggtcgctaccattaccagttggtctggtgtcaaaaataataataa\n/
-FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
+FP /ggaaaaaaga\ncttcgtggg/
 //
 
 ID msbar-ex
@@ -8858,7 +8779,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI eclac.remap
-FZ = 1929
+FZ = 2242
 FP /^\s+Hin6I\s+2\s+HinP1I,HspAI\n/
 //
 
@@ -9033,13 +8954,13 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI eclac.seqmatchall
-FZ = 1513
-FP /^  1832 ECLAC +5646..7477     ECLACA +1..1832\n/
-FP /^  1113 ECLAC +49..1161     ECLACI +1..1113\n/
-FP /^  1500 ECLAC +4305..5804     ECLACY +1..1500\n/
-FP /^  3078 ECLAC +1287..4364     ECLACZ +1..3078\n/
-FP /^   159 ECLACA +1..159      ECLACY +1342..1500\n/
-FP /^    60 ECLACY +1..60       ECLACZ +3019..3078\n/
+FZ = 1537
+FP /^  1832 ECLAC +[+] +5646..7477     ECLACA +[+] +1..1832\n/
+FP /^  1113 ECLAC +[+] +49..1161     ECLACI +[+] +1..1113\n/
+FP /^  1500 ECLAC +[+] +4305..5804     ECLACY +[+] +1..1500\n/
+FP /^  3078 ECLAC +[+] +1287..4364     ECLACZ +[+] +1..3078\n/
+FP /^   159 ECLACA +[+] +1..159      ECLACY +[+] +1342..1500\n/
+FP /^    60 ECLACY +[+] +1..60       ECLACZ +[+] +3019..3078\n/
 //
 
 ###########################################################################
@@ -9093,7 +9014,7 @@ ID seqret-inlist-good
 AP seqret
 CL -auto @../../data/good.list test.out -osf embl
 FI test.out
-FZ = 506
+FZ = 584
 FP 3 /^ID   .* AA\.\n/
 FP /^SQ   SEQUENCE    56 AA;   6466 MW;  48CB2E252357CBF6 CRC64;/
 //
@@ -13732,6 +13653,55 @@ FP /^>NC_001321.1_1/
 FP /^VNY\*SAHDHNMTEVSYIWYFFIFFGGLARTPLWP\*\*VSSQSDKL\*LGLDVFVIWLAQPTC\n/
 //
 
+ID transeq-list1
+UC To translate from a list of sequences and test the ranges are set correctly
+AP transeq
+CL @../../data/range1.list list.pep
+FI stderr
+FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI list.pep
+FZ = 733
+FP /^AAGKKLPR\n/
+FP /^STVTQLPTKWWPSRTSLLVRSSTPEETRPSRLTC\*PMAAASVPLSPAAHPLASTRRLSSV\n/
+FP /^KKKKX\n/
+//
+
+ID transeq-list2
+UC To translate from a list of sequences and test the ranges are set correctly
+AP transeq
+CL @../../data/range2.list list.pep
+FI stderr
+FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI list.pep
+FZ = 1135
+FP /^PAAGKKLPRLPKCARCRNHGYSSPLKGHKRFCMWRDCQCKKCSLIAERQRVMAVQVALRR\n/
+FP /^LFSVVAAVPEIKMLLMTEKKKKKX\n/
+FP /^MVAIKDITARQILDSRGNPTVEVDLLTDGGCFRAAVPSGASTGIYEALELRDKDQTKFMG\n/
+FP /^QLMRIEESLGSDCQYAGAGFRHPN\*\n/
+//
+
+ID transeq-list12
+UC To translate from a list of sequences and test the ranges are set correctly
+AP transeq
+CL @../../data/range12.list list.pep
+FI stderr
+FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI list.pep
+FZ = 631
+FP /^AAGKKLPR\n/
+FP /^MVAIKDITARQILDSRGNPTVEVDLLTDGGCFRAAVPSGASTGIYEALELRDKDQTKFMG\n/
+FP /^QLMRIEESLGSDCQYAGAGFRHPN\*\n/
+//
+
 ID trimest-ex
 AP trimest
 CL tembl:hsfau hsfau.seq
@@ -14021,207 +13991,9 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI hba_human.wordmatch
 FZ > 608
-FP /^ +5 HBA_HUMAN +58\.\.62 +HBB_HUMAN +63\.\.67\n/
-FP /^ +4 HBA_HUMAN +14\.\.17 +HBB_HUMAN +15\.\.18\n/
-FP /^ +4 HBA_HUMAN +116\.\.119 +HBB_HUMAN +121\.\.124\n/
-FI HBA_HUMAN.gff
-FZ = 336
-FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
-FI HBB_HUMAN.gff
-FZ = 336
-FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
-//
-
-ID wordmatch-same
-AP wordmatch
-CL tembl:eclaci tembl:eclaci -word 50 -auto
-FI eclaci.wordmatch
-FZ > 460
-FP /^ +1113 +ECLACI +1\.\.1113 +ECLACI +1\.\.1113\n/
-FI ECLACI.gff
-FZ = 137
-FP /^ECLACI\twordmatch\tmisc_feature\t1\t1113\t1\.000\t/
-//
-
-ID wordmatch-pair
-AP wordmatch
-CL tsw:hba_human tsw:hbb_human -aformat pair
-IN
-IN
-IN
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI hba_human.wordmatch
-FZ > 608
-FP 1 /^HBA_HUMAN         58 HGKKV     62\n/
-FP 1 /^                     \|\|\|\|\|\n/
-FP 2 /^                     \|\|\|\|\n/
-FP 1 /^HBB_HUMAN         63 HGKKV     67\n/
-FI HBA_HUMAN.gff
-FZ = 336
-FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
-FI HBB_HUMAN.gff
-FZ = 336
-FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
-//
-
-ID wordmatch-srspair
-AP wordmatch
-CL tsw:hba_human tsw:hbb_human -aformat srspair
-IN
-IN
-IN
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI hba_human.wordmatch
-FZ > 608
-FP 1 /^HBA_HUMAN         58 HGKKV     62\n/
-FP 1 /^                     \|\|\|\|\|\n/
-FP 2 /^                     \|\|\|\|\n/
-FP 1 /^HBB_HUMAN         63 HGKKV     67\n/
-FI HBA_HUMAN.gff
-FZ = 336
-FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
-FI HBB_HUMAN.gff
-FZ = 336
-FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
-//
-
-ID wordmatch-markx0
-AP wordmatch
-CL tsw:hba_human tsw:hbb_human -aformat markx0
-IN
-IN
-IN
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI hba_human.wordmatch
-FZ > 608
-FP 1 /^HBA_HU HGKKV\n/
-FP 1 /^       :::::\n/
-FP 1 /^HBB_HU HGKKV\n/
-FP 1 /^        60  \n/
-FI HBA_HUMAN.gff
-FZ = 336
-FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
-FI HBB_HUMAN.gff
-FZ = 336
-FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
-//
-
-ID wordmatch-markx1
-AP wordmatch
-CL tsw:hba_human tsw:hbb_human -aformat markx1
-IN
-IN
-IN
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI hba_human.wordmatch
-FZ > 608
-FP 1 /^HBA_HU HGKKV\n/
-## found for numbering and for alignment in first hit
-FP 2 /^            \n/
-FP 1 /^HBB_HU HGKKV\n/
-FP 1 /^        60  \n/
-FI HBA_HUMAN.gff
-FZ = 336
-FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
-FI HBB_HUMAN.gff
-FZ = 336
-FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
-//
-
-ID wordmatch-markx2
-AP wordmatch
-CL tsw:hba_human tsw:hbb_human -aformat markx2
-IN
-IN
-IN
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI hba_human.wordmatch
-FZ > 608
-FP 1 /^        60  \n/
-FP 1 /^HBA_HU HGKKV\n/
-FP 1 /^HBB_HU \.\.\.\.\.\n/
-FI HBA_HUMAN.gff
-FZ = 336
-FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
-FI HBB_HUMAN.gff
-FZ = 336
-FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
-//
-
-ID wordmatch-markx3
-AP wordmatch
-CL tsw:hba_human tsw:hbb_human -aformat markx3
-IN
-IN
-IN
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI hba_human.wordmatch
-FZ > 608
-FP 1 /^>HBA_HUMAN \.\.\nHGKKV\n/
-FP 1 /^>HBB_HUMAN \.\.\nHGKKV\n/
-FI HBA_HUMAN.gff
-FZ = 336
-FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
-FI HBB_HUMAN.gff
-FZ = 336
-FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
-//
-
-ID wordmatch-markx10
-AP wordmatch
-CL tsw:hba_human tsw:hbb_human -aformat markx10
-IN
-IN
-IN
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI hba_human.wordmatch
-FZ > 608
-FP 3 /^>HBA_HUMAN \.\.\n/
-FP 3 /^; sq_len: 141\n/
-FP 1 /^; al_start: 58\n/
-FP 1 /^; al_stop: 62\n/
-FP 1 /^; al_display_start: 58\n/
-FP 2 /^HGKKV\n/
-FP 3 /^>HBB_HUMAN \.\.\n/
-FP 3 /^; sq_len: 146\n/
-FP 1 /^; al_start: 63\n/
-FP 1 /^; al_stop: 67\n/
-FP 1 /^; al_display_start: 63\n/
+FP /^ +5 HBA_HUMAN +[+] +58\.\.62 +HBB_HUMAN +[+] +63\.\.67\n/
+FP /^ +4 HBA_HUMAN +[+] +14\.\.17 +HBB_HUMAN +[+] +15\.\.18\n/
+FP /^ +4 HBA_HUMAN +[+] +116\.\.119 +HBB_HUMAN +[+] +121\.\.124\n/
 FI HBA_HUMAN.gff
 FZ = 336
 FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
@@ -14345,7 +14117,210 @@ FP 5 /tembl-id:HSFAU1\[[0-9]+:[0-9]+\]\n/
 # Checking alignment reports
 # with sbegin, send, various formats, and
 # different internal alignment functions
+#
+# Functions              Programs         Comments
+#
+# seqmatchall program    seqmatchall      Pair Global
+# stretcher   program    stretcher        Pair Global
+# matcher     program    matcher          Pair Local
+# wordmatch   program    wordmatch        Pair Local Ungapped
+#
+# embAlignReportGlobal   merger           Pair Global
+#                        needle           Pair Global
+# embAlignReportLocal    water            Pair Local
+#                        supermatcher     Pair Local
 ###########################################################
+
+ID align-seqmatchall-default
+## Using an increased word size to avoid accidental matches:
+AP seqmatchall
+IN tembl:eclac*
+IN 15
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eclac.seqmatchall
+FZ = 1537
+FP /^  1832 ECLAC +[+] +5646..7477     ECLACA +[+] +1..1832\n/
+FP /^  1113 ECLAC +[+] +49..1161     ECLACI +[+] +1..1113\n/
+FP /^  1500 ECLAC +[+] +4305..5804     ECLACY +[+] +1..1500\n/
+FP /^  3078 ECLAC +[+] +1287..4364     ECLACZ +[+] +1..3078\n/
+FP /^   159 ECLACA +[+] +1..159      ECLACY +[+] +1342..1500\n/
+FP /^    60 ECLACY +[+] +1..60       ECLACZ +[+] +3019..3078\n/
+//
+
+ID align-stretcher-msfgap
+AP stretcher
+CL -gappen 5 -gaplen 1 -stdout -sbegin2 4
+CL -aformat msf
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP 1 /^AFULL +GGCCAATTGGCATG\n/
+FP 1 /^BFULL +~{17}CGGG\.{9}CC\.{14}TTT~\n/
+FC = 17
+//
+
+ID align-stretcher-full
+AP stretcher
+CL -gappen 16 -gaplen 1 -stdout
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +10\/64 \(15\.6%\)/
+FP /^# Score: +-55\n/
+FP 1 /^               10        20        30        40        50\n/
+FP 1 /^ AFULL ACGTAACCGGTTAAACCCGGGTTTAAAACCCCGGGGTTTTCCCAAATTTG\n/
+FP 1 /^ BFULL A------------AAC----------------GGGCCTTT----------\n/
+FP 1 /^                                           10            \n/
+FC = 40
+//
+
+ID align-stretcher-part
+AP stretcher
+CL -gappen 16 -gaplen 4 -stdout
+IN ../../data/aligna.dna
+IN ../../data/alignapart.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +47\/65 \(72\.3%\)/
+FP /^# Score: +115\n/
+FP 1 /^                60    \n/
+FP 1 /^ AFULL GGCC-AATTGGCATG\n/
+FP 1 /^ APART GGTTTAACCGG--TT\n/
+FP 1 /^            50        \n/
+FC = 40
+//
+
+ID align-stretcher-begin
+AP stretcher
+CL -gappen 16 -gaplen 4 -stdout -sbegin1 5
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +8\/60 \(13\.3%\)/
+FP /^# Score: +-180\n/
+FP 1 /^           10        20        30        40        50    \n/
+FP 1 /^ AFULL AACCGGTTAAACCCGGGTTTAAAACCCCGGGGTTTTCCCAAATTTGGGCC\n/
+FP 1 /^       :: :::                                            \n/
+FP 1 /^ BFULL AAACGG--------------------------------------------\n/
+FP 1 /^           60    \n/
+FP 1 /^ AFULL AATTGGCATG\n/
+FP 1 /^           : : : \n/
+FP 1 /^ BFULL ----GCCTTT\n/
+FP 1 /^             10  \n/
+FC = 40
+//
+
+ID align-stretcher-end
+AP stretcher
+CL -gappen 16 -gaplen 4 -stdout -send1 15
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +6\/15 \(40\.0%\)/
+FP /^# Score: +-18\n/
+FP 1 /^               10     \n/
+FP 1 /^ AFULL ACGTAACCGGTTAAA\n/
+FP 1 /^ BFULL A---AACGGGCCTTT\n/
+FP 1 /^                  10  \n/
+FC = 34
+//
+
+ID align-stretcher-begin2
+AP stretcher
+CL -gappen 16 -gaplen 4 -stdout -sbegin2 5
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +6\/64 \( 9\.4%\)/
+FP /^# Score: +-226\n/
+FP 1 /^               10        20        30        40        50\n/
+FP 1 /^ AFULL ACGTAACCGGTTAAACCCGGGTTTAAAACCCCGGGGTTTTCCCAAATTTG\n/
+FP 1 /^ BFULL --------------------------------GGGCCTTT----------\n/
+FP 1 /^                                           10            \n/
+FC = 40
+//
+
+ID align-stretcher-end2
+AP stretcher
+CL -gappen 16 -gaplen 4 -stdout -send2 -3
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +9\/64 \(14\.1%\)/
+FP /^# Score: +-211\n/
+FP 1 /^               60    \n/
+FP 1 /^ AFULL GGCCAATTGGCATG\n/
+FP 1 /^ BFULL GGCCT---------\n/
+FP 1 /^          10         \n/
+FC = 40
+//
+
+ID align-stretcher-begendall
+AP stretcher
+CL -gappen 16 -gaplen 4 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +5\/11 \(45\.5%\)/
+FP /^# Score: +-11\n/
+FP 1 /^           10     \n/
+FP 1 /^ AFULL AACCGGTTAAA\n/
+FP 1 /^ BFULL AACGGG-----\n/
+FP 1 /^                 7\n/
+FC = 34
+//
 
 ID align-matcher-full
 AP matcher
@@ -14369,6 +14344,48 @@ FC = 34
 //
 
 
+ID align-matcher-long
+AP matcher
+CL -gappen 5 -gaplen 1 -stdout
+IN tembl:eclac
+IN tembl:eclacz
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +3078\/3078 \(100\.0%\)/
+FP /^# Score: +15390\n/
+FP 1 /^       4340      4350      4360    \n/
+FP 1 /^             3060      3070        \n/
+FP 2 /^ *\S+ +GTTGGTCTGGTGTCAAAAATAATAATAA\n/
+FC = 400
+//
+
+
+ID align-matcher-longrev
+AP matcher
+CL -gappen 5 -gaplen 1 -stdout -srev1 -srev2
+IN tembl:eclac
+IN tembl:eclacz
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +3078\/3078 \(100\.0%\)/
+FP /^# Score: +15390\n/
+FP 1 /^        1310      1300      1290   \n/
+FP 1 /^              20        10         \n/
+FP 2 /^ *\S+ +CGACGGCCAGTGAATCCGTAATCATGGT\n/
+FC = 400
+//
+
+
 ID align-matcher-part
 AP matcher
 CL -gappen 5 -gaplen 1 -stdout
@@ -14381,12 +14398,13 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /^# Identity: +56\/56 \(100\.0%\)/
-FP /^# Score: +280\n/
-FP 1 /^ AFULL CCGGTT\n/
-FP 1 /^ APART CCGGTT\n/
-FP 1 /^           10        20        30        40        50    \n/
-FP 1 /^               10        20        30        40        50\n/
+FP /^# Identity: +46\/64 \(71\.9%\)/
+FP /^# Score: +196\n/
+FP 1 /^ AFULL T----GGGCCAATT\n/
+FP 1 /^ APART TAACCGG-----TT\n/
+FP 1 /^        50           \n\n/
+FP 1 /^           10        20        30        40              \n/
+FP 1 /^               10        20        30           40       \n/
 FC = 40
 //
 
@@ -14444,12 +14462,12 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /^# Identity: +6\/8 \(75\.0%\)/
-FP /^# Score: +24\n/
-FP 1 /^       20      \n/
-FP 1 /^ AFULL GGG--TTT\n/
-FP 1 /^ BFULL GGGCCTTT\n/
-FP 1 /^           10  \n/
+FP /^# Identity: +7\/9 \(77\.8%\)/
+FP /^# Score: +29\n/
+FP 1 /^      50        \n/
+FP 1 /^ AFULL GGGCCAATT\n/
+FP 1 /^ BFULL GGGCC--TT\n/
+FP 1 /^             10 \n/
 FC = 34
 //
 
@@ -14465,12 +14483,12 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /^# Identity: +9\/16 \(56\.2%\)/
+FP /^# Identity: +8\/11 \(72\.7%\)/
 FP /^# Score: +30\n/
-FP 1 /^               50      \n/
-FP 1 /^ AFULL AAACCCGGGTTTAACC\n/
-FP 1 /^ BFULL AAAC--GGG-----CC\n/
-FP 1 /^                       \n/
+FP 1 /^            50    \n/
+FP 1 /^ AFULL AAATTTGGGCC\n/
+FP 1 /^ BFULL AAA--CGGGCC\n/
+FP 1 /^                 9\n/
 FC = 34
 //
 
@@ -14491,7 +14509,7 @@ FP /^# Score: +21\n/
 FP 1 /^           10\n/
 FP 1 /^ AFULL AACCGG\n/
 FP 1 /^ BFULL AACGGG\n/
-FP 1 /^             \n/
+FP 1 /^            7\n/
 FC = 34
 //
 
@@ -14554,7 +14572,7 @@ FP 1 /^           10\n/
 FP 1 /^ AFULL AACCGG\n/
 FP 1 /^       ::: ::\n/
 FP 1 /^ BFULL AACGGG\n/
-FP 1 /^             \n/
+FP 1 /^            7\n/
 FC = 34
 //
 
@@ -14577,7 +14595,7 @@ FP 1 /^           10\n/
 FP 1 /^ AFULL AACCGG\n/
 FP 1 /^          X  \n/
 FP 1 /^ BFULL AACGGG\n/
-FP 1 /^             \n/
+FP 1 /^            7\n/
 FC = 34
 //
 
@@ -14598,7 +14616,7 @@ FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
 FP 1 /^           10\n/
 FP 1 /^ AFULL AACCGG\n/
-FP 1 /^BFULL  \.\.\.G\.\.\n/
+FP 1 /^ BFULL \.\.\.G\.\.\n/
 FC = 32
 //
 
@@ -14637,9 +14655,9 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP 1 /^>AFULL \.\.\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\nAACCGG\n/
-FP 1 /^>BFULL \.\.\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\nAACGGG\n/
-FC = 40
+FP 1 /^>AFULL \.\.\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\nAACCGG\n/
+FP 1 /^>BFULL \.\.\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\nAACGGG\n/
+FC = 53
 //
 
 ID align-matcher-fasta
@@ -14698,10 +14716,690 @@ FP 1 /^BFULL +AAAC\.\.GGGCCTTT\n/
 FC = 13
 //
 
-ID align-stretcher-msfgap
-AP stretcher
-CL -gappen 5 -gaplen 1 -stdout -sbegin2 4
-CL -aformat msf
+ID align-matcherprot-full
+AP matcher
+CL -stdout
+IN ../../data/aligna.prot
+IN ../../data/alignb.prot
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +40\/68 \(58\.8%\)/
+FP /^# Score: +198\n/
+FP 1 /^             60        70\n/
+FP 1 /^ AFULL FFIIIAALEEFFIIAEFL\n/
+FP 1 /^       ::::::: . :::::.:.\n/
+FP 1 /^ BFULL FFIIIAADDLFFIIADFI\n/
+FP 1 /^               60        \n/
+FC = 40
+//
+
+
+ID align-matcherprot-begin
+AP matcher
+CL -gappen 5 -gaplen 1 -stdout -sbegin1 5
+IN ../../data/aligna.prot
+IN ../../data/alignb.prot
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +40\/68 \(58\.8%\)/
+FP /^# Score: +195\n/
+FP 1 /^ AFULL FFIIIAALEEFFIIAEFL\n/
+FP 1 /^       ::::::: . :::::.:.\n/
+FP 1 /^ BFULL FFIIIAADDLFFIIADFI\n/
+FP 1 /^               60        \n/
+FC = 40
+//
+
+
+ID align-matcherprot-end
+AP matcher
+CL -stdout -send1 15
+IN ../../data/aligna.prot
+IN ../../data/alignb.prot
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +8\/13 \(61\.5%\)/
+FP /^# Score: +42\n/
+FP 1 /^             10     \n/
+FP 1 /^ AFULL FIAAEEFLFIIAA\n/
+FP 1 /^       ::::..:  .:::\n/
+FP 1 /^ BFULL FIAADDFFILIAA\n/
+FP 1 /^               10   \n/
+FC = 34
+//
+
+ID align-matcherprot-begin2
+AP matcher
+CL -stdout -sbegin2 5
+IN ../../data/aligna.prot
+IN ../../data/alignb.prot
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +36\/64 \(56\.2%\)/
+FP /^# Score: +180\n/
+FP 1 /^ AFULL IAALEEFFIIAEFL\n/
+FP 1 /^       ::: . :::::.:.\n/
+FP 1 /^ BFULL IAADDLFFIIADFI\n/
+FP 1 /^           60        \n/
+FC = 40
+//
+
+ID align-matcherprot-end2
+AP matcher
+CL -stdout -send2 -3
+IN ../../data/aligna.prot
+IN ../../data/alignb.prot
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +40\/68 \(58\.8%\)/
+FP /^# Score: +198\n/
+FP 1 /^             60        70\n/
+FP 1 /^ AFULL FFIIIAALEEFFIIAEFL\n/
+FP 1 /^       ::::::: . :::::.:.\n/
+FP 1 /^ BFULL FFIIIAADDLFFIIADFI\n/
+FP 1 /^               60        \n/
+FC = 40
+//
+
+ID align-matcherprot-begendall
+AP matcher
+CL -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+IN ../../data/aligna.prot
+IN ../../data/alignb.prot
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +6\/11 \(54\.5%\)/
+FP /^# Score: +32\n/
+FP 1 /^           10     \n/
+FP 1 /^ AFULL AAEEFLFIIAA\n/
+FP 1 /^ BFULL AADDFFILIAA\n/
+FP 1 /^             10   \n/
+FC = 34
+//
+
+ID align-wordmatch-same
+AP wordmatch
+CL tembl:eclaci tembl:eclaci -word 50 -auto
+FI eclaci.wordmatch
+FC = 18
+FP /^ +1113 +ECLACI +[+] +1\.\.1113 +ECLACI +[+] +1\.\.1113\n/
+FI ECLACI.gff
+FZ = 137
+FP /^ECLACI\twordmatch\tmisc_feature\t1\t1113\t1\.000\t/
+//
+
+ID align-wordmatch-pair
+AP wordmatch
+CL tsw:hba_human tsw:hbb_human -aformat pair
+IN
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI hba_human.wordmatch
+FZ > 608
+FP 1 /^HBA_HUMAN         58 HGKKV     62\n/
+FP 1 /^                     \|\|\|\|\|\n/
+FP 2 /^                     \|\|\|\|\n/
+FP 1 /^HBB_HUMAN         63 HGKKV     67\n/
+FI HBA_HUMAN.gff
+FZ = 336
+FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
+FI HBB_HUMAN.gff
+FZ = 336
+FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
+//
+
+ID align-wordmatch-srspair
+AP wordmatch
+CL tsw:hba_human tsw:hbb_human -aformat srspair
+IN
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI hba_human.wordmatch
+FZ > 608
+FP 1 /^HBA_HUMAN         58 HGKKV     62\n/
+FP 1 /^                     \|\|\|\|\|\n/
+FP 2 /^                     \|\|\|\|\n/
+FP 1 /^HBB_HUMAN         63 HGKKV     67\n/
+FI HBA_HUMAN.gff
+FZ = 336
+FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
+FI HBB_HUMAN.gff
+FZ = 336
+FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
+//
+
+ID align-wordmatch-markx0
+AP wordmatch
+CL tsw:hba_human tsw:hbb_human -aformat markx0
+IN
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI hba_human.wordmatch
+FZ > 608
+FP 1 /^HBA_HU HGKKV\n/
+FP 1 /^       :::::\n/
+FP 1 /^HBB_HU HGKKV\n/
+FP 1 /^        60  \n/
+FI HBA_HUMAN.gff
+FZ = 336
+FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
+FI HBB_HUMAN.gff
+FZ = 336
+FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
+//
+
+ID align-wordmatch-markx1
+AP wordmatch
+CL tsw:hba_human tsw:hbb_human -aformat markx1
+IN
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI hba_human.wordmatch
+FZ > 608
+FP 1 /^HBA_HU HGKKV\n/
+## found for numbering and for alignment in first hit
+FP 2 /^           \n/
+FP 1 /^HBB_HU HGKKV\n/
+FP 1 /^        60  \n/
+FI HBA_HUMAN.gff
+FZ = 336
+FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
+FI HBB_HUMAN.gff
+FZ = 336
+FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
+//
+
+ID align-wordmatch-markx2
+AP wordmatch
+CL tsw:hba_human tsw:hbb_human -aformat markx2
+IN
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI hba_human.wordmatch
+FZ > 608
+FP 1 /^        60  \n/
+FP 1 /^HBA_HU HGKKV\n/
+FP 1 /^HBB_HU \.HLTP\n/
+FI HBA_HUMAN.gff
+FZ = 336
+FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
+FI HBB_HUMAN.gff
+FZ = 336
+FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
+//
+
+ID align-wordmatch-markx3
+AP wordmatch
+CL tsw:hba_human tsw:hbb_human -aformat markx3
+IN
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI hba_human.wordmatch
+FZ > 608
+FP 1 /^>HBA_HUMAN \.\.\nHGKKV\n/
+FP 1 /^>HBB_HUMAN \.\.\nHGKKV\n/
+FI HBA_HUMAN.gff
+FZ = 336
+FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
+FI HBB_HUMAN.gff
+FZ = 336
+FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
+//
+
+ID align-wordmatch-markx10
+AP wordmatch
+CL tsw:hba_human tsw:hbb_human -aformat markx10
+IN
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI hba_human.wordmatch
+FZ > 608
+FP 3 /^>HBA_HUMAN \.\.\n/
+FP 3 /^; sq_len: 141\n/
+FP 1 /^; al_start: 58\n/
+FP 1 /^; al_stop: 62\n/
+FP 1 /^; al_display_start: 58\n/
+FP 2 /^HGKKV\n/
+FP 3 /^>HBB_HUMAN \.\.\n/
+FP 3 /^; sq_len: 146\n/
+FP 1 /^; al_start: 63\n/
+FP 1 /^; al_stop: 67\n/
+FP 1 /^; al_display_start: 63\n/
+FI HBA_HUMAN.gff
+FZ = 336
+FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
+FI HBB_HUMAN.gff
+FZ = 336
+FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
+//
+
+ID align-merger-fasta
+AP merger
+CL -aformat fasta
+IN tembl:eclacy
+IN tembl:eclaca
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eclacy.merger
+FC = 108
+FP /accggaaaaaaga\n[-]+\n/
+FP /^---------------------gtgaatgaagtcgcttaagcaatcaatgtcggatgcggc\n/
+FI eclacy.fasta
+FC = 54
+FZ = 3291
+FP 1 /^>/
+FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
+FP /ggaaaaaaga\ncttcgtggg/
+//
+
+ID align-merger-markx0
+AP merger
+CL -aformat markx0
+IN tembl:eclacy
+IN tembl:eclaca
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eclacy.merger
+FC = 417
+FP /^# Score: 795\.0\n/
+FP / 1340      1350\nECLACY cgctt/
+FP /^ECLACY cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa\n/
+FP /^ECLACA [-]+gtgaatgaa\n +\n/
+FP /^ECLACA .*tccgaccaac\n      10/
+FI eclacy.fasta
+FC = 54
+FZ = 3291
+FP 1 /^>/
+FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
+FP /ggaaaaaaga\ncttcgtggg/
+//
+
+ID align-merger-markx1
+AP merger
+CL -aformat markx1
+IN tembl:eclacy
+IN tembl:eclaca
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eclacy.merger
+FC = 417
+FP /^# Score: 795\.0\n/
+FP / 1340      1350\nECLACY cgctt/
+FP /^ECLACY cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa\n/
+FP /^ECLACA [-]+gtgaatgaa\n +\n/
+FP /^ECLACA .*tccgaccaac\n      10/
+FI eclacy.fasta
+FC = 54
+FZ = 3291
+FP 1 /^>/
+FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
+FP /ggaaaaaaga\ncttcgtggg/
+//
+
+ID align-merger-markx2
+AP merger
+CL -aformat markx2
+IN tembl:eclacy
+IN tembl:eclaca
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eclacy.merger
+FC = 289
+FP /^# Score: 795\.0\n/
+FP / 1340      1350\nECLACY cgctt/
+FP /^ECLACY cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa\n/
+FP /^ECLACY [acgt]+gtgaatgaa\nECLACA [-]+\.\.\.\.\.\.\.\.\.\n/
+FI eclacy.fasta
+FC = 54
+FZ = 3291
+FP 1 /^>/
+FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
+FP /ggaaaaaaga\ncttcgtggg/
+//
+
+ID align-merger-markx3
+AP merger
+CL -aformat markx3
+IN tembl:eclacy
+IN tembl:eclaca
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eclacy.merger
+FC = 163
+FP /^# Score: 795\.0\n/
+FP /^cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa\n/
+FP /^-----------------------------------------gtgaatgaa\n/
+FI eclacy.fasta
+FC = 54
+FZ = 3291
+FP 1 /^>/
+FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
+FP /ggaaaaaaga\ncttcgtggg/
+//
+
+ID align-merger-markx10
+AP merger
+CL -aformat markx10
+IN tembl:eclacy
+IN tembl:eclaca
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eclacy.merger
+FC = 184
+FP /^; sw_score: 795.0\n/
+FP /^cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa\n/
+FP /^-----------------------------------------gtgaatgaa\n/
+FI eclacy.fasta
+FC = 54
+FZ = 3291
+FP 1 /^>/
+FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
+FP /ggaaaaaaga\ncttcgtggg/
+//
+
+ID align-merger-match
+AP merger
+CL -aformat match
+IN tembl:eclacy
+IN tembl:eclaca
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eclacy.merger
+FC = 26
+FP /^   159 ECLACY +[+] +1342\.\.1500     ECLACA +[+] +1\.\.159\n/
+FI eclacy.fasta
+FC = 54
+FZ = 3291
+FP 1 /^>/
+FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
+FP /ggaaaaaaga\ncttcgtggg/
+//
+
+ID align-merger-msf
+AP merger
+CL -af msf
+IN tembl:eclacy
+IN tembl:eclaca
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eclacy.merger
+FC = 265
+FP /^ECLACY +cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa\n/
+FP /^ECLACA +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~gtgaatgaa\n/
+FI eclacy.fasta
+FC = 54
+FZ = 3291
+FP 1 /^>/
+FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
+FP /ggaaaaaaga\ncttcgtggg/
+//
+
+ID align-merger-pair
+AP merger
+CL -aformat pair
+IN tembl:eclacy
+IN tembl:eclaca
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eclacy.merger
+FZ > 1445
+FP /^# Score: 795\.0\n/
+FP /^ECLACY +1301 +cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa +1350\n/
+FP /^ECLACA +1 [-]+gtgaatgaa +9\n/
+FI eclacy.fasta
+FC = 54
+FZ = 3291
+FP 1 /^>/
+FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
+FP /ggaaaaaaga\ncttcgtggg/
+//
+
+ID align-merger-score
+AP merger
+CL -aformat score
+IN tembl:eclacy
+IN tembl:eclaca
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eclacy.merger
+FC = 9
+FP 0 /^# Score:/
+FP /^ECLACY ECLACA 3173 \(795\.0\)\n/
+FI eclacy.fasta
+FC = 54
+FZ = 3291
+FP 1 /^>/
+FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
+FP /ggaaaaaaga\ncttcgtggg/
+//
+
+ID align-merger-simple
+AP merger
+CL -aformat simple
+IN tembl:eclacy
+IN tembl:eclaca
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eclacy.merger
+FC = 289
+FP /^# Score: 795\.0\n/
+FP /^ECLACY +1301 +cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa +1350\n/
+FP /^ECLACA +1 [-]+gtgaatgaa +9\n/
+FI eclacy.fasta
+FC = 54
+FZ = 3291
+FP 1 /^>/
+FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
+FP /ggaaaaaaga\ncttcgtggg/
+//
+
+ID align-merger-srs
+AP merger
+CL -aformat srs
+IN tembl:eclacy
+IN tembl:eclaca
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eclacy.merger
+FC = 225
+FP /^# Score: 795\.0\n/
+FP /^ECLACY +1301 +cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa +1350\n/
+FP /^ECLACA +1 [-]+gtgaatgaa +9\n/
+FI eclacy.fasta
+FC = 54
+FZ = 3291
+FP 1 /^>/
+FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
+FP /ggaaaaaaga\ncttcgtggg/
+//
+
+ID align-merger-srspair
+AP merger
+CL -aformat srspair
+IN tembl:eclacy
+IN tembl:eclaca
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eclacy.merger
+FC = 289
+FP /^# Score: 795\.0\n/
+FP /^ECLACY +1301 +cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa +1350\n/
+FP /^ECLACA +1 [-]+gtgaatgaa +9\n/
+FI eclacy.fasta
+FC = 54
+FZ = 3291
+FP 1 /^>/
+FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
+FP /ggaaaaaaga\ncttcgtggg/
+//
+
+ID align-merger-tcoffee
+AP merger
+CL -aformat tcoffee
+IN tembl:eclacy
+IN tembl:eclaca
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eclacy.merger
+FC = 167
+FP /^2\nECLACY 1500 ttccagct/
+FP /^! score=795.0\n/
+FP /^1342 1 0 1 0\n/
+FP /^1500 159 0 1 0\n/
+FP 0 /^1501/
+FI eclacy.fasta
+FC = 54
+FZ = 3291
+FP 1 /^>/
+FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
+FP /ggaaaaaaga\ncttcgtggg/
+//
+
+ID align-needle-full
+AP needle
+CL -gapopen 16 -gapext 4 -stdout
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
 IN
@@ -14711,9 +15409,128 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP 1 /^AFULL +TTAACCGGTTACGT\n/
-FP 1 /^BFULL +~~~~~~~~~~~~~~~~~CGGG\.\.\.\.\.\.\.\.\.CC\.\.\.\.TTT~~~~~~~~~~~\n/
-FC = 17
+FP /^# Identity: +8\/64 \(12\.5%\)/
+FP /^# Score: +24\.0\n/
+FP 1 /^AFULL +1 acgtaaccggttaaacccgggtttaaaaccccggggttttcccaaatttg     50\n/
+FP 1 /^      +              \|\|\|\|\.\.\|\.\.\|\|\|                          \n/
+FP 1 /^BFULL +1 ------------aaacgggccttt--------------------------     12\n/
+FC = 36
+//
+
+ID align-needle-part
+AP needle
+CL -gapopen 16 -gapext 4 -stdout
+IN ../../data/aligna.dna
+IN ../../data/alignapart.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +46\/67 \(68\.7%\)/
+FP /^# Score: +162\.0\n/
+FP 1 /^AFULL             48 ttgggccaattggcatg     64\n/
+FP 1 /^                     \|\| \.\.\|\|\.\.\|\|      \n/
+FP 1 /^APART             47 tt-aaccggtt------     56\n/
+FC = 36
+//
+
+ID align-needle-begin
+AP needle
+CL -gapopen 16 -gapext 4 -stdout -sbegin1 5
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +8\/60 \(13\.3%\)/
+FP /^# Score: +24\.0\n/
+FP 1 /^AFULL +5 aaccggttaaacccgggtttaaaaccccggggttttcccaaatttgggcc     54\n/
+FP 1 /^      +          \|\|\|\|\.\.\|\.\.\|\|\|                 +\n/
+FP 1 /^BFULL +1 --------aaacgggccttt------------------------------     12\n/
+FC = 36
+//
+
+ID align-needle-end
+AP needle
+CL -gapopen 16 -gapext 4 -stdout -send1 15
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +3\/24 \(12\.5%\)/
+FP /^# Score: +15\.0\n/
+FP 1 /^AFULL +1 acgtaaccggttaaa---------     15\n/
+FP 1 /^BFULL +1 ------------aaacgggccttt     12\n/
+FC = 32
+//
+
+ID align-needle-begin2
+AP needle
+CL -gapopen 16 -gapext 4 -stdout -sbegin2 5
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +6\/64 \( 9\.4%\)/
+FP /^# Score: +22\.0\n/
+FP 1 /^AFULL +1 acgtaaccggttaaacccgggtttaaaaccccggggttttcccaaatttg     50\n/
+FP 1 /^BFULL +5 --------------------------------gggccttt----------     12\n/
+FC = 36
+//
+
+ID align-needle-end2
+AP needle
+CL -gapopen 16 -gapext 4 -stdout -send2 -3
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +6\/64 \( 9\.4%\)/
+FP /^# Score: +14\.0\n/
+FP 1 /^AFULL +1 acgtaaccggttaaacccgggtttaaaaccccggggttttcccaaatttg     50\n/
+FP 1 /^BFULL +1 ------------aaacgggcct----------------------------     10\n/
+FC = 36
+//
+
+ID align-needle-begendall
+AP needle
+CL -gapopen 16 -gapext 4 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +5\/11 \(45\.5%\)/
+FP /^# Score: +21\.0\n/
+FP 1 /^AFULL +5 aaccggttaaa     15\n/
+FP 1 /^BFULL +2 aacggg-----      7\n/
+FC = 32
 //
 
 ID align-water-full
@@ -14748,10 +15565,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /^# Identity: +56\/56 \(100\.0%\)/
-FP /^# Score: +280\.0\n/
-FP 1 /^AFULL             55 ccggtt     60\n/
-FP 1 /^APART             51 ccggtt     56\n/
+FP /^# Identity: +46\/62 \(74\.2%\)/
+FP /^# Score: +196\.0\n/
+FP 1 /^AFULL +5 aaccggttaaacccgggtttaaaaccccggggtttt---cccaaatttgg     51\n/
+FP 1 /^APART +1 aaccggttaaacccgggtttaaaaccccggggttttaaaccc------gg     44\n/
 FC = 36
 //
 
@@ -14805,10 +15622,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /^# Identity: +6\/8 \(75\.0%\)/
-FP /^# Score: +24\.0\n/
-FP 1 /^AFULL             19 ggg--ttt     24\n/
-FP 1 /^BFULL              5 gggccttt     12\n/
+FP /^# Identity: +7\/9 \(77\.8%\)/
+FP /^# Score: +29\.0\n/
+FP 1 /^AFULL             50 gggccaatt     58\n/
+FP 1 /^BFULL              5 gggcc--tt     11\n/
 FC = 32
 //
 
@@ -14824,10 +15641,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /^# Identity: +9\/16 \(56\.2%\)/
+FP /^# Identity: +8\/11 \(72\.7%\)/
 FP /^# Score: +30\.0\n/
-FP 1 /^AFULL             41 aaacccgggtttaacc     56\n/
-FP 1 /^BFULL              1 aaa--cggg-----cc      9\n/
+FP 1 /^AFULL             44 aaatttgggcc     54\n/
+FP 1 /^BFULL              1 aaa--cgggcc      9\n/
 FC = 32
 //
 
@@ -14850,284 +15667,52 @@ FP 1 /^BFULL              2 aacggg      7\n/
 FC = 32
 //
 
-ID align-stretcher-full
-AP stretcher
-CL -gappen 16 -gaplen 1 -stdout
-IN ../../data/aligna.dna
-IN ../../data/alignb.dna
+ID align-supermatcher-default
+TI 400
+AP supermatcher
+CL tembl:ec* tembl:eclac -word 50 
+IN
+IN 3.0
 IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
-FP /^# Identity: +10\/64 \(15\.6%\)/
-FP /^# Score: +-55\n/
-FP 1 /^               10        20        30        40        50\n/
-FP 1 /^ AFULL ACGTAACCGGTTAAACCCGGGTTTAAAACCCCGGGGTTTTAAACCCGGGT\n/
-FP 1 /^ BFULL A------------AAC----------------GGGCCTTT----------\n/
-FP 1 /^                                           10            \n/
-FC = 40
+FI stdout 
+FZ = 0
+FI supermatcher.error
+FZ = 0
+FI eclac.supermatcher
+FZ > 71230
+FP /^ECLAC +1 /
+FP /^# Score: 37385\.0/
+FP 5 /^# Score: /
+FP /^ECLACA +1801 [acgt]+ +1832\n/
 //
 
-ID align-stretcher-part
-AP stretcher
-CL -gappen 16 -gaplen 4 -stdout
-IN ../../data/aligna.dna
-IN ../../data/alignapart.dna
+ID align-supermatcher-range
+TI 400
+AP supermatcher
+CL tembl:ec* tembl:eclac -word 50 -sbegin2 101 -send2 -101
+IN
+IN 3.0
 IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
-FP /^# Identity: +56\/64 \(87\.5%\)/
-FP /^# Score: +224\n/
-FP 1 /^               60    \n/
-FP 1 /^ AFULL TTAACCGGTTACGT\n/
-FP 1 /^ APART TTAACCGGTT----\n/
-FP 1 /^         50          \n/
-FC = 40
-//
-
-ID align-stretcher-begin
-AP stretcher
-CL -gappen 16 -gaplen 4 -stdout -sbegin1 5
-IN ../../data/aligna.dna
-IN ../../data/alignb.dna
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FP /^# Identity: +9\/60 \(15\.0%\)/
-FP /^# Score: +-183\n/
-FP 1 /^           10        20        30        40        50    \n/
-FP 1 /^ AFULL AACCGGTTAAACCCGGGTTTAAAACCCCGGGGTTTTAAACCCGGGTTTAA\n/
-FP 1 /^ BFULL AAACG-------------------------GGCCTT--------------\n/
-FP 1 /^                                        10               \n/
-FC = 40
-//
-
-ID align-stretcher-end
-AP stretcher
-CL -gappen 16 -gaplen 4 -stdout -send1 15
-IN ../../data/aligna.dna
-IN ../../data/alignb.dna
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FP /^# Identity: +6\/15 \(40\.0%\)/
-FP /^# Score: +-18\n/
-FP 1 /^               10     \n/
-FP 1 /^ AFULL ACGTAACCGGTTAAA\n/
-FP 1 /^ BFULL A---AACGGGCCTTT\n/
-FP 1 /^                  10  \n/
-FC = 34
-//
-
-ID align-stretcher-begin2
-AP stretcher
-CL -gappen 16 -gaplen 4 -stdout -sbegin2 5
-IN ../../data/aligna.dna
-IN ../../data/alignb.dna
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FP /^# Identity: +6\/64 \( 9\.4%\)/
-FP /^# Score: +-226\n/
-FP 1 /^               10        20        30        40        50\n/
-FP 1 /^ AFULL ACGTAACCGGTTAAACCCGGGTTTAAAACCCCGGGGTTTTAAACCCGGGT\n/
-FP 1 /^ BFULL --------------------------------GGGCCTTT----------\n/
-FP 1 /^                                           10            \n/
-FC = 40
-//
-
-ID align-stretcher-end2
-AP stretcher
-CL -gappen 16 -gaplen 4 -stdout -send2 -3
-IN ../../data/aligna.dna
-IN ../../data/alignb.dna
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FP /^# Identity: +8\/64 \(12\.5%\)/
-FP /^# Score: +-208\n/
-FP 1 /^               60    \n/
-FP 1 /^ AFULL TTAACCGGTTACGT\n/
-FP 1 /^ BFULL -----------CCT\n/
-FP 1 /^                   10\n/
-FC = 40
-//
-
-ID align-stretcher-begendall
-AP stretcher
-CL -gappen 16 -gaplen 4 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
-IN ../../data/aligna.dna
-IN ../../data/alignb.dna
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FP /^# Identity: +5\/11 \(45\.5%\)/
-FP /^# Score: +-11\n/
-FP 1 /^           10     \n/
-FP 1 /^ AFULL AACCGGTTAAA\n/
-FP 1 /^ BFULL AACGGG-----\n/
-FP 1 /^                  \n/
-FC = 34
-//
-
-ID align-needle-full
-AP needle
-CL -gapopen 16 -gapext 4 -stdout
-IN ../../data/aligna.dna
-IN ../../data/alignb.dna
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FP /^# Identity: +8\/64 \(12\.5%\)/
-FP /^# Score: +24\.0\n/
-FP 1 /^AFULL +1 acgtaaccggttaaacccgggtttaaaaccccggggttttaaacccgggt     50\n/
-FP 1 /^BFULL +1             aaacgggccttt                               12\n/
-FC = 36
-//
-
-ID align-needle-part
-AP needle
-CL -gapopen 16 -gapext 4 -stdout
-IN ../../data/aligna.dna
-IN ../../data/alignapart.dna
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FP /^# Identity: +56\/64 \(87\.5%\)/
-FP /^# Score: +280\.0\n/
-FP 1 /^AFULL             51 ttaaccggttacgt     64\n/
-FP 1 /^APART             47 ttaaccggtt         56\n/
-FC = 36
-//
-
-ID align-needle-begin
-AP needle
-CL -gapopen 16 -gapext 4 -stdout -sbegin1 5
-IN ../../data/aligna.dna
-IN ../../data/alignb.dna
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FP /^# Identity: +8\/60 \(13\.3%\)/
-FP /^# Score: +24\.0\n/
-FP 1 /^AFULL +5 aaccggttaaacccgggtttaaaaccccggggttttaaacccgggtttaa     54\n/
-FP 1 /^BFULL +1         aaacgggccttt                                   12\n/
-FC = 36
-//
-
-ID align-needle-end
-AP needle
-CL -gapopen 16 -gapext 4 -stdout -send1 15
-IN ../../data/aligna.dna
-IN ../../data/alignb.dna
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FP /^# Identity: +3\/24 \(12\.5%\)/
-FP /^# Score: +15\.0\n/
-FP 1 /^AFULL +1 acgtaaccggttaaa              15\n/
-FP 1 /^BFULL +1             aaacgggccttt     12\n/
-FC = 32
-//
-
-ID align-needle-begin2
-AP needle
-CL -gapopen 16 -gapext 4 -stdout -sbegin2 5
-IN ../../data/aligna.dna
-IN ../../data/alignb.dna
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FP /^# Identity: +6\/64 \( 9\.4%\)/
-FP /^# Score: +22\.0\n/
-FP 1 /^AFULL +1 acgtaaccggttaaacccgggtttaaaaccccggggttttaaacccgggt     50\n/
-FP 1 /^BFULL +5                                 gggccttt               12\n/
-FC = 36
-//
-
-ID align-needle-end2
-AP needle
-CL -gapopen 16 -gapext 4 -stdout -send2 -3
-IN ../../data/aligna.dna
-IN ../../data/alignb.dna
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FP /^# Identity: +6\/64 \( 9\.4%\)/
-FP /^# Score: +14\.0\n/
-FP 1 /^AFULL +1 acgtaaccggttaaacccgggtttaaaaccccggggttttaaacccgggt     50\n/
-FP 1 /^BFULL +1             aaacgggcct                                 10\n/
-FC = 36
-//
-
-ID align-needle-begendall
-AP needle
-CL -gapopen 16 -gapext 4 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
-IN ../../data/aligna.dna
-IN ../../data/alignb.dna
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FP /^# Identity: +5\/11 \(45\.5%\)/
-FP /^# Score: +21\.0\n/
-FP 1 /^AFULL +5 aaccggttaaa     15\n/
-FP 1 /^BFULL +2 aacggg           7\n/
-FC = 32
+FI stdout 
+FZ = 0
+FI supermatcher.error
+FZ = 0
+FI eclac.supermatcher
+FZ > 69555
+FP /^ECLAC +101 /
+FP /^# Score: 36385\.0/
+FP 5 /^# Score: /
+FP /^ECLACA +1701 [acgt]+ +1732\n/
 //
 
 #######################################
@@ -15201,7 +15786,7 @@ FZ = 3658
 FP /^ +10 +HSHT +1658 +0[.]7314 +\n/
 FI hs989235.fasta
 FZ = 536690
-FP 42 /^>/
+FP 44 /^>/
 //
 
 ID corbatest-check
@@ -15732,178 +16317,6 @@ FP /SQ   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;/
 FP /CO   1    1    .    P    8     8( +[.])+ +D    ASP    OD2( +[-]?[0-9]+[.][0-9]+)+/
 //
 
-ID fraggle-ex
-AB domainatrix
-AA fraggle
-IN ../../data/structure
-IN
-IN
-IN 
-IN .fhits
-FI stdout
-FZ = 86
-FC = 2
-FP /Processing ../../data/structure/54894.hits\n/
-FP /Processing ../../data/structure/55074.hits\n/
-FI stderr
-FZ = 305
-FP 0 /^Warning:/
-FP 0 /^Error:/
-FP 0 /^Died:/
-FI 54894.fhits
-FZ = 6877
-FP /^CL   Alpha and beta proteins [(]a[+]b[)]\n/
-FP 27 /^SQ/
-FI 55074.fhits
-FZ = 38972
-FP /^CL   Alpha and beta proteins [(]a[+]b[)]\n/
-FP 112 /^SQ/
-//
-
-ID hetparse-ex
-AB domainatrix
-AA hetparse
-IN ../../data/structure/het.txt
-IN Y
-IN ../../data/structure
-IN
-IN Ehet.dat
-FI stdout
-FC = 2
-FP 2 /^Processing/
-FI stderr
-FZ = 255
-FP 0 /^Warning:/
-FP 0 /^Error:/
-FP 0 /^Died:/
-FI Ehet.dat
-FZ = 949
-FP 9 /^ID/
-//
-
-ID hmmgen-ex
-AB domainatrix
-AA hmmgen
-IN ../../data/structure
-IN
-IN
-IN
-FI stdout
-FZ > 2800
-FP /^Saving model to file +... done. \[.\/55074.hmm\]\n/
-FI stderr
-FZ = 254
-FP 0 /^Warning:/
-FP 0 /^Error:/
-FP 0 /^Died:/
-FI 54894.hmm
-FC = 306
-FP /    94( +-?\d+){21}\n/
-FI 55074.hmm
-FC = 636
-FP /    94( +-?\d+){21}\n/
-//
-
-ID interface-ex
-AB domainatrix
-AA interface
-IN ../../data/structure/2hhb.pxyz
-IN
-IN 2hhb.con
-IN
-FI stdout
-FZ = 5
-FP /2hhb\n/
-FI stderr
-FZ = 191
-FP 0 /^Warning:/
-FP 0 /^Error:/
-FP 0 /^Died:/
-FI 2hhb.con
-FZ = 3940
-FP /^ID   2hhb\n/
-FP 158 /^SM   /
-FI interface.log
-FZ = 5
-FP /2hhb\n/
-//
-
-ID pdbparse-ex
-AB domainatrix
-AA pdbparse
-IN ../../data/structure
-IN
-IN
-IN Y
-IN
-IN
-IN
-IN
-FI stdout
-FC = 2
-FP 2 /^Processing /
-FI stderr
-FC = 2
-FP 0 /^Warning:/
-FP 0 /^Error:/
-FP 0 /^Died:/
-FI pdbparse.log
-FC = 14
-FP 2 /^SEQRESLENDIF/
-FP 2 /^SECSTART       1 1 ILE 384\n/
-FP 3 /^SECBOTH/
-FP /^SECBOTH        1 1 VAL 78 ILE 81\n/
-FI 1cs4.pxyz
-FC = 491
-FP 475 /^CO /
-FI 1ii7.pxyz
-FC = 419
-FP 402 /^CO /
-//
-
-ID pdbtosp-keep
-AB domainatrix
-AA pdbtosp
-DL keep
-IN ../../data/structure/pdbtosp.txt
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI Epdbtosp.dat
-FZ = 422
-FP 7 /^EN   /
-FP /^IN   XYLA_ACTMI ID; P12851 ACC;\n/
-//
-
-ID profgen-ex
-AB domainatrix
-AA profgen
-IN ../../data/structure
-IN
-IN g
-IN
-IN
-IN
-IN
-IN
-FI stderr
-FC = 6
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI 54894.gribs
-FC = 110
-FP /^Length\t\t97\n/
-FP /^Max_score\t1013.29\n/
-FI 55074.gribs
-FC = 292
-FP /^Length\t\t279\n/
-FP /^Max_score\t1572.10\n/
-//
-
 ID rocplot-ex
 AB domainatrix
 AA rocplot
@@ -15964,135 +16377,6 @@ FI  rocplot.errors
 FC > 0
 FP 1 /MODE/
 FZ > 0
-//
-
-ID scopalign-ex
-AB domainatrix
-AA scopalign
-RQ stamp
-CC requires a modified stamp to be installed
-IN ../../data/structure/all.scop2
-IN
-IN
-IN
-IN
-FI stderr
-FC = 18
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FC = 14
-FP 2 /^stamp/
-FI 54898.salign
-FZ = 0
-FI 55074.salign
-FZ = 0
-//
-
-ID scopnr-ex
-AB domainatrix
-AA scopnr
-IN ../../data/structure/all_s.scop
-IN
-IN
-IN all_nr.scop
-IN
-FI stdout
-FC = 4
-FP 2 /^\/\/ /
-FP 2 /^D1/
-FI stderr
-FC = 5
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI all_nr.scop
-FC = 55
-FP 2 /^ID/
-FI scopnr.log
-FC = 10
-FP 2 /^Retained/
-FP 2 /^Rejected/
-FP 2 /^\/\//
-//
-
-ID scopparse-keep
-AB domainatrix
-AA scopparse
-DL keep
-IN ../../data/structure/scop.cla.raw
-IN ../../data/structure/scop.des.raw
-IN all.scop.new
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI all.scop.new
-FC = 48
-FP 2 /^ID/
-//
-
-ID scoprep-ex
-AB domainatrix
-AA scoprep
-CC documentation says stamp is required
-CC but the test case does not fail without it
-IN ../scopparse-keep/all.scop.new
-IN all_rep1st.scop.new
-FI stderr
-FC = 3
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI all_rep1st.scop.new
-FC = 48
-FP 2 /^ID/
-//
-
-ID scopreso-ex
-AB domainatrix
-AA scopreso
-IN ../../data/structure
-IN .dxyz
-IN ../../data/structure/all.scop
-IN 2.3
-IN all_2.3.scop
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI all_2.3.scop
-FC = 24
-FP 1 /^ID/
-//
-
-ID scopseqs-ex
-AB domainatrix
-AA scopseqs
-CC Warnings - no accession number for both entries
-CL -pdbtosp ../pdbtosp-keep/Epdbtosp.dat
-IN ../scopparse-keep/all.scop.new
-IN ../../data/structure
-IN .dxyz
-IN all_s.scop
-IN
-FI stderr
-FC = 5
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FC = 4
-FP 2 /^\/\/\n/
-FI all_s.scop
-FC = 55
-FP 2 /^ID   /
-FI scopseqs.log
-FC = 4
-FP 2 /^\/\/\n/
 //
 
 ID seqalign-ex
@@ -16210,111 +16494,6 @@ FC = 2139
 FP 140 /^SQ   /
 FI scop.oth
 FZ = 0
-//
-
-ID seqwords-ex
-AB domainatrix
-AA seqwords
-IN ../../data/structure/test.terms
-IN ../../data/structure/test.seq
-IN test.seqhits
-FI stderr
-FC = 3
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI test.seqhits
-FC = 31
-FP 1 /^SQ   /
-//
-
-ID siggen-keep
-DL keep
-AB domainatrix
-AA siggen
-IN ../../data/structure
-IN
-IN 2
-IN 15
-IN
-IN 1
-IN
-IN 5
-IN Y
-IN
-IN
-FI stderr
-FC = 17
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI 54894.sig
-FC = 124
-FP 14 /^IN   /
-FI 55074.sig
-FC = 279
-FP 32 /^IN   /
-//
-
-ID sigplot-ex
-RQ gnuplot
-CC requires gnuplot
-CC fails - no true hits in input
-CC and the Usage case says so too
-AB domainatrix
-AA sigplot
-IN 2
-IN ../../data/structure
-IN .hits
-IN ../../data/structure/scop.all
-IN Y
-IN
-IN n
-IN
-FI stderr
-FC = 6
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FC = 2
-FP 1 /^Validation file read ok\n/
-FP 1 /^PROCESSING/
-FI 54894.hits.dat
-FZ = 0
-FI 54894.hits.dat2
-FZ = 0
-//
-
-ID sigscan-ex
-AB domainatrix
-AA sigscan
-CL -targetf ../../data/structure/scop.all
-IN ../siggen-keep/54894.sig
-IN ../../data/structure/test.seq
-IN
-IN
-IN
-IN
-IN 1
-IN
-IN
-IN 54894.sighits
-IN 54894.sigalign
-FI stderr
-FC = 6
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FC = 7
-FP 7 / ok\n/
-FI 54894.sigalign
-FC = 188
-FP 85 /^SIGNATURE /
-FI 54894.sighits
-FC = 19
-FP 1 /^SI   /
 //
 
 ######################################
