@@ -53,8 +53,8 @@
 #define	ACD_SEQ_NUCLEIC 4
 #define	ACD_SEQ_NAME 5
 #define	ACD_SEQ_WEIGHT 6
-#define	ACD_SEQ_MULTICOUNT 6
 #define	ACD_SEQ_COUNT 7
+#define	ACD_SEQ_MULTICOUNT 8
 
 #define USED_GET 1
 #define USED_ACD 2
@@ -1913,6 +1913,8 @@ static AcdOAttr acdCalcSeqsetall[] =
 	 "Boolean, indicates if sequence set is DNA"},
     {"name", VT_STR, "",
 	 "The name of the sequence set"},
+    {"totweight", VT_FLOAT, "",
+	 "Float, total sequence weight for each set"},
     {"count", VT_INT, "",
 	 "Integer, number of sequences in each set"},
     {"multicount", VT_INT, "",
@@ -10453,8 +10455,10 @@ static void acdSetSeqsetall(AcdPAcd thys)
     ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC],
 		  ajSeqsetIsNuc(val[0]));
     ajStrAssS(&thys->SetStr[ACD_SEQ_NAME], val[0]->Name);
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_MULTICOUNT], nsets);
+    ajStrFromFloat(&thys->SetStr[ACD_SEQ_WEIGHT],
+		   ajSeqsetTotweight(val[0]), 3);
     ajStrFromInt(&thys->SetStr[ACD_SEQ_COUNT], ajSeqsetSize(val[0]));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_MULTICOUNT], nsets);
     
     acdInFileSave(ajSeqsetGetName(val[0]));
 
