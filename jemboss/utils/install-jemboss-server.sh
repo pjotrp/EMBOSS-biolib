@@ -190,7 +190,7 @@ ssl_print_notes()
    SECURITY=`sed -n  -e 's|^security.provider.\([0-9]\)=com.sun.net.ssl.internal.ssl.Provider|security|p' $JAVA_HOME/jre/lib/security/java.security`
 
 
-   if ( $SECURITY = "security" ); then 
+   if [ $SECURITY = "security" ]; then 
      NUM=1 
    else
      echo "1) EDIT "$JAVA_HOME/jre/lib/security/java.security
