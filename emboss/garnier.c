@@ -371,7 +371,7 @@ static void garnier_do(AjPFile outf, ajint from, ajint to, char *seq,
     ajint nna=20;
     ajint parr[4];
     char carr[]="HETC";
-    char type[5000];
+    char *type;
     ajint iarr[4];
     ajint dharr[]=
     {
@@ -390,7 +390,10 @@ static void garnier_do(AjPFile outf, ajint from, ajint to, char *seq,
     idc=Idc;
     end=to-from+1;
     n0=end;
-      
+
+/* GWW - 28 Sept 2001 - changed 'type' to dynamic allocation */
+    type = AJALLOC0(n0*sizeof(char));
+
     sascii = aascii;
     
     if (idc<=0) dcs=dch=0;
@@ -491,6 +494,8 @@ static void garnier_do(AjPFile outf, ajint from, ajint to, char *seq,
          (float)iarr[3]/fn0);
     ajFmtPrintF(outf,"-----------------------------------------------"
 		"---------------------\n\n");
+
+    AJFREE(type);
     
     return;
 }
