@@ -128,8 +128,8 @@ See also
    
 Author(s)
 
-   This program was originally written by Richard Durbin and Jean
-   Thierry-Mieg as part of the ACEDB genome database package.
+   This program was originally written by Richard Durbin at the Sanger
+   Centre.
    
    This application was modified for inclusion in EMBOSS by Peter Rice
    (pmr@sanger.ac.uk) Informatics Division, The Sanger Centre, Wellcome
