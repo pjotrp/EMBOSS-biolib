@@ -189,6 +189,7 @@ See also
    emowse Protein identification by mass spectrometry
    freak Residue/base frequency table or plot
    iep Calculates the isoelectric point of a protein
+   mwcontam Shows molwts that match across a set of files
    mwfilter Filter noisy molwts from mass spec output
    pepinfo Plots simple amino acid properties in parallel
    pepstats Protein statistics

@@ -40,7 +40,8 @@ Command line arguments
 
    Optional qualifiers: (none)
    Advanced qualifiers:
-   -datafile           matrixf    Residue substitution matrix
+   -datafile           matrixf    This is the scoring matrix file used when
+                                  comparing sequences.
    -gapopen            float      The gap insertion penalty is the score taken
                                   away when a gap is created. The best value
                                   depends on the choice of comparison matrix.
@@ -90,8 +91,8 @@ Command line arguments
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default
-   -datafile Residue substitution matrix Comparison matrix file in EMBOSS
-   data path EBLOSUM62
+   -datafile This is the scoring matrix file used when comparing
+   sequences. Comparison matrix file in EMBOSS data path EBLOSUM62
    -gapopen The gap insertion penalty is the score taken away when a gap
    is created. The best value depends on the choice of comparison matrix.
    The default value assumes you are using the EBLOSUM62 matrix for

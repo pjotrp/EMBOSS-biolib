@@ -81,7 +81,12 @@ Command line arguments
                                   consensus.If any of these give a top score
                                   for matching or identical scores then a
                                   collision has occured.
-   -matrixfile         matrix     Matrix file
+   -matrixfile         matrix     This is the scoring matrix file used when
+                                  comparing sequences. By default it is the
+                                  file 'EBLOSUM62' (for proteins) or the file
+                                  'EDNAFULL' (for nucleic sequences). These
+                                  files are found in the 'data' directory of
+                                  the EMBOSS installation.
    -showscore          integer    Print residue scores
    -portrait           bool       Set page to Portrait
 
@@ -145,8 +150,11 @@ Command line arguments
    3) Checks all those not in the current consensus.If any of these give
    a top score for matching or identical scores then a collision has
    occured. Integer from 0 to 3 0
-   -matrixfile Matrix file Comparison matrix file in EMBOSS data path
-   EBLOSUM62 for protein
+   -matrixfile This is the scoring matrix file used when comparing
+   sequences. By default it is the file 'EBLOSUM62' (for proteins) or the
+   file 'EDNAFULL' (for nucleic sequences). These files are found in the
+   'data' directory of the EMBOSS installation. Comparison matrix file in
+   EMBOSS data path EBLOSUM62 for protein
    EDNAFULL for DNA
    -showscore Print residue scores Any integer value -1
    -portrait Set page to Portrait Yes/No No

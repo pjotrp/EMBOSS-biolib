@@ -68,7 +68,8 @@ Command line arguments
   [-algextn]           string     Extension of alignment files
    -sparsity           integer    % sparsity of signature
 *  -seqoption          menu       Select number
-*  -datafile           matrixf    Substitution matrix to be used
+*  -datafile           matrixf    This is the scoring matrix file used when
+                                  comparing sequences.
 *  -conoption          menu       Select number
 *  -filtercon          bool       Ignore alignment positions making less than
                                   a threshold number of contacts
@@ -106,8 +107,8 @@ Command line arguments
    2 (Residue class)
    3 (None)
    3
-   -datafile Substitution matrix to be used Comparison matrix file in
-   EMBOSS data path ./EBLOSUM62
+   -datafile This is the scoring matrix file used when comparing
+   sequences. Comparison matrix file in EMBOSS data path EBLOSUM62
    -conoption Select number
    1 (Number)
    2 (Conservation)

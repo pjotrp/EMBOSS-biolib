@@ -38,7 +38,9 @@ Command line arguments
    -tolerance          float      ppm tolerance
   [-outfile]           outfile    Output file name
 
-   Optional qualifiers: (none)
+   Optional qualifiers:
+   -showdel            bool       Output deleted mwts
+
    Advanced qualifiers:
    -datafile           string     Data file of noisy molecular weights
 
@@ -55,7 +57,7 @@ Command line arguments
    [-outfile]
    (Parameter 2) Output file name Output file <sequence>.mwfilter
    Optional qualifiers Allowed values Default
-   (none)
+   -showdel Output deleted mwts Yes/No No
    Advanced qualifiers Allowed values Default
    -datafile Data file of noisy molecular weights Any string is accepted
    Emwfilter.dat
@@ -182,6 +184,7 @@ See also
    emowse Protein identification by mass spectrometry
    freak Residue/base frequency table or plot
    iep Calculates the isoelectric point of a protein
+   mwcontam Shows molwts that match across a set of files
    octanol Displays protein hydropathy
    pepinfo Plots simple amino acid properties in parallel
    pepstats Protein statistics

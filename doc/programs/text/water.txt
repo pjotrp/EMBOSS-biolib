@@ -64,7 +64,7 @@ Command line arguments
                                   EBLOSUM62 matrix for protein sequences, and
                                   the EDNAFULL matrix for nucleotide
                                   sequences.
-   -gapextend          float      The gap extension, penalty is added to the
+   -gapextend          float      The gap extension penalty is added to the
                                   standard gap penalty for each base or
                                   residue in the gap. This is how long gaps
                                   are penalized. Usually you will expect a few
@@ -81,7 +81,12 @@ Command line arguments
   [-outfile]           align      (no help text) align value
 
    Optional qualifiers:
-   -datafile           matrixf    Matrix file
+   -datafile           matrixf    This is the scoring matrix file used when
+                                  comparing sequences. By default it is the
+                                  file 'EBLOSUM62' (for proteins) or the file
+                                  'EDNAFULL' (for nucleic sequences). These
+                                  files are found in the 'data' directory of
+                                  the EMBOSS installation.
 
    Advanced qualifiers:
    -[no]similarity     bool       Display percent identity and similarity
@@ -102,7 +107,7 @@ Command line arguments
    The default value assumes you are using the EBLOSUM62 matrix for
    protein sequences, and the EDNAFULL matrix for nucleotide sequences.
    Number from 1.000 to 100.000 10.0 for any sequence
-   -gapextend The gap extension, penalty is added to the standard gap
+   -gapextend The gap extension penalty is added to the standard gap
    penalty for each base or residue in the gap. This is how long gaps are
    penalized. Usually you will expect a few long gaps rather than many
    short gaps, so the gap extension penalty should be lower than the gap
@@ -114,8 +119,11 @@ Command line arguments
    [-outfile]
    (Parameter 3) (no help text) align value Alignment file
    Optional qualifiers Allowed values Default
-   -datafile Matrix file Comparison matrix file in EMBOSS data path
-   EBLOSUM62 for protein
+   -datafile This is the scoring matrix file used when comparing
+   sequences. By default it is the file 'EBLOSUM62' (for proteins) or the
+   file 'EDNAFULL' (for nucleic sequences). These files are found in the
+   'data' directory of the EMBOSS installation. Comparison matrix file in
+   EMBOSS data path EBLOSUM62 for protein
    EDNAFULL for DNA
    Advanced qualifiers Allowed values Default
    -[no]similarity Display percent identity and similarity Yes/No Yes

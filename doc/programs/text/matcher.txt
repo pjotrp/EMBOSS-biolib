@@ -54,7 +54,12 @@ Command line arguments
   [-outfile]           align      (no help text) align value
 
    Optional qualifiers:
-   -datafile           matrix     Matrix file
+   -datafile           matrix     This is the scoring matrix file used when
+                                  comparing sequences. By default it is the
+                                  file 'EBLOSUM62' (for proteins) or the file
+                                  'EDNAFULL' (for nucleic sequences). These
+                                  files are found in the 'data' directory of
+                                  the EMBOSS installation.
    -alternatives       integer    This sets the number of alternative matches
                                   output. By default only the highest scoring
                                   alignment is shown. A value of 2 gves you
@@ -99,8 +104,11 @@ Command line arguments
    [-outfile]
    (Parameter 3) (no help text) align value Alignment file
    Optional qualifiers Allowed values Default
-   -datafile Matrix file Comparison matrix file in EMBOSS data path
-   EBLOSUM62 for protein
+   -datafile This is the scoring matrix file used when comparing
+   sequences. By default it is the file 'EBLOSUM62' (for proteins) or the
+   file 'EDNAFULL' (for nucleic sequences). These files are found in the
+   'data' directory of the EMBOSS installation. Comparison matrix file in
+   EMBOSS data path EBLOSUM62 for protein
    EDNAFULL for DNA
    -alternatives This sets the number of alternative matches output. By
    default only the highest scoring alignment is shown. A value of 2 gves

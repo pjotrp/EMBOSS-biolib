@@ -76,7 +76,8 @@ Command line arguments
   [-extn]              string     File extension of clean domain coordinate
                                   files
   [-thresh]            float      The % sequence identity redundancy threshold
-  [-datafile]          matrixf    Residue substitution matrix
+  [-datafile]          matrixf    This is the scoring matrix file used when
+                                  comparing sequences.
   [-gapopen]           float      The gap insertion penalty is the score taken
                                   away when a gap is created. The best value
                                   depends on the choice of comparison matrix.
@@ -124,8 +125,8 @@ Command line arguments
    (Parameter 4) The % sequence identity redundancy threshold Any numeric
    value 95.0
    [-datafile]
-   (Parameter 5) Residue substitution matrix Comparison matrix file in
-   EMBOSS data path EBLOSUM62
+   (Parameter 5) This is the scoring matrix file used when comparing
+   sequences. Comparison matrix file in EMBOSS data path EBLOSUM62
    [-gapopen]
    (Parameter 6) The gap insertion penalty is the score taken away when a
    gap is created. The best value depends on the choice of comparison

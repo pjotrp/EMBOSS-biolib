@@ -75,7 +75,12 @@ Command line arguments
                                   used as the reference sequence. By default
                                   the consensus sequence is used as the
                                   reference sequence.
-   -matrix             matrix     Similarity scoring Matrix file
+   -matrix             matrix     This is the scoring matrix file used when
+                                  comparing sequences. By default it is the
+                                  file 'EBLOSUM62' (for proteins) or the file
+                                  'EDNAFULL' (for nucleic sequences). These
+                                  files are found in the 'data' directory of
+                                  the EMBOSS installation.
    -html               bool       Format output as an HTML table
 
    Advanced qualifiers:
@@ -132,7 +137,10 @@ Command line arguments
    compared. If this is set to 0 then the consensus sequence will be used
    as the reference sequence. By default the consensus sequence is used
    as the reference sequence. Any string is accepted 0
-   -matrix Similarity scoring Matrix file Comparison matrix file in
+   -matrix This is the scoring matrix file used when comparing sequences.
+   By default it is the file 'EBLOSUM62' (for proteins) or the file
+   'EDNAFULL' (for nucleic sequences). These files are found in the
+   'data' directory of the EMBOSS installation. Comparison matrix file in
    EMBOSS data path EBLOSUM62 for protein
    EDNAFULL for DNA
    -html Format output as an HTML table Yes/No No

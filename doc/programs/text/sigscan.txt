@@ -52,7 +52,8 @@ Command line arguments
    -thresh             integer    Minimum length (residues) of overlap
                                   required for two hits with the same code to
                                   be counted as the same hit.
-   -sub                matrixf    Residue substitution matrix
+   -sub                matrixf    This is the scoring matrix file used when
+                                  comparing sequences.
    -gapo               float      The gap insertion penalty is the score taken
                                   away when a gap is created. The best value
                                   depends on the choice of comparison matrix.
@@ -94,8 +95,8 @@ Command line arguments
    -targetf Name of validation (input) Input file test.valid.in
    -thresh Minimum length (residues) of overlap required for two hits
    with the same code to be counted as the same hit. Any integer value 20
-   -sub Residue substitution matrix Comparison matrix file in EMBOSS data
-   path ./EBLOSUM62
+   -sub This is the scoring matrix file used when comparing sequences.
+   Comparison matrix file in EMBOSS data path EBLOSUM62
    -gapo The gap insertion penalty is the score taken away when a gap is
    created. The best value depends on the choice of comparison matrix.
    The default value assumes you are using the EBLOSUM62 matrix for
