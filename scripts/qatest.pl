@@ -139,7 +139,7 @@ sub runtest ($) {
     }
     elsif ($line =~ /^\/\/$/) {next}
     else {
-      $testerr = "$retcode{1} $line";
+      $testerr = "$retcode{1} $line: $line";
       print STDERR $testerr;
       return 1;
     }
@@ -152,6 +152,7 @@ sub runtest ($) {
     $stdin = "< stdin";
   }
   else {$stdin = ""}
+  $starttime = time();
   $sysstat = system( "$testapp $cmdline > stdout 2> stderr $stdin");
   $status = $sysstat >> 8;
   if ($status) {
@@ -170,6 +171,9 @@ sub runtest ($) {
       return 5;
     }
   }
+
+  $endtime = time();
+  $runtime = $endtime - $starttime;
 
   opendir (DIR, ".");
   @allfiles = readdir(DIR);
@@ -272,6 +276,7 @@ sub runtest ($) {
 
   open (TESTLOG, ">testlog") || die "Cannot open $testid/testlog";
   print TESTLOG $testerr;
+  print TESTLOG "Runtime $runtime seconds\n";
   close TESTLOG;
   chdir "..";
 
