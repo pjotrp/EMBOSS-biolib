@@ -14,7 +14,7 @@
 
 #ifndef __lint
 static const char rcsid[] =
-"$Id: prnt.c,v 1.1 2002/02/25 09:33:50 hgmp Exp $";
+"$Id: prnt.c,v 1.2 2003/01/28 10:53:43 ajb Exp $";
 #endif
 
 /* XXX */
@@ -138,9 +138,28 @@ void print_align_header(SEQ *seq1, SEQ *seq2, argv_scores_t *ds)
 
 static char *subseq_label(char *buf, unsigned int size, int n)
 {
+    AjPStr buffer = NULL;
+    
+
+    
 	assert(size > 0);
+
+    buffer = ajStrNewC("");
+    ajFmtPrintS(&buffer," (subsequence #%d)", n);
 	buf[0] = 0;
-	if (n > 0) snprintf(buf, size, " (subsequence #%d)", n);
+    if (n > 0)
+    {
+	if(ajStrLen(buffer)>size)
+	    strncpy(buf,ajStrStr(buffer),size);
+	else
+	    strcpy(buf,ajStrStr(buffer));
+    }
+    ajStrDel(&buffer);
+    
+
+    /* The following snprintf replaced by above code as Tru64 V4 doesn't have it */
+    /* snprintf(buf, size, " (subsequence #%d)", n); */
+
 	return buf;
 }
 
