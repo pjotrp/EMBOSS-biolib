@@ -46,13 +46,9 @@ int main(int argc, char **argv)
   AjPSeqset seqset = NULL;
   AjPStr refseq;	/* input name/number of reference sequence */
   ajint  nrefseq;	/* numeric reference sequence */
-  AjPStr *show;		/* what to show */
-  ajint width;		/* width of displayed sequence line */
-  ajint margin;		/* width of displayed margin on left side */
   AjPMatrix matrix;	/* scoring matrix structure */
   ajint **sub;		/* integer scoring matrix */
   AjPSeqCvt  cvt=0;	/* conversion table for scoring matrix */
-  AjBool similarcase;	/* True if want to change case based on Similarity */
   float identity;
   ajint ident;
   float fplural; 
@@ -481,6 +477,7 @@ static int Getrefseq (AjPStr refseq, AjPSeqset seqset)
     ajFatal("Reference sequence is not a sequence ID or a number: %S", refseq);
   }
 
+    return -1;			/* to make the compiler happy */
 }
  
 
