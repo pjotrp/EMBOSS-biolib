@@ -555,7 +555,7 @@ public class BuildJembossForm implements ActionListener
           }
         }
       }
-      new ResultsMenuBar(res,fresults,hashRes);
+      new ResultsMenuBar(res,fresults,hashRes,null);
       res.setVisible(true);
     }
   }
