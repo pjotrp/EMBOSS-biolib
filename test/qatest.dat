@@ -5497,6 +5497,31 @@ FP /^FASTAM2\n/
 FP /^ACGTACGTACGTACGTACGT----ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTTGCAACGTACGT\n/
 //
 
+ID seqret-offset
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat%1753
+FI test.out
+FZ = 4488
+FP /^ID   RNOPS /
+FP /^ID   RNU68037 /
+FP 2 /^ID/
+FI stderr
+FZ = 0
+//
+
+ID seqret-offset-zero
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat%0
+FI test.out
+FZ = 5457
+FP /^ID   MMAM /
+FP /^ID   RNOPS /
+FP /^ID   RNU68037 /
+FP 3 /^ID/
+FI stderr
+FZ = 0
+//
+
 #####################################################
 # Test the query part of USAs
 #####################################################
