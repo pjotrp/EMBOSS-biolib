@@ -5967,10 +5967,7 @@ static void acdSetDirlist(AcdPAcd thys)
 	if(ajStrChar(ext, 0) != '.')
 	    ajStrInsertC(&ext, 0, ".");
 	ajStrApp(&t, ext);
-    }
-    
-    ajFmtPrint("term: %S\n", t);
-    
+    }    
 
     ajFileScan(reply,t,&val,ajFalse,ajFalse,NULL,NULL,ajFalse,NULL);
     
