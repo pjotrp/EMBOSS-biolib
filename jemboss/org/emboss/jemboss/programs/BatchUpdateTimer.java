@@ -21,7 +21,6 @@
 
 package org.emboss.jemboss.programs;
 
-import org.emboss.jemboss.gui.*;
 import org.emboss.jemboss.*;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,36 +33,29 @@ import java.util.TimerTask;
 */
 public class BatchUpdateTimer
 {
-    private static Timer timer;
+  private static Timer timer;
 
-    public BatchUpdateTimer(int seconds)
-    {
-      timer = new Timer();
-      timer.schedule(new RemindTask(), seconds*1000, seconds*1000);
-    }
+  public BatchUpdateTimer(int seconds)
+  {
+    timer = new Timer();
+    timer.schedule(new RemindTask(), seconds*1000, seconds*1000);
+  }
 
-    class RemindTask extends TimerTask
+
+  class RemindTask extends TimerTask
+  {
+    public void run()
     {
-      public void run()
+      Jemboss.resultsManager.updateStatus();
+//    System.out.println("Results Manager " + Jemboss.resultsManager.getStatus());
+      if(Jemboss.resultsManager.getStatus().endsWith("completed"))
       {
-        SwingWorker jobworker = new SwingWorker()
-        {
-          public Object construct()
-          {
-            Jemboss.resultsManager.updateStatus();
-            return null;
-          }
-        };
-        jobworker.start();
-        System.out.println("Time's up!" + Jemboss.resultsManager.getStatus());
-        if(Jemboss.resultsManager.getStatus().endsWith("completed"))
-        {
-          timer.cancel(); //Terminate the timer thread
-          System.out.println("End timer thread");
-          Jemboss.resultsManager.setAutoUpdate(false);
-        }
+        timer.cancel(); //Terminate the timer thread
+//      System.out.println("End timer thread");
+        Jemboss.resultsManager.setAutoUpdate(false);
       }
     }
+  }
 
 }
 

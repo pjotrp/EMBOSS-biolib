@@ -21,13 +21,13 @@
 
 package org.emboss.jemboss.programs;
 
-import org.emboss.jemboss.gui.*;
 import org.emboss.jemboss.*;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Hashtable;
 import java.util.Enumeration;
 import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
 
 /**
 *
@@ -37,52 +37,45 @@ import javax.swing.DefaultListModel;
 */
 public class ResultsUpdateTimer
 {
-    private static Timer timer;
+  private static Timer timer;
 
-    public ResultsUpdateTimer(int seconds, DefaultListModel datasets)
-    {
-      timer = new Timer();
-      timer.schedule(new ResultsTask(datasets), seconds*1000, seconds*1000);
-    }
+  public ResultsUpdateTimer(int seconds, DefaultListModel datasets, 
+                            JFrame savedResFrame)
+  {
+    timer = new Timer();
+    timer.schedule(new ResultsTask(datasets,savedResFrame), 
+                   seconds*1000, seconds*1000);
+  }
 
 
-    class ResultsTask extends TimerTask
-    {
-     
-      private DefaultListModel datasets=null;  
+  class ResultsTask extends TimerTask
+  {
+    private DefaultListModel datasets=null;  
+    private JFrame savedResFrame;
 
-      public ResultsTask()
-      {
-      }
+    public ResultsTask(){}
         
-      public ResultsTask(DefaultListModel datasets)
-      {
-        this.datasets = datasets;
-      }
-
-      public void run()
-      {
-        SwingWorker jobworker = new SwingWorker()
-        {
-          public Object construct()
-          {
-          
-            datasets.removeAllElements();
-            //get this information from the results manager
-            Enumeration enum = Jemboss.resultsManager.descriptionHash().keys();
-            while (enum.hasMoreElements())
-            {
-              String image = (String)enum.nextElement().toString();
-              datasets.addElement(image);
-              System.out.println("HERE2! " + image);
-            }
-            return null;
-          }
-        };
-        jobworker.start();
-      }
+    public ResultsTask(DefaultListModel datasets,JFrame savedResFrame)
+    {
+      this.datasets = datasets;
+      this.savedResFrame = savedResFrame;
     }
 
+    public void run()
+    {
+      datasets.removeAllElements();
+      //get this information from the results manager
+      Enumeration enum = Jemboss.resultsManager.descriptionHash().keys();
+      while (enum.hasMoreElements())
+      {
+        String image = (String)enum.nextElement().toString();
+        datasets.addElement(image);
+//      System.out.println("Current results " + image);
+      }
+      if(!savedResFrame.isVisible())
+        timer.cancel();
+    }
+  }
   
 }
 

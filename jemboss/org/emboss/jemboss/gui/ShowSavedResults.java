@@ -447,6 +447,11 @@ public class ShowSavedResults
 	    ResultList thisres = new ResultList(mysettings, epr.getCurrent(),
                                                       "delete_saved_results");
 	    savedResFrame.setCursor(cdone);
+
+            JembossProcess jp = epr.getResult(epr.getCurrent());
+            epr.removeResult(jp);
+
+
 	    JOptionPane.showMessageDialog(savedResFrame,"Result set\n"
                          +epr.getCurrent()+
 			 "\nhas been successfully deleted");
@@ -456,7 +461,8 @@ public class ShowSavedResults
 	   
 	    aboutRes.setText("");
 	    int index = st.getSelectedIndex();
-	    datasets.remove(index);
+            if(index >-1)
+	      datasets.remove(index);
 	    st.setSelectedIndex(-1);
 	  }
           catch (JembossSoapException eae)
@@ -475,6 +481,13 @@ public class ShowSavedResults
     savedResFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     savedResFrame.pack();
     savedResFrame.setVisible(true);
+
+//add in automatic updates
+    String freq = (String)AdvancedOptions.jobMgr.getSelectedItem();
+    int ind = freq.indexOf(" ");
+    new ResultsUpdateTimer(Integer.parseInt(freq.substring(0,ind)),
+                           datasets, savedResFrame);
+
   }
 
 }

@@ -72,6 +72,11 @@ public class PendingResults
     pendingResults.add(res);
   }
 
+  public void removeResult(JembossProcess res)
+  {
+    pendingResults.remove(res);
+  }
+
 /**
 * Gives which of the available datasets is currently
 * being looked at by the gui
@@ -92,10 +97,23 @@ public class PendingResults
     currentRes = s;
   }
 
-  public void removeResult(JembossProcess res)
+/**
+*
+* @param s  The name of the dataset
+* @return the process object
+*
+*/
+  public JembossProcess getResult(String s)
   {
-    pendingResults.remove(res);
+    for (int i=0 ; i < pendingResults.size(); ++i)
+    {
+      JembossProcess er = (JembossProcess)pendingResults.get(i);
+      if(er.getJob().equals(s))
+        return er;
+    }
+    return null;
   }
+
 
   public Hashtable descriptionHash() 
   {
@@ -104,7 +122,8 @@ public class PendingResults
     {
       JembossProcess er = (JembossProcess)pendingResults.get(i);
       String desc = er.getDescription();
-      if (desc == null) { desc = "";}
+      if(desc == null || desc.equals("")) 
+        desc = " Pending";
       h.put(er.getJob(),desc);
     }
     return h;
@@ -246,9 +265,9 @@ public class PendingResults
 */
   public void updateMode() 
   {
-    if (jobComboBox != null) {
+    if (jobComboBox != null) 
       jobComboBox.setSelectedItem(mysettings.getCurrentMode());
-    }
+    
   }
 
 /**
