@@ -220,6 +220,7 @@ static AjBool     seqReadNbrf(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadNcbi(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadNexus(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadPhylip(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadPhylipnon(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadRaw(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadSelex(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadStockholm(AjPSeq thys, AjPSeqin seqin);
@@ -307,6 +308,8 @@ static SeqOInFormat seqInFormatDef[] = {
        AJFALSE, AJTRUE,  AJFALSE, seqReadClustal}, /* alias for clustal */
   {"phylip",      AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  AJTRUE,  seqReadPhylip},
+  {"phylipnon",   AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE,  AJTRUE,  seqReadPhylipnon}, /* tried by phylip */
   {"acedb",       AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  AJFALSE, seqReadAcedb},
   {"dbid",        AJFALSE, AJTRUE,  AJTRUE,
@@ -1727,7 +1730,7 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 	    seqin->Format, seqInFormatDef[seqin->Format].Name);
 
     /* while(seqin->Search) */ /* need to check end-of-file to avoid repeats */
-    while(seqin->Search && !ajFileBuffEmpty(buff))
+    while(seqin->Search && (seqin->Data ||!ajFileBuffEmpty(buff)))
     {
 	stat = seqReadFmt(thys, seqin, seqin->Format);
 	switch(stat)
@@ -3597,6 +3600,208 @@ static AjBool seqClustalReadseq(const AjPStr rdline, const AjPTable msftable)
 
 
 
+/* @funcstatic seqReadPhylipnon ***********************************************
+**
+** Tries to read input in Phylip non-interleaved format.
+**
+** @param [w] thys [AjPSeq] Sequence object
+** @param [u] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+static AjBool seqReadPhylipnon(AjPSeq thys, AjPSeqin seqin)
+{
+    static AjPStr rdline = NULL;
+    static AjPStr seqstr = NULL;
+    static AjPStr tmpstr = NULL;
+    ajint bufflines = 0;
+    AjBool ok       = ajFalse;
+    ajint iseq      = 0;
+    ajint jseq      = 0;
+    ajint len       = 0;
+    ajint ilen      = 0;
+    ajint maxlen    = 0;
+    AjPFileBuff buff;
+
+    AjPTable phytable        = NULL;
+    SeqPMsfItem phyitem      = NULL;
+    SeqPMsfData phydata      = NULL;
+    static AjPRegexp topexp  = NULL;
+    static AjPRegexp headexp = NULL;
+    static AjPRegexp seqexp  = NULL;
+    ajint i;
+    AjBool done = ajFalse;
+
+    ajDebug("seqReadPhylipnon seqin->Data %x\n", seqin->Data);
+
+    buff = seqin->Filebuff;
+
+    if(!topexp)
+	topexp = ajRegCompC("^ *([0-9]+) +([0-9]+)");
+
+    if(!headexp)
+	headexp = ajRegCompC("^(..........) ?"); /* 10 chars */
+
+    if(!seqexp)
+	seqexp = ajRegCompC("^[ \t\n\r]*$");
+
+    if(!seqin->Data)
+    {					/* start of file */
+	seqin->multidone = ajFalse;
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+	if(!ok)
+	    return ajFalse;
+	bufflines++;
+
+	ajDebug("first line:\n'%-20.20S'\n", rdline);
+
+	if(!ajRegExec(topexp, rdline))
+	{				/* first line test */
+	    ajFileBuffReset(buff);
+	    return ajFalse;
+	}
+
+	ajRegSubI(topexp, 1, &tmpstr);
+	ajStrToInt(tmpstr, &iseq);
+	ajDebug("topexp1 '%S' %d\n", tmpstr, iseq);
+	ajRegSubI(topexp, 2, &tmpstr);
+	ajStrToInt(tmpstr, &len);
+	ajDebug("topexp2 '%S' %d\n", tmpstr,len);
+	ajDebug("first line OK: '%S' iseq: %d len: %d\n",
+		rdline, iseq, len);
+
+	seqin->Data = AJNEW0(phydata);
+	phydata->Table = phytable = ajTableNew(0, ajStrTableCmp,
+					       ajStrTableHash);
+	phydata->Names = AJCALLOC(iseq, sizeof(*phydata->Names));
+	seqin->Filecount = 0;
+
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+	bufflines++;
+	ilen = 0;
+	while(ok && (jseq < iseq))
+	{
+	    /* first set - create table */
+	    if(!ajRegExec(headexp, rdline))
+	    {
+		ajDebug("FAIL (not headexp): '%S'\n", rdline);
+		ajFileBuffReset(buff);
+		AJFREE(seqin->Data);
+		return ajFalse;
+	    }
+	    ajDebug("line: '%S'\n", rdline);
+	    ajRegSubI(headexp, 1, &tmpstr);
+	    if(!ajStrIsWhite(tmpstr)) {
+		/* check previous sequence */
+		if(jseq)
+		{
+		    if(ilen != len)
+		    {
+			ajDebug("phylipnon format length mismatch at %d "
+				"(length %d)\n",
+				len, ilen);
+			AJFREE(seqin->Data);
+			return ajFalse;
+		    }
+		}
+		/* new sequence */
+		AJNEW0(phyitem);
+		seqSetName(&phyitem->Name, tmpstr);
+		ajStrAssS(&phydata->Names[jseq], phyitem->Name);
+		ajDebug("name: '%S' => '%S'\n", tmpstr, phyitem->Name);
+		phyitem->Weight = 1.0;
+		ajRegPost(headexp, &seqstr);
+		seqAppend(&phyitem->Seq, seqstr);
+		ilen = ajStrLen(phyitem->Seq);
+		if(ilen == len)
+		    done = ajTrue;
+		else if(ilen > len)
+		{
+		    ajDebug("Phylipnon format: sequence %S "
+			    "header size %d exceeded\n",
+			    phyitem->Name, len);
+		    AJFREE(seqin->Data);
+		    return ajFalse;
+		}
+		ajTablePut(phytable, ajStrNewS(phyitem->Name), phyitem);
+		ajDebug("seq %d: (%d) '%-20.20S'\n", jseq, ilen, rdline);
+	    }
+	    else {
+		/* more sequence to append */
+		if(seqPhylipReadseq(rdline, phytable, phyitem->Name,
+				    len, &ilen, &done))
+		{
+		    ajDebug("read to len %d\n", ilen);
+		    if (done)
+		    {
+			if(!jseq)
+			    maxlen = ilen;
+			jseq++;
+		    }
+		}
+
+	    }
+
+	    if(jseq < iseq)
+	    {
+		ok = ajFileBuffGetStore(buff, &rdline,
+					seqin->Text, &thys->TextPtr);
+		bufflines++;
+	    }
+	}
+	if(ilen != len)
+	{
+	    ajDebug("phylipnon format final length mismatch at %d "
+		    "(length %d)\n",
+		    len, ilen);
+	    return ajFalse;
+	}
+
+	ajDebug("Header has %d sequences\n", jseq);
+	ajTableTrace(phytable);
+	ajTableMap(phytable, seqMsfTabList, NULL);
+
+	phydata->Nseq = iseq;
+	phydata->Count = 0;
+	phydata->Bufflines = bufflines;
+	ajDebug("PHYLIP format read %d lines\n", bufflines);
+    }
+
+    phydata = seqin->Data;
+    phytable = phydata->Table;
+
+    i = phydata->Count;
+    ajDebug("returning [%d] '%S'\n", i, phydata->Names[i]);
+    phyitem = ajTableGet(phytable, phydata->Names[i]);
+    ajStrAssS(&thys->Name, phydata->Names[i]);
+    ajStrDel(&phydata->Names[i]);
+
+    thys->Weight = phyitem->Weight;
+    ajStrAssS(&thys->Seq, phyitem->Seq);
+    ajStrDel(&phyitem->Seq);
+
+    phydata->Count++;
+    if(phydata->Count >=phydata->Nseq)
+    {
+	seqin->multidone = ajTrue;
+	ajDebug("seqReadPhylip multidone\n");
+	ajFileBuffClear(seqin->Filebuff, 0);
+	ajTableMapDel(phytable, seqMsfTabDel, NULL);
+	ajTableFree(&phytable);
+	AJFREE(phydata->Names);
+	AJFREE(phydata);
+	seqin->Data = NULL;
+    }
+
+    return ajTrue;
+}
+
+
+
+
 /* @funcstatic seqReadPhylip **************************************************
 **
 ** Tries to read input in Phylip interleaved format.
@@ -3634,9 +3839,10 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
     ajDebug("seqReadPhylip seqin->Data %x\n", seqin->Data);
 
     buff = seqin->Filebuff;
+    ajFileBuffBuff(buff);    /* must buffer to test non-interleaved */
 
     if(!topexp)
-	topexp = ajRegCompC("^ *([0-9]+) +([0-9]+)");
+	topexp = ajRegCompC("^ *([1-9][0-9]*) +([0-9]+)");
 
     if(!headexp)
 	headexp = ajRegCompC("^(..........) ?"); /* 10 chars */
@@ -3657,7 +3863,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 
 	if(!ajRegExec(topexp, rdline))
 	{				/* first line test */
-	    ajFileBuffReset(buff);
+	    ajFileBuffResetStore(buff, seqin->Text, &thys->TextPtr);
 	    return ajFalse;
 	}
 
@@ -3665,7 +3871,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	ajStrToInt(tmpstr, &iseq);
 	ajRegSubI(topexp, 2, &tmpstr);
 	ajStrToInt(tmpstr, &len);
-	ajDebug("first line OK: '%S' iseq; %d len: %d\n",
+	ajDebug("first line OK: '%S' iseq: %d len: %d\n",
 		rdline, iseq, len);
 
 	seqin->Data = AJNEW0(phydata);
@@ -3684,7 +3890,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	    if(!ajRegExec(headexp, rdline))
 	    {
 		ajDebug("FAIL (not headexp): '%S'\n", rdline);
-		ajFileBuffReset(buff);
+		ajFileBuffResetStore(buff, seqin->Text, &thys->TextPtr);
 		AJFREE(seqin->Data);
 		return ajFalse;
 	    }
@@ -3703,6 +3909,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	    {
 		ajDebug("Phylip format: sequence %S header size %d exceeded\n",
 			phyitem->Name, len);
+		ajFileBuffResetStore(buff, seqin->Text, &thys->TextPtr);
 		AJFREE(seqin->Data);
 		return ajFalse;
 	    }
@@ -3717,9 +3924,16 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 		    ajDebug("phylip format length mismatch in header "
 			    "iseq: %d jseq: %d ilen: %d maxlen: %d",
 			    iseq, jseq, ilen, maxlen);
-		    ajWarn("phylip format length mismatch in header");
+		    ajFileBuffResetStore(buff, seqin->Text, &thys->TextPtr);
 		    AJFREE(seqin->Data);
-		    return ajFalse;
+		    ajTableMapDel(phytable, seqMsfTabDel, NULL);
+		    ajTableFree(&phytable);
+		    if(seqReadPhylipnon(thys, seqin))
+			return ajTrue;
+		    else {
+			ajWarn("phylip format length mismatch in header");
+			return ajFalse;
+		    }
 		}
 	    }
 	    jseq++;
@@ -3763,9 +3977,17 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 		    {
 			if(ilen != maxlen)
 			{
-			    ajDebug("phylip format length mismatch at %dan",
-				    maxlen);
-			    return ajFalse;
+			    ajDebug("phylip format length mismatch at %d "
+				    "(length %d)\n",
+				    maxlen, ilen);
+			    ajFileBuffResetStore(buff,
+						 seqin->Text, &thys->TextPtr);
+			    ajTableMapDel(phytable, seqMsfTabDel, NULL);
+			    ajTableFree(&phytable);
+			    AJFREE(phydata->Names);
+			    AJFREE(seqin->Data);
+			    ajDebug("File reset, try seqReadPhylipnon\n");
+			    return seqReadPhylipnon(thys, seqin);
 			}
 		    }
 
@@ -3780,13 +4002,25 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 		}
 	    }
 	    if(!done)
-		return ajFalse;
+	    {
+		ajFileBuffResetStore(buff, seqin->Text, &thys->TextPtr);
+		ajTableMapDel(phytable, seqMsfTabDel, NULL);
+		ajTableFree(&phytable);
+		AJFREE(phydata->Names);
+		AJFREE(seqin->Data);
+		return seqReadPhylipnon(thys, seqin);
+	    }
 
 	    if(jseq)
 	    {
 		ajDebug("Phylip format %d sequences partly read at end\n",
 			iseq-jseq);
-		return ajFalse;
+		ajFileBuffResetStore(buff, seqin->Text, &thys->TextPtr);
+		ajTableMapDel(phytable, seqMsfTabDel, NULL);
+		ajTableFree(&phytable);
+		AJFREE(phydata->Names);
+		AJFREE(seqin->Data);
+		return seqReadPhylipnon(thys, seqin);
 	    }
 	}
 
@@ -3860,7 +4094,11 @@ static AjBool seqPhylipReadseq(const AjPStr rdline, const AjPTable phytable,
 
     phyitem = ajTableGet(phytable, token);
     if(!phyitem)
+    {
+	ajDebug("seqPhylipReadseq failed to find '%S' in phytable\n",
+		token);
 	return ajFalse;
+    }
 
     seqAppend(&phyitem->Seq, rdline);
     *ilen = ajStrLen(phyitem->Seq);
@@ -3978,7 +4216,7 @@ static AjBool seqReadHennig86(AjPSeq thys, AjPSeqin seqin)
 	ajStrToInt(tmpstr, &iseq);
 	ajRegSubI(topexp, 2, &tmpstr);
 	ajStrToInt(tmpstr, &len);
-	ajDebug("first line OK: '%S' iseq; %d len: %d\n",
+	ajDebug("first line OK: '%S' iseq: %d len: %d\n",
 		rdline, iseq, len);
 
 	seqin->Data = AJNEW0(fmtdata);
