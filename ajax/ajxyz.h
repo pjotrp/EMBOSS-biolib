@@ -213,16 +213,18 @@ typedef struct AjSScophit
 			    swissprot sequence */
     ajint     End;        /* End of sequence or signature alignment relative to full length 
 			    swissprot sequence */
-    AjPStr    Id;         /* Identifier */  
+    AjPStr    Acc;        /* Accession number of sequence entry  */
+    AjPStr    Spr;        /* Swissprot code of sequence entry */
     AjPStr    Typeobj;    /* Bibliographic information ... objective*/ 
     AjPStr    Typesbj;    /* Bibliographic information ... subjective */ 
-    ajint     Group;      /* Group no. of sequence */
+    AjPStr    Group;      /* 'REDUNDANT' or 'NON_REDUNDANT' */
     ajint     Rank;       /* Rank order of hit */	
     float     Score;      /* Score of hit */
     float     Eval;       /* E-value of hit */
     AjPStr    Alg;        /* Alignment, e.g. of a signature to the sequence */
     AjBool    Target;     /* True if the Scophit is targetted for removal from 
 			     a list of Scophit objects */
+    AjBool    Target2;    /* Also used for garbage collection */
     AjBool    Priority;   /* True if the Scop hit is high priority. */
 } AjOScophit, *AjPScophit;
 
@@ -252,16 +254,17 @@ typedef struct AjSHit
 			    swissprot sequence */
   ajint     End;        /* End of sequence or signature alignment relative to full length 
 			    swissprot sequence */
-  AjPStr    Id;         /* Identifier */  
+  AjPStr Acc;           /* Accession number of sequence entry  */
   AjPStr    Typeobj;    /* Primary classification of hit - objective*/
   AjPStr    Typesbj;    /* Secondary classification of hit */
   AjPStr    Alg;        /* Alignment, e.g. of a signature to the sequence */
-  ajint     Group;      /* Group no. of sequence */
+  AjPStr    Group;      /* 'REDUNDANT' or 'NON_REDUNDANT' */
   ajint     Rank;       /* Rank order of hit */	
   float     Score;      /* Score of hit */
   float     Eval;       /* E-value of hit */
   AjBool    Target;     /* True if the Scophit is targetted for removal from 
 			     a list of Scophit objects */
+  AjBool    Target2;    /* Also used for garbage collection */
   AjBool    Priority;   /* True if the Scop hit is high priority. */
 } AjOHit, *AjPHit;
 
@@ -853,12 +856,13 @@ AjPList       ajXyzScophitListCopy(AjPList ptr);
 AjBool        ajXyzScophitToHit(AjPHit *to, AjPScophit from);
 AjBool        ajXyzScophitCheckTarget(AjPScophit ptr);
 AjBool        ajXyzScophitTarget(AjPScophit *h);
+AjBool        ajXyzScophitTarget2(AjPScophit *h);
 AjBool        ajXyzScophitTargetLowPriority(AjPScophit *h);
 AjBool        ajXyzScophitMergeInsertThis(AjPList list, AjPScophit hit1, 
 				   AjPScophit hit2,  AjIList iter);
 AjBool        ajXyzScophitMergeInsertOther(AjPList list, AjPScophit hit1, AjPScophit hit2);
 AjPScophit    ajXyzScophitMerge(AjPScophit hit1, AjPScophit hit2);
-ajint         ajXyzScophitCompId(const void *hit1, const void *hit2);
+ajint         ajXyzScophitCompSpr(const void *hit1, const void *hit2);
 ajint         ajXyzScophitCompStart(const void *hit1, const void *hit2);
 ajint         ajXyzScophitCompFold(const void *hit1, const void *hit2);
 ajint         ajXyzScophitCompSfam(const void *hit1, const void *hit2);
@@ -911,8 +915,9 @@ AjBool        ajXyzPrintPdbResolution(AjPFile outf, AjPPdb pdb);
 
 
 AjBool        ajXyzScopalgRead(AjPFile inf, AjPScopalg *thys);
-AjBool        ajXyzScopalgWrite(AjPFile outf, AjPScopalg *thys);
+AjBool        ajXyzScopalgWrite(AjPFile outf, AjPScopalg scop);
 AjBool        ajXyzScopalgWriteClustal(AjPScopalg align, AjPFile* outf);
+AjBool        ajXyzScopalgWriteClustal2(AjPScopalg align, AjPFile* outf);
 AjPScopalg    ajXyzScopalgNew(ajint n);
 void          ajXyzScopalgDel(AjPScopalg *pthis);
 ajint         ajXyzScopalgGetseqs(AjPScopalg thys, AjPStr **arr);
