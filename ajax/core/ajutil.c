@@ -25,9 +25,8 @@ static ajint utilBigendCalled = 0;
 void ajExit (void) {
   ajDebug("\nFinal Summary\n=============\n\n");
   ajLogInfo();
-  ajDebug("\nlog done\n");
   ajStrExit();
-  ajDebug("\nstr done\n");
+  ajRegExit();
   ajFileExit();
   ajFeatExit();
   ajAcdExit(ajFalse);
