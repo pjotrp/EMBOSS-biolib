@@ -1,5 +1,7 @@
 Version 2.7.0
-	Removed old carba code in preparation for adding corba server as
+	Revseq can now read in gapped nucleic acid sequences.
+
+	Removed old corba code in preparation for adding corba server as
 	an embassy package.
 
 	Simplified error messages for sequence reading, and corrected
