@@ -208,6 +208,8 @@ int main(int argc, char **argv)
 
     embEstMatInit( match, mismatch, gap_penalty, 0, '-' );
 
+    ajSeqTrim(genome);
+
     if ( ajSeqLen(genome) )
     {
 	/* Make sure we have enough space to hold the genomic AjPSeq */
@@ -238,6 +240,8 @@ int main(int argc, char **argv)
 
 	    /* if required, make shuffled comparisons
 	       to get statistical significance */
+
+	    ajSeqTrim(est);
 
 	    ajDebug("shuffles: %d\n", shuffles);
 	    if ( shuffles > 0 )
