@@ -8459,7 +8459,7 @@ static void acdHelpAssoc (AcdPAcd thys, AjPStr *str, char* name)
 	    else
 		(void) ajFmtPrintS (&qname, "-%s", quals[i].Name);
 	    (void) ajStrAssC (&qtype, quals[i].Type);
-	    (void) ajFmtPrintS (&line, "   %-20S %-10S ",
+	    (void) ajFmtPrintS (&line, "  %-20S %-10S ",
 				qname,  qtype);
 	    (void) ajStrAssC (&text, quals[i].Help);
 	    (void) acdTextFormat(&text);
