@@ -90,8 +90,12 @@ public class Graph2DPlot extends ScrollPanel
   //
   private static int LINE = 1;
   private static int TEXT = 2;
+  private static int RECTANGLE = 3;
+
+  private static int AXIS = 4;
 
   // draw rectangle around graph
+  private boolean draw_axes  = true;
   private boolean rectangle = false;
 
   private boolean screen_min_max = false;
@@ -163,7 +167,7 @@ public class Graph2DPlot extends ScrollPanel
     }
     catch(FileNotFoundException fnne){}
     catch(IOException ioe){}  
-     calcMinMax();
+    calcMinMax();
   }
 
   /**
@@ -649,6 +653,7 @@ public class Graph2DPlot extends ScrollPanel
  
     if(screen_min_max)
     {
+
       if(xmin > xmax)
       {
         xmin = xmin_screen;
@@ -660,12 +665,73 @@ public class Graph2DPlot extends ScrollPanel
         ymin = ymin_screen;
         ymax = ymax_screen;
       }
+      
+      if(ncoords > 2)
+      {
+        draw_axes = false;
+      
+        for(int i=0; i<xnum; i++)
+        {
+          if( ((Integer)emboss_data[0][i]).intValue() == LINE ||
+              ((Integer)emboss_data[0][i]).intValue() == RECTANGLE )
+          {
+            float x1 = ((Float)emboss_data[1][i]).floatValue();
+            float y1 = ((Float)emboss_data[2][i]).floatValue();
+            float x2 = ((Float)emboss_data[3][i]).floatValue();
+            float y2 = ((Float)emboss_data[4][i]).floatValue();
+      
+            if( Math.abs(x2-x1) > (xmax-xmin)*0.8 && 
+                (Math.abs(y2-y1) < 0.1 || ((Integer)emboss_data[0][i]).intValue() == RECTANGLE) )
+            {
+              if(x2 > x1)
+              {
+                xmax = x2;
+                xmin = x1;
+              }
+              else
+              {
+                xmax = x1;
+                xmin = x2;
+              }
+
+              draw_axes = true;
+              if(((Integer)emboss_data[0][i]).intValue() == RECTANGLE)
+                rectangle = true;
+
+              emboss_data[0][i] = new Integer(AXIS);
+            }      
+            else if( Math.abs(y2-y1) > (ymax-ymin)*0.8 && Math.abs(x2-x1) < 0.1)  // looks like axis line
+            {
+              if(y2 > y1)
+              {
+                ymax = y2;
+                ymin = y1;
+              }
+              else
+              {
+                ymax = y1;
+                ymin = y2;
+              }
+
+              draw_axes = true;
+              if(((Integer)emboss_data[0][i]).intValue() == RECTANGLE)
+                rectangle = true;
+
+              emboss_data[0][i] = new Integer(AXIS);
+            }
+            
+          }       
+        }
+      }
+
+      if(!draw_axes && ymin > ymin_screen)
+        ymin = ymin_screen;
     }
 
-//  System.out.println("xmin "+xmin);
-//  System.out.println("xmax "+xmax);
-//  System.out.println("ymin "+ymin);
-//  System.out.println("ymax "+ymax);
+    System.out.println("xmin "+xmin);
+    System.out.println("xmax "+xmax);
+    System.out.println("ymin "+ymin);
+    System.out.println("ymax "+ymax);
   }
 
   public int getWidth()
@@ -705,11 +771,13 @@ public class Graph2DPlot extends ScrollPanel
       og.fillRect(0,0,getWidth(),getHeight());
       og.setColor(Color.black);
 
-      drawAxes(og,tick_height);
       if(emboss_data.length == 2)   // 2d plot
         drawPoints(og);
       else
         drawGraphics(og,fm);   
+
+      if(draw_axes)
+        drawAxes(og,tick_height);
     }
     g.drawImage(offscreen, 0, 0, null);
   }
@@ -736,11 +804,13 @@ public class Graph2DPlot extends ScrollPanel
     g.fillRect(0,0,getWidth(),getHeight());
     g.setColor(Color.black);
 
-    drawAxes(g,tick_height);
     if(emboss_data.length == 2)   // 2d plot
       drawPoints(g);
     else
       drawGraphics(g,fm);
+
+    if(draw_axes)
+      drawAxes(g,tick_height);
   }
 
   /**
@@ -978,8 +1048,8 @@ public class Graph2DPlot extends ScrollPanel
     if(max < 1000)
       myformat = new DecimalFormat("##0.00");
     else if(max < 10000)
-      myformat = new DecimalFormat("##0.##E0");
-    else if(max < 100000)
+      myformat = new DecimalFormat("##0.#E0");
+    else if(max < 1000000)
       myformat = new DecimalFormat("#0.##E0");
     return myformat;
   }
@@ -1003,6 +1073,30 @@ public class Graph2DPlot extends ScrollPanel
 
     int xnum  = emboss_data[0].length;
     
+    if(xstart == null)
+    {
+      xstart = new TextFieldFloat();
+      xstart.setValue(xmin);
+    }
+    if(xend == null)
+    {
+      xend = new TextFieldFloat();
+      xend.setValue(xmax);
+    }
+
+    if(ystart == null)
+    {
+      ystart = new TextFieldFloat();
+      ystart.setValue(ymin);
+    }
+
+    if(yend == null)
+    {
+      yend = new TextFieldFloat();
+      yend.setValue(ymax);
+    }
+
+
     float xfactor = (getWidth()-(2*xborder))/(float)(xend.getValue()-xstart.getValue());
     float yfactor = (getHeight()-(2*yborder))/(float)(yend.getValue()-ystart.getValue());
 
@@ -1042,15 +1136,42 @@ public class Graph2DPlot extends ScrollPanel
       }
       else if( ((Integer)emboss_data[0][i]).intValue() == TEXT)   // text
       {
-        int colourID = (int) ((Float)emboss_data[3][i]).floatValue();
-        int textWidth = fm.stringWidth((String)emboss_data[5][i])/2;
-        g.setColor(plplot_colour[colourID]);
-        g.drawString((String)emboss_data[5][i],(int)(x1-textWidth),(int)y1);
+        boolean number = true;
+        try
+        {
+          String text = (String)emboss_data[5][i];
+          Float.parseFloat(text);
+        }
+        catch(NumberFormatException nfe)
+        {
+          number = false;
+        }
+
+        if( x1 >= 0 && y1 <= 0 &&
+            x1 <= xendPoint && y1 >= -yendPoint )
+        {
+          int colourID = (int) ((Float)emboss_data[3][i]).floatValue();
+          int textWidth = fm.stringWidth((String)emboss_data[5][i])/2;
+
+          g.setColor(plplot_colour[colourID]);
+          g.drawString((String)emboss_data[5][i],(int)(x1-textWidth),(int)y1);
+        }
+        else if(y1 > 0 && !number)  // looks like x-axis title
+        {
+          if(xtitle_field == null)
+            xtitle_field = new JTextField((String)emboss_data[5][i]);
+        }
+        else if(y1 < yendPoint && !number)  // looks like main title
+        {
+          if(maintitle_field == null)
+            maintitle_field = new JTextField((String)emboss_data[5][i]);
+        }
       }
     }
     g2d.translate(-xborder, -getHeight()+yborder);
     g2d.setStroke(stroke);
   }
+
 
   /**
   *
@@ -1072,6 +1193,29 @@ public class Graph2DPlot extends ScrollPanel
     g2d.setStroke(new BasicStroke((float)graph_line.getValue()));
 
     int xnum  = emboss_data[0].length;
+
+    if(xstart == null)
+    {
+      xstart = new TextFieldFloat();
+      xstart.setValue(xmin);
+    }
+    if(xend == null)
+    {
+      xend = new TextFieldFloat();
+      xend.setValue(xmax);
+    }
+
+    if(ystart == null)
+    {
+      ystart = new TextFieldFloat();
+      ystart.setValue(ymin);
+    }
+
+    if(yend == null)
+    {
+      yend = new TextFieldFloat();
+      yend.setValue(ymax);
+    }
 
     float xfactor = (getWidth()-(2*xborder))/(float)(xend.getValue()-xstart.getValue());
     float yfactor = (getHeight()-(2*yborder))/(float)(yend.getValue()-ystart.getValue());
@@ -1121,7 +1265,7 @@ public class Graph2DPlot extends ScrollPanel
     while((line = in.readLine()) != null )
     {
       graph_data.append(line+"\n");
-      if(line.startsWith("Line") && !xygraph)
+      if((line.startsWith("Line") || line.startsWith("Rectangle")) && !xygraph)
       {
         vx.add(line);
       }
@@ -1144,8 +1288,8 @@ public class Graph2DPlot extends ScrollPanel
         ymax_screen = Float.parseFloat(tok.nextToken());
         screen_min_max = true;
       }
-      else if(line.startsWith("Rectangle"))
-        rectangle = true;
+//    else if(line.startsWith("Rectangle"))
+//      rectangle = true;
       else if(!line.startsWith("#") && !line.equals("") && 
               !line.startsWith("Text") && !line.startsWith("Line"))
       {
@@ -1173,17 +1317,17 @@ public class Graph2DPlot extends ScrollPanel
         int ind = line.indexOf(" ");
         maintitle = line.substring(ind).trim();
       }
-      else if(line.startsWith("Text"))
+      else if(line.startsWith("Text") && !line.startsWith("Textline"))
       {
-        in.mark(100);
+//      in.mark(100);
         vx.add(line);
-        if((line = in.readLine()) != null )
-        {
-          if(!isTick(line,false))
-            in.reset();      
-          else
-            continue;
-        }
+//      if((line = in.readLine()) != null )
+//      {
+//        if(!isTick(line,false))
+//          in.reset();      
+//        else
+//          continue;
+//      }
       }
     }
 
@@ -1224,6 +1368,8 @@ public class Graph2DPlot extends ScrollPanel
       emboss_data[0][i] = new Integer(LINE);
     else if(type.startsWith("Text"))
       emboss_data[0][i] = new Integer(TEXT);
+    else if(type.equals("Rectangle"))
+      emboss_data[0][i] = new Integer(RECTANGLE);
 
     tok.nextToken();
     emboss_data[1][i] = Float.valueOf(tok.nextToken());
