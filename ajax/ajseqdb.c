@@ -1231,6 +1231,7 @@ static char* seqCdTrgName (ajuint ipos, SeqPCdFile fil)
     static char* name = NULL;
     static ajint maxNameSize = 0;
     ajint nameSize;
+    ajint i;
 
     nameSize = fil->RecSize-8;
 
@@ -1243,7 +1244,8 @@ static char* seqCdTrgName (ajuint ipos, SeqPCdFile fil)
     }
 
     (void) seqCdFileSeek (fil, ipos);
-    (void) seqCdFileRead (name, 8, fil);
+    (void) seqCdFileReadInt (&i, fil);
+    (void) seqCdFileReadInt (&i, fil);
     (void) seqCdFileReadName (name, nameSize, fil);
 
     ajDebug("seqCdTrgName maxNameSize:%d nameSize:%d name '%s'\n",
