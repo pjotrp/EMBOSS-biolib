@@ -186,12 +186,12 @@ public class Favorites
     }
    
 // lastly any to delete
-    for(int i=0; i<nmenu; i++)
+    for(int i=nmenu-1; i!=0; i--)
     {
       JMenuItem fav = favJMenu.getItem(i);
       if(fav == null)
         continue;
-                                                                                               
+
       String action = fav.getActionCommand();
       if(action.equals("DELETE"))
         favJMenu.remove(fav);
