@@ -72,9 +72,6 @@ int main(int argc, char **argv)
     float ticklen;
     float onefifth;
     AjPFeattable *tabptr = NULL;
-    AjPStr ufo    = NULL;
-    AjPStr format = NULL;
-    AjPStr ext    = NULL;
     AjPFeattabOut seq1out = NULL;
     AjPStr sajb = NULL;
 
@@ -85,10 +82,8 @@ int main(int argc, char **argv)
     graph    = ajAcdGetGraph("graph");
     gap      = ajAcdGetInt("gap");
     boxit    = ajAcdGetBool("boxit");
+    seq1out  = ajAcdGetFeatout("featout");
     dumpfeat = ajAcdGetBool("dumpfeat");
-    format   = ajAcdGetString("format");
-
-    ext = ajAcdGetString("ext");
 
     sajb = ajStrNew();
     embWordLength(wordlen);
@@ -207,18 +202,10 @@ int main(int argc, char **argv)
 			 ajStrStr(sajb));
     }
     
-    if(dumpfeat)
+    if(dumpfeat && seq1out)
     {
-	seq1out = ajFeattabOutNew();
 	for(i=0;i<ajSeqsetSize(seqset);i++)
 	{
-	    seq1 = ajSeqsetGetSeq(seqset, i);
-	    ajStrAss(&ufo,format);
-	    ajStrAppC(&ufo,":");
-	    ajStrAppC(&ufo,ajSeqName(seq1));
-	    ajStrAppC(&ufo,".");
-	    ajStrApp(&ufo,ext);
-	    ajFeattabOutOpen(seq1out, ufo);
 	    ajFeatWrite(seq1out, tabptr[i]);
 	}
     }
