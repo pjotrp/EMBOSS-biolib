@@ -601,6 +601,7 @@ public class JembossAuthServer
 
     Random rnd = new Random();
     String dat = new Date().toString();
+    dat = dat.replace(':','_');
 
 //get a unique project name 
     String project = new String(tmproot + appl + "_" +
