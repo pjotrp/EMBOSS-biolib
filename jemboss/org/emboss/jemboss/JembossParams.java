@@ -75,19 +75,21 @@ public class JembossParams
   private boolean useAuth = true;
   private String useAuthName = "user.auth";
 
-  private String publicSoapURL = "http://pubsoap1.hgmp.mrc.ac.uk/soap/servlet/rpcrouter";
+  private String publicSoapURL = 
+             "https://jemboss.hgmp.mrc.ac.uk:8443/soap/servlet/rpcrouter";
   private String publicSoapURLName = "server.public";
 
-  private String privateSoapURL = "http://privsoap1.hgmp.mrc.ac.uk/cgi-bin/soap.cgi";
+  private String privateSoapURL = 
+             "https://jemboss.hgmp.mrc.ac.uk:8443/soap/servlet/rpcrouter";
   private String privateSoapURLName = "server.private";
 
   private String soapService = "EmbossSoap";
   private String soapServiceName = "service.name";
 
-  private String privateSoapService = "EmbossSoap";
+  private String privateSoapService = "JembossAuthServer";
   private String privateSoapServiceName = "service.private";
 
-  private String publicSoapService = "EmbossSoap";
+  private String publicSoapService = "JembossAuthServer";
   private String publicSoapServiceName = "service.public";
 
   //soap options
