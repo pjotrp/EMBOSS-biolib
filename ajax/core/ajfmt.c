@@ -305,7 +305,7 @@ static void cvt_x(ajint code, VALIST ap,
 static void cvt_p(ajint code, VALIST ap,
 	ajint put(ajint c, void* cl), void* cl,
 	ajuint* flags, ajint width, ajint precision) {
-	ajulong m = (ajulong)va_arg(VA_V(ap), void*);
+	unsigned long m = (unsigned long)va_arg(VA_V(ap), void*);
 	char buf[43];
 	char *p = buf + sizeof buf;
 	precision = INT_MIN;
