@@ -108,7 +108,11 @@ ajint main(ajint argc, char **argv)
 	if(len>maxarr)
 	{
 	    AJCRESIZE(path,len);
+	    if(!path)
+		ajFatal("Sequences too big. Try 'matcher' or 'supermatcher'");
 	    AJCRESIZE(compass,len);
+	    if(!compass)
+		ajFatal("Sequences too big. Try 'matcher' or 'supermatcher'");
 	    maxarr=len;
 	}
 
