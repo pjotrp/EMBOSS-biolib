@@ -422,9 +422,9 @@ sub createnewdocumentation ( $$ ) {
 # application's document is missing
     print LOG "createnewdocumentation missing $progdocdir/$thisprogram.html\n";
     print "\n$progdocdir/$thisprogram.html =missing=\n";
-    print "Create a web page for this program? (y/n) ";
-#      $ans = <STDIN>;
-    $ans = "n";
+    print STDERR "\n$progdocdir/$thisprogram.html =missing=\n";
+    print STDERR "Create a web page for this program? (y/n) ";
+    $ans = <STDIN>;
     if ($ans =~ /^y/) {
         system("cp $docdir/template.html.save $progdocdir/$thisprogram.html");
         system "perl -p -i -e 's/ProgramNameToBeReplaced/$thisprogram/g;' $progdocdir/$thisprogram.html";
