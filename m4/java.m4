@@ -14,7 +14,7 @@ AC_ARG_WITH(java,
   --without-java to disable java],
 [if test "$withval" != no ; then
   AC_MSG_RESULT(yes)
-  ALT_HOME="$withval"
+  JALT_HOME="$withval"
   if test -d $withval ; then
 	echo "Java directory $withval exists"
   else
@@ -22,7 +22,7 @@ AC_ARG_WITH(java,
 	exit 0
   fi
 
-  ALT_HOME="${ALT_HOME} -DHAVE_JAVA"
+  JALT_HOME="${JALT_HOME} -DHAVE_JAVA"
   AC_CHECK_PROG(havejavac,javac,"yes","no")
   if test "${havejavac}" != yes ; then
   echo "Error: Either JAVA not installed or 'javac' not in your PATH"
@@ -41,9 +41,9 @@ AC_MSG_RESULT(no)
 
 ])
 
-if test -n "${ALT_HOME}"
+if test -n "${JALT_HOME}"
 then
-	CPPFLAGS="$CPPFLAGS -I${ALT_HOME}"
+	CPPFLAGS="$CPPFLAGS -I${JALT_HOME}"
 fi
 
 ])
