@@ -110,7 +110,7 @@ int main(int argc, char **argv)
 	/* reverse complement if poly-T found */
 	if(tail5 > tail3 && reverse)
 	{
-	    ajSeqReverse(seq);
+	    ajSeqReverseForce(seq);
 	    ajStrAppC(&desc, " [reverse complement]");
 	}
 

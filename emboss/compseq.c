@@ -241,7 +241,7 @@ int main(int argc, char **argv)
 	if(seqisnuc && reverse)
 	{
 	    /* Do it again on the reverse strand */
-	    ajSeqReverse(seq);
+	    ajSeqReverseForce(seq);
 	    s = ajSeqChar(seq);
 
 	    for(pos=frame; pos <= ajSeqLen(seq)-word; pos += increment)
