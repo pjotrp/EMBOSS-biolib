@@ -114,7 +114,7 @@ AjPDichet     ajXyzDichetNew(ajint n)
     }
     else
     {
-	ajWarn("Arg with value zero passed to ajXyzDichetNew\n");
+/*	ajWarn("Arg with value zero passed to ajXyzDichetNew\n"); */
 	ret->n=0;
 	ret->entries=NULL;
     }
@@ -326,8 +326,8 @@ ajFloatPut(&ret->seqvar_score, len-1, (float)0.0);
 	ret->combi_score  = ajIntNewL((ajint)len);
 	ajIntPut(&ret->combi_score, len-1, (int)0);
     }
-    else
-	ajWarn("Zero sized arg passed to ajXyzScorealgNew.\n");
+/*    else
+	ajWarn("Zero sized arg passed to ajXyzScorealgNew.\n"); */
     
 /* JCIMATT   ret->seq_do    = ajFalse; */
 ret->seqmat_do = ajFalse;
@@ -369,8 +369,8 @@ AjPVdwall  ajXyzVdwallNew(ajint n)
 
     if(n)
 	AJCNEW0(ret->Res, n);
-    else
-	ajWarn("Zero sized arg passed to ajXyzVdwallNew.\n");
+/*    else
+	ajWarn("Zero sized arg passed to ajXyzVdwallNew.\n"); */
 
     return ret;
 }
@@ -406,8 +406,8 @@ AjPVdwres  ajXyzVdwresNew(ajint n)
 
 	AJCNEW0(ret->Rad, n);
     }
-    else
-	ajWarn("Zero sized arg passed to ajXyzVdwresNew.\n");
+/*    else
+	ajWarn("Zero sized arg passed to ajXyzVdwresNew.\n"); */
 
 
     return ret;
@@ -444,8 +444,8 @@ AjPCmap  ajXyzCmapNew(ajint dim)
 	for(z=0;z<dim;++z)
 	    ajInt2dPut(&ret->Mat, z, dim-1, (ajint) 0);
     }
-   else
-       ajWarn("Zero sized arg passed to ajXyzCmapNew.\n");
+/*   else
+       ajWarn("Zero sized arg passed to ajXyzCmapNew.\n"); */
 
 
     ret->Dim=dim;
@@ -492,8 +492,8 @@ AjPScopalg  ajXyzScopalgNew(int n)
 	    ret->Seqs[i] = ajStrNew();
     }
 
-   else
-       ajWarn("Zero sized arg passed to ajXyzScopalgNew.\n");    
+/*   else
+       ajWarn("Zero sized arg passed to ajXyzScopalgNew.\n");     */
 
 
     return ret;
@@ -606,8 +606,8 @@ AjPHitlist  ajXyzHitlistNew(int n)
 	for(i=0;i<n;++i)
 	    ret->hits[i] = ajXyzHitNew();
     }	
-    else
-	ajWarn("Zero sized arg passed to ajXyzHitlistNew.\n");
+/*    else
+	ajWarn("Zero sized arg passed to ajXyzHitlistNew.\n"); */
 
     return ret;
 }
@@ -647,8 +647,8 @@ AjPPdb ajXyzPdbNew(ajint chains)
 	for(i=0;i<chains;++i)
 	    ret->Chains[i] = ajXyzChainNew();
     }
-   else
-       ajWarn("Zero sized arg passed to ajXyzPdbNew.\n");
+/*   else
+       ajWarn("Zero sized arg passed to ajXyzPdbNew.\n"); */
 
     
 
@@ -739,8 +739,8 @@ AjPScop ajXyzScopNew(ajint chains)
 	    ret->End[i]=ajStrNew();
 	}
     }
-   else
-       ajWarn("Zero sized arg passed to ajXyzScopNew.\n");
+/*   else
+       ajWarn("Zero sized arg passed to ajXyzScopNew.\n"); */
 
 
     ret->N = chains;
@@ -2687,7 +2687,7 @@ AjBool ajXyzSignatureAlignSeqall(AjPSignature sig, AjPSeqall db, ajint n,
 
 /* @func ajXyzCpdbRead ***********************************************************
 **
-** Reads a Cpdb file and writes a filled Pdb object.
+** Reads a Cpdb file  (new format) and writes a filled Pdb object.
 ** Needs modifying to return ajFalse in case of bad format etc
 **
 ** @param [r] inf  [AjPFile] Pointer to cpdb file
@@ -2809,7 +2809,7 @@ AjBool ajXyzCpdbRead(AjPFile inf, AjPPdb *thys)
 	    ajStrToken(&token,&handle,NULL);
 	    ajStrToken(&token,&handle,NULL);
 
-	    ajStrToken(&xstr,&handle,NULL); /* xray */
+	    ajStrToken(&xstr,&handle,NULL); /* method */
 	    ajStrToken(&token,&handle,NULL);
 
 	    ajStrToken(&token,&handle,NULL); /* reso */
@@ -2870,12 +2870,6 @@ AjBool ajXyzCpdbRead(AjPFile inf, AjPPdb *thys)
 	    ajStrToken(&token,&handle,NULL); 
 	    ajStrToInt(token,&(*thys)->Chains[nc-1]->numTurns);
 
-	    /* water */
-	    /*
-	    ajStrToken(&token,&handle,NULL);
-	    ajStrToken(&token,&handle,NULL); 
-	    ajStrToInt(token,&(*thys)->Chains[nc-1]->Nwat);
-	    */
 	    continue;
 	}
   
@@ -2904,6 +2898,306 @@ AjBool ajXyzCpdbRead(AjPFile inf, AjPPdb *thys)
 
 	    ajStrToken(&token,&handle,NULL);
 	    ajStrToInt(token,&gpn);
+	    
+	    AJNEW0(atom);
+	    atom->Mod = mod;
+	    atom->Chn = chn;
+	    atom->Gpn = gpn;
+	    
+
+	    ajStrToken(&token,&handle,NULL);
+	    atom->Type = *ajStrStr(token);
+	    
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToInt(token,&atom->Idx);
+
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrAssS(&atom->Pdb,token);
+
+	    ajStrToken(&token,&handle,NULL);
+	    atom->eType = *ajStrStr(token);
+
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToInt(token,&atom->eNum);
+
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrAssS(&atom->eId,token);
+	    
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToInt(token,&atom->eClass);
+
+	    ajStrToken(&token,&handle,NULL);
+	    atom->Id1 = *ajStrStr(token);
+	    
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrAssS(&atom->Id3,token);
+
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrAssS(&atom->Atm,token);
+
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToFloat(token,&atom->X);
+
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToFloat(token,&atom->Y);
+
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToFloat(token,&atom->Z);
+
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToFloat(token,&atom->O);
+
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToFloat(token,&atom->B);
+
+	    /* Check for coordinates for water or groups that could not
+	       be uniquely assigned to a chain */
+	    if(chn==0)
+	    {
+		/* Heterogen */
+		if(atom->Type == 'H')
+		    ajListPushApp((*thys)->Groups,(void *)atom);
+		else if(atom->Type == 'W')
+		    ajListPushApp((*thys)->Water,(void *)atom);
+		else
+		    ajFatal("Unexpected parse error in ajXyzCpdbReadOld. Email jison@hgmp.mrc.ac.uk");
+	    }
+	    else
+		ajListPushApp((*thys)->Chains[chn-1]->Atoms,(void *)atom);
+	}
+    }
+    /* End of main application loop*/
+    
+
+
+    /* Tidy up*/
+    ajStrTokenClear(&handle);
+    ajStrDel(&line);
+    ajStrDel(&token);
+    ajStrDel(&idstr);
+    ajStrDel(&destr);
+    ajStrDel(&osstr);
+    ajStrDel(&xstr);
+
+
+    /* Bye Bye*/
+    return ajTrue;
+}
+
+
+
+
+
+/* @func ajXyzCpdbReadOld ****************************************************
+**
+** Reads a Cpdb file  (old format) and writes a filled Pdb object.
+** Needs modifying to return ajFalse in case of bad format etc
+** The following types of lines can be parsed: 
+**
+** EX   METHOD xray; RESO 2.80; NMOD 1; NCHA 2;
+** IN   ID A; NR 210; NH 12; NW 0;
+** CO   1    1    P    3     2     P    PRO    N     31.631    1.734   37.188     1.00    47.72
+**
+** @param [r] inf  [AjPFile] Pointer to cpdb file
+** @param [w] thys [AjPPdb*] Pdb object pointer
+**
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+
+AjBool ajXyzCpdbReadOld(AjPFile inf, AjPPdb *thys)
+{
+    ajint         nmod =0;
+    ajint         ncha =0;
+    ajint         ngrp =0;
+    ajint           nc =0;
+    ajint          mod =0;
+    ajint          chn =0;
+    ajint          gpn =0;
+
+    float       reso =0.0;
+
+    AjPStr      line =NULL;
+    AjPStr     token =NULL;
+    AjPStr     idstr =NULL;
+    AjPStr     destr =NULL;
+    AjPStr     osstr =NULL;
+    AjPStr      xstr =NULL;
+    AjPStrTok handle =NULL;
+    
+    AjPAtom     atom =NULL;
+
+
+    
+
+
+    /* Intitialise strings */
+    line  = ajStrNew();
+    token = ajStrNew();
+    idstr = ajStrNew();
+    destr = ajStrNew();
+    osstr = ajStrNew();
+    xstr  = ajStrNew();
+
+
+
+    /* Start of main application loop*/
+    while(ajFileReadLine(inf,&line))
+    {
+	if(ajStrPrefixC(line,"XX"))
+	    continue;
+	
+	/* Parse ID */
+	if(ajStrPrefixC(line,"ID"))
+	{
+	    ajStrTokenAss(&handle,line," \n\t\r");
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToken(&idstr,&handle,NULL);
+
+	    continue;
+	}
+
+	
+	/* Parse number of chains*/
+	if(ajStrPrefixC(line,"CN"))
+	{
+	    ajStrTokenAss(&handle,line," []\n\t\r");
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToInt(token,&nc);
+
+	    continue;
+	}
+	
+
+	/* Parse description text*/
+	if(ajStrPrefixC(line,"DE"))
+	{
+	    (void) ajStrTokenAss (&handle, line, " ");
+	    (void) ajStrToken (&token, &handle, NULL);
+	    /* 'DE' */
+	    (void) ajStrToken (&token, &handle, "\n\r");
+	    /* desc */
+	    if (ajStrLen(destr))
+	    {
+		(void) ajStrAppC (&destr, " ");
+		(void) ajStrApp (&destr, token);
+	    }
+	    else
+		(void) ajStrAss (&destr, token);
+
+	    continue;
+	}
+
+
+	/* Parse source text */
+	if(ajStrPrefixC(line,"OS"))
+	{
+	    (void) ajStrTokenAss (&handle, line, " ");
+	    (void) ajStrToken (&token, &handle, NULL);
+	    /* 'OS' */
+	    (void) ajStrToken (&token, &handle, "\n\r");
+	    /* source */
+	    if (ajStrLen(osstr))
+	    {
+		(void) ajStrAppC (&osstr, " ");
+		(void) ajStrApp (&osstr, token);
+	    }
+	    else
+		(void) ajStrAss (&osstr, token);
+
+	    continue;
+	}
+	
+
+	/* Parse experimental line*/
+	if(ajStrPrefixC(line,"EX"))
+	{
+	    ajStrTokenAss(&handle,line," ;\n\t\r");
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToken(&token,&handle,NULL);
+
+	    ajStrToken(&xstr,&handle,NULL); /* method */
+	    ajStrToken(&token,&handle,NULL);
+
+	    ajStrToken(&token,&handle,NULL); /* reso */
+	    ajStrToFloat(token,&reso);
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToken(&token,&handle,NULL); /* nmod */
+	    ajStrToInt(token,&nmod);
+	    ajStrToken(&token,&handle,NULL);
+
+	    ajStrToken(&token,&handle,NULL); /* ncha */
+	    ajStrToInt(token,&ncha);
+
+	    *thys = ajXyzPdbNew(ncha);
+
+	    ajStrAssS(&(*thys)->Pdb,idstr);
+	    ajStrAssS(&(*thys)->Compnd,destr);
+	    ajStrAssS(&(*thys)->Source,osstr);
+	    if(ajStrMatchC(xstr,"xray"))
+		(*thys)->Method = ajXRAY;
+	    else
+		(*thys)->Method = ajNMR;
+
+	    (*thys)->Reso = reso;
+	    (*thys)->Nmod = nmod;
+	    (*thys)->Nchn = ncha;
+	    (*thys)->Ngp  = ngrp;
+
+	}
+	
+
+	/* Parse information line*/
+	if(ajStrPrefixC(line,"IN"))
+	{
+	    ajStrTokenAss(&handle,line," ;\n\t\r");
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToken(&token,&handle,NULL); /* id value */
+	    (*thys)->Chains[nc-1]->Id=*ajStrStr(token);
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToken(&token,&handle,NULL); /* residues */
+	    ajStrToInt(token,&(*thys)->Chains[nc-1]->Nres);
+	    ajStrToken(&token,&handle,NULL);
+	    /* hetatm */
+	    ajStrToken(&token,&handle,NULL); 
+	    ajStrToInt(token,&(*thys)->Chains[nc-1]->Nlig);
+	    /* water */
+	    /*
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToken(&token,&handle,NULL); 
+	    ajStrToInt(token,&(*thys)->Chains[nc-1]->Nwat);
+	    */
+
+	    continue;
+	}
+  
+
+	/* Parse sequence line*/
+	if(ajStrPrefixC(line,"SQ"))
+	{
+	    while(ajFileReadLine(inf,&line) && !ajStrPrefixC(line,"XX"))
+		ajStrAppC(&(*thys)->Chains[nc-1]->Seq,ajStrStr(line));
+	    ajStrCleanWhite(&(*thys)->Chains[nc-1]->Seq);
+	    continue;
+	}
+
+
+	/* Parse coordinate line*/
+	if(ajStrPrefixC(line,"CO"))
+	{
+	    ajStrTokenAss(&handle,line," \t\n\r");
+	    ajStrToken(&token,&handle,NULL);
+
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToInt(token,&mod);
+
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToInt(token,&chn);
+
+/*	    ajStrToken(&token,&handle,NULL);
+	    ajStrToInt(token,&gpn); */
 	    
 	    AJNEW0(atom);
 	    atom->Mod = mod;
@@ -2950,7 +3244,6 @@ AjBool ajXyzCpdbRead(AjPFile inf, AjPPdb *thys)
     /* End of main application loop*/
     
 
-
     /* Tidy up*/
     ajStrTokenClear(&handle);
     ajStrDel(&line);
@@ -2964,10 +3257,6 @@ AjBool ajXyzCpdbRead(AjPFile inf, AjPPdb *thys)
     /* Bye Bye*/
     return ajTrue;
 }
-
-
-
-
 
 
 
@@ -3306,8 +3595,7 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop
 	    
 	    
 	    /* Print out coordinate line*/
-	    ajFmtPrintF(outf, "%-5s%-5d%-5d%-5d%-5c%-6d%-6S%-5c%-5c%-5c%-5c%-2c%6S    %-4S"
-			"%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
+	    ajFmtPrintF(outf, "%-5s%-5d%-5d%-5d%-5c%-6d%-6S%-5c%-5d%-5S",
 			"CO", 
 			atm->Mod,       /* It will always be 1 */
 			1,		/*JCI chn number is always given as 1*/
@@ -3315,20 +3603,25 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop
 			atm->Type, 
 			atm->Idx+rn_mod, 
 			atm->Pdb, 
-			    '.', 
-			    '.', 
-			    '.', 
-			    '.', 
-			atm->Id1, 
-			atm->Id3,
-			atm->Atm, 
-			atm->X, 
-			atm->Y, 
-			atm->Z, 
-			atm->O, 
-			atm->B);
+			atm->eType,
+			atm->eNum,
+			atm->eId);
 
+	    if(atm->eType == 'H')
+		ajFmtPrintF(outf, "%-5d", atm->eClass);
+	    else
+		ajFmtPrintF(outf, "%-5c", '.');
 
+	    ajFmtPrintF(outf, "%-2c%6S    %-4S%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
+		       atm->Id1, 
+		       atm->Id3,
+		       atm->Atm, 
+		       atm->X, 
+		       atm->Y, 
+		       atm->Z, 
+		       atm->O, 
+		       atm->B);
+	    
 	    /* Assign pointer for this chain*/
 	    atm2=atm;
 	}
@@ -7302,6 +7595,44 @@ AjBool ajXyzInContact(AjPAtom atm1, AjPAtom atm2, float thresh,
 
 
     return ajFalse;
+} 
+
+
+
+
+
+/* @func ajXyzAtomDistance ********************************************
+**
+** Returns the distance (Angstroms) between two atoms.
+**
+** @param [r] atm1   [AjPAtom]     Atom 1 object
+** @param [r] atm2   [AjPAtom]     Atom 1 object
+** @param [r] vdw    [AjPVdwall]   Vdwall object
+**
+** Returns the distance (Angstroms) between the van der Waals surface of two
+** atoms.
+**
+** @return [float] Distance (Angstroms) between two atoms.
+** @@
+**
+******************************************************************************/
+
+float ajXyzAtomDistance(AjPAtom atm1, AjPAtom atm2, AjPVdwall vdw)
+{
+    float val =0.0;
+    float val1=0.0;
+
+    
+    val=((atm1->X -  atm2->X) * (atm1->X -  atm2->X)) +
+	((atm1->Y -  atm2->Y) * (atm1->Y -  atm2->Y)) +
+	    ((atm1->Z -  atm2->Z) * (atm1->Z -  atm2->Z));
+
+
+    /*  This calculation uses square root */
+    val1= sqrt(val) - ajXyzVdwRad(atm1, vdw) - ajXyzVdwRad(atm2, vdw);
+    
+        
+    return val1;
 } 
 
 

@@ -630,6 +630,7 @@ AjPAtom       ajXyzAtomNew(void);
 void          ajXyzAtomDel(AjPAtom *thys);
 AjBool        ajXyzInContact(AjPAtom atm1, AjPAtom atm2, float thresh,
 			    AjPVdwall vdw);
+float         ajXyzAtomDistance(AjPAtom atm1, AjPAtom atm2, AjPVdwall vdw);
 
 AjPChain      ajXyzChainNew(void);
 void          ajXyzChainDel(AjPChain *thys);
@@ -701,6 +702,7 @@ AjBool        ajXyzHitlistsWriteFasta(AjPList *list, AjPFile *outf);
 
 
 AjBool        ajXyzCpdbRead(AjPFile inf, AjPPdb *thys);
+AjBool        ajXyzCpdbReadOld(AjPFile inf, AjPPdb *thys);
 AjBool        ajXyzCpdbWriteAll(AjPFile out, AjPPdb thys);
 AjBool        ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 			      AjPScop scop);
