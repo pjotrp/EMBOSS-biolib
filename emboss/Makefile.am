@@ -8,7 +8,7 @@ entrails histogramtest intconv messtest \
 patmattest plplottest proteinmotifsearch \
 seqinfo \
 seqretallfeat seqretfeat seqtofeat \
-simplesw stamps testplot treetypedisplay 
+simplesw testplot treetypedisplay 
 
 bin_PROGRAMS = abiview acdc antigenic \
 backtranseq banana btwisted \
@@ -36,7 +36,7 @@ prosextract pscan \
 rebaseextract recode redata remap restover restrict revseq scope \
 seealso seqmatchall seqret seqretall seqretset seqretsplit \
 showdb showfeat showorf showseq \
-shuffleseq sigcleave silent splitter stretcher \
+shuffleseq sigcleave silent splitter stamps stretcher \
 stssearch supermatcher syco \
 textsearch tfextract tfm tfscan \
 tmap transeq trimseq \
