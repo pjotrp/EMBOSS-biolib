@@ -19,9 +19,7 @@
 *
 ********************************************************************/
 
-
 package org.emboss.jemboss.gui;
-
 
 import org.emboss.jemboss.*;
 import org.emboss.jemboss.soap.*;
@@ -47,7 +45,7 @@ public class SetUpMenuBar
 // cursors to show when we're at work
   final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
-
+  public static SequenceList seqList;
 
   public SetUpMenuBar(final EmbreoParams mysettings, final JFrame f,
                       final String envp[], final String cwd,
@@ -176,8 +174,19 @@ public class SetUpMenuBar
       }
     });
     toolMenu.add(toolJalview);
-//  menuPanel.add(Box.createHorizontalStrut(5));
-    menuPanel.add(toolMenu); 
+    toolMenu.addSeparator();
+
+    JMenuItem toolWorkList = new JMenuItem("Sequence List");
+    seqList = new SequenceList(withSoap,mysettings);
+    toolWorkList.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        seqList.setVisible(true); 
+      }
+    });
+    toolMenu.add(toolWorkList);
+    menuPanel.add(toolMenu);
 
     JMenu helpMenu = new JMenu("Help");
     helpMenu.setMnemonic(KeyEvent.VK_H);
