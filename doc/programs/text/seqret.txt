@@ -611,7 +611,6 @@ Known bugs
 See also
 
    Program name                          Description
-   alignret     Read multiple sequences, write alignments
    biosed       Replace or delete sequence sections
    cutseq       Removes a specified section from a sequence
    degapseq     Removes gap characters from sequences
@@ -628,8 +627,6 @@ See also
    nthseq       Writes one sequence from a multiple set of sequences
    pasteseq     Insert one sequence into another
    revseq       Reverse and complement a sequence
-   seqretall    Reads and writes (returns) a set of sequences one at a time
-   seqretset    Reads and writes (returns) a set of sequences all at once
    seqretsplit  Reads and writes (returns) sequences in individual files
    splitter     Split a sequence into (overlapping) smaller sequences
    swissparse   Retrieves sequences from swissprot using keyword search

@@ -276,6 +276,7 @@ See also
    textsearch Search sequence documentation text. SRS and Entrez are
    faster!
    tfm Displays a program's help documentation manual
+   whichdb Search all databases for an entry
    wossname Finds programs by keywords in their one-line documentation
    
 Author(s)

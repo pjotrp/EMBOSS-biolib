@@ -179,6 +179,8 @@ See also
    search
    rebaseextract Extract data from REBASE
    scope Convert raw scop classification file to embl-like format
+   seqnr Converts redundant database results to a non-redundant set of
+   hits
    
 Author(s)
 

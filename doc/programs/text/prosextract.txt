@@ -118,14 +118,16 @@ Known bugs
 
 See also
 
-   Program name                           Description
-   cutgextract   Extract data from CUTG
-   domainer      Build domain coordinate files
-   nrscope       Converts redundant EMBL-format SCOP file to non-redundant one
+   Program name Description
+   cutgextract Extract data from CUTG
+   domainer Build domain coordinate files
+   nrscope Converts redundant EMBL-format SCOP file to non-redundant one
    printsextract Extract data from PRINTS
    rebaseextract Extract data from REBASE
-   scope         Convert raw scop classification file to embl-like format
-   tfextract     Extract data from TRANSFAC
+   scope Convert raw scop classification file to embl-like format
+   seqnr Converts redundant database results to a non-redundant set of
+   hits
+   tfextract Extract data from TRANSFAC
    
 Author(s)
 

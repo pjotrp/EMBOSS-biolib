@@ -221,6 +221,8 @@ See also
    prosextract Builds the PROSITE motif database for patmatmotifs to
    search
    rebaseextract Extract data from REBASE
+   seqnr Converts redundant database results to a non-redundant set of
+   hits
    tfextract Extract data from TRANSFAC
    
 Author(s)

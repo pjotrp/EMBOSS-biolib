@@ -173,6 +173,7 @@ See also
    showfeat     Show features of a sequence
    showseq      Display a sequence with features, translation etc
    tfm          Displays a program's help documentation manual
+   whichdb      Search all databases for an entry
    wossname     Finds programs by keywords in their one-line documentation
    
 Author(s)
