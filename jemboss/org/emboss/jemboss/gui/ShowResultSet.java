@@ -210,7 +210,7 @@ public class ShowResultSet extends JFrame
         if (thiskey.endsWith("png") || thiskey.endsWith("html"))
         {
           int index = findInt(thiskey);
-          if(index>0)
+          if(index>0 && index < stabs.length)
           {
             stabs[index-1] = new String(thiskey);
             ntabs++;
