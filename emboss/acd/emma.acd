@@ -4,6 +4,7 @@ appl: emma [
   gui: yes
   batch: yes
   cpu: medium
+  external: "clustalw"
 ]
 
 section: input [ info: "input Section" type: page ]

@@ -1,6 +1,7 @@
 appl: eprimer3 [
   documentation: "Picks PCR primers and hybridization oligos"
   groups: "Nucleic:Primers"
+  external: "primer3_core"
 ]
 
 section: input  [ info: "input Section" type: page ]
