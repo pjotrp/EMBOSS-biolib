@@ -24,6 +24,8 @@ package org.emboss.jemboss.gui.form;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 import java.net.URL;
 
 import java.util.Hashtable;
@@ -35,7 +37,7 @@ import org.emboss.jemboss.*;
 import org.emboss.jemboss.gui.*;
 import org.emboss.jemboss.soap.*;
 import org.emboss.jemboss.gui.sequenceChooser.*;
-
+import org.emboss.jemboss.graphics.Graph2DPlot;
 
 /**
 *
@@ -501,11 +503,16 @@ public class BuildJembossForm implements ActionListener
   }
 
 
+  /**
+  *
+  * Show standalone results in a tabbed pane.
+  *
+  */
   private void showStandaloneResults(String stdout)
   {
-    JFrame res = new JFrame(applName + " Results  : " + seqoutResult);
+    final JFrame res = new JFrame(applName + " Results  : " + seqoutResult);
     res.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    JTabbedPane fresults = new JTabbedPane();
+    final JTabbedPane fresults = new JTabbedPane();
     res.getContentPane().add(fresults,BorderLayout.CENTER);
     Hashtable hashRes = new Hashtable();
 
@@ -517,7 +524,7 @@ public class BuildJembossForm implements ActionListener
     JScrollPane rscroll;
 
     if(!stdout.equals("") &&
-       !(stdout.startsWith("Created") && stdout.endsWith(".png")))
+       !(stdout.startsWith("Created") && (stdout.endsWith(".png") || stdout.endsWith(".dat")) ))
     {
       presults = new JPanel(new BorderLayout());
       pscroll = new ScrollPanel(new BorderLayout());
@@ -584,7 +591,7 @@ public class BuildJembossForm implements ActionListener
         {
           public boolean accept(File cwd, String name)
           {
-            if(name.endsWith(".png"))
+            if(name.endsWith(".png") || name.endsWith(".dat"))
               return name.startsWith(applName);
             else
               return false;
@@ -593,27 +600,88 @@ public class BuildJembossForm implements ActionListener
 
         for(int i=0;i<pngFiles.length;i++)
         {
-          presults = new JPanel(new BorderLayout());
-          pscroll  = new ScrollPanel(new BorderLayout());
-          rscroll  = new JScrollPane(pscroll);
-          rscroll.getViewport().setBackground(Color.white);
-          presults.add(rscroll, BorderLayout.CENTER);
-          byte pngContents[] = getLocalFile(new File(pngFiles[i]));
-          ImageIcon icon = new ImageIcon(pngContents);
-          JLabel picture = new JLabel(icon);
-          pscroll.add(picture);
-          fresults.add(pngFiles[i],presults);
-          hashRes.put(pngFiles[i],pngContents);
+          if(pngFiles[i].endsWith(".dat"))
+          {
+            Graph2DPlot gp = new Graph2DPlot();
+            rscroll = new JScrollPane(gp);
+            rscroll.getViewport().setBackground(Color.white);
+            gp.setFileData(new String((byte [])getLocalFile(new File(pngFiles[i]))));
+            fresults.add(pngFiles[i],rscroll);
+//          setJMenuBar(gp.getMenuBar(false, this));
+          }
+          else
+          {
+            presults = new JPanel(new BorderLayout());
+            pscroll  = new ScrollPanel(new BorderLayout());
+            rscroll  = new JScrollPane(pscroll);
+            rscroll.getViewport().setBackground(Color.white);
+            presults.add(rscroll, BorderLayout.CENTER);
+            byte pngContents[] = getLocalFile(new File(pngFiles[i]));
+            ImageIcon icon = new ImageIcon(pngContents);
+            JLabel picture = new JLabel(icon);
+            pscroll.add(picture);
+            fresults.add(pngFiles[i],presults);
+            hashRes.put(pngFiles[i],pngContents);
+          }
         }
       }
     }
 
-    new ResultsMenuBar(res,fresults,hashRes,mysettings);
+    final ResultsMenuBar menubar = new ResultsMenuBar(res,fresults,hashRes,mysettings); 
+    fresults.addChangeListener(new ChangeListener()
+    {
+      public void stateChanged(ChangeEvent e)
+      {
+        setJMenuBar(fresults,res,menubar);
+      }
+    });
+
+    setJMenuBar(fresults,res,menubar);
     res.setVisible(true);
   }
 
+  
+  /**
+  *
+  * Set the menu bar based on the title of the
+  * tabbed pane
+  *
+  */
+  private void setJMenuBar(JTabbedPane fresults, JFrame res, ResultsMenuBar menuBar)
+  {
+    int index = fresults.getSelectedIndex();
+    String title = fresults.getTitleAt(index);
+    
+    if(title.endsWith(".dat"))
+    {
+      Graph2DPlot graph = getGraph2DPlot((JScrollPane)fresults.getSelectedComponent());
+      if(graph == null)
+        return;
+
+      JMenuBar graphMenuBar = graph.getMenuBar(false, res);
+      res.setJMenuBar(graphMenuBar);
+    }
+    else
+      res.setJMenuBar(menuBar);
+  }
+
+  /**
+  *
+  * Locate the Graph2DPlot component in the scrollpane
+  *
+  */
+  private Graph2DPlot getGraph2DPlot(JScrollPane jsp)
+  {
+    Component comp = jsp.getViewport().getView();
+    if(comp instanceof Graph2DPlot)
+        return (Graph2DPlot)comp;
+  
+    return null;
+  }
+
+
   private String checkParameters(ParseAcd parseAcd, int numofFields, 
-                                Hashtable filesToMove)
+                                 Hashtable filesToMove)
   {
 
     String params = new String("");
