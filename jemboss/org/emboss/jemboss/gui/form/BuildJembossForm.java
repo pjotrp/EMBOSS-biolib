@@ -521,7 +521,7 @@ public class BuildJembossForm implements ActionListener
         presults = new JPanel(new BorderLayout());
         pscroll = new ScrollPanel(new BorderLayout());
         rscroll = new JScrollPane(pscroll);
-        rscroll.getViewport().setBackground(Color.WHITE);
+        rscroll.getViewport().setBackground(Color.white);
         presults.add(rscroll, BorderLayout.CENTER);
         JTextPane atext = new JTextPane();
         atext.setText(stdout);
@@ -538,7 +538,7 @@ public class BuildJembossForm implements ActionListener
         presults = new JPanel(new BorderLayout());
         pscroll = new ScrollPanel(new BorderLayout());
         rscroll = new JScrollPane(pscroll);
-        rscroll.getViewport().setBackground(Color.WHITE);
+        rscroll.getViewport().setBackground(Color.white);
         presults.add(rscroll, BorderLayout.CENTER);
 
         if(parseAcd.isOutputSequence(j) || parseAcd.isOutputFile(j))
@@ -594,7 +594,7 @@ public class BuildJembossForm implements ActionListener
             presults = new JPanel(new BorderLayout());
             pscroll  = new ScrollPanel(new BorderLayout());
             rscroll  = new JScrollPane(pscroll);
-            rscroll.getViewport().setBackground(Color.WHITE);
+            rscroll.getViewport().setBackground(Color.white);
             presults.add(rscroll, BorderLayout.CENTER);
             byte pngContents[] = getLocalFile(new File(pngFiles[i]));
             ImageIcon icon = new ImageIcon(pngContents);
