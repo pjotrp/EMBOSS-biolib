@@ -1,4 +1,4 @@
 #!/bin/csh
 cd ..
-jar cf Jemboss.jar images/* org/emboss/jemboss/*class resources/acdstore.jar resources/version resources/jemboss.properties resources/readme.txt org/emboss/jemboss/*/*class org/emboss/jemboss/*/*/*class uk/ac/mrc/hgmp/embreo/*class uk/ac/mrc/hgmp/embreo/*/*class
+jar cf Jemboss.jar images/* org/emboss/jemboss/*class resources/*.jar resources/version resources/jemboss.properties resources/readme.txt org/emboss/jemboss/*/*class org/emboss/jemboss/*/*/*class 
 mv Jemboss.jar utils
