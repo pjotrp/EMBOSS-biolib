@@ -36,6 +36,9 @@ public class JembossParams
   private String acdDirToParse;
   private String acdDirToParseName = "acdDirToParse";
 
+  private static boolean jembossServer = false;
+  private String jembossServerName = "jemboss.server";
+
   private Properties jembossSettings;
   public JembossParams()
   {
@@ -124,8 +127,16 @@ public class JembossParams
     embossBin = jembossSettings.getProperty(embossBinName);
     embossPath = jembossSettings.getProperty(embossPathName);
     acdDirToParse = jembossSettings.getProperty(acdDirToParseName);
+    String tmp = jembossSettings.getProperty(jembossServerName);
+    jembossServer = new Boolean(tmp).booleanValue();
 
   }  
+
+
+  public static boolean isJembossServer()
+  {
+    return jembossServer;
+  }
 
   public String getPlplot()
   {
