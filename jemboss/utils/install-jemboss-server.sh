@@ -1246,7 +1246,7 @@ make_jemboss_properties $EMBOSS_INSTALL $LOCALHOST $AUTH $SSL $PORT $EMBOSS_URL 
 
 RUNFILE=$JEMBOSS/runJemboss.csh
 sed "s|^setenv JEMBOSS_HOME .|setenv JEMBOSS_HOME $JEMBOSS|" $RUNFILE > $RUNFILE.new
-sed "s|java |$JAVA_HOME/bin/java |" |" $RUNFILE.new > $RUNFILE.new1
+sed "s|java |$JAVA_HOME/bin/java |" $RUNFILE.new > $RUNFILE.new1
 rm -f $RUNFILE.new
 mv $RUNFILE $RUNFILE.bak
 mv $RUNFILE.new1 $RUNFILE
