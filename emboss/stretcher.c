@@ -312,7 +312,7 @@ static ajint stretcherEalign(char *A,char *B,ajint M,ajint N,ajint G,
 
     c = stretcherAlign(A,B,M,N,-g,-g);		/* OK, do it */
     ck = stretcherCheckScore((unsigned char *)A,(unsigned char *)B,M,N,S,NC);
-    if (c != ck) ajFmtPrintF (outf,"Check_score error.\n");
+    if (c != ck) ajWarn("stretcher CheckScore failed");
     return c;
 }
 
@@ -964,3 +964,8 @@ static ajint stretcherCheckScore(unsigned char *A,unsigned char *B,ajint M,
     *NC = nc1;
     return(score);
 }
+
+
+
+
+
