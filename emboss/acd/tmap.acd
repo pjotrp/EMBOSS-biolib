@@ -3,7 +3,7 @@ appl: tmap [
         groups: "Protein:2D Structure"
 ]
 
-seqset: jimbo [ 
+seqset: msf [ 
     param: Y
     type: gapprotein
     info: "Sequences file to be read in"
