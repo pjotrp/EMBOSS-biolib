@@ -382,6 +382,7 @@ AjPScop  ajXyzScopNew(ajint n);
 
 AjPScophit  ajXyzScophitNew(void);
 void     ajXyzScophitDel(AjPScophit *pthis);
+AjBool ajXyzHitlistToScophits(AjPList in, AjPList *out);
 
 void     ajXyzHitDel(AjPHit *pthis);
 AjPHit   ajXyzHitNew(void);
