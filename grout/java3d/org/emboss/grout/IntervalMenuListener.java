@@ -19,22 +19,20 @@
 ***************************************************************/
 
 /*
- * ParserListener.java
+ * IntervalMenuListener.java
  *
- * Created on April 24, 2002, 1:42 PM
+ * Created on October 4th, 2002
  */
 
 package org.emboss.grout;
 
-import java.beans.PropertyChangeListener;
 /**
  *
  * @author  hmorgan2
  */
-public interface ParserListener
+public interface IntervalMenuListener
 {
   
-  public abstract void parserChanged(ParserEvent e);
+  public abstract void groutPanelChanged(IntervalMenuEvent e);
   
 }
-

@@ -18,23 +18,22 @@
 *
 ***************************************************************/
 
-/*
- * ParserListener.java
- *
- * Created on April 24, 2002, 1:42 PM
- */
-
 package org.emboss.grout;
 
-import java.beans.PropertyChangeListener;
 /**
+ * OneGraphicListener.java
  *
- * @author  hmorgan2
+ *
+ * Created: Thu Mar 13 14:42:13 2003
+ *
+ * @author <a href="mailto:">Mr H. Morgan</a>
+ * @version
  */
-public interface ParserListener
+
+public interface OneGraphicListener
 {
   
-  public abstract void parserChanged(ParserEvent e);
+  public abstract void oneGraphicChanged(OneGraphicEvent e);
   
 }
 

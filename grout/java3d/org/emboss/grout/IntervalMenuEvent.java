@@ -19,22 +19,31 @@
 ***************************************************************/
 
 /*
- * ParserListener.java
+ * IntervalMenuEvent.java
  *
- * Created on April 24, 2002, 1:42 PM
+ * Created on October 4th, 2002
  */
 
 package org.emboss.grout;
 
-import java.beans.PropertyChangeListener;
+import java.util.EventObject;
+import java.beans.PropertyChangeEvent;
+
 /**
  *
  * @author  hmorgan2
  */
-public interface ParserListener
+public class IntervalMenuEvent extends PropertyChangeEvent
 {
   
-  public abstract void parserChanged(ParserEvent e);
+  private IntervalMenu source;
+  
+  /** Creates a new instance of IntervalMenuEvent */
+  public IntervalMenuEvent(Object source, String propertyName, Object oldValue, Object newValue)
+  {
+    super(source, propertyName, oldValue, newValue);
+    this.source = (IntervalMenu) source;
+    
+  }
   
 }
-

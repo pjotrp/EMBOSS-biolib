@@ -18,41 +18,30 @@
  *
  ***************************************************************/
 
-/*
- * ShowSequenceOccurance.java
- *
- * Created on June 24, 2002, 11:46 AM
- */
-
 package org.emboss.grout;
 
-public class ShowSequenceOccurance implements PickOccurance
+import java.awt.Color;
+import java.awt.event.MouseEvent;
+
+/** ColourMenuUser.java
+ *
+ * Interface for an object that instansiates a Colour Menu
+ *
+ *
+ * Created: Thu Mar 13 14:42:13 2003
+ * @author <a href="mailto:">Mr H. Morgan</a>
+ * @version
+ */
+
+public interface ColourMenuUser
 {
-    
-    private double x1;
-    private double y1;
-    private double x2;
-    private double y2;
-    
-    public void ShowSequenceOccurance(double x, double y)
-    {
-        x1 = x;
-        y1 = y;
-        x2 = y2 = Integer.MIN_VALUE;
-    }
-    
-    public void ShowSequenceOccurance(double x1, double y1, double x2,
-    double y2)
-    {
-        this.x1 = x1;
-        this.y1 = y1;
-        this.x2 = x2;
-        this.y2 = y2;
-    }
-    
-    public void PerformPick()
-    {
-        
-    }
-    
+    /** The colour menu runs this to change the graphic colour
+     * @param colourSwing The colour to change it to
+     * @param me The mouse event that generated the menu
+     * @param tr The transferable graphic that was clicked on
+     */    
+    public abstract void changeThisGraphicColour(Color colourSwing,
+    MouseEvent me,
+    TransferableGraphic tr);
 }
+

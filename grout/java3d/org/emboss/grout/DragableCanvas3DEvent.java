@@ -18,23 +18,31 @@
 *
 ***************************************************************/
 
-/*
- * ParserListener.java
- *
- * Created on April 24, 2002, 1:42 PM
- */
-
 package org.emboss.grout;
 
-import java.beans.PropertyChangeListener;
 /**
+ * DragableCanvas3DEvent.java
  *
- * @author  hmorgan2
+ *
+ * Created: Thu Mar 13 14:44:13 2003
+ *
+ * @author <a href="mailto:">Mr H. Morgan</a>
+ * @version
  */
-public interface ParserListener
+import java.util.EventObject;
+import java.beans.PropertyChangeEvent;
+
+public class DragableCanvas3DEvent extends PropertyChangeEvent
 {
   
-  public abstract void parserChanged(ParserEvent e);
+  private DragableCanvas3D source;
+  
+  /** Creates a new instance of DragableCanvas3DEvent with source set */
+  public DragableCanvas3DEvent(Object source, String propertyName, 
+																Object oldValue, Object newValue)
+  {
+    super(source, propertyName, oldValue, newValue);
+    this.source = (DragableCanvas3D) source;
+  }
   
 }
-

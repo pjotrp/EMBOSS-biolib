@@ -19,22 +19,20 @@
 ***************************************************************/
 
 /*
- * ParserListener.java
+ * DragableCanvas3DListener.java
  *
- * Created on April 24, 2002, 1:42 PM
+ * Created on June 24, 2002, 11:41 AM
  */
 
 package org.emboss.grout;
 
-import java.beans.PropertyChangeListener;
 /**
  *
  * @author  hmorgan2
  */
-public interface ParserListener
+public interface DragableCanvas3DListener
 {
   
-  public abstract void parserChanged(ParserEvent e);
+  public abstract void dragableCanvas3DChanged(DragableCanvas3DEvent e);
   
 }
-

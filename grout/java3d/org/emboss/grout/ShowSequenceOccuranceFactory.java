@@ -1,3 +1,23 @@
+/***************************************************************
+*
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 2
+* of the License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*
+*  @author: Copyright (C) Hugh Morgan
+*
+***************************************************************/
+
 /*
  * ShowSequenceOccuranceFactory.java
  *
@@ -32,7 +52,9 @@ public class ShowSequenceOccuranceFactory implements PickOccuranceFactory,
 		private double x2;
 		private double y2;
 
-		private GroutPanel originator;
+		// private GroutPanel originator;
+		public GroutPanel originator;
+		public DefaultBehaviourOccuranceFactory parentFactory;
 
 		private Hashtable positionMarkersX = null;
 		private Hashtable positionMarkersY = null;
@@ -52,6 +74,17 @@ public class ShowSequenceOccuranceFactory implements PickOccuranceFactory,
 				originator = origin;
 				xSequence = origin.getXSequence();
 				ySequence = origin.getYSequence();
+		  	// (new Exception()).printStackTrace();
+		}
+
+		public ShowSequenceOccuranceFactory
+				(GroutPanel origin, DefaultBehaviourOccuranceFactory pf)
+		{
+				originator = origin;
+				xSequence = origin.getXSequence();
+				ySequence = origin.getYSequence();
+				parentFactory = pf;
+		  	// (new Exception()).printStackTrace();
 		}
 
 		public void PerformPick()
@@ -70,16 +103,21 @@ public class ShowSequenceOccuranceFactory implements PickOccuranceFactory,
 
 		public void mouseClicked(MouseEvent me)
 		{
-				// System.out.println("mouseClicked = " + me);
+		  	// (new Exception()).printStackTrace();
+				// System.out.println("freeMemory() b4 = " + Runtime.getRuntime().freeMemory());
+				System.gc();
+				// System.out.println("freeMemory() af = " + Runtime.getRuntime().freeMemory());
 
 				if((xSequence == null) && (ySequence ==null))
 				{
-						JOptionPane.showMessageDialog(null, "Sorry, I have no sequence for this display", "No Sequence",
+						JOptionPane.showMessageDialog(null, 
+																					"No sequence available for display",
+																					"No Sequence",
 																					JOptionPane.ERROR_MESSAGE);
 				}
 				else
 				{
-
+						// System.gc();
 						Canvas3D canvas = (Canvas3D) me.getSource();
 
 						if(!jumpTo)
@@ -87,10 +125,6 @@ public class ShowSequenceOccuranceFactory implements PickOccuranceFactory,
 								Dimension screenSize = canvas.getScreen3D().getSize();
 								Dimension canvasSize = canvas.getSize();
 						
-								// System.out.println("qwe screenSize " + screenSize );
-								// System.out.println("qwe canvasSize " +  canvasSize);
-								// System.out.println("qwe me.getPoint().y " +  me.getPoint().y);
-
 								OneGraphic graphic1 = (OneGraphic) canvas.getParent().getParent();
 								ViewPositionModel model = graphic1.getViewPositionModel();
 
@@ -106,22 +140,11 @@ public class ShowSequenceOccuranceFactory implements PickOccuranceFactory,
 																									 * (((double) canvasSize.height
 																											 - (double) me.getPoint().y)
 																											/(double) canvasSize.height))));
-								// System.out.println("qwe sequencePosY " +  sequencePosY);
-
-								// System.out.println("sequencePosX " + sequencePosX);
-								// System.out.println("me.getPoint().x " + me.getPoint().x);
-								// System.out.println("topX " + topX);
-								// System.out.println("bottomX " + bottomX);
-								//				System.out.println(" " + );
-								//				System.out.println(" " + );
 
 								if(positionMarkersX == null)
 								{
-										// System.out.println("now positionMarkers = " + positionMarkers);
 										String xSequenceName = graphic1.getXTitle();
 										String ySequenceName = graphic1.getYTitle();
-
-										// System.out.println("xSequenceName = " + xSequenceName + " ySequenceName = " + ySequenceName);
 
 										GroutSequence sequence1 = new GroutSequence(xSequenceName, 
 																																xSequence);
@@ -134,36 +157,31 @@ public class ShowSequenceOccuranceFactory implements PickOccuranceFactory,
 										if(ySequence != null)
 										{
 												positionMarkersX = 
-														originator.addSinglePositionMarker(sequencePosX, graphic1);
+														originator.addSinglePositionMarker(sequencePosX, 
+																															 graphic1);
 												positionMarkersY = 
-														originator.addYPositionMarker(sequencePosY, graphic1);
-												GroutSequence sequence2 = new GroutSequence(ySequenceName,
-																																		ySequence);
+														originator.addYPositionMarker(sequencePosY, 
+																													graphic1);
+												GroutSequence sequence2 = new GroutSequence
+														(ySequenceName, ySequence);
 												sequences.addElement(sequence2);
 												position = alterIndent(sequencePosX, sequencePosY);
 										}
 										else
 										{
 												positionMarkersX = 
-														originator.addSinglePositionMarker(sequencePosX, graphic1);
+														originator.addSinglePositionMarker(sequencePosX,
+																															 graphic1);
 												indents.addElement(new Integer(0));
 												position = sequencePosX;
 										}
 
 										alignEditor = new GroutAlignJFrame(sequences, indents);
 										alignEditor.setPosition((int)position);
-										// System.out.println("alignEditor.setPosition((int)position) = " + position);
 										alignEditor.addGroutAlignJFrameListener(this);
-										// System.out.println("adding alignEditor.addGroutAlignJFrameListener");
 								}
 								else
 								{
-										// System.out.println("moving the line cos positionMarkers = " + positionMarkers);
-										// for(int i = 0; i < positionMarkersX.size(); ++i)
-										// {
-										// moveXLineTo(((Shape3D) positionMarkersX.elementAt(i)), sequencePosX);
-										// }
-										// moveYLineTo(((Shape3D) positionMarkersY.elementAt(0)), sequencePosY);
 										double position = 0;
 
 										position = alterIndent(sequencePosX, sequencePosY);
@@ -174,15 +192,12 @@ public class ShowSequenceOccuranceFactory implements PickOccuranceFactory,
 						}
 						else
 						{
-								// System.out.println("Show Sequence of line canvas = " + canvas);
 								OneGraphic graphic1 = (OneGraphic) canvas.getParent().getParent();
 								ViewPositionModel model = graphic1.getViewPositionModel();
-								PickCanvas pickCanvas = new PickCanvas(canvas,
-																											 graphic1.getRendWindContainer().getUniverse().getLocale());
-								/*
-									PickCanvas pickCanvas = new PickCanvas(((Canvas3D) me.getSource()),
-									((OneGraphic) me.getComponent()).getRendWindContainer().getUniverse().getLocale());
-								*/
+								PickCanvas pickCanvas = new PickCanvas
+										(canvas, 
+										 graphic1.getRendWindContainer().getUniverse().getLocale());
+
 								pickCanvas.setMode(PickTool.GEOMETRY_INTERSECT_INFO);
 								pickCanvas.setTolerance(5.0f);
 								pickCanvas.setShapeLocation(me);
@@ -191,17 +206,22 @@ public class ShowSequenceOccuranceFactory implements PickOccuranceFactory,
 
 								if (pickResult != null)
 								{
-										// System.out.println("shapes in pick result = " + pickResult.getCompressedGeometryShape3Ds());
           
-										PickIntersection pickIntersection = pickResult.getClosestIntersection( pickCanvas.getStartPosition());
+										PickIntersection pickIntersection = 
+												pickResult.getClosestIntersection
+												(pickCanvas.getStartPosition());
           
 										if (pickIntersection != null)
 										{
-												Point3d p3d1 = pickIntersection.getClosestVertexCoordinates();
-												Point3d[] coords = pickIntersection.getPrimitiveCoordinates();
+												Point3d p3d1 = 
+														pickIntersection.getClosestVertexCoordinates();
+												Point3d[] coords = 
+														pickIntersection.getPrimitiveCoordinates();
 												int index = pickIntersection.getClosestVertexIndex();
-												int[] arrayIndex = pickIntersection.getPrimitiveCoordinateIndices();
-												GeometryArray geometry = pickIntersection.getGeometryArray();
+												int[] arrayIndex = 
+														pickIntersection.getPrimitiveCoordinateIndices();
+												GeometryArray geometry = 
+														pickIntersection.getGeometryArray();
             
 												Point3d p3d2 = new Point3d();
 												geometry.getCoordinate(index, p3d2);
@@ -211,17 +231,10 @@ public class ShowSequenceOccuranceFactory implements PickOccuranceFactory,
 												Point3d bottom = new Point3d(Double.POSITIVE_INFINITY,
 																										 Double.POSITIVE_INFINITY, 0);
             
-												// System.out.println("p3d1 = " + p3d1);
-												// System.out.println("coords = " + coords);
-												// System.out.println("index = " + index);
-												// System.out.println("arrayIndex = " + arrayIndex);
-												// System.out.println("geometry = " + geometry);
-												// System.out.print("Match between");
 												// not sure you need this messin' about, 
 												// but it helps with different shapes
 												for(int i = 0; i < coords.length; ++i)
 												{
-														// System.out.print(" point " + i + " = " + coords[i]);
 														if(coords[i].x > top.x)
 														{
 																top.x = coords[i].x;
@@ -245,7 +258,6 @@ public class ShowSequenceOccuranceFactory implements PickOccuranceFactory,
 
 												position = alterIndent(((bottom.x / 2) + (top.x / 2)),
 																							 ((bottom.y / 2) + (top.y / 2)));
-												// System.out.println("Setting position to " + position);
 												alignEditor.setIndents(indents);
 												alignEditor.setPosition((int)position);
 												// model.setViewPosition(bottom, top);
@@ -256,7 +268,6 @@ public class ShowSequenceOccuranceFactory implements PickOccuranceFactory,
 										System.err.println("Cannot find line, please try again.");
 								}
 						}
-						// System.out.println(xSequence.substring(((int)sequencePosX - 5), ((int)sequencePosX + 5)));
 				}
 		}
 		public void mouseEntered(MouseEvent me)
@@ -286,10 +297,10 @@ public class ShowSequenceOccuranceFactory implements PickOccuranceFactory,
 
 		public void moveXLineTo(Shape3D line, double sequencePosX)
 		{
-				// IndexedLineStripArray geometry = (IndexedLineStripArray) line.getGeometry();
 				for (Enumeration e = line.getAllGeometries() ; e.hasMoreElements() ;)
 				{
-						IndexedLineStripArray geometry = (IndexedLineStripArray) e.nextElement();
+						IndexedLineStripArray geometry = 
+								(IndexedLineStripArray) e.nextElement();
 
 						Point3d point0 = new Point3d();
 						geometry.getCoordinate(0, point0);
@@ -305,10 +316,10 @@ public class ShowSequenceOccuranceFactory implements PickOccuranceFactory,
 
 		public void moveYLineTo(Shape3D line, double sequencePosY)
 		{
-				// IndexedLineStripArray geometry = (IndexedLineStripArray) line.getGeometry();
 				for (Enumeration e = line.getAllGeometries() ; e.hasMoreElements() ;)
 				{
-						IndexedLineStripArray geometry = (IndexedLineStripArray) e.nextElement();
+						IndexedLineStripArray geometry = 
+								(IndexedLineStripArray) e.nextElement();
 
 						Point3d point0 = new Point3d();
 						geometry.getCoordinate(0, point0);
@@ -335,9 +346,6 @@ public class ShowSequenceOccuranceFactory implements PickOccuranceFactory,
 																									- sequencePosX)), 0);
 						indents.setElementAt(new Integer(0), 1);
 						position = sequencePosY;
-						// System.out.println("(sequencePosY > sequencePosX so 2nd indent = " + (sequencePosY - sequencePosX));
-						// System.out.println("(sequencePosY = " +  sequencePosY);
-						// System.out.println("(sequencePosX = " +  sequencePosX);
 				}
 				else
 				{
@@ -345,11 +353,7 @@ public class ShowSequenceOccuranceFactory implements PickOccuranceFactory,
 						indents.setElementAt(new Integer((int) (sequencePosX 
 																									- sequencePosY)), 1);
 						position = sequencePosX;
-						// System.out.println("(sequencePosY < sequencePosX so 1st indent = " + (sequencePosX - sequencePosY));
-						// System.out.println("(sequencePosY = " +  sequencePosY);
-						// System.out.println("(sequencePosX = " +  sequencePosX);
 				}
-				// System.out.println("indents.elementAt(0) = " + indents.elementAt(0) + " indents.elementAt(1) = " + indents.elementAt(1) + "indents.size()  = " + indents.size());
 
 				return position;
 		}
@@ -376,12 +380,6 @@ public class ShowSequenceOccuranceFactory implements PickOccuranceFactory,
 						}
 						if(ySequence != null)
 						{
-								/*
-								Enumeration keys = positionMarkersY.keys();
-								moveYLineTo(((Shape3D) keys.nextElement()),
-														((double) (((Integer)e.getNewValue()).intValue() - 
-																			 ((Integer)indents.elementAt(1)).intValue())));
-								*/
 								for (Enumeration keys = positionMarkersY.keys(); keys.hasMoreElements();) 
 								{
 										moveYLineTo(((Shape3D) keys.nextElement()),
@@ -392,7 +390,7 @@ public class ShowSequenceOccuranceFactory implements PickOccuranceFactory,
 				}
 				else if(whatChanged.equals("windowClosed"))
 				{
-						// System.out.println("whatChanged.equals(windowClosed");
+						System.out.println("whatChanged.equals(windowClosed");
 						// for(int i = 0; i < positionMarkersX.size(); ++i)
 						for (Enumeration keys = positionMarkersX.keys();
 								 keys.hasMoreElements();) 
@@ -410,12 +408,29 @@ public class ShowSequenceOccuranceFactory implements PickOccuranceFactory,
 								}
 								// removeLine((Shape3D) positionMarkersY.elementAt(0));
 						}
-						originator.changePickFactory("ShowSequence");
+						if(this.getClass().isInstance(originator.getPickFactory()))
+						{
+								// originator.changePickFactory("ShowSequence");
+								parentFactory.changeShowSequenceOccuranceFactory(this);
+						}
+						else
+						{
+												if(parentFactory != null)
+												{
+														parentFactory.
+																changeShowSequenceOccuranceFactory(this);
+																// newShowSequenceOccuranceFactory(originator);
+												}
+						}
 				}
 				else if(whatChanged.equals("newAlignJFrame"))
 				{
 						// System.out.println("originator.changePickFactory(ShowSequence");
-						originator.changePickFactory("ShowSequence");
+						// originator.changePickFactory("ShowSequence");
+						if(parentFactory != null)
+						{
+								parentFactory.changeShowSequenceOccuranceFactory(this);
+						}
 				}
 				else if(whatChanged.equals("JumpToNearestAlignment"))
 				{
