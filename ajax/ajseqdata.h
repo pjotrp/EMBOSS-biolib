@@ -56,7 +56,8 @@ typedef struct AjSSeqQuery {
   AjPStr Application;		/* External application command */
   enum AjEQryType Type;		/* Enum query type */
   ajlong Fpos;			/* File position from fseek */
-  SeqSAccess* Access;		/* Access function : see ajseqread.h */
+  AjBool QryDone;		/* Has the query been done yet */
+  SeqSAccess* Access;	        /* Access function : see ajseqread.h */
   void* QryData;		/* Private data for access function */
 } AjOSeqQuery, *AjPSeqQuery;
 
