@@ -86,7 +86,7 @@ section: output [
 ]
 
   align: outfile  [
-    standard: "Y"
+    parameter: "Y"
     aformat: "simple"
     minseqs: "2"
     maxseqs: "2"
