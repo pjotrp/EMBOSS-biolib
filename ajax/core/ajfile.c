@@ -2933,6 +2933,12 @@ void ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
     AjPStr s=NULL;
     AjPStr t=NULL;
     AjBool flag;
+    AjPStr tpath=NULL;
+
+
+    tpath = ajStrNew();
+    ajStrAssC(&tpath,ajStrStr(path));
+
     
     if(dolist)
     {
@@ -2943,11 +2949,19 @@ void ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
     if(show)
 	ajFmtPrintF(outf,"\n\nDIRECTORY: %s\n\n",ajStrStr(path));
 
-    if(!ajFileDir(&path))
+    if(!ajFileDir(&tpath))
+    {
+	ajStrDel(&tpath);
 	return;
+    }
+    
 
-    if(!(indir=opendir(ajStrStr(path))))
+    if(!(indir=opendir(ajStrStr(tpath))))
+    {
+	ajStrDel(&tpath);
 	return;
+    }
+    
 
     s = ajStrNew();
     dirs = ajListNew();
@@ -2956,7 +2970,7 @@ void ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
     {
 	if(!dp->d_ino || !strcmp(dp->d_name,".") || !strcmp(dp->d_name,".."))
 	    continue;
-	ajStrAssC(&s,ajStrStr(path));
+	ajStrAssC(&s,ajStrStr(tpath));
 /*	ajStrAppC(&s,"/");*/
 	ajStrAppC(&s,dp->d_name);
 	if(ajFileStat(&s,AJ_FILE_DIR))  /* Its a directory */
@@ -3019,6 +3033,7 @@ void ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
     }
 
     ajStrDel(&s);
+    ajStrDel(&tpath);
     ajListDel(&dirs);
 
     return;
