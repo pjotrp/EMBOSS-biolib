@@ -36,14 +36,14 @@ pkgdata_DATA =  abiview0.gif banana0.gif chaos0.gif cpgplot0.gif \
                fuzznuc.html fuzzpro.html fuzztran.html garnier.html \
                geecee.html gendist.html getorf.html groups.html \
                helixturnhelix.html hmoment.html iep.html index.html \
-               infoalign.html information_group.html infoseq.html
-pkgdata2_DATA = isochore.html jembossctl.html kitsch.html lindna.html \
-               listor.html marscan.html maskfeat.html maskseq.html \
-               matcher.html megamerger.html menus_group.html merger.html \
-               mix.html msbar.html mse.html mwfilter.html needle.html \
-               neighbor.html newcpgreport.html newcpgseek.html newseq.html \
-               noreturn.html notseq.html nrscope.html nthseq.html \
-               nucleic_2d_structure_group.html \
+               infoalign.html information_group.html infoseq.html \
+               interface.html isochore.html jembossctl.html kitsch.html
+pkgdata2_DATA = lindna.html listor.html marscan.html maskfeat.html \
+               maskseq.html matcher.html megamerger.html menus_group.html \
+               merger.html mix.html msbar.html mse.html mwfilter.html \
+               needle.html neighbor.html newcpgreport.html newcpgseek.html \
+               newseq.html noreturn.html notseq.html nrscope.html \
+               nthseq.html nucleic_2d_structure_group.html \
                nucleic_codon_usage_group.html \
                nucleic_composition_group.html \
                nucleic_cpg_islands_group.html \

@@ -21,7 +21,7 @@ pkgdata_DATA =  SITE-DIRECTED.txt abiview.txt ajtest.txt alignwrap.txt \
                extractseq.txt factor.txt findkm.txt fitch.txt freak.txt \
                fuzznuc.txt fuzzpro.txt fuzztran.txt garnier.txt geecee.txt \
                gendist.txt getorf.txt helixturnhelix.txt hmoment.txt \
-               iep.txt infoalign.txt infoseq.txt isochore.txt
+               iep.txt infoalign.txt infoseq.txt interface.txt isochore.txt
 pkgdata2_DATA = jembossctl.txt kitsch.txt lindna.txt listor.txt marscan.txt \
                maskfeat.txt maskseq.txt matcher.txt megamerger.txt \
                merger.txt mix.txt msbar.txt mse.txt mwfilter.txt needle.txt \
