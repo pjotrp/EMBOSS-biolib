@@ -1,24 +1,23 @@
-<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
 <html>
-<head>
-   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-   <meta name="GENERATOR" content="Mozilla/4.77 [en] (X11; U; SunOS 5.8 sun4u) [Netscape]">
-</head>
 <body text="#000000" bgcolor="#7CA6FF" link="#0000EE" vlink="#551A8B" alink="#FF0000">
-
+&nbsp;
 <center>
 <h1>
 <font color="#FF0000">Jemboss (<i>v</i>. alpha1.0)</font></h1></center>
 
-<p><br>
-<p>&nbsp;&nbsp; A server will become available at the HGMP for registered
-users. The user will be able to download the client from a web-page. In
-this way any updates to the client can be automatically downloaded.
+<h1>
+<font size=+2>Installation and Setup</font></h1>
+
+<p><br>&nbsp;&nbsp;&nbsp; A server will become available at the HGMP for
+registered users. The user will be able to download the client from a web-page.
+In this way any updates to the client can be automatically downloaded.
 <p>&nbsp;&nbsp;&nbsp; Jemboss uses Java Native Interface (JNI) to enable
 it to utilise the EMBOSS ajax library. This is used to calculate sequence
 attributes from any of the numerous formats that EMBOSS can use.
-<p>&nbsp;&nbsp;&nbsp; Jemboss uses Embreo which is also being developed
-at the HGMP by Peter Tribble, as a general SOAP calling library.
+<p>&nbsp;&nbsp;&nbsp; Jemboss uses of the Embreo which is also being developed
+at the HGMP by Peter Tribble, as a general SOAP calling Java library.
+<p>&nbsp;&nbsp;&nbsp; Note, this software has been developed and tested,
+so far,&nbsp; using java1.3.
 <br>&nbsp;
 <h2>
 Directories</h2>
@@ -62,7 +61,7 @@ Directories</h2>
 </table>
 
 <h2>
-</h2>
+<font size=-2>&nbsp;</font></h2>
 
 <h2>
 Client Compilation</h2>
@@ -94,23 +93,34 @@ For example:
 <br>server.private=http://privsoap2.hgmp.mrc.ac.uk/cgi-bin/soap.cgi
 <br>service.public=JembossServer
 <br>service.private=EmbossSoap
-<br>&nbsp;
+<p>The first line in this example (user.auth) means that the server is
+expecting a username and password, to be able to run the EMBOSS applications.
+The next two lines are the location of the public and private servers,
+that the Jemboss client is expecting to access. The last lines in this
+file are the names of the two servers.
 <p>6. To run Jemboss
 <br>java org/emboss/Jemboss/Jemboss &amp;
 <br>&nbsp;
-<br>&nbsp;
 <h1>
 <font size=+2>Server Setup</font></h1>
-&nbsp;&nbsp;&nbsp; The Jesmboss uses two servers at the HGMP. The first
-is a public server (no authentication necessary), which servers to launch
-Jemboss and display the program forms and help. To run any of the applications
-a second, private server is used which requires the username and password
-to be provided by the user.
+&nbsp;&nbsp;&nbsp; The server setup is very much dependent on the local
+environment and the level of security necessary for that site. The server
+that is in the distribution is very much in development. It will be necessary
+for any other site to design their own method of deploying these soap service
+methods that the client accesses.
+<p>&nbsp;&nbsp;&nbsp;&nbsp; The Jemboss server at the HGMP uses two servers.
+The first is a public server (no authentication necessary), which serves
+to launch Jemboss and display the program forms and help. To run any of
+the applications a second, private server is used which requires the username
+and password to be provided by the user.
 <p>&nbsp;&nbsp;&nbsp; The Java server code is in org.emboss.jemboss.server.JembossServer
 class (and the classes uses org.emboss.jemboss.Ajax org.emboss.jemboss.RunEmbossApplication).
-This is used for the public Jemboss server at the HGMP but at present has
-most of the private and public server methods (except those used by the
-job manager). The private server used at the HGMP runs as perl scripts.
+This is used for the public Jemboss server at the HGMP. The public methods
+are then deployed using an Apache TomCat server.
+<p>&nbsp;&nbsp;&nbsp; At present most of the private and public server
+methods (except those used by the job manager) are provided by this Java
+server. However, the private server used at the HGMP runs as a perl script
+and this is also provided in the distribution.
 <br>&nbsp;
 <h2>
 Acknowledgements:</h2>
@@ -120,12 +130,7 @@ This product includes software developed by the Apache Software Foundation
 <br>&nbsp;
 <p>
 <hr WIDTH="100%">
-<p>UK MRC HGMP Resource Centre
-<br>Hinxton
-<br>Cambridge
-<br>CB10 1SB
-<br>UK
-<br>&nbsp;
+<br><i>tcarver@hgmp.mrc.ac.uk</i>
 <br>&nbsp;
 </body>
 </html>
