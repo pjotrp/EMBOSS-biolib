@@ -12,8 +12,8 @@
 **  i, j, and k unit vectors in the x y and z directions respectively
 **
 ** @author Copyright (C) 2003 Damian Counsell
-** @version $Revision: 1.6 $
-** @modified $Date: 2003/10/21 16:53:12 $
+** @version $Revision: 1.7 $
+** @modified $Date: 2003/10/22 12:25:43 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -337,6 +337,51 @@ float aj3dVectorDihedralAngle(AjP3dVector ajp3dVectorA,
 	fDihedralAngle = -1.0 * fDihedralAngle;
 
     return fDihedralAngle;
+}
+
+
+
+
+/* @func aj3dVectorDihedralAngle2 ********************************************
+**
+** calculates the angle from the plane perpendicular to A x B to the plane
+**  perpendicular to B x C (where A, B and C are vectors)
+**
+** @param [r] ajp3dVectorA [AjP3dVector] 
+** @param [r] ajp3dVectorB [AjP3dVector] 
+** @param [r] ajp3dVectorC [AjP3dVector] 
+**
+** @return [float] dihedral angle
+** @@
+******************************************************************************/
+
+float aj3dVectorDihedralAngle2(AjP3dVector ajp3dVectorA,
+			       AjP3dVector ajp3dVectorB,
+			       AjP3dVector ajp3dVectorC)
+{ 
+    float fDihedralAngle2;
+    float fNumerator;
+    float fDenominator;
+    float fBterm;
+
+    AjP3dVector ajp3dVectorTorqueFirst  = NULL;
+    AjP3dVector ajp3dVectorTorqueSecond = NULL;
+    AjP3dVector ajp3dVectorTorqueThird  = NULL;
+
+    ajp3dVectorTorqueFirst  = aj3dVectorNew();
+    ajp3dVectorTorqueSecond = aj3dVectorNew();
+    ajp3dVectorTorqueThird  = aj3dVectorNew();
+    aj3dVectorCrossProduct(ajp3dVectorA, ajp3dVectorB,
+			   ajp3dVectorTorqueFirst);
+    aj3dVectorCrossProduct(ajp3dVectorB, ajp3dVectorC,
+			   ajp3dVectorTorqueSecond);
+    fNumerator = aj3dVectorDotProduct(ajp3dVectorTorqueFirst,
+					 ajp3dVectorTorqueSecond);
+    fDenominator = aj3dVectorLength(ajp3dVectorTorqueFirst) * aj3dVectorLength(ajp3dVectorTorqueSecond);
+    fBterm = fNumerator / fDenominator;
+    fDihedralAngle2 = ajRadToDeg( (float)acos((double)fBterm) );
+
+    return fDihedralAngle2;
 }
 
 
