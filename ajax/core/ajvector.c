@@ -12,8 +12,8 @@
 **  i, j, and k unit vectors in the x y and z directions respectively
 **
 ** @author Copyright (C) 2003 Damian Counsell
-** @version $Revision: 1.8 $
-** @modified $Date: 2003/10/29 10:34:25 $
+** @version $Revision: 1.9 $
+** @modified $Date: 2003/11/06 15:17:55 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -360,6 +360,11 @@ float aj3dVectorDihedralAngle(AjP3dVector ajp3dVectorA,
 	fSignCoefficient = -1.0;
 	
     }
+
+    aj3dVectorDel(&ajp3dVectorTorqueFirst);
+    aj3dVectorDel(&ajp3dVectorTorqueSecond);
+    aj3dVectorDel(&ajp3dVectorTorqueThird);
+    aj3dVectorDel(&ajp3dVectorTorqueCombined);
 
     return (fSignCoefficient * fDihedralAngle);
 }
