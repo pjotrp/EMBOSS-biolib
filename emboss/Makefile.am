@@ -9,7 +9,7 @@ demofeatures demolist demosequence demostring demotable \
 entrails histogramtest intconv \
 patmattest \
 seqinfo \
-seqretallfeat seqretfeat seqtofeat \
+seqretallfeat seqtofeat \
 swissparse testplot treetypedisplay 
 
 bin_PROGRAMS = abiview acdc antigenic \
@@ -211,7 +211,6 @@ histogramtest_SOURCES = histogramtest.c
 patmattest_SOURCES = patmattest.c
 swissparse_SOURCES = swissparse.c
 seqretallfeat_SOURCES = seqretallfeat.c
-seqretfeat_SOURCES = seqretfeat.c
 seqtofeat_SOURCES = seqtofeat.c
 testplot_SOURCES = testplot.c
 treetypedisplay_SOURCES = treetypedisplay.c
