@@ -313,16 +313,12 @@ static int sixpack_findorfs (AjPSeqout *outseq, AjPFile *outf, ajint from,
 	      orflength=i-last_stop;
 	    else 
 	      {
+		orflength=0;
 		for (j=last_stop;j<i;j++)
 		  {
 		    if(p[j]=='M')
 		      {
 			orflength=i-j;
-			break;
-		      }
-		    else
-		      {
-			orflength=0;
 			break;
 		      }
 		  }
@@ -332,19 +328,23 @@ static int sixpack_findorfs (AjPSeqout *outseq, AjPFile *outf, ajint from,
 		sixpack_ajprintseq(outseq, p,i-orflength,i-1,orflength,name,orfnb+1,frame,origname,min_orflength);
 		orfnb++;
 	      }
-	    else if ((last_stop == 0) && firstorf)
+	    else if ((last_stop == 0) && firstorf && p[0] != '*')
 	      {
 		if (mstart)
 		  orflength=i-last_stop;
-		sixpack_ajprintseq(outseq, p,i-orflength,i-1,orflength,name,orfnb+1,frame,origname,min_orflength);
-		orfnb++;
+		if (orflength > 0) {
+		  sixpack_ajprintseq(outseq, p,i-orflength,i-1,orflength,name,orfnb+1,frame,origname,min_orflength);
+		  orfnb++;
+		}
 	      }
 	    else if ((i == to-1) && addedasterisk)
 	      {
-		if (mstart)
-		  orflength=i-last_stop;
-		sixpack_ajprintseq(outseq, p,i-orflength,i-1,orflength,name,orfnb+1,frame,origname,min_orflength);
-		orfnb++;
+		/*		if (mstart)
+				orflength=i-last_stop; */
+		if (orflength > 0) {
+		  sixpack_ajprintseq(outseq, p,i-orflength,i-1,orflength,name,orfnb+1,frame,origname,min_orflength);
+		  orfnb++;
+		}
 	      }
 
 	    
@@ -373,8 +373,8 @@ static int sixpack_findorfs (AjPSeqout *outseq, AjPFile *outf, ajint from,
 ** @param [?] seq [char*] Sequence to write
 ** @param [?] begin [ajint] Start position of the ORF to write
 ** @param [?] end [int] End position of the ORF to write
+** @param [?] orflengtht [ajint] Size of the current ORF
 ** @param [?] name [char*] Name of the translated sequence (with frame number)
-** @param [?] count [ajint]
 ** @param [?] count [ajint] Number of the ORF to be written in this frame
 ** @param [?] frame [ajint] Frame number
 ** @param [?] origname [char*] Original name of the sequence (DNA)
