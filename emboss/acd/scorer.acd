@@ -1,6 +1,6 @@
 application: scorer
 [
-  documentation: "scores accuracy of protein-protein sequence alignment algorithm against gold standard structure-structure alignment"
+  documentation: "scores accuracy of protein-protein sequence alignment against gold standard structure-structure alignment"
   groups: "protein: 3D structure"
 ]
 
@@ -10,29 +10,22 @@ section: input
   type: "page"
 ]
 
-  dirlist: golddirlist
+  sequence: goldsubstituted
   [
     parameter: "Y"
 #    default: "/data/structure/people/mhurley/Database/HOMSTRAD/class/all_alpha/glob"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_output_alignments/needle"
-    information: "directory containing gold standard substituted sequences"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/gold/1csn_3erk.sbs"
+    information: "test aligned and substituted sequence"
   ]
 
-  dirlist: testdir
+  sequence: testsubstituted
   [
     parameter: "Y"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/substituted_sequences"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_output_alignments/nawalign"
-    information: "directory containing alignment files for scoring"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/needle/1csn_3erk.sbs"
+    information: "gold standard aligned and substituted sequence"
   ]
 
-  directory: scoreddir
-  [
-    parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/scored_substituted"
-    information: "name of directory containing scored substituted alignments"
-    extension: "sco"
-  ]
 
 endsection: input
 
@@ -58,21 +51,12 @@ section: output
   type: "page"
 ]
 
-  report: outfile
-  [
+  outfile: seqscorefile
+[
     parameter: "Y"
-    rformat: "table"
-    multiple: "N"
-    precision: "1"
-    prompt: "scoresfile for output"
-    taglist: "int:score1 float:score2"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_scoring_files/scores.txt"
-  ]
+    extension: "scored"
+    help: "If you enter the name of a file here then this program will
+           write the score details into that file."
+]
 
-  seqout: scored
-  [
-    param: "Y"
-    type: "gapprotein"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_scoring_files/09Aug04.fasta"
-  ]
 endsection: output
