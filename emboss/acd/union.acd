@@ -1,5 +1,5 @@
 appl: union [
-  documentation: "Reads sequence fragments and builds one sequeence"
+  documentation: "Reads sequence fragments and builds one sequence"
   groups: "Edit"
 ]
 
