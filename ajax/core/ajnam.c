@@ -49,6 +49,7 @@ enum NamEType
 
 static AjBool namDoDebug  = AJFALSE;
 static AjBool namDoValid  = AJFALSE;
+static AjBool namDoHomeRc = AJTRUE;
 static AjPStr namRootStr  = NULL;
 
 static AjBool namListParseOK = AJFALSE;
@@ -1823,6 +1824,8 @@ void ajNamInit(const char* prefix)
     
     /* look for .embossrc in an arbitrary directory */
     
+    ajStrAssC(&debugStr, prefix);
+    
     prefixRoot= getenv("EMBOSSRC");
     
     if(prefixRoot)
@@ -1850,7 +1853,13 @@ void ajNamInit(const char* prefix)
     
     prefixRoot= getenv("HOME");
     
-    if(prefixRoot)
+    ajStrAppC(&debugStr, "_RCHOME");
+    ajStrToUpper(&debugStr);
+    
+    if(ajNamGetenv(debugStr, &debugVal))
+	ajStrToBool(debugVal, &namDoHomeRc);
+
+    if(namDoHomeRc &&prefixRoot)
     {
 	ajStrAssC(&namRootStr, prefixRoot);
 	ajStrAppC(&namRootStr, "/.");

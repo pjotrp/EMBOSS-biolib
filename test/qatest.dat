@@ -12275,6 +12275,10 @@ FP /HBB_HUMAN/
 ID showdb-ex
 UC Display information on the currently available databases:
 AP showdb
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+PP EMBOSS_RCHOME=N
+PP export EMBOSS_RCHOME
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -12288,6 +12292,10 @@ FP /^tembl\s+N\s+OK\s+OK\s+OK/
 ID showdb-ex2
 UC Write the results to a file:
 AP showdb
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+PP EMBOSS_RCHOME=N
+PP export EMBOSS_RCHOME
 CL -outfile showdb.out
 FI stderr
 FC = 1
@@ -12302,6 +12310,10 @@ FP /^tembl\s+N\s+OK\s+OK\s+OK/
 ID showdb-ex3
 UC Display information on one explicit database:
 AP showdb
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+PP EMBOSS_RCHOME=N
+PP export EMBOSS_RCHOME
 CL -database tsw
 FI stderr
 FC = 1
@@ -12316,6 +12328,10 @@ FP 0 /^tembl/
 ID showdb-ex4
 UC Display information on the databases formatted in HTML:
 AP showdb
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+PP EMBOSS_RCHOME=N
+PP export EMBOSS_RCHOME
 CL -html
 FI stderr
 FC = 1
@@ -12330,6 +12346,10 @@ FP /^<tr><td>tembl</td><td>N</td><td>OK/
 ID showdb-ex5
 UC Display protein databases only:
 AP showdb
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+PP EMBOSS_RCHOME=N
+PP export EMBOSS_RCHOME
 CL -nonucleic
 FI stderr
 FC = 1
@@ -12344,6 +12364,10 @@ FP 0 /^[^#]\S*\s+N/
 ID showdb-ex6
 UC Display the information with no headings:
 AP showdb
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+PP EMBOSS_RCHOME=N
+PP export EMBOSS_RCHOME
 CL -noheading
 FI stderr
 FC = 1
@@ -12358,6 +12382,10 @@ FP 0 /\A#/
 ID showdb-ex7
 UC Display just a list of the available database names:
 AP showdb
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+PP EMBOSS_RCHOME=N
+PP export EMBOSS_RCHOME
 CL -noheading -notype -noid -noquery -noall -nocomment -auto
 FI stdout
 FP /^tsw\s+\n/
@@ -12367,6 +12395,10 @@ FP /^tembl\s+\n/
 ID showdb-ex8
 UC Display only the names and types:
 AP showdb
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+PP EMBOSS_RCHOME=N
+PP export EMBOSS_RCHOME
 CL -only -type
 FI stderr
 FC = 1
@@ -13059,7 +13091,7 @@ IN v
 IN
 IN
 FI stderr
-FC = 8
+FC = 9
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -13442,6 +13474,8 @@ ID whichdb-ex
 AP whichdb
 PP EMBOSSRC=../..
 PP export EMBOSSRC
+PP EMBOSS_RCHOME=N
+PP export EMBOSS_RCHOME
 TI 300
 IN hsfau1
 IN
