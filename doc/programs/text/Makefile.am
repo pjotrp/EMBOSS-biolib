@@ -1,4 +1,4 @@
-pkgdata_DATA = SITE-DIRECTED.txt antigenic.txt backtranseq.txt \
+pkgdata_DATA = SITE-DIRECTED.txt abiview.txt antigenic.txt backtranseq.txt \
                banana.txt btwisted.txt chaos.txt checktrans.txt \
                chips.txt cirdna.txt clique.txt codcmp.txt coderet.txt \
                complex.txt compseq.txt cons.txt consense.txt contml.txt \
@@ -30,7 +30,7 @@ pkgdata_DATA = SITE-DIRECTED.txt antigenic.txt backtranseq.txt \
                preg.txt prettyplot.txt prettyseq.txt prima.txt \
                primersearch.txt printsextract.txt profit.txt prophecy.txt \
                prophet.txt prosextract.txt protdist.txt pscan.txt \
-               rebaseextract.txt redata.txt remap.txt restml.txt \
+               rebaseextract.txt recode.txt redata.txt remap.txt restml.txt \
                restrict.txt revseq.txt seealso.txt seqboot.txt \
                seqmatchall.txt seqret.txt seqretall.txt seqretset.txt \
                seqretsplit.txt showdb.txt showfeat.txt showorf.txt \

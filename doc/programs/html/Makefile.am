@@ -1,4 +1,5 @@
-pkgdata_DATA = banana0.gif chaos0.gif cpgplot0.gif dotmatcher0.gif \
+pkgdata_DATA = abiview0.gif banana0.gif chaos0.gif cpgplot0.gif \
+               dotmatcher0.gif \
                dottup0.gif emboss_icon.gif findkm0.gif isochore0.gif \
                octanol0.gif pepinfo1.gif pepinfo2.gif pepnet0.gif \
                pepwheel0.gif pepwindow0.gif pepwindowall0.gif \
@@ -6,7 +7,7 @@ pkgdata_DATA = banana0.gif chaos0.gif cpgplot0.gif dotmatcher0.gif \
                syco0.gif syco1.gif tmap0.gif topo.gif wobble0.gif \
                SITE-DIRECTED.html alignment_global_group.html \
                alignment_group.html alignment_local_group.html \
-               alignment_multiple_group.html antigenic.html \
+               alignment_multiple_group.html abiview.html antigenic.html \
                backtranseq.html banana.html btwisted.html chaos.html \
                checktrans.html chips.html cirdna.html clique.html \
                codcmp.html coderet.html coding_regions_group.html \
@@ -57,7 +58,7 @@ pkgdata_DATA = banana0.gif chaos0.gif cpgplot0.gif dotmatcher0.gif \
                protdist.html protein_sequence_composition_group.html \
                protein_sequence_features_group.html \
                protein_sequence_properties_group.html \
-               pscan.html rebaseextract.html redata.html \
+               pscan.html rebaseextract.html recode.html redata.html \
                reformatting_group.html remap.html repeats_group.html \
                restml.html restrict.html \
                re_group.html \
