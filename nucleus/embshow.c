@@ -31,7 +31,7 @@ Example: complement of the sequence
 
 Create a new type in the descriptor object types 'enum ShowEValtype'. 
 eg: SH_COMP
-Use this to refer to this type in later routines. (eg: by embShowAddComp())
+Use this to refer to this type in later routines. (eg: by embShowAddComp)
 
 Create a structure to hold information about what options for this type
 you can have. 
@@ -39,7 +39,7 @@ eg: typedef struct EmbSShowComp { ... }
 
 Create a function called by the user to set up the new type as the next
 thing to be displayed in the list of things.
-eg: embShowAddComp()
+eg: embShowAddComp
 
 Create the routine to actually output a line's length of whatever is
 being displayed from position 'pos' of the sequence - the output is
@@ -49,7 +49,7 @@ These strings need not be complete lines - you can push many strings of
 partial lines if you prefer.
 End the lines to be output by pushing a string ending with a '\n'.
 As many lines as you wish may be pushed onto the lines list.
-eg: showFillComp()
+eg: showFillComp
 
 Add a case statement to showFillLines to call the showFill* routine.
 eg:
@@ -270,7 +270,7 @@ void embShowDel (EmbPShow* pthis)
      ****** the first sequence.
      ****** 
      ****** It was because I was dutifully freeing up all the data held in
-     ****** this structure and 'seq' is later freed by ajSeqallNext()
+     ****** this structure and 'seq' is later freed by ajSeqallNext
      ******/
     /*****  DO NOT: ajSeqDel(&pthis->seq); *****/
 
@@ -330,7 +330,7 @@ void embShowDel (EmbPShow* pthis)
 
     (void) ajListIterFree(iter);
 
-    /* we have already freed the descriptors, so use ajListDel() here */ 
+    /* we have already freed the descriptors, so use ajListDel here */ 
     while(ajListPop(thys->list,(void **)&ptr));
     (void) ajListDel(&thys->list);
 
@@ -463,7 +463,7 @@ static void showDelRE (EmbPShowRE info) {
 
 static void showDelFT (EmbPShowFT info) {
 
-  /*(void) ajFeattabDel(&(info->feat));*/ /* cloned pointer in showeseq etc.*/
+  (void) ajFeattableDel(&(info->feat)); /* cloned pointer in showseq etc.*/
   AJFREE(info);
 
 }
@@ -1702,7 +1702,7 @@ static void showFillREupright(EmbPShow thys, AjPList lines, EmbPShowRE info,
 
 	    /*
 	     *  we will be potentially updating the nodes of linelist, so
-	     *  don't just iterate, use ajListstrPop() and ajListstrPushApp()
+	     *  don't just iterate, use ajListstrPop and ajListstrPushApp
 	     *  to pop off the bottom and then push the altered node back on
 	     *  the top of the list
 	     */
@@ -1782,7 +1782,7 @@ static void showFillREupright(EmbPShow thys, AjPList lines, EmbPShowRE info,
 
     /* tidy up */
     while(ajListstrPop(linelist,&sajb));
-    /* do not use ajListstrFree() here! */
+    /* do not use ajListstrFree here! */
     (void) ajListstrDel(&linelist);
     ajStrDel(&tick);
 }
@@ -2133,7 +2133,7 @@ static void showFillREflat(EmbPShow thys, AjPList lines, EmbPShowRE info,
 
 	    /*
 	     *  we will be potentially updating the nodes of linelist, so
-	     *  don't just iterate, use ajListstrPop() and ajListstrPushApp()
+	     *  don't just iterate, use ajListstrPop and ajListstrPushApp
 	     *  to pop off the bottom and then push the altered node back on
 	     *  the top of the list
 	     */
@@ -2148,7 +2148,7 @@ static void showFillREflat(EmbPShow thys, AjPList lines, EmbPShowRE info,
 		if (!freespace)
 		{
 		    /* if name space is clear, write name and site */
-		    /* ajDebug("Calling showLineIsClear() for region %d to "
+		    /* ajDebug("Calling showLineIsClear for region %d to "
 		       "%d", start-pos, end-pos); */
 		    if (showLineIsClear(&line, start-pos, end-pos))
 		    {
@@ -2245,7 +2245,7 @@ static void showFillREflat(EmbPShow thys, AjPList lines, EmbPShowRE info,
 
     /* tidy up */
     while(ajListstrPop(linelist,&sajb));
-    /* do not use ajListstrFree() here! */
+    /* do not use ajListstrFree here! */
     (void) ajListstrDel(&linelist);
 
     return;
@@ -2436,8 +2436,8 @@ static void showFillFT(EmbPShow thys, AjPList lines, EmbPShowFT info, ajint pos)
 	    /*
 	     *  iterate through list of existing lines to find no overlap
 	     *  with existing lines we will be potentially updating the
-	     *  nodes of linelist, so don't just iterate, use ajListstrPop()
-	     *  and ajListstrPushApp() to pop off the bottom and then push
+	     *  nodes of linelist, so don't just iterate, use ajListstrPop
+	     *  and ajListstrPushApp to pop off the bottom and then push
 	     *  the altered node back on the top of the list
 	     */
 	    for (ln = ajListstrLength(linelist); ln>0; ln--)
@@ -2453,7 +2453,7 @@ static void showFillFT(EmbPShow thys, AjPList lines, EmbPShowFT info, ajint pos)
 		if (!freespace)
 		{
 		    /* if name space is clear, write namestr and sitestr */
-		    /* ajDebug("Calling showLineIsClear() for region %d to"
+		    /* ajDebug("Calling showLineIsClear for region %d to"
 		       " %d", start-pos, end-pos); */
 		    if (showLineIsClear(&line2, start-pos, end-pos) &&
 			showLineIsClear(&line2, namestart-pos, nameend-pos))
@@ -2532,7 +2532,7 @@ static void showFillFT(EmbPShow thys, AjPList lines, EmbPShowFT info, ajint pos)
     (void) ajListIterFree(liter);
 
     /* tidy up */
-    /* do not use ajListstrFree() here! */
+    /* do not use ajListstrFree here! */
     while(ajListstrPop(linelist,&sajb));
     (void) ajListstrDel(&linelist);
 
@@ -2586,7 +2586,7 @@ if (*(ajStrStr(*target)+i+start) == '\0' || *(ajStrStr(insert)+i) == '\0')
   }
 /*  
 ajDebug("result is: >%S<", *target);
-ajDebug("exiting showOverPrint()");  
+ajDebug("exiting showOverPrint");  
 */
 }
 
