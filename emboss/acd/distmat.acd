@@ -55,14 +55,14 @@ float: gapweight  [
 ]
 
 integer: position  [
-  optional: "@(@(!$(msf.protein)) & @($(nucmethod)!=4)))"
+  optional: "@(@(!$(msf.protein)) & @($(nucmethod)!=4))"
   default: "123"
   information: "Base position to analyse."
   help: "Choose base positions to analyse in each codon i.e. 123 (all bases), 12 (the first two bases), 1, 2, or 3 individual bases."
 ]
 
 bool: calculatea  [
-  optional: "@(@(!$(msf.protein)) & @($(nucmethod)==5)))"
+  optional: "@(@(!$(msf.protein)) & @($(nucmethod)==5))"
   default: "N"
   information: "Calculate the a-parameter"
   help: "This will force the calculation of the a-parameter in the Jin-Nei Gamma distance calculation, otherwise the default is 1.0 (see -parametera option)."
