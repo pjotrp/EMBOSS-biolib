@@ -37,7 +37,7 @@ seealso seqmatchall seqret seqretall seqretset seqretsplit \
 showdb showfeat showorf showseq \
 shuffleseq sigcleave silent splitter stretcher \
 stssearch supermatcher syco \
-textsearch tfextract tfm tfmult tfscan \
+textsearch tfextract tfm tfscan \
 tmap transeq trimseq \
 vectorstrip \
 water wobble wordcount wordmatch \
@@ -171,7 +171,6 @@ syco_SOURCES = syco.c
 textsearch_SOURCES = textsearch.c
 tfextract_SOURCES = tfextract.c
 tfm_SOURCES = tfm.c
-tfmult_SOURCES = tfmult.c
 tfscan_SOURCES = tfscan.c
 tmap_SOURCES = tmap.c
 transeq_SOURCES = transeq.c
