@@ -16,7 +16,6 @@ complex corbatest \
 demoalign demofeatures demolist demoreport demosequence demostring demotable \
 entrails histogramtest intconv \
 patmattest \
-plotfeat \
 prima primers \
 seqinfo seqretall seqretallfeat seqretset seqretsingle \
 sigplot \
@@ -237,7 +236,6 @@ demotable_SOURCES = demotable.c
 dichet_SOURCES = dichet.c
 histogramtest_SOURCES = histogramtest.c
 patmattest_SOURCES = patmattest.c
-plotfeat_SOURCES = plotfeat.c
 psiblasts_SOURCES = psiblasts.c
 seqretsingle_SOURCES = seqretsingle.c
 sigplot_SOURCES = sigplot.c
