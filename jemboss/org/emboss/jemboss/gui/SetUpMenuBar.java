@@ -181,7 +181,7 @@ public class SetUpMenuBar
         int sso = JOptionPane.showConfirmDialog(f,ss,"Jemboss Settings",
                              JOptionPane.OK_CANCEL_OPTION,
                              JOptionPane.PLAIN_MESSAGE,null);
-        if(sso == JOptionPane.OK_OPTION)
+        if(sso == JOptionPane.OK_OPTION && withSoap)
           ss.setNewSettings();
       }
     });
