@@ -521,6 +521,32 @@ CC No example in the documentation
 
 ID cpgplot-ex
 AP cpgplot
+CL tembl:rnu68037 -graph cps
+IN
+IN
+IN
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI stdout
+FZ = 19
+FP /^Created cpgplot.ps\n/
+FI rnu68037.cpgplot
+FP /RNU68037 from 1 to 1218/
+FP /Observed\/Expected ratio > 0\.60/
+FP /Length 406 \(104\.\.509\)/
+FP /Length 329 \(596\.\.924\)/
+FI rnu68037.out2
+FP /^##Type DNA RNU68037/
+FI cpgplot.ps
+FP /^%%Title: PLplot Graph/
+//
+
+ID cpgplot-old
+AP cpgplot
 CL tembl:rnu68037 -graph data
 IN
 IN
@@ -569,6 +595,7 @@ FP /^RNU68037\tcpgreport\tmisc_feature\t96\t1032\t630\.000\t/
 //
 
 ID cusp-ex
+UC This example uses only one input sequence. The normal use would be to use a set of coding sequences as the input.
 AP cusp
 CL -sbeg 135 -send 1292
 IN tembl:paamir
@@ -595,6 +622,7 @@ DI CODONS
 //
 
 ID cutseq-ex
+UC To remove bases 10 to 12 from a database entry and write to the new sequence file 'gatta2.seq':
 AP cutseq
 CL tembl:paamir gatta2.seq -from=10 -to=12
 FI stderr
@@ -606,6 +634,7 @@ FP /^ggtaccgctcgagcatctgctcgatcaccaccagccgggcgacgggaactgcacgatcta\n/
 //
 
 ID cutseq-ex2
+UC To remove the first 20 bases from 'tembl:paamir' and write it to 'jsh.seq': 
 AP cutseq
 CL tembl:paamir -from=1 -to=20 -out=jsh.seq
 FI stderr
@@ -617,6 +646,7 @@ FP /^tgctcgatcaccaccagccgggcgacgggaactgcacgatctacctggcgagcctggagc\n/
 //
 
 ID cutseq-ex3
+UC If the default start and end positions are accepted, then all of the sequence is removed!
 AP cutseq
 CL tembl:paamir starta.seq -sbeg=-1000 -send=1290
 IN
@@ -648,6 +678,29 @@ FC = 2165
 //
 
 ID dan-ex2
+UC An example of producing a plot of Tm:
+AP dan
+CL -plot -graph cps
+IN tembl:paamir
+IN
+IN
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI stdout
+FZ = 15
+FP /^Created dan.ps\n/
+FI dan.ps
+FP /^%%Title: PLplot Graph/
+FI paamir.dan
+FZ = 0
+//
+
+ID dan-old
+UC An example of producing a plot of Tm:
 AP dan
 CL -plot -graph data
 IN tembl:paamir
@@ -780,6 +833,7 @@ FP /\A.{308}O42493\001/
 //
 
 ID dbiblast-ex-keep
+UC This creates EMBOSS indices for the BLAST database 'swnew'
 DL keep
 AP dbiblast
 IN swnew
@@ -2178,7 +2232,8 @@ FP 13 />H/
 FP 13 />/
 //
 
-ID dbigcg-exc
+## name changed from dbigcg-exc to stop documentation script finding it
+ID dbigcg-testexc
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
@@ -2189,7 +2244,8 @@ FP 1 /\A>HSFAU /
 FP 1 />/
 //
 
-ID dbigcg-excfail
+## name changed from dbigcg-excfail to stop documentation script finding it
+ID dbigcg-testexcfail
 ER 1
 AP seqret
 PP EMBOSSRC=../..
@@ -3122,6 +3178,7 @@ FP /^ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT\n/
 //
 
 ID descseq-ex
+UC Set the name of a sequence to "myclone23" 
 AP descseq
 CL -seq ../../data/dna.text -out clone23.seq -name "myclone23"
 FI stderr
@@ -3133,6 +3190,7 @@ FP /^>myclone23\n/
 //
 
 ID descseq-ex2
+UC Set the description of a sequence to "This is my clone number 244" 
 AP descseq
 CL -seq ../../data/dna.text -out xy24.seq -desc "This is my clone number 244"
 FI stderr
@@ -3144,6 +3202,7 @@ FP /EMBOSS_001 This is my clone number 244\n/
 //
 
 ID descseq-ex3
+UC Append some text to the description of a sequence
 AP descseq
 CL -seq ../../data/dna.text -out est4.seq -desc " (submitted)" -append
 FI stderr
