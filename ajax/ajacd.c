@@ -664,7 +664,7 @@ static AjBool    acdValidSectionMatch(char* secname);
 static void      acdValidQual(const AcdPAcd thys);
 static AjBool    acdValIsBool(const char* arg);
 static AjBool    acdVarResolve(AjPStr* str);
-static AjBool    acdVarSimple(AjPStr* str);
+static AjBool    acdVarSimple(AjPStr var, AjPStr* varname);
 static AjBool    acdVarSplit(const AjPStr var, AjPStr* name, AjPStr* attrname);
 static AjBool    acdVarTest(const AjPStr var);
 static AjBool    acdVarTestValid(const AjPStr var, AjBool* toggle);
@@ -800,6 +800,7 @@ static void acdSetInfile(AcdPAcd thys);
 static void acdSetList(AcdPAcd thys);
 static void acdSetMatrix(AcdPAcd thys);
 static void acdSetMatrixf(AcdPAcd thys);
+static void acdSetOutdir(AcdPAcd thys);
 static void acdSetOutfile(AcdPAcd thys);
 static void acdSetCpdb(AcdPAcd thys);
 static void acdSetScop(AcdPAcd thys);
@@ -1039,6 +1040,8 @@ AcdOAttr acdAttrDirectory[] =
 	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null filename as 'no file'"},
+    {"extension", VT_STR, "",
+	 "Default file extension"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -1239,6 +1242,20 @@ AcdOAttr acdAttrMatrixf[] =
 	 "Default name for nucleotide matrix"},
     {"protein", VT_BOOL, "Y",
 	 "Protein matrix"},
+    {NULL, VT_NULL, NULL,
+	 NULL}
+};
+
+AcdOAttr acdAttrOutdir[] =
+{
+    {"fullpath", VT_BOOL, "N",
+	 "Require full path in value"},
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
+    {"extension", VT_STR, "",
+	 "Default file extension"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -2076,6 +2093,9 @@ AcdOType acdType[] =
     {"matrixf",            "input",            acdSecInput,
 	 acdAttrMatrixf,   acdSetMatrixf,      NULL,
 	 AJFALSE, &acdUseData, "Comparison matrix file in EMBOSS data path" },
+    {"outdir",             "output",            NULL,
+	 acdAttrOutdir,    acdSetOutdir,    NULL,
+	 AJFALSE, &acdUseMisc, "Output directory" },
     {"outfile",            "output",           acdSecOutput,
 	 acdAttrOutfile,   acdSetOutfile,   acdQualOutfile,
 	 AJTRUE,  &acdUseOutfile, "Output file" },
@@ -3404,7 +3424,6 @@ static AcdPAcd acdNewQual(const AjPStr name, const AjPStr token,
 	   (acdType[itype].Attr == acdAttrSeqset) ||
 	   (acdType[itype].Attr == acdAttrSeqsetall))
 	{
-	    /* automatic $(today) variable */
 	    ajStrAssC(&protName, "acdprotein");
 	    ajFmtPrintS(&acdVarAcdProtein, "$(%S.protein)", name);
 	    vacd = acdNewVar(protName);
@@ -3659,11 +3678,13 @@ static void acdTestAssocUnknown(const AjPStr name)
 	{
 	    if(ajStrMatch(pa->Name, pa->Token))	/* test: dupassoc.acd */
 		acdErrorAcd(pa,
-			    "Associated qualifier '%S' clashes with '%S' in ACD file\n",
+			    "Associated qualifier '%S' clashes with '%S' "
+			    "in ACD file\n",
 			    name, pa->Name);
 	    else
 		acdErrorAcd(pa,		/* test: dupassoc2.acd */
-			    "Associated qualifier '%S' clashes with '%S'/'%S' in ACD file\n",
+			    "Associated qualifier '%S' clashes with '%S'/'%S' "
+			    "in ACD file\n",
 			    name, pa->Name, pa->Token);
 	    break;
 	}
@@ -4129,16 +4150,12 @@ static AjBool acdReplyInit(const AcdPAcd thys, const char *defval,
 
 
 
-/* @funcstatic acdReplyInit ***************************************************
+/* @funcstatic acdDefinedEmpty ************************************************
 **
-** Builds a default value for the reply first time around. Uses a default
-** specially set in the ACD, or (if none) uses the default string passed in
-** parameter "defval" and also sets this as the default in the ACD.
+** Tests for a defined ACD value of an empty string
 **
 ** @param [r] thys [const AcdPAcd] ACD object for current item.
-** @param [r] defval [const char*] Default value, as a string
-** @param [w] reply [AjPStr*] String containing default reply
-** @return [AjBool] ajTrue if a value in the ACD was used.
+** @return [AjBool] ajTrue if a value in the ACD was used but is empty
 ** @@
 ******************************************************************************/
 
@@ -5338,20 +5355,44 @@ static void acdSetDatafile(AcdPAcd thys)
 
 /* @func ajAcdGetDirectory ****************************************************
 **
-** Returns an item of type AjPStr which has been validated as a
+** Returns an item of type AjPDir which has been validated as a
 ** directory.
 **
 ** Optionally can be forced to have a fully qualified path when returned.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPStr] String containing a directory name
+** @return [AjPDir] Directory object
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
 ******************************************************************************/
 
-AjPStr ajAcdGetDirectory(const char *token)
+AjPDir ajAcdGetDirectory(const char *token)
 {
     return acdGetValue(token, "directory");
+}
+
+
+
+
+/* @func ajAcdGetDirectoryName ************************************************
+**
+** Returns an item of type AjPStr which has been validated as a
+** directory name
+**
+** Optionally can be forced to have a fully qualified path when returned.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPDir] Directory object
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPStr ajAcdGetDirectoryName(const char *token)
+{
+    AjPDir dir;
+
+    dir = acdGetValue(token, "directory");
+    return ajDirName(dir);
 }
 
 
@@ -5375,7 +5416,7 @@ AjPStr ajAcdGetDirectory(const char *token)
 
 static void acdSetDirectory(AcdPAcd thys)
 {
-    AjPStr val;
+    AjPDir val;
 
     AjBool required = ajFalse;
     AjBool ok       = ajFalse;
@@ -5386,11 +5427,13 @@ static void acdSetDirectory(AcdPAcd thys)
 
     AjBool nullok = ajFalse;
     AjBool dopath = ajFalse;
+    AjPStr ext = NULL;
 
     val = NULL;				/* set the default value */
 
     acdAttrToBool(thys, "fullpath", ajFalse, &dopath);
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrResolve(thys, "extension", &ext);
 
     required = acdIsRequired(thys);
     acdReplyInit(thys, ".", &defreply);
@@ -5410,6 +5453,12 @@ static void acdSetDirectory(AcdPAcd thys)
 		ok = ajFileDirPath(&reply);
 	    else
 		ok = ajFileDir(&reply);
+	    if (ok)
+	    {
+		val = ajDirNewS(reply, ext);
+		if (!val)
+		    ok = ajFalse;
+	    }
 	    if(!ok)
 		acdBadVal(thys, required,
 			  "Unable to open directory '%S'",
@@ -5425,8 +5474,6 @@ static void acdSetDirectory(AcdPAcd thys)
     }
     if(!ok)
 	acdBadRetry(thys);
-
-    ajStrAssS(&val, reply);
 
     thys->Value = val;
     ajStrAssS(&thys->ValStr, reply);
@@ -5564,7 +5611,8 @@ static void acdSetDirlist(AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPPhyoState*] Discrete state object. The string was already set by
+** @return [AjPPhyloState*] Discrete state object.
+**         The string was already set by
 **         acdSetDiscretestates so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
@@ -5587,7 +5635,7 @@ AjPPhyloState* ajAcdGetDiscretestates(const char *token)
 **
 ** @param [r] token [const char*] Text token name
 ** @param [r] num [ajint] Token number (1 for the first)
-** @return [AjPhyloState] Properties object. The data was already set by
+** @return [AjPPhyloState] Properties object. The data was already set by
 **         acdSetDiscretestates so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
@@ -5734,7 +5782,7 @@ static void acdSetDiscretestates(AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPPhyoDist] Distances object. The string was already set by
+** @return [AjPPhyloDist] Distances object. The string was already set by
 **         acdSetDistances so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
@@ -6591,7 +6639,6 @@ AjPGraph ajAcdGetGraph(const char *token)
 
 static void acdSetGraph(AcdPAcd thys)
 {
-#ifndef GROUT
     AjPGraph val = NULL;
     
     AjBool required = ajFalse;
@@ -6645,7 +6692,7 @@ static void acdSetGraph(AcdPAcd thys)
 
 	    if(!val)
 		val = call("ajGraphNew");
-	    call("ajGraphSet",val, reply,&ok);
+	    call("ajGraphSet",val, reply, &ok);
 
 	    if(!ok)
 	    {
@@ -6671,35 +6718,33 @@ static void acdSetGraph(AcdPAcd thys)
     if(val)
     {
 	if(acdGetValueAssoc(thys, "gtitle", &title))
-	    call("ajGraphxyTitle",val,title);
+	    call("ajGraphTitle",val,title);
     
 	if(acdGetValueAssoc(thys, "gsubtitle", &title))
-	    call("ajGraphxySubtitle",val,title);
+	    call("ajGraphSubTitle",val,title);
     
 	if(acdGetValueAssoc(thys, "gxtitle", &title))
-	    call("ajGraphxyXtitle",val,title);
+	    call("ajGraphXTitle",val,title);
     
 	if(acdGetValueAssoc(thys, "gytitle", &title))
-	    call("ajGraphxyYtitle",val,title);
+	    call("ajGraphYTitle",val,title);
     
 	if(acdGetValueAssoc(thys, "goutfile", &title))
-	    call("ajGraphxySetOutputFile",val,title);
+	    call("ajGraphSetOutputFile",val,title);
     
 	if(acdGetValueAssoc(thys, "gdirectory", &title))
-	    call("ajGraphxySetOutputDir",val,title);
+	    call("ajGraphSetOutputDir",val,title);
 	else
 	{
 	    ajStrAssC(&title, "");
 	    if(acdOutDirectory(&title))
-		call("ajGraphxySetOutputDir",val,title);
+		call("ajGraphSetOutputDir",val,title);
 	}
     
     
 	call("ajGraphTrace",val);
     }
     
-#endif
-
     return;
 }
 
@@ -6740,7 +6785,6 @@ AjPGraph ajAcdGetGraphxy(const char *token)
 
 static void acdSetGraphxy(AcdPAcd thys)
 {
-#ifndef GROUT
     AjPGraph val;
     static AjPStr gdev = NULL;
     
@@ -6826,35 +6870,33 @@ static void acdSetGraphxy(AcdPAcd thys)
     if(val)
     {
 	if(acdGetValueAssoc(thys, "gtitle", &title))
-	    call("ajGraphxyTitle",val,title);
+	    call("ajGraphTitle",val,title);
 
 	if(acdGetValueAssoc(thys, "gsubtitle", &title))
-	    call("ajGraphxySubtitle",val,title);
+	    call("ajGraphSubTitle",val,title);
 
 	if(acdGetValueAssoc(thys, "gxtitle", &title))
-	    call("ajGraphxyXtitle",val,title);
+	    call("ajGraphXTitle",val,title);
 
 	if(acdGetValueAssoc(thys, "gytitle", &title))
-	    call("ajGraphxyYtitle",val,title);
+	    call("ajGraphYTitle",val,title);
 
 	if(acdGetValueAssoc(thys, "goutfile", &title))
-	    call("ajGraphxySetOutputFile",val,title);
+	    call("ajGraphSetOutputFile",val,title);
 
 	if(acdGetValueAssoc(thys, "gdirectory", &title))
-	    call("ajGraphxySetOutputDir",val,title);
+	    call("ajGraphSetOutputDir",val,title);
 	else
 	{
 	    ajStrAssC(&title, "");
 	    if(acdOutDirectory(&title))
-		call("ajGraphxySetOutputDir",val,title);
+		call("ajGraphSetOutputDir",val,title);
 	}
 
     
 	call("ajGraphTrace",val);
     }
 
-#endif
-    
     return;
 }
 
@@ -7432,6 +7474,136 @@ static void acdSetMatrixf(AcdPAcd thys)
 
 
 
+/* @func ajAcdGetOutdir *******************************************************
+**
+** Returns an item of type AjPDir which has been validated as an output
+** directory.
+**
+** Optionally can be forced to have a fully qualified path when returned.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPStr] String containing a directory name
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPDir ajAcdGetOutdir(const char *token)
+{
+    return acdGetValue(token, "outdir");
+}
+
+
+
+
+/* @func ajAcdGetOutdirName ***************************************************
+**
+** Returns an item of type AjPStr which has been validated as an output
+** directory.
+**
+** Optionally can be forced to have a fully qualified path when returned.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPStr] String containing a directory name
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPStr ajAcdGetOutdirName(const char *token)
+{
+    AjPDir dir;
+    dir =  acdGetValue(token, "outdir");
+    return ajDirName(dir);
+}
+
+
+
+
+/* @funcstatic acdSetOutdir ***************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD output directory item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value is "." the current directory.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdSetOutdir(AcdPAcd thys)
+{
+    AjPDir val;
+
+    AjBool required = ajFalse;
+    AjBool ok       = ajFalse;
+
+    static AjPStr defreply = NULL;
+    static AjPStr reply    = NULL;
+    ajint itry;
+
+    AjBool nullok = ajFalse;
+    AjBool dopath = ajFalse;
+    AjPStr ext = NULL;
+
+    val = NULL;				/* set the default value */
+
+    acdAttrToBool(thys, "fullpath", ajFalse, &dopath);
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrResolve(thys, "extension", &ext);
+
+    required = acdIsRequired(thys);
+    acdReplyInit(thys, ".", &defreply);
+
+    for(itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+
+	ajStrAssS(&reply, defreply);
+
+	if(required)
+	    acdUserGet(thys, &reply);
+
+	if(ajStrLen(reply))
+	{
+	    if(dopath)
+		ok = ajFileDirPath(&reply);
+	    else
+		ok = ajFileDir(&reply);
+	    if (ok)
+	    {
+		val = ajDiroutNewS(reply, ext);
+		if (!val)
+		    ok = ajFalse;
+	    }
+	    if(!ok)
+		acdBadVal(thys, required,
+			  "Unable to open directory '%S'",
+			  reply);
+	}
+	else
+	    if(!nullok)
+	    {
+		acdBadVal(thys, required,
+			  "Directory path is required");
+		ok = ajFalse;
+	    }
+    }
+    if(!ok)
+	acdBadRetry(thys);
+
+    thys->Value = val;
+    ajStrAssS(&thys->ValStr, reply);
+
+    return;
+}
+
+
+
+
 /* @func ajAcdGetOutfile ******************************************************
 **
 ** Returns an item of type Outfile as defined in a named ACD item.
@@ -7575,7 +7747,7 @@ static void acdSetOutfile(AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPPhyloProp*] Properties array. The data was already set by
+** @return [AjPPhyloProp] Properties array. The data was already set by
 **         acdSetProperties so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
@@ -8879,13 +9051,14 @@ AjPSeqset* ajAcdGetSeqsetall(const char *token)
 
 
 
-/* @func ajAcdGetSeqsetall ****************************************************
+/* @func ajAcdGetSeqsetallI ***************************************************
 **
 ** Returns an item of type Seqset as defined in a named ACD item.
 ** Called by the application after all ACD values have been set,
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [const char*] Text token name
+** @param [r] num [ajint] Sequence set number (1 for the first)
 ** @return [AjPSeqset] Sequence set object. The sequence was already loaded by
 **         acdSetSeqset so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
@@ -10240,7 +10413,7 @@ static void acdSetToggle(AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPPhyloTree] Tree object. The data was already set by
+** @return [AjPPhyloTree*] Tree object. The data was already set by
 **         acdSetTree so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
@@ -13607,7 +13780,9 @@ static AjBool acdVarTestValid(const AjPStr var, AjBool* toggle)
 {
     static AjPRegexp varexp = NULL;
     static AjPRegexp toggleexp = NULL;
+    AjPStr varref = NULL;
     AjPStr varname = NULL;
+    AcdPAcd acd = NULL;
 
     if(!varexp)
 	varexp = ajRegCompC("^(.*)\\$\\([a-zA-Z0-9_.]+\\)");
@@ -13621,15 +13796,32 @@ static AjBool acdVarTestValid(const AjPStr var, AjBool* toggle)
 
     /*
      ** A variable - is it a simple (toggle) dependency?
-     ** Toggles can be @($(varname)) or @(!$(varname))
+     ** Toggles can be $(varname) or @($(varname)) or @(!$(varname))
+     ** Also allowed is automatic variable acdprotein
      */
 
     acdLog("acdVarTestValid variable '%S'\n", var);
     if(ajRegExec(toggleexp, var))
     {
-	ajRegSubI(toggleexp, 2, &varname); /* returns $(varname) */
-	*toggle = acdVarSimple(&varname);
+	ajRegSubI(toggleexp, 2, &varref); /* returns $(varname) */
+	if(acdVarSimple(varref, &varname))
+	{
+	    acd = acdFindAcd(varname, varname, 0);
+	    if (acd)
+	    {
+		acdLog("acdVarTestValid varname %S acd %S type %s\n",
+		       varname, acd->Name, acdType[acd->Type].Name);
+		if(!strcmp(acdType[acd->Type].Name, "toggle"))
+		    *toggle = ajTrue;
+		if(ajStrMatchCaseC(varname, "acdprotein"))
+		    *toggle = ajTrue;
+	    }
+	    else
+		acdLog("acdVarTestValid varname %S not found\n",
+		       varname);
+	}
 	acdLog("varname '%S' toggle %B\n", varname, *toggle);
+	ajStrDel(&varref);
 	ajStrDel(&varname);
     }
     return ajTrue;
@@ -13645,9 +13837,8 @@ static AjBool acdVarTestValid(const AjPStr var, AjBool* toggle)
 ** @@
 ******************************************************************************/
 
-static AjBool acdVarSimple(AjPStr* var)
+static AjBool acdVarSimple(AjPStr var, AjPStr* varname)
 {
-    static AjPStr varname  = NULL;
     static AjPStr attrname = NULL;
     static AjPStr result   = NULL;
     static AjPStr token    = NULL;
@@ -13661,16 +13852,16 @@ static AjBool acdVarSimple(AjPStr* var)
     if(!funexp)
 	funexp = ajRegCompC("^(.*)\\@\\(([^()]+)\\)");
 
-    if(ajRegExec(varexp, *var))
+    if(ajRegExec(varexp, var))
     {
 	ajRegSubI(varexp, 2, &token);	/* variable name */
-	acdVarSplit(token, &varname, &attrname);
+	acdVarSplit(token, varname, &attrname);
 	if(!ajStrLen(attrname))
 	    ajStrAssC(&attrname, "default");
-	if(!acdGetAttr(&result, varname, attrname))
+	if(!acdGetAttr(&result, *varname, attrname))
 	{
 	    acdLog("acdVarSimple failed to resolve '%S.%S\n",
-		   varname, attrname);
+		   *varname, attrname);
 	    ajStrAssC(&result, "");
 	}
 
@@ -13678,13 +13869,12 @@ static AjBool acdVarSimple(AjPStr* var)
 	ajStrApp(&newvar, result);
 	if(ajRegPost(varexp, &restvar)) /* any more? */
 	    ajStrApp(&newvar, restvar);
-	ajStrAssS(var, newvar);
-	acdLog("acdVarSimple name %S resolved to '%S'\n", varname, newvar);
+	acdLog("acdVarSimple name %S resolved to '%S'\n", *varname, newvar);
     }
     
-    if(ajRegExec(varexp, *var))
+    if(ajRegExec(varexp, newvar))
 	return ajFalse;
-    if(ajRegExec(funexp, *var))
+    if(ajRegExec(funexp, newvar))
 	return ajFalse;
 
     return ajTrue;
@@ -15650,7 +15840,7 @@ static ajint acdIsQual(const char* arg, const char* arg2,
 	}
 	
 	/*
-	 **ust the qualifier name with no value
+	 ** just the qualifier name with no value
 	 */
 	
 	if(!strcmp(acdType[acdListCurr->Type].Name, "boolean") ||
@@ -19515,6 +19705,7 @@ static void acdValidQual(const AcdPAcd thys)
     AjBool isStandard = ajFalse;
     AjBool isAdditional = ajFalse;
     AjBool isCalculated = ajFalse;
+    AjBool isToggle = ajFalse;
 
     static AjPStr secname   = NULL;
     static AjPStr tmpstr    = NULL;
@@ -19563,6 +19754,9 @@ static void acdValidQual(const AcdPAcd thys)
 			  thys->Name, acdType[thys->Type].Name,
 			  acdType[thys->Type].Section->Name);
     }
+
+    if(ajStrMatchCC(acdType[thys->Type].Name, "toggle"))
+	isToggle = ajTrue;
 
     /* parameter, standard, additional only once, with 'Y' */
 
@@ -19687,7 +19881,7 @@ static void acdValidQual(const AcdPAcd thys)
     else if (isAdditional)
     {
 	if (acdValidSectionMatch("advanced") ||
-	    acdValidSectionMatch("required"))
+	    (!isToggle && acdValidSectionMatch("required")))
 	    acdWarn("Additional qualifier '%S' "
 		    "in section '%S'",
 		    thys->Name, secname);
@@ -19695,11 +19889,14 @@ static void acdValidQual(const AcdPAcd thys)
 
     else				/* must be advanced */
     {
-	if (acdValidSectionMatch("additional") ||
-	    acdValidSectionMatch("required"))
-	    acdWarn("Advanced qualifier '%S' "
-		    "in section '%S'",
-		    thys->Name, secname);
+	if (!isToggle)
+	{
+	    if (acdValidSectionMatch("additional") ||
+		acdValidSectionMatch("required"))
+		acdWarn("Advanced qualifier '%S' "
+			"in section '%S'",
+			thys->Name, secname);
+	}
     }
 
     tmpinfo = acdAttrValue(thys, "information");
@@ -19708,9 +19905,9 @@ static void acdValidQual(const AcdPAcd thys)
     if(ajStrLen(tmpprompt) && !ajStrLen(tmpinfo))
 	acdErrorValid("Prompt specified but no information");
 
-    if (ajStrLen(tmpinfo) && !isupper(ajStrChar(tmpinfo, 0)))
+    if (ajStrLen(tmpinfo) && !isupper((int)ajStrChar(tmpinfo, 0)))
     {
-	if (islower(ajStrChar(tmpinfo, 0)))
+	if (islower((int)ajStrChar(tmpinfo, 0)))
 	    acdWarn("Information string for '%S' starts in lower case",
 		thys->Name);
 	else
@@ -19718,9 +19915,9 @@ static void acdValidQual(const AcdPAcd thys)
 		    thys->Name);
     }
 
-    if (ajStrLen(tmpprompt) && !isupper(ajStrChar(tmpprompt, 0)))
+    if (ajStrLen(tmpprompt) && !isupper((int)ajStrChar(tmpprompt, 0)))
     {
-	if (islower(ajStrChar(tmpprompt, 0)))
+	if (islower((int)ajStrChar(tmpprompt, 0)))
 	    acdWarn("Prompt string for '%S' starts in lower case",
 		thys->Name);
 	else
@@ -19728,9 +19925,9 @@ static void acdValidQual(const AcdPAcd thys)
 		    thys->Name);
     }
 
-    if (ajStrLen(tmphelp) && !isupper(ajStrChar(tmphelp, 0)))
+    if (ajStrLen(tmphelp) && !isupper((int)ajStrChar(tmphelp, 0)))
     {
-	if (islower(ajStrChar(tmphelp, 0)))
+	if (islower((int)ajStrChar(tmphelp, 0)))
 	    acdWarn("Help string for '%S' starts in lower case",
 		thys->Name);
 	else
@@ -19822,9 +20019,14 @@ static void acdValidQual(const AcdPAcd thys)
 		  ajStrSuffixC(thys->Token, "sequences")) ))
 		seqMulti = ajTrue;
 	    if(seqMulti)
-		if(!ajStrMatch(thys->Token, qualName))
-		    acdWarn("Expected sequence qualifier is '%S' found '%S'",
-			    qualName, thys->Token);
+		if ((ajStrLen(thys->Token) == ajStrLen(qualName)) &&
+		    ajStrSuffixC(thys->Token, "sequence"))
+		{
+		    if(!ajStrMatch(thys->Token, qualName))
+			acdWarn("Expected sequence qualifier is '%S' "
+				"found '%S'",
+				qualName, thys->Token);
+		}
 	}
 	
 	tmpstr = acdAttrValue(thys, "type");
@@ -19863,9 +20065,14 @@ static void acdValidQual(const AcdPAcd thys)
 	       !(ajStrMatchC(thys->Token, "feature")))
 		featMulti = ajTrue;
 	    if(featMulti)
-		if(!ajStrMatch(thys->Token, qualName))
-		    acdWarn("Expected feature qualifier is '%S' found '%S'",
-			    qualName, thys->Token);
+		if ((ajStrLen(thys->Token) == ajStrLen(qualName)) &&
+		    ajStrSuffixC(thys->Token, "feature"))
+		{
+		    if(!ajStrMatch(thys->Token, qualName))
+			acdWarn("Expected feature qualifier is '%S' "
+				"found '%S'",
+				qualName, thys->Token);
+		}
 	}
 	
 	/* still to do - check for type */
@@ -19922,6 +20129,7 @@ static void acdValidQual(const AcdPAcd thys)
 	if(!ajStrLen(tmpstr))
 	    acdWarn("No knowntype specified for input file");
     }
+
     /* outfile - assume parameter unless default is stdout -outfile */
     /* check for type */
 
@@ -19938,7 +20146,8 @@ static void acdValidQual(const AcdPAcd thys)
 	}
 	
 	qualCountOutfile++;
-	if(!ajStrSuffixC(thys->Token, "file"))
+	if(ajStrMatchCC(acdType[thys->Type].Name, "outfile") &&
+	   !ajStrSuffixC(thys->Token, "file"))
 	    acdWarn("Outfile qualifier '%S' is not 'outfile' or '*file'",
 		    thys->Token);
 	else
@@ -19957,6 +20166,45 @@ static void acdValidQual(const AcdPAcd thys)
 	tmpstr = acdAttrValue(thys, "knowntype");
 	if(!ajStrLen(tmpstr))
 	    acdWarn("No knowntype specified for output file");
+    }
+
+    /* outdirectory - assume parameter unless default is stdout -outfile */
+    /* check for type */
+
+    if(ajStrMatchCC(acdType[thys->Type].Name, "outdir"))
+    {
+	if(!isparam && !acdAttrTest(thys, "nullok"))
+	{
+	    if(*acdType[thys->Type].UseCount == 1)
+		acdErrorValid("First output directory '%S' is not a parameter",
+			      thys->Token);
+	    else
+		acdWarn("Subsequent output directory '%S' is not a parameter",
+			thys->Token);
+	}
+	
+	qualCountOutfile++;
+	if(ajStrMatchCC(acdType[thys->Type].Name, "outdir") &&
+	   !ajStrSuffixC(thys->Token, "outdir"))
+	    acdWarn("Outfile qualifier '%S' is not 'outdir' or '*outdir'",
+		    thys->Token);
+	else
+	{
+	    if((qualCountOutfile > 1) ||
+	       !ajStrMatchC(thys->Token, "outdir"))
+		outMulti = ajTrue;
+	    if((qualCountOutfile == 1) &&
+	       !ajStrMatchC(thys->Token, "outdir"))
+		acdWarn("First output directory qualifier '%S' "
+			"is not 'outdir'",
+			thys->Token);
+	}
+	
+	/* still to do - check for type */
+
+	tmpstr = acdAttrValue(thys, "knowntype");
+	if(!ajStrLen(tmpstr))
+	    acdWarn("No knowntype specified for output directory");
     }
 
     /* align - as for outfile? */
@@ -20056,10 +20304,14 @@ static void acdValidQual(const AcdPAcd thys)
 		seqoutMulti = ajTrue;
 	    if(seqoutMulti)
 	    {
-		if(!ajStrMatch(thys->Token, qualName))
-		    acdWarn("Expected sequence output qualifier is '%S' "
-			    "found '%S'",
-			    qualName, thys->Token);
+		if ((ajStrLen(thys->Token) == ajStrLen(qualName)) &&
+		    ajStrSuffixC(thys->Token, "outseq"))
+		{
+		    if(!ajStrMatch(thys->Token, qualName))
+			acdWarn("Expected sequence output qualifier is '%S' "
+				"found '%S'",
+				qualName, thys->Token);
+		}
 	    }
 	}
 	
@@ -20089,10 +20341,10 @@ static void acdValidQual(const AcdPAcd thys)
 	qualCountFeatout++;
 	if(qualCountFeatout == 1)
 	    ajStrAssS(&qualFeatoutFirst, thys->Token);
-	ajFmtPrintS(&qualName, "%cfeatout",
+	ajFmtPrintS(&qualName, "%coutfeat",
 		    (char) ('a' - 1 + qualCountFeatout));
 
-	if(!ajStrMatchC(thys->Token, "featout") &&
+	if(!ajStrMatchC(thys->Token, "outfeat") &&
 	   !ajStrSuffixC(thys->Token, "outfeat"))
 	    acdWarn("Feature output qualifier '%S' is not 'featout' "
 		    "or '*outfeat'",
@@ -20101,15 +20353,18 @@ static void acdValidQual(const AcdPAcd thys)
 	else
 	{
 	    if((qualCountFeatout > 1) ||
-	       (!ajStrMatchC(thys->Token, "featout") &&
-		!ajStrMatchC(thys->Token, "outfeat")))
+	       (!ajStrMatchC(thys->Token, "outfeat")))
 		featoutMulti = ajTrue;
 	    if(featoutMulti)
 	    {
-		if(!ajStrMatch(thys->Token, qualName))
-		    acdWarn("Expected feature output qualifier is '%S' "
-			    "found '%S'",
-			    qualName, thys->Token);
+		if ((ajStrLen(thys->Token) == ajStrLen(qualName)) &&
+		    ajStrSuffixC(thys->Token, "outfeat"))
+		{
+		    if(!ajStrMatch(thys->Token, qualName))
+			acdWarn("Expected feature output qualifier is '%S' "
+				"found '%S'",
+				qualName, thys->Token);
+		}
 	    }
 	}
 	
@@ -20354,7 +20609,8 @@ static void acdReadSections(AjPTable* typetable, AjPTable* infotable)
 ** Tests whether a named section appears in the current section list
 **
 ** @param [r] secname [char*] Section name
-** @return [const AjPStr] ajTrue if the named section was found
+** @return [AjBool] ajTrue if the named section was found
+** @@
 ******************************************************************************/
 
 static AjBool acdValidSectionMatch(char* secname)
