@@ -7905,15 +7905,22 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
 	ok = ajFalse;
     }
 
-    if(ajStrLen(thys->Sv) || ajStrLen(thys->Gi)) /* test Sv and Gi */
+    if(ajStrLen(thys->Sv)) /* test Sv and Gi */
     {
 	if(ajStrMatchWild(seq->Sv, thys->Sv))
 	    return ajTrue;
 
+	ajDebug("sv test failed\n");
+	tested = ajTrue;
+	ok = ajFalse;
+    }
+
+    if(ajStrLen(thys->Gi)) /* test Sv and Gi */
+    {
 	if(ajStrMatchWild(seq->Gi, thys->Gi))
 	    return ajTrue;
 
-	ajDebug("sv test failed\n");
+	ajDebug("gi test failed\n");
 	tested = ajTrue;
 	ok = ajFalse;
     }
