@@ -164,7 +164,9 @@ then
 #       echo CPPFLAGS = $CPPFLAGS
 
 else
-	echo "Directory $ALT_HOME does not exist"
-	exit 0
+        if test $withval != "no"; then
+		echo "Directory $ALT_HOME does not exist"
+		exit 0
+        fi
 fi
 ])
