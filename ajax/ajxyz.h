@@ -629,6 +629,9 @@ AjBool   ajXyzPrintPdbResolution(AjPFile outf, AjPPdb pdb);
 AjBool   ajXyzPdbChain(char id, AjPPdb pdb, ajint *chn);
 void     ajXyzScopToPdb(AjPStr scop, AjPStr *pdb);
 
+AjBool   ajXyzPdbAtomIndexI(AjPPdb pdb, ajint chn, AjPInt *idx);
+AjBool   ajXyzPdbAtomIndexC(AjPPdb pdb, char chn, AjPInt *idx);
+
 
 AjBool   ajXyzScopalgRead(AjPFile inf, AjPScopalg *thys);
 AjBool   ajXyzScopalgWrite(AjPFile outf, AjPScopalg *thys);
@@ -698,6 +701,7 @@ AjBool ajXyzInContact(AjPAtom atm1, AjPAtom atm2, float thresh,
 			  AjPVdwall vdw);
 float ajXyzVdwRad(AjPAtom atm, AjPVdwall vdw);
 
+AjBool ajXyzHitlistToThreeScophits(AjPList in, AjPList *fam, AjPList *sfam, AjPList *fold);
 
 
 

@@ -6479,3 +6479,114 @@ float ajXyzVdwRad(AjPAtom atm, AjPVdwall vdw)
     return((float)1.2);
 }
 
+
+
+
+
+
+
+/* @func ajXyzPdbAtomIndexI **************************************************
+**
+** Reads a Pdb object and writes an integer array which gives the index into the 
+** protein sequence for structured residues (residues for which electron density
+** was determined) for a given chain. The array length is of course equal to the 
+** number of structured residues. 
+**
+** @param [r] pdb [AjPPdb] Pdb object
+** @param [r] chn [ajint ] Chain number
+** @param [w] idx [AjPint] Index array
+**
+** @return [AjBool] True on succcess
+** @@
+******************************************************************************/
+AjBool   ajXyzPdbAtomIndexI(AjPPdb pdb, ajint chn, AjPInt *idx)
+{
+    AjIList  iter        =NULL;
+    AjPAtom  atm         =NULL;
+    ajint    this_rn     =0;
+    ajint    last_rn     =-1000;
+    ajint    resn        =0;     /* Sequential count of residues*/
+    
+    
+    if(!pdb || !(*idx))
+    {
+	ajWarn("Bad arg's passed to ajXyzPdbAtomIndexI");
+	return ajFalse;
+    }
+    
+    if((chn > pdb->Nchn) || (!pdb->Chains))
+    {
+	ajWarn("Bad arg's passed to ajXyzPdbAtomIndexI");
+	return ajFalse;
+    }
+    
+
+    /* Initialise the iterator*/
+    iter=ajListIter(pdb->Chains[chn-1]->Atoms);
+
+
+    /* Iterate through the list of atoms*/
+    while((atm=(AjPAtom)ajListIterNext(iter)))
+    {
+	if(atm->Chn!=chn)
+	    continue;
+	
+	/* JCI hard-coded to work on model 1*/
+	/* Break if a non-protein atom is found or model no. !=1*/
+	if(atm->Type!='P' || atm->Mod!=1)
+	    break;
+
+	/* If we are onto a new residue*/
+	this_rn=atm->Idx;
+	if(this_rn!=last_rn)
+	{
+	    ajIntPut(&(*idx), resn++, atm->Idx);
+	    last_rn=this_rn;
+	}
+    }
+        
+    if(resn==0)
+    {
+	ajWarn("Chain not found in ajXyzPdbAtomIndexI");
+	ajListIterFree(iter);		
+	return ajFalse;
+    }
+    	
+
+    ajListIterFree(iter);		
+    return ajTrue;
+}
+
+
+/* @func ajXyzPdbAtomIndexC *************************************************
+**
+** Reads a Pdb object and writes an integer array which gives the index into the 
+** protein sequence for structured residues (residues for which electron density
+** was determined) for a given chain.  The array length is of course equal to the 
+** number of structured residues. 
+**
+** @param [r] pdb [AjPPdb] Pdb object
+** @param [r] chn [ajint ] Chain identifier
+** @param [w] idx [AjPint] Index array
+**
+** @return [AjBool] True on succcess
+** @@
+******************************************************************************/
+AjBool   ajXyzPdbAtomIndexC(AjPPdb pdb, char chn, AjPInt *idx)
+{
+    ajint chnn;
+    
+    if(!ajXyzPdbChain(chn, pdb, &chnn))
+    {
+	ajWarn("Chain not found in ajXyzPdbAtomIndexC");
+	return ajFalse;
+    }
+    
+    if(!ajXyzPdbAtomIndexI(pdb, chnn, idx))
+	return ajFalse;
+
+
+    return ajTrue;
+}
+
+
