@@ -201,6 +201,7 @@ foreach $x ("short", "int", "long", "float", "double", "char",
 }
 
 foreach $x ("ajshort", "ajint", "ajuint", "ajlong", "ajulong",
+	    "jobject", "jstring", "jboolean", "jclass", "jint", "jbyteArray",
 	    "AjBool", "AjStatus", "BOOL", "AjEnum",
 	    "VALIST") {
     $simpletype{$x} = 1;
