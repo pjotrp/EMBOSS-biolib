@@ -585,7 +585,7 @@ static void sirna_report(AjPReport report, AjPSeq seq,
     count_gc = 0;
     for (i=CDS_begin+1; i < CDS_begin+window_len-2; i++) {
       c = cseq[i];
-      if (tolower(c) == 'g' || tolower(c) == 'c') {
+      if (tolower((int)c) == 'g' || tolower((int)c) == 'c') {
     	 count_gc++;
       }
     }
@@ -646,7 +646,7 @@ static void sirna_report(AjPReport report, AjPSeq seq,
       ajDebug("%d) GC score = %d\n", position, score);
       
 /* check for AA at start */
-      if (tolower(cseq[position]) == 'a') {
+      if (tolower((int)cseq[position]) == 'a') {
         score += A_start;
         ajDebug("Found A at start\n");
       } else {
@@ -657,10 +657,10 @@ static void sirna_report(AjPReport report, AjPSeq seq,
       }
 
 /* check for TT at end */
-      if (((tolower(cseq[position+window_len-1]) == 't') &&
-           (tolower(cseq[position+window_len-2]) == 't')) ||
-          ((tolower(cseq[position+window_len-1]) == 'u') &&
-           (tolower(cseq[position+window_len-2]) == 'u'))) {
+      if (((tolower((int)cseq[position+window_len-1]) == 't') &&
+           (tolower((int)cseq[position+window_len-2]) == 't')) ||
+          ((tolower((int)cseq[position+window_len-1]) == 'u') &&
+           (tolower((int)cseq[position+window_len-2]) == 'u'))) {
         score += TT_end;
         ajDebug("Found TT at end\n");
       } else {
@@ -677,11 +677,11 @@ static void sirna_report(AjPReport report, AjPSeq seq,
       tttt_count = 0;
       for (j=position; j < position+window_len; j++) {
         c = cseq[j];
-        if (tolower(c) != 'a') {aaaa_count = 0;} else {aaaa_count++;}
-        if (tolower(c) != 'c') {cccc_count = 0;} else {cccc_count++;}
-        if (tolower(c) != 'g') {gggg_count = 0;} else {gggg_count++;}
-        if (tolower(c) != 't' &&
-            tolower(c) != 'u') {tttt_count = 0;} else {tttt_count++;}
+        if (tolower((int)c) != 'a') {aaaa_count = 0;} else {aaaa_count++;}
+        if (tolower((int)c) != 'c') {cccc_count = 0;} else {cccc_count++;}
+        if (tolower((int)c) != 'g') {gggg_count = 0;} else {gggg_count++;}
+        if (tolower((int)c) != 't' &&
+            tolower((int)c) != 'u') {tttt_count = 0;} else {tttt_count++;}
 /* always bomb out if we find GGGG */
         if (gggg_count >= 4) {
           score += GGGG;
@@ -706,7 +706,7 @@ static void sirna_report(AjPReport report, AjPSeq seq,
       }
 
 /* check to see if the second base is an 'A' */
-      if (tolower(cseq[position+1]) != 'a') {
+      if (tolower((int)cseq[position+1]) != 'a') {
         score += POS_2_NOT_A;	
       }
 
@@ -714,11 +714,11 @@ static void sirna_report(AjPReport report, AjPSeq seq,
 /* add a penalty if they do not have the correct purine/pyrimidine pattern */
 /* NARN(17)YNN */
       if (poliii &&
-         ((tolower(cseq[position+2]) != 'a' &&
-           tolower(cseq[position+2]) != 'g') ||
-          (tolower(cseq[position+window_len-3]) != 'c' &&
-	   tolower(cseq[position+window_len-3]) != 'u' &&
-	   tolower(cseq[position+window_len-3]) != 't'))) {
+         ((tolower((int)cseq[position+2]) != 'a' &&
+           tolower((int)cseq[position+2]) != 'g') ||
+          (tolower((int)cseq[position+window_len-3]) != 'c' &&
+	   tolower((int)cseq[position+window_len-3]) != 'u' &&
+	   tolower((int)cseq[position+window_len-3]) != 't'))) {
         score += NOT_POLIII;
         ajDebug("Not a PolIII region\n");
       }
@@ -733,13 +733,13 @@ static void sirna_report(AjPReport report, AjPSeq seq,
       c = cseq[position+1];  
       ajDebug("%d) score = %d\n", position, score);
       ajDebug("** base = %c\n", c);
-      if (tolower(c) == 'g' || tolower(c) == 'c') {
+      if (tolower((int)c) == 'g' || tolower((int)c) == 'c') {
         count_gc--;
       }
 
 /* new base shifted onto 3' end of window -2 */
       c = cseq[position+window_len-2];
-      if (tolower(c) == 'g' || tolower(c) == 'c') {
+      if (tolower((int)c) == 'g' || tolower((int)c) == 'c') {
         count_gc++;
       }
       ajDebug("Next GC count=%d\n", count_gc);
