@@ -511,11 +511,11 @@ public class Graph2DPlot extends ScrollPanel
 
         if(xmin > x)
           xmin = x;
-        else if(xmax < x)
+        if(xmax < x)
           xmax = x;
         if(ymin > y)
           ymin = y;
-        else if(ymax < y)
+        if(ymax < y)
           ymax = y;
 
         x = emboss_data[3][i];
@@ -524,11 +524,11 @@ public class Graph2DPlot extends ScrollPanel
 
       if(xmin > x)
         xmin = x;
-      else if(xmax < x)
+      if(xmax < x)
         xmax = x;
       if(ymin > y)
         ymin = y;
-      else if(ymax < y)
+      if(ymax < y)
         ymax = y;
     }
 
@@ -688,7 +688,7 @@ public class Graph2DPlot extends ScrollPanel
     for(int i = 0; i<=n_xticks; i++)
     {
       float xpos = (float)((i*xinterval)+xstart.getValue());
-      int xpos_major = (int)(xpos*xfactor);
+      int xpos_major = (int)((i*xinterval)*xfactor);
       g2d.drawLine(xpos_major,0,xpos_major,tick_height);
 
       if(i > 0)
