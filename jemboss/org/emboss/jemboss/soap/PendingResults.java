@@ -38,6 +38,8 @@ public class PendingResults
   private String currentRes = null;
   private JButton jobButton = null;
   private JComboBox jobComboBox = null;
+  private boolean autoUpdates = false;
+
   // cursors to show when we're at work
   final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
@@ -215,6 +217,27 @@ public class PendingResults
 
   }
 
+/**
+*
+*  @return true if automatically updating status manager 
+*        with BatchUpdateTimer thread
+*
+*/
+  public boolean isAutoUpdate()
+  {
+    return autoUpdates;
+  }
+
+/**
+*
+* @param true if automatically updating status manager 
+*        with BatchUpdateTimer thread
+*
+*/
+  public void setAutoUpdate(boolean b)
+  {
+    autoUpdates = b;
+  }
 
 /**
 *
@@ -312,6 +335,16 @@ public class PendingResults
       }
     }
   } 
+
+/**
+*
+* @return job status text
+*
+*/
+  public String getStatus()
+  {
+    return jobButton.getText();
+  }
 
 }
 

@@ -427,6 +427,12 @@ public class BuildJembossForm implements ActionListener
               JembossProcess er = new JembossProcess((String)thisrun.get("jobid"));
               Jemboss.resultsManager.addResult(er);
               Jemboss.resultsManager.updateStatus();
+              if(!Jemboss.resultsManager.isAutoUpdate())
+              {
+                System.out.println("Start new batch update thread");
+                Jemboss.resultsManager.setAutoUpdate(true);
+                new BatchUpdateTimer(20);
+              }
             }
             else
               new ShowResultSet(thisrun.hash());
