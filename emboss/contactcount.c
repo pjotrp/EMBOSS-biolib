@@ -346,9 +346,9 @@ static AjPFeature write_count(AjPFeattable ajpFeattableCounts,
 **
 ** writes normalized substitution scores to a scoring matrix file format
 **
+** @param [r] ajpInt2dCounts [AjPInt2d] 2-D matrix of signed integer scores
 ** @param [r] ajpFileScoringMatrix [AjPFile] file to write scoring table to
-** @param [r] ajpInt2dScoringMatrix [AjPInt2d] 2-D matrix of signed integer scores
-** @return [AjBool] did it work? ajTrue for success
+** @return [AjBool] AJTRUE for success
 ** @@
 ******************************************************************************/
 
@@ -452,8 +452,8 @@ static ajint char_to_scoring_matrix_index(char cResType)
 **
 ** converts scoring_matrix index number to char
 **
-** @param [r] cResType [char] index to residue type in data dir scoring matrix
-** @return [char]  original single-letter residue type
+** @param [r] ajIntBlosumIndex [ajint] BLOSUM index number
+** @return [ajint]  original single-letter residue type
 ** @@
 ******************************************************************************/
 

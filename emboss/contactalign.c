@@ -432,8 +432,9 @@ static AjPStr ajint1_to_string3 (ajint ajIntCode)
 ** reads ajxyz contact map file into two arrays of ints  
 **
 ** @param [r] ajpFileCmap [AjPFile]  input file stream of current cmap
-** @param [r] pAjPInt2dCmapResTypes [AjPInt2d *] contacts as residue types
-** @param [r] pAjPInt2dCmapPositions [AjPInt2d *] contacts as positions in chain
+** @param [r] pAjpInt2dCmapResTypes [AjPInt2d *] contacts as residue types
+** @param [r] pAjpInt2dCmapPositions [AjPInt2d *] contacts as positions
+**                                               in chain
 ** @return [AjBool] ajTrue if file successfully read
 ** @@
 ******************************************************************************/
@@ -908,7 +909,7 @@ static AjBool write_cmap_file (AjPFile ajpFileUpdatedCmap,
 **
 ** Default constructor for a Cmap contact object
 **
-** @return [AjpContact] Pointer to an AjPContact
+** @return [AjPContact] Pointer to an AjPContact
 ** @@
 ******************************************************************************/
 
@@ -927,7 +928,7 @@ static AjPContact ajContactNew(void)
 **
 ** Default destructor for a Cmap contact object
 **
-** @param [r] pAjpContactToDel [AjPContact *] contact to be deleted
+** @param [r] pthis [AjPContact *] contact to be deleted
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1053,8 +1054,8 @@ static AjPInt2d get_cmap_summary (char *pcSeq)
 **
 ** reserves memory for a 2-D array of ints to store a contact map 
 **
-** @param [r] ajIntAcrossSeqLen [AjPContact] number of residues in template
-** @return [ajint **] array of ajints containing position IDs for each contact
+** @param [r] ajIntAcrossSeqLen [ajint] number of residues in template
+** @return [AjPInt2d] array of ajints containing position IDs for each contact
 ** @@
 ******************************************************************************/
 
