@@ -76,7 +76,7 @@ typedef struct AjSReport {
 
 void         ajReportClose (AjPReport pthys);
 void         ajReportDel (AjPReport* pthys);
-AjBool       ajReportOpen (AjPReport thys, const AjPStr name);
+void         ajReportDummyFunction(void);
 void         ajReportFileAdd (AjPReport thys,
 			      const AjPFile file, const AjPStr type);
 AjBool       ajReportFindFormat (const AjPStr format, ajint* iformat);
@@ -85,6 +85,7 @@ ajint        ajReportLists (const AjPReport thys,
 			    AjPStr** types, AjPStr** names,
 			    AjPStr** prints, ajint** tagsizes);
 AjPReport    ajReportNew (void);
+AjBool       ajReportOpen (AjPReport thys, const AjPStr name);
 void         ajReportPrintFormat (const AjPFile outf, AjBool full);
 AjPStr       ajReportSeqName (const AjPReport thys, AjPSeq seq);
 void         ajReportSetHeader (AjPReport thys, const AjPStr header);

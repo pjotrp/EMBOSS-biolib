@@ -84,6 +84,8 @@ static void reportWriteDbMotif(AjPReport outrpt, AjPFeattable ftable,
 			       AjPSeq seq);
 static void reportWriteDiffseq(AjPReport outrpt, AjPFeattable ftable,
 			       AjPSeq seq);
+static void reportWriteDraw(AjPReport outrpt, AjPFeattable ftable,
+			   AjPSeq seq);
 static void reportWriteExcel(AjPReport outrpt, AjPFeattable ftable,
 			     AjPSeq seq);
 static void reportWriteFeatTable(AjPReport outrpt, AjPFeattable ftable,
@@ -121,6 +123,7 @@ static char* reportCharname(const AjPReport thys);
 
 static ReportOFormat reportFormat[] =
 {
+   /* Name  MinTags  Showseq  Nuc      Prot     Function */
     /* standard feature formats */
     {"embl",      0, AJFALSE, AJTRUE,  AJFALSE, reportWriteEmbl},
     {"genbank",   0, AJFALSE, AJTRUE,  AJFALSE, reportWriteGenbank},
@@ -134,6 +137,8 @@ static ReportOFormat reportFormat[] =
     /* feature reports */
     {"dbmotif",   0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteDbMotif},
     {"diffseq",   0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteDiffseq},
+/*    cirdna/lindna input format - looks horrible in those programs */
+/*    {"draw",      0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteDraw},*/
     {"excel",     0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteExcel},
     {"feattable", 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteFeatTable},
     {"motif",     0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteMotif},
@@ -612,6 +617,151 @@ static void reportWriteDiffseq(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
     ajStrDel(&tmpstr);
     ajStrDel(&tagval);
     ajStrDel(&jname);
+    
+    ajListIterFree(iterft);
+
+    return;
+}
+
+
+
+
+/* @funcstatic reportWriteDraw ************************************************
+**
+** Writes a report in Draw format, for use as input to cirdna or lindna
+**
+** Format:<br>
+**   group<br>
+**<br>
+**   label<br>
+**   tick  [tagvalue] [start] 8<br>
+**   endlabel<br>
+**   label<br>
+**   tick  [tagvalue] [end] 3<br>
+**   endlabel<br>
+**<br>
+**   endgroup<br>
+**
+** Data reported:
+**
+** Tags required: Enzyme_name, 5prime, 3primem 5primerev, 3primerev
+**
+** Tags used:
+**
+** Tags reported:
+**
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void reportWriteDraw(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+{
+    AjPFile outf;
+    AjIList iterft     = NULL;
+    AjPFeature feature = NULL;
+    ajint istart  = 0;
+    ajint iend    = 0;
+    float score   = 0.0;
+    AjPStr subseq = NULL;
+    ajint ntags;
+    static AjPStr* tagtypes = NULL;
+    static AjPStr* tagnames = NULL;
+    static AjPStr* tagprints = NULL;
+    static ajint*  tagsizes = NULL;
+    ajint j = 0;
+    AjPStr tagval = NULL;
+    ajint jenz = -1;
+    ajint j5 = -1;
+    ajint j3 = -1;
+    ajint j5rev = -1;
+    ajint j3rev = -1;
+    ajint jstart;
+    ajint jend;
+    outf = thys->File;
+    
+    ajReportWriteHeader(thys, ftable, seq);
+    
+    ntags = ajReportLists(thys, &tagtypes, &tagnames, &tagprints, &tagsizes);
+    
+    for(j=0; j < ntags; j++)
+    {
+	if(ajStrMatchCaseC(tagnames[j], "enzyme"))
+	    jenz = j;
+	if(ajStrMatchCaseC(tagnames[j], "5prime"))
+	    j5 = j;
+	if(ajStrMatchCaseC(tagnames[j], "3prime"))
+	    j3 = j;
+	if(ajStrMatchCaseC(tagnames[j], "5prime_rev"))
+	    j5rev = j;
+	if(ajStrMatchCaseC(tagnames[j], "3prime_rev"))
+	    j3rev = j;
+    }
+
+    ajFmtPrintF(outf, "Start %d\n", 
+ 		ajSeqBegin(seq) + ajSeqOffset(seq));
+    ajFmtPrintF(outf, "End   %d\n", 
+ 		ajSeqEnd(seq) + ajSeqOffset(seq));
+
+    ajFmtPrintF(outf, "\n"); 
+    ajFmtPrintF(outf, "group\n");
+    
+    iterft = ajListIter(ftable->Features);
+    while(ajListIterMore(iterft))
+    {
+	feature = (AjPFeature)ajListIterNext(iterft);
+	if (feature->Strand == '-')
+	{
+	    istart = feature->End;
+	    iend = feature->Start;
+	}
+	else
+	{
+	    istart = feature->Start;
+	    iend = feature->End;
+	}
+	score = feature->Score;
+
+	ajFmtPrintF(outf, "label\n");
+	if (j5 >= 0)
+	{
+	    ajFeatGetNote(feature, tagnames[j5], &tagval);
+	    ajStrToInt(tagval, &jstart);
+	    ajFmtPrintF(outf, "Tick %d 8\n", jstart);
+	    if (jenz >= 0)
+	    {
+		ajFeatGetNote(feature, tagnames[jenz], &tagval);
+		ajFmtPrintF(outf, "%S\n", tagval);
+	    }
+	    else
+		ajFmtPrintF(outf, "Enz\n");
+	    ajFmtPrintF(outf, "endlabel\n");
+	}
+	if (j3 >= 0)
+	{
+	    ajFmtPrintF(outf, "label\n");
+	    ajFeatGetNote(feature, tagnames[j3], &tagval);
+	    ajStrToInt(tagval, &jend);
+	    ajFmtPrintF(outf, "Tick %d 3\n", jend);
+	    if (jenz >= 0)
+	    {
+		ajFeatGetNote(feature, tagnames[jenz], &tagval);
+		ajFmtPrintF(outf, "%S\n", tagval);
+	    }
+	    else
+		ajFmtPrintF(outf, "Enz\n");
+	    ajFmtPrintF(outf, "endlabel\n");
+	}
+
+	ajFmtPrintF(outf, "\n");
+    }
+    
+    ajReportWriteTail(thys, ftable, seq);
+    
+    ajStrDel(&subseq);
+    ajStrDel(&tagval);
     
     ajListIterFree(iterft);
 
@@ -2599,3 +2749,24 @@ void ajReportPrintFormat(const AjPFile outf, AjBool full)
 
     return;
 }
+/* @func ajReportDummyFunction ************************************************
+**
+** Dummy function to catch all unused functions defined in the ajreport
+** source file.
+**
+** @return [void]
+**
+******************************************************************************/
+
+void ajReportDummyFunction(void)
+{
+    AjPReport report = NULL;
+    AjPFeattable ftable = NULL;
+    AjPSeq seq = NULL;
+
+    reportWriteDraw(report, ftable, seq);
+}
+
+
+
+
