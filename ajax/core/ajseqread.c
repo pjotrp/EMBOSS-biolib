@@ -466,6 +466,25 @@ void ajSeqinUsa (AjPSeqin* pthis, AjPStr Usa)
 AjBool ajSeqAllRead (AjPSeq thys, AjPSeqin seqin)
 {
     AjBool ret = ajFalse;
+    ajint i;
+    AjPStr tmpformat = NULL;
+    static ajint calls = 0;
+
+    if (!calls)
+    {					/* we need a copy of the formatlist */
+	for (i=0; seqInFormatDef[i].Name; i++); 
+	ajDebug("Initializing seqInFormat, %d formats\n", i);
+	AJCNEW(seqInFormat,i+1);
+	for (i=0; seqInFormatDef[i].Name; i++)
+	    seqInFormat[i] = seqInFormatDef[i];
+	if (ajNamGetValueC("format", &tmpformat))
+	{
+	    (void) seqSetInFormat(tmpformat, seqInFormat);
+	    ajDebug ("seqSetInFormat '%S' from EMBOSS_FORMAT\n", tmpformat);
+	}
+	ajStrDel(&tmpformat);
+	calls = 1;
+    }
 
 
     if (!seqin->Filebuff) {	/* First call. No file open yet ... */
@@ -711,8 +730,12 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 	AJCNEW(seqInFormat,i+1);
 	for (i=0; seqInFormatDef[i].Name; i++)
 	    seqInFormat[i] = seqInFormatDef[i];
+
 	if (ajNamGetValueC("format", &tmpformat))
+	{
 	    (void) seqSetInFormat(tmpformat, seqInFormat);
+	    ajDebug ("seqSetInFormat '%S' from EMBOSS_FORMAT\n", tmpformat);
+	}
 	ajStrDel(&tmpformat);
 	calls = 1;
     }
@@ -4753,7 +4776,7 @@ void ajSeqPrintInFormat (AjPFile outf, AjBool full)
 
     ajFmtPrintF (outf, "\n");
     ajFmtPrintF (outf, "# sequence input formats\n");
-    ajFmtPrintF (outf, "# Name         Single (if true, split into single"
+    ajFmtPrintF (outf, "# Name         Try (test for uinknown input)"
 		 " files)\n");
     ajFmtPrintF (outf, "\n");
     ajFmtPrintF (outf, "InFormat {\n");
@@ -4838,7 +4861,7 @@ static AjBool seqSetInFormat (AjPStr format, SeqPInFormat inform)
     for (i=0; inform[i].Name; i++)
 	inform[i].Try = ajFalse;
 
-    /* ajDebug("seqSetInformat '%S'\n", format); */
+    ajDebug("seqSetInformat '%S'\n", format);
 
     (void) ajStrTokenAss (&handle, format, " \t\n\r,;:");
     while (ajStrToken (&fmtstr, &handle, " \t\n\r,;:"))
