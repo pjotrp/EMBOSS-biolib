@@ -5421,6 +5421,37 @@ AjBool ajXyzPdbtospRead(AjPFile inf, AjPStr entry, AjPPdbtosp *thys)
 }
 
 
+/* @func ajXyzPdbtospReadAll *********************************************************
+**
+** Read all the Pdbtosp objects in a file in embl-like format and writes a list 
+** of these objects. It then sorts the list by PDB id.
+**
+** @param [r] inf [AjPFile] Input file stream
+** @param [w] list [AjPList*]  Sorted list of Pdbtosp objects
+**
+** @return [AjBool] True on success
+** @@
+*****************************************************************************/
+AjBool ajXyzPdbtospReadAll(AjPFile inf, AjPList *list)
+{
+    AjPPdbtosp ptr=NULL;
+    
+    /* Check args and allocate list if necessary */
+    if(!list || !inf)
+	return ajFalse;
+    if(!(*list))
+	*list = ajListNew();
+    
+
+    while(ajXyzPdbtospReadC(inf, "*", &ptr))
+	ajListPush(*list, (void *) ptr);
+
+    ajListSort(*list, ajXyzSortPdbtospPdb);
+    
+    return ajTrue;
+}
+
+
 
 
 /* @func ajXyzScopRead *********************************************************
@@ -5725,11 +5756,12 @@ AjBool ajXyzScopclaReadC(AjPFile inf, char *entry, AjPScopcla *thys)
 
 /* @func ajXyzPdbtospReadC ******************************************************
 **
-** Read a Pdbtosp object from a file in embl-like format.
+** Read a Pdbtosp object from a file in embl-like format.  Memory for the
+** object is allocated.
 **
 ** @param [r] inf [AjPFile] Input file stream
 ** @param [r] entry [char*] Pdb id
-** @param [w] thys [AjPPdbtosp*] Pdbtosp object
+** @param [w] thys [AjPPdbtosp*] Pdbtosp object 
 **
 ** @return [AjBool] True on success
 ** @@
@@ -6043,12 +6075,172 @@ AjBool ajXyzScopReadC(AjPFile inf, char *entry, AjPScop *thys)
 ** @param [r] scop [AjPStr]   Scop identifier code
 ** @param [w] pdb  [AjPStr*]  Pdb identifier code
 **
-** @return [void]
+** @return [AjPStr] Pointer to pdb identifier code.
 ** @@
 ******************************************************************************/
-void   ajXyzScopToPdb(AjPStr scop, AjPStr *pdb)
+AjPStr   ajXyzScopToPdb(AjPStr scop, AjPStr *pdb)
 {
     ajStrAssSub(pdb, scop, 1, 4);
+    return *pdb;
+}
+
+
+
+/* @func ajXyzPdbToSp *********************************************************
+**
+** Read a pdb identifier code and writes the equivalent swissprot identifier code
+** Relies on list of Pdbtosp objects sorted by PDB code, which is usually obtained 
+** by a call to ajXyzPdbtospReadAll.
+** 
+** @param [r] pdb  [AjPStr]   Pdb  identifier code
+** @param [w] spr  [AjPStr*]  Swissprot identifier code
+** @param [r] list [AjPList]  Sorted list of Pdbtosp objects
+**
+** @return [AjBool]  True if a swissprot identifier code was found for the Pdb code.
+** @@
+******************************************************************************/
+AjBool   ajXyzPdbToSp(AjPStr pdb, AjPStr *spr, AjPList list)
+{
+    AjPPdbtosp *arr = NULL;  /* Array derived from list */
+    ajint       dim =0;      /* Size of array */
+    ajint       idx =0;      /* Index into array for the Pdb code */
+
+    
+    if(!pdb || !list)
+    {
+	ajWarn("Bad args passed to ajXyzPdbToSp");
+	return ajFalse;
+    }
+    
+
+    dim = ajListToArray(list, (void ***) &(arr));
+    if(!dim)
+    {
+	ajWarn("Empty list passed to ajXyzPdbToSp");
+	return ajFalse;
+    }
+
+
+    if( (idx = ajXyzPdbtospBinSearch(pdb, arr, dim))==-1)
+	return ajFalse;
+    else
+    {
+	ajStrAssS(spr, arr[idx]->Spr[0]);
+	return ajTrue;
+    }
+}
+
+
+
+/* @func ajXyzScopToSp *********************************************************
+**
+** Read a scop identifier code and writes the equivalent swissprot identifier code
+** Relies on a list of Pdbtosp objects sorted by PDB code, which is usually obtained 
+** by a call to ajXyzPdbtospReadAll.
+** 
+** @param [r] scop  [AjPStr]  Scop domain identifier code
+** @param [w] spr   [AjPStr*]  Swissprot identifier code
+** @param [r] list  [AjPList]  Sorted list of Pdbtosp objects
+**
+** @return [AjBool]  True if a swissprot identifier code was found for the Scop code.
+** @@
+******************************************************************************/
+AjBool   ajXyzScopToSp(AjPStr scop, AjPStr *spr, AjPList list)
+{
+    AjPStr pdb=NULL;
+    
+    pdb=ajStrNew();
+    
+    if(ajXyzPdbToSp(ajXyzScopToPdb(scop, &pdb), spr, list))
+    {
+	ajStrDel(&pdb);
+	return ajTrue;
+    }
+    else
+    {
+	ajStrDel(&pdb);
+	return ajFalse;
+    }
+}
+
+
+
+
+/* @func ajXyzPdbToAcc *********************************************************
+**
+** Read a pdb identifier code and writes the equivalent accession number.
+** Relies on list of Pdbtosp objects sorted by PDB code, which is usually obtained 
+** by a call to ajXyzPdbtospReadAll.
+** 
+** @param [r] pdb  [AjPStr]   Pdb  identifier code
+** @param [w] Acc  [AjPStr*]  Accession number
+** @param [r] list [AjPList]  Sorted list of Pdbtosp objects
+**
+** @return [AjBool]  True if a swissprot identifier code was found for the Pdb code.
+** @@
+******************************************************************************/
+AjBool   ajXyzPdbToAcc(AjPStr pdb, AjPStr *acc, AjPList list)
+{
+    AjPPdbtosp *arr = NULL;  /* Array derived from list */
+    ajint    dim =0;      /* Size of array */
+    ajint    idx =0;      /* Index into array for the Pdb code */
+
+    
+    if(!pdb || !list)
+    {
+	ajWarn("Bad args passed to ajXyzPdbToSp");
+	return ajFalse;
+    }
+    
+
+    dim = ajListToArray(list, (void ***) &(arr));
+    if(!dim)
+    {
+	ajWarn("Empty list passed to ajXyzPdbToAcc");
+	return ajFalse;
+    }
+
+
+    if( (idx = ajXyzPdbtospBinSearch(pdb, arr, dim))==-1)
+	return ajFalse;
+    else
+    {
+	ajStrAssS(acc, arr[idx]->Acc[0]);
+	return ajTrue;
+    }
+}
+
+
+
+/* @func ajXyzScopToAcc *********************************************************
+**
+** Read a scop identifier code and writes the equivalent accession number
+** Relies on a list of Pdbtosp objects sorted by PDB code, which is usually obtained 
+** by a call to ajXyzPdbtospReadAll.
+** 
+** @param [r] scop  [AjPStr]  Scop domain identifier code
+** @param [w] acc   [AjPStr*]  Accession number
+** @param [r] list  [AjPList]  Sorted list of Pdbtosp objects
+**
+** @return [AjBool]  True if a swissprot identifier code was found for the Scop code.
+** @@
+******************************************************************************/
+AjBool   ajXyzScopToAcc(AjPStr scop, AjPStr *acc, AjPList list)
+{
+    AjPStr pdb=NULL;
+    
+    pdb=ajStrNew();
+    
+    if(ajXyzPdbToAcc(ajXyzScopToPdb(scop, &pdb), acc, list))
+    {
+	ajStrDel(&pdb);
+	return ajTrue;
+    }
+    else
+    {
+	ajStrDel(&pdb);
+	return ajFalse;
+    }
 }
 
 
@@ -7777,6 +7969,46 @@ ajint ajXyzCompScore(const void *hit1, const void *hit2)
 }
 
 
+/* @func ajXyzPdbtospBinSearch ***********************************************
+**
+** Performs a binary search for a PDB code over an array of Pdbtosp
+** structures (which of course must first have been sorted). This is a 
+** case-insensitive search.
+**
+** @param [r] id  [AjPStr]      Search term
+** @Param [r] arr [AjPPdbtosp*] Array of AjOPdbtosp objects
+** @param [r] siz [ajint]       Size of array
+**
+** @return [ajint] Index of first AjOPdbtosp object found with an PDB code
+** matching id, or -1 if id is not found.
+** @@
+******************************************************************************/
+ajint ajXyzPdbtospBinSearch(AjPStr id, AjPPdbtosp *arr, ajint siz)
+{
+    int l;
+    int m;
+    int h;
+    int c;
+
+
+    l=0;
+    h=siz-1;
+    while(l<=h)
+    {
+        m=(l+h)>>1;
+
+        if((c=ajStrCmpCase(id, arr[m]->Pdb)) < 0) 
+	    h=m-1;
+        else if(c>0) 
+	    l=m+1;
+        else 
+	    return m;
+    }
+    return -1;
+}
+
+
+
 
 
 /* @func ajXyzBinSearch ******************************************************
@@ -7786,7 +8018,7 @@ ajint ajXyzCompScore(const void *hit1, const void *hit2)
 ** case-insensitive search.
 **
 ** @param [r] id  [AjPStr]     Search term
-** @param [r] arr [AjPHitlist] Array of AjOHitidx objects
+** @param [r] arr [AjPHitidx*] Array of AjOHitidx objects
 ** @param [r] siz [ajint]      Size of array
 **
 ** @return [ajint] Index of first AjOHitidx object found with an Id element 
@@ -7815,6 +8047,31 @@ ajint ajXyzBinSearch(AjPStr id, AjPHitidx *arr, ajint siz)
 	    return m;
     }
     return -1;
+}
+
+
+
+/* @func ajXyzSortPdbtospPdb *********************************************************
+**
+** Function to sort AjOPdbtosp objects by Pdb element. Usually called by 
+** ajXyzPdbtospReadAll.
+**
+** @param [r] ptr1  [const void*] Pointer to AjOPdbtosp object 1
+** @param [r] ptr2  [const void*] Pointer to AjOPdbtosp object 2
+**
+** @return [ajint] -1 if Pdb1 should sort before Pdb2, +1 if the Pdb2 should sort 
+** first. 0 if they are identical in length and content. 
+** @@
+******************************************************************************/
+ajint ajXyzSortPdbtospPdb(const void *ptr1, const void *ptr2)
+{
+    AjPPdbtosp p= NULL;
+    AjPPdbtosp q  = NULL;
+
+    p = (*(AjPPdbtosp*)ptr1);
+    q = (*(AjPPdbtosp*)ptr2);
+    
+    return ajStrCmpO(p->Pdb, q->Pdb);
 }
 
 
@@ -8530,7 +8787,6 @@ AjBool   ajXyzPdbAtomIndexC(AjPPdb pdb, char chn, AjPInt *idx)
 
     return ajTrue;
 }
-
 
 
 

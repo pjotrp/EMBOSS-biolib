@@ -764,6 +764,9 @@ AjPPdbtosp ajXyzPdbtospNew(ajint n);
 void ajXyzPdbtospDel(AjPPdbtosp *thys);
 AjBool ajXyzPdbtospRead(AjPFile inf, AjPStr entry, AjPPdbtosp *thys);
 AjBool ajXyzPdbtospReadC(AjPFile inf, char *entry, AjPPdbtosp *thys);
+AjBool ajXyzPdbtospReadAll(AjPFile inf, AjPList *list);
+ajint ajXyzPdbtospBinSearch(AjPStr id, AjPPdbtosp *arr, ajint siz);
+ajint ajXyzSortPdbtospPdb(const void *ptr1, const void *ptr2);
 
 
 AjPAtom       ajXyzAtomNew(void);
@@ -791,7 +794,11 @@ void          ajXyzScopDel(AjPScop *pthis);
 AjBool        ajXyzScopRead(AjPFile inf, AjPStr entry, AjPScop *thys);
 AjBool        ajXyzScopReadC(AjPFile inf, char *entry, AjPScop *thys);
 void          ajXyzScopWrite(AjPFile outf, AjPScop thys);
-void          ajXyzScopToPdb(AjPStr scop, AjPStr *pdb);
+AjPStr        ajXyzScopToPdb(AjPStr scop, AjPStr *pdb);
+AjBool        ajXyzPdbToSp(AjPStr pdb, AjPStr *spr, AjPList list);
+AjBool        ajXyzScopToSp(AjPStr scop, AjPStr *spr, AjPList list);
+AjBool        ajXyzPdbToAcc(AjPStr pdb, AjPStr *acc, AjPList list);
+AjBool        ajXyzScopToAcc(AjPStr scop, AjPStr *acc, AjPList list);
 
 
 AjPScopcla    ajXyzScopclaNew(ajint chains);
@@ -948,7 +955,6 @@ AjBool        ajXyzDichetRawRead(AjPFile fptr, AjPDichet *ptr);
 AjBool        ajXyzDichetRead(AjPFile fptr, AjPDichet *ptr);
 AjBool        ajXyzDichetWrite(AjPFile fptr, AjPDichet ptr, AjBool dogrep);
 
-void ajXyzSeqWrite(AjPFile outf, AjPStr seq, char *prefix);
 
 
 
