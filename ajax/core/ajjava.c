@@ -4088,6 +4088,9 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listDirs
     (*env)->SetObjectField(env,obj,field,estr);
 
 
+    if(ajStrLen(errstd))
+	ok = ajFalse;
+
     java_tidy_command(&username,&password,&envi,&directory,
 		      &outstd,&errstd);
     AJFREE(jpass);
