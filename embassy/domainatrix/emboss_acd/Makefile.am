@@ -1,8 +1,6 @@
 
-pkgdata_DATA = contacts.acd domainer.acd fraggle.acd hetparse.acd hmmgen.acd \
-	interface.acd libscan.acd pdbparse.acd pdbplus.acd pdbtosp.acd \
-	profgen.acd rocplot.acd scopalign.acd scopnr.acd scopparse.acd \
-	scoprep.acd scopreso.acd scopseqs.acd seqalign.acd seqnr.acd \
-	seqsearch.acd seqsort.acd seqwords.acd siggen.acd sigplot.acd \
-	sigscan.acd
+pkgdata_DATA = = domainer.acd domainalign.acd domainnr.acd domainrep.acd domainreso.acd domainseqs.acd \
+               libgen.acd pdbparse.acd scopparse.acd \
+               seqalign.acd seqnr.acd seqsearch.acd seqfraggle.acd seqsort.acd \
+               rocplot.acd rocon.acd
 pkgdatadir=$(prefix)/share/EMBOSS/acd
