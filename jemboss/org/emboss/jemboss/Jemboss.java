@@ -134,7 +134,11 @@ public class Jemboss implements ActionListener
 
     // set the working dir
     if(!withSoap)
+    {
       mysettings.setUserHome(System.getProperty("user.dir"));
+      if(mysettings.getDebug())
+        System.out.println("Standalone mode");
+    }
 
     // make the local file manager
     tree = new DragTree(new File(mysettings.getUserHome()),
@@ -274,15 +278,9 @@ public class Jemboss implements ActionListener
     if(args.length > 0)
     {
       if(args[0].equalsIgnoreCase("local"))
-      {
         withSoap = false; 
-        System.out.println("Standalone mode");
-      }
       else 
-      {
         withSoap = true; 
-        System.out.println("Client-server mode");
-      }
     }
     else
       withSoap = true;
