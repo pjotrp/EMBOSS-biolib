@@ -43,9 +43,9 @@ pkgdata2_DATA = kitsch.txt lindna.txt listor.txt marscan.txt maskfeat.txt \
                silent.txt splitter.txt stamps.txt stretcher.txt \
                stssearch.txt supermatcher.txt swissparse.txt syco.txt \
                textsearch.txt tfextract.txt tfm.txt tfscan.txt tmap.txt \
-               topo.txt transeq.txt trimest.txt trimseq.txt vectorstrip.txt \
-               water.txt whichdb.txt wobble.txt wordcount.txt wordmatch.txt \
-               wossname.txt yank.txt
+               topo.txt transeq.txt trimest.txt trimseq.txt union.txt \
+               vectorstrip.txt water.txt whichdb.txt wobble.txt \
+               wordcount.txt wordmatch.txt wossname.txt yank.txt
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/programs/text
 pkgdata2dir=$(prefix)/share/$(PACKAGE)/doc/programs/text

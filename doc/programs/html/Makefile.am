@@ -76,7 +76,7 @@ pkgdata2_DATA = isochore.html jembossctl.html kitsch.html lindna.html \
                stretcher.html stssearch.html supermatcher.html \
                swissparse.html syco.html test_group.html textsearch.html \
                tfextract.html tfm.html tfscan.html tmap.html topo.html \
-               transeq.html trimest.html trimseq.html \
+               transeq.html trimest.html trimseq.html union.html \
                utils_database_creation_group.html \
                utils_database_indexing_group.html utils_misc_group.html \
                vectorstrip.html water.html whichdb.html wobble.html \
