@@ -1,4 +1,10 @@
 Version 2.5.0
+	Corrected EMBLCD index searching for queries that start with a
+	wildcard. For example, tembl-key:?* should search for all entries
+	that have a keyword (key:* is regarded as 'all entries'). Entries
+	with no keyword (in PIR's pir4.ref file for example) will be
+	ignored.
+	
 	Updated source code docs for EFUNC and EDATA. Corrected all bad
 	headers. efunc.out has no errors. efunc.check only reports
 	'missing headers' for duplicated function names (#ifdef code)
