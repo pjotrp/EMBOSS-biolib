@@ -21,7 +21,7 @@ Description
    from the AAINDEX database.
    
    The AAINDEX database file 'aaindex1' can be downloaded from the
-   AAINDEX site: ftp://ftp.genome.ad.jp/pub/db/genomenet/aaindex/
+   AAINDEX site: ftp://ftp.genome.ad.jp/pub/db/genomenet/aaindex/aaindex1
    
 Usage
 
