@@ -74,7 +74,7 @@
 
 
 
-static AjBool jctl_up(char *buf,int *uid,int *gid,AjPStr *home);
+static AjBool jctl_up(const char *buf,int *uid,int *gid,AjPStr *home);
 static AjBool jctl_do_fork(char *buf, int uid, int gid);
 static AjBool jctl_do_batch(char *buf, int uid, int gid);
 static AjBool jctl_do_directory(char *buf, int uid, int gid);
@@ -89,13 +89,13 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
 			      unsigned char **fbuf, int *size);
 static AjBool jctl_do_putfile(char *buf, int uid, int gid);
 
-static char **jctl_make_array(AjPStr str);
+static char **jctl_make_array(const AjPStr str);
 static void jctl_tidy_strings(AjPStr *tstr, AjPStr *home, AjPStr *retlist,
 			      char *buf);
 static void jctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
 			   AjPStr *dir, AjPStr *outstd, AjPStr *errstd);
 static AjBool jctl_check_buffer(char *buf, int mlen);
-static AjBool jctl_chdir(char *file);
+static AjBool jctl_chdir(const char *file);
 static AjBool jctl_initgroups(char *buf, int gid);
 static void jctl_zero(char *buf);
 static time_t jctl_Datestr(AjPStr s);
@@ -160,8 +160,8 @@ static int jctl_pam_conv(int num_msg, struct pam_message **msg,
 
 
 static int jctl_pipe_read(char *buf, int n, int seconds);
-static int jctl_pipe_write(char *buf, int n, int seconds);
-static int jctl_snd(char *buf,int len);
+static int jctl_pipe_write(const char *buf, int n, int seconds);
+static int jctl_snd(const char *buf,int len);
 static int jctl_rcv(char *buf);
 
 static int java_block(int chan, unsigned long flag);
@@ -841,7 +841,7 @@ static AjBool jctl_check_pass(AjPStr username,AjPStr password,ajint *uid,
 **
 ** Primary username/password check. Return uid/gid/homedir
 **
-** @param [w] buf [char*] socket buffer
+** @param [w] buf [const char*] socket buffer
 ** @param [w] uid [int*] uid
 ** @param [w] gid [int*] gid
 ** @param [w] home [AjPStr*] home
@@ -849,14 +849,14 @@ static AjBool jctl_check_pass(AjPStr username,AjPStr password,ajint *uid,
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_up(char *buf, int *uid, int *gid, AjPStr *home)
+static AjBool jctl_up(const char *buf, int *uid, int *gid, AjPStr *home)
 {
     AjPStr username = NULL;
     AjPStr password = NULL;
     AjPStr cstr = NULL;
     ajint command;
     AjBool ok = ajFalse;
-    char *p = NULL;
+    const char *p = NULL;
 
     username = ajStrNew();
     password = ajStrNew();
@@ -869,7 +869,7 @@ static AjBool jctl_up(char *buf, int *uid, int *gid, AjPStr *home)
 	   bzero((void*)ajStrStr(username),ajStrLen(username));
 	if(ajStrLen(password))
 	   bzero((void*)ajStrStr(password),ajStrLen(password));
-	jctl_zero(buf);
+	jctl_zero((char*)buf);
 
 	ajStrDel(&username);
 	ajStrDel(&password);
@@ -895,7 +895,7 @@ static AjBool jctl_up(char *buf, int *uid, int *gid, AjPStr *home)
 
     bzero((void*)ajStrStr(username),ajStrLen(username));
     bzero((void*)ajStrStr(password),ajStrLen(password));
-    jctl_zero(buf);
+    jctl_zero((char*)buf);
 
     ajStrDel(&username);
     ajStrDel(&password);
@@ -935,8 +935,8 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
     AjPStr enviro = NULL;
     AjPStr dir    = NULL;
 
-    char *p = NULL;
-    char *q = NULL;
+    const char *p = NULL;
+    const char *q = NULL;
     char c  = '\0';
 
     /* Fork stuff */
@@ -1009,7 +1009,7 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
 
     ajStrAssC(&dir,p);
 
-    jctl_zero(buf);
+    jctl_zero((char*)buf);
 
 
     p = q = ajStrStr(cl);
@@ -1334,8 +1334,8 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
     AjPStr enviro = NULL;
     AjPStr dir    = NULL;
 
-    char *p = NULL;
-    char *q = NULL;
+    const char *p = NULL;
+    const char *q = NULL;
     char c  = '\0';
 
     /* Fork stuff */
@@ -1399,7 +1399,7 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
 
     ajStrAssC(&dir,p);
 
-    jctl_zero(buf);
+    jctl_zero((char*)buf);
 
 
     p = q = ajStrStr(cl);
@@ -1667,7 +1667,7 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
 ** @return [char**] env or argv array
 ******************************************************************************/
 
-static char** jctl_make_array(AjPStr str)
+static char** jctl_make_array(const AjPStr str)
 {
     int n;
     char **ptr = NULL;
@@ -1676,7 +1676,7 @@ static char** jctl_make_array(AjPStr str)
 
     buf = ajStrNew();
 
-    n = ajStrTokenCountR(&str," \t\n");
+    n = ajStrTokenCountR(str," \t\n");
 
     AJCNEW0(ptr,n+1);
 
@@ -1738,7 +1738,7 @@ static AjBool jctl_do_directory(char *buf, int uid, int gid)
     ajStrAssC(&dir,p);
 
 
-    jctl_zero(buf);
+    jctl_zero((char*)buf);
 
     if(setgid(gid)==-1)
     {
@@ -1827,7 +1827,7 @@ static AjBool jctl_do_deletefile(char *buf, int uid, int gid)
     /* retrieve user file */
     ajStrAssC(&ufile,p);
 
-    jctl_zero(buf);
+    jctl_zero((char*)buf);
 
     if(setgid(gid)==-1)
     {
@@ -1901,7 +1901,7 @@ static AjBool jctl_do_seq(char *buf, int uid, int gid)
     /* retrieve user file */
     ajStrAssC(&usa,p);
 
-    jctl_zero(buf);
+    jctl_zero((char*)buf);
 
     if(setgid(gid)==-1)
     {
@@ -1988,7 +1988,7 @@ static AjBool jctl_do_seqset(char *buf, int uid, int gid)
     /* retrieve user file */
     ajStrAssC(&usa,p);
 
-    jctl_zero(buf);
+    jctl_zero((char*)buf);
 
     if(setgid(gid)==-1)
     {
@@ -2079,7 +2079,7 @@ static AjBool jctl_do_renamefile(char *buf, int uid, int gid)
     /* retrieve new name */
     ajStrAssC(&u2file,p);
 
-    jctl_zero(buf);
+    jctl_zero((char*)buf);
 
     if(setgid(gid)==-1)
     {
@@ -2158,7 +2158,7 @@ static AjBool jctl_do_deletedir(char *buf, int uid, int gid)
     /* retrieve user directory */
     ajStrAssC(&dir,p);
 
-    jctl_zero(buf);
+    jctl_zero((char*)buf);
 
     if(setgid(gid)==-1)
     {
@@ -2281,7 +2281,7 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
     /* retrieve user file */
     ajStrAssC(&dir,p);
 
-    jctl_zero(buf);
+    jctl_zero((char*)buf);
 
     if(setgid(gid)==-1)
     {
@@ -2468,7 +2468,7 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
     /* retrieve directory */
     ajStrAssC(&dir,p);
 
-    jctl_zero(buf);
+    jctl_zero((char*)buf);
 
 
 
@@ -2660,7 +2660,7 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     /* retrieve file name */
     ajStrAssC(&file,p);
 
-    jctl_zero(buf);
+    jctl_zero((char*)buf);
 
     if(setgid(gid)==-1)
     {
@@ -2938,7 +2938,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
     /* retrieve file name */
     ajStrAssC(&file,p);
 
-    jctl_zero(buf);
+    jctl_zero((char*)buf);
 
     if(jctl_snd(ajStrStr(message),2)==-1)
     {
@@ -3289,12 +3289,12 @@ static AjBool jctl_check_buffer(char *buf, int mlen)
 **
 ** If a filename is given (e.g. delete) then first chdir to the directory
 **
-** @param [r] file [char*] file name
+** @param [r] file [const char*] file name
 **
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_chdir(char *file)
+static AjBool jctl_chdir(const char *file)
 {
     char *p;
     AjPStr str = NULL;
@@ -3521,7 +3521,7 @@ static int jctl_pipe_read(char *buf, int n, int seconds)
 **
 ** Write a byte stream to stdout (unblocked)
 **
-** @param [r] buf [char *] buffer to write
+** @param [r] buf [const char *] buffer to write
 ** @param [r] n [int] number of bytes to write
 ** @param [r] seconds [int] time-out
 **
@@ -3529,7 +3529,7 @@ static int jctl_pipe_read(char *buf, int n, int seconds)
 ** @@
 ******************************************************************************/
 
-static int jctl_pipe_write(char *buf, int n, int seconds)
+static int jctl_pipe_write(const char *buf, int n, int seconds)
 {
 #ifdef HAVE_POLL
     struct pollfd ufds;
@@ -3543,7 +3543,7 @@ static int jctl_pipe_write(char *buf, int n, int seconds)
     int  written;
     int  sent = 0;
     int  ret  = 0;
-    char *p;
+    const char *p;
     int tchan = 1;
     unsigned long block = 0;
     long then = 0;
@@ -3649,14 +3649,14 @@ static int jctl_pipe_write(char *buf, int n, int seconds)
 **
 ** Mimic socket write using pipes
 **
-** @param [r] buf [char *] buffer to write
+** @param [r] buf [const char *] buffer to write
 ** @param [r] len [int] number of bytes to write
 **
 ** @return [int] 0=success  -1=failure
 ** @@
 ******************************************************************************/
 
-static int jctl_snd(char *buf,int len)
+static int jctl_snd(const char *buf,int len)
 {
 
     if(jctl_pipe_write((char *)&len,sizeof(int),TIMEOUT)==-1)
@@ -3776,7 +3776,7 @@ static time_t jctl_Datestr(AjPStr s)
 
     tmp = ajStrNew();
     ajStrAssS(&tmp,s);
-    p = ajStrStr(tmp);
+    p = (char*)ajStrStr(tmp);
     while(*p)
     {
 	if(*p == '_' || *p==':')

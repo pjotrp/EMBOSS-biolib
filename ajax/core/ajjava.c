@@ -446,7 +446,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userInfo
 
     ajint uid = 0;
     ajint gid = 0;
-    char  *hp = NULL;
+    const char  *hp;
 
     jvc = (*env)->GetObjectClass(env,obj);
 
@@ -2619,8 +2619,8 @@ static int java_jembossctl(ajint command,
     int    i=0;
 
 
-    char *cuser = NULL;
-    char *cpass = NULL;
+    const char *cuser;
+    const char *cpass;
 
     char *buff  = NULL;
     int size = 0;
