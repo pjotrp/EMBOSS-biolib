@@ -130,7 +130,7 @@ AjBool embDmxScophitsToHitlist(const AjPList in,
 
     if(!((scoptmp=(AjPScophit)ajListIterNext(*iter))))
     {
-	ajWarn("Empty list in embDmxScophitsToHitlist");
+/*	ajWarn("Empty list in embDmxScophitsToHitlist"); */
 	ajListIterFree(iter);	
 	return ajFalse;
     }
