@@ -55,7 +55,7 @@ extern void ajFmtPutd(const char *str, ajint len,
 	int put(int c, void *cl), void *cl,
 	ajuint flags[256], ajint width, ajint precision);
 extern void ajFmtPuts(const char *str, ajint len,
-	ajint put(ajint c, void *cl), void *cl,
+	int put(int c, void *cl), void *cl,
 	ajuint flags[256], ajint width, ajint precision);
 extern AjPStr ajFmtStr(const char *fmt, ...);
 extern AjPStr ajFmtPrintS(AjPStr *pthis, const char *fmt, ...) ;
