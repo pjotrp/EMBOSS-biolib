@@ -1749,7 +1749,7 @@ static void seqGcgLoadBuff (const AjPSeqin seqin)
     /* write the sequence (do we care about the format?) */
     seqGcgReadSeq(seqin);
  
-    ajFileBuffTraceFull (seqin->Filebuff, 9999, 100);
+    /* ajFileBuffTraceFull (seqin->Filebuff, 9999, 100); */
 
     if (!qryd->libr)
 	ajFileClose (&qryd->libs);
@@ -2915,7 +2915,7 @@ AjBool ajSeqAccessFile (AjPSeqin seqin)
 
     ajDebug ("ajSeqAccessFile %S\n", qry->Filename);
 
-    ajStrTraceT (qry->Filename, "qry->Filename (before):");
+    /* ajStrTraceT (qry->Filename, "qry->Filename (before):"); */
 
     seqin->Filebuff = ajFileBuffNewIn (qry->Filename);
     if (!seqin->Filebuff)
@@ -2924,8 +2924,9 @@ AjBool ajSeqAccessFile (AjPSeqin seqin)
 	return ajFalse;
     }
 
-    ajStrTraceT (seqin->Filename, "seqin->Filename:");
-    ajStrTraceT (qry->Filename, "qry->Filename (after):");
+    /* ajStrTraceT (seqin->Filename, "seqin->Filename:"); */
+    /* ajStrTraceT (qry->Filename, "qry->Filename (after):"); */
+
     (void) ajStrAss (&seqin->Filename, qry->Filename);
 
     return ajTrue;
@@ -2952,7 +2953,7 @@ AjBool ajSeqAccessOffset (AjPSeqin seqin)
 
     ajDebug ("ajSeqAccessOffset %S %ld\n", qry->Filename, qry->Fpos);
 
-    ajStrTraceT (qry->Filename, "qry->Filename (before):");
+    /* ajStrTraceT (qry->Filename, "qry->Filename (before):"); */
     seqin->Filebuff = ajFileBuffNewIn (qry->Filename);
     if (!seqin->Filebuff)
     {
@@ -2960,8 +2961,8 @@ AjBool ajSeqAccessOffset (AjPSeqin seqin)
 	return ajFalse;
     }
     ajFileSeek (ajFileBuffFile(seqin->Filebuff), qry->Fpos, 0);
-    ajStrTraceT (seqin->Filename, "seqin->Filename:");
-    ajStrTraceT (qry->Filename, "qry->Filename (after):");
+    /* ajStrTraceT (seqin->Filename, "seqin->Filename:"); */
+    /* ajStrTraceT (qry->Filename, "qry->Filename (after):"); */
     (void) ajStrAss (&seqin->Filename, qry->Filename);
 
     return ajTrue;
