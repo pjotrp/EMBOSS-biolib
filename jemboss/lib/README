@@ -16,5 +16,3 @@ mail.jar                - Javamail, from Sun, v1.3.2
 activation.jar          - Sun's Java Activation Framework (Glasgow), v1.0.2
                           http://java.sun.com/products/javabeans/glasgow/jaf.html                       
   
-jcert.jar , jnet.jar, jsse.jar - Sun's Java Secure Socket Extension 1.0.2
-
