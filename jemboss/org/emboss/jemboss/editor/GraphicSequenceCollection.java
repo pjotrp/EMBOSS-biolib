@@ -445,22 +445,27 @@ public class GraphicSequenceCollection extends JPanel
 
     else if(mat != null)
     {
+      double threshold = prettyPlot.getMatchThreshold();
+      int m1 = mat.getMatrixIndex(s);
       int matrix[][] = mat.getMatrix();
+      float matching = 0.f;
+
       enum = seqs.elements();
       while(enum.hasMoreElements())
       {
         Sequence seq = (Sequence)(enum.nextElement());
-        if(!seqName.equals(seq.getName()))
-        {
-          int m1 = mat.getMatrixIndex(s);
+//      if(!seqName.equals(seq.getName()))
+//      {
           if(pos < seq.getLength())
           {
             int m2 = mat.getMatrixIndex(seq.getResidue(pos));
-            if(matrix[m1][m2]>0)
-              return prettyPlot.getMatchColour();
+            if(m1 >= 0 && m2 >= 0 && matrix[m1][m2]>0)
+              matching += seq.getWeight();
           }
-        }
-      } 
+//      }
+      }
+      if(matching >= threshold)
+        return prettyPlot.getMatchColour(); 
     }
     return Color.black;
   }

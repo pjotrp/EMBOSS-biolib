@@ -26,6 +26,7 @@ import java.awt.Color;
 import java.awt.event.*;
 
 import org.emboss.jemboss.gui.form.TextFieldInt;
+import org.emboss.jemboss.gui.form.TextFieldFloat;
 import org.emboss.jemboss.gui.form.LabelTextBox;
 
 
@@ -41,6 +42,8 @@ public class PrettyPlotJFrame extends JFrame
 
   /** field to define min number of identities */
   private TextFieldInt textInt;
+  /** field to define threshold for positive matches */
+  private TextFieldFloat textFloat;
   /** colour panel for identical matches */
   private JColorChooser idColour;
   /** colour panel for positive scoring matches */
@@ -66,6 +69,8 @@ public class PrettyPlotJFrame extends JFrame
   {
     textInt = new TextFieldInt();
     textInt.setText(Integer.toString(minID));
+    textFloat = new TextFieldFloat();
+    textFloat.setValue(0.d);
     idColour = new JColorChooser(colID);
     matchColour = new JColorChooser(colMatch);
     idColourBackground = new JColorChooser(colIDBack);
@@ -98,6 +103,21 @@ public class PrettyPlotJFrame extends JFrame
                 "Minimum number of identities in a column");
 
     bacross.add(idLabel);
+    bacross.add(Box.createHorizontalGlue());
+    bdown.add(bacross);
+    bdown.add(Box.createVerticalStrut(4));
+
+// match threshold
+    bacross = Box.createHorizontalBox();
+    textFloat = new TextFieldFloat();
+    textFloat.setValue(0.d);
+    textFloat.setPreferredSize(d);
+    bacross.add(textFloat);
+    LabelTextBox floatLabel = new LabelTextBox(
+                "Theshold for positive matches",
+                "Minimum match score");
+
+    bacross.add(floatLabel);
     bacross.add(Box.createHorizontalGlue());
     bdown.add(bacross);
     bdown.add(Box.createVerticalStrut(4));
@@ -268,6 +288,18 @@ public class PrettyPlotJFrame extends JFrame
   public int getMinimumIdentity(int nseqs)
   {
     return Integer.parseInt(textInt.getText());
+  }
+
+
+  /**
+  *
+  * Get the match threshold value
+  * @return 	threshold value
+  *
+  */
+  public double getMatchThreshold()
+  {
+    return textFloat.getValue();
   }
 
 
