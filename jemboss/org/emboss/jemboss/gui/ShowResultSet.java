@@ -36,6 +36,7 @@ import java.util.Hashtable;
 import java.util.Enumeration;
 
 import org.emboss.grout.*;
+import org.emboss.jemboss.graphics.*;
 import org.emboss.jemboss.gui.filetree.FileEditorDisplay;
 import org.emboss.jemboss.JembossParams;
 
@@ -184,6 +185,16 @@ public class ShowResultSet extends JFrame
       remove(menuBar.getToolBar());
       getContentPane().add(grout.getToolBar(),BorderLayout.NORTH);
     }
+    else if(title.endsWith(".dat"))
+    {
+      Graph2DPlot graph = getGraph2DPlot((JScrollPane)rtp.getSelectedComponent());
+      if(graph == null)
+        return;
+
+      JMenuBar graphMenuBar = graph.getMenuBar(false, this);
+      remove(menuBar.getToolBar());
+      setJMenuBar(graphMenuBar);
+    }
     else 
     {
       setJMenuBar(menuBar);
@@ -192,6 +203,16 @@ public class ShowResultSet extends JFrame
 
       getContentPane().add(menuBar.getToolBar(),BorderLayout.NORTH);
     }
+  }
+
+
+  private Graph2DPlot getGraph2DPlot(JScrollPane jsp)
+  {
+    Component comp = jsp.getViewport().getView();
+    if(comp instanceof Graph2DPlot)
+        return (Graph2DPlot)comp;
+
+    return null;
   }
 
   /**
@@ -204,7 +225,6 @@ public class ShowResultSet extends JFrame
   */
   private String[] addHashContentsToTab(Hashtable h,JTabbedPane rtp)
   {
-
     ScrollPanel s1;
     JScrollPane r1;
 
@@ -235,6 +255,15 @@ public class ShowResultSet extends JFrame
             rtp.add(thiskey,r1);
           }
         }
+        else if (thiskey.endsWith(".dat"))
+        {
+          Graph2DPlot gp = new Graph2DPlot();
+          r1 = new JScrollPane(gp);
+          gp.setFileData(new String((byte [])h.get(thiskey)));
+//  frame.setJMenuBar(gp.getMenuBar(false, frame));
+          rtp.add(thiskey,r1);
+          setJMenuBar(gp.getMenuBar(false, this));
+        }
         else if (thiskey.endsWith("x3d")) // grout
         {
           GroutPanel panel = new GroutPanel()
@@ -262,7 +291,6 @@ public class ShowResultSet extends JFrame
             panel.setX3DFile(new String((byte[])h.get(thiskey)));
           rtp.add(thiskey,panel);
           setJMenuBar(panel.getMenuBar());
-
         }
         else
         {
