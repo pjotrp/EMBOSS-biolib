@@ -2,16 +2,16 @@
 
 SUBDIRS =
 
-bin_PROGRAMS = contacts domainer fraggle hetparse hmmgen interface  \
-	libscan pdbparse pdbtosp profgen scopalign scopnr scopparse \ 
-	scoprep scopreso scopseqs seqalign seqnr seqsearch seqsort  \ 
-	seqwords siggen sigplot sigscan
+bin_PROGRAMS = contacts domainer fraggle hetparse hmmgen interface libscan \
+               pdbparse pdbtosp profgen scopalign scopnr scopparse \
+               scoprep scopreso scopseqs seqalign seqnr seqsearch seqsort \
+               seqwords siggen sigplot sigscan
 
 INCLUDES = -I../../../plplot -I../../../ajax -I../../../nucleus
 
 if ISSHARED
 if ISAIXIA64
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs -L../../../ajax/.libs -L ../../../nucleus/.libs -lajax -lnucleus
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs -L../../../ajax/.libs -L../../../nucleus/.libs -lajax -lnucleus
 else
 AM_CFLAGS =
 endif
