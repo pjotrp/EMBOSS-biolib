@@ -1,4 +1,4 @@
-#abiview = abiview ../data/abiview.abi -auto
+abiview = abiview ../data/abiview.abi -graph cps -auto
 #contacts = contacts -cpdb ../data -cpdbextn .pxyz -con ../data -conextn .con -thresh 1.0 -vdwf Evdw.dat -conerrf contacts.log
 #swissparse = swissparse -keyfile ../data/test.terms -spfile ../data/test.seq -auto
 acdc = acdc embossversion -auto
@@ -86,7 +86,6 @@ newcpgseek = newcpgseek tembl:xl23808 -auto
 newseq = newseq -name fred -desc test -type p -seq acdefg -auto
 noreturn = noreturn ../data/oddcomp.comp -auto
 notseq = notseq 'tsw:*' -exclude 'ops*' -auto
-nrscope =test= nrscope -scopin ../data/test.scopembl -scopout ../data/test.scopnr -dpdb ../data -extn .pxyz -thresh 95.0 -datafile EBLOSUM62 -gapopen 10 -gapextend 0.5 -errf nrscope.log
 nthseq = nthseq ../swiss/seq.dat -num 5 -auto
 octanol = octanol tsw:opsd_human -graph ps -auto
 oddcomp = oddcomp 'tsw:*' -comp ../data/oddcomp.comp -auto
@@ -119,17 +118,15 @@ restover = restover tembl:hsfau -seqcomp acgt -auto
 restrict = restrict tembl:hsfau -auto
 revseq = revseq tembl:hsfau -auto
 scopalign = scopalign -scopf ../data/test.scopnr -path ../data
-scope =test= scope -inf ../data/test.scopraw -auto
 seealso = seealso fuzznuc
 seqinfo =test= seqinfo tsw:opsd_human -auto
 seqmatchall = seqmatchall 'tembl:hsfau*' -auto
 seqret = seqret tsw:opsd_human -auto
 seqretall =test= seqretall 'tembl:hsfau*' -auto
 seqretallfeat =test= seqretallfeat 'tembl:hsfau*' -auto
-seqretfeat =test= seqretfeat tembl:hsfau -auto
+seqretfeat =test= seqret -feat tembl:hsfau -auto
 seqretset =test= seqretset ../data/globins.msf -auto
 seqretsplit = seqretsplit 'tembl:hsfau*' -auto
-seqtofeat =test= seqtofeat tsw:opsd_human -pattern VIA -auto
 set1 =test= seqretset -auto tsw:opsd_human
 setmany =test= seqretset -auto 'tsw:opsd_*'
 showalign = showalign ../data/globins.msf -auto
