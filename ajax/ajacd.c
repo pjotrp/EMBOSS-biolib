@@ -3364,13 +3364,13 @@ static void acdSetDirectory (AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [char*] Text token name
-** @return [AjPFeattable] Feature Table object. The table was already loaded by
+** @return [AjPFeatTable] Feature Table object. The table was already loaded by
 **         acdSetFeat so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
 ******************************************************************************/
 
-AjPFeattable ajAcdGetFeat (char *token)
+AjPFeatTable ajAcdGetFeat (char *token)
 {
     return acdGetValue (token, "features");
 }
@@ -3403,8 +3403,8 @@ AjPFeattable ajAcdGetFeat (char *token)
 
 static void acdSetFeat (AcdPAcd thys)
 {
-    AjPFeattable val = NULL;
-    AjPFeattabIn tabin = NULL;
+    AjPFeatTable val = NULL;
+    AjPFeatTabIn tabin = NULL;
 
     AjBool required = ajFalse;
     AjBool ok = ajFalse;
@@ -3431,7 +3431,7 @@ static void acdSetFeat (AcdPAcd thys)
     AjBool fprompt=ajFalse;
     int iattr;
 
-    tabin = ajFeattabInNew();		/* set the default value */
+    tabin = ajFeatTabInNew();		/* set the default value */
 
     required = acdIsRequired(thys);
     (void) acdQualToBool (thys, "fask", ajFalse, &fprompt, &defreply);
@@ -3513,11 +3513,11 @@ static void acdSetFeat (AcdPAcd thys)
        if (freverse)
        ajFeatReverse (val);
        
-       ajFeattabSetRange(val, fbegin, fend);
-       ajFeattabInSetRange(tabin, fbegin, fend);
+       ajFeatTabSetRange(val, fbegin, fend);
+       ajFeatTabInSetRange(tabin, fbegin, fend);
        */
 
-    ajFeattabInDel (&tabin);
+    ajFeatTabInDel (&tabin);
 
     /* features tables have special set attributes */
 
@@ -3546,13 +3546,13 @@ static void acdSetFeat (AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [char*] Text token name
-** @return [AjPFeattabOut] Feature Table output object. Already opened
+** @return [AjPFeatTabOut] Feature Table output object. Already opened
 **                      by acdSetFeatout so this just returns the object
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
 ******************************************************************************/
 
-AjPFeattabOut ajAcdGetFeatout (char *token)
+AjPFeatTabOut ajAcdGetFeatout (char *token)
 {
     return acdGetValue (token, "featout");
 }
@@ -3585,7 +3585,7 @@ AjPFeattabOut ajAcdGetFeatout (char *token)
 
 static void acdSetFeatout (AcdPAcd thys)
 {
-    AjPFeattabOut val = NULL;
+    AjPFeatTabOut val = NULL;
 
     AjBool required = ajFalse;
     AjBool ok = ajFalse;
@@ -3608,7 +3608,7 @@ static void acdSetFeatout (AcdPAcd thys)
 	{NULL, VT_NULL} };
 
     required = acdIsRequired(thys);
-    val = ajFeattabOutNew();
+    val = ajFeatTabOutNew();
 
     acdAttrResolve (thys, "name", &name);
     if (!acdGetValueAssoc (thys, "offormat", &val->Formatstr))
@@ -3628,7 +3628,7 @@ static void acdSetFeatout (AcdPAcd thys)
 	    (void) acdUserGet (thys, &reply);
 
 	(void) acdGetValueAssoc (thys, "ofopenfile", &val->Filename);
-	ok = ajFeattabOutOpen (val, reply);
+	ok = ajFeatTabOutOpen (val, reply);
 	if (!ok)
 	    acdBadVal (thys, required,
 		       "Unable to read sequence '%S'", reply);
