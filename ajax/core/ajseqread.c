@@ -285,7 +285,7 @@ void ajSeqinDel (AjPSeqin* pthis)
 
     if(thys->Fttable)
     {
-	ajFeattabDel(&thys->Fttable);
+	ajFeattableDel(&thys->Fttable);
     }
   
 /*
@@ -581,7 +581,7 @@ void ajSeqinClear (AjPSeqin thys)
 
     if(thys->Fttable)
     {
-	ajFeattabDel(&thys->Fttable);
+	ajFeattableDel(&thys->Fttable);
     }
   
 /*
@@ -916,7 +916,7 @@ static ajint seqReadFmt (AjPSeq thys, AjPSeqin seqin, SeqPInFormat inform,
 		}
 		else
 		{
-		    ajFeattabDel(&thys->Fttable);
+		    ajFeattableDel(&thys->Fttable);
 		    ajFeattableTrace(seqin->Fttable);
 		    thys->Fttable = seqin->Fttable;
 		    seqin->Fttable = NULL;
@@ -1405,10 +1405,10 @@ static AjBool seqReadNbrf (AjPSeq thys, AjPSeqin seqin)
 	seqin->Ftquery = ajFeattabInNewSSF (ftfmt, thys->Name, "P", ftfile);
 	ajDebug ("PIR FEAT TabIn %x\n", seqin->Ftquery);
 	ftfile = NULL;			/* now copied to seqin->FeattabIn */
-	ajFeattabDel(&seqin->Fttable);
+	ajFeattableDel(&seqin->Fttable);
 	seqin->Fttable = ajFeatRead (seqin->Ftquery);
 	ajFeattableTrace(seqin->Fttable);
-	ajFeattabDel(&thys->Fttable);
+	ajFeattableDel(&thys->Fttable);
 	thys->Fttable = seqin->Fttable;
 	seqin->Fttable = NULL;
     }
@@ -3471,10 +3471,10 @@ static AjBool seqReadSwiss (AjPSeq thys, AjPSeqin seqin)
 	seqin->Ftquery = ajFeattabInNewSSF (ftfmt, thys->Name, "P", ftfile);
 	ajDebug ("SWISS FEAT TabIn %x\n", seqin->Ftquery);
 	ftfile = NULL;			/* now copied to seqin->FeattabIn */
-	ajFeattabDel(&seqin->Fttable);
+	ajFeattableDel(&seqin->Fttable);
 	seqin->Fttable = ajFeatRead (seqin->Ftquery);
 	ajFeattableTrace(seqin->Fttable);
-	ajFeattabDel(&thys->Fttable);
+	ajFeattableDel(&thys->Fttable);
 	thys->Fttable = seqin->Fttable;
 	seqin->Fttable = NULL;
     }
@@ -3607,7 +3607,7 @@ static AjBool seqReadEmbl (AjPSeq thys, AjPSeqin seqin)
     if (dofeat)
     {
 	ajDebug ("EMBL FEAT TabIn %x\n", seqin->Ftquery);
-	ajFeattabDel(&thys->Fttable);
+	ajFeattableDel(&thys->Fttable);
 	thys->Fttable = ajFeatRead (seqin->Ftquery);
 	ajFeattableTrace(thys->Fttable);
     }
@@ -3768,10 +3768,10 @@ static AjBool seqReadGenbank (AjPSeq thys, AjPSeqin seqin)
 	seqin->Ftquery = ajFeattabInNewSSF (ftfmt, thys->Name, "N", ftfile);
 	ajDebug ("GENBANK FEAT TabIn %x\n", seqin->Ftquery);
 	ftfile = NULL;			/* now copied to seqin->FeattabIn */
-	ajFeattabDel(&seqin->Fttable);
+	ajFeattableDel(&seqin->Fttable);
 	seqin->Fttable = ajFeatRead (seqin->Ftquery);
 	ajFeattableTrace(seqin->Fttable);
-	ajFeattabDel(&thys->Fttable);
+	ajFeattableDel(&thys->Fttable);
 	thys->Fttable = seqin->Fttable;
 	seqin->Fttable = NULL;
     }
@@ -3917,10 +3917,10 @@ static AjBool seqReadGff (AjPSeq thys, AjPSeqin seqin)
 					ajStrStr(seqin->Type), ftfile);
     ajDebug ("GFF FEAT TabIn %x\n", seqin->Ftquery);
     ftfile = NULL;			/* now copied to seqin->FeattabIn */
-    ajFeattabDel(&seqin->Fttable);
+    ajFeattableDel(&seqin->Fttable);
     seqin->Fttable = ajFeatRead (seqin->Ftquery);
     ajFeattableTrace(seqin->Fttable);
-    ajFeattabDel(&thys->Fttable);
+    ajFeattableDel(&thys->Fttable);
     thys->Fttable = seqin->Fttable;
     seqin->Fttable = NULL;
   }
