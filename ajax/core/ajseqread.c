@@ -1588,6 +1588,7 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
     ajint       sqcnt  = 0;
     ajint       i;
     char        c='\0';
+    AjBool      first=ajTrue;
     
     line = ajStrNew();
 
@@ -1602,6 +1603,16 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
 	/* First count the sequences, and get any header information */
 	while(!isseq && (ok=ajFileBuffGet(buff,&line)))
 	{
+	    if(first)
+	    {
+		first=ajFalse;
+		if(!ajStrPrefixC(line,"#="))
+		{
+		    ajStrDel(&line);
+		    ajFileBuffReset(buff);
+		    return ajFalse;
+		}
+	    }
 	    ajStrClean(&line);
 	    p = ajStrStr(line);
 	    if(!*p || *p=='#')
