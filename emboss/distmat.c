@@ -1447,6 +1447,8 @@ static void distmat_outputDist(AjPFile outf, ajint nseqs, ajint mlen,
 	else
 	    posn = 123;
     }
+    else if(posn == 1 || posn == 2)
+      	posn++;
 
     /* print title and parameters */
     ajFmtPrintF(outf,"Distance Matrix\n---------------\n\n");
