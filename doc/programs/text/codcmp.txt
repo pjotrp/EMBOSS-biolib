@@ -140,6 +140,9 @@ Author(s)
 
    This application was written by Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
    
+   Some more statistics were add by David Martin
+   (david.martin@biotek.uio.no)
+   
 History
 
    Completed 9 Sept 1999
