@@ -1720,7 +1720,7 @@ void ajSeqClear (AjPSeq thys)
 
 void ajSeqAssName (AjPSeq thys, AjPStr str)
 {
-    (void) ajStrAss(&thys->Name, str);
+    (void) ajStrAssS (&thys->Name, str);
 
     return;
 }
@@ -1755,7 +1755,7 @@ void ajSeqAssNameC (AjPSeq thys, char* text)
 
 void ajSeqAssAcc (AjPSeq thys, AjPStr str)
 {
-    (void) ajStrAss(&thys->Acc, str);
+    (void) ajStrAssS (&thys->Acc, str);
 
     return;
 }
@@ -1789,7 +1789,7 @@ void ajSeqAssAccC (AjPSeq thys, char* text)
 
 void ajSeqAssSv (AjPSeq thys, AjPStr str)
 {
-    (void) ajStrAss(&thys->Sv, str);
+    (void) ajStrAssS (&thys->Sv, str);
 
     return;
 }
@@ -1823,7 +1823,7 @@ void ajSeqAssSvC (AjPSeq thys, char* text)
 
 void ajSeqAssGi (AjPSeq thys, AjPStr str)
 {
-    (void) ajStrAss(&thys->Gi, str);
+    (void) ajStrAssS (&thys->Gi, str);
 
     return;
 }
@@ -1857,7 +1857,7 @@ void ajSeqAssGiC (AjPSeq thys, char* text)
 
 void ajSeqAssUfo (AjPSeq thys, AjPStr str)
 {
-    (void) ajStrAss(&thys->Ufo, str);
+    (void) ajStrAssS (&thys->Ufo, str);
 
     return;
 }
@@ -1891,7 +1891,7 @@ void ajSeqAssUfoC (AjPSeq thys, char* text)
 
 void ajSeqAssUsa (AjPSeq thys, AjPStr str)
 {
-    (void) ajStrAss(&thys->Usa, str);
+    (void) ajStrAssS (&thys->Usa, str);
 
     return;
 }
@@ -1925,7 +1925,7 @@ void ajSeqAssUsaC (AjPSeq thys, char* text)
 
 void ajSeqAssEntry (AjPSeq thys, AjPStr str)
 {
-    (void) ajStrAss(&thys->Entryname, str);
+    (void) ajStrAssS (&thys->Entryname, str);
 
     return;
 }
@@ -1959,7 +1959,7 @@ void ajSeqAssEntryC (AjPSeq thys, char* text)
 
 void ajSeqAssFull (AjPSeq thys, AjPStr str)
 {
-    (void) ajStrAss(&thys->Full, str);
+    (void) ajStrAssS (&thys->Full, str);
 
     return;
 }
@@ -1993,7 +1993,7 @@ void ajSeqAssFullC (AjPSeq thys, char* text)
 
 void ajSeqAssFile (AjPSeq thys, AjPStr str)
 {
-    (void) ajStrAss(&thys->Filename, str);
+    (void) ajStrAssS (&thys->Filename, str);
 
     return;
 }
@@ -2028,7 +2028,7 @@ void ajSeqAssFileC (AjPSeq thys, char* text)
 
 void ajSeqAssSeq (AjPSeq thys, AjPStr str)
 {
-    (void) ajStrAss(&thys->Seq, str);
+    (void) ajStrAssS (&thys->Seq, str);
     thys->Begin = 0;
     thys->End = 0;
     thys->Rev = ajFalse;
@@ -2083,7 +2083,7 @@ void ajSeqAssSeqCI (AjPSeq thys, char* text, ajint ilen)
 
 void ajSeqAssDesc (AjPSeq thys, AjPStr str)
 {
-    (void) ajStrAss(&thys->Desc, str);
+    (void) ajStrAssS (&thys->Desc, str);
 
     return;
 }
@@ -2134,7 +2134,7 @@ void ajSeqMod (AjPSeq thys)
 
 void ajSeqReplace (AjPSeq thys, AjPStr seq)
 {
-    (void) ajStrAss (&thys->Seq, seq);
+    (void) ajStrAssS (&thys->Seq, seq);
     thys->Begin = 0;
     thys->End = 0;
     thys->Rev = ajFalse;
@@ -3124,7 +3124,7 @@ AjBool ajSeqNum (AjPSeq thys, AjPSeqCvt cvt, AjPStr* numseq)
     char *cp = ajSeqChar(thys);
     char *ncp;
 
-    (void) ajStrAss (numseq, thys->Seq);
+    (void) ajStrAssS (numseq, thys->Seq);
     ncp = ajStrStr(*numseq);
 
     while (*cp)
@@ -3381,7 +3381,7 @@ AjPStr ajSeqStrCopy (AjPSeq thys)
     static AjPStr str;
 
     str= 0;
-    (void) ajStrAss (&str, thys->Seq);
+    (void) ajStrAssS (&str, thys->Seq);
 
     return str;
 }
