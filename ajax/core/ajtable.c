@@ -146,7 +146,7 @@ AjPTable ajTableNew(ajint hint,
 {
     AjPTable table;
     ajint iprime;
-    ajint i;
+    ajint i = 0;
 
     /* largest primes just under 2**8 to 2**31 */
 
@@ -163,9 +163,8 @@ AjPTable ajTableNew(ajint hint,
 	INT_MAX
     };
 
-    assert(hint >= 0);
-
-    for(i = 1; primes[i] < hint; i++);
+    if(hint >= 0)
+	for(i = 1; primes[i] < hint; i++); /* else use default i=0 */
 
     iprime = primes[i-1];
     ajDebug("ajTableNew hint %d size %d\n", hint, iprime);
@@ -213,8 +212,10 @@ void * ajTableGet(const AjPTable table, const void *key)
     ajint i;
     struct binding *p;
 
-    assert(table);
-    assert(key);
+    if(!table)
+	return NULL;
+    if (!key)
+	return NULL;
 
     i = (*table->hash)(key, table->size);
     for(p = table->buckets[i]; p; p = p->link)
@@ -246,8 +247,10 @@ void * ajTableKey(const AjPTable table, const void *key)
     ajint i;
     struct binding *p;
 
-    assert(table);
-    assert(key);
+    if (!table)
+	return NULL;
+    if (!key)
+	return NULL;
 
     i = (*table->hash)(key, table->size);
     for(p = table->buckets[i]; p; p = p->link)
@@ -276,7 +279,8 @@ void ajTableTrace(const AjPTable table)
     ajint k = 0;
     struct binding *p;
 
-    assert(table);
+    if(!table)
+	return NULL;
 
     ajDebug("table trace: ");
     ajDebug(" length: %d", table->length);
@@ -319,7 +323,8 @@ void ajStrTableTrace(const AjPTable table)
     ajint k = 0;
     struct binding *p;
 
-    assert(table);
+    if(!table)
+	return;
 
     ajDebug("(string) table trace: ");
     ajDebug(" length: %d", table->length);
@@ -367,8 +372,10 @@ void * ajTablePut(AjPTable table, const void *key, void *value)
     struct binding *p;
     void *prev;
 
-    assert(table);
-    assert(key);
+    if(!table)
+	return NULL;
+    if(!key)
+	return NULL;
 
     i = (*table->hash)(key, table->size);
     for(p = table->buckets[i]; p; p = p->link)
@@ -409,7 +416,8 @@ void * ajTablePut(AjPTable table, const void *key, void *value)
 
 ajint ajTableLength(const AjPTable table)
 {
-    assert(table);
+    if(!table)
+	return 0;
 
     return table->length;
 }
@@ -437,8 +445,10 @@ void ajTableMap(AjPTable table,
     ajuint stamp;
     struct binding *p;
 
-    assert(table);
-    assert(apply);
+    if(!table)
+	return;
+    if(!apply)
+	return;
 
     stamp = table->timestamp;
     for(i = 0; i < table->size; i++)
@@ -472,8 +482,10 @@ void * ajTableRemove(AjPTable table, const void *key)
     ajint i;
     struct binding **pp;
 
-    assert(table);
-    assert(key);
+    if(!table)
+	return NULL;
+    if(!key)
+	return NULL;
 
     table->timestamp++;
     i = (*table->hash)(key, table->size);
@@ -515,8 +527,9 @@ void ** ajTableToarray(AjPTable table, void *end)
     void **array;
     struct binding *p;
 
-    assert(table);
-
+    if(!table)
+	return NULL;
+ 
     array = AJALLOC((2*table->length + 1)*sizeof(*array));
 
     for(i = 0; i < table->size; i++)
