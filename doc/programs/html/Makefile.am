@@ -50,6 +50,7 @@ pkgdata2_DATA = isochore.html kitsch.html lindna.html listor.html \
                newcpgreport.html newcpgseek.html newseq.html noreturn.html \
                notseq.html nthseq.html nucleic_2d_structure_group.html \
                nucleic_codon_usage_group.html \
+               nucleic_codon_usage_nucleic_gene_finding_group.html \
                nucleic_composition_group.html \
                nucleic_cpg_islands_group.html \
                nucleic_gene_finding_group.html nucleic_motifs_group.html \
