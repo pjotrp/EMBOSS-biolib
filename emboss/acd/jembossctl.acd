@@ -1,6 +1,7 @@
 appl: jembossctl [
   documentation: "Jemboss Authentication Control"
   groups: "Utils:Misc"
+  gui: no
 ]
 
 string: sock  [
