@@ -16,6 +16,7 @@ check_PROGRAMS = acdlog ajtest \
 complex corbatest \
 demoalign demofeatures demolist demoreport demosequence demostring demotable \
 entrails giep histogramtest intconv \
+newcoils \
 patmattest \
 prima primers \
 seqinfo seqretall seqretallfeat seqretset seqretsingle seqrettype \
@@ -139,6 +140,7 @@ merger_SOURCES = merger.c
 mwcontam_SOURCES = mwcontam.c
 mwfilter_SOURCES = mwfilter.c
 needle_SOURCES = needle.c
+newcoils_SOURCES = newcoils.c
 newcpgreport_SOURCES = newcpgreport.c
 newcpgseek_SOURCES = newcpgseek.c
 newseq_SOURCES = newseq.c
