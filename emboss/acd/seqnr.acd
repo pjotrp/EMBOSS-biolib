@@ -1,4 +1,4 @@
-appl: groups [
+appl: seqnr [
   documentation: "Removes redundant hits from a scop families file."
   groups: "Utils:Database creation"
   gui: "yes"
