@@ -562,7 +562,7 @@ static int infoalign_Getrefseq (AjPStr refseq, AjPSeqset seqset)
 ** reference sequence
 **
 ** @param [r] ref [AjPSeq] the reference sequence
-** @param [r] seq [AjPSeq] the sequence to be changed
+** @param [r] seq [AjPSeq] the sequence to be compared to 'ref'
 ** @param [r] sub [ajint **] scoring matrix
 ** @param [r] cvt [AjPSeqCvt] conversion table for scoring matrix
 ** @param [r] seqlength [ajint *] sequence length
@@ -592,7 +592,7 @@ static void infoalign_Compare(AjPSeq ref, AjPSeq seq, ajint **sub,
     char *s = ajSeqChar(seq);	/* the original char * of the sequence */
     char *r = ajSeqChar(ref);
 
-    AjBool inGap = ajFalse;
+    AjBool inGap = ajFalse;	/* true if in a gap in 'seq' */
     ajint begin, end;
 
     /* initialise counts */
@@ -620,34 +620,35 @@ static void infoalign_Compare(AjPSeq ref, AjPSeq seq, ajint **sub,
 		(*gaps)++;
 	    }
 	    (*gapcount)++;
-	}
-	else
+	} else {
 	    inGap = ajFalse;
 
 
-	/* count identity, similarity, differences */
-	/* are we past the end of the reference sequence ? */
-	if (i >= lenref)
-	    (*difcount)++;
-	else
-	{
-	    /* identity */
-	    if (toupper((int)r[i]) == toupper((int)s[i]))
-		(*idcount)++;
-	    /* similarity */
-	    else if (sub[ajSeqCvtK(cvt, r[i])][ajSeqCvtK(cvt, s[i])] > 0)
-		(*simcount)++;
-	    /* difference */
-	    else
-		(*difcount)++;
+	    /* count identity, similarity, differences */
+	    /* are we past the end of the reference sequence ? */
+	    if (i >= lenref) {
+	        (*difcount)++;
+	    } else {
+	        /* identity */
+	        if ((toupper((int)r[i]) == toupper((int)s[i])))
+		    (*idcount)++;
+	        /* similarity */
+	        else if (sub[ajSeqCvtK(cvt, r[i])][ajSeqCvtK(cvt, s[i])] > 0)
+		    (*simcount)++;
+	        /* difference */
+	        else
+		    (*difcount)++;
+	    }
 	}
     }
 
     /* get lengths */
     /* length of sequence excluding gaps */
-    *seqlength = *idcount + *simcount + *difcount;;
+    *seqlength = *idcount + *simcount + *difcount;
     /* length of aligned sequence with internal gaps */
-    *alignlength = *gapcount + *seqlength;
+/*    *alignlength = *gapcount + *seqlength;
+*/
+    *alignlength = end-begin+1;
 
     /* calculate change */
     *change = (float)(end-begin+1 - *idcount)*100.0/(float)(end-begin+1);
