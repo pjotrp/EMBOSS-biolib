@@ -23,6 +23,7 @@
 **
 **
 **
+**
 ******************************************************************************
 **IMPORTANT NOTE      IMPORTANT NOTE      IMPORTANT NOTE        IMPORTANT NOTE     
 ******************************************************************************
@@ -552,7 +553,7 @@ int main(int argc, char **argv)
 	
 
         /* Remove targeted hits ... i.e. the ones from the alignment*/
-        ajListGarbageCollect(famout_hits,ajXyzScophitDelWrap,ajXyzScophitCheckTarget);
+        ajListGarbageCollect(famout_hits,ajXyzScophitDelWrap,(const void*)ajXyzScophitCheckTarget);
 
 
 

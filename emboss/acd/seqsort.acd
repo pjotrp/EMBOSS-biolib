@@ -6,6 +6,11 @@ appl: seqsort [
   cpu: "medium"
 ]
 
+
+
+
+
+section: required [ info: "required Section" type: page ]
 list: mode  [
   required: "Y"
   default: "1"
@@ -16,12 +21,6 @@ list: mode  [
   values: "1: Process psiblast hits, 2: Process swissparse hits, 3: Merge psiblast and swissparse hits"
   header: "Mode of operation"
   prompt: "Select mode"
-]
-
-integer: overlap  [
-  required: "Y"
-  prompt: "number of overlapping residues required for merging of two hits"
-  default: "10"
 ]
 
 string: psipath  [
@@ -58,6 +57,18 @@ string: swissfile  [
   information: "Name of file containing processed seqwords hits file (input)"
 ]
 
+integer: overlap  [
+  required: "Y"
+  prompt: "number of overlapping residues required for merging of two hits"
+  default: "10"
+]
+endsection: required
+
+
+
+
+
+section: output [ info: "output Section" type: page ]
 outfile: hitsf  [
   parameter: "Y"
   prompt: "Name of scop hits file (output)"
@@ -69,5 +80,5 @@ outfile: validf  [
   prompt: "Name of validation file (output)"
   default: "seqsort.all"
 ]
-
+endsection: output
 

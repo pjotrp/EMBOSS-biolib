@@ -6,6 +6,11 @@ appl: scopreso [
   cpu: "low"
 ]
 
+
+
+
+
+section: input [ info: "input Section" type: page ]
 string: cpdbpath  [
   parameter: "Y"
   information: "Location of domain coordinate files for input (embl-like format)"
@@ -18,20 +23,39 @@ string: cpdbextn  [
   default: ".pxyz"
 ]
 
-float: threshold  [
-  required: "Y"
-  prompt: "Threshold for inclusion (Angstroms)"
-  default: "2.8"
-]
-
 infile: scopinf  [
   parameter: "Y"
   prompt: "Name of SCOP data file for input (embl-like format)"
   default: "Escop.dat"
 ]
+endsection: input
 
+
+
+
+
+section: required [ info: "required Section" type: page ]
+float: threshold  [
+  required: "Y"
+  prompt: "Threshold for inclusion (Angstroms)"
+  default: "2.8"
+]
+endsection: required
+
+
+
+
+
+section: output [ info: "output Section" type: page ]
 outfile: scopoutf  [
   parameter: "Y"
   prompt: "Name of SCOP data file for output"
   default: "Escop_2.8.dat"
 ]
+endsection: output
+
+
+
+
+
+

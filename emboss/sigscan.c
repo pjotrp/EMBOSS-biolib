@@ -66,48 +66,64 @@
 ** family in the SCOP parsable files.
 ** (7) HI - hit data.  The data are as follows (column numbers are given in 
 ** parentheses). (i) HI is always given. (ii) Rank-order of the hit. (iii) 
-** Database identifier code. (iv) The group number of the protein if a grouped 
-** scop families file was provided or '.' otherwise. (v) The primary (objective)
-** classification of the hit. For true hits (genuine relatives to the signature
-** as listed in the scop families file)
-** one of 'SEED', 'HIT' or 'OTHER') is given. Otherwise, 'CROSS', 'FALSE'
-** or 'UNKNOWN' is given ('.' is given if a scop families file was not 
-** provided). (vi) The secondary classification of the hit, either 'TRUE', 
+** Accession number. (iv) Start of hit in full-length sequence. (v) End of 
+** hit in full-length sequence.  (vi) Whether a hit from the validation file 
+** for the family corresponding to the signature was redundant or not.  For
+** hits with a primary classification of 'TRUE' (see below) it has a value 
+** of 'REDUNDANT', 'NON_REDUNDANT'.  For other hits 'NOT_APPLICABLE' is given.
+** '.' is given if the validation file was not provided.  (vii) The primary 
+** (objective) classification of the hit. For true hits (genuine relatives 
+** to the signature as listed in the scop families file) one of 'SEED', 
+** 'HIT' or 'OTHER') is given. Otherwise, 'CROSS', 'FALSE'
+** or 'UNKNOWN' is given ('.' is given if a validation file was not 
+** provided). (viii) The secondary classification of the hit, either 'TRUE', 
 ** 'CROSS', 'FALSE' or 'UNKNOWN' ('.' is given if a scop families file was not 
-** provided). The classes of hits are defined below.  
-** (vii) Score of sequence-signature match.  (viii) E-value (see below).
+** provided). The classes of hits are defined below.  (ix) Score of 
+** sequence-signature match.  (x) E-value (see below). 
 ** (8) XX - used for spacing.
 ** (9) // - The file ends with a line containing '//' only.
 ** 
 ** 
 ** Figure 1   Excerpt from a signature hits file
 ** 
-** DE   Results of signature search
-** XX
-** CL   All alpha proteins
-** XX
-** FO   Globin-like
-** XX
-** SF   Globin-like
-** XX
-** FA   Globins
-** XX
-** SI   14982
-** XX
-** HI   1    1RBPDFG   1    TRUE     TRUE    234  0.0001 
-** HI   2    1GFT35J   3    TRUE     TRUE    234  0.0008 
-** HI   3    1KJUFGH   1    TRUE     TRUE    224  0.0108 
-** HI   4    1GYU15R   2    CLOSE    TRUE    220  0.1876 
-** HI   5    1LKI89O   2    CLOSE    TRUE    203  0.6787 
-** HI   6    1QRTY58   1    TRUE     TRUE    199  0.9978 
-** HI   7    2IOM78G   1    FALSE    FALSE   198  1.0844
-** HI   8    1SZR234   1    CLOSE    TRUE    198  1.4343 
-** HI   9    3PONI57   1    DISTANT  FALSE   197  2.8849 
-** HI  10    1PHDJBS   3    CLOSE    TRUE    190  2.9872
-** HI  11    1HIOHDW   1    UNKNOWN  UNKNOWN 160  5,8676 
-** HI  12    199976T   1    CLOSE    TRUE    140  8.8346 
-** XX
-** //
+** 
+DE   Results of signature search
+XX
+CL   Alpha and beta proteins (a/b)
+XX
+FO   NAD(P)-binding Rossmann-fold domains
+XX
+SF   NAD(P)-binding Rossmann-fold domains
+XX
+FA   Lactate & malate dehydrogenases, N-terminal domain
+XX
+SI   51848
+XX
+HI  1     Q9YHX4    21   136  NOT_APPLICABLE UNKNOWN   UNKNOWN   24.2   0.000  
+HI  2     Q9W6G6    19   128  NOT_APPLICABLE UNKNOWN   UNKNOWN   24.2   0.000  
+HI  3     P23379    60   173  NOT_APPLICABLE FALSE     FALSE     24.2   0.000  
+HI  4     Q9XDS8    60   173  NOT_APPLICABLE FALSE     FALSE     24.2   0.000  
+HI  5     P54768    103  219  NOT_APPLICABLE FALSE     FALSE     24.2   0.000  
+HI  6     P22194    178  296  NOT_APPLICABLE UNKNOWN   UNKNOWN   24.2   0.000  
+HI  7     P23254    438  554  NOT_APPLICABLE UNKNOWN   UNKNOWN   24.2   0.000  
+HI  8     O62954    113  227  NOT_APPLICABLE UNKNOWN   UNKNOWN   24.2   0.000  
+HI  9     P31163    110  224  NOT_APPLICABLE UNKNOWN   UNKNOWN   24.2   0.000  
+HI  10    P17351    111  225  NOT_APPLICABLE FALSE     FALSE     24.2   0.000  
+HI  11    P36124    482  598  NOT_APPLICABLE FALSE     FALSE     24.2   0.000  
+HI  12    P05895    797  915  NOT_APPLICABLE FALSE     FALSE     24.2   0.000  
+HI  13    P74946    124  238  NOT_APPLICABLE FALSE     FALSE     24.2   0.000  
+HI  14    Q9MUT9    112  226  NOT_APPLICABLE UNKNOWN   UNKNOWN   24.2   0.000  
+HI  15    P06378    109  227  NOT_APPLICABLE UNKNOWN   UNKNOWN   24.2   0.000  
+HI  16    P17788    111  225  NOT_APPLICABLE FALSE     FALSE     24.2   0.000  
+HI  17    O14186    467  578  NOT_APPLICABLE UNKNOWN   UNKNOWN   24.2   0.000  
+HI  18    Q11149    229  345  NOT_APPLICABLE UNKNOWN   UNKNOWN   24.2   0.000  
+HI  19    P50818    242  360  NOT_APPLICABLE UNKNOWN   UNKNOWN   24.2   0.000  
+HI  20    P30065    111  225  NOT_APPLICABLE UNKNOWN   UNKNOWN   24.2   0.000  
+HI  21    Q20680    514  630  NOT_APPLICABLE UNKNOWN   UNKNOWN   24.2   0.000  
+HI  22    P53007    103  220  NOT_APPLICABLE UNKNOWN   UNKNOWN   24.2   0.000  
+HI  23    Q10146    98   207  NOT_APPLICABLE UNKNOWN   UNKNOWN   24.2   0.000  
+XX
+//
 ** 
 **
 ** Excerpts from an alignment file are shown (Figure 2). The records used 

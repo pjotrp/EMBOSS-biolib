@@ -6,14 +6,32 @@ appl: scoprep [
   cpu: "medium"
 ]
 
+
+
+
+
+section: input [ info: "input Section" type: page ]
 infile: scopin  [
   parameter: "Y"
   prompt: "Name of scop classification file (embl format input)"
   default: "Escop.dat"
 ]
+endsection: input
 
+
+
+
+
+section: output [ info: "output Section" type: page ]
 outfile: scopout  [
   parameter: "Y"
   prompt: "Name of scop classification file (embl format output)"
   default: "Escop.dat.out"
 ]
+endsection: output
+
+
+
+
+
+

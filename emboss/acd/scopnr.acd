@@ -6,18 +6,21 @@ appl: scopnr [
   cpu: "medium"
 ]
 
+
+
+section: input [ info: "input Section" type: page ]
 infile: scopin  [
   parameter: "Y"
   prompt: "Name of scop classification file (embl format input)"
   default: "Escop.dat"
 ]
+endsection: input
 
-outfile: scopout  [
-  parameter: "Y"
-  prompt: "Name of non-redundant scop classification file (embl format output)"
-  default: "EscopNR.dat"
-]
 
+
+
+
+section: required [ info: "required Section" type: page ]
 list: mode  [
   required: "Y"
   default: "1"
@@ -48,9 +51,13 @@ float: threshup  [
   prompt: "The % sequence identity redundancy threshold (upper limit)"
   default: "90.0"
 ]
+endsection: required
 
 
 
+
+
+section: advanced [ info: "advanced Section" type: page ]
 matrixf: datafile  [
   optional: "Y"
   prompt: "Residue substitution matrix"
@@ -78,9 +85,33 @@ float: gapextend  [
   expected: "0.5 for any sequence"
   help: "The gap extension, penalty is added to the standard gap penalty for each base or residue in the gap. This is how long gaps are penalized. Usually you will expect a few long gaps rather than many short gaps, so the gap extension penalty should be lower than the gap penalty. An exception is where one or both sequences are single reads with possible sequencing errors in which case you would expect many single base gaps. You can get this result by setting the gap open penalty to zero (or very low) and using the gap extension penalty to control gap scoring."
 ]
+endsection: advanced
+
+
+
+
+
+section: output [ info: "output Section" type: page ]
+outfile: scopout  [
+  parameter: "Y"
+  prompt: "Name of non-redundant scop classification file (embl format output)"
+  default: "Escop_90.dat"
+]
 
 outfile: errf  [
   required: "Y"
   prompt: "Name of log file for the build"
   default: "scopnr.log"
 ]
+endsection: output
+
+
+
+
+
+
+
+
+
+
+

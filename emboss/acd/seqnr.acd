@@ -1,4 +1,4 @@
-appl: seqnr [
+appl: groups [
   documentation: "Removes redundant hits from a scop families file."
   groups: "Utils:Database creation"
   gui: "yes"
@@ -6,28 +6,21 @@ appl: seqnr [
   cpu: "medium"
 ]
 
+
+
+
+
+section: input [ info: "input Section" type: page ]
 infile: inf  [
   parameter: "Y"
   prompt: "Name of the scop hits file (input)"
   default: "test.hits.in"
 ]
 
-infile: validf  [
+infile: vinf  [
   parameter: "Y"
   prompt: "Name of validation file (input)"
-  default: "tesd.valid.in"
-]
-
-outfile: outf  [
-  parameter: "Y"
-  prompt: "Name non-redundant scop hits file (output)"
-  default: "test.hits.out"
-]
-
-outfile: voutf  [
-  parameter: "Y"
-  prompt: "Name of processed validation file (output)"
-  default: "test.valid.out"
+  default: "test.valid.in"
 ]
 
 infile: scopin  [
@@ -45,17 +38,49 @@ string: alignpath  [
 string: alignextn  [
   required: "Y"
   prompt: "Extension of scop alignment files"
-  default: ".align"
+  default: ".salign"
 ]
+endsection: input
 
+
+
+
+
+section: required [ info: "required Section" type: page ]
 matrixf: datafile  [
-  optional: "Y"
+  required: "Y"
   prompt: "Residue substitution matrix"
   default: "EBLOSUM62"
 ]
 
+
+float: thresh  [
+  required: "Y"
+  prompt: "The % sequence identity redundancy threshold"
+  default: "95.0"
+]
+
+
+list: mode  [
+  required: "Y"
+  default: "1"
+  minimum: "1"
+  maximum: "2"
+  delimiter: ","
+  codedelimiter: ":"
+  values: "1: Validation file for signatures from structure-based sequence alignemnts, 2: Validation file for signatures from extended alignments"
+  header: "Mode of operation"
+  prompt: "Select mode"
+]
+endsection: required
+
+
+
+
+
+section: advanced [ info: "advanced Section" type: page ]
 float: gapopen  [
-  optional: "Y"
+  optional: "N"
   information: "Gap insertion penalty"
   minimum: "1."
   maximum: "100."
@@ -66,7 +91,7 @@ float: gapopen  [
 ]
 
 float: gapextend  [
-  optional: "Y"
+  optional: "N"
   information: "Gap extension penalty"
   minimum: "0.0"
   maximum: "10."
@@ -75,9 +100,38 @@ float: gapextend  [
   expected: "0.5 for any sequence"
   help: "The gap extension, penalty is added to the standard gap penalty for each base or residue in the gap. This is how long gaps are penalized. Usually you will expect a few long gaps rather than many short gaps, so the gap extension penalty should be lower than the gap penalty. An exception is where one or both sequences are single reads with possible sequencing errors in which case you would expect many single base gaps. You can get this result by setting the gap open penalty to zero (or very low) and using the gap extension penalty to control gap scoring."
 ]
+endsection: advanced
 
-float: thresh  [
-  required: "Y"
-  prompt: "The % sequence identity redundancy threshold"
-  default: "95.0"
+
+
+
+
+section: output [ info: "output Section" type: page ]
+outfile: outf  [
+  parameter: "Y"
+  prompt: "Name non-redundant scop hits file (output)"
+  default: "test.hits.out"
 ]
+
+string: voutfname  [
+  parameter: "Y"
+  prompt: "Name of processed validation file (output)"
+  default: "test.valid.out"
+]
+
+outfile: logf  [
+  required: "Y"
+  prompt: "Name seqnr log file (output)"
+  default: "seqnr.log"
+]
+endsection: output
+
+
+
+
+
+
+
+
+
+

@@ -1,20 +1,34 @@
 appl: profgen [
   documentation: "Generates various profiles for each alignment in a directory."
   groups:"Protein:3D Structure"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
 ]
 
+
+
+
+
+section: input [ info: "input Section" type: page ]
 string: infpath [
         req: Y
         def: "./"
-        help: "Directory containing the extended alignments (input)"
+        help: "Location of sequence alignment files (input)"
 ]
 
 string: infextn [
         req: Y
-        def: ".salign"
-        help: "File extention of extended alignment files (input)"
+        def: ".ealign"
+        help: "Extension of sequence alignment files"
 ]
+endsection: input
 
+
+
+
+
+section: required [ info: "required Section" type: page ]
 list: type  [
   required: "Y"
   default: "F"
@@ -56,39 +70,54 @@ float: extension  [
   information: "Gap extension penalty"
   default: "0.3"
 ]
+endsection: required
 
+
+
+
+
+section: output [ info: "output Section" type: page ]
 string: smpfpath [
         req: "@($(type)==F)"
         def: "./tmp/"
-        help: "Directory for generated simple profiles (output)"
+        help: "Location of simple profile files (output)"
 ]
 
 string: smpfextn [
         req: "@($(type)==F)"
         def: ".freq"
-        help: "File extention of generated simple profile (output)"
+        help: "Extention of simple profile files"
 ]
 
 string: gbpfpath [
         req: "@($(type)==G)"
         def: "./tmp/"
-        help: "Directory for generated Gribskov profiles (output)"
+        help: "Location of Gribskov profile files (output)"
 ]
 
 string: gbpfextn [
         req: "@($(type)==G)"
         def: ".gribs"
-        help: "File extention of generated Gribskov profile (output)"
+        help: "Extension of Gribskov profile files"
 ]
 
 string: hnpfpath [
         req: "@($(type)==H)"
         def: "./tmp/"
-        help: "Directory for generated Henikoff profiles (output)"
+        help: "Location of Henikoff profile files (output)"
 ]
 
 string: hnpfextn [
         req: "@($(type)==H)"
         def: ".henik"
-        help: "File extention of generated Henikoff profile (output)"
+        help: "Extention of Henikoff profile files"
 ]
+endsection: output
+
+
+
+
+
+
+
+

@@ -6,6 +6,8 @@ appl: scopparse [
   cpu: "low"
 ]
 
+
+section: input [ info: "input Section" type: page ]
 infile: infilea  [
   prompt: "Name of scop classification file (raw format dir.cla.scop.txt_X.XX for input)"
   default: "dir.cla.scop.txt_1.57"
@@ -17,9 +19,21 @@ infile: infileb  [
   default: "dir.des.scop.txt_1.57"
   parameter: "Y"
 ]
+endsection: input
 
+
+
+
+
+section: output [ info: "output Section" type: page ]
 outfile: outfile  [
   prompt: "Name of scop classification file (embl format output)"
   default: "Escop.dat"
   parameter: "Y"
 ]
+endsection: output
+
+
+
+
+

@@ -178,7 +178,6 @@
 
 #include "emboss.h"
 
-static AjBool seqalign_WriteScopout(AjPFile in, AjPFile out, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class);
 
 
 int main(int argc, char **argv)
@@ -200,12 +199,13 @@ int main(int argc, char **argv)
 				    for clustalw */
     AjPStr  clustinf2   = NULL;  /* the name of the input sequence file 
 				    for clustalw */
-    AjPStr  treefile    = NULL;  /* the name of the .dnd file that will
-				    be created */
+    AjPStr  clustoutf   = NULL;  /* the name of the Clustal file that will
+				    be created ... this is reformated into 
+				    scop alignment format*/
     
     AjPFile scopin     = NULL;  /* scop families file (for reading)*/
-    AjPFile scopout    = NULL;  /* scop families file (for writing)*/
-
+/*    AjPFile scopout    = NULL; */ /* scop families file (for writing)*/
+    
 
     AjPStr fam          = NULL;   /* family name */
     AjPStr sfam         = NULL;   /* superfamily name */
@@ -233,10 +233,17 @@ int main(int argc, char **argv)
 				     from 'list' */
     ajint   posdot      = 0;      /* Position of last '.' in filenames 
 				     from 'list' */
-    
-    
-    
-    
+
+    ajint   sunid       = 0;
+    AjPFile alg_in      = NULL;   /* the alignment file for reading*/
+    AjPFile alg_out     = NULL;   /* the alignment file for writing*/
+    AjPStr  outname     = NULL;
+    AjPStr  line        = NULL;
+    outname    = ajStrNew();
+    line       = ajStrNew();
+
+
+
     msg        = ajStrNew();
     outfilename= ajStrNew();
     syscmd     = ajStrNew();
@@ -248,7 +255,7 @@ int main(int argc, char **argv)
     tmp_name   = ajStrNew();
     clustinf1  = ajStrNew();
     clustinf2  = ajStrNew();
-    treefile   = ajStrNew();
+    clustoutf  = ajStrNew();
     
     fam        = ajStrNew();
     sfam       = ajStrNew();
@@ -323,30 +330,37 @@ int main(int argc, char **argv)
 	else
 	{
 	    /* set up the random file for the input alignment for clustal */
-	    ajStrAss(&clustinf1,tmp_name);
+	    ajStrAssS(&clustinf1,tmp_name);
 	    ajStrAppC(&clustinf1,".aln");
 
 	    /* set up the random file for the input sequences for clustal */
-	    ajStrAss(&clustinf2,tmp_name);
+	    ajStrAssS(&clustinf2,tmp_name);
 	    ajStrAppC(&clustinf2,".seqs");
 
 	    /* setup the .dnd tree file to delete later */
-	    ajStrAss(&treefile,tmp_name);
-	    ajStrAppC(&treefile,".dnd");
+	    ajStrAssS(&clustoutf,tmp_name);
+	    ajStrAppC(&clustoutf,".out");
 	    
 	    /* read the scop seed alignment file into a scopalg object */
 	    ajXyzScopalgRead(alnf,&align);
 
 	    /* extract the scop information */
-	    ajStrAss(&fam,align->Family);
-	    ajStrAss(&sfam,align->Superfamily);
-	    ajStrAss(&fold,align->Fold);
-	    ajStrAss(&class,align->Class);
+	    ajStrAssS(&fam,align->Family);
+	    ajStrAssS(&sfam,align->Superfamily);
+	    ajStrAssS(&fold,align->Fold);
+	    ajStrAssS(&class,align->Class);
+	    sunid = align->Sunid_Family;
+	    
 
 	    /* write out the seed alignment (from the scopalg object) 
 	       in CLUSTAL format */
-	    outf1 = ajFileNewOut(clustinf1);
-	    ajXyzScopalgWriteClustal(align,&outf1);
+	    if((outf1 = ajFileNewOut(clustinf1))==NULL)
+	    {
+		ajFatal("Could not open %S for writing\n", clustinf1);
+	    }
+	    
+	    ajXyzScopalgWriteClustal(align,&outf1); 
+/*	    ajXyzScopalgWrite(outf1, align);  */
 	    ajFileClose(&outf1);
 
 	    /* Delete Scopalg structure */
@@ -364,11 +378,11 @@ int main(int argc, char **argv)
 	       The Typeobj element of the hits used in the alignment are given as SEED */
 	    ajFileSeek(scopin,0,SEEK_SET);
 
-	    seqalign_WriteScopout(scopin, scopout, fam, sfam, fold, class);
+/*	    seqalign_WriteScopout(scopin, scopout, fam, sfam, fold, class); */
 	    
 
-	    ajFileClose(&scopin);
-	    ajFileClose(&scopout);
+/*	    ajFileClose(&scopin);
+	    ajFileClose(&scopout); */
 	    
 	    
 
@@ -398,21 +412,71 @@ int main(int argc, char **argv)
 	    
 	    /* run clustalw in profile to sequence mode */
 	    ajFmtPrintS(&syscmd,"clustalw -type=protein -profile1=%S -sequences"
-			" -profile2=%S -outfile=%S%S%S\n",
-			clustinf1,clustinf2,outpath, outfilename, outextn);
+			" -profile2=%S -outfile=%S\n",
+			clustinf1,clustinf2,clustoutf);
+	    
+	    ajFmtPrint("\n%S\n", syscmd);
 	    system(ajStrStr(syscmd));
 	    
+
+
+	    
+	    /* Reformat output file into scop format */
+	    /* First open files */
+	    if((alg_in = ajFileNewIn(clustoutf))==NULL)
+	    {
+		ajFatal("Could not read clustal output file");
+	    }
+	    
+	    ajStrAssS(&outname, outpath);
+	    ajStrApp(&outname, outfilename);
+	    ajStrApp(&outname, outextn);
+	    if((alg_out = ajFileNewOut(outname))==NULL)
+	    {
+		ajFatal("Could not write clustal output file");
+	    }
+
+	    /* Then write scop classification data */
+	    ajFmtPrintF(alg_out,"CL   %S",class);
+	    ajFmtPrintSplit(alg_out,fold,"\nXX\nFO   ",75," \t\n\r");
+	    ajFmtPrintSplit(alg_out,sfam,"XX\nSF   ",75," \t\n\r");
+	    ajFmtPrintSplit(alg_out,fam,"XX\nFA   ",75," \t\n\r");
+	    ajFmtPrintF(alg_out,"XX\n");
+	    ajFmtPrintF(alg_out,"SI   %d\nXX\n",sunid);
+
+
+	    /* Then parse the clustal file and write the alignment */
+	    while(ajFileReadLine(alg_in,&line))
+	    {
+		if(ajStrPrefixC(line, "CLUSTAL"))
+		    continue;
+		if(MAJSTRLEN(line)==0)
+		    continue;
+		if(line->Ptr[0]==' ')
+		    ajFmtPrintF(alg_out, "\n");
+		else
+		    ajFmtPrintF(alg_out, "%S\n", line);
+	    }
+	    
+	    
+	    ajFileClose(&alg_in);
+	    ajFileClose(&alg_out);
+	    
+
 	    /* clean up directory */
 	    ajSysUnlink(&clustinf1);
 	    ajSysUnlink(&clustinf2);
-	    ajSysUnlink(&treefile);
+	    ajSysUnlink(&clustoutf);
+	    
 	}
 	/* Free the nodes ! */
 	ajStrDel(&filename);
     }
     
 
-    /* clean up */
+    /* clean up */    
+    ajStrDel(&outname);
+    ajStrDel(&line);
     ajStrDel(&msg);
     ajStrDel(&syscmd);
     ajStrDel(&fam);
@@ -427,7 +491,7 @@ int main(int argc, char **argv)
     ajStrDel(&tmp_name);
     ajStrDel(&clustinf1);
     ajStrDel(&clustinf2);
-    ajStrDel(&treefile);
+    ajStrDel(&clustoutf);
     ajStrDel(&outfilename);
     ajListDel(&list);
     
@@ -440,117 +504,6 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic  seqalign_WriteScopout ****************************************
-**
-** Reads a scop families file, classifies those hits with the specified 
-** classification as SEED proteins (the Typeobj of the hit is written), and 
-** writes out the new scop families file.
-**
-** @param [r] in        [AjPFile]       Input scop families file
-** @param [r] out       [AjPFile]       Output scop families file
-** @param [r] fam       [AjPStr ]       Family
-** @param [r] sfam      [AjPStr ]       Superfamily
-** @param [r] fold      [AjPStr ]       Fold
-** 
-** @return [AjBool] True on success (a file has been written)
-** @@
-******************************************************************************/
-static AjBool seqalign_WriteScopout(AjPFile in, AjPFile out, AjPStr fam, 
-				    AjPStr sfam, AjPStr fold, AjPStr class)
-{
-    AjPHitlist hitlist = NULL; 
-    ajint x=0;
-    
-    /* if family is specified then the other fields also have to be specified. */
-    if(fam)
-    {
-	if(!sfam || !fold || !class)
-	{
-	    ajWarn("Bad arguments passed to seqalign_WriteScopout\n");
-	    return ajFalse;
-	}
-	else
-	{
-	    while(ajXyzHitlistRead(in,"//",&hitlist))
-	    {
-		if(ajStrMatch(fam,hitlist->Family) &&
-		   ajStrMatch(sfam,hitlist->Superfamily) &&
-		   ajStrMatch(fold,hitlist->Fold) &&
-		   ajStrMatch(class,hitlist->Class))
-		{
-		    for(x=0; x<hitlist->N; x++)
-			ajStrAssC(&hitlist->hits[x]->Typeobj, "SEED");
-		}
-		ajXyzHitlistWrite(out, hitlist);
-		ajXyzHitlistDel(&hitlist);
-		hitlist=NULL;
-	    }
-	    
-	}
-    }
-
-    /* if superfamily is specified then the other fields also have 
-       to be specified. */
-    else if(sfam)
-    {
-	if(!fold || !class)
-	{
-	    ajWarn("Bad arguments passed to seqalign_WriteScopout\n");
-	    return ajFalse;
-	}
-	else
-	{
-	    while(ajXyzHitlistRead(in,"//",&hitlist))
-	    {
-		if(ajStrMatch(sfam,hitlist->Superfamily) &&
-		   ajStrMatch(fold,hitlist->Fold) &&
-		   ajStrMatch(class,hitlist->Class))
-		{
-		    for(x=0; x<hitlist->N; x++)
-			ajStrAssC(&hitlist->hits[x]->Typeobj, "SEED");
-		}
-		ajXyzHitlistWrite(out, hitlist);
-		ajXyzHitlistDel(&hitlist);
-		hitlist=NULL;
-	    }
-	    
-	}	
-    }
-    
-    /* if fold is specified then the other fields also have to be specified. */
-    else if(fold)
-    {
-	if(!class)
-	{
-	    ajWarn("Bad arguments passed to seqalign_WriteScopout\n");
-	    return ajFalse;
-	}
-	else
-	{
-	    while(ajXyzHitlistRead(in,"//",&hitlist))
-	    {
-		if(ajStrMatch(fold,hitlist->Fold) &&
-		   ajStrMatch(class,hitlist->Class))
-		{
-		    for(x=0; x<hitlist->N; x++)
-			ajStrAssC(&hitlist->hits[x]->Typeobj, "SEED");
-		}
-		ajXyzHitlistWrite(out, hitlist);
-		ajXyzHitlistDel(&hitlist);
-		hitlist=NULL;
-	    }
-
-	}	
-    } 
-
-    else
-    {
-	ajWarn("Bad arguments passed to seqalign_WriteScopout\n");
-	return ajFalse;
-    }
-    
-    return ajTrue;
-}
 
 			      
 				 

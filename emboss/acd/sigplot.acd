@@ -1,56 +1,61 @@
-appl: sigplot [
-  documentation: "Reads a signature hits file and validation file and generates gnuplot data files of signature performance."
-  groups: "Protein:3D Structure"
-  gui: "yes"
-  batch: "yes"
-  cpu: "low"
+appl: sigplot
+[
+        doc: "Generates data files of signature performance"
+        groups: "PROTEIN:3D STRUCTURE"
 ]
 
-infile: hitsin  [
-  required: "Y"
-  prompt: "Name of signature hits file (input)"
-  default: "my.hits"
+
+
+
+
+section: input [ info: "input Section" type: page ]
+infile: hitsin
+[
+        param: Y
+        prompt: "Name of signature hits file for input"
+        def: "test.sighits.in"
+
 ]
 
 infile: validatin
 [
-  required: "Y"
-  prompt: "Name of seqsort validation file for input"
-  def: "vali.hits"
+        param: Y
+        prompt: "Name of seqsort validation file for input"
+        def: "test.valid.in"
 ]
+endsection: input
 
-outfile: datafile  [
-  required: "Y"
-  prompt: "Name of gnuplot data file for plotting types of hits (output)"
-  default: "graph1.dat"
+
+section: required [ info: "required Section" type: page ]
+bool: splithit
+[
+  param: Y
+  required: Y
+  prompt: "Graph 'true' hits as proportion of redundant and non-redundant hits"
+  default: "Y"
 ]
-
-outfile: ssdatafile
-[ 
-  required: "Y"
-  prompt: "Name of gnuplot data file for plotting specificty/sensitivity (output)"
-  def: "graph2.dat"
-]
-
 bool: seedid
 [
-  required: "Y"
+  param: Y
   prompt: "Generate matrix of %id between seed proteins and hits"
-  default: "N"
+  default: "Y"
 ]
 
 infile: alignfile  
 [
   required: "$(seedid)"
   prompt: "Name of seed alignment file for input"
-  default: "test.salign"
+
+  default: "test.salign.in"
+  nullok: "Y"	
 ]
 
 infile: sigalignfile  
 [
   required: "$(seedid)"
   prompt: "Name of sigscan alignment file for input"
-  default: "test.sigalign"
+  default: "test.sigalign.in"
+  nullok: "Y"	
 ]
 
 matrixf: submat  
@@ -84,11 +89,49 @@ float: gapextn
   expected: "0.5 for any sequence"
   help: "The gap extension, penalty is added to the standard gap penalty for each base or residue in the gap. This is how long gaps are penalized. Usually you will expect a few long gaps rather than many short gaps, so the gap extension penalty should be lower than the gap penalty. An exception is where one or both sequences are single reads with possible sequencing errors in which case you would expect many single base gaps. You can get this result by setting the gap open penalty to zero (or very low) and using the gap extension penalty to control gap scoring."
 ]
+endsection: required
 
+
+
+
+
+
+section: output [ info: "output Section" type: page ]
+outfile: datafile
+[ 
+        param: Y
+        prompt: "Name of GNUPLOT class data file for output"
+        def: "test.dat"
+]
+outfile: ssdatafile
+[ 
+        param: Y
+        prompt: "Name of GNUPLOT specificty/sensitivity data file for output"
+        def: "sensi_speci.dat"
+]
 outfile: matrixout
 [ 
         required: "$(seedid)"
         prompt: "Name of output file for %id matrix"
         def: "testid.mat"
 ]
+endsection: output
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

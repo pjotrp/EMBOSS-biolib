@@ -6,9 +6,11 @@ appl: seqwords [
   cpu: "low"
 ]
 
+
+
+section: input [ info: "input Section" type: page ]
 infile: keyfile  [
   prompt: "Name of keywords file (input)"
-  default: "scop.terms"
   parameter: "Y"
 ]
 
@@ -17,9 +19,21 @@ infile: spfile  [
   default: "./seq.dat"
   required: "Y"
 ]
+endsection: input
 
+
+
+
+
+section: output [ info: "output Section" type: page ]
 outfile: outfile  [
   prompt: "Name of seqwords hits file (output)"
-  default: "scop.seqs"
+  default: "test.seqhits"
   parameter: "Y"
 ]
+endsection: output
+
+
+
+
+

@@ -6,6 +6,10 @@ appl: sigscan [
   cpu: "medium"
 ]
 
+
+
+
+section: input [ info: "input Section" type: page ]
 infile: sigin  [
   parameter: "Y"
   prompt: "Name of signature file (input)"
@@ -23,7 +27,13 @@ infile: targetf  [
   required: "Y"
   default: "test.valid.in"
 ]
+endsection: input
 
+
+
+
+
+section: required [ info: "required Section" type: page ]
 integer: thresh  [
   required: "Y"
   information: "Minimum length (residues) of overlap required for two hits with the same code to be counted as the same hit."
@@ -75,7 +85,13 @@ integer: nhits  [
   information: "Number of hits to output"
   default: "100"
 ]
+endsection: required
 
+
+
+
+
+section: output [ info: "output Section" type: page ]
 outfile: hitsf  [
   parameter: "Y"
   prompt: "Name of signature hits file (output)"
@@ -87,6 +103,12 @@ outfile: alignf  [
   prompt: "Name of signature alignments file (output)"
   default: "test.sigalign"
 ]
+endsection: output
+
+
+
+
+
 
 
 

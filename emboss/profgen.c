@@ -57,12 +57,12 @@
 #define HENIKOFF_LENGTH 27
 
 
-void simple_matrix(AjPSeqset seqset, AjPFile outf, AjPStr name,
+static void profgen_simple_matrix(AjPSeqset seqset, AjPFile outf, AjPStr name,
                    ajint threshold);
-void gribskov_profile(AjPSeqset seqset, float **sub,
+static void profgen_gribskov_profile(AjPSeqset seqset, float **sub,
                       AjPFile outf, AjPStr name, ajint threshold,
                       float gapopen, float gapextend, AjPStr *cons);
-void henikoff_profile(AjPSeqset seqset, AjPMatrixf imtx, float **sub,
+static void profgen_henikoff_profile(AjPSeqset seqset, AjPMatrixf imtx, float **sub,
                       ajint threshold, AjPSeqCvt cvt, AjPFile outf, AjPStr name,
                       float gapopen, float gapextend, AjPStr *cons);
 
@@ -144,6 +144,9 @@ int main(int argc, char **argv)
     gapopen   = ajRoundF(gapopen,8);
     gapextend = ajRoundF(gapextend,8);
 
+
+    seq = ajSeqNew();
+
     /* Check directories */
     if((!ajFileDir(&infpath)) || (!(infextn)))
         ajFatal("Could not open extended alignment directory");    
@@ -179,16 +182,17 @@ int main(int argc, char **argv)
         else
         {
             ajXyzScopalgRead(inf,&scopalg);
+
             seqset   = ajSeqsetNew();
             
             /* fill the seqset */
             for(i=0; i<scopalg->N; i++)
             {
-                seq = ajSeqNew();
                 ajStrAssS(&seq->Acc,scopalg->Codes[i]);
                 ajStrAssS(&seq->Seq,scopalg->Seqs[i]);
                 ajSeqsetApp(seqset,seq);
             }
+
 
             /* create simple frequency profile */
             if(*p=='F')
@@ -214,13 +218,13 @@ int main(int argc, char **argv)
                 outf = ajFileNewOutD(smpfpath,outfname);
                 
                 /* create a simple frequency  profile */
-                simple_matrix(seqset,outf,outfname,threshold);
+                profgen_simple_matrix(seqset,outf,outfname,threshold);
 
                 /* close file and clean up*/
                 ajFileClose(&outf);
                 ajStrAssC(&outfname,"");
             }
-            
+	                
             else if(*p=='G')
             {
 
@@ -245,13 +249,13 @@ int main(int argc, char **argv)
                 outf = ajFileNewOutD(gbpfpath,outfname);
 
                 /* create a Gribskov profile */
-                gribskov_profile(seqset,sub,outf,outfname,threshold,gapopen,gapextend,&cons);
+                profgen_gribskov_profile(seqset,sub,outf,outfname,threshold,gapopen,gapextend,&cons);
 
                 /* close file and clean up*/
                 ajFileClose(&outf);
                 ajStrAssC(&outfname,"");
             }
-
+	    
             else if(*p=='H')
             {
                 /* create an output filename */
@@ -275,7 +279,7 @@ int main(int argc, char **argv)
                 outf = ajFileNewOutD(hnpfpath,outfname);
                 
                 /* create a Henikoff profile */
-                henikoff_profile(seqset,matrix,sub,threshold,cvt,outf,outfname,gapopen,gapextend,&cons);
+                profgen_henikoff_profile(seqset,matrix,sub,threshold,cvt,outf,outfname,gapopen,gapextend,&cons);
                 
                 /* close file and clean up*/
                 ajFileClose(&outf);
@@ -287,15 +291,20 @@ int main(int argc, char **argv)
 
             /* clean up jobs after each file */
             ajXyzScopalgDel(&scopalg);
+
             ajSeqsetDel(&seqset);
             ajFileClose(&inf);
+
+	    ajStrDel(&filename);
 
             /* clean up the seqs */
         }
     }
     
+    
 
     /*clean up */
+    ajSeqDel(&seq);
     ajStrDel(&infpath);
     ajStrDel(&infextn);
     ajStrDel(&smpfpath);
@@ -305,7 +314,6 @@ int main(int argc, char **argv)
     ajStrDel(&hnpfpath);
     ajStrDel(&hnpfextn);
     ajStrDel(&tmp);
-    ajStrDel(&filename);
     ajStrDel(&outfname);
     ajStrDel(&cons);
     
@@ -317,7 +325,7 @@ int main(int argc, char **argv)
     return 0;
 }
 
-/* @func simple_matrix ********************************************************
+/* @funcstatic  profgen_simple_matrix ********************************************************
 **
 ** Undocumented.
 **
@@ -327,7 +335,7 @@ int main(int argc, char **argv)
 ** @param [?] threshold [ajint] Undocumented
 ** @@
 ******************************************************************************/
-void simple_matrix(AjPSeqset seqset, AjPFile outf, AjPStr name,
+static void profgen_simple_matrix(AjPSeqset seqset, AjPFile outf, AjPStr name,
                    ajint threshold)
 {
     char *p;
@@ -422,7 +430,7 @@ void simple_matrix(AjPSeqset seqset, AjPFile outf, AjPStr name,
     return;
 }
 
-/* @func gribskov_profile *****************************************************
+/* @funcstatic  profgen_gribskov_profile *****************************************************
 **
 ** Undocumented.
 **
@@ -436,7 +444,7 @@ void simple_matrix(AjPSeqset seqset, AjPFile outf, AjPStr name,
 ** @param [?] cons [AjPStr*] Undocumented
 ** @@
 ******************************************************************************/
-void gribskov_profile(AjPSeqset seqset, float **sub,
+static void profgen_gribskov_profile(AjPSeqset seqset, float **sub,
                       AjPFile outf, AjPStr name, ajint threshold,
                       float gapopen, float gapextend, AjPStr *cons)
 {
@@ -639,7 +647,7 @@ void gribskov_profile(AjPSeqset seqset, float **sub,
     return;
 }
 
-/* @func henikoff_profile *****************************************************
+/* @funcstatic  profgen_henikoff_profile *****************************************************
 **
 ** Undocumented.
 **
@@ -655,7 +663,7 @@ void gribskov_profile(AjPSeqset seqset, float **sub,
 ** @param [?] cons [AjPStr*] Undocumented
 ** @@
 ******************************************************************************/
-void henikoff_profile(AjPSeqset seqset, AjPMatrixf matrix, float **sub,
+static void profgen_henikoff_profile(AjPSeqset seqset, AjPMatrixf matrix, float **sub,
                       ajint threshold, AjPSeqCvt cvt, AjPFile outf, AjPStr name,
                       float gapopen, float gapextend, AjPStr *cons)
 {

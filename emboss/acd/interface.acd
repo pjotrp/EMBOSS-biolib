@@ -6,35 +6,53 @@ appl: interface [
   cpu: "high"
 ]
 
+
+section: input [ info: "input Section" type: page ]
 infile: in  [
   parameter: "Y"
   information: "Name of protein coordinate file for input (embl format)"
-  default: "test.pxyz"
 ]
-
-outfile: out  [
-  parameter: "Y"
-  information: "Name of contact file for output"
-  default: "test.con"
+string: vdwf  [
+  required: "Y"
+  prompt: "Name of data file with van der Waals radii"
+  default: "Evdw.dat"
 ]
+endsection: input
 
+
+
+
+
+section: required [ info: "required Section" type: page ]
 float: thresh  [
   required: "Y"
   information: "Threshold contact distance"
   default: "1.0"
 ]
+endsection: required
 
+
+
+
+
+section: advanced [ info: "advanced Section" type: page ]
 float: ignore  [
   information: "Threshold ignore distance"
   help: "If any two atoms from two different residues are at least this distance apart then no futher inter-atomic contacts will be checked for for that residue pair . This speeds the calculation up considerably."
   optional: "Y"
   default: "20.0"
 ]
+endsection: advanced
 
-string: vdwf  [
-  required: "Y"
-  prompt: "Name of data file with van der Waals radii"
-  default: "Evdw.dat"
+
+
+
+
+section: output [ info: "output Section" type: page ]
+outfile: out  [
+  parameter: "Y"
+  information: "Name of contact file for output"
+  default: "test.con"
 ]
 
 outfile: conerrf  [
@@ -42,3 +60,16 @@ outfile: conerrf  [
   prompt: "Name of log file for the build"
   default: "interface.log"
 ]
+endsection: output
+
+
+
+
+
+
+
+
+
+
+
+

@@ -6,6 +6,9 @@ appl: contacts [
   cpu: "high"
 ]
 
+
+
+section: input [ info: "input Section" type: page ]
 string: cpdb  [
   parameter: "Y"
   information: "Location of coordinate files (embl format input)"
@@ -18,25 +21,43 @@ string: cpdbextn  [
   default: ".pxyz"
 ]
 
+string: vdwf  [
+  required: "Y"
+  prompt: "Name of data file with van der Waals radii"
+  default: "Evdw.dat"
+]
+endsection: input
+
+
+
+
+
+section: required [ info: "required Section" type: page ]
 float: thresh  [
   required: "Y"
   information: "Threshold contact distance"
   default: "1.0"
 ]
+endsection: required
 
+
+
+
+
+section: advanced [ info: "advanced Section" type: page ]
 float: ignore  [
   optional: "N"
   information: "Threshold ignore distance"
   help: "If any two atoms from two different residues are at least this distance apart then no futher inter-atomic contacts will be checked for for that residue pair . This speeds the calculation up considerably."
   default: "20.0"
 ]
+endsection: advanced
 
-string: vdwf  [
-  required: "Y"
-  prompt: "Name of data file with van der Waals radii"
-  default: "Evdw.dat"
-]
 
+
+
+
+section: output [ info: "output Section" type: page ]
 string: con  [
   parameter: "Y"
   information: "Location of contact files for output"
@@ -54,3 +75,16 @@ outfile: conerrf  [
   prompt: "Name of log file for the build"
   default: "contacts.log"
 ]
+endsection: output
+
+
+
+
+
+
+
+
+
+
+
+

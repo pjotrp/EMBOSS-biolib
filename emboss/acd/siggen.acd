@@ -6,30 +6,29 @@ appl: siggen [
   cpu: "low"
 ]
 
+
+
+
+
+section: input [ info: "input Section" type: page ]
 string: algpath  [
   parameter: "Y"
-  prompt: "Location of extended alignment files (clustal format input)"
+  prompt: "Location of scop structure-based sequence alignment files (input)"
   default: "./"
 ]
 
 string: algextn  [
   parameter: "Y"
   prompt: "Extension of alignment files"
-  default: ".align"
+  default: ".salign"
 ]
+endsection: input
 
-string: sigpath  [
-  parameter: "Y"
-  prompt: "Location of signature files (output)"
-  default: "./"
-]
 
-string: sigextn  [
-  parameter: "Y"
-  prompt: "Extension of signature files"
-  default: ".sig"
-]
 
+
+
+section: required [ info: "required Section" type: page ]
 integer: sparsity  [
   required: "Y"
   prompt: "% sparsity of signature"
@@ -87,7 +86,7 @@ integer: conthresh  [
 string: conpath  [
   required: "@(!$(randomise))"
   prompt: "Location of contact files (input)"
-  default: "/data/contacts/"
+  default: "./"
 ]
 
 string: conextn  [
@@ -99,7 +98,7 @@ string: conextn  [
 string: cpdbpath  [
   required: "@(!$(randomise))"
   information: "Location of domain coordinate files (embl format input)"
-  default: "/data/cpdbscop/"
+  default: "./"
 ]
 
 string: cpdbextn  [
@@ -113,3 +112,28 @@ bool: filterpsim  [
   prompt: "Ignore alignment postitions with post_similar value of 0"
   default: "N"
 ]
+endsection: required
+
+
+
+
+
+section: output [ info: "output Section" type: page ]
+string: sigpath  [
+  parameter: "Y"
+  prompt: "Location of signature files (output)"
+  default: "./"
+]
+
+string: sigextn  [
+  parameter: "Y"
+  prompt: "Extension of signature files"
+  default: ".sig"
+]
+endsection: output
+
+
+
+
+
+

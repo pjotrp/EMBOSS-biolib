@@ -46,6 +46,7 @@
 ** structural alignments for each SCOP family in turn.
 ** 
 ** VERY IMPORTANT NOTE 
+** 1. Adaption of STAMP for domain codes
 ** scopalign will only run with with a version of stamp which has been modified
 ** so that pdb id codes of length greater than 4 characters are acceptable.
 ** This involves a trivial change to the stamp module getdomain.c (around line
@@ -53,6 +54,29 @@
 ** temp=getfile(domain[0].id,dirfile,4,OUTPUT); 
 ** temp=getfile(domain[0].id,dirfile,7,OUTPUT); 
 ** 
+** 2. Adaption of STAMP for larger datasets
+** STAMP was failing to align a large dataset of all the available V set Ig 
+** domains. The ver2hor module generated the following error:
+** Transforming coordinates...
+**  ...done.
+** ver2hor -f ./scopalign-1022069396.11280.76.post > ./scopalign-1022069396.11280.out
+** error: something wrong with STAMP file
+**          STAMP length is 370, Alignment length is 422
+**          STAMP nseq is 155, Alignment nseq is 155
+**
+** This was fixed by changing #define MAXtlen 200 to #define MAXtlen 2000 in 
+** alignfit.h.
+** 
+** At the same time I changed the following as a safety measure:
+** gstamp.c  : #define MAX_SEQ_LEN 10000    (was 2000)
+** pdbseq.c  : #define MAX_SEQ_LEN 10000    (was 3000)
+** defaults.h: #define MAX_SEQ_LEN 10000    (was 8000)
+** defaults.h: #define MAX_NSEQ 10000       (was 1000)
+** defaults.h: #define MAX_BLOC_SEQ 5000    (was 500)
+** dstamp.h  : #define MAX_N_SEQ 10000      (was 1000)
+** ver2hor.h : #define MAX_N_SEQ 10000      (was 1000)
+**
+**
 ** The modified code is kept on the HGMP file system in /packages/stamp/src2
 ** WHEN RUNNING SCOPALIGN AT THE HGMP IT IS ESSENTIAL THAT THE COMMAND 
 ** 'use stamp2' (which runs the script /packages/menu/USE/stamp2) IS GIVEN 

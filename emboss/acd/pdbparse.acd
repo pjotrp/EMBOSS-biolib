@@ -6,6 +6,8 @@ appl: pdbparse [
   cpu: "low"
 ]
 
+
+section: input [ info: "input Section" type: page ]
 string: pdb  [
   parameter: "Y"
   information: "Location of pdb files (pdb format input)"
@@ -17,37 +19,13 @@ string: pdbextn  [
   information: "Extension of pdb files (pdb format input)"
   default: ".ent"
 ]
+endsection: input
 
-string: cpdb  [
-  parameter: "Y"
-  information: "Location of coordinate files (embl format output)"
-  default: "./"
-]
 
-string: cpdbextn  [
-  parameter: "Y"
-  information: "Extension of coordinate files (embl format output)"
-  default: ".pxyz"
-]
 
-bool: cpdbnaming  [
-  optional: "N"
-  information: "Use pdbid code to name files"
-  default: "Y"
-]
 
-integer: chnsiz  [
-  optional: "Y"
-  information: "Minimum number of residues in a chain for it to be parsed"
-  default: "5"
-]
 
-integer: maxmis  [
-  optional: "N"
-  information: "Maximum number of permissible mismatches between the ATOM and SEQRES sequences"
-  default: "3"
-]
-
+section: required [ info: "required Section" type: page ]
 bool: nocamask  [
   required: "Y"
   information: "Mask non-amino acid groups in protein chains that do not contain a C-alpha atom"
@@ -68,6 +46,58 @@ bool: atommask  [
   help: "The amino acid will appear not appear in the CO record but will still be present in the SQ record of the clean coordinate file"
   default: "N"
 ]
+endsection: required
+
+
+
+
+
+section: advanced [ info: "advanced Section" type: page ]
+bool: cpdbnaming  [
+  optional: "N"
+  information: "Use pdbid code to name files"
+  default: "Y"
+]
+
+integer: chnsiz  [
+  optional: "Y"
+  information: "Minimum number of residues in a chain for it to be parsed"
+  default: "5"
+]
+
+integer: maxmis  [
+  optional: "N"
+  information: "Maximum number of permissible mismatches between the ATOM and SEQRES sequences"
+  default: "3"
+]
+endsection: advanced
+
+
+
+
+
+section: output [ info: "output Section" type: page ]
+string: cpdb  [
+  parameter: "Y"
+  information: "Location of coordinate files (embl format output)"
+  default: "./"
+]
+
+string: cpdbextn  [
+  parameter: "Y"
+  information: "Extension of coordinate files (embl format output)"
+  default: ".pxyz"
+]
+endsection: output
+
+
+
+
+
+
+
+
+
 
 outfile: errf  [
   required: "Y"

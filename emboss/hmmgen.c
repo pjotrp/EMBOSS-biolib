@@ -89,7 +89,7 @@ int main(int argc, char **argv)
     list = ajListNew();
 
     /* Check directories */
-    if((!ajFileDir(&infpath)) || (!(infextn)))
+    if((!ajFileDir(&infpath)) || (!ajFileDir(&outfpath)) || (!(infextn)))
         ajFatal("Could not open extended alignment directory");    
     
     /* Create list of files in the path */
@@ -114,6 +114,7 @@ int main(int argc, char **argv)
         if((inf = ajFileNewIn(filename)) == NULL)
         {
             ajWarn("Could not open file %S\n",filename);
+	    ajStrDel(&filename);
             continue;
         }
 
@@ -147,25 +148,34 @@ int main(int argc, char **argv)
             /* read alignment file into a scopalg structure */
             ajXyzScopalgRead(inf,&scopalg);
                     
+	    printf("scopalg structure read ok\n");
+	    fflush(stdout);
+	    
+
             /* open up a file and write out the alignment in CLUSTAL format */
             seqsinf = ajFileNewOut(seqsin);
           
-            ajXyzScopalgWriteClustal(scopalg,&seqsinf);
+            ajXyzScopalgWriteClustal2(scopalg,&seqsinf);
           
+	    printf("ScopalgWriteClustal2 called ok\n");
+	    fflush(stdout);
+
             ajFileClose(&seqsinf);
           
             /* construct command line to run hmmer to build model */
             ajFmtPrintS(&cmd,"hmmbuild -g %S %S",outfile,seqsin);
 
             /* run hmmer */
-            system(ajStrStr(cmd));
+	    ajFmtPrint("%S\n", cmd);
+	    fflush(stdout);
+	    system(ajStrStr(cmd));
 
             /* clean up temperary files */
             ajFmtPrintS(&cmd,"rm %S",seqsin);
             system(ajStrStr(cmd));
 
-            ajXyzScopalgRead(inf,&scopalg);
-            ajFileClose(&inf);
+	    ajStrDel(&filename);
+	    ajFileClose(&inf);
         }
     }
     
@@ -174,7 +184,6 @@ int main(int argc, char **argv)
     ajStrDel(&infextn);
     ajStrDel(&outfpath);
     ajStrDel(&outfextn);
-    ajStrDel(&filename);
     ajStrDel(&outfile);
     ajStrDel(&tmp);
     ajStrDel(&cmd);

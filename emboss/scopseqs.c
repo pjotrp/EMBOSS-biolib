@@ -162,7 +162,6 @@ int main(int argc, char **argv)
     
     float      gapopen;		  /* Gap insertion penalty*/
     float      gapextend;	  /* Gap extension penalty*/
-    float      thresh;		  /* Threshold for non-redundancy*/
  
     AjPStr     msg        = NULL; /* String used for messages */
     AjPStr     dpdb_path  = NULL; /* Path of dpdb (clean domain) files */
@@ -214,7 +213,6 @@ int main(int argc, char **argv)
     scop_outf   = ajAcdGetOutfile("scopout");
     dpdb_path   = ajAcdGetString("dpdb");
     dpdb_extn   = ajAcdGetString("extn");
-    thresh      = ajAcdGetFloat("thresh");
     matrix      = ajAcdGetMatrixf("datafile");
     gapopen     = ajAcdGetFloat("gapopen");
     gapextend   = ajAcdGetFloat("gapextend");
@@ -226,11 +224,6 @@ int main(int argc, char **argv)
 	ajFatal("Could not open dpdb directory");
 
 
-    /* Write header of log file */
-    /* JCI Replace hard-coded 'FAMILIES' with appropriate string when */
-    /* redundancy removal is implemented for any node in SCOP */
-    ajFmtPrintF(errf, "FAMILIES are non-redundant\n"
-		"%.0f%% redundancy threshold\n", thresh); 
 
     /* set up the pdbtosp object list */
     ajXyzPdbtospReadAll(pdbtosp_inf,&list);

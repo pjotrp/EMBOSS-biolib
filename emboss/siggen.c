@@ -176,27 +176,29 @@
 
 #include "emboss.h"
 
-AjBool  siggen_ScoreSeqMat(AjPScopalg alg, AjPScorealg *scores, AjPMatrixf mat, 
+static AjBool  siggen_ScoreSeqMat(AjPScopalg alg, AjPScorealg *scores, AjPMatrixf mat, 
                         AjPInt2d seq_pos);
-AjBool  siggen_ScoreSeqVar(AjPScopalg alg, AjPScorealg *scores, AjPInt2d seq_pos);
+static AjBool  siggen_ScoreSeqVar(AjPScopalg alg, AjPScorealg *scores, AjPInt2d seq_pos);
 
-AjBool  siggen_ScoreNcon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, 
+static AjBool  siggen_ScoreNcon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, 
                          AjPInt2d seq_pos, AjPInt *atom_idx, AjBool *noca);
-AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, 
+static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, 
                          AjPInt2d seq_pos, AjPInt *atom_idx, AjBool *noca);
-AjBool  siggen_ScoreNCCon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps,  
+static AjBool  siggen_ScoreNCCon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps,  
                           AjPInt2d seq_pos);
-AjBool  siggen_ScoreCombined(AjPScorealg *scores);
-AjPSignature  siggen_SigSelect(AjPScopalg alg, AjPScorealg scores, 
-                               AjPInt2d seq_pos, ajint sig_sparse, AjPCmap *cmaps, AjPInt *atom_idx,
-                               float *spar_check);
-AjBool siggen_CalcSeqpos(AjPScopalg alg, AjPInt2d *seq_pos);
-AjBool siggen_ScoreAlignment(AjPScorealg *scores, AjPScopalg alg, AjPCmap *cmaps, 
-                             AjPMatrixf  mat, AjBool *noca, AjPInt2d seq_pos, AjPInt *atom_idx);
-AjBool  siggen_ScoreNcon_Filter(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, 
+static AjBool  siggen_ScoreCombined(AjPScorealg *scores);
+static AjPSignature  siggen_SigSelect(AjPScopalg alg, AjPScorealg scores, 
+                               AjPInt2d seq_pos, ajint sig_sparse, AjPCmap *cmaps, 
+			       AjPInt *atom_idx, float *spar_check);
+static AjBool siggen_CalcSeqpos(AjPScopalg alg, AjPInt2d *seq_pos);
+static AjBool siggen_ScoreAlignment(AjPScorealg *scores, AjPScopalg alg, AjPCmap *cmaps, 
+                             AjPMatrixf  mat, AjBool *noca, AjPInt2d seq_pos, 
+			     AjPInt *atom_idx);
+static AjBool  siggen_ScoreNcon_Filter(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, 
                          AjPInt2d seq_pos);                  
-AjBool siggen_Con_Thresh(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, ajint conthresh,
-                         AjBool *noca, AjPInt2d seq_pos, AjPInt *atom_idx);
+static AjBool siggen_Con_Thresh(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, 
+			 ajint conthresh, AjBool *noca, AjPInt2d seq_pos, 
+			 AjPInt *atom_idx);
 
 
 
@@ -255,7 +257,8 @@ int main(ajint argc, char **argv)
     AjBool      score_ncon    =ajFalse; /* Score on basis of number of contacts  (Y/N) */ 
     AjBool      score_ccon    =ajFalse; /* Score on basis of conservation of contacts  (Y/N) */
 
-    AjBool      score_both    =ajFalse; /* Score on combined measure of number and conservation (Y/N) ( not implemented at moment) */ 
+    AjBool      score_both    =ajFalse; /* Score on combined measure of number and 
+					   conservation (Y/N) ( not implemented at moment) */ 
     AjBool      filterpsim    =ajFalse; /* Filter on basis of post_similar data line (Y/N) */ 
     AjBool      filtercon     =ajFalse; /* Filter on basis of number of contacts (Y/N) */ 
     ajint       conthresh     =0;       /* Threshold number of contacts for filtercon */
@@ -864,7 +867,7 @@ int main(ajint argc, char **argv)
 
 
 
-/* @func siggen_ScoreSeqMat ****************************************************
+/* @funcstatic  siggen_ScoreSeqMat ****************************************************
  **
 
  ** Reada a Scopalg object and writes a Scorealg object. Each residue in 
@@ -881,7 +884,7 @@ int main(ajint argc, char **argv)
  ** @@
  ****************************************************************************/
 
-AjBool  siggen_ScoreSeqMat(AjPScopalg alg, AjPScorealg *scores, AjPMatrixf mat, 
+static AjBool  siggen_ScoreSeqMat(AjPScopalg alg, AjPScorealg *scores, AjPMatrixf mat, 
                  AjPInt2d seq_pos)
 {
     ajint       memb_cnt     =0;    /* Counter for members of the family (alignment) */
@@ -972,7 +975,7 @@ AjBool  siggen_ScoreSeqMat(AjPScopalg alg, AjPScorealg *scores, AjPMatrixf mat,
 
 
 
-/* @func siggen_ScoreSeqVar**************************************************
+/* @funcstatic  siggen_ScoreSeqVar**************************************************
  **
  ** Reada a Scopalg object and writes a Scorealg object. Each residue in 
  ** the alignment is scored on the basis of a variability function.
@@ -986,7 +989,7 @@ AjBool  siggen_ScoreSeqMat(AjPScopalg alg, AjPScorealg *scores, AjPMatrixf mat,
  ** @return [AjBool] True on succcess
  ** @@
  ****************************************************************************/
-AjBool  siggen_ScoreSeqVar(AjPScopalg alg, AjPScorealg *scores, AjPInt2d seq_pos)
+static AjBool  siggen_ScoreSeqVar(AjPScopalg alg, AjPScorealg *scores, AjPInt2d seq_pos)
 {
     ajint       memb_cnt     =0;    /* Counter for members of the family (alignment) */
 
@@ -1141,7 +1144,8 @@ AjBool  siggen_ScoreSeqVar(AjPScopalg alg, AjPScorealg *scores, AjPInt2d seq_pos
                 else
                 {
                     /* print warning */
-                    printf("Unknown residue type found in siggen_ScoreSeqVar.... total residues counted does not = number of sequences\n");
+                    printf("Unknown residue type found in siggen_ScoreSeqVar.... "
+			   "total residues counted does not = number of sequences\n");
                     /* perform frequency calculation */
                     /* divide by total, NOT alg->N  */
                     ajFloatPut(&class_freq, 0, ((float)aliphatic/(float)total));
@@ -1223,7 +1227,7 @@ AjBool  siggen_ScoreSeqVar(AjPScopalg alg, AjPScorealg *scores, AjPInt2d seq_pos
 
 
 
-/* @func siggen_ScoreNcon *****************************************************
+/* @funcstatic  siggen_ScoreNcon *****************************************************
  **
  ** Reads a Scopalg object and writes a Scorealg object. Each residue in 
 
@@ -1239,7 +1243,7 @@ AjBool  siggen_ScoreSeqVar(AjPScopalg alg, AjPScorealg *scores, AjPInt2d seq_pos
  ** @return [AjBool] True on succcess
  ** @@
  ******************************************************************************/
-AjBool  siggen_ScoreNcon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, 
+static AjBool  siggen_ScoreNcon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, 
                          AjPInt2d seq_pos, AjPInt *atom_idx, AjBool *noca)
 {
 
@@ -1364,7 +1368,8 @@ AjBool  siggen_ScoreNcon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps,
                 if(noca[memb_cnt] == ajTrue)
                 {
                     nconpos_cnt += ajInt2dGet(align_ncon, memb_cnt, idx_atomidx);
-                   /* ajFmtPrint("post_cnt   = %4d memb_cnt = %4d\nseq_pos    = %4d\natomidx    = %4d\nalign_ncon = %4d\nnconpos    = %4d\n\n", 
+                   /* ajFmtPrint("post_cnt   = %4d memb_cnt = %4d\nseq_pos    = %4d\natomidx   
+		      = %4d\nalign_ncon = %4d\nnconpos    = %4d\n\n", 
                                post_cnt, memb_cnt, idx_seqpos, idx_atomidx, 
                                ajInt2dGet(align_ncon, memb_cnt, idx_atomidx), nconpos_cnt);*/
                 }
@@ -1373,7 +1378,8 @@ AjBool  siggen_ScoreNcon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps,
                 else
                 {
                     nconpos_cnt += ajInt2dGet(align_ncon, memb_cnt, (idx_atomidx - 1));
-                    /*ajFmtPrint("post_cnt   = %4d memb_cnt = %4d\nseq_pos    = %4d\natomidx    = %4d\nalign_ncon = %4d\nnconpos    = %4d\n\n", 
+                    /*ajFmtPrint("post_cnt   = %4d memb_cnt = %4d\nseq_pos    = %4d\natomidx  
+		      = %4d\nalign_ncon = %4d\nnconpos    = %4d\n\n", 
                                post_cnt, memb_cnt, idx_seqpos, idx_atomidx, 
                                ajInt2dGet(align_ncon, memb_cnt, (idx_atomidx - 1)), nconpos_cnt);*/
                 }
@@ -1412,7 +1418,7 @@ AjBool  siggen_ScoreNcon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps,
 
 
 
-/* @func siggen_ScoreCcon *****************************************************
+/* @funcstatic  siggen_ScoreCcon *****************************************************
  **
  ** Reada a Scopalg object and writes a Scorealg object. Each residue in 
  ** the alignment is scored on the basis of the conservation of phsyical 
@@ -1428,7 +1434,7 @@ AjBool  siggen_ScoreNcon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps,
  ** @return [AjBool] True on succcess
  ** @@
  ******************************************************************************/
-AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, 
+static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, 
                   AjPInt2d seq_pos, AjPInt *atom_idx, AjBool *noca)
 {
 
@@ -1463,17 +1469,32 @@ AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps,
     
     for(memb_cnt = 0; memb_cnt<alg->N;memb_cnt++)
     {
-        for(x=0; x<alg->width;x++)
-        {
-            if(ajIntGet(atom_idx[memb_cnt], x) == -1)
-            {
-                ajIntPut(&atomidx_size, memb_cnt, x);
-                break;
-            }
-
-            else
-                continue;
-        }
+	if(alg->width==cmaps[memb_cnt]->Dim)
+	{
+	    for(x=0; x<=alg->width;x++)
+	    {
+		if(ajIntGet(atom_idx[memb_cnt], x) == -1)
+		{
+		    ajIntPut(&atomidx_size, memb_cnt, x);
+		    break;
+		}
+		else
+		    continue;
+	    }	
+	}
+	else
+	{
+	    for(x=0; x<alg->width;x++)
+	    {
+		if(ajIntGet(atom_idx[memb_cnt], x) == -1)
+		{
+		    ajIntPut(&atomidx_size, memb_cnt, x);
+		    break;
+		}
+		else
+		    continue;
+	    }	
+	}
     }
     
 
@@ -1569,7 +1590,8 @@ AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps,
                                         /* Check if seq_pos element contains the (atomidx_cnt)th structured residue */
                                         if((idx_seqpos == atomidx_cnt) && (idx_seqpos != '-'))
                                         {
-                                           /* printf("at seqpos_cnt = %d idx_seqpos = %d atomidx_cnt = %d\n", seqpos_cnt, idx_seqpos,atomidx_cnt);*/
+                                           /* printf("at seqpos_cnt = %d idx_seqpos = %d atomidx_cnt = %d\n", 
+					      seqpos_cnt, idx_seqpos,atomidx_cnt);*/
                                             /* Assign current value of seqpos_cnt to temp */
                                             /* i.e. the element of seq_pos (hence position in alignment)  */
                                             /* where the residue from atom_idx array occurs */
@@ -1631,7 +1653,8 @@ AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps,
                                         /* Check if seq_pos element contains the (atomidx_cnt)th structured residue */
                                         if((idx_seqpos == atomidx_cnt) && (idx_seqpos != '-'))
                                         {
-                                           /*printf("at seqpos_cnt = %d idx_seqpos = %d atomidx_cnt = %d\n", seqpos_cnt, idx_seqpos,atomidx_cnt);*/
+                                           /*printf("at seqpos_cnt = %d idx_seqpos = %d atomidx_cnt = %d\n", 
+					     seqpos_cnt, idx_seqpos,atomidx_cnt);*/
                                             /* Assign current value of seqpos_cnt to temp */
                                             /* i.e. the element of seq_pos (hence position in alignment)  */
                                             /* where the residue from atom_idx array occurs */
@@ -1711,7 +1734,7 @@ AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps,
 
 
 
-/* @func siggen_ScoreNCCon ****************************************************
+/* @funcstatic  siggen_ScoreNCCon ****************************************************
  **
  ** Reada a Scopalg object and writes a Scorealg object. Each residue in 
  ** the alignment is scored on the basis of a combination of the the number 
@@ -1727,7 +1750,7 @@ AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps,
  ** @return [AjBool] True on succcess
  ** @@
  ******************************************************************************/
-AjBool  siggen_ScoreNCCon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps,  
+static AjBool  siggen_ScoreNCCon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps,  
                    AjPInt2d seq_pos)
 {
     /*JC added to stop make bitching */
@@ -1738,7 +1761,7 @@ AjBool  siggen_ScoreNCCon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps,
 
 
 
-/* @func siggen_ScoreCombined *****************************************************
+/* @funcstatic  siggen_ScoreCombined *****************************************************
  **
  ** Read the Scorealg structure and calculates the combined scores for 
 
@@ -1750,7 +1773,7 @@ AjBool  siggen_ScoreNCCon(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps,
  ** @return [AjBool] True on succcess
  ** @@
  *****************************************************************************/
-AjBool  siggen_ScoreCombined(AjPScorealg *scores)
+static AjBool  siggen_ScoreCombined(AjPScorealg *scores)
 {
     /*JC added to stop make bitching */
     return ajFalse;
@@ -1760,7 +1783,7 @@ AjBool  siggen_ScoreCombined(AjPScorealg *scores)
 
 
 
-/* @func siggen_SigSelect *************************************************
+/* @funcstatic  siggen_SigSelect *************************************************
  **
  ** Read Scopalg and Scorealg objects and returns a pointer to a Signature
  ** object. The signature generated is derived from a number, determined
@@ -1776,7 +1799,7 @@ AjBool  siggen_ScoreCombined(AjPScorealg *scores)
  ** @return [AjPSignature] Pointer to Signature structure or NULL on failure
  ** @@
  *****************************************************************************/
-AjPSignature  siggen_SigSelect(AjPScopalg alg, AjPScorealg scores, 
+static AjPSignature  siggen_SigSelect(AjPScopalg alg, AjPScorealg scores, 
                                AjPInt2d seq_pos, ajint sig_sparse, AjPCmap *cmaps,
                                AjPInt *atom_idx, float *spar_check)
 {
@@ -2209,6 +2232,8 @@ AjPSignature  siggen_SigSelect(AjPScopalg alg, AjPScorealg scores,
     /* Initialise array elements from 0 to alg->width */
     /* Count number of potential signature positions  */
     /* depending on the scoring methods selected      */
+    num_aligned = -1;
+    
     for(x=0; x<alg->width; x++)
     {
         /* initialise post_sim array to zero */
@@ -2350,7 +2375,9 @@ AjPSignature  siggen_SigSelect(AjPScopalg alg, AjPScorealg scores,
         total_temp = (((float)num_aligned/(float)av_temp) * (float)100);
 
         /* If so print message */
-        ajFmtPrint("There are not sufficient aligned positions to generate a signature of the specified sparsity.\nSignature sparsity = %.2f\n", total_temp);
+        ajFmtPrint("There are not sufficient aligned positions to generate a "
+		   "signature of the specified sparsity.\nSignature sparsity = %.2f\n", 
+		   total_temp);
         spar = total_temp;
         (*spar_check) = (ceil((double)spar));
 
@@ -2818,7 +2845,13 @@ AjPSignature  siggen_SigSelect(AjPScopalg alg, AjPScorealg scores,
     }
     
 */
-/*x, ajIntGet(scores->ncon_thresh, x), ajFloatGet(scores->seqmat_score, x), ajFloatGet(seqmat_normal, x), x, ajIntGet(scores->ncon_thresh, x), ajFloatGet(scores->seqvar_score, x),ajFloatGet(seqvar_normal, x), x, ajIntGet(scores->ncon_thresh, x), ajFloatGet(scores->ncon_score, x), ajFloatGet(ncon_normal, x), x, ajIntGet(scores->ncon_thresh, x), ajFloatGet(scores->ccon_score, x), ajFloatGet(ccon_normal, x), ajFloatGet(total_score, x)); */
+/*x, ajIntGet(scores->ncon_thresh, x), ajFloatGet(scores->seqmat_score, x), 
+  ajFloatGet(seqmat_normal, x), x, ajIntGet(scores->ncon_thresh, x), 
+  ajFloatGet(scores->seqvar_score, x),ajFloatGet(seqvar_normal, x), x, 
+  ajIntGet(scores->ncon_thresh, x), ajFloatGet(scores->ncon_score, x), 
+  ajFloatGet(ncon_normal, x), x, ajIntGet(scores->ncon_thresh, x), 
+  ajFloatGet(scores->ccon_score, x), ajFloatGet(ccon_normal, x), 
+  ajFloatGet(total_score, x)); */
 
 
 
@@ -2846,7 +2879,7 @@ AjPSignature  siggen_SigSelect(AjPScopalg alg, AjPScorealg scores,
 
 
 
-/* @func siggen_ScoreAlignment ************************************************
+/* @funcstatic  siggen_ScoreAlignment ************************************************
  **
  ** Convenience routine - calls several functions to score an alignment.
  **
@@ -2860,7 +2893,7 @@ AjPSignature  siggen_SigSelect(AjPScopalg alg, AjPScorealg scores,
  ** @return [AjBool] True on succcess
  ** @@
  ******************************************************************************/
-AjBool siggen_ScoreAlignment(AjPScorealg *scores, AjPScopalg alg, 
+static AjBool siggen_ScoreAlignment(AjPScorealg *scores, AjPScopalg alg, 
                              AjPCmap *cmaps, AjPMatrixf  mat, 
                              AjBool *noca, AjPInt2d seq_pos, AjPInt *atom_idx)
 {
@@ -2910,7 +2943,7 @@ AjBool siggen_ScoreAlignment(AjPScorealg *scores, AjPScopalg alg,
 
 
 
-/* @func siggen_CalcSeqpos ****************************************************
+/* @funcstatic  siggen_CalcSeqpos ****************************************************
  **
  ** Reads a Scopalg object and calculates an index for the alignment.
  **
@@ -2920,7 +2953,7 @@ AjBool siggen_ScoreAlignment(AjPScorealg *scores, AjPScopalg alg,
  ** @return [AjBool] True on succcess
  ** @@
  ******************************************************************************/
-AjBool siggen_CalcSeqpos(AjPScopalg alg, AjPInt2d *seq_pos)
+static AjBool siggen_CalcSeqpos(AjPScopalg alg, AjPInt2d *seq_pos)
 {
     ajint       z             =0;       /* Loop counter */
     ajint       memb_cnt      =0;       /* Counter for members of the family (alignment) */
@@ -3004,7 +3037,7 @@ AjBool siggen_CalcSeqpos(AjPScopalg alg, AjPInt2d *seq_pos)
 
 
 
-/* @func siggen_Con_thresh ***********************************************
+/* @funcstatic  siggen_Con_thresh ***********************************************
  **
  ** Reads Cmaps object, and determines whether each position in the 
  ** structural alignment displays greater than a threshold (conthresh)
@@ -3023,7 +3056,7 @@ AjBool siggen_CalcSeqpos(AjPScopalg alg, AjPInt2d *seq_pos)
  ** @return [AjBool] True on succcess
  ** @@
  ******************************************************************************/
-AjBool siggen_Con_Thresh(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, 
+static AjBool siggen_Con_Thresh(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, 
 ajint conthresh, AjBool *noca, AjPInt2d seq_pos, AjPInt *atom_idx)
 {
 
@@ -3117,7 +3150,8 @@ ajint conthresh, AjBool *noca, AjPInt2d seq_pos, AjPInt *atom_idx)
                 if(noca[memb_cnt] == ajTrue)
                 {
                     nconpos_cnt += ajInt2dGet(align_ncon, memb_cnt, idx_atomidx);
-/*                  ajFmtPrint("post_cnt   = %4d memb_cnt = %4d\nseq_pos    = %4d\natomidx    = %4d\nalign_ncon = %4d\nnconpos    = %4d\n\n", 
+/*                  ajFmtPrint("post_cnt   = %4d memb_cnt = %4d\nseq_pos    = %4d\natomidx    "
+		    "= %4d\nalign_ncon = %4d\nnconpos    = %4d\n\n", 
                                post_cnt, memb_cnt, idx_seqpos, idx_atomidx, 
                                ajInt2dGet(align_ncon, memb_cnt, idx_atomidx), nconpos_cnt);*/
 
@@ -3127,7 +3161,8 @@ ajint conthresh, AjBool *noca, AjPInt2d seq_pos, AjPInt *atom_idx)
                 else
                 {
                     nconpos_cnt += ajInt2dGet(align_ncon, memb_cnt, (idx_atomidx - 1));
-/*                  ajFmtPrint("post_cnt   = %4d memb_cnt = %4d\nseq_pos    = %4d\natomidx    = %4d\nalign_ncon = %4d\nnconpos    = %4d\n\n", 
+/*                  ajFmtPrint("post_cnt   = %4d memb_cnt = %4d\nseq_pos    = %4d\natomidx    "
+		    "= %4d\nalign_ncon = %4d\nnconpos    = %4d\n\n", 
                                post_cnt, memb_cnt, idx_seqpos, idx_atomidx, 
                                ajInt2dGet(align_ncon, memb_cnt, (idx_atomidx - 1)), nconpos_cnt);*/
                 }
@@ -3164,7 +3199,8 @@ ajint conthresh, AjBool *noca, AjPInt2d seq_pos, AjPInt *atom_idx)
     /* or exit */
     if(con_counter < 3)
     {
-        ajFmtPrint("There are not sufficient residues making greater than threshold number of contacts.\nExiting......signature not generated\n");
+        ajFmtPrint("There are not sufficient residues making greater than threshold "
+		   "number of contacts.\nExiting......signature not generated\n");
         ajExit();
         return(0);
     }
@@ -3178,5 +3214,15 @@ ajint conthresh, AjBool *noca, AjPInt2d seq_pos, AjPInt *atom_idx)
 
     /* Return */
     return ajTrue;
+}
+
+
+/* 
+Put this in to stop compiler bitching about unused functions 
+*/
+void siggen_unused()
+{
+    siggen_ScoreNCCon(NULL, NULL, NULL, NULL);
+    siggen_ScoreCombined(NULL);
 }
 

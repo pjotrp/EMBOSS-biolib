@@ -6,12 +6,23 @@ appl: scopalign [
   cpu: "medium"
 ]
 
+
+
+
+
+section: input [ info: "input Section" type: page ]
 infile: scopf  [
   parameter: "Y"
   prompt: "Name of scop classification file (embl format input)"
   default: "Escop.dat"
 ]
+endsection: input
 
+
+
+
+
+section: output [ info: "output Section" type: page ]
 string: path  [
   parameter: "Y"
   prompt: "Location of scop structure-based sequence alignment files (output)"
@@ -35,3 +46,9 @@ string: extnc  [
   prompt: "Extension of scop structure alignment files (output)"
   default: ".palign"
 ]
+endsection: output
+
+
+
+
+

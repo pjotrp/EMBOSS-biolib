@@ -6,6 +6,11 @@ appl: seqalign [
   cpu: "high"
 ]
 
+
+
+
+
+section: input [ info: "input Section" type: page ]
 string: inpath  [
   parameter: "Y"
   default: "./"
@@ -22,15 +27,26 @@ infile: scopin  [
   required: "Y"
   prompt: "Name of scop hits file (input)"
 ]
+endsection: input
 
+
+
+
+
+section: output [ info: "output Section" type: page ]
 string: outpath  [
   parameter: "Y"
   default: "./"
-  prompt: "Location of extended alignment files (clustal format output)"
+  prompt: "Location of extended alignment files (Escop format output)"
 ]
 
 string: outextn  [
   parameter: "Y"
-  default: ".clustal"
+  default: ".ealign"
   help: "Extention of extended alignment files"
 ]
+endsection: output
+
+
+
+

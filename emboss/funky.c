@@ -125,18 +125,18 @@ typedef struct AjSDbase
 /*----------------------------------------------------------------------------*/
 /* FUNCTION PROTOTYPES                                                        */
 /*----------------------------------------------------------------------------*/
-AjPDbase    ajXyzDbaseNew(ajint n);
-void        ajXyzDbaseDel(AjPDbase *ptr);
-AjPDbaseEnt ajXyzDbaseEntNew(ajint n);
-void        ajXyzDbaseEntDel(AjPDbaseEnt *ptr);
-void        ajXyzDomContsDel(AjPDomConts *ptr);
-AjPDomConts ajXyzDomContsNew(ajint n);
-AjBool      HetTest(AjPPdb ptr);
-AjBool      funky_DichetToDbase(AjPDbase *dbase, AjPHet hetdic);
-AjBool      funky_CpdbListHeterogens(AjPPdb pdb, AjPList *list_heterogens, AjPInt *siz_heterogens, ajint *nhet, AjPFile logf );
-AjBool      ajXyzPdbGetDomain(AjPPdb pdb, AjPList list_allscop, AjPList *list_pdbscopids);
-AjBool      funky_HeterogenContacts(float dist_thresh, AjPList list_domains, AjPList list_pdbscopids, AjPList list_heterogens, AjPInt siz_domains, AjPInt siz_heterogens, AjPVdwall vdw, AjPDbase *dbase);
-AjBool      funky_HeterogenContactsWrite(AjPFile funky_out, AjPDbase dbase);  
+static AjPDbase    funky_DbaseNew(ajint n);
+static void        funky_DbaseDel(AjPDbase *ptr);
+static AjPDbaseEnt funky_DbaseEntNew(ajint n);
+static void        funky_DbaseEntDel(AjPDbaseEnt *ptr);
+static void        funky_DomContsDel(AjPDomConts *ptr);
+static AjPDomConts funky_DomContsNew(ajint n);
+static AjBool      funky_HetTest(AjPPdb ptr);
+static AjBool      funky_DichetToDbase(AjPDbase *dbase, AjPHet hetdic);
+static AjBool      funky_CpdbListHeterogens(AjPPdb pdb, AjPList *list_heterogens, AjPInt *siz_heterogens, ajint *nhet, AjPFile logf );
+static AjBool      funky_PdbGetDomain(AjPPdb pdb, AjPList list_allscop, AjPList *list_pdbscopids);
+static AjBool      funky_HeterogenContacts(float dist_thresh, AjPList list_domains, AjPList list_pdbscopids, AjPList list_heterogens, AjPInt siz_domains, AjPInt siz_heterogens, AjPVdwall vdw, AjPDbase *dbase);
+static AjBool      funky_HeterogenContactsWrite(AjPFile funky_out, AjPDbase dbase);  
 /*----------------------------------------------------------------------------*/
 
 
@@ -337,10 +337,10 @@ int main(ajint argc, char **argv)
     }
     
   /* CREATE DBASE OBJECT */
-  dbase=ajXyzDbaseNew(hetdic->n);
+  dbase=funky_DbaseNew(hetdic->n);
   for(i=0; i<hetdic->n; i++) 
     { 
-      dbase->entries[i] = ajXyzDbaseEntNew(0); 
+      dbase->entries[i] = funky_DbaseEntNew(0); 
     }
     
   /* WRITE HETEROGEN INFORMATION FROM DICHET OBJECT (ABBREVIATIONS AND FULL NAMES) TO DBASE OBJECT */
@@ -395,7 +395,7 @@ int main(ajint argc, char **argv)
       ajFileClose(&prot_fptr);
       
       /* Check for heterogens in pdb object, if no heterogens skip to next file */
-      if(!HetTest(pdb))
+      if(!funky_HetTest(pdb))
 	{
 	  ajStrDel(&cp_file);	
 	  ajFmtPrintF(logf, "\tHET:0\tDOM:-\n");
@@ -420,7 +420,7 @@ int main(ajint argc, char **argv)
       list_pdbscopids=ajListstrNew();
 
       /* Check for domains in the pdb object, if no domains skip to next file */
-      if(!ajXyzPdbGetDomain(pdb, list_allscop, &list_pdbscopids))
+      if(!funky_PdbGetDomain(pdb, list_allscop, &list_pdbscopids))
 	{
 	  ajFmtPrintF(logf, "\tDOM:0");	  
 	  ajXyzPdbDel(&pdb);
@@ -610,7 +610,7 @@ int main(ajint argc, char **argv)
 
     
   /* Free dbase object */
-  ajXyzDbaseDel(&dbase);
+  funky_DbaseDel(&dbase);
 
   ajFileClose(&logf);
     
@@ -620,7 +620,7 @@ int main(ajint argc, char **argv)
 
 
 
-/* @func ajXyzDbaseNew **************************************************
+/* @funcstatic  funky_DbaseNew **************************************************
 **
 ** Constructor for Dbase object
 ** @param [r] n [ajint] number of entries in database
@@ -628,7 +628,7 @@ int main(ajint argc, char **argv)
 ** @return [AjPDbase] Pointer to Dbase object
 ** @@
 *************************************************************************/
-AjPDbase  ajXyzDbaseNew(ajint n)
+static AjPDbase  funky_DbaseNew(ajint n)
 {
     AjPDbase ret=NULL;
     
@@ -642,34 +642,34 @@ AjPDbase  ajXyzDbaseNew(ajint n)
     }
     else
     {
-	ajWarn("Arg with value zero passed to ajXyzDbaseNew");
+	ajWarn("Arg with value zero passed to funky_DbaseNew");
 	ret->entries=NULL;
     }
     return ret;
 }
 
 
-/* @func ajXyzDbaseDel **************************************************
+/* @funcstatic  funky_DbaseDel **************************************************
 **
 ** Destructor for Dbase object 
 **
 ** @return [void] 
 ** @@
 ******************************************************************************/
-void ajXyzDbaseDel(AjPDbase *ptr)
+static void funky_DbaseDel(AjPDbase *ptr)
 {
   ajint i=0;
   
   /* Check arg's */
   if(ptr==NULL) 
     {	
-      ajWarn("Attemp to free NULL pointer in ajXyzDbaseDel");
+      ajWarn("Attemp to free NULL pointer in funky_DbaseDel");
       return; 
     }
 
   if(*ptr==NULL) 
     {	
-      ajWarn("Attemp to free NULL pointer in ajXyzDbaseDel");
+      ajWarn("Attemp to free NULL pointer in funky_DbaseDel");
       return; 
     }
 
@@ -679,7 +679,7 @@ void ajXyzDbaseDel(AjPDbase *ptr)
 	{
 	    if((*ptr)->entries[i])
 	    {
-		ajXyzDbaseEntDel(&((*ptr)->entries[i]));
+		funky_DbaseEntDel(&((*ptr)->entries[i]));
 	    }
 	} 
 	AJFREE((*ptr)->entries);
@@ -689,7 +689,7 @@ void ajXyzDbaseDel(AjPDbase *ptr)
   return;
 }
 
-/* @func ajXyzDbaseEntNew **************************************************
+/* @funcstatic  funky_DbaseEntNew **************************************************
 **
 ** Constructor for DbaseEnt object 
 ** @param [r] n [ajint] number of entries in array of domain contact residues
@@ -697,7 +697,7 @@ void ajXyzDbaseDel(AjPDbase *ptr)
 ** @return [AjPDbaseEnt] Pointer to DbaseEnt object
 ** @@
 ******************************************************************************/
-AjPDbaseEnt ajXyzDbaseEntNew(ajint n)
+static AjPDbaseEnt funky_DbaseEntNew(ajint n)
 {
   AjPDbaseEnt ret=NULL;
   AJNEW0(ret);
@@ -715,13 +715,13 @@ AjPDbaseEnt ajXyzDbaseEntNew(ajint n)
     }
   else
     {
-      /*ajWarn("Zero sized arg passed to ajXyzDbaseEntNew.\n");*/
+      /*ajWarn("Zero sized arg passed to funky_DbaseEntNew.\n");*/
       ret->cont_data = NULL;
     }
   return ret;
 }
 
-/* @func ajXyzDbaseEntDel **************************************************
+/* @funcstatic  funky_DbaseEntDel **************************************************
 **
 ** Destructor for DbaseEnt object 
 ** @param [r] n [ajint] number of entries in array of domain contact residues
@@ -729,14 +729,14 @@ AjPDbaseEnt ajXyzDbaseEntNew(ajint n)
 ** @return [void] 
 ** @@
 ******************************************************************************/
-void ajXyzDbaseEntDel(AjPDbaseEnt *ptr)
+static void funky_DbaseEntDel(AjPDbaseEnt *ptr)
 {
   ajint x=0;
     
   /* Check arg's */
   if(*ptr==NULL) 
     {	
-      ajWarn("Attemp to free NULL pointer in ajXyzDbaseEntDel");
+      ajWarn("Attemp to free NULL pointer in funky_DbaseEntDel");
       return; 
     }
 
@@ -751,7 +751,7 @@ void ajXyzDbaseEntDel(AjPDbaseEnt *ptr)
 
       for(x=0;x<(*ptr)->no_dom;x++)
       {
-	  ajXyzDomContsDel(&((*ptr)->cont_data[x]));
+	  funky_DomContsDel(&((*ptr)->cont_data[x]));
       }
       AJFREE((*ptr)->cont_data);
   }
@@ -764,7 +764,7 @@ void ajXyzDbaseEntDel(AjPDbaseEnt *ptr)
 }
 
 
-/* @func ajXyzDomContsNew **************************************************
+/* @funcstatic  funky_DomContsNew **************************************************
 **
 ** Constructor for DomConts object
 ** @param [r] n [ajint] no. of amino acids that make contact with the ligand
@@ -772,7 +772,7 @@ void ajXyzDbaseEntDel(AjPDbaseEnt *ptr)
 ** @return [AjPDomConts] Pointer to DomConts object
 ** @@
 ******************************************************************************/
-AjPDomConts ajXyzDomContsNew(ajint n)
+static AjPDomConts funky_DomContsNew(ajint n)
 {
   AjPDomConts ret=NULL;
   ajint i=0;
@@ -795,7 +795,7 @@ AjPDomConts ajXyzDomContsNew(ajint n)
     }
   else
     {
-      /* ajWarn("Zero sized arg passed to ajXyzDomContsNew.\n"); */
+      /* ajWarn("Zero sized arg passed to funky_DomContsNew.\n"); */
       ret->res_pos=ajIntNew();    
       ret->aa_code=NULL;
       ret->res_pos2=NULL;              /* NEW */
@@ -804,7 +804,7 @@ AjPDomConts ajXyzDomContsNew(ajint n)
 }
 
          
-/* @func ajXyzDomContsDel **************************************************
+/* @funcstatic  funky_DomContsDel **************************************************
 **
 ** Destructor for DomConts object
 ** @param [r]  ptr [AjPDomConts *] pointer to AjPDomConts object
@@ -812,14 +812,14 @@ AjPDomConts ajXyzDomContsNew(ajint n)
 ** @return [AjPDomConts] Pointer to DomConts object
 ** @@
 ******************************************************************************/
-void ajXyzDomContsDel(AjPDomConts *ptr) 
+static void funky_DomContsDel(AjPDomConts *ptr) 
 {
   ajint i=0;
 
   /* Check arg's */
   if(*ptr==NULL) 
     {	
-      ajWarn("Attemp to free NULL pointer in ajXyzDomContsDel");
+      ajWarn("Attemp to free NULL pointer in funky_DomContsDel");
       return; 
     }
   ajStrDel(&(*ptr)->scop_name);
@@ -845,7 +845,7 @@ void ajXyzDomContsDel(AjPDomConts *ptr)
 }
 
 
-/* @func funky_DichetToDbase **************************************************
+/* @funcstatic  funky_DichetToDbase **************************************************
 **
 ** Function to populate the Dbase object (database of functional residues)
 ** with abbreviations and full names from the heterogen dictionary.
@@ -856,7 +856,7 @@ void ajXyzDomContsDel(AjPDomConts *ptr)
 ** @return [AjBool] True on success
 ** @@
 ******************************************************************************/
-AjBool      funky_DichetToDbase(AjPDbase *dbase, AjPHet hetdic)
+static AjBool      funky_DichetToDbase(AjPDbase *dbase, AjPHet hetdic)
 {
   ajint i=0;
 
@@ -869,9 +869,9 @@ AjBool      funky_DichetToDbase(AjPDbase *dbase, AjPHet hetdic)
 
   if(*dbase==NULL) 
     {
-      *dbase=ajXyzDbaseNew(hetdic->n);
+      *dbase=funky_DbaseNew(hetdic->n);
       for(i=0; i< hetdic->n; i++)
-	(*dbase)->entries[i] = ajXyzDbaseEntNew(0);
+	(*dbase)->entries[i] = funky_DbaseEntNew(0);
 	
     }
   for(i=0;i<(hetdic)->n;++i)
@@ -884,7 +884,7 @@ AjBool      funky_DichetToDbase(AjPDbase *dbase, AjPHet hetdic)
 }
 
 
-/* @func funky_CpdbListHeterogens ******************************************** 
+/* @funcstatic  funky_CpdbListHeterogens ******************************************** 
 ** 
 ** Function to create a list of array of Atom objects for ligands in the current Pdb 
 ** object (a single array for each ligand) 
@@ -899,7 +899,7 @@ AjBool      funky_DichetToDbase(AjPDbase *dbase, AjPHet hetdic)
 ** @@ 
 ******************************************************************************/ 
 /* JISON added line in comments above for new arg*/
-AjBool      funky_CpdbListHeterogens(AjPPdb pdb, AjPList *list_heterogens, AjPInt *siz_heterogens, ajint *nhet, AjPFile logf ) /* JISON added arg*/ 
+static AjBool      funky_CpdbListHeterogens(AjPPdb pdb, AjPList *list_heterogens, AjPInt *siz_heterogens, ajint *nhet, AjPFile logf ) /* JISON added arg*/ 
 { 
 
   /* NOTE: EVERYTHING IN THE CLEAN PDB FILES IS CURRENTLY CHAIN ASSOCIATED! THIS WILL BE CHANGED IN FUTURE */
@@ -1000,7 +1000,7 @@ AjBool      funky_CpdbListHeterogens(AjPPdb pdb, AjPList *list_heterogens, AjPIn
 }
 
 
-/* @func ajXyzPdbGetDomain ***************************************************
+/* @funcstatic  funky_PdbGetDomain ***************************************************
 **
 ** Function to create a list of SCOP domains in the current Pdb object
 ** using SCOP classification
@@ -1013,7 +1013,7 @@ AjBool      funky_CpdbListHeterogens(AjPPdb pdb, AjPList *list_heterogens, AjPIn
 ** @return [void]
 ** @@
 ******************************************************************************/
-AjBool      ajXyzPdbGetDomain(AjPPdb pdb, AjPList list_allscop, AjPList *list_pdbscopids)
+static AjBool      funky_PdbGetDomain(AjPPdb pdb, AjPList list_allscop, AjPList *list_pdbscopids)
 {
   
   AjIList iter=NULL; /* List iterator for SCOP classification list */
@@ -1057,7 +1057,7 @@ AjBool      ajXyzPdbGetDomain(AjPPdb pdb, AjPList list_allscop, AjPList *list_pd
 }
 
 
-/* @func funky_HeterogenContacts *********************************************
+/* @funcstatic  funky_HeterogenContacts *********************************************
 **
 ** Function to calculate contacts between domains and ligands
 **
@@ -1070,7 +1070,7 @@ AjBool      ajXyzPdbGetDomain(AjPPdb pdb, AjPList list_allscop, AjPList *list_pd
 ** @@
 ******************************************************************************/
 
-AjBool      funky_HeterogenContacts(float dist_thresh, AjPList list_domains, AjPList list_pdbscopids, AjPList list_heterogens, AjPInt siz_domains, AjPInt siz_heterogens, AjPVdwall vdw, AjPDbase *dbase)
+static AjBool      funky_HeterogenContacts(float dist_thresh, AjPList list_domains, AjPList list_pdbscopids, AjPList list_heterogens, AjPInt siz_domains, AjPInt siz_heterogens, AjPVdwall vdw, AjPDbase *dbase)
 {
 
   AjIList iter_dom=NULL;		/* Iterator for domain atoms LOA*/
@@ -1137,7 +1137,7 @@ AjBool      funky_HeterogenContacts(float dist_thresh, AjPList list_domains, AjP
 	  aaTempList=ajListNew();
 	  res_pos2TempList=ajListNew();
 	  /* ajFmtPrint("***New DomConts created for Dom %S:Het %d (pair %d) - aaTempList also created\n", scopidArr[scopctr-1], HetIdx, l++); */
-	  cont_dataTemp=ajXyzDomContsNew(0);
+	  cont_dataTemp=funky_DomContsNew(0);
 	  
 	  HetIdx++;			        /* increment siz_heterogens index */
 	  het_max=ajIntGet(siz_heterogens, HetIdx-1); /* Get size of current heterogen atom array */
@@ -1190,7 +1190,7 @@ AjBool      funky_HeterogenContacts(float dist_thresh, AjPList list_domains, AjP
 	      cont_dataTemp=NULL;
 	    } 
 	  else
-	    ajXyzDomContsDel(&cont_dataTemp);
+	    funky_DomContsDel(&cont_dataTemp);
 	  
 	  ajListDel(&aaTempList);
 	  ajListDel(&res_pos2TempList);
@@ -1229,7 +1229,7 @@ AjBool      funky_HeterogenContacts(float dist_thresh, AjPList list_domains, AjP
 }
 
 
-/* @func funky_HeterogenContactsWrite *********************************************
+/* @funcstatic  funky_HeterogenContactsWrite *********************************************
 **
 ** Function to write Dbase object to file i.e. the database of functional residues
 **
@@ -1241,7 +1241,7 @@ AjBool      funky_HeterogenContacts(float dist_thresh, AjPList list_domains, AjP
 ** @@
 ******************************************************************************/
 
-AjBool    funky_HeterogenContactsWrite(AjPFile funky_out, AjPDbase dbase)
+static AjBool    funky_HeterogenContactsWrite(AjPFile funky_out, AjPDbase dbase)
 {
 
   ajint i=0;       /* loop counter for dbase->entries[i] */
@@ -1294,7 +1294,7 @@ AjBool    funky_HeterogenContactsWrite(AjPFile funky_out, AjPDbase dbase)
 
 
 
-/* @func HetTest *************************************************************
+/* @funcstatic  funky_HetTest *************************************************************
 **
 ** Function to write Dbase object to file i.e. the database of functional residues
 **
@@ -1305,7 +1305,7 @@ AjBool    funky_HeterogenContactsWrite(AjPFile funky_out, AjPDbase dbase)
 ** @return [AjBool] True on success
 ** @@
 ******************************************************************************/
-AjBool HetTest(AjPPdb pdb_ptr)
+static AjBool funky_HetTest(AjPPdb pdb_ptr)
 {
   /* False = no hets found */
   /* True = hets found */

@@ -6,6 +6,11 @@ appl: domainer [
   cpu: "low"
 ]
 
+
+
+
+
+section: input [ info: "input Section" type: page ]
 infile: scop  [
   required: "Y"
   prompt: "Name of scop classification file (embl format input)"
@@ -18,6 +23,18 @@ string: cpdb  [
   default: "./"
 ]
 
+string: cpdbextn  [
+  parameter: "Y"
+  information: "Extension of coordinate files (embl format)"
+  default: ".pxyz"
+]
+endsection: input
+
+
+
+
+
+section: output [ info: "output Section" type: page ]
 string: cpdbscop  [
   parameter: "Y"
   information: "Location of domain coordinate files (embl format output)"
@@ -28,12 +45,6 @@ string: pdbscop  [
   parameter: "Y"
   information: "Location of domain coordinate files (pdb format output)"
   default: "./"
-]
-
-string: cpdbextn  [
-  parameter: "Y"
-  information: "Extension of coordinate files (embl format)"
-  default: ".pxyz"
 ]
 
 string: pdbextn  [
@@ -53,3 +64,14 @@ outfile: pdberrf  [
   prompt: "Name of log file for the pdb format build"
   default: "domainer_pdb.log"
 ]
+endsection: output
+
+
+
+
+
+
+
+
+
+

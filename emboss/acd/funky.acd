@@ -4,21 +4,29 @@ appl:funky
   groups: "Utils:Database creation"
 ]
 
+
+
+
+
+section: input [ info: "input Section" type: page ]
 string: prot  [
   information: "Location of protein coordinate files for input (embl-like format)"
-  default: "/packages/emboss_dev/jison/emboss/emboss/emboss/waqas"
+  default: "./"
+  gui: "yes"
+  batch: "yes"
+  cpu: "high"
 ]
 
 
 string: protextn  [
   information: "Extension of protein coordinate files (embl-like format)"
-  default: ".full"
+  default: ".pxyz"
 ]
 
 
 string: dom  [
   information: "Location of domain coordinate files for input (embl-like format)"
-  default: "/data/structure/cpdbscop_embl"
+  default: "./"
 ]
 
 
@@ -29,37 +37,57 @@ string: domextn  [
 
 infile: dic  [
   prompt: "Name of dictionary of heterogen groups"
-  default: "/packages/emboss_dev/jison/emboss/emboss/emboss/waqas/het_dictionary.out"
+  default: "Ehet.dat"
 ]
 
 
 infile: scop  [
   prompt: "Name of scop file for input (embl-like format)"
-  default: "/data/structure/scop/Escop.dat"
+  default: "Escop.dat"
 ]
 
 
 infile: vdwf  [
   prompt: "Name of data file with van der Waals radii"
-  default: "/data/structure/dat/Evdw.dat"
+  default: "Evdw.dat"
 ]
+endsection: input
 
 
+
+
+
+section: required [ info: "required Section" type: page ]
 float: thresh  [
   information: "Threshold contact distance"
+  required: "Y"
   default: "1.0"
 ]
+endsection: required
 
 
+
+
+
+section: output [ info: "output Section" type: page ]
 outfile: outf  [
   prompt: "Name of output file"
-  default: "/packages/emboss_dev/jison/emboss/emboss/emboss/waqas/funky.out"
+  default: "funky.out"
 ]
 
 outfile: logf  [
   prompt: "Name of log file"
-  default: "/packages/emboss_dev/jison/emboss/emboss/emboss/waqas/funky.log"
+  default: "funky.log"
 ]
+endsection: output
+
+
+
+
+
+
+
+
 
 
 
