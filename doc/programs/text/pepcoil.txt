@@ -238,7 +238,7 @@ Known bugs
    
 See also
 
-    Program name                        Description
+    Program name                         Description
    antigenic      Finds antigenic sites in proteins
    digest         Protein proteolytic enzyme or reagent cleavage digest
    fuzzpro        Protein pattern search
@@ -251,6 +251,7 @@ See also
    patmatmotifs   Search a PROSITE motif database with a protein sequence
    pepnet         Displays proteins as a helical net
    pepwheel       Shows protein sequences as helices
+   pestfind       Finds PEST motifs as potential proteolytic cleavage sites
    preg           Regular expression search of a protein sequence
    pscan          Scans proteins using PRINTS
    sigcleave      Reports protein signal cleavage sites

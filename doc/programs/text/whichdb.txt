@@ -66,8 +66,6 @@ Warning:
 Cannot open division file '' for database 'mmunigene'
 Warning: 
 seqCdQry failed
-socket connect failed for database 'tgb': 
-Connection timed out
    
    Go to the output files for this example
    

@@ -355,7 +355,7 @@ Output file format
   
 ########################################
 # Program:  stretcher
-# Rundate:  Wed Sep 04 17:28:39 2002
+# Rundate:  Thu Nov 07 14:48:29 2002
 # Align_format: markx0
 # Report_file: hba_human.stretcher
 ########################################
@@ -451,8 +451,7 @@ Known bugs
    
 See also
 
-   Program name                  Description
-   alignwrap    Aligns a set of sequences to a seed alignment
+   Program name             Description
    est2genome   Align EST and genomic DNA sequences
    needle       Needleman-Wunsch global alignment
    

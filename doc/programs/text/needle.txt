@@ -43,7 +43,7 @@ Usage
    Here is a sample session with needle
    
 
-% needle tsw:hba_human tsw:hbb_human
+% needle tsw:hba_human tsw:hbb_human 
 Needleman-Wunsch global alignment.
 Gap opening penalty [10.0]: 
 Gap extension penalty [0.5]: 
@@ -379,7 +379,7 @@ Output file format
   
 ########################################
 # Program:  needle
-# Rundate:  Fri Aug 23 16:05:26 2002
+# Rundate:  Thu Nov 07 14:35:11 2002
 # Align_format: srspair
 # Report_file: hba_human.needle
 ########################################
@@ -499,7 +499,6 @@ Known bugs
 See also
 
    Program name                      Description
-   alignwrap    Aligns a set of sequences to a seed alignment
    est2genome   Align EST and genomic DNA sequences
    stretcher    Finds the best global alignment between two sequences
    

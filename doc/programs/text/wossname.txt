@@ -54,7 +54,7 @@ megamerger       Merge two large overlapping nucleic acid sequences
 merger           Merge two overlapping nucleic acid sequences
 
 ALIGNMENT DIFFERENCES
-diffseq          Find differences (SNPs) between nearly identical sequences
+diffseq          Find differences between nearly identical sequences
 
 ALIGNMENT DOT PLOTS
 dotmatcher       Displays a thresholded dotplot of two sequences
@@ -98,6 +98,7 @@ showalign        Displays a multiple sequence alignment
 showdb           Displays information on the currently available databases
 showfeat         Show features of a sequence
 showseq          Display a sequence with features, translation etc
+sixpack          Display a DNA sequence in both directions with its translation
 textsearch       Search sequence documentation text. SRS and Entrez are faster!
 
 EDIT
@@ -166,6 +167,7 @@ compseq          Counts the composition of dimer/trimer/etc words in a sequence
 dan              Calculates DNA RNA/DNA melting temperature
 freak            Residue/base frequency table or plot
 isochore         Plots isochores in large DNA sequences
+sirna            Finds siRNA duplexes in mRNA
 wordcount        Counts words of a specified size in a DNA sequence
 
 NUCLEIC CPG ISLANDS
@@ -180,6 +182,7 @@ getorf           Finds and extracts open reading frames (ORFs)
 marscan          Finds MAR/SAR sites in nucleic sequences
 plotorf          Plot potential open reading frames
 showorf          Pretty output of DNA translations
+sixpack          Display a DNA sequence in both directions with its translation
 wobble           Wobble base plot
 
 NUCLEIC MOTIFS
@@ -228,6 +231,7 @@ prettyseq        Output sequence with translated ranges
 remap            Display a sequence with restriction cut sites, translation etc
 showorf          Pretty output of DNA translations
 showseq          Display a sequence with features, translation etc
+sixpack          Display a DNA sequence in both directions with its translation
 transeq          Translate nucleic acid sequences
 
 PHYLOGENY
@@ -388,7 +392,7 @@ dbigcg           Index a GCG formatted database
 degapseq         Removes gap characters from sequences
 descseq          Alter the name or description of a sequence
 dichet           Parse dictionary of heterogen groups
-diffseq          Find differences (SNPs) between nearly identical sequences
+diffseq          Find differences between nearly identical sequences
 digest           Protein proteolytic enzyme or reagent cleavage digest
 distmat          Creates a distance matrix from multiple alignments
 domainer         Reads protein coordinate files and writes domains coordinate f
@@ -525,6 +529,8 @@ idue contact data
 sigscan          Scans a signature against swissprot and writes a signature hit
 s files
 silent           Silent mutation restriction enzyme scan
+sirna            Finds siRNA duplexes in mRNA
+sixpack          Display a DNA sequence in both directions with its translation
 skipseq          Reads and writes (returns) sequences, skipping the first few
 splitter         Split a sequence into (overlapping) smaller sequences
 stretcher        Finds the best global alignment between two sequences
@@ -858,8 +864,8 @@ ALIGNMENT CONSENSUS
    
 ALIGNMENT DIFFERENCES
 
-   Program name                        Description
-   diffseq      Find differences (SNPs) between nearly identical sequences
+   Program name                     Description
+   diffseq      Find differences between nearly identical sequences
    
 ALIGNMENT DOT PLOTS
 

@@ -153,8 +153,8 @@ Command line arguments
 
    Mandatory qualifiers Allowed values Default
    [-search]
-   (Parameter 1) Enter the name of an EMBOSS program Any string is
-   accepted An empty string is accepted
+   (Parameter 1) Enter the name of an EMBOSS program A string of at least
+   1 characters Required
    Optional qualifiers Allowed values Default
    -explode The groups that EMBOSS applications belong to have two forms,
    exploded and not exploded. The exploded group names are more numerous
@@ -277,6 +277,7 @@ See also
    showdb Displays information on the currently available databases
    showfeat Show features of a sequence
    showseq Display a sequence with features, translation etc
+   sixpack Display a DNA sequence with 6-frame translation and ORFs
    textsearch Search sequence documentation text. SRS and Entrez are
    faster!
    tfm Displays a program's help documentation manual

@@ -107,7 +107,6 @@ rodent        N    OK  OK  OK  EMBL rodent sequences
 sts           N    OK  OK  OK  EMBL STS sequences
 synthetic     N    OK  OK  OK  EMBL synthetic sequences
 tembl         N    OK  OK  OK  EMBL in native format with EMBL CD-ROM index
-tgb           N    OK  -   -   Genbank IDs
 tgenbank      N    OK  OK  OK  GenBank in native format with EMBL CD-ROM index
 tigregad      N    OK  OK  OK  TIGR EGAD sequences
 tigrhgi       N    OK  OK  OK  TIGR HGI sequences
@@ -245,8 +244,6 @@ index
 
  tembl N OK   OK   OK   EMBL in native format with EMBL CD-ROM index
 
- tgb N OK   -    -    Genbank IDs
-
  tgenbank N OK   OK   OK   GenBank in native format with EMBL CD-ROM index
 
  tigregad N OK   OK   OK   TIGR EGAD sequences
@@ -345,7 +342,6 @@ rodent        N    OK  OK  OK  EMBL rodent sequences
 sts           N    OK  OK  OK  EMBL STS sequences
 synthetic     N    OK  OK  OK  EMBL synthetic sequences
 tembl         N    OK  OK  OK  EMBL in native format with EMBL CD-ROM index
-tgb           N    OK  -   -   Genbank IDs
 tgenbank      N    OK  OK  OK  GenBank in native format with EMBL CD-ROM index
 tigregad      N    OK  OK  OK  TIGR EGAD sequences
 tigrhgi       N    OK  OK  OK  TIGR HGI sequences
@@ -408,7 +404,6 @@ rodent
 sts
 synthetic
 tembl
-tgb
 tgenbank
 tigregad
 tigrhgi
@@ -472,7 +467,6 @@ rodent        N
 sts           N
 synthetic     N
 tembl         N
-tgb           N
 tgenbank      N
 tigregad      N
 tigrhgi       N
@@ -604,7 +598,6 @@ rodent        N    OK  OK  OK  EMBL rodent sequences
 sts           N    OK  OK  OK  EMBL STS sequences
 synthetic     N    OK  OK  OK  EMBL synthetic sequences
 tembl         N    OK  OK  OK  EMBL in native format with EMBL CD-ROM index
-tgb           N    OK  -   -   Genbank IDs
 tgenbank      N    OK  OK  OK  GenBank in native format with EMBL CD-ROM index
 tigregad      N    OK  OK  OK  TIGR EGAD sequences
 tigrhgi       N    OK  OK  OK  TIGR HGI sequences
@@ -718,6 +711,7 @@ See also
    showalign Displays a multiple sequence alignment
    showfeat Show features of a sequence
    showseq Display a sequence with features, translation etc
+   sixpack Display a DNA sequence with 6-frame translation and ORFs
    textsearch Search sequence documentation text. SRS and Entrez are
    faster!
    tfm Displays a program's help documentation manual

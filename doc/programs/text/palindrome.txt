@@ -9,7 +9,8 @@ Function
    
 Description
 
-   This looks for inverted repeats (stem loops) in a nucleotide sequence.
+   palindrome looks for inverted repeats (stem loops) in a nucleotide
+   sequence.
    
    It will find inverted repeats that include a proportion of mismatches
    and gaps (bulges in the stem loop).
@@ -20,6 +21,13 @@ Description
    
    Secondary structures like inverted repeats in genomic sequences may be
    implicated in initiation of DNA replication.
+   
+   Some genomic sequence entries in the databases are composed of
+   unfinished, draft sequence with gaps of unknown size between contigs.
+   The positions of these gaps are often indicated by runs of 200 N
+   characters. To prevent palindrome producing large, uninformative
+   outputs, any palindromes found that are composed only of N's will not
+   be reported.
    
 Usage
 

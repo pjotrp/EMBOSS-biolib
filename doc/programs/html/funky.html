@@ -133,10 +133,10 @@ Here is a sample session with funky:
                                   format)
    -vdwf               infile     Name of data file with van der Waals radii
    -thresh             float      Threshold contact distance
+  [-outf]              outfile    Name of output file
 
    Optional qualifiers: (none)
    Advanced qualifiers:
-   -outf               outfile    Name of output file
    -logf               outfile    Name of log file
 
    General qualifiers:
@@ -211,6 +211,13 @@ Here is a sample session with funky:
 <td>1.0</td>
 </tr>
 
+<tr>
+<td>[-outf]<br>(Parameter 5)</td>
+<td>Name of output file</td>
+<td>Output file</td>
+<td>funky.out</td>
+</tr>
+
 <tr bgcolor="#FFFFD0">
 <th align="left" colspan=2>Optional qualifiers</th>
 <th align="left">Allowed values</th>
@@ -225,13 +232,6 @@ Here is a sample session with funky:
 <th align="left" colspan=2>Advanced qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
-</tr>
-
-<tr>
-<td>-outf</td>
-<td>Name of output file</td>
-<td>Output file</td>
-<td>funky.out</td>
 </tr>
 
 <tr>
@@ -512,19 +512,10 @@ None.
 <tr><th>Program name</th><th>Description</th></tr>
 <tr><td><a href="aaindexextract.html">aaindexextract</a></td><td>Extract data from AAINDEX</td></tr>
 <tr><td><a href="cutgextract.html">cutgextract</a></td><td>Extract data from CUTG</td></tr>
-<tr><td><a href="domainer.html">domainer</a></td><td>Reads protein coordinate files and writes domains coordinate files</td></tr>
-<tr><td><a href="hetparse.html">hetparse</a></td><td>Converts raw dictionary of heterogen groups to a file in embl-like format</td></tr>
-<tr><td><a href="nrscope.html">nrscope</a></td><td>Converts redundant EMBL-format SCOP file to non-redundant one</td></tr>
-<tr><td><a href="pdbparse.html">pdbparse</a></td><td>Parses pdb files and writes cleaned-up protein coordinate files</td></tr>
-<tr><td><a href="pdbtosp.html">pdbtosp</a></td><td>Convert raw swissprot:pdb equivalence file to embl-like format</td></tr>
 <tr><td><a href="printsextract.html">printsextract</a></td><td>Extract data from PRINTS</td></tr>
 <tr><td><a href="prosextract.html">prosextract</a></td><td>Builds the PROSITE motif database for patmatmotifs to search</td></tr>
 <tr><td><a href="rebaseextract.html">rebaseextract</a></td><td>Extract data from REBASE</td></tr>
 <tr><td><a href="scope.html">scope</a></td><td>Convert raw scop classification file to embl-like format</td></tr>
-<tr><td><a href="scopnr.html">scopnr</a></td><td>Removes redundant domains from a scop classification file</td></tr>
-<tr><td><a href="scopparse.html">scopparse</a></td><td>Converts raw scop classification files to a file in embl-like format</td></tr>
-<tr><td><a href="scopseqs.html">scopseqs</a></td><td>Adds pdb and swissprot sequence records to a scop classification file</td></tr>
-<tr><td><a href="seqnr.html">seqnr</a></td><td>Removes redundant hits from a scop families file</td></tr>
 <tr><td><a href="tfextract.html">tfextract</a></td><td>Extract data from TRANSFAC</td></tr>
 </table>
 

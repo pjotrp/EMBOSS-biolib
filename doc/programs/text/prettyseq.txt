@@ -425,6 +425,7 @@ See also
    showfeat Show features of a sequence
    showorf Pretty output of DNA translations
    showseq Display a sequence with features, translation etc
+   sixpack Display a DNA sequence with 6-frame translation and ORFs
    textsearch Search sequence documentation text. SRS and Entrez are
    faster!
    transeq Translate nucleic acid sequences

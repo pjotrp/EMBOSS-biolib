@@ -21,7 +21,7 @@ Usage
    'tsw:amir_pseae' and write the results to the file 'amir_pseae.fasta':
    
 
-% pasteseq tsw:amir_pseae tsw:flav_nossm -pos=67
+% pasteseq tsw:amir_pseae tsw:flav_nossm -pos=67 
 Insert one sequence into another
 Output sequence [amir_pseae.fasta]: 
    
@@ -33,7 +33,7 @@ Output sequence [amir_pseae.fasta]:
    This does the same thing, but the output qualifier is explicitly used:
    
    
-% pasteseq tsw:amir_pseae tsw:flav_nossm -out=amirplus.seq -pos=67
+% pasteseq tsw:amir_pseae tsw:flav_nossm -out=amirplus.seq -pos=67 
 Insert one sequence into another
 
    Go to the output files for this example
@@ -44,7 +44,7 @@ Insert one sequence into another
    'tsw:amir_pseae' use -pos=0:
    
    
-% pasteseq tsw:amir_pseae tsw:flav_nossm -out=amirplus.seq -pos=0
+% pasteseq tsw:amir_pseae tsw:flav_nossm -out=amirplus.seq -pos=0 
 Insert one sequence into another
 
    Go to the output files for this example

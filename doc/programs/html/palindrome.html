@@ -46,7 +46,8 @@ Looks for inverted repeats in a nucleotide sequence
 </H2>
 
 
-This looks for inverted repeats (stem loops) in a nucleotide sequence. 
+<b>palindrome</b> looks for inverted repeats (stem loops) in a
+nucleotide sequence. 
 
 <p>
 It will find inverted repeats that include a proportion of mismatches
@@ -62,6 +63,16 @@ maximum gap between repeated regions and number of mismatches allowed.
 
 Secondary structures like inverted repeats in genomic sequences may be
 implicated in initiation of DNA replication. 
+
+<p>
+
+Some genomic sequence entries in the databases are composed of
+unfinished, draft sequence with gaps of unknown size between contigs. 
+The positions of these gaps are often indicated by runs of 200 N
+characters.  To prevent <b>palindrome</b> producing large, uninformative
+outputs, any palindromes found that are composed only of N's will not be
+reported. 
+
 
 <H2>
     Usage

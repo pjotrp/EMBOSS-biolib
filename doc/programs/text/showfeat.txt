@@ -580,6 +580,7 @@ See also
    showalign Displays a multiple sequence alignment
    showdb Displays information on the currently available databases
    showseq Display a sequence with features, translation etc
+   sixpack Display a DNA sequence with 6-frame translation and ORFs
    swissparse Retrieves sequences from swissprot using keyword search
    textsearch Search sequence documentation text. SRS and Entrez are
    faster!

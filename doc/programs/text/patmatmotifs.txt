@@ -71,7 +71,7 @@ Usage
    Here is a sample session with patmatmotifs
    
 
-% patmatmotifs -full
+% patmatmotifs -full 
 Search a PROSITE motif database with a protein sequence
 Input sequence: tsw:opsd_human
 Output report [opsd_human.patmatmotifs]: 
@@ -256,7 +256,7 @@ Output file format
   
 ########################################
 # Program: patmatmotifs
-# Rundate: Tue Sep 03 17:11:07 2002
+# Rundate: Thu Nov 07 14:35:28 2002
 # Report_format: dbmotif
 # Report_file: opsd_human.patmatmotifs
 ########################################
@@ -268,7 +268,8 @@ Output file format
 #
 # Full: Yes
 # Prune: Yes
-# Data_file: ../prosextract-keep/PROSITE/prosite.lines
+# Data_file: /packages/emboss_dev/gwilliam/emboss/emboss/emboss/data/PROSITE/pr
+osite.lines
 #
 #=======================================
 
@@ -437,7 +438,7 @@ Known bugs
    
 See also
 
-    Program name                        Description
+    Program name                         Description
    antigenic      Finds antigenic sites in proteins
    digest         Protein proteolytic enzyme or reagent cleavage digest
    fuzzpro        Protein pattern search
@@ -446,6 +447,7 @@ See also
    oddcomp        Finds protein sequence regions with a biased composition
    patmatdb       Search a protein sequence with a motif
    pepcoil        Predicts coiled coil regions
+   pestfind       Finds PEST motifs as potential proteolytic cleavage sites
    preg           Regular expression search of a protein sequence
    pscan          Scans proteins using PRINTS
    sigcleave      Reports protein signal cleavage sites

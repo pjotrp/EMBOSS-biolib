@@ -63,7 +63,7 @@ Command line arguments
 
    Optional qualifiers:
    -minlength          integer    This is the minimum length that a poly-A (or
-                                  poly-T) tail must have before it is
+                                  poly-U) tail must have before it is
                                   removed. If there are mismatches in the tail
                                   than there must be at least this length of
                                   poly-A tail before the mismatch for the
@@ -82,7 +82,7 @@ Command line arguments
                                   of GCAAAAGAAAA would be removed; There are
                                   at least -minlength A's preceeding the last
                                   'G', so it is part of the tail.
-   -[no]reverse        boolean    When a poly-T region at the 5' end of the
+   -[no]reverse        boolean    When a poly-U region at the 5' end of the
                                   sequence is found and removed, it is likely
                                   that the sequence is in the reverse sense.
                                   This option will change the sequence to the
@@ -91,11 +91,33 @@ Command line arguments
                                   not be changed.
 
    Advanced qualifiers:
-   -[no]fiveprime      boolean    If this is set true, then the 5' end of teh
-                                  sequence is inspected for poly-T tails.
+   -[no]fiveprime      boolean    If this is set true, then the 5' end of the
+                                  sequence is inspected for poly-U tails.
                                   These will be removed if they are longer
                                   than any 3' poly-A tails. If this is false,
                                   then the 5' end is ignored.
+   -linker             string     If this is set true, then there must be a
+                                  poly-A signal (e.g. AAUAAA) within 10 to 30
+                                  bases upstream of the poly-A tail. If there
+                                  is no such signal, the poly-A tail is not
+                                  removed
+   -signal             string     If you are searching for the poly-A signal,
+                                  then you can specify here the sequences of
+                                  the signal to search for. By default they
+                                  are the most common signals: AAUAAA or
+                                  AUUAAA. These occur in about 73% of ESTs.
+                                  There are rarer signals found in significant
+                                  numbers in human ESTs (other organisms
+                                  might have other variants). See: Genome Res
+                                  2000 Jul;10(7):1001-10 'Patterns of variant
+                                  polyadenylation signal usage in human
+                                  genes.' Beaudoing E, Freier S, Wyatt JR,
+                                  Claverie JM, Gautheret D.
+                                  You might like to try the full range of
+                                  signals reported in this paper, i.e:
+                                  AAUAAA,AUUAAA,AGUAAA,UAUAAA,CAUAAA,GAUAAA,AAU
+AUA,AAUACA,AAUAGA,ACUAAA
+                                  These occur in about 89% of ESTs.
 
    General qualifiers:
   -help                boolean    Report command line options. More
@@ -110,7 +132,7 @@ Command line arguments
    (Parameter 2) Output sequence(s) USA Writeable sequence(s)
    <sequence>.format
    Optional qualifiers Allowed values Default
-   -minlength This is the minimum length that a poly-A (or poly-T) tail
+   -minlength This is the minimum length that a poly-A (or poly-U) tail
    must have before it is removed. If there are mismatches in the tail
    than there must be at least this length of poly-A tail before the
    mismatch for the mismatch to be considered part of the tail. Integer 1
@@ -125,16 +147,31 @@ Command line arguments
    GCAAAAGAAAA would be removed; There are at least -minlength A's
    preceeding the last 'G', so it is part of the tail. Integer 0 or more
    1
-   -[no]reverse When a poly-T region at the 5' end of the sequence is
+   -[no]reverse When a poly-U region at the 5' end of the sequence is
    found and removed, it is likely that the sequence is in the reverse
    sense. This option will change the sequence to the forward sense when
    it is written out. If this option is not set, then the sense will not
    be changed. Boolean value Yes/No Yes
    Advanced qualifiers Allowed values Default
-   -[no]fiveprime If this is set true, then the 5' end of teh sequence is
-   inspected for poly-T tails. These will be removed if they are longer
+   -[no]fiveprime If this is set true, then the 5' end of the sequence is
+   inspected for poly-U tails. These will be removed if they are longer
    than any 3' poly-A tails. If this is false, then the 5' end is
    ignored. Boolean value Yes/No Yes
+   -linker If this is set true, then there must be a poly-A signal (e.g.
+   AAUAAA) within 10 to 30 bases upstream of the poly-A tail. If there is
+   no such signal, the poly-A tail is not removed Any string is accepted
+   Y
+   -signal If you are searching for the poly-A signal, then you can
+   specify here the sequences of the signal to search for. By default
+   they are the most common signals: AAUAAA or AUUAAA. These occur in
+   about 73% of ESTs. There are rarer signals found in significant
+   numbers in human ESTs (other organisms might have other variants).
+   See: Genome Res 2000 Jul;10(7):1001-10 'Patterns of variant
+   polyadenylation signal usage in human genes.' Beaudoing E, Freier S,
+   Wyatt JR, Claverie JM, Gautheret D. You might like to try the full
+   range of signals reported in this paper, i.e:
+   AAUAAA,AUUAAA,AGUAAA,UAUAAA,CAUAAA,GAUAAA,AAUAUA,AAUACA,AAUAGA,ACUAAA
+   These occur in about 89% of ESTs. Any string is accepted AAUAAA,AUUAAA
    
 Input file format
 

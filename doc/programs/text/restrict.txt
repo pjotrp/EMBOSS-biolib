@@ -238,7 +238,7 @@ Output file format
   
 ########################################
 # Program: restrict
-# Rundate: Wed Sep 04 17:22:50 2002
+# Rundate: Thu Nov 07 14:42:26 2002
 # Report_format: table
 # Report_file: hsfau.restrict
 ########################################

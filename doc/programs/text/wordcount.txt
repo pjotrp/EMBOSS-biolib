@@ -283,6 +283,7 @@ See also
    dan          Calculates DNA RNA/DNA melting temperature
    freak        Residue/base frequency table or plot
    isochore     Plots isochores in large DNA sequences
+   sirna        Finds siRNA duplexes in mRNA
    
 Author(s)
 
