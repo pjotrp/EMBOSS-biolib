@@ -206,7 +206,9 @@ See also
    
 Author(s)
 
-   This application was written by Bernd Jagla
+   This application was written by Bernd Jagla bernd@golgi.ski.mskcc.org
+   Freie Universitat Berlin, Institut fur Med./Techn. Physik und
+   Lasermedizin, Krahmerstrasse 6-10, 12045 Berlin, Germany.
    
 History
 
