@@ -833,3 +833,64 @@ static double ajCodRandom(ajint NA, ajint NC, ajint NG, ajint NT, ajint len, cha
 
     return tot;
 }
+
+
+/* @func ajCodCalcCai ********************************************************
+**
+** Calculate codon adaptive index
+** NAR 15:1281-1295
+**
+** @param [r] thys [AjPCod*] codon usage
+**
+** @return [double] CAI
+** @@
+******************************************************************************/
+
+double ajCodCalcCai(AjPCod *thys)
+{
+    AjPCod cod = *thys;
+    double cai;
+    double max;
+    double sum;
+    double res;
+    double xij;
+    double total;
+    ajint  i;
+    ajint  k;
+
+    total = (double)0.;
+    for(i=0;i<AJCODAMINOS-2;++i)
+    {
+	max = (double)0.;
+	for(k=0;k<AJCODSTART;++k)
+	{
+	    if(cod->aa[k]==27)
+		continue;
+	    if(cod->aa[k]==i)
+		max = (max>cod->fraction[k]) ? max : cod->fraction[k];
+	}
+	
+	sum = (double)0.;
+	for(k=0;k<AJCODSTART && max;++k)
+	{
+	    if(cod->aa[k]==27)
+		continue;
+	    if(cod->aa[k]==i)
+	    {
+		xij = cod->fraction[k];
+		if(xij)
+		{
+		    res = cod->tcount[k] * log(xij/max);
+		    sum += res;
+		}
+	    }
+	}
+
+	total += sum;
+    }
+
+    total /= (double)1000.;
+    cai = exp(total);    
+
+    return cai;
+}
