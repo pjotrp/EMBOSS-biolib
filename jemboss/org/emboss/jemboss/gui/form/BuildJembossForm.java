@@ -130,7 +130,7 @@ public class BuildJembossForm implements ActionListener
 // get help for current application
     if(!withSoap) 
     {
-      String command = embossBin.concat("tfm " + applName + " -nomore");
+      String command = embossBin.concat("tfm " + applName + " -html -nomore");
       RunEmbossApplication rea = new RunEmbossApplication(command,envp,null);
       rea.isProcessStdout();
       helptext = rea.getProcessStdout(); 
@@ -148,32 +148,41 @@ public class BuildJembossForm implements ActionListener
     {
       public void actionPerformed(ActionEvent e)
       {
-        f.setCursor(cbusy);
-        JFrame fhelp = new JFrame(applName + " Help");
-        JPanel phelp = (JPanel)fhelp.getContentPane();
-        phelp.setLayout(new BorderLayout());
-        JPanel pscroll = new JPanel(new BorderLayout());
-        JScrollPane rscroll = new JScrollPane(pscroll);
-        phelp.add(rscroll, BorderLayout.CENTER);
-    
         String text = "";
+        String url = null;
         if(!withSoap)
-        {
           text = helptext;
+        else
+          url = mysettings.getembURL()+applName+".html";
+
+        JEditorPane htmlPane = null;
+        if(url == null)
+        {
+          try
+          {
+            new Browser(url,applName,true,text);
+          }
+          catch(IOException ioe1){}
         }
         else
-        {
-          GetHelp thishelp = new GetHelp(applName,mysettings);
-          text = thishelp.getHelpText();
+        { 
+          try
+          { 
+            new Browser(url,applName);  
+          }
+          catch(IOException ioe2)
+          {
+            GetHelp thishelp = new GetHelp(applName,mysettings);
+            text = thishelp.getHelpText();
+            
+            try
+            {
+              new Browser(url,applName,true,text);
+            }
+            catch(IOException ioe3){}
+          }
+
         }
-        JTextArea helpText = new JTextArea(text);
-        pscroll.add(helpText, BorderLayout.CENTER);
-        helpText.setFont(new Font("monospaced", Font.PLAIN, 12));
-        helpText.setCaretPosition(0);
-        helpText.setEditable(false);
-        fhelp.setSize(520,395);
-        fhelp.setVisible(true);
-        f.setCursor(cdone);
       }
     });
 
