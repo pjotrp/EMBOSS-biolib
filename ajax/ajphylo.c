@@ -1425,7 +1425,6 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
     AjPFile treefile  = NULL;
     AjPList treelist  = NULL;
     AjBool treeok;
-    void ** trees = NULL;
     ajint i;
     ajint count;
     ajint headcount = 0;
