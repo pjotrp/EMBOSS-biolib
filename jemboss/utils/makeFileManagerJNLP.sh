@@ -111,6 +111,7 @@ fi
 # Create FileManager jar file
 
 jar cf FileManager.jar images/* org/emboss/jemboss/*class resources/client.jar \
+        resources/resources.jar \
         resources/version resources/jemboss.properties resources/readme.txt \
         resources/*html org/emboss/jemboss/*/*class org/emboss/jemboss/*/*/*class 
 mv FileManager.jar jnlp_fm
