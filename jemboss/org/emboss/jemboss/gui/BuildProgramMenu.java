@@ -70,17 +70,17 @@ public class BuildProgramMenu
 
 /**
 *
-* 
 *  @param  JPanel p1 is the menu pane
 *  @param  JPanel p2 is the form pane
+*  @param  JScrollPane EMBOSS form scroll pane 
 *  @param  String location of the EMBOSS binaries
 *  @param  String array of environment variables for EMBOSS applications.
 *  @param  EmbreoParams SOAP parameter settings
 *  @param  boolean true if using SOAP server
 *  @param  String current working directory (local)
 *  @param  String location of the ACD directory
-*  @param  CardLayout for the EMBOSS forms
 *  @param  JFrame Jemboss frame
+*  @param  Splash splash frame
 *
 */
   public BuildProgramMenu(final JPanel p1, final JPanel p2, 
@@ -110,7 +110,6 @@ public class BuildProgramMenu
       {
         if(withSoap) 
         {
-//        splashing = new Splash(mysettings,3);
           splashing.doneSomething("Connecting with server");
 //        EmbreoAuthPrompt pfa = new EmbreoAuthPrompt(mysettings);
           GetWossname ewoss = new GetWossname(mysettings);
@@ -168,8 +167,8 @@ public class BuildProgramMenu
 
         final String allAcd[] = progs.getProgsList();
         final String allDes[] = progs.getProgDescription();
-        Component c = p1.getComponent(0);
-        p1.remove(c);
+//      Component c = p1.getComponent(0);
+//      p1.remove(c);
 
         p1.add(menuBar, BorderLayout.NORTH);
         f.setVisible(true);
@@ -294,7 +293,6 @@ public class BuildProgramMenu
 
         p1.setVisible(false);
         p1.setVisible(true);
-//      f.setVisible(true);
 
 // get database available
 //      if(withSoap)
@@ -325,11 +323,8 @@ public class BuildProgramMenu
       };
       databaseworker.start();
     }
-   
 
   }
-
-
 
 }
 

@@ -1,4 +1,4 @@
-/* Jemboss *****************************************************
+/***************************************************************
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@ import javax.swing.event.*;
 import java.awt.event.*;
 import java.io.*;
 
-import org.emboss.jemboss.gui.startup.*;
+import org.emboss.jemboss.gui.startup.*;    // splash window
 import org.emboss.jemboss.gui.filetree.*;   // local files
 import uk.ac.mrc.hgmp.embreo.*;             // SOAP settings
 import org.emboss.jemboss.gui.*;            // Jemboss graphics
@@ -40,9 +40,6 @@ import org.emboss.jemboss.soap.*;
 *  (i)  standalone - with a locally installation of EMBOSS.
 *  (ii) client / server mode - download the client from a site,
 *       such as the HGMP, which runs the Jemboss server.
-*
-*  @author Copyright (C) T. J. Carver
-*  @version 1.0
 *
 */
 public class Jemboss 
@@ -58,8 +55,6 @@ public class Jemboss
   private String embossBin;
   private String embossPath;
   private String acdDirToParse;
-
-  private File acdDir;
 
   private String cwd = new String(
                        System.getProperty("user.dir") + fs);
@@ -104,7 +99,6 @@ public class Jemboss
       acdDirToParse = jp.getAcdDirToParse();
       embossPath = new String("PATH" + ps +
                                embossPath + ps);
-      acdDir = new File(acdDirToParse);
       envp[0] = "PATH=" + embossPath;        
       envp[1] = "PLPLOT_LIB=" + plplot;
       envp[2] = "EMBOSS_DATA=" + embossData;
@@ -170,8 +164,8 @@ public class Jemboss
 
     pFront.add(bacross,BorderLayout.CENTER);
 
-    JLabel lload = new JLabel(getLoadingHTMLPage());
-    p1.add(lload, BorderLayout.CENTER);
+//  JLabel lload = new JLabel(getLoadingHTMLPage());
+//  p1.add(lload, BorderLayout.CENTER);
 
     f.pack();
     f.setLocation(0,((int)d.getHeight()-f.getHeight())/2);
