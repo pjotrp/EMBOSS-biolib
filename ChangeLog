@@ -1,4 +1,7 @@
 Version 2.6.0
+
+	Added twofeat - Finds neighbouring pairs of features in sequences
+
 	Extractfeat - added option (-featinname) to include the name of
 	the feature as part of the ID name of the sequence that is
 	written out. 
@@ -24,7 +27,7 @@ Version 2.6.0
 
 	Msbar can now check that the result doesn't match a set of
 	input other sequences.  For example you could specify that it
-	doesn't match the input sequence or a set of presiously produced
+	doesn't match the input sequence or a set of previously produced
 	mutation results. 
 
         Getorf reporting of circular genome positions tidied up - it now
