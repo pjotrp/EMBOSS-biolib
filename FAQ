@@ -79,7 +79,7 @@ A) http://www.no.embnet.org/FromGCG.html
 
 Q) Is there a reference I can cite for EMBOSS?
 
-A) Rice,R. Longden,I. and Bleasby,A.
+A) Rice,P. Longden,I. and Bleasby,A.
 "EMBOSS: The European Molecular Biology Open Software Suite"
 Trends in Genetics June 2000, vol 16, No 6. pp.276-277
 
@@ -111,13 +111,15 @@ Q) I'm trying to compile EMBOSS with the PNG support
 
 A) If you have  gd-1.7.3, zlib-1.1.3 and libpng-1.0.5 or greater
    then the normal compile should work! However due to gd no longer
-   supporting gif format then you may need to install gd,zlib and
+   supporting gif format then you may need to install gd, zlib and
    libpng locally. i.e. /home/joe/local
 
    To compile with the local version your configure line should now
    read:-
    ./configure --with-pngdriver=/home/joe/local
 
+   This will look for the graphics libraries in your local
+   installation under /home/joe/local instead of a system-wide location
 
 
 
@@ -178,7 +180,7 @@ A) Yes. Here is the information you will need:-
 
 Q) How do i compile the CVS version?
 
-A) You will need automake, autoconf and libtool for this.
+A) You will need automake, autoconf, gmake and libtool for this.
    
    Scripts are available to compile the cvs version.
    
@@ -441,7 +443,7 @@ A) To see what graphics drivers are available type ? at the promt for
    cps     -> Colour Postscript
    x11     -> X display. (also called xterm and xwindows)
    hpgl    -> HP Laserjet III, HPGL emulation mode.
-   png     -> PNG (you will need png,z,gd librarys installed for this)
+   png     -> PNG (you will need png, z and gd libraries for this)
    tek     -> Tektronix Terminal
    none    -> None.
    data    -> Writes out points to a file for graphs.
@@ -453,9 +455,9 @@ A) To see what graphics drivers are available type ? at the promt for
 Q) How do i get the PNG driver?
 
 A) To get the PNG driver you will need to have installed z,png and gd
-   librarys. In particular gd version >=  1.7.3 must be used.
+   libraries. In particular gd version >=  1.7.3 must be used.
 
-   If for some reason you do not have the required librarys and your 
+   If for some reason you do not have the required libraries and your 
    system support group will not update these ( In particular gd, as
    the older versions support GIF which is NOT supported in later
    versions) then install all three latest versions (z,gd,png) to a 
@@ -471,7 +473,7 @@ A) To get the PNG driver you will need to have installed z,png and gd
    as i installed gd etc using --prefix=/home/joe/new 
    in the configure of each.
 
-   If you have recently installed the librarys to your system then
+   If you have recently installed the libraries to your system then
    
    make clean
    rm config.cache
@@ -481,7 +483,7 @@ A) To get the PNG driver you will need to have installed z,png and gd
    By removing config.cache you are telling the system to check
    again for what is available as these are stored in that file.
 
-   make clean removes all the current objects and EMBOSS librarys
+   make clean removes all the current objects and EMBOSS libraries
    as these will now need to include the png driver code. 
 
 
@@ -492,16 +494,15 @@ Q) Where to look for the additional libraries needed for PNG.
 A)
    GD)  http://www.boutell.com/gd/
    Z)   http://www.mirror.ac.uk/sites/ftp.cdrom.com/pub/infozip/zlib/
-   PNG) http://www.mirror.ac.uk/sites/ftp.cdrom.com/pub/png/
+   PNG) http://www.mirror.ac.uk/sites/ftp.libpng.org/pub/png/libpng.html
 
    These also list the various mirror sites for non UK people.
 
-   Alternative using ftp :-
+   Alternatively, using ftp :-
 
-   PNG) ftp://swrinde.nde.swri.edu/pub/png/src/libpng.1.0.5.tar.gz
-   GD)  ftp://ftp.boutell.com/pub/boutell/gd/gd-1.7.3.tar.gz
-   Z)   ftp://ftp.uu.net/graphics/png/src/zlib-1.1.3.tar.gz
-
+   PNG) ftp://swrinde.nde.swri.edu/pub/png/src/libpng.1.0.8.tar.gz
+   GD)  ftp://ftp.boutell.com/pub/boutell/gd/gd-1.8.3.tar.gz
+   Z)   ftp://ftp.info-zip.org/pub/infozip/zlib/zlib-1.1.3.tar.gz
 
 
 
