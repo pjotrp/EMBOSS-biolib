@@ -158,3 +158,4 @@ wobble = wobble tembl:hsfau -graph ps -auto
 wordcount = wordcount tembl:hsfau -auto
 wordmatch = wordmatch tembl:hsfau tembl:hsfau1 -auto
 wossname = wossname -search codon -auto
+topo = topo tsw:aqp1_human -signa -prol=UM -cys=cg -gly=sr -acid=dr -basic=db -ohaa=da -araa=dg -graph ps -sections="18 35 49 67 94 115 136 156 165 184 211 232" -nomembrane -sigrange="74 82 sy 189 189 hm 239 239 sa 157 157 sa 262 262 sa"
