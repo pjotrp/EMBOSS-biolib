@@ -35,15 +35,11 @@ public class Browser extends JFrame implements HyperlinkListener,
                                  ActionListener 
 {
 
-  private JIconButton jembossButton;
-  private JButton backButton;
   private MemoryComboBox urlField;
   private JEditorPane htmlPane;
   private String initialURL;
-  private Vector urlCache; 
   private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
-
 
 
   public Browser(String initialURL, String name) throws IOException
@@ -58,13 +54,11 @@ public class Browser extends JFrame implements HyperlinkListener,
     super(name);
     this.initialURL = initialURL;
 
-    urlCache = new Vector();
+    Vector urlCache = new Vector();
     if(!ltext)
       urlCache.add(initialURL);
     else
       urlCache.add(name+".html");
-
-    setUpJMenuBar();
 
     if(ltext)
     {
@@ -87,8 +81,9 @@ public class Browser extends JFrame implements HyperlinkListener,
       }
     }
 
-    addToScrollPane();
     setBrowserSize();
+    setUpJMenuBar(urlCache);
+    addToScrollPane();
     setVisible(true);
   }
 
@@ -96,9 +91,9 @@ public class Browser extends JFrame implements HyperlinkListener,
   {
     super(initialURL);
     this.initialURL = initialURL;
-    urlCache = new Vector();
+    Vector urlCache = new Vector();
     urlCache.add(initialURL);
-    setUpJMenuBar();
+
     try
     {
       htmlPane = new JEditorPane(urlName);
@@ -108,43 +103,99 @@ public class Browser extends JFrame implements HyperlinkListener,
       throw new IOException();
     }
 
-    addToScrollPane();
     setBrowserSize();
+    setUpJMenuBar(urlCache);
+    addToScrollPane();
     setVisible(true);
   }
 
-  public void setUpJMenuBar()
+/**
+*
+* Method to create the frames menu and tool bar.
+*
+*/
+  private void setUpJMenuBar(Vector urlCache)
   {
     JMenuBar menuBar = new JMenuBar();
+    JToolBar toolBarURL  = new JToolBar();
+    JToolBar toolBarIcon = new JToolBar();
 
+    JMenu fileMenu = new JMenu("File");
+    fileMenu.setMnemonic(KeyEvent.VK_F);
+    menuBar.add(fileMenu);
+
+    // back
+    JMenuItem backMenu = new JMenuItem("Back");
+    backMenu.setAccelerator(KeyStroke.getKeyStroke(
+              KeyEvent.VK_B, ActionEvent.CTRL_MASK));
+    backMenu.setActionCommand("BACK");
+    backMenu.addActionListener(this);
+    fileMenu.add(backMenu);
+
+    // close
+    fileMenu.addSeparator();
+    JMenuItem closeMenu = new JMenuItem("Close");
+    closeMenu.setAccelerator(KeyStroke.getKeyStroke(
+              KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+
+    closeMenu.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        setVisible(false);
+      }
+    });
+    fileMenu.add(closeMenu);
+
+    // jemboss logo button
     ClassLoader cl = this.getClass().getClassLoader();
     ImageIcon jem = new ImageIcon(cl.getResource("images/Jemboss_logo_small.gif"));
-    jembossButton = new JIconButton(jem);
+    JIconButton jembossButton = new JIconButton(jem);
     jembossButton.addActionListener(this);
+    jembossButton.setActionCommand("JEMBOSS");
 
+    // url field
     JLabel urlLabel = new JLabel("URL:");
     urlField = new MemoryComboBox(urlCache);
+    
+    int urlFieldHeight = (int)urlField.getPreferredSize().getHeight();
     urlField.addActionListener(this);
 
-    menuBar.add(jembossButton);
-    menuBar.add(urlLabel);
-    menuBar.add(urlField);
+    toolBarIcon.add(jembossButton);
+    toolBarURL.add(urlLabel);
+    toolBarURL.add(urlField);
+
     setJMenuBar(menuBar);
+    getContentPane().add(toolBarURL, BorderLayout.NORTH);
+    getContentPane().add(toolBarIcon, BorderLayout.SOUTH);
+
+    int urlFieldWidth  = (int)toolBarURL.getPreferredSize().getWidth(); 
+    Dimension d = new Dimension(urlFieldWidth,urlFieldHeight);
+    urlField.setMaximumSize(d);
+
+    int iconBarWidth  = (int)toolBarIcon.getPreferredSize().getWidth();
+    int iconBarHeight = jem.getIconHeight();
+    d = new Dimension(iconBarWidth,iconBarHeight);
+    toolBarIcon.setPreferredSize(d);
+
   }
 
-  public void setBrowserSize()
+  private void setBrowserSize()
   {
     Dimension screenSize = getToolkit().getScreenSize();
     int width  = screenSize.width * 5 / 10;
-    int height = screenSize.height * 4 / 10;
-    setBounds(width/5, height/4, width, height);
+    int height = screenSize.height * 6 / 10;
+    setBounds(width/5, height/6, width, height);
   }
 
-  public void addToScrollPane()
+  private void addToScrollPane()
   {
     htmlPane.setEditable(false);
     htmlPane.setCaretPosition(0);
     JScrollPane scrollPane = new JScrollPane(htmlPane);
+   
+    // ensures html wraps properly
+    htmlPane.setPreferredSize(getPreferredSize());
     getContentPane().add(scrollPane, BorderLayout.CENTER);
   }
 
@@ -154,10 +205,13 @@ public class Browser extends JFrame implements HyperlinkListener,
     setCursor(cbusy);
     if (event.getSource() == urlField) 
       url = (String)urlField.getSelectedItem();
-    else if (event.getSource() == jembossButton)
+    else if (event.getActionCommand().equals("JEMBOSS"))
       url = "http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Jemboss/";
+    else if (event.getActionCommand().equals("BACK"))
+      url = (String)urlField.getItemAt(1);
     else
       url = initialURL;
+
     try
     {
       htmlPane.setPage(new URL(url));
@@ -166,11 +220,16 @@ public class Browser extends JFrame implements HyperlinkListener,
     catch(IOException ioe)
     {
       setCursor(cdone);
-      warnUser("Can't follow link to " + url + ": " + ioe);
+      warnUser("Can't follow link to " + url );
     }
     setCursor(cdone);
   }
 
+/**
+*
+* Method to handle hyper link events.
+*
+*/
   public void hyperlinkUpdate(HyperlinkEvent event) 
   {
     if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
@@ -184,16 +243,17 @@ public class Browser extends JFrame implements HyperlinkListener,
       catch(IOException ioe) 
       {
         setCursor(cdone);
-        warnUser("Can't follow link to " 
-                 + event.getURL().toExternalForm() + ": " + ioe);
+        warnUser("Can't follow link to " +  
+                  event.getURL().toExternalForm() );
       }
+      
       setCursor(cdone);
     }
   }
 
   private void warnUser(String message)
   {
-    JOptionPane.showMessageDialog(this, message, "Error", 
+    JOptionPane.showMessageDialog(this, message, "Warning", 
                                   JOptionPane.ERROR_MESSAGE);
   }
 
