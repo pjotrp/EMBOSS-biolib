@@ -104,7 +104,7 @@ AC_MSG_CHECKING(for large file support)
 
 dnl Test for Linux large file support
 if test "`uname`" = "Linux"; then
-CPPFLAGS="-DAJ_LinuxLF -D__USE_FILEOFFSET64 -D__USE_LARGEFILE64 $CPPFLAGS"
+CPPFLAGS="-DAJ_LinuxLF -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE $CPPFLAGS"
 fi
 
 dnl Test for Solaris large file support
