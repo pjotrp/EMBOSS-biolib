@@ -1,4 +1,9 @@
 Version 2.8.0
+	tfm accepts the PAGER environment variable. It can be overrided
+	by EMBOSS_PAGER.
+
+	Fix for HTTP 1.1 lines for MacOSX added (Cedric Rossi).
+
 	The home directory ~/.embossrc file can be turned off with
 	"setenv EMBOSS_HOMERC N" This was added for cleaner QA tests
 	but may have other uses.
