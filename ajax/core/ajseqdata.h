@@ -480,27 +480,28 @@ typedef struct AjSSeqin {
 ** @attr Doc [AjPStr] Obsolete - see TextPtr
 ** @attr Rev [AjBool] true: to be reverse-complemented
 ** @attr Reversed [AjBool] true: has been reverse-complemented
+** @attr Trimmed [AjBool] true: has been trimmed
+** @attr Garbage [AjBool] Flag for garbage collection
 ** @attr Begin [ajint] start position (processed on reading)
 ** @attr End [ajint] end position (processed on reading)
 ** @attr Offset [ajint] offset from start
 ** @attr Offend [ajint] offset from end 
+** @attr Weight [float] Weight from multiple alignment
 ** @attr Fpos [ajlong] File position (fseek) for USA
 ** @attr Usa [AjPStr] USA fo re-reading
 ** @attr Ufo [AjPStr] UFO for re-reading
-** @attr Fttable [AjPFeattable] Feature table
 ** @attr Formatstr [AjPStr] Input format name
 ** @attr Format [AjEnum] Input format enum
 ** @attr Filename [AjPStr] Original filename
 ** @attr Entryname [AjPStr] Entryname (ID)
 ** @attr TextPtr [AjPStr] Full text
-** @attr Weight [float] Weight from multiple alignment
 ** @attr Acclist [AjPList] Secondary accessions
 ** @attr Keylist [AjPList] Keyword list
 ** @attr Taxlist [AjPList] Taxonomy list (just species for now)
 ** @attr Seq [AjPStr] The sequence
+** @attr Fttable [AjPFeattable] Feature table
 ** @attr Selexdata [AjPSelexdata] Selex data
 ** @attr Stock [AjPStockholmdata] Stockholm data
-** @attr Garbage [AjBool] Flag for garbage collection
 **
 ** @new ajSeqNew Default constructor
 ** @new ajSeqNewL Constructor with expected maximum size.
@@ -563,27 +564,28 @@ typedef struct AjSSeq {
   AjPStr Doc;
   AjBool Rev;
   AjBool Reversed;
+  AjBool Trimmed;
+  AjBool Garbage;
   ajint Begin;
   ajint End;
   ajint Offset;
   ajint Offend;
+  float Weight;
   ajlong Fpos;
   AjPStr Usa;
   AjPStr Ufo;
-  AjPFeattable Fttable;
   AjPStr Formatstr;
   AjEnum Format;
   AjPStr Filename;
   AjPStr Entryname;
   AjPStr TextPtr;
-  float Weight;
   AjPList Acclist;
   AjPList Keylist;
   AjPList Taxlist;
   AjPStr Seq;
+  AjPFeattable Fttable;
   AjPSelexdata Selexdata;
   AjPStockholmdata Stock;
-  AjBool Garbage;
 } AjOSeq;
 
 #define AjPSeq AjOSeq*
