@@ -1,4 +1,9 @@
 Version 3.0.0
+	In the emboss.default and .embossrc files the same name can be
+	used for variables, databases, and resources. In previous versions
+	a single table was used and name clashes could occur. This becomes
+	an issue with the increasing use of resource definitions.
+
 	Colours for abiview set to the ABI standard colours.
 
 	Sequence types explicitly set in source code for cons, sixpack and
