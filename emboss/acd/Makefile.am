@@ -1,5 +1,5 @@
 
-pkgdata_DATA = codes.english emboss.default \
+pkgdata_DATA = codes.english \
 	abiview.acd ajbad.acd ajfeatest.acd ajtest.acd \
 	ajtest2.acd antigenic.acd backtranseq.acd banana.acd \
 	btwisted.acd cai.acd chaos.acd charge.acd checktrans.acd chips.acd \
