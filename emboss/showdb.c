@@ -258,6 +258,7 @@ int main(int argc, char **argv)
 	}
 
 	ajListIterFree(&iter);
+	ajListDel(&dbnames);
     }
     
     /* end the HTML table */
