@@ -399,7 +399,7 @@ static AjBool check_pass(AjPStr username, AjPStr password, ajint *uid,
     pwd = getpwnam(ajStrStr(username));
     
     if(!pwd)
-        return ajTrue;
+        return ajFalse;
     
     *uid = pwd->pw_uid;
     *gid = pwd->pw_gid;
@@ -884,13 +884,25 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
 	dup2(outpipe[1],1);
 	dup2(errpipe[1],2);
 	if(setgid(gid)==-1)
+	{
+	    fprintf(stderr,"setgid failure");
 	    exit(-1);
+	}
 	if(setuid(uid)==-1)
+	{
+	    fprintf(stderr,"setuid failure");
 	    exit(-1);
+	}
 	if(chdir(ajStrStr(dir))==-1)
+	{
+	    fprintf(stderr,"chdir failure");
 	    exit(-1);
+	}
 	if(execve(ajStrStr(prog),argp,envp) == -1)
+	{
+	    fprintf(stderr,"execve failure");
 	    exit(-1);
+	}
     }
 
 
