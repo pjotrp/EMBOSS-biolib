@@ -1,61 +1,46 @@
-appl: groups [
-  documentation: "Removes redundant hits from a scop families file."
+appl: scopseqs [
+  documentation: "Adds pdb and swissprot sequence records to a scop classification file."
   groups: "Utils:Database creation"
-  gui: "yes"
-  batch: "yes"
-  cpu: "medium"
-]
-
-infile: inf  [
-  parameter: "Y"
-  prompt: "Name of the scop hits file (input)"
-  default: "test.hits.in"
-]
-
-infile: validf  [
-  parameter: "Y"
-  prompt: "Name of validation file (input)"
-  default: "tesd.valid.in"
-]
-
-outfile: outf  [
-  parameter: "Y"
-  prompt: "Name non-redundant scop hits file (output)"
-  default: "test.hits.out"
-]
-
-outfile: voutf  [
-  parameter: "Y"
-  prompt: "Name of processed validation file (output)"
-  default: "test.valid.out"
 ]
 
 infile: scopin  [
-  required: "Y"
-  prompt: "Name of scop classification file (embl format input)"
+  parameter: "Y"
+  prompt: "Name of scop file for input (embl-like format)"
   default: "Escop.dat"
 ]
 
-string: alignpath  [
-  required: "Y"
-  prompt: "Location of scop alignment files (input)"
-  default: "./"
+infile: pdbtosp  [
+  parameter: "Y"
+  prompt: "Name of the pdbcodes to swissprot indexing (embl-like format)"
+  default: "Epdbtosp.dat"
 ]
 
-string: alignextn  [
-  required: "Y"
-  prompt: "Extension of scop alignment files"
-  default: ".align"
+string: dpdb  [
+  parameter: "Y"
+  prompt: "Location of clean domain coordinate files for input (embl-like format)"
+  default: "/data/cpdbscop/ "
+]
+
+string: extn  [
+  parameter: "Y"
+  prompt: "File extension of clean domain coordinate files"
+  default: ".pxyz"
+]
+
+float: thresh  [
+  parameter: "Y"
+  prompt: "The % sequence identity redundancy threshold"
+  default: "95.0"
 ]
 
 matrixf: datafile  [
-  optional: "Y"
+  parameter: "Y"
   prompt: "Residue substitution matrix"
   default: "EBLOSUM62"
 ]
 
 float: gapopen  [
-  optional: "Y"
+  parameter: "Y"
   information: "Gap insertion penalty"
   minimum: "1."
   maximum: "100."
@@ -66,7 +51,7 @@ float: gapopen  [
 ]
 
 float: gapextend  [
-  optional: "Y"
+  parameter: "Y"
   information: "Gap extension penalty"
   minimum: "0.0"
   maximum: "10."
@@ -76,8 +61,13 @@ float: gapextend  [
   help: "The gap extension, penalty is added to the standard gap penalty for each base or residue in the gap. This is how long gaps are penalized. Usually you will expect a few long gaps rather than many short gaps, so the gap extension penalty should be lower than the gap penalty. An exception is where one or both sequences are single reads with possible sequencing errors in which case you would expect many single base gaps. You can get this result by setting the gap open penalty to zero (or very low) and using the gap extension penalty to control gap scoring."
 ]
 
-float: thresh  [
-  required: "Y"
-  prompt: "The % sequence identity redundancy threshold"
-  default: "95.0"
+outfile: scopout  [
+  parameter: "Y"
+  prompt: "Name of processed file for output (embl-like format)"
+  default: "wibble.dat"
+]
+outfile: errf  [
+  parameter: "Y"
+  prompt: "Name of log file for the build"
+  default: "scopseqs.log"
 ]

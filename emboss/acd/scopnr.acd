@@ -1,52 +1,55 @@
-appl: groups [
-  documentation: "Removes redundant hits from a scop families file."
+appl: scopnr [
+  documentation: "Removes redundant domains from a scop classification file."
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"
   cpu: "medium"
 ]
 
-infile: inf  [
-  parameter: "Y"
-  prompt: "Name of the scop hits file (input)"
-  default: "test.hits.in"
-]
-
-infile: validf  [
-  parameter: "Y"
-  prompt: "Name of validation file (input)"
-  default: "tesd.valid.in"
-]
-
-outfile: outf  [
-  parameter: "Y"
-  prompt: "Name non-redundant scop hits file (output)"
-  default: "test.hits.out"
-]
-
-outfile: voutf  [
-  parameter: "Y"
-  prompt: "Name of processed validation file (output)"
-  default: "test.valid.out"
-]
-
 infile: scopin  [
-  required: "Y"
+  parameter: "Y"
   prompt: "Name of scop classification file (embl format input)"
   default: "Escop.dat"
 ]
 
-string: alignpath  [
-  required: "Y"
-  prompt: "Location of scop alignment files (input)"
-  default: "./"
+outfile: scopout  [
+  parameter: "Y"
+  prompt: "Name of non-redundant scop classification file (embl format output)"
+  default: "EscopNR.dat"
 ]
 
-string: alignextn  [
+list: mode  [
   required: "Y"
-  prompt: "Extension of scop alignment files"
-  default: ".align"
+  default: "1"
+  minimum: "1"
+  maximum: "2"
+  values: "1: Remove redundancy at a single threshold % sequence similarity,2: Remove redundancy outside a range of acceptable threshold % similarity"
+  delimiter: ","
+  codedelimiter: ":"
+  header: "Redundancy removal options"
+  prompt: "Select number"
 ]
+
+
+float: thresh  [
+  required: "@($(mode)==1)"
+  prompt: "The % sequence identity redundancy threshold"
+  default: "95.0"
+]
+
+float: threshlow  [
+  required: "@($(mode)==2)"
+  prompt: "The % sequence identity redundancy threshold (lower limit)"
+  default: "30.0"
+]
+
+float: threshup  [
+  required: "@($(mode)==2)"
+  prompt: "The % sequence identity redundancy threshold (upper limit)"
+  default: "90.0"
+]
+
+
 
 matrixf: datafile  [
   optional: "Y"
@@ -76,8 +79,8 @@ float: gapextend  [
   help: "The gap extension, penalty is added to the standard gap penalty for each base or residue in the gap. This is how long gaps are penalized. Usually you will expect a few long gaps rather than many short gaps, so the gap extension penalty should be lower than the gap penalty. An exception is where one or both sequences are single reads with possible sequencing errors in which case you would expect many single base gaps. You can get this result by setting the gap open penalty to zero (or very low) and using the gap extension penalty to control gap scoring."
 ]
 
-float: thresh  [
+outfile: errf  [
   required: "Y"
-  prompt: "The % sequence identity redundancy threshold"
-  default: "95.0"
+  prompt: "Name of log file for the build"
+  default: "scopnr.log"
 ]

@@ -1,0 +1,37 @@
+appl: scopreso [
+  documentation: "Removes low resolution domains from a scop classification file."
+  groups: "PROTEIN:3D STRUCTURE"
+  gui: "yes"
+  batch: "yes"
+  cpu: "low"
+]
+
+string: cpdbpath  [
+  parameter: "Y"
+  information: "Location of domain coordinate files for input (embl-like format)"
+  default: "./"
+]
+
+string: cpdbextn  [
+  parameter: "Y"
+  information: "Extension of coordinate files (embl-like format)"
+  default: ".pxyz"
+]
+
+float: threshold  [
+  required: "Y"
+  prompt: "Threshold for inclusion (Angstroms)"
+  default: "2.8"
+]
+
+infile: scopinf  [
+  parameter: "Y"
+  prompt: "Name of SCOP data file for input (embl-like format)"
+  default: "Escop.dat"
+]
+
+outfile: scopoutf  [
+  parameter: "Y"
+  prompt: "Name of SCOP data file for output"
+  default: "Escop_2.8.dat"
+]

@@ -1,0 +1,27 @@
+appl: hmmgen [
+  documentation: "Generates a hidden Markov model for each alignment in a directory."
+  groups:"Protein:3D Structure"
+]
+
+string: infpath [
+        req: Y
+        def: "./"
+        help: "Directory containing the extended alignments (input)"
+]
+
+string: infextn [
+        req: Y
+        def: ".salign"
+        help: "File extention of extended alignment files (input)"
+]
+string: outfpath [
+        req: Y
+        def: "./"
+        help: "Directory to put the hmms (output)"
+]
+
+string: outfextn [
+        req: Y
+        def: ".hmm"
+        help: "File extention hmm files (output)"
+]

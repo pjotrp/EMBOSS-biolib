@@ -1,0 +1,65 @@
+appl:funky
+[
+  documentation: "Reads clean coordinate files and writes file of protein-heterogen contact data."
+  groups: "Utils:Database creation"
+]
+
+string: prot  [
+  information: "Location of protein coordinate files for input (embl-like format)"
+  default: "/packages/emboss_dev/jison/emboss/emboss/emboss/waqas"
+]
+
+
+string: protextn  [
+  information: "Extension of protein coordinate files (embl-like format)"
+  default: ".full"
+]
+
+
+string: dom  [
+  information: "Location of domain coordinate files for input (embl-like format)"
+  default: "/data/structure/cpdbscop_embl"
+]
+
+
+string: domextn  [
+  information: "Extension of domain coordinate files (embl-like format)"
+  default: ".pxyz"
+]
+
+infile: dic  [
+  prompt: "Name of dictionary of heterogen groups"
+  default: "/packages/emboss_dev/jison/emboss/emboss/emboss/waqas/het_dictionary.out"
+]
+
+
+infile: scop  [
+  prompt: "Name of scop file for input (embl-like format)"
+  default: "/data/structure/scop/Escop.dat"
+]
+
+
+infile: vdwf  [
+  prompt: "Name of data file with van der Waals radii"
+  default: "/data/structure/dat/Evdw.dat"
+]
+
+
+float: thresh  [
+  information: "Threshold contact distance"
+  default: "1.0"
+]
+
+
+outfile: outf  [
+  prompt: "Name of output file"
+  default: "/packages/emboss_dev/jison/emboss/emboss/emboss/waqas/funky.out"
+]
+
+outfile: logf  [
+  prompt: "Name of log file"
+  default: "/packages/emboss_dev/jison/emboss/emboss/emboss/waqas/funky.log"
+]
+
+
+

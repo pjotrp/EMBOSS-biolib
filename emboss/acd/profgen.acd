@@ -1,0 +1,94 @@
+appl: profgen [
+  documentation: "Generates various profiles for each alignment in a directory."
+  groups:"Protein:3D Structure"
+]
+
+string: infpath [
+        req: Y
+        def: "./"
+        help: "Directory containing the extended alignments (input)"
+]
+
+string: infextn [
+        req: Y
+        def: ".salign"
+        help: "File extention of extended alignment files (input)"
+]
+
+list: type  [
+  required: "Y"
+  default: "F"
+  minimum: "1"
+  maximum: "1"
+  values: "F:Frequency,G:Gribskov,H:Henikoff"
+  delimiter: ","
+  codedelimiter: ":"
+  header: "Profile type"
+  prompt: "Select type"
+  button: "Y"
+]
+
+variable:  dogap "@($(type) != f)"
+
+integer: threshold  [
+  required: "@($(type)==F)"
+  default: "75"
+  minimum: "1"
+  maximum: "100"
+  information: "Enter threshold reporting percentage"
+]
+
+matrixf: datafile  [
+  required: "@($(type)!=F)"
+  information: "Scoring matrix"
+  default: "@($(type) = G: Epprofile H: EBLOSUM62 F: EBLOSUM62)"
+  expected: "'Epprofile' for Gribskov type, or EBLOSUM62"
+]
+
+float: open  [
+  required: "$(dogap)"
+  information: "Gap opening penalty"
+  default: "3.0"
+]
+
+float: extension  [
+  required: "$(dogap)"
+  information: "Gap extension penalty"
+  default: "0.3"
+]
+
+string: smpfpath [
+        req: "@($(type)==F)"
+        def: "./tmp/"
+        help: "Directory for generated simple profiles (output)"
+]
+
+string: smpfextn [
+        req: "@($(type)==F)"
+        def: ".freq"
+        help: "File extention of generated simple profile (output)"
+]
+
+string: gbpfpath [
+        req: "@($(type)==G)"
+        def: "./tmp/"
+        help: "Directory for generated Gribskov profiles (output)"
+]
+
+string: gbpfextn [
+        req: "@($(type)==G)"
+        def: ".gribs"
+        help: "File extention of generated Gribskov profile (output)"
+]
+
+string: hnpfpath [
+        req: "@($(type)==H)"
+        def: "./tmp/"
+        help: "Directory for generated Henikoff profiles (output)"
+]
+
+string: hnpfextn [
+        req: "@($(type)==H)"
+        def: ".henik"
+        help: "File extention of generated Henikoff profile (output)"
+]

@@ -1,0 +1,36 @@
+appl: seqalign [
+  documentation: "Generate extended alignments for families in a scop families file by using CLUSTALW with seed alignments."
+  groups: "Protein:3D Structure"
+  gui: "yes"
+  batch: "yes"
+  cpu: "high"
+]
+
+string: inpath  [
+  parameter: "Y"
+  default: "./"
+  help: "Location of scop alignment files (input)"
+]
+
+string: extn  [
+  parameter: "Y"
+  default: ".align"
+  help: "Extention of scop alignment files"
+]
+
+infile: scopin  [
+  required: "Y"
+  prompt: "Name of scop hits file (input)"
+]
+
+string: outpath  [
+  parameter: "Y"
+  default: "./"
+  prompt: "Location of extended alignment files (clustal format output)"
+]
+
+string: outextn  [
+  parameter: "Y"
+  default: ".clustal"
+  help: "Extention of extended alignment files"
+]
