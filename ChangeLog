@@ -1,4 +1,16 @@
 Version 2.7.0
+	-help output modified to align all the qualifiers
+
+	acdpretty output revised to resolve to full names
+
+	Complete overhaul of all ACD error conditions. Parsing and command
+	line validation messages are now all used, and all tested in the
+	qatest suite. These tests used bad ACD files in the test/acd
+	directory.
+
+	whichdb failed to report error mesasges. They are now turned on -
+	and most of the common errors are reported with less evrbosity.
+
 	TCODE application added. Calculates the TESTCODE statistic.
 
 	Eprimer3 now reports the primer positions using the coordinates
@@ -8,7 +20,7 @@ Version 2.7.0
 	positions from the original sequence. 
 
 	tfm looks for documentation in EMBOSS_DOCROOT (an environment
-	variable, or defined in emboss.defaault), then in the install
+	variable, or defined in emboss.default), then in the install
 	directory, and finally the original build directory.
 
 	In some cases, EMBOSS programs could terminate with an exit status
