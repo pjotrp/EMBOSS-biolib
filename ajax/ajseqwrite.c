@@ -885,7 +885,7 @@ static void seqWriteHennig86(AjPSeqout outseq)
 		"xread\n");
     
     ajFmtPrintF(outseq->File,		/* title text */
-		"' Written by EMBOSS %D '\n", ajTimeToday());
+		"' Written by EMBOSS %D '\n", ajTimeTodayRef());
     
     ajFmtPrintF(outseq->File,		/* length, count */
 		"%d %d\n", ilen, isize);
@@ -981,7 +981,7 @@ static void seqWriteMega(AjPSeqout outseq)
     ajFmtPrintF(outseq->File,		/* header text */
 		"#mega\n");
     ajFmtPrintF(outseq->File,		/* dummy title */
-		"TITLE: Written by EMBOSS %D\n", ajTimeToday());
+		"TITLE: Written by EMBOSS %D\n", ajTimeTodayRef());
 
     for(ipos=1; ipos <= ilen; ipos += wid)
     {
@@ -1047,7 +1047,7 @@ static void seqWriteMeganon(AjPSeqout outseq)
     ajFmtPrintF(outseq->File,		/* header text */
 		"#mega\n");
     ajFmtPrintF(outseq->File,		/* dummy title */
-		"TITLE: Written by EMBOSS %D\n", ajTimeToday());
+		"TITLE: Written by EMBOSS %D\n", ajTimeTodayRef());
     ajFmtPrintF(outseq->File,		/* blank space for comments */
 		"\n");
 
@@ -1109,7 +1109,7 @@ static void seqWriteNexus(AjPSeqout outseq)
     ajFmtPrintF(outseq->File,		/* header text */
 		"#NEXUS\n");
     ajFmtPrintF(outseq->File,		/* dummy title */
-		"[TITLE: Written by EMBOSS %D]\n\n", ajTimeToday());
+		"[TITLE: Written by EMBOSS %D]\n\n", ajTimeTodayRef());
     ajFmtPrintF(outseq->File,
 		"begin data;\n");
     ajFmtPrintF(outseq->File,		/* count, length */
@@ -1194,7 +1194,7 @@ static void seqWriteNexusnon(AjPSeqout outseq)
     ajFmtPrintF(outseq->File,		/* header text */
 		"#NEXUS\n");
     ajFmtPrintF(outseq->File,		/* dummy title */
-		"[TITLE: Written by EMBOSS %D]\n\n", ajTimeToday());
+		"[TITLE: Written by EMBOSS %D]\n\n", ajTimeTodayRef());
     ajFmtPrintF(outseq->File,
 		"begin data;\n");
     ajFmtPrintF(outseq->File,		/* count, length */
@@ -1273,7 +1273,7 @@ static void seqWriteJackknifer(AjPSeqout outseq)
     }
 
     ajFmtPrintF(outseq->File,		/* header text */
-		"' Written by EMBOSS %D \n", ajTimeToday());
+		"' Written by EMBOSS %D \n", ajTimeTodayRef());
 
     for(ipos=1; ipos <= ilen; ipos += wid)
     {					/* interleaved */
@@ -1343,7 +1343,7 @@ static void seqWriteJackknifernon(AjPSeqout outseq)
     }
 
     ajFmtPrintF(outseq->File,		/* header text */
-		"' Written by EMBOSS %D \n", ajTimeToday());
+		"' Written by EMBOSS %D \n", ajTimeTodayRef());
 
     for(i=0; i < isize; i++)
     {
@@ -1866,14 +1866,14 @@ static void seqWriteMsf(AjPSeqout outseq)
 	ajFmtPrintF(outseq->File, "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n");
 	ajFmtPrintF(outseq->File,
 		    "  %F MSF:  %d Type: P %D CompCheck: %4d ..\n\n",
-		    outseq->File, ilen, ajTimeToday(), checktot);
+		    outseq->File, ilen, ajTimeTodayRef(), checktot);
     }
     else
     {
 	ajFmtPrintF(outseq->File, "!!NA_MULTIPLE_ALIGNMENT 1.0\n\n");
 	ajFmtPrintF(outseq->File,
 		    "  %F MSF: %d Type: N %D CompCheck: %4d ..\n\n",
-		    outseq->File, ilen, ajTimeToday(), checktot);
+		    outseq->File, ilen, ajTimeTodayRef(), checktot);
     }
     
     for(i=0; i < isize; i++)
@@ -2562,7 +2562,7 @@ static void seqWriteGff(AjPSeqout outseq)
     ajFmtPrintF(outseq->File,
 		"##source-version EMBOSS %S\n", version);
     ajFmtPrintF(outseq->File,
-		"##date %D\n", ajTimeTodayF("GFF"));
+		"##date %D\n", ajTimeTodayRefF("GFF"));
     if(ajStrMatchC(outseq->Type, "P"))
 	ajFmtPrintF(outseq->File,
 		    "##Protein %S\n", outseq->Name);
