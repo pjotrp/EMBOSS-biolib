@@ -35,8 +35,13 @@ typedef struct AjSAlign {
   AjBool Multi;
   AjPList Data;
   ajint Nseqs;
+  ajint Nmin;
+  ajint Nmax;
   ajint Width;
   ajint Count;
+  AjPStr Matrix;
+  AjPStr GapPen;
+  AjPStr ExtPen;
 } AjOAlign, *AjPAlign;
 
 AjBool       ajAlignDefine (AjPAlign pthys, AjPSeqset seqset);
@@ -51,6 +56,10 @@ AjBool       ajAlignFormatDefault (AjPStr* pformat);
 AjPAlign     ajAlignNew (void);
 void         ajAlignSetHeader (AjPAlign thys, AjPStr header);
 void         ajAlignSetHeaderC (AjPAlign thys, char* header);
+void         ajAlignSetGapI (AjPAlign thys, ajint gappen, ajint extpen);
+void         ajAlignSetGapR (AjPAlign thys, float gappen, float extpen);
+void         ajAlignSetMatrix (AjPAlign thys, AjPStr matrix);
+void         ajAlignSetMatrixC (AjPAlign thys, const char* matrix);
 void         ajAlignSetType (AjPAlign thys, AjPSeqset seqset);
 void         ajAlignTrace (AjPAlign thys);
 AjBool       ajAlignValid (AjPAlign thys);
