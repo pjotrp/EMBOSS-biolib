@@ -172,7 +172,6 @@ seqinfo_SOURCES = seqinfo.c
 seqretall_SOURCES = seqretall.c
 seqretset_SOURCES = seqretset.c
 seqretsplit_SOURCES = seqretsplit.c
-scope_SOURCES = scope.c
 showalign_SOURCES = showalign.c
 showdb_SOURCES = showdb.c
 showfeat_SOURCES = showfeat.c
@@ -224,8 +223,8 @@ LDADD = ../nucleus/libnucleus.la ../ajax/libajaxg.la ../ajax/libajax.la ../plplo
 pkgdata_DATA = emboss.default.template
 pkgdatadir=$(prefix)/share/$(PACKAGE)
 
-if PURIFY
-  LINK = purify $(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) -o $@
-else
-
-endif
+#if PURIFY
+#  LINK = purify $(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) -o $@
+#else
+#
+#endif
