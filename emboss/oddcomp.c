@@ -80,6 +80,8 @@ int main(int argc, char **argv)
     window = ajAcdGetInt ("window");
     outfile = ajAcdGetOutfile ("outfile");
     compdata = ajAcdGetInfile ("compdata");
+    ignorebz = ajAcdGetBool ("ignorebz");
+
     /* number of overlapping words in a window */
     ringsize = window - word + 1;
 
