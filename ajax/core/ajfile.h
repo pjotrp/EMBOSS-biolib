@@ -74,6 +74,7 @@ typedef struct AjSFileBuffList {
 ** @new ajFileBuffNewDW Constructor using a directory and wildcard filename
 ** @new ajFileBuffNewInList Constructor using a list of filenames
 ** @delete ajFileBuffDel Default destructor
+** @mod ajFileBuffIsbuff Turns on input buffering.
 ** @mod ajFileBuffNobuff Turns off input buffering.
 ** @mod ajFileBuffReset Resets so the next read uses the first buffered line
 ** @mod ajFileBuffClear Deletes unwanted old lines from the buffer
@@ -133,6 +134,7 @@ AjBool      ajFileBuffGetStore (AjPFileBuff thys, AjPStr* pdest,
 				AjBool store, AjPStr *astr);
 AjBool      ajFileBuffGetStoreL (AjPFileBuff thys, AjPStr* pdest,
 				 ajlong* fpos, AjBool store, AjPStr *astr);
+AjBool      ajFileBuffIsbuff (AjPFileBuff thys);
 void        ajFileBuffLoad (AjPFileBuff thys);
 void        ajFileBuffLoadC (AjPFileBuff thys, const char* str);
 void        ajFileBuffLoadS (AjPFileBuff thys, const AjPStr str);
@@ -145,7 +147,7 @@ AjPFileBuff ajFileBuffNewFile (AjPFile file);
 AjPFileBuff ajFileBuffNewIn (const AjPStr name);
 AjPFileBuff ajFileBuffNewInList (AjPList list);
 AjPFileBuff ajFileBuffNewS (const AjPStr data);
-void        ajFileBuffNobuff (AjPFileBuff thys);
+AjBool      ajFileBuffNobuff (AjPFileBuff thys);
 void        ajFileBuffReset (AjPFileBuff thys);
 void        ajFileBuffResetPos (AjPFileBuff thys);
 void        ajFileBuffResetStore (AjPFileBuff thys,
