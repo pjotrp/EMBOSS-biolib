@@ -34,9 +34,8 @@ ajrange.c ajreg.c ajreport.c \
 ajseq.c ajseqabi.c ajseqdb.c ajseqread.c ajseqtype.c ajseqwrite.c \
 ajsort.c ajstr.c ajsys.c \
 ajtable.c ajtime.c ajtranslate.c ajutil.c ajvector.c ajxyz.c \
-pcre.c pcre_get.c pcre_study.c pcreposix.c
+pcre.c pcre_study.c pcreposix.c
 
-# included in pcre.c : pcre_chartables.c pcre_printint.c
 
 AJAXGSRC = ajgraph.c ajhist.c
 
@@ -50,7 +49,8 @@ ajrange.h ajreg.h ajreport.h \
 ajseq.h ajseqabi.h ajseqdata.h ajseqdb.h ajseqread.h ajseqtype.h ajseqwrite.h \
 ajsort.h ajstr.h ajsys.h \
 ajtable.h ajtime.h ajtranslate.h ajutil.h ajvector.h ajxyz.h \
-pcre.h pcre_config.h pcre_internal.h pcreposix.h
+pcre.h pcre_chartables.c pcre_config.h pcre_get.c pcre_printint.c \
+pcre_internal.h pcreposix.h
 
 
 libajax_la_SOURCES = $(AJAXSRC)
