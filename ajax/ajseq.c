@@ -3984,7 +3984,7 @@ ajint ajSeqCvtLen(const AjPSeqCvt thys)
 /* @func ajSeqCvtK ************************************************************
 **
 ** Returns the integer code corresponding to a sequence character
-** in a conversion tabkle
+** in a conversion table
 **
 ** @param [r] thys [const AjPSeqCvt] Conversion table
 ** @param [r] ch [char] Sequence character
@@ -4004,7 +4004,7 @@ ajint ajSeqCvtK(const AjPSeqCvt thys, char ch)
 /* @func ajSeqCvtKS ***********************************************************
 **
 ** Returns the integer code corresponding to a sequence character string
-** in a conversion tabkle
+** in a conversion table
 **
 ** @param [r] thys [const AjPSeqCvt] Conversion table
 ** @param [r] ch [AjPStr] Sequence character string
