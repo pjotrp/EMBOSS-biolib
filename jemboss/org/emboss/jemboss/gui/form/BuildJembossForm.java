@@ -816,13 +816,16 @@ public class BuildJembossForm implements ActionListener
             try
             {
               File tf = File.createTempFile(fn, ".jembosstmp",
-                                  new File(cwd));
+                                            new File(cwd));
               PrintWriter out = new PrintWriter(new FileWriter(tf));
               out.println(cp);
               out.close();
-              fn = new String(tf.getCanonicalPath());
+              if(mysettings.isCygwin())
+                fn = new String(tf.getName());
+              else
+                fn = new String(tf.getCanonicalPath());
             } catch (IOException ioe) {}
-            options = options.concat(" -" + val + " " + fn);
+            options = options.concat(" -" + val + " " + fn );
           }
         }
 
