@@ -378,6 +378,7 @@ AjBool     ajStrReplaceC (AjPStr* pthis, int pos1,
 			  const char* overwrite, int len);
 int        ajStrRef(const AjPStr thys);
 #define    AJSTRREF(str) str->Use
+void       ajStrRemoveHtml(AjPStr *thys);
 AjBool     ajStrRev (AjPStr* pthis);
 int        ajStrRFindC (const AjPStr thys, const char *text);
 int        ajStrRoom (const AjPStr thys);

@@ -153,7 +153,6 @@ AjPScop ajScopNew(int chains)
 
     ret->Entry       = ajStrNew();
     ret->Pdb         = ajStrNew();
-    ret->Db          = ajStrNew();
     ret->Class       = ajStrNew();
     ret->Fold        = ajStrNew();
     ret->Superfamily = ajStrNew();
@@ -164,7 +163,7 @@ AjPScop ajScopNew(int chains)
 
     if(chains)
     {
-	AJCNEW0(ret->Chain,chains);
+	ret->Chain=ajCharNewL(chains);
 	AJCNEW0(ret->Start,chains);
 	AJCNEW0(ret->End,chains);
 	for(i=0; i<chains; i++)
@@ -295,7 +294,6 @@ void ajScopDel(AjPScop *thys)
 
     ajStrDel(&pthis->Entry);
     ajStrDel(&pthis->Pdb);
-    ajStrDel(&pthis->Db);
     ajStrDel(&pthis->Class);
     ajStrDel(&pthis->Fold);
     ajStrDel(&pthis->Superfamily);
@@ -306,8 +304,6 @@ void ajScopDel(AjPScop *thys)
 
     if(pthis->N)
     {
-	AJFREE(pthis->Start);
-	AJFREE(pthis->End);
 	for(i=0; i<pthis->N; i++)
 	{
 	    ajStrDel(&pthis->Start[i]);
@@ -315,9 +311,9 @@ void ajScopDel(AjPScop *thys)
 	}
 	AJFREE(pthis->Start);
 	AJFREE(pthis->End);
+	AJFREE(pthis->Chain);
     }
 
-    AJFREE(pthis->Chain);    
     AJFREE(pthis);
 
     return;
@@ -610,10 +606,7 @@ AjBool ajCpdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 {
     /*rn_mod is a modifier to the residue number to give correct residue
       numbering for the domain*/
-    int      x;
-    int      y;
     int      z;
-    int      a;
     int      chn;
     int      start=0;
     int      end=0;
@@ -665,7 +658,7 @@ AjBool ajCpdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 		ajStrDel(&seq);
 		ajStrDel(&tmpseq);
 		ajWarn("Chain incompatibility error in ajCpdbWriteDomain");	
-		return AjFalse;
+		return ajFalse;
 	    }
 	
 
@@ -701,7 +694,7 @@ AjBool ajCpdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 	{
 	    noend = ajTrue;
 	    
-	    while(atm=(AjPAtom)ajListIterNext(iter))
+	    while((atm=(AjPAtom)ajListIterNext(iter)))
 	    {
 		if(atm->Type!='P' || atm->Mod!=1)
 		    break;	
@@ -721,7 +714,7 @@ AjBool ajCpdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 	/*Find start and end of domains in chain*/
 	if(!found_start || !found_end)
 	{
-	    while(atm=(AjPAtom)ajListIterNext(iter))
+	    while((atm=(AjPAtom)ajListIterNext(iter)))
 	    {
 
 		if(atm->Type!='P' || atm->Mod!=1 
@@ -763,8 +756,8 @@ AjBool ajCpdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 	    ajStrDel(&seq);
 	    ajStrDel(&tmpseq);
 	    ajListIterFree(iter);	
-	    ajWarn("Domain start not found in ajCpdbWriteDomain");		
-	    return AjFalse;
+	    ajWarn("Domain start not found in ajCpdbWriteDomain");
+	    return ajFalse;
 	}
 	
 	if(!found_end)		
@@ -772,8 +765,8 @@ AjBool ajCpdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 		ajStrDel(&seq);
 		ajStrDel(&tmpseq);
 		ajListIterFree(iter);	
-		ajWarn("Domain end not found in ajCpdbWriteDomain");		
-		return AjFalse;
+		ajWarn("Domain end not found in ajCpdbWriteDomain");
+		return ajFalse;
 	    }
 	
 
@@ -814,7 +807,7 @@ AjBool ajCpdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 	    ajStrDel(&tmpseq);
 	    ajListIterFree(iter);	
 	    ajWarn("Chain incompatibility error in ajCpdbWriteDomain");
-	    return AjFalse;
+	    return ajFalse;
 	}
 
 	iter=ajListIter(pdb->Chains[chn-1]->Atoms);
@@ -842,7 +835,7 @@ AjBool ajCpdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 	else 
 	    noend=ajFalse;
 	
-	while(atm=(AjPAtom)ajListIterNext(iter))
+	while((atm=(AjPAtom)ajListIterNext(iter)))
 	{
 	    if(atm->Mod!=1 || atm->Type!='P')
 		break;
@@ -1181,7 +1174,6 @@ AjBool ajPrintPdbAtomDomain(AjPFile outf, AjPPdb pdb, AjPScop scop, int mod)
     AjBool   noend=ajFalse;
     int      rn_mod=0;  
     int      z;
-    int      a;
     int      finalrn=0;
     char     id;
     int      chn;
@@ -1199,7 +1191,7 @@ AjBool ajPrintPdbAtomDomain(AjPFile outf, AjPPdb pdb, AjPScop scop, int mod)
 
 	iter=ajListIter(pdb->Chains[chn-1]->Atoms);	
 	
-	while(atm=(AjPAtom)ajListIterNext(iter))
+	while((atm=(AjPAtom)ajListIterNext(iter)))
 	    if(atm->Mod==mod)
 		break;
 
@@ -1327,18 +1319,16 @@ AjBool ajPrintPdbAtomDomain(AjPFile outf, AjPPdb pdb, AjPScop scop, int mod)
 AjBool ajPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, int mod, int chn)
 {
     AjBool   doneter=ajFalse;
-    int      offset;
     AjIList  iter=NULL;
     AjPAtom  atm=NULL;
     AjPAtom  atm2=NULL;
     int      acnt;
-    int      z;
     
 
     doneter=ajFalse;
     iter=ajListIter(pdb->Chains[chn-1]->Atoms);	
 
-    while(atm=(AjPAtom)ajListIterNext(iter))
+    while((atm=(AjPAtom)ajListIterNext(iter)))
 	if(atm->Mod==mod)
 	    break;
   
@@ -1401,7 +1391,7 @@ AjBool ajPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, int mod, int chn)
     }
     ajListIterFree(iter);				    
 
-    return AjTrue;
+    return ajTrue;
 }
 
 
@@ -1432,7 +1422,6 @@ AjBool ajPrintPdbSeqresDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
     AjPStr   tmp2=NULL;
     int      last_rn=0;  
     int      this_rn;
-    int      a;
     int      x;
     int      y;
     int      z;
@@ -1479,7 +1468,7 @@ AjBool ajPrintPdbSeqresDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 	else	
 	    noend=ajFalse;
 	
-	while(atm=(AjPAtom)ajListIterNext(iter))
+	while((atm=(AjPAtom)ajListIterNext(iter)))
 	{
 	    if(atm->Type!='P' || atm->Mod!=1)
 		break;
@@ -1600,8 +1589,6 @@ AjBool ajPrintPdbSeqresChain(AjPFile outf, AjPPdb pdb, int chn)
     AjPAtom  atm=NULL;
     AjPStr   tmp1=NULL;
     AjPStr   tmp2=NULL;
-    AjBool   nostart=ajFalse;
-    AjBool   noend=ajFalse;
     int      last_rn=0;  
     int      this_rn;
     int      x;
@@ -1620,7 +1607,7 @@ AjBool ajPrintPdbSeqresChain(AjPFile outf, AjPPdb pdb, int chn)
       atm=(AjPAtom)ajListIterNext(iter);
       */
 
-    while(atm=(AjPAtom)ajListIterNext(iter))
+    while((atm=(AjPAtom)ajListIterNext(iter)))
     {
 	if(atm->Type!='P' || atm->Mod!=1)
 	    break;
@@ -1867,7 +1854,6 @@ AjBool ajPrintPdbHeader(AjPFile outf, AjPPdb pdb)
 AjBool   ajPdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 {
     int x;
-    int y;
     
     ajPrintPdbHeader(outf, pdb);
     ajPrintPdbTitle(outf, pdb);
@@ -1985,7 +1971,6 @@ void ajScopWrite(AjPFile outf, AjPScop thys)
     ajFmtPrintF(outf,"ID   %S\nXX\n",thys->Entry);
     ajFmtPrintF(outf,"EN   %S\nXX\n",thys->Pdb);
     ajFmtPrintF(outf,"OS   %S\nXX\n",thys->Source);
-    ajFmtPrintF(outf,"DB   %S\nXX\n",thys->Db);
     ajFmtPrintF(outf,"CL   %S",thys->Class);
 
     ajFmtPrintSplit(outf,thys->Fold,"\nXX\nFO   ",75," \t\n\r");
@@ -2055,7 +2040,6 @@ AjBool ajScopReadC(AjPFile inf, char *entry, AjPScop *thys)
     static AjPStr str=NULL;
     static AjPStr xentry=NULL;
     static AjPStr source=NULL;
-    static AjPStr db=NULL;
     static AjPStr class=NULL;
     static AjPStr fold=NULL;
     static AjPStr super=NULL;
@@ -2078,7 +2062,6 @@ AjBool ajScopReadC(AjPFile inf, char *entry, AjPScop *thys)
 	xentry  = ajStrNew();
 	pdb     = ajStrNew();
 	source  = ajStrNew();
-	db      = ajStrNew();
 	class   = ajStrNew();
 	fold    = ajStrNew();
 	super   = ajStrNew();
@@ -2088,8 +2071,8 @@ AjBool ajScopReadC(AjPFile inf, char *entry, AjPScop *thys)
 	tentry  = ajStrNew();
 	stmp    = ajStrNew();
 	exp1    = ajRegCompC("^([^ \t\r\n]+)[ \t\n\r]+");
-	exp2    = ajRegCompC("^([A-Za-z0-9]+)[ ]*[^ \t\r\n]+[ ]*([0-9]+)[ ]*"
-			     "[^ \t\r\n]+[ ]*([0-9]+)");
+	exp2    = ajRegCompC("^([A-Za-z0-9.]+)[ ]*[^ \t\r\n]+[ ]*([0-9.]+)[ ]*"
+			     "[^ \t\r\n]+[ ]*([0-9.]+)");
     }
 
 
@@ -2128,8 +2111,6 @@ AjBool ajScopReadC(AjPFile inf, char *entry, AjPScop *thys)
 	    ajStrAssS(&xentry,str);
 	else if(ajStrPrefixC(line,"EN"))
 	    ajStrAssS(&pdb,str);
-	else if(ajStrPrefixC(line,"DB"))
-	    ajStrAssS(&db,str);
 	else if(ajStrPrefixC(line,"OS"))
 	    ajStrAssS(&source,str);
 	else if(ajStrPrefixC(line,"CL"))
@@ -2185,7 +2166,6 @@ AjBool ajScopReadC(AjPFile inf, char *entry, AjPScop *thys)
 	    ajStrAssS(&(*thys)->Entry,xentry);
 	    ajStrAssS(&(*thys)->Pdb,pdb);
 	    ajStrAssS(&(*thys)->Source,source);
-	    ajStrAssS(&(*thys)->Db,db);
 	    ajStrAssS(&(*thys)->Class,class);
 	    ajStrAssS(&(*thys)->Fold,fold);
 	    ajStrAssS(&(*thys)->Domain,domain);

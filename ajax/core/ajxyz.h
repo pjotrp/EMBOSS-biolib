@@ -118,7 +118,6 @@ typedef struct AjSScop
 {
     AjPStr Entry;
     AjPStr Pdb;
-    AjPStr Db;
     AjPStr Class;
     AjPStr Fold;
     AjPStr Superfamily;
@@ -129,7 +128,6 @@ typedef struct AjSScop
     char   *Chain;
     AjPStr *Start;
     AjPStr *End;
-    AjPFile Fp;
 } AjOScop,*AjPScop;
 
 

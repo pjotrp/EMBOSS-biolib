@@ -5049,3 +5049,41 @@ void ajStrDegap(AjPStr* thys)
 
     return;
 }
+
+/* @func ajStrRemoveHtml *****************************************************
+**
+** Removes all strings between and including angle brackets
+**
+** @param [w] thys [AjPStr*] String
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajStrRemoveHtml(AjPStr *thys)
+{
+    char *p;
+    char *q;
+
+    p = q = (*thys)->Ptr;
+    while(*p)
+    {
+	if(*p!='<')
+	{
+	    *q++=*p++;
+	    continue;
+	}
+	while(*p)
+	{
+	    if(*p=='>')
+	    {
+		++p;
+		break;
+	    }
+	    --(*thys)->Len;
+	    ++p;
+	}
+    }
+    *q='\0';
+
+    return;
+}
