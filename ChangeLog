@@ -1,4 +1,7 @@
 Version 2.7.0
+	A guide to the EMBASSY package domainatrix (domainatrix.doc)
+	has been added to /emboss/emboss/doc/manuals
+
 	Extractfeat now has the -describe qualifier to allow it to add
 	the value of selected tags to the Description line of the output
 	sequence. 
