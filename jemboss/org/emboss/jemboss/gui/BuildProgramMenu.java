@@ -80,7 +80,7 @@ public class BuildProgramMenu
            final String embossBin, final String envp[],
            final JembossParams mysettings, final boolean withSoap,
            final String cwd, final String acdDirToParse,
-           final JFrame f)
+           final SetUpMenuBar mainMenu, final JFrame f)
   {
   
     final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
@@ -111,8 +111,8 @@ public class BuildProgramMenu
           if(mysettings.getPublicSoapURL().startsWith("https"))
           {
             System.setProperty("https.proxyHost", "");
-//          System.setProperty("http.proxyHost", "");
-//          System.setProperty("proxyHost", "");  
+            System.setProperty("http.proxyHost", "");
+            System.setProperty("proxyHost", "");  
             String settings[] = new String[1];
             settings[0] = new String("proxy.override=true");
             mysettings.updateJembossPropStrings(settings);
@@ -153,7 +153,8 @@ public class BuildProgramMenu
 
               Database d = new Database(showdbOut);
               db = d.getDB();
-
+              mainMenu.setEnableFileManagers(true);
+              mainMenu.setEnableShowResults(true);
               splashing.doneSomething("");
               splashThread.setInterval(0);
 
@@ -180,8 +181,13 @@ public class BuildProgramMenu
               if(hwoss.containsKey("wossname.out"))
                 woss = new String((byte[])hwoss.get("wossname.out"));
 
+              mainMenu.setEnableFileManagers(false);
+              mainMenu.setEnableShowResults(false);
+
               Hashtable hshowdb = (new JembossJarUtil("resources/showdb.jar")).getHash();
-              
+              mainMenu.setEnableFileManagers(false);
+              mainMenu.setEnableShowResults(false);   
+
               if(hshowdb.containsKey("showdb.out"))
               {
                 String showdbOut = new String((byte[])hshowdb.get("showdb.out"));
@@ -189,13 +195,16 @@ public class BuildProgramMenu
                 db = d.getDB();
               }
             }
-            catch (Exception ex){ ex.printStackTrace(); }
+            catch (Exception ex){ System.out.println("calling the server"); }
 
             if(woss.equals(""))
             {
               GetWossname ewoss = new GetWossname(mysettings);
               woss = ewoss.getDBText(); 
+              mainMenu.setEnableFileManagers(true);
+              mainMenu.setEnableShowResults(true);
             }
+            
             splashing.doneSomething("");
           } 
           catch(Exception e)
