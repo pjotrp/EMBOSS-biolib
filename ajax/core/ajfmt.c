@@ -376,7 +376,12 @@ static void cvt_u(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 #endif
     }
     else
+    {
 	m  = va_arg(VA_V(ap), unsigned int);
+#if defined(HAVE64)
+	hm = m;
+#endif
+    }
 
 #if !defined(HAVE64)
     do
@@ -438,7 +443,12 @@ static void cvt_o(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 #endif
     }
     else
+    {
 	m = va_arg(VA_V(ap), unsigned int);
+#if defined(HAVE64)
+	hm = m;
+#endif
+    }
 
 #if !defined(HAVE64)
     do
@@ -490,10 +500,20 @@ static void cvt_x(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
     p = buf + sizeof buf;
 
     if(flags['l'])
+    {
 	m = va_arg(VA_V(ap), unsigned long);
+#if defined(HAVE64)
+	hm = m;
+#endif
+    }
     else if(flags['h'])
+    {
 	/* ANSI C converts short to int */
 	m = va_arg(VA_V(ap), unsigned int);
+#if defined(HAVE64)
+	hm = m;
+#endif
+    }
     else if(flags['L'])
     {
 #if defined(HAVE64)
@@ -504,13 +524,23 @@ static void cvt_x(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 #endif
     }
     else
+    {
 	m = va_arg(VA_V(ap), unsigned int);
-
+#if defined(HAVE64)
+	hm = m;
+#endif
+    }
     if(code == 'X')
     {
+#if !defined(HAVE64)
 	do
 	    *--p = "0123456789ABCDEF"[m&0xf];
 	while((m>>= 4) != 0);
+#else
+	do
+	    *--p = "0123456789ABCDEF"[hm&0xf];
+	while((hm>>= 4) != 0);
+#endif
     }
     else
     {
@@ -2313,7 +2343,7 @@ static void scvt_d(const char *fmt, char **pos, VALIST ap, ajint width,
 	    if(flag!='L')
 		sscanf(ajStrStr(t),"%ld",&n);
 
-	    else
+	    else			/* flag == 'L' define hn */
 	    {
 #if defined(HAVE64)
 		hn = sc_long(ajStrStr(t));
@@ -2401,7 +2431,7 @@ static void scvt_x(const char *fmt, char **pos, VALIST ap, ajint width,
 		if(sscanf(ajStrStr(t),"%lx",&n)!=1)
 		    return;
 	    }
-	    else
+	    else			/* flag == 'L' define hn */
 	    {
 #if defined(HAVE64)
 		hn = sc_hex(ajStrStr(t));
@@ -2621,7 +2651,7 @@ static void scvt_o(const char *fmt, char **pos, VALIST ap, ajint width,
 		if(sscanf(ajStrStr(t),"%lo",&n)!=1)
 		    return;
 	    }
-	    else
+	    else			/* flag == 'L' define hn */
 	    {
 #if defined(HAVE64)
 		hn = sc_octal(ajStrStr(t));
@@ -2713,7 +2743,7 @@ static void scvt_u(const char *fmt, char **pos, VALIST ap, ajint width,
 		if(sscanf(ajStrStr(t),"%lu",&n)!=1)
 		    return;
 	    }
-	    else
+	    else			/* flag == 'L' define hn */
 	    {
 #if defined(HAVE64)
 		hn = sc_ulong(ajStrStr(t));
