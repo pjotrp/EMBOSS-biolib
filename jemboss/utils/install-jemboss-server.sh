@@ -1244,35 +1244,6 @@ fi
 
 make_jemboss_properties $EMBOSS_INSTALL $LOCALHOST $AUTH $SSL $PORT $EMBOSS_URL $CLUSTALW $PRIMER3
 
-RUNFILE=$JEMBOSS/runJemboss.csh
-sed "s|^setenv JEMBOSS_HOME .|setenv JEMBOSS_HOME $JEMBOSS|" $RUNFILE > $RUNFILE.new
-sed "s|java |$JAVA_HOME/bin/java |" $RUNFILE.new > $RUNFILE.new1
-rm -f $RUNFILE.new
-mv $RUNFILE $RUNFILE.bak
-mv $RUNFILE.new1 $RUNFILE
-
-if [ $INSTALL_TYPE = "2" ]; then
-  if [ -f "$RUNFILE.bak" ]; then
-    rm -f $RUNFILE.bak
-  fi
-  sed "s|^#java org|java org|" $RUNFILE > $RUNFILE.new
-  sed "s|^java org.emboss.jemboss.Jemboss &|#java org.emboss.jemboss.Jemboss &|" $RUNFILE.new  > $RUNFILE.new1
-  sed "s|^#setenv EMBOSS_INSTALL.*|setenv EMBOSS_INSTALL $EMBOSS_INSTALL/lib|"   $RUNFILE.new1 > $RUNFILE.new2
-  sed "s|^#setenv LD_LIBRARY_PATH|setenv LD_LIBRARY_PATH|"                       $RUNFILE.new2 > $RUNFILE.new3
-  rm -f $RUNFILE.new $RUNFILE.new1 $RUNFILE.new2
-  mv $RUNFILE $RUNFILE.bak1
-  mv $RUNFILE.new3 $RUNFILE
-  chmod a+x $RUNFILE
-
-  echo
-  echo "To run Jemboss:"
-  echo "cd $JEMBOSS"
-  echo "./runJemboss.csh"
-  echo
-
-  exit 0
-fi
-
 #
 #
 # Tomcat scripts
@@ -1342,6 +1313,52 @@ echo "$TOMCAT_ROOT/bin/shutdown.sh"  >> tomstop
 
 chmod u+x tomstart
 chmod u+x tomstop
+
+
+#
+#
+# Run Jemboss script
+#
+#
+
+RUNFILE=$JEMBOSS/runJemboss.sh
+sed "s|^JEMBOSS_HOME=.|JEMBOSS_HOME=$JEMBOSS|" $RUNFILE > $RUNFILE.new
+mv $RUNFILE $RUNFILE.bak
+mv $RUNFILE.new $RUNFILE
+
+if [ $INSTALL_TYPE = "2" ]; then
+  if [ -f "$RUNFILE.bak" ]; then
+    rm -f $RUNFILE.bak
+  fi
+  sed "s|^#java org|$JAVA_HOME/bin/java org|" $RUNFILE > $RUNFILE.new
+  sed "s|^java org.emboss.jemboss.Jemboss &|#java org.emboss.jemboss.Jemboss &|" $RUNFILE.new  > $RUNFILE.new1
+  sed "s|^#EMBOSS_INSTALL=\(.*\)|EMBOSS_INSTALL=$EMBOSS_INSTALL/lib; export EMBOSS_INSTALL|" $RUNFILE.new1 > $RUNFILE.new2
+  sed "s|^#LD_LIBRARY_PATH|LD_LIBRARY_PATH|" $RUNFILE.new2 > $RUNFILE.new3
+  rm -f $RUNFILE.new $RUNFILE.new1 $RUNFILE.new2
+  mv $RUNFILE $RUNFILE.bak1
+  mv $RUNFILE.new3 $RUNFILE
+
+
+  if [ "$AIX" = "y" ]; then
+   sed "s|^#LIBPATH|LIBPATH|" $RUNFILE > $RUNFILE.new1
+   rm -f $RUNFILE
+   mv $RUNFILE.new1 $RUNFILE
+  fi
+
+  chmod a+x $RUNFILE
+
+  echo
+  echo "To run Jemboss:"
+  echo "cd $JEMBOSS"
+  echo "./runJemboss.sh"
+  echo
+
+  exit 0
+else
+  sed "s|^java |$JAVA_HOME/bin/java |" $RUNFILE > $RUNFILE.new
+  rm -f $RUNFILE
+  mv $RUNFILE.new $RUNFILE
+fi
 
 #
 # Add classes to Tomcat path
@@ -1519,13 +1536,13 @@ if [ ! -d "$DATADIR" ]; then
   echo
 fi
 echo "Try running Jemboss with the script:"
-echo "   $JEMBOSS/runJemboss.csh"
+echo "   $JEMBOSS/runJemboss.sh"
 echo
 echo "To create a web launch page see:"
 echo "http://www.uk.embnet.org/Software/EMBOSS/Jemboss/install/deploy.html"
 echo
 
-chmod a+x $JEMBOSS/runJemboss.csh
+chmod a+x $JEMBOSS/runJemboss.sh
 chmod u+x $JEMBOSS/utils/*sh
 
 exit 0;
