@@ -58,7 +58,6 @@ int main(int argc, char **argv)
 
     ajSeqAssSeq (a, back);
 
-    ajSeqSetNuc(a);
     ajSeqWrite(outf,a);
 
     ajStrDel(&back);
