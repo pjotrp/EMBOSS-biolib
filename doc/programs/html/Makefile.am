@@ -71,7 +71,7 @@ pkgdata2_DATA = lindna.html listor.html marscan.html maskfeat.html \
                revseq.html scopalign.html scope.html scopparse.html \
                seealso.html seqboot.html seqmatchall.html seqnr.html \
                seqret.html seqretall.html seqretallfeat.html \
-               seqretfeat.html seqretset.html seqretsplit.html \
+               seqretfeat.html seqretset.html seqretsplit.html seqsort.html \
                showalign.html showdb.html showfeat.html showorf.html \
                showseq.html shuffleseq.html sigcleave.html siggen.html \
                sigscan.html silent.html splitter.html stamps.html \
