@@ -61,8 +61,8 @@ int main(int argc, char **argv)
 	    ** so replace the rest directly
 	    */
 
-	    for(i=0;i<len;i++)
-		if(p[i] ==  0x0d)
+	    for (i=0;i<len;i++)
+		if (p[i] ==  0x0d)
 		    p[i] = 0x0a;
 	}
 	
