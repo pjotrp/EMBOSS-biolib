@@ -965,7 +965,14 @@ AjBool ajFileGetsL (const AjPFile thys, AjPStr* pdest, ajlong* fpos) {
 
   if (!thys->fp)
     ajWarn("ajFileGets file not found");
+
   while (buff) {
+    if (thys->End) {
+      *fpos = 0;
+      ajDebug("File already read to end %F\n", thys);
+      return ajFalse;
+    }
+
     *fpos = ajFileTell (thys);
     cp = fgets (&buff[ipos], isize, thys->fp);
 
