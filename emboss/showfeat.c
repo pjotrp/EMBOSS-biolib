@@ -257,7 +257,7 @@ static void showfeat_ShowFeatSeq (AjPFile outfile, AjPSeq seq, ajint beg,
     AjBool gotoutput = ajFalse;		/* have a line to output */
       
     /* get the feature table of the sequence */
-    feat = ajSeqGetFeat(seq);
+    feat = ajSeqCopyFeat(seq);
     if(!feat)
 	return;
 
@@ -350,7 +350,7 @@ static void showfeat_ShowFeatSeq (AjPFile outfile, AjPSeq seq, ajint beg,
 
 
     /* tidy up */
-/*    (void) ajFeattabDel(&feat); ajb */
+    (void) ajFeattableDel(&feat);
 
     ajStrDel(&tagsout);
     ajStrDel(&posout);
