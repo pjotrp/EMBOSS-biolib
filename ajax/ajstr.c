@@ -4017,12 +4017,15 @@ int ajCharPos (const char* thys, int ipos) {
 AjIStr ajStrIter (const AjPStr thys) {
 
   AjIStr iter;
-
+  AjPStr tmp;
+  
   iter = AJNEW0(iter);
   iter->Begin = 0;
   iter->End = thys->Len;
   iter->Curr = 0;
-  iter->Loc = iter->Obj = ajStrDup(thys);
+  tmp = ajStrNewC(ajStrStr(thys));
+  
+  iter->Loc = iter->Obj = tmp;
 
   return iter;
 
