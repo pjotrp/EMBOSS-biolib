@@ -255,21 +255,11 @@ public class BuildProgramMenu
                                       embossCommand,envp,null);
           rea.waitFor();
           woss = rea.getProcessStdout();
-          Process processWoss = rea.getProcess();
 
           embossCommand = new String(embossBin + "showdb -auto");
           rea = new RunEmbossApplication2(embossCommand,envp,null);
           rea.waitFor();
           String showdbOut = rea.getProcessStdout();
-
-          try 
-          {
-            processWoss.waitFor();
-          } 
-          catch (InterruptedException interre)
-          {
-            System.out.println("BuildProgramMenu received interruption error");
-          }
 
           Database d = new Database(showdbOut);
           db = d.getDB();
@@ -469,6 +459,40 @@ public class BuildProgramMenu
         p1.setPreferredSize(dp1);
         p1.setMaximumSize(dp1);
         p1.setMinimumSize(dp1);
+
+
+// search tool bar
+        JToolBar toolBar = new JToolBar(JToolBar.VERTICAL);
+        final JTextField search = new JTextField(12);
+        search.addActionListener(new ActionListener()
+        {
+          public void actionPerformed(ActionEvent e)
+          {
+            new KeywordSearch(search,mysettings,withSoap,f,envp);
+          }
+        });
+
+        Box bacross = Box.createHorizontalBox();
+        JLabel keyw = new JLabel("Keyword Search");
+        keyw.setFont(new Font("SansSerif", Font.BOLD, 10));
+        bacross.add(keyw);
+        JButton go = new JButton("GO");
+        go.setFont(new Font("monospaced", Font.BOLD, 10));
+        go.setMargin(new Insets(0,0,0,0));
+        go.setForeground(new Color(0,51,102));
+        go.addActionListener(new ActionListener()
+        {
+          public void actionPerformed(ActionEvent e)
+          {
+            new KeywordSearch(search,mysettings,withSoap,f,envp);
+          }
+        });
+        bacross.add(Box.createHorizontalStrut(2));
+        bacross.add(go);
+        bacross.add(Box.createHorizontalGlue());
+        toolBar.add(bacross);
+        toolBar.add(search);
+        p1.add(toolBar, BorderLayout.SOUTH);
 
 // put on the logo
         ClassLoader cl = this.getClass().getClassLoader();
