@@ -1,5 +1,24 @@
 Version 2.4.0
 
+        Two access methods "file" and "offset" were defined as valid in
+	database definitions, but are really reserved for simple file reading.
+	They are removed from the database access methods list.
+
+	Two access methods "cmd" and "nbrf" are obsolete (cmd was never
+	implemented, nbrf is replaced by gcg which includes a query
+	mechanism). Both are removed from the database access methods list,
+	and the source code is commented out.
+	
+        SRS, SRSFASTA and SRSWWW database access can read all entries This
+	is not recommended for SRSWWW access because it will read
+	everything into memory - all of EMBL for example - then strip out
+	HTML tags before reading. For SRS it is not recommended because
+	"methodall: direct" is faster. For SRSFASTA it is necessary
+	because using SRSFASTA implies EMBOSS does not read the original
+	data format. However, not iomplementing an "all" search left a gap
+	in the SRS access methods which would generate a bad SRS command
+	line or URL.
+	
 	NBRF sequence reading trims last character only if it is '*'
 	to catch cases where SRS reports the sequence as 'plain'
 

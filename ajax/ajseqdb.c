@@ -136,11 +136,11 @@ typedef struct SeqSCdQry
 
 static AjBool     seqAccessApp (AjPSeqin seqin);
 static AjBool     seqAccessBlast (AjPSeqin seqin);
-static AjBool     seqAccessCmd (AjPSeqin seqin);
+/* static AjBool     seqAccessCmd (AjPSeqin seqin);*/ /* not implemented */
 static AjBool     seqAccessDirect (AjPSeqin seqin);
 static AjBool     seqAccessEmblcd (AjPSeqin seqin);
 static AjBool     seqAccessGcg (AjPSeqin seqin);
-static AjBool     seqAccessNbrf (AjPSeqin seqin);
+/* static AjBool     seqAccessNbrf (AjPSeqin seqin); */ /* obsolete */
 static AjBool     seqAccessSrs (AjPSeqin seqin);
 static AjBool     seqAccessSrsfasta (AjPSeqin seqin);
 static AjBool     seqAccessSrswww (AjPSeqin seqin);
@@ -206,13 +206,14 @@ static SeqOAccess seqAccess[] =
   {"srsfasta",seqAccessSrsfasta},
   {"srswww",seqAccessSrswww},
   {"url",seqAccessUrl},
-  {"cmd",seqAccessCmd},
+  /* {"cmd",seqAccessCmd}, */		/* not yet implemented */
   {"app",seqAccessApp},
   {"external",seqAccessApp},
-  {"file",ajSeqAccessFile},
-  {"offset",ajSeqAccessOffset},
+  /* {"asis",ajSeqAccessAsis}, */      /* called directly by seqUsaProcess */
+  /* {"file",ajSeqAccessFile}, */      /* called directly by seqUsaProcess */
+  /* {"offset",ajSeqAccessOffset}, */  /* called directly by seqUsaProcess */
   {"direct",seqAccessDirect},
-  {"nbrf",seqAccessNbrf},
+  /* {"nbrf",seqAccessNbrf}, */	       /* obsolete */
   {"gcg",seqAccessGcg},
   {"blast",seqAccessBlast},
   {NULL, NULL}
@@ -1240,6 +1241,9 @@ static AjBool seqAccessSrs (AjPSeqin seqin)
     else if (ajStrLen(qry->Key))
 	(void) ajFmtPrintS(&seqin->Filename, "%S -e '[%S-key:%S]'|",
 			   qry->Application, searchdb, qry->Key);
+    else
+	(void) ajFmtPrintS(&seqin->Filename, "%S -e '%S'|",
+			   qry->Application, searchdb);
 
     seqin->Filebuff = ajFileBuffNewIn (seqin->Filename);
     if (!seqin->Filebuff)
@@ -1304,6 +1308,9 @@ static AjBool seqAccessSrsfasta (AjPSeqin seqin)
     else if (ajStrLen(qry->Key))
 	(void) ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta [%S-key:%S]|",
 			   qry->Application, searchdb, qry->Key);
+    else
+	(void) ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta %S|",
+			   qry->Application, searchdb);
 
     ajDebug ("searching with SRS command '%S'\n", seqin->Filename);
     seqin->Filebuff = ajFileBuffNewIn (seqin->Filename);
@@ -1406,6 +1413,9 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
     else if (ajStrLen(qry->Key))
 	(void) ajFmtPrintAppS(&get, "+[%S-key:%S]",
 			   searchdb, qry->Key);
+    else
+	(void) ajFmtPrintAppS(&get, "+%S",
+			   searchdb);
 
     ajDebug ("searching with SRS url '%S'\n", get);
 
@@ -1873,8 +1883,9 @@ static AjBool seqCdQryClose (AjPSeqQuery qry)
 
 /* @funcstatic seqAccessGcg **************************************************
 **
-** Reads sequence(s) using NBRF index files. Returns with the file pointer
-** set to the position in the sequence file.
+** Reads sequence(s) from a GCG formatted database, using EMBLCD index
+** files. Returns with the file pointer set to the position in the
+** sequence file.
 **
 ** @param [r] seqin [AjPSeqin] Sequence input.
 ** @return [AjBool] ajTrue on success.
@@ -2920,7 +2931,7 @@ static AjBool seqCdQryFile (AjPSeqQuery qry)
 **
 ******************************************************************************/
 
-/* @funcstatic seqAccessNbrf **************************************************
+/* #funcstatic seqAccessNbrf **************************************************
 **
 ** Reads sequence(s) using NBRF index files. Returns with the file pointer
 ** set to the position in the sequence file.
@@ -2930,44 +2941,46 @@ static AjBool seqCdQryFile (AjPSeqQuery qry)
 ** @@
 ******************************************************************************/
 
-static AjBool seqAccessNbrf (AjPSeqin seqin)
-{
-    static AjPStr fullname = NULL;
-
-    AjPSeqQuery qry = seqin->Query;
-
-    ajDebug ("seqAccessNbrf %S\n", qry->DbName);
-
-    if (!ajStrLen(qry->Directory))
-    {
-	ajErr ("NBRF access: directory not defined");
-	return ajFalse;
-    }
-
-    if (!ajStrLen(qry->Filename))
-    {
-	ajErr ("NBRF access: filename not defined");
-	return ajFalse;
-    }
-
-    ajDebug ("Try to open %S%S.seq\n", qry->Directory, qry->Filename);
-
-    seqin->Filebuff = ajFileBuffNewDW (qry->Directory, qry->Filename);
-    if (!seqin->Filebuff)
-    {
-	ajErr ("NBRF access: failed to open filename '%S/%S'",
-	       qry->Directory, qry->Filename);
-	return ajFalse;
-    }
-
-    (void) ajStrAssS (&seqin->Filename, qry->Filename);
-    (void) ajStrAssS (&seqin->Entryname, qry->Id);
-    (void) ajStrAssS (&seqin->Db, qry->DbName);
-
-    ajStrDel (&fullname);
-
-    return ajTrue;
-}
+/*
+//static AjBool seqAccessNbrf (AjPSeqin seqin)
+//{
+//    static AjPStr fullname = NULL;
+//
+//    AjPSeqQuery qry = seqin->Query;
+//
+//    ajDebug ("seqAccessNbrf %S\n", qry->DbName);
+//
+//    if (!ajStrLen(qry->Directory))
+//    {
+//	ajErr ("NBRF access: directory not defined");
+//	return ajFalse;
+//    }
+//
+//    if (!ajStrLen(qry->Filename))
+//    {
+//	ajErr ("NBRF access: filename not defined");
+//	return ajFalse;
+//    }
+//
+//    ajDebug ("Try to open %S%S.seq\n", qry->Directory, qry->Filename);
+//
+//    seqin->Filebuff = ajFileBuffNewDW (qry->Directory, qry->Filename);
+//    if (!seqin->Filebuff)
+//    {
+//	ajErr ("NBRF access: failed to open filename '%S/%S'",
+//	       qry->Directory, qry->Filename);
+//	return ajFalse;
+//    }
+//
+//    (void) ajStrAssS (&seqin->Filename, qry->Filename);
+//    (void) ajStrAssS (&seqin->Entryname, qry->Id);
+//    (void) ajStrAssS (&seqin->Db, qry->DbName);
+//
+//    ajStrDel (&fullname);
+//
+//    return ajTrue;
+//}
+*/
 
 /* @section Remote URL Database Access ****************************************
 **
@@ -3128,7 +3141,8 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
 **
 ******************************************************************************/
 
-/* @funcstatic seqAccessCmd ***************************************************
+
+/* #funcstatic seqAccessCmd ***************************************************
 **
 ** Reads sequence data using a command. (not yet implemented)
 **
@@ -3137,12 +3151,14 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqAccessCmd (AjPSeqin seqin)
-{
-    ajErr ("seqAccessCmd is not yet implemented");
-
-    return ajFalse;
-}
+/*
+//static AjBool seqAccessCmd (AjPSeqin seqin)
+//{
+//    ajErr ("seqAccessCmd is not yet implemented");
+//
+//    return ajFalse;
+//}
+*/
 
 /* @section Application Database Access **********************************
 **
@@ -3301,7 +3317,7 @@ AjBool ajSeqAccessFile (AjPSeqin seqin)
 
 /* @func ajSeqAccessOffset **************************************************
 **
-** Reads a sequence from a named file.
+** Reads a sequence from a named file, at a given offset within the file.
 **
 ** @param [r] seqin [AjPSeqin] Sequence input.
 ** @return [AjBool] ajTrue on success.
