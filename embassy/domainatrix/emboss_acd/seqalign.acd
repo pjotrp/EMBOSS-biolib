@@ -76,6 +76,25 @@ endsection: required
 
 
 
+
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: forcetype  [
+    standard: "Y"
+    information: "Force output of minimal domain classification data."
+    help: "This option specifies whether to force minimal domain classification data to be written to the output file in cases where singlet sequences were given as input file and no classification data was available"
+    default: "N"
+  ]
+
+endsection: advanced
+
+
+
+
 section: output [
   information: "Output section"
   type: "page"

@@ -118,11 +118,10 @@ int main(int argc, char **argv)
     AjPStr    tmp1      = NULL;
     AjPStr    tmp2      = NULL;
     
-
-
     AjBool    ok = ajFalse;
     AjBool    ok2 = ajFalse;
-    
+    AjBool    forcetype = ajFalse; /* ACD variable */
+          
 
     /* Memory allocation */
     line        = ajStrNew();
@@ -142,13 +141,14 @@ int main(int argc, char **argv)
     ajNamInit("emboss");
     ajAcdInitP("seqalign",argc,argv,"DOMAINATRIX");
 
-    inseqs  = ajAcdGetDirlist("inseqs");
-    dhfin   = ajAcdGetDirectory("dhfin");
-    dafout  = ajAcdGetDirectory("dafout");
-    logf    = ajAcdGetOutfile("logf");    
-    amode   = ajAcdGetList("amode");  
-    mode    = ajAcdGetList("mode");    
-
+    inseqs    = ajAcdGetDirlist("inseqs");
+    dhfin     = ajAcdGetDirectory("dhfin");
+    dafout    = ajAcdGetDirectory("dafout");
+    logf      = ajAcdGetOutfile("logf");    
+    amode     = ajAcdGetList("amode");  
+    mode      = ajAcdGetList("mode");    
+    forcetype = ajAcdGetBool("forcetype");
+    
 
     /* Convert the selected amode to an integer */
     if(!(ajStrToInt(amode[0], &amoden)))
@@ -187,8 +187,8 @@ int main(int argc, char **argv)
 	ajStrAppC(&clustout,".out");
 	    
 
-	/* Input sequences were a seed alignment */
-	if(modei==1) 
+	/* Input sequences are seed alignment */
+	if(modei==2) 
 	{
 	    /* Read the domain seed alignment file */
 	    ok = ajFalse;
@@ -244,8 +244,8 @@ int main(int argc, char **argv)
 	    }
 	    ajFileClose(&clustinf1);
 	}
-	/* Input sequences were a singlet sequence */
-	else if(modei==2) 
+	/* Input sequences are singlets */
+	else if(modei==1) 
 	{	
 	    ok = ajFalse;
 	    if((!(hit_sing = embHitReadFasta(inf))))
@@ -264,8 +264,10 @@ int main(int argc, char **argv)
 		    ok = ajTrue;
 	    }
 	    else
+	    {
 		if(MAJSTRLEN(hit_sing->Seq))
 		    ok = ajTrue;
+	    }
 	    ajFileClose(&inf);
 	    
 	    
@@ -340,11 +342,11 @@ int main(int argc, char **argv)
 	    if(!(ajSeqsetRead(seqset_h, seqin_h)))
 		ajFatal("SeqsetRead failed in seqsearch_psialigned");
 	    
-	    if(ajSeqsetSize(seqset_h) > 1)
+	    if(ajSeqsetSize(seqset_h) >= 1)
 		ok2 = ajTrue;
 	}
 	else 
-	    if((hitlist_h->N > 1))
+	    if((hitlist_h->N >= 1))
 		ok2 = ajTrue;
 	
 
@@ -369,23 +371,28 @@ int main(int argc, char **argv)
 
 
 	/* Singlet sequence input rather than seed alignment. Add this sequence to the file of hits.  */
-	if(modei==2) 
+	if(modei==1) 
 	{
 	    if(hit_sing)
 	    {
 		
-		if((MAJSTRLEN(hit_sing->Acc)))
-		    ajFmtPrintF(clustinf2,">%S_%d_%d\n",
-				hit_sing->Acc,
-				hit_sing->Start,
-				hit_sing->End);
-		else
+		if((MAJSTRLEN(hit_sing->Dom)))
 		    /* The start and end may just be zero for domain sequences but 
 		       include them for consistency with the other inputs */
 		    ajFmtPrintF(clustinf2,">%S_%d_%d\n",
 				hit_sing->Dom,
 				hit_sing->Start,
 				hit_sing->End);
+		else if((MAJSTRLEN(hit_sing->Acc)))
+		    ajFmtPrintF(clustinf2,">%S_%d_%d\n",
+				hit_sing->Acc,
+				hit_sing->Start,
+				hit_sing->End);
+		else	
+		    ajFmtPrintF(clustinf2,">._%d_%d\n",
+				hit_sing->Start,
+				hit_sing->End);
+
 		ajFmtPrintF(clustinf2,"%S\n",hit_sing->Seq);
 	    }
 	    else
@@ -423,7 +430,7 @@ int main(int argc, char **argv)
 
 
 	/* Call clustalw */
-	if(ok)
+	if(modei==2)
 	{
 	    /* Alignment is available: do profile to sequence mode */
 	    ajFmtPrintS(&cmd,"clustalw -type=protein -profile1=%S -sequences"
@@ -432,7 +439,7 @@ int main(int argc, char **argv)
 			clustin1,clustin2,clustout);
 	}	
 	/* Such cases will now no longer occur ... but keep here for time being */
-	else
+	else if(modei==1)
 	{
 	    /* Alignment is NOT available: multiple sequence mode */
 	    ajFmtPrintS(&cmd,"clustalw -infile=%S -align"
@@ -462,19 +469,29 @@ int main(int argc, char **argv)
 
 
 	/* Then write domain classification data */
-	if(scopalign)
+	if((modei==2))
 	{
-	    if(scopalign->Type == ajSCOP)
+	    if(scopalign)
+	    {
+		if(scopalign->Type == ajSCOP)
+		    ajFmtPrintF(alg_out,"# TY   SCOP\n# XX\n");
+		else
+		    ajFmtPrintF(alg_out,"# TY   CATH\n# XX\n");
+		ajFmtPrintF(alg_out,"# CL   %S\n# XX\n",scopalign->Class);
+		ajFmtPrintF(alg_out,"# FO   %S\n# XX\n",scopalign->Fold);
+		ajFmtPrintF(alg_out,"# SF   %S\n# XX\n",scopalign->Superfamily);
+		ajFmtPrintF(alg_out,"# FA   %S\n# XX\n",scopalign->Family);
+		ajFmtPrintF(alg_out,"# SI   %d\n# XX\n",scopalign->Sunid_Family);
+	    }
+	    else if(forcetype)
 		ajFmtPrintF(alg_out,"# TY   SCOP\n# XX\n");
-	    else
-		ajFmtPrintF(alg_out,"# TY   CATH\n# XX\n");
-	    ajFmtPrintF(alg_out,"# CL   %S\n# XX\n",scopalign->Class);
-	    ajFmtPrintF(alg_out,"# FO   %S\n# XX\n",scopalign->Fold);
-	    ajFmtPrintF(alg_out,"# SF   %S\n# XX\n",scopalign->Superfamily);
-	    ajFmtPrintF(alg_out,"# FA   %S\n# XX\n",scopalign->Family);
-	    ajFmtPrintF(alg_out,"# SI   %d\n# XX\n",scopalign->Sunid_Family);
 	}
-	
+	/* Write minimal domain classification records where input was a singlet
+	   sequence and thus no classification records were provided. */
+	else if((modei==1) && (forcetype))
+	{
+	    ajFmtPrintF(alg_out,"# TY   SCOP\n# XX\n");
+	}	
 
 	/* Then parse the clustal file and write the alignment */
 	while(ajFileReadLine(alg_in,&line))
@@ -500,8 +517,9 @@ int main(int argc, char **argv)
 
 
 	/* clean up directory */
-	if(scopalign->N !=0)
-	    ajSysUnlink(clustin1);
+	if(modei==2)
+	    if(scopalign->N !=0)
+		ajSysUnlink(clustin1);
 	
 	ajSysUnlink(clustin2);
 	ajSysUnlink(clustout);
