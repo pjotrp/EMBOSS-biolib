@@ -9457,10 +9457,8 @@ FP 0 /Warning:/
 FI stdout
 FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
-FP 1 /^           10\n/
-FP 1 /^ AFULL AACCGG\n/
-FP 1 /^ BFULL AACGGG\n/
-FP 1 /^             \n/
+FP 1 /^AFULL +5 AACCGG +10\n/
+FP 1 /^BFULL +2 AACGGG +7\n/
 FC = 31
 //
 
@@ -9477,11 +9475,9 @@ FP 0 /Warning:/
 FI stdout
 FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
-FP 1 /^           10\n/
-FP 1 /^ AFULL AACCGG\n/
-FP 1 /^ BFULL AACGGG\n/
-FP 1 /^             \n/
-FC = 33
+FP 1 /^AFULL +5 AACCGG +10\n/
+FP 1 /^BFULL +2 AACGGG +7\n/
+FC = 31
 //
 
 ID align-matcher-markx0
@@ -9502,7 +9498,7 @@ FP 1 /^ AFULL AACCGG\n/
 FP 1 /^       ::: ::\n/
 FP 1 /^ BFULL AACGGG\n/
 FP 1 /^             \n/
-FC = 31
+FC = 33
 //
 
 ID align-matcher-markx1
