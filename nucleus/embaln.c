@@ -2635,6 +2635,11 @@ void embAlignCalcSimilarity(AjPStr m, AjPStr n, float **sub, AjPSeqCvt cvt,
     ajint   gaps=0;
 
 
+    ajStrToUpper(&m);
+    ajStrToUpper(&n);		
+    
+
+
     p=ajStrStr(m);
     q=ajStrStr(n);
     olen=strlen(p);
