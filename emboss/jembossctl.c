@@ -70,6 +70,7 @@ static AjBool jctl_check_buffer(char *buf, int mlen);
 static AjBool jcntl_check_socket_owner(char *pname);
 static AjBool jctl_chdir(char *file);
 static AjBool jctl_initgroups(char *buf, int gid);
+static void jctl_zero(char *buf);
 
 
 #include <pwd.h>
@@ -320,6 +321,7 @@ int main(int argc, char **argv)
     }
     
 
+    bzero((void*)buf,JBUFFLEN+1);
     ajStrDel(&message);
     jctl_tidy_strings(&tstr,&home,&retlist,buf);
     
@@ -782,6 +784,8 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
 
     ajStrAssC(&dir,p);
 
+    jctl_zero(buf);
+
     handle = ajStrTokenInit(cl," \t\n");
     ajStrToken(&prog,&handle,NULL);
     ajStrTokenClear(&handle);
@@ -993,6 +997,7 @@ static AjBool jctl_do_directory(char *buf, int uid, int gid)
     /* retrieve directory */
     ajStrAssC(&dir,p);
 
+    jctl_zero(buf);
 
     if(setgid(gid)==-1)
     {
@@ -1066,6 +1071,7 @@ static AjBool jctl_do_deletefile(char *buf, int uid, int gid)
     /* retrieve user file */
     ajStrAssC(&ufile,p);
 
+    jctl_zero(buf);
 
     if(setgid(gid)==-1)
     {
@@ -1136,6 +1142,7 @@ static AjBool jctl_do_deletedir(char *buf, int uid, int gid)
     /* retrieve user directory */
     ajStrAssC(&dir,p);
 
+    jctl_zero(buf);
 
     if(setgid(gid)==-1)
     {
@@ -1218,6 +1225,7 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
     /* retrieve user file */
     ajStrAssC(&dir,p);
 
+    jctl_zero(buf);
 
     if(setgid(gid)==-1)
     {
@@ -1317,6 +1325,7 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
     /* retrieve directory */
     ajStrAssC(&dir,p);
 
+    jctl_zero(buf);
 
     if(setgid(gid)==-1)
     {
@@ -1418,6 +1427,7 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     /* retrieve file name */
     ajStrAssC(&file,p);
 
+    jctl_zero(buf);
 
     if(setgid(gid)==-1)
     {
@@ -1560,6 +1570,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid, int sockdes)
     /* retrieve file name */
     ajStrAssC(&file,p);
 
+    jctl_zero(buf);
 
     if(send(sockdes,ajStrStr(message),2,0)==-1)
     {
@@ -1862,7 +1873,7 @@ static AjBool jcntl_check_socket_owner(char *pname)
 **
 ** @param [r] file [char*] file name
 **
-** @return [AjBool] true if sane
+** @return [AjBool] true if success
 ******************************************************************************/
 static AjBool jctl_chdir(char *file)
 {
@@ -1893,7 +1904,7 @@ static AjBool jctl_chdir(char *file)
 ** @param [r] buf [char*] socket buffer
 ** @param [r] gid [char*] gid
 **
-** @return [AjBool] true if sane
+** @return [AjBool] true if success
 ******************************************************************************/
 
 static AjBool jctl_initgroups(char *buf, int gid)
@@ -1914,6 +1925,27 @@ static AjBool jctl_initgroups(char *buf, int gid)
     ajStrDel(&user);
 
     return ajTrue;
+}
+
+
+/* @funcstatic jctl_zero ***********************************************
+**
+** Wipe username/password
+**
+** @param [r] buf [char*] socket buffer
+**
+** @return [void]
+******************************************************************************/
+
+static void jctl_zero(char *buf)
+{
+    char *p;
+
+    p=buf;
+    while(*p)
+	*p++ = '\0';
+
+    return;
 }
 
 #else
