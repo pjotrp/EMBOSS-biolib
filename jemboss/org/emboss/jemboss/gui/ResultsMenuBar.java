@@ -68,6 +68,9 @@ public class ResultsMenuBar
     fileMenu.add(fileMenuShowres);
 
     JMenuItem resFileMenuExit = new JMenuItem("Close");
+    resFileMenuExit.setAccelerator(KeyStroke.getKeyStroke(
+                    KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+    
     resFileMenuExit.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
