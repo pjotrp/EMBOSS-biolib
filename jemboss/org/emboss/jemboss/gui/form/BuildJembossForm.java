@@ -150,41 +150,44 @@ public class BuildJembossForm implements ActionListener
     }
 
 // Help button
-    JButton bhelp = new JButton("Help");
+    JButton bhelp = new JButton("");
     ImageIcon rfii = new ImageIcon("images/Information_button.gif");
     bhelp.setIcon(rfii);
     bhelp.addActionListener(this);
+    bhelp.setBorder(BorderFactory.createRaisedBevelBorder());
 
 // Display results button
     bresults = new JButton("Show results");
     bresults.addActionListener(this);
-
+    bresults.setBorder(BorderFactory.createRaisedBevelBorder());
 
 // Go button
     
     JButton bgo = new JButton("GO");
     rfii = new ImageIcon("images/Go_button.gif");
     bgo.setIcon(rfii);
+    bgo.setBorder(BorderFactory.createRaisedBevelBorder());
     bgo.addActionListener(this);
 
 // Advanced options
     JButton badvanced = new JButton("Advanced Options");
     badvanced.addActionListener(this);
+    badvanced.setBorder(BorderFactory.createRaisedBevelBorder());
 
     Box tools;
     tools = Box.createHorizontalBox();
     tools.add(Box.createRigidArea(new Dimension(2,0)));
     tools.add(bgo);
-    tools.add(Box.createRigidArea(new Dimension(2,0)));
+    tools.add(Box.createRigidArea(new Dimension(4,0)));
     tools.add(bhelp);
       
     if(advSectionBox!= null)
     {
-      tools.add(Box.createRigidArea(new Dimension(2,0)));
+      tools.add(Box.createRigidArea(new Dimension(4,0)));
       tools.add(badvanced);
     }
 
-    tools.add(Box.createRigidArea(new Dimension(2,0)));
+    tools.add(Box.createRigidArea(new Dimension(4,0)));
     tools.add(bresults);
     bresults.setVisible(false);
     tools.add(Box.createHorizontalGlue());
@@ -325,7 +328,7 @@ public class BuildJembossForm implements ActionListener
   }
 
 
-/*
+/**
 *
 *  Action events Exit, Help, GO, & Show results
 * 
@@ -339,7 +342,7 @@ public class BuildJembossForm implements ActionListener
     String line;
     String text = "";
 
-    if( ae.getActionCommand().startsWith("Help"))
+    if( ae.getActionCommand().startsWith(""))  // Help option
     {
       f.setCursor(cbusy);
       JFrame fhelp = new JFrame(applName + " Help");
