@@ -411,6 +411,7 @@ AjBool     ajStrPrefixCaseCO (const char* thys, const AjPStr pref);
 AjBool     ajStrPrefixCO (const char *str, const AjPStr thys);
 void       ajStrQuote(AjPStr *s);
 void       ajStrQuoteStrip(AjPStr *s);
+void       ajStrQuoteStripAll(AjPStr *s);
 void       ajStrRandom(AjPStr *s);
 AjBool     ajStrReplace  (AjPStr* pthis, ajint pos1,
 			  const AjPStr overwrite, ajint len);
