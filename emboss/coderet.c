@@ -68,7 +68,11 @@ int main(int argc, char **argv)
     usa  = ajStrNew();
 
 
-    ajStrAssC(&usa,ajStrStr(seqall->Seqin->Usa));
+    /*
+     *  Must get this so that embedded references in the same database
+     *  can be resolved
+     */
+    ajStrAssS(&usa,ajSeqallGetUsa(seqall));
     
     while(ajSeqallNext(seqall,&seq))
     {

@@ -372,6 +372,25 @@ AjPStr ajSeqGetUsa (AjPSeq thys) {
   return thys->Usa;
 }
 
+/* @func ajSeqallGetUsa *****************************************************
+**
+** Returns the sequence name of a sequence stream.
+** Because this is a pointer to the real internal string
+** the caller must take care not to change the character string in any way.
+** If the string is to be changed (case for example) then it must first
+** be copied.
+**
+** @param [u] thys [AjPSeqall] Sequence object.
+** @return [AjPStr] Name as a string.
+** @@
+******************************************************************************/
+
+AjPStr ajSeqallGetUsa (AjPSeqall thys) {
+  ajDebug ("ajSeqallGetUsa '%S'\n", thys->Seqin->Usa);
+
+  return thys->Seqin->Usa;
+}
+
 /* ==================================================================== */
 /* ========================= constructors ============================= */
 /* ==================================================================== */
