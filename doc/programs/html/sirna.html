@@ -211,7 +211,6 @@ penalties.
 
 <pre>
 for each input sequence:
-    if 'control' has been specified, randomly scramble the sequence
 
     find the start position of the CDS in the feature table
     if there is no such CDS, take the -sbegin position as the CDS start
@@ -324,12 +323,6 @@ Output sequence [hsfau.fasta]: <b></b>
                                   more of any bases in a row will be reported.
                                   No regions will ever be reported that have
                                   4 or more G's in a row.
-   -control            boolean    If this option is true then the sequence is
-                                  scrambled and siRNA probes are selected from
-                                  this scrambled sequence. The selected
-                                  probes are compared to the original sequence
-                                  to check that these control probes are not
-                                  similar to it.
 
    Advanced qualifiers: (none)
    General qualifiers:
@@ -401,13 +394,6 @@ Output sequence [hsfau.fasta]: <b></b>
 <td>If this option is FALSE then only those 23 base regions that have no repeat of 4 or more of any bases in a row will be reported. No regions will ever be reported that have 4 or more G's in a row.</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
-</tr>
-
-<tr>
-<td>-control</td>
-<td>If this option is true then the sequence is scrambled and siRNA probes are selected from this scrambled sequence. The selected probes are compared to the original sequence to check that these control probes are not similar to it.</td>
-<td>Boolean value Yes/No</td>
-<td>No</td>
 </tr>
 
 <tr bgcolor="#FFFFD0">
