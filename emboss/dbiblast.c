@@ -1401,10 +1401,15 @@ static void dbiblast_dbname(AjPStr* dbname, AjPStr oname, char *suff)
 	ajStrTrim (dbname, 0);
 
     if (!ajStrSuffix(*dbname, suffix))
-      return;
+    {
+	ajStrDel(&suffix);
+	return;
+    }
 
     ajStrTrim (dbname, -ajStrLen(suffix));
 
+    ajStrDel(&suffix);
+    
     return;
 }
 
