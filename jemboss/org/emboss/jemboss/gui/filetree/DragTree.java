@@ -182,18 +182,22 @@ public class DragTree extends JTree implements DragGestureListener,
           try
           {
             setCursor(cbusy);
-            EmbreoFileGet efg = new EmbreoFileGet(mysettings,fn.getRootDir(),fn.getFullName());
 
-            FileSave fsave = new FileSave(dropDest,efg.contents());
-
-            if(fsave.writeOK() && !fsave.fileExists())
+            FileSave fsave = new FileSave(dropDest); //check we want to & can save
+            if(fsave.doWrite())
             {
-              final String ndropDir = dropDir;
-              Runnable updateTheTree = new Runnable() 
+              EmbreoFileGet efg = new EmbreoFileGet(mysettings,fn.getRootDir(),fn.getFullName());
+              fsave.fileSaving(efg.contents());
+
+              if(fsave.writeOK() && !fsave.fileExists())
               {
-                public void run () { addObject(fn.getFile(),ndropDir); };
-              };
-              SwingUtilities.invokeLater(updateTheTree);
+                final String ndropDir = dropDir;
+                Runnable updateTheTree = new Runnable() 
+                {
+                  public void run () { addObject(fn.getFile(),ndropDir); };
+                };
+                SwingUtilities.invokeLater(updateTheTree);
+              }
             }
             setCursor(cdone);
           } 

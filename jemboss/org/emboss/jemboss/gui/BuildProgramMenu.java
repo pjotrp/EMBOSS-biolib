@@ -269,7 +269,7 @@ public class BuildProgramMenu
         ClassLoader cl = this.getClass().getClassLoader();
         ImageIcon jlo = new ImageIcon(cl.getResource("images/Jemboss_logo_large.gif"));
         JLabel jlablogo = new JLabel(jlo); 
-        jlablogo.setPreferredSize(new Dimension(300,300));  //centre's logo
+        jlablogo.setPreferredSize(new Dimension(300,360));  //centre's logo
         JPanel pFront = new JPanel();
         pFront.setBackground(Color.white);
         pFront.add(jlablogo);

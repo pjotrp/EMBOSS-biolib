@@ -170,8 +170,8 @@ public class Jemboss implements ActionListener
     }
     else
     {
-      jdim = new Dimension(700,540);
-      jdimExtend = new Dimension(880,540);
+      jdim = new Dimension(660,540);
+      jdimExtend = new Dimension(840,540);
       pmain.setPreferredSize(jdim);
       scrollTree.setPreferredSize(new Dimension(180,540));
     }

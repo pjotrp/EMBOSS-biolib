@@ -28,22 +28,23 @@ import javax.swing.*;
 public class FileSave 
 {
 
+  private File f;
   private boolean fileWritten = false;
   private boolean fExists = false;
+  private boolean canDo = true;
 
 /**
 *
-* Save file to disk. 
+* Check if we can/want to save file to disk. 
 * @param  f  the File to save to
-* @param  file  An Object with the file contents
 *
 */
-  public FileSave(File f, Object file) 
+  public FileSave(File f) 
   {
 
-
+   this.f = f;
 // error cases
-    boolean canDo = true;
+ 
     if(f.exists()) 
     {
       fExists = true;
@@ -66,6 +67,17 @@ public class FileSave
 	    canDo = true;
       }
     }
+
+    this.canDo = canDo;
+  }
+
+/**
+*
+* @param  file  An Object with the file contents
+*
+*/
+  public void fileSaving(Object file)
+  {
 
 // try the write
     if (canDo) 
@@ -103,7 +115,17 @@ public class FileSave
 
 /**
 *
-* Whether the operation was successful
+* @return true if we can write and want too
+*
+*/
+  public boolean doWrite()
+  {
+    return canDo;
+  }
+
+/**
+*
+* Whether the fileSaving() operation was successful
 * @return true if we wrote the file, otherwise false
 *
 */
