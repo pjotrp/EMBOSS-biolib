@@ -5,6 +5,7 @@ acdwarnrange   boolean "N" "Warn if a number is out of range and fixed to be wit
 data     string "(install directory)" "EMBOSS directory for finding data files"
 debugbuffer boolean "N" "Buffer debug output to save I/O time but risk losing output"
 format      string "unknown" "Input sequence format"
+homerc	    boolean "Y" "Read the .embossrc file in the user's home directory"
 httpversion string "1.1" "HTTP version"
 graphics    string "x11" "Default graphics output device"
 language    string "english" "(Obsolete) Language used for the codes.language file"
