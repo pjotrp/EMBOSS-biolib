@@ -1,6 +1,6 @@
 
 
-                            Jemboss (v. alpha1.0)
+                            Jemboss 
 
 Using the Interface
 
