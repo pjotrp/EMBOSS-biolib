@@ -2205,12 +2205,12 @@ AjBool ajScopReadC(AjPFile inf, char *entry, AjPScop *thys)
 	    ajRegSubI(exp2,1,&stmp);
 	    (*thys)->Chain[idx-1] = *ajStrStr(stmp);
 	    ajRegSubI(exp2,2,&str);
-/*DEBUG ... was reading them as char *'s*/
+/*DEBUG AJB  ... was reading them as char *'s*/
 /*	    ajStrAssC(&(*thys)->Start[idx-1],ajStrStr(str)); */
 	    ajStrAss(&(*thys)->Start[idx-1],str);
 
 	    ajRegSubI(exp2,3,&str);
-/*DEBUG ... was reading them as char *'s*/
+/*DEBUG AJB  ... was reading them as char *'s*/
 /*	    ajStrAssC(&(*thys)->End[idx-1],ajStrStr(str)); */
 	    ajStrAss(&(*thys)->End[idx-1],str);
 	}
