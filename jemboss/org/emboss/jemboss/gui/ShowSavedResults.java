@@ -170,7 +170,11 @@ public class ShowSavedResults
           } 
           catch (JembossSoapException eae) 
           {
-            new AuthPopup(mysettings,savedResFrame);
+            AuthPopup ap = new AuthPopup(mysettings,f);
+            ap.setBottomPanel();
+            ap.setSize(380,170);
+            ap.pack();
+            ap.setVisible(true);
           }
         }
       });
@@ -234,7 +238,11 @@ public class ShowSavedResults
             } 
             catch (JembossSoapException eae) 
             {  
-              new AuthPopup(mysettings,f);
+              AuthPopup ap = new AuthPopup(mysettings,f);
+              ap.setBottomPanel();
+              ap.setSize(380,170);
+              ap.pack();
+              ap.setVisible(true);
             }
           }
         }
@@ -260,7 +268,11 @@ public class ShowSavedResults
 	    } 
             catch (JembossSoapException eae)
             {
-              new AuthPopup(mysettings,f);
+              AuthPopup ap = new AuthPopup(mysettings,f);
+              ap.setBottomPanel();
+              ap.setSize(380,170);
+              ap.pack();
+              ap.setVisible(true);
 	    }
   	  } 
   	  else 
@@ -310,7 +322,11 @@ public class ShowSavedResults
 	      } 
 	      catch (JembossSoapException eae) 
 	      {
-                new AuthPopup(mysettings,f);
+                AuthPopup ap = new AuthPopup(mysettings,f);
+                ap.setBottomPanel();
+                ap.setSize(380,170);
+                ap.pack();
+                ap.setVisible(true);
               }
             }
 	  } 
@@ -333,7 +349,11 @@ public class ShowSavedResults
     } 
     catch (JembossSoapException eae) 
     {
-      new AuthPopup(mysettings,f);
+      AuthPopup ap = new AuthPopup(mysettings,f);
+      ap.setBottomPanel();
+      ap.setSize(380,170);
+      ap.pack();
+      ap.setVisible(true);
     }
 
   }
@@ -443,7 +463,11 @@ public class ShowSavedResults
 	  } 
           catch (JembossSoapException eae) 
           {
-	    new AuthPopup(mysettings,savedResFrame);
+            AuthPopup ap = new AuthPopup(mysettings,savedResFrame);
+            ap.setBottomPanel();
+            ap.setSize(380,170);
+            ap.pack();
+            ap.setVisible(true);
 	  }
 	}
       }
@@ -475,7 +499,11 @@ public class ShowSavedResults
           catch (JembossSoapException eae) 
           {
             savedResFrame.setCursor(cdone);
-	    new AuthPopup(mysettings,savedResFrame);
+            AuthPopup ap = new AuthPopup(mysettings,savedResFrame);
+            ap.setBottomPanel();
+            ap.setSize(380,170);
+            ap.pack();
+            ap.setVisible(true);
 	  }
 	}
       }
@@ -525,7 +553,11 @@ public class ShowSavedResults
             catch (JembossSoapException eae)
             {
 	      // shouldn't happen
-	      new AuthPopup(mysettings,savedResFrame);
+              AuthPopup ap = new AuthPopup(mysettings,savedResFrame);
+              ap.setBottomPanel();
+              ap.setSize(380,170);
+              ap.pack();
+              ap.setVisible(true);
 	    }
           }
 	}

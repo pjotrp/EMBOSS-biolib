@@ -28,7 +28,6 @@ import java.awt.event.*;
 import java.io.File;
 
 import org.emboss.jemboss.soap.JembossSoapException;
-import org.emboss.jemboss.soap.AuthPopup;
 import org.emboss.jemboss.JembossParams;
 
 public class LocalAndRemoteFileTreeFrame extends JFrame
@@ -36,6 +35,7 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
 
   private DragTree ltree;
   private JSplitPane treePane;
+  private JMenuItem prefClose;
 
 /**
 *
@@ -105,7 +105,7 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
       });
       group.add(prefH);
 
-      JMenuItem prefClose = new JMenuItem("Close");
+      prefClose = new JMenuItem("Close");
       prefClose.setAccelerator(KeyStroke.getKeyStroke(
                     KeyEvent.VK_C, ActionEvent.CTRL_MASK));
 
@@ -140,8 +140,20 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
     catch(JembossSoapException jse)
     {
       throw new JembossSoapException();
-//    new AuthPopup(mysettings,this);
     }
+  }
+
+  public void setExit()
+  {
+    prefClose.setText("Exit");
+    prefClose.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        System.exit(0);
+      }
+    });
+
   }
 
   public DragTree getLocalDragTree()

@@ -111,7 +111,11 @@ public class ResultsMenuBar
         {
           String fileSelected = fsave.getFileName();
           String pathSelected = fsave.getPath();
-          org.emboss.jemboss.Jemboss.tree.addObject(fileSelected,pathSelected,null);
+          try
+          {
+            org.emboss.jemboss.Jemboss.tree.addObject(fileSelected,pathSelected,null);
+          }
+          catch(NullPointerException npe){}
           DragTree ltree = org.emboss.jemboss.gui.SetUpMenuBar.getLocalDragTree();
           if(ltree!=null)
             ltree.addObject(fileSelected,pathSelected,null);

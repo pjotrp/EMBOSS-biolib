@@ -448,7 +448,11 @@ public class BuildJembossForm implements ActionListener
           }
           catch (JembossSoapException eae)
           {
-            new AuthPopup(mysettings,f);
+            AuthPopup ap = new AuthPopup(mysettings,f);
+            ap.setBottomPanel();
+            ap.setSize(380,170);
+            ap.pack();
+            ap.setVisible(true);
             f.setCursor(cdone);
           }
         }
