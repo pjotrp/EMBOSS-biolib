@@ -1161,6 +1161,10 @@ AjPSeq ajSeqNewS (AjPSeq seq)
     (void) ajStrAssS(&pthis->Entryname, seq->Entryname);
     (void) ajStrAssS(&pthis->Seq, seq->Seq);
 
+    if(seq->TextPtr)
+	(void) ajStrAssS(&pthis->TextPtr, seq->TextPtr);
+
+
     pthis->Rev = seq->Rev;
     pthis->EType = seq->EType;
     pthis->Format = seq->Format;
