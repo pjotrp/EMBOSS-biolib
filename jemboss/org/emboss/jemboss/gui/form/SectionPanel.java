@@ -92,7 +92,7 @@ public class SectionPanel
 
   private final int maxSectionWidth = 498;
   private JFrame f;
-
+  private ReportFormat rf=null;
 
 /**
 *
@@ -363,50 +363,33 @@ public class SectionPanel
         else if(att.startsWith("report"))
         {
           // possible report formats
-          fieldOption[h] = new myComboPopup(ReportFormat.getReportFormats());
-          
-          int np = parseAcd.getNumofParams(nf);
-          String def=null;
-          for(int i=0;i<np;i++)
-            if(parseAcd.getParameterAttribute(nf,i).equals("rformat"))
-            {
-              def = parseAcd.getParamValueStr(nf,i);
-              fieldOption[h].setSelectedItem(parseAcd.getParamValueStr(nf,i));
-            }
+          rf = new ReportFormat(parseAcd,nf);
 
-          Dimension d = fieldOption[h].getPreferredSize();
-          d = new Dimension(150,(int)d.getHeight());
+          pan.add(rf.getComboPopup());
 
-          fieldOption[h].setMaximumSize(d);
-          fieldOption[h].setPreferredSize(d);
-          pan.add(fieldOption[h]);
-
-          pan.add(setLabelText(" Report format ("+def+")",
+          pan.add(setLabelText(" Report format ("+rf.getDefaultFormat()+")",
                   ReportFormat.getToolTip()));
 
-//        Box pan2 = new Box(BoxLayout.X_AXIS);
-//        section.add(pan2);
+          Box pan2 = new Box(BoxLayout.X_AXIS);
+          section.add(pan2);
           // -raccshow  show accession 
-//        checkBox[h] = new JCheckBox();
-//        pan2.add(checkBox[h]);
-//        pan2.add(setLabelText("Accession number",
-//            "Displays the accession number in the report"));
-//        pan2.add(Box.createHorizontalStrut(20));
+          pan2.add(rf.getAccCheckBox());
+          pan2.add(setLabelText("Accession number",
+              "Displays the accession number in the report"));
+          pan2.add(Box.createHorizontalStrut(20));
 
           // -rdesshow  show description
-//        checkBox[h+1] = new JCheckBox();
-//        pan2.add(checkBox[h+1]);
-//        pan2.add(setLabelText("Description", 
-//            "Displays the sequence description in the report"));
-//        pan2.add(Box.createHorizontalStrut(20));
+          pan2.add(rf.getDesCheckBox());
+          pan2.add(setLabelText("Description", 
+              "Displays the sequence description in the report"));
+          pan2.add(Box.createHorizontalStrut(20));
 
           // -rusashow  show the full USA
-//        checkBox[h+2] = new JCheckBox();
-//        pan2.add(checkBox[h+2]);
-//        pan2.add(setLabelText("Full USA", 
-//            "Displays the universal sequence address in the report"));
+          pan2.add(rf.getUsaDesCheckBox());
+          pan2.add(setLabelText("Full USA", 
+              "Displays the universal sequence address in the report"));
 
-//        pan2.add(Box.createHorizontalGlue());
+          pan2.add(Box.createHorizontalGlue());
         }
         else if(att.startsWith("list") || att.startsWith("select"))
         {
@@ -495,6 +478,19 @@ public class SectionPanel
     sectionBox.add(sectionPane);
     sectionBox.add(Box.createHorizontalGlue());
     
+  }
+
+  public ReportFormat getReportFormat()
+  {
+    return rf;
+  }
+ 
+  public boolean isReportFormat()
+  {
+    if(rf==null)
+      return false;
+
+    return true;
   }
 
 

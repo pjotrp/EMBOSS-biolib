@@ -52,6 +52,7 @@ import org.emboss.jemboss.gui.sequenceChooser.*;
 public class BuildJembossForm implements ActionListener 
 {
 
+  private ReportFormat rf;
   private TextFieldSink textf[];
   private TextFieldInt textInt[];
   private TextFieldFloat textFloat[];
@@ -334,6 +335,9 @@ public class BuildJembossForm implements ActionListener
               nfield,textf,textInt,textFloat,rangeField,checkBox,
               inSeqAttr,fieldOption,multiOption,inSeq,db,appDescription,
               lab,numofFields,mysettings,withSoap);
+
+        if(sp.isReportFormat())
+          rf = sp.getReportFormat();
 
         if(sp.isAdvancedSection())
         {
@@ -702,13 +706,7 @@ public class BuildJembossForm implements ActionListener
       }
       else if ( att.startsWith("report") )
       {
-        options = options.concat(" -rformat "+fieldOption[h].getSelectedItem());
-//      if( checkBox[h].isSelected() )
-//        options = options.concat(" -raccshow ");
-//      if( checkBox[h+1].isSelected() )
-//        options = options.concat(" -rdesshow ");
-//      if( checkBox[h+2].isSelected() )
-//        options = options.concat(" -rusashow ");
+        options = options.concat(rf.getReportFormat());
       }
       else if ( att.startsWith("bool") && checkBox[h].isVisible()
                                        && checkBox[h].isEnabled())

@@ -527,14 +527,6 @@ public class ParseAcd
         nlist++;
       }
     }
-    else if (dataType.startsWith("report"))
-    {
-      appF.setGuiHandleNumber(nlist); 
-      nlist++;               // -rformat   report format
-      nbool++;               // -raccshow  show accession number
-      nbool++;               // -rdesshow  show description
-      nbool++;               // -rusashow  show the full USA
-    }
     else if (dataType.startsWith("range"))
     {
       appF.setGuiHandleNumber(nrange);

@@ -22,6 +22,9 @@
 
 package org.emboss.jemboss.gui.form;
 
+import org.emboss.jemboss.parser.ParseAcd;
+import java.awt.Dimension;
+import javax.swing.JCheckBox;
 
 public class ReportFormat
 {
@@ -35,12 +38,82 @@ public class ReportFormat
              "seqtable", "simple", "srs",
              "table", "tagseq"};
 
+  private myComboPopup cp;
+  private JCheckBox raccshow = new JCheckBox();
+  private JCheckBox rdesshow = new JCheckBox();
+  private JCheckBox rusashow = new JCheckBox();
+  private String def;
+
+  public ReportFormat(ParseAcd parseAcd, int nf)
+  {
+    cp = new myComboPopup(getReportFormats());
+
+    int np = parseAcd.getNumofParams(nf);
+
+    for(int i=0;i<np;i++)
+      if(parseAcd.getParameterAttribute(nf,i).equals("rformat"))
+      {
+        def = parseAcd.getParamValueStr(nf,i);
+        cp.setSelectedItem(parseAcd.getParamValueStr(nf,i));
+      }
+ 
+    Dimension d = cp.getPreferredSize();
+    d = new Dimension(150,(int)d.getHeight());
+    
+    cp.setMaximumSize(d);
+    cp.setPreferredSize(d);
+
+  }
+
+  public myComboPopup getComboPopup()
+  {
+    return cp;
+  }
+
+  public String getDefaultFormat()
+  {
+    return def;
+  }
+
+  public JCheckBox getAccCheckBox()
+  {
+    return raccshow;
+  }
+
+  public JCheckBox getDesCheckBox()
+  {
+    return rdesshow;
+  }
+
+  public JCheckBox getUsaDesCheckBox()
+  {
+    return rusashow;
+  }
+
   
-  public static String[] getReportFormats()
+  private static String[] getReportFormats()
   {
     return rpt;
   }
 
+  public String getReportFormat()
+  {
+    String report = " -rformat " + cp.getSelectedItem();
+    if(raccshow.isSelected())
+      report = report.concat(" -raccshow ");
+    if(rdesshow.isSelected())
+      report = report.concat(" -rdesshow ");
+    if(rusashow.isSelected())
+      report = report.concat(" -rusashow ");
+    return report;
+  }
+
+
+/**
+*
+* @return String report of the available report formats
+*
+*/
   public static String getToolTip()
   {
     return "embl \t\t\t\t\t\t\t\t- EMBL feature table format.\n"+
