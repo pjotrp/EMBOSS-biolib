@@ -6451,7 +6451,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI globins.infoalign
 FZ = 691
-FP /^msf::.*HBA_HORSE\s+HBA_HORSE\s+144\s+147\s+2\s+3\s+48\s+4\s+92\s+66\.666664\s+\n/
+FP /^msf::.*HBA_HORSE\s+HBA_HORSE\s+141\s+144\s+2\s+3\s+48\s+4\s+89\s+66\.666664\s+\n/
 //
 
 ID infoalign-ex2
@@ -6466,7 +6466,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI globins.infoalign
 FZ = 407
-FP /^HBA_HORSE\s+144\s+147\s+2\s+3\s+48\s+4\s+92\s+66\.666664\s+\n/
+FP /^HBA_HORSE\s+141\s+144\s+2\s+3\s+48\s+4\s+89\s+66\.666664\s+\n/
 //
 
 ID infoalign-ex3
@@ -6481,7 +6481,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI globins.infoalign
 FZ = 126
-FP /^HBA_HORSE\s+144\n/
+FP /^HBA_HORSE\s+141\n/
 //
 
 ID infoalign-ex4
@@ -6496,7 +6496,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI globins.infoalign
 FZ = 136
-FP /^HBA_HORSE\s+3\s+92\n/
+FP /^HBA_HORSE\s+3\s+89\n/
 //
 
 ID infoalign-ex5
@@ -6542,7 +6542,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI globins.infoalign
 FZ = 691
-FP /^msf::\S+\s+HBA_HORSE\s+144\s+147\s+2\s+3\s+54\s+18\s+72\s+62.500000\s+\n/
+FP /^msf::\S+\s+HBA_HORSE\s+141\s+144\s+2\s+3\s+51\s+18\s+72\s+64.583336\s+\n/
 //
 
 ID infoalign-ex8
