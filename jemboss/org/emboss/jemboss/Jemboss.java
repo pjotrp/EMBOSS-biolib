@@ -156,8 +156,6 @@ public class Jemboss implements ActionListener
     p3 = new JPanel(new BorderLayout());                // filemanager panel
 
     JScrollPane scrollProgForm = new JScrollPane(p2);
-    scrollProgForm.getViewport().setBackground(Color.white);
-
     JPanel pwork = new JPanel(new BorderLayout());
     JPanel pform = new JPanel(new BorderLayout());
 
