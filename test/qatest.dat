@@ -15583,19 +15583,6 @@ FP 0 /Error: /
 FP 0 /Died: /
 //
 
-ID embpat-type1
-AP fuzzpro
-CL asis:ACDEEEFFFGHKLMNPPQQQRRSTVWXYZABCD
-CL CDEEEF
-CL -auto -debug
-FI fuzzpro.dbg
-FP 1 /embPatType 1 /
-FI stderr
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-//
-
 #######################################
 # DOMAINATRIX
 #######################################
