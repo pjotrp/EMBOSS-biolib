@@ -213,8 +213,8 @@ regexp * hsregcomp(const char *exp)
     regCount ++;
     regTotal ++;
 
-    ajDebug("hsregcomp %x size %d regexp '%s'\n",
-	    r, (int) (sizeof(regexp) + (size_t)co.regsize), exp);
+    /* ajDebug("hsregcomp %x size %d regexp '%s'\n",
+       r, (int) (sizeof(regexp) + (size_t)co.regsize), exp); */
 
     /* Second pass: emit code. */
     co.regparse = (char *)exp;
@@ -1167,16 +1167,19 @@ static char* regnext(register char *p)
 
 void hsregfree(regexp **r)
 {
-  ajDebug("hsregfree size regexp %d\n",
-	  (ajint) sizeof(regexp));
-  ajDebug("hsregfree %x\n", *r);
-  ajDebug("hsregfree regsize %d\n",
-	  (ajint) sizeof(**r));
-  ajDebug("hsregfree data %d\n",
-	  (ajint) (**r).regsize);
-  ajDebug("hsregfree %x size regexp %d data %d regsize %d\n", *r,
-	  (ajint) sizeof(regexp), (ajint) (**r).regsize,
-	  (ajint) sizeof(**r));
+  /*
+//  ajDebug("hsregfree size regexp %d\n",
+//	  (ajint) sizeof(regexp));
+//  ajDebug("hsregfree %x\n", *r);
+//  ajDebug("hsregfree regsize %d\n",
+//	  (ajint) sizeof(**r));
+//  ajDebug("hsregfree data %d\n",
+//	  (ajint) (**r).regsize);
+//  ajDebug("hsregfree %x size regexp %d data %d regsize %d\n", *r,
+//	  (ajint) sizeof(regexp), (ajint) (**r).regsize,
+//	  (ajint) sizeof(**r));
+  */
+
   regFreeCount += 1;
   regFree += sizeof(regexp) + (**r).regsize;
   regTotal --;
