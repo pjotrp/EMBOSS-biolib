@@ -2492,7 +2492,7 @@ static ajint acdFindTypeC (char* type)
 {
     ajint i;
     ajint ifound=0;
-    ajint j=0;
+    ajint j=-1;
     ajint ilen = strlen(type);
     static AjPStr ambigList = NULL;
 
@@ -7172,9 +7172,9 @@ static void* acdGetValueNum (char *token, char* type, ajint pnum) {
 
   for (pa=acdList; pa; pa=pa->Next) {
     if (ajStrMatchC(pa->Token, token)) {
+      if ((itype>=0) && (pa->Type != itype))
+	ajFatal ("Token %s is not of type %s\n", token, type);
       if (pa->PNum == pnum) {
-	if (itype && (pa->Type != itype))
-	  ajFatal ("Token %s is not of type %s\n", token, type);
 	acdLog ("found %S [%d] '%S'\n",
 		pa->Name, pa->PNum, pa->ValStr);
 	return pa->Value;
