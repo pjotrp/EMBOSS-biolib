@@ -4352,27 +4352,30 @@ static AjBool feattableWriteEmbl(AjPFeattable thys, const AjPFile file,
 	}
 	
 	ajListIterFree(iter);
-	
-	/* Don't forget the last one !!! */
-	if(join)
+
+	if (gfprev)
 	{
-	    ajStrAppC(&location,")");	/* close bracket for join */
-	    /* ajDebug("last: join: closing ')' appended\n"); */
-	}
-	if(whole)
-	{
-	    ajStrInsertC(&location,0,"complement(");
-	    ajStrAppC(&location,")");
-	    /* ajDebug("last: wrap with complement(), reset whole %b to N\n",
-	       whole); */
-	    whole = ajFalse;
-	}
+	    /* Don't forget the last one !!! */
+	    if(join)
+	    {
+		ajStrAppC(&location,")");	/* close bracket for join */
+		/* ajDebug("last: join: closing ')' appended\n"); */
+	    }
+	    if(whole)
+	    {
+		ajStrInsertC(&location,0,"complement(");
+		ajStrAppC(&location,")");
+		/* ajDebug("last: wrap with complement(), reset whole %b to N\n",
+		   whole); */
+		whole = ajFalse;
+	    }
 	
-	/* ajDebug("last: calling featDumpEmbl for gfprev\n"); */
-	/* ajDebug("location: '%S'\n", location); */
+	    /* ajDebug("last: calling featDumpEmbl for gfprev\n"); */
+	    /* ajDebug("location: '%S'\n", location); */
 	
-	featDumpEmbl(gfprev, location, file,
-		     thys->Seqid, IsEmbl) ; /* gfprev has tag data */
+	    featDumpEmbl(gfprev, location, file,
+			 thys->Seqid, IsEmbl) ; /* gfprev has tag data */
+	}
 	ajStrDel(&location);
 	ajStrDel(&pos);
 	ajStrDel(&temp);
