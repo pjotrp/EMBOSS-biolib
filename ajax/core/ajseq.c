@@ -3445,6 +3445,45 @@ AjBool ajSeqTrim(AjPSeq thys)
     return okay;
 }
 
+/* @func ajSeqGapCount *****************************************************
+**
+** returns the number of gaps in a sequence (counting any possible
+** gap character
+**
+** @param [w] thys [AjPSeq] Sequence object
+** @return [ajint] Number of gaps 
+******************************************************************************/
+
+ajint ajSeqGapCount (AjPSeq thys) {
+  return ajSeqGapCountS (thys->Seq);
+}
+
+/* @func ajSeqGapCountS *****************************************************
+**
+** returns the number of gaps in a string (counting any possible
+** gap character
+**
+** @param [w] str [AjPStr] String object
+** @return [ajint] Number of gaps 
+******************************************************************************/
+
+ajint ajSeqGapCountS (AjPStr str) {
+
+  ajint ret=0;
+
+  static char testchars[] = "-~."; /* all known gap characters */
+  char *testgap = testchars;
+
+  ajDebug("ajSeqGapCountS '%S'\n", str);
+
+  while (*testgap) {
+    ret += ajStrCountK(str, *testgap);
+    testgap++;
+  }
+
+  return ret;
+}
+
 /* @func ajSeqGapStandard *****************************************************
 **
 ** Makes all gaps in a sequence use a standard gap character
