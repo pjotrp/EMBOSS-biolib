@@ -29,10 +29,11 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 import java.io.*;
-import java.util.*;
-import org.apache.soap.rpc.*;
+import java.util.Vector;
+import java.util.Enumeration;
+import org.apache.soap.rpc.Parameter;
 
-import org.emboss.jemboss.soap.*;
+import org.emboss.jemboss.soap.PrivateRequest;
 import org.emboss.jemboss.gui.ResultsMenuBar;
 import org.emboss.jemboss.JembossParams;
 
@@ -202,12 +203,16 @@ public class DragTree extends JTree implements DragGestureListener,
         if(dir.exists())
         {
           JOptionPane.showMessageDialog(null, fullname+" alread exists!",
-                                   "Warning", JOptionPane.ERROR_MESSAGE);
+                                   "Error", JOptionPane.ERROR_MESSAGE);
         }
         else
         {
-          dir.mkdir();
-          addObject(inputValue,path,node);
+          if(dir.mkdir())
+            addObject(inputValue,path,node);
+          else
+            JOptionPane.showMessageDialog(null,
+                       "Cannot make the folder\n"+fullname,
+                       "Error", JOptionPane.ERROR_MESSAGE);     
         }
       }
     }
@@ -229,19 +234,25 @@ public class DragTree extends JTree implements DragGestureListener,
       }
       else if(source.getText().equals("Delete File..."))
       {
-        int n = JOptionPane.showConfirmDialog(
-                                   null,"Delete "+f.getAbsolutePath()+"?",
+        int n = JOptionPane.showConfirmDialog(null,
+                                   "Delete "+f.getAbsolutePath()+"?",
                                    "Delete f.getAbsolutePath()",
                                    JOptionPane.YES_NO_OPTION);
         if(n == JOptionPane.YES_OPTION)
         {
-          f.delete();
-          Runnable deleteFileFromTree = new Runnable()
+          if(f.delete())
           {
-            public void run () { deleteObject(node,
-                                 f.getParentFile().getAbsolutePath()); };
-          };
-          SwingUtilities.invokeLater(deleteFileFromTree);
+            Runnable deleteFileFromTree = new Runnable()
+            {
+              public void run () { deleteObject(node,
+                                   f.getParentFile().getAbsolutePath()); };
+            };
+            SwingUtilities.invokeLater(deleteFileFromTree);
+          }
+          else
+            JOptionPane.showMessageDialog(null,"Cannot delete\n"+
+                               f.getAbsolutePath(),
+                               "Warning", JOptionPane.ERROR_MESSAGE);
         }
       }
     }
@@ -259,16 +270,25 @@ public class DragTree extends JTree implements DragGestureListener,
     }
     else
     {
-      oldFile.renameTo(fnew);
-      Runnable deleteFileFromTree = new Runnable()
+      if(oldFile.renameTo(fnew))
       {
-        public void run ()
+        Runnable deleteFileFromTree = new Runnable()
         {
-          addObject(fnew.getName(),fnew.getParent(),oldNode);
-          deleteObject(oldNode,oldFile.getParentFile().getAbsolutePath());
+          public void run ()
+          {
+            addObject(fnew.getName(),fnew.getParent(),oldNode);
+            deleteObject(oldNode,oldFile.getParentFile().getAbsolutePath());
+          };
         };
-      };
-      SwingUtilities.invokeLater(deleteFileFromTree);
+        SwingUtilities.invokeLater(deleteFileFromTree);
+      }
+      else
+      {
+        JOptionPane.showMessageDialog(null, 
+                   "Cannot rename \n"+oldFile.getAbsolutePath()+
+                   "\nto\n"+fnew.getAbsolutePath(), "Rename Error",
+                   JOptionPane.ERROR_MESSAGE);
+      }
     }
     return;
   }
