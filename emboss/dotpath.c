@@ -34,8 +34,8 @@ static void dotpath_plotMatches(AjPList list);
 
 
 
-
-
+ajint begin1;
+ajint begin2;
 
 
 /* @prog dotpath **************************************************************
@@ -68,6 +68,7 @@ int main(int argc, char **argv)
     char ptr[10];
     ajint oldcolour=-1;
     ajint np=0;
+    ajint npp=0;
     
     ajGraphInit("dotpath", argc, argv);
 
@@ -79,6 +80,10 @@ int main(int argc, char **argv)
     text = ajAcdGetBool("data");
     boxit = ajAcdGetBool("boxit");
     outfile = ajAcdGetOutfile ("outfile");
+
+
+    begin1 = ajSeqBegin(seq1);
+    begin2 = ajSeqBegin(seq2);
 
     ajSeqTrim(seq1);
     ajSeqTrim(seq2);
@@ -196,8 +201,12 @@ int main(int argc, char **argv)
     }
     else
     {
+	np = ajListLength(matchlist);
 	ajFmtPrintF(outfile,"##2D Plot\n##Title dotpath (%D)\n",ajTimeToday());
-	ajFmtPrintF(outfile,"##Graphs 1\n##Number 1\n##Points 0\n");
+	if(overlaps)
+	    ajFmtPrintF(outfile,"##Graphs 1\n##Number 1\n##Points %d\n",np);
+	else
+	    ajFmtPrintF(outfile,"##Graphs 1\n##Number 1\n##Points 0\n");
 	ajFmtPrintF(outfile,"##XminA %f XmaxA %f YminA %f YmaxA %f\n",0.,
 		    (float)ajSeqLen(seq1),0.,(float)ajSeqLen(seq2));
 	ajFmtPrintF(outfile,"##Xmin %f Xmax %f Ymin %f Ymax %f\n",0.,
@@ -209,16 +218,16 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outfile,"##Xtitle %s\n##Ytitle %s\n",ajSeqName(seq1),
 		    ajSeqName(seq2));
 
-	if(overlaps && (np=ajListLength(matchlist)))
+	if(overlaps && np)
 	    ajListMap(matchlist,dotpath_objtofile1, outfile);	
 
 	/* get the minimal set of overlapping matches */    
 	(void) embWordMatchMin(matchlist, ajSeqLen(seq1), ajSeqLen(seq2));
 	embWordFreeTable(seq1MatchTable); /* free table of words */
-	np += ajListLength(matchlist);
+	npp = ajListLength(matchlist);
+	np += npp;
 
-
-	ajFmtPrintF(outfile,"##DataObjects\n##Number %d\n",np);
+	ajFmtPrintF(outfile,"##DataObjects\n##Number %d\n",npp);
 
 /* output the minal overlapping set of data with colour=BLACK */	
 	ajListMap(matchlist,dotpath_objtofile2, outfile);	
@@ -254,8 +263,8 @@ static void dotpath_objtofile1(void **x,void *cl)
     ajint y1;
     ajint y2;
 
-    x1 = (*p).seq1start;
-    y1 = (*p).seq2start;
+    x1 = (*p).seq1start+begin1;
+    y1 = (*p).seq2start+begin2;
     x2 = x1 + (*p).length;
     y2 = y1 + (*p).length;
   
@@ -284,8 +293,8 @@ static void dotpath_objtofile2(void **x,void *cl)
     ajint y1;
     ajint y2;
 
-    x1 = (*p).seq1start;
-    y1 = (*p).seq2start;
+    x1 = (*p).seq1start+begin1;
+    y1 = (*p).seq2start+begin2;
     x2 = x1 + (*p).length;
     y2 = y1 + (*p).length;
   
@@ -310,8 +319,8 @@ static void dotpath_drawPlotlines(void **x, void *cl)
     EmbPWordMatch p  = (EmbPWordMatch)*x;
     PLFLT x1,y1,x2,y2;
 
-    x1 = x2 = ((*p).seq1start);
-    y1 = y2 = (PLFLT)((*p).seq2start);
+    x1 = x2 = ((*p).seq1start)+1;
+    y1 = y2 = (PLFLT)((*p).seq2start)+1;
     x2 += (*p).length;
     y2 += (PLFLT)(*p).length;
  

@@ -31,6 +31,12 @@ static void dottup_plotMatches(AjPList list);
 
 #include "ajgraph.h"
 
+
+ajint begin1;
+ajint begin2;
+
+
+
 /* @prog dottup ***************************************************************
 **
 ** Displays a wordmatch dotplot of two sequences
@@ -66,7 +72,7 @@ int main(int argc, char **argv)
     ajint i;
     float k,max;
     char ptr[10];
-
+    
     ajGraphInit("dottup", argc, argv);
 
     wordlen = ajAcdGetInt ("wordsize");
@@ -76,6 +82,9 @@ int main(int argc, char **argv)
     text = ajAcdGetBool("data");
     boxit = ajAcdGetBool("boxit");
     outfile = ajAcdGetOutfile ("outfile");
+
+    begin1 = ajSeqBegin(seq1);
+    begin2 = ajSeqBegin(seq2);
 
     ajSeqTrim(seq1);
     ajSeqTrim(seq2);
@@ -229,8 +238,8 @@ static void dottup_objtofile(void **x,void *cl)
     ajint y1;
     ajint y2;
 
-    x1 = (*p).seq1start;
-    y1 = (*p).seq2start;
+    x1 = (*p).seq1start+begin1;
+    y1 = (*p).seq2start+begin2;
     x2 = x1 + (*p).length;
     y2 = y1 + (*p).length;
   
@@ -253,8 +262,8 @@ static void dottup_drawPlotlines(void **x, void *cl)
     EmbPWordMatch p  = (EmbPWordMatch)*x;
     PLFLT x1,y1,x2,y2;
 
-    x1 = x2 = ((*p).seq1start);
-    y1 = y2 = (PLFLT)((*p).seq2start);
+    x1 = x2 = ((*p).seq1start)+1;
+    y1 = y2 = (PLFLT)((*p).seq2start)+1;
     x2 += (*p).length;
     y2 += (PLFLT)(*p).length;
  
