@@ -308,6 +308,55 @@ public class AlignJFrame extends JFrame
     JMenu editMenu = new JMenu("Edit");
     menuBar.add(editMenu);
 
+    JMenuItem insertAnn = new JMenuItem("Insert Annotation Sequence");
+    editMenu.add(insertAnn);
+    insertAnn.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        ScrollPanel pane = new ScrollPanel(new BorderLayout());
+        Box bacross = Box.createVerticalBox();
+        JRadioButton openFile = new JRadioButton("Read from File");
+        JRadioButton cut      = new JRadioButton("Cut and Paste");
+        ButtonGroup group = new ButtonGroup();
+        group.add(openFile);
+        group.add(cut);
+        cut.setSelected(true);
+        bacross.add(openFile);
+        bacross.add(cut);
+        pane.add(bacross,BorderLayout.CENTER);
+        int selectedValue = JOptionPane.showConfirmDialog(null,
+                          pane, "Cut and Paste/Read from File",
+                          JOptionPane.OK_CANCEL_OPTION,
+                          JOptionPane.QUESTION_MESSAGE);
+        if(selectedValue == JOptionPane.OK_OPTION)
+        {
+          SequenceReader sr = null;
+          if(openFile.isSelected())
+            sr = new SequenceReader();
+          else
+          {
+            Paste pastePane = new Paste();
+            selectedValue = JOptionPane.showConfirmDialog(null,
+                          pastePane, "Cut and Paste",
+                          JOptionPane.OK_CANCEL_OPTION,
+                          JOptionPane.QUESTION_MESSAGE);
+            if(selectedValue == JOptionPane.OK_OPTION)
+              sr = new SequenceReader(pastePane.getSequence());
+          }
+          if(sr != null && sr.isReading())
+          {
+            sequenceFile = sr.getSequenceFile();
+            gsc.addAnnotationSequence(sr.getSequence(0));
+            Dimension dpane = gsc.getPanelSize();
+            gsc.setPreferredSize(dpane);
+            gsc.setNamePanelWidth(gsc.getNameWidth());
+            jspSequence.setViewportView(gsc);
+          }
+        }
+      }
+    });
+
     JMenuItem trimMenu = new JMenuItem("Trim Sequences");
     editMenu.add(trimMenu);
     trimMenu.addActionListener(new ActionListener()
@@ -513,6 +562,7 @@ public class AlignJFrame extends JFrame
     });
     calculateMenu.add(calculateCons);
 
+    
     JMenuItem consOptions = new JMenuItem("Set consensus options...");
     consOptions.addActionListener(new ActionListener()
     {

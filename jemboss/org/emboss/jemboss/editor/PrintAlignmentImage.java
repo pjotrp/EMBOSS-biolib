@@ -398,7 +398,7 @@ public class PrintAlignmentImage extends ScrollPanel
    
     if(antiAlias)
     {
-      System.out.println("Anit-alias on!");
+//    System.out.println("Anit-alias on!");
       g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                RenderingHints.VALUE_ANTIALIAS_ON);
     }

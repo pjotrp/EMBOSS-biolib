@@ -113,6 +113,7 @@ public class GraphicSequenceCollection extends JPanel
     this.drawColorBox = drawColorBox;
     this.drawNumber = drawNumber;
 
+    jspSequence.getViewport().setBackground(Color.white);
     setBackground(Color.white);
     MultiLineToolTipUI.initialize();
     graphicSequence = new Vector();
@@ -528,7 +529,7 @@ public class GraphicSequenceCollection extends JPanel
       Sequence seqDown = (Sequence)seqs.get(seqIndex+1);
       String res = seqDown.getSequence().substring(pos,pos+1);
       Color col = getColor(res,pos,seqDown.getName());
-      if(col.equals(Color.black))
+      if(col.equals(Color.black) || seqDown.getName().equals("Consensus"))
         testDown = 1;
     }
 
@@ -720,6 +721,7 @@ public class GraphicSequenceCollection extends JPanel
     Box XBox = new Box(BoxLayout.X_AXIS);
     XBox.add(gs);
     XBox.add(Box.createHorizontalGlue());
+//  seqBox.add(Box.createVerticalStrut(5));
     seqBox.add(XBox);
     gs.setToolTipText("");   //enable tooltip display
 
@@ -1384,6 +1386,12 @@ public class GraphicSequenceCollection extends JPanel
                new SequenceNameJButton(new Sequence(" "),0);
     graphicName.add(snjBlank);
     seqNameBox.add(snjBlank);
+  }
+
+  protected void addAnnotationSequence(Sequence s)
+  {
+    int fontSize = getFontSize();
+    addSequence(s,true,5,fontSize);
   }
 
 }
