@@ -1496,6 +1496,8 @@ void ajReportDel (AjPReport* pthys) {
 
 AjBool ajReportOpen (AjPReport thys, AjPStr name) {
 
+  if (!ajReportValid(thys)) return ajFalse;
+
   thys->File = ajFileNewOut(name);
   if (thys->File)
     return ajTrue;
