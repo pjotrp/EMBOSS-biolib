@@ -1253,11 +1253,11 @@ $JAVA_HOME/bin/jar cvf $JEMBOSS/resources/resources.jar EPAM* EBLOSUM* ENUC*
 #
 
 if [ $AUTH = "y" ]; then
-  $JAVA_HOME/bin/javac -classpath $JEMBOSS $JEMBOSS/org/emboss/jemboss/server/JembossAuthServer.java
-  $JAVA_HOME/bin/javac -classpath $JEMBOSS $JEMBOSS/org/emboss/jemboss/server/JembossFileAuthServer.java
+  $JAVA_HOME/bin/javac -target 1.3 -source 1.3 -classpath $JEMBOSS $JEMBOSS/org/emboss/jemboss/server/JembossAuthServer.java
+  $JAVA_HOME/bin/javac -target 1.3 -source 1.3 -classpath $JEMBOSS $JEMBOSS/org/emboss/jemboss/server/JembossFileAuthServer.java
 else
-  $JAVA_HOME/bin/javac -classpath $JEMBOSS $JEMBOSS/org/emboss/jemboss/server/JembossServer.java
-  $JAVA_HOME/bin/javac -classpath $JEMBOSS $JEMBOSS/org/emboss/jemboss/server/JembossFileServer.java
+  $JAVA_HOME/bin/javac -target 1.3 -source 1.3 -classpath $JEMBOSS $JEMBOSS/org/emboss/jemboss/server/JembossServer.java
+  $JAVA_HOME/bin/javac -target 1.3 -source 1.3 -classpath $JEMBOSS $JEMBOSS/org/emboss/jemboss/server/JembossFileServer.java
 fi
 
 if [ "$MACOSX" = "y" ]; then
