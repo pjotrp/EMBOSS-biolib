@@ -19,8 +19,6 @@
 ** along with this program; if not, write to the Free Software
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 **
-** Program requirment:- If you are running this program from the HGMP, 
-** need to type "use clustal" at the command line before using this program.
 ******************************************************************************
 ** 
 ** 
@@ -37,7 +35,11 @@
 ** alignment with sequences from the hits file one sequence at a time by 
 ** calling clustalw.  A multiple sequence alignment in clustal format is 
 ** generated.
-
+**
+** Notes
+** Program requirment:- Requires a working version of clustalw. If you are 
+** running this program from the HGMP, need to type "use clustal" at the 
+** command line before using this program.
 **/
 
 
