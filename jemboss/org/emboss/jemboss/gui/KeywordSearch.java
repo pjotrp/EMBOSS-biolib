@@ -46,18 +46,18 @@ public class KeywordSearch implements HyperlinkListener
                        boolean withSoap, JFrame jemFrame, String envp[])
   {
     String searchTxt = search.getText().trim();
-    if(searchTxt.indexOf(" ") > -1)
-    {
-      searchTxt = searchTxt.substring(0,searchTxt.indexOf(" "));
-      int n = JOptionPane.showConfirmDialog(jemFrame,
-                   "Single keyword search.\n"+
-                   "Continue the search using the keyword:\n`"+
-                   searchTxt+"`", "EMBOSS Keyword Search",
-                   JOptionPane.OK_CANCEL_OPTION,
-                   JOptionPane.ERROR_MESSAGE,null);
-       if(n == JOptionPane.CANCEL_OPTION)
-         return;
-    }
+//  if(searchTxt.indexOf(" ") > -1)
+//  {
+//    searchTxt = searchTxt.substring(0,searchTxt.indexOf(" "));
+//    int n = JOptionPane.showConfirmDialog(jemFrame,
+//                 "Single keyword search.\n"+
+//                 "Continue the search using the keyword:\n`"+
+//                 searchTxt+"`", "EMBOSS Keyword Search",
+//                 JOptionPane.OK_CANCEL_OPTION,
+//                 JOptionPane.ERROR_MESSAGE,null);
+//     if(n == JOptionPane.CANCEL_OPTION)
+//       return;
+//  }
                                                                                       
     jemFrame.setCursor(cbusy);
     showSearch(searchTxt,mysettings,withSoap,jemFrame, envp);
@@ -93,10 +93,14 @@ public class KeywordSearch implements HyperlinkListener
     }
     else
     {
-      String embossCommand = new String(embossBin +
-          "wossname -search "+search+
-          " -html -prelink "+mysettings.getembURL()+
-          " -postlink .html -outfile stdout -auto");
+      String embossCommand[] = { embossBin+"wossname",
+                                 "-search", search,
+                                 "-html",
+                                 "-prelink", mysettings.getembURL(),
+                                 "-postlink", ".html",
+                                 "-outfile", "stdout",
+                                 "-auto" };
+ 
       RunEmbossApplication2 rea = new RunEmbossApplication2(
                                   embossCommand,envp,null);
       rea.waitFor();
