@@ -6,7 +6,7 @@ cluster corbatest \
 demofeatures demolist demosequence demostring demotable \
 entrails histogramtest messtest \
 patmattest plplottest proteinmotifsearch \
-scope scopext seqinfo \
+scope seqinfo \
 seqretallfeat seqretfeat seqtofeat \
 simplesw testplot treetypedisplay 
 
@@ -147,8 +147,6 @@ redata_SOURCES = redata.c
 remap_SOURCES = remap.c
 restrict_SOURCES = restrict.c
 revseq_SOURCES = revseq.c
-scope_SOURCES = scope.c
-scopext_SOURCES = scopext.c
 seealso_SOURCES = seealso.c
 seqmatchall_SOURCES = seqmatchall.c
 seqret_SOURCES = seqret.c
@@ -156,6 +154,7 @@ seqinfo_SOURCES = seqinfo.c
 seqretall_SOURCES = seqretall.c
 seqretset_SOURCES = seqretset.c
 seqretsplit_SOURCES = seqretsplit.c
+scope_SOURCES = scope.c
 showdb_SOURCES = showdb.c
 showfeat_SOURCES = showfeat.c
 showorf_SOURCES = showorf.c
