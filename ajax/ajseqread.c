@@ -1464,10 +1464,20 @@ static AjBool seqReadNbrf (AjPSeq thys, AjPSeqin seqin)
     static AjPStr ftfmt = NULL;
     AjBool dofeat = ajFalse;
 
+    static AjPStrTok handle2=NULL;
+    static AjPStr    token2=NULL;
+    static AjPStr    rdline2=NULL;
+    
     AjBool ok;
 
     static AjPRegexp idexp = NULL;
     ajDebug ("seqReadNbrf\n");
+
+    if(!token2)
+    {
+	token2 = ajStrNew();
+	rdline2 = ajStrNew();
+    }
 
     if (!ftfmt)
 	ajStrAssC (&ftfmt, "pir");
@@ -1534,6 +1544,14 @@ static AjBool seqReadNbrf (AjPSeq thys, AjPSeqin seqin)
 	}
 	else
 	{
+	    if (ajStrPrefixC(rdline, "C;Accession:"))
+	    {
+		ajStrAssC(&rdline2,ajStrStr(rdline)+13);
+		ajStrTokenAss (&handle2,rdline2, " ;\n\r");
+		while (ajStrToken (&token2, &handle2, NULL))
+		    seqAccSave (thys, token2);
+	    }
+
 	    if (ajStrChar(rdline,0) == 'R')
 	    {			/* skip reference lines with no prefix */
 		while((ok=ajFileBuffGet(buff,&rdline)))
