@@ -175,21 +175,6 @@
 # Command line tests
 ####################
 
-ID acdc-ex
-AP acdc
-CL antigenic
-IN tsw:act1_fugru
-IN
-IN
-FI act1_fugru.antigenic
-FZ = 0
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-//
-
 ID acdc-0001
 AP acdc
 PP EMBOSS_ACDROOT=../../acd
@@ -309,6 +294,39 @@ FI paamir.out2
 FZ = 0
 //
 
+ID acdc-ex
+AP acdc
+CL antigenic
+IN tsw:act1_fugru
+IN
+IN
+FI act1_fugru.antigenic
+FZ = 0
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID acdlog-check
+AQ acdlog
+CL antigenic
+IN tsw:act1_fugru
+IN
+IN
+FI act1_fugru.antigenic
+FZ = 0
+FI antigenic.acdlog
+FC = 4890
+FP 47 /^acdProcess/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
 ID acdpretty-ex
 AP acdpretty
 PP EMBOSS_ACDROOT=../../acd
@@ -321,6 +339,49 @@ FP 12 /^[a-z]+: /
 FI stdout
 FC = 1
 FP /^Created qatest.acdpretty\n/
+//
+
+ID acdtable-ex
+AP acdtable
+CL antigenic
+IN tsw:act1_fugru
+IN
+IN
+FI stderr
+FC = 49
+FP 8 /[<]tr/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID acdtrace-ex
+AP acdtrace
+CL antigenic
+IN tsw:act1_fugru
+IN
+IN
+FI act1_fugru.antigenic
+FZ = 0
+FI stderr
+FC = 20
+FP 9 /^Trace: +\d+/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID acdvalid-ex
+AP acdvalid
+CL antigenic
+IN tsw:act1_fugru
+IN
+IN
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID acdc-0011
@@ -1936,12 +1997,11 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 DI AAINDEX
+DF kytj820101
 //
 
 ID abiview-ex
 AP abiview
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL -graph cps
 IN ../../data/abiview.abi
 IN
@@ -1963,8 +2023,6 @@ FP /^%%Title: PLplot Graph\n/
 ##ID abiview-old
 ##AP abiview
 ##CC Example file missing test/data/ba16d2.s1
-##PP EMBOSSRC=../../
-##PP export EMBOSSRC
 ##CL -graph ps
 ##IN ../../data/ba16d2.s1
 ##IN
@@ -2061,8 +2119,6 @@ FP 0 /Died: /
 
 ID banana-ex
 AP banana
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL -graph data
 IN tembl:rnu68037
 FI banana.profile
@@ -2122,8 +2178,6 @@ FP 0 /Died: /
 
 ID banana-graph
 AP banana
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL -nooutfile -graph ps
 IN tembl:rnu68037
 FI stdout
@@ -2195,8 +2249,6 @@ FP /0[.]188/
 
 ID chaos-ex
 AP chaos
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL tembl:eclac -graph cps
 FI stderr
 FC = 1
@@ -2214,8 +2266,6 @@ FP /^Created chaos.ps\n/
 
 ID chaos-data
 AP chaos
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL tembl:eclac -graph data
 FI stdout
 FC = 1
@@ -2289,8 +2339,6 @@ FP /Nc = 32[.]951/
 
 ID cirdna-ex
 AP cirdna
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL -graph cps
 IN ../../data/data.cirp
 IN
@@ -2427,8 +2475,6 @@ FP /^nnnnnnnnnnnnnnnnnnnnACGTACGTACGTACGTACGTACGTACGTnnnnACGTACGT\n/
 
 ID cpgplot-ex
 AP cpgplot
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL tembl:rnu68037 -graph cps
 IN
 IN
@@ -2458,8 +2504,6 @@ FP /^%%Title: PLplot Graph/
 
 ID cpgplot-old
 AP cpgplot
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL tembl:rnu68037 -graph data
 IN
 IN
@@ -2615,8 +2659,6 @@ FC = 2165
 ID dan-ex2
 UC An example of producing a plot of Tm:
 AP dan
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -plot -graph cps
 IN tembl:paamir
 IN
@@ -2641,8 +2683,6 @@ FZ = 0
 ID dan-old
 UC An example of producing a plot of Tm:
 AP dan
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -plot -graph data
 IN tembl:paamir
 IN
@@ -2672,8 +2712,6 @@ FZ = 0
 
 ID direct-all
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL temblall:* test.out -auto
 FI test.out
 FP 44 /^>/
@@ -2681,8 +2719,6 @@ FP 44 /^>/
 
 ID direct-filename
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL temblvrt:* test.out -auto
 FI test.out
 FP 25 /^>/
@@ -2690,8 +2726,6 @@ FP 25 /^>/
 
 ID direct-exclude
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL temblrest:* test.out -auto
 FI test.out
 FP 19 /^>/
@@ -2847,8 +2881,6 @@ FP /\A.{308}O42493\001/
 
 ID dbiblast-idfirst
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblast-id:CO9_FUGRU test.out -auto
 FI test.out
 FZ = 649
@@ -2858,8 +2890,6 @@ FP 1 />/
 
 ID dbiblast-idsecond
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblast-id:E2BB_FUGRU test.out -auto
 FI test.out
 FZ = 473
@@ -2869,8 +2899,6 @@ FP 1 />/
 
 ID dbiblast-last
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblast-id:TM21_FUGRU test.out -auto
 FI test.out
 FZ = 287
@@ -2880,8 +2908,6 @@ FP 1 />/
 
 ID dbiblast-nextlast
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblast-id:ODO2_FUGRU test.out -auto
 FI test.out
 FZ = 569
@@ -2891,8 +2917,6 @@ FP 1 />/
 
 ID dbiblast-acfirst
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblast-acc:P53450 test.out -auto
 FI test.out
 FZ = 435
@@ -2902,8 +2926,6 @@ FP 1 />/
 
 ID dbiblast-acsecond
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblast-acc:P79755 test.out -auto
 FI test.out
 FZ = 649
@@ -2913,8 +2935,6 @@ FP 1 />/
 
 ID dbiblast-aclast
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblast-acc:Q90515 test.out -auto
 FI test.out
 FZ = 287
@@ -2924,8 +2944,6 @@ FP 1 />/
 
 ID dbiblast-all
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblast:* test.out -auto
 FI test.out
 FZ = 4474
@@ -2935,8 +2953,6 @@ FP 9 />/
 
 ID dbiblast-wild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblast:n* test.out -auto
 FI test.out
 FZ = 516
@@ -3037,8 +3053,6 @@ FP /\A.{308}O42493\001/
 
 ID dbiblast-split-idfirst
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblastsplit-id:CO9_FUGRU test.out -auto
 FI test.out
 FZ = 649
@@ -3048,8 +3062,6 @@ FP 1 />/
 
 ID dbiblast-split-idsecond
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblastsplit-id:E2BB_FUGRU test.out -auto
 FI test.out
 FZ = 473
@@ -3059,8 +3071,6 @@ FP 1 />/
 
 ID dbiblast-split-last
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblastsplit-id:TM21_FUGRU test.out -auto
 FI test.out
 FZ = 287
@@ -3070,8 +3080,6 @@ FP 1 />/
 
 ID dbiblast-split-nextlast
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblastsplit-id:ODO2_FUGRU test.out -auto
 FI test.out
 FZ = 569
@@ -3081,8 +3089,6 @@ FP 1 />/
 
 ID dbiblast-split-acfirst
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblastsplit-acc:P53450 test.out -auto
 FI test.out
 FZ = 435
@@ -3092,8 +3098,6 @@ FP 1 />/
 
 ID dbiblast-split-acsecond
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblastsplit-acc:P79755 test.out -auto
 FI test.out
 FZ = 649
@@ -3103,8 +3107,6 @@ FP 1 />/
 
 ID dbiblast-split-aclast
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblastsplit-acc:Q90515 test.out -auto
 FI test.out
 FZ = 287
@@ -3114,8 +3116,6 @@ FP 1 />/
 
 ID dbiblast-split-all
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblastsplit:* test.out -auto
 FI test.out
 FZ = 4474
@@ -3125,8 +3125,6 @@ FP 9 />/
 
 ID dbiblast-split-wild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblastsplit:n* test.out -auto
 FI test.out
 FZ = 516
@@ -3136,8 +3134,6 @@ FP 2 />/
 
 ID dbiblast-split-testexc
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblastsplitexc:CO9_FUGRU test.out -auto
 FI test.out
 FZ = 649
@@ -3148,8 +3144,6 @@ FP 1 />/
 ID dbiblast-split-testexcfail
 ER 1
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblastsplitexc:FABP_FUGRU test.out -auto
 FI stderr
 FZ = 131
@@ -3161,8 +3155,6 @@ FP 1 /Died: /
 
 ID dbiblast-split-testinc
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblastsplitinc:FABP_FUGRU test.out -auto
 FI test.out
 FZ = 175
@@ -3173,8 +3165,6 @@ FP 1 />/
 ID dbiblast-split-testincfail
 ER 1
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapblastsplitinc:CO9_FUGRU test.out -auto
 FI stderr
 FZ = 130
@@ -3304,8 +3294,6 @@ FP /\A.{44} +/
 
 ID dbifasta-idfirst
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qanfasta-id:MMAM test.out -auto
 FI test.out
 FZ = 471
@@ -3315,8 +3303,6 @@ FP 1 />/
 
 ID dbifasta-idsecond
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qanfasta-id:RNOPS test.out -auto
 FI test.out
 FZ = 1565
@@ -3326,8 +3312,6 @@ FP 1 />/
 
 ID dbifasta-last
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qanfasta-id:RNU68037 test.out -auto
 FI test.out
 FZ = 1318
@@ -3337,8 +3321,6 @@ FP 1 />/
 
 ID dbifasta-nextlast
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qanfasta-id:RNOPS test.out -auto
 FI test.out
 FZ = 1565
@@ -3348,8 +3330,6 @@ FP 1 />/
 
 ID dbifasta-all
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qanfasta:* test.out -auto
 FI test.out
 FZ = 3354
@@ -3359,8 +3339,6 @@ FP 3 />/
 
 ID dbifasta-wild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qanfasta:r* test.out -auto
 FI test.out
 FZ = 2883
@@ -3403,8 +3381,6 @@ FP /\A.{308}O42493\001/
 
 ID dbifasta-swiss-idfirst
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapfasta-id:CO9_FUGRU test.out -auto
 FI test.out
 FZ = 649
@@ -3414,8 +3390,6 @@ FP 1 />/
 
 ID dbifasta-swiss-idsecond
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapfasta-id:E2BB_FUGRU test.out -auto
 FI test.out
 FZ = 473
@@ -3425,8 +3399,6 @@ FP 1 />/
 
 ID dbifasta-swiss-last
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapfasta-id:TM21_FUGRU test.out -auto
 FI test.out
 FZ = 287
@@ -3436,8 +3408,6 @@ FP 1 />/
 
 ID dbifasta-swiss-nextlast
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapfasta-id:ODO2_FUGRU test.out -auto
 FI test.out
 FZ = 569
@@ -3447,8 +3417,6 @@ FP 1 />/
 
 ID dbifasta-swiss-all
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapfasta:* test.out -auto
 FI test.out
 FZ = 4474
@@ -3458,8 +3426,6 @@ FP 9 />/
 
 ID dbifasta-swiss-wild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapfasta:n* test.out -auto
 FI test.out
 FZ = 516
@@ -3503,8 +3469,6 @@ FP s /\A.{308}AC3[.]1\000/
 
 ID dbifasta-worm-idfirst
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qawfasta-id:AC3.1 test.out -auto
 FI test.out
 FZ = 426
@@ -3514,8 +3478,6 @@ FP 1 />/
 
 ID dbifasta-worm-idsecond
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qawfasta-id:AC3.2 test.out -auto
 FI test.out
 FZ = 1057
@@ -3525,8 +3487,6 @@ FP 1 />/
 
 ID dbifasta-worm-last
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qawfasta-id:ZK637.15 test.out -auto
 FI test.out
 FZ = 205
@@ -3536,8 +3496,6 @@ FP 1 />/
 
 ID dbifasta-worm-nextlast
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qawfasta-id:zk637.14 test.out -auto
 FI test.out
 FZ = 260
@@ -3547,8 +3505,6 @@ FP 1 />/
 
 ID dbifasta-worm-all
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qawfasta:* test.out -auto
 FI test.out
 FZ = 33816
@@ -3557,8 +3513,6 @@ FP 66 />/
 
 ID dbifasta-worm-wild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qawfasta:a* test.out -auto
 FI test.out
 FZ = 19764
@@ -3568,8 +3522,6 @@ FP 40 /^>/
 
 ID dbifasta-worm-wildz
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qawfasta:z* test.out -auto
 FI test.out
 FZ = 7264
@@ -3640,8 +3592,6 @@ FP /\A.{308}L48662\001/
 
 ID dbiflat-id
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qanflat-id:rnops test.out -auto
 FI test.out
 FZ = 1567
@@ -3651,8 +3601,6 @@ FP 1 />/
 
 ID dbiflat-idfirst
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qanflat-id:MMAM test.out -auto
 FI test.out
 FZ = 473
@@ -3662,8 +3610,6 @@ FP 1 />/
 
 ID dbiflat-idsecond
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qanflat-id:RNOPS test.out -auto
 FI test.out
 FZ = 1567
@@ -3673,8 +3619,6 @@ FP 1 />/
 
 ID dbiflat-last
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qanflat-id:RNU68037 test.out -auto
 FI test.out
 FZ = 1320
@@ -3684,8 +3628,6 @@ FP 1 />/
 
 ID dbiflat-nextlast
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qanflat-id:RNOPS test.out -auto
 FI test.out
 FZ = 1567
@@ -3695,8 +3637,6 @@ FP 1 />/
 
 ID dbiflat-all
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qanflat:* test.out -auto
 FI test.out
 FZ = 3360
@@ -3706,8 +3646,6 @@ FP 3 />/
 
 ID dbiflat-wild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qanflat:r* test.out -auto
 FI test.out
 FZ = 2887
@@ -3717,8 +3655,6 @@ FP 2 />/
 
 ID dbiflat-tembl-idfirst
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL tembl-id:AB000095 test.out -auto
 FI test.out
 FZ = 2542
@@ -3728,8 +3664,6 @@ FP 1 />/
 
 ID dbiflat-tembl-idsecond
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL tembl-id:AB000360 test.out -auto
 FI test.out
 FZ = 2685
@@ -3739,8 +3673,6 @@ FP 1 />/
 
 ID dbiflat-tembl-last
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL tembl-id:XLRHODOP test.out -auto
 FI test.out
 FZ = 1777
@@ -3750,8 +3682,6 @@ FP 1 />/
 
 ID dbiflat-tembl-nextlast
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL tembl-id:XL23808 test.out -auto
 FI test.out
 FZ = 4876
@@ -3761,8 +3691,6 @@ FP 1 />/
 
 ID dbiflat-tembl-multiacc
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL tembl-acc:V00451 test.out -auto
 FI test.out
 FZ = 6261
@@ -3772,8 +3700,6 @@ FP 3 />/
 
 ID dbiflat-tembl-all
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL tembl:* test.out -auto
 FI test.out
 FZ = 540075
@@ -3783,8 +3709,6 @@ FP 44 />/
 
 ID dbiflat-tembl-wild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL tembl:h* test.out -auto
 FI test.out
 FZ = 154591
@@ -3932,8 +3856,6 @@ FP /\A.{300}\001/
 
 ID dbiflat-swiss-idfirst
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapflat-id:CO9_FUGRU test.out -auto
 FI test.out
 FZ = 649
@@ -3943,8 +3865,6 @@ FP 1 />/
 
 ID dbiflat-swiss-idsecond
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapflat-id:E2BB_FUGRU test.out -auto
 FI test.out
 FZ = 473
@@ -3954,8 +3874,6 @@ FP 1 />/
 
 ID dbiflat-swiss-last
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapflat-id:TM21_FUGRU test.out -auto
 FI test.out
 FZ = 287
@@ -3965,8 +3883,6 @@ FP 1 />/
 
 ID dbiflat-swiss-nextlast
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapflat-id:ODO2_FUGRU test.out -auto
 FI test.out
 FZ = 569
@@ -3976,8 +3892,6 @@ FP 1 />/
 
 ID dbiflat-swiss-all
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapflat:* test.out -auto
 FI test.out
 FZ = 2413
@@ -3987,8 +3901,6 @@ FP 5 />/
 
 ID dbiflat-swiss-wild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapflat:o* test.out -auto
 FI test.out
 FZ = 569
@@ -3998,8 +3910,6 @@ FP 1 />/
 
 ID dbiflat-swiss-testexc
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapflatexc-id:CO9_FUGRU test.out -auto
 FI test.out
 FZ = 649
@@ -4010,8 +3920,6 @@ FP 1 />/
 ID dbiflat-swiss-testexcfail
 ER 1
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapflatexc-id:FOS_FUGRU test.out -auto
 FI stderr
 FZ = 127
@@ -4023,8 +3931,6 @@ FP 1 /Died: /
 
 ID dbiflat-swiss-testinc
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapflatinc-id:FOS_FUGRU test.out -auto
 FI test.out
 FZ = 435
@@ -4035,8 +3941,6 @@ FP 1 />/
 ID dbiflat-swiss-testincfail
 ER 1
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapflatinc-id:CO9_FUGRU test.out -auto
 FI stderr
 FZ = 127
@@ -4110,8 +4014,6 @@ FP /\A.{308}AB000095/
 
 ID dbigcg-id
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcg-id:hsfau test.out -auto
 FI test.out
 FZ = 560
@@ -4121,8 +4023,6 @@ FP 1 />/
 
 ID dbigcg-idfirst
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcg-id:AB000095 test.out -auto
 FI test.out
 FZ = 2542
@@ -4132,8 +4032,6 @@ FP 1 />/
 
 ID dbigcg-idsecond
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcg-id:AB009062 test.out -auto
 FI test.out
 FZ = 594
@@ -4143,8 +4041,6 @@ FP 1 />/
 
 ID dbigcg-last
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcg-id:XLRHODOP test.out -auto
 FI test.out
 FZ = 1777
@@ -4154,8 +4050,6 @@ FP 1 />/
 
 ID dbigcg-acc
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcg:L07770 test.out -auto
 FI test.out
 FZ = 1777
@@ -4165,8 +4059,6 @@ FP 1 />/
 
 ID dbigcg-nextlast
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcg-id:XL23808 test.out -auto
 FI test.out
 FZ = 4876
@@ -4176,8 +4068,6 @@ FP 1 />/
 
 ID dbigcg-splitfirst
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcg-id:CEY39B6 test.out -auto
 FI test.out
 FZ = 362911
@@ -4187,8 +4077,6 @@ FP 1 />/
 
 ID dbigcg-splitmid
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcg-id:PFMAL4P1 test.out -auto
 FI test.out
 FZ = 399267
@@ -4198,8 +4086,6 @@ FP 1 />/
 
 ID dbigcg-splitbefore
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcg-id:AC017364 test.out -auto
 FI test.out
 FZ = 3801
@@ -4209,8 +4095,6 @@ FP 1 />/
 
 ID dbigcg-splitafter
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcg-id:PFMAL4P3 test.out -auto
 FI test.out
 FZ = 326444
@@ -4220,8 +4104,6 @@ FP 1 />/
 
 ID dbigcg-splitend
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcg-id:ECUW67 test.out -auto
 FI test.out
 FZ = 378731
@@ -4231,8 +4113,6 @@ FP 1 />/
 
 ID dbigcg-all
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcg:* test.out -auto
 FI test.out
 FZ = 2145073
@@ -4242,8 +4122,6 @@ FP 40 />/
 
 ID dbigcg-wild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcg:h* test.out -auto
 FI test.out
 FZ = 77403
@@ -4253,8 +4131,6 @@ FP 13 />/
 
 ID dbigcg-testexc
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgexc-id:hsfau test.out -auto
 FI test.out
 FZ = 560
@@ -4265,8 +4141,6 @@ FP 1 />/
 ID dbigcg-testexcfail
 ER 1
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgexc-id:eclac test.out -auto
 FI stderr
 FZ = 122
@@ -4278,8 +4152,6 @@ FP 1 /Died: /
 
 ID dbigcg-testinc
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcginc-id:eclac test.out -auto
 FI test.out
 FZ = 7676
@@ -4290,8 +4162,6 @@ FP 1 />/
 ID dbigcg-testincfail
 ER 1
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcginc-id:hsfau test.out -auto
 FI stderr
 FZ = 122
@@ -4361,8 +4231,6 @@ FP /\A.{308}AFRICAN CLAWED FROG\000/
 
 ID dbigcg-allsys-id
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-id:hsfau test.out -auto
 FI test.out
 FZ = 560
@@ -4372,8 +4240,6 @@ FP 1 />/
 
 ID dbigcg-allsys-idfirst
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-id:AB000095 test.out -auto
 FI test.out
 FZ = 2542
@@ -4383,8 +4249,6 @@ FP 1 />/
 
 ID dbigcg-allsys-idsecond
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-id:AB009062 test.out -auto
 FI test.out
 FZ = 594
@@ -4394,8 +4258,6 @@ FP 1 />/
 
 ID dbigcg-allsys-last
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-id:XLRHODOP test.out -auto
 FI test.out
 FZ = 1777
@@ -4405,8 +4267,6 @@ FP 1 />/
 
 ID dbigcg-allsys-acc
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall:L07770 test.out -auto
 FI test.out
 FZ = 1777
@@ -4416,8 +4276,6 @@ FP 1 />/
 
 ID dbigcg-allsys-nextlast
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-id:XL23808 test.out -auto
 FI test.out
 FZ = 4876
@@ -4427,8 +4285,6 @@ FP 1 />/
 
 ID dbigcg-allsys-splitfirst
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-id:CEY39B6 test.out -auto
 FI test.out
 FZ = 362911
@@ -4438,8 +4294,6 @@ FP 1 />/
 
 ID dbigcg-allsys-splitmid
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-id:PFMAL4P1 test.out -auto
 FI test.out
 FZ = 399267
@@ -4449,8 +4303,6 @@ FP 1 />/
 
 ID dbigcg-allsys-splitbefore
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-id:AC017364 test.out -auto
 FI test.out
 FZ = 3801
@@ -4460,8 +4312,6 @@ FP 1 />/
 
 ID dbigcg-allsys-splitafter
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-id:PFMAL4P3 test.out -auto
 FI test.out
 FZ = 326444
@@ -4471,8 +4321,6 @@ FP 1 />/
 
 ID dbigcg-allsys-splitend
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-id:ECUW67 test.out -auto
 FI test.out
 FZ = 378731
@@ -4482,8 +4330,6 @@ FP 1 />/
 
 ID dbigcg-allsys-all
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall:* test.out -auto
 FI test.out
 FZ = 2145073
@@ -4493,8 +4339,6 @@ FP 40 />/
 
 ID dbigcg-allsys-wild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall:h* test.out -auto
 FI test.out
 FZ = 77403
@@ -4504,8 +4348,6 @@ FP 13 />/
 
 ID dbigcg-allsys-acnum
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-acc:X65923 test.out -auto
 FI test.out
 FZ = 560
@@ -4515,8 +4357,6 @@ FP 1 />/
 
 ID dbigcg-allsys-acnumall
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-acc:* test.out -auto
 FI test.out
 FZ = 2145073
@@ -4526,8 +4366,6 @@ FP 40 />/
 
 ID dbigcg-allsys-acnumwild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-acc:x* test.out -auto
 FI test.out
 FZ = 18986
@@ -4537,8 +4375,6 @@ FP 11 />/
 
 ID dbigcg-allsys-sv
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-sv:D00596.1 test.out -auto
 FI test.out
 FZ = 19007
@@ -4548,8 +4384,6 @@ FP 1 />/
 
 ID dbigcg-allsys-svall
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-sv:* test.out -auto
 FI test.out
 FZ = 2145073
@@ -4559,8 +4393,6 @@ FP 40 />/
 
 ID dbigcg-allsys-svwild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-sv:x* test.out -auto
 FI test.out
 FZ = 5045
@@ -4570,8 +4402,6 @@ FP 3 />/
 
 ID dbigcg-allsys-des
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-des:fau test.out -auto
 FI test.out
 FZ = 560
@@ -4581,8 +4411,6 @@ FP 1 />/
 
 ID dbigcg-allsys-desall
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-des:* test.out -auto
 FI test.out
 FZ = 2145073
@@ -4592,8 +4420,6 @@ FP 40 />/
 
 ID dbigcg-allsys-deswild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-des:m* test.out -auto
 FI test.out
 FZ = 1543930
@@ -4603,8 +4429,6 @@ FP 18 />/
 
 ID dbigcg-allsys-key
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-key:rhodopsin test.out -auto
 FI test.out
 FZ = 5087
@@ -4614,8 +4438,6 @@ FP 3 />/
 
 ID dbigcg-allsys-keyall
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-key:* test.out -auto
 FI test.out
 FZ = 2145073
@@ -4625,8 +4447,6 @@ FP 40 />/
 
 ID dbigcg-allsys-keywild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-key:m* test.out -auto
 FI test.out
 FZ = 9918
@@ -4636,8 +4456,6 @@ FP 3 />/
 
 ID dbigcg-allsys-org
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-org:Mus test.out -auto
 FI test.out
 FZ = 473
@@ -4647,8 +4465,6 @@ FP 1 />/
 
 ID dbigcg-allsys-orgall
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-org:* test.out -auto
 FI test.out
 FZ = 2145073
@@ -4658,8 +4474,6 @@ FP 40 />/
 
 ID dbigcg-allsys-orgwild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-org:s* test.out -auto
 FI test.out
 FZ = 45442
@@ -4669,8 +4483,6 @@ FP 5 />/
 
 ID dbigcg-allsys-orgwild2
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qangcgall-org:mus* test.out -auto
 FI test.out
 FZ = 4274
@@ -4768,8 +4580,6 @@ FP /\A.{308}A00001/
 
 ID dbigcg-pir-id
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapir-id:cchu test.out -auto
 FI test.out
 FZ = 141
@@ -4779,8 +4589,6 @@ FP 1 />/
 
 ID dbigcg-pir-idfirst
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapir-id:A31558 test.out -auto
 FI test.out
 FZ = 156
@@ -4790,8 +4598,6 @@ FP 1 />/
 
 ID dbigcg-pir-idsecond
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapir-id:A32902 test.out -auto
 FI test.out
 FZ = 123
@@ -4801,8 +4607,6 @@ FP 1 />/
 
 ID dbigcg-pir-last
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapir-id:S29350 test.out -auto
 FI test.out
 FZ = 186
@@ -4812,8 +4616,6 @@ FP 1 />/
 
 ID dbigcg-pir-acc
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapir:A00001 test.out -auto
 FI test.out
 FZ = 141
@@ -4823,8 +4625,6 @@ FP 1 />/
 
 ID dbigcg-pir-nextlast
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapir-id:S11172 test.out -auto
 FI test.out
 FZ = 178
@@ -4834,8 +4634,6 @@ FP 1 />/
 
 ID dbigcg-pir-all
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapir:* test.out -auto
 FI test.out
 FZ = 10175
@@ -4845,8 +4643,6 @@ FP 60 />/
 
 ID dbigcg-pir-wild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapir:c* test.out -auto
 FI test.out
 FZ = 7660
@@ -4856,8 +4652,6 @@ FP 49 />/
 
 ID dbigcg-pir-testexc
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirexc-id:S11172 test.out -auto
 FI test.out
 FZ = 178
@@ -4868,8 +4662,6 @@ FP 1 />/
 ID dbigcg-pir-testexcfail
 ER 1
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirexc-id:cchu test.out -auto
 FI stderr
 FZ = 120
@@ -4881,8 +4673,6 @@ FP 1 /Died: /
 
 ID dbigcg-pir-testinc
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirinc-id:cchu test.out -auto
 FI test.out
 FZ = 141
@@ -4893,8 +4683,6 @@ FP 1 />/
 ID dbigcg-pir-testincfail
 ER 1
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirinc-id:S11172 test.out -auto
 FI stderr
 FZ = 122
@@ -4960,8 +4748,6 @@ FP /\A.{308}ANAS PLATYRHYNCHOS \(DOMESTIC DUCK\)/
 
 ID dbigcg-pirall-id
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall-id:cchu test.out -auto
 FI test.out
 FZ = 141
@@ -4971,8 +4757,6 @@ FP 1 />/
 
 ID dbigcg-pirall-idfirst
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall-id:A31558 test.out -auto
 FI test.out
 FZ = 156
@@ -4982,8 +4766,6 @@ FP 1 />/
 
 ID dbigcg-pirall-idsecond
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall-id:A32902 test.out -auto
 FI test.out
 FZ = 123
@@ -4993,8 +4775,6 @@ FP 1 />/
 
 ID dbigcg-pirall-last
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall-id:S29350 test.out -auto
 FI test.out
 FZ = 186
@@ -5004,8 +4784,6 @@ FP 1 />/
 
 ID dbigcg-pirall-acc
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall:A00001 test.out -auto
 FI test.out
 FZ = 141
@@ -5015,8 +4793,6 @@ FP 1 />/
 
 ID dbigcg-pirall-nextlast
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall-id:S11172 test.out -auto
 FI test.out
 FZ = 178
@@ -5026,8 +4802,6 @@ FP 1 />/
 
 ID dbigcg-pirall-all
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall:* test.out -auto
 FI test.out
 FZ = 10175
@@ -5037,8 +4811,6 @@ FP 60 />/
 
 ID dbigcg-pirall-wild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall:c* test.out -auto
 FI test.out
 FZ = 7660
@@ -5048,8 +4820,6 @@ FP 49 />/
 
 ID dbigcg-pirall-acnum
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall-acc:A04605 test.out -auto
 FI test.out
 FZ = 139
@@ -5059,8 +4829,6 @@ FP 1 />/
 
 ID dbigcg-pirall-acnumall
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall-acc:* test.out -auto
 FI test.out
 FZ = 10175
@@ -5070,8 +4838,6 @@ FP 60 />/
 
 ID dbigcg-pirall-acnumwild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall-acc:s* test.out -auto
 FI test.out
 FZ = 829
@@ -5082,8 +4848,6 @@ FP 5 />/
 
 ID dbigcg-pirall-des
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall-des:cytochrome test.out -auto
 FI test.out
 FZ = 8516
@@ -5093,8 +4857,6 @@ FP 54 />/
 
 ID dbigcg-pirall-desall
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall-des:* test.out -auto
 FI test.out
 FZ = 10175
@@ -5104,8 +4866,6 @@ FP 60 />/
 
 ID dbigcg-pirall-deswild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall-des:p* test.out -auto
 FI test.out
 FZ = 2380
@@ -5115,8 +4875,6 @@ FP 11 />/
 
 ID dbigcg-pirall-key
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall-key:polymorphism test.out -auto
 FI test.out
 FZ = 141
@@ -5126,8 +4884,6 @@ FP 1 />/
 
 ID dbigcg-pirall-keyall
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall-key:* test.out -auto
 FI test.out
 FZ = 10175
@@ -5138,8 +4894,6 @@ FP 60 />/
 # only entries with keywords
 ID dbigcg-pirall-keyall2
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall-key:?* test.out -auto
 FI test.out
 FZ = 8800
@@ -5149,8 +4903,6 @@ FP 56 />/
 
 ID dbigcg-pirall-keywild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall-key:m* test.out -auto
 FI test.out
 FZ = 8180
@@ -5160,8 +4912,6 @@ FP 52 />/
 
 ID dbigcg-pirall-org
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall-org:'drosophila melanogaster' test.out -auto
 FI test.out
 FZ = 180
@@ -5171,8 +4921,6 @@ FP 1 />/
 
 ID dbigcg-pirall-orgall
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall-org:* test.out -auto
 FI test.out
 FZ = 10175
@@ -5182,8 +4930,6 @@ FP 60 />/
 
 ID dbigcg-pirall-orgwild
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL qapirall-org:s* test.out -auto
 FI test.out
 FZ = 1103
@@ -5316,8 +5062,6 @@ FC = 17
 
 ID dotmatcher-ex
 AP dotmatcher
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL tsw:hba_human tsw:hbb_human -graph cps
 FI stderr
 FC = 1
@@ -5334,8 +5078,6 @@ FP /^Created dotmatcher.ps\n/
 
 ID dotmatcher-data
 AP dotmatcher
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL tsw:hba_human tsw:hbb_human -graph data
 FI stderr
 FC = 1
@@ -5352,8 +5094,6 @@ FP /^Text2 x1 73.000000 y1 163.5[0-9]+ colour 0 size 1.000000 Dotmatcher: HBA_HU
 
 ID dotmatcher-stretchdata
 AP dotmatcher
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL tsw:hba_human tsw:hbb_human -stretch -xygraph data
 FI stderr
 FC = 1
@@ -5377,8 +5117,6 @@ FP /^##Number 0\n/
 
 ID dotmatcher-stretch
 AP dotmatcher
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL tsw:hba_human tsw:hbb_human -xygraph ps -stretch
 IN
 FI stderr
@@ -5400,8 +5138,6 @@ AP dotpath
 ## timeout 60 seconds on original test system
 ##
 TI 400
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL tembl:AF129756 tembl:AP000504 -word 20 -graph cps -overlaps
 FI stderr
 FC = 1
@@ -5423,8 +5159,6 @@ AP dotpath
 ## timeout 60 seconds on original test system
 ##
 TI 400
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL tembl:AF129756 tembl:AP000504 -word 20 -graph data
 FI dotpath1.dat
 FP /^Line x1 10963.000000 y1 4915.000000 x2 10999.000000 y2 4951.000000 colour 0\n/
@@ -5441,8 +5175,6 @@ FP 0 /Died: /
 
 ID dottup-ex
 AP dottup
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac" -graph cps
 FI stdout
 FZ = 18
@@ -5460,8 +5192,6 @@ FP 0 /Died: /
 
 ID dottup-data
 AP dottup
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac"
 CL -graph data
 IN
@@ -5482,8 +5212,6 @@ ID dottup-stretchdata
 AP dottup
 CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac"
 CL -stretch -xygraph data
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 IN
 FI stdout
 FC = 1
@@ -5502,8 +5230,6 @@ ID dottup-stretch
 AP dottup
 CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac" -xygraph ps
 CL -stretch
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 IN
 FI stdout
 FZ = 18
@@ -6197,8 +5923,6 @@ FP 1 /Died: /
 
 ID epestfind-ex
 AP epestfind
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL -graph cps -invalid
 IN ../../data/exu2_drops.embl
 IN 
@@ -6716,8 +6440,6 @@ FP /^tcttaa\n/
 
 ID findkm-ex
 AP findkm
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL -graph cps
 IN ../../data/enztest.dat
 IN
@@ -7266,8 +6988,6 @@ FP /^<tr><td>tembl-id:PAAMIR</td><td>PAAMIR</td><td>X13776</td><td>N</td><td>216
 ID isochore-ex
 CC Change to reading tembl:AF129756 - much faster
 AP isochore
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL tembl:AF129756  -graph cps
 IN
 FI stderr
@@ -7302,8 +7022,6 @@ FP 0 /Died: /
 # remove the extra 2 prompts from the example
 ID lindna-ex
 AP lindna
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL -graph cps
 IN ../../data/data.linp
 IN
@@ -8054,8 +7772,6 @@ FP /^%%Pages: 1\n/
 
 ID pepnet-data
 AP pepnet
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL -sask -graph data
 ## No -outfile qualifier - fixed filename
 IN tsw:gcn4_yeast
@@ -8117,8 +7833,6 @@ FP /^%%Pages: 1\n/
 
 ID pepwheel-data
 AP pepwheel
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL tsw:hbb_human -send 30 -graph data
 FI stdout
 FC = 1
@@ -8229,8 +7943,6 @@ FP /^%%Pages: 1\n/
 # change example to use globins.msf
 ID plotcon-ex
 AP plotcon
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL -sformat msf ../../data/globins.msf -graph cps
 IN
 FI stderr
@@ -8249,8 +7961,6 @@ FP /^%%Pages: 1\n/
 
 ID plotcon-data
 AP plotcon
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL -sformat msf ../../data/globins.msf -graph data
 IN
 FI stdout
@@ -8307,8 +8017,6 @@ FP /^%%Pages: 1\n/
 
 ID polydot-ex
 AP polydot
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL ../../data/globins.fasta -gtitle="Polydot of globins.fasta"
 CL -graph cps
 IN
@@ -8327,8 +8035,6 @@ FP /^%%Pages: 1\n/
 
 ID polydot-data
 AP polydot
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL ../../data/globins.fasta -gtitle="Polydot of globins.fasta"
 CL -graph data
 IN
@@ -8351,8 +8057,6 @@ FP /^Text1 x1 1121.670044 y1 1023.659973 colour 0 size 0.300000   1    146     8
 
 ID polydot-feat
 AP polydot
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL ../../data/globins.fasta -gtitle="Polydot of globins.fasta"
 CL -graph cps -dumpfeat
 IN
@@ -8402,13 +8106,11 @@ FZ = 22
 FP /^Created prettyplot.ps\n/
 FI prettyplot.ps
 FP /^%%Title: PLplot Graph\n/
-FP /^%%Pages: 2\n/
+FP /^%%Pages: 3\n/
 //
 
 ID prettyplot-data
 AP prettyplot
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL -resbreak=10 -boxcol -consensus -plurality=3
 CL -graph data
 IN ../../data/globins.msf
@@ -8933,9 +8635,9 @@ FP /^#\s+3\s+13\s+25\s+33\s+37\s+114/
 ID restrict-nonpal
 UC Tests non-palindromic sites
 AP restrict
-CL -enzymes BseYI
 PP EMBOSS_DATA=../rebaseextract-keep/
 PP export EMBOSS_DATA
+CL -enzymes BseYI
 IN asis:GCTGGGTTTCCCAGC 
 IN
 IN
@@ -11306,8 +11008,6 @@ ER 1
 CC No need for a local SRS installation - fails at USA processing
 CC Reports bad filename because 'bad' is an unknown field
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-bad:AB000095
 FI stderr
 FZ = 205
@@ -11323,8 +11023,6 @@ ER 1
 CC No need for a local SRS installation - fails at USA processing
 CC Reports bad filename because 'key' is not defined in 'fields' for qasrs
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-key:AB000095
 FI stderr
 FZ = 205
@@ -11339,8 +11037,6 @@ ID seqret-query-srs-id
 CC Requires a local SRS installation
 RQ srs
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-ID:AB000095
 FI test.out
 FZ = 3678
@@ -11352,8 +11048,6 @@ ID seqret-query-srs-acc
 CC Requires a local SRS installation
 RQ srs
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-ACC:AB000095
 FI test.out
 FZ = 3678
@@ -11365,8 +11059,6 @@ ID seqret-query-srs-sv
 CC Requires a local SRS installation
 RQ srs
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-SV:AB000095.1
 FI test.out
 FZ = 3678
@@ -11378,8 +11070,6 @@ ID seqret-query-srs-name
 CC Requires a local SRS installation
 RQ srs
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs:AB000095
 FI test.out
 FZ = 3678
@@ -11392,8 +11082,6 @@ CC Requires a local SRS installation
 RQ srs
 ER 1
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-id:OLD
 FI stderr
 FZ = 116
@@ -11407,8 +11095,6 @@ ID seqret-query-srsfasta-id
 CC Requires a local SRS installation
 RQ srs
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrsfasta-ID:AB000095
 FI test.out
 FZ = 3407
@@ -11420,8 +11106,6 @@ ID seqret-query-srsfasta-acc
 CC Requires a local SRS installation
 RQ srs
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrsfasta-ACC:AB000095
 FI test.out
 FZ = 3407
@@ -11433,8 +11117,6 @@ ID seqret-query-srsfasta-sv
 CC Requires a local SRS installation
 RQ srs
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrsfasta-SV:AB000095.1
 FI test.out
 FZ = 3407
@@ -11446,8 +11128,6 @@ ID seqret-query-srsfasta-name
 CC Requires a local SRS installation
 RQ srs
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrsfasta:AB000095
 FI test.out
 FZ = 3407
@@ -11460,8 +11140,6 @@ CC Requires a local SRS installation
 RQ srs
 ER 1
 AP seqret
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrsfasta-id:OLD
 FI stderr
 FZ = 121
@@ -11474,8 +11152,6 @@ FP 1 /Died: /
 ID seqret-query-srswww-id
 AP seqret
 CC Requires http access to EBI SRS server
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrswww-ID:AB000095
 FI test.out
 FZ = 3678
@@ -11486,8 +11162,6 @@ FP 1 /^ID /
 ID seqret-query-srswww-acc
 AP seqret
 CC Requires http access to EBI SRS server
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrswww-ACC:AB000095
 FI test.out
 FZ = 3678
@@ -11498,8 +11172,6 @@ FP 1 /^ID /
 ID seqret-query-srswww-sv
 AP seqret
 CC Requires http access to EBI SRS server
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrswww-SV:AB000095.1
 FI test.out
 FZ = 3678
@@ -11510,8 +11182,6 @@ FP 1 /^ID /
 ID seqret-query-srswww-name
 AP seqret
 CC Requires http access to EBI SRS server
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrswww:AB000095
 FI test.out
 FZ = 3678
@@ -11523,8 +11193,6 @@ ID seqret-query-srswww-fail
 ER 1
 AP seqret
 CC Requires http access to EBI SRS server
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrswww-id:OLD
 FI stderr
 FZ = 119
@@ -12707,8 +12375,6 @@ FP /HBB_HUMAN/
 ID showdb-ex
 UC Display information on the currently available databases:
 AP showdb
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 PP EMBOSS_RCHOME=N
 PP export EMBOSS_RCHOME
 FI stderr
@@ -12724,8 +12390,6 @@ FP /^tembl\s+N\s+OK\s+OK\s+OK/
 ID showdb-ex2
 UC Write the results to a file:
 AP showdb
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 PP EMBOSS_RCHOME=N
 PP export EMBOSS_RCHOME
 CL -outfile showdb.out
@@ -12742,8 +12406,6 @@ FP /^tembl\s+N\s+OK\s+OK\s+OK/
 ID showdb-ex3
 UC Display information on one explicit database:
 AP showdb
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 PP EMBOSS_RCHOME=N
 PP export EMBOSS_RCHOME
 CL -database tsw
@@ -12760,8 +12422,6 @@ FP 0 /^tembl/
 ID showdb-ex4
 UC Display information on the databases formatted in HTML:
 AP showdb
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 PP EMBOSS_RCHOME=N
 PP export EMBOSS_RCHOME
 CL -html
@@ -12778,8 +12438,6 @@ FP /^<tr><td>tembl</td><td>N</td><td>OK/
 ID showdb-ex5
 UC Display protein databases only:
 AP showdb
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 PP EMBOSS_RCHOME=N
 PP export EMBOSS_RCHOME
 CL -nonucleic
@@ -12796,8 +12454,6 @@ FP 0 /^[^#]\S*\s+N/
 ID showdb-ex6
 UC Display the information with no headings:
 AP showdb
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 PP EMBOSS_RCHOME=N
 PP export EMBOSS_RCHOME
 CL -noheading
@@ -12814,8 +12470,6 @@ FP 0 /\A#/
 ID showdb-ex7
 UC Display just a list of the available database names:
 AP showdb
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 PP EMBOSS_RCHOME=N
 PP export EMBOSS_RCHOME
 CL -noheading -notype -noid -noquery -noall -nocomment -auto
@@ -12827,8 +12481,6 @@ FP /^tembl\s+\n/
 ID showdb-ex8
 UC Display only the names and types:
 AP showdb
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 PP EMBOSS_RCHOME=N
 PP export EMBOSS_RCHOME
 CL -only -type
@@ -13420,8 +13072,6 @@ FP /^     37     236   0.951 Coding/
 
 ID tcode-ex2
 UC Produce a graphical plot
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL -plot -graph cps
 AP tcode
 IN tembl:hsfau1
@@ -13557,8 +13207,6 @@ FP /^ +T00702; PU.1;Quality: 3; Species: mouse, Mus musculus.\n/
 
 ID tmap-ex
 AP tmap
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL tsw:opsd_human -out tmap.res -graph cps
 FI stderr
 FC = 1
@@ -13976,8 +13624,6 @@ FP /^# Similarity: +88/145 \(60.7%\)\n/
 
 ID whichdb-ex
 AP whichdb
-PP EMBOSSRC=../..
-PP export EMBOSSRC
 PP EMBOSS_RCHOME=N
 PP export EMBOSS_RCHOME
 TI 300
@@ -15966,8 +15612,6 @@ FP 0 /Died: /
 
 ID histogramtest-check
 AQ histogramtest
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL -graph ps
 IN
 IN
@@ -16128,8 +15772,6 @@ FP 1 /^>/
 ID testplot-check
 AQ testplot
 CC No documentation, no example
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL -graph ps
 IN
 IN
@@ -16150,8 +15792,6 @@ FP /^%%Pages: 1\n/
 ID treetypedisplay-check
 AQ treetypedisplay
 CC No documentation, no example
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL -graph ps
 FI stderr
 FC = 1
@@ -17452,7 +17092,7 @@ FP 0 /Died: /
 //
 
 ID ekitsch-ex
-AB phylipnew
+AB phylip
 AA ekitsch
 IN ../../data/evolution/kitsch.dat
 IN
@@ -18735,11 +18375,11 @@ FP 26 /^./
 //
 
 ID fseqboot-ex
-AB phylip
-AA fseqboot_seq
+AB phylipnew
+AA fseqboot
 IN ../../data/evolution/seqboot.dat
 IN
-FI seqboot.fseqboot_seq
+FI seqboot.fseqboot
 FC = 600
 FP 13 /^Alpha     AAAAAA\n/
 FP 22 /^Beta      AAACCC\n/
@@ -18845,8 +18485,6 @@ FP 2 /^./
 ID topo-ex
 AB topo
 AA topo
-PP EMBOSSRC=../../
-PP export EMBOSSRC
 CL tsw:aqp1_human -signa -prol=UM -cys=cg -gly=sr -acid=dr
 CL -basic=db -ohaa=da -araa=dg -graph ps
 IN 18 35 49 67 94 115 136 156 165 184 211 232
@@ -18863,5 +18501,28 @@ FP /^Created topo.ps\n/
 FI topo.ps
 FZ > 950000
 FP /^%%Title: PLplot Graph\n/
+//
+
+#######################################
+# APPENDIXD
+#######################################
+
+ID crystalball-ex
+AB appendixd
+AA crystalball
+CL -competition -rdtime -rdcost -animalstudies -clinicaltrials
+CL -fdaproblems -fdatime -profit -everythingelse
+IN tembl:hsfau
+IN
+FI hsfau.crystalball
+FC = 9
+FP 9 /:/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
 //
 
