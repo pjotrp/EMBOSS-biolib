@@ -95,7 +95,11 @@ int main(int argc, char **argv)
     while(ajListPop(flist,(void **)&entry))
     {
 	if(!ajStrMatchWild(entry,wild))
+	{
+	    ajStrDel(&entry);
 	    continue;
+	}
+	
 	inf = ajFileNewIn(entry);
 	if(!inf)
 	    ajFatal("cannot open file %S",entry);
@@ -125,6 +129,7 @@ int main(int argc, char **argv)
 		}
 	    }
 	}
+	ajStrDel(&entry);
 	ajFileClose(&inf);
     }
     
@@ -171,6 +176,9 @@ int main(int argc, char **argv)
 
     ajTableFree(&table);
 
+
+    ajListDel(&flist);
+    
 
     ajExit();
     return 0;
