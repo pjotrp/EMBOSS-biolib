@@ -18,7 +18,7 @@ pkgdata2_DATA = isochore0.gif lindna.gif octanol0.gif pepinfo1.gif \
                database_indexing_group.html database_information_group.html \
                dbiblast.html dbifasta.html dbiflat.html dbigcg.html \
                degapseq.html descseq.html diffseq.html digest.html \
-               display_alignment_multiple_group.html \
+               display_alignment_multiple_group.html distances.html \
                dna_sequence_composition_group.html \
                dna_sequence_features_group.html \
                dna_sequence_properties_group.html dnacomp.html dnadist.html \
