@@ -97,8 +97,6 @@ int main(int argc, char **argv)
       }
 
       ajSeqTrim(seq);
-      if (ajSeqGetReverse(seq))
-	ajSeqReverse(seq);
 
       if (findoverlap) {
         if (!first) {
