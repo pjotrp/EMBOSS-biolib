@@ -1067,6 +1067,8 @@ void ajDirDel(AjPDir* pthis)
 {
     AjPDir thys;
 
+    thys = *pthis;
+
     ajStrDel(&thys->Name);
     ajStrDel(&thys->Prefix);
     ajStrDel(&thys->Extension);
