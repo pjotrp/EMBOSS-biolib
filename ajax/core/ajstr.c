@@ -2491,6 +2491,72 @@ int ajStrFindC (const AjPStr thys, const char* text) {
   return (cp - thys->Ptr);
 }
 
+/* @func ajStrFind ***********************************************************
+** 
+** Locates the first occurrence in the string of the second string.
+**
+** @param [r] thys [const AjPStr] String
+** @param [r] text [const AjPStr] text to find
+** @return [int] Position of the start of text in string if found.
+** @error -1 Text not found.
+** @@
+******************************************************************************/
+
+int ajStrFind (const AjPStr thys, const AjPStr text)
+{
+  const char* cp;
+  cp = strstr (thys->Ptr, text->Ptr);
+  if (!cp) return -1;
+  return (cp - thys->Ptr);
+}
+
+/* @func ajStrFindCaseC *******************************************************
+** 
+** Locates the first occurrence in the string of the second string.
+** Case insensitive
+**
+** @param [r] thys [const AjPStr] String
+** @param [r] text [const char*] text to find
+** @return [int] Position of the start of text in string if found.
+** @error -1 Text not found.
+** @@
+******************************************************************************/
+
+int ajStrFindCaseC (const AjPStr thys, const char *text) {
+
+    AjPStr t1;
+    AjPStr t2;
+    int v;
+    
+    t1 = ajStrNewC(thys->Ptr);
+    t2 = ajStrNewC(text);
+    ajStrToUpper(&t1);
+    ajStrToUpper(&t2);
+
+    v = ajStrFind(t1,t2);
+    ajStrDel(&t1);
+    ajStrDel(&t2);
+
+    return v;
+}
+
+/* @func ajStrFindCase *******************************************************
+** 
+** Locates the first occurrence in the string of the second string.
+** Case insensitive
+**
+** @param [r] thys [const AjPStr] String
+** @param [r] text [const AjPStr] text to find
+** @return [int] Position of the start of text in string if found.
+** @error -1 Text not found.
+** @@
+******************************************************************************/
+
+int ajStrFindCase (const AjPStr thys, AjPStr text) {
+
+    return ajStrFindCaseC(thys,text->Ptr);
+}
+
 /* @func ajStrRFindC **********************************************************
 ** 
 ** Locates the last occurrence in the string of the second text string.
