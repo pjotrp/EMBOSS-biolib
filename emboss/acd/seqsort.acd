@@ -1,6 +1,6 @@
 appl: seqsort [
   documentation: "Removes ambiguities from a set of hits resulting from a database search"
-  groups: "PROTEIN: structure"
+  groups: "PROTEIN: 3D STRUCTURE"
 ]
 
 section: required [ info: "required Section" type: page ]
