@@ -1,0 +1,3 @@
+23 Jan 2001
+GWW
+Changed configure.in to add -lmenu -lform to the LIBS

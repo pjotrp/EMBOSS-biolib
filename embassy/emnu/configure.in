@@ -6,7 +6,7 @@ dnl Process this file with autoconf to produce a configure script.
 #CC=cc
 
 AC_INIT(source/emnu.c)
-AM_INIT_AUTOMAKE(EMNU, 1.0.0)
+AM_INIT_AUTOMAKE(EMNU, 1.0.1)
 
 dnl Use libtool to make a shared library.
 AM_PROG_LIBTOOL
@@ -87,7 +87,7 @@ AC_MSG_CHECKING(for with_curses)
 CPPFLAGS="$CPPFLAGS -I${with_curses}/include"
 LDFLAGS="$LDFLAGS -L${with_curses}/lib"
 fi
-AC_CHECK_LIB(ncurses, main, LIBS="$LIBS -lncurses", LIBS="$LIBS -lcurses")
+AC_CHECK_LIB(ncurses, main, LIBS="$LIBS -lform -lmenu -lncurses", LIBS="$LIBS -lform -lmenu -lcurses")
 
 dnl Test if --enable-debug given
 AC_ARG_ENABLE(warnings,
