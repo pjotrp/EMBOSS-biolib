@@ -2000,7 +2000,7 @@ static void scvt_x(char *fmt, char **pos, VALIST ap, ajint width,
 	    else
 	    {
 #if defined(HAVE64)
-		if(sscanf(ajStrStr(t),"%Lx",&n)!=1)
+		if(sscanf(ajStrStr(t),"%Lx",&hn)!=1)
 		    return;
 #else
 		ajFatal("Cannot use %%Lx on 32 bit machines");
