@@ -26,10 +26,9 @@ import javax.swing.tree.*;
 import java.io.*;
 import java.util.*;
 
-import org.emboss.jemboss.soap.FileRoots;
+import org.emboss.jemboss.soap.*;
+
 import uk.ac.mrc.hgmp.embreo.EmbreoParams;
-import uk.ac.mrc.hgmp.embreo.EmbreoAuthException;
-import uk.ac.mrc.hgmp.embreo.filemgr.EmbreoFileList;
 
 
 public class RemoteFileNode extends DefaultMutableTreeNode 
@@ -43,7 +42,7 @@ public class RemoteFileNode extends DefaultMutableTreeNode
 
     private Vector children;
     private String rootdir;   
-    private transient EmbreoFileList parentList;  // make transient for
+    private transient FileList parentList;        // make transient for
     private transient EmbreoParams mysettings;    // Transferable to work
     private transient FileRoots froots;
 
@@ -56,7 +55,7 @@ public class RemoteFileNode extends DefaultMutableTreeNode
 
 
     public RemoteFileNode(EmbreoParams mysettings, FileRoots froots,
-                    String file, EmbreoFileList parentList, String parent)
+                    String file, FileList parentList, String parent)
     { 
       this.mysettings = mysettings;
       this.froots = froots;
@@ -105,14 +104,14 @@ public class RemoteFileNode extends DefaultMutableTreeNode
         try
         {
 //        System.out.println(froots.getCurrentRoot() + " :: " + fullname);
-          EmbreoFileList efl = new EmbreoFileList(mysettings,
+          FileList efl = new FileList(mysettings,
                                    froots.getCurrentRoot(),fullname);
           children = efl.fileVector();
           for(int i=0;i<children.size();i++)
             add(new RemoteFileNode(mysettings,froots,(String)children.get(i),
                                    efl,fullname));
         }
-        catch(EmbreoAuthException eae) {}
+        catch(JembossSoapException eae) {}
       }
       explored = true;
     }
