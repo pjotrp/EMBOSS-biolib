@@ -35,9 +35,11 @@
 ** to be discarded later) if they exceed a threshold (%) level of sequence
 ** similarity to any other in the set (the shortest sequence of the current
 ** pair will be discarded).
-**
-** @param [r] input  [AjPList]    List of ajPSeq's
-** @param [w] keep   [AjPInt*]    0: rejected (redundant) sequence, 1: the
+** 
+** The set output will always contain at least 1 sequence.
+** 
+** @param [r] input  [AjPList]    List of ajPSeq's 
+** @param [w] keep   [AjPInt*]    0: rejected (redundant) sequence, 1: the 
                                   sequence was retained
 ** @param [w] nset   [ajint*]     Number of sequences in nr set (no. of 1's in
 **                                the keep array)
@@ -124,9 +126,17 @@ AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, ajint *nset,
     {
 	for(y=x+1; y<nin; y++)
 	{
+	    /* DIAGNOSTICS
+	       ajFmtPrint("x=%d y=%d\nComparing\n%S\nto\n%S\n\n", 
+		       x, y, inseqs[x]->Seq, inseqs[y]->Seq);
+	    */
+	    
+
 	    /* Process w/o alignment identical sequences */
 	    if(ajStrMatch(inseqs[x]->Seq, inseqs[y]->Seq))
 	    {
+/* DIAGNOSTICS		printf("Score=%f\n", 100.0); */
+		
 		ajFloat2dPut(&scores,x,y,(float)100.0);
 		continue;
 	    }
@@ -182,10 +192,23 @@ AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, ajint *nset,
 				   ajIntGet(lens,y),&id,&sim,&idx, &simx);
 
 
-	    /* Write array with score */
-	    ajFloat2dPut(&scores,x,y,sim);
+	    /* Write array with score*/
+	/* DIAGNOSTICS	    printf("Score=%f\n", sim); */
+		    ajFloat2dPut(&scores,x,y,sim);
 	}
     }
+
+
+    /* DIAGNOSTIC 
+    for(x=0; x<nin; x++)
+    {
+	for(y=x+1; y<nin; y++)	
+	{
+	    ajFmtPrint("%d:%d : %f\n", x+1, y+1, ajFloat2dGet(scores,x,y));
+        }
+    }
+    */
+    
 
 
     /* Write the keep array as appropriate */
@@ -214,6 +237,13 @@ AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, ajint *nset,
     	if(ajIntGet(*keep,x))
 	    (*nset)++;
 
+    /* Keep first sequence in case all have been processed out */
+    if(*nset == 0)
+    {
+	ajIntPut(keep,0,1);
+	*nset = 1;
+    }
+    
 
     AJFREE(compass);
     AJFREE(path);
@@ -451,6 +481,15 @@ AjBool embXyzSeqsetNRRange(AjPList input, AjPInt *keep, ajint *nset,
 	    (*nset)++;
 
 
+
+    /* Keep first sequence in case all have been processed out */
+    if(*nset == 0)
+    {
+	ajIntPut(keep,0,1);
+	*nset = 1;
+    }
+
+    /* Tidy up */
     AJFREE(compass);
     AJFREE(path);
     ajStrDel(&m);
