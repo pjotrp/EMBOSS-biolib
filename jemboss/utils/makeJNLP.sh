@@ -92,14 +92,14 @@ getJavaHomePath
 JAVA_HOME=$JAVA_HOME_TMP
 while [ ! -f "$JAVA_HOME/bin/keytool" ]
 do
-  echo "Enter java (1.3 or above) location [/usr/java/jdk1.3.1/]: "
+  echo "Enter java (1.4 or above) location [/usr/local/java/]: "
   read JAVA_HOME
   if [ "$JAVA_HOME" = "" ]; then
-    JAVA_HOME="/usr/java/jdk1.3.1/"
+    JAVA_HOME="/usr/local/java/"
   fi
 done
 
-PATH=$PATH:$JAVA_HOME/bin/ ; export PATH
+PATH=$JAVA_HOME/bin/:$PATH: ; export PATH
 
 if [ ! -f "$CWPWD/resources/acdstore.jar" ]; then
   echo
