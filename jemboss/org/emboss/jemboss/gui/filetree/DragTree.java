@@ -435,7 +435,7 @@ public class DragTree extends JTree implements DragGestureListener,
 */
   public void dragOver(DropTargetDragEvent e)
   {
-    if (e.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE)) 
+    if (e.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE))
     {
       Point ploc = e.getLocation();
       TreePath ePath = getPathForLocation(ploc.x,ploc.y);
@@ -558,28 +558,8 @@ public class DragTree extends JTree implements DragGestureListener,
   public void deleteObject(FileNode node, String parentPath)
   {
 
-    FileNode parentNode = null;
+    FileNode parentNode = (FileNode)node.getParent();
     Enumeration enum = openNodeDir.keys();
-
-    while(enum.hasMoreElements())
-    {
-      String thiskey = (String)enum.nextElement();
-      try
-      {
-        if(thiskey.equals(parentPath))
-        {
-          parentNode = (FileNode)openNodeDir.get(thiskey);
-          break;
-        }
-        else if((new File(thiskey)).getCanonicalPath().equals(parentPath))  //check canonical path -
-        {                                                                   //resolves mount dirs
-          parentNode = (FileNode)openNodeDir.get(thiskey);
-          break;
-        }
-      }
-      catch(IOException ioe) {}
-    }
-
 
     if(parentNode == null)
       return;
