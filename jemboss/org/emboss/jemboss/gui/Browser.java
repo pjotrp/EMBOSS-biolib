@@ -366,6 +366,8 @@ public class Browser extends JFrame
           inURL = cl.getResource("resources/readmeAlign.html");
 	else if(selectedValue.equals("Sequence List"))
           inURL = cl.getResource("resources/seqList.html");
+        else if(selectedValue.equals("Results Manager"))
+          inURL = cl.getResource("resources/results.html");
 	else if (selectedValue.equals("User Guide"))
         {
 	  try
