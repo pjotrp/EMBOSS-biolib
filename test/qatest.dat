@@ -1,4 +1,4 @@
-s###########################################################################
+###########################################################################
 # Things to do
 #
 # (1) database extract programs to write to a local directory
@@ -9,7 +9,7 @@ s###########################################################################
 #
 ###########################################################################
 
-# This is the qatest.dat file that is used by the scripts/qatest.pl script.
+# This is the qatest.dat file that is used by scripts/qatest.pl
 #
 # The script should be run from the directory test/qa
 #
@@ -17,11 +17,13 @@ s###########################################################################
 #
 # If no argument is given to the script it will run through all of the
 # entries in this file. If an argument is supplied it will search for
-# the entry whose ID name matches the argument an drun that one.
+# the entry whose ID name matches the argument and will run that one.
 #
-# To run the script and retain the files craeted during the test, use
+# To run the script and retain the files created during the test, use
 # ../../scripts/qatest.pl -kk
 # 
+# The results of the QA tests willl be stored in the file
+# test/qa/qatest.log
 # 
 # Typical example entry:
 # 
@@ -42,6 +44,66 @@ s###########################################################################
 # FP 0 /Error: /
 # FP 0 /Died: /
 # // (marks the end of the entry)
+# 
+# ID identifier
+# 	The identifier is formed from the name of the application being 
+#	tested and a tag to indicate what sort of test is being performed. 
+#	The identifier is used to create a directory test/qa/<identifier>.
+#	Typical tags are:
+#	-ex	= example used to create the HTML documentation
+#	-ex2, -ex3	= further examples used in the documentation
+# 	-keep, -fail, -0001, -nofile	= used in various tests of failure
+# UC text
+#	(Optional)
+# 	This information is not used in the QA testing.
+# 	It is used by scripts/makeexample.pl when creating the HTML
+#	documentation files to annotate the examples of usage.
+# AP Application name
+#	This is used for the command line and for reporting statistics
+# CL Command line
+#	(Optional)
+#	This is the rest of the command line.
+# ER error return code
+#	(Optional)
+# 	Error code to return.
+# ## Comment 
+#	(Optional)
+#	This is a comment.
+#	Double # is required.
+# CC Comment
+#	Used in commenting on failed tests, e.g. "Requires SRS"
+# DL 'success' or 'all' or 'keep'
+#	(Optional)
+#	'success' = delete the test directory on success (the default)
+# 	'all' = delete the test directory always
+#	'keep' = keep the test results directory always
+# IN Line input
+#	(Required for each prompted input)
+#	If there is nothing on the line, then an empty line is input to the
+#	application. (Obvious really, but needs to be said)
+# FI File name 
+#	(Required for all output files created)
+#	stdout and stderr are assumed to exist and be empty unless stated.
+# FP File pattern
+#	(Required for all non stdout and stderr files)
+#	perl /regexp/ to be found in the preceeding 'FI' file.
+#	The /regexp/ may be preceeded by an optional count to check exact
+#	number. 
+# FZ [<=>]number 
+#	(Required for all non stdout and stderr files)
+#	File size test on the preceeding 'FI' file.
+#	The file size may be qualified with an optional relation '=', '>' etc.
+#	Implicit test for zero size stdout/stderr unless stated.
+# FC [<=>]number File 
+#	Linecount test on the preceeding 'FI' file.
+#	The line count may be qualified with an optional relation '=', '>' etc.
+# PP environment_variable=value
+# PP export environment_variable
+#	(Optional)
+#	Set an environment variable required by the application.
+#	The variable should always be exported, for example:
+#	PP EMBOSS_ACDROOT=../../acd
+#	PP export EMBOSS_ACDROOT
 
 
 ####################
