@@ -61,7 +61,9 @@ public class RemoteFileTreePanel extends JPanel
     int cstart = efr.getDefaultRootIndex();
     if (cstart != -1) 
       rootSelect.setSelectedIndex(cstart);
-    
+    Dimension d = rootSelect.getPreferredSize();
+    rootSelect.setPreferredSize(new Dimension((int)d.getWidth(),(int)d.getHeight()-5));
+   
     add(rootSelect, BorderLayout.NORTH);
     rootSelect.addActionListener(new ActionListener() 
     {
