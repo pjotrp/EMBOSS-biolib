@@ -1,7 +1,7 @@
 The EMBOSS Frequently Asked Questions list
 ==========================================
 
-Last modified: 15-Dec-1999
+Last modified: 10-Oct-2000
 
 
 SECTION A - Help and Support
@@ -9,7 +9,7 @@ SECTION A - Help and Support
 
 Q) How do I report bugs ?
 
-A) mail emboss-bug@sanger.ac.uk
+A) mail emboss-bug@embnet.org
 
 
 
@@ -17,14 +17,14 @@ A) mail emboss-bug@sanger.ac.uk
 
 Q) Are there any mailing lists about EMBOSS?
 
-A) emboss@sanger.ac.uk 
+A) emboss@embnet.org 
    is an open list (anyone can join) for general announcements and
    discussions by end users. 
 
-   emboss-dev@sanger.ac.uk 
+   emboss-dev@embnet.org 
    is a closed list for discussions by developers using EMBOSS. 
    
-   To subscribe to either list, send mail to majordomo@sanger.ac.uk
+   To subscribe to either list, send mail to majordomo@embnet.org
    with the message text subscribe emboss or subscribe emboss-dev 
 
 
@@ -34,14 +34,14 @@ A) emboss@sanger.ac.uk
 Q) Where's the documentation?
    
 A) All the documentation can be found at the following web page
-   http://www.sanger.ac.uk/Software/EMBOSS/
+   http://www.uk.embnet.org/Software/EMBOSS/
 
 
 
 
 Q) Where's the applications' documentation?
 
-A) http://www.sanger.ac.uk/Software/EMBOSS/Apps/
+A) http://www.uk.embnet.org/Software/EMBOSS/Apps/
 
 
 
@@ -125,14 +125,14 @@ Q) Can I get the latest code via CVS ?
 A) Yes. Here is the information you will need:-
 
    Make sure you have cvs on your system (available at http://www.cyclic.com). 
-   Then log into the cvs server at The Sanger Centre as:
+   Then log into the cvs server at HGMP as:
 
    user 'cvsuser', 
    password 'CVSUSER' 
 
    (this is a read only server). 
 
-   cvs -d :pserver:cvsuser@cvs.sanger.ac.uk:/cvsroot/emboss login
+   cvs -d :pserver:cvsuser@cvs.hgmp.mrc.ac.uk:/cvsroot/packages/emboss/COPY login
    password: CVSUSER
 
    Now to check out the EMBOSS source code tree, place yourself in a
@@ -146,7 +146,7 @@ A) Yes. Here is the information you will need:-
 
    Now checkout the repository as
 
-   cvs -d :pserver:cvsuser@cvs.sanger.ac.uk:/cvsroot/emboss checkout emboss
+   cvs -d :pserver:cvsuser@cvs.hgmp.mrc.ac.uk:/cvsroot/packages/emboss/COPY checkout emboss
 
 
 
@@ -192,7 +192,7 @@ A)  a) from the anonymous cvs code.
 
     b) from  MSE-0.0.4.tar.gz 
 
-    available from our FTP server ftp://ftp.sanger.ac.uk/pub/EMBOSS/ 
+    available from our FTP server ftp://ftp.uk.embnet.org/pub/EMBOSS/ 
     in file MSE-0.0.4.tar.gz 
 
        1) Go to the emboss directory 
@@ -237,7 +237,7 @@ A)  a) from the anonymous cvs code.
 
     b) from PHYLIP-3.573c.tar.gz 
 
-    available from our FTP server ftp://ftp.sanger.ac.uk/pub/EMBOSS/ 
+    available from our FTP server ftp://ftp.uk.embnet.org/pub/EMBOSS/ 
     in file PHYLIP-3.573c.tar.gz 
 
        1) Go to the emboss directory 
