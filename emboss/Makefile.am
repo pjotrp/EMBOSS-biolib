@@ -10,7 +10,6 @@ entrails histogramtest intconv \
 patmattest \
 psiblasts \
 seqinfo \
-seqtofeat \
 sigscan \
 testplot treetypedisplay 
 
@@ -213,7 +212,6 @@ histogramtest_SOURCES = histogramtest.c
 patmattest_SOURCES = patmattest.c
 psiblasts_SOURCES = psiblasts.c
 seqretallfeat_SOURCES = seqretallfeat.c
-seqtofeat_SOURCES = seqtofeat.c
 sigscan_SOURCES = sigscan.c
 testplot_SOURCES = testplot.c
 treetypedisplay_SOURCES = treetypedisplay.c
