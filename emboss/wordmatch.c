@@ -1,15 +1,11 @@
 /* wordmatch
-** Create a word table for the first sequence.
-** Then go down second sequence checking to see if the word matches.
-** If word matches then check to see if the position lines up with the last position
-** if it does continue else stop.
-**
+** Create a word table for the first sequence.  Then go down second
+** sequence checking to see if the word matches.  If word matches then
+** check to see if the position lines up with the last position if it
+** does continue else stop.
 **
 */
-/*
-wordmatch -sequencea /nfs/adnah/il/wordtest/eclac.seq
-          -sequenceb /nfs/adnah/il/wordtest/eclaci.seq -wordsize 6q
-*/
+
 #include "ajax.h"
 #include "emboss.h"
 
@@ -57,7 +53,7 @@ int main(int argc, char **argv)
 
   if(matchlist && outf)
     ajFmtPrintF(outf, "FINALLY length = %d\n",ajListLength(matchlist));
-     
+
   embWordFreeTable(seq1MatchTable);               /* free table of words */
 
   if (outf)
@@ -80,7 +76,7 @@ int main(int argc, char **argv)
     ajListIterFree(iter) ;
 
     embWordMatchListConvToFeat(matchlist,&Tab1,&Tab2,seq1, seq2);
-    
+
     embWordMatchListDelete(&matchlist); /* free the match structures */
   }
   ajAlignWrite (align);

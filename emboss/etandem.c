@@ -13,12 +13,12 @@
 ** modify it under the terms of the GNU General Public License
 ** as published by the Free Software Foundation; either version 2
 ** of the License, or (at your option) any later version.
-** 
+**
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
-** 
+**
 ** You should have received a copy of the GNU General Public License
 ** along with this program; if not, write to the Free Software
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -40,7 +40,7 @@ typedef struct cons
   ajint bestScore ;
   ajint ibest ;
   ajint *bestMax ;
-  ajint repeat ; 
+  ajint repeat ;
   struct cons *next ;
 } *Cons ;
 
@@ -69,7 +69,7 @@ static ajint nCons = 0 ;
 
 
 
-/* @funcstatic etandem_consCreate ********************************************
+/* @funcstatic etandem_consCreate *********************************************
 **
 ** Undocumented.
 **
@@ -90,7 +90,7 @@ static Cons etandem_consCreate (void)
     return res ;
 }
 
-/* @funcstatic etandem_consDestroy *******************************************
+/* @funcstatic etandem_consDestroy ********************************************
 **
 ** Undocumented.
 **
@@ -117,7 +117,7 @@ static void etandem_consDestroy (Cons cons)
 static struct cons reportRootStruct ;
 static Cons reportRoot = &reportRootStruct ;
 
-/* @funcstatic etandem_basicReport *******************************************
+/* @funcstatic etandem_basicReport ********************************************
 **
 ** Undocumented.
 **
@@ -148,7 +148,7 @@ static void etandem_basicReport (AjPFeattable tab, AjPFile outfile, Cons a)
     perc = 100.0 * (a->bestScore + n * (copies + 1)) / (2.0 * n * copies) ;
     if (outfile)
       ajFmtPrintF (outfile, "%6d %10d %10d %2d %3d %5.1f ",
-		   a->bestScore, a->start+1, a->ibest+1, 
+		   a->bestScore, a->start+1, a->ibest+1,
 		   n, copies, perc) ;
 
     gf = ajFeatNew (tab, NULL, rpthit,
@@ -191,7 +191,7 @@ static void etandem_basicReport (AjPFeattable tab, AjPFile outfile, Cons a)
 
 
 
-/* @funcstatic etandem_report ************************************************
+/* @funcstatic etandem_report *************************************************
 **
 ** Undocumented.
 **
@@ -200,10 +200,10 @@ static void etandem_basicReport (AjPFeattable tab, AjPFile outfile, Cons a)
 ******************************************************************************/
 
 static void etandem_report (Cons a)
-{ 
+{
     ajint j ;
     ajint firstchar ;
-  
+
     if (a->bestScore >= thresh)
     {
 	if (uniform)
@@ -229,7 +229,7 @@ static void etandem_report (Cons a)
 
 
 
-/* @funcstatic etandem_finalReport *******************************************
+/* @funcstatic etandem_finalReport ********************************************
 **
 ** Undocumented.
 **
@@ -242,7 +242,7 @@ static void etandem_report (Cons a)
 static void etandem_finalReport (AjPFeattable tab, AjPFile outfile)
 {
     ajint start;
-    ajint end ; 
+    ajint end ;
     Cons a;
     Cons top;
     Cons olda;
@@ -450,7 +450,7 @@ int main(int argc, char **argv)
 		    nextb:
 			oldb = b ;
 		    }
-		nexta: 
+		nexta:
 		    ;
 		}
 	    }

@@ -12,12 +12,12 @@
 ** modify it under the terms of the GNU General Public License
 ** as published by the Free Software Foundation; either version 2
 ** of the License, or (at your option) any later version.
-** 
+**
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
-** 
+**
 ** You should have received a copy of the GNU General Public License
 ** along with this program; if not, write to the Free Software
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -56,7 +56,7 @@ int main(int argc, char **argv)
     AjPSeqout outseq=NULL;
     AjPFeattabOut featout=NULL;
     AjBool    addlast;
-    
+
     ajint begin;
     ajint end;
     ajint len;
@@ -81,7 +81,7 @@ int main(int argc, char **argv)
 
         strand = ajSeqStr(seq);
 
-	ajStrAssSubC(&substr,ajStrStr(strand),begin-1,end-1); 
+	ajStrAssSubC(&substr,ajStrStr(strand),begin-1,end-1);
         /* end with a '*' if we want to and there is not one there already */
 	ajDebug("last residue =%c\n", ajSeqChar(seq)[end-1]);
         if (addlast && ajSeqChar(seq)[end-1] != '*') {
@@ -102,8 +102,8 @@ int main(int argc, char **argv)
 	checktrans_dumptofeat(featout,0,len,ajStrStr(substr),ajSeqName(seq),
 			      begin,orfml);
     }
-    
-    
+
+
     ajSeqDel(&seq);
     ajStrDel(&substr);
     ajFileClose(&outf);
@@ -156,7 +156,7 @@ static void checktrans_findorfs (AjPSeqout *outseq, AjPFile *outf, ajint from,
 		ajFmtPrintF(*outf,"\t%d\t%d\t%d\t%d-%d\t%s_%d\n", count,
 			    i+1, orflength, i-orflength+1, i, name,count);
 		checktrans_ajbseq(outseq, p,i-orflength,i-1,name,count);
-		    
+
 	    }
 	    last_stop = ++i;
 	    ++count;
@@ -201,30 +201,30 @@ static void checktrans_ajbseq(AjPSeqout *outseq, char *seq, ajint begin, int
     AjPSeq sq;
     AjPStr str;
     AjPStr nm;
-    
+
     sq  = ajSeqNew();
     str = ajStrNew();
     nm  = ajStrNew();
 
     ajStrAssSubC(&str,seq,begin,end);
     ajSeqReplace(sq,str);
-    
+
     ajFmtPrintS(&nm,"%s_%d",name,count);
     ajSeqAssName(sq,nm);
-    
+
     ajSeqWrite(*outseq, sq);
 
     ajStrDel(&nm);
     ajStrDel(&str);
     ajSeqDel(&sq);
-    
+
     return;
 }
 
 
 
 
-/* @funcstatic checktrans_dumptofeat *****************************************
+/* @funcstatic checktrans_dumptofeat ******************************************
 **
 ** Undocumented.
 **
@@ -254,14 +254,14 @@ static void checktrans_dumptofeat(AjPFeattabOut featout, ajint from, ajint to,
     ajint frame=0;
     AjPFeature feature;
     float score = 0.0;
-  
+
     name = ajStrNew();
     source = ajStrNew();
     type = ajStrNew();
 
 
     ajStrAssC(&name,seqname);
-  
+
     feattable = ajFeattableNewProt(name);
 
     ajStrAssC(&source,"checktrans");

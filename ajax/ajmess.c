@@ -1,26 +1,26 @@
-/********************************************************************
+/******************************************************************************
 ** @source AJAX message functions
 **
 ** @author Richard Durbin and Ed Griffiths from ACEdb (messubs.c)
-** @version 1.0 
+** @version 1.0
 ** @modified Ian Longden for EMBOSS
 ** @@
-** 
+**
 ** This library is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU Library General Public
 ** License as published by the Free Software Foundation; either
 ** version 2 of the License, or (at your option) any later version.
-** 
+**
 ** This library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Library General Public License for more details.
-** 
+**
 ** You should have received a copy of the GNU Library General Public
 ** License along with this library; if not, write to the
 ** Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ** Boston, MA  02111-1307, USA.
-********************************************************************/
+******************************************************************************/
 
 #include <string.h>
 
@@ -60,7 +60,7 @@ static char* messGetFilename(char *path);
 **======================== Macros ============================================
 =============================================================================*/
 
-/* @macro ajFatal *******************************************************
+/* @macro ajFatal *************************************************************
 **
 ** Fatal error message to standard error.
 ** Includes filename and line number in the source code that invokes it.
@@ -72,7 +72,7 @@ static char* messGetFilename(char *path);
 ** @@
 ******************************************************************************/
 
-/* @macro ajErr *******************************************************
+/* @macro ajErr ***************************************************************
 **
 ** Error message to standard error.
 ** Newline is added automatically at the end of the format string.
@@ -83,7 +83,7 @@ static char* messGetFilename(char *path);
 ** @@
 ******************************************************************************/
 
-/* @macro ajWarn *******************************************************
+/* @macro ajWarn **************************************************************
 **
 ** Warning message to standard error.
 ** Newline is added automatically at the end of the format string.
@@ -94,7 +94,7 @@ static char* messGetFilename(char *path);
 ** @@
 ******************************************************************************/
 
-/* @macro ajUser *******************************************************
+/* @macro ajUser **************************************************************
 **
 ** User information message to standard error.
 ** Newline is added automatically at the end of the format string.
@@ -105,7 +105,7 @@ static char* messGetFilename(char *path);
 ** @@
 ******************************************************************************/
 
-/* @macro ajMessCrash *******************************************************
+/* @macro ajMessCrash *********************************************************
 **
 ** Crash error message to standard error.
 ** Includes filename and line number in the source code that invokes it.
@@ -189,7 +189,8 @@ static void messDump (char *message);
 #define EXIT_PREFIX "   An error spotted (non-EMBOSS): "
 #define DIE_PREFIX "Died: "
 #define CRASH_PREFIX_FORMAT "\n   %s An error in %s at line %d:\n"
-#define FULL_CRASH_PREFIX_FORMAT "\n   %s Program cannot continue (%s, in file %s, at line %d):\n"
+#define FULL_CRASH_PREFIX_FORMAT "\n   %s Program cannot continue " \
+                                 "(%s, in file %s, at line %d):\n"
 #define SYSERR_FORMAT "Something wrong with a system call (%d - %s)"
 
 /******************************************************************************
@@ -223,7 +224,7 @@ static AjMessOutRoutine	 exitRoutine = 0 ;
 static AjMessOutRoutine	 crashRoutine = 0 ;
 static AjMessOutRoutine	 warningRoutine = 0 ;
 
-/* @func ajMessBeepReg ********************************************
+/* @func ajMessBeepReg ********************************************************
 **
 ** Sets a function to process beeps
 **
@@ -238,7 +239,7 @@ AjMessVoidRoutine ajMessBeepReg (AjMessVoidRoutine func) {
   return old;
 }
 
-/* @func ajMessOutReg ********************************************
+/* @func ajMessOutReg *********************************************************
 **
 ** Sets a function to write messages
 **
@@ -253,7 +254,7 @@ AjMessOutRoutine ajMessOutReg (AjMessOutRoutine func) {
   return old ;
 }
 
-/* @func ajMessDumpReg ********************************************
+/* @func ajMessDumpReg ********************************************************
 **
 ** Sets a function to dump data
 **
@@ -268,7 +269,7 @@ AjMessOutRoutine ajMessDumpReg (AjMessOutRoutine func) {
   return old ;
 }
 
-/* @func ajMessErrorReg ********************************************
+/* @func ajMessErrorReg *******************************************************
 **
 ** Sets a function to report errors
 **
@@ -283,7 +284,7 @@ AjMessOutRoutine ajMessErrorReg (AjMessOutRoutine func) {
   return old ;
 }
 
-/* @func ajMessExitReg ********************************************
+/* @func ajMessExitReg ********************************************************
 **
 ** Sets a function to exit
 **
@@ -298,7 +299,7 @@ AjMessOutRoutine ajMessExitReg (AjMessOutRoutine func) {
   return old ;
 }
 
-/* @func ajMessCrashReg ********************************************
+/* @func ajMessCrashReg *******************************************************
 **
 ** Sets a function to crash
 **
@@ -313,7 +314,7 @@ AjMessOutRoutine ajMessCrashReg (AjMessOutRoutine func) {
   return old ;
 }
 
-/* @func ajMessWarningReg ********************************************
+/* @func ajMessWarningReg *****************************************************
 **
 ** Sets a function to print warnings
 **
@@ -328,7 +329,7 @@ AjMessOutRoutine ajMessWarningReg (AjMessOutRoutine func) {
   return old ;
 }
 
-/* @func ajMessBeep *******************************************************
+/* @func ajMessBeep ***********************************************************
 **
 ** Calls the defined beep function, if any. Otherwise prints ASCII 7 to
 ** standard output.
@@ -348,7 +349,7 @@ void ajMessBeep (void) {
   return;
 }
 
-/* @func ajMessOutLine *******************************************************
+/* @func ajMessOutLine ********************************************************
 **
 ** Formats a message. Calls the defined output function (if any).
 ** Otherwise prints the message to standard output with an extra newline.
@@ -375,7 +376,7 @@ void ajMessOutLine (char *format,...) {
   return;
 }
 
-/* @func ajMessOut *******************************************************
+/* @func ajMessOut ************************************************************
 **
 ** Formats a message. Calls the defined output function (if any).
 ** Otherwise prints the message to standard output with no newline.
@@ -402,7 +403,7 @@ void ajMessOut (char *format,...) {
   return;
 }
 
-/* @func ajMessVOut *******************************************************
+/* @func ajMessVOut ***********************************************************
 **
 ** Formats a message. Calls the defined output function (if any).
 ** Otherwise prints the message to standard output.
@@ -428,7 +429,7 @@ void ajMessVOut (char *format, va_list args) {
   return;
 }
 
-/* @func ajMessDump *******************************************************
+/* @func ajMessDump ***********************************************************
 **
 ** Formats a message. Calls the dump function (if any).
 ** Otherwise no further action.
@@ -456,7 +457,7 @@ void ajMessDump (char *format,...) {
   return;
 }
 
-/* @funcstatic messDump ******************************************************
+/* @funcstatic messDump *******************************************************
 **
 ** Calls the dump function (if any) to dump text followed by a newline.
 **
@@ -487,7 +488,7 @@ ajint ajMessErrorCount (void) {
   return errorCount ;
 }
 
-/* @func ajMessError *******************************************************
+/* @func ajMessError **********************************************************
 **
 ** Formats an error message. Calls the error function (if any).
 ** Otherwise prints the message to standard error with a trailing newline.
@@ -525,11 +526,11 @@ void ajMessError (char *format, ...) {
 
       ajMessInvokeDebugger () ;
   }
-  
+
   return;
 }
 
-/* @func ajMessVError *******************************************************
+/* @func ajMessVError *********************************************************
 **
 ** Formats an error message. Calls the error function (if any).
 ** Otherwise prints the message to standard error with a trailing newline.
@@ -568,7 +569,7 @@ void ajMessVError (char *format, va_list args) {
   return;
 }
 
-/* @func ajMessDie *******************************************************
+/* @func ajMessDie ************************************************************
 **
 ** Formats an error message. Calls the error function (if any).
 ** Otherwise prints the message to standard error with a trailing newline.
@@ -607,14 +608,14 @@ void ajMessDie (char *format, ...) {
 
       ajMessInvokeDebugger () ;
   }
-  
+
 
   exit(EXIT_FAILURE) ;
 
   return;			/* Should never get here. */
 }
 
-/* @func ajMessVDie *******************************************************
+/* @func ajMessVDie ***********************************************************
 **
 ** Formats an error message. Calls the error function (if any).
 ** Otherwise prints the message to standard error with a trailing newline.
@@ -652,7 +653,7 @@ void ajMessVDie (char *format, va_list args) {
   return;
 }
 
-/* @func ajMessWarning *******************************************************
+/* @func ajMessWarning ********************************************************
 **
 ** Formats a warning message. Calls the warning function (if any).
 ** Otherwise prints the message to standard error with a trailing newline.
@@ -672,12 +673,12 @@ void ajMessWarning (char *format, ...) {
 
   if(AjErrorLevel.warning)
   {
-      
+
       AJAXFORMATSTRING(args, format, mesg_buf, prefix) ;
 
       if (errorJmpBuf)	/* throw back up to the function that registered it */
 	  longjmp (*errorJmpBuf, 1) ;
-    
+
       messDump(mesg_buf) ;
 
       if (warningRoutine)
@@ -687,7 +688,7 @@ void ajMessWarning (char *format, ...) {
 
       ajMessInvokeDebugger () ;
   }
-  
+
   return;
 }
 
@@ -712,7 +713,7 @@ void ajMessVWarning (char *format, va_list args) {
 
   if (errorJmpBuf)  /* throw back up to the function that registered it */
     longjmp (*errorJmpBuf, 1) ;
-    
+
   messDump(mesg_buf) ;
 
   if (warningRoutine)
@@ -725,7 +726,7 @@ void ajMessVWarning (char *format, va_list args) {
   return;
 }
 
-/* @func ajMessExit ******************************************************
+/* @func ajMessExit ***********************************************************
 **
 ** Formats an exit message and calls the exit function (if any).
 ** Otherwise prints the message to standard error with a trailing newline
@@ -765,7 +766,7 @@ void ajMessExit(char *format, ...) {
   return ;			/* Should never get here. */
 }
 
-/* @func ajMessCrashFL *******************************************************
+/* @func ajMessCrashFL ********************************************************
 **
 ** This is the routine called by the ajFatal macro and others.
 **
@@ -816,7 +817,7 @@ void ajMessCrashFL (char *format, ...) {
       if (crashJmpBuf)	/* throw back up to the function that registered it */
 	  longjmp(*crashJmpBuf, 1) ;
 
-  
+
       messDump(mesg_buf) ;
 
       if (crashRoutine)
@@ -826,14 +827,14 @@ void ajMessCrashFL (char *format, ...) {
 
       ajMessInvokeDebugger() ;
   }
-  
+
 
   exit(EXIT_FAILURE) ;
 
   return ;			/* Should never get here. */
 }
 
-/* @func ajMessVCrashFL ******************************************************
+/* @func ajMessVCrashFL *******************************************************
 **
 ** This is the routine called by the ajVFatal macro and others.
 **
@@ -881,7 +882,7 @@ void ajMessVCrashFL (char *format, va_list args) {
   if (crashJmpBuf)	/* throw back up to the function that registered it */
     longjmp(*crashJmpBuf, 1) ;
 
-  
+
   messDump(mesg_buf) ;
 
   if (crashRoutine)
@@ -949,27 +950,10 @@ char* ajMessCaughtMessage (void) {
   return messbuf ;
 }
 
-/* This function writes into the global messbuf which has a limited size,    */
-/* see top of file: BUFSIZE                                                  */
-/*                                                                           */
-/*char *ajFmtString (char *format, ...)
- {
- char *mesg_buf ;
-   va_list args ;
-
-   ?? Format the message string.                                              ??
-   AJAXFORMATSTRING(args, format, mesg_buf, NULL)
-
-   return mesg_buf ;
-   }
-*/
-
-/* Return the string for a given errno from the standard C library.          */
-/*                                                                           */
-
 /* @func ajMessSysErrorText ***************************************************
 **
-** Returns the system message text from 'strerror'
+** Returns the system message text from 'strerror' from the standard C
+** library.
 **
 ** @return [char*] System error message.
 ** @@
@@ -1013,14 +997,14 @@ char* ajMessSysErrorText (void) {
 ** it copes with the format string accidentally being our internal buffer.
 **
 ** This routine does its best to check that the vsprintf is successful, if
-** not the routine bombs out with an error message. Note that num_bytes is 
-** the return value from vsprintf. 
+** not the routine bombs out with an error message. Note that num_bytes is
+** the return value from vsprintf.
 **
-** Failures trapped: 
-**  num_bytes less than 0  =  vsprintf failed, reason is reported. 
+** Failures trapped:
+**  num_bytes less than 0  =  vsprintf failed, reason is reported.
 **  num_bytes + 1 more than BUFSIZE  =  our internal buffer size was exceeded.
 **                                 (vsprintf returns number of bytes written
-**                                  _minus_ terminating NULL) 
+**                                  _minus_ terminating NULL)
 **
 ** @param [r] args [va_list] Variable length argument list
 ** @param [r] format [char*] Format string
@@ -1064,7 +1048,7 @@ static char* messFormat(va_list args, char *format, char *prefix) {
     if (!strcpy (buf_ptr, prefix))
       ajMessCrash("strcpy failed") ;
   }
-  
+
   /* Do the format.                                                          */
   /* num_bytes = vsprintf((buf_ptr + prefix_len), format, args)+prefix_len+1;*/
 
@@ -1079,12 +1063,12 @@ static char* messFormat(va_list args, char *format, char *prefix) {
   else if (num_bytes > BUFSIZE)
     ajMessCrash("messubs internal buffer size (%d) exceeded, "
 		"a total of %d bytes were written",
-		BUFSIZE, num_bytes) ;  
+		BUFSIZE, num_bytes) ;
 
   return(buf_ptr) ;
 }
 
-/* @funcstatic messGetFilename ******************************************
+/* @funcstatic messGetFilename ************************************************
 **
 ** Converts a filename into a base file name. Used for filenames passed
 ** by macros from __FILE__ which could include part or all of the path
@@ -1099,23 +1083,26 @@ static char* messGetFilename(char *path) {
   static char *path_copy = NULL ;
   const char *path_delim = SUBDIR_DELIMITER_STR ;
   char *result = NULL, *tmp ;
-    
-  if (path != NULL) {
-    if (strcmp((path + strlen(path) - 1), path_delim) != 0) {/* Last char = "/" ?? */
+
+  if (path != NULL)
+  {
+    if (strcmp((path + strlen(path) - 1), path_delim) != 0)
+    {				/* Last char = "/" ?? */
       if (path_copy != NULL)
 	AJFREE (path_copy) ;
       path_copy = ajSysStrdup(path) ;
-      
+
       tmp = ajSysStrtok(path_copy, path_delim) ;
-          
-      while (tmp != NULL) {
+
+      while (tmp != NULL)
+      {
         result = tmp ;		/* Keep results of previous strtok */
 
         tmp = ajSysStrtok(NULL, path_delim) ;
       }
     }
   }
-    
+
   return(result) ;
 }
 
@@ -1130,7 +1117,7 @@ static char* messGetFilename(char *path) {
 ** from the main.
 ** */
 
-/* @func ajMessErrorInit *****************************************************
+/* @func ajMessErrorInit ******************************************************
 **
 ** Initialises the stored program name.
 **
@@ -1147,7 +1134,7 @@ void ajMessErrorInit (char *progname) {
   return ;
 }
 
-/* @func ajMessSetErr *******************************************************
+/* @func ajMessSetErr *********************************************************
 **
 ** Stores the source file name (converted to a base name)
 ** and the source line number to be
@@ -1162,9 +1149,9 @@ void ajMessErrorInit (char *progname) {
 ******************************************************************************/
 
 void ajMessSetErr (char *filename, ajint line_num) {
-  
+
   assert(filename != NULL && line_num != 0) ;
-    
+
   /* We take the basename here because __FILE__ can be a path rather than    */
   /* just a filename, depending on how a module was compiled.                */
 
@@ -1187,7 +1174,7 @@ void ajMessSetErr (char *filename, ajint line_num) {
 
 static char* messGetErrorProgram(void) {
   return(messageG.progname) ;
-}  
+}
 
 /* @funcstatic messGetErrorFile ***********************************************
 **
@@ -1199,7 +1186,7 @@ static char* messGetErrorProgram(void) {
 
 static char* messGetErrorFile(void) {
   return(messageG.filename) ;
-}  
+}
 
 /* @funcstatic messGetErrorLine ***********************************************
 **
@@ -1211,7 +1198,7 @@ static char* messGetErrorFile(void) {
 
 static ajint messGetErrorLine(void) {
   return(messageG.line_num) ;
-}  
+}
 
 /* set a file to read for all the messages. NB if this is not set
 Then a default one will be read */
@@ -1264,10 +1251,10 @@ static AjBool ajMessReadErrorFile(void){
     messErrorFile = ajFmtString("%s/messages/messages.english",
 				  getenv("EMBOSS_ROOT"));
     fp = fopen(messErrorFile,"r");
-  }    
+  }
   if(!fp)
     return ajFalse;
-  
+
   errorTable = ajStrTableNewC(0);
 
   while(fgets(line, 512, fp)) {
@@ -1296,7 +1283,7 @@ static AjBool ajMessReadErrorFile(void){
   return ajTrue;
 }
 
-/* @func ajMessOutCode *******************************************************
+/* @func ajMessOutCode ********************************************************
 **
 ** Writes an output message for a given message code.
 **
@@ -1409,7 +1396,7 @@ void ajMessCrashCodeFL (char *code) {
 void ajMessCodesDelete (void) {
   void **array;
   ajint i;
-  
+
   if(!errorTable)
     return;
 
@@ -1419,12 +1406,12 @@ void ajMessCodesDelete (void) {
     AJFREE (array[i+1]);
     AJFREE (array[i]);
   }
-  AJFREE (array); 
+  AJFREE (array);
   ajTableFree (&errorTable);
   errorTable = 0;
   return;
 }
-/* @func ajDebug *******************************************************
+/* @func ajDebug **************************************************************
 **
 ** Writes a debug message to the debug file if debugging is on.
 ** Typically, debugging is turned on by adding '-debug' to the command line
@@ -1485,7 +1472,7 @@ void ajDebug (char* fmt, ...) {
   return;
 }
 
-/* @func ajDebugFile ***************************************************
+/* @func ajDebugFile **********************************************************
 **
 ** Returns the file used for debug output, or NULL if no debug file is open.
 **
@@ -1500,7 +1487,7 @@ FILE* ajDebugFile (void) {
   return ajFileFp(fileDebugFile);
 }
 
-/* @func ajUserGet *******************************************************
+/* @func ajUserGet ************************************************************
 **
 ** Writes a prompt to the terminal and reads one line from the user.
 **

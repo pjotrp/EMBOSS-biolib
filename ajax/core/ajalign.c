@@ -1,29 +1,29 @@
-/********************************************************************
+/******************************************************************************
 ** @source AJAX ALIGN (ajax alignment output) functions
 **
 ** These functions align AJAX sequences and report them in a variety
 ** of formats.
 **
 ** @author Copyright (C) 2001 Peter Rice, LION Bioscience Ltd.
-** @version 1.0 
+** @version 1.0
 ** @modified Aug 21 2001 First version
 ** @@
-** 
+**
 ** This library is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU Library General Public
 ** License as published by the Free Software Foundation; either
 ** version 2 of the License, or (at your option) any later version.
-** 
+**
 ** This library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Library General Public License for more details.
-** 
+**
 ** You should have received a copy of the GNU Library General Public
 ** License along with this library; if not, write to the
 ** Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ** Boston, MA  02111-1307, USA.
-********************************************************************/
+******************************************************************************/
 
 #include <stddef.h>
 #include <stdarg.h>
@@ -91,14 +91,14 @@ static void    alignWriteTrace (AjPAlign thys);
 static void    alignWriteSimple (AjPAlign thys);
 
 
-/* @funclist alignFormat *****************************************************
+/* @funclist alignFormat ******************************************************
 **
 ** Functions to write alignments
 **
 ******************************************************************************/
 
 static AlignOFormat alignFormat[] = {
-  /* name       dna      protein min max function */ 
+  /* name       dna      protein min max function */
   /* standard sequence formats */
   {"unknown",   AJFALSE, AJFALSE, 0, 0, alignWriteSimple},
   {"fasta",     AJTRUE,  AJTRUE,  0, 0, alignWriteFasta},
@@ -129,7 +129,7 @@ static AlignOFormat alignFormat[] = {
 ** blast to be implemented
 */
 
-/* @funcstatic alignWriteTrace ***********************************************
+/* @funcstatic alignWriteTrace ************************************************
 **
 ** Writes an alignment in Trace format
 **
@@ -145,7 +145,7 @@ static void alignWriteTrace (AjPAlign thys) {
   return;
 }
 
-/* @funcstatic alignWriteMsf ************************************************
+/* @funcstatic alignWriteMsf **************************************************
 **
 ** Writes an alignment in MSF format
 **
@@ -364,7 +364,7 @@ static void alignWriteMarkX10 (AjPAlign thys) {
 }
 
 
-/* @funcstatic alignWriteMark ***********************************************
+/* @funcstatic alignWriteMark *************************************************
 **
 ** Writes an alignment in a Fasta MarkX format.
 **
@@ -510,8 +510,8 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
     i0n = smark[1];
     i10 = smark[2];
     i1n = smark[3];
-  
-    /* (il) smins is always 0 ?? so why bother with this ?? 
+
+    /* (il) smins is always 0 ?? so why bother with this ??
        ioff0=smin0-smins;
        ioff1=smin1-smins;
        */
@@ -523,10 +523,10 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
 	    AJFREE(line[i]);
 	for(i=0;i<2;++i)
 	    AJFREE(cline[i]);
-	
+
 	return;
     }
-  
+
 
     if (markx==3)
     {
@@ -679,7 +679,7 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
 		sprintf(&cline[0][i],"%8ld",(long)qqoff+1);
 		cline[0][i+8]=' ';
 	    }
-      
+
 	    lloff = sbegin1-1 + /*loffset +*/ (ajlong)(ioff1-del1);
 	    if (cl1 && lloff%10 == 9)
 	    {
@@ -698,7 +698,7 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
 		sprintf(&cline[1][i],"%8ld",(long)lloff+1);
 		cline[1][i+8]=' ';
 	    }
-      
+
 
 	    line[1][i] = ' ';
 	    if (ioff0-del0 >= min0 && ioff0-del0 <= max0)
@@ -765,13 +765,13 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
 		}
 	    }
 	}
-    
+
 	for (i=0; i<3; i++)
 	    line[i][lend]=0;
 
 	for (i=0; i<2; i++)
 	    cline[i][lend+7]=0;
-    
+
 	ll01 = ll0&&ll1;
 	if (markx==2 && (ll0))
 	    ll1=0;
@@ -792,7 +792,7 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
       AJFREE(line[i]);
   for(i=0;i<2;++i)
       AJFREE(cline[i]);
-  
+
   return;
 }
 
@@ -814,7 +814,7 @@ static void alignWriteMatch (AjPAlign thys) {
   ajint len0;
   AlignPData* pdata;
   AlignPData data;
-  
+
   nali = ajListToArray (thys->Data, (void***) &pdata);
 
   ajAlignWriteHeader (thys);
@@ -991,7 +991,7 @@ static void alignWriteScore (AjPAlign thys) {
   ajint iali;
   AlignPData* pdata;
   AlignPData data;
-  
+
   nali = ajListToArray (thys->Data, (void***) &pdata);
 
   for (iali=0; iali<nali; iali++) {
@@ -1086,7 +1086,7 @@ static void alignWriteSrsAny (AjPAlign thys, ajint imax, AjBool mark) {
   if (nseq < 1)
   {
     ajAlignWriteHeader (thys);
-    
+
     return;
   }
 
@@ -1308,7 +1308,7 @@ AjBool ajAlignDefineSS (AjPAlign thys, AjPSeq seqa, AjPSeq seqb) {
   return ajTrue;
 }
 
-/* @func ajAlignDel **********************************************************
+/* @func ajAlignDel ***********************************************************
 **
 ** Destructor for Alignment objects
 **
@@ -1333,7 +1333,7 @@ void ajAlignDel (AjPAlign* pthys) {
   ajStrDel(&thys->Matrix);
   ajStrDel(&thys->GapPen);
   ajStrDel(&thys->ExtPen);
-  
+
   while (ajListPop(thys->Data, (void**) &data)) {
     alignDataDel(&data, thys->SeqExternal);
   }
@@ -1370,7 +1370,7 @@ void ajAlignReset (AjPAlign thys) {
   return;
 }
 
-/* @func ajAlignOpen *********************************************************
+/* @func ajAlignOpen **********************************************************
 **
 ** Opens a new align file
 **
@@ -1391,7 +1391,7 @@ AjBool ajAlignOpen (AjPAlign thys, AjPStr name) {
   return ajFalse;
 }
 
-/* @func ajAlignFormatDefault ************************************************
+/* @func ajAlignFormatDefault *************************************************
 **
 ** Sets the default format for an alignment
 **
@@ -1414,7 +1414,7 @@ AjBool ajAlignFormatDefault (AjPStr* pformat) {
   return ajTrue;
 }
 
-/* @func ajAlignFindFormat ***********************************************
+/* @func ajAlignFindFormat ****************************************************
 **
 ** Looks for the specified align format in the internal definitions and
 ** returns the index.
@@ -1453,7 +1453,7 @@ AjBool ajAlignFindFormat (AjPStr format, ajint* iformat) {
   return ajFalse;
 }
 
-/* @func ajAlignValid ************************************************
+/* @func ajAlignValid *********************************************************
 **
 ** Test for an alignment object.
 **
@@ -1479,15 +1479,17 @@ AjBool ajAlignValid (AjPAlign thys) {
 
   if ( alignFormat[thys->Format].Minseq  &&
        thys->Nmin < alignFormat[thys->Format].Minseq) {
-    ajFatal("Alignment format specifies at least %d sequences, alignment has only %d",
-	   alignFormat[thys->Format].Minseq, thys->Nmin);
+    ajFatal("Alignment format specifies at least %d sequences, "
+	    "alignment has only %d",
+	    alignFormat[thys->Format].Minseq, thys->Nmin);
     return ajFalse;
   }
 
   if ( alignFormat[thys->Format].Maxseq  &&
        thys->Nmax > alignFormat[thys->Format].Maxseq) {
-    ajFatal("Alignment format specifies at most %d sequences, alignment has  %d",
-	   alignFormat[thys->Format].Minseq, thys->Nmin);
+    ajFatal("Alignment format specifies at most %d sequences, "
+	    "alignment has  %d",
+	    alignFormat[thys->Format].Minseq, thys->Nmin);
     return ajFalse;
   }
 
@@ -1500,7 +1502,7 @@ AjBool ajAlignValid (AjPAlign thys) {
   return ajTrue;
 }
 
-/* @func ajAlignNew ************************************************
+/* @func ajAlignNew ***********************************************************
 **
 ** Constructor for an alignment object
 **
@@ -1525,7 +1527,7 @@ AjPAlign ajAlignNew (void) {
   return pthis;
 }
 
-/* @func ajAlignWrite ************************************************
+/* @func ajAlignWrite *********************************************************
 **
 ** Writes an alignment file
 **
@@ -1558,7 +1560,7 @@ void ajAlignWrite (AjPAlign thys) {
   return;
 }
 
-/* @func ajAlignClose ********************************************************
+/* @func ajAlignClose *********************************************************
 **
 ** Closes an alignment
 **
@@ -1579,7 +1581,7 @@ void ajAlignClose (AjPAlign thys) {
   return;
 }
 
-/* @func ajAlignWriteHeader ************************************************
+/* @func ajAlignWriteHeader ***************************************************
 **
 ** Writes an alignment header
 **
@@ -1662,7 +1664,7 @@ void ajAlignWriteHeader (AjPAlign thys) {
   ++thys->Count;
 
   ajStrDel(&tmpstr);
-  
+
   return;
 }
 
@@ -1707,11 +1709,11 @@ void ajAlignWriteTail (AjPAlign thys) {
   }
 
   ajStrDel(&tmpstr);
-  
+
   return;
 }
 
-/* @func ajAlignSetHeader ************************************************
+/* @func ajAlignSetHeader *****************************************************
 **
 ** Defines an alignment header
 **
@@ -1731,7 +1733,7 @@ void ajAlignSetHeader (AjPAlign thys, AjPStr header) {
   return;
 }
 
-/* @func ajAlignSetHeaderApp ************************************************
+/* @func ajAlignSetHeaderApp **************************************************
 **
 ** Defines an alignment header
 **
@@ -1751,7 +1753,7 @@ void ajAlignSetHeaderApp (AjPAlign thys, AjPStr header) {
   return;
 }
 
-/* @func ajAlignSetTailApp ************************************************
+/* @func ajAlignSetTailApp ****************************************************
 **
 ** Defines an alignment header
 **
@@ -1771,7 +1773,7 @@ void ajAlignSetTailApp (AjPAlign thys, AjPStr tail) {
   return;
 }
 
-/* @func ajAlignSetSubHeader ************************************************
+/* @func ajAlignSetSubHeader **************************************************
 **
 ** Defines an alignment subheader (cleared after printing so it can
 ** be set again for the next alignment)
@@ -1792,7 +1794,7 @@ void ajAlignSetSubHeader (AjPAlign thys, AjPStr subheader) {
   return;
 }
 
-/* @func ajAlignSetTail ************************************************
+/* @func ajAlignSetTail *******************************************************
 **
 ** Defines an alignment tail
 **
@@ -1812,7 +1814,7 @@ void ajAlignSetTail (AjPAlign thys, AjPStr tail) {
   return;
 }
 
-/* @func ajAlignSetHeaderC ************************************************
+/* @func ajAlignSetHeaderC ****************************************************
 **
 ** Defines an alignment header
 **
@@ -1832,7 +1834,7 @@ void ajAlignSetHeaderC (AjPAlign thys, const char* header) {
   return;
 }
 
-/* @func ajAlignSetSubHeaderC ************************************************
+/* @func ajAlignSetSubHeaderC *************************************************
 **
 ** Defines an alignment header (cleared after printing so it can
 ** be set again for the next alignment)
@@ -1853,7 +1855,7 @@ void ajAlignSetSubHeaderC (AjPAlign thys, const char* subheader) {
   return;
 }
 
-/* @func ajAlignSetTailC ************************************************
+/* @func ajAlignSetTailC ******************************************************
 **
 ** Defines an alignment tail
 **
@@ -1890,7 +1892,7 @@ void ajAlignSetMatrixNameC (AjPAlign thys, const char* matrix) {
   return;
 }
 
-/* @func ajAlignSetMatrixName ************************************************
+/* @func ajAlignSetMatrixName *************************************************
 **
 ** Defines an alignment matrix
 **
@@ -1907,7 +1909,7 @@ void ajAlignSetMatrixName (AjPAlign thys, AjPStr matrix) {
   return;
 }
 
-/* @func ajAlignSetMatrixInt ************************************************
+/* @func ajAlignSetMatrixInt **************************************************
 **
 ** Defines an alignment matrix
 **
@@ -1957,7 +1959,7 @@ void ajAlignSetMatrixFloat (AjPAlign thys, AjPMatrixf matrix) {
   return;
 }
 
-/* @func ajAlignSetGapI ************************************************
+/* @func ajAlignSetGapI *******************************************************
 **
 ** Defines alignment gap penalties
 **
@@ -1981,7 +1983,7 @@ void ajAlignSetGapI (AjPAlign thys, ajint gappen, ajint extpen) {
   return;
 }
 
-/* @func ajAlignSetGapR ************************************************
+/* @func ajAlignSetGapR *******************************************************
 **
 ** Defines alignment gap penalties
 **
@@ -2015,7 +2017,7 @@ void ajAlignSetGapR (AjPAlign thys, float gappen, float extpen) {
   return;
 }
 
-/* @func ajAlignSetScoreI ************************************************
+/* @func ajAlignSetScoreI *****************************************************
 **
 ** Defines alignment score
 **
@@ -2039,7 +2041,7 @@ void ajAlignSetScoreI (AjPAlign thys, ajint score) {
   return;
 }
 
-/* @func ajAlignSetScoreR ************************************************
+/* @func ajAlignSetScoreR *****************************************************
 **
 ** Defines alignment score
 **
@@ -2067,7 +2069,7 @@ void ajAlignSetScoreR (AjPAlign thys, float score) {
   return;
 }
 
-/* @func ajAlignSetStats *******************************************
+/* @func ajAlignSetStats ******************************************************
 **
 ** Sets standard properties for an alignment subheader. These are:
 ** Length, Identity, Gaps, Similarity, Score
@@ -2134,7 +2136,7 @@ void ajAlignSetStats (AjPAlign thys, ajint iali, ajint len,
   return;
 }
 
-/* @func ajAlignSetSubStandard *******************************************
+/* @func ajAlignSetSubStandard ************************************************
 **
 ** Sets standard subheader using the properties for an alignment.
 ** These are:
@@ -2208,7 +2210,7 @@ static AjPSeq* alignSeqs (AjPAlign thys, ajint iali) {
   AlignPData* pdata;
   AlignPData data;
   ajint nali;
-  
+
   nali = ajListToArray (thys->Data, (void***) &pdata);
   data = pdata[iali];
 
@@ -2217,7 +2219,7 @@ static AjPSeq* alignSeqs (AjPAlign thys, ajint iali) {
   return data->Seq;
 }
 
-/* @funcstatic alignSeq ******************************************************
+/* @funcstatic alignSeq *******************************************************
 **
 ** Returns the nth sequence for an alignment
 **
@@ -2232,7 +2234,7 @@ static AjPSeq alignSeq (AjPAlign thys, ajint iseq, ajint iali) {
   AlignPData* pdata;
   AlignPData data;
   ajint nali;
-  
+
   nali = ajListToArray (thys->Data, (void***) &pdata);
   data = pdata[iali];
 
@@ -2241,7 +2243,7 @@ static AjPSeq alignSeq (AjPAlign thys, ajint iseq, ajint iali) {
   return data->Seq[iseq];
 }
 
-/* @funcstatic alignData *****************************************************
+/* @funcstatic alignData ******************************************************
 **
 ** Returns the nth data structure for an alignment
 **
@@ -2255,7 +2257,7 @@ static AlignPData alignData (AjPAlign thys, ajint iali) {
   AlignPData* pdata;
   AlignPData data;
   ajint nali;
-  
+
   nali = ajListToArray (thys->Data, (void***) &pdata);
   data = pdata[iali];
 
@@ -2264,7 +2266,7 @@ static AlignPData alignData (AjPAlign thys, ajint iali) {
   return data;
 }
 
-/* @funcstatic alignLen ******************************************************
+/* @funcstatic alignLen *******************************************************
 **
 ** Returns the length of the nth sequence for an alignment
 **
@@ -2278,7 +2280,7 @@ static ajint alignLen (AjPAlign thys, ajint iali) {
   AlignPData* pdata;
   AlignPData data;
   ajint nali;
-  
+
   nali = ajListToArray (thys->Data, (void***) &pdata);
   data = pdata[iali];
 
@@ -2287,8 +2289,8 @@ static ajint alignLen (AjPAlign thys, ajint iali) {
   return data->Len;
 }
 
- 
-/* @func ajAlignSetType ************************************************
+
+/* @func ajAlignSetType *******************************************************
 **
 ** Sets the align type (if it is not set already)
 **
@@ -2390,7 +2392,7 @@ AjBool ajAlignSetRange (AjPAlign thys,
   data->Rev[1] = ajFalse;
 
   /* No ... do not set the length ... only set the range */
-  /* 
+  /*
   data->Len = (end1 - start1) + 1;
   if (data->Len < (end2 - start2 + 1))
     data->Len = (end2 - start2) + 1;
@@ -2399,11 +2401,11 @@ AjBool ajAlignSetRange (AjPAlign thys,
   */
 
   AJFREE (pdata);
- 
+
   return ajTrue;
 }
 
-/* @funcstatic alignSeqName **************************************************
+/* @funcstatic alignSeqName ***************************************************
 **
 ** Returns the sequence name or USA depending on the setting in the
 ** Alignment object (derived from the ACD and command line -ausa option)
@@ -2428,7 +2430,7 @@ static AjPStr alignSeqName (AjPAlign thys, ajint i) {
   return ajSeqGetName(seq);
 }
 
-/* @funcstatic alignDataDel **************************************************
+/* @funcstatic alignDataDel ***************************************************
 **
 ** Deletes an alignment data structure
 **
@@ -2442,7 +2444,7 @@ static void alignDataDel (AlignPData* pthys, AjBool external) {
 
   AlignPData thys = *pthys;
   ajint i;
-  
+
   AJFREE (thys->Start);
   AJFREE (thys->End);
   AJFREE (thys->Rev);
@@ -2479,7 +2481,7 @@ static void alignDiff (AjPStr* pmark, AjPStr seq) {
   char* s = " ";
 
   ajStrMod (pmark);
-  
+
   if (ajStrLen(*pmark) < ilen)
     ilen = ajStrLen(*pmark);
 
@@ -2494,7 +2496,7 @@ static void alignDiff (AjPStr* pmark, AjPStr seq) {
   return;
 }
 
-/* @funcstatic alignSim ******************************************************
+/* @funcstatic alignSim *******************************************************
 **
 ** Convert upper case (identical) positions to an identity character,
 ** and lower case (similar) positions to a similarity character
@@ -2517,7 +2519,7 @@ static void alignSim (AjPStr* pmark, const char idch, const char simch,
   ajDebug ("alignSim '%S'\n", *pmark);
 
   ajStrMod (pmark);
-  
+
   ilen = ajStrLen(*pmark);
 
   for (i=0; i < ilen; i++) {
@@ -2660,7 +2662,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     ** reset identities and +ve matches
     */
 
-    for(imat=0;imat<matsize;imat++) 
+    for(imat=0;imat<matsize;imat++)
     {
       identical[imat] = 0.0;	/* weights of all sequence chars in column */
       matching[imat] = 0.0;
@@ -2670,9 +2672,9 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     ** reset the posScore array
     */
 
-    for(iseq=0;iseq<nseqs;iseq++) 
+    for(iseq=0;iseq<nseqs;iseq++)
       ajFloatPut(&posScore,iseq,0.);
- 
+
     /*
     ** generate scores (identical, posScore) for columns
     */
@@ -2683,7 +2685,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
       if(m1)
 	identical[m1] += seqs[iseq]->Weight;
 
-      for(jseq=iseq+1;jseq<nseqs;jseq++) 
+      for(jseq=iseq+1;jseq<nseqs;jseq++)
       {
 	m2 = ajSeqCvtK(cvt,seqcharptr[jseq][kpos]);
 	if(m1 && m2)
@@ -2722,7 +2724,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 	  seqcharptr[iseq][kpos] != '-')
 	numres++;
 
-      if(ajFloatGet(posScore,iseq) > max) 
+      if(ajFloatGet(posScore,iseq) > max)
       {
 	highindex = iseq;
 	max       = ajFloatGet(posScore,iseq);
@@ -2812,14 +2814,15 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 /*
 //    ajDebug("index[%d] ident:%d matching:%d high:%d\n",
 //	    kpos,
-//	    identicalmaxindex, 
+//	    identicalmaxindex,
 //	    matchingmaxindex, highindex);
 */
     himatch = matching[ajSeqCvtK(cvt,seqcharptr[highindex][kpos])];
 
     if (thys->IMatrix)
     {
-      ajDebug("index[%d] ident:%d '%c' %.1f matching:%d '%c' %.1f %.1f high:%d '%c' %.1f\n",
+      ajDebug("index[%d] ident:%d '%c' %.1f matching:%d '%c' %.1f %.1f "
+	      "high:%d '%c' %.1f\n",
 	      kpos,
 	      identicalmaxindex,
 	      ajMatrixChar(thys->IMatrix, identicalmaxindex-1),
@@ -2833,7 +2836,8 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     }
     else
     {
-      ajDebug("index[%d] ident:%d '%c' %.1f matching:%d '%c' %.1f %.1f high:%d '%c' %.1f\n",
+      ajDebug("index[%d] ident:%d '%c' %.1f matching:%d '%c' %.1f %.1f "
+	      "high:%d '%c' %.1f\n",
 	      kpos,
 	      identicalmaxindex,
 	      ajMatrixfChar(thys->FMatrix, identicalmaxindex-1),
@@ -2902,7 +2906,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 
 }
 
-/* @funcstatic alignTotweight ********************************************
+/* @funcstatic alignTotweight *************************************************
 **
 ** Returns the total wight for all sequences in an alignment.
 **
@@ -3037,7 +3041,7 @@ static void alignTraceData (AjPAlign thys) {
   return;
 }
 
-/* @func ajAlignPrintFormat ************************************************
+/* @func ajAlignPrintFormat ***************************************************
 **
 ** Reports the internal data structures
 **

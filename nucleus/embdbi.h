@@ -6,7 +6,7 @@ extern "C"
 #ifndef embdbi_h
 #define embdbi_h
 
-/* @data EmbPField *******************************************************
+/* @data EmbPField ************************************************************
 **
 ** NUCLEUS internal structure for database indexing applications
 ** to store field tokens with links to the entry index number.
@@ -19,7 +19,7 @@ typedef struct EmbSField {
   ajint nid;			/* entry number */
 } EmbOField, *EmbPField;
 
-/* @data EmbPEntry *******************************************************
+/* @data EmbPEntry ************************************************************
 **
 ** NUCLEUS internal structure for database indexing applications
 ** to store an entry id with a list of field tokens and file

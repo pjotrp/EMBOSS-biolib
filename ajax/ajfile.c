@@ -1,24 +1,24 @@
-/********************************************************************
+/******************************************************************************
 ** @source AJAX file routines
 **
-** @version 1.0 
+** @version 1.0
 ** @@
-** 
+**
 ** This library is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU Library General Public
 ** License as published by the Free Software Foundation; either
 ** version 2 of the License, or (at your option) any later version.
-** 
+**
 ** This library is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ** Library General Public License for more details.
-** 
+**
 ** You should have received a copy of the GNU Library General Public
 ** License along with this library; if not, write to the
 ** Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ** Boston, MA  02111-1307, USA.
-********************************************************************/
+******************************************************************************/
 
 #include "ajax.h"
 #include <stdarg.h>
@@ -124,7 +124,7 @@ AjPFile ajFileNewInPipe (const AjPStr name) {
   if (pid < 0)
     ajFatal("fork create failed");
   /* pid is zero in the child, but is the child PID in the parent */
-  
+
   if (!pid) { /* this is the child process */
     (void) close (pipefds[0]);
 
@@ -183,9 +183,9 @@ AjPFile ajFileNewIn (const AjPStr name) {
     AjPStr dirname=NULL;
     AjPStr wildname=NULL;
     AjPFile ptr;
-    
+
     char   *p=NULL;
-    
+
     ajDebug("ajFileNewIn '%S'\n", name);
     (void) ajStrAssS(&tmpname, name);
 
@@ -222,7 +222,7 @@ AjPFile ajFileNewIn (const AjPStr name) {
 	    ajDebug("use HOME: '%S'\n", tmpname);
 	}
     }
-    
+
     if (!wildexp)
 	wildexp = ajRegCompC("(.*/)?([^/]*[*?][^/]*)$");
 
@@ -238,7 +238,7 @@ AjPFile ajFileNewIn (const AjPStr name) {
     }
 
 
-    
+
     AJNEW0(thys);
     ajStrAssS(&thys->Name, tmpname);
     (void) ajNamResolve(&thys->Name);
@@ -246,7 +246,7 @@ AjPFile ajFileNewIn (const AjPStr name) {
     if (!thys->fp)
     {
 	ajStrDel(&thys->Name);
-	
+
 	AJFREE (thys);
 	/*    thys->Handle = 0;*/
 	return NULL;
@@ -281,7 +281,7 @@ AjPFile ajFileNewInC (const char *name)
 {
     AjPStr tmp;
     AjPFile fp;
-    
+
     tmp = ajStrNewC(name);
     fp = ajFileNewIn(tmp);
     ajStrDel(&tmp);
@@ -496,7 +496,7 @@ AjPFile ajFileNewF (FILE* file) {
 /* =========================== destructor ============================= */
 /* ==================================================================== */
 
-/* @section File Destructors ********************************************
+/* @section File Destructors **************************************************
 **
 ** Destruction is achieved by closing the file.
 **
@@ -609,7 +609,7 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
     AjPStr hname = NULL;
     static AjPStr pname = NULL;
     char *p;
-    
+
     if(tfile == NULL) return;
 
     (void) ajStrAss(&bname, tfile);
@@ -631,7 +631,7 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
 	ajStrDelReuse(&fname);
 	return;
     }
-    
+
 
     if((p=getenv("HOME")))
     {
@@ -648,7 +648,7 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
 	    ajStrDelReuse(&fname);
 	    return;
 	}
-    
+
 	(void) ajStrAssC(&hname,p);
 	(void) ajStrAppC(&hname,"/.embossdata/");
 	(void) ajStrApp(&hname,bname);
@@ -663,13 +663,13 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
 	}
 	ajStrDel(&hname);
     }
-    
-    
+
+
 
 
     if(ajNamGetValueC("DATA", &fname))
     {
-    
+
         (void) ajFileDirFix(&fname);
 	(void) ajStrApp(&fname,bname);
 	ajDebug ("ajFileDataNew trying '%S'\n", fname);
@@ -681,7 +681,7 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
 	    return;
 	}
     }
-    
+
     if(ajNamRootInstall(&fname)) /* just EMBOSS/data under installation */
     {
         (void) ajNamRootPack(&pname);	/* just EMBOSS */
@@ -699,10 +699,10 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
 	    return;
 	}
     }
-    
+
     if(ajNamRoot(&fname))	/* just emboss/data under source */
     {
-    
+
 	(void) ajStrAppC(&fname,"/data/");
 	(void) ajStrApp(&fname,bname);
 	ajDebug ("ajFileDataNew trying '%S'\n", fname);
@@ -714,7 +714,7 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
 	    return;
 	}
     }
-    
+
     ajStrDelReuse(&bname);
     ajStrDelReuse(&fname);
 
@@ -741,7 +741,7 @@ void ajFileDataNewC(const char *s, AjPFile *f)
     t=ajStrNewC(s);
     ajFileDataNew(t,f);
     ajStrDel(&t);
-    
+
     return;
 }
 
@@ -766,7 +766,7 @@ void ajFileDataDirNew(const AjPStr tfile, const AjPStr dir, AjPFile *fnew)
 
     if(ajNamGetValueC("DATA", &fname))
     {
-    
+
         (void) ajFileDirFix(&fname);
 	if (ajStrLen(dir))
 	{
@@ -782,7 +782,7 @@ void ajFileDataDirNew(const AjPStr tfile, const AjPStr dir, AjPFile *fnew)
 	    return;
 	}
     }
-    
+
     if(ajNamRootInstall(&fname)) /* just EMBOSS/data under installation */
     {
         (void) ajNamRootPack(&pname);	/* just EMBOSS */
@@ -805,10 +805,10 @@ void ajFileDataDirNew(const AjPStr tfile, const AjPStr dir, AjPFile *fnew)
 	    return;
 	}
     }
-    
+
     if(ajNamRoot(&fname))	/* just emboss/data under source */
     {
-    
+
 	(void) ajStrAppC(&fname,"/data/");
 	if (ajStrLen(dir))
 	{
@@ -825,7 +825,7 @@ void ajFileDataDirNew(const AjPStr tfile, const AjPStr dir, AjPFile *fnew)
 	    return;
 	}
     }
-    
+
     ajStrDelReuse(&pname);
     ajStrDelReuse(&fname);
 
@@ -859,7 +859,7 @@ void ajFileDataDirNewC(const char *s, const char* d, AjPFile *f)
     ajFileDataDirNew(t,u,f);
     ajStrDel(&t);
     ajStrDel(&u);
-    
+
     return;
 }
 
@@ -1322,7 +1322,7 @@ AjBool ajFileNameTrim (AjPStr* fname) {
 
   static AjPStr tmpstr = NULL;
   char *p;
-  
+
   if((p=strrchr(ajStrStr(*fname),(ajint)'/')))
   {
       (void) ajStrAssC(&tmpstr,p+1);
@@ -1354,7 +1354,7 @@ void ajFileDataNewWrite(const AjPStr tfile, AjPFile *fnew)
 
     if(ajNamGetValueC("DATA", &fname))
     {
-    
+
 	if (!ajFileDir(&fname))	/* also does ajFileDirFix */
 	{
 	    ajNamRootPack(&pname);
@@ -1371,7 +1371,7 @@ void ajFileDataNewWrite(const AjPStr tfile, AjPFile *fnew)
 
     if(ajNamRootInstall(&fname)) /* just emboss/data under installation */
     {
-    
+
         (void) ajNamRootPack(&pname);	/* just EMBOSS */
 	(void) ajFileDirFix(&fname);
 	(void) ajStrAppC(&fname,"share/");
@@ -1390,7 +1390,7 @@ void ajFileDataNewWrite(const AjPStr tfile, AjPFile *fnew)
 
     if(ajNamRoot(&fname))	/* just emboss/data under source */
     {
-    
+
 	(void) ajStrAppC(&fname,"/data/");
 	if (!ajFileDir(&fname))
 	  ajFatal("Not installed, and source data directory not found: %S\n",
@@ -1442,7 +1442,7 @@ AjBool ajFileDir (AjPStr* dir) {
     return ajFalse;
 
   (void) closedir(odir);
-  
+
   return ajTrue;
 }
 
@@ -1839,7 +1839,7 @@ AjPFileBuff ajFileBuffNewIn (const AjPStr name) {
   return ajFileBuffNewFile (file);
 }
 
-/* @func ajFileBuffNew *******************************************************
+/* @func ajFileBuffNew ********************************************************
 **
 ** Creates a new buffered input file object with an undefined file.
 **
@@ -1912,14 +1912,14 @@ AjBool ajFileBuffSetFile (AjPFileBuff* pthys, AjPFile file) {
 
   thys = *pthys;
   /* same file ??? */
-  if (thys->File && (thys->File->Handle ==  file->Handle)) { 
+  if (thys->File && (thys->File->Handle ==  file->Handle)) {
     ajFileBuffClear (thys, -1);
     return ajTrue;
   }
 
   /* No: this is a copy of the true pointer. */
   /* ajFileClose (&thys->File); */
-  
+
   thys->File = file;
 
   fileBuffInit (thys);
@@ -2215,7 +2215,7 @@ AjPFile ajFileNewDF (const AjPStr dir, const AjPStr filename) {
 AjPFile ajFileNewDC (const AjPStr dir, const char* filename) {
 
   static AjPStr namefix = NULL;
-  
+
   if (ajStrLen(dir))
     (void) ajStrAssS (&namefix, dir);
   else
@@ -2358,9 +2358,9 @@ AjBool ajFileBuffGetStore (const AjPFileBuff thys, AjPStr* pdest,
 {
   ajlong fpos = 0;
   AjBool ret;
-  
+
   ret =  ajFileBuffGetL (thys, pdest, &fpos);
-  
+
   if(!store)
       return ret;
 
@@ -2465,7 +2465,7 @@ void ajFileBuffStripHtml (const AjPFileBuff thys) {
   AjPRegexp ncbiexp = NULL;
   AjPRegexp ncbiexp2 = NULL;
   AjPRegexp srsdbexp = NULL;
-  
+
   AjPStr s1 = NULL;
   AjPStr s2 = NULL;
   AjPStr s3 = NULL;
@@ -2990,7 +2990,7 @@ void ajFileBuffClear (const AjPFileBuff thys, ajint lines) {
     else {
       /*ajDebug ("have to delete this line\n'%S'\n", list->Line);*/
       AJFREE(list);	/* deleted, kill the list item */
-    }	
+    }
     list = next;
   }
 
@@ -3290,7 +3290,7 @@ AjBool ajFileNameExtC (AjPStr* filename, const char* extension)
     static AjPStr tmpstr=NULL;
     AjBool doext = ajTrue;
     char   *p=NULL;
-    
+
     doext = ajTrue;
     if (!extension || !*extension)
 	doext = ajFalse;
@@ -3304,7 +3304,7 @@ AjBool ajFileNameExtC (AjPStr* filename, const char* extension)
 	*p='\0';
 	tmpstr->Len = p - ajStrStr(tmpstr);
     }
-    
+
 
     if(doext)
     {
@@ -3357,7 +3357,7 @@ ajint ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
     tpath = ajStrNew();
     ajStrAssC(&tpath,ajStrStr(path));
 
-    
+
     if(dolist)
     {
 	t=ajStrNewC(ajStrStr(path));
@@ -3372,14 +3372,14 @@ ajint ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
 	ajStrDel(&tpath);
 	return 0;
     }
-    
+
 
     if(!(indir=opendir(ajStrStr(tpath))))
     {
 	ajStrDel(&tpath);
 	return 0;
     }
-    
+
 
     s = ajStrNew();
     dirs = ajListNew();
@@ -3591,20 +3591,20 @@ char* ajFileTempName(const char *dir)
     ajint     retry;
     AjBool  ok;
     AjPFile outf;
-    
+
     if(!dt)
 	dt     = ajStrNew();
 
     direct = ajStrNew();
-    
+
     if(!dir)
 	ajStrAssC(&direct,".");
     else
 	ajStrAssC(&direct,dir);
     ajStrAppC(&direct,"/");
-    
 
-    
+
+
     ajFmtPrintS(&dt,"%S%s-%d.%d",direct,ajAcdProgram(),time(0),
 		ajRandomNumber());
 
@@ -3627,7 +3627,7 @@ char* ajFileTempName(const char *dir)
 	ajDebug("Cannot find a unique filename [last try %S]\n",dt);
 	ok = ajFalse;
     }
-    
+
     if(!(outf = ajFileNewOut(dt)))
     {
 	ajDebug("Cannot write to file %S\n",dt);
@@ -3638,7 +3638,7 @@ char* ajFileTempName(const char *dir)
 	ajFileClose(&outf);
 	unlink(ajStrStr(dt));
     }
-    
+
     ajStrDel(&direct);
 
     if(!ok)
@@ -3696,7 +3696,7 @@ ajint ajFileWriteChar (AjPFile thys, char* str, ajint len) {
 ajint ajFileWriteInt2 (AjPFile thys, short i) {
   short j = i;
   if (ajUtilBigendian())ajUtilRev2(&j);
-    
+
   return fwrite (&j, 2, 1, ajFileFp(thys));
 }
 
@@ -3769,9 +3769,9 @@ ajint ajFileBuffStripSrs(AjPFileBuff thys)
     AjPFileBuffList lptr=NULL;
     AjPFileBuffList tptr=NULL;
     AjPFileBuffList lastptr=NULL;
-    
+
     AjBool found;
-    
+
     found = ajFalse;
     lptr = thys->Curr;
 
@@ -3810,12 +3810,12 @@ ajint ajFileBuffStripSrs(AjPFileBuff thys)
     }
 
     thys->Lines = thys->Curr;
-    
-    
+
+
 
     while(lptr && !ajStrPrefixC(lptr->Line,"</pre>"))
     {
-	
+
 	lastptr = lptr;
 	lptr = lptr->Next;
     }
@@ -3838,7 +3838,7 @@ ajint ajFileBuffStripSrs(AjPFileBuff thys)
 	    lastptr->Next = NULL;
 	    continue;
 	}
-	
+
 	lastptr->Next = lptr;
 	while(lptr && !ajStrPrefixC(lptr->Line,"</pre>"))
 	{
@@ -3846,14 +3846,14 @@ ajint ajFileBuffStripSrs(AjPFileBuff thys)
 	    lptr = lptr->Next;
 	}
     }
-    
+
     lptr = thys->Curr;
     while(lptr)
     {
 	ajStrRemoveHtml(&lptr->Line);
 	lptr = lptr->Next;
     }
-    
+
 /*  Test print routine
     lptr=thys->Curr;
     while(lptr)
@@ -3896,15 +3896,15 @@ static void fileListRecurs(AjPStr file, AjPList list, ajint *recurs)
     ++(*recurs);
     if(*recurs > FILERECURSLV)
 	ajFatal("Filelist maximum recursion level reached");
-    
+
     ajStrChomp(&file);
     c = *ajStrStr(file);
 
     dir   = ajStrNew();
     line  = ajStrNew();
     dlist = ajListNew();
-    
-    
+
+
     if(ajStrIsWild(file))
     {
 	if(!(p=strrchr(ajStrStr(file),(int)'/')))
@@ -3940,7 +3940,7 @@ static void fileListRecurs(AjPStr file, AjPList list, ajint *recurs)
 	ptr = ajStrNewC(ajStrStr(file));
 	ajListPushApp(list,(void *)ptr);
     }
-    
+
 
     ajListDel(&dlist);
     ajStrDel(&dir);
@@ -3956,7 +3956,7 @@ static void fileListRecurs(AjPStr file, AjPList list, ajint *recurs)
 /* @func ajFileFileList  ******************************************************
 **
 ** Return a list of files that match a comma-separated string of
-** filenames which can include wildcards or listfiles 
+** filenames which can include wildcards or listfiles
 **
 ** @param [r] files [AjPStr] comma-separated filename list
 **
@@ -3982,7 +3982,7 @@ AjPList ajFileFileList(AjPStr files)
     }
 
     AJFREE(fstr);
-    
+
     if(!ajListLength(list))
     {
 	ajListDel(&list);
@@ -4113,7 +4113,7 @@ static void fileBuffLineDel (AjPFileBuff thys) {
 **
 ** Steps the Curr pointer to the next line in a buffer.
 **
-** Not for use when reading from a file. This steps through the buffer 
+** Not for use when reading from a file. This steps through the buffer
 **
 ** @param [u] thys [AjPFileBuff] File buffer
 ** @return [AjBool] ajTrue if there was another line

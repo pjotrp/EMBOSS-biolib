@@ -6,7 +6,7 @@ extern "C"
 #ifndef ajseqalign_h
 #define ajseqalign_h
 
-/* @data AjPAlign *******************************************************
+/* @data AjPAlign *************************************************************
 **
 ** Ajax Align Output object.
 **
@@ -38,7 +38,7 @@ typedef struct AjSAlign {
   AjBool Showusa;		/* Report USA (-ausa) or only seqname */
   AjBool Multi;			/* if true, assume >1 alignment */
   AjBool Global;		/* if true, show full sequence beyond match */
-  AjPList Data;			/* Alignment specific data - see ajalign.c */ 
+  AjPList Data;			/* Alignment specific data - see ajalign.c */
   ajint Nseqs;			/* Number of sequences in all alignments */
   ajint Nmin;			/* Minimum number of sequences e.g. 2 */
   ajint Nmax;			/* Maximum number of sequences e.g. 2 */

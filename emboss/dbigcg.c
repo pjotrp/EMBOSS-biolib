@@ -9,12 +9,12 @@
 ** modify it under the terms of the GNU General Public License
 ** as published by the Free Software Foundation; either version 2
 ** of the License, or (at your option) any later version.
-** 
+**
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
-** 
+**
 ** You should have received a copy of the GNU General Public License
 ** along with this program; if not, write to the Free Software
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -318,13 +318,13 @@ int main(int argc, char **argv)
     if (systemsort)
       embDbiRmEntryFile (dbname, cleanup);
 
-    ajListDel(&listInputFiles);    
+    ajListDel(&listInputFiles);
 
     ajExit ();
     return 0;
 }
 
-/* @funcstatic dbigcg_nextentry ********************************************
+/* @funcstatic dbigcg_nextentry ***********************************************
 **
 ** Returns next database entry as an EmbPEntry object
 **
@@ -436,7 +436,7 @@ static EmbPEntry dbigcg_nextentry (AjPFile libr, AjPFile libs,
 }
 
 
-/* @funcstatic dbigcg_gcgopenlib ********************************************
+/* @funcstatic dbigcg_gcgopenlib **********************************************
 **
 ** Open a GCG library
 **
@@ -465,7 +465,7 @@ static AjBool dbigcg_gcgopenlib (AjPStr lname, AjPFile* libr, AjPFile* libs)
     *libr = ajFileNewIn(rname);
     if(!*libr)
 	ajFatal("Failed to open %S for reading",rname);
-  
+
     *libs = ajFileNewIn(sname);
     if(!*libs)
 	ajFatal("Failed to open %S for reading",sname);
@@ -633,7 +633,7 @@ static ajint dbigcg_gcggetent(AjPStr idformat,
 	!ajStrSuffixC(*libstr,"_00") &&
 	!ajStrSuffixC(*libstr,"_000"))
       return gcglen;
-  
+
     gcglen += dbigcg_gcgappent (libr, libs, rexp, sexp,
 				libstr);
 
@@ -643,7 +643,7 @@ static ajint dbigcg_gcggetent(AjPStr idformat,
 
 
 
-/* @funcstatic dbigcg_pirgetent **********************************************
+/* @funcstatic dbigcg_pirgetent ***********************************************
 **
 ** get a single entry from the PIR database files
 **
@@ -811,24 +811,24 @@ static ajint dbigcg_gcgappent (AjPFile libr, AjPFile libs,
     char *q;
     ajint rpos;
     ajint spos;
-  
+
     if(!testlibstr)
 	testlibstr = ajStrNew();
 
     ajStrAssS(&tmpstr,*libstr);
-  
+
     ajDebug("dbi_gcgappent '%S'\n", tmpstr);
 
     p = ajStrStr(tmpstr);
     q = strrchr(p,'_');
     *q='\0';
-  
+
 
     ajFmtPrintS(&testlibstr, "%s_",p);
     ilen = ajStrLen(testlibstr);
 
     isend = ajFalse;
-  
+
     while(!isend)
     {
         spos = ajFileTell(libs);
@@ -841,13 +841,13 @@ static ajint dbigcg_gcgappent (AjPFile libr, AjPFile libs,
 		return 1;
 	    }
 	}
-      
+
 	ajRegExec (sexp, sline);
 	ajRegSubI(sexp, 1, &seqlibstr);
 
 	rpos = ajFileTell(libr);
 	ajFileGets(libr, &rline);
-      
+
 	while (ajStrChar(rline,0)!='>') {
 	    rpos = ajFileTell(libr);
 	    if (!ajFileGets(libr, &rline))
@@ -868,11 +868,11 @@ static ajint dbigcg_gcgappent (AjPFile libr, AjPFile libs,
 	ajDebug("gcgappent %B test: '%S' seq: '%S' ref: '%S'\n",
 		isend, testlibstr, seqlibstr, reflibstr);
     }
-  
+
     ajDebug("gcgappent done at seq: '%S' ref: '%S'\n", seqlibstr, reflibstr);
 
     ajStrAssC(libstr,p);
-  
+
     ajFileSeek (libr, rpos, 0);
     ajFileSeek (libs, spos, 0);
 
@@ -880,7 +880,7 @@ static ajint dbigcg_gcgappent (AjPFile libr, AjPFile libs,
 }
 
 
-/* @funcstatic dbigcg_ParseEmbl ********************************************
+/* @funcstatic dbigcg_ParseEmbl ***********************************************
 **
 ** Parse the ID, accession from an EMBL or SWISSPROT entry
 **
@@ -923,7 +923,7 @@ static AjBool dbigcg_ParseEmbl (AjPFile libr,
     static ajint taxfield=-1;
     static ajint svnfield=-1;
     static AjBool reset = AJTRUE;
-  
+
     if (!fields)
     {
       reset = ajTrue;
@@ -977,7 +977,7 @@ static AjBool dbigcg_ParseEmbl (AjPFile libr,
     {
         rpos = ajFileTell(libr);
 	ajStrAssS(&tmpstr,rline);
-      
+
 	if (ajRegExec (typexp, tmpstr))
 	{
 	    ajRegSubI (typexp, 1, &typStr);
@@ -1212,7 +1212,7 @@ static AjBool dbigcg_ParseGenbank (AjPFile libr,
     {
         rpos = ajFileTell(libr);
 	ajStrAssS(&tmpstr,rline);
-      
+
 	if (ajRegExec (typexp, tmpstr))
 	{
 	    ajRegSubI (typexp, 2, &typStr);
@@ -1499,7 +1499,7 @@ static AjBool dbigcg_ParsePir (AjPFile libr,
     {
         rpos = ajFileTell(libr);
 	ajStrAssS(&tmpstr,rline);
-      
+
 	if (ajRegExec (acexp, rline))
 	{
 	    ajRegPost (acexp, &tmpline);

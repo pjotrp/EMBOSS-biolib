@@ -8,12 +8,12 @@
 ** modify it under the terms of the GNU General Public License
 ** as published by the Free Software Foundation; either version 2
 ** of the License, or (at your option) any later version.
-** 
+**
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
-** 
+**
 ** You should have received a copy of the GNU General Public License
 ** along with this program; if not, write to the Free Software
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -22,7 +22,7 @@
 #include "emboss.h"
 
 
-/* @prog water ***************************************************************
+/* @prog water ****************************************************************
 **
 ** Smith-Waterman local alignment
 **
@@ -37,24 +37,24 @@ int main(int argc, char **argv)
     AjPStr m;
     AjPStr n;
     AjPStr ss;
-    
+
     AjPFile outf=NULL;
     AjBool  show=ajFalse;
-    
+
     ajint    lena;
     ajint    lenb;
     ajint    i;
-    
+
     char   *p;
     char   *q;
 
     ajint start1=0;
     ajint start2=0;
-    
-    
+
+
     float  *path;
     ajint    *compass;
-    
+
     AjPMatrixf matrix;
     AjPSeqCvt  cvt=0;
     float      **sub;
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 
     AjBool dosim=ajFalse;
     AjBool fasta=ajFalse;
-    
+
     float id=0.;
     float sim=0.;
     float idx=0.;
@@ -98,13 +98,13 @@ int main(int argc, char **argv)
     m  = ajStrNew();
     n  = ajStrNew();
     ss = ajStrNew();
-    
+
     gapopen = ajRoundF(gapopen, 8);
     gapextend = ajRoundF(gapextend, 8);
 
     AJCNEW(path, maxarr);
     AJCNEW(compass, maxarr);
-    
+
     sub = ajMatrixfArray(matrix);
     cvt = ajMatrixfCvt(matrix);
 
@@ -135,7 +135,7 @@ int main(int argc, char **argv)
 
 	ajStrAssC(&m,"");
 	ajStrAssC(&n,"");
-	
+
 	embAlignPathCalc(p,q,lena,lenb,gapopen,gapextend,path,sub,cvt,
 			compass,show);
 
@@ -191,14 +191,14 @@ int main(int argc, char **argv)
 
     AJFREE (compass);
     AJFREE (path);
-    
+
     AJFREE(compass);
     AJFREE(path);
 
     ajStrDel(&n);
     ajStrDel(&m);
     ajStrDel(&ss);
-    
+
     ajExit();
     return 0;
 }

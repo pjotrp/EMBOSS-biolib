@@ -10,69 +10,69 @@
 ** modify it under the terms of the GNU General Public License
 ** as published by the Free Software Foundation; either version 2
 ** of the License, or (at your option) any later version.
-** 
+**
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
-** 
+**
 ** You should have received a copy of the GNU General Public License
 ** along with this program; if not, write to the Free Software
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-******************************************************************************
-** 
-** 
-** 
-** 
-** 
-** 
-** Operation
-** 
-** swissparse parses a file of keywords and the swissprot database and writes 
-** a file of sequences whose swissprot entries contains at least one of the 
-** keywords.  If an entry contains a keyword in a domain record of the feature 
-** table, then the sequence of the domain is written to the output file, 
-** otherwise the entire sequence is written. 
+*******************************************************************************
 **
-** 
-** The keywords file (Figure 1) contains lists of keywords specific to a 
-** number of SCOP families and superfamilies.  Each list of keywords is given 
-** after a block of SCOP classification records; for family-specific search 
-** terms, the block must contain a CL, FO, SF and an FA record (see below). 
-** For superfamily-specific terms, clearly only the CL, FO and SF should be 
-** specified. A single keyword must be given per line after the record 'TE'. 
-** Each block of SCOP classification records and search terms must be 
+**
+**
+**
+**
+**
+** Operation
+**
+** swissparse parses a file of keywords and the swissprot database and writes
+** a file of sequences whose swissprot entries contains at least one of the
+** keywords.  If an entry contains a keyword in a domain record of the feature
+** table, then the sequence of the domain is written to the output file,
+** otherwise the entire sequence is written.
+**
+**
+** The keywords file (Figure 1) contains lists of keywords specific to a
+** number of SCOP families and superfamilies.  Each list of keywords is given
+** after a block of SCOP classification records; for family-specific search
+** terms, the block must contain a CL, FO, SF and an FA record (see below).
+** For superfamily-specific terms, clearly only the CL, FO and SF should be
+** specified. A single keyword must be given per line after the record 'TE'.
+** Each block of SCOP classification records and search terms must be
 ** delimited by the record '//' (the file should end with this record).
 ** It is possible to provide fold and class-specific search terms by using the
-** CL and FO records only as appropriate, however, text searches of swissprot 
-** for members of scop folds and classes are unlikely to produce meaningful 
+** CL and FO records only as appropriate, however, text searches of swissprot
+** for members of scop folds and classes are unlikely to produce meaningful
 ** results.
 **
 **
-** The format of the output file (Figure 2) is the same as the hits file 
-** written by the EMBOSS application psiblasts.  The file uses the following 
+** The format of the output file (Figure 2) is the same as the hits file
+** written by the EMBOSS application psiblasts.  The file uses the following
 ** records:
-** (1) DE - bibliographic information. The text 'Results of swissprot search' 
+** (1) DE - bibliographic information. The text 'Results of swissprot search'
 ** is always given.
 ** Four SCOP classification records may be given:
-** (2)  CL - Domain class.  It is identical to the text given after 'Class' in 
-** the scop classification file (see documentation for the EMBOSS application 
+** (2)  CL - Domain class.  It is identical to the text given after 'Class' in
+** the scop classification file (see documentation for the EMBOSS application
 ** scope).
-** (3)  FO - Domain fold.  It is identical to the text given after 'Fold' in 
+** (3)  FO - Domain fold.  It is identical to the text given after 'Fold' in
 ** the scop classification file (see scope documentation).
-** (4)  SF - Domain superfamily.  It is identical to the text given after 
+** (4)  SF - Domain superfamily.  It is identical to the text given after
 ** 'Superfamily' in the scop classification file (see scope documentation).
 ** (5)  FA - Domain family. It is identical to the text given after 'Family'
 ** in the scop classification file (see scope documentation).
-** (6)  NS - Number in set. The number of sequences retrieved by the search 
-** for this family or superfamily. The file will have a section containing an 
-** NN, AC, CL, RA and SQ records (see below) for each sequence in the set for 
+** (6)  NS - Number in set. The number of sequences retrieved by the search
+** for this family or superfamily. The file will have a section containing an
+** NN, AC, CL, RA and SQ records (see below) for each sequence in the set for
 ** each family / superfamily.
-** (7) NN - Sequence number.  The number given in brackets after this record 
+** (7) NN - Sequence number.  The number given in brackets after this record
 ** indicates the start of the data for the relevent sequence in the current
 ** set.
 ** (8) AC - Accession number of the hit.
-** (9) TY - Classification of hit.  Always has the value 'OTHER' (the values 
+** (9) TY - Classification of hit.  Always has the value 'OTHER' (the values
 ** HIT or ALIGN are used for psiblasts output (see psiblasts documentation).
 ** (10) RA - Sequence range. The numbers before START and END give the start
 ** and end positions respectively of the domain relative to the full length
@@ -80,14 +80,14 @@
 ** of the sequence are given in cases where an entire protein sequence is
 ** given.
 ** (11) SQ - protein sequence. The number of residues is given before AA on the
-** first line. The protein sequence is given on subsequent lines. 
+** first line. The protein sequence is given on subsequent lines.
 ** (12) XX - used for spacing.
-** (13) // - used to delimit data for search of swissprot. 
+** (13) // - used to delimit data for search of swissprot.
 **
 **
 **
 ** Figure 1  Excerpt from swissparse input file
-**  
+**
 **  CL   All beta proteins
 **  XX
 **  FO   Lipocalins
@@ -121,10 +121,10 @@
 **  TE   Fatty acid binding
 **  TE   Fatty acid-binding
 **  //
-** 
-** 
-** 
-** 
+**
+**
+**
+**
 ** Figure 2  Excerpt from swissparse output file
 **
 **  DE   Members of scop families
@@ -139,7 +139,7 @@
 **  XX
 **  NS   2
 **  XX
-**  NN   [1]   
+**  NN   [1]
 **  XX
 **  AC   P67983
 **  XX
@@ -152,7 +152,7 @@
 **       KVADALTNAV AHVDDMPNAL SALSDLHAHK LRVDPVNFKL LSHCLLVTLA AHLPAEFTPA
 **       VHASLDKFLA SVSTVLTSKY R
 **  XX
-**  NN   [2]   
+**  NN   [2]
 **  XX
 **  AC   P673383
 **  XX
@@ -174,11 +174,11 @@
 **  XX
 **  FA   Phycocyanins
 **  XX
-**  
+**
 **
 ** Notes
-** This is slow - swissparse is read multiple times (once for each list of 
-** terms).  Changing it to do a single file read would require modifying 
+** This is slow - swissparse is read multiple times (once for each list of
+** terms).  Changing it to do a single file read would require modifying
 ** keysearch to take an array of hitlist and terms structures.
 **
 ******************************************************************************/
@@ -224,35 +224,35 @@ static AjBool   swissparse_keysearch(AjPFile inf, AjPTerms terms,
 
 int main(int argc, char **argv)
 {
-    AjPFile     key_inf=NULL;		/* File pointer for keywords file */ 
+    AjPFile     key_inf=NULL;		/* File pointer for keywords file */
     AjPFile     sp_inf =NULL;		/* File pointer for swissprot
                                            database */
-    AjPFile     outf   =NULL;		/* File pointer for output file */ 
+    AjPFile     outf   =NULL;		/* File pointer for output file */
     AjPTerms    keyptr =NULL;		/* Pointer to terms structure */
     AjPHitlist  hitptr =NULL;		/* Pointer to hitlist structure */
-    
 
 
- 
-   
+
+
+
     /* Read data from acd */
     embInit("swissparse",argc,argv);
     key_inf  = ajAcdGetInfile("keyfile");
     sp_inf  = ajAcdGetInfile("spfile");
     outf =  ajAcdGetOutfile("outfile");
-    
+
 
     /* Print DE field to output file */
     ajFmtPrintF(outf,"DE   Members of scop families\nXX\n");
-    
-    
-    /* Start of main application loop 
+
+
+    /* Start of main application loop
        Read next list of terms from input file */
     while((swissparse_TermsRead(key_inf, &keyptr)))
     {
 	/* Rewind swissprot file pointer to the top */
 	ajFileSeek(sp_inf, 0, 0);
-	
+
 
 	/* Allocate memory for hitlist */
 	AJNEW0(hitptr);
@@ -263,11 +263,11 @@ int main(int argc, char **argv)
 
 
 	/* Copy scop records from terms to hitlist structure */
-	ajStrAss(&hitptr->Class, keyptr->Class); 
-	ajStrAss(&hitptr->Fold, keyptr->Fold); 
+	ajStrAss(&hitptr->Class, keyptr->Class);
+	ajStrAss(&hitptr->Fold, keyptr->Fold);
 	ajStrAss(&hitptr->Superfamily, keyptr->Superfamily);
 	ajStrAss(&hitptr->Family, keyptr->Family);
-	
+
 
 	/* Write output file */
 	ajXyzHitlistWrite(outf, hitptr);
@@ -277,8 +277,8 @@ int main(int argc, char **argv)
 	ajXyzHitlistDel(&hitptr);
 	swissparse_TermsDel(&keyptr);
     }
-    swissparse_TermsDel(&keyptr);    
-    
+    swissparse_TermsDel(&keyptr);
+
     /* Tidy up*/
     ajFileClose(&key_inf);
     ajFileClose(&sp_inf);
@@ -302,8 +302,8 @@ int main(int argc, char **argv)
 ******************************************************************************/
 static AjPTerms swissparse_TermsNew(void)
 {
-    AjPTerms  ret =NULL;		/* Pointer to terms structure */    
-    
+    AjPTerms  ret =NULL;		/* Pointer to terms structure */
+
 
     /* Create an AjSTerms object */
     AJNEW0(ret);
@@ -313,7 +313,7 @@ static AjPTerms swissparse_TermsNew(void)
     ret->Family=ajStrNew();
     ret->N=0;
     ret->Keywords=NULL;
-        
+
     return ret;
 }
 
@@ -334,19 +334,19 @@ static void swissparse_TermsDel(AjPTerms *pthis)
 {
     int x=0;				/* Counter */
     AjPTerms thys = *pthis;
-    
+
     ajStrDel(&thys->Class);
     ajStrDel(&thys->Fold);
     ajStrDel(&thys->Superfamily);
     ajStrDel(&thys->Family);
 
-    
+
     for(x=0;x<thys->N; x++)
 	ajStrDel(&thys->Keywords[x]);
     AJFREE(thys->Keywords);
 
     AJFREE(thys);
-    
+
     return;
 }
 
@@ -356,7 +356,7 @@ static void swissparse_TermsDel(AjPTerms *pthis)
 
 /* @funcstatic swissparse_TermsRead *******************************************
 **
-** Read the next Terms object from a file in embl-like format. The search 
+** Read the next Terms object from a file in embl-like format. The search
 ** terms are modified with a leading and trailing space.
 **
 ** @param [r] inf [AjPFile] Input file stream
@@ -366,12 +366,12 @@ static void swissparse_TermsDel(AjPTerms *pthis)
 ** @@
 ******************************************************************************/
 static AjBool swissparse_TermsRead(AjPFile inf, AjPTerms *thys)
-{    
+{
     AjPStr   line           =NULL;	/* Line of text */
     AjPStr   temp           =NULL;
     AjPList  list_terms     =NULL;	/* List of keywords for a scop node*/
     AjBool   ok             =ajFalse;
-    
+
 
     /* Create Terms structure */
     (*thys)=swissparse_TermsNew();
@@ -381,7 +381,7 @@ static AjBool swissparse_TermsRead(AjPFile inf, AjPTerms *thys)
     list_terms = ajListstrNew();
     line       = ajStrNew();
 
-    
+
     /* Read first line */
     ok = ajFileReadLine(inf,&line);
 
@@ -392,7 +392,7 @@ static AjBool swissparse_TermsRead(AjPFile inf, AjPTerms *thys)
 	{
 	    ok = ajFileReadLine(inf,&line);
 	    continue;
-	}	
+	}
 	else if(ajStrPrefixC(line,"CL"))
 	{
 	    ajStrAssC(&(*thys)->Class,ajStrStr(line)+3);
@@ -431,21 +431,21 @@ static AjBool swissparse_TermsRead(AjPFile inf, AjPTerms *thys)
 	    }
 	    ajStrClean(&(*thys)->Family);
 	}
-	else if(ajStrPrefixC(line,"TE")) 
+	else if(ajStrPrefixC(line,"TE"))
 	{
 	    /* Copy and clean up term */
 	    temp    = ajStrNew();
 	    ajStrAssC(&temp,ajStrStr(line)+3);
 	    ajStrClean(&temp);
 
-	    
+
 	    /* Append a leading and trailing space to search term*/
 	    ajStrAppK(&temp, ' ');
 	    ajStrInsertC(&temp, 0, " ");
 
-	    
+
 	    /* Add the current term to the list */
-	    ajListstrPush(list_terms,temp);		    
+	    ajListstrPush(list_terms,temp);
 	}
 
 	ok = ajFileReadLine(inf,&line);
@@ -455,13 +455,13 @@ static AjBool swissparse_TermsRead(AjPFile inf, AjPTerms *thys)
 	/* Clean up */
 	ajListstrFree(&list_terms);
 	ajStrDel(&line);
-	
-    
+
+
 	/* Return */
 	return ajFalse;
     }
-        
-    
+
+
     /*Convert the AjPList of terms to array of AjPSeq's*/
     if(!((*thys)->N=ajListstrToArray((AjPList)list_terms,&(*thys)->Keywords)))
     {
@@ -472,9 +472,9 @@ static AjBool swissparse_TermsRead(AjPFile inf, AjPTerms *thys)
     /* Clean up.  Free the list (not the nodes!) */
     ajListstrDel(&list_terms);
     ajStrDel(&line);
-    
+
     return ajTrue;
-} 
+}
 
 
 
@@ -502,7 +502,7 @@ static AjBool swissparse_keysearch(AjPFile inf, AjPTerms terms,
     AjPInt   start          =NULL;      /* Array of start of hit(s) */
     AjPInt   end            =NULL;      /* Array of end of hit(s) */
     ajint    nhits          =0;         /* Number of hits */
-    ajint    x              =0;         
+    ajint    x              =0;
     AjBool   foundkw        =ajFalse;
     AjBool   foundft        =ajFalse;
 
@@ -510,9 +510,9 @@ static AjBool swissparse_keysearch(AjPFile inf, AjPTerms terms,
     /* Check for valid args */
     if(!inf)
 	return ajFalse;
-    
 
-    
+
+
 
     /* allocate strings and arrays */
     line       = ajStrNew();
@@ -531,21 +531,21 @@ static AjBool swissparse_keysearch(AjPFile inf, AjPTerms terms,
 	    /* Copy accesion number and remove the ';' from the end*/
 	    ajFmtScanS(line, "%*s %S", &id);
 	    ajStrSubstituteCC(&id, ";", "\0");
-	    
-	    
+
+
 	    /* Reset flags & no. hits*/
 	    foundkw=ajFalse;
 	    foundft=ajFalse;
 	    nhits=0;
 	}
-	
-	
+
+
 	/* Search the description and keyword lines with search terms */
 	else if((ajStrPrefixC(line,"DE") || (ajStrPrefixC(line,"KW"))))
 	{
-	    /* Search terms have a leading and trailing space to prevent 
-	       them being found as substrings within other words.  To 
-	       catch cases where a DE or KW line begins with a search 
+	    /* Search terms have a leading and trailing space to prevent
+	       them being found as substrings within other words.  To
+	       catch cases where a DE or KW line begins with a search
 	       term, we must add a leading and trailing space to line.
 	       We must first remove punctation from the line to be parsed.*/
 	    ajStrConvertCC(&line, ".,;:", "    ");
@@ -556,24 +556,24 @@ static AjBool swissparse_keysearch(AjPFile inf, AjPTerms terms,
 	    for (x = 0; x < terms->N; x++)
 		/* Search term is found */
 		if((ajStrFindCase(line, terms->Keywords[x])!=-1))
-		{	
+		{
 		    foundkw=ajTrue;
 		    break;
 		}
 	}
 
-	
+
 	/* Search the feature table line with search terms */
 	else if((ajStrPrefixC(line,"FT   DOMAIN")))
 	{
-	    /* Search terms have a leading and trailing space to prevent 
-	       them being found as substrings within other words.  To 
-	       catch cases where a FT line ends with a search 
-	       term, we must add a  trailing space to line 
+	    /* Search terms have a leading and trailing space to prevent
+	       them being found as substrings within other words.  To
+	       catch cases where a FT line ends with a search
+	       term, we must add a  trailing space to line
 	       We must first remove punctation from the line to be parsed.*/
 	    ajStrConvertCC(&line, ".,;:", "    ");
 	    ajStrAppK(&line, ' ');
-	    
+
 
 	    for (x = 0; x < terms->N; x++)
 		if((ajStrFindCase(line, terms->Keywords[x])!=-1))
@@ -581,7 +581,7 @@ static AjBool swissparse_keysearch(AjPFile inf, AjPTerms terms,
 		    /* Search term is found */
 		    foundft = ajTrue;
 		    nhits++;
-		    
+
 		    /* Assign start and end of hit */
 		    ajFmtScanS(line, "%*s %*s %d %d", &s, &e);
 
@@ -591,7 +591,7 @@ static AjBool swissparse_keysearch(AjPFile inf, AjPTerms terms,
 		    break;
 		}
 	}
-	
+
 
 	/* Parse the sequence */
 	else if((ajStrPrefixC(line,"SQ") && ((foundkw == ajTrue) ||
@@ -605,7 +605,7 @@ static AjBool swissparse_keysearch(AjPFile inf, AjPTerms terms,
 	    while((ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"//"))
 		/* Read sequence line into temp */
 		ajStrAppC(&temp,ajStrStr(line)+3);
- 
+
 
 	    /* Clean up temp. sequence */
 	    ajStrCleanWhite(&temp);
@@ -619,7 +619,7 @@ static AjBool swissparse_keysearch(AjPFile inf, AjPTerms terms,
 		    /* Increment counter of hits for subsequent hits*/
 		    (*hits)->N++;
 
-		    
+
 		    /*
 		     * Reallocate memory for array of hits in hitlist
 		     * structure
@@ -631,13 +631,13 @@ static AjBool swissparse_keysearch(AjPFile inf, AjPTerms terms,
 		    /* Assign start and end of hit */
 		    (*hits)->hits[(*hits)->N-1]->Start = ajIntGet(start, x);
 		    (*hits)->hits[(*hits)->N-1]->End = ajIntGet(end, x);
-				
+
 
 		    /* Extract sequence within specified range */
-		    ajStrAssSub(&(*hits)->hits[(*hits)->N - 1]->Seq, temp, 
-				(*hits)->hits[(*hits)->N - 1]->Start - 1, 
+		    ajStrAssSub(&(*hits)->hits[(*hits)->N - 1]->Seq, temp,
+				(*hits)->hits[(*hits)->N - 1]->Start - 1,
 				(*hits)->hits[(*hits)->N - 1]->End - 1);
-		    
+
 
 	    /* Put id into structure */
 	    ajStrAss(&(*hits)->hits[(*hits)->N - 1]->Id, id);
@@ -653,17 +653,17 @@ static AjBool swissparse_keysearch(AjPFile inf, AjPTerms terms,
 		/* Increment counter of hits */
 		(*hits)->N++;
 
-		    
+
 		/* Reallocate memory for array of hits in hitlist structure */
 		AJCRESIZE((*hits)->hits, (*hits)->N);
 		(*hits)->hits[(*hits)->N-1]=ajXyzHitNew();
-				    
+
 
 		/* Extract whole sequence */
-		ajStrAss(&(*hits)->hits[(*hits)->N - 1]->Seq, temp); 
-		(*hits)->hits[(*hits)->N - 1]->Start = 1; 
+		ajStrAss(&(*hits)->hits[(*hits)->N - 1]->Seq, temp);
+		(*hits)->hits[(*hits)->N - 1]->Start = 1;
 		(*hits)->hits[(*hits)->N - 1]->End =
-		    ajStrLen((*hits)->hits[(*hits)->N - 1]->Seq); 
+		    ajStrLen((*hits)->hits[(*hits)->N - 1]->Seq);
 
 
 	    /* Put id into structure */
@@ -678,7 +678,7 @@ static AjBool swissparse_keysearch(AjPFile inf, AjPTerms terms,
 	    /* Free temp. sequence */
 	    ajStrDel(&temp);
 
-	    
+
 	}
     }
 
