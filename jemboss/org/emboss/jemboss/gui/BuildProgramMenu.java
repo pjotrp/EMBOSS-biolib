@@ -60,7 +60,7 @@ public class BuildProgramMenu
   private int currentApp = -1;
   /** favorite menu */
   private Favorites favorites;
- 
+
   /**
   *
   *  @param  p1 		menu pane
@@ -121,7 +121,7 @@ public class BuildProgramMenu
       envp = mysettings.getEmbossEnvironmentArray(env);
     }
 
-
+    
     SwingWorker groupworker = new SwingWorker() 
     {
       String woss = "";
@@ -462,19 +462,31 @@ public class BuildProgramMenu
 
 
 // search tool bar
+        final JRadioButton radioAND = new JRadioButton("AND");
+        JRadioButton radioOR  = new JRadioButton("OR");
+        Font fnt = new Font("SansSerif", Font.BOLD, 10);
+        radioAND.setFont(fnt);
+        radioOR.setFont(fnt);
+        radioAND.setSelected(true);
+                                                                                            
+        ButtonGroup group = new ButtonGroup();
+        group.add(radioAND);
+        group.add(radioOR);
+
         JToolBar toolBar = new JToolBar(JToolBar.VERTICAL);
         final JTextField search = new JTextField(12);
         search.addActionListener(new ActionListener()
         {
           public void actionPerformed(ActionEvent e)
           {
-            new KeywordSearch(search,mysettings,withSoap,f,envp);
+            new KeywordSearch(search,woss,mysettings,
+                              radioAND.isSelected());
           }
         });
 
         Box bacross = Box.createHorizontalBox();
         JLabel keyw = new JLabel("Keyword Search");
-        keyw.setFont(new Font("SansSerif", Font.BOLD, 10));
+        keyw.setFont(fnt);
         bacross.add(keyw);
         JButton go = new JButton("GO");
         go.setFont(new Font("monospaced", Font.BOLD, 10));
@@ -484,7 +496,8 @@ public class BuildProgramMenu
         {
           public void actionPerformed(ActionEvent e)
           {
-            new KeywordSearch(search,mysettings,withSoap,f,envp);
+            new KeywordSearch(search,woss,mysettings,
+                              radioAND.isSelected());
           }
         });
         bacross.add(Box.createHorizontalStrut(2));
@@ -492,6 +505,13 @@ public class BuildProgramMenu
         bacross.add(Box.createHorizontalGlue());
         toolBar.add(bacross);
         toolBar.add(search);
+
+        bacross = Box.createHorizontalBox();
+        bacross.add(radioAND);
+        bacross.add(radioOR);
+        bacross.add(Box.createHorizontalGlue());
+        toolBar.add(bacross);
+
         p1.add(toolBar, BorderLayout.SOUTH);
 
 // put on the logo

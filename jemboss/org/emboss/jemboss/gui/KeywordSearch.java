@@ -25,14 +25,13 @@ import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import java.awt.*;
-import java.util.Hashtable;
+import java.util.StringTokenizer;
 import java.io.IOException;
 import java.net.URL;
+import java.io.BufferedReader;
+import java.io.StringReader;
 
 import org.emboss.jemboss.JembossParams;
-import org.emboss.jemboss.programs.*;      // running EMBOSS programs
-import org.emboss.jemboss.gui.startup.*;   // finds progs, groups, docs & db's
-import org.emboss.jemboss.soap.*;
 
 public class KeywordSearch implements HyperlinkListener
 {
@@ -42,76 +41,118 @@ public class KeywordSearch implements HyperlinkListener
   private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
   private JFrame f;
 
-  public KeywordSearch(JTextField search, JembossParams mysettings,
-                       boolean withSoap, JFrame jemFrame, String envp[])
+  public KeywordSearch(JTextField search, String woss,
+                       JembossParams mysettings, boolean andOperator)
   {
-    String searchTxt = search.getText().trim();
-//  if(searchTxt.indexOf(" ") > -1)
-//  {
-//    searchTxt = searchTxt.substring(0,searchTxt.indexOf(" "));
-//    int n = JOptionPane.showConfirmDialog(jemFrame,
-//                 "Single keyword search.\n"+
-//                 "Continue the search using the keyword:\n`"+
-//                 searchTxt+"`", "EMBOSS Keyword Search",
-//                 JOptionPane.OK_CANCEL_OPTION,
-//                 JOptionPane.ERROR_MESSAGE,null);
-//     if(n == JOptionPane.CANCEL_OPTION)
-//       return;
-//  }
-                                                                                      
-    jemFrame.setCursor(cbusy);
-    showSearch(searchTxt,mysettings,withSoap,jemFrame, envp);
-    jemFrame.setCursor(cdone);
+    String searchTxt = search.getText().trim().toLowerCase();
+    String res = search(searchTxt,woss.toLowerCase(),
+                        mysettings,andOperator);
+    showSearchResult(res,searchTxt,mysettings);
   }
 
-  private void showSearch(String search, JembossParams mysettings,
-                          boolean withSoap, JFrame jemFrame, String envp[])
+  private String search(String searchTxt, String woss,
+                        JembossParams mysettings, boolean andOperator)
   {
-    String embossBin = mysettings.getEmbossBin();
-    String woss = null;
-                                                                                              
-    if(withSoap)
+    StringBuffer res = new StringBuffer();
+    boolean found = false;
+    try
     {
-      try
-      {
-        String embossCommand = new String("wossname -search "+search+
-                                   " -html -prelink "+mysettings.getembURL()+
-                                   " -postlink .html -outfile woss.out -auto");
-        JembossRun thisrun = new JembossRun(embossCommand,"",
-                                 new Hashtable(),mysettings);
-        woss = new String((byte[])thisrun.get("woss.out"));
-      }
-      catch(JembossSoapException jse)
-      {
-        AuthPopup ap = new AuthPopup(mysettings,null);
-        ap.setBottomPanel();
-        ap.setSize(380,170);
-        ap.pack();
-        ap.setVisible(true);
-        return;
-      }
-    }
-    else
-    {
-      String embossCommand[] = { embossBin+"wossname",
-                                 "-search", search,
-                                 "-html",
-                                 "-prelink", mysettings.getembURL(),
-                                 "-postlink", ".html",
-                                 "-outfile", "stdout",
-                                 "-auto" };
+      String line;
+      String searching = getSearchText(searchTxt,andOperator);
  
-      RunEmbossApplication2 rea = new RunEmbossApplication2(
-                                  embossCommand,envp,null);
-      rea.waitFor();
-      woss = rea.getProcessStdout();
-    }
+      res.append("<h2><a name=\"SEARCH EMBOSS FOR "+searching+
+                "\">EMBOSS SEARCH FOR '"+searching+"'</a></h2>");
 
+      BufferedReader in = new BufferedReader(new StringReader(woss));
+      while((line = in.readLine()) != null)
+      {
+        if(line.indexOf(":") > -1)
+          continue;
+        else
+        {
+          boolean match = false;
+
+          if(andOperator)
+            match = searchAND(line,searchTxt);
+          else
+            match = searchOR(line,searchTxt);
+
+          if(match)
+          {
+            if(!found)
+            {
+              res.append("<table border cellpadding=4 bgcolor=\"#FFFFF0\">");
+              res.append("<tr><th>Program name</th><th>Description</th></tr>");
+            }
+            found = true;
+            String prog = line.substring(0,line.indexOf(" "));
+            res.append("<tr><td><a href=\""+mysettings.getembURL()+prog+
+                     ".html\">"+prog+"</a></td><td>"+
+                     line.substring(line.indexOf(" "))+"</td></tr>");
+          }
+        }            
+      }
+
+      if(found)
+        res.append("</table>");
+      else
+        res.append("<b>No matches found.</b>");
+    }
+    catch(IOException ioe){} 
+    return res.toString();
+  }
+
+  private String getSearchText(String searchTxt, boolean andOperator)
+  {
+    if(searchTxt.indexOf(" ") == -1)
+      return searchTxt;
+
+    StringBuffer buff = new StringBuffer();
+    StringTokenizer tok = new StringTokenizer(searchTxt," ");
+    while(tok.hasMoreTokens())
+    {
+      buff.append(tok.nextToken());
+      if(andOperator && tok.hasMoreTokens())
+        buff.append(" AND ");
+      else if(!andOperator && tok.hasMoreTokens())
+        buff.append(" OR ");
+    }
+    return buff.toString();
+  }
+
+  private boolean searchAND(String line, String searchTxt)
+  {
+    StringTokenizer tok = new StringTokenizer(searchTxt," ");
+    while(tok.hasMoreTokens())
+    {
+      String token = tok.nextToken();
+      if(line.indexOf(token) == -1)
+        return false;
+    }
+    return true;
+  }
+
+  private boolean searchOR(String line, String searchTxt)
+  {
+    StringTokenizer tok = new StringTokenizer(searchTxt," ");
+    while(tok.hasMoreTokens())
+    {
+      String token = tok.nextToken();
+      if(line.indexOf(token) > -1)
+        return true;
+    }
+    return false;
+  }
+
+
+  private void showSearchResult(String woss, String searchTxt,
+                                JembossParams mysettings)
+  {
     f = new JFrame("EMBOSS Keyword Search");
     Dimension d = f.getToolkit().getScreenSize();
     d = new Dimension((int)d.getWidth()/2,(int)d.getHeight()/2);
     f.setSize(d);
-
+                                                                                            
     JTabbedPane tab = new JTabbedPane();
     searchHTML = new JTextPane();
     searchHTML.addHyperlinkListener(this);
@@ -119,10 +160,10 @@ public class KeywordSearch implements HyperlinkListener
     searchHTML.setContentType("text/html");
     searchHTML.setText(woss);
     searchHTML.setCaretPosition(0);
-
+                                                                                            
     JScrollPane jsp = new JScrollPane(searchHTML);
     jsp.setPreferredSize(d);
-    tab.addTab("Search :: "+search,jsp);
+    tab.addTab("Search :: "+searchTxt,jsp);
     f.getContentPane().add(tab);
     new ResultsMenuBar(f,tab,null,mysettings);
     f.setVisible(true);
