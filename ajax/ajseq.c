@@ -1159,7 +1159,7 @@ const AjPSeq ajSeqsetGetSeq(const AjPSeqset thys, ajint i)
 ** The array is 1 larger than the sequence set,
 ** with the last element set to NULL.
 ** @param [r] thys [const AjPSeqset] Sequence set object.
-** @return [const AjPSeq] Sequence object.
+** @return [AjPSeq*] Sequence object.
 ** @@
 ******************************************************************************/
 

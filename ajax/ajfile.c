@@ -2471,11 +2471,11 @@ void ajFileTrace(const AjPFile thys)
 **
 ** Returns the AjPFile for an AjPOutfile object
 **
-** @param [r] thys [AjPOutfile] Outfile object
+** @param [r] thys [const AjPOutfile] Outfile object
 ** @return [AjPFile] AjPFile object
 ******************************************************************************/
 
-AjPFile ajOutfileFile (AjPOutfile thys)
+AjPFile ajOutfileFile (const AjPOutfile thys)
 {
     return thys->File;
 }
@@ -2486,11 +2486,11 @@ AjPFile ajOutfileFile (AjPOutfile thys)
 **
 ** Returns the C FILE* for an AjPOutfile object
 **
-** @param [r] thys [AjPOutfile] Outfile object
+** @param [r] thys [const AjPOutfile] Outfile object
 ** @return [FILE*] C file pointer
 ******************************************************************************/
 
-FILE* ajOutfileFp (AjPOutfile thys)
+FILE* ajOutfileFp (const AjPOutfile thys)
 {
     return thys->File->fp;
 }

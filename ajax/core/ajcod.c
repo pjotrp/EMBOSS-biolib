@@ -1053,11 +1053,11 @@ double ajCodCai(const AjPCod thys, const AjPStr str)
 **
 ** Returns the name of a codon table
 **
-** @param [r] thys [AjPCod] Codon usage object
+** @param [r] thys [const AjPCod] Codon usage object
 ** @return [const AjPStr] Original filename
 ******************************************************************************/
 
-const AjPStr ajCodGetName(AjPCod thys)
+const AjPStr ajCodGetName(const AjPCod thys)
 {
     return thys->Name;
 }
@@ -1066,11 +1066,11 @@ const AjPStr ajCodGetName(AjPCod thys)
 **
 ** Returns the name of a codon table
 **
-** @param [r] thys [AjPCod] Codon usage object
+** @param [r] thys [const AjPCod] Codon usage object
 ** @return [const char*] Original filename
 ******************************************************************************/
 
-const char* ajCodGetNameC(AjPCod thys)
+const char* ajCodGetNameC(const AjPCod thys)
 {
     return ajStrStr(thys->Name);
 }
@@ -1079,11 +1079,11 @@ const char* ajCodGetNameC(AjPCod thys)
 **
 ** Returns the description of a codon table
 **
-** @param [r] thys [AjPCod] Codon usage object
+** @param [r] thys [const AjPCod] Codon usage object
 ** @return [const AjPStr] Original filename
 ******************************************************************************/
 
-const AjPStr ajCodGetDesc(AjPCod thys)
+const AjPStr ajCodGetDesc(const AjPCod thys)
 {
     return thys->Desc;
 }
@@ -1092,11 +1092,11 @@ const AjPStr ajCodGetDesc(AjPCod thys)
 **
 ** Returns the description of a codon table
 **
-** @param [r] thys [AjPCod] Codon usgage object
+** @param [r] thys [const AjPCod] Codon usgage object
 ** @return [const char*] Original filename
 ******************************************************************************/
 
-const char* ajCodGetDescC(AjPCod thys)
+const char* ajCodGetDescC(const AjPCod thys)
 {
     return ajStrStr(thys->Desc);
 }

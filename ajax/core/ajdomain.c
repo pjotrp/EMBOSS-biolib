@@ -96,7 +96,8 @@ typedef struct AjSScopcla
     char   *Chain;
     AjPStr *Start;
     AjPStr *End;
-} AjOScopcla,*AjPScopcla;
+} AjOScopcla;
+#define AjPScopcla AjOScopcla*
 
 
 
@@ -135,7 +136,8 @@ typedef struct AjSScopdes
     AjPStr Sccs;
     AjPStr Entry;
     AjPStr Desc;
-} AjOScopdes,*AjPScopdes;
+} AjOScopdes;
+#define AjPScopdes AjOScopdes*
 
 
 
@@ -171,7 +173,8 @@ typedef struct AjSCathDom
    AjPStr *Start;
    AjPStr *End;          
    ajint  NSegment;
-} AjOCathDom, *AjPCathDom;
+} AjOCathDom;
+#define AjPCathDom AjOCathDom*
 
 
 
@@ -203,7 +206,8 @@ typedef struct AjSCathName
 {
     AjPStr Id;
     AjPStr Desc;          
-} AjOCathName, *AjPCathName;
+} AjOCathName;
+#define AjPCathName AjOCathName*
 
 
 
@@ -222,17 +226,17 @@ static AjPScopdes    domainScopdesNew(void);
 static void          domainScopdesDel(AjPScopdes *ptr);
 static AjPScopdes    domainScopdesRead(AjPFile inf, const AjPStr entry);
 static AjPScopdes    domainScopdesReadC(AjPFile inf, const char *entry);
-static ajint         domainScopdesBinSearch(ajint id, const AjPScopdes *arr,
+static ajint         domainScopdesBinSearch(ajint id, AjPScopdes *arr,
 					    ajint siz);
 
 static ajint         domainScopdesCompSunid(const void *scop1,
 					    const void *scop2);
 
 static ajint         domainCathNameBinSearch(const AjPStr id,
-					     const AjPCathName *arr,
+					     AjPCathName *arr,
 					     ajint siz);
 static ajint         domainCathDomBinSearch(const AjPStr id,
-					    const AjPCathDom *arr,
+					    AjPCathDom *arr,
 					    ajint siz);
 static ajint         domainSortDomainID(const void *DomID1,
 					const void *DomID2);
@@ -673,7 +677,7 @@ static void domainScopclaDel(AjPScopcla *thys)
 ** domainScopdesCompSunid).
 **
 ** @param [r] id  [ajint]        Search value of Sunid
-** @param [r] arr [const AjPScopdes*] Array of Scopdes objects
+** @param [r] arr [CONST AjPScopdes*] Array of Scopdes objects
 ** @param [r] siz [ajint]        Size of array
 **
 ** @return [ajint] Index of first Scopdes object found with a Sunid 
@@ -681,7 +685,7 @@ static void domainScopclaDel(AjPScopcla *thys)
 ** @@
 ****************************************************************************/
 
-static ajint domainScopdesBinSearch(ajint id, const AjPScopdes *arr, ajint siz)
+static ajint domainScopdesBinSearch(ajint id, AjPScopdes *arr, ajint siz)
 {
     int l;
     int m;
@@ -786,14 +790,14 @@ static ajint domainScopdesCompSunid(const void *scop1, const void *scop2)
 ** case-insensitive search.
 **
 ** @param [r] id  [const AjPStr]       Search term
-** @param [r] arr [const AjPCathName*] Array of CathName objects
+** @param [r] arr [CONST AjPCathName*] Array of CathName objects
 ** @param [r] siz [ajint]        Size of array
 **
 ** @return [ajint] Index of first CathName object found with an CATH Id code
 ** matching id, or -1 if id is not found.
 ** @@
 ****************************************************************************/
-static ajint domainCathNameBinSearch(const AjPStr id, const AjPCathName *arr,
+static ajint domainCathNameBinSearch(const AjPStr id, AjPCathName *arr,
 				     ajint siz)
 {
     int l;
@@ -828,14 +832,14 @@ static ajint domainCathNameBinSearch(const AjPStr id, const AjPCathName *arr,
 ** case-insensitive search.
 **
 ** @param [r] id  [const AjPStr]       Search term
-** @param [r] arr [const AjPCathDom*] Array of AjPCathDom objects
+** @param [r] arr [CONST AjPCathDom*] Array of AjPCathDom objects
 ** @param [r] siz [ajint]        Size of array
 **
 ** @return [ajint] Index of first AjPCathDom object found with an domain code
 ** matching id, or -1 if id is not found.
 ** @@
 ****************************************************************************/
-static ajint domainCathDomBinSearch(const AjPStr id, const AjPCathDom *arr,
+static ajint domainCathDomBinSearch(const AjPStr id, AjPCathDom *arr,
 				    ajint siz)
 {
     int l;
@@ -1378,6 +1382,288 @@ AjPScop ajScopNew(ajint chains)
 
 
 
+/* @func ajScopReadNew *****************************************************
+**
+** Read a Scop object from a file in embl-like format (see documentation for 
+** DOMAINATRIX "scopparse" application).
+**
+** @param [u] inf   [AjPFile] Input file stream.
+** @param [r] entry [const AjPStr]  SCOP id of domain to read (or "*" for next 
+**                            domain in file).
+**
+** @return [AjPScop] Scop object. 
+** @category new [AjPScop] Scop constructor from reading dcf format file.
+** @@
+****************************************************************************/
+
+AjPScop ajScopReadNew(AjPFile inf, const AjPStr entry)
+{
+    AjPScop ret = NULL;
+    
+    ret = ajScopReadCNew(inf,ajStrStr(entry));
+    
+    return ret;
+}
+
+
+
+
+
+/* @func ajScopReadCNew ****************************************************
+**
+** Read a Scop object from a file in embl-like format (see documentation for 
+** DOMAINATRIX "scopparse" application).
+**
+** @param [u] inf   [AjPFile]  Input file stream
+** @param [r] entry [const char*]    SCOP id of domain to parse
+**
+** @return [AjPScop] Scop object or NULL (file read problem).
+** @category new [AjPScop] Cath constructor from reading dcf format file.
+** @@
+****************************************************************************/
+
+AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
+{
+    AjPScop ret = NULL;
+    
+    static AjPRegexp exp1 = NULL;
+    static AjPRegexp exp2 = NULL;
+    static AjPStr line    = NULL;
+    static AjPStr str     = NULL;
+    static AjPStr xentry  = NULL;
+    static AjPStr source  = NULL;
+    static AjPStr class   = NULL;
+    static AjPStr fold    = NULL;
+    static AjPStr super   = NULL;
+    static AjPStr family  = NULL;
+    static AjPStr domain  = NULL;
+    static AjPStr pdb     = NULL;
+    static AjPStr tentry  = NULL;
+    static AjPStr stmp    = NULL;
+    static AjPStr Acc     = NULL;         
+    static AjPStr Spr     = NULL;          
+    static AjPStr SeqPdb  = NULL;	
+    static AjPStr SeqSpr  = NULL;	
+
+    AjBool ok             = ajFalse;
+    
+    const char *p;
+    ajint idx = 0;
+    ajint n   = 0;
+    ajint  Startd;      /* Start of sequence relative to full length 
+			    swissprot sequence */
+    ajint  Endd;        /* End of sequence relative to full length 
+			    swissprot sequence */
+
+    ajint  Sunid_Class;         /* SCOP sunid for class */
+    ajint  Sunid_Fold;          /* SCOP sunid for fold */
+    ajint  Sunid_Superfamily;   /* SCOP sunid for superfamily */
+    ajint  Sunid_Family;        /* SCOP sunid for family */
+    ajint  Sunid_Domain;        /* SCOP sunid for domain */  
+    ajint  Sunid_Source;        /* SCOP sunid for species */
+    ajint  Sunid_Domdat;        /* SCOP sunid for domain data */
+
+
+    /* Only initialise strings if this is called for the first time */
+    if(!line)
+    {
+	str     = ajStrNew();
+	xentry  = ajStrNew();
+	pdb     = ajStrNew();
+	source  = ajStrNew();
+	class   = ajStrNew();
+	fold    = ajStrNew();
+	super   = ajStrNew();
+	family  = ajStrNew();
+	domain  = ajStrNew();
+	line    = ajStrNew();
+	tentry  = ajStrNew();
+	stmp    = ajStrNew();
+	Acc     = ajStrNew();
+	Spr     = ajStrNew();
+	exp1    = ajRegCompC("^([^ \t\r\n]+)[ \t\n\r]+");
+	exp2    = ajRegCompC("^([A-Za-z0-9.]+)[ ]*[^ \t\r\n]+[ ]*"
+			     "([0-9.-]+)[ ]*"
+			     "[^ \t\r\n]+[ ]*([0-9.-]+)");
+    }
+    
+    SeqSpr  = ajStrNew();
+    SeqPdb  = ajStrNew();
+
+
+    
+    ajStrAssC(&tentry,entry);
+    ajStrToUpper(&tentry);
+    
+    while((ok=ajFileReadLine(inf,&line)))
+    {
+	if(!ajStrPrefixC(line,"ID   "))
+	    continue;
+	
+	if(!ajRegExec(exp1,line))
+	    return NULL;
+	ajRegPost(exp1,&stmp);
+	if(ajStrMatchWild(stmp,tentry))
+	    break;
+    }
+
+    
+    if(!ok)
+	return NULL;
+    
+    
+    while(ok && !ajStrPrefixC(line,"//"))
+    {
+	if(ajStrPrefixC(line,"XX"))
+	{
+	    ok = ajFileReadLine(inf,&line);
+	    continue;
+	}
+	ajRegExec(exp1,line);
+	ajRegPost(exp1,&str);
+
+	if(ajStrPrefixC(line,"ID"))
+	    ajStrAssS(&xentry,str);
+	else if(ajStrPrefixC(line,"EN"))
+	    ajStrAssS(&pdb,str);
+	else if(ajStrPrefixC(line,"OS"))
+	    ajStrAssS(&source,str);
+	else if(ajStrPrefixC(line,"CL"))
+	    ajStrAssS(&class,str);
+	else if(ajStrPrefixC(line,"FO"))
+	{
+	    ajStrAssS(&fold,str);
+	    while(ajFileReadLine(inf,&line))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&fold,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&fold);
+	}
+	else if(ajStrPrefixC(line,"SF"))
+	{
+	    ajStrAssS(&super,str);
+	    while(ajFileReadLine(inf,&line))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&super,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&super);
+	}
+	else if(ajStrPrefixC(line,"FA"))
+	{
+	    ajStrAssS(&family,str);
+	    while(ajFileReadLine(inf,&line))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&family,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&family);
+	}
+	else if(ajStrPrefixC(line,"DO"))
+	{
+	    ajStrAssS(&domain,str);
+	    while(ajFileReadLine(inf,&line))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&domain,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&domain);
+	}
+	else if(ajStrPrefixC(line,"NC"))
+	{
+	    ajStrToInt(str,&n);
+	    (ret) = ajScopNew(n);
+	    ajStrAssS(&(ret)->Entry,xentry);
+	    ajStrAssS(&(ret)->Pdb,pdb);
+	    ajStrAssS(&(ret)->Source,source);
+	    ajStrAssS(&(ret)->Class,class);
+	    ajStrAssS(&(ret)->Fold,fold);
+	    ajStrAssS(&(ret)->Domain,domain);
+	    ajStrAssS(&(ret)->Superfamily,super);
+	    ajStrAssS(&(ret)->Family,family);
+	    ajStrAssS(&(ret)->Acc,Acc);
+	    ajStrAssS(&(ret)->Spr,Spr);
+	    ajStrAssS(&(ret)->SeqPdb,SeqPdb);
+	    ajStrAssS(&(ret)->SeqSpr,SeqSpr);
+	    (ret)->Sunid_Class = Sunid_Class;
+	    (ret)->Sunid_Fold = Sunid_Fold;
+	    (ret)->Sunid_Superfamily = Sunid_Superfamily;
+	    (ret)->Sunid_Family = Sunid_Family;
+	    (ret)->Sunid_Domain = Sunid_Domain;
+	    (ret)->Sunid_Source = Sunid_Source;
+	    (ret)->Sunid_Domdat = Sunid_Domdat;
+	    (ret)->Startd       = Startd ;
+	    (ret)->Endd         = Endd;
+	}
+	else if(ajStrPrefixC(line,"CN"))
+	{
+	    p = ajStrStr(str);
+	    sscanf(p,"[%d]",&idx);
+	}
+	else if(ajStrPrefixC(line,"CH"))
+	{
+	    if(!ajRegExec(exp2,str))
+		return NULL;
+	    ajRegSubI(exp2,1,&stmp);
+	    (ret)->Chain[idx-1] = *ajStrStr(stmp);
+	    ajRegSubI(exp2,2,&str);
+	    ajStrAssC(&(ret)->Start[idx-1],ajStrStr(str)); 
+
+	    ajRegSubI(exp2,3,&str);
+	    ajStrAssC(&(ret)->End[idx-1],ajStrStr(str)); 
+
+	}
+	/* Sequence from pdb file */
+	else if(ajStrPrefixC(line,"DS"))
+	{
+	    while((ok=ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"XX"))
+		ajStrAppC(&SeqPdb,ajStrStr(line));
+	    ajStrCleanWhite(&SeqPdb);
+	    continue;
+	}
+	/* Sequence from swissprot */
+	else if(ajStrPrefixC(line,"SQ"))
+	{
+	    while((ok=ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"XX"))
+		ajStrAppC(&SeqSpr,ajStrStr(line));
+	    ajStrCleanWhite(&SeqSpr);
+	    continue;
+	}
+	/* Accession number */
+	else if(ajStrPrefixC(line,"AC"))
+	    ajFmtScanS(line, "%*s %S", &Acc);
+	/* Swissprot code */
+	else if(ajStrPrefixC(line,"SP"))
+	    ajFmtScanS(line, "%*s %S", &Spr);
+	/* Start and end relative to swissprot sequence */
+	else if(ajStrPrefixC(line,"RA"))
+	    ajFmtScanS(line, "%*s %d %*s %d", &Startd, &Endd);
+	/* Sunid of domain data */
+	else if(ajStrPrefixC(line,"SI"))
+	    ajFmtScanS(line, "%*s %d %*s %d %*s %d %*s "
+		       "%d %*s %d %*s %d %*s %d", 
+		       &Sunid_Class, &Sunid_Fold, &Sunid_Superfamily,
+		       &Sunid_Family, 
+		       &Sunid_Domain, &Sunid_Source, &Sunid_Domdat);
+	
+	ok = ajFileReadLine(inf,&line);
+    }
+ 
+    ajStrDel(&SeqSpr);
+    ajStrDel(&SeqPdb);
+    
+    return ret;
+}
+
+
+
+
+
 /* ======================================================================= */
 /* =========================== destructors =============================== */
 /* ======================================================================= */
@@ -1752,7 +2038,7 @@ ajint ajCathMatchPdbId(const void *hit1, const void *hit2)
 ** structures (which of course must first have been sorted). This is a 
 ** case-insensitive search.
 **
-** @param [r] arr [const AjPScop*]    Array of AjPScop objects
+** @param [r] arr [CONST AjPScop*]    Array of AjPScop objects
 ** @param [r] siz [ajint]       Size of array
 ** @param [r] id  [const AjPStr]      Search term
 **
@@ -1762,7 +2048,7 @@ ajint ajCathMatchPdbId(const void *hit1, const void *hit2)
 **                         Scop objects.
 ** @@
 ****************************************************************************/
-ajint ajScopArrFindScopid(const AjPScop *arr, ajint siz, const AjPStr id)
+ajint ajScopArrFindScopid(AjPScop *arr, ajint siz, const AjPStr id)
 
 {
     int l;
@@ -1798,7 +2084,7 @@ ajint ajScopArrFindScopid(const AjPScop *arr, ajint siz, const AjPStr id)
 ** objects (which of course must first have been sorted). This is a 
 ** case-insensitive search.
 **
-** @param [r] arr [const AjPScop*]    Array of Scop objects
+** @param [r] arr [CONST AjPScop*]    Array of Scop objects
 ** @param [r] siz [ajint]       Size of array
 ** @param [r] id  [ajint]       Search term
 **
@@ -1809,7 +2095,7 @@ ajint ajScopArrFindScopid(const AjPScop *arr, ajint siz, const AjPStr id)
 ** @@
 ****************************************************************************/
 
-ajint ajScopArrFindSunid(const AjPScop *arr, ajint siz, ajint id)
+ajint ajScopArrFindSunid(AjPScop *arr, ajint siz, ajint id)
 {
     int l;
     int m;
@@ -1842,7 +2128,7 @@ ajint ajScopArrFindSunid(const AjPScop *arr, ajint siz, ajint id)
 ** objects (which of course must first have been sorted). This is a 
 ** case-insensitive search.
 **
-** @param [r] arr [const AjPScop*]    Array of AjPScop objects
+** @param [r] arr [CONST AjPScop*]    Array of AjPScop objects
 ** @param [r] siz [ajint]       Size of array
 ** @param [r] id  [const AjPStr]      Search term
 **
@@ -1853,7 +2139,7 @@ ajint ajScopArrFindSunid(const AjPScop *arr, ajint siz, ajint id)
 ** @@
 ****************************************************************************/
 
-ajint ajScopArrFindPdbid(const AjPScop *arr, ajint siz, const AjPStr id)
+ajint ajScopArrFindPdbid(AjPScop *arr, ajint siz, const AjPStr id)
 {
     int l;
     int m;
@@ -1938,288 +2224,6 @@ ajint ajCathArrFindPdbid(const AjPCath *arr, ajint siz, const AjPStr id)
 ** changes.
 **
 ****************************************************************************/
-
-/* @func ajScopReadNew *****************************************************
-**
-** Read a Scop object from a file in embl-like format (see documentation for 
-** DOMAINATRIX "scopparse" application).
-**
-** @param [u] inf   [AjPFile] Input file stream.
-** @param [r] entry [const AjPStr]  SCOP id of domain to read (or "*" for next 
-**                            domain in file).
-**
-** @return [AjPScop] Scop object. 
-** @category new [AjPScop] Scop constructor from reading dcf format file.
-** @@
-****************************************************************************/
-
-AjPScop ajScopReadNew(AjPFile inf, const AjPStr entry)
-{
-    AjPScop ret = NULL;
-    
-    ret = ajScopReadCNew(inf,ajStrStr(entry));
-    
-    return ret;
-}
-
-
-
-
-
-/* @func ajScopReadCNew ****************************************************
-**
-** Read a Scop object from a file in embl-like format (see documentation for 
-** DOMAINATRIX "scopparse" application).
-**
-** @param [u] inf   [AjPFile]  Input file stream
-** @param [r] entry [const char*]    SCOP id of domain to parse
-**
-** @return [AjPScop] Scop object or NULL (file read problem).
-** @category new [AjPScop] Cath constructor from reading dcf format file.
-** @@
-****************************************************************************/
-
-AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
-{
-    AjPScop ret = NULL;
-    
-    static AjPRegexp exp1 = NULL;
-    static AjPRegexp exp2 = NULL;
-    static AjPStr line    = NULL;
-    static AjPStr str     = NULL;
-    static AjPStr xentry  = NULL;
-    static AjPStr source  = NULL;
-    static AjPStr class   = NULL;
-    static AjPStr fold    = NULL;
-    static AjPStr super   = NULL;
-    static AjPStr family  = NULL;
-    static AjPStr domain  = NULL;
-    static AjPStr pdb     = NULL;
-    static AjPStr tentry  = NULL;
-    static AjPStr stmp    = NULL;
-    static AjPStr Acc     = NULL;         
-    static AjPStr Spr     = NULL;          
-    static AjPStr SeqPdb  = NULL;	
-    static AjPStr SeqSpr  = NULL;	
-
-    AjBool ok             = ajFalse;
-    
-    const char *p;
-    ajint idx = 0;
-    ajint n   = 0;
-    ajint  Startd;      /* Start of sequence relative to full length 
-			    swissprot sequence */
-    ajint  Endd;        /* End of sequence relative to full length 
-			    swissprot sequence */
-
-    ajint  Sunid_Class;         /* SCOP sunid for class */
-    ajint  Sunid_Fold;          /* SCOP sunid for fold */
-    ajint  Sunid_Superfamily;   /* SCOP sunid for superfamily */
-    ajint  Sunid_Family;        /* SCOP sunid for family */
-    ajint  Sunid_Domain;        /* SCOP sunid for domain */  
-    ajint  Sunid_Source;        /* SCOP sunid for species */
-    ajint  Sunid_Domdat;        /* SCOP sunid for domain data */
-
-
-    /* Only initialise strings if this is called for the first time */
-    if(!line)
-    {
-	str     = ajStrNew();
-	xentry  = ajStrNew();
-	pdb     = ajStrNew();
-	source  = ajStrNew();
-	class   = ajStrNew();
-	fold    = ajStrNew();
-	super   = ajStrNew();
-	family  = ajStrNew();
-	domain  = ajStrNew();
-	line    = ajStrNew();
-	tentry  = ajStrNew();
-	stmp    = ajStrNew();
-	Acc     = ajStrNew();
-	Spr     = ajStrNew();
-	exp1    = ajRegCompC("^([^ \t\r\n]+)[ \t\n\r]+");
-	exp2    = ajRegCompC("^([A-Za-z0-9.]+)[ ]*[^ \t\r\n]+[ ]*"
-			     "([0-9.-]+)[ ]*"
-			     "[^ \t\r\n]+[ ]*([0-9.-]+)");
-    }
-    
-    SeqSpr  = ajStrNew();
-    SeqPdb  = ajStrNew();
-
-
-    
-    ajStrAssC(&tentry,entry);
-    ajStrToUpper(&tentry);
-    
-    while((ok=ajFileReadLine(inf,&line)))
-    {
-	if(!ajStrPrefixC(line,"ID   "))
-	    continue;
-	
-	if(!ajRegExec(exp1,line))
-	    return NULL;
-	ajRegPost(exp1,&stmp);
-	if(ajStrMatchWild(stmp,tentry))
-	    break;
-    }
-
-    
-    if(!ok)
-	return NULL;
-    
-    
-    while(ok && !ajStrPrefixC(line,"//"))
-    {
-	if(ajStrPrefixC(line,"XX"))
-	{
-	    ok = ajFileReadLine(inf,&line);
-	    continue;
-	}
-	ajRegExec(exp1,line);
-	ajRegPost(exp1,&str);
-
-	if(ajStrPrefixC(line,"ID"))
-	    ajStrAssS(&xentry,str);
-	else if(ajStrPrefixC(line,"EN"))
-	    ajStrAssS(&pdb,str);
-	else if(ajStrPrefixC(line,"OS"))
-	    ajStrAssS(&source,str);
-	else if(ajStrPrefixC(line,"CL"))
-	    ajStrAssS(&class,str);
-	else if(ajStrPrefixC(line,"FO"))
-	{
-	    ajStrAssS(&fold,str);
-	    while(ajFileReadLine(inf,&line))
-	    {
-		if(ajStrPrefixC(line,"XX"))
-		    break;
-		ajStrAppC(&fold,ajStrStr(line)+3);
-	    }
-	    ajStrClean(&fold);
-	}
-	else if(ajStrPrefixC(line,"SF"))
-	{
-	    ajStrAssS(&super,str);
-	    while(ajFileReadLine(inf,&line))
-	    {
-		if(ajStrPrefixC(line,"XX"))
-		    break;
-		ajStrAppC(&super,ajStrStr(line)+3);
-	    }
-	    ajStrClean(&super);
-	}
-	else if(ajStrPrefixC(line,"FA"))
-	{
-	    ajStrAssS(&family,str);
-	    while(ajFileReadLine(inf,&line))
-	    {
-		if(ajStrPrefixC(line,"XX"))
-		    break;
-		ajStrAppC(&family,ajStrStr(line)+3);
-	    }
-	    ajStrClean(&family);
-	}
-	else if(ajStrPrefixC(line,"DO"))
-	{
-	    ajStrAssS(&domain,str);
-	    while(ajFileReadLine(inf,&line))
-	    {
-		if(ajStrPrefixC(line,"XX"))
-		    break;
-		ajStrAppC(&domain,ajStrStr(line)+3);
-	    }
-	    ajStrClean(&domain);
-	}
-	else if(ajStrPrefixC(line,"NC"))
-	{
-	    ajStrToInt(str,&n);
-	    (ret) = ajScopNew(n);
-	    ajStrAssS(&(ret)->Entry,xentry);
-	    ajStrAssS(&(ret)->Pdb,pdb);
-	    ajStrAssS(&(ret)->Source,source);
-	    ajStrAssS(&(ret)->Class,class);
-	    ajStrAssS(&(ret)->Fold,fold);
-	    ajStrAssS(&(ret)->Domain,domain);
-	    ajStrAssS(&(ret)->Superfamily,super);
-	    ajStrAssS(&(ret)->Family,family);
-	    ajStrAssS(&(ret)->Acc,Acc);
-	    ajStrAssS(&(ret)->Spr,Spr);
-	    ajStrAssS(&(ret)->SeqPdb,SeqPdb);
-	    ajStrAssS(&(ret)->SeqSpr,SeqSpr);
-	    (ret)->Sunid_Class = Sunid_Class;
-	    (ret)->Sunid_Fold = Sunid_Fold;
-	    (ret)->Sunid_Superfamily = Sunid_Superfamily;
-	    (ret)->Sunid_Family = Sunid_Family;
-	    (ret)->Sunid_Domain = Sunid_Domain;
-	    (ret)->Sunid_Source = Sunid_Source;
-	    (ret)->Sunid_Domdat = Sunid_Domdat;
-	    (ret)->Startd       = Startd ;
-	    (ret)->Endd         = Endd;
-	}
-	else if(ajStrPrefixC(line,"CN"))
-	{
-	    p = ajStrStr(str);
-	    sscanf(p,"[%d]",&idx);
-	}
-	else if(ajStrPrefixC(line,"CH"))
-	{
-	    if(!ajRegExec(exp2,str))
-		return NULL;
-	    ajRegSubI(exp2,1,&stmp);
-	    (ret)->Chain[idx-1] = *ajStrStr(stmp);
-	    ajRegSubI(exp2,2,&str);
-	    ajStrAssC(&(ret)->Start[idx-1],ajStrStr(str)); 
-
-	    ajRegSubI(exp2,3,&str);
-	    ajStrAssC(&(ret)->End[idx-1],ajStrStr(str)); 
-
-	}
-	/* Sequence from pdb file */
-	else if(ajStrPrefixC(line,"DS"))
-	{
-	    while((ok=ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"XX"))
-		ajStrAppC(&SeqPdb,ajStrStr(line));
-	    ajStrCleanWhite(&SeqPdb);
-	    continue;
-	}
-	/* Sequence from swissprot */
-	else if(ajStrPrefixC(line,"SQ"))
-	{
-	    while((ok=ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"XX"))
-		ajStrAppC(&SeqSpr,ajStrStr(line));
-	    ajStrCleanWhite(&SeqSpr);
-	    continue;
-	}
-	/* Accession number */
-	else if(ajStrPrefixC(line,"AC"))
-	    ajFmtScanS(line, "%*s %S", &Acc);
-	/* Swissprot code */
-	else if(ajStrPrefixC(line,"SP"))
-	    ajFmtScanS(line, "%*s %S", &Spr);
-	/* Start and end relative to swissprot sequence */
-	else if(ajStrPrefixC(line,"RA"))
-	    ajFmtScanS(line, "%*s %d %*s %d", &Startd, &Endd);
-	/* Sunid of domain data */
-	else if(ajStrPrefixC(line,"SI"))
-	    ajFmtScanS(line, "%*s %d %*s %d %*s %d %*s "
-		       "%d %*s %d %*s %d %*s %d", 
-		       &Sunid_Class, &Sunid_Fold, &Sunid_Superfamily,
-		       &Sunid_Family, 
-		       &Sunid_Domain, &Sunid_Source, &Sunid_Domdat);
-	
-	ok = ajFileReadLine(inf,&line);
-    }
- 
-    ajStrDel(&SeqSpr);
-    ajStrDel(&SeqPdb);
-    
-    return ret;
-}
-
-
-
-
 
 /* @func ajPdbWriteDomain **************************************************
 **

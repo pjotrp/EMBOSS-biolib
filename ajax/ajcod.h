@@ -20,7 +20,7 @@ extern "C"
 ** @alias AjOCod
 **
 ** @attr Name [AjPStr] Name of codon file
-** @attr Description [AjPStr] Description
+** @attr Desc [AjPStr] Description
 ** @attr aa [ajint*] Amino acid represented by codon
 ** @attr num [ajint*] Number of codons
 ** @attr tcount [double*] Codons per thousand
@@ -38,7 +38,8 @@ typedef struct AjSCod
     double *tcount;
     double *fraction;
     ajint *back;
-} AjOCod, *AjPCod;
+} AjOCod;
+#define AjPCod AjOCod*
 
 
 void         ajCodBacktranslate(AjPStr *b, const AjPStr a, const AjPCod thys);
@@ -55,10 +56,10 @@ void         ajCodComp(ajint *NA, ajint *NC, ajint *NG, ajint *NT,
 void         ajCodCountTriplets(AjPCod *thys, const AjPStr s, ajint *c);
 void         ajCodDel (AjPCod *thys);
 AjPCod       ajCodDup (const AjPCod thys);
-const AjPStr ajCodGetDesc(AjPCod thys);
-const char*  ajCodGetDescC(AjPCod thys);
-const AjPStr ajCodGetName(AjPCod thys);
-const char*  ajCodGetNameC(AjPCod thys);
+const AjPStr ajCodGetDesc(const AjPCod thys);
+const char*  ajCodGetDescC(const AjPCod thys);
+const AjPStr ajCodGetName(const AjPCod thys);
+const char*  ajCodGetNameC(const AjPCod thys);
 ajint        ajCodIndex(const AjPStr s);
 ajint        ajCodIndexC(const char *codon);
 AjPCod	     ajCodNew(void);

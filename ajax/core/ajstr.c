@@ -3449,7 +3449,7 @@ void ajStrFix(AjPStr *pthis)
 **
 ** Reset string length when some nasty caller may have edited it
 **
-** @param [u] thys [AjPStr] String
+** @param [u] pthis [AjPStr*] String
 ** @param [r] ilen [ajint] Length expected.
 ** @return [void]
 ** @category modify [AjPStr] Reset string length when some nasty
@@ -3655,6 +3655,37 @@ AjBool ajStrParentheses(const AjPStr s)
 
     return ajTrue;
 }
+
+/* @func ajStrStrMod **********************************************************
+**
+** Makes the string modifiable, and returns the current Cstring pointer.
+**
+** As the input string is not const, the calling program must be able
+** to modify it.
+**
+** If the length of the string is changed, it is the respnonsibility of
+** the caller to reset it with ajStrFix
+**
+** @param [u] pthis [AjPStr*] Source string
+** @return [char*] Current string pointer, or a null string if undefined.
+** @category modify [AjPStr] Returns char* text. Note: The caller is allowed
+**           to modify the string contents through this pointer.
+**           If the length is changed, ajStrFix should be called to
+**           reset the string internals.
+** @@
+******************************************************************************/
+
+char* ajStrStrMod(AjPStr *pthis)
+{
+    if(!*pthis)
+	return charNULL;
+
+    ajStrMod(pthis);
+
+    return (*pthis)->Ptr;
+}
+
+
 
 /* ==================================================================== */
 /* ======================== Operators ==================================*/
@@ -5004,36 +5035,6 @@ const char* ajStrStr(const AjPStr thys)
     return thys->Ptr;
 }
 
-
-
-
-/* @func ajStrStr *************************************************************
-**
-** Makes the string modifiable, and returns the current Cstring pointer.
-**
-** As the input string is not const, the calling program must be able
-** to modify it.
-**
-** If the length of the string is changed, it is the respnonsibility of
-** the caller to reset it with ajStrFix
-**
-** @param [r] thys [AjPStr*] Source string
-** @return [const char*] Current string pointer, or a null string if undefined.
-** @category cast [AjPStr] Returns char* text. Note: this should be
-**                treated as a constant as it is a pointer to the
-**                actual data to avoid excessive memory allocations.
-** @@
-******************************************************************************/
-
-char* ajStrStrMod(AjPStr *pthis)
-{
-    if(!*pthis)
-	return charNULL;
-
-    ajStrMod(pthis);
-
-    return (*pthis)->Ptr;
-}
 
 
 
@@ -7653,7 +7654,7 @@ void ajStrDegap(AjPStr* thys)
 **
 ** Removes all of a given set of characters from a string
 **
-** @param [w] thys [AjPStr*] String
+** @param [w] pthis [AjPStr*] String
 ** @param [r] string [const char*] characters to remove
 ** @return [void]
 ** @@

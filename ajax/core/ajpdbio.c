@@ -102,7 +102,8 @@ typedef struct AjSElement
     AjPStr   endSeqNum;     
     char     chainId;       
     ajint    helixClass;    
-}AjOElement, *AjPElement;
+}AjOElement;
+#define AjPElement AjOElement*
 
 
 
@@ -133,8 +134,8 @@ typedef struct AjSElements
 {
     ajint      n;            
     AjPElement *elms;        
-}
-AjOElements, *AjPElements;
+} AjOElements;
+#define AjPElements AjOElements*
 
 
 
@@ -319,7 +320,8 @@ typedef struct AjSPdbfile
     AjPStr   *elementId;   
     char     *elementType; 
     ajint    *helixClass;  
-}AjOPdbfile, *AjPPdbfile;
+} AjOPdbfile;
+#define AjPPdbfile AjOPdbfile*
 
 
 
@@ -377,7 +379,7 @@ static AjBool       FirstPass(AjPPdbfile *pdbfile, AjPFile logf,
 			      AjPElements *elms, AjBool camask);
 static AjBool       CheckChains(AjPPdbfile *pdbfile, AjPFile logf, 
 				ajint min_chain_size);
-static AjBool       SeqresToSequence(AjPStr seqres, AjPStr *seq, 
+static AjBool       SeqresToSequence(const AjPStr seqres, AjPStr *seq, 
 				     AjBool camask, ajint *len);
 static AjBool       CheckTer(AjPPdbfile *pdbfile, AjPFile logf);
 static AjBool       NumberChains(AjPPdbfile *pdbfile, AjPFile logf);
@@ -388,8 +390,8 @@ static AjBool       StandardiseNumbering(AjPPdbfile *pdbfile,
 					 AjPFile logf);
 static AjBool       AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, 
 				   ajint lim);
-static AjBool       PdbfileToPdb(AjPPdb *ret, AjPPdbfile pdb);
-static ajint        PdbfileFindLine(AjPPdbfile pdb, ajint chn, 
+static AjBool       PdbfileToPdb(AjPPdb *ret, const AjPPdbfile pdb);
+static ajint        PdbfileFindLine(const AjPPdbfile pdb, ajint chn, 
 				    ajint which, ajint pos);
 
 /* Functions for Element object */
@@ -397,39 +399,44 @@ static AjPElements  ElementsNew(ajint nchains);
 static void         ElementsDel(AjPElements *ptr);
 static AjPElement   ElementNew(void);
 static void         ElementDel(AjPElement *ptr);
-static AjBool       PdbfileChain(char id, AjPPdbfile pdb, ajint *chn);
+static AjBool       PdbfileChain(char id, const AjPPdbfile pdb, ajint *chn);
 static AjBool       WriteElementData(AjPPdbfile *pdbfile, AjPFile logf, 
-				     AjPElements elms);
+				     const AjPElements elms);
 
 
 /* These functions are called by ajPdbWriteDomainRecordRaw */
-static AjBool       WriteHeaderScop(AjPFile outf, AjPScop scop);
+static AjBool       WriteHeaderScop(AjPFile outf, const AjPScop scop);
 static AjBool       WriteSeqresDomain(AjPFile errf, AjPFile outf, 
-				      AjPPdb pdb, AjPScop scop);
+				      const AjPPdb pdb, const AjPScop scop);
 static AjBool       WriteAtomDomainPdb(AjPFile errf, AjPFile outf, 
-				       AjPPdb pdb, AjPScop scop, ajint mod);
+				       const AjPPdb pdb, const AjPScop scop,
+				       ajint mod);
 static AjBool       WriteAtomDomainIdx(AjPFile errf, AjPFile outf, 
-				       AjPPdb pdb, AjPScop scop, ajint mod);
-static AjBool       WriteAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
-				    AjPScop scop, ajint mod, ajint mode);
+				       const AjPPdb pdb, const AjPScop scop,
+				       ajint mod);
+static AjBool       WriteAtomDomain(AjPFile errf, AjPFile outf,
+				    const AjPPdb pdb,
+				    const AjPScop scop, ajint mod, ajint mode);
 
 
 /* These functions are called by ajPdbWriteRecordRaw */
-static AjBool       WriteSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb,
+static AjBool       WriteSeqresChain(AjPFile errf, AjPFile outf,
+				     const AjPPdb pdb,
 				     ajint chn);
-static AjBool       WriteAtomChain(AjPFile outf, AjPPdb pdb, ajint mod, 
+static AjBool       WriteAtomChain(AjPFile outf, const AjPPdb pdb, ajint mod, 
 				   ajint chn, ajint mode);
-static AjBool       WriteHeterogen(AjPFile outf, AjPPdb pdb, ajint mod);
-static AjBool       WriteHeader(AjPFile outf, AjPPdb pdb);
-static AjBool       WriteTitle(AjPFile outf, AjPPdb pdb);
-static AjBool       WriteCompnd(AjPFile outf, AjPPdb pdb);
-static AjBool       WriteSource(AjPFile outf, AjPPdb pdb);
-static AjBool       WriteEmptyRemark(AjPFile outf, AjPPdb pdb);
-static AjBool       WriteResolution(AjPFile outf, AjPPdb pdb);
+static AjBool       WriteHeterogen(AjPFile outf, const AjPPdb pdb, ajint mod);
+static AjBool       WriteHeader(AjPFile outf, const AjPPdb pdb);
+static AjBool       WriteTitle(AjPFile outf, const AjPPdb pdb);
+static AjBool       WriteCompnd(AjPFile outf, const AjPPdb pdb);
+static AjBool       WriteSource(AjPFile outf, const AjPPdb pdb);
+static AjBool       WriteEmptyRemark(AjPFile outf, const AjPPdb pdb);
+static AjBool       WriteResolution(AjPFile outf, const AjPPdb pdb);
 
 /* Others */
-static AjBool       WriteText(AjPFile outf, AjPStr str, char *prefix);
-AjBool              BaseAa3ToAa1(char *aa1, AjPStr aa3);
+static AjBool       WriteText(AjPFile outf, const AjPStr str,
+			      const char *prefix);
+AjBool              BaseAa3ToAa1(char *aa1, const AjPStr aa3);
 
 
 
@@ -445,16 +452,16 @@ AjBool              BaseAa3ToAa1(char *aa1, AjPStr aa3);
 ** Writes sequence for a protein chain to an output file in pdb format 
 ** (SEQRES records).  Sequence is taken from a Pdb structure.
 **
-** @param [w] errf [AjPFile] Output file stream for error messages
-** @param [w] outf [AjPFile] Output file stream
-** @param [r] pdb  [AjPPdb] Pdb object
+** @param [u] errf [AjPFile] Output file stream for error messages
+** @param [u] outf [AjPFile] Output file stream
+** @param [r] pdb  [const AjPPdb] Pdb object
 ** @param [r] chn  [ajint] chain number, beginning at 1
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
 
-static AjBool WriteSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb, 
+static AjBool WriteSeqresChain(AjPFile errf, AjPFile outf, const AjPPdb pdb, 
 				ajint chn)
 {
     ajint last_rn = 0;  
@@ -576,16 +583,16 @@ static AjBool WriteSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 ** taken from a Scop structure.  Where coordinates for multiple models (e.g. 
 ** NMR structures) are given, data for model 1 are written.
 **
-** @param [w] errf [AjPFile] Output file stream for error messages
-** @param [w] outf [AjPFile] Output file stream
-** @param [r] pdb  [AjPPdb] Pdb object
-** @param [r] scop [AjPScop] Scop object
+** @param [u] errf [AjPFile] Output file stream for error messages
+** @param [u] outf [AjPFile] Output file stream
+** @param [r] pdb  [const AjPPdb] Pdb object
+** @param [r] scop [const AjPScop] Scop object
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
-static AjBool WriteSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, 
-				 AjPScop scop)
+static AjBool WriteSeqresDomain(AjPFile errf, AjPFile outf, const AjPPdb pdb, 
+				const AjPScop scop)
 {
     ajint last_rn = 0;  
     ajint this_rn;
@@ -881,8 +888,8 @@ static AjBool WriteSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 ** (ATOM records). Coordinates are taken from a Pdb structure. The model 
 ** number argument should have a value of 1 for x-ray structures.
 **
-** @param [w] outf [AjPFile] Output file stream
-** @param [r] pdb  [AjPPdb]  Pdb object
+** @param [u] outf [AjPFile] Output file stream
+** @param [r] pdb  [const AjPPdb]  Pdb object
 ** @param [r] mod  [ajint]   Model number, beginning at 1
 ** @param [r] chn  [ajint]   Chain number, beginning at 1
 ** @param [r] mode [ajint]   Either ajPDB or ajIDX if the original or 
@@ -892,7 +899,8 @@ static AjBool WriteSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 ** @@
 ****************************************************************************/
 
-static AjBool WriteAtomChain(AjPFile outf, AjPPdb pdb, ajint mod, ajint chn, 
+static AjBool WriteAtomChain(AjPFile outf, const AjPPdb pdb,
+			     ajint mod, ajint chn, 
 			     ajint mode)
 {
     AjBool  doneter = ajFalse;
@@ -1026,10 +1034,10 @@ static AjBool WriteAtomChain(AjPFile outf, AjPPdb pdb, ajint mod, ajint chn,
 ** file.  The corrected residue numbers are given (these give an index into 
 ** the SEQRES sequence.  
 **
-** @param [w] errf [AjPFile] Output file stream for error messages
-** @param [w] outf [AjPFile] Output file stream
-** @param [r] pdb  [AjPPdb] Pdb object
-** @param [r] scop [AjPScop] Scop object
+** @param [u] errf [AjPFile] Output file stream for error messages
+** @param [u] outf [AjPFile] Output file stream
+** @param [r] pdb  [const AjPPdb] Pdb object
+** @param [r] scop [const AjPScop] Scop object
 ** @param [r] mod  [ajint] Model number, beginning at 1
 ** @param [r] mode [ajint] Either ajPDB or ajIDX if the original or corrected
 **                         residue number is to be used. 
@@ -1038,8 +1046,8 @@ static AjBool WriteAtomChain(AjPFile outf, AjPPdb pdb, ajint mod, ajint chn,
 ** @@
 ****************************************************************************/
 
-static AjBool WriteAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, 
-			       AjPScop scop, ajint mod, ajint mode)
+static AjBool WriteAtomDomain(AjPFile errf, AjPFile outf, const AjPPdb pdb, 
+			       const AjPScop scop, ajint mod, ajint mode)
 {
     /*
     ** rn_mod is a modifier to the residue number to give correct residue 
@@ -1287,18 +1295,18 @@ static AjBool WriteAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 ** index into the SEQRES sequence.  Use WriteAtomDomainIdx if you 
 ** need an index into the SEQRES sequence.  
 **
-** @param [w] errf [AjPFile] Output file stream for error messages
-** @param [w] outf [AjPFile] Output file stream
-** @param [r] pdb  [AjPPdb] Pdb object
-** @param [r] scop [AjPScop] Scop object
+** @param [u] errf [AjPFile] Output file stream for error messages
+** @param [u] outf [AjPFile] Output file stream
+** @param [r] pdb  [const AjPPdb] Pdb object
+** @param [r] scop [const AjPScop] Scop object
 ** @param [r] mod  [ajint] Model number, beginning at 1
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
 
-static AjBool WriteAtomDomainPdb(AjPFile errf, AjPFile outf, AjPPdb pdb, 
-				  AjPScop scop, ajint mod)
+static AjBool WriteAtomDomainPdb(AjPFile errf, AjPFile outf, const AjPPdb pdb, 
+				  const AjPScop scop, ajint mod)
 {
     if(WriteAtomDomain(errf, outf, pdb, scop, mod, ajPDB))
 	return ajTrue;
@@ -1319,18 +1327,18 @@ static AjBool WriteAtomDomainPdb(AjPFile errf, AjPFile outf, AjPPdb pdb,
 ** index into the SEQRES sequence).  Use WriteAtomDomainPdb if you 
 ** wish to maintain the original residue number. 
 **
-** @param [w] errf [AjPFile] Output file stream for error messages
-** @param [w] outf [AjPFile] Output file stream
-** @param [r] pdb  [AjPPdb]  Pdb object
-** @param [r] scop [AjPScop] Scop object
+** @param [u] errf [AjPFile] Output file stream for error messages
+** @param [u] outf [AjPFile] Output file stream
+** @param [r] pdb  [const AjPPdb]  Pdb object
+** @param [r] scop [const AjPScop] Scop object
 ** @param [r] mod  [ajint]   Model number, beginning at 1
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
 
-static AjBool WriteAtomDomainIdx(AjPFile errf, AjPFile outf, AjPPdb pdb, 
-				  AjPScop scop, ajint mod)
+static AjBool WriteAtomDomainIdx(AjPFile errf, AjPFile outf, const AjPPdb pdb, 
+				  const AjPScop scop, ajint mod)
 {
     if(WriteAtomDomain(errf, outf, pdb, scop, mod, ajIDX))
 	return ajTrue;
@@ -1349,15 +1357,15 @@ static AjBool WriteAtomDomainIdx(AjPFile errf, AjPFile outf, AjPPdb pdb,
 ** are taken from a Pdb structure. The model number argument should have a 
 ** value of 1 for x-ray structures.
 **
-** @param [w] outf [AjPFile] Output file stream
-** @param [r] pdb  [AjPPdb]  Pdb object
+** @param [u] outf [AjPFile] Output file stream
+** @param [r] pdb  [const AjPPdb]  Pdb object
 ** @param [r] mod  [ajint]   Model number, beginning at 1
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
 
-static AjBool WriteHeterogen(AjPFile outf, AjPPdb pdb, ajint mod)
+static AjBool WriteHeterogen(AjPFile outf, const AjPPdb pdb, ajint mod)
 {
     AjIList  iter = NULL;
     AjPAtom  atm  = NULL;
@@ -1433,16 +1441,16 @@ static AjBool WriteHeterogen(AjPFile outf, AjPPdb pdb, ajint mod)
 **
 ** Writes text to file in the format of pdb records
 ** 
-** @param [w] outf   [AjPFile] Output file stream
-** @param [r] str    [AjPStr]  Text to print out
-** @param [r] prefix [char *]  pdb record (e.g. "HEADER")
+** @param [u] outf   [AjPFile] Output file stream
+** @param [r] str    [const AjPStr]  Text to print out
+** @param [r] prefix [const char*]  pdb record (e.g. "HEADER")
 **
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
 
-static AjBool WriteText(AjPFile outf, AjPStr str, char *prefix)
+static AjBool WriteText(AjPFile outf, const AjPStr str, const char *prefix)
 {
     ajint n = 0;
     ajint l = 0;
@@ -1506,14 +1514,14 @@ static AjBool WriteText(AjPFile outf, AjPStr str, char *prefix)
 **
 ** Writes the Pdb element of a Pdb structure to an output file in pdb format
 **
-** @param [w] outf [AjPFile] Output file stream
-** @param [r] pdb  [AjPPdb] Pdb object
+** @param [u] outf [AjPFile] Output file stream
+** @param [r] pdb  [const AjPPdb] Pdb object
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
 
-static AjBool WriteHeader(AjPFile outf, AjPPdb pdb)
+static AjBool WriteHeader(AjPFile outf, const AjPPdb pdb)
 {
     if(pdb && outf)
     {
@@ -1535,14 +1543,14 @@ static AjBool WriteHeader(AjPFile outf, AjPPdb pdb)
 ** Writes the Entry element of a Scop structure to an output file in pdb 
 ** format
 **
-** @param [w] outf [AjPFile] Output file stream
-** @param [r] scop [AjPScop] Scop object
+** @param [u] outf [AjPFile] Output file stream
+** @param [r] scop [const AjPScop] Scop object
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
 
-static AjBool WriteHeaderScop(AjPFile outf, AjPScop scop)
+static AjBool WriteHeaderScop(AjPFile outf, const AjPScop scop)
 {
     if(scop && outf)
     {
@@ -1564,14 +1572,14 @@ static AjBool WriteHeaderScop(AjPFile outf, AjPScop scop)
 ** Writes a TITLE record to an output file in pdb format
 ** The text is hard-coded.
 **
-** @param [w] outf [AjPFile] Output file stream
-** @param [r] pdb  [AjPPdb] Pdb object
+** @param [u] outf [AjPFile] Output file stream
+** @param [r] pdb  [const AjPPdb] Pdb object
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
 
-static AjBool WriteTitle(AjPFile outf, AjPPdb pdb)
+static AjBool WriteTitle(AjPFile outf, const AjPPdb pdb)
 {
     if(pdb && outf)
     {
@@ -1593,13 +1601,13 @@ static AjBool WriteTitle(AjPFile outf, AjPPdb pdb)
 ** Writes the Compnd element of a Pdb structure to an output file in pdb 
 ** format
 **
-** @param [w] outf [AjPFile] Output file stream
-** @param [r] pdb  [AjPPdb] Pdb object
+** @param [u] outf [AjPFile] Output file stream
+** @param [r] pdb  [const AjPPdb] Pdb object
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
-static AjBool WriteCompnd(AjPFile outf, AjPPdb pdb)
+static AjBool WriteCompnd(AjPFile outf, const AjPPdb pdb)
 {
     if(pdb && outf)
     {
@@ -1619,14 +1627,14 @@ static AjBool WriteCompnd(AjPFile outf, AjPPdb pdb)
 ** Writes the Source element of a Pdb structure to an output file in pdb 
 ** format
 **
-** @param [w] outf [AjPFile] Output file stream
-** @param [r] pdb  [AjPPdb] Pdb object
+** @param [u] outf [AjPFile] Output file stream
+** @param [r] pdb  [const AjPPdb] Pdb object
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
 
-static AjBool WriteSource(AjPFile outf, AjPPdb pdb)
+static AjBool WriteSource(AjPFile outf, const AjPPdb pdb)
 {
     if(pdb && outf)
     {
@@ -1645,14 +1653,14 @@ static AjBool WriteSource(AjPFile outf, AjPPdb pdb)
 **
 ** Writes an empty REMARK record to an output file in pdb format
 **
-** @param [w] outf [AjPFile] Output file stream
-** @param [r] pdb  [AjPPdb] Pdb object
+** @param [u] outf [AjPFile] Output file stream
+** @param [r] pdb  [const AjPPdb] Pdb object
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
 
-static AjBool WriteEmptyRemark(AjPFile outf, AjPPdb pdb)
+static AjBool WriteEmptyRemark(AjPFile outf, const AjPPdb pdb)
 {
     if(pdb && outf)
     {
@@ -1672,14 +1680,14 @@ static AjBool WriteEmptyRemark(AjPFile outf, AjPPdb pdb)
 ** Writes the Reso element of a Pdb structure to an output file in pdb 
 ** format
 **
-** @param [w] outf [AjPFile] Output file stream
-** @param [r] pdb  [AjPPdb] Pdb object
+** @param [u] outf [AjPFile] Output file stream
+** @param [r] pdb  [const AjPPdb] Pdb object
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
 
-static AjBool WriteResolution(AjPFile outf, AjPPdb pdb)
+static AjBool WriteResolution(AjPFile outf, const AjPPdb pdb)
 {
     if(pdb && outf)
     {
@@ -1711,7 +1719,7 @@ static AjBool WriteResolution(AjPFile outf, AjPPdb pdb)
 ** 
 ** The linetype array is set to default value of PDBPARSE_IGNORE
 **
-** @param [r] inf  [AjPFile] Pointer to pdb file
+** @param [u] inf  [AjPFile] Pointer to pdb file
 **
 ** @return [AjPPdbfile] Pdbfile object pointer, or NULL on failure.
 ** @@
@@ -1828,7 +1836,7 @@ static AjPPdbfile ReadLines(AjPFile inf)
 **
 ** Destructor for pdbfile object.
 **
-** @param [w] pthis [AjPPdbfile*] Pdbfile object pointer
+** @param [d] pthis [AjPPdbfile*] Pdbfile object pointer
 **
 ** @return [void]
 ** @@
@@ -2028,7 +2036,7 @@ static AjPElements ElementsNew(ajint nelms)
 **
 ** Destructor for Elements object.
 **
-** @param [w] ptr [AjPElements*] Elements object pointer
+** @param [d] ptr [AjPElements*] Elements object pointer
 **
 ** @return [void]
 ** @@
@@ -2096,7 +2104,7 @@ static AjPElement ElementNew(void)
 **
 ** Destructor for Element object.
 **
-** @param [w] ptr [AjPElement*] Element object pointer
+** @param [d] ptr [AjPElement*] Element object pointer
 **
 ** @return [void]
 ** @@
@@ -2299,7 +2307,7 @@ static AjPPdbfile PdbfileNew(ajint nlines, ajint nchains)
 **
 **
 ** @param [w] pdbfile  [AjPPdbfile*]  Pdbfile object pointer
-** @param [r] logf     [AjPFile]       Pointer to log file (build diagnostics)
+** @param [u] logf     [AjPFile]       Pointer to log file (build diagnostics)
 ** @param [w] elms     [AjPElements*] Elements object pointer    
 ** @param [r] camask   [AjBool]        Whether to mask non-amino acid residues 
 **                                    within protein chains which do not
@@ -2990,7 +2998,7 @@ static AjBool FirstPass(AjPPdbfile *pdbfile, AjPFile logf, AjPElements *elms,
 ** Reads a string containing a SEQRES sequence  (e.g. "ALA ALA LEU" ) and 
 ** writes a string containing a normal sequence (e.g. "AAL").
 **
-** @param [r] seqres   [AjPStr]   SEQRES sequence
+** @param [r] seqres   [const AjPStr]   SEQRES sequence
 ** @param [w] seq      [AjPStr *] Output sequence
 ** @param [r] camask   [AjBool]   Whether to ignore residues which do not 
 ** have a C-alpha atom, these are defined as ACE, FOR and NH2 groups.
@@ -3000,7 +3008,8 @@ static AjBool FirstPass(AjPPdbfile *pdbfile, AjPFile logf, AjPElements *elms,
 ** @return [AjBool] ajTrue on success, ajFalse otherwise.
 ** @@
 ****************************************************************************/
-static AjBool SeqresToSequence(AjPStr seqres, AjPStr *seq, AjBool camask, 
+static AjBool SeqresToSequence(const AjPStr seqres,
+			       AjPStr *seq, AjBool camask, 
 			       ajint *len)
 {
     static AjPStr    aa3  =NULL;
@@ -3060,7 +3069,7 @@ static AjBool SeqresToSequence(AjPStr seqres, AjPStr *seq, AjBool camask,
 ** 
 **
 ** @param [w] pdbfile         [AjPPdbfile*] Pdbfile object pointer
-** @param [r] logf            [AjPFile]      Pointer to log file (build 
+** @param [u] logf            [AjPFile]      Pointer to log file (build 
 **                                           diagnostics).
 ** @param [r] min_chain_size  [ajint]        Minimum number of amino acids in 
 **                                           a chain.
@@ -3198,7 +3207,7 @@ static AjBool CheckChains(AjPPdbfile *pdbfile, AjPFile logf,
 ** but this is not done for tercnt.
 **
 ** @param [w] pdbfile [AjPPdbfile*] Pdbfile object pointer
-** @param [r] logf    [AjPFile]     Pointer to log file (build diagnostics)
+** @param [u] logf    [AjPFile]     Pointer to log file (build diagnostics)
 ** 
 ** @return [AjBool]  True on success, False otherwise.
 ** @@
@@ -3344,7 +3353,7 @@ static AjBool CheckTer(AjPPdbfile *pdbfile, AjPFile logf)
 ** 
 **
 ** @param [w] pdbfile  [AjPPdbfile*] Pdbfile object pointer
-** @param [w] logf     [AjPFile]      Pointer to log file (build diagnostics)
+** @param [u] logf     [AjPFile]      Pointer to log file (build diagnostics)
 ** 
 ** @return [AjBool]  True on success, False otherwise
 ** @@
@@ -3752,7 +3761,7 @@ static AjBool NumberChains(AjPPdbfile *pdbfile, AjPFile logf)
 ** achieve this.
 ** 
 ** @param [w] pdbfile    [AjPPdbfile*] Pdbfile object pointer
-** @param [r] logf       [AjPFile]     Pointer to log file (build diagnostics)
+** @param [u] logf       [AjPFile]     Pointer to log file (build diagnostics)
 ** @param [r] min_chain_size  [ajint]  Min. no. of amino acids in a chain
 ** @param [r] camask          [AjBool] Whether to mask non-amino acid 
 **                                     residues within protein chains which 
@@ -4162,7 +4171,7 @@ if(camask)
 ** True for the second residue. 
 **
 ** @param [w] pdbfile [AjPPdbfile*] Pdbfile object pointer
-** @param [r] logf    [AjPFile]      Pointer to log file (build diagnostics)
+** @param [u] logf    [AjPFile]      Pointer to log file (build diagnostics)
 ** 
 ** @return [AjBool]  True on success, False otherwise
 ** @@
@@ -4659,7 +4668,7 @@ static AjBool StandardiseNumbering(AjPPdbfile *pdbfile, AjPFile logf)
 ** sequence presuming heterogeneity).
 **
 ** @param [w] pdbfile [AjPPdbfile*] Pdbfile object pointer
-** @param [r] logf    [AjPFile]      Pointer to log file (build diagnostics)
+** @param [u] logf    [AjPFile]      Pointer to log file (build diagnostics)
 ** @param [r] lim     [ajint]        Max. no. permissible mismatches between
 **                                   the ATOM & SEQRES sequences.
 ** 
@@ -6205,14 +6214,14 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim)
 ** For printing out diagnostics for pdbparse build
 ** 
 **
-** #param [r] pdbfile [AjPPdbfile*]  Pdbfile object pointer
+** #param [r] pdbfile [const AjPPdbfile*]  Pdbfile object pointer
 ** #param [r] n       [ajint ]        Flag for controlling output
 ** 
 ** #return [AjBool]  True on success, False otherwise
 ** ##
 ****************************************************************************/
 /*THIS_DIAGNOSTIC 
-static void diagnostic(AjPPdbfile *pdbfile, ajint n)
+static void diagnostic(const AjPPdbfile *pdbfile, ajint n)
 {
     ajint i;
     i=0;
@@ -6298,12 +6307,12 @@ static void diagnostic(AjPPdbfile *pdbfile, ajint n)
 ** 
 **
 ** @param [w] ret     [AjPPdb *]     Pdb object pointer
-** @param [r] pdb     [AjPPdbfile]  Pdbfile object pointer
+** @param [r] pdb     [const AjPPdbfile]  Pdbfile object pointer
 ** 
 ** @return [AjBool]  True on success, False otherwise
 ** @@
 ****************************************************************************/
-static AjBool PdbfileToPdb(AjPPdb *ret, AjPPdbfile pdb)
+static AjBool PdbfileToPdb(AjPPdb *ret, const AjPPdbfile pdb)
 {
     ajint i=0;				/* Loop counter */
     ajint j=0;				/* Loop counter */
@@ -6439,7 +6448,7 @@ static AjBool PdbfileToPdb(AjPPdb *ret, AjPPdbfile pdb)
 ** Returns the line number of the first instance of a line with a specified 
 ** residue and chain number. 	
 ** 
-** @param [r] pdb     [AjPPdbfile] Pdbfile object pointer
+** @param [r] pdb     [const AjPPdbfile] Pdbfile object pointer
 ** @param [r] chn     [ajint] Chain number
 ** @param [r] which   [ajint] 0 or 1, refer to resn1 or resn2 residue
 ** @param [r] pos     [ajint] Residue number
@@ -6447,7 +6456,7 @@ static AjBool PdbfileToPdb(AjPPdb *ret, AjPPdbfile pdb)
 ** @return [ajint]  Line number (index, i.e. starts from 0).
 ** @@
 ****************************************************************************/
-static ajint  PdbfileFindLine(AjPPdbfile pdb, ajint chn, ajint which, 
+static ajint  PdbfileFindLine(const AjPPdbfile pdb, ajint chn, ajint which, 
 			      ajint pos)
 {
     ajint a=0;
@@ -6484,13 +6493,13 @@ static ajint  PdbfileFindLine(AjPPdbfile pdb, ajint chn, ajint which,
 ** Finds the chain number for a given chain identifier in a pdbfile structure
 **
 ** @param [r] id  [char]        Chain identifier
-** @param [r] pdb [AjPPdbfile] Pdbfile object
+** @param [r] pdb [const AjPPdbfile] Pdbfile object
 ** @param [w] chn [ajint *]     Chain number
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
-static AjBool PdbfileChain(char id, AjPPdbfile pdb, ajint *chn)
+static AjBool PdbfileChain(char id, const AjPPdbfile pdb, ajint *chn)
 {
     ajint a;
  
@@ -6535,14 +6544,14 @@ static AjBool PdbfileChain(char id, AjPPdbfile pdb, ajint *chn)
 ** and writes equivalent variables in an Pdbfile object.
 ** 
 ** @param [w] pdbfile [AjPPdbfile*] Pdbfile object pointer
-** @param [r] logf    [AjPFile] Pointer to log file (build diagnostics)
-** @param [r] elms    [AjPElements] Elements object pointer
+** @param [u] logf    [AjPFile] Pointer to log file (build diagnostics)
+** @param [r] elms    [const AjPElements] Elements object pointer
 ** 
 ** @return [AjBool]  True on success, False otherwise
 ** @@
 ****************************************************************************/
 static AjBool WriteElementData(AjPPdbfile *pdbfile, AjPFile logf, 
-			       AjPElements elms)
+			       const AjPElements elms)
 {
     ajint x           =0;
     ajint y           =0;
@@ -6981,8 +6990,8 @@ static AjBool WriteElementData(AjPPdbfile *pdbfile, AjPFile logf,
 ** The pdb id is derived from the file name and extension of the pdb file 
 ** (these are passed in by argument).
 ** 
-** @param [r] inf            [AjPFile] Pointer to pdb file 
-** @param [r] pdbid          [AjPStr]  PDB id code of pdb file
+** @param [u] inf            [AjPFile] Pointer to pdb file 
+** @param [r] pdbid          [const AjPStr]  PDB id code of pdb file
 ** @param [r] min_chain_size [ajint]   Minimum number of amino acids in a chain 
 ** @param [r] max_mismatch   [ajint]   Maximum number of permissible mismatches 
 **                                      between the ATOM and SEQRES sequences 
@@ -6992,12 +7001,12 @@ static AjBool WriteElementData(AjPPdbfile *pdbfile, AjPFile logf,
 ** within protein chains which do not have a C-alpha atom.
 ** @param [r] atommask       [AjBool]  Whether to mask residues or groups 
 ** in protein chains with a single atom only.
-** @param [r] logf           [AjPFile] Pointer to log file (build diagnostics)
+** @param [u] logf           [AjPFile] Pointer to log file (build diagnostics)
 **
 ** @return [AjPPdb] pdb object pointer, or NULL on failure.
 ** @@
 ****************************************************************************/
-AjPPdb ajPdbReadRawNew(AjPFile inf, AjPStr pdbid, ajint min_chain_size, 
+AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size, 
 		       ajint max_mismatch, AjBool camask, AjBool camask1, 
 		       AjBool atommask, AjPFile logf)
 {
@@ -7217,17 +7226,18 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, AjPStr pdbid, ajint min_chain_size,
 **                           ajHEADER_DOMAIN, ajSEQRES_DOMAIN, 
 **                           ajATOMPDB_DOMAIN, ajATOMIDX_DOMAIN
 **                           
-** @param [r] pdb  [AjPPdb]  Pdb object
+** @param [r] pdb  [const AjPPdb]  Pdb object
 ** @param [r] mod  [ajint]   Model number
-** @param [r] scop [AjPScop] Scop object for domain
-** @param [w] outf [AjPFile] Output file stream
-** @param [w] errf [AjPFile] Output file stream for error messages
+** @param [r] scop [const AjPScop] Scop object for domain
+** @param [u] outf [AjPFile] Output file stream
+** @param [u] errf [AjPFile] Output file stream for error messages
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
-AjBool  ajPdbWriteDomainRecordRaw(ajint mode, AjPPdb pdb, ajint mod,
-				   AjPScop scop, AjPFile outf, AjPFile errf)
+AjBool  ajPdbWriteDomainRecordRaw(ajint mode, const AjPPdb pdb, ajint mod,
+				   const AjPScop scop,
+				  AjPFile outf, AjPFile errf)
 {
     /* Check args */
     if(!outf || !scop)
@@ -7289,16 +7299,16 @@ AjBool  ajPdbWriteDomainRecordRaw(ajint mode, AjPPdb pdb, ajint mod,
 **                            ajSEQRES_CHAIN, ajATOMPDB_CHAIN, ajATOMIDX_CHAIN, 
 **                            ajHETEROGEN, ajHEADER, ajTITLE,ajCOMPND,ajSOURCE, 
 **                            ajEMPTYREMARK,ajRESOLUTION.
-** @param [r] pdb   [AjPPdb]  Pdb object
+** @param [r] pdb   [const AjPPdb]  Pdb object
 ** @param [r] mod   [ajint]   Model number.
 ** @param [r] chn   [ajint]   Chain number.
-** @param [w] outf  [AjPFile] Output file stream
-** @param [w] errf  [AjPFile] Output file stream for error messages
+** @param [u] outf  [AjPFile] Output file stream
+** @param [u] errf  [AjPFile] Output file stream for error messages
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
-AjBool  ajPdbWriteRecordRaw(ajint mode, AjPPdb pdb, ajint mod, 
+AjBool  ajPdbWriteRecordRaw(ajint mode, const AjPPdb pdb, ajint mod, 
 			    ajint chn, AjPFile outf, AjPFile errf)
 {
     /* Check args */
@@ -7376,15 +7386,16 @@ AjBool  ajPdbWriteRecordRaw(ajint mode, AjPPdb pdb, ajint mod,
 **
 ** @param [r] mode [ajint]   Either ajPdb or ajIDX if the original or 
 **                           corrected residue number is to be used. 
-** @param [r] pdb  [AjPPdb]  Pdb object
-** @param [w] outf [AjPFile] Output file stream
-** @param [w] errf [AjPFile] Output file stream for error messages
+** @param [r] pdb  [const AjPPdb]  Pdb object
+** @param [u] outf [AjPFile] Output file stream
+** @param [u] errf [AjPFile] Output file stream for error messages
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
 
-AjBool ajPdbWriteAllRaw(ajint mode, AjPPdb pdb, AjPFile outf, AjPFile errf)
+AjBool ajPdbWriteAllRaw(ajint mode, const AjPPdb pdb,
+			AjPFile outf, AjPFile errf)
 {
     ajint x;
     ajint y;
@@ -7479,16 +7490,16 @@ AjBool ajPdbWriteAllRaw(ajint mode, AjPPdb pdb, AjPFile outf, AjPFile errf)
 ** 
 ** @param [r] mode [ajint]   Either ajPDB or ajIDX if the original or 
 **                           corrected residue number is to be used. 
-** @param [r] pdb  [AjPPdb]  Pdb object
-** @param [r] scop [AjPScop] Scop object
-** @param [w] outf [AjPFile] Output file stream
-** @param [w] errf [AjPFile] Output file stream for error messages
+** @param [r] pdb  [const AjPPdb]  Pdb object
+** @param [r] scop [const AjPScop] Scop object
+** @param [u] outf [AjPFile] Output file stream
+** @param [u] errf [AjPFile] Output file stream for error messages
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
 
-AjBool ajPdbWriteDomainRaw(ajint mode, AjPPdb pdb, AjPScop scop, 
+AjBool ajPdbWriteDomainRaw(ajint mode, const AjPPdb pdb, const AjPScop scop, 
 			    AjPFile outf, AjPFile errf)
 {
     ajint z;     /* A counter */
@@ -7583,14 +7594,14 @@ AjBool ajPdbWriteDomainRaw(ajint mode, AjPPdb pdb, AjPScop scop,
 ** corresponding single letter code.
 ** 
 ** @param [w] aa1 [char *]   Single letter identifier of amino acid
-** @param [r] aa3 [AjPStr]   AjPStr object (3 letter code)
+** @param [r] aa3 [const AjPStr]   AjPStr object (3 letter code)
 **
 ** @return [AjBool] True on succcess
 ** @@
 ** NOTE THIS SHOULD BE MOVE TO ajbase.c / h at some point.
 ****************************************************************************/
 
-AjBool  BaseAa3ToAa1(char *aa1, AjPStr aa3)
+AjBool  BaseAa3ToAa1(char *aa1, const AjPStr aa3)
 {
     ajint i;
     

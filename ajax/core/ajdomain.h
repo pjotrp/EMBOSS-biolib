@@ -148,7 +148,8 @@ typedef struct AjSScop
     AjPStr SeqSpr;	
     ajint  Startd;      
     ajint  Endd;        
-} AjOScop,*AjPScop;
+} AjOScop;
+#define AjPScop AjOScop*
 
 
 
@@ -229,7 +230,8 @@ typedef struct AjSCath
     ajint   Family_Id;      
     ajint   NIFamily_Id;     
     ajint   IFamily_Id;     
-} AjOCath, *AjPCath;
+} AjOCath;
+#define AjPCath AjOCath*
 
 
 
@@ -242,9 +244,9 @@ AjPScop  ajScopNew(ajint n);
 void     ajScopDel(AjPScop *ptr);
 AjBool   ajScopCopy(AjPScop *to, const AjPScop from);
 
-ajint    ajScopArrFindScopid(const AjPScop *arr, ajint siz, const AjPStr id);
-ajint    ajScopArrFindSunid(const AjPScop *arr, ajint siz, ajint id);
-ajint    ajScopArrFindPdbid(const AjPScop *arr, ajint siz, const AjPStr id);
+ajint    ajScopArrFindScopid(AjPScop *arr, ajint siz, const AjPStr id);
+ajint    ajScopArrFindSunid(AjPScop *arr, ajint siz, ajint id);
+ajint    ajScopArrFindPdbid(AjPScop *arr, ajint siz, const AjPStr id);
 
 ajint    ajScopMatchScopid(const void *hit1, const void *hit2);
 ajint    ajScopMatchPdbId(const void *hit1, const void *hit2);

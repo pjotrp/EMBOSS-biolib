@@ -713,7 +713,7 @@ AjBool ajSysIsDirectory(const char *s)
 ** @param [r] s [const char *] source string
 ** @param [r] t [const char *] delimiter string
 **
-** @return [const char*] pointer or NULL
+** @return [char*] pointer or NULL
 ** @@
 ******************************************************************************/
 
@@ -863,14 +863,14 @@ char* ajSysFgets(char *buf, int size, FILE *fp)
 **
 ** An fopen replacement to cope with cygwin and windows
 **
-** @param [r] name [char *] file to open
-** @param [r] size [int] r/w/a flags
+** @param [r] name [const char *] file to open
+** @param [r] flags [const char*] r/w/a flags
 **
 ** @return [FILE*] file or NULL
 ** @@
 ******************************************************************************/
 
-FILE* ajSysFopen(char *name, char *flags)
+FILE* ajSysFopen(const char *name, const char *flags)
 {
     FILE   *ret  = NULL;
 #ifdef __CYGWIN__
