@@ -1055,17 +1055,15 @@ echo "--------------------------------------------------------------"
 echo
 #make_jemboss_properties $EMBOSS_INSTALL $LOCALHOST $AUTH $SSL $PORT $EMBOSS_URL
 
-echo
-if [ "$SSL" = "y" ]; then
-  echo "To secure the admin admin tool https://$LOCALHOST:$PORT/soap "
-else
-  echo "To secure the admin admin tool http://$LOCALHOST:$PORT/soap "
-fi
-echo "look at http://www.uk.embnet.org/Software/EMBOSS/Jemboss/download/tomcat.html"
+#if [ "$SSL" = "y" ]; then
+#  echo "To secure the admin admin tool https://$LOCALHOST:$PORT/soap "
+#else
+#  echo "To secure the admin admin tool http://$LOCALHOST:$PORT/soap "
+#fi
+#echo "look at http://www.uk.embnet.org/Software/EMBOSS/Jemboss/download/tomcat.html"
 echo
 echo "A tomstart and tomstop script to start & stop Tomcat have"
-echo "been created in this directory for you convenience."
-echo
+echo "been created. It important to use these to start & stop Tomcat."
 
 if [ "$AUTH" = "y" ]; then
   echo 
@@ -1082,6 +1080,16 @@ else
   echo "Use the tomstop & tomstart scripts to stop & start tomcat."
   echo
 fi
+
+if [ ! -d "$DATADIR" ]; then
+  echo "Create the user results directory (and ensure this is world read/write-able): "
+  echo "   mkdir $DATADIR"
+  echo
+fi
+echo "Try running Jemboss with the script:"
+echo "   cd $JEMBOSS"
+echo "   ./runJemboss.csh"
+echo
 
 chmod a+x $JEMBOSS/runJemboss.csh
 chmod u+x $JEMBOSS/utils/*sh
