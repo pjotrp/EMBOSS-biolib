@@ -613,7 +613,8 @@ public class JembossServer
 *
 * Returns the results for a saved project.
 * @param project/directory name
-* @param unused
+* @param unused if showing all results otherwise this
+*        is the name of the file to display
 * @return saved results files
 *
 */
@@ -632,7 +633,8 @@ public class JembossServer
 *
 * Returns the results for a saved project.
 * @param project/directory name
-* @param unused
+* @param unused if showing all results otherwise this
+*        is the name of the file to display
 * @return saved results files
 *
 */
@@ -642,9 +644,34 @@ public class JembossServer
    
     project = tmproot.concat(project);
     File projectDir = new File(project);
-    ssr = loadFilesContent(projectDir,project,ssr,null);
-    ssr = loadPNGContent(projectDir,project,ssr);
-        
+
+    if(cl.equals(""))
+    {
+      ssr = loadFilesContent(projectDir,project,ssr,null);
+      ssr = loadPNGContent(projectDir,project,ssr);
+    }
+    else
+    {
+      try
+      {
+        String fc = "";
+        String line;
+        File fn = new File(project + fs + cl);
+
+        if(fn.exists())
+        {
+          BufferedReader in = new BufferedReader(new FileReader(project +
+                                                       fs + cl));
+          while((line = in.readLine()) != null)
+            fc = fc.concat(line + "\n");
+        }
+  
+        ssr.add(cl);
+        ssr.add(fc);
+      }
+      catch (IOException ioe){}
+    }
+
     ssr.add("status");
     ssr.add("0");
 
@@ -653,6 +680,47 @@ public class JembossServer
 
     return ssr;
   }
+
+
+/**
+*
+* Private server
+*
+* Save a file to a project directory on the server.
+* @return message
+*
+*/
+  public Vector save_project_file(String project, String filename,
+                                  String notes, String userName)
+  {
+    Vector v = new Vector();
+    String msg = "OK";
+
+    String fn = tmproot + fs + userName+ fs +
+                     project + fs + filename;
+
+    File f = new File(fn);
+    try
+    {
+      if(!f.exists())
+        f.createNewFile();
+      FileOutputStream out = new FileOutputStream(f);
+      out.write(notes.getBytes());
+      out.close();
+    }
+    catch(IOException ioe)
+    {
+      msg = new String("Error making input file");
+    }
+
+    v.add("status");
+    v.add("0");
+    v.add("msg");
+    v.add(msg);
+
+    return v;
+  }
+
 
 
 /**
