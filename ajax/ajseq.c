@@ -3638,7 +3638,8 @@ AjBool ajSeqTrim(AjPSeq thys)
 	thys->Offset = begin-1;
 	thys->Begin =0;
     }
-    ajDebug("After Trimming len = %d '%S'\n",thys->Seq->Len, thys->Seq);
+    ajDebug("After Trimming len = %d\n",thys->Seq->Len);
+    /*ajDebug("After Trimming len = %d '%S'\n",thys->Seq->Len, thys->Seq);*/
 
     return okay;
 }
