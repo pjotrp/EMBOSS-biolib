@@ -1,6 +1,9 @@
 appl: ehmmalign [
         doc: "Align sequences with an HMM"
         groups: "HMM"
+        gui: yes
+        batch: yes
+        cpu: medium
 ]
 
 

@@ -1,6 +1,9 @@
 appl: tfextract [
   documentation: "Extract data from TRANSFAC"
   groups: "Utils:Database creation"
+  gui: yes
+  batch: yes
+  cpu: medium
 ]
 
 section: input [ info: "input Section" type: page ]

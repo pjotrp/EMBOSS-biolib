@@ -1,6 +1,9 @@
 appl: supermatcher [
   documentation: "Finds a match of a large sequence against one or more sequences"
   groups: "Alignment:Local"
+  gui: yes
+  batch: yes
+  cpu: medium
 ]
 
 section: input [ info: "input Section" type: page ]

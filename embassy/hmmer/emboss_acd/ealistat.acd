@@ -1,6 +1,9 @@
 appl: ealistat [
         doc: "Statistics for multiple alignment files"
         groups: "HMM"
+        gui: yes
+        batch: yes
+        cpu: medium
 ]
 
 

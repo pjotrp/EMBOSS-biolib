@@ -1,6 +1,9 @@
 appl: ehmmbuild [
         doc: "Build HMM"
         groups: "HMM"
+        gui: yes
+        batch: yes
+        cpu: medium
 ]
 
 

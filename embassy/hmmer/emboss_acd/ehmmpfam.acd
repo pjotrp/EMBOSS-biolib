@@ -1,6 +1,9 @@
 appl: ehmmpfam [
         doc: "Align single sequence with an HMM"
         groups: "HMM"
+        gui: yes
+        batch: yes
+        cpu: medium
 ]
 
 

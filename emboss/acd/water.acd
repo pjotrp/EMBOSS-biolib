@@ -1,6 +1,9 @@
 appl: water [
   documentation: "Smith-Waterman local alignment."
   groups: "Alignment:Local"
+  gui: yes
+  batch: yes
+  cpu: medium
 ]
 
 section: input [ info: "input Section" type: page ]

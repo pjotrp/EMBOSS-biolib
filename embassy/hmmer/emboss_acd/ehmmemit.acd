@@ -1,6 +1,9 @@
 appl: ehmmemit [
         doc: "Extract HMM sequences"
         groups: "HMM"
+        gui: yes
+        batch: yes
+        cpu: medium
 ]
 
 

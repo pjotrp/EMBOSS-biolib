@@ -1,6 +1,9 @@
 appl: ehmmindex [
         doc: "Index an HMM database"
         groups: "HMM"
+        gui: yes
+        batch: yes
+        cpu: medium
 ]
 
 

@@ -1,6 +1,9 @@
 appl: ehmmcalibrate [
         doc: "Calibrate a hidden Markov model"
         groups: "HMM"
+        gui: yes
+        batch: yes
+        cpu: medium
 ]
 
 

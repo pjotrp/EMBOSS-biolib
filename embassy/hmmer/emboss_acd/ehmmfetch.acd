@@ -1,6 +1,9 @@
 appl: ehmmfetch [
         doc: "Extract HMM from a database"
         groups: "HMM"
+        gui: yes
+        batch: yes
+        cpu: medium
 ]
 
 
