@@ -308,7 +308,7 @@ static void restrict_printHits(AjPFile *outf, AjPList *l, AjPStr *name,
 
     if(frags)
     {
-	ajSortIntDec(fa,fn);
+	ajSortIntInc(fa,fn);
 	ajFmtPrintF(*outf,"\n\nFragment lengths:\n");
 	if(!fn || (fn==1 && plasmid))
 	    ajFmtPrintF(*outf,"    %d\n",end-begin+1);
@@ -333,7 +333,7 @@ static void restrict_printHits(AjPFile *outf, AjPList *l, AjPStr *name,
 	    }
 	    else
 		fx[fc++]=(fa[0]-begin+1)+(end-fa[fn-1]);
-	    ajSortIntInc(fx,fc);
+	    ajSortIntDec(fx,fc);
 	    for(i=0;i<fc;++i)
 		ajFmtPrintF(*outf,"    %d\n",fx[i]);
 	}

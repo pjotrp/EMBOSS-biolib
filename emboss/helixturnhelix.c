@@ -368,7 +368,7 @@ static void hth_print_hits(AjPList *ajb, ajint n, float minsd, ajint lastcol,
 	ajIntPut(&hp,i,i);
 	ajFloatPut(&hsd,i,lp[i]->sd);
     }
-    ajSortFloatDecI(ajFloatFloat(hsd),ajIntInt(hp),n);
+    ajSortFloatIncI(ajFloatFloat(hsd),ajIntInt(hp),n);
     ajFloatDel(&hsd);
     
     for(i=0;i<n;++i)

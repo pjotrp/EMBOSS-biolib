@@ -213,7 +213,7 @@ int main(int argc, char **argv)
 
 	if(nhits)
 	{
-	    ajSortFloatDecI(ajFloatFloat(hwt),ajIntInt(hp),nhits);
+	    ajSortFloatIncI(ajFloatFloat(hwt),ajIntInt(hp),nhits);
 	    ajFmtPrintF(outf,
 			"\nEntries in score order, max score at \"*\"\n\n");
 	    for(i=nhits-1,j=0;i>-1;--i)

@@ -1200,10 +1200,10 @@ AjPSignature  siggen_SigSelect(AjPScopalg alg, AjPScorealg scores,
     /* Reorder the gap data so it is in order of increasing sized gap*/
     for(x=0; x<sig->npos;x++)
     {
-	ajSortIntDecI((ajint *) ajIntInt(sig->dat[x]->gsiz), 
+	ajSortIntIncI((ajint *) ajIntInt(sig->dat[x]->gsiz), 
 		      (ajint *) ajIntInt(sig->dat[x]->gfrq),  
 		      sig->dat[x]->ngap);
-	ajSortIntDec((ajint *) ajIntInt(sig->dat[x]->gsiz), sig->dat[x]->ngap);
+	ajSortIntInc((ajint *) ajIntInt(sig->dat[x]->gsiz), sig->dat[x]->ngap);
     }
     
 

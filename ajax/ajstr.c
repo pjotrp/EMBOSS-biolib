@@ -1998,7 +1998,7 @@ void ajStrRandom(AjPStr *s)
 	na[i]=i;
 	rn[i]=ajRandomNumber();
     }
-    ajSortIntDecI(rn,na,len);
+    ajSortIntIncI(rn,na,len);
     
     for(i=0;i<len;++i)
 	q[i]=p[na[i]];
