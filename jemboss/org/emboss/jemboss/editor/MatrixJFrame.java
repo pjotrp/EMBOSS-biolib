@@ -33,9 +33,13 @@ import org.emboss.jemboss.gui.filetree.FileEditorDisplay;
 */
 public class MatrixJFrame extends JFrame
 {
+  /** scroll pane for matrix display */
   private JScrollPane mScroll =  new JScrollPane();
+  /** cursor busy		     */
   private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
+  /** cursor done		     */
   private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
+  /** scoring matrix */
   private Matrix mat;
 
   /**
