@@ -62,7 +62,6 @@ Command line arguments
    -datafile           string     Alternative RE data file
    -html               boolean    Create HTML output
    -[no]limit          boolean    Limits reports to one isoschizomer
-   -preferred          boolean    Report preferred isoschizomers
    -alphabetic         boolean    Sort output alphabetically
    -fragments          boolean    Show fragment lengths
    -name               boolean    Show sequence name
@@ -131,7 +130,6 @@ Command line arguments
    string is accepted
    -html Create HTML output Boolean value Yes/No No
    -[no]limit Limits reports to one isoschizomer Boolean value Yes/No Yes
-   -preferred Report preferred isoschizomers Boolean value Yes/No No
    -alphabetic Sort output alphabetically Boolean value Yes/No No
    -fragments Show fragment lengths Boolean value Yes/No No
    -name Show sequence name Boolean value Yes/No No
@@ -255,19 +253,19 @@ Output file format
         71      AciI            CCGC            71      73
         73      Hin6I           GCGC            73      75
         94      TaqI            TCGA            94      96
-        103     BsiSI           CCGG            103     105
-        162     BsiSI           CCGG            162     164
+        103     HpaII           CCGG            103     105
+        162     HpaII           CCGG            162     164
         190     Hin6I           GCGC            190     192
         192     Hin6I           GCGC            192     194
-        225     Bse1I           ACTGG           221     219
+        225     BsrI            ACTGG           221     219
         229     AciI            CCGC            226     228
         263     AciI            CCGC            263     265
         380     AciI            CCGC            377     379
         383     AciI            CCGC            380     382
-        395     BsiSI           CCGG            395     397
+        395     HpaII           CCGG            395     397
         398     Hin6I           GCGC            398     400
         408     AclI            AACGTT          409     411
-        409     HpyCH4IV        ACGT            409     411
+        409     MaeII           ACGT            409     411
    
    The output from restover is a simple text one. The base number,
    restriction enzyme name, recognition site and cut positions are shown.

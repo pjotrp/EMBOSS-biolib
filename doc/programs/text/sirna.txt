@@ -646,7 +646,7 @@ taaaaaagccacttagttcagtc
   
 ########################################
 # Program: sirna
-# Rundate: Tue Apr 22 14:20:35 2003
+# Rundate: Thu May 22 10:58:32 2003
 # Report_format: table
 # Report_file: hsfau.sirna
 ########################################
@@ -756,7 +756,7 @@ taaaaaagccacttagttcagtc
   
 ########################################
 # Program: sirna
-# Rundate: Tue Apr 22 14:20:36 2003
+# Rundate: Thu May 22 10:58:33 2003
 # Report_format: table
 # Report_file: hsfau.sirna
 ########################################

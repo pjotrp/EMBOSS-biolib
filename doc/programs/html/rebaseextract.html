@@ -102,7 +102,8 @@ Running this program may be the job of your system manager.
 
 % <b>rebaseextract </b>
 Extract data from REBASE
-Full pathname of WITHREFM: <b>../../data/withrefm</b>
+Full pathname of WITHREFM file: <b>../../data/withrefm</b>
+Full pathname of PROTO file: <b>../../data/proto</b>
 
 </pre></td></tr></table><p>
 <p>
@@ -124,7 +125,8 @@ IT IS DONE FOR YOU.
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Mandatory qualifiers:
-  [-inf]               infile     Full pathname of WITHREFM
+  [-inf]               infile     Full pathname of WITHREFM file
+  [-proto]             infile     Full pathname of PROTO file
 
    Optional qualifiers:
    -[no]equivalences   boolean    This option calculates an embossre.equ file
@@ -165,7 +167,14 @@ IT IS DONE FOR YOU.
 
 <tr>
 <td>[-inf]<br>(Parameter 1)</td>
-<td>Full pathname of WITHREFM</td>
+<td>Full pathname of WITHREFM file</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>[-proto]<br>(Parameter 2)</td>
+<td>Full pathname of PROTO file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -323,6 +332,58 @@ Zebala, J.A., (1993) Diss. Abstr., vol. 54, pp. 1394-1398.
 
 </pre>
 </td></tr></table><p>
+<p><h3>File: ../../data/proto</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+ 
+REBASE version 305                                              proto.305
+ 
+    =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    REBASE, The Restriction Enzyme Database   http://rebase.neb.com
+    Copyright (c)  Dr. Richard J. Roberts, 2003.   All rights reserved.
+    =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+ 
+Rich Roberts                                                    Apr 30 2003
+ 
+
+
+
+	    TYPE II ENZYMES
+	    ---------------
+
+BsiYI                          CCNNNNN^NNGG
+BsrI                           ACTGG (1/-1)
+HaeIII                         GG^CC
+HpaII                          C^CGG
+Ksp632I                        CTCTTC (1/4)
+MaeII                          A^CGT
+
+
+
+	    TYPE I ENZYMES
+	    ---------------
+
+EcoAI                          GAGNNNNNNNGTCA
+EcoBI                          TGANNNNNNNNTGCT
+EcoDI                          TTANNNNNNNGTCY
+EcoDR2                         TCANNNNNNGTCG
+EcoDR3                         TCANNNNNNNATCG
+EcoDXXI                        TCANNNNNNNRTTC
+EcoEI                          GAGNNNNNNNATGC
+EcoKI                          AACNNNNNNGTGC
+
+
+
+	    TYPE III ENZYMES
+	    ---------------
+
+EcoPI                          AGACC
+EcoP15I                        CAGCAG (25/27)
+HinfIII                        CGAAT
+StyLTI                         CAGAG
+
+</pre>
+</td></tr></table><p>
 
 
 <H2>
@@ -336,6 +397,17 @@ Zebala, J.A., (1993) Diss. Abstr., vol. 54, pp. 1394-1398.
 <p><h3>File: REBASE</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
+</pre>
+</td></tr></table><p>
+<p><h3>File: embossre.equ</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+Bsc4I BsiYI
+Bse1I BsrI
+BshI HaeIII
+BsiSI HpaII
+Bsu6I Ksp632I
+HpyCH4IV MaeII
 </pre>
 </td></tr></table><p>
 

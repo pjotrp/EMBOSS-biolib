@@ -352,7 +352,7 @@ Command line arguments
                                   hindiii
                                   HinfI
                                   PpiI
-   -table              menu       Code to use
+   -table              menu       Genetic code to use
    -matchsource        string     By default any feature source in the feature
                                   table is shown. You can set this to match
                                   any feature source you wish to show.
@@ -439,20 +439,74 @@ Command line arguments
                                   value will be displayed.
 
    Advanced qualifiers:
-   -orfminsize         integer    Minimum size of Open Reading Frames (ORFs)
-                                  to display in the translations.
-   -flatreformat       boolean    Display RE sites in flat format
-   -mincuts            integer    Minimum cuts per RE
-   -maxcuts            integer    Maximum cuts per RE
-   -sitelen            integer    Minimum recognition site length
-   -single             boolean    Force single RE site only cuts
-   -[no]blunt          boolean    Allow blunt end RE cutters
-   -[no]sticky         boolean    Allow sticky end RE cutters
-   -[no]ambiguity      boolean    Allow ambiguous RE matches
-   -plasmid            boolean    Allow circular DNA
-   -[no]commercial     boolean    Only use restriction enzymes with suppliers
-   -[no]limit          boolean    Limits RE hits to one isoschizomer
-   -preferred          boolean    Report preferred isoschizomers
+   -orfminsize         integer    This sets the minimum size of Open Reading
+                                  Frames (ORFs) to display in the
+                                  translations. All other translation regions
+                                  are masked by changing the amino acids to
+                                  '-' characters.
+   -flatreformat       boolean    This changes the output format to one where
+                                  the recognition site is indicated by a row
+                                  of '===' characters and the cut site is
+                                  pointed to by a '>' character in the forward
+                                  sense, or a '<' in the reverse sense
+                                  strand.
+   -mincuts            integer    This sets the minimum number of cuts for any
+                                  restriction enzyme that will be considered.
+                                  Any enzymes that cut fewer times than this
+                                  will be ignored.
+   -maxcuts            integer    This sets the maximum number of cuts for any
+                                  restriction enzyme that will be considered.
+                                  Any enzymes that cut more times than this
+                                  will be ignored.
+   -sitelen            integer    This sets the minimum length of the
+                                  restriction enzyme recognition site. Any
+                                  enzymes with sites shorter than this will be
+                                  ignored.
+   -single             boolean    If this is set then this forces the values
+                                  of the mincuts and maxcuts qualifiers to
+                                  both be 1. Any other value you may have set
+                                  them to will be ignored.
+   -[no]blunt          boolean    This allows those enzymes which cut at the
+                                  same position on the forward and reverse
+                                  strands to be considered.
+   -[no]sticky         boolean    This allows those enzymes which cut at
+                                  different positions on the forward and
+                                  reverse strands, leaving an overhang, to be
+                                  considered.
+   -[no]ambiguity      boolean    This allows those enzymes which have one or
+                                  more 'N' ambiguity codes in their pattern to
+                                  be considered
+   -plasmid            boolean    If this is set then this allows searches for
+                                  restriction enzyme recognition site and cut
+                                  postions that span the end of the sequence
+                                  to be considered.
+   -[no]commercial     boolean    If this is set, then only those enzymes with
+                                  a commercial supplier will be searched for.
+                                  This qualifier is ignored if you have
+                                  specified an explicit list of enzymes to
+                                  search for, rather than searching through
+                                  'all' the enzymes in the REBASE database. It
+                                  is assumed that, if you are asking for an
+                                  explicit enzyme, then you probably know
+                                  where to get it from and so all enzymes
+                                  names that you have asked to be searched
+                                  for, and which cut, will be reported whether
+                                  or not they have a commercial supplier.
+   -[no]limit          boolean    This limits the reporting of enzymes to just
+                                  one enzyme from each group of
+                                  isoschizomers. The enzyme chosen to
+                                  represent an isoschizomer group is the
+                                  prototype indicated in the data file
+                                  'embossre.equ', which is created by the
+                                  program 'rebaseextract'. If you prefer
+                                  different prototypes to be used, make a copy
+                                  of embossre.equ in your home directory and
+                                  edit it. If this value is set to be false
+                                  then all of the input enzymes will be
+                                  reported. You might like to set this to
+                                  false if you are supplying an explicit set
+                                  of enzymes rather than searching 'all' of
+                                  them.
    -threeletter        boolean    Display protein sequences in three-letter
                                   code
    -number             boolean    Number the sequences
@@ -585,7 +639,7 @@ Command line arguments
    treated as the list of enzymes to search for. An example of a file of
    enzyme names is: ! my enzymes HincII, ppiII ! other enzymes hindiii
    HinfI PpiI Any string is accepted all
-   -table Code to use
+   -table Genetic code to use
    0 (Standard)
    1 (Standard (with alternative initiation codons))
    2 (Vertebrate Mitochondrial)
@@ -660,21 +714,55 @@ Command line arguments
    tag/value pairs in a feature that match the specified tag and value
    will be displayed. Boolean value Yes/No No
    Advanced qualifiers Allowed values Default
-   -orfminsize Minimum size of Open Reading Frames (ORFs) to display in
-   the translations. Integer 0 or more 0
-   -flatreformat Display RE sites in flat format Boolean value Yes/No No
-   -mincuts Minimum cuts per RE Integer from 1 to 1000 1
-   -maxcuts Maximum cuts per RE Integer up to 2000000000 2000000000
-   -sitelen Minimum recognition site length Integer from 2 to 20 4
-   -single Force single RE site only cuts Boolean value Yes/No No
-   -[no]blunt Allow blunt end RE cutters Boolean value Yes/No Yes
-   -[no]sticky Allow sticky end RE cutters Boolean value Yes/No Yes
-   -[no]ambiguity Allow ambiguous RE matches Boolean value Yes/No Yes
-   -plasmid Allow circular DNA Boolean value Yes/No No
-   -[no]commercial Only use restriction enzymes with suppliers Boolean
-   value Yes/No Yes
-   -[no]limit Limits RE hits to one isoschizomer Boolean value Yes/No Yes
-   -preferred Report preferred isoschizomers Boolean value Yes/No No
+   -orfminsize This sets the minimum size of Open Reading Frames (ORFs)
+   to display in the translations. All other translation regions are
+   masked by changing the amino acids to '-' characters. Integer 0 or
+   more 0
+   -flatreformat This changes the output format to one where the
+   recognition site is indicated by a row of '===' characters and the cut
+   site is pointed to by a '>' character in the forward sense, or a '<'
+   in the reverse sense strand. Boolean value Yes/No No
+   -mincuts This sets the minimum number of cuts for any restriction
+   enzyme that will be considered. Any enzymes that cut fewer times than
+   this will be ignored. Integer from 1 to 1000 1
+   -maxcuts This sets the maximum number of cuts for any restriction
+   enzyme that will be considered. Any enzymes that cut more times than
+   this will be ignored. Integer up to 2000000000 2000000000
+   -sitelen This sets the minimum length of the restriction enzyme
+   recognition site. Any enzymes with sites shorter than this will be
+   ignored. Integer from 2 to 20 4
+   -single If this is set then this forces the values of the mincuts and
+   maxcuts qualifiers to both be 1. Any other value you may have set them
+   to will be ignored. Boolean value Yes/No No
+   -[no]blunt This allows those enzymes which cut at the same position on
+   the forward and reverse strands to be considered. Boolean value Yes/No
+   Yes
+   -[no]sticky This allows those enzymes which cut at different positions
+   on the forward and reverse strands, leaving an overhang, to be
+   considered. Boolean value Yes/No Yes
+   -[no]ambiguity This allows those enzymes which have one or more 'N'
+   ambiguity codes in their pattern to be considered Boolean value Yes/No
+   Yes
+   -plasmid If this is set then this allows searches for restriction
+   enzyme recognition site and cut postions that span the end of the
+   sequence to be considered. Boolean value Yes/No No
+   -[no]commercial If this is set, then only those enzymes with a
+   commercial supplier will be searched for. This qualifier is ignored if
+   you have specified an explicit list of enzymes to search for, rather
+   than searching through 'all' the enzymes in the REBASE database. It is
+   assumed that, if you are asking for an explicit enzyme, then you
+   probably know where to get it from and so all enzymes names that you
+   have asked to be searched for, and which cut, will be reported whether
+   or not they have a commercial supplier. Boolean value Yes/No Yes
+   -[no]limit This limits the reporting of enzymes to just one enzyme
+   from each group of isoschizomers. The enzyme chosen to represent an
+   isoschizomer group is the prototype indicated in the data file
+   'embossre.equ', which is created by the program 'rebaseextract'. If
+   you prefer different prototypes to be used, make a copy of
+   embossre.equ in your home directory and edit it. If this value is set
+   to be false then all of the input enzymes will be reported. You might
+   like to set this to false if you are supplying an explicit set of
+   enzymes rather than searching 'all' of them. Boolean value Yes/No Yes
    -threeletter Display protein sequences in three-letter code Boolean
    value Yes/No No
    -number Number the sequences Boolean value Yes/No No

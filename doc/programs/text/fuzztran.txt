@@ -407,7 +407,7 @@ Output file format
   
 ########################################
 # Program: fuzztran
-# Rundate: Tue Apr 22 14:04:19 2003
+# Rundate: Thu May 22 10:28:54 2003
 # Report_format: table
 # Report_file: rnops.fuzztran
 ########################################

@@ -392,7 +392,7 @@ Output file format
   
 ########################################
 # Program: dan
-# Rundate: Tue Apr 22 13:45:39 2003
+# Rundate: Thu May 22 10:22:02 2003
 # Report_format: seqtable
 # Report_file: paamir.dan
 ########################################

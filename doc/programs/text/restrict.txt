@@ -34,7 +34,10 @@ Command line arguments
 
    Mandatory qualifiers:
   [-sequence]          seqall     Sequence database USA
-   -sitelen            integer    Minimum recognition site length
+   -sitelen            integer    This sets the minimum length of the
+                                  restriction enzyme recognition site. Any
+                                  enzymes with sites shorter than this will be
+                                  ignored.
    -enzymes            string     The name 'all' reads in all enzyme names
                                   from the REBASE database. You can specify
                                   enzymes by giving their names with commas
@@ -61,24 +64,71 @@ Command line arguments
 
    Optional qualifiers: (none)
    Advanced qualifiers:
-   -min                integer    Minimum cuts per RE
-   -max                integer    Maximum cuts per RE
-   -individual         boolean    This gives the fragment lengths produced by
-                                  restriction assuming only each named RE of
-                                  the set that can cut the sequence is used.
-                                  Results are added to the tail section of the
-                                  report.
-   -single             boolean    Force single site only cuts
-   -[no]blunt          boolean    Allow blunt end cutters
-   -[no]sticky         boolean    Allow sticky end cutters
-   -[no]ambiguity      boolean    Allow ambiguous matches
-   -plasmid            boolean    Allow circular DNA
-   -[no]commercial     boolean    Only enzymes with suppliers
+   -min                integer    This sets the minimum number of cuts for any
+                                  restriction enzyme that will be considered.
+                                  Any enzymes that cut fewer times than this
+                                  will be ignored.
+   -max                integer    This sets the maximum number of cuts for any
+                                  restriction enzyme that will be considered.
+                                  Any enzymes that cut more times than this
+                                  will be ignored.
+   -solofragment       boolean    This gives the fragment lengths of the
+                                  forward sense strand produced by complete
+                                  restriction by each restriction enzyme on it
+                                  own. Results are added to the tail section
+                                  of the report.
+   -single             boolean    If this is set then this forces the values
+                                  of the mincuts and maxcuts qualifiers to
+                                  both be 1. Any other value you may have set
+                                  them to will be ignored.
+   -[no]blunt          boolean    This allows those enzymes which cut at the
+                                  same position on the forward and reverse
+                                  strands to be considered.
+   -[no]sticky         boolean    This allows those enzymes which cut at
+                                  different positions on the forward and
+                                  reverse strands, leaving an overhang, to be
+                                  considered.
+   -[no]ambiguity      boolean    This allows those enzymes which have one or
+                                  more 'N' ambiguity codes in their pattern to
+                                  be considered
+   -plasmid            boolean    If this is set then this allows searches for
+                                  restriction enzyme recognition site and cut
+                                  postions that span the end of the sequence
+                                  to be considered.
+   -[no]commercial     boolean    If this is set, then only those enzymes with
+                                  a commercial supplier will be searched for.
+                                  This qualifier is ignored if you have
+                                  specified an explicit list of enzymes to
+                                  search for, rather than searching through
+                                  'all' the enzymes in the REBASE database. It
+                                  is assumed that, if you are asking for an
+                                  explicit enzyme, then you probably know
+                                  where to get it from and so all enzymes
+                                  names that you have asked to be searched
+                                  for, and which cut, will be reported whether
+                                  or not they have a commercial supplier.
    -datafile           string     Alternative RE data file
-   -[no]limit          boolean    Limits reports to one isoschizomer
-   -preferred          boolean    Report preferred isoschizomers
+   -[no]limit          boolean    This limits the reporting of enzymes to just
+                                  one enzyme from each group of
+                                  isoschizomers. The enzyme chosen to
+                                  represent an isoschizomer group is the
+                                  prototype indicated in the data file
+                                  'embossre.equ', which is created by the
+                                  program 'rebaseextract'. If you prefer
+                                  different prototypes to be used, make a copy
+                                  of embossre.equ in your home directory and
+                                  edit it. If this value is set to be false
+                                  then all of the input enzymes will be
+                                  reported. You might like to set this to
+                                  false if you are supplying an explicit set
+                                  of enzymes rather than searching 'all' of
+                                  them.
    -alphabetic         boolean    Sort output alphabetically
-   -fragments          boolean    Show fragment lengths
+   -fragments          boolean    This gives the fragment lengths of the
+                                  forward sense strand produced by complete
+                                  restriction using all of the input enzymes
+                                  together. Results are added to the tail
+                                  section of the report.
    -name               boolean    Show sequence name
 
    Associated qualifiers:
@@ -130,7 +180,9 @@ Command line arguments
    Mandatory qualifiers Allowed values Default
    [-sequence]
    (Parameter 1) Sequence database USA Readable sequence(s) Required
-   -sitelen Minimum recognition site length Integer from 2 to 20 4
+   -sitelen This sets the minimum length of the restriction enzyme
+   recognition site. Any enzymes with sites shorter than this will be
+   ignored. Integer from 2 to 20 4
    -enzymes The name 'all' reads in all enzyme names from the REBASE
    database. You can specify enzymes by giving their names with commas
    between then, such as: 'HincII,hinfI,ppiI,hindiii'. The case of the
@@ -147,24 +199,55 @@ Command line arguments
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default
-   -min Minimum cuts per RE Integer from 1 to 1000 1
-   -max Maximum cuts per RE Integer up to 2000000000 2000000000
-   -individual This gives the fragment lengths produced by restriction
-   assuming only each named RE of the set that can cut the sequence is
-   used. Results are added to the tail section of the report. Boolean
+   -min This sets the minimum number of cuts for any restriction enzyme
+   that will be considered. Any enzymes that cut fewer times than this
+   will be ignored. Integer from 1 to 1000 1
+   -max This sets the maximum number of cuts for any restriction enzyme
+   that will be considered. Any enzymes that cut more times than this
+   will be ignored. Integer up to 2000000000 2000000000
+   -solofragment This gives the fragment lengths of the forward sense
+   strand produced by complete restriction by each restriction enzyme on
+   it own. Results are added to the tail section of the report. Boolean
    value Yes/No No
-   -single Force single site only cuts Boolean value Yes/No No
-   -[no]blunt Allow blunt end cutters Boolean value Yes/No Yes
-   -[no]sticky Allow sticky end cutters Boolean value Yes/No Yes
-   -[no]ambiguity Allow ambiguous matches Boolean value Yes/No Yes
-   -plasmid Allow circular DNA Boolean value Yes/No No
-   -[no]commercial Only enzymes with suppliers Boolean value Yes/No Yes
+   -single If this is set then this forces the values of the mincuts and
+   maxcuts qualifiers to both be 1. Any other value you may have set them
+   to will be ignored. Boolean value Yes/No No
+   -[no]blunt This allows those enzymes which cut at the same position on
+   the forward and reverse strands to be considered. Boolean value Yes/No
+   Yes
+   -[no]sticky This allows those enzymes which cut at different positions
+   on the forward and reverse strands, leaving an overhang, to be
+   considered. Boolean value Yes/No Yes
+   -[no]ambiguity This allows those enzymes which have one or more 'N'
+   ambiguity codes in their pattern to be considered Boolean value Yes/No
+   Yes
+   -plasmid If this is set then this allows searches for restriction
+   enzyme recognition site and cut postions that span the end of the
+   sequence to be considered. Boolean value Yes/No No
+   -[no]commercial If this is set, then only those enzymes with a
+   commercial supplier will be searched for. This qualifier is ignored if
+   you have specified an explicit list of enzymes to search for, rather
+   than searching through 'all' the enzymes in the REBASE database. It is
+   assumed that, if you are asking for an explicit enzyme, then you
+   probably know where to get it from and so all enzymes names that you
+   have asked to be searched for, and which cut, will be reported whether
+   or not they have a commercial supplier. Boolean value Yes/No Yes
    -datafile Alternative RE data file Any string is accepted An empty
    string is accepted
-   -[no]limit Limits reports to one isoschizomer Boolean value Yes/No Yes
-   -preferred Report preferred isoschizomers Boolean value Yes/No No
+   -[no]limit This limits the reporting of enzymes to just one enzyme
+   from each group of isoschizomers. The enzyme chosen to represent an
+   isoschizomer group is the prototype indicated in the data file
+   'embossre.equ', which is created by the program 'rebaseextract'. If
+   you prefer different prototypes to be used, make a copy of
+   embossre.equ in your home directory and edit it. If this value is set
+   to be false then all of the input enzymes will be reported. You might
+   like to set this to false if you are supplying an explicit set of
+   enzymes rather than searching 'all' of them. Boolean value Yes/No Yes
    -alphabetic Sort output alphabetically Boolean value Yes/No No
-   -fragments Show fragment lengths Boolean value Yes/No No
+   -fragments This gives the fragment lengths of the forward sense strand
+   produced by complete restriction using all of the input enzymes
+   together. Results are added to the tail section of the report. Boolean
+   value Yes/No No
    -name Show sequence name Boolean value Yes/No No
    
 Input file format
@@ -287,7 +370,7 @@ Output file format
   
 ########################################
 # Program: restrict
-# Rundate: Tue Apr 22 14:12:37 2003
+# Rundate: Thu May 22 13:31:43 2003
 # Report_format: table
 # Report_file: hsfau.restrict
 ########################################
@@ -307,114 +390,60 @@ Output file format
 #
 #=======================================
 
-  Start     End   Score Enzyme_name Restriction_site 5prime 3prime 5primerev 3p
-rimerev
-     11      14        0 TaqI        TCGA                 11     13         .
-       .
-     28      31        0 AciI        CCGC                 25     27         .
-       .
-     38      41        0 AciI        CCGC                 38     40         .
-       .
-     44      48        0 BceAI       ACGGC                25     27         .
-       .
-     71      74        0 AciI        CCGC                 71     73         .
-       .
-     71      81        0 Bsc4I       CCNNNNNNNGG          77     74         .
-       .
-     73      76        0 Hin6I       GCGC                 73     75         .
-       .
-     73      76        0 HhaI        GCGC                 75     73         .
-       .
-     77      81        0 BssKI       CCNGG                76     81         .
-       .
-     77      81        0 EcoRII      CCWGG                76     81         .
-       .
-     94      97        0 TaqI        TCGA                 94     96         .
-       .
-    103     106        0 BsiSI       CCGG                103    105         .
-       .
-    105     108        0 BshI        GGCC                106    106         .
-       .
-    107     111        0 EcoRII      CCWGG               106    111         .
-       .
-    107     117        0 Bsc4I       CCNNNNNNNGG         113    110         .
-       .
-    107     111        0 BssKI       CCNGG               106    111         .
-       .
-    122     132        0 Bsc4I       CCNNNNNNNGG         128    125         .
-       .
-    125     135        0 Hin4I       GAYNNNNNVTC         116    111       148
-     143
-    146     150        0 Bse1I       ACTGG               151    149         .
-       .
-    161     165        0 BssKI       CCNGG               160    165         .
-       .
-    162     165        0 BsiSI       CCGG                162    164         .
-       .
-    182     186        0 BssKI       CCNGG               181    186         .
-       .
-    182     186        0 EcoRII      CCWGG               181    186         .
-       .
-    190     193        0 HhaI        GCGC                192    190         .
-       .
-    190     193        0 Hin6I       GCGC                190    192         .
-       .
-    192     195        0 HhaI        GCGC                194    192         .
-       .
-    192     195        0 Hin6I       GCGC                192    194         .
-       .
-    197     201        0 BssKI       CCNGG               196    201         .
-       .
-    197     201        0 EcoRII      CCWGG               196    201         .
-       .
-    209     212        0 BshI        GGCC                210    210         .
-       .
-    219     222        0 BshI        GGCC                220    220         .
-       .
-    221     231        0 Bsc4I       CCNNNNNNNGG         227    224         .
-       .
-    225     229        0 Bse1I       ACTGG               221    219         .
-       .
-    229     232        0 AciI        CCGC                226    228         .
-       .
-    236     239        0 BshI        GGCC                237    237         .
-       .
-    248     252        0 BssKI       CCNGG               247    252         .
-       .
-    248     252        0 EcoRII      CCWGG               247    252         .
-       .
-    261     264        0 BshI        GGCC                262    262         .
-       .
-    263     266        0 AciI        CCGC                263    265         .
-       .
-    293     297        0 EcoRII      CCWGG               292    297         .
-       .
-    293     297        0 BssKI       CCNGG               292    297         .
-       .
-    296     299        0 BshI        GGCC                297    297         .
-       .
-    335     338        0 BshI        GGCC                336    336         .
-       .
-    380     383        0 AciI        CCGC                377    379         .
-       .
-    383     386        0 AciI        CCGC                380    382         .
-       .
-    395     398        0 BsiSI       CCGG                395    397         .
-       .
-    398     401        0 HhaI        GCGC                400    398         .
-       .
-    398     401        0 Hin6I       GCGC                398    400         .
-       .
-    405     410        0 HindII      GTYRAC              407    407         .
-       .
-    408     413        0 AclI        AACGTT              409    411         .
-       .
-    409     412        0 HpyCH4IV    ACGT                409    411         .
-       .
-    417     427        0 Bsc4I       CCNNNNNNNGG         423    420         .
-       .
-    438     441        0 BshI        GGCC                439    439         .
-       .
+  Start     End Enzyme_name Restriction_site 5prime 3prime 5primerev 3primerev
+     11      14 TaqI        TCGA                 11     13         .         .
+     28      31 AciI        CCGC                 25     27         .         .
+     38      41 AciI        CCGC                 38     40         .         .
+     44      48 BceAI       ACGGC                25     27         .         .
+     71      74 AciI        CCGC                 71     73         .         .
+     71      81 BsiYI       CCNNNNNNNGG          77     74         .         .
+     73      76 Hin6I       GCGC                 73     75         .         .
+     73      76 HhaI        GCGC                 75     73         .         .
+     77      81 BssKI       CCNGG                76     81         .         .
+     77      81 EcoRII      CCWGG                76     81         .         .
+     94      97 TaqI        TCGA                 94     96         .         .
+    103     106 HpaII       CCGG                103    105         .         .
+    105     108 HaeIII      GGCC                106    106         .         .
+    107     111 EcoRII      CCWGG               106    111         .         .
+    107     117 BsiYI       CCNNNNNNNGG         113    110         .         .
+    107     111 BssKI       CCNGG               106    111         .         .
+    122     132 BsiYI       CCNNNNNNNGG         128    125         .         .
+    125     135 Hin4I       GAYNNNNNVTC         116    111       148       143
+    146     150 BsrI        ACTGG               151    149         .         .
+    161     165 BssKI       CCNGG               160    165         .         .
+    162     165 HpaII       CCGG                162    164         .         .
+    182     186 BssKI       CCNGG               181    186         .         .
+    182     186 EcoRII      CCWGG               181    186         .         .
+    190     193 HhaI        GCGC                192    190         .         .
+    190     193 Hin6I       GCGC                190    192         .         .
+    192     195 HhaI        GCGC                194    192         .         .
+    192     195 Hin6I       GCGC                192    194         .         .
+    197     201 BssKI       CCNGG               196    201         .         .
+    197     201 EcoRII      CCWGG               196    201         .         .
+    209     212 HaeIII      GGCC                210    210         .         .
+    219     222 HaeIII      GGCC                220    220         .         .
+    221     231 BsiYI       CCNNNNNNNGG         227    224         .         .
+    225     229 BsrI        ACTGG               221    219         .         .
+    229     232 AciI        CCGC                226    228         .         .
+    236     239 HaeIII      GGCC                237    237         .         .
+    248     252 BssKI       CCNGG               247    252         .         .
+    248     252 EcoRII      CCWGG               247    252         .         .
+    261     264 HaeIII      GGCC                262    262         .         .
+    263     266 AciI        CCGC                263    265         .         .
+    293     297 EcoRII      CCWGG               292    297         .         .
+    293     297 BssKI       CCNGG               292    297         .         .
+    296     299 HaeIII      GGCC                297    297         .         .
+    335     338 HaeIII      GGCC                336    336         .         .
+    380     383 AciI        CCGC                377    379         .         .
+    383     386 AciI        CCGC                380    382         .         .
+    395     398 HpaII       CCGG                395    397         .         .
+    398     401 HhaI        GCGC                400    398         .         .
+    398     401 Hin6I       GCGC                398    400         .         .
+    405     410 HindII      GTYRAC              407    407         .         .
+    408     413 AclI        AACGTT              409    411         .         .
+    409     412 MaeII       ACGT                409    411         .         .
+    417     427 BsiYI       CCNNNNNNNGG         423    420         .         .
+    438     441 HaeIII      GGCC                439    439         .         .
 
 #---------------------------------------
 #---------------------------------------

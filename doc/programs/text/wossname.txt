@@ -432,6 +432,7 @@ revseq           Reverse and complement a sequence
 seealso          Finds programs sharing group names
 seqmatchall      Does an all-against-all comparison of a set of sequences
 seqret           Reads and writes (returns) sequences
+seqret           Reads and writes (returns) sequences
 seqretsplit      Reads and writes (returns) sequences in individual files
 showalign        Displays a multiple sequence alignment
 showdb           Displays information on the currently available databases

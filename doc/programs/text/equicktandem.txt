@@ -233,7 +233,7 @@ Output file format
   
 ########################################
 # Program: equicktandem
-# Rundate: Tue Apr 22 13:56:23 2003
+# Rundate: Thu May 22 10:25:53 2003
 # Report_format: table
 # Report_file: hhtetra.qtan
 ########################################

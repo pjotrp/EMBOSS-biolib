@@ -27,20 +27,111 @@ Usage
    
 
 % checktrans 
-Error: File /packages/emboss_dev/gwilliam/emboss/emboss/emboss/acd/checktrans.a
-cd line 11: ../../data/paamir.pep
-Expected ':' not found after 'min:1'
+Reports STOP codons and ORF statistics of a protein
+Input sequence(s): ../../data/paamir.pep
+Minimum ORF Length to report [100]: 
+Output file [paamir_1.checktrans]: 
+Output sequence [paamir_1.fasta]: 
    
    Go to the input files for this example
+   Go to the output files for this example
    
 Command line arguments
 
-Error: File /packages/emboss_dev/gwilliam/emboss/emboss/emboss/acd/checktrans.a
-cd line 11: Expected ':' not found after 'min:1'
+   Mandatory qualifiers:
+  [-sequence]          seqall     Sequence database USA
+   -orfml              integer    Minimum ORF Length to report
+  [-report]            outfile    Output file name
+   -outseq             seqoutall  Sequence file to hold output ORF sequences
+
+   Optional qualifiers:
+   -[no]addlast        boolean    An asterisk in the protein sequence
+                                  indicates the position of a STOP codon.
+                                  Checktrans assumes that all ORFs end in a
+                                  STOP codon. Forcing the sequence to end with
+                                  an asterisk, if there is not one there
+                                  already, makes checktrans treat the end as a
+                                  potential ORF. If an asterisk is added, it
+                                  is not included in the reported count of
+                                  STOPs.
+
+   Advanced qualifiers:
+   -featout            featout    File for output features
+
+   Associated qualifiers:
+  "-sequence" related qualifiers
+   -sbegin1             integer    First base used
+   -send1               integer    Last base used, def=seq length
+   -sreverse1           boolean    Reverse (if DNA)
+   -sask1               boolean    Ask for begin/end/reverse
+   -snucleotide1        boolean    Sequence is nucleotide
+   -sprotein1           boolean    Sequence is protein
+   -slower1             boolean    Make lower case
+   -supper1             boolean    Make upper case
+   -sformat1            string     Input sequence format
+   -sopenfile1          string     Input filename
+   -sdbname1            string     Database name
+   -sid1                string     Entryname
+   -ufo1                string     UFO features
+   -fformat1            string     Features format
+   -fopenfile1          string     Features file name
+  "-report" related qualifiers
+   -odirectory2         string     Output directory
+  "-outseq" related qualifiers
+   -osformat            string     Output seq format
+   -osextension         string     File name extension
+   -osname              string     Base file name
+   -osdirectory         string     Output directory
+   -osdbname            string     Database name to add
+   -ossingle            boolean    Separate file for each entry
+   -oufo                string     UFO features
+   -offormat            string     Features format
+   -ofname              string     Features file name
+   -ofdirectory         string     Output directory
+  "-featout" related qualifiers
+   -offormat            string     Output feature format
+   -ofopenfile          string     Features file name
+   -ofextension         string     File name extension
+   -ofdirectory         string     Output directory
+   -ofname              string     Base file name
+   -ofsingle            boolean    Separate file for each entry
+
+   General qualifiers:
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for required and optional values
+   -debug               boolean    Write debug output to program.dbg
+   -acdlog              boolean    Write ACD processing log to program.acdlog
+   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
+   -acdtable            boolean    Write HTML table of options
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
    
-   Error: File
-   /packages/emboss_dev/gwilliam/emboss/emboss/emboss/acd/checktrans.acd
-   line 11: Expected ':' not found after 'min:1'
+
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   -orfml Minimum ORF Length to report Integer 1 or more 100
+   [-report]
+   (Parameter 2) Output file name Output file <sequence>.checktrans
+   -outseq Sequence file to hold output ORF sequences Writeable
+   sequence(s) <sequence>.format
+   Optional qualifiers Allowed values Default
+   -[no]addlast An asterisk in the protein sequence indicates the
+   position of a STOP codon. Checktrans assumes that all ORFs end in a
+   STOP codon. Forcing the sequence to end with an asterisk, if there is
+   not one there already, makes checktrans treat the end as a potential
+   ORF. If an asterisk is added, it is not included in the reported count
+   of STOPs. Boolean value Yes/No Yes
+   Advanced qualifiers Allowed values Default
+   -featout File for output features Writeable feature table unknown.gff
    
 Input file format
 
@@ -72,6 +163,39 @@ Output file format
    This program writes three files: the ORF report file
    (paamir_1.checktrans), the output sequence file (paamir_1.fasta) and
    the feature file (paamir_1.out3) which is in GFF format by default.
+   
+  Output files for usage example
+  
+  File: paamir_1.checktrans
+  
+
+
+CHECKTRANS of PAAMIR_1 from 1 to 724
+
+        ORF#    Pos     Len     ORF Range       Sequence name
+
+        7       635     357     278-634 PAAMIR_1_7
+
+        Total STOPS:     7
+   
+
+  File: paamir_1.fasta
+  
+>PAAMIR_1_7
+PPARRRWRRWRVTWQRGRWWSRLTSPASIRPPAGPSSRPAMVSSRRTRPSPPGPRRPTGR
+PCCSAAPRRPQATGGWKTCSGTCTTSTSTRHRGRSGWSARTTTAACLRASRKSMRAACSR
+SAGSRPNRFAPTLMSSCITSTTGPPAWAGDRSHERQLAARQPARVAGAGPQPAGGGQRRP
+GLAADPHRLFGAPVLAAAGSLRRAGGRGLHQHFPEWPPRRDRCAARRRDSAHYPGGAGGV
+RKPRGALADHRAGVPRRDHPAARCPPGAACAGIGAAHQRGNGEAEAEDRAAPGPHRRPGP
+DQPGQGVADAAPWLGRARGAPAPVAGSDEAARADPEDRSGVAGKRAVRLSDPGRPEQ
+   
+  File: paamir_1.gff
+  
+##gff-version 2.0
+##date 2003-05-22
+##Type Protein PAAMIR_1
+PAAMIR_1        checktrans      misc_feature    278     634     0.000   +
+.       Sequence "PAAMIR_1.1"
    
    The ORF report file gives the numeric count of the ORF, the position
    of the terminating STOP codon, the length of the ORF, its start and

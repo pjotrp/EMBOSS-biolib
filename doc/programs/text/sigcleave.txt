@@ -223,7 +223,7 @@ Output file format
   
 ########################################
 # Program: sigcleave
-# Rundate: Tue Apr 22 14:20:31 2003
+# Rundate: Thu May 22 10:58:29 2003
 # Report_format: motif
 # Report_file: ach2_drome.sig
 ########################################
