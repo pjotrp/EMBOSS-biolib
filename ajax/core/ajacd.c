@@ -691,6 +691,7 @@ AcdOAttr acdAttrOutfile[] = { {"name", VT_STR},
 			      {"extension", VT_STR},
 			      {"type", VT_STR},
 			      {"nullok", VT_BOOL},
+			      {"append", VT_BOOL},
 			      {NULL, VT_NULL} };
 
 AcdOAttr acdAttrCpdb[] = { {"name", VT_STR},
@@ -5056,6 +5057,7 @@ static void acdSetOutfile (AcdPAcd thys)
     static AjPStr reply = NULL;
     ajint itry;
     AjBool nullok;
+    AjBool append;
 
     static AjPStr name = NULL;
     static AjPStr ext = NULL;
@@ -5068,6 +5070,8 @@ static void acdSetOutfile (AcdPAcd thys)
 
     (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
     acdLog ("nullok: %B\n", nullok);
+    (void) acdAttrToBool (thys, "append", ajFalse, &append);
+    acdLog ("append: %B\n", append);
 
     required = acdIsRequired(thys);
     (void) acdOutFilename (&outfname, name, ext);
@@ -5085,7 +5089,14 @@ static void acdSetOutfile (AcdPAcd thys)
 
 	if (ajStrLen(reply))
 	{
-	    val = ajFileNewOut(reply);
+	    if (append)
+	    {
+	        val = ajFileNewApp(reply);
+	    }
+	    else
+	    {
+	        val = ajFileNewOut(reply);
+	    }
 	    if (!val)
 	    {
 		acdBadVal (thys, required,
