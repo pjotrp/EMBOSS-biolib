@@ -235,6 +235,7 @@ typedef struct EmbSBtCache
     ajint cachesize;
     ajint nperbucket;
     AjPStr replace;
+    ajlong count;
     AjBool deleted;
 } EmbOBtcache, *EmbPBtcache;
 
@@ -258,7 +259,7 @@ void     embBtreeCacheDel(EmbPBtcache *thys);
 void     embBtreeInsertId(EmbPBtcache cache, EmbPBtId id);
 void     embBtreeIdDel(EmbPBtId *thys);
 EmbPBtId embBtreeIdNew(void);
-EmbPBtId embBtreeIdFromKey(EmbPBtcache cache, char *key, AjBool incdup);
+EmbPBtId embBtreeIdFromKey(EmbPBtcache cache, char *key);
 void     embBtreeWriteParams(EmbPBtcache cache, char *fn);
 void     embBtreeReadParams(char *fn, ajint *order, ajint *nperbucket,
 			    ajint *pagesize, ajint *level, ajint *cachesize);
@@ -272,6 +273,11 @@ void       embBtreeWildDel(EmbPBtWild *thys);
 EmbPBtpage embBtreeFindInsertW(EmbPBtcache cache, char *key);
 EmbPBtId   embBtreeIdFromKeyW(EmbPBtcache cache, EmbPBtWild wild);
 AjBool     embBtreeReplaceId(EmbPBtcache cache, EmbPBtId rid);
+
+AjPStr*    embBtreeReadEntries(char *filename);
+void       embBtreeInsertDupId(EmbPBtcache cache, EmbPBtId id);
+AjPList    embBtreeDupFromKey(EmbPBtcache cache, char *key);
+
 
 #endif
 
