@@ -182,7 +182,7 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
 //    treePane.setOneTouchExpandable(true);
       getContentPane().add(treePane);
       pack();
-      setVisible(true);
+
     }
     catch(JembossSoapException jse)
     {

@@ -200,6 +200,10 @@ public class AuthPopup extends JFrame
           LocalAndRemoteFileTreeFrame treeFrame =
                   new LocalAndRemoteFileTreeFrame(mysettings);
           treeFrame.setExit();
+
+          Dimension d = treeFrame.getToolkit().getScreenSize();
+          treeFrame.setLocation(0,((int)d.getHeight()-treeFrame.getHeight())/2);
+          treeFrame.setVisible(true);
         }
         catch(JembossSoapException jse)
         {
@@ -232,6 +236,9 @@ public class AuthPopup extends JFrame
           LocalAndRemoteFileTreeFrame treeFrame =
                   new LocalAndRemoteFileTreeFrame(mysettings);
           treeFrame.setExit();
+          Dimension d = treeFrame.getToolkit().getScreenSize();
+          treeFrame.setLocation(0,((int)d.getHeight()-treeFrame.getHeight())/2);
+          treeFrame.setVisible(true);
         }
         catch(JembossSoapException jse)
         {

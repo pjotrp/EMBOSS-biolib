@@ -110,6 +110,15 @@ public class SetUpMenuBar
           try
           {
             localAndRemoteTree = new LocalAndRemoteFileTreeFrame(mysettings);
+            Dimension d = f.getToolkit().getScreenSize();
+            int locY = (int)(d.getHeight()-localAndRemoteTree.getHeight())/2;
+            int wid1 = (int)localAndRemoteTree.getPreferredSize().getWidth();
+            int wid2 = f.getWidth();
+            wid1 = (int)d.getWidth()-wid1;
+            if(wid2 < wid1)
+              wid1 = wid2;     
+            localAndRemoteTree.setLocation(wid1,locY);
+            localAndRemoteTree.setVisible(true);
           }
           catch(JembossSoapException jse)
           {
