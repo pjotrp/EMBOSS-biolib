@@ -93,8 +93,8 @@ int main(int argc, char **argv)
     ajAcdInitP("domainer",argc,argv,"DOMAINATRIX"); 
     cpdb_dir     = ajAcdGetDirectory("ccfp");
     mode          = ajAcdGetList("mode");
-    cpdbscop_dir = ajAcdGetOutdir("ccfd");
-    pdbscop_dir  = ajAcdGetOutdir("pdb");
+    cpdbscop_dir = ajAcdGetOutdir("ccfdir");
+    pdbscop_dir  = ajAcdGetOutdir("pdbdir");
     scop_inf      = ajAcdGetInfile("scopfile");
     errf1         = ajAcdGetOutfile("pdberrfile");
     errf2         = ajAcdGetOutfile("cpdberrfile");

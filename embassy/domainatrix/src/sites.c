@@ -314,7 +314,7 @@ int main(ajint argc, char **argv)
     dcf_fptr    = ajAcdGetInfile("dcf");
     het_fptr    = ajAcdGetInfile("dic");
     outf        = ajAcdGetOutfile("outf");
-    vdwf        = ajAcdGetInfile("vdwf");
+    vdwf        = ajAcdGetDatafile("vdwf");
     dist_thresh = ajAcdGetFloat("thresh");
     logf        = ajAcdGetOutfile("logf");
     

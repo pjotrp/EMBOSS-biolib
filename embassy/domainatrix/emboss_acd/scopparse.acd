@@ -20,7 +20,7 @@ section: input [
            file dir.cla.scop.txt_X.XX (input). This is the raw SCOP
            classification file available at
            http://scop.mrc-lmb.cam.ac.uk/scop/parse/dir.cla.scop.txt_1.57."
-    knowntype: "Raw SCOP parsable file (classification file)"
+    knowntype: "Raw scop classification file"
     parameter: "Y"
   ]
 
@@ -31,7 +31,7 @@ section: input [
            dir.des.scop.txt_X.XX (input). This is the raw SCOP description
            file available at
            http://scop.mrc-lmb.cam.ac.uk/scop/parse/dir.des.scop.txt_1.57."
-    knowntype: "Raw SCOP parsable file (description file)"
+    knowntype: "raw scop description file"
     parameter: "Y"
   ]
 
@@ -57,10 +57,6 @@ section: additional [
   ]
 
 endsection: additional
-
-
-
-
 
 section: required [
   information: "Required section"
@@ -89,10 +85,6 @@ section: required [
 
 endsection: required
 
-
-
-
-
 section: output [
   information: "Output section"
   type: "page"
@@ -108,24 +100,8 @@ section: output [
            in DCF format (EMBL-like). Domain sequence information can be
            added to the file by using DOMAINSEQS."
     default: "test.scop"
-    knowntype: "Domain classification file"
+    knowntype: "domain classification file"
     parameter: "Y"
   ]
 
 endsection: output
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

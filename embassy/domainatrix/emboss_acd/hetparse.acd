@@ -13,14 +13,14 @@ section: input [
   type: "page"
 ]
 
-  infile: infile  [
+  infile: infile [
     parameter: "Y"
     information: "Name of input file (raw dictionary of
                   heterogen groups)"
-    help: "This option specifies the name of input file (raw dictionary of
-           heterogen groups) to parse, which should be of the format specified at
-           http://pdb.rutgers.edu/het_dictionary.txt"
-	   knowntype: "Raw dictionary of heterogen groups"
+    help: "This option specifies the name of input file (raw
+           dictionary of heterogen groups) to parse, which should be of the
+           format specified at http://pdb.rutgers.edu/het_dictionary.txt"
+    knowntype: "Raw dictionary of heterogen groups"
   ]
 
 endsection: input
@@ -30,22 +30,22 @@ section: required [
   type: "page"
 ]
 
-
-  toggle: dogrep  [
+  toggle: dogrep [
     standard: "Y"
-    information: "Search a directory of PDB files with keywords?"
-    help: "This option specifies whether to search a directory of files (typically PDB files) with keywords. If set, HETPARSE will search the directory
-           and will count the number of files that each heterogen appears
-           in."
+    information: "Search a directory of PDB files with
+                  keywords?"
+    help: "This option specifies whether to search a directory of
+           files (typically PDB files) with keywords. If set, HETPARSE will
+           search the directory and will count the number of files that each
+           heterogen appears in."
     default: "N"
   ]
 
-
-  dirlist: dirlist
-  [
+  dirlist: dirlist [
     standard: "$(dogrep)"
     information: "Directory to search with keywords"
-    help: "This option specifies the directory to search with keywords."
+    help: "This option specifies the directory to search with
+           keywords."
     default: "./"
     extension: "ent"
   ]
@@ -57,20 +57,14 @@ section: output [
   type: "page"
 ]
 
-  outfile: outfile  [
+  outfile: outfile [
     parameter: "Y"
     default: "Ehet.dat"
-    information: "Name of EMBL-like format dictionary of heterogen groups."
-    help: "This option specifies the name of EMBL-like format dictionary of heterogen groups."
+    information: "Name of EMBL-like format dictionary of
+                  heterogen groups."
+    help: "This option specifies the name of EMBL-like format
+           dictionary of heterogen groups."
     knowntype: "Dictionary of heterogen groups"
   ]
 
 endsection: output
-
-
-
-
-
-
-
-

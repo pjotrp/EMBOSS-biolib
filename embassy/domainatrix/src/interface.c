@@ -122,7 +122,7 @@ int main(ajint argc, char **argv)
     logf          = ajAcdGetOutfile("conerrf");
     thresh        = ajAcdGetFloat("thresh");
     ignore        = ajAcdGetFloat("ignore");
-    vdwf       = ajAcdGetInfile("vdwf");
+    vdwf       = ajAcdGetDatafile("vdwf");
 
 
     
