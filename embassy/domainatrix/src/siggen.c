@@ -2852,6 +2852,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg, AjPScorealg scores,
                                        ( (float)sig_sparse/(float)100)));
 
 
+    
     for(i=((alg->width)-1); i>((alg->width)-sig_npos); i--)
     {
         /*ajFmtPrint("i = %d %f %d \n", i, ajFloatGet(total_score, i), ajIntGet(post_sim, i));*/

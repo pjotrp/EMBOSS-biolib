@@ -37,7 +37,8 @@
 **  be provided in which case a classification of hits is provided in the 
 **  signature hits file.  The names of signature file, signature hits file, 
 **  signature alignment file and validation files are provided by the user.
-**   
+**  The user specifies a maximum number of false hits that are written to 
+**  the signature hits files.
 **  
 **  Sister applications
 **  A 'signature file' contains a sparse sequence signature.  The files are 
@@ -185,7 +186,8 @@
 **  
 **  Input file format
 **  The format of the scop validation is exactly the same as the scop families
-**  file, described in seqsearch.c. 
+**  file, described in seqsearch.c.  The format of the signature file is 
+**  described in siggen.c
 ** 
 **   
 **  
@@ -370,6 +372,7 @@ int main(int argc, char **argv)
     AjPList      listtargets = NULL; /*List of AjOHitlist structures */    
     AjPStr       *nterm=NULL;        /*Holds N-terminal matching options from acd*/
     ajint         ntopt=0;           /*N-terminal option as int */
+    ajint              x=0;   /* Housekeeping variable*/
     
 
 
@@ -466,6 +469,15 @@ int main(int argc, char **argv)
 	ajXyzHitlistClassify(&hits, listtargets, thresh);
 	ajFmtPrint("Hit classified ok\n");
     }
+    else
+    {
+	for(x=0; x<hits->N; x++)
+	{
+	    ajStrAssC(&hits->hits[x]->Typeobj, "UNKNOWN");
+	    ajStrAssC(&hits->hits[x]->Typesbj, "UNKNOWN");
+	    ajStrAssC(&hits->hits[x]->Group, "NOT_APPLICABLE");
+	}
+    }
     
 
     
@@ -476,7 +488,7 @@ int main(int argc, char **argv)
 
     /*WRITE HITS OUTPUT FILE */
   
-    ajXyzSignatureAlignWrite(alignf, sig, hits);
+    ajXyzSignatureAlignWriteBlock(alignf, sig, hits);
     ajFmtPrint("Alignments file written ok\n");
 
 

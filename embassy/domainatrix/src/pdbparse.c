@@ -4485,7 +4485,8 @@ if(camask)
 ** Reads a Pdbfile object and standardises the two sets of residue numbers 
 ** (resn1 & resn2 arrays) derived from the raw residue numbers. The residue 
 ** numbering is corrected for zero or negative residue numbers, non-standard 
-** numbering schemes and any other cases of non-sequentiality. 
+** numbering schemes and any other cases of non-sequentiality (e.g. where the
+** next residue number is lower than the previous one, see 1pca).
 ** resn1 gives the sequence presuming an alternative numbering scheme, resn2 
 ** gives the sequence presuming heterogeneity. Heterogeneity is indicated by 
 ** a character in position lines[26] (the same position used to indicate 
@@ -4526,6 +4527,7 @@ static AjBool pdbparse_StandardiseNumbering(AjPPdbfile *pdbfile, AjPFile logf)
     ajint   add=0;			/* An amount to add to the residue 
 					   numbers to correct them */
     AjBool  ignore=ajFalse;
+    AjBool  odd=ajFalse;
     ajint   rn=0;			/* Current residue number */
     ajint   last_rn=0;			/* Last residue number read in */    
     ajint   this_rn=0;			/* Current residue number read in */    
@@ -4769,6 +4771,8 @@ static AjBool pdbparse_StandardiseNumbering(AjPPdbfile *pdbfile, AjPFile logf)
 	    {
 		ignore = ajFalse;
 	    }
+
+
 	      
 	    last=curr;
 	    last_rn = rn;
@@ -4835,25 +4839,34 @@ static AjBool pdbparse_StandardiseNumbering(AjPPdbfile *pdbfile, AjPFile logf)
 	    ajStrAssS(&this_rt, (*pdbfile)->rtype[i]);
 
 
-	    /*If this ATOM is 'N' or if this is a different residue type*/
+	    /* A new residue is indicated if this ATOM is 'N' or 
+	       if this is a different residue type*/
 	    if( !(ajStrCmpC((*pdbfile)->atype[i],  "N")) || 
 	       !(ajStrMatch(this_rt, last_rt)))
 	    {
+		/* Check for duplicate residue numbers */
 		if(this_rn == last_rn)
 		{
 		    add++;
 		    ignore=ajTrue;
-		}	
+		    odd=ajTrue;
+		}
+
+		/* Check for drops in residue numbers, see 1pca */
+		if(this_rn < last_rn)
+		{
+		    add+=(last_rn-this_rn+1);
+		    ignore=ajTrue;
+		    odd=ajFalse;
+		}
 	    }
 
 
-	    if(this_rn != last_rn)
+	    if(this_rn > last_rn)
 		ignore = ajFalse;
 
 	    (*pdbfile)->resn1[i]=this_rn+add;
 
-
-	    
 
 	    ajStrAssS(&last_rt, this_rt);
 	    last_rn = this_rn;
@@ -4861,7 +4874,9 @@ static AjBool pdbparse_StandardiseNumbering(AjPPdbfile *pdbfile, AjPFile logf)
 
 	    if(ignore)
 	    {
-		(*pdbfile)->oddnum[i]=ajTrue;
+		if(odd)
+		    (*pdbfile)->oddnum[i]=ajTrue;
+		
 		if(!report_nonsqt)
 		{
 		    ajFmtPrintF(logf, "%-15s%d (%c) %d\n", "NONSQNTL", 
@@ -4918,14 +4933,22 @@ static AjBool pdbparse_StandardiseNumbering(AjPPdbfile *pdbfile, AjPFile logf)
 	    ajStrAssS(&this_rt, (*pdbfile)->rtype[i]);
 
 
-	    /*If this ATOM is 'N' or if this is a different residue type*/
+	    /* A new residue is indicated if this ATOM is 'N' or 
+	       if this is a different residue type*/
 	    if(!(ajStrCmpC((*pdbfile)->atype[i],  "N")) || 
 	       !(ajStrMatch(this_rt, last_rt)))
 	    {
+		/* Check for duplicate residue numbers */
 		if(this_rn == last_rn)
 		{
 		    add++;
 		}	
+
+		/* Check for drops in residue numbers, see 1pca */
+		if(this_rn < last_rn)
+		{
+		    add+=(last_rn-this_rn+1);
+		}
 	    }
 
 	    (*pdbfile)->resn2[i]=this_rn+add;
@@ -5176,6 +5199,7 @@ static AjBool pdbparse_AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint l
 /*	    ajFmtPrint("%S\n", (*pdbfile)->lines[i]); */
 	    
 
+
 	    if((*pdbfile)->resn1[i] != last1)
 	    {
 		pdbparse_BaseAa3ToAa1(&aa1, (*pdbfile)->rtype[i]);
@@ -5332,7 +5356,7 @@ static AjBool pdbparse_AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint l
 			
 			done=ajTrue;
 
-			/*DIAGNOSTIC			 printf("STEP1 OK\n"); */
+			/* DIAGNOSTIC			 printf("STEP1 OK\n");  */
 			
 			break;
 		    }
@@ -5404,7 +5428,7 @@ static AjBool pdbparse_AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint l
 				(*pdbfile)->resn1ok[i]=ajFalse;		       
 			
 			    done=ajTrue;
-			    /*DIAGNOSTIC		
+			    /*DIAGNOSTIC		 
 			      printf("STEP1 OK %d mismatches\n", nmismatches); */
 
 			    break;
@@ -5458,7 +5482,10 @@ static AjBool pdbparse_AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint l
 		       numbers 'by hand' */
 
 		    for(k=0;k<nres[i];k++)
+		    {
 			ajIntPut(&idx[i], k, k+loc+1);
+		    }
+		    
 		    
 		    if(x==0)
 			(*pdbfile)->resn1ok[i]=ajTrue;
@@ -5466,9 +5493,8 @@ static AjBool pdbparse_AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint l
 			(*pdbfile)->resn1ok[i]=ajFalse;		       
 		    
 		    done=ajTrue;
-
-		    /*DIAGNOSTIC
-		      printf("STEP2 OK\n"); */
+		    /*DIAGNOSTIC 
+		    printf("STEP2 OK\n");  */
 
 		    break;
 		}
@@ -5544,7 +5570,7 @@ static AjBool pdbparse_AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint l
 		    else
 			(*pdbfile)->resn1ok[i]=ajFalse;		       
 
-		    /*DIAGNOSTIC		     printf("STEP3 OK\n"); */
+		    /*DIAGNOSTIC		     printf("STEP3 OK\n");  */
 
 		    done=ajTrue;
 		    break;
@@ -5659,7 +5685,7 @@ static AjBool pdbparse_AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint l
 			done=ajTrue;
 			
 			/*DIAGNOSTIC	
-			  printf("STEP4 OK %d mismatches\n", nmismatches); */
+			  printf("STEP4 OK %d mismatches\n", nmismatches);  */
 			
  			break;
 		    }
@@ -5829,7 +5855,7 @@ static AjBool pdbparse_AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint l
 		    		    
 		    
 
-		    /*DIAGNOSTIC		     printf("STEP5 OK\n"); */
+		    /*DIAGNOSTIC		     printf("STEP5 OK\n");  */
 		    
 		    done=ajTrue;
 		    break;
@@ -6191,7 +6217,7 @@ static AjBool pdbparse_AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint l
 			(*pdbfile)->resn1ok[i]=ajFalse;		       
 		    
 		    /*DIAGNOSTIC		 
-		      printf("STEP6 OK %d mismatches\n", nmismatches);  */
+		      printf("STEP6 OK %d mismatches\n", nmismatches);   */
 
 		    done=ajTrue;
 		    break;
@@ -6269,8 +6295,12 @@ static AjBool pdbparse_AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint l
 	if((*pdbfile)->resn1ok[i])
 	{
 	    for(j=0;j<nres1[i];j++)
+	    {
 		ajIntPut(&idx_full[i], ajIntGet(num1[i], j), 
 			 ajIntGet(idx[i], j));
+
+	    }
+	    
 	}
 	else
 	{
