@@ -223,5 +223,5 @@ int main(int argc, char **argv)
     ajPosRegFree(&exp);
 
     (void) ajExit();
-    exit(0);
+    return 0;
 }
