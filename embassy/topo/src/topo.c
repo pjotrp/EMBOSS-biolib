@@ -7,7 +7,7 @@ Draws an image of a transmembrane protein
 Display on device [xwin]: 
 Transmembrane Sections: 18 35 49 67 94 115 136 156 165 184 211 232
 First membrane from the outside [Y]: n
-Signatue Sections: 74 82 sy 189 189 hm 239 239 sa 157 157 sa 262 262 sa
+Signature Sections: 74 82 sy 189 189 hm 239 239 sa 157 157 sa 262 262 sa
 */
 
 #include "ajax.h"
@@ -464,7 +464,7 @@ int main(int argc, char * argv[]) {
     (void) checklpro(symlpro,inum,istart,iend,strand,syms) ;
   /*c ask about aromatic amino acids  */ 
 
-  ajspnum = ajAcdGetBool("signature");
+  ajspnum = ajAcdGetToggle("signature");
   if(ajspnum){
     /* num num code sets */
     regions = ajAcdGetRange ("sigrange");
@@ -1990,7 +1990,8 @@ int main(int argc, char * argv[]) {
   /*  (void) closef(fn) ;
   (void) account() ;*/
   
-  return 1;
+  ajExit();
+  return 0;
 }	/*end ;*/
 
 void  truncdown(const int num,const int istart,const int iend,
