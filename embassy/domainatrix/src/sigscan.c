@@ -135,9 +135,9 @@
 **  Scans a signature against swissprot and writes a signature hits file
 **  Name of signature file (input): /test_data/54894.sig
 **  Name of swissprot sequence database to search: /test_data/test.seq
-**  Name of validation (input): /test_data/scop.all
-**  Minimum length (residues) of overlap required for two hits with the same code to be counted as the same hit. [20]: 
+**  Minimum length (residues) of overlap required for two hits with the same code to be counted as the same hit. [20]:
 **  Residue substitution matrix [EBLOSUM62]: 
+**  Name of validation (input): /test_data/scop.all
 **  Gap insertion penalty [10]: 
 **  Gap extension penalty [0.5]: 
 **  N-terminal matching options
@@ -146,6 +146,7 @@
 **           3 : Use empirical gaps only
 **  Select number [1]: 1
 **  Number of hits to output [100]: 
+**  Max. number of false hits to output [50]:
 **  Name of signature hits file (output) [test.sighits]: /test_data/54894.sighits
 **  Name of signature alignments file (output) [test.sigalign]: /test_data/54894.sigalign
 **  Signature file read ok

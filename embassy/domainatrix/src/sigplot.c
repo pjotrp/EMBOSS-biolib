@@ -172,6 +172,10 @@
 **  An example of interactive use of sigplot is shown below.
 **  Unix % sigplot
 **  Generates data files of signature performance
+**  Plotting mode
+**           1 : Do not merge results (multiple plots)
+**           2 : Merge results (single plot)
+**  Select mode of operation [1]:
 **  Location of signature hits files (input) [./]: test_data
 **  Extension of signature hits files [.hits]: .testhits
 **  Name of seqsort validation file for input [test.all]: test_data/scop.all
@@ -181,7 +185,7 @@
 **  Location of gnuplot data files (output) [./]: test_data
 **  Validation file read ok
 **  PROCESSING test_data/sig.testhits
-**  Warning: Only 0 false hits found in hits file test_data/sig.testhits
+**  Warning: There are no true hits in hits file ../../data/structure/54894.hits........exiting sigplot!
 **  
 **  Graphs of signature performance were generated from signature hits files in
 **  test_data with the file extension .testhits and by reference to the scop 

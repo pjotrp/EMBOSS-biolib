@@ -90,7 +90,7 @@
 **  keywords.
 **  Name of keywords file (input): /test_data/test.terms
 **  Name of swissprot database (input): /test_data/test.seq
-**  Name of scop hits file (output) [test.seqhits]: /test_data/test.seqhits
+**  Name of scop hits file (output) [test.hits]: /test_data/test.seqhits
 **  Unix % 
 **  
 **  The keywords file /test_data/test.terms was read and used to search the 

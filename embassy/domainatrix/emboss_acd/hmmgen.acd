@@ -36,7 +36,7 @@ string: outfpath [
 string: outfextn [
 	parameter: Y
         def: ".hmm"
-        information: "Extention of HMM files"
+        information: "Extension of HMM files"
 ]
 endsection: output
 

@@ -151,7 +151,7 @@
 **  Sequence 6: Q99396_266_473        208 aa
 **  Sequences (104:108) Aligned. Score:  30
 **  
-**  < rest of clustalw output ommitted for clarity >
+**  < rest of clustalw output omitted for clarity >
 **  
 **  Sequence:8     Score:1487
 **  Sequence:3     Score:1407
@@ -178,7 +178,7 @@
 **  Output file format
 **  The format of the extended scop alignment file (below) is exactly the same
 **  as the scop alignment file described in scopalign.c except that the 
-**  'Number' and 'Post_similar' records are ommitted.  Also, the code given
+**  'Number' and 'Post_similar' records are omitted.  Also, the code given
 **  ahead of each sequence consists of a string and two numbers seperated by
 **  underscores.  The string is the accession number of the sequence, the
 **  first and second numbers are the start and end point of the sequence in
@@ -271,6 +271,8 @@ int main(int argc, char **argv)
     AjPStr  clustoutf   = NULL;  /* the name of the Clustal file that will
 				    be created ... this is reformated into 
 				    scop alignment format*/
+    AjPStr  clustdndf   = NULL;  /* the name of the Clustal tree file
+				   to clean up*/
     
     AjPFile scopin     = NULL;  /* scop families file (for reading)*/
 /*    AjPFile scopout    = NULL; */ /* scop families file (for writing)*/
@@ -329,6 +331,7 @@ int main(int argc, char **argv)
     clustinf1  = ajStrNew();
     clustinf2  = ajStrNew();
     clustoutf  = ajStrNew();
+    clustdndf  = ajStrNew();
     
     fam        = ajStrNew();
     sfam       = ajStrNew();
@@ -415,6 +418,8 @@ int main(int argc, char **argv)
 	    ajStrAppC(&clustinf2,".seqs");
 
 	    /* setup the .dnd tree file to delete later */
+	    ajStrAssS(&clustdndf,tmp_name);
+	    ajStrAppC(&clustdndf,".dnd");
 	    ajStrAssS(&clustoutf,tmp_name);
 	    ajStrAppC(&clustoutf,".out");
 	    
@@ -557,7 +562,7 @@ int main(int argc, char **argv)
 	    /* First open files */
 	    if((alg_in = ajFileNewIn(clustoutf))==NULL)
 	    {
-		ajFatal("Could not read clustal output file");
+		ajFatal("Could not read clustal output file %S", clustoutf);
 	    }
 	    
 	    ajStrAssS(&outname, outpath);
@@ -601,6 +606,7 @@ int main(int argc, char **argv)
 
 	    ajSysUnlink(&clustinf2);
 	    ajSysUnlink(&clustoutf);
+	    ajSysUnlink(&clustdndf);
 
 
 	    /* Delete Scopalg structure */
@@ -629,6 +635,7 @@ int main(int argc, char **argv)
     ajStrDel(&clustinf1);
     ajStrDel(&clustinf2);
     ajStrDel(&clustoutf);
+    ajStrDel(&clustdndf);
     ajStrDel(&outfilename);
     ajListDel(&list);
     

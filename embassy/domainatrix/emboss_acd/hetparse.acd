@@ -38,7 +38,7 @@ string: path  [
 
 string: extn  [
   required: "$(dogrep)"
-  information: "Exension of files to search in above directory"
+  information: "Extension of files to search in above directory"
   default: ".ent"
 ]
 endsection: required
