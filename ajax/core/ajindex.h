@@ -375,10 +375,8 @@ typedef struct AjSBtpage
 ** @attr replace [AjPStr] Undocumented
 ** @attr count [ajlong] Undocumented
 ** @attr deleted [AjBool] Undocumented
-** @attr slevel [ajint] Undocumented
-** @attr sorder [ajint] Undocumented
-** @attr snperbucket [ajint] Undocumented
 ** @attr secrootblock [ajlong] secondary tree root block
+** @attr kwlimit [ajint] Max length of secondary key
 ******************************************************************************/
 
 typedef struct AjSBtCache
@@ -400,6 +398,7 @@ typedef struct AjSBtCache
     ajint sorder;
     ajint snperbucket;
     ajlong secrootblock;
+    ajint  kwlimit;
 } AjOBtcache;
 #define AjPBtcache AjOBtcache*
 
@@ -410,9 +409,8 @@ typedef struct AjSBtCache
 **
 ** Btree primary keyword
 **
-** @attr keyword [AjPStr] Keyword
-** @attr treeblock [ajlong] Disc block of secondary tree
-** @attr id [AjPStr] Identifier
+** @attr keyword [AjPStr] keyword
+** @attr treeblock [ajlong] disc block of secondary tree
 ******************************************************************************/
 
 typedef struct AjSBtPri
@@ -433,8 +431,8 @@ typedef struct AjSBtPri
 ** @attr NodeType [ajint] Node type
 ** @attr Nentries [ajint] Number of entries
 ** @attr Overflow [ajlong] Offset to overflow block
-** @attr keylen [ajint*] Key lengths
-** @attr codes [AjPBtPri*] Codes
+** @attr keylen [ajint*] key lengths
+** @attr Ids [AjPBtId*] Ids
 ******************************************************************************/
 
 typedef struct AjSPriBucket
@@ -458,7 +456,7 @@ typedef struct AjSPriBucket
 ** @attr Nentries [ajint] Number of entries
 ** @attr Overflow [ajlong] Offset to overflow block
 ** @attr keylen [ajint*] key lengths
-** @attr ids [AjPStr*] Ids
+** @attr Ids [AjPStr*] Ids
 ******************************************************************************/
 
 typedef struct AjSSecBucket
@@ -521,13 +519,13 @@ AjPBtcache ajBtreeSecCacheNewC(const char *file, const char *ext,
 			       ajint pagesize, ajint order, ajint fill,
 			       ajint level, ajint cachesize,
 			       ajint sorder, ajint slevel, ajint sfill,
-			       ajint count);
+			       ajint count, ajint kwlimit);
 AjPBtpage  ajBtreeSecFindInsert(AjPBtcache cache, const char *key);
 void       ajBtreeInsertSecId(AjPBtcache cache, const AjPStr id);
 AjBool     ajBtreeSecFromId(AjPBtcache cache, const char *key);
 
 AjPList    ajBtreeSecLeafList(AjPBtcache cache, ajlong rootblock);
-AjBool     ajBtreeVerifyId(AjPBtcache cache, ajlong rootblock, const char *id);
+AjBool     ajBtreeVerifyId(AjPBtcache cache, ajlong rootblock, char *id);
 
 void       ajBtreeInsertKeyword(AjPBtcache cache, const AjPBtPri pri);
 
