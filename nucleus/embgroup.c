@@ -909,15 +909,15 @@ void embGrpOutputGroupsList(AjPFile outfile, AjPList groupslist,
 	if (html)
 	{
 	    if (showprogs)
-		ajFmtPrintF(outfile,"<a name=%S><h2>%S</h2></a>\n", gl->name,
-			    gl->name);
+		ajFmtPrintF(outfile,"<h2><a name=\"%S\">%S</a></h2>\n",
+			gl->name, gl->name);
 	    else
 	    {
 		if (ajStrLen(link1) || ajStrLen(link2))
-		    ajFmtPrintF(outfile,"<li><a href=\"%S%S%S\">%S</a>\n",
+		    ajFmtPrintF(outfile,"<li><a href=\"%S%S%S\">%S</a></li>\n",
 				link1,gl->name,link2,gl->name);
 		else
-		    ajFmtPrintF(outfile,"<li>%S\n", gl->name);
+		    ajFmtPrintF(outfile,"<li>%S</li>\n", gl->name);
 	    }
 	}
 	else
