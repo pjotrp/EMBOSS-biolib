@@ -93,7 +93,7 @@ public class AjaxUtil
         {
           int n = JOptionPane.showConfirmDialog(f,
                  "Do you really want to extract\n"+
-                 "the whole of " + fc + " databese?",
+                 "the whole of " + fc + " database?",
                  "Confirm the sequence entry",
                  JOptionPane.YES_NO_OPTION);
           if(n == JOptionPane.NO_OPTION)
