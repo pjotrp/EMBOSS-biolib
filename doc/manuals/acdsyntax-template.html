@@ -23,7 +23,7 @@
 
 </div>
 
-<a name=sect1></a>
+<a name=sect1>&nbsp;</a>
 <h1>1. Introduction</h1>
 
 <p>The EMBOSS package
@@ -41,7 +41,7 @@ be a web-interface where a user chooses the options for the program using
 lists, checkboxes, radio buttons etc. In EMBOSS, the way a program interacts
 with the user, its interface, is independent of the actual program.</p>
 
-<a name=sect11></a>
+<a name=sect11>&nbsp;</a>
 <h2>1.1 Command line syntax</h2>
 
 <p>At the moment, EMBOSS
@@ -60,14 +60,15 @@ line, like:</p>
  </tr>
 </table>
 
-<p>In this example the EMBOSS program ' <b>seqret</b>
-is called with the filename '<i>filename.seq</i>' as its first parameter.
-'-sformat <i>fasta</i>' indicates that the sequence file is in 'fasta' format.
-A complete description of the command line syntax will follow in <a href="#Acddesc5">section 2 Formal Description of the ACD language.</a> The
-percentage sign '%' indicates that the command was entered on the UNIX command
-line. This will be used throughout the documentation.</p>
+<p>In this example the EMBOSS program ' <b>seqret</b> is called with
+the filename '<i>filename.seq</i>' as its first parameter.  '-sformat
+<i>fasta</i>' indicates that the sequence file is in 'fasta' format.
+A complete description of the command line syntax will follow in <a
+href="#sect2">section 2 Formal Description of the ACD language.</a>
+The percentage sign '%' indicates that the command was entered on the
+UNIX command line. This will be used throughout the documentation.</p>
 
-<a name=sect12></a>
+<a name=sect12>&nbsp;</a>
 <h2>1.2 ACD files</h2>
 
 <p>Every EMBOSS program will be accompanied by a so-called ACD (Ajax
@@ -82,7 +83,7 @@ value or the presence of another. (An example: If the input sequence
 for an alignment program is DNA, it should not accept a protein
 comparison matrix).</p>
 
-<a name=sect13></a>
+<a name=sect13>&nbsp;</a>
 <h2>1.3 ACD language</h2>
 
 <p>The parameters are
@@ -92,11 +93,10 @@ the command line or can be used in another interface like web pages. It is a
 very 'forgiving' language in that it does not restrict the available syntax any
 more than is strictly necessary.</p>
 
-<a name=sect2></a>
+<a name=sect2>&nbsp;</a>
 <h1>2. Formal description of the ACD language</h1>
 
-<a name=sect21></a>
-
+<a name=sect21>&nbsp;</a>
 <h2>2.1 ACD file overview</h2>
 
 <p>ACD files are simple
@@ -187,8 +187,7 @@ abbreviated to <i>default:</i> or even <i>d:</i> although the latter is
 not recommended due to lack of clarity.</p>
 <p>Values can be delimited (i.e. treated as one token) by double quotes</p>
 
-<a name=Appdef7></a>
-
+<a name=sect22>&nbsp;</a>
 <h2>2.2 The application definition</h2>
 
 <p>The first token of an ACD file must be the <i>application:</i> token,
@@ -198,13 +197,13 @@ but this is not mandatory. When a program calls the
 <i>embInit("program")</i> function with <i>"program"</i> as its
 parameter, the function will only look for an ACD file called
 <i>program.acd</i>. It will not compare the parameter with the string
-given after the <i>application:</i> token. <a name=Appattr8></a>
-</p>
+given after the <i>application:</i> token.</p>
 
+<a name=sect221>&nbsp;</a>
 <h3>2.2.1 Application attributes</h3>
 
-<p><a name=Docattr9></a></p>
 
+<a name=sect2211>&nbsp;</a>
 <h4>2.2.1.1 The documentation attribute</h4>
 
 <p>The <i>application:</i> token has a <i>documentation:</i> attribute which is
@@ -241,39 +240,43 @@ Reads and writes (returns) a sequence
 Input sequence :
 </pre>
 
-<p>The ACD file starts with the definition of the
-program <b>seqret</b>. The <i>documentation:</i> attribute is followed by a string
-briefly explaining the function of the program and this string is shown after
-the program is invoked and before it prompts the user for any input. The <i>documentation:</i>
-string is also searched by the <b>wossname</b> utility, which finds
-applications by keyword (in the <i>doc</i> string) and group.</p>
+<p>The ACD file starts with the definition of the program
+<b>seqret</b>. The <i>documentation:</i> attribute is followed by a
+string briefly explaining the function of the program and this string
+is shown after the program is invoked and before it prompts the user
+for any input. The <i>documentation:</i> string is also searched by
+the <b>wossname</b> utility, which finds applications by keyword (in
+the <i>doc</i> string) and group.</p>
 
-<p>The length of the <i>documentation:</i> string should be
-kept to 63 characters or shorter in order to allow the <b>wossname</b> utility
-to display each program name and its documentation on one 80-character line.</p>
+<p>The length of the <i>documentation:</i> string should be kept to 63
+characters or shorter in order to allow the <b>wossname</b> utility to
+display each program name and its documentation on one 80-character
+line.</p>
 
 <p>The <i>documentation:</i> string should <b>not</b> end
 with a '.' character</p>
 
-<p>Any acronyms or capitalised abbreviations in
-the <i>documentation:</i> string should be written in upper case. (e.g.: SNPs, EST, DNA,
-ABI, SRS, ASCII, CDS, mRNA, B-DNA, RNA, CpG, ORFs, MAR/SAR, PCR, STS, REBASE,
-SCOP, PROSITE, PRINTS, EMBL, TRANSFAC, AAINDEX, BLAST, GCG, EMBOSS)</p>
+<p>Any acronyms or capitalised abbreviations in the
+<i>documentation:</i> string should be written in upper case. (e.g.:
+SNPs, EST, DNA, ABI, SRS, ASCII, CDS, mRNA, B-DNA, RNA, CpG, ORFs,
+MAR/SAR, PCR, STS, REBASE, SCOP, PROSITE, PRINTS, EMBL, TRANSFAC,
+AAINDEX, BLAST, GCG, EMBOSS)</p>
 
 <p>The <i>documentation:</i> string should start with an
-upper-case letter. <a name=Grpattr10>&nbsp;</a></p>
+upper-case letter.</p>
 
+<a name=sect2212>&nbsp;</a>
 <h4>2.2.1.2 The groups attribute</h4>
 
-<p>The <i>groups:</i> attribute allows the EMBOSS
-programs to be grouped together based on their functionality. The <i>groups:</i>
+<p>The <i>groups:</i> attribute allows the EMBOSS programs to be
+grouped together based on their functionality. The <i>groups:</i>
 attribute is followed by a string value, containing the name(s) of the
-group(s). When an application belongs to more then one group, the group names
-must be separated by either a comma (,) or semi-colon (;); i.e. a group name is
-not a token, but a list of tokens.</p>
+group(s). When an application belongs to more then one group, the
+group names must be separated by either a comma (,) or semi-colon (;);
+i.e. a group name is not a token, but a list of tokens.</p>
 
-<p>The <i>groups:</i> string is also searched by
-the <b>wossname</b> utility, which finds applications by keyword (in the <i>doc</i>
+<p>The <i>groups:</i> string is also searched by the <b>wossname</b>
+utility, which finds applications by keyword (in the <i>doc</i>
 string) and group.</p>
 
 <p><b>Formalised:</b></p>
@@ -292,9 +295,8 @@ application: seqret [
   ]
 </pre>
 
-<p><a name=Acdgroup>&nbsp;</a></p>
-
-<h4>Groups format</h4>
+<a name=sect2213>&nbsp;</a>
+<h4>2.2.1.3 Groups format</h4>
 
 <p>Group names can have spaces in them.</p>
 
@@ -308,7 +310,8 @@ of 2 levels, so do not use more than one ':' in a group name.</p>
 accepted values, however we try to stick to a fairly rigidly defined group
 structure.</p>
 
-<h4>The groups structure</h4>
+<a name=sect2214>&nbsp;</a>
+<h4>2.2.1.4 The groups structure</h4>
 
 <p>The First and Second level group names are
 given below with some explanation of what might be expected to be placed in the
@@ -319,9 +322,8 @@ group.</p>
 then the group specification must not use the group names singly, (i.e. you
 must not use <b>"Alignment"</b> or <b>"Consensus"</b>). <br>
 If the group consists of only one level, such as <br>
-<b>Display</b> <br>
-then please don't start adding sub-levels to it. (i.e. you must not use <b>"Display
-: Features"</b>)</p>
+<b>Display</b> <br> then please don't start adding sub-levels to
+it. (i.e. you must not use <b>"Display : Features"</b>)</p>
 
 <p>You are <b>strongly</b> encouraged to use the
 following groups structure. We have found that most things will fit in one or
@@ -378,8 +380,7 @@ Test                   (programs which are not designed for public
 usage)
 </pre>
 
-<p><a name=Acddata11>&nbsp;</a></p>
-
+<a name=sect23>&nbsp;</a>
 <h2>2.3 Ajax Data Types</h2>
 
 <p>ACD files describe the parameters that a
@@ -1214,10 +1215,13 @@ string objects. The current objects are listed in Table 1.</p>
  </tr>
 </table>
 
-<p><b>Table 1. Available Data Types/Objects in ACD.</b> <a name=Acdtypes12>&nbsp;</a></p>
+<a name=table1>&nbsp;</a>
+<p><b>Table 1. Available Data Types/Objects in ACD.</b></p>
 
+<a name=sect231>&nbsp;</a>
 <h3>2.3.1 Description of the data types</h3>
 
+<a name=sect2311>&nbsp;</a>
 <h4>2.3.1.1 Simple types</h4>
 
 <p>Array</p>
@@ -1282,10 +1286,8 @@ type.</p>
 the command line, except that their values can depend on ACD values
 set earlier from user input.</p>
 
-<p><a name=AcdIO14>&nbsp;</a></p>
-
-<h4>2.3.1.2 Input<a name=fnB3> </a>
-<a href="#fn3">[3]</a></h4>
+<a name=sect2312>&nbsp;</a>
+<h4>2.3.1.2 Input<a name=fnB3> </a><a href="#fn3">[3]</a></h4>
 
 <p>Codon</p>
 
@@ -1336,10 +1338,10 @@ format.</p>
 
 <p>Sequence</p>
 
-<p>USA (database reference or file) indicating a
-single sequence. The type of sequence can be restricted by specific attribute <i>"type"</i>
-(for example, the program should only accept DNA files). Can also read features
-if the "features" ACD attribute is set.</p>
+<p>USA (database reference or file) indicating a single sequence. The
+type of sequence can be restricted by specific attribute <i>"type"</i>
+(for example, the program should only accept DNA files). Can also read
+features if the "features" ACD attribute is set.</p>
 
 <p>Seqall</p>
 
@@ -1352,14 +1354,14 @@ set.</p>
 
 <p>Seqset</p>
 
-<p>set of single sequences that can be used all at
-the same time (for example a database of some sort that is to be used for a
-pattern search). The type of sequence can be restricted by specific attribute <i>"type"</i>
-(for example, the program should only accept DNA files). Can also read features
-if the "features" ACD attribute is set.</p>
+<p>set of single sequences that can be used all at the same time (for
+example a database of some sort that is to be used for a pattern
+search). The type of sequence can be restricted by specific attribute
+<i>"type"</i> (for example, the program should only accept DNA
+files). Can also read features if the "features" ACD attribute is
+set.</p>
 
-<p><a name=Acdlist15>&nbsp;</a></p>
-
+<a name=sect2313>&nbsp;</a>
 <h4>2.3.1.3 Selection lists</h4>
 
 <p>Selection lists are a way to present the user with
@@ -1392,9 +1394,10 @@ type is usually preferred.</p>
 
 <ul type=disc>
  <li>List </li>
- <li>Select <a name=Acdparam16>&nbsp;</a> </li>
+ <li>Select</li>
 </ul>
 
+<a name=sect2314>&nbsp;</a>
 <h4>2.3.1.4 Output <a href="#fn3">[3]</a></h4>
 
 <p>Align</p>
@@ -1445,6 +1448,7 @@ is set.</p>
 together, usually a multiple sequence alignment. Can also write features if the
 "features" ACD attribute is set.</p>
 
+<a name=sect2315>&nbsp;</a>
 <h4>2.3.1.5 Graphics</h4>
 
 <p>Graph</p>
@@ -1466,6 +1470,7 @@ Postscript, "png" for PNG files, and "X11" for X-Windows. A
 value of "?" in answer to the prompt will list the available graphics
 devices on your installation.</p>
 
+<a name=sect232>&nbsp;</a>
 <h3>2.3.2 Parameter names</h3>
 
 <p>ACD objects have mandatory names.</p>
@@ -1804,16 +1809,18 @@ streamline the development of ACD files.</p>
  </tr>
 </table>
 
-<p><a name=Acdattr17>&nbsp;</a> <b>Table 2. Recommended naming conventions.</b></p>
+<p><a name=table2>&nbsp;</a>
+<b>Table 2. Recommended naming conventions.</b></p>
 
+<a name=sect24>&nbsp;</a>
 <h2>2.4 Attributes</h2>
 
-<p>There are two types of attributes for
-parameters.  'Global' attributes cen be
-defined for any ACD data type. Each data type then has its own set of  'specific' attributes. These definitions can
-refer to 'calculated' attributes generated automatically by ACD processing. The
-'global' and 'specific' ttributes are part of the parameter definition and are
-placed between the square brackets.</p>
+<p>There are two types of attributes for parameters.  'Global'
+attributes cen be defined for any ACD data type. Each data type then
+has its own set of 'specific' attributes. These definitions can refer
+to 'calculated' attributes generated automatically by ACD
+processing. The 'global' and 'specific' ttributes are part of the
+parameter definition and are placed between the square brackets.</p>
 
 <p><b>Formalised:</b></p>
 
@@ -1823,16 +1830,17 @@ placed between the square brackets.</p>
   ]
 </pre>
 
-<p><a name=Acddef18>&nbsp;</a></p>
 
+<a name=sect241>&nbsp;</a>
 <h3>2.4.1 Attributes</h3>
 
 <p>Attributes to parameters can specify the
 default value, and the requirements for a correct value, for a parameter. It
 can specify whether the parameter is mandatory and what the limits are for a
 valid value. There are global attributes that apply to all data types and there
-are data type-specific attributes. <a name=Acdglobal19>&nbsp;</a></p>
+are data type-specific attributes.</p>
 
+<a name=sect2411>&nbsp;</a>
 <h4>2.4.1.1 The global attributes</h4>
 
 <p>code</p>
@@ -1879,9 +1887,9 @@ for when the <i>-options</i> qualifier is set on the command line.</p>
 
 <p>param</p>
 
-<p>Defines a parameter on the command line which
-can appear without a qualifier name. Also implies that the value is <i>required</i>
-and will be prompted for if missing.</p>
+<p>Defines a parameter on the command line which can appear without a
+qualifier name. Also implies that the value is <i>required</i> and
+will be prompted for if missing.</p>
 
 <p>prompt</p>
 
@@ -1947,14 +1955,15 @@ sequence: asequence [
   ]
 </pre>
 
-<p><a name=Acdparam20>&nbsp;</a></p>
 
+<a name=sect24111>&nbsp;</a>
 <h5>2.4.1.1.1 Parameter: attribute</h5>
 
-<p>The <i>parameter:</i> attribute is a boolean
-attribute, defining the order of the parameters on the command line, if the
-parameter name is not explicitly entered on the command line. If set to Y, the
-parameter can be entered on the command line without using the parameter name.</p>
+<p>The <i>parameter:</i> attribute is a boolean attribute, defining
+the order of the parameters on the command line, if the parameter name
+is not explicitly entered on the command line. If set to Y, the
+parameter can be entered on the command line without using the
+parameter name.</p>
 
 <p><b>Formalised:</b></p>
 
@@ -2000,8 +2009,8 @@ sequence: asequence [
 % <b>acddemo</b> <i>filename.seq</i>
 </pre>
 
-<p>In both examples <i>filename.seq</i> is the
-value of the parameter named <i>asequence</i> for the EMBOSS program <b>acddemo</b>.
+<p>In both examples <i>filename.seq</i> is the value of the parameter
+named <i>asequence</i> for the EMBOSS program <b>acddemo</b>.
 </p>
 
 <p>The second example will also allow the command
@@ -2033,10 +2042,11 @@ outseq: outseq [
 % <b>acddemo</b> <i>infilename.seq</i> <i>outfilename.seq</i>
 </pre>
 
-<p>will assign the name <i>infilename.seq</i> to
-parameter <i>sequence</i>, and <i>outfilename.seq</i> to parameter <i>outseq</i>.
-<a name=Acdopt21>&nbsp;</a></p>
+<p>will assign the name <i>infilename.seq</i> to parameter
+<i>sequence</i>, and <i>outfilename.seq</i> to parameter
+<i>outseq</i>.</p>
 
+<a name=sect24112>&nbsp;</a>
 <h5>2.4.1.1.2 Standard: attribute</h5>
 
 <p>Any program is expected to have one or more
@@ -2053,16 +2063,19 @@ command line.</p>
 "parameter" can appear on the command line as the simple value with
 no name, to provide simple command lines.</p>
 
+<a name=sect24113>&nbsp;</a>
 <h5>2.4.1.1.3 Additional: attribute</h5>
 
-<p>When the additional: attribute is set, the
-parameter will only be queried for, when the <i>-options</i> qualifier is set
-(on the command line or when the system default is set using an environment
-variable (See 3.7) or any other way). If the <i>-options</i> qualifier is not
-set, the user will not be queried for this parameter, if it is omitted in the
-program execution (i.e. not mentioned on the command line or any other way).</p>
+<p>When the additional: attribute is set, the parameter will only be
+queried for, when the <i>-options</i> qualifier is set (on the command
+line or when the system default is set using an environment variable
+(See 3.7) or any other way). If the <i>-options</i> qualifier is not
+set, the user will not be queried for this parameter, if it is omitted
+in the program execution (i.e. not mentioned on the command line or
+any other way).</p>
 
-<h5>2.4.1.1.3 The prompt: help: and information:
+<a name=sect24114>&nbsp;</a>
+<h5>2.4.1.1.4 The prompt: help: and information:
 attributes</h5>
 
 <p>The <i>information:</i> attribute defines the
@@ -2091,12 +2104,13 @@ on the command line, or when help in other format is requested (Web page).</p>
 codes.english file with the name HELPXXXX where XXXX is the name of the ACD
 data type.</p>
 
-<p>The codes.english file includes some additional
-standard prompts such as GAP for gap penalties. These prompts can be used with
-the <i>code:</i> attribute, for example <i>code: "GAP"</i>, but GUI
-developers found these hard to use, so we have replaced them with normal <i>information:</i>
-attributes.</p>
+<p>The codes.english file includes some additional standard prompts
+such as GAP for gap penalties. These prompts can be used with the
+<i>code:</i> attribute, for example <i>code: "GAP"</i>, but GUI
+developers found these hard to use, so we have replaced them with
+normal <i>information:</i> attributes.</p>
 
+<a name=sect2412>&nbsp;</a>
 <h4>2.4.1 2 Data type-specific specific attributes</h4>
 
 <p>The default set of attributes is available for
@@ -2107,6 +2121,7 @@ all ACD data type definitions.</p>
 <p>Each ACD type has its own set of specific
 attributes, summarized in Table 1 and described in more detail below.</p>
 
+<a name=sect24121>&nbsp;</a>
 <h5>2.4.1.2.1 Simple types</h5>
 
 <p><b>Formalised:</b></p>
@@ -2291,6 +2306,7 @@ attributes, summarized in Table 1 and described in more detail below.</p>
  </tr>
 </table>
 
+<a name=table3>&nbsp;</a>
 <p><b>Table 3. Simple data types - attributes. </b></p>
 
 <p>Int</p>
@@ -2303,20 +2319,21 @@ need to iterate this parameter.</p>
 
 <p>Float</p>
 
-<p><i>min</i>: and <i>max</i>: attributes define the boundaries and default to the
-boundaries as specified by the systems set-up. The <i>inc:</i> attribute
-defines the steps that this parameter is allowed to take, in case there is a
-need to iterate this parameter. The <i>inc:</i> attribute can be any valid
-float value. The <i>precision:</i> attribute defines the maximum number of significant
+<p><i>min</i>: and <i>max</i>: attributes define the boundaries and
+default to the boundaries as specified by the systems set-up. The
+<i>inc:</i> attribute defines the steps that this parameter is allowed
+to take, in case there is a need to iterate this parameter. The
+<i>inc:</i> attribute can be any valid float value. The
+<i>precision:</i> attribute defines the maximum number of significant
 decimal places that will be taken into account for this value.</p>
 
 <p>String</p>
 
-<p><i>minlen:</i> attribute defines the minimum length the string must be, the <i>maxlen:</i>
-attribute defines the maximum length the string can be.</p>
+<p><i>minlen:</i> attribute defines the minimum length the string must
+be, the <i>maxlen:</i> attribute defines the maximum length the string
+can be.</p>
 
-<p><a name=IOtype25>&nbsp;</a></p>
-
+<a name=sect24122>&nbsp;</a>
 <h5>2.4.1.2.2 Input</h5>
 
 <p><b>Formalised:</b></p>
@@ -2639,7 +2656,8 @@ attribute defines the maximum length the string can be.</p>
  </tr>
 </table>
 
-<p><b>Table 3. Input data types - attributes.</b></p>
+<a name=table4>&nbsp;</a>
+<p><b>Table 4. Input data types - attributes.</b></p>
 
 <p>Sequence/Seqset/Seqall</p>
 
@@ -2652,7 +2670,7 @@ of the given type.</p>
 scoring matrix is used as a DNA or Protein matrix.</p>
 
 
-
+<a name=sect24123>&nbsp;</a>
 <h5>2.4.1.2.3 Selection lists</h5>
 
 <p><b>Formalised:</b></p>
@@ -2842,8 +2860,8 @@ scoring matrix is used as a DNA or Protein matrix.</p>
  </tr>
 </table>
 
-<p><b>Table 4. Selection lists data types -
-attributes.</b></p>
+<a name=table5>&nbsp;</a>
+<p><b>Table 5. Selection lists data types - attributes.</b></p>
 
 <p>For both selection list types, the values that
 the user can choose from are defined in the <i>values:</i> attribute as a
@@ -2865,7 +2883,8 @@ is simply displayed with a text entry box beneath it, to enter the option.</p>
 <p>Example:</p>
 
 <pre>
-list: matrix [     default: "blosum"   # default value
+list: matrix [
+     default: "blosum"   # default value
      minimum: 1 maximum: 1   # must select exactly 1
      header: "Comparison matrices" # printed before list
      values: "B:blosum, P:pam, I:id" 3 valid values
@@ -2919,8 +2938,8 @@ Comparison matrices
 Select one [blosum] : PAM
 </pre>
 
-<p><a name=Calc27></a></p>
 
+<a name=sect24124>&nbsp;</a>
 <h5>2.4.1.2.4 Output</h5>
 
 <p><b>Formalised:</b></p>
@@ -3248,7 +3267,8 @@ Select one [blosum] : PAM
  </tr>
 </table>
 
-<p><b>Table 5. Output data types - attributes.</b></p>
+<a name=table6>&nbsp;</a>
+<p><b>Table 6. Output data types - attributes.</b></p>
 
 <p>Align</p>
 
@@ -3280,8 +3300,7 @@ format. If the <i>name:</i> attribute is not defined in the ACD file, it will
 default to the calculated attribute <i>name:</i> of the FIRST sequence that is
 read in ($(asequence.name) if the sequence parameter is named asequence).</p>
 
-<p>&nbsp;</p>
-
+<a name=sect24125>&nbsp;</a>
 <h5>2.4.1.2.5 Graphics</h5>
 
 <p><b>Formalised:</b></p>
@@ -3447,7 +3466,8 @@ read in ($(asequence.name) if the sequence parameter is named asequence).</p>
  </tr>
 </table>
 
-<p><b>Table 6. Graphics data types - attributes.</b></p>
+<a name=table7>&nbsp;</a>
+<p><b>Table 7. Graphics data types - attributes.</b></p>
 
 <p>Graph</p>
 
@@ -3456,9 +3476,7 @@ read in ($(asequence.name) if the sequence parameter is named asequence).</p>
 <p>Graphxy</p>
 
 
-
-<p>&nbsp;</p>
-
+<a name=sect242>&nbsp;</a>
 <h3>2.4.2 Calculated attributes</h3>
 
 <p>Calculated attributes are attributes that are
@@ -3469,7 +3487,8 @@ the parameter is referring to. At the moment the calculated attributes are only
 referring to sequence type objects and can hold things like the name of the
 sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
 
-<h4>Data type-specific calculated attributes</h4>
+<a name=sect2421>&nbsp;</a>
+<h4>2.4.2.1 Data type-specific calculated attributes</h4>
 
 <p><b>Formalised:</b></p>
 
@@ -3749,16 +3768,17 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
  </tr>
 </table>
 
-<p><b>Table 7. Data type-specific calculated
-attributes.</b> <a name=Type28>&nbsp;</a>
-</p>
+<a name=table8>&nbsp;</a>
+<p><b>Table 8. Data type-specific calculated attributes.</b></p>
 
-<h4>2.4.2.1 The sequence type: attribute </h4>
+<a name=sect2422>&nbsp;</a>
+<h4>2.4.2.2 The sequence type: attribute </h4>
 
-<p>The <i>type:</i> attribute will describe the
-type of the sequence in a single token. The EMBOSS initialisation routines will
-try to establish the type, by reading the (first) sequence and examining the
-contents. Possible values for the <i>type:</i> attribute are listed in table 8.</p>
+<p>The <i>type:</i> attribute will describe the type of the sequence
+in a single token. The EMBOSS initialisation routines will try to
+establish the type, by reading the (first) sequence and examining the
+contents. Possible values for the <i>type:</i> attribute are listed in
+table 8.</p>
 
 
 
@@ -3893,9 +3913,11 @@ contents. Possible values for the <i>type:</i> attribute are listed in table 8.<
  </tr>
 </table>
 
-<p><b>Table 8. Possible values for the <i>type: </i>attribute
-in input sequence data types.</b> <a name=Usage29>&nbsp;</a></p>
+<a name=table9>&nbsp;</a>
+<p><b>Table 9. Possible values for the <i>type: </i>attribute in input
+sequence data types.</b></p>
 
+<a name=sect243>&nbsp;</a>
 <h3>2.4.3 Attribute usage</h3>
 
 <p>The values of attributes (default, specific and
@@ -3922,8 +3944,9 @@ integer: windowsize [
 </pre>
 
 <p>In this example the parameter <i>windowsize</i>
-will default to the length of the input sequence. <a name=Quals30>&nbsp;</a></p>
+will default to the length of the input sequence.</p>
 
+<a name=sect25>&nbsp;</a>
 <h2>2.5 Qualifiers</h2>
 
 <p>For many of the parameters/objects, qualifiers
@@ -3933,13 +3956,13 @@ qualifier as being, for instance, 'fasta'. These types of qualifiers are
 specific for a particular data type (or object) and are therefore called data
 type specific qualifiers.</p>
 
-<p>A second type of qualifier is independent of
-the data types. These are the global qualifiers and apply to the complete
-program. They are usually used to change the behaviour of the program.
-Qualifiers can be set to turn the debugging on, for instance (by using the <i>-debug</i>
-qualifier), or it can instruct the program to behave like a filter, reading
-from the standard input and writing to the standard output ( <i>-filter</i>
-qualifier).</p>
+<p>A second type of qualifier is independent of the data types. These
+are the global qualifiers and apply to the complete program. They are
+usually used to change the behaviour of the program.  Qualifiers can
+be set to turn the debugging on, for instance (by using the
+<i>-debug</i> qualifier), or it can instruct the program to behave
+like a filter, reading from the standard input and writing to the
+standard output ( <i>-filter</i> qualifier).</p>
 
 <p>Qualifiers can be entered on the command line
 in a myriad of ways and a full description of the command line syntax will be
@@ -3958,10 +3981,11 @@ Where <b>seqret</b> is the program being called, <i>sequence.seq</i> the first
 (and only) parameter and <i>-sformat fasta</i> the qualifier/value pair for
 this parameter.</p>
 
-<p>The global qualifiers are boolean qualifiers
-and can be set by naming them on the command line and specifically unset by
-prefixing the qualifier with 'no', but since the global qualifiers all default
-to false anyway, there is no specific need to use this syntax at the moment..</p>
+<p>The global qualifiers are boolean qualifiers and can be set by
+naming them on the command line and specifically unset by prefixing
+the qualifier with 'no', but since the global qualifiers all default
+to false anyway, there is no specific need to use this syntax at the
+moment..</p>
 
 <p>Example:</p>
 
@@ -3972,14 +3996,15 @@ to false anyway, there is no specific need to use this syntax at the moment..</p
 % <b>seqret</b> <i>sequence.seq</i> -nodebug
 </pre>
 
-<p>In the first example <b>seqret</b> is the
-program being called, <i>sequence.seq</i> the first (and only) parameter and <i>-debug
-</i>instructs the program to turn debugging on. In the second example <b>seqret</b>
-is run with the same parameter, but the <i>-debug</i> qualifier is no prefixed
-with ' <i>no</i>', instructing the program to turn debugging off (this could be
-useful if debugging was turned on by default in the resource files or in an
-environment variable). <a name=Qnames31>&nbsp;</a></p>
+<p>In the first example <b>seqret</b> is the program being called,
+<i>sequence.seq</i> the first (and only) parameter and <i>-debug
+</i>instructs the program to turn debugging on. In the second example
+<b>seqret</b> is run with the same parameter, but the <i>-debug</i>
+qualifier is no prefixed with ' <i>no</i>', instructing the program to
+turn debugging off (this could be useful if debugging was turned on by
+default in the resource files or in an environment variable).</p>
 
+<a name=sect251>&nbsp;</a>
 <h3>2.5.1 Naming scheme for qualifiers</h3>
 
 <p>Qualifiers can have any name, but a recommended
@@ -3988,16 +4013,19 @@ qualifier indicate the data type they are related to. 'OS' is used for the
 output sequence data types (outseq, outseqset and outseqall) and 'S' for the
 input sequence data types (sequence, seqset and seqall). The rest of the
 qualifiers' name is free but should be something sensible related to the data
-type. <a name=Global32>&nbsp;</a></p>
+type.</p>
 
+<a name=sect252>&nbsp;</a>
 <h3>2.5.2 Global qualifiers</h3>
 
-<p>Global qualifiers can change the behaviour of
-the program. They are boolean qualifiers and can be set by naming them on the
-command line and specifically unset by prefixing the qualifier with '<i>no</i>'<a name=fnB5></a>
-<a href="http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Acd/syntax.html#fn5">[5]</a>. The qualifiers can be used on the EMBOSS
-program and as a qualifier for <b>acdc</b>. The current global qualifiers are
-listed in the table below.</p>
+<p>Global qualifiers can change the behaviour of the program. They are
+boolean qualifiers and can be set by naming them on the command line
+and specifically unset by prefixing the qualifier with '<i>no</i>'<a
+name=fnB5></a> <a
+href="#fn5">[5]</a>.
+The qualifiers can be used on the EMBOSS program and as a qualifier
+for <b>acdc</b>. The current global qualifiers are listed in the table
+below.</p>
 
 <p><b>Formalised:</b></p>
 
@@ -4089,17 +4117,20 @@ listed in the table below.</p>
  </tr>
 </table>
 
-<p><b>Table 9. Global qualifiers.</b> <a name=Gdesc33>&nbsp;</a></p>
+<a name=table10>&nbsp;</a>
+<p><b>Table 10. Global qualifiers.</b></p>
 
+<a name=sect2521>&nbsp;</a>
 <h4>2.5.2.1 Global qualifier description</h4>
 
-<p><a name=Acdlog34>&nbsp;</a></p>
 
+<a name=sect25211>&nbsp;</a>
 <h5>2.5.2.1.1 acdlog (for testing only)</h5>
 
-<p>This qualifier will turn on the log function of
-the ACD file processing. It will produce a logfile of the ACD file parsing
-process. The logfile will have the name of the application, with the extension <i>.acdlog</i>.
+<p>This qualifier will turn on the log function of the ACD file
+processing. It will produce a logfile of the ACD file parsing
+process. The logfile will have the name of the application, with the
+extension <i>.acdlog</i>.
 </p>
 
 <p>Example:</p>
@@ -4123,18 +4154,18 @@ Definitions in ACD file
 ..(Removed lines)..
 </pre>
 
-<p>This example shows the application <b>seqret</b>
-being run with the <i>-acdlog</i> qualifier (and the <i>-auto</i> qualifier,
-(which will be discussed later). After completion of the program a file called <i>seqret.acdlog</i>
-is created in the current directory, with the logging information, of which the
-first sixteen lines are shown.</p>
+<p>This example shows the application <b>seqret</b> being run with the
+<i>-acdlog</i> qualifier (and the <i>-auto</i> qualifier, (which will
+be discussed later). After completion of the program a file called
+<i>seqret.acdlog</i> is created in the current directory, with the
+logging information, of which the first sixteen lines are shown.</p>
 
 <p>The logfile will first list the ACD file
 description, with all abbreviated names extended to their full length. Next, it
 will list all the parameters and qualifiers it knows of and prints out all the
-information it has on the data types and qualifiers. <a name=Acdpretty35>&nbsp;</a>
-</p>
+information it has on the data types and qualifiers.</p>
 
+<a name=sect25212>&nbsp;</a>
 <h5>2.5.2.1.2 acdpretty (for testing only)</h5>
 
 <p>When the <i>-acdpretty</i> qualifier is used,
@@ -4143,8 +4174,9 @@ file. It will produce the full-length names of all data type names, attributes
 and qualifiers. It will show all attributes on a separate line and all values
 enclosed in quotes. The file will be saved as <i>programname.acdpretty</i> in
 the current directory ( <i>programname</i> is the name of the original
-program). <a name=Auto36>&nbsp;</a></p>
+program).</p>
 
+<a name=sect25213>&nbsp;</a>
 <h5>2.5.2.1.3 auto</h5>
 
 <p>The <i>-auto</i> qualifier will turn off any
@@ -4163,23 +4195,26 @@ Output sequence [pdnirsecf.fasta]:
 %
 </pre>
 
-<p>The first example shows the application <b>seqret</b>
-being run without the <i>-auto</i> qualifier. The program will prompt the user
-for an output filename, because the output sequence is a mandatory parameter.
-It presents the user with a prompt and a default output filename ( <i>pdnirsecf.fasta</i>,
-constructed from the input sequence name and the output format).</p>
+<p>The first example shows the application <b>seqret</b> being run
+without the <i>-auto</i> qualifier. The program will prompt the user
+for an output filename, because the output sequence is a mandatory
+parameter.  It presents the user with a prompt and a default output
+filename ( <i>pdnirsecf.fasta</i>, constructed from the input sequence
+name and the output format).</p>
 
 <p>In the second example, the application <b>seqret</b>
 is run with the <i>-auto</i> qualifier. The user is not queried for the output
 filename and it will use the default filename( <i>pdnirsecf.fasta</i>) for the
-output file. <a name=Debug37>&nbsp;</a></p>
+output file.</p>
 
+<a name=sect25214>&nbsp;</a>
 <h5>2.5.2.1.4 debug</h5>
 
-<p>This qualifier will turn on the debug tracing.
-A file will be produced with the name of the program followed by the extension <i>.dbg</i>.
-The debug file will contain a complete trace of the actions of the program
-reported by calls to the AJAX function <i>ajDebug()</i>.</p>
+<p>This qualifier will turn on the debug tracing.  A file will be
+produced with the name of the program followed by the extension
+<i>.dbg</i>.  The debug file will contain a complete trace of the
+actions of the program reported by calls to the AJAX function
+<i>ajDebug()</i>.</p>
 
 <p>Example:</p>
 
@@ -4232,12 +4267,14 @@ first line
 try format 7 (fasta)
 </pre>
 
-<p>This examples shows the application <b>seqret</b>
-being run with the <i>-debug</i> qualifier (and the <i>-auto</i> qualifier,
-which will be discussed later). After completion of the program, a file called <i>seqret.dbg</i>
-is created in the current directory which contains the debug information, of
-which some of the lines are shown. <a name=Filter38>&nbsp;</a></p>
+<p>This examples shows the application <b>seqret</b> being run with
+the <i>-debug</i> qualifier (and the <i>-auto</i> qualifier, which
+will be discussed later). After completion of the program, a file
+called <i>seqret.dbg</i> is created in the current directory which
+contains the debug information, of which some of the lines are
+shown.</p>
 
+<a name=sect25215>&nbsp;</a>
 <h5>2.5.2.1.5 filter</h5>
 
 <p>The filter qualifier makes the program behave
@@ -4255,8 +4292,9 @@ missing values.</p>
 <p>The example shows the application <b>seqret</b>
 being run with the <i>-filter</i> qualifier. The input file is 'piped' into the
 program using the Unix command <i>cat</i> and the output is 'piped' directly to
-the Unix program <i>lpr</i>, which will print it on the printer. <a name=Help39>&nbsp;</a></p>
+the Unix program <i>lpr</i>, which will print it on the printer.</p>
 
+<a name=sect25216>&nbsp;</a>
 <h5>2.5.2.1.6 help</h5>
 
 <p>Help on a program's use can be obtained by
@@ -4268,17 +4306,19 @@ from the <i>help:</i> attribute.</p>
 
 <p>A second qualifier <i>-verbose</i> gives a list
 of all available qualifiers, including any associated qualifiers (sequence
-formatting etc) and the general qualifiers such as <i>-help</i>. <a name=Options40>&nbsp;</a></p>
+formatting etc) and the general qualifiers such as <i>-help</i>.</p>
 
+<a name=sect25217>&nbsp;</a>
 <h5>2.5.2.1.7 options</h5>
 
-<p>A program wirll prompt the user for any missing
-"required" or "parameter" values. Some programs have more
-options that are normally not prompted for (although they can be used on the
-command line). When the <i>-options</i> qualifier is used, the program  will 
-query the user for the required parameters (data types with the <i>parameter:</i>
-attribute and/or <i>standard:</i> attribute) and also for the parameters that
-are labelled with the <i>additional:</i> attribute.</p>
+<p>A program wirll prompt the user for any missing "required" or
+"parameter" values. Some programs have more options that are normally
+not prompted for (although they can be used on the command line). When
+the <i>-options</i> qualifier is used, the program will query the user
+for the required parameters (data types with the <i>parameter:</i>
+attribute and/or <i>standard:</i> attribute) and also for the
+parameters that are labelled with the <i>additional:</i>
+attribute.</p>
 
 <p>Example:</p>
 
@@ -4322,17 +4362,20 @@ being required by the attribute of that name. It will not query the user for
 the integer variable <i>outputLength</i>, since it is not labelled as neither a
 parameter nor required.</p>
 
-<p>In the second example the user IS queried for
-the integer, since the <i>-options</i> qualifier forces the program to query
-for those parameters that are labelled with the <i>additional:</i> attribute.</p>
+<p>In the second example the user IS queried for the integer, since
+the <i>-options</i> qualifier forces the program to query for those
+parameters that are labelled with the <i>additional:</i>
+attribute.</p>
 
-<p>Any parameter that is not defined as a
-parameter (with the <i>parameter:</i> attribute), as required (by the <i>standard:</i>
-attribute) or as optional (by the <i>additional:</i> attribute) can still be used
-on the command line, but the user will NEVER be queried for them. These
-parameters are considered an 'advanced feature' and can only be used on the
-command line. They will only be shown by the <i>-help</i> qualifier. <a name=Stdout41>&nbsp;</a></p>
+<p>Any parameter that is not defined as a parameter (with the
+<i>parameter:</i> attribute), as required (by the <i>standard:</i>
+attribute) or as optional (by the <i>additional:</i> attribute) can
+still be used on the command line, but the user will NEVER be queried
+for them. These parameters are considered an 'advanced feature' and
+can only be used on the command line. They will only be shown by the
+<i>-help</i> qualifier.</p>
 
+<a name=sect25218>&nbsp;</a>
 <h5>2.5.2.1.8 stdout</h5>
 
 <p>When the <i>-stdout</i> qualifier is used, the
@@ -4354,8 +4397,9 @@ Output sequence [stdout]: <i>&lt;ENTER&gt;</i>
 changes the default output to be to standard output (the terminal) instead of
 to a file. The program can still prompt the user, so there is a chance to enter
 a filename instead. With <i>-auto</i> on the command line, the program would
-instead write to the terminal without asking. <a name=Vars42>&nbsp;</a></p>
+instead write to the terminal without asking.</p>
 
+<a name=sect2522>&nbsp;</a>
 <h4>2.5.2.2 Environment variables EMBOSS_qualifier</h4>
 
 <p>Most global qualifiers default to FALSE unless
@@ -4513,8 +4557,8 @@ for global qualifiers.</p>
  </tr>
 </table>
 
-<p><b>Table 10. Environment variables associated with
-global qualifiers.</b></p>
+<a name=table11>&nbsp;</a>
+<p><b>Table 11. Environment variables associated with global qualifiers.</b></p>
 
 <p>Environment variables can be specified in the global
 <i>emboss.defaults</i> file, in the user's <i>.embosssrc</i> file or set on the
@@ -4584,10 +4628,11 @@ of the environment variable is cancelled by using the negating effect
 of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
 <i>-nooptions</i>).</p>
 
+<a name=sect253>&nbsp;</a>
 <h3>2.5.3 Data type specific qualifiers</h3>
 
-<p><a name=AssocIO44>&nbsp;</a></p>
 
+<a name=sect2531>&nbsp;</a>
 <h4>2.5.3.1 Input</h4>
 
 <p>At the moment there are only qualifiers for
@@ -4722,8 +4767,10 @@ sequence type data.</p>
  </tr>
 </table>
 
-<p><b>Table 11. Input qualifiers.</b> <a name=Qmulti45>&nbsp;</a></p>
+<a name=table12>&nbsp;</a>
+<p><b>Table 12. Input qualifiers.</b></p>
 
+<a name=sect2532>&nbsp;</a>
 <h4>2.5.3.2 Output</h4>
 
 <p>At the moment there are only qualifiers for
@@ -4790,8 +4837,10 @@ sequence type data.</p>
  </tr>
 </table>
 
-<p><b>Table 12. Output qualifiers.</b> &nbsp;</p>
+<a name=table13>&nbsp;</a>
+<p><b>Table 13. Output qualifiers.</b></p>
 
+<a name=sect2533>&nbsp;</a>
 <h4>2.5.3.3 Graphics</h4>
 
 <p>At the moment there are only qualifiers for
@@ -4836,8 +4885,10 @@ sequence type data.</p>
  </tr>
 </table>
 
-<p><b>Table 13. Graphics qualifiers.</b> &nbsp;</p>
+<a name=table14>&nbsp;</a>
+<p><b>Table 14. Graphics qualifiers.</b></p>
 
+<a name=sect254>&nbsp;</a>
 <h3>2.5.4 Multiple qualifiers</h3>
 
 <p>Qualifiers refer to the parameter that preceded
@@ -4864,12 +4915,13 @@ to different data types.</p>
 % <b>align</b> <i>aap.seq</i> -sformat fasta <i> noot.seq </i> -sformat gcg
 </pre>
 
-<p>In this example, the program <b>align</b> takes
-two parameters, both input sequences (files <i>aap.seq</i> and <i>noot.seq</i>,
-data type sequence) and here the order of the qualifiers is important. Since <i>aap.seq</i>
-is in 'fasta' format and <i>noot.seq</i> is in 'gcg' format. <a name=Qnum46>&nbsp;</a>
-</p>
+<p>In this example, the program <b>align</b> takes two parameters,
+both input sequences (files <i>aap.seq</i> and <i>noot.seq</i>, data
+type sequence) and here the order of the qualifiers is
+important. Since <i>aap.seq</i> is in 'fasta' format and
+<i>noot.seq</i> is in 'gcg' format.</p>
 
+<a name=sect255>&nbsp;</a>
 <h3>2.5.5 Numbering qualifiers</h3>
 
 <p>Instead of having to adhere to a rigorous order
@@ -4928,8 +4980,9 @@ sequence: asequence2 [
 (filename1.seq) is in 'gcg' format and the second sequence file (filename2.seq)
 is in 'fasta' format. Note that the second -sformat qualifier has been numbered
 2, although it is the third parameter (but the second sequence parameter, hence
-number 2). <a name=Operations47>&nbsp;</a></p>
+number 2).</p>
 
+<a name=sect26>&nbsp;</a>
 <h2>2.6 Operations</h2>
 
 <p>Operations can be used to be more flexible in
@@ -4955,9 +5008,10 @@ whole token should be enclosed by double quotes (" ")</p>
 <p><b>Formalised:</b></p>
 
 <pre>
-@(@(<i>operation</i>)) <a name=OpArith48></a>
+@(@(<i>operation</i>))</a>
 </pre>
 
+<a name=sect261>&nbsp;</a>
 <h3>2.6.1 Arithmetic operations</h3>
 
 <p>The current arithmetic operations are addition,
@@ -5017,14 +5071,16 @@ attribute) by first dividing the sequence length by 3, using the divide
 arithmetic operation, nested with a separate subtraction operation.</p>
 
 <p>If any of the operands are not numerical, the
-result is undefined. <a name=OpCond49>&nbsp;</a></p>
+result is undefined.</p>
 
+<a name=sect262>&nbsp;</a>
 <h3>2.6.2 Conditional operations</h3>
 
 <p>There are three conditional operations: The
 Boolean operation, the simple conditional (if/then/else type) and the case
-type. <a name=OpBool50>&nbsp;</a></p>
+type.</p>
 
+<a name=sect2621>&nbsp;</a>
 <h4>2.6.2.1 Boolean operation</h4>
 
 <p>The Boolean operation will resolve to a Boolean
@@ -5065,22 +5121,24 @@ infile:  data [
 </pre>
 
 <p>In this example, the data file is only required
-if the type of sequence is 'DNA'. <a name=OpIf51>&nbsp;</a></p>
+if the type of sequence is 'DNA'.</p>
 
+<a name=sect2622>&nbsp;</a>
 <h4>2.6.2.2 Simple conditional operation.</h4>
 
-<p>The simple conditional is a tri-operand
-operator. The test value is followed by a question mark '?', which in turn is followed
-by the two values the operation can resolve to, separated by a colon ':'. <b>Formalised:</b>
+<p>The simple conditional is a tri-operand operator. The test value is
+followed by a question mark '?', which in turn is followed by the two
+values the operation can resolve to, separated by a colon
+':'. <b>Formalised:</b>
 </p>
 
 <p>@(<i>boolval ? iftrue : iffalse</i>)</p>
 
-<p>The test value, <i>boolval</i>, which must be
-either a Boolean variable, a Boolean operation or an integer, is examined and
-if it resolves to true (or non-zero) the total operation resolves to the <i>iftrue</i>
-value. If the test value resolves to false (or zero) the operation resolves to
-the second value ( <i>iffalse</i>.</p>
+<p>The test value, <i>boolval</i>, which must be either a Boolean
+variable, a Boolean operation or an integer, is examined and if it
+resolves to true (or non-zero) the total operation resolves to the
+<i>iftrue</i> value. If the test value resolves to false (or zero) the
+operation resolves to the second value ( <i>iffalse</i>.</p>
 
 <p>Example:</p>
 
@@ -5090,13 +5148,14 @@ string: matrix [
   ]
 </pre>
 
-<p>The <i>$(sequence.protein)</i> variable is a
-Boolean value that resolves to true if the <i>inseq</i> data type with the name
-<i>sequence</i> is a protein sequence. The operation would resolve to <i>BLOSUM62</i>
-if the sequence is a protein sequence and resolve to <i>DNAMAT</i> if it was
-not a protein sequence (i.e. a DNA or RNA sequence). <a name=OpCase52>&nbsp;</a>
-</p>
+<p>The <i>$(sequence.protein)</i> variable is a Boolean value that
+resolves to true if the <i>inseq</i> data type with the name
+<i>sequence</i> is a protein sequence. The operation would resolve to
+<i>BLOSUM62</i> if the sequence is a protein sequence and resolve to
+<i>DNAMAT</i> if it was not a protein sequence (i.e. a DNA or RNA
+sequence).</p>
 
+<a name=sect2623>&nbsp;</a>
 <h4>2.6.2.3 Case operation.</h4>
 
 <p>In the case-type operation, the test value is
@@ -5135,8 +5194,9 @@ to unknown.</p>
 
 <p>If the test value cannot unambiguously be
 assigned to a single associated value, the operation will resolve to the LAST
-associated value that matches its possible value. <a name=Setenv53>&nbsp;</a></p>
+associated value that matches its possible value.</p>
 
+<a name=sect263>&nbsp;</a>
 <h3>2.6.3 Environment variables</h3>
 
 <p>The behaviour of EMBOSS programs can not only
@@ -5258,8 +5318,10 @@ general to the workings of an EMBOSS program.</p>
  </tr>
 </table>
 
-<p><b>Table 14. Environment variables.</b> <a name=Envsyntax54>&nbsp;</a></p>
+<a name=table15>&nbsp;</a>
+<p><b>Table 15. Environment variables.</b></p>
 
+<a name=sect3>&nbsp;</a>
 <h1>3. Command line syntax</h1>
 
 <p>Most of the EMBOSS programs will be started
@@ -5268,11 +5330,13 @@ qualifiers. Which parameters and qualifiers can appear on the command line, is
 defined in the Ajax Command Definition (ACD) file that is associated with the
 EMBOSS program (See 1.2).</p>
 
-<p>The Command line syntax is very versatile and
-it does not restrict the available syntax more than is strictly necessary. To
-save confusion, there will be a recommended EMBOSS command style, which
-probably will be the UNIX style using '=' for parameter and qualifier values. <a name=PQual55>&nbsp;</a></p>
+<p>The Command line syntax is very versatile and it does not restrict
+the available syntax more than is strictly necessary. To save
+confusion, there will be a recommended EMBOSS command style, which
+probably will be the UNIX style using '=' for parameter and qualifier
+values.</p>
 
+<a name=sect31>&nbsp;</a>
 <h2>3.1 Parameters and qualifiers.</h2>
 
 <p>For parameters it is not always mandatory to
@@ -5284,8 +5348,9 @@ qualifier is to be given on the command line).</p>
 
 <p>In the rest of the definition of the command
 line syntax, wherever the word qualifier is used, it means both parameters and
-qualifiers. If ‘parameter’ is used it will only apply to parameters. <a name=Qualdef56>&nbsp;</a></p>
+qualifiers. If 'parameter' is used it will only apply to parameters.</p>
 
+<a name=sect32>&nbsp;</a>
 <h2>3.2 Qualifier definition</h2>
 
 <ul type=disc>
@@ -5307,7 +5372,8 @@ qualifiers. If ‘parameter’ is used it will only apply to parameters. <a name=Qua
  <li>The values are spaced from the qualifier name by either a space ' '
      (UNIX style) or an equal sign '=' (OpenVMS or SeqPup style). </li>
  <li>If the equal sign '=' is used to assign a value to a qualifier, the
-     prefix (hyphen '-' or forward slash '/') can be omitted (SeqPup style). </li>
+     prefix (hyphen '-' or forward slash '/') can be omitted (SeqPup
+     style).</li>
  <li>Boolean (Yes/No) (True/False) qualifiers have no attached value and
      are set True by giving the qualifier name, and set to False by adding the
      prefix 'no' to the qualifier name. </li>
@@ -5378,8 +5444,9 @@ enforcement of a standard recommended way for users to specify the
 command lines.</p>
 
 <p>For general use, we strongly recommend the
-first example above. <a name=Acdnew57>&nbsp;</a></p>
+first example above.</p>
 
+<a name=sect4>&nbsp;</a>
 <h1>4. Using an ACD file in a new EMBOSS program</h1>
 
 <p>This part is intended as a simple guide to getting started as a
@@ -5391,6 +5458,7 @@ easy.</p>
 need to write the application source code, which will use the EMBOSS
 libraries, and you also need to add the application to EMBOSS.</p>
 
+<a name=sect41>&nbsp;</a>
 <h2>4.1 Application Command Definitions</h2>
 
 <p>Strangely, you add the application to EMBOSS
@@ -5398,6 +5466,7 @@ before you write any source code. This is because EMBOSS can use the
 application command definition (ACD) file to test all the input for you,
 without any new source code.</p>
 
+<a name=sect411>&nbsp;</a>
 <h3>4.1.1 ACD files</h3>
 
 <p>ACD files live in the <i>emboss/acd/</i>
@@ -5442,8 +5511,9 @@ for the user'" as well.</p>
 
 <p>There are other things you can specify too. All
 values can have defaults provided in the ACD file and tests to make sure the
-values are reasonable. See the ACD documentation for more information. <a name=Acdtest60>&nbsp;</a></p>
+values are reasonable. See the ACD documentation for more information.</p>
 
+<a name=sect412>&nbsp;</a>
 <h3>4.1.2 Testing your ACD file</h3>
 
 <p>Now for the cunning part. EMBOSS has an
@@ -5457,14 +5527,15 @@ You put</p>
 <p>on the command line. It will read <i>appname.acd</i>
 and will read in any required data just as if the application itself was
 running. It will also test anything else you add on the command line and report
-syntax errors in exactly the same way as the real application. <a name=Acdcode61>&nbsp;</a></p>
+syntax errors in exactly the same way as the real application.</p>
 
+<a name=sect42>&nbsp;</a>
 <h2>4.2 Application template</h2>
 
-<p>When the ACD file is ready, which should not
-take long, you can start on the application code. This lives in emboss/<i>appname</i>.c
-and to start with you will simply call the startup routines and pick up the
-values you defined in the ACD file.</p>
+<p>When the ACD file is ready, which should not take long, you can
+start on the application code. This lives in emboss/<i>appname</i>.c
+and to start with you will simply call the startup routines and pick
+up the values you defined in the ACD file.</p>
 
 <pre>
 #include "emboss.h"
@@ -5502,8 +5573,9 @@ choose.</p>
 output functions to do this, typically ajFmtPrintF which works just
 like C's "printf" except that it uses an AJAX file object (AjPFile)
 and has some extra format options like %S for AJAX strings
-(AjPStr). <a name=Makefile62>&nbsp;</a></p>
+(AjPStr).</p>
 
+<a name=sect43>&nbsp;</a>
 <h2>4.3 Makefile changes</h2>
 
 <p>You can add a new application without too much
@@ -5523,8 +5595,9 @@ You can then use <i>make</i> to make EMBOSS with your new application.</p>
 <p>What next?</p>
 
 <p>Time to write some real code for your
-application. Good luck and happy coding! <a name=Example63>&nbsp;</a></p>
+application. Good luck and happy coding!</p>
 
+<a name=sect5>&nbsp;</a>
 <h1>5. Examples</h1>
 
 <p>The following ACD file for a hypothetical
@@ -5616,15 +5689,16 @@ string: string [
   ]
 </pre>
 
-<p><a name=Process64>&nbsp;</a></p>
 
+<a name=sect51>&nbsp;</a>
 <h2>5.1 Processing the ACD File</h2>
 
 <p>The AJAX Command Definition, and the command
 line entered by the user, are processed automatically by a single start-up call
 to <i>embInit</i>. The same call also handles all prompting of the user for
-missing information. <a name=Test65>&nbsp;</a></p>
+missing information.</p>
 
+<a name=sect52>&nbsp;</a>
 <h2>5.2 Testing ACD Files</h2>
 
 <p>To help in evaluating the ACD files, there is a
@@ -5688,7 +5762,7 @@ Second sequence : paamir.tfa
 Too short - minimum length is 4 characters
 </pre>
 
-<a name=Thanks66></a>
+<a name=sect6>&nbsp;</a>
 <h1>6. Acknowledgements</h1>
 
 <p>This documentation was originally written by Thon de Boer at the
@@ -5707,31 +5781,31 @@ http://www.uk.embnet.org/Software/EMBOSS/Acd/</p>
 <h1>Footnotes</h1>
 
 <p><a name=fn1></a> <a
-href="http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Acd/syntax.html#fnB1">[1]</a>
+href="#fnB1">[1]</a>
 The colon notation and the equal sign notation can be used
 interchangeably. We recommend the use of the colon notation and this
 is the notation that will be used in all further examples and
 formalisations.</p>
 
 <p><a name=fn2></a> <a
-href="http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Acd/syntax.html#fnB2">[2]</a>
+href="#fnB2">[2]</a>
 The values given for the attributes are the default values.</p>
 
 <p><a name=fn3></a> <a
-href="http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Acd/syntax.html#fnB3">[3]</a>
+href="#fnB3">[3]</a>
 Input (and output) will usually take place using files, but 'files' is
 used here in the broadest sense, since there are many different ways
 that the input can actually take place (via the USA method).</p>
 
 <p><a name=fn4></a> <a
-href="http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Acd/syntax.html#fnB4">[4]</a>
+href="#fnB4">[4]</a>
 Any value that is appropriate for the type of parameter that this
 attribute is associated with.</p>
 
 <p><a name=fn5></a> <a
-href="http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Acd/syntax.html#fnB5">[5]</a>
+href="#fnB5">[5]</a>
 The global qualifiers all default to 'false' at this moment, so there
-is no compelling reason to use this syntax at the moment.</p>
+is no compelling reason to use this syntax.</p>
 
 <p>Notes:</p>
 
@@ -5752,6 +5826,9 @@ output and notes on features in reports</p>
 
 <p>Check the -nooutput option in the example(s)</p>
 
+<p>acd error checks</p>
+
+<p>acdvalid</p>
 
 </body>
 
