@@ -75,6 +75,7 @@ void         ajSeqAssSeq (AjPSeq thys, AjPStr str);
 void         ajSeqAssSeqC (AjPSeq thys, char* text);
 void         ajSeqAssSeqCI (AjPSeq thys, char* text, ajint ilen);
 void         ajSeqAssSv (AjPSeq thys, AjPStr str);
+void         ajSeqAssSvC (AjPSeq thys, char* text);
 void         ajSeqAssUfo (AjPSeq thys, AjPStr str);
 void         ajSeqAssUfoC (AjPSeq thys, char* text);
 void         ajSeqAssUsa (AjPSeq thys, AjPStr str);
