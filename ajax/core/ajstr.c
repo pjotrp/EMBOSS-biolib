@@ -5403,3 +5403,44 @@ void ajStrRemoveNewline(AjPStr *thys)
 
     return;
 }
+
+/* @func ajStrCountK *******************************************************
+**
+** Counts occurrences of a character in a string
+**
+** @param [r] thys [AjPStr] String
+** @param [r] ch [char] Character to count
+** @return [ajint] Number of times character was found in string
+******************************************************************************/
+
+ajint ajStrCountK (AjPStr thys, char ch) {
+  ajint ret = 0;
+  char* cp = thys->Ptr;
+  while (*cp) {
+    if (*cp == ch) ret++;
+    cp++;
+  }
+  return ret;
+}
+
+/* @func ajStrCountC *******************************************************
+**
+** Counts occurrences of a character set in a string
+**
+** @param [r] thys [AjPStr] String
+** @param [r] str [const char*] Characters to count
+** @return [ajint] Number of times character was found in string
+******************************************************************************/
+
+ajint ajStrCountC (AjPStr thys, const char* str) {
+  ajint ret = 0;
+  const char* cp = str;
+
+  while (*cp) {
+    ret += ajStrCountK(thys, *cp);
+    cp++;
+  }
+
+  return ret;
+}
+

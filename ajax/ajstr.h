@@ -288,6 +288,8 @@ AjBool     ajStrConvert   (AjPStr* pthis, const AjPStr oldc,
 AjBool     ajStrConvertCC (AjPStr* pthis, const char* oldc, const char* newc);
 AjBool     ajStrCopy (AjPStr* pthis, const AjPStr str);
 AjBool     ajStrCopyC (AjPStr* pthis, const char* str);
+ajint      ajStrCountC (AjPStr thys, const char* str);
+ajint      ajStrCountK (AjPStr thys, char ch);
 AjBool     ajStrCut (AjPStr* pthis, ajint begin, ajint end);
 void       ajStrDegap(AjPStr* thys);
 void       ajStrDel (AjPStr *thys);
