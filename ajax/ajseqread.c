@@ -878,6 +878,10 @@ static ajint seqReadFmt (AjPSeq thys, AjPSeqin seqin, SeqPInFormat inform,
 	ajDebug ("query match failed, continuing ...\n");
 	ajSeqClear (thys);
     }
+    else
+    {
+        ajFileBuffReset(seqin->Filebuff);
+    }
     return 1;
 }
 
@@ -1324,7 +1328,7 @@ static AjBool seqReadGcg (AjPSeq thys, AjPSeqin seqin)
     /* test GCG 9.x file types if available */
     /* any type on the .. line will override this */
 
-    if (ajStrPrefixC(rdline, "!!NA_EQUENCE"))
+    if (ajStrPrefixC(rdline, "!!NA_SEQUENCE"))
 	ajSeqSetNuc(thys);
     else if (ajStrPrefixC(rdline, "!!AA_SEQUENCE"))
 	ajSeqSetProt(thys);
@@ -1848,8 +1852,10 @@ static AjBool seqReadPhylip (AjPSeq thys, AjPSeqin seqin)
 
 	ajDebug("first line:\n'%S'\n", rdline);
 
-	if (!ajRegExec(topexp, rdline)) /* first line test */
-	    return ajFalse;
+	if (!ajRegExec(topexp, rdline)) { /* first line test */
+	  ajFileBuffReset (buff);
+	  return ajFalse;
+	}
 
 	ajRegSubI(topexp, 1, &tmpstr);
 	(void) ajStrToInt (tmpstr, &iseq);
@@ -1871,6 +1877,7 @@ static AjBool seqReadPhylip (AjPSeq thys, AjPSeqin seqin)
 	    if (!ajRegExec (headexp, rdline))
 	    {
 		ajDebug ("FAIL (not headexp): '%S'\n", rdline);
+		ajFileBuffReset (buff);
 		return ajFalse;
 	    }
 	    AJNEW0(phyitem);
