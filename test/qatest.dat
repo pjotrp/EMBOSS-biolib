@@ -16764,68 +16764,214 @@ FC = 0
 # PHYLIP 3.5
 #######################################
 
-ID eclique-help
+ID eclique-ex
 AB phylip
 AA eclique
-CL -help
+IN ../../data/evolution/clique.dat
+IN
+IN
+IN
+IN
+IN
+FI eclique.outfile
+FC = 31
+FP /^Characters: \(  1  2  3  6\)\n/
+FP /^     2  1  3  6\n/
+FI eclique.treefile
+FC = 1
+FP /^\(\(\(Delta,Epsilon\),Gamma\),Alpha,Beta\);\n/
 FI stderr
-FC = 0
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
-ID econsense-help
+ID econsense-ex
 AB phylip
 AA econsense
-CL -help
+IN ../../data/evolution/consense.dat
+IN
+IN
+IN
+IN
+FI econsense.outfile
+FC = 74
+FP s /^  F\n  I\n  C\n/
+FP /^\.\.\*\.\*\.\.\.\.\.\s+4\.00\n/
+FI consense.treefile
+FC = 2
+FP /^\(A:9.0,\(\(E:9.0,\(\(\(I:9.0,F:9.0\):9.0,\(\(D:9.0,\(J:9.0,H:9.0\):4.0\)/
+FP /\(J:9.0,H:9.0\):4.0\):6.0,C:9.0\):6.0\):2.0,G:9.0\):6.0\):9.0,\n/
+FP /^B:9.0\):9.0\);\n/
 FI stderr
-FC = 0
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 1
+FP /^\n/
 //
 
-ID econtml-help
+ID econtml-ex
 AB phylip
 AA econtml
-CL -help
+IN ../../data/evolution/contml.dat
+IN
+IN
+IN
+IN
+IN
+IN
+IN
+IN
+IN
+FI econtml.outfile
+FC = 31
+FP /^Ln Likelihood =    33\.29060\n/
+FP /^  3       Chinese           0.00221   \(    -0.02034,     0.03710\)\n/
+FI econtml.treefile
+FC = 2
+FP /^\(African:0.08464,\(American:0.02094,\(Australian:0.05959,Chinese:0.00221\)/
 FI stderr
-FC = 0
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
-ID econtrast-help
+ID econtrast-ex
 AB phylip
 AA econtrast
-CL -help
+IN ../../data/evolution/contrast.dat
+IN ../../data/evolution/contrast.tree
+IN
+IN
 FI stderr
-FC = 0
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI econtrast.outfile
+FC = 27
+FP /^    3.9423    1.7028\n/
+FP /^    1.0000    0.4319\n/
+FP /^    1.0000    0.6566\n/
 //
 
-ID ednacomp-help
+ID ednacomp-ex
 AB phylip
 AA ednacomp
-CL -help
+CL -stepoutput
+IN ../../data/evolution/dnacomp.dat
+IN
+IN
+IN
+IN
+IN
+FI ednacomp.outfile
+FC = 36
+FP /total number of compatible sites is       11.0\n/
+FP /    0[!]       2   1   3   2   0   2   1   1   1\n/
+FP /   0 [!] YYNYYYYYY\n/
+FP /One most parsimonious tree found:\n/
+FI ednacomp.treefile
+FC = 1
+FP /\(\(\(\(Epsilon,Delta\),Gamma\),Beta\),Alpha\);\n/
 FI stderr
-FC = 0
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
-ID ednadist-help
+ID ednadist-ex
 AB phylip
 AA ednadist
-CL -help
+IN ../../data/evolution/dnadist.dat
+IN
+IN
+IN
+IN
+FI ednadist.outfile
+FC = 6
+FP /    5\n/
+FP /^Alpha       0.0000  0.2997  0.7820  1.1716  1.4617\n/
 FI stderr
-FC = 0
+FC = 10
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
-ID ednainvar-help
+ID ednainvar-ex
 AB phylip
 AA ednainvar
-CL -help
+IN ../../data/evolution/dnainvar.dat
+IN
+IN
+IN
+IN
+IN
+FI ednainvar.outfile
+FC = 109
+FP /^     AAAG         2\n/
+FP /^     1113         3\n/
+FP /^  III:  \(\(Alpha.*,Delta.*\),\(Beta.*,Gamma.*\)\)\n/
+FP /^   III    0    -     0   =     0       1.0000               no\n/
+FP /^   Quadratic invariant =             4.0\n/
+FP 3 /^   Quadratic invariant =/
+FP /  Tree III:             5.0\n/
 FI stderr
-FC = 0
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+## stdout has one blank line
+FI stdout
+FC = 1
+FP /^\n/
 //
 
-ID ednaml-help
+ID ednaml-ex
 AB phylip
 AA ednaml
-CL -help
+## may need to play with the input file format for this one
+CL -ncategories 2 -categories "1111112222222" -rate "1.0 2.0"
+CL -gamma h
+CL -nhmmcategories 5 -hmmrates "0.264 1.413 3.596 7.086 12.641"
+CL -hmmprobabilities "0.522 0.399 0.076 0.0036 0.000023"
+CL -lambda 1.5
+CL -weight "0111111111110"
+IN ../../data/evolution/dnaml.dat
+IN
+IN
+IN
+IN
+IN
+IN
+IN
+IN
+FI ednaml.outfile
+FC = 90
+FP /^        1           0.264            0.522\n/
+FP /^        2           2.000\n/
+FP /^Ln Likelihood =   -57.89164\n/
+FP /^ +2 + Alpha +0.26902 +\( +zero, +0.80593\) \*\n/
+FP /^             1132121111 211\n/
+FI dnaml.treefile
+FC = 2
+FP /^\(\(Epsilon:0.13647,Delta:0.13781\):7.83947,\(Gamma:0.95525,\n/
+FP /^Beta:0.04509\):0.00006,Alpha:0.26902\);\n/
 FI stderr
-FC = 0
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 54
+FP 45 /^./
 //
 
 ID ednamlk-help
@@ -16836,125 +16982,352 @@ FI stderr
 FC = 0
 //
 
-ID ednapars-help
+ID ednapars-ex
 AB phylip
 AA ednapars
-CL -help
+IN ../../data/evolution/dnapars.dat
+IN
+IN
+IN
+IN
+FI ednapars.outfile
+FC = 21
+FP /^requires a total of     19.000\n/
+FP /^           \+--Epsilon.*\n/
+FI ednapars.treefile
+FC = 1
+FP /^\(\(\(\(Epsilon,Delta\),Gamma\),Beta\),Alpha\);\n/
 FI stderr
-FC = 0
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
-ID ednapenny-help
+ID ednapenny-ex
 AB phylip
 AA ednapenny
-CL -help
+IN ../../data/evolution/dnapenny.dat
+IN
+IN
+IN
+IN
+FI ednapenny.outfile
+FC = 207
+FP /^     9 trees in all found\n/
+FP /^  \!     \+-----6  \+-----Gamma2    \n/
+FI ednapenny.treefile
+FC = 9
+FP /^\(Alpha1,\(\(\(\(\(Delta,Epsilon\),Gamma2\),Gamma1\),\(Beta2,Beta1\)\),Alpha2\)\)\[0.1111\];\n/
+FP 3 /\(Gamma2,Gamma1\)/
+FP 9 /\(Delta,Epsilon\),/
 FI stderr
-FC = 0
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
-ID edollop-help
+ID edollop-ex
 AB phylip
 AA edollop
-CL -help
+IN ../../data/evolution/dollop.dat
+IN
+IN
+IN
 FI stderr
-FC = 0
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI edollop.outfile
+FC = 28
+FP /^One most parsimonious tree found:\n/
+FP 1 /^requires a total of      3.000\n/
+FI edollop.treefile
+FC = 1
+FP /^\(Delta,\(Epsilon,\(Gamma,\(Beta,Alpha\)\)\)\);\n/
 //
 
-ID edolpenny-help
+ID edolpenny-ex
 AB phylip
 AA edolpenny
-CL -help
+IN ../../data/evolution/dolpenny.dat
+IN
+IN
+IN
+IN
+FI edolpenny.outfile
+FC = 67
+FP /^    3 trees in all found\n/
+FP 1 /^     \+--6     \+--5  \n/
+FI edolpenny.treefile
+FC = 3
+FP /^\(Delta,\(Epsilon,\(Gamma1,\(Alpha2,\(\(Beta2,Beta1\),Alpha1\)\)\)\)\)\[0.3333\];\n/
+FP /^\(Delta,\(Epsilon,\(Gamma1,\(\(Beta2,Beta1\),\(Alpha2,Alpha1\)\)\)\)\)\[0.3333\];\n/
+FP /^\(Delta,\(Epsilon,\(Gamma1,\(\(\(Beta2,Beta1\),Alpha2\),Alpha1\)\)\)\)\[0.3333\];\n/
 FI stderr
-FC = 0
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
-ID efactor-help
+ID efactor-ex
 AB phylip
 AA efactor
-CL -help
+IN ../../data/evolution/factor.dat
+IN
+FI efactor.outfile
+FC = 5
+FP /^ +4 +8\n/
+FP /^Alpha     11100000\n/
 FI stderr
-FC = 0
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 3
+FP 1 /^./
 //
 
-ID efitch-help
+ID efitch-ex
 AB phylip
 AA efitch
-CL -help
+IN ../../data/evolution/fitch.dat
+IN
+IN
+IN
+IN
+FI efitch.outfile
+FC = 47
+FP /^   7 Populations\n/
+FP /^Sum of squares =     0.01417\n/
+FP /^   1          Mouse             0.77028\n/
+FP /^   1             2              0.41923\n/
+FP /^   2          Gibbon            0.35442\n/
+FI fitch.treefile
+FC = 2
+FP /^\(Mouse:0.77028,\(\(\(\(Human:0.11417,Chimp:0.15503\):0.03705,\n/
+FP /^Gorilla:0.15677\):0.01693,Orang:0.29628\):0.05289,Gibbon:0.35442\):0.41923,Bovine:0.91632\);\n/
 FI stderr
-FC = 0
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
-ID egendist-help
+ID egendist-ex
 AB phylip
 AA egendist
-CL -help
+IN ../../data/evolution/gendist.dat
+IN
+IN
+FI egendist.outfile
+FC = 6
+FP /^    5\n/
+FP /^Chinese     0.0807  0.2347  0.0000  0.0539  0.0633\n/
 FI stderr
-FC = 0
+FC = 6
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
-ID ekitsch-help
-AB phylip
+ID ekitsch-ex
+AB phylipnew
 AA ekitsch
-CL -help
+IN ../../data/evolution/kitsch.dat
+IN
+IN
+FI ekitsch.outfile
+FC = 48
+FP /^   7 Populations\n/
+FP /^Sum of squares =      0.168\n/
+FP /^   6  Human           0.13460        0.81151\n/
+FP /^   5     6            0.02776        0.67691\n/
+FP /^   6  Chimp           0.13460        0.81151\n/
+FI ekitsch.treefile
+FC = 3
+FP /^\(\(\(\(\(\(Human:0.13460,Chimp:0.13460\):0.02776,Gorilla:0.16236\):0.07664,\n/
+FP /^Orang:0.23900\):0.06461,Gibbon:0.30360\):0.43105,Mouse:0.73465\):0.07686,\n/
+FP /^Bovine:0.81151\);\n/
 FI stderr
-FC = 0
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
-ID emix-help
+ID emix-ex
 AB phylip
 AA emix
-CL -help
+IN ../../data/evolution/mix.dat
+IN
+IN
+IN
+IN
+IN
+FI emix.outfile
+FC = 84
+FP 4 /^requires a total of      9.000\n/
+FP /^     4 trees in all found\n/
+FP 2 /^--1     \!  \+--Delta +\n/
+FI emix.treefile
+FC = 4
+FP /^\(\(\(Epsilon,Gamma\),\(Delta,Beta\)\),Alpha\)\[0.2500\];\n/
+FP /^\(\(Gamma,\(\(Epsilon,Delta\),Beta\)\),Alpha\)\[0.2500\];\n/
+FP /^\(\(Epsilon,\(Gamma,\(Delta,Beta\)\)\),Alpha\)\[0.2500\];\n/
+FP /^\(\(Gamma,\(Epsilon,\(Delta,Beta\)\)\),Alpha\)\[0.2500\];\n/
 FI stderr
-FC = 0
+FC = 6
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
-ID eneighbor-help
+ID eneighbor-ex
 AB phylip
 AA eneighbor
-CL -help
+IN ../../data/evolution/neighbor.dat
+IN
+IN
+IN
+IN
+IN
+FI eneighbor.outfile
+FC = 40
+FP /^   7 Populations\n/
+FP /^  \+--2            \+----------------------Mouse     \n/
+FP /^   1          Mouse             0.76891\n/
+FP /^   2             1              0.42027\n/
+FP /^   2          Gibbon            0.35793\n/
+FI eneighbor.treefile
+FC = 2
+FP /^\(Orang:0.28469,\(Gorilla:0.15393,\(Chimp:0.15167,Human:0.11753\):0.03982\):0.02696,\(\(Bovine:0.91769,\n/
+FP /^Mouse:0.76891\):0.42027,Gibbon:0.35793\):0.04648\);\n/
 FI stderr
-FC = 0
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
-ID epenny-help
+ID epenny-ex
 AB phylip
 AA epenny
-CL -help
+IN ../../data/evolution/penny.dat
+IN
+IN
+IN
+IN
+FI epenny.outfile
+FC = 66
+FP /^    3 trees in all found\n/
+FP 3 /^  remember: this is an unrooted tree\!\n/
+FP /^  \!           \+-----Alpha2    \n/
+FI epenny.treefile
+FC = 3
+FP /^\(Alpha1,\(\(Alpha2,\(\(Epsilon,Delta\),Gamma1\)\),\(Beta2,Beta1\)\)\)\[0.3333\];\n/
+FP /^\(Alpha1,\(Alpha2,\(\(\(Epsilon,Delta\),Gamma1\),\(Beta2,Beta1\)\)\)\)\[0.3333\];\n/
+FP /^\(Alpha1,\(\(Alpha2,\(Beta2,Beta1\)\),\(\(Epsilon,Delta\),Gamma1\)\)\)\[0.3333\];\n/
 FI stderr
-FC = 0
+FC = 6
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 1
+FP /^\n/
 //
 
-ID eprotdist-help
+ID eprotdist-ex
 AB phylip
 AA eprotdist
-CL -help
+IN ../../data/evolution/protdist.dat
+IN
+IN
+FI eprotdist.outfile
+FC = 6
+FP /^Gamma          0.88304  0.45192  0.00000  1.30693  1.21582\n/
 FI stderr
-FC = 0
+FC = 6
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
-ID eprotpars-help
+ID eprotpars-ex
 AB phylip
 AA eprotpars
-CL -help
+IN ../../data/evolution/protpars.dat
+IN
+IN
+IN
+IN
+FI eprotpars.outfile
+FC = 58
+FP /^     3 trees in all found\n/
+FP 1 /^  \!        \+--Beta      \n/
+FP 2 /^  \! +\+-+Beta +\n/
+FI eprotpars.treefile
+FC = 3
+FP /^\(\(Gamma,\(\(Epsilon,Delta\),Beta\)\),Alpha\)\[0.3333\];\n/
+FP /^\(\(\(\(Epsilon,Delta\),Gamma\),Beta\),Alpha\)\[0.3333\];\n/
+FP /^\(\(\(Epsilon,Delta\),\(Gamma,Beta\)\),Alpha\)\[0.3333\];\n/
 FI stderr
-FC = 0
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
-ID erestml-help
+ID erestml-ex
 AB phylip
 AA erestml
-CL -help
+IN ../../data/evolution/restml.dat
+IN
+IN
+IN
+IN
+FI erestml.outfile
+FC = 42
+FP /^Ln Likelihood =   -40.35857\n/
+FP /^   1          Gamma           0.11430     \(  0.11177,     0.11683\) \*\*\n/
+FI erestml.treefile
+FC = 2
+FP /^\(\(Epsilon:0.00005,Delta:0.01458\):0.05855,\(Gamma:0.11430,\n/
+FP /^Beta:0.00008\):0.00002,Alpha:0.02468\);\n/
 FI stderr
-FC = 0
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
-ID eseqboot-help
+ID eseqboot-ex
 AB phylip
 AA eseqboot
-CL -help
+IN ../../data/evolution/seqboot.dat
+IN
+IN
+IN
+IN
+IN
+FI eseqboot.outfile
+FC = 600
+FP 11 /^Alpha        AAAAAA\n/
+FP 17 /^Beta         AAACCC\n/
+FP 25 /^\S+ +AAACCC\n/
+FP 100 /^Alpha/
 FI stderr
-FC = 0
+FC = 11
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
+
 
 #######################################
 # PHYLIP 3.6
@@ -17072,7 +17445,6 @@ FP 10 /^./
 
 ID fcontrast-ex
 AB phylipnew
-AA fcontrast
 AA fcontrast
 IN ../../data/evolution/contrast.dat
 IN ../../data/evolution/contrast.tree
