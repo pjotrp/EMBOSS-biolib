@@ -31,6 +31,7 @@ typedef struct SeqSAccess {
   AjBool (*Access) (AjPSeqin seqin);
 } SeqOAccess, *SeqPAccess;
 
+AjPSeqall    ajSeqallFile (AjPStr usa);
 AjBool       ajSeqAllRead (AjPSeq thys, AjPSeqin seqin);
 AjBool       ajSeqGetFromUsa (AjPStr thys, AjBool protein, AjPSeq *seq);
 void         ajSeqinClear (AjPSeqin thys);

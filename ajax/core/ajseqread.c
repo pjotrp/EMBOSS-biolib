@@ -408,10 +408,8 @@ AjBool ajSeqAllRead (AjPSeq thys, AjPSeqin seqin)
     AjBool ret = ajFalse;
   
     if (!seqin->Filebuff)
-    {
 	if (!seqUsaProcess (thys, seqin))
 	    return ajFalse;
-    }
   
     ret = seqRead (thys, seqin);
     if (ret)
@@ -425,6 +423,41 @@ AjBool ajSeqAllRead (AjPSeq thys, AjPSeqin seqin)
     return ret;
 }
 
+/* @func ajSeqAllFile *********************************************************
+**
+** Parse a USA Uniform Sequence Address
+**
+** Return the results in the AjPSeqall object but leave the file open for
+** future calls.
+**
+** @param [r] thys [AjPStr] sequence usa.
+** @return [AjPseqall] seqall object
+** @@
+******************************************************************************/
+
+AjPSeqall ajSeqallFile(AjPStr usa)
+{
+    AjPSeqall seqall=NULL;
+    AjPSeqin  seqin=NULL;
+    AjPSeq    seq=NULL;
+    
+    seqall = ajSeqallNew();
+    
+    seqin = seqall->Seqin;
+    seqin->multi = ajTrue;
+    seq = seqall->Seq;
+
+    ajSeqinUsa(&seqin,usa);
+
+    if(!ajSeqAllRead(seq,seqin))
+    {
+	ajSeqallDel(&seqall);
+	return NULL;
+    }
+
+    return seqall;
+}
+    
 /* @func ajSeqallNext *********************************************************
 **
 ** Reads the next sequence into a sequence stream. For the first call this

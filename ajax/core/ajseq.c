@@ -79,6 +79,25 @@ AjPSeqall ajSeqallNew (void) {
 **
 ******************************************************************************/
 
+/* @func ajSeqallNew **********************************************************
+**
+** Creates a new sequence stream object to hold one sequence at a time.
+**
+** @return [AjPSeqall] New sequence stream object.
+** @@
+******************************************************************************/
+
+void ajSeqallDel(AjPSeqall *thys)
+{
+
+    ajSeqDel(&(*thys)->Seq);
+    ajSeqinDel(&(*thys)->Seqin);
+
+    AJFREE(*thys);
+
+    return;
+}
+
 /* ==================================================================== */
 /* ========================== Assignments ============================= */
 /* ==================================================================== */
