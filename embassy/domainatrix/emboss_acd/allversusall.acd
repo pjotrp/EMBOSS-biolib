@@ -23,6 +23,13 @@ dirlist: seqin  [
   ]
 
 
+  matrixf: matrix  [
+    additional: "Y"
+    information: "Residue substitution matrix."
+    help: "This option specifies the residue substitution matrix that is used for sequence comparison."
+    default: "EBLOSUM62"
+  ]
+
 endsection: input
 
 
@@ -36,17 +43,10 @@ section: required [
 endsection: required
 
 
-section: advanced [
-  information: "Advanced section"
+section: additional [
+  information: "Additional section"
   type: "page"
 ]
-
-  matrixf: matrix  [
-    additional: "Y"
-    information: "Residue substitution matrix."
-    help: "This option specifies the residue substitution matrix that is used for sequence comparison."
-    default: "EBLOSUM62"
-  ]
 
   float: gapopen  [
     additional: "Y"
@@ -82,7 +82,7 @@ section: advanced [
            gap extension penalty to control gap scoring."
   ]
 
-endsection: advanced
+endsection: additional
 
 
 
@@ -97,7 +97,7 @@ directory: datout  [
     help: "This option specifies the location of sequence similarity data files (output)."
     default: "./"
     extension: "out"
-    knowntype: "ALLVERSUSALL output file"
+    knowntype: "allversusall output"
   ]
 
 
@@ -107,7 +107,7 @@ directory: datout  [
     default: "ALLVERSUSALL.log"
     help: "This option specifies the name of ALLVERSUSALL log file (output). The log file contains messages about any errors arising
            while ALLVERSUSALL ran."
-    knowntype:   "ALLVERSUSALL log file"
+    knowntype:   "allversusall log file"
   ]
 
 endsection: output
