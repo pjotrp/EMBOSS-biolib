@@ -18,7 +18,7 @@
 #
 #
 # Install EMBOSS & Jemboss 
-# last changed: 17/01/03
+# last changed: 11/08/03
 #
 #
 
@@ -30,10 +30,10 @@ getJavaHomePath()
   JAVA_HOME_TMP=${JAVA_HOME_TMP-`which java 2>/dev/null`} 
 
   if [ ! -f "$JAVA_HOME_TMP" ]; then
-     if [ -d /usr/java/j2sdk1.4.1 ]; then
-       JAVA_HOME_TMP=/usr/java/j2sdk1.4.1
-     elif [ -d /usr/local/java/j2sdk1.4.1 ]; then
-       JAVA_HOME_TMP=/usr/local/java/j2sdk1.4.1
+     if [ -d /usr/java/j2sdk1.4.2 ]; then
+       JAVA_HOME_TMP=/usr/java/j2sdk1.4.2
+     elif [ -d /usr/local/java/j2sdk1.4.2 ]; then
+       JAVA_HOME_TMP=/usr/local/java/j2sdk1.4.2
      else
        JAVA_HOME_TMP=0
      fi
@@ -43,6 +43,58 @@ getJavaHomePath()
   fi
 }
 
+
+getClustalWPath()
+{
+  CLUSTALW=${CLUSTALW-`which clustalw 2>/dev/null`}
+
+  echo
+  echo "-------------------------- ClustalW --------------------------"
+  echo
+  echo "To use emma (EMBOSS interface to ClustalW) Jemboss needs to"
+  echo "know the path to the clustalw binary."
+  echo
+  if (test "$CLUSTALW" != ""); then
+    CLUSTALW=`dirname $CLUSTALW`
+    echo "Enter the path to the clustalw or press return to use the"
+    echo "default [$CLUSTALW]:"
+    read CLUSTALW_TMP
+    if (test "$CLUSTALW_TMP" != ""); then
+      CLUSTALW="$CLUSTALW_TMP"
+    fi
+  else
+    echo "Enter the path to clustalw or press return to set"
+    echo "this later in jemboss.properties"
+    read CLUSTALW
+  fi
+}
+
+
+getPrimerPath()
+{
+  PRIMER3=${PRIMER3-`which primer3_core 2>/dev/null`}
+                                                                                
+  echo
+  echo "-------------------------- Primer3  --------------------------"
+  echo
+  echo "To use eprimer3 (EMBOSS interface primer3 from the Whitehead"
+  echo "Institute) Jemboss needs to know the path to the primer3_core"
+  echo "binary."
+  echo
+  if (test "$PRIMER3" != ""); then
+    PRIMER3=`dirname $PRIMER3`
+    echo "Enter the path to the primer3_core or press return to use the"
+    echo "default [$PRIMER3]:"
+    read PRIMER3_TMP
+    if (test "$PRIMER3_TMP" != ""); then
+      PRIMER3="$PRIMER3_TMP"
+    fi
+  else
+    echo "Enter the path to primer3_core or press return to set"
+    echo "this later in jemboss.properties"
+    read PRIMER3
+  fi
+}
 
 setDataDirectory()
 {
@@ -277,7 +329,24 @@ make_jemboss_properties()
   SSL=$4
   PORT=$5
   EMBOSS_URL=$6
+  CLUSTALW=$7
+  PRIMER3=$8
 
+  EMBOSSPATH=/usr/bin/:/bin
+  export EMBOSSPATH
+
+  if (test "$CLUSTALW" != ""); then
+    EMBOSSPATH=${EMBOSSPATH}:$CLUSTALW
+  else
+    EMBOSSPATH=${EMBOSSPATH}:/packages/clustal/
+  fi
+
+  if (test "$PRIMER3" != ""); then
+    EMBOSSPATH=${EMBOSSPATH}:$PRIMER3
+  else
+    EMBOSSPATH=${EMBOSSPATH}:/packages/primer3/bin
+  fi
+ 
   if [ $SSL = "y" ]; then
      URL=https://$URL:$PORT
   else
@@ -312,8 +381,10 @@ make_jemboss_properties()
   echo "plplot=$EMBOSS_INSTALL/share/EMBOSS/" >> $JEMBOSS_PROPERTIES
   echo "embossData=$EMBOSS_INSTALL/share/EMBOSS/data/" >> $JEMBOSS_PROPERTIES
   echo "embossBin=$EMBOSS_INSTALL/bin/" >> $JEMBOSS_PROPERTIES
-  echo "embossPath=/usr/bin/:/bin:/packages/clustal/:/packages/primer3/bin:" \
-                                                     >> $JEMBOSS_PROPERTIES
+  echo "embossPath=$EMBOSSPATH" >> $JEMBOSS_PROPERTIES
+
+# echo "embossPath=/usr/bin/:/bin:$CLUSTALW:$PRIMER3:/packages/clustal/:/packages/primer3/bin:" \
+#                                                    >> $JEMBOSS_PROPERTIES
   echo "acdDirToParse=$EMBOSS_INSTALL/share/EMBOSS/acd/" >> $JEMBOSS_PROPERTIES
   echo "embossURL=$EMBOSS_URL" >> $JEMBOSS_PROPERTIES
   cp $JEMBOSS_PROPERTIES $JEMBOSS_PROPERTIES.bak
@@ -573,7 +644,6 @@ $DIR/lib64
 }
 
 
-
 clear
 echo
 echo "--------------------------------------------------------------"
@@ -607,6 +677,7 @@ echo
 echo "Before running this script you should download the latest:"
 echo
 echo "(1) EMBOSS release (contains Jemboss) ftp://ftp.hgmp.mrc.ac.uk/pub/EMBOSS/"
+
 
 if [ $INSTALL_TYPE = "1" ]; then
   echo "(2) Tomcat release http://jakarta.apache.org/site/binindex.html"
@@ -895,7 +966,7 @@ JEMBOSS_SERVER_AUTH=""
 AUTH=y
 
 if [ $INSTALL_TYPE = "1" ]; then
-  echo "Enter if you want Jemboss to use unix authorisation (y/n) [y]? "
+  echo "Do you want Jemboss to use unix authorisation (y/n) [y]? "
   read AUTH
 
   echo "$AUTH" >> $RECORD
@@ -1079,7 +1150,6 @@ if [ "$AIX" = "y" ]; then
   fi
 fi
 
-
 echo
 echo "  ******** EMBOSS will be configured with this information  ******** "
 echo 
@@ -1089,7 +1159,6 @@ echo "            --with-thread=$PLATFORM \\"
 echo "            --prefix=$EMBOSS_INSTALL \\"
 echo "           $JEMBOSS_SERVER_AUTH $USER_CONFIG"
 echo
-sleep 1
 
 WORK_DIR=`pwd`
 cd $EMBOSS_DOWNLOAD
@@ -1117,7 +1186,13 @@ embassy_install $EMBOSS_DOWNLOAD $RECORD $PLATFORM $EMBOSS_INSTALL $USER_CONFIG
 
 #
 #
-# Compile server code
+# Get clustalw and primer3_core path
+#
+getClustalWPath
+getPrimerPath
+
+#
+#
 #
 
 #cd $EMBOSS_INSTALL/share/EMBOSS/jemboss
@@ -1139,7 +1214,7 @@ $JAVA_HOME/bin/jar cvf $JEMBOSS/resources/resources.jar EPAM* EBLOSUM* ENUC*
 
 
 #
-#
+# Compile server code
 #
 
 if [ $AUTH = "y" ]; then
@@ -1167,7 +1242,7 @@ fi
 #
 # Exit if standalone compilation
 
-make_jemboss_properties $EMBOSS_INSTALL $LOCALHOST $AUTH $SSL $PORT $EMBOSS_URL
+make_jemboss_properties $EMBOSS_INSTALL $LOCALHOST $AUTH $SSL $PORT $EMBOSS_URL $CLUSTALW $PRIMER3
 
 RUNFILE=$JEMBOSS/runJemboss.csh
 sed "s|^setenv JEMBOSS_HOME .|setenv JEMBOSS_HOME $JEMBOSS|" $RUNFILE > $RUNFILE.new
@@ -1380,7 +1455,7 @@ else
     VAL=0
     while [ $VAL != "y" ] 
     do
-      echo "To continue you must have changed the above files!"
+      echo "To continue you must have changed the above file(s)!"
       echo "Have the above files been edited (y/n)?"
       read VAL
     done
