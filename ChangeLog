@@ -1,4 +1,7 @@
 Version 2.8.0
+	pestfind renamed to epestfind and handling of terminal water
+	residue adjusted.
+
 	Align formats: Added "tcoffee" as a valid -aformat which writes a
 	T-Coffee library file suitable for input as -in=Lfilename to
 	T-Coffee.
@@ -31,7 +34,8 @@ Version 2.8.0
 	or any sequence. We may find a cleaner fix, but it would depend on
 	knowing the sequence type.
 	
-	Added binding factor output to tfscan
+	Added binding factor output to tfscan plus option to specify a
+	custom data file
 
 	Removed the Henry Spencer regular expression libraries. There were
 	a few calls to the ajPosReg functions, but only to test it worked
