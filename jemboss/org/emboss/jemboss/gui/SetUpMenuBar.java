@@ -22,6 +22,8 @@
 
 package org.emboss.jemboss.gui;
 
+
+import org.emboss.jemboss.*;
 import uk.ac.mrc.hgmp.embreo.*;
 import uk.ac.mrc.hgmp.embreo.filemgr.*;
 
@@ -191,9 +193,11 @@ public class SetUpMenuBar
     });
     helpMenu.add(helpMenuAbout);
 
-    menuPanel.add(Box.createHorizontalGlue());
+    menuPanel.add(Box.createHorizontalStrut((int)(Jemboss.jdim.getWidth()-195)));
+
     menuPanel.add(helpMenu);
-    menuPanel.add(Box.createHorizontalStrut(5));
+//  menuPanel.add(Box.createHorizontalStrut(5));
+    menuPanel.add(Box.createHorizontalGlue());
 
     f.setJMenuBar(menuPanel);
 
