@@ -4355,8 +4355,10 @@ static void GraphxyNewPlplot(AjPGraph thys)
 
 static void GraphxyNewGrout(AjPGraph thys)
 {
+#ifdef GROUT
     AJNEW0(thys->xml);
     ajDebug("GraphxyNewGrout numsets: %d\n", thys->numsets);
+#endif
 
     return;
 }
