@@ -122,6 +122,12 @@ public class SequenceReader
       index = line.indexOf("!!NA_MULTIPLE_ALIGNMENT");
       if(index > -1)
         return readMSFFile(new BufferedReader(new FileReader(seqFile)));
+
+// clustal 
+      index = line.indexOf("CLUSTAL");
+      if(index > -1)
+        return readClustalFile(new BufferedReader(new FileReader(seqFile)));
+
     }
     catch (IOException e)
     {
@@ -159,6 +165,11 @@ public class SequenceReader
       index = line.indexOf("!!NA_MULTIPLE_ALIGNMENT");
       if(index > -1)
         return readMSFFile(new BufferedReader(new StringReader(seqString)));
+
+// clustal
+      index = line.indexOf("CLUSTAL");
+      if(index > -1)
+        return readClustalFile(new BufferedReader(new FileReader(seqFile)));
     }
     catch (IOException e)
     {
@@ -210,7 +221,7 @@ public class SequenceReader
     }
     catch (IOException e)
     {
-      System.out.println("SequenceReader Error");
+      System.out.println("SequenceReader FASTA Error");
     }
     return seqs;
   }
@@ -291,7 +302,7 @@ public class SequenceReader
 
               int seqInd = ((Integer)seqIndex.get(name)).intValue();
               seq = (Sequence)seqs.elementAt(seqInd);
-              seq.appentToSequence(seqString);
+              seq.appendToSequence(seqString);
             }
           }
         }
@@ -301,11 +312,70 @@ public class SequenceReader
     }
     catch (IOException e)
     {
-      System.out.println("SequenceReader Error");
+      System.out.println("SequenceReader MSF Error");
     }
     return seqs;
   }
 
+
+  /**
+  *
+  * Reads in the CLUSTAL sequence file and creates a Vector
+  * containing the sequence(s).
+  * @param in   buffered reader
+  */
+  public Vector readClustalFile(BufferedReader in)
+  {
+    seqs = new Vector();
+    String seqString = "";
+
+    try
+    {
+      String line;
+      Sequence seq;
+      String type = null;
+      StringTokenizer st;
+      Hashtable seqIndex = new Hashtable();
+      int num = 0;
+
+      while((line = in.readLine()) != null )
+      {
+        line = line.trim();
+        if(line.equals(""))
+          continue;
+        if(line.startsWith("CLUSTAL "))
+          continue;
+
+        int index = line.indexOf(" ");
+        if(index > -1)
+        {
+          String name = line.substring(0,index);
+          if(!seqIndex.containsKey(name))
+          {
+            seqIndex.put(name,new Integer(num));
+            seq = new Sequence(name,"");
+            seqs.add(num++,seq);
+          }
+  
+          st = new StringTokenizer(line.substring(index)," ");
+          seqString = new String();
+          while (st.hasMoreTokens())
+            seqString = seqString.concat(st.nextToken(" ").trim());
+
+          int seqInd = ((Integer)seqIndex.get(name)).intValue();
+          seq = (Sequence)seqs.elementAt(seqInd);
+          seq.appendToSequence(seqString);
+        }
+
+      }
+    }
+    catch (IOException e)
+    {
+      System.out.println("SequenceReader Clutal Error");
+    }
+    return seqs;
+
+  }
 
   /**
   *

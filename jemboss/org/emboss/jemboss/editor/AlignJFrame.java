@@ -120,7 +120,7 @@ public class AlignJFrame extends JFrame
     int interval = 10;
     seqs = new Vector();
     mat = new Matrix("resources/resources.jar",
-                     "EBLOSUM60");
+                     "EBLOSUM62");
     
     jspSequence = new JScrollPane();
     jspSequence.getViewport().setBackground(Color.white);

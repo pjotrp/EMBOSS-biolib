@@ -207,7 +207,7 @@ public class Sequence
   *  @param s	sequence to append 
   *
   */
-  public void appentToSequence(String s)
+  public void appendToSequence(String s)
   {
     seq = seq+s;
     length+=s.length();
