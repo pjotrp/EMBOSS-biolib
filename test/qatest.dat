@@ -146,8 +146,8 @@ AP banana
 CL -graph data
 IN tembl:rnu68037
 FI banana.profile
-FZ = 21906
-FP /\At +0.0 +0.0\ng +17.7 +0.0\na +21.1 +0.0\ng +28.5 +0.0\n/
+FZ = 25580
+FP /^t +0.0 +0.0\ng +17.7 +0.0\na +21.1 +0.0\ng +28.5 +0.0\n/
 FP /^c +17.7 +0.0\nc +15.7 +19.2\nt +15.7 +18.5\ng +17.7 +17.9\n/
 FI banana.dat1
 FZ = 308957
@@ -555,9 +555,9 @@ ID dbifasta-ex
 DL keep
 AP dbifasta
 IN idacc
-IN EMROD
 IN ../../data
 IN emrod
+IN EMROD
 IN
 IN
 FI stderr
@@ -616,9 +616,9 @@ ID dbifasta-swiss
 DL keep
 AP dbifasta
 IN idacc
-IN SWNEW
 IN ../../data
 IN swnew
+IN SWNEW
 IN
 IN
 FI stderr
@@ -677,9 +677,9 @@ ID dbiflat-ex
 DL keep
 AP dbiflat
 IN EMBL
-IN EMBL
 IN ../../embl
 IN rod.dat
+IN EMBL
 IN
 IN
 FI stderr
@@ -792,9 +792,9 @@ ID dbiflat-swiss
 DL keep
 AP dbiflat
 IN
-IN SWNEW
 IN ../../swnew
 IN
+IN SWNEW
 IN
 IN
 FI stderr
@@ -854,9 +854,9 @@ DL keep
 TI 120
 AP dbigcg
 IN EMBL
-IN EMBL
 IN ../../embl
 IN
+IN EMBL
 IN
 IN
 FI stderr
@@ -907,6 +907,15 @@ AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcg-id:XLRHODOP test.out -auto
+FI test.out
+FP 1 />XLRHODOP /
+//
+
+ID dbigcg-acc
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcg:L07770 test.out -auto
 FI test.out
 FP 1 />XLRHODOP /
 //
@@ -1078,8 +1087,8 @@ FZ = 0
 ID dreg-ex
 AP dreg
 IN tembl:paamir
-IN
 IN ggtacc
+IN
 FI paamir.dreg
 FP /PAAMIR +1 +GGTACC/
 FI stderr
@@ -1238,7 +1247,40 @@ IN
 FI stderr
 FC = 2
 FI pax6.est2genome
-FZ = 2104
+FZ = 8087
+FP /Note .* forward est and forward genome, .* imply forward gene/
+FP /^Exon       129  99.2  1380  1510 HSA1280        428   558 pax6/
+//
+
+ID est2genome-align
+TI 200
+AP est2genome
+CL -align
+IN ../../data/pax6_cdna.fasta
+IN ../../data/z83307.seq
+IN
+FI stderr
+FC = 2
+FI pax6.est2genome
+FZ = 8087
+FP /Note .* forward est and forward genome, .* imply forward gene/
+FP /^Exon       129  99.2  1380  1510 HSA1280        428   558 pax6/
+FP /^HSA1280   9567 ttgaggccctggagaaaggtgat.....ttcagagtttgagagaacccat  10116\n/
+FP /^               [|]+>>>>> 515 >>>>>[|]+\n/
+FP /^   pax6   1082 ttgaggccctggagaaag...............agtttgagagaacccat   1116\n/
+//
+
+ID est2genome-align-best
+TI 200
+AP est2genome
+CL -align -best
+IN ../../data/pax6_cdna.fasta
+IN ../../data/z83307.seq
+IN
+FI stderr
+FC = 2
+FI pax6.est2genome
+FZ = 8087
 FP /Note .* forward est and forward genome, .* imply forward gene/
 FP /^Exon       129  99.2  1380  1510 HSA1280        428   558 pax6/
 //
@@ -1246,8 +1288,8 @@ FP /^Exon       129  99.2  1380  1510 HSA1280        428   558 pax6/
 ID etandem-ex
 AP etandem
 IN tembl:hhtetra
-IN
 IN 6
+IN
 IN
 FI stderr
 FC = 2
@@ -1366,9 +1408,9 @@ ID fuzztran-ex
 AP fuzztran
 CL -opt
 IN tembl:rnops
-IN f
-IN
 IN RA
+IN
+IN f
 IN
 IN
 FI stderr
@@ -1784,8 +1826,8 @@ TI 300
 AP megamerger
 CL tembl:ap000504 tembl:af129756
 IN
-IN report
 IN
+IN report
 FI stderr
 FC = 2
 FI report
@@ -1826,9 +1868,9 @@ FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
 ID msbar-ex
 AP msbar
 IN tembl:eclac
-IN
 IN 5
 IN 4
+IN
 IN
 IN
 FI stderr
@@ -1924,8 +1966,8 @@ FP /carriage return format\nACDEFGHIKLMNPQRSTVWY\n/
 ID notseq-ex
 AP notseq
 IN ../../data/globins.fasta
-IN mydata.seq
 IN myg_phyca,lgb2_luplu
+IN mydata.seq
 FI stderr
 FC = 2
 FI mydata.seq
@@ -1942,8 +1984,8 @@ FP 0 /^>LGB2_LUPLU/
 ID notseq-ex2
 AP notseq
 IN ../../data/globins.fasta
-IN mydata.seq
 IN hb*
+IN mydata.seq
 FI stderr
 FC = 2
 FI mydata.seq
@@ -2005,9 +2047,9 @@ ID oddcomp-ex
 CC test.comp input file missing
 AP oddcomp
 IN tsw:*
-IN out.odd
 IN ../../data/test.comp
 IN
+IN out.odd
 FI stderr
 FC = 2
 FI out.odd
@@ -2262,8 +2304,8 @@ FZ = 0
 ID preg-ex
 AP preg
 IN tsw:*_rat
-IN
 IN IA[QWF]A
+IN
 FI stderr
 FC = 2
 FI 100k_rat.preg
@@ -2354,8 +2396,8 @@ ID primersearch-ex2
 AP primersearch
 CL tembl:z52466
 IN ../../data/primers
-IN
 IN 20
+IN
 FI stderr
 FC = 2
 FI hsa203yc1.primersearch
@@ -2526,8 +2568,8 @@ CC Needs rebaseextract to reformat REBASE data
 AP remap
 CL -notran -sbeg 1 -send 60
 IN tembl:eclac
-IN
 IN taqi,bsu6i,acii,bsski
+IN
 IN
 FI stderr
 FC = 2
@@ -3764,7 +3806,7 @@ ID seqret-outmultiusa-clustalprot
 AP seqret
 CL -auto ../../data/prot.m-swiss clustal::test.out
 FI test.out
-FZ = 549
+FZ = 615
 FP /^CLUSTAL W\(1\.4\) multiple sequence alignment\n/
 FP /^SWISSM2         AACCDDEEFF GGHHIIKKLL MMNNPPQQRR SSTTVVWWYY AACCDDEEFF\n/
 FP 4 /^\n/
@@ -3775,7 +3817,7 @@ ID seqret-outmulti-clustalprot
 AP seqret
 CL -auto ../../data/prot.m-swiss test.out -osf clustal
 FI test.out
-FZ = 549
+FZ = 615
 FP /^CLUSTAL W\(1\.4\) multiple sequence alignment\n/
 FP /^SWISSM2         AACCDDEEFF GGHHIIKKLL MMNNPPQQRR SSTTVVWWYY AACCDDEEFF\n/
 FP 4 /^\n/
@@ -4961,7 +5003,7 @@ CL wossname
 FI stderr
 FC = 1
 FI stdout
-FZ = 15434
+FZ = 15479
 FP /EMBOSS: wossname/
 FP /Program wossname/
 //
