@@ -3,7 +3,7 @@
 <HTML>
 <HEAD>
   <TITLE>
-  EMBOSS: yank
+  EMBOSS: union
   </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
@@ -17,7 +17,7 @@
 <td align=middle valign=middle>
 <font face="Arial,Helvetica" size=6 color="#ffffff">
 <H2>
-EMBOSS: yank
+EMBOSS: union
 </H2>
 </font>
 </td>
@@ -31,12 +31,12 @@ EMBOSS: yank
 <!--END OF HEADER-->
 
 <H1>
-Program yank
+Program union
 </H1>
 <H2>
     Function
 </H2>
-Reads a range from a sequence, appends the full USA to a list file
+Reads sequence fragments and builds one sequence
 
 <!--
 DON'T WRITE ANYTHING HERE.
@@ -59,67 +59,24 @@ IT IS DONE FOR YOU.
         Algorithms
   -->
 
-<b>yank</b> is a simple utility to add a specified sequence name to a
-list file. 
+<b>union</b> reads in several sequences, concatenates them and writes
+them out as a single sequence.
 
 <p>
 
-In fact, it writes out not just the name of the sequence, but also the
-start and end position of a region within that sequence and, if the
-sequence is nucleic, if can specify whether the sequence is the reverse
-complement. 
-
-<p>
-
-Many EMBOSS programs can read in a set of sequences.  (Some examples are
-<b>emma</b> and <b>union</b>) There are many ways of specifying these
-sequences, including wildcarded sequence file names, wildcarded database
-entry names and list files.  List files (files of file names) are the
-most flexible. <b>yank</b> is a utility to add sequences to a list file.
-
-<p>
+It is most useful when the input sequences are specified in a List file. 
+The List file (file of sequence names) can be any set of sequences in
+files or database entries specified in the normal EMBOSS USA (which can
+include the spcification of sub-regions of the sequence, eg. 
+'em:hsfau[20,55]').  Specifying several such subregions in a sequence or
+sequences allows you to enter disjoint sequences to be joined. 
 
 
-Instead of containing the sequences themselves, a List file contains
-"references" to sequences - so, for example, you might include database
-entries, the names of files containing sequences, or even the names of
-other list files.  For example, here's a valid list file, called
-<i>seq.list</i>:
 
-<p>
-<pre>
-unix % more seq.list 
 
-opsd_abyko.fasta
-sw:opsd_xenla
-sw:opsd_c*
-@another_list
-</pre>
 
-<p>
 
-This looks a bit odd, but it's really very straightforward; the file
-contains:
 
-<p>
-
-<ul>
-      <li><b>opsd_abyko.fasta</b> - this is the name of a sequence file. The file is read in from the current directory. 
-      <li><b>sw:opsd_xenla</b> - this is a reference to a specific sequence in the SwissProt database 
-      <li><b>sw:opsd_c*</b> - this represents all the sequences in SwissProt whose identifiers start with ``opsd_c'' 
-      <li><b>another_list</b> - this is the name of a second list file 
-</ul>
-
-<p>
-
-Notice the <b>@</b> in front of the last entry.  This is the way you tell
-EMBOSS that this file is a list file, not a regular sequence file. 
-
-<p>
-
-Without the program <b>yank</b> you would need to use a text editor such
-as pico to create the appropriate list files.  <b>yank</b>
-makes this process easy. 
 
 
 
@@ -134,42 +91,17 @@ makes this process easy.
  -->
 
 
-Here is a sample session with yank, adding the regions making up the
-coding sequence of embl:hsfau1 to the list 'cds.list':
+Here is a sample session with union, the file 'cds.list' contains a list
+of the regions making up the coding sequence of the sequence
+'embl:hsfau':
 
 <pre>
 
-% yank
-Reads a range from a sequence, appends the full USA to a list file
-Input sequence: em:hsfau1
-     Begin at position [start]: 782
-       End at position [end]: 856
-        Reverse strand [N]:
-Output file [hsfau1.yank]: cds.list
+% union
+Reads sequence fragments and builds one sequence
+Input sequence(s): @cds.list
+Output sequence [hsfau1.fasta]: fau.cds 
 
-% yank
-Reads a range from a sequence, appends the full USA to a list file
-Input sequence: em:hsfau1
-     Begin at position [start]: 951
-       End at position [end]: 1095
-        Reverse strand [N]:
-Output file [hsfau1.yank]: cds.list
-
-% yank
-Reads a range from a sequence, appends the full USA to a list file
-Input sequence: em:hsfau1
-     Begin at position [start]: 1557
-       End at position [end]: 1612
-        Reverse strand [N]:
-Output file [hsfau1.yank]: cds.list
-
-% yank
-Reads a range from a sequence, appends the full USA to a list file
-Input sequence: em:hsfau1
-     Begin at position [start]: 1787
-       End at position [end]: 1912
-        Reverse strand [N]:
-Output file [hsfau1.yank]: cds.list
 </pre>
 
 
@@ -192,13 +124,11 @@ Output file [hsfau1.yank]: cds.list
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Mandatory qualifiers:
-  [-sequence]          sequence   Sequence USA
-  [-outfile]           outfile    Output file name
+  [-sequence]          seqall     Sequence database USA
+  [-outseq]            seqout     Output sequence USA
 
    Optional qualifiers: (none)
-   Advanced qualifiers:
-   -newfile            bool       Overwrite existing output file
-
+   Advanced qualifiers: (none)
    General qualifiers:
   -help                bool       report command line options. More
                                   information on associated and general
@@ -217,16 +147,16 @@ Output file [hsfau1.yank]: cds.list
 
 <tr>
 <td>[-sequence]<br>(Parameter 1)</td>
-<td>Sequence USA</td>
-<td>Readable sequence</td>
+<td>Sequence database USA</td>
+<td>Readable sequence(s)</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
-<td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
-<td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.yank</td>
+<td>[-outseq]<br>(Parameter 2)</td>
+<td>Output sequence USA</td>
+<td>Writeable sequence</td>
+<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
 </tr>
 
 <tr bgcolor="#FFFFD0">
@@ -246,10 +176,7 @@ Output file [hsfau1.yank]: cds.list
 </tr>
 
 <tr>
-<td>-newfile</td>
-<td>Overwrite existing output file</td>
-<td>Yes/No</td>
-<td>No</td>
+<td colspan=4>(none)</td>
 </tr>
 
 </table>
@@ -278,16 +205,29 @@ IT IS DONE FOR YOU.
         happens in unusual cases - null input, etc. 
    -->
 
-Any valid sequence can be read in.
+The input can be any set of sequences in a file of multiple sequence
+entries or a List file.  The sequences are concatenated in the order in
+which they appear in the file. 
 
 <p>
 
-You will be prompted for the start and end positions you wish to use.
+The input used in the above example is:
 
 <p>
 
-If the sequence is nucleic, you will be prompted whether you wish to use
-the reverse complement of the sequence. 
+<pre>
+em-id:HSFAU1[782:856]
+em-id:HSFAU1[951:1095]
+em-id:HSFAU1[1557:1612]
+em-id:HSFAU1[1787:1912]
+</pre>
+
+<p>
+
+You may find the program <b>yank</b> useful for creating List files.
+
+
+
 
 
 
@@ -307,23 +247,10 @@ the reverse complement of the sequence.
         happens in unusual cases - null output, errors etc. 
    -->
 
-The result file 'cds.list' of the example above is:
-
-<p>
-
-<pre>
-em-id:HSFAU1[782:856]
-em-id:HSFAU1[951:1095]
-em-id:HSFAU1[1557:1612]
-em-id:HSFAU1[1787:1912]     
-</pre>
+The result if a normal sequence file containnig a single sequence
+resulting from the concatenation of the input sequences. 
 
 
-<p>
-
-This can now be read in by a program such as <b>union</b> by specifying
-the list file as '@cds.list' when <b>union</b> prompts for
-input. 
 
 
 
@@ -391,11 +318,10 @@ The directories are searched in the following order:
 
    -->
 
+
+
+
 None.
-
-
-
-
 
 
 
@@ -539,8 +465,8 @@ None.
 <tr><td><a href="swissparse.html">swissparse</a></td><td>Retrieves sequences from swissprot using keyword search</td></tr>
 <tr><td><a href="trimest.html">trimest</a></td><td>Trim poly-A tails off EST sequences</td></tr>
 <tr><td><a href="trimseq.html">trimseq</a></td><td>Trim ambiguous bits off the ends of sequences</td></tr>
-<tr><td><a href="union.html">union</a></td><td>Reads sequence fragments and builds one sequence</td></tr>
 <tr><td><a href="vectorstrip.html">vectorstrip</a></td><td>Strips out DNA between a pair of vector sequences</td></tr>
+<tr><td><a href="yank.html">yank</a></td><td>Reads a range from a sequence, appends the full USA to a list file</td></tr>
 </table>
 
 <!-- 
@@ -550,8 +476,9 @@ None.
 
 <p>
 
-The program <b>extract</b> does not make list files, but creates a
-sequence from sub-regions of a single other sequence. 
+You may find the program <b>yank</b> useful for creating List files.
+
+
 
 
 
@@ -568,7 +495,7 @@ sequence from sub-regions of a single other sequence.
    -->
 
 This application was written by Peter Rice <a
-href="mailto:peter.rice@uk.lionbioscience.com">(peter.rice@uk.lionbioscience.com)</a>
+href="peter.rice@uk.lionbioscience.com">(peter.rice@uk.lionbioscience.com)</a>
 
 
 

@@ -50,9 +50,10 @@ sw:opsd_c*
        
    Notice the @ in front of the last entry. This is the way you tell
    EMBOSS that this file is a list file, not a regular sequence file.
+   
    Without the program yank you would need to use a text editor such as
    pico to create the appropriate list files. yank makes this process
-   easy. 
+   easy.
    
 Usage
 
@@ -191,7 +192,7 @@ See also
    swissparse   Retrieves sequences from swissprot using keyword search
    trimest      Trim poly-A tails off EST sequences
    trimseq      Trim ambiguous bits off the ends of sequences
-   union        Reads sequence fragments and builds one sequeence
+   union        Reads sequence fragments and builds one sequence
    vectorstrip  Strips out DNA between a pair of vector sequences
    
    The program extract does not make list files, but creates a sequence
