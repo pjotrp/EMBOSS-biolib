@@ -2779,6 +2779,64 @@ void ajStrFixTestI (const AjPStr thys, ajint ilen) {
 }
 
 
+/* @func ajStrUncomment *******************************************************
+**
+** Strips comments from a character string (a line from an ACD file
+** or the package.default or the .packagerc file or a data file).
+** Comments are blank lines or any text following a "#" character.
+**
+** See ajStrUncommentStart for comments that must have "#" at the start only
+**
+** @param [u] text [AjPStr*] Line of text from input file
+** @return [AjBool] ajTrue if there is some text remaining
+** @@
+******************************************************************************/
+
+AjBool ajStrUncomment (AjPStr* text)
+{
+    char *cp;
+
+    if (!ajStrLen (*text))	/* empty string */
+      return ajFalse;
+
+    cp = strchr(ajStrStr(*text), '#');
+    if (cp)
+    {				/* comment found */
+	*cp = '\0';
+	(void) ajStrFix (*text);
+    }
+
+    if (!ajStrLen(*text))	/* no text before the comment */
+      return ajFalse;
+
+    return ajTrue;
+}
+
+/* @func ajStrUncommentStart **************************************************
+**
+** Strips comments from a character string (a line from an ACD file
+** or the package.default or the .packagerc file or a data file).
+** Comments are blank lines or any text starting with a "#" character.
+**
+** @param [u] text [AjPStr*] Line of text from input file
+** @return [AjBool] ajTrue if there is some text remaining
+** @@
+******************************************************************************/
+
+AjBool ajStrUncommentStart (AjPStr* text)
+{
+    if (!ajStrLen (*text))	/* empty string */
+      return ajFalse;
+
+    if (ajStrChar(*text, 0) == '#')
+    {				/* comment found */
+	ajStrAssC(text, "");
+	return ajFalse;
+    }
+
+    return ajTrue;
+}
+
 /* ==================================================================== */
 /* ======================== Operators ==================================*/
 /* ==================================================================== */
@@ -2915,6 +2973,7 @@ ajint ajStrRFindC (const AjPStr thys, const char* text) {
   }
   return -1;
 }
+
 /* @func ajStrCmp *************************************************************
 **
 ** Compares the value of two strings for use in sorting (e.g. ajListSort)

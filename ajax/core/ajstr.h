@@ -463,6 +463,8 @@ AjBool     ajStrWhole (const AjPStr thys, ajint begin, ajint end);
 AjBool     ajStrWildPrefix (AjPStr* str);
 AjBool     ajStrWrap (AjPStr* pthis, ajint width);
 AjBool     ajStrWrapLeft (AjPStr* pthis, ajint width, ajint left);
+AjBool     ajStrUncomment (AjPStr* text);
+AjBool     ajStrUncommentStart (AjPStr* text);
 char*      ajStrYN (AjBool boule);
 
 #endif
