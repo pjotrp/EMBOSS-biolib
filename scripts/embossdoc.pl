@@ -71,9 +71,9 @@ sub testassign($$\@\@) {
     if ($tx !~ /[w]/) {
 	print "bad category assign - code1 '$tx' not 'w'\n";
     }
-    if ($tx !~ /[D]/) {
-	print "bad category assign - code1 '$tx' not 'D'\n";
-    }
+#    if ($tx !~ /[D]/) {
+#	print "bad category assign - code1 '$tx' not 'D'\n";
+#    }
 }
 
 sub testmodify($$\@\@) {
