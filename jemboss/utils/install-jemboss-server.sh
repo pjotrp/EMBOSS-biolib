@@ -592,7 +592,17 @@ fi
 
 
 if [ "$AUTH_TYPE" = "3" ]; then
-  echo "setenv LD_PRELOAD /lib/libpam.so" >> tomstart
+  if [ -f "/lib/libpam.so" ]; then
+    echo "setenv LD_PRELOAD /lib/libpam.so" >> tomstart
+  elif [ -f "/usr/lib/libpam.so" ]; then
+    echo "setenv LD_PRELOAD /usr/lib/libpam.so" >> tomstart
+  else
+    echo
+    echo "WARNING: don't know what to set LD_PRELOAD to"
+    echo "edit LD_PRELOAD in tomstart script!"
+    echo "setenv LD_PRELOAD /usr/lib/libpam.so" >> tomstart
+    echo
+  fi
 fi
 
 echo 'set path=($path '"$JAVA_HOME/bin)"  >> tomstart
