@@ -688,7 +688,7 @@ AjPFile ajFileNewOutC(const char* name)
     AjPFile thys;
 
     tmp = ajStrNewC(name);
-    thys = ajFileNewIn(tmp);
+    thys = ajFileNewOut(tmp);
     ajStrDel(&tmp);
 
     return thys;
