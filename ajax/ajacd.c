@@ -2438,16 +2438,16 @@ AcdOType acdType[] =
     {"datafile",           "input",            acdSecInput,
 	 acdAttrDatafile,  acdSetDatafile,     NULL,
 	 AJFALSE, &acdUseData, "Data file" },
-    {"directory",          "input",            NULL,
+    {"directory",          "input",            acdSecInput,
 	 acdAttrDirectory, acdSetDirectory,    NULL,
 	 AJFALSE, &acdUseMisc, "Directory" },
     {"dirlist",	           "input",            acdSecInput,
 	 acdAttrDirlist,   acdSetDirlist,      NULL,
 	 AJFALSE, &acdUseMisc, "Directory with files" },
-    {"discretestates",     "input",            NULL,
+    {"discretestates",     "input",            acdSecInput,
 	 acdAttrDiscrete,acdSetDiscretestates, NULL,
 	 AJTRUE,  &acdUseData, "Discrete states file" },
-    {"distances",         "input",            NULL,
+    {"distances",         "input",             acdSecInput,
 	 acdAttrDistances,acdSetDistances, NULL,
 	 AJTRUE,  &acdUseData, "Distance matrix" },
     {"features",           "input",            acdSecInput,
@@ -2456,13 +2456,13 @@ AcdOType acdType[] =
     {"featout",            "output",           acdSecOutput,
 	 acdAttrFeatout,   acdSetFeatout,      acdQualFeatout,
 	 AJTRUE,  &acdUseFeatout, "Writeable feature table" },
-    {"filelist",	   "input",            NULL,
+    {"filelist",	   "input",            acdSecInput,
 	 acdAttrFilelist,  acdSetFilelist,     NULL,
 	 AJFALSE, &acdUseMisc, "Comma-separated file list" },
     {"float",              "simple",           NULL,
 	 acdAttrFloat,     acdSetFloat,        NULL,
 	 AJFALSE, &acdUseMisc, "Floating point number" },
-    {"frequencies",         "input",            NULL,
+    {"frequencies",         "input",           acdSecInput,
 	 acdAttrFrequencies,acdSetFrequencies, NULL,
 	 AJTRUE,  &acdUseData, "Frequency value(s)" },
     {"graph",              "graph",            acdSecOutput,
@@ -2570,7 +2570,7 @@ AcdOType acdType[] =
     {"toggle",            "simple",           NULL,
 	 acdAttrToggle,      acdSetToggle,         NULL,
 	 AJFALSE, &acdUseMisc, "Toggle value Yes/No" },
-    {"tree",               "input",            NULL,
+    {"tree",               "input",            acdSecInput,
 	 acdAttrTree,      acdSetTree,         NULL,
 	 AJTRUE,  &acdUseData, "Phylogenetic tree" },
     {"xygraph",            "graph",            acdSecOutput,
@@ -21577,16 +21577,33 @@ static void acdValidQual(const AcdPAcd thys)
     /* check for type */
 
     if(ajStrMatchCC(acdType[thys->Type].Name, "infile") ||
-       ajStrMatchCC(acdType[thys->Type].Name, "filelist"))
+       ajStrMatchCC(acdType[thys->Type].Name, "filelist") ||
+       ajStrMatchCC(acdType[thys->Type].Name, "directory") ||
+       ajStrMatchCC(acdType[thys->Type].Name, "dirlist"))
     {
 	if(!isparam && !acdAttrTest(thys, "nullok"))
 	{
-	    if(*acdType[thys->Type].UseCount == 1)
-		acdErrorValid("First input file '%S' is not a parameter",
-			      thys->Token);
+	    if(ajStrMatchCC(acdType[thys->Type].Name, "directory") ||
+	       ajStrMatchCC(acdType[thys->Type].Name, "dirlist"))
+	    {
+		if(*acdType[thys->Type].UseCount == 1)
+		    acdErrorValid("First input directory '%S' is not a "
+				  "parameter",
+				  thys->Token);
+		else
+		    acdWarn("Subsequent input directory '%S' is not a "
+			    "parameter",
+			    thys->Token);
+	    }
 	    else
-		acdWarn("Subsequent input file '%S' is not a parameter",
-			thys->Token);
+	    {
+		if(*acdType[thys->Type].UseCount == 1)
+		    acdErrorValid("First input file '%S' is not a parameter",
+				  thys->Token);
+		else
+		    acdWarn("Subsequent input file '%S' is not a parameter",
+			    thys->Token);
+	    }
 	}
 
 	qualCountInfile++;
@@ -21595,22 +21612,48 @@ static void acdValidQual(const AcdPAcd thys)
 	    if(!ajStrSuffixC(thys->Token, "file"))
 		acdWarn("Infile qualifier '%S' is not 'infile' or '*file'",
 			thys->Token);
+	    else
+	    {
+		if((qualCountInfile > 1) ||
+		   !ajStrMatchC(thys->Token, "infile"))
+		    inMulti = ajTrue;
+		if((qualCountInfile == 1) &&
+		   !ajStrMatchC(thys->Token, "infile"))
+		    acdWarn("First input file qualifier '%S' is not 'infile'",
+			    thys->Token);
+	    }
 	}
 	else if(ajStrMatchCC(acdType[thys->Type].Name, "filelist"))
 	{
 	    if(!ajStrSuffixC(thys->Token, "files"))
 		acdWarn("Filelist qualifier '%S' is not '*files'",
 			thys->Token);
+	    else
+	    {
+		if(qualCountInfile > 1)
+		    inMulti = ajTrue;
+		/* no fixed qualifier name for first input filelist */
+	    }
 	}
-	else
+	else if(ajStrMatchCC(acdType[thys->Type].Name, "directory") ||
+		ajStrMatchCC(acdType[thys->Type].Name, "dirlist"))
 	{
-	    if((qualCountInfile > 1) ||
-	       !ajStrMatchC(thys->Token, "infile"))
-		inMulti = ajTrue;
-	    if((qualCountInfile == 1) &&
-	       !ajStrMatchC(thys->Token, "infile"))
-		acdWarn("First input file qualifier '%S' is not 'infile'",
+	    if(ajStrSuffixC(thys->Token, "outdir"))
+		acdWarn("Directory qualifier '%S' has outdir style name "
+			"'*outdir'",
 			thys->Token);
+	    else if(!ajStrSuffixC(thys->Token, "dir") &&
+		    !ajStrSuffixC(thys->Token, "path") &&
+		    !ajStrSuffixC(thys->Token, "directory"))
+		acdWarn("Directory qualifier '%S' is not '*directory or *dir'"
+			" or *path'",
+			thys->Token);
+	    else
+	    {
+		if(qualCountInfile > 1)
+		    inMulti = ajTrue;
+		/* no fixed qualifier name for first input directory */
+	    }
 	}
 
 	tmpstr = acdAttrValue(thys, "knowntype");
@@ -21944,6 +21987,7 @@ static void acdValidKnowntype(const AcdPAcd thys)
 	if (!ajStrMatchCC(acdType[thys->Type].Name, "infile") &&
 	    !ajStrMatchCC(acdType[thys->Type].Name, "datafile") &&
 	    !ajStrMatchCC(acdType[thys->Type].Name, "directory") &&
+	    !ajStrMatchCC(acdType[thys->Type].Name, "dirlist") &&
 	    !ajStrMatchCC(acdType[thys->Type].Name, "outfile") &&
 	    !ajStrMatchCC(acdType[thys->Type].Name, "outdir") &&
 	    !ajStrMatchCC(acdType[thys->Type].Name, "filelist"))
