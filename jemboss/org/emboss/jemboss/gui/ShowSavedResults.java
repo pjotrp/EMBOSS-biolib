@@ -285,7 +285,7 @@ public class ShowSavedResults
       });
 
       // add a users note for that project
-      JButton addNoteButton = new JButton("Show Notes");
+      JButton addNoteButton = new JButton("Edit Notes");
       addNoteButton.addActionListener(new ActionListener()
       {
         public void actionPerformed(ActionEvent e)
@@ -487,7 +487,7 @@ public class ShowSavedResults
 	    savedResFrame.setCursor(cbusy);
             String project = convertToOriginal(st.getSelectedValue());
 	    ResultList thisres = new ResultList(mysettings,project, 
-                                     "        show_saved_results");
+                                             "show_saved_results");
 	    savedResFrame.setCursor(cdone);
 	    if (thisres.getStatus().equals("0")) 
               new ShowResultSet(thisres.hash(),project,mysettings);
