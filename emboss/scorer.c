@@ -8,8 +8,8 @@
 ** Outputs plain text files containing basic accuracy scores
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.2 $
-** @modified $Date: 2004/07/14 11:10:37 $
+** @version $Revision: 1.3 $
+** @modified $Date: 2004/07/14 15:37:48 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ enum constant
     };
 
 
-/* @prog scorer.c ************************************************************
+/* @prog scorer ************************************************************
 ** 
 ** compare alignments with gold standard and score
 **

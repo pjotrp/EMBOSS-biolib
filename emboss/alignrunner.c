@@ -4,8 +4,8 @@
 **  writes the resulting alignments into a new directory
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.1 $
-** @modified $Date: 2004/07/13 15:50:03 $
+** @version $Revision: 1.2 $
+** @modified $Date: 2004/07/14 15:37:48 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ enum constant
     };
 
 
-/* @prog alignrunner.c *******************************************************
+/* @prog alignrunner *******************************************************
 ** 
 ** run alignment programs on a directory full of sequence pairs 
 **
