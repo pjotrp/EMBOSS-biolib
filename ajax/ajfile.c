@@ -1880,8 +1880,25 @@ AjBool ajFileDirUp(AjPStr* dir)
 
 static DIR* fileOpenDir(AjPStr* dir)
 {
+    static AjPStr cwd = NULL;
+    AjBool moved = ajFalse;
+
     if(ajStrChar(*dir, -1) != '/')
 	ajStrAppC(dir, "/");
+
+    /*  going up */
+    while(ajStrPrefixC(*dir, "../"))
+    {
+	if(!moved)
+	    ajFileGetwd(&cwd);
+	moved = ajTrue;
+	ajFileDirUp(&cwd);
+	ajStrSub(dir, 3, -1);
+	ajDebug("Going up '%S' '%S'\n", *dir, cwd);
+    }
+
+    if(moved)
+	ajStrInsert(dir, 0, cwd);
 
     return opendir(ajStrStr(*dir));
 }
