@@ -51,6 +51,8 @@ public class ShowResultSet extends JFrame
   private ResultsMenuBar menuBar;
   /** tabbed pane */
   private JTabbedPane rtp;
+  /** grout panel */
+  private GroutPanel grout = null;
 
   /**
   * 
@@ -176,11 +178,20 @@ public class ShowResultSet extends JFrame
     String title = rtp.getTitleAt(index);
     if(title.endsWith("x3d"))
     {
-      JMenuBar groutMenuBar = ((GroutPanel)rtp.getSelectedComponent()).getMenuBar();
+      grout = (GroutPanel)rtp.getSelectedComponent();
+      JMenuBar groutMenuBar = grout.getMenuBar();
       setJMenuBar(groutMenuBar);
+      remove(menuBar.getToolBar());
+      getContentPane().add(grout.getToolBar(),BorderLayout.NORTH);
     }
-    else
+    else 
+    {
       setJMenuBar(menuBar);
+      if(grout != null)
+        remove(grout.getToolBar());
+
+      getContentPane().add(menuBar.getToolBar(),BorderLayout.NORTH);
+    }
   }
 
   /**

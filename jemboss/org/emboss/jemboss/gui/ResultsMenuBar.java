@@ -583,6 +583,19 @@ public class ResultsMenuBar extends JMenuBar
     redo.setEnabled(undoManager.canRedo());
   }
 
+
+  /**
+  *
+  * Get the tool bar
+  * @return 	tool bar
+  *
+  */
+  protected JToolBar getToolBar()
+  {
+    return toolBar;
+  }
+
+
   /**
   *
   * Save to a local file
