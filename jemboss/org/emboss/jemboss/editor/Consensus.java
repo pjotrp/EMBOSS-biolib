@@ -25,11 +25,30 @@ import java.util.Vector;
 import java.util.Hashtable;
 import java.util.Enumeration;
 
+/**
+*
+* Calculate a consensus using the same method as 'cons'
+* in the EMBOSS suite.
+*
+*/
 public class Consensus
 {
   private int matrix[][];
   private String cons = "";
 
+  /**
+  *
+  * @param matrixFile	scoring matrix file
+  * @param seqs		vector of Sequence objects
+  * @param fplural	defines no. of +ve scoring matches below
+  *               	which there is no consensus.	
+  * @param setcase	upper/lower case given if score above/below
+  *                     user defined +ve matching threshold.
+  * @param identity	defines the number of identical symbols
+  *                	requires in an alignment column for it to
+  *                	included in the consensus.
+  *
+  */
   public Consensus(File matrixFile, Vector seqs, float fplural,
                    float setcase, int identity)
   {
@@ -38,6 +57,20 @@ public class Consensus
     calculateCons(mat,seqs,fplural,setcase,identity);
   }
 
+  /**
+  *
+  * @param matrixJar    	jar file containing scoring matrix 
+  * @param matrixFileName   	scoring matrix file name
+  * @param seqs         	vector of Sequence objects
+  * @param fplural      	defines no. of +ve scoring matches below
+  *                     	which there is no consensus.
+  * @param setcase      	upper/lower case given if score above/below
+  *                     	user defined +ve matching threshold.
+  * @param identity     	defines the number of identical symbols
+  *                     	requires in an alignment column for it to
+  *                     	included in the consensus.
+  *
+  */
   public Consensus(String matrixJar, String matrixFileName, 
                    Vector seqs, float fplural,
                    float setcase, int identity)
@@ -46,6 +79,19 @@ public class Consensus
                seqs,fplural,setcase,identity);
   }
 
+  /**
+  *
+  * @param mat		scoring matrix
+  * @param seqs         vector of Sequence objects
+  * @param fplural      defines no. of +ve scoring matches below
+  *                     which there is no consensus.
+  * @param setcase      upper/lower case given if score above/below
+  *                     user defined +ve matching threshold.
+  * @param identity     defines the number of identical symbols
+  *                     requires in an alignment column for it to
+  *                     included in the consensus.
+  *
+  */
   public Consensus(Matrix mat,
                    Vector seqs, float fplural,
                    float setcase, int identity)
@@ -55,6 +101,21 @@ public class Consensus
   }
 
 
+  /**
+  *
+  * Routine to calculate the consensus of a set of sequences
+  *
+  * @param mat          scoring matrix
+  * @param seqs         vector of Sequence objects
+  * @param fplural      defines no. of +ve scoring matches below
+  *                     which there is no consensus.
+  * @param setcase      upper/lower case given if score above/below
+  *                     user defined +ve matching threshold.
+  * @param identity     defines the number of identical symbols
+  *                     requires in an alignment column for it to
+  *                     included in the consensus.
+  *
+  */
   private void calculateCons(Matrix mat, Vector seqs, float fplural,
                             float setcase, int identity)
   {
@@ -199,6 +260,8 @@ public class Consensus
 /**
 *
 * Check all sequences are the same length
+* @param seqs	collection of sequences
+* @return	true if all sequences are the same length
 *
 */
   public boolean isEqualSequenceLength(Vector seqs)
@@ -223,6 +286,8 @@ public class Consensus
 *
 * Check all sequences lengths and return length of
 * the longest sequence
+* @param seqs   collection of sequences
+* @return       length of longest sequence
 *
 */
   public int getMaxSequenceLength(Vector seqs)
@@ -239,16 +304,39 @@ public class Consensus
     return len;
   }
 
+/**
+*
+* Get the consensus sequence
+* @return 	the consensus sequence
+*
+*/
   public Sequence getConsensusSequence()
   {
     return new Sequence("Consensus",cons);
   }
 
+/**
+*
+* Get the sequence weight
+* @param seqs	set of sequences
+* @param i 	index of a sequence in the set
+* @return	sequence weight
+*
+*/
   public float getSequenceWeight(Vector seqs, int i)
   {
     return ((Sequence)seqs.get(i)).getWeight();
   }
 
+/**
+*
+* Get the residue at a given position from a given sequence
+* @param seqs   set of sequences
+* @param i      index of a sequence in the set
+* @param j	residue position
+* @return       residue
+*
+*/
   public String getResidue(Vector seqs, int i, int k)
   {
     String res = "-";
