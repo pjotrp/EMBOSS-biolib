@@ -31,7 +31,7 @@ foreach x ($wdir/ajax/*html $wdir/nucleus/*html \
     endif
 end
 
-echo "Ajax functions"
+#echo "Ajax functions"
 foreach x ($edir/ajax/*.c)
   embossdoccheck.pl $x >> ../efunc.check
   embossdoc.pl $x >> ../efunc.out
@@ -42,7 +42,7 @@ cat *.srs >! ../efunc.dat
 \rm *html
 \rm *.srs
 
-echo "Ajax static datatypes"
+#echo "Ajax static datatypes"
 foreach x ($edir/ajax/*.c)
   embossdatacheck.pl $x >> ../edata.check
   embossdatadoc.pl $x >> ../edata.out
@@ -60,7 +60,7 @@ cp *.empty $wdir/datadef/
 \rm *.srsdata
 \rm *.empty
 
-echo "Nucleus functions"
+#echo "Nucleus functions"
 foreach x ($edir/nucleus/*.c)
   embossdoccheck.pl $x >> ../efunc.check
   embossdoc.pl $x >> ../efunc.out
@@ -71,7 +71,7 @@ cat *.srs >> ../efunc.dat
 \rm *html
 \rm *.srs
 
-echo "Nucleus static datatypes"
+#echo "Nucleus static datatypes"
 foreach x ($edir/nucleus/*.c)
   embossdatacheck.pl $x >> ../edata.check
   embossdatadoc.pl $x >> ../edata.out
@@ -89,7 +89,7 @@ cp *.empty $wdir/datadef/
 \rm *.srsdata
 \rm *.empty
 
-echo "Emboss functions"
+#echo "Emboss functions"
 foreach x ($edir/emboss/*.c)
   embossdoccheck.pl $x >> ../efunc.check
   embossdoc.pl $x >> ../efunc.out
@@ -100,7 +100,7 @@ cat *.srs >> ../efunc.dat
 \rm *html
 \rm *.srs
 
-echo "Emboss static datatypes"
+#echo "Emboss static datatypes"
 foreach x ($edir/emboss/*.c)
   embossdatacheck.pl $x >> ../edata.check
   embossdatadoc.pl $x >> ../edata.out
@@ -116,7 +116,7 @@ end
 \rm *html
 \rm *.srsdata
 
-echo "Ajax datatypes"
+#echo "Ajax datatypes"
 foreach x ($edir/ajax/*.h)
   embossdatacheck.pl $x >> ../edata.check
   embossdatadoc.pl $x >> ../edata.out
@@ -128,7 +128,7 @@ foreach x (*html)
 #      echo "Note: Ajax headers overwriting $wdir/datadef/$x is empty"
       \cp $x $wdir/datadef/
     else if  (-e $x:r.empty) then
-      echo "Note: Ajax header $x is empty - keep previous"
+#      echo "Note: Ajax header $x is empty - keep previous"
 #      ls -al $x $x:r.empty $wdir/datadef/$x:r.empty $wdir/datadef/$x
     else
       echo "Warning: Ajax headers overwriting $wdir/datadef/$x"
@@ -143,7 +143,7 @@ end
 \rm *.srsdata
 \rm *.empty
 
-echo "Nucleus datatypes"
+#echo "Nucleus datatypes"
 foreach x ($edir/nucleus/*.h)
   embossdatacheck.pl $x >> ../edata.check
   embossdatadoc.pl $x >> ../edata.out
@@ -154,7 +154,7 @@ foreach x (*html)
 #      echo "Note: Nucleus headers overwriting $wdir/datadef/$x is empty"
       \cp $x $wdir/datadef/
     else if  (-e $x:r.empty) then
-      echo "Note: Nucleus header $x is empty - keep previous"
+#      echo "Note: Nucleus header $x is empty - keep previous"
 #      ls -al $x $x:r.empty $wdir/datadef/$x:r.empty $wdir/datadef/$x
     else
       echo "Warning: Nucleus headers overwriting $wdir/datadef/$x"
