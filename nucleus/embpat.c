@@ -249,7 +249,11 @@ EmbPPatMatch embPatMatchFindC(AjPStr regexp, char *sptr)
     ajint posi;
     ajint i;
     char *ptr;
+    AjBool nterm = ajFalse;
 
+    if(*regexp->Ptr == '^')
+	nterm  = ajTrue;
+    
     regcomp = ajRegComp(regexp);
 
     ptr = sptr;
@@ -266,10 +270,13 @@ EmbPPatMatch embPatMatchFindC(AjPStr regexp, char *sptr)
 	ajListAppend(poslist, ajListNodesNew(pos, NULL));
 	ajListAppend(lenlist, ajListNodesNew(len, NULL));
 	sptr += posi+1;
+	if(nterm)
+	    break;
     }
 
     ajRegFree(&regcomp);
     results->number  = ajListLength(poslist);
+    
     if(results->number)
     {
 	AJCNEW(results->start, results->number);
@@ -3707,10 +3714,6 @@ ajint embPatGetType(AjPStr *pattern, ajint mismatch, AjBool protein, ajint *m,
 	    type=7;
 	else
 	    type = 5;
-	/* Fix for broken Henry Spencer using <M( patterns */
-	q = ajStrStr(*pattern);
-	if(*(q+1)=='(')
-	    type = 7;
     }
     else if(mismatch && !range && (fclass || compl))
     {
