@@ -42,6 +42,7 @@ int main(int argc, char **argv)
     ajSeqPrintInFormat (outf, full);
     ajSeqPrintOutFormat (outf, full);
     ajSeqPrintAccess (outf, full);
+    ajNamPrintDbAttr (outf, full);
     ajAlignPrintFormat (outf, full);
     ajReportPrintFormat (outf, full);
 
