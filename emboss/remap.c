@@ -188,7 +188,7 @@ int main(int argc, char **argv)
 	}
 
 	/* get the feature table of the sequence */
-	feat = ajSeqGetFeat(seq);
+	feat = ajSeqCopyFeat(seq);
 
 	/* get the restriction cut sites */
 	/*
@@ -282,7 +282,7 @@ int main(int argc, char **argv)
 
 	/* tidy up */
 	(void) embShowDel(&ss);
-	(void) ajFeattabDel(&feat);
+	(void) ajFeattableDel(&feat);
 	while(ajListPop(restrictlist,(void **)&mm))
 	    embMatMatchDel(&mm);
 	(void) ajListDel(&restrictlist);
