@@ -566,7 +566,6 @@ static AjBool seqAccessEmblcd (AjPSeqin seqin)
 	    AJFREE(qry->QryData);
 	    qryd = NULL;
 	}
-
     }
 
     (void) ajStrAssS (&seqin->Db, qry->DbName);
@@ -648,7 +647,8 @@ static AjBool seqCdAll (AjPSeqin seqin)
     ajDebug ("EMBLCD All index directory '%S'\n", qry->IndexDir);
 
     dfp = seqCdFileOpen(qry->IndexDir, "division.lkp", &divfile);
-    if (!dfp) {
+    if (!dfp)
+    {
 	ajWarn("Cannot open division file '%S' for database '%S'",
 		divfile, qry->DbName);
 	return ajFalse;
@@ -670,12 +670,14 @@ static AjBool seqCdAll (AjPSeqin seqin)
 	/* test exclusion list and add file if OK */
 
 	if (ajFileTestSkip (fullName, qry->Exclude, qry->Filename,
-			    ajTrue, ajTrue)) {
+			    ajTrue, ajTrue))
+	{
 	    ajDebug("qrybufflist add '%S'\n", fullName);
 	    ajListstrPushApp (list, fullName);
 	    fullName = NULL;
 	}
-	else {
+	else
+	{
 	    ajDebug("qrybufflist *delete* '%S'\n", fullName);
 	    ajStrDel(&fullName);
 	}
@@ -1104,7 +1106,6 @@ static AjBool seqCdIdxQuery (AjPSeqQuery qry)
 	ajDebug ("first  %d '%s'\n", jlo, name);
 	name = seqCdIdxName (khi, fil);
 	ajDebug (" last  %d '%s'\n", khi, name);
-
     }
 
     for (i=jlo; i <= khi; i++)
@@ -1464,7 +1465,6 @@ static AjBool seqCdTrgOpen (AjPStr dir, char* name, SeqPCdFile* trgfil,
 
 static AjBool seqCdTrgClose (SeqPCdFile* ptrgfil, SeqPCdFile* phitfil)
 {
-
     seqCdFileClose (ptrgfil);
     seqCdFileClose (phitfil);
 
@@ -1504,7 +1504,8 @@ static AjBool seqAccessSrs (AjPSeqin seqin)
 	(void) ajStrAssC (&qry->Application, "getz");
 
     ajDebug ("seqAccessSrs %S:%S\n", searchdb, qry->Id);
-    if (ajStrLen(qry->Id)) {
+    if (ajStrLen(qry->Id))
+    {
 	(void) ajFmtPrintS(&seqin->Filename, "%S -e '[%S-id:%S]",
 			   qry->Application, searchdb, qry->Id);
 	if (ajStrMatch(qry->Id, qry->Acc)) /* or accnumber */
@@ -1584,7 +1585,8 @@ static AjBool seqAccessSrsfasta (AjPSeqin seqin)
     else if (ajStrLen(qry->Acc))
 	(void) ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta [%S-acc:%S]|",
 			   qry->Application, searchdb, qry->Acc);
-    else if (ajStrLen(qry->Sv)) {
+    else if (ajStrLen(qry->Sv))
+    {
         (void) ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta [%S-sv:%S]|",
 			   qry->Application, searchdb, qry->Sv);
     }
@@ -1671,7 +1673,8 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
     else if (ajStrLen(qry->Acc))
 	(void) ajFmtPrintAppS(&get, "+[%S-acc:%S]",
 			   searchdb, qry->Acc);
-    else if (ajStrLen(qry->Sv)) {
+    else if (ajStrLen(qry->Sv))
+    {
       (void) ajFmtPrintAppS(&get,"+[%S-sv:%S]",
 			 searchdb, qry->Sv);
     }
@@ -1933,7 +1936,6 @@ static AjBool seqCdQryEntry (AjPSeqQuery qry)
 		    ajDebug("SKIP: accnum '%S' [file %d]\n",
 			    qry->Acc, qryd->idxLine->DivCode);
 	    }
-
 	}
 	(void) seqCdTrgClose (&qryd->trgfp, &qryd->hitfp);
 	ajStrDel (&qryd->trgLine->Target);
@@ -1976,7 +1978,6 @@ static AjBool seqCdQryEntry (AjPSeqQuery qry)
 		    ajDebug("SKIP: seqvn '%S' [file %d]\n",
 			    qry->Acc, qryd->idxLine->DivCode);
 	    }
-
 	}
 	(void) seqCdTrgClose (&qryd->trgfp, &qryd->hitfp);
 	ajStrDel (&qryd->trgLine->Target);
@@ -2019,7 +2020,6 @@ static AjBool seqCdQryEntry (AjPSeqQuery qry)
 		    ajDebug("SKIP: des '%S' [file %d]\n",
 			    qry->Acc, qryd->idxLine->DivCode);
 	    }
-
 	}
 	(void) seqCdTrgClose (&qryd->trgfp, &qryd->hitfp);
 	ajStrDel (&qryd->trgLine->Target);
@@ -2062,7 +2062,6 @@ static AjBool seqCdQryEntry (AjPSeqQuery qry)
 		    ajDebug("SKIP: key '%S' [file %d]\n",
 			    qry->Acc, qryd->idxLine->DivCode);
 	    }
-
 	}
 	(void) seqCdTrgClose (&qryd->trgfp, &qryd->hitfp);
 	ajStrDel (&qryd->trgLine->Target);
@@ -2105,7 +2104,6 @@ static AjBool seqCdQryEntry (AjPSeqQuery qry)
 		    ajDebug("SKIP: tax '%S' [file %d]\n",
 			    qry->Acc, qryd->idxLine->DivCode);
 	    }
-
 	}
 	(void) seqCdTrgClose (&qryd->trgfp, &qryd->hitfp);
 	ajStrDel (&qryd->trgLine->Target);
@@ -2173,19 +2171,19 @@ static AjBool seqCdQryQuery (AjPSeqQuery qry)
 **         second entry should sort first. 0 if they are identical
 ** @@
 ******************************************************************************/
-static int seqCdEntryCmp (const void* pa, const void* pb) {
+static int seqCdEntryCmp (const void* pa, const void* pb)
+{
+    SeqPCdEntry a = *(SeqPCdEntry*) pa;
+    SeqPCdEntry b = *(SeqPCdEntry*) pb;
 
-  SeqPCdEntry a = *(SeqPCdEntry*) pa;
-  SeqPCdEntry b = *(SeqPCdEntry*) pb;
+    ajDebug ("seqCdEntryCmp %x %d %d : %x %d %d\n",
+	     a, a->div, a->annoff,
+	     b, b->div, b->annoff);
 
-  ajDebug ("seqCdEntryCmp %x %d %d : %x %d %d\n",
-	  a, a->div, a->annoff,
-	  b, b->div, b->annoff);
+    if (a->div != b->div)
+	return (a->div - b->div);
 
-  if (a->div != b->div)
-    return (a->div - b->div);
-
-  return (a->annoff - b->annoff);
+    return (a->annoff - b->annoff);
 }
 
 /* @funcstatic seqCdEntryDel***************************************************
@@ -2197,17 +2195,17 @@ static int seqCdEntryCmp (const void* pa, const void* pb) {
 ** @return [void]
 ** @@
 ******************************************************************************/
-static void seqCdEntryDel (void** pentry, void* cl) {
+static void seqCdEntryDel (void** pentry, void* cl)
+{
+    /* SeqPCdEntry a = (SeqPCdEntry) *pentry; */
 
-  /* SeqPCdEntry a = (SeqPCdEntry) *pentry; */
+    /*
+       ajDebug ("seqCdEntryDel %x %x %d %d\n", pentry,
+       a, a->div, a->annoff);
+       */
 
-  /*
-  ajDebug ("seqCdEntryDel %x %x %d %d\n", pentry,
-	  a, a->div, a->annoff);
-  */
-
-  AJFREE (*pentry);
-  return;
+    AJFREE (*pentry);
+    return;
 }
 
 /* @funcstatic seqCdQryNext ***************************************************
@@ -3264,7 +3262,6 @@ static AjBool seqBlastOpen (AjPSeqQuery qry, AjBool next)
 
 static ajint seqCdDivNext (AjPSeqQuery qry)
 {
-
     SeqPCdQry qryd = qry->QryData;
     AjPStr fullName = NULL;
     ajint i;
@@ -3280,7 +3277,8 @@ static ajint seqCdDivNext (AjPSeqQuery qry)
 	    (void) ajDebug("next file is %d '%S'\n", qryd->div, fullName);
 	    return qryd->div;
 	}
-	else {
+	else
+	{
 	    (void) ajDebug("skip %d  '%S'\n", (i+1), fullName);
 	}
     }
@@ -3353,7 +3351,8 @@ static AjBool seqBlastAll (const AjPSeqin seqin)
 	seqin->Filebuff = ajFileBuffNew();
 	qryd->idnum = 0;
     }
-    else {
+    else
+    {
 	qryd = qry->QryData;
     }
 
@@ -3376,7 +3375,6 @@ static AjBool seqBlastAll (const AjPSeqin seqin)
         }
 	if (!seqBlastLoadBuff (seqin))
 	  return ajFalse;
-
     }
 
     qryd->idnum++;
@@ -3685,7 +3683,8 @@ static AjBool seqHttpVersion(AjPSeqQuery qry, AjPStr* httpver)
 	return ajFalse;
     }
 
-    if (!ajStrIsFloat(*httpver)) {
+    if (!ajStrIsFloat(*httpver))
+    {
       ajWarn ("Invalid HTTPVERSION '%S', reset to 1.0", *httpver);
       ajStrAssC(httpver, "1.0");
       return ajFalse;
@@ -4585,7 +4584,6 @@ static AjBool seqBlastReadTable (const AjPSeqin seqin, AjPStr* hline,
 
     default:
 	ajErr ("Unknown blast database type %d", qryd->type);
-
     }
 
     return ajFalse;
@@ -4602,7 +4600,6 @@ static AjBool seqBlastReadTable (const AjPSeqin seqin, AjPStr* hline,
 
 static void seqBlastStripNcbi (AjPStr* line)
 {
-
     /*  static AjPRegexp gnlexp = NULL;
 	static AjPRegexp giexp = NULL;*/
     static AjPStr tmpline = NULL;
@@ -4750,7 +4747,6 @@ static ajint seqCdTrgFind (AjPSeqQuery qry, char* indexname, AjPStr queryName)
 
     if(prefixlen)
     {
-
       /*
       ** (1a) we have a prefix (no wildcard at the start)
       ** look for the prefix fdprefix
@@ -4824,7 +4820,6 @@ static ajint seqCdTrgFind (AjPSeqQuery qry, char* indexname, AjPStr queryName)
 	ajDebug("first %d '%s'\n",b2,name);
 	name = seqCdTrgName(t3,trgfp);
 	ajDebug("last %d '%s'\n",t3,name);
-
     }
 
 
@@ -4866,7 +4861,6 @@ static ajint seqCdTrgFind (AjPSeqQuery qry, char* indexname, AjPStr queryName)
 			queryName,idxline->DivCode);
 	    }
 	}
-
     }
 
     (void) seqCdTrgClose (&trgfp, &hitfp);
