@@ -15,10 +15,13 @@
 ** are changed.
 */
 
-static AjPTable calls=NULL;
+static AjPTable calls = NULL;
 
 static ajint callCmpStr(const void *x, const void *y);
 static unsigned callStrHash(const void *key, unsigned hashsize);
+
+
+
 
 /* @funcstatic callCmpStr *****************************************************
 **
@@ -35,6 +38,9 @@ static ajint callCmpStr(const void *x, const void *y)
     return strcmp((char *)x, (char *)y);
 }
 
+
+
+
 /* @funcstatic callStrHash ****************************************************
 **
 ** Create hash value from key.
@@ -48,14 +54,22 @@ static ajint callCmpStr(const void *x, const void *y)
 static unsigned callStrHash(const void *key, unsigned hashsize)
 {
     unsigned hashval;
-    char *s = (char *) key;
-    ajint j = strlen(s);
+    char *s;
+    ajint j;
 
     ajint i;
+
+    s = (char *) key;
+    j = strlen(s);
+
     for(i=0, hashval = 0; i < j; i++, s++)
 	hashval = *s + 31 *hashval;
+
     return hashval % hashsize;
 }
+
+
+
 
 /* @func callRegister *********************************************************
 **
@@ -77,10 +91,13 @@ void callRegister(char *name, CallFunc func)
     rec = ajTableGet(calls, name);	/* does it exist already */
 
     if(!rec)
-    {
-	(void) ajTablePut(calls, name, (void *) func);
-    }
+	ajTablePut(calls, name, (void *) func);
+
+    return;
 }
+
+
+
 
 /* @func call *****************************************************************
 **
@@ -119,4 +136,3 @@ void* call(char *name, ...)
 
     return retval;
 }
-
