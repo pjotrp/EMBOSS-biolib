@@ -47,7 +47,7 @@ public class Graph2DPlot extends ScrollPanel
   private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
-  private float[][] emboss_data;
+  private Object[][] emboss_data;
   private float xmin = 0;
   private float xmax = 0;
   private float ymin = 0;
@@ -87,6 +87,10 @@ public class Graph2DPlot extends ScrollPanel
   private JTextField xtitle_field = null;
   private JTextField ytitle_field = null;
 
+  //
+  private static int LINE = 1;
+  private static int TEXT = 2;
+
   // draw rectangle around graph
   private boolean rectangle = false;
 
@@ -122,7 +126,7 @@ public class Graph2DPlot extends ScrollPanel
   * Set the data to plot.
   *
   */
-  public void setData(float[][] emboss_data)
+  public void setData(Object[][] emboss_data)
   {
     this.emboss_data = emboss_data;
     calcMinMax();
@@ -548,7 +552,7 @@ public class Graph2DPlot extends ScrollPanel
 
 
 // zoom
-    String zoom[] = {"50", "80", "90", "100", "150", "200"};
+    String zoom[] = {"70", "80", "90", "100", "150", "200"};
     final JComboBox zoomSize = new JComboBox(zoom);
     zoomSize.setSelectedItem("100");
     menubar.add(zoomSize);
@@ -605,17 +609,20 @@ public class Graph2DPlot extends ScrollPanel
     {
       if(ncoords == 2)
       {
-        x = emboss_data[0][i];
-        y = emboss_data[1][i];
+        x = ((Float)emboss_data[0][i]).floatValue();
+        y = ((Float)emboss_data[1][i]).floatValue();
       }
       else
       {
-        if(isTick(emboss_data[1][i], emboss_data[2][i],
-                  emboss_data[3][i], emboss_data[4][i],false))
+        if(isTick(((Float)emboss_data[1][i]).floatValue(), 
+                  ((Float)emboss_data[2][i]).floatValue(),
+                  ((Float)emboss_data[3][i]).floatValue(), 
+                  ((Float)emboss_data[4][i]).floatValue(),false) ||
+           ((Integer)emboss_data[0][i]).intValue() == TEXT)
           continue;
 
-        x = emboss_data[1][i];
-        y = emboss_data[2][i];
+        x = ((Float)emboss_data[1][i]).floatValue();
+        y = ((Float)emboss_data[2][i]).floatValue();
 
         if(xmin > x)
           xmin = x;
@@ -626,8 +633,8 @@ public class Graph2DPlot extends ScrollPanel
         if(ymax < y)
           ymax = y;
 
-        x = emboss_data[3][i];
-        y = emboss_data[4][i];
+        x = ((Float)emboss_data[3][i]).floatValue();
+        y = ((Float)emboss_data[4][i]).floatValue();
       }
 
       if(xmin > x)
@@ -654,7 +661,6 @@ public class Graph2DPlot extends ScrollPanel
         ymax = ymax_screen;
       }
     }
-
 
 //  System.out.println("xmin "+xmin);
 //  System.out.println("xmax "+xmax);
@@ -703,7 +709,7 @@ public class Graph2DPlot extends ScrollPanel
       if(emboss_data.length == 2)   // 2d plot
         drawPoints(og);
       else
-        drawGraphics(og);   
+        drawGraphics(og,fm);   
     }
     g.drawImage(offscreen, 0, 0, null);
   }
@@ -734,7 +740,7 @@ public class Graph2DPlot extends ScrollPanel
     if(emboss_data.length == 2)   // 2d plot
       drawPoints(g);
     else
-      drawGraphics(g);
+      drawGraphics(g,fm);
   }
 
   /**
@@ -936,8 +942,10 @@ public class Graph2DPlot extends ScrollPanel
   {
     Point loc = e.getPoint();
 
-    float xpos = (loc.x-xborder) * (xmax-xmin) / (getWidth()-(2*xborder));
-    float ypos = (getHeight()-yborder-loc.y) * (ymax-ymin) / (getHeight()-(2*yborder));
+    float xpos = ((loc.x-xborder) * (xmax-xmin) / (getWidth()-(2*xborder))) 
+                 + (float)xstart.getValue();
+    float ypos = ((getHeight()-yborder-loc.y) * (ymax-ymin) / (getHeight()-(2*yborder)))
+                 + (float)ystart.getValue();
 
     DecimalFormat xformat = null;
     DecimalFormat yformat = null;
@@ -954,7 +962,6 @@ public class Graph2DPlot extends ScrollPanel
     else
       yformat = new DecimalFormat((String)y_formatList.getSelectedItem());
    
-  
     return xformat.format(xpos)+","+yformat.format(ypos); 
   }
 
@@ -982,7 +989,7 @@ public class Graph2DPlot extends ScrollPanel
   * Draw an EMBOSS graphics set of data.
   *
   */
-  private void drawGraphics(Graphics g)
+  private void drawGraphics(Graphics g, FontMetrics fm)
   {
     Graphics2D g2d = (Graphics2D)g;
     BasicStroke stroke = (BasicStroke)g2d.getStroke();
@@ -1010,19 +1017,19 @@ public class Graph2DPlot extends ScrollPanel
     g2d.translate(xborder, getHeight()-yborder);
     for(int i=0; i<xnum; i++)
     {
-      if(emboss_data[0][i] < 2.f)   // line coordinates
+      x1 =  ( ((Float)emboss_data[1][i]).floatValue() - (float)xstart.getValue())*xfactor;
+      y1 = -( ((Float)emboss_data[2][i]).floatValue() - (float)ystart.getValue())*yfactor;
+      if( ((Integer)emboss_data[0][i]).intValue() == LINE)   // line coordinates
       {
-        x1 =  (emboss_data[1][i] - (float)xstart.getValue())*xfactor;
-        y1 = -(emboss_data[2][i] - (float)ystart.getValue())*yfactor;
-        x2 =  (emboss_data[3][i] - (float)xstart.getValue())*xfactor;
-        y2 = -(emboss_data[4][i] - (float)ystart.getValue())*yfactor;
+        x2 =  ( ((Float)emboss_data[3][i]).floatValue() - (float)xstart.getValue())*xfactor;
+        y2 = -( ((Float)emboss_data[4][i]).floatValue() - (float)ystart.getValue())*yfactor;
 
         if( x1 >= 0 && x2 >= 0 &&
             x1 <= xendPoint && x2 <= xendPoint &&
             y1 <= 0 && y2 <= 0 &&
             y1 >= -yendPoint && y2 >= -yendPoint )
         {
-          int colourID = (int)emboss_data[5][i];
+          int colourID = (int) ((Float)emboss_data[5][i]).floatValue();
 
           if(graph_colour != null &&
              graph_colour != Color.black)
@@ -1032,6 +1039,13 @@ public class Graph2DPlot extends ScrollPanel
 
           g.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
         }
+      }
+      else if( ((Integer)emboss_data[0][i]).intValue() == TEXT)   // text
+      {
+        int colourID = (int) ((Float)emboss_data[3][i]).floatValue();
+        int textWidth = fm.stringWidth((String)emboss_data[5][i])/2;
+        g.setColor(plplot_colour[colourID]);
+        g.drawString((String)emboss_data[5][i],(int)(x1-textWidth),(int)y1);
       }
     }
     g2d.translate(-xborder, -getHeight()+yborder);
@@ -1062,8 +1076,8 @@ public class Graph2DPlot extends ScrollPanel
     float xfactor = (getWidth()-(2*xborder))/(float)(xend.getValue()-xstart.getValue());
     float yfactor = (getHeight()-(2*yborder))/(float)(yend.getValue()-ystart.getValue());
 
-    float x1 =  (emboss_data[0][0] - (float)xstart.getValue())*xfactor;
-    float y1 = -(emboss_data[1][0] - (float)ystart.getValue())*yfactor;
+    float x1 =  ( ((Float)emboss_data[0][0]).floatValue() - (float)xstart.getValue())*xfactor;
+    float y1 = -( ((Float)emboss_data[1][0]).floatValue() - (float)ystart.getValue())*yfactor;
     float x2;
     float y2;
 
@@ -1073,8 +1087,8 @@ public class Graph2DPlot extends ScrollPanel
     g2d.translate(xborder, getHeight()-yborder);
     for(int i=1; i<xnum; i++)
     {
-      x2 =  (emboss_data[0][i] - (float)xstart.getValue())*xfactor;
-      y2 = -(emboss_data[1][i] - (float)ystart.getValue())*yfactor;
+      x2 =  ( ((Float)emboss_data[0][i]).floatValue() - (float)xstart.getValue())*xfactor;
+      y2 = -( ((Float)emboss_data[1][i]).floatValue() - (float)ystart.getValue())*yfactor;
 
       if( x1 >= 0 && x2 >= 0 &&
           y1 <= 0 && y2 <= 0 )
@@ -1093,7 +1107,7 @@ public class Graph2DPlot extends ScrollPanel
   * Read graph data.
   *
   */
-  public float[][] readGraph(Reader read) throws IOException
+  public Object[][] readGraph(Reader read) throws IOException
   {
     BufferedReader in = new BufferedReader(read);
     String line;
@@ -1162,6 +1176,7 @@ public class Graph2DPlot extends ScrollPanel
       else if(line.startsWith("Text"))
       {
         in.mark(100);
+        vx.add(line);
         if((line = in.readLine()) != null )
         {
           if(!isTick(line,false))
@@ -1173,20 +1188,20 @@ public class Graph2DPlot extends ScrollPanel
     }
 
     npoints = vx.size();
-    float[][] emboss_data;
+    Object[][] emboss_data;
 
     if(vy.size() > 0)
     {
-      emboss_data = new float[2][npoints];
+      emboss_data = new Object[2][npoints];
       for(int i=0; i<npoints; i++)
       {
-        emboss_data[0][i] = ((Float)vx.get(i)).floatValue();
-        emboss_data[1][i] = ((Float)vy.get(i)).floatValue(); 
+        emboss_data[0][i] = (Float)vx.get(i);
+        emboss_data[1][i] = (Float)vy.get(i); 
       }
     }
     else
     {
-      emboss_data = new float[6][npoints];
+      emboss_data = new Object[6][npoints];
       for(int i=0; i<npoints; i++)
         setGraphicRow(emboss_data,(String)vx.get(i),i);
     }
@@ -1201,25 +1216,36 @@ public class Graph2DPlot extends ScrollPanel
   * Rectangle x1 0.000000 y1 0.000000 x2 518.000000 y2 518.000000 colour 0
   *
   */
-  private void setGraphicRow(float[][] emboss_data, String line, int i)
+  private void setGraphicRow(Object[][] emboss_data, String line, int i)
   {
     StringTokenizer tok = new StringTokenizer(line," "); 
     String type = tok.nextToken(); 
     if(type.equals("Line"))
-      emboss_data[0][i] = 1.f;
-    else
-      emboss_data[0][i] = 2.f;
+      emboss_data[0][i] = new Integer(LINE);
+    else if(type.startsWith("Text"))
+      emboss_data[0][i] = new Integer(TEXT);
 
     tok.nextToken();
-    emboss_data[1][i] = Float.parseFloat(tok.nextToken());
+    emboss_data[1][i] = Float.valueOf(tok.nextToken());
     tok.nextToken();
-    emboss_data[2][i] = Float.parseFloat(tok.nextToken());
+    emboss_data[2][i] = Float.valueOf(tok.nextToken());
     tok.nextToken();
-    emboss_data[3][i] = Float.parseFloat(tok.nextToken());
+    emboss_data[3][i] = Float.valueOf(tok.nextToken());
     tok.nextToken();
-    emboss_data[4][i] = Float.parseFloat(tok.nextToken());
-    tok.nextToken();
-    emboss_data[5][i] = Float.parseFloat(tok.nextToken());
+    emboss_data[4][i] = Float.valueOf(tok.nextToken());
+
+    if(type.equals("Line"))
+    {
+      tok.nextToken();
+      emboss_data[5][i] = Float.valueOf(tok.nextToken());
+    }
+    else if(type.startsWith("Text"))
+    {
+      String text = new String();
+      while(tok.hasMoreTokens())
+        text = text+" "+tok.nextToken();
+      emboss_data[5][i] = text.trim();
+    }
   }
 
   /**
