@@ -1189,7 +1189,7 @@ void ajTrnSeqFrame (AjPTrn trnObj, AjPSeq seq, ajint frame, AjPStr *pep) {
 AjPSeq ajTrnSeqFramePep (AjPTrn trnObj, AjPSeq seq, ajint frame) {
 
   AjPSeq pep=NULL; /* the returned new peptide */
-  AjPStr str=NULL; /* the string holding the nucleic sequence */
+/*  AjPStr str=NULL; *//* the string holding the nucleic sequence */
   AjPStr trn=NULL; /* the string holding the peptide sequence */
   
   pep = ajTrnNewPep(seq, frame);
@@ -1227,7 +1227,7 @@ AjPSeq ajTrnSeqFramePep (AjPTrn trnObj, AjPSeq seq, ajint frame) {
 ajint ajTrnCDangle (AjPTrn trnObj, char *seq, ajint len, ajint frame, 
 	AjPStr *pep) {
 
-  ajint end;	/* end base of last complete codon in forward sense */
+  ajint end=0;	/* end base of last complete codon in forward sense */
   ajint dangle;	/* number of bases at the end */
 
   if (frame > 3) frame = -frame + 3;
@@ -1313,7 +1313,7 @@ ajint ajTrnStrDangle (AjPTrn trnObj, AjPStr seq, ajint frame, AjPStr *pep) {
 AjPSeq ajTrnSeqOrig (AjPTrn trnObj, AjPSeq seq, ajint frame) {
 
   AjPSeq pep=NULL; /* the returned new peptide */
-  AjPStr str=NULL; /* the string holding the nucleic sequence */
+/*  AjPStr str=NULL; *//* the string holding the nucleic sequence */
   AjPStr trn=NULL; /* the string holding the peptide sequence */
   
   pep = ajTrnNewPep(seq, frame);
