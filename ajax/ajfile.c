@@ -827,7 +827,9 @@ void ajFileDataDirNew(const AjPStr tfile, const AjPStr dir, AjPFile *fnew)
 
     *fnew = NULL;
 
-    return ajFileDataNew(tfile, fnew);
+    ajFileDataNew(tfile, fnew);
+
+    return;
 }
 
 /* @func ajFileDataDirNewC ***************************************************
