@@ -336,6 +336,15 @@ ajint ajRegLenI(AjPRegexp rp, ajint isub)
     istart = 2*isub;
     iend   = istart+1;
 
+    if(isub < 0)
+	return 0;
+
+    if(isub >= rp->ovecsize)
+	return 0;
+
+    if(rp->ovector[istart] < 0)
+	return 0;
+
     return (rp->ovector[iend] - rp->ovector[istart]);
 }
 
@@ -397,6 +406,40 @@ AjBool ajRegPostC(AjPRegexp rp, const char** post)
 
 
 
+/* @func ajRegPre ************************************************************
+**
+** After a successful match, returns the string before the match.
+**
+** @param [r] rp [AjPRegexp] Compiled regular expression.
+** @param [w] post [AjPStr*] String to hold the result.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+AjBool ajRegPre(AjPRegexp rp, AjPStr* dest)
+{
+    ajint ilen;
+
+    ilen = rp->ovector[0];
+    ajStrModL(dest, ilen+1);
+    if(ilen)
+    {
+	strncpy((*dest)->Ptr, rp->orig, ilen);
+	(*dest)->Len = ilen;
+	(*dest)->Ptr[ilen] = '\0';
+
+	return ajTrue;
+    }
+
+    ajStrDelReuse(dest);
+
+    return ajFalse;
+}
+
+
+
+
+
 /* @func ajRegSubI ************************************************************
 **
 ** After a successful match, returns a substring.
@@ -404,11 +447,13 @@ AjBool ajRegPostC(AjPRegexp rp, const char** post)
 ** @param [r] rp [AjPRegexp] Compiled regular expression.
 ** @param [r] isub [ajint] Substring number.
 ** @param [w] dest [AjPStr*] String to hold the result.
-** @return [void]
+** @return [AjBool] ajTrue if a substring was defined
+**                  ajFalse if the substring is not matched
+**                  ajFalse if isub is out of range
 ** @@
 ******************************************************************************/
 
-void ajRegSubI(AjPRegexp rp, ajint isub, AjPStr* dest)
+AjBool ajRegSubI(AjPRegexp rp, ajint isub, AjPStr* dest)
 {
     ajint ilen;
     ajint istart;
@@ -420,13 +465,19 @@ void ajRegSubI(AjPRegexp rp, ajint isub, AjPStr* dest)
     if(isub < 0)
     {
 	ajStrDelReuse(dest);
-	return;
+	return ajFalse;
     }
 
     if(isub >= rp->ovecsize)
     {
 	ajStrDelReuse(dest);
-	return;
+	return ajFalse;
+    }
+
+    if(rp->ovector[istart] < 0)
+    {
+	ajStrDelReuse(dest);
+	return ajFalse;
     }
 
     ilen = rp->ovector[iend] - rp->ovector[istart];
@@ -436,7 +487,7 @@ void ajRegSubI(AjPRegexp rp, ajint isub, AjPStr* dest)
     (*dest)->Len = ilen;
     (*dest)->Ptr[ilen] = '\0';
 
-    return;
+    return ajTrue;
 }
 
 
