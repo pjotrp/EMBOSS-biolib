@@ -187,8 +187,8 @@ public class BuildProgramMenu
         menuBar.setLayout(new  GridLayout(npG,1));
    
         final int numProgs = progs.getNumProgs();
-        JMenu primaryGroups[] = new JMenu[npG];
-        primaryGroups = progs.getPrimaryGroups();
+//      JMenu primaryGroups[] = new JMenu[npG];
+//      primaryGroups = progs.getPrimaryGroups();
 
         final String allAcd[] = progs.getProgsList();
         final String allDes[] = progs.getProgDescription();
