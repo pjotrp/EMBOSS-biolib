@@ -67,7 +67,7 @@ static AjBool c_notin(ajint c, char *list);
 static AjBool c_isin(ajint c, char *list);
 static ajint ajFmtVscan(char *thys,const char *fmt,va_list ap);
 
-static void scvt_S(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_uS(char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
 static void scvt_d(char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
@@ -83,7 +83,7 @@ static void scvt_u(char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
 static void scvt_p(char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
-static void scvt_B(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_uB(char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
 static void scvt_c(char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
@@ -95,13 +95,13 @@ static void scvt_z(char *fmt, char **pos, VALIST ap, ajint width,
 
 static void cvt_s(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision);
-static void cvt_B(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
+static void cvt_uB(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision);
-static void cvt_D(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
+static void cvt_uD(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision);
-static void cvt_F(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
+static void cvt_uF(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision);
-static void cvt_S(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
+static void cvt_uS(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision);
 static void cvt_x(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision);
@@ -618,7 +618,7 @@ static void cvt_f(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
     return;
 }
 
-/* @funcstatic cvt_S **********************************************************
+/* @funcstatic cvt_uS *********************************************************
 **
 ** Conversion for %S to print a string
 **
@@ -633,7 +633,7 @@ static void cvt_f(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 ** @@
 ******************************************************************************/
 
-static void cvt_S(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
+static void cvt_uS(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision)
 {
     AjPStr str1 = va_arg(VA_V(ap), AjPStr);
@@ -678,7 +678,7 @@ static void cvt_b(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
     return;
 }
 
-/* @funcstatic cvt_B **********************************************************
+/* @funcstatic cvt_uB *********************************************************
 **
 ** Conversion for %B to print a boolean as text (Yes or No)
 **
@@ -693,7 +693,7 @@ static void cvt_b(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 ** @@
 ******************************************************************************/
 
-static void cvt_B(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
+static void cvt_uB(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision)
 {
     AjBool bl = va_arg(VA_V(ap), AjBool);
@@ -708,7 +708,7 @@ static void cvt_B(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
     return;
 }
 
-/* @funcstatic cvt_D **********************************************************
+/* @funcstatic cvt_uD *********************************************************
 **
 ** Conversion for %D to print a datetime value
 **
@@ -723,7 +723,7 @@ static void cvt_B(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 ** @@
 ******************************************************************************/
 
-static void cvt_D(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
+static void cvt_uD(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision)
 {
     AJTIME *time =  va_arg(VA_V(ap), AJTIME *);
@@ -746,7 +746,7 @@ static void cvt_D(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 	      width, precision);
 }
 
-/* @funcstatic cvt_F **********************************************************
+/* @funcstatic cvt_uF *********************************************************
 **
 ** Conversion for %F to print a file object
 **
@@ -761,7 +761,7 @@ static void cvt_D(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 ** @@
 ******************************************************************************/
 
-static void cvt_F(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
+static void cvt_uF(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision)
 {
     AjPFile fil = va_arg(VA_V(ap), AjPFile);
@@ -799,9 +799,9 @@ static Fmt_T cvt[256] =
  /*  40- 47 */      0,     0,     0,     0,     0,     0,     0,     0,
  /*  48- 55 */      0,     0,     0,     0,     0,     0,     0,     0,
  /*  56- 63 */      0,     0,     0,     0,     0,     0,     0,     0,
- /*  64- 71 */      0,     0, cvt_B,     0, cvt_D,     0, cvt_F,     0,
+ /*  64- 71 */      0,     0,cvt_uB,     0,cvt_uD,     0,cvt_uF,     0,
  /*  72- 79 */      0,     0,     0,     0,     0,     0,     0,     0,
- /*  80- 87 */      0,     0,     0, cvt_S,     0,     0,     0,     0,
+ /*  80- 87 */      0,     0,     0,cvt_uS,     0,     0,     0,     0,
  /*  88- 95 */  cvt_x,     0,     0,     0,     0,     0,     0,     0,
  /*  96-103 */      0,     0, cvt_b, cvt_c, cvt_d, cvt_f, cvt_f, cvt_f,
  /* 104-111 */      0,     0,     0,     0,     0,     0, cvt_d, cvt_o,
@@ -830,9 +830,9 @@ static Fmt_S scvt[256] =
  /*  40- 47 */      0,     0,     0,     0,     0,     0,     0,     0,
  /*  48- 55 */      0,     0,     0,     0,     0,     0,     0,     0,
  /*  56- 63 */      0,     0,     0,     0,     0,     0,     0,     0,
- /*  64- 71 */      0,     0,scvt_B,     0,     0,     0,     0,     0,
+ /*  64- 71 */      0,     0,scvt_uB,     0,     0,     0,     0,     0,
  /*  72- 79 */      0,     0,     0,     0,     0,     0,     0,     0,
- /*  80- 87 */      0,     0,     0, scvt_S,    0,     0,     0,     0,
+ /*  80- 87 */      0,     0,     0, scvt_uS,    0,     0,     0,     0,
  /*  88- 95 */ scvt_x,     0,     0,     0,     0,     0,     0,     0,
  /*  96-103 */      0,     0,scvt_b,scvt_c,scvt_d,scvt_f,scvt_f,scvt_f,
  /* 104-111 */      0,     0,     0,     0,     0,     0,scvt_d,scvt_o,
@@ -1901,7 +1901,7 @@ static ajint ajFmtVscan(char *thys,const char *fmt,va_list ap)
 
 
 
-/* @funcstatic scvt_S ********************************************************
+/* @funcstatic scvt_uS ********************************************************
 **
 ** Conversion for %S to load a string
 **
@@ -1915,7 +1915,7 @@ static ajint ajFmtVscan(char *thys,const char *fmt,va_list ap)
 ** @@
 ******************************************************************************/
 
-static void scvt_S(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_uS(char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok)
 {
     char *p = *pos;
@@ -2463,7 +2463,7 @@ static void scvt_p(char *fmt, char **pos, VALIST ap, ajint width,
 }
 
 
-/* @funcstatic scvt_B ********************************************************
+/* @funcstatic scvt_uB *******************************************************
 **
 ** Conversion for %B to load a boolean (integer or YyNnTtFf)
 **
@@ -2477,7 +2477,7 @@ static void scvt_p(char *fmt, char **pos, VALIST ap, ajint width,
 ** @@
 ******************************************************************************/
 
-static void scvt_B(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_uB(char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok)
 {
     char *p = *pos;
