@@ -501,7 +501,9 @@ AjBool ajListLast(AjPList thys, void** x) {
   if (!thys)
     return ajFalse;
 
-  for (rest = thys->First; rest->Next; rest = rest->Next);
+  for (rest = thys->First; rest->Next; rest = rest->Next)
+      if(!rest->Next->Next)
+	  break;
 
   if (x)
     *x = listNodeItem(rest);
