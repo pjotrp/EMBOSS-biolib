@@ -25,7 +25,7 @@
 
 enum constant
     {
-	enumDebugLevel        =  0,
+	enumDebugLevel        =  2,
 	enumZeroContacts      =  0,
 	enumFirstResType      =  0,
 	enumFirstResTypeIndex =  0,
@@ -119,8 +119,6 @@ static AjPCmapHeader ajCmapHeaderNew ();
 
 static void ajCmapHeaderDel (AjPCmapHeader *pAjpCmapHeaderToDelete);
 
-static AjBool print_cmap_header (AjPCmapHeader *pAjpCmapHeader);
-
 static AjBool string3_to_ajint1 (AjPStr ajpStrThreeLetterCode);
 
 static AjPStr ajint1_to_string3 (ajint ajIntCode);
@@ -146,6 +144,8 @@ static void debug_int_map (AjPInt2d *pAjpInt2dSummary,
 
 static void debug_int_summary (AjPInt2d *pAjpInt2dSummary,
 			       ajint ajIntSeqLen);
+
+static AjBool debug_cmap_header (AjPCmapHeader *pAjpCmapHeader);
 
 /* @prog contactalign ********************************************************
 ** 
@@ -229,7 +229,7 @@ int main(int argc , char **argv)
 					     fExtensionPenalty);
 
     /* DDDDEBUG CHECK THAT WORKED */
-    if(enumDebugLevel > 1)
+    if(enumDebugLevel > 2)
     {
 	debug_pair_score(ajpFloat2dPairScores, ajpSeqDown, ajpSeqAcross);
     }
@@ -241,7 +241,7 @@ int main(int argc , char **argv)
 						   enumTraceArrayOffset);
     
     /* DDDDEBUG CHECK THAT WORKED */
-    if(enumDebugLevel > 1)
+    if(enumDebugLevel > 2)
     {
 	debug_Gotoh_score(ajpGotohCellGotohScores, ajIntDownSeqLen, ajIntAcrossSeqLen);
     }
@@ -254,7 +254,7 @@ int main(int argc , char **argv)
 				  fExtensionPenalty);
 
     /* DDDDEBUG CHECK THAT WORKED */
-    if(enumDebugLevel > 1)
+    if(enumDebugLevel > 2)
     {
 	debug_Gotoh_score(ajpGotohCellGotohScores, ajIntDownSeqLen, ajIntAcrossSeqLen);
     }
@@ -309,19 +309,24 @@ int main(int argc , char **argv)
 						&ajpInt2dCmapSummary,
 						&ajpInt2dCmapResTypes,
 						&ajpInt2dCmapPositions);
+    
 
-    /* DDDDEBUGGING */
-    debug_int_summary(&ajpInt2dCmapSummary,
+
+    /* DDDDEBUGGING DID WE READ THE CMAP FILE? */
+    if( enumDebugLevel > 1 )
+    {
+	debug_cmap_header(&ajpCmapHeader);
+	
+	debug_int_summary(&ajpInt2dCmapSummary,
+			  ajIntAcrossSeqLen);
+	
+	debug_int_map(&ajpInt2dCmapSummary,
+		      &ajpInt2dCmapPositions,
+		      pcSeqAcross,
 		      ajIntAcrossSeqLen);
-
-    debug_int_map(&ajpInt2dCmapSummary,
-		  &ajpInt2dCmapPositions,
-		  pcSeqAcross,
-		  ajIntAcrossSeqLen);
-
-    print_cmap_header(&ajpCmapHeader);
-
-    /* DDDD DEBUG DUMMY FILENAME BELOW */
+    }
+   
+    /* DDDDEBUG: DUMMY FILENAME IS USED BELOW */
     ajpStrUpdatedCmapFile =
 	ajStrNewC("/users/damian/EMBOSS/emboss/emboss/emboss/conts/test.con");
     ajpFileUpdatedCmap = ajFileNewOut(ajpStrUpdatedCmapFile);
@@ -429,7 +434,7 @@ static AjPStr ajint1_to_string3 (ajint ajIntCode)
 
 /* @funcstatic read_cmap_file ************************************************
 **
-** reads ajxyz contact map file into two arrays of ints  
+** reads ajpdb contact map file into two arrays of ints  
 **
 ** @param [r] ajpFileCmap [AjPFile]  input file stream of current cmap
 ** @param [r] pAjpInt2dCmapResTypes [AjPInt2d *] contacts as residue types
@@ -446,9 +451,14 @@ static AjBool read_cmap_file (AjPFile ajpFileCmap,
 			      AjPInt2d *pAjpInt2dCmapResTypes,
 			      AjPInt2d *pAjpInt2dCmapPositions)
 {
-    AjBool ajBoolCmapFileRead = ajFalse; /* has the file been read? */
+    AjBool ajBoolCmapFileRead; /* has the file been read? */
+    /* DDDD DEBUG: ARE NULL HEADERS BEING RETURNED? */
+    AjBool ajBoolCmapHeaderLoaded; /* has the Cmap header been read? */
 
     ajint ajIntColumnCount;
+
+    /* what kind of contact map line has been read in? */
+    ajint ajIntCmapLineType;
 
     /* to store contact attributes from contact map */
     ajint ajIntTempFirstResType;
@@ -468,17 +478,15 @@ static AjBool read_cmap_file (AjPFile ajpFileCmap,
     AjPInt2d ajpInt2dCmapResTypes = NULL;
     AjPInt2d ajpInt2dCmapPositions = NULL;
 
-    /* what kind of contact map line has been read in? */
-    ajint ajIntCmapLineType = enumNoCmapLine;
-
     /* string to store that contact map line */
     AjPStr ajpStrCmapLine = NULL;
 
-    /* dereference pointers to same */
-    ajpCmapHeader = *pAjpCmapHeader;
-    ajpInt2dCmapSummary = *pAjpInt2dCmapSummary;
-    ajpInt2dCmapResTypes = *pAjpInt2dCmapResTypes;
-    ajpInt2dCmapPositions = *pAjpInt2dCmapPositions;    
+    /* default to no line */
+    ajIntCmapLineType = enumNoCmapLine;
+
+    ajBoolCmapFileRead = ajFalse;
+    /* DDDD DEBUG: ARE NULL HEADERS BEING RETURNED? */
+    ajBoolCmapHeaderLoaded = ajFalse;
 
     /* check file passed to function is usable */	
     if(!ajpFileCmap)
@@ -491,7 +499,7 @@ static AjBool read_cmap_file (AjPFile ajpFileCmap,
     ajIntTempContacts = enumZeroContacts;
 
     for(ajIntColumnCount = 0; ajIntColumnCount < ajIntSeqLen; ajIntColumnCount++)
-	ajInt2dPut(&ajpInt2dCmapSummary,
+	ajInt2dPut(pAjpInt2dCmapSummary,
 		   enumLastContactIndex,
 		   ajIntColumnCount,
 		   ajIntTempContacts);
@@ -502,8 +510,11 @@ static AjBool read_cmap_file (AjPFile ajpFileCmap,
     /* reserve memory for current contact object */
     ajpContactTemp = ajContactNew();
 
-    /* reserve memory for current contact map header object */
-    ajpCmapHeader = ajCmapHeaderNew();    
+    /* dereference pointers to passed object pointers */
+    ajpCmapHeader = *pAjpCmapHeader;
+    ajpInt2dCmapSummary = *pAjpInt2dCmapSummary;
+    ajpInt2dCmapResTypes = *pAjpInt2dCmapResTypes;
+    ajpInt2dCmapPositions = *pAjpInt2dCmapPositions;    
 
     /* read through contact map file until there are no more contacts */
     while( ( ajpStrCmapLine = read_cmap_line(ajpFileCmap) ) )
@@ -563,21 +574,22 @@ static AjBool read_cmap_file (AjPFile ajpFileCmap,
 		       enumLastContactIndex,
 		       ajIntTempFirstPosition,
 		       ajIntTempContacts);
-
-	    /* DDDDEBUG: AND CHECK THAT'S WORKED */
-	    print_contact(ajpContactTemp);
 	}
 	else if(ajIntCmapLineType == enumHeaderCmapLine)
 	{
-	    load_header_line(&ajpStrCmapLine,
-			     &ajpCmapHeader);
-	    
+	    /* DDDDEBUG: DEBUGGGING VERSION OF THIS CLAUSE USED HERE */
+	    ajBoolCmapHeaderLoaded = load_header_line(&ajpStrCmapLine,
+						      pAjpCmapHeader);
+	    if(!ajBoolCmapHeaderLoaded)
+		    {	
+			ajWarn("HEADER NOT READ!");	
+			return ajFalse;
+		    }
 	}
     }
 
     /* free contact */
     ajContactDel(&ajpContactTemp);
-    
     
     return ajBoolCmapFileRead;
 }
@@ -586,7 +598,7 @@ static AjBool read_cmap_file (AjPFile ajpFileCmap,
 
 /* @funcstatic read_cmap_line ************************************************
 **
-** reads single line from ajxyz contact map file and returns it as a string
+** reads single line from ajpdb contact map file and returns it as a string
 **
 ** @param [r] ajpFileCmap [AjPFile]  input file stream of current cmap
 ** @return [AjPStr] contents of line read
@@ -607,8 +619,6 @@ static AjPStr read_cmap_line (AjPFile ajpFileCmap)
 /* @funcstatic type_cmap_line ************************************************
 **
 ** based on first two chars, returns type of line from contact map file:
-**
-**
 **
 ** @param [r] ajpFileCmap [AjPFile]  input file stream of current cmap
 ** @return [AjPStr] contents of line read
@@ -655,7 +665,7 @@ static ajint type_cmap_line (AjPStr ajpStrCmapLine)
 
 /* @funcstatic load_contact_line ************************************************
 **
-** loads single contact from single line of ajxyz contact map file
+** loads single contact from single line of ajpdb contact map file
 **
 ** @param [r] pAjpStrCmapLine [AjPStr *] to contact line from Cmap file
 ** @param [r] pAjpContactParsed [AjPContact *] to contact object from line
@@ -719,7 +729,7 @@ static AjBool load_contact_line (AjPStr *pAjpStrCmapLine,
 
 /* @funcstatic load_header_line ************************************************
 **
-** loads single line from ajxyz contact map file into header object
+** loads single line from ajpdb contact map file into header object
 **
 ** @param [r] pAjpStrCmapLine [AjPStr *] to header line from Cmap file
 ** @param [r] pAjpHeaderToLoad [AjPCmapHeader *] to header object from line
@@ -728,17 +738,17 @@ static AjBool load_contact_line (AjPStr *pAjpStrCmapLine,
 ******************************************************************************/
 
 static AjBool load_header_line (AjPStr *pAjpStrCmapLine,
-				 AjPCmapHeader *pAjpCmapHeaderToLoad)
+				AjPCmapHeader *pAjpCmapHeaderToLoad)
 {
     AjPStr ajpStrCmapLine = NULL;
     AjPCmapHeader ajpCmapHeaderToLoad = NULL;
+    AjBool ajBoolCmapHeaderToLoad;
+
+    ajBoolCmapHeaderToLoad = ajFalse;
 
     ajpCmapHeaderToLoad = *pAjpCmapHeaderToLoad;
     ajpStrCmapLine = *pAjpStrCmapLine;
 
-    AjBool ajBoolCmapHeaderToLoad = ajFalse;
-
-    /* check string passed to function is usable */	
     if(!ajpStrCmapLine)
     {	
 	ajWarn("NULL string passed to load_header_line()");	
@@ -784,8 +794,8 @@ static AjBool load_header_line (AjPStr *pAjpStrCmapLine,
     else 
     {
 	ajBoolCmapHeaderToLoad = ajFalse;
-    } 
-    
+    }
+
     return ajBoolCmapHeaderToLoad;
 }
 
@@ -793,7 +803,7 @@ static AjBool load_header_line (AjPStr *pAjpStrCmapLine,
 
 /* @funcstatic write_cmap_file ************************************************
 **
-** writes ajxyz contact map file from header object and two arrays of ints  
+** writes ajpdb contact map file from header object and two arrays of ints  
 **
 ** @param [r] ajpFileUpdatedCmap [AjPFile] output file stream of current cmap
 ** @param [r] ajIntSeqLen [ajint] number of residues in chain sequence
@@ -890,7 +900,8 @@ static AjBool write_cmap_file (AjPFile ajpFileUpdatedCmap,
 	    ajpContactTemp->ajIntSecondPosition = ajIntTempSecondPosition;
 
 	    /* DDDDEBUG: AND CHECK THAT'S WORKED */
-	    print_contact(ajpContactTemp);
+	    if(enumDebugLevel > 1)
+		print_contact(ajpContactTemp);
 
 	    write_contact(ajpFileUpdatedCmap,
 			  ajpContactTemp);
@@ -1233,7 +1244,7 @@ static AjBool write_contact (AjPFile ajpFileUpdatedCmap,
 static AjBool write_cmap_header (AjPFile ajpFileUpdatedCmap,
 				 AjPCmapHeader ajpHeaderToWrite)
 {
-    static AjBool write_line();
+    AjBool write_line();
 
     AjBool ajBoolSuccess;
     AjPStr ajpStrTemp = NULL;
@@ -1241,24 +1252,21 @@ static AjBool write_cmap_header (AjPFile ajpFileUpdatedCmap,
     ajBoolSuccess = ajFalse;
 
     ajpStrTemp = ajpHeaderToWrite->ajpStrCmapId;
-    ajBoolSuccess = write_line(ajpStrTemp);
+    ajBoolSuccess = ajFileWriteStr(ajpFileUpdatedCmap,
+				   ajpStrTemp,
+				   enumMaxCmapLineLen);
 
     ajpStrTemp = ajStrNewC("XX\n");
-    ajBoolSuccess = write_line(ajpStrTemp);
-    
-    static AjBool write_line()
-	{
-	    ajBoolSuccess = (ajFileWriteStr(ajpFileUpdatedCmap,
-					    ajpStrTemp,
-					    enumMaxCmapLineLen));
-	    return ajBoolSuccess;
-	}
+    ajBoolSuccess = ajFileWriteStr(ajpFileUpdatedCmap,
+				   ajpStrTemp,
+				   enumMaxCmapLineLen);
     
     return ajBoolSuccess;
+
 }
 
 
-/* @funcstatic print_cmap_header *********************************************
+/* @funcstatic debug_cmap_header *********************************************
 **
 ** prints out a contact map header
 **
@@ -1267,11 +1275,11 @@ static AjBool write_cmap_header (AjPFile ajpFileUpdatedCmap,
 ** @@
 ******************************************************************************/
 
-static AjBool print_cmap_header (AjPCmapHeader *pAjpCmapHeaderToPrint)
+static AjBool debug_cmap_header (AjPCmapHeader *pAjpCmapHeaderToPrint)
 {
-    static void empty_line();
+    void empty_line();
 
-    AjPCmapHeader ajpCmapHeaderToPrint;
+    AjPCmapHeader ajpCmapHeaderToPrint = NULL;
 
     AjBool ajBoolSuccess;
     ajBoolSuccess= ajFalse;
@@ -1280,27 +1288,21 @@ static AjBool print_cmap_header (AjPCmapHeader *pAjpCmapHeaderToPrint)
 
     /* print out each line in contact map header in order */
     ajFmtPrint("ID   %S\n", ajpCmapHeaderToPrint->ajpStrCmapId);
-    empty_line();
+    ajFmtPrint("XX\n");
     ajFmtPrint("DE   %S\n", ajpCmapHeaderToPrint->ajpStrCmapDe);
-    empty_line();
+    ajFmtPrint("XX\n");
     ajFmtPrint("MO   %S\n", ajpCmapHeaderToPrint->ajpStrCmapMo);
-    empty_line();
+    ajFmtPrint("XX\n");
     ajFmtPrint("CN   %S\n", ajpCmapHeaderToPrint->ajpStrCmapCn);
-    empty_line();
+    ajFmtPrint("XX\n");
     ajFmtPrint("IN   %S\n", ajpCmapHeaderToPrint->ajpStrCmapIn);
-    empty_line();
+    ajFmtPrint("XX\n");
     ajFmtPrint("SQ   %S\n", ajpCmapHeaderToPrint->ajpStrCmapSq);
-    empty_line();
+    ajFmtPrint("XX\n");
 	
-    ajBoolSuccess= ajTrue;
-
+    ajBoolSuccess = ajTrue;
     
     return ajBoolSuccess;
-
-    static void empty_line()
-	{
-	    ajFmtPrint("XX\n");
-	}
     
 }
 
