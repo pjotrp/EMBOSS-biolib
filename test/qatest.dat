@@ -4944,9 +4944,20 @@ FP 138 /^>/
 FP /^>HSFAU1_951_1095 \[exon\] H\.sapiens fau 1 gene\n/
 //
 
+ID extractfeat-ex4
+UC To extract the CDS region with the exons joined into one sequence:
+AP extractfeat
+CL tembl:hsfau1 -type CDS -join stdout
+FI stderr
+FC = 1
+FI stdout
+FZ = 453
+FP /^>HSFAU1_782_1912 \[CDS\] H.sapiens fau 1 gene\n/
+//
+
 # The example has phosphorylation, we only have features that say
 # PHOSPHORYLATION (BY RK) (BY SIMILARITY).
-ID extractfeat-ex4
+ID extractfeat-ex5
 UC To write out the 7 residues around all phosphorylated residues in the tsw database: 
 AP extractfeat
 CL tsw:*  -type mod_res -value phosphorylation* -before 3 -after -4 stdout
