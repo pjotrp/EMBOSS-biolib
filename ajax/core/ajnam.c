@@ -198,6 +198,12 @@ NamOAttr namRsAttrs[] =
 
     {"identifier", "", "standard identifier (defaults to name)"},
     {"release", "", "release of the resource"},
+
+    {"order", "", "order of a primary B+tree"},
+    {"fill", "", "max number of entries in a primary B+tree bucket"},
+    {"secorder", "", "order of a secondary B+tree"},
+    {"secfill", "", "max number of entries in a secondary B+tree bucket"},
+    {"kwlimit", "", "cut-off length for a secondary B+tree key"},
     {NULL, NULL, NULL}
 };
 
@@ -214,6 +220,7 @@ NamOValid namDbTypes[] =
 NamOValid namRsTypes[] =
 {
     {"Blast", "Blast database file"},
+    {"Index", "Blast database file"},
     {NULL, NULL}
 };
 
@@ -2868,4 +2875,54 @@ AjBool ajNamSetControl(const char* optionName)
     ajDie("Unknown ajNamSetControl control option '%s'", optionName);
 
     return ajFalse;
+}
+
+
+
+
+/* @func ajNamRsAttrValueC **************************************************
+**
+** Return the value for a resource attribute
+**
+** @param [r] resource [const char *] resource name
+** @param [r] attribute [const char *] resource attribute
+** @param [w] value [AjPStr *] resource value
+
+**
+** @return [AjBool] true if found
+** @@
+******************************************************************************/
+
+AjBool ajNamRsAttrValueC(const char *name, const char *attribute,
+			 AjPStr *value)
+{
+    ajint i;
+    ajint j;
+    NamPEntry fnew = NULL;
+    void **array   = NULL;
+    AjPStr *rsattr = NULL;
+    AjBool found   = ajFalse;
+    
+    array = ajTableToarray(namMasterTable, NULL);
+
+    for(i = 0; array[i] && !found; i += 2)
+    {
+	fnew =(NamPEntry) array[i+1];
+	if(fnew->type == TYPE_RESOURCE)
+	    if(!ajStrCmpC(fnew->name,name))
+	    {
+		rsattr = (AjPStr *) fnew->data;
+		for(j=0; namRsAttrs[j].Name; ++j)
+		    if(!strcmp(namRsAttrs[j].Name,attribute))
+			if(ajStrLen(rsattr[j]))
+			{
+			    ajStrAssS(value,rsattr[j]);
+			    found = ajTrue;
+			    break;
+			}
+	    }
+    }
+    AJFREE(array);
+
+    return found;
 }
