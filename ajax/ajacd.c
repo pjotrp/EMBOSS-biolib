@@ -9996,7 +9996,8 @@ static AjBool acdVarResolve (AjPStr* var) {
     ivar++;
     ajRegSubI(varexp, 2, &token); /* variable name */
     (void) acdVarSplit (token, &varname, &attrname);
-    (void) acdGetAttr (&result, varname, attrname);
+    if (!acdGetAttr (&result, varname, attrname))
+      ajStrAssC(&result, "");
 
     ajRegSubI(varexp, 1, &newvar);
     (void) ajStrApp (&newvar, result);
@@ -12029,7 +12030,7 @@ static AcdPAcd acdFindParam (ajint PNum) {
 **
 ** Pick up a defined attribute for variable handling.
 ** The ACD item must be defined (already processed).
-** Attributes include and specially set up by the acdSet function
+** Attributes include any specially calculated by the acdSet function
 ** for that type.
 **
 ** @param [uP] result [AjPStr*] Resulting attribute value
@@ -13973,6 +13974,7 @@ void ajAcdExit (AjBool silent) {
 
   if (silent) staySilent = ajTrue;
   if (acdDoHelp) staySilent = ajTrue;
+  if (acdDoPretty) staySilent = ajTrue;
 
   if (staySilent) return;
 
