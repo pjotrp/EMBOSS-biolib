@@ -181,7 +181,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
         e.rejectDrag();
       else
       {
-        setSelectionPath(eventPath);
+        setSelectionPath(ePath);
         e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
       }
     } 
