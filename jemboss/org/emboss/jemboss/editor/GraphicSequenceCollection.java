@@ -452,8 +452,10 @@ public class GraphicSequenceCollection extends JPanel
   {
     if(textColour.equals(prettyPlot.getIDColour()))
       return prettyPlot.getIDBackgroundColour();
-    else
+    else if(textColour.equals(prettyPlot.getMatchColour()))
       return prettyPlot.getMatchBackgroundColour();
+    else
+      return null;
   }
 
  

@@ -399,11 +399,15 @@ public class SequenceJPanel extends JPanel
     Color col = gsc.getColor(res,i,sName);
     Color colBackground = gsc.getPrettyBackground(col);
 
-    g.setColor(colBackground);
-    g.fillRect(ipos,0,resWidth,seqHeight);
+    if(colBackground != null)
+    {
+      g.setColor(colBackground);
+      g.fillRect(ipos,0,resWidth,seqHeight);
+    }
 
     if(!col.equals(Color.black) && gsc.isPrettyBox())
     {
+      g.setColor(Color.black);
       // draw left line of cell
       if(!leftResidue)
         g.drawLine(ipos,0,ipos,seqHeight);
@@ -415,6 +419,7 @@ public class SequenceJPanel extends JPanel
       {
         String resRight = seq.getSequence().substring(i+1,i+2);
         Color rightCol = gsc.getColor(resRight,i+1,sName);
+
         // draw right line of cell
         if(rightCol.equals(Color.black))
           g.drawLine(ipos+resWidth,0,ipos+resWidth,seqHeight);

@@ -106,6 +106,8 @@ public class PrettyPlotJFrame extends JFrame
     bacross = Box.createHorizontalBox();
     idColour = new JColorChooser(Color.red);
     final JButton idButton = new JButton("");   
+    Dimension buttSize = new Dimension(25,20);
+    idButton.setPreferredSize(buttSize);
     final JDialog dialog = JColorChooser.createDialog(idButton,
                                         "Pick a Color",
                                         true,
@@ -133,6 +135,7 @@ public class PrettyPlotJFrame extends JFrame
     bacross = Box.createHorizontalBox();
     idColourBackground = new JColorChooser(Color.white);
     final JButton idBackButton = new JButton("");
+    idBackButton.setPreferredSize(buttSize);
     final JDialog dialogID = JColorChooser.createDialog(idBackButton,
                                         "Pick a Color",
                                         true,
@@ -160,6 +163,7 @@ public class PrettyPlotJFrame extends JFrame
     bacross = Box.createHorizontalBox();
     matchColour = new JColorChooser(Color.blue);
     final JButton matchButton = new JButton("");
+    matchButton.setPreferredSize(buttSize);
     final JDialog dialogMatch = JColorChooser.createDialog(matchButton,
                                         "Pick a Color",
                                         true,
@@ -187,6 +191,7 @@ public class PrettyPlotJFrame extends JFrame
     bacross = Box.createHorizontalBox();
     matchColourBackground = new JColorChooser(Color.white);
     final JButton matchBackButton = new JButton("");
+    matchBackButton.setPreferredSize(buttSize);
     final JDialog dialogMatchBack = JColorChooser.createDialog(matchButton,
                                         "Pick a Color",
                                         true,
@@ -199,7 +204,7 @@ public class PrettyPlotJFrame extends JFrame
       public void actionPerformed(ActionEvent e)
       {
         dialogMatchBack.show();
-        matchBackButton.setBackground(matchColour.getColor());
+        matchBackButton.setBackground(matchColourBackground.getColor());
       }
     });
     bacross.add(matchBackButton);
