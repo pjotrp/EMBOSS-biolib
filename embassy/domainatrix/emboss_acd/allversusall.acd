@@ -1,7 +1,5 @@
 application: allversusall [
-  documentation: "Does an all-versus-all global alignment for
-                  each set of sequences in an input directory and writes
-                  files of sequence similarity values"
+  documentation: "Produce sequence similarity values"
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"

@@ -1,6 +1,5 @@
 application: libscan [
-  documentation: "Scans a database with a set of models that
-                  represents a family"
+  documentation: "Scan a database with family models"
   groups: "Protein:3D Structure"
   embassy: "domainatrix"
 ]

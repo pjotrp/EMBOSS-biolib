@@ -1,6 +1,5 @@
 application: siggen [
-  documentation: "Generates a sparse protein signature from
-                  an alignment and residue contact data."
+  documentation: "Generate a sparse protein signature"
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

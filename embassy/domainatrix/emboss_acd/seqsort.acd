@@ -1,7 +1,5 @@
 application: seqsort [
-  documentation: "Reads DHF files (domain hits files) of
-                  database hits (sequences) and removes hits of ambiguous
-                  classification."
+  documentation: "Remove ambiguous hits from DHF files"
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

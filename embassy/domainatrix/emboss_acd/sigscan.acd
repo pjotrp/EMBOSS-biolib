@@ -1,7 +1,5 @@
 application: sigscan [
-  documentation: "Generates a DHF file (domain hits file) of
-                  hits (sequences) from scanning a signature against a
-                  sequence database."
+  documentation: "Generate a DHF file using signature scanning"
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

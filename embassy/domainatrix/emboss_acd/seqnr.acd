@@ -1,6 +1,5 @@
 application: seqnr [
-  documentation: "Removes redundancy from DHF files (domain
-                  hits files) or other files of sequences."
+  documentation: "Removes redundancy from DHF files"
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"

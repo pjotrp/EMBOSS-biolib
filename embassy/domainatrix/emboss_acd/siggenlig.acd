@@ -1,5 +1,5 @@
 application: siggenlig [
-  documentation: "Generates ligand-binding signatures from a CON file (contacts file) of residue-ligand contacts."
+  documentation: "Generate ligand-binding signatures"
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

@@ -1,7 +1,5 @@
 application: seqalign [
-  documentation: "Reads a DAF file (domain alignment file)
-                  and a DHF file (domain hits file) and writes a DAF file
-                  extended with the hits."
+  documentation: "Add DHF information to DAF file"
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

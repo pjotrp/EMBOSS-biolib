@@ -1,7 +1,5 @@
 application: pdbplus [
-  documentation: "Add residue solvent accessibility and
-                  secondary structure data to a CCF file (clean coordinate
-                  file) for a protein or domain."
+  documentation: "Add accessibility & 2ry structure to CCF" 
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"

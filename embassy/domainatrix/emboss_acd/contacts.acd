@@ -1,7 +1,5 @@
 application: contacts [
-  documentation: "Reads CCF files (clean coordinate files)
-                  and writes CON files (contact files) of intra-chain
-                  residue-residue contact data."
+  documentation: "Produce CON files from CCF files"
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

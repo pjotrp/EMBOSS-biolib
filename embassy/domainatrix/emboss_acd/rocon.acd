@@ -1,9 +1,5 @@
 application: rocon [
-  documentation: "Reads a DHF file (domain hits file) of hits
-                  (sequences of unknown structural classification) and a DHF
-                  file of validation sequences (known classification) and
-                  writes a 'hits file' for the hits, which are classified and
-                  rank-ordered on the basis of score."
+  documentation: "Scan DHF files and generate hits"
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

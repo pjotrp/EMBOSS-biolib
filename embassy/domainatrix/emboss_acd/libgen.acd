@@ -1,6 +1,5 @@
 application: libgen [
-  documentation: "Generates various types of discriminating
-                  elements for each alignment in a directory."
+  documentation: "Generate discriminating elements from alignments"
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

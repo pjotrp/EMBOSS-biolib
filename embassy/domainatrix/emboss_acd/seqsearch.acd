@@ -1,7 +1,5 @@
 application: seqsearch [
-  documentation: "Generate database hits (sequences) for
-                  nodes in a DCF file (domain classification file) by using
-                  PSI-BLAST."
+  documentation: "Generate database hits for DCF using PSI-BLAST"
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

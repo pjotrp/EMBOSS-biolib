@@ -1,6 +1,5 @@
 application: cathparse [
-  documentation: "Reads raw CATH classification files and
-                  writes DCF file (domain classification file)."
+  documentation: "Produce DCF file from CATH"
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"

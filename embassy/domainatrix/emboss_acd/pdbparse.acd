@@ -1,6 +1,5 @@
 application: pdbparse [
-  documentation: "Parses PDB files and writes CCF files
-                  (clean coordinate files) for proteins."
+  documentation: "Parses PDB files and writes CCF files"
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"

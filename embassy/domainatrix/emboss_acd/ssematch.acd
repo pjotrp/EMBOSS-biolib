@@ -1,6 +1,5 @@
 application: ssematch [
-  documentation: "Searches a DCF file (domain classification
-                  file) for secondary structure matches."
+  documentation: "Search a DCF file for secondary structure matches"
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"

@@ -1,10 +1,5 @@
 application: rocplot [
-  documentation: "Provides interpretation and graphical
-                  display of the performance of discriminating elements (e.g.
-                  profiles for protein families). rocplot reads file(s) of
-                  hits from discriminator-database search(es), performs ROC
-                  analysis on the hits, and writes graphs illustrating the
-                  diagnostic performance of the discriminating elements."
+  documentation: "ROC analysis for discriminators"
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"
