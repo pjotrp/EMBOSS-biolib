@@ -6,8 +6,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.25 $
-** @modified $Date: 2004/11/25 20:23:08 $
+** @version $Revision: 1.26 $
+** @modified $Date: 2004/12/06 18:06:28 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -71,22 +71,23 @@ int main(int argc , char **argv)
 
     AjPSeqout ajpSeqoutAligned = NULL; /* output object to write alignment   */
 
-    /* alignment gap extension and gap penalty scores */
+    /* penalties */
     float fExtensionPenalty;
     float fGapPenalty;
     AjBool ajBoolZeroEndPenalty;
 
     /* prebuilt scoring matrix (e.g. BLOSUM62) */
     AjPMatrixf ajpMatrixfSubstitutionScoring = NULL;
-    /* contact-based scoring matrix */
-    AjPMatrixf ajpMatrixfContactScoring = NULL;
     /* array for pair scores according to conventional scoring matrix  */
     AjPFloat2d ajpFloat2dPairScores = NULL;
+    /* contact-based scoring matrix */
+    AjPMatrixf ajpMatrixfContactScoring = NULL;
     /* array for pair scores according to contact-based scoring matrix */
     float **floatArrayContactScores = NULL;
 
     /* array for recursively summed scores in alignment backtrace */
     AjPGotohCell **ajpGotohCellGotohScores;
+    AjPGotohCell ajpGotohCellForDeletion;
     /* stack of backtraced cells */
     AjPList ajpListGotohCellsMaxScoringTrace = NULL;
 
@@ -188,7 +189,7 @@ int main(int argc , char **argv)
 
     /* DDDD DEBUG DUMMY FILENAME BELOW */
     ajpStrOriginalCmapFile =
-	ajStrNewC("/users/damian/EMBOSS/emboss/emboss/emboss/conts/d1aj3__.con");
+	ajStrNewC("/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/contacts/cmaps/d1mho__.con");
     ajpFileOriginalCmap = ajFileNewIn(ajpStrOriginalCmapFile);
 
     pcSeqAcross = ajSeqCharCopy(ajpSeqAcross);
@@ -196,9 +197,9 @@ int main(int argc , char **argv)
     /* reserve memory for objects representing contact map */
     ajpInt2dCmapSummary = embGetCmapSummary(pcSeqAcross);
     ajpInt2dCmapResTypes = embGetIntMap(ajIntAcrossSeqLen +
-				       enumArrayOffset);
-    ajpInt2dCmapPositions = embGetIntMap(ajIntAcrossSeqLen +
 					enumArrayOffset);
+    ajpInt2dCmapPositions = embGetIntMap(ajIntAcrossSeqLen +
+					 enumArrayOffset);
     ajpCmapHeader = ajCmapHeaderNew();
 
     /* DDDDEBUGGING */
@@ -232,7 +233,7 @@ int main(int argc , char **argv)
 	debug_cmap_header(&ajpCmapHeader);
 	
 	debug_cmap_summary(&ajpInt2dCmapSummary,
-			  ajIntAcrossSeqLen);
+			   ajIntAcrossSeqLen);
     }
 
     if( enumDebugLevel > 2 )
@@ -246,18 +247,18 @@ int main(int argc , char **argv)
    
     /* DDDDEBUG: DUMMY FILENAME IS USED BELOW */
     ajpStrUpdatedCmapFile =
-	ajStrNewC("/users/damian/EMBOSS/emboss/emboss/emboss/conts/test.con");
+	ajStrNewC("/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/contacts/cmaps/test.con");
     ajpFileUpdatedCmap = ajFileNewOut(ajpStrUpdatedCmapFile);
-
 
     /* write contact arrays to a new contact map file */
     ajBoolUpdatedCmapFileWritten =
-	embWriteCmapFile (ajpFileUpdatedCmap,
-			  ajIntAcrossSeqLen,
-			  &ajpInt2dCmapSummary,
-			  &ajpCmapHeader,
-			  &ajpInt2dCmapResTypes,
-			  &ajpInt2dCmapPositions);
+	embWriteUpdatedCmapFile(ajpFileUpdatedCmap,
+				ajIntAcrossSeqLen,
+				&ajpInt2dCmapSummary,
+				&ajpCmapHeader,
+				&ajpInt2dCmapResTypes,
+				&ajpInt2dCmapPositions,
+				&ajpMatrixfContactScoring);
 
     /* XXXX LOOK UP PROBABILITY SCORE FOR PAIR */
 
@@ -289,7 +290,20 @@ int main(int argc , char **argv)
     ajSeqWrite(ajpSeqoutAligned, ajpSeqDownCopy);
     ajSeqWrite(ajpSeqoutAligned, ajpSeqAcrossCopy);
 
+    /* delete objects */
+    ajSeqDel(&ajpSeqDown);
+    ajSeqDel(&ajpSeqAcross);
+    ajMatrixfDel(&ajpMatrixfSubstitutionScoring);
+    ajFloat2dDel(&ajpFloat2dPairScores);
+    ajSeqDel(&ajpSeqDownCopy);
+    ajSeqDel(&ajpSeqAcrossCopy);
+    while(ajListPop(ajpListGotohCellsMaxScoringTrace,
+		    (void **)&ajpGotohCellForDeletion))
+	AJFREE(ajpGotohCellForDeletion);
+    ajListFree(&ajpListGotohCellsMaxScoringTrace);
+
     /* delete output sequence */
+    ajSeqWriteClose(ajpSeqoutAligned);
     ajSeqoutDel(&ajpSeqoutAligned);
 
     /* tidy up everything else */
