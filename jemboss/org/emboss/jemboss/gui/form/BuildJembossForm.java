@@ -358,7 +358,7 @@ public class BuildJembossForm implements ActionListener
         Jemboss.resultsManager.updateMode("interactive");
 //  }
 
-    String type[] = {"Jemboss Graphics","PNG"};
+    String type[] = {"PNG","Jemboss Graphics"};
     graphics = new JComboBox(type);
 
     for(int j=0;j<nsection;j++)
