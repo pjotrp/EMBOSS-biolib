@@ -128,6 +128,13 @@
 ** Notes
 ** Should describe scoring schemes in above.
 **
+** Important Note
+**
+** siggen is designed to work with OLD FORMAT clean pdb files - i.e. the 
+** ones currently found in /data/cpdb/ on the HGMP server.  To convert to 
+** parsing of new format files (when available) change ajXyzCpdbReadOld to 
+** ajXyzCpdbRead().
+**
 ******************************************************************************/
 
 
@@ -485,7 +492,7 @@ int main(ajint argc, char **argv)
                 }   
 
 		/* Read coordinate data file */ 
-		ajXyzCpdbRead(fptr_cpdb, &pdb);
+		ajXyzCpdbReadOld(fptr_cpdb, &pdb);
 		
 
 		/* Determine the chain number */
