@@ -307,14 +307,16 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userInfo
     home     = ajStrNew();
     
     juser = (char *) (*env)->GetStringUTFChars(env,door,0);
-    ajStrAssC(&username,juser);
+    if(juser)
+	ajStrAssC(&username,juser);
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
     jpass = (char *) (*env)->GetStringUTFChars(env,key,0);
-    ajStrAssC(&password,jpass);
+    if(jpass)
+	ajStrAssC(&password,jpass);
     (*env)->ReleaseStringUTFChars(env,key,jpass);
 
-    if(!ajStrLen(username) || !ajStrLen(password))
+    if(!ajStrLen(username) || !ajStrLen(password) || !juser || !jpass)
 	return ajFalse;
 
 #ifndef NO_AUTH
