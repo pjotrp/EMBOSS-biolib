@@ -6,8 +6,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.18 $
-** @modified $Date: 2004/06/03 13:40:19 $
+** @version $Revision: 1.19 $
+** @modified $Date: 2004/06/03 16:40:06 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 
 enum constant
     {
-	enumDebugLevel        =  2,
+	enumDebugLevel        =  0,
 	enumZeroContacts      =  0,
 	enumFirstResType      =  0,
 	enumFirstResTypeIndex =  0,
@@ -170,7 +170,12 @@ static AjBool debug_cmap_header (AjPCmapHeader *pAjpCmapHeader);
 
 int main(int argc , char **argv)
 {
+    char cTempTraceDown;
+    char cTempTraceAcross;
     char *pcSeqAcross;
+    char *pcTraceDown;
+    char *pcTraceAcross;
+    char *pcUpdatedSeqAcross;
 
     /* sequence objects and copies */
     AjPSeq ajpSeqDown = NULL;
@@ -193,6 +198,8 @@ int main(int argc , char **argv)
     AjPGotohCell **ajpGotohCellGotohScores;
 
     /* lengths of strings of numbers */
+    ajint ajIntSeqCount;
+    ajint ajIntTraceCount;
     ajint ajIntDownSeqLen;
     ajint ajIntAcrossSeqLen;
     ajint ajIntAlignmentLen;
@@ -293,6 +300,31 @@ int main(int argc , char **argv)
 			     ajpSeqDownCopy,
 			     ajpSeqAcrossCopy);
 
+    /* substitute all matches into a new version of the template sequence */
+    pcUpdatedSeqAcross = ajSeqCharCopy(ajpSeqAcross);
+    pcTraceDown = ajSeqCharCopy(ajpSeqDownCopy);
+    pcTraceAcross = ajSeqCharCopy(ajpSeqAcrossCopy);
+
+    ajIntSeqCount = 0;
+    
+    for(ajIntTraceCount = 0;ajIntTraceCount < ajIntAlignmentLen; ajIntTraceCount++)
+    {
+	cTempTraceDown = pcTraceDown[ajIntTraceCount];
+	cTempTraceAcross = pcTraceAcross[ajIntTraceCount];
+	if(cTempTraceAcross == '-')
+	{
+	    ajIntTraceCount++;
+	}
+	else
+	{
+	    ajFmtPrint("%c\t", cTempTraceAcross);
+	    ajFmtPrint("%c\t", cTempTraceDown);
+	    if( cTempTraceDown != '-')
+		pcUpdatedSeqAcross[ajIntSeqCount] = cTempTraceDown;
+	    ajFmtPrint("%c\n", pcUpdatedSeqAcross[ajIntSeqCount]);
+	}
+    }
+
     /* XXXX EVERYTHING FROM HERE IS TO DO WITH ALIGNMENT MODIFICATION */
 
     /* DDDD DEBUG DUMMY FILENAME BELOW */
@@ -344,7 +376,7 @@ int main(int argc , char **argv)
 			  ajIntAcrossSeqLen);
     }
 
-    if( enumDebugLevel > 1 )
+    if( enumDebugLevel > 2 )
     {
 	debug_int_map(&ajpInt2dCmapSummary,
 		      &ajpInt2dCmapResTypes,
@@ -357,9 +389,6 @@ int main(int argc , char **argv)
     ajpStrUpdatedCmapFile =
 	ajStrNewC("/users/damian/EMBOSS/emboss/emboss/emboss/conts/test.con");
     ajpFileUpdatedCmap = ajFileNewOut(ajpStrUpdatedCmapFile);
-
-
-
 
 
     /* write contact arrays to a new contact map file */
@@ -941,9 +970,9 @@ static AjBool write_cmap_file (AjPFile ajpFileUpdatedCmap,
 				    enumLastContactIndex,
 				    ajIntColumn);
 
-	ajFmtPrint("££££££££££££££££££££££££££££££££\n");
-	ajFmtPrint("££££££ COLUMN LENGTH: %d ££££££\n", ajIntColumnLen);
-	ajFmtPrint("££££££££££££££££££££££££££££££££\n\n");
+/* 	ajFmtPrint("££££££££££££££££££££££££££££££££\n"); */
+/* 	ajFmtPrint("££££££ COLUMN LENGTH: %d ££££££\n", ajIntColumnLen); */
+/* 	ajFmtPrint("££££££££££££££££££££££££££££££££\n\n"); */
 
 	ajIntTempFirstResType = ajInt2dGet(ajpInt2dCmapSummary,
 					   enumFirstResTypeIndex,
@@ -962,14 +991,18 @@ static AjBool write_cmap_file (AjPFile ajpFileUpdatedCmap,
 
 		/* load up temporary contact object with values from residue type array */ 
 		ajpStrTempSecondResType = ajint1_to_string3(ajIntTempSecondResType);
-	    
-		ajFmtPrint("££££££££££££££££££££££££££££££££\n");
-		ajFmtPrint("££££ first residue type: %S ££££\n",
-			   ajpStrTempFirstResType);
-		ajFmtPrint("£££ second residue type: %S ££££\n",
-			   ajpStrTempSecondResType);
-		ajFmtPrint("££££££££££££££££££££££££££££££££\n\n");
 
+		if( enumDebugLevel > 1 )
+		{
+		    
+		    ajFmtPrint("££££££££££££££££££££££££££££££££\n");
+		    ajFmtPrint("££££ first residue type: %S ££££\n",
+			       ajpStrTempFirstResType);
+		    ajFmtPrint("£££ second residue type: %S ££££\n",
+			       ajpStrTempSecondResType);
+		    ajFmtPrint("££££££££££££££££££££££££££££££££\n\n");
+		}
+		
 		/* read temporary contact object with values from position array */
 		ajIntTempFirstPosition = ajIntColumn;
 		ajIntTempSecondPosition = ajInt2dGet(ajpInt2dCmapPositions,
@@ -1481,7 +1514,7 @@ static void debug_int_map(AjPInt2d *pAjpInt2dCmapSummary,
     ajpInt2dCmapSummary = *pAjpInt2dCmapSummary;
     ajpInt2dCmapPositions = *pAjpInt2dCmapPositions;
     ajpInt2dCmapResTypes = *pAjpInt2dCmapResTypes;
-    
+
     ajFmtPrint("====================================================================================================\n");
     ajFmtPrint("====================================================================================================\n");
     for(ajIntColumnCount = 0; ajIntColumnCount < ajIntSeqLen; ajIntColumnCount++)
