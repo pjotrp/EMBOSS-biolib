@@ -30,6 +30,7 @@ AjPFile   ajAcdGetOutfile (char *token);
 AjPPdb    ajAcdGetCpdb (char *token);
 AjPRange  ajAcdGetRange (char *token);
 AjPRegexp ajAcdGetRegexp (char *token);
+AjPScop   ajAcdGetScop (char *token);
 AjPStr*   ajAcdGetSelect (char *token);
 AjPStr    ajAcdGetSelectI (char *token, int num);
 AjPSeq    ajAcdGetSeq (char *token);

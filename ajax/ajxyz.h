@@ -10,7 +10,7 @@ extern "C"
 #define ajNMR   1    /* Structure was determined by NMR or is a model     */
 
 
-#define ESCOP "Escop.dat" /* Scop data file */
+#define ajESCOP "Escop.dat" /* Scop data file */
 
 
 /* @data AjPAtom *******************************************************
@@ -147,6 +147,8 @@ AjPPdb   ajPdbNew(int chains, int models);
 void     ajPdbDel(AjPPdb *thys);
 void     ajScopDel(AjPScop *pthis);
 AjPScop  ajScopNew(int n);
+AjBool   ajScopRead(AjPFile inf, AjPStr entry, AjPScop *thys);
+AjBool   ajScopReadC(AjPFile inf, char *entry, AjPScop *thys);
 void     ajScopWrite(AjPFile outf, AjPScop thys);
 
 

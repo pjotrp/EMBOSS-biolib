@@ -715,7 +715,7 @@ AjBool ajCpdbWriteAll(AjPFile outf, AjPPdb thys)
 ** Write contents of a Scop object to an output file
 **
 ** @param [w] outf [AjPFile] Output file stream
-** @param [r] thys [AjPScop] Pdb object
+** @param [r] thys [AjPScop] Scop object
 **
 ** @return [void]
 ** @@
@@ -747,4 +747,204 @@ void ajScopWrite(AjPFile outf, AjPScop thys)
     ajFmtPrintF(outf,"//\n");
     
     return;
+}
+
+/* @func ajScopRead *********************************************************
+**
+** Read a Scop object from a file
+**
+** @param [r] inf [AjPFile] Output file stream
+** @param [r] entry [AjPStr] id
+** @param [w] thys [AjPScop*] Scop object
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+AjBool ajScopRead(AjPFile inf, AjPStr entry, AjPScop *thys)
+{
+    return ajScopReadC(inf,ajStrStr(entry),thys);
+}
+
+/* @func ajScopReadC ******************************************************
+**
+** Read a Scop object from a file
+**
+** @param [r] inf [AjPFile] Output file stream
+** @param [r] entry [char*] id
+** @param [w] thys [AjPScop*] Scop object
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+AjBool ajScopReadC(AjPFile inf, char *entry, AjPScop *thys)
+{
+    static AjPRegexp exp1=NULL;
+    static AjPRegexp exp2=NULL;
+    static AjPStr line=NULL;
+    static AjPStr str=NULL;
+    static AjPStr xentry=NULL;
+    static AjPStr source=NULL;
+    static AjPStr db=NULL;
+    static AjPStr class=NULL;
+    static AjPStr fold=NULL;
+    static AjPStr super=NULL;
+    static AjPStr family=NULL;
+    static AjPStr domain=NULL;
+    static AjPStr pdb=NULL;
+    static AjPStr tentry=NULL;
+    static AjPStr stmp=NULL;
+    
+    AjBool ok=ajFalse;
+    
+    char   *p;
+    int    idx=0;
+    int    n=0;
+    
+
+    if(!line)
+    {
+	str     = ajStrNew();
+	xentry  = ajStrNew();
+	pdb     = ajStrNew();
+	source  = ajStrNew();
+	db      = ajStrNew();
+	class   = ajStrNew();
+	fold    = ajStrNew();
+	super   = ajStrNew();
+	family  = ajStrNew();
+	domain  = ajStrNew();
+	line    = ajStrNew();
+	tentry  = ajStrNew();
+	stmp    = ajStrNew();
+	exp1    = ajRegCompC("^([^ \t\r\n]+)[ \t\n\r]+");
+	exp2    = ajRegCompC("^([A-Za-z0-9]+)[ ]*[^ \t\r\n]+[ ]*([0-9]+)[ ]*"
+			     "[^ \t\r\n]+[ ]*([0-9]+)");
+    }
+
+
+    
+    ajStrAssC(&tentry,entry);
+    ajStrToUpper(&tentry);
+    
+    while((ok=ajFileReadLine(inf,&line)))
+    {
+	if(!ajStrPrefixC(line,"ID   "))
+	    continue;
+	
+	if(!ajRegExec(exp1,line))
+	    return ajFalse;
+	ajRegPost(exp1,&stmp);
+	if(ajStrMatchWild(stmp,tentry))
+	    break;
+    }
+
+    
+    if(!ok)
+	return ajFalse;
+    
+    
+    while(ok && !ajStrPrefixC(line,"//"))
+    {
+	if(ajStrPrefixC(line,"XX"))
+	{
+	    ok = ajFileReadLine(inf,&line);
+	    continue;
+	}
+	ajRegExec(exp1,line);
+	ajRegPost(exp1,&str);
+
+	if(ajStrPrefixC(line,"ID"))
+	    ajStrAssS(&xentry,str);
+	else if(ajStrPrefixC(line,"EN"))
+	    ajStrAssS(&pdb,str);
+	else if(ajStrPrefixC(line,"DB"))
+	    ajStrAssS(&db,str);
+	else if(ajStrPrefixC(line,"OS"))
+	    ajStrAssS(&source,str);
+	else if(ajStrPrefixC(line,"CL"))
+	    ajStrAssS(&class,str);
+	else if(ajStrPrefixC(line,"FO"))
+	{
+	    ajStrAssS(&fold,str);
+	    while(ajFileReadLine(inf,&line))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&fold,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&fold);
+	}
+	else if(ajStrPrefixC(line,"SF"))
+	{
+	    ajStrAssS(&super,str);
+	    while(ajFileReadLine(inf,&line))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&super,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&super);
+	}
+	else if(ajStrPrefixC(line,"FA"))
+	{
+	    ajStrAssS(&family,str);
+	    while(ajFileReadLine(inf,&line))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&family,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&family);
+	}
+	else if(ajStrPrefixC(line,"DO"))
+	{
+	    ajStrAssS(&domain,str);
+	    while(ajFileReadLine(inf,&line))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&domain,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&domain);
+	}
+	else if(ajStrPrefixC(line,"NC"))
+	{
+	    ajStrToInt(str,&n);
+	    (*thys) = ajScopNew(n);
+	    ajStrAssS(&(*thys)->Entry,xentry);
+	    ajStrAssS(&(*thys)->Pdb,pdb);
+	    ajStrAssS(&(*thys)->Source,source);
+	    ajStrAssS(&(*thys)->Db,db);
+	    ajStrAssS(&(*thys)->Class,class);
+	    ajStrAssS(&(*thys)->Fold,fold);
+	    ajStrAssS(&(*thys)->Domain,domain);
+	    ajStrAssS(&(*thys)->Superfamily,super);
+	    ajStrAssS(&(*thys)->Family,family);
+	    
+	}
+	else if(ajStrPrefixC(line,"CN"))
+	{
+	    p = ajStrStr(str);
+	    sscanf(p,"[%d]",&idx);
+	}
+	else if(ajStrPrefixC(line,"CH"))
+	{
+	    if(!ajRegExec(exp2,str))
+		return ajFalse;
+	    ajRegSubI(exp2,1,&stmp);
+	    ajStrAss(&(*thys)->Chain[idx-1],stmp);
+	    ajRegSubI(exp2,2,&str);
+	    ajStrToInt(str,&(*thys)->Start[idx-1]);
+	    ajRegSubI(exp2,3,&str);
+	    ajStrToInt(str,&(*thys)->End[idx-1]);
+	}
+	ok = ajFileReadLine(inf,&line);
+    }
+
+    if(!ok)
+	return ajFalse;
+    
+    return ajTrue;
 }
