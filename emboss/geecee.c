@@ -46,6 +46,7 @@ int main(int argc, char **argv)
     ajFmtPrintF(outf, "#Sequence   GC content\n") ;
     while (ajSeqallNext(seqall, &seq))
     {
+	ajSeqTrim(seq);
 	seqstr = ajSeqStr(seq) ;
 	len    = ajSeqLen(seq) ;
 	pgc    = ajMeltGC(&seqstr,len) ; /* forward strand for now... */
