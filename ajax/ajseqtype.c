@@ -206,7 +206,7 @@ AjBool ajSeqTypeCheckS (AjPStr* pthys, AjPStr type) {
   ajint i = 0;
   char ret;
 
-  ajDebug ("ajSeqTypeCheckS type '%S' seq '%S'\n", type, *pthys);
+  /* ajDebug ("ajSeqTypeCheckS type '%S' seq '%S'\n", type, *pthys); */
 
   if (!ajStrLen(type)) {		/* nothing given - anything goes */
     ajSeqGapS (pthys, seqGap);
