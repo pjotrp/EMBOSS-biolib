@@ -54,13 +54,23 @@ public class SequenceReader
     if(returnVal == JFileChooser.APPROVE_OPTION)
     {
       seqFile = fc.getSelectedFile();
-      String cwd = (fc.getCurrentDirectory()).getAbsolutePath();
-      String fileSelected = seqFile.getName();
       readSequenceFile();
       reading = true;
     }
   } 
 
+  public SequenceReader(File seqFile)
+  {
+    this.seqFile = seqFile;
+    readSequenceFile();
+    reading = true;
+  }
+
+  public SequenceReader(String seqString)
+  {
+    readSequenceString(seqString);
+    reading = true;
+  }
 
 /**
 *
@@ -81,18 +91,48 @@ public class SequenceReader
 
 // fasta
       if(line.startsWith(">"))
-        return readFastaFile();
+        return readFastaFile(new BufferedReader(new FileReader(seqFile)));
 
 // msf
       int index = line.indexOf("PileUp");
       if(index > -1)
-        return readMSFFile();
+        return readMSFFile(new BufferedReader(new FileReader(seqFile)));
       index = line.indexOf("!!AA_MULTIPLE_ALIGNMENT");
       if(index > -1)
-        return readMSFFile();
+        return readMSFFile(new BufferedReader(new FileReader(seqFile)));
       index = line.indexOf("!!NA_MULTIPLE_ALIGNMENT");
       if(index > -1)
-        return readMSFFile();
+        return readMSFFile(new BufferedReader(new FileReader(seqFile)));
+    }
+    catch (IOException e)
+    {
+      System.out.println("SequenceReader Error");
+    }
+    return null;
+  }
+
+  public Vector readSequenceString(String seqString)
+  {
+    BufferedReader in = null;
+    try
+    {
+      in = new BufferedReader(new StringReader(seqString));
+      String line = in.readLine();
+
+// fasta
+      if(line.startsWith(">"))
+        return readFastaFile(new BufferedReader(new StringReader(seqString)));
+
+// msf
+      int index = line.indexOf("PileUp");
+      if(index > -1)
+        return readMSFFile(new BufferedReader(new StringReader(seqString)));
+      index = line.indexOf("!!AA_MULTIPLE_ALIGNMENT");
+      if(index > -1)
+        return readMSFFile(new BufferedReader(new StringReader(seqString)));
+      index = line.indexOf("!!NA_MULTIPLE_ALIGNMENT");
+      if(index > -1)
+        return readMSFFile(new BufferedReader(new StringReader(seqString)));
     }
     catch (IOException e)
     {
@@ -107,15 +147,15 @@ public class SequenceReader
 * containing the sequence(s).
 *
 */
-  public Vector readFastaFile()
+  public Vector readFastaFile(BufferedReader in)
   {
     seqs = new Vector();
-    BufferedReader in = null;
+//  BufferedReader in = null;
     String seqString = "";
 
     try
     {
-      in = new BufferedReader(new FileReader(seqFile));
+//    in = new BufferedReader(new FileReader(seqFile));
       String line;
       String name = null;
       Sequence seq;
@@ -154,15 +194,15 @@ public class SequenceReader
 * containing the sequence(s).
 *
 */
-  public Vector readMSFFile()
+  public Vector readMSFFile(BufferedReader in)
   {
     seqs = new Vector();
-    BufferedReader in = null;
+//  BufferedReader in = null;
     String seqString = "";
 
     try
     {
-      in = new BufferedReader(new FileReader(seqFile));
+//    in = new BufferedReader(new FileReader(seqFile));
       String line;
       Sequence seq;
       String type = null;
