@@ -153,6 +153,7 @@ extern char *strptime(const char *s, const char *format, struct tm *tm);
 #endif
 
 
+
 /* @prog jembossctl **********************************************************
 **
 ** Slave suid program for Jemboss
@@ -167,6 +168,7 @@ int main(int argc, char **argv)
     int command=0;
 
     
+    
     int uid;
     int gid;
     AjPStr home=NULL;
@@ -177,9 +179,12 @@ int main(int argc, char **argv)
     unsigned char *fbuf=NULL;
     int size;
 
+
+
     /* Only allow user with the real uid TOMCAT_UID to proceed */
     if(getuid() != TOMCAT_UID)
 	exit(-1);
+
     
     home = ajStrNew();
     tstr = ajStrNew();
@@ -210,7 +215,6 @@ int main(int argc, char **argv)
     }
     
 
-
     /* Wait for a command from jni */
 
     if((mlen = jctl_rcv(cbuf))==-1)
@@ -222,6 +226,7 @@ int main(int argc, char **argv)
 	exit(-1);
     }
 
+
     if(!jctl_check_buffer(cbuf,mlen))
     {
 	jctl_tidy_strings(&tstr,&home,&retlist,cbuf);
@@ -230,6 +235,7 @@ int main(int argc, char **argv)
 	fflush(stderr);
 	exit(-1);
     }
+
 
 
     if(sscanf(cbuf,"%d",&command)!=1)
@@ -294,8 +300,10 @@ int main(int argc, char **argv)
     case LIST_FILES:
 	ajStrAssC(&tstr,cbuf);
 	ok = jctl_up(ajStrStr(tstr),&uid,&gid,&home);
+
 	if(ok)
 	    ok = jctl_do_listfiles(cbuf,uid,gid,&retlist);
+
 	fprintf(stdout,"%s",ajStrStr(retlist));
 	break;
 
@@ -304,6 +312,7 @@ int main(int argc, char **argv)
 	ok = jctl_up(ajStrStr(tstr),&uid,&gid,&home);
 	if(ok)
 	    ok = jctl_do_listdirs(cbuf,uid,gid,&retlist);
+
 	fprintf(stdout,"%s",ajStrStr(retlist));
 	break;
 
@@ -1956,8 +1965,18 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
     
     char *p=NULL;
     DIR  *dirp;
+#if defined (HAVE64)
+    struct dirent64 *dp;
+#else
     struct dirent *dp;
+#endif
+
+#if defined (HAVE64)
+    struct stat64 sbuf;
+#else
     struct stat sbuf;
+#endif
+
     AjPList list=NULL;
     AjPStr  tstr=NULL;
 #if defined (__SVR4) && defined (__sun) && defined (_POSIX_C_SOURCE)
@@ -2031,6 +2050,10 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
 
     list = ajListNew();
 
+#if defined (__SVR4) && defined (__sun) && defined (_POSIX_C_SOURCE) && defined (HAVE64)
+    for(ret=readdir64_r(dirp,(struct dirent64 *)dbuf,&dp);dp;
+	ret=readdir64_r(dirp,(struct dirent64 *)dbuf,&dp))
+#else
 #if defined (__SVR4) && defined (__sun) && defined (_POSIX_C_SOURCE)
     for(ret=readdir_r(dirp,(struct dirent *)dbuf,&dp);dp;
 	ret=readdir_r(dirp,(struct dirent *)dbuf,&dp))
@@ -2039,15 +2062,32 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
     for(dp=readdir_r(dirp,(struct dirent *)dbuf);dp;
 	dp=readdir_r(dirp,(struct dirent *)dbuf))
 #else
+#if defined (HAVE64)
+    for(dp=readdir64(dirp);dp;dp=readdir64(dirp))
+#else
     for(dp=readdir(dirp);dp;dp=readdir(dirp))
 #endif
 #endif
+#endif
+#endif
     {
+#if defined (__SVR4) && defined (__sun) && defined (_POSIX_C_SOURCE) && defined (HAVE64)
+	if(ret)
+	    break;
+#endif
+
 	if(*(dp->d_name)=='.')
 	    continue;
 	ajFmtPrintS(&full,"%S%s",dir,dp->d_name);
+
+
+#if defined (HAVE64)
+	if(stat64(ajStrStr(full),&sbuf)==-1)
+	    continue;
+#else
 	if(stat(ajStrStr(full),&sbuf)==-1)
 	    continue;
+#endif
 
 	if(sbuf.st_mode & S_IFREG)
 	{
@@ -2102,8 +2142,20 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
     char *p=NULL;
     DIR  *dirp;
     time_t t;
+
+#if defined (HAVE64)
+    struct dirent64 *dp;
+#else
     struct dirent *dp;
+#endif
+
+#if defined (HAVE64)
+    struct stat64 sbuf;
+#else
     struct stat sbuf;
+#endif
+
+
     AjPList list=NULL;
     AjPStr  tstr=NULL;
 #if defined (__SVR4) && defined (__sun) && defined (_POSIX_C_SOURCE)
@@ -2131,16 +2183,21 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 	return ajFalse;
     }
 
+
+
     /* Skip over authentication stuff */
     p=buf;
     while(*p)
 	++p;
     ++p;
 
+
     /* retrieve directory */
     ajStrAssC(&dir,p);
 
     jctl_zero(buf);
+
+
 
     if(setgid(gid)==-1)
     {
@@ -2149,6 +2206,8 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 	ajStrDel(&full);
 	return ajFalse;
     }
+
+
     if(setuid(uid)==-1)
     {
 	fprintf(stderr,"setuid error (list dirs)\n");
@@ -2156,6 +2215,8 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 	ajStrDel(&full);
 	return ajFalse;
     }
+
+
     if(chdir(ajStrStr(dir))==-1)
     {
 	fprintf(stderr,"chdir error (list dirs)\n");
@@ -2178,6 +2239,11 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
     list = ajListNew();
 
 
+
+#if defined (__SVR4) && defined (__sun) && defined (_POSIX_C_SOURCE) && defined (HAVE64)
+    for(ret=readdir64_r(dirp,(struct dirent64 *)dbuf,&dp);dp;
+	ret=readdir64_r(dirp,(struct dirent64 *)dbuf,&dp))
+#else
 #if defined (__SVR4) && defined (__sun) && defined (_POSIX_C_SOURCE)
     for(ret=readdir_r(dirp,(struct dirent *)dbuf,&dp);dp;
 	ret=readdir_r(dirp,(struct dirent *)dbuf,&dp))
@@ -2186,16 +2252,32 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
     for(dp=readdir_r(dirp,(struct dirent *)dbuf);dp;
 	dp=readdir_r(dirp,(struct dirent *)dbuf))
 #else
+#if defined (HAVE64)
+    for(dp=readdir64(dirp);dp;dp=readdir64(dirp))
+#else
     for(dp=readdir(dirp);dp;dp=readdir(dirp))
 #endif
 #endif
+#endif
+#endif
     {
+#if defined (__SVR4) && defined (__sun) && defined (_POSIX_C_SOURCE) && defined (HAVE64)
+	if(ret)
+	    break;
+#endif
+
 	if(*(dp->d_name)=='.')
 	    continue;
+
 	ajFmtPrintS(&full,"%S%s",dir,dp->d_name);
+	
+#if defined (HAVE64)
+	if(stat64(ajStrStr(full),&sbuf)==-1)
+	    continue;
+#else
 	if(stat(ajStrStr(full),&sbuf)==-1)
 	    continue;
-
+#endif
 	if(sbuf.st_mode & S_IFDIR)
 	{
 	    tstr = ajStrNew();
@@ -2203,6 +2285,7 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 	    ajListPush(list,(void *)tstr);
 	}
     }
+
 
     if(ajListLength(list) > 1)
     {
@@ -2214,6 +2297,8 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 	else
 	    ajListSort(list,ajStrCmp);
     }
+
+
 
     while(ajListPop(list,(void **)&tstr))
     {
@@ -2257,7 +2342,11 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     
     char *p=NULL;
     char *q=NULL;
+#if defined (HAVE64)
+    struct stat64 sbuf;
+#else
     struct stat sbuf;
+#endif
     int n=0;
     int sofar=0;
     int pos=0;
@@ -2352,11 +2441,19 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     }
 
 
+#if defined (HAVE64)
+    if(stat64(ajStrStr(file),&sbuf)==-1)
+    {
+	fprintf(stderr,"stat error (get file)\n");
+	n = *size = 0;
+    }
+#else
     if(stat(ajStrStr(file),&sbuf)==-1)
     {
 	fprintf(stderr,"stat error (get file)\n");
 	n = *size = 0;
     }
+#endif
     else
 	n = *size = sbuf.st_size;
 
