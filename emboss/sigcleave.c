@@ -100,8 +100,8 @@ int main(int argc, char **argv)
     embInit("sigcleave",argc,argv);
     
     seqall    = ajAcdGetSeqall("sequence");
-    opval     = ajAcdGetInt("pval");
-    nval      = ajAcdGetInt("nval");
+    opval     = -13;		/* was ajAcdGetInt */
+    nval      = 2;		/* was ajAcdGetInt */
     prokaryote   = ajAcdGetBool("prokaryote");
     minweight    = ajAcdGetFloat("minweight");
     report      = ajAcdGetReport("outfile");
@@ -391,7 +391,7 @@ static ajint sigcleave_readSig(AjPFloat2d *matrix,AjBool prokaryote)
 	}
 	else
 	    if(xcols!=cols)
-		ajFatal("Assymetric table");
+		ajFatal("Asymmetric table");
 
 	q=ajStrStr(line);
 	q=ajSysStrtok(q,ajStrStr(delim));
@@ -462,3 +462,4 @@ static ajint sigcleave_readSig(AjPFloat2d *matrix,AjBool prokaryote)
 
     return cols;
 }
+
