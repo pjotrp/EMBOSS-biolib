@@ -23,7 +23,7 @@ section: required [
 
   string: enzymes  [
     standard: "Y"
-    default: "all"
+    default: "all
     information: "Comma separated enzyme list"
   ]
 
@@ -44,9 +44,12 @@ section: output [
     information: "Display translated sequence"
   ]
 
-  outfile: outfile  [
+  report: outfile  [
     parameter: "Y"
-    knowntype: "recoder output"
+    rformat: "table"
+    taglist: "str:Dir str:enzyme=EnzymeName str:rspattern=RS-Pattern
+              int:baseposn=Base-Posn str:aa=AA str:mutation=Mutation"
+    rscoreshow: "N"
   ]
 
 endsection: output

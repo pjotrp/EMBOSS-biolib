@@ -1,4 +1,7 @@
 Version 2.8.0
+	Report format output added (by Henrikki Almusa) for dreg, preg,
+	recoder and silent.
+
 	pestfind renamed to epestfind and handling of terminal water
 	residue adjusted.
 

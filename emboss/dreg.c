@@ -35,42 +35,37 @@ int main(int argc, char **argv)
 {
 
     AjPSeqall seqall;
-    AjPFile outf;
     AjPRegexp patexp;
+    AjPReport report=NULL;
+    AjPFeattable feat=NULL;
+    AjPFeature sf = NULL;
     AjPSeq seq = NULL;
     AjPStr str = NULL;
     AjPStr tmpstr = NULL;
     AjPStr substr = NULL;
-    AjBool found;
     ajint ioff;
     ajint ipos;
     ajint ilen;
 
     embInit("dreg", argc, argv);
 
-    outf   = ajAcdGetOutfile("outfile");
+    report = ajAcdGetReport ("outfile");
     seqall = ajAcdGetSeqall("sequence");
     patexp = ajAcdGetRegexp("pattern");
 
-    ajFmtPrintF(outf, "dreg search of %S with pattern %S\n",
-		ajAcdValue("sequence"), ajAcdValue("pattern"));
+    ajFmtPrintAppS (&tmpstr, "Pattern: %S\n", ajAcdValue("pattern"));
+    ajReportSetHeader (report, tmpstr);
 
     while(ajSeqallNext(seqall, &seq))
     {
-	found = ajFalse;
 	ipos  = 1;
 	ajStrAssS(&str, ajSeqStr(seq));
 	ajStrToUpper(&str);
 	ajDebug("Testing '%s' len: %d %d\n",
 		ajSeqName(seq), ajSeqLen(seq), ajStrLen(str));
+	feat = ajFeattableNewDna(ajSeqGetName(seq));
 	while(ajStrLen(str) && ajRegExec(patexp, str))
 	{
-	    if(!found)
-	    {
-		ajFmtPrintF(outf, "Matches in %s\n", ajSeqName(seq));
-		found = ajTrue;
-	    }
-
 	    ioff = ajRegOffset(patexp);
 	    ilen = ajRegLenI(patexp, 0);
 
@@ -80,8 +75,7 @@ int main(int argc, char **argv)
 		ajRegPost(patexp, &tmpstr);
 		ajStrAssS(&str, tmpstr);
 		ipos += ioff;
-		ajFmtPrintF(outf, "%15s %5d %S\n", ajSeqName(seq), ipos,
-			    substr);
+		sf = ajFeatNewII (feat,ipos,ipos+ilen-1);
 		ipos += ilen;
 	    }
 	    else
@@ -90,9 +84,11 @@ int main(int argc, char **argv)
 		ajStrTrim(&str, 1);
 	    }
 	}
+        (void) ajReportWrite (report,feat,seq);
+        ajFeattableDel(&feat);
     }
 
-    ajFileClose(&outf);
+    ajReportDel(&report);
 
     ajExit();
 

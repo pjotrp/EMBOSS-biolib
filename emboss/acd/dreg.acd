@@ -34,9 +34,9 @@ section: output [
   type: "page"
 ]
 
-  outfile: outfile  [
+  report: outfile  [
     parameter: "Y"
-    knowntype: "dreg output"
+    rformat: "seqtable"
   ]
 
 endsection: output

@@ -48,9 +48,13 @@ section: output [
     information: "Display all mutations"
   ]
 
-  outfile: outfile  [
+  report: outfile  [
     parameter: "Y"
-    knowntype: "silent output"
+    rformat: "table"
+    taglist: "str:Dir str:enzyme=EnzymeName str:rspattern=RS-Pattern
+              int:baseposn=Base-Posn str:aa=AA str:silent=Silent
+	      str:mutation=Mutation"
+    rscoreshow: "N"
   ]
 
 endsection: output
