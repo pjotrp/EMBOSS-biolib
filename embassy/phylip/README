@@ -150,13 +150,13 @@ sequence file can now use any sequence file format.
 here as they would give no advantage form having an emboss interface.
 
 
-Emboss problems mail emboss-bug@sanger.ac.uk
+Emboss problems mail emboss-bug@embnet.org
 
 Installation.
 
 
 1) Go to the emboss directory 
-cd EMBOSS-0.0.4
+cd EMBOSS-2.x.x
 
 2) make new directory embassy if it does not exist already.
 mkdir embassy
