@@ -1799,6 +1799,7 @@ void ajNamInit(const char* prefix)
     AjPStr prefixCap     = NULL;
     AjPStr debugStr      = NULL;
     AjPStr debugVal      = NULL;
+    AjPStr homercVal      = NULL;
     
     /* create new table to hold the values */
     
@@ -1889,8 +1890,6 @@ void ajNamInit(const char* prefix)
     
     /* look for .embossrc in an arbitrary directory */
     
-    ajStrAssC(&debugStr, prefix);
-    
     prefixRoot= getenv("EMBOSSRC");
     
     if(prefixRoot)
@@ -1918,16 +1917,17 @@ void ajNamInit(const char* prefix)
     
     prefixRoot= getenv("HOME");
     
-    ajStrAppC(&debugStr, "_RCHOME");
-    ajStrToUpper(&debugStr);
+    ajStrAssC(&prefixStr, prefix);
     
-    if(ajNamGetenv(debugStr, &debugVal))
+    ajStrAppC(&prefixStr, "_RCHOME");
+    ajStrToUpper(&prefixStr);
+    
+    if(ajNamGetenv(prefixStr, &homercVal))
 	ajStrToBool(debugVal, &namDoHomeRc);
 
-    ajStrDel(&debugStr);
-    ajStrDel(&debugVal);
+    ajStrDel(&homercVal);
     
-    if(namDoHomeRc &&prefixRoot)
+    if(namDoHomeRc && prefixRoot)
     {
 	ajStrAssC(&namRootStr, prefixRoot);
 	ajStrAppC(&namRootStr, "/.");
