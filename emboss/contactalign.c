@@ -25,7 +25,7 @@
 
 enum constant
     {
-	enumDebugLevel        =  2,
+	enumDebugLevel        =  1,
 	enumZeroContacts      =  0,
 	enumFirstResType      =  0,
 	enumFirstResTypeIndex =  0,
@@ -232,16 +232,14 @@ int main(int argc , char **argv)
 					     fExtensionPenalty);
 
     /* DDDDEBUG CHECK THAT WORKED */
-    if(enumDebugLevel > 2)
+    if(enumDebugLevel > 0)
     {
 	debug_pair_score(ajpFloat2dPairScores, ajpSeqDown, ajpSeqAcross);
     }
     
     /* initialize Gotoh score array */
-    ajpGotohCellGotohScores = embGotohCellGetArray(ajIntDownSeqLen +
-						   enumTraceArrayOffset,
-						   ajIntAcrossSeqLen +
-						   enumTraceArrayOffset);
+    ajpGotohCellGotohScores = embGotohCellGetArray(ajIntDownSeqLen,
+						   ajIntAcrossSeqLen);
     
     /* DDDDEBUG CHECK THAT WORKED */
     if(enumDebugLevel > 2)
@@ -1238,14 +1236,20 @@ static AjBool write_cmap_line (AjPFile ajpFileUpdatedCmap,
 /*                                                                              */
 /* prints out result of Gotoh scoring                                           */
 
-void debug_Gotoh_score (AjPGotohCell **ajpGotohCellGotohScores, ajint ajIntDownSeqLen, ajint ajIntAcrossSeqLen)
+void debug_Gotoh_score (AjPGotohCell **ajpGotohCellGotohScores,
+			ajint ajIntDownSeqLen,
+			ajint ajIntAcrossSeqLen)
 {
   ajint ajIntRowCount;
   ajint ajIntColumnCount;
 
-  for(ajIntRowCount = 0 ; ajIntRowCount < ajIntDownSeqLen + enumTraceArrayOffset ; ajIntRowCount++)
+  for(ajIntRowCount = 0;
+      ajIntRowCount < (ajIntDownSeqLen + enumTraceArrayOffset);
+      ajIntRowCount++)
     {
-      for(ajIntColumnCount = 0 ; ajIntColumnCount < ajIntAcrossSeqLen + enumTraceArrayOffset ; ajIntColumnCount++)
+      for(ajIntColumnCount = 0;
+	  ajIntColumnCount < (ajIntAcrossSeqLen + enumTraceArrayOffset);
+	  ajIntColumnCount++)
 	{
 	  ajFmtPrint("====================================================================================================\n");
 	  ajFmtPrint("GOTOH (%4d, %4d):\ti pointer: %4d j pointer: %4d\tsubscore: %3.3f\ttemplate residue:\t%c\tquery residue:\t%c\tisIndel?: %B\n", \
@@ -1259,6 +1263,8 @@ void debug_Gotoh_score (AjPGotohCell **ajpGotohCellGotohScores, ajint ajIntDownS
 	  ajFmtPrint("====================================================================================================\n");
 	}
     }
+
+  ajFmtPrint("JUST ABOUT TO LEAVE debug_Gotoh_score()\n");
 
   return;
 }
