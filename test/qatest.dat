@@ -6921,8 +6921,9 @@ ID seqret-inlist-bad
 AP seqret
 CL -auto @../../data/bad.list test.out -osf embl
 FI stderr
-FZ = 55
-FP /^Error: failed to open filename \.\.\/\.\.\/data\/alignc\.prot \n/
+FZ = 112
+FP /^Error: failed to open filename '\.\.\/\.\.\/data\/alignc\.prot'\n/
+FP /^Error: Unable to read sequence '\.\.\/\.\.\/data\/alignc\.prot'\n/
 FP 0 /Warning:/
 FI test.out
 FP 3 /^ID   .* AA\.\n/
@@ -6935,6 +6936,45 @@ CL -auto @../../data/ugly.list test.out -osf embl
 FI stderr
 FZ = 46
 FP /^Error: Unable to read sequence 'tembl:eclacj'\n/
+FP 0 /Warning:/
+FI test.out
+FP 2 /^ID   .* BP\.\n/
+FP /^SQ   Sequence 3078 BP; 682 A; 841 C; 886 G; 669 T; 0 other;/
+//
+
+ID seqret-inlist-uglyfirst
+AP seqret
+CL -auto @../../data/uglyfirst.list test.out -osf embl
+FI stderr
+FZ = 46
+FP /^Error: Unable to read sequence 'tembl:eclacj'\n/
+FP 0 /Warning:/
+FI test.out
+FP 2 /^ID   .* BP\.\n/
+FP /^SQ   Sequence 3078 BP; 682 A; 841 C; 886 G; 669 T; 0 other;/
+//
+
+ID seqret-inlist-uglylast
+AP seqret
+CL -auto @../../data/uglylast.list test.out -osf embl
+FI stderr
+FZ = 46
+FP /^Error: Unable to read sequence 'tembl:eclacj'\n/
+FP 0 /Warning:/
+FI test.out
+FP 2 /^ID   .* BP\.\n/
+FP /^SQ   Sequence 3078 BP; 682 A; 841 C; 886 G; 669 T; 0 other;/
+//
+
+ID seqret-inlist-uglyall
+AP seqret
+CL -auto @../../data/uglyall.list test.out -osf embl
+FI stderr
+FZ = 138
+FP /^Error: Unable to read sequence 'tembl:eclacj'\n/
+FP /^Error: Unable to read sequence 'tembl:eclack'\n/
+FP /^Error: Unable to read sequence 'tembl:eclacl'\n/
+FP 3 /^Error: /
 FP 0 /Warning:/
 FI test.out
 FP 2 /^ID   .* BP\.\n/
@@ -10819,7 +10859,7 @@ FP /^# Similarity: +88/145 \(60.7%\)\n/
 
 ID whichdb-ex
 AP whichdb
-PP EMBOSSRC=../../rc
+PP EMBOSSRC=../..
 PP export EMBOSSRC
 TI 300
 IN hsfau1
