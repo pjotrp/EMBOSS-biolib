@@ -37,6 +37,7 @@ AjBool       ajSeqGetFromUsa (AjPStr thys, AjBool protein, AjPSeq *seq);
 void         ajSeqinClear (AjPSeqin thys);
 void         ajSeqinDel (AjPSeqin* pthis);
 AjPSeqin     ajSeqinNew (void);
+AjBool       ajSeqParseFasta(AjPStr str, AjPStr* id, AjPStr* acc, AjPStr* desc);
 AjBool       ajSeqParseNcbi(AjPStr str, AjPStr* id, AjPStr* acc, AjPStr* desc);
 void         ajSeqinSetNuc (AjPSeqin seqin);
 void         ajSeqinSetProt (AjPSeqin seqin);

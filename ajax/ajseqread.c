@@ -113,9 +113,9 @@ static SeqOInFormat seqInFormatDef[] = { /* AJFALSE = ignore (duplicates) */
   {"em",         AJFALSE, seqReadEmbl},	/* alias for embl */
   {"swiss",      AJTRUE,  seqReadSwiss},
   {"sw",         AJFALSE, seqReadSwiss}, /* alias for swiss */
+  {"ncbi",       AJTRUE,  seqReadNcbi},
   {"fasta",      AJTRUE,  seqReadFasta},
   {"pearson",    AJFALSE, seqReadFasta}, /* alias for fasta */
-  {"ncbi",       AJTRUE,  seqReadNcbi},
   {"genbank",    AJTRUE,  seqReadGenbank},
   {"gb",         AJFALSE, seqReadGenbank}, /* alias for genbank */
   {"nbrf",       AJTRUE,  seqReadNbrf},
@@ -1051,10 +1051,11 @@ static AjBool seqRead (AjPSeq thys, AjPSeqin seqin)
 
 static AjBool seqReadFasta (AjPSeq thys, AjPSeqin seqin)
 {
-    static AjPStrTok handle = NULL;
-    static AjPStr token = NULL;
     static AjPStr rdline = NULL;
     AjPFileBuff buff = seqin->Filebuff;
+    static AjPStr id = NULL;
+    static AjPStr acc = NULL;
+    static AjPStr desc = NULL;
 
     char *cp;
     ajint bufflines = 0;
@@ -1082,29 +1083,17 @@ static AjBool seqReadFasta (AjPSeq thys, AjPSeqin seqin)
 	return ajFalse;
     }
 
-    (void) ajStrTokenAss (&handle, rdline, "> ");
-    (void) ajStrToken (&token, &handle, " \t\n\r");
-    seqSetName (&thys->Name, token);
-
-    (void) ajStrToken (&token, &handle, NULL);
-
-    if (ajIsAccession(token))
-    {
-	(void) seqAccSave (thys, token);
-	(void) ajStrToken (&thys->Desc, &handle, "\n\r");
-    }
-    else
-    {
-	(void) ajStrAss (&thys->Desc, token);
-	if (ajStrToken (&token, &handle, "\n\r"))
-	{
-	    (void) ajStrAppC (&thys->Desc, " ");
-	    (void) ajStrApp (&thys->Desc, token);
-	}
+    if (!ajSeqParseFasta(rdline, &id, &acc, &desc)) {
+      ajFileBuffReset (buff);
+      return ajFalse;
     }
 
-    (void) ajStrDelReuse(&token);  /* duplicate of accession or description */
-    (void) ajStrTokenReset (&handle);
+    seqSetName (&thys->Name, id);
+
+    if (ajStrLen(acc))
+      (void) seqAccSave (thys, acc);
+    
+    (void) ajStrAssS (&thys->Desc, desc);
 
     if (ajStrLen(seqin->Inseq))
     {	/* we have a sequence to use */
@@ -4681,9 +4670,68 @@ static void seqQryWildComp (void)
 ******************************************************************************/
 
 
-/* @func ajSeqParseNcbi *******************************************************
+/* @func ajSeqParseFasta ******************************************************
 **
 ** Parse an NCBI format fasta line. Return id acc and description
+**
+** @param [r] str [AjPStr]   fasta line.
+** @param [w] id [AjPStr*]   id.
+** @param [w] acc [AjPStr*]  accession number.
+** @param [w] desc [AjPStr*] description.
+** @return [AjBool] ajTrue if fasta format
+** @@
+******************************************************************************/
+
+AjBool ajSeqParseFasta(AjPStr str, AjPStr* id, AjPStr* acc, AjPStr* desc)
+{
+    static AjPStrTok handle = NULL;
+    static AjPStr token = NULL;
+    AjBool ok = ajFalse;
+
+    ajDebug("ajSeqParseFasta '%S'\n", str);
+
+    if (!ajStrPrefixC(str, ">"))
+      return ajFalse;
+
+    (void) ajStrTokenAss (&handle, str, "> ");
+    (void) ajStrToken (id, &handle, " \t\n\r");
+  
+    ok = ajStrToken (&token, &handle, NULL);
+
+    if (ok && ajIsAccession(token))
+    {
+	(void) ajStrAssS (acc, token);
+	(void) ajStrToken (desc, &handle, "\n\r");
+    }
+    else
+    {
+        (void) ajStrAssC (acc, "");
+	(void) ajStrAssS (desc, token);
+	if (ajStrToken (&token, &handle, "\n\r"))
+	{
+	    (void) ajStrAppC (desc, " ");
+	    (void) ajStrApp (desc, token);
+	}
+    }
+
+    (void) ajStrDelReuse(&token);  /* duplicate of accession or description */
+    (void) ajStrTokenReset (&handle);
+
+    ajDebug("result id: '%S' acc: '%S' desc: '%S'\n", *id, *acc, *desc);
+
+    return ajTrue;
+}
+
+
+/* @func ajSeqParseNcbi *******************************************************
+**
+** Parse an NCBI format fasta line. Return id acc and description.
+**
+** Tries to cope with the amazing variety of identifiers NCBI inflicts
+** on us all - see the BLAST document README.formatdb from NCBI for
+** some of the gory detail, and look at some real files for clues
+** to what can really happen. Sadly,' real files' also includes
+** internal IDs in blast databases reformatted by formatdb.
 **
 ** @param [r] str [AjPStr]   fasta line.
 ** @param [w] id [AjPStr*]   id.
@@ -4694,89 +4742,200 @@ static void seqQryWildComp (void)
 ******************************************************************************/
 AjBool ajSeqParseNcbi(AjPStr str, AjPStr* id, AjPStr* acc, AjPStr* desc)
 {
+    static AjPStrTok idhandle = NULL;
     static AjPStrTok handle = NULL;
-    static AjPStr token=NULL;
+    static AjPStr idstr = NULL;
+    static AjPStr reststr = NULL;
+    static AjPStr prefix = NULL;
+    static AjPStr token = NULL;
+    static AjPStr numtoken = NULL;
     char *q;
     ajint  i;
     ajint  nt;
     
-    if(!strchr((q=MAJSTRSTR(str)),(ajint)'|') || *MAJSTRSTR(str)!='>')
+    /* NCBI's list of standard identifiers June 2001
+    ** ftp://ncbi.nlm.nih.gov/blast/db/README.formatdb
+    **
+    ** Database Name                         Identifier Syntax
+    ** 
+    ** GenBank                               gb|accession|locus
+    ** EMBL Data Library                     emb|accession|locus
+    ** DDBJ, DNA Database of Japan           dbj|accession|locus
+    ** SWISS-PROT                            sp|accession|entry name
+    ** NCBI Reference Sequence               ref|accession|locus
+    **
+    ** General database identifier           gnl|database|identifier
+    ** BLAST formatdb                        gnl|BL_ORD_ID|number
+    **   (prefix for normal FASTA header - remove)
+    **
+    ** NBRF PIR                              pir||entry
+    ** Protein Research Foundation           prf||name
+    **   (Japanese SEQDB protein DB)
+    **
+    ** Brookhaven Protein Data Bank          pdb|entry|chain
+    **
+    ** Patents                               pat|country|number 
+    **
+    ** GenInfo Backbone Id                   bbs|number 
+    ** Local Sequence identifier             lcl|identifier
+    **
+    ** GenInfo identifier prefix             gi|gi_identifier
+    **   (prefix - remove)
+    */
+
+    (void) ajDebug("ajSeqParseNcbi '%S'\n", str);
+    (void) ajDebug ("id test %B %B\n",
+		    !strchr(MAJSTRSTR(str), (ajint)'|'),
+		    (*MAJSTRSTR(str)!='>'));
+
+    /* Line must start with '>', and include '|' bar, hopefully in the ID */
+
+    if(!strchr(MAJSTRSTR(str),(ajint)'|') || *MAJSTRSTR(str)!='>') {
 	return ajFalse;
-
-    (void) ajStrTokenAss(&handle,str,"| \r");
-
-    if(!strncmp(q,">gi|",4))
-    {
-	(void) ajStrToken(&token, &handle, NULL);
-	(void) ajStrToken(id, &handle, NULL);
-	(void) ajStrToken(desc, &handle, "\n\r");
-	(void) ajStrAssC(acc,"");
-	return ajTrue;
     }
+
+    (void) ajStrTokenAss(&idhandle,str,"> \t\r\n");
+    (void) ajStrToken(&idstr, &idhandle, NULL);
+    (void) ajStrToken(&reststr, &idhandle, "\r\n");
+    (void) ajStrTokenReset(&idhandle);
+    if (!ajStrLen(idstr)) {
+      (void) ajDebug ("No ID string found\n");
+      return ajFalse;
+    }
+
+    (void) ajStrTokenAss(&handle,idstr,"|");
+
+    (void) ajStrToken(&prefix, &handle, NULL);
+    q = MAJSTRSTR(prefix);
+
+    if(!strncmp(q,"gi",2))
+    {
+        (void) ajDebug("gi prefix\n");
+	(void) ajStrToken(&token, &handle, NULL);
+	if (! ajStrToken(&prefix, &handle, NULL)) {
+	  /* we only have a gi prefix */
+	  (void) ajDebug("*only* gi prefix\n");
+	  (void) ajStrAssS(id, token);
+	  (void) ajStrAssC(acc, "");
+	  (void) ajStrAssS (desc, reststr);
+	  (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+			  prefix, *id, *acc, *desc);
+	  return ajTrue;
+	}
+
+	/* otherwise we continue to parse the rest */
+	q = MAJSTRSTR(prefix);
+    }
+
 
 /*
  * This next routine and associated function could be used if
- * whatever is appended to gnl lines is consistent    
-    if(!strncmp(q,">gnl|",5))
+ * whatever is appended to gnl lines is consistent
+ */
+   
+    if(!strncmp(MAJSTRSTR(idstr),"gnl|BL_ORD_ID|",14))
     {
-	(void) ajStrToken(&token, &handle, NULL);
-	(void) ajStrToken(&token, &handle, NULL);
-	if(ajStrMatchC(token,"BL_ORD_ID"))
-	{
-	    (void) ajStrToken(&token, &handle, "\n\r");
-	    return ajSeqParseFasta(token,id,acc);
+        (void) ajDebug("gnl|BL_ORD_ID stripping\n");
+	(void) ajStrToken(&token, &handle, NULL); /* BL_ORD_ID */
+	(void) ajStrToken(&numtoken, &handle, NULL); /* number */
+	(void) ajStrInsertC(&reststr, 0, ">");
+	if(ajSeqParseFasta(reststr,id,acc,desc)) {
+	  (void) ajDebug("ajSeqParseFasta success\n");
+	  (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+			  prefix, *id, *acc, *desc);
+	  return ajTrue;
 	}
-	ajStrAss(id,token);
-	ajStrAssC(acc,"");
+        (void) ajDebug("ajSeqParseFasta failed - use the gnl id\n");
+	(void) ajStrAss(id,numtoken);
+	(void) ajStrAssC(acc,"");
+	(void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+			prefix, *id, *acc, *desc);
 	return ajTrue;
     }
-*/
 
-    if(!strncmp(q,">bbs|",5) || !strncmp(q,">lcl|",5))
+/* works for NCBI formatdb reformatted blast databases
+** still checking for any misformatted databases elsewhere */
+
+    if(!strcmp(q,"bbs") || !strcmp(q,"lcl"))
     {
-	(void) ajStrToken(&token, &handle, NULL);
+        (void) ajDebug("bbs or lcl prefix\n");
 	(void) ajStrToken(id, &handle, NULL);
-	(void) ajStrToken(desc, &handle, "\n\r");
 	(void) ajStrAssC(acc,"");
+	(void) ajStrAssS(desc, reststr);
+	(void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+			prefix, *id, *acc, *desc);
 	return ajTrue;
     }
     
-    if(!strncmp(q,">gnl|",5) || !strncmp(q,">pat|",5) || !strncmp(q,">pdb|",5))
+    if(!strcmp(q,"gnl") || !strcmp(q,"pat"))
     {
-	(void) ajStrToken(&token, &handle, NULL);
+        (void) ajDebug("gnl or pat or pdb prefix\n");
 	(void) ajStrToken(&token, &handle, NULL);
 	(void) ajStrToken(id, &handle, NULL);
-	(void) ajStrToken(desc, &handle, "\n\r");
-	(void) ajStrAssC(acc,"");
+	(void) ajStrAssC(acc,""); /* no accession number */
+	(void) ajStrAssS(desc, reststr);
+	(void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+			prefix, *id, *acc, *desc);
 	return ajTrue;
     }
     
 	
-    if(!strncmp(q,">gb|",4) || !strncmp(q,">emb|",5) || !strncmp(q,">dbj|",5)
-       || !strncmp(q,">sp|",4) || !strncmp(q,"ref|",5))
+    if(!strcmp(q,"pdb"))
     {
-	(void) ajStrToken(&token, &handle, NULL);
-	(void) ajStrToken(acc, &handle, NULL);
+        (void) ajDebug("gnl or pat or pdb prefix\n");
 	(void) ajStrToken(id, &handle, NULL);
-	(void) ajStrToken(desc, &handle, "\n\r");
+	if (ajStrToken(&token, &handle, NULL)) {
+	  /* chain identifier to append */
+	  (void) ajStrApp(id, token);
+	}
+	(void) ajStrAssC(acc,""); /* no accession number */
+	(void) ajStrAssS(desc, reststr);
+	(void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+			prefix, *id, *acc, *desc);
+	return ajTrue;
+    }
+    
+	
+    if(!strcmp(q,"gb") || !strcmp(q,"emb") || !strcmp(q,"dbj")
+       || !strcmp(q,"sp") || !strcmp(q,"ref"))
+    {
+        (void) ajDebug("gb,emb,dbj,sp,ref prefix\n");
+	(void) ajStrToken(acc, &handle, NULL);
+	if (!ajStrToken(id, &handle, NULL)) {
+	  /* no ID, reuse accession */
+	  (void) ajStrAssS (id, *acc);
+	}
+	(void) ajStrAssS(desc, reststr);
+	(void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+			prefix, *id, *acc, *desc);
 	return ajTrue;
     }
 
 
-    if(!strncmp(q,">pir|",5) || !strncmp(q,">prf|",5))
+    if(!strcmp(q,"pir") || !strcmp(q,"prf"))
     {
-	(void) ajStrToken(&token, &handle, NULL);
+        (void) ajDebug("pir,prf prefix\n");
 	(void) ajStrToken(id, &handle, NULL);
-	(void) ajStrToken(desc, &handle, "\n\r");
+	(void) ajStrAssS(desc, reststr);
+	(void) ajStrAssC(acc, "");
+	(void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+			prefix, *id, *acc, *desc);
 	return ajTrue;
     }
 
 
   /* else assume that the last two barred tokens contain [acc]|id */
 
-  nt = ajStrTokenCount(&str,"|");
+  (void) ajDebug("No prefix accepted - try the last 2 fields\n");
+
+  nt = ajStrTokenCount(&idstr,"|");
+
+  (void) ajDebug ("Barred tokens - %d found\n", nt);
+
   if(nt < 2)
     return ajFalse;
+
+  /* restart parsing with only bars */
 
   (void) ajStrTokenAss(&handle,str,"|");
   for(i=0;i<nt-2;++i)
@@ -4795,7 +4954,9 @@ AjBool ajSeqParseNcbi(AjPStr str, AjPStr* id, AjPStr* acc, AjPStr* desc)
   (void) ajStrToken (&token, &handle, "\n\r");
   (void) ajStrAss (desc, token);
 
-    return ajTrue;
+  (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+		  prefix, *id, *acc, *desc);
+  return ajTrue;
 }
 
 
