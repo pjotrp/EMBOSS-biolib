@@ -93,6 +93,9 @@ static AjPFile namFile=NULL;
 static ajint namLine=0;
 static ajint namErrorCount=0;
 
+static AjPRegexp namNameExp = 0;
+static AjPRegexp namVarExp = NULL;
+
 /* @datastatic NamPAttr *******************************************************
 **
 ** Resource attribute definition structure
@@ -867,7 +870,7 @@ static void namListParse (AjPList listwords, AjPList listcount,
   ajint wordcount=0;
   ajint linecount=0;
   ajint lineword=0;
-  ajint *iword;
+  ajint *iword = NULL;
   AjBool namstatus;
 
   /* ndbattr = count database attributes */
@@ -896,6 +899,7 @@ static void namListParse (AjPList listwords, AjPList listcount,
       lineword = *iword;
       linecount++;
       namLine = linecount-1;
+      AJFREE (iword);
     }
     wordcount++;
     namUser("namListParse word: %d line: %d (%d) <%S>\n",
@@ -958,9 +962,12 @@ static void namListParse (AjPList listwords, AjPList listcount,
 	else if (ajStrChar(curword,0) == '\"')
 	  quoteopen = quoteclose = '\"';
 
-	(void) ajStrAss (&value, curword);
-	if(quoteopen)	                /* remove open quote */
-	  (void) ajStrTrim(&value, 1);
+	(void) ajStrAssS (&value, curword);
+	if (quoteopen) {
+	  (void) ajStrTrim(&value, 1); /* trim the opening quote */
+	  if (!ajStrLen(value))
+	    ajErr ("Bare quote %c found in namListParse", quoteopen);
+	}
 	else
 	  saveit = ajTrue;
 
@@ -974,7 +981,7 @@ static void namListParse (AjPList listwords, AjPList listcount,
       }
       else
       {
-	(void) ajStrAss (&name, curword);
+	(void) ajStrAssS (&name, curword);
 	namUser("save name '%S'\n", name);
       }
     }
@@ -1007,26 +1014,28 @@ static void namListParse (AjPList listwords, AjPList listcount,
 	  else if (ajStrChar(curword, 0) == '\"')
 	    quoteopen = quoteclose = '\"';
 
-	  (void) ajStrAss (&value, curword);
-	  if (quoteopen)
-	    (void) ajStrTrim(&value, 1);
+	  (void) ajStrAssS (&value, curword);
+	  if (quoteopen) {
+	    (void) ajStrTrim(&value, 1); /* trim the opening quote */
+	    if (!ajStrLen(value))
+	      ajErr ("Bare quote %c found in namListParse", quoteopen);
+	  }
 	  else
-	    dbsave = ajTrue;
+	    dbsave = ajTrue;	/* we are done - simple word */
 
 	  if(ajStrChar(curword, -1) == quoteclose)
 	  {
 	    quoteopen = quoteclose = 0;
-	    (void) ajStrTrim(&value,-1);   /* ignore quote if there is */
-				              /* one at end*/
+	    (void) ajStrTrim(&value,-1);   /* trim closing quote */
 	    dbsave = ajTrue;
 	  }
-	  if(!quoteopen)
+	  if(!quoteopen)	/* if we just reset it above */
 	    dbsave = ajTrue;
 	}
       }
       else
       {
-	(void) ajStrAss (&name, curword);
+	(void) ajStrAssS (&name, curword);
 	namUser("saving db name '%S'\n", name);
       }
     }
@@ -1059,9 +1068,12 @@ static void namListParse (AjPList listwords, AjPList listcount,
 	  else if (ajStrChar(curword, 0) == '\"')
 	    quoteopen = quoteclose = '\"';
 
-	  (void) ajStrAss (&value, curword);
-	  if (quoteopen)
-	    (void) ajStrTrim(&value, 1);
+	  (void) ajStrAssS (&value, curword);
+	  if (quoteopen) {
+	    (void) ajStrTrim(&value, 1); /* trim the opening quote */
+	    if (!ajStrLen(value))
+	      ajErr ("Bare quote %c found in namListParse", quoteopen);
+	  }
 	  else
 	    rssave = ajTrue;
 
@@ -1078,7 +1090,7 @@ static void namListParse (AjPList listwords, AjPList listcount,
       }
       else
       {
-	(void) ajStrAss (&name, curword);
+	(void) ajStrAssS (&name, curword);
 	namUser("saving resource name '%S'\n", name);
       }
     }
@@ -1182,7 +1194,7 @@ static void namListParse (AjPList listwords, AjPList listcount,
       {  /* it existed so over write previous table entry */
 	namUser ("%S: replaced previous definition of '%S'\n",
 		 namRootStr,
-		 entry->name); /* never writes - too soon to debug */
+		 entry->name);
 	namEntryDelete (entry);
 	AJFREE (tabname);
       }
@@ -1192,12 +1204,27 @@ static void namListParse (AjPList listwords, AjPList listcount,
       db_input = -1;
       dbattr = 0;
     }
+    ajStrDel (&curword);
   }
+
   if (namParseType)
   {				/* test: badset.rc baddb.rc  */
     namError("Unexpected end of file in %s definition",
 	     namTypes[namParseType]);
     namParseType = 0;
+  }
+
+  if (ajListLength(listcount))	/* cleanup the wordcount list */
+  {
+    namUser("** remaining wordcount items: %d\n", ajListLength(listcount));
+    while (ajListLength(listcount))
+    {
+      ajListPop(listcount, (void**) &iword);
+      AJFREE (iword);
+    }
+  }
+  if (value) {
+    ajUser ("++ namListParse value %x '%S'", value, value);
   }
 
   return;
@@ -1267,7 +1294,7 @@ AjBool ajNamGetValueC (char* name, AjPStr* value){
   if (ajStrPrefixCO(name, namPrefixStr)) /* may already have the prefix */
     (void) ajStrAssC (&namstr, name);
   else {
-    (void) ajStrAss (&namstr, namPrefixStr);
+    (void) ajStrAssS (&namstr, namPrefixStr);
     (void) ajStrAppC (&namstr, name);
   }
   /* upper case for ENV, otherwise don't care */
@@ -1284,7 +1311,7 @@ AjBool ajNamGetValueC (char* name, AjPStr* value){
 
   fnew = ajTableGet(namMasterTable, ajStrStr(namstr));
   if (fnew) {
-    (void) ajStrAss (value, fnew->value);
+    (void) ajStrAssS (value, fnew->value);
     return ajTrue;
   }
 
@@ -1337,7 +1364,7 @@ static AjBool namProcessFile (AjPFile file) {
   AjPList listcount;
   AjPStr wordptr;
   ajint iline=0;
-  ajint *k;
+  ajint *k = NULL;
 
   ajint preverrorcount = namErrorCount;
 
@@ -1389,7 +1416,6 @@ static AjBool namProcessFile (AjPFile file) {
 	  wordptr = ajStrNewS(word);
 	  ajListstrPushApp (listwords, wordptr);
 	  ajStrAssC(&word, "");
-
 	  wordptr = ajStrNewC("]");
 	  ajListstrPushApp(listwords, wordptr);
 	  ajStrAssC(&word, "");
@@ -1406,6 +1432,7 @@ static AjBool namProcessFile (AjPFile file) {
 
     }
   }
+  ajStrDel(&rdline);
 
   AJNEW0(k);
   *k = ajListLength(listwords);
@@ -1428,7 +1455,7 @@ static AjBool namProcessFile (AjPFile file) {
 
   namDebugVariables();
   ajStrDel(&word);
-
+ 
   namUser("namProcessFile done '%F'\n", file);
   if (namErrorCount > preverrorcount)
     return ajFalse;
@@ -1708,6 +1735,10 @@ void ajNamExit (void){
   ajStrDel(&namPrefixStr);       /* allocated in ajNamInit */
   ajStrDel(&namFileOrig);       /* allocated in ajNamInit */
   ajStrDel(&namRootStr);       /* allocated in ajNamInit */
+
+  ajRegFree (&namNameExp);
+  ajRegFree (&namVarExp);
+
   ajDebug("ajNamExit done\n");
   return;
 }
@@ -1763,7 +1794,7 @@ AjBool ajNamDbGetUrl (AjPStr dbname, AjPStr* url) {
   dbattr = data->data;
 
   if (ajStrLen(dbattr[iurl])) {
-    (void) ajStrAss (url, dbattr[iurl]);
+    (void) ajStrAssS (url, dbattr[iurl]);
     return ajTrue;
   }
 
@@ -1800,7 +1831,7 @@ AjBool ajNamDbGetDbalias (AjPStr dbname, AjPStr* dbalias) {
   dbattr = data->data;
 
   if (ajStrLen(dbattr[idba])) {
-    (void) ajStrAss (dbalias, dbattr[idba]);
+    (void) ajStrAssS (dbalias, dbattr[idba]);
     return ajTrue;
   }
 
@@ -1954,7 +1985,7 @@ static AjBool namDbSetAttr (AjPStr* dbattr, char* attrib, AjPStr* qrystr) {
 
   if (!ajStrLen(dbattr[i])) return ajFalse;
 
-  (void) ajStrAss (qrystr, dbattr[i]);
+  (void) ajStrAssS (qrystr, dbattr[i]);
   /* ajDebug("namDbSetAttr('%S')\n", *qrystr); */
 
   (void) namVarResolve (qrystr);
@@ -1974,24 +2005,23 @@ static AjBool namDbSetAttr (AjPStr* dbattr, char* attrib, AjPStr* qrystr) {
 
 static AjBool namVarResolve (AjPStr* var) {
 
-  static AjPRegexp varexp = NULL;
   AjPStr varname = NULL;
   AjPStr newvar = NULL;
   AjPStr restvar = NULL;
 
-  if (!varexp) varexp = ajRegCompC("^\\$([a-zA-Z0-9_.]+)");
+  if (!namVarExp) namVarExp = ajRegCompC("^\\$([a-zA-Z0-9_.]+)");
 
-  while (ajRegExec (varexp, *var)) {
+  while (ajRegExec (namVarExp, *var)) {
 
-    ajRegSubI(varexp, 1, &varname); /* variable name */
+    ajRegSubI(namVarExp, 1, &varname); /* variable name */
 
     (void) ajNamGetValue(varname, &newvar);
 
     ajDebug("namVarResolve '%S' = '%S'\n", varname, newvar);
 
-    if (ajRegPost(varexp, &restvar)) /* any more? */
+    if (ajRegPost(namVarExp, &restvar)) /* any more? */
       (void) ajStrApp (&newvar, restvar);
-    (void) ajStrAss (var, newvar);
+    (void) ajStrAssS (var, newvar);
   }
 
   ajStrDel(&varname);
@@ -2137,24 +2167,23 @@ AjBool ajNamRootBase (AjPStr* rootbase) {
 
 AjBool ajNamResolve (AjPStr* name) {
 
-  static AjPRegexp namexp = 0;
   AjPStr varname = NULL;
   AjPStr varvalue = NULL;
   AjPStr restname = NULL;
   AjBool ret;
 
-  if (!namexp)
-    namexp = ajRegCompC ("^\\$([A-Za-z0-9_]+)");
+  if (!namNameExp)
+    namNameExp = ajRegCompC ("^\\$([A-Za-z0-9_]+)");
 
   ajDebug ("ajNamResolve of '%S'\n", *name);
-  ret = ajRegExec (namexp, *name);
+  ret = ajRegExec (namNameExp, *name);
   if (ret) {
-    ajRegSubI(namexp, 1, &varname);
+    ajRegSubI(namNameExp, 1, &varname);
     ajDebug ("variable '%S' found\n", varname);
-    (void) ajRegPost(namexp, &restname);
+    (void) ajRegPost(namNameExp, &restname);
     ret = ajNamGetValue (varname, &varvalue);
     if (ret) {
-      (void) ajStrAss (name, varvalue);
+      (void) ajStrAssS (name, varvalue);
       (void) ajStrApp (name, restname);
       ajDebug ("converted to '%S'\n", *name);
     }
