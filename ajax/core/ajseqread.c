@@ -1113,15 +1113,15 @@ AjBool ajSeqRead(AjPSeq thys, AjPSeqin seqin)
     /* if values are missing in the sequence object, we can use defaults
        from seqin or calculate where possible */
 
-    ajDebug("++keep restored %d..%d (%b) '%S' %d\n",
+    /*ajDebug("++keep restored %d..%d (%b) '%S' %d\n",
 	    seqin->Begin, seqin->End, seqin->Rev,
-	    seqin->Formatstr, seqin->Format);
-    ajDebug("ajSeqRead: thys->Db '%S', seqin->Db '%S'\n",
-	    thys->Db, seqin->Db);
-    ajDebug("ajSeqRead: thys->Name '%S'\n",
-	    thys->Name);
-    ajDebug("ajSeqRead: thys->Entryname '%S', seqin->Entryname '%S'\n",
-	    thys->Entryname, seqin->Entryname);
+	    seqin->Formatstr, seqin->Format);*/
+    /*ajDebug("ajSeqRead: thys->Db '%S', seqin->Db '%S'\n",
+	    thys->Db, seqin->Db);*/
+    /*ajDebug("ajSeqRead: thys->Name '%S'\n",
+	    thys->Name);*/
+    /*ajDebug("ajSeqRead: thys->Entryname '%S', seqin->Entryname '%S'\n",
+	    thys->Entryname, seqin->Entryname);*/
     ajStrSet(&thys->Db, seqin->Db);
     ajStrSet(&thys->Entryname, seqin->Entryname);
     /*ajStrSet(&thys->Name, thys->Entryname); */
@@ -7926,7 +7926,9 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
     }
 
     if(!ajStrLen(thys->Acc))
-	ajDebug("No accession number to test\n");
+    {
+	/*ajDebug("No accession number to test\n");*/
+    }
     else if(ajListLength(seq->Acclist))
     {		   /* accession number test - check the entire list */
 	iter = ajListIterRead(seq->Acclist);
@@ -7945,7 +7947,9 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
     }
 
     if(!ajStrLen(thys->Org))
-	ajDebug("No taxonomy to test\n");
+    {
+	/*ajDebug("No taxonomy to test\n"); */
+    }
     else if(ajListLength(seq->Taxlist))
     {			   /* taxonomy test - check the entire list */
 	iter = ajListIterRead(seq->Taxlist);
@@ -7969,7 +7973,9 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
     }
 
     if(!ajStrLen(thys->Key))
-	ajDebug("No keyword to test\n");
+    {
+	/*ajDebug("No keyword to test\n");*/
+    }
     else if(ajListLength(seq->Keylist))
     {			    /* keyword test - check the entire list */
 	iter = ajListIterRead(seq->Keylist);
@@ -7994,7 +8000,7 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
 
     if(!ajStrLen(thys->Des))
     {
-	ajDebug("No description to test\n");
+	/*ajDebug("No description to test\n");*/
 	ok = ajFalse;
     }
     else if(ajStrLen(seq->Desc))
