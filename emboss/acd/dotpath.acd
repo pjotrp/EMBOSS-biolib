@@ -1,6 +1,9 @@
 appl: dotpath [
   documentation: "Displays a non-overlapping wordmatch dotplot of two sequences"
   groups: "Alignment:Dot plots"
+  gui: yes
+  batch: yes
+  cpu: high
 ]
 
 section: input [ info: "input Section" type: page ]

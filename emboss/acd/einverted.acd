@@ -1,6 +1,9 @@
 appl: einverted [
   documentation: "Finds DNA inverted repeats"
   groups: "Nucleic:Repeats, Nucleic:2D structure"
+  gui: yes
+  batch: yes
+  cpu: medium
 ]
 
 section: input [ info: "input Section" type: page ]

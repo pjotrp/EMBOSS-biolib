@@ -1,6 +1,9 @@
 appl: emma [
   documentation: "Multiple alignment program - interface to ClustalW program"
   groups: "Alignment:Multiple"
+  gui: yes
+  batch: yes
+  cpu: medium
 ]
 
 section: input [ info: "input Section" type: page ]
