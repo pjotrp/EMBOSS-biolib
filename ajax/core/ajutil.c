@@ -102,7 +102,10 @@ void ajLogInfo(void)
     static AjPFile logf;
     static AjPStr logfile = NULL;
     static AjPStr uids    = NULL;
+    AjPTime today = NULL;
 
+    today = ajTimeTodayF("log");
+    
     if(ajNamGetValueC("logfile", &logfile))
     {
 	logf = ajFileNewApp(logfile);
@@ -113,9 +116,11 @@ void ajLogInfo(void)
 	ajFmtPrintF(logf, "%s\t%S\t%D\n",
 		    ajAcdProgram(),
 		    uids,
-		    ajTimeTodayF("log"));
+		    today);
 	ajFileClose(&logf);
     }
+
+    AJFREE(today);
 
     return;
 }

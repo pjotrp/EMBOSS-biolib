@@ -2410,14 +2410,15 @@ static AcdEStage acdStage(const AjPStr token)
 
 static void acdParse(AjPList listwords, AjPList listcount)
 {
-    AjPStr acdStrType = NULL;
+    AjPStr acdStrType  = NULL;
     AjPStr acdStrAlias = NULL;
     AjPStr acdStrValue = NULL;
-    AjPStr secname = NULL;
+    AjPStr secname  = NULL;
     ajint linecount = 0;
-    ajint lineword = 0;
-    ajint *iword = NULL;
-    acdLineNum = 0;
+    ajint lineword  = 0;
+    ajint *iword    = NULL;
+    ajint acdLineNum = 0;
+    AjPTime today = NULL;
     
     while(ajListLength(listcount) && (!lineword))
     {
@@ -2473,7 +2474,9 @@ static void acdParse(AjPList listwords, AjPList listcount)
 	    
 	    /* automatic $(today) variable */
 	    ajStrAssC(&acdStrName, "today");
-	    ajFmtPrintS(&acdStrValue, "%D", ajTimeToday());
+	    today = ajTimeToday();
+	    ajFmtPrintS(&acdStrValue, "%D", today);
+	    AJFREE(today);
 	    acdNewCurr = acdNewVar(acdStrName);
 	    acdSetVarDef(acdNewCurr, acdStrValue);
 	    break;
