@@ -47,8 +47,6 @@ typedef struct SeqSMsfItem
 
 static AjBool     seqReadAbi (AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqABISampleName(AjPFile fp, AjPStr *sample);
-static void       seqABIGetBasePosition(AjPFile fp,long int numBases,
-					AjPShort* basePositions);
 static AjBool     seqReadABIInt4(AjPFile fp,long int*i4);
 static AjBool     seqABIReadFloat4(AjPFile fp,float* f4);
 static AjBool     seqABIReadInt2(AjPFile fp,short int*i2);
