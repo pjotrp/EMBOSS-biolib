@@ -147,6 +147,7 @@ if test $ALT_ALLINUSR = "0" ; then
 #
 # If not okay then reset FLAGS.
 #
+  	  AM_CONDITIONAL(AMPNG, false)
 	  LDFLAGS="$ALT_LDFLAGS"
 	  CPPFLAGS="$ALT_CPPFLAGS"
 	  echo No png driver will be made due to librarys missing/old.
