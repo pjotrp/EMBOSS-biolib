@@ -143,9 +143,11 @@ static AjBool     seqAccessGcg (AjPSeqin seqin);
 static AjBool     seqAccessNbrf (AjPSeqin seqin);
 static AjBool     seqAccessSrs (AjPSeqin seqin);
 static AjBool     seqAccessSrsfasta (AjPSeqin seqin);
+static AjBool     seqAccessSrswww (AjPSeqin seqin);
 static AjBool     seqAccessUrl (AjPSeqin seqin);
 
-static AjBool     seqBlastOpen (AjPSeqQuery qry);
+static AjBool     seqBlastOpen (AjPSeqQuery qry, AjBool next);
+static ajint      seqCdDivNext (AjPSeqQuery qry);
 static AjBool     seqBlastAll (const AjPSeqin seqin);
 static AjPFile    seqBlastFileOpen (AjPStr dir, AjPStr name);
 static AjBool     seqBlastLoadBuff (const AjPSeqin seqin);
@@ -202,6 +204,7 @@ static SeqOAccess seqAccess[] =
   {"emblcd", seqAccessEmblcd},
   {"srs",seqAccessSrs},
   {"srsfasta",seqAccessSrsfasta},
+  {"srswww",seqAccessSrswww},
   {"url",seqAccessUrl},
   {"cmd",seqAccessCmd},
   {"app",seqAccessApp},
@@ -441,7 +444,8 @@ static AjBool seqCdAll (AjPSeqin seqin)
 
 	/* test exclusion list and add file if OK */
 
-	if (ajFileTestSkip (fullName, qry->Exclude, qry->Filename, ajTrue)) {
+	if (ajFileTestSkip (fullName, qry->Exclude, qry->Filename,
+			    ajTrue, ajTrue)) {
 	    ajDebug("qrybufflist add '%S'\n", fullName);
 	    ajListstrPushApp (list, fullName);
 	    fullName = NULL;
@@ -459,6 +463,8 @@ static AjBool seqCdAll (AjPSeqin seqin)
     seqCdFileClose (&dfp);
     ajStrDelReuse (&divfile);
     ajCharFree(name);
+
+    qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -1222,9 +1228,18 @@ static AjBool seqAccessSrs (AjPSeqin seqin)
     else if (ajStrLen(qry->Acc))
 	(void) ajFmtPrintS(&seqin->Filename, "%S -e '[%S-acc:%S]'|",
 			   qry->Application, searchdb, qry->Acc);
+    else if (ajStrLen(qry->Sv))
+      (void) ajFmtPrintS(&seqin->Filename,"%S -e '[%S-sv:%S]'|",
+			 qry->Application, searchdb, qry->Sv);
     else if (ajStrLen(qry->Des))
 	(void) ajFmtPrintS(&seqin->Filename, "%S -e '[%S-des:%S]'|",
 			   qry->Application, searchdb, qry->Des);
+    else if (ajStrLen(qry->Org))
+	(void) ajFmtPrintS(&seqin->Filename, "%S -e '[%S-org:%S]'|",
+			   qry->Application, searchdb, qry->Org);
+    else if (ajStrLen(qry->Key))
+	(void) ajFmtPrintS(&seqin->Filename, "%S -e '[%S-key:%S]'|",
+			   qry->Application, searchdb, qry->Key);
 
     seqin->Filebuff = ajFileBuffNewIn (seqin->Filename);
     if (!seqin->Filebuff)
@@ -1235,6 +1250,8 @@ static AjBool seqAccessSrs (AjPSeqin seqin)
     (void) ajStrAssS (&seqin->Db, qry->DbName);
 
     ajStrDel (&searchdb);
+
+    qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -1274,9 +1291,19 @@ static AjBool seqAccessSrsfasta (AjPSeqin seqin)
     else if (ajStrLen(qry->Acc))
 	(void) ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta [%S-acc:%S]|",
 			   qry->Application, searchdb, qry->Acc);
+    else if (ajStrLen(qry->Sv)) {
+        (void) ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta [%S-sv:%S]|",
+			   qry->Application, searchdb, qry->Sv);
+    }
     else if (ajStrLen(qry->Des))
 	(void) ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta [%S-des:%S]|",
 			   qry->Application, searchdb, qry->Des);
+    else if (ajStrLen(qry->Org))
+	(void) ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta [%S-org:%S]|",
+			   qry->Application, searchdb, qry->Org);
+    else if (ajStrLen(qry->Key))
+	(void) ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta [%S-key:%S]|",
+			   qry->Application, searchdb, qry->Key);
 
     ajDebug ("searching with SRS command '%S'\n", seqin->Filename);
     seqin->Filebuff = ajFileBuffNewIn (seqin->Filename);
@@ -1289,6 +1316,185 @@ static AjBool seqAccessSrsfasta (AjPSeqin seqin)
     (void) ajStrAssS (&seqin->Db, qry->DbName);
 
     ajStrDel (&searchdb);
+
+    qry->QryDone = ajTrue;
+
+    return ajTrue;
+}
+
+/* @funcstatic seqAccessSrswww **********************************************
+**
+** Reads sequence(s) using SRS. Sends a query to a remote SRS web server.
+** Opens a file using the results and returns to the caller to
+** read the data.
+**
+** @param [r] seqin [AjPSeqin] Sequence input.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+static AjBool seqAccessSrswww (AjPSeqin seqin)
+{
+    static AjPRegexp urlexp = NULL;
+
+    static AjPStr url = NULL;
+    static AjPStr host = NULL;
+    static AjPStr port = NULL;
+    static AjPStr urlget = NULL;
+    static AjPStr get = NULL;
+    ajint iport = 80;
+    static AjPStr searchdb = NULL;
+    struct sockaddr_in sin;
+    struct hostent *hp;
+
+    ajint sock;
+    ajint status;
+    FILE *fp;
+
+    AjPSeqQuery qry = seqin->Query;
+
+    if (!ajNamDbGetUrl (qry->DbName, &url))
+    {
+	ajErr ("no URL defined for database %S", qry->DbName);
+	return ajFalse;
+    }
+
+   urlexp = ajRegCompC("^http://([a-z0-9.-]+)(:[0-9]+)?(.*)");
+    if (!ajRegExec(urlexp, url))
+    {
+	ajErr ("invalid URL '%S' for database %S", url, qry->DbName);
+	return ajFalse;
+    }
+  
+    ajRegSubI(urlexp, 1, &host);
+
+    ajRegSubI(urlexp, 2, &port);
+    if (ajStrLen(port))
+    {
+	(void) ajStrTrim(&port, 1);
+	(void) ajStrToInt (port, &iport);
+    }
+    ajRegSubI(urlexp, 3, &urlget);
+
+    if (!ajNamDbGetDbalias (qry->DbName, &searchdb))
+	(void) ajStrAssS (&searchdb, qry->DbName);
+
+    ajDebug ("seqAccessSrswww %S:%S url: '%S'\n", searchdb, qry->Id, urlget);
+
+    (void) ajFmtPrintS(&get, "GET %S?-e+-ascii", urlget);
+    if (ajStrLen(qry->Id))
+    {
+	(void) ajFmtPrintAppS(&get, "+[%S-id:%S]",
+			   searchdb, qry->Id);
+	if (ajStrMatch(qry->Id, qry->Acc))
+	    (void) ajFmtPrintAppS(&get, "|[%S-acc:%S]",
+				  searchdb, qry->Id);
+    }
+    else if (ajStrLen(qry->Acc))
+	(void) ajFmtPrintAppS(&get, "+[%S-acc:%S]",
+			   searchdb, qry->Acc);
+    else if (ajStrLen(qry->Sv)) {
+      (void) ajFmtPrintAppS(&get,"+[%S-sv:%S]",
+			 searchdb, qry->Sv);
+    }
+    else if (ajStrLen(qry->Des))
+	(void) ajFmtPrintAppS(&get, "+[%S-des:%S]",
+			   searchdb, qry->Des);
+    else if (ajStrLen(qry->Org))
+	(void) ajFmtPrintAppS(&get, "+[%S-org:%S]",
+			   searchdb, qry->Org);
+    else if (ajStrLen(qry->Key))
+	(void) ajFmtPrintAppS(&get, "+[%S-key:%S]",
+			   searchdb, qry->Key);
+
+    ajDebug ("searching with SRS url '%S'\n", get);
+
+    (void) ajFmtPrintAppS(&get, " HTTP/1.0\n");
+
+    (void) ajStrAssS (&seqin->Db, qry->DbName);
+
+    ajStrDel (&searchdb);
+
+    ajDebug ("host '%S' port '%S' (%d) get '%S'\n", host, port, iport, get);
+
+    hp = gethostbyname(ajStrStr(host));
+    if (!hp)
+    {
+	ajErr ("Unable to get host '%S'", host);
+	return ajFalse;
+    }
+
+    ajDebug ("creating socket\n");
+    sock = socket(AF_INET, SOCK_STREAM, 0); 
+    if (sock < 0)
+    {
+	ajErr ("Socket create failed");
+	return ajFalse;
+    }
+
+    ajDebug ("setup socket data \n");
+    sin.sin_family = AF_INET;
+    sin.sin_port = htons(iport);	/* convert to short in network byte order */
+#ifndef __VMS
+    (void) memcpy (&sin.sin_addr, hp->h_addr, hp->h_length);
+#endif
+    ajDebug ("connecting to socket\n");
+    status = connect (sock, (struct sockaddr*) &sin, sizeof(sin));
+    if (status < 0)
+    {
+	ajErr ("socket connect failed");
+	return ajFalse;
+    }
+
+    ajDebug ("sending: '%S'\n", get);
+    (void) send (sock, ajStrStr(get), ajStrLen(get), 0);
+
+    /*
+       (void) ajFmtPrintS(&get, "Accept: \n");
+       ajDebug ("sending: '%S'\n", get);
+       (void) send (sock, ajStrStr(get), ajStrLen(get), 0);
+       
+       (void) ajFmtPrintS(&get, "User-Agent: EMBOSS\n");
+       ajDebug ("sending: '%S'\n", get);
+       (void) send (sock, ajStrStr(get), ajStrLen(get), 0);
+       */
+
+    (void) ajFmtPrintS(&get, "Host: %S:%d\n", host, iport);
+    ajDebug ("sending: '%S'\n", get);
+    (void) send (sock, ajStrStr(get), ajStrLen(get), 0);
+
+    (void) ajFmtPrintS(&get, "\n");
+    ajDebug ("sending: '%S'\n", get);
+    (void) send (sock, ajStrStr(get), ajStrLen(get), 0);
+
+    fp = ajSysFdopen (sock, "r");
+    if (!fp)
+    {
+	ajErr ("socket open failed");
+	return ajFalse;
+    }
+    seqin->Filebuff = ajFileBuffNewF(fp);
+    if (!seqin->Filebuff)
+    {
+	ajErr ("socket buffer attach failed");
+	return ajFalse;
+    }
+    ajFileBuffLoad(seqin->Filebuff);
+
+
+    if(!ajFileBuffStripSrs(seqin->Filebuff))
+	ajFileBuffStripHtml(seqin->Filebuff);
+
+    (void) ajStrAssS (&seqin->Db, qry->DbName);
+
+    ajStrDelReuse (&url);
+    ajStrDelReuse (&host);
+    ajStrDelReuse (&port);
+    ajStrDelReuse (&get);
+    ajStrDelReuse (&urlget);
+    ajRegFree (&urlexp);
+
+    qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -1394,7 +1600,8 @@ static AjBool seqCdQryOpen (AjPSeqQuery qry)
 	(void) ajStrAssC(&fullName, name);
 	ajFileNameDirSet (&fullName, qry->Directory);
 
-	if (!ajFileTestSkip (fullName, qry->Exclude, qry->Filename, ajTrue))
+	if (!ajFileTestSkip (fullName, qry->Exclude, qry->Filename,
+			     ajTrue, ajTrue))
 	    qryd->Skip[i] = ajTrue;
     }
 
@@ -1491,6 +1698,8 @@ static AjBool seqCdQryEntry (AjPSeqQuery qry)
     if (!ajListLength(qryd->List))
 	return ajFalse;
 
+    qry->QryDone = ajTrue;
+
     return ajTrue;
 }
 
@@ -1506,6 +1715,7 @@ static AjBool seqCdQryEntry (AjPSeqQuery qry)
 
 static AjBool seqCdQryQuery (AjPSeqQuery qry)
 {
+    qry->QryDone = ajTrue;
 
     if(ajStrLen(qry->Id))
     {
@@ -1566,6 +1776,8 @@ static AjBool seqCdQryNext (AjPSeqQuery qry)
 
     AJFREE(entry);
 
+    qry->QryDone = ajTrue;
+
     return ajTrue;
 }
 
@@ -1602,7 +1814,7 @@ static AjBool seqBlastQryNext (AjPSeqQuery qry)
     if (entry->div != qryd->div)
     {
 	qryd->div = entry->div;
-	seqBlastOpen (qry);		/* replaces qry->QryData */
+	seqBlastOpen (qry, ajFalse);		/* replaces qry->QryData */
 	qryd = qry->QryData;
     }
     qryd->idnum = entry->annoff - 1;  
@@ -1613,6 +1825,8 @@ static AjBool seqBlastQryNext (AjPSeqQuery qry)
     /* entry->annoff as qryd->idnum sets table position */
 
     AJFREE(entry);
+
+    qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -1868,7 +2082,10 @@ static AjBool seqGcgReadRef (const AjPSeqin seqin)
 	}
 	rpos = ajFileTell (qryd->libr);
 	if (!testcontinue)
+	{
+	  ajStrSubstituteCC (&line, ". .", "..");
 	  ajFileBuffLoadS (seqin->Filebuff, line);
+	}
     }
 
 
@@ -2068,7 +2285,6 @@ static AjBool seqGcgReadSeq (const AjPSeqin seqin)
 /*	ajFileGets (qryd->libs, &line); */
     }
   
-
     return ajTrue;
 }
 
@@ -2116,8 +2332,7 @@ static void seqGcgBinDecode (AjPStr thys, ajint sqlen)
 
 /* @funcstatic seqGcgAll *********************************************
 **
-** Reads the EMBLCD division lookup file and opens a list of all the
-** database files for plain reading.
+** Opens the first or next GCG file for further reading
 **
 ** @param [P] seqin [const AjPSeqin] Sequence input.
 ** @return [AjBool] ajTrue on success.
@@ -2142,19 +2357,19 @@ static AjBool seqGcgAll (const AjPSeqin seqin)
 
     if (!qry->QryData)
     {
-	ajDebug ("seqCdQryOpen initialising\n");
+	ajDebug ("seqGcgAll initialising\n");
 	seqin->Single = ajTrue;
 	if (!seqCdQryOpen(qry))
-	    ajFatal ("seqCdQryOpen failed");
+	    ajFatal ("seqGcgAll failed");
 
-	qryd = qry->QryData;
-	seqin->Filebuff = ajFileBuffNew();
     }
+
+    qryd = qry->QryData;
+    seqin->Filebuff = ajFileBuffNew();
 
     if (!qryd->libr)
     {
-	qryd->div++;
-	if (qryd->div > qryd->maxdiv)
+        if (!seqCdDivNext(qry))
 	{
 	    ajDebug ("seqGcgAll finished\n");
 	    return ajFalse;
@@ -2167,6 +2382,8 @@ static AjBool seqGcgAll (const AjPSeqin seqin)
 	    ajDebug("               sequence file    '%F'\n", qryd->libs);
     }
     seqGcgLoadBuff (seqin);
+
+    qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -2270,11 +2487,12 @@ static AjBool seqAccessBlast (AjPSeqin seqin)
 ** The blast version (1 or 2) is derived from the table file name.
 **
 ** @param [r] qry [AjPSeqQuery] Sequence query object
+** @param [r] next [AjBool] Skip to next file (when reading all entries)
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-static AjBool seqBlastOpen (AjPSeqQuery qry)
+static AjBool seqBlastOpen (AjPSeqQuery qry, AjBool next)
 {
     static char* seqext[] = {"bsq", "csq", "psq", "nsq"};
     static char* hdrext[] = {"ahd", "nhd", "phr", "nhr"};
@@ -2313,11 +2531,16 @@ static AjBool seqBlastOpen (AjPSeqQuery qry)
 	    ajFatal ("Blast database open failed");
     }
 
+    if (next)
+    {
+	if (!seqCdDivNext(qry))	/* set qryd->div to next (included) file */
+	  return ajFalse;
+    }
+
     qryd = qry->QryData;
 
     qryd->type = 0;
-    if (!qryd->div)
-      qryd->div = 1;	/* Check what this does with a multi-volume index */
+
 
     HeaderLen = 0;
 
@@ -2340,7 +2563,8 @@ static AjBool seqBlastOpen (AjPSeqQuery qry)
     ajRegSubI (divexp, 3, &qryd->seqfile);
     ajDebug ("File(s) '%S' '%S'\n", qryd->datfile, qryd->seqfile);
 
-    ajDebug("seqBlastOpen '%S' '%s'\n", qryd->datfile, qryd->name);
+    ajDebug("seqBlastOpen next: %B '%S' '%s'\n",
+	    next, qryd->datfile, qryd->name);
 
     if (ajStrChar(qryd->datfile, -1) == 'b')
     {
@@ -2502,6 +2726,43 @@ static AjBool seqBlastOpen (AjPSeqQuery qry)
     return ajTrue;
 }
 
+/* @funcstatic seqCdDivNext ***********************************************
+**
+** Sets the division count to the next included file. We need the division
+** file to be already open.
+**
+** @param [r] qry [AjPSeqQuery] sequence query object.
+** @return [ajint] File number (starting at 1) or zero if all files are done.
+** @@
+******************************************************************************/
+
+static ajint seqCdDivNext (AjPSeqQuery qry)
+{
+
+    SeqPCdQry qryd = qry->QryData;
+    AjPStr fullName = NULL;
+    ajint i;
+
+    ajDebug("seqCdDivNext div: %d dfp: %x nameSize: %d name '%s'\n",
+	    qryd->div, qryd->maxdiv);
+
+    for (i=qryd->div; i < qryd->maxdiv; i++)
+    {
+        if (!qryd->Skip[i])
+	{
+	    qryd->div = i+1;
+	    (void) ajDebug("next file is %d '%S'\n", qryd->div, fullName);
+	    return qryd->div;
+	}
+	else {
+	    (void) ajDebug("skip %d  '%S'\n", (i+1), fullName);
+	}
+    }
+
+    return 0;
+}
+
+
 /* @funcstatic seqBlastLoadBuff ***********************************************
 **
 ** Fill a buffered file with text data and preloads the sequence in
@@ -2558,12 +2819,15 @@ static AjBool seqBlastAll (const AjPSeqin seqin)
     {
 	ajDebug ("seqBlastAll initialising\n");
 	seqin->Single = ajTrue;
-	if (!seqBlastOpen(qry))		/* replaces qry->QryData */
+	if (!seqBlastOpen(qry, ajTrue))		/* replaces qry->QryData */
 	    ajFatal ("seqBlastAll failed");
 
 	qryd = qry->QryData;
 	seqin->Filebuff = ajFileBuffNew();
 	qryd->idnum = 0;
+    }
+    else {
+	qryd = qry->QryData;
     }
 
     if (!qryd->libr)
@@ -2573,11 +2837,25 @@ static AjBool seqBlastAll (const AjPSeqin seqin)
     }
 
     if (!seqBlastLoadBuff (seqin))
-	return ajFalse;
+    {
+	if (!seqBlastOpen(qry, ajTrue))		/* try the next file */
+	  return ajFalse;
+	qryd = qry->QryData;
+	qryd->idnum = 0;
+	if (!qryd->libr)
+	{
+	    ajDebug ("seqBlastAll finished\n");
+	    return ajFalse;
+        }
+	if (!seqBlastLoadBuff (seqin))
+	  return ajFalse;
+
+    }
 
     qryd->idnum++;
     (void) ajStrAssS (&seqin->Db, qry->DbName);
 
+    qry->QryDone = ajTrue;
 
     return ajTrue;
 }
