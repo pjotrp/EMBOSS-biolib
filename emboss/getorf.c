@@ -34,9 +34,9 @@ static void getorf_AppORF(ajint find, AjPStr *str, char *chrseq, ajint pos,
 			  char aa);
 
 static void getorf_FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable,
-			    ajint minsize, AjPSeqout seqout, AjBool sense,
-			    AjBool circular, ajint find, ajint *orf_no,
-			    AjBool methionine, ajint around);
+			    ajint minsize, ajint maxsize, AjPSeqout seqout, 
+			    AjBool sense, AjBool circular, ajint find, 
+			    ajint *orf_no, AjBool methionine, ajint around);
 
 
 
@@ -71,6 +71,7 @@ int main(int argc, char **argv)
     AjPStr *tablelist;
     ajint table;
     ajint minsize;
+    ajint maxsize;
     AjPStr *findlist;
     ajint find;
     AjBool methionine;
@@ -95,6 +96,7 @@ int main(int argc, char **argv)
     seqall     = ajAcdGetSeqall("sequence");
     tablelist  = ajAcdGetList("table");
     minsize    = ajAcdGetInt("minsize");
+    maxsize    = ajAcdGetInt("maxsize");
     findlist   = ajAcdGetList("find");
     methionine = ajAcdGetBool("methionine");
     circular   = ajAcdGetBool("circular");
@@ -113,8 +115,11 @@ int main(int argc, char **argv)
     ** get the minimum size converted to protein length if storing
     ** protein sequences
     */
-    if(find == P_STOP2STOP || find == P_START2STOP || find == AROUND_START)
+    if(find == P_STOP2STOP || find == P_START2STOP || find == AROUND_START) 
+    {
 	minsize /= 3;
+	maxsize /= 3;
+    }
     
     while(ajSeqallNext(seqall, &seq))
     {
@@ -138,7 +143,7 @@ int main(int argc, char **argv)
 	}
 
 	/* find the ORFs */
-	getorf_FindORFs(seq, len, trnTable, minsize, seqout, sense,
+	getorf_FindORFs(seq, len, trnTable, minsize, maxsize, seqout, sense,
 			circular, find, &orf_no, methionine, around);
 
 	/* now reverse complement the sequence and do it again */
@@ -146,7 +151,7 @@ int main(int argc, char **argv)
 	{
 	    sense = ajFalse;
 	    ajSeqReverse(seq);
-	    getorf_FindORFs(seq, len, trnTable, minsize, seqout, sense,
+	    getorf_FindORFs(seq, len, trnTable, minsize, maxsize, seqout, sense,
 			    circular, find, &orf_no, methionine,
 			    around);
 	}
@@ -170,7 +175,8 @@ int main(int argc, char **argv)
 ** @param [?] seq [AjPSeq] Undocumented
 ** @param [?] len [ajint] Undocumented
 ** @param [?] trnTable [AjPTrn] Undocumented
-** @param [?] minsize [ajint] Undocumented
+** @param [?] minsize [ajint] Minimum size ORF to find
+** @param [?] maxsize [ajint] Maximum size ORF to find
 ** @param [?] seqout [AjPSeqout] Undocumented
 ** @param [?] sense [AjBool] Undocumented
 ** @param [?] circular [AjBool] Undocumented
@@ -182,9 +188,9 @@ int main(int argc, char **argv)
 ******************************************************************************/
 
 static void getorf_FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable,
-			    ajint minsize, AjPSeqout seqout, AjBool sense,
-			    AjBool circular, ajint find, ajint *orf_no,
-			    AjBool methionine, ajint around)
+			    ajint minsize, ajint maxsize, AjPSeqout seqout, 
+			    AjBool sense, AjBool circular, ajint find, 
+			    ajint *orf_no, AjBool methionine, ajint around)
 {
     AjBool ORF[3];			/* true if found an ORF */
     AjBool LASTORF[3];		 /* true if hit the end of an ORF past
@@ -286,7 +292,8 @@ static void getorf_FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable,
 		/* Already have a sequence to write out? */
 		if(ORF[frame])
 		{
-		    if(ajStrLen(newstr[frame]) >= minsize)
+		    if(ajStrLen(newstr[frame]) >= minsize && 
+		       ajStrLen(newstr[frame]) <= maxsize)
 		    {
 			/* create a new sequence */
 			if(codon == STOP)
@@ -371,7 +378,8 @@ static void getorf_FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable,
 			getorf_AppORF(find, &newstr[frame], chrseq,
 				      pos, aa);
 
-		    if(ajStrLen(newstr[frame]) >= minsize)
+		    if(ajStrLen(newstr[frame]) >= minsize &&
+		       ajStrLen(newstr[frame]) >= maxsize)
 		    {
 			/* create a new sequence */
 			if(codon == STOP)
@@ -418,7 +426,8 @@ static void getorf_FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable,
 	{
 	    /* translate frame 1 into pep */
 	    pep = ajTrnSeqOrig(trnTable, seq, 1);
-	    if(ajSeqLen(pep) >= minsize)
+	    if(ajSeqLen(pep) >= minsize && 
+	       ajSeqLen(pep) <= maxsize)
 		getorf_WriteORF(seq, len, seqlen, sense, find, orf_no,
 				0, seqlen-1, ajSeqStr(pep), seqout,
 				around);
@@ -429,7 +438,8 @@ static void getorf_FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable,
 	{
 	    /* translate frame 2 into pep */
 	    pep = ajTrnSeqOrig(trnTable, seq, 2);
-	    if(ajSeqLen(pep) >= minsize)
+	    if(ajSeqLen(pep) >= minsize &&
+	       ajSeqLen(pep) <= maxsize)
 		getorf_WriteORF(seq, len, seqlen, sense, find, orf_no,
 				1, seqlen-1, ajSeqStr(pep), seqout,
 				around);
@@ -440,7 +450,8 @@ static void getorf_FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable,
 	{
 	    /* translate frame 3 into pep */
 	    pep = ajTrnSeqOrig(trnTable, seq, 3);
-	    if(ajSeqLen(pep) >= minsize)
+	    if(ajSeqLen(pep) >= minsize && 
+	       ajSeqLen(pep) >= maxsize)
 		getorf_WriteORF(seq, len, seqlen, sense, find, orf_no,
 				2, seqlen-1, ajSeqStr(pep), seqout,
 				around);

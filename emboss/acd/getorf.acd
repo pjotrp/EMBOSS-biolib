@@ -48,6 +48,12 @@ section: advanced [
     information: "Minimum nucleotide size of ORF to report"
   ]
 
+  integer: maxsize  [
+    additional: "Y"
+    default: "1000000"
+    information: "Maximum nucleotide size of ORF to report"
+  ]
+
   list: find  [
     additional: "Y"
     default: "0"
