@@ -1035,8 +1035,11 @@ AjBool ajFileGetsL (const AjPFile thys, AjPStr* pdest, ajlong* fpos) {
     }
 
     *fpos = ajFileTell (thys);
+#ifndef __ppc__
     cp = fgets (&buff[ipos], isize, thys->fp);
-
+#else
+    cp = ajSysFgets (&buff[ipos], isize, thys->fp);
+#endif
     if (!cp) {
       if (feof(thys->fp)) {
 	thys->End = ajTrue;

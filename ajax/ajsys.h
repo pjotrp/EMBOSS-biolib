@@ -35,6 +35,7 @@ AjBool ajSysWhichEnv(AjPStr *exefile, char **environment);
 void ajSysPrintlist(char **a);
 char *ajSysStrtok(const char *s, const char *t);
 char *ajSysStrtokR(const char *s, const char *t, char **ptrptr, AjPStr *buf);
+char *ajSysFgets(char *buf, int size, FILE *fp);
 
 /*
  * S_IFREG is non-ANSI therefore define it here

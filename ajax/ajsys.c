@@ -686,3 +686,53 @@ char* ajSysStrtokR(const char *s, const char *t, char **ptrptr, AjPStr *buf)
     
     return ajStrStr(*buf);
 }
+
+/* @func ajSysFgets ******************************************************
+**
+** An fgets replacement that will cope with Mac OSX <CR> files
+**
+** @param [w] buf [char *] buffer
+** @param [r] size [int] maximum length to read
+** @param [r] fp [FILE *] stream
+**
+** @return [char*] buf or NULL
+** @@
+******************************************************************************/
+
+char *ajSysFgets(char *buf, int size, FILE *fp)
+{
+#ifdef __ppc__
+    int c;
+    char *p;
+    int cnt;
+
+    p = buf;
+    if(!size || size<0)
+        return NULL;
+
+    cnt = 0;
+    while((c=getc(fp))!=EOF && c!=0x0d && c!='\n' && cnt!=size)
+    {
+        *(p++) = c;
+        ++cnt;
+    }
+
+    *p ='\0';
+
+    if(c==EOF)
+        return NULL;
+
+
+    if(cnt == size)
+        return buf;
+
+    if(c=='\r' || c=='\n')
+        *(p++) = '\n';
+
+    *p = '\0';
+
+    return buf;
+#else
+    return fgets(buf,size,fp);
+#endif
+}
