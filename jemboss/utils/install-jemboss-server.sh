@@ -1407,20 +1407,20 @@ echo
 echo
 echo "--------------------------------------------------------------"
 echo "--------------------------------------------------------------"
-echo
-
-echo
-echo "A tomstart and tomstop script to start & stop Tomcat have"
-echo "been created. It important to use these to start & stop Tomcat."
 
 if [ "$AUTH" = "y" ]; then
   echo 
-  echo "You will need to (as root):"
-  echo "   chmod u+s $EMBOSS_INSTALL/bin/jembossctl"
-  echo "   chown root $EMBOSS_INSTALL/bin/jembossctl"                        
+  echo "Tomcat should be running and the Jemboss web services deployed!"
   echo
-  echo "Tomcat may still be running! Ensure it is running as the non-priveliged"
-  echo "tomcat user. Use the tomstop & tomstart scripts to stop & start tomcat."
+  echo "It is *very* important to now:"
+  echo "1. As root:"
+  echo "   chmod u+s $EMBOSS_INSTALL/bin/jembossctl"
+  echo "   chown root $EMBOSS_INSTALL/bin/jembossctl"
+  echo "2. Ensure that tomcat is running as the non-priveliged user,"
+  echo "   with the same UID (i.e. $UUID) that was given to this script"
+  echo "   (and NOT as root!)."
+  echo "3. Use the tomstop & tomstart scripts in this directory"
+  echo "   to stop & start tomcat."
   echo 
 else
   echo
