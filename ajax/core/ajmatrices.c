@@ -115,7 +115,7 @@ AjPMatrixf ajMatrixfNew(AjPStr* codes, ajint n, AjPStr filename)
     for(i=0; i<n; i++)
 	ret->Codes[i] = ajStrNew();
 
-    for(i=0; i<nsize; i++)
+    for(i=0; i<n; i++)
 	ajStrAssS(&ret->Codes[i], codes[i]);
 
     ret->Size = nsize;
