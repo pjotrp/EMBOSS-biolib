@@ -3616,6 +3616,7 @@ AjPSeqout ajSeqoutNew (void)
     pthis->Type = ajStrNew();
     pthis->EType = 0;
     pthis->Db = ajStrNew();
+    pthis->Setdb = ajStrNew();
     pthis->Full = ajStrNew();
     pthis->Date = ajStrNew();
     pthis->Doc = ajStrNew();
@@ -3626,6 +3627,7 @@ AjPSeqout ajSeqoutNew (void)
     pthis->Formatstr = ajStrNew();
     pthis->Format = 0;
     pthis->Filename = ajStrNew();
+    pthis->Directory = ajStrNew();
     pthis->Entryname = ajStrNew();
     pthis->Seq = ajStrNew();
     pthis->File = NULL;
@@ -3688,14 +3690,18 @@ void ajSeqoutDel (AjPSeqout* pthis)
     ajStrDel (&thys->Desc);
     ajStrDel (&thys->Type);
     ajStrDel (&thys->Db);
+    ajStrDel (&thys->Setdb);
     ajStrDel (&thys->Full);
     ajStrDel (&thys->Date);
     ajStrDel (&thys->Doc);
     ajStrDel (&thys->Usa);
     ajStrDel (&thys->Ufo);
+    ajStrDel (&thys->FtFormat);
+    ajStrDel (&thys->FtFilename);
     ajStrDel (&thys->Informatstr);
     ajStrDel (&thys->Formatstr);
     ajStrDel (&thys->Filename);
+    ajStrDel (&thys->Directory);
     ajStrDel (&thys->Entryname);
     ajStrDel (&thys->Seq);
     ajStrDel (&thys->Extension);
