@@ -86,6 +86,8 @@ public class BuildJembossForm implements ActionListener
 
   private String acdDirToParse;
 
+  private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
+  private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 // result files
   private String seqoutResult;
   private String outfileResult;
@@ -97,13 +99,13 @@ public class BuildJembossForm implements ActionListener
   private String embossBin;
 
   private int numofFields;
-  public EmbreoParams mysettings;
+  private EmbreoParams mysettings;
 
   
   public BuildJembossForm(int i, String allDes[], String db[],
         String allAcd[], String[] envp, String cwd, String embossBin,
-        String acdDirToParse, boolean withSoap, JPanel p2, 
-        EmbreoParams mysettings, Hashtable acdStore, JFrame f)
+        String acdDirToParse, final boolean withSoap, JPanel p2, 
+        final EmbreoParams mysettings, Hashtable acdStore, final JFrame f)
   {
 
     this.f = f;
@@ -150,11 +152,44 @@ public class BuildJembossForm implements ActionListener
     }
 
 // Help button
-    JButton bhelp = new JButton("Help");
-    ImageIcon rfii = new ImageIcon("images/Information_button.gif");
-    bhelp.setIcon(rfii);
+    JButton bhelp = new JButton(new ImageIcon("images/Information_button.gif"));
     bhelp.addActionListener(this);
     bhelp.setBorder(BorderFactory.createRaisedBevelBorder());
+
+
+    bhelp.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        f.setCursor(cbusy);
+        JFrame fhelp = new JFrame(applName + " Help");
+        JPanel phelp = (JPanel)fhelp.getContentPane();
+        phelp.setLayout(new BorderLayout());
+        JPanel pscroll = new JPanel(new BorderLayout());
+        JScrollPane rscroll = new JScrollPane(pscroll);
+        phelp.add(rscroll, BorderLayout.CENTER);
+    
+        String text = "";
+        if(!withSoap)
+        {
+          text = helptext;
+        }
+        else
+        {
+          EmbreoHelp thishelp = new EmbreoHelp(applName,mysettings);
+          text = thishelp.getHelpText();
+        }
+        JTextArea helpText = new JTextArea(text);
+        pscroll.add(helpText, BorderLayout.CENTER);
+        helpText.setFont(new Font("monospaced", Font.PLAIN, 12));
+        helpText.setCaretPosition(0);
+        helpText.setEditable(false);
+        fhelp.setSize(520,395);
+        fhelp.setVisible(true);
+        f.setCursor(cdone);
+      }
+    });
+
 
 // Display results button
     bresults = new JButton("Show results");
@@ -164,7 +199,7 @@ public class BuildJembossForm implements ActionListener
 // Go button
     
     JButton bgo = new JButton("GO");
-    rfii = new ImageIcon("images/Go_button.gif");
+    ImageIcon rfii = new ImageIcon("images/Go_button.gif");
     bgo.setIcon(rfii);
     bgo.setBorder(BorderFactory.createRaisedBevelBorder());
     bgo.addActionListener(this);
@@ -336,41 +371,11 @@ public class BuildJembossForm implements ActionListener
 */
   public void actionPerformed(ActionEvent ae)
   {
-    final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
-    final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
     String line;
     String text = "";
 
-    if( ae.getActionCommand().startsWith("Help"))  // Help option
-    {
-      f.setCursor(cbusy);
-      JFrame fhelp = new JFrame(applName + " Help");
-      JPanel phelp = (JPanel)fhelp.getContentPane();
-      phelp.setLayout(new BorderLayout());
-      JPanel pscroll = new JPanel(new BorderLayout());
-      JScrollPane rscroll = new JScrollPane(pscroll);
-      phelp.add(rscroll, BorderLayout.CENTER);
-
-      if(!withSoap) 
-      {
-        text = helptext;
-      } 
-      else
-      {
-        EmbreoHelp thishelp = new EmbreoHelp(applName,mysettings);
-        text = thishelp.getHelpText();
-      }
-      JTextArea helpText = new JTextArea(text);
-      pscroll.add(helpText, BorderLayout.CENTER);
-      helpText.setFont(new Font("monospaced", Font.PLAIN, 12));
-      helpText.setCaretPosition(0);
-      helpText.setEditable(false);
-      fhelp.setSize(520,395);
-      fhelp.setVisible(true);
-      f.setCursor(cdone);
-    }
-    else if( ae.getActionCommand().startsWith("Advanced Option"))
+    if( ae.getActionCommand().startsWith("Advanced Option"))
     {
       if(advSectionBox.isVisible())
       {
