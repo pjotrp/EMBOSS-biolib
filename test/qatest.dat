@@ -7783,6 +7783,9 @@ PP mkdir ./REBASE
 PP EMBOSS_DATA=./
 PP export EMBOSS_DATA
 IN ../../data/withrefm
+FI embossre.equ
+FZ = 260
+FP 1 /EcoRII Acc38I/
 FI stderr
 FC = 2
 FP 0 /Warning: /
