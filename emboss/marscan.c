@@ -359,7 +359,6 @@ static AjBool getpos (AjPList l, ajint *thisprev, ajint otherprev,
   ajint dist;	/* distance between the two patterns */
   ajint firstpos;	/* first position of the first of the two patterns */
   ajint lastpos; 	/* last position of the second of the two patterns */
-  ajint temp1, temp2;
   ajint s8, s16, e8, e16;	/* start and end positions */
 
   while (*thisprev <= otherprev) {
