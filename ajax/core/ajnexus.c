@@ -185,7 +185,7 @@ AjPNexus ajNexusParse(AjPFileBuff buff)
     if(!ajStrPrefixCaseC(rdline, "#NEXUS"))
     {				/* first line test */
 	ajFileBuffReset(buff);
-	return ajFalse;
+	return NULL;
     }
     ajDebug("ajNexusParse: First line ok '%S'\n", rdline);
 
