@@ -1,3 +1,11 @@
+v1.0.1
 23 Jan 2001
 GWW
 Changed configure.in to add -lmenu -lform to the LIBS
+
+
+v1.0.2
+23 Jan 2001
+GWW
+Changed configure.in back and added -lmenu -lform -lX11 to source/Makefile.am
+
