@@ -3570,7 +3570,7 @@ CL -auto ../../data/dna.embl gff::test.out
 FI test.out
 FZ = 191
 FP /^##gff-version 2\n/
-FP /^##source-version EMBOSS 2\.0\.1\n/
+FP /^##source-version EMBOSS [0-9.]+\n/
 FP /^##date [0-9\-]+\n/
 FP /^##DNA EMBL\n/
 FP /^##acgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgt\n/
@@ -3583,7 +3583,7 @@ CL -auto ../../data/dna.embl test.out -osf gff
 FI test.out
 FZ = 191
 FP /^##gff-version 2\n/
-FP /^##source-version EMBOSS 2\.0\.1\n/
+FP /^##source-version EMBOSS [0-9.]+\n/
 FP /^##date [0-9\-]+\n/
 FP /^##DNA EMBL\n/
 FP /^##acgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgt\n/
