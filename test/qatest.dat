@@ -6895,8 +6895,8 @@ FI stderr
 FC = 3
 FP /^Error: Unable to open data file 'fail780101' for input\n/
 FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
+FP 1 /Error: /
+FP 1 /Died: /
 //
 
 # change example to globins.msf (plural)
@@ -7822,7 +7822,7 @@ FI stderr
 FP /Unable to read sequence .*/dna\.ig/
 FP 0 /Warning: /
 FP 1 /Error: /
-FP 0 /Died: /
+FP 1 /Died: /
 //
 
 ID seqret-inusa-ig
@@ -8356,7 +8356,7 @@ FZ = 109
 FP /Error: Unable to read sequence 'stdin'/
 FP 0 /Warning: /
 FP 1 /Error: /
-FP 0 /Died: /
+FP 1 /Died: /
 //
 
 ID seqret-in-badformat
@@ -9530,7 +9530,7 @@ FP /Error: Unknown query field 'bad' in USA '../../embl/rod.dat:bad:MMAM'/
 FP /Error: Unable to read sequence 'embl::../../embl/rod.dat:bad:MMAM'/
 FP 0 /Warning: /
 FP 2 /Error: /
-FP 0 /Died: /
+FP 1 /Died: /
 //
 
 ID seqret-query-direct-name
@@ -9560,7 +9560,7 @@ FZ = 133
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:FAIL'/
 FP 0 /Warning: /
 FP 1 /Error: /
-FP 0 /Died: /
+FP 1 /Died: /
 //
 
 ID seqret-query-direct-id
@@ -9590,7 +9590,7 @@ FZ = 136
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ID:FAIL'/
 FP 0 /Warning: /
 FP 1 /Error: /
-FP 0 /Died: /
+FP 1 /Died: /
 //
 
 ID seqret-query-direct-acc
@@ -9620,7 +9620,7 @@ FZ = 139
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ACC:Z99999'/
 FP 0 /Warning: /
 FP 1 /Error: /
-FP 0 /Died: /
+FP 1 /Died: /
 //
 
 ID seqret-query-direct-accfail2
@@ -9632,7 +9632,7 @@ FZ = 139
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ACC:99999Z'/
 FP 0 /Warning: /
 FP 1 /Error: /
-FP 0 /Died: /
+FP 1 /Died: /
 //
 
 ID seqret-query-direct-sv
@@ -9662,7 +9662,7 @@ FZ = 140
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:SV:Z99999.1'/
 FP 0 /Warning: /
 FP 1 /Error: /
-FP 0 /Died: /
+FP 1 /Died: /
 //
 
 ID seqret-query-direct-des
@@ -9692,7 +9692,7 @@ FZ = 138
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:DES:lynam'/
 FP 0 /Warning: /
 FP 1 /Error: /
-FP 0 /Died: /
+FP 1 /Died: /
 //
 
 ID seqret-query-direct-deswordstart
@@ -9740,7 +9740,7 @@ FZ = 138
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:KEY:CHAIN'/
 FP 0 /Warning: /
 FP 1 /Error: /
-FP 0 /Died: /
+FP 1 /Died: /
 //
 
 ID seqret-query-direct-org
@@ -9782,7 +9782,7 @@ FZ = 137
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ORG:HOMO'/
 FP 0 /Warning: /
 FP 1 /Error: /
-FP 0 /Died: /
+FP 1 /Died: /
 //
 
 ID seqret-query-srs-badfield
@@ -9799,7 +9799,7 @@ FP /^Error: USA 'qasrs-bad:AB000095' query field 'bad' not defined for database 
 FP /^Error: Unable to read sequence 'qasrs-bad:AB000095'/
 FP 0 /Warning: /
 FP 2 /Error: /
-FP 0 /Died: /
+FP 1 /Died: /
 //
 
 ID seqret-query-srs-badfield2
@@ -9814,10 +9814,9 @@ FI stderr
 FZ = 205
 FP /^Error: USA 'qasrs-key:AB000095' query field 'key' not defined for database 'qasrs'/
 FP /^Error: Unable to read sequence 'qasrs-key:AB000095'/
-FP /^Error: Unable to read sequence 'qasrs-bad:AB000095'/
 FP 0 /Warning: /
 FP 2 /Error: /
-FP 0 /Died: /
+FP 1 /Died: /
 //
 
 ID seqret-query-srs-id
