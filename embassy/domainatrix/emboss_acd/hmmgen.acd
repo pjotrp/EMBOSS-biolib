@@ -1,0 +1,45 @@
+appl: hmmgen 
+[
+  documentation: "Generates a hidden Markov model for each alignment in a directory by using the HMMER package."
+  groups:"Protein:3D Structure"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+]
+
+
+section: input [ info: "input Section" type: page ]
+string: infpath [
+	parameter: Y
+        def: "./"
+        information: "Location of scop alignment files (input)"
+	help: "A 'scop family alignment file' contains a sequence alignment of domains belonging to the same scop family.  The file is in embl-like format and is annotated with records describing the SCOP classification of the family.  A scop family alignment file generatd by scopalign will contain a structure-based sequence alignment of domains of known structure only.  Such alignments can be extended with sequence relatives (of unknown structure) to the family in question by using seqalign."
+]
+
+string: infextn [
+	parameter: Y
+        def: ".ealign"
+        information: "Extension of scop alignment files"
+]
+endsection: input
+
+
+
+
+section: output [ info: "output Section" type: page ]
+string: outfpath [
+	parameter: Y
+        def: "./"
+        information: "Location of HMM files (output)"
+]
+
+string: outfextn [
+	parameter: Y
+        def: ".hmm"
+        information: "Extention of HMM files"
+]
+endsection: output
+
+
+
+

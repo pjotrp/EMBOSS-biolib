@@ -1,0 +1,33 @@
+appl: pdbtosp [
+  documentation: "Convert raw swissprot:pdb equivalence file to embl-like format"
+  groups: "Utils:Database creation"
+  gui: "yes"
+  batch: "yes"
+  cpu: "low"
+]
+
+
+section: input [ info: "input Section" type: page ]
+infile: infilea  [
+  information: "Name of raw swissprot:pdb equivalence file (input)"
+  help: "pdbtosp parses the swissprot:pdb equivalence table available at URL http://www.expasy.ch/cgi-bin/lists?pdbtosp.txt"
+  parameter: "Y"
+]
+endsection: input
+
+
+
+
+
+section: output [ info: "output Section" type: page ]
+outfile: outfile  [
+  information: "Name of swissprot:pdb equivalence file (embl format output)"
+  default: "Epdbtosp.dat"
+  parameter: "Y"
+]
+endsection: output
+
+
+
+
+
