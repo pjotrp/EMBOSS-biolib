@@ -119,6 +119,7 @@ NamOAttr namAttr[] = {
   {"appquery", ""},
   {"appall", ""},
   {"exclude", ""},
+  {"fields", ""},
   {NULL, NULL}
 };
 
@@ -1399,6 +1400,7 @@ AjBool ajNamDbQuery (AjPSeqQuery qry) {
   (void) namDbSetAttr(dbattr, "directory", &qry->Directory);
   (void) namDbSetAttr(dbattr, "exclude", &qry->Exclude);
   (void) namDbSetAttr(dbattr, "filename", &qry->Filename);
+  (void) namDbSetAttr(dbattr, "fields", &qry->DbFields);
 
   if (!ajSeqQueryIs(qry)) { /* must have a method for all entries */
 
