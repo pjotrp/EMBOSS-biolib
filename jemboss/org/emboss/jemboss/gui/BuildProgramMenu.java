@@ -111,7 +111,7 @@ public class BuildProgramMenu
       envp[2] = "EMBOSS_DATA=" + mysettings.getEmbossData();
       envp[3] = "HOME=" + System.getProperty("user.home") + fs;
       if(mysettings.isCygwin())
-        envp[4] = "EMBOSSCYGROOT" + mysettings.getCygwinRoot();
+        envp[4] = "EMBOSSCYGROOT=" + mysettings.getCygwinRoot();
     }
 
 
