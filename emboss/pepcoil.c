@@ -28,9 +28,9 @@
 
 #define COILFILE "Epepcoil.dat"
 
-void readcoildat(AjPFloat2d *rdat);
-float probcoil(float score);
-ajint inframe(ajint start, ajint pos, ajint frame, ajint len);
+static void pepcoil_readcoildat(AjPFloat2d *rdat);
+static float pepcoil_probcoil(float score);
+static ajint pepcoil_inframe(ajint start, ajint pos, ajint frame, ajint len);
 
 
 
@@ -103,7 +103,7 @@ int main(int argc, char **argv)
 
 
     rdat = ajFloat2dNew();
-    readcoildat(&rdat);
+    pepcoil_readcoildat(&rdat);
 
     seqall    = ajAcdGetSeqall("sequence");
     window    = ajAcdGetInt("window");
@@ -176,7 +176,7 @@ int main(int argc, char **argv)
 	    ajFloatPut(&pscores,i,maxscore);
 	    ajIntPut(&frames,i,maxframe);
 	    ajFloatPut(&rframes,i,(float) maxframe);
-	    ajFloatPut(&probs,i,probcoil(maxscore));
+	    ajFloatPut(&probs,i,pepcoil_probcoil(maxscore));
 	    if(ajFloatGet(pscores,i)>maxmaxscore)
 		maxmaxscore=ajFloatGet(pscores,i);
 	}
@@ -203,7 +203,8 @@ int main(int argc, char **argv)
 		{
 		    maxcoil=AJMAX(maxcoil,ajFloatGet(probs,i));
 		    maxscore=AJMAX(maxscore,ajFloatGet(pscores,i));
-		    if(inframe(startframe,i,ajIntGet(frames,i),7)!=coilframe)
+		    if(pepcoil_inframe(startframe,i,ajIntGet(frames,i),7)!=
+		       coilframe)
 		    {
 			if(frame)
 			    ajFmtPrintF(outf,"%10d..%d   frame %d..%d\n",
@@ -320,16 +321,16 @@ int main(int argc, char **argv)
 
 
 
-/* @func readcoildat **********************************************************
+/* @funcstatic pepcoil_readcoildat *******************************************
 **
-** Undocumented.
+** Read coil data from emboss data area
 **
-** @param [?] rdat [AjPFloat2d*] Undocumented
+** @param [w] rdat [AjPFloat2d*] coil data
 ** @@
 ******************************************************************************/
 
 
-void readcoildat(AjPFloat2d *rdat)
+static void pepcoil_readcoildat(AjPFloat2d *rdat)
 {
     AjPFile mfptr=NULL;
     AjPStr  line=NULL;
@@ -371,17 +372,17 @@ void readcoildat(AjPFloat2d *rdat)
 
 
 
-/* @func probcoil *************************************************************
+/* @funcstatic pepcoil_probcoil **********************************************
 **
-** Undocumented.
+** Calculate coil probability
 **
-** @param [?] score [float] Undocumented
-** @return [float] Undocumented
+** @param [r] score [float] score
+** @return [float] probability
 ** @@
 ******************************************************************************/
 
 
-float probcoil(float score)
+static float pepcoil_probcoil(float score)
 {
     float gcc;
     float gg;
@@ -395,19 +396,19 @@ float probcoil(float score)
 
 
 
-/* @func inframe **************************************************************
+/* @funcstatic pepcoil_inframe ***********************************************
 **
-** Undocumented.
+** Return frame
 **
-** @param [?] start [ajint] Undocumented
-** @param [?] pos [ajint] Undocumented
-** @param [?] frame [ajint] Undocumented
-** @param [?] len [ajint] Undocumented
-** @return [ajint] Undocumented
+** @param [r] start [ajint] start
+** @param [r] pos [ajint] position
+** @param [r] frame [ajint] frame
+** @param [r] len [ajint] length
+** @return [ajint] frame value
 ** @@
 ******************************************************************************/
 
-ajint inframe(ajint start, ajint pos, ajint frame, ajint len)
+ajint pepcoil_inframe(ajint start, ajint pos, ajint frame, ajint len)
 {
     return 1+ajPosMod(frame-pos+start-1,len);
 }

@@ -8,76 +8,19 @@
 
 #include "ajgraph.h"
 
-float xstart=0,ystart=0;
-ajint *lines;
-ajint *pts;
-ajint which;
-AjPFile outf=NULL;
-
-/* @funcstatic  drawPlotlines *************************************************
-**
-** Undocumented.
-**
-** @@
-******************************************************************************/
-
-static void drawPlotlines(void **x, void *cl)
-{
-    EmbPWordMatch p  = (EmbPWordMatch)*x;
-    PLFLT x1,y1,x2,y2;
-
-    lines[which]++;
-    pts[which]+= (*p).length;
-    x1 = x2 = ((*p).seq1start)+xstart;
-    y1 = y2 = (PLFLT)((*p).seq2start)+ystart;
-    x2 += (*p).length;
-    y2 += (PLFLT)(*p).length;
- 
-    ajGraphLine(x1, y1, x2, y2);
-}
-
-/* @funcstatic  dataPlotlines *************************************************
-**
-** Undocumented.
-**
-** @@
-******************************************************************************/
-
-static void dataPlotlines(void **x, void *cl)
-{
-    EmbPWordMatch p  = (EmbPWordMatch)*x;
-    PLFLT x1,y1,x2,y2;
-
-    lines[which]++;
-    pts[which]+= (*p).length;
-    x1 = x2 = ((*p).seq1start)+xstart;
-    y1 = y2 = (PLFLT)((*p).seq2start)+ystart;
-    x2 += (*p).length;
-    y2 += (PLFLT)(*p).length;
- 
-    ajFmtPrintF(outf,"Line x1 %f y1 %f x2 %f y2 %f colour 0\n",x1, y1, x2, y2);
-}
+static float xstart=0;
+static float ystart=0;
+static ajint *lines;
+static ajint *pts;
+static ajint which;
+static AjPFile outf=NULL;
 
 
-/* @funcstatic  plotMatches ***************************************************
-**
-** Undocumented.
-**
-** @param [?] list [AjPList] Undocumented
-** @param [?] text [AjBool] Undocumented
-** @@
-******************************************************************************/
-
-static void plotMatches(AjPList list, AjBool text)
-{
-    if(!text)
-	ajListMap(list,drawPlotlines, NULL);
-    else
-	ajListMap(list,dataPlotlines, NULL);
-    return;
-}
 
 
+static void polydot_drawPlotlines(void **x, void *cl);
+static void polydot_dataPlotlines(void **x, void *cl);
+static void polydot_plotMatches(AjPList list, AjBool text);
 
 
 
@@ -196,7 +139,7 @@ int main(int argc, char **argv)
 		matchlist = embWordBuildMatchTable(&seq1MatchTable, seq2,
 						   ajTrue);
 		if(matchlist)
-		    plotMatches(matchlist,text);
+		    polydot_plotMatches(matchlist,text);
 		if(i<j && dumpfeat)
 		    embWordMatchListConvToFeat(matchlist,&tabptr[i],
 					       &tabptr[j],seq1,
@@ -334,6 +277,79 @@ int main(int argc, char **argv)
     ajStrDel(&sajb);
     AJFREE(lines);
     AJFREE(pts);
+
     ajExit();
     return 0;
+}
+
+
+
+
+/* @funcstatic polydot_drawPlotlines *****************************************
+**
+** Undocumented.
+**
+** @@
+******************************************************************************/
+
+static void polydot_drawPlotlines(void **x, void *cl)
+{
+    EmbPWordMatch p  = (EmbPWordMatch)*x;
+    PLFLT x1,y1,x2,y2;
+
+    lines[which]++;
+    pts[which]+= (*p).length;
+    x1 = x2 = ((*p).seq1start)+xstart;
+    y1 = y2 = (PLFLT)((*p).seq2start)+ystart;
+    x2 += (*p).length;
+    y2 += (PLFLT)(*p).length;
+ 
+    ajGraphLine(x1, y1, x2, y2);
+}
+
+
+
+
+/* @funcstatic  polydot_dataPlotlines ****************************************
+**
+** Undocumented.
+**
+** @@
+******************************************************************************/
+
+static void polydot_dataPlotlines(void **x, void *cl)
+{
+    EmbPWordMatch p  = (EmbPWordMatch)*x;
+    PLFLT x1,y1,x2,y2;
+
+    lines[which]++;
+    pts[which]+= (*p).length;
+    x1 = x2 = ((*p).seq1start)+xstart;
+    y1 = y2 = (PLFLT)((*p).seq2start)+ystart;
+    x2 += (*p).length;
+    y2 += (PLFLT)(*p).length;
+ 
+    ajFmtPrintF(outf,"Line x1 %f y1 %f x2 %f y2 %f colour 0\n",x1, y1, x2, y2);
+}
+
+
+
+
+/* @funcstatic polydot_plotMatches *******************************************
+**
+** Undocumented.
+**
+** @param [?] list [AjPList] Undocumented
+** @param [?] text [AjBool] Undocumented
+** @@
+******************************************************************************/
+
+static void polydot_plotMatches(AjPList list, AjBool text)
+{
+    if(!text)
+	ajListMap(list,polydot_drawPlotlines, NULL);
+    else
+	ajListMap(list,polydot_dataPlotlines, NULL);
+
+    return;
 }

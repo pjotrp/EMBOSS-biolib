@@ -1,4 +1,4 @@
-/* @source plplottest.c
+/* @source plplottest application
 **
 ** General test routine for graph plotting PLPLOT.
 **
@@ -17,8 +17,7 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******************************************************************************/
 #ifndef NO_PLOT
-#include "ajax.h"
-#include "ajgraph.h"
+#include "emboss.h"
 
 /* @prog plplottest *******************************************************
 **
@@ -28,42 +27,43 @@
 
 int main(int argc, char **argv)
 {
-  ajint i;
-  ajint numcols = 32; /* only 16 actually just testing!!! */
-  char buffer[20];
-  AjPGraph graph;
+    ajint i;
+    ajint numcols = 32;		/* only 16 actually just testing!!! */
+    char buffer[20];
+    AjPGraph graph;
 
-  ajGraphInit ("plplottest", argc, argv);
+    ajGraphInit ("plplottest", argc, argv);
 
-  graph = ajAcdGetGraph ("graph");
+    graph = ajAcdGetGraph ("graph");
 
-  ajGraphOpenWin(graph, 0.0,40.0,0.0,40.0);
-  for(i=0;i<numcols; i++){
-    ajGraphSetLineStyle(i);
-    ajGraphSetFore(i);
+    ajGraphOpenWin(graph, 0.0,40.0,0.0,40.0);
+    for(i=0;i<numcols; i++)
+    {
+	ajGraphSetLineStyle(i);
+	ajGraphSetFore(i);
 
-    ajGraphLine((PLFLT)i,0.0,(PLFLT)i,20.0);
-    ajGraphBoxFill((PLFLT)i,20.0,1.0);
-    ajGraphDiaFill((PLFLT)i,21.0,1.0);
-    ajGraphTriFill((PLFLT)i,23.0,i+1,25.0,i+2,23.0);
-    ajGraphSetFore(1);
-    ajGraphTri((PLFLT)i,23.0,i+1,25.0,i+2,23.0);
+	ajGraphLine((PLFLT)i,0.0,(PLFLT)i,20.0);
+	ajGraphBoxFill((PLFLT)i,20.0,1.0);
+	ajGraphDiaFill((PLFLT)i,21.0,1.0);
+	ajGraphTriFill((PLFLT)i,23.0,i+1,25.0,i+2,23.0);
+	ajGraphSetFore(1);
+	ajGraphTri((PLFLT)i,23.0,i+1,25.0,i+2,23.0);
 
-    ajGraphCircle(i,30.0,1);
+	ajGraphCircle(i,30.0,1);
 
-    ajGraphSetFore(1);
-    ajGraphSetCharSize(1.0);
-    ajGraphTextStart (i,20.5,"a");
+	ajGraphSetFore(1);
+	ajGraphSetCharSize(1.0);
+	ajGraphTextStart (i,20.5,"a");
 
-    ajGraphSetCharSize(1.0/((PLFLT)i+1.0));
-    sprintf(buffer,"%f",(PLFLT)(1.0/((PLFLT)i+1.0)));
-    ajGraphTextStart (i,25.5+i,buffer);
-  }
+	ajGraphSetCharSize(1.0/((PLFLT)i+1.0));
+	sprintf(buffer,"%f",(PLFLT)(1.0/((PLFLT)i+1.0)));
+	ajGraphTextStart (i,25.5+i,buffer);
+    }
   
 
-  ajGraphCloseWin();
-  ajExit();
-  return 0;
+    ajGraphCloseWin();
+    ajExit();
+    return 0;
 }
 
 
@@ -71,6 +71,6 @@ int main(int argc, char **argv)
 #else
 int main(int argc, char **argv)
 {
-  ajFatal("Sorry no PLplot was found on compilation hence NO graph");
+    ajFatal("Sorry no PLplot was found on compilation hence NO graph");
 }
 #endif

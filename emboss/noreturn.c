@@ -35,7 +35,7 @@ int main(int argc, char **argv)
     AjPFile inf  = NULL;
     AjPFile outf = NULL;
     AjPStr  line = NULL;
-    ajint     len;
+    ajint   len;
     char    *p;
     
     embInit("noreturn", argc, argv);

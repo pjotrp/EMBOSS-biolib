@@ -24,10 +24,10 @@
 #include <string.h>
 
 
-void norfs(char *seq, char *rev, ajint n, float **x, float **y, AjPInt *cnt,
-	   ajint beg, AjPStr *starts, ajint nstarts, AjPStr *stops,
-	   ajint nstops);
-AjBool isin(char *p, AjPStr *str, ajint n);
+static void plotorf_norfs(char *seq, char *rev, ajint n, float **x, float **y,
+			  AjPInt *cnt, ajint beg, AjPStr *starts,
+			  ajint nstarts, AjPStr *stops, ajint nstops);
+static AjBool plotorf_isin(char *p, AjPStr *str, ajint n);
 
 
 
@@ -97,8 +97,8 @@ int main(int argc, char **argv)
 
     for(i=0;i<6;++i)
     {
-	norfs(ajStrStr(str),ajStrStr(rev),i,x,y,&cnt,beg,starts,nstarts,
-	      stops,nstops);
+	plotorf_norfs(ajStrStr(str),ajStrStr(rev),i,x,y,&cnt,beg,starts,
+		      nstarts,stops,nstops);
 	data = ajGraphxyDataNewI(2);
 	data->numofpoints = 0;
 	
@@ -144,29 +144,27 @@ int main(int argc, char **argv)
     return 0;
 }
 
-/* @func norfs ****************************************************************
+/* @funcstatic plotorf_norfs **************************************************
 **
 ** Undocumented.
 **
-** @param [?] seq [char*] Undocumented
-** @param [?] rev [char*] Undocumented
-** @param [?] n [ajint] Undocumented
-** @param [?] x [float**] Undocumented
-** @param [?] y [float**] Undocumented
-** @param [?] cnt [AjPInt*] Undocumented
-** @param [?] beg [ajint] Undocumented
-** @param [?] starts [AjPStr*] Undocumented
-** @param [?] nstarts [ajint] Undocumented
-** @param [?] stops [AjPStr*] Undocumented
-** @param [?] nstops [ajint] Undocumented
+** @param [r] seq [char*] nucleic sequence
+** @param [r] rev [char*] reverse sequence
+** @param [r] n [ajint] length
+** @param [w] x [float**] xpos
+** @param [w] y [float**] ypos
+** @param [w] cnt [AjPInt*] orf count
+** @param [r] beg [ajint] sequence strat
+** @param [w] starts [AjPStr*] start posns
+** @param [r] nstarts [ajint] number of starts
+** @param [w] stops [AjPStr*] stop posns
+** @param [r] nstops [ajint] number of stops
 ** @@
 ******************************************************************************/
 
-
-
-void norfs(char *seq, char *rev, ajint n, float **x, float **y, AjPInt *cnt,
-	   ajint beg, AjPStr *starts, ajint nstarts, AjPStr *stops,
-	   ajint nstops)
+static void plotorf_norfs(char *seq, char *rev, ajint n, float **x, float **y,
+			  AjPInt *cnt, ajint beg, AjPStr *starts,
+			  ajint nstarts, AjPStr *stops, ajint nstops)
 {
 
     ajint len;
@@ -201,7 +199,7 @@ void norfs(char *seq, char *rev, ajint n, float **x, float **y, AjPInt *cnt,
     
     for(i=po;i<len-2;i+=3)
     {
-	if(isin(&p[i],starts,nstarts))
+	if(plotorf_isin(&p[i],starts,nstarts))
 	{
 	    if(!inframe)
 	    {
@@ -211,7 +209,7 @@ void norfs(char *seq, char *rev, ajint n, float **x, float **y, AjPInt *cnt,
 	    }
 	}
 	
-	if(isin(&p[i],stops,nstops))
+	if(plotorf_isin(&p[i],stops,nstops))
 	    if(inframe)
 		inframe=ajFalse;
     }
@@ -229,7 +227,7 @@ void norfs(char *seq, char *rev, ajint n, float **x, float **y, AjPInt *cnt,
     
     for(i=po;i<len-2;i+=3)
     {
-	if(isin(&p[i],starts,nstarts))
+	if(plotorf_isin(&p[i],starts,nstarts))
 	{
 	    if(!inframe)
 	    {
@@ -246,7 +244,7 @@ void norfs(char *seq, char *rev, ajint n, float **x, float **y, AjPInt *cnt,
 	    }
 	}
 
-	if(isin(&p[i],stops,nstops))
+	if(plotorf_isin(&p[i],stops,nstops))
 	    if(inframe)
 	    {
 		if(ajIntGet(*cnt,n))
@@ -276,19 +274,18 @@ void norfs(char *seq, char *rev, ajint n, float **x, float **y, AjPInt *cnt,
     return;
 }
 
-/* @func isin *****************************************************************
+/* @funcstatic plotorf_isin **************************************************
 **
-** Undocumented.
+** True if codon at p occurs in string str
 **
-** @param [?] p [char*] Undocumented
-** @param [?] str [AjPStr*] Undocumented
-** @param [?] n [ajint] Undocumented
-** @return [AjBool] Undocumented
+** @param [r] p [char*] codon
+** @param [r] str [AjPStr*] sequence
+** @param [r] n [ajint] str length
+** @return [AjBool] true if found
 ** @@
 ******************************************************************************/
 
-
-AjBool isin(char *p, AjPStr *str, ajint n)
+static AjBool plotorf_isin(char *p, AjPStr *str, ajint n)
 {
     ajint i;
     AjBool ret;

@@ -48,8 +48,9 @@
 #include "ajtime.h"
 
 
-static void pushpoint(AjPList *l, float x1, float y1, float x2, float y2);
-static void datapoints(AjPList *l, AjPFile outf);
+static void plotcon_pushpoint(AjPList *l, float x1, float y1, float x2,
+			      float y2);
+static void plotcon_datapoints(AjPList *l, AjPFile outf);
 
 typedef struct SPoint
 {
@@ -229,8 +230,8 @@ int main(int argc, char **argv)
 		if(ymin > sumscore[bin-1]) ymin=sumscore[bin-1];
 		if(ymax < sumscore[bin-1]) ymax=sumscore[bin-1];
 	    }
-	    pushpoint(&list,(float)(bin+1),sumscore[bin],
-		      (float)(bin),sumscore[bin-1]);
+	    plotcon_pushpoint(&list,(float)(bin+1),sumscore[bin],
+			      (float)(bin),sumscore[bin-1]);
 	}
     else
 	for(bin=0;bin<numbins;bin++)
@@ -274,7 +275,7 @@ int main(int argc, char **argv)
 		    "Relative Residue Position","Similarity");
 	ajFmtPrintF(outf,"##DataObjects\n##Number %d\n",ajListLength(list));
 
-	datapoints(&list,outf);
+	plotcon_datapoints(&list,outf);
 
 	ajFmtPrintF(outf,"##GraphObjects\n##Number 0\n");
 
@@ -295,21 +296,22 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic  pushpoint *****************************************************
+/* @funcstatic  plotcon_pushpoint ********************************************
 **
 ** Adds data points to the list.
 **
-** @param [?] l [AjPList*] List to push data point to.
-** @param [?] x1 [float]   x value at bin+1
-** @param [?] y1 [float]   y value at bin+1
-** @param [?] x2 [float]   x value at bin
-** @param [?] y2 [float]   y value at bin
+** @param [w] l [AjPList*] List to push data point to.
+** @param [r] x1 [float]   x value at bin+1
+** @param [r] y1 [float]   y value at bin+1
+** @param [r] x2 [float]   x value at bin
+** @param [r] y2 [float]   y value at bin
 ** @@
 ******************************************************************************/
 
 
 
-static void pushpoint(AjPList *l, float x1, float y1, float x2, float y2)
+static void plotcon_pushpoint(AjPList *l, float x1, float y1, float x2,
+			      float y2)
 {
     PPoint p;
     AJNEW0(p);
@@ -326,27 +328,26 @@ static void pushpoint(AjPList *l, float x1, float y1, float x2, float y2)
 
 
 
-/* @funcstatic  datapoints ****************************************************
+/* @funcstatic plotcon_datapoints ********************************************
 **
 ** Output a list of data points to a text file
 **
-** @param [?] l [AjPList*]   List of data points
-** @param [?] outf [AjPFile] File to write to
+** @param [r] l [AjPList*]   List of data points
+** @param [w] outf [AjPFile] File to write to
 ** @@
 ******************************************************************************/
 
 
-static void datapoints(AjPList *l,AjPFile outf)
+static void plotcon_datapoints(AjPList *l,AjPFile outf)
 {
     PPoint p;
 
     while(ajListPop(*l,(void **)&p))
     {
-      ajFmtPrintF(outf,"Line x1 %f y1 %f x2 %f y2 %f colour 0\n",
-                  p->x1,p->y1,p->x2,p->y2);
-      AJFREE(p);
+	ajFmtPrintF(outf,"Line x1 %f y1 %f x2 %f y2 %f colour 0\n",
+		    p->x1,p->y1,p->x2,p->y2);
+	AJFREE(p);
     }
 
     return;
 }
-

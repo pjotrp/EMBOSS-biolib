@@ -22,7 +22,7 @@
 #include "emboss.h"
 
 
-void spaces(AjPFile *outf, ajint length);
+static void patmatdb_spaces(AjPFile *outf, ajint length);
 
 
 
@@ -133,12 +133,12 @@ int main(int argc, char **argv)
 		
 		
 	    ajFmtPrintF(outf, "     |");
-	    spaces(&outf, length);
+	    patmatdb_spaces(&outf, length);
 	    ajFmtPrintF(outf, "|\n");
 
 
 	    ajFmtPrintF(outf, "%6d", start);
-	    spaces(&outf, length);
+	    patmatdb_spaces(&outf, length);
 	    ajFmtPrintF(outf, "%-d\n\n\n", end);
 	}
 
@@ -154,16 +154,16 @@ int main(int argc, char **argv)
     return 0;
 }
 
-/* @func spaces ***************************************************************
+/* @funcstatic patmatdb_spaces ************************************************
 **
 ** add spaces under sequence between the count bars
 **
-** @param [?] outf [AjPFile*] Undocumented
-** @param [?] length [ajint] Undocumented
+** @param [w] outf [AjPFile*] outfile
+** @param [r] length [ajint] length+2
 ** @@
 ******************************************************************************/
 
-void spaces(AjPFile *outf, ajint length)
+static void patmatdb_spaces(AjPFile *outf, ajint length)
 {
     ajint i;
 
