@@ -59,16 +59,100 @@ IT IS DONE FOR YOU.
         Algorithms
   -->
 
-**************** 
-EDIT HERE
-**************** 
+<b>primer3</b> is an interface to the 'primer3' program from the
+Whitehead Institute. 
+
+<p>
+
+The Whitehead program must be set up and on the path in order for
+<b>primer3</b> to find and run it. 
+
+<p>
+
+Primer3 picks primers for PCR reactions, considering as criteria:
+<p>
+
+<UL>
+<LI>oligonucleotide melting temperature, size, GC content,
+  and primer-dimer possibilities,
+
+<LI>PCR product size,
+
+<LI>positional constraints within the source sequence, and
+
+<LI>miscellaneous other constraints.
+</UL>
+
+<p>
+
+All of these criteria are user-specifiable as constraints.
 
 
+<H3>ADVICE FOR PICKING PRIMERS</H3>
 
+We suggest referring to: Wojciech Rychlik, "Selection of Primers
+for Polymerase Chain Reaction" in BA White, Ed., "Methods in
+Molecular Biology, Vol. 15: PCR Protocols: Current Methods and
+Applications", 1993, pp 31-40, Humana Press, Totowa NJ
 
+<H4>Cautions</H4>
 
+Some of the most important issues in primer picking can be
+addressed only before using Primer3.  These are sequence quality
+(including making sure the sequence is not vector and not
+chimeric) and avoiding repetitive elements.
 
+<p>
 
+Techniques for avoiding problems include a thorough understanding
+of possible vector contaminants and cloning artifacts coupled
+with database searches using blast, fasta, or other similarity
+searching program to screen for vector contaminants and possible
+repeats.  Repbase (J. Jurka, A.F.A. Smit, C. Pethiyagoda, and
+others, 1995-1996, ftp://ncbi.nlm.nih.gov/repository/repbase)
+is an excellent source of repeat sequences and pointers to the
+literature.  Primer3 now allows you to screen candidate oligos
+against a Mispriming Library (or a Mishyb Library in the case
+of internal oligos).
+
+<p>
+
+Sequence quality can be controlled by manual trace viewing and
+quality clipping or automatic quality clipping programs.  Low-
+quality bases should be changed to N's or can be made part of
+Excluded Regions. The beginning of a sequencing read is often
+problematic because of primer peaks, and the end of the read
+often contains many low-quality or even meaningless called bases.
+Therefore when picking primers from single-pass sequence it is
+often best to use the INCLUDED_REGION parameter to ensure that
+Primer3 chooses primers in the high quality region of the read.
+
+<p>
+
+In addition, Primer3 takes as input a Sequence Quality list for
+use with those base calling programs 
+
+<p>
+
+(e.g. Phred, Bass/Grace, Trout) that output this information.
+
+<H4>What to do if Primer3 cannot find a primers?</H4>
+
+Try relaxing various parameters, including the
+self-complementarity parameters and max and min oligo melting
+temperatures.  For example, for very A-T-rich regions you might
+have to increase maximum primer size or decrease minimum melting
+temperature.  It is usually unwise to reduce the minimum primer
+size if your template is complex (e.g. a mammalian genome), since
+small primers are more likely to be non-specific.  Make sure that
+there are adequate stretches of non-Ns in the regions in which
+you wish to pick primers.  If necessary you can also allow an N
+in your primer and use an oligo mixture containing all four bases
+at that position.
+
+<p>
+
+Try setting the '-explain' option.
 
 
 
@@ -89,13 +173,10 @@ Here is a sample session with primer3:
 
 <pre>
 
-% primer3
+% primer3 em:hsfau1 hsfau.primer3 -explain
 
 </pre>
 
-**************** 
-EDIT HERE
-**************** 
 
 
 
@@ -124,7 +205,7 @@ EDIT HERE
    -task               list       Tell Primer3 what task to perform. Legal
                                   values are 0: 'Pick PCR primers', 1: 'Pick
                                   PCR primers and hybridization probe', 2:
-                                  'Pick left primer only', 3: 'Pick right
+                                  'Pick forward primer only', 3: 'Pick reverse
                                   primer only', 4: 'Pick hybridization probe
                                   only'.
                                   The tasks should be self explanatory.
@@ -175,18 +256,19 @@ EDIT HERE
                                   E.g. 401,407 68,70 forbids selection of
                                   primers in the 7 bases starting at 401 and
                                   the 3 bases at 68.
-   -leftinput          string     The sequence of a left primer to check and
-                                  around which to design right primers and
-                                  optional internal oligos. Must be a
+   -forwardinput       string     The sequence of a forward primer to check
+                                  and around which to design reverse primers
+                                  and optional internal oligos. Must be a
                                   substring of SEQUENCE.
-   -rightinput         string     The sequence of a right primer to check and
-                                  around which to design left primers and
-                                  optional internal oligos. Must be a
+   -reverseinput       string     The sequence of a reverse primer to check
+                                  and around which to design forward primers
+                                  and optional internal oligos. Must be a
                                   substring of the reverse strand of SEQUENCE.
 *  -gcclamp            integer    Require the specified number of consecutive
-                                  Gs and Cs at the 3' end of both the left and
-                                  right primer. (This parameter has no effect
-                                  on the internal oligo if one is requested.)
+                                  Gs and Cs at the 3' end of both the forward
+                                  and reverse primer. (This parameter has no
+                                  effect on the internal oligo if one is
+                                  requested.)
 *  -osize              integer    Optimum length (in bases) of a primer oligo.
                                   Primer3 will attempt to pick primers close
                                   to this length.
@@ -214,8 +296,8 @@ EDIT HERE
 *  -maxtm              float      Maximum acceptable melting
                                   temperature(Celsius) for a primer oligo.
 *  -maxdifftm          float      Maximum acceptable (unsigned) difference
-                                  between the melting temperatures of the left
-                                  and right primers.
+                                  between the melting temperatures of the
+                                  forward and reverse primers.
 *  -ogcpercent         float      Primer optimum GC percent.
 *  -mingc              float      Minimum allowable percentage of Gs and Cs in
                                   any primer.
@@ -332,8 +414,9 @@ EDIT HERE
                                   regions excluded regions for internal
                                   oligos.
 *  -oligoinput         string     The sequence of an internal oligo to check
-                                  and around which to design left and right
-                                  primers. Must be a substring of SEQUENCE.
+                                  and around which to design forward and
+                                  reverse primers. Must be a substring of
+                                  SEQUENCE.
 *  -oligoosize         integer    Optimum length (in bases) of an internal
                                   oligo. Primer3 will attempt to pick primers
                                   close to this length.
@@ -431,9 +514,9 @@ EDIT HERE
    -fileflag           bool       If the associated value is non-0, then
                                   Primer3 creates two output files for each
                                   input SEQUENCE. File <sequence-id>.for lists
-                                  all acceptable left primers for
+                                  all acceptable forward primers for
                                   <sequence-id>, and <sequence-id>.rev lists
-                                  all acceptable right primers for
+                                  all acceptable reverse primers for
                                   <sequence-id>, where <sequence-id> is the
                                   value of the SEQUENCE-ID tag (which must be
                                   supplied). In addition, if the input tag
@@ -507,10 +590,10 @@ EDIT HERE
                                   when testing a single primer for (local)
                                   self-complementarity and the maximum
                                   allowable local alignment score when testing
-                                  for complementarity between left and right
-                                  primers. Local self-complementarity is taken
-                                  to predict the tendency of primers to
-                                  anneal to each other without necessarily
+                                  for complementarity between forward and
+                                  reverse primers. Local self-complementarity
+                                  is taken to predict the tendency of primers
+                                  to anneal to each other without necessarily
                                   causing self-priming in the PCR. The scoring
                                   system gives 1.00 for complementary bases,
                                   -0.25 for a match of any base (or N) with an
@@ -534,7 +617,7 @@ EDIT HERE
                                   for self-complementarity, and the maximum
                                   allowable 3'-anchored global alignment score
                                   when testing for complementarity between
-                                  left and right primers. The 3'-anchored
+                                  forward and reverse primers. The 3'-anchored
                                   global alignment score is taken to predict
                                   the likelihood of PCR-priming primer-dimers,
                                   for example
@@ -563,11 +646,11 @@ EDIT HERE
                                   as great as the score of a global
                                   alignment.
    -maxendstability    float      The maximum stability for the five 3' bases
-                                  of a left or right primer. Bigger numbers
-                                  mean more stable 3' ends. The value is the
-                                  maximum delta G for duplex disruption for
-                                  the five 3' bases as calculated using the
-                                  nearest neighbor parameters published in
+                                  of a forward or reverse primer. Bigger
+                                  numbers mean more stable 3' ends. The value
+                                  is the maximum delta G for duplex disruption
+                                  for the five 3' bases as calculated using
+                                  the nearest neighbor parameters published in
                                   Breslauer, Frank, Bloeker and Marky, Proc.
                                   Natl. Acad. Sci. USA, vol 83, pp 3746-3750.
                                   Primer3 uses a completely permissive default
@@ -663,10 +746,10 @@ EDIT HERE
 
 <tr>
 <td>-task</td>
-<td>Tell Primer3 what task to perform. Legal values are 0: 'Pick PCR primers', 1: 'Pick PCR primers and hybridization probe', 2: 'Pick left primer only', 3: 'Pick right primer only', 4: 'Pick hybridization probe only'.
+<td>Tell Primer3 what task to perform. Legal values are 0: 'Pick PCR primers', 1: 'Pick PCR primers and hybridization probe', 2: 'Pick forward primer only', 3: 'Pick reverse primer only', 4: 'Pick hybridization probe only'.
 The tasks should be self explanatory.
 Briefly, an 'internal oligo' is intended to be used as a hybridization probe (hyb probe) to detect the PCR product after amplification.</td>
-<td><table><tr><td>0</td> <td><i>(Pick PCR primers)</i></td></tr><tr><td>1</td> <td><i>(Pick PCR primers and hybridization probe)</i></td></tr><tr><td>2</td> <td><i>(Pick left primer only)</i></td></tr><tr><td>3</td> <td><i>(Pick right primer only)</i></td></tr><tr><td>4</td> <td><i>(Pick hybridization probe only)</i></td></tr></table></td>
+<td><table><tr><td>0</td> <td><i>(Pick PCR primers)</i></td></tr><tr><td>1</td> <td><i>(Pick PCR primers and hybridization probe)</i></td></tr><tr><td>2</td> <td><i>(Pick forward primer only)</i></td></tr><tr><td>3</td> <td><i>(Pick reverse primer only)</i></td></tr><tr><td>4</td> <td><i>(Pick hybridization probe only)</i></td></tr></table></td>
 <td>0</td>
 </tr>
 
@@ -707,22 +790,22 @@ E.g. 401,407 68,70 forbids selection of primers in the 7 bases starting at 401 a
 </tr>
 
 <tr>
-<td>-leftinput</td>
-<td>The sequence of a left primer to check and around which to design right primers and optional internal oligos. Must be a substring of SEQUENCE.</td>
+<td>-forwardinput</td>
+<td>The sequence of a forward primer to check and around which to design reverse primers and optional internal oligos. Must be a substring of SEQUENCE.</td>
 <td>Any string is accepted</td>
 <td><i>An empty string is accepted</i></td>
 </tr>
 
 <tr>
-<td>-rightinput</td>
-<td>The sequence of a right primer to check and around which to design left primers and optional internal oligos. Must be a substring of the reverse strand of SEQUENCE.</td>
+<td>-reverseinput</td>
+<td>The sequence of a reverse primer to check and around which to design forward primers and optional internal oligos. Must be a substring of the reverse strand of SEQUENCE.</td>
 <td>Any string is accepted</td>
 <td><i>An empty string is accepted</i></td>
 </tr>
 
 <tr>
 <td>-gcclamp</td>
-<td>Require the specified number of consecutive Gs and Cs at the 3' end of both the left and right primer. (This parameter has no effect on the internal oligo if one is requested.)</td>
+<td>Require the specified number of consecutive Gs and Cs at the 3' end of both the forward and reverse primer. (This parameter has no effect on the internal oligo if one is requested.)</td>
 <td>Integer 0 or more</td>
 <td>0</td>
 </tr>
@@ -771,7 +854,7 @@ E.g. 401,407 68,70 forbids selection of primers in the 7 bases starting at 401 a
 
 <tr>
 <td>-maxdifftm</td>
-<td>Maximum acceptable (unsigned) difference between the melting temperatures of the left and right primers.</td>
+<td>Maximum acceptable (unsigned) difference between the melting temperatures of the forward and reverse primers.</td>
 <td>Any integer value</td>
 <td>100.0</td>
 </tr>
@@ -871,7 +954,7 @@ pairs, where <start> is the index of the first base of an excluded region, and <
 
 <tr>
 <td>-oligoinput</td>
-<td>The sequence of an internal oligo to check and around which to design left and right primers. Must be a substring of SEQUENCE.</td>
+<td>The sequence of an internal oligo to check and around which to design forward and reverse primers. Must be a substring of SEQUENCE.</td>
 <td>Any string is accepted</td>
 <td><i>An empty string is accepted</i></td>
 </tr>
@@ -999,7 +1082,7 @@ INTERNAL-OLIGO-SELF-END is meaningless when applied to internal oligos used for 
 
 <tr>
 <td>-fileflag</td>
-<td>If the associated value is non-0, then Primer3 creates two output files for each input SEQUENCE. File <sequence-id>.for lists all acceptable left primers for <sequence-id>, and <sequence-id>.rev lists all acceptable right primers for <sequence-id>, where <sequence-id> is the value of the SEQUENCE-ID tag (which must be supplied). In addition, if the input tag TASK is 1 or 4, Primer3 produces a file <sequence-id>.int, which lists all acceptable internal oligos.</td>
+<td>If the associated value is non-0, then Primer3 creates two output files for each input SEQUENCE. File <sequence-id>.for lists all acceptable forward primers for <sequence-id>, and <sequence-id>.rev lists all acceptable reverse primers for <sequence-id>, where <sequence-id> is the value of the SEQUENCE-ID tag (which must be supplied). In addition, if the input tag TASK is 1 or 4, Primer3 produces a file <sequence-id>.int, which lists all acceptable internal oligos.</td>
 <td>Yes/No</td>
 <td>No</td>
 </tr>
@@ -1050,7 +1133,7 @@ An empty value for this parameter indicates that no repeat library should be use
 
 <tr>
 <td>-selfany</td>
-<td>The maximum allowable local alignment score when testing a single primer for (local) self-complementarity and the maximum allowable local alignment score when testing for complementarity between left and right primers. Local self-complementarity is taken to predict the tendency of primers to anneal to each other without necessarily causing self-priming in the PCR. The scoring system gives 1.00 for complementary bases, -0.25 for a match of any base (or N) with an N, -1.00 for a mismatch, and -2.00 for a gap. Only single-base-pair gaps are allowed. For example, the alignment
+<td>The maximum allowable local alignment score when testing a single primer for (local) self-complementarity and the maximum allowable local alignment score when testing for complementarity between forward and reverse primers. Local self-complementarity is taken to predict the tendency of primers to anneal to each other without necessarily causing self-priming in the PCR. The scoring system gives 1.00 for complementary bases, -0.25 for a match of any base (or N) with an N, -1.00 for a mismatch, and -2.00 for a gap. Only single-base-pair gaps are allowed. For example, the alignment
 5' ATCGNA 3'
 || | |
 3' TA-CGT 5'
@@ -1065,7 +1148,7 @@ is not considered. Scores are non-negative, and a score of 0.00 indicates that t
 
 <tr>
 <td>-selfend</td>
-<td>The maximum allowable 3'-anchored global alignment score when testing a single primer for self-complementarity, and the maximum allowable 3'-anchored global alignment score when testing for complementarity between left and right primers. The 3'-anchored global alignment score is taken to predict the likelihood of PCR-priming primer-dimers, for example
+<td>The maximum allowable 3'-anchored global alignment score when testing a single primer for self-complementarity, and the maximum allowable 3'-anchored global alignment score when testing for complementarity between forward and reverse primers. The 3'-anchored global alignment score is taken to predict the likelihood of PCR-priming primer-dimers, for example
 5' ATGCCCTAGCTTCCGGATG 3'
 ||| |||||
 3' AAGTCCTACATTTAGCCTAGT 5'
@@ -1080,7 +1163,7 @@ The scoring system is as for the Maximum Complementarity argument. In the exampl
 
 <tr>
 <td>-maxendstability</td>
-<td>The maximum stability for the five 3' bases of a left or right primer. Bigger numbers mean more stable 3' ends. The value is the maximum delta G for duplex disruption for the five 3' bases as calculated using the nearest neighbor parameters published in Breslauer, Frank, Bloeker and Marky, Proc. Natl. Acad. Sci. USA, vol 83, pp 3746-3750. Primer3 uses a completely permissive default value for backward compatibility (which we may change in the next release). Rychlik recommends a maximum value of 9 (Wojciech Rychlik, 'Selection of Primers for Polymerase Chain Reaction' in BA White, Ed., 'Methods in Molecular Biology, Vol. 15: PCR Protocols: Current Methods and Applications', 1993, pp 31-40, Humana Press, Totowa NJ).</td>
+<td>The maximum stability for the five 3' bases of a forward or reverse primer. Bigger numbers mean more stable 3' ends. The value is the maximum delta G for duplex disruption for the five 3' bases as calculated using the nearest neighbor parameters published in Breslauer, Frank, Bloeker and Marky, Proc. Natl. Acad. Sci. USA, vol 83, pp 3746-3750. Primer3 uses a completely permissive default value for backward compatibility (which we may change in the next release). Rychlik recommends a maximum value of 9 (Wojciech Rychlik, 'Selection of Primers for Polymerase Chain Reaction' in BA White, Ed., 'Methods in Molecular Biology, Vol. 15: PCR Protocols: Current Methods and Applications', 1993, pp 31-40, Humana Press, Totowa NJ).</td>
 <td>Number up to 1000.000</td>
 <td>100.0</td>
 </tr>
@@ -1128,10 +1211,7 @@ IT IS DONE FOR YOU.
         happens in unusual cases - null input, etc. 
    -->
 
-**************** 
-EDIT HERE
-**************** 
-
+It reads a normal nucleic acid sequence
 
 
 
@@ -1155,14 +1235,54 @@ EDIT HERE
         happens in unusual cases - null output, errors etc. 
    -->
 
-**************** 
-EDIT HERE
-**************** 
+An example output file follows:
+
+<p>
+<hr>
+<pre>
+# PRIMER3 RESULTS FOR HSFAU1
+
+#                      Start  Len   Tm     GC%   Sequence
+
+   1 PRODUCT SIZE: 289
+     FORWARD PRIMER    1725   20  59.96  55.00  AGGGAAGGGATGCTAGGTGT
+
+     REVERSE PRIMER    2013   20  59.99  55.00  AGAAGCACACCTCTCCCTGA
 
 
+   2 PRODUCT SIZE: 288
+     FORWARD PRIMER    1725   20  59.96  55.00  AGGGAAGGGATGCTAGGTGT
+
+     REVERSE PRIMER    2012   20  59.99  60.00  GAAGCACACCTCTCCCTGAG
 
 
+   3 PRODUCT SIZE: 286
+     FORWARD PRIMER    1728   20  60.07  55.00  GAAGGGATGCTAGGTGTGGA
 
+     REVERSE PRIMER    2013   20  59.99  55.00  AGAAGCACACCTCTCCCTGA
+
+
+   4 PRODUCT SIZE: 284
+     FORWARD PRIMER    1731   20  60.07  55.00  GGGATGCTAGGTGTGGAAGA
+
+     REVERSE PRIMER    2014   20  59.99  60.00  GAGAAGCACACCTCTCCCTG
+
+
+</pre>
+<hr>
+<p>
+
+Headers describing the input file name and the names of the outp[ut
+columns are displayed.
+
+<p>
+
+The best 5 primer pairs are displayed with the product size.
+
+<p>
+
+The reverse sequence is displayed as the reverse complement to the input
+forward sense sequence. 
 
 
 
@@ -1228,10 +1348,7 @@ The directories are searched in the following order:
 
    -->
 
-**************** 
-EDIT HERE
-**************** 
-
+None.
 
 
 
@@ -1305,8 +1422,11 @@ None.
         "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
    -->
 
-None.
-
+The message: "EMBOSS An error in primer3.c at line 315: The program
+'primer3_core' must be on the path.  It is part of the 'primer3'
+package, available from the Whitehead Institute.  See:
+http://www-genome.wi.mit.edu/" is output if you do not have the
+Whitehead Institute's primer3 program set up and on your path. 
 
 
 
@@ -1382,16 +1502,33 @@ None.
         Who has worked on the program in the past.
    -->
 
-This application was written by Alan Bleasby <a
-href="mailto:ableasby@hgmp.mrc.ac.uk">(ableasby@hgmp.mrc.ac.uk)</a>
+This application was written by Gary Williams <a
+href="mailto:gwilliam@hgmp.mrc.ac.uk">(gwilliam@hgmp.mrc.ac.uk)</a>
 
-**************** 
-EDIT HERE
-**************** 
+<p>
 
+The Whitehead Institute's primer3 program is not part of this program,
+but it must be set up on your system and on your path. 
 
+<p>
+The Whitehead Institute's primer3 program is:
+<br>
+ Copyright (c) 1996,1997,1998
+<br>
+        Whitehead Institute for Biomedical Research. All rights reserved.
 
+<p>
 
+The Whitehead Institute requests that use of this software be cited in
+publications as:
+
+<p>
+
+Steve Rozen, Helen J. Skaletsky (1996,1997,1998)
+<br>
+   Primer3. Code available at
+<br>
+   http://www-genome.wi.mit.edu/genome_software/other/primer3.html
 
 
 
@@ -1412,11 +1549,7 @@ EDIT HERE
         What changes have been made.
    -->
 
-Written (date) - author.
-
-**************** 
-EDIT HERE
-**************** 
+Written (Dec 2001) - Gary Williams
 
 
 
