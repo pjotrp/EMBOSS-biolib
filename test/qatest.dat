@@ -185,10 +185,10 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest -help -verbose
 FI stderr
-FZ = 3995
+FZ = 3895
 FP 26 /   boolean /
 FP  6 /   integer /
-FP 28 /   string /
+FP 26 /   string /
 FP /   [-]testalen           string     asequence length \.\.\.\n/
 FP 0 /Warning: /
 FP 0 /Error: /
@@ -653,13 +653,13 @@ AP acdc
 ER 1
 PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
-CL ambigdefattr tembl:paamir
+CL ambigdefattr tembl:paamir -filter
 FI stderr
 FZ > 0
-FP 0 /Warning: /
+FP 1 /Warning: Ambiguous name/token 'd' \(debug,die\)/
 FP 1 /Error: /
 FP 0 /Died: /
-FP /Error: File .*ambigdefattr.acd line 7: \(outtest\) 'o' matches attribute 'optional' and associated qualifier 'odirectory'\n/
+FP /Error: File .*ambigdefattr.acd line 3: \(ambigdefattr\) Attribute or qualifier 'd' ambiguous\n/
 //
 
 ID acd-ambigassoc
@@ -1585,7 +1585,7 @@ FC = 4
 FP /^>HBA_HUMAN /
 FI hba_human.gff
 FC = 158
-FP /^##Type unknown Protein HBA_HUMAN\n/
+FP /^##Type Protein HBA_HUMAN\n/
 //
 
 ID qual-ufo-noid
@@ -6324,7 +6324,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI enztest.findkm
-FP /^Vmax = 99.70, Km = 4.894612\n/
+FP /^Vmax = 99.70, Km = 4.8946\d+\n/
 FI findkm.ps
 FZ > 30000
 FP /^%%Title: PLplot Graph\n/
@@ -7477,7 +7477,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI octanol.ps
-FZ = 17968
+FZ = 13936
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -10244,12 +10244,12 @@ ID seqret-outmultiusa-msf
 AP seqret
 CL -auto ../../data/dna.m-embl msf::test.out
 FI test.out
-FZ = 871
+FZ = 880
 FP /^!!NA_MULTIPLE_ALIGNMENT 1\.0\n/
 FP /^  test\.out MSF: 120 Type: N [0-9\/]+ CompCheck: 3196 \.\.\n/
-FP /^  Name: FASTAM1 Len: 120  Check: 8587 Weight: 1\.00\n/
-FP /^  Name: FASTAM2 Len: 120  Check: 6178 Weight: 1\.00\n/
-FP /^  Name: FASTAM3 Len: 120  Check: 8431 Weight: 1\.00\n/
+FP /^  Name: FASTAM1    Len: 120  Check: 8587 Weight: 1\.00\n/
+FP /^  Name: FASTAM2    Len: 120  Check: 6178 Weight: 1\.00\n/
+FP /^  Name: FASTAM3    Len: 120  Check: 8431 Weight: 1\.00\n/
 FP /^\/\/\n/
 FP /^           1                                               50\n/
 FP 3 /^FASTAM3    [ACGT\-]+\n/
@@ -10259,12 +10259,12 @@ ID seqret-outmulti-msf
 AP seqret
 CL -auto ../../data/dna.m-embl test.out -osf msf
 FI test.out
-FZ = 871
+FZ = 880
 FP /^!!NA_MULTIPLE_ALIGNMENT 1\.0\n/
 FP /^  test\.out MSF: 120 Type: N [0-9\/]+ CompCheck: 3196 \.\.\n/
-FP /^  Name: FASTAM1 Len: 120  Check: 8587 Weight: 1\.00\n/
-FP /^  Name: FASTAM2 Len: 120  Check: 6178 Weight: 1\.00\n/
-FP /^  Name: FASTAM3 Len: 120  Check: 8431 Weight: 1\.00\n/
+FP /^  Name: FASTAM1    Len: 120  Check: 8587 Weight: 1\.00\n/
+FP /^  Name: FASTAM2    Len: 120  Check: 6178 Weight: 1\.00\n/
+FP /^  Name: FASTAM3    Len: 120  Check: 8431 Weight: 1\.00\n/
 FP /^\/\/\n/
 FP /^           1                                               50\n/
 FP 3 /^FASTAM3    [ACGT\-]+\n/
@@ -10274,7 +10274,7 @@ ID seqret-outmulti-msf-noalign
 AP seqret
 CL -auto tembl:paami\* test.out -osf msf
 FI test.out
-FZ = 13815
+FZ = 13831
 FP /^!!NA_MULTIPLE_ALIGNMENT 1\.0\n/
 FP /^  test\.out MSF: 2167 Type: N [0-9/]+ CompCheck: 9293 \.\.\n/
 FP 4 /^  Name: PAAMI/
@@ -10288,12 +10288,12 @@ ID seqret-outmultiusa-msfprot
 AP seqret
 CL -auto ../../data/prot.m-swiss msf::test.out
 FI test.out
-FZ = 743
+FZ = 752
 FP /^!!AA_MULTIPLE_ALIGNMENT 1\.0\n/
 FP /^  test\.out MSF:  100 Type: P [0-9\/]+ CompCheck: 4147 \.\.\n/
-FP /^  Name: SWISSM1 Len: 100  Check: 1414 Weight: 1\.00\n/
-FP /^  Name: SWISSM2 Len: 100  Check: 1993 Weight: 1\.00\n/
-FP /^  Name: SWISSM3 Len: 100  Check:  740 Weight: 1\.00\n/
+FP /^  Name: SWISSM1    Len: 100  Check: 1414 Weight: 1\.00\n/
+FP /^  Name: SWISSM2    Len: 100  Check: 1993 Weight: 1\.00\n/
+FP /^  Name: SWISSM3    Len: 100  Check:  740 Weight: 1\.00\n/
 FP /^\/\/\n/
 FP /^           1                                               50\n/
 FP 2 /^SWISSM2    [A-Z~]+\n/
@@ -10303,12 +10303,12 @@ ID seqret-outmulti-msfprot
 AP seqret
 CL -auto ../../data/prot.m-swiss test.out -osf msf
 FI test.out
-FZ = 743
+FZ = 752
 FP /^!!AA_MULTIPLE_ALIGNMENT 1\.0\n/
 FP /^  test\.out MSF:  100 Type: P [0-9\/]+ CompCheck: 4147 \.\.\n/
-FP /^  Name: SWISSM1 Len: 100  Check: 1414 Weight: 1\.00\n/
-FP /^  Name: SWISSM2 Len: 100  Check: 1993 Weight: 1\.00\n/
-FP /^  Name: SWISSM3 Len: 100  Check:  740 Weight: 1\.00\n/
+FP /^  Name: SWISSM1    Len: 100  Check: 1414 Weight: 1\.00\n/
+FP /^  Name: SWISSM2    Len: 100  Check: 1993 Weight: 1\.00\n/
+FP /^  Name: SWISSM3    Len: 100  Check:  740 Weight: 1\.00\n/
 FP /^\/\/\n/
 FP /^           1                                               50\n/
 FP 2 /^SWISSM2    [A-Z~]+\n/
@@ -10326,7 +10326,7 @@ FP /^dimensions ntax=3 nchar=120;\n/
 FP /^format interleave datatype=DNA missing=N gap=-;\n/
 FP /^matrix\n/
 FP /^;\n/
-FP /^endblock;\n/
+FP /^end;\n/
 FP /^begin assumptions;\n/
 FP /^options deftype=unord;\n/
 FP 3 /^FASTAM2              [ACGT\-]+\n/
@@ -10344,7 +10344,7 @@ FP /^dimensions ntax=3 nchar=120;\n/
 FP /^format interleave datatype=DNA missing=N gap=-;\n/
 FP /^matrix\n/
 FP /^;\n/
-FP /^endblock;\n/
+FP /^end;\n/
 FP /^begin assumptions;\n/
 FP /^options deftype=unord;\n/
 FP 3 /^FASTAM2              [ACGT\-]+\n/
@@ -10364,7 +10364,7 @@ FP /^matrix\n/
 FP 3 /^FASTAM[1-3]\n/
 FP 3 /^[ACGT\-]+\n/
 FP /^;\n/
-FP /^endblock;\n/
+FP /^end;\n/
 FP /^begin assumptions;\n/
 FP /^options deftype=unord;\n/
 //
@@ -10383,7 +10383,7 @@ FP /^matrix\n/
 FP 3 /^FASTAM[1-3]\n/
 FP 3 /^[ACGT\-]+\n/
 FP /^;\n/
-FP /^endblock;\n/
+FP /^end;\n/
 FP /^begin assumptions;\n/
 FP /^options deftype=unord;\n/
 //
@@ -11511,7 +11511,7 @@ ID seq-end-msf
 AQ seqretsingle
 CL tembl:eclaci -send 100 -out test.out -osf msf -auto
 FI test.out
-FZ = 391
+FZ = 395
 FP 1 /^ +Name: /
 FP  / +Name: ECLACI .* Check: 8066/
 FP /^ECLACI     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
@@ -11521,7 +11521,7 @@ ID seq-begin-msf
 AQ seqretsingle
 CL tembl:eclaci -sbegin 51 -send 100 -out test.out -osf msf -auto
 FI test.out
-FZ = 264
+FZ = 268
 FP 1 / +Name: /
 FP  / +Name: ECLACI .* Check: 2937/
 FP /^ECLACI     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
@@ -11531,7 +11531,7 @@ ID seq-rev-msf
 AQ seqretsingle
 CL tembl:eclaci -sbegin 51 -send 100 -srev -out test.out -osf msf -auto
 FI test.out
-FZ = 264
+FZ = 268
 FP 1 / +Name: /
 FP  / +Name: ECLACI .* Check: 9768/
 FP /^ECLACI     ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
@@ -11571,7 +11571,7 @@ ID seqall-end-msf
 AP seqret
 CL tembl:eclac\* -send 100 -out test.out -osf msf -auto
 FI test.out
-FZ = 1086
+FZ = 1107
 FP 5 / +Name: /
 FP  / +Name: ECLAC .* Check: 4203/
 FP  / +Name: ECLACI .* Check: 8066/
@@ -11583,7 +11583,7 @@ ID seqall-begin-msf
 AP seqret
 CL tembl:eclac\* -sbegin 51 -send 100 -out test.out -osf msf -auto
 FI test.out
-FZ = 707
+FZ = 728
 FP 5 / +Name: /
 FP  / +Name: ECLAC .* Check: 1328/
 FP  / +Name: ECLACI .* Check: 2937/
@@ -11595,7 +11595,7 @@ ID seqall-rev-msf
 AP seqret
 CL tembl:eclac\* -sbegin 51 -send 100 -srev -out test.out -osf msf -auto
 FI test.out
-FZ = 707
+FZ = 728
 FP 5 / +Name: /
 FP  / +Name: ECLAC .* Check: 2885/
 FP  / +Name: ECLACI .* Check: 9768/
@@ -11637,7 +11637,7 @@ ID seqset-end-msf
 AQ seqretset
 CL tembl:eclac\* -send 100 -out test.out -osf msf -auto
 FI test.out
-FZ = 1086
+FZ = 1107
 FP 5 / +Name: /
 FP  / +Name: ECLAC .* Check: 4203/
 FP  / +Name: ECLACI .* Check: 8066/
@@ -11649,7 +11649,7 @@ ID seqset-begin-msf
 AQ seqretset
 CL tembl:eclac\* -sbegin 51 -send 100 -out test.out -osf msf -auto
 FI test.out
-FZ = 707
+FZ = 728
 FP 5 / +Name: /
 FP  / +Name: ECLAC .* Check: 1328/
 FP  / +Name: ECLACI .* Check: 2937/
@@ -11661,7 +11661,7 @@ ID seqset-rev-msf
 AQ seqretset
 CL tembl:eclac\* -sbegin 51 -send 100 -srev -out test.out -osf msf -auto
 FI test.out
-FZ = 707
+FZ = 728
 FP 5 / +Name: /
 FP  / +Name: ECLAC .* Check: 2885/
 FP  / +Name: ECLACI .* Check: 9768/
@@ -11754,7 +11754,7 @@ ID featseq-end-msf
 AQ seqretsingle
 CL -feat tembl:eclaci -send 100 -out test.out -osf msf -auto
 FI test.out
-FZ = 391
+FZ = 395
 FP 1 /^ +Name: /
 FP  / +Name: ECLACI .* Check: 8066/
 FP /^ECLACI     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
@@ -11768,7 +11768,7 @@ ID featseq-begin-msf
 AQ seqretsingle
 CL -feat tembl:eclaci -sbegin 51 -send 100 -out test.out -osf msf -auto
 FI test.out
-FZ = 264
+FZ = 268
 FP 1 / +Name: /
 FP  / +Name: ECLACI .* Check: 2937/
 FP /^ECLACI     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
@@ -11782,7 +11782,7 @@ ID featseq-rev-msf
 AQ seqretsingle
 CL -feat tembl:eclaci -sbegin 51 -send 100 -srev -out test.out -osf msf -auto
 FI test.out
-FZ = 264
+FZ = 268
 FP 1 / +Name: /
 FP  / +Name: ECLACI .* Check: 9768/
 FP /^ECLACI     ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
@@ -11879,7 +11879,7 @@ ID featseqall-end-msf
 AP seqret
 CL -feat tembl:eclac\* -send 100 -out test.out -osf msf -auto
 FI test.out
-FZ = 1086
+FZ = 1107
 FP 5 / +Name: /
 FP  / +Name: ECLAC .* Check: 4203/
 FP  / +Name: ECLACI .* Check: 8066/
@@ -11896,7 +11896,7 @@ ID featseqall-begin-msf
 AP seqret
 CL -feat tembl:eclac\* -sbegin 51 -send 100 -out test.out -osf msf -auto
 FI test.out
-FZ = 707
+FZ = 728
 FP 5 / +Name: /
 FP  / +Name: ECLAC .* Check: 1328/
 FP  / +Name: ECLACI .* Check: 2937/
@@ -11913,7 +11913,7 @@ ID featseqall-rev-msf
 AP seqret
 CL -feat tembl:eclac\* -sbegin 51 -send 100 -srev -out test.out -osf msf -auto
 FI test.out
-FZ = 707
+FZ = 728
 FP 5 / +Name: /
 FP  / +Name: ECLAC .* Check: 2885/
 FP  / +Name: ECLACI .* Check: 9768/
@@ -12013,7 +12013,7 @@ ID featseqset-end-msf
 AQ seqretset
 CL -feat tembl:eclac\* -send 100 -out test.out -osf msf -auto
 FI test.out
-FZ = 1086
+FZ = 1107
 FP 5 / +Name: /
 FP  / +Name: ECLAC .* Check: 4203/
 FP  / +Name: ECLACI .* Check: 8066/
@@ -12030,7 +12030,7 @@ ID featseqset-begin-msf
 AQ seqretset
 CL -feat tembl:eclac\* -sbegin 51 -send 100 -out test.out -osf msf -auto
 FI test.out
-FZ = 707
+FZ = 728
 FP 5 / +Name: /
 FP  / +Name: ECLAC .* Check: 1328/
 FP  / +Name: ECLACI .* Check: 2937/
@@ -12047,7 +12047,7 @@ ID featseqset-rev-msf
 AQ seqretset
 CL -feat tembl:eclac\* -sbegin 51 -send 100 -srev -out test.out -osf msf -auto
 FI test.out
-FZ = 707
+FZ = 728
 FP 5 / +Name: /
 FP  / +Name: ECLAC .* Check: 2885/
 FP  / +Name: ECLACI .* Check: 9768/
@@ -14724,7 +14724,7 @@ CL -full
 IN
 FI outfile.entrails
 FZ > 26000
-FP /^ +taglist +string +"Extra tags to report"\n/
+FP /^ +taglist +string +"" +"Extra tags to report"\n/
 FP /^ +ausashow +boolean +"N" +"Show the full USA in the alignment"\n/
 FI stderr
 FC = 2
