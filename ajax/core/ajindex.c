@@ -712,7 +712,7 @@ AjPBtpage ajBtreeCacheWrite(AjPBtcache cache, ajlong pageno)
 ** The root node is at block 0L
 **
 ** @param [u] cache [AjPBtcache] cache
-** @param [w] rootpage [ajlong] root block
+** @param [r] rootpage [ajlong] root block
 **
 ** @return [void]
 ** @@

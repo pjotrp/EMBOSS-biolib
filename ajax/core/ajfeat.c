@@ -174,7 +174,7 @@ static AjPFeature   featFeatNewProt(AjPFeattable thys,
 				    ajint  End,
 				    float score,
 				    ajint flags );
-static AjBool       featFeatType(AjPStr line, AjPStr* type, AjPStr* tag,
+static AjBool       featFeatType(const AjPStr line, AjPStr* type, AjPStr* tag,
 				 AjPStr* req);
 static AjPFeature   featFeatureNew(void);
 static AjBool       featFindInFormat(const AjPStr format, ajint* iformat);
@@ -240,7 +240,7 @@ static void         featTagGffDefault(AjPStr* pout, const AjPStr tag,
 static AjBool       featTagGffSpecial(AjPStr* pval, const AjPStr tag);
 static void         featTagLimit(const AjPStr name, const AjPTable table,
 				 AjPStr* retstr);
-static AjBool       featTagName(AjPStr line, AjPStr* name, AjPStr* type,
+static AjBool       featTagName(const AjPStr line, AjPStr* name, AjPStr* type,
 				AjPStr* rest);
 static AjPStr       featTagProt(const AjPStr type, AjBool* known);
 static void         featTagQuoteEmbl(AjPStr* pval);
@@ -4037,7 +4037,7 @@ static AjBool featEmblTvRest(AjPStr* tags, AjPStr* skip)
 **                  ajFalse means an error occurred
 ******************************************************************************/
 
-static AjBool featTagName(AjPStr line, AjPStr* name, AjPStr* type,
+static AjBool featTagName(const AjPStr line, AjPStr* name, AjPStr* type,
 			  AjPStr* rest)
 {
     const char* cp = ajStrStr(line);
@@ -4099,7 +4099,7 @@ static AjBool featTagName(AjPStr line, AjPStr* name, AjPStr* type,
 **                  ajFalse means an error occurred
 ******************************************************************************/
 
-static AjBool featFeatType(AjPStr line, AjPStr* type, AjPStr* tag,
+static AjBool featFeatType(const AjPStr line, AjPStr* type, AjPStr* tag,
 			   AjPStr* req)
 {
     const char* cp = ajStrStr(line);
@@ -8800,7 +8800,7 @@ static AjBool featTagSpecialAllTranslation(AjPStr* pval)
 **
 ** The format is a positive integer, or unknown (unquoted)
 **
-** @param  [r] pval [AjPStr*] parameter value
+** @param [u] pval [AjPStr*] parameter value
 ** @return [AjBool] ajTrue for a valid value, possibly corrected
 **                  ajFalse if invalid, to be converted to default (note) type
 ** @@
