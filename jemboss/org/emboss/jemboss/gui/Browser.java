@@ -60,7 +60,7 @@ public class Browser extends JFrame implements HyperlinkListener,
     if(!ltext)
       urlCache.add(initialURL);
     else
-      urlCache.add("");
+      urlCache.add(name+".html");
 
     JMenuBar menuBar = new JMenuBar();
 
