@@ -1,5 +1,9 @@
 Version 2.5.0
 
+
+	mwcontam program added. Displays molecular weights that are common
+	across a set of files.
+
 	showfeat - added '-sort join' to display joined features on one line.
 
 	diffseq - don't give summary of SNPs if the sequences are proteins.
