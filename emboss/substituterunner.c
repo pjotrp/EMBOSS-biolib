@@ -5,8 +5,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.2 $
-** @modified $Date: 2004/10/26 12:58:49 $
+** @version $Revision: 1.3 $
+** @modified $Date: 2004/10/26 14:16:33 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -43,179 +43,110 @@ int main(int argc , char **argv)
 {
     AjPStr ajpStrPathToCommands      = NULL;
     AjPStr ajpStrCommandName         = NULL; /* substitition program         */
-    AjPStr ajpStrFirstCommandLine    = NULL; /* 1st input to substitute prog */
-    AjPStr ajpStrSecondCommandLine   = NULL; /* 2nd input to substitute prog */
-    const char *pcFirstCommandLine   = NULL; /* for input to exec command    */
-    const char *pcSecondCommandLine  = NULL; /* for input to exec command    */
-
+    AjPStr ajpStrCommandLine         = NULL; /* for running "substitute"     */
+    const char *pcCommandLine        = NULL; /* for input to exec command    */
 
     /* parameters to substitution command */
-    AjPList ajpListFirstPairFiles       = NULL; /* first list of pair files     */
-    AjPList ajpListSecondPairFiles      = NULL; /* second list of pair files    */
+    AjPList ajpListPairFiles            = NULL; /* list of pair files           */
     AjPStr ajpStrInfileSuffix           = NULL; /* extension pair files         */
     AjPStr ajpStrRootOutfileName        = NULL; /* non-dir, non-extension name  */
-    AjPStr ajpStrFirstPairFileName      = NULL;
-    AjPStr ajpStrSecondPairFileName     = NULL;
-    AjPStr ajpStrFirstPairFileNameCopy  = NULL;
-    AjPStr ajpStrSecondPairFileNameCopy = NULL;
-    AjPStr ajpStrFirstPathToOutfile     = NULL; /* first dir for sub'd files    */
-    AjPStr ajpStrSecondPathToOutfile    = NULL; /* second dir for sub'd files   */
-    AjPStr ajpStrFirstOutfileName       = NULL;
-    AjPStr ajpStrSecondOutfileName      = NULL;
-    AjPStr ajpStrFirstOutfileSuffix     = NULL;
-    AjPStr ajpStrSecondOutfileSuffix    = NULL;
+    AjPStr ajpStrPairFileName           = NULL;
+    AjPStr ajpStrPairFileNameCopy       = NULL;
+    AjPStr ajpStrPathToOutfile          = NULL; /* dir for sub'd files          */
+    AjPStr ajpStrOutfileName            = NULL;
+    AjPStr ajpStrOutfileSuffix          = NULL;
     const AjPStr ajpStrSeqoutFormat     = NULL; /* format of sub'd seqfile      */
 
-    ajint ajIntSeqPairFilesInFirstDir;
-    ajint ajIntSeqPairFilesInSecondDir;
+    ajint ajIntSeqPairFilesInPairDir;
 
     const char *pcFileNameSeparator  = ".";
 
     embInit("substituterunner", argc, argv);
 
     /* get command-line parameters from ACD */
-    ajpStrPathToCommands      = ajAcdGetDirectoryName("pathtocommands");
-    ajpStrFirstPathToOutfile  = ajAcdGetOutdirName("firstsubstitutedseqsoutdir");
-    ajpStrSecondPathToOutfile = ajAcdGetOutdirName("secondsubstitutedseqsoutdir");
-    ajpListFirstPairFiles     = ajAcdGetDirlist("firstalignedpairsdirlist");
-    ajpListSecondPairFiles    = ajAcdGetDirlist("secondalignedpairsdirlist");
+    ajpStrPathToCommands = ajAcdGetDirectoryName("pathtocommands");
+    ajpStrPathToOutfile  = ajAcdGetOutdirName("substitutedseqsoutdir");
+    ajpListPairFiles     = ajAcdGetDirlist("alignedpairsdirlist");
 
     /* assign other values */
-    ajpStrCommandName         = ajStrNewC("substitute");
-    ajpStrFirstOutfileSuffix  = ajStrNewC("sbs");
-    ajpStrSecondOutfileSuffix = ajStrNewC("sbs");
-    ajpStrSeqoutFormat        = ajStrNewC("fasta");
+    ajpStrCommandName   = ajStrNewC("substitute");
+    ajpStrOutfileSuffix = ajStrNewC("sbs");
+    ajpStrSeqoutFormat  = ajStrNewC("fasta");
 
     /* count the number of sequence pairs to be aligned */
-    ajIntSeqPairFilesInFirstDir  = ajListLength(ajpListFirstPairFiles);
-    ajIntSeqPairFilesInSecondDir = ajListLength(ajpListSecondPairFiles);
+    ajIntSeqPairFilesInPairDir = ajListLength(ajpListPairFiles);
 
-    ajFmtPrint("\nfirst: %d\tsecond: %d\n\n", ajIntSeqPairFilesInFirstDir, ajIntSeqPairFilesInSecondDir);
+    ajFmtPrint("\nfirst: %d\tsecond: %d\n\n", ajIntSeqPairFilesInPairDir);
 
     /* loop over pair files in alignment directory */
-    while(ajListPop(ajpListFirstPairFiles, (void **)&ajpStrFirstPairFileName))
+    while(ajListPop(ajpListPairFiles, (void **)&ajpStrPairFileName))
     {
-	ajListPop(ajpListSecondPairFiles, (void **)&ajpStrSecondPairFileName);
-
 	/* DDDDEBUG */
 	if(enumDebugLevel)
 	{
 	    printf("\n%s\n", "START OF LOOP");
-	    ajFmtPrint("ajpStrFirstPairFileName:\t%S\n", ajpStrFirstPairFileName);
-	    ajFmtPrint("ajpStrSecondPairFileName:\t%S\n", ajpStrSecondPairFileName);
+	    ajFmtPrint("ajpStrPairFileName:\t%S\n", ajpStrPairFileName);
 	    printf("%s\n", "START OF LOOP");
 	}
 
 	/* make modifiable copies of the current file names */
-	ajStrCopy(&ajpStrFirstPairFileNameCopy, ajpStrFirstPairFileName);
-	ajStrCopy(&ajpStrSecondPairFileNameCopy, ajpStrSecondPairFileName);
+	ajStrCopy(&ajpStrPairFileNameCopy, ajpStrPairFileName);
 
 	/* get file name stems */
-	ajFileNameTrim(&ajpStrFirstPairFileNameCopy);
-	ajFileNameTrim(&ajpStrSecondPairFileNameCopy);
-	
-	ajFileNameShorten(&ajpStrFirstPairFileNameCopy);
-	ajFileNameShorten(&ajpStrSecondPairFileNameCopy);
+	ajFileNameTrim(&ajpStrPairFileNameCopy);
+	ajFileNameShorten(&ajpStrPairFileNameCopy);
 
+	/* assemble each file name */
+	ajStrApp(&ajpStrOutfileName, ajpStrPathToOutfile);
+	ajStrApp(&ajpStrOutfileName, ajpStrPairFileNameCopy);
+	ajStrAppC(&ajpStrOutfileName, pcFileNameSeparator);
+	ajStrApp(&ajpStrOutfileName, ajpStrOutfileSuffix);
 
-	/* assemble each output file name */
-	ajStrApp(&ajpStrFirstOutfileName, ajpStrFirstPathToOutfile);
-	ajStrApp(&ajpStrSecondOutfileName, ajpStrSecondPathToOutfile);
-	ajStrApp(&ajpStrFirstOutfileName, ajpStrFirstPairFileNameCopy);
-	ajStrApp(&ajpStrSecondOutfileName, ajpStrSecondPairFileNameCopy);
-	ajStrAppC(&ajpStrFirstOutfileName, pcFileNameSeparator);
-	ajStrAppC(&ajpStrSecondOutfileName, pcFileNameSeparator);
-	ajStrApp(&ajpStrFirstOutfileName, ajpStrFirstOutfileSuffix);
-	ajStrApp(&ajpStrSecondOutfileName, ajpStrSecondOutfileSuffix);
-
-	/* find last dot in file name */
-/* 	ajIntSeparatorPos = ajStrRFindC(ajpStrPairFileNameCopy, */
-/* 					pcFileNameSeparator); */
-	
-	/*
-	 * copy everything after it into second pair file name
-	 */
-/* 	ajStrAssSub(&ajpStrSecondPairFileName, */
-/* 		    ajpStrPairFileNameCopy, */
-/* 		    enumCountZero, */
-/* 		    ajIntSeparatorPos); */
-
-	/* assemble each input file name */
-/* 	ajStrCopy(&ajpStrFirstPairFileName, */
-/* 		   ajpStrPairFileNameCopy); */
-/* 	ajStrApp(&ajpStrSecondPairFileName, ajpStrSecondInfileSuffix); */
-
-
-	/* create new command line strings */
-	ajpStrFirstCommandLine  = ajStrNew();
-	ajpStrSecondCommandLine = ajStrNew();
+	/* create new command line string */
+	ajpStrCommandLine = ajStrNew();
 
 	/*
-	 * assemble command lines to substitute each current query trace
+	 * assemble command line to substitute each current query trace
 	 * into each template trace
 	 */
-	ajFmtPrintS(&ajpStrFirstCommandLine,
+	ajFmtPrintS(&ajpStrCommandLine,
 		    "%S%S -alignedpair %S -substitutedseq %S",
 		    ajpStrPathToCommands, ajpStrCommandName,
-		    ajpStrFirstPairFileName,
-		    ajpStrFirstOutfileName);
+		    ajpStrPairFileName,
+		    ajpStrOutfileName);
 
-	ajFmtPrintS(&ajpStrSecondCommandLine,
-		    "%S%S -alignedpair %S -substitutedseq %S",
-		    ajpStrPathToCommands, ajpStrCommandName,
-		    ajpStrSecondPairFileName,
-		    ajpStrSecondOutfileName);
+	pcCommandLine  = ajStrStr(ajpStrCommandLine);
 
-	pcFirstCommandLine  = ajStrStr(ajpStrFirstCommandLine);
-	pcSecondCommandLine = ajStrStr(ajpStrSecondCommandLine);
-
-	system(pcFirstCommandLine);
-	system(pcSecondCommandLine);
+	system(pcCommandLine);
 
 	printf("\n%s", "Hello?!");
 
 	/* DDDDEBUG */
 	if(enumDebugLevel)
 	{
-	    printf("\npcFirstCommandLine:\t%s", pcFirstCommandLine);
-	    printf("\npcSecondCommandLine:\t%s", pcSecondCommandLine);
+	    printf("\npcCommandLine:\t%s", pcCommandLine);
 	}
 	
 	/* free command strings */
 	ajStrDel(&ajpStrRootOutfileName);
-	ajStrDel(&ajpStrFirstPairFileName);
-	ajStrDel(&ajpStrSecondPairFileName);
-	ajStrDel(&ajpStrFirstOutfileName);
-	ajStrDel(&ajpStrSecondOutfileName);
-	ajStrDel(&ajpStrFirstCommandLine);
-	ajStrDel(&ajpStrSecondCommandLine);
- 	/* DDDDEBUG */
-/* 	if(enumDebugLevel) */
-/* 	{ */
-/* 	    printf("\n%s\n", "END OF LOOP"); */
-/* 	    ajFmtPrint("%S\n", ajpStrPairFileName); */
-/* 	    printf("%s\n", "END OF LOOP"); */
-/* 	} */
+	ajStrDel(&ajpStrPairFileName);
+	ajStrDel(&ajpStrOutfileName);
+	ajStrDel(&ajpStrCommandLine);
    }    
 
     /* XXXX YOU NEED TO REWIND THE PAIR FILE LISTS HERE */
 
     /* clear up the pair file objects */
-    while(ajListPop(ajpListFirstPairFiles, (void **)&ajpStrFirstPairFileName))
-	AJFREE(ajpStrFirstPairFileName);
-    ajListDel(&ajpListFirstPairFiles);
-    while(ajListPop(ajpListSecondPairFiles, (void **)&ajpStrSecondPairFileName))
-	AJFREE(ajpStrSecondPairFileName);
-    ajListDel(&ajpListSecondPairFiles);
+    while(ajListPop(ajpListPairFiles, (void **)&ajpStrPairFileName))
+	AJFREE(ajpStrPairFileName);
+    ajListDel(&ajpListPairFiles);
 
     /* clean up remaining strings */
-    ajStrDel(&ajpStrFirstPairFileName);
-    ajStrDel(&ajpStrSecondPairFileName);
+    ajStrDel(&ajpStrPairFileName);
     ajStrDel(&ajpStrInfileSuffix);
 
     /* clear up the pair file list */
-    ajListFree(&ajpListFirstPairFiles);
-    ajListFree(&ajpListSecondPairFiles);
+    ajListFree(&ajpListPairFiles);
 
     /* tidy up everything else */
     ajExit();
