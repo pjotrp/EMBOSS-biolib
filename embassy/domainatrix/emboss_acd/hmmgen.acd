@@ -7,7 +7,7 @@ application: hmmgen [
   cpu: "medium"
 ]
 
-section: input
+section: input [
   information: "Input section"
   type: "page"
 ]
@@ -34,7 +34,7 @@ section: input
 
 endsection: input
 
-section: output
+section: output [
   information: "Output section"
   type: "page"
 ]
