@@ -81,8 +81,8 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
           treePane.setBottomComponent(remotePanel);
           rtree.setPreferredSize(panelSize);
           ltree.setPreferredSize(panelSize);
-          treePane.setDividerLocation(0.5);
           pack();
+          treePane.setDividerLocation(0.5);
         }
       });
       prefV.setSelected(true);
@@ -103,8 +103,8 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
   
           rtree.setPreferredSize(panelSize);
           ltree.setPreferredSize(panelSize);
-          treePane.setDividerLocation(0.5);
           pack();
+          treePane.setDividerLocation(0.5);
         }
       });
       group.add(prefH);
