@@ -99,8 +99,9 @@ Description
 Usage
 
    Here is a sample session with preg.
-
+   
 % preg
+regular expression search of a protein sequence
 Input sequence: sw:*
 Output file [5h1d_fugru.preg]:
 Regular expression pattern: gc[^g]
@@ -135,7 +136,8 @@ Input file format
 Output file format
 
    Here is the output from the example run:
-
+     _________________________________________________________________
+   
 Matches in CO9_FUGRU
       CO9_FUGRU   522 GCQ
 Matches in D1DR_FUGRU
@@ -171,13 +173,20 @@ Matches in AMIC_PSEAE
      AMIC_PSEAE    80 GCY
 Matches in AMIR_PSEAE
      AMIR_PSEAE    36 GCS
-
+     _________________________________________________________________
+   
 Data files
 
+   None.
+   
 Notes
 
+   None.
+   
 References
 
+   None.
+   
 Warnings
 
    Regular expressions are case-sensitive. The pattern 'AAAA' will not
@@ -185,12 +194,16 @@ Warnings
    
 Diagnostic Error Messages
 
+   None.
+   
 Exit status
 
-   Always returns 0.
+   It always exits with a status of 0. Always returns 0.
    
 Known bugs
 
+   None.
+   
 See also
 
    Program name                       Description
@@ -218,6 +231,8 @@ Author(s)
    
 History
 
+   Written (1999) - Peter Rice
+   
 Target users
 
    This program is intended to be used by everyone and everything, from
