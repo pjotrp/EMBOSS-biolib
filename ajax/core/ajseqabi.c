@@ -40,27 +40,32 @@ static ajshort seqABIBaseIdx(char B);
 
 AjBool ajSeqABITest(AjPFile fp)
 {   
-    char pabi[5];
-    pabi[4] = '\0'; 
+  char pabi[5];
+  pabi[4] = '\0'; 
 
-    if(ajFileRead((void *)pabi,4,1,fp))
+  if (fp->End)
+  {
+    ajDebug("EOF: ajSeqABITest already at end file %F\n", fp);
+    return ajFalse;
+  }
+
+  if(ajFileRead((void *)pabi,4,1,fp))
+  {
+    if(ajStrPrefixCC(pabi,"ABIF"))
+      return ajTrue;
+  } 
+
+  if(ajFileSeek(fp,26,SEEK_SET))
+  {
+    if(ajFileRead((void*)pabi,4,1,fp))
     {
       if(ajStrPrefixCC(pabi,"ABIF"))
-        return ajTrue;
-    } 
-
-    if(ajFileSeek(fp,26,SEEK_SET))
-    {
-      if(ajFileRead((void*)pabi,4,1,fp))
-      {
-        if(ajStrPrefixCC(pabi,"ABIF"))
-           return ajTrue;
-      }
+	return ajTrue;
     }
+  }
 
-    return ajFalse;
+  return ajFalse;
 }
-
 
 /* @func ajSeqABIReadSeq *****************************************************
 **

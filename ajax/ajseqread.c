@@ -1785,6 +1785,8 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
     
     if(!seqin->Selex)
     {
+        if (ajFileBuffEof(buff))
+	  return ajFalse;
 	ajFileBuffClear(buff,-1);
 	ajFileBuffReset(buff);
 	buff->Fpos = 0;
