@@ -648,14 +648,17 @@ public class JembossAuthServer
 
     tmproot = tmproot.concat(userName+fs);
 
-    project = tmproot.concat(project);
-
-    boolean ok = aj.delDir(userName,passwd,environ,project);
-    if(!ok || !aj.getErrStd().equals(""))
+    StringTokenizer st = new StringTokenizer(project,"\n");
+    while(st.hasMoreTokens()) 
     {
-      appendToLogFile("Failed deletion of directory "+project,errorLog);
-      appendToLogFile("STDERR "+aj.getErrStd(),errorLog);
-      appendToLogFile("STDOUT "+aj.getOutStd(),errorLog);
+      String proj = tmproot.concat(st.nextToken());
+      boolean ok = aj.delDir(userName,passwd,environ,proj);
+      if(!ok || !aj.getErrStd().equals(""))
+      {
+        appendToLogFile("Failed deletion of directory "+proj,errorLog);
+        appendToLogFile("STDERR "+aj.getErrStd(),errorLog);
+        appendToLogFile("STDOUT "+aj.getOutStd(),errorLog);
+      }
     }
 
     dsr.add("status");
