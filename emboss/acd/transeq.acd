@@ -66,7 +66,9 @@ appl: transeq [
                 14:Flatworm Mitochondrial;
                 15:Blepharisma Macronuclear;
                 16:Chlorophycean Mitochondrial;
-                21:Trematode Mitochondrial"
+                21:Trematode Mitochondrial;
+                22:Scenedesmus obliquus;
+                23:Thraustochytrium Mitochondrial"
         delim: ";"
         codedelim: ":"
         prompt: "Code to use"
