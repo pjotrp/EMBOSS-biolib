@@ -181,8 +181,9 @@ section: advanced [
     information: "Threshold above which the consensus is given
                   in uppercase"
     help: "Sets the threshold for the scores of the positive matches
-           above which the consensus is is upper-case and below which the
-           consensus is in lower-case."
+           above which the consensus is in upper-case and below which the
+           consensus is in lower-case. By default this is set to be half
+           of the (weight-adjusted) number of sequences in the alignment."
   ]
 
   float: identity  [
