@@ -1,3 +1,118 @@
+Mon May 20 13:35:54 BST 2002
+
+        Major new revision of protein structure applications - w/o full documentation.
+
+	New applications have been cvs add'ed:  
+	     pdbparse.c / acd
+	     scopseqs.c / acd
+	     scopnr.c / acd
+	     seqsearch.c / acd 
+	     seqwords.c / acd
+	     seqalign.c / acd 
+	     hetparse.c / acd
+	     scopreso.c / acd
+	     scoprep.c / acd
+	     profgen.c / acd
+	     funky.c / acd
+	     hmmgen.c / acd
+	     
+	Some applications have been cvs delete'd: 
+	     scope.c / acd
+	     nrscope.c / acd
+	     psiblasts.c / acd
+	     swissparse.c / acd
+	     alignwrap.c / acd
+	     dichet.c / acd
+
+	The deleted applications have been replaced as follows: 
+	     coordenew  --> pdbparse (coordnew was deleted a while back)
+	     scope --> scopparse
+	     nrscope --> scopnr
+	     psiblasts --> seqsearch
+	     swissparse --> seqwords
+	     alignwrap  --> seqalign
+
+	New versions of code have been cvs commit'ed: 
+	     pdbparse.c / acd
+	     domainer.c / acd
+	     contacts.c / acd
+	     interface.c / acd
+	     pdbtosp.c / acd
+	     scopparse.c / acd
+	     scopreso.c / acd
+	     scopseqs.c / acd
+	     scopnr.c / acd
+	     scoprep.c / acd
+	     scopalign.c / acd
+	     seqsearch.c / acd
+	     seqwords.c / acd
+	     seqsort.c / acd
+	     seqnr.c / acd
+	     seqalign.c / acd
+	     siggen.c / acd
+	     sigscan.c / acd
+	     sigplot.c / acd
+	     hetparse.c / acd
+	     profgen.c / acd
+	     funky.c / acd
+	     hmmgen.c / acd
+	Plus     
+	     ajxyz.c / ajxyz.h
+
+	Short summaries of the applications are as follows:
+	     pdbparse - Parses pdb files and writes cleaned-up protein 
+	                coordinate files.
+	     domainer - Reads protein coordinate files and writes 
+	                domains coordinate files.
+	     contacts - Reads coordinate files and writes files of 
+	                intra-chain residue-residue contact data.
+	     interface- Reads coordinate files and writes files of 
+	                inter-chain residue-residue contact data.
+	     pdbtosp  - Convert raw swissprot:pdb equivalence file to 
+		        embl-like format.
+	     scopparse- Converts raw scop classification files to a 
+	                file in embl-like format.
+	     scopreso - Removes low resolution domains from a scop 
+	                classification file.
+	     scopseqs - Adds pdb and swissprot sequence records to a 
+	                scop classification file.
+	     scopnr   - Removes redundant domains from a scop 
+	                classification file.
+	     scoprep  - Reorder scop classificaiton file so that the 
+	                representative structure of each family is 
+			given first.
+	     scopalign- Generate alignments for families in a scop 
+	                classification file by using STAMP.
+	     seqsearch- Generate files of hits for families in a scop
+	                classification file by using PSI-BLAST with 
+			seed alignments.
+	     seqwords - Generate files of hits for scop families by 
+	                searching swissprot with keywords.
+	     seqsort  - Reads multiple files of hits and writes a 
+	                non-ambiguous file of hits (scop families file) 
+			plus a validation file.
+	     seqnr    - Removes redundant hits from a scop families file.
+	     seqalign - Generate extended alignments for families in 
+	                a scop families file by using CLUSTALW with seed 
+			alignments.
+	     siggen   - Generates a sparse protein signature from an 
+	                alignment and residue contact data.
+	     sigscan  - Scans a signature against swissprot and writes 
+	                a signature hits files.
+	     sigplot  - Reads a signature hits file and validation file 
+	                and generates gnuplot data files of signature 
+			performance.
+	     profgen  - Generates various profiles for each alignment 
+	                in a directory.
+	     hmmgen   - Generates a hidden Markov model for each alignment 
+	                in a directory.
+	     hetparse - Converts raw dictionary of heterogen groups to 
+	                a file in embl-like format.
+	     funky    -	Reads clean coordinate files and writes file 
+	                of protein-heterogen contact data.
+
+
+
 Version 2.4.1
 	Fixed error reading multiple databases
 	Fixed MacOSX reading of incomplete sequence files
