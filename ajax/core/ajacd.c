@@ -88,6 +88,7 @@ static AjPStr acdExpTmpstr = NULL;
 static AjPStr acdLogFName = NULL;
 static AjPFile acdLogFile = NULL;
 static AjPList acdSecList = NULL;
+static AjPTable acdSecTable = NULL;
 
 static AjPStr acdPrettyFName = NULL;
 static AjPFile acdPrettyFile = NULL;
@@ -363,22 +364,22 @@ typedef struct AcdSSection
 
 AcdOSection acdSecInput[] =
 {
-    {"input", "input Section", "page"},
+    {"input", "Input section", "page"},
     {NULL, NULL, NULL}
 };
 AcdOSection acdSecOutput[] =
 {
-    {"output", "output Section", "page"},
+    {"output", "Output section", "page"},
     {NULL, NULL, NULL}
 };
 AcdOSection acdSecRequired[] = 
 {
-    {"required", "required Section", "page"},
+    {"required", "Required section", "page"},
     {NULL, NULL, NULL}
 };
 AcdOSection acdSecAdvanced[] = 
 {
-    {"advanced", "advanced Section", "page"},
+    {"advanced", "Advanced section", "page"},
     {NULL, NULL, NULL}
 };
 
@@ -394,7 +395,7 @@ AcdOSection acdSecAdvanced[] =
 **
 ** @attr Name [char*] Attribute type
 ** @attr Group [char*] Attribute group
-** @attr Section [AcdPSection] Expected section name
+** @attr Section [AcdPSection] Expected section
 ** @attr Attr [AcdPAttr] Type-specific attributes
 ** @attr TypeSet [(void*)] function to set value and prompt user
 ** @attr Quals [AcdPQual] Type-specific qualifiers
@@ -475,6 +476,7 @@ static void      acdCodeInit(void);
 static AjBool    acdDataFilename(AjPStr* datafname,
 				 const AjPStr name, const AjPStr ext);
 static AjBool    acdDef(AcdPAcd thys, const AjPStr value);
+static AjBool    acdDefinedEmpty (const AcdPAcd thys);
 static void      acdError(const char* fmt, ...);
 static void      acdErrorAcd(const AcdPAcd thys, const char* fmt, ...);
 
@@ -657,13 +659,15 @@ static AjBool    acdUserGetPrompt(const char* prompt, AjPStr* reply);
 static void      acdValidAppl(const AcdPAcd thys);
 static void      acdValidApplGroup(const AjPStr groups);
 static void      acdValidSection(const AcdPAcd thys);
+static void      acdValidSectionFull(AjPStr* secname);
+static AjBool    acdValidSectionMatch(char* secname);
 static void      acdValidQual(const AcdPAcd thys);
 static AjBool    acdValIsBool(const char* arg);
 static AjBool    acdVarResolve(AjPStr* str);
 static AjBool    acdVarSimple(AjPStr* str);
 static AjBool    acdVarSplit(const AjPStr var, AjPStr* name, AjPStr* attrname);
 static AjBool    acdVarTest(const AjPStr var);
-static AjBool    acdVarTestValid(const AjPStr var);
+static AjBool    acdVarTestValid(const AjPStr var, AjBool* toggle);
 static AjBool    acdVocabCheck(const AjPStr str, const char** vocab);
 static void      acdWarn(const char* fmt, ...);
 static AjBool    acdWordNext(AjPList listwords, AjPStr* pword);
@@ -813,6 +817,7 @@ static void acdSetSeqoutset(AcdPAcd thys);
 static void acdSetSeqset(AcdPAcd thys);
 static void acdSetSeqsetall(AcdPAcd thys);
 static void acdSetString(AcdPAcd thys);
+static void acdSetToggle(AcdPAcd thys);
 static void acdSetTree(AcdPAcd thys);
 
 /*
@@ -938,8 +943,10 @@ AcdOAttr acdAttrAppl[] =
 	 "Non-emboss application name for SoapLab"},
     {"executable", VT_STR, "",
 	 "Non-emboss executable for SoapLab"},
+    {"template", VT_STR, "",
+	 "Commandline template for SoapLab's ACD files"},
     {"comment", VT_STR, "",
-	 "Comment for SoapLab"},
+	 "Comment for SoapLab's ACD files"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -956,6 +963,8 @@ AcdOAttr acdAttrAlign[] =
 	 "Maximum number of sequences"},
     {"multiple", VT_BOOL, "N",
 	 "More than one alignment in one file"},
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null filename as 'no file'"},
     {NULL, VT_NULL, NULL,
@@ -1026,6 +1035,8 @@ AcdOAttr acdAttrDirectory[] =
 {
     {"fullpath", VT_BOOL, "N",
 	 "Require full path in value"},
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null filename as 'no file'"},
     {NULL, VT_NULL, NULL,
@@ -1092,6 +1103,8 @@ AcdOAttr acdAttrFeatout[] =
 	 "Feature type (protein, nucleotide, etc.)"},
     {"multiple", VT_BOOL, "N",
 	 "Features for multiple sequences"},
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null UFO as 'no output'"},
     {NULL, VT_NULL, NULL,
@@ -1142,6 +1155,8 @@ AcdOAttr acdAttrFrequencies[] =
 
 AcdOAttr acdAttrGraph[] =
 {
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null graph type as 'no graph'"},
     {NULL, VT_NULL, NULL,
@@ -1152,6 +1167,8 @@ AcdOAttr acdAttrGraphxy[] =
 {
     {"multiple", VT_INT, "1",
 	 "Number of graphs"},
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null graph type as 'no graph'"},
     {NULL, VT_NULL, NULL,
@@ -1288,6 +1305,8 @@ AcdOAttr acdAttrReport[] =
 	 "Multiple sequences in one report"},
     {"precision", VT_INT, "3",
 	 "Score precision"},
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null filename as 'no file'"},
     {NULL, VT_NULL, NULL,
@@ -1383,6 +1402,8 @@ AcdOAttr acdAttrSeqout[] =
 	 "Write features if any"},
     {"type", VT_STR, "",
 	 "Output sequence type (protein, gapprotein, etc.)"},
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null USA as 'no output'"},
     {NULL, VT_NULL, NULL,
@@ -1403,6 +1424,8 @@ AcdOAttr acdAttrSeqoutall[] =
 	 "Minimum number of sequences"},
     {"maxseqs", VT_INT, "(INT_MAX)",
 	 "Maximum number of sequences"},
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null USA as 'no output'"},
     {NULL, VT_NULL, NULL,
@@ -1423,6 +1446,8 @@ AcdOAttr acdAttrSeqoutset[] =
 	 "Minimum number of sequences"},
     {"maxseqs", VT_INT, "(INT_MAX)",
 	 "Maximum number of sequences"},
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null USA as 'no output'"},
     {NULL, VT_NULL, NULL,
@@ -1439,6 +1464,8 @@ AcdOAttr acdAttrSeqset[] =
 	 "Minimum number of sequences"},
     {"maxseqs", VT_INT, "(INT_MAX)",
 	 "Maximum number of sequences"},
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null filename as 'no file'"},
     {NULL, VT_NULL, NULL,
@@ -1459,6 +1486,8 @@ AcdOAttr acdAttrSeqsetall[] =
 	 "Minimum number of sequence sets"},
     {"maxsets", VT_INT, "(INT_MAX)",
 	 "Maximum number of sequence sets"},
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null filename as 'no file'"},
     {NULL, VT_NULL, NULL,
@@ -1477,6 +1506,12 @@ AcdOAttr acdAttrString[] =
 	 "Convert to upper case"},
     {"lower", VT_BOOL, "N",
 	 "Convert to lower case"},
+    {NULL, VT_NULL, NULL,
+	 NULL}
+};
+
+AcdOAttr acdAttrToggle[] =
+{
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -1993,10 +2028,10 @@ AcdOType acdType[] =
     {"cpdb",	           "input",            acdSecInput,
 	 acdAttrCpdb,      acdSetCpdb,         NULL,
 	 AJFALSE, &acdUseData, "Cleaned PDB file in EMBOSS data path" },
-    {"datafile",           "input",            NULL,
+    {"datafile",           "input",            acdSecInput,
 	 acdAttrDatafile,  acdSetDatafile,     NULL,
 	 AJFALSE, &acdUseData, "Data file" },
-    {"directory",          "input",            acdSecInput,
+    {"directory",          "input",            NULL,
 	 acdAttrDirectory, acdSetDirectory,    NULL,
 	 AJFALSE, &acdUseMisc, "Directory" },
     {"dirlist",	           "input",            acdSecInput,
@@ -2086,6 +2121,9 @@ AcdOType acdType[] =
     {"string",             "simple",           NULL,
 	 acdAttrString,    acdSetString,       NULL,
 	 AJFALSE, &acdUseMisc, "String value" },
+    {"toggle",            "simple",           NULL,
+	 acdAttrToggle,      acdSetToggle,         NULL,
+	 AJFALSE, &acdUseMisc, "Toggle value Yes/No" },
     {"tree",               "input",            NULL,
 	 acdAttrTree,      acdSetTree,         NULL,
 	 AJTRUE,  &acdUseData, "Phylogenetic tree" },
@@ -2200,6 +2238,7 @@ AjStatus ajAcdInitP(const char *pgm, ajint argc, char *argv[],
     
     acdProgram = ajStrNewC(pgm);
     acdSecList = ajListstrNew();
+    acdSecTable = ajStrTableNewCase(50);
 
     acdLog("testing acdprompts");
     if(ajNamGetValueC("acdprompts", &tmpstr))
@@ -2525,6 +2564,9 @@ static void acdParse(AjPList listwords, AjPList listcount)
 
 	    /* application: then the appl name */
 	    acdParseName(listwords, &acdStrName);
+	    if (!ajStrMatch(acdStrName, acdProgram))
+		acdError("Application name '%S' does not match filename '%S'",
+			 acdStrName, acdProgram);
 	    
 	    acdNewCurr = acdNewAppl(acdStrName);
 	    
@@ -3201,6 +3243,8 @@ static AcdPAcd acdNewSec(const AjPStr name)
     static ajint firstcall = 1;
     static ajint ikey;
     AjPStr secname=NULL;
+    AjPStr secfull=NULL;
+    AjPStr secfullvalue=NULL;
 
     if(firstcall)
     {
@@ -3216,6 +3260,13 @@ static AcdPAcd acdNewSec(const AjPStr name)
 
     ajStrAssS(&secname, name);
     ajListstrPush(acdSecList, secname);
+
+    acdValidSectionFull(&secfull);
+    ajStrAssS(&secfullvalue, name);
+    acdLog("Full section '%S'\n", secfull);
+
+    if (ajTablePut(acdSecTable, secfull, secfullvalue))
+	acdError("Duplicate section '%S'", name);
 
     acdLog("acdNewSec acdSecList push '%S' new length %d\n",
 	   secname, ajListstrLength(acdSecList));
@@ -3350,7 +3401,8 @@ static AcdPAcd acdNewQual(const AjPStr name, const AjPStr token,
     if(!ajStrLen(acdVarAcdProtein))
 	if((acdType[itype].Attr == acdAttrSeq) ||
 	   (acdType[itype].Attr == acdAttrSeqall) ||
-	   (acdType[itype].Attr == acdAttrSeqset))
+	   (acdType[itype].Attr == acdAttrSeqset) ||
+	   (acdType[itype].Attr == acdAttrSeqsetall))
 	{
 	    /* automatic $(today) variable */
 	    ajStrAssC(&protName, "acdprotein");
@@ -4077,6 +4129,36 @@ static AjBool acdReplyInit(const AcdPAcd thys, const char *defval,
 
 
 
+/* @funcstatic acdReplyInit ***************************************************
+**
+** Builds a default value for the reply first time around. Uses a default
+** specially set in the ACD, or (if none) uses the default string passed in
+** parameter "defval" and also sets this as the default in the ACD.
+**
+** @param [r] thys [const AcdPAcd] ACD object for current item.
+** @param [r] defval [const char*] Default value, as a string
+** @param [w] reply [AjPStr*] String containing default reply
+** @return [AjBool] ajTrue if a value in the ACD was used.
+** @@
+******************************************************************************/
+
+static AjBool acdDefinedEmpty (const AcdPAcd thys)
+{
+    AjPStr def;
+
+    if(thys->DefStr)
+    {
+	def = thys->DefStr[DEF_DEFAULT];
+	if(thys->Defined && !ajStrLen(def))
+	    return ajTrue;
+    }
+
+    return ajFalse;
+}
+
+
+
+
 /* @funcstatic acdUserGet *****************************************************
 **
 ** Given an ACD containing a defined prompt, a help string,
@@ -4573,41 +4655,43 @@ static void acdSetAlign(AcdPAcd thys)
 
     static AjPStr defreply = NULL;
     static AjPStr reply    = NULL;
+    static AjPStr tmpstr    = NULL;
     ajint itry;
+    AjBool nullok;
+    AjBool nulldefault;
     
     static AjPStr name      = NULL;
     static AjPStr ext       = NULL;
+    static AjPStr fmt       = NULL;
     static AjPStr dir       = NULL;
     static AjPStr outfname  = NULL;
     static AjPStr fullfname = NULL;
     
-    val = ajAlignNew();
+    val = NULL;
+
     
-    acdAttrToStr(thys, "type", "", &val->Type);
-    acdAttrToInt(thys, "minseqs", 0, &val->Nmin);
-    acdAttrToInt(thys, "maxseqs", 0, &val->Nmax);
-    acdAttrToBool(thys, "multiple", ajFalse, &val->Multi);
-    
-    acdGetValueAssoc(thys, "aformat", &val->Formatstr);
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
+
+    acdGetValueAssoc(thys, "aformat", &fmt);
     acdGetValueAssoc(thys, "aextension", &ext);
     acdGetValueAssoc(thys, "aname", &name);
     acdGetValueAssoc(thys, "adirectory", &dir);
-    acdQualToInt(thys, "awidth", 50, &val->Width, &defreply);
-    acdQualToBool(thys, "aglobal", ajFalse, &val->Global, &defreply);
-    acdQualToBool(thys, "aaccshow", ajFalse, &val->Showacc, &defreply);
-    acdQualToBool(thys, "adesshow", ajFalse, &val->Showdes, &defreply);
-    acdQualToBool(thys, "ausashow", ajFalse, &val->Showusa, &defreply);
-    
-    if(!ajAlignValid(val))
-    {					/* test acdc-alignbadformat */
-	ajDie("Alignment option -%S: Validation failed",
-	      thys->Name);
-    }
     
     acdOutDirectory(&dir);
-    acdOutFilename(&outfname, name, ext);
     required = acdIsRequired(thys);
-    acdReplyInit(thys, ajStrStr(outfname), &defreply);
+    if(nullok && nulldefault)
+    {
+	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
+	    acdOutFilename(&defreply, name, ext);
+	else				/* leave empty */
+	    acdReplyInit(thys, "", &defreply);
+    }
+    else
+    {
+	acdOutFilename(&outfname, name, ext);
+	acdReplyInit(thys, ajStrStr(outfname), &defreply);
+    }
     acdPromptAlign(thys);
     
     for(itry=acdPromptTry; itry && !ok; itry--)
@@ -4619,12 +4703,42 @@ static void acdSetAlign(AcdPAcd thys)
 	if(required)
 	    acdUserGet(thys, &reply);
 
-	ajStrAssS(&fullfname, reply);
-	ajFileSetDir(&fullfname, dir);
-	ok = ajAlignOpen(val, fullfname);
-	if(!ok)
-	    acdBadVal(thys, required,
-		      "Unable to open alignment file '%S'", fullfname);
+	if(ajStrLen(reply))
+	{
+	    val = ajAlignNew();
+	    ajStrSet(&val->Formatstr, fmt);
+	    acdAttrToStr(thys, "type", "", &val->Type);
+	    acdAttrToInt(thys, "minseqs", 0, &val->Nmin);
+	    acdAttrToInt(thys, "maxseqs", 0, &val->Nmax);
+	    acdAttrToBool(thys, "multiple", ajFalse, &val->Multi);
+	    acdQualToInt(thys, "awidth", 50, &val->Width, &tmpstr);
+	    acdQualToBool(thys, "aglobal", ajFalse, &val->Global, &tmpstr);
+	    acdQualToBool(thys, "aaccshow", ajFalse, &val->Showacc, &tmpstr);
+	    acdQualToBool(thys, "adesshow", ajFalse, &val->Showdes, &tmpstr);
+	    acdQualToBool(thys, "ausashow", ajFalse, &val->Showusa, &tmpstr);
+	    if(!ajAlignValid(val))
+	    {					/* test acdc-alignbadformat */
+		ajDie("Alignment option -%S: Validation failed",
+		      thys->Name);
+	    }
+    
+	    ajStrAssS(&fullfname, reply);
+	    ajFileSetDir(&fullfname, dir);
+	    ok = ajAlignOpen(val, fullfname);
+	    if(!ok)
+	    {
+		acdBadVal(thys, required,
+			  "Unable to open alignment file '%S'", fullfname);
+		ajAlignDel(&val);
+	    }
+	}
+	else
+	    if(!nullok)
+	    {
+		acdBadVal(thys, required,
+			  "Alignment file is required");
+		ok = ajFalse;
+	    }
     }
 
     if(!ok)
@@ -5271,7 +5385,7 @@ static void acdSetDirectory(AcdPAcd thys)
     ajint itry;
 
     AjBool nullok = ajFalse;
-    AjBool dopath;
+    AjBool dopath = ajFalse;
 
     val = NULL;				/* set the default value */
 
@@ -5298,14 +5412,14 @@ static void acdSetDirectory(AcdPAcd thys)
 		ok = ajFileDir(&reply);
 	    if(!ok)
 		acdBadVal(thys, required,
-			  "Unable to open file '%S' for input",
+			  "Unable to open directory '%S'",
 			  reply);
 	}
 	else
 	    if(!nullok)
 	    {
 		acdBadVal(thys, required,
-			  "Input file is required");
+			  "Directory path is required");
 		ok = ajFalse;
 	    }
     }
@@ -5987,24 +6101,30 @@ static void acdSetFeatout(AcdPAcd thys)
     static AjPStr defreply = NULL;
     static AjPStr reply    = NULL;
     ajint itry;
-    
+    AjBool nullok;
+    AjBool nulldefault;
+   
     static AjPStr name     = NULL;
     static AjPStr ext      = NULL;
+    static AjPStr fmt      = NULL;
     static AjPStr outfname = NULL;
     static AjPStr type     = NULL;
    
-    val = ajFeattabOutNew();
-    
+    val = NULL;
+
     if(!acdGetValueAssoc(thys, "ofname", &name))
 	acdAttrResolve(thys, "name", &name);
 
-    if(acdGetValueAssoc(thys, "offormat", &val->Formatstr))
-	ajStrAssS(&ext, val->Formatstr);
+    if(acdGetValueAssoc(thys, "offormat", &fmt))
+	ajStrAssS(&ext, fmt);
     else
 	acdAttrResolve(thys, "extension", &ext);
 
     if(!ajStrLen(ext))
 	ajFeatOutFormatDefault(&ext);
+
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
 
     ajDebug("acdSetFeatout checking type\n");
 
@@ -6015,15 +6135,20 @@ static void acdSetFeatout(AcdPAcd thys)
 	    ajWarn("No output type specified for '%S'", thys->Name);
     }
 
-    ajDebug("Type '%S' try ajFeattabOutSetType\n", type);
 
-    if(!ajFeattabOutSetType(val, type))
-	acdError("Invalid type for feature output");
-
-    acdOutDirectory(&val->Directory);
-    acdOutFilename(&outfname, name, ext);
     required = acdIsRequired(thys);
-    acdReplyInit(thys, ajStrStr(outfname), &defreply);
+    if(nullok && nulldefault)
+    {
+	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
+	    acdOutFilename(&defreply, name, ext);
+	else				/* leave empty */
+	    acdReplyInit(thys, "", &defreply);
+    }
+    else
+    {
+	acdOutFilename(&outfname, name, ext);
+	acdReplyInit(thys, ajStrStr(outfname), &defreply);
+    }
     acdPromptFeatout(thys);
     
     for(itry=acdPromptTry; itry && !ok; itry--)
@@ -6035,22 +6160,38 @@ static void acdSetFeatout(AcdPAcd thys)
 	if(required)
 	    acdUserGet(thys, &reply);
 	
-	acdGetValueAssoc(thys, "ofopenfile", &val->Filename);
-	acdGetValueAssoc(thys, "ofdirectory", &val->Directory);
-	acdOutDirectory(&val->Directory);
-	
-	ok = ajFeattabOutOpen(val, reply);
-	if(!ok)
+	if(ajStrLen(reply))
 	{
-	    if(ajStrLen(val->Directory))
-		acdBadVal(thys, required,
-			  "Unable to open features output '%S%S'",
-			  val->Directory, reply);
-	    else
-		acdBadVal(thys, required,
-			  "Unable to open features output '%S'",
-			  reply);
+	    val = ajFeattabOutNew();
+	    ajDebug("Type '%S' try ajFeattabOutSetType\n", type);
+	    if(!ajFeattabOutSetType(val, type))
+		acdError("Invalid type for feature output");
+	    acdGetValueAssoc(thys, "ofopenfile", &val->Filename);
+	    acdGetValueAssoc(thys, "ofdirectory", &val->Directory);
+	    acdOutDirectory(&val->Directory);
+	    ajStrSet(&val->Formatstr, fmt);
+	
+	    ok = ajFeattabOutOpen(val, reply);
+	    if(!ok)
+	    {
+		if(ajStrLen(val->Directory))
+		    acdBadVal(thys, required,
+			      "Unable to open features output '%S%S'",
+			      val->Directory, reply);
+		else
+		    acdBadVal(thys, required,
+			      "Unable to open features output '%S'",
+			      reply);
+		ajFeattabOutDel(&val);
+	    }
 	}
+	else
+	    if(!nullok)
+	    {
+		acdBadVal(thys, required,
+			  "Output UFO is required");
+		ok = ajFalse;
+	    }
     }
 
     if(!ok)
@@ -6461,17 +6602,33 @@ static void acdSetGraph(AcdPAcd thys)
     static AjPStr title    = NULL;
     static AjPStr gdev     = NULL;
 
-    AjBool nullok = ajFalse;
     ajint itry;
-
+    AjBool nullok;
+    AjBool nulldefault;
     
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
     required = acdIsRequired(thys);
-    if(ajNamGetValueC("GRAPHICS",&gdev))
-	acdReplyInit(thys, ajStrStr(gdev), &defreply);
+    if(nullok && nulldefault)
+    {
+	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
+	{
+	    if(ajNamGetValueC("GRAPHICS",&gdev))
+		acdReplyInit(thys, ajStrStr(gdev), &defreply);
+	    else
+		acdReplyInit(thys, "x11", &defreply);
+	}
+	else				/* leave empty */
+	    acdReplyInit(thys, "", &defreply);
+    }
     else
-	acdReplyInit(thys, "x11", &defreply);
-    
+    {
+	if(ajNamGetValueC("GRAPHICS",&gdev))
+	    acdReplyInit(thys, ajStrStr(gdev), &defreply);
+	else
+	    acdReplyInit(thys, "x11", &defreply);
+    }
+
     acdPromptGraph(thys);
     
     for(itry=acdPromptTry; itry && !ok; itry--)
@@ -6483,19 +6640,27 @@ static void acdSetGraph(AcdPAcd thys)
 	if(required)
 	    acdUserGet(thys, &reply);
 
-	if(!ajStrLen(reply) && nullok)	/* valid no graph type */
-	    break;
-
-	if(!val)
-	    val = call("ajGraphNew");
-	call("ajGraphSet",val, reply,&ok);
-
-	if(!ok)
+	if(ajStrLen(reply))	/* valid no graph type */
 	{
-	    call("ajGraphDumpDevices");
-	    acdBadVal(thys, required,
-		      "Invalid graph value '%S'", reply);
+
+	    if(!val)
+		val = call("ajGraphNew");
+	    call("ajGraphSet",val, reply,&ok);
+
+	    if(!ok)
+	    {
+		call("ajGraphDumpDevices");
+		acdBadVal(thys, required,
+			  "Invalid graph value '%S'", reply);
+	    }
 	}
+	else
+	    if(!nullok)
+	    {
+		acdBadVal(thys, required,
+			  "Graph is required");
+		ok = ajFalse;
+	    }
     }
     
     if(!ok)
@@ -6534,6 +6699,7 @@ static void acdSetGraph(AcdPAcd thys)
     }
     
 #endif
+
     return;
 }
 
@@ -6585,37 +6751,70 @@ static void acdSetGraphxy(AcdPAcd thys)
     static AjPStr reply    = NULL;
     static AjPStr title    = NULL;
     ajint itry;
+    AjBool nullok;
+    AjBool nulldefault;
     ajint multi;
     
+    val = NULL;
+
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
     acdAttrToInt(thys, "multi", 1, &multi);
     if(multi < 1) multi = 1;
     acdLog("multi: %d\n", multi);
     
     required = acdIsRequired(thys);
-    if(ajNamGetValueC("GRAPHICS",&gdev))
-	acdReplyInit(thys, ajStrStr(gdev), &defreply);
+    if(nullok && nulldefault)
+    {
+	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
+	{
+	    if(ajNamGetValueC("GRAPHICS",&gdev))
+		acdReplyInit(thys, ajStrStr(gdev), &defreply);
+	    else
+		acdReplyInit(thys, "x11", &defreply);
+	}
+	else				/* leave empty */
+	    acdReplyInit(thys, "", &defreply);
+    }
     else
-	acdReplyInit(thys, "x11", &defreply);
-    
+    {
+	if(ajNamGetValueC("GRAPHICS",&gdev))
+	    acdReplyInit(thys, ajStrStr(gdev), &defreply);
+	else
+	    acdReplyInit(thys, "x11", &defreply);
+    }
     acdPromptGraph(thys);
-    
-    val = call("ajGraphxyNewI",multi);
     
     for(itry=acdPromptTry; itry && !ok; itry--)
     {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+
 	ajStrAssS(&reply, defreply);
 
 	if(required)
 	    acdUserGet(thys, &reply);
 
-	call("ajGraphxySet",val, reply, &ok);
-
-	if(!ok)
+	if(ajStrLen(reply))	/* valid no graph type */
 	{
-	    call("ajGraphDumpDevices");
-	    acdBadVal(thys, required,
-		      "Invalid XY graph value '%S'", reply);
+	    if(!val)
+		val = call("ajGraphxyNewI",multi);
+    
+	    call("ajGraphxySet",val, reply, &ok);
+
+	    if(!ok)
+	    {
+		call("ajGraphDumpDevices");
+		acdBadVal(thys, required,
+			  "Invalid XY graph value '%S'", reply);
+	    }
 	}
+	else
+	    if(!nullok)
+	    {
+		acdBadVal(thys, required,
+			  "Graph is required");
+		ok = ajFalse;
+	    }
     }
     
     if(!ok)
@@ -6624,32 +6823,36 @@ static void acdSetGraphxy(AcdPAcd thys)
     thys->Value = val;
     ajStrAssC(&thys->ValStr, "XY graph definition");
     
-    if(acdGetValueAssoc(thys, "gtitle", &title))
-	call("ajGraphxyTitle",val,title);
-    
-    if(acdGetValueAssoc(thys, "gsubtitle", &title))
-	call("ajGraphxySubtitle",val,title);
-    
-    if(acdGetValueAssoc(thys, "gxtitle", &title))
-	call("ajGraphxyXtitle",val,title);
-    
-    if(acdGetValueAssoc(thys, "gytitle", &title))
-	call("ajGraphxyYtitle",val,title);
-    
-    if(acdGetValueAssoc(thys, "goutfile", &title))
-	call("ajGraphxySetOutputFile",val,title);
-    
-    if(acdGetValueAssoc(thys, "gdirectory", &title))
-	call("ajGraphxySetOutputDir",val,title);
-    else
+    if(val)
     {
-	ajStrAssC(&title, "");
-	if(acdOutDirectory(&title))
+	if(acdGetValueAssoc(thys, "gtitle", &title))
+	    call("ajGraphxyTitle",val,title);
+
+	if(acdGetValueAssoc(thys, "gsubtitle", &title))
+	    call("ajGraphxySubtitle",val,title);
+
+	if(acdGetValueAssoc(thys, "gxtitle", &title))
+	    call("ajGraphxyXtitle",val,title);
+
+	if(acdGetValueAssoc(thys, "gytitle", &title))
+	    call("ajGraphxyYtitle",val,title);
+
+	if(acdGetValueAssoc(thys, "goutfile", &title))
+	    call("ajGraphxySetOutputFile",val,title);
+
+	if(acdGetValueAssoc(thys, "gdirectory", &title))
 	    call("ajGraphxySetOutputDir",val,title);
+	else
+	{
+	    ajStrAssC(&title, "");
+	    if(acdOutDirectory(&title))
+		call("ajGraphxySetOutputDir",val,title);
+	}
+
+    
+	call("ajGraphTrace",val);
     }
-    
-    call("ajGraphTrace",val);
-    
+
 #endif
     
     return;
@@ -7301,13 +7504,18 @@ static void acdSetOutfile(AcdPAcd thys)
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
     acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
     acdAttrToBool(thys, "append", ajFalse, &append);
+    acdOutDirectory(&dir);
     
     required = acdIsRequired(thys);
-    if(nullok && nulldefault)	       /* do not make up a filename */
-	acdReplyInit(thys, "", &defreply);
+    if(nullok && nulldefault)
+    {
+	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
+	    acdOutFilename(&defreply, name, ext);
+	else				/* leave empty */
+	    acdReplyInit(thys, "", &defreply);
+    }
     else
     {
-	acdOutDirectory(&dir);
 	acdOutFilename(&outfname, name, ext);
 	acdReplyInit(thys, ajStrStr(outfname), &defreply);
     }
@@ -7754,49 +7962,42 @@ static void acdSetReport(AcdPAcd thys)
     static AjPStr defreply = NULL;
     static AjPStr reply    = NULL;
     ajint itry;
+    AjBool nullok;
+    AjBool nulldefault;
     
     static AjPStr name      = NULL;
     static AjPStr ext       = NULL;
+    static AjPStr fmt       = NULL;
     static AjPStr dir       = NULL;
     static AjPStr outfname  = NULL;
     static AjPStr fullfname = NULL;
     static AjPStr taglist   = NULL;
     ajint mintags = 0;
     
-    val = ajReportNew();
+    val = NULL;
+
     
-    acdAttrToStr(thys, "type", "", &val->Type);
-    acdAttrToInt(thys, "mintags", 0, &val->Mintags);
-    acdAttrToStr(thys, "taglist", "", &taglist);
-    acdAttrToBool(thys, "multiple", ajFalse, &val->Multi);
-    acdAttrToInt(thys, "precision", 3, &val->Precision);
-    
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
+
     acdGetValueAssoc(thys, "rdirectory", &dir);
     acdGetValueAssoc(thys, "rextension", &ext);
     acdGetValueAssoc(thys, "rname", &name);
-    acdGetValueAssoc(thys, "rformat", &val->Formatstr);
-    acdQualToBool(thys, "raccshow", ajFalse,
-		  &val->Showacc, &defreply);
-    acdQualToBool(thys, "rdesshow", ajFalse,
-		  &val->Showdes, &defreply);
-    acdQualToBool(thys, "rscoreshow", ajTrue,
-		  &val->Showscore, &defreply);
-    acdQualToBool(thys, "rusashow", ajFalse,
-		  &val->Showusa, &defreply);
-    
-    /* test acdc-reportbadtaglist */
-    if(!ajReportSetTags(val, taglist, mintags))
-	acdErrorAcd(thys, "Bad tag list for report");
-
-    /* test acdc-reportbadtags */
-    if(!ajReportValid(val))
-	ajDie("Report option -%S: Validation failed",
-	      thys->Name);
-    
+    acdGetValueAssoc(thys, "rformat", &fmt);
     acdOutDirectory(&dir);
-    acdOutFilename(&outfname, name, ext);
     required = acdIsRequired(thys);
-    acdReplyInit(thys, ajStrStr(outfname), &defreply);
+    if(nullok && nulldefault)
+    {
+	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
+	    acdOutFilename(&defreply, name, ext);
+	else				/* leave empty */
+	    acdReplyInit(thys, "", &defreply);
+    }
+    else
+    {
+	acdOutFilename(&outfname, name, ext);
+	acdReplyInit(thys, ajStrStr(outfname), &defreply);
+    }
     acdPromptReport(thys);
     
     for(itry=acdPromptTry; itry && !ok; itry--)
@@ -7808,13 +8009,51 @@ static void acdSetReport(AcdPAcd thys)
 	if(required)
 	    acdUserGet(thys, &reply);
 
-	ajStrAssS(&fullfname, reply);
-	ajFileSetDir(&fullfname, dir);
-	ok = ajReportOpen(val, fullfname);
-	if(!ok)
-	    acdBadVal(thys, required,
-		      "Unable to open report file '%S'",
-		      fullfname);
+	if(ajStrLen(reply))
+	{
+	    val = ajReportNew();
+	    ajStrSet(&val->Formatstr, fmt);
+	    acdAttrToStr(thys, "type", "", &val->Type);
+	    acdAttrToInt(thys, "mintags", 0, &val->Mintags);
+	    acdAttrToStr(thys, "taglist", "", &taglist);
+	    acdAttrToBool(thys, "multiple", ajFalse, &val->Multi);
+	    acdAttrToInt(thys, "precision", 3, &val->Precision);
+	    acdQualToBool(thys, "raccshow", ajFalse,
+			  &val->Showacc, &defreply);
+	    acdQualToBool(thys, "rdesshow", ajFalse,
+			  &val->Showdes, &defreply);
+	    acdQualToBool(thys, "rscoreshow", ajTrue,
+			  &val->Showscore, &defreply);
+	    acdQualToBool(thys, "rusashow", ajFalse,
+			  &val->Showusa, &defreply);
+    
+	    /* test acdc-reportbadtaglist */
+	    if(!ajReportSetTags(val, taglist, mintags))
+		acdErrorAcd(thys, "Bad tag list for report");
+
+	    /* test acdc-reportbadtags */
+	    if(!ajReportValid(val))
+		ajDie("Report option -%S: Validation failed",
+		      thys->Name);
+    
+	    ajStrAssS(&fullfname, reply);
+	    ajFileSetDir(&fullfname, dir);
+	    ok = ajReportOpen(val, fullfname);
+	    if(!ok)
+	    {
+		acdBadVal(thys, required,
+			  "Unable to open report file '%S'",
+			  fullfname);
+		ajReportDel(&val);
+	    }
+	}
+	else
+	    if(!nullok)
+	    {
+		acdBadVal(thys, required,
+			  "Report file is required");
+		ok = ajFalse;
+	    }
     }
 
     if(!ok)
@@ -9274,6 +9513,8 @@ static void acdSetSeqout(AcdPAcd thys)
     static AjPStr defreply = NULL;
     static AjPStr reply    = NULL;
     ajint itry;
+    AjBool nullok;
+    AjBool nulldefault;
     
     static AjPStr name     = NULL;
     static AjPStr ext      = NULL;
@@ -9281,9 +9522,9 @@ static void acdSetSeqout(AcdPAcd thys)
     static AjPStr sing     = NULL;
     static AjPStr outfname = NULL;
     AjBool osfeat;
-    
-    val = ajSeqoutNew();		/* set the default value */
-    
+
+    val = NULL;
+
     if(!acdGetValueAssoc(thys, "osname", &name))
 	acdAttrResolve(thys, "name", &name);
     
@@ -9295,15 +9536,25 @@ static void acdSetSeqout(AcdPAcd thys)
     if(!ajStrLen(ext))
 	ajSeqOutFormatDefault(&ext);
     
-    acdOutFilename(&outfname, name, ext);
-    
-    acdGetValueAssoc(thys, "osdbname", &val->Setdb);
-    
     acdAttrToBool(thys, "features", ajFalse, &osfeat);
-    val->Features = osfeat;
     
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
+
     required = acdIsRequired(thys);
-    acdReplyInit(thys, ajStrStr(outfname), &defreply);
+    if(nullok && nulldefault)
+    {
+	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
+	    acdOutFilename(&defreply, name, ext);
+	else				/* leave empty */
+	    acdReplyInit(thys, "", &defreply);
+    }
+    else
+    {
+	acdOutFilename(&outfname, name, ext);
+	acdReplyInit(thys, ajStrStr(outfname), &defreply);
+    }
+
     acdPromptSeqout(thys);
     
     for(itry=acdPromptTry; itry && !ok; itry--)
@@ -9315,49 +9566,64 @@ static void acdSetSeqout(AcdPAcd thys)
 	if(required)
 	    acdUserGet(thys, &reply);
 	
-	ajSeqoutUsa(&val, reply);	/* resets the AjPSeqout */
-	val->Features = osfeat;
-	acdGetValueAssoc(thys, "osdirectory", &val->Directory);
-	acdOutDirectory(&val->Directory);
-	acdLog("acdSetSeqout features: %B dir '%S'\n",
-	       val->Features, val->Directory);
-	
-	ajStrSet(&val->Formatstr, fmt);
-	if(!ajStrLen(val->Formatstr))
-	    ajSeqOutFormatDefault(&val->Formatstr);
-	
-	ajStrSet(&val->Extension, ext);
-	ajStrSet(&val->Extension, val->Formatstr);
-	
-	acdGetValueAssoc(thys, "oufo", &val->Ufo);
-	acdGetValueAssoc(thys, "offormat", &val->Ftquery->Formatstr);
-	if(!ajStrLen(val->Ftquery->Formatstr))
-	    ajFeatOutFormatDefault(&val->Ftquery->Formatstr);
-	acdGetValueAssoc(thys, "ofname", &val->Ftquery->Filename);
-	acdGetValueAssoc(thys, "ofdirectory",
-			 &val->Ftquery->Directory);
-	acdOutDirectory(&val->Ftquery->Directory);
-	
-	acdQualToBool(thys, "ossingle",
-		      ajFalse,
-		      &val->Single, &sing);
-	
-	if(!acdAttrToStr(thys, "type", "", &val->Outputtype))
-	    if(!acdInTypeSeq(&val->Outputtype))
-		ajWarn("No output type specified for '%S'", thys->Name);
-	
-	if(!ajSeqoutOpen(val))
+        if(ajStrLen(reply))
 	{
-	    if(ajStrLen(val->Directory))
-		acdBadVal(thys, required,
-			  "Unable to write sequence to '%S%S'",
-			  val->Directory, reply);
-	    else
-		acdBadVal(thys, required,
-			  "Unable to write sequence to '%S'",
-			  reply);
-	    ok = ajFalse;
+	    val = ajSeqoutNew();	/* set the default value */
+    
+	    ajSeqoutUsa(&val, reply);	/* resets the AjPSeqout */
+	    val->Features = osfeat;
+	    acdGetValueAssoc(thys, "osdirectory", &val->Directory);
+	    acdGetValueAssoc(thys, "osdbname", &val->Setdb);
+    
+	    acdOutDirectory(&val->Directory);
+	    acdLog("acdSetSeqout features: %B dir '%S'\n",
+		   val->Features, val->Directory);
+
+	    ajStrSet(&val->Formatstr, fmt);
+	    if(!ajStrLen(val->Formatstr))
+		ajSeqOutFormatDefault(&val->Formatstr);
+
+	    ajStrSet(&val->Extension, ext);
+	    ajStrSet(&val->Extension, val->Formatstr);
+
+	    acdGetValueAssoc(thys, "oufo", &val->Ufo);
+	    acdGetValueAssoc(thys, "offormat", &val->Ftquery->Formatstr);
+	    if(!ajStrLen(val->Ftquery->Formatstr))
+		ajFeatOutFormatDefault(&val->Ftquery->Formatstr);
+	    acdGetValueAssoc(thys, "ofname", &val->Ftquery->Filename);
+	    acdGetValueAssoc(thys, "ofdirectory",
+			     &val->Ftquery->Directory);
+	    acdOutDirectory(&val->Ftquery->Directory);
+
+	    acdQualToBool(thys, "ossingle",
+			  ajFalse,
+			  &val->Single, &sing);
+
+	    if(!acdAttrToStr(thys, "type", "", &val->Outputtype))
+		if(!acdInTypeSeq(&val->Outputtype))
+		    ajWarn("No output type specified for '%S'", thys->Name);
+
+	    if(!ajSeqoutOpen(val))
+	    {
+		if(ajStrLen(val->Directory))
+		    acdBadVal(thys, required,
+			      "Unable to write sequence to '%S%S'",
+			      val->Directory, reply);
+		else
+		    acdBadVal(thys, required,
+			      "Unable to write sequence to '%S'",
+			      reply);
+		ok = ajFalse;
+		ajSeqoutDel(&val);
+	    }
 	}
+	else
+	    if(!nullok)
+	    {
+		acdBadVal(thys, required,
+			  "Output USA is required");
+		ok = ajFalse;
+	    }
     }
 
     if(!ok)
@@ -9365,10 +9631,13 @@ static void acdSetSeqout(AcdPAcd thys)
     
     thys->Value = val;
     ajStrAssS(&thys->ValStr, reply);
-    acdLog("acdSetSeqout features: %B\n", val->Features);
-    if(val->Features)
-	acdLog("acdSetSeqout with features UFO '%S'\n", val->Ufo);
-    
+    if (val)
+    {
+	acdLog("acdSetSeqout features: %B\n", val->Features);
+	if(val->Features)
+	    acdLog("acdSetSeqout with features UFO '%S'\n", val->Ufo);
+    }
+
     return;
 }
 
@@ -9424,6 +9693,8 @@ static void acdSetSeqoutset(AcdPAcd thys)
     
     AjBool required = ajFalse;
     AjBool ok       = ajFalse;
+    AjBool nullok;
+    AjBool nulldefault;
 
     static AjPStr defreply = NULL;
     static AjPStr reply    = NULL;
@@ -9436,8 +9707,8 @@ static void acdSetSeqoutset(AcdPAcd thys)
     static AjPStr outfname = NULL;
     AjBool osfeat;
     
-    val = ajSeqoutNew();		/* set the default value */
-    
+    val = NULL;
+
     if(!acdGetValueAssoc(thys, "osname", &name))
 	acdAttrResolve(thys, "name", &name);
     
@@ -9449,15 +9720,26 @@ static void acdSetSeqoutset(AcdPAcd thys)
     if(!ajStrLen(ext))
 	ajSeqOutFormatDefault(&ext);
     
-    acdOutFilename(&outfname, name, ext);
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
+
     
-    acdGetValueAssoc(thys, "osdbname", &val->Setdb);
     
     acdAttrToBool(thys, "features", ajFalse, &osfeat);
-    val->Features = osfeat;
     
     required = acdIsRequired(thys);
-    acdReplyInit(thys, ajStrStr(outfname), &defreply);
+    if(nullok && nulldefault)
+    {
+	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
+	    acdOutFilename(&defreply, name, ext);
+	else				/* leave empty */
+	    acdReplyInit(thys, "", &defreply);
+    }
+    else
+    {
+	acdOutFilename(&outfname, name, ext);
+	acdReplyInit(thys, ajStrStr(outfname), &defreply);
+    }
     acdPromptSeqout(thys);
     
     for(itry=acdPromptTry; itry && !ok; itry--)
@@ -9469,48 +9751,62 @@ static void acdSetSeqoutset(AcdPAcd thys)
 	if(required)
 	    acdUserGet(thys, &reply);
 	
-	ajSeqoutUsa(&val, reply);
-	val->Features = osfeat;
-	acdGetValueAssoc(thys, "osdirectory", &val->Directory);
-	acdOutDirectory(&val->Directory);
-	acdLog("acdSetSeqoutset features: %B\n", val->Features);
-	
-	ajStrSet(&val->Formatstr, fmt);
-	if(!ajStrLen(val->Formatstr))
-	    ajSeqOutFormatDefault(&val->Formatstr);
-	
-	ajStrSet(&val->Extension, ext);
-	ajStrSet(&val->Extension, val->Formatstr);
-	
-	acdGetValueAssoc(thys, "oufo", &val->Ufo);
-	acdGetValueAssoc(thys, "offormat", &val->Ftquery->Formatstr);
-	if(!ajStrLen(val->Ftquery->Formatstr))
-	    ajFeatOutFormatDefault(&val->Ftquery->Formatstr);
-	acdGetValueAssoc(thys, "ofname", &val->Ftquery->Filename);
-	acdGetValueAssoc(thys, "ofdirectory",
-			 &val->Ftquery->Directory);
-	acdOutDirectory(&val->Ftquery->Directory);
-	
-	acdQualToBool(thys, "ossingle",
-		      ajSeqOutFormatSingle(val->Formatstr),
-		      &val->Single, &sing);
-	
-	if(!acdAttrToStr(thys, "type", "", &val->Outputtype))
-	    if(!acdInTypeSeq(&val->Outputtype))
-		ajWarn("No output type specified for '%S'", thys->Name);
-	
-	if(!ajSeqoutOpen(val))
+	if(ajStrLen(reply))
 	{
-	    if(ajStrLen(val->Directory))
-		acdBadVal(thys, required,
-			  "Unable to write sequence to '%S%S'",
-			  val->Directory, reply);
-	    else
-		acdBadVal(thys, required,
-			  "Unable to write sequence to '%S'",
-			  reply);
-	    ok = ajFalse;
+	    val = ajSeqoutNew();		/* set the default value */
+    
+	    ajSeqoutUsa(&val, reply);
+	    acdGetValueAssoc(thys, "osdbname", &val->Setdb);
+	    val->Features = osfeat;
+	    acdGetValueAssoc(thys, "osdirectory", &val->Directory);
+	    acdOutDirectory(&val->Directory);
+	    acdLog("acdSetSeqoutset features: %B\n", val->Features);
+
+	    ajStrSet(&val->Formatstr, fmt);
+	    if(!ajStrLen(val->Formatstr))
+		ajSeqOutFormatDefault(&val->Formatstr);
+
+	    ajStrSet(&val->Extension, ext);
+	    ajStrSet(&val->Extension, val->Formatstr);
+
+	    acdGetValueAssoc(thys, "oufo", &val->Ufo);
+	    acdGetValueAssoc(thys, "offormat", &val->Ftquery->Formatstr);
+	    if(!ajStrLen(val->Ftquery->Formatstr))
+		ajFeatOutFormatDefault(&val->Ftquery->Formatstr);
+	    acdGetValueAssoc(thys, "ofname", &val->Ftquery->Filename);
+	    acdGetValueAssoc(thys, "ofdirectory",
+			     &val->Ftquery->Directory);
+	    acdOutDirectory(&val->Ftquery->Directory);
+
+	    acdQualToBool(thys, "ossingle",
+			  ajSeqOutFormatSingle(val->Formatstr),
+			  &val->Single, &sing);
+
+	    if(!acdAttrToStr(thys, "type", "", &val->Outputtype))
+		if(!acdInTypeSeq(&val->Outputtype))
+		    ajWarn("No output type specified for '%S'", thys->Name);
+
+	    if(!ajSeqoutOpen(val))
+	    {
+		if(ajStrLen(val->Directory))
+		    acdBadVal(thys, required,
+			      "Unable to write sequence to '%S%S'",
+			      val->Directory, reply);
+		else
+		    acdBadVal(thys, required,
+			      "Unable to write sequence to '%S'",
+			      reply);
+		ok = ajFalse;
+		ajSeqoutDel(&val);
+	    }
 	}
+	else
+	    if(!nullok)
+	    {
+		acdBadVal(thys, required,
+			  "Output USA is required");
+		ok = ajFalse;
+	    }
     }
 
     if(!ok)
@@ -9576,6 +9872,8 @@ static void acdSetSeqoutall(AcdPAcd thys)
     static AjPStr defreply = NULL;
     static AjPStr reply    = NULL;
     ajint itry;
+    AjBool nullok;
+    AjBool nulldefault;
     
     static AjPStr name     = NULL;
     static AjPStr ext      = NULL;
@@ -9584,8 +9882,8 @@ static void acdSetSeqoutall(AcdPAcd thys)
     static AjPStr outfname = NULL;
     AjBool osfeat;
     
-    val = ajSeqoutNew();		/* set the default value */
-    
+    val = NULL;
+
     if(!acdGetValueAssoc(thys, "osname", &name))
 	acdAttrResolve(thys, "name", &name);
     
@@ -9597,15 +9895,25 @@ static void acdSetSeqoutall(AcdPAcd thys)
     if(!ajStrLen(ext))
 	ajSeqOutFormatDefault(&ext);
     
-    acdOutFilename(&outfname, name, ext);
-    
-    acdGetValueAssoc(thys, "osdbname", &val->Setdb);
     
     acdAttrToBool(thys, "features", ajFalse, &osfeat);
-    val->Features = osfeat;
     
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
+
     required = acdIsRequired(thys);
-    acdReplyInit(thys, ajStrStr(outfname), &defreply);
+    if(nullok && nulldefault)
+    {
+	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
+	    acdOutFilename(&defreply, name, ext);
+	else				/* leave empty */
+	    acdReplyInit(thys, "", &defreply);
+    }
+    else
+    {
+	acdOutFilename(&outfname, name, ext);
+        acdReplyInit(thys, ajStrStr(outfname), &defreply);
+    }
     acdPromptSeqout(thys);
     
     for(itry=acdPromptTry; itry && !ok; itry--)
@@ -9617,56 +9925,68 @@ static void acdSetSeqoutall(AcdPAcd thys)
 	if(required)
 	    acdUserGet(thys, &reply);
 	
-	ajSeqoutUsa(&val, reply);
-	val->Features = osfeat;
-	acdGetValueAssoc(thys, "osdirectory", &val->Directory);
-	acdOutDirectory(&val->Directory);
-	acdLog("acdSetSeqoutall features: %B\n", val->Features);
-	
-	ajStrSet(&val->Formatstr, fmt);
-	if(!ajStrLen(val->Formatstr))
-	    ajSeqOutFormatDefault(&val->Formatstr);
-	
-	ajStrSet(&val->Extension, ext);
-	ajStrSet(&val->Extension, val->Formatstr);
-	
-	acdGetValueAssoc(thys, "oufo", &val->Ufo);
-	acdGetValueAssoc(thys, "offormat", &val->Ftquery->Formatstr);
-	if(!ajStrLen(val->Ftquery->Formatstr))
-	    ajFeatOutFormatDefault(&val->Ftquery->Formatstr);
-	
-	acdGetValueAssoc(thys, "ofname", &val->Ftquery->Filename);
-	
-	acdGetValueAssoc(thys, "ofdirectory",
-			 &val->Ftquery->Directory);
-	acdOutDirectory(&val->Ftquery->Directory);
-	
-	acdLog("acdSetSeqoutall ossingle default: %B\n",
-	       ajSeqOutFormatSingle(val->Formatstr));
-	
-	acdQualToBool(thys, "ossingle",
-		      ajSeqOutFormatSingle(val->Formatstr),
-		      &val->Single, &sing);
-	
-	acdLog("acdSetSeqoutall ossingle value %B '%S'\n",
-	       val->Single, sing);
-	
-	if(!acdAttrToStr(thys, "type", "", &val->Outputtype))
-	    if(!acdInTypeSeq(&val->Outputtype))
-		ajWarn("No output type specified for '%S'", thys->Name);
-	
-	if(!ajSeqoutOpen(val))
+	if(ajStrLen(reply))
 	{
-	    if(ajStrLen(val->Directory))
-		acdBadVal(thys, required,
-			  "Unable to write sequence to '%S%S'",
-			  val->Directory, reply);
-	    else
-		acdBadVal(thys, required,
-			  "Unable to write sequence to '%S'",
-			  reply);
-	    ok = ajFalse;
+	    val = ajSeqoutNew();		/* set the default value */
+	    ajSeqoutUsa(&val, reply);
+	    val->Features = osfeat;
+	    acdGetValueAssoc(thys, "osdirectory", &val->Directory);
+	    acdGetValueAssoc(thys, "osdbname", &val->Setdb);
+	    acdOutDirectory(&val->Directory);
+	    acdLog("acdSetSeqoutall features: %B\n", val->Features);
+
+	    ajStrSet(&val->Formatstr, fmt);
+	    if(!ajStrLen(val->Formatstr))
+		ajSeqOutFormatDefault(&val->Formatstr);
+
+	    ajStrSet(&val->Extension, ext);
+	    ajStrSet(&val->Extension, val->Formatstr);
+
+	    acdGetValueAssoc(thys, "oufo", &val->Ufo);
+	    acdGetValueAssoc(thys, "offormat", &val->Ftquery->Formatstr);
+	    if(!ajStrLen(val->Ftquery->Formatstr))
+		ajFeatOutFormatDefault(&val->Ftquery->Formatstr);
+
+	    acdGetValueAssoc(thys, "ofname", &val->Ftquery->Filename);
+	    acdGetValueAssoc(thys, "ofdirectory",
+			     &val->Ftquery->Directory);
+	    acdOutDirectory(&val->Ftquery->Directory);
+
+	    acdLog("acdSetSeqoutall ossingle default: %B\n",
+		   ajSeqOutFormatSingle(val->Formatstr));
+
+	    acdQualToBool(thys, "ossingle",
+			  ajSeqOutFormatSingle(val->Formatstr),
+			  &val->Single, &sing);
+
+	    acdLog("acdSetSeqoutall ossingle value %B '%S'\n",
+		   val->Single, sing);
+
+	    if(!acdAttrToStr(thys, "type", "", &val->Outputtype))
+		if(!acdInTypeSeq(&val->Outputtype))
+		    ajWarn("No output type specified for '%S'", thys->Name);
+
+	    if(!ajSeqoutOpen(val))
+	    {
+		if(ajStrLen(val->Directory))
+		    acdBadVal(thys, required,
+			      "Unable to write sequence to '%S%S'",
+			      val->Directory, reply);
+		else
+		    acdBadVal(thys, required,
+			      "Unable to write sequence to '%S'",
+			      reply);
+		ok = ajFalse;
+		ajSeqoutDel(&val);
+	    }
 	}
+	else
+	    if(!nullok)
+	    {
+		acdBadVal(thys, required,
+			  "Output USA is required");
+		ok = ajFalse;
+	    }
     }
 
     if(!ok)
@@ -9817,6 +10137,96 @@ static void acdSetString(AcdPAcd thys)
     thys->Value = val;
     ajStrAssS(&thys->ValStr, val);
     
+    return;
+}
+
+
+
+
+/* @func ajAcdGetToggle *******************************************************
+**
+** Returns an item of type Toggle as defined in a named ACD item. Called by the
+** application after all ACD values have been set, and simply returns
+** what the ACD item already has.
+**
+** Toggle is an AjBool that is used to switch (toggle) other ACD types.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjBool] Boolean value from ACD item
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjBool ajAcdGetToggle(const char *token)
+{
+    AjBool* val;
+
+    val = acdGetValue(token, "toggle");
+    return *val;
+}
+
+
+/* @funcstatic acdSetToggle ***************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD toggle item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other available) is "N" for ajFalse.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajStrToBool
+** @@
+******************************************************************************/
+
+
+static void acdSetToggle(AcdPAcd thys)
+{
+    AjBool* val;
+
+    AjBool required = ajFalse;
+    AjBool ok       = ajFalse;
+
+    static AjPStr defreply = NULL;
+    static AjPStr reply    = NULL;
+    ajint itry;
+
+    AJNEW0(val);		   /* create storage for the result */
+
+    *val = ajFalse;			/* set the default value */
+
+    required = acdIsRequired(thys);
+    acdReplyInit(thys, "N", &defreply);
+
+    acdLog("acdSetToggle -%S def: %S\n", thys->Name, defreply);
+
+
+    for(itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ajStrAssS(&reply, defreply);
+
+	if(required)
+	    acdUserGet(thys, &reply);
+
+	ok = ajStrToBool(reply, val);
+	if(!ok)
+	    acdBadVal(thys, required, "Invalid Y/N value '%S'", reply);
+    }
+    if(!ok)
+	acdBadRetry(thys);
+
+    thys->Value = val;
+    ajStrAssC(&thys->ValStr, ajStrBool(*val));
+
+    acdLog("acdSetToggle -%S val: %B\n", thys->Name, *val);
+
+    if(ajStrMatchC(thys->Name, "help"))
+	acdHelp();
+
     return;
 }
 
@@ -13187,21 +13597,24 @@ static AjBool acdVarTest(const AjPStr var)
 ** Used by acdvalid to check for dependencies that are too complex
 **
 ** @param [w] var [const AjPStr] String value
+** @param [w] toggle [AjBool*] ajTrue if the value is a simple true or false
+**                             test of a toggle variable
 ** @return [AjBool] ajTrue if a variable was found
 ** @@
 ******************************************************************************/
 
-static AjBool acdVarTestValid(const AjPStr var)
+static AjBool acdVarTestValid(const AjPStr var, AjBool* toggle)
 {
     static AjPRegexp varexp = NULL;
     static AjPRegexp toggleexp = NULL;
     AjPStr varname = NULL;
-    AjBool toggle;
 
     if(!varexp)
 	varexp = ajRegCompC("^(.*)\\$\\([a-zA-Z0-9_.]+\\)");
     if(!toggleexp)
 	toggleexp = ajRegCompC("^(@\\([!])?(\\$\\([a-zA-Z0-9_.]+\\))\\)?$");
+
+    *toggle = ajFalse;
 
     if(!ajRegExec(varexp, var))
 	return ajFalse;
@@ -13215,13 +13628,9 @@ static AjBool acdVarTestValid(const AjPStr var)
     if(ajRegExec(toggleexp, var))
     {
 	ajRegSubI(toggleexp, 2, &varname); /* returns $(varname) */
-	toggle = acdVarSimple(&varname);
-	acdLog("varname '%S' toggle %B\n", varname, toggle);
+	*toggle = acdVarSimple(&varname);
+	acdLog("varname '%S' toggle %B\n", varname, *toggle);
 	ajStrDel(&varname);
-	if(toggle)
-	    return ajFalse;
-
-	return ajTrue;
     }
     return ajTrue;
 }
@@ -13723,7 +14132,8 @@ static AjBool acdExpNot(AjPStr* result, const AjPStr str)
     static AjPRegexp nexp = NULL;
 
     if(!nexp)				/* ajint + ajint */
-	nexp = ajRegCompC("^[ \t]*(!|[Nn][Oo][Tt])[ \t]*([A-Za-z0-9]+)[ \t]*$");
+	nexp = ajRegCompC("^[ \t]*(!|[Nn][Oo][Tt])"
+			  "[ \t]*([A-Za-z0-9]+)[ \t]*$");
 
     if(ajRegExec(nexp, str))
     {
@@ -15207,10 +15617,10 @@ static ajint acdIsQual(const char* arg, const char* arg2,
 	if(ajStrPrefix((*acd)->Name, noqual))
 	{			       /* we have a -noqual matched */
 	    acdLog("we matched with -no\n");
-	    if(!strcmp(acdType[acdListCurr->Type].Name,
-		       "boolean"))	/* -nobool */
+	    if(!strcmp(acdType[acdListCurr->Type].Name, "boolean") ||
+	       !strcmp(acdType[acdListCurr->Type].Name, "toggle"))
 	    {
-		acdLog("-no%S=N boolean accepted\n", noqual);
+		acdLog("-no%S=N boolean or toggle accepted\n", noqual);
 		gotvalue = ajTrue;
 		ret = 1;
 		ajStrAssC(pvalue, "N");
@@ -15239,7 +15649,12 @@ static ajint acdIsQual(const char* arg, const char* arg2,
 		ajDie("'no' prefix invalid for '%s'", arg);
 	}
 	
-	if(!strcmp(acdType[acdListCurr->Type].Name, "boolean"))
+	/*
+	 **ust the qualifier name with no value
+	 */
+	
+	if(!strcmp(acdType[acdListCurr->Type].Name, "boolean") ||
+	   !strcmp(acdType[acdListCurr->Type].Name, "toggle"))
 	{
 	    if(acdValIsBool(arg2))	/* bool value, accept */
 	    {
@@ -15253,7 +15668,7 @@ static ajint acdIsQual(const char* arg, const char* arg2,
 	}
 	else
 	{
-	    if(!arg2)
+	    if(!arg2)			/* no value - can be missing? */
 	    {
 		ajStrToBool((*acd)->DefStr[DEF_MISSING], &ismissing);
 		if(!ismissing)		/* test acdc-novalue */
@@ -16076,7 +16491,7 @@ static void acdTokenToLower(char *token, ajint* number)
 /* @funcstatic acdIsRequired **************************************************
 **
 ** Returns true if an ACD item is required but not yet defined.
-** Required means the required attribute is set (which it is by
+** Required means the standard attribute is set (which it is by
 ** default for a parameter),
 ** or the additional flag is set and -options was specified.
 **
@@ -16089,6 +16504,19 @@ static AjBool acdIsRequired(const AcdPAcd thys)
 {
     AjPStr *def     = thys->DefStr;
     AjBool required = ajFalse;
+
+    if (thys->DefStr)
+	acdLog("acdIsRequired '%S' Defined %B DefStr '%x' std '%S' add '%S' def '%S'\n",
+	       thys->Name,
+	       thys->Defined,
+	       thys->DefStr,
+	       def[DEF_STANDARD],
+	       def[DEF_ADDITIONAL],
+	       def[DEF_DEFAULT]);
+    else
+    	acdLog("acdIsRequired '%S' Defined %B\n",
+	       thys->Name,
+	       thys->Defined);
 
     if(thys->Defined)
 	return ajFalse;
@@ -17627,7 +18055,7 @@ static AjPStr* acdSelectValue(const AcdPAcd thys, ajint min, ajint max,
 {
     AjPStr *val = NULL;
     
-    static AjPStr delim;
+    static AjPStr delim=NULL;
     AjPStr tmpstr;
     AjPStr value;
     AjBool exactcase;
@@ -19081,10 +19509,18 @@ static void acdValidQual(const AcdPAcd thys)
     ajint itype;
     AjBool isparam = ajFalse;
     AjBool boolval;
+    AjBool toggle;
 
+    AjBool isParameter = ajFalse;
+    AjBool isStandard = ajFalse;
+    AjBool isAdditional = ajFalse;
+    AjBool isCalculated = ajFalse;
+
+    static AjPStr secname   = NULL;
     static AjPStr tmpstr    = NULL;
     static AjPStr tmpinfo   = NULL;
     static AjPStr tmpprompt = NULL;
+    static AjPStr tmphelp   = NULL;
 
     static ajint qualCountSeq     = 0;
     static ajint qualCountSeqout  = 0;
@@ -19110,6 +19546,24 @@ static void acdValidQual(const AcdPAcd thys)
     if(!acdDoValid)
 	return;
 
+    if(ajListLength(acdSecList))
+    {
+	acdValidSectionFull(&secname);
+    }
+    else
+    {
+	acdErrorValid("No section defined for qualifier '%S'", thys->Name);
+	ajStrAssC(&secname, "<none>");
+    }
+
+    if (acdType[thys->Type].Section)
+    {
+	if (!acdValidSectionMatch(acdType[thys->Type].Section->Name))
+	    acdErrorValid("Qualifier '%S' type '%s' not in section '%s'",
+			  thys->Name, acdType[thys->Type].Name,
+			  acdType[thys->Type].Section->Name);
+    }
+
     /* parameter, standard, additional only once, with 'Y' */
 
     itype = 0;
@@ -19118,13 +19572,22 @@ static void acdValidQual(const AcdPAcd thys)
     if(ajStrLen(tmpstr))
     {
 	itype++;
-	if(acdVarTestValid(tmpstr))
-	    acdErrorValid("Calculated parameter value");
+	if(acdVarTestValid(tmpstr, &toggle))
+	{
+	    isParameter = ajTrue;
+	    isCalculated = ajTrue;
+	    acdErrorValid("Calculated parameter value for '%S'",
+			  thys->Name);
+	}
 	else
 	{
 	    if(ajStrToBool(tmpstr,&isparam))
 	    {
-		if(!isparam)
+		if(isparam)
+		{
+		    isParameter = ajTrue;
+		}
+		else
 		{
 		    acdErrorValid("Parameter defined as false '%S'", tmpstr);
 		    itype--;
@@ -19137,13 +19600,27 @@ static void acdValidQual(const AcdPAcd thys)
     if(ajStrLen(tmpstr))
     {
 	itype++;
-	if(acdVarTestValid(tmpstr))
-	    acdWarn("Calculated standard value");
+	if(acdVarTestValid(tmpstr, &toggle))
+	{
+	    isStandard = ajTrue;
+	    isCalculated = ajTrue;
+	    if (!toggle)
+		acdWarn("Calculated standard value for '%S'",
+			thys->Name);
+	    if (acdValidSectionMatch("advanced"))
+		acdWarn("Calculated standard value for qualifier '%S' "
+			"in section '%S'",
+			thys->Name, secname);
+	}
 	else
 	{
 	    if(ajStrToBool(tmpstr,&boolval))
 	    {
-		if(!boolval)
+		if(boolval)
+		{
+		    isStandard = ajTrue;
+		}
+		else
 		{
 		    acdErrorValid("Standard defined as false '%S'",
 				  tmpstr);
@@ -19157,13 +19634,27 @@ static void acdValidQual(const AcdPAcd thys)
     if(ajStrLen(tmpstr))
     {
 	itype++;
-	if(acdVarTestValid(tmpstr))
-	    acdWarn("Calculated additional value");
+	if(acdVarTestValid(tmpstr, &toggle))
+	{
+	    isAdditional = ajTrue;
+	    isCalculated = ajTrue;
+	    if (!toggle)
+		acdWarn("Calculated additional value for '%S'",
+			thys->Name);
+	    if (acdValidSectionMatch("advanced"))
+		acdWarn("Calculated additional value for qualifier '%S' "
+			"in section '%S'",
+			thys->Name, secname);
+	}
 	else
 	{
 	    if(ajStrToBool(tmpstr,&boolval))
 	    {
-		if(!boolval)
+		if(boolval)
+		{
+		    isAdditional = ajTrue;
+		}
+		else
 		{
 		    acdErrorValid("Additional defined as false '%S'",
 				  tmpstr);
@@ -19176,10 +19667,76 @@ static void acdValidQual(const AcdPAcd thys)
     if(itype > 1)
 	acdErrorValid("Multiple definition of parameter/standard/additional");
 
+    if (isParameter)
+    {
+		    if (acdValidSectionMatch("advanced") ||
+			acdValidSectionMatch("additional"))
+			acdErrorValid("Parameter '%S' in section '%S'",
+				      thys->Name, secname);
+    }
+
+    else if (isStandard)
+    {
+	if (acdValidSectionMatch("advanced") ||
+	    acdValidSectionMatch("additional"))
+	    acdWarn("Standard qualifier '%S' "
+		    "in section '%S'",
+		    thys->Name, secname);
+    }
+
+    else if (isAdditional)
+    {
+	if (acdValidSectionMatch("advanced") ||
+	    acdValidSectionMatch("required"))
+	    acdWarn("Additional qualifier '%S' "
+		    "in section '%S'",
+		    thys->Name, secname);
+    }
+
+    else				/* must be advanced */
+    {
+	if (acdValidSectionMatch("additional") ||
+	    acdValidSectionMatch("required"))
+	    acdWarn("Advanced qualifier '%S' "
+		    "in section '%S'",
+		    thys->Name, secname);
+    }
+
     tmpinfo = acdAttrValue(thys, "information");
     tmpprompt = acdAttrValue(thys, "prompt");
+    tmphelp = acdAttrValue(thys, "help");
     if(ajStrLen(tmpprompt) && !ajStrLen(tmpinfo))
 	acdErrorValid("Prompt specified but no information");
+
+    if (ajStrLen(tmpinfo) && !isupper(ajStrChar(tmpinfo, 0)))
+    {
+	if (islower(ajStrChar(tmpinfo, 0)))
+	    acdWarn("Information string for '%S' starts in lower case",
+		thys->Name);
+	else
+	    acdWarn("Information string for '%S' starts non-alphabetic",
+		    thys->Name);
+    }
+
+    if (ajStrLen(tmpprompt) && !isupper(ajStrChar(tmpprompt, 0)))
+    {
+	if (islower(ajStrChar(tmpprompt, 0)))
+	    acdWarn("Prompt string for '%S' starts in lower case",
+		thys->Name);
+	else
+	    acdWarn("Prompt string for '%S' starts non-alphabetic",
+		    thys->Name);
+    }
+
+    if (ajStrLen(tmphelp) && !isupper(ajStrChar(tmphelp, 0)))
+    {
+	if (islower(ajStrChar(tmphelp, 0)))
+	    acdWarn("Help string for '%S' starts in lower case",
+		thys->Name);
+	else
+	    acdWarn("Help string for '%S' starts non-alphabetic",
+		    thys->Name);
+    }
 
     /*
      ** if known, must have a standard info string
@@ -19217,9 +19774,11 @@ static void acdValidQual(const AcdPAcd thys)
 	if(!isparam && !acdAttrTest(thys, "nullok"))
 	{
 	    if(*acdType[thys->Type].UseCount == 1)
-		acdErrorValid("First sequence input is not a parameter");
+		acdErrorValid("First sequence input '%S' is not a parameter",
+			      thys->Token);
 	    else
-		acdWarn("Subsequent sequence input is not a parameter");
+		acdWarn("Subsequent sequence input '%S' is not a parameter",
+			thys->Token);
 	}
 	qualCountSeq++;
 	if(qualCountSeq == 1)
@@ -19281,9 +19840,11 @@ static void acdValidQual(const AcdPAcd thys)
 	if(!isparam && !acdAttrTest(thys, "nullok"))
 	{
 	    if(*acdType[thys->Type].UseCount == 1)
-		acdErrorValid("First feature input is not a parameter");
+		acdErrorValid("First feature input '%S' is not a parameter",
+			      thys->Token);
 	    else
-		acdWarn("Subsequent feature input is not a parameter");
+		acdWarn("Subsequent feature input '%S' is not a parameter",
+			thys->Token);
 	}
 	qualCountFeat++;
 	if(qualCountFeat == 1)
@@ -19324,9 +19885,11 @@ static void acdValidQual(const AcdPAcd thys)
 	if(!isparam && !acdAttrTest(thys, "nullok"))
 	{
 	    if(*acdType[thys->Type].UseCount == 1)
-		acdErrorValid("First input file is not a parameter");
+		acdErrorValid("First input file '%S' is not a parameter",
+			      thys->Token);
 	    else
-		acdWarn("Subsequent input file is not a parameter");
+		acdWarn("Subsequent input file '%S' is not a parameter",
+			thys->Token);
 	}
 
 	qualCountInfile++;
@@ -19349,7 +19912,8 @@ static void acdValidQual(const AcdPAcd thys)
 		inMulti = ajTrue;
 	    if((qualCountInfile == 1) &&
 	       !ajStrMatchC(thys->Token, "infile"))
-		acdWarn("First input file qualifier is not 'infile'");
+		acdWarn("First input file qualifier '%S' is not 'infile'",
+			thys->Token);
 	}
 
 	/* still to do - check for type */
@@ -19366,9 +19930,11 @@ static void acdValidQual(const AcdPAcd thys)
 	if(!isparam && !acdAttrTest(thys, "nullok"))
 	{
 	    if(*acdType[thys->Type].UseCount == 1)
-		acdErrorValid("First output file is not a parameter");
+		acdErrorValid("First output file '%S' is not a parameter",
+			      thys->Token);
 	    else
-		acdWarn("Subsequent output file is not a parameter");
+		acdWarn("Subsequent output file '%S' is not a parameter",
+			thys->Token);
 	}
 	
 	qualCountOutfile++;
@@ -19382,7 +19948,8 @@ static void acdValidQual(const AcdPAcd thys)
 		outMulti = ajTrue;
 	    if((qualCountOutfile == 1) &&
 	       !ajStrMatchC(thys->Token, "outfile"))
-		acdWarn("First output file qualifier is not 'outfile'");
+		acdWarn("First output file qualifier '%S' is not 'outfile'",
+			thys->Token);
 	}
 	
 	/* still to do - check for type */
@@ -19399,9 +19966,11 @@ static void acdValidQual(const AcdPAcd thys)
 	if(!isparam && !acdAttrTest(thys, "nullok"))
 	{
 	    if(*acdType[thys->Type].UseCount == 1)
-		acdErrorValid("First alignment file is not a parameter");
+		acdErrorValid("First alignment file '%S' is not a parameter",
+			      thys->Token);
 	    else
-		acdWarn("Subsequent alignment file is not a parameter");
+		acdWarn("Subsequent alignment file '%S' is not a parameter",
+			thys->Token);
 	}
 
 	qualCountOutfile++;
@@ -19415,7 +19984,8 @@ static void acdValidQual(const AcdPAcd thys)
 		outMulti = ajTrue;
 	    if((qualCountOutfile == 1) &&
 	       !ajStrMatchC(thys->Token, "outfile"))
-		acdWarn("First alignment file qualifier is not 'outfile'");
+		acdWarn("First alignment file qualifier '%S' is not 'outfile'",
+			thys->Token);
 	}
     }
 
@@ -19426,9 +19996,11 @@ static void acdValidQual(const AcdPAcd thys)
 	if(!isparam && !acdAttrTest(thys, "nullok"))
 	{
 	    if(*acdType[thys->Type].UseCount == 1)
-		acdErrorValid("First report file is not a parameter");
+		acdErrorValid("First report file '%S' is not a parameter",
+			      thys->Token);
 	    else
-		acdWarn("Subsequent report file is not a parameter");
+		acdWarn("Subsequent report file '%S' is not a parameter",
+			thys->Token);
 	}
 
 	qualCountOutfile++;
@@ -19442,7 +20014,8 @@ static void acdValidQual(const AcdPAcd thys)
 		outMulti = ajTrue;
 	    if((qualCountOutfile == 1) &&
 	       !ajStrMatchC(thys->Token, "outfile"))
-		acdWarn("First report file qualifier is not 'outfile'");
+		acdWarn("First report file qualifier '%S' is not 'outfile'",
+			thys->Token);
 	}	
     }
 
@@ -19456,9 +20029,11 @@ static void acdValidQual(const AcdPAcd thys)
 	if(!isparam && !acdAttrTest(thys, "nullok"))
 	{
 	    if(*acdType[thys->Type].UseCount == 1)
-		acdErrorValid("First sequence output is not a parameter");
+		acdErrorValid("First sequence output '%S' is not a parameter",
+			      thys->Token);
 	    else
-		acdWarn("Subsequent sequence output is not a parameter");
+		acdWarn("Subsequent sequence output '%S' is not a parameter",
+			thys->Token);
 	}
 
 	qualCountSeqout++;
@@ -19504,9 +20079,11 @@ static void acdValidQual(const AcdPAcd thys)
 	if(!isparam && !acdAttrTest(thys, "nullok"))
 	{
 	    if(*acdType[thys->Type].UseCount == 1)
-		acdErrorValid("First feature output is not a parameter");
+		acdErrorValid("First feature output '%S' is not a parameter",
+			      thys->Token);
 	    else
-		acdWarn("Subsequent feature output is not a parameter");
+		acdWarn("Subsequent feature output '%S' is not a parameter",
+			thys->Token);
 	}
 
 	qualCountFeatout++;
@@ -19515,7 +20092,8 @@ static void acdValidQual(const AcdPAcd thys)
 	ajFmtPrintS(&qualName, "%cfeatout",
 		    (char) ('a' - 1 + qualCountFeatout));
 
-	if(!ajStrSuffixC(thys->Token, "featout"))
+	if(!ajStrMatchC(thys->Token, "featout") &&
+	   !ajStrSuffixC(thys->Token, "outfeat"))
 	    acdWarn("Feature output qualifier '%S' is not 'featout' "
 		    "or '*outfeat'",
 		    thys->Token);
@@ -19523,7 +20101,8 @@ static void acdValidQual(const AcdPAcd thys)
 	else
 	{
 	    if((qualCountFeatout > 1) ||
-	       (!ajStrMatchC(thys->Token, "featout")))
+	       (!ajStrMatchC(thys->Token, "featout") &&
+		!ajStrMatchC(thys->Token, "outfeat")))
 		featoutMulti = ajTrue;
 	    if(featoutMulti)
 	    {
@@ -19766,6 +20345,74 @@ static void acdReadSections(AjPTable* typetable, AjPTable* infotable)
 	}
     }
     ajFileClose(&sectFile);
+
+    return;
+}
+
+/* @funcstatic acdValidSectionMatch *******************************************
+**
+** Tests whether a named section appears in the current section list
+**
+** @param [r] secname [char*] Section name
+** @return [const AjPStr] ajTrue if the named section was found
+******************************************************************************/
+
+static AjBool acdValidSectionMatch(char* secname)
+{
+    AjIList iter = NULL;
+    AjPStr listsecname;
+    AjBool ret = ajFalse;
+
+    if(!ajListLength(acdSecList))
+	return ajFalse;
+
+    iter = ajListIter(acdSecList);
+
+    while (ajListIterMore(iter))
+    {
+	listsecname = ajListIterNext(iter);
+	if(ajStrMatchC(listsecname, secname))
+	{
+	    ret = ajTrue;
+	    break;
+	}
+    }
+
+    ajListIterFree(iter);
+
+    return ret;
+}
+
+/* @funcstatic acdValidSectionFull *******************************************
+**
+** Returns the full section name with the top level and any fame
+** sub-sections
+**
+** @param [r] secname [AjPStr*] Section name
+** @return [void]
+******************************************************************************/
+
+static void acdValidSectionFull(AjPStr* secname)
+{
+    AjIList iter = NULL;
+    AjPStr listsecname;
+
+    ajStrAssC(secname, "");
+
+    if(!ajListLength(acdSecList))
+	return;
+
+    iter = ajListIter(acdSecList);
+
+    while (ajListIterMore(iter))
+    {
+	listsecname = ajListIterNext(iter);
+	if (ajStrLen(*secname))
+	    ajStrAppK(secname,':');
+	ajStrApp(secname, listsecname);
+    }
+
+    ajListIterFree(iter);
 
     return;
 }
