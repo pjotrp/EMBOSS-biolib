@@ -1623,6 +1623,7 @@ static void reportWriteTagseq (AjPReport thys,
   AJFREE(seqmarkup);
 
   ajStrDel(&substr);
+  ajStrDel(&seqnumber);
   ajListIterFree(iterft);
   return;
 }
