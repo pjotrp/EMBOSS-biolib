@@ -39,33 +39,29 @@ public class JembossAuthServer
   private String tmproot = new String("/tmp/SOAP/emboss/");
   private String logFile = new String(tmproot+"/jemboss.log");
   private String errorLog = new String(tmproot+"/jemboss_error.log");
-  private File tmprootDir = new File(tmproot);
-
 
   private String fs = new String(System.getProperty("file.separator"));
   private String ps = new String(System.getProperty("path.separator"));
-  private String ls = new String(System.getProperty("line.separator"));
 
 //get paths to EMBOSS
   JembossParams jp  = new JembossParams();
   String plplot     = jp.getPlplot();
   String embossData = jp.getEmbossData();
   String embossBin  = jp.getEmbossBin();
-  String embossPath = jp.getEmbossPath();
+  String embossPath = embossBin + ps + jp.getEmbossPath();
   String acdDirToParse     = jp.getAcdDirToParse();
   String embossEnvironment = jp.getEmbossEnvironment();
 
   private String[] env = 
   {
-    "PATH=" + embossPath + ps + embossBin,
+    "PATH=" + embossPath,
     "PLPLOT_LIB=" + plplot,
     "EMBOSS_DATA=" + embossData
 //  ,"LD_LIBRARY_PATH=/usr/local/lib"
 // FIX FOR SOME SUNOS
   };
-  private String[] envp = jp.getEmbossEnvironmentArray(env);
   
-  private String environ = "PATH=" + embossBin+ ps + embossPath +" "+
+  private String environ = "PATH=" + embossPath+ " "+
                            "PLPLOT_LIB=" + plplot +" "+
                            "EMBOSS_DATA=" + embossData +" "+
                            jp.getEmbossEnvironment();
@@ -79,6 +75,7 @@ public class JembossAuthServer
 
   public String version()
   {
+    String[] envp = jp.getEmbossEnvironmentArray(env);
     String embossCommand = new String(embossBin + "embossversion");
     RunEmbossApplication rea = new RunEmbossApplication(embossCommand,
                                                            envp,null);
@@ -89,6 +86,7 @@ public class JembossAuthServer
 
   public String appversion()
   {
+    String[] envp = jp.getEmbossEnvironmentArray(env);
     String embossCommand = new String(embossBin + "embossversion");
     RunEmbossApplication rea = new RunEmbossApplication(embossCommand,
                                                            envp,null);
@@ -180,6 +178,7 @@ public class JembossAuthServer
 */
   public Vector getWossname()
   {
+    String[] envp = jp.getEmbossEnvironmentArray(env);
     Vector wossOut = new Vector();
     String embossCommand = new String(embossBin + 
                    "wossname -colon -gui -auto");
@@ -205,6 +204,7 @@ public class JembossAuthServer
 */
   public Vector show_help(String applName)
   {
+    String[] envp = jp.getEmbossEnvironmentArray(env);
     String command = embossBin.concat("tfm " + applName + " -html -nomore");
     RunEmbossApplication rea = new RunEmbossApplication(command,envp,null);
     String helptext = "";
@@ -339,6 +339,7 @@ public class JembossAuthServer
 */
   public Vector call_ajax(String fileContent, String seqtype)
   {
+    File tmprootDir = new File(tmproot);
     boolean afile = false;
     String fn = null;
     File tf = null;
@@ -434,6 +435,7 @@ public class JembossAuthServer
 */
   public Vector show_db()
   {
+    String[] envp = jp.getEmbossEnvironmentArray(env);
     Vector showdbOut = new Vector();
     String embossCommand = new String(embossBin + "showdb -auto");
     RunEmbossApplication rea = new RunEmbossApplication(embossCommand,
@@ -496,7 +498,7 @@ public class JembossAuthServer
 
     tmproot = tmproot.concat(userName+fs);
 
-    tmprootDir = new File(tmproot);
+    File tmprootDir = new File(tmproot);
 
     String name = Thread.currentThread().getName();
     Ajax aj = new Ajax();
@@ -599,6 +601,7 @@ public class JembossAuthServer
       return result;
     }
 
+    String ls = new String(System.getProperty("line.separator"));
 //create description file & input files
     String descript = "EMBOSS run details"+ls+ls+
                       "Application: "+appl+ls+rest+ls+
@@ -928,8 +931,6 @@ public class JembossAuthServer
 
     tmproot = tmproot.concat(userName+fs);
 
-//  tmprootDir = new File(tmproot);
-   
     lsr.add("status");
     lsr.add("0");
     lsr.add("msg");
