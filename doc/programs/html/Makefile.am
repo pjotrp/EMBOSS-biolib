@@ -58,10 +58,9 @@ pkgdata2_DATA = isochore.html jembossctl.html kitsch.html lindna.html \
                pepnet.html pepstats.html pepwheel.html pepwindow.html \
                pepwindowall.html phylogeny_group.html plotcon.html \
                plotorf.html polydot.html preg.html prettyplot.html \
-               prettyseq.html prima.html primer3.html primersearch.html \
-               printsextract.html profit.html prophecy.html prophet.html \
-               prosextract.html protdist.html \
-               protein_2d_structure_group.html \
+               prettyseq.html primersearch.html printsextract.html \
+               profit.html prophecy.html prophet.html prosextract.html \
+               protdist.html protein_2d_structure_group.html \
                protein_3d_structure_group.html \
                protein_composition_group.html protein_motifs_group.html \
                protein_mutation_group.html protein_profiles_group.html \
@@ -81,7 +80,7 @@ pkgdata2_DATA = isochore.html jembossctl.html kitsch.html lindna.html \
                utils_database_creation_group.html \
                utils_database_indexing_group.html utils_misc_group.html \
                vectorstrip.html water.html whichdb.html wobble.html \
-               wordcount.html wordmatch.html wossname.html
+               wordcount.html wordmatch.html wossname.html yank.html
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/programs/html
 pkgdata2dir=$(prefix)/share/$(PACKAGE)/doc/programs/html
