@@ -32,10 +32,9 @@ dnl distribution terms that you use for the rest of that program.
 #
 # Just added EMBOSS into LF_PATH_XLIB so that on the sysytems where
 # LF_PATH_XLIB exists we do not get duplication errors!!!!!
-# Blooming frustrating!!!
+
 
 AC_DEFUN(LF_EMBOSS_PATH_XLIB,[
-  AC_PATH_XTRA
   CXXFLAGS="$CXXFLAGS $X_CFLAGS"
   XLIB="$X_LIBS -lX11 $X_EXTRA_LIBS"
   AC_SUBST(XLIB)
