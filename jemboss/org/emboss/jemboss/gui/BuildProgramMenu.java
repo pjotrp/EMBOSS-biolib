@@ -108,11 +108,22 @@ public class BuildProgramMenu
       {
         if(withSoap) 
         {
+          if(mysettings.getPublicSoapURL().startsWith("https"))
+            System.setProperty("http.proxyHost", "");
+
           SwingWorker databaseworker = new SwingWorker()
           {
             public Object construct()
             {
-              ShowDB showdb = new ShowDB(mysettings);
+              ShowDB showdb = null;
+              try
+              {
+                showdb  = new ShowDB(mysettings);
+              }
+              catch (Exception ex)
+              {
+                ex.printStackTrace();
+              }
               String showdbOut = showdb.getDBText();
               Database d = new Database(showdbOut);
               db = d.getDB();
@@ -132,54 +143,38 @@ public class BuildProgramMenu
           databaseworker.start();
           
           splashing.doneSomething("Connecting with server");
-          boolean calling = true;
 
           int iloop = 0;
 
-          while(calling)
+          try
           {
             try
             {
-              try
-              {
-                Hashtable hwoss = (new JembossJarUtil("resources/wossname.jar")).getHash();
-                if(hwoss.containsKey("wossname.out"))
-                  woss = new String((byte[])hwoss.get("wossname.out"));
-              }
-              catch (Exception ex){ ex.printStackTrace(); }
-
-              if(woss.equals(""))
-              {
-                GetWossname ewoss = new GetWossname(mysettings);
-                woss = ewoss.getDBText(); 
-              }
-              splashing.doneSomething("Found EMBOSS applications");
-              calling = false;
-            } 
-            catch(Exception e)
-            {
-              if(mysettings.getPublicSoapURL().startsWith("https") &&
-                 iloop == 0)
-              {
-                String settings[] = new String[1];
-                settings[0] = new String("proxy.override=true");
-                mysettings.updateJembossPropStrings(settings);
-              }
-              else
-              { 
-                splashing.doneSomething("Cannot connect!");
-                ServerSetup ss = new ServerSetup(mysettings);
-                int sso = JOptionPane.showConfirmDialog(f,ss,
-                             "Check Settings",
-                             JOptionPane.OK_CANCEL_OPTION,
-                             JOptionPane.ERROR_MESSAGE,null);
-                if(sso == JOptionPane.OK_OPTION)
-                  ss.setNewSettings();
-                else
-                  System.exit(0);
-              }
+              Hashtable hwoss = (new JembossJarUtil("resources/wossname.jar")).getHash();
+              if(hwoss.containsKey("wossname.out"))
+                woss = new String((byte[])hwoss.get("wossname.out"));
             }
-            iloop++;
+            catch (Exception ex){ ex.printStackTrace(); }
+
+            if(woss.equals(""))
+            {
+              GetWossname ewoss = new GetWossname(mysettings);
+              woss = ewoss.getDBText(); 
+            }
+            splashing.doneSomething("Found EMBOSS applications");
+          } 
+          catch(Exception e)
+          {
+            splashing.doneSomething("Cannot connect!");
+            ServerSetup ss = new ServerSetup(mysettings);
+            int sso = JOptionPane.showConfirmDialog(f,ss,
+                           "Check Settings",
+                           JOptionPane.OK_CANCEL_OPTION,
+                           JOptionPane.ERROR_MESSAGE,null);
+            if(sso == JOptionPane.OK_OPTION)
+              ss.setNewSettings();
+            else
+              System.exit(0);
           }
         } 
         else 
