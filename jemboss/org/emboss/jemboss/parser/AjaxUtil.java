@@ -27,21 +27,26 @@ import javax.swing.*;
 
 import org.emboss.jemboss.programs.ListFile;
 
+/**
+*
+* Utility to get the sequence file contents or the database
+* entry ready to use in Ajax
+*
+*/
 public class AjaxUtil
 {
 
-
-/**
-*
-* Returns the sequence file contents or the database entry
-* ready to use in Ajax.
-* @param fname file or database entry
-* @param db[] array of databases available
-* @param f the JFrame or null
-* @param withSoap true if being run in client-server mode
-* @return String to pass to seqType or seqsetType (if not null)
-*
-*/
+  /**
+  *
+  * Returns the sequence file contents or the database entry
+  * ready to use in Ajax.
+  * @param fname file or database entry
+  * @param db[] array of databases available
+  * @param f the JFrame or null
+  * @param withSoap true if being run in client-server mode
+  * @return String to pass to seqType or seqsetType (if not null)
+  *
+  */
   public static String getFileOrDatabaseForAjax(String fname,
                      String db[], JFrame f, boolean withSoap)
   {
