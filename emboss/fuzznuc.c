@@ -24,10 +24,11 @@
 #include "stdlib.h"
 
 
-void print_hits(AjPList *l, ajint hits, AjPFile outf, AjPStr seq, AjBool mms,
-		AjBool sc, ajint thits, ajint adj, ajint begin, AjPStr desc,
-		AjBool dodesc, AjPStr acc, AjBool doacc, AjPStr usa, AjBool
-		dousa);
+static void fuzznuc_print_hits(AjPList *l, ajint hits, AjPFile outf,
+			       AjPStr seq, AjBool mms, AjBool sc, ajint thits,
+			       ajint adj, ajint begin, AjPStr desc,
+			       AjBool dodesc, AjPStr acc, AjBool doacc,
+			       AjPStr usa, AjBool dousa);
 
 
 /* @prog fuzznuc **************************************************************
@@ -136,8 +137,8 @@ int main(int argc, char **argv)
 	    desc = ajSeqGetDesc(seq);
 	    acc  = ajSeqGetAcc(seq);
 	    usa  = ajSeqGetUsa(seq);
-	    print_hits(&l,hits,outf,text,mms,sc,thits,adj,begin,desc,dodesc,
-		       acc,doacc,usa,dousa);
+	    fuzznuc_print_hits(&l,hits,outf,text,mms,sc,thits,adj,begin,desc,
+			       dodesc,acc,doacc,usa,dousa);
 	}
 	
 	
@@ -162,7 +163,7 @@ int main(int argc, char **argv)
 
 
 
-/* @func print_hits ***********************************************************
+/* @funcstatic fuzznuc_print_hits *********************************************
 **
 ** Undocumented.
 **
@@ -185,10 +186,11 @@ int main(int argc, char **argv)
 ******************************************************************************/
 
 
-void print_hits(AjPList *l, ajint hits, AjPFile outf, AjPStr seq, AjBool mms,
-		AjBool sc, ajint thits, ajint adj, ajint begin, AjPStr desc,
-		AjBool dodesc, AjPStr acc, AjBool doacc, AjPStr usa, AjBool
-		dousa)
+static void fuzznuc_print_hits(AjPList *l, ajint hits, AjPFile outf,
+			       AjPStr seq, AjBool mms, AjBool sc, ajint thits,
+			       ajint adj, ajint begin, AjPStr desc,
+			       AjBool dodesc, AjPStr acc, AjBool doacc,
+			       AjPStr usa, AjBool dousa)
 {
     ajint i;
     EmbPMatMatch m;
@@ -252,9 +254,6 @@ void print_hits(AjPList *l, ajint hits, AjPFile outf, AjPStr seq, AjBool mms,
 	}
     }
     
-	
-	    
-
     ajStrDel(&s);
     
     return;

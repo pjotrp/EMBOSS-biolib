@@ -24,9 +24,10 @@
 #include "stdlib.h"
 
 
-void print_hits(AjPList *l, ajint hits, AjPFile outf, AjPStr seq, AjBool mms,
-		ajint begin, AjPStr desc, AjBool dodesc, AjPStr acc,
-		AjBool doacc, AjPStr usa, AjBool dousa);
+static void fuzzpro_print_hits(AjPList *l, ajint hits, AjPFile outf,
+			       AjPStr seq, AjBool mms, ajint begin,
+			       AjPStr desc, AjBool dodesc, AjPStr acc,
+			       AjBool doacc, AjPStr usa, AjBool dousa);
 
 
 
@@ -125,8 +126,8 @@ int main(int argc, char **argv)
 	    desc = ajSeqGetDesc(seq);
 	    acc  = ajSeqGetAcc(seq);
             usa  = ajSeqGetUsa(seq);
-	    print_hits(&l,hits,outf,text,mms,begin,desc,dodesc,acc,doacc,
-	    	usa,dousa);
+	    fuzzpro_print_hits(&l,hits,outf,text,mms,begin,desc,dodesc,acc,
+			       doacc,usa,dousa);
 	}
 	
 
@@ -150,7 +151,7 @@ int main(int argc, char **argv)
 
 
 
-/* @func print_hits ***********************************************************
+/* @funcstatic fuzzpro_print_hits ***************************************
 **
 ** Undocumented.
 **
@@ -170,9 +171,10 @@ int main(int argc, char **argv)
 ******************************************************************************/
 
 
-void print_hits(AjPList *l, ajint hits, AjPFile outf, AjPStr seq, AjBool mms,
-		ajint begin, AjPStr desc, AjBool dodesc, AjPStr acc,
-		AjBool doacc, AjPStr usa, AjBool dousa)
+static void fuzzpro_print_hits(AjPList *l, ajint hits, AjPFile outf,
+			       AjPStr seq, AjBool mms, ajint begin,
+			       AjPStr desc, AjBool dodesc, AjPStr acc,
+			       AjBool doacc, AjPStr usa, AjBool dousa)
 {
     ajint i;
     EmbPMatMatch m;
