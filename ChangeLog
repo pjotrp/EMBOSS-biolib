@@ -1,5 +1,24 @@
 Version 2.9.0
-        showfeat now has the qualifier '-annotation'.  This allows yo to
+	new ACD attribute 'relation' added to all ACD types. This will
+	hold some information about how output data types relate to inputs
+	and parameters. The syntax of the string is not yet clear. Running
+	of EMBOSS programs will not be affected - the relation string is
+	defined for web services and related wrappers to maintain
+	provenance better.
+
+	New ACD function oneof added, syntax is @($(var)=={a,b,c}) to test
+	for a choice of menu options. Intended to clean up some ACD files
+	- but they are already clean so it may not be useful. At some
+	stage the unused ACD functions should be declared obsolete for
+	simplicity (and efficiency). We will leave the code in place, but
+	remove them from the list of functions tested.
+
+	acdvalid now tests the knowntype attribute for strings. ACD files
+	have been cleanup up to give knowntypes for all strings (defined
+	in knowntypes.standard) or to convert strings to datafile or other
+	ACD types as appropriate.
+
+        showfeat now has the qualifier '-annotation'. This allows you to
         add your own brief annotations of regions on the displayed
         figure. 
 
