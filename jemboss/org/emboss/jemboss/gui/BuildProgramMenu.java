@@ -336,6 +336,9 @@ public class BuildProgramMenu
           showdbOut = showdb.getDBText();
           Database d = new Database(showdbOut);
           db = d.getDB();
+          JLabel jl = new JLabel("<html>"); // not used but speeds first 
+                                            // ACD form being loaded
+                                            // which uses html 
           return null;
         }
       };
