@@ -168,6 +168,7 @@ void        ajListstrPush (AjPList list, AjPStr x);
 void        ajListstrPushApp (AjPList list, AjPStr x);
 void        ajListstrReverse (AjPList list);
 ajint       ajListstrToArray (AjPList list, AjPStr** array);
+ajint       ajListstrToArrayApp (AjPList list, AjPStr** array);
 void        ajListstrTrace   (const AjPList list);
 
 ajint       ajListToArray (AjPList list, void*** array);
