@@ -1820,7 +1820,7 @@ AjBool ajStrChomp (AjPStr* pthis){
   static AjPStr spaces = NULL;
 
   if (!spaces)
-    (void) ajStrAssC(&spaces,"\t \n");
+    (void) ajStrAssC(&spaces,"\t \n\r");
 
   ret = ajStrMod (pthis);
   (void) ajStrTrimC(pthis, spaces->Ptr);
