@@ -1392,6 +1392,7 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
     static AjPStr get = NULL;
     ajint iport = 80;
     static AjPStr searchdb = NULL;
+    static AjPStr errstr = NULL;
     struct sockaddr_in sin;
     struct hostent *hp;
 
@@ -1407,42 +1408,13 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
 
     AjPSeqQuery qry = seqin->Query;
 
-    ajNamGetValueC ("proxy", &proxy);
-    if (ajStrLen(qry->DbProxy))
-      ajStrAssS (&proxy, qry->DbProxy);
-
-    if (ajStrMatchC(proxy, ":"))
-      ajStrAssC (&proxy, "");
-
-    ajNamGetValueC ("httpversion", &httpver);
-    ajDebug ("httpver getValueC '%S'\n", httpver);
-
-    ajStrAssC (&httpver, "1.0");
-    if (ajStrLen(qry->DbHttpVer))
-      ajStrAssS (&httpver, qry->DbHttpVer);
-    ajDebug("httpver after qry '%S'\n", httpver);
-
-    if (!ajStrIsFloat(httpver)) {
-      ajWarn ("Invalid HTTPVERSION '%S', reset to 1.0", httpver);
-      ajStrAssC(&httpver, "1.0");
-    }
-    ajDebug ("httpver final '%S'\n", httpver);
-
-    proxexp = ajRegCompC("^([a-z0-9.-]+):([0-9]+)$");
-    if (ajRegExec (proxexp, proxy))
-    {
-	ajRegSubI(proxexp, 1, &proxyName);
-	ajRegSubI(proxexp, 2, &proxyStr);
-	(void) ajStrToInt (proxyStr, &proxyPort);
-    }
-
     if (!ajNamDbGetUrl (qry->DbName, &url))
     {
 	ajErr ("no URL defined for database %S", qry->DbName);
 	return ajFalse;
     }
 
-   urlexp = ajRegCompC("^http://([a-z0-9.-]+)(:[0-9]+)?(.*)");
+    urlexp = ajRegCompC("^http://([a-z0-9.-]+)(:[0-9]+)?(.*)");
     if (!ajRegExec(urlexp, url))
     {
 	ajErr ("invalid URL '%S' for database '%S'", url, qry->DbName);
@@ -1463,6 +1435,23 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
 	(void) ajStrAssS (&searchdb, qry->DbName);
 
     ajDebug ("seqAccessSrswww %S:%S url: '%S'\n", searchdb, qry->Id, urlget);
+
+    /* check for proxy definition */
+
+    ajNamGetValueC ("proxy", &proxy);
+    if (ajStrLen(qry->DbProxy))
+      ajStrAssS (&proxy, qry->DbProxy);
+
+    if (ajStrMatchC(proxy, ":"))
+      ajStrAssC (&proxy, "");
+
+    proxexp = ajRegCompC("^([a-z0-9.-]+):([0-9]+)$");
+    if (ajRegExec (proxexp, proxy))
+    {
+	ajRegSubI(proxexp, 1, &proxyName);
+	ajRegSubI(proxexp, 2, &proxyStr);
+	(void) ajStrToInt (proxyStr, &proxyPort);
+    }
 
     if (ajStrLen(proxyName))
       (void) ajFmtPrintS(&get, "GET http://%S:%d%S?-e+-ascii",
@@ -1498,9 +1487,26 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
 	(void) ajFmtPrintAppS(&get, "+%S",
 			   searchdb);
 
+    /* check for HTTP version definition */
+
+    ajNamGetValueC ("httpversion", &httpver);
+    ajDebug ("httpver getValueC '%S'\n", httpver);
+
+    ajStrAssC (&httpver, "1.0");
+    if (ajStrLen(qry->DbHttpVer))
+      ajStrAssS (&httpver, qry->DbHttpVer);
+    ajDebug("httpver after qry '%S'\n", httpver);
+
+    if (!ajStrIsFloat(httpver)) {
+      ajWarn ("Invalid HTTPVERSION '%S', reset to 1.0", httpver);
+      ajStrAssC(&httpver, "1.0");
+    }
+    ajDebug ("httpver final '%S'\n", httpver);
+
     ajDebug ("searching with SRS url '%S'\n", get);
 
     (void) ajFmtPrintAppS(&get, " HTTP/%S\n", httpver);
+    ajStrDel(&httpver);
 
     (void) ajStrAssS (&seqin->Db, qry->DbName);
 
@@ -1545,8 +1551,10 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
     if (status < 0)
     {
 	ajDebug ("socket connect failed, status: %d\n", status);
-	ajErr ("socket connect failed for database '%S'", qry->DbName);
-	perror("Socket connect failed");
+	ajFmtPrintS(&errstr, "socket connect failed for database '%S'",
+		    qry->DbName);
+	ajErr ("%S", errstr);
+	perror(ajStrStr(errstr));
 	return ajFalse;
     }
 
@@ -1598,6 +1606,10 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
     ajStrDelReuse (&port);
     ajStrDelReuse (&get);
     ajStrDelReuse (&urlget);
+    ajStrDel(&proxyName);
+    ajStrDel(&proxyStr);
+    ajStrDel(&proxy);
+    ajStrDel(&httpver);
     ajRegFree (&urlexp);
 
     qry->QryDone = ajTrue;
@@ -3343,11 +3355,11 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
     ajint status;
     FILE *fp;
 
-    AjPStr proxyName=NULL;	/* host for proxy access.*/
     ajint proxyPort=0;		/* port for proxy axxess */
-    AjPStr proxyStr=NULL;
-    AjPStr proxy=NULL;		/* proxy from variable or query */
-    AjPStr httpver=NULL;	/* HTTP version 1.0, 1.1, ... */
+    static AjPStr proxyName=NULL;	/* host for proxy access.*/
+    static AjPStr proxyStr=NULL;
+    static AjPStr proxy=NULL;		/* proxy from variable or query */
+    static AjPStr httpver=NULL;	/* HTTP version 1.0, 1.1, ... */
 
     AjPSeqQuery qry = seqin->Query;
 
@@ -3360,6 +3372,7 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
     static AjPStr urlget = NULL;
     static AjPStr get = NULL;
     static AjPStr gethead = NULL;
+    static AjPStr errstr = NULL;
     ajint iport = 80;
     ajint ipos;
 
@@ -3468,8 +3481,10 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
     if (status < 0)
     {
 	ajDebug ("socket connect failed, status: %d\n", status);
-	ajErr ("socket connect failed for database '%S'", qry->DbName);
-	perror("Socket connect failed");
+	ajFmtPrintS(&errstr, "socket connect failed for database '%S'",
+		    qry->DbName);
+	ajErr ("%S", errstr);
+	perror(ajStrStr(errstr));
 	return ajFalse;
     }
 
@@ -3525,6 +3540,7 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
     ajStrDelReuse (&get);
     ajStrDelReuse (&urlget);
     ajRegFree (&urlexp);
+    ajRegFree (&proxexp);
 
     qry->QryDone = ajTrue;
     
