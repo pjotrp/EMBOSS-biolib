@@ -56,7 +56,8 @@ list: seqoption  [
 matrixf: datafile  [
   required: "@($(seqoption)==1)"
   prompt: "Substitution matrix to be used"
-  default: "./EBLOSUM62"
+  default: "EBLOSUM62"
+  help: "This is the scoring matrix file used when comparing sequences."
 ]
 
 list: conoption  [

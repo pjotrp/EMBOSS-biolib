@@ -43,7 +43,8 @@ integer: thresh  [
 matrixf: sub  [
   required: "Y"
   prompt: "Residue substitution matrix"
-  default: "./EBLOSUM62"
+  default: "EBLOSUM62"
+  help: "This is the scoring matrix file used when comparing sequences."
 ]
 
 float: gapo  [
