@@ -1076,10 +1076,10 @@ AjBool ajFileGetsTrimL (const AjPFile thys, AjPStr* pdest, ajlong* fpos) {
   if (dest->Ptr[dest->Len-1] == '\n')
      dest->Ptr[--dest->Len] = '\0';
 
-  ajDebug("Remove carriage-return characters from PC-style files\n");
-  if (dest->Len && dest->Ptr[dest->Len-1] == '\r')
+  if (dest->Len && dest->Ptr[dest->Len-1] == '\r') {
+    ajDebug("Remove carriage-return characters from PC-style files\n");
      dest->Ptr[--dest->Len] = '\0';
-
+  }
   return ajTrue;
 }
 
@@ -1108,9 +1108,10 @@ AjBool ajFileGetsTrim (const AjPFile thys, AjPStr* pdest) {
   if (dest->Ptr[dest->Len-1] == '\n')
      dest->Ptr[--dest->Len] = '\0';
 
-  ajDebug("Remove carriage-return characters from PC-style files\n");
-  if (dest->Len && dest->Ptr[dest->Len-1] == '\r')
-     dest->Ptr[--dest->Len] = '\0';
+  if (dest->Len && dest->Ptr[dest->Len-1] == '\r') {
+    ajDebug("Remove carriage-return characters from PC-style files\n");
+    dest->Ptr[--dest->Len] = '\0';
+  }
 
   return ajTrue;
 }
