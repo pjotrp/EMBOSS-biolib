@@ -314,7 +314,7 @@ public class InputSequenceAttributes
   /**
   *
   * Set the -sbegin flag
-  * @prame iseq		value for -sbeg
+  * @param iseq		value for -sbeg
   *
   */
   public void setBegSeq(int iseq)
@@ -325,7 +325,7 @@ public class InputSequenceAttributes
   /**
   *
   * Set the -send flag
-  * @prame iseq         value for -send
+  * @param iseq         value for -send
   *
   */
   public void setEndSeq(int iseq)
@@ -336,7 +336,7 @@ public class InputSequenceAttributes
   /**
   *
   * Set the -sbegin flag
-  * @prame s         	value for -sbeg
+  * @param s         	value for -sbeg
   *
   */
   public void setBegSeq(String s)
@@ -347,7 +347,7 @@ public class InputSequenceAttributes
   /**
   *
   * Set the -send flag
-  * @prame s         	value for -send
+  * @param s         	value for -send
   *
   */
   public void setEndSeq(String s)
