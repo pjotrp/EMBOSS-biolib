@@ -1653,6 +1653,24 @@ FP /^               [|]+>>>>> 515 >>>>>[|]+\n/
 FP /^   pax6   1082 ttgaggccctggagaaag...............agtttgagagaacccat   1116\n/
 //
 
+ID est2genome-align-linear
+TI 200
+AP est2genome
+CL -align -space 1
+IN ../../data/pax6_cdna.fasta
+IN ../../data/z83307.seq
+IN
+FI stderr
+FC = 2
+FI pax6.est2genome
+FZ = 8087
+FP /Note .* forward est and forward genome, .* imply forward gene/
+FP /^Exon       129  99.2  1380  1510 HSA1280        428   558 pax6/
+FP /^HSA1280   9567 ttgaggccctggagaaaggtgat.....ttcagagtttgagagaacccat  10116\n/
+FP /^               [|]+>>>>> 515 >>>>>[|]+\n/
+FP /^   pax6   1082 ttgaggccctggagaaag...............agtttgagagaacccat   1116\n/
+//
+
 ID est2genome-align-best
 TI 200
 AP est2genome
