@@ -2023,7 +2023,9 @@ void ajReportDel(AjPReport* pthys)
     ajListDel(&thys->Tagtypes);
 
     ajStrDel(&thys->Header);
+    ajStrDel(&thys->SubHeader);
     ajStrDel(&thys->Tail);
+    ajStrDel(&thys->SubTail);
 
     ajFeattableDel(&thys->Fttable);
     ajFeattabOutDel(&thys->Ftquery);
@@ -2469,6 +2471,20 @@ void ajReportWriteHeader(AjPReport thys,
 	ajFmtPrintF(outf, "\n");
     }
     
+    if(ajStrLen(thys->SubHeader))
+    {
+	ajStrAssS(&tmpstr, thys->SubHeader);
+	ajStrSubstituteCC(&tmpstr, "\n", "\1# ");
+	ajStrSubstituteCC(&tmpstr, "\1", "\n");
+	ajStrTrimEndC(&tmpstr, " ");
+	ajFmtPrintF(outf, "#\n");
+	ajFmtPrintF(outf, "# %S", tmpstr);
+	if(!ajStrSuffixC(tmpstr, "\n#"))
+	    ajFmtPrintF(outf, "\n#");
+	ajFmtPrintF(outf, "\n");
+	ajStrDel(&thys->SubHeader);
+    }
+    
     if(!doSingle || thys->Multi)
 	ajFmtPrintF(outf, "#=======================================\n\n");
     else
@@ -2487,16 +2503,16 @@ void ajReportWriteHeader(AjPReport thys,
 
 /* @func ajReportWriteTail ****************************************************
 **
-** Writes a feature report tail
+** Writes (and clears) a feature report tail
 **
-** @param [r] thys [const AjPReport] Report object
+** @param [u] thys [AjPReport] Report object
 ** @param [r] ftable [const AjPFeattable] Feature table object
 ** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajReportWriteTail(const AjPReport thys,
+void ajReportWriteTail(AjPReport thys,
 		       const AjPFeattable ftable, const AjPSeq seq)
 {
     AjPFile outf;
@@ -2509,6 +2525,20 @@ void ajReportWriteTail(const AjPReport thys,
 	ajFmtPrintF(outf, "\n#---------------------------------------\n");
     else
 	ajFmtPrintF(outf, "\n########################################\n");
+
+    if(ajStrLen(thys->SubTail))
+    {
+	ajStrAssS(&tmpstr, thys->SubTail);
+	ajStrSubstituteCC(&tmpstr, "\n", "\1# ");
+	ajStrSubstituteCC(&tmpstr, "\1", "\n");
+	ajStrTrimEndC(&tmpstr, " ");
+	ajFmtPrintF(outf, "#\n");
+	ajFmtPrintF(outf, "# %S", tmpstr);
+	if(!ajStrSuffixC(tmpstr, "\n#"))
+	    ajFmtPrintF(outf, "\n#");
+	ajFmtPrintF(outf, "\n");
+	ajStrDel(&thys->SubTail);
+    }
 
     if(ajStrLen(thys->Tail))
     {
@@ -2576,6 +2606,46 @@ void ajReportSetHeaderC(AjPReport thys, const char* header)
 
 
 
+/* @func ajReportSetSubHeader *************************************************
+**
+** Defines a feature report subheader
+**
+** @param [u] thys [AjPReport] Report object
+** @param [r] header [const AjPStr] Report header with embedded newlines
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajReportSetSubHeader(AjPReport thys, const AjPStr header)
+{
+    ajStrAssS(&thys->SubHeader, header);
+
+    return;
+}
+
+
+
+
+/* @func ajReportSetSubHeaderC ************************************************
+**
+** Defines a feature report subheader
+**
+** @param [u] thys [AjPReport] Report object
+** @param [r] header [const char*] Report header with embedded newlines
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajReportSetSubHeaderC(AjPReport thys, const char* header)
+{
+    ajStrAssC(&thys->SubHeader, header);
+
+    return;
+}
+
+
+
+
 /* @func ajReportSetTail ******************************************************
 **
 ** Defines a feature report tail
@@ -2609,6 +2679,46 @@ void ajReportSetTail(AjPReport thys, const AjPStr tail)
 void ajReportSetTailC(AjPReport thys, const char* tail)
 {
     ajStrAssC(&thys->Tail, tail);
+
+    return;
+}
+
+
+
+
+/* @func ajReportSetSubTail ***************************************************
+**
+** Defines a feature report subtail
+**
+** @param [u] thys [AjPReport] Report object
+** @param [r] tail [const AjPStr] Report tail with embedded newlines
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajReportSetSubTail(AjPReport thys, const AjPStr tail)
+{
+    ajStrAssS(&thys->SubTail, tail);
+
+    return;
+}
+
+
+
+
+/* @func ajReportSetSubTailC **************************************************
+**
+** Defines a feature report subtail
+**
+** @param [u] thys [AjPReport] Report object
+** @param [r] tail [const char*] Report tail with embedded newlines
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajReportSetSubTailC(AjPReport thys, const char* tail)
+{
+    ajStrAssC(&thys->SubTail, tail);
 
     return;
 }

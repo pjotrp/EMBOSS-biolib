@@ -30,7 +30,9 @@ extern "C"
 ** @attr Tagprints [AjPList] List of extra tag printnames (from ACD)
 ** @attr Tagtypes [AjPList] List of extra tag datatypes (from ACD)
 ** @attr Header [AjPStr] Text to add to header with newlines
+** @attr SubHeader [AjPStr] Text to add to subheader with newlines
 ** @attr Tail [AjPStr] Text to add to tail with newlines
+** @attr SubTail [AjPStr] Text to add to subtail with newlines
 ** @attr FileNames [AjPList] Names of extra files (see FileTypes)
 ** @attr FileTypes [AjPList] Types of extra files (see FileNames)
 ** @attr Precision [ajint] Floating precision for score
@@ -61,7 +63,9 @@ typedef struct AjSReport {
   AjPList Tagprints;
   AjPList Tagtypes;
   AjPStr Header;
+  AjPStr SubHeader;
   AjPStr Tail;
+  AjPStr SubTail;
   AjPList FileNames;
   AjPList FileTypes;
   ajint Precision;
@@ -92,10 +96,14 @@ void         ajReportPrintFormat (AjPFile outf, AjBool full);
 const AjPStr ajReportSeqName (const AjPReport thys, const AjPSeq seq);
 void         ajReportSetHeader (AjPReport thys, const AjPStr header);
 void         ajReportSetHeaderC (AjPReport thys, const char* header);
+void         ajReportSetSubHeader (AjPReport thys, const AjPStr header);
+void         ajReportSetSubHeaderC (AjPReport thys, const char* header);
 AjBool       ajReportSetTags (AjPReport thys,
 			      const AjPStr taglist, ajint mintags);
 void         ajReportSetTail (AjPReport thys, const AjPStr tail);
 void         ajReportSetTailC (AjPReport thys, const char* tail);
+void         ajReportSetSubTail (AjPReport thys, const AjPStr tail);
+void         ajReportSetSubTailC (AjPReport thys, const char* tail);
 void         ajReportSetType (AjPReport thys,
 			      const AjPFeattable ftable, const AjPSeq seq);
 void         ajReportTrace (const AjPReport thys);
@@ -105,7 +113,7 @@ void         ajReportWrite (AjPReport thys,
 void         ajReportWriteClose (AjPReport thys);
 void         ajReportWriteHeader (AjPReport thys,
 				  const AjPFeattable ftable, const AjPSeq seq);
-void         ajReportWriteTail (const AjPReport thys,
+void         ajReportWriteTail (AjPReport thys,
 				const AjPFeattable ftable, const AjPSeq seq);
 
 #endif

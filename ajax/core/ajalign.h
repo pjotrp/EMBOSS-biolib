@@ -34,6 +34,7 @@ extern "C"
 ** @attr Header [AjPStr] Text to add to header with newlines
 ** @attr SubHeader [AjPStr] Text to add to align subheader with newlines
 ** @attr Tail [AjPStr] Text to add to tail with newlines
+** @attr SubTail [AjPStr] Text to add to subtail with newlines
 ** @attr Showacc [AjBool] Report accession number if ajTrue
 ** @attr Showdes [AjBool] Report sequence description if ajTrue
 ** @attr Showusa [AjBool] Report full USA (-ausaqualifier) if ajTrue
@@ -67,6 +68,7 @@ typedef struct AjSAlign {
   AjPStr Header;
   AjPStr SubHeader;
   AjPStr Tail;
+  AjPStr SubTail;
   AjBool Showacc;
   AjBool Showdes;
   AjBool Showusa;
@@ -142,7 +144,7 @@ AjBool       ajAlignValid (AjPAlign thys);
 void         ajAlignWrite (AjPAlign thys);
 void         ajAlignWriteClose (AjPAlign thys);
 void         ajAlignWriteHeader (AjPAlign thys);
-void         ajAlignWriteTail (const AjPAlign thys);
+void         ajAlignWriteTail (AjPAlign thys);
 
 #endif
 

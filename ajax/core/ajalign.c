@@ -1657,9 +1657,10 @@ void ajAlignDel(AjPAlign* pthys)
     ajStrDel(&thys->Extension);
     ajStrDel(&thys->Type);
     ajStrDel(&thys->Usa);
-    ajStrDel(&thys->SubHeader);
     ajStrDel(&thys->Header);
+    ajStrDel(&thys->SubHeader);
     ajStrDel(&thys->Tail);
+    ajStrDel(&thys->SubTail);
     ajStrDel(&thys->Matrix);
     ajStrDel(&thys->GapPen);
     ajStrDel(&thys->ExtPen);
@@ -2046,13 +2047,13 @@ void ajAlignWriteHeader(AjPAlign thys)
 **
 ** Writes an alignment tail
 **
-** @param [r] thys [const AjPAlign] Alignment object
+** @param [u] thys [AjPAlign] Alignment object
 ** @return [void]
 ** @category output [AjPAlign] Master footer output routine
 ** @@
 ******************************************************************************/
 
-void ajAlignWriteTail(const AjPAlign thys)
+void ajAlignWriteTail(AjPAlign thys)
 {
     AjPFile outf;
     AjPStr tmpstr = NULL;
@@ -2068,6 +2069,17 @@ void ajAlignWriteTail(const AjPAlign thys)
     else
 	ajFmtPrintF(outf, "\n########################################\n");
     
+    if(ajStrLen(thys->SubTail))
+    {
+	ajStrAssS(&tmpstr, thys->SubTail);
+	ajStrSubstituteCC(&tmpstr, "\n", "\1# ");
+	ajStrSubstituteCC(&tmpstr, "\1", "\n");
+	ajFmtPrintF(outf, "#\n");
+	ajFmtPrintF(outf, "# %S\n", tmpstr);
+	ajFmtPrintF(outf, "#\n");
+	ajStrDel(&thys->SubTail);
+    }
+
     if(ajStrLen(thys->Tail))
     {
 	ajStrAssS(&tmpstr, thys->Tail);
@@ -2228,6 +2240,75 @@ void ajAlignSetTailApp(AjPAlign thys, const AjPStr tail)
 
     ajDebug("ajAlignSetTailApp len %d '%S'\n",
 	    ajStrLen(thys->Tail), tail);
+
+    return;
+}
+
+/* @func ajAlignSetSubTail ****************************************************
+**
+** Defines an alignment tail
+**
+** @param [u] thys [AjPAlign] Alignment object
+** @param [r] tail [const AjPStr] Align tail with embedded newlines
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajAlignSetSubTail(AjPAlign thys, const AjPStr tail)
+{
+    ajStrAssS(&thys->SubTail, tail);
+
+    ajDebug("ajAlignSetSubTail len %d '%S'\n",
+	    ajStrLen(thys->SubTail), tail);
+
+    return;
+}
+
+
+
+
+/* @func ajAlignSetSubTailC ***************************************************
+**
+** Defines an alignment tail
+**
+** @param [u] thys [AjPAlign] Alignment object
+** @param [r] tail [const char*] Align tail with embedded newlines
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajAlignSetSubTailC(AjPAlign thys, const char* tail)
+{
+    ajStrAssC(&thys->SubTail, tail);
+
+    ajDebug("ajAlignSetSubTailC len %d '%S'\n",
+	    ajStrLen(thys->SubTail), tail);
+
+    return;
+}
+
+
+
+
+/* @func ajAlignSetSubTailApp *************************************************
+**
+** Apopends to an alignment tail
+**
+** @param [u] thys [AjPAlign] Alignment object
+** @param [r] tail [const AjPStr] Align tail with embedded newlines
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajAlignSetSubTailApp(AjPAlign thys, const AjPStr tail)
+{
+    if(ajStrLen(thys->SubTail) && ajStrChar(thys->SubTail, -1) != '\n')
+	ajStrAppC(&thys->SubTail, "/n");
+
+    ajStrApp(&thys->SubTail, tail);
+
+    ajDebug("ajAlignSetSubTailApp len %d '%S'\n",
+	    ajStrLen(thys->SubTail), tail);
 
     return;
 }
@@ -3593,6 +3674,7 @@ void ajAlignTrace(const AjPAlign thys)
     ajDebug("Header: '%S'\n", thys->Header);
     ajDebug("SubHeader: '%S'\n", thys->SubHeader);
     ajDebug("Tail: '%S'\n", thys->Tail);
+    ajDebug("SubTail: '%S'\n", thys->SubTail);
     ajDebug("Showusa: %B\n", thys->Showusa);
     ajDebug("Multi: %B\n", thys->Multi);
     ajDebug("Global: %B\n", thys->Global);
