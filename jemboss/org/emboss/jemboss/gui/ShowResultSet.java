@@ -54,57 +54,73 @@ public class ShowResultSet
     String stabs[] = new String[reslist.size()];
     int ntabs = 0;
 
+    JPanel s1;
+    JScrollPane r1;
+
+    String cmd = "cmd";
     while (enum.hasMoreElements()) 
     {
       String thiskey = (String)enum.nextElement().toString();
-      JPanel s1 = new JPanel(new BorderLayout());
-      JScrollPane r1 = new JScrollPane(s1);
-      if (thiskey.endsWith("png") || thiskey.endsWith("html")) 
+      if(!thiskey.equals(cmd))
       {
-        int index = findInt(thiskey);
-        if(index>0)
+        s1 = new JPanel(new BorderLayout());
+        r1 = new JScrollPane(s1);
+        if (thiskey.endsWith("png") || thiskey.endsWith("html")) 
         {
-          stabs[index-1] = new String(thiskey);
-          ntabs++;
-        }
-        else
+          int index = findInt(thiskey);
+          if(index>0)
+          {
+            stabs[index-1] = new String(thiskey);
+            ntabs++;
+          }
+          else
+          {
+            ImageIcon i1 = new ImageIcon((byte [])reslist.get(thiskey));
+            JLabel l1 = new JLabel(i1);
+            s1.add(l1);
+            rtp.add(thiskey,r1);
+          }
+        } 
+        else 
         {
-          ImageIcon i1 = new ImageIcon((byte [])reslist.get(thiskey));
-          JLabel l1 = new JLabel(i1);
-          int hh = i1.getIconHeight();
-          int ww = i1.getIconWidth();
-          s1.add(l1);
+          FileEditorDisplay fed = new FileEditorDisplay(null,thiskey,
+                                             reslist.get(thiskey));
+          JTextPane o1 = fed.getJTextPane();
+//	  JTextArea o1 = new JTextArea((String)reslist.get(thiskey));
+          o1.setFont(new Font("monospaced", Font.PLAIN, 12));
+          o1.setCaretPosition(0);
+	  s1.add(o1, BorderLayout.CENTER);
           rtp.add(thiskey,r1);
         }
-      } 
-      else 
-      {
-        FileEditorDisplay fed = new FileEditorDisplay(null,thiskey,
-                                             reslist.get(thiskey));
-        JTextPane o1 = fed.getJTextPane();
-//	JTextArea o1 = new JTextArea((String)reslist.get(thiskey));
-        o1.setFont(new Font("monospaced", Font.PLAIN, 12));
-        o1.setCaretPosition(0);
-	s1.add(o1, BorderLayout.CENTER);
-        rtp.add(thiskey,r1);
       }
     }
 
 // now load png files into pane
     for(int i=0; i<ntabs;i++)
     {
-      JPanel s1 = new JPanel(new BorderLayout());
-      JScrollPane r1 = new JScrollPane(s1);
+      s1 = new JPanel(new BorderLayout());
+      r1 = new JScrollPane(s1);
       ImageIcon i1 = new ImageIcon((byte [])reslist.get(stabs[i]));
       JLabel l1 = new JLabel(i1);
-      int hh = i1.getIconHeight();
-      int ww = i1.getIconWidth();
       s1.add(l1);
       if(stabs[i] != null)
       {
         rtp.add(r1,i);
         rtp.setTitleAt(i,stabs[i]);
       }
+    }
+
+    if(reslist.containsKey(cmd))
+    {
+      s1 = new JPanel(new BorderLayout());
+      r1 = new JScrollPane(s1);
+      FileEditorDisplay fed = new FileEditorDisplay(null,cmd,
+                                         reslist.get(cmd));
+      JTextPane o1 = fed.getJTextPane();
+      o1.setFont(new Font("monospaced", Font.PLAIN, 12));
+      o1.setCaretPosition(0);
+      s1.add(o1, BorderLayout.CENTER);
+      rtp.add(cmd,r1);
     }
 
     resFrame.setSize(640,480);
