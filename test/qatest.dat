@@ -2384,6 +2384,7 @@ UC To extract all of the CDS, mRNA and the protein translations:
 AP coderet
 IN tembl:X03487
 IN
+IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -2393,6 +2394,9 @@ FI hsferg1.fasta
 FP />x03487_cds_1\natgacgaccgcgt/
 FP /aatgaaagctaa\n>x03487_mrna_1\ncagacgttcttcgc/
 FP /ctcctacgtttacctgtccatg\n>x03487_pro_1\nMTTASTSQVRQNY/
+FI hsferg1.coderet
+FC = 3
+FP /     1     1     1     3 HSFERG1\n/
 //
 
 ID coderet-ex2
@@ -2400,6 +2404,7 @@ UC To only extract the mRNA sequence:
 AP coderet
 CL -nocds -notranslation
 IN tembl:X03487
+IN
 IN
 FI stderr
 FC = 2
@@ -2410,6 +2415,9 @@ FI hsferg1.fasta
 FP 0 />x03487_cds_1/
 FP />x03487_mrna_1\ncagacgttcttcgc/
 FP 0 />x03487_pro_1/
+FI hsferg1.coderet
+FC = 3
+FP /     1     1 HSFERG1\n/
 //
 
 ID compseq-ex
@@ -5466,6 +5474,28 @@ FP /^ID   EMBL       standard; DNA; UNC; 100 BP.\n/
 FP /^     acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt +100\n/
 //
 
+ID entret-in-experiment
+AP entret
+CL -auto ../../data/xb63c7.s1.exp -sf experiment test.out
+FI test.out
+FZ = 2317
+FC = 51
+FP /^ID   xb63c7\.s1\n/
+FP /^     TAATTTTCAA AAG-CCA-G\n/
+FP /^SR   440\n/
+//
+
+ID entret-inauto-experiment
+AP entret
+CL -auto ../../data/xb63c7.s1.exp test.out
+FI test.out
+FZ = 2317
+FC = 51
+FP /^ID   xb63c7\.s1\n/
+FP /^     TAATTTTCAA AAG-CCA-G\n/
+FP /^SR   440\n/
+//
+
 ID entret-in-embl
 AP entret
 CL -auto ../../data/dna.embl -sf embl test.out
@@ -5500,20 +5530,20 @@ ID entret-inauto-gcg
 AP entret
 CL -auto ../../data/dna.gcg test.out
 FI test.out
-FZ = 208
-FC = 9
+FZ = 362
+FC = 14
 FP /^GCG  Length: 100  Type: N  Check: 6856 ..\n/
-FP /^  51 GTACGTACGT ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT\n/
+FP /^   1 ACGTAC\<note\>GTAC GTACGTACGT\n/
 //
 
 ID entret-in-gcg
 AP entret
 CL -auto ../../data/dna.gcg -sf gcg test.out
 FI test.out
-FZ = 208
-FC = 9
+FZ = 362
+FC = 14
 FP /^GCG  Length: 100  Type: N  Check: 6856 ..\n/
-FP /^  51 GTACGTACGT ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT\n/
+FP /^   1 ACGTAC\<note\>GTAC GTACGTACGT\n/
 //
 
 ID entret-inauto-gcg8
@@ -5875,6 +5905,26 @@ CL -auto ../../data/dna.phylip -sf phylip test.out
 FI test.out
 FZ = 495
 FC = 12
+FP 3 /^MSFM/
+FP /^          ACGTACGTTG CAACGTACGT\n/
+//
+
+ID entret-inmultiauto-phylipnon
+AP entret
+CL -auto ../../data/dna.phylip3 test.out
+FI test.out
+FZ = 492
+FC = 10
+FP 3 /^MSFM/
+FP /^          ACGTACGTTG CAACGTACGT\n/
+//
+
+ID entret-inmulti-phylipnon
+AP entret
+CL -auto ../../data/dna.phylip3 -sf phylip test.out
+FI test.out
+FZ = 492
+FC = 10
 FP 3 /^MSFM/
 FP /^          ACGTACGTTG CAACGTACGT\n/
 //
@@ -8932,6 +8982,30 @@ FP /^ID   .* 100 BP\.\n/
 FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
 //
 
+ID seqret-inauto-experiment
+AP seqret
+CL -auto ../../data/xb63c7.s1.exp test.out -osf embl
+FI test.out
+FP /^ID   .* 439 BP\.\n/
+FP /^SQ   Sequence 439 BP; 162 A; 53 C; 61 G; 153 T; 10 other;/
+//
+
+ID seqret-inusa-experiment
+AP seqret
+CL -auto experiment::../../data/xb63c7.s1.exp test.out -osf embl
+FI test.out
+FP /^ID   .* 439 BP\.\n/
+FP /^SQ   Sequence 439 BP; 162 A; 53 C; 61 G; 153 T; 10 other;/
+//
+
+ID seqret-in-experiment
+AP seqret
+CL -auto ../../data/xb63c7.s1.exp -sf experiment test.out -osf embl
+FI test.out
+FP /^ID   .* 439 BP\.\n/
+FP /^SQ   Sequence 439 BP; 162 A; 53 C; 61 G; 153 T; 10 other;/
+//
+
 ID seqret-inauto-fasta
 AP seqret
 CL -auto ../../data/dna.fasta test.out -osf embl
@@ -9527,6 +9601,39 @@ FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
 FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
 //
 
+ID seqret-inmultiauto-phylipnon
+AP seqret
+CL -auto ../../data/dna.phylip3 test.out -osf embl
+FI test.out
+FP 1 /^ID   MSFM1 .* 120 BP\.\n/
+FP 1 /^ID   MSFM2 .* 120 BP\.\n/
+FP 1 /^ID   MSFM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmultiusa-phylipnon
+AP seqret
+CL -auto phylipnon::../../data/dna.phylip3 test.out -osf embl
+FI test.out
+FP 1 /^ID   MSFM1 .* 120 BP\.\n/
+FP 1 /^ID   MSFM2 .* 120 BP\.\n/
+FP 1 /^ID   MSFM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmulti-phylipnon
+AP seqret
+CL -auto ../../data/dna.phylip3 -sf phylipnon test.out -osf embl
+FI test.out
+FP 1 /^ID   MSFM1 .* 120 BP\.\n/
+FP 1 /^ID   MSFM2 .* 120 BP\.\n/
+FP 1 /^ID   MSFM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
 ID seqret-inmultiauto-strider
 AP seqret
 CL -auto ../../data/dna.m-strider test.out -osf embl
@@ -10057,40 +10164,40 @@ ID seqret-outmultiusa-clustal
 AP seqret
 CL -auto ../../data/dna.m-embl clustal::test.out
 FI test.out
-FZ = 801
+FZ = 732
 FP /^CLUSTAL W\(1\.4\) multiple sequence alignment\n/
-FP /^FASTAM2         ACGTACGTAC GTACGTACGT ----ACGTAC GTACGTACGT ACGTACGTAC\n/
+FP /^FASTAM2         ACGTACGTACGTACGTACGT----ACGTACGTACGTACGTACGTACGTAC\n/
 //
 
 ID seqret-outmulti-clustal
 AP seqret
 CL -auto ../../data/dna.m-embl test.out -osf clustal
 FI test.out
-FZ = 801
+FZ = 732
 FP /^CLUSTAL W\(1\.4\) multiple sequence alignment\n/
-FP /^FASTAM2         ACGTACGTAC GTACGTACGT ----ACGTAC GTACGTACGT ACGTACGTAC\n/
+FP /^FASTAM2         ACGTACGTACGTACGTACGT----ACGTACGTACGTACGTACGTACGTAC\n/
 //
 
 ID seqret-outmultiusa-clustalprot
 AP seqret
 CL -auto ../../data/prot.m-swiss clustal::test.out
 FI test.out
-FZ = 615
+FZ = 583
 FP /^CLUSTAL W\(1\.4\) multiple sequence alignment\n/
-FP /^SWISSM2         AACCDDEEFF GGHHIIKKLL MMNNPPQQRR SSTTVVWWYY AACCDDEEFF\n/
+FP /^SWISSM2         AACCDDEEFFGGHHIIKKLLMMNNPPQQRRSSTTVVWWYYAACCDDEEFF\n/
 FP 4 /^\n/
-FP 2 /^                                                                      \n/
+FP 2 /^                                                                  \n/
 //
 
 ID seqret-outmulti-clustalprot
 AP seqret
 CL -auto ../../data/prot.m-swiss test.out -osf clustal
 FI test.out
-FZ = 615
+FZ = 583
 FP /^CLUSTAL W\(1\.4\) multiple sequence alignment\n/
-FP /^SWISSM2         AACCDDEEFF GGHHIIKKLL MMNNPPQQRR SSTTVVWWYY AACCDDEEFF\n/
+FP /^SWISSM2         AACCDDEEFFGGHHIIKKLLMMNNPPQQRRSSTTVVWWYYAACCDDEEFF\n/
 FP 4 /^\n/
-FP 2 /^                                                                      \n/
+FP 2 /^                                                                  \n/
 //
 
 ID seqret-outmultiusa-codata
@@ -10555,23 +10662,23 @@ FP /^FASTAM1   ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT ACGTACGTAC\n/
 FP 6 /^          [ACGT \-]+\n/
 //
 
-ID seqret-outmultiusa-phylip3
+ID seqret-outmultiusa-phylipnon
 AP seqret
-CL -auto ../../data/dna.m-embl phylip3::test.out
+CL -auto ../../data/dna.m-embl phylipnon::test.out
 FI test.out
-FZ = 495
-FP /^1 120 YF\n/
+FZ = 492
+FP /^3 120\n/
 FP /^FASTAM1   ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT ACGTACGTAC\n/
 FP 6 /^          [ACGT \-]+\n/
 FP / GTACGTACGT\nFASTAM2/
 //
 
-ID seqret-outmulti-phylip3
+ID seqret-outmulti-phylipnon
 AP seqret
-CL -auto ../../data/dna.m-embl test.out -osf phylip3
+CL -auto ../../data/dna.m-embl test.out -osf phylipnon
 FI test.out
-FZ = 495
-FP /^1 120 YF\n/
+FZ = 492
+FP /^3 120\n/
 FP /^FASTAM1   ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT ACGTACGTAC\n/
 FP 6 /^          [ACGT \-]+\n/
 FP / GTACGTACGT\nFASTAM2/
@@ -11154,7 +11261,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww-ID:AB000095
 FI test.out
-FZ = 3678
+FZ = 3701
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -11164,7 +11271,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww-ACC:AB000095
 FI test.out
-FZ = 3678
+FZ = 3701
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -11174,7 +11281,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww-SV:AB000095.1
 FI test.out
-FZ = 3678
+FZ = 3701
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -11184,7 +11291,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww:AB000095
 FI test.out
-FZ = 3678
+FZ = 3701
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
