@@ -1774,7 +1774,10 @@ AjBool ajFileBuffSetFile (AjPFileBuff* pthys, AjPFile file) {
   }
   thys = *pthys;
 
-  if (thys->File && (thys->File->Handle ==  file->Handle)) /* same file */
+  ajFileBuffClear (thys, -1);
+
+  /* same file ??? */
+  if (thys->File && (thys->File->Handle ==  file->Handle)) 
     return ajTrue;
 
   ajFileClose (&thys->File);
