@@ -105,7 +105,7 @@ public class RemoteFileNode extends DefaultMutableTreeNode
       {
         if(parent.endsWith("/."))
           parent = parent.substring(0,parent.length()-1);
-        else if(parent.endsWith("/"))
+        else if(parent.endsWith(fs))
           parent = parent.substring(0,parent.length());
 
         if(parent.equals("."))
@@ -113,7 +113,10 @@ public class RemoteFileNode extends DefaultMutableTreeNode
         else
         {
           fullname = parent + fs + file;
-          serverPathToFile = serverPathToFile.concat(fs+parent);
+          if(serverPathToFile.endsWith(fs))
+            serverPathToFile = serverPathToFile.concat(parent);
+          else
+            serverPathToFile = serverPathToFile.concat(fs+parent);
         }
       }
     
@@ -156,6 +159,10 @@ public class RemoteFileNode extends DefaultMutableTreeNode
       String prefix = (String)froots.getRoots().get(froots.getCurrentRoot());
       if(!prefix.endsWith(fs))
         prefix = prefix.concat(fs);
+
+      if(fullname.equals("."))
+        return prefix;
+
       return prefix + fullname;
     }
 
@@ -173,7 +180,6 @@ public class RemoteFileNode extends DefaultMutableTreeNode
       {
         try
         {
-//        System.out.println(froots.getCurrentRoot() + " :: " + fullname);
           FileList efl = new FileList(mysettings,
                                    froots.getCurrentRoot(),fullname);
           Vector children = efl.fileVector();
@@ -184,6 +190,20 @@ public class RemoteFileNode extends DefaultMutableTreeNode
         catch(JembossSoapException eae) {}
       }
       explored = true;
+    }
+
+    /**
+    *
+    * Forces the directory to be re-explored
+    *
+    */
+    public void reExplore(JembossParams mysettings, FileRoots froots)
+    {
+      this.mysettings = mysettings;
+      this.froots = froots;
+      explored = false;
+      removeAllChildren();
+      explore();
     }
 
 // Transferable
