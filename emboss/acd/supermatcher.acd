@@ -14,7 +14,7 @@ seqall: seqa  [
 
 seqset: seqb  [
   parameter: "Y"
-  type: "@($(seqa.protein) ? protein : nucleotide)"
+  type: "@($(seqa.protein) ? stopprotein : nucleotide)"
 ]
 
 endsection: input
