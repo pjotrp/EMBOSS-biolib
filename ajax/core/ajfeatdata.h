@@ -66,101 +66,30 @@ typedef struct AjSFeattabOut {
 
 /* @data AjPFeattable *******************************************************
 **
-** Ajax Collection base class for AjPFeatures. The table may have a default
-** data Format, a format 'Version' and a 'Data' timestamp associated with it.
-** The table maintains a 'dictionary' of tags associated with the 'Source', 
-** 'Type' and 'Tag' fields of its component AjPFeatures. The features
-** themselves may be accessed via iteration methods.
+** Ajax data type for collecting AjPFeatures in a 'feature table'.
+** The features themselves may be accessed via iteration methods.
 **
 ** @alias AjSFeattable
 ** @alias AjOFeattable
 **
-** @new    ajFeattabNew          Constructor
+** @new    ajFeattableNew        Constructor
 ** @delete ajFeattabDel          Default destructor
-** @assign ajFeattabCopy         Copy constructor
 ** @mod    ajFeattabAdd          Adds an AjPFeature to a set
-** @mod    ajFeattabSetVersion   (Re)sets the current  AjPFeattable data
-**                               format version
-** @mod    ajFeattabSetDate      (Re)sets the current date of the 
-**                               AjPFeattable (file) dataset
-** @mod    ajFeattabDefFormat    Sets the original input ('source') data
-**                               format for the table.
-** @mod    ajFeattabDefSource    Sets default 'Source' label for features
-**                               created without source label specified
-** @mod    ajFeattabDefType      Sets default 'Type' label for features
-**                               created without type label specified
-** @cast   ajFeattabFormat       Returns the current AjPFeattable data
-**                               format type
-** @cast   ajFeattabVersion      Returns the current AjPFeattable data
-**                               format version
-** @cast   ajFeattabDate         Returns the date of the AjPFeattable
-**                               (file) dataset
-** @cast   ajFeattabDictionary   Returns the AjFeatLexicon 'dictionary'
-**                               of feature tags
-** @cast   ajFeattabFirst        Iterator: returns the first AjPFeature
-**                               of a set
-** @cast   ajFeattabNext         Iterator: returns the next AjPeature of
-**                               a set (ajFeattabFirst method must be called
-**                               first before using this method)
-** @cast   ajFeattabCount        Returns the number of features in the
-**                               feature set
-** @set    ajFeattabMerge        Merges another AjPFeattable to the current one
-** @mod    ajFeattabRead         Reads in a feature set in a specified format
-** @set    ajFeattabHeader       Dumps out the (Format specific) header
-**                               describing a feature set
-** @set    ajFeattabDump         Dumps the feature set to a file, in a
-**                               specified format
-** @use    ajFeattabDumpMatches  Dumps the feature set to a file, with
-**                               information about features cross matched
-**                               between different feature tables.
-**
-** Functions being contemplated but not yet implemented:
-**
-** #cast   ajFeattabMember       Predicate to test AjFeature membership in
-**                               a table
-** #set    ajFeattabUnion        Returns 'union set' of two feature tables
-** #set    ajFeattabIntersection Returns 'intersection set' of two feature
-**                               tables
-** #set    ajFeattabDifference   Returns 'difference set' of one 
-**                               feature table 'subtracted' again another
-** #mod    ajFeattabSort         Sorts a feature table based upon user
-**                               defined criteria
-** #set    ajFeattabFilter       Returns a new feature table based 
-**                               upon a filtered version of an existing one
-** #mod    ajFeattabRewrite      Method to systematically rewrite source,
-**                               type and tag fields
-**                               of all the AjFeature's in the table
-** #set    ajFeattabCluster      Returns an array of feature tables each
-**                               containing a group of features sharing some
-**                               attribute (by pairwise comparison) 
-** #set    ajFeattabGroup        Returns an table of feature tables each
-**                               containing a group of features sharing
-**                               some fixed, named attribute 
-** #set    ajFeattabRange        Returns the features of a feature table 
-**                               which lie within a given AjRange
-** #set    ajFeattabOverlapSelf  Returns a feature table filtered for
-**                               'self overlaps'
-** #cast   ajFeattabOverlapStats Returns summary statistics about feature
-**                               table matches
-** #set    ajFeattabStudy        Performs a general analysis of a feature
-**                               table, for *Range, *Score cast's
-** #cast   ajFeattabMinScore     Returns the minimum score of a feature table
-** #cast   ajFeattabMaxScore     Returns the maximum score of a feature table
-** #cast   ajFeattabAveScore     Returns the average score of a feature table
+** @mod    ajFeaturesRead        Reads in a feature set in a specified format
 ** @@
 ******************************************************************************/
 
 typedef struct AjSFeattable {
-  AjPStr            Name ;
-  AjPStr            Type ;
-  float             Version ;	/* GFF version */
-  AjPTime           Date ;
+  AjPStr            Name ;	/* Sequence name */
+  AjPStr            Type ;	/* Sequence type: P or N */ 
+  /*float             Version ;*/	/* GFF version */
+  /*AjPTime           Date ;*/
   ajint             DefFormat ; /* Original input or 'source' format
 				   of the feature table */
-  AjPStr            DefSource ;
+  /* AjPStr            DefSource ;*/
   AjPList           Features ;	/* List of AjPFeatures... */
-  ajint             Start;	/* a.k.a. GFF region... */
-  ajint             End;
+  ajint             Start;      /* First and last position used */
+  ajint             End;        /* Rather like begin and end for sequences */
   ajint             Groups;
 }  AjOFeattable, *AjPFeattable ;  
 
