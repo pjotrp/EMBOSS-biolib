@@ -34,7 +34,6 @@ import java.util.Enumeration;
 
 import org.emboss.jemboss.soap.PrivateRequest;
 import org.emboss.jemboss.gui.ResultsMenuBar;
-import org.emboss.jemboss.gui.ScrollPanel;
 import org.emboss.jemboss.JembossParams;
 
 /**
@@ -635,16 +634,13 @@ public class DragTree extends JTree implements DragGestureListener,
     JFrame ffile = new JFrame(filename);
     JPanel pfile = (JPanel)ffile.getContentPane();
     pfile.setLayout(new BorderLayout());
-    ScrollPanel pscroll = new ScrollPanel(new BorderLayout());
-    JScrollPane rscroll = new JScrollPane(pscroll);
-    rscroll.getViewport().setBackground(Color.white);
 
     FileEditorDisplay fed = new FileEditorDisplay(ffile, filename);
     new ResultsMenuBar(ffile,fed,mysettings);
+
+    JScrollPane rscroll = new JScrollPane(fed);
     pfile.add(rscroll, BorderLayout.CENTER);
-    JTextPane seqText = fed.getJTextPane();
-    pscroll.add(seqText, BorderLayout.CENTER);
-    seqText.setCaretPosition(0);
+    fed.setCaretPosition(0);
     ffile.setSize(450,400);
     ffile.setVisible(true);
   }

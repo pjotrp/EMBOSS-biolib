@@ -31,7 +31,6 @@ import javax.swing.tree.*;
 import java.io.*;
 import java.util.*;
 
-import org.emboss.jemboss.gui.ScrollPanel;
 import org.emboss.jemboss.gui.ResultsMenuBar;
 import org.emboss.jemboss.soap.*;
 import org.emboss.jemboss.JembossParams;
@@ -608,9 +607,6 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
       JFrame ffile = new JFrame(filename);
       JPanel pfile = (JPanel)ffile.getContentPane();
       pfile.setLayout(new BorderLayout());
-      ScrollPanel pscroll = new ScrollPanel(new BorderLayout());
-      JScrollPane rscroll = new JScrollPane(pscroll);
-      rscroll.getViewport().setBackground(Color.white);
 
       Vector params = new Vector();
       String options= "fileroot=" + froots.getCurrentRoot();
@@ -623,10 +619,11 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
       FileEditorDisplay fed = new FileEditorDisplay(ffile,filename,
                                    gReq.getHash().get("contents"));
       new ResultsMenuBar(ffile,fed,mysettings);
+      JScrollPane rscroll = new JScrollPane(fed);
+
       pfile.add(rscroll, BorderLayout.CENTER);
-      JTextPane seqText = fed.getJTextPane();
-      pscroll.add(seqText, BorderLayout.CENTER);
-      seqText.setCaretPosition(0);
+      fed.setCaretPosition(0);
+      ffile.pack();
       ffile.setSize(450,400);
       ffile.setVisible(true);
     }
