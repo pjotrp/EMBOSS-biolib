@@ -1192,7 +1192,6 @@ AjBool ajSeqsetRead(AjPSeqset thys, AjPSeqin seqin)
 	/*ajSeqTrace(seq);*/
 	iseq++;
 
-	ajSeqTrim(seq);
 	ajListPushApp(setlist, seq);
 
 	/*ajDebug("appended to list\n");*/
