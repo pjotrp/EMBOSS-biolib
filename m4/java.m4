@@ -197,8 +197,8 @@ AC_ARG_WITH(thread,
 		LDFLAGS="$LDFLAGS -lpthread"
 		LIBS="$LIBS -lpthread"
 	  fi
-	  if test "$withval" = "sgi" ; then
-	        CFLAGS="$CFLAGS -D_POSIX_C_SOURCE=199506L" 
+	  if test "$withval" = "irix" ; then
+	        CFLAGS="$CFLAGS" 
 		LDFLAGS="$LDFLAGS -lpthread"
 		LIBS="$LIBS -lpthread"
 	  fi

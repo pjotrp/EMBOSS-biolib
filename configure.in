@@ -92,7 +92,7 @@ fi
 
 dnl Turn off irritating linker warnings in IRIX
 if test "`uname`" = "IRIX"; then
-CFLAGS="-Wl,-LD_MSG:off=85:off=84:off=16 $CFLAGS"
+CFLAGS="-Wl,-LD_MSG:off=85:off=84:off=16:off=134 $CFLAGS"
 fi
 
 
