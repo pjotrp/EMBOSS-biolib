@@ -1,4 +1,12 @@
 Version 3.0.0
+	Sequence types explicitly set in source code for cons, sixpack and
+	backtranseq. GCG format output was showing nucleotide instead of
+	protein sequence type.
+
+	Correction to reversed sequence numbering for local alignments
+	from water.
+	
+Version 2.10.0
 	Profile analysis with gprof indicates that the regular expressions
 	(and the PCRE library) are very inefficient. Wildcards in regular
 	expressions lead to millions of recursive calls to the match
