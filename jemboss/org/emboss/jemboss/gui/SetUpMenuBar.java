@@ -71,32 +71,32 @@ public class SetUpMenuBar
     });
     fileMenu.add(fileMenuShowres);
 
-    JMenuItem showRemoteFile = new JMenuItem("Remote Files");
-    showRemoteFile.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        f.setCursor(cbusy);
-        try
-        {
-          JFrame fres = new JFrame();
-          RemoteFileTreePanel rtree = new RemoteFileTreePanel(mysettings,false);
-          fres.getContentPane().add(rtree);
-          JMenuBar rtreeBar = new JMenuBar();
-          rtreeBar.add(rtree.getRootSelect());
-          fres.setJMenuBar(rtreeBar);
-          fres.pack();
-          fres.setVisible(true);
-        }
-        catch (Exception expf) 
-        {
-          f.setCursor(cdone); 
-          new AuthPopup(mysettings,f);
-        }
-        f.setCursor(cdone);
-      }
-    });
-    fileMenu.add(showRemoteFile);
+//  JMenuItem showRemoteFile = new JMenuItem("Remote Files");
+//  showRemoteFile.addActionListener(new ActionListener()
+//  {
+//    public void actionPerformed(ActionEvent e)
+//    {
+//      f.setCursor(cbusy);
+//      try
+//      {
+//        JFrame fres = new JFrame();
+//        RemoteFileTreePanel rtree = new RemoteFileTreePanel(mysettings,false);
+//        fres.getContentPane().add(rtree);
+//        JMenuBar rtreeBar = new JMenuBar();
+//        rtreeBar.add(rtree.getRootSelect());
+//        fres.setJMenuBar(rtreeBar);
+//        fres.pack();
+//        fres.setVisible(true);
+//      }
+//      catch (Exception expf) 
+//      {
+//        f.setCursor(cdone); 
+//        new AuthPopup(mysettings,f);
+//      }
+//      f.setCursor(cdone);
+//    }
+//  });
+//  fileMenu.add(showRemoteFile);
 
     JMenuItem showLocalRemoteFile = new JMenuItem("Local and Remote Files");
     showLocalRemoteFile.addActionListener(new ActionListener()
@@ -104,8 +104,19 @@ public class SetUpMenuBar
       public void actionPerformed(ActionEvent e)
       {
         f.setCursor(cbusy);
+     
         if(localAndRemoteTree == null)
-          localAndRemoteTree = new LocalAndRemoteFileTreeFrame(mysettings);
+        {
+          try
+          {
+            localAndRemoteTree = new LocalAndRemoteFileTreeFrame(mysettings);
+          }
+          catch(JembossSoapException jse)
+          {
+            localAndRemoteTree = null;
+            new AuthPopup(mysettings,f); 
+          }
+        }
         else
           localAndRemoteTree.setVisible(true);
         f.setCursor(cdone);
@@ -149,12 +160,12 @@ public class SetUpMenuBar
     prefsMenu.addSeparator();
 
     final ServerSetup ss = new ServerSetup(mysettings);
-    JMenuItem serverSettings = new JMenuItem("Server Settings");
+    JMenuItem serverSettings = new JMenuItem("Settings");
     serverSettings.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
-        int sso = JOptionPane.showConfirmDialog(f,ss,"Server Settings",
+        int sso = JOptionPane.showConfirmDialog(f,ss,"Jemboss Settings",
                              JOptionPane.OK_CANCEL_OPTION,
                              JOptionPane.PLAIN_MESSAGE,null);
         if(sso == JOptionPane.OK_OPTION)
@@ -164,25 +175,24 @@ public class SetUpMenuBar
     prefsMenu.add(serverSettings);
 
     
-    JMenuItem showEnvironment = new JMenuItem("Show Environment");
-    showEnvironment.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e) 
-      {
-        if(withSoap)
-          JOptionPane.showMessageDialog(f,
-           "Public Server: " + mysettings.getPublicSoapURL() +
-           "\nPublic Server Name: " + mysettings.getPublicSoapService() +
-           "\nPrivate Server: " + mysettings.getPrivateSoapURL() +
-           "\nPrivate Server Name: " + mysettings.getPrivateSoapService());
-        else
-          JOptionPane.showMessageDialog(f, 
-              envp[0] + "\n" + envp[1] + "\n" +
-              envp[2] + "\n" + envp[3] + "\n");
-      }
-    });
-    prefsMenu.add(showEnvironment);
-//  menuPanel.add(Box.createHorizontalStrut(5));
+//  JMenuItem showEnvironment = new JMenuItem("Show Environment");
+//  showEnvironment.addActionListener(new ActionListener()
+//  {
+//    public void actionPerformed(ActionEvent e) 
+//    {
+//      if(withSoap)
+//        JOptionPane.showMessageDialog(f,
+//         "Public Server: " + mysettings.getPublicSoapURL() +
+//         "\nPublic Server Name: " + mysettings.getPublicSoapService() +
+//         "\nPrivate Server: " + mysettings.getPrivateSoapURL() +
+//         "\nPrivate Server Name: " + mysettings.getPrivateSoapService());
+//      else
+//        JOptionPane.showMessageDialog(f, 
+//            envp[0] + "\n" + envp[1] + "\n" +
+//            envp[2] + "\n" + envp[3] + "\n");
+//    }
+//  });
+//  prefsMenu.add(showEnvironment);
     menuPanel.add(prefsMenu);
 
 
