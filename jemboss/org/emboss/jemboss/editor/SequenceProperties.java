@@ -33,7 +33,7 @@ public class SequenceProperties
 {
 
   /** Taylor colour scheme, W.R.Taylor Protein 
-            Eng. vol.10 no. 7 pp743-746, 1997 */
+            Eng vol.10,  7 pp743-746, 1997 */
   public static Hashtable taylorColor = new Hashtable();
 
   /** AQUAMARINE from EMBOSS data Ecolour.map */

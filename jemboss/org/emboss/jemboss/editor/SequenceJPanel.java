@@ -29,39 +29,73 @@ import java.util.Vector;
 
 /**
 *
-* Applet for drawing sequence 
+* Sequence panel for drawing a sequence or the 
+* sequence numbers
 *
 */
 public class SequenceJPanel extends JPanel
                             implements ActionListener
 {
+
   private Color col;
+  /** sequence to display */
   private Sequence seq;
+  /** font size */
   private int fontSize = 14;
+  /** font */
   private Font font = new Font("Monospaced", 
                       Font.PLAIN, fontSize);
+  /** boundary width around each residue */
   private int boundWidth;
+  /** half boundary width (boundWidth/2) */
   private int boundWidth2;
+  /** residue width */
   private int resWidth;
+  /** sequence height */
   private int seqHeight; 
+  /** residue number when pressed by mouse */
   private int pressedResidue;
+  /** sequence numbering interval */
   private int interval;
+  /** sequence length     */
   private int seqLength;
+  /** sequence height pad */
   private int ypad=0;
-
+  /** colour scheme		       */
   private Hashtable colorTable;
+  /** pad/gap character                */
   private String padChar = new String("-");
+  /** pattern to search for            */
   private String pattern;
+  /** draw the sequence                */
   private boolean drawSequence = false;
+  /** draw a black box around residues */
   private boolean drawBlackBox = false;
+  /** colour the residues              */
   private boolean drawColorBox = false;
+  /** draw the sequence numbers        */
   private boolean drawNumber   = false;
+  /** colour as per prettyplot  */
   private boolean prettyPlot   = false;
+  /** high light search pattern */
   private boolean highlightPattern = false;
+  /** sequence alignment panel  */
   private JComponent viewPane;
+  /** pop up menu */
   private JPopupMenu popup;
 
-
+  /**
+  *
+  * @param seq		sequence to display
+  * @param viewPane	sequence alignment panel
+  * @param drawSequence	draw the sequence if true
+  * @param drawBlackBox draw a black box around residues
+  * @param drawColorBox	colour the residues
+  * @param colorTable	colour scheme
+  * @param fontSize	font size
+  * @param ypad		sequence height pad
+  *
+  */
   public SequenceJPanel(Sequence seq, JComponent viewPane,
                         boolean drawSequence,
                         boolean drawBlackBox, boolean drawColorBox,
@@ -130,11 +164,18 @@ public class SequenceJPanel extends JPanel
 //  setMinimumSize(getPreferredSize());
   }
 
-/**
-*
-* Constructor with default font size.
-*
-*/
+  /**
+  *
+  * Constructor with default font size.
+  * @param seq          sequence to display
+  * @param viewPane     sequence alignment panel
+  * @param drawSequence draw the sequence if true
+  * @param drawBlackBox draw a black box around residues
+  * @param drawColorBox colour the residues
+  * @param colorTable   colour scheme
+  * @param ypad         sequence height pad
+  *
+  */
   public SequenceJPanel(Sequence seq, JComponent viewPane,
                         boolean drawSequence,
                         boolean drawBlackBox, boolean drawColorBox,
@@ -144,6 +185,13 @@ public class SequenceJPanel extends JPanel
          colorTable,0,ypad);
   }
 
+  /**
+  *
+  * Constructor for sequence numbering 
+  * @param interval	numbering interval
+  * @param seqLength	length of the sequence
+  *
+  */
   public SequenceJPanel(int interval, int seqLength)
   {
     seq = null;
