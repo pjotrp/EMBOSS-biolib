@@ -280,7 +280,7 @@ public class JembossAuthServer
 
 
     boolean ok = false;
-    if( fexists  ||             //call ajax if sequence file
+    if( fexists  || afile ||    //call ajax if sequence file
         fn.indexOf(":") > 0 )   //or db
     {
       try
