@@ -573,23 +573,17 @@ public class ResultsMenuBar extends JMenuBar
 
   private JTextPane getSelectedJTextPane(JTabbedPane rtb)
   {
-    JScrollPane jsp = (JScrollPane)(rtb.getSelectedComponent());
-    JPanel jp = (JPanel)(jsp.getViewport().getView());
     try
     {
-      return (JTextPane)jp.getComponent(0);
-    }
-    catch(ClassCastException cce){}
+      JScrollPane jsp = (JScrollPane)(rtb.getSelectedComponent());
+      return (JTextPane)(jsp.getViewport().getView());
+    } catch(ClassCastException cce) {}
+
     return null;
   }
 
   private JTextComponent getJTextComponentAt(JTabbedPane rtb, int index)
   {
-//  try
-//  {
-//    return (JTextComponent)rtb.getComponentAt(index);
-//  } catch(ClassCastException cce) {}
-
     try
     {
       JScrollPane jsp = (JScrollPane)(rtb.getComponentAt(index));
