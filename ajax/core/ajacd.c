@@ -4790,6 +4790,7 @@ AjPGraph ajAcdGetGraph (char *token)
 
 static void acdSetGraph (AcdPAcd thys)
 {
+#ifndef GROUT
     AjPGraph val;
 
     AjBool required = ajFalse;
@@ -4863,7 +4864,7 @@ static void acdSetGraph (AcdPAcd thys)
     (void) call("ajGraphTrace",val);
 
     ajStrDel(&name);
-
+#endif
     return;
 }
 
@@ -4898,6 +4899,7 @@ AjPGraph ajAcdGetGraphxy (char *token)
 
 static void acdSetGraphxy (AcdPAcd thys)
 {
+#ifndef GROUT
     AjPGraph val;
     AjPStr name = ajStrNewC("GRAPHICS");
     static AjPStr gdev = NULL;
@@ -4975,6 +4977,8 @@ static void acdSetGraphxy (AcdPAcd thys)
     (void) call("ajGraphTrace",val);
 
     ajStrDel(&name);
+#endif
+
     return;
 }
 
@@ -14262,8 +14266,8 @@ void ajAcdExit (AjBool silent) {
     if (pa->Assoc) continue;
     if (pa->Level != ACD_PARAM && pa->Level != ACD_QUAL) continue;
     if (!pa->Used) {
-      ajWarn ("ACD qualifier never used: %S = '%S' (assoc %B)",
-	      pa->Name, pa->ValStr, pa->Assoc);
+      ajDebug ("ACD qualifier never used: %S = '%S' (assoc %B)",
+	       pa->Name, pa->ValStr, pa->Assoc);
     }
 
   }
