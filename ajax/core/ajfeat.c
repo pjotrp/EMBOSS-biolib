@@ -4111,6 +4111,8 @@ AjPFeature ajFeatNew (AjPFeattable thys,
   /* Allocate the object... */
   AJNEW0(ret) ;
 
+  ajStrCopy (&ret->Type, type);
+
   ret->Tags = ajListNew();
   thys->Groups++;
   ret->Group = thys->Groups;
@@ -4124,6 +4126,7 @@ AjPFeature ajFeatNew (AjPFeattable thys,
   ret->Frame  = frame ;
   ret->Start = start;
   ret->End = end;
+
 
   ajFeatSetDesc (ret, desc);
 
