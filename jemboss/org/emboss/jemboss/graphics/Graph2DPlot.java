@@ -555,6 +555,10 @@ public class Graph2DPlot extends ScrollPanel
       }
       else
       {
+        if(isTick(emboss_data[1][i], emboss_data[2][i],
+                  emboss_data[3][i], emboss_data[4][i]))
+          continue;
+
         x = emboss_data[1][i];
         y = emboss_data[2][i];
 
@@ -1127,12 +1131,21 @@ public class Graph2DPlot extends ScrollPanel
     tok.nextToken();
     float y2 = Float.parseFloat(tok.nextToken());
 
+    return isTick(x1,y1,x2,y2);
+  }
+
+  /**
+  *
+  * Determine if this looks like a tick line.
+  *
+  */
+  private boolean isTick(float x1,float y1,float x2,float y2)
+  {
     if(x1 == x2 || y1 == y2)
       return true;
 
     return false;
   }
-
 
   public static void main(String arg[])
   {
