@@ -1,5 +1,19 @@
 Version 2.7.0
 
+	In some cases, EMBOSS programs could terminate with an exit status
+	of 255 (-1). Terminating with "Die:" message exists with status 1.
+	All exit calls now use either 0 (success) or the standard
+	library EXIT_FAILURE value (usually 1).
+
+	All report output fiels have a new attribute (and qualifier)
+	rscoreshow which defaults to "Y". Setting rscoreshow: "N" will
+	remove the score from the output, except for GFF where it is
+	required, and SRS format where it can be kept for use in standard
+	parsers. The aim is to exclude the score value from applications
+	that have no scoring method (restrict for example). For these,
+	putting -rscore on the command line will override the ACD file and
+	display the score.
+	
 	Showseq and showfeat both now have the qualifier '-stricttags'.
 	By default if any tag/value pair in a feature matches the
 	specified tag and value, then all the tags/value pairs of that
