@@ -46,7 +46,7 @@ integer: max  [
   information: "Maximum cuts per RE"
 ]
 
-bool: individual  [
+bool: solofragment  [
   optional: "N"
   default: "N"
   information: "List individual enzymes with their fragments"
@@ -102,12 +102,6 @@ bool: limit  [
   optional: "N"
   default: "Y"
   information: "Limits reports to one isoschizomer"
-]
-
-bool: preferred  [
-  optional: "N"
-  default: "N"
-  information: "Report preferred isoschizomers"
 ]
 
 bool: alphabetic  [
