@@ -57,7 +57,7 @@ Protein statistics
 <li>isoelectric point
 <li>for each type of amino acid: number, molar percent, DayhoffStat
 <li>for each physico-chemical class of amino acid: number, molar percent
-<li>probability of protein solubility in E. coli
+<li>probability of protein expression in E. coli inclusion bodies
 </ul>
 
 <p>
@@ -68,11 +68,21 @@ per 1000 aa normalised to 100 by rls@ebi.ac.uk (original work from 1993)
 
 <p>
 
-The protein solubility gives an idea if the protein will be expressed
-from E. coli in the cytosol or in inclusion bodies. This might
-correlate with the quality of protein crystals and therefore be of
-interest for high throughput protein crystallography (reference 1).
-
+The probability of expression in inclusion bodies is sometimes
+referred to as a type of solubility measure. If, however, a
+recombinant protein is expressed in Escherichia coli, it can be
+expressed as soluble in the cytosol or insoluble in inclusion bodies. If
+the Harrison model predicts a given protein to be probably expressed
+in includion bodies, this doesn't mean that it is not possible to get
+it soluble in the cytosol. One example: Thermatoga maritima cell
+divison protein FtsA with a C-terminal His-Tag has a 58% Harrison
+probability of being expressed in inclusion bodies. However, there was
+plenty of soluble protein in the E. coli cytosol (F. van den Ent and
+J.  Lowe, EMBO J. 19, 5300-5307 2000). If the protein is expressed in
+inclusion bodies or not is not only dependent on the sequence, but
+also on many other factors, such as E. coli strain, incubation
+temperature, type of expression vector, strength of promoter and
+medium.
 
 
 
@@ -287,7 +297,7 @@ None.
 </H2>
 
 <ol>
-<li>Harrison, R.G. inNovations 11 (Novagen house journal)
+<li>Roger G. Harrison "Expression of soluble heterologous proteins via fusion with NusA protein" in inNovations 11, June 2000, p 4 - 7.
 </ol>
 
 <H2>
