@@ -66,8 +66,6 @@ public class Jemboss implements ActionListener
   private JSplitPane pmain;
   private JSplitPane ptree;
 
-  private JPanel p1;
-  private JPanel p2;
   private JPanel p3;
   public static DragTree tree;
   private JButton extend;
@@ -89,6 +87,8 @@ public class Jemboss implements ActionListener
   public static Dimension jdim;
   public static Dimension jdimExtend;
 
+  private ImageIcon fwdArrow = new ImageIcon("images/Forward_arrow_button.gif");
+  private ImageIcon bwdArrow = new ImageIcon("images/Backward_arrow_button.gif");
 
   public Jemboss ()
   {
@@ -115,12 +115,11 @@ public class Jemboss implements ActionListener
     tree = new DragTree( new File(System.getProperty("user.home")), f);
     scrollTree = new JScrollPane(tree);
 
-    p1 = new JPanel(new BorderLayout());   // menu panel
-    p2 = new JPanel(new GridLayout());     // emboss form pain
-    p3 = new JPanel(new BorderLayout());   // filemanager panel
+    JPanel p1 = new JPanel(new BorderLayout()); // menu panel
+    JPanel p2 = new JPanel(new GridLayout());   // emboss form pain
+    p3 = new JPanel(new BorderLayout());        // filemanager panel
 
     JScrollPane scrollProgForm = new JScrollPane(p2);
-
     JPanel pwork = new JPanel(new BorderLayout());
     JPanel pform = new JPanel(new BorderLayout());
 
@@ -131,10 +130,11 @@ public class Jemboss implements ActionListener
     JMenuBar btmMenu = new JMenuBar();
 
 // button to extend window
-    extend = new JButton(">>");
-    extend.setBorder(BorderFactory.createMatteBorder(1,5,1,1,Color.black));
+    extend = new JButton(fwdArrow);
+    extend.setBorder(BorderFactory.createMatteBorder(0,0,0,0, Color.black));
     extend.addActionListener(this);
     extend.setToolTipText("Open and close file manager.");
+
     Dimension d = f.getToolkit().getScreenSize();
     if(withSoap)
     {
@@ -174,13 +174,16 @@ public class Jemboss implements ActionListener
     new SetUpMenuBar(mysettings, f, envp, cwd, withSoap);
 
 // add Jemboss Logo
-    JembossLogo jlogo = new JembossLogo(120,145,55);
+
+//  JembossLogo jlogo = new JembossLogo(120,145,55);
+    JLabel jlablogo = new JLabel(new ImageIcon
+                          ("images/Jemboss_logo_large.gif"));
     JPanel pFront = new JPanel(new BorderLayout());
-    pFront.add(jlogo,BorderLayout.CENTER);
     p2.add(pFront);
     pFront.setBackground(Color.white);
     Box bacross = new Box(BoxLayout.Y_AXIS);
-    bacross.add(jlogo);
+    bacross.add(Box.createRigidArea(new Dimension(150,150)));
+    bacross.add(jlablogo);
     pFront.add(bacross,BorderLayout.CENTER);
 
 // add to Jemboss main frame and locate it center left of screen
@@ -196,9 +199,9 @@ public class Jemboss implements ActionListener
   }
 
 
-/*
+/**
 *
-*  Action events Exit, Help, GO, & Show results
+*  Action event to open the file manager
 *
 *
 */
@@ -207,20 +210,17 @@ public class Jemboss implements ActionListener
     final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
     final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
-    if( ae.getActionCommand().startsWith("<<"))
+    if( p3.getComponentCount() > 0 )
     {
-      Dimension d = new Dimension(0,0);
       p3.remove(0);
-      extend.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, Color.black));
-      extend.setText(">>");
+      extend.setIcon(fwdArrow);
       pmain.setPreferredSize(jdim);
       f.pack();
     }
     else
     {
       p3.add(scrollTree, BorderLayout.CENTER);
-      extend.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 5, Color.black));
-      extend.setText("<<");
+      extend.setIcon(bwdArrow);
       pmain.setPreferredSize(jdimExtend);
       f.pack();
     }
