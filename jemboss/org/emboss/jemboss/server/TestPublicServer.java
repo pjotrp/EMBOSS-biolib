@@ -86,7 +86,7 @@ public class TestPublicServer
       try
       {
         GetWossname ewoss = new GetWossname(mysettings);
-        System.out.println(ewoss.getDBText());
+        System.out.println(ewoss.getWossnameText());
         System.out.println("\n\nAbove are the wossname results from the server :\n"+
                                    mysettings.getPublicSoapURL());
       }
