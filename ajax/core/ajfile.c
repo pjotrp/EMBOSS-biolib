@@ -1913,7 +1913,7 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 	cp = ajSysFgets(&buff[ipos], isize, thys->fp);
 #endif
 
-	if(!cp)
+        if(!cp && !ipos)
 	{
 	    if(feof(thys->fp))
 	    {
@@ -1955,6 +1955,11 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
     }
     
     ajStrFixI(&thys->Buff, ilen);
+    if (ajStrChar(thys->Buff,-1) != '\n')
+    {
+	ajDebug("Appending missing newline to '%S'\n", thys->Buff);
+	ajStrAppK(&thys->Buff, '\n');
+    }
     ajStrAssS(pdest, thys->Buff);
  
     return ajTrue;
