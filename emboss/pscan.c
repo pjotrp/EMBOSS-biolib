@@ -24,12 +24,8 @@
 
 
 
-void print_hits(AjPFile *outf, AjPList *l, ajint nmotifs, AjPStr *name,
-		ajint begin, ajint end);
-
-
-
-
+static void pscan_print_hits(AjPFile *outf, AjPList *l, ajint nmotifs,
+			     AjPStr *name, ajint begin, ajint end);
 
 
 
@@ -81,7 +77,6 @@ int main(int argc, char **argv)
     
     while(ajSeqallNext(seqall, &seq))
     {
-/*	ajUser("Scanning %s...",ajSeqName(seq)); */
 	begin=ajSeqallBegin(seqall);
 	end=ajSeqallEnd(seqall);
 	
@@ -107,8 +102,7 @@ int main(int argc, char **argv)
 
 	ajListPop(l,(void **)&mm);
 
-/*	ajUser(""); */
-	print_hits(&outf, &l, nmotifs, &name, begin, end);
+	pscan_print_hits(&outf, &l, nmotifs, &name, begin, end);
 	ajListDel(&l);
 
 
@@ -134,22 +128,22 @@ int main(int argc, char **argv)
 
 
 
-/* @func print_hits ***********************************************************
+/* @funcstatic pscan_print_hits **********************************************
 **
 ** Undocumented.
 **
-** @param [?] outf [AjPFile*] Undocumented
-** @param [?] l [AjPList*] Undocumented
-** @param [?] nmotifs [ajint] Undocumented
-** @param [?] name [AjPStr*] Undocumented
-** @param [?] begin [ajint] Undocumented
-** @param [?] end [ajint] Undocumented
+** @param [w] outf [AjPFile*] outfile
+** @param [r] l [AjPList*] hits
+** @param [r] nmotifs [ajint] number of hits
+** @param [?] name [AjPStr*] sequence name
+** @param [?] begin [ajint] start position
+** @param [?] end [ajint] end position
 ** @@
 ******************************************************************************/
 
 
-void print_hits(AjPFile *outf, AjPList *l, ajint nmotifs, AjPStr *name,
-		ajint begin, ajint end)
+static void pscan_print_hits(AjPFile *outf, AjPList *l, ajint nmotifs,
+			     AjPStr *name, ajint begin, ajint end)
 {
     EmbPMatMatch mm;
     ajint i;
@@ -245,7 +239,8 @@ void print_hits(AjPFile *outf, AjPList *l, ajint nmotifs, AjPStr *name,
 
 
     ajFmtPrintF(*outf,"\n\nCLASS 2\n");	
-    ajFmtPrintF(*outf,"All elements match but not all in the correct order\n\n");	
+    ajFmtPrintF(*outf,"All elements match but not all in the "
+		"correct order\n\n");	
 
     found = ajTrue;
 
