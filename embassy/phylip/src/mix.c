@@ -109,9 +109,9 @@ int i;
     mixture = true;
 
 
-  usertree = !ajAcdGetBool("besttree");
+  usertree = !ajAcdGetToggle("besttree");
   if(!usertree){
-    jumble = ajAcdGetBool("random");
+    jumble = ajAcdGetToggle("random");
     if(jumble){
       inseed = ajAcdGetInt("randseed");
       /* make sure it's odd*/
@@ -134,7 +134,7 @@ int i;
       njumble = 1;
   }
 
-  thresh = ajAcdGetBool("thresh");
+  thresh = ajAcdGetToggle("thresh");
   if(thresh){
     threshold = ajAcdGetFloat("valthresh");
     threshold = (long)(threshold * 10.0 + 0.5) / 10.0;
@@ -142,7 +142,7 @@ int i;
 
   ancvar = ajAcdGetBool("ancestral");
 
-  mulsets = ajAcdGetBool("multsets");
+  mulsets = ajAcdGetToggle("multsets");
   if (mulsets)
     datasets = ajAcdGetInt("datasets");
   
@@ -155,7 +155,7 @@ int i;
   ancseq = ajAcdGetBool("statesatnodes");
   treeprint = ajAcdGetBool("drawtree");
  
-  trout = ajAcdGetBool("trout");
+  trout = ajAcdGetToggle("trout");
   if(trout){
     treef = ajAcdGetOutfile("treefile");
     treefile = treef->fp;

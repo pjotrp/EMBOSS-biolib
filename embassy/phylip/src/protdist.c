@@ -250,6 +250,7 @@ void emboss_getnums(){
 
 void emboss_inputdata(){
   int i,j,l,k;
+  int ilen;
   const char *temp;
   Char charstate='\0';
   aas aa=quest;   /* temporary amino acid for input */
@@ -273,7 +274,10 @@ void emboss_inputdata(){
   }
 
   for(i=0;i<spp;i++){
-    strncpy(nayme[i],ajStrStr(ajSeqsetName(seqset, i)),nmlngth);
+    ilen = ajStrLen(ajSeqsetName(seqset, i));
+    strncpy(nayme[i],ajStrStr(ajSeqsetName(seqset, i)),ilen);
+    for (j=ilen;j<nmlngth;j++)
+	nayme[i][j] = ' ';
     /*    ajUser("%s/n",ajSeqsetName(seqset, i));*/
     temp = ajSeqsetSeq(seqset, i);
     for(j=0;j<chars;j++){

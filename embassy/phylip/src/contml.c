@@ -78,7 +78,7 @@ long inseed0;
   inf = ajAcdGetInfile("infile");
   infile = inf->fp;
 
-  usertree = !ajAcdGetBool("besttree");
+  usertree = !ajAcdGetToggle("besttree");
   if(usertree)
     lengths = ajAcdGetBool("lengths");
   else {

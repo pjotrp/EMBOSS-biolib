@@ -115,9 +115,9 @@ void emboss_getoptions(char *pgm, int argc, char *argv[]){
   
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;
-  usertree = !ajAcdGetBool("besttree");
+  usertree = !ajAcdGetToggle("besttree");
   if(!usertree){
-    jumble = ajAcdGetBool("random");
+    jumble = ajAcdGetToggle("random");
     if(jumble){
       inseed = ajAcdGetInt("randseed");
       /* make sure it's odd*/
@@ -140,11 +140,11 @@ void emboss_getoptions(char *pgm, int argc, char *argv[]){
       njumble = 1;
   }
 
-  thresh = ajAcdGetBool("thresh");
+  thresh = ajAcdGetToggle("thresh");
   if(thresh)
     threshold = ajAcdGetFloat("valthresh");
   
-  outgropt = ajAcdGetBool("og");
+  outgropt = ajAcdGetToggle("og");
   if(outgropt)
     outgrno = ajAcdGetInt("outgnum"); 
   else
@@ -159,7 +159,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[]){
   ancseq = ajAcdGetBool("seqatnodes");
 
   treeprint = ajAcdGetBool("drawtree");
-  trout = ajAcdGetBool("trout");
+  trout = ajAcdGetToggle("trout");
   if(trout){
     treef = ajAcdGetOutfile("treefile");
     treefile = treef->fp;
@@ -193,6 +193,7 @@ void emboss_getnums(){
 
 void emboss_inputdata(){
   long i, j, k, l;
+  int ilen;
   aas aa=quest;   /* temporary amino acid for input */
   const char *temp1;
   Char charstate='\0';
@@ -217,7 +218,10 @@ void emboss_inputdata(){
   }
 
   for(i=0;i<spp;i++){
-    strncpy(nayme[i],ajStrStr(ajSeqsetName(seqset, i)),nmlngth);
+    ilen = ajStrLen(ajSeqsetName(seqset, i));
+    strncpy(nayme[i],ajStrStr(ajSeqsetName(seqset, i)),ilen);
+    for (j=ilen;j<nmlngth;j++)
+	nayme[i][j] = ' ';
     temp1 = ajSeqsetSeq(seqset, i);
     for(j=0;j<chars;j++){
       switch (temp1[j]) {

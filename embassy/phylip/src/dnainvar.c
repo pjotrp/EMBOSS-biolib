@@ -44,7 +44,7 @@ AjPFile outf;
   ajNamInit("emboss");
   retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
 
-  seqset = ajAcdGetSeqset("msf");
+  seqset = ajAcdGetSeqset("sequence");
 
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;
@@ -68,6 +68,7 @@ int i;
 }
 void emboss_inputdata(){
   int i,j;
+  int ilen;
 
   if (progress)
     putchar('\n');
@@ -87,7 +88,10 @@ void emboss_inputdata(){
     fprintf(outfile, "---------\n\n");
   }
   for(i=0;i<numsp;i++){
-    strncpy(&nayme[i][0],ajStrStr(ajSeqsetName(seqset, i)),nmlngth);
+    ilen = ajStrLen(ajSeqsetName(seqset, i));
+    strncpy(&nayme[i][0],ajStrStr(ajSeqsetName(seqset, i)),ilen);
+    for (j=ilen;j<nmlngth;j++)
+	nayme[i][j] = ' ';
     /*    ajUser("%s/n",ajSeqsetName(seqset, i));*/
     strncpy(&y[i][0],ajSeqsetSeq(seqset, i),sites);
     y[i][sites] = '\0';

@@ -116,7 +116,7 @@ long inseed0;
 
   usertree = !ajAcdGetToggle("besttree");
   if(!usertree){
-    jumble = ajAcdGetBool("random");
+    jumble = ajAcdGetToggle("random");
     if(jumble){
       inseed = ajAcdGetInt("randseed");
       /* make sure it's odd*/

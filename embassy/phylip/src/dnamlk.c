@@ -264,7 +264,8 @@ int scanned;
   putchar('\n');
 }
 void emboss_inputdata(){
-  int i,j;
+ int i,j;
+ int ilen;
 
  for (i = 0; i < sites; i++)
    weight[i] = 1;
@@ -288,7 +289,10 @@ void emboss_inputdata(){
     fprintf(outfile, "---------\n\n");
   }
   for(i=0;i<spp;i++){
-    strncpy(naym[i],ajStrStr(ajSeqsetName(seqset, i)),nmlngth);
+    ilen = ajStrLen(ajSeqsetName(seqset, i));
+    strncpy(naym[i],ajStrStr(ajSeqsetName(seqset, i)),ilen);
+    for (j=ilen;j<nmlngth;j++)
+	naym[i][j] = ' ';
     strncpy(&y[i][0],ajSeqsetSeq(seqset, i),sites);
     y[i][sites] = '\0';
     if(printdata)

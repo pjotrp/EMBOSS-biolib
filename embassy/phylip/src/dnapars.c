@@ -187,6 +187,7 @@ void emboss_getnums(){
 
 void emboss_inputdata(){
 int j;
+int ilen;
 
   if (progress)
     putchar('\n');
@@ -206,7 +207,10 @@ int j;
     fprintf(outfile, "---------\n\n");
   }
   for(i=0;i<spp;i++){
-    strncpy(&nayme[i][0],ajStrStr(ajSeqsetName(seqset, i)),nmlngth);
+    ilen = ajStrLen(ajSeqsetName(seqset, i));
+    strncpy(&nayme[i][0],ajStrStr(ajSeqsetName(seqset, i)),ilen);
+    for (j=ilen;j<nmlngth;j++)
+	nayme[i][j] = ' ';
     /*    ajUser("%s/n",ajSeqsetName(seqset, i));*/
     strncpy(&y[i][0],ajSeqsetSeq(seqset, i),chars);
     for(j=0;j<chars;j++){

@@ -264,7 +264,8 @@ int scanned;
 }
 
 void emboss_inputdata(){
-  int i,j;
+ int i,j;
+ int ilen;
 
  if(!ctgry){ 
   for (i = 0; i < sites; i++)
@@ -292,7 +293,10 @@ void emboss_inputdata(){
     fprintf(outfile, "---------\n\n");
   }
   for(i=0;i<numsp;i++){
-    strncpy(curtree.nodep[i]->nayme,ajStrStr(ajSeqsetName(seqset, i)),nmlngth);
+    ilen = ajStrLen(ajSeqsetName(seqset, i));
+    strncpy(curtree.nodep[i]->nayme,ajStrStr(ajSeqsetName(seqset, i)),ilen);
+    for (j=ilen;j<nmlngth;j++)
+	curtree.nodep[i]->nayme[j] = ' ';
     strncpy(&y[i][0],ajSeqsetSeq(seqset, i),sites);
     y[i][sites] = '\0';
     if(printdata)
