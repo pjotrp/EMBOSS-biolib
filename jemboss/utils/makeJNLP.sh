@@ -13,6 +13,9 @@ read KEY
 cd ..
 #CWPWD=$PWD
 CWPWD=`pwd`
+cd ..
+CWPWD2=`pwd`
+cd $CWPWD
 
 while [ ! -d "$CWPWD/resources" ]
 do
@@ -24,10 +27,24 @@ do
     CWPWD=$TMP
   fi
 done
-cd $CWPWD
 
 #
 #
+
+if [ ! -f "$CWPWD/resources/acdstore.jar" ]; then
+
+  ACDDIR=0
+  while [ ! -d "$ACDDIR" ]
+  do
+    echo "Enter the directory where the acd files are stored"
+    echo "[$CWPWD2/acd/]:"
+    read ACDDIR
+    if [ "$ACDDIR" = "" ]; then
+      ACDDIR="$CWPWD2/acd/"
+    fi
+    echo
+  done
+fi
 
 if [ ! -d "jnlp" ]; then
   mkdir jnlp
@@ -45,6 +62,15 @@ done
 
 PATH=$PATH:$JAVA_HOME/bin/ ; export PATH
 
+if [ ! -f "$CWPWD/resources/acdstore.jar" ]; then
+  echo
+  echo "Create acdstore.jar to contain acd files."
+  cd $ACDDIR
+  jar cf acdstore.jar *.acd
+fi
+
+cd $CWPWD
+
 #
 # Wrap client.keystore for JNLP 
 
@@ -59,6 +85,10 @@ else
   echo "*** WARNING! If you are using an SSL Jemboss server then"
   echo "*** this will not work as the script has not found the"
   echo "*** client keystore file."
+fi
+
+if [ ! -f "$CWPWD/resources/acdstore.jar" ]; then
+  cp $ACDDIR/acdstore.jar resources/
 fi
 
 #
