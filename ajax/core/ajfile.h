@@ -114,7 +114,32 @@ typedef struct AjSFileBuff {
 
 #define AjPFileBuff AjOFileBuff*
 
+/* @data AjPDir **************************************************************
+**
+** Ajax directory object. Holds information for an open
+** input or output directory.
+**
+** @new ajDirNew Default constructor for a directory
+** @new ajDiroutNew Default constructor for an output directory
+** @@
+******************************************************************************/
+
+typedef struct AjSDir {
+  AjPStr Name;			/* Path */
+  AjPStr Extension;		/* Default file extension */
+  AjBool Output;		/* True if to be used for output */
+} AjODir;
+
+#define AjPDir AjODir*
+
 /* ============= prototypes =========================*/
+
+AjPStr      ajDirExt(const AjPDir thys);
+AjPStr      ajDirName(const AjPDir thys);
+AjPDir      ajDirNew (const AjPStr name);
+AjPDir      ajDirNewS (const AjPStr name, const AjPStr ext);
+AjPDir      ajDiroutNew (const AjPStr name);
+AjPDir      ajDiroutNewS (const AjPStr name, const AjPStr ext);
 
 void        ajFileBuffClear (AjPFileBuff thys, ajint lines);
 void        ajFileBuffClearStore (AjPFileBuff thys, ajint lines,
@@ -186,6 +211,8 @@ AjBool      ajFileGetsTrimL (AjPFile thys, AjPStr *pdest, ajlong* fpos);
 AjBool      ajFileHasDir (const AjPStr name);
 ajlong      ajFileLength (AjPStr fname);
 const char* ajFileName (const AjPFile thys);
+AjBool      ajFileNameDir (AjPStr* filename, const AjPDir dir,
+			   const AjPStr name);
 AjBool      ajFileNameDirSet  (AjPStr* filename, const AjPStr dir);
 AjBool      ajFileNameDirSetC (AjPStr* filename, const char* dir);
 AjBool      ajFileNameExt  (AjPStr* filename, const AjPStr extension);
@@ -194,6 +221,7 @@ AjBool      ajFileNameShorten(AjPStr *fname);
 AjBool      ajFileNameTrim(AjPStr *fname);
 AjPFile     ajFileNew (void);
 AjPFile     ajFileNewApp (const AjPStr name);
+AjPFile     ajFileNewDirF(const AjPDir dir, const AjPStr filename);
 AjPFile     ajFileNewDC (const AjPStr dir, const char* filename);
 AjPFile     ajFileNewDF (const AjPStr dir, const AjPStr filename);
 AjPFile     ajFileNewDW (const AjPStr dir, const AjPStr wildfile);
@@ -205,6 +233,7 @@ AjPFile     ajFileNewInList (AjPList list);
 AjPFile     ajFileNewOut (const AjPStr name);
 AjPFile     ajFileNewOutC (const char *name);
 AjPFile     ajFileNewOutD (const AjPStr dir, const AjPStr name);
+AjPFile     ajFileNewOutDir(const AjPDir dir, const AjPStr name);
 void        ajFileOutHeader (const AjPFile thys);
 void        ajFileOutClose (AjPFile *pthis);
 AjBool      ajFileNext (AjPFile thys);

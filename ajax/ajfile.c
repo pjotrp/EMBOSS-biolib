@@ -64,6 +64,158 @@ static DIR*   fileOpenDir(AjPStr *dir);
 /* ========================= constructors ============================= */
 /* ==================================================================== */
 
+/* @section Directory Constructors *************************************************
+**
+** All constructors return a new open file by pointer. It is the responsibility
+** of the user to first destroy any previous file pointer. The target pointer
+** does not need to be initialised to NULL, but it is good programming practice
+** to do so anyway.
+**
+** To replace or reuse an existing file, see instead
+** the {File Assignments} and {File Modifiers} functions.
+**
+** The range of constructors is provided to allow flexibility in how
+** applications can open files to read various kinds of data.
+**
+******************************************************************************/
+
+
+
+
+
+
+/* @func ajDirNew ************************************************************
+**
+** Creates a new directory object.
+**
+** @param [r] name [const AjPStr] Directory name
+** @return [AjPDir] New directory object.
+** @@
+******************************************************************************/
+
+AjPDir ajDirNew(const AjPStr name)
+{
+    AjPDir thys;
+
+    AJNEW0(thys);
+    ajStrAssS(&thys->Name, name);
+    thys->Extension = NULL;
+    thys->Output = ajFalse;
+
+    return thys;
+}
+
+
+
+/* @func ajDirNewS ************************************************************
+**
+** Creates a new directory object.
+**
+** @param [r] name [const AjPStr] Directory name
+** @param [r] ext [const AjPStr] File extension
+** @return [AjPDir] New directory object.
+** @@
+******************************************************************************/
+
+AjPDir ajDirNewS(const AjPStr name, const AjPStr ext)
+{
+    AjPDir thys;
+
+    AJNEW0(thys);
+    ajStrAssS(&thys->Name, name);
+    if (ajStrLen(ext))
+	ajStrAssS(&thys->Extension, ext);
+    thys->Output = ajFalse;
+
+    return thys;
+}
+
+
+
+/* @func ajDiroutNew **********************************************************
+**
+** Creates a new directory outputobject.
+**
+** @param [r] name [const AjPStr] Directory name
+** @return [AjPDir] New directory object.
+** @@
+******************************************************************************/
+
+AjPDir ajDiroutNew(const AjPStr name)
+{
+    AjPDir thys;
+
+    AJNEW0(thys);
+    ajStrAssS(&thys->Name, name);
+    thys->Extension = NULL;
+    thys->Output = ajTrue;
+
+    return thys;
+}
+
+
+
+/* @func ajDiroutNewS *********************************************************
+**
+** Creates a new directory output object.
+**
+** @param [r] name [const AjPStr] Directory name
+** @param [r] ext [const AjPStr] File extension
+** @return [AjPDir] New directory object.
+** @@
+******************************************************************************/
+
+AjPDir ajDiroutNewS(const AjPStr name, const AjPStr ext)
+{
+    AjPDir thys;
+
+    AJNEW0(thys);
+    ajStrAssS(&thys->Name, name);
+    if (ajStrLen(ext))
+	ajStrAssS(&thys->Extension, ext);
+    thys->Output = ajTrue;
+
+    return thys;
+}
+
+
+
+/* @func ajDirName ************************************************************
+**
+** Returns the name of a directory object
+**
+** @param [r] thys [const AjPDir] Directory object.
+** @return [AjPStr] Directory name
+** @@
+******************************************************************************/
+
+AjPStr ajDirName(const AjPDir thys)
+{
+    if (!thys)
+	return NULL;
+    return thys->Name;
+}
+
+
+
+/* @func ajDirExt *************************************************************
+**
+** Returns the extension of a directory object
+**
+** @param [r] thys [const AjPDir] Directory object.
+** @return [AjPStr] Directory name
+** @@
+******************************************************************************/
+
+AjPStr ajDirExt(const AjPDir thys)
+{
+    if (!thys)
+	return NULL;
+    return thys->Extension;
+}
+
+
+
 /* @section File Constructors *************************************************
 **
 ** All constructors return a new open file by pointer. It is the responsibility
@@ -133,7 +285,8 @@ AjPFile ajFileNewInPipe(const AjPStr name)
     char** arglist        = NULL;
     char* pgm;
     int status;
-    
+    pid_t retval;
+
     AJNEW0(thys);
     ajStrAssS(&tmpname, name);
 
@@ -186,7 +339,12 @@ AjPFile ajFileNewInPipe(const AjPStr name)
     if(fileOpenCnt > fileOpenMax)
 	fileOpenMax = fileOpenCnt;
     
-    while(wait(&status) != pid);
+    while((retval=waitpid(pid,&status,WNOHANG))!=pid)
+	{
+	    if(retval == -1)
+		if(errno != EINTR)
+		    break;
+	}
     
     return thys;
 }
@@ -539,6 +697,75 @@ AjPFile ajFileNewOutD(const AjPStr dir, const AjPStr name)
 	}
 	thys->fp = fopen(ajStrStr(dirfix), "w");
 	ajDebug("ajFileNewOutD open dirfix '%S'\n", dirfix);
+    }
+
+    if(!thys->fp)
+    {
+	thys->Handle = 0;
+	return NULL;
+    }
+
+    thys->Handle = ++fileHandle;
+    ajStrAssS(&thys->Name, name);
+    thys->End = ajFalse;
+
+    fileOpenCnt++;
+    fileOpenTot++;
+    if(fileOpenCnt > fileOpenMax)
+	fileOpenMax = fileOpenCnt;
+
+    return thys;
+}
+
+
+
+
+/* @func ajFileNewOutDir ******************************************************
+**
+** Creates a new output file object with a specified directory and name.
+** Uses the default extension (if any) specified for the directory.
+**
+** 'stdout' and 'stderr' are special names for standard output and
+** standard error respectively.
+**
+** If the filename already has a directory specified,
+** the "dir" argument is ignored.
+**
+** @param [rN] dir [const AjPStr] Directory (optional, can be empty or NULL).
+** @param [r] name [const AjPStr] File name.
+** @return [AjPFile] New file object.
+** @@
+******************************************************************************/
+
+AjPFile ajFileNewOutDir(const AjPDir dir, const AjPStr name)
+{
+    AjPFile thys;
+    static AjPStr dirfix = NULL;
+
+    ajDebug("ajFileNewOutDir('%S' '%S')\n", dir->Name, name);
+
+    AJNEW0(thys);
+
+    if(!dir)
+    {
+	thys->fp = fopen(ajStrStr(name), "w");
+	ajDebug("ajFileNewOutDir open name '%S'\n", name);
+    }
+    else
+    {
+	if(ajFileHasDir(name))
+	    ajStrAssS(&dirfix, name);
+	else
+	{
+	    ajStrAssS(&dirfix, dir->Name);
+	    if(ajStrChar(dir->Name, -1) != '/')
+		ajStrAppC(&dirfix, "/");
+	    ajStrApp(&dirfix, name);
+	}
+	ajFileNameExt(&dirfix, dir->Extension);
+
+	thys->fp = fopen(ajStrStr(dirfix), "w");
+	ajDebug("ajFileNewOutDir open dirfix '%S'\n", dirfix);
     }
 
     if(!thys->fp)
@@ -2705,6 +2932,39 @@ AjPFile ajFileNewDF(const AjPStr dir, const AjPStr filename)
 
 
 
+/* @func ajFileNewDirF ********************************************************
+**
+** Opens directory "dir"
+** Looks for file "file" with the extension (if any) specified
+** for the directory
+**
+** @param [r] dir [const AjPStr] Directory
+** @param [r] filename [const AjPStr] Wildcard Filename.
+** @return [AjPFile] New file object.
+** @@
+******************************************************************************/
+
+AjPFile ajFileNewDirF(const AjPDir dir, const AjPStr filename)
+{
+    static AjPStr namefix = NULL;
+	
+    if(ajStrLen(dir->Name))
+	ajStrAssS(&namefix, dir->Name);
+    else
+	ajStrAssC(&namefix, "./");
+    
+    if(ajStrChar(namefix, -1) != '/')
+	ajStrAppC(&namefix, "/");
+    
+    ajStrApp(&namefix, filename);
+    ajFileNameExt(&namefix, dir->Extension);
+
+    return ajFileNewIn(namefix);
+}
+
+
+
+
 
 /* @func ajFileNewDC **********************************************************
 **
@@ -4061,12 +4321,44 @@ AjBool ajFileBuffEmpty(const AjPFileBuff thys)
 
 
 
+/* @func ajFileNameDir *****************************************************
+**
+** Sets the directory part of a filename
+**
+** @param [r] filename [AjPStr*] Filename.
+** @param [r] dir [const AjPDir] Directory
+** @param [r] dir [const AjPStr] Base filename
+** @return [AjBool] ajTrue if the replacement succeeded.
+** @@
+******************************************************************************/
+
+AjBool ajFileNameDir(AjPStr* filename, const AjPDir dir, const AjPStr name)
+{
+    AjBool ret = ajFalse;
+    if(!dir)
+    {
+	ajStrAssS(filename, name);
+	return ajFalse;
+    }
+
+    ret = ajFileNameDirSet(filename, dir->Name);
+    if (!ret)
+	return ajFalse;
+
+    ret = ajFileNameExt(filename, dir->Extension);
+
+    return ret;
+}
+
+
+
+
 /* @func ajFileNameDirSet *****************************************************
 **
 ** Sets the directory part of a filename
 **
 ** @param [r] filename [AjPStr*] Filename.
-** @param [r] dir [const AjPStr] New file extension
+** @param [r] dir [const AjPStr] New directory
 ** @return [AjBool] ajTrue if the replacement succeeded.
 ** @@
 ******************************************************************************/
@@ -4170,7 +4462,13 @@ AjBool ajFileNameExtC(AjPStr* filename, const char* extension)
 
     ajDebug("ajFileNameExtC '%S' '%s'\n", *filename, extension);
     ajStrAssC(&tmpstr,ajStrStr(*filename));
-    p = strrchr(ajStrStr(tmpstr),'.');
+
+    /* Skip any directory path */
+    p = strrchr(ajStrStr(tmpstr),'/');
+    if (!p)
+	p = ajStrStr(tmpstr);
+
+    p = strrchr(p,'.');
     if(p)
     {
 	*p='\0';
