@@ -6583,7 +6583,7 @@ static void featLocEmblWrapC (AjPStr *ploc, ajint margin,
     ajDebug("try %d to %d (len %d)\n", i, last, len);
 
     if ((last+1) >= len) { /* no need to split */
-      ajStrAssSub(&tmpstr, *ploc, i, len);
+      ajStrAssSub(&tmpstr, *ploc, i, len-1);
       ajDebug ("last %d >= len %d\n", last, len);
       j = 0;
     }
@@ -6647,7 +6647,7 @@ static void featTagEmblWrapC (AjPStr *pval, ajint margin, char* prefix,
     ajDebug("try %d to %d (len %d)\n", i, last, len);
 
     if ((last+1) >= len) { /* no need to split */
-      ajStrAssSub(&tmpstr, *pval, i, len);
+      ajStrAssSub(&tmpstr, *pval, i, len-1);
       ajDebug ("last %d >= len %d\n", last, len);
       j = 0;
     }
@@ -6724,7 +6724,7 @@ static void featTagSwissWrapC (AjPStr *pval, ajint margin, char* prefix,
     ajDebug("try %d to %d (len %d)\n", i, last, len);
 
     if ((last+1) >= len) { /* no need to split */
-      ajStrAssSub(&tmpstr, valstr, i, len);
+      ajStrAssSub(&tmpstr, valstr, i, len-1);
       ajDebug ("last %d >= len %d\n", last, len);
       j = 0;
     }
