@@ -1534,7 +1534,7 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
     ajint i;
     ajint stat;
 
-    /*    AjPFileBuff buff = seqin->Filebuff; unused */
+    AjPFileBuff buff = seqin->Filebuff;
 
     ajSeqClear(thys);
     ajDebug("seqRead: cleared\n");
@@ -1642,8 +1642,8 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
     ajDebug("seqRead failed - try again with format %d '%s'\n",
 	    seqin->Format, seqInFormatDef[seqin->Format].Name);
 
-    /*while(seqin->Search && !ajFileBuffEmpty(buff))*/
-    while(seqin->Search)
+    /* while(seqin->Search) */ /* need to check end-of-file to avoid repeats */
+    while(seqin->Search && !ajFileBuffEmpty(buff))
     {
 	stat = seqReadFmt(thys, seqin, seqin->Format);
 	switch(stat)
@@ -4026,7 +4026,12 @@ static AjBool seqHennig86Readseq(const AjPStr rdline, AjPTable msftable)
 **
 ** Tries to read input in Treecon format.
 **
-** To be implemented
+** Treecon is a windows program for tree drawing.
+**
+** Van de Peer, Y., De Wachter, R. (1994)
+** TREECON for Windows: a software package for the construction and
+** drawing of evolutionary trees for the Microsoft Windows environment.
+** Comput. Applic. Biosci. 10, 569-570.
 **
 ** @param [w] thys [AjPSeq] Sequence object
 ** @param [u] seqin [AjPSeqin] Sequence input object
@@ -4036,7 +4041,147 @@ static AjBool seqHennig86Readseq(const AjPStr rdline, AjPTable msftable)
 
 static AjBool seqReadTreecon(AjPSeq thys, AjPSeqin seqin)
 {
-    return ajFalse;
+    static AjPStr rdline = NULL;
+    static AjPStr tmpstr = NULL;
+    ajint bufflines = 0;
+    AjBool ok       = ajFalse;
+    ajint len       = 0;
+    ajint ilen      = 0;
+    ajint i;
+    AjPFileBuff buff;
+
+    AjPTable phytable        = NULL;
+    SeqPMsfItem phyitem      = NULL;
+    AjPList phylist          = NULL;
+    SeqPMsfData phydata      = NULL;
+    static AjPRegexp topexp  = NULL;
+    static AjPRegexp seqexp  = NULL;
+
+    buff = seqin->Filebuff;
+
+    if(!topexp)
+	topexp = ajRegCompC("^ *([0-9]+)");
+
+    if(!seqexp)
+	seqexp = ajRegCompC("^[ \t\n\r]*$");
+
+    if(!seqin->Data)			/* first time - read the data */
+    {
+	seqin->multidone = ajFalse;
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+	if(!ok)
+	    return ajFalse;
+	bufflines++;
+
+	if(!ajRegExec(topexp, rdline))
+	{				/* first line test */
+	    ajFileBuffReset(buff);
+	    return ajFalse;
+	}
+
+	ajRegSubI(topexp, 1, &tmpstr);
+	ajStrToInt(tmpstr, &len);
+
+	ajDebug("first line OK: '%S' len: %d\n",
+		rdline, len);
+
+	seqin->Data = AJNEW0(phydata);
+	AJNEW0(phyitem);
+	phydata->Table = phytable = ajTableNew(0, ajStrTableCmp,
+					       ajStrTableHash);
+	phylist = ajListstrNew();
+	seqin->Filecount = 0;
+
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+	bufflines++;
+	ilen = 0;
+	while (ok)
+	{
+	   if (!ilen)
+	   {
+	       ajStrClean(&rdline);
+	       if (!ajStrLen(rdline))	/* empty line after a sequence */
+		   break;
+	       ajStrAssS(&phyitem->Name, rdline);
+	       ajTablePut(phytable, phyitem->Name, phyitem);
+	       ajListstrPushApp(phylist, phyitem->Name);
+	       iseq++;
+	   }
+	   else
+	   {
+	       ajStrCleanWhite(&rdline);
+	       ilen += ajStrLen(rdline);
+	       seqAppend(&phyitem->Seq, rdline);
+	       
+	       if (ilen > len)
+	       {
+		   ajDebug("Treecon format: '%S' too long, read %d/%d\n",
+		    phyitem->Name, ilen, len);
+		ajFileBuffReset(buff);
+		AJFREE(seqin->Data);
+		return ajFalse;
+	       }
+	       if (ilen == len)
+	       {
+		   ilen = 0;
+	       }
+	   }
+
+	   ok = ajFileBuffGetStore(buff, &rdline,
+				   seqin->Text, &thys->TextPtr);
+	}
+	if (ilen)
+	{
+	    ajDebug("Treecon format: unfinished sequence '%S' read %d/%d\n",
+		    phyitem->Name, ilen, len);
+	    AJFREE(seqin->Data);
+	    return ajFalse;
+	}
+
+	phydata->Names = AJCALLOC(iseq, sizeof(*phydata->Names));
+	for(i=0; i < iseq; i++)
+	{
+	    ajListstrPop(phylist, &phydata->Names[i]);
+	    ajDebug("list [%d] '%S'\n", i, phydata->Names[i]);
+	}
+	ajListstrFree(&phylist);
+	phydata->Nseq = iseq;
+	phydata->Count = 0;
+	phydata->Bufflines = bufflines;
+	ajDebug("Treecon format read %d lines\n", bufflines);
+
+
+    }
+
+    phydata = seqin->Data;
+    phytable = phydata->Table;
+
+    i = phydata->Count;
+    ajDebug("returning [%d] '%S'\n", i, phydata->Names[i]);
+    phyitem = ajTableGet(phytable, phydata->Names[i]);
+    ajStrAss(&thys->Name, phydata->Names[i]);
+    ajStrDel(&phydata->Names[i]);
+
+    thys->Weight = phyitem->Weight;
+    ajStrAss(&thys->Seq, phyitem->Seq);
+    ajStrDel(&phyitem->Seq);
+
+    phydata->Count++;
+    if(phydata->Count >=phydata->Nseq)
+    {
+	seqin->multidone = ajTrue;
+	ajDebug("seqReadTreecon multidone\n");
+	ajFileBuffClear(seqin->Filebuff, 0);
+	ajTableMap(phytable, seqMsfTabDel, NULL);
+	ajTableFree(&phytable);
+	AJFREE(phydata->Names);
+	AJFREE(phydata);
+	seqin->Data = NULL;
+    }
+
+    return ajTrue;
 }
 
 
@@ -6733,16 +6878,21 @@ static AjBool seqinUfoLocal(const AjPSeqin thys)
 
 static void seqSetName(AjPStr* name, const AjPStr str)
 {
-    static AjPRegexp idexp = NULL;
+    static AjPRegexp idexp = NULL;	/* dbname:id */
 
     if(!idexp)
-	idexp = ajRegCompC("([^ \t\n\r,<>|;]+:)?([^ \t\n\r,<>|;]+)");
+	idexp = ajRegCompC("^([^ \t\n\r,<>|;]+:)?([^ \t\n\r,<>|;]+)$");
 
     if(ajRegExec(idexp, str))
 	ajRegSubI(idexp, 2, name);
     else
+    {
 	ajStrAssS(name, str);
-
+	if (ajStrClean(name))
+	{
+	    ajStrSubstituteKK(name, ' ', '_');
+	}
+    }
     ajDebug("seqSetName '%S' result: '%S'\n", str, *name);
 
     return;
