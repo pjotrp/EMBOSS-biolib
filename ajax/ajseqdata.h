@@ -51,6 +51,7 @@ typedef struct AjSSeqQuery {
   AjPStr Filename;		/* Individual filename */
   AjPStr Exclude;		/* File wildcards to exclude (spaced) */
   AjPStr DbFields;		/* Query fields (plus id and acc) */
+  AjPStr DbProxy;		/* Proxy host */
   AjPStr Field;			/* Query level */
   AjPStr QryString;		/* Query level */
   AjPStr Application;		/* External application command */
