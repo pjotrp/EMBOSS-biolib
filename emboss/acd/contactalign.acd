@@ -1,0 +1,58 @@
+application: contactalign [
+    documentation: "EMBOSS implementation of Damian Counsell's 2.5-D alignment algorithm"
+    groups: "protein: sequence alignment"
+]
+
+section: input [
+  information: "input section"
+  type: "page"
+]
+
+  sequence: down [
+    param: "Y"
+    type: "protein"
+    information: "first sequence to be aligned"
+  ]
+
+  sequence: across [
+    param: "Y"
+    type: protein
+    information: "second sequence to be aligned"
+  ]
+
+  matrixf: datafile [
+    optional: "Y"	
+    info: "Matrix file"
+    protein: $(down.protein)
+    default: "data/EBLOSUM62"	
+  ]
+
+endsection: input
+
+section: required [
+  information: "required section"
+  type: "page"
+]
+
+endsection: required
+
+
+section: advanced [
+  information: "advanced section"
+  type: "page"
+]
+
+endsection: advanced
+
+section: output [
+  information: "output Section"
+  type: "page"
+]
+
+seqout: aligned
+  [
+    param: "Y"
+    type: "gapprotein"
+  ]
+
+endsection: output
