@@ -654,7 +654,7 @@ static void infoalign_Compare(AjPSeq ref, AjPSeq seq, ajint **sub,
     *seqlength   = *idcount + *simcount + *difcount;
     *alignlength = end-begin+1;
 
-    *change = (float)(end-begin+1 - *idcount)*100.0/(float)(end-begin+1);
+    *change = (float)(*alignlength - *idcount)*100.0/(float)(*alignlength);
 
     return;
 }
