@@ -1,7 +1,7 @@
 /******************************************************************************
 ** @source NUCLEUS Gotoh dynamic programming functions
 **
-** sequence alignment by the method of Gotoh uses cells (here AjPGotohCells)
+** sequence alignment by the method of Gotoh uses cells (here, AjPGotohCells)
 **  containing pointers to preceding cells in sequence alignment backtrace
 **  tables:
 **
@@ -9,8 +9,8 @@
 **  Journal of Molecular Biology 162:705-708
 **
 ** @author Copyright (C) 2003 Damian Counsell
-** @version $Revision: 1.2 $
-** @modified $Date: 2004/02/09 18:11:22 $
+** @version $Revision: 1.3 $
+** @modified $Date: 2004/02/11 13:22:25 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -40,6 +40,8 @@
 #include "embgotoh.h"
 
 static const ajint cAjIntOffset = 1;
+
+/* DDDDEBUG */
 static ajint DEBUG_LEVEL = 0;
 
 /* ==================================================================== */
@@ -689,13 +691,15 @@ ajint embGotohReadOffBacktrace(AjPList ajpListGotohCellsMaxScoringTrace,
       ajStrAppK(&strAcrossTrace, cBufferCurrentAcross);
       
       /* DDDDEBUG */
-      ajFmtPrint("\nthis template residue: %c , this query residue: %c\n" , cBufferCurrentDown , cBufferCurrentAcross); 
+      if(DEBUG_LEVEL)
+	  ajFmtPrint("\nthis template residue: %c , this query residue: %c\n" , cBufferCurrentDown , cBufferCurrentAcross); 
 
     }
   while(ajListIterMore(ajListIterBacktrace));
 
   /* DDDDEBUG */
-  ajFmtPrint("\n FULL TEMPLATE STRING: %S , FULL QUERY STRING: %S\n" , strDownTrace , strAcrossTrace); 
+      if(DEBUG_LEVEL)
+	  ajFmtPrint("\n FULL TEMPLATE STRING: %S , FULL QUERY STRING: %S\n" , strDownTrace , strAcrossTrace); 
 
   ajSeqReplace(ajpSeqDown, strDownTrace); 
   ajSeqReplace(ajpSeqAcross, strAcrossTrace); 
