@@ -2675,7 +2675,14 @@ AjBool        ajXyzSignatureAlignSeq(AjPSignature S, AjPSeq seq, AjPHit *hit,
 
     /* Backtrack through matrix */
     alg[maxp]='*';
-    for(this=path[max].prev, score=path[max].val; sidx>0; this=path[this].prev)
+/*    for(this=path[max].prev, score=path[max].val; sidx>0; this=path[this].prev)
+	{
+	    thisp= this - (ajint) ((sidx=(ajint)floor((double)(this/nres))) 
+				   * nres);
+	    alg[thisp]='*';
+	}*/
+
+    for(this=path[max].prev; sidx>0; this=path[this].prev)
 	{
 	    thisp= this - (ajint) ((sidx=(ajint)floor((double)(this/nres))) 
 				   * nres);
@@ -3157,7 +3164,7 @@ AjPHitlist ajXyzSignatureHitsRead(AjPFile inf)
     AjPList list   =NULL;
     AjPHitlist ret =NULL;
     ajint  Sunid_Family=0;
-    AjBool   ok    =ajFalse;
+    AjBool   ok    =ajTrue;
     AjPHit tmphit  =NULL;
     
 
@@ -3310,7 +3317,7 @@ AjBool        ajXyzSignatureHitsWrite(AjPFile outf, AjPSignature sig,
     {
 	if(ajStrMatchC(hits->hits[x]->Typeobj, "FALSE"))
 	    nf++;
-	if(nf==n)
+	if(nf>n)
 	    break;
 	if(MAJSTRLEN(hits->hits[x]->Acc))
 	{
@@ -10524,12 +10531,12 @@ ajint ajXyzScophitCompPval(const void *hit1, const void *hit2)
     p = (*(AjPScophit*)hit1);
     q = (*(AjPScophit*)hit2);
     
-    if(p->Pval > q->Pval)
-        return 1;
+    if(p->Pval < q->Pval)
+        return -1;
     else if (p->Pval == q->Pval)
         return 0;
     else
-        return -1;
+        return 1;
 
 
 }
