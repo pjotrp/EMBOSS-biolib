@@ -4,8 +4,8 @@
 **  writes the resulting alignments into a new directory
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.5 $
-** @modified $Date: 2004/10/14 18:57:10 $
+** @version $Revision: 1.6 $
+** @modified $Date: 2004/11/17 18:00:37 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -24,6 +24,7 @@
 ******************************************************************************/
 
 #include "emboss.h"
+#include "string.h"
 
 enum constant
     {
@@ -78,6 +79,20 @@ int main( int argc , char **argv )
     AjPStr ajpStrAlignmentFormat      = NULL; /* format for output alignment file              */
     AjPStr ajpStrFirstCommandLine     = NULL; /* command line given to alignment program       */
     AjPStr ajpStrSecondCommandLine    = NULL; /* command line given to alignment program       */
+    
+    AjPStr ajpStrTempQuerySeqName;
+    AjPStr ajpStrQuerySeqName;
+    AjIStr ajpStrIterQuerySeqName;
+    char cQuerySeqName;
+    AjBool ajBoolQueryNameRead = AJFALSE;
+    
+    AjPStr ajpStrTempTemplateSeqName;
+    AjIStr ajpStrIterTemplateSeqName;
+    AjPStr ajpStrTemplateSeqName;
+    char cTemplateSeqName;
+    AjBool ajBoolTemplateNameRead = AJFALSE;
+    
+    char cDot = '.';
 
     embInit("alignrunner", argc, argv);
 
@@ -108,7 +123,7 @@ int main( int argc , char **argv )
     /* new seqset to store input unaligned sequences */
     ajpSeqsetUnalignedPair = ajSeqsetNew();
     /* new string for alignment command and options to it */
-    ajpStrJoinOutfileName = ajStrNewC("_vs_");
+    ajpStrJoinOutfileName = ajStrNewC("_");
 
     ajpSeqQuery = ajSeqNew();    
     ajpSeqTemplate = ajSeqNew();
@@ -119,6 +134,11 @@ int main( int argc , char **argv )
     /* DDDDEBUG */
     /* for(ajIntCount = 0;ajIntCount < 10;ajIntCount++) */
     {
+	ajpStrQuerySeq = ajStrNew();
+	ajpStrTemplateSeq = ajStrNew();
+	ajpStrQuerySeqName = ajStrNew();
+	ajpStrTemplateSeqName = ajStrNew();
+	
 	ajpStrRootOutfileName = ajStrNew();
 	ajpStrFirstOutfileName = ajStrNew();
 	ajpStrSecondOutfileName = ajStrNew();
@@ -137,17 +157,71 @@ int main( int argc , char **argv )
 	{
 	    ajpSeqQuery = ajSeqsetGetSeq(ajpSeqsetUnalignedPair, enumQuerySeqIndex);
 	    ajpSeqTemplate = ajSeqsetGetSeq(ajpSeqsetUnalignedPair, enumTemplateSeqIndex);
-	    
+
 	    ajpStrQuerySeq = ajSeqStr(ajpSeqQuery);
 	    ajpStrTemplateSeq = ajSeqStr(ajpSeqTemplate);
 
-	    ajStrCopy(&ajpStrRootOutfileName, ajpSeqQuery->Name);
+	    /* get name from sequence properties */
+	    ajpStrTempQuerySeqName = ajStrNewS(ajpSeqQuery->Name);
+	    /* iterate over the characters in the name */
+	    ajpStrIterQuerySeqName = ajStrIter(ajpStrTempQuerySeqName);
+	    ajBoolQueryNameRead = AJFALSE;	    
+	    while(!ajStrIterDone(ajpStrIterQuerySeqName) &&
+		  !ajBoolQueryNameRead)
+	    {
+		/* read in current character */
+		cQuerySeqName = ajStrIterGetK(ajpStrIterQuerySeqName);
+		ajStrIterNext(ajpStrIterQuerySeqName);
+		/*
+		 * if there is a dot in the sequence name, truncate 
+		 * the name there and append the first character
+		 * after the dot to this leading string
+		 */
+		if(cQuerySeqName == cDot)
+		{
+		    ajBoolQueryNameRead = AJTRUE;
+		    cQuerySeqName = ajStrIterGetK(ajpStrIterQuerySeqName);
+		}
+
+		/* if there is no dot, use the whole sequence name */
+		ajStrAppK(&ajpStrQuerySeqName, cQuerySeqName);
+	    }
+
+	    /* get name from sequence properties */
+	    ajpStrTempTemplateSeqName = ajStrNewS(ajpSeqTemplate->Name);
+	    /* iterate over the characters in the name */
+	    ajpStrIterTemplateSeqName = ajStrIter(ajpStrTempTemplateSeqName);
+	    ajBoolTemplateNameRead = AJFALSE;	    
+	    while(!ajStrIterDone(ajpStrIterTemplateSeqName) &&
+		  !ajBoolTemplateNameRead)
+	    {
+		/* read in current character */
+		cTemplateSeqName = ajStrIterGetK(ajpStrIterTemplateSeqName);
+		ajStrIterNext(ajpStrIterTemplateSeqName);
+		/*
+		 * if there is a dot in the sequence name, truncate 
+		 * the name there and append the first character
+		 * after the dot to this leading string
+		 */
+		if(cTemplateSeqName == cDot)
+		{
+		    ajBoolTemplateNameRead = AJTRUE;
+		    cTemplateSeqName = ajStrIterGetK(ajpStrIterTemplateSeqName);
+		}
+
+		/* if there is no dot, use the whole sequence name */
+		ajStrAppK(&ajpStrTemplateSeqName, cTemplateSeqName);
+	    }
+
+	    ajStrCopy(&ajpStrRootOutfileName, ajpStrQuerySeqName);
 	    ajStrApp(&ajpStrRootOutfileName, ajpStrJoinOutfileName);
-	    ajStrApp(&ajpStrRootOutfileName, ajpSeqTemplate->Name);
+	    ajStrApp(&ajpStrRootOutfileName, ajpStrTemplateSeqName);
+
 	    /* 	ajFileNameTrim(&ajpStrFirstOutfileName); */
 	    /* 	ajFileNameTrim(&ajpStrSecondOutfileName); */
 	    /* 	ajFileNameShorten(&ajpStrFirstOutfileName); */
 	    /* 	ajFileNameShorten(&ajpStrSecondOutfileName); */
+
 	    ajStrCopy(&ajpStrFirstOutfileName, ajpStrRootOutfileName);
 	    ajStrCopy(&ajpStrSecondOutfileName, ajpStrRootOutfileName);	
 	    ajStrApp(&ajpStrFirstOutfileName, ajpStrFirstOutfileSuffix);
@@ -189,6 +263,8 @@ int main( int argc , char **argv )
 	    ajFmtPrint("\nSINGLE ENTRY IN FILE\n");
 	}
 
+	ajStrDel(&ajpStrQuerySeqName);
+	ajStrDel(&ajpStrTemplateSeqName);
 	ajStrDel(&ajpStrRootOutfileName);
 	ajStrDel(&ajpStrFirstOutfileName);
 	ajStrDel(&ajpStrSecondOutfileName);
