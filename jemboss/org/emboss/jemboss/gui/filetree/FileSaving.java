@@ -45,63 +45,36 @@ public class FileSaving
   public FileSaving(JTextPane seqText, byte[] pngContent)
   {
 
-     String fileSelected = "";
-     String cwd = "";
-     JFileChooser fc = new JFileChooser();
-     fc.addChoosableFileFilter(new SequenceFilter());
-     int returnVal = fc.showSaveDialog(fc);
 
-     if (returnVal == JFileChooser.APPROVE_OPTION)
-     {
-       File files = fc.getSelectedFile();
-       cwd = (fc.getCurrentDirectory()).getAbsolutePath();
-       fileSelected = files.getName();
+    SecurityManager sm = System.getSecurityManager();
+    System.setSecurityManager(null);
+    JFileChooser fc = new JFileChooser();
+    System.setSecurityManager(sm);
 
-       seqText.setCursor(cbusy);
-       File f = null;
-       boolean fexist = true;
-       int ok = JOptionPane.OK_OPTION;
+    fc.addChoosableFileFilter(new SequenceFilter());
+    int returnVal = fc.showSaveDialog(fc);
+
+    if (returnVal == JFileChooser.APPROVE_OPTION)
+    {
+      File files = fc.getSelectedFile();
+      String cwd = (fc.getCurrentDirectory()).getAbsolutePath();
+      String fileSelected = files.getName();
+
+      seqText.setCursor(cbusy);
+      FileSave fsave = new FileSave(new File(cwd + fs + fileSelected));
+      if(fsave.doWrite())
+      {
+        if(pngContent != null)
+          fsave.fileSaving(pngContent);
+        else
+          fsave.fileSaving(seqText.getText());
       
-//     save results
-       try
-       {
-         f = new File(cwd + fs + fileSelected);
-         if(!f.exists())
-           fexist = false;
-         else
-           ok = JOptionPane.showConfirmDialog(seqText,
-                fileSelected + " already exists. Ovewrite?",
-                "Overwrite file",
-                JOptionPane.YES_NO_OPTION);
+        if(!fsave.fileExists())
+          org.emboss.jemboss.Jemboss.tree.addObject(fileSelected,cwd);
+      }
+      seqText.setCursor(cdone);
+    }
+  }
 
-         if (ok == JOptionPane.YES_OPTION) 
-         {
-           f.createNewFile();
-
-           if(pngContent != null)
-           {
-             FileOutputStream fos = new FileOutputStream(f);
-             DataOutputStream ds = new DataOutputStream(fos);
-             ds.write(pngContent,0,pngContent.length);
-           }
-           else
-           {
-             PrintWriter out = new PrintWriter(new FileWriter(f));
-             out.print(seqText.getText());
-             out.close();
-           }
-           if(!fexist)
-             org.emboss.jemboss.Jemboss.tree.addObject(fileSelected,cwd);
-         }
-       }
-       catch (IOException ioe)
-       {
-         System.out.println("Cannot write to file "
-                       + cwd + fs + fileSelected);
-       }
-       seqText.setCursor(cdone);
-     }
-
-   }
 }
 

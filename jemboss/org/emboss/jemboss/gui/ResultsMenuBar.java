@@ -184,82 +184,27 @@ public class ResultsMenuBar
           File files = fc.getSelectedFile();
           cwd = (fc.getCurrentDirectory()).getAbsolutePath();
           fileSelected = files.getName();
-        }
 
-        frame.setCursor(cbusy);
-//      save results
-        String tabTitle = rtb.getTitleAt(rtb.getSelectedIndex());
-        int n = 0;
-        Enumeration enum = hash.keys();
+          frame.setCursor(cbusy);
+//        save results
+          String tabTitle = rtb.getTitleAt(rtb.getSelectedIndex());
+          Enumeration enum = hash.keys();
 
-        boolean fexist = true;
-        while(enum.hasMoreElements())
-        {
-          String thiskey = (String)enum.nextElement();
-          if(tabTitle.equals(thiskey))
+          while(enum.hasMoreElements())
           {
-            int ok = JOptionPane.OK_OPTION;
-            if(thiskey.endsWith(".png"))      //FOR PNG FILES
+            String thiskey = (String)enum.nextElement();
+            if(tabTitle.equals(thiskey))
             {
-              try
-              {
-                File f = new File(cwd + fs + fileSelected); 
-                if(!f.exists())
-                  fexist = false;
-                else
-                  ok = JOptionPane.showConfirmDialog(rtb,
-                     fileSelected + " already exists. Ovewrite?",
-                     "Overwrite file",
-                     JOptionPane.YES_NO_OPTION);
-
-                if (ok == JOptionPane.YES_OPTION)
-                {
-                  FileOutputStream fos = new FileOutputStream(f);
-                  DataOutputStream ds = new DataOutputStream(fos);
-                  byte[] b = (byte[])hash.get(thiskey);
-                  ds.write(b,0,b.length);
-                }
-              }
-              catch (IOException ioe)
-              {
-                System.out.println("Cannot write to file " 
-                          + cwd + fs + fileSelected); 
-              }
-            }
-            else                             //FOR TEXT FILES
-            {
-              try
-              {
-                File f = new File(cwd + fs + fileSelected);
-                if(!f.exists())
-                  fexist = false;
-                else
-                  ok = JOptionPane.showConfirmDialog(rtb,
-                     fileSelected + " already exists. Ovewrite?",
-                     "Overwrite file",
-                     JOptionPane.YES_NO_OPTION);
-
-                if (ok == JOptionPane.YES_OPTION)
-                {
-                  f.createNewFile();
-                  PrintWriter out = new PrintWriter(new FileWriter(f));
-                  out.print(hash.get(thiskey));
-                  out.close();
-                }
-              }
-              catch (IOException ioe)
-              {
-                System.out.println("Cannot write to file "  
-                          + cwd + fs + fileSelected);
-              }
+              FileSave fsave = new FileSave(new File(cwd + fs + fileSelected));
+              if(fsave.doWrite())
+                fsave.fileSaving(hash.get(thiskey));
+              if(!fsave.fileExists())
+                org.emboss.jemboss.Jemboss.tree.addObject(fileSelected,cwd);
             }
           }
-          n++;
-        }
 
-        if(!fexist)
-          org.emboss.jemboss.Jemboss.tree.addObject(fileSelected,cwd);
-        frame.setCursor(cdone);
+          frame.setCursor(cdone);
+        }
       }
     });
   }
