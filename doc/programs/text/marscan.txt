@@ -56,14 +56,20 @@ Usage
 % marscan
 marscan
 Finds MAR/SAR sites in nucleic sequences
-Input sequence(s): em:AF332699
+Input sequence(s): EMBL:BVJDUN
 Output file [hsfau1.marscan]:
 
 Command line arguments
 
    Mandatory qualifiers:
   [-sequence]          seqall     Sequence database USA
-  [-outf]              outfile    Output file name
+  [-outf]              featout    File for output of MAR/SAR recognition
+                                  signature (MRS) regions. This contains
+                                  details of the MRS in normal GFF format. The
+                                  MRS consists of two recognition sites, one
+                                  of 8 bp and one of 16 bp on either sense
+                                  strand of the genomic DNA, within 200 bp of
+                                  each other.
 
    Optional qualifiers: (none)
    Advanced qualifiers: (none)
@@ -72,7 +78,11 @@ Command line arguments
    [-sequence]
    (Parameter 1) Sequence database USA Readable sequence(s) Required
    [-outf]
-   (Parameter 2) Output file name Output file <sequence>.marscan
+   (Parameter 2) File for output of MAR/SAR recognition signature (MRS)
+   regions. This contains details of the MRS in normal GFF format. The
+   MRS consists of two recognition sites, one of 8 bp and one of 16 bp on
+   either sense strand of the genomic DNA, within 200 bp of each other.
+   Writeable feature table unknown.gff
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default
@@ -85,6 +95,17 @@ Input file format
 Output file format
 
    It writes a standard GFF (Gene Feature Format) file.
+   
+   The output from the above example is:
+     _________________________________________________________________
+   
+##gff-version 0.0
+##date 2001-02-12
+##sequence-region BVJDUN 0 0
+BVJDUN  marscan misc_signal     4604    4633    1.0     .       .       note "M
+AR/SAR recognition site (MRS). 8bp pattern=4604..4611. 16bp pattern = 4618..463
+3"
+     _________________________________________________________________
    
 Data files
 
@@ -110,7 +131,7 @@ References
    
 Warnings
 
-   None.
+   It does not check that the DNA input seequnce is genomic or not.
    
 Diagnostic Error Messages
 

@@ -109,7 +109,7 @@ Here is a sample session with marscan:
 % marscan
 marscan
 Finds MAR/SAR sites in nucleic sequences
-Input sequence(s): em:AF332699
+Input sequence(s): EMBL:BVJDUN
 Output file [hsfau1.marscan]:
 
 </pre>
@@ -135,7 +135,13 @@ Output file [hsfau1.marscan]:
 <pre>
    Mandatory qualifiers:
   [-sequence]          seqall     Sequence database USA
-  [-outf]              outfile    Output file name
+  [-outf]              featout    File for output of MAR/SAR recognition
+                                  signature (MRS) regions. This contains
+                                  details of the MRS in normal GFF format. The
+                                  MRS consists of two recognition sites, one
+                                  of 8 bp and one of 16 bp on either sense
+                                  strand of the genomic DNA, within 200 bp of
+                                  each other.
 
    Optional qualifiers: (none)
    Advanced qualifiers: (none)
@@ -159,9 +165,9 @@ Output file [hsfau1.marscan]:
 
 <tr>
 <td>[-outf]<br>(Parameter 2)</td>
-<td>Output file name</td>
-<td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.marscan</td>
+<td>File for output of MAR/SAR recognition signature (MRS) regions. This contains details of the MRS in normal GFF format. The MRS consists of two recognition sites, one of 8 bp and one of 16 bp on either sense strand of the genomic DNA, within 200 bp of each other.</td>
+<td>Writeable feature table</td>
+<td><i>unknown.gff</i></td>
 </tr>
 
 <tr bgcolor="#FFFFD0">
@@ -237,7 +243,20 @@ Normal genomic DNA USA.
 
 It writes a standard GFF (Gene Feature Format) file.
 
+<p>
 
+The output from the above example is:
+
+<p>
+
+<hr>
+<pre>
+##gff-version 0.0
+##date 2001-02-12
+##sequence-region BVJDUN 0 0
+BVJDUN  marscan misc_signal     4604    4633    1.0     .       .       note "MAR/SAR recognition site (MRS). 8bp pattern=4604..4611. 16bp pattern = 4618..4633"
+</pre>
+<hr>
 
 
 
@@ -375,7 +394,7 @@ Mirkovitch J., Mirault M-E. and Laemmli UK. Cell. 1984. Vol. 39 pp. 223-232.
         Potentially stupid things the program will let you do.
    -->
 
-None.
+It does not check that the DNA input seequnce is genomic or not.
 
 
 
