@@ -352,14 +352,12 @@ static SeqOAccess seqAccess[] =
   {"srsfasta",seqAccessSrsfasta, NULL},
   {"srswww",seqAccessSrswww, NULL},
   {"url",seqAccessUrl, NULL},
-  /* {"cmd",seqAccessCmd, NULL}, */		/* not yet implemented */
   {"app",seqAccessApp, NULL},
   {"external",seqAccessApp, NULL},
   /* {"asis",ajSeqAccessAsis, NULL}, */        /* called by seqUsaProcess */
   /* {"file",ajSeqAccessFile, NULL}, */        /* called by seqUsaProcess */
   /* {"offset",ajSeqAccessOffset, NULL}, */    /* called by seqUsaProcess */
   {"direct",seqAccessDirect, NULL},
-  /* {"nbrf",seqAccessNbrf, NULL}, */	       /* obsolete */
   {"gcg",seqAccessGcg, NULL},
   {"blast",seqAccessBlast, NULL},
   {NULL, NULL, NULL}
@@ -367,6 +365,27 @@ static SeqOAccess seqAccess[] =
 
 static char aa_btoa[27] = {"-ARNDCQEGHILKMFPSTWYVBZX*"};
 static char aa_btoa2[27]= {"-ABCDEFGHIKLMNPQRSTVWXYZ*"};
+
+/* @func ajSeqMethodTest ******************************************************
+**
+** Tests for a named method for sequence reading.
+**
+** @param [r] method [AjPStr] Method required.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+AjBool ajSeqMethodTest (AjPStr method)
+{
+    ajint i;
+
+    for (i=0; seqAccess[i].Name; i++)
+    {
+	if (ajStrMatchCaseC (method, seqAccess[i].Name))
+	  return ajTrue;
+    }
+    return ajFalse;
+}
 
 /* @func ajSeqMethod **********************************************************
 **
