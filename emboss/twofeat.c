@@ -419,6 +419,8 @@ static void twofeat_sort_hits(const AjPList hitlist, AjBool twoout,
     AjIList iter = NULL;
     PHit detail  = NULL;
 
+    source = ajStrNew();
+    type   = ajStrNew();
     	
     ajStrAssC(&source,"twofeat");
     ajStrAssS(&type, typeout);
@@ -467,6 +469,9 @@ static void twofeat_sort_hits(const AjPList hitlist, AjBool twoout,
         twofeat_HitsDel(&detail);
     }
     ajListIterFree(&iter);
+
+    ajStrDel(&source);
+    ajStrDel(&type);
     
     return;
 }

@@ -590,6 +590,8 @@ static void showalign_MakeNonidentity(const AjPSeq ref,
 
 
     ajSeqReplace(seq, sstr);
+    ajStrDel(&sstr);
+    
     return;
 }
 
