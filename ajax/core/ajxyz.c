@@ -573,6 +573,10 @@ AjPPdb ajXyzPdbNew(ajint chains)
     ret->Pdb = ajStrNew();
     ret->Compnd = ajStrNew();
     ret->Source = ajStrNew();
+    ret->Groups = ajListNew();
+    ret->Water  = ajListNew();
+    ret->gpid   = ajChararrNew();
+    
 
     if(chains)
     {	
@@ -582,6 +586,7 @@ AjPPdb ajXyzPdbNew(ajint chains)
     }
    else
        ajWarn("Zero sized arg passed to ajXyzPdbNew.\n");
+
     
 
     return ret;
@@ -1097,7 +1102,8 @@ void ajXyzHitlistDel(AjPHitlist *pthis)
 void ajXyzPdbDel(AjPPdb *thys)
 {
     AjPPdb pthis = *thys;
-    
+    AjPAtom atm=NULL;
+
     ajint nc=0;
     ajint i=0;
 
@@ -1109,6 +1115,18 @@ void ajXyzPdbDel(AjPPdb *thys)
     ajStrDel(&pthis->Pdb);
     ajStrDel(&pthis->Compnd);
     ajStrDel(&pthis->Source);
+
+    ajChararrDel(&pthis->gpid);
+    
+    
+    while(ajListPop(pthis->Water,(void **)&atm))
+	ajXyzAtomDel(&atm);
+    ajListDel(&pthis->Water);
+
+    while(ajListPop(pthis->Groups,(void **)&atm))
+	ajXyzAtomDel(&atm);
+    ajListDel(&pthis->Groups);
+    
     
     for(i=0;i<nc;++i)
 	ajXyzChainDel(&pthis->Chains[i]);
@@ -2335,9 +2353,11 @@ AjBool ajXyzCpdbRead(AjPFile inf, AjPPdb *thys)
 {
     ajint         nmod =0;
     ajint         ncha =0;
+    ajint         ngrp =0;
     ajint           nc =0;
     ajint          mod =0;
     ajint          chn =0;
+    ajint          gpn =0;
     ajint     last_chn =0;
     ajint     last_mod =0;
     ajint done_co_line =0;
@@ -2446,15 +2466,19 @@ AjBool ajXyzCpdbRead(AjPFile inf, AjPPdb *thys)
 
 	    ajStrToken(&xstr,&handle,NULL); /* xray */
 	    ajStrToken(&token,&handle,NULL);
+
 	    ajStrToken(&token,&handle,NULL); /* reso */
 	    ajStrToFloat(token,&reso);
 	    ajStrToken(&token,&handle,NULL);
 	    ajStrToken(&token,&handle,NULL); /* nmod */
 	    ajStrToInt(token,&nmod);
 	    ajStrToken(&token,&handle,NULL);
+
 	    ajStrToken(&token,&handle,NULL); /* ncha */
-	    
 	    ajStrToInt(token,&ncha);
+
+	    ajStrToken(&token,&handle,NULL); /* ngrp */
+	    ajStrToInt(token,&ngrp);
 
 	    *thys = ajXyzPdbNew(ncha);
 
@@ -2469,6 +2493,7 @@ AjBool ajXyzCpdbRead(AjPFile inf, AjPPdb *thys)
 	    (*thys)->Reso = reso;
 	    (*thys)->Nmod = nmod;
 	    (*thys)->Nchn = ncha;
+	    (*thys)->Ngp  = ngrp;
 	}
 	
 
@@ -2484,11 +2509,15 @@ AjBool ajXyzCpdbRead(AjPFile inf, AjPPdb *thys)
 	    ajStrToken(&token,&handle,NULL); /* residues */
 	    ajStrToInt(token,&(*thys)->Chains[nc-1]->Nres);
 	    ajStrToken(&token,&handle,NULL);
-	    ajStrToken(&token,&handle,NULL); /* hetatm */
-	    ajStrToInt(token,&(*thys)->Chains[nc-1]->Nhet);
+	    /* hetatm */
+	    ajStrToken(&token,&handle,NULL); 
+	    ajStrToInt(token,&(*thys)->Chains[nc-1]->Nlig);
+	    /* water */
+	    /*
 	    ajStrToken(&token,&handle,NULL);
-	    ajStrToken(&token,&handle,NULL); /* water */
+	    ajStrToken(&token,&handle,NULL); 
 	    ajStrToInt(token,&(*thys)->Chains[nc-1]->Nwat);
+	    */
 	    continue;
 	}
   
@@ -2514,10 +2543,15 @@ AjBool ajXyzCpdbRead(AjPFile inf, AjPPdb *thys)
 
 	    ajStrToken(&token,&handle,NULL);
 	    ajStrToInt(token,&chn);
+
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToInt(token,&gpn);
 	    
 	    AJNEW0(atom);
 	    atom->Mod = mod;
 	    atom->Chn = chn;
+	    atom->Gpn = gpn;
+	    
 
 
 	    if(done_co_line == 0)
@@ -2593,6 +2627,7 @@ AjBool ajXyzCpdbRead(AjPFile inf, AjPPdb *thys)
 ** models (e.g. NMR structures) are given, data for model 1 are written.
 ** In the Cpdb file, the coordinates are presented as belonging to a single 
 ** chain regardless of how many chains the domain comprised.
+** Coordinates for heterogens are NOT written to file.
 **
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [w] errf [AjPFile] Output file stream for error messages
@@ -2677,7 +2712,9 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop
 	ajFmtPrintF(outf, "xray; ");	
     else
 	ajFmtPrintF(outf, "nmr_or_model; ");		
-    ajFmtPrintF(outf, "RESO %.2f; NMOD 1; NCHA 1;\n", pdb->Reso);
+    ajFmtPrintF(outf, "RESO %.2f; NMOD 1; NCHA 1; NGRP 0;\n", 
+		pdb->Reso);
+    
     /* JCI The NCHA and NMOD are hard-coded to 1 for domain files*/
     
     
@@ -2824,7 +2861,7 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop
     ajFmtPrintF(outf, "XX\n");	
     ajFmtPrintF(outf, "%-5s[1]\n", "CN");	
     ajFmtPrintF(outf, "XX\n");	
-    ajFmtPrintF(outf, "%-5sID %c; NR %d; NH 0; NW 0;\n", 
+    ajFmtPrintF(outf, "%-5sID %c; NR %d; NL 0;\n", 
 		"IN", 
 		id,
 		ajStrLen(seq));
@@ -2915,11 +2952,12 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop
 	    
 	    
 	    /* Print out coordinate line*/
-	    ajFmtPrintF(outf, "%-5s%-5d%-5d%-5c%-6d%-6S%-2c%6S    %-4S"
+	    ajFmtPrintF(outf, "%-5s%-5d%-5d%-5d%-5c%-6d%-6S%-2c%6S    %-4S"
 			"%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
 			"CO", 
-			atm->Mod, 
+			atm->Mod,       /* It will always be 1 */
 			1,		/*JCI chn number is always given as 1*/
+			atm->Gpn,
 			atm->Type, 
 			atm->Idx+rn_mod, 
 			atm->Pdb, 
@@ -2996,8 +3034,8 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 	ajFmtPrintF(outf, "xray; ");	
     else
 	ajFmtPrintF(outf, "nmr_or_model; ");		
-    ajFmtPrintF(outf, "RESO %.2f; NMOD %d; NCHA %d;\n", thys->Reso,
-		thys->Nmod, thys->Nchn);
+    ajFmtPrintF(outf, "RESO %.2f; NMOD %d; NCHA %d; NGRP %d;\n", thys->Reso,
+		thys->Nmod, thys->Nchn, thys->Ngp);
 
 
     /* Write chain-specific information*/
@@ -3008,12 +3046,21 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 		    "CN", 
 		    x+1);	
 	ajFmtPrintF(outf, "XX\n");	
+
+	ajFmtPrintF(outf, "%-5sID %c; NR %d; NL %d;\n", 
+		    "IN", 
+		    thys->Chains[x]->Id,
+		    thys->Chains[x]->Nres,
+		    thys->Chains[x]->Nlig);
+
+	/*
 	ajFmtPrintF(outf, "%-5sID %c; NR %d; NH %d; NW %d;\n", 
 		    "IN", 
 		    thys->Chains[x]->Id,
 		    thys->Chains[x]->Nres,
 		    thys->Chains[x]->Nhet,
 		    thys->Chains[x]->Nwat);
+		    */
 	ajFmtPrintF(outf, "XX\n");	
 	ajSeqWriteCdb(outf, thys->Chains[x]->Seq);
     }
@@ -3025,20 +3072,24 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
     {
 	for(y=0;y<thys->Nchn;y++)
 	{
+	    /* Print out chain-specific coordinates */
 	    iter=ajListIter(thys->Chains[y]->Atoms);
 	    while(ajListIterMore(iter))
 	    {
 		tmp=(AjPAtom)ajListIterNext(iter);
-		if(tmp->Mod!=x)
-			continue;
+		if(tmp->Mod>x)
+		    break;
+		else if(tmp->Mod!=x)
+		    continue;
 		else	
 		{
-		    ajFmtPrintF(outf, "%-5s%-5d%-5d%-5c%-6d%-6S%-2c"
+		    ajFmtPrintF(outf, "%-5s%-5d%-5d%-5d%-5c%-6d%-6S%-2c"
 				"%6S    %-4S"
 				"%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
 				"CO", 
 				tmp->Mod, 
 				tmp->Chn, 
+				tmp->Gpn, 
 				tmp->Type, 
 				tmp->Idx, 
 				tmp->Pdb, 
@@ -3054,6 +3105,73 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 	    }
 	    ajListIterFree(iter);			
 	} 	
+
+	/* Print out group-specific coordinates for this model*/
+	iter=ajListIter(thys->Groups);
+	while(ajListIterMore(iter))
+	{
+	    tmp=(AjPAtom)ajListIterNext(iter);
+	    if(tmp->Mod>x)
+		break;
+	    else if(tmp->Mod!=x)
+		continue;
+	    else	
+	    {
+		ajFmtPrintF(outf, "%-5s%-5d%-5d%-5d%-5c%-6d%-6S%-2c"
+			    "%6S    %-4S"
+			    "%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
+			    "CO", 
+			    tmp->Mod, 
+			    tmp->Chn, 
+			    tmp->Gpn, 
+			    tmp->Type, 
+			    tmp->Idx, 
+			    tmp->Pdb, 
+			    tmp->Id1, 
+			    tmp->Id3,
+			    tmp->Atm, 
+			    tmp->X, 
+			    tmp->Y, 
+			    tmp->Z,
+			    tmp->O,
+			    tmp->B);
+	    }
+	}
+	ajListIterFree(iter);			
+
+	
+	/* Print out water-specific coordinates for this model*/
+	iter=ajListIter(thys->Water);
+	while(ajListIterMore(iter))
+	{
+	    tmp=(AjPAtom)ajListIterNext(iter);
+	    if(tmp->Mod>x)
+		break;
+	    else if(tmp->Mod!=x)
+		continue;
+	    else	
+	    {
+		ajFmtPrintF(outf, "%-5s%-5d%-5d%-5d%-5c%-6d%-6S%-2c"
+			    "%6S    %-4S"
+			    "%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
+			    "CO", 
+			    tmp->Mod, 
+			    tmp->Chn, 
+			    tmp->Gpn, 
+			    tmp->Type, 
+			    tmp->Idx, 
+			    tmp->Pdb, 
+			    tmp->Id1, 
+			    tmp->Id3,
+			    tmp->Atm, 
+			    tmp->X, 
+			    tmp->Y, 
+			    tmp->Z,
+			    tmp->O,
+			    tmp->B);
+	    }
+	}
+	ajListIterFree(iter);			
     }
     ajFmtPrintF(outf, "//\n");    
 
@@ -3186,6 +3304,7 @@ AjBool  ajXyzPrintPdbText(AjPFile outf, AjPStr str, char *prefix)
 ** records).  Coordinates are taken from a Pdb structure, domain definition is 
 ** taken from a Scop structure. The model number argument should have a value of 
 ** 1 for x-ray structures.
+** Coordinates for heterogens are NOT written to file.
 **
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [w] errf [AjPFile] Output file stream for error messages
@@ -3373,7 +3492,87 @@ AjBool ajXyzPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 
 
 
+/* @func ajXyzPrintPdbHeterogen *********************************************
+**
+** Writes coordinates for heterogens that could not be uniquely associated 
+** with a chain to an output file in pdb format (HETATM records). Coordinates 
+** are taken from a Pdb structure. The model number argument should have a 
+** value of 1 for x-ray structures.
+**
+** @param [w] outf [AjPFile] Output file stream
+** @param [r] pdb  [AjPPdb]  Pdb object
+** @param [r] mod  [ajint]   Model number, beginning at 1
+**
+** @return [AjBool] True on succcess
+** @@
+******************************************************************************/
+AjBool   ajXyzPrintPdbHeterogen(AjPFile outf, AjPPdb pdb, ajint mod)
+{
+    AjIList  iter=NULL;
+    AjPAtom  atm=NULL;
+    AjPAtom  atm2=NULL;
+    ajint      acnt;
+    
 
+    /* Check args are not NULL */
+    if(!outf || !pdb || mod<1)
+	return ajFalse;
+    
+
+        iter=ajListIter(pdb->Groups);	
+
+    while((atm=(AjPAtom)ajListIterNext(iter)))
+	if(atm->Mod==mod)
+	    break;
+  
+    for(acnt=1; atm; atm=(AjPAtom)ajListIterNext(iter)) 	
+    {
+	/* Break if on t0 a new model*/
+	if(atm->Mod!=mod)
+	    break;
+	
+	/* Write out HETATM line*/
+
+	if(atm->Type == 'H')
+	    ajFmtPrintF(outf, "%-6s%5d  %-4S%-4S%c%4d%12.3f%8.3f%8.3f"
+			"%6.2f%6.2f%11s%-3c\n", 
+			"HETATM", 
+			acnt++, 
+			atm->Atm, 
+			atm->Id3, 
+			ajChararrGet(pdb->gpid, atm->Gpn-1),
+			atm->Idx, 
+			atm->X, 
+			atm->Y, 
+			atm->Z, 
+			atm->O,
+			atm->B,
+			" ", 
+			*ajStrStr(atm->Atm));
+	else
+	    ajFmtPrintF(outf, "%-6s%5d  %-4S%-4S%c%4d%12.3f%8.3f%8.3f"
+			"%6.2f%6.2f%11s%-3c\n", 
+			"HETATM", 
+			acnt++, 
+			atm->Atm, 
+			atm->Id3, 
+			' ',
+			atm->Idx, 
+			atm->X, 
+			atm->Y, 
+			atm->Z, 
+			atm->O,
+			atm->B,
+			" ", 
+			*ajStrStr(atm->Atm));
+	atm2=atm;
+    }
+
+    
+    ajListIterFree(iter);				    
+
+    return ajTrue;
+}
 
 
 
@@ -4061,7 +4260,8 @@ AjBool ajXyzPrintPdbHeaderScop(AjPFile outf, AjPScop scop)
 ** a Scop structure.
 ** In the pdb file, the coordinates are presented as belonging to a single 
 ** chain regardless of how many chains the domain comprised.
-**
+** Coordinates for heterogens are NOT written to file.
+** 
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [w] errf [AjPFile] Output file stream for error messages
 ** @param [r] pdb  [AjPPdb] Pdb object
@@ -4196,6 +4396,12 @@ AjBool   ajXyzPdbWriteAll(AjPFile errf, AjPFile outf, AjPPdb pdb)
 		ajWarn("Error writing file in ajXyzPdbWriteAll"); 
 		return ajFalse;
 	    }
+
+	if(!ajXyzPrintPdbHeterogen(outf, pdb, y+1))
+	{
+	    ajWarn("Error writing file in ajXyzPdbWriteAll"); 
+	    return ajFalse;
+	}
 	
 
 	/* Write ENDMDL record*/
@@ -4206,9 +4412,9 @@ AjBool   ajXyzPdbWriteAll(AjPFile errf, AjPFile outf, AjPPdb pdb)
     
     /* Write END record*/
     ajFmtPrintF(outf, "%-80s\n", "END");
-
+    
     return ajTrue;
-}
+}	
 
 
 
@@ -6184,3 +6390,92 @@ AjBool   ajXyzScophitCheckTarget(AjPScophit ptr)
 {
     return ptr->Target;
 }
+
+
+
+
+
+
+/* @func ajXyzInContact ********************************************
+**
+** Determines whether two atoms are in physical contact  
+**
+** @param [r] atm1   [AjPAtom]     Atom 1 object
+** @param [r] atm2   [AjPAtom]     Atom 1 object
+** @param [r] thresh [float]       Threshold contact distance
+** @param [r] vdw    [AjPVdwall]   Vdwall object
+**
+** Contact between two atoms is defined as when the van der Waals surface of 
+** the first atom comes within the threshold contact distance (thresh) of the 
+** van der Waals surface of the second atom.
+**
+** @return [AjBool] True if the two atoms form contact
+** @@
+**
+******************************************************************************/
+
+AjBool ajXyzInContact(AjPAtom atm1, AjPAtom atm2, float thresh,
+				 AjPVdwall vdw)
+{
+    float val =0.0;
+    float val1=0.0;
+
+    
+    val=((atm1->X -  atm2->X) * (atm1->X -  atm2->X)) +
+	((atm1->Y -  atm2->Y) * (atm1->Y -  atm2->Y)) +
+	    ((atm1->Z -  atm2->Z) * (atm1->Z -  atm2->Z));
+
+
+    /*  This calculation uses square root 
+    if((sqrt(val) - ajXyzVdwRad(atm1, vdw) -
+	ajXyzVdwRad(atm2, vdw)) <= thresh)
+	return ajTrue;
+	*/
+
+
+    /* Same calculation avoiding square root */
+    val1 = ajXyzVdwRad(atm1, vdw) +	ajXyzVdwRad(atm2, vdw) + thresh;
+    
+    if(val <= (val1*val1))
+	return ajTrue;
+
+
+    return ajFalse;
+} 
+
+
+
+
+
+
+/* @func ajXyzVdwRad ***********************************************
+**
+** Returns the van der Waals radius of an atom. Returns 1.2 as default.
+**
+** @param [r] atm    [AjPAtom]     Atom object
+** @param [r] vdw    [AjPVdwall]   Vdwall object
+**
+** Contact between two atoms is defined as when the van der Waals surface of 
+** the first atom comes within the threshold contact distance (thresh) of the 
+** van der Waals surface of the second atom.
+**
+** @return [float] van der Waals radius of the atom
+** @@
+**
+******************************************************************************/
+
+float ajXyzVdwRad(AjPAtom atm, AjPVdwall vdw)
+{
+    ajint x=0;
+    ajint y=0;
+    
+    for(x=0;x<vdw->N;x++)
+	for(y=0;y<vdw->Res[x]->N;y++)
+	{
+	    if(ajStrMatch(atm->Atm, vdw->Res[x]->Atm[y]))
+		return(vdw->Res[x]->Rad[y]);	 
+	}
+    
+    return((float)1.2);
+}
+

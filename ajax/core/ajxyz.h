@@ -309,6 +309,7 @@ typedef struct AjSAtom
 {
   ajint        Mod;        /*Model number*/
   ajint        Chn;        /*Chain number*/
+  ajint        Gpn;        /*Group number*/
   char       Type;       /*'P' (protein atom), 'H' ("heterogens") or 'w' 
 			   (water)*/
   ajint        Idx;        /*Residue number - index into sequence*/
@@ -344,12 +345,12 @@ typedef struct AjSChain
   char       Id;         /*Chain id, ('.' if one wasn't specified in the 
 			   original PDB file)*/
   ajint        Nres;       /*No. of amino acid residues*/
-  ajint        Nhet;       /*No. of atoms which are non-covalently associated 
+  ajint        Nlig;       /*No. of groups which are non-covalently associated 
 			   with the chain, excluding water ("heterogens")*/
-  ajint        Nwat;       /*No. of water atoms which are associated with the 
-			   chain*/
   AjPStr     Seq;	 /* sequence as string */
-  AjPList    Atoms;      /*List of Atoms */
+  AjPList    Atoms;      /*List of Atom objects for (potentially multiple models)
+			  of the polypeptide chain and any groups (ligands) that 
+			  could be uniquely associated with a chain*/
 } AjOChain, *AjPChain;
 
 
@@ -378,6 +379,14 @@ typedef struct AjSPdb
   ajint        Nmod;       /*No. of models (always 1 for XRAY structures)*/
   ajint        Nchn;       /*No. polypeptide chains */
   AjPChain  *Chains;     /*Array of pointers to AjSChain structures*/
+  ajint      Ngp;        /* No. groups that could not be uniquely associated with a chain 
+			    in the SEQRES records */
+  AjPChar    gpid;	   /*Array of chain (group) id's for groups that 
+			     could not be uniquely associated with a chain */
+  AjPList   Groups;     /*List of Atom objects for groups that could not 
+			   be uniquely associated with a chain */
+  AjPList   Water;     /*List of Atom objects for water molecules (which can 
+			   never be uniquely associated with a chain */
 }AjOPdb, *AjPPdb;
 
 /* @data AjPScop *******************************************************
@@ -607,6 +616,7 @@ AjBool   ajXyzPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 AjBool   ajXyzPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, ajint mod, ajint chn);
 AjBool   ajXyzPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 				 AjPScop scop, ajint mod);
+AjBool   ajXyzPrintPdbHeterogen(AjPFile outf, AjPPdb pdb, ajint mod);
 AjBool   ajXyzPrintPdbText(AjPFile outf, AjPStr str, char *prefix);
 AjBool   ajXyzPrintPdbHeader(AjPFile outf, AjPPdb pdb);
 AjBool   ajXyzPrintPdbHeaderScop(AjPFile outf, AjPScop scop);
@@ -684,6 +694,10 @@ ajint ajXyzScophitCompStart(const void *hit1, const void *hit2);
 ajint ajXyzScophitCompFold(const void *hit1, const void *hit2);
 ajint ajXyzScophitCompSfam(const void *hit1, const void *hit2);
 ajint ajXyzScophitCompFam(const void *hit1, const void *hit2);
+AjBool ajXyzInContact(AjPAtom atm1, AjPAtom atm2, float thresh,
+			  AjPVdwall vdw);
+float ajXyzVdwRad(AjPAtom atm, AjPVdwall vdw);
+
 
 
 
