@@ -2115,8 +2115,11 @@ GetVisual(PLStream *pls)
 	    xwd->visual = visualList->visual;	/* Choose first match. */
 	    xwd->depth = vTemplate.depth;
 	}
+    /*ajb*/ XFree(visualList);
 #endif
     }
+
+    
 #endif
 
     if ( ! visuals_matched) {
