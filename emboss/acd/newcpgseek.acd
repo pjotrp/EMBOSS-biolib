@@ -37,6 +37,7 @@ section: output [
 
   outfile: outfile  [
     parameter: "Y"
+    standardtype: "cpgseek output"
   ]
 
 endsection: output

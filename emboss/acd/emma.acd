@@ -13,7 +13,7 @@ section: input [
   type: "page"
 ]
 
-  seqall: inseqs  [
+  seqall: sequence  [
     parameter: "Y"
     type: "gapany"
   ]
@@ -26,7 +26,7 @@ section: advanced [
 ]
 
   section: dendsection [
-    information: "dendrogram Section"
+    information: "Dendrogram options"
     type: "frame"
   ]
 
@@ -61,8 +61,8 @@ section: advanced [
                   protein"
   ]
 
-  section: slowsection [
-    information: "slowsection Section"
+  section: slowalignsection [
+    information: "Slow align options"
     type: "frame"
   ]
 
@@ -76,7 +76,7 @@ section: advanced [
       values: "s:slow, f:fast"
       delimiter: ","
       codedelimiter: ":"
-      prompt: "Please select one"
+      information: "Please select one"
       button: "Y"
       help: "A distance is calculated between every pair of sequences
              and these are used to construct the dendrogram which guides the
@@ -97,7 +97,6 @@ section: advanced [
       minimum: "0.0"
       information: "Slow pairwise alignment: gap opening
                     penalty"
-      prompt: "Input value for gap open penalty"
       help: "The penalty for opening a gap in the pairwise
              alignments."
     ]
@@ -108,21 +107,20 @@ section: advanced [
       minimum: "0.0"
       information: "Slow pairwise alignment: gap extension
                     penalty"
-      prompt: "Input value for gap extension penalty"
       help: "The penalty for extending a gap by 1 residue in the
              pairwise alignments."
     ]
 
-  endsection: slowsection
+  endsection: slowalignsection
 
-  section: protsection [
-    information: "protsection Section"
+  section: protalignsection [
+    information: "Protein align options"
     type: "frame"
   ]
 
     boolean: prot  [
       default: "@($(insist) ?
-                @(!$(inseqs.protein)):$(inseqs.protein))"
+                @(!$(sequence.protein)):$(sequence.protein))"
       information: "Do not change this value"
     ]
 
@@ -135,7 +133,7 @@ section: advanced [
       values: "b:blosum, p:pam, g:gonnet, i:id, o:own"
       delimiter: ","
       codedelimiter: ":"
-      prompt: "Select matrix"
+      information: "Select matrix"
       button: "Y"
       help: "The scoring table which describes the similarity of each
              amino acid to each other. \
@@ -174,7 +172,7 @@ section: advanced [
       values: "i:iub, c:clustalw, o:own"
       delimiter: ","
       codedelimiter: ":"
-      prompt: "Select matrix"
+      information: "Select matrix"
       button: "Y"
       help: "The scoring table which describes the scores assigned to
              matches and mismatches (including IUB ambiguity codes)."
@@ -186,13 +184,12 @@ section: advanced [
       optional: "$(usermatrix)"
       default: "NULL"
       information: "Filename of user pairwise matrix"
-      prompt: "Input the filename of your pairwise matrix"
     ]
 
-  endsection: protsection
+  endsection: protalignsection
 
-  section: fastsection [
-    information: "fastsection Section"
+  section: fastalignsection [
+    information: "Fast align options"
     type: "frame"
   ]
 
@@ -259,10 +256,10 @@ section: advanced [
                     suppresses percentage score"
     ]
 
-  endsection: fastsection
+  endsection: fastalignsection
 
   section: matrixsection [
-    information: "matrixsection Section"
+    information: "Matrix options"
     type: "frame"
   ]
 
@@ -274,7 +271,7 @@ section: advanced [
       header: "Protein multiple alignment matrix options"
       values: "b:blosum, p:pam, g:gonnet, i:id, o:own"
       delimiter: ","
-      prompt: "Select matrix"
+      information: "Select matrix"
       button: "Y"
       help: "This gives a menu where you are offered a choice of
              weight matrices. The default for proteins is the PAM series
@@ -320,7 +317,7 @@ section: advanced [
       values: "i:iub, c:clustalw, o:own"
       delimiter: ","
       codedelimiter: ":"
-      prompt: "Select matrix"
+      information: "Select matrix"
       button: "Y"
       help: "This gives a menu where you are offered amenu where a
              single matrix (not a series) can be selected."
@@ -338,7 +335,7 @@ section: advanced [
   endsection: matrixsection
 
   section: gapsection [
-    information: "gapsection Section"
+    information: "Gap options"
     type: "frame"
   ]
 
@@ -450,13 +447,13 @@ section: output [
   seqoutset: outseq  [
     parameter: "Y"
     extension: "aln"
-    information: "The sequence alignment output filename"
   ]
 
   outfile: dendoutfile  [
     parameter: "Y"
     extension: "dnd"
-    information: "The dendogram output filename"
+    information: "Dendogram output filename"
+    standardtype: "dendrogram"
   ]
 
 endsection: output

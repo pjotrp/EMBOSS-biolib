@@ -79,7 +79,6 @@ section: advanced [
 ]
 
   list: fields  [
-    required: "n"
     information: "Index fields"
     values: "acnum:Accession number;seqvn:Sequence Version and
              GI;des:Description"

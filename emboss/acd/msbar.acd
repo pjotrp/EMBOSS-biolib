@@ -94,7 +94,7 @@ section: advanced [
     information: "Maximum size for a block mutation"
   ]
 
-  seqall: other  [
+  seqall: other [
     type: "any"
     default: "asis:N"
     information: "Other sequences that the mutated result

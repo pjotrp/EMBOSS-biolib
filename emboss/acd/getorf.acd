@@ -39,7 +39,7 @@ section: advanced [
              23:Thraustochytrium Mitochondrial"
     delimiter: ";"
     codedelimiter: ":"
-    prompt: "Code to use"
+    information: "Code to use"
   ]
 
   integer: minsize  [

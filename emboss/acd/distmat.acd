@@ -9,7 +9,7 @@ section: input [
   type: "page"
 ]
 
-  seqset: msf  [
+  seqset: sequence  [
     parameter: "Y"
     type: "gapany"
     help: "File containing a sequence alignment."
@@ -23,7 +23,7 @@ section: advanced [
 ]
 
   list: nucmethod  [
-    required: "@(!$(msf.protein))"
+    required: "@(!$(sequence.protein))"
     default: "0"
     minimum: "1"
     maximum: "1"
@@ -33,12 +33,12 @@ section: advanced [
              4:Tajima-Nei; 5:Jin-Nei Gamma"
     delimiter: ";"
     codedelimiter: ":"
-    prompt: "Method to use"
+    information: "Method to use"
     help: "Multiple substitution correction methods for nucleotides."
   ]
 
   list: protmethod  [
-    required: "$(msf.protein)"
+    required: "$(sequence.protein)"
     default: "0"
     minimum: "1"
     maximum: "1"
@@ -46,13 +46,13 @@ section: advanced [
     values: "0:Uncorrected; 1:Jukes-Cantor; 2:Kimura Protein;"
     delimiter: ";"
     codedelimiter: ":"
-    prompt: "Method to use"
+    information: "Method to use"
     help: "Multiple substitution correction methods for proteins."
   ]
 
   boolean: ambiguous  [
-    optional: "@(@(@(!$(msf.protein)) & @($(nucmethod)==1)) |
-               @($(msf.protein) & @($(protmethod)!=2)))"
+    optional: "@(@(@(!$sequence.protein)) & @($(nucmethod)==1)) |
+               @($(sequence.protein) & @($(protmethod)!=2)))"
     default: "N"
     information: "Use the abiguous codes in the calculation."
     help: "Option to use the abiguous codes in the calculation of the
@@ -60,8 +60,8 @@ section: advanced [
   ]
 
   float: gapweight  [
-    optional: "@(@(@($(nucmethod)<2) & @(!$(msf.protein))) |
-               @($(msf.protein) & @($(protmethod)!=2)))"
+    optional: "@(@(@($(nucmethod)<2) & @(!$(sequence.protein))) |
+               @($(sequence.protein) & @($(protmethod)!=2)))"
     information: "Weight given to gaps"
     default: "0."
     help: "Option to weight gaps in the uncorrected (nucleotide) and
@@ -69,7 +69,7 @@ section: advanced [
   ]
 
   integer: position  [
-    optional: "@(@(!$(msf.protein)) & @($(nucmethod)!=4))"
+    optional: "@(@(!$(sequence.protein)) & @($(nucmethod)!=4))"
     default: "123"
     information: "Base position to analyse."
     help: "Choose base positions to analyse in each codon i.e. 123
@@ -78,7 +78,7 @@ section: advanced [
   ]
 
   boolean: calculatea  [
-    optional: "@(@(!$(msf.protein)) & @($(nucmethod)==5))"
+    optional: "@(@(!$(sequence.protein)) & @($(nucmethod)==5))"
     default: "N"
     information: "Calculate the a-parameter"
     help: "This will force the calculation of the a-parameter in the
@@ -101,10 +101,10 @@ section: output [
   information: "Output section"
   type: "page"
 ]
-
-  outfile: outf  [
+  outfile: outfile  [
     parameter: "Y"
-    information: "Enter a name for the distance matrix"
+    standardtype: "distance matrix"
   ]
 
 endsection: output
+

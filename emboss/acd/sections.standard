@@ -15,7 +15,19 @@ required page Required section
 #
 # sub level (frame) sections
 # ==========================
-datasection advanced  Data section
+datasection output Data output section
+dendsection advanced Dendrogram options
+fastalignsection advanced Fast align options
+gapsection advanced Gap options
 htmlsection output Html section
-
-
+matrixsection advanced Matrix options
+oligosinput advanced Internal oligo input
+oligosection advanced Internal oligo options
+primersection advanced Primer options
+primerweights advanced Primer penalty weights
+programsection advanced Program options
+productsection advanced Product options
+protalignsection advanced Protein align options
+seqoptsection advanced Sequence options
+slowalignsection advanced Slow align options
+thermosection advanced Thermodynamic options

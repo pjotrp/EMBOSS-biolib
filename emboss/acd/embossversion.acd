@@ -11,7 +11,7 @@ section: output [
   outfile: outfile  [
     optional: "Y"
     default: "stdout"
-    prompt: "Output file"
+    standardtype: "embossversion output"
   ]
 
 endsection: output

@@ -12,6 +12,7 @@ section: input [
   filelist: files  [
     parameter: "Y"
     information: "Comma separated file list"
+    standardtype: "molwt list"
   ]
 
 endsection: input
@@ -37,6 +38,7 @@ section: output [
   outfile: outfile  [
     parameter: "Y"
     extension: "mwcontam"
+    standardtype: "molwt list"
   ]
 
 endsection: output

@@ -1,22 +1,23 @@
 application: esim4 [
   documentation: "Align an mRNA to a genomic DNA sequence"
-  groups: "alignment"
+  groups: "Alignment:Global"
 ]
 
 sequence: sequence  [
   parameter: "Y"
   type: "dna"
-  prompt: "mRNA sequence"
+  information: "mRNA sequence"
 ]
 
 seqall: genome  [
   parameter: "Y"
   type: "dna"
-  prompt: "Genomic sequence"
+  information: "Genomic sequence"
 ]
 
 outfile: outfile  [
   parameter: "Y"
+  standardtype: "sim4 output"
 ]
 
 integer: word  [
@@ -69,7 +70,6 @@ boolean: usermspb  [
 ]
 
 integer: mspb  [
-  optional: "$(usermspB)"
   required: "$(usermspB)"
   default: "12"
   information: "(C) Sets the MSP score threshold during the

@@ -11,6 +11,7 @@ section: input [
 
   seqall: sequence  [
     parameter: "Y"
+    type: "gapany"
   ]
 
 endsection: input
@@ -24,7 +25,7 @@ section: required [
     required: "Y"
     minimum: "1"
     default: "1"
-    prompt: "The number of the sequence to output"
+    information: "The number of the sequence to output"
   ]
 
 endsection: required

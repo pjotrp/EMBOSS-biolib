@@ -75,7 +75,7 @@ section: advanced [
   ]
 
   section: productsection [
-    information: "productsection Section"
+    information: "Product options"
     type: "frame"
   ]
 
@@ -118,7 +118,7 @@ section: advanced [
   endsection: productsection
 
   section: thermosection [
-    information: "thermosection Section"
+    information: "Thermodynamic options"
     type: "frame"
   ]
 
@@ -172,7 +172,6 @@ section: output [
 
   report: outfile  [
     required: "@(!$(plot))"
-    information: "Output data file"
     help: "If a plot is not being produced then data on the melting
            point etc. in each window along the sequence is output to the
            file."

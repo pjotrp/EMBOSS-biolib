@@ -11,16 +11,16 @@ section: input [
   type: "page"
 ]
 
-  seqall: est  [
+  seqall: est [
     parameter: "Y"
     type: "dna"
-    prompt: "EST sequence(s)"
+    information: "EST sequence(s)"
   ]
 
-  sequence: genome  [
+  sequence: genome [
     parameter: "Y"
     type: "dna"
-    prompt: "Genomic sequence"
+    information: "Genomic sequence"
   ]
 
 endsection: input
@@ -132,6 +132,7 @@ section: output [
 
   outfile: outfile  [
     parameter: "y"
+    standardtype: "estgenome output"
   ]
 
   boolean: align  [

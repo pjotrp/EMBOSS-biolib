@@ -54,9 +54,8 @@ section: output [
 ]
 
   report: outfile  [
-    required: "Y"
+    parameter: "Y"
     rformat: "diffseq"
-    information: "Output report file"
     taglist: "int:start int:end int:length str:name str:sequence
               str:first_feature str:second_feature"
   ]

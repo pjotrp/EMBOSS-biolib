@@ -25,7 +25,7 @@ section: advanced [
   matrix: datafile  [
     optional: "Y"
     information: "Scoring matrix"
-    protein: "$(msf.protein)"
+    protein: "$(sequence.protein)"
     help: "This is the scoring matrix file used when comparing
            sequences. By default it is the file 'EBLOSUM62' (for proteins) or
            the file 'EDNAFULL' (for nucleic sequences). These files are
@@ -38,7 +38,7 @@ section: advanced [
     help: "Set a cut-off for the number of positive matches below
            which there is no consensus. The default plurality is taken as
            half the total weight of all the sequences in the alignment."
-    default: "@( $(msf.totweight) / 2)"
+    default: "@( $(sequence.totweight) / 2)"
     expected: "Half the total sequence weighting"
   ]
 

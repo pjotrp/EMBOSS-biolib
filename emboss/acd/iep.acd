@@ -9,7 +9,7 @@ section: input [
   type: "page"
 ]
 
-  seqall: sequencea  [
+  seqall: sequence [
     parameter: "Y"
     type: "pureprotein"
   ]
@@ -61,6 +61,7 @@ section: output [
 
   outfile: outfile  [
     required: "$(report)"
+    standardtype: "iep output"
   ]
 
 endsection: output

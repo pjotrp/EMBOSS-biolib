@@ -9,7 +9,7 @@ section: input [
   type: "page"
 ]
 
-  seqall: sequences  [
+  seqall: sequence  [
     parameter: "Y"
     type: "protein"
   ]
@@ -17,6 +17,7 @@ section: input [
   infile: infile  [
     parameter: "Y"
     information: "Name of molecular weight data file"
+    standardtype: "peptide molweights"
   ]
 
 endsection: input
@@ -48,7 +49,7 @@ section: advanced [
              6:V8-phosph, 7:Chymotrypsin, 8:CNBr"
     delimiter: ","
     codedelimiter: ":"
-    prompt: "Enzyme or reagent"
+    information: "Enzyme or reagent"
   ]
 
   string: aadata  [
@@ -73,6 +74,7 @@ section: advanced [
     default: "0.1"
     minimum: "0.1"
     maximum: "1.0"
+    information: "Tolerance"
   ]
 
   float: partials  [
@@ -90,7 +92,8 @@ section: output [
 ]
 
   outfile: outfile  [
-    required: "Y"
+    parameter: "Y"
+    standardtype: "emowse output"
   ]
 
 endsection: output

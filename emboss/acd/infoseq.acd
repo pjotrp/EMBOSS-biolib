@@ -11,6 +11,7 @@ section: input [
 
   seqall: sequence  [
     parameter: "Y"
+    type: "gapany"
   ]
 
 endsection: input
@@ -23,7 +24,7 @@ section: output [
   outfile: outfile  [
     optional: "Y"
     default: "stdout"
-    information: "Output sequence details to a file"
+    standardtype: "infoseq output"
     help: "If you enter the name of a file here then this program will
            write the sequence details into that file."
   ]

@@ -11,14 +11,14 @@ section: input [
   type: "page"
 ]
 
-  sequence: sequencea  [
+  sequence: asequence [
     parameter: "Y"
     type: "any"
   ]
 
   seqall: seqall  [
     parameter: "Y"
-    type: "@($(sequencea.protein) ? stopprotein : nucleotide)"
+    type: "@($(asequence.protein) ? stopprotein : nucleotide)"
   ]
 
 endsection: input
@@ -33,7 +33,7 @@ section: required [
     information: "Gap opening penalty"
     minimum: "1."
     maximum: "100."
-    default: "@($(sequencea.protein)? 10.0 : 10.0 )"
+    default: "@($(asequence.protein)? 10.0 : 10.0 )"
     valid: "Floating point number from 1.0 to 100.0"
     expected: "10.0 for any sequence"
     help: "The gap open penalty is the score taken away when a gap is
@@ -48,7 +48,7 @@ section: required [
     information: "Gap extension penalty"
     minimum: "0.0"
     maximum: "10."
-    default: "@($(sequencea.protein)? 0.5 : 0.5 )"
+    default: "@($(asequence.protein)? 0.5 : 0.5 )"
     valid: "Floating point number from 0.0 to 10.0"
     expected: "0.5 for any sequence"
     help: "The gap extension, penalty is added to the standard gap
@@ -72,7 +72,7 @@ section: advanced [
   matrixf: datafile  [
     optional: "Y"
     information: "Matrix file"
-    protein: "$(sequencea.protein)"
+    protein: "$(asequence.protein)"
     help: "This is the scoring matrix file used when comparing
            sequences. By default it is the file 'EBLOSUM62' (for proteins) or
            the file 'EDNAFULL' (for nucleic sequences). These files are

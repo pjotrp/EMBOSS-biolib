@@ -9,7 +9,7 @@ section: input [
   type: "page"
 ]
 
-  sequence: sequencea  [
+  sequence: sequence [
     parameter: "Y"
     type: "Protein"
   ]
@@ -21,7 +21,7 @@ section: required [
   type: "page"
 ]
 
-  list: menu  [
+  list: menu [
     required: "Y"
     default: "1"
     minimum: "1"
@@ -31,7 +31,7 @@ section: required [
     delimiter: ","
     codedelimiter: ":"
     header: "Enzymes and Reagents"
-    prompt: "Select number"
+    information: "Select number"
     button: "Y"
   ]
 

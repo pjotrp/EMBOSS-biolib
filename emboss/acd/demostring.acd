@@ -1,9 +1,9 @@
 application: demostring [
   documentation: "demonstration of the string functions"
-  groups: "demo"
+  groups: "Test"
 ]
 
 string: instring  [
   required: "Y"
-  prompt: "Value for instr"
+  information: "Value for instr"
 ]

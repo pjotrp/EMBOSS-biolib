@@ -10,8 +10,7 @@ section: input [
 
   dirlist: directory  [
     parameter: "Y"
-    required: "Y"
-    prompt: "CUTG directory"
+    information: "CUTG directory"
   ]
 
 endsection: input

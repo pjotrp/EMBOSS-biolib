@@ -72,6 +72,7 @@ section: output [
   outfile: outfile  [
     parameter: "Y"
     extension: "inv"
+    standardtype: "inverted output"
   ]
 
 endsection: output

@@ -50,6 +50,7 @@ section: output [
   outfile: origfile  [
     extension: "oldqtan"
     nullok: "Y"
+    standardtype: "quicktandem output"
   ]
 
 endsection: output

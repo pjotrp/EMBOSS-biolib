@@ -11,10 +11,12 @@ section: input [
 
   seqset: firstset  [
     parameter: "Y"
+    type: "gapany"
   ]
 
   seqset: secondset  [
     parameter: "Y"
+    type: "gapany"
   ]
 
 endsection: input
@@ -54,10 +56,10 @@ section: output [
   type: "page"
 ]
 
-  outfile: outlist  [
+  outfile: outfile  [
     parameter: "Y"
     extension: "list"
-    information: "Output list file"
+    standardtype: "USA list"
     help: "The list of sequence names will be written to this list
            file"
   ]

@@ -1,6 +1,6 @@
 application: emnu [
   documentation: "Simple menu of EMBOSS applications"
-  groups: "menus"
+  groups: "Menus"
   gui: "N"
 ]
 
@@ -19,7 +19,7 @@ boolean: morefiles  [
 boolean: explode  [
   optional: "Y"
   default: "N"
-  prompt: "Use the expanded group names"
+  information: "Use the expanded group names"
   help: "The groups that EMBOSS applications belong to have two forms,
          exploded and not exploded. The exploded group names are more
          numerous and often vaguely phrased than the non-exploded ones. The

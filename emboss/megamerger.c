@@ -50,10 +50,10 @@ int main(int argc, char **argv)
     embInit("megamerger", argc, argv);
 
     wordlen = ajAcdGetInt ("wordsize");
-    seq1 = ajAcdGetSeq ("seqa");
-    seq2 = ajAcdGetSeq ("seqb");
+    seq1 = ajAcdGetSeq ("asequence");
+    seq2 = ajAcdGetSeq ("bsequence");
     prefer = ajAcdGetBool ("prefer");
-    outfile = ajAcdGetOutfile ("report");
+    outfile = ajAcdGetOutfile ("outfile");
     seqout = ajAcdGetSeqout ("outseq");
 
     /* trim sequences to -sbegin and -send */

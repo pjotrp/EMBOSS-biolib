@@ -11,6 +11,7 @@ section: input [
 
   seqall: sequence  [
     parameter: "Y"
+    type: "gapany"
   ]
 
 endsection: input
@@ -49,10 +50,10 @@ section: output [
     parameter: "Y"
   ]
 
-  seqoutall: junkout  [
+  seqoutall: junkoutseq  [
     optional: "Y"
     default: "/dev/null"
-    information: "file of excluded sequences"
+    information: "File of excluded sequences"
     help: "This file collects the sequences which you have excluded
            from the main output file of sequences."
   ]

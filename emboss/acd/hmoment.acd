@@ -65,6 +65,7 @@ section: output [
 
   outfile: outfile  [
     required: "@(!$(plot))"
+    standardtype: "hmoment output"
   ]
 
 endsection: output

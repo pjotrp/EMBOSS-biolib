@@ -9,14 +9,14 @@ section: input [
   type: "page"
 ]
 
-  sequence: sequencea  [
+  sequence: asequence [
     parameter: "y"
     type: "any"
   ]
 
-  sequence: sequenceb  [
+  sequence: bsequence [
     parameter: "y"
-    type: "@($(sequencea.protein) ? stopprotein : nucleotide)"
+    type: "@($(asequence.protein) ? stopprotein : nucleotide)"
   ]
 
 endsection: input
@@ -55,8 +55,8 @@ section: output [
 
   graph: graph  [
     required: "@(@(!$(data)) & @(!$(stretch)))"
-    gxtitle: "$(sequenceb.name)"
-    gytitle: "$(sequencea.name)"
+    gxtitle: "$(bsequence.name)"
+    gytitle: "$(asequence.name)"
   ]
 
   xygraph: xygraph  [
@@ -72,6 +72,7 @@ section: output [
   outfile: outfile  [
     required: "@($(data) & @(!$(stretch)))"
     nullok: "Y"
+    standardtype: "dotplot graph data"
   ]
 
 endsection: output

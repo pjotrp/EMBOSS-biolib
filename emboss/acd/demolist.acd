@@ -3,8 +3,9 @@ application: demolist [
   groups: "Test"
 ]
 
-infile: gff  [
+infile: infile [
   parameter: "Y"
   information: "gff file to be read in"
   help: "File containing normal tab delimited gff's"
+  standardtype: "gff"
 ]

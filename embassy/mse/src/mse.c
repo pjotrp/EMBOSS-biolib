@@ -162,7 +162,7 @@ AjPSeqset seqset;
 	ajAcdInitP("mse", argc, argv, "MSE");
   
 
-	seqset = ajAcdGetSeqset("msf");
+	seqset = ajAcdGetSeqset("sequence");
 
 	tmpdir = ajAcdGetString("tmpdir");
 

@@ -7,9 +7,10 @@ application: demoreport [
 sequence: sequence  [
   parameter: "Y"
   features: "Y"
+  type: "any"
 ]
 
-report: report  [
+report: outfile  [
   parameter: "Y"
   taglist: "int:demo=demo_tag float:test int:pos=Maximum_position"
 ]

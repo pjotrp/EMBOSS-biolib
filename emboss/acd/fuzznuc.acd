@@ -25,7 +25,7 @@ section: required [
 
   string: pattern  [
     required: "Y"
-    prompt: "Search pattern"
+    information: "Search pattern"
     help: "The standard IUPAC one-letter codes for the nucleotides are
            used. \
            The symbol `n' is used for a position where any nucleotide is
@@ -54,7 +54,7 @@ section: required [
     required: "Y"
     default: "0"
     minimum: "0"
-    prompt: "Number of mismatches"
+    information: "Number of mismatches"
   ]
 
 endsection: required
@@ -66,7 +66,7 @@ section: advanced [
 
   boolean: complement  [
     default: "0"
-    prompt: "Search complementary strand"
+    information: "Search complementary strand"
   ]
 
 endsection: advanced

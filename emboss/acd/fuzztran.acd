@@ -25,7 +25,7 @@ section: required [
 
   string: pattern  [
     required: "Y"
-    prompt: "Search pattern"
+    information: "Search pattern"
     help: "The standard IUPAC one-letter codes for the amino acids are
            used. \
            The symbol `x' is used for a position where any amino acid is
@@ -54,7 +54,7 @@ section: required [
     required: "Y"
     default: "0"
     minimum: "0"
-    prompt: "Number of mismatches"
+    information: "Number of mismatches"
   ]
 
 endsection: required
@@ -74,7 +74,7 @@ section: advanced [
              -3:-3, R:Reverse three frames, 6:All six frames"
     delimiter: ","
     codedelimiter: ":"
-    prompt: "Frame(s) to translate"
+    information: "Frame(s) to translate"
   ]
 
   list: table  [
@@ -95,7 +95,7 @@ section: advanced [
              23:Thraustochytrium Mitochondrial"
     delimiter: ";"
     codedelimiter: ":"
-    prompt: "Code to use"
+    information: "Code to use"
   ]
 
 endsection: advanced

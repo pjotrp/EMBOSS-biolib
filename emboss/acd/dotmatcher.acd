@@ -9,14 +9,14 @@ section: input [
   type: "page"
 ]
 
-  sequence: sequencea  [
+  sequence: asequence  [
     parameter: "y"
     type: "any"
   ]
 
-  sequence: sequenceb  [
+  sequence: bsequence  [
     parameter: "y"
-    type: "@($(sequencea.protein) ? stopprotein : nucleotide)"
+    type: "@($(asequence.protein) ? stopprotein : nucleotide)"
   ]
 
 endsection: input
@@ -43,7 +43,7 @@ section: advanced [
   matrix: matrixfile  [
     optional: "Y"
     information: "Matrix file"
-    protein: "$(sequencea.protein)"
+    protein: "$(asequence.protein)"
     help: "This is the scoring matrix file used when comparing
            sequences. By default it is the file 'EBLOSUM62' (for proteins) or
            the file 'EDNAFULL' (for nucleic sequences). These files are
@@ -72,22 +72,23 @@ section: output [
 
   graph: graph  [
     required: "@(@(!$(data)) & @(!$(stretch)))"
-    gtitle: "Dotmatcher: $(sequencea.name) vs $(sequenceb.name)"
-    gxtitle: "$(sequencea.name)"
-    gytitle: "$(sequenceb.name)"
+    gtitle: "Dotmatcher: $(asequence.name) vs $(bsequence.name)"
+    gxtitle: "$(asequence.name)"
+    gytitle: "$(bsequence.name)"
   ]
 
   xygraph: xygraph  [
     required: "$(stretch)"
-    gtitle: "Dotmatcher: $(sequencea.name) vs $(sequenceb.name)"
-    gxtitle: "$(sequencea.name)"
-    gytitle: "$(sequenceb.name)"
+    gtitle: "Dotmatcher: $(asequence.name) vs $(bsequence.name)"
+    gxtitle: "$(asequence.name)"
+    gytitle: "$(bsequence.name)"
   ]
 
   outfile: outfile  [
     required: "@($(data) & @(!$(stretch)))"
     nullok: "Y"
     information: "Display as data"
+    standardtype: "dotplot graph data"
   ]
 
 endsection: output

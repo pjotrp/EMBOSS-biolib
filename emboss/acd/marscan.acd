@@ -25,7 +25,6 @@ section: output [
     taglist: "str:type int:start8bp int:end8bp int:start16bp
               int:end16bp"
     rformat: "gff"
-    information: "Output feature report"
     help: "File for output of MAR/SAR recognition signature (MRS)
            regions. This contains details of the MRS in normal GFF format.
            The MRS consists of two recognition sites, one of 8 bp and one of

@@ -12,12 +12,12 @@ section: input [
   type: "page"
 ]
 
-  sequence: seqa  [
+  sequence: asequence  [
     parameter: "Y"
     type: "DNA"
   ]
 
-  sequence: seqb  [
+  sequence: bsequence [
     parameter: "Y"
     type: "DNA"
   ]
@@ -62,10 +62,10 @@ section: output [
     extension: "merged"
   ]
 
-  outfile: report  [
+  outfile: outfile  [
     parameter: "Y"
     extension: "megamerger"
-    information: "Output report"
+    standardtype: "megamerger report"
   ]
 
 endsection: output

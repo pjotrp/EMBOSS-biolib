@@ -12,6 +12,7 @@ section: input [
   seqall: sequence  [
     parameter: "Y"
     entry: "Y"
+    type: "any"
   ]
 
 endsection: input
@@ -34,6 +35,7 @@ section: output [
 
   outfile: outfile  [
     parameter: "Y"
+    standardtype: "entry full text"
   ]
 
 endsection: output

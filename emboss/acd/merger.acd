@@ -9,12 +9,12 @@ section: input [
   type: "page"
 ]
 
-  sequence: seqa  [
+  sequence: asequence [
     parameter: "Y"
     type: "DNA"
   ]
 
-  sequence: seqb  [
+  sequence: bsequence [
     parameter: "Y"
     type: "DNA"
   ]
@@ -29,7 +29,7 @@ section: advanced [
   matrixf: datafile  [
     optional: "Y"
     information: "Matrix file"
-    protein: "$(seqa.protein)"
+    protein: "$(asequence.protein)"
     help: "This is the scoring matrix file used when comparing
            sequences. By default it is the file 'EBLOSUM62' (for proteins) or
            the file 'EDNAFULL' (for nucleic sequences). These files are
@@ -65,7 +65,6 @@ section: output [
 
   align: outfile  [
     parameter: "Y"
-    information: "Output alignment and explanation"
     aformat: "simple"
     minseqs: "2"
     maxseqs: "2"

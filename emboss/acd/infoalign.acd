@@ -77,7 +77,7 @@ section: output [
   outfile: outfile  [
     parameter: "Y"
     extension: "infoalign"
-    information: "Output sequence details to a file"
+    standardtype: "infoalign output"
     help: "If you enter the name of a file here then this program will
            write the sequence details into that file."
   ]

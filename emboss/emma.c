@@ -102,7 +102,7 @@ int main(int argc, char **argv, char **env)
     m3str  = ajStrNew();
 
 
-    seqall = ajAcdGetSeqall( "inseqs");
+    seqall = ajAcdGetSeqall( "sequence");
     seqout = ajAcdGetSeqoutset( "outseq");
 
     dend_outfile = ajAcdGetOutfile( "dendoutfile");

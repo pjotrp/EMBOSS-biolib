@@ -29,6 +29,7 @@ section: output [
   outfile: outfile  [
     parameter: "Y"
     append: "@(!$(newfile))"
+    standardtype: "USA list"
   ]
 
 endsection: output

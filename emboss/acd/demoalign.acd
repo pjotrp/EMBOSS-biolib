@@ -12,6 +12,7 @@ section: input [
   seqset: sequence  [
     parameter: "Y"
     features: "Y"
+    type: "gapany"
   ]
 
 endsection: input
@@ -35,7 +36,7 @@ section: advanced [
 
   matrixf: floatmatrix  [
     optional: "Y"
-    prompt: "Matrix file"
+    information: "Matrix file"
     protein: "$(sequence.protein)"
     help: "This is the scoring matrix file used when comparing
            sequences. By default it is the file 'EBLOSUM62' (for proteins) or
@@ -45,7 +46,7 @@ section: advanced [
 
   matrix: intmatrix  [
     optional: "Y"
-    prompt: "Matrix file"
+    information: "Matrix file"
     protein: "$(sequence.protein)"
     help: "This is the scoring matrix file used when comparing
            sequences. By default it is the file 'EBLOSUM62' (for proteins) or
@@ -54,7 +55,7 @@ section: advanced [
   ]
 
   boolean: dofloat  [
-    prompt: "Use floating point matrix"
+    information: "Use floating point matrix"
   ]
 
 endsection: advanced
