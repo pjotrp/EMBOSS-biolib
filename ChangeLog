@@ -1,4 +1,6 @@
 Version 2.8.0
+	Vector arithmetic added to ajax library.
+
 	Compilation now uses large file handling by default. To disable use
 	--disable-large when configuring. An effect is to make the default
 	size of ajlongs 64 bits.
