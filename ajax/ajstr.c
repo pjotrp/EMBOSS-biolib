@@ -4959,7 +4959,19 @@ char ajStrChar (const AjPStr thys, int pos) {
 **
 */
 
-int ajStrListToArray(AjPStr str, AjPStr **array)
+
+/* @func ajStrListToArray ****************************************************
+**
+** Splits a newline separated multi-line string into an array of AjPStrs
+**
+** @param [r] thys [const AjPStr] String
+** @param [w] array [AjPStr**] pointer to array of AjPStrs
+**
+** @return [int] Number of array elements created
+** @@
+******************************************************************************/
+
+int ajStrListToArray(AjPStr thys, AjPStr **array)
 {
     int c;
     int len;
@@ -4968,13 +4980,13 @@ int ajStrListToArray(AjPStr str, AjPStr **array)
     char *p=NULL;
     char *q=NULL;
 
-    if(!str->Len)
+    if(!thys->Len)
 	return 0;
 
 
-    p = q = ajStrStr(str);
+    p = q = ajStrStr(thys);
 
-    len = str->Len;
+    len = thys->Len;
     for(i=c=n=0;i<len;++i)
 	if(*(p++)=='\n')
 	    ++c;
