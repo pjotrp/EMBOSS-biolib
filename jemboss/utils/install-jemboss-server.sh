@@ -519,7 +519,7 @@ fi
 if [ "$AUTH" = "y" ]; then
 
   echo "#include <stdio.h>" > dummy.c
-  echo 'int main(){ printf("%d\n",getuid()); }' >> dummy.c
+  echo 'int main(){ printf("%d",getuid()); }' >> dummy.c
   if (cc dummy.c -o dummy >/dev/null 2>&1); then
     UUIDTMP=`./dummy`
     CC="cc"; 
