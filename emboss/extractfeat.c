@@ -982,7 +982,8 @@ static AjBool extractfeat_MatchPatternTags(AjPFeature feat, AjPStr tpattern,
 ******************************************************************************/
 
 static AjBool extractfeat_MatchPatternDescribe(AjPFeature feat, 
-	AjPStr describe, AjPStr *strout)
+					       AjPStr describe,
+					       AjPStr *strout)
 {
     AjIList titer;                      /* iterator for feat */
     static AjPStr tagnam = NULL;        /* tag structure */
