@@ -161,15 +161,25 @@ public class BuildJembossForm implements ActionListener
         {
           try
           {
-            new Browser(url,applName,true,text);
+            new Browser(url,applName,true,text,mysettings);
           }
           catch(IOException ioe1){}
+        }
+        else if(mysettings.isUseTFM())
+        {
+          GetHelp thishelp = new GetHelp(applName,mysettings);
+          text = thishelp.getHelpText();
+          try
+          {
+            new Browser(url,applName,true,text,mysettings);
+          }
+          catch(IOException ioe3){}
         }
         else
         { 
           try
           { 
-            new Browser(url,applName);  
+            new Browser(url,applName,mysettings);  
           }
           catch(IOException ioe2)
           {
@@ -178,7 +188,7 @@ public class BuildJembossForm implements ActionListener
             
             try
             {
-              new Browser(url,applName,true,text);
+              new Browser(url,applName,true,text,mysettings);
             }
             catch(IOException ioe3){}
           }
