@@ -1,5 +1,5 @@
 appl: skipseq [
-  documentation: "Reads and writes (returns) sequences"
+  documentation: "Reads and writes (returns) sequences, skipping the first few"
   groups: "Edit"
 ]
 

@@ -22,9 +22,9 @@
 #include "emboss.h"
 
 
-/* @prog seqret ***************************************************************
+/* @prog skipseq **************************************************************
 **
-** Reads and writes (returns) sequences
+** "Reads and writes (returns) sequences, skipping the first few
 **
 ******************************************************************************/
 
