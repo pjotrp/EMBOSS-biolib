@@ -9,6 +9,26 @@ s###########################################################################
 #
 ###########################################################################
 
+# Example entry:
+# 
+# ID programname-ex (the ID name of this test)
+# UC text (not used in the QA test - used in the HTML documentation)
+# AP programname (the name of the application to test)
+# CL (the command-line arguments to use after the application name)
+# IN (a response to a prompt for input using the default)
+# IN (a response to a prompt using a non-default input)
+# FI filename (an expected output filename)
+# FZ integer (the expected size in bytes of the above filename)
+# FC integer (the expected number of lines in the above file)
+# FP /regexp/ (an expected perl regular expression in the above file)
+# FP integer /regexp/ (a regexp that is expected integer number of times)
+# FI stderr ()
+# FC = 2
+# FP 0 /Warning: /
+# FP 0 /Error: /
+# FP 0 /Died: /
+# // (marks the end of the entry)
+
 ####################
 # Command line tests
 ####################
