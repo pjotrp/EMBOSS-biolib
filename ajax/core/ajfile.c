@@ -59,6 +59,11 @@ static void   fileListRecurs(const AjPStr file, AjPList list, ajint *recurs);
 static DIR*   fileOpenDir(AjPStr *dir);
 
 
+#ifdef __CYGWIN__
+#define fopen(a,b) ajSysFopen(a,b)
+#endif
+
+
 
 
 /* ==================================================================== */

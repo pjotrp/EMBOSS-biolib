@@ -3258,7 +3258,10 @@ static AjBool seqoutUsaProcess(AjPSeqout thys)
     AjBool regstat;
     
     static AjPStr usatest = NULL;
-    
+#ifdef __CYGWIN__
+    AjPStr usatmp = NULL;
+#endif
+
     ajDebug("seqoutUsaProcess\n");
     if(!fmtexp)
 	fmtexp = ajRegCompC("^([A-Za-z0-9]*)::?(.*)$");
@@ -3269,6 +3272,18 @@ static AjBool seqoutUsaProcess(AjPSeqout thys)
 	idexp = ajRegCompC("^(.*)$");
     
     ajStrAssS(&usatest, thys->Usa);
+
+#ifdef __CYGWIN__
+    if(*(ajStrStr(usatest)+1)==':')
+    {
+	usatmp = ajStrNew();
+        ajFmtPrintS(&usatmp,"/cygdrive/%c/%s",*ajStrStr(usatest),
+		    ajStrStr(usatest)+2);
+        ajStrAss(&usatest,usatmp);
+        ajStrDel(&usatmp);
+    }
+#endif
+
     ajDebug("output USA to test: '%S'\n\n", usatest);
     
     fmtstat = ajRegExec(fmtexp, usatest);

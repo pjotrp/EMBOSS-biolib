@@ -848,3 +848,39 @@ char* ajSysFgets(char *buf, int size, FILE *fp)
     return fgets(buf,size,fp);
 #endif
 }
+
+
+
+
+/* @func ajSysFopen ***********************************************************
+**
+** An fopen replacement to cope with cygwin and windows
+**
+** @param [r] name [char *] file to open
+** @param [r] size [int] r/w/a flags
+**
+** @return [FILE*] file or NULL
+** @@
+******************************************************************************/
+
+FILE* ajSysFopen(char *name, char *flags)
+{
+    AjPStr fname = NULL;
+    FILE   *ret  = NULL;
+    
+#ifdef __CYGWIN__
+    if(*(name+1) == ':')
+    {
+	fname = ajStrNew();
+	ajFmtPrintS(&fname,"/cygdrive/%c/%s",*name,name+2);
+	ret = fopen(ajStrStr(fname),flags);
+	ajStrDel(&fname);
+    }
+    else
+      ret = fopen(name,flags);
+#else
+	ret = fopen(name,flags);
+#endif
+
+	return ret;
+}

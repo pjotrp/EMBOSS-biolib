@@ -27,6 +27,12 @@
 #include "ajax.h"
 #include <errno.h>
 
+
+#ifdef __CYGWIN__
+#define fopen(a,b) ajSysFopen(a,b)
+#endif
+
+
 /* next three moved from acd for library splitting */
 
 AjBool acdDebugSet    = 0;

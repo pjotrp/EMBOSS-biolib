@@ -6834,6 +6834,9 @@ static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
     AjBool liststat  = ajFalse;
     AjBool asisstat  = ajFalse;
     AjBool rangestat = ajFalse;
+#ifdef __CYGWIN__
+    AjPStr usatmp    = NULL;
+#endif
 
     qry = seqin->Query;
 
@@ -6878,6 +6881,17 @@ static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
     ajStrAssS(&usatest, seqin->Usa);
     /* Strip any leading spaces */
     ajStrTrimC(&usatest," \t\n");
+
+#ifdef __CYGWIN__
+    if(*(ajStrStr(usatest)+1)==':')
+    {
+	usatmp = ajStrNew();
+        ajFmtPrintS(&usatmp,"/cygdrive/%c/%s",*ajStrStr(usatest),
+		    ajStrStr(usatest)+2);
+        ajStrAss(&usatest,usatmp);
+        ajStrDel(&usatmp);
+    }
+#endif
 
     ajDebug("USA to test: '%S'\n\n", usatest);
 

@@ -36,6 +36,7 @@ void ajSysPrintlist(char **a);
 char *ajSysStrtok(const char *s, const char *t);
 char *ajSysStrtokR(const char *s, const char *t, char **ptrptr, AjPStr *buf);
 char *ajSysFgets(char *buf, int size, FILE *fp);
+FILE *ajSysFopen(char *name, char *flags);
 
 /*
  * S_IFREG is non-ANSI therefore define it here
