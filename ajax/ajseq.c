@@ -807,7 +807,7 @@ AjBool ajSeqsetIsRna (AjPSeqset thys)
 }
 
 
-/* @func ajSeqsetIsRna *************************************************
+/* @func ajSeqsetIsDna *************************************************
 **
 ** Tests whether a sequence set is dna.
 **
