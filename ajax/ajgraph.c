@@ -1042,9 +1042,7 @@ void ajGraphOpenPlot(AjPGraph thys, ajint numofsets)
 void ajGraphOpenWin(AjPGraph thys, float xmin, float xmax,
 		    float ymin, float ymax)
 {
-    AjOTime ajtime;
-
-    ajtime.format = 0;
+    AjPTime ajtime;
 
     ajGraphSetDevice(thys);
 
@@ -1055,8 +1053,12 @@ void ajGraphOpenWin(AjPGraph thys, float xmin, float xmax,
 			     graphType[thys->plplot->displaytype].ext);
 
 	if( ajStrLen(thys->plplot->title) <=1)
+	{
+	    ajtime = ajTimeToday();
 	    ajFmtPrintAppS(&thys->plplot->title,"%s (%D)",
-			   ajAcdProgram(),&ajtime);
+			   ajAcdProgram(),ajtime);
+	    ajTimeDel(&ajtime);
+	}
     }
     ajGraphColourBack();
     GraphInit(thys);
@@ -1154,14 +1156,7 @@ void ajGraphCloseWin(void)
 void ajGraphOpen(AjPGraph thys, PLFLT xmin, PLFLT xmax,
 		  PLFLT ymin, PLFLT ymax, ajint flags)
 {
-    AjOTime ajtime;
-    time_t tim;
-
-    tim = time(0);
-
-    ajTimeLocal(tim,&ajtime);
-    ajtime.format = 0;
-
+    AjPTime ajtime;
     ajGraphSetDevice(thys);
     if (thys->plplot)
     {
@@ -1170,8 +1165,12 @@ void ajGraphOpen(AjPGraph thys, PLFLT xmin, PLFLT xmax,
 				    graphType[thys->plplot->displaytype].ext);
 
 	if( ajStrLen(thys->plplot->title) <=1)
+	{
+	    ajtime = ajTimeToday();
 	    ajStrAppC(&thys->plplot->title,
-		      ajFmtString("%s (%D)",ajAcdProgram(),&ajtime));
+		      ajFmtString("%s (%D)",ajAcdProgram(),ajtime));
+	    ajTimeDel(&ajtime);
+	}
 
 	GraphSetName(thys, thys->plplot->outputfile,
 		     graphType[thys->plplot->displaytype].ext);
@@ -5163,13 +5162,7 @@ static void GraphxyGeneral(AjPGraph thys, AjBool closeit)
     ajint i;
     ajint old;
     ajint old2;
-    AjOTime ajtime;
-    time_t tim; 
-
-    tim = time(0);
-    
-    ajTimeLocal(tim,&ajtime);
-    ajtime.format = 0;
+    AjPTime ajtime;
     
     ajGraphSetDevice(thys);
     
@@ -5201,8 +5194,14 @@ static void GraphxyGeneral(AjPGraph thys, AjBool closeit)
 	
 	if((thys->plplot->flags & AJGRAPH_TITLE) &&
 	   ajStrLen(thys->plplot->title) <=1)
+	{
+	    ajtime = ajTimeToday();
 	    ajStrAppC(&thys->plplot->title,
-			     ajFmtString("%s (%D)", ajAcdProgram(),&ajtime));
+			     ajFmtString("%s (%D)",
+					 ajAcdProgram(),
+					 ajtime));
+	    ajTimeDel(&ajtime);
+	}
 
 	ajGraphLabel(((thys->plplot->flags & AJGRAPH_X_LABEL) ?
 		      ajStrStr(thys->plplot->xaxis) : " "),

@@ -5463,7 +5463,7 @@ static void acdSetDirectory(AcdPAcd thys)
 
     AjBool nullok = ajFalse;
     AjBool dopath = ajFalse;
-    AjPStr ext = NULL;
+    static AjPStr ext = NULL;
 
     val = NULL;				/* set the default value */
 
