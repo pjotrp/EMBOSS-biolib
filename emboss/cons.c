@@ -104,7 +104,7 @@ int main(int argc, char **argv)
 }
 
 void calc_consensus(AjPSeqset seqset,AjPMatrix cmpmatrix,
-                    ajint nseqs,int mlen,float fplural,float setcase,
+                    ajint nseqs, ajint mlen,float fplural,float setcase,
                     ajint identity, AjPStr *cons)
 {
     ajint   i; 

@@ -467,7 +467,7 @@ AjBool	ajXyzContactsWrite(AjPFile logf, AjPFile outf, float thresh,
 **
 ** @param [w] outf [AjPFile]     Output file stream (contact file)
 ** @param [r] mat  [AjPInt2d]    Contact map
-** @param [r] txt  [char]        Text to print at start of each line
+** @param [r] txt  [char*]        Text to print at start of each line
 ** @param [r] mod  [ajint]         Model number
 ** @param [r] chn  [ajint]         Chain number
 ** @param [r] pdb  [AjPPdb]      Pdb object
@@ -482,8 +482,8 @@ AjBool	ajXyzContactsWrite(AjPFile logf, AjPFile outf, float thresh,
 ** @@
 **
 ****************************************************************************/
-AjBool	ajXyzPrintContactMap(AjPFile outf, AjPInt2d mat, char *txt, int mod, 
-			     int chn, AjPPdb pdb)
+AjBool	ajXyzPrintContactMap(AjPFile outf, AjPInt2d mat, char *txt, ajint mod, 
+			     ajint chn, AjPPdb pdb)
 {
     ajint      x,y;           /* Loop counters */    
     AjPStr   res1;          /* ID of residue 1 */
