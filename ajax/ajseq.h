@@ -32,6 +32,7 @@ typedef struct AjSSeqCvt {
 /* ======= prototypes ==================*/
 
 AjBool       ajIsAccession (AjPStr accnum);
+AjPStr       ajIsSeqversion (AjPStr sv);
 AjPSelex     ajSelexNew(ajint n);
 void         ajSelexDel(AjPSelex *thys);
 AjPSelexdata ajSelexdataNew(void);
@@ -41,6 +42,7 @@ AjPSelexSQ   ajSelexSQNew(void);
 AjPStockholm ajStockholmNew(ajint i);
 void         ajStockholmDel(AjPStockholm *thys);
 void         ajStockholmdataDel(AjPStockholmdata *thys);
+
 
 AjPStockholmdata ajStockholmdataNew(void);
 
