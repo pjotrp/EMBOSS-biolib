@@ -145,7 +145,7 @@ int main(int argc, char **argv)
     int size;
     
 
-    if(argc<2)
+    if(argc!=2)
 	return -1;
     
     sockname = ajStrNewC(argv[1]);
