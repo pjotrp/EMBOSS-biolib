@@ -201,20 +201,14 @@ public class BuildJembossForm implements ActionListener
 // Display results button
     bresults = new JButton("Show results");
     bresults.addActionListener(this);
-    bresults.setMargin(new Insets(0,1,0,1));
 
 // Go button
     
     ImageIcon rfii = new ImageIcon(cl.getResource("images/Go_button.gif"));
     JButton bgo = new JButton(rfii);
     bgo.setActionCommand("GO");
-    bgo.setIcon(rfii);
     bgo.setMargin(new Insets(0,0,0,0));
     bgo.addActionListener(this);
-
-// Advanced options
-    JButton badvanced = new JButton("Advanced Options");
-    badvanced.addActionListener(this);
 
     Box tools;
     tools = Box.createHorizontalBox();
@@ -223,8 +217,11 @@ public class BuildJembossForm implements ActionListener
     tools.add(Box.createRigidArea(new Dimension(4,0)));
     tools.add(bhelp);
       
+// Advanced options
     if(advSectionBox!= null)
     {
+      JButton badvanced = new JButton("Advanced Options");
+      badvanced.addActionListener(this);
       tools.add(Box.createRigidArea(new Dimension(4,0)));
       tools.add(badvanced);
     }
