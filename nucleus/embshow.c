@@ -759,7 +759,7 @@ void embShowAddFT(EmbPShow thys, AjPFeattable feat)
 
     AJNEW0(info);
 
-    ajFeattableCopy(&info->feat, feat); /* store the feature table */
+    info->feat = ajFeattableCopy(feat); /* store the feature table */
   
     ajListPushApp(thys->list, showInfoNew(info, SH_FT));
 

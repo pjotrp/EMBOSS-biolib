@@ -108,25 +108,25 @@ typedef struct AjSHist {
 } AjOHist, *AjPHist;
 
 void    ajHistClose (void);
-void    ajHistCopyData (AjPHist hist, ajint index, PLFLT *data);
-void    ajHistDelete (AjPHist hist);
-void    ajHistDisplay (AjPHist hist);
+void    ajHistCopyData (AjPHist hist, ajint index, const PLFLT *data);
+void    ajHistDelete (AjPHist* hist);
+void    ajHistDisplay (const AjPHist hist);
 AjPHist ajHistNew (ajint numofsets, ajint numofpoints);
 AjPHist ajHistNewG (ajint numofsets, ajint numofpoints, AjPGraph graph);
 void    ajHistSetBlackandWhite (AjPHist hist, AjBool set);
 void    ajHistSetColour(AjPHist hist, ajint index, ajint colour);
-void    ajHistSetMultiTitle  (AjPHist hist, ajint index, AjPStr title);
-void    ajHistSetMultiTitleC (AjPHist hist, ajint index, char *title);
-void    ajHistSetMultiXTitle  (AjPHist hist, ajint index, AjPStr title);
-void    ajHistSetMultiXTitleC (AjPHist hist, ajint index, char *title);
-void    ajHistSetMultiYTitle  (AjPHist hist, ajint index, AjPStr title);
-void    ajHistSetMultiYTitleC (AjPHist hist, ajint index, char *title);
+void    ajHistSetMultiTitle  (AjPHist hist, ajint index, const AjPStr title);
+void    ajHistSetMultiTitleC (AjPHist hist, ajint index, const char *title);
+void    ajHistSetMultiXTitle  (AjPHist hist, ajint index, const AjPStr title);
+void    ajHistSetMultiXTitleC (AjPHist hist, ajint index, const char *title);
+void    ajHistSetMultiYTitle  (AjPHist hist, ajint index, const AjPStr title);
+void    ajHistSetMultiYTitleC (AjPHist hist, ajint index, const char *title);
 void    ajHistSetPattern (AjPHist hist, ajint index, ajint style);
 void    ajHistSetPtrToData (AjPHist hist, ajint index, PLFLT *data);
-void    ajHistSetTitleC (AjPHist hist, char* string);
-void    ajHistSetXAxisC (AjPHist hist, char* string);
-void    ajHistSetYAxisLeftC (AjPHist hist, char* string);
-void    ajHistSetYAxisRightC (AjPHist hist, char* string);
+void    ajHistSetTitleC (AjPHist hist, const char* string);
+void    ajHistSetXAxisC (AjPHist hist, const char* string);
+void    ajHistSetYAxisLeftC (AjPHist hist,const  char* string);
+void    ajHistSetYAxisRightC (AjPHist hist, const char* string);
 
 #endif /* ajhist_h */
 

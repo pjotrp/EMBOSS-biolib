@@ -84,7 +84,7 @@ void          ajFeatSortByType (AjPFeattable Feattab);
 void          ajFeattableAdd (AjPFeattable thys, AjPFeature feature) ;
 ajint         ajFeattableBegin (const AjPFeattable thys);
 void          ajFeattableClear (AjPFeattable thys);
-void          ajFeattableCopy (AjPFeattable* pthys, const AjPFeattable orig);
+AjPFeattable  ajFeattableCopy (const AjPFeattable orig);
 void          ajFeattableDel (AjPFeattable *pthis) ;
 ajint         ajFeattableEnd (const AjPFeattable thys);
 AjPStr        ajFeattableGetName (const AjPFeattable thys);

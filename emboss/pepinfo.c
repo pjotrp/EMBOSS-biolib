@@ -275,7 +275,7 @@ int main(int argc, char **argv)
 	embDataListDel(aa_props);
 
 	/*delete hist object*/
-	ajHistDelete(hist);
+	ajHistDelete(&hist);
     }
 
     /* if hydropathy plot required */

@@ -239,8 +239,7 @@ static AjBool       featTypePirIn(AjPStr* type);
 static AjBool       featTypePirOut(AjPStr* type);
 static AjPStr       featTypeProt(const AjPStr type);
 static AjBool       featVocabRead(const char *name,
-				  ajint typsize, ajint tagsize,
-				  AjPTable* pTypeTable, AjPTable* pTagsTable);
+				  AjPTable pTypeTable, AjPTable pTagsTable);
 
 
 
@@ -5511,10 +5510,17 @@ static void featInit(void)
 
     FeatInitDone = ajTrue;
 
-    featVocabRead("emboss", 200, 200,
-		  &FeatTypeTableDna, &FeatTagsTableDna);
-    featVocabRead("protein", 200, 200,
-		  &FeatTypeTableProtein, &FeatTagsTableProtein);
+    if(!FeatTypeTableDna) {
+	FeatTypeTableDna = ajStrTableNewCase(200);
+	FeatTagsTableDna = ajStrTableNewCase(200);
+	featVocabRead("emboss",FeatTypeTableDna, FeatTagsTableDna);
+    }
+
+    if(!FeatTypeTableProtein) {
+	FeatTypeTableProtein = ajStrTableNewCase(200);
+	FeatTagsTableProtein = ajStrTableNewCase(200);
+	featVocabRead("protein", FeatTypeTableProtein, FeatTagsTableProtein);
+    }
 
     ajDebug("Tables internal (Dna, Prot) Type: %x %x Tags: %x %x\n",
 	    FeatTypeTableDna, FeatTypeTableProtein,
@@ -5532,17 +5538,16 @@ static void featInit(void)
 ** Reads the possible feature types (keys) and tags (qualifiers)
 ** from files.
 **
-** @param [r] name [const char*] Feature format
-** @param [r] typsize [ajint] Estimated number of types
-** @param [r] tagsize [ajint] Estimated number of tags
-** @param [r] pTypeTable [AjPTable*] Feature type table
-** @param [r] pTagsTable [AjPTable*] Feature tags table
+** @param [r] name [const char*] Feature type ("emboss", "protein", or external
+**                               feature types "swiss", "gff", "embl", etc.
+** @param [w] pTypeTable [AjPTable] Feature type table
+** @param [w] pTagsTable [AjPTable] Feature tags table
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-static AjBool featVocabRead(const char* name, ajint typsize, ajint tagsize,
-			    AjPTable* pTypeTable, AjPTable* pTagsTable)
+static AjBool featVocabRead(const char* name,
+			    AjPTable pTypeTable, AjPTable pTagsTable)
 {
     AjPFile TagsFile = NULL;
     AjPFile TypeFile = NULL;
@@ -5571,9 +5576,7 @@ static AjBool featVocabRead(const char* name, ajint typsize, ajint tagsize,
     ajint tagscount = 0;
     ajint linecount = 0;
     ajint i;
-    ajint itypsize = 200;
-    ajint itagsize = 200;
-    
+
     char* TagType[] =
     {
 	"QTEXT",			/* quoted text */
@@ -5588,25 +5591,12 @@ static AjBool featVocabRead(const char* name, ajint typsize, ajint tagsize,
 	NULL
     };
     
-    if(*pTypeTable && *pTagsTable)
-	return ajTrue;
-    
     if(!ValExp)
 	ValExp = ajRegCompC("([^ \t]+) +([^ \t]+)") ;
     if(!TagExp)
 	TagExp = ajRegCompC("(([mM])?/([^ \t]+))|([^/ \t]+)") ;
     if(!VocabExp)
 	VocabExp = ajRegCompC("([^\", \t]+)") ;
-    
-    if(typsize > 0)
-	itypsize = typsize;
-    if(tagsize > 0)
-	itagsize = tagsize;
-    
-    if(!*pTypeTable)
-	*pTypeTable = ajStrTableNewCase(itypsize);
-    if(!*pTagsTable)
-	*pTagsTable = ajStrTableNewCase(itagsize);
     
     /* First read in the list of all possible tags */
     
@@ -5659,7 +5649,7 @@ static AjBool featVocabRead(const char* name, ajint typsize, ajint tagsize,
 		    tagstr = NULL;
 		    ajStrAssC(&defname, "");
 		    ajStrAssS(&tagstr, tagname);
-		    if (ajTablePut (*pTagsTable, defname, tagstr))
+		    if (ajTablePut (pTagsTable, defname, tagstr))
 			ajErr("Etags.%s duplicate tag for '%S'",
 			      name, defname);
 		    tagstr  = NULL;
@@ -5687,7 +5677,7 @@ static AjBool featVocabRead(const char* name, ajint typsize, ajint tagsize,
 		    ajStrDelReuse(&tmpstr);
 		}
 		
-		if(ajTablePut (*pTagsTable, tagname, tagstr))
+		if(ajTablePut (pTagsTable, tagname, tagstr))
 		    ajErr("Etags.%s duplicate tag for '%S'", name, tagname);
 		tagstr  = NULL;
 		tagname = NULL;
@@ -5705,7 +5695,7 @@ static AjBool featVocabRead(const char* name, ajint typsize, ajint tagsize,
   **             /tag
   **             /tag
   **
-  ** All tags must be defined in the Etags file (read earlier into *pTagsTable)
+  ** All tags must be defined in the Etags file (read earlier into pTagsTable)
   */
 
     ajFmtPrintS(&TypeFName, "Efeatures.%s", name);
@@ -5741,14 +5731,14 @@ static AjBool featVocabRead(const char* name, ajint typsize, ajint tagsize,
 			typtagstr = NULL;
 			ajStrAssC(&defname, "");
 			ajStrAssS(&typtagstr, type);
-			if(ajTablePut (*pTypeTable, defname, typtagstr))
+			if(ajTablePut (pTypeTable, defname, typtagstr))
 			    ajErr("Efeatures.%s duplicate tag for '%S'",
 				  name, defname);
 			typtagstr = NULL;
 		    }
 		    else	  /* save the previous feature type + tags */
 		    {
-			if(ajTablePut (*pTypeTable, savetype, typtagstr))
+			if(ajTablePut (pTypeTable, savetype, typtagstr))
 			    ajErr("Efeatures.%s duplicate tag for '%S'",
 				  name, savetype);
 			typtagstr = NULL;
@@ -5765,7 +5755,7 @@ static AjBool featVocabRead(const char* name, ajint typsize, ajint tagsize,
 		}
 		else			/* tag name */
 		{
-		    if(!ajTableGet(*pTagsTable, tag))
+		    if(!ajTableGet(pTagsTable, tag))
 			ajWarn("%S: tag %S (feature %S) not in Etags file",
 			       TypeFName, tag, savetype);
 
@@ -5779,7 +5769,7 @@ static AjBool featVocabRead(const char* name, ajint typsize, ajint tagsize,
     
     if(typecount > 0)		/* save the last feature type */
     {
-	if(ajTablePut(*pTypeTable, savetype, typtagstr))
+	if(ajTablePut(pTypeTable, savetype, typtagstr))
 	    ajErr("Efeatures.%s duplicate tag for '%S'", name, savetype);
 	typtagstr = NULL;
 	savetype  = NULL;
@@ -5790,18 +5780,18 @@ static AjBool featVocabRead(const char* name, ajint typsize, ajint tagsize,
     ajStrDel(&line);
     ajStrDel(&token);
     
-    line = (AjPStr) ajTableGet(*pTypeTable, ajStrNew());
+    line = (AjPStr) ajTableGet(pTypeTable, ajStrNew());
     ajDebug("Default type...: '%S'\n", line);
     
-    line = (AjPStr) ajTableGet(*pTagsTable, ajStrNew());
+    line = (AjPStr) ajTableGet(pTagsTable, ajStrNew());
     ajDebug("Default tag...:  '%S'\n", line);
     
     ajDebug("Total types...: %d\n", typecount);
     /*
-       ajTableTrace(*pTypeTable);
-       ajTableTrace(*pTagsTable);
-       ajStrTablePrint(*pTypeTable);
-       ajStrTablePrint(*pTagsTable);
+       ajTableTrace(pTypeTable);
+       ajTableTrace(pTagsTable);
+       ajStrTablePrint(pTypeTable);
+       ajStrTablePrint(pTagsTable);
        */
     
     ajStrDel(&tmpstr);
@@ -5826,8 +5816,12 @@ static AjBool featVocabRead(const char* name, ajint typsize, ajint tagsize,
 
 static AjBool featVocabInitEmbl(void)
 {
-    return featVocabRead ("embl", 0, 0,
-			  &FeatTypeTableEmbl, &FeatTagsTableEmbl);
+    if (!FeatTypeTableEmbl) {
+	FeatTypeTableEmbl = ajStrTableNewCase(200);
+	FeatTagsTableEmbl = ajStrTableNewCase(200);
+	return featVocabRead ("embl", FeatTypeTableEmbl, FeatTagsTableEmbl);
+    }
+    return ajTrue;
 }
 
 
@@ -5842,8 +5836,12 @@ static AjBool featVocabInitEmbl(void)
 
 static AjBool featVocabInitGff(void)
 {
-    return featVocabRead ("gff", 200, 200,
-			  &FeatTypeTableGff, &FeatTagsTableGff);
+    if (!FeatTypeTableGff) {
+	FeatTypeTableGff = ajStrTableNewCase(200);
+	FeatTagsTableGff = ajStrTableNewCase(200);
+	return featVocabRead ("gff", FeatTypeTableGff, FeatTagsTableGff);
+    }
+    return ajTrue;
 }
 
 
@@ -5858,7 +5856,12 @@ static AjBool featVocabInitGff(void)
 
 static AjBool featVocabInitPir(void)
 {
-    return featVocabRead ("pir", 20, 5, &FeatTypeTablePir, &FeatTagsTablePir);
+    if (!FeatTypeTablePir) {
+	FeatTypeTablePir = ajStrTableNewCase(200);
+	FeatTagsTablePir = ajStrTableNewCase(200);
+	return featVocabRead ("pir", FeatTypeTablePir, FeatTagsTablePir);
+    }
+    return ajTrue;
 }
 
 
@@ -5873,8 +5876,12 @@ static AjBool featVocabInitPir(void)
 
 static AjBool featVocabInitSwiss(void)
 {
-    return featVocabRead ("swiss", 50, 5,
-			  &FeatTypeTableSwiss, &FeatTagsTableSwiss);
+    if (!FeatTypeTableSwiss) {
+	FeatTypeTableSwiss = ajStrTableNewCase(50);
+	FeatTagsTableSwiss = ajStrTableNewCase(5);
+	return featVocabRead ("swiss", FeatTypeTableSwiss, FeatTagsTableSwiss);
+    }
+    return ajTrue;
 }
 
 
@@ -6948,35 +6955,30 @@ static FeatPTagval featTagval(const AjPFeature thys, const AjPStr tag)
 **
 ** For cases where we need a copy we can safely change and/or delete.
 **
-** @param [r]   pthys  [AjPFeattable*]  Feature table copy of the original
 ** @param [r]   orig  [const AjPFeattable]  Original feature table
-** @return [void]
+** @return [AjPFeattable] Feature table copy of the original
 ** @@
 ******************************************************************************/
 
-void ajFeattableCopy(AjPFeattable* pthys, const AjPFeattable orig)
+AjPFeattable ajFeattableCopy(const AjPFeattable orig)
 {
-    AjPFeattable thys;
+    AjPFeattable ret = NULL;
     AjIList iter;
     AjPFeature featorig;
     AjPFeature feat = NULL;
 
-    ajFeattableDel(pthys);
-
     if(!orig)
-	return;
+	return NULL;
 
-    *pthys = featTableNew();
+    ret = featTableNew();
 
-    thys = *pthys;
-
-    ajStrAssS(&thys->Seqid, orig->Seqid);
-    ajStrAssS(&thys->Type, orig->Type);
-    thys->DefFormat = orig->DefFormat;
-    thys->Start     = orig->Start;
-    thys->End       = orig->End;
-    thys->Len       = orig->Len;
-    thys->Groups    = orig->Groups;
+    ajStrAssS(&ret->Seqid, orig->Seqid);
+    ajStrAssS(&ret->Type, orig->Type);
+    ret->DefFormat = orig->DefFormat;
+    ret->Start     = orig->Start;
+    ret->End       = orig->End;
+    ret->Len       = orig->Len;
+    ret->Groups    = orig->Groups;
 
     iter = ajListIterRead(orig->Features);
 
@@ -6984,11 +6986,11 @@ void ajFeattableCopy(AjPFeattable* pthys, const AjPFeattable orig)
     {
 	featorig = ajListIterNext(iter);
 	feat = ajFeatCopy(featorig);
-	ajFeattableAdd(thys, feat);
+	ajFeattableAdd(ret, feat);
     }
     ajListIterFree(&iter);
 
-    return;
+    return ret;
 }
 
 

@@ -4396,10 +4396,7 @@ AjPFeattable ajSeqGetFeat(const AjPSeq thys)
 
 AjPFeattable ajSeqCopyFeat(const AjPSeq thys)
 {
-    AjPFeattable ret = NULL;
-    ajFeattableCopy(&ret, thys->Fttable);
-
-    return ret;
+    return ajFeattableCopy(thys->Fttable);
 }
 
 
