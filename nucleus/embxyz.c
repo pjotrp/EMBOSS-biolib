@@ -23,6 +23,8 @@
 #include "emboss.h"
 
 
+
+
 /* @func embXyzSeqsetNR *******************************************************
 **
 ** Reads a list of AjPSeq's and writes an array describing the redundancy in
@@ -47,43 +49,41 @@
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
+
 AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, ajint *nset,
 		      AjPMatrixf matrix, float gapopen, float gapextend,
 		      float thresh)
 {
-    ajint         start1  =0;	/*Start of seq 1, passed as arg but not used*/
-    ajint         start2  =0;	/*Start of seq 2, passed as arg but not used*/
-    ajint         maxarr  =300;	/*Initial size for matrix*/
-    ajint         len;
-    ajint         x;		/*Counter for seq 1*/
-    ajint         y;		/*Counter for seq 2*/
-    ajint         nin;		/*Number of sequences in input list*/
-    ajint        *compass;
+    ajint start1  = 0;	  /* Start of seq 1, passed as arg but not used */
+    ajint start2  = 0;	  /* Start of seq 2, passed as arg but not used */
+    ajint maxarr  = 300;  /* Initial size for matrix */
+    ajint len;
+    ajint x;		  /* Counter for seq 1 */
+    ajint y;		  /* Counter for seq 2 */
+    ajint nin;		  /* Number of sequences in input list */
+    ajint *compass;
 
-    char       *p;
-    char       *q;
+    char  *p;
+    char  *q;
 
-    float     **sub;
-    float       id       =0.;	/*Passed as arg but not used here*/
-    float       sim      =0.;
-    float       idx      =0.;	/*Passed as arg but not used here*/
-    float       simx     =0.;	/*Passed as arg but not used here*/
-    float      *path;
+    float **sub;
+    float id   = 0.;	  /* Passed as arg but not used here */
+    float sim  = 0.;
+    float idx  = 0.;	  /* Passed as arg but not used here */
+    float simx = 0.;	  /* Passed as arg but not used here */
+    float *path;
 
-    AjPStr      m = NULL;	/*Passed as arg but not used here*/
-    AjPStr      n = NULL;	/*Passed as arg but not used here*/
+    AjPStr m = NULL;	  /* Passed as arg but not used here */
+    AjPStr n = NULL;	  /* Passed as arg but not used here */
 
-    AjPSeq      *inseqs  =NULL;	/*Array containing input sequences*/
-    AjPInt      lens     =NULL;	/*1: Lengths of sequences* in input list*/
-    AjPFloat2d  scores   =NULL;
-    AjPSeqCvt   cvt      =0;
-    AjBool      show     =ajFalse;	/*Passed as arg but not used here*/
-
-
+    AjPSeq      *inseqs = NULL;	   /* Array containing input sequences */
+    AjPInt      lens    = NULL;	   /* 1: Lengths of sequences* in input list */
+    AjPFloat2d  scores  = NULL;
+    AjPSeqCvt   cvt     = 0;
+    AjBool      show    = ajFalse; /* Passed as arg but not used here */
 
 
-
-    /*Intitialise some variables*/
+    /* Intitialise some variables */
     AJCNEW(path, maxarr);
     AJCNEW(compass, maxarr);
     m = ajStrNew();
@@ -93,8 +93,7 @@ AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, ajint *nset,
     sub = ajMatrixfArray(matrix);
     cvt = ajMatrixfCvt(matrix);
 
-
-    /*Convert the AjPList to an array of AjPseq*/
+    /* Convert the AjPList to an array of AjPseq */
     if(!(nin=ajListToArray(input,(void ***)&inseqs)))
     {
 	ajWarn("Zero sized list of sequences passed into SeqsetNR");
@@ -106,31 +105,26 @@ AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, ajint *nset,
     }
 
 
-    /*Create an ajint array to hold lengths of sequences*/
+    /* Create an ajint array to hold lengths of sequences */
     lens = ajIntNewL(nin);
     for(x=0; x<nin; x++)
 	ajIntPut(&lens,x,ajSeqLen(inseqs[x]));
 
 
-    /*Set the keep array elements to 1 */
+    /* Set the keep array elements to 1 */
     for(x=0;x<nin;x++)
 	ajIntPut(keep,x,1);
 
 
-    /*Create a 2d float array to hold the similarity scores*/
+    /* Create a 2d float array to hold the similarity scores */
     scores = ajFloat2dNew();
 
-
-
-
-
-
-    /*Start of main application loop*/
+    /* Start of main application loop */
     for(x=0; x<nin; x++)
     {
 	for(y=x+1; y<nin; y++)
 	{
-	    /*Process w/o alignment identical sequences*/
+	    /* Process w/o alignment identical sequences */
 	    if(ajStrMatch(inseqs[x]->Seq, inseqs[y]->Seq))
 	    {
 		ajFloat2dPut(&scores,x,y,(float)100.0);
@@ -138,7 +132,7 @@ AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, ajint *nset,
 	    }
 
 
-	    /* Intitialise variables for use by alignment functions*/
+	    /* Intitialise variables for use by alignment functions */
 	    len = ajIntGet(lens,x)*ajIntGet(lens,y);
 
 	    if(len>maxarr)
@@ -188,18 +182,13 @@ AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, ajint *nset,
 				   ajIntGet(lens,y),&id,&sim,&idx, &simx);
 
 
-	    /* Write array with score*/
+	    /* Write array with score */
 	    ajFloat2dPut(&scores,x,y,sim);
 	}
     }
-    /* End of main application loop*/
 
 
-
-
-
-
-    /* Write the keep array as appropriate*/
+    /* Write the keep array as appropriate */
     for(x=0; x<nin; x++)
     {
 	if(!ajIntGet(*keep,x))
@@ -226,7 +215,6 @@ AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, ajint *nset,
 	    (*nset)++;
 
 
-    /* Tidy up */
     AJFREE(compass);
     AJFREE(path);
     ajStrDel(&m);
@@ -235,18 +223,8 @@ AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, ajint *nset,
     ajIntDel(&lens);
     AJFREE(inseqs);
 
-
-    /* Bye Bye */
     return ajTrue;
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -280,43 +258,40 @@ AjBool embXyzSeqsetNRRange(AjPList input, AjPInt *keep, ajint *nset,
 		      AjPMatrixf matrix, float gapopen, float gapextend,
 		      float thresh1, float thresh2)
 {
-    ajint         start1  =0;	/*Start of seq 1, passed as arg but not used*/
-    ajint         start2  =0;	/*Start of seq 2, passed as arg but not used*/
-    ajint         maxarr  =300;	/*Initial size for matrix*/
-    ajint         len;
-    ajint         x;		/*Counter for seq 1*/
-    ajint         y;		/*Counter for seq 2*/
-    ajint         nin;		/*Number of sequences in input list*/
-    ajint        *compass;
+    ajint start1 = 0;	/* Start of seq 1, passed as arg but not used */
+    ajint start2 = 0;	/* Start of seq 2, passed as arg but not used */
+    ajint maxarr = 300;	/* Initial size for matrix */
+    ajint len;
+    ajint x;		/* Counter for seq 1 */
+    ajint y;		/* Counter for seq 2 */
+    ajint nin;		/* Number of sequences in input list */
+    ajint *compass;
 
-    char       *p;
-    char       *q;
+    char  *p;
+    char  *q;
 
-    float     **sub;
-    float       id       =0.;	/*Passed as arg but not used here*/
-    float       sim      =0.;
-    float       idx      =0.;	/*Passed as arg but not used here*/
-    float       simx     =0.;	/*Passed as arg but not used here*/
-    float      *path;
+    float **sub;
+    float id   = 0.;	/* Passed as arg but not used here */
+    float sim  = 0.;
+    float idx  = 0.;	/* Passed as arg but not used here */
+    float simx = 0.;	/* Passed as arg but not used here */
+    float *path;
 
-    AjPStr      m = NULL;	/*Passed as arg but not used here*/
-    AjPStr      n = NULL;	/*Passed as arg but not used here*/
+    AjPStr m = NULL;	/* Passed as arg but not used here */
+    AjPStr n = NULL;	/* Passed as arg but not used here */
 
-    AjPSeq      *inseqs  =NULL;	/*Array containing input sequences*/
-    AjPInt      lens     =NULL;	/*1: Lengths of sequences* in input list*/
-    AjPFloat2d  scores   =NULL;
-    AjPSeqCvt   cvt      =0;
-    AjBool      show     =ajFalse;	/*Passed as arg but not used here*/
-    AjBool      ok       =ajFalse;      /*True if the current sequence has
+    AjPSeq *inseqs = NULL;	/* Array containing input sequences */
+    AjPInt lens    = NULL;	/* 1: Lengths of sequences* in input list */
+    AjPFloat2d  scores = NULL;
+    AjPSeqCvt cvt = 0;
+    AjBool show = ajFalse;	/* Passed as arg but not used here */
+    AjBool ok   = ajFalse;      /* True if the current sequence has
 					  at least thresh1 % similarity to
 					  at least one other sequence in the
 					  set */
 
 
-
-
-
-    /*Intitialise some variables*/
+    /* Intitialise some variables */
     AJCNEW(path, maxarr);
     AJCNEW(compass, maxarr);
     m = ajStrNew();
@@ -327,7 +302,7 @@ AjBool embXyzSeqsetNRRange(AjPList input, AjPInt *keep, ajint *nset,
     cvt = ajMatrixfCvt(matrix);
 
 
-    /*Convert the AjPList to an array of AjPseq*/
+    /* Convert the AjPList to an array of AjPseq */
     if(!(nin=ajListToArray(input,(void ***)&inseqs)))
     {
 	ajWarn("Zero sized list of sequences passed into SeqsetNR");
@@ -339,31 +314,27 @@ AjBool embXyzSeqsetNRRange(AjPList input, AjPInt *keep, ajint *nset,
     }
 
 
-    /*Create an ajint array to hold lengths of sequences*/
+    /* Create an ajint array to hold lengths of sequences */
     lens = ajIntNewL(nin);
     for(x=0; x<nin; x++)
 	ajIntPut(&lens,x,ajSeqLen(inseqs[x]));
 
 
-    /*Set the keep array elements to 1 */
+    /* Set the keep array elements to 1 */
     for(x=0;x<nin;x++)
 	ajIntPut(keep,x,1);
 
 
-    /*Create a 2d float array to hold the similarity scores*/
+    /* Create a 2d float array to hold the similarity scores */
     scores = ajFloat2dNew();
 
 
-
-
-
-
-    /*Start of main application loop*/
+    /* Start of main application loop */
     for(x=0; x<nin; x++)
     {
 	for(y=x+1; y<nin; y++)
 	{
-	    /*Process w/o alignment identical sequences*/
+	    /* Process w/o alignment identical sequences */
 	    if(ajStrMatch(inseqs[x]->Seq, inseqs[y]->Seq))
 	    {
 		ajFloat2dPut(&scores,x,y,(float)100.0);
@@ -371,7 +342,7 @@ AjBool embXyzSeqsetNRRange(AjPList input, AjPInt *keep, ajint *nset,
 	    }
 
 
-	    /* Intitialise variables for use by alignment functions*/
+	    /* Intitialise variables for use by alignment functions */
 	    len = ajIntGet(lens,x)*ajIntGet(lens,y);
 
 	    if(len>maxarr)
@@ -421,18 +392,13 @@ AjBool embXyzSeqsetNRRange(AjPList input, AjPInt *keep, ajint *nset,
 				   ajIntGet(lens,y),&id,&sim,&idx, &simx);
 
 
-	    /* Write array with score*/
+	    /* Write array with score */
 	    ajFloat2dPut(&scores,x,y,sim);
 	}
     }
-    /* End of main application loop*/
 
 
-
-
-
-
-    /* Write the keep array as appropriate, first check the upper limit*/
+    /* Write the keep array as appropriate, first check the upper limit */
     for(x=0; x<nin; x++)
     {
 	if(!ajIntGet(*keep,x))
@@ -455,7 +421,7 @@ AjBool embXyzSeqsetNRRange(AjPList input, AjPInt *keep, ajint *nset,
     }
 
 
-    /* Now check the lower limit*/
+    /* Now check the lower limit */
     for(x=0; x<nin; x++)
     {
 	if(!ajIntGet(*keep,x))
@@ -485,7 +451,6 @@ AjBool embXyzSeqsetNRRange(AjPList input, AjPInt *keep, ajint *nset,
 	    (*nset)++;
 
 
-    /* Tidy up */
     AJFREE(compass);
     AJFREE(path);
     ajStrDel(&m);
@@ -494,7 +459,5 @@ AjBool embXyzSeqsetNRRange(AjPList input, AjPInt *keep, ajint *nset,
     ajIntDel(&lens);
     AJFREE(inseqs);
 
-
-    /* Bye Bye */
     return ajTrue;
 }
