@@ -65,7 +65,7 @@ typedef struct AjSListNode {
 ** @cast ajListLength get the number of nodes in a linked list.
 ** @cast ajListstrLength get the number of nodes in an AjPStr linked list.
 ** @cast ajListPeek Returns the first node but keeps it on the list
-** @cast ajListstrPop Returns the first node but keeps it on the list
+** @cast ajListstrPeek Returns the first node but keeps it on the list
 ** @cast ajListPop Removes and returns the first node.
 ** @cast ajListstrPop Removes and returns the first AjPStr node.
 ** @use ajListFind For each node in the list call a function
