@@ -17285,7 +17285,7 @@ void ajAcdExit (AjBool silent)
 		continue;
 	    if (!pa->Used)
 	    {
-		ajWarn ("ACD qualifier never used: %S = '%S' (assoc %B)",
+		acdLog ("ACD qualifier never used: %S = '%S' (assoc %B)",
 			pa->Name, pa->ValStr, pa->Assoc);
 	    }
 	}
