@@ -3261,9 +3261,10 @@ FP /^  7\.00    43\.59    -0\.41\n/
 ID infoalign-ex
 AP infoalign
 CL ../../data/globins.msf
+IN
 FI stderr
-FC = 1
-FI stdout
+FC = 2
+FI globins.infoalign
 FZ = 691
 FP /^msf::.*HBA_HORSE\s+HBA_HORSE\s+144\s+147\s+2\s+3\s+48\s+4\s+92\s+66\.666664\s+\n/
 //
@@ -3271,9 +3272,10 @@ FP /^msf::.*HBA_HORSE\s+HBA_HORSE\s+144\s+147\s+2\s+3\s+48\s+4\s+92\s+66\.666664
 ID infoalign-ex2
 AP infoalign
 CL ../../data/globins.msf -nousa
+IN
 FI stderr
-FC = 1
-FI stdout
+FC = 2
+FI globins.infoalign
 FZ = 407
 FP /^HBA_HORSE\s+144\s+147\s+2\s+3\s+48\s+4\s+92\s+66\.666664\s+\n/
 //
@@ -3281,9 +3283,10 @@ FP /^HBA_HORSE\s+144\s+147\s+2\s+3\s+48\s+4\s+92\s+66\.666664\s+\n/
 ID infoalign-ex3
 AP infoalign
 CL ../../data/globins.msf -only -name -seqlength
+IN
 FI stderr
-FC = 1
-FI stdout
+FC = 2
+FI globins.infoalign
 FZ = 126
 FP /^HBA_HORSE\s+144\n/
 //
@@ -3291,9 +3294,10 @@ FP /^HBA_HORSE\s+144\n/
 ID infoalign-ex4
 AP infoalign
 CL ../../data/globins.msf -only -name -gapcount -diffcount
+IN
 FI stderr
-FC = 1
-FI stdout
+FC = 2
+FI globins.infoalign
 FZ = 136
 FP /^HBA_HORSE\s+3\s+92\n/
 //
@@ -3301,9 +3305,10 @@ FP /^HBA_HORSE\s+3\s+92\n/
 ID infoalign-ex5
 AP infoalign
 CL ../../data/globins.msf -only -name -gaps
+IN
 FI stderr
-FC = 1
-FI stdout
+FC = 2
+FI globins.infoalign
 FZ = 112
 FP /^HBA_HORSE\s+2\n/
 //
@@ -3311,9 +3316,10 @@ FP /^HBA_HORSE\s+2\n/
 ID infoalign-ex6
 AP infoalign
 CL ../../data/globins.msf -html
+IN
 FI stderr
-FC = 1
-FI stdout
+FC = 2
+FI globins.infoalign
 FZ = 1590
 FP /^<tr><td>msf::\.\./\.\./data/globins\.msf:HBA_HORSE<\/td>\n/
 FP /^<td>HBA_HORSE<\/td>\n/
@@ -3322,9 +3328,10 @@ FP /^<td>HBA_HORSE<\/td>\n/
 ID infoalign-ex7
 AP infoalign
 CL ../../data/globins.msf -refseq 1
+IN
 FI stderr
-FC = 1
-FI stdout
+FC = 2
+FI globins.infoalign
 FZ = 691
 FP /^msf::\S+\s+HBA_HORSE\s+144\s+147\s+2\s+3\s+54\s+18\s+72\s+62.500000\s+\n/
 //
@@ -3513,7 +3520,7 @@ IN
 IN
 FI stderr
 FC = 2
-FI stdout 
+FI eclacy.out2 
 FZ > 1445
 FP /^# Score: 795\.0\n/
 FP /^ECLACY +1301 +cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa +1350\n/
@@ -3536,7 +3543,7 @@ IN
 IN
 FI stderr
 FC = 2
-FI stdout 
+FI eclacy.out2
 FZ > 1445
 FP /^# Score: 795\.0\n/
 FP /^ECLACY +1301 +cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa +1350\n/
@@ -3559,7 +3566,7 @@ IN
 IN
 FI stderr
 FC = 2
-FI stdout 
+FI eclacy.out2
 FZ > 1445
 FP /^# Score: 795\.0\n/
 FP /^ECLACY +cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa\n/
@@ -3582,7 +3589,7 @@ IN
 IN
 FI stderr
 FC = 2
-FI stdout 
+FI eclacy.out2
 FZ > 1445
 FP /^# Score: 795\.0\n/
 FP /^ECLACY +1301 +cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa +1350\n/
@@ -7100,7 +7107,7 @@ IN ../../data/globins.msf
 IN
 FI stderr
 FC = 2
-FI stdout
+FI globins.showalign
 FZ = 2235
 FP /^HBB_HUMAN  --------VHLTPE\.K\.AVTALWG\.VN-VD\.V\.GEA\.GR-LLVvY\.WTQR\.\.ES\.GD\.ST\n/
 FP /^Consensus  xllxvlxxxxxxdftxxvxaSxxkxlxxvaxxlxxkyXxxxxxx\n/
@@ -7189,7 +7196,7 @@ IN tembl:paamir
 IN
 FI stderr
 FC = 2
-FI stdout 
+FI paamir.showfeat 
 FZ = 841
 FP /\|=+\| 2167\n/
 FP 2 /    misc_feature\n/
@@ -7220,7 +7227,7 @@ IN
 IN
 FI stderr
 FC = 12
-FI stdout 
+FI paamir.showseq 
 FZ = 793
 FP 2 /^\s+\|=+\|\n\s+promoter note="/
 //
@@ -7396,9 +7403,10 @@ FP /^%%Pages: 1\n/
 ID textsearch-ex
 AP textsearch
 CL tsw:* 'lactose'
+IN
 FI stderr
-FC = 1
-FI stdout
+FC = 2
+FI 100k_rat.textsearch
 FZ = 169
 FP /^tsw-id:LACI_ECOLI LACI_ECOLI    P03023\s+LACTOSE OPERON REPRESSOR/
 FP /^tsw-id:LACY_ECOLI LACY_ECOLI    P02920\s+LACTOSE PERMEASE/
@@ -7407,9 +7415,10 @@ FP /^tsw-id:LACY_ECOLI LACY_ECOLI    P02920\s+LACTOSE PERMEASE/
 ID textsearch-ex2
 AP textsearch
 CL tsw:*_ecoli 'lactose | permease'
+IN
 FI stderr
-FC = 1
-FI stdout
+FC = 2
+FI laci_ecoli.textsearch
 FZ = 180
 FP /^tsw-id:LACI_ECOLI LACI_ECOLI    P03023\s+LACTOSE OPERON REPRESSOR/
 FP /^tsw-id:LACY_ECOLI LACY_ECOLI    P02920\s+LACTOSE PERMEASE/
@@ -7420,7 +7429,7 @@ ID textsearch-ex3
 AP textsearch
 CL tembl:* 'lacz' -html -outfile embl.lacz
 FI stderr
-FC = 1
+FC = 2
 FI embl.lacz
 FZ = 220
 FP /^tembl-id:ECLAC    ECLAC         J01636\s+E.coli lactose operon/
