@@ -4,8 +4,8 @@ int main(int argc, char **argv)
 {
 
   AjPSeq seq;
-  AjPFeatTabOut outft;
-  AjPFeatTable ftab = NULL;
+  AjPFeattabOut outft;
+  AjPFeattable ftab = NULL;
   AjPStr pattern;
   AjPRegexp exp = NULL;
   AjPStr cpyseq = NULL;
@@ -28,7 +28,7 @@ int main(int argc, char **argv)
   cpyseq = ajSeqStrCopy (seq);
   ajUser ("using pattern '%S' cpyseq len %d", pattern, ajStrLen(cpyseq));
 
-  ftab = ajFeatTabNewOut (ajSeqGetName(seq));
+  ftab = ajFeattableNewSeq (seq);
 
   src = ajStrNewC ("seqtofeat");
   ftname = ajStrNewC ("pattern");

@@ -36,7 +36,8 @@
 void readAunty(AjPFloat *agp);
 void padit(AjPFile *outf, ajint b, ajint e);
 void dumptoFeat(ajint nhits, AjPInt hp,AjPInt hpos,AjPInt hlen,AjPFloat thisap,
-		AjPFloat hwt, AjPFeatTabOut featout,char *seqname,int begin);
+		AjPFloat hwt, AjPFeattabOut featout,char *seqname,
+		ajint begin);
 
 
 
@@ -51,7 +52,7 @@ int main(int argc, char **argv)
     AjPStr    stmp=NULL;
     AjPStr    substr=NULL;
 
-    AjPFeatTabOut featout=NULL;    
+    AjPFeattabOut featout=NULL;    
 
     ajint begin;
     ajint end;
@@ -367,20 +368,20 @@ void padit(AjPFile *outf, ajint b, ajint e)
 }
 
 
-void dumptoFeat(ajint nhits, AjPInt hp, AjPInt hpos, AjPInt hlen,AjPFloat thisap,
-		AjPFloat hwt, AjPFeatTabOut featout, char *seqname,int begin)
+void dumptoFeat(ajint nhits, AjPInt hp, AjPInt hpos, AjPInt hlen,
+		AjPFloat thisap, AjPFloat hwt, AjPFeattabOut featout,
+		char *seqname, ajint begin)
 {
-    AjPFeatLexicon dict=NULL;
-    AjPFeatTable feattable;
+    AjPFeattable feattable;
     AjPStr name=NULL;
-    AjPStr score=NULL;
+    float score = 0.0;
     AjPStr desc=NULL;
     AjPStr source=NULL;
     AjPStr type=NULL;
     AjPStr tag=NULL;
     AjPStr val=NULL;
-    AjEFeatStrand strand=AjStrandWatson;
-    AjEFeatFrame frame=AjFrameUnknown;
+    char strand='+';
+    ajint frame=0;
     ajint i=0;
     ajint k=0;
     ajint m=0;
@@ -393,13 +394,12 @@ void dumptoFeat(ajint nhits, AjPInt hp, AjPInt hpos, AjPInt hlen,AjPFloat thisap
     source = ajStrNew();
     type = ajStrNew();
     tag = ajStrNew();
-    score = ajStrNew();
+    score = 0.0;
 
 
     (void) ajStrAssC(&name,seqname);
 
-    feattable = ajFeatTabNew(name,dict);
-    dict = ajFeatTableDict(feattable);
+    feattable = ajFeattableNewProt(name);
 
     (void) ajStrAssC(&source,"antigenic");
     (void) ajStrAssC(&type,"misc_feature");
@@ -414,7 +414,8 @@ void dumptoFeat(ajint nhits, AjPInt hp, AjPInt hpos, AjPInt hlen,AjPFloat thisap
       
 	iend = istart + ajIntGet(hlen,k)-1;
 
-	(void) ajFmtPrintS(&score,"%.3f",ajFloatGet(hwt,k));
+	score = ajFloatGet(hwt,k);
+	/*(void) ajFmtPrintS(&score,"%.3f",ajFloatGet(hwt,k));*/
 	feature = ajFeatureNew(feattable, source, type,
 			       istart+begin, iend+begin, score, strand, frame,
 			       desc , 0, 0) ;    
@@ -428,14 +429,14 @@ void dumptoFeat(ajint nhits, AjPInt hp, AjPInt hpos, AjPInt hlen,AjPFloat thisap
 		{
 		    val = ajStrNew();
 		    (void) ajFmtPrintS(&val,"max score at %d",m);
-		    (void) ajFeatSetTagValue(feature,tag,val,AJFALSE);
+		    (void) ajFeatTagSet(feature,tag,val);
 		    new++;
 		}
 		else
 		{
 		    val = ajStrNew();
 		    (void) ajFmtPrintS(&val,",%d",m);
-		    (void) ajFeatSetTagValue(feature,tag,val,AJTRUE);	    
+		    (void) ajFeatTagSet(feature,tag,val);	    
 		}
 	    }
     }
@@ -443,17 +444,12 @@ void dumptoFeat(ajint nhits, AjPInt hp, AjPInt hpos, AjPInt hlen,AjPFloat thisap
     ajFeatSortByStart(feattable);
     (void) ajFeaturesWrite (featout, feattable);
 
-
-    ajFeatDeleteDict(dict);
-    ajFeatTabDel(&feattable);
-
-    
+    ajFeattabDel(&feattable);
 
     ajStrDel(&name);
     ajStrDel(&source);
     ajStrDel(&type);
     ajStrDel(&tag);
-    ajStrDel(&score);
 
     return;
 }

@@ -33,7 +33,8 @@
 
 
 void cpgsearch(AjPFile *outf, ajint s, ajint len, char *seq, char *name,
-	       ajint begin, ajint *score,AjPFeatTabOut featout,AjPFeatTable *feattable);
+	       ajint begin, ajint *score,AjPFeattabOut featout,
+	       AjPFeattable *feattable);
 void calcgc(ajint from, ajint to, char *p, ajint *dcg, ajint *dgc, ajint *gc);
 
 
@@ -45,8 +46,8 @@ int main(int argc, char **argv)
     AjPFile   outf=NULL;
     AjPStr    strand=NULL;
     AjPStr    substr=NULL;
-    AjPFeatTabOut featout;
-    AjPFeatTable feattable=NULL;    
+    AjPFeattabOut featout;
+    AjPFeattable feattable=NULL;    
     ajint begin;
     ajint end;
     ajint len;
@@ -90,8 +91,7 @@ int main(int argc, char **argv)
     ajFileClose(&outf);
     ajFeatSortByStart(feattable);
     ajFeaturesWrite (featout, feattable);
-    ajFeatDeleteDict(feattable->Dictionary);
-    ajFeatTabDel(&feattable);
+    ajFeattabDel(&feattable);
     
     ajExit();
     return 0;
@@ -107,7 +107,8 @@ int main(int argc, char **argv)
 
 
 void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
-	       ajint begin, ajint *score,AjPFeatTabOut featout,AjPFeatTable *feattable)
+	       ajint begin, ajint *score,AjPFeattabOut featout,
+	       AjPFeattable *feattable)
 {
     ajint i;
     ajint c;
@@ -122,18 +123,17 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
     ajint dcg;
     ajint dgc;
     ajint gc;
-    static AjPFeatLexicon dict=NULL;
     static AjPStr name2=NULL,source=NULL,type=NULL;
-    AjPStr score2=NULL,desc=NULL;
-    AjEFeatStrand strand=AjStrandWatson;
-    AjEFeatFrame frame=AjFrameUnknown;
+    AjPStr desc=NULL;
+    char  strand='+';
+    ajint frame=0;
     AjPFeature feature;
+    float score2 = 0.0;
     
     if(!name2){
       ajStrAssC(&name2,name);
       
-      *feattable = ajFeatTabNew(name2,dict);
-      dict = (*feattable)->Dictionary;
+      *feattable = ajFeattableNewDna(name2);
       
       ajStrAssC(&source,"cpgreport");
       ajStrAssC(&type,"misc_feature");
@@ -150,7 +150,8 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
 	    calcgc(lsum+1,t+2,p,&dcg,&dgc,&gc);
 	    if(dgc)
 	    {	      
-	        score2 = ajFmtPrintS(&score2,"%d.0",top);
+	        score2 = (float) top;
+		/*ajFmtPrintS(&score2,"%d.0",top);*/
 	        feature = ajFeatureNew(*feattable, source, type,
 				       lsum+2+z,t+2+z, score2, strand, frame,
 				       desc , 0, 0) ;    
@@ -164,7 +165,8 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
 	    }
 	    else
 	    {
-	      score2 = ajFmtPrintS(&score2,"%d.0",top);
+	      score2 = (float) top;
+	      /*score2 = ajFmtPrintS(&score2,"%d.0",top);*/
 	      feature = ajFeatureNew(*feattable, source, type,
 				     lsum+2+z,t+2+z, score2, strand, frame,
 				     desc , 0, 0) ;    
@@ -195,7 +197,8 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
 	    ajFmtPrintF(*outf,"     %5d %5.1f %6.2f\n",
 			dcg,(float)gc*100.0/(float)(t+1-lsum),
 			((float)dcg/(float)dgc));
-	    score2 = ajFmtPrintS(&score2,"%d.0",top);
+	    score2 = (float) top;
+	    /*score2 = ajFmtPrintS(&score2,"%d.0",top);*/
 	    feature = ajFeatureNew(*feattable, source, type,
 				   lsum+2+z,t+2+z, score2, strand, frame,
 				   desc , 0, 0) ;    
@@ -205,7 +208,8 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
 	    ajFmtPrintF(*outf,"%-20s %6d %6d %5d ",name,lsum+2+z,t+2+z,top);
 	    ajFmtPrintF(*outf,"     %5d %5.1f    -\n",dcg,
 			(float)gc*100.0/(float)(t+1-lsum));
-	    score2 = ajFmtPrintS(&score2,"%d.0",top);
+	    score2 = (float) top;
+	    /*score2 = ajFmtPrintS(&score2,"%d.0",top);*/
 	    feature = ajFeatureNew(*feattable, source, type,
 				   lsum+2+z,t+2+z, score2, strand, frame,
 				   desc , 0, 0) ;    
@@ -213,8 +217,6 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
 	cpgsearch(outf,t+2,to,p,name,begin,score,featout,feattable);
     }
 
-
-    ajStrDel(&score2);
     ajStrDel(&desc);
     
     return;

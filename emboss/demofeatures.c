@@ -1,17 +1,16 @@
 #include "emboss.h"
 
-int main(int argc, char **argv)
-{
-  AjPFeatLexicon dict=NULL;
-  AjPFeatTable feattable;
-  AjPStr name=NULL,score=NULL,desc=NULL,source=NULL,type=NULL;
-  AjEFeatStrand strand=AjStrandWatson;
-  AjEFeatFrame frame=AjFrameUnknown;
+int main (int argc, char **argv) {
+  AjPFeattable feattable;
+  AjPStr name=NULL,desc=NULL,source=NULL,type=NULL;
+  char strand='+';
+  ajint frame=0;
   AjBool sortbytype,dictionary,sortbystart,tracedict;
   AjPFile file;
   AjPFeature feature;
-  AjPFeatTabOut output = NULL;
+  AjPFeattabOut output = NULL;
   ajint i;
+  float score = 0.0;
 
   embInit ("demofeatures", argc, argv);
 
@@ -24,19 +23,12 @@ int main(int argc, char **argv)
 
   /* first read the dictionary if one is to be used */
 
-  if(dictionary) 
-    dict = ajFeatGffDictionaryCreate(); 
-
   ajStrAssC(&name,"seq1");
 
-  feattable = ajFeatTabNew(name,dict);
-  if(!dictionary)
-    dict = feattable->Dictionary;
+  feattable = ajFeattableNew(name);
 
   ajStrAssC(&source,"demofeature");
-  ajStrAssC(&score,"1.0");
-
-
+  score = 1.0;
   
   for(i=1;i<11;i++){
     if(i & 1)
@@ -56,14 +48,9 @@ int main(int argc, char **argv)
   if(sortbystart)
     ajFeatSortByStart(feattable);
 
-
-  if(tracedict) /* -debug need to be on aswell for this to be visible!! */
-    ajFeatDickTracy(dict);
-
   ajFeaturesWrite (output, feattable);
   
   ajStrDel(&name);
-  ajStrDel(&score);
   ajStrDel(&type);
 
   return 0;

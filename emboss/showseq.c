@@ -27,9 +27,10 @@
 /* declare functions */
 
 static void FormatShow(EmbPShow ss, AjPStr format, AjPTrn trnTable,
-AjPRange translaterange, AjPRange uppercase, AjPRange highlight, AjBool
-threeletter, AjBool numberseq, AjPFeatTable feat, ajint orfminsize,
-AjPList restrictlist, AjBool flat);
+		       AjPRange translaterange, AjPRange uppercase,
+		       AjPRange highlight, AjBool threeletter,
+		       AjBool numberseq, AjPFeattable feat, ajint orfminsize,
+		       AjPList restrictlist, AjBool flat);
 
 static void read_equiv(AjPFile *equfile, AjPTable *table);
 static void read_file_of_enzyme_names(AjPStr *enzymes);
@@ -62,7 +63,7 @@ int main(int argc, char **argv)
   ajint offset;
   AjBool html;
   AjPStr descriptionline;
-  AjPFeatTable feat;
+  AjPFeattable feat;
   ajint orfminsize;
   AjBool flat;
   AjPTrn trnTable;
@@ -253,7 +254,7 @@ int main(int argc, char **argv)
 /* tidy up */
     (void) embShowDel(&ss);
 /* AJB fixed: trying to delete memory already deleted */
-/*   (void) ajFeatTabDel(&feat); */
+/*   (void) ajFeattabDel(&feat); */
     (void) ajListDel(&restrictlist);
 
 /* add a gratuitous newline at the end of the sequence */
@@ -289,8 +290,9 @@ int main(int argc, char **argv)
 ** @param [r] highlight [AjPRange] ranges to colour in HTML
 ** @param [r] threeletter [AjBool] use 3-letter code
 ** @param [r] numberseq [AjBool] put numbers on sequences
-** @param [r] feat [AjPFeatTable] sequence's feature table
-** @param [r] orfminsize [ajint] minimum size of ORFs to display (0 for no ORFs)
+** @param [r] feat [AjPFeattable] sequence's feature table
+** @param [r] orfminsize [ajint] minimum size of ORFs to display
+**                              (0 for no ORFs)
 ** @param [r] restrictlist [AjPList] restriction enzyme cut site list (or NULL)
 ** @param [r] flat [AjBool] show restriction sites in flat format
 ** @return [void]
@@ -298,9 +300,10 @@ int main(int argc, char **argv)
 ******************************************************************************/
 
 static void FormatShow(EmbPShow ss, AjPStr format, AjPTrn trnTable,
-AjPRange translaterange, AjPRange uppercase, AjPRange highlight, AjBool
-threeletter, AjBool numberseq, AjPFeatTable feat, ajint orfminsize,
-AjPList restrictlist, AjBool flat) {
+		       AjPRange translaterange, AjPRange uppercase, 
+		       AjPRange highlight,  AjBool threeletter,
+		       AjBool numberseq, AjPFeattable feat, ajint orfminsize,
+		       AjPList restrictlist, AjBool flat) {
 
   AjPStrTok tok;
   char white[] = " \t\n\r";

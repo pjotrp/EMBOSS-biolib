@@ -20,8 +20,8 @@ int main(int argc, char **argv)
   AjPTable seq1MatchTable =0 ;
   AjPList matchlist = NULL;
   AjPFile outf;
-  AjPFeatTable Tab1=NULL,Tab2=NULL;
-  AjPFeatTabOut seq1out = NULL, seq2out = NULL;
+  AjPFeattable Tab1=NULL,Tab2=NULL;
+  AjPFeattabOut seq1out = NULL, seq2out = NULL;
 
   embInit("wordmatch", argc, argv);
 

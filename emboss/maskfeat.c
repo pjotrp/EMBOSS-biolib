@@ -77,7 +77,7 @@ static void FeatSeqMask (AjPSeq seq, AjPStr type, AjPStr maskchar) {
   AjIList    iter = NULL ;
   AjPFeature gf   = NULL ;
   AjPStr str = NULL;
-  AjPFeatTable feat;
+  AjPFeattable feat;
   char whiteSpace[] = " \t\n\r,;";	/* skip whitespace and , ; */
   AjPStrTok tokens;
   AjPStr key=NULL;
@@ -85,9 +85,6 @@ static void FeatSeqMask (AjPSeq seq, AjPStr type, AjPStr maskchar) {
 /* get the feature table of the sequence */
     feat = ajSeqGetFeat(seq);
     
-/* Check arguments */
-  ajFeatObjVerify(feat, AjCFeatTable ) ;
-
   (void) ajStrAss (&str, ajSeqStr(seq));
                   
 /* For all features... */
@@ -98,7 +95,7 @@ static void FeatSeqMask (AjPSeq seq, AjPStr type, AjPStr maskchar) {
       gf = ajListIterNext (iter) ;
       tokens = ajStrTokenInit(type, whiteSpace);
       while (ajStrToken( &key, &tokens, NULL)) {
-        if (ajStrMatchWild(gf->Type->name, key)) {
+        if (ajStrMatchWild(gf->Type, key)) {
           (void) ajStrMask (&str, gf->Start-1, gf->End-1, *ajStrStr(maskchar));
         }
       }
@@ -111,7 +108,7 @@ static void FeatSeqMask (AjPSeq seq, AjPStr type, AjPStr maskchar) {
   (void) ajSeqReplace(seq, str);
 
 /* tidy up */
-  (void) ajFeatTabDel(&feat);
+  (void) ajFeattabDel(&feat);
   (void) ajStrDel(&str);
   (void) ajStrDel(&key);
 }

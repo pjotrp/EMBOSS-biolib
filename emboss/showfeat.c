@@ -30,10 +30,10 @@ static void ShowFeatSeq (AjPFile outfile, AjPSeq seq, ajint beg, ajint end, AjPS
 	reverse, AjBool unknown, AjBool strand, AjBool source, AjBool
 	position, AjBool type, AjBool tags, AjBool values);
     	
-static void WriteFeat(AjPStr line, AjEFeatStrand strand, ajint fstart, ajint fend,
+static void WriteFeat(AjPStr line, char strand, ajint fstart, ajint fend,
 	ajint width, ajint beg, ajint end);
 
-static void FeatOut(AjPFile outfile, AjPStr lineout, AjEFeatStrand strandout,
+static void FeatOut(AjPFile outfile, AjPStr lineout, char strandout,
 	AjPStr sourceout, AjPStr posout, AjPStr typeout, AjPStr tagsout,
 	ajint width, AjBool strand, AjBool source, AjBool type, AjBool
 	tags, AjBool position);
@@ -44,13 +44,12 @@ static ajint CompareFeatType (const void * a, const void * b);
 
 static ajint CompareFeatPos (const void * a, const void * b);
 
-static AjBool MatchPattern (AjPStr str, AjPStr pattern);
-
-static AjBool MatchPatternTags (AjPList taglist, AjPStr tpattern, AjPStr vpattern);
+static AjBool showfeatMatchPatternTags (AjPFeature feat, AjPStr tpattern,
+					AjPStr vpattern);
 
 static void AddPos(AjPStr *posout, ajint start, ajint end);
 
-static void AddTags(AjPStr *tagout, AjPList taglist, AjBool values);
+static void AddTagsStr(AjPStr *tagout, AjPFeature feat, AjBool values);
 
 
 
@@ -214,12 +213,12 @@ static void ShowFeatSeq (AjPFile outfile, AjPSeq seq, ajint beg, ajint end, AjPS
     	
   AjIList    iter = NULL ;
   AjPFeature gf   = NULL ;
-  AjPFeatTable feat;
+  AjPFeattable feat;
 
   /*  ajint len = ajSeqLen(seq);*/
 
   AjPStr lineout   = ajStrNew();
-  AjEFeatStrand strandout = AjStrandUnknown;
+  char strandout = '\0';
   AjBool first = ajTrue;
   AjPStr sourceout = NULL;
   AjPStr typeout   = NULL;
@@ -228,27 +227,6 @@ static void ShowFeatSeq (AjPFile outfile, AjPSeq seq, ajint beg, ajint end, AjPS
 
   AjBool gotoutput = ajFalse;	/* have a line to output */
       
-/* reminder of the AjSFeature structure for handy reference
-*
-*
-*  AjEFeatClass      Class ;
-*  AjPFeatTable      Owner ;
-*  AjPFeatVocFeat     Source ;
-*  AjPFeatVocFeat     Type ;
-*  ajint               Start ;
-*  ajint               End; 
-*  ajint               Start2;
-*  ajint               End2;
-*  AjPStr            Score ;
-*  AjPList           Tags ; 	a.k.a. the [group] field tag-values of GFF2 
-*  AjPStr            Comment ;
-*  AjEFeatStrand     Strand ;
-*  AjEFeatFrame      Frame ;
-*  AjPStr            desc ;
-*  ajint               Flags;
-*
-*/
-
 /* get the feature table of the sequence */
   feat = ajSeqGetFeat(seq);
   if(!feat)
@@ -258,12 +236,6 @@ static void ShowFeatSeq (AjPFile outfile, AjPSeq seq, ajint beg, ajint end, AjPS
   tagsout = ajStrNewC("");
   posout  = ajStrNewC("");
   
-
-
-/* Check arguments */
-  ajFeatObjVerify(feat, AjCFeatTable ) ;
-
- 
   if (feat->Features) {
 
     if (!ajStrCmpC(sortlist[0], "source")) {
@@ -283,14 +255,14 @@ static void ShowFeatSeq (AjPFile outfile, AjPSeq seq, ajint beg, ajint end, AjPS
       gf = ajListIterNext (iter) ;
 
 /* check that we want to output this sense */
-      if (!forward && gf->Strand == AjStrandWatson) continue;
-      if (!reverse && gf->Strand == AjStrandCrick) continue;
-      if (!unknown && gf->Strand == AjStrandUnknown) continue;
+      if (!forward && gf->Strand == '+') continue;
+      if (!reverse && gf->Strand == '-') continue;
+      if (!unknown && gf->Strand == '\0') continue;
 
 /* check that we want to output this match of source, type */
-      if (!MatchPattern (gf->Source->name, matchsource) || 
-          !MatchPattern (gf->Type->name, matchtype) ||
-          !MatchPatternTags(gf->Tags, matchtag, matchvalue)) continue;
+      if (!embMiscMatchPattern (gf->Source, matchsource) || 
+          !embMiscMatchPattern (gf->Type, matchtype) ||
+          !showfeatMatchPatternTags(gf, matchtag, matchvalue)) continue;
 
 /* check that the feature is within the range we wish to display */
       if (beg+1 > gf->End || end+1 < gf->Start) continue;
@@ -298,16 +270,16 @@ static void ShowFeatSeq (AjPFile outfile, AjPSeq seq, ajint beg, ajint end, AjPS
 /* see if we are starting a new line */
       if (!collapse || first ||
           gf->Strand != strandout ||
-          (source && ajStrCmpCase(gf->Source->name, sourceout)) ||
-          ajStrCmpCase(gf->Type->name, typeout)) {
+          (source && ajStrCmpCase(gf->Source, sourceout)) ||
+          ajStrCmpCase(gf->Type, typeout)) {
       	if (gotoutput) {
       	  FeatOut(outfile, lineout, strandout, sourceout, posout, typeout, tagsout, width, strand, source, type, tags, position);
       	}
 /* reset the strings for the new line */
         ajStrClear(&lineout);
       	(void) ajStrAppKI(&lineout, ' ', width);
-      	ajStrAss(&sourceout, gf->Source->name);
-      	ajStrAss(&typeout, gf->Type->name);
+      	ajStrAss(&sourceout, gf->Source);
+      	ajStrAss(&typeout, gf->Type);
         strandout = gf->Strand;
         ajStrClear(&tagsout);
         ajStrClear(&posout);
@@ -316,7 +288,7 @@ static void ShowFeatSeq (AjPFile outfile, AjPSeq seq, ajint beg, ajint end, AjPS
         gotoutput = ajTrue;
       }
 /* add tags to tagout */
-      AddTags(&tagsout, gf->Tags, values);
+      AddTagsStr(&tagsout, gf, values);
 /* add positions to posout */
       AddPos(&posout, gf->Start, gf->End);
 
@@ -337,7 +309,7 @@ static void ShowFeatSeq (AjPFile outfile, AjPSeq seq, ajint beg, ajint end, AjPS
 
 
 /* tidy up */
-  (void) ajFeatTabDel(&feat);
+  (void) ajFeattabDel(&feat);
 
   ajStrDel(&tagsout);
   ajStrDel(&posout);
@@ -352,7 +324,7 @@ static void ShowFeatSeq (AjPFile outfile, AjPSeq seq, ajint beg, ajint end, AjPS
 ** Show the sequence features using clunky ascii graphics
 **
 ** @param [w] line [AjPStr] Line of ASCII graphics to write in
-** @param [r] strand [AjEFeatStrand] strand
+** @param [r] strand [char] strand
 ** @param [r] fstart [ajint] start of feature
 ** @param [r] fend [ajint] end of feature
 ** @param [r] width [ajint] width of line of features
@@ -362,7 +334,7 @@ static void ShowFeatSeq (AjPFile outfile, AjPSeq seq, ajint beg, ajint end, AjPS
 ** @@
 ******************************************************************************/
 
-static void WriteFeat(AjPStr line, AjEFeatStrand strand, ajint fstart, ajint fend,
+static void WriteFeat(AjPStr line, char strand, ajint fstart, ajint fend,
 	ajint width, ajint beg, ajint end) {
 
   ajint i;
@@ -382,10 +354,10 @@ static void WriteFeat(AjPStr line, AjEFeatStrand strand, ajint fstart, ajint fen
   
 /* write the end characters */
   if (pos1 >= 0 && pos1 < width) {
-    if (strand == AjStrandWatson) {
+    if (strand == '+') {
       *(ajStrStr(line)+pos1) = '|';
     
-    } else if (strand == AjStrandCrick) {
+    } else if (strand == '-') {
       *(ajStrStr(line)+pos1) = '<';
     
     } else {
@@ -395,10 +367,10 @@ static void WriteFeat(AjPStr line, AjEFeatStrand strand, ajint fstart, ajint fen
   }
   
   if (pos2 >= 0 && pos2 < width) {
-    if (strand == AjStrandWatson) {
+    if (strand == '+') {
       *(ajStrStr(line)+pos2) = '>';
     
-    } else if (strand == AjStrandCrick) {
+    } else if (strand == '-') {
       *(ajStrStr(line)+pos2) = '|';
     
     } else {
@@ -415,7 +387,7 @@ static void WriteFeat(AjPStr line, AjEFeatStrand strand, ajint fstart, ajint fen
 **
 ** @param [u] outfile [AjPFile] output file
 ** @param [r] lineout [AjPStr] ASCII graphics line
-** @param [r] strandout [AjEFeatStrand] strand of feature 
+** @param [r] strandout [char] strand of feature 
 ** @param [r] sourceout [AjPStr] source of feature 
 ** @param [r] posout [AjPStr] positions of feature 
 ** @param [r] typeout [AjPStr] type of feature 
@@ -430,7 +402,7 @@ static void WriteFeat(AjPStr line, AjEFeatStrand strand, ajint fstart, ajint fen
 ** @@
 ******************************************************************************/
 
-static void FeatOut(AjPFile outfile, AjPStr lineout, AjEFeatStrand strandout,
+static void FeatOut(AjPFile outfile, AjPStr lineout, char strandout,
 	AjPStr sourceout, AjPStr posout, AjPStr typeout, AjPStr tagsout,
 	ajint width, AjBool strand, AjBool source, AjBool type, AjBool
 	tags, AjBool position) {
@@ -445,9 +417,9 @@ static void FeatOut(AjPFile outfile, AjPStr lineout, AjEFeatStrand strandout,
   }
 
   if (strand) {
-    if (strandout == AjStrandWatson) {
+    if (strandout == '+') {
       (void) ajFmtPrintF(outfile, "+");
-    } else if (strandout == AjStrandCrick) {
+    } else if (strandout == '-') {
       (void) ajFmtPrintF(outfile, "-");
     } else {
       (void) ajFmtPrintF(outfile, "0");
@@ -511,12 +483,12 @@ static ajint CompareFeatSource (const void * a, const void * b) {
   if (c->Strand == d->Strand) {
 
 /* stands are the same, sort by source */
-    val = ajStrCmpCase(c->Source->name, d->Source->name);
+    val = ajStrCmpCase(c->Source, d->Source);
     if (val != 0) return val;
   
  
 /* source is the same, sort by type */
-    val = ajStrCmpCase(c->Type->name, d->Type->name);
+    val = ajStrCmpCase(c->Type, d->Type);
     if (val != 0) return val;
   
  
@@ -524,10 +496,10 @@ static ajint CompareFeatSource (const void * a, const void * b) {
     return (c->Start - d->Start);
 
 /* sort by strand */	
-  } else if (c->Strand == AjStrandWatson) {
+  } else if (c->Strand == '+') {
     return -1;
 
-  } else if (c->Strand == AjStrandUnknown && d->Strand == AjStrandCrick) {
+  } else if (c->Strand == '\0' && d->Strand == '-') {
     return -1;
 
   } else {
@@ -559,21 +531,21 @@ static ajint CompareFeatType (const void * a, const void * b) {
   if (c->Strand == d->Strand) {
 
 /* stands are the same, sort by type */
-    val = ajStrCmpCase(c->Type->name, d->Type->name);
+    val = ajStrCmpCase(c->Type, d->Type);
     if (val != 0) return val;
   
 /* type is the same, sort by source */
-    val = ajStrCmpCase(c->Source->name, d->Source->name);
+    val = ajStrCmpCase(c->Source, d->Source);
     if (val != 0) return val;
   
 /* source is the same, sort by start */
     return (c->Start - d->Start);
 
 /* sort by strand */	
-  } else if (c->Strand == AjStrandWatson) {
+  } else if (c->Strand == '+') {
     return -1;
 
-  } else if (c->Strand == AjStrandUnknown && d->Strand == AjStrandCrick) {
+  } else if (c->Strand == '\0' && d->Strand == '-') {
     return -1;
 
   } else {
@@ -610,18 +582,18 @@ static ajint CompareFeatPos (const void * a, const void * b) {
     if (val != 0) return val;
 
 /* starts are the same, sort by type */
-    val = ajStrCmpCase(c->Type->name, d->Type->name);
+    val = ajStrCmpCase(c->Type, d->Type);
     if (val != 0) return val;
   
 /* type is the same, sort by source */
-    val = ajStrCmpCase(c->Source->name, d->Source->name);
+    val = ajStrCmpCase(c->Source, d->Source);
     return val;
   
 /* sort by strand */	
-  } else if (c->Strand == AjStrandWatson) {
+  } else if (c->Strand == '+') {
     return -1;
 
-  } else if (c->Strand == AjStrandUnknown && d->Strand == AjStrandCrick) {
+  } else if (c->Strand == '\0' && d->Strand == '-') {
     return -1;
 
   } else {
@@ -630,50 +602,12 @@ static ajint CompareFeatPos (const void * a, const void * b) {
 
 }
 
-
-
-/** @funcstatic MatchPattern ***********************************************
-**
-** Does a simple OR'd test of matches to (possibly wildcarded) words.
-** The words are tested one at a time until a match is found.
-** Whitespace and , ; | characters can separate the words in the pattern.
-**
-**
-** @param [r] str [AjPStr] string to test
-** @param [r] pattern [AjPStr] pattern to match with
-**
-** @return [AjBool] ajTrue = found a match
-** @@
-******************************************************************************/
-
-static AjBool MatchPattern (AjPStr str, AjPStr pattern) {
-    
-  char whiteSpace[] = " \t\n\r,;|";      /* skip whitespace and , ; | */
-  AjPStrTok tokens;
-  AjPStr key=NULL;
-  AjBool val = ajFalse;		/* returned value */
-      
-  tokens = ajStrTokenInit(pattern, whiteSpace);
-  while (ajStrToken( &key, &tokens, NULL)) {
-    if (ajStrMatchWild(str, key)) {
-      val = ajTrue;
-      break;
-    }
-  }
-  (void) ajStrTokenClear( &tokens);
-  (void) ajStrDel(&key);
-
-  return val;
-
-}
-
-
-/** @funcstatic MatchPatternTags ***********************************************
+/** @funcstatic showfeatMatchPatternTags **************************************
 **
 ** Checks for a match of the tagpattern and valuepattern to at least one
 ** tag=value pair
 **
-** @param [r] taglist [AjPList] list of tags to test
+** @param [r] feat [AjPFeature] Feature to process
 ** @param [r] tpattern [AjPStr] tags pattern to match with
 ** @param [r] vpattern [AjPStr] values pattern to match with
 **
@@ -681,10 +615,12 @@ static AjBool MatchPattern (AjPStr str, AjPStr pattern) {
 ** @@
 ******************************************************************************/
 
-static AjBool MatchPatternTags (AjPList taglist, AjPStr tpattern, AjPStr vpattern) {
+static AjBool showfeatMatchPatternTags (AjPFeature feat, AjPStr tpattern,
+				AjPStr vpattern) {
     
-  AjIList titer;                /* iterator for taglist */
-  LPFeatTagValue tag;		/* tag structure */
+  AjIList titer;                /* iterator for feat */
+  AjPStr tagnam;		/* tag structure */
+  AjPStr tagval;		/* tag structure */
   AjBool val = ajFalse;		/* returned value */
   AjBool tval;			/* tags result */
   AjBool vval;			/* value result */
@@ -692,19 +628,17 @@ static AjBool MatchPatternTags (AjPList taglist, AjPStr tpattern, AjPStr vpatter
 
 /* if there are no tags to match, but the patterns are both '*', then
 allow this as a match */
-  if (!ajListLength(taglist) && 
-      !ajStrCmpC(tpattern, "*") &&
+  if (!ajStrCmpC(tpattern, "*") &&
       !ajStrCmpC(vpattern, "*")) 
       return ajTrue;
 
 /* iterate through the tags and test for match to patterns */
-  titer = ajListIter(taglist);
-  while (ajListIterMore(titer)) {
-    tag = (LPFeatTagValue)ajListIterNext(titer);
-    tval = MatchPattern(tag->Tag->VocTag->name, tpattern);
-    if(tag->Tag->VocTag->flags & TAG_VOID) /* if tag has no value */ 
+  titer = ajFeatTagIter(feat);
+  while (ajFeatTagval(titer, &tagnam, &tagval)) {
+    tval = embMiscMatchPattern(tagnam, tpattern);
+    if(!ajStrLen(tagval)) /* if tag has no value */ 
       return val;
-    vval = MatchPattern(tag->Value, vpattern);
+    vval = embMiscMatchPattern(tagval, vpattern);
     if (tval && vval) {
       val = ajTrue;
       break;
@@ -736,35 +670,35 @@ static void AddPos(AjPStr *posout, ajint start, ajint end) {
   ajFmtPrintAppS(posout, "%d-%d", start, end);
 
 }
-/** @funcstatic AddTags ***********************************************
+/** @funcstatic AddTagsStr ***********************************************
 **
 ** writes the tags to the tagsout string
 **
 ** @param [r] tagsout [AjPStr *] tags out string
-** @param [r] taglist [AjPList] list of tags
+** @param [r] feat [AjPFeature] Feature to use
 ** @param [r] values [AjBool] display values of tags
 **
 ** @return [void] 
 ** @@
 ******************************************************************************/
 
-static void AddTags(AjPStr *tagsout, AjPList taglist, AjBool values) {
+static void AddTagsStr(AjPStr *tagsout, AjPFeature feat, AjBool values) {
 
   AjIList titer;                /* iterator for taglist */
-  LPFeatTagValue tagstr;	/* tag structure */
+  AjPStr tagnam = NULL;
+  AjPStr tagval = NULL;
 
 /* iterate through the tags and test for match to patterns */
 /* debug - there is something wrong with the list */
 
-  titer = ajListIter(taglist);
-  while (ajListIterMore(titer)) {
-    tagstr = (LPFeatTagValue)ajListIterNext(titer);
-/* don't display the translation tag - it is far too ajlong :-) */
-    if (ajStrCmpC(tagstr->Tag->VocTag->name, "translation")) {
+  titer = ajFeatTagIter(feat);
+  while (ajFeatTagval(titer, &tagnam, &tagval)) {
+/* don't display the translation tag - it is far too long :-) */
+    if (ajStrCmpC(tagnam, "translation")) {
       if (values == ajTrue) {
-        (void) ajFmtPrintAppS(tagsout, " %S=\"%S\"", tagstr->Tag->VocTag->name, tagstr->Value);
+        (void) ajFmtPrintAppS(tagsout, " %S=\"%S\"", tagnam, tagval);
       } else {
-        (void) ajFmtPrintAppS(tagsout, " %S", tagstr->Tag->VocTag->name);
+        (void) ajFmtPrintAppS(tagsout, " %S", tagnam);
       }
     }
   }

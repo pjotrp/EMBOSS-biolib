@@ -60,7 +60,7 @@ int main(int argc, char **argv)
   ajint offset;
   AjBool html;
   AjPStr descriptionline;
-  AjPFeatTable feat;
+  AjPFeattable feat;
   ajint orfminsize;
   AjPTrn trnTable;
   AjBool translation;
@@ -238,7 +238,7 @@ int main(int argc, char **argv)
 
 /* tidy up */
     (void) embShowDel(&ss);
-    (void) ajFeatTabDel(&feat);
+    (void) ajFeattabDel(&feat);
     while(ajListPop(restrictlist,(void **)&mm))
 	embMatMatchDel(&mm);
     (void) ajListDel(&restrictlist);

@@ -33,7 +33,8 @@ void countbases(char *seq, char *bases, ajint window, ajint *cx, ajint *cy,
 		ajint *cxpy);
 void identify(AjPFile outf, float *obsexp, float *xypc, AjBool *thresh,
 	      ajint begin, ajint len, ajint shift, char *bases, char *name,
-	      ajint minlen, float minobsexp, float minpc,AjPFeatTabOut featout);
+	      ajint minlen, float minobsexp, float minpc,
+	      AjPFeattabOut featout);
 void reportislands(AjPFile outf, AjBool *thresh, char *bases, char *name,
 		   float minobsexp, float minpc, ajint minlen, ajint begin,
 		   ajint len);
@@ -42,7 +43,8 @@ void plotit(char *seq, ajint begin, ajint len, ajint shift, float *obsexp,
 	    ajint plstart, ajint plend, AjBool doobsexp,
 	    AjBool docg, AjBool dopc, AjPGraph mult);
 
-void dumpfeatout(AjPFeatTabOut featout, AjBool *thresh, char *seqname,int begin,int len);
+void dumpfeatout(AjPFeattabOut featout, AjBool *thresh, char *seqname,
+		 ajint begin, ajint len);
 
 
 int main(int argc, char **argv)
@@ -78,7 +80,7 @@ int main(int argc, char **argv)
     
     ajint i;
     ajint maxarr;
-    AjPFeatTabOut featout=NULL;
+    AjPFeattabOut featout=NULL;
 
     
     (void) ajGraphInit("cpgplot",argc,argv);
@@ -252,7 +254,7 @@ void countbases(char *seq, char *bases, ajint window, ajint *cx, ajint *cy,
 void identify(AjPFile outf, float *obsexp, float *xypc, AjBool *thresh,
 	      ajint begin, ajint len, ajint shift, char *bases, char *name,
 	      ajint minlen, float minobsexp, float minpc,
-	      AjPFeatTabOut featout)
+	      AjPFeattabOut featout)
 {
   static ajint avwindow=10;
   float avpc;
@@ -501,24 +503,23 @@ void plotit(char *seq, ajint begin, ajint len, ajint shift, float *obsexp,
 	AJFREE (tmp);
 }
 
-void dumpfeatout(AjPFeatTabOut featout, AjBool *thresh, char *seqname,
-		 ajint begin,int len)
+void dumpfeatout(AjPFeattabOut featout, AjBool *thresh, char *seqname,
+		 ajint begin, ajint len)
 {
     AjBool island;
     ajint startpos=0;
     ajint endpos;
     ajint i;
-    AjPFeatTable feattable;
-    AjPFeatLexicon dict=NULL;
-    AjPStr name=NULL,score=NULL,desc=NULL,source=NULL,type=NULL;
-    AjEFeatStrand strand=AjStrandWatson;
-    AjEFeatFrame frame=AjFrameUnknown;
+    AjPFeattable feattable;
+    AjPStr name=NULL,desc=NULL,source=NULL,type=NULL;
+    char strand='+';
+    ajint frame=0;
     AjPFeature feature;
-    
+    float score = 0.0;
+
     ajStrAssC(&name,seqname);
     
-    feattable = ajFeatTabNew(name,dict);
-    dict = feattable->Dictionary;
+    feattable = ajFeattableNewDna(name);
     
     ajStrAssC(&source,"cpgplot");
     ajStrAssC(&type,"misc_feature");
@@ -557,8 +558,7 @@ void dumpfeatout(AjPFeatTabOut featout, AjBool *thresh, char *seqname,
     }
     ajFeatSortByStart(feattable);
     ajFeaturesWrite (featout, feattable);
-    ajFeatTabDel(&feattable);
-    ajFeatDeleteDict(dict);
+    ajFeattabDel(&feattable);
 
     ajStrDel(&source);
     ajStrDel(&type);

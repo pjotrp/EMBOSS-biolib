@@ -34,7 +34,7 @@ void findorfs( AjPSeqout *outseq, AjPFile *outf, ajint s, ajint len,
 void ajbseq(AjPSeqout *outseq, char *seq, ajint begin, int
 	end, char *name, ajint count);
 
-void dumptofeat(AjPFeatTabOut featout,int from, ajint to,
+void dumptofeat(AjPFeattabOut featout, ajint from, ajint to,
 	char *p, char *seqname, ajint begin, ajint min_orflength);
 
 int main(int argc, char **argv)
@@ -45,7 +45,7 @@ int main(int argc, char **argv)
     AjPStr    strand=NULL;
     AjPStr    substr=NULL;
     AjPSeqout outseq=NULL;
-    AjPFeatTabOut featout=NULL;
+    AjPFeattabOut featout=NULL;
     
     ajint begin;
     ajint end;
@@ -159,23 +159,22 @@ void ajbseq(AjPSeqout *outseq, char *seq, ajint begin, int
     return;
 }
 
-void dumptofeat(AjPFeatTabOut featout,int from, ajint to,
+void dumptofeat(AjPFeattabOut featout, ajint from, ajint to,
 	char *p, char *seqname, ajint begin, ajint min_orflength){
   ajint i;
   ajint count = 1;
   ajint last_stop = 0;
   ajint orflength = 0;
-  AjPFeatTable feattable;
-  AjPFeatLexicon dict=NULL;
-  AjPStr name=NULL,score=NULL,desc=NULL,source=NULL,type=NULL;
-  AjEFeatStrand strand=AjStrandWatson;
-  AjEFeatFrame frame=AjFrameUnknown;
+  AjPFeattable feattable;
+  AjPStr name=NULL,desc=NULL,source=NULL,type=NULL;
+  char strand='+';
+  ajint frame=0;
   AjPFeature feature;
+  float score = 0.0;
   
   ajStrAssC(&name,seqname);
   
-  feattable = ajFeatTabNew(name,dict);
-  dict = feattable->Dictionary;
+  feattable = ajFeattableNewProt(name);
 
   ajStrAssC(&source,"checktrans");
   ajStrAssC(&type,"misc_feature");
@@ -204,6 +203,6 @@ void dumptofeat(AjPFeatTabOut featout,int from, ajint to,
   }
   ajFeatSortByStart(feattable);
   ajFeaturesWrite (featout, feattable);
-  ajFeatTabDel(&feattable);
+  ajFeattabDel(&feattable);
     
 }

@@ -5,9 +5,6 @@ AjPList buildListFromString(AjPStr string, AjPSeq seq, AjBool feat){
   AjPRegexp commaseparated = NULL;
   AjPList newlist = NULL;
   AjPStr test=NULL;
-  AjPFeatVocFeat item=NULL;
-  AjPFeatVocTag item2=NULL;
-
 
   if(ajStrLen(string) <= 1)
     return NULL;
@@ -21,6 +18,7 @@ AjPList buildListFromString(AjPStr string, AjPSeq seq, AjBool feat){
     /*    ajUser("remainder = *%S*\n",string);*/
 
     if(feat){
+      /*
       item = CheckDictForFeature(seq->Fttable,test);
 
       if(item){
@@ -45,7 +43,8 @@ AjPList buildListFromString(AjPStr string, AjPSeq seq, AjBool feat){
 	ajWarn("%S not a valid Tag hence not used\n",test);
       }
       ajStrDel(&test);
-   }
+ */
+  }
   }
 
   ajRegFree(&commaseparated);
@@ -65,9 +64,12 @@ int main(int argc, char **argv)
 
   embInit ("seqretfeat", argc, argv);
 
+  ajFeatTest ();
+
+  /*
   seq        = ajAcdGetSeq ("sequence");
   seqout     = ajAcdGetSeqout ("outseq");
-
+  */
   ignore     = ajAcdGetString("featignore");
   onlyallow  = ajAcdGetString("featonlyallow");
 
@@ -77,32 +79,41 @@ int main(int argc, char **argv)
   sortbytype = ajAcdGetBool("sortbytype");
   sortbystart = ajAcdGetBool("sortbystart");
 
+  ajExit();
 
   /* Process Features */
   newlist =  buildListFromString(ignore, seq, ajTrue);
   if(newlist){
     ajDebug("Process featignore\n");
-    ajFeatIgnoreFeat(seq->Fttable,newlist);
+    /*
+      ajFeatIgnoreFeat(seq->Fttable,newlist);
+    */
     if(ajStrLen(onlyallow)> 1)
       ajWarn("-featonlyallow option ignored as -featignore specified aswell");
   }
   else {
     newlist =  buildListFromString(onlyallow, seq, ajTrue);
+    /*
     if(newlist)
       ajFeatOnlyAllowFeat(seq->Fttable,newlist);
+    */
   }
 
   /* Process Tags */
   newlist =  buildListFromString(ignore2, seq, ajFalse);
   if(newlist){
+    /*
     ajFeatIgnoreTag(seq->Fttable,newlist);
+    */
     if(ajStrLen(onlyallow2)> 1)
       ajWarn("-tagonlyallow option ignored as -tagignore specified aswell");
   }
   else {
     newlist =  buildListFromString(onlyallow2, seq, ajFalse);
-    if(newlist)
+    /*
+      if(newlist)
       ajFeatOnlyAllowTag(seq->Fttable,newlist);
+    */
   }
 
   if(sortbytype)

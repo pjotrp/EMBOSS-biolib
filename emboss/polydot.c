@@ -79,9 +79,9 @@ int main(int argc, char **argv)
     char ptr[10];
     float ticklen;
     float onefifth;
-    AjPFeatTable *tabptr=NULL;
+    AjPFeattable *tabptr=NULL;
     AjPStr ufo=NULL,format=NULL,ext=NULL;
-    AjPFeatTabOut seq1out = NULL;
+    AjPFeattabOut seq1out = NULL;
     AjBool text;
     AjPStr sajb=NULL;
     
@@ -281,7 +281,7 @@ int main(int argc, char **argv)
 
     if(dumpfeat)
     {
-	seq1out = ajFeatTabOutNew();
+	seq1out = ajFeattabOutNew();
 	for(i=0;i<ajSeqsetSize(seqset);i++)
 	{
 	    seq1 = ajSeqsetGetSeq (seqset, i);
@@ -290,7 +290,7 @@ int main(int argc, char **argv)
 	    ajStrAppC(&ufo,ajSeqName(seq1));
 	    ajStrAppC(&ufo,".");
 	    ajStrApp(&ufo,ext);
-	    ajFeatTabOutOpen(seq1out, ufo);
+	    ajFeattabOutOpen(seq1out, ufo);
 	    ajFeaturesWrite(seq1out, tabptr[i]);
 	}
     }

@@ -26,9 +26,8 @@ static void diff (AjPList matchlist, AjPSeq seq1, AjPSeq seq2, AjPFile
 	outfile, AjBool columns);
 
 
-static void WordMatchListConvDiffToFeat(AjPList list, AjPFeatTable *tab1,
-                AjPFeatTable *tab2, AjPStr seq1name, AjPStr seq2name, AjPSeq
-                seq1, AjPSeq seq2);
+static void WordMatchListConvDiffToFeat(AjPList list, AjPFeattable *tab1,
+                AjPFeattable *tab2, AjPSeq seq1, AjPSeq seq2);
                                 
 int main(int argc, char **argv)
 {
@@ -38,8 +37,8 @@ int main(int argc, char **argv)
   AjPTable seq1MatchTable =0 ;
   AjPList matchlist=NULL ;
   AjPFile outfile;
-  AjPFeatTable Tab1=NULL,Tab2=NULL;
-  AjPFeatTabOut seq1out = NULL, seq2out = NULL;
+  AjPFeattable Tab1=NULL,Tab2=NULL;
+  AjPFeattabOut seq1out = NULL, seq2out = NULL;
   AjBool columns;	/* format output report files in columns */
     
   embInit("diffseq", argc, argv);
@@ -68,7 +67,7 @@ int main(int argc, char **argv)
   if (matchlist) {
 /* output the gff files */                                
     (void) WordMatchListConvDiffToFeat(matchlist, &Tab1, &Tab2, 
-	  seq1->Name, seq2->Name, seq1, seq2);
+	  seq1, seq2);
 
 /* make the output file */
     (void) diff (matchlist, seq1, seq2, outfile, columns);
@@ -87,47 +86,44 @@ int main(int argc, char **argv)
 }
 
 
-/* @funcstatic WordMatchListConvDiffToFeat ***********************************************
+/* @funcstatic WordMatchListConvDiffToFeat ***********************************
 **
 ** convert the word table differences to feature tables.
 **
-** @param [Pr] list [AjPList] non-overlapping match list to be printed (sorted by position).
-** @param [rw] tab1 [AjPFeatTable*] feature table for sequence 1
-** @param [rw] tab2 [AjPFeatTable*] feature table for sequence 2
-** @param [r] seq1name [AjPStr] sequence name
-** @param [r] seq2name [AjPStr] secondsequence name
+** @param [Pr] list [AjPList] non-overlapping match list to be printed
+**                            (sorted by position).
+** @param [rw] tab1 [AjPFeattable*] feature table for sequence 1
+** @param [rw] tab2 [AjPFeattable*] feature table for sequence 2
 ** @param [r] seq1 [AjPSeq] sequence 1
 ** @param [r] seq2 [AjPSeq] sequence 2
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void WordMatchListConvDiffToFeat(AjPList list, AjPFeatTable *tab1,
-        AjPFeatTable *tab2, AjPStr seq1name, AjPStr seq2name, AjPSeq
-        seq1, AjPSeq seq2) {
-  AjEFeatStrand strand=AjStrandWatson;
-  AjEFeatFrame frame=AjFrameUnknown;
-  AjPStr score=NULL,source=NULL,type=NULL,note=NULL,replace=NULL,desc=NULL;
+static void WordMatchListConvDiffToFeat(AjPList list, AjPFeattable *tab1,
+        AjPFeattable *tab2,  AjPSeq seq1, AjPSeq seq2) {
+  char strand='+';
+  ajint frame=0;
+  AjPStr source=NULL,type=NULL,note=NULL,replace=NULL,desc=NULL;
   AjPFeature feature;
   AjIList iter=NULL;
-  AjPFeatLexicon dict=NULL;
   ajint misstart1 = -1;   /* start of mismatch region in seq1 */
   ajint misstart2 = -1;   /* start of mismatch region in seq2 */
   ajint misend1, misend2; /* end of mismatch region */
   AjPStr notestr=NULL, replacestr=NULL;
+  float score = 0.0;
 
-  dict = ajFeatGffDictionaryCreate(); 
   if(!*tab1)
-    *tab1 = ajFeatTabNew(seq1name,dict);
+    *tab1 = ajFeattableNewSeq(seq1);
   if(!*tab2)
-    *tab2 = ajFeatTabNew(seq2name,dict);
+    *tab2 = ajFeattableNewSeq(seq2);
   
   ajStrAssC(&source,"diffseq");
   ajStrAssC(&type,"conflict");
-  ajStrAssC(&score,"1.0");
   ajStrAssC(&note,"note");
   ajStrAssC(&replace,"replace");
-  
+  score = 1.0;
+
   iter = ajListIter(list);
   while(ajListIterMore(iter)) {
     EmbPWordMatch p = (EmbPWordMatch) ajListIterNext (iter) ;
@@ -143,23 +139,23 @@ void WordMatchListConvDiffToFeat(AjPList list, AjPFeatTable *tab1,
                            misstart1+1, misend1+1, score, 
                            strand, frame, desc, 0, 0) ;
         if (misstart1 == misend1 && misstart2 == misend2) {
-          ajFmtPrintS(&notestr, "SNP in %S", seq2name);
+          ajFmtPrintS(&notestr, "SNP in %S", ajSeqGetName(seq2));
         } else if (misstart2 > misend2) {
-          ajFmtPrintS(&notestr, "Insertion of %d bases in %S", misend1 - misstart1 +1, seq1name);
+          ajFmtPrintS(&notestr, "Insertion of %d bases in %S", misend1 - misstart1 +1, ajSeqGetName(seq1));
         } else {
-/*          ajFmtPrintS(&notestr, "%S mismatch length=%d. %S mismatch length=%d.", seq1name, misend1 - misstart1 +1, seq2name, misend2 - misstart2 +1);*/
-          ajFmtPrintS(&notestr, "%S", seq2name);
+	  /*          ajFmtPrintS(&notestr, "%S mismatch length=%d. %S mismatch length=%d.", ajSeqGetName(seq1), misend1 - misstart1 +1, ajSeqGetName(seq2), misend2 - misstart2 +1);*/
+          ajFmtPrintS(&notestr, "%S", ajSeqGetName(seq2));
           
         }
 
-        ajFeatSetTagValue(feature, note, notestr, ajFalse);
+        ajFeatTagSet(feature,  note, notestr);
 
         if (misstart2 <= misend2) {
           ajStrAssSub(&replacestr, ajSeqStr(seq2), misstart2, misend2);
         } else {
           ajStrAssC(&replacestr, "");
         }
-        ajFeatSetTagValue(feature, replace, replacestr, ajFalse);
+        ajFeatTagSet(feature, replace, replacestr);
       }
 
       if (misstart2 <= misend2) {       /* is there a gap between the matches? */
@@ -170,22 +166,22 @@ void WordMatchListConvDiffToFeat(AjPList list, AjPFeatTable *tab1,
                            strand, frame, desc, 0, 0) ;
 
         if (misstart2 == misend2 && misstart1 == misend1) {
-          ajFmtPrintS(&notestr, "SNP in %S", seq1name);
+          ajFmtPrintS(&notestr, "SNP in %S", ajSeqGetName(seq1));
         } else if (misstart1 > misend1) {
-          ajFmtPrintS(&notestr, "Insertion of %d bases in %S", misend2 - misstart2 +1, seq2name);
+          ajFmtPrintS(&notestr, "Insertion of %d bases in %S", misend2 - misstart2 +1, ajSeqGetName(seq2));
         } else {
-/*          ajFmtPrintS(&notestr, "%S mismatch length=%d. %S mismatch length=%d.", seq2name, misend2 - misstart2 +1, seq1name, misend1 - misstart1 +1);*/
-          ajFmtPrintS(&notestr, "%S", seq1name);
+/*          ajFmtPrintS(&notestr, "%S mismatch length=%d. %S mismatch length=%d.", ajSeqGetName(seq2), misend2 - misstart2 +1, ajSeqGetName(seq1), misend1 - misstart1 +1);*/
+          ajFmtPrintS(&notestr, "%S", ajSeqGetName(seq1));
         }
 
-        ajFeatSetTagValue(feature, note, notestr, ajFalse);
+        ajFeatTagSet(feature, note, notestr);
 
         if (misstart1 <= misend1) {
           ajStrAssSub(&replacestr, ajSeqStr(seq1), misstart1, misend1);
         } else {
           ajStrAssC(&replacestr, "");
         }
-        ajFeatSetTagValue(feature, replace, replacestr, ajFalse);
+        ajFeatTagSet(feature, replace, replacestr);
       }
 
     }
@@ -199,11 +195,10 @@ void WordMatchListConvDiffToFeat(AjPList list, AjPFeatTable *tab1,
   ajListIterFree(iter);
   ajStrDel(&source);
   ajStrDel(&type);
-  ajStrDel(&score);
   ajStrDel(&note);
   ajStrDel(&replace);
 
-/* These are still used in ajFeatSetTagValue()
+/* These are still used in ajFeatTagSet()
   ajStrDel(&notestr);
   ajStrDel(&replacestr);
 */
@@ -216,29 +211,30 @@ void WordMatchListConvDiffToFeat(AjPList list, AjPFeatTable *tab1,
 ** Don't write out the translation - is it often far too long!
 **
 ** @param [r] outfile [AjPFile] output file
-** @param [r] taglist [AjPList] list of tags
+** @param [r] feat [AjPFeature] Feature to be processed
 ** @param [r] values [AjBool] display values of tags
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void AddTags(AjPFile outfile, AjPList taglist, AjBool values) {
+static void AddTags(AjPFile outfile, AjPFeature feat, AjBool values) {
 
   AjIList titer;                /* iterator for taglist */
-  LPFeatTagValue tagstr;        /* tag structure */
+  static AjPStr tagnam = NULL;
+  static AjPStr tagval = NULL;
 
 /* iterate through the tags and test for match to patterns */
 
-  titer = ajListIter(taglist);
-  while (ajListIterMore(titer)) {
-    tagstr = (LPFeatTagValue)ajListIterNext(titer);
-/* don't display the translation tag - it is far too ajlong :-) */
-    if (ajStrCmpC(tagstr->Tag->VocTag->name, "translation")) {
+  titer = ajFeatTagIter(feat);
+  while (ajFeatTagval (titer, &tagnam, &tagval)) {
+
+/* don't display the translation tag - it is far too long :-) */
+    if (ajStrCmpC(tagnam, "translation")) {
       if (values == ajTrue) {
-        (void) ajFmtPrintF(outfile, " %S=\"%S\"", tagstr->Tag->VocTag->name, tagstr->Value);
+        (void) ajFmtPrintF(outfile, " %S=%S", tagnam, tagval);
       } else {
-        (void) ajFmtPrintF(outfile, " %S", tagstr->Tag->VocTag->name);
+        (void) ajFmtPrintF(outfile, " %S", tagnam);
       }
     }
   }
@@ -253,44 +249,20 @@ static void AddTags(AjPFile outfile, AjPList taglist, AjBool values) {
 ** Don't write out the source feature - far too irritating!
 **
 ** @param [r] outfile [AjPFile] Output file containing report.
-** @param [r] feat [AjPFeatTable] Feature table to search
+** @param [r] feat [AjPFeattable] Feature table to search
 ** @param [r] start [ajint] Start position of region (in human coordinates)
 ** @param [r] end [ajint] End position of region (in human coordinates)
 ** @return [void] 
 ** @@
 ******************************************************************************/
 
-static void Features(AjPFile outfile, AjPFeatTable feat, ajint start, ajint end) {
+static void Features(AjPFile outfile, AjPFeattable feat, ajint start, ajint end) {
 
   AjIList    iter = NULL ;
   AjPFeature gf   = NULL ;
       
-/* reminder of the AjSFeature structure for handy reference
-*
-*
-*  AjEFeatClass      Class ;
-*  AjPFeatTable      Owner ;
-*  AjPFeatVocFeat     Source ;
-*  AjPFeatVocFeat     Type ;
-*  ajint               Start ;
-*  ajint               End; 
-*  ajint               Start2;
-*  ajint               End2;
-*  AjPStr            Score ;
-*  AjPList           Tags ;     a.k.a. the [group] field tag-values of GFF2 
-*  AjPStr            Comment ;
-*  AjEFeatStrand     Strand ;
-*  AjEFeatFrame      Frame ;
-*  AjPStr            desc ;
-*  ajint               Flags;
-*
-*/
-
   if(!feat)
     return;
-
-/* Check arguments */
-  ajFeatObjVerify(feat, AjCFeatTable ) ;
 
   if (feat->Features) {
     iter = ajListIter(feat->Features) ;
@@ -301,11 +273,11 @@ static void Features(AjPFile outfile, AjPFeatTable feat, ajint start, ajint end)
       if (start > gf->End || end < gf->Start) continue;
 
 /* don't output the 'source' feature - it is very irritating! */
-      if (!ajStrCmpC(gf->Type->name, "source")) continue;
+      if (!ajStrCmpC(gf->Type, "source")) continue;
 
 /* write out the feature details */
-      (void) ajFmtPrintF(outfile, "Feature: %S %d-%d", gf->Type->name, gf->Start, gf->End);
-      (void) AddTags(outfile, gf->Tags, ajTrue);
+      (void) ajFmtPrintF(outfile, "Feature: %S %d-%d", gf->Type, gf->Start, gf->End);
+      (void) AddTags(outfile, gf, ajTrue);
     }
     ajListIterFree(iter) ;
   }
@@ -345,8 +317,8 @@ static void diff (AjPList matchlist, AjPSeq seq1, AjPSeq seq2, AjPFile
   ajint len1, len2;
 
 /* get the feature table of the sequences */
-  AjPFeatTable feat1 = ajSeqGetFeat(seq1);
-  AjPFeatTable feat2 = ajSeqGetFeat(seq2);
+  AjPFeattable feat1 = ajSeqGetFeat(seq1);
+  AjPFeattable feat2 = ajSeqGetFeat(seq2);
 
 
 /* title line */
@@ -466,7 +438,7 @@ static void diff (AjPList matchlist, AjPSeq seq1, AjPSeq seq2, AjPFile
   ajStrDel(&s1);
   ajStrDel(&s2);
   ajStrDel(&tmp);
-  (void) ajFeatTabDel(&feat1);
-  (void) ajFeatTabDel(&feat2);
+  (void) ajFeattabDel(&feat1);
+  (void) ajFeattabDel(&feat2);
 
 }
