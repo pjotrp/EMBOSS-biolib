@@ -121,8 +121,8 @@ int main(int argc, char **argv)
 
     embInit("est2genome", argc, argv);
 
-    estset  = ajAcdGetSeqall("est");
-    genome  = ajAcdGetSeq("genome");
+    estset  = ajAcdGetSeqall("estsequence");
+    genome  = ajAcdGetSeq("genomesequence");
     outfile = ajAcdGetOutfile("outfile");
 
     /* the alignment penalties */

@@ -78,8 +78,8 @@ int main(int argc, char **argv)
     seq1    = ajAcdGetSeq("asequence");
     seq2    = ajAcdGetSeq("bsequence");
     report  = ajAcdGetReport("outfile");
-    seq1out = ajAcdGetFeatout("afeatout");
-    seq2out = ajAcdGetFeatout("bfeatout");
+    seq1out = ajAcdGetFeatout("aoutfeat");
+    seq2out = ajAcdGetFeatout("boutfeat");
     columns = ajAcdGetBool("columns");
 
     /*

@@ -205,7 +205,7 @@ int main(int argc, char **argv)
 ** @param [r] t [AjPTable] table of accession numbers
 ** @param [r] seq [AjPSeq] test sequence
 ** @param [r] minlength [ajint] minimum length of pattern
-** @param [r] btable [AjPtable] BF lines from transfac (if any)
+** @param [r] btable [AjPTable] BF lines from transfac (if any)
 ** @@
 ******************************************************************************/
 

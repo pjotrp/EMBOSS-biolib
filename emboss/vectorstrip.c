@@ -155,7 +155,7 @@ int main(int argc, char **argv)
     seqall     = ajAcdGetSeqall("sequence");
     outf       = ajAcdGetOutfile("outfile");
     seqout     = ajAcdGetSeqoutall("outseq");
-    vec        = ajAcdGetBool("vectorfile");
+    vec        = ajAcdGetToggle("vectorfile");
     besthits   = ajAcdGetBool("besthits");
     fiveprime  = ajAcdGetString("linkerA");
     threeprime = ajAcdGetString("linkerB");

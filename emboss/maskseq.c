@@ -48,7 +48,7 @@ int main(int argc, char **argv)
     seqout   = ajAcdGetSeqout("outseq");
     regions  = ajAcdGetRange("regions");
     maskchar = ajAcdGetString("maskchar");
-    tolower  = ajAcdGetBool("tolower");
+    tolower  = ajAcdGetToggle("tolower");
 
     beg = ajSeqBegin(seq)-1;
     end = ajSeqEnd(seq)-1;

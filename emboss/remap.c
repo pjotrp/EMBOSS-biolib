@@ -1266,7 +1266,7 @@ static void remap_RestrictPreferred(AjPList l, AjPTable t)
 **
 ** @param [r] str [AjPStr] String to test
 **
-** @return [ajBool] True is ambiguous bases found
+** @return [AjBool] True is ambiguous bases found
 ** @@
 ******************************************************************************/
 
@@ -1278,10 +1278,10 @@ static AjBool remap_Ambiguous(AjPStr str)
     for (ipos=0; ipos<ajStrLen(str); ipos++) 
     {
     	chr = ajStrChar(str, ipos);
-    	if (tolower(chr) != 'a' &&
-    	    tolower(chr) != 'c' &&
-    	    tolower(chr) != 'g' &&
-    	    tolower(chr) != 't'
+    	if (tolower((int)chr) != 'a' &&
+    	    tolower((int)chr) != 'c' &&
+    	    tolower((int)chr) != 'g' &&
+    	    tolower((int)chr) != 't'
     	    )
             return ajTrue;
     }

@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     embInit("biosed", argc, argv);
 
     seqall  = ajAcdGetSeqall("sequence");
-    delete  = ajAcdGetBool("delete");
+    delete  = ajAcdGetToggle("delete");
     target  = ajAcdGetString("target");
     replace = ajAcdGetString("replace");
     outseq  = ajAcdGetSeqout("outseq");

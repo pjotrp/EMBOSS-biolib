@@ -69,7 +69,7 @@ int main(int argc, char **argv)
     seqall  = ajAcdGetSeqall("sequence");
     score   = ajAcdGetInt("score");
     outf    = ajAcdGetOutfile("outfile");
-    featout = ajAcdGetFeatout("featout");
+    featout = ajAcdGetFeatout("outfeat");
 
 
     substr = ajStrNew();

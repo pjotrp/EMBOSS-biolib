@@ -50,7 +50,6 @@ int main(int argc, char **argv, char **env)
 
     AjBool only_dend;
     AjBool are_prot = ajFalse;
-    AjBool insist;
     AjBool do_slow;
     AjBool use_dend;
     AjPStr dend_file = NULL;
@@ -67,7 +66,6 @@ int main(int argc, char **argv, char **env)
     float pw_gapc;
     float pw_gapv;
 
-    AjPStr *slowstr;
     AjPStr pwmstr = NULL;
     char   pwmc   = '\0';
     AjPStr pwdstr = NULL;
@@ -119,17 +117,11 @@ int main(int argc, char **argv, char **env)
 
     dend_outfile = ajAcdGetOutfile("dendoutfile");
 
-    only_dend = ajAcdGetBool("onlydend");
-    use_dend  = ajAcdGetBool("dend");
+    only_dend = ajAcdGetToggle("onlydend");
+    use_dend  = ajAcdGetToggle("dend");
     dend_file = ajAcdGetString("dendfile");
-    insist  = ajAcdGetBool("insist");
 
-    slowstr = ajAcdGetList("slowfast");
-
-    if(*ajStrStr(*slowstr)=='s')
-	do_slow = ajTrue;
-    else
-	do_slow = ajFalse;
+    do_slow = ajAcdGetToggle("slow");
 
     ktup      = ajAcdGetInt("ktup");
     gapw      = ajAcdGetInt("gapw");
@@ -222,7 +214,7 @@ int main(int argc, char **argv, char **env)
     while(ajSeqallNext(seqall, &seq))
     {
         /*
-        **  Check sequencs are all of the same type
+        **  Check sequences are all of the same type
         **  Still to be done
         **  Write out sequences
         */
@@ -258,7 +250,7 @@ int main(int argc, char **argv, char **env)
 	    ajStrAppC(&cmd, " -align");
 
     /* Set sequence type from information from acd file */
-    if(are_prot || insist)
+    if(are_prot)
         ajStrAppC(&cmd, " -type=protein");
     else
         ajStrAppC(&cmd, " -type=dna");

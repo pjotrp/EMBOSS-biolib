@@ -607,8 +607,9 @@ static AjBool silent_checktrans(AjPStr seq,EmbPMatMatch match,
 **
 ** Output sequence information
 **
+** @param [r] title [char*] Title (header) string
 ** @param [r] seq [AjPStr] sequence
-** @param [w] outf [AjPFile] outfile
+** @param [w] tailstr [AjPStr*] Generated footer string
 ** @param [r] start [ajint] start position
 ** @param [r] num [AjBool] Adjust numbering
 ** @@

@@ -27,7 +27,7 @@ int main (int argc, char **argv)
 
     embInit("demofeatures", argc, argv);
 
-    output      = ajAcdGetFeatout("featout");
+    output      = ajAcdGetFeatout("outfeat");
     sortbytype  = ajAcdGetBool("typesort");
     sortbystart = ajAcdGetBool("startsort");
 

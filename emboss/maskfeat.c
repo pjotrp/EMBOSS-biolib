@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     seqout   = ajAcdGetSeqout("outseq");
     type     = ajAcdGetString("type");
     maskchar = ajAcdGetString("maskchar");
-    tolower  = ajAcdGetBool("tolower");
+    tolower  = ajAcdGetToggle("tolower");
 
     while(ajSeqallNext(seqall, &seq))
     {

@@ -75,7 +75,7 @@ int main(int argc, char **argv)
     outf    = ajAcdGetOutfile("outfile");
     orfml   = ajAcdGetInt("orfml");
     outseq  = ajAcdGetSeqoutall("outseq");
-    featout = ajAcdGetFeatout("featout");
+    featout = ajAcdGetFeatout("outfeat");
     addlast = ajAcdGetBool("addlast");
 
     substr    = ajStrNew();

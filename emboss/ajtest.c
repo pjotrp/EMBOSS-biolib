@@ -3,13 +3,13 @@
 
 
 
+static void ajiest_kim (AjPStr seqout_name, AjPSeq subseq);
+
 /* @prog ajtest ***************************************************************
 **
 ** testing, and subject to frequent change
 **
 ******************************************************************************/
-
-static void kim (AjPStr seqout_name, AjPSeq subseq);
 
 int main(int argc, char **argv)
 {
@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 
     seqall = ajAcdGetSeqall ("sequence");
     seqset = ajAcdGetSeqset ("bsequence");
-    dir = ajAcdGetDirectory("directory");
+    dir = ajAcdGetDirectoryName("directory");
 
     ajUser("Directory '%S'", dir);
     ajUser("Set of %d", ajSeqsetSize(seqset));
@@ -32,7 +32,7 @@ int main(int argc, char **argv)
     {
 	ajUser ("%3d <%S>", i++, ajSeqGetUsa(seq));
 	ajFmtPrintS(&kimout, "kim%d.out", i);
-	kim (kimout, seq);
+	ajtest_kim (kimout, seq);
     }
 
     ajExit();
@@ -40,7 +40,17 @@ int main(int argc, char **argv)
     return 0;
 }
 
-static void kim (AjPStr seqout_name, AjPSeq subseq)
+/* @funcstatic ajtest_kim *****************************************************
+**
+** Test for Kim Ritherford's reported problem
+**
+** @param [r] seqout_name [AjPStr] Seqout name
+** @param [r] subseq [AjPSeq] Subsequence
+** @return [void]
+** @@
+******************************************************************************/
+
+static void ajtest_kim (AjPStr seqout_name, AjPSeq subseq)
 {
     AjPFile seqout_file = ajFileNewOut(seqout_name);
     AjPSeqout named_seqout = ajSeqoutNewF(seqout_file);

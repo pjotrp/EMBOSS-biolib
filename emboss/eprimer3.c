@@ -70,6 +70,8 @@ int main(int argc, char **argv, char **env)
     AjBool explain_flag;
     AjBool file_flag;
     AjPStr* task;
+    AjBool do_primer;
+    AjBool do_hybrid;
     ajint num_return;
     ajint first_base_index;
 
@@ -186,6 +188,8 @@ int main(int argc, char **argv, char **env)
     explain_flag     = ajAcdGetBool("explainflag");
     file_flag        = ajAcdGetBool("fileflag");
     task             = ajAcdGetList("task");
+    do_primer        = ajAcdGetToggle("primer");
+    do_hybrid        = ajAcdGetToggle("hybridprobe");
     num_return       = ajAcdGetInt("numreturn");
     first_base_index = ajAcdGetInt("firstbaseindex");
 
@@ -199,7 +203,7 @@ int main(int argc, char **argv, char **env)
 
     /* Primer details */
     pick_anyway         = ajAcdGetBool("pickanyway");
-    mispriming_library  = ajAcdGetInfile("mispriminglibrary");
+    mispriming_library  = ajAcdGetInfile("mispriminglibraryfile");
     max_mispriming      = ajAcdGetFloat("maxmispriming");
     pair_max_mispriming = ajAcdGetFloat("pairmaxmispriming");
     gc_clamp            = ajAcdGetInt("gcclamp");
@@ -267,7 +271,7 @@ int main(int argc, char **argv, char **env)
     internal_oligo_self_any       = ajAcdGetFloat("oligoselfany");
     internal_oligo_self_end       = ajAcdGetFloat("oligoselfend");
     internal_oligo_max_poly_x     = ajAcdGetInt("oligomaxpolyx");
-    internal_oligo_mishyb_library = ajAcdGetInfile("oligomishyblibrary");
+    internal_oligo_mishyb_library = ajAcdGetInfile("oligomishyblibraryfile");
     internal_oligo_max_mishyb     = ajAcdGetFloat("oligomaxmishyb");
     /*
        internal_oligo_min_quality    = ajAcdGetInt("oligominquality");
@@ -341,18 +345,31 @@ int main(int argc, char **argv, char **env)
         eprimer3_send_bool(stream, "PRIMER_EXPLAIN_FLAG", explain_flag);
 	eprimer3_send_bool(stream, "PRIMER_FILE_FLAG", file_flag);
 
-	if(!ajStrCmpC(task[0], "0"))
-	    ajStrAssC(&taskstr, "pick_pcr_primers");
-	else if(!ajStrCmpC(task[0], "1"))
-	    ajStrAssC(&taskstr, "pick_pcr_primers_and_hyb_probe");
-	else if(!ajStrCmpC(task[0], "2"))
-	    ajStrAssC(&taskstr, "pick_left_only");
-	else if(!ajStrCmpC(task[0], "3"))
-	    ajStrAssC(&taskstr, "pick_right_only");
-	else if(!ajStrCmpC(task[0], "4"))
-	    ajStrAssC(&taskstr, "pick_hyb_probe_only");
+	if(do_hybrid)
+	{
+	    if(!ajStrCmpC(task[0], "1"))
+		ajStrAssC(&taskstr, "pick_pcr_primers_and_hyb_probe");
+	    else if(!ajStrCmpC(task[0], "2"))
+		ajStrAssC(&taskstr, "pick_left_only");
+	    else if(!ajStrCmpC(task[0], "3"))
+		ajStrAssC(&taskstr, "pick_right_only");
+	    else if(!ajStrCmpC(task[0], "4"))
+		ajStrAssC(&taskstr, "pick_hyb_probe_only");
+
+	    if (!do_primer)
+		ajStrAssC(&taskstr, "pick_hyb_probe_only");
+	}
 	else
-	    ajFatal("Unknown value for TASK");
+	{
+	    if(!ajStrCmpC(task[0], "1"))
+		ajStrAssC(&taskstr, "pick_pcr_primers");
+	    else if(!ajStrCmpC(task[0], "2"))
+		ajStrAssC(&taskstr, "pick_left_only");
+	    else if(!ajStrCmpC(task[0], "3"))
+		ajStrAssC(&taskstr, "pick_right_only");
+	    else if(!ajStrCmpC(task[0], "4"))
+		ajStrAssC(&taskstr, "pick_hyb_probe_only");
+	}
 
 	eprimer3_send_string(stream, "PRIMER_TASK", taskstr);
 	eprimer3_send_int(stream, "PRIMER_NUM_RETURN", num_return);
