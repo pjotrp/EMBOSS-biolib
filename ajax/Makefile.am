@@ -41,7 +41,7 @@ ajpdb.c ajpdbio.c ajphylo.c \
 ajrange.c ajreg.c ajreport.c \
 ajseq.c ajseqabi.c ajseqdb.c ajseqread.c ajseqtype.c ajseqwrite.c \
 ajsort.c ajstr.c ajsys.c \
-ajtable.c ajtime.c ajtranslate.c ajutil.c ajvector.c \
+ajtable.c ajtime.c ajtranslate.c ajtree.c ajutil.c ajvector.c \
 pcre.c pcre_study.c pcreposix.c ajgraph.c ajhist.c
 
 # Uncomment to use dual libraries and remove ajgraph.c/ajhist.h from
@@ -59,7 +59,7 @@ ajpdb.h ajpdbio.h ajphylo.h \
 ajrange.h ajreg.h ajreport.h \
 ajseq.h ajseqabi.h ajseqdata.h ajseqdb.h ajseqread.h ajseqtype.h ajseqwrite.h \
 ajsort.h ajstr.h ajsys.h \
-ajtable.h ajtime.h ajtranslate.h ajutil.h ajvector.h \
+ajtable.h ajtime.h ajtranslate.h ajtree.h ajutil.h ajvector.h \
 pcre.h pcre_chartables.c pcre_config.h pcre_get.c pcre_printint.c \
 pcre_internal.h pcreposix.h
 
