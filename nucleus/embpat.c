@@ -215,15 +215,15 @@ EmbPPatMatch embPatSeqMatchFindC(const AjPSeq seq, const char *reg)
 ** Find all the regular expression matches of reg in the string string.
 **
 ** @param [r] regexp [const AjPStr] Regular expression string.
-** @param [r] string [const AjPStr] String to be searched.
+** @param [r] strng [const AjPStr] String to be searched.
 **
 ** @return [EmbPPatMatch] Results of the pattern matching.
 **
 ******************************************************************************/
 
-EmbPPatMatch embPatMatchFind(const AjPStr regexp, const AjPStr string)
+EmbPPatMatch embPatMatchFind(const AjPStr regexp, const AjPStr strng)
 {
-    return embPatMatchFindC(regexp, ajStrStr(string));
+    return embPatMatchFindC(regexp, ajStrStr(strng));
 }
 
 

@@ -162,7 +162,7 @@ ajint           embPatKMPSearch (const AjPStr str, const AjPStr pat,
 				 const ajint *next, ajint start);
 
 void            embPatMatchDel (EmbPPatMatch* pthis);
-EmbPPatMatch    embPatMatchFind  (const AjPStr regexp, const AjPStr string);
+EmbPPatMatch    embPatMatchFind  (const AjPStr regexp, const AjPStr strng);
 EmbPPatMatch    embPatMatchFindC (const AjPStr regexp, const char *sptr);
 ajint           embPatMatchGetEnd (const EmbPPatMatch data, ajint index);
 ajint           embPatMatchGetLen (const EmbPPatMatch data, ajint index);

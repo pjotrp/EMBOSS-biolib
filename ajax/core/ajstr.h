@@ -412,7 +412,7 @@ AjBool     ajStrReplaceK (AjPStr* pthis, ajint pos1,
 AjBool     ajStrReplaceS( AjPStr* pthis, ajint begin, const AjPStr overwrite);
 ajint      ajStrRef(const AjPStr thys);
 #define    MAJSTRREF(str) str->Use
-void       ajStrRemoveCharsC(AjPStr* this, const char *string);
+void       ajStrRemoveCharsC(AjPStr* this, const char *strng);
 void       ajStrRemoveHtml(AjPStr* pthis);
 void       ajStrRemoveNewline(AjPStr* pthis);
 AjBool     ajStrRev (AjPStr* pthis);

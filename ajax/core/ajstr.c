@@ -7655,12 +7655,12 @@ void ajStrDegap(AjPStr* thys)
 ** Removes all of a given set of characters from a string
 **
 ** @param [w] pthis [AjPStr*] String
-** @param [r] string [const char*] characters to remove
+** @param [r] strng [const char*] characters to remove
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajStrRemoveCharsC(AjPStr* pthis, const char *string)
+void ajStrRemoveCharsC(AjPStr* pthis, const char *strng)
 {
     char *p = NULL;
     char *q = NULL;
@@ -7675,7 +7675,7 @@ void ajStrRemoveCharsC(AjPStr* pthis, const char *string)
     p = thys->Ptr;
     q = p;
 
-    while((r=strpbrk(p,string)))
+    while((r=strpbrk(p,strng)))
     {
 	while(p!=r)
 	    *(q++) = *(p++);
