@@ -32,7 +32,7 @@ import java.awt.event.*;
 import java.io.*;
 import org.apache.regexp.*;
 
-import org.emboss.jemboss.gui.SetUpMenuBar;
+import org.emboss.jemboss.gui.AdvancedOptions;
 import org.emboss.jemboss.parser.*;
 import org.emboss.jemboss.gui.sequenceChooser.*;
 import org.emboss.jemboss.soap.CallAjax;
@@ -131,7 +131,7 @@ public class SectionPanel
     toolTipManager.setDismissDelay(80000);  
     Border etched = BorderFactory.createEtchedBorder();
 
-    isShadedGUI = SetUpMenuBar.prefShadeGUI.isSelected();
+    isShadedGUI = AdvancedOptions.prefShadeGUI.isSelected();
 
     this.p3 = p3;
     this.textf = textf;
@@ -152,7 +152,7 @@ public class SectionPanel
     this.f = f;
 
 //using JNI?
-    jni = SetUpMenuBar.prefjni.isSelected();
+    jni = AdvancedOptions.prefjni.isSelected();
     nf = nff;
 
     String att = parseAcd.getParameterAttribute(nf,0).toLowerCase();

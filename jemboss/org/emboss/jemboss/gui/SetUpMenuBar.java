@@ -47,8 +47,6 @@ public class SetUpMenuBar
 // cursors to show when we're at work
   final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
-  public static JCheckBox prefjni;
-  public static JCheckBox prefShadeGUI;
 
 
   public SetUpMenuBar(final EmbreoParams mysettings, final JFrame f,
@@ -115,13 +113,20 @@ public class SetUpMenuBar
     JMenu prefsMenu = new JMenu("Preferences");
     prefsMenu.setMnemonic(KeyEvent.VK_P);
 
-    prefShadeGUI = new JCheckBox("Shade unused parameters");
-    prefsMenu.add(prefShadeGUI);
-    prefShadeGUI.setSelected(true);
+    AdvancedOptions ao = new AdvancedOptions();
+    JMenuItem showAdvOpt = new JMenuItem("Advanced Options");
+    showAdvOpt.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        AdvancedOptions ao = new AdvancedOptions();
 
-    prefjni = new JCheckBox("Calculate dependencies (JNI)");
-    prefsMenu.add(prefjni);
-    prefjni.setSelected(true);
+        JOptionPane jao = new JOptionPane();
+        jao.showMessageDialog(f,ao,"Advanced Options",
+                              JOptionPane.PLAIN_MESSAGE);
+      }
+    });
+    prefsMenu.add(showAdvOpt);
     prefsMenu.addSeparator();
     
     JMenuItem showEnvironment = new JMenuItem("Show Environment");
@@ -212,7 +217,6 @@ public class SetUpMenuBar
 //  menuPanel.add(Box.createHorizontalStrut((int)(Jemboss.jdim.getWidth()-195)));
 
     menuPanel.add(helpMenu);
-//  menuPanel.add(Box.createHorizontalStrut(5));
     menuPanel.add(Box.createHorizontalGlue());
 
     f.setJMenuBar(menuPanel);

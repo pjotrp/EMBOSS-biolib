@@ -431,7 +431,9 @@ public class BuildJembossForm implements ActionListener
               {
                 System.out.println("Start new batch update thread");
                 Jemboss.resultsManager.setAutoUpdate(true);
-                new BatchUpdateTimer(20);
+                String freq = (String)AdvancedOptions.jobMgr.getSelectedItem();
+                int ind = freq.indexOf(" ");
+                new BatchUpdateTimer(Integer.parseInt(freq.substring(0,ind)));
               }
             }
             else

@@ -95,6 +95,7 @@ public class ParseAcd{
     nsection = 0;
     nsubsection = 0;
 
+
     try 
     {
       BufferedReader in = new BufferedReader(new StringReader(acdText));
