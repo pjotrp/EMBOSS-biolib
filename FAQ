@@ -715,3 +715,11 @@ A) prettyplot -auto ~/wordtest/globin-nogap.msf -graph ps
 
    prettyplot -auto ~/wordtest/globin-nogap.msf -graph ps -go=hello
    Creates hello.ps
+
+
+
+Q) In the editor 'mse', but I don't know how to save my edited sequences
+   at the end of the editing session. 
+
+A) Use Control-Z to get into command mode.
+   Then use the SAVE command which will prompt for the file name.
