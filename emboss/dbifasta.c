@@ -659,7 +659,7 @@ static AjPRegexp getExpr(AjPStr idformat, ajint *type)
     else if(ajStrMatchC(idformat,"idacc"))
     {
 	*type = IDACC;
-	exp = ajRegCompC("^>([A-Za-z0-9_-]+)+[ \t]+([A-Za-z0-9-]+)");
+	exp = ajRegCompC("^>([.A-Za-z0-9_-]+)+[ \t]+([A-Za-z0-9-]+)");
     }
     else if(ajStrMatchC(idformat,"accid"))
     {
