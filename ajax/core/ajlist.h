@@ -190,6 +190,11 @@ void ajListRemove (AjIList iter);
 void ajListstrInsert (AjIList iter, AjPStr x);
 void ajListstrRemove (AjIList iter);
 void ajListSort (AjPList thys, int (*compar) (const void*, const void*));
+void ajListSort2(AjPList thys, int (*sort1) (const void*, const void*),
+		 int (*sort2) (const void*, const void*));
+void ajListSort3(AjPList thys, int (*sort1) (const void*, const void*),
+		 int (*sort2) (const void*, const void*),
+		 int (*sort3) (const void*, const void*));
 
 #endif
 
