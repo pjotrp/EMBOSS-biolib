@@ -38,9 +38,6 @@ static void TextDisplay(AjPGraph graphs, int nstart, int nstop,
                  AjPStr nseq);
 static int getResColour(char B);
 
-static void graphDataDel(AjPGraphData graphs);
-static void graphObjDel(AjPGraph graphs , int nstart, int nstop);
-static void graphDataObjDel(AjPGraphData gd , int nstart, int nstop);
 
 
 int main (int argc, char * argv[])
@@ -194,17 +191,17 @@ int main (int argc, char * argv[])
 
       if(nstop<numBases)
       {
-         graphDataDel(gd1);                   /* free graph data mem */
-         graphDataDel(gd2);
-         graphDataDel(gd3);
-         graphDataDel(gd4);
+         ajGraphDataDel(&gd1);                     /* free graph data mem */
+         ajGraphDataDel(&gd2);
+         ajGraphDataDel(&gd3);
+         ajGraphDataDel(&gd4);
          if(!overlay)          
          {                     
-            graphDataObjDel(gd5,nstart,nstop);  /* free seq text mem */
-            graphDataDel(gd5);
+            ajGraphDataObjDel(&gd5);            /* free seq text mem */
+            ajGraphDataDel(&gd5);
          }
          else
-            graphObjDel(graphs,nstart,nstop);   /* free seq text mem */
+            ajGraphObjDel(&graphs);	        /* free seq text mem */
          ajGraphNewPage(ajFalse);               /* display new page  */
       }
 
@@ -357,100 +354,6 @@ static void TextDisplay(AjPGraph graphs, int nstart, int nstop,
 }
 
 
-/* @funcstatic graphObjDel **********************************************
-**
-** Free graph object- i.e. the sequence text, assigned in TextDisplay.
-**
-** returns: 
-**          
-*************************************************************************/
-static void graphObjDel(AjPGraph graphs , int nstart, int nstop)
-{
-
-   int i;
-
-   AjPGraphObj ObjCurr;
-   AjPGraphObj ObjNext;
-   AjPGraphObj ObjPrev=NULL;
-
-
-   ObjCurr = graphs->Obj;
-
-   for(i=nstart;i<nstop-1;i++)
-   {
-     if(i>nstart) AJFREE(ObjPrev);
-     ObjNext = ObjCurr->next;
-     ajStrDel(&ObjCurr->text);
-     ObjPrev = ObjCurr;
-     ObjCurr = ObjNext;
-   }
-   AJFREE(ObjPrev);
-   AJFREE(graphs->Obj);
-
-
-  return;
-}
-
-
-/* @funcstatic graphDataObjDel ******************************************
-**
-** Free graph data object- i.e. the sequence text, assigned in 
-** graphTextDisplay.
-**
-** returns: 
-**          
-*************************************************************************/
-static void graphDataObjDel(AjPGraphData gd , int nstart, int nstop)
-{
-
-   int i;
-
-   AjPGraphObj ObjCurr;
-   AjPGraphObj ObjNext;
-   AjPGraphObj ObjPrev=NULL;
-
-
-   ObjCurr = gd->Obj;
-   for(i=nstart;i<nstop-1;i++)
-   {
-     if(i>nstart) AJFREE(ObjPrev);
-     ObjNext = ObjCurr->next;
-     ajStrDel(&ObjCurr->text);
-     ObjPrev = ObjCurr;
-     ObjCurr = ObjNext;
-   }
-   AJFREE(ObjPrev);
-/* AJFREE(gd->Obj); */
-
-
-  return;
-}
-
-
-/* @funcstatic graphDataDel *********************************************
-**
-** Free graph data structure.
-**
-** returns:
-**         
-*************************************************************************/
-static void graphDataDel(AjPGraphData gd)
-{
-
-  AJFREE(gd->x);
-  AJFREE(gd->y);
-  ajStrDel(&gd->title);
-  ajStrDel(&gd->subtitle);
-  ajStrDel(&gd->xaxis);
-  ajStrDel(&gd->yaxis);
-  ajStrDel(&gd->gtype);
-  AJFREE(gd->Obj);
-  AJFREE(gd);
-
-  return;
-}
-
-
 /* @funcstatic getResColour *********************************************
 **
 ** Assign colour to a given nucleotide.
@@ -462,4 +365,3 @@ static int getResColour(char B)
 {
   return ((B)=='C'?RED:(B)=='A'?GREEN:(B)=='G'?BLUE:(B)=='T'?BLACK:YELLOW);
 }
-
