@@ -118,12 +118,12 @@ A) If you have  gd-1.7.3, zlib-1.1.3 and libpng-1.0.5 or greater
    To install, pick up the sources and then:
 
    gunzip -c zlib-1_1_3_tar.gz   | tar xf -
-   gunzip -c libpng-1_0_8_tar.gz | tar xf -
-   gunzip -c gd-1.8.3.tar.gz     | tar xf -
+   gunzip -c libpng-1_2_1_tar.gz | tar xf -
+   gunzip -c gd-1.8.4.tar.gz     | tar xf -
 
    ln -s zlib-1.1.3   zlib
-   ln -s libpng-1.0.8 libpng
-   ln -s gd-1.8.3     gd
+   ln -s libpng-1.2.1 libpng
+   ln -s gd-1.8.4     gd
 
    cd zlib
    ./configure --prefix=/home/joe/local
@@ -631,9 +631,9 @@ A)
 
    Alternatively, using ftp :-
 
-   PNG) ftp://swrinde.nde.swri.edu/pub/png/src/libpng.1.0.8.tar.gz
-   GD)  ftp://ftp.boutell.com/pub/boutell/gd/gd-1.8.3.tar.gz
+   GD)  (boutell.com no longer allows FTP, no known mirror sites, use HTTP)
    Z)   ftp://ftp.info-zip.org/pub/infozip/zlib/zlib-1.1.3.tar.gz
+   PNG) ftp://swrinde.nde.swri.edu/pub/png/src/libpng.1.2.1.tar.gz
 
 
 
