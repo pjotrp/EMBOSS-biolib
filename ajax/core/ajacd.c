@@ -1808,8 +1808,8 @@ AcdOQual acdQualFeat[] =
     {"fformat",    "",  "string",  "Features format"},
     {"fopenfile",  "",  "string",  "Features file name"},
     {"fask",       "N", "boolean", "Prompt for begin/end/reverse"},
-    {"fbegin",     "0", "integer", "First base used"},
-    {"fend",       "0", "integer", "Last base used, def=max length"},
+    {"fbegin",     "0", "integer", "First position used"},
+    {"fend",       "0", "integer", "Last position used, def=max length"},
     {"freverse",   "N", "boolean", "Reverse (if DNA)"},
     {NULL, NULL, NULL, NULL}
 };
