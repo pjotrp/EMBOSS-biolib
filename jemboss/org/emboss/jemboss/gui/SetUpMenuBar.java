@@ -23,7 +23,6 @@ package org.emboss.jemboss.gui;
 
 import org.emboss.jemboss.*;
 import org.emboss.jemboss.soap.*;
-import uk.ac.mrc.hgmp.embreo.*;
 import org.emboss.jemboss.gui.filetree.*;
 
 import java.net.URL;

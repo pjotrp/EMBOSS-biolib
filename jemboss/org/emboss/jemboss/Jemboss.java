@@ -32,7 +32,6 @@ import java.net.*;
 
 import org.emboss.jemboss.gui.startup.*;    // splash window
 import org.emboss.jemboss.gui.filetree.*;   // local files
-import uk.ac.mrc.hgmp.embreo.*;             // SOAP settings
 import org.emboss.jemboss.gui.*;            // Jemboss graphics
 import org.emboss.jemboss.soap.*;           // results manager
 
