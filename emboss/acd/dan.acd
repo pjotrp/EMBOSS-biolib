@@ -115,8 +115,15 @@ float: temperature  [
   help: "If -thermo has been specified then this specifies the temperature at which to calculate the DeltaG, DeltaH and DeltaS values."
 ]
 
-outfile: outfile  [
+report: outfile  [
   required: "@(!$(plot))"
   information: "Output data file"
   help: "If a plot is not being produced then data on the melting point etc. in each window along the sequence is output to the file."
+  rformat: "seqtable"
+  taglist: "float:tm=Tm float:gc=GC float:dg=DeltaG float:dh=DeltaH float:ds=DeltaS float:tmprod=TmProd"
 ]
+#outfile: outfile  [
+#  required: "@(!$(plot))"
+#  information: "Output data file"
+#  help: "If a plot is not being produced then data on the melting point etc. in each window along the sequence is output to the file."
+#]
