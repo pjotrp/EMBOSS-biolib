@@ -21,8 +21,8 @@ install-exec-hook:
 	@if test "${JAVA_OK}" != "yes" ; then \
 	  echo "No class files to copy"; \
 	else \
-	  $(top_srcdir)/mkinstalldirs $(DESTDIR)/$(prefix)/share/$(PACKAGE)/jemboss/org/emboss/jemboss/editor; \
+	  $(top_srcdir)/mkinstalldirs $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/org/emboss/jemboss/editor; \
 	for i in *.class; do \
-	  ${INSTALL_DATA} $$i $(DESTDIR)/$(prefix)/share/$(PACKAGE)/jemboss/org/emboss/jemboss/editor; \
+	  ${INSTALL_DATA} $$i $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/org/emboss/jemboss/editor; \
 	done; \
 	fi
