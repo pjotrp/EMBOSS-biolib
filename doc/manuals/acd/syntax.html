@@ -1394,7 +1394,7 @@ nullok: N<br>
   <p>
 distancesize (integer)<br>
 replicates (boolean)<br>
-missval (boolean)<br>
+hasmissing (boolean)<br>
 
  </p>
  </td>
@@ -1403,6 +1403,7 @@ missval (boolean)<br>
   <p>
 size: 1<br>
 nullok: N<br>
+missval: N<br>
 
  </p>
  </td>
@@ -2510,6 +2511,8 @@ oformat: ""<br>
 
   <td>
   <p>
+name: ""<br>
+extension: ""<br>
 nulldefault: N<br>
 nullok: N<br>
 
@@ -4532,6 +4535,18 @@ value is calculated, the user may need some extra guidance.</p>
 
  <tr>
   <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>missval: <i>integer<i></p>
+  </td>
+  <td>
+  <p>Can have missing values (replicates zero)<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>features</p>
   </td>
   <td>
@@ -6412,6 +6427,30 @@ Select one [blosum] : PAM
   <p>outtree</p>
   </td>
   <td>
+  <p>name: <i>string<i></p>
+  </td>
+  <td>
+  <p>Default file name<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>extension: <i>string<i></p>
+  </td>
+  <td>
+  <p>Default file extension<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
   <p>nulldefault: <i>Y/N<i></p>
   </td>
   <td>
@@ -7425,7 +7464,7 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>&nbsp;</p>
   </td>
   <td>
-  <p>missval: <i>Y/N<i></p>
+  <p>hasmissing: <i>Y/N<i></p>
   </td>
   <td>
   <p>Missing values found(replicates=N)<br>Default: </p>
@@ -8147,7 +8186,7 @@ table 8.</p>
   <p>gapdnaphylo</p>
   </td>
   <td>
-  <p>Protein only</p>
+  <p>Nucleotide only</p>
   </td>
   <td>
   <p>Kept</p>
@@ -8231,7 +8270,7 @@ table 8.</p>
   <p>gaprnaphylo</p>
   </td>
   <td>
-  <p>Protein only</p>
+  <p>Nucleotide only</p>
   </td>
   <td>
   <p>Kept</p>
