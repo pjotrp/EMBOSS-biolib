@@ -194,8 +194,10 @@ static AjBool siggen_CalcSeqpos(AjPScopalg alg, AjPInt2d *seq_pos);
 static AjBool siggen_ScoreAlignment(AjPScorealg *scores, AjPScopalg alg, AjPCmap *cmaps, 
                              AjPMatrixf  mat, AjBool *noca, AjPInt2d seq_pos, 
 			     AjPInt *atom_idx);
+/*
 static AjBool  siggen_ScoreNcon_Filter(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, 
                          AjPInt2d seq_pos);                  
+*/
 static AjBool siggen_Con_Thresh(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, 
 			 ajint conthresh, AjBool *noca, AjPInt2d seq_pos, 
 			 AjPInt *atom_idx);
