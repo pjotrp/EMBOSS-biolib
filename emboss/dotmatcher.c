@@ -76,6 +76,17 @@ ajint main (ajint argc, char **argv)
     AjBool text;
     AjPFile outf=NULL;
     AjPStr  subt=NULL;
+
+    ajint b1;
+    ajint b2;
+    ajint e1;
+    ajint e2;
+    AjPStr se1;
+    AjPStr se2;
+
+    se1 = ajStrNew();
+    se2 = ajStrNew();
+    
     
     ajtime.time = localtime(&tim);
     ajtime.format = 0;
@@ -94,8 +105,21 @@ ajint main (ajint argc, char **argv)
     sub = ajMatrixArray(matrix);
     cvt = ajMatrixCvt(matrix);
 
+    b1 = ajSeqBegin(seq);
+    b2 = ajSeqBegin(seq2);
+    e1 = ajSeqEnd(seq);
+    e2 = ajSeqEnd(seq2);
+
+    ajStrAssSubC(&se1,ajSeqChar(seq),b1-1,e1-1);
+    ajStrAssSubC(&se2,ajSeqChar(seq2),b2-1,e2-1);
+    ajSeqReplace(seq,se1);
+    ajSeqReplace(seq2,se2);
+    printf("%d %d",ajSeqLen(seq),ajSeqLen(seq2));
+    
+
     s1 = ajStrStr(ajSeqStr(seq));
     s2 = ajStrStr(ajSeqStr(seq2));
+
 
     aa0str = ajStrNewL(1+ajSeqLen(seq)); /* length plus trailing blank */
     aa1str = ajStrNewL(1+ajSeqLen(seq2));
@@ -261,12 +285,12 @@ ajint main (ajint argc, char **argv)
 	if(ajSeqLen(seq2)/ajSeqLen(seq) > 10 )
 	{		/* alot smaller then just label start and end */
 	    ajGraphLine(0.0,0.0,0.0,0.0-ticklen);
-	    sprintf(ptr,"0");
+	    sprintf(ptr,"%d",b1-1);
 	    ajGraphTextMid ( 0.0,0.0-(onefifth),ptr);
       
 	    ajGraphLine((float)(ajSeqLen(seq)),0.0,
 			(float)ajSeqLen(seq),0.0-ticklen);
-	    sprintf(ptr,"%d",ajSeqLen(seq));
+	    sprintf(ptr,"%d",ajSeqLen(seq)+b1-1);
 	    ajGraphTextMid ( (float)ajSeqLen(seq),0.0-(onefifth),ptr);
       
 	}
@@ -275,7 +299,7 @@ ajint main (ajint argc, char **argv)
 	    for(k2=0.0;k2<ajSeqLen(seq);k2+=tickgap)
 	    {
 		ajGraphLine(k2,0.0,k2,0.0-ticklen);
-		sprintf(ptr,"%d",(ajint)k2);
+		sprintf(ptr,"%d",(ajint)k2+b1-1);
 		ajGraphTextMid ( k2,0.0-(onefifth),ptr);
 	    }
 	}
@@ -290,12 +314,12 @@ ajint main (ajint argc, char **argv)
 	if(ajSeqLen(seq)/ajSeqLen(seq2) > 10 )
 	{		/* alot smaller then just label start and end */
 	    ajGraphLine(0.0,0.0,0.0-ticklen,0.0);
-	    sprintf(ptr,"0");
+	    sprintf(ptr,"%d",b2-1);
 	    ajGraphTextEnd ( 0.0-(onefifth),0.0,ptr);
       
 	    ajGraphLine(0.0,(float)ajSeqLen(seq2),0.0-ticklen,
 			(float)ajSeqLen(seq2));
-	    sprintf(ptr,"%d",ajSeqLen(seq2));
+	    sprintf(ptr,"%d",ajSeqLen(seq2)+b2-1);
 	    ajGraphTextEnd ( 0.0-(onefifth),(float)ajSeqLen(seq2),ptr);
 	}
 	else
@@ -303,7 +327,7 @@ ajint main (ajint argc, char **argv)
 	    for(k2=0.0;k2<ajSeqLen(seq2);k2+=tickgap)
 	    {
 		ajGraphLine(0.0,k2,0.0-ticklen,k2);
-		sprintf(ptr,"%d",(ajint)k2);
+		sprintf(ptr,"%d",(ajint)k2+b2-1);
 		ajGraphTextEnd ( 0.0-(onefifth),k2,ptr);
 	    }
 	}
@@ -342,7 +366,9 @@ ajint main (ajint argc, char **argv)
     /* deallocate memory */
     ajStrDel(&aa0str);
     ajStrDel(&aa1str);
-
+    ajStrDel(&se1);
+    ajStrDel(&se2);
+    
     AJFREE (strret);			/* created withing ajFmtString */
 
     ajExit();
