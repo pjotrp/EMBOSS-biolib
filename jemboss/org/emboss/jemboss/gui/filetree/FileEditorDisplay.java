@@ -63,8 +63,16 @@ public class FileEditorDisplay extends JTextPane
      else if( filename.toLowerCase().endsWith(".png") || 
               filename.toLowerCase().endsWith(".gif") ||
               filename.toLowerCase().endsWith(".jpeg") ||
-              filename.endsWith(".tif") || filename.endsWith(".ps") )
+              filename.endsWith(".tif") )
        setText(text,"png");
+     else if( filename.toLowerCase().endsWith(".z")  ||
+              filename.toLowerCase().endsWith(".gz") ||
+              filename.toLowerCase().endsWith(".zip")||
+              filename.toLowerCase().endsWith(".tar")||
+              filename.toLowerCase().endsWith(".ppt")||
+              filename.toLowerCase().endsWith(".doc")||
+              filename.toLowerCase().endsWith(".ps") )
+       setText("Jemboss Cannot display "+filename,"regular");
      else
        setText(text,"regular");
    }
@@ -93,8 +101,25 @@ public class FileEditorDisplay extends JTextPane
        insertIcon(icon);
        pngContent = (byte [])contents;
      }
+     else if( filename.toLowerCase().endsWith(".z")  ||
+              filename.toLowerCase().endsWith(".gz") ||
+              filename.toLowerCase().endsWith(".zip")||
+              filename.toLowerCase().endsWith(".tar")||
+              filename.toLowerCase().endsWith(".ppt")||
+              filename.toLowerCase().endsWith(".doc")||
+              filename.toLowerCase().endsWith(".ps") )
+       setText("Jemboss Cannot display "+filename,"regular");
      else
-       setText("Cannot display "+filename,"regular");
+     {
+       try
+       {
+         setText(new String((byte [])contents),"regular");
+       }
+       catch (Exception exp)
+       {
+         setText("Cannot display "+filename,"regular");
+       }
+     }
 
    }
 
