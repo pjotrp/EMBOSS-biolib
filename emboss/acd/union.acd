@@ -8,15 +8,9 @@ section: input [
   type: "page"
 ]
 
-  boolean: feature  [
-    default: "N"
-    information: "Use feature information"
-  ]
-
   seqall: sequence  [
     parameter: "Y"
     type: "gapany"
-    features: "$(feature)"
   ]
 
 endsection: input
@@ -28,29 +22,6 @@ section: output [
 
   seqout: outseq  [
     parameter: "Y"
-    features: "$(feature)"
-  ]
-
-  string: overlapfile  [
-    additional: "Y"
-    information: "Output sequence overlaps to a file"
   ]
 
 endsection: output
-
-section: advanced [
-  information: "Advanced section"
-  type: "page"
-]
-
-  boolean: source  [
-    default: "N"
-    information: "Create source features"
-  ]
-
-  boolean: findoverlap [
-    default: "N"
-    information: "Look for overlaps when joining"
-  ]
-
-endsection: advanced

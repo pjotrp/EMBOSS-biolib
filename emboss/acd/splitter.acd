@@ -9,15 +9,9 @@ section: input [
   type: "page"
 ]
 
-  boolean: feature  [
-    default: "N"
-    information: "Use feature information"
-  ]
-
   seqall: sequence  [
     parameter: "Y"
     type: "any"
-    features: "$(feature)"
   ]
 
 endsection: input
@@ -42,18 +36,6 @@ section: additional [
     information: "Overlap between split sequences"
   ]
 
-  boolean: source [
-    additional: "Y"
-    default: "N"
-    information: "Split using source features with /oridif qualifiers"
-  ]
-
-  boolean: multifile [
-    additional: "Y"
-    default: "N"
-    information: "Split sequence into multiple files"
-  ]
-
 endsection: additional
 
 section: advanced [
@@ -75,7 +57,6 @@ section: output [
 
   seqoutall: outseq  [
     parameter: "Y"
-    features: "$(feature)"
   ]
 
 endsection: output
