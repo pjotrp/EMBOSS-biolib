@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/time.h>
@@ -49,6 +50,10 @@ static AjBool check_pass(AjPStr username, AjPStr password, ajint *uid,
 #endif
 static char **make_array(AjPStr str);
 
+#ifdef PAM
+static int PAM_conv(int num_msg, struct pam_message **msg,
+		    struct pam_response **resp, void *appdata_ptr);
+#endif
 
 
 
@@ -149,7 +154,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqsetType
 
 
 
-static AjBool ajJavaGetSeqFromUsa (AjPStr thys, AjPSeq *seq)
+static AjBool ajJavaGetSeqFromUsa(AjPStr thys, AjPSeq *seq)
 {
     AjPSeqin seqin;
     AjBool ok;
@@ -172,7 +177,7 @@ static AjBool ajJavaGetSeqFromUsa (AjPStr thys, AjPSeq *seq)
 
 
 
-static AjBool ajJavaGetSeqsetFromUsa (AjPStr thys, AjPSeqset *seq)
+static AjBool ajJavaGetSeqsetFromUsa(AjPStr thys, AjPSeqset *seq)
 {
     AjPSeqin seqin;
     AjBool ok;
@@ -420,8 +425,8 @@ struct ad_user
 };
 
 
-int PAM_conv(int num_msg, const struct pam_message **msg,
-	     struct pam_response **resp, void *appdata_ptr)
+static int PAM_conv(int num_msg, struct pam_message **msg,
+		    struct pam_response **resp, void *appdata_ptr)
 {
     struct ad_user *user=(struct ad_user *)appdata_ptr;
     struct pam_response *response;
@@ -473,13 +478,14 @@ static AjBool check_pass(AjPStr username,AjPStr password,ajint *uid,
 		      ajint *gid,AjPStr *home)
 {
     struct ad_user user_info;
-    struct pam_conv conv =
+
+    struct pam_cv
     {
-	PAM_conv,
-	(void *)&user_info
+	int (*cv)(int,struct pam_message **,struct pam_response **,void *);
+	void *userinfo;
     };
 
-
+    struct pam_cv conv;
     pam_handle_t *pamh = NULL;
     int retval;
 
@@ -487,6 +493,9 @@ static AjBool check_pass(AjPStr username,AjPStr password,ajint *uid,
 
     user_info.username = ajStrStr(username);
     user_info.password = ajStrStr(password);
+
+    conv.cv = PAM_conv;
+    conv.userinfo = (void *)&user_info;
     
     pwd = getpwnam(ajStrStr(username));
     if(!pwd)		 /* No such username */
@@ -497,7 +506,8 @@ static AjBool check_pass(AjPStr username,AjPStr password,ajint *uid,
 
     ajStrAssC(home,pwd->pw_dir);
 
-    retval = pam_start("emboss_auth",ajStrStr(username),&conv,&pamh);
+    retval = pam_start("emboss_auth",ajStrStr(username),
+		       (struct pam_conv*)&conv,&pamh);
     
     if (retval == PAM_SUCCESS)
 	retval= pam_authenticate(pamh,PAM_SILENT);
