@@ -52,7 +52,7 @@ public class BuildProgramMenu
   /** database names */
   private static String db[];
   /** acd files cache */
-  private Hashtable acdStore;   
+  private Hashtable acdStore = new Hashtable();   
 
 
 /**
@@ -156,7 +156,11 @@ public class BuildProgramMenu
         ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
         toolTipManager.setDismissDelay(80000);
 
-        acdStore = (new JembossJarUtil("resources/acdstore.jar")).getHash();
+        try
+        {
+          acdStore = (new JembossJarUtil("resources/acdstore.jar")).getHash();
+        }
+        catch (Exception ex){}
 
 // program menu
         JMenuBar menuBar = new JMenuBar();
@@ -415,13 +419,13 @@ public class BuildProgramMenu
         else
           acdText = new String((byte[])obj);
  
-        System.out.println("Retrieved "+applName+" acd file from cache");
+//      System.out.println("Retrieved "+applName+" acd file from cache");
       }
       else
       {
         GetACD progacd = new GetACD(applName,mysettings);
         acdText = progacd.getAcd();
-        System.out.println("Retrieved "+applName+" acd file via soap");
+//      System.out.println("Retrieved "+applName+" acd file via soap");
         acdStore.put(applName+".acd",acdText);
       }
     }

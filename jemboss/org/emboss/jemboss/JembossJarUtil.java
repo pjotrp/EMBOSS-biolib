@@ -30,12 +30,12 @@ import java.io.*;
 * Unpacks a Jar file into a Hashtable
 *
 */
-public class JembossJarUtil
+public class JembossJarUtil 
 {
 
   private Hashtable jarStore = new Hashtable();
 
-  public JembossJarUtil(String jarFile)
+  public JembossJarUtil(String jarFile) throws Exception
   {
 
     try 
@@ -92,18 +92,20 @@ public class JembossJarUtil
       }
       zis.close();
     }
-    catch (NullPointerException e) 
-    {
-      System.out.println("JembossJarUtil Error: jarStore");
-    } 
-    catch (FileNotFoundException e) 
-    {
-      e.printStackTrace();
-    }
-    catch (IOException e)
-    {
-      e.printStackTrace();
-    }
+    catch (Exception e) { throw new Exception();}
+
+//  catch (NullPointerException e) 
+//  {
+//    System.out.println("JembossJarUtil Error: jarStore");
+//  } 
+//  catch (FileNotFoundException e) 
+//  {
+//    e.printStackTrace();
+//  }
+//  catch (IOException e)
+//  {
+//    e.printStackTrace();
+//  }
   }
 
   public Hashtable getHash()
