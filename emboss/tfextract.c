@@ -43,6 +43,7 @@ int main(int argc, char **argv)
     AjPStr line;
     AjPStr acc;
     AjPStr id;
+    AjPStr bf;
     AjPStr pattern;
     AjPStr pfname;
 
@@ -74,6 +75,7 @@ int main(int argc, char **argv)
 
     line    = ajStrNew();
     id      = ajStrNewC("");
+    bf      = ajStrNew();
     acc     = ajStrNew();
     pattern = ajStrNew();
 
@@ -81,6 +83,7 @@ int main(int argc, char **argv)
     while(ajFileReadLine(inf,&line))
     {
 	p = ajStrStr(line);
+	
 	if(ajStrPrefixC(line,"ID"))
 	{
 	    gid  = ajTrue;
@@ -96,6 +99,15 @@ int main(int argc, char **argv)
 	    p = strtok(p," \t\n");
 	    p = strtok(NULL," \t\n");
 	    ajStrAssC(&acc,p);
+	}
+
+
+	if(ajStrPrefixC(line,"BF"))
+	{
+	    p = strpbrk(p," \t\n");
+	    while(*p && *p==' ')
+		++p;
+	    ajStrAssC(&bf,p);
 	}
 
 	if(ajStrPrefixC(line,"SQ") || ajStrPrefixC(line,"SE"))
@@ -149,8 +161,15 @@ int main(int argc, char **argv)
 	}
 
 	if(ajStrPrefixC(line,"//") && ajStrLen(pattern) && gid)
-	    ajFmtPrintF(fp,"%-20s %s %s\n",ajStrStr(id),ajStrStr(pattern),
-			ajStrStr(acc));
+	{
+	    if(!ajStrLen(bf))
+		ajFmtPrintF(fp,"%-20s %S %S\n",ajStrStr(id),pattern,acc);
+	    else
+	    {
+		ajFmtPrintF(fp,"%-20s %S %S %S\n",ajStrStr(id),pattern,acc,bf);
+		ajStrAssC(&bf,"");
+	    }
+	}
     }
 
 
@@ -163,6 +182,7 @@ int main(int argc, char **argv)
 
     ajStrDel(&line);
     ajStrDel(&id);
+    ajStrDel(&bf);
     ajStrDel(&acc);
     ajStrDel(&pattern);
 

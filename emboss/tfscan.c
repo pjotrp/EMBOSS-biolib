@@ -29,7 +29,8 @@
 
 static void tfscan_print_hits(AjPStr name, AjPList *l, ajint hits,
 			      AjPFile outf, ajint begin, ajint end,
-			      AjPTable t, AjPSeq seq, ajint minlength);
+			      AjPTable t, AjPSeq seq, ajint minlength,
+			      AjPTable btable);
 
 
 
@@ -57,6 +58,7 @@ int main(int argc, char **argv)
     AjPStr line   = NULL;
     AjPStr name   = NULL;
     AjPStr acc    = NULL;
+    AjPStr bf     = NULL;
     AjPStr *menu;
     AjPStr pattern  = NULL;
     AjPStr opattern = NULL;
@@ -64,7 +66,8 @@ int main(int argc, char **argv)
     AjPStr key      = NULL;
     AjPStr value    = NULL;
     AjPTable atable = NULL;
-
+    AjPTable btable = NULL;
+    
     ajint mismatch;
     ajint minlength;
     
@@ -101,6 +104,7 @@ int main(int argc, char **argv)
 
     name     = ajStrNew();
     acc      = ajStrNew();
+    bf       = ajStrNewC("");
     substr   = ajStrNew();
     line     = ajStrNew();
     pattern  = ajStrNewC("AA");
@@ -118,7 +122,8 @@ int main(int argc, char **argv)
 
 	l=ajListNew();
 	atable = ajStrTableNew(1000);
-
+	btable = ajStrTableNew(1000);
+	
 	sum=0;
 	while(ajFileReadLine(inf,&line))
 	{
@@ -127,13 +132,20 @@ int main(int argc, char **argv)
 	    if(!*p || *p=='#' || *p=='\n' || *p=='!')
 		continue;
 
-	    p = strtok(p," \t\n");
-	    ajStrAssC(&pname,p);
-	    p = strtok(NULL," \t\n");
-	    ajStrAssC(&pattern,p);
-	    ajStrAssC(&opattern,p);
-	    p = strtok(NULL," \t\n");
-	    ajStrAssC(&acc,p);
+	    ajFmtScanS(line,"%S%S%S",&pname,&pattern,&acc);
+	    p += ajStrLen(pname);
+	    while(*p && *p==' ')
+		++p;
+	    p += ajStrLen(pattern);
+	    while(*p && *p==' ')
+		++p;
+	    p += ajStrLen(acc);
+	    while(*p && *p==' ')
+		++p;
+
+	    ajStrAssS(&opattern,pattern);
+	    ajStrAssC(&bf,p);
+	    
 	    v = embPatVariablePattern(&pattern,opattern,substr,pname,l,0,
 				      mismatch,begin);
 	    if(v)
@@ -141,16 +153,21 @@ int main(int argc, char **argv)
 		key = ajStrNewC(ajStrStr(pname));
 		value = ajStrNewC(ajStrStr(acc));
 		ajTablePut(atable,(const void *)key,(void *)value);
+		key = ajStrNewC(ajStrStr(pname));
+		value = ajStrNewC(ajStrStr(bf));
+		ajTablePut(btable,(const void *)key,(void *)value);
 	    }
 	    sum += v;
 	}
 
 	if(sum)
-	    tfscan_print_hits(name,&l,sum,outf,begin,end,atable,seq,minlength);
+	    tfscan_print_hits(name,&l,sum,outf,begin,end,atable,seq,minlength,
+			      btable);
 
 	ajFileSeek(inf,0L,0);
 	ajListDel(&l);
 	ajStrTableFree(&atable);
+	ajStrTableFree(&btable);
 	ajStrDel(&strand);
     }
 
@@ -185,21 +202,24 @@ int main(int argc, char **argv)
 ** @param [r] t [AjPTable] table of accession numbers
 ** @param [r] seq [AjPSeq] test sequence
 ** @param [r] minlength [ajint] minimum length of pattern
+** @param [r] btable [AjPtable] BF lines from transfac (if any)
 ** @@
 ******************************************************************************/
 
 static void tfscan_print_hits(AjPStr name, AjPList *l,
 			      ajint hits, AjPFile outf,
 			      ajint begin, ajint end, AjPTable t,
-			      AjPSeq seq, ajint minlength)
+			      AjPSeq seq, ajint minlength, AjPTable btable)
 {
     ajint i;
     EmbPMatMatch m;
     AjPStr acc = NULL;
     AjPStr s   = NULL;
-
-    s = ajStrNew();
-
+    AjPStr bf  = NULL;
+    AjPStr lastnam = NULL;
+    
+    s       = ajStrNew();
+    lastnam = ajStrNewC("");
 
     ajFmtPrintF(outf,"TFSCAN of %s from %d to %d\n\n",ajStrStr(name),
 		begin,end);
@@ -208,6 +228,17 @@ static void tfscan_print_hits(AjPStr name, AjPList *l,
     {
 	ajListPop(*l,(void **)&m);
 	acc = ajTableGet(t,(const void *)m->seqname);
+
+
+
+	if((ajStrCmpO(m->seqname,lastnam)) && ajStrLen(lastnam))
+	{
+	    bf  = ajTableGet(btable,(const void *)lastnam);
+	    if(ajStrLen(bf))
+		ajFmtPrintF(outf,"                     %S\n",bf);
+	}
+	
+	ajStrAssS(&lastnam,m->seqname);
 
 	ajStrAssSubC(&s,ajSeqChar(seq),m->start-1,m->start+m->len-2);
 
@@ -220,6 +251,7 @@ static void tfscan_print_hits(AjPStr name, AjPList *l,
     }
 
     ajStrDel(&s);
-
+    ajStrDel(&lastnam);
+    
     return;
 }
