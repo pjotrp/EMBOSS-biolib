@@ -1108,11 +1108,11 @@ AjBool ajStrFromFloat (AjPStr* pthis, float val, ajint precision) {
 AjBool ajStrFromDouble (AjPStr* pthis, double val, ajint precision) {
 
   AjBool ret = ajFalse;
-  ajint i;
+  long long i;
   char fmt[12];
   AjPStr thys;
 
-  ajint ival = abs((ajint) val);
+  long long ival = (long long) fabs(val);
 
   if (ival)
     i = precision + (ajint) log10((double)ival) + 4;
@@ -1143,11 +1143,11 @@ AjBool ajStrFromDouble (AjPStr* pthis, double val, ajint precision) {
 AjBool ajStrFromDoubleE (AjPStr* pthis, double val, ajint precision) {
 
   AjBool ret = ajFalse;
-  ajint i;
+  long long i;
   char fmt[12];
   AjPStr thys;
 
-  ajint ival = abs((ajint) val);
+  long long ival = (long long) fabs(val);
 
   if (ival)
     i = precision + (ajint) log10((double)ival) + 8;
