@@ -3,8 +3,11 @@
 
 bin_PROGRAMS = crystalball
 
+if LOCALLINK
 INCLUDES = -I../../../nucleus -I../../../ajax -I../../../plplot
-
+else
+INCLUDES = -I${embprefix}/include
+endif
 
 if ISSHARED
 if ISAIXIA64
@@ -17,7 +20,10 @@ endif
 
 crystalball_SOURCES = crystalball.c 
 
+if LOCALLINK
 LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
-
+else
+LDADD = -L${embprefix}/lib -lnucleus -lajax -lplplot $(XLIB)
+endif
 
 

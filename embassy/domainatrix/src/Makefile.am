@@ -7,7 +7,11 @@ bin_PROGRAMS = contacts domainer fraggle hetparse hmmgen interface libscan \
 	scopparse scoprep scopreso scopseqs seqalign seqnr seqsearch \
 	seqsort seqwords siggen sigplot sigscan
 
+if LOCALLINK
 INCLUDES = -I../../../plplot -I../../../ajax -I../../../nucleus
+else
+INCLUDES = -I${embprefix}/include
+endif
 
 if ISSHARED
 if ISAIXIA64
@@ -44,4 +48,8 @@ siggen_SOURCES = siggen.c
 sigplot_SOURCES = sigplot.c
 sigscan_SOURCES = sigscan.c
 
+if LOCALLINK
 LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
+else
+LDADD = -L${embprefix}/lib -lnucleus -lajax -lplplot $(XLIB)
+endif

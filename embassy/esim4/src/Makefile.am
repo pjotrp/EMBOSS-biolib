@@ -3,7 +3,11 @@
 
 bin_PROGRAMS = esim4
 
+if LOCALLINK
 INCLUDES = -I../../../nucleus -I../../../ajax -I../../../plplot
+else
+INCLUDES = -I${embprefix}/include
+endif
 
 noinst_HEADERS = align.h args.h charvec.h discrim.h dna.h encoding.h \
 	libc.h misc.h poly.h prnt.h psublast.h seq.h sim4b1.h \
@@ -11,8 +15,8 @@ noinst_HEADERS = align.h args.h charvec.h discrim.h dna.h encoding.h \
 
 esim4_SOURCES = align.c charvec.c dna.c misc.c prnt.c seq_read.c sim4b1.c Xtend1.c args.c discrim.c encoding.c poly.c seq.c sim4.init.c splice.c
 
+if LOCALLINK
 LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
-
-
-
-
+else
+LDADD = -L${embprefix}/lib -lnucleus -lajax -lplplot $(XLIB)
+endif
