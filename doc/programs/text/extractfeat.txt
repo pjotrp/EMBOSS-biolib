@@ -165,9 +165,19 @@ Command line arguments
                                   The tag value may be wildcarded by using
                                   '*'.
                                   If you wish to show more than one tag value,
-                                  separate their names with the character
-                                  '|', eg:
+                                  separate their names with a space or the
+                                  character '|', eg:
                                   pax* | 10
+   -join               bool       Some features, such as CDS (coding sequence)
+                                  and mRNA are composed of introns
+                                  concatenated together. There may be other
+                                  forms of 'joined' sequence, depending on the
+                                  feature table. If this option is set TRUE,
+                                  then any group of these features will be
+                                  output as a single sequence. If the 'before'
+                                  and 'after' qualifiers have been set, then
+                                  only the sequence before the first feature
+                                  and after the last feature are added.
 
    Advanced qualifiers: (none)
    General qualifiers:
@@ -249,7 +259,15 @@ Command line arguments
    tag value in the feature table is shown. You can set this to match any
    feature tag valueyou wish to show. The tag value may be wildcarded by
    using '*'. If you wish to show more than one tag value, separate their
-   names with the character '|', eg: pax* | 10 Any string is accepted *
+   names with a space or the character '|', eg: pax* | 10 Any string is
+   accepted *
+   -join Some features, such as CDS (coding sequence) and mRNA are
+   composed of introns concatenated together. There may be other forms of
+   'joined' sequence, depending on the feature table. If this option is
+   set TRUE, then any group of these features will be output as a single
+   sequence. If the 'before' and 'after' qualifiers have been set, then
+   only the sequence before the first feature and after the last feature
+   are added. Yes/No No
    Advanced qualifiers Allowed values Default
    (none)
    

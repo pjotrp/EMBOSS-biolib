@@ -137,10 +137,9 @@ merged sequence should therefore be treated with great caution:
 
 % megamerger embl:ap000504 embl:af129756
 Merge two large overlapping nucleic acid sequences
-Output sequence [ap000504.merged]: 
-Output file [stdout]: report
 Word size [20]: 
-
+Output sequence [ap000504.merged]: 
+Output file [ap000504.megamerger]:
 
 </pre>
 
@@ -161,7 +160,7 @@ IT IS DONE FOR YOU.
   [-seqb]              sequence   Sequence USA
    -wordsize           integer    Word size
   [-outseq]            seqout     Output sequence USA
-   -report             outfile    Output report
+  [-report]            outfile    Output report
 
    Optional qualifiers: (none)
    Advanced qualifiers: (none)
@@ -211,10 +210,10 @@ IT IS DONE FOR YOU.
 </tr>
 
 <tr>
-<td>-report</td>
+<td>[-report]<br>(Parameter 4)</td>
 <td>Output report</td>
 <td>Output file</td>
-<td>stdout</td>
+<td><i>&lt;sequence&gt;</i>.megamerger</td>
 </tr>
 
 <tr bgcolor="#FFFFD0">

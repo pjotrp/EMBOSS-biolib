@@ -74,27 +74,11 @@ Here is a sample session with supermatcher.
 
 <pre>
 
- supermatcher ~/wordtest/U68037 ~/wordtest/AB003171 -noscoreonly
-
+% supermatcher tembl:ec\* tembl:eclac -word 50 -sbegin2 101 -send2 -101
 Finds a match of a large sequence against one or more sequences
-Gap opening penalty [10.0]: 
-Gap extension penalty [0.5]: 3.0
-Output file [stdout]: 
-Local: RNU68037 vs EM:AB003171
-Score: 30.00
-
-RNU68037        820   tcaaccacagctgccctccgcagctctcggggag.gcggc.tccg 862  
-                      ||||| ||||   || |  ||||     |||||| ||  | ||| 
-EM:AB003171     2492  tcaactacag.aaccatgtgcag....aggggagagctccatcct 2531 
-
-RNU68037        863   cgcgcagggttcacgcacacga.cgtgg.aaatggtgggccagct 905  
-                       |  ||  ||| | || || || | ||| ||   ||||   |  |
-EM:AB003171     2532  tgaaca..gttaaagc.ca.gagcttggtaacaagtggataaatt 2572 
-
-RNU68037        906   .cgtgggcatcatggtggtgtc.gtg..catctgctggagc     942  
-                       | |    |||||  ||  ||| | |  ||  |||  ||||
-EM:AB003171     2573  acat....atcattttgcggtctgagaacacatgc.agagc      2608 
-
+Gap opening penalty [10.0]: 3.0
+Gap extension penalty [0.5]:
+Output alignment [eclac.supermatcher]:
 
 </pre>
 
@@ -237,10 +221,116 @@ Two sequence USAs.
     Output file format
 </H2>
 
-    supermatcher.error will contain any errors that occured during the
-    program. This maybe that wordmatch could not find any matches
-    hence no suitable start point is found for the smith-waterman
-    calculation.
+<p>
+
+The output is a standard EMBOSS alignment file. 
+
+<p>
+
+The results can be output in one of several styles by using the
+command-line qualifier <b>-aformat xxx</b>, where 'xxx' is replaced by
+the name of the required format.  Some of the alignment formats can cope
+with an unlimited number of sequences, while others are only for pairs
+of sequences.  
+
+<p>
+
+The available multiple alignment format names are: unknown, multiple,
+simple, fasta, msf, trace, srs
+
+<p>
+
+The available pairwise alignment format names are: pair, markx0, markx1,
+markx2, markx3, markx10, srspair, score
+
+<p>
+
+See:
+<A href="http://www.uk.embnet.org/Software/EMBOSS/Themes/AlignFormats.html">
+http://www.uk.embnet.org/Software/EMBOSS/Themes/AlignFormats.html</A>
+for further information on alignment formats.
+
+<p>
+
+
+<p>
+
+The output from the example follows:
+
+<p>
+
+<pre>
+########################################
+# Program:  supermatcher
+# Rundate:  Mon May 20 16:32:00 2002
+# Report_file: eclac.supermatcher
+########################################
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: ECLAC
+# 2: ECLAC
+# Matrix: EDNAFULL
+# Gap_penalty: 3.0
+# Extend_penalty: 0.5
+#
+# Length: 7277
+# Identity:    7277/7277 (100.0%)
+# Similarity:  7277/7277 (100.0%)
+# Gaps:           0/7277 ( 0.0%)
+# Score: 36385.0
+#
+#
+#=======================================
+
+ECLAC            101 atgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtg    150
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC            101 atgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtg    150
+
+ECLAC            151 aaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggc    200
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC            151 aaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggc    200
+
+ECLAC            201 gatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgg    250
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC            201 gatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgg    250
+
+ECLAC            251 gcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcac    300
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC            251 gcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcac    300
+
+ECLAC            301 gcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactggg    350
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC            301 gcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactggg    350
+
+ECLAC            351 tgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgta    400
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC            351 tgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgta    400
+
+ECLAC            401 aagcggcggtgcacaatcttctcgcgcaacgcgtcagtgggctgatcatt    450
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC            401 aagcggcggtgcacaatcttctcgcgcaacgcgtcagtgggctgatcatt    450
+
+ECLAC            451 aactatccgctggatgaccaggatgccattgctgtggaagctgcctgcac    500
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC            451 aactatccgctggatgaccaggatgccattgctgtggaagctgcctgcac    500
+
+ECLAC            501 taatgttccggcgttatttcttgatgtctctgaccagacacccatcaaca    550
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC            501 taatgttccggcgttatttcttgatgtctctgaccagacacccatcaaca    550
+
+
+...........  etc. .............
+
+
+</pre>
+
+<p>
+
+The file 'supermatcher.error' will contain any errors that occured
+during the program.  This may be that wordmatch could not find any
+matches hence no suitable start point is found for the smith-waterman
+calculation. 
 
 
 <H2>

@@ -260,9 +260,19 @@ To write out the 7 residues around all phosphorylated residues in swissprot:
                                   The tag value may be wildcarded by using
                                   '*'.
                                   If you wish to show more than one tag value,
-                                  separate their names with the character
-                                  '|', eg:
+                                  separate their names with a space or the
+                                  character '|', eg:
                                   pax* | 10
+   -join               bool       Some features, such as CDS (coding sequence)
+                                  and mRNA are composed of introns
+                                  concatenated together. There may be other
+                                  forms of 'joined' sequence, depending on the
+                                  feature table. If this option is set TRUE,
+                                  then any group of these features will be
+                                  output as a single sequence. If the 'before'
+                                  and 'after' qualifiers have been set, then
+                                  only the sequence before the first feature
+                                  and after the last feature are added.
 
    Advanced qualifiers: (none)
    General qualifiers:
@@ -373,10 +383,17 @@ gene | label</td>
 <td>-value</td>
 <td>Tag values are the values associated with a feature tag. Tags are the types of extra values that a feature may have. For example in the EMBL feature table, a 'CDS' type of feature may have the tags '/codon', '/codon_start', '/db_xref', '/EC_number', '/evidence', '/exception', '/function', '/gene', '/label', '/map', '/note', '/number', '/partial', '/product', '/protein_id', '/pseudo', '/standard_name', '/translation', '/transl_except', '/transl_table', or '/usedin'. Only some of these tags can have values, for example '/gene' can have the value of the gene name. By default any feature tag value in the feature table is shown. You can set this to match any feature tag valueyou wish to show.
 The tag value may be wildcarded by using '*'.
-If you wish to show more than one tag value, separate their names with the character '|', eg:
+If you wish to show more than one tag value, separate their names with a space or the character '|', eg:
 pax* | 10</td>
 <td>Any string is accepted</td>
 <td>*</td>
+</tr>
+
+<tr>
+<td>-join</td>
+<td>Some features, such as CDS (coding sequence) and mRNA are composed of introns concatenated together. There may be other forms of 'joined' sequence, depending on the feature table. If this option is set TRUE, then any group of these features will be output as a single sequence. If the 'before' and 'after' qualifiers have been set, then only the sequence before the first feature and after the last feature are added.</td>
+<td>Yes/No</td>
+<td>No</td>
 </tr>
 
 <tr bgcolor="#FFFFD0">

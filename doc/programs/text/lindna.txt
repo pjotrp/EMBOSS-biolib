@@ -281,6 +281,7 @@ See also
 
    Program name Description
    abiview Reads ABI file and display the trace
+   cirdna Draws circular maps of DNA constructs
    pepnet Displays proteins as a helical net
    pepwheel Shows protein sequences as helices
    prettyplot Displays aligned sequences, with colouring and boxing

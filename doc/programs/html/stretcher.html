@@ -73,31 +73,9 @@ Finds the best global alignment between two sequences
 
 <pre>
 
- stretcher -sequencea s1 -sequenceb s2 
-
-
- hbahum                                              141  vs.
- hbbhum                                              146 
- scoring matrix: BLOSUM62, gap penalties: 12/2
- 43.2% identity;         Global alignment score: 272
-
-                 10        20        30        40         50        
- hbahum V-LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DLSH-----GSA
-        : :.: .:. : : ::::  .. : :.::: :... .: :. .:  : :::      :. 
- hbbhum VHLTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGNP
-                10          20        30        40        50        
-
-             60        70        80        90       100       110   
- hbahum QVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDPVNFKLLSHCLLVTLAAHL
-        .::.:::::  :.....::.:.. .....::.::. ::.::: ::.::.. :. .:: :.
- hbbhum KVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPENFRLLGNVLVCVLAHHF
-        60        70        80        90       100       110        
-
-            120       130       140 
- hbahum PAEFTPAVHASLDKFLASVSTVLTSKYR
-          :::: :.:. .: .:.:...:. ::.
- hbbhum GKEFTPPVQAAYQKVVAGVANALAHKYH
-       120       130       140      
+% stretcher tsw:hba_human tsw:hbb_human
+Finds the best global alignment between two sequences
+Output alignment [hba_human.stretcher]: 
 
 </pre>
 
@@ -217,6 +195,90 @@ Any 2 sequence USAs of the same type (DNA or protein).
     Output file format
 </H2>
 
+<p>
+
+The output is a standard EMBOSS alignment file. 
+
+<p>
+
+The results can be output in one of several styles by using the
+command-line qualifier <b>-aformat xxx</b>, where 'xxx' is replaced by
+the name of the required format.  Some of the alignment formats can cope
+with an unlimited number of sequences, while others are only for pairs
+of sequences.  
+
+<p>
+
+The available multiple alignment format names are: unknown, multiple,
+simple, fasta, msf, trace, srs
+
+<p>
+
+The available pairwise alignment format names are: pair, markx0, markx1,
+markx2, markx3, markx10, srspair, score
+
+<p>
+
+See:
+<A href="http://www.uk.embnet.org/Software/EMBOSS/Themes/AlignFormats.html">
+http://www.uk.embnet.org/Software/EMBOSS/Themes/AlignFormats.html</A>
+for further information on alignment formats.
+
+<p>
+
+
+<p>
+
+The output from the example follows:
+
+<p>
+
+<pre>
+########################################
+# Program:  stretcher
+# Rundate:  Mon May 20 16:25:11 2002
+# Report_file: hba_human.stretcher
+########################################
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: HBA_HUMAN
+# 2: HBB_HUMAN
+# Matrix: EBLOSUM62
+# Gap_penalty: 12
+# Extend_penalty: 2
+#
+# Length: 148
+# Identity:      64/148 (43.2%)
+# Similarity:    89/148 (60.1%)
+# Gaps:           9/148 ( 6.1%)
+# Score: 272
+#
+#
+#=======================================
+
+
+                10        20        30        40
+HBA_HU V-LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DL
+       : :.: .:. : : ::::  .. : :.::: :... .: :. .:  : ::
+HBB_HU VHLTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDL
+               10          20        30        40
+
+       50             60        70        80        90
+HBA_HU SH-----GSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRV
+       :      :. .::.:::::  :.....::.:.. .....::.::. ::.:
+HBB_HU STPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHV
+       50        60        70        80        90
+
+           100       110       120       130       140
+HBA_HU DPVNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKYR
+       :: ::.::.. :. .:: :.  :::: :.:. .: .:.:...:. ::.
+HBB_HU DPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH
+      100       110       120       130       140
+
+#---------------------------------------
+#---------------------------------------         
+</pre>
 
 <H2>
     Data files
@@ -255,6 +317,8 @@ The directories are searched in the following order:
 </H2>
 
 
+None.
+
 <H2>
     References
 </H2>
@@ -269,21 +333,25 @@ The directories are searched in the following order:
     Warnings
 </H2>
 
+None.
 
 <H2>
     Diagnostic Error Messages
 </H2>
 
+None.
 
 <H2>
     Exit status
 </H2>
 
+It exits with a status of 0.
 
 <H2>
     Known bugs
 </H2>
 
+None.
 
 <!--
 <H2>

@@ -246,34 +246,84 @@ IT IS DONE FOR YOU.
     Output file format
 </H2>
 
+<p>
+
+The output is a standard EMBOSS alignment file. 
+
+<p>
+
+The results can be output in one of several styles by using the
+command-line qualifier <b>-aformat xxx</b>, where 'xxx' is replaced by
+the name of the required format.  Some of the alignment formats can cope
+with an unlimited number of sequences, while others are only for pairs
+of sequences.  
+
+<p>
+
+The available multiple alignment format names are: unknown, multiple,
+simple, fasta, msf, trace, srs
+
+<p>
+
+The available pairwise alignment format names are: pair, markx0, markx1,
+markx2, markx3, markx10, srspair, score
+
+<p>
+
+See:
+<A href="http://www.uk.embnet.org/Software/EMBOSS/Themes/AlignFormats.html">
+http://www.uk.embnet.org/Software/EMBOSS/Themes/AlignFormats.html</A>
+for further information on alignment formats.
+
+<p>
+
+
+<p>
+
 
 Here is the output file from the example run:
 <P>
 
 <HR>
 <pre>
-Global: HBA_HUMAN vs HBB_HUMAN
-Score: 290.50
+########################################
+# Program:  needle
+# Rundate:  Mon May 20 16:22:49 2002
+# Report_file: hba_human.needle
+########################################
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: HBA_HUMAN
+# 2: HBB_HUMAN
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 148
+# Identity:      63/148 (42.6%)
+# Similarity:    88/148 (59.5%)
+# Gaps:           9/148 ( 6.1%)
+# Score: 290.5
+#
+#
+#=======================================
 
-HBA_HUMAN       1         VLSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFP 44      
-                           |:| :|: | | ||||  :  | | ||| |: : :| |: :| 
-HBB_HUMAN       1        VHLTPEEKSAVTALWGKV..NVDEVGGEALGRLLVVYPWTQRFFE 43      
+HBA_HUMAN          1  VLSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DL     48
+                      .|:|.:|:.|.|.||||  :..|.|.|||.|:.:.:|.|:.:|..| ||
+HBB_HUMAN          1 VHLTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDL     48
 
-HBA_HUMAN       45       HF.DLS.....HGSAQVKGHGKKVADALTNAVAHVDDMPNALSAL 83      
-                          | |||      |: :|| |||||  | :: :||:|::    : |
-HBB_HUMAN       44       SFGDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATL 88      
+HBA_HUMAN         49 S-----HGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRV     93
+                     |     .|:.:||.|||||..|.::.:||:|::....:.||:||..||.|
+HBB_HUMAN         49 STPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHV     98
 
-HBA_HUMAN       84       SDLHAHKLRVDPVNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKF 128     
-                         |:||  || ||| ||:|| : |:  || |   |||| | |:  | 
-HBB_HUMAN       89       SELHCDKLHVDPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKV 133     
+HBA_HUMAN         94 DPVNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKYR    141
+                     ||.||:||.:.|:..||.|...||||.|.|:..|.:|.|:..|..||.
+HBB_HUMAN         99 DPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH    146
 
-HBA_HUMAN       129      LASVSTVLTSKYR                                 141     
-                         :| |:  |  || 
-HBB_HUMAN       134      VAGVANALAHKYH                                 146     
 
-%id = 45.32                     %similarity = 63.31
-Overall %id = 43.15             Overall %similarity = 60.27
-</pre>
+#---------------------------------------
+#---------------------------------------  </pre>
 <HR>
 <P>
 

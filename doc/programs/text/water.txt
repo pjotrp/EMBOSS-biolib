@@ -47,10 +47,11 @@ Usage
 
    Here is a sample session with water.
 
-% water sw:hba_human sw:hbb_human
+% water tsw:hba_human tsw:hbb_human
+Smith-Waterman local alignment.
 Gap opening penalty [10.0]:
 Gap extension penalty [0.5]:
-Output file [hba_human.water]:
+Output alignment [hba_human.water]:
 
 Command line arguments
 
@@ -126,42 +127,72 @@ Input file format
    
 Output file format
 
+   The output is a standard EMBOSS alignment file.
+   
+   The results can be output in one of several styles by using the
+   command-line qualifier -aformat xxx, where 'xxx' is replaced by the
+   name of the required format. Some of the alignment formats can cope
+   with an unlimited number of sequences, while others are only for pairs
+   of sequences.
+   
+   The available multiple alignment format names are: unknown, multiple,
+   simple, fasta, msf, trace, srs
+   
+   The available pairwise alignment format names are: pair, markx0,
+   markx1, markx2, markx3, markx10, srspair, score
+   
+   See: http://www.uk.embnet.org/Software/EMBOSS/Themes/AlignFormats.html
+   for further information on alignment formats.
+   
    Here is the output file from the example run:
      _________________________________________________________________
    
-Local: HBA_HUMAN vs HBB_HUMAN
-Score: 293.50
+########################################
+# Program:  water
+# Rundate:  Mon May 20 16:35:12 2002
+# Report_file: hba_human.water
+########################################
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: HBA_HUMAN
+# 2: HBB_HUMAN
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 145
+# Identity:      63/145 (43.4%)
+# Similarity:    88/145 (60.7%)
+# Gaps:           8/145 ( 5.5%)
+# Score: 293.5
+#
+#
+#=======================================
 
-HBA_HUMAN       2        LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF 46
-                         |:| :|: | | ||||  :  | | ||| |: : :| |: :|  |
-HBB_HUMAN       3        LTPEEKSAVTALWGKV..NVDEVGGEALGRLLVVYPWTQRFFESF 45
+HBA_HUMAN          2 LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DLS-     49
+                     |:|.:|:.|.|.||||  :..|.|.|||.|:.:.:|.|:.:|..| |||
+HBB_HUMAN          3 LTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDLST     50
 
-HBA_HUMAN       47       .DLS.....HGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSD 85
-                          |||      |: :|| |||||  | :: :||:|::    : ||:
-HBB_HUMAN       46       GDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSE 90
+HBA_HUMAN         50 ----HGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDP     95
+                         .|:.:||.|||||..|.::.:||:|::....:.||:||..||.|||
+HBB_HUMAN         51 PDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDP    100
 
-HBA_HUMAN       86       LHAHKLRVDPVNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLA 130
-                         ||  || ||| ||:|| : |:  || |   |||| | |:  | :|
-HBB_HUMAN       91       LHCDKLHVDPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVA 135
+HBA_HUMAN         96 VNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKY    140
+                     .||:||.:.|:..||.|...||||.|.|:..|.:|.|:..|..||
+HBB_HUMAN        101 ENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKY    145
 
-HBA_HUMAN       131      SVSTVLTSKY                                    140
-                          |:  |  ||
-HBB_HUMAN       136      GVANALAHKY                                    145
 
-%id = 45.99                     %similarity = 64.23
-Overall %id = 43.15             Overall %similarity = 60.27
+#---------------------------------------
+#---------------------------------------
      _________________________________________________________________
    
-   The %id is the percentage of identical matches between the two
-   sequences over the reported aligned region.
+   The Identity: is the percentage of identical matches between the two
+   sequences over the reported aligned region (including any gaps in the
+   length).
    
-   The %similarity is the percentage of matches between the two sequences
-   over the reported aligned region where the scoring matrix value is
-   greater or equal to 0.0.
-   
-   The Overall %id and Overall %similarity are calculated in a similar
-   manner for the number of matches over the length of the longest of the
-   two sequences.
+   The Similarity: is the percentage of matches between the two sequences
+   over the reported aligned region (including any gaps in the length).
    
 Data files
 

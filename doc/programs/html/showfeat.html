@@ -72,23 +72,24 @@ containing an EMBL feature table.
 
 <pre>
 
-% showfeat -ufo paamir.ft
+% showfeat em:paamir
 Show features of a sequence.
-Input sequence(s): embl:paamir
-Output file [stdout]: 
+Output file [paamir.showfeat]: stdout
 PAAMIR
 Pseudomonas aeruginosa amiC and amiR gene for aliphatic amidase regulation
 |==========================================================| 2167
+&gt;                                                            misc_feature
 |----------------------------------------------------------&gt; source
 &gt;                                                            promoter
 |&gt;                                                           promoter
   &gt;                                                          RBS
   |-------------------------------&gt;                          CDS
                 |&gt;                                           misc_feature
-                        |------&gt;                             mutation
+                        |------&gt;                             variation
+                                  &gt;                          conflict
                                   |----------------&gt;         CDS
-|                                                            misc_feature
-                                  |                          conflict
+
+
 
 </pre>
 
@@ -283,7 +284,7 @@ IT IS DONE FOR YOU.
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>If you enter the name of a file here then this program will write the feature details into that file.</td>
 <td>Output file</td>
-<td>stdout</td>
+<td><i>&lt;sequence&gt;</i>.showfeat</td>
 </tr>
 
 <tr bgcolor="#FFFFD0">
@@ -532,8 +533,7 @@ FT                   /citation=[3]
 </H2>
 
 
-The output is a text representation of the feature table, and goes by
-default to standard output (the terminal).
+The output is a text representation of the feature table.
 
 <p>
 
@@ -541,19 +541,18 @@ Here is the output from the example run:
 
 <pre>
 
-PAAMIR
-Pseudomonas aeruginosa amiC and amiR gene for aliphatic amidase regulation
 |==========================================================| 2167
+&gt;                                                            misc_feature
 |----------------------------------------------------------&gt; source
 &gt;                                                            promoter
 |&gt;                                                           promoter
   &gt;                                                          RBS
   |-------------------------------&gt;                          CDS
                 |&gt;                                           misc_feature
-                        |------&gt;                             mutation
+                        |------&gt;                             variation
+                                  &gt;                          conflict
                                   |----------------&gt;         CDS
-|                                                            misc_feature
-                                  |                          conflict
+
 
 </pre>
 

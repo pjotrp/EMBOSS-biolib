@@ -19,23 +19,24 @@ Usage
    as a -ufo qualifier (uniform feature object), in this case a file
    containing an EMBL feature table.
 
-% showfeat -ufo paamir.ft
+% showfeat em:paamir
 Show features of a sequence.
-Input sequence(s): embl:paamir
-Output file [stdout]:
+Output file [paamir.showfeat]: stdout
 PAAMIR
 Pseudomonas aeruginosa amiC and amiR gene for aliphatic amidase regulation
 |==========================================================| 2167
+>                                                            misc_feature
 |----------------------------------------------------------> source
 >                                                            promoter
 |>                                                           promoter
   >                                                          RBS
   |------------------------------->                          CDS
                 |>                                           misc_feature
-                        |------>                             mutation
+                        |------>                             variation
+                                  >                          conflict
                                   |---------------->         CDS
-|                                                            misc_feature
-                                  |                          conflict
+
+
 
 Command line arguments
 
@@ -198,7 +199,8 @@ Command line arguments
    (Parameter 1) Sequence database USA Readable sequence(s) Required
    [-outfile]
    (Parameter 2) If you enter the name of a file here then this program
-   will write the feature details into that file. Output file stdout
+   will write the feature details into that file. Output file
+   <sequence>.showfeat
    Optional qualifiers Allowed values Default
    -matchsource By default any feature source in the feature table is
    shown. You can set this to match any feature source you wish to show.
@@ -369,24 +371,22 @@ FT                   /citation=[3]
 
 Output file format
 
-   The output is a text representation of the feature table, and goes by
-   default to standard output (the terminal).
+   The output is a text representation of the feature table.
    
    Here is the output from the example run:
 
-PAAMIR
-Pseudomonas aeruginosa amiC and amiR gene for aliphatic amidase regulation
 |==========================================================| 2167
+>                                                            misc_feature
 |----------------------------------------------------------> source
 >                                                            promoter
 |>                                                           promoter
   >                                                          RBS
   |------------------------------->                          CDS
                 |>                                           misc_feature
-                        |------>                             mutation
+                        |------>                             variation
+                                  >                          conflict
                                   |---------------->         CDS
-|                                                            misc_feature
-                                  |                          conflict
+
 
 Data files
 
