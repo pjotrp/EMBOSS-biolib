@@ -27,8 +27,8 @@
 #define MILLION 1000000.
 
 
-static void mwcontam_readdata(AjPStr files, AjPList **lists,
-			      AjPStr **filearr, ajint *n);
+static void mwcontam_readdata(AjPList files, AjPList **lists,
+			      ajint *n);
 static void mwcontam_complists(AjPList one, AjPList *two, float tolerance);
 
 
@@ -44,11 +44,10 @@ static void mwcontam_complists(AjPList one, AjPList *two, float tolerance);
 
 int main(int argc, char **argv)
 {
-    AjPStr files  = NULL;
+    AjPList files  = NULL;
     AjPFile outf = NULL;
     float tolerance = 0.0;
     AjPList *lists=NULL;
-    AjPStr  *filearr=NULL;
     double  *ptr=NULL;
     
     ajint n;
@@ -56,12 +55,12 @@ int main(int argc, char **argv)
     
     embInit("mwcontam", argc, argv);
 
-    files     = ajAcdGetString("files");
+    files     = ajAcdGetFilelist("files");
     tolerance = ajAcdGetFloat("tolerance");
     outf      = ajAcdGetOutfile("outfile");
 
 
-    mwcontam_readdata(files,&lists,&filearr,&n);
+    mwcontam_readdata(files,&lists,&n);
 
     if(n>1)
     {
@@ -80,12 +79,11 @@ int main(int argc, char **argv)
 	while(ajListPop(lists[i],(void **)&ptr))
 	    AJFREE(ptr);
 	ajListDel(&lists[i]);
-	ajStrDel(&filearr[i]);
     }
 
     AJFREE(lists);
-    AJFREE(filearr);
 
+    ajListDel(&files);
     ajFileClose(&outf);
     
     ajExit();
@@ -99,24 +97,24 @@ int main(int argc, char **argv)
 **
 ** Read molecular weight files.
 **
-** @param [r] files [AjPStr] Comma separated list of data files
+** @param [r] files [AjPList] List of files
 ** @param [w] lists [AjPList**] Array of lists for molwts
-** @param [w] filearr [AjPStr**] Names of files
 ** @param [w] n [ajint*] number of files/lists
 ** @@
 *******************************************************************/
-static void mwcontam_readdata(AjPStr files, AjPList **lists,
-			      AjPStr **filearr, ajint *n)
+static void mwcontam_readdata(AjPList files, AjPList **lists,
+			      ajint *n)
 {
     AjPFile inf=NULL;
     AjPStr  line = NULL;
+    AjPStr  thysf = NULL;
     ajint   nfiles;
     ajint   i;
     double  *ptr=NULL;
     double  val=0.;
     char    c;
     
-    nfiles = *n = ajArrCommaList(files,filearr);
+    nfiles = *n = ajListLength(files);
 
     if(!nfiles)
 	ajFatal("No input files were specified");
@@ -128,9 +126,10 @@ static void mwcontam_readdata(AjPStr files, AjPList **lists,
     for(i=0;i<nfiles;++i)
     {
 	(*lists)[i] = ajListNew();
-	inf = ajFileNewIn((*filearr)[i]);
+	ajListPop(files,(void **)&thysf);
+	inf = ajFileNewIn(thysf);
 	if(!inf)
-	    ajFatal("Cannot open file %S",(*filearr)[i]);
+	    ajFatal("Cannot open file %S",thysf);
 	while(ajFileReadLine(inf,&line))
 	{
 	    c = *ajStrStr(line);

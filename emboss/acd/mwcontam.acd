@@ -4,7 +4,7 @@ appl: mwcontam [
 ]
 
 section: input [ info: "input Section" type: page ]
-string: files  [
+filelist: files  [
   parameter: "Y"
   information: "Comma separated file list"
 ]
