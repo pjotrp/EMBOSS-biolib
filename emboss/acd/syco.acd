@@ -51,6 +51,7 @@ section: output [
 
   toggle: plot  [
     information: "Produce plot"
+    default: "Y"
   ]
 
   xygraph: graph  [
