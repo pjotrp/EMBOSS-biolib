@@ -479,7 +479,7 @@ public class BuildProgramMenu
         {
           public void actionPerformed(ActionEvent e)
           {
-            new KeywordSearch(search,woss,mysettings,
+            new KeywordSearch(search,woss,mysettings,withSoap,
                               radioAND.isSelected());
           }
         });
@@ -496,7 +496,7 @@ public class BuildProgramMenu
         {
           public void actionPerformed(ActionEvent e)
           {
-            new KeywordSearch(search,woss,mysettings,
+            new KeywordSearch(search,woss,mysettings,withSoap,
                               radioAND.isSelected());
           }
         });

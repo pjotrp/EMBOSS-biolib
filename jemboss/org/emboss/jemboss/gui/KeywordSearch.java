@@ -44,11 +44,12 @@ public class KeywordSearch implements HyperlinkListener
   private JFrame f;
 
   public KeywordSearch(JTextField search, String woss,
-                       JembossParams mysettings, boolean andOperator)
+                       JembossParams mysettings, boolean withSoap,
+                       boolean andOperator)
   {
     String searchTxt = search.getText().trim().toLowerCase();
     String res = search(searchTxt,woss.toLowerCase(),
-                        mysettings,andOperator);
+                        mysettings,withSoap,andOperator);
     showSearchResult(res,searchTxt,mysettings);
   }
 
@@ -62,13 +63,29 @@ public class KeywordSearch implements HyperlinkListener
   *
   */
   private String search(String searchTxt, String woss,
-                        JembossParams mysettings, boolean andOperator)
+                        JembossParams mysettings, boolean withSoap,
+                        boolean andOperator)
   {
     Vector vres = new Vector();
     StringBuffer res = new StringBuffer();
     boolean found = false;
     try
     {
+      String stub;
+
+      if(withSoap)
+        stub = mysettings.getembURL();
+      else
+      {
+        String embRoot = mysettings.getEmbossBin().trim();
+        if(embRoot.endsWith("bin/"))
+          embRoot = embRoot.substring(0,embRoot.length()-4);
+        else
+          embRoot = embRoot.substring(0,embRoot.length()-3);
+          
+        stub = "file://"+embRoot+"/share/EMBOSS/doc/programs/html/";
+      }
+ 
       String line;
       String searching = getSearchText(searchTxt,andOperator);
  
@@ -99,7 +116,7 @@ public class KeywordSearch implements HyperlinkListener
 
             found = true;
             String prog = line.substring(0,line.indexOf(" "));
-            String progHTML = "<tr><td><a href=\""+mysettings.getembURL()+prog+
+            String progHTML = "<tr><td><a href=\""+stub+prog+
                               ".html\">"+prog+"</a></td><td>"+
                               line.substring(line.indexOf(" "))+"</td></tr>";
             if(!vres.contains(progHTML))
