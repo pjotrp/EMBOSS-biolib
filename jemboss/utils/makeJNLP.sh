@@ -1,7 +1,29 @@
 #!/bin/sh
+#
+#
 
+echo
+echo "Run this script from the installed jemboss directories."
+echo "Press any key to continue"
+read
 
 cd ..
+CWPWD=$PWD
+
+while [ ! -d "$CWPWD/resources" ]
+do
+  echo
+  echo "Enter the installed jemboss directory "
+  echo "[/usr/local/emboss/share/EMBOSS/jemboss]:"
+  read TMP
+  if [ $TMP != "" ]; then
+    CWPWD=$TMP
+  fi
+done
+
+#
+#
+
 if [ ! -d "jnlp" ]; then
   mkdir jnlp
 fi
@@ -9,8 +31,11 @@ fi
 JAVA_HOME=0
 while [ ! -f "$JAVA_HOME/bin/keytool" ]
 do
-  echo "Enter java (1.3 or above) location (/usr/java/jdk1.3.1/): "
+  echo "Enter java (1.3 or above) location [/usr/java/jdk1.3.1/]: "
   read JAVA_HOME
+  if [ "$JAVA_HOME" = "" ]; then
+    JAVA_HOME="/usr/java/jdk1.3.1/"
+  fi
 done
 
 PATH=$PATH:$JAVA_HOME/bin/ ; export PATH
@@ -82,8 +107,8 @@ echo "Each of the jar files will now be signed"
 echo
 for i in *.jar; do 
   echo "Signing $i"
-  jarsigner -keystore jembossstore -signedjar s$i \
-        $i signFiles -storepass $STOREPASS
+  jarsigner -keystore jembossstore -storepass $STOREPASS -keypass $KEYPASS \
+           -signedjar s$i $i signFiles 
 done;
 
 #
