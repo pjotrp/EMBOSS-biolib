@@ -508,7 +508,8 @@ static AjBool    acdCodeDef(const AcdPAcd thys, AjPStr *msg);
 static AjBool    acdCodeGet(const AjPStr code, AjPStr *msg);
 static void      acdCodeInit(void);
 static AjBool    acdDataFilename(AjPStr* datafname,
-				 const AjPStr name, const AjPStr ext);
+				 const AjPStr name, const AjPStr ext,
+				 AjBool nullok);
 static AjBool    acdDef(AcdPAcd thys, const AjPStr value);
 static AjBool    acdDefinedEmpty (const AcdPAcd thys);
 static void      acdError(const char* fmt, ...);
@@ -528,6 +529,7 @@ static AjBool    acdExpLesser(AjPStr* result, const AjPStr str);
 static AjBool    acdExpAnd(AjPStr* result, const AjPStr str);
 static AjBool    acdExpOr(AjPStr* result, const AjPStr str);
 static AjBool    acdExpCond(AjPStr* result, const AjPStr str);
+static AjBool    acdExpOneof(AjPStr* result, const AjPStr str);
 static AjBool    acdExpCase(AjPStr* result, const AjPStr str);
 static AjBool    acdExpFilename(AjPStr* result, const AjPStr str);
 static AjBool    acdExpExists(AjPStr* result, const AjPStr str);
@@ -757,6 +759,7 @@ static AcdOExpList explist[] =
     {"case", acdExpCase},
     {"filename", acdExpFilename},
     {"exists", acdExpExists},
+    {"oneof", acdExpOneof},
     {NULL, NULL}
 };
 
@@ -877,7 +880,7 @@ static void acdSetTree(AcdPAcd thys);
 
 /* Default attributes available for all types */
 
-static ajint nDefAttr = 17;
+static ajint nDefAttr = 18;
 
 enum AcdEDef
 {
@@ -894,6 +897,7 @@ enum AcdEDef
     DEF_EXPECTED,
     DEF_NEEDED,
     DEF_KNOWNTYPE,
+    DEF_RELATION,
     DEF_STYLE,
     DEF_QUALIFIER,
     DEF_TEMPLATE,
@@ -936,6 +940,9 @@ AcdOAttr acdAttrDef[] =
     {"knowntype", VT_STR, "",
 	 "Known standard type, "
 	     "used to define inputs and output types for workflows"},
+    {"relation", VT_STR, "",
+	 "Relationship between this ACD item and others, "
+	     "defined as specially formatted text"},
     {"style", VT_STR, "",
 	 "Style for SoapLab's ACD files"},
     {"qualifier", VT_STR, "",
@@ -2388,7 +2395,6 @@ AjStatus ajAcdInitP(const char *pgm, ajint argc, char *argv[],
 	    {
 		if(ajStrLen(tmpword)) /* nothing before first whitespace */
 		{
-		    acdLog("++ add to list %x '%S'\n", tmpword, tmpword);
 		    ajListstrPushApp(acdListWords, tmpword);
 		    tmpword = NULL;
 		}
@@ -5344,7 +5350,7 @@ static void acdSetDatafile(AcdPAcd thys)
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
     acdLog("nullok: %B\n", nullok);
     
-    acdDataFilename(&datafname, name, ext);
+    acdDataFilename(&datafname, name, ext, nullok);
     required = acdIsRequired(thys);
     acdReplyInit(thys, ajStrStr(datafname), &defreply);
 /*    acdPromptInfile(thys);*/
@@ -14454,7 +14460,7 @@ static AjBool acdExpEqual(AjPStr* result, const AjPStr str)
     
     if(!texp)				/* string == string */
 	texp = ajRegCompC("^[ \t]*([^ \t]+)[ \t]*[=][=][ \t]*"
-			  "([^ \t]+)[ \t]*$");
+			  "([^ \t{}]+)[ \t]*$"); /* for {} see acdExpOneof */
     
     if(ajRegExec(texp, str))
     {
@@ -14498,7 +14504,7 @@ static AjBool acdExpNotEqual(AjPStr* result, const AjPStr str)
     static AjPRegexp dexp = NULL;
     static AjPRegexp texp = NULL;
     
-    if(!iexp)				/* ajint + ajint */
+    if(!iexp)				/* int != int */
 	iexp = ajRegCompC("^[ \t]*([0-9+-]+)[ \t]*[!][=][ \t]*"
 			  "([0-9+-]+)[ \t]*$");
     
@@ -14518,7 +14524,7 @@ static AjBool acdExpNotEqual(AjPStr* result, const AjPStr str)
 	return ajTrue;
     }
     
-    if(!dexp)				/* float + float */
+    if(!dexp)				/* float != float */
 	dexp = ajRegCompC("^[ \t]*([0-9.+-]+)[ \t]*[!][=][ \t]*"
 			  "([0-9.+-]+)[ \t]*$");
     
@@ -14538,9 +14544,9 @@ static AjBool acdExpNotEqual(AjPStr* result, const AjPStr str)
 	return ajTrue;
     }
     
-    if(!texp)				/* float + float */
+    if(!texp)				/* string != string*/
 	texp = ajRegCompC("^[ \t]*([^ \t]+)[ \t]*[!][=][ \t]*"
-			  "([^ \t]+)[ \t]*$");
+			  "([^ \t{}]+)[ \t]*$"); /* for {} see acdExpOneof */
     
     if(ajRegExec(texp, str))
     {
@@ -14952,6 +14958,80 @@ static AjBool acdExpCond(AjPStr* result, const AjPStr str)
 }
 
 
+
+
+/* @funcstatic acdExpOneof ****************************************************
+**
+** Looks for and resolves an expression as a test for a list of values
+** @( var == { vala | valb | valc } )
+** @( var != { vala | valb | valc } )
+**
+** @param [r] result [AjPStr*] Expression result
+** @param [r] str [const AjPStr] String with possible expression
+** @return [AjBool] ajTrue if successfully resolved
+** @@
+******************************************************************************/
+
+static AjBool acdExpOneof(AjPStr* result, const AjPStr str)
+{
+    ajint ifound;
+    AjBool todo;
+    
+    static AjPStr testvar = NULL;
+    static AjPStr notvar = NULL;
+    static AjPStr restvar = NULL;
+    static AjPStr elsevar = NULL;
+
+    static AjPRegexp caseexp = NULL;
+    static AjPRegexp listexp = NULL;
+    
+    if(!caseexp)		    /* value = (case : value,  ...) */
+	caseexp = ajRegCompC("^[ \t]*([A-Za-z0-9+-]+)[ \t]*"
+			     "([!=])[=][ \t]*[{]");
+    if(!listexp)			/* case : value */
+	listexp = ajRegCompC("^[ \t]*([^| \t]+)[ \t]*[|]+"
+			     "[ \t]*([^| \t,]+)[ \t,]*[}]");
+    
+    if(ajRegExec(caseexp, str))
+    {
+	ajRegSubI(caseexp, 1, &testvar);
+	ajRegSubI(caseexp, 2, &notvar);	/* "!" or empty */
+	
+	if(!ajRegPost(caseexp, &restvar)) /* any more? */
+	    return ajFalse;
+
+	ajStrAssC(&elsevar, "");
+	todo = ajTrue;
+	ifound = 0;
+	while(todo && ajRegExec(listexp, restvar))
+	{
+	    ajRegSubI(listexp, 1, &acdExpTmpstr);
+
+	    if(ajStrMatch(acdExpTmpstr, testvar)) /* match, but did we
+						     want to find it? */
+	    {
+		if (ajStrChar(notvar,0) == '=')
+		    ajStrAssC(result, "Y");
+		else
+		    ajStrAssC(result, "N");
+		return ajTrue;
+	    }
+
+	    todo = ajRegPost(listexp, &restvar);
+	}
+	/* no match, but did we not
+	   want to find it? */
+	if (ajStrChar(notvar,0) == '=')
+	    ajStrAssC(result, "N");
+	else
+	    ajStrAssC(result, "Y");
+	return ajTrue;
+	acdLog("%S != else : '%S'\n", testvar, *result);
+	return ajTrue;
+    }
+    
+    return ajFalse;
+}
 
 
 /* @funcstatic acdExpCase *****************************************************
@@ -18497,24 +18577,29 @@ static void acdAmbigAppC(AjPStr* pambigList, const char* txt)
 ** @param [w] infname [AjPStr*] Resulting file name
 ** @param [r] name [const AjPStr] Ffile name
 ** @param [r] ext [const AjPStr] File extension
+** @param [r] nullok [AjBool] Can set as an empty string if true
 ** @return [AjBool] ajTrue if a name was successfully set
 ** @@
 ******************************************************************************/
 
 static AjBool acdDataFilename(AjPStr* infname,
-			      const AjPStr name, const AjPStr ext)
+			      const AjPStr name, const AjPStr ext,
+			      AjBool nullok)
 {
-    AjBool ret = ajFalse;
+    AjBool ret = ajTrue;
 
     if(ajStrLen(name))
 	ajStrAssS(infname, name);
-    else
+    else if (!nullok)
 	ajStrAssS(infname, acdProgram);
+    else
+	ajStrAssC(infname, "");
 
     if(ajStrLen(ext))
 	ajFileNameExt(infname, ext);
     else
-	ajFileNameExtC(infname, "dat");
+	if (!nullok)
+	    ajFileNameExtC(infname, "dat");
 
     return ret;
 }
@@ -20163,11 +20248,19 @@ static void acdValidQual(const AcdPAcd thys)
 			thys->Token);
 	}
 
-	/* still to do - check for type */
-
 	tmpstr = acdAttrValue(thys, "knowntype");
 	if(!ajStrLen(tmpstr))
 	    acdWarn("No knowntype specified for input file");
+    }
+
+    /* datafile - no standard qualifier name yet */
+    /* check for knowntype */
+
+    if(ajStrMatchCC(acdType[thys->Type].Name, "datafile"))
+    {
+	tmpstr = acdAttrValue(thys, "knowntype");
+	if(!ajStrLen(tmpstr))
+	    acdWarn("No knowntype specified for data file");
     }
 
     /* outfile - assume parameter unless default is stdout -outfile */
@@ -20483,6 +20576,7 @@ static void acdValidKnowntype(const AcdPAcd thys)
     if (ajStrMatchC(acdKnownType, "file"))
     {
 	if (!ajStrMatchCC(acdType[thys->Type].Name, "infile") &&
+	    !ajStrMatchCC(acdType[thys->Type].Name, "filelist") &&
 	    !ajStrMatchCC(acdType[thys->Type].Name, "outfile"))
 	{
 	    acdWarn("Knowntype '%S' defined for type '%S', used for '%s'",
@@ -20522,6 +20616,7 @@ static void acdReadKnowntypes(AjPTable* desctable, AjPTable* typetable)
     AjPStr knownName     = NULL;
     AjPStr knownType     = NULL;
     AjPStr knownDesc     = NULL;
+    ajint iline = 0;
 
     ajNamRootPack(&knownPack);
     ajNamRootInstall(&knownRootInst);
@@ -20562,6 +20657,7 @@ static void acdReadKnowntypes(AjPTable* desctable, AjPTable* typetable)
     knownxp = ajRegCompC("([^ ]+) +([^ ]+) +([^ ].*)");
     while(knownFile && ajFileReadLine(knownFile, &knownLine))
     {
+	iline++;
 	if(ajStrUncomment(&knownLine))
 	{
 	    ajStrClean(&knownLine);
@@ -20573,11 +20669,11 @@ static void acdReadKnowntypes(AjPTable* desctable, AjPTable* typetable)
 		ajRegSubI(knownxp, 3, &knownDesc);
 		ajStrSubstituteKK(&knownName, '_', ' ');
 		if(ajTablePut(*typetable, knownName, knownType))
-		    ajWarn("Duplicate knowntype name in file %S",
-			   knownFName);
+		    ajWarn("Duplicate knowntype name '%S' in file %S line %d",
+			   knownName, knownFName, iline);
 		if(ajTablePut(*desctable, knownName, knownDesc))
-		    ajWarn("Duplicate knowntype name in file %S",
-			   knownFName);
+		    ajWarn("Duplicate knowntype name '%S' in file %S line %d",
+			   knownName, knownFName, iline);
 	        knownName = NULL;
 		knownType = NULL;
 		knownDesc = NULL;
