@@ -78,7 +78,7 @@ select: slowfast  [
 construct the dendrogram which guides the final multiple alignment. The scores
 are calculated from separate pairwise alignments. These can be calculated using
 2 methods: dynamic programming (slow but accurate) or by the method of Wilbur  
-and Lipman (extremely fast but approximate). / The
+and Lipman (extremely fast but approximate). \ The
 slow-accurate method is fine for short sequences but will be VERY SLOW for 
 many (e.g. >100) long (e.g. >1000 residue) sequences."
 ]
@@ -125,7 +125,7 @@ select: pwmatrix  [
   prompt: "Select matrix"
   button: "Y"
   help: "The scoring table which describes the similarity of each amino
-acid to each other. / There are three 'in-built' series of weight matrices
+acid to each other. \ There are three 'in-built' series of weight matrices
 offered.  Each consists of several matrices which work differently at
 different evolutionary distances.  To see the exact details, read the
 documentation.  Crudely, we store several matrices in memory, spanning
@@ -134,16 +134,16 @@ to highly divergent ones).  For very similar sequences, it is best to
 use a strict weight matrix which only gives a high score to identities
 and the most favoured conservative substitutions.  For more divergent
 sequences, it is appropriate to use 'softer' matrices which give a high
-score to many other frequent substitutions.  / 1) BLOSUM (Henikoff). 
+score to many other frequent substitutions.  \ 1) BLOSUM (Henikoff). 
 These matrices appear to be the best available for carrying out data
 base similarity (homology searches).  The matrices used are: Blosum80,
-62, 45 and 30.  / 2) PAM (Dayhoff).  These have been extremely widely
+62, 45 and 30.  \ 2) PAM (Dayhoff).  These have been extremely widely
 used since the late '70s.  We use the PAM 120, 160, 250 and 350
-matrices.  / 3) GONNET .  These matrices were derived using almost the
+matrices.  \ 3) GONNET .  These matrices were derived using almost the
 same procedure as the Dayhoff one (above) but are much more up to date
 and are based on a far larger data set.  They appear to be more
 sensitive than the Dayhoff series.  We use the GONNET 40, 80, 120, 160,
-250 and 350 matrices.  / We also supply an identity matrix which gives a
+250 and 350 matrices.  \ We also supply an identity matrix which gives a
 score of 1.0 to two identical amino acids and a score of zero otherwise. 
 This matrix is not very useful."
 ]
@@ -258,7 +258,7 @@ matrices.  The default for proteins is the PAM series derived by Gonnet
 and colleagues.  Note, a series is used! The actual matrix that is used
 depends on how similar the sequences to be aligned at this alignment
 step are.  Different matrices work differently at each evolutionary
-distance.  / There are three 'in-built' series of weight matrices
+distance.  \ There are three 'in-built' series of weight matrices
 offered.  Each consists of several matrices which work differently at
 different evolutionary distances.  To see the exact details, read the
 documentation.  Crudely, we store several matrices in memory, spanning
@@ -267,16 +267,16 @@ to highly divergent ones).  For very similar sequences, it is best to
 use a strict weight matrix which only gives a high score to identities
 and the most favoured conservative substitutions.  For more divergent
 sequences, it is appropriate to use 'softer' matrices which give a high
-score to many other frequent substitutions.  / 1) BLOSUM (Henikoff). 
+score to many other frequent substitutions.  \ 1) BLOSUM (Henikoff). 
 These matrices appear to be the best available for carrying out data
 base similarity (homology searches).  The matrices used are: Blosum80,
-62, 45 and 30.  / 2) PAM (Dayhoff).  These have been extremely widely
+62, 45 and 30.  \ 2) PAM (Dayhoff).  These have been extremely widely
 used since the late '70s.  We use the PAM 120, 160, 250 and 350
-matrices.  / 3) GONNET .  These matrices were derived using almost the
+matrices.  \ 3) GONNET .  These matrices were derived using almost the
 same procedure as the Dayhoff one (above) but are much more up to date
 and are based on a far larger data set.  They appear to be more
 sensitive than the Dayhoff series.  We use the GONNET 40, 80, 120, 160,
-250 and 350 matrices.  / We also supply an identity matrix which gives a
+250 and 350 matrices.  \ We also supply an identity matrix which gives a
 score of 1.0 to two identical amino acids and a score of zero otherwise. 
 This matrix is not very useful.  Alternatively, you can read in your own
 (just one matrix, not a series)."
