@@ -264,7 +264,8 @@ jemboss/api/org/emboss/jemboss/parser/acd/Makefile
 jemboss/api/org/emboss/jemboss/programs/Makefile
 jemboss/api/org/emboss/jemboss/soap/Makefile
 jemboss/images/Makefile
-jemboss/lib/Makefile jemboss/org/Makefile jemboss/org/emboss/Makefile
+jemboss/lib/Makefile jemboss/lib/axis/Makefile
+jemboss/org/Makefile jemboss/org/emboss/Makefile
 jemboss/org/emboss/jemboss/Makefile jemboss/org/emboss/jemboss/gui/Makefile
 jemboss/org/emboss/jemboss/gui/filetree/Makefile
 jemboss/org/emboss/jemboss/gui/form/Makefile
