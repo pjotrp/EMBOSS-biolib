@@ -868,7 +868,12 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
             if(parentNode.isExplored())
               addObject(parentNode,lfn.getName(),false);
             else
+            {
               exploreNode(parentNode);
+              RemoteFileNode childNode = getNode(parentNode.getServerName() 
+                                                     + "/" + lfn.getName());
+              scrollPathToVisible(new TreePath(childNode.getPath())); 
+            }
           } 
           catch (Exception exp) 
           {
