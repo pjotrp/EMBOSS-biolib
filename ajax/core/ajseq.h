@@ -55,6 +55,7 @@ ajint        ajSeqallGetRange (AjPSeqall thys, ajint* begin, ajint* end);
 AjPStr       ajSeqallGetUsa (AjPSeqall thys);
 ajint        ajSeqallLen (AjPSeqall seqall);
 AjPSeqall    ajSeqallNew (void);
+void         ajSeqallClear (AjPSeqall thys);
 AjBool       ajSeqallNext (AjPSeqall seqall, AjPSeq* retseq);
 void         ajSeqallReverse (AjPSeqall thys);
 void         ajSeqallSetRange (AjPSeqall seq, ajint ibegin, ajint iend);

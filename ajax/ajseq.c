@@ -1698,6 +1698,28 @@ void ajSeqClear (AjPSeq thys)
 }
 
 
+/* @func ajSeqallClear ***********************************************************
+**
+** Resets all data for a sequence stream object so that it can be reused.
+**
+** @param [uP] thys [AjPSeqall] Sequence stream
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqallClear (AjPSeqall thys)
+{
+  ajSeqClear (&thys->Seq);
+  ajSeqinClear(&thys->Seqin);
+  thys->Count=0;
+  thys->Begin=0;
+  thys->End=0;
+  thys->Rev=ajFalse;
+  
+  return;
+}
+
+
 /* ==================================================================== */
 /* =========================== Modifiers ============================== */
 /* ==================================================================== */
