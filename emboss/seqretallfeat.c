@@ -15,7 +15,6 @@ int main(int argc, char **argv)
   AjPSeq seq = NULL;
 
   embInit ("seqretallfeat", argc, argv);
-  ajFeatTest();
 
   seqout = ajAcdGetSeqoutall ("outseq");
   seqall = ajAcdGetSeqall ("sequence");
@@ -26,6 +25,10 @@ int main(int argc, char **argv)
   }
   ajSeqWriteClose (seqout);
 
+  ajFeatTest();
+
   ajExit ();
   return 0;
 }
+
+
