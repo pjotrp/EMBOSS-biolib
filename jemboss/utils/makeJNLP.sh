@@ -145,6 +145,7 @@ cp lib/axis/*jar jnlp
 cp images/Jemboss_logo_large.gif jnlp
 cp utils/template.html jnlp/index.html
 cd jnlp
+rm mail.jar activation.jar wsdl4j.jar
 
 echo
 echo
@@ -224,8 +225,10 @@ echo '           <j2se version="1.3+"/>'                >> $JNLP
 echo '             <jar href="'sJemboss.jar'"/>'        >> $JNLP
 for i in s*.jar; do
   if [ $i != "sJemboss.jar" ]; then
-    if [ $i != "soap.jar" ]; then
-      echo '             <jar href="'$i'"/>'                >> $JNLP
+    if [ $i != "saaj.jar" ]; then
+      if [ $i != "servlet.jar" ]; then
+        echo '             <jar href="'$i'"/>'          >> $JNLP
+      fi
     fi
   fi
 done;
