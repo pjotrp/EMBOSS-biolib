@@ -1,4 +1,15 @@
 Version 2.7.0
+	Sequence output types now have a 'type:' attribute which defaults
+	to the type of the first input sequence. For most applications
+	this is good enough as a default. For those which add gaps or
+	translate DNA to protein (or vice versa) a 'type:' attribute will
+	be needed. This is to improve support for automated workflow
+	building by more stringly typing input and output data.
+
+	acdpretty now wraps long lines of ACD definitions, splitting at
+	any lone backslash (which defines a newline for -help output) or
+	at whitespace. Attributes and sections are indented by 2 spaces.
+
 	Until now, the ACD file syntax has allowed name=value syntax and
 	the use of {} () and even <> for quoted strings just in case they
 	needed both ' and " characters. These are now removed. We believe

@@ -78,6 +78,7 @@ static ajint acdInFile = 0;
 static ajint acdOutFile = 0;
 static ajint acdPromptTry = 2;
 static AjPStr acdInFName = NULL;
+static AjPStr acdInTypename = NULL;
 /*static AjPStr acdOutFName = NULL;*/
 static AjPStr acdExpTmpstr = NULL;
 
@@ -88,7 +89,14 @@ static AjPList acdSecPromptList = NULL;
 
 static AjPStr acdPrettyFName = NULL;
 static AjPFile acdPrettyFile = NULL;
+static ajint acdPrettyMargin = 0;
+static ajint acdPrettyIndent = 2;
 
+static AjPStr acdFName = NULL;
+/*
+static ajint acdLineCount = 0;
+static AjPList acdListCount = NULL;
+*/
 /* Levels as defined in the ACD structure */
 
 enum AcdELevel { ACD_APPL,		/* application definition */
@@ -219,6 +227,7 @@ typedef struct AcdSAcd
   AjBool Defined;		/* set when defined by user */
   ajint Used;
   AjBool Assoc;
+  ajint Line;
   struct AcdSAcd* AssocQuals;
   AjPStr OrigStr;
   AjPStr ValStr;
@@ -319,176 +328,183 @@ typedef enum
 
 static AcdEStage acdCurrentStage;
 
-static AcdEStage acdStage (AjPStr token);
-static void acdParse (AjPStr text);
-static void acdArgsScan (ajint argc, char *argv[]);
-static void acdHelp (void);
-static void acdHelpAssoc (AcdPAcd thys, AjPStr *str, char *name);
-static void acdHelpAppend (AcdPAcd thys, AjPStr* str, char flag);
-static void acdHelpShow (AjPStr str, char* title);
-static void acdHelpAssocTable (AcdPAcd thys, AjPList tablist, char flag);
-static void acdHelpTable (AcdPAcd thys, AjPList tablist, char flag);
-static void acdHelpTableShow (AjPList tablist, char* title);
-static void acdHelpText (AcdPAcd thys, AjPStr* msg);
-static void acdHelpValid (AcdPAcd thys, AjPStr *str);
-static void acdArgsParse (ajint argc, char *argv[]);
-static AjBool acdIsParam (char* arg, AjPStr* param, ajint* iparam,
-                          AcdPAcd* acd);
-static ajint acdIsQual (char* arg, char* arg2, ajint *iparam, AjPStr *pqual,
-                      AjPStr *pvalue, ajint* number, AcdPAcd* acd);
-static AjBool acdValIsBool (char* arg);
-static void acdQualParse (AjPStr* pqual, AjPStr* pnoqual, AjPStr* pqmaster,
-			  ajint* number);
-static void acdTokenToLower (char *token, ajint* number);
-static void acdNoComment (AjPStr* text);
-static AjPStr acdParseValue (AjPStrTok* tokenhandle, char* delim);
-static AjPStr acdParseValueRB (AjPStrTok* tokenhandle, char* delim);
-static AcdPAcd acdNewQual (AjPStr name, AjPStr token, AjPStr* type,
-			   ajint pnum);
-static AcdPAcd acdNewQualQual (AjPStr name, AjPStr* type);
-static AcdPAcd acdNewAppl (AjPStr name);
-static AcdPAcd acdNewVar (AjPStr name);
-static AcdPAcd acdNewAcd (AjPStr name, AjPStr token, ajint itype);
-static AcdPAcd acdNewAcdKey (AjPStr name, AjPStr token, ajint ikey);
-static AcdPAcd acdNewSec (AjPStr name);
-static AcdPAcd acdNewEndsec (AjPStr name);
-static void acdTestUnknown (AjPStr name, AjPStr token, ajint pnum);
-static void acdTestAssoc (AjPStr name);
-static AjBool acdTestQualC (char *name);
-static AcdPAcd acdFindAcd (AjPStr name, AjPStr token, ajint pnum);
-static AcdPAcd acdFindAssoc (AcdPAcd thys, AjPStr name, AjPStr altname);
-static ajint acdAttrCount (ajint itype);
-static ajint acdAttrKeyCount (ajint ikey);
-static ajint acdAttrListCount (AcdPAttr attr);
-static AjBool acdIsLeftB (AjPStr *pstr);
-static AjBool acdIsRightB (AjPStr *pstr);
-static AjBool acdGetAttr (AjPStr* result, AjPStr name, AjPStr attrib);
-static ajint acdFindType (AjPStr type);
-static ajint acdFindTypeC (char* type);
-/*static ajint acdFindKey (AjPStr key);*/
-static ajint acdFindKeyC (char* key);
-static void* acdGetValue (char *token, char* type);
-static void* acdGetValueNum (char *token, char* type, ajint pnum);
-static AjPStr acdGetValStr (char *token);
-static AjBool acdGetValueAssoc (AcdPAcd thys, char *token, AjPStr *result);
-static void acdBadRetry (AcdPAcd thys);
-static void acdBadVal (AcdPAcd thys, AjBool required, char *fmt, ...);
-static void acdListReport (char *title);
-static void acdListAttr (AcdPAttr attr, AjPStr* valstr, ajint nattr);
-static ajint acdFindAttr (AcdPAttr attr, AjPStr attrib);
-static ajint acdFindAttrC (AcdPAttr attr, char* attrib);
-static void acdSetAll (void);
-static void acdProcess (void);
-static AjBool acdCodeGet (AjPStr code, AjPStr *msg);
-static AjBool acdCodeDef (AcdPAcd thys, AjPStr *msg);
-static AjBool acdHelpCodeDef (AcdPAcd thys, AjPStr *msg);
-static void acdCodeInit (void);
-static AjBool acdSetQualAppl (AcdPAcd thys, AjBool val);
-static AjBool acdAttrResolve (AcdPAcd thys, char *attr, AjPStr *result);
-static AjBool acdAttrToBool (AcdPAcd thys,
-			     char *attr, AjBool defval, AjBool *result);
-static AjBool acdAttrToFloat (AcdPAcd thys,
-			      char *attr, float defval, float *result);
-static AjBool acdAttrToInt (AcdPAcd thys,
- 			    char *attr, ajint defval, ajint *result);
-static AjBool acdAttrToStr (AcdPAcd thys,
-			    char *attr, char* defval, AjPStr *result);
-static void   acdPrintCalcAttr (AjPFile outf, AjBool full,
-			      char* acdtype, AcdOAttr calcattr[]);
-static AjBool acdQualToBool (AcdPAcd thys, char *qual,
-			     AjBool defval, AjBool *result, AjPStr* valstr);
-static AjBool acdQualToFloat (AcdPAcd thys, char *qual,
-			      float defval, ajint precision,
-			      float *result, AjPStr* valstr);
-static AjBool acdQualToInt (AcdPAcd thys, char *qual,
-			      ajint defval, ajint *result, AjPStr* valstr);
-static AjBool acdQualToSeqbegin (AcdPAcd thys, char *qual,
-				 ajint defval, ajint *result, AjPStr* valstr);
-static AjBool acdQualToSeqend   (AcdPAcd thys, char *qual,
-				 ajint defval, ajint *result, AjPStr* valstr);
-static AjBool acdVarResolve (AjPStr* str);
-static AjBool acdHelpVarResolve (AjPStr* str, AjPStr src);
-static AjBool acdFunResolve (AjPStr* result, AjPStr str);
-static AjBool acdVarSplit (AjPStr var, AjPStr* name, AjPStr* attrname);
-static AjPStr acdAttrValue (AcdPAcd thys, char *attrib);
-static AjBool acdAttrValueStr (AcdPAcd thys, char *attrib, char* def,
-			       AjPStr *str);
-static AcdPAcd acdFindItem (AjPStr item, ajint number);
-static AcdPAcd acdFindQual (AjPStr qual, AjPStr noqual, AjPStr master,
-			    ajint PNum, ajint *iparam);
-static AcdPAcd acdFindQualMaster (AjPStr qual, AjPStr noqual, AjPStr master,
-				  ajint PNum);
-static AcdPAcd acdFindQualAssoc (AcdPAcd pa, AjPStr qual, AjPStr noqual,
-				 ajint PNum);
-static AcdPAcd acdFindParam (ajint PNum);
-static ajint acdNextParam (ajint pnum);
-static AjBool acdIsParamValue (AjPStr pval);
-static AjBool acdIsRequired (AcdPAcd thys);
-
-static AjBool acdReplyInit (AcdPAcd thys, char *defval, AjPStr* reply);
-static AjBool acdUserGet (AcdPAcd thys, AjPStr* reply);
-static AjBool acdUserGetPrompt (char* prompt, AjPStr* reply);
-
-static AjBool acdDef (AcdPAcd thys, AjPStr value);
-static AjBool acdSet (AcdPAcd thys, AjPStr* attrib, AjPStr value);
-static AjBool acdSetDef (AcdPAcd thys, AjPStr value);
-static AjBool acdSetDefC (AcdPAcd thys, char* value);
-static AjBool acdSetQualDefBool (AcdPAcd thys, char* name, AjBool value);
-static AjBool acdSetQualDefInt (AcdPAcd thys, char* name, ajint value);
-static AjBool acdSetKey (AcdPAcd thys, AjPStr* attrib, AjPStr value);
-static AjBool acdSetVarDef (AcdPAcd thys, AjPStr value);
-static void acdPromptAlign (AcdPAcd thys);
-static void acdPromptCodon (AcdPAcd thys);
-static void acdPromptCpdb (AcdPAcd thys);
-static void acdPromptDirlist (AcdPAcd thys);
-static void acdPromptFeat (AcdPAcd thys);
-static void acdPromptFeatout (AcdPAcd thys);
-static void acdPromptFilelist (AcdPAcd thys);
-static void acdPromptGraph (AcdPAcd thys);
-static void acdPromptReport (AcdPAcd thys);
-static void acdPromptScop (AcdPAcd thys);
-static void acdPromptSeq (AcdPAcd thys);
-static void acdPromptSeqout (AcdPAcd thys);
-static void acdPromptOutfile (AcdPAcd thys);
-static void acdPromptInfile (AcdPAcd thys);
-static void acdListPrompt (AcdPAcd thys);
-static void acdSelectPrompt (AcdPAcd thys);
-static AjPStr* acdListValue (AcdPAcd thys, ajint min, ajint max,
-			     AjPStr reply);
-static AjPStr* acdSelectValue (AcdPAcd thys, ajint min, ajint max,
-			       AjPStr reply);
-static void acdAmbigApp (AjPStr* pambiglist, AjPStr str);
-static void acdAmbigAppC (AjPStr* pambiglist, char* txt);
-static AjBool acdDataFilename (AjPStr* datafname, AjPStr name, AjPStr ext);
-static AjBool acdInFilename (AjPStr* infname);
-static AjBool acdOutDirectory (AjPStr* outdir);
-static AjBool acdOutFilename (AjPStr* outfname, AjPStr name, AjPStr ext);
-static AjBool acdInFileSave (AjPStr infname);
-static AjPStr acdStrDiff (AjPStr str1, AjPStr str2);
-static void acdLog (char *fmt, ...);
-static void acdPretty (char *fmt, ...);
-static AjBool acdIsQtype (AcdPAcd thys);
-static AjBool acdIsStype (AcdPAcd thys);
-static AjBool acdTextFormat (AjPStr* text);
-static AjBool acdVocabCheck (AjPStr str, char** vocab);
+static void      acdAmbigApp (AjPStr* pambiglist, AjPStr str);
+static void      acdAmbigAppC (AjPStr* pambiglist, char* txt);
+static void      acdArgsParse (ajint argc, char *argv[]);
+static void      acdArgsScan (ajint argc, char *argv[]);
+static ajint     acdAttrCount (ajint itype);
+static ajint     acdAttrKeyCount (ajint ikey);
+static ajint     acdAttrListCount (AcdPAttr attr);
+static AjBool    acdAttrResolve (AcdPAcd thys, char *attr, AjPStr *result);
+static AjBool    acdAttrToBool (AcdPAcd thys,
+				char *attr, AjBool defval, AjBool *result);
+static AjBool    acdAttrToFloat (AcdPAcd thys,
+				 char *attr, float defval, float *result);
+static AjBool    acdAttrToInt (AcdPAcd thys,
+			       char *attr, ajint defval, ajint *result);
+static AjBool    acdAttrToStr (AcdPAcd thys,
+			       char *attr, char* defval, AjPStr *result);
+static AjPStr    acdAttrValue (AcdPAcd thys, char *attrib);
+static AjBool    acdAttrValueStr (AcdPAcd thys, char *attrib, char* def,
+				  AjPStr *str);
+static void      acdBadRetry (AcdPAcd thys);
+static void      acdBadVal (AcdPAcd thys, AjBool required, char *fmt, ...);
+static AjBool    acdCodeDef (AcdPAcd thys, AjPStr *msg);
+static AjBool    acdCodeGet (AjPStr code, AjPStr *msg);
+static void      acdCodeInit (void);
+static AjBool    acdDataFilename (AjPStr* datafname, AjPStr name, AjPStr ext);
+static AjBool    acdDef (AcdPAcd thys, AjPStr value);
 
 /* expression processing */
 
-static AjBool acdExpPlus (AjPStr* result, AjPStr str);
-static AjBool acdExpMinus (AjPStr* result, AjPStr str);
-static AjBool acdExpStar (AjPStr* result, AjPStr str);
-static AjBool acdExpDiv (AjPStr* result, AjPStr str);
-static AjBool acdExpNot (AjPStr* result, AjPStr str);
-static AjBool acdExpEqual (AjPStr* result, AjPStr str);
-static AjBool acdExpNotEqual (AjPStr* result, AjPStr str);
-static AjBool acdExpGreater (AjPStr* result, AjPStr str);
-static AjBool acdExpLesser (AjPStr* result, AjPStr str);
-static AjBool acdExpAnd (AjPStr* result, AjPStr str);
-static AjBool acdExpOr (AjPStr* result, AjPStr str);
-static AjBool acdExpCond (AjPStr* result, AjPStr str);
-static AjBool acdExpCase (AjPStr* result, AjPStr str);
-static AjBool acdExpFilename (AjPStr* result, AjPStr str);
-static AjBool acdExpExists (AjPStr* result, AjPStr str);
+static AjBool    acdExpPlus (AjPStr* result, AjPStr str);
+static AjBool    acdExpMinus (AjPStr* result, AjPStr str);
+static AjBool    acdExpStar (AjPStr* result, AjPStr str);
+static AjBool    acdExpDiv (AjPStr* result, AjPStr str);
+static AjBool    acdExpNot (AjPStr* result, AjPStr str);
+static AjBool    acdExpEqual (AjPStr* result, AjPStr str);
+static AjBool    acdExpNotEqual (AjPStr* result, AjPStr str);
+static AjBool    acdExpGreater (AjPStr* result, AjPStr str);
+static AjBool    acdExpLesser (AjPStr* result, AjPStr str);
+static AjBool    acdExpAnd (AjPStr* result, AjPStr str);
+static AjBool    acdExpOr (AjPStr* result, AjPStr str);
+static AjBool    acdExpCond (AjPStr* result, AjPStr str);
+static AjBool    acdExpCase (AjPStr* result, AjPStr str);
+static AjBool    acdExpFilename (AjPStr* result, AjPStr str);
+static AjBool    acdExpExists (AjPStr* result, AjPStr str);
+
+static AcdPAcd   acdFindAcd (AjPStr name, AjPStr token, ajint pnum);
+static AcdPAcd   acdFindAssoc (AcdPAcd thys, AjPStr name, AjPStr altname);
+static ajint     acdFindAttr (AcdPAttr attr, AjPStr attrib);
+static ajint     acdFindAttrC (AcdPAttr attr, char* attrib);
+static AcdPAcd   acdFindItem (AjPStr item, ajint number);
+/*static ajint     acdFindKey (AjPStr key);*/
+static ajint     acdFindKeyC (char* key);
+static AcdPAcd   acdFindParam (ajint PNum);
+static AcdPAcd   acdFindQual (AjPStr qual, AjPStr noqual, AjPStr master,
+			      ajint PNum, ajint *iparam);
+static AcdPAcd   acdFindQualAssoc (AcdPAcd pa, AjPStr qual, AjPStr noqual,
+				   ajint PNum);
+static AcdPAcd   acdFindQualMaster (AjPStr qual, AjPStr noqual, AjPStr master,
+				    ajint PNum);
+static ajint     acdFindType (AjPStr type);
+static ajint     acdFindTypeC (char* type);
+static AjBool    acdFunResolve (AjPStr* result, AjPStr str);
+static AjBool    acdGetAttr (AjPStr* result, AjPStr name, AjPStr attrib);
+static AjBool    acdGetValueAssoc (AcdPAcd thys, char *token, AjPStr *result);
+static void*     acdGetValue (char *token, char* type);
+static void*     acdGetValueNum (char *token, char* type, ajint pnum);
+static AjPStr    acdGetValStr (char *token);
+static void      acdHelp (void);
+static void      acdHelpAppend (AcdPAcd thys, AjPStr* str, char flag);
+static void      acdHelpAssoc (AcdPAcd thys, AjPStr *str, char *name);
+static void      acdHelpAssocTable (AcdPAcd thys, AjPList tablist, char flag);
+static AjBool    acdHelpCodeDef (AcdPAcd thys, AjPStr *msg);
+static void      acdHelpShow (AjPStr str, char* title);
+static void      acdHelpTable (AcdPAcd thys, AjPList tablist, char flag);
+static void      acdHelpTableShow (AjPList tablist, char* title);
+static void      acdHelpText (AcdPAcd thys, AjPStr* msg);
+static void      acdHelpValid (AcdPAcd thys, AjPStr *str);
+static AjBool    acdHelpVarResolve (AjPStr* str, AjPStr src);
+static AjBool    acdInFilename (AjPStr* infname);
+static AjBool    acdInFileSave (AjPStr infname);
+static AjBool    acdInType (AjPStr* intype);
+static AjBool    acdInTypeSave (AjPStr intype);
+static AjBool    acdIsLeftB (AjPStr *pstr);
+static AjBool    acdIsParam (char* arg, AjPStr* param, ajint* iparam,
+			     AcdPAcd* acd);
+static AjBool    acdIsParamValue (AjPStr pval);
+static ajint     acdIsQual (char* arg, char* arg2, ajint *iparam,
+			    AjPStr *pqual, AjPStr *pvalue,
+			    ajint* number, AcdPAcd* acd);
+static AjBool    acdIsQtype (AcdPAcd thys);
+static AjBool    acdIsRequired (AcdPAcd thys);
+static AjBool    acdIsRightB (AjPStr *pstr);
+static AjBool    acdIsStype (AcdPAcd thys);
+static void      acdListAttr (AcdPAttr attr, AjPStr* valstr, ajint nattr);
+static void      acdListPrompt (AcdPAcd thys);
+static void      acdListReport (char *title);
+static AjPStr*   acdListValue (AcdPAcd thys, ajint min, ajint max,
+			       AjPStr reply);
+static void      acdLog (char *fmt, ...);
+static AcdPAcd   acdNewAcd (AjPStr name, AjPStr token, ajint itype);
+static AcdPAcd   acdNewAcdKey (AjPStr name, AjPStr token, ajint ikey);
+static AcdPAcd   acdNewAppl (AjPStr name);
+static AcdPAcd   acdNewEndsec (AjPStr name);
+static AcdPAcd   acdNewQual (AjPStr name, AjPStr token, AjPStr* type,
+			     ajint pnum);
+static AcdPAcd   acdNewQualQual (AjPStr name, AjPStr* type);
+static AcdPAcd   acdNewSec (AjPStr name);
+static AcdPAcd   acdNewVar (AjPStr name);
+static ajint     acdNextParam (ajint pnum);
+static void      acdNoComment (AjPStr* text);
+static AjBool    acdOutDirectory (AjPStr* outdir);
+static AjBool    acdOutFilename (AjPStr* outfname, AjPStr name, AjPStr ext);
+static void      acdParse (AjPStr text);
+static AjPStr    acdParseValue (AjPStrTok* tokenhandle, char* delim);
+static AjPStr    acdParseValueRB (AjPStrTok* tokenhandle, char* delim);
+static void      acdPretty (char *fmt, ...);
+static void      acdPrettyShift ();
+static void      acdPrettyWrap (ajint left, char *fmt, ...);
+static void      acdPrettyUnShift ();
+static void      acdPrintCalcAttr (AjPFile outf, AjBool full,
+				   char* acdtype, AcdOAttr calcattr[]);
+static void      acdProcess (void);
+static void      acdPromptAlign (AcdPAcd thys);
+static void      acdPromptCodon (AcdPAcd thys);
+static void      acdPromptCpdb (AcdPAcd thys);
+static void      acdPromptDirlist (AcdPAcd thys);
+static void      acdPromptFeat (AcdPAcd thys);
+static void      acdPromptFeatout (AcdPAcd thys);
+static void      acdPromptFilelist (AcdPAcd thys);
+static void      acdPromptGraph (AcdPAcd thys);
+static void      acdPromptInfile (AcdPAcd thys);
+static void      acdPromptOutfile (AcdPAcd thys);
+static void      acdPromptReport (AcdPAcd thys);
+static void      acdPromptScop (AcdPAcd thys);
+static void      acdPromptSeq (AcdPAcd thys);
+static void      acdPromptSeqout (AcdPAcd thys);
+static void      acdQualParse (AjPStr* pqual, AjPStr* pnoqual,
+			       AjPStr* pqmaster, ajint* number);
+static AjBool    acdQualToBool (AcdPAcd thys, char *qual,
+				AjBool defval, AjBool *result, AjPStr* valstr);
+static AjBool    acdQualToFloat (AcdPAcd thys, char *qual,
+			      float defval, ajint precision,
+			      float *result, AjPStr* valstr);
+static AjBool    acdQualToInt (AcdPAcd thys, char *qual,
+			       ajint defval, ajint *result, AjPStr* valstr);
+static AjBool    acdQualToSeqbegin (AcdPAcd thys, char *qual,
+				    ajint defval, ajint *result,
+				    AjPStr* valstr);
+static AjBool    acdQualToSeqend   (AcdPAcd thys, char *qual,
+				    ajint defval, ajint *result,
+				    AjPStr* valstr);
+static AjBool    acdReplyInit (AcdPAcd thys, char *defval, AjPStr* reply);
+static AjBool    acdSet (AcdPAcd thys, AjPStr* attrib, AjPStr value);
+static void      acdSetAll (void);
+static AjBool    acdSetDef (AcdPAcd thys, AjPStr value);
+static AjBool    acdSetDefC (AcdPAcd thys, char* value);
+static AjBool    acdSetQualAppl (AcdPAcd thys, AjBool val);
+static AjBool    acdSetQualDefBool (AcdPAcd thys, char* name, AjBool value);
+static AjBool    acdSetQualDefInt (AcdPAcd thys, char* name, ajint value);
+static AjBool    acdSetKey (AcdPAcd thys, AjPStr* attrib, AjPStr value);
+static AjBool    acdSetVarDef (AcdPAcd thys, AjPStr value);
+static void      acdSelectPrompt (AcdPAcd thys);
+static AjPStr*   acdSelectValue (AcdPAcd thys, ajint min, ajint max,
+				 AjPStr reply);
+static AcdEStage acdStage (AjPStr token);
+static AjPStr    acdStrDiff (AjPStr str1, AjPStr str2);
+static void      acdTestAssoc (AjPStr name);
+static AjBool    acdTestQualC (char *name);
+static void      acdTestUnknown (AjPStr name, AjPStr token, ajint pnum);
+static AjBool    acdTextFormat (AjPStr* text);
+static void      acdTokenToLower (char *token, ajint* number);
+static AjBool    acdUserGet (AcdPAcd thys, AjPStr* reply);
+static AjBool    acdUserGetPrompt (char* prompt, AjPStr* reply);
+static AjBool    acdValIsBool (char* arg);
+static AjBool    acdVarResolve (AjPStr* str);
+static AjBool    acdVarSplit (AjPStr var, AjPStr* name, AjPStr* attrname);
+static AjBool    acdVocabCheck (AjPStr str, char** vocab);
 
 /* @datastatic AcdPExpList ****************************************************
 **
@@ -1479,7 +1495,6 @@ AjStatus ajAcdInitP (char *pgm, ajint argc, char *argv[], char *package)
 
     static AjPFile acdFile = NULL;
     static AjPStr acdLine = NULL;
-    static AjPStr acdFName = NULL;
     static AjPStr acdRoot = NULL;
     static AjPStr acdRootInst = NULL;
     static AjPStr acdPack = NULL;
@@ -1500,7 +1515,7 @@ AjStatus ajAcdInitP (char *pgm, ajint argc, char *argv[], char *package)
 	if (acdPromptTry < 1) acdPromptTry = 1;
 	ajDebug ("acdPromptTry %d", acdPromptTry);
     }
-    (void) ajStrDel(&tmpstr);
+    ajStrDel(&tmpstr);
 
     /* pre-parse the command line for special options */
 
@@ -1576,15 +1591,17 @@ AjStatus ajAcdInitP (char *pgm, ajint argc, char *argv[], char *package)
 	}
     }
     ajFileClose (&acdFile);
-    (void) ajStrDel (&acdLine);
-    (void) ajStrDel(&acdFName);
+    ajStrDel (&acdLine);
 
     /* Parse the input to set the initial definitions */
 
     /* (void) ajStrStat ("before acdParse"); */
     acdParse (acdText);
     /* (void) ajStrStat ("after acdParse"); */
-    (void) ajStrDel (&acdText);
+    ajStrDel (&acdText);
+
+    if (acdDoPretty)
+      ajExit ();
 
     /* Fill in incomplete information like parameter numbers */
 
@@ -1629,6 +1646,7 @@ AjStatus ajAcdInitP (char *pgm, ajint argc, char *argv[], char *package)
     ajStrDel(&acdRoot);
     ajStrDel(&acdRootInst);
     ajStrDel(&acdPack);
+    ajStrDel(&acdFName);
 
     return ajStatusOK;
 }
@@ -1789,6 +1807,7 @@ static void acdParse (AjPStr text)
 	    (void) ajStrToLower (&acdApplToken);
 	    acdPretty ("%S: %S [\n", acdApplType,
 		       acdAppl);
+	    acdPrettyShift ();
 
 	    /* continue parsing until we reach a true closing ']' character */
 
@@ -1807,7 +1826,8 @@ static void acdParse (AjPStr text)
 		(void) ajStrAssS (&acdmodvalue, acdvalue);
 		(void) acdTextFormat(&acdmodvalue);
 		(void) acdSetKey (acdApplCurr, &acdtoken, acdmodvalue);
-		acdPretty ("  %S: \"%S\"\n", acdtoken, acdvalue);
+		acdPrettyWrap (ajStrLen(acdtoken)+3, "%S: \"%S\"",
+			       acdtoken, acdvalue);
 		if (!done)
 		{
 		    (void) ajStrToken(&acdtmp, &tokenhandle, whiteplus);
@@ -1815,6 +1835,7 @@ static void acdParse (AjPStr text)
 		    done = acdIsRightB(&acdtmp);
 		}
 	    }
+	    acdPrettyUnShift ();
 	    acdPretty ("]\n");
 
 	    (void) ajStrAssC (&acdVar, "today"); /* we have the type */
@@ -1830,7 +1851,7 @@ static void acdParse (AjPStr text)
 	     ** are defined for each "type", as are associated
 	     ** qualifiers. There is no distinction between them here.  The
 	     ** difference is that the qualifier values are defaults which
-	     ** can be overridden on the ocmmand line
+	     ** can be overridden on the command line
 	     */
 
 	case QUAL_STAGE:
@@ -1855,6 +1876,7 @@ static void acdParse (AjPStr text)
 	    acdQualCurr = acdNewQual (acdQual, acdQualToken, &acdQualType, 0);
 	    acdPretty ("\n%S: %S %S [\n", acdQualType,
 		       acdQual, acdStrDiff(acdQual, acdQualToken));
+	    acdPrettyShift ();
 
 	    /* continue parsing until we reach a true closing ']' character */
 
@@ -1873,7 +1895,8 @@ static void acdParse (AjPStr text)
 		(void) ajStrAssS (&acdmodvalue, acdvalue);
 		(void) acdTextFormat(&acdmodvalue);
 		(void) acdSet (acdQualCurr, &acdtoken, acdmodvalue);
-		acdPretty ("  %S: \"%S\"\n", acdtoken, acdvalue);
+		acdPrettyWrap (ajStrLen(acdtoken)+3, "%S: \"%S\"",
+			       acdtoken, acdvalue);
 		if (!done)
 		{
 		    (void) ajStrToken(&acdtmp, &tokenhandle, whiteplus);
@@ -1881,6 +1904,7 @@ static void acdParse (AjPStr text)
 		    done = acdIsRightB(&acdtmp);
 		}
 	    }
+	    acdPrettyUnShift ();
 	    acdPretty ("]\n");
 
 	    break;
@@ -1906,6 +1930,7 @@ static void acdParse (AjPStr text)
 
 	    acdSecCurr = acdNewSec (acdSec);
 	    acdPretty ("\nsection: %S  [\n", acdSec);
+	    acdPrettyShift ();
 
 	    /* continue parsing until we reach a true closing ']' character */
 
@@ -1924,7 +1949,8 @@ static void acdParse (AjPStr text)
 		(void) ajStrAssS (&acdmodvalue, acdvalue);
 		(void) acdTextFormat(&acdmodvalue);
 		(void) acdSetKey (acdSecCurr, &acdtoken, acdmodvalue);
-		acdPretty ("  %S: \"%S\"\n", acdtoken, acdvalue);
+		acdPrettyWrap (ajStrLen(acdtoken)+3, "%S: \"%S\"",
+			       acdtoken, acdvalue);
 		if (!done)
 		{
 		    (void) ajStrToken(&acdtmp, &tokenhandle, whiteplus);
@@ -1932,7 +1958,9 @@ static void acdParse (AjPStr text)
 		    done = acdIsRightB(&acdtmp);
 		}
 	    }
+	    acdPrettyUnShift ();
 	    acdPretty ("]\n");
+	    acdPrettyShift ();
 
 	    break;
 
@@ -1942,6 +1970,7 @@ static void acdParse (AjPStr text)
 	    (void) ajStrToLower (&acdEndsec);
 	    acdEndsecCurr = acdNewEndsec (acdEndsec);
 	    /* ajStrAssS(&acdvalue, acdParseValue(&tokenhandle, white));*/
+	    acdPrettyUnShift ();
 	    acdPretty ("\nendsection:  %S\n", acdEndsec);
 	    break;
 
@@ -3361,7 +3390,7 @@ static void acdSetAppl (AcdPAcd thys)
 
     if (!acdAuto && ajStrLen(appldoc))
     {
-	(void) ajStrWrapLeft (&appldoc, 75, 0);
+	(void) ajStrWrap (&appldoc, 75);
 	ajUser("%S", appldoc);
     }
 
@@ -3835,10 +3864,7 @@ static void acdSetBool (AcdPAcd thys)
     ajDebug("acdSetBool -%S val: %B\n", thys->Name, *val);
 
     if (ajStrMatchC(thys->Name, "help"))
-	acdHelp();
-
-    if (ajStrMatchC(thys->Name, "acdpretty") && *val)
-	ajExit();
+	acdHelp ();
 
     return;
 }
@@ -6342,7 +6368,11 @@ static void acdSetSeq (AcdPAcd thys) {
 
     ajSeqinUsa (&seqin, reply);
 
-    (void) acdAttrToStr(thys, "type", "", &seqin->Inputtype);
+    if (acdAttrToStr(thys, "type", "", &seqin->Inputtype))
+      acdInTypeSave(seqin->Inputtype);
+    else
+      acdInTypeSave(NULL);
+
     (void) acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
     (void) acdAttrToBool(thys, "entry", ajFalse, &seqin->Text);
 
@@ -6603,7 +6633,11 @@ static void acdSetSeqset (AcdPAcd thys) {
 
     ajSeqinUsa (&seqin, reply);
 
-    (void) acdAttrToStr(thys, "type", "", &seqin->Inputtype);
+    if (acdAttrToStr(thys, "type", "", &seqin->Inputtype))
+      acdInTypeSave(seqin->Inputtype);
+    else
+      acdInTypeSave(NULL);
+
     (void) acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
 
     (void) acdGetValueAssoc (thys, "sformat", &seqin->Formatstr);
@@ -6856,7 +6890,11 @@ static void acdSetSeqall (AcdPAcd thys) {
 
     ajSeqinUsa (&seqin, reply);
 
-    (void) acdAttrToStr(thys, "type", "", &seqin->Inputtype);
+    if (acdAttrToStr(thys, "type", "", &seqin->Inputtype))
+      acdInTypeSave(seqin->Inputtype);
+    else
+      acdInTypeSave(NULL);
+
     (void) acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
     (void) acdAttrToBool(thys, "entry", ajFalse, &seqin->Text);
 
@@ -7131,6 +7169,12 @@ static void acdSetSeqout (AcdPAcd thys) {
 			  ajFalse,
 			  &val->Single, &sing);
 
+    if (!acdAttrToStr(thys, "type", "", &val->Outputtype))
+    {
+      if (!acdInType(&val->Outputtype))
+	ajWarn("No output type specified for '%S'", thys->Name);
+    }
+
     if (!ajSeqoutOpen(val)) {
       if (ajStrLen(val->Directory))
 	acdBadVal (thys, required,
@@ -7270,6 +7314,12 @@ static void acdSetSeqoutset (AcdPAcd thys) {
     (void) acdQualToBool (thys, "ossingle",
 			  ajSeqOutFormatSingle(val->Formatstr),
 			  &val->Single, &sing);
+
+    if (!acdAttrToStr(thys, "type", "", &val->Outputtype))
+    {
+      if (!acdInType(&val->Outputtype))
+	ajWarn("No output type specified for '%S'", thys->Name);
+    }
 
     if (!ajSeqoutOpen(val)) {
       if (ajStrLen(val->Directory))
@@ -7413,6 +7463,12 @@ static void acdSetSeqoutall (AcdPAcd thys) {
 
     (void) acdLog ("acdSetSeqoutall ossingle value %B '%S'\n",
 		    val->Single, sing);
+
+    if (!acdAttrToStr(thys, "type", "", &val->Outputtype))
+    {
+      if (!acdInType(&val->Outputtype))
+	ajWarn("No output type specified for '%S'", thys->Name);
+    }
 
     if (!ajSeqoutOpen(val)) {
       if (ajStrLen(val->Directory))
@@ -14014,6 +14070,7 @@ static AjBool acdDataFilename (AjPStr* infname, AjPStr name, AjPStr ext) {
 
   return ret;
 }
+
 /* @funcstatic acdInFilename **************************************************
 **
 ** Sets a default input file name. If filtering is on, this will be stdin.
@@ -14198,6 +14255,66 @@ static AjBool acdInFileSave (AjPStr infname) {
   return ajTrue;
 }
 
+/* @funcstatic acdInTypeSave **************************************************
+**
+** For the first call, saves the input filename for use in building output
+** file name(s).
+**
+** @param [P] intype [AjPStr] Input sequence type
+** @return [AjBool] ajTrue if a type was successfully set
+** @@
+******************************************************************************/
+
+static AjBool acdInTypeSave (AjPStr intype) {
+
+  if (acdInTypename)
+    return ajFalse;
+
+  ajDebug ("acdInTypeSave (%S)\n",
+	   intype);
+
+  if (!ajStrLen(intype)) {
+    ajStrAssC (&acdInTypename, "");
+    ajDebug("Input sequence type defaults to ''\n", acdInTypename);
+  }
+  else
+    (void) ajStrAssS (&acdInTypename, intype);
+
+  (void) ajStrToLower(&acdInTypename);
+
+  ajDebug ("acdInTypeSave (%S) input type set to '%S'\n",
+	   intype, acdInTypename);
+
+  return ajTrue;
+}
+
+/* @funcstatic acdInType **************************************************
+**
+** Returns the input sequence type (if known)
+**
+** @param [wP] infname [AjPStr*] Input sequence type
+** @return [AjBool] ajTrue if a type was successfully set
+** @@
+******************************************************************************/
+
+static AjBool acdInType (AjPStr* infname) {
+
+  AjBool ret = ajFalse;
+
+  ajDebug("acdInType saved acdInTypename '%S'\n", acdInTypename);
+
+  if (acdInTypename) {		/* could be an empty string */
+    (void) ajStrAssS (infname, acdInTypename);
+    ret = ajTrue;
+  }
+  else {
+    (void) ajStrAssC (infname, ""); /* allow anything, but return ajFalse */
+    ret = ajFalse;
+  }
+
+  return ret;
+}
+
 /* @funcstatic acdStrDiff *****************************************************
 **
 ** Returns the second string if different from the first,
@@ -14266,6 +14383,7 @@ static void acdLog (char *fmt, ...) {
 static void acdPretty (char *fmt, ...) {
 
   va_list args ;
+  static AjPStr tmpstr = NULL;
 
   if (!acdDoPretty)
     return;
@@ -14281,9 +14399,102 @@ static void acdPretty (char *fmt, ...) {
     }
   }
 
-  va_start (args, fmt) ;
-  ajFmtVPrintF (acdPrettyFile, fmt, args);
-  va_end (args) ;
+
+  va_start (args, fmt);
+  ajFmtVPrintS (&tmpstr, fmt, args);
+  va_end (args);
+
+  while (ajStrChar(tmpstr, 0) == '\n') {
+    ajFmtPrintF (acdPrettyFile, "\n");
+    ajStrTrim (&tmpstr, 1);
+  }
+
+  if (acdPrettyMargin)
+    ajFmtPrintF(acdPrettyFile, "%.*s", acdPrettyMargin,
+		"                                                       ");
+  ajFmtPrintF (acdPrettyFile, "%S", tmpstr);
+
+  return;
+}
+
+/* @funcstatic acdPrettyWrap **************************************************
+**
+** Writes a pretty formatted version of the .acd syntax
+** lien to the .acdpretty file
+**
+** @param [r] left [ajint] Extra left margin for follow-on lines
+** @param [r] fmt [char*] Format with ajFmt extensions
+** @param [v] [...] Optional arguments
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPrettyWrap (ajint left, char *fmt, ...) {
+
+  va_list args ;
+  static AjPStr tmpstr = NULL;
+  ajint leftmargin = left + acdPrettyMargin;
+  ajint width = 78 - leftmargin;
+
+  if (!acdDoPretty)
+    return;
+
+  if (!acdPrettyFName) {
+    if (acdStdout) {
+      acdPrettyFile = ajFileNewF (stdout);
+    }
+    else {
+      (void) ajFmtPrintS (&acdPrettyFName, "%S.acdpretty", acdProgram);
+      acdPrettyFile = ajFileNewOut (acdPrettyFName);
+      ajFileUnbuffer(acdPrettyFile);
+    }
+  }
+
+  va_start (args, fmt);
+  ajFmtVPrintS (&tmpstr, fmt, args);
+  va_end (args);
+
+  ajStrSubstituteCC (&tmpstr, " \\ ", " \\\n");	/* force newlines at '\' */
+
+  ajStrWrapLeft (&tmpstr, width, leftmargin);
+  if (acdPrettyMargin)
+    ajFmtPrintF(acdPrettyFile, "%.*s", acdPrettyMargin,
+		"                                                       ");
+  ajFmtPrintF (acdPrettyFile, "%S\n", tmpstr);
+
+  return;
+}
+
+/* @funcstatic acdPrettyShift *************************************************
+**
+** Right shifts (indents) acdpretty printing
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPrettyShift () {
+
+  acdPrettyMargin += acdPrettyIndent;
+
+  return;
+}
+
+/* @funcstatic acdPrettyUnshift ***********************************************
+**
+** Left shifts acdpretty printing
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPrettyUnShift () {
+
+  acdPrettyMargin -= acdPrettyIndent;
+  if (acdPrettyMargin < 0) {
+    ajWarn ("acdpretty printing indent error - too many left shifts");
+    acdPrettyMargin = 0;
+  }
 
   return;
 }
