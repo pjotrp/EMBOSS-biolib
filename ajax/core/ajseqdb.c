@@ -3132,6 +3132,8 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
     ajStrDelReuse (&urlget);
     ajRegFree (&urlexp);
 
+    qry->QryDone = ajTrue;
+    
     return ajTrue;
 }
 
@@ -3228,6 +3230,9 @@ static AjBool seqAccessApp (AjPSeqin seqin)
     (void) ajStrAssS (&seqin->Db, qry->DbName);
 
     ajStrDel (&pipename);
+
+    qry->QryDone = ajTrue;
+    
 
     return ajTrue;
 }
