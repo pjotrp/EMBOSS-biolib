@@ -841,6 +841,7 @@ static void cvt_uD(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 {
     AjPTime time;
     struct tm *mytime;
+    int lenyr;
 
     char buf[280];
     char yr[280];
@@ -854,7 +855,8 @@ static void cvt_uD(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
     {
 	/* Long-winded but gets around some compilers' %y warnings */
 	strftime(yr,280,"%Y",mytime);
-	strcpy(yr,&yr[strlen(yr)-2]);
+	lenyr = strlen(yr);
+	memmove(yr,&yr[lenyr-2],3);
 	strftime(buf,280, "%d/%m/", mytime);
 	strcat(buf,yr);
     }
