@@ -205,7 +205,8 @@ public class Jemboss implements ActionListener
     }
 
 // setup the top menu bar
-    new SetUpMenuBar(mysettings, f, envp, cwd, withSoap);
+    SetUpMenuBar mainMenu = new SetUpMenuBar(
+                mysettings, f, envp, cwd, withSoap);
 
 // add to Jemboss main frame and locate it center left of screen
     f.getContentPane().add(pmain);
@@ -214,7 +215,7 @@ public class Jemboss implements ActionListener
 
     new BuildProgramMenu(p1,p2,pform,scrollProgForm,embossBin,
                          envp,mysettings,withSoap,cwd,
-                         acdDirToParse,f);
+                         acdDirToParse,mainMenu,f);
 
     f.addWindowListener(new winExit());
 
