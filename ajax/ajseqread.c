@@ -4883,6 +4883,27 @@ static AjBool seqFindInFormat (AjPStr format, ajint* iformat)
     return ajFalse;
 }
 
+/* @func ajSeqFormatTest ******************************************************
+**
+** tests whether a named format is known
+**
+** @param [P] format [AjPStr] Format
+** @return [AjBool] ajTrue if formats was accepted
+** @@
+******************************************************************************/
+
+AjBool ajSeqFormatTest (AjPStr format)
+{
+  ajint i;
+
+  for (i=0; seqInFormatDef[i].Name; i++)
+  {
+    if (ajStrMatchCaseC(format, seqInFormatDef[i].Name))
+      return ajTrue;
+  }
+  return ajFalse;
+}
+
 /* @funcstatic seqSetInFormat *************************************************
 **
 ** Steps through a list of default formats, setting the Try value for
