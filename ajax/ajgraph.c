@@ -108,6 +108,7 @@ typedef struct GraphSType {
 ** Graph functions to open and display a graph with the PLPLOT
 ** device drivers
 **
+** @return [void]
 ******************************************************************************/
 
 static GraphOType graphType[] = {

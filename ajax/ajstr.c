@@ -1722,7 +1722,7 @@ AjBool ajStrSubstituteCC(AjPStr *pthis, const char* replace,
 ** Replace all occurrences of character replace with putin in string pthis.
 **
 ** @param [uP] pthis [AjPStr*]  Target string.
-** @param [r]  replace [ char] Character to replace.
+** @param [r]  replace [char] Character to replace.
 ** @param [r]  putin [char] Character to insert.
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@

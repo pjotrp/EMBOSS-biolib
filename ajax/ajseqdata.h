@@ -105,7 +105,7 @@ typedef struct AjSSelex
 } AjOSelex,*AjPSelex;
 
 
-/* @data AjPSelexData *******************************************************
+/* @data AjPSelexdata *******************************************************
 **
 ** Ajax Selex data object (individual sequences)
 **
@@ -168,7 +168,7 @@ typedef struct AjSStockholm
 } AjOStockholm,*AjPStockholm;
 
 
-/* @data AjPStockholmData *****************************************************
+/* @data AjPStockholmdata *****************************************************
 **
 ** Ajax Stockholm data object (individual sequences)
 **

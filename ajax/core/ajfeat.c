@@ -84,16 +84,11 @@ static AjBool   FeatInitSwiss = AJFALSE;
 static AjPTable FeatTypeTableSwiss = NULL;
 static AjPTable FeatTagsTableSwiss = NULL;
 
-/*static AjBool   FeatInitAcedb = AJFALSE;*/
-static AjPTable FeatTypeTableAcedb = NULL;
-static AjPTable FeatTagsTableAcedb = NULL;
-
 static void         featClear ( AjPFeature thys );
 static ajint        featCompByEnd(const void *a, const void *b);
 static ajint        featCompByGroup(const void *a, const void *b);
 static ajint        featCompByStart(const void *a, const void *b);
 static ajint        featCompByType(const void *a, const void *b);
-/*static AjBool       featDelRegAcedb();*/
 static AjBool       featDelRegEmbl();
 static AjBool       featDelRegGff();
 static AjBool       featDelRegPir();
@@ -143,17 +138,14 @@ static AjBool       featoutUfoProcess (AjPFeattabOut thys, AjPStr ufo);
 static AjPFeature   featPirFromLine ( AjPFeattable thys,
 				     AjPStr origline);
 static AjBool       featReadUnknown  ( AjPFeattable thys, AjPFileBuff file) ;
-/*static AjBool      featReadAcedb    ( AjPFeattable thys, AjPFileBuff file) ;*/
 static AjBool       featReadEmbl     ( AjPFeattable thys, AjPFileBuff file) ;
 static AjBool       featReadGff      ( AjPFeattable thys, AjPFileBuff file) ;
 static AjBool       featReadPir      ( AjPFeattable thys, AjPFileBuff file) ;
 static AjBool       featReadSwiss    ( AjPFeattable thys, AjPFileBuff file) ;
-/*static AjBool      featRegInitAcedb();*/
 static AjBool       featRegInitEmbl();
 static AjBool       featRegInitGff();
 static AjBool       featRegInitPir();
 static AjBool       featRegInitSwiss();
-/*static AjBool      featVocabInitAcedb();*/
 static AjBool       featVocabInitEmbl();
 static AjBool       featVocabInitGff();
 static AjBool       featVocabInitPir();
@@ -238,6 +230,7 @@ typedef struct FeatSInFormat {
 ** Includes the read function (featRead), and initialising (featInitReg)
 ** and deletion (featDelReg) of parsing resular expression.
 **
+** @return [void]
 ******************************************************************************/
 
 static FeatOInFormat featInFormatDef[] = {
@@ -255,8 +248,6 @@ static FeatOInFormat featInFormatDef[] = {
    featReadEmbl,    featRegInitEmbl,    featDelRegEmbl},
   {"gff",           AJTRUE,  AJTRUE,  AJFALSE,
    featReadGff,     featRegInitGff,     featDelRegGff},
-  /*  {"acedb",         AJTRUE,  AJFALSE, AJFALSE,
-      featReadAcedb,   featRegInitAcedb,   featDelRegAcedb},*/
   {"swiss",         AJFALSE, AJTRUE,  AJFALSE,
    featReadSwiss,   featRegInitSwiss,   featDelRegSwiss},
   {"sw",            AJFALSE, AJTRUE,  AJFALSE,
@@ -358,6 +349,7 @@ typedef struct FeatSOutFormat {
 ** (featVocabInit) - done automatically for input formats by the featInitReg
 ** functions) and to write the output file (ajFeattableWrite)
 **
+** @return [void]
 ******************************************************************************/
 
 static FeatOOutFormat featOutFormatDef[] = {
@@ -759,11 +751,11 @@ AjPFeattable ajFeatRead  ( AjPFeattabIn  ftin )
 ** @exception 'Mem_Failed' from memory allocation
 ** @@
 ** Obsolete option
-** @param  [rENU] desc     [AjPStr]      desc of feature feature
+** param  [rENU] desc     [AjPStr]      desc of feature feature
 **
 ** Not for constructor - rarely used - add later if needed
-** @param  [rNU]  Start2   [ajint]  2nd Start position of the feature
-** @param  [rNU]  End2     [ajint]  2nd End position of the feature
+** param  [rNU]  Start2   [ajint]  2nd Start position of the feature
+** param  [rNU]  End2     [ajint]  2nd End position of the feature
 ** 
 ******************************************************************************/
 
@@ -774,8 +766,6 @@ AjPFeature ajFeatNew (AjPFeattable thys,
 		      float        score,
 		      char         strand,
 		      ajint        frame
-		      /* AjPStr       ,desc, */
-		      /* ajint Start2, ajint End2 */
 		      ) 
 {
   ajint flags = 0;
@@ -803,11 +793,11 @@ AjPFeature ajFeatNew (AjPFeattable thys,
 ** @exception 'Mem_Failed' from memory allocation
 ** @@
 ** Obsolete option
-** @param  [rENU] desc     [AjPStr]      desc of feature feature
+** param  [rENU] desc     [AjPStr]      desc of feature feature
 **
 ** Not for constructor - rarely used - add later if needed
-** @param  [rNU]  Start2   [ajint]  2nd Start position of the feature
-** @param  [rNU]  End2     [ajint]  2nd End position of the feature
+** param  [rNU]  Start2   [ajint]  2nd Start position of the feature
+** param  [rNU]  End2     [ajint]  2nd End position of the feature
 ** 
 ******************************************************************************/
 
@@ -856,8 +846,6 @@ AjPFeature ajFeatNewProt (AjPFeattable thys,
 			  AjPStr       type,
 			  ajint Start, ajint End,
 			  float        score
-			  /* AjPStr       ,desc, */
-			  /* ajint Start2, ajint End2 */
 			  ) 
 {
   ajint flags = 0;
@@ -1027,7 +1015,7 @@ static ajint featCompByType(const void *a, const void *b) {
 ** @cre 'table' argument must be a valid ajFeattable
 ** @@
 ** Obsolete:
-** @param  [rENU] desc     [AjPStr]      desc of feature feature
+** param  [rENU] desc     [AjPStr]      desc of feature feature
 ** 
 ******************************************************************************/
 
@@ -1039,7 +1027,6 @@ static AjPFeature featFeatNew (AjPFeattable thys,
 				  float        score,
 				  char         strand,
 				  ajint        frame, 
-   /* AjPStr       desc, */ /* obsolete pmr 2-jul-01 */
 				  ajint        exon,
 				  ajint        Start2,
 				  ajint        End2,
@@ -1909,21 +1896,6 @@ AjBool ajFeatWrite ( AjPFeattabOut ftout, AjPFeattable features )
   }
 }
 
-/* @funcstatic featReadAcedb **************************************************
-**
-** Reads feature data in ACEDB format
-**
-** @param [r] thys [AjPFeattable] Feature table
-** @param [r] file [AjPFileBuff] Buffered input file
-** @return [AjBool] ajTrue on success
-** @@
-******************************************************************************/
-
-/*static AjBool featReadAcedb    ( AjPFeattable thys, AjPFileBuff file){
-  ajDebug("featReadAcedb NOT IMPLEMENTED YET\n");
-  return ajFalse;
-}*/
-
 /* @funcstatic featReadEmbl ***************************************************
 **
 ** Reads feature data in EMBL format
@@ -2017,8 +1989,6 @@ static AjBool featReadPir   ( AjPFeattable thys, AjPFileBuff file) {
 **
 ** @param [r] thys [AjPFeattable] Feature table
 ** @param [r] origline [AjPStr] Input line
-** @param [r] saveloc  [AjPStr*] Continued location
-** @param [r] saveline [AjPStr*] Continued tag-value pairs
 ** @return [AjPFeature] New feature.
 ** @@
 ******************************************************************************/
@@ -2391,8 +2361,6 @@ static void featGffProcessTagval (AjPFeature gf, AjPFeattable table,
 **
 ** @param [r] thys [AjPFeattable] Feature table
 ** @param [r] origline [AjPStr] Input line
-** @param [r] saveloc  [AjPStr*] Continued location
-** @param [r] saveline [AjPStr*] Continued tag-value pairs
 ** @return [AjPFeature] New feature.
 ** @@
 ******************************************************************************/
@@ -2475,7 +2443,7 @@ static AjPFeature featSwissFromLine ( AjPFeattable thys,
 ** @param [u] fromstr [AjPStr] Feature start
 ** @param [u] tostr [AjPStr] Feature end
 ** @param [u] source [AjPStr] Feature table source
-** @param [r] tags [AjPStr*] Feature qualifier tags string
+** @param [r] tags [AjPStr] Feature qualifier tags string
 ** @return [AjPFeature] Feature as inserted into the feature table
 ** @@
 ******************************************************************************/
@@ -2925,6 +2893,7 @@ static AjPFeature featEmblProcess  ( AjPFeattable thys, AjPStr feature,
 **
 ** @param [r] thys [AjPFeattable] Feature table
 ** @param [r] line [AjPStr] Input line
+** @param [r] version [float] GFF version (1.0 for old format behaviour)
 ** @return [AjPFeature] New feature
 ** @@
 ******************************************************************************/
@@ -3179,21 +3148,6 @@ AjBool ajFeattableWriteGff (AjPFeattable Feattab, AjPFile file)
   return ajTrue ;
 }
 
-/* @funcstatic featRegInitAcedb ***********************************************
-**
-** Initialize regular expressions and data structures for ajFeat  format
-**
-** @return [AjBool] ajTrue if successful
-** @@
-******************************************************************************/
-
-/*static AjBool featRegInitAcedb (void) 
-{
-  featInit();
-
-  ajDebug("Hello Acedb\n");
-  return ajFalse;
-}*/
 /* @funcstatic featRegInitEmbl ************************************************
 **
 ** Initialize regular expressions and data structures for
@@ -3341,26 +3295,6 @@ static AjBool featRegInitGff (void) {
 
   return ajTrue;
 }
-
-/* @funcstatic featDelRegAcedb ************************************************
-**
-** Cleanup and exit routines. Free and destroy regular expressions
-**
-** @return [AjBool] ajFalse if unsuccesful
-** @@
-******************************************************************************/
-/*static AjBool featDelRegAcedb(void) {
-
-  if (!FeatInitAcedb)
-    return ajTrue;
-
-  ajStrTableFree(&FeatTypeTableAcedb);
-  ajStrTableFree(&FeatTagsTableAcedb);
-
-  FeatInitAcedb = ajFalse;
-
-  return ajFalse;
-}*/
 
 /* @funcstatic featDelRegEmbl *************************************************
 **
@@ -4311,7 +4245,7 @@ ajint ajFeatGetLocs(AjPStr str, AjPStr **cds, char *type)
 **
 ** Finds a named note tag (with a * prefix)
 **
-** @param [r] thys [AjPfeature] Feature object
+** @param [r] thys [AjPFeature] Feature object
 ** @param [r] name [AjPStr] Tag name
 ** @param [r] val [AjPStr*] Tag value (if found)
 **
@@ -4329,7 +4263,7 @@ AjBool ajFeatGetNote (AjPFeature thys, AjPStr name, AjPStr* val) {
 **
 ** Finds a named note tag (with a * prefix)
 **
-** @param [r] thys [AjPfeature] Feature object
+** @param [r] thys [AjPFeature] Feature object
 ** @param [r] name [AjPStr] Tag name
 ** @param [r] count [ajint] Tag count: zero for any, 1 for first, 2 for second
 ** @param [r] val [AjPStr*] Tag value (if found)
@@ -4386,7 +4320,7 @@ AjBool ajFeatGetNoteI (AjPFeature thys, AjPStr name, ajint count,
 **
 ** Returns the nth value of a named feature tag.
 **
-** @param [r] thys [AjPfeature] Feature object
+** @param [r] thys [AjPFeature] Feature object
 ** @param [r] name [AjPStr] Tag name
 ** @param [r] num [ajint] Tag number
 ** @param [r] val [AjPStr*] Tag value (if found)
@@ -4429,7 +4363,7 @@ AjBool ajFeatGetTag (AjPFeature thys, AjPStr name, ajint num, AjPStr* val) {
 ** pointer to the type, and is still owned by the feature
 ** and is not to be destroyed.
 **
-** @param [r] thys [AjPfeature] Feature object
+** @param [r] thys [AjPFeature] Feature object
 **
 ** @return [AjPStr] Feature type, read only
 ** @@
@@ -4443,7 +4377,7 @@ AjPStr ajFeatGetType (AjPFeature thys) {
 **
 ** Returns the start position of a feature object.
 **
-** @param [r] thys [AjPfeature] Feature object
+** @param [r] thys [AjPFeature] Feature object
 **
 ** @return [ajint] Feature start position
 ** @@
@@ -4457,7 +4391,7 @@ ajint ajFeatGetStart (AjPFeature thys) {
 **
 ** Returns the end position of a feature object.
 **
-** @param [r] thys [AjPfeature] Feature object
+** @param [r] thys [AjPFeature] Feature object
 **
 ** @return [ajint] Feature end position
 ** @@
@@ -4471,7 +4405,7 @@ ajint ajFeatGetEnd (AjPFeature thys) {
 **
 ** Returns the direction of a feature object.
 **
-** @param [r] thys [AjPfeature] Feature object
+** @param [r] thys [AjPFeature] Feature object
 **
 ** @return [AjBool] ajTrue for a forward direction, ajFalse for reverse
 ** @@
@@ -4487,7 +4421,7 @@ AjBool ajFeatGetForward (AjPFeature thys) {
 **
 ** Returns the reading frame of a feature object.
 **
-** @param [r] thys [AjPfeature] Feature object
+** @param [r] thys [AjPFeature] Feature object
 **
 ** @return [ajint] Feature reading frame (zero for undefined)
 ** @@
@@ -4986,19 +4920,6 @@ static AjBool featVocabRead (char* name, ajint typsize, ajint tagsize,
 
 }
 
-/* @funcstatic featVocabInitAcedb *********************************************
-**
-** Initialises feature table internals for ACEDB format
-**
-** @return [AjBool] ajTrue on success
-******************************************************************************/
-
-/*static AjBool featVocabInitAcedb (void) {
-
-  return featVocabRead ("acedb", 0, 0, &FeatTypeTableEmbl, &FeatTagsTableEmbl);
-
-}*/
-
 /* @funcstatic featVocabInitEmbl **********************************************
 **
 ** Initialises feature table internals for EMBL format
@@ -5115,7 +5036,7 @@ AjPFeature ajObsFeatNew (AjPFeattable thys,
   return ret;
 }
 
-/* @func ajFeatSetDesc ********************************************************
+/* @func ajFeatSetDescApp *****************************************************
 **
 ** Sets the description for a feature
 **
@@ -5448,7 +5369,7 @@ AjPFeattable ajFeattableNew( AjPStr name )
 **
 ** Sets the type of a feature table as DNA
 **
-** @param [AjPFeattable] Feature table object
+** @param [U] thys [AjPFeattable] Feature table object
 ** @return [void]
 ** @@
 ** 
@@ -5465,7 +5386,7 @@ void ajFeattableSetDna (AjPFeattable thys)
 **
 ** Sets the type of a feature table as Protein
 **
-** @param [AjPFeattable] Feature table object
+** @param [U] thys [AjPFeattable] Feature table object
 ** @return [void]
 ** @@
 ** 
@@ -5676,7 +5597,7 @@ static FeatPTagval featTagval ( AjPFeature thys, AjPStr tag) {
 **
 ** For cases where we need a copy we can safely change and/or delete.
 **
-** @param [r]   pthys  [AjPFeattable]  Feature table copy of the original
+** @param [r]   pthys  [AjPFeattable*]  Feature table copy of the original
 ** @param [r]   orig  [AjPFeattable]  Original feature table
 ** @return [void]
 ** @@
@@ -5723,7 +5644,7 @@ void ajFeattableCopy (AjPFeattable* pthys, AjPFeattable orig) {
 **
 ** For cases where we need a copy we can safely change and/or delete.
 **
-** @param [r]   pthys  [AjPFeature]  Feature  copy of the original
+** @param [r]   pthys  [AjPFeature*]  Feature  copy of the original
 ** @param [r]   orig  [AjPFeature]  Original feature
 ** @return [void]
 ** @@
@@ -6555,6 +6476,7 @@ static void featTagQuoteGff (AjPStr* pval) {
 ** @param  [r] preftyp [char*] Left margin prefix string for first line
 **                            (includes the feature key)
 ** @param [W] retstr [AjPStr*] string with formatted value.
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -6619,6 +6541,7 @@ static void featLocEmblWrapC (AjPStr *ploc, ajint margin,
 ** @param  [r] margin [ajint] Right margin
 ** @param  [r] prefix [char*] Left margin prefix string
 ** @param  [W] retstr [AjPStr*] string with formatted value.
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -6682,6 +6605,7 @@ static void featTagEmblWrapC (AjPStr *pval, ajint margin, char* prefix,
 ** @param  [r] margin [ajint] Right margin
 ** @param  [r] prefix [char*] Left margin prefix string
 ** @param  [W] retstr [AjPStr*] string with formatted value.
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -7079,7 +7003,7 @@ static void featDumpEmbl (AjPFeature feat, AjPStr location, AjPFile file,
 **
 ** Write details of single feature to output file
 **
-** @param [r] feat [AjPFeature] Feature
+** @param [r] thys [AjPFeature] Feature
 ** @param [r] location [AjPStr] Location as a string
 ** @param [r] file [AjPFile] Output file
 ** @return [void]
@@ -7157,7 +7081,7 @@ static void featDumpPir (AjPFeature thys, AjPStr location, AjPFile file) {
 **
 ** Write details of single feature to output file
 **
-** @param [r] feat [AjPFeature] Feature
+** @param [r] thys [AjPFeature] Feature
 ** @param [r] file [AjPFile] Output file
 ** @param [r] gftop [AjPFeature] Parent feature
 ** @return [void]
@@ -7486,6 +7410,7 @@ static AjBool featTypePirOut (AjPStr* type) {
 ** @param [R] name  [AjPStr] Tag name
 ** @param [R] table [AjPTable] Tag table
 ** @param [W] retstr [AjPStr*] string with formatted value.
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -7519,6 +7444,7 @@ static void featTagFmt (AjPStr name, AjPTable table, AjPStr* retstr) {
 ** @param [R] name  [AjPStr] Tag name
 ** @param [R] table [AjPTable] Tag table
 ** @param [W] retstr [AjPStr*] string with formatted value.
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -7567,9 +7493,6 @@ void ajFeatExit (void) {
     }
   }
 
-  ajStrTableFree(&FeatTypeTableAcedb);
-  ajStrTableFree(&FeatTagsTableAcedb);
-
   ajStrTableFree(&FeatTypeTableEmbl);
   ajStrTableFree(&FeatTagsTableEmbl);
 
@@ -7592,6 +7515,7 @@ void ajFeatExit (void) {
 **
 ** Dummy function to prevent compiler warnings
 **
+** @return [void]
 ******************************************************************************/
 
 void ajFeatUnused (void) {
@@ -7627,7 +7551,7 @@ static AjPFeature featFeatureNew (void) {
 **
 ** The type is left uninitialised
 **
-** @return [AjPFeature] New empty feature table
+** @return [AjPFeattable] New empty feature table
 ******************************************************************************/
 
 static AjPFeattable featTableNew (void) {
@@ -7648,7 +7572,7 @@ static AjPFeattable featTableNew (void) {
 ** The type is left uninitialised
 **
 ** @param [R] name [AjPStr] Name for new feature table (or NULL for unnamed)
-** @return [AjPFeature] New empty feature table
+** @return [AjPFeattable] New empty feature table
 ******************************************************************************/
 
 static AjPFeattable featTableNewS (AjPStr name) {
@@ -7667,7 +7591,7 @@ static AjPFeattable featTableNewS (AjPStr name) {
 ** Returns AJTRUE if it is local, AJFALSE if remote.
 **
 ** @param [r] gf       [AjPFeature]  Feature
-** @return [AjBool]
+** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 AjBool ajFeatIsLocal (AjPFeature gf) 
@@ -7686,7 +7610,7 @@ AjBool ajFeatIsLocal (AjPFeature gf)
 ** @param [r] gf       [AjPFeature]  Feature
 ** @param [r] start    [ajint]  start of range
 ** @param [r] end      [ajint]  end of range
-** @return [AjBool]
+** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 AjBool ajFeatIsLocalRange (AjPFeature gf, ajint start, ajint end) 

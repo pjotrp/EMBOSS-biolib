@@ -787,6 +787,7 @@ static const Except_T Fmt_Overflow = { "Formatting Overflow" };
 ** floating point conversions all use cvt_f which sends everything to
 ** the standard C library. Also, cvt_d is used by alternative codes.
 **
+** @return [void]
 ******************************************************************************/
 
 static Fmt_T cvt[256] =
@@ -818,6 +819,7 @@ static Fmt_T cvt[256] =
 ** floating point conversions all use cvt_f which sends everything to
 ** the standard C library. Also, cvt_d is used by alternative codes.
 **
+** @return [void]
 ******************************************************************************/
 
 static Fmt_S scvt[256] =

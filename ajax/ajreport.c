@@ -91,6 +91,7 @@ static char* reportCharname (AjPReport thys);
 **
 ** Functions to write feature reports
 **
+** @return [void]
 ******************************************************************************/
 
 static ReportOFormat reportFormat[] = { 
@@ -1667,7 +1668,6 @@ AjBool ajReportSetTags (AjPReport thys, AjPStr taglist, ajint mintags) {
 ** Checks the format works with the type (protein or nucleotide).
 **
 ** @param [R] thys [AjPReport] Report object
-** @param [R] mintags [ajint] Minimum number of tags to use in report
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
@@ -2076,7 +2076,7 @@ static char* reportCharname (AjPReport thys) {
   return protstr;
 }
 
-/* @funcstatic ajReportSeqName ************************************************
+/* @func ajReportSeqName ************************************************
 **
 ** Returns the sequence name or USA depending on the setting in the
 ** report object (derived from the ACD and command line -rusa option)
@@ -2101,6 +2101,7 @@ AjPStr ajReportSeqName (AjPReport thys, AjPSeq seq) {
 ** @param [r] thys [AjPReport] Report object
 ** @param [r] file [AjPFile] File
 ** @param [r] type [AjPStr] Type (simple text description)
+** @return [void]
 ******************************************************************************/
 
 void ajReportFileAdd (AjPReport thys, AjPFile file, AjPStr type) {

@@ -126,8 +126,8 @@ static void       seqSetName (AjPStr* name, AjPStr str);
 
 static void       seqUsaListTrace (AjPList list);
 static AjBool     seqUsaProcess (AjPSeq thys, AjPSeqin seqin);
-void              seqUsaRestore (AjPSeqin seqin, SeqPListUsa node);
-void              seqUsaSave (SeqPListUsa node, AjPSeqin seqin);
+static void       seqUsaRestore (AjPSeqin seqin, SeqPListUsa node);
+static void       seqUsaSave (SeqPListUsa node, AjPSeqin seqin);
 
 /* static data that needs the function definitions and so must come later */
 
@@ -135,6 +135,7 @@ void              seqUsaSave (SeqPListUsa node, AjPSeqin seqin);
 **
 ** Functions to read each sequence format
 **
+** @return [void]
 ******************************************************************************/
 
 static SeqOInFormat seqInFormatDef[] = { /* AJFALSE = ignore (duplicates) */
@@ -1752,13 +1753,12 @@ static AjBool seqReadNcbi (AjPSeq thys, AjPSeqin seqin)
 }
 
 
-/* @func ajSeqReadSelex ************************************************
+/* @funcstatic seqReadSelex ***************************************************
 **
 ** Read a Selex file. (temporary)
 **
-** @param [r] inf [AjPFile] Selex input file
-** @param [w] outf [AjPFile] Output file
-** @return [AjBool] ajTrue if success
+** @param [r] thys [AjPFileSeq] Sequence object
+** @param [w] seqin [AjPSeqin] Sequence input object
 ** @@
 ******************************************************************************/
 
@@ -1880,7 +1880,7 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
 
 
 
-/* @func ajSeqReadStockholm ************************************************
+/* @funcstatic seqReadStockholm ***********************************************
 **
 ** Read a Stockholm file.
 **
@@ -1888,7 +1888,7 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
 ** @param [r] seqin [AjPSeqin] seqin object
 ** @return [AjBool] ajTrue if success
 ** @@
-*******************************************************************/
+******************************************************************************/
 
 static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 {
@@ -5222,10 +5222,11 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
 ** Restores a sequence input specification from a SeqPListUsa node
 **
 ** @param [w] seqin [AjPSeqin] Sequence input object
-** @param [r] node [SeqPListUsa] Usa list node
+** @param [w] node [SeqPListUsa] Usa list node
+** @return [void]
 ******************************************************************************/
 
-void seqUsaRestore (AjPSeqin seqin, SeqPListUsa node) {
+static void seqUsaRestore (AjPSeqin seqin, SeqPListUsa node) {
   seqin->Begin = node->Begin;
   seqin->End = node->End;
   seqin->Rev = node->Rev;
@@ -5243,7 +5244,7 @@ void seqUsaRestore (AjPSeqin seqin, SeqPListUsa node) {
 ** @param [w] seqin [AjPSeqin] Sequence input object
 ******************************************************************************/
 
-void seqUsaSave (SeqPListUsa node, AjPSeqin seqin) {
+static void seqUsaSave (SeqPListUsa node, AjPSeqin seqin) {
   node->Begin = seqin->Begin;
   node->End = seqin->End;
   node->Rev = seqin->Rev;
@@ -5258,7 +5259,7 @@ void seqUsaSave (SeqPListUsa node, AjPSeqin seqin) {
 ** Traces the nodes in a USA list
 **
 ** @param [r] list [AjPList] The USA list
-**
+** @return [void]
 ******************************************************************************/
 
 static void seqUsaListTrace (AjPList list) {
