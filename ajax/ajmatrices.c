@@ -72,7 +72,7 @@ AjPMatrix ajMatrixNew(AjPStr* codes, ajint n, AjPStr filename)
     AJCNEW0(ret->Matrix, nsize);
     for(i=0; i<nsize; i++)
 	AJCNEW0(ret->Matrix[i], nsize);
-    ret->Cvt = ajSeqCvtNewZeroS(codes, nsize);
+    ret->Cvt = ajSeqCvtNewZeroS(codes, n);
 
     return ret;
 }
@@ -123,7 +123,7 @@ AjPMatrixf ajMatrixfNew(AjPStr* codes, ajint n, AjPStr filename)
     AJCNEW0(ret->Matrixf, nsize);
     for(i=0; i<nsize; i++)
 	AJCNEW0(ret->Matrixf[i], nsize);
-    ret->Cvt = ajSeqCvtNewZeroS(codes, nsize);
+    ret->Cvt = ajSeqCvtNewZeroS(codes, n);
 
     return ret;
 }
