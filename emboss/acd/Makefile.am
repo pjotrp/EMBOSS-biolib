@@ -39,7 +39,7 @@ pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd \
 	seealso.acd \
 	seqinfo.acd seqmatchall.acd seqret.acd seqretall.acd \
 	seqretallfeat.acd seqretset.acd seqretsingle.acd \
-	seqretsplit.acd showalign.acd \
+	seqretsplit.acd seqrettype.acd showalign.acd \
 	showdb.acd showfeat.acd showorf.acd showseq.acd shuffleseq.acd \
 	sigcleave.acd silent.acd sirna.acd sixpack.acd \
 	skipseq.acd splitter.acd \
@@ -47,7 +47,8 @@ pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd \
 	tcode.acd testplot.acd textsearch.acd tfextract.acd tfm.acd \
 	tfscan.acd tmap.acd tranalign.acd transeq.acd treetypedisplay.acd \
 	trimest.acd trimseq.acd twofeat.acd union.acd vectorstrip.acd \
-	water.acd whichdb.acd wobble.acd wordcount.acd wordmatch.acd wossname.acd \
+	water.acd whichdb.acd wobble.acd wordcount.acd \
+	wordmatch.acd wossname.acd \
 	yank.acd
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/acd
