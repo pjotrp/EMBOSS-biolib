@@ -303,16 +303,18 @@ static AjPGraphData graphTextDisplay(AjPGraph graphs, int nstart,
 
     AjPGraphData gdata;
    
-    char res;
+    char res[2];
+
+    res[1]='\0';
 
 /* create graph data object */
     gdata = ajGraphxyDataNewI(ajShortGet(basePositions,nstop-1)-nt);
 
     for(i=nstart;i<nstop;i++)
     {
-       res = ajStrChar(nseq,i);
-       colres = getResColour(res);
-       ajGraphDataObjAddText(gdata,(float)i+1.,tmax+75.,colres,&res);
+       *res = ajStrChar(nseq,i);
+       colres = getResColour(*res);
+       ajGraphDataObjAddText(gdata,(float)i+1.,tmax+75.,colres,res);
     }
 
     ajGraphDataxySetMaxMin(gdata,(float)nstart+1,
@@ -340,14 +342,14 @@ static void TextDisplay(AjPGraph graphs, int nstart, int nstop,
     int i;
     int colres;
 
-    char res;
+    char res[2];
 
-
+    res[1] = '\0';
     for(i=nstart;i<nstop-1;i++)
     {
-       res = ajStrChar(nseq,i);
-       colres = getResColour(res);
-       ajGraphObjAddText(graphs,(float)i+1.,1225.,colres,&res);
+       *res = ajStrChar(nseq,i);
+       colres = getResColour(*res);
+       ajGraphObjAddText(graphs,(float)i+1.,1225.,colres,res);
     }
 
     return;
