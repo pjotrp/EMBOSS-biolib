@@ -3557,6 +3557,20 @@ ajint ajFeatGetTrans(AjPStr str, AjPStr **cds)
     return ncds;
 }
 
+/* @funcstatic featGetUsaSection **********************************************
+**
+** Returns the sequence for a USA
+**
+** What is this doing in ajfeat ???
+**
+** @param [R] thys [AjPStr*] Result
+** @param [R] token [AjPStr] Token
+** @param [R] begin [ajint*] Start position
+** @param [R] end [ajint*] End position
+** @param [R] usa [AjPStr] Usa to be processed
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
 
 static AjBool featGetUsaSection(AjPStr* thys, AjPStr token, ajint* begin,
 				ajint* end, AjPStr usa)

@@ -1745,7 +1745,13 @@ AjBool ajListstrPopEnd(AjPList thys, AjPStr *x)
 }
 
 
-/* Dummy function to catch all unused functions defined above */
+/* @func ajListDummyFunctions ************************************************
+**
+** Dummy function to catch all unused functions defined in ajlist
+**
+** @param [R] array [void**] Array needed by ajListArrayTrace
+******************************************************************************/
+
 void ajListDummyFunction(void** array)
 {
     listArrayTrace(array);

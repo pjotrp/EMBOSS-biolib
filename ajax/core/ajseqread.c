@@ -2211,35 +2211,119 @@ static AjBool seqHennig86Readseq (AjPStr rdline, AjPTable msftable)
     return ajTrue;
 }
 
+/* @funcstatic seqReadTreecon *************************************************
+**
+** Tries to read input in Treecon format.
+**
+** To be implemented
+**
+** @param [wP] thys [AjPSeq] Sequence object
+** @param [P] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
 static AjBool seqReadTreecon (AjPSeq thys, AjPSeqin seqin)
 {
     return ajFalse;
 }
+
+/* @funcstatic seqReadJackknifer **********************************************
+**
+** Tries to read input in Jackknifer format.
+**
+** To be implemented
+**
+** @param [wP] thys [AjPSeq] Sequence object
+** @param [P] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
 
 static AjBool seqReadJackknifer (AjPSeq thys, AjPSeqin seqin)
 {
     return ajFalse;
 }
 
+/* @funcstatic seqReadJackknifernon *******************************************
+**
+** Tries to read input in Jackknifer non-interleaved format.
+**
+** To be implemented
+**
+** @param [wP] thys [AjPSeq] Sequence object
+** @param [P] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
 static AjBool seqReadJackknifernon (AjPSeq thys, AjPSeqin seqin)
 {
     return ajFalse;
 }
+
+/* @funcstatic seqReadNexus *************************************************
+**
+** Tries to read input in Nexus format.
+**
+** To be implemented
+**
+** @param [wP] thys [AjPSeq] Sequence object
+** @param [P] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
 
 static AjBool seqReadNexus (AjPSeq thys, AjPSeqin seqin)
 {
     return ajFalse;
 }
 
+/* @funcstatic seqReadNexusnon ************************************************
+**
+** Tries to read input in Nexus non-interleaved format.
+**
+** To be implemented
+**
+** @param [wP] thys [AjPSeq] Sequence object
+** @param [P] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
 static AjBool seqReadNexusnon (AjPSeq thys, AjPSeqin seqin)
 {
     return ajFalse;
 }
 
+/* @funcstatic seqReadMega *************************************************
+**
+** Tries to read input in Mega format.
+**
+** To be implemented
+**
+** @param [wP] thys [AjPSeq] Sequence object
+** @param [P] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
 static AjBool seqReadMega (AjPSeq thys, AjPSeqin seqin)
 {
     return ajFalse;
 }
+
+/* @funcstatic seqReadMeganon *************************************************
+**
+** Tries to read input in Mega non-interleaved format.
+**
+** To be implemented
+**
+** @param [wP] thys [AjPSeq] Sequence object
+** @param [P] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
 
 static AjBool seqReadMeganon (AjPSeq thys, AjPSeqin seqin)
 {
