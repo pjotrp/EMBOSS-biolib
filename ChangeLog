@@ -1,5 +1,12 @@
 Version 2.7.0
 
+	Showseq and showfeat both now have the qualifier '-stricttags'.
+	By default if any tag/value pair in a feature matches the
+	specified tag and value, then all the tags/value pairs of that
+	feature will be displayed.  If '-stricttags' is set to be true,
+	then only those tag/value pairs in a feature that match the
+	specified tag and value will be displayed. 
+
 	Megamerger now has the qualifier '-prefer' which makes it use
 	the first sequence to create the merged sequence whenever there is a
 	mismatch between the two sequences. 
