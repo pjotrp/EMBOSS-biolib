@@ -17,7 +17,7 @@ section: input [
            get details of. The names often have a 'I' in them - this is a
            capital 'i', not a '1' or an 'l'. The names are case-independent
            ('AaeI' is the same as 'aaei')"
-    knowntype: "restriction enzyme"
+    knowntype: "enzyme name"
   ]
 
 endsection: input
