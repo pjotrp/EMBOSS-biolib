@@ -6106,7 +6106,7 @@ ID entret-inauto-nonewline
 AP entret
 CL -auto ../../data/dna.nonewline test.out
 FI test.out
-FZ = 50
+FZ = 51
 FC = 2
 FP /^>\n/
 FP /^aaaaccccggggttttaaaaccccggggttttaaccggttshshshsh$/
