@@ -41,15 +41,39 @@ public class SequenceList extends JFrame
 
   private DragJTable table;
   private SequenceListTableModel seqModel;
+  private JPopupMenu popMenu = new JPopupMenu();
 
   public SequenceList()
   {
     super("Sequence List");
     setSize(400,200);
-    table = new DragJTable();
     seqModel = new SequenceListTableModel();
+    table = new DragJTable(seqModel);
     table.setModel(seqModel);
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+    //column width
+    for(int i=0;i<SequenceListTableModel.modelColumns.length;i++)
+    {
+      TableColumn column = table.getColumn(SequenceListTableModel.modelColumns[i].title);
+      column.setPreferredWidth(SequenceListTableModel.modelColumns[i].width);
+    }
+
+    JMenuItem openMenuItem = new JMenuItem("Open");
+    openMenuItem.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        int nrow = table.getSelectedRow();
+        String fileName = (String)table.getValueAt(nrow,
+                         SequenceListTableModel.COL_NAME);
+        System.out.println("FILE NAME IS " +fileName);
+      }
+    });
+    popMenu.add(openMenuItem);
+    
+    MouseListener popupListener = new PopupListener(); 
+    table.addMouseListener(popupListener);
 
     JScrollPane scrollpane = new JScrollPane(table);
     scrollpane.setSize(300,100);
@@ -100,6 +124,24 @@ public class SequenceList extends JFrame
     getContentPane().add(buttonPanel, BorderLayout.SOUTH);
   }
 
+  class PopupListener extends MouseAdapter 
+  {
+    public void mousePressed(MouseEvent e) {
+      maybeShowPopup(e);
+    }
+
+    public void mouseReleased(MouseEvent e) 
+    {
+      maybeShowPopup(e);
+    }
+
+    private void maybeShowPopup(MouseEvent e) 
+    {
+      if(e.isPopupTrigger()) 
+        popMenu.show(e.getComponent(),
+              e.getX(), e.getY());
+    }
+  }
 }
 
 
@@ -107,9 +149,11 @@ class DragJTable extends JTable implements DragGestureListener,
                            DragSourceListener, DropTargetListener
 {
 
-  public DragJTable()
+  private SequenceListTableModel seqModel;
+  public DragJTable(SequenceListTableModel seqModel)
   {
     super();
+    this.seqModel = seqModel;
     DragSource dragSource = DragSource.getDefaultDragSource();
     dragSource.createDefaultDragGestureRecognizer(
            this,                             // component where drag originates
@@ -146,7 +190,8 @@ class DragJTable extends JTable implements DragGestureListener,
       {
         final FileNode fn =
            (FileNode)t.getTransferData(FileNode.FILENODE);
-        System.out.println("Detected local drop of " + fn.getFile().getCanonicalPath()); 
+        insertData(seqModel,e.getLocation(),fn.getFile().getCanonicalPath());
+        e.getDropTargetContext().dropComplete(true);
       }
       catch(UnsupportedFlavorException ufe){}
       catch(IOException ioe){}
@@ -155,19 +200,26 @@ class DragJTable extends JTable implements DragGestureListener,
     {
       try
       {
-        Point ploc = e.getLocation();
-        int row = rowAtPoint(ploc);
         final RemoteFileNode fn =
             (RemoteFileNode)t.getTransferData(RemoteFileNode.REMOTEFILENODE);
+        insertData(seqModel,e.getLocation(),fn.getPathName()+"/"+fn.getFile());
         e.getDropTargetContext().dropComplete(true);
-        System.out.println("Detected remote drop of " + fn.getRootDir() + "/" + fn.getFile());
-        System.out.println("Detected remote drop of " + fn.getServerName());
       }
       catch (Exception exp)
       {
         e.rejectDrop();
       }
     }
+  }
+
+  public void insertData(SequenceListTableModel seqModel, Point ploc,
+                                         String fileName)
+  {
+    int row = rowAtPoint(ploc);
+    seqModel.insertRow(row);
+    seqModel.setValueAt(fileName,row,SequenceListTableModel.COL_NAME);
+    tableChanged(new TableModelEvent(seqModel, row+1, row+1,
+            TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT));
   }
 
   public void dragOver(DropTargetDragEvent e)
@@ -207,20 +259,24 @@ class ColumnData
 class SequenceData
 {
   public String s_name;
-  public String s_path;
+  public String s_beg;
+  public String s_end;
   public Boolean s_default;
 
   public SequenceData()
   {
     s_name = new String();
-    s_path = new String();
+    s_beg = new String();
+    s_end = new String();
     s_default = new Boolean(false);
   }
 
-  public SequenceData(String name, String path, Boolean def)
+  public SequenceData(String name, String beg, 
+                      String end, Boolean def)
   {
     s_name = name;
-    s_path = path;
+    s_beg = beg;
+    s_end = end;
     s_default = def;
   }
 }
@@ -239,8 +295,9 @@ class SequenceListTableModel extends AbstractTableModel
 
   public static final ColumnData modelColumns[] =
   {
-    new ColumnData("File",100,JLabel.LEFT),
-    new ColumnData("Path",150,JLabel.LEFT),
+    new ColumnData("File",170,JLabel.LEFT),
+    new ColumnData("Start",45,JLabel.LEFT),
+    new ColumnData("End",45,JLabel.LEFT),
     new ColumnData("Default",15,JLabel.LEFT)
   };
 
@@ -257,15 +314,17 @@ class SequenceListTableModel extends AbstractTableModel
 
 
   public static final int COL_NAME = 0;
-  public static final int COL_PATH = 1;
-  public static final int COL_DEF  = 2;
+  public static final int COL_BEG  = 1;
+  public static final int COL_END  = 2;
+  public static final int COL_DEF  = 3;
 
   public void setDefaultData()
   {
     modelVector.removeAllElements();
-    modelVector.addElement(new SequenceData("-","-",new Boolean(false))); 
-    modelVector.addElement(new SequenceData("-","-",new Boolean(false))); 
-    modelVector.addElement(new SequenceData("-","-",new Boolean(false))); 
+    modelVector.addElement(new SequenceData("-","","",new Boolean(false))); 
+    modelVector.addElement(new SequenceData("-","","",new Boolean(false))); 
+    modelVector.addElement(new SequenceData("-","","",new Boolean(false))); 
+    modelVector.addElement(new SequenceData("-","","",new Boolean(false))); 
   }
   
   public int getRowCount()
@@ -297,7 +356,8 @@ class SequenceListTableModel extends AbstractTableModel
     switch(nCol)
     { 
       case COL_NAME: return row.s_name;
-      case COL_PATH: return row.s_path;
+      case COL_BEG: return row.s_beg;
+      case COL_END: return row.s_end;
       case COL_DEF:  return row.s_default;
     }
     return ""; 
@@ -316,8 +376,11 @@ class SequenceListTableModel extends AbstractTableModel
       case COL_NAME: 
         row.s_name = svalue;
         break;
-      case COL_PATH: 
-        row.s_path = svalue;
+      case COL_BEG: 
+        row.s_beg = svalue;
+        break;
+      case COL_END:
+        row.s_end = svalue;
         break;
       case COL_DEF:  
         row.s_default = (Boolean)value;
