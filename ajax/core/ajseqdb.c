@@ -574,8 +574,15 @@ static AjBool seqAccessFreeEmblcd (void* qrydata)
 
     ajDebug("seqAccessFreeEmblcd\n");
 
+    /* these are buffered ... freed by ajFileBuffDel elsewhere */
+
+    /*
     ajFileClose(&qryd->libr);
     ajFileClose(&qryd->libs);
+    */
+
+    qryd->libr=0;
+    qryd->libs=0;
 
     return retval;
 }
@@ -2445,10 +2452,13 @@ static AjBool seqCdQryClose (AjPSeqQuery qry)
 
     seqCdFileClose (&qryd->ifp);
     seqCdFileClose (&qryd->dfp);
+    /* defined in a buffer, cleared there */
     /*
     ajFileClose(&qryd->libr);
     ajFileClose(&qryd->libs);
     */
+    qryd->libr=0;
+    qryd->libs=0;
     ajListFree(&qryd->List);
     AJFREE(qryd->trgLine);
     AJFREE (qryd->idxLine);
