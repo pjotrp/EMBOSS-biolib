@@ -1040,7 +1040,7 @@ void getdata()
 	      ch != 'S' && ch != 'T' && ch != 'U' && ch != 'V' && ch != 'W' &&
 	      ch != 'X' && ch != 'Y' && ch != '?' && ch != 'O' && ch != '-' &&
 	      ch != '.') {
-	    printf("ERROR: BAD BASE:%c AT POSITION%5ld OF SPECIES %3ld\n",
+	    printf("ERROR: BAD BASE:%c AT POSITION%5hd OF SPECIES %3hd\n",
 		   ch, j, i);
 	    exit(-1);
 	  }

@@ -682,8 +682,8 @@ void getdata()
 		x[i][l] /= sqrt(sum);
 	      x[i][m - 1] = 0.0;
 	    } else {
-	      printf("\n LOCUS%3hd IN SPECIES%3hd: ");
-	      printf("FREQUENCIES ADD UP TO MORE THAN 1\n",j, i + 1);
+	      printf("\n LOCUS%3hd IN SPECIES%3hd: ",j, i + 1);
+	      printf("FREQUENCIES ADD UP TO MORE THAN 1\n");
 	      exit(-1);
 	    }
 	  }
@@ -1519,7 +1519,7 @@ node *p;
   divisor = 1.0;
   getch(&ch);
   digit = ch - ordzero;
-  while (((unsigned long)digit <= 9) | ch == '.'){
+  while (((unsigned long)digit <= 9) || ch == '.'){
     if (ch == '.')
       pointread = true;
     else {
@@ -1885,7 +1885,7 @@ void maketree()
 }  /* maketree */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* main program */

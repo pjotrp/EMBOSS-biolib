@@ -80,13 +80,13 @@ AjPFile outf;
   methodlist = ajAcdGetList ("method");
 
   ajUser("%S",*methodlist);
-  if(strncmp(ajStrStr(*methodlist),"Kimura",6) ==NULL){
+  if(strncmp(ajStrStr(*methodlist),"Kimura",6) == 0){
     kimura = true;
   }
-  else if(strncmp(ajStrStr(*methodlist),"Jinnei",6)==NULL){
+  else if(strncmp(ajStrStr(*methodlist),"Jinnei",6)== 0){
     jinnei = true;
   }
-  else if(strncmp(ajStrStr(*methodlist),"Jukes",5)==NULL){
+  else if(strncmp(ajStrStr(*methodlist),"Jukes",5)== 0){
     jukes = true;
   }
   else{
@@ -550,8 +550,8 @@ void inputweights()
     if (ch == '0' || ch == '1')
       oldweight[i] = ch - '0';
     else {
-      printf("BAD WEIGHT CHARACTER: %c -- ");
-      printf("WEIGHTS IN DNADIST MUST BE 0 OR 1\n",ch);
+      printf("BAD WEIGHT CHARACTER: %c -- ",ch);
+      printf("WEIGHTS IN DNADIST MUST BE 0 OR 1\n");
       exit(-1);
     }
     weightsum += oldweight[i];
@@ -1414,7 +1414,7 @@ void writedists()
 }  /* writedists */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* DNA Distances by Maximum Likelihood */

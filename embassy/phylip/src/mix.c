@@ -96,10 +96,10 @@ int i;
   infile = inf->fp;
 
   methodlist = ajAcdGetList ("method");
-  if(strncmp(ajStrStr(*methodlist),"Wag",3) ==NULL){
+  if(strncmp(ajStrStr(*methodlist),"Wag",3) == 0){
     allwagner = true;
   }
-  else if(strncmp(ajStrStr(*methodlist),"Cam",3)==NULL)
+  else if(strncmp(ajStrStr(*methodlist),"Cam",3)== 0)
     allsokal = true;
   else
     mixture = true;
@@ -1025,7 +1025,7 @@ void doinput()
   inputdata();
 }  /* doinput */
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* Mixed parsimony by uphill search */

@@ -186,7 +186,7 @@ void emboss_getnums(){
   spp = ajSeqsetSize (seqset);
   chars = ajSeqsetGetRange(seqset,&begin2,&end2);
   if (printdata)
-    fprintf(outfile, "%4hd Species, %4hd Sites\n", spp, chars);
+    fprintf(outfile, "%4ld Species, %4ld Sites\n", spp, chars);
   nonodes = spp * 2 - 1;
 }
 

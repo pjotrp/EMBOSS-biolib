@@ -48,10 +48,10 @@ AjPStr *methodlist;
   all = ajAcdGetBool("all");
 
   methodlist = ajAcdGetList ("method");
-  if(strncmp(ajStrStr(*methodlist),"Nei",3) ==NULL){
+  if(strncmp(ajStrStr(*methodlist),"Nei",3) == 0){
     nei = true;
   }
-  else if(strncmp(ajStrStr(*methodlist),"Cav",3)==NULL)
+  else if(strncmp(ajStrStr(*methodlist),"Cav",3)== 0)
     cavalli = true;
   else
     reynolds = true;
@@ -421,7 +421,7 @@ void writedists()
 }  /* writedists */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* main program */

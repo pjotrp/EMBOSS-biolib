@@ -174,29 +174,29 @@ AjPFile outf;
   outfile = outf->fp;
 
   methodlist = ajAcdGetList ("method");
-  if(strncmp(ajStrStr(*methodlist),"Pam",3) ==NULL)
+  if(strncmp(ajStrStr(*methodlist),"Pam",3) == 0)
     usepam = true;
-  else if(strncmp(ajStrStr(*methodlist),"Kim",3)==NULL)
+  else if(strncmp(ajStrStr(*methodlist),"Kim",3)== 0)
     kimura = true;
   
   if (!(usepam || kimura)) {
 
     categlist = ajAcdGetList ("categ");
-    if(strncmp(ajStrStr(*categlist),"G",1) ==NULL)
+    if(strncmp(ajStrStr(*categlist),"G",1) == 0)
       whichcat = chemical;
-    else if(strncmp(ajStrStr(*categlist),"C",1) ==NULL)
+    else if(strncmp(ajStrStr(*categlist),"C",1) == 0)
       whichcat = george;
     else
       whichcat = hall;
 
     genlist = ajAcdGetList ("gencode");
-    if(strncmp(ajStrStr(*genlist),"U",1) ==NULL)
+    if(strncmp(ajStrStr(*genlist),"U",1) == 0)
       whichcode = universal;
-    else if(strncmp(ajStrStr(*genlist),"M",1) ==NULL)
+    else if(strncmp(ajStrStr(*genlist),"M",1) == 0)
       whichcode = mito;
-    else if(strncmp(ajStrStr(*genlist),"V",1) ==NULL)
+    else if(strncmp(ajStrStr(*genlist),"V",1) == 0)
       whichcode = vertmito;
-    else if(strncmp(ajStrStr(*genlist),"F",1) ==NULL)
+    else if(strncmp(ajStrStr(*genlist),"F",1) == 0)
       whichcode = flymito;
     else
       whichcode = yeastmito;

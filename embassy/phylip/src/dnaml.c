@@ -1019,7 +1019,7 @@ void getdata()
 	    continue;
 	  uppercase(&ch);
 	  if (strchr("ABCDGHKMNRSTUVWXY?O-.",ch) == NULL){
-	    printf("ERROR: BAD BASE:%c AT POSITION%5hd OF SPECIES %3ld\n",
+	    printf("ERROR: BAD BASE:%c AT POSITION%5hd OF SPECIES %3hd\n",
 		   ch, j, i);
 	    exit(-1);
 	  }

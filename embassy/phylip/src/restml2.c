@@ -1111,7 +1111,7 @@ node *p;
   divisor = 1.0;
   getch(&ch);
   digit = ch - ordzero;
-  while (((unsigned short)digit <= 9) | ch == '.') {
+  while (((unsigned short)digit <= 9) || ch == '.') {
     if (ch == '.')
       pointread = true;
     else {
