@@ -577,7 +577,7 @@ AjBool	ajXyzWriteContactMap(AjPInt2d *mat, ajint *ncon, ajint dim,
     ajint       x       =0;            /* Loop counters */
     ajint       y       =0;            /* Loop counters */
     ajint       last_atm=0;
-    AXbaj	jBool      done    =ajFalse;       /* Flag */
+    AjBool      done    =ajFalse;       /* Flag */
     
 
     /* Error checking on args */
