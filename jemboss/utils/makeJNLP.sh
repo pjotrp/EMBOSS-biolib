@@ -23,6 +23,7 @@ do
     CWPWD=$TMP
   fi
 done
+cd $CWPWD
 
 #
 #
