@@ -12,3 +12,7 @@ appl: charge [
  xygraph: graph [ req: $(plot) ]
 
  outfile: outfile [ req: @(!$(plot)) ]
+
+ string: aadata [ req: N
+		def: Eamino.dat
+		info: "Amino acid property data file name" ]
