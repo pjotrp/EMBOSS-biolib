@@ -239,16 +239,15 @@ public class BuildProgramMenu
         {
           String embossBin = mysettings.getEmbossBin();
           String embossCommand = new String(embossBin + "wossname -colon -auto");
-          System.out.println(embossCommand);
-          RunEmbossApplication rea = new RunEmbossApplication(
+          RunEmbossApplication2 rea = new RunEmbossApplication2(
                                       embossCommand,envp,null);
-          rea.isProcessStdout();
+          rea.waitFor();
           woss = rea.getProcessStdout();
           Process processWoss = rea.getProcess();
 
           embossCommand = new String(embossBin + "showdb -auto");
-          rea = new RunEmbossApplication(embossCommand,envp,null);
-          rea.isProcessStdout();
+          rea = new RunEmbossApplication2(embossCommand,envp,null);
+          rea.waitFor();
           String showdbOut = rea.getProcessStdout();
 
           try 
@@ -259,6 +258,7 @@ public class BuildProgramMenu
           {
             System.out.println("BuildProgramMenu received interruption error");
           }
+
           Database d = new Database(showdbOut);
           db = d.getDB();
 
