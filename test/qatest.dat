@@ -2744,11 +2744,11 @@ ER 1
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
-CL qangcginc-id:cchu test.out -auto
+CL qapirinc-id:S11172 test.out -auto
 FI stderr
-FZ = 51
+FZ = 52
 FP 1 /Error: /
-FP /Error: Unable to read sequence 'qapirinc-id:cchu'/
+FP /Error: Unable to read sequence 'qapirinc-id:S11172'/
 FP 0 /Warning:/
 //
 
@@ -4220,9 +4220,9 @@ IN
 FI stderr
 FC = 2
 FI file1.list
-FZ = 111
+FZ = 115
 FC = 4
-FP 4 /^ncbi::/
+FP 4 /^fasta::/
 FP 3 /file1/
 FP 1 /file2/
 //
@@ -4234,9 +4234,9 @@ IN
 FI stderr
 FC = 2
 FI file1.list
-FZ = 56
+FZ = 58
 FC = 2
-FP 2 /^ncbi::/
+FP 2 /^fasta::/
 FP 2 /file1/
 FP 0 /file2/
 //
@@ -4248,9 +4248,9 @@ IN
 FI stderr
 FC = 2
 FI file1.list
-FZ = 55
+FZ = 57
 FC = 2
-FP 2 /^ncbi::/
+FP 2 /^fasta::/
 FP 1 /file1/
 FP 1 /file2/
 //
@@ -4262,9 +4262,9 @@ IN
 FI stderr
 FC = 2
 FI file1.list
-FZ = 27
+FZ = 28
 FC = 1
-FP 1 /^ncbi::/
+FP 1 /^fasta::/
 FP 1 /file1/
 FP 0 /file2/
 FP 1 /file1:one/
@@ -5460,6 +5460,11 @@ FP /^1500  4305 5804 ECLAC 1 1500 ECLACY\n/
 FP /^3078  1287 4364 ECLAC 1 3078 ECLACZ\n/
 FP /^159  1 159 ECLACA 1342 1500 ECLACY\n/
 FP /^60  1 60 ECLACY 3019 3078 ECLACZ\n/
+//
+
+ID seqnr-ex
+AP seqnr
+CC No example in documentation
 //
 
 
@@ -8539,7 +8544,7 @@ FI stderr
 FC = 1
 FP 0 /Warning:/
 FI stdout
-FZ = 15359
+FZ = 15612
 FP 1 /^ +Finds programs by keywords in their one-line documentation\n/
 FP 2 /^ +-explode/
 //
