@@ -172,37 +172,6 @@ typedef struct AjSFeattable {
 **                               (non-null) AjPFeattable
 ** @delete ajFeatDel             Default destructor
 ** @assign ajFeatCopy            Copy constructor
-** @modify ajFeatSetSource       Sets the name of the analysis which
-**                               ascertained the feature
-** @modify ajFeatSetType         Sets the type of feature (e.g. exon, etc.)
-** @modify ajFeatSetScore        Sets the score associated with the feature,
-**                               if any
-** @modify ajFeatSetTagValue     Sets a specified tag for a feature and any
-**                               (optional) value associated with it
-**                               If a value is unspecified (NULL), then the
-**                               current value associated with the tag
-**                               if returned. If a new value is specified,
-**                               the old value is returned.
-** @modify ajFeatClearTags       Clears all tags (except Source and Type tag)
-** @modify ajFeatAddSubFeature   Adds a subsidiary AjFeature to the feature
-** @cast   ajFeatSource          Returns the name of the analysis which
-**                               ascertained the feature
-** @cast   ajFeatType            Returns the type of feature (e.g. exon, etc.)
-** @cast   ajFeatScore           Returns the score associated with the
-**                               feature, if any
-** @cast   ajFeatTag             Returns the value associated with a
-**                               specified tag associated with the feature
-** @cast   ajFeatTagSet          Returns a list of the tags associated
-**                               with the feature, including the source and
-**                               type tags
-** @cast   ajFeatSubFeatures     Returns the AjPFeattable of subfeatures of
-**                               the feature
-** @modify ajFeatFromLine        Parses in a string, in a specified feature
-**                               format
-** @use    ajFeatDumpString      Dumps the feature to a string, in a
-**                               specified format
-** @use    ajFeatDump            Dumps the feature to a file, in a specified
-**                               format
 **
 ** @attr Protein [AjBool] true for a protein feature
 ** @attr Source [AjPStr] Source program name (or EMBL)

@@ -344,8 +344,8 @@ int main(int argc, char **argv)
 ** steps down the two lists of matches looking for hits within the required
 ** maximum distance
 **
-** @param [r] l16 [AjPList] List of length 16 hits (both forward and reverse)
-** @param [r] l8 [AjPList] List of length 8 hits (both forward and reverse)
+** @param [u] l16 [AjPList] List of length 16 hits (both forward and reverse)
+** @param [u] l8 [AjPList] List of length 8 hits (both forward and reverse)
 ** @param [u] tab [AjPFeattable*] feature table
 ** @return [void]
 ** @@
@@ -430,7 +430,7 @@ static void marscan_stepdown(AjPList l16, AjPList l8, AjPFeattable *tab)
 ** gets the next position from a list and checks to see if we have a match
 ** within MAXDIST of the last match in the other list
 **
-** @param [r] l [AjPList] the list of matching positions
+** @param [u] l [AjPList] the list of matching positions
 ** @param [u] thisprev [ajint *] pointer to last stored position of
 **                                this pattern
 ** @param [r] otherprev [ajint] last stored position of the other pattern

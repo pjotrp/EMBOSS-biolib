@@ -571,6 +571,10 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 	    }
 	    ($aname,$atype, $prest) = ($data =~ m/\S+\s*(\S*)\s*[\[]([\[\]A-Za-z0-9_* \(\)]+)[\]]\s*(.*)/gos);
 
+	    if (!defined($aname)) {
+		print STDERR "bad \@attr syntax:\n$data";
+		next;
+	    }
 	    $drest = $prest;
 	    $drest =~ s/\n\n+$/\n/gos;
 	    $drest =~ s/\n\n\n+/\n\n/gos;

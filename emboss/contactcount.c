@@ -302,7 +302,7 @@ int main( int argc , char **argv )
 **
 ** writes frequency features to a feature table and returns new feature  
 **
-** @param [r] ajpFeattableCounts [AjPFeattable] table to write frequency to
+** @param [u] ajpFeattableCounts [AjPFeattable] table to write frequency to
 ** @param [r] ajIntFeatureResType [ajint] residue type that a count
 **                                            belongs to
 ** @param [r] ajIntSpecificPairs [ajint] contacts specific to both residues

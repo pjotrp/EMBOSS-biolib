@@ -410,6 +410,7 @@ void ajSeqAllWrite(AjPSeqout outseq, const AjPSeq seq)
 ** @param [u] outseq [AjPSeqout] Sequence output.
 ** @param [r] seq [const AjPSeqset] Sequence set.
 ** @return [void]
+** @category output [AjPSeqset] Writes out all sequences in a set
 ** @category modify [AjPSeqout] Master sequence set output
 **                routine
 ** @@
@@ -613,6 +614,7 @@ void ajSeqWriteClose(AjPSeqout outseq)
 ** @param [r] seq [const AjPSeq] Sequence
 ** @return [void]
 ** @category modify [AjPSeqout] Master sequence output routine
+** @category output [AjPSeq] Master sequence output routine
 ** @@
 ******************************************************************************/
 

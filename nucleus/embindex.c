@@ -27,7 +27,7 @@
 
 static AjPFile    btreeCreateFile(const AjPStr idirectory, const AjPStr dbname,
 				  const char *add);
-static EmbPBtpage btreeCacheLocate(EmbPBtcache cache, ajlong page);
+static EmbPBtpage btreeCacheLocate(const EmbPBtcache cache, ajlong page);
 static EmbPBtpage btreeCacheLruUnlink(EmbPBtcache cache);
 static void       btreeCacheUnlink(EmbPBtcache cache, EmbPBtpage cpage);
 static void       btreeCacheDestage(EmbPBtcache cache, EmbPBtpage cpage);
@@ -45,10 +45,10 @@ static EmbPBtpage btreePageFromKey(EmbPBtcache cache, unsigned char *buf,
 				   const char *item);
 static ajint      btreeNumInBucket(EmbPBtcache cache, ajlong pageno);
 static EmbPBucket btreeReadBucket(EmbPBtcache cache, ajlong pageno);
-static void       btreeWriteBucket(EmbPBtcache cache, EmbPBucket bucket,
+static void       btreeWriteBucket(EmbPBtcache cache, const EmbPBucket bucket,
 				   ajlong pageno);
 static void       btreeAddToBucket(EmbPBtcache cache, ajlong pageno,
-				   EmbPBtId id);
+				   const EmbPBtId id);
 static void 	  btreeBucketDel(EmbPBucket *thys);
 static AjBool     btreeReorderBuckets(EmbPBtcache cache, EmbPBtpage page);
 static void       btreeGetKeys(EmbPBtcache cache, unsigned char *buf,
@@ -56,8 +56,9 @@ static void       btreeGetKeys(EmbPBtcache cache, unsigned char *buf,
 static ajint      btreeIdCompare(const void *a, const void *b);
 static EmbPBucket btreeBucketNew(ajint n);
 static void       btreeWriteNode(EmbPBtcache cache, EmbPBtpage page,
-				 AjPStr *keys, ajlong *ptrs, ajint nkeys);
-static AjBool     btreeNodeIsFull(EmbPBtcache cache, EmbPBtpage page);
+				 AjPStr const *keys, const ajlong *ptrs,
+				 ajint nkeys);
+static AjBool     btreeNodeIsFull(const EmbPBtcache cache, EmbPBtpage page);
 static void       btreeInsertNonFull(EmbPBtcache cache, EmbPBtpage page,
 				     const AjPStr key, ajlong less,
 				     ajlong greater);
@@ -71,9 +72,9 @@ static EmbPBtpage btreeSplitLeaf(EmbPBtcache cache, EmbPBtpage spage);
 static ajlong     btreeFindBalance(EmbPBtcache cache, ajlong thisNode,
 				   ajlong leftNode, ajlong rightNode,
 				   ajlong lAnchor, ajlong rAnchor,
-				   EmbPBtId id);
+				   const EmbPBtId id);
 static AjBool     btreeRemoveEntry(EmbPBtcache cache,ajlong pageno,
-				   EmbPBtId id);
+				   const EmbPBtId id);
 static void       btreeAdjustBuckets(EmbPBtcache cache, EmbPBtpage leaf);
 static ajlong     btreeCollapseRoot(EmbPBtcache cache, ajlong pageno);
 static ajlong     btreeRebalance(EmbPBtcache cache, ajlong thisNode,
@@ -186,7 +187,7 @@ EmbPBtcache embBtreeCacheNewC(const char *file, const char *mode,
 **
 ** Construct a cache page object
 **
-** @param [r] cache [EmbPBtcache] cache
+** @param [u] cache [EmbPBtcache] cache
 **
 ** @return [EmbPBtpage] initialised disc block cache structure
 ** @@
@@ -254,14 +255,14 @@ static EmbPBucket btreeBucketNew(ajint n)
 **
 ** Search for a page in the cache
 **
-** @param [r] cache [EmbPBtcache] cache structure
+** @param [r] cache [const EmbPBtcache] cache structure
 ** @param [r] page [ajlong] page number to locate
 **
 ** @return [EmbPBtpage]	pointer to page or NULL if not found
 ** @@
 ******************************************************************************/
 
-static EmbPBtpage btreeCacheLocate(EmbPBtcache cache, ajlong page)
+static EmbPBtpage btreeCacheLocate(const EmbPBtcache cache, ajlong page)
 {
     EmbPBtpage cpage = NULL;
 
@@ -282,7 +283,7 @@ static EmbPBtpage btreeCacheLocate(EmbPBtcache cache, ajlong page)
 ** Remove links to a cache page and return the address of the page
 **
 ** @param [w] cache [EmbPBtcache] cache structure
-** @param [r] cpage [EmbPBtpage] cache page
+** @param [u] cpage [EmbPBtpage] cache page
 **
 ** @return [void]
 ** @@
@@ -323,7 +324,7 @@ static void btreeCacheUnlink(EmbPBtcache cache, EmbPBtpage cpage)
 ** Insert a cache page at the mru position
 **
 ** @param [w] cache [EmbPBtcache] cache structure
-** @param [r] cpage [EmbPBtpage] cache page
+** @param [u] cpage [EmbPBtpage] cache page
 **
 ** @return [void]
 ** @@
@@ -393,8 +394,8 @@ static EmbPBtpage btreeCacheLruUnlink(EmbPBtcache cache)
 **
 ** Destage a cache page
 **
-** @param [r] cache [EmbPBtcache] cache
-** @param [r] cpage [EmbPBtpage] cache papge 
+** @param [u] cache [EmbPBtcache] cache
+** @param [u] cpage [EmbPBtpage] cache papge 
 **
 ** @return [void]
 ** @@
@@ -434,7 +435,7 @@ static void btreeCacheDestage(EmbPBtcache cache, EmbPBtpage cpage)
 **
 ** Fetch a cache page from disc
 **
-** @param [r] cache [EmbPBtcache] cache
+** @param [u] cache [EmbPBtcache] cache
 ** @param [w] cpage [EmbPBtpage] cache page 
 ** @param [r] pageno [ajlong] page number
 **
@@ -599,7 +600,7 @@ EmbPBtpage embBtreeCacheRead(EmbPBtcache cache, ajlong pageno)
 **
 ** Sync all dirty cache pages
 **
-** @param [r] cache [EmbPBtcache] cache
+** @param [u] cache [EmbPBtcache] cache
 **
 ** @return [void]
 ** @@
@@ -790,7 +791,7 @@ static EmbPBtpage btreeFindINode(EmbPBtcache cache, EmbPBtpage page,
 ** Return next lower index page given a key
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [r] buf [unsigned char *] page buffer
+** @param [u] buf [unsigned char *] page buffer
 ** @param [r] key [const char *] key to search for 
 **
 ** @return [EmbPBtpage] pointer to a page
@@ -1019,14 +1020,14 @@ static EmbPBucket btreeReadBucket(EmbPBtcache cache, ajlong pageno)
 ** Write index bucket object to the cache given a disc page number
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [r] bucket [EmbPBucket] bucket
+** @param [r] bucket [const EmbPBucket] bucket
 ** @param [r] pageno [ajlong] page number
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void btreeWriteBucket(EmbPBtcache cache, EmbPBucket bucket,
+static void btreeWriteBucket(EmbPBtcache cache, const EmbPBucket bucket,
 			     ajlong pageno)
 {
     EmbPBtpage page     = NULL;
@@ -1205,13 +1206,14 @@ static void btreeBucketDel(EmbPBucket *thys)
 **
 ** @param [u] cache [EmbPBtcache] cache
 ** @param [r] pageno [ajlong] page number of bucket
-** @param [r] id [EmbPBtId] ID info
+** @param [r] id [const EmbPBtId] ID info
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void btreeAddToBucket(EmbPBtcache cache, ajlong pageno, EmbPBtId id)
+static void btreeAddToBucket(EmbPBtcache cache, ajlong pageno,
+			     const EmbPBtId id)
 {
     EmbPBucket bucket = NULL;
     EmbPBtId   destid = NULL;
@@ -1344,8 +1346,8 @@ ajint embBtreeReadDir(AjPStr **filelist,
 ** Re-order leaf buckets
 ** Must only be called if one of the buckets is full
 **
-** @param [r] cache [EmbPBtcache] cache
-** @param [r] leaf [EmbPBtpage] leaf page
+** @param [u] cache [EmbPBtcache] cache
+** @param [u] leaf [EmbPBtpage] leaf page
 **
 ** @return [AjBool] true if reorder was successful i.e. leaf not full
 ** @@
@@ -1561,14 +1563,14 @@ static AjBool btreeReorderBuckets(EmbPBtcache cache, EmbPBtpage leaf)
 **
 ** Tests whether a node is full of keys
 **
-** @param [u] cache [EmbPBtcache] cache
-** @param [r] page [EmbPBtpage] original page
+** @param [r] cache [const EmbPBtcache] cache
+** @param [u] page [EmbPBtpage] original page
 **
 ** @return [AjBool] true if full
 ** @@
 ******************************************************************************/
 
-static AjBool btreeNodeIsFull(EmbPBtcache cache, EmbPBtpage page)
+static AjBool btreeNodeIsFull(const EmbPBtcache cache, EmbPBtpage page)
 {
     unsigned char *buf = NULL;
     ajint nkeys = 0;
@@ -1592,7 +1594,7 @@ static AjBool btreeNodeIsFull(EmbPBtcache cache, EmbPBtpage page)
 ** Insert a key into a non-full node
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [r] page [EmbPBtpage] original page
+** @param [u] page [EmbPBtpage] original page
 ** @param [r] key [const AjPStr] key to insert
 ** @param [r] less [ajlong] less-than pointer
 ** @param [r] greater [ajlong] greater-than pointer
@@ -1706,7 +1708,7 @@ static void btreeInsertNonFull(EmbPBtcache cache, EmbPBtpage page,
 ** Insert a key into a potentially full node
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [r] page [EmbPBtpage] original page
+** @param [u] page [EmbPBtpage] original page
 ** @param [r] key [const AjPStr] key to insert
 ** @param [r] less [ajlong] less-than pointer
 ** @param [r] greater [ajlong] greater-than pointer
@@ -2160,7 +2162,7 @@ static AjPFile btreeCreateFile(const AjPStr idirectory, const AjPStr dbname,
 **
 ** Read files to index
 **
-** @param [r] filelist [AjPStr*] list of files
+** @param [r] filelist [const AjPStr*] list of files
 ** @param [r] nfiles [ajint] number of files
 ** @param [r] fdirectory [const AjPStr] flatfile directory
 ** @param [r] idirectory [const AjPStr] index directory
@@ -2170,7 +2172,7 @@ static AjPFile btreeCreateFile(const AjPStr idirectory, const AjPStr dbname,
 ** @@
 ******************************************************************************/
 
-AjBool embBtreeWriteFileList(AjPStr *filelist, ajint nfiles,
+AjBool embBtreeWriteFileList(const AjPStr *filelist, ajint nfiles,
 			     const AjPStr fdirectory, const AjPStr idirectory,
 			     const AjPStr dbname)
 {
@@ -2200,9 +2202,9 @@ AjBool embBtreeWriteFileList(AjPStr *filelist, ajint nfiles,
 ** Get Keys and Pointers from an internal node
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [r] buf [unsigned char *] page buffer
-** @param [r] keys [AjPStr **] keys
-** @param [r] ptrs [ajlong**] ptrs
+** @param [u] buf [unsigned char *] page buffer
+** @param [w] keys [AjPStr **] keys
+** @param [w] ptrs [ajlong**] ptrs
 **
 ** @return [void]
 ** @@
@@ -2326,9 +2328,9 @@ static ajint btreeIdCompare(const void *a, const void *b)
 ** Write an internal node
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [w] spage [EmbPBtpage] buffer
-** @param [r] keys [AjPStr*] keys
-** @param [r] ptrs [ajlong*] page pointers
+** @param [u] spage [EmbPBtpage] buffer
+** @param [r] keys [AjPStr const *] keys
+** @param [r] ptrs [const ajlong*] page pointers
 ** @param [r] nkeys [ajint] number of keys
 
 **
@@ -2337,7 +2339,7 @@ static ajint btreeIdCompare(const void *a, const void *b)
 ******************************************************************************/
 
 static void btreeWriteNode(EmbPBtcache cache, EmbPBtpage spage,
-			   AjPStr *keys, ajlong *ptrs, ajint nkeys)
+			   AjPStr const *keys, const ajlong *ptrs, ajint nkeys)
 {
     unsigned char *lbuf   = NULL;
     unsigned char *tbuf   = NULL;
@@ -2467,13 +2469,13 @@ static void btreeWriteNode(EmbPBtcache cache, EmbPBtpage spage,
 ** Insert an ID structure into the tree
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [r] id [EmbPBtId] Id object
+** @param [r] id [const EmbPBtId] Id object
 **
 ** @return [void] pointer to a page
 ** @@
 ******************************************************************************/
 
-void embBtreeInsertId(EmbPBtcache cache, EmbPBtId id)
+void embBtreeInsertId(EmbPBtcache cache, const EmbPBtId id)
 {
     EmbPBtpage spage   = NULL;
     EmbPBtpage parent  = NULL;
@@ -2764,14 +2766,14 @@ EmbPBtId embBtreeIdFromKey(EmbPBtcache cache, const char *key)
 **
 ** Write B+ tree parameters to file
 **
-** @param [r] cache [EmbPBtcache] cache
+** @param [r] cache [const EmbPBtcache] cache
 ** @param [r] fn [const char *] file
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void embBtreeWriteParams(EmbPBtcache cache, const char *fn)
+void embBtreeWriteParams(const EmbPBtcache cache, const char *fn)
 {
     AjPStr  fname = NULL;
     AjPFile outf  = NULL;
@@ -2855,7 +2857,7 @@ void embBtreeReadParams(const char *fn, ajint *order, ajint *nperbucket,
 ** Split a leaf and propagate up if necessary
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [r] spage [EmbPBtpage] page
+** @param [u] spage [EmbPBtpage] page
 **
 ** @return [EmbPBtpage] pointer to a parent page
 ** @@
@@ -3207,13 +3209,13 @@ static EmbPBtpage btreeSplitLeaf(EmbPBtcache cache, EmbPBtpage spage)
 ** Entry point for ID deletion
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [r] id [EmbPBtId] page
+** @param [r] id [const EmbPBtId] page
 **
 ** @return [AjBool] True if found and deleted
 ** @@
 ******************************************************************************/
 
-AjBool embBtreeDeleteId(EmbPBtcache cache, EmbPBtId id)
+AjBool embBtreeDeleteId(EmbPBtcache cache, const EmbPBtId id)
 {
     EmbPBtpage rootpage = NULL;
     unsigned char *buf  = NULL;
@@ -3253,7 +3255,7 @@ AjBool embBtreeDeleteId(EmbPBtcache cache, EmbPBtId id)
 ** @param [r] rightNode [ajlong] Node to right
 ** @param [r] lAnchor [ajlong] Left anchor
 ** @param [r] rAnchor [ajlong] Right anchor
-** @param [r] id [EmbPBtId] id
+** @param [r] id [const EmbPBtId] id
 **
 ** @return [ajlong] page number or BTNO_NODE
 ** @@
@@ -3262,7 +3264,7 @@ AjBool embBtreeDeleteId(EmbPBtcache cache, EmbPBtId id)
 static ajlong btreeFindBalance(EmbPBtcache cache, ajlong thisNode,
 			       ajlong leftNode, ajlong rightNode,
 			       ajlong lAnchor, ajlong rAnchor,
-			       EmbPBtId id)
+			       const EmbPBtId id)
 {
     unsigned char *buf  = NULL;
     unsigned char *buf1 = NULL;
@@ -3480,13 +3482,14 @@ static ajlong btreeFindBalance(EmbPBtcache cache, ajlong thisNode,
 **
 ** @param [u] cache [EmbPBtcache] cache
 ** @param [r] pageno [ajlong] leaf node page
-** @param [r] id [EmbPBtId] id
+** @param [r] id [const EmbPBtId] id
 **
 ** @return [AjBool] True if found (and deleted)
 ** @@
 ******************************************************************************/
 
-static AjBool btreeRemoveEntry(EmbPBtcache cache,ajlong pageno,EmbPBtId id)
+static AjBool btreeRemoveEntry(EmbPBtcache cache,ajlong pageno,
+			       const EmbPBtId id)
 {
     unsigned char *buf = NULL;
     EmbPBtpage page    = NULL;
@@ -3597,8 +3600,8 @@ static AjBool btreeRemoveEntry(EmbPBtcache cache,ajlong pageno,EmbPBtId id)
 ** Re-order leaf buckets
 ** Can be called whatever the state of a leaf (used by deletion funcs)
 **
-** @param [r] cache [EmbPBtcache] cache
-** @param [r] leaf [EmbPBtpage] leaf page
+** @param [u] cache [EmbPBtcache] cache
+** @param [u] leaf [EmbPBtpage] leaf page
 **
 ** @return [void]
 ** @@
@@ -4666,7 +4669,7 @@ static void btreeFindMin(EmbPBtcache cache, ajlong pageno, const char *key)
 ** Rebalance buckets on insertion
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [r] retpage [EmbPBtpage*] page
+** @param [u] retpage [EmbPBtpage*] page
 ** @param [r] key [const char *] key
 **
 ** @return [ajlong] bucket block or 0L if shift not posible 
@@ -4983,7 +4986,7 @@ static ajlong btreeInsertShift(EmbPBtcache cache, EmbPBtpage *retpage,
 ** Rebalance Nodes on insertion
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [r] tpage [EmbPBtpage] page
+** @param [u] tpage [EmbPBtpage] page
 **
 ** @return [void]
 ** @@
@@ -5201,7 +5204,7 @@ static void btreeKeyShift(EmbPBtcache cache, EmbPBtpage tpage)
 ** Find the next leaf by traversing the tree
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [r] thys [EmbPBtpage] current leaf page
+** @param [u] thys [EmbPBtpage] current leaf page
 **
 ** @return [EmbPBtpage] next leaf or NULL
 ** @@
@@ -5518,7 +5521,7 @@ static EmbPBtpage btreeFindINodeW(EmbPBtcache cache, EmbPBtpage page,
 ** Return next lower index page given a key (wild)
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [r] buf [unsigned char *] page buffer
+** @param [u] buf [unsigned char *] page buffer
 ** @param [r] key [const char *] key to search for 
 **
 ** @return [EmbPBtpage] pointer to a page
@@ -5792,13 +5795,13 @@ EmbPBtId embBtreeIdFromKeyW(EmbPBtcache cache, EmbPBtWild wild)
 ** Replace an ID structure in a leaf node given a key
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [r] rid [EmbPBtId] replacement id object
+** @param [r] rid [const EmbPBtId] replacement id object
 **
 ** @return [AjBool] true if success
 ** @@
 ******************************************************************************/
 
-AjBool embBtreeReplaceId(EmbPBtcache cache, EmbPBtId rid)
+AjBool embBtreeReplaceId(EmbPBtcache cache, const EmbPBtId rid)
 {
     EmbPBtpage page   = NULL;
     EmbPBucket bucket = NULL;
@@ -5947,7 +5950,7 @@ AjPStr* embBtreeReadEntries(const char *filename)
 ** Get an ID structure from a leaf node given a key
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [r] id [EmbPBtId] potentially duplicate id
+** @param [u] id [EmbPBtId] potentially duplicate id
 **
 ** @return [void]
 ** @@
@@ -6054,7 +6057,7 @@ void embBtreeInsertDupId(EmbPBtcache cache, EmbPBtId id)
 **
 ** Write B+ tree parameters to file
 **
-** @param [r] cache [EmbPBtcache] cache
+** @param [u] cache [EmbPBtcache] cache
 ** @param [r] key [const char *] key
 **
 ** @return [AjPList] list of matching EmbPBtIds or NULL

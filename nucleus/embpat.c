@@ -2285,7 +2285,7 @@ void embPatTUInit(const AjPStr pat, ajint **skipm, ajint m, ajint k)
 ** @param [r] pat [const AjPStr] pattern
 ** @param [r] text [const AjPStr] text to search (incl ajcompl/class)
 ** @param [r] slen [ajint] length of text
-** @param [r] skipm [CONST ajint **] mismatch skip array
+** @param [r] skipm [ajint * const *] mismatch skip array
 ** @param [r] m [ajint] real pattern length
 ** @param [r] k [ajint] allowed mismatches
 ** @param [r] begin [ajint] text offset
@@ -2298,7 +2298,7 @@ void embPatTUInit(const AjPStr pat, ajint **skipm, ajint m, ajint k)
 ******************************************************************************/
 
 ajint embPatTUSearch(const AjPStr pat, const AjPStr text, ajint slen,
-		     ajint **skipm, ajint m,
+		     ajint * const *skipm, ajint m,
 		     ajint k, ajint begin, AjPList l, AjBool amino,
 		     AjBool carboxyl, const AjPStr name)
 {
@@ -2477,7 +2477,7 @@ void embPatTUBInit(const AjPStr pat, ajint **skipm, ajint m, ajint k,
 ** @param [r] pat [const AjPStr] pattern
 ** @param [r] text [const AjPStr] text to search (incl ajcompl/class)
 ** @param [r] slen [ajint] length of text
-** @param [r] skipm [CONST ajint **] mismatch skip array
+** @param [r] skipm [ajint * const *] mismatch skip array
 ** @param [r] m [ajint] real pattern length
 ** @param [r] k [ajint] allowed mismatches
 ** @param [r] begin [ajint] text offset
@@ -2491,7 +2491,7 @@ void embPatTUBInit(const AjPStr pat, ajint **skipm, ajint m, ajint k,
 ******************************************************************************/
 
 ajint embPatTUBSearch(const AjPStr pat,const AjPStr text, ajint slen,
-		      ajint **skipm, ajint m,
+		      ajint * const *skipm, ajint m,
 		      ajint k, ajint begin, AjPList l, AjBool amino,
 		      AjBool carboxyl, const AjPStr name, ajint plen)
 {
@@ -3878,7 +3878,7 @@ void embPatCompile(ajint type, const AjPStr pattern, ajint* plen,
 ** @param [r] sotable [const ajuint*] buffer for SHIFT-OR
 ** @param [r] solimit [ajint] limit for SHIFT-OR
 ** @param [r] regexp [const AjPStr] PCRE regexp string
-** @param [r] skipm [CONST ajint**] skip buffer for Tarhio-Ukkonen-Bleasby
+** @param [r] skipm [ajint* const *] skip buffer for Tarhio-Ukkonen-Bleasby
 ** @param [w] hits [ajint*] number of hits
 ** @param [r] m [ajint] real pat length (from embPatGetType/embPatCompile)
 ** @param [w] tidy [void**] data to free
@@ -3891,7 +3891,7 @@ void embPatFuzzSearch(ajint type, ajint begin, const AjPStr pattern,
 		      const AjPStr name, const AjPStr text, AjPList l,
 		      ajint plen, ajint mismatch, AjBool left, AjBool right,
 		      ajint *buf, EmbPPatBYPNode off, const ajuint *sotable,
-		      ajint solimit, const AjPStr regexp, ajint **skipm,
+		      ajint solimit, const AjPStr regexp, ajint * const *skipm,
 		      ajint *hits, ajint m, void **tidy)
 {
     EmbPPatMatch ppm;

@@ -143,7 +143,7 @@ int main(int argc, char **argv)
 ** Adds bases or gaps to newseq from nseq guided by pseq
 ** starting at npos
 **
-** @param [r] newseq [AjPSeq] newseq
+** @param [u] newseq [AjPSeq] newseq
 ** @param [r] nseq [const AjPSeq] nseq
 ** @param [r] pseq [const AjPSeq] pseq
 ** @param [r] npos [ajint] nseq start pos

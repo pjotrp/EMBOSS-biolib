@@ -21,7 +21,7 @@ extern "C"
 **
 ** @new ajFileNew Default constructor for an input file
 ** @new ajFileNewF Constructor using an existing open file,
-**                 for example stdin or stdout.
+**                 for example stdin or stdout
 ** @new ajFileNewIn Constructor using a filename for an input file
 ** @new ajFileNewApp Default constructor using a filename for an output file
 **                   to be opened for appending records to the end of the file

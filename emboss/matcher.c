@@ -280,7 +280,7 @@ static ajint matcher_Diff(const char A[], const char B[],
 			  ajint te);
 static ajint matcher_Calcons(const char *aa0, ajint n0,
 			     const char *aa1, ajint n1,
-			     ajint *res, ajint *nc, ajint *nident);
+			     const ajint *res, ajint *nc, ajint *nident);
 static ajint matcher_Discons(const char *seqc0, const char *seqc1, ajint nc);
 static ajint matcher_Addnode(ajint c, ajint ci, ajint cj, ajint i, ajint j,
 			     ajint K, ajint cost);
@@ -378,7 +378,7 @@ int main(int argc, char **argv)
 **
 ** Undocumented
 **
-** @param [r] align [AjPAlign] Alignment object
+** @param [u] align [AjPAlign] Alignment object
 ** @param [r] A [const char*] Undocumented
 ** @param [r] B [const char*] Undocumented
 ** @param [r] M [ajint] Undocumented
@@ -1512,14 +1512,14 @@ static ajint matcher_Diff(const char *A,const char *B,
 ** @param [r] n0 [ajint] Undocumented
 ** @param [r] aa1 [const char*] Undocumented
 ** @param [r] n1 [ajint] Undocumented
-** @param [r] res [ajint*] Undocumented
-** @param [r] nc [ajint*] Undocumented
-** @param [r] nident [ajint*] Undocumented
+** @param [r] res [const ajint*] Undocumented
+** @param [w] nc [ajint*] Undocumented
+** @param [w] nident [ajint*] Undocumented
 ** @return [ajint] Undocumented
 ******************************************************************************/
 
 static ajint matcher_Calcons(const char *aa0,ajint n0,
-			     const char *aa1,ajint n1,ajint *res,
+			     const char *aa1,ajint n1,const ajint *res,
 			     ajint *nc,ajint *nident)
 {
     ajint i0;
@@ -1530,7 +1530,7 @@ static ajint matcher_Calcons(const char *aa0,ajint n0,
     ajint nd;
     char *sp0;
     char *sp1;
-    ajint *rp;
+    const ajint *rp;
 
     const char *sq1;
     const char *sq2;

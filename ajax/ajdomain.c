@@ -226,17 +226,17 @@ static AjPScopdes    domainScopdesNew(void);
 static void          domainScopdesDel(AjPScopdes *ptr);
 static AjPScopdes    domainScopdesRead(AjPFile inf, const AjPStr entry);
 static AjPScopdes    domainScopdesReadC(AjPFile inf, const char *entry);
-static ajint         domainScopdesBinSearch(ajint id, AjPScopdes *arr,
+static ajint         domainScopdesBinSearch(ajint id, AjPScopdes const *arr,
 					    ajint siz);
 
 static ajint         domainScopdesCompSunid(const void *scop1,
 					    const void *scop2);
 
 static ajint         domainCathNameBinSearch(const AjPStr id,
-					     AjPCathName *arr,
+					     AjPCathName const *arr,
 					     ajint siz);
 static ajint         domainCathDomBinSearch(const AjPStr id,
-					    AjPCathDom *arr,
+					    AjPCathDom const *arr,
 					    ajint siz);
 static ajint         domainSortDomainID(const void *DomID1,
 					const void *DomID2);
@@ -677,7 +677,7 @@ static void domainScopclaDel(AjPScopcla *thys)
 ** domainScopdesCompSunid).
 **
 ** @param [r] id  [ajint]        Search value of Sunid
-** @param [r] arr [CONST AjPScopdes*] Array of Scopdes objects
+** @param [r] arr [AjPScopdes const*] Array of Scopdes objects
 ** @param [r] siz [ajint]        Size of array
 **
 ** @return [ajint] Index of first Scopdes object found with a Sunid 
@@ -685,7 +685,7 @@ static void domainScopclaDel(AjPScopcla *thys)
 ** @@
 ****************************************************************************/
 
-static ajint domainScopdesBinSearch(ajint id, AjPScopdes *arr, ajint siz)
+static ajint domainScopdesBinSearch(ajint id, AjPScopdes const*arr, ajint siz)
 {
     int l;
     int m;
@@ -790,14 +790,14 @@ static ajint domainScopdesCompSunid(const void *scop1, const void *scop2)
 ** case-insensitive search.
 **
 ** @param [r] id  [const AjPStr]       Search term
-** @param [r] arr [CONST AjPCathName*] Array of CathName objects
+** @param [r] arr [AjPCathName const*] Array of CathName objects
 ** @param [r] siz [ajint]        Size of array
 **
 ** @return [ajint] Index of first CathName object found with an CATH Id code
 ** matching id, or -1 if id is not found.
 ** @@
 ****************************************************************************/
-static ajint domainCathNameBinSearch(const AjPStr id, AjPCathName *arr,
+static ajint domainCathNameBinSearch(const AjPStr id, AjPCathName const *arr,
 				     ajint siz)
 {
     int l;
@@ -832,14 +832,14 @@ static ajint domainCathNameBinSearch(const AjPStr id, AjPCathName *arr,
 ** case-insensitive search.
 **
 ** @param [r] id  [const AjPStr]       Search term
-** @param [r] arr [CONST AjPCathDom*] Array of AjPCathDom objects
+** @param [r] arr [AjPCathDom const*] Array of AjPCathDom objects
 ** @param [r] siz [ajint]        Size of array
 **
 ** @return [ajint] Index of first AjPCathDom object found with an domain code
 ** matching id, or -1 if id is not found.
 ** @@
 ****************************************************************************/
-static ajint domainCathDomBinSearch(const AjPStr id, AjPCathDom *arr,
+static ajint domainCathDomBinSearch(const AjPStr id, AjPCathDom const *arr,
 				    ajint siz)
 {
     int l;
@@ -2038,7 +2038,7 @@ ajint ajCathMatchPdbId(const void *hit1, const void *hit2)
 ** structures (which of course must first have been sorted). This is a 
 ** case-insensitive search.
 **
-** @param [r] arr [CONST AjPScop*]    Array of AjPScop objects
+** @param [r] arr [AjPScop const *]    Array of AjPScop objects
 ** @param [r] siz [ajint]       Size of array
 ** @param [r] id  [const AjPStr]      Search term
 **
@@ -2048,7 +2048,7 @@ ajint ajCathMatchPdbId(const void *hit1, const void *hit2)
 **                         Scop objects.
 ** @@
 ****************************************************************************/
-ajint ajScopArrFindScopid(AjPScop *arr, ajint siz, const AjPStr id)
+ajint ajScopArrFindScopid(AjPScop const *arr, ajint siz, const AjPStr id)
 
 {
     int l;
@@ -2084,7 +2084,7 @@ ajint ajScopArrFindScopid(AjPScop *arr, ajint siz, const AjPStr id)
 ** objects (which of course must first have been sorted). This is a 
 ** case-insensitive search.
 **
-** @param [r] arr [CONST AjPScop*]    Array of Scop objects
+** @param [r] arr [AjPScop const *]    Array of Scop objects
 ** @param [r] siz [ajint]       Size of array
 ** @param [r] id  [ajint]       Search term
 **
@@ -2095,7 +2095,7 @@ ajint ajScopArrFindScopid(AjPScop *arr, ajint siz, const AjPStr id)
 ** @@
 ****************************************************************************/
 
-ajint ajScopArrFindSunid(AjPScop *arr, ajint siz, ajint id)
+ajint ajScopArrFindSunid(AjPScop const *arr, ajint siz, ajint id)
 {
     int l;
     int m;
@@ -2128,7 +2128,7 @@ ajint ajScopArrFindSunid(AjPScop *arr, ajint siz, ajint id)
 ** objects (which of course must first have been sorted). This is a 
 ** case-insensitive search.
 **
-** @param [r] arr [CONST AjPScop*]    Array of AjPScop objects
+** @param [r] arr [AjPScop const*]    Array of AjPScop objects
 ** @param [r] siz [ajint]       Size of array
 ** @param [r] id  [const AjPStr]      Search term
 **
@@ -2139,7 +2139,7 @@ ajint ajScopArrFindSunid(AjPScop *arr, ajint siz, ajint id)
 ** @@
 ****************************************************************************/
 
-ajint ajScopArrFindPdbid(AjPScop *arr, ajint siz, const AjPStr id)
+ajint ajScopArrFindPdbid(AjPScop const *arr, ajint siz, const AjPStr id)
 {
     int l;
     int m;

@@ -39,31 +39,37 @@ static AjPStr lindna_ReadGroup(AjPFile infile, ajint maxlabels,
 			       ajint *NumNames, ajint *Colour);
 
 static float lindna_TextGroup(float Margin, float TextHeight, float TextLength,
-			      AjPStr *Name, char *TextOri, ajint NumLabels,
-			      ajint *NumNames, AjPStr GroupName);
+			      AjPStr const *Name,
+			      const char *TextOri, ajint NumLabels,
+			      const ajint *NumNames, const AjPStr GroupName);
 
 static float lindna_HeightGroup(float posblock, float posrange, float postext,
 				float TickHeight, float BlockHeight,
-				float RangeHeight, AjPStr *Name,
-				AjPStr *Style, char *TextOri, ajint NumLabels,
-				ajint *NumNames, ajint Adjust);
+				float RangeHeight, AjPStr const *Name,
+				AjPStr const *Style, const char *TextOri,
+				ajint NumLabels,
+				const ajint *NumNames, ajint Adjust);
 
-static ajint lindna_OverlapTextGroup(AjPStr *Name, AjPStr *Style,
-				     char *TextOri, ajint NumLabels,
-				     float *From, float *To, ajint *Adjust);
+static ajint lindna_OverlapTextGroup(AjPStr const *Name, AjPStr const *Style,
+				     const char *TextOri, ajint NumLabels,
+				     const float *From, const float *To,
+				     ajint *Adjust);
 
 static void lindna_DrawGroup(float xDraw, float yDraw, float Border,
 			     float posblock, float posrange, float postext,
 			     float DrawLength, float TickHeight,
 			     float BlockHeight, float RangeHeight,
-			     float TextLength, float TextHeight, float *From,
-			     float *To, AjPStr *Name, char *FromSymbol,
-			     char *ToSymbol, AjPStr *Style,
-			     AjPStr InterSymbol, AjBool InterTicks,
-			     char *TextOri, ajint NumLabels, ajint *NumNames,
-			     AjPStr GroupName, ajint *Adjust,
-			     ajint InterColour, ajint *Colour,
-			     AjPStr BlockType);
+			     float TextLength, float TextHeight,
+			     const float *From,
+			     const float *To, AjPStr const *Name,
+			     const char *FromSymbol,
+			     const char *ToSymbol, AjPStr const *Style,
+			     const AjPStr InterSymbol, AjBool InterTicks,
+			     const char *TextOri,
+			     ajint NumLabels, const ajint *NumNames,
+			     const AjPStr GroupName, const ajint *Adjust,
+			     ajint InterColour, const ajint *Colour,
+			     const AjPStr BlockType);
 
 static float lindna_TextRuler(float Start, float End, ajint GapSize,
 			      float TextLength, float TextHeight,
@@ -80,25 +86,25 @@ static void lindna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 			     char TextOri, ajint Colour);
 
 static void lindna_DrawTicks(float xDraw, float yDraw, float TickHeight,
-			     float From, AjPStr Name, float TextLength,
+			     float From, const AjPStr Name, float TextLength,
 			     float TextHeight, float postext, char TextOri,
 			     ajint NumNames, ajint Adjust, ajint Colour);
 
 static void lindna_DrawBlocks(float xDraw, float yDraw, float BlockHeight,
 			      float TextHeight, float From, float To,
-			      AjPStr Name, float postext, char TextOri,
+			      const AjPStr Name, float postext, char TextOri,
 			      ajint NumNames, ajint Adjust, ajint Colour,
-			      AjPStr BlockType);
+			      const AjPStr BlockType);
 
 static void lindna_DrawRanges(float xDraw, float yDraw, float RangeHeight,
-			      float From, float To, AjPStr Name,
+			      float From, float To, const AjPStr Name,
 			      char FromSymbol, char ToSymbol,
 			      float TextLength, float TextHeight,
 			      float postext, char TextOri, ajint NumNames,
 			      ajint Adjust, ajint Colour);
 
 static void lindna_InterBlocks(float xDraw, float yDraw, float BlockHeight,
-			       float From, float To, AjPStr InterSymbol,
+			       float From, float To, const AjPStr InterSymbol,
 			       ajint Colour);
 
 static void lindna_DrawArrowHeadsOnLine(float xDraw, float yDraw, float Height,
@@ -109,21 +115,24 @@ static void lindna_DrawBracketsOnLine(float xDraw, float yDraw, float Height,
 
 static void lindna_DrawBarsOnLine(float xDraw, float yDraw, float Height);
 
-static void lindna_HorTextPile(float x, float y, AjPStr Name, float postext,
+static void lindna_HorTextPile(float x, float y, const AjPStr Name,
+			       float postext,
 			       ajint NumNames);
 
 static float lindna_HorTextPileHeight(float postext, ajint NumNames);
 
-static void lindna_VerTextPile(float x, float y, AjPStr Name, float postext,
+static void lindna_VerTextPile(float x, float y, const AjPStr Name,
+			       float postext,
 			       ajint NumNames);
 
-static float lindna_VerTextPileHeight(AjPStr Name, float postext,
+static float lindna_VerTextPileHeight(const AjPStr Name, float postext,
 				      ajint NumNames);
 
-static void lindna_VerTextSeq(float x, float y, AjPStr Name, float postext,
+static void lindna_VerTextSeq(float x, float y, const AjPStr Name,
+			      float postext,
 			      ajint NumNames);
 
-static float lindna_VerTextSeqHeightMax(AjPStr Name, float postext,
+static float lindna_VerTextSeqHeightMax(const AjPStr Name, float postext,
 					ajint NumNames);
 
 
@@ -715,7 +724,7 @@ static void lindna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 ** @param [r] yDraw [float] Undocumented
 ** @param [r] TickHeight [float] Undocumented
 ** @param [r] From [float] Undocumented
-** @param [r] Name [AjPStr] Undocumented
+** @param [r] Name [const AjPStr] Undocumented
 ** @param [r] TextLength [float] Undocumented
 ** @param [r] TextHeight [float] Undocumented
 ** @param [r] postext [float] Undocumented
@@ -727,7 +736,7 @@ static void lindna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 ******************************************************************************/
 
 static void lindna_DrawTicks(float xDraw, float yDraw, float TickHeight,
-			     float From, AjPStr Name, float TextLength,
+			     float From, const AjPStr Name, float TextLength,
 			     float TextHeight, float postext, char TextOri,
 			     ajint NumNames, ajint Adjust, ajint Colour)
 {
@@ -770,21 +779,21 @@ static void lindna_DrawTicks(float xDraw, float yDraw, float TickHeight,
 ** @param [r] TextHeight [float] Undocumented
 ** @param [r] From [float] Undocumented
 ** @param [r] To [float] Undocumented
-** @param [r] Name [AjPStr] Undocumented
+** @param [r] Name [const AjPStr] Undocumented
 ** @param [r] postext [float] Undocumented
 ** @param [r] TextOri [char] Undocumented
 ** @param [r] NumNames [ajint] Undocumented
 ** @param [r] Adjust [ajint] Undocumented
 ** @param [r] Colour [ajint] Undocumented
-** @param [r] BlockType [AjPStr] Undocumented
+** @param [r] BlockType [const AjPStr] Undocumented
 ** @@
 ******************************************************************************/
 
 static void lindna_DrawBlocks(float xDraw, float yDraw, float BlockHeight,
 			      float TextHeight, float From, float To,
-			      AjPStr Name, float postext, char TextOri,
+			      const AjPStr Name, float postext, char TextOri,
 			      ajint NumNames, ajint Adjust, ajint Colour,
-			      AjPStr BlockType)
+			      const AjPStr BlockType)
 {
     float x1Blocks;
     float y1Blocks;
@@ -842,7 +851,7 @@ static void lindna_DrawBlocks(float xDraw, float yDraw, float BlockHeight,
 ** @param [r] RangeHeight [float] Undocumented
 ** @param [r] From [float] Undocumented
 ** @param [r] To [float] Undocumented
-** @param [r] Name [AjPStr] Undocumented
+** @param [r] Name [const AjPStr] Undocumented
 ** @param [r] FromSymbol [char] Undocumented
 ** @param [r] ToSymbol [char] Undocumented
 ** @param [r] TextLength [float] Undocumented
@@ -856,7 +865,7 @@ static void lindna_DrawBlocks(float xDraw, float yDraw, float BlockHeight,
 ******************************************************************************/
 
 static void lindna_DrawRanges(float xDraw, float yDraw, float RangeHeight,
-			      float From, float To, AjPStr Name,
+			      float From, float To, const AjPStr Name,
 			      char FromSymbol, char ToSymbol,
 			      float TextLength, float TextHeight,
 			      float postext, char TextOri, ajint NumNames,
@@ -940,13 +949,13 @@ static void lindna_DrawRanges(float xDraw, float yDraw, float RangeHeight,
 ** @param [r] BlockHeight [float] Undocumented
 ** @param [r] From [float] Undocumented
 ** @param [r] To [float] Undocumented
-** @param [r] InterSymbol [AjPStr] Undocumented
+** @param [r] InterSymbol [const AjPStr] Undocumented
 ** @param [r] Colour [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
 static void lindna_InterBlocks(float xDraw, float yDraw, float BlockHeight,
-			       float From, float To, AjPStr InterSymbol,
+			       float From, float To, const AjPStr InterSymbol,
 			       ajint Colour)
 {
     float x1Inter;
@@ -1089,13 +1098,14 @@ static void lindna_DrawBarsOnLine(float xDraw, float yDraw, float Height)
 **
 ** @param [r] x [float] Undocumented
 ** @param [r] y [float] Undocumented
-** @param [r] Name [AjPStr] Undocumented
+** @param [r] Name [const AjPStr] Undocumented
 ** @param [r] postext [float] Undocumented
 ** @param [r] NumNames [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
-static void lindna_HorTextPile(float x, float y, AjPStr Name, float postext,
+static void lindna_HorTextPile(float x, float y, const AjPStr Name,
+			       float postext,
 			       ajint NumNames)
 {
     float yupper;
@@ -1162,13 +1172,14 @@ static float lindna_HorTextPileHeight(float postext, ajint NumNames)
 **
 ** @param [r] x [float] Undocumented
 ** @param [r] y [float] Undocumented
-** @param [r] Name [AjPStr] Undocumented
+** @param [r] Name [const AjPStr] Undocumented
 ** @param [r] postext [float] Undocumented
 ** @param [r] NumNames [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
-static void lindna_VerTextPile(float x, float y, AjPStr Name, float postext,
+static void lindna_VerTextPile(float x, float y, const AjPStr Name,
+			       float postext,
 			       ajint NumNames)
 {
     float stringLength;
@@ -1200,14 +1211,14 @@ static void lindna_VerTextPile(float x, float y, AjPStr Name, float postext,
 **
 ** compute the height of a pile of vertical text strings
 **
-** @param [r] Name [AjPStr] Undocumented
+** @param [r] Name [const AjPStr] Undocumented
 ** @param [r] postext [float] Undocumented
 ** @param [r] NumNames [ajint] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
 
-static float lindna_VerTextPileHeight(AjPStr Name, float postext,
+static float lindna_VerTextPileHeight(const AjPStr Name, float postext,
 				      ajint NumNames)
 {
     float stringLength;
@@ -1238,13 +1249,14 @@ static float lindna_VerTextPileHeight(AjPStr Name, float postext,
 **
 ** @param [r] x [float] Undocumented
 ** @param [r] y [float] Undocumented
-** @param [r] Name [AjPStr] Undocumented
+** @param [r] Name [const AjPStr] Undocumented
 ** @param [r] postext [float] Undocumented
 ** @param [r] NumNames [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
-static void lindna_VerTextSeq(float x, float y, AjPStr Name, float postext,
+static void lindna_VerTextSeq(float x, float y, const AjPStr Name,
+			      float postext,
 			      ajint NumNames)
 {
     float stringHeight;
@@ -1278,14 +1290,14 @@ static void lindna_VerTextSeq(float x, float y, AjPStr Name, float postext,
 ** compute the height of a sequence of vertical text strings
 ** (this is the height of the longest string)
 **
-** @param [r] Name [AjPStr] Undocumented
+** @param [r] Name [const AjPStr] Undocumented
 ** @param [r] postext [float] Undocumented
 ** @param [r] NumNames [ajint] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
 
-static float lindna_VerTextSeqHeightMax(AjPStr Name, float postext,
+static float lindna_VerTextSeqHeightMax(const AjPStr Name, float postext,
 					ajint NumNames)
 {
     float stringLength;
@@ -1316,8 +1328,8 @@ static float lindna_VerTextSeqHeightMax(AjPStr Name, float postext,
 ** read the beginning of the input file
 **
 ** @param [u] infile [AjPFile] Undocumented
-** @param [r] Start [float*] Undocumented
-** @param [r] End [float*] Undocumented
+** @param [w] Start [float*] Undocumented
+** @param [w] End [float*] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -1348,16 +1360,16 @@ static void lindna_ReadInput(AjPFile infile, float *Start, float *End)
 **
 ** @param [u] infile [AjPFile] Undocumented
 ** @param [r] maxlabels [ajint] Undocumented
-** @param [r] From [float*] Undocumented
-** @param [r] To [float*] Undocumented
-** @param [r] Name [AjPStr*] Undocumented
-** @param [r] FromSymbol [char*] Undocumented
-** @param [r] ToSymbol [char*] Undocumented
-** @param [r] Style [AjPStr*] Undocumented
-** @param [r] TextOri [char*] Undocumented
-** @param [r] NumLabels [ajint*] Undocumented
-** @param [r] NumNames [ajint*] Undocumented
-** @param [r] Colour [ajint*] Undocumented
+** @param [w] From [float*] Undocumented
+** @param [w] To [float*] Undocumented
+** @param [w] Name [AjPStr*] Undocumented
+** @param [w] FromSymbol [char*] Undocumented
+** @param [w] ToSymbol [char*] Undocumented
+** @param [w] Style [AjPStr*] Undocumented
+** @param [w] TextOri [char*] Undocumented
+** @param [w] NumLabels [ajint*] Undocumented
+** @param [w] NumNames [ajint*] Undocumented
+** @param [w] Colour [ajint*] Undocumented
 ** @return [AjPStr] Undocumented
 ** @@
 ******************************************************************************/
@@ -1494,18 +1506,19 @@ static AjPStr lindna_ReadGroup(AjPFile infile, ajint maxlabels,
 ** @param [r] Margin [float] Undocumented
 ** @param [r] TextHeight [float] Undocumented
 ** @param [r] TextLength [float] Undocumented
-** @param [r] Name [AjPStr*] Undocumented
-** @param [r] TextOri [char*] Undocumented
+** @param [r] Name [AjPStr const *] Undocumented
+** @param [r] TextOri [const char*] Undocumented
 ** @param [r] NumLabels [ajint] Undocumented
-** @param [r] NumNames [ajint*] Undocumented
-** @param [r] GroupName [AjPStr] Undocumented
+** @param [r] NumNames [const ajint*] Undocumented
+** @param [r] GroupName [const AjPStr] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
 
 static float lindna_TextGroup(float Margin, float TextHeight, float TextLength,
-			      AjPStr *Name, char *TextOri, ajint NumLabels,
-			      ajint *NumNames, AjPStr GroupName)
+			      AjPStr const *Name, const char *TextOri,
+			      ajint NumLabels,
+			      const ajint *NumNames, const AjPStr GroupName)
 {
     ajint i;
     ajint j;
@@ -1554,11 +1567,11 @@ static float lindna_TextGroup(float Margin, float TextHeight, float TextLength,
 ** @param [r] TickHeight [float] Undocumented
 ** @param [r] BlockHeight [float] Undocumented
 ** @param [r] RangeHeight [float] Undocumented
-** @param [r] Name [AjPStr*] Undocumented
-** @param [r] Style [AjPStr*] Undocumented
-** @param [r] TextOri [char*] Undocumented
+** @param [r] Name [AjPStr const *] Undocumented
+** @param [r] Style [AjPStr const *] Undocumented
+** @param [r] TextOri [const char*] Undocumented
 ** @param [r] NumLabels [ajint] Undocumented
-** @param [r] NumNames [ajint*] Undocumented
+** @param [r] NumNames [const ajint*] Undocumented
 ** @param [r] Adjust [ajint] Undocumented
 ** @return [float] Undocumented
 ** @@
@@ -1566,9 +1579,10 @@ static float lindna_TextGroup(float Margin, float TextHeight, float TextLength,
 
 static float lindna_HeightGroup(float posblock, float posrange, float postext,
 				float TickHeight, float BlockHeight,
-				float RangeHeight, AjPStr *Name,
-				AjPStr *Style, char *TextOri, ajint NumLabels,
-				ajint *NumNames, ajint Adjust)
+				float RangeHeight, AjPStr const *Name,
+				AjPStr const *Style, const char *TextOri,
+				ajint NumLabels,
+				const ajint *NumNames, ajint Adjust)
 {
     ajint i;
     float GroupHeight;
@@ -1640,20 +1654,21 @@ static float lindna_HeightGroup(float posblock, float posrange, float postext,
 **
 ** find whether horizontal text strings overlap within a group
 **
-** @param [r] Name [AjPStr*] Undocumented
-** @param [r] Style [AjPStr*] Undocumented
-** @param [r] TextOri [char*] Undocumented
+** @param [r] Name [AjPStr const *] Undocumented
+** @param [r] Style [AjPStr const *] Undocumented
+** @param [r] TextOri [const char*] Undocumented
 ** @param [r] NumLabels [ajint] Undocumented
-** @param [r] From [float*] Undocumented
-** @param [r] To [float*] Undocumented
-** @param [r] Adjust [ajint*] Undocumented
+** @param [r] From [const float*] Undocumented
+** @param [r] To [const float*] Undocumented
+** @param [w] Adjust [ajint*] Undocumented
 ** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
-static ajint lindna_OverlapTextGroup(AjPStr *Name, AjPStr *Style,
-				     char *TextOri, ajint NumLabels,
-				     float *From, float *To, ajint *Adjust)
+static ajint lindna_OverlapTextGroup(AjPStr const *Name, AjPStr const *Style,
+				     const char *TextOri, ajint NumLabels,
+				     const float *From, const float *To,
+				     ajint *Adjust)
 {
     ajint i;
     ajint j;
@@ -1796,22 +1811,22 @@ static ajint lindna_OverlapTextGroup(AjPStr *Name, AjPStr *Style,
 ** @param [r] RangeHeight [float] Undocumented
 ** @param [r] TextLength [float] Undocumented
 ** @param [r] TextHeight [float] Undocumented
-** @param [r] From [float*] Undocumented
-** @param [r] To [float*] Undocumented
-** @param [r] Name [AjPStr*] Undocumented
-** @param [r] FromSymbol [char*] Undocumented
-** @param [r] ToSymbol [char*] Undocumented
-** @param [r] Style [AjPStr*] Undocumented
-** @param [r] InterSymbol [AjPStr] Undocumented
+** @param [r] From [const float*] Undocumented
+** @param [r] To [const float*] Undocumented
+** @param [r] Name [AjPStr const *] Undocumented
+** @param [r] FromSymbol [const char*] Undocumented
+** @param [r] ToSymbol [const char*] Undocumented
+** @param [r] Style [AjPStr const *] Undocumented
+** @param [r] InterSymbol [const AjPStr] Undocumented
 ** @param [r] InterTicks [AjBool] Undocumented
-** @param [r] TextOri [char*] Undocumented
+** @param [r] TextOri [const char*] Undocumented
 ** @param [r] NumLabels [ajint] Undocumented
-** @param [r] NumNames [ajint*] Undocumented
-** @param [r] GroupName [AjPStr] Undocumented
-** @param [r] Adjust [ajint*] Undocumented
+** @param [r] NumNames [const ajint*] Undocumented
+** @param [r] GroupName [const AjPStr] Undocumented
+** @param [r] Adjust [const ajint*] Undocumented
 ** @param [r] InterColour [ajint] Undocumented
-** @param [r] Colour [ajint*] Undocumented
-** @param [r] BlockType [AjPStr] Undocumented
+** @param [r] Colour [const ajint*] Undocumented
+** @param [r] BlockType [const AjPStr] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -1819,14 +1834,17 @@ static void lindna_DrawGroup(float xDraw, float yDraw, float Border,
 			     float posblock, float posrange, float postext,
 			     float DrawLength, float TickHeight,
 			     float BlockHeight, float RangeHeight,
-			     float TextLength, float TextHeight, float *From,
-			     float *To, AjPStr *Name, char *FromSymbol,
-			     char *ToSymbol, AjPStr *Style,
-			     AjPStr InterSymbol, AjBool InterTicks,
-			     char *TextOri, ajint NumLabels, ajint *NumNames,
-			     AjPStr GroupName, ajint *Adjust,
-			     ajint InterColour, ajint *Colour,
-			     AjPStr BlockType)
+			     float TextLength, float TextHeight,
+			     const float *From,
+			     const float *To, AjPStr const *Name,
+			     const char *FromSymbol,
+			     const char *ToSymbol, AjPStr const *Style,
+			     const AjPStr InterSymbol, AjBool InterTicks,
+			     const char *TextOri, ajint NumLabels,
+			     const ajint *NumNames,
+			     const AjPStr GroupName, const ajint *Adjust,
+			     ajint InterColour, const ajint *Colour,
+			     const AjPStr BlockType)
 {
     ajint i;
     ajint j;

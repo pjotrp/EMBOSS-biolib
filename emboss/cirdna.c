@@ -29,7 +29,8 @@
 
 
 
-static void cirdna_ReadInput(AjPFile infile, float *Start, float *End);
+static void cirdna_ReadInput(AjPFile infile,
+			     float *Start, float *End);
 static AjPStr cirdna_ReadGroup(AjPFile infile, ajint maxlabels,
 			       float* From, float *To,
 			       AjPStr *Name2, char *FromSymbol,
@@ -37,75 +38,87 @@ static AjPStr cirdna_ReadGroup(AjPFile infile, ajint maxlabels,
 			       ajint *NumLabels, ajint *NumNames,
 			       ajint *Colour);
 static float cirdna_TextGroup(float TextHeight, float TextLength,
-			      AjPStr *Name2, ajint NumLabels, ajint *NumNames,
-			      AjPStr GroupName, AjPStr *Style2, float* From,
-			      float* To, float BlockHeight, AjPStr PosTicks);
-static float cirdna_TextGroupStr(AjPStr *Name2, ajint NumLabels,
-				 ajint *NumNames, AjPStr GroupName,
-				 float TextCoef, AjPStr *Style2, float* From,
-				 float* To, float BlockHeight,
-				 AjPStr PosTicks);
+			      AjPStr const *Name2, ajint NumLabels,
+			      const ajint *NumNames,
+			      const AjPStr GroupName, AjPStr const *Style2,
+			      const float* From,
+			      const float* To,
+			      float BlockHeight, const AjPStr PosTicks);
+static float cirdna_TextGroupStr(AjPStr const *Name2, ajint NumLabels,
+				 const ajint *NumNames, const AjPStr GroupName,
+				 float TextCoef, AjPStr const *Style2,
+				 const float* From,
+				 const float* To, float BlockHeight,
+				 const AjPStr PosTicks);
 static float cirdna_HeightGroup(float posblock, float posrange, float postext,
 				float TickHeight, float BlockHeight,
-				float RangeHeight, AjPStr *Name2,
-				AjPStr *Style2, ajint NumLabels,
-				ajint *NumNames, AjPStr PosTicks,
-				AjPStr PosBlocks, ajint Adjust);
-static ajint cirdna_OverlapTextGroup(AjPStr *Name2, AjPStr *Style2,
-				     ajint NumLabels, float* From, float* To,
+				float RangeHeight,
+				AjPStr const *Style2, ajint NumLabels,
+				const ajint *NumNames, const AjPStr PosTicks,
+				const AjPStr PosBlocks, ajint Adjust);
+static ajint cirdna_OverlapTextGroup(AjPStr const *Name2,
+				     AjPStr const *Style2,
+				     ajint NumLabels,
+				     const float* From, const float* To,
 				     float Start, float End,
-				     AjPStr PosTicks, ajint *Adjust);
-static AjBool cirdna_OverlapTickRuler(ajint NumGroups, ajint *NumLabels,
-				      float** From, AjPStr PosTicks,
+				     const AjPStr PosTicks, ajint *Adjust);
+static AjBool cirdna_OverlapTickRuler(ajint NumGroups, const ajint *NumLabels,
+				     float* const * From,
+				      const AjPStr PosTicks,
 				      ajint RulerTick);
 static void cirdna_DrawGroup(float xDraw, float yDraw, float posblock,
 			     float posrange, float postext, float TickHeight,
 			     float BlockHeight, float RangeHeight,
 			     float RealLength, float TextLength,
 			     float TextHeight, float Radius, float RadiusMax,
-			     float* From, float* To, AjPStr *Name2,
-			     char *FromSymbol, char *ToSymbol,
-			     AjPStr *Style2, AjBool InterSymbol,
+			     const float* From, const float* To,
+			     AjPStr const *Name2,
+			     const char *FromSymbol, const char *ToSymbol,
+			     AjPStr const *Style2, AjBool InterSymbol,
 			     AjBool InterTicks, ajint NumLabels,
-			     AjPStr GroupName, float OriginAngle,
-			     ajint *NumNames, AjPStr PosTicks,
-			     AjPStr PosBlocks, ajint *Adjust,
-			     ajint InterColour, ajint *Colour,
-			     AjPStr BlockType);
+			     const AjPStr GroupName, float OriginAngle,
+			     const ajint *NumNames, const AjPStr PosTicks,
+			     const AjPStr PosBlocks, const ajint *Adjust,
+			     ajint InterColour, const ajint *Colour,
+			     const AjPStr BlockType);
 static float cirdna_TextRuler(float Start, float End, ajint GapSize,
 			      float TextLength, float TextHeight,
-			      AjPStr PosTicks, ajint NumGroups,
-			      ajint *NumLabels);
+			      const AjPStr PosTicks, ajint NumGroups,
+			      const ajint *NumLabels);
 static float cirdna_TextRulerStr(float Start, float End, ajint GapSize,
-				 float TextCoef, AjPStr PosTicks,
-				 ajint NumGroups, ajint *NumLabels);
+				 float TextCoef, const AjPStr PosTicks,
+				 ajint NumGroups, const ajint *NumLabels);
 static float cirdna_HeightRuler(float Start, float End, ajint GapSize,
 				float postext, float TickHeight,
-				AjPStr PosTicks, ajint NumGroups,
-				ajint *NumLabels);
+				const AjPStr PosTicks, ajint NumGroups,
+				const ajint *NumLabels);
 static void cirdna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 			     float RealLength, float Radius, float TickHeight,
 			     float OriginAngle, ajint GapSize,
 			     AjBool TickLines, float TextLength,
 			     float TextHeight, float postext,
-			     ajint NumGroups, ajint *NumLabels, float** From,
-			     AjPStr PosTicks, ajint Colour);
+			     ajint NumGroups, const ajint *NumLabels,
+			     float* const * From,
+			     const AjPStr PosTicks, ajint Colour);
 static void cirdna_DrawTicks(float xDraw, float yDraw, float RealLength,
 			     float Radius, float TickHeight, float From,
-			     AjPStr Name2, float OriginAngle,
+			     const AjPStr Name2, float OriginAngle,
 			     float TextLength, float TextHeight, float postext,
-			     AjPStr PosTicks, ajint NumNames, ajint Adjust,
+			     const AjPStr PosTicks,
+			     ajint NumNames, ajint Adjust,
 			     ajint Colour);
 static void cirdna_DrawBlocks(float xDraw, float yDraw, float RealLength,
 			      float Radius, ajint BlockHeight, float From,
-			      float To, AjPStr Name2,
+			      float To, const AjPStr Name2,
 			      float postext, float OriginAngle,
-			      AjPStr PosBlocks, ajint NumNames, ajint Adjust,
-			      ajint Colour, AjPStr BlockType);
+			      const AjPStr PosBlocks, ajint NumNames,
+			      ajint Adjust,
+			      ajint Colour, const AjPStr BlockType);
 static void cirdna_DrawRanges(float xDraw, float yDraw, float RealLength,
 			      float Radius, float RangeHeight, float From,
 			      float To, char FromSymbol,
-			      char ToSymbol, AjPStr Name2, float OriginAngle,
+			      char ToSymbol, const AjPStr Name2,
+			      float OriginAngle,
 			      ajint NumNames, float postext, ajint Adjust,
 			      ajint Colour);
 static void cirdna_InterBlocks(float xDraw, float yDraw, float RealLength,
@@ -126,10 +139,11 @@ static void cirdna_DrawBarsOnCurve(float xDraw, float yDraw,
 				       float Height, float Radius,
 				       float Angle);
 static void cirdna_HorTextPile(float x, float y, float Radius,
-			       float StartAngle, float EndAngle, AjPStr Name2,
+			       float StartAngle, float EndAngle,
+			       const AjPStr Name2,
 			       float postext, ajint NumNames);
 static float cirdna_HorTextPileHeight(float postext, ajint NumNames);
-static float cirdna_HorTextPileLengthMax(AjPStr Name2, ajint NumNames);
+static float cirdna_HorTextPileLengthMax(const AjPStr Name2, ajint NumNames);
 static float cirdna_ComputeAngle(float RealLength, float Length,
 				 float OriginAngle);
 
@@ -426,7 +440,7 @@ int main(int argc, char **argv)
     {
 	GroupHeight[i] = cirdna_HeightGroup(posblock, posrange, postext,
 					    TickHeight, BlockHeight,
-					    RangeHeight, Name[i], Style[i],
+					    RangeHeight, Style[i],
 					    NumLabels[i], NumNames[i],
 					    PosTicks, PosBlocks, AdjustMax[i]);
 	TotalHeight += (GroupHeight[i]+GapGroup);
@@ -485,7 +499,7 @@ int main(int argc, char **argv)
     {
 	GroupHeight[i] = cirdna_HeightGroup(posblock, posrange, postext,
 					    TickHeight, BlockHeight,
-					    RangeHeight, Name[i],
+					    RangeHeight,
 					    Style[i], NumLabels[i],
 					    NumNames[i], PosTicks, PosBlocks,
 					    AdjustMax[i]);
@@ -541,17 +555,17 @@ int main(int argc, char **argv)
 ** @param [r] GapSize [ajint] Undocumented
 ** @param [r] TextLength [float] Undocumented
 ** @param [r] TextHeight [float] Undocumented
-** @param [r] PosTicks [AjPStr] Undocumented
+** @param [r] PosTicks [const AjPStr] Undocumented
 ** @param [r] NumGroups [ajint] Undocumented
-** @param [r] NumLabels [ajint*] Undocumented
+** @param [r] NumLabels [const ajint*] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
 
 static float cirdna_TextRuler(float Start, float End, ajint GapSize,
 			      float TextLength, float TextHeight,
-			      AjPStr PosTicks, ajint NumGroups,
-			      ajint *NumLabels)
+			      const AjPStr PosTicks, ajint NumGroups,
+			      const ajint *NumLabels)
 {
     ajint i;
     ajint j;
@@ -608,16 +622,16 @@ static float cirdna_TextRuler(float Start, float End, ajint GapSize,
 ** @param [r] End [float] Undocumented
 ** @param [r] GapSize [ajint] Undocumented
 ** @param [r] TextCoef [float] Undocumented
-** @param [r] PosTicks [AjPStr] Undocumented
+** @param [r] PosTicks [const AjPStr] Undocumented
 ** @param [r] NumGroups [ajint] Undocumented
-** @param [r] NumLabels [ajint*] Undocumented
+** @param [r] NumLabels [const ajint*] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
 
 static float cirdna_TextRulerStr(float Start, float End, ajint GapSize,
-				 float TextCoef, AjPStr PosTicks,
-				 ajint NumGroups, ajint *NumLabels)
+				 float TextCoef, const AjPStr PosTicks,
+				 ajint NumGroups, const ajint *NumLabels)
 {
     ajint i;
     ajint  j;
@@ -688,17 +702,17 @@ static float cirdna_TextRulerStr(float Start, float End, ajint GapSize,
 ** @param [r] GapSize [ajint] Undocumented
 ** @param [r] postext [float] Undocumented
 ** @param [r] TickHeight [float] Undocumented
-** @param [r] PosTicks [AjPStr] Undocumented
+** @param [r] PosTicks [const AjPStr] Undocumented
 ** @param [r] NumGroups [ajint] Undocumented
-** @param [r] NumLabels [ajint*] Undocumented
+** @param [r] NumLabels [const ajint*] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
 
 static float cirdna_HeightRuler(float Start, float End, ajint GapSize,
 				float postext, float TickHeight,
-				AjPStr PosTicks, ajint NumGroups,
-				ajint *NumLabels)
+				const AjPStr PosTicks, ajint NumGroups,
+				const ajint *NumLabels)
 {
     ajint i;
     ajint j;
@@ -766,9 +780,9 @@ static float cirdna_HeightRuler(float Start, float End, ajint GapSize,
 ** @param [r] TextHeight [float] Undocumented
 ** @param [r] postext [float] Undocumented
 ** @param [r] NumGroups [ajint] Undocumented
-** @param [r] NumLabels [ajint*] Undocumented
-** @param [r] From [float**] Undocumented
-** @param [r] PosTicks [AjPStr] Undocumented
+** @param [r] NumLabels [const ajint*] Undocumented
+** @param [r] From [float* const *] Undocumented
+** @param [r] PosTicks [const AjPStr] Undocumented
 ** @param [r] Colour [ajint] Undocumented
 ** @@
 ******************************************************************************/
@@ -778,8 +792,9 @@ static void cirdna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 			     float OriginAngle, ajint GapSize,
 			     AjBool TickLines, float TextLength,
 			     float TextHeight, float postext,
-			     ajint NumGroups, ajint *NumLabels, float** From,
-			     AjPStr PosTicks, ajint Colour)
+			     ajint NumGroups, const ajint *NumLabels,
+			     float* const * From,
+			     const AjPStr PosTicks, ajint Colour)
 {
     ajint i;
     AjPStr string;
@@ -849,12 +864,12 @@ static void cirdna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 ** @param [r] Radius [float] Undocumented
 ** @param [r] TickHeight [float] Undocumented
 ** @param [r] From [float] Undocumented
-** @param [r] Name2 [AjPStr] Undocumented
+** @param [r] Name2 [const AjPStr] Undocumented
 ** @param [r] OriginAngle [float] Undocumented
 ** @param [r] TextLength [float] Undocumented
 ** @param [r] TextHeight [float] Undocumented
 ** @param [r] postext [float] Undocumented
-** @param [r] PosTicks [AjPStr] Undocumented
+** @param [r] PosTicks [const AjPStr] Undocumented
 ** @param [r] NumNames [ajint] Undocumented
 ** @param [r] Adjust [ajint] Undocumented
 ** @param [r] Colour [ajint] Undocumented
@@ -863,9 +878,10 @@ static void cirdna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 
 static void cirdna_DrawTicks(float xDraw, float yDraw, float RealLength,
 			     float Radius, float TickHeight, float From,
-			     AjPStr Name2, float OriginAngle,
+			     const AjPStr Name2, float OriginAngle,
 			     float TextLength, float TextHeight, float postext,
-			     AjPStr PosTicks, ajint NumNames, ajint Adjust,
+			     const AjPStr PosTicks,
+			     ajint NumNames, ajint Adjust,
 			     ajint Colour)
 {
     float Angle;
@@ -938,23 +954,23 @@ static void cirdna_DrawTicks(float xDraw, float yDraw, float RealLength,
 ** @param [r] BlockHeight [ajint] Undocumented
 ** @param [r] From [float] Undocumented
 ** @param [r] To [float] Undocumented
-** @param [r] Name2 [AjPStr] Undocumented
+** @param [r] Name2 [const AjPStr] Undocumented
 ** @param [r] postext [float] Undocumented
 ** @param [r] OriginAngle [float] Undocumented
-** @param [r] PosBlocks [AjPStr] Undocumented
+** @param [r] PosBlocks [const AjPStr] Undocumented
 ** @param [r] NumNames [ajint] Undocumented
 ** @param [r] Adjust [ajint] Undocumented
 ** @param [r] Colour [ajint] Undocumented
-** @param [r] BlockType [AjPStr] Undocumented
+** @param [r] BlockType [const AjPStr] Undocumented
 ** @@
 ******************************************************************************/
 
 static void cirdna_DrawBlocks(float xDraw, float yDraw, float RealLength,
 			      float Radius, ajint BlockHeight, float From,
-			      float To, AjPStr Name2, float postext,
-			      float OriginAngle, AjPStr PosBlocks,
+			      float To, const AjPStr Name2, float postext,
+			      float OriginAngle, const AjPStr PosBlocks,
 			      ajint NumNames, ajint Adjust, ajint Colour,
-			      AjPStr BlockType)
+			      const AjPStr BlockType)
 {
     float StartAngle;
     float EndAngle;
@@ -1017,7 +1033,7 @@ static void cirdna_DrawBlocks(float xDraw, float yDraw, float RealLength,
 ** @param [r] To [float] Undocumented
 ** @param [r] FromSymbol [char] Undocumented
 ** @param [r] ToSymbol [char] Undocumented
-** @param [r] Name2 [AjPStr] Undocumented
+** @param [r] Name2 [const AjPStr] Undocumented
 ** @param [r] OriginAngle [float] Undocumented
 ** @param [r] NumNames [ajint] Undocumented
 ** @param [r] postext [float] Undocumented
@@ -1029,7 +1045,7 @@ static void cirdna_DrawBlocks(float xDraw, float yDraw, float RealLength,
 static void cirdna_DrawRanges(float xDraw, float yDraw, float RealLength,
 			      float Radius, float RangeHeight, float From,
 			      float To, char FromSymbol, char ToSymbol,
-			      AjPStr Name2, float OriginAngle,
+			      const AjPStr Name2, float OriginAngle,
 			      ajint NumNames, float postext, ajint Adjust,
 			      ajint Colour)
 {
@@ -1340,7 +1356,7 @@ static void cirdna_DrawBarsOnCurve(float xDraw, float yDraw,
 ** @param [r] Radius [float] Undocumented
 ** @param [r] StartAngle [float] Undocumented
 ** @param [r] EndAngle [float] Undocumented
-** @param [r] Name2 [AjPStr] Undocumented
+** @param [r] Name2 [const AjPStr] Undocumented
 ** @param [r] postext [float] Undocumented
 ** @param [r] NumNames [ajint] Undocumented
 ** @@
@@ -1348,7 +1364,7 @@ static void cirdna_DrawBarsOnCurve(float xDraw, float yDraw,
 
 static void cirdna_HorTextPile(float x, float y, float Radius,
 			       float StartAngle, float EndAngle,
-			       AjPStr Name2, float postext,
+			       const AjPStr Name2, float postext,
 			       ajint NumNames)
 {
     float rupper;
@@ -1412,13 +1428,13 @@ static float cirdna_HorTextPileHeight(float postext, ajint NumNames)
 ** compute the maximum length of a pile of horizontal text strings
 ** (this is the length of the longest string)
 **
-** @param [r] Name2 [AjPStr] Undocumented
+** @param [r] Name2 [const AjPStr] Undocumented
 ** @param [r] NumNames [ajint] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
 
-static float cirdna_HorTextPileLengthMax(AjPStr Name2, ajint NumNames)
+static float cirdna_HorTextPileLengthMax(const AjPStr Name2, ajint NumNames)
 {
     float stringLength;
     float maxLength;
@@ -1449,12 +1465,13 @@ static float cirdna_HorTextPileLengthMax(AjPStr Name2, ajint NumNames)
 ** read the beginning of the input file
 **
 ** @param [u] infile [AjPFile] Undocumented
-** @param [r] Start [float*] Undocumented
-** @param [r] End [float*] Undocumented
+** @param [w] Start [float*] Undocumented
+** @param [w] End [float*] Undocumented
 ** @@
 ******************************************************************************/
 
-static void cirdna_ReadInput(AjPFile infile, float *Start, float *End)
+static void cirdna_ReadInput(AjPFile infile,
+			     float *Start, float *End)
 {
     AjPStr line;
 
@@ -1483,15 +1500,15 @@ static void cirdna_ReadInput(AjPFile infile, float *Start, float *End)
 **
 ** @param [u] infile [AjPFile] Undocumented
 ** @param [r] maxlabels [ajint] Undocumented
-** @param [r] From [float*] Undocumented
-** @param [r] To [float*] Undocumented
-** @param [r] Name [AjPStr*] Undocumented
-** @param [r] FromSymbol [char*] Undocumented
-** @param [r] ToSymbol [char*] Undocumented
-** @param [r] Style2 [AjPStr*] Undocumented
-** @param [r] NumLabels [ajint*] Undocumented
-** @param [r] NumNames [ajint*] Undocumented
-** @param [r] Colour [ajint*] Undocumented
+** @param [w] From [float*] From position array
+** @param [w] To [float*] To position array
+** @param [w] Name [AjPStr*] Array of sequence names
+** @param [w] FromSymbol [char*] Undocumented
+** @param [w] ToSymbol [char*] Undocumented
+** @param [w] Style2 [AjPStr *] Undocumented
+** @param [w] NumLabels [ajint*] Undocumented
+** @param [w] NumNames [ajint*] Array of ajints
+** @param [w] Colour [ajint*] Array of colour codes
 ** @return [AjPStr] Undocumented
 ******************************************************************************/
 
@@ -1628,21 +1645,24 @@ static AjPStr cirdna_ReadGroup(AjPFile infile, ajint maxlabels,
 **
 ** @param [r] TextHeight [float] Undocumented
 ** @param [r] TextLength [float] Undocumented
-** @param [r] Name [AjPStr*] Undocumented
+** @param [r] Name [AjPStr const *] Undocumented
 ** @param [r] NumLabels [ajint] Undocumented
-** @param [r] NumNames [ajint*] Undocumented
-** @param [r] GroupName [AjPStr] Undocumented
-** @param [r] Style2 [AjPStr*] Undocumented
-** @param [r] From [float*] Undocumented
-** @param [r] To [float*] Undocumented
+** @param [r] NumNames [const ajint*] Undocumented
+** @param [r] GroupName [const AjPStr] Undocumented
+** @param [r] Style2 [AjPStr const *] Undocumented
+** @param [r] From [const float*] Undocumented
+** @param [r] To [const float*] Undocumented
 ** @param [r] BlockHeight [float] Undocumented
-** @param [r] PosTicks [AjPStr] Undocumented
+** @param [r] PosTicks [const AjPStr] Undocumented
 ** @return [float] Undocumented
 ******************************************************************************/
 static float cirdna_TextGroup(float TextHeight, float TextLength,
-			      AjPStr *Name, ajint NumLabels, ajint *NumNames,
-			      AjPStr GroupName, AjPStr *Style2, float* From,
-			      float* To, float BlockHeight, AjPStr PosTicks)
+			      AjPStr const *Name, ajint NumLabels,
+			      const ajint *NumNames,
+			      const AjPStr GroupName, AjPStr const *Style2,
+			      const float* From,
+			      const float* To, float BlockHeight,
+			      const AjPStr PosTicks)
 {
     ajint i;
     ajint j;
@@ -1689,23 +1709,24 @@ static float cirdna_TextGroup(float TextHeight, float TextLength,
 **  compute the character size that fits all elements of a group provided that
 **  the height and the length of all strings are multiplied by TextCoef
 **
-** @param [r] Name2 [AjPStr*] Undocumented
+** @param [r] Name2 [AjPStr const *] Undocumented
 ** @param [r] NumLabels [ajint] Undocumented
-** @param [r] NumNames [ajint*] Undocumented
-** @param [r] GroupName [AjPStr] Undocumented
+** @param [r] NumNames [const ajint*] Undocumented
+** @param [r] GroupName [const AjPStr] Undocumented
 ** @param [r] TextCoef [float] Undocumented
-** @param [r] Style2 [AjPStr*] Undocumented
-** @param [r] From [float*] Undocumented
-** @param [r] To [float*] Undocumented
+** @param [r] Style2 [AjPStr const *] Undocumented
+** @param [r] From [const float*] Undocumented
+** @param [r] To [const float*] Undocumented
 ** @param [r] BlockHeight [float] Undocumented
-** @param [r] PosTicks [AjPStr] Undocumented
+** @param [r] PosTicks [const AjPStr] Undocumented
 ** @return [float] Undocumented
 ******************************************************************************/
-static float cirdna_TextGroupStr(AjPStr *Name2, ajint NumLabels,
-				 ajint *NumNames, AjPStr GroupName,
-				 float TextCoef, AjPStr *Style2,
-				 float* From, float* To, float BlockHeight,
-				 AjPStr PosTicks)
+static float cirdna_TextGroupStr(AjPStr const *Name2, ajint NumLabels,
+				 const ajint *NumNames, const AjPStr GroupName,
+				 float TextCoef, AjPStr const *Style2,
+				 const float* From, const float* To,
+				 float BlockHeight,
+				 const AjPStr PosTicks)
 {
     ajint i;
     ajint j;
@@ -1764,22 +1785,21 @@ static float cirdna_TextGroupStr(AjPStr *Name2, ajint NumLabels,
 ** @param [r] TickHeight [float] Undocumented
 ** @param [r] BlockHeight [float] Undocumented
 ** @param [r] RangeHeight [float] Undocumented
-** @param [r] Name2 [AjPStr*] Undocumented
-** @param [r] Style2 [AjPStr*] Undocumented
+** @param [r] Style2 [AjPStr const *] Undocumented
 ** @param [r] NumLabels [ajint] Undocumented
-** @param [r] NumNames [ajint*] Undocumented
-** @param [r] PosTicks [AjPStr] Undocumented
-** @param [r] PosBlocks [AjPStr] Undocumented
+** @param [r] NumNames [const ajint*] Undocumented
+** @param [r] PosTicks [const AjPStr] Undocumented
+** @param [r] PosBlocks [const AjPStr] Undocumented
 ** @param [r] Adjust [ajint] Undocumented
 ** @return [float] Undocumented
 ******************************************************************************/
 
 static float cirdna_HeightGroup(float posblock, float posrange, float postext,
 				float TickHeight, float BlockHeight,
-				float RangeHeight, AjPStr *Name2,
-				AjPStr *Style2, ajint NumLabels,
-				ajint *NumNames, AjPStr PosTicks,
-				AjPStr PosBlocks, ajint Adjust)
+				float RangeHeight,
+				AjPStr const *Style2, ajint NumLabels,
+				const ajint *NumNames, const AjPStr PosTicks,
+				const AjPStr PosBlocks, ajint Adjust)
 {
     ajint i;
     float GroupHeight;
@@ -1846,22 +1866,23 @@ static float cirdna_HeightGroup(float posblock, float posrange, float postext,
 **
 ** find whether horizontal text strings overlap within a group
 **
-** @param [r] Name2 [AjPStr*] Undocumented
-** @param [r] Style2 [AjPStr*] Undocumented
+** @param [r] Name2 [AjPStr const *] Undocumented
+** @param [r] Style2 [AjPStr const *] Undocumented
 ** @param [r] NumLabels [ajint] Undocumented
-** @param [r] From [float*] Undocumented
-** @param [r] To [float*] Undocumented
+** @param [r] From [const float*] Undocumented
+** @param [r] To [const float*] Undocumented
 ** @param [r] Start [float] Undocumented
 ** @param [r] End [float] Undocumented
-** @param [r] PosTicks [AjPStr] Undocumented
-** @param [r] Adjust [ajint*] Undocumented
+** @param [r] PosTicks [const AjPStr] Undocumented
+** @param [w] Adjust [ajint*] Array elements written
 ** @return [ajint] Undocumented
 ******************************************************************************/
 
-static ajint cirdna_OverlapTextGroup(AjPStr *Name2, AjPStr *Style2,
-				     ajint NumLabels, float* From, float* To,
+static ajint cirdna_OverlapTextGroup(AjPStr const *Name2, AjPStr const *Style2,
+				     ajint NumLabels,
+				     const float* From, const float* To,
 				     float Start, float End,
-				     AjPStr PosTicks, ajint *Adjust)
+				     const AjPStr PosTicks, ajint *Adjust)
 {
     ajint i;
     ajint j;
@@ -2006,15 +2027,16 @@ static ajint cirdna_OverlapTextGroup(AjPStr *Name2, AjPStr *Style2,
 ** find whether group ticks and ruler's ticks overlap
 **
 ** @param [r] NumGroups [ajint] Undocumented
-** @param [r] NumLabels [ajint*] Undocumented
-** @param [r] From [float**] Undocumented
-** @param [r] PosTicks [AjPStr] Undocumented
+** @param [r] NumLabels [const ajint*] Undocumented
+** @param [r] From [float* const *] Undocumented
+** @param [r] PosTicks [const AjPStr] Undocumented
 ** @param [r] RulerTick [ajint] Undocumented
 ** @return [AjBool] Undocumented
 ******************************************************************************/
 
-static AjBool cirdna_OverlapTickRuler(ajint NumGroups, ajint *NumLabels,
-				      float** From, AjPStr PosTicks,
+static AjBool cirdna_OverlapTickRuler(ajint NumGroups, const ajint *NumLabels,
+				      float* const * From,
+				      const AjPStr PosTicks,
 				      ajint RulerTick)
 {
     ajint i;
@@ -2059,24 +2081,24 @@ static AjBool cirdna_OverlapTickRuler(ajint NumGroups, ajint *NumLabels,
 ** @param [r] TextHeight [float] Undocumented
 ** @param [r] Radius [float] Undocumented
 ** @param [r] RadiusMax [float] Undocumented
-** @param [r] From [float*] Undocumented
-** @param [r] To [float*] Undocumented
-** @param [r] Name2 [AjPStr*] Undocumented
-** @param [r] FromSymbol [char*] Undocumented
-** @param [r] ToSymbol [char*] Undocumented
-** @param [r] Style2 [AjPStr*] Undocumented
+** @param [r] From [const float*] Undocumented
+** @param [r] To [const float*] Undocumented
+** @param [r] Name2 [AjPStr const *] Undocumented
+** @param [r] FromSymbol [const char*] Undocumented
+** @param [r] ToSymbol [const char*] Undocumented
+** @param [r] Style2 [AjPStr const *] Undocumented
 ** @param [r] InterSymbol [AjBool] Undocumented
 ** @param [r] InterTicks [AjBool] Undocumented
 ** @param [r] NumLabels [ajint] Undocumented
-** @param [r] GroupName [AjPStr] Undocumented
+** @param [r] GroupName [const AjPStr] Undocumented
 ** @param [r] OriginAngle [float] Undocumented
-** @param [r] NumNames [ajint*] Undocumented
-** @param [r] PosTicks [AjPStr] Undocumented
-** @param [r] PosBlocks [AjPStr] Undocumented
-** @param [r] Adjust [ajint*] Undocumented
+** @param [r] NumNames [const ajint*] Undocumented
+** @param [r] PosTicks [const AjPStr] Undocumented
+** @param [r] PosBlocks [const AjPStr] Undocumented
+** @param [r] Adjust [const ajint*] Undocumented
 ** @param [r] InterColour [ajint] Undocumented
-** @param [r] Colour [ajint*] Undocumented
-** @param [r] BlockType [AjPStr] Undocumented
+** @param [r] Colour [const ajint*] Undocumented
+** @param [r] BlockType [const AjPStr] Undocumented
 ** @return [void]
 ******************************************************************************/
 
@@ -2085,14 +2107,17 @@ static void cirdna_DrawGroup(float xDraw, float yDraw, float posblock,
 			     float BlockHeight, float RangeHeight,
 			     float RealLength, float TextLength,
 			     float TextHeight, float Radius, float RadiusMax,
-			     float* From, float* To, AjPStr *Name2,
-			     char *FromSymbol, char *ToSymbol, AjPStr *Style2,
+			     const float* From, const float* To,
+			     AjPStr const *Name2,
+			     const char *FromSymbol, const char *ToSymbol, 
+			     AjPStr const *Style2,
 			     AjBool InterSymbol, AjBool InterTicks,
-			     ajint NumLabels, AjPStr GroupName,
-			     float OriginAngle, ajint *NumNames,
-			     AjPStr PosTicks, AjPStr PosBlocks, ajint *Adjust,
-			     ajint InterColour, ajint *Colour,
-			     AjPStr BlockType)
+			     ajint NumLabels, const AjPStr GroupName,
+			     float OriginAngle, const ajint *NumNames,
+			     const AjPStr PosTicks, const AjPStr PosBlocks,
+			     const ajint *Adjust,
+			     ajint InterColour, const ajint *Colour,
+			     const AjPStr BlockType)
 {
     ajint i;
     ajint j;

@@ -38,21 +38,22 @@ static void remap_RemoveMinMax(AjPList restrictlist,
 			       AjPTable hittable, ajint mincuts,
 			       ajint maxcuts);
 static void remap_CutList(AjPFile outfile,
-	AjPTable hittable, AjBool isos, AjBool html, ajint mincuts,
+	const AjPTable hittable, AjBool isos, AjBool html, ajint mincuts,
 	ajint maxcuts);
-static void remap_NoCutList(AjPFile outfile, AjPTable hittable,
-			    AjBool html, AjPStr enzymes, AjBool blunt,
+static void remap_NoCutList(AjPFile outfile, const AjPTable hittable,
+			    AjBool html, const AjPStr enzymes, AjBool blunt,
 			    AjBool sticky, ajint sitelen, AjBool commercial,
-			    AjBool ambiguity, AjBool limit, AjPTable retable);
+			    AjBool ambiguity, AjBool limit,
+			    const AjPTable retable);
 static void remap_DelTable(AjPTable * table);
 static void remap_read_file_of_enzyme_names(AjPStr *enzymes);
 static int remap_ajStrCmpCase(const void* str1, const void* str2);
 static void remap_ajStrDel(void** str, void* cl);
-static void rebase_RenamePreferred(const AjPList list, AjPTable table, 
+static void rebase_RenamePreferred(const AjPList list, const AjPTable table, 
 				   AjPList newlist);
-static void remap_RestrictPreferred(const AjPList l, AjPTable t);
-static AjBool remap_Ambiguous(AjPStr str);
-static void remap_GetFrames(AjPStr *framelist, AjBool *frames);
+static void remap_RestrictPreferred(const AjPList l, const AjPTable t);
+static AjBool remap_Ambiguous(const AjPStr str);
+static void remap_GetFrames(AjPStr const *framelist, AjBool *frames);
 
 
 /* @datastatic PValue *********************************************************
@@ -373,7 +374,7 @@ int main(int argc, char **argv)
 **
 ** Delete the tables with PValue structures
 **
-** @param [r] table [AjPTable *] table to delete
+** @param [d] table [AjPTable *] table to delete
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -411,8 +412,8 @@ static void remap_DelTable(AjPTable * table)
 ** restrictlist.
 ** Populate hittable with enzymes names and hit counts.
 **
-** @param [r] restrictlist [AjPList] List to prune
-** @param [r] hittable [AjPTable] table of number of hits for each enzyme
+** @param [u] restrictlist [AjPList] List to prune
+** @param [u] hittable [AjPTable] table of number of hits for each enzyme
 ** @param [r] mincuts [ajint] mincuts
 ** @param [r] maxcuts [ajint] maxcuts
 ** @return [void]
@@ -485,8 +486,8 @@ static void remap_RemoveMinMax(AjPList restrictlist,
 **
 ** display a list of the enzymes that cut
 **
-** @param [r] outfile [AjPFile] file to print to.
-** @param [r] hittable [AjPTable] table of number of hits for each enzyme
+** @param [u] outfile [AjPFile] file to print to.
+** @param [r] hittable [const AjPTable] table of number of hits for each enzyme
 ** @param [r] isos [AjBool] True if allow isoschizomers
 ** @param [r] html [AjBool] dump out html if true.
 ** @param [r] mincuts [ajint] min required cuts
@@ -495,7 +496,8 @@ static void remap_RemoveMinMax(AjPList restrictlist,
 ** @@
 ******************************************************************************/
 
-static void remap_CutList(AjPFile outfile, AjPTable hittable, AjBool isos,
+static void remap_CutList(AjPFile outfile, const AjPTable hittable,
+			  AjBool isos,
 			  AjBool html, ajint mincuts, ajint maxcuts)
 {
     PValue value;
@@ -622,25 +624,26 @@ static void remap_CutList(AjPFile outfile, AjPTable hittable, AjBool isos,
 **
 ** display a list of the enzymes that do NOT cut
 **
-** @param [r] outfile [AjPFile] file to print to.
-** @param [r] hittable [AjPTable] Enzymes that cut
+** @param [u] outfile [AjPFile] file to print to.
+** @param [r] hittable [const AjPTable] Enzymes that cut
 ** @param [r] html [AjBool] dump out html if true.
-** @param [r] enzymes [AjPStr] names of enzymes to search for or 'all'
+** @param [r] enzymes [const AjPStr] names of enzymes to search for or 'all'
 ** @param [r] blunt [AjBool] Allow blunt cutters
 ** @param [r] sticky [AjBool] Allow sticky cutters
 ** @param [r] sitelen [ajint] minimum length of recognition site
 ** @param [r] commercial [AjBool] Allow commercially supplied cutters
 ** @param [r] ambiguity [AjBool] Allow ambiguous patterns
 ** @param [r] limit [AjBool] True if allow isoschizomers
-** @param [r] retable [AjPTable] Table from embossre.equ file 
+** @param [r] retable [const AjPTable] Table from embossre.equ file 
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void remap_NoCutList(AjPFile outfile, AjPTable hittable,
-			    AjBool html, AjPStr enzymes, AjBool blunt,
+static void remap_NoCutList(AjPFile outfile, const AjPTable hittable,
+			    AjBool html, const AjPStr enzymes, AjBool blunt,
 			    AjBool sticky, ajint sitelen, AjBool commercial,
-			    AjBool ambiguity, AjBool limit, AjPTable retable)
+			    AjBool ambiguity, AjBool limit,
+			    const AjPTable retable)
 {
 
     /* for iterating over hittable */
@@ -991,7 +994,7 @@ static void remap_NoCutList(AjPFile outfile, AjPTable hittable,
 **
 ** Lifted from Alan's restrict.c - reads the embossre.equ file.
 **
-** @param [r] equfile [AjPFile*] file to read then close.
+** @param [u] equfile [AjPFile*] file to read then close.
 ** @param [wP] table [AjPTable*] table to write to.
 ** @return [void]
 ** @@
@@ -1034,7 +1037,7 @@ static void remap_read_equiv(AjPFile *equfile, AjPTable *table)
 ** If the list of enzymes starts with a '@' it opens that file, reads in
 ** the list of enzyme names and replaces the input string with the enzyme names
 **
-** @param [r] enzymes [AjPStr*] names of enzymes to search for or 'all' or
+** @param [w] enzymes [AjPStr*] names of enzymes to search for or 'all' or
 **                              '@file'
 ** @return [void]
 ** @@
@@ -1144,13 +1147,13 @@ static void remap_ajStrDel(void** str, void* cl)
 ** to the output list, else the old string name is appended to the output list.
 **
 ** @param [r] list [const AjPList] Inout list of strings
-** @param [r] table [AjPTable] Table of replacements
+** @param [r] table [const AjPTable] Table of replacements
 ** @param [u] newlist [AjPList] Returned new list of strings
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void rebase_RenamePreferred(const AjPList list, AjPTable table, 
+static void rebase_RenamePreferred(const AjPList list, const AjPTable table, 
 				   AjPList newlist) 
 {
     AjIList iter = NULL;
@@ -1199,14 +1202,14 @@ static void rebase_RenamePreferred(const AjPList list, AjPTable table,
 ** will be change to a name of B and isoschizomer list of "A, X, C"
 ** If the old name is not in the isoschizomer list, it will be added to it.
 **
-** @param [u] l [const AjPList] list of EmbPMatMatch hits
-** @param [r] t [AjPTable] table from embossre.equ file
+** @param [r] l [const AjPList] list of EmbPMatMatch hits
+** @param [r] t [const AjPTable] table from embossre.equ file
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void remap_RestrictPreferred(const AjPList l, AjPTable t)
+static void remap_RestrictPreferred(const AjPList l, const AjPTable t)
 {
     AjIList iter   = NULL;
     EmbPMatMatch m = NULL;
@@ -1279,13 +1282,13 @@ static void remap_RestrictPreferred(const AjPList l, AjPTable t)
 **
 ** Tests whether there are ambiguity base codes in a string
 **
-** @param [r] str [AjPStr] String to test
+** @param [r] str [const AjPStr] String to test
 **
 ** @return [AjBool] True is ambiguous bases found
 ** @@
 ******************************************************************************/
 
-static AjBool remap_Ambiguous(AjPStr str)
+static AjBool remap_Ambiguous(const AjPStr str)
 {
     ajint ipos;
     char chr;
@@ -1310,13 +1313,13 @@ static AjBool remap_Ambiguous(AjPStr str)
 ** Frame numbers are ordered in the vector as:
 ** 1, 2, 3 -1, -2, -3
 **
-** @param [r] framelist [AjPStr*] list of frame numbers
+** @param [r] framelist [AjPStr const *] list of frame numbers
 ** @param [u] frames [AjBool*] Boolean vector
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void remap_GetFrames(AjPStr *framelist, AjBool *frames)
+static void remap_GetFrames(AjPStr const *framelist, AjBool *frames)
 {
     int i;
 

@@ -77,7 +77,6 @@ static AjPFltarr isochore_FltarrNew0(size_t size);
 
 /* @prog isochore *************************************************************
 **
-**
 ** Calculates the G+C content of a DNA sequence
 ** by sliding a window of size "iwin" in increments of "ishift" bases
 ** at a time.
@@ -97,12 +96,6 @@ static AjPFltarr isochore_FltarrNew0(size_t size);
 **
 ******************************************************************************/
 
-
-/* @prog isochore *************************************************************
-**
-** Plots isochores in large DNA sequences
-**
-******************************************************************************/
 
 int main(int argc, char **argv)
 {

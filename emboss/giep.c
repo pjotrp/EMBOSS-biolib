@@ -222,7 +222,7 @@ int main(int argc, char **argv)
 #ifndef GROUT
     ajGraphClose();
 #else
-    ajXmlClearFile(graph);
+    ajXmlClearFile(&graph);
 #endif
     AJFREE (K);
     AJFREE (pro);

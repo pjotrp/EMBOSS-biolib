@@ -29,8 +29,9 @@
 
 static void tfscan_print_hits(const AjPStr name, AjPList *l, ajint hits,
 			      AjPFile outf, ajint begin, ajint end,
-			      AjPTable t, AjPSeq seq, ajint minlength,
-			      AjPTable btable);
+			      const AjPTable t, const AjPSeq seq,
+			      ajint minlength,
+			      const AjPTable btable);
 
 
 
@@ -205,17 +206,18 @@ int main(int argc, char **argv)
 ** @param [u] outf [AjPFile] output file
 ** @param [r] begin [ajint] sequence start
 ** @param [r] end [ajint] sequence end
-** @param [r] t [AjPTable] table of accession numbers
-** @param [r] seq [AjPSeq] test sequence
+** @param [r] t [const AjPTable] table of accession numbers
+** @param [r] seq [const AjPSeq] test sequence
 ** @param [r] minlength [ajint] minimum length of pattern
-** @param [r] btable [AjPTable] BF lines from transfac (if any)
+** @param [r] btable [const AjPTable] BF lines from transfac (if any)
 ** @@
 ******************************************************************************/
 
 static void tfscan_print_hits(const AjPStr name, AjPList *l,
 			      ajint hits, AjPFile outf,
-			      ajint begin, ajint end, AjPTable t,
-			      AjPSeq seq, ajint minlength, AjPTable btable)
+			      ajint begin, ajint end, const AjPTable t,
+			      const AjPSeq seq, ajint minlength,
+			      const  AjPTable btable)
 {
     ajint i;
     EmbPMatMatch m;

@@ -28,9 +28,9 @@
 
 static void plotorf_norfs(const char *seq, const char *rev,
 			  ajint n, float **x, float **y,
-			  AjPInt *cnt, ajint beg, AjPStr *starts,
-			  ajint nstarts, AjPStr *stops, ajint nstops);
-static AjBool plotorf_isin(const char *p, AjPStr *str, ajint n);
+			  AjPInt *cnt, ajint beg, AjPStr const *starts,
+			  ajint nstarts, AjPStr const *stops, ajint nstops);
+static AjBool plotorf_isin(const char *p, AjPStr const *str, ajint n);
 
 
 
@@ -183,17 +183,17 @@ int main(int argc, char **argv)
 ** @param [w] y [float**] ypos
 ** @param [w] cnt [AjPInt*] orf count
 ** @param [r] beg [ajint] sequence strat
-** @param [r] starts [AjPStr*] start posns
+** @param [r] starts [AjPStr const *] start posns
 ** @param [r] nstarts [ajint] number of starts
-** @param [r] stops [AjPStr*] stop posns
+** @param [r] stops [AjPStr const *] stop posns
 ** @param [r] nstops [ajint] number of stops
 ** @@
 ******************************************************************************/
 
 static void plotorf_norfs(const char *seq, const char *rev,
 			  ajint n, float **x, float **y,
-			  AjPInt *cnt, ajint beg, AjPStr *starts,
-			  ajint nstarts, AjPStr *stops, ajint nstops)
+			  AjPInt *cnt, ajint beg, AjPStr const *starts,
+			  ajint nstarts, AjPStr const *stops, ajint nstops)
 {
     ajint len;
     ajint i;
@@ -304,13 +304,13 @@ static void plotorf_norfs(const char *seq, const char *rev,
 ** True if codon at p occurs in string str
 **
 ** @param [r] p [const char*] codon
-** @param [r] str [AjPStr*] sequence
+** @param [r] str [AjPStr const *] sequence
 ** @param [r] n [ajint] str length
 ** @return [AjBool] true if found
 ** @@
 ******************************************************************************/
 
-static AjBool plotorf_isin(const char *p, AjPStr *str, ajint n)
+static AjBool plotorf_isin(const char *p, AjPStr const *str, ajint n)
 {
     ajint i;
     AjBool ret;

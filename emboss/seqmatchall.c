@@ -25,8 +25,8 @@
 
 
 
-static void seqmatchall_matchListPrint(void **x,void *cl);
-static void seqmatchall_listPrint(AjPAlign align, AjPList list);
+static void seqmatchall_matchListPrint(void *x,void *cl);
+static void seqmatchall_listPrint(AjPAlign align, const AjPList list);
 
 
 
@@ -109,20 +109,20 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [r] x [void**] Undocumented
+** @param [r] x [void*] Undocumented
 ** @param [r] cl [void*] Undocumented
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void seqmatchall_matchListPrint(void **x,void *cl)
+static void seqmatchall_matchListPrint(void *x,void *cl)
 {
     EmbPWordMatch p;
     AjPAlign align;
     AjPStr sub1=NULL;
     AjPStr sub2=NULL;
 
-    p = (EmbPWordMatch)*x;
+    p = (EmbPWordMatch)x;
     align = (AjPAlign) cl;
 /*
     ajFmtPrintF(outfile, "%d  %d %d %s %d %d %s\n",
@@ -130,20 +130,20 @@ static void seqmatchall_matchListPrint(void **x,void *cl)
 		(*p).seq1start+1,(*p).seq1start+(*p).length,seq1->Name->Ptr,
 		(*p).seq2start+1,(*p).seq2start+(*p).length,seq2->Name->Ptr);
 */
-    ajStrAssSub(&sub1, ajSeqStr((*p).sequence),
-		(*p).seq1start+1,
-		(*p).seq1start+(*p).length);
+    ajStrAssSub(&sub1, ajSeqStr(p->sequence),
+		p->seq1start+1,
+		p->seq1start+p->length);
 
-    ajStrAssSub(&sub2, ajSeqStr((*p).sequence),
-		(*p).seq2start+1,
-		(*p).seq2start+(*p).length);
+    ajStrAssSub(&sub2, ajSeqStr(p->sequence),
+		p->seq2start+1,
+		p->seq2start+p->length);
 
     ajAlignDefineCC(align, ajStrStr(sub1), ajStrStr(sub2),
 		    seq1->Name->Ptr, seq2->Name->Ptr);
-    ajAlignSetScoreI(align, (*p).length);
+    ajAlignSetScoreI(align, p->length);
     ajAlignSetSubRange(align,
-       (*p).seq1start, (*p).seq1start + 1, (*p).seq1start + (*p).length,
-       (*p).seq2start, (*p).seq2start + 1, (*p).seq2start + (*p).length);
+       p->seq1start, p->seq1start + 1, p->seq1start + p->length,
+       p->seq2start, p->seq2start + 1, p->seq2start + p->length);
 
     ajStrDel(&sub1);
     ajStrDel(&sub2);
@@ -158,14 +158,14 @@ static void seqmatchall_matchListPrint(void **x,void *cl)
 **
 ** Undocumented.
 **
-** @param [?] align [AjPAlign] Undocumented
-** @param [?] list [AjPList] Undocumented
+** @param [u] align [AjPAlign] Algnment object
+** @param [r] list [const AjPList] Undocumented
 ** @@
 ******************************************************************************/
 
-static void seqmatchall_listPrint(AjPAlign align, AjPList list)
+static void seqmatchall_listPrint(AjPAlign align, const AjPList list)
 {
-    ajListMap(list,seqmatchall_matchListPrint, align);
+    ajListMapRead(list,seqmatchall_matchListPrint, align);
 
     return;
 }

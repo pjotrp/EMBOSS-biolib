@@ -325,16 +325,18 @@ typedef struct AjSSignature
 AjPSignature  embSignatureNew(ajint n);
 void          embSignatureDel(AjPSignature *ptr);
 AjPSignature  embSignatureReadNew(AjPFile inf);
-AjBool        embSignatureWrite(AjPFile outf, AjPSignature obj);
-AjBool        embSignatureCompile(AjPSignature *S, float gapo, float gape, 	
-				  AjPMatrixf matrix);
-AjBool        embSignatureAlignSeq(AjPSignature S, AjPSeq seq, AjPHit *hit, 
+AjBool        embSignatureWrite(AjPFile outf, const AjPSignature obj);
+AjBool        embSignatureCompile(AjPSignature *S, float gapo, float gape,
+				  const AjPMatrixf matrix);
+AjBool        embSignatureAlignSeq(const AjPSignature S, const AjPSeq seq,
+				   AjPHit *hit, 
 				   ajint nterm);
-AjBool        embSignatureAlignSeqall(AjPSignature sig, AjPSeqall db, 
+AjBool        embSignatureAlignSeqall(const AjPSignature sig,
+				      AjPSeqall db, 
 				      ajint n, AjPHitlist *hitlist, 
 				      ajint nterm);
-AjBool        embSignatureHitsWrite(AjPFile outf, AjPSignature sig, 
-				    AjPHitlist hitlist, ajint n);
+AjBool        embSignatureHitsWrite(AjPFile outf, const AjPSignature sig, 
+				    const AjPHitlist hitlist, ajint n);
 AjPHitlist    embSignatureHitsRead(AjPFile inf);
 
 
@@ -346,8 +348,8 @@ AjPHitlist    embSignatureHitsRead(AjPFile inf);
 /* ======================================================================= */
 AjPHit        embHitNew(void);
 void          embHitDel(AjPHit *ptr);
-AjPHit        embHitMerge(AjPHit hit1, AjPHit hit2);
-AjBool        embHitsOverlap(AjPHit hit1, AjPHit hit2, ajint n);
+AjPHit        embHitMerge(const AjPHit hit1, const AjPHit hit2);
+AjBool        embHitsOverlap(const AjPHit hit1, const AjPHit hit2, ajint n);
 ajint         embMatchScore(const void *hit1, const void *hit2);
 ajint         embMatchinvScore(const void *hit1, const void *hit2);
 
@@ -361,12 +363,14 @@ ajint         embMatchinvScore(const void *hit1, const void *hit2);
 AjPHitlist    embHitlistNew(ajint n);
 void          embHitlistDel(AjPHitlist *ptr);
 AjPHitlist    embHitlistRead(AjPFile inf);
-AjBool        embHitlistWrite(AjPFile outf, AjPHitlist obj);
-AjBool        embHitlistWriteSubset(AjPFile outf, AjPHitlist obj, 
-				    AjPInt ok);
-AjPList       embHitlistReadNode(AjPFile inf, AjPStr fam, 
-				 AjPStr sfam, AjPStr fold, AjPStr klass);
-AjBool        embHitlistClassify(AjPHitlist *hits, AjPList targets, 
+AjBool        embHitlistWrite(AjPFile outf, const AjPHitlist obj);
+AjBool        embHitlistWriteSubset(AjPFile outf, const AjPHitlist obj, 
+				    const AjPInt ok);
+AjPList       embHitlistReadNode(AjPFile inf, const AjPStr fam, 
+				 const AjPStr sfam, const AjPStr fold,
+				 const AjPStr klass);
+AjBool        embHitlistClassify(AjPHitlist const *hits,
+				 const AjPList targets, 
 				 ajint thresh);
 ajint         embHitlistMatchFold(const void *hit1, const void *hit2);
 

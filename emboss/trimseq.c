@@ -28,10 +28,10 @@
 
 
 
-static ajint trimseq_trim(AjPSeq seq, ajint sense, AjBool isnuc,
+static ajint trimseq_trim(const AjPSeq seq, ajint sense, AjBool isnuc,
 			  ajint window, float percent, AjBool strict,
 			  AjBool star);
-static void trimseq_parole(AjBool *gang, char *good_guys);
+static void trimseq_parole(AjBool *gang, const char *good_guys);
 
 
 
@@ -115,7 +115,7 @@ int main(int argc, char **argv)
 **
 ** Trim sequence
 **
-** @param [r] seq [AjPSeq] sequence
+** @param [r] seq [const AjPSeq] sequence
 ** @param [r] sense [ajint] 0=right trim    1=left trim
 ** @param [r] isnuc [AjBool] whether nucleic or protein
 ** @param [r] window [ajint] window size
@@ -127,7 +127,8 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static ajint trimseq_trim(AjPSeq seq, ajint sense, AjBool isnuc, ajint window,
+static ajint trimseq_trim(const AjPSeq seq,
+			  ajint sense, AjBool isnuc, ajint window,
 			  float percent, AjBool strict, AjBool star)
 {
     ajint leroy_brown;		/* last bad character */
@@ -264,11 +265,11 @@ static ajint trimseq_trim(AjPSeq seq, ajint sense, AjBool isnuc, ajint window,
 **
 ** @param [w] gang [AjBool*] array of flags for whether a character
 **                           is required or not
-** @param [r] good_guys [char*] string of chars that are required
+** @param [r] good_guys [const char*] string of chars that are required
 ** @@
 ******************************************************************************/
 
-static void trimseq_parole(AjBool *gang, char *good_guys)
+static void trimseq_parole(AjBool *gang, const char *good_guys)
 {
     ajint i;
 

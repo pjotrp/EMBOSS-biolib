@@ -67,8 +67,9 @@ ajint debug;
 
 
 
-static void  est2genome_make_output(AjPFile ofile, AjPSeq genome, AjPSeq est,
-				    EmbPEstAlign ge, ajint match,
+static void  est2genome_make_output(AjPFile ofile,
+				    const AjPSeq genome, const AjPSeq est,
+				    const EmbPEstAlign ge, ajint match,
 				    ajint mismatch, ajint gap_penalty,
 				    ajint intron_penalty,
 				    ajint splice_penalty, ajint minscore,
@@ -506,8 +507,9 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static void est2genome_make_output(AjPFile ofile, AjPSeq genome, AjPSeq est,
-				   EmbPEstAlign ge, ajint match,
+static void est2genome_make_output(AjPFile ofile,
+				   const AjPSeq genome, const AjPSeq est,
+				   const EmbPEstAlign ge, ajint match,
 				   ajint mismatch, ajint gap_penalty,
 				   ajint intron_penalty, ajint splice_penalty,
 				   ajint minscore, ajint align, ajint width,

@@ -25,7 +25,7 @@
 
 
 
-static void getorf_WriteORF(AjPSeq seq, ajint len, ajint seqlen,
+static void getorf_WriteORF(const AjPSeq seq, ajint len, ajint seqlen,
 			    AjBool sense, ajint find, ajint *orf_no,
 			    ajint start, ajint pos, const AjPStr str,
 			    AjPSeqout seqout, ajint around);
@@ -34,7 +34,7 @@ static void getorf_AppORF(ajint find, AjPStr *str,
 			  const char *chrseq, ajint pos,
 			  char aa);
 
-static void getorf_FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable,
+static void getorf_FindORFs(const AjPSeq seq, ajint len, const AjPTrn trnTable,
 			    ajint minsize, ajint maxsize, AjPSeqout seqout, 
 			    AjBool sense, AjBool circular, ajint find, 
 			    ajint *orf_no, AjBool methionine, ajint around);
@@ -173,22 +173,22 @@ int main(int argc, char **argv)
 **
 ** finds all orfs in the current sense and writes them out
 **
-** @param [r] seq [AjPSeq] Undocumented
+** @param [r] seq [const AjPSeq] Undocumented
 ** @param [r] len [ajint] Undocumented
-** @param [r] trnTable [AjPTrn] Undocumented
+** @param [r] trnTable [const AjPTrn] Undocumented
 ** @param [r] minsize [ajint] Minimum size ORF to find
 ** @param [r] maxsize [ajint] Maximum size ORF to find
-** @param [r] seqout [AjPSeqout] Undocumented
+** @param [u] seqout [AjPSeqout] Undocumented
 ** @param [r] sense [AjBool] Undocumented
 ** @param [r] circular [AjBool] Undocumented
 ** @param [r] find [ajint] Undocumented
-** @param [r] orf_no [ajint*] Undocumented
+** @param [w] orf_no [ajint*] Undocumented
 ** @param [r] methionine [AjBool] Undocumented
 ** @param [r] around [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
-static void getorf_FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable,
+static void getorf_FindORFs(const AjPSeq seq, ajint len, const AjPTrn trnTable,
 			    ajint minsize, ajint maxsize, AjPSeqout seqout, 
 			    AjBool sense, AjBool circular, ajint find, 
 			    ajint *orf_no, AjBool methionine, ajint around)
@@ -473,21 +473,22 @@ static void getorf_FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable,
 **
 ** Undocumented.
 **
-** @param [r] seq [AjPSeq] Undocumented
+** @param [r] seq [const AjPSeq] Undocumented
 ** @param [r] len [ajint] Undocumented
 ** @param [r] seqlen [ajint] Undocumented
 ** @param [r] sense [AjBool] Undocumented
 ** @param [r] find [ajint] Undocumented
-** @param [r] orf_no [ajint*] Undocumented
+** @param [w] orf_no [ajint*] Undocumented
 ** @param [r] start [ajint] Undocumented
 ** @param [r] pos [ajint] Undocumented
 ** @param [r] str [const AjPStr] Undocumented
-** @param [r] seqout [AjPSeqout] Undocumented
+** @param [u] seqout [AjPSeqout] Undocumented
 ** @param [r] around [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
-static void getorf_WriteORF(AjPSeq seq, ajint len, ajint seqlen, AjBool sense,
+static void getorf_WriteORF(const AjPSeq seq,
+			    ajint len, ajint seqlen, AjBool sense,
 			    ajint find, ajint *orf_no, ajint start, ajint pos,
 			    const AjPStr str, AjPSeqout seqout, ajint around)
 {
@@ -669,10 +670,10 @@ static void getorf_WriteORF(AjPSeq seq, ajint len, ajint seqlen, AjBool sense,
 **
 ** append aa to ORF sequence string
 **
-** @param [r] find [ajint] Undocumented
-** @param [r] str [AjPStr*] Undocumented
+** @param [r] find [ajint] Find code
+** @param [u] str [AjPStr*] Sequence string
 ** @param [r] chrseq [const char*] Undocumented
-** @param [r] pos [ajint] Undocumented
+** @param [r] pos [ajint] Codon triplet position in chrseq
 ** @param [r] aa [char] Undocumented
 ** @@
 ******************************************************************************/

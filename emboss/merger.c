@@ -30,7 +30,7 @@ static void merger_Merge(AjPAlign align, AjPStr *merged,
 			 const char *a, const char *b,
 			 const AjPStr m, const AjPStr n,
 			 ajint start1,
-			 ajint start2, float score, AjBool mark, float **sub,
+			 ajint start2, float score, AjBool mark,
 			 const AjPSeqCvt cvt,
 			 const char *namea, const char *nameb, ajint begina,
 			 ajint beginb);
@@ -154,7 +154,7 @@ int main(int argc, char **argv)
     ** now construct the merged sequence, uppercase the bits of the two
     ** input sequences which are used in the merger
     */
-    merger_Merge(align, &merged,p,q,m,n,start1,start2,score,1,sub,cvt,
+    merger_Merge(align, &merged,p,q,m,n,start1,start2,score,1,cvt,
 		 ajSeqName(a),ajSeqName(b),begina,beginb);
 
     embAlignReportGlobal(align, a, b, m, n,
@@ -195,13 +195,12 @@ int main(int argc, char **argv)
 ** @param [w] ms [AjPStr *] output merged sequence
 ** @param [r] a [const char *] complete first sequence
 ** @param [r] b [const char *] complete second sequence
-** @param [r] m [AjPStr] Walk alignment for first sequence
-** @param [r] n [AjPStr] Walk alignment for second sequence
+** @param [r] m [const AjPStr] Walk alignment for first sequence
+** @param [r] n [const AjPStr] Walk alignment for second sequence
 ** @param [r] start1 [ajint] start of alignment in first sequence
 ** @param [r] start2 [ajint] start of alignment in second sequence
 ** @param [r] score [float] alignment score from AlignScoreX
 ** @param [r] mark [AjBool] mark matches and conservatives
-** @param [r] sub [float **] substitution matrix
 ** @param [r] cvt [const AjPSeqCvt] conversion table for matrix
 ** @param [r] namea [const char *] name of first sequence
 ** @param [r] nameb [const char *] name of second sequence
@@ -214,7 +213,7 @@ int main(int argc, char **argv)
 static void merger_Merge(AjPAlign align, AjPStr *ms,
 			 const char *a, const char *b,
 			 const AjPStr m, const AjPStr n, ajint start1,
-			 ajint start2, float score, AjBool mark, float **sub,
+			 ajint start2, float score, AjBool mark,
 			 const AjPSeqCvt cvt,
 			 const char *namea, const char *nameb,
 			 ajint begina, ajint beginb)

@@ -93,7 +93,8 @@ void      embDbiSortFile (const AjPStr dbname,
 			  const char* ext1, const char* ext2,
 			  ajint nfiles, AjBool cleanup, const AjPStr sortopt);
 AjPFile   embDbiSortOpen (AjPFile* alistfile, ajint ifile,
-			  const AjPStr dbname, AjPStr* fields, ajint nfields);
+			  const AjPStr dbname, AjPStr const * fields,
+			  ajint nfields);
 ajint     embDbiSortWriteEntry (AjPFile entFile, ajint maxidlen,
 				const AjPStr dbname, ajint nfiles,
 				AjBool cleanup, const AjPStr sortopt);
@@ -107,7 +108,8 @@ void      embDbiWriteDivision (const AjPStr indexdir,
 			       const AjPStr dbname, const AjPStr release,
 			       const char date[4],
 			       ajint maxfilelen, ajint nfiles,
-			       AjPStr* divfiles, AjPStr* seqfiles);
+			       AjPStr const * divfiles,
+			       AjPStr const * seqfiles);
 void      embDbiWriteDivisionRecord (AjPFile file,
 				     ajint maxnamlen, short recnum,
 				     const AjPStr datfile,

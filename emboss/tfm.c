@@ -28,7 +28,7 @@
 static void tfm_FindAppDocRoot(AjPStr* docroot);
 static AjBool tfm_FindAppDoc(const AjPStr program, const AjPStr docroot,
 			     AjBool html, AjPStr* path);
-static void tfm_FixImages(AjPStr *line, AjPStr path);
+static void tfm_FixImages(AjPStr *line, const AjPStr path);
 
 
 
@@ -228,12 +228,12 @@ static AjBool tfm_FindAppDoc(const AjPStr program, const AjPStr docroot,
 ** Add full path to installed or local image files
 **
 ** @param [w] line [AjPStr*] html line
-** @param [r] path [AjPStr] file location
+** @param [r] path [const AjPStr] file location
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void tfm_FixImages(AjPStr *line, AjPStr path)
+static void tfm_FixImages(AjPStr *line, const AjPStr path)
 {
     AjPStr newpath = NULL;
     AjPStr name = NULL;

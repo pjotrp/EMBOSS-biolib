@@ -14,8 +14,9 @@ extern "C"
 ** @alias AjSRange
 **
 ** @new ajRangeNewI Default constructor for range objects
+** @new ajRangeGet Create a range object from a string
+** @new ajRangeFile Create a range object from a file
 ** @delete ajRangeDel Default destructor for range objects
-** @modify ajRangeGet Load a range object
 ** @modify ajRangeChange Set the values of a start and end in a range element
 ** @modify ajRangeBegin Sets the range values relative to the Begin value
 ** @use ajRangeNumber Return the number of ranges in a range object
@@ -30,7 +31,6 @@ extern "C"
 ** @use ajRangeOverlaps Detect overlaps of a set of ranges to a seq region
 ** @use ajRangeOrdered Test if ranges are in ascending non-overlapping order
 ** @use ajRangeDefault Test if the default range has been set
-** @input ajRangeFile Load a range object from a file
 **
 ** @attr n [ajint] Number of ranges
 ** @attr start [ajint*] From positions

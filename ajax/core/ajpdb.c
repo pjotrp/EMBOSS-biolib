@@ -1179,7 +1179,7 @@ AjBool ajPdbChnidToNum(char id, const AjPPdb pdb, ajint *chn)
 ** structures (which of course must first have been sorted). This is a 
 ** case-insensitive search.
 **
-** @param [r] arr [CONST AjPPdbtosp*] Array of AjOPdbtosp objects
+** @param [r] arr [AjPPdbtosp const*] Array of AjOPdbtosp objects
 ** @param [r] siz [ajint]       Size of array
 ** @param [r] id  [const AjPStr]      Search term
 **
@@ -1188,7 +1188,7 @@ AjBool ajPdbChnidToNum(char id, const AjPPdb pdb, ajint *chn)
 ** @@
 ****************************************************************************/
 
-ajint ajPdbtospArrFindPdbid(AjPPdbtosp *arr, ajint siz, const AjPStr id)
+ajint ajPdbtospArrFindPdbid(AjPPdbtosp const *arr, ajint siz, const AjPStr id)
 {
     int l;
     int m;

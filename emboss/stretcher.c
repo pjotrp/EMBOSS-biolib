@@ -45,7 +45,7 @@ static ajint stretcher_Ealign(const char *A, const char *B,
 			      ajint H,ajint *S, ajint* NC);
 static ajint stretcher_Calcons(const char *aa0, ajint n0,
 			       const char *aa1, ajint n1,
-			       ajint* res);
+			       const ajint* res);
 static ajint stretcher_Discons(const char* seqc0, const char *seqc1, ajint nc);
 static ajint stretcher_Align(const char *A, const char *B,
 			     ajint M, ajint N, ajint tb,
@@ -303,8 +303,8 @@ static ajint nmax=0;
 ** @param [r] N [ajint] Undocumented
 ** @param [r] G [ajint] Undocumented
 ** @param [r] H [ajint] Undocumented
-** @param [r] S [ajint*] Undocumented
-** @param [r] NC [ajint*] Undocumented
+** @param [w] S [ajint*] Undocumented
+** @param [w] NC [ajint*] Undocumented
 ** @return [ajint] Undocumented
 ******************************************************************************/
 
@@ -570,13 +570,13 @@ static ajint stretcher_Align(const char *A,const char *B,
 ** @param [r] n0 [ajint] Undocumented
 ** @param [r] aa1 [const char*] Undocumented
 ** @param [r] n1 [ajint] Undocumented
-** @param [r] res [ajint*] Undocumented
+** @param [r] res [const ajint*] Undocumented
 ** @return [ajint] Undocumented
 ******************************************************************************/
 
 static ajint stretcher_Calcons(const char *aa0,ajint n0,
 			       const char *aa1,ajint n1,
-			       ajint *res)
+			       const ajint *res)
 {
     ajint i0;
     ajint i1;
@@ -584,7 +584,7 @@ static ajint stretcher_Calcons(const char *aa0,ajint n0,
     ajint nc;
     char *sp0;
     char *sp1;
-    ajint *rp;
+    const ajint *rp;
     const char *sq1;
     const char *sq2;
 
@@ -1013,8 +1013,8 @@ static ajint stretcher_Discons(const char *seqc0, const char *seqc1, ajint nc)
 ** @param [r] B [const unsigned char*] Undocumented
 ** @param [r] M [ajint] Undocumented
 ** @param [r] N [ajint] Undocumented
-** @param [r] S [ajint*] Undocumented
-** @param [r] NC [ajint*] Undocumented
+** @param [w] S [ajint*] Undocumented
+** @param [w] NC [ajint*] Undocumented
 ** @return [ajint] Undocumented
 ******************************************************************************/
 

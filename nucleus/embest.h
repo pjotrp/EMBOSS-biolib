@@ -273,35 +273,37 @@ FILE *openfile_in_seqpath_arg(char *basename, char *ext, char *mode,
 AjPSeq into_sequence( char *name, char *desc, char *s );
 AjPSeq subseq( AjPSeq seq, ajint start, ajint stop );
 
-EmbPEstAlign embEstAlignNonRecursive ( AjPSeq est, AjPSeq genome,
+EmbPEstAlign embEstAlignNonRecursive ( const AjPSeq est, const AjPSeq genome,
 				       ajint match, ajint mismatch,
 				       ajint gap_penalty, ajint intron_penalty,
 				       ajint splice_penalty,
-				       AjPSeq splice_sites,
+				       const AjPSeq splice_sites,
 				       ajint backtrack, ajint needleman,
 				       ajint init_path );
 
-EmbPEstAlign embEstAlignLinearSpace ( AjPSeq est, AjPSeq genome,
+EmbPEstAlign embEstAlignLinearSpace ( const AjPSeq est, const AjPSeq genome,
 				      ajint match, ajint mismatch,
 				      ajint gap_penalty, ajint intron_penalty,
 				      ajint splice_penalty,
-				      AjPSeq splice_sites,
+				      const AjPSeq splice_sites,
 				      float max_area );
 
-AjPSeq       embEstFindSpliceSites( AjPSeq genome, ajint direction );
+AjPSeq       embEstFindSpliceSites( const AjPSeq genome, ajint direction );
 void         embEstFreeAlign( EmbPEstAlign *ge );
 ajint          embEstGetSeed (void);
 void         embEstMatInit (ajint match, ajint mismatch, ajint gap,
 			    ajint neutral, char pad_char);
-void         embEstOutBlastStyle ( AjPFile ofile, AjPSeq genome, AjPSeq est,
-				   EmbPEstAlign ge, ajint match,
-				   ajint mismatch, ajint gap_penalty,
-				   ajint intron_penalty,
-				   ajint splice_penalty,
-				   ajint gapped, ajint reverse  );
+void         embEstOutBlastStyle ( AjPFile ofile,
+				  const AjPSeq genome, const AjPSeq est,
+				  const EmbPEstAlign ge, ajint match,
+				  ajint mismatch, ajint gap_penalty,
+				  ajint intron_penalty,
+				  ajint splice_penalty,
+				  ajint gapped, ajint reverse  );
 
-void         embEstPrintAlign( AjPFile ofile, AjPSeq genome, AjPSeq est,
-			       EmbPEstAlign ge, ajint width );
+void         embEstPrintAlign( AjPFile ofile,
+			      const AjPSeq genome, const AjPSeq est,
+			      const EmbPEstAlign ge, ajint width );
 void         embEstSetDebug (void);
 void         embEstSetVerbose (void);
 AjPSeq       embEstShuffleSeq( AjPSeq seq, ajint in_place, ajint *seed );

@@ -152,12 +152,12 @@ void ajRangeDel(AjPRange *thys)
 
 /* @func ajRangeGet ***********************************************************
 **
-** Load a range object
+** Create a range object from a string
 **
 ** @param [r] str [const AjPStr] range string
 **
 ** @return [AjPRange] range object
-** @category new [AjPRange] Load a range object
+** @category new [AjPRange] Create a range object from a string
 ** @@
 ******************************************************************************/
 

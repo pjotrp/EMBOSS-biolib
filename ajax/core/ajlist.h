@@ -71,8 +71,8 @@ typedef struct AjSListNode {
 ** @cast ajListstrLength get the number of nodes in an AjPStr linked list.
 ** @cast ajListPeek Returns the first node but keeps it on the list
 ** @cast ajListstrPeek Returns the first node but keeps it on the list
-** @cast ajListPop Removes and returns the first node.
-** @cast ajListstrPop Removes and returns the first AjPStr node.
+** @modify ajListPop Removes and returns the first node.
+** @modify ajListstrPop Removes and returns the first AjPStr node.
 ** @use ajListFind For each node in the list call a function
 **                 and return ajTrue when found.
 ** @use ajListstrFind For each node in the list call a function
@@ -107,12 +107,12 @@ typedef struct AjSList {
 ** @attr Dir [AjBool] Direction of last iterative move
 ** @attr Modify [AjBool] Allows iterator to modify the sequence
 **
-** @new ajListIter Default constructor for a read-only list iterator
-** @new ajListIterMod Constructor for a list iterator that can modify the list
+** @new ajListIter Default constructor
+** @new ajListIterRead Default constructor for a read-only list iterator
 ** @cast ajListIterDone Tests whether an iterator is finished.
 ** @delete ajListIterFree Deletes a list iterator.
 ** @cast ajListIterMore Tests whether iterator can return another item.
-** @cast ajListIterNext Returns next item using iterator, or steps off the end.
+** @modify ajListIterNext Returns next item using iterator, or steps off the end.
 ** @modify ajListRemove Removes an item at the current iterator.
 ** @modify ajListstrRemove Removes an AjPStr item at the current iterator.
 ** @modify ajListInsert Inserts an item at the current iterator.

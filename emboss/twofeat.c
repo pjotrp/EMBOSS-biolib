@@ -52,34 +52,39 @@ typedef struct SHit
 
  	  
 
-static void twofeat_rippledown(AjPFeattable tabA, AjPFeattable tabB,
+static void twofeat_rippledown(const AjPFeattable tabA,
+			       const AjPFeattable tabB,
 			       ajint overlapi, ajint minrange,
 			       ajint maxrange, ajint
 			       rangetypei, ajint sensei, ajint orderi,
 			       AjPFeattable outtab,
-			       AjBool twoout, AjPStr typeout);
+			       AjBool twoout, const AjPStr typeout);
 static AjBool twofeat_check_match(AjPFeature gfA, AjPFeature gfB,
 				  PHit *detail, ajint overlapi,
 				  ajint minrange, ajint maxrange, ajint
 				  rangetypei, ajint sensei, ajint orderi);
-static void twofeat_sort_hits(AjPList hitlist, AjBool twoout, AjPStr
-			      typeout, AjPFeattable outtab);
-static void twofeat_find_features(AjPSeq seq, AjPFeattable tab,
-				  ajint begin, ajint end, AjPStr source,
-				  AjPStr type, ajint sense, float minscore,
-				  float maxscore, AjPStr tag, AjPStr value);
-static AjBool twofeat_MatchFeature(AjPFeature gf, AjPStr source, AjPStr type,
+static void twofeat_sort_hits(const AjPList hitlist, AjBool twoout,
+			      const AjPStr typeout, AjPFeattable outtab);
+static void twofeat_find_features(const AjPSeq seq, AjPFeattable tab,
+				  ajint begin, ajint end, const AjPStr source,
+				  const AjPStr type, ajint sense,
+				  float minscore,  float maxscore,
+				  const AjPStr tag, const AjPStr value);
+static AjBool twofeat_MatchFeature(const AjPFeature gf,
+				   const AjPStr source, const AjPStr type,
 				   ajint sense, float minscore,
-				   float maxscore, AjPStr tag, AjPStr value,
+				   float maxscore,
+				   const AjPStr tag, const AjPStr value,
 				   AjBool *tagsmatch);
-static AjBool twofeat_MatchPatternTags(AjPFeature feat, AjPStr tpattern,
-				       AjPStr vpattern);
+static AjBool twofeat_MatchPatternTags(const AjPFeature feat,
+				       const AjPStr tpattern,
+				       const AjPStr vpattern);
 static PHit twofeat_HitsNew();
 static void twofeat_HitsDel(PHit *pthis);
-static ajint twofeat_get_overlap_type(AjPStr overlap);
-static ajint twofeat_get_range_type(AjPStr rangetype);
-static ajint twofeat_get_sense_type(AjPStr sense);
-static ajint twofeat_get_order_type(AjPStr order);
+static ajint twofeat_get_overlap_type(const AjPStr overlap);
+static ajint twofeat_get_range_type(const AjPStr rangetype);
+static ajint twofeat_get_sense_type(const AjPStr sense);
+static ajint twofeat_get_order_type(const AjPStr order);
 
 
 
@@ -301,27 +306,28 @@ int main(int argc, char **argv)
 ** Add any required hits from the hit-list to the output feature table
 ** 
 **
-** @param [r] tabA [AjPFeattable] table A of features to compare to tabB
-** @param [r] tabB [AjPFeattable] table B of features to compare to tabA
+** @param [r] tabA [const AjPFeattable] table A of features to compare to tabB
+** @param [r] tabB [const AjPFeattable] table B of features to compare to tabA
 ** @param [r] overlapi [ajint] types of overlap allowed
 ** @param [r] minrange [ajint] min distance allowed
 ** @param [r] maxrange [ajint] max distance allowed
 ** @param [r] rangetypei [ajint] where to measure the distance from
 ** @param [r] sensei [ajint] sense relationships allowed
 ** @param [r] orderi [ajint] order relationships allowed
-** @param [r] outtab [AjPFeattable] output feature table
+** @param [u] outtab [AjPFeattable] output feature table
 ** @param [r] twoout [AjBool] True=write both features, else make a single one
-** @param [r] typeout [AjPStr] if a single feature, this is its type name
+** @param [r] typeout [const AjPStr] if a single feature, this is its type name
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void twofeat_rippledown(AjPFeattable tabA, AjPFeattable tabB,
+static void twofeat_rippledown(const AjPFeattable tabA,
+			       const AjPFeattable tabB,
 			       ajint overlapi, ajint minrange,
 			       ajint maxrange, ajint rangetypei,
 			       ajint sensei, ajint orderi,
 			       AjPFeattable outtab, AjBool twoout,
-			       AjPStr typeout)
+			       const AjPStr typeout)
 {
 
 
@@ -389,16 +395,16 @@ static void twofeat_rippledown(AjPFeattable tabA, AjPFeattable tabB,
 **
 ** Outputs the pairs of hits to the output feature table
 **
-** @param [r] hitlist [AjPList] list of matches (PHit) 
+** @param [r] hitlist [const AjPList] list of matches (PHit) 
 ** @param [r] twoout [AjBool] True if want pairs of features output
-** @param [r] typeout [AjPStr]  name of type if want single features
+** @param [r] typeout [const AjPStr]  name of type if want single features
 ** @param [u] outtab [AjPFeattable] output feature table
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void twofeat_sort_hits(AjPList hitlist, AjBool twoout, AjPStr
-			      typeout, AjPFeattable outtab)
+static void twofeat_sort_hits(const AjPList hitlist, AjBool twoout,
+			      const AjPStr typeout, AjPFeattable outtab)
 {
     char strand;
     ajint frame = 0;
@@ -472,25 +478,26 @@ static void twofeat_sort_hits(AjPList hitlist, AjBool twoout, AjPStr
 **
 ** Finds seq features matching the required criteria and puts them in tab
 **
-** @param [r] seq [AjPSeq] the sequence
+** @param [r] seq [const AjPSeq] the sequence
 ** @param [u] tab [AjPFeattable] Feature table to populate
 ** @param [r] begin [ajint] start position in sequence
 ** @param [r] end [ajint] end position in sequence
-** @param [r] source [AjPStr] source criterion
-** @param [r] type [AjPStr] type criterion
+** @param [r] source [const AjPStr] source criterion
+** @param [r] type [const AjPStr] type criterion
 ** @param [r] sense [ajint] sense criterion
 ** @param [r] minscore [float] min score criterion
 ** @param [r] maxscore [float] max score criterion
-** @param [r] tag [AjPStr] tag criterion
-** @param [r] value [AjPStr] tag value criterion
+** @param [r] tag [const AjPStr] tag criterion
+** @param [r] value [const AjPStr] tag value criterion
 ** @return [void] 
 ** @@
 ******************************************************************************/
 
-static void twofeat_find_features(AjPSeq seq, AjPFeattable tab,
-				  ajint begin, ajint end, AjPStr source,
-				  AjPStr type, ajint sense, float minscore,
-				  float maxscore, AjPStr tag, AjPStr value)
+static void twofeat_find_features(const AjPSeq seq, AjPFeattable tab,
+				  ajint begin, ajint end, const AjPStr source,
+				  const  AjPStr type, ajint sense,
+				  float minscore, float maxscore,
+				  const AjPStr tag, const AjPStr value)
 {
 
     /* get feature table of sequence */
@@ -550,22 +557,24 @@ static void twofeat_find_features(AjPSeq seq, AjPFeattable tab,
 **
 ** Test if a feature matches a set of criteria
 **
-** @param [r] gf [AjPFeature] Feature to test
-** @param [r] source [AjPStr] Required Source pattern
-** @param [r] type [AjPStr] Required Type pattern
+** @param [r] gf [const AjPFeature] Feature to test
+** @param [r] source [const AjPStr] Required Source pattern
+** @param [r] type [const AjPStr] Required Type pattern
 ** @param [r] sense [ajint] Required Sense pattern +1,0,-1 (or other value$
 ** @param [r] minscore [float] Min required Score pattern
 ** @param [r] maxscore [float] Max required Score pattern
-** @param [r] tag [AjPStr] Required Tag pattern
-** @param [r] value [AjPStr] Required Value pattern
-** @param [u] tagsmatch [AjBool *] true if a join has matching tag/values
+** @param [r] tag [const AjPStr] Required Tag pattern
+** @param [r] value [const AjPStr] Required Value pattern
+** @param [w] tagsmatch [AjBool*] true if a join has matching tag/values
 ** @return [AjBool] True if feature matches criteria
 ** @@
 ******************************************************************************/
 
-static AjBool twofeat_MatchFeature(AjPFeature gf, AjPStr source, AjPStr type,
+static AjBool twofeat_MatchFeature(const AjPFeature gf,
+				   const AjPStr source, const AjPStr type,
 				   ajint sense, float minscore,
-				   float maxscore, AjPStr tag, AjPStr value,
+				   float maxscore,
+				   const AjPStr tag, const AjPStr value,
 				   AjBool *tagsmatch)
 {
     AjBool scoreok;
@@ -610,16 +619,17 @@ static AjBool twofeat_MatchFeature(AjPFeature gf, AjPStr source, AjPStr type,
 ** Checks for a match of the tagpattern and valuepattern to at least one
 ** tag=value pair
 **
-** @param [r] feat [AjPFeature] Feature to process
-** @param [r] tpattern [AjPStr] tags pattern to match with
-** @param [r] vpattern [AjPStr] values pattern to match with
+** @param [r] feat [const AjPFeature] Feature to process
+** @param [r] tpattern [const AjPStr] tags pattern to match with
+** @param [r] vpattern [const AjPStr] values pattern to match with
 **
 ** @return [AjBool] ajTrue = found a match
 ** @@
 ******************************************************************************/
 
-static AjBool twofeat_MatchPatternTags(AjPFeature feat, AjPStr tpattern,
-				       AjPStr vpattern)
+static AjBool twofeat_MatchPatternTags(const AjPFeature feat,
+				       const AjPStr tpattern,
+				       const AjPStr vpattern)
 {
     AjIList titer;                      /* iterator for feat */
     static AjPStr tagnam = NULL;        /* tag structure */
@@ -695,7 +705,7 @@ static PHit twofeat_HitsNew()
 **
 ** Deletes a PHit object
 **
-** @param [wP] pthis [PHit *] Pointer to object to be deleted
+** @param [d] pthis [PHit *] Pointer to object to be deleted
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -723,9 +733,9 @@ static void twofeat_HitsDel(PHit *pthis)
 ** check for overlap, minrange, maxrange, rangetype, sense, order
 ** put the results in a PHit object
 **
-** @param [r] gfA [AjPFeature] Feature A
-** @param [r] gfB [AjPFeature] Feature B
-** @param [r] detail [PHit *] Returned details of match 
+** @param [u] gfA [AjPFeature] Feature A - stored for adding new tags
+** @param [u] gfB [AjPFeature] Feature B - stored for adding new tags
+** @param [w] detail [PHit *] Returned details of match 
 ** @param [r] overlapi [ajint] types of overlap allowed
 ** @param [r] minrange [ajint] min distance allowed
 ** @param [r] maxrange [ajint] max distance allowed
@@ -758,6 +768,7 @@ static AjBool twofeat_check_match(AjPFeature gfA, AjPFeature gfB,
     sB = gfB->Start;
     eB = gfB->End;
 
+    *detail = NULL;
 
     ajDebug("Next gfA=%S %d..%d\n", gfA->Type, gfA->Start, gfA->End);
     ajDebug("Next gfB=%S %d..%d\n", gfB->Type, gfB->Start, gfB->End);
@@ -926,12 +937,12 @@ static AjBool twofeat_check_match(AjPFeature gfA, AjPFeature gfB,
 ** converts the overlap code to an integer
 ** 
 **
-** @param [r] overlap [AjPStr] Overlap code
+** @param [r] overlap [const AjPStr] Overlap code
 ** @return [ajint] integer value
 ** @@
 ******************************************************************************/
 
-static ajint twofeat_get_overlap_type(AjPStr overlap)
+static ajint twofeat_get_overlap_type(const AjPStr overlap)
 {
 
     if(ajStrMatchC(overlap, "A"))
@@ -963,12 +974,12 @@ static ajint twofeat_get_overlap_type(AjPStr overlap)
 ** converts the range code to an integer
 ** 
 **
-** @param [r] rangetype [AjPStr] Range code
+** @param [r] rangetype [const AjPStr] Range code
 ** @return [ajint] integer value
 ** @@
 ******************************************************************************/
 
-static ajint twofeat_get_range_type(AjPStr rangetype)
+static ajint twofeat_get_range_type(const AjPStr rangetype)
 {
     if(ajStrMatchC(rangetype, "N"))
 	return RA_NEAREST;
@@ -995,12 +1006,12 @@ static ajint twofeat_get_range_type(AjPStr rangetype)
 ** converts the sense code to an integer
 ** 
 **
-** @param [r] sense [AjPStr] sense code
+** @param [r] sense [const AjPStr] sense code
 ** @return [ajint] integer value
 ** @@
 ******************************************************************************/
 
-static ajint twofeat_get_sense_type(AjPStr sense)
+static ajint twofeat_get_sense_type(const AjPStr sense)
 {
     if(ajStrMatchC(sense, "A"))
 	return SN_ANY;
@@ -1024,12 +1035,12 @@ static ajint twofeat_get_sense_type(AjPStr sense)
 ** converts the order code to an integer
 ** 
 **
-** @param [r] order [AjPStr] order code
+** @param [r] order [const AjPStr] order code
 ** @return [ajint] integer value
 ** @@
 ******************************************************************************/
 
-static ajint twofeat_get_order_type(AjPStr order)
+static ajint twofeat_get_order_type(const AjPStr order)
 {
     if(ajStrMatchC(order, "A"))
 	return OR_ANY;

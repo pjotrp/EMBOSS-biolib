@@ -93,18 +93,19 @@ static AjBool emowse_molwt_outofrange(double thys, double given, double range);
 static ajint emowse_read_data(AjPFile inf, EmbPMdata** data);
 static ajint emowse_sort_data(const void *a, const void *b);
 static ajint emowse_hit_sort(const void *a, const void *b);
-static void emowse_match(EmbPMdata* data, ajint dno, AjPList flist,
+static void emowse_match(EmbPMdata const * data, ajint dno, AjPList flist,
 			 ajint nfrags, double tol,
-			 const AjPSeq seq, AjPList* hlist,
+			 const AjPSeq seq, AjPList hlist,
 			 double partials, double cmw, ajint enz,
-			 AjPDouble freqs);
+			 const AjPDouble freqs);
 
 static ajint emowse_seq_comp(ajint bidx, ajint thys, const AjPSeq seq,
-			     EmbPMdata *data, EmbPMolFrag *frags);
+			     EmbPMdata const *data, EmbPMolFrag const *frags);
 static ajint emowse_get_index(double actmw, double maxmw, double minmw,
-			      EmbPMolFrag *frags, ajint fno, double *bestmw,
+			      EmbPMolFrag const *frags,
+			      ajint fno, double *bestmw,
 			      ajint *index, ajint thys, const AjPSeq seq,
-			      EmbPMdata *data);
+			      EmbPMdata const *data);
 
 static ajint emowse_seq_search(const AjPStr substr, AjPStr* s);
 static AjBool emowse_msearch(const char *seq, const char *pat, AjBool term);
@@ -112,7 +113,7 @@ static void emowse_mreverse(char *s);
 static ajint emowse_get_orc(AjPStr *orc, const char *s, ajint pos);
 static AjBool emowse_comp_search(const AjPStr substr, const char *s);
 static void emowse_print_hits(AjPFile outf, AjPList hlist, ajint dno,
-			      EmbPMdata* data);
+			      EmbPMdata const * data);
 
 
 
@@ -191,7 +192,7 @@ int main(int argc, char **argv)
 	flist  = ajListNew();
 	nfrags = embMolGetFrags(ajSeqStr(seq),rno,&flist);
 
-	emowse_match(data,dno,flist,nfrags,(double)tol,seq,&hlist,
+	emowse_match(data,dno,flist,nfrags,(double)tol,seq,hlist,
 		     (double)partials,
 	      smw,rno,freqs);
 
@@ -218,7 +219,7 @@ int main(int argc, char **argv)
 ** Undocumented.
 **
 ** @param [u] finf [AjPFile] Undocumented
-** @param [r] freqs [AjPDouble*] Undocumented
+** @param [w] freqs [AjPDouble*] Undocumented
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -282,7 +283,7 @@ static AjBool emowse_molwt_outofrange(double thys, double given, double range)
 ** Undocumented.
 **
 ** @param [u] inf [AjPFile] Undocumented
-** @param [r] data [EmbPMdata**] Undocumented
+** @param [w] data [EmbPMdata**] Undocumented
 ** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/
@@ -377,25 +378,25 @@ static ajint emowse_hit_sort(const void *a, const void *b)
 **
 ** Undocumented.
 **
-** @param [r] data [EmbPMdata*] Undocumented
+** @param [r] data [EmbPMdata const *] Undocumented
 ** @param [r] dno [ajint] Undocumented
-** @param [r] flist [AjPList] Undocumented
+** @param [u] flist [AjPList] Undocumented
 ** @param [r] nfrags [ajint] Undocumented
 ** @param [r] tol [double] Undocumented
 ** @param [r] seq [const AjPSeq] Undocumented
-** @param [r] hlist [AjPList*] Undocumented
+** @param [u] hlist [AjPList] Undocumented
 ** @param [r] partials [double] Undocumented
 ** @param [r] cmw [double] Undocumented
 ** @param [r] rno [ajint] Undocumented
-** @param [r] freqs [AjPDouble] Undocumented
+** @param [r] freqs [const AjPDouble] Undocumented
 ** @@
 ******************************************************************************/
 
-static void emowse_match(EmbPMdata* data, ajint dno, AjPList flist,
+static void emowse_match(EmbPMdata const * data, ajint dno, AjPList flist,
 			 ajint nfrags, double tol,
-			 const AjPSeq seq, AjPList* hlist,
+			 const AjPSeq seq, AjPList hlist,
 			 double partials, double cmw, ajint rno,
-			 AjPDouble freqs)
+			 const AjPDouble freqs)
 {
     double actmw;
     double minmw;
@@ -514,16 +515,16 @@ static void emowse_match(EmbPMdata* data, ajint dno, AjPList flist,
 	hits->name  = ajStrNewC(ajSeqName(seq));
 	hits->frags = frags;
 	hits->nf = nfrags;
-	ajListPush(*hlist,(void *)hits);
-	ajListSort(*hlist,emowse_hit_sort);
-	ajListPop(*hlist,(void **)&hits);
+	ajListPush(hlist,(void *)hits);
+	ajListSort(hlist,emowse_hit_sort);
+	ajListPop(hlist,(void **)&hits);
 	min = hits->score;
-	ajListPush(*hlist,(void *)hits);
+	ajListPush(hlist,(void *)hits);
 	++n;
     }
     else if(sumf>min && isumf!=1)
     {
-	ajListPop(*hlist,(void **)&hits);
+	ajListPop(hlist,(void **)&hits);
 	ajStrDel(&hits->seq);
 	ajStrDel(&hits->name);
 	ajStrDel(&hits->desc);
@@ -546,11 +547,11 @@ static void emowse_match(EmbPMdata* data, ajint dno, AjPList flist,
 	hits->frags = frags;
         hits->nf    = nfrags;
 
-	ajListPush(*hlist,(void *)hits);
-	ajListSort(*hlist,emowse_hit_sort);
-	ajListPop(*hlist,(void **)&hits);
+	ajListPush(hlist,(void *)hits);
+	ajListSort(hlist,emowse_hit_sort);
+	ajListPop(hlist,(void **)&hits);
 	min = hits->score;
-	ajListPush(*hlist,(void *)hits);
+	ajListPush(hlist,(void *)hits);
     }
     else
     {
@@ -573,21 +574,22 @@ static void emowse_match(EmbPMdata* data, ajint dno, AjPList flist,
 ** @param [r] actmw [double] Undocumented
 ** @param [r] maxmw [double] Undocumented
 ** @param [r] minmw [double] Undocumented
-** @param [r] frags [EmbPMolFrag*] Undocumented
+** @param [r] frags [EmbPMolFrag const *] Undocumented
 ** @param [r] fno [ajint] Undocumented
-** @param [r] bestmw [double*] Undocumented
-** @param [r] index [ajint*] Undocumented
+** @param [w] bestmw [double*] Undocumented
+** @param [w] index [ajint*] Undocumented
 ** @param [r] thys [ajint] Undocumented
 ** @param [r] seq [const AjPSeq] Undocumented
-** @param [r] data [EmbPMdata*] Undocumented
+** @param [r] data [EmbPMdata const *] Undocumented
 ** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
 static ajint emowse_get_index(double actmw, double maxmw, double minmw,
-			      EmbPMolFrag *frags, ajint fno, double *bestmw,
+			      EmbPMolFrag const *frags,
+			      ajint fno, double *bestmw,
 			      ajint *index, ajint thys, const AjPSeq seq,
-			      EmbPMdata *data)
+			      EmbPMdata const *data)
 {
     double mw1;
     double mw2;
@@ -728,14 +730,14 @@ static ajint emowse_get_index(double actmw, double maxmw, double minmw,
 ** @param [r] bidx [ajint] Undocumented
 ** @param [r] thys [ajint] Undocumented
 ** @param [r] seq [const AjPSeq] Undocumented
-** @param [r] data [EmbPMdata*] Undocumented
-** @param [r] frags [EmbPMolFrag*] Undocumented
+** @param [r] data [EmbPMdata const *] Undocumented
+** @param [r] frags [EmbPMolFrag const *] Undocumented
 ** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
 static ajint emowse_seq_comp(ajint bidx, ajint thys, const AjPSeq seq,
-			     EmbPMdata *data, EmbPMolFrag *frags)
+			     EmbPMdata const *data, EmbPMolFrag const *frags)
 {
     ajint beg;
     ajint end;
@@ -848,7 +850,7 @@ static void emowse_mreverse(char *s)
 ** Undocumented.
 **
 ** @param [r] substr [const AjPStr] Undocumented
-** @param [r] str [AjPStr*] Undocumented
+** @param [u] str [AjPStr*] Undocumented
 ** @return [AjBool] Undocumented
 ** @@
 ******************************************************************************/
@@ -1119,7 +1121,7 @@ static AjBool emowse_comp_search(const AjPStr substr, const char *s)
 **
 ** Undocumented.
 **
-** @param [r] orc [AjPStr*] Undocumented
+** @param [u] orc [AjPStr*] Undocumented
 ** @param [r] s [const char*] Undocumented
 ** @param [r] pos [ajint] Undocumented
 ** @return [ajint] Undocumented
@@ -1154,14 +1156,14 @@ static ajint emowse_get_orc(AjPStr *orc, const char *s, ajint pos)
 ** Undocumented.
 **
 ** @param [u] outf [AjPFile] Undocumented
-** @param [r] hlist [AjPList] Undocumented
+** @param [u] hlist [AjPList] Undocumented
 ** @param [r] dno [ajint] Undocumented
-** @param [r] data [EmbPMdata*] Undocumented
+** @param [r] data [EmbPMdata const *] Undocumented
 ** @@
 ******************************************************************************/
 
 static void emowse_print_hits(AjPFile outf, AjPList hlist, ajint dno,
-			      EmbPMdata* data)
+			      EmbPMdata const * data)
 {
     PHits hits   = NULL;
     AjIList iter = NULL;

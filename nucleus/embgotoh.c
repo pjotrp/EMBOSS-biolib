@@ -9,8 +9,8 @@
 **  Journal of Molecular Biology 162:705-708
 **
 ** @author Copyright (C) 2003--2004 Damian Counsell
-** @version $Revision: 1.9 $
-** @modified $Date: 2004/06/14 14:39:20 $
+** @version $Revision: 1.10 $
+** @modified $Date: 2004/06/21 14:06:21 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -145,7 +145,7 @@ AjPGotohCell embGotohCellCreate(ajint ajIntRow, ajint ajIntColumn,
 **
 ** If the given pointer is NULL, or a NULL pointer, simply returns.
 **
-** @param  [w] pthis [AjPGotohCell*] Pointer to the Gotoh cell to be deleted.
+** @param  [d] pthis [AjPGotohCell*] Pointer to the Gotoh cell to be deleted.
 **         The pointer is always deleted.
 ** @return [void]
 ** @category delete [AjPGotohCell] default destructor
@@ -244,26 +244,32 @@ AjPGotohCell** embGotohCellGetArray(ajint ajIntDownSeqLen,
 
 
 
+/* @section AjPGotohCell Modifiers ****************************************
+**
+** AjPGotohCell modifiers
+**
+******************************************************************************/
+
 /* @func embGotohCellCalculateSumScore ***************************************
 **
 ** Calculates Gotoh cells for summing pair score array
 **
-** @param [r] ajpFloat2dPairScores [AjPFloat2d] Pair score array
-** @param [r] ajpSeqDown [AjPSeq] Sequence down
-** @param [r] ajpSeqAcross [AjPSeq] Seqeunce across
+** @param [r] ajpFloat2dPairScores [const AjPFloat2d] Pair score array
+** @param [r] ajpSeqDown [const AjPSeq] Sequence down
+** @param [r] ajpSeqAcross [const AjPSeq] Seqeunce across
 ** @param [w] ajpGotohCellGotohScores [AjPGotohCell**] Gotoh cell array
 ** @param [r] fGapPenalty [float] Gap penalty
 ** @param [r] fExtensionPenalty [float] Gap extension penalty
 ** @return [void]
-** @category use [AjPGotohCell] fill in alignment array of
-**                ajGotohCells
+** @category modify [AjPGotohCell] fill in alignment array of
+**                  ajGotohCells
 ** @@
 ******************************************************************************/
 
 
-void embGotohCellCalculateSumScore(AjPFloat2d ajpFloat2dPairScores,
-				   AjPSeq ajpSeqDown,
-				   AjPSeq ajpSeqAcross,
+void embGotohCellCalculateSumScore(const AjPFloat2d ajpFloat2dPairScores,
+				   const AjPSeq ajpSeqDown,
+				   const AjPSeq ajpSeqAcross,
 				   AjPGotohCell **ajpGotohCellGotohScores,
 				   float fGapPenalty,
 				   float fExtensionPenalty)
@@ -447,25 +453,31 @@ void embGotohCellCalculateSumScore(AjPFloat2d ajpFloat2dPairScores,
 
 
 
+/* @section AjPGotohCell Miscellaneous ****************************************
+**
+** AjPGotohCell modifiers
+**
+******************************************************************************/
+
 /* @func embGotohCellBacktrace ************************************************
 **
 **  backtraces through the elements of a pair-scoring array according
 **  to the method of Gotoh,  O., "An Improved algorithm for matching
 **  biological sequences." Journal of Molecular Biology 162:705-708
 **
-** @param [r] ajpGotohCellGotohScores [AjPGotohCell**] Gotoh cell array
-** @param [r] ajpSeqDown [AjPSeq] Sequence down
-** @param [r] ajpSeqAcross [AjPSeq] Sequence across
-** @param [r] ajpListGotohCellsMaxScoringTrace [AjPList] Trace
+** @param [r] ajpGotohCellGotohScores [AjPGotohCell const **] Gotoh cell array
+** @param [r] ajpSeqDown [const AjPSeq] Sequence down
+** @param [r] ajpSeqAcross [const AjPSeq] Sequence across
+** @param [u] ajpListGotohCellsMaxScoringTrace [AjPList] Trace
 ** @return [ajint] length of alignment
 ** @category use [AjPGotohCell] find highest scoring path through
 **                array of ajGotohCells
 ** @@
 ******************************************************************************/
 
-ajint embGotohCellBacktrace(AjPGotohCell **ajpGotohCellGotohScores,
-			    AjPSeq ajpSeqDown,
-			    AjPSeq ajpSeqAcross,
+ajint embGotohCellBacktrace(AjPGotohCell const **ajpGotohCellGotohScores,
+			    const AjPSeq ajpSeqDown,
+			    const AjPSeq ajpSeqAcross,
 			    AjPList ajpListGotohCellsMaxScoringTrace)
 {
   AjPGotohCell ajpGotohCellBackTrace;
@@ -631,9 +643,9 @@ ajint embGotohCellBacktrace(AjPGotohCell **ajpGotohCellGotohScores,
 **
 ** scores the residues of two protein sequences against a scoring matrix
 **
-** @param [r] ajpMatrixFscoring [AjPMatrixf] scoring matrix
-** @param [r] ajpSeqDown [AjPSeq] first sequence
-** @param [r] ajpSeqAcross [AjPSeq] second sequence
+** @param [r] ajpMatrixFscoring [const AjPMatrixf] scoring matrix
+** @param [r] ajpSeqDown [const AjPSeq] first sequence
+** @param [r] ajpSeqAcross [const AjPSeq] second sequence
 ** @param [r] fExtensionPenalty [float] alignment extension penalty
 **
 ** @return [AjPFloat2d] 2D matrix of pair scores
@@ -641,9 +653,9 @@ ajint embGotohCellBacktrace(AjPGotohCell **ajpGotohCellGotohScores,
 ******************************************************************************/
 
 
-AjPFloat2d embGotohPairScore(AjPMatrixf ajpMatrixFscoring,
-			     AjPSeq ajpSeqDown,
-			     AjPSeq ajpSeqAcross,
+AjPFloat2d embGotohPairScore(const AjPMatrixf ajpMatrixFscoring,
+			     const AjPSeq ajpSeqDown,
+			     const AjPSeq ajpSeqAcross,
 			     float fExtensionPenalty)
 {
   ajint ajIntDownSeqLen;
@@ -745,15 +757,16 @@ AjPFloat2d embGotohPairScore(AjPMatrixf ajpMatrixFscoring,
 ** unloads the elements of a stack of backtraced AjOGotohCells and reads the
 **  corresponding residues from the aligned sequences
 **
-** @param [r] ajpListGotohCellsMaxScoringTrace [AjPList] stack of AjGotohCells
-** @param [r] ajpSeqDown [AjPSeq] first sequence
-** @param [r] ajpSeqAcross [AjPSeq] second sequence
+** @param [r] ajpListGotohCellsMaxScoringTrace [const AjPList] stack of
+**                           AjGotohCells
+** @param [u] ajpSeqDown [AjPSeq] first sequence replaced by alignment
+** @param [u] ajpSeqAcross [AjPSeq] second sequence replaced by alignment
 **
 ** @return [ajint] length of alignment trace
 ** @@
 ******************************************************************************/
 
-ajint embGotohReadOffBacktrace(AjPList ajpListGotohCellsMaxScoringTrace,
+ajint embGotohReadOffBacktrace(const AjPList ajpListGotohCellsMaxScoringTrace,
 			       AjPSeq ajpSeqDown,
 			       AjPSeq ajpSeqAcross)
 {

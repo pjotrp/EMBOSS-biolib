@@ -777,20 +777,21 @@ AjPFile embDbiFileIndex(const AjPStr indexdir, const AjPStr field,
 ** @param [r] date [const char[4]] Date
 ** @param [r] maxfilelen [ajint] Max file length
 ** @param [r] nfiles [ajint] Number of files indexes
-** @param [r] divfiles [CONST AjPStr*] Division filenames
-** @param [r] seqfiles [CONST AjPStr*] Sequence filenames (or NULL if none)
+** @param [r] divfiles [AjPStr const *] Division filenames
+** @param [r] seqfiles [AjPStr const *] Sequence filenames (or NULL if none)
 ** @return [void]
 ******************************************************************************/
 
 void embDbiWriteDivision(const AjPStr indexdir,
 			 const AjPStr dbname, const AjPStr release,
 			 const char date[4],  ajint maxfilelen, ajint nfiles,
-			 AjPStr* divfiles, AjPStr* seqfiles)
+			 AjPStr const * divfiles, AjPStr const * seqfiles)
 {
     AjPFile divFile;
     AjPStr tmpfname = NULL;
     ajint i;
     ajint filesize;
+
     short recsize;
 
     ajStrAssC(&tmpfname, "division.lkp");
@@ -936,14 +937,15 @@ void embDbiWriteTrg(AjPFile file, ajint maxfieldlen, ajint idnum,
 ** @param [r] ifile [ajint] Input file number (used for temporary file names)
 ** @param [r] dbname [const AjPStr] Database name
 **                                  (used for temporary file names)
-** @param [r] fields [CONST AjPStr*] Field names (used for temporary
+** @param [r] fields [AjPStr const *] Field names (used for temporary
 **                                   file names)
 ** @param [r] nfields [ajint] Number of fields
 ** @return [AjPFile] Sort file for entries
 ******************************************************************************/
 
-AjPFile embDbiSortOpen(AjPFile* alistfile, ajint ifile, const AjPStr dbname,
-		       AjPStr* fields, ajint nfields)
+AjPFile embDbiSortOpen(AjPFile* alistfile,
+		       ajint ifile, const AjPStr dbname,
+		       AjPStr const * fields, ajint nfields)
 {
     AjPFile elistfile;
     ajint ifield;
@@ -990,7 +992,7 @@ void embDbiSortClose(AjPFile* elistfile, AjPFile* alistfile, ajint nfields)
 ** Stores data for current entry in memory by appending to lists
 **
 ** @param [u] idlist [AjPList] List of entry IDs
-** @param [r] fieldList [CONST AjPList*] List of field tokens for each field
+** @param [u] fieldList [AjPList*] List of field tokens for each field
 ** @param [r] nfields [ajint] Number of fields
 ** @param [u] entry [EmbPEntry] Current entry
 ** @param [r] ifile [ajint] Current input file number

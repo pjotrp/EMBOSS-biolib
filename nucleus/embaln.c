@@ -47,7 +47,7 @@
 ** @param [r] gapopen [float] gap opening penalty
 ** @param [r] gapextend [float] gap extension penalty
 ** @param [w] path [float *] path matrix
-** @param [r] sub [const AjFloatArray *] substitution matrix from AjPMatrixf
+** @param [r] sub [float * const *] substitution matrix from AjPMatrixf
 ** @param [r] cvt [const AjPSeqCvt] Conversion array for AjPMatrixf
 ** @param [w] compass [ajint *] Path direction pointer array
 ** @param [r] show [AjBool] Display path matrix
@@ -61,7 +61,7 @@
 void embAlignPathCalc(const char *a, const char *b,
 		      ajint lena, ajint lenb, float gapopen,
 		      float gapextend, float *path,
-		      const AjFloatArray *sub, const AjPSeqCvt cvt,
+		      float * const *sub, const AjPSeqCvt cvt,
 		      ajint *compass, AjBool show)
 {
     ajint xpos;
@@ -221,7 +221,7 @@ void embAlignPathCalc(const char *a, const char *b,
 ** @param [r] gapopen [float] gap opening penalty
 ** @param [r] gapextend [float] gap extension penalty
 ** @param [w] path [float *] path matrix
-** @param [r] sub [const AjFloatArray *] substitution matrix from AjPMatrixf
+** @param [r] sub [float * const *] substitution matrix from AjPMatrixf
 ** @param [r] cvt [const AjPSeqCvt] Conversion array for AjPMatrixf
 ** @param [w] compass [ajint *] Path direction pointer array
 ** @param [r] show [AjBool] Display path matrix
@@ -234,7 +234,7 @@ void embAlignPathCalc(const char *a, const char *b,
 
 void embAlignPathCalcSW(const char *a, const char *b, ajint lena, ajint lenb,
 			float gapopen, float gapextend, float *path,
-			const AjFloatArray *sub, const AjPSeqCvt cvt, ajint *compass,
+			float * const *sub, const AjPSeqCvt cvt, ajint *compass,
 			AjBool show)
 {
     ajint xpos;
@@ -402,7 +402,7 @@ void embAlignPathCalcSW(const char *a, const char *b, ajint lena, ajint lenb,
 ** @param [r] gapopen [float] gap opening penalty
 ** @param [r] gapextend [float] gap extension penalty
 ** @param [w] path [float *] path matrix
-** @param [r] sub [const AjFloatArray*] substitution matrix from AjPMatrixf
+** @param [r] sub [float * const*] substitution matrix from AjPMatrixf
 ** @param [r] cvt [const AjPSeqCvt] Conversion array for AjPMatrixf
 ** @param [w] compass [ajint *] Path direction pointer array
 ** @param [r] show [AjBool] Display path matrix
@@ -413,7 +413,7 @@ void embAlignPathCalcSW(const char *a, const char *b, ajint lena, ajint lenb,
 static void alignPathCalcOld(const char *a, const char *b,
 			     ajint lena, ajint lenb,
 			     float gapopen, float gapextend, float *path,
-			     const AjFloatArray *sub, const AjPSeqCvt cvt,
+			     float * const *sub, const AjPSeqCvt cvt,
 			     ajint *compass, AjBool show)
 {
     ajint xpos;
@@ -568,7 +568,7 @@ static void alignPathCalcOld(const char *a, const char *b,
 ** @param [r] path [const float *] path matrix
 ** @param [r] a [const AjPSeq] first sequence
 ** @param [r] b [const AjPSeq] second sequence
-** @param [r] fmatrix [const AjFloatArray *] substitution matrix from
+** @param [r] fmatrix [float * const *] substitution matrix from
 **                    AjPMatrixf
 ** @param [r] cvt [const AjPSeqCvt] Conversion array for AjPMatrixf
 ** @param [r] lena [ajint] length of first sequence
@@ -584,7 +584,7 @@ static void alignPathCalcOld(const char *a, const char *b,
 ******************************************************************************/
 
 float embAlignScoreNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
-			    const AjFloatArray *fmatrix,
+			    float * const *fmatrix,
 			    const AjPSeqCvt cvt, ajint lena, ajint lenb,
 			    float gapopen, const ajint *compass,
 			    float gapextend, ajint *start1, ajint *start2)
@@ -743,7 +743,7 @@ float embAlignScoreNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 ** @param [r] b [const AjPSeq] second sequence
 ** @param [r] lena [ajint] length of first sequence
 ** @param [r] lenb [ajint] length of second sequence
-** @param [r] sub [const AjFloatArray *] substitution matrix from AjPMatrixf
+** @param [r] sub [float * const *] substitution matrix from AjPMatrixf
 ** @param [r] cvt [const AjPSeqCvt] Conversion array for AjPMatrixf
 ** @param [w] start1 [ajint *] start of alignment in first sequence
 ** @param [w] start2 [ajint *] start of alignment in second sequence
@@ -754,7 +754,7 @@ float embAlignScoreNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 float embAlignScoreSWMatrix(const float *path, const ajint *compass,
 			    float gapopen,
 			    float gapextend,  const AjPSeq a, const AjPSeq b,
-			    ajint lena, ajint lenb, const AjFloatArray *sub,
+			    ajint lena, ajint lenb, float * const *sub,
 			    const AjPSeqCvt cvt, ajint *start1, ajint *start2)
 {
     ajint i;
@@ -928,7 +928,7 @@ float embAlignScoreSWMatrix(const float *path, const ajint *compass,
 ** @param [w] n [AjPStr *] alignment for second sequence
 ** @param [r] lena [ajint] length of first sequence
 ** @param [r] lenb [ajint] length of second sequence
-** @param [r] sub [const AjFloatArray *] substitution matrix from AjPMatrixf
+** @param [r] sub [float * const *] substitution matrix from AjPMatrixf
 ** @param [r] cvt [const AjPSeqCvt] Conversion array for AjPMatrixf
 ** @param [w] start1 [ajint *] start of alignment in first sequence
 ** @param [w] start2 [ajint *] start of alignment in second sequence
@@ -941,7 +941,7 @@ void embAlignWalkSWMatrix(const float *path, const ajint *compass,
 			  float gapextend, const AjPSeq a, const AjPSeq b,
 			  AjPStr *m,
 			  AjPStr *n, ajint lena, ajint lenb,
-			  const AjFloatArray *sub,
+			  float * const *sub,
 			  const AjPSeqCvt cvt, ajint *start1, ajint *start2)
 {
     ajint i;
@@ -1097,7 +1097,7 @@ void embAlignWalkSWMatrix(const float *path, const ajint *compass,
 ** @param [r] gapextend [float] gap extension penalty
 ** @param [r] cvt [const AjPSeqCvt] Conversion array for AjPMatrixf
 ** @param [r] compass [const ajint*] Path direction pointer array
-** @param [r] sub [const AjFloatArray*] substitution matrix from AjPMatrixf
+** @param [r] sub [float * const*] substitution matrix from AjPMatrixf
 **
 ** @return [void]
 ******************************************************************************/
@@ -1108,7 +1108,7 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 			  ajint *start2, float gapopen,
 			  float gapextend, const AjPSeqCvt cvt,
 			  const ajint *compass,
-			  const AjFloatArray *sub)
+			  float * const *sub)
 {
     ajint i;
     ajint j;
@@ -1251,7 +1251,7 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 ** @param [r] start2 [ajint] start of alignment in second sequence
 ** @param [r] score [float] alignment score from AlignScoreX
 ** @param [r] mark [AjBool] mark matches and conservatives
-** @param [r] sub [const AjFloatArray *] substitution matrix
+** @param [r] sub [float * const *] substitution matrix
 ** @param [r] cvt [const AjPSeqCvt] conversion table for matrix
 ** @param [r] namea [const char *] name of first sequence
 ** @param [r] nameb [const char *] name of second sequence
@@ -1264,7 +1264,7 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 void embAlignPrintGlobal(AjPFile outf, const char *a, const char *b,
 			 const AjPStr m, const AjPStr n,
 			 ajint start1, ajint start2, float score, AjBool mark,
-			 const AjFloatArray *sub, const AjPSeqCvt cvt,
+			 float * const *sub, const AjPSeqCvt cvt,
 			 const char *namea,
 			 const char *nameb, ajint begina, ajint beginb)
 {
@@ -1562,7 +1562,7 @@ void embAlignPrintGlobal(AjPFile outf, const char *a, const char *b,
 ** @param [r] start2 [ajint] start of alignment in second sequence
 ** @param [r] score [float] alignment score from AlignScoreX
 ** @param [r] mark [AjBool] mark matches and conservatives
-** @param [r] sub [const AjFloatArray *] substitution matrix
+** @param [r] sub [float * const *] substitution matrix
 ** @param [r] cvt [const AjPSeqCvt] conversion table for matrix
 ** @param [r] namea [const char*] name of first sequence
 ** @param [r] nameb [const char*] name of second sequence
@@ -1575,7 +1575,7 @@ void embAlignPrintGlobal(AjPFile outf, const char *a, const char *b,
 void embAlignPrintLocal(AjPFile outf, const char *a, const char *b,
 			const AjPStr m, const AjPStr n,
 			ajint start1, ajint start2, float score, AjBool mark,
-			const AjFloatArray *sub, const AjPSeqCvt cvt,
+			float * const *sub, const AjPSeqCvt cvt,
 			const char *namea,
 			const char *nameb, ajint begina, ajint beginb)
 {
@@ -1803,7 +1803,7 @@ void embAlignUnused(void)
 ** @param [r] gapopen [float] gap opening penalty
 ** @param [r] gapextend [float] gap extension penalty
 ** @param [w] path [float *] path matrix
-** @param [r] sub [const AjFloatArray *] substitution matrix from AjPMatrixf
+** @param [r] sub [float * const *] substitution matrix from AjPMatrixf
 ** @param [r] cvt [const AjPSeqCvt] Conversion array for AjPMatrixf
 ** @param [w] compass [ajint *] Path direction pointer array
 ** @param [r] show [AjBool] Display path matrix
@@ -1819,7 +1819,7 @@ void embAlignUnused(void)
 
 void embAlignPathCalcFast(const char *a, const char *b, ajint lena, ajint lenb,
 			  float gapopen, float gapextend,
-			  float *path, const AjFloatArray *sub, const AjPSeqCvt cvt,
+			  float *path, float * const *sub, const AjPSeqCvt cvt,
 			  ajint *compass, AjBool show, ajint pathwidth)
 {
     ajint xpos;
@@ -2008,7 +2008,7 @@ void embAlignPathCalcFast(const char *a, const char *b, ajint lena, ajint lenb,
 ** @param [r] b [const AjPSeq] second sequence
 ** @param [r] lena [ajint] length of first sequence
 ** @param [r] lenb [ajint] length of second sequence
-** @param [r] sub [const AjFloatArray *] substitution matrix from AjPMatrixf
+** @param [r] sub [float * const *] substitution matrix from AjPMatrixf
 ** @param [r] cvt [const AjPSeqCvt] Conversion array for AjPMatrixf
 ** @param [w] start1 [ajint *] start of alignment in first sequence
 ** @param [w] start2 [ajint *] start of alignment in second sequence
@@ -2021,7 +2021,7 @@ float embAlignScoreSWMatrixFast(const float *path, const ajint *compass,
 				float gapextend,
 				const AjPSeq a, const AjPSeq b,
 				ajint lena, ajint lenb,
-				const AjFloatArray *sub,
+				float * const *sub,
 				const AjPSeqCvt cvt,
 				ajint *start1, ajint *start2,
 				ajint pathwidth)
@@ -2223,7 +2223,7 @@ float embAlignScoreSWMatrixFast(const float *path, const ajint *compass,
 ** @param [w] n [AjPStr *] alignment for second sequence
 ** @param [r] lena [ajint] length of first sequence
 ** @param [r] lenb [ajint] length of second sequence
-** @param [r] sub [const AjFloatArray *] substitution matrix from AjPMatrixf
+** @param [r] sub [float * const *] substitution matrix from AjPMatrixf
 ** @param [r] cvt [const AjPSeqCvt] Conversion array for AjPMatrixf
 ** @param [w] start1 [ajint *] start of alignment in first sequence
 ** @param [w] start2 [ajint *] start of alignment in second sequence
@@ -2237,7 +2237,7 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
 			      float gapextend,
 			      const AjPSeq a, const AjPSeq b, AjPStr *m,
 			      AjPStr *n, ajint lena, ajint lenb,
-			      const AjFloatArray *sub, const AjPSeqCvt cvt,
+			      float * const *sub, const AjPSeqCvt cvt,
 			      ajint *start1, ajint *start2,
 			      ajint width)
 {
@@ -2397,7 +2397,7 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
 ** @param [r] gapopen [float] gap opening coefficient
 ** @param [r] gapextend [float] gap extension coefficient
 ** @param [w] path [float *] path matrix
-** @param [r] fmatrix [const AjFloatArray *] profile matrix
+** @param [r] fmatrix [float * const *] profile matrix
 ** @param [w] compass [ajint *] Path direction pointer array
 ** @param [r] show [AjBool] Display path matrix
 **
@@ -2407,7 +2407,7 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
 void embAlignProfilePathCalc(const char *a, ajint proflen, ajint seqlen,
 			     float gapopen,
 			     float gapextend, float *path,
-			     const AjFloatArray *fmatrix,
+			     float * const *fmatrix,
 			     ajint *compass, AjBool show)
 {
     ajint row;				/* profile position in path */
@@ -2548,7 +2548,7 @@ void embAlignProfilePathCalc(const char *a, ajint proflen, ajint seqlen,
 ** @param [w] n [AjPStr *] alignment for second sequence
 ** @param [r] proflen [ajint] length of consensus sequence
 ** @param [r] seqlen [ajint] length of test sequence
-** @param [r] fmatrix [const AjFloatArray *] profile
+** @param [r] fmatrix [float * const *] profile
 ** @param [w] start1 [ajint *] start of alignment in consensus sequence
 ** @param [w] start2 [ajint *] start of alignment in test sequence
 **
@@ -2560,7 +2560,7 @@ void embAlignWalkProfileMatrix(const float *path, const ajint *compass,
 			       float gapextend,
 			       const AjPStr cons, const AjPStr seq,
 			       AjPStr *m, AjPStr *n, ajint proflen,
-			       ajint seqlen, const AjFloatArray *fmatrix,
+			       ajint seqlen, float * const *fmatrix,
 			       ajint *start1, ajint *start2)
 {
     ajint i;
@@ -2720,7 +2720,7 @@ void embAlignWalkProfileMatrix(const float *path, const ajint *compass,
 ** @param [r] start2 [ajint] start of alignment in second sequence
 ** @param [r] score [float] alignment score from AlignScoreX
 ** @param [r] mark [AjBool] mark matches and conservatives
-** @param [r] fmatrix [const AjFloatArray *] profile
+** @param [r] fmatrix [float * const *] profile
 ** @param [r] namea [const char *] name of first sequence
 ** @param [r] nameb [const char *] name of second sequence
 ** @param [r] begina [ajint] first sequence offset
@@ -2732,7 +2732,7 @@ void embAlignWalkProfileMatrix(const float *path, const ajint *compass,
 void embAlignPrintProfile(AjPFile outf, const char *a, const char *b,
 			  const AjPStr m, const AjPStr n,
 			  ajint start1, ajint start2, float score, AjBool mark,
-			  const AjFloatArray *fmatrix, const char *namea,
+			  float * const *fmatrix, const char *namea,
 			  const char *nameb, ajint begina, ajint beginb)
 {
     const AjPStr fa;
@@ -2930,7 +2930,7 @@ void embAlignPrintProfile(AjPFile outf, const char *a, const char *b,
 **
 ** @param [r] m [const AjPStr] Walk alignment for first sequence
 ** @param [r] n [const AjPStr] Walk alignment for second sequence
-** @param [r] sub [const AjFloatArray *] substitution matrix
+** @param [r] sub [float * const *] substitution matrix
 ** @param [r] cvt [const AjPSeqCvt] conversion table for matrix
 ** @param [r] lenm [ajint] length of first sequence
 ** @param [r] lenn [ajint] length of second sequence
@@ -2943,7 +2943,7 @@ void embAlignPrintProfile(AjPFile outf, const char *a, const char *b,
 ******************************************************************************/
 
 void embAlignCalcSimilarity(const AjPStr m, const AjPStr n,
-			    const AjFloatArray *sub, const AjPSeqCvt cvt,
+			    float * const *sub, const AjPSeqCvt cvt,
 			    ajint lenm, ajint lenn, float *id, float *sim,
 			    float *idx, float *simx)
 {
@@ -3017,7 +3017,7 @@ void embAlignCalcSimilarity(const AjPStr m, const AjPStr n,
 ** @param [r] seq [const AjPStr] second sequence
 ** @param [r] proflen [ajint] length of consensus sequence
 ** @param [r] seqlen [ajint] length of test sequence
-** @param [r] fmatrix [const AjFloatArray *] profile
+** @param [r] fmatrix [float * const *] profile
 ** @param [w] start1 [ajint *] start of alignment in consensus sequence
 ** @param [w] start2 [ajint *] start of alignment in test sequence
 **
@@ -3028,7 +3028,7 @@ float embAlignScoreProfileMatrix(const float *path, const ajint *compass,
 				 float gapopen,
 				 float gapextend, const AjPStr seq,
 				 ajint proflen, ajint seqlen,
-				 const AjFloatArray *fmatrix,
+				 float * const *fmatrix,
 				 ajint *start1, ajint *start2)
 {
     ajint i;
@@ -3414,7 +3414,7 @@ void embAlignReportLocal(AjPAlign align,
 ** @param [r] start2 [ajint] start of alignment in second sequence
 ** @param [r] score [float] alignment score from AlignScoreX
 ** @param [r] mark [AjBool] mark matches and conservatives
-** @param [r] fmatrix [const AjFloatArray *] profile
+** @param [r] fmatrix [float * const *] profile
 ** @param [r] namea [const char *] name of first sequence
 ** @param [r] nameb [const char *] name of second sequence
 ** @param [r] begina [ajint] first sequence offset
@@ -3428,7 +3428,7 @@ void embAlignReportProfile(AjPAlign thys, const AjPSeqset seqset,
 			   const AjPStr m, const AjPStr n,
 			   ajint start1, ajint start2, float score,
 			   AjBool mark,
-			   const AjFloatArray *fmatrix, const char *namea,
+			   float * const *fmatrix, const char *namea,
 			   const char *nameb, ajint begina, ajint beginb)
 {
     const AjPStr fa;

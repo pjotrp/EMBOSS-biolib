@@ -197,7 +197,7 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [r] graph [AjPGraph] Undocumented
+** @param [u] graph [AjPGraph] Undocumented
 ** @param [r] limit [ajint] Undocumented
 ** @param [r] x [const float*] Undocumented
 ** @param [r] y [const float*] Undocumented

@@ -36,8 +36,7 @@
 
 static void cpgreport_cpgsearch(AjPFile outf, ajint s, ajint len,
 				const char *seq, const char *name,
-				ajint begin, ajint *score,
-				AjPFeattabOut featout,
+				ajint begin, ajint score,
 				AjPFeattable feattable);
 static void cpgreport_calcgc(ajint from, ajint to, const char *p,
 			     ajint *dcg, ajint *dgc, ajint *gc);
@@ -97,7 +96,7 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outf,"        CpG   %%CG  CG/GC\n");
 
 	cpgreport_cpgsearch(outf,0,len,ajStrStr(substr),ajSeqName(seq),
-			    begin,&score,featout,feattable);
+			    begin,score,feattable);
 	ajStrDel(&strand);
     }
 
@@ -128,16 +127,14 @@ int main(int argc, char **argv)
 ** @param [r] p [const char*] Undocumented
 ** @param [r] name [const char*] Undocumented
 ** @param [r] begin [ajint] Undocumented
-** @param [r] score [ajint*] Undocumented
-** @param [r] featout [AjPFeattabOut] Undocumented
-** @param [r] feattable [AjPFeattable] Undocumented
+** @param [r] score [ajint] Undocumented
+** @param [u] feattable [AjPFeattable] Undocumented
 ** @@
 ******************************************************************************/
 
 static void cpgreport_cpgsearch(AjPFile outf, ajint from, ajint to,
 				const char *p,
-				const char *name, ajint begin, ajint *score,
-				AjPFeattabOut featout,
+				const char *name, ajint begin, ajint score,
 				AjPFeattable feattable)
 {
     ajint i;
@@ -170,7 +167,7 @@ static void cpgreport_cpgsearch(AjPFile outf, ajint from, ajint to,
     for(i=from,c=to-1,sum=ssum=t=top=0,lsum=-1,z=begin-1;i<to;++i,ssum=sum)
     {
 	if(p[i]=='C' && p[i+1]=='G' && c-i)
-	    sum += *score+1;
+	    sum += score+1;
 	--sum;
 
 	if(sum<0)
@@ -205,7 +202,7 @@ static void cpgreport_cpgsearch(AjPFile outf, ajint from, ajint to,
 		ajFmtPrintF(outf,"     %5d %5.1f    -\n",
 			    dcg,(float)gc*100.0/(float)(t+1-lsum));
 	    }
-	    cpgreport_cpgsearch(outf,t+2,i,p,name,begin,score,featout,
+	    cpgreport_cpgsearch(outf,t+2,i,p,name,begin,score,
 				feattable);
 	    sum = ssum = lsum = t = top = 0;
 	}
@@ -249,7 +246,7 @@ static void cpgreport_cpgsearch(AjPFile outf, ajint from, ajint to,
 				 score2, strand, frame);
 	}
 
-	cpgreport_cpgsearch(outf,t+2,to,p,name,begin,score,featout,feattable);
+	cpgreport_cpgsearch(outf,t+2,to,p,name,begin,score,feattable);
     }
 
     return;
@@ -265,9 +262,9 @@ static void cpgreport_cpgsearch(AjPFile outf, ajint from, ajint to,
 ** @param [r] from [ajint] Undocumented
 ** @param [r] to [ajint] Undocumented
 ** @param [r] p [const char*] Undocumented
-** @param [r] dcg [ajint*] Undocumented
-** @param [r] dgc [ajint*] Undocumented
-** @param [r] gc [ajint*] Undocumented
+** @param [w] dcg [ajint*] Undocumented
+** @param [w] dgc [ajint*] Undocumented
+** @param [w] gc [ajint*] Undocumented
 ** @@
 ******************************************************************************/
 

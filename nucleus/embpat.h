@@ -148,7 +148,7 @@ void            embPatFuzzSearch(ajint type, ajint begin, const AjPStr pattern,
 				 ajint *buf, EmbPPatBYPNode off,
 				 const ajuint *sotable,
 				 ajint solimit, const AjPStr regexp,
-				 ajint **skipm,
+				 ajint * const *skipm,
 				 ajint *hits, ajint m, void **tidy);
 
 ajint           embPatGetType(const AjPStr pattern, AjPStr *cleanpat,
@@ -218,7 +218,7 @@ void            embPatTUBInit (const AjPStr pat, ajint **skipm,
 			       ajint m, ajint k, ajint plen);
 ajint           embPatTUBSearch (const AjPStr pat,const AjPStr text,
 				 ajint slen,
-				 ajint **skipm, ajint m,
+				 ajint * const *skipm, ajint m,
 				 ajint k, ajint begin, AjPList l, AjBool amino,
 				 AjBool carboxyl, const AjPStr name,
 				 ajint plen);
@@ -226,7 +226,7 @@ ajint           embPatTUBSearch (const AjPStr pat,const AjPStr text,
 void            embPatTUInit (const AjPStr pat,
 			      ajint **skipm, ajint m, ajint k);
 ajint           embPatTUSearch (const AjPStr pat,const AjPStr text, ajint slen,
-				ajint **skipm, ajint m,
+				ajint * const *skipm, ajint m,
 				ajint k, ajint begin, AjPList l, AjBool amino,
 				AjBool carboxyl, const AjPStr name);
 

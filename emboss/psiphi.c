@@ -33,22 +33,22 @@ static ajint chain_index(ajint ajIntSelectedChainNumber,
 			 ajint ajIntHighestChainNumber,
 			 ajint ajIntLowestChainNumber);
 
-static ajint first_residue_number(AjPPdb ajpPdbCleanStructure,
-					 ajint ajIntChainIndex,
-					 ajint ajIntStartResidueNumber);
-
-static ajint last_residue_number(AjPPdb PdbCleanStructure,
+static ajint first_residue_number(const AjPPdb ajpPdbCleanStructure,
 				  ajint ajIntChainIndex,
-				  ajint ajIntStartResidueNumber,
-				  ajint ajIntFinishResidueNumber);
+				  ajint ajIntStartResidueNumber);
 
-static AjBool phi_calculable(AjBool* arrayOfAjboolsResidue);
+static ajint last_residue_number(const AjPPdb PdbCleanStructure,
+				 ajint ajIntChainIndex,
+				 ajint ajIntStartResidueNumber,
+				 ajint ajIntFinishResidueNumber);
 
-static AjBool psi_calculable(AjBool* arrayOfAjboolsResidue);
+static AjBool phi_calculable(const AjBool* arrayOfAjboolsResidue);
 
-static float phi(AjPAtom *arrayOfAjpatomsWindow);
+static AjBool psi_calculable(const AjBool* arrayOfAjboolsResidue);
 
-static float psi(AjPAtom *arrayOfAjpatomsWindow);
+static float phi(AjPAtom const *arrayOfAjpatomsWindow);
+
+static float psi(AjPAtom const *arrayOfAjpatomsWindow);
 
 static AjBool load_previous_residue(AjPAtom ajpAtomCurrent,
 				    AjPAtom* arrayOfAjpatomsResidue,
@@ -440,7 +440,7 @@ static ajint chain_index(ajint ajIntSelectedChainNumber,
 **
 ** check selected lower residue within chain's range and return 1st window res
 **
-** @param [r] ajpPdbCleanStructure [AjPPdb] cleaned AjPPdb structure
+** @param [r] ajpPdbCleanStructure [const AjPPdb] cleaned AjPPdb structure
 ** @param [r] ajIntChainIndex [ajint] number of user-selected chain in
 **                                    structure
 ** @param [r] ajIntStartResidueNumber [ajint] user-selected lower residue
@@ -448,7 +448,7 @@ static ajint chain_index(ajint ajIntSelectedChainNumber,
 ** @return [ajint] First window residue number
 ** @@
 ******************************************************************************/
-static ajint first_residue_number (AjPPdb ajpPdbCleanStructure,
+static ajint first_residue_number (const AjPPdb ajpPdbCleanStructure,
 				   ajint ajIntChainIndex,
 				   ajint ajIntStartResidueNumber)
 {
@@ -492,7 +492,7 @@ static ajint first_residue_number (AjPPdb ajpPdbCleanStructure,
 **
 ** check selected upper protein residue within chain's range and return limit
 **
-** @param [r] ajpPdbCleanStructure [AjPPdb] cleaned AjPPdb structure
+** @param [r] ajpPdbCleanStructure [const AjPPdb] cleaned AjPPdb structure
 ** @param [r] ajIntChainIndex [ajint] number of user-selected chain in
 **                                    structure
 ** @param [r] ajIntStartResidueNumber [ajint] user-selected lower residue
@@ -502,7 +502,7 @@ static ajint first_residue_number (AjPPdb ajpPdbCleanStructure,
 ** @return [ajint] Last residue number
 ** @@
 ******************************************************************************/
-static ajint last_residue_number(AjPPdb ajpPdbCleanStructure,
+static ajint last_residue_number(const AjPPdb ajpPdbCleanStructure,
 				 ajint ajIntChainIndex,
 				 ajint ajIntStartResidueNumber,
 				 ajint ajIntFinishResidueNumber)
@@ -540,11 +540,11 @@ static ajint last_residue_number(AjPPdb ajpPdbCleanStructure,
 **
 ** are all necessary atoms present to calculate phi torsion angle?
 **
-** @param [r] arrayOfAjboolsWindow [AjBool*] corresponding array of AjBools
+** @param [r] arrayOfAjboolsWindow [const AjBool*] corresponding array of AjBools
 ** @return [AjBool] ajTrue if calculable
 ** @@
 ******************************************************************************/
-static AjBool phi_calculable(AjBool* arrayOfAjboolsWindow)
+static AjBool phi_calculable(const AjBool* arrayOfAjboolsWindow)
 {
     AjBool ajBoolPhiCalculable = AJFALSE;
     /*
@@ -566,11 +566,11 @@ static AjBool phi_calculable(AjBool* arrayOfAjboolsWindow)
 **
 ** are all necessary atoms present to calculate psi torsion angle?
 **
-** @param [r] arrayOfAjboolsWindow [AjBool*] corresponding array of AjBools
+** @param [r] arrayOfAjboolsWindow [const AjBool*] corresponding array of AjBools
 ** @return [AjBool] ajTrue if calculable
 ** @@
 ******************************************************************************/
-static AjBool psi_calculable(AjBool* arrayOfAjboolsWindow)
+static AjBool psi_calculable(const AjBool* arrayOfAjboolsWindow)
 {
     AjBool ajBoolPsiCalculable = AJFALSE;
     /*
@@ -594,12 +594,12 @@ static AjBool psi_calculable(AjBool* arrayOfAjboolsWindow)
 **
 ** returns the phi torsion angle between a specified set of AjPAtoms
 **
-** @param [r] arrayOfAjpatomsWindow [AjPAtom*] window of nine mainchain atoms
+** @param [r] arrayOfAjpatomsWindow [AjPAtom const *] window of nine mainchain atoms
 ** @return [float] phi torsion angle
 ** @@
 ******************************************************************************/
 
-static float phi (AjPAtom* arrayOfAjpatomsWindow)
+static float phi (AjPAtom const * arrayOfAjpatomsWindow)
 {
     float fPhiTorsionAngle;
     
@@ -654,12 +654,12 @@ static float phi (AjPAtom* arrayOfAjpatomsWindow)
 **
 ** returns the psi torsion angle between a specified set of AjPAtoms
 **
-** @param [r] arrayOfAjpatomsWindow [AjPAtom*] window of nine mainchain atoms
+** @param [r] arrayOfAjpatomsWindow [AjPAtom const *] window of nine mainchain atoms
 ** @return [float]  psi torsion angle
 ** @@
 ******************************************************************************/
 
-static float psi (AjPAtom* arrayOfAjpatomsWindow)
+static float psi (AjPAtom const * arrayOfAjpatomsWindow)
 {
     float fPsiTorsionAngle;
     
@@ -716,9 +716,9 @@ static float psi (AjPAtom* arrayOfAjpatomsWindow)
 ** checks and/or loads one mainchain AjPAtom from into window of AjPAtoms
 ** returns AJFALSE if non-residue atom
 **
-** @param [r] ajpAtom [AjPAtom] current AjPAtom from ajPPdb object
-** @param [r] arrayOfAjpatomsWindow [AjPAtom*] array of nine mainchain atoms
-** @param [r] arrayOfAjboolsWindow [AjBool*] corresponding array of AjBools
+** @param [u] ajpAtom [AjPAtom] current AjPAtom from ajPPdb object
+** @param [u] arrayOfAjpatomsWindow [AjPAtom*] array of nine mainchain atoms
+** @param [u] arrayOfAjboolsWindow [AjBool*] corresponding array of AjBools
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
@@ -764,9 +764,9 @@ static AjBool load_previous_residue(AjPAtom ajpAtom,
 ** check and/or loads one mainchain AjPAtom into window of AjPAtoms
 ** returns AJFALSE if non-residue atom
 **
-** @param [r] ajpAtom [AjPAtom] current AjPAtom from ajPPdb object
-** @param [r] arrayOfAjpatomsWindow [AjPAtom*] array of nine mainchain atoms
-** @param [r] arrayOfAjboolsWindow [AjBool*] corresponding array of AjBools
+** @param [u] ajpAtom [AjPAtom] current AjPAtom from ajPPdb object
+** @param [u] arrayOfAjpatomsWindow [AjPAtom*] array of nine mainchain atoms
+** @param [u] arrayOfAjboolsWindow [AjBool*] corresponding array of AjBools
 ** @return [AjBool]  ajTrue on success
 ** @@
 ******************************************************************************/
@@ -813,9 +813,9 @@ static AjBool load_current_residue(AjPAtom ajpAtom,
 ** loads AjPAtoms from next residue into window; returns AJTRUE if window full
 ** returns AJFALSE if non-residue atom
 **
-** @param [r] ajpAtom [AjPAtom] current AjPAtom from ajPPdb object
-** @param [r] arrayOfAjpatomsWindow [AjPAtom*] array of nine mainchain atoms
-** @param [r] arrayOfAjboolsWindow [AjBool*] corresponding array of AjBools
+** @param [u] ajpAtom [AjPAtom] current AjPAtom from ajPPdb object
+** @param [u] arrayOfAjpatomsWindow [AjPAtom*] array of nine mainchain atoms
+** @param [u] arrayOfAjboolsWindow [AjBool*] corresponding array of AjBools
 ** @return [AjBool]  ajTrue on success
 ** @@
 ******************************************************************************/
@@ -861,7 +861,7 @@ static AjBool load_next_residue(AjPAtom ajpAtom,
 **
 ** writes torsion angle features to a feature table and returns new feature  
 **
-** @param [r] ajpFeattableTorsionAngles [AjPFeattable] table to write torsion
+** @param [u] ajpFeattableTorsionAngles [AjPFeattable] table to write torsion
 **                                                     angle to
 ** @param [r] ajIntFeatureResidueNumber [ajint] residue that angle belongs to
 ** @param [r] fPhiTorsionAngle [float] phi torsion angle for residue
@@ -901,8 +901,8 @@ static AjPFeature write_psi_phi (AjPFeattable ajpFeattableTorsionAngles,
 **
 ** moves AjPAtoms one residue along an array of mainchain AjPAtoms
 **
-** @param [r] arrayOfAjpatomsWindow [AjPAtom*] array of nine mainchain atoms
-** @param [r] arrayOfAjboolsWindow [AjBool*] corresponding array of AjBools
+** @param [u] arrayOfAjpatomsWindow [AjPAtom*] array of nine mainchain atoms
+** @param [u] arrayOfAjboolsWindow [AjBool*] corresponding array of AjBools
 *8 @return [void]
 ** @@
 ******************************************************************************/

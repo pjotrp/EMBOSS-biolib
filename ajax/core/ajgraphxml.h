@@ -67,7 +67,7 @@ AjBool 	ajXmlSetMaxMin(AjPGraphXml file, double xMin, double yMin,
 			       double xMax, double yMax);
 AjBool 	ajXmlWriteFile(AjPGraphXml file, const AjPStr filename);
 AjBool 	ajXmlWriteStdout(AjPGraphXml file);
-void 	ajXmlClearFile(AjPGraphXml file);
+void 	ajXmlClearFile(AjPGraphXml *pfile);
 AjBool 	ajXmlSetSource(AjPGraphXml file, const AjPStr title);
 AjBool 	ajXmlAddMainTitleC(AjPGraphXml file, const char *title);
 AjBool 	ajXmlAddXTitleC (AjPGraphXml file, const char *title);
@@ -108,12 +108,14 @@ void 	ajXmlAddTextOnArc(AjPGraphXml file, double xCentre,
 			  double endAngle, double radius,
 			  double size, const AjPStr fontFamily,
 			  const AjPStr fontStyle, const AjPStr text);
-void 	ajXmlAddJoinedLineSetEqualGapsF(AjPGraphXml file, float *y,
+void 	ajXmlAddJoinedLineSetEqualGapsF(AjPGraphXml file, const float *y,
 					int numberOfPoints,
 					float startX, float increment);
-void 	ajXmlAddJoinedLineSet(AjPGraphXml file, double *x, double *y,
+void 	ajXmlAddJoinedLineSet(AjPGraphXml file,
+			      const double *x, const double *y,
 			      int numberOfPoints);
-void 	ajXmlAddJoinedLineSetF(AjPGraphXml file, float *x, float *y,
+void 	ajXmlAddJoinedLineSetF(AjPGraphXml file,
+			       const float *x, const float *y,
 			       int numberOfPoints);
 void 	ajXmlAddLine(AjPGraphXml file,
 		     double x1, double y1, double x2, double y2);
@@ -122,10 +124,12 @@ void 	ajXmlAddLineF(AjPGraphXml file, float x1, float y1,
 void 	ajXmlAddPoint(AjPGraphXml file, double x1, double y1);
 void 	ajXmlAddRectangle(AjPGraphXml file, double x1, double y1, double x2,
 			  double y2, AjBool fill);
-void 	ajXmlAddHistogramEqualGapsF(AjPGraphXml file, float *y, int numPoints,
+void 	ajXmlAddHistogramEqualGapsF(AjPGraphXml file,
+				    const float *y, int numPoints,
 				    float startX, float xGap);
-void 	ajXmlAddRectangleSet(AjPGraphXml file, double *x1, double *y1,
-			     double *x2, double *y2, int numPoints,
+void 	ajXmlAddRectangleSet(AjPGraphXml file,
+			     const double *x1, const double *y1,
+			     const double *x2, const double *y2, int numPoints,
 			     AjBool fill);
 void 	ajXmlAddCylinder(AjPGraphXml file, double x1, double y1, double x2,
 			 double y2, double width);
@@ -174,7 +178,8 @@ AjBool 	ajXmlAddNakedResidue(AjPGraphXml file, char residue, double radius,
 			     double angle);
 float 	ajXmlFitTextOnLine(float x1, float y1, float x2, float y2,
 			   const AjPStr text);
-void 	ajXmlGetColour(AjPGraphXml file, double r, double g, double b);
+void 	ajXmlGetColour(const AjPGraphXml file,
+		       double *r, double *g, double *b);
 void 	ajXmlSetColour(AjPGraphXml file, double r, double g, double b);
 void 	ajXmlSetColourFromCode(AjPGraphXml file, ajint colour);
 void 	ajXmlAddGraphic(AjPGraphXml file, const AjPStr type);

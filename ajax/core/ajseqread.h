@@ -21,7 +21,7 @@ extern "C"
 ** of AjPSeqin.
 **
 ** @alias SeqSAccess
-** @new seqMethod returns a copy of a known access method definition.
+** @new ajSeqMethod returns a copy of a known access method definition.
 ** @other AjPSeqin Sequence input
 **
 ** @attr Name [char*] Access method name used in emboss.default

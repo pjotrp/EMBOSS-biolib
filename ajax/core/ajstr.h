@@ -141,7 +141,7 @@ extern "C"
 ** @cast ajStrLen Returns string length
 ** @cast ajStrSize Returns string reserved bytes (including trailing null)
 ** @cast ajStrRef Returns string reference count
-** @cast ajStrPos String position
+** @cast ajStrPos Converts a string position into a true position
 ** @cast ajStrTok  Returns a static next string from token parsing of a string
 **                 with the previous delimiter set
 ** @cast ajStrTokC Returns a static next string from token parsing of a

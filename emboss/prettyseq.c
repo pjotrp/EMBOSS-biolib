@@ -32,7 +32,7 @@
 
 static void prettyseq_makeRuler(ajint len, ajint begin, char *ruler,
 				ajint *npos);
-static void prettyseq_calcProteinPos(ajint *ppos, AjPStr pro,
+static void prettyseq_calcProteinPos(ajint *ppos, const AjPStr pro,
 				     ajint len);
 static void prettyseq_showTrans(const ajint *ppos, const ajint *npos,
 				const AjPStr pro, const AjPStr substr,
@@ -137,7 +137,7 @@ int main(int argc, char **argv)
 ** @param [w] outf [AjPFile] outfile
 ** @param [r] beg [ajint] start position
 ** @param [r] end [ajint] end position
-** @param [r] s [AjPStr*] nucleic acid sequence
+** @param [u] s [AjPStr*] nucleic acid sequence (regions to be case converted)
 ** @param [r] codon [const AjPCod] translation CU table
 ** @param [r] range [const AjPRange] region to translate
 ** @param [r] width [ajint] screen width
@@ -275,13 +275,13 @@ static void prettyseq_makeRuler(ajint len, ajint begin, char *ruler,
 ** Protein translation positions
 **
 ** @param [w] ppos [ajint*] positions
-** @param [r] pro [AjPStr] protein
+** @param [r] pro [const AjPStr] protein
 ** @param [r] len [ajint] length
 ** @@
 ******************************************************************************/
 
 
-static void prettyseq_calcProteinPos(ajint *ppos, AjPStr pro, ajint len)
+static void prettyseq_calcProteinPos(ajint *ppos, const AjPStr pro, ajint len)
 {
     ajint j;
 

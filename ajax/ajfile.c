@@ -2770,7 +2770,7 @@ AjBool ajFileEof(const AjPFile thys)
 **
 ** @param [r] name [const AjPStr] File name.
 ** @return [AjPFileBuff] New buffered file object.
-** @category new [AjPFileBuff] Default constructor for a named input file
+** @category new [AjPFileBuff] Constructor using a filename
 ** @@
 ******************************************************************************/
 

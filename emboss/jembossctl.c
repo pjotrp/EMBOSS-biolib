@@ -94,15 +94,15 @@ static void jctl_tidy_strings(AjPStr *tstr, AjPStr *home, AjPStr *retlist,
 			      char *buf);
 static void jctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
 			   AjPStr *dir, AjPStr *outstd, AjPStr *errstd);
-static AjBool jctl_check_buffer(char *buf, int mlen);
+static AjBool jctl_check_buffer(const char *buf, int mlen);
 static AjBool jctl_chdir(const char *file);
-static AjBool jctl_initgroups(char *buf, int gid);
+static AjBool jctl_initgroups(const char *buf, int gid);
 static void jctl_zero(char *buf);
-static time_t jctl_Datestr(AjPStr s);
+static time_t jctl_Datestr(const AjPStr s);
 static int    jctl_date(const void* str1, const void* str2);
 
-static AjBool jctl_GetSeqFromUsa(AjPStr thys, AjPSeq *seq);
-static AjBool jctl_GetSeqsetFromUsa(AjPStr thys, AjPSeqset *seq);
+static AjBool jctl_GetSeqFromUsa(const AjPStr thys, AjPSeq *seq);
+static AjBool jctl_GetSeqsetFromUsa(const AjPStr thys, AjPSeqset *seq);
 
 
 
@@ -922,8 +922,8 @@ static AjBool jctl_up(const char *buf, int *uid, int *gid, AjPStr *home)
 ** Fork emboss program
 **
 ** @param [w] buf [char*] socket buffer
-** @param [w] uid [int] uid
-** @param [w] gid [int] gid
+** @param [r] uid [int] uid
+** @param [r] gid [int] gid
 **
 ** @return [AjBool] true if success
 ******************************************************************************/
@@ -1321,8 +1321,8 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
 ** Fork emboss program
 **
 ** @param [w] buf [char*] socket buffer
-** @param [w] uid [int] uid
-** @param [w] gid [int] gid
+** @param [r] uid [int] uid
+** @param [r] gid [int] gid
 **
 ** @return [AjBool] true if success
 ******************************************************************************/
@@ -1662,7 +1662,7 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
 **
 ** Construct argv and env arrays for Ajax.fork
 **
-** @param [r] str [AjPStr] space separated tokens
+** @param [r] str [const AjPStr] space separated tokens
 **
 ** @return [char**] env or argv array
 ******************************************************************************/
@@ -1704,8 +1704,8 @@ static char** jctl_make_array(const AjPStr str)
 ** Make user directory
 **
 ** @param [w] buf [char*] socket buffer
-** @param [w] uid [int] uid
-** @param [w] gid [int] gid
+** @param [r] uid [int] uid
+** @param [r] gid [int] gid
 **
 ** @return [AjBool] true if success
 ******************************************************************************/
@@ -1797,8 +1797,8 @@ static AjBool jctl_do_directory(char *buf, int uid, int gid)
 ** Delete a user file
 **
 ** @param [w] buf [char*] socket buffer
-** @param [w] uid [int] uid
-** @param [w] gid [int] gid
+** @param [r] uid [int] uid
+** @param [r] gid [int] gid
 **
 ** @return [AjBool] true if success
 ******************************************************************************/
@@ -1870,8 +1870,8 @@ static AjBool jctl_do_deletefile(char *buf, int uid, int gid)
 ** Get sequence attributes (top level)
 **
 ** @param [w] buf [char*] socket buffer
-** @param [w] uid [int] uid
-** @param [w] gid [int] gid
+** @param [r] uid [int] uid
+** @param [r] gid [int] gid
 **
 ** @return [AjBool] true if success
 ******************************************************************************/
@@ -1955,8 +1955,8 @@ static AjBool jctl_do_seq(char *buf, int uid, int gid)
 ** Get seqset attributes (top level)
 **
 ** @param [w] buf [char*] socket buffer
-** @param [w] uid [int] uid
-** @param [w] gid [int] gid
+** @param [r] uid [int] uid
+** @param [r] gid [int] gid
 **
 ** @return [AjBool] true if success
 ******************************************************************************/
@@ -2041,8 +2041,8 @@ static AjBool jctl_do_seqset(char *buf, int uid, int gid)
 ** Rename a user file
 **
 ** @param [w] buf [char*] socket buffer
-** @param [w] uid [int] uid
-** @param [w] gid [int] gid
+** @param [r] uid [int] uid
+** @param [r] gid [int] gid
 **
 ** @return [AjBool] true if success
 ******************************************************************************/
@@ -2127,8 +2127,8 @@ static AjBool jctl_do_renamefile(char *buf, int uid, int gid)
 ** Recursively delete a user directory
 **
 ** @param [w] buf [char*] socket buffer
-** @param [w] uid [int] uid
-** @param [w] gid [int] gid
+** @param [r] uid [int] uid
+** @param [r] gid [int] gid
 **
 ** @return [AjBool] true if success
 ******************************************************************************/
@@ -2220,8 +2220,8 @@ static AjBool jctl_do_deletedir(char *buf, int uid, int gid)
 ** Return regular files in a directory
 **
 ** @param [w] buf [char*] socket buffer
-** @param [w] uid [int] uid
-** @param [w] gid [int] gid
+** @param [r] uid [int] uid
+** @param [r] gid [int] gid
 ** @param [w] retlist [AjPStr*] file list
 **
 ** @return [AjBool] true if success
@@ -2400,8 +2400,8 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
 ** Return directoriy files within a directory
 **
 ** @param [w] buf [char*] socket buffer
-** @param [w] uid [int] uid
-** @param [w] gid [int] gid
+** @param [r] uid [int] uid
+** @param [r] gid [int] gid
 ** @param [w] retlist [AjPStr*] file list
 **
 ** @return [AjBool] true if success
@@ -2602,8 +2602,8 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 ** Get a user file
 **
 ** @param [w] buf [char*] socket buffer
-** @param [w] uid [int] uid
-** @param [w] gid [int] gid
+** @param [r] uid [int] uid
+** @param [r] gid [int] gid
 ** @param [w] fbuf [unsigned char**] file
 ** @param [w] size [int*] uid
 **
@@ -2892,8 +2892,8 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
 ** Put a user file
 **
 ** @param [w] buf [char*] socket buffer
-** @param [w] uid [int] uid
-** @param [w] gid [int] gid
+** @param [r] uid [int] uid
+** @param [r] gid [int] gid
 **
 ** @return [AjBool] true if success
 ******************************************************************************/
@@ -3200,15 +3200,15 @@ static void jctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
 **
 ** Sanity check on socket commands
 **
-** @param [r] buf [char*] socket buffer
+** @param [r] buf [const char*] socket buffer
 ** @param [r] mlen [int] buffer length
 **
 ** @return [AjBool] true if sane
 ******************************************************************************/
 
-static AjBool jctl_check_buffer(char *buf, int mlen)
+static AjBool jctl_check_buffer(const char *buf, int mlen)
 {
-    char *p;
+    const char *p;
     int str1len;
     int command;
     int count;
@@ -3332,13 +3332,13 @@ static AjBool jctl_chdir(const char *file)
 **
 ** Initialise groups
 **
-** @param [r] buf [char*] socket buffer
+** @param [r] buf [const char*] socket buffer
 ** @param [r] gid [int] gid
 **
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_initgroups(char *buf, int gid)
+static AjBool jctl_initgroups(const char *buf, int gid)
 {
     AjPStr str  = NULL;
     AjPStr user = NULL;
@@ -3365,7 +3365,7 @@ static AjBool jctl_initgroups(char *buf, int gid)
 **
 ** Wipe username/password
 **
-** @param [r] buf [char*] socket buffer
+** @param [w] buf [char*] socket buffer
 **
 ** @return [void]
 ******************************************************************************/
@@ -3388,7 +3388,7 @@ static void jctl_zero(char *buf)
 **
 ** Read a byte stream from stdin (unblocked)
 **
-** @param [r] buf [char *] buffer to read
+** @param [w] buf [char *] buffer to read
 ** @param [r] n [int] number of bytes to read
 ** @param [r] seconds [int] time-out
 **
@@ -3681,7 +3681,7 @@ static int jctl_snd(const char *buf,int len)
 **
 ** Mimic socket read using pipes
 **
-** @param [r] buf [char *] buffer for read
+** @param [w] buf [char *] buffer for read
 **
 ** @return [int] 0=success  -1=failure
 ** @@
@@ -3747,13 +3747,13 @@ static int java_block(int chan, unsigned long flag)
 ** Test string for valid Jemboss date. Return time_t
 ** or 0 if invalid string
 **
-** @param [r] s [AjPStr] potential date string
+** @param [r] s [const AjPStr] potential date string
 **
 ** @return [time_t] failure=0
 ** @@
 ******************************************************************************/
 
-static time_t jctl_Datestr(AjPStr s)
+static time_t jctl_Datestr(const AjPStr s)
 {
     AjPStr tmp = NULL;
     struct tm tm;
@@ -3859,12 +3859,12 @@ static int jctl_date(const void* str1, const void* str2)
 **
 ** Return a sequence given a USA
 **
-** @param [r] thys [AjPStr] usa
+** @param [r] thys [const AjPStr] usa
 ** @param [w] seq [AjPSeq*] sequence
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
-static AjBool jctl_GetSeqFromUsa(AjPStr thys, AjPSeq *seq)
+static AjBool jctl_GetSeqFromUsa(const AjPStr thys, AjPSeq *seq)
 {
     AjPSeqin seqin;
     AjBool ok;
@@ -3892,12 +3892,12 @@ static AjBool jctl_GetSeqFromUsa(AjPStr thys, AjPSeq *seq)
 **
 ** Return a seqset given a usa
 **
-** @param [r] thys [AjPStr] usa
+** @param [r] thys [const AjPStr] usa
 ** @param [w] seq [AjPSeqset*] seqset
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
-static AjBool jctl_GetSeqsetFromUsa(AjPStr thys, AjPSeqset *seq)
+static AjBool jctl_GetSeqsetFromUsa(const AjPStr thys, AjPSeqset *seq)
 {
     AjPSeqin seqin;
     AjBool ok;

@@ -25,8 +25,8 @@
 
 
 
-static void maskfeat_FeatSeqMask(AjPSeq seq, AjPStr type, 
-				 AjPStr maskchar, AjBool tolower);
+static void maskfeat_FeatSeqMask(AjPSeq seq, const AjPStr type, 
+				 const AjPStr maskchar, AjBool tolower);
 
 static void maskfeat_StrToLower(AjPStr *str, ajint begin, ajint end);
 
@@ -80,16 +80,17 @@ int main(int argc, char **argv)
 ** Masks features of a sequence
 **
 ** @param [u] seq [AjPSeq] sequence
-** @param [r] type [AjPStr] types of features to mask as wildcarded string
-** @param [r] maskchar [AjPStr] character to mask with
+** @param [r] type [const AjPStr] types of features to mask as
+**                                wildcarded string
+** @param [r] maskchar [const AjPStr] character to mask with
 ** @param [r] tolower [AjBool] if True then 'mask' by changing to lower-case
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 
-static void maskfeat_FeatSeqMask(AjPSeq seq, AjPStr type, 
-				 AjPStr maskchar, AjBool tolower)
+static void maskfeat_FeatSeqMask(AjPSeq seq, const AjPStr type, 
+				 const AjPStr maskchar, AjBool tolower)
 {
     AjIList    iter = NULL ;
     AjPFeature gf   = NULL ;

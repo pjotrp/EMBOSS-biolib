@@ -273,7 +273,7 @@ int main(int argc, char **argv)
 **
 ** Read list of RE suppliers into table
 **
-** @param [r] inf [AjPFile] infile
+** @param [u] inf [AjPFile] infile
 ** @return [AjPTable] Undocumented
 ** @@
 ******************************************************************************/

@@ -97,16 +97,23 @@ void         embSigposDel(AjPSigpos *thys);
 
 EmbPHitidx   embHitidxNew(void);
 void         embHitidxDel(EmbPHitidx *pthis);
-ajint        embHitidxBinSearch(AjPStr id, EmbPHitidx *arr, ajint siz);
+ajint        embHitidxBinSearch(const AjPStr id,
+				EmbPHitidx const *arr, ajint siz);
 ajint        embHitidxMatchId(const void *hit1, const void *hit2);
 
 
-AjBool       embHitlistReadFam(AjPFile scopf, AjPStr fam, AjPStr sfam, 
-			       AjPStr fold, AjPStr klass, AjPList* list);
-AjBool       embHitlistReadSfam(AjPFile scopf, AjPStr fam, AjPStr sfam, 
-				AjPStr fold, AjPStr klass,AjPList* list);
-AjBool       embHitlistReadFold(AjPFile scopf, AjPStr fam, AjPStr sfam, 
-				AjPStr fold, AjPStr klass,AjPList* list);
+AjBool       embHitlistReadFam(AjPFile scopf, const AjPStr fam,
+			       const AjPStr sfam, 
+			       const AjPStr fold, const AjPStr klass,
+			       AjPList* list);
+AjBool       embHitlistReadSfam(AjPFile scopf,
+				const AjPStr fam, const AjPStr sfam, 
+				const AjPStr fold, const AjPStr klass,
+				AjPList* list);
+AjBool       embHitlistReadFold(AjPFile scopf,
+				const AjPStr fam, const AjPStr sfam, 
+				const AjPStr fold, const AjPStr klass,
+				AjPList* list);
 
 
 
@@ -313,8 +320,8 @@ void embHitidxDel(EmbPHitidx *pthis)
 ** structures (which of course must first have been sorted). This is a 
 ** case-insensitive search.
 **
-** @param [r] id  [AjPStr]       Search term
-** @param [r] arr [EmbPHitidx*]  Array of EmbOHitidx objects
+** @param [r] id  [const AjPStr]       Search term
+** @param [r] arr [EmbPHitidx const *]  Array of EmbOHitidx objects
 ** @param [r] siz [ajint]        Size of array
 **
 ** @return [ajint] Index of first Hitidx object found with an Id element 
@@ -322,7 +329,7 @@ void embHitidxDel(EmbPHitidx *pthis)
 ** @@
 ****************************************************************************/
 
-ajint embHitidxBinSearch(AjPStr id, EmbPHitidx *arr, ajint siz)
+ajint embHitidxBinSearch(const AjPStr id, EmbPHitidx const *arr, ajint siz)
 {
     int l;
     int m;
@@ -386,11 +393,11 @@ ajint embHitidxMatchId(const void *hit1, const void *hit2)
 ** scop families file matching the specified classification is read (the file
 ** should not normally contain duplicate families).
 **
-** @param [r] scopf     [AjPFile]    The scop families file.
-** @param [r] fam       [AjPStr]     Family
-** @param [r] sfam      [AjPStr]     Superfamily
-** @param [r] fold      [AjPStr]     Fold
-** @param [r] klass     [AjPStr]     Class
+** @param [u] scopf     [AjPFile]    The scop families file.
+** @param [r] fam       [const AjPStr]     Family
+** @param [r] sfam      [const AjPStr]     Superfamily
+** @param [r] fold      [const AjPStr]     Fold
+** @param [r] klass     [const AjPStr]     Class
 ** @param [w] list      [AjPList*]   A list of hitlist structures.
 ** 
 ** @return [AjBool] True on success (a file has been written)
@@ -398,12 +405,13 @@ ajint embHitidxMatchId(const void *hit1, const void *hit2)
 ****************************************************************************/
 
 AjBool embHitlistReadFam(AjPFile scopf,
-			 AjPStr fam, AjPStr sfam, AjPStr fold, 
-			 AjPStr klass, AjPList* list)
+			 const AjPStr fam, const AjPStr sfam,
+			 const AjPStr fold, 
+			 const AjPStr klass, AjPList* list)
 {
     AjPHitlist hitlist = NULL; 
     AjBool done        = ajFalse;
-    AjPStr class       = NULL;
+    const AjPStr class       = NULL;
 
     class = klass;
 
@@ -449,23 +457,24 @@ AjBool embHitlistReadFam(AjPFile scopf,
 ** DOMAINATRIX package), selects the entries with the specified 
 ** superfamily, and create a list of Hitlist structures.
 **
-** @param [r] scopf     [AjPFile]      The scop families file.
-** @param [r] fam       [AjPStr]       Family
-** @param [r] sfam      [AjPStr]       Superfamily
-** @param [r] fold      [AjPStr]       Fold
-** @param [r] klass     [AjPStr]       Class
+** @param [u] scopf     [AjPFile]      The scop families file.
+** @param [r] fam       [const AjPStr]       Family
+** @param [r] sfam      [const AjPStr]       Superfamily
+** @param [r] fold      [const AjPStr]       Fold
+** @param [r] klass     [const AjPStr]       Class
 ** @param [w] list      [AjPList*]     A list of hitlist structures.
 ** 
 ** @return [AjBool] True on success (a file has been written)
 ** @@
 ****************************************************************************/
 
-AjBool embHitlistReadSfam(AjPFile scopf, AjPStr fam, AjPStr sfam,
-			    AjPStr fold, AjPStr klass, AjPList* list)
+AjBool embHitlistReadSfam(AjPFile scopf,
+			  const AjPStr fam, const AjPStr sfam,
+			  const AjPStr fold, const AjPStr klass, AjPList* list)
 {
     AjPHitlist hitlist = NULL; 
     AjBool done  = ajFalse;
-    AjPStr class = NULL;
+    const AjPStr class = NULL;
 
     class = klass;
     
@@ -507,22 +516,23 @@ AjBool embHitlistReadSfam(AjPFile scopf, AjPStr fam, AjPStr sfam,
 ** DOMAINATRIX package), selects the entries with the specified 
 ** fold, and create a list of Hitlist structures.
 **
-** @param [r] scopf     [AjPFile]      The scop families file.
-** @param [r] fam       [AjPStr]       Family
-** @param [r] sfam      [AjPStr]       Superfamily
-** @param [r] fold      [AjPStr]       Fold
-** @param [r] klass     [AjPStr]       Class
+** @param [u] scopf     [AjPFile]      The scop families file.
+** @param [r] fam       [const AjPStr]       Family
+** @param [r] sfam      [const AjPStr]       Superfamily
+** @param [r] fold      [const AjPStr]       Fold
+** @param [r] klass     [const AjPStr]       Class
 ** @param [w] list      [AjPList*]     A list of hitlist structures.
 ** @return [AjBool] ajTrue on success
 ** @@
 ****************************************************************************/
 
-AjBool embHitlistReadFold(AjPFile scopf, AjPStr fam, AjPStr sfam,
-			  AjPStr fold, AjPStr klass, AjPList* list)
+AjBool embHitlistReadFold(AjPFile scopf,
+			  const AjPStr fam, const AjPStr sfam,
+			  const AjPStr fold, const AjPStr klass, AjPList* list)
 {
     AjPHitlist hitlist = NULL; 
     AjBool done  = ajFalse;
-    AjPStr class = NULL;
+    const AjPStr class = NULL;
 
     class = klass;
     
@@ -862,14 +872,14 @@ void embSignatureDel(AjPSignature *ptr)
 ** If hit1 and hit2 are both OTHER, the merged hit remains classified as 
 ** OTHER.
 ** 
-** @param [r] hit1     [AjPHit]  Hit 1
-** @param [r] hit2     [AjPHit]  Hit 2
+** @param [r] hit1     [const AjPHit]  Hit 1
+** @param [r] hit2     [const AjPHit]  Hit 2
 **
 ** @return [AjPHit] Pointer to Hit object.
 ** @@
 ****************************************************************************/
 
-AjPHit embHitMerge(AjPHit hit1, AjPHit hit2)
+AjPHit embHitMerge(const AjPHit hit1, const AjPHit hit2)
 {
     AjPHit ret;
     ajint start = 0;      /* Start of N-terminal-most sequence */
@@ -1116,8 +1126,8 @@ ajint embMatchinvScore(const void *hit1, const void *hit2)
 **
 ** Checks for overlap between two hits.
 **
-** @param [r] hit1  [AjPHit]     Pointer to hit object 1
-** @param [r] hit2  [AjPHit]     Pointer to hit object 2
+** @param [r] hit1  [const AjPHit]     Pointer to hit object 1
+** @param [r] hit2  [const AjPHit]     Pointer to hit object 2
 ** @param [r] n     [ajint]      Threshold number of residues for overlap
 **
 ** @return [AjBool] True if the overlap between the sequences is at least as 
@@ -1125,7 +1135,7 @@ ajint embMatchinvScore(const void *hit1, const void *hit2)
 ** @@
 ****************************************************************************/
 
-AjBool embHitsOverlap(AjPHit hit1, AjPHit hit2, ajint n)
+AjBool embHitsOverlap(const AjPHit hit1, const AjPHit hit2, ajint n)
 {
     if((MAJSTRLEN(hit1->Seq)<n) || (MAJSTRLEN(hit2->Seq)<n))
     {
@@ -1166,7 +1176,7 @@ AjBool embHitsOverlap(AjPHit hit1, AjPHit hit2, ajint n)
 ** Read a hitlist object from a file in embl-like format (see documentation
 ** for the DOMAINATRIX "seqsearch" application). 
 ** 
-** @param [r] inf      [AjPFile] Input file stream
+** @param [u] inf      [AjPFile] Input file stream
 **
 ** @return [AjPHitlist] Hitlist object
 ** @@
@@ -1339,21 +1349,22 @@ AjPHitlist embHitlistRead(AjPFile inf)
 ** DOMAINATRIX package) and writes a list of Hitlist objects containing 
 ** all domains matching the scop classification provided.
 **
-** @param [r] inf    [AjPFile]   File containing multiple Hitlist objects
-** @param [r] fam    [AjPStr]    Family.
-** @param [r] sfam   [AjPStr]    Superfamily.
-** @param [r] fold   [AjPStr]    Fold.
-** @param [r] klass  [AjPStr]    Class.
+** @param [u] inf    [AjPFile]   File containing multiple Hitlist objects
+** @param [r] fam    [const AjPStr]    Family.
+** @param [r] sfam   [const AjPStr]    Superfamily.
+** @param [r] fold   [const AjPStr]    Fold.
+** @param [r] klass  [const AjPStr]    Class.
 ** 
 ** @return [AjPList] List of Hitlist objects or NULL.
 ** @@
 ****************************************************************************/
 
-AjPList embHitlistReadNode(AjPFile inf, AjPStr fam, AjPStr sfam, 
-			   AjPStr fold, AjPStr klass)
+AjPList embHitlistReadNode(AjPFile inf,
+			   const AjPStr fam, const AjPStr sfam, 
+			   const AjPStr fold, const AjPStr klass)
 {
     AjPList ret = NULL;
-    AjPStr class   = NULL;
+    const AjPStr class   = NULL;
 
     class = klass;
 
@@ -1452,14 +1463,14 @@ AjPList embHitlistReadNode(AjPFile inf, AjPStr fam, AjPStr sfam,
 ** Text for Class, Fold, Superfamily and Family is only written if the text
 ** is available.
 ** 
-** @param [w] outf [AjPFile] Output file stream
-** @param [r] obj [AjPHitlist] Hitlist object
+** @param [u] outf [AjPFile] Output file stream
+** @param [r] obj [const AjPHitlist] Hitlist object
 **
 ** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
-AjBool embHitlistWrite(AjPFile outf, AjPHitlist obj)
+AjBool embHitlistWrite(AjPFile outf, const AjPHitlist obj)
 {
     ajint x = 0;  /* Counter */
     
@@ -1536,15 +1547,16 @@ AjBool embHitlistWrite(AjPFile outf, AjPHitlist obj)
 ** Text for Class, Fold, Superfamily and Family is only written if the text
 ** is available.
 ** 
-** @param [w] outf  [AjPFile]    Output file stream
-** @param [r] obj   [AjPHitlist] Hitlist object
-** @param [r] ok    [AjPInt]     Whether hits are to be printed or not
+** @param [u] outf  [AjPFile]    Output file stream
+** @param [r] obj   [const AjPHitlist] Hitlist object
+** @param [r] ok    [const AjPInt]     Whether hits are to be printed or not
 **
 ** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
-AjBool embHitlistWriteSubset(AjPFile outf, AjPHitlist obj, AjPInt ok)
+AjBool embHitlistWriteSubset(AjPFile outf,
+			     const AjPHitlist obj, const AjPInt ok)
 {
     ajint x    = 0;  /* Counter */
     ajint y    = 0;  /* Counter */
@@ -1629,7 +1641,7 @@ AjBool embHitlistWriteSubset(AjPFile outf, AjPHitlist obj, AjPInt ok)
 ** Read a Signature object from a file in embl-like format (see documentation
 ** for the DOMAINATRIX "sigscan" application).
 **
-** @param [r] inf [AjPFile] Input file stream
+** @param [u] inf [AjPFile] Input file stream
 **
 ** @return [AjPSignature] Signature object
 ** @@
@@ -1811,12 +1823,12 @@ AjPSignature embSignatureReadNew(AjPFile inf)
 ** format (see documentation for the DOMAINATRIX "sigscan" application). 
 **
 ** @param [w] outf [AjPFile]       Output file stream
-** @param [r] obj  [AjPSignature]  Signature object
+** @param [r] obj  [const AjPSignature]  Signature object
 **
 ** @return [AjBool] ajTrue on success
 ** @@
 ****************************************************************************/
-AjBool embSignatureWrite(AjPFile outf, AjPSignature obj)
+AjBool embSignatureWrite(AjPFile outf, const AjPSignature obj)
 { 
     ajint i;
     ajint j;
@@ -1866,7 +1878,7 @@ AjBool embSignatureWrite(AjPFile outf, AjPSignature obj)
 ** DOMAINATRIX "sigscan" application). In other words, this function reads
 ** the results of a scan of a signature against a protein sequence database.  
 **
-** @param [w] inf  [AjPFile]      Input file stream
+** @param [u] inf  [AjPFile]      Input file stream
 **
 ** @return [AjPHitlist] Hitlist object that was allocated.
 ** @@
@@ -1997,17 +2009,17 @@ AjPHitlist embSignatureHitsRead(AjPFile inf)
 ** embHitlistClassify.  Hits up to the first user-specified number of false
 ** hits are written.
 **
-** @param [w] outf    [AjPFile]      Output file stream
-** @param [w] sig     [AjPSignature] Signature object
-** @param [r] hitlist [AjPHitlist]   Hitlist objects with hits from scan
+** @param [u] outf    [AjPFile]      Output file stream
+** @param [r] sig     [const AjPSignature] Signature object
+** @param [r] hitlist [const AjPHitlist]   Hitlist objects with hits from scan
 ** @param [r] n       [ajint]        Max. no. false hits to output
 **
 ** @return [AjBool] True if file was written
 ** @@
 ****************************************************************************/
 
-AjBool embSignatureHitsWrite(AjPFile outf, AjPSignature sig, 
-			     AjPHitlist hitlist, ajint n)
+AjBool embSignatureHitsWrite(AjPFile outf, const AjPSignature sig, 
+			     const AjPHitlist hitlist, ajint n)
 {
     ajint  x  = 0;
     ajint  nf = 0;
@@ -2140,8 +2152,8 @@ AjBool embSignatureHitsWrite(AjPFile outf, AjPSignature sig,
 ** generating signature performance plots with the EMBOSS application sigplot.
 **
 **
-** @param [r] hits    [AjPHitlist*] Pointer to Hitlist object with hits
-** @param [r] targets [AjPList]     List of AjOHitlist objects with targets
+** @param [r] hits    [AjPHitlist const *] Pointer to Hitlist object with hits
+** @param [r] targets [const AjPList]   List of AjOHitlist objects with targets
 ** @param [r] thresh  [ajint]       Minimum length (residues) of overlap 
 ** required for two hits with the same code to be counted as the same hit.
 **
@@ -2149,7 +2161,8 @@ AjBool embSignatureHitsWrite(AjPFile outf, AjPSignature sig,
 ** @@
 ****************************************************************************/
 
-AjBool embHitlistClassify(AjPHitlist *hits, AjPList targets, ajint thresh)
+AjBool embHitlistClassify(AjPHitlist const *hits,
+			  const AjPList targets, ajint thresh)
 {  
     /*
     ** A list of Hitidx structures is derived from the list of AjOHitlist 
@@ -2394,14 +2407,14 @@ AjBool embHitlistClassify(AjPHitlist *hits, AjPList targets, ajint thresh)
 ** @param [w] S      [AjPSignature*] Signature object
 ** @param [r] gapo   [float]         Gap opening penalty
 ** @param [r] gape   [float]         Gap extension penalty
-** @param [r] matrix [AjPMatrixf]    Residue substitution matrix
+** @param [r] matrix [const AjPMatrixf]    Residue substitution matrix
 **
 ** @return [AjBool] True if array was written succesfully.
 ** @@
 ****************************************************************************/
 
 AjBool embSignatureCompile(AjPSignature *S, float gapo, float gape, 
-			     AjPMatrixf matrix)
+			   const AjPMatrixf matrix)
 {
     AjPSeqCvt cvt   = NULL;   /* Conversion array for AjPMatrixf */
     float     **sub = NULL;   /* Substitution matrix from AjPMatrixf */
@@ -2547,10 +2560,10 @@ AjBool embSignatureCompile(AjPSignature *S, float gapo, float gape,
 ** function.
 ** A Hit object is written.
 **
-** @param [r] S      [AjPSignature] Signature object
-** @param [r] seq    [AjPSeq]       Protein sequence
+** @param [r] S      [const AjPSignature] Signature object
+** @param [r] seq    [const AjPSeq]       Protein sequence
 ** @param [w] hit    [AjPHit*]      Hit object pointer
-** @param [w] nterm  [ajint]        N-terminal matching option
+** @param [r] nterm  [ajint]        N-terminal matching option
 **
 ** @return [AjBool] True if a signature-sequence alignment was successful and 
 ** the Hit object was written.  Returns False if there was an internal error, 
@@ -2559,8 +2572,9 @@ AjBool embSignatureCompile(AjPSignature *S, float gapo, float gape,
 ** @@
 ****************************************************************************/
 
-AjBool embSignatureAlignSeq(AjPSignature S, AjPSeq seq, AjPHit *hit, 
-			      ajint nterm)
+AjBool embSignatureAlignSeq(const AjPSignature S, const AjPSeq seq,
+			    AjPHit *hit, 
+			    ajint nterm)
 {
     const AjPStr  P     = NULL; 
     ajint  gidx   = 0;	  /*Index into gap array */
@@ -2879,18 +2893,19 @@ AjBool embSignatureAlignSeq(AjPSignature S, AjPSeq seq, AjPHit *hit,
 ** Memory for an Hitlist object must be allocated beforehand by using the 
 ** Hitlist constructor with an arg. of 0.
 **
-** @param [r] sig      [AjPSignature] Signature object
-** @param [r] db       [AjPSeqall]    Protein sequences
-** @param [w] n        [ajint]        Max. number of top-scoring hits to store
+** @param [r] sig      [const AjPSignature] Signature object
+** @param [u] db       [AjPSeqall]    Protein sequences
+** @param [r] n        [ajint]        Max. number of top-scoring hits to store
 ** @param [w] hitlist  [AjPHitlist*]  Hitlist object pointer
-** @param [w] nterm    [ajint]        N-terminal matching option
+** @param [r] nterm    [ajint]        N-terminal matching option
 **
 ** @return [AjBool] True if Hitlist object was written succesfully.
 ** @@
 ****************************************************************************/
 
-AjBool embSignatureAlignSeqall(AjPSignature sig, AjPSeqall db, ajint n, 
-				 AjPHitlist *hitlist, ajint nterm)
+AjBool embSignatureAlignSeqall(const AjPSignature sig, AjPSeqall db,
+			       ajint n, 
+			       AjPHitlist *hitlist, ajint nterm)
 {
     ajint   nhits    = 0;        /* Number of hits written to Hitlist object*/
     ajint   hitcnt   = 0;        /* Counter of number of hits */

@@ -3396,6 +3396,7 @@ AjPStr ajIsSeqversion(const AjPStr sv)
 **
 ** @param [r] seq [const AjPSeq] Sequence.
 ** @return [void]
+** @category output [AjPSeq] Reports the contents of a sequence
 ** @@
 ******************************************************************************/
 
@@ -3814,7 +3815,7 @@ AjBool ajSeqGetReversed(const AjPSeq seq)
 **
 ** @param [r] seq [const AjPSeq] Sequence object
 ** @return [char*] Sequence as a null terminated character string.
-
+** @category cast [AjPSeq] Returns a copy of the sequence as char*.
 ** @@
 ******************************************************************************/
 
@@ -4240,6 +4241,7 @@ ajint ajSeqCvtKS (const AjPSeqCvt thys, const AjPStr ch)
 **
 ** @param [r] thys [const AjPSeq] Sequence.
 ** @return [const AjPStr] Sequence as a string.
+** @category cast [AjPSeq] Returns the actual AjPStr holding the sequence.
 ** @@
 ******************************************************************************/
 

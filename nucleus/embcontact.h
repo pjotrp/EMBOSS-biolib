@@ -28,17 +28,15 @@ extern "C"
 ** @attr ajIntFirstPosition [ajint] position of first residue in contact
 ** @attr ajIntSecondPosition [ajint] position of second residue in contact
 ** @attr ajpStrFirstResType [AjPStr] 1st residue type in contact (3 lett code)
-** @attr ajpStrSecondResType [char] 2nd residue type in contact (3 lett code)
+** @attr ajpStrSecondResType [AjPStr] 2nd residue type in contact (3 lett code)
 ** @@
 ******************************************************************************/
 
 
 typedef struct AjContact
 {
-    /* position of residues in contact */
     ajint ajIntFirstPosition;
     ajint ajIntSecondPosition;
-    /* 3-letter codes for 1st residue in contact */
     AjPStr ajpStrFirstResType; 
     AjPStr ajpStrSecondResType;
 } AjOContact;
@@ -46,7 +44,7 @@ typedef struct AjContact
 
 
 
-/* @data AjPCmapHeader **********************************************************
+/* @data AjPCmapHeader ********************************************************
 **
 ** NUCLEUS header of a cmap file
 **
@@ -65,7 +63,10 @@ typedef struct AjContact
 ** @attr ajpStrCmapId [AjPStr] text of protein ID code
 ** @attr ajpStrCmapDe [AjPStr] text of 
 ** @attr ajpStrCmapEx [AjPStr] 1st residue type in contact (3 lett code)
-** @attr ajpStrSecondResType [char] 2nd residue type in contact (3 lett code)
+** @attr ajpStrCmapMo [AjPStr] MO line data
+** @attr ajpStrCmapCn [AjPStr] CN line data
+** @attr ajpStrCmapIn [AjPStr]  IN line data
+** @attr ajpStrCmapSq [AjPStr]  Sequence data
 ** @@
 ******************************************************************************/
 

@@ -196,12 +196,12 @@ int main(int argc, char **argv)
 ** @param [r] len [ajint] Undocumented
 ** @param [r] window [ajint] Undocumented
 ** @param [r] shift [ajint] Undocumented
-** @param [r] obsexp [float*] Undocumented
-** @param [r] xypc [float*] Undocumented
+** @param [w] obsexp [float*] Undocumented
+** @param [w] xypc [float*] Undocumented
 ** @param [r] bases [const AjPStr] Undocumented
-** @param [r] obsexpmax [float*] Undocumented
-** @param [r] plstart [ajint*] Undocumented
-** @param [r] plend [ajint*] Undocumented
+** @param [w] obsexpmax [float*] Undocumented
+** @param [w] plstart [ajint*] Undocumented
+** @param [w] plend [ajint*] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -265,9 +265,9 @@ static void cpgplot_findbases(const AjPStr substr, ajint begin, ajint len,
 ** @param [r] seq [const char*] Undocumented
 ** @param [r] bases [const char*] Undocumented
 ** @param [r] window [ajint] Undocumented
-** @param [r] cx [float*] Undocumented
-** @param [r] cy [float*] Undocumented
-** @param [r] cxpy [float*] Undocumented
+** @param [w] cx [float*] Undocumented
+** @param [w] cy [float*] Undocumented
+** @param [w] cxpy [float*] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -332,7 +332,7 @@ static void cpgplot_countbases(const char *seq, const char *bases,
 ** @param [u] outf [AjPFile] Undocumented
 ** @param [r] obsexp [const float*] Undocumented
 ** @param [r] xypc [const float*] Undocumented
-** @param [r] thresh [AjBool*] Undocumented
+** @param [w] thresh [AjBool*] Undocumented
 ** @param [r] begin [ajint] Undocumented
 ** @param [r] len [ajint] Undocumented
 ** @param [r] shift [ajint] Undocumented
@@ -341,7 +341,7 @@ static void cpgplot_countbases(const char *seq, const char *bases,
 ** @param [r] minlen [ajint] Undocumented
 ** @param [r] minobsexp [float] Undocumented
 ** @param [r] minpc [float] Undocumented
-** @param [r] featout [AjPFeattabOut] Undocumented
+** @param [u] featout [AjPFeattabOut] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -498,7 +498,7 @@ static void cpgplot_reportislands(AjPFile outf, const AjBool *thresh,
 ** @param [r] shift [ajint] Undocumented
 ** @param [r] obsexp [const float*] Undocumented
 ** @param [r] xypc [const float*] Undocumented
-** @param [r] thresh [AjBool*] Undocumented
+** @param [r] thresh [const AjBool*] Undocumented
 ** @param [r] bases [const char*] Undocumented
 ** @param [r] obsexpmax [float] Undocumented
 ** @param [r] plstart [ajint] Undocumented
@@ -506,7 +506,7 @@ static void cpgplot_reportislands(AjPFile outf, const AjBool *thresh,
 ** @param [r] doobsexp [AjBool] Undocumented
 ** @param [r] docg [AjBool] Undocumented
 ** @param [r] dopc [AjBool] Undocumented
-** @param [r] graphs [AjPGraph] Undocumented
+** @param [u] graphs [AjPGraph] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -653,7 +653,7 @@ static void cpgplot_plotit(const char *seq,
 **
 ** Undocumented.
 **
-** @param [r] featout [AjPFeattabOut] Undocumented
+** @param [u] featout [AjPFeattabOut] Undocumented
 ** @param [r] thresh [const AjBool*] Undocumented
 ** @param [r] seqname [const char*] Undocumented
 ** @param [r] begin [ajint] Undocumented

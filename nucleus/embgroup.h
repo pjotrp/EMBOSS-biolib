@@ -64,20 +64,24 @@ typedef struct gnode {
 
 
 ajint    embGrpCompareTwoGnodes(const void * a, const void * b);
-void   embGrpGetProgGroups (AjPList glist, AjPList alpha, char **env,
+void   embGrpGetProgGroups (AjPList glist, AjPList alpha, char * const env[],
           AjBool emboss, AjBool embassy, AjBool explode, AjBool colon,
           AjBool gui);
 void   embGrpGroupsListDel (AjPList *groupslist);
-void   embGrpKeySearchProgs (AjPList newlist, AjPList glist, AjPStr key);
+void   embGrpKeySearchProgs (AjPList newlist, const AjPList glist,
+			     const AjPStr key);
 void   embGrpKeySearchSeeAlso(AjPList newlist, AjPList *appgroups,
-        AjPList alpha, AjPList glist, AjPStr key);
-GPnode embGrpMakeNewGnode (AjPStr name);
-GPnode embGrpMakeNewPnode (AjPStr name, AjPStr doc);
-void   embGrpOutputGroupsList (AjPFile outfile, AjPList groupslist,
-			       AjBool showprogs, AjBool html, AjPStr link1,
-			       AjPStr link2);
-void   embGrpOutputProgsList (AjPFile outfile, AjPList progslist,
-			      AjBool html, AjPStr link1, AjPStr link2);
+			      const AjPList alpha, const AjPList glist,
+			      const AjPStr key);
+GPnode embGrpMakeNewGnode (const AjPStr name);
+GPnode embGrpMakeNewPnode (const AjPStr name, const AjPStr doc);
+void   embGrpOutputGroupsList (AjPFile outfile, const AjPList groupslist,
+			       AjBool showprogs, AjBool html,
+			       const AjPStr link1,
+			       const AjPStr link2);
+void   embGrpOutputProgsList (AjPFile outfile,  const AjPList progslist,
+			      AjBool html,
+			      const AjPStr link1, const AjPStr link2);
 void   embGrpSortGroupsList (AjPList groupslist);
 void   embGrpMakeUnique(AjPList list);
 

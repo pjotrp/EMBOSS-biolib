@@ -34,18 +34,18 @@ static void profit_read_profile(AjPFile inf, AjPStr *name, AjPStr *mname,
 static void profit_read_simple(AjPFile inf, AjPStr *name, ajint *mlen,
 			       ajint *maxs, ajint *thresh,AjPStr *cons);
 
-static void profit_scan_profile(AjPStr substr, AjPStr pname, AjPStr name,
-				AjPStr mname, ajint mlen, float **fmatrix,
-				ajint thresh, float maxs, float gapopen,
-				float gapextend, AjPFile outf, AjPStr *cons);
+static void profit_scan_profile(const AjPStr substr, const AjPStr pname,
+				ajint mlen, float * const *fmatrix,
+				ajint thresh, float maxs, AjPFile outf);
 
-static void profit_scan_simple(AjPStr substr, AjPStr pname, AjPStr name,
+static void profit_scan_simple(const AjPStr substr,
+			       const AjPStr pname,
 			       ajint mlen, ajint maxs, ajint thresh,
-			       ajint **matrix,AjPFile outf,AjPStr *cons);
+			       ajint * const *matrix,
+			       AjPFile outf);
 
-static void profit_printHits(AjPStr substr,AjPStr pname, ajint pos,
-			     AjPStr name, ajint score, ajint thresh,
-			     float maxs, AjPFile outf,AjPStr *cons);
+static void profit_printHits(const AjPStr pname, ajint pos,
+			     ajint score, AjPFile outf);
 
 static ajint profit_getType(AjPFile inf);
 
@@ -200,16 +200,16 @@ int main(int argc, char **argv)
 	switch(type)
 	{
 	case 1:
-	    profit_scan_simple(substr,pname,name,mlen,maxs,thresh,matrix,
-			       outf,&cons);
+	    profit_scan_simple(substr,pname,mlen,maxs,thresh,matrix,
+			       outf);
 	    break;
 	case 2:
-	    profit_scan_profile(substr,pname,name,mname,mlen,fmatrix,
-				thresh,maxfs,gapopen,gapextend,outf,&cons);
+	    profit_scan_profile(substr,pname,mlen,fmatrix,
+				thresh,maxfs,outf);
 	    break;
 	case 3:
-	    profit_scan_profile(substr,pname,name,mname,mlen,fmatrix,thresh,
-				maxfs,gapopen,gapextend,outf,&cons);
+	    profit_scan_profile(substr,pname,mlen,fmatrix,thresh,
+				maxfs,outf);
 	    break;
 	default:
 	    break;
@@ -242,7 +242,7 @@ int main(int argc, char **argv)
 **
 ** Get type of matrix
 **
-** @param [r] inf [AjPFile] profile
+** @param [u] inf [AjPFile] profile
 ** @return [ajint] 1=simple 2=Gribskov 3=Henikoff
 ** @@
 ******************************************************************************/
@@ -283,7 +283,7 @@ static ajint profit_getType(AjPFile inf)
 **
 ** Undocumented.
 **
-** @param [r] inf [AjPFile] mtx file
+** @param [u] inf [AjPFile] mtx file
 ** @param [w] name [AjPStr*] mtx name
 ** @param [w] mlen [ajint*] mtx length
 ** @param [w] maxs [ajint*] mtx max score
@@ -358,7 +358,7 @@ static void profit_read_simple(AjPFile inf, AjPStr *name, ajint *mlen,
 **
 ** Read profile
 **
-** @param [r] inf [AjPFile] Undocumented
+** @param [u] inf [AjPFile] Undocumented
 ** @param [w] name [AjPStr*] profile name
 ** @param [w] mname [AjPStr*] mtx name
 ** @param [w] mlen [ajint*] profile length
@@ -463,21 +463,21 @@ static void profit_read_profile(AjPFile inf, AjPStr *name, AjPStr *mname,
 **
 ** Scan sequence with a frequency matrix
 **
-** @param [r] substr [AjPStr] sequence
-** @param [r] pname [AjPStr] profile name
-** @param [r] name [AjPStr] seq namne
+** @param [r] substr [const AjPStr] sequence
+** @param [r] pname [const AjPStr] profile name
 ** @param [r] mlen [ajint] mtx length
 ** @param [r] maxs [ajint] max score
 ** @param [r] thresh [ajint] threshold
-** @param [r] matrix [ajint**] freq mtx
-** @param [w] outf [AjPFile] outfile
-** @param [r] cons [AjPStr*] consensus sequence
+** @param [r] matrix [ajint* const *] freq mtx
+** @param [u] outf [AjPFile] outfile
 ** @@
 ******************************************************************************/
 
-static void profit_scan_simple(AjPStr substr, AjPStr pname, AjPStr name,
+static void profit_scan_simple(const AjPStr substr,
+			       const AjPStr pname,
 			       ajint mlen, ajint maxs, ajint thresh,
-			       ajint **matrix,AjPFile outf, AjPStr *cons)
+			       ajint * const *matrix,
+			       AjPFile outf)
 {
     ajint len;
     ajint i;
@@ -500,8 +500,7 @@ static void profit_scan_simple(AjPStr substr, AjPStr pname, AjPStr name,
 	    sum += matrix[j][ajAZToInt(*(p+i+j))];
 	score = sum * 100 / maxs;
 	if(score >= thresh)
-	    profit_printHits(substr,pname,i,name,score,thresh,(float)maxs,outf,
-			     cons);
+	    profit_printHits(pname,i,score,outf);
     }
 
     return;
@@ -514,22 +513,16 @@ static void profit_scan_simple(AjPStr substr, AjPStr pname, AjPStr name,
 **
 ** Print results for profit
 **
-** @param [r] substr [AjPStr] sequence
-** @param [r] pname [AjPStr] profile name
+** @param [r] pname [const AjPStr] profile name
 ** @param [r] pos [ajint] position
-** @param [r] name [AjPStr] name
 ** @param [r] score [ajint] score
-** @param [r] thresh [ajint] threshold
-** @param [r] maxs [float] max score
-** @param [w] outf [AjPFile] outfile
-** @param [r] cons [AjPStr*] consensus seq
+** @param [u] outf [AjPFile] outfile
 ** @@
 ******************************************************************************/
 
 
-static void profit_printHits(AjPStr substr,AjPStr pname, ajint pos,
-			     AjPStr name, ajint score, ajint thresh,
-			     float maxs, AjPFile outf, AjPStr *cons)
+static void profit_printHits(const AjPStr pname, ajint pos,
+			     ajint score, AjPFile outf)
 {
     ajFmtPrintF(outf,"%s %d Percentage: %d\n",ajStrStr(pname),pos+1,score);
 
@@ -543,26 +536,22 @@ static void profit_printHits(AjPStr substr,AjPStr pname, ajint pos,
 **
 ** Scan sequence with a profile
 **
-** @param [r] substr [AjPStr] sequence
-** @param [r] pname [AjPStr] profile name
-** @param [r] name [AjPStr] sequence name
-** @param [r] mname [AjPStr] mtx name
+** @param [r] substr [const AjPStr] sequence
+** @param [r] pname [const AjPStr] profile name
 ** @param [r] mlen [ajint] profile length
-** @param [r] fmatrix [float**] score matrix
+** @param [r] fmatrix [float* const *] score matrix
 ** @param [r] thresh [ajint] threshold
 ** @param [r] maxs [float] max score
-** @param [r] gapopen [float] open penalty
-** @param [r] gapextend [float] extend penalty
-** @param [w] outf [AjPFile] outfile
-** @param [r] cons [AjPStr*] consensus seq
+** @param [u] outf [AjPFile] outfile
 ** @@
 ******************************************************************************/
 
 
-static void profit_scan_profile(AjPStr substr, AjPStr pname, AjPStr name,
-				AjPStr mname, ajint mlen, float **fmatrix,
-				ajint thresh, float maxs, float gapopen,
-				float gapextend, AjPFile outf, AjPStr *cons)
+static void profit_scan_profile (const AjPStr substr,
+				 const AjPStr pname,
+				 ajint mlen,
+				 float * const *fmatrix,
+				 ajint thresh, float maxs, AjPFile outf)
 {
     ajint len;
     ajint i;
@@ -585,8 +574,7 @@ static void profit_scan_profile(AjPStr substr, AjPStr pname, AjPStr name,
 	    sum += fmatrix[j][ajAZToInt(*(p+i+j))];
 	score = sum * 100. / maxs;
 	if((ajint)score >= thresh)
-	    profit_printHits(substr,pname,i,name,(ajint)score,thresh,maxs,outf,
-			     cons);
+	    profit_printHits(pname,i,(ajint)score,outf);
     }
 
     return;

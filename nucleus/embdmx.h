@@ -50,7 +50,8 @@ AjBool        embDmxScophitsAccToHitlist(const AjPList in, AjPHitlist *out,
 AjBool        embDmxHitsWrite(AjPFile outf,
 			      const AjPHitlist hits, ajint maxhits);
 AjBool        embDmxScopToScophit(const AjPScop source, AjPScophit* target);
-AjBool        embDmxScopalgToScop(const AjPScopalg align, AjPScop *scop_arr, 
+AjBool        embDmxScopalgToScop(const AjPScopalg align,
+				  AjPScop const *scop_arr, 
 				  ajint dim, AjPList* list);
 AjBool        embDmxScophitsOverlap(const AjPScophit h1,
 				    const AjPScophit h2, ajint n);

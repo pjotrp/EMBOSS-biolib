@@ -3743,7 +3743,7 @@ void ajAlignPrintFormat(AjPFile outf, AjBool full)
 **
 ** Calculates alignment statistics (and a consensus) from a sequence set.
 **
-** @param [u] thys [AjPSeqset] Sequence set.
+** @param [r] thys [const AjPSeqset] Sequence set.
 ** @param [w] mymatrix [AjPMatrix] User-defined matrix, or NULL for the default
 ** @param [w] cons [AjPStr*] the created consensus sequence
 ** @param [w] retident [ajint*] number of residues identical in all sequences
@@ -3753,7 +3753,7 @@ void ajAlignPrintFormat(AjPFile outf, AjBool full)
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
-AjBool ajAlignConsStats(AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
+AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
 			 ajint* retident, ajint* retsim, ajint* retgap,
 			 ajint* retlen)
 {

@@ -122,7 +122,7 @@ int main(int argc, char **argv)
 ** @param [r] p [const char*] sequence
 ** @param [r] name [const char*] sequence name
 ** @param [r] begin [ajint] start in sequence
-** @param [w] score [ajint] score
+** @param [r] score [ajint] score
 ** @@
 ******************************************************************************/
 

@@ -89,7 +89,7 @@
 ** 
 ** @param [r] in      [const AjPList]     List of pointers to Scophit objects
 ** @param [w] out     [AjPHitlist*] Pointer to Hitlist object
-** @param [r] iter    [AjIList*]    Pointer to iterator for list.
+** @param [u] iter    [AjIList*]    Pointer to iterator for list.
 **
 ** @return [AjBool] True on success (lists were processed ok)
 ** @@
@@ -304,7 +304,7 @@ AjBool embDmxScophitToHit(AjPHit *to, const AjPScophit from)
 ** 
 ** @param [r] in      [const AjPList]     List of pointers to Scophit objects
 ** @param [w] out     [AjPHitlist*] Pointer to Hitlist object
-** @param [r] iter    [AjIList*]    Pointer to iterator for list.
+** @param [u] iter    [AjIList*]    Pointer to iterator for list.
 **
 ** @return [AjBool] True on success (lists were processed ok)
 ** @@
@@ -627,7 +627,7 @@ AjBool embDmxScopToScophit(const AjPScop source, AjPScophit* target)
 ** corresponding Scop objects from the scop classification file.
 **
 ** @param [r] align     [const AjPScopalg]  Contains a seed alignment.
-** @param [r] scop_arr  [const AjPScop*]    Array of AjPScop objects
+** @param [r] scop_arr  [AjPScop const *]    Array of AjPScop objects
 ** @param [r] scop_dim  [ajint]       Size of array
 ** @param [w] list      [AjPList*]    List of Scop objects.
 ** 
@@ -636,7 +636,7 @@ AjBool embDmxScopToScophit(const AjPScop source, AjPScophit* target)
 ** @@
 ****************************************************************************/
 
-AjBool embDmxScopalgToScop(const AjPScopalg align, AjPScop *scop_arr, 
+AjBool embDmxScopalgToScop(const AjPScopalg align, AjPScop const *scop_arr, 
 			   ajint scop_dim, AjPList* list)
 {
     AjPStr entry_up = NULL;  /* Current entry, upper case */

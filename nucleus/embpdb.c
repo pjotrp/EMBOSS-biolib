@@ -782,10 +782,10 @@ AjBool embPdbAtomIndexC(const AjPPdb pdb, char chn, AjPInt *idx)
 ** which CA atoms are missing. The array length is of course equal to the 
 ** number of structured residues. 
 **
-** @param [r] pdb  [Aconst jPPdb]  Pdb object
+** @param [r] pdb  [const AjPPdb]  Pdb object
 ** @param [r] chn  [ajint]   Chain number
 ** @param [w] idx  [AjPInt*] Index array
-** @param [r] nres [ajint*]  Array length 
+** @param [w] nres [ajint*]  Array length 
 **
 ** @return [AjBool] True on succcess
 ** @@
@@ -871,7 +871,7 @@ AjBool embPdbAtomIndexICA(const AjPPdb pdb,
 ** @param [r] pdb [const AjPPdb]  Pdb object
 ** @param [r] chn [char]    Chain identifier
 ** @param [w] idx [AjPInt*] Index array
-** @param [r] nres [ajint*] Array length 
+** @param [w] nres [ajint*] Array length 
 **
 ** @return [AjBool] True on succcess
 ** @@
@@ -907,7 +907,7 @@ AjBool embPdbAtomIndexCCA(const AjPPdb pdb, char chn, AjPInt *idx, ajint *nres)
 ** (STRIDE 'T' or 'C'). The string is allocated if necessary.
 **
 ** @param [w] to [AjPStr*]  String to write
-** @param [r] to [const AjPStr]  String to read
+** @param [r] from [const AjPStr]  String to read
 **
 ** @return [AjBool] True on succcess
 ** @@

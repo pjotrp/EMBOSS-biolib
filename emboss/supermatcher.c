@@ -359,7 +359,8 @@ static void supermatcher_matchListOrder(void **x,void *cl)
 **
 ** Undocumented.
 **
-** @param [r] list [AjPList] unordered input list
+** @param [u] list [AjPList] unordered input list - elements added to the
+**                           ordered list, but apparently not deleted.
 ** @param [w] ordered [AjPList] ordered output list
 ** @return [void]
 ** @@

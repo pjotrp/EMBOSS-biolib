@@ -244,9 +244,9 @@ AjPScop  ajScopNew(ajint n);
 void     ajScopDel(AjPScop *ptr);
 AjBool   ajScopCopy(AjPScop *to, const AjPScop from);
 
-ajint    ajScopArrFindScopid(AjPScop *arr, ajint siz, const AjPStr id);
-ajint    ajScopArrFindSunid(AjPScop *arr, ajint siz, ajint id);
-ajint    ajScopArrFindPdbid(AjPScop *arr, ajint siz, const AjPStr id);
+ajint    ajScopArrFindScopid(AjPScop const *arr, ajint siz, const AjPStr id);
+ajint    ajScopArrFindSunid(AjPScop const *arr, ajint siz, ajint id);
+ajint    ajScopArrFindPdbid(AjPScop const *arr, ajint siz, const AjPStr id);
 
 ajint    ajScopMatchScopid(const void *hit1, const void *hit2);
 ajint    ajScopMatchPdbId(const void *hit1, const void *hit2);

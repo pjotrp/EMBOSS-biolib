@@ -57,7 +57,7 @@ typedef struct AjGotohCell
 /* =================== All functions in alphabetical order ================= */
 /* ========================================================================= */
 
-/* ajgotoh.h() $Date: 2004/05/06 15:09:43 $                        DJC Oct03 */
+/* ajgotoh.h() $Date: 2004/06/21 14:06:21 $                        DJC Oct03 */
 
 AjPGotohCell **embGotohCellGetArray(ajint ajIntDownSeqLen,
 				    ajint ajIntCrossSeqLen);
@@ -73,26 +73,26 @@ void           embGotohCellDel(AjPGotohCell* pthis);
 
 AjPGotohCell   embGotohCellNew(void);
 
-AjPFloat2d     embGotohPairScore(AjPMatrixf ajpMatrixFscoring,
-				 AjPSeq ajpSeqDown,
-				 AjPSeq ajpSeqAcross,
+AjPFloat2d     embGotohPairScore(const AjPMatrixf ajpMatrixFscoring,
+				 const AjPSeq ajpSeqDown,
+				 const AjPSeq ajpSeqAcross,
 				 float fExtensionPenalty);
 
-void           embGotohCellCalculateSumScore(AjPFloat2d ajpFloat2dPairScores,
-					     AjPSeq ajpSeqDown,
-					     AjPSeq ajpSeqAcross,
-					     AjPGotohCell **ajpGotohCellGotohScores,
-					     float fGapPenalty,
-					     float fExtensionPenalty);
+void      embGotohCellCalculateSumScore(const AjPFloat2d ajpFloat2dPairScores,
+					const AjPSeq ajpSeqDown,
+					const AjPSeq ajpSeqAcross,
+					AjPGotohCell **ajpGotohCellGotohScores,
+					float fGapPenalty,
+					float fExtensionPenalty);
 
-ajint          embGotohCellBacktrace(AjPGotohCell **ajpGotohCellGotohScores,
-				     AjPSeq ajpSeqDown,
-				     AjPSeq ajpSeqAcross,
-				     AjPList ajpListGotohCellsMaxScoringTrace);
+ajint   embGotohCellBacktrace(AjPGotohCell const **ajpGotohCellGotohScores,
+			      const AjPSeq ajpSeqDown,
+			      const AjPSeq ajpSeqAcross,
+			      AjPList ajpListGotohCellsMaxScoringTrace);
 
-ajint          embGotohReadOffBacktrace(AjPList ajpListGotohCellsMaxScoringTrace,
-					AjPSeq ajpSeqDown,
-					AjPSeq ajpSeqAcross);
+ajint  embGotohReadOffBacktrace(const AjPList ajpListGotohCellsMaxScoringTrace,
+				AjPSeq ajpSeqDown,
+				AjPSeq ajpSeqAcross);
 
 #endif
 

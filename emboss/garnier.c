@@ -345,13 +345,13 @@ ajint pamh1[MAXSQ];		/* used for kfact replacement */
 
 
 static void garnier_report(AjPReport report, AjPFeattable TabRpt,
-			   AjPSeq seqobj,
+			   const AjPSeq seqobj,
 			   ajint from, ajint to, char *seq,
 			   ajint begin, ajint Idc);
 static void garnier_do(AjPFile outf, ajint s, ajint len,
 		       char *seq, const char *name,
 		       ajint begin, ajint Idc);
-static void garnier_makemap (char *input, ajint *map, ajint n);
+static void garnier_makemap (const char *input, ajint *map, ajint n);
 
 
 
@@ -610,19 +610,19 @@ static void garnier_do(AjPFile outf, ajint from, ajint to, char *seq,
 **
 ** Undocumented.
 **
-** @param [r] report [AjPReport] Undocumented
-** @param [r] TabRpt [AjPFeattable] Undocumented
-** @param [r] seqobj [AjPSeq] Undocumented
+** @param [u] report [AjPReport] Undocumented
+** @param [u] TabRpt [AjPFeattable] Undocumented
+** @param [r] seqobj [const AjPSeq] Undocumented
 ** @param [r] from [ajint] Undocumented
 ** @param [r] to [ajint] Undocumented
-** @param [r] seq [char*] Undocumented
+** @param [w] seq [char*] Undocumented
 ** @param [r] begin [ajint] Undocumented
 ** @param [r] Idc [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
 static void garnier_report(AjPReport report, AjPFeattable TabRpt,
-			   AjPSeq seqobj,
+			   const AjPSeq seqobj,
 			   ajint from, ajint to, char *seq,
 			   ajint begin, ajint Idc)
 {
@@ -833,13 +833,13 @@ static void garnier_report(AjPReport report, AjPFeattable TabRpt,
 **
 ** Undocumented.
 **
-** @param [r] input [char*] Undocumented
-** @param [r] map [ajint*] Undocumented
+** @param [r] input [const char*] Undocumented
+** @param [w] map [ajint*] Undocumented
 ** @param [r] n [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
-static void garnier_makemap(char *input, ajint *map, ajint n)
+static void garnier_makemap(const char *input, ajint *map, ajint n)
 {
     ajint i;
 

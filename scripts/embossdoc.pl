@@ -116,11 +116,12 @@ sub testuse($\@\@) {
 	print "bad category use - no parameters\n";
 	return 0;
     }
-    $qpat = qr/const $tdata[*]*/;
+    $qpat = qr/^const $tdata[*]*$/;
+    $qpat2 = qr/^$tdata[*]* const[ *]*$/;
     $tc = ${$tcast}[0];
     $tx = ${$tcode}[0];
     $tc =~ s/^CONST /const /go;
-    if ($tc !~ $qpat && $tc ne "const void*") {
+    if ($tc !~ $qpat && $tc !~ $qpat2 && $tc ne "const void*") {
 	print "bad category use - parameter1 '$tc' not 'const $tdata'\n";
     }
     if ($tx !~ /[r]/) {
@@ -204,7 +205,7 @@ foreach $x ("short", "int", "long", "float", "double", "char",
 
 foreach $x ("ajshort", "ajint", "ajuint", "ajlong", "ajulong",
 	    "jobject", "jstring", "jboolean", "jclass", "jint", "jbyteArray",
-	    "AjBool", "AjStatus", "BOOL", "AjEnum",
+	    "AjBool", "AjStatus", "BOOL", "AjEnum", "PLFLT", "PLINT",
 	    "VALIST") {
     $simpletype{$x} = 1;
 }
@@ -546,7 +547,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 		    $castfix = $cast;
 		    $castfix =~ s/^CONST +//go;
 		    if (!$isprog && ($castfix ne $tcast)) {
-			print "bad cast <$cast> <$tcast>\n";
+			print "bad cast for $tname <$cast> <$tcast>\n";
 		    }
 		    if (!$isprog && ($var ne $tname)) {
 			print "bad var <$var> <$tname>\n";
@@ -660,6 +661,23 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 # Note: maybe we can put a placeholder in the @param cast
 		if ($code =~ /[?]/) {
 		    print "bad \@param '$var' code '$code'\n";
+		}
+	    }
+	    elsif ($cast =~ /[\]]$/) {
+# hard to check - can be read, write, update or delete
+# because we can't use const for these
+# Note: maybe we can put a placeholder in the @param cast
+		if ($code =~ /[?]/) {
+		    print "bad \@param '$var' code '$code'\n";
+		}
+		if ($code =~ /r/) {
+		    if ($cast =~ /^CONST +/) {
+			$cast =~ s/^CONST +//o;
+		    }
+		    else
+		    {
+			print "bad \@param '$var' code '$code' but '$cast'\n";
+		    }
 		}
 	    }
 	    elsif ($cast =~ /[*]+$/) {
@@ -791,6 +809,10 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    else {
 		print "bad category type '$ctype' - no validation\n";
 	    }
+	}
+
+	if ($token eq "cc")  {
+	    next;
 	}
 
 	if ($token eq "@")  {

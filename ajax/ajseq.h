@@ -17,7 +17,7 @@ extern "C"
 ** @new ajSeqCvtNewText Creates from a character string of valid bases.
 ** @new ajSeqCvtNewZero Creates from a character string of valid bases.
 ** @new ajSeqCvtNewZeroS Creates from an array of strings of valid bases.
-** @use ajSeqNum Convert sequence to numbers
+** @cast ajSeqNum Convert sequence to numbers
 ** @output ajSeqCvtTrace Reports on contents for debugging
 *
 ** @alias AjSSeqCvt

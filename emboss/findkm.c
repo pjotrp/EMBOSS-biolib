@@ -29,10 +29,11 @@
 
 
 
-static float findkm_summation(float *arr, ajint number);
-static float findkm_multisum (float *arr1, float *arr2, ajint number);
-static float findkm_findmax(float *arr1, ajint number);
-static float findkm_findmin(float *arr1, ajint number);
+static float findkm_summation(const float *arr, ajint number);
+static float findkm_multisum (const float *arr1, const float *arr2,
+			      ajint number);
+static float findkm_findmax(const float *arr1, ajint number);
+static float findkm_findmin(const float *arr1, ajint number);
 
 
 
@@ -295,14 +296,14 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [r] arr [float*] Undocumented
-** @param [r] number [ajint] Undocumented
+** @param [r] arr [const float*] Undocumented
+** @param [r] number [ajint] Array size
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
 
 
-static float findkm_summation(float *arr, ajint number)
+static float findkm_summation(const float *arr, ajint number)
 {
     ajint i;
     float sum=0;
@@ -320,14 +321,15 @@ static float findkm_summation(float *arr, ajint number)
 **
 ** Undocumented.
 **
-** @param [r] arr1 [float*] Undocumented
-** @param [r] arr2 [float*] Undocumented
-** @param [r] number [ajint] Undocumented
+** @param [r] arr1 [const float*] Undocumented
+** @param [r] arr2 [const float*] Undocumented
+** @param [r] number [ajint] Array size
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
 
-static float findkm_multisum(float *arr1, float *arr2, ajint number)
+static float findkm_multisum(const float *arr1, const float *arr2,
+			     ajint number)
 {
     ajint i;
     float sum = 0;
@@ -345,13 +347,13 @@ static float findkm_multisum(float *arr1, float *arr2, ajint number)
 **
 ** Undocumented.
 **
-** @param [r] arr [float*] Undocumented
-** @param [r] number [ajint] Undocumented
+** @param [r] arr [const float*] Undocumented
+** @param [r] number [ajint] Array size
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
 
-static float findkm_findmax(float *arr, ajint number)
+static float findkm_findmax(const float *arr, ajint number)
 {
     ajint i;
     float max;
@@ -372,13 +374,13 @@ static float findkm_findmax(float *arr, ajint number)
 **
 ** Undocumented.
 **
-** @param [r] arr [float*] Undocumented
-** @param [r] number [ajint] Undocumented
+** @param [r] arr [const float*] Undocumented
+** @param [r] number [ajint] Array size
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
 
-static float findkm_findmin(float *arr, ajint number)
+static float findkm_findmin(const float *arr, ajint number)
 {
     ajint i;
     float min;

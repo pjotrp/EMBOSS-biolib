@@ -34,8 +34,9 @@ static void infoalign_OutputInt(AjPFile outfile, ajint num, AjBool html,
 				 AjBool after);
 static void infoalign_OutputStr(AjPFile outfile, const AjPStr str, AjBool html,
 				 AjBool after, ajint minlength);
-static void infoalign_Compare(const AjPSeq ref, const AjPSeq seq, ajint **sub,
-			      AjPSeqCvt cvt, ajint *seqlength,
+static void infoalign_Compare(const AjPSeq ref, const AjPSeq seq,
+			      ajint *const *sub,
+			      const AjPSeqCvt cvt, ajint *seqlength,
 			      ajint *alignlength, ajint *gaps,
 			      ajint *gapcount, ajint *idcount,
 			      ajint *simcount, ajint *difcount, float *change);
@@ -579,22 +580,23 @@ static int infoalign_Getrefseq(const AjPStr refseq, const AjPSeqset seqset)
 **
 ** @param [r] ref [const AjPSeq] the reference sequence
 ** @param [r] seq [const AjPSeq] the sequence to be compared to 'ref'
-** @param [r] sub [ajint **] scoring matrix
-** @param [r] cvt [AjPSeqCvt] conversion table for scoring matrix
-** @param [r] seqlength [ajint *] sequence length
-** @param [r] alignlength [ajint *] alignment length
-** @param [r] gaps [ajint *] number of gaps
-** @param [r] gapcount [ajint *] number of gap characters
-** @param [r] idcount [ajint *] number of identical positions
-** @param [r] simcount [ajint *] number of similar positions
-** @param [r] difcount [ajint *] number of different positions
-** @param [r] change [float *] % difference
+** @param [r] sub [ajint * const *] scoring matrix
+** @param [r] cvt [const AjPSeqCvt] conversion table for scoring matrix
+** @param [w] seqlength [ajint *] sequence length
+** @param [w] alignlength [ajint *] alignment length
+** @param [w] gaps [ajint *] number of gaps
+** @param [w] gapcount [ajint *] number of gap characters
+** @param [w] idcount [ajint *] number of identical positions
+** @param [w] simcount [ajint *] number of similar positions
+** @param [w] difcount [ajint *] number of different positions
+** @param [w] change [float *] % difference
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void infoalign_Compare(const AjPSeq ref, const AjPSeq seq, ajint **sub,
-			      AjPSeqCvt cvt, ajint *seqlength,
+static void infoalign_Compare(const AjPSeq ref, const AjPSeq seq,
+			      ajint * const *sub,
+			      const AjPSeqCvt cvt, ajint *seqlength,
 			      ajint *alignlength, ajint *gaps,
 			      ajint *gapcount, ajint *idcount,
 			      ajint *simcount, ajint *difcount,

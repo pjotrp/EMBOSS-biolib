@@ -152,9 +152,10 @@ static void psearch_read_primers(AjPList* primerList, AjPFile primerFile,
 static AjBool psearch_classify_and_compile(Primer* primdata);
 static void psearch_primer_search(const AjPList primerList, const AjPSeq seq,
 				  AjPFile outf);
-static void psearch_scan_seq(Primer primdata, const AjPSeq seq, AjBool reverse,
+static void psearch_scan_seq(const Primer primdata,
+			     const AjPSeq seq, AjBool reverse,
 			     AjPFile outf);
-static void psearch_store_hits(Primer primdata, AjPList fhits_list,
+static void psearch_store_hits(const Primer primdata, AjPList fhits_list,
 			       AjPList rhits_list, const AjPSeq seq,
 			       AjBool reverse);
 static void psearch_print_hits(const AjPList primerList, AjPFile outf);
@@ -265,7 +266,7 @@ static void psearch_initialise_pguts(PGuts* primer)
 **
 ** Frees up all the internal members of a PGuts struct
 **
-** @param [?] primer [PGuts*] Undocumented
+** @param [d] primer [PGuts*] Undocumented
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -378,8 +379,8 @@ static void psearch_clean_hitlist(AjPList* hlist)
 ** read primers in from primerfile, classify and compile the patterns
 **
 ** @param [w] primerList [AjPList*] primer list
-** @param [?] primerFile [AjPFile] Undocumented
-** @param [?] mmp [ajint] Undocumented
+** @param [u] primerFile [AjPFile] Undocumented
+** @param [r] mmp [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -557,14 +558,15 @@ static void psearch_primer_search(const AjPList primerList, const AjPSeq seq,
 ** sense or reverse complemented
 ** works out amplimer length if the two primers both hit
 **
-** @param [r] primdata [Primer] primer data
+** @param [r] primdata [const Primer] primer data
 ** @param [r] seq [const AjPSeq] sequence
 ** @param [r] reverse [AjBool] do reverse
 ** @param [w] outf [AjPFile] outfile
 ** @@
 ******************************************************************************/
 
-static void psearch_scan_seq(Primer primdata, const AjPSeq seq, AjBool reverse,
+static void psearch_scan_seq(const Primer primdata,
+			     const AjPSeq seq, AjBool reverse,
 			     AjPFile outf)
 {
     AjPStr seqstr = NULL;
@@ -696,7 +698,7 @@ static void psearch_scan_seq(Primer primdata, const AjPSeq seq, AjBool reverse,
 **
 ** Store primer hits
 **
-** @param [r] primdata [Primer] primer data
+** @param [r] primdata [const Primer] primer data
 ** @param [w] fhits [AjPList] forward hits
 ** @param [w] rhits [AjPList] reverse hits
 ** @param [r] seq [const AjPSeq] sequence
@@ -704,7 +706,8 @@ static void psearch_scan_seq(Primer primdata, const AjPSeq seq, AjBool reverse,
 ** @@
 ******************************************************************************/
 
-static void psearch_store_hits(Primer primdata, AjPList fhits, AjPList rhits,
+static void psearch_store_hits(const Primer primdata,
+			       AjPList fhits, AjPList rhits,
 			       const AjPSeq seq, AjBool reverse)
 {
     ajint amplen = 0;

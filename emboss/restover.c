@@ -33,14 +33,15 @@
 
 
 
-static void restover_printHits(AjPSeq, AjPStr, AjPFile *outf, AjPList l,
-			       AjPStr *name, ajint hits, ajint begin,
+static void restover_printHits(const AjPSeq seq, const AjPStr seqcmp,
+			       AjPFile outf, AjPList l,
+			       const AjPStr name, ajint hits, ajint begin,
 			       ajint end, AjBool ambiguity, ajint mincut,
 			       ajint maxcut, AjBool plasmid, AjBool blunt,
 			       AjBool sticky, ajint sitelen, AjBool limit,
-			       AjPTable table, AjBool alpha,
+			       const AjPTable table, AjBool alpha,
 			       AjBool frags, AjBool nameit, AjBool html);
-static void restover_read_equiv(AjPFile *equfile, AjPTable *table);
+static void restover_read_equiv(AjPFile equfile, AjPTable table);
 static void restover_read_file_of_enzyme_names(AjPStr *enzymes);
 
 
@@ -150,7 +151,10 @@ int main(int argc, char **argv)
 	if(!equfile)
 	    limit=ajFalse;
 	else
-	    restover_read_equiv(&equfile,&table);
+	{
+	    restover_read_equiv(equfile,table);
+	    ajFileClose(&equfile);
+	}
     }
 
 
@@ -169,7 +173,7 @@ int main(int argc, char **argv)
 	if(hits)
 	{
 	    name = ajStrNewC(ajSeqName(seq));
-	    restover_printHits(seq, seqcmp, &outf,l,&name,hits,begin,end,
+	    restover_printHits(seq, seqcmp, outf,l,name,hits,begin,end,
 			       ambiguity,min,max,plasmid,blunt,sticky,
 			       sitelen,limit,table,alpha,frags,nameit,
 			       html);
@@ -197,11 +201,11 @@ int main(int argc, char **argv)
 **
 ** Print restover hits
 **
-** @param [r] seq [AjPSeq] Sequence
-** @param [w] seqcmp [AjPStr] Undocumented
-** @param [w] outf [AjPFile*] outfile
-** @param [w] l [AjPList] hits
-** @param [r] name [AjPStr*] sequence name
+** @param [r] seq [const AjPSeq] Sequence
+** @param [r] seqcmp [const AjPStr] Undocumented
+** @param [w] outf [AjPFile] outfile
+** @param [u] l [AjPList] hits
+** @param [r] name [const AjPStr] sequence name
 ** @param [r] hits [ajint] number of hits
 ** @param [r] begin [ajint] start position
 ** @param [r] end [ajint] end position
@@ -213,7 +217,7 @@ int main(int argc, char **argv)
 ** @param [r] sticky [AjBool] allow sticky cutters
 ** @param [r] sitelen [ajint] length of cut site
 ** @param [r] limit [AjBool] limit count
-** @param [r] table [AjPTable] supplier table
+** @param [r] table [const AjPTable] supplier table
 ** @param [r] alpha [AjBool] alphabetic sort
 ** @param [r] frags [AjBool] show fragment lengths
 ** @param [r] nameit [AjBool] show name
@@ -221,12 +225,13 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static void restover_printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf,
-			       AjPList l, AjPStr *name, ajint hits,
+static void restover_printHits(const AjPSeq seq, const AjPStr seqcmp,
+			       AjPFile outf,
+			       AjPList l, const AjPStr name, ajint hits,
 			       ajint begin, ajint end, AjBool ambiguity,
 			       ajint mincut, ajint maxcut, AjBool plasmid,
 			       AjBool blunt, AjBool sticky, ajint sitelen,
-			       AjBool limit, AjPTable table,
+			       AjBool limit, const AjPTable table,
 			       AjBool alpha, AjBool frags,AjBool nameit,
 			       AjBool html)
 {
@@ -249,27 +254,27 @@ static void restover_printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf,
     fn = 0;
 
     if(html)
-	ajFmtPrintF(*outf,"<BR>");
-    ajFmtPrintF(*outf,"# Restrict of %S from %d to %d\n",*name,begin,end);
+	ajFmtPrintF(outf,"<BR>");
+    ajFmtPrintF(outf,"# Restrict of %S from %d to %d\n",name,begin,end);
 
     if(html)
-	ajFmtPrintF(*outf,"<BR>");
-    ajFmtPrintF(*outf,"#\n");
+	ajFmtPrintF(outf,"<BR>");
+    ajFmtPrintF(outf,"#\n");
 
     if(html)
-	ajFmtPrintF(*outf,"<BR>");
-    ajFmtPrintF(*outf,"# Minimum cuts per enzyme: %d\n",mincut);
+	ajFmtPrintF(outf,"<BR>");
+    ajFmtPrintF(outf,"# Minimum cuts per enzyme: %d\n",mincut);
 
     if(html)
-	ajFmtPrintF(*outf,"<BR>");
-    ajFmtPrintF(*outf,"# Maximum cuts per enzyme: %d\n",maxcut);
+	ajFmtPrintF(outf,"<BR>");
+    ajFmtPrintF(outf,"# Maximum cuts per enzyme: %d\n",maxcut);
 
     if(html)
-	ajFmtPrintF(*outf,"<BR>");
-    ajFmtPrintF(*outf,"# Minimum length of recognition site: %d\n",
+	ajFmtPrintF(outf,"<BR>");
+    ajFmtPrintF(outf,"# Minimum length of recognition site: %d\n",
 		sitelen);
     if(html)
-	ajFmtPrintF(*outf,"<BR>");
+	ajFmtPrintF(outf,"<BR>");
 
     hits = embPatRestrictRestrict(l,hits,!limit,alpha);
 
@@ -280,20 +285,20 @@ static void restover_printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf,
     }
 
 
-    ajFmtPrintF(*outf,"# Number of hits with any overlap: %d\n",hits);
+    ajFmtPrintF(outf,"# Number of hits with any overlap: %d\n",hits);
 
     if(html)
-	ajFmtPrintF(*outf,"<BR>");
+	ajFmtPrintF(outf,"<BR>");
 
     if(html)
-	ajFmtPrintF(*outf,"</p><table  border cellpadding=4 "
+	ajFmtPrintF(outf,"</p><table  border cellpadding=4 "
 		    "bgcolor=\"#FFFFF0\">\n");
     if(html)
-	ajFmtPrintF(*outf,
+	ajFmtPrintF(outf,
 		    "<th>Base Number</th><th>Enzyme</th><th>Site</th>"
 		    "<th>5'</th><th>3'</th><th>[5'</th><th>3']</th>\n");
     else
-	ajFmtPrintF(*outf,"# Base Number\tEnzyme\t\tSite\t\t5'\t3'\t"
+	ajFmtPrintF(outf,"# Base Number\tEnzyme\t\tSite\t\t5'\t3'\t"
 		    "[5'\t3']\n");
 
     for(i=0;i<hits;++i)
@@ -331,14 +336,14 @@ static void restover_printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf,
 	{
 	    if(html)
 	    {
-		ajFmtPrintF(*outf,
+		ajFmtPrintF(outf,
 			    "<tr><td>%-d</td><td>%-16s</td><td>%-16s"
 			    "</td><td>%d</td><td>%d</td></tr>\n",
 			    m->start,ajStrStr(m->cod),ajStrStr(m->pat),
 			    m->cut1,m->cut2);
 	    }
 	    else
-		ajFmtPrintF(*outf,"\t%-d\t%-16s%-16s%d\t%d\t\n",
+		ajFmtPrintF(outf,"\t%-d\t%-16s%-16s%d\t%d\t\n",
 			    m->start,ajStrStr(m->cod),ajStrStr(m->pat),
 			    m->cut1,m->cut2);
 	}
@@ -359,14 +364,14 @@ static void restover_printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf,
 	    if(ajStrMatchCase(overhead, seqcmp))
 	    {
 		if(html)
-		    ajFmtPrintF(*outf,
+		    ajFmtPrintF(outf,
 				"<tr><td>%-d</td><td>%-16s</td><td>%-16s"
 				"</td><td></td><td></td><td>%d</td><td>%d"
 				"</td></tr>\n",
 				m->start,ajStrStr(m->cod),ajStrStr(m->pat),
 				m->cut1,m->cut2);
 		else
-		    ajFmtPrintF(*outf,"\t%-d\t%-16s%-16s\t\t%d\t%d\t\n",
+		    ajFmtPrintF(outf,"\t%-d\t%-16s%-16s\t\t%d\t%d\t\n",
 				m->start,ajStrStr(m->cod),ajStrStr(m->pat),
 				m->cut1,m->cut2);
 	    }
@@ -389,9 +394,9 @@ static void restover_printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf,
     if(frags)
     {
 	ajSortIntInc(fa,fn);
-	ajFmtPrintF(*outf,"\n\nFragment lengths:\n");
+	ajFmtPrintF(outf,"\n\nFragment lengths:\n");
 	if(!fn || (fn==1 && plasmid))
-	    ajFmtPrintF(*outf,"    %d\n",end-begin+1);
+	    ajFmtPrintF(outf,"    %d\n",end-begin+1);
 	else
 	{
 	    last = -1;
@@ -417,7 +422,7 @@ static void restover_printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf,
 
 	    ajSortIntDec(fx,fc);
 	    for(i=0;i<fc;++i)
-		ajFmtPrintF(*outf,"    %d\n",fx[i]);
+		ajFmtPrintF(outf,"    %d\n",fx[i]);
 	}
 	AJFREE(fa);
 	AJFREE(fx);
@@ -427,7 +432,7 @@ static void restover_printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf,
     ajStrDel(&ps);
 
     if(html)
-	ajFmtPrintF(*outf,"</table>\n");
+	ajFmtPrintF(outf,"</table>\n");
 
     return;
 }
@@ -439,12 +444,12 @@ static void restover_printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf,
 **
 ** Load table with equivalent RE names
 **
-** @param [r] equfile [AjPFile*] names
-** @param [w] table [AjPTable*] table to store names in
+** @param [u] equfile [AjPFile] names
+** @param [u] table [AjPTable] table to store names in
 ** @@
 ******************************************************************************/
 
-static void restover_read_equiv(AjPFile *equfile, AjPTable *table)
+static void restover_read_equiv(AjPFile equfile, AjPTable table)
 {
     AjPStr line;
     AjPStr key;
@@ -454,7 +459,7 @@ static void restover_read_equiv(AjPFile *equfile, AjPTable *table)
 
     line = ajStrNew();
 
-    while(ajFileReadLine(*equfile,&line))
+    while(ajFileReadLine(equfile,&line))
     {
 	p=ajStrStr(line);
 	if(!*p || *p=='#' || *p=='!')
@@ -463,10 +468,9 @@ static void restover_read_equiv(AjPFile *equfile, AjPTable *table)
 	key=ajStrNewC(p);
 	p=ajSysStrtok(NULL," \t\n");
 	value=ajStrNewC(p);
-	ajTablePut(*table,(const void *)key, (void *)value);
+	ajTablePut(table,(const void *)key, (void *)value);
     }
 
-    ajFileClose(equfile);
     ajStrDel(&line);
 
     return;
@@ -480,7 +484,8 @@ static void restover_read_equiv(AjPFile *equfile, AjPTable *table)
 ** If the list of enzymes starts with a '@' if opens that file, reads in
 ** the list of enzyme names and replaces the input string with the enzyme names
 **
-** @param [r] enzymes [AjPStr*] enzymes to search for or 'all' or '@file'
+** @param [w] enzymes [AjPStr*] enzymes to search for, can be passed as
+**                             'all' or '@file'
 ** @return [void]
 ** @@
 ******************************************************************************/

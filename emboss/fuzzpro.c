@@ -158,7 +158,7 @@ int main(int argc, char **argv)
 **
 ** @param [u] l [AjPList] Undocumented
 ** @param [r] hits [ajint] Undocumented
-** @param [r] report [AjPReport] Report object
+** @param [u] report [AjPReport] Report object
 ** @param [u] tab [AjPFeattable] Feature table
 ** @param [r] seq [const AjPSeq] Sequence
 ** @@

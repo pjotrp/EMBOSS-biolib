@@ -33,11 +33,12 @@ static void prophet_read_profile(AjPFile inf, AjPStr *name, AjPStr *mname,
 				 ajint *mlen, float *gapopen,
 				 float *gapextend, ajint *thresh,
 				 float *maxs, AjPStr *cons);
-static void prophet_scan_profile(AjPStr substr, AjPStr pname, AjPStr name,
-				 AjPStr mname, ajint mlen, float **fmatrix,
+static void prophet_scan_profile(const AjPStr substr, const AjPStr pname,
+				 const AjPStr name, const AjPStr mname,
+				 ajint mlen, float * const *fmatrix,
 				 ajint thresh, float maxs, float gapopen,
 				 float gapextend, AjPFile outf,
-				 AjPStr *cons, float opencoeff,
+				 const AjPStr cons, float opencoeff,
 				 float extendcoeff, float *path,
 				 ajint *compass, AjPStr *m, AjPStr *n,
 				 ajint slen, ajint begin);
@@ -163,7 +164,7 @@ int main(int argc, char **argv)
 	ajStrAssC(&n,"");
 
 	prophet_scan_profile(substr,pname,name,mname,mlen,fmatrix,thresh,maxs,
-			     gapopen,gapextend,outf,&cons,opencoeff,
+			     gapopen,gapextend,outf,cons,opencoeff,
 			     extendcoeff,path,compass,&m,&n,len,begin);
 
 	ajStrDel(&strand);
@@ -191,7 +192,7 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [r] inf [AjPFile] infile
+** @param [u] inf [AjPFile] infile
 ** @param [w] tname [AjPStr*] type name
 ** @return [ajint] 1=Gribskov 2=Henikoff
 ** @@
@@ -233,7 +234,7 @@ static ajint prophet_getType(AjPFile inf, AjPStr *tname)
 **
 ** Read Gribskov or Henikoff profile
 **
-** @param [r] inf [AjPFile] infile
+** @param [u] inf [AjPFile] infile
 ** @param [w] name [AjPStr*] profile name
 ** @param [w] mname [AjPStr*] matrix name
 ** @param [w] mlen [ajint*] profile length
@@ -340,34 +341,36 @@ static void prophet_read_profile(AjPFile inf, AjPStr *name, AjPStr *mname,
 **
 ** Scan sequence with profile
 **
-** @param [r] substr [AjPStr] sequence
-** @param [r] pname [AjPStr] profilename
-** @param [r] name [AjPStr] seq name
-** @param [r] mname [AjPStr] matrix name
+** @param [r] substr [const AjPStr] sequence
+** @param [r] pname [const AjPStr] profilename
+** @param [r] name [const AjPStr] seq name
+** @param [r] mname [const AjPStr] matrix name
 ** @param [r] mlen [ajint] profile length
-** @param [r] fmatrix [float**] score matrix
+** @param [r] fmatrix [float* const *] score matrix
 ** @param [r] thresh [ajint] score threshold
 ** @param [r] maxs [float] maximum score
 ** @param [r] gapopen [float] open penalty
 ** @param [r] gapextend [float] extend penalty
-** @param [w] outf [AjPFile] outfile
-** @param [r] cons [AjPStr*] consensus sequence
+** @param [u] outf [AjPFile] outfile
+** @param [r] cons [const AjPStr] consensus sequence
 ** @param [r] opencoeff [float] opening co-efficient
 ** @param [r] extendcoeff [float] extension co-efficient
-** @param [r] path [float*] path matrix
-** @param [r] compass [ajint*] path direction
-** @param [r] m [AjPStr*] sequence result
-** @param [r] n [AjPStr*] consensus result
+** @param [w] path [float*] path matrix
+** @param [w] compass [ajint*] path direction
+** @param [w] m [AjPStr*] sequence result
+** @param [w] n [AjPStr*] consensus result
 ** @param [r] slen [ajint] sequence length
 ** @param [r] begin [ajint] start position
 ** @@
 ******************************************************************************/
 
 
-static void prophet_scan_profile(AjPStr substr, AjPStr pname, AjPStr name,
-				 AjPStr mname, ajint mlen, float **fmatrix,
+static void prophet_scan_profile(const AjPStr substr, const AjPStr pname,
+				 const AjPStr name, const AjPStr mname,
+				 ajint mlen, float * const *fmatrix,
 				 ajint thresh, float maxs, float gapopen,
-				 float gapextend, AjPFile outf, AjPStr *cons,
+				 float gapextend, AjPFile outf,
+				 const AjPStr cons,
 				 float opencoeff, float extendcoeff,
 				 float *path, ajint *compass, AjPStr *m,
 				 AjPStr *n, ajint slen, ajint begin)
@@ -383,12 +386,12 @@ static void prophet_scan_profile(AjPStr substr, AjPStr pname, AjPStr name,
 				     substr,mlen,slen,fmatrix,&start1,
 				     &start2);
 
-    embAlignWalkProfileMatrix(path,compass,opencoeff,extendcoeff,*cons,
+    embAlignWalkProfileMatrix(path,compass,opencoeff,extendcoeff,cons,
 			      substr,m,n,mlen,slen,fmatrix,&start1,
 			      &start2);
 
 
-    embAlignPrintProfile(outf,ajStrStr(*cons),ajStrStr(substr),*m,*n,
+    embAlignPrintProfile(outf,ajStrStr(cons),ajStrStr(substr),*m,*n,
 			 start1,start2,score,1,fmatrix,"Consensus",
 			 ajStrStr(pname),1,begin);
 

@@ -812,8 +812,10 @@ AjPSeqall ajSeqallFile(const AjPStr usa)
 ** @param [u] seqall [AjPSeqall] Sequence stream
 ** @param [w] retseq [AjPSeq*] Sequence
 ** @return [AjBool] ajTrue if a sequence was refound. ajFalse when all is done.
-** @category input [AjPSeqall] Master sequence stream input, reads next
+** @category input [AjPSeq] Master sequence stream input, reads next
 **                         sequence from an open input stream.
+** @category modify [AjPSeqall] Master sequence stream input,
+**                 reads next sequence from an open input stream.
 ** @@
 ******************************************************************************/
 

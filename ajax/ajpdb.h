@@ -656,7 +656,7 @@ void         ajCmapDel(AjPCmap *ptr);
 /* ======================================================================= */
 AjPPdbtosp   ajPdbtospNew(ajint n);
 void         ajPdbtospDel(AjPPdbtosp *ptr);
-ajint        ajPdbtospArrFindPdbid(AjPPdbtosp *arr,
+ajint        ajPdbtospArrFindPdbid(AjPPdbtosp const *arr,
 				   ajint siz, const AjPStr id);
 
 

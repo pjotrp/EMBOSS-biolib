@@ -52,10 +52,9 @@ struct DNAB
 
 
 static ajint hth_readNab(AjPInt2d *matrix,AjBool eightyseven);
-static void hth_print_hits(AjPList *ajb, ajint n, float minsd, ajint lastcol,
+static void hth_print_hits(AjPList ajb, ajint n, float minsd, ajint lastcol,
 			   AjBool eightyseven, AjPFile outf);
-static void hth_report_hits(AjPList *ajb, ajint lastcol,
-			    AjPReport report,
+static void hth_report_hits(AjPList ajb, ajint lastcol,
 			    AjPFeattable TabRpt);
 
 
@@ -178,7 +177,7 @@ int main(int argc, char **argv)
 		++n;
 	    }
 	}
-	hth_report_hits(&ajb, lastcol, report, TabRpt);
+	hth_report_hits(ajb, lastcol, TabRpt);
 
 	ajReportWrite(report, TabRpt, seq);
 	ajFeattableDel(&TabRpt);
@@ -198,7 +197,7 @@ int main(int argc, char **argv)
 	    ajFmtPrintF(outf, "\nHELIXTURNHELIX: Nucleic Acid Binding "
 			"Domain search\n\n");
 	    ajFmtPrintF(outf,"\nHits above +%.2f SD (%.2f)\n",minsd,minscore);
-	    hth_print_hits(&ajb, n, minsd, lastcol, eightyseven, outf);
+	    hth_print_hits(ajb, n, minsd, lastcol, eightyseven, outf);
 	}
     
     ajInt2dDel(&matrix);
@@ -224,7 +223,7 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [r] matrix [AjPInt2d*] Undocumented
+** @param [w] matrix [AjPInt2d*] Undocumented
 ** @param [r] eightyseven [AjBool] Undocumented
 ** @return [ajint] Undocumented
 ** @@
@@ -384,7 +383,7 @@ static ajint hth_readNab(AjPInt2d *matrix,AjBool eightyseven)
 **
 ** Undocumented.
 **
-** @param [r] ajb [AjPList*] Undocumented
+** @param [u] ajb [AjPList] Undocumented
 ** @param [r] n [ajint] Undocumented
 ** @param [r] minsd [float] Undocumented
 ** @param [r] lastcol [ajint] Undocumented
@@ -394,7 +393,7 @@ static ajint hth_readNab(AjPInt2d *matrix,AjBool eightyseven)
 ******************************************************************************/
 
 
-static void hth_print_hits(AjPList *ajb, ajint n, float minsd, ajint lastcol,
+static void hth_print_hits(AjPList ajb, ajint n, float minsd, ajint lastcol,
 			   AjBool eightyseven, AjPFile outf)
 {
     DNAB     **lp;
@@ -411,7 +410,7 @@ static void hth_print_hits(AjPList *ajb, ajint n, float minsd, ajint lastcol,
 
     for(i=0;i<n;++i)
     {
-	if(!ajListPop(*ajb,(void **)&lp[i]))
+	if(!ajListPop(ajb,(void **)&lp[i]))
 	    ajFatal("Poppa doesn't live here anymore");
 	ajIntPut(&hp,i,i);
 	ajFloatPut(&hsd,i,lp[i]->sd);
@@ -463,16 +462,14 @@ static void hth_print_hits(AjPList *ajb, ajint n, float minsd, ajint lastcol,
 **
 ** Undocumented.
 **
-** @param [r] ajb [AjPList*] Undocumented
+** @param [u] ajb [AjPList] List of hits - which are deleted at the end
 ** @param [r] lastcol [ajint] Undocumented
-** @param [r] report [AjPReport] Undocumented
-** @param [r] TabRpt [AjPFeattable] Undocumented
+** @param [u] TabRpt [AjPFeattable] Undocumented
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void hth_report_hits(AjPList *ajb, ajint lastcol, AjPReport report,
-			    AjPFeattable TabRpt)
+static void hth_report_hits(AjPList ajb, ajint lastcol, AjPFeattable TabRpt)
 {
     DNAB     **lp = NULL;
 
@@ -493,7 +490,7 @@ static void hth_report_hits(AjPList *ajb, ajint lastcol, AjPReport report,
     hp  = ajIntNew();
     hsd = ajFloatNew();
 
-    n = ajListToArray(*ajb, (void***) &lp);
+    n = ajListToArray(ajb, (void***) &lp);
 
     if(!n)
 	return;
@@ -519,7 +516,7 @@ static void hth_report_hits(AjPList *ajb, ajint lastcol, AjPReport report,
 
     }
 
-    while(ajListPop(*ajb,(void **)&dnab))
+    while(ajListPop(ajb,(void **)&dnab))
     {
 	ajStrDel(&dnab->name);
 	ajStrDel(&dnab->seq);

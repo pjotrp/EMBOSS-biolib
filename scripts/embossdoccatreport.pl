@@ -22,7 +22,7 @@ while (<>) {
 	    $last = $mod;
 	}
 	if (/[\(]undefined[\)]/) {$mundef++}
-	elsif (/bad category \S+ described as/) {$mdesc++}
+	elsif (/bad category type \S+ described as/) {$mdesc++}
 	else {$mbad++}
 	$mtot++;
     }
