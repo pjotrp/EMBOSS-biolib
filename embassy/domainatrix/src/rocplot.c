@@ -151,10 +151,10 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 			       AjPInt nrelatives, AjPFloat *rocn, 
 			       AjPFloat2d *rocx, AjPFloat2d *rocy, 
 			       AjPFloat2d *classx, AjPFloat3d *classy, 
-			       AjPInt *hitcnt);
+			       AjPInt *hitcnt, AjBool norange);
 static AjBool rocplot_overlap(AjPHitdata h1, AjPHitdata h2, ajint thresh);
 static AjBool rocplot_hit_is_unique(AjPHitdata  hit, AjPList mrglist, 
-				    ajint thresh);
+				    ajint thresh, AjBool norange);
 void rocplot_HitdataDel(AjPHitdata *thys);
 AjPHitdata rocplot_HitdataNew(void);
 AjBool rocplot_read_hits_files(int mode, int multimode, int datamode, 
@@ -220,6 +220,8 @@ int main(int argc, char **argv)
                                        from ACD.                           */
     AjPStr    classbasename   = NULL;    /* Base name of file(s) containing 
 				       classification plot(s) from ACD.    */
+    AjBool    norange        = NULL;  /* Disregard range data */
+    
 
     /* For housekeeping */
     AjPStr     *hitsnames  = NULL;  /* Array of names only of hits files.  */
@@ -301,6 +303,8 @@ int main(int argc, char **argv)
     if((ajStrChar(*mode,0)=='2') && (ajStrChar(*multimode,0)=='1'))
 	barbasename   = ajAcdGetString("barbasename");
     classbasename      = ajAcdGetString("classbasename");
+    norange           = ajAcdGetBool("norange");
+    
 
     /* DIAGNOSTICS */
     errf          = ajAcdGetOutfile("errf");    
@@ -428,7 +432,7 @@ int main(int argc, char **argv)
     if(!rocplot_calcdata(modei, multimodei, datamodei, hitslists, 
 			 numfiles, thresh, roc, 
 			 nrelatives, &rocn, &rocx, &rocy, &classx, &classy, 
-			 &hitcnt))
+			 &hitcnt, norange))
 	ajFatal("rocplot_calcdata failed");
 
 
@@ -466,8 +470,6 @@ int main(int argc, char **argv)
 	ajFmtPrint("Processing %S\n", hitsnames[x]);
     ajFmtPrint("Please wait ... ");
     
-
-
 
     /**********************************************************************/
     /* SET DATA FOR OUTPUT FILES. WRITE CLASSIFICATION PLOT AND BAR CHART */
@@ -591,7 +593,6 @@ int main(int argc, char **argv)
 	    nrocseries = 1;
 	    ajFmtPrintS(&roclegend[0], "%s", "Combined dataset");
 
-	    
 	    /**********************************************/
 	    /* 2.2.1. Single list of known true relatives */
 	    /**********************************************/
@@ -1071,17 +1072,22 @@ void rocplot_HitdataDel(AjPHitdata *thys)
 **  hits both with the same accession numbers and with the start and end 
 **  points of 1-100 and 91 - 190 respectively are considered to be the same
 **  hit if the overlap threshold is 10 or less.
+**  If 'norange' is true however (i.e. in cases where the 'norange' 
+**  additional ACD option was set on)  then range data are disregarded when 
+**  identifying unique hits: two hits are classed as unique if they have 
+**  different accession numbers.
 **
 ** @param [r] hit     [AjPHitdata] Hit to check for uniqueness
 ** @param [r] mrglist [AjPList]    List of hits
 ** @param [r] thresh  [ajint]      Overlap threshold
+** @param [r] norange [AjBool]     Disregard range data
 ** 
 ** @return [AjBool] True if Hit did not occur in list.
 ** @@
 **
 ****************************************************************************/
 static AjBool rocplot_hit_is_unique(AjPHitdata  hit, AjPList mrglist, 
-				    ajint thresh)
+				    ajint thresh, AjBool norange)
 {
     AjIList     iter      = NULL;    
     AjPHitdata  tmphit    = NULL; 
@@ -1089,11 +1095,20 @@ static AjBool rocplot_hit_is_unique(AjPHitdata  hit, AjPList mrglist,
     iter = ajListIterRead(mrglist);
     while((tmphit = (AjPHitdata)ajListIterNext(iter)))
     {
-	if(rocplot_overlap(tmphit, hit, thresh))
+	if(norange) 
 	{
-	    ajListIterFree(&iter);
-	    return ajFalse;
+	    if(ajStrMatch(tmphit->Acc, hit->Acc))
+	    {
+		ajListIterFree(&iter);
+		return ajFalse;
+	    }
 	}
+	else
+	    if(rocplot_overlap(tmphit, hit, thresh))
+	    {
+		ajListIterFree(&iter);
+		return ajFalse;
+	    }
     }
     ajListIterFree(&iter);
     return ajTrue;
@@ -1163,6 +1178,7 @@ static AjBool rocplot_overlap(AjPHitdata h1, AjPHitdata h2, ajint thresh)
 ** @param [w] classx     [AjPFloat2d *]   Classification x data to calculate.
 ** @param [w] classy     [AjPFloat3d *]   Classification y data to calculate.
 ** @param [w] hitcnt     [AjPInt *]       Count of hits processed. 
+** @param [r] norange    [AjBool]         Disregard range data
 ** 
 ** @return [AjBool] True on success.
 ** @@
@@ -1174,7 +1190,7 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 			       AjPInt nrelatives, AjPFloat *rocn, 
 			       AjPFloat2d *rocx, AjPFloat2d *rocy, 
 			       AjPFloat2d *classx, AjPFloat3d *classy, 
-			       AjPInt *hitcnt)
+			       AjPInt *hitcnt, AjBool norange)
 { 
     ajint       maxfalse   = 0;       /* Number of FALSE hits to consider  */
     AjPList     mrglist    = NULL;    /* Single list for hits from multiple. 
@@ -1262,7 +1278,7 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 		if((tmphit = (AjPHitdata)ajListIterNext(iters[x])))
 		{
 		    if(((datamode==1) && 
-			(rocplot_hit_is_unique(tmphit, mrglist, thresh))) ||
+			(rocplot_hit_is_unique(tmphit, mrglist, thresh, norange))) ||
 		       (datamode==2))
 		    {
 			ajIntInc(hitcnt, 0);
@@ -1301,6 +1317,7 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 /*			ajFloat2dPut(rocx, 0, *hitcnt-1, (1 - spec));
 			ajFloat2dPut(rocy, 0, *hitcnt-1, sens);		 */
 
+
 			if(nottrue==maxfalse)
 			{
 			    /* Sort list of data points by X value and 
@@ -1332,9 +1349,11 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 	}
 	/* Calculate ROCn value */
 	/* Single list of known true relatives */	
+	/* DEBUG: The index was 'x' rather than '0' before. This was an error
+	   as x==numfiles, whereas x should be <= numfiles */
 	if(datamode==1) 
 	    rocn_tmp = ( 1 / (float)((float)roc * 
-				     (float)ajIntGet(nrelatives, x)))
+				     (float)ajIntGet(nrelatives, 0)))
 		* ((float)ntrue_sum);
 	
 	/* Multiple lists of known true relatives */	
@@ -1411,6 +1430,7 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 		/* Housekeeping */
 		reset = ajFalse;
 
+
 		if(nottrue==maxfalse)
 		{
 		    /* Sort list of data points by X value and populate 
@@ -1422,6 +1442,7 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 			ajFloat2dPut(rocx, x, y, xyptr->X);
 			ajFloat2dPut(rocy, x, y, xyptr->Y);		 
 			
+
 			/* DIAGNOSTICS */
 			ajFmtPrintF(errf, "sens[%d]: %f   1-spec[%d]: %f\n", 
 				    y, xyptr->Y, y, xyptr->X);	
@@ -1601,6 +1622,7 @@ static AjBool   rocplot_write_rocplot(AjPDir outdir,AjPStr fname, AjPStr title,
     shorttitle = ajStrNew();
     shortlegend = ajStrNew();
 
+
     /* Create gnuplot data files */
     for(x=0; x<nseries; x++)
     {
@@ -1645,7 +1667,6 @@ static AjBool   rocplot_write_rocplot(AjPDir outdir,AjPStr fname, AjPStr title,
        lots of input files. */
     ajStrAssSub(&shortlegend, legend[0], 0, 49);
 
-
     for(x=0; x<nseries; x++)
     {	
 	if(done)
@@ -1687,7 +1708,6 @@ static AjBool   rocplot_write_rocplot(AjPDir outdir,AjPStr fname, AjPStr title,
     ajStrDel(&tmpstr);
     ajXmlClearFile(graph);
     */
-
 
     ajStrDel(&outfname);
     ajStrDel(&shorttitle);
