@@ -1,4 +1,23 @@
 Version 3.0.0
+	Alignment output issues resolved. Specifying begin and end of
+	input sequences now works for all alignment formats. Markx formats
+	have been rewritten as the original code we used has nasty
+	dependencies on global variables which we struggled to reproduce
+	for all cases. The rewritten code is much simpler. Note that the
+	gap penalty reported by markx10 format is the EMBOSS
+	penalty. Markx10 as used in the FASTA package subtracts the gap
+	extension penalty from the gap penalty ... and adds it back when
+	calculating.
+
+	transeq failed to check sequence ranges in list files
+	correctly. It was only using the range from the first sequence if
+	the USA included a start and end. The range is now reset for each
+	sequence.
+
+	remap (and other programs that display translations) had problems
+	with masking ORFs (using strange characters instead of '0'),
+	caused by bad calls to an AJAX function.
+	
 	Entrez added as an access method. Sequence format must be
 	genbank. Server URL is hard-coded at NCBI (for now). Works by
 	finding GIs GenInfo Identifiers) that match the query, and then
