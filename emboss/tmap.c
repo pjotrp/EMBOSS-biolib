@@ -263,6 +263,9 @@ int main(int argc, char *argv[])
   mult = ajAcdGetGraphxy ("graph");
   outfile = ajAcdGetOutfile("outfile");
 
+if(!ajSeqsetLen(seqset))
+    ajFatal("No useable sequences were specified");
+  
 /* 
    22 March 2000 - GWW
    EMBOSS programs shouldn't write to stdout, unless the user specifies it.
