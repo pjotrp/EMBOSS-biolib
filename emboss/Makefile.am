@@ -8,6 +8,7 @@ complex corbatest \
 demoalign demofeatures demolist demoreport demosequence demostring demotable dichet \
 entrails histogramtest intconv \
 patmattest \
+primers \
 psiblasts \
 seqinfo seqretsingle \
 sigplot sigscan \
@@ -33,7 +34,7 @@ palindrome pasteseq patmatdb patmatmotifs \
 pepcoil pepinfo pepnet pepstats \
 pepwheel pepwindow pepwindowall \
 plotcon plotorf polydot preg \
-prettyplot prettyseq prima primer3 primers primersearch printsextract \
+prettyplot prettyseq prima primer3 primersearch printsextract \
 profit prophecy prophet \
 prosextract pscan \
 rebaseextract recoder redata remap restover restrict revseq scope \
