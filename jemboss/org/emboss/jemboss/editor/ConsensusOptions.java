@@ -28,13 +28,24 @@ import org.emboss.jemboss.gui.form.TextFieldFloat;
 import org.emboss.jemboss.gui.form.TextFieldInt;
 import org.emboss.jemboss.gui.form.LabelTextBox;
 
+
+/**
+*
+* Defines the options to be used in calculating a consensus
+*
+*/
 public class ConsensusOptions extends JFrame
 {
 
+  /** plurality */
   private TextFieldFloat pluralFloat;
+  /** identity */
   private TextFieldInt idInt;
+  /** set the case */
   private TextFieldFloat caseFloat;
+  /** graphic sequence collection */
   private GraphicSequenceCollection gsc;
+  /** scoring matrix */
   private Matrix mat;
   private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
@@ -168,6 +179,7 @@ public class ConsensusOptions extends JFrame
     return Float.parseFloat(pluralFloat.getText());
   }
 
+
   /**
   *
   * Get the minimum positive matches for a 
@@ -178,6 +190,7 @@ public class ConsensusOptions extends JFrame
   {
     return Float.parseFloat(caseFloat.getText());
   }
+
 
   /**
   *
@@ -190,19 +203,54 @@ public class ConsensusOptions extends JFrame
     return Integer.parseInt(idInt.getText());
   }
 
+
+  /**
+  *
+  * Set the minimum positive matches for a
+  * site to be made upper case in the consensus.
+  * The float is rounded to 2 decimal places.
+  *
+  */
+  protected void setCase(float caseValue)
+  {
+    caseValue = (Math.round(caseValue*100.f));
+    caseFloat.setText(Float.toString(caseValue/100.f));
+  }
+
+
+  /**
+  *
+  * Set the graphic sequence collection
+  *
+  */
   protected void setGraphicSequenceCollection(GraphicSequenceCollection gsc)
   {
     this.gsc = gsc;
   }
 
+
+  /**
+  *
+  * Set the matrix to use
+  *
+  */
   protected void setMatrix(Matrix mat)
   {
     this.mat = mat;
   }
 
+   
+  /**
+  *
+  * Set the minimum positive match score for a
+  * site to be included in the consensus.
+  * The float is rounded to 2 decimal places.
+  *
+  */
   protected void setPlurality(float plurality)
   {
-    pluralFloat.setText(Float.toString(plurality));
+    plurality = (Math.round(plurality*100.f));
+    pluralFloat.setText(Float.toString(plurality/100.f));
   }
 
 }

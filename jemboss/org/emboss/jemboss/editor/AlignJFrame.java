@@ -405,8 +405,13 @@ public class AlignJFrame extends JFrame
           Enumeration enum = vseq.elements();
           float wgt = 0.f;
           while(enum.hasMoreElements())
-            wgt+=((Sequence)enum.nextElement()).getWeight();
+          {
+            Sequence s = (Sequence)enum.nextElement();
+            if(!s.getName().equals("Consensus"))
+              wgt+=s.getWeight();
+          }
 
+          options.setCase(wgt/2.f);
           options.setPlurality(wgt/2.f);
           options.setGraphicSequenceCollection(gsc);
         }
