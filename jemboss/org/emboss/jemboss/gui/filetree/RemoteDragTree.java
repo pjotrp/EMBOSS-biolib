@@ -32,22 +32,25 @@ import java.io.*;
 import java.util.*;
 
 import org.emboss.jemboss.gui.ResultsMenuBar;
+import org.emboss.jemboss.soap.*;
 import uk.ac.mrc.hgmp.embreo.*;
 import uk.ac.mrc.hgmp.embreo.filemgr.*;
+import org.apache.soap.rpc.*;
 
 /**
-* Creates a file tree which is a drag source
+*
+* Creates a remote file tree which is a drag source & sink
+*
 */
 public class RemoteDragTree extends JTree implements DragGestureListener,
                            DragSourceListener, DropTargetListener 
 {
 
   public static DefaultTreeModel model;
-  private String fs = new String(System.getProperty("file.separator"));
-  private RemoteFileNode rootNode;
   private EmbreoParams mysettings; 
   private EmbreoFileRoots froots;
 
+  private String fs = new String(System.getProperty("file.separator"));
   final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
@@ -121,7 +124,8 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
     // drag only files 
     if(isFileSelection())
       e.startDrag(DragSource.DefaultCopyDrop, // cursor
-          new StringSelection(getFilename()), // transferable
+//        new StringSelection(getFilename()), // transferable
+                 (Transferable)getNodename(), // transferable data
                                        this); // drag source listener
   }
 
@@ -137,31 +141,95 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
 // Target
   public void dragEnter(DropTargetDragEvent e)
   {
-    if(e.isDataFlavorSupported(DataFlavor.stringFlavor))
+    if(e.isDataFlavorSupported(FileNode.FILENODE))
     {
       e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+      System.out.println("dragEnter");
     }
-    System.out.println("dragEnter");
   }
 
   public void drop(DropTargetDropEvent e)
   {
     Transferable t = e.getTransferable();
-    if(t.isDataFlavorSupported(DataFlavor.stringFlavor))
+
+    if(t.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE))
+       System.out.println("Detected local drop");
+    else if(t.isDataFlavorSupported(FileNode.FILENODE))
     {
-//    try
-//    {
-//      System.out.println("DROPPED SUCCESS!!!" + 
-//          (String)t.getTransferData(DataFlavor.stringFlavor));       
-//    }
-//    catch (Exception ex) {}
+      try
+      {
+        Point ploc = e.getLocation();
+        TreePath dropPath = getPathForLocation(ploc.x,ploc.y);
+        if (dropPath != null) 
+        {
+          FileNode fn = (FileNode)t.getTransferData(FileNode.FILENODE);
+          File lfn = fn.getFile();
+
+          String dropDest = null;
+          RemoteFileNode fdropPath = (RemoteFileNode)dropPath.getLastPathComponent();
+          String dropRoot = fdropPath.getRootDir();
+          if(fdropPath.isLeaf()) 
+          {
+            RemoteFileNode pn = (RemoteFileNode)fdropPath.getParent();
+            dropDest = pn.getFullName() + fs + lfn.getName();
+          } 
+          else 
+            dropDest = fdropPath.getFullName() + fs + lfn.getName();
+
+          try 
+          {
+            Vector params = new Vector();
+            byte[] fileData = getLocalFile(lfn);
+            params.addElement(new Parameter("options", String.class,
+                              "fileroot=" + dropRoot, null));
+            params.addElement(new Parameter("filename", String.class,
+                              dropDest, null));
+            params.addElement(new Parameter("filedata", fileData.getClass(),
+                              fileData, null));
+            EmbreoFileRequest gReq = new EmbreoFileRequest(mysettings,"put_file",params);
+            System.out.println("DROPPED - SUCCESS!!!");
+          } 
+          catch (Exception exp) 
+          {
+            System.out.println("RemoteDragTree: caught exception " + dropRoot +
+                " Destination: " + dropDest + " Local File " + lfn.toString());
+          }
+        }
+      }
+      catch (Exception ex) {}
     } 
     else
     {
       e.rejectDrop();
       return;
     }
-    return;
+
+  }
+
+
+  public byte[] getLocalFile(File name)
+  {
+    byte[] b = null;
+    try
+    {
+      long s = name.length();
+      b = new byte[(int)s];
+      FileInputStream fi = new FileInputStream(name);
+      fi.read(b);
+      fi.close();
+    } 
+    catch (IOException ioe) 
+    {
+      System.out.println("Cannot read file: " + name);
+    }
+    return b;
+  }
+
+  public RemoteFileNode getNodename()
+  {
+    TreePath path = getLeadSelectionPath();
+    RemoteFileNode node = (RemoteFileNode)path.getLastPathComponent();
+    return node;
   }
 
 /**
@@ -173,10 +241,10 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
 */
   public void dragOver(DropTargetDragEvent e) 
   {
-    if (e.isDataFlavorSupported(DataFlavor.stringFlavor)) 
+    if (e.isDataFlavorSupported(FileNode.FILENODE)) 
     {
-      Point hereiam = e.getLocation();
-      TreePath ePath = getPathForLocation(hereiam.x,hereiam.y);
+      Point ploc = e.getLocation();
+      TreePath ePath = getPathForLocation(ploc.x,ploc.y);
       if (ePath == null) 
         e.rejectDrag();
       else
@@ -214,7 +282,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
 
   private DefaultTreeModel createTreeModel(String root) 
   {
-    rootNode = new RemoteFileNode(root,null,null);
+    RemoteFileNode rootNode = new RemoteFileNode(mysettings,froots,root,null,null);
     rootNode.explore();
     return new DefaultTreeModel(rootNode);
   }
@@ -275,68 +343,5 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
     setCursor(cdone);
   }
 
-
-  class RemoteFileNode extends DefaultMutableTreeNode 
-  {
-    private boolean explored = false;
-    private boolean isDir = false;
-    private EmbreoFileList parentList;
-    private String[] childrenNames;
-    private String fs = new String(System.getProperty("file.separator"));
-    private String fullname;
-    private Vector children;
-
-    public RemoteFileNode(String file, EmbreoFileList parentList, String parent)
-    { 
-      this.parentList = parentList;
-
-      if(file.equals(" "))
-        isDir = true;
-
-      if(parentList != null)
-      {
-        fullname = parent + fs + file;
-        if(parentList.isDirectory(file))
-          isDir = true;
-      }
-      else
-        fullname = ".";
-
-      setUserObject(file); 
-    }
-
-    public boolean getAllowsChildren() { return isDir; }
-    public boolean isLeaf() { return !isDir; }
-    public boolean isDirectory() { return isDir; }
-//  public String getFile() { return (String)getUserObject(); }
-    public String getFullName() { return fullname; }
-    public boolean isExplored() { return explored; }
-    public String getServerName() 
-    { 
-      String prefix = (String)froots.getRoots().get(froots.getCurrentRoot());
-      return prefix + fs + fullname;
-    }
-
-    public void explore() 
-    {
-      if(!isDir)
-        return;
-
-      if(!explored)
-      {
-        try
-        {
-//        System.out.println(froots.getCurrentRoot() + " :: " + fullname);
-          EmbreoFileList efl = new EmbreoFileList(mysettings,
-                                   froots.getCurrentRoot(),fullname);
-          children = efl.fileVector();
-          for(int i=0;i<children.size();i++)
-            add(new RemoteFileNode((String)children.get(i),efl,fullname));
-        }
-        catch(EmbreoAuthException eae) {}
-      }
-      explored = true;
-    }
-  }
 
 }
