@@ -16,7 +16,7 @@ pkgdata_DATA = codes.english emboss.default \
 	freak.acd fuzznuc.acd fuzzpro.acd fuzztran.acd \
 	garnier.acd geecee.acd getorf.acd helixturnhelix.acd \
 	histogramtest.acd iep.acd infoseq.acd isochore.acd \
-	lindna.acd maskfeat.acd maskseq.acd matcher.acd \
+	lindna.acd marscan.acd maskfeat.acd maskseq.acd matcher.acd \
 	megamerger.acd merger.acd msbar.acd needle.acd \
 	newcpgreport.acd newcpgseek.acd newseq.acd noreturn.acd \
 	notseq.acd nrscope.acd nthseq.acd octanol.acd oddcomp.acd \
