@@ -2264,12 +2264,16 @@ void ajAlignSetType (AjPAlign thys) {
   return;
 }
 
-/* @func ajAlignSetType ************************************************
+/* @func ajAlignSetRange ************************************************
 **
-** Sets the align type (if it is not set already)
+** Sets the alignment range in each sequence, but only for a
+** pairwise alignment
 **
 ** @param [R] thys [AjPAlign] Alignment object
-** @param [R] seqset [AjPSeqset] Sequence set object
+** @param [R] start1 [ajint] Start in sequence 1
+** @param [R] end1 [ajint] End in sequence 1
+** @param [R] start2 [ajint] Start in sequence 2
+** @param [R] end2 [ajint] End in sequence 2
 ** @return [void]
 ** @@
 ******************************************************************************/
