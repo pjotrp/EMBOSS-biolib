@@ -946,6 +946,7 @@ void ajTrnRevC (AjPTrn trnObj, char *str, ajint len, AjPStr *pep) {
   ajint ajb;
   
   ajb = (len/3)*3-1;
+  ajDebug("ajTrnRevC start position=%d\n", ajb);
   for(i=ajb;i>1;i-=3)
     (void) ajStrAppK(pep, trnObj->GC[trncomp[(ajint)str[i]]]
     				     [trncomp[(ajint)str[i-1]]]
@@ -1083,9 +1084,11 @@ void ajTrnCFrame (AjPTrn trnObj, char *seq, ajint len, ajint frame, AjPStr *pep)
   if (frame > 3) frame = -frame + 3;
 
   if (frame >= 1 && frame <= 3) {
-    ajTrnC(trnObj, &seq[frame-1], len, pep);
+/* want to make the len the REAL length passed over */
+    ajTrnC(trnObj, &seq[frame-1], len-frame+1, pep);
   } else if (frame >= -3 && frame <= -1) {
-    ajTrnRevC (trnObj, &seq[-frame-1], len, pep);
+/* want to make the len the REAL length passed over */
+    ajTrnRevC (trnObj, &seq[-frame-1], len+frame+1, pep);
   } else {
     ajDie("Invalid frame '%d' in ajTrnCFrame()\n", frame);
   }
