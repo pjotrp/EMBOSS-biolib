@@ -32,6 +32,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include <limits.h>
+#include <fcntl.h>
 
 #define FILERECURSLV 20
 static ajint fileBuffSize = 2048;
@@ -57,7 +58,6 @@ static AjBool fileBuffLineNext(AjPFileBuff thys);
 static void   fileClose(AjPFile thys);
 static void   fileListRecurs(const AjPStr file, AjPList list, ajint *recurs);
 static DIR*   fileOpenDir(AjPStr *dir);
-
 
 #ifdef __CYGWIN__
 #define fopen(a,b) ajSysFopen(a,b)
@@ -432,7 +432,7 @@ AjPFile ajFileNewInPipe(const AjPStr name)
 	execvp(pgm, arglist);
 	ajErr("execvp ('%S', NULL) failed: '%s'\n",
 		tmpname, strerror(errno));
-	ajExitBad();
+	ajExitAbort();
     }
     
     ajDebug("pid %d, pipe '%d', '%d'\n",
@@ -442,7 +442,7 @@ AjPFile ajFileNewInPipe(const AjPStr name)
     thys->fp = ajSysFdopen(pipefds[0], "r");
     close(pipefds[1]);
     ajStrDelReuse(&tmpname);
-    
+
     if(!thys->fp)
     {
 	thys->Handle = 0;
@@ -681,9 +681,6 @@ AjPFile ajFileNewApp(const AjPStr name)
 
     return thys;
 }
-
-
-
 
 /* @func ajFileNewOut *********************************************************
 **
@@ -5633,7 +5630,7 @@ AjBool ajFileBuffStripHtmlPre(AjPFileBuff thys)
     lptr = thys->Curr;
     
     preexp = ajRegCompC("<[Pp][Rr][Ee]>");
-    endexp = ajRegCompC("</[Pp][Rr][Ee]>");
+
     lptr=thys->Curr;
     
     ajDebug("ajFileBuffStripHtmlPre testing for <pre> line(s)\n");
@@ -5647,12 +5644,14 @@ AjBool ajFileBuffStripHtmlPre(AjPFileBuff thys)
     if(!ifound)
     {
 	ajDebug("ajFileBuffStripHtmlPre no <pre> line(s)\n");
+	ajRegFree(&preexp);
 	return ajFalse;
     }
 
     if (ifound > 1)
     {
 	ajDebug("ajFileBuffStripHtmlPre found %d <pre> lines\n", ifound);
+	ajRegFree(&preexp);
 	return ajFalse;
     }
 
@@ -5676,8 +5675,12 @@ AjBool ajFileBuffStripHtmlPre(AjPFileBuff thys)
 	ajDebug("++ajFileBuffStripHtmlPre <pre> at: %S\n", lptr->Line);
     thys->Lines = thys->Curr = lptr;
     ajRegPost(preexp, &lptr->Line);
+    ajRegFree(&preexp);
 
     ajDebug("++ajFileBuffStripHtmlPre skip to </pre>\n");
+
+    endexp = ajRegCompC("</[Pp][Rr][Ee]>");
+
     while(lptr && !ajRegExec(endexp,lptr->Line))
     {
 	ajDebug("keep: %S\n", lptr->Line);
@@ -5687,6 +5690,7 @@ AjBool ajFileBuffStripHtmlPre(AjPFileBuff thys)
     ajRegPre(endexp, &lptr->Line);
     thys->Last = lptr;
     lptr = lptr->Next;
+    ajRegFree(&endexp);
 
     while(lptr)
     {
@@ -5701,6 +5705,7 @@ AjBool ajFileBuffStripHtmlPre(AjPFileBuff thys)
     thys->Last->Next = NULL;
     ajFileBuffReset(thys);
     ajFileBuffPrint(thys, "ajFileBuffStripHtmlPre completed");
+
     return ajTrue;
 }
 
