@@ -37,6 +37,7 @@ typedef struct SeqSAccess SeqSAccess;
 ** @attr Key [AjPStr] Keyword Wildcard
 ** @attr Org [AjPStr] Taxonomy Wildcard
 ** @attr Sv [AjPStr] SeqVersion Wildcard
+** @attr Gi [AjPStr] GenInfo Identifier Wildcard
 ** @attr Method [AjPStr] Name of access method
 ** @attr Formatstr [AjPStr] Name of input sequence format
 ** @attr IndexDir [AjPStr] Index directory
@@ -75,6 +76,7 @@ typedef struct AjSSeqQuery {
   AjPStr Key;
   AjPStr Org;
   AjPStr Sv;
+  AjPStr Gi;
   AjPStr Method;
   AjPStr Formatstr;
   AjPStr IndexDir;
