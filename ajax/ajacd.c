@@ -660,6 +660,7 @@ static AjBool    acdQualToSeqend(const AcdPAcd thys, const char *qual,
 				 ajint defval, ajint *result,
 				 AjPStr* valstr);
 static AjPTable  acdReadGroups(void);
+static void      acdReadKnowntypes(AjPTable* desctable, AjPTable* infotable);
 static void      acdReadSections(AjPTable* typetable, AjPTable* infotable);
 static AjBool    acdReplyInit(const AcdPAcd thys,
 			      const char *defval, AjPStr* reply);
@@ -692,6 +693,7 @@ static AjBool    acdUserGet(const AcdPAcd thys, AjPStr* reply);
 static AjBool    acdUserGetPrompt(const char* prompt, AjPStr* reply);
 static void      acdValidAppl(const AcdPAcd thys);
 static void      acdValidApplGroup(const AjPStr groups);
+static void      acdValidKnowntype(const AcdPAcd thys);
 static void      acdValidSection(const AcdPAcd thys);
 static void      acdValidSectionFull(AjPStr* secname);
 static AjBool    acdValidSectionMatch(char* secname);
@@ -20414,9 +20416,181 @@ static void acdValidQual(const AcdPAcd thys)
 			  "and no input sequence type as a default");
     }
 
+    /* string - we don't ask much, but we do prefer strings to have a
+       known type that does not suggest some other datatype can be
+       used */
+
+    if(ajStrMatchCC(acdType[thys->Type].Name, "string"))
+    {
+	tmpstr = acdAttrValue(thys, "knowntype");
+	if(!ajStrLen(tmpstr))
+	{
+	    tmpstr = acdAttrValue(thys, "pattern");
+	    if (!ajStrLen(tmpstr))
+		acdWarn("No knowntype specified for string");
+	    else
+		acdWarn("Pattern but no knowntype specified for string");
+	}
+    }
+
+    acdValidKnowntype(thys);
+
     return;
 }
 
+
+
+
+/* @funcstatic acdValidKnowntype **********************************************
+**
+** Validation for Known type
+**
+** @param [r] thys [const AcdPAcd] Current ACD object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdValidKnowntype(const AcdPAcd thys)
+{
+    static AjPTable descTable = NULL;
+    static AjPTable acdtypeTable = NULL;
+    AjPStr typestr         = NULL;
+    AjPStr acdKnownType    = NULL;
+    static AjPStr defType = NULL;
+
+    if(!acdDoValid)
+	return;
+
+    typestr = acdAttrValue(thys, "knowntype");
+    if (!ajStrLen(typestr))
+	return;
+
+    if(!descTable)
+	acdReadKnowntypes(&descTable, &acdtypeTable);
+
+    if (!defType)
+	ajFmtPrintS(&defType, "%S output", acdProgram);
+
+    acdKnownType = ajTableGet(acdtypeTable, typestr);
+    if (!acdKnownType)
+    {
+	if (!ajStrMatch(typestr, defType))
+	    acdWarn("Knowntype '%S' not defined in knowntypes.standard",
+		    typestr);
+	return;
+    }
+
+    if (ajStrMatchC(acdKnownType, "file"))
+    {
+	if (!ajStrMatchCC(acdType[thys->Type].Name, "infile") &&
+	    !ajStrMatchCC(acdType[thys->Type].Name, "outfile"))
+	{
+	    acdWarn("Knowntype '%S' defined for type '%S', used for '%s'",
+		    typestr, acdKnownType, acdType[thys->Type].Name);
+	}
+    }
+    else if (!ajStrMatchC(acdKnownType, acdType[thys->Type].Name))
+    {
+	acdWarn("Knowntype '%S' defined for type '%S', used for '%s'",
+		typestr, acdKnownType, acdType[thys->Type].Name);
+    }
+
+    return;
+}
+
+
+/* @funcstatic acdReadSections ************************************************
+**
+** Read standard table of ACD sections and store in AjPTable objects
+**
+** @param [r] typetable [AjPTable*] String table of section names and types
+** @param [r] infotable [AjPTable*] String table of section names and
+**                                 descriptions
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdReadKnowntypes(AjPTable* desctable, AjPTable* typetable)
+{
+    AjPFile knownFile    = NULL;
+    AjPStr knownFName    = NULL;
+    AjPStr knownRoot     = NULL;
+    AjPStr knownRootInst = NULL;
+    AjPStr knownPack     = NULL;
+    AjPStr knownLine     = NULL;
+    AjPRegexp knownxp    = NULL;
+    AjPStr knownName     = NULL;
+    AjPStr knownType     = NULL;
+    AjPStr knownDesc     = NULL;
+
+    ajNamRootPack(&knownPack);
+    ajNamRootInstall(&knownRootInst);
+    ajFileDirFix(&knownRootInst);
+    
+    *desctable = ajStrTableNewCase(50);
+    *typetable = ajStrTableNewCase(50);
+
+    if(ajNamGetValueC("acdroot", &knownRoot))
+    {
+	ajFileDirFix(&knownRoot);
+	ajFmtPrintS(&knownFName, "%Sknowntypes.standard", knownRoot);
+	knownFile = ajFileNewIn(knownFName);
+	acdLog("Knowntypes file in acdroot: '%S'\n", knownFName);
+    }
+    else
+    {
+	ajFmtPrintS(&knownFName, "%Sshare/%S/acd/knowntypes.standard",
+		    knownRootInst, knownPack);
+	acdLog("Knowntypes file installed: '%S'\n", knownFName);
+	knownFile = ajFileNewIn(knownFName);
+	if(!knownFile)
+	{
+	    acdLog("Knowntypes file '%S' not opened\n", knownFName);
+	    ajNamRoot(&knownRoot);
+	    ajFileDirFix(&knownRoot);
+	    ajFmtPrintS(&knownFName, "%Sacd/knowntypes.standard", knownRoot);
+	    acdLog("Knowntypes file from source dir: '%S'\n", knownFName);
+	    knownFile = ajFileNewIn(knownFName);
+	}
+    }
+    
+    if(!knownFile)			/* test acdc-knownmissing */
+	ajDie("Knowntypes file %S not found", knownFName);
+    else
+	acdLog("Knowntypes file %F used\n", knownFile);
+    
+    knownxp = ajRegCompC("([^ ]+) +([^ ]+) +([^ ].*)");
+    while(knownFile && ajFileReadLine(knownFile, &knownLine))
+    {
+	if(ajStrUncomment(&knownLine))
+	{
+	    ajStrClean(&knownLine);
+
+	    if(ajRegExec(knownxp, knownLine))
+	    {
+		ajRegSubI(knownxp, 1, &knownType);
+		ajRegSubI(knownxp, 2, &knownName);
+		ajRegSubI(knownxp, 3, &knownDesc);
+		ajStrSubstituteKK(&knownName, '_', ' ');
+		if(ajTablePut(*typetable, knownName, knownType))
+		    ajWarn("Duplicate knowntype name in file %S",
+			   knownFName);
+		if(ajTablePut(*desctable, knownName, knownDesc))
+		    ajWarn("Duplicate knowntype name in file %S",
+			   knownFName);
+	        knownName = NULL;
+		knownType = NULL;
+		knownDesc = NULL;
+	    }
+	    else
+		ajErr("Bad record in file %S:\n%S",
+		      knownFName, knownLine);
+	}
+    }
+    ajFileClose(&knownFile);
+
+    return;
+}
 
 
 
