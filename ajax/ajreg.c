@@ -102,8 +102,8 @@ AjPRegexp ajRegCompC (const char* exp)
     regAlloc += sizeof(ret);
     regCount ++;
     regTotal ++;
-    ajDebug("ajRegComp %x size %d regexp '%s'\n",
-	    ret, (int) sizeof(ret), exp);
+    /*ajDebug("ajRegComp %x size %d regexp '%s'\n",
+      ret, (int) sizeof(ret), exp);*/
 
     return ret;
 }
@@ -136,7 +136,7 @@ AjBool ajRegExec (AjPRegexp prog, AjPStr str)
     if (status >= 0)
     {
 	prog->orig = ajStrStr(str);
-	ajRegTrace(prog);
+	/*ajRegTrace(prog); */
 	if (status == 0)
 	    ajWarn("ajRegExec too many substrings");
 	return ajTrue;
@@ -177,7 +177,7 @@ AjBool ajRegExecC (AjPRegexp prog, const char* str)
     if (status >= 0)
     {
 	prog->orig = str ;
-	ajRegTrace(prog);
+	/*ajRegTrace(prog);*/
 	if (status == 0)
 	    ajWarn("ajRegExecC too many substrings");
 	return ajTrue;
@@ -246,12 +246,12 @@ ajint ajRegOffsetI (AjPRegexp rp, ajint isub)
 ** @@
 ******************************************************************************/
 
-ajint ajRegLenI (AjPRegexp rp, ajint isub) {
+ajint ajRegLenI (AjPRegexp rp, ajint isub)
+{
+    ajint istart = 2*isub;
+    ajint iend = istart+1;
 
-  ajint istart = 2*isub;
-  ajint iend = istart+1;
-
-  return (rp->ovector[iend] - rp->ovector[istart]);
+    return (rp->ovector[iend] - rp->ovector[istart]);
 }
 
 /* @func ajRegPost ************************************************************
@@ -264,15 +264,16 @@ ajint ajRegLenI (AjPRegexp rp, ajint isub) {
 ** @@
 ******************************************************************************/
 
-AjBool ajRegPost (AjPRegexp rp, AjPStr* post) {
+AjBool ajRegPost (AjPRegexp rp, AjPStr* post)
+{
+    if (rp->ovector[1])
+    {
+	(void) ajStrAssC (post, &rp->orig[rp->ovector[1]]);
+	return ajTrue;
+    }
 
-  if (rp->ovector[1]) {
-    (void) ajStrAssC (post, &rp->orig[rp->ovector[1]]);
-    return ajTrue;
-  }
-
-  (void) ajStrDelReuse(post);
-  return ajFalse;
+    (void) ajStrDelReuse(post);
+    return ajFalse;
 }
 
 /* @func ajRegPostC ***********************************************************
@@ -288,16 +289,17 @@ AjBool ajRegPost (AjPRegexp rp, AjPStr* post) {
 ** @@
 ******************************************************************************/
 
-AjBool ajRegPostC (AjPRegexp rp, const char** post) {
+AjBool ajRegPostC (AjPRegexp rp, const char** post)
+{
+    if (rp->ovector[1])
+    {
+	*post = &rp->orig[rp->ovector[1]];
+	return ajTrue;
+    }
 
-  if (rp->ovector[1]) {
-    *post = &rp->orig[rp->ovector[1]];
-    return ajTrue;
-  }
+    *post = 0;
 
-  *post = 0;
-
-  return ajFalse;
+    return ajFalse;
 }
 
 /* @func ajRegSubI ************************************************************
@@ -311,27 +313,29 @@ AjBool ajRegPostC (AjPRegexp rp, const char** post) {
 ** @@
 ******************************************************************************/
 
-void ajRegSubI (AjPRegexp rp, ajint isub, AjPStr* dest) {
+void ajRegSubI (AjPRegexp rp, ajint isub, AjPStr* dest)
+{
+    ajint ilen;
+    ajint istart = 2*isub;
+    ajint iend = istart+1;
 
-  ajint ilen;
-  ajint istart = 2*isub;
-  ajint iend = istart+1;
-
-  if (isub < 0) {
-    (void) ajStrDelReuse (dest);
+    if (isub < 0)
+    {
+	(void) ajStrDelReuse (dest);
+	return;
+    }
+    if (isub >= rp->ovecsize)
+    {
+	(void) ajStrDelReuse (dest);
+	return;
+    }
+    ilen = rp->ovector[iend] - rp->ovector[istart];
+    (void) ajStrModL (dest, ilen+1);
+    if (ilen)
+	(void) strncpy ((*dest)->Ptr, &rp->orig[rp->ovector[istart]], ilen);
+    (*dest)->Len = ilen;
+    (*dest)->Ptr[ilen] = '\0';
     return;
-  }
-  if (isub >= rp->ovecsize) {
-    (void) ajStrDelReuse (dest);
-    return;
-  }
-  ilen = rp->ovector[iend] - rp->ovector[istart];
-  (void) ajStrModL (dest, ilen+1);
-  if (ilen)
-    (void) strncpy ((*dest)->Ptr, &rp->orig[rp->ovector[istart]], ilen);
-  (*dest)->Len = ilen;
-  (*dest)->Ptr[ilen] = '\0';
-  return;
 }
 
 /* destructor */
@@ -352,20 +356,20 @@ void ajRegFree (AjPRegexp* pexp)
     if (!*pexp) return;
 
     exp = *pexp;
-    ajDebug("ajRegFree %x size regexp %d\n", exp,
-	    (ajint) sizeof(exp));
-  regFreeCount += 1;
-  regFree += sizeof(*exp) ;
-  if (exp->pcre)
-      regFree += sizeof(exp->pcre) ;
-  if (exp->extra)
-  regFree += sizeof(exp->extra) ;
-  regTotal --;
+    /* ajDebug("ajRegFree %x size regexp %d\n", exp,
+       (ajint) sizeof(exp));*/
+    regFreeCount += 1;
+    regFree += sizeof(*exp) ;
+    if (exp->pcre)
+	regFree += sizeof(exp->pcre) ;
+    if (exp->extra)
+	regFree += sizeof(exp->extra) ;
+    regTotal --;
 
-  AJFREE (exp->pcre);
-  AJFREE (exp->extra);
-  AJFREE (exp->ovector);
-  AJFREE(*pexp);
+    AJFREE (exp->pcre);
+    AJFREE (exp->extra);
+    AJFREE (exp->ovector);
+    AJFREE(*pexp);
 }
 
 /* @func ajRegTrace ***********************************************************
@@ -423,12 +427,12 @@ void ajRegTrace (AjPRegexp exp)
 ** @@
 ******************************************************************************/
 
-void ajRegExit (void) {
+void ajRegExit (void)
+{
+    ajDebug ("Regexp usage (bytes): %ld allocated, %ld freed, %ld in use\n",
+	     regAlloc, regFree, regAlloc - regFree);
+    ajDebug ("Regexp usage (number): %ld allocated, %ld freed %ld in use\n",
+	     regTotal, regFreeCount, regCount);
 
-  ajDebug ("Regexp usage (bytes): %ld allocated, %ld freed, %ld in use\n",
-	   regAlloc, regFree, regAlloc - regFree);
-  ajDebug ("Regexp usage (number): %ld allocated, %ld freed %ld in use\n",
-	   regTotal, regFreeCount, regCount);
-
-  return;
+    return;
 }

@@ -168,7 +168,7 @@ static SeqOType seqType[] =
 ** If the type can have gaps, also tests for gap characters.
 ** Used only for testing, so never writes any error message
 **
-** @param [P] pthys [AjPStr*] Sequence string
+** @param [P] pthys [AjPSeq] Sequence string
 ** @param [P] Type [AjPStr] Sequence type
 ** @return [AjBool] ajTrue if compatible.
 ** @@
@@ -178,7 +178,8 @@ AjBool ajSeqTypeTest (AjPSeq thys, AjPStr Type)
 {
     ajint itype = -1;
 
-    ajDebug ("testing sequence '%s' type '%S'\n", thys, Type);
+    /*ajDebug ("testing sequence '%S' type '%S'\n",
+	     ajSeqStr(thys), Type);*/
 
     if (!ajStrLen(Type)) 	   /* nothing given - anything goes */
     {
@@ -350,7 +351,7 @@ static AjBool seqTypeFixReg (AjPSeq thys, ajint itype, char fixchar)
     ajint i;
 
     ajDebug ("seqTypeFixReg '%s'\n", seqType[itype].Name);
-    ajDebug ("Seq old '%S'\n", thys->Seq);
+    /*ajDebug ("Seq old '%S'\n", thys->Seq);*/
     badchar = seqType[itype].Badchars();
 
     while (ajRegExec(badchar, thys->Seq))
@@ -365,7 +366,7 @@ static AjBool seqTypeFixReg (AjPSeq thys, ajint itype, char fixchar)
 	for (i=0;i<ilen;i++)
 	    ajStrReplaceK(&thys->Seq, ++ioff, fixchar, 1);
     }
-    ajDebug ("Seq new '%S'\n", thys->Seq);
+    /*ajDebug ("Seq new '%S'\n", thys->Seq);*/
     ret = ajTrue;
     return ret;
 }
@@ -382,7 +383,6 @@ static AjBool seqTypeFixReg (AjPSeq thys, ajint itype, char fixchar)
 
 static void seqTypeSet (AjPSeq thys, AjPStr Type)
 {
-
     char* cp = ajStrStr(Type);
 
     ajDebug ("seqTypeSet '%S'\n", Type);
@@ -420,7 +420,6 @@ static void seqTypeSet (AjPSeq thys, AjPStr Type)
 
 AjBool ajSeqTypeCheckS (AjPStr* pthys, AjPStr type_name)
 {
-
 /*    AjPStr tmpstr = NULL; */
     AjPRegexp badchars;
     ajint itype = -1;
@@ -500,8 +499,7 @@ AjBool ajSeqTypeCheckS (AjPStr* pthys, AjPStr type_name)
 ******************************************************************************/
 
 AjBool ajSeqTypeCheckIn (AjPSeq thys, AjPSeqin seqin)
-{
-    
+{    
     ajint itype = -1;
     AjPRegexp badchars;
     AjPStr tmpstr = NULL;
@@ -975,7 +973,8 @@ static void seqGapSL (AjPStr* seq, char gapc, char padc, ajint ilen)
     char endc = gapc;
     
     igap = strlen(seqCharGapTest);
-    if (!newgap){
+    if (!newgap)
+    {
 	newgap = ajCharNewL(igap);
 	newgap[0] = '\0';
     }
@@ -1134,7 +1133,6 @@ void ajSeqPrintType (AjPFile outf, AjBool full)
 	ajFmtPrintF (outf, "  %-15s %3B %s \"%s\"\n",
 		     seqType[i].Name, seqType[i].Gaps,
 		     typeName[seqType[i].Type], seqType[i].Desc);
-
     }
     ajFmtPrintF (outf, "}\n");
 }
@@ -1159,8 +1157,8 @@ static char seqTypeTest (AjPStr thys, AjPRegexp badchars)
     if (!ajStrLen(thys))
 	return ret;
 
-    ajDebug ("seqTypeTest, Sequence '%S'\n",
-	     thys);
+    /* ajDebug ("seqTypeTest, Sequence '%S'\n",
+	     thys); */
     if (!ajRegExec(badchars, thys))
 	return ret;
 
