@@ -18,8 +18,9 @@ dnl   #endif /* PLD_png */
 dnl
 dnl @author Ian Longden <il@sanger.ac.uk>
 dnl Modified: Alan Bleasby. Corrected library order
-dnl Modified: David Mathog.   Looks in ALT_HOME, and then /usr no matter what for
-dnl   all 3 libs.
+dnl Modified: David Mathog. Looks in ALT_HOME, and then /usr no matter what
+dnl                         for all 3 libs.
+dnl Modified: Alan Bleasby. png correction
 dnl
 
 AC_DEFUN(CHECK_PNGDRIVER,
@@ -46,7 +47,7 @@ ALT_USED=0
 #
 # Locate png/gd/zlib, if wanted
 #
-if test -n "${ALT_HOME}"
+if test -d "${ALT_HOME}"
 then
 #
 # Keep a copy if it fails
@@ -79,7 +80,7 @@ then
 	if test $CHECK = "1" ; then
 	  AC_CHECK_LIB(png, png_destroy_read_struct, CHECK=1, CHECK=0 , -L${ALT_HOME}/lib -lz)
 	  if test $CHECK = "0" ; then
-	    AC_CHECK_LIB(z, inflateEnd, CHECK=1, CHECK=0 , -L/usr/lib -lz)
+	    AC_CHECK_LIB(png, png_destroy_read_struct, CHECK=1, CHECK=0 , -L/usr/lib -lz)
           else
             ALT_USED=1
 	  fi
@@ -126,5 +127,8 @@ then
 #       echo LDFLAGS = $LDFLAGS
 #       echo CPPFLAGS = $CPPFLAGS
 
+else
+	echo "Directory $ALT_HOME does not exist"
+	exit 0
 fi
 ])

@@ -15,6 +15,13 @@ AC_ARG_WITH(java,
 [if test "$withval" != no ; then
   AC_MSG_RESULT(yes)
   ALT_HOME="$withval"
+  if test -d $withval ; then
+	echo "Java directory $withval exists"
+  else
+	echo "Java directory $withval does not exist"
+	exit 0
+  fi
+
   ALT_HOME="${ALT_HOME} -DHAVE_JAVA"
   AC_CHECK_PROG(havejavac,javac,"yes","no")
   if test "${havejavac}" != yes ; then
@@ -30,7 +37,7 @@ else
 
 fi], [
 
-AC_MSG_RESULT(yes)
+AC_MSG_RESULT(no)
 
 ])
 
@@ -52,12 +59,21 @@ AC_ARG_WITH(javaos,
 [  --with-javaos=DIR root directory path of java installation include OS [defaults /usr/java/jdk1.3.1/include/linux] ],
 [if test "$withval" != no ; then
   AC_MSG_RESULT(yes)
-  ALT_HOMEOS="$withval"
+	  if test -d $withval ; then
+		echo "Javaos directory $withval exists"
+	  else
+		echo "Javaos directory $withval does not exist"
+		exit 0
+	  fi
+	  ALT_HOMEOS="$withval"
 else
   AC_MSG_RESULT(no)
 fi], [
-AC_MSG_RESULT(yes)
-
+AC_MSG_RESULT(no)
+	if test "$JAVA_OK" = "yes" ; then
+		echo "Error: --with-java=dir unspecified"
+		exit 0
+	fi
 ])
 
 if test -n "${ALT_HOMEOS}"
