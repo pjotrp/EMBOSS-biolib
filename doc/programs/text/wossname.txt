@@ -155,8 +155,6 @@ cai              CAI codon adaptation index
 chips            Codon usage statistics
 codcmp           Codon usage table comparison
 cusp             Create a codon usage table
-
-NUCLEIC CODON USAGE NUCLEIC GENE FINDING
 syco             Synonymous codon usage Gribskov statistic plot
 
 NUCLEIC COMPOSITION
@@ -183,6 +181,7 @@ marscan          Finds MAR/SAR sites in nucleic sequences
 plotorf          Plot potential open reading frames
 showorf          Pretty output of DNA translations
 sixpack          Display a DNA sequence with 6-frame translation and ORFs
+syco             Synonymous codon usage Gribskov statistic plot
 tcode            Fickett TESTCODE statistic to identify protein-coding DNA
 wobble           Wobble base plot
 
@@ -494,7 +493,6 @@ FEATURE TABLES
 INFORMATION
 NUCLEIC 2D STRUCTURE
 NUCLEIC CODON USAGE
-NUCLEIC CODON USAGE NUCLEIC GENE FINDING
 NUCLEIC COMPOSITION
 NUCLEIC CPG ISLANDS
 NUCLEIC GENE FINDING
@@ -538,7 +536,6 @@ Keyword to search for, or blank to list all programs:
      * INFORMATION
      * NUCLEIC 2D STRUCTURE
      * NUCLEIC CODON USAGE
-     * NUCLEIC CODON USAGE NUCLEIC GENE FINDING
      * NUCLEIC COMPOSITION
      * NUCLEIC CPG ISLANDS
      * NUCLEIC GENE FINDING

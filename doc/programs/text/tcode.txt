@@ -406,7 +406,7 @@ Output file format
   
 ########################################
 # Program: tcode
-# Rundate: Tue Apr 22 13:42:27 2003
+# Rundate: Tue Apr 22 14:20:52 2003
 # Report_format: table
 # Report_file: hsfau1.tcode
 ########################################
@@ -668,6 +668,7 @@ See also
    plotorf      Plot potential open reading frames
    showorf      Pretty output of DNA translations
    sixpack      Display a DNA sequence with 6-frame translation and ORFs
+   syco         Synonymous codon usage Gribskov statistic plot
    wobble       Wobble base plot
    
   See Elsewhere

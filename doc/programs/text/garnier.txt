@@ -218,7 +218,7 @@ Output file format
   
 ########################################
 # Program: garnier
-# Rundate: Tue Apr 22 13:27:35 2003
+# Rundate: Tue Apr 22 14:04:28 2003
 # Report_format: tagseq
 # Report_file: amic_pseae.garnier
 ########################################

@@ -616,7 +616,7 @@ Output file format
   
 ########################################
 # Program: twofeat
-# Rundate: Tue Apr 22 13:42:44 2003
+# Rundate: Tue Apr 22 14:21:12 2003
 # Report_format: table
 # Report_file: hsfau.twofeat
 ########################################

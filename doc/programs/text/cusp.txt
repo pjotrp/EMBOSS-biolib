@@ -367,10 +367,11 @@ Known bugs
    
 See also
 
-   Program name         Description
+   Program name                  Description
    cai          CAI codon adaptation index
    chips        Codon usage statistics
    codcmp       Codon usage table comparison
+   syco         Synonymous codon usage Gribskov statistic plot
    
 Author(s)
 

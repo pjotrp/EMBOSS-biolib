@@ -240,7 +240,7 @@ Output file format
   
 ########################################
 # Program: helixturnhelix
-# Rundate: Tue Apr 22 13:27:38 2003
+# Rundate: Tue Apr 22 14:04:31 2003
 # Report_format: motif
 # Report_file: laci_ecoli.hth
 ########################################

@@ -44,11 +44,14 @@ Usage
 
    Here is a sample session with dotpath
    
-   
+
 % dotpath tembl:AF129756 tembl:AP000504 -word 20 -graph cps -overlaps 
 Displays a non-overlapping wordmatch dotplot of two sequences
 
+Created dotpath.ps
+   
    Go to the input files for this example
+   Go to the output files for this example
    
 Command line arguments
 
@@ -484,6 +487,12 @@ Output file format
    
    With the -data qualifier a file of the positions of the matches in the
    minimal non-overlapping set of matches is output.
+   
+  Output files for usage example
+  
+  Graphics File: dotpath.ps
+  
+   [dotpath results]
    
 Data files
 

@@ -557,6 +557,7 @@ See also
    showorf      Pretty output of DNA translations
    showseq      Display a sequence with features, translation etc
    sixpack      Display a DNA sequence with 6-frame translation and ORFs
+   syco         Synonymous codon usage Gribskov statistic plot
    tcode        Fickett TESTCODE statistic to identify protein-coding DNA
    transeq      Translate nucleic acid sequences
    wobble       Wobble base plot

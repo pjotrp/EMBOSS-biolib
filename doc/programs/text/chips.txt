@@ -335,10 +335,11 @@ Known bugs
    
 See also
 
-   Program name         Description
+   Program name                  Description
    cai          CAI codon adaptation index
    codcmp       Codon usage table comparison
    cusp         Create a codon usage table
+   syco         Synonymous codon usage Gribskov statistic plot
    
 Author(s)
 

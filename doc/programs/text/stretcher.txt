@@ -413,7 +413,7 @@ Output file format
   
 ########################################
 # Program:  stretcher
-# Rundate:  Tue Apr 22 13:42:20 2003
+# Rundate:  Tue Apr 22 14:20:40 2003
 # Align_format: markx0
 # Report_file: hba_human.stretcher
 ########################################

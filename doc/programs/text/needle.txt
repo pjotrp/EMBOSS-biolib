@@ -437,7 +437,7 @@ Output file format
   
 ########################################
 # Program:  needle
-# Rundate:  Tue Apr 22 13:29:22 2003
+# Rundate:  Tue Apr 22 14:06:18 2003
 # Align_format: srspair
 # Report_file: hba_human.needle
 ########################################

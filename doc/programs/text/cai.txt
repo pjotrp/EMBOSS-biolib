@@ -252,10 +252,11 @@ Known bugs
    
 See also
 
-   Program name         Description
+   Program name                  Description
    chips        Codon usage statistics
    codcmp       Codon usage table comparison
    cusp         Create a codon usage table
+   syco         Synonymous codon usage Gribskov statistic plot
    
 Author(s)
 

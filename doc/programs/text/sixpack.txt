@@ -780,6 +780,7 @@ See also
    showfeat Show features of a sequence
    showorf Pretty output of DNA translations
    showseq Display a sequence with features, translation etc
+   syco Synonymous codon usage Gribskov statistic plot
    tcode Fickett TESTCODE statistic to identify protein-coding DNA
    textsearch Search sequence documentation text. SRS and Entrez are
    faster!
