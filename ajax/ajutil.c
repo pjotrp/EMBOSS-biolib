@@ -55,7 +55,6 @@ void ajExit(void)
     ajRegExit();
     ajTableExit();
     ajListExit();
-    ajRegExit();
     ajFileExit();
     ajFeatExit();
     ajAcdExit(ajFalse);
