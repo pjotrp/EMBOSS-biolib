@@ -36,7 +36,7 @@ below.
 <td><tt>a) Linux</td><td><tt>--with-auth=shadow (or --with-auth=pam see
                                 PAM notes).</td><tr>
 <td><tt>b) Irix</td><td><tt>    --with-auth=shadow</td><tr>
-<td><tt>c) MacOSX</td><td><tt>  --with-auth=noshadow</td><tr>
+<td><tt>c) MacOSX</td><td><tt>  --with-auth=pam</td><tr>
 <td><tt>d) AIX</td><td><tt>     --with-auth=aixshadow</td><tr>
 <td><tt>e) HP-UX</td><td><tt>   --with-auth=hpuxshadow</td><tr>
 <td><tt>f) Solaris</td><td><tt> --with-auth=rshadow</td><tr>
@@ -53,8 +53,7 @@ correct one. Many will work with NIS (e.g. shadow, rshadow).
 
 <p>In general this is used if your system has a /etc/passwd file
 which contains encrypted passwords and only a getpwnam()
-system call (man getpwnam). It is also used by MacOSX which
-has an unusual authentication system.
+system call (man getpwnam). 
 
 <p>2. rnoshadow
 
