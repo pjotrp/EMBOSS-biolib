@@ -1018,6 +1018,7 @@ sub defanumerically { $acdstatsdefa{$t}{$b} <=> $acdstatsdefa{$t}{$a} }
 $stage = "";
 while ($line = <>) {
     chomp $line;
+    $stage = "";
     if ($line =~ /^\#\s*(\S.*)/) {
 	if ($stages{$1}) {
 	    $stage = $stages{$1};
