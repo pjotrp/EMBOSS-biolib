@@ -1530,6 +1530,7 @@ static void prima_prune_nearby(AjPList *pairlist, ajint *npair, ajint range)
 	    {
 		prima_PrimerDel(&pair->f);
 		prima_PrimerDel(&pair->r);
+		AJFREE(pair);
 		--count;
 	    }
 	}
