@@ -198,8 +198,8 @@ section: output [
            tag names that should be added to the output sequence Description
            text, together with their values (if any). For example, if this is
            set to be 'gene', then if any output feature has the tag (for
-           example) '/gene="BRCA1"' associated with it, then the text
-           '(gene="BRCA1")' will be added to the Description line. Tags are
+           example) '/gene=BRCA1' associated with it, then the text
+           '(gene=BRCA1)' will be added to the Description line. Tags are
            the types of extra values that a feature may have. For example in
            the EMBL feature table, a 'CDS' type of feature may have the tags
            '/codon', '/codon_start', '/db_xref', '/EC_number', '/evidence',

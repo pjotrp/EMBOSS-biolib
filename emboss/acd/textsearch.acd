@@ -94,7 +94,7 @@ section: output [
 
   outfile: outfile  [
     parameter: "Y"
-    knowntype: "textsearch output""
+    knowntype: "textsearch output"
   ]
 
 endsection: output
