@@ -97,7 +97,10 @@ public class BuildProgramMenu
     }
     else 
     {
-      envp = new String[5];  /* environment vars */
+      if(mysettings.isCygwin())
+        envp = new String[5];  /* environment vars */
+      else
+        envp = new String[4];
       String ps = new String(System.getProperty("path.separator"));
       String embossBin  = mysettings.getEmbossBin();
       String embossPath = mysettings.getEmbossPath();
