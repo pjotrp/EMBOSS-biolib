@@ -5,6 +5,5 @@ appl: rebaseextract [
 
 infile: inf  [
   parameter: "Y"
-  required: "Y"
   prompt: "Full pathname of WITHREFM"
 ]
