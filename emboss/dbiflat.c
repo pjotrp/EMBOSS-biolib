@@ -187,8 +187,8 @@ int main(int argc, char **argv)
 
     idformat   = ajAcdGetListI("idformat",1);
     fields     = ajAcdGetList("fields");
-    directory  = ajAcdGetDirectory("directory");
-    indexdir   = ajAcdGetDirectory("indexdirectory");
+    directory  = ajAcdGetDirectoryName("directory");
+    indexdir   = ajAcdGetDirectoryName("indexdirectory");
     filename   = ajAcdGetString("filenames");
     exclude    = ajAcdGetString("exclude");
     dbname     = ajAcdGetString("dbname");

@@ -386,8 +386,8 @@ int main(int argc, char **argv)
     idformat = ajStrNewC("NCBI");
 
     fields     = ajAcdGetList("fields");
-    directory  = ajAcdGetDirectory("directory");
-    indexdir   = ajAcdGetDirectory("indexdirectory");
+    directory  = ajAcdGetDirectoryName("directory");
+    indexdir   = ajAcdGetDirectoryName("indexdirectory");
     filename   = ajAcdGetString("filenames");
     exclude    = ajAcdGetString("exclude");
     dbname     = ajAcdGetString("dbname");
