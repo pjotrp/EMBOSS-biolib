@@ -1909,16 +1909,26 @@ static AjBool jctl_chdir(char *file)
     char *p;
     AjPStr str=NULL;
     int ret;
+    char *buf;
+    int  len=0;
+    
+    if(!(buf=(char *)malloc((len=strlen(file))+1)))
+	return ajFalse;
+    strcpy(buf,file);
+    
+    if(buf[len-1]=='/')
+	buf[len-1]='\0';
     
     str = ajStrNew();
-    if(!(p=strrchr(file,(int)'/')))
+    if(!(p=strrchr(buf,(int)'/')))
 	ajStrAssC(&str,".");
     else
-	ajStrAssSubC(&str,file,0,p-file);
-
+	ajStrAssSubC(&str,buf,0,p-buf);
+    
     ret = chdir(ajStrStr(str));
     ajStrDel(&str);
-
+    AJFREE(buf);
+    
     if(ret==-1)
 	return ajFalse;
 
