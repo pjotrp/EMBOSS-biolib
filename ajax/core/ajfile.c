@@ -367,10 +367,16 @@ AjPFile ajFileNewOut (const AjPStr name) {
 
   AjPFile thys;
 
-  if (ajStrMatchC(name, "stdout"))
-    return ajFileNewF(stdout);
-  if (ajStrMatchC(name, "stderr"))
-    return ajFileNewF(stderr);
+  if (ajStrMatchC(name, "stdout")) {
+    thys = ajFileNewF(stdout);
+    ajStrAssC(&thys->Name, "stdout");
+    return thys;
+  }
+  if (ajStrMatchC(name, "stderr")) {
+    thys = ajFileNewF(stderr);
+    ajStrAssC(&thys->Name, "stderr");
+    return thys;
+  }
 
   AJNEW0(thys);
   thys->fp = fopen (ajStrStr(name), "w");
