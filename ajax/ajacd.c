@@ -721,6 +721,7 @@ AcdOAttr acdAttrReport[] = { {"name", VT_STR},
 			     {"taglist", VT_STR}, /* extra tags to report */
 			     {"mintags", VT_INT}, /* min number extra tags */
 			     {"multiple", VT_BOOL},
+			     {"precision", VT_INT},/*score precision */
 			     {NULL, VT_NULL} };
 
 AcdOAttr acdAttrSec[] = { {"info", VT_STR},
@@ -863,6 +864,8 @@ AcdOQual acdQualReport[] =
   {"ropenfile",  "",       "string", "report file name"},
   {"rextension", "",       "string", "file name extension"},
   {"rname",      "",       "string", "base file name"},
+  {"raccshow",   "",       "bool",   "show accession number in the report"},
+  {"rdesshow",   "",       "bool",   "show description in the report"},
   {"rusashow",   "",       "bool",   "show the full USA in the report"},
   {NULL, NULL, NULL, NULL} };
 
@@ -5078,8 +5081,15 @@ static void acdSetOutfile (AcdPAcd thys)
     acdLog ("append: %B\n", append);
 
     required = acdIsRequired(thys);
-    (void) acdOutFilename (&outfname, name, ext);
-    (void) acdReplyInit (thys, ajStrStr(outfname), &defreply);
+    if (nullok)
+    {
+      (void) acdReplyInit (thys, "", &defreply);
+    }
+    else
+    {
+      (void) acdOutFilename (&outfname, name, ext);
+      (void) acdReplyInit (thys, ajStrStr(outfname), &defreply);
+    }
     acdPromptOutfile (thys);
 
     for (itry=acdPromptTry; itry && !ok; itry--)
@@ -5596,10 +5606,13 @@ static void acdSetReport (AcdPAcd thys)
     (void) acdAttrResolve (thys, "rextension", &ext);
     (void) acdAttrToStr (thys, "taglist", "", &taglist);
     (void) acdAttrToInt (thys, "mintags", 0, &val->Mintags);
+    (void) acdAttrToInt (thys, "precision", 3, &val->Precision);
     (void) acdAttrToStr (thys, "type", "", &val->Type);
     (void) acdAttrToBool (thys, "multiple", ajFalse, &val->Multi);
     (void) acdGetValueAssoc (thys, "rformat", &val->Formatstr);
-   (void) acdQualToBool (thys, "rusashow", ajFalse, &val->Showusa, &defreply);
+    (void) acdQualToBool (thys, "rusashow", ajFalse, &val->Showusa, &defreply);
+    (void) acdQualToBool (thys, "raccshow", ajFalse, &val->Showacc, &defreply);
+    (void) acdQualToBool (thys, "rdesshow", ajFalse, &val->Showdes, &defreply);
 
     if (!ajReportSetTags (val, taglist, mintags)) {
       ajErr("Bad tag list for report");
