@@ -44,16 +44,26 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
                            DragSourceListener, DropTargetListener, ActionListener 
 {
 
+  /** jemboss properties */
   private JembossParams mysettings; 
+  /** remote directory roots */
   private static FileRoots froots;
-
+  /** popup menu */
   private JPopupMenu popup;
+  /** file separator */
   private String fs = new String(System.getProperty("file.separator"));
+  /** busy cursor */
   private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
+  /** done cursor */
   private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
-  public RemoteDragTree(final JembossParams mysettings, FileRoots froots,
-                        final JPanel viewPane) 
+  /**
+  *
+  * @param mysettings	jemboss properties
+  * @param froots	remote directory roots
+  *
+  */
+  public RemoteDragTree(final JembossParams mysettings, FileRoots froots)
   {
 
     this.mysettings = mysettings;
@@ -163,6 +173,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
   /**
   *
   * Popup menu actions
+  * @param e	action event
   *
   */
   public void actionPerformed(ActionEvent e)
@@ -358,6 +369,13 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
     }
   }
 
+  /**
+  *
+  * Delete a node from the tree
+  * @param node		node to remove
+  * @param parentPath	parent path
+  *
+  */
   public void deleteObject(RemoteFileNode node, String parentPath)
   {
     RemoteFileNode parentNode = (RemoteFileNode)node.getParent();
@@ -475,13 +493,13 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
 
   }
 
-/**
-*
-* When a suitable DataFlavor is offered over a remote file
-* node the node is highlighted/selected and the drag
-* accepted. Otherwise the drag is rejected.
-*
-*/
+  /**
+  *
+  * When a suitable DataFlavor is offered over a remote file
+  * node the node is highlighted/selected and the drag
+  * accepted. Otherwise the drag is rejected.
+  *
+  */
   public void dragOver(DropTargetDragEvent e)
   {
     if (e.isDataFlavorSupported(FileNode.FILENODE))
@@ -505,6 +523,13 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
   public void dropActionChanged(DropTargetDragEvent e) {}
   public void dragExit(DropTargetEvent e){}
 
+  /**
+  * 
+  * Get the contents of a local file as a byte array
+  * @param name 	local file name
+  * @return 		contents of file
+  *
+  */
   public byte[] getLocalFile(File name)
   {
     byte[] b = null;
@@ -523,6 +548,12 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
     return b;
   }
 
+  /**
+  *
+  * Get the remote file node of the selected node
+  * @return	remote file node
+  *
+  */
   public RemoteFileNode getNodename()
   {
     TreePath path = getLeadSelectionPath();
@@ -532,7 +563,12 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
     return node;
   }
 
-
+  /**
+  *
+  * Determine if selected node is a file
+  * @return 	true if the selected node is a file
+  *
+  */
   public boolean isFileSelection()
   {
     TreePath path = getLeadSelectionPath();
@@ -542,6 +578,12 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
     return !node.isDirectory();
   }
 
+  /**
+  *
+  * Get the selected node file name
+  * @return	file name
+  *
+  */
   public String getFilename()
   {
     TreePath path = getLeadSelectionPath();
@@ -549,6 +591,13 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
     return node.getServerName();
   }
 
+  /**
+  *
+  * Creates the tree model for the given root
+  * @param root 	root to create model for
+  * @return		tree model
+  *
+  */
   private DefaultTreeModel createTreeModel(String root) 
   {
     setCursor(cbusy);
@@ -560,14 +609,16 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
   }
 
 
-/**
-*
-* Adding a file (or directory) to the file tree manager.
-* This looks to see if the directory has already been opened
-* and updates the filetree if it has.
-* @param file to add to the tree
-*
-*/
+  /**
+  *
+  * Adding a file (or directory) to the file tree manager.
+  * This looks to see if the directory has already been opened
+  * and updates the filetree if it has.
+  * @param parentNode	parent node
+  * @param child	file to add to the tree
+  * @param ldir 	true if child is a directory
+  *
+  */
   public void addObject(RemoteFileNode parentNode,String child,
                         boolean ldir)
   {
@@ -608,12 +659,13 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
   }
 
 
-/**
-*
-* Opens a JFrame with the file contents displayed.
-* @param the file name
-*
-*/
+  /**
+  *
+  * Opens a JFrame with the file contents displayed.
+  * @param filename	file name
+  * @param mysettings	jemboss properties
+  *
+  */
   public static void showFilePane(String filename, JembossParams mysettings)
   {
     try
@@ -647,6 +699,11 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
     
   }
 
+  /**
+  *
+  * Popup menu listener
+  *
+  */
   class PopupListener extends MouseAdapter
   {
     public void mousePressed(MouseEvent e)

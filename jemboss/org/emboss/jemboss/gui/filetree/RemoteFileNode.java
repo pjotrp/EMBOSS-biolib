@@ -30,20 +30,31 @@ import org.emboss.jemboss.soap.*;
 
 import org.emboss.jemboss.JembossParams;
 
-
+/**
+*
+* File node for remote file tree manager
+*
+*/
 public class RemoteFileNode extends DefaultMutableTreeNode 
                     implements Transferable, Serializable
 {
+    /** true if node is explored */
     private boolean explored = false;
+    /** true if node is a directory */
     private boolean isDir = false;
+    /** full name of node */
     private String fullname;
+    /** path to the file on the server */
     private String serverPathToFile;
-
-    private String rootdir;   
+    /** root directory */
+    private String rootdir; 
+    /** parent directory listing */
     private transient FileList parentList;        // make transient for
-    private transient JembossParams mysettings;    // Transferable to work
+    /** jemboss properties */
+    private transient JembossParams mysettings;   // Transferable to work
+    /** remote server file roots */
     private transient FileRoots froots;
-
+    /** file separator for server files */
     private String fs = "/";
 
     final public static DataFlavor REMOTEFILENODE = 
@@ -51,12 +62,31 @@ public class RemoteFileNode extends DefaultMutableTreeNode
     static DataFlavor flavors[] = { REMOTEFILENODE, DataFlavor.stringFlavor };
 
 
+    /**
+    *
+    * @param mysettings		jemboss properties
+    * @param froots		remote server file roots
+    * @param file		file for this node
+    * @param parentList		parent directory listing
+    * @param parent		parent to this node
+    *
+    */
     public RemoteFileNode(JembossParams mysettings, FileRoots froots,
                     String file, FileList parentList, String parent)
     {
       this(mysettings, froots, file, parentList, parent, false);
     }
 
+    /**
+    *
+    * @param mysettings         jemboss properties
+    * @param froots             remote server file roots
+    * @param file               file for this node
+    * @param parentList         parent directory listing
+    * @param parent             parent to this node
+    * @param ldir		true if the node is a directory
+    *
+    */
     public RemoteFileNode(JembossParams mysettings, FileRoots froots,
                     String file, FileList parentList, String parent,
                     boolean ldir)
@@ -98,14 +128,29 @@ public class RemoteFileNode extends DefaultMutableTreeNode
       setUserObject(file); 
     }
    
+    /** @return		true if node is a directory */
     public boolean getAllowsChildren() { return isDir; }
+    /** @return         true if node is a file */
     public boolean isLeaf() { return !isDir; }
+    /** @return         true if node is a directory */
     public boolean isDirectory() { return isDir; }
+    /** @return         the node name */
     public String getFile() { return (String)getUserObject(); }
+    /** @return         root directory */
     public String getRootDir() { return rootdir; }
+    /** @return         full name of the node */
     public String getFullName() { return fullname; }
+    /** @return         path on server */
     public String getPathName() { return serverPathToFile; }
+    /** @return         true if explored */
     public boolean isExplored() { return explored; }
+
+    /**
+    *
+    * Get the server name 
+    * @return 	server name
+    *
+    */
     public String getServerName() 
     { 
       String prefix = (String)froots.getRoots().get(froots.getCurrentRoot());
@@ -114,6 +159,11 @@ public class RemoteFileNode extends DefaultMutableTreeNode
       return prefix + fullname;
     }
 
+    /**
+    *
+    * Explore the node and add new child nodes 
+    *
+    */
     public void explore() 
     {
       if(!isDir)
