@@ -398,11 +398,11 @@ void print_hits(AjPList *l, ajint hits, AjPFile outf, AjPStr seq, AjBool mms,
 	
 
 	if(!mms)
-	    ajFmtPrintF(outf,"%15s(%2d) %8d %s\n",ajStrStr(m->seqname),fnum,
+	    ajFmtPrintF(outf,"%15s %2d %8d %s\n",ajStrStr(m->seqname),fnum,
 			npos,
 			ajStrStr(s));
 	else
-	    ajFmtPrintF(outf,"%15s(%2d) %8d %5d %s\n",ajStrStr(m->seqname),
+	    ajFmtPrintF(outf,"%15s %2d %8d %5d %s\n",ajStrStr(m->seqname),
 			fnum,npos,
 			m->mm,ajStrStr(s));
 
