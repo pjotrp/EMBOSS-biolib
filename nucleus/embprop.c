@@ -170,6 +170,44 @@ double embPropCalcMolwtMod(char *s, ajint start, ajint end, double nmass,
 
 
 
+/* @func embPropCalcMolextcoeff*********************************************
+**
+** Calculate the molecular extinction coefficient of a protein sequence
+**
+** @param [r] s [char *] sequence
+** @param [r] start [ajint] start position
+** @param [r] end [ajint] end position
+**
+** @return [double] molar extinction coefficient
+** @@
+******************************************************************************/
+
+double embPropCalcMolextcoeff(char *s, ajint start, ajint end)
+{
+
+    char *p;
+    double sum;
+    ajint i;
+    ajint len;
+    
+    if(!propInit)
+	ajFatal("Amino Acid data not initialised. Call embPropAminoRead");
+
+    len = end-start+1;
+    
+    p   = s+start;
+    sum = 0.0;
+
+    for(i=0;i<len;++i)
+	sum += EmbPropTable[ajAZToInt(toupper((ajint)p[i]))]
+	    [EMBPROPABSORBANCE];
+
+    return sum;
+}
+
+
+
+
 /* @func embPropCharToThree  **************************************************
 **
 ** Return 3 letter amino acid code A=Ala B=Asx C=Cys etc

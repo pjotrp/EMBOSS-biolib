@@ -74,6 +74,8 @@ int main(int argc, char **argv)
     double cv;
     double psolu;
 
+    double molar_ext_coeff;
+
     float *dhstat = NULL;
     AjPStr datafn = NULL;
     AjPFile mfptr = NULL;
@@ -131,6 +133,15 @@ int main(int argc, char **argv)
 	    ajFmtPrintF(outf,"Isoelectric Point = None\n\n");
 	else
 	    ajFmtPrintF(outf,"Isoelectric Point = %-6.4lf\n",iep);
+
+	molar_ext_coeff = embPropCalcMolextcoeff(ajStrStr(substr),0,len-1);
+	
+
+	ajFmtPrintF(outf,"A280 Molar Extinction Coefficient  = %-8d\n", 
+		    (ajint)molar_ext_coeff);
+	
+	ajFmtPrintF(outf,"A280 Extinction Coefficient 1mg/ml = %-10.2f\n",
+		    molar_ext_coeff / molwt);
 
 	ngps = c['N'-'A'] + c['G'-'A'] + c['P'-'A'] + c['S'-'A'];
 	rk   = c['R'-'A'] + c['K'-'A'];
