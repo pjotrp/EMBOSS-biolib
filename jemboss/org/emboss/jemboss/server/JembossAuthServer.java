@@ -251,7 +251,6 @@ public class JembossAuthServer
 
     boolean afile = false;
     boolean fexists = false;
-    String fn = null;
 
     // local file exists?
     if(fileContent.startsWith(fs))
@@ -269,6 +268,7 @@ public class JembossAuthServer
     }
 
     // create temporary file
+    String fn = null;
     if( ((fileContent.indexOf(":") < 0) || 
          (fileContent.indexOf("\n") > 0) ) &&
          (!fexists) ) 
@@ -503,23 +503,6 @@ public class JembossAuthServer
 
   /**
   *
-  * Convert contents from a Vector to a Hashtable
-  * @param v	Vector
-  *
-  */ 
-  private Hashtable getHashtable(Vector v)
-  {
-    Hashtable h = new Hashtable();
-    for(Enumeration e = v.elements() ; e.hasMoreElements() ;)
-    {
-      String s = (String)e.nextElement();
-      h.put(s,e.nextElement());
-    }
-    return h;
-  }
-
-  /**
-  *
   * Run an emboss application
   * @param embossCommand        command line to run
   * @param options              options
@@ -663,7 +646,8 @@ public class JembossAuthServer
       return returnError(aj,"Failed to make file "+
                          project+fs+".desc");
 
-    new AppendToLogFileThread(options+" "+dat+" "+embossCommand,logFile,true).start();
+    new AppendToLogFileThread(options+" "+dat+
+                              " "+embossCommand,logFile,true).start();
 
     result.add("cmd");
     result.add(embossCommand);
@@ -1091,9 +1075,9 @@ public class JembossAuthServer
       if(aj.getFileok()!=1)
       {
         appendToLogFile("Calling getFile : "+tmproot + fs +
-                          dirname + fs + ".desc",errorLog);
-        appendToLogFile("STDERR "+aj.getErrStd(),errorLog);
-        appendToLogFile("STDOUT "+aj.getOutStd(),errorLog);
+                        dirname + fs + ".desc\n"+
+                        "STDERR "+aj.getErrStd()+"\n"+
+                        "STDOUT "+aj.getOutStd(),errorLog);
       }
     }
     
@@ -1170,9 +1154,9 @@ public class JembossAuthServer
 
     if(!ls)
     {
-      appendToLogFile("Failed loadFilesContent "+project,errorLog);
-      appendToLogFile("STDERR "+aj.getErrStd(),errorLog);
-      appendToLogFile("STDOUT "+aj.getOutStd(),errorLog);
+      appendToLogFile("Failed loadFilesContent\n"+
+                      "STDERR "+aj.getErrStd()+"\n"+
+                      "STDOUT "+aj.getOutStd(),errorLog);
     }
 
     String outStd = aj.getOutStd();
@@ -1208,25 +1192,6 @@ public class JembossAuthServer
   *
   * Used to provide information on the batch/background
   * processes.
-  * @param prog		program
-  * @param opt		options
-  * @param resToQuery 	results to query
-  * @param userName  	username
-  * @param passwd	passwd
-  *
-  */
-  public Vector update_result_status(String prog, String opt,
-                        Vector resToQuery,String userName,
-                        byte[] passwd)
-  {
-    return update_result_status(prog,opt,getHashtable(resToQuery),
-                                userName,passwd);
-  }
-
-  /**
-  *
-  * Used to provide information on the batch/background
-  * processes.
   * @param prog         program
   * @param opt          options
   * @param resToQuery   results to query
@@ -1235,7 +1200,7 @@ public class JembossAuthServer
   *
   */
   public Vector update_result_status(String prog, String opt,
-                        Hashtable resToQuery,String userName,
+                        Vector resToQuery,String userName,
                         byte[] passwd)
   {
     Ajax aj = new Ajax();
@@ -1245,11 +1210,10 @@ public class JembossAuthServer
 
     tmproot = tmproot.concat(userName+fs);
 
-    Enumeration enum = resToQuery.keys();
-    while (enum.hasMoreElements())
+    for(Enumeration e = resToQuery.elements() ; e.hasMoreElements() ;)
     {
-      String thiskey = (String)enum.nextElement().toString();
-      String thiselm = (String)resToQuery.get(thiskey);
+      String thiskey = (String)e.nextElement();
+      e.nextElement();
 
       try
       {
