@@ -15,7 +15,7 @@ install-exec-hook:
 	  echo "No class files to copy"; \
 	else \
 	  $(top_srcdir)/mkinstalldirs $(prefix)/share/$(PACKAGE)/jemboss/org/emboss/jemboss/editor; \
-	for i in *.class; do \
+	for i in *.*; do \
 	  ${INSTALL_DATA} $$i $(prefix)/share/$(PACKAGE)/jemboss/org/emboss/jemboss/editor; \
 	done; \
 	fi
