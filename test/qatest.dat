@@ -101,7 +101,7 @@ CL qatest tembl:paamir tembl:paamir x.x -sbegin_a 5 -send_a 1000
 ER 1
 FI stderr
 FP / ambiguous master qualifier for sbegin_a /
-FP /\nunknown qualifier -sbegin_a\n/
+FP /Died: unknown qualifier -sbegin_a\n/
 FP 1 /Warning:/
 //
 
@@ -1164,7 +1164,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qapblastsplitexc:FABP_FUGRU test.out -auto
 FI stderr
-FZ = 87
+FZ = 159
 FP /Error: BLAST Entry failed/
 FP /Error: Unable to read sequence 'qapblastsplitexc:FABP_FUGRU'/
 FP 0 /Warning:/
@@ -1188,7 +1188,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qapblastsplitinc:CO9_FUGRU test.out -auto
 FI stderr
-FZ = 86
+FZ = 158
 FP /Error: BLAST Entry failed/
 FP /Error: Unable to read sequence 'qapblastsplitinc:CO9_FUGRU'/
 FP 0 /Warning:/
@@ -2004,7 +2004,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qapflatexc-id:FOS_FUGRU test.out -auto
 FI stderr
-FZ = 101
+FZ = 173
 FP /Error: Database Entry 'FOS_FUGRU' not found/
 FP /Error: Unable to read sequence 'qapflatexc-id:FOS_FUGRU'/
 FP 0 /Warning:/
@@ -2028,7 +2028,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qapflatinc-id:CO9_FUGRU test.out -auto
 FI stderr
-FZ = 101
+FZ = 173
 FP /Error: Database Entry 'CO9_FUGRU' not found/
 FP /Error: Unable to read sequence 'qapflatinc-id:CO9_FUGRU'/
 FP 0 /Warning:/
@@ -2255,7 +2255,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcgexc-id:eclac test.out -auto
 FI stderr
-FZ = 52
+FZ = 124
 FP 1 /Error: /
 FP /Error: Unable to read sequence 'qangcgexc-id:eclac'/
 FP 0 /Warning:/
@@ -2279,7 +2279,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcginc-id:hsfau test.out -auto
 FI stderr
-FZ = 52
+FZ = 124
 FP 1 /Error: /
 FP /Error: Unable to read sequence 'qangcginc-id:hsfau'/
 FP 0 /Warning:/
@@ -2850,7 +2850,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qapirexc-id:cchu test.out -auto
 FI stderr
-FZ = 50
+FZ = 122
 FP 1 /Error: /
 FP /Error: Unable to read sequence 'qapirexc-id:cchu'/
 FP 0 /Warning:/
@@ -2874,7 +2874,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qapirinc-id:S11172 test.out -auto
 FI stderr
-FZ = 52
+FZ = 124
 FP 1 /Error: /
 FP /Error: Unable to read sequence 'qapirinc-id:S11172'/
 FP 0 /Warning:/
@@ -4361,6 +4361,20 @@ FZ = 20
 FP /^Created isochore.ps\n/
 //
 
+ID jembossctl-ex
+AP jembossctl
+CL jctl.file
+IN
+FI stderr
+FC = 2
+FI file1.list
+FZ = 115
+FC = 4
+FP 4 /^fasta::/
+FP 3 /file1/
+FP 1 /file2/
+//
+
 # remove the extra 2 prompts from the example
 ID lindna-ex
 AP lindna
@@ -5129,7 +5143,7 @@ PP export EMBOSS_DATA=../aaindexextract-keep/
 CL tsw:hba_human -datafile fail780101
 IN ps
 FI stderr
-FC = 2
+FC = 4
 FP /^Error: Unable to open data file 'fail780101' for input\n/
 FP 0 /Warning:/
 //
@@ -5818,7 +5832,7 @@ AP seqret
 CL -auto @../../data/ugly.list test.out -osf embl
 FI stderr
 FZ = 41
-FP /^Error: Database Entry 'eclacj' not found\n/
+FP /^Error: Database Query 'eclacj' not found\n/
 FP 0 /Warning:/
 FI test.out
 FP 2 /^ID   .* BP\.\n/
@@ -6533,7 +6547,7 @@ AP seqret
 CL -auto stdin test.out -osf embl
 ER 1
 FI stderr
-FZ = 39
+FZ = 111
 FP /Error: Unable to read sequence 'stdin'/
 FP 0 /Warning:/
 //
@@ -7374,6 +7388,20 @@ FP /^           1                                               50\n/
 FP 3 /^FASTAM3    [ACGT\-]+\n/
 //
 
+ID seqret-outmulti-msf-noalign
+AP seqret
+CL -auto tembl:paami\* test.out -osf msf
+FI test.out
+FZ = 13815
+FP /^!!NA_MULTIPLE_ALIGNMENT 1\.0\n/
+FP /^  test\.out MSF: 2167 Type: N [0-9/]+ CompCheck: 9293 \.\.\n/
+FP 4 /^  Name: PAAMI/
+FP /^           1                                               50\n/
+FP 21 /^PAAMIE +[ACGTacgt\-]+\n/
+FP 1 /^PAAMIE +[ACGTacgt\-]+[~]+\n/
+FP 22 /^PAAMIE +[~]+\n/
+//
+
 ID seqret-outmultiusa-msfprot
 AP seqret
 CL -auto ../../data/prot.m-swiss msf::test.out
@@ -7686,7 +7714,7 @@ ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:bad:MMAM
 FI stderr
-FZ = 137
+FZ = 209
 FP /Error: Unknown query field 'bad' in USA '../../embl/rod.dat:bad:MMAM'/
 FP /Error: Unable to read sequence 'embl::../../embl/rod.dat:bad:MMAM'/
 FP 2 /Error: /
@@ -7716,7 +7744,7 @@ ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:FAIL
 FI stderr
-FZ = 63
+FZ = 135
 FP 1 /^Error: /
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:FAIL'/
 FP 0 /Warning:/
@@ -7745,7 +7773,7 @@ ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ID:FAIL
 FI stderr
-FZ = 66
+FZ = 138
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ID:FAIL'/
 FP 1 /^Error: /
 FP 0 /Warning:/
@@ -7774,7 +7802,7 @@ ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ACC:Z99999
 FI stderr
-FZ = 69
+FZ = 141
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ACC:Z99999'/
 FP 1 /^Error: /
 FP 0 /Warning:/
@@ -7785,7 +7813,7 @@ ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ACC:99999Z
 FI stderr
-FZ = 69
+FZ = 141
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ACC:99999Z'/
 FP 1 /^Error: /
 FP 0 /Warning:/
@@ -7814,7 +7842,7 @@ ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:SV:Z99999.1
 FI stderr
-FZ = 70
+FZ = 142
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:SV:Z99999.1'/
 FP 1 /^Error: /
 FP 0 /Warning:/
@@ -7843,7 +7871,7 @@ ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:lynam
 FI stderr
-FZ = 68
+FZ = 140
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:DES:lynam'/
 FP 1 /^Error: /
 FP 0 /Warning:/
@@ -7890,7 +7918,7 @@ ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:KEY:CHAIN
 FI stderr
-FZ = 68
+FZ = 140
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:KEY:CHAIN'/
 FP 1 /^Error: /
 FP 0 /Warning:/
@@ -7931,7 +7959,7 @@ ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ORG:HOMO
 FI stderr
-FZ = 67
+FZ = 139
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ORG:HOMO'/
 FP 1 /^Error: /
 FP 0 /Warning:/
@@ -7946,7 +7974,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-bad:AB000095
 FI stderr
-FZ = 135
+FZ = 207
 FP /^Error: USA 'qasrs-bad:AB000095' query field 'bad' not defined for database 'qasrs'/
 FP /^Error: Unable to read sequence 'qasrs-bad:AB000095'/
 FP 2 /^Error: /
@@ -7962,7 +7990,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-key:AB000095
 FI stderr
-FZ = 135
+FZ = 207
 FP /^Error: USA 'qasrs-key:AB000095' query field 'key' not defined for database 'qasrs'/
 FP /^Error: Unable to read sequence 'qasrs-key:AB000095'/
 FP 2 /^Error: /
@@ -8149,7 +8177,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrswww-id:OLD
 FI stderr
-FZ = 49
+FZ = 121
 FP /^Error: Unable to read sequence 'qasrswww-id:OLD'/
 FP 1 /^Error: /
 FP 0 /Warning:/
@@ -9039,34 +9067,60 @@ FZ = 565
 FP /^HindIII     AAGCTT         267       A\.A    268      A->T  \n/
 //
 
+ID sixpack-ex
+AP sixpack
+IN tembl:paamir
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI paamir.sixpack
+FZ = 25535
+FP /^          P  P  A  W  A  G  D  R  S  H  E  R  Q  L  A  A  R  Q  P  A     F1\n/
+FP /^           R  Q  H  G  R  G  T  A  P  M  S  A  N  S  L  L  G  S  L  R    F2\n/
+FP /^            A  S  M  G  G  G  P  L  P  [*]  A  P  T  R  C  S  A  A  C  A   F3\n/
+FP /^     1261 ccgccagcatgggcgggggaccgctcccatgagcgccaactcgctgctcggcagcctgcg 1320\n/
+FI paamir.fasta
+FZ = 9444
+FP /^>PAAMIR_2_ORF4  Translation of PAAMIR in frame 2, ORF 4, threshold 1, 210aa\n/
+FP /^PRRLVRQHGRGTAPMSANSLLGSLRELQVLVLNPPGEVSDALVLQLIRIGCSVRQCWPPP\n/
+FP 67 /^>/
+//
+
+ID sixpack-mstart
+AP sixpack
+CL -mstart
+IN tembl:paamir
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI paamir.sixpack
+FZ = 25535
+FP /^          P  P  A  W  A  G  D  R  S  H  E  R  Q  L  A  A  R  Q  P  A     F1\n/
+FP /^           R  Q  H  G  R  G  T  A  P  M  S  A  N  S  L  L  G  S  L  R    F2\n/
+FP /^            A  S  M  G  G  G  P  L  P  [*]  A  P  T  R  C  S  A  A  C  A   F3\n/
+FP /^     1261 ccgccagcatgggcgggggaccgctcccatgagcgccaactcgctgctcggcagcctgcg 1320\n/
+FI paamir.fasta
+FZ = 4506
+FP /^>PAAMIR_2_ORF2  Translation of PAAMIR in frame 2, ORF 2, threshold 1, 196aa\n/
+FP /^MSANSLLGSLRELQVLVLNPPGEVSDALVLQLIRIGCSVRQCWPPPEAFDVPVDVVFTSI\n/
+FP 30 /^>/
+//
+
 ID sirna-ex
 AP sirna
 IN tembl:hsfau
 IN 
 IN 
-FI stderr
-FC = 2
 FI hsfau.sirna
 FZ = 7238
 FP /GAAGAAGACAGGUCGGGCUdTdT AGCCCGACCUGUCUUCUUCdTdT/
 FI hsfau.fasta
 FZ = 6035
 FP /aaaagtgagaggtcagactccta/
-//
-
-ID sixpack-ex
-AP sixpack
-IN tembl:hsfau
-IN 
-IN 
-FI stderr
-FC = 2
-FI hsfau.sixpack
-FZ = 6424
-FP /R  I  F  F  G  S  L  E  T  L  F  F/
-FI hsfau.fasta
-FZ = 3739
-FP /FLFLDSIFAVAGTAVQSPICSSLSAPRSYTPSR/
 //
 
 ID skipseq-ex
@@ -9297,7 +9351,7 @@ FI stderr
 FC = 1
 FP 0 /Warning:/
 FI stdout
-FZ = 47463
+FZ = 47851
 FP 1 /^ +Finds programs by keywords in their one-line documentation\n/
 FP 2 /^ +-explode/
 //
@@ -10215,6 +10269,72 @@ FP 1 /^>BFULL \.\.\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\nAACGGG\n/
 FC = 39
 //
 
+ID align-matcher-fasta
+AP matcher
+CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -aformat fasta
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI stdout
+FP 1 /^>AFULL\n/
+FP 1 /^AACCGG\n/
+FP 1 /^>BFULL\n/
+FP 1 /^AACGGG\n/
+FC = 4
+//
+
+ID align-matcher-msf
+AP matcher
+CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -aformat msf
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI stdout
+FP 1 /^AFULL +AACCGG\n/
+FP 1 /^BFULL +AACGGG\n/
+FC = 13
+//
+
+ID align-matcher-msfall
+AP matcher
+CL -gappen 5 -gaplen 1 -stdout
+CL -aformat msf
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI stdout
+FP 1 /^AFULL +AAACCCGGG\.\.TTT\n/
+FP 1 /^BFULL +AAAC\.\.GGGCCTTT\n/
+FC = 13
+//
+
+ID align-stretcher-msfgap
+AP stretcher
+CL -gappen 5 -gaplen 1 -stdout -sbegin2 4
+CL -aformat msf
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI stdout
+FP 1 /^AFULL +TTAACCGGTTACGT\n/
+FP 1 /^BFULL +~~~~~~~~~~~~~~~~~CGGG\.\.\.\.\.\.\.\.\.CC\.\.\.\.TTT~~~~~~~~~~~\n/
+FC = 17
+//
+
 ID align-water-full
 AP water
 CL -gapopen 5 -gapext 1 -stdout
@@ -10902,21 +11022,346 @@ FP 1 /Length \[7\]: /
 //
 
 #######################################
+# DOMAINATRIX
+#######################################
+
+#######################################
 # EMNU
 #######################################
+
+ID emnu-help
+AB emnu
+AA emnu
+CL -help
+FI stderr
+FC = 0
+//
+
+#######################################
+# ESIM4
+#######################################
+
+ID esim4-help
+AB esim4
+AA esim4
+CL -help
+FI stderr
+FC = 111
+//
+
+#######################################
+# HMMER
+#######################################
+
+ID ehmmcalibrate-help
+AB phylip
+AA ehmmcalibrate
+CL -help
+FI stderr
+FC = 0
+//
+
+ID ehmmconvert-help
+AB phylip
+AA ehmmconvert
+CL -help
+FI stderr
+FC = 0
+//
+
+ID ehmmemit-help
+AB phylip
+AA ehmmemit
+CL -help
+FI stderr
+FC = 0
+//
+
+ID ehmmfetch-help
+AB phylip
+AA ehmmfetch
+CL -help
+FI stderr
+FC = 0
+//
+
+ID ehmmindex-help
+AB phylip
+AA ehmmindex
+CL -help
+FI stderr
+FC = 0
+//
+
+ID ehmmbuild-help
+AB phylip
+AA ehmmbuild
+CL -help
+FI stderr
+FC = 0
+//
+
+ID ehmmalign-help
+AB phylip
+AA ehmmalign
+CL -help
+FI stderr
+FC = 0
+//
+
+ID ehmmpfam-help
+AB phylip
+AA ehmmpfam
+CL -help
+FI stderr
+FC = 0
+//
+
+ID ehmmsearch-help
+AB phylip
+AA ehmmsearch
+CL -help
+FI stderr
+FC = 0
+//
+
+ID ealistat-help
+AB phylip
+AA ealistat
+CL -help
+FI stderr
+FC = 0
+//
 
 #######################################
 # MEME
 #######################################
 
+ID meme-help
+AB meme
+AA meme
+CL -help
+FI stderr
+FC = 0
+//
+
 #######################################
 # MSE
 #######################################
+
+ID mse-help
+AB mse
+AA mse
+CL -help
+FI stderr
+FC = 0
+//
 
 #######################################
 # PHYLIP
 #######################################
 
+ID eclique-help
+AB phylip
+AA eclique
+CL -help
+FI stderr
+FC = 0
+//
+
+ID econsense-help
+AB phylip
+AA econsense
+CL -help
+FI stderr
+FC = 0
+//
+
+ID econtml-help
+AB phylip
+AA econtml
+CL -help
+FI stderr
+FC = 0
+//
+
+ID econtrast-help
+AB phylip
+AA econtrast
+CL -help
+FI stderr
+FC = 0
+//
+
+ID ednacomp-help
+AB phylip
+AA ednacomp
+CL -help
+FI stderr
+FC = 0
+//
+
+ID ednadist-help
+AB phylip
+AA ednadist
+CL -help
+FI stderr
+FC = 0
+//
+
+ID ednainvar-help
+AB phylip
+AA ednainvar
+CL -help
+FI stderr
+FC = 0
+//
+
+ID ednaml-help
+AB phylip
+AA ednaml
+CL -help
+FI stderr
+FC = 0
+//
+
+ID ednamlk-help
+AB phylip
+AA ednamlk
+CL -help
+FI stderr
+FC = 0
+//
+
+ID ednapars-help
+AB phylip
+AA ednapars
+CL -help
+FI stderr
+FC = 0
+//
+
+ID ednapenny-help
+AB phylip
+AA ednapenny
+CL -help
+FI stderr
+FC = 0
+//
+
+ID edollop-help
+AB phylip
+AA edollop
+CL -help
+FI stderr
+FC = 0
+//
+
+ID edolpenny-help
+AB phylip
+AA edolpenny
+CL -help
+FI stderr
+FC = 0
+//
+
+ID efactor-help
+AB phylip
+AA efactor
+CL -help
+FI stderr
+FC = 0
+//
+
+ID efitch-help
+AB phylip
+AA efitch
+CL -help
+FI stderr
+FC = 0
+//
+
+ID egendist-help
+AB phylip
+AA egendist
+CL -help
+FI stderr
+FC = 0
+//
+
+ID ekitsch-help
+AB phylip
+AA ekitsch
+CL -help
+FI stderr
+FC = 0
+//
+
+ID emix-help
+AB phylip
+AA emix
+CL -help
+FI stderr
+FC = 0
+//
+
+ID eneighbor-help
+AB phylip
+AA eneighbor
+CL -help
+FI stderr
+FC = 0
+//
+
+ID epenny-help
+AB phylip
+AA epenny
+CL -help
+FI stderr
+FC = 0
+//
+
+ID eprotdist-help
+AB phylip
+AA eprotdist
+CL -help
+FI stderr
+FC = 0
+//
+
+ID eprotpars-help
+AB phylip
+AA eprotpars
+CL -help
+FI stderr
+FC = 0
+//
+
+ID erestml-help
+AB phylip
+AA erestml
+CL -help
+FI stderr
+FC = 0
+//
+
+ID eseqboot-help
+AB phylip
+AA eseqboot
+CL -help
+FI stderr
+FC = 0
+//
+
 #######################################
 # TOPO
 #######################################
+
+ID topo-help
+AB topo
+AA topo
+CL -help
+FI stderr
+FC = 0
+//
+
