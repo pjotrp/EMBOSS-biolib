@@ -7,8 +7,9 @@ Version 2.3.1
         pepinfo PNG output larger to make the text readable (only affects
         PNG output)
 	empty sequence file input fails gracefully
-
-empty sequence input fails gracefully (and only needs one ^D from stdin)
+	empty sequence input fails gracefully (and only needs one
+	^D from stdin)
+	
 Version 2.3.0
 
         Seqretall, seqretallfeat and seqretset moved to 'make check'.
