@@ -276,7 +276,6 @@ int main(int argc, char **argv)
 	/* tidy up */
 	(void) embShowDel(&ss);
 
-	(void) ajFeattableDel(&feat);
 	(void) ajListDel(&restrictlist);
 
 	/* add a gratuitous newline at the end of the sequence */
