@@ -182,7 +182,7 @@ public class ShowSavedResults
       resFileMenu.addSeparator();
       JMenuItem resFileMenuExit = new JMenuItem("Close");
       resFileMenuExit.setAccelerator(KeyStroke.getKeyStroke(
-                    KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+                    KeyEvent.VK_E, ActionEvent.CTRL_MASK));
 
       resFileMenuExit.addActionListener(new ActionListener()
       {
@@ -401,9 +401,9 @@ public class ShowSavedResults
       }
     });
 
-    JMenuItem resFileMenuExit = new JMenuItem("Close",KeyEvent.VK_C);
+    JMenuItem resFileMenuExit = new JMenuItem("Close");
     resFileMenuExit.setAccelerator(KeyStroke.getKeyStroke(
-                    KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+                    KeyEvent.VK_E, ActionEvent.CTRL_MASK));
 
     resFileMenuExit.addActionListener(new ActionListener()
     {

@@ -116,7 +116,7 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
 // close / exit
       prefClose = new JMenuItem("Close");
       prefClose.setAccelerator(KeyStroke.getKeyStroke(
-                    KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+                    KeyEvent.VK_E, ActionEvent.CTRL_MASK));
 
       prefClose.addActionListener(new ActionListener()
       {
