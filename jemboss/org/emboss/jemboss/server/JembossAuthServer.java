@@ -39,30 +39,30 @@ public class JembossAuthServer
   /** SOAP results directory */
   private String tmproot = new String("/tmp/SOAP/emboss/");
   /** Jemboss log file       */
-  private String logFile = new String(tmproot+"/jemboss.log");
+  private final String logFile = new String(tmproot+"/jemboss.log");
   /** Jemboss error log file */
-  private String errorLog = new String(tmproot+"/jemboss_error.log");
+  private final String errorLog = new String(tmproot+"/jemboss_error.log");
   /** file separator */
-  private String fs = new String(System.getProperty("file.separator"));
+  private final String fs = new String(System.getProperty("file.separator"));
   /** path separator */
-  private String ps = new String(System.getProperty("path.separator"));
+  private final String ps = new String(System.getProperty("path.separator"));
   /** line seperator */
-  private String ls = System.getProperty("line.separator");
+  private final String ls = System.getProperty("line.separator");
 
 //get paths to EMBOSS
   /** jemboss properties */
-  JembossParams jp  = new JembossParams();
+  final JembossParams jp  = new JembossParams();
   /** plplot path */
-  String plplot     = jp.getPlplot();
+  final String plplot     = jp.getPlplot();
   /** emboss data path */
-  String embossData = jp.getEmbossData();
+  final String embossData = jp.getEmbossData();
   /** emboss binary path */
-  String embossBin  = jp.getEmbossBin();
+  final String embossBin  = jp.getEmbossBin();
   /** path environment variable */
-  String embossPath = embossBin + ps + jp.getEmbossPath();
+  final String embossPath = embossBin + ps + jp.getEmbossPath();
 
   /** emboss run environment */
-  private String[] env = 
+  final private String[] env = 
   {
     "PATH=" + embossPath,
     "PLPLOT_LIB=" + plplot,
@@ -72,7 +72,7 @@ public class JembossAuthServer
   };
  
   /** emboss run environment as a string */ 
-  private String environ = "PATH=" + embossPath+ " "+
+  private final String environ = "PATH=" + embossPath+ " "+
                            "PLPLOT_LIB=" + plplot +" "+
                            "EMBOSS_DATA=" + embossData +" "+
                            jp.getEmbossEnvironment();
@@ -91,7 +91,7 @@ public class JembossAuthServer
   {
     Vector acd = new Vector(4);
     StringBuffer acdText = new StringBuffer();
-    String acdToParse = new String(jp.getAcdDirToParse() + appName + ".acd");
+    final String acdToParse = new String(jp.getAcdDirToParse() + appName + ".acd");
 
     try
     {
@@ -129,9 +129,9 @@ public class JembossAuthServer
   */
   public Vector getWossname()
   {
-    String[] envp = jp.getEmbossEnvironmentArray(env);
+    final String[] envp = jp.getEmbossEnvironmentArray(env);
     Vector wossOut = new Vector(4);
-    String embossCommand = new String(embossBin + 
+    final String embossCommand = new String(embossBin + 
                    "wossname -colon -gui -auto");
  
     RunEmbossApplication2 rea = new RunEmbossApplication2(embossCommand,
@@ -155,8 +155,8 @@ public class JembossAuthServer
   */
   public Vector show_help(String applName)
   {
-    String[] envp = jp.getEmbossEnvironmentArray(env);
-    String command = embossBin.concat("tfm " + applName + " -html -nomore");
+    final String[] envp = jp.getEmbossEnvironmentArray(env);
+    final String command = embossBin.concat("tfm " + applName + " -html -nomore");
     RunEmbossApplication2 rea = new RunEmbossApplication2(command,
                                                        envp,null);
     rea.waitFor();
@@ -398,9 +398,9 @@ public class JembossAuthServer
   */
   public Vector show_db()
   {
-    String[] envp = jp.getEmbossEnvironmentArray(env);
+    final String[] envp = jp.getEmbossEnvironmentArray(env);
     Vector showdbOut = new Vector(8);
-    String embossCommand = new String(embossBin + "showdb -auto");
+    final String embossCommand = new String(embossBin + "showdb -auto");
 
     RunEmbossApplication2 rea = new RunEmbossApplication2(embossCommand,
                                                           envp,null);
@@ -940,7 +940,7 @@ public class JembossAuthServer
       return v;
     }
 
-    String fn = tmproot + fs + userName+ fs + 
+    final String fn = tmproot + fs + userName+ fs + 
                      project + fs + filename;
     boolean ok = aj.putFile(userName,passwd,environ,
                             fn,notes.getBytes());
