@@ -2943,6 +2943,9 @@ void ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
     if(show)
 	ajFmtPrintF(outf,"\n\nDIRECTORY: %s\n\n",ajStrStr(path));
 
+    if(!ajFileDir(&path))
+	return;
+
     if(!(indir=opendir(ajStrStr(path))))
 	return;
 
@@ -2954,7 +2957,7 @@ void ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
 	if(!dp->d_ino || !strcmp(dp->d_name,".") || !strcmp(dp->d_name,".."))
 	    continue;
 	ajStrAssC(&s,ajStrStr(path));
-	ajStrAppC(&s,"/");
+/*	ajStrAppC(&s,"/");*/
 	ajStrAppC(&s,dp->d_name);
 	if(ajFileStat(&s,AJ_FILE_DIR))  /* Its a directory */
 	{
