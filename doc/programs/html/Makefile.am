@@ -61,11 +61,12 @@ pkgdata2_DATA = isochore.html kitsch.html lindna.html listor.html \
                palindrome.html pasteseq.html patmatdb.html \
                patmatmotifs.html penny.html pepcoil.html pepinfo.html \
                pepnet.html pepstats.html pepwheel.html pepwindow.html \
-               pepwindowall.html phylogeny_group.html plotcon.html \
-               plotorf.html polydot.html preg.html prettyplot.html \
-               prettyseq.html primersearch.html printsextract.html \
-               profit.html prophecy.html prophet.html prosextract.html \
-               protdist.html protein_2d_structure_group.html \
+               pepwindowall.html pestfind.html phylogeny_group.html \
+               plotcon.html plotorf.html polydot.html preg.html \
+               prettyplot.html prettyseq.html primersearch.html \
+               printsextract.html profit.html prophecy.html prophet.html \
+               prosextract.html protdist.html \
+               protein_2d_structure_group.html \
                protein_3d_structure_group.html \
                protein_composition_group.html protein_motifs_group.html \
                protein_mutation_group.html protein_profiles_group.html \
