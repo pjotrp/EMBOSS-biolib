@@ -21942,8 +21942,11 @@ static void acdValidKnowntype(const AcdPAcd thys)
     if (ajStrMatchC(acdKnownType, "file"))
     {
 	if (!ajStrMatchCC(acdType[thys->Type].Name, "infile") &&
-	    !ajStrMatchCC(acdType[thys->Type].Name, "filelist") &&
-	    !ajStrMatchCC(acdType[thys->Type].Name, "outfile"))
+	    !ajStrMatchCC(acdType[thys->Type].Name, "datafile") &&
+	    !ajStrMatchCC(acdType[thys->Type].Name, "directory") &&
+	    !ajStrMatchCC(acdType[thys->Type].Name, "outfile") &&
+	    !ajStrMatchCC(acdType[thys->Type].Name, "outdir") &&
+	    !ajStrMatchCC(acdType[thys->Type].Name, "filelist"))
 	{
 	    acdWarn("Knowntype '%S' defined for type '%S', used for '%s'",
 		    typestr, acdKnownType, acdType[thys->Type].Name);
@@ -22034,6 +22037,14 @@ static void acdReadKnowntypes(AjPTable* desctable, AjPTable* typetable)
 		ajRegSubI(knownxp, 2, &knownName);
 		ajRegSubI(knownxp, 3, &knownDesc);
 		ajStrSubstituteKK(&knownName, '_', ' ');
+		if(ajStrMatchCaseC(knownType, "infile") ||
+		   ajStrMatchCaseC(knownType, "filelist") ||
+		   ajStrMatchCaseC(knownType, "datafile") ||
+		   ajStrMatchCaseC(knownType, "outfile"))
+		{
+		    ajWarn("Knowntype '%S' in file %S line %d - use 'file'",
+			   knownType, knownFName, iline);
+		}
 		if(ajTablePut(*typetable, knownName, knownType))
 		    ajWarn("Duplicate knowntype name '%S' in file %S line %d",
 			   knownName, knownFName, iline);
