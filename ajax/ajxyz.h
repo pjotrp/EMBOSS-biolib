@@ -233,6 +233,9 @@ typedef struct AjSHit
   ajint     Rank;       /* Rank order of hit */	
   float     Score;      /* Score of hit */
   float     Eval;       /* E-value of hit */
+  AjBool    Target;     /* True if the Scophit is targetted for removal from 
+			     a list of Scophit objects */
+  AjBool    Priority;   /* True if the Scop hit is high priority. */
 } AjOHit, *AjPHit;
 
 
@@ -533,6 +536,51 @@ typedef struct AjSSignature
 
 
 
+/* @data AjPDichetent ***********************************************************
+**
+** Ajax Dichetent object.
+**
+** Holds a single entry from a dictionary of heterogen groups.
+**
+** AjPDichetent is implemented as a pointer to a C data structure.
+**
+** @alias AjSDichetent
+** @alias AjODichetent
+**
+** @@
+******************************************************************************/
+typedef struct AjSDichetent
+{
+    AjPStr   abv;   /* 3-letter abbreviation of heterogen */
+    AjPStr   syn;   /* Synonym */
+    AjPStr   ful;   /* Full name */
+    ajint    cnt;   /* No. of occurences (files) of this heterogen in a directory */
+} AjODichetent, *AjPDichetent;
+
+
+
+
+/* @data AjPDichet ***********************************************************
+**
+** Ajax Dichet object.
+** Holds a dictionary of heterogen groups.
+**
+** AjPDichet is implemented as a pointer to a C data structure.
+**
+** @alias AjSDichet
+** @alias AjODichet
+**
+** @@
+******************************************************************************/
+typedef struct AjSDichet
+{
+    ajint         n;        /* Number of entries */
+    AjPDichetent *entries;  /* Array of entries */
+} AjODichet, *AjPDichet;
+
+
+
+
 
 
 
@@ -570,18 +618,19 @@ AjPScop  ajXyzScopNew(ajint n);
 AjPScophit  ajXyzScophitNew(void);
 void     ajXyzScophitDel(AjPScophit *pthis);
 void     ajXyzScophitDelWrap(const void  **ptr);
+AjBool ajXyzScophitsToHitlist(AjPList in, AjPHitlist *out,   AjIList *iter);
 AjBool ajXyzHitlistToScophits(AjPList in, AjPList *out);
 AjBool        ajXyzHitsOverlap(AjPHit h1, AjPHit h2, ajint n);
 AjBool        ajXyzScophitsOverlap(AjPScophit h1, AjPScophit h2, ajint n);
 AjBool        ajXyzScophitsOverlapAcc(AjPScophit h1, AjPScophit h2, ajint n);
 AjBool ajXyzScophitCopy(AjPScophit *to, AjPScophit from);
 AjPList ajXyzScophitListCopy(AjPList ptr);
+AjBool  ajXyzScophitToHit(AjPHit *to, AjPScophit from);
 AjBool   ajXyzScophitCheckTarget(AjPScophit ptr);
 AjBool        ajXyzScophitTarget(AjPScophit *h);
 AjBool        ajXyzScophitTargetLowPriority(AjPScophit *h);
-
-AjBool   ajXyzScophitMergeInsertThis(AjPList list, AjPScophit hit1, 
-				     AjPScophit hit2,  AjIList iter);
+AjBool ajXyzScophitMergeInsertThis(AjPList list, AjPScophit hit1, 
+				   AjPScophit hit2,  AjIList iter);
 AjBool   ajXyzScophitMergeInsertOther(AjPList list, AjPScophit hit1, AjPScophit hit2);
 AjPScophit  ajXyzScophitMerge(AjPScophit hit1, AjPScophit hit2);
 
@@ -699,9 +748,17 @@ ajint ajXyzScophitCompSfam(const void *hit1, const void *hit2);
 ajint ajXyzScophitCompFam(const void *hit1, const void *hit2);
 AjBool ajXyzInContact(AjPAtom atm1, AjPAtom atm2, float thresh,
 			  AjPVdwall vdw);
-float ajXyzVdwRad(AjPAtom atm, AjPVdwall vdw);
 
 AjBool ajXyzHitlistToThreeScophits(AjPList in, AjPList *fam, AjPList *sfam, AjPList *fold);
+AjPDichetent  ajXyzDichetentNew(void);
+void          ajXyzDichetentDel(AjPDichetent *ptr);
+AjPDichet     ajXyzDichetNew(ajint n);
+void          ajXyzDichetDel(AjPDichet *ptr);
+AjBool        ajXyzDichetRawRead(AjPFile fptr, AjPDichet *ptr);
+AjBool        ajXyzDichetRead(AjPFile fptr, AjPDichet *ptr);
+AjBool        ajXyzDichetWrite(AjPFile fptr, AjPDichet ptr, AjBool dogrep);
+
+
 
 
 

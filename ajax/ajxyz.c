@@ -64,6 +64,67 @@
 ******************************************************************************/
 
 
+/* @func ajXyzDichetentNew ******************************************************
+**
+** Dichetent object constructor. 
+**
+** 
+** @return [AjPDichetent] Pointer to a Dichetent object
+** @@
+******************************************************************************/
+AjPDichetent  ajXyzDichetentNew(void)
+{
+    AjPDichetent ret=NULL;
+    
+    AJNEW0(ret);
+    
+    /*Create strings*/
+    ret->abv = ajStrNew();
+    ret->syn = ajStrNew();
+    ret->ful = ajStrNew();
+    
+    return ret;
+}
+
+
+
+
+/* @func ajXyzDichetent ******************************************************
+**
+** Dichet object constructor. 
+**
+** @param [w] n [ajint] Number of entries in dictionary.
+** 
+** @return [AjPDichet] Pointer to a Dichet object
+** @@
+******************************************************************************/
+AjPDichet     ajXyzDichetNew(ajint n)
+{
+    ajint i=0;
+    AjPDichet ret=NULL;
+    
+    AJNEW0(ret);
+
+    if(n)
+    {
+	ret->n=n;
+	AJCNEW0(ret->entries, n);
+	for(i=0;i<n;i++)
+	    ret->entries[i]=ajXyzDichetentNew();
+    }
+    else
+    {
+	ajWarn("Arg with value zero passed to ajXyzDichetNew\n");
+	ret->n=0;
+	ret->entries=NULL;
+    }
+    
+
+    return ret;
+}
+
+
+
 
 /* @func ajXyzSigposNew ******************************************************
 **
@@ -505,6 +566,8 @@ AjPHit  ajXyzHitNew(void)
     ret->Rank      =0;
     ret->Score     =0;    
     ret->Eval      =0;
+    ret->Target      =ajFalse;
+    ret->Priority    =ajFalse;
 
     return ret;
 }
@@ -689,6 +752,80 @@ AjPScop ajXyzScopNew(ajint chains)
 /* ==================================================================== */
 /* ========================= Destructors ============================== */
 /* ==================================================================== */
+
+
+
+
+
+
+
+/* @func ajXyzDichetentDel ******************************************************
+**
+** Destructor for Dichetent object.
+**
+** @param [w] ptr [AjPDichetent*] Dichetent object pointer
+**
+** @return [void]
+** @@
+******************************************************************************/
+void   ajXyzDichetentDel(AjPDichetent *ptr)
+{
+    /* Check arg's */
+    if(*ptr==NULL)
+	return;
+
+   
+    if((*ptr)->abv)
+	ajStrDel( &((*ptr)->abv)); 
+    if((*ptr)->syn)
+	ajStrDel( &((*ptr)->syn)); 
+    if((*ptr)->ful)
+	ajStrDel( &((*ptr)->ful)); 
+
+    AJFREE(*ptr);
+    *ptr=NULL;
+    
+    return;
+}
+
+
+
+
+
+/* @func ajXyzDichetDel ******************************************************
+**
+** Destructor for Dichet object.
+**
+** @param [w] ptr [AjPDichet*] Dichet object pointer
+**
+** @return [void]
+** @@
+******************************************************************************/
+void          ajXyzDichetDel(AjPDichet *ptr)
+{
+    ajint i=0;
+    
+    /* Check arg's */
+    if(*ptr==NULL)
+	return;
+
+    if((*ptr)->entries)
+    {
+        for(i=0;i<(*ptr)->n;i++)
+	{
+	    if((*ptr)->entries[i])
+		ajXyzDichetentDel(&((*ptr)->entries[i]));
+	}	
+	
+	AJFREE((*ptr)->entries);
+    }
+    AJFREE(*ptr);
+    *ptr=NULL;
+
+    return;
+}
+
+
 
 
 
@@ -1250,6 +1387,178 @@ void ajXyzScopDel(AjPScop *thys)
 /* ==================================================================== */
 
 
+
+/* @func ajXyzDichetRawRead **************************************************
+**
+** Reads a dictionary of heterogen groups available at 
+** http://pdb.rutgers.edu/het_dictionary.txt and writes a Dichet object.
+**
+** @param [w] ptr  [AjPDichet*] Dichet object pointer
+** @param [r] fptr [AjPFile]    Pointer to dictionary
+**
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+AjBool        ajXyzDichetRawRead(AjPFile fptr, AjPDichet *ptr)
+{
+    AjPStr        line=NULL;   /* A line from the file */
+    AjPDichetent entry=NULL;   /* The current entry */
+    AjPDichetent tmp=NULL;   /* Temp. pointer */
+    AjPList       list=NULL;   /* List of entries */
+    ajint       het_cnt=0;     /* Count of number of HET records in file */
+    ajint       formul_cnt=0;  /* Count of number of FORMUL records in file */
+    
+
+    /* Check arg's */
+    if((!fptr)||(*ptr))
+    {
+	ajWarn("Bad args passed to ajXyzDichetRawRead\n");
+	return ajFalse;
+    }
+    
+    /* Create strings etc */
+    line = ajStrNew();
+    list = ajListNew();
+
+    
+    /* Read lines from file */
+    while(ajFileReadLine(fptr, &line))
+    {
+	if(ajStrPrefixC(line,"HET "))
+	{
+	    het_cnt++;
+	    
+	    entry=ajXyzDichetentNew();
+	    ajFmtScanS(line, "%*s %S", &entry->abv);
+	}
+	else if(ajStrPrefixC(line,"HETNAM"))
+	{
+	    ajStrAppC(&entry->ful, &line->Ptr[14]);
+	}
+	else if(ajStrPrefixC(line,"HETSYN"))
+	{
+	    ajStrAppC(&entry->syn, &line->Ptr[14]);
+	}
+	else if(ajStrPrefixC(line,"FORMUL"))
+	{
+	    formul_cnt++;
+
+	    /* In cases where HETSYN or FORMUL were not
+	       specified, assign a value of '.' */
+	    if(MAJSTRLEN(entry->ful)==0)
+		ajStrAssC(&entry->ful, ".");
+
+	    if(MAJSTRLEN(entry->syn)==0)
+		ajStrAssC(&entry->syn, ".");
+	    
+
+	    /* Push entry onto list */
+	    ajListPush(list, (AjPDichetent) entry);
+	}
+    }
+
+    if(het_cnt != formul_cnt)
+    {	
+	while(ajListPop(list, (void **) &tmp))
+	    ajXyzDichetentDel(&tmp);
+	
+	ajListDel(&list);	    
+	ajStrDel(&line);
+
+	ajFatal("Fatal discrepancy in count of HET and FORMUL records\n"
+		"Email wawan@hgmp.mrc.ac.uk\n");
+    }	
+    
+   
+    
+
+    *ptr=ajXyzDichetNew(0);
+    (*ptr)->n=ajListToArray(list, (void ***) &((*ptr)->entries));
+    
+   
+    
+    /* Tidy up and return */
+    ajStrDel(&line);
+    ajListDel(&list);
+    return ajTrue;
+}
+
+
+
+
+
+
+/* @func ajXyzDichetRead **************************************************
+**
+** Read heterogen dictionary, the Dichet object is created within the 
+** ajXyzDichetRead function
+** 
+** @param [r] dic_fptr [AjPFile]    Pointer to dichet file
+** @param [w] hetdic  [AjPDichet]   Pointer to Dichet object
+** 
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+AjBool    ajXyzDichetRead(AjPFile dic_fptr, AjPDichet *hetdic)
+{
+  AjPStr        line=NULL;  /* current line */
+  AjPDichetent  entry=NULL; /* current entry */
+  AjPList       list=NULL;  /* List of entries */
+  AjPStr        temp=NULL;  /* Temporary string */
+  
+  
+  /*Check args */
+  if((!dic_fptr||(*hetdic)))
+  {
+      ajWarn("Bad args passed to ajXyzDichetRead\n");
+      return ajFalse;
+  }
+  /* Create string and list objects */
+  
+  line=ajStrNew();
+  temp=ajStrNew();
+  list=ajListNew();
+  
+  /* Read lines from file */
+  while(ajFileReadLine(dic_fptr, &line))
+  {
+      if(ajStrPrefixC(line, "ID "))
+      {
+	  entry=ajXyzDichetentNew();
+	  ajFmtScanS(line, "%*s %S", &entry->abv);
+      }	
+      else if(ajStrPrefixC(line, "DE ")) /* NEED TO ACCOUNT FOR MULTIPLE LINES */
+      {
+	  ajFmtScanS(line, "%*s %S", &temp);
+	  if(ajStrLen(entry->ful))
+	      ajStrApp(&entry->ful, temp);
+	  else
+	      ajStrAss(&entry->ful, temp);
+      }	
+      else if(ajStrPrefixC(line, "SY "))
+      {
+	  ajFmtScanS(line, "%*s %S", &entry->syn);
+      }
+      else if(ajStrPrefixC(line, "NN "))
+      {
+	  ajFmtScanS(line, "%*s %S", &entry->cnt);
+      }
+      ajListPush(list, (AjPDichetent) entry);
+  }
+
+  *hetdic=ajXyzDichetNew(0);
+  (*hetdic)->n=ajListToArray(list, (void ***) &((*hetdic)->entries));
+  
+  ajStrDel(&line);
+  ajStrDel(&temp);
+  ajListDel(&list);
+  return ajTrue;
+}
+
+
+
+
+
 /* @func ajXyzSignatureRead **************************************************
 **
 ** Read the next Signature object from a file in embl-like format.
@@ -1417,6 +1726,44 @@ AjBool ajXyzSignatureRead(AjPFile inf, AjPSignature *thys)
     else
 	return ajTrue;
 }
+
+
+
+/* @func ajXyzDichetWrite **************************************************
+**
+** Writes the contents of a Dichet object to file. 
+**
+** @param [r] ptr     [AjPDichet] Dichet object
+** @param [r] dogrep  [AjBool]    Flag (True if we are to write <cnt> element of
+** the Dichet object to file)
+** @param [w] fptr    [AjPFile]   Output file
+**
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+AjBool        ajXyzDichetWrite(AjPFile fptr, AjPDichet ptr, AjBool dogrep)
+{
+    ajint i=0;
+    
+    /* Check arg's */
+    if(!fptr || !ptr)
+	return ajFalse;
+    
+    
+    for(i=0;i<ptr->n; i++)
+    {
+	ajFmtPrintF(fptr, "ID   %S\n", ptr->entries[i]->abv);
+	ajFmtPrintSplit(fptr, ptr->entries[i]->ful, "DE   ", 70, " \t\n\r");
+	ajFmtPrintSplit(fptr, ptr->entries[i]->syn, "SY   ", 70, " \t\n\r");
+	if(dogrep)
+	    ajFmtPrintF(fptr, "NN   %d\n", ptr->entries[i]->cnt);
+	ajFmtPrintF(fptr, "//\n");
+    }
+
+    return ajTrue;
+}
+
+
 
 
 
@@ -2358,9 +2705,6 @@ AjBool ajXyzCpdbRead(AjPFile inf, AjPPdb *thys)
     ajint          mod =0;
     ajint          chn =0;
     ajint          gpn =0;
-    ajint     last_chn =0;
-    ajint     last_mod =0;
-    ajint done_co_line =0;
 
     float       reso =0.0;
 
@@ -2553,14 +2897,6 @@ AjBool ajXyzCpdbRead(AjPFile inf, AjPPdb *thys)
 	    atom->Gpn = gpn;
 	    
 
-
-	    if(done_co_line == 0)
-	    {
-		last_chn=chn;
-		last_mod=mod;
-		done_co_line=1;
-	    }
-	    
 	    ajStrToken(&token,&handle,NULL);
 	    atom->Type = *ajStrStr(token);
 	    
@@ -3009,10 +3345,10 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop
 
 AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 {
-    ajint         x;
-    ajint         y;
-    AjIList  iter =NULL;
-    AjPAtom   tmp =NULL;
+    ajint        x = 0;
+    ajint        y = 0;
+    AjIList   iter = NULL;
+    AjPAtom    tmp = NULL;
     
 
 
@@ -3046,7 +3382,7 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 		    "CN", 
 		    x+1);	
 	ajFmtPrintF(outf, "XX\n");	
-
+ 
 	ajFmtPrintF(outf, "%-5sID %c; NR %d; NL %d;\n", 
 		    "IN", 
 		    thys->Chains[x]->Id,
@@ -3066,7 +3402,8 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
     }
     ajFmtPrintF(outf, "XX\n");	
 
-
+/*    printf("NCHN: %d   NMOD: %d\n", thys->Nchn, thys->Nmod); */
+    
     /* Write coordinate list*/
     for(x=1;x<=thys->Nmod;x++)
     {
@@ -3083,13 +3420,33 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 		    continue;
 		else	
 		{
-		    ajFmtPrintF(outf, "%-5s%-5d%-5d%-5d%-5c%-6d%-6S%-2c"
-				"%6S    %-4S"
+		    if(tmp->Type=='H')
+			ajFmtPrintF(outf, "%-5s%-5d%-5d%-5d%-5c%-6c%-6S%-2c"
+				    "%6S    %-4S"
+				"%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
+				    "CO", 
+				tmp->Mod, 
+				tmp->Chn, 
+				tmp->Gpn, 
+				tmp->Type, 
+				    '.',
+				tmp->Pdb, 
+				    '.',
+				tmp->Id3,
+				tmp->Atm, 
+				tmp->X, 
+				tmp->Y, 
+				tmp->Z,
+				tmp->O,
+				tmp->B);
+		    else
+		    ajFmtPrintF(outf, "%-5s%-5d%-5d%-5c%-5c%-6d%-6S%-2c"
+				    "%6S    %-4S"
 				"%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
 				"CO", 
 				tmp->Mod, 
 				tmp->Chn, 
-				tmp->Gpn, 
+				'.',
 				tmp->Type, 
 				tmp->Idx, 
 				tmp->Pdb, 
@@ -3117,17 +3474,17 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 		continue;
 	    else	
 	    {
-		ajFmtPrintF(outf, "%-5s%-5d%-5d%-5d%-5c%-6d%-6S%-2c"
+		ajFmtPrintF(outf, "%-5s%-5d%-5c%-5d%-5c%-6c%-6S%-2c"
 			    "%6S    %-4S"
 			    "%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
 			    "CO", 
 			    tmp->Mod, 
-			    tmp->Chn, 
+			    '.',
 			    tmp->Gpn, 
 			    tmp->Type, 
-			    tmp->Idx, 
+			    '.', 
 			    tmp->Pdb, 
-			    tmp->Id1, 
+			    '.',
 			    tmp->Id3,
 			    tmp->Atm, 
 			    tmp->X, 
@@ -3151,17 +3508,17 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 		continue;
 	    else	
 	    {
-		ajFmtPrintF(outf, "%-5s%-5d%-5d%-5d%-5c%-6d%-6S%-2c"
+		ajFmtPrintF(outf, "%-5s%-5d%-5c%-5c%-5c%-6c%-6S%-2c"
 			    "%6S    %-4S"
 			    "%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
 			    "CO", 
 			    tmp->Mod, 
-			    tmp->Chn, 
-			    tmp->Gpn, 
+			    '.', 
+			    '.', 
 			    tmp->Type, 
-			    tmp->Idx, 
+			    '.', 
 			    tmp->Pdb, 
-			    tmp->Id1, 
+			    '.',
 			    tmp->Id3,
 			    tmp->Atm, 
 			    tmp->X, 
@@ -5177,8 +5534,8 @@ AjBool ajXyzHitlistWrite(AjPFile outf, AjPHitlist thys)
     if(!thys)
 	return ajFalse;
 
-    ajFmtPrintF(outf,"CL   %S",thys->Class);
-    ajFmtPrintSplit(outf,thys->Fold,"\nXX\nFO   ",75," \t\n\r");
+    ajFmtPrintF(outf,"CL   %S\n",thys->Class);
+    ajFmtPrintSplit(outf,thys->Fold,"XX\nFO   ",75," \t\n\r");
     ajFmtPrintSplit(outf,thys->Superfamily,"XX\nSF   ",75," \t\n\r");
     ajFmtPrintSplit(outf,thys->Family,"XX\nFA   ",75," \t\n\r");
     ajFmtPrintF(outf,"XX\nNS   %d\nXX\n",thys->N);
@@ -5578,7 +5935,7 @@ AjBool   ajXyzScophitMergeInsertOther(AjPList list, AjPScophit hit1, AjPScophit 
 ** @return [AjBool] True on success.
 ** @@
 ******************************************************************************/
-AjBool   ajXyzScophitMergeInsertThis(AjPList list, AjPScophit hit1, 
+AjBool ajXyzScophitMergeInsertThis(AjPList list, AjPScophit hit1, 
 				     AjPScophit hit2,  AjIList iter)
 {
     AjPScophit new;
@@ -5703,6 +6060,168 @@ AjPScophit  ajXyzScophitMerge(AjPScophit hit1, AjPScophit hit2)
     ajStrDel(&temp);
     return ret;
 }
+
+
+
+/* @func ajXyzScophitToHit **************************************************
+**
+** Copies the contents from a Scophit to a Hit object. Creates the Hit object
+** if necessary.
+**
+** @param [w] to   [AjPHit*] Hit object pointer 
+** @param [r] from [AjPScophit] Scophit object 
+**
+** @return [AjBool] True if copy was successful.
+** @@
+******************************************************************************/
+AjBool  ajXyzScophitToHit(AjPHit *to, AjPScophit from)
+{
+    if(!from)
+    {
+	ajWarn("NULL arg passed to ajXyzScophitToHit");
+	return ajFalse;
+    }
+    
+    if(!(*to))
+	*to = ajXyzHitNew();
+
+    ajStrAssS(&(*to)->Seq, from->Seq);
+    (*to)->Start = from->Start;
+    (*to)->End = from->End;
+    ajStrAssS(&(*to)->Id, from->Id);
+    ajStrAssS(&(*to)->Typeobj, from->Typeobj);
+    ajStrAssS(&(*to)->Typesbj, from->Typesbj);
+    ajStrAssS(&(*to)->Alg, from->Alg);
+    (*to)->Group = from->Group;
+    (*to)->Rank = from->Rank;
+    (*to)->Score = from->Score;
+    (*to)->Eval = from->Eval;
+    (*to)->Target = from->Target;
+    (*to)->Priority = from->Priority;
+
+    return ajTrue;
+}
+
+
+
+
+
+/* @func ajXyzScophitsToHitlist *******************************************
+**
+** Reads from a list of Scophit objects and writes a Hitlist object with 
+** with the next block of hits with identical SCOP classification. If the 
+** iterator passed in is NULL it will read from the start of the list, 
+** otherwise it will read from the current position. Memory for the Hitlist
+** is allocated and will have to be freed by the user.
+** 
+** @param [r] in      [AjPList]     List of pointers to Scophit objects
+** @param [w] out     [AjPHitlist*] Pointer to Hitlist object
+** @param [r] iter    [AjIList*]    Pointer to iterator for list.
+**
+** @return [AjBool] True on success (lists were processed ok)
+** @@
+******************************************************************************/
+AjBool ajXyzScophitsToHitlist(AjPList in, AjPHitlist *out, AjIList *iter)
+{
+    AjPScophit scoptmp=NULL;        /* Temp. pointer to Scophit object */
+    AjPHit     tmp=NULL;            /* Temp. pointer to Hit object */
+    AjPList    list=NULL;           /* Temp. list of Hit objects */
+    AjBool     do_fam=ajFalse;
+    AjBool     do_sfam=ajFalse;
+    AjBool     do_fold=ajFalse;
+    AjBool     do_class=ajFalse;
+    AjPStr     fam=NULL;
+    AjPStr     sfam=NULL;
+    AjPStr     fold=NULL;
+    AjPStr     class=NULL;
+
+
+
+
+    /* Check args and allocate memory */
+    if(!in)
+    {
+	ajWarn("NULL arg passed to ajXyzScophitsToHitlist");
+	return ajFalse;
+    }
+    
+    if(!(*iter))
+	*iter=ajListIter(in);
+
+    if(!(*out))
+	*out = ajXyzHitlistNew(0);
+    
+
+    list = ajListNew();
+
+
+    
+    if(!(scoptmp=(AjPScophit)ajListIterNext(*iter)))
+    {
+	ajWarn("Empty list in ajXyzScophitsToHitlist");
+	return ajFalse;
+    }
+    
+    
+    if(scoptmp->Class)
+    {
+	do_class = ajTrue;
+	ajStrAssS(&class, scoptmp->Class);
+    }
+    if(scoptmp->Fold)
+    {
+	do_fold= ajTrue;
+	ajStrAssS(&fold, scoptmp->Fold);
+    }
+    if(scoptmp->Superfamily)
+    {
+	do_sfam = ajTrue;
+	ajStrAssS(&sfam, scoptmp->Superfamily);
+    }
+    if(scoptmp->Family)
+    {
+	do_fam = ajTrue;
+	ajStrAssS(&fam, scoptmp->Family);
+    }
+
+    ajXyzScophitToHit(&tmp, scoptmp);
+    ajListPush(list, (AjPHit) tmp);
+
+    
+
+    while((scoptmp=(AjPScophit)ajListIterNext(*iter)))
+    {
+	if(do_class)
+	    if(!ajStrMatch(scoptmp->Class, class))
+		break;
+	if(do_fold)
+	    if(!ajStrMatch(scoptmp->Fold, fold))
+		break;
+	if(do_sfam)
+	    if(!ajStrMatch(scoptmp->Superfamily, sfam))
+		break;
+	if(do_fam)
+	    if(!ajStrMatch(scoptmp->Family, fam))
+		break;
+	
+	ajXyzScophitToHit(&tmp, scoptmp);
+	ajListPush(list, (AjPHit) tmp);
+	tmp=NULL;
+    }
+    ajStrAss(&(*out)->Class, class);
+    ajStrAss(&(*out)->Fold, fold);
+    ajStrAss(&(*out)->Superfamily, sfam);
+    ajStrAss(&(*out)->Family, fam);
+
+
+    /* Copy temp. list to Hitlist */
+    (*out)->N = ajListToArray(list, (void ***) &((*out)->hits));
+
+    /* Tidy up and return */
+    ajListDel(&list);	    
+    return ajTrue;
+}
+
 
 
 
@@ -6013,7 +6532,7 @@ ajint ajXyzScophitCompId(const void *hit1, const void *hit2)
 ** @param [r] hit1  [const void*] Pointer to AjOScophit object 1
 ** @param [r] hit2  [const void*] Pointer to AjOScophit object 2
 **
-** @return [ajint] 1 if Start1 should sort before Start2, +1 if the Start2 
+** @return [ajint] -1 if Start1 should sort before Start2, +1 if the Start2 
 ** should sort first. 0 if they are identical.
 ** @@
 ******************************************************************************/
@@ -6024,13 +6543,14 @@ ajint ajXyzScophitCompStart(const void *hit1, const void *hit2)
 
     p = (*(AjPScophit*)hit1);
     q = (*(AjPScophit*)hit2);
-    
+   
+
     if(p->Start < q->Start)
-	return 1;
+	return -1;
     else if(p->Start == q->Start)
 	return 0;
     else
-	return -1;
+	return 1;
 }
 
 
