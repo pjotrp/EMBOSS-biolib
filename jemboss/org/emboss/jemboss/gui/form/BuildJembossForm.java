@@ -31,7 +31,7 @@ import java.net.URL;
 import java.util.*;
 import java.awt.event.*;
 import java.io.*;
-import uk.ac.mrc.hgmp.embreo.*;
+import uk.ac.mrc.hgmp.embreo.EmbreoParams;
 import org.emboss.jemboss.parser.*;
 import org.emboss.jemboss.programs.*;
 import org.emboss.jemboss.*;
@@ -792,7 +792,7 @@ public class BuildJembossForm implements ActionListener
 
           if(withSoap)
           {
-            EmbreoMakeFileSafe sf = new EmbreoMakeFileSafe(fn);
+            MakeFileSafe sf = new MakeFileSafe(fn);
             sfn = sf.getSafeFileName();
             filesToMove.put(sfn,cp);
             options = options.concat(" -" + val + " " + sfn);
@@ -847,7 +847,7 @@ public class BuildJembossForm implements ActionListener
           options = options.concat(" -" + val + " list::internalList");
         else
         {
-          EmbreoMakeFileSafe sf = new EmbreoMakeFileSafe(lfn);
+          MakeFileSafe sf = new MakeFileSafe(lfn);
           String sfs = sf.getSafeFileName();
           options = options.concat(" -" + val + " list::" +  sfs);
         }
@@ -862,7 +862,7 @@ public class BuildJembossForm implements ActionListener
     }
     else                                        // not list file
     {                                  
-      EmbreoMakeFileSafe sf = new EmbreoMakeFileSafe(fn);
+      MakeFileSafe sf = new MakeFileSafe(fn);
       sfn = sf.getSafeFileName();
       if ((new File(fn)).exists())    // read & add to transfer list
       {
