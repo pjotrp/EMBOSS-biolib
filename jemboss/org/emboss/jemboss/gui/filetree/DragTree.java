@@ -368,7 +368,8 @@ public class DragTree extends JTree implements DragGestureListener,
 // drop sink
   public void dragEnter(DropTargetDragEvent e)
   {
-    if(e.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE))
+    if(e.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE) ||
+       e.isDataFlavorSupported(FileNode.FILENODE) )
       e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
   }
 
@@ -386,20 +387,20 @@ public class DragTree extends JTree implements DragGestureListener,
     //local drop
     if(t.isDataFlavorSupported(FileNode.FILENODE))
     {
-//     try
-//     {
-//       FileNode fn = (FileNode)t.getTransferData(FileNode.FILENODE);
-//       if (dropNode.isLeaf())
-//       {
-//         e.rejectDrop();
-//         return;
-//       }
-//      
-//       String dropDir = dropNode.getFile().getAbsolutePath();
-//       String newFullName = dropDir+fs+fn.toString();
-//       renameFile(fn.getFile(),fn,newFullName);  
-//     }
-//     catch(Exception ufe){}        
+       try
+       {
+         FileNode fn = (FileNode)t.getTransferData(FileNode.FILENODE);
+         if (dropNode.isLeaf())
+         {
+           e.rejectDrop();
+           return;
+         }
+        
+         String dropDir = dropNode.getFile().getAbsolutePath();
+         String newFullName = dropDir+fs+fn.toString();
+         renameFile(fn.getFile(),fn,newFullName);  
+       }
+       catch(Exception ufe){}        
     }
     //remote drop
     else if(t.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE))
@@ -493,24 +494,24 @@ public class DragTree extends JTree implements DragGestureListener,
         e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
       }
     }
-//  else if(e.isDataFlavorSupported(FileNode.FILENODE))
-//  {
-//    Point ploc = e.getLocation();
-//    TreePath ePath = getPathForLocation(ploc.x,ploc.y);
-//    if (ePath == null)
-//    {
-//      e.rejectDrag();
-//      return;
-//    }
-//    FileNode node = (FileNode)ePath.getLastPathComponent();
-//    if(!node.isDirectory())
-//      e.rejectDrag();
-//    else 
-//    {
-//      setSelectionPath(ePath);
-//      e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
-//    }
-//  }
+    else if(e.isDataFlavorSupported(FileNode.FILENODE))
+    {
+      Point ploc = e.getLocation();
+      TreePath ePath = getPathForLocation(ploc.x,ploc.y);
+      if (ePath == null)
+      {
+        e.rejectDrag();
+        return;
+      }
+      FileNode node = (FileNode)ePath.getLastPathComponent();
+      if(!node.isDirectory())
+        e.rejectDrag();
+      else 
+      {
+        setSelectionPath(ePath);
+        e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+      }
+    }
     else
       e.rejectDrag();
     
@@ -698,8 +699,9 @@ public class DragTree extends JTree implements DragGestureListener,
   public void deleteObject(FileNode node)
   {
     DefaultTreeModel model =(DefaultTreeModel)getModel();
-    FileNode parentNode = getNode(node.getFile().getAbsolutePath());
+    FileNode parentNode = getNode(node.getFile().getParent());
     model.removeNodeFromParent(node);
+    parentNode.reExplore();
     model.nodeStructureChanged(parentNode);
   }
 
