@@ -23,6 +23,9 @@ FI act1_fugru.antigenic
 FZ = 0
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID acdc-0001
@@ -168,7 +171,9 @@ FP 1 /^ +\[-asequence\] +sequence +Sequence USA\n/
 FP 1 /^ +\[-bsequence\] +sequence +Sequence USA\n/
 FP 2 /^ +\[-.sequence\] +sequence +Sequence USA\n/
 FP /   [-]testalen           string     asequence length \.\.\.\n/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID acdc-0012
@@ -182,7 +187,9 @@ FP 29 /   boolean /
 FP  6 /   integer /
 FP 28 /   string /
 FP /   [-]testalen           string     asequence length \.\.\.\n/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID acdc-0013
@@ -196,7 +203,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI x.x
 FZ = 0
 FI paamir.fasta
@@ -220,8 +229,10 @@ PP export EMBOSS_ACDROOT
 CL nofile
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
 FP /Error: File ../../acd/nofile.acd line 0: ACD file not opened\n/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 //
 
 ID acd-noappl
@@ -232,8 +243,10 @@ PP export EMBOSS_ACDROOT
 CL noappl
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
 FP /Error: File .*noappl.acd line 4: Application definition required at start\n/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 //
 
 ID acd-noleftq
@@ -244,8 +257,10 @@ PP export EMBOSS_ACDROOT
 CL noleftq
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
 FP /Error: File .*noleftq.acd line 7: \(output\) Failed to find '\[' for section output\n/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 //
 
 ID acd-noleftsec
@@ -256,8 +271,10 @@ PP export EMBOSS_ACDROOT
 CL noleftsec
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
 FP /Error: File .*noleftsec.acd line 5: \(output\) Failed to find '\[' for section output\n/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 //
 
 ID acd-noleftappl
@@ -268,8 +285,10 @@ PP export EMBOSS_ACDROOT
 CL noleftappl
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
 FP /Error: File .*noleftappl.acd line 3: \(noleftappl\) Failed to find '\[' for application noleftappl\n/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 //
 
 ID acd-noendsec
@@ -280,11 +299,13 @@ PP export EMBOSS_ACDROOT
 CL noendsec
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
 FP /Error: Section 'output' has no endsection\n/
 FP /Error: Section 'input' has no endsection\n/
 FP 2 /Error: Section '.*' has no endsection\n/
 FP /Error: File .*noendsec.acd line 13: Unclosed sections in ACD file\n/
+FP 0 /Warning: /
+FP 3 /Error: /
+FP 0 /Died: /
 //
 
 ID acd-noquote
@@ -295,7 +316,9 @@ PP export EMBOSS_ACDROOT
 CL noquote
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*noquote.acd line 5: \(outtest\) Unexpected end of file, no closing quote\n/
 //
 
@@ -307,7 +330,9 @@ PP export EMBOSS_ACDROOT
 CL novalue
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*novalue.acd line 5: \(outtest\) Unexpected end of file, attribute value not found\n/
 //
 
@@ -319,7 +344,9 @@ PP export EMBOSS_ACDROOT
 CL badstage
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*badstage.acd line 5: Unrecognized token 'dingsbum'\n/
 //
 
@@ -331,7 +358,9 @@ PP export EMBOSS_ACDROOT
 CL calcparam
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*calcparam.acd line 22: [(]outtest[)] 'parameter' attribute cannot use a variable. It is used .* been set\n/
 //
 
@@ -343,7 +372,9 @@ PP export EMBOSS_ACDROOT
 CL noapplname
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*noapplname.acd line 3: Bad or missing application name '\['\n/
 //
 
@@ -355,7 +386,9 @@ PP export EMBOSS_ACDROOT
 CL badapplname
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*badapplname.acd line 3: Bad or missing application name 'run[*]123'\n/
 //
 
@@ -367,7 +400,9 @@ PP export EMBOSS_ACDROOT
 CL noqualname
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*noqualname.acd line 5: Bad or missing qualifier alphabetic name '\['\n/
 //
 
@@ -379,7 +414,9 @@ PP export EMBOSS_ACDROOT
 CL badqualname
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*badqualname.acd line 5: Bad or missing qualifier alphabetic name 'sequence1'\n/
 //
 
@@ -391,7 +428,9 @@ PP export EMBOSS_ACDROOT
 CL badalias
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*badalias.acd line 5: Bad syntax qualifier alias name 'file2'\n/
 //
 
@@ -403,7 +442,9 @@ PP export EMBOSS_ACDROOT
 CL nocolon
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*nocolon.acd line 5: Expected ':' not found after 'param'\n/
 //
 
@@ -415,7 +456,9 @@ PP export EMBOSS_ACDROOT
 CL badendsec
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*badendsec.acd line 14: Bad endsection 'fred', current section is 'output'\n/
 //
 
@@ -427,7 +470,9 @@ PP export EMBOSS_ACDROOT
 CL endsecextra
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*endsecextra.acd line 18: Bad endsection 'fred', not in a section\n/
 //
 
@@ -439,7 +484,9 @@ PP export EMBOSS_ACDROOT
 CL dupname
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*dupname.acd line 14: \(outtest\) Name 'outtest' not unique\n/
 //
 
@@ -451,7 +498,9 @@ PP export EMBOSS_ACDROOT
 CL dupalias
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*dupalias.acd line 14: \(output\) Name\/Alias 'outtest'\/'output' not unique\n/
 //
 
@@ -463,7 +512,9 @@ PP export EMBOSS_ACDROOT
 CL ambigtype
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*ambigtype.acd line 16: ambiguous acd type seqo \(seqout,seqoutall,seqoutset\)\n/
 //
 
@@ -475,7 +526,9 @@ PP export EMBOSS_ACDROOT
 CL ambigvar tembl:paamir -auto
 FI stderr
 FZ > 0
-FP 1 /^Warning:/
+FP 1 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*ambigvar.acd line 9: Failed to resolve variable 'seq'\n/
 FP /Warning: ambiguous item seq \(sequence,seqmod\)\n/
 //
@@ -488,7 +541,9 @@ PP export EMBOSS_ACDROOT
 CL undefvar tembl:paamir -auto
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*undefvar.acd line 7: Variable 'seqmod' not yet defined\n/
 //
 
@@ -500,7 +555,9 @@ PP export EMBOSS_ACDROOT
 CL leftend
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*leftend.acd line 5: \(outtest\) End of file looking for '\]'\n/
 //
 
@@ -512,7 +569,9 @@ PP export EMBOSS_ACDROOT
 CL valend
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*valend.acd line 5: \(outtest\) End of file looking for '\]'\n/
 //
 
@@ -524,7 +583,9 @@ PP export EMBOSS_ACDROOT
 CL noattname
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*noattname.acd line 5: \(outtest\) Bad or missing attribute name 'requ1red'\n/
 //
 
@@ -536,7 +597,9 @@ PP export EMBOSS_ACDROOT
 CL dupassoc
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*dupassoc.acd line 5: \(sbegin\) Associated qualifier 'sbegin' clashes with 'sbegin' in ACD file\n/
 //
 
@@ -548,7 +611,9 @@ PP export EMBOSS_ACDROOT
 CL dupassoc2
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*dupassoc2.acd line 5: \(mybool\) Associated qualifier 'sbegin' clashes with 'mybool'\/'sbegin' in ACD file\n/
 //
 
@@ -560,7 +625,9 @@ PP export EMBOSS_ACDROOT
 CL wrongattr
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*wrongattr.acd line 7: \(outtest\) Attribute 'wanted' unknown\n/
 //
 
@@ -572,7 +639,9 @@ PP export EMBOSS_ACDROOT
 CL ambigdefattr tembl:paamir
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Error: File .*ambigdefattr.acd line 7: \(outtest\) 'o' matches attribute 'optional' and associated qualifier 'odirectory'\n/
 //
 
@@ -584,7 +653,9 @@ PP export EMBOSS_ACDROOT
 CL ambigassoc
 FI stderr
 FZ > 0
-FP 1 /^Warning:/
+FP 1 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP /Warning: Ambiguous name/token 'f' \(fformat,fopenfile\)\n/
 FP /Error: File .*ambigassoc.acd line 8: \(asequence\) Attribute or qualifier 'f' ambiguous\n/
 //
@@ -596,9 +667,10 @@ PP export EMBOSS_ACDROOT
 CL mixedcase
 FI stderr
 FZ > 0
-FP 1 /^Warning:/
+FP 1 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FP /Warning: File .*mixedcase.acd line 16: Automatically converting 'testA' to lower case\n/
-FP 0 /^Error:/
 FI mixedcase.acdpretty
 FZ > 0
 FP /: testa /
@@ -612,7 +684,9 @@ PP export EMBOSS_ACDROOT
 CL testarray
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FP 1 /^Error: .*testarray.acd line 8: \(numlist\) Array attribute size: 0 less than 1/
 //
 
@@ -629,7 +703,9 @@ IN
 IN
 FI stderr
 FZ > 0
-FP 1 /^Warning:/
+FP 1 /Warning: /
+FP 0 /Error: /
+FP 1 /Died: /
 FP /Warning: Ambiguous master qualifier 'a' in sbegin_a \(auto,acdlog,acdpretty,acdtable,asequence\)/
 FP /Died: Unknown qualifier -sbegin_a/
 //
@@ -641,8 +717,10 @@ PP export EMBOSS_ACDROOT
 CL qatest tembl:paamir tembl:paamir x.x -a 5 -auto
 ER 1
 FI stderr
+FP 1 /Warning: /
+FP 0 /Error: /
+FP 1 /Died: /
 FP /Warning: ambiguous qualifier 'a' \(auto,acdlog,acdpretty,acdtable,asequence,aint\)/
-FP 1 /Warning:/
 FP /Died: Unknown qualifier -a\n/
 //
 
@@ -654,7 +732,9 @@ PP export EMBOSS_ACDROOT
 CL qatest tembl:paamir . x.x
 ER 1
 FI stderr
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 FP /Error: Unable to read sequence ''\n/
 FP /Died: qatest terminated: Bad value for '-bsequence' and no prompt\n/
 //
@@ -666,7 +746,9 @@ PP export EMBOSS_ACDROOT
 CL qatest tembl:paamir tembl:paamir x.x -auto -nologic=Y
 ER 1
 FI stderr
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 1 /Died: /
 FP /Died: 'no' prefix used with value for '-nologic=Y'\n/
 //
 
@@ -678,7 +760,9 @@ PP export EMBOSS_ACDROOT
 CL qatest tembl:paamir tembl:paamir x.x -auto -nooutdir
 ER 1
 FI stderr
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 1 /Died: /
 FP /Died: 'no' prefix invalid for '-nooutdir'\n/
 //
 
@@ -690,7 +774,9 @@ PP export EMBOSS_ACDROOT
 CL qatest tembl:paamir tembl:paamir x.x -auto -notestalen
 ER 1
 FI stderr
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 1 /Died: /
 FP /Died: 'no' prefix invalid for '-notestalen'\n/
 //
 
@@ -702,7 +788,9 @@ PP export EMBOSS_ACDROOT
 CL qatest tembl:paamir tembl:paamir x.x -auto -testalen
 ER 1
 FI stderr
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 1 /Died: /
 FP /Died: Value required for '-testalen'\n/
 //
 
@@ -714,7 +802,9 @@ PP export EMBOSS_ACDROOT
 CL qatest tembl:paamir tembl:paamir x.x -auto -testalen -testblen
 ER 1
 FI stderr
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 1 /Died: /
 FP /Died: Value required for '-testalen' before '-testblen'\n/
 //
 
@@ -727,7 +817,9 @@ PP export EMBOSS_LANGUAGE
 CL qatest -help
 ER 1
 FI stderr
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 1 /Died: /
 FP /Died: Bad format in codes file ../../acd/codes.bad after 'defbool "Yes or No"'\n/
 //
 
@@ -739,7 +831,9 @@ PP EMBOSS_LANGUAGE=missing
 PP export EMBOSS_LANGUAGE
 CL qatest -help
 FI stderr
-FP 1 /Warning:/
+FP 1 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FP /Warning: Code file ..\/..\/acd\/codes.missing not found\n/
 //
 
@@ -752,7 +846,9 @@ IN
 IN
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FP /Asequence end 1113:/
 FP /Bsequence end 2167:/
 //
@@ -767,7 +863,9 @@ IN
 IN
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FP /Asequence end 113:/
 FP /Bsequence end 1167:/
 //
@@ -782,7 +880,9 @@ IN
 IN
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FP /Asequence end 113:/
 FP /Bsequence end 2167:/
 //
@@ -797,7 +897,9 @@ IN
 IN
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FP /Asequence end 1113:/
 FP /Bsequence end 1167:/
 //
@@ -812,7 +914,9 @@ IN
 IN
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FP /Asequence end 113:/
 FP /Bsequence end 1167:/
 //
@@ -827,7 +931,9 @@ IN
 IN
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FP /Asequence end 113:/
 FP /Bsequence end 2167:/
 //
@@ -842,7 +948,9 @@ IN
 IN
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FP /Asequence end 113:/
 FP /Bsequence end 2167:/
 //
@@ -857,7 +965,9 @@ IN
 IN
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FP /Asequence end 113:/
 FP /Bsequence end 2167:/
 //
@@ -872,7 +982,9 @@ IN
 IN
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FP /Asequence end 113:/
 FP /Bsequence end 1167:/
 //
@@ -888,8 +1000,10 @@ IN
 IN
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
 FP /^Error: Argument 'tembl:hsfos' : Too many parameters 3\/2\n/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 //
 
 ID acdc-alignbadformat
@@ -901,9 +1015,11 @@ CL testalign -aformat fred
 IN
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
 FP /Error: Unknown alignment format 'fred'\n/
 FP /Died: Alignment option -test: Validation failed\n/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 //
 
 ID acdc-alignbadminseq
@@ -915,9 +1031,11 @@ CL testalign
 IN
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
 FP /Error: Alignment format specifies at least 2 sequences, alignment has only 0\n/
 FP /Died: Alignment option -test: Validation failed\n/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 //
 
 ID acdc-alignbadmaxseq
@@ -929,9 +1047,11 @@ CL testalignpair
 IN
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
 FP /Error: Alignment format specifies at most 2 sequences, alignment has 3\n/
 FP /Died: Alignment option -test: Validation failed\n/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 //
 
 ID acdc-alignbadwidth
@@ -942,9 +1062,10 @@ CL testalignok -awidth 9
 IN
 FI stderr
 FZ > 0
-FP 1 /^Warning:/
+FP 1 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FP /^Warning: Alignment width \(-awidth=9\) too narrow, reset to 10\n/
-FP 0 /Error: \n/
 FI outfile.testalignok
 FZ = 0
 //
@@ -958,8 +1079,11 @@ CL datafile -pepdatafile badname.dat
 IN
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
 FP /Error: Unable to open data file 'badname.dat' for input\n/
+FP /Died: datafile terminated: Bad value for '-pepdatafile' and no prompt\n/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 //
 
 ID acdc-listambig1
@@ -971,8 +1095,11 @@ CL testlist
 IN f
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 0 /Died: /
 FP /Error: 'f' is ambiguous \(fa,four,fb,five\)\n/
+FP /Error: Bad menu option 'f'\n/
 //
 
 ID acdc-listambig2
@@ -984,8 +1111,11 @@ CL testlist
 IN t
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 0 /Died: /
 FP /Error: 't' is ambiguous \(two,three\)\n/
+FP /Error: Bad menu option 't'\n/
 //
 
 ID acdc-listbad
@@ -997,8 +1127,11 @@ CL testlist
 IN x
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 0 /Died: /
 FP /Error: 'x' is not a valid menu option\n/
+FP /Error: Bad menu option 'x'\n/
 FP /Accepted short codes are: a,b,c,fa,fb\n/
 //
 
@@ -1011,7 +1144,9 @@ CL testlist
 IN a,b,c,four
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 0 /Died: /
 FP /Error: Menu allows no more than 3 values\n/
 FP /Error: Bad menu option 'a,b,c,four'\n/
 //
@@ -1025,7 +1160,9 @@ CL testlist
 IN 
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 0 /Died: /
 FP /Error: Menu needs 1 value\n/
 FP /Error: Bad menu option ''\n/
 //
@@ -1039,7 +1176,9 @@ CL testreport -rformat fred
 IN 
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 FP /Error: Unknown report format 'fred'\n/
 FP /Died: Report option -test: Validation failed\n/
 //
@@ -1053,7 +1192,9 @@ CL testreport
 IN 
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 FP /Error: Report specifies 4 tags, has only 3\n/
 FP /Died: Report option -test: Validation failed\n/
 //
@@ -1067,7 +1208,9 @@ CL testreporttags
 IN 
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 0 /Died: /
 FP /Error: Bad report taglist at ' str s=String'\n/
 FP /Error: File .*testreporttags.acd line 8: \(test\) Bad tag list for report\n/
 //
@@ -1081,7 +1224,9 @@ CL testselect
 IN f
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 0 /Died: /
 FP /Error: 'f' is ambiguous \(four,five\)\n/
 FP /Error: Bad select option 'f'\n/
 //
@@ -1095,8 +1240,11 @@ CL testselect
 IN x
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 0 /Died: /
 FP /Error: 'x' is not a valid selection list option\n/
+FP /Error: Bad select option 'x'\n/
 FP /Accepted values are: one,two,three,four,five\n/
 //
 
@@ -1109,7 +1257,9 @@ CL testselect
 IN one,two,thr,four
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 0 /Died: /
 FP /Error: Selection list allows no more than 3 values\n/
 FP /Error: Bad select option 'one,two,thr,four'\n/
 //
@@ -1123,7 +1273,9 @@ CL testselect
 IN 1,2,3,4
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 0 /Died: /
 FP /Error: Selection list allows no more than 3 values\n/
 FP /Error: Bad select option '1,2,3,4'\n/
 //
@@ -1137,7 +1289,9 @@ CL testselect
 IN 
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 0 /Died: /
 FP /Error: Selection list needs 1 value\n/
 FP /Error: Bad select option ''\n/
 //
@@ -1154,7 +1308,9 @@ IN 6
 IN 7
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 4 /Error: /
+FP 1 /Died: /
 FP 2 /Error: Bad select option '[1-9]'\n/
 FP /Died: testselect terminated: Bad value for '-test' and no more retries\n/
 //
@@ -1170,7 +1326,9 @@ CL testselect -testnum fred
 IN 5
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 FP /Error: Invalid integer value 'fred'\n/
 FP /Died: testselect terminated: Bad value for '-testnum' and no prompt\n/
 //
@@ -1185,7 +1343,9 @@ PP export EMBOSS_ACDPROMPTS
 CL testselect -test 6 -auto
 FI stderr
 FZ > 0
-FP 0 /^Warning:/
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 1 /Died: /
 FP 1 /Error: Bad select option '[1-9]'\n/
 FP /Died: testselect terminated: Bad value for '-test' with -auto defined\n/
 //
@@ -1203,6 +1363,9 @@ PP EMBOSS_BADFILE=../../rc/badsummary.rc
 PP export EMBOSS_BADFILE
 FI stderr
 FZ > 0
+FP 0 /Warning: /
+FP 3 /Error: /
+FP 1 /Died: /
 FP /Error: File .*\.embossrc line 2: Error\(s\) found in included file .*badsummary.rc\n/
 FP /Died: Error\(s\) in configuration files\n/
 //
@@ -1216,6 +1379,9 @@ PP EMBOSS_BADFILE=../../rc/badtype.rc
 PP export EMBOSS_BADFILE
 FI stderr
 FZ > 0
+FP 0 /Warning: /
+FP 3 /Error: /
+FP 1 /Died: /
 FP /Error: File .*badtype.rc line 1: Invalid definition type 'this'\n/
 FP /Error: File .*badtype.rc line 1: Invalid definition type 'badtype'\n/
 FP /Error: File .*\.embossrc line 2: Error\(s\) found in included file .*badtype.rc\n/
@@ -1230,6 +1396,9 @@ PP EMBOSS_BADFILE=../../rc/badset.rc
 PP export EMBOSS_BADFILE
 FI stderr
 FZ > 0
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 1 /Died: /
 FP /Error: File .*badset.rc line 7: Unexpected end of file in SET definition\n/
 //
 
@@ -1242,6 +1411,9 @@ PP EMBOSS_BADFILE=../../rc/baddb.rc
 PP export EMBOSS_BADFILE
 FI stderr
 FZ > 0
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 1 /Died: /
 FP /Error: File .*baddb.rc line 3: Unexpected end of file in DBNAME definition\n/
 //
 
@@ -1254,6 +1426,9 @@ PP EMBOSS_BADFILE=../../rc/badresattr.rc
 PP export EMBOSS_BADFILE
 FI stderr
 FZ > 0
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 1 /Died: /
 FP /Error: File .*badresattr.rc line 3: Bad attribute 'badattr' for resource 'badresource'\n/
 //
 
@@ -1266,6 +1441,9 @@ PP EMBOSS_BADFILE=../../rc/badinclude.rc
 PP export EMBOSS_BADFILE
 FI stderr
 FZ > 0
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 FP /Error: File .*\.embossrc line 2: Failed to open include file '[$]emboss_badfile'\n/
 //
 
@@ -1278,6 +1456,9 @@ PP EMBOSS_BADFILE=../../rc/includeagain.rc
 PP export EMBOSS_BADFILE
 FI stderr
 FZ > 0
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 1 /Died: /
 FP /Error: File .*includeagain.rc line 3: [$]emboss_badfile already read .. skipping\n/
 //
 
@@ -1290,6 +1471,9 @@ PP EMBOSS_BADFILE=../../rc/dbempty.rc
 PP export EMBOSS_BADFILE
 FI stderr
 FZ > 0
+FP 0 /Warning: /
+FP 5 /Error: /
+FP 1 /Died: /
 FP /Error: File .*dbempty.rc line 3: Database 'empty' has no attributes\n/
 FP /Error: File .*dbempty.rc line 3: Database 'empty' has no format definition\n/
 FP /Error: File .*dbempty.rc line 3: Database 'empty' has no type definition\n/
@@ -1305,6 +1489,9 @@ PP EMBOSS_BADFILE=../../rc/dbunknowns.rc
 PP export EMBOSS_BADFILE
 FI stderr
 FZ > 0
+FP 0 /Warning: /
+FP 4 /Error: /
+FP 1 /Died: /
 FP /Error: File .*dbunknowns.rc line 4: Database 'unknowns' format: 'noformat' unknown\n/
 FP /Error: File .*dbunknowns.rc line 4: Database 'unknowns' method: 'notknown' unknown\n/
 FP /Error: File .*dbunknowns.rc line 4: Database 'unknowns' type: 'nosuchtype' unknown\n/
@@ -1319,6 +1506,9 @@ PP EMBOSS_BADFILE=../../rc/rsempty.rc
 PP export EMBOSS_BADFILE
 FI stderr
 FZ > 0
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 1 /Died: /
 FP /Error: File .*rsempty.rc line 3: Resource 'empty' has no attributes\n/
 //
 
@@ -1331,6 +1521,9 @@ PP EMBOSS_BADFILE=../../rc/dbnoquote.rc
 PP export EMBOSS_BADFILE
 FI stderr
 FZ > 0
+FP 0 /Warning: /
+FP 4 /Error: /
+FP 1 /Died: /
 FP /Error: File .*dbnoquote.rc line 4: '\]' found, unclosed quotes in 'unclosed single quotes'\n/
 FP /Error: File .*dbnoquote.rc line 8: '\]' found, unclosed quotes in 'unclosed double quotes'\n/
 FP /Error: File .*dbnoquote.rc line 12: '\]' found, unclosed quotes in 'unclosed mixed quotes''\n/
@@ -1351,7 +1544,9 @@ IN ../../data/aaindex1.test
 FI stderr
 FC = 2
 DI AAINDEX
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID abiview-ex
@@ -1361,6 +1556,9 @@ IN ../../data/abiview.abi
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 19
 FP /^Created abiview.ps\n/
@@ -1412,7 +1610,9 @@ FZ > 100
 FC > 5
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID antigenic-ex2
@@ -1428,7 +1628,9 @@ FZ > 100
 FC > 5
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID backtranseq-ex
@@ -1442,7 +1644,9 @@ FP /CGCCACCGGCGTGGTG\n/
 FZ = 1092
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID backtranseq-ex2
@@ -1457,7 +1661,9 @@ FP /GAGAAGAAGAAC\n/
 FZ = 1838
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID banana-ex
@@ -1470,7 +1676,9 @@ FP /^a +0.0 +0.0\nt +19.7 +0.0\ng +17.7 +0.0\na +21.1 +0.0\n/
 FP /^a +14.9 +0.0\nc +17.7 +20.0\nc +15.7 +19.2\nt +15.7 +18.5\n/
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 19
 FP /^Created banana.dat\n/
@@ -1482,6 +1690,9 @@ AP biosed
 CL tembl:hsfau hsfau.rna -target T -replace U
 FI stderr
 FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.rna
 FZ = 562
 FP /^UCUAAUAAAAAAGCCACUUAGUUCAGUCAAAAAAAAAA\n/
@@ -1493,6 +1704,9 @@ AP biosed
 CL tsw:AMIR_PSEAE AMIR_PSEAE.pep -target PPP -replace XXPPPXX
 FI stderr
 FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI AMIR_PSEAE.pep
 FZ = 252
 FP /^MSANSLLGSLRELQVLVLNPPGEVSDALVLQLIRIGCSVRQCWXXPPPXXEAFDVPVDVV\n/
@@ -1517,7 +1731,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI ab009602.cai
 FP /0[.]188/
 //
@@ -1527,7 +1743,9 @@ AP chaos
 CL tembl:eclac -graph cps
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI chaos.ps
 FZ > 100
 FP /^%%Title: PLplot Graph\n/
@@ -1543,7 +1761,9 @@ CL tsw:hbb_human
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hbb_human.charge
 FP /CHARGE of HBB_HUMAN from 1 to 146: window 5/
 FC = 145
@@ -1557,7 +1777,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI paamir_1.checktrans
 FZ = 132
 FP /Total STOPS:\s+7\n/
@@ -1578,7 +1800,9 @@ IN tembl:paamir
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI paamir.chips
 FP /Nc = 32[.]951/
 //
@@ -1593,7 +1817,9 @@ IN
 IN
 FI stderr
 FC = 9
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI cirdna.ps
 FZ = 23067
 FP /^%%Title: PLplot Graph\n/
@@ -1611,7 +1837,9 @@ IN Ehin.cut
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI outfile.codcmp
 FP /^Mean Squared Difference = 0[.]037\n/
 FP /^Sum Squared Difference = 2[.]337\n/
@@ -1628,7 +1856,9 @@ IN tembl:X03487
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsferg1.fasta
 FP />x03487_cds_1\natgacgaccgcgt/
 FP /aatgaaagctaa\n>x03487_mrna_1\ncagacgttcttcgc/
@@ -1643,7 +1873,9 @@ IN tembl:X03487
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsferg1.fasta
 FP 0 />x03487_cds_1/
 FP />x03487_mrna_1\ncagacgttcttcgc/
@@ -1656,7 +1888,9 @@ AP compseq
 CL tembl:hsfau 2 result3.comp
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI result3.comp
 FZ = 912
 FP /^Total count\s+517\n/
@@ -1669,7 +1903,9 @@ AP compseq
 CL tembl:hsfau 6 result6.comp -nozero
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI result6.comp
 FZ = 18689
 FP /^Total count\s+513\n/
@@ -1682,7 +1918,9 @@ AP compseq
 CL tembl:hsfau 3 result3.comp -frame 2 -in ../../data/prev.comp
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI result3.comp
 FZ = 2697
 FP /^Total count\s+172\n/
@@ -1694,7 +1932,9 @@ AP cons
 IN ../../data/dna.msf
 IN aligned.cons
 FI stderr
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FC = 2
 FI aligned.cons
 FZ = 134
@@ -1714,7 +1954,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 19
 FP /^Created cpgplot.ps\n/
@@ -1740,7 +1982,9 @@ IN
 IN
 FI stderr
 FC = 4
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI rnu68037.cpgplot
 FP /RNU68037 from 1 to 1218/
 FP /Observed\/Expected ratio > 0\.60/
@@ -1768,7 +2012,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI rnu68037.cpgreport
 FP /CPGREPORT of RNU68037 from 1 to 1218/
 FP /RNU68037                 12     13    17          1 100\.0    -/
@@ -1786,7 +2032,9 @@ IN tembl:paamir
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI paamir.cusp
 FP /GCA\tA\t\t0\.077\t7\.772\t3/
 FP /GCC\tA\t\t0\.462\t46\.632\t18/
@@ -1802,7 +2050,9 @@ PP export EMBOSSDATA
 IN ../../data
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 DI CODONS 
 //
 
@@ -1812,7 +2062,9 @@ AP cutseq
 CL tembl:paamir gatta2.seq -from=10 -to=12
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI gatta2.seq
 FZ = 2293
 FP /^ggtaccgctcgagcatctgctcgatcaccaccagccgggcgacgggaactgcacgatcta\n/
@@ -1824,7 +2076,9 @@ AP cutseq
 CL tembl:paamir -from=1 -to=20 -out=jsh.seq
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI jsh.seq
 FZ = 2275
 FP /^tgctcgatcaccaccagccgggcgacgggaactgcacgatctacctggcgagcctggagc\n/
@@ -1838,7 +2092,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI starta.seq
 FZ = 92
 FP /\A>PAAMIR X13776[.]1 .* regulation\Z/
@@ -1854,7 +2110,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI paamir.dan
 FZ = 170172
 FP / +1 +20 +64\.9 +70\.0 .* ggtaccgctggccgagcatc *\n/
@@ -1874,7 +2132,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 15
 FP /^Created dan.ps\n/
@@ -1896,7 +2156,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI dan1.dat
 FZ = 46560
 FP /^11\.000000\s+64\.921204\n/
@@ -1922,7 +2184,9 @@ IN
 IN
 FI stderr
 FC = 8
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 322
 FP /\A.{300}\001\000swnew.pin\000/
@@ -1962,7 +2226,9 @@ IN
 IN
 FI stderr
 FC = 8
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 322
 FP /\A.{300}\001\000swnew.pin\000/
@@ -2002,7 +2268,9 @@ IN
 IN
 FI stderr
 FC = 8
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 322
 FP /\A.{300}\001\000swnew.pin\000/
@@ -2030,7 +2298,9 @@ IN
 IN
 FI stderr
 FC = 8
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 322
 FP /\A.{300}\001\000swnew.pin\000/
@@ -2160,7 +2430,9 @@ IN P
 IN
 FI stderr
 FC = 8
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 410
 FP /\A.{300}\001\000swsplit.00.pin\000/
@@ -2187,7 +2459,9 @@ IN P
 IN
 FI stderr
 FC = 8
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 410
 FP /\A.{300}\001\000swsplit.00.pin\000/
@@ -2214,7 +2488,9 @@ IN P
 IN
 FI stderr
 FC = 8
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 410
 FP /\A.{300}\001\000swsplit.00.pin\000/
@@ -2347,9 +2623,10 @@ PP export EMBOSSRC
 CL qapblastsplitexc:FABP_FUGRU test.out -auto
 FI stderr
 FZ = 131
-FP 1 /Error: /
 FP /Error: Unable to read sequence 'qapblastsplitexc:FABP_FUGRU'/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 //
 
 ID dbiblast-split-testinc
@@ -2371,9 +2648,10 @@ PP export EMBOSSRC
 CL qapblastsplitinc:CO9_FUGRU test.out -auto
 FI stderr
 FZ = 130
-FP 1 /Error: /
 FP /Error: Unable to read sequence 'qapblastsplitinc:CO9_FUGRU'/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 //
 
 #############################################
@@ -2391,7 +2669,9 @@ IN
 IN
 FI stderr
 FC = 8
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 322
 FP /\A.{300}\001\000emrod\000/
@@ -2418,7 +2698,9 @@ IN
 IN
 FI stderr
 FC = 8
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 322
 FP /\A.{300}\001\000emrod\000/
@@ -2459,7 +2741,9 @@ IN
 IN
 FI stderr
 FC = 8
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 322
 FP /\A.{300}\001\000emrod\000/
@@ -2570,7 +2854,9 @@ IN
 IN
 FI stderr
 FC = 8
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 322
 FP /\A.{300}\001\000swnew\000/
@@ -2667,7 +2953,9 @@ IN
 IN
 FI stderr
 FC = 8
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 366
 FP /\A.{300}\001\000wormpep.clone.AB\000/
@@ -2774,7 +3062,9 @@ IN
 IN
 FI stderr
 FC = 6
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 322
 FP /\A.{300}\001\000rod\.dat\000/
@@ -2801,7 +3091,9 @@ IN
 IN
 FI stderr
 FC = 6
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 322
 FP /\A.{300}\001\000rod\.dat\000/
@@ -2985,7 +3277,9 @@ IN
 IN
 FI stderr
 FC = 6
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 378
 FP /\A.{300}\001\000new_seq\.dat\000/
@@ -3012,7 +3306,9 @@ IN
 IN
 FI stderr
 FC = 6
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 378
 FP /\A.{300}\001\000new_seq\.dat\000/
@@ -3063,7 +3359,9 @@ IN
 IN
 FI stderr
 FC = 6
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 378
 FP /\A.{300}\001\000new_seq\.dat\000/
@@ -3187,9 +3485,10 @@ PP export EMBOSSRC
 CL qapflatexc-id:FOS_FUGRU test.out -auto
 FI stderr
 FZ = 127
-FP 1 /Error: /
 FP /Error: Unable to read sequence 'qapflatexc-id:FOS_FUGRU'/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 //
 
 ID dbiflat-swiss-testinc
@@ -3211,9 +3510,10 @@ PP export EMBOSSRC
 CL qapflatinc-id:CO9_FUGRU test.out -auto
 FI stderr
 FZ = 127
-FP 1 /Error: /
 FP /Error: Unable to read sequence 'qapflatinc-id:CO9_FUGRU'/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 //
 
 ID dbiflat-genbank-keep
@@ -3227,7 +3527,9 @@ IN
 IN
 FI stderr
 FC = 6
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 570
 ## Pattern needs 's' modifier ... binary data includes a newline
@@ -3259,7 +3561,9 @@ IN
 IN
 FI stderr
 FC = 6
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 606
 FP /\A.{300}\001\000eem_ba1\.ref eem_ba1\.seq\000/
@@ -3436,9 +3740,10 @@ PP export EMBOSSRC
 CL qangcgexc-id:eclac test.out -auto
 FI stderr
 FZ = 122
-FP 1 /Error: /
 FP /Error: Unable to read sequence 'qangcgexc-id:eclac'/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 //
 
 ID dbigcg-testinc
@@ -3460,9 +3765,10 @@ PP export EMBOSSRC
 CL qangcginc-id:hsfau test.out -auto
 FI stderr
 FZ = 122
-FP 1 /Error: /
 FP /Error: Unable to read sequence 'qangcginc-id:hsfau'/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 //
 
 #############################################
@@ -3483,6 +3789,8 @@ IN
 FI stderr
 FC = 6
 FP 0 /Warning:/
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 606
 FP /\A.{300}\001\000eem_ba1\.ref eem_ba1\.seq\000/
@@ -3854,6 +4162,8 @@ IN
 FI stderr
 FC = 6
 FP 0 /Warning:/
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 606
 FP /\A.{300}\001\000eem_ba1\.ref eem_ba1\.seq\000/
@@ -3910,6 +4220,8 @@ IN
 FI stderr
 FC = 6
 FP 0 /Warning:/
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 388
 FP /\A.{300}\001\000pir1\.ref pir1\.seq\000/
@@ -4031,9 +4343,10 @@ PP export EMBOSSRC
 CL qapirexc-id:cchu test.out -auto
 FI stderr
 FZ = 120
-FP 1 /Error: /
 FP /Error: Unable to read sequence 'qapirexc-id:cchu'/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 //
 
 ID dbigcg-pir-testinc
@@ -4055,9 +4368,10 @@ PP export EMBOSSRC
 CL qapirinc-id:S11172 test.out -auto
 FI stderr
 FZ = 122
-FP 1 /Error: /
 FP /Error: Unable to read sequence 'qapirinc-id:S11172'/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 //
 
 
@@ -4079,7 +4393,9 @@ IN
 IN
 FI stderr
 FC = 6
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI division.lkp
 FZ = 388
 FP /\A.{300}\001\000pir1\.ref pir1\.seq\000/
@@ -4354,7 +4670,9 @@ AP degapseq
 CL ../../data/dnagap.fasta nogaps.seq
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI nogaps.seq
 FZ = 138
 FP /^ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT\n/
@@ -4366,7 +4684,9 @@ AP descseq
 CL -seq ../../data/dna.text -out clone23.seq -name "myclone23"
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI clone23.seq
 FZ = 113
 FP /^>myclone23\n/
@@ -4378,7 +4698,9 @@ AP descseq
 CL -seq ../../data/dna.text -out xy24.seq -desc "This is my clone number 244"
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI xy24.seq
 FZ = 142
 FP /EMBOSS_001 This is my clone number 244\n/
@@ -4390,7 +4712,9 @@ AP descseq
 CL -seq ../../data/dna.text -out est4.seq -desc " (submitted)" -append
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI est4.seq
 FZ = 127
 FP /EMBOSS_001  \(submitted\)\n/
@@ -4407,7 +4731,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI ap000504.diffseq
 FP /^# AP000504 overlap starts at 1\n/
 FP /^# AF129756 overlap starts at 6036\n/
@@ -4427,7 +4753,9 @@ IN
 IN
 FI stderr
 FC = 11
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI opsd_human.digest
 FP /^    246     248    346\.378 K      E      AEK\s*\n/
 FP /yields 14 fragments/
@@ -4445,7 +4773,9 @@ IN 2
 IN
 FI stderr
 FC = 6
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI pax.distmat
 FP / Kimura /
 FP /^\s+0[.]00\s+20[.]37\s+PX8A_HUMAN 9\n/
@@ -4458,7 +4788,9 @@ CL tsw:hba_human tsw:hbb_human -graph cps
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI dotmatcher.ps
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
@@ -4473,7 +4805,9 @@ CL tsw:hba_human tsw:hbb_human -xygraph ps -stretch
 IN
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 22
 FP /^Created dotmatcher.ps\n/
@@ -4491,7 +4825,9 @@ TI 400
 CL tembl:AF129756 tembl:AP000504 -word 20 -graph cps -overlaps
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 19
 FP /^Created dotpath.ps\n/
@@ -4513,7 +4849,9 @@ FP /^##Number 118\n/
 FC = 133
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID dottup-ex
@@ -4529,7 +4867,9 @@ FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID dottup-stretch
@@ -4546,7 +4886,9 @@ FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID dreg-ex
@@ -4558,7 +4900,9 @@ FI paamir.dreg
 FP /PAAMIR +1 +GGTACC/
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID einverted-ex
@@ -4576,7 +4920,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsts1.inv
 FP /Score 236: 108/130 \( 83%\) matches, 0 gaps/
 //
@@ -4586,7 +4932,9 @@ UC Display the directories searched for EMBOSS data files:
 AP embossdata
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /Exists\n/
 //
@@ -4597,7 +4945,9 @@ AP embossdata
 CL -showall
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^DIRECTORY: .*data\/?\n/
 FP /^DIRECTORY: .*data\/CODONS\/?\n/
@@ -4611,7 +4961,9 @@ AP embossdata
 CL -filename EPAM60
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^File \.\/EPAM60/
 FP /^File \.embossdata\/EPAM60/
@@ -4623,7 +4975,9 @@ AP embossdata
 CL -fetch -filename Epepcoil.dat
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^File '.*data\/Epepcoil.dat' has been copied successfully\.\n/
 FI Epepcoil.dat
@@ -4635,7 +4989,9 @@ ID embossversion-ex
 AP embossversion
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FC = 1
 FP /^[12]\.\d+(\.\d+)?\n/
@@ -4649,7 +5005,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI 100k_rat.emowse
 FZ = 8246
 FP /^1   100K_RAT/
@@ -4663,7 +5021,9 @@ IN
 IN
 FI stderr
 FC = 3
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 ##
 ## stdout is written by clustalw, invoked by emma
 ##
@@ -4691,7 +5051,9 @@ CL tembl:hsfau
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.entret
 FZ = 2868
 FP /^FT   CDS             57\.\.458\n/
@@ -4703,6 +5065,9 @@ AP eprimer3
 CL tembl:hsfau1 hsfau.eprimer3 -explain
 FI stderr
 FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.eprimer3
 FZ = 1427
 FP /^\n/
@@ -4729,7 +5094,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hhtetra.qtan
 FZ = 532
 FP /^ +191     935     339      6    124\n/
@@ -4743,7 +5110,9 @@ IN tembl:hsnfg9
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hs989235.est2genome
 FZ = 3051
 FP /Note .* forward est and forward genome, .* imply REVERSED GENE/
@@ -4758,7 +5127,9 @@ IN ../../data/z83307.seq
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI pax6.est2genome
 FZ = 2104
 FP /Note .* forward est and forward genome, .* imply forward gene/
@@ -4774,7 +5145,9 @@ IN ../../data/z83307.seq
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI pax6.est2genome
 FZ = 8087
 FP /Note .* forward est and forward genome, .* imply forward gene/
@@ -4793,7 +5166,9 @@ IN ../../data/z83307.seq
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI pax6.est2genome
 FZ = 8087
 FP /Note .* forward est and forward genome, .* imply forward gene/
@@ -4812,7 +5187,9 @@ IN ../../data/z83307.seq
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI pax6.est2genome
 FZ = 8087
 FP /Note .* forward est and forward genome, .* imply forward gene/
@@ -4828,7 +5205,9 @@ IN ../../data/z83307.seq
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI pax6.est2genome
 FZ = 2104
 FP /Note .* forward est and forward genome, .* imply forward gene/
@@ -4844,7 +5223,9 @@ IN ../../data/z83307.seq
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI pax6.est2genome
 FZ = 2050
 FP /Note requested forward est and forward genome/
@@ -4860,7 +5241,9 @@ IN ../../data/z83307.seq
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI pax6.est2genome
 FZ = 2051
 FP /Note requested reversed est and forward genome/
@@ -4876,7 +5259,9 @@ IN ../../data/z83307.seq
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI pax6.est2genome
 FZ = 47
 FP /Note requested reversed est and forward genome/
@@ -4892,7 +5277,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hhtetra.tan
 FZ = 834
 FC = 29
@@ -4910,6 +5297,9 @@ AP extractfeat
 CL tembl:hsfau1 -type exon stdout
 FI stderr
 FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 743
 FP 5 /^>HSFAU1_/
@@ -4923,6 +5313,9 @@ AP extractfeat
 CL tembl:hsfau1 -type exon -before 10 -after 10 stdout
 FI stderr
 FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 844
 FP 5 /^>HSFAU1_/
@@ -4937,6 +5330,9 @@ AP extractfeat
 CL tembl:*  -type exon -before 5 -after -5 stdout
 FI stderr
 FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 14856
 FP 5 /^>HSFAU1_/
@@ -4963,6 +5359,9 @@ AP extractfeat
 CL tsw:*  -type mod_res -value phosphorylation* -before 3 -after -4 stdout
 FI stderr
 FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 97
 FP 2 /^>/
@@ -4980,7 +5379,9 @@ AP extractseq
 CL tembl:hsfau result.seq -regions '10-20'
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI result.seq
 FZ = 47
 FP /^ctcgactccat\n/
@@ -4993,7 +5394,9 @@ AP extractseq
 CL tembl:hsfau1 result2.seq -regions '10-20 30-45 533-537'
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI result2.seq
 FZ = 71
 FP /^tccctctcgatacactcgggacaagttagggc\n/
@@ -5006,7 +5409,9 @@ AP extractseq
 CL tembl:hsfau1 -reg "782..856,951..1095,1557..1612,1787..1912" stdout
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FC = 8
 FZ = 447
@@ -5020,7 +5425,9 @@ AP extractseq
 CL tembl:hsfau1 -reg "782..856,951..1095,1557..1612,1787..1912" stdout -separate
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FC = 13
 FZ = 564
@@ -5040,7 +5447,9 @@ FZ = 18
 FP /^Created findkm.ps\n/
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI enztest.findkm
 FP /^Vmax = 99.70, Km = 4.894612\n/
 FI findkm.ps
@@ -5056,7 +5465,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.freak
 FP /^24         0.733333\n/
 FP /^36         0.600000\n/
@@ -5072,7 +5483,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hhtetra.fuzznuc
 FZ = 571
 FP /^# HitCount: 2\n/
@@ -5088,7 +5501,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI 100k_rat.fuzzpro
 FZ = 2380
 FP 6 /^# HitCount: 1\n/
@@ -5108,7 +5523,9 @@ IN
 IN
 FI stderr
 FC = 31
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI rnops.fuzztran
 FZ = 1135
 FP /^# HitCount: 9\n/
@@ -5242,7 +5659,9 @@ IN tsw:amic_pseae
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI amic_pseae.garnier
 FP /^#  Residue totals: H:111   E: 98   T: 81   C: 94\n/
 //
@@ -5253,7 +5672,9 @@ CL -sbegin 51 -send 120
 IN tsw:amic_pseae
 IN
 FI stderr
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FC = 2
 FI amic_pseae.garnier
 FZ = 1144
@@ -5266,7 +5687,9 @@ CL tembl:hhtetra
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hhtetra.geecee
 FZ = 42
 FP /^HHTETRA       0\.53\n/
@@ -5279,7 +5702,9 @@ IN tembl:eclaci
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI eclaci.orf
 FZ = 877
 FP /^>ECLACI_1 \[735 - 1112\]/
@@ -5295,7 +5720,9 @@ IN tsw:laci_ecoli
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI laci_ecoli.hth
 FP /^[(]1[)] Score 2160[.]000 length 22 at residues 4->25\n/
 FP /^ Standard_deviations: 6.54\n/
@@ -5307,7 +5734,9 @@ CL tsw:hbb_human
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hbb_human.hmoment
 FZ = 1483
 FP /^Window: 10 Angle: 100 Max uH: 0\.714\n/
@@ -5320,7 +5749,9 @@ CL tsw:laci_ecoli
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI laci_ecoli.iep
 FZ = 761 
 FP /^Isoelectric Point = 6\.8820\n/
@@ -5335,7 +5766,9 @@ CL ../../data/globins.msf
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.infoalign
 FZ = 691
 FP /^msf::.*HBA_HORSE\s+HBA_HORSE\s+144\s+147\s+2\s+3\s+48\s+4\s+92\s+66\.666664\s+\n/
@@ -5348,7 +5781,9 @@ CL ../../data/globins.msf -nousa
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.infoalign
 FZ = 407
 FP /^HBA_HORSE\s+144\s+147\s+2\s+3\s+48\s+4\s+92\s+66\.666664\s+\n/
@@ -5361,7 +5796,9 @@ CL ../../data/globins.msf -only -name -seqlength
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.infoalign
 FZ = 126
 FP /^HBA_HORSE\s+144\n/
@@ -5374,7 +5811,9 @@ CL ../../data/globins.msf -only -name -gapcount -diffcount
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.infoalign
 FZ = 136
 FP /^HBA_HORSE\s+3\s+92\n/
@@ -5387,7 +5826,9 @@ CL ../../data/globins.msf -only -name -gaps
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.infoalign
 FZ = 112
 FP /^HBA_HORSE\s+2\n/
@@ -5400,7 +5841,9 @@ CL ../../data/globins.msf -html
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.infoalign
 FZ = 1590
 FP /^<tr><td>msf::\.\./\.\./data/globins\.msf:HBA_HORSE<\/td>\n/
@@ -5414,7 +5857,9 @@ CL ../../data/globins.msf -refseq 1
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.infoalign
 FZ = 691
 FP /^msf::\S+\s+HBA_HORSE\s+144\s+147\s+2\s+3\s+54\s+18\s+72\s+62.500000\s+\n/
@@ -5443,7 +5888,9 @@ AP infoseq
 CL tembl:paamir
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 202
 FP /^tembl-id:PAAMIR\s+PAAMIR\s+X13776\s+N\s+2167\s+66\.54\s+Pseudomonas/
@@ -5455,7 +5902,9 @@ AP infoseq
 CL tembl:paamir -nousa
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 168
 FP /^PAAMIR\s+X13776\s+N\s+2167\s+66\.54\s+Pseudomonas/
@@ -5467,7 +5916,9 @@ AP infoseq
 CL tembl:paamir -only -name -length
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 19
 FP /^PAAMIR\s+2167\n/
@@ -5479,7 +5930,9 @@ AP infoseq
 CL tembl:paamir -only -desc
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 75
 FP /^Pseudomonas aeruginosa .* regulation\n/
@@ -5491,7 +5944,9 @@ AP infoseq
 CL tembl:paamir -only -type
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 2
 FP /^N\n/
@@ -5503,7 +5958,9 @@ AP infoseq
 CL tembl:paamir -html
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 354
 FP /^<tr><td>tembl-id:PAAMIR</td><td>PAAMIR</td><td>X13776</td><td>N</td><td>2167</td><td>66.54 </td><td>Pseudomonas .* regulation</td></tr>\n/
@@ -5516,7 +5973,9 @@ CL tembl:AF129756  -graph cps
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI af129756.iso
 FZ = 22819
 FP /^5000\s+0.476\n/
@@ -5536,6 +5995,9 @@ CL jctl.file
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI file1.list
 FZ = 115
 FC = 4
@@ -5556,7 +6018,9 @@ FZ = 18
 FP /^Created lindna.ps\n/
 FI stderr
 FC = 5
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI lindna.ps
 FZ = 14370
 FP /^%%Title: PLplot Graph\n/
@@ -5571,6 +6035,9 @@ CL ../../data/file1 ../../data/file2
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI file1.list
 FZ = 115
 FC = 4
@@ -5586,6 +6053,9 @@ CL ../../data/file1 ../../data/file2 -operator and
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI file1.list
 FZ = 58
 FC = 2
@@ -5601,6 +6071,9 @@ CL ../../data/file1 ../../data/file2 -operator xor
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI file1.list
 FZ = 57
 FC = 2
@@ -5616,6 +6089,9 @@ CL ../../data/file1 ../../data/file2 -operator not
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI file1.list
 FZ = 28
 FC = 1
@@ -5631,7 +6107,9 @@ IN tembl:u01317
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hshbb.marscan 
 FZ = 1524
 FP /\t2242\t2458\t.*start8bp 2451".*end8bp 2458".*start16bp 2242".*end16bp 2257"\n/
@@ -5644,7 +6122,9 @@ CL tembl:ab000360
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI ab000360.fasta
 FZ = 2685
 FP /^>AB000360 /
@@ -5658,7 +6138,9 @@ CL tembl:ab000360 -tolower -supper
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI ab000360.fasta
 FZ = 2685
 FP /^>AB000360 /
@@ -5671,7 +6153,9 @@ AP maskseq
 CL ../../data/prot.fasta prot2.seq -reg=10-12
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI prot2.seq
 FZ = 146
 FP /^ACDEFGHIKXXXPQRSTVWYACDEFGHIKLMNPQRSTVWYACDEFGHIKLMNPQRSTVWY\n/
@@ -5683,7 +6167,9 @@ AP maskseq
 CL ../../data/prot.fasta prot2.seq -reg=20-30 -mask=x
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI prot2.seq
 FZ = 146
 FP /^ACDEFGHIKLMNPQRSTVWxxxxxxxxxxxMNPQRSTVWYACDEFGHIKLMNPQRSTVWY\n/
@@ -5695,7 +6181,9 @@ AP maskseq
 CL ../../data/prot.fasta prot2.seq -reg=20-23,34-45,88-90
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI prot2.seq
 FZ = 146
 FP /^ACDEFGHIKLMNPQRSTVWXXXXEFGHIKLMNPXXXXXXXXXXXXGHIKLMNPQRSTVWY\n/
@@ -5708,7 +6196,9 @@ AP maskseq
 CL ../../data/prot.fasta prot2.seq -reg=20-23,34-45,88-90 -tolower
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI prot2.seq
 FZ = 146
 FP /^ACDEFGHIKLMNPQRSTVWyacdEFGHIKLMNPqrstvwyacdefGHIKLMNPQRSTVWY\n/
@@ -5721,7 +6211,9 @@ CL tsw:hba_human tsw:hbb_human
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hba_human.matcher
 FP /^# Identity: +63\/145 \(43\.4%\)/
 FP /^# Score: +264\n/
@@ -5736,7 +6228,9 @@ CL tsw:hba_human tsw:hbb_human -alt 10
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hba_human.matcher
 FP /^# Identity: +63\/145 \(43\.4%\)/
 FP /^# Score: +264\n/
@@ -5753,7 +6247,9 @@ IN
 IN report
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI report
 FZ = 30354
 FP /^AP000504 overlap starts at 1\n/
@@ -5775,7 +6271,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI eclacy.out2 
 FZ > 1445
 FP /^# Score: 795\.0\n/
@@ -5799,7 +6297,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI eclacy.out2
 FZ > 1445
 FP /^# Score: 795\.0\n/
@@ -5823,7 +6323,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI eclacy.out2
 FZ > 1445
 FP /^# Score: 795\.0\n/
@@ -5847,7 +6349,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI eclacy.out2
 FZ > 1445
 FP /^# Score: 795\.0\n/
@@ -5873,7 +6377,9 @@ IN
 IN
 FI stderr
 FC = 26
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 ##
 ## hard to test - different changes each time
 FI eclac.fasta 
@@ -5888,6 +6394,9 @@ IN
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI outfile.mwcontam
 FZ = 15
 FP /^67\.000\n/
@@ -5901,6 +6410,9 @@ IN
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI molwts.mwfilter
 FZ = 190
 FC = 16
@@ -5915,7 +6427,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hba_human.needle 
 FZ > 1270
 FP /^# Score: 290\.5\n/
@@ -5934,7 +6448,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI rnu68037.newcpgreport
 FZ = 542
 FP /^FT   CpG island       104\.\.509\n/
@@ -5953,7 +6469,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI rnu68037.newcpgseek
 FZ = 279
 FP /^with score \> 17 \n/
@@ -5973,7 +6491,9 @@ IN swiss::mycc.pep
 IN KKKEERADLIAY
 FI stderr
 FC = 5
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI mycc.pep
 FZ = 162
 FP /^ID   cytoc          STANDARD;      PRT;    12 AA\.\n/
@@ -5987,7 +6507,9 @@ CL ../../data/abc.dat
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI abc.noreturn
 FZ = 71
 FP /carriage return format\nACDEFGHIKLMNPQRSTVWY\n/
@@ -6002,7 +6524,9 @@ IN myg_phyca,lgb2_luplu
 IN mydata.seq
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI mydata.seq
 FZ = 926
 FP /^>HBA_HUMAN/
@@ -6023,7 +6547,9 @@ IN hb*
 IN mydata.seq
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI mydata.seq
 FZ = 581
 FP 0 /^>HBA_HUMAN/
@@ -6044,7 +6570,9 @@ IN 2
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI eclac.fasta
 FZ = 1942
 FP /^>ECLACA X51872.1 Escherichia coli lacA gene/
@@ -6059,7 +6587,9 @@ FZ = 19
 FP /^Created octanol.ps\n/
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI octanol.ps
 FZ = 17968
 FP /^%%Title: PLplot Graph\n/
@@ -6076,7 +6606,9 @@ IN
 IN out.odd
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI out.odd
 FP /CB1B_FUGRU/
 FZ = 175
@@ -6093,7 +6625,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsts1.pal
 FZ = 1383
 FP /^Palindromes:\n126   caaaaaaaaaaaaaaaa   142\n/
@@ -6110,7 +6644,9 @@ CL tsw:amir_pseae tsw:flav_nossm -pos=67
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI amir_pseae.fasta
 FZ = 276
 FP /^FQNGHHDSKKIGLFYGTZTGKTESVAEIIDEFGDEVVTLDIDEIAALLAAGTPRTTLVAL\n/
@@ -6122,7 +6658,9 @@ AP pasteseq
 CL tsw:amir_pseae tsw:flav_nossm -out=amirplus.seq -pos=67
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI amirplus.seq
 FZ = 276
 FP /^FQNGHHDSKKIGLFYGTZTGKTESVAEIIDEFGDEVVTLDIDEIAALLAAGTPRTTLVAL\n/
@@ -6134,7 +6672,9 @@ AP pasteseq
 CL tsw:amir_pseae tsw:flav_nossm -out=amirplus.seq -pos=0
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI amirplus.seq
 FZ = 276
 FP /^DALVLQLIRIGCSVRQCWPPPEAFDVPVDVVFTSIFQNGHHDEIAALLAAGTPRTTLVAL\n/
@@ -6147,7 +6687,9 @@ IN st[ty]s
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI 100k_rat.patmatdb 
 FZ = 1285
 FP /^# Sequence: HD_FUGRU     from: 1   to: 3148\n# HitCount: 1\n/
@@ -6168,7 +6710,9 @@ IN tsw:opsd_human
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI opsd_human.patmatmotifs
 FP /^# HitCount: 2\n/
 FP /^# Motif: OPSIN\n# Count: 1\n/
@@ -6186,7 +6730,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI gcn4_yeast.pepcoil 
 FZ = 258
 FP /^Other structures from 1 to 232 \(232 residues\)\n/
@@ -6205,7 +6751,9 @@ IN cps
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 19
 FP /^Created pepinfo.ps\n/
@@ -6229,7 +6777,9 @@ IN 274
 IN cps
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 18
 FP /^Created pepnet.ps\n/
@@ -6245,7 +6795,9 @@ IN tsw:laci_ecoli
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI laci_ecoli.pepstats
 FZ = 1315
 FP /^Molecular weight = 38563\.97/
@@ -6262,7 +6814,9 @@ CL tsw:hbb_human -send 30
 IN cps
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 20
 FP /^Created pepwheel.ps\n/
@@ -6278,7 +6832,9 @@ CL tsw:hba_human
 IN cps
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 21
 FP /^Created pepwindow.ps\n/
@@ -6296,7 +6852,9 @@ CL tsw:hba_human
 IN ps
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 21
 FP /^Created pepwindow.ps\n/
@@ -6314,7 +6872,9 @@ CL tsw:hba_human -datafile chop780101
 IN ps
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 21
 FP /^Created pepwindow.ps\n/
@@ -6334,7 +6894,9 @@ IN ps
 FI stderr
 FC = 3
 FP /^Error: Unable to open data file 'fail780101' for input\n/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 # change example to globins.msf (plural)
@@ -6344,7 +6906,9 @@ CL ../../data/globins.msf -gxtitle="Base Number" -gytitle="hydropathy"
 IN cps
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 24
 FP /^Created pepwindowall.ps\n/
@@ -6363,7 +6927,9 @@ IN
 IN 
 FI stderr
 FC = 6
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 20
 FP /^Created pestfind.ps\n/
@@ -6382,7 +6948,9 @@ CL -sformat msf ../../data/globins.msf -graph cps
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 19
 FP /^Created plotcon.ps\n/
@@ -6398,7 +6966,9 @@ IN tembl:paamir
 IN cps
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 19
 FP /^Created plotorf.ps\n/
@@ -6416,7 +6986,9 @@ IN ../../data/mito.seq
 IN cps
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 19
 FP /^Created plotorf.ps\n/
@@ -6433,7 +7005,9 @@ CL -graph cps
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 19
 FP /^Created polydot.ps\n/
@@ -6449,7 +7023,9 @@ IN IA[QWF]A
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI 100k_rat.preg
 FZ = 94
 FP /^       100K_RAT   390 IAQA\n/
@@ -6462,7 +7038,9 @@ IN ../../data/globins.msf
 IN cps
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 22
 FP /^Created prettyplot.ps\n/
@@ -6477,7 +7055,9 @@ CL ../../data/globins.msf -plurality=3 -docolour
 IN cps
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 22
 FP /^Created prettyplot.ps\n/
@@ -6493,7 +7073,9 @@ IN 135-1292
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI paamir.prettyseq 
 FZ = 8166 
 FP / 121 AGGAGAGGAAACGGatgggatcgcaccaggagcggccgctgatcggcctgctgttctccg 180\n/
@@ -6508,7 +7090,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsa203yc1.primersearch
 FZ = 405
 FP /^Primer name D1S2660\nAmplimer 1\n/
@@ -6528,7 +7112,9 @@ IN 20
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsa203yc1.primersearch
 FZ = 686
 FP /^Amplimer 1\n\tSequence: HSA203YC1 Z52466 \n/
@@ -6548,7 +7134,9 @@ FP /^\tCACACATGCACATGCAC hits forward strand at 49 with 2 mismatches\n/
 ##IN
 ##FI stderr
 ##FC = 2
-##FP 0 /Warning:/
+##FP 0 /Warning: /
+##FP 0 /Error: /
+##FP 0 /Died: /
 ##FI hs214yg7.primersearch
 ##FZ = 0
 ##//
@@ -6563,7 +7151,9 @@ AP printsextract
 IN ../../data/prints.test
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 DI PRINTS
 //
 
@@ -6577,7 +7167,9 @@ IN tsw:*
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI outfile.profit
 FZ = 122
 FP /^HBB_HUMAN/
@@ -6592,7 +7184,9 @@ IN
 IN
 FI stderr
 FC = 6
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.prophecy 
 FZ = 13782
 FC = 173
@@ -6611,7 +7205,9 @@ IN
 IN
 FI stderr
 FC = 6
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.prophecy 
 ##
 ## Do not check file size. AIX reports -0.00 in some positions
@@ -6633,7 +7229,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hd_fugru.prophet
 FP /^Score: 170.08\n/
 FP /^Consensus +15 +ELSAVDKAWVKAN\.SVAEVGGHALERGLFASEPMTLEFFDTFKYL 58 +\n/
@@ -6650,7 +7248,9 @@ PP export EMBOSS_DATA
 IN ../../data/
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 DI PROSITE
 //
 
@@ -6665,7 +7265,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI opsd_human.pscan 
 FZ = 794
 FP /^Fingerprint GPCRRHODOPSN Elements 7\n    Accession number PR00237\n/
@@ -6684,7 +7286,9 @@ PP export EMBOSS_DATA
 IN ../../data/withrefm
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 DI REBASE
 //
 
@@ -6698,7 +7302,9 @@ IN EcoRII
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.recoder
 FZ = 2563
 FP 3 /^EcoRII      CCWGG          77        P\.P    78       C->[ACGT]  \n/
@@ -6714,7 +7320,9 @@ IN BamHI
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI outfile.redata
 FP /\ABamHI\n/
 FP /^Recognition site is GGATCC leaving sticky ends\n/
@@ -6734,7 +7342,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI eclac.remap 
 FZ = 1064
 FP /^# Enzymes that cut.*\n(\s+\S+\s+1\s+\n){4}\n/
@@ -6758,7 +7368,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI eclac.remap
 FZ = 1663
 FP /^\s+Hin6I\s+2\s+HinP1I,HspAI\n/
@@ -6776,7 +7388,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI eclac.remap
 FZ = 2060
 FP /^\s+Hin6I\s+2\s+HinP1I,HspAI\n/
@@ -6792,7 +7406,9 @@ IN cg
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.restover
 FZ = 1122
 FP /^# Number of hits with any overlap: 53\n/
@@ -6810,7 +7426,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.restrict
 FP /^\s+11\s+14\s+0\s+TaqI\s+TCGA\s+11\s+13\s+[.]\s+[.]\n/
 FP /^\s+125\s+135\s+0\s+Hin4I\s+GAYNNNNNVTC\s+116\s+111\s+148\s+143\n/
@@ -6822,7 +7440,9 @@ AP revseq
 CL tembl:hsfau hsfau.rev
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.rev
 FZ = 562
 FP /^gtcccagctaccgcgaagatggagtcgagaaagaggaa\n/
@@ -6834,7 +7454,9 @@ AP revseq
 CL tembl:hsfau hsfau.rev -norev
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.rev
 FZ = 562
 FP /^agattattttttcggtgaatcaagtcagtttttttttt\n/
@@ -6846,7 +7468,9 @@ AP revseq
 CL tembl:hsfau hsfau.rev -nocomp
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.rev
 FZ = 562
 FP /^cagggtcgatggcgcttctacctcagctctttctcctt\n/
@@ -6857,7 +7481,9 @@ AP seealso
 IN matcher
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ > 289
 FP /^seqmatchall/
@@ -6874,7 +7500,9 @@ IN 15
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI eclac.seqmatchall
 FZ = 210
 FP /^1832  5646 7477 ECLAC 1 1832 ECLACA\n/
@@ -6946,9 +7574,11 @@ AP seqret
 CL -auto @../../data/bad.list test.out -osf embl
 FI stderr
 FZ = 112
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 0 /Died: /
 FP /^Error: failed to open filename '\.\.\/\.\.\/data\/alignc\.prot'\n/
 FP /^Error: Unable to read sequence '\.\.\/\.\.\/data\/alignc\.prot'\n/
-FP 0 /Warning:/
 FI test.out
 FP 3 /^ID   .* AA\.\n/
 FP /^SQ   SEQUENCE    56 AA;   6466 MW;  48CB2E252357CBF6 CRC64;/
@@ -6960,7 +7590,9 @@ CL -auto @../../data/ugly.list test.out -osf embl
 FI stderr
 FZ = 46
 FP /^Error: Unable to read sequence 'tembl:eclacj'\n/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FI test.out
 FP 2 /^ID   .* BP\.\n/
 FP /^SQ   Sequence 3078 BP; 682 A; 841 C; 886 G; 669 T; 0 other;/
@@ -6972,7 +7604,9 @@ CL -auto @../../data/uglyfirst.list test.out -osf embl
 FI stderr
 FZ = 46
 FP /^Error: Unable to read sequence 'tembl:eclacj'\n/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FI test.out
 FP 2 /^ID   .* BP\.\n/
 FP /^SQ   Sequence 3078 BP; 682 A; 841 C; 886 G; 669 T; 0 other;/
@@ -6984,7 +7618,9 @@ CL -auto @../../data/uglylast.list test.out -osf embl
 FI stderr
 FZ = 46
 FP /^Error: Unable to read sequence 'tembl:eclacj'\n/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FI test.out
 FP 2 /^ID   .* BP\.\n/
 FP /^SQ   Sequence 3078 BP; 682 A; 841 C; 886 G; 669 T; 0 other;/
@@ -6998,8 +7634,9 @@ FZ = 138
 FP /^Error: Unable to read sequence 'tembl:eclacj'\n/
 FP /^Error: Unable to read sequence 'tembl:eclack'\n/
 FP /^Error: Unable to read sequence 'tembl:eclacl'\n/
-FP 3 /^Error: /
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 3 /Error: /
+FP 0 /Died: /
 FI test.out
 FP 2 /^ID   .* BP\.\n/
 FP /^SQ   Sequence 3078 BP; 682 A; 841 C; 886 G; 669 T; 0 other;/
@@ -7183,7 +7820,9 @@ AP seqret
 CL -auto ../../data/dna.ig test.out -osf embl
 FI stderr
 FP /Unable to read sequence .*/dna\.ig/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 //
 
 ID seqret-inusa-ig
@@ -7715,7 +8354,9 @@ ER 1
 FI stderr
 FZ = 109
 FP /Error: Unable to read sequence 'stdin'/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 //
 
 ID seqret-in-badformat
@@ -7726,7 +8367,9 @@ AP seqret
 CL -auto ../../data/dna.fasta -sf badformat test.out -osf embl
 FI stderr
 FP /Unknown input format 'badformat'/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FI test.out
 FP /^ID   .* 100 BP\.\n/
 FP /SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
@@ -7740,7 +8383,9 @@ AP seqret
 CL -auto badformat::../../data/dna.fasta test.out -osf embl
 FI stderr
 FP /Unknown input format 'badformat'/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 FI test.out
 FP /^ID   .* 100 BP\.\n/
 FP /SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
@@ -8883,8 +9528,9 @@ FI stderr
 FZ = 207
 FP /Error: Unknown query field 'bad' in USA '../../embl/rod.dat:bad:MMAM'/
 FP /Error: Unable to read sequence 'embl::../../embl/rod.dat:bad:MMAM'/
+FP 0 /Warning: /
 FP 2 /Error: /
-FP 0 /Warning:/
+FP 0 /Died: /
 //
 
 ID seqret-query-direct-name
@@ -8911,9 +9557,10 @@ AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:FAIL
 FI stderr
 FZ = 133
-FP 1 /^Error: /
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:FAIL'/
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 //
 
 ID seqret-query-direct-id
@@ -8941,8 +9588,9 @@ CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ID:FAIL
 FI stderr
 FZ = 136
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ID:FAIL'/
-FP 1 /^Error: /
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 //
 
 ID seqret-query-direct-acc
@@ -8970,8 +9618,9 @@ CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ACC:Z99999
 FI stderr
 FZ = 139
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ACC:Z99999'/
-FP 1 /^Error: /
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 //
 
 ID seqret-query-direct-accfail2
@@ -8981,8 +9630,9 @@ CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ACC:99999Z
 FI stderr
 FZ = 139
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ACC:99999Z'/
-FP 1 /^Error: /
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 //
 
 ID seqret-query-direct-sv
@@ -9010,8 +9660,9 @@ CL -auto -out test.out -osf embl embl::../../embl/rod.dat:SV:Z99999.1
 FI stderr
 FZ = 140
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:SV:Z99999.1'/
-FP 1 /^Error: /
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 //
 
 ID seqret-query-direct-des
@@ -9039,8 +9690,9 @@ CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:lynam
 FI stderr
 FZ = 138
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:DES:lynam'/
-FP 1 /^Error: /
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 //
 
 ID seqret-query-direct-deswordstart
@@ -9086,8 +9738,9 @@ CL -auto -out test.out -osf embl embl::../../embl/rod.dat:KEY:CHAIN
 FI stderr
 FZ = 138
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:KEY:CHAIN'/
-FP 1 /^Error: /
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 //
 
 ID seqret-query-direct-org
@@ -9127,8 +9780,9 @@ CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ORG:HOMO
 FI stderr
 FZ = 137
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ORG:HOMO'/
-FP 1 /^Error: /
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
 //
 
 ID seqret-query-srs-badfield
@@ -9143,8 +9797,9 @@ FI stderr
 FZ = 205
 FP /^Error: USA 'qasrs-bad:AB000095' query field 'bad' not defined for database 'qasrs'/
 FP /^Error: Unable to read sequence 'qasrs-bad:AB000095'/
-FP 2 /^Error: /
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 0 /Died: /
 //
 
 ID seqret-query-srs-badfield2
@@ -9159,8 +9814,10 @@ FI stderr
 FZ = 205
 FP /^Error: USA 'qasrs-key:AB000095' query field 'key' not defined for database 'qasrs'/
 FP /^Error: Unable to read sequence 'qasrs-key:AB000095'/
-FP 2 /^Error: /
-FP 0 /Warning:/
+FP /^Error: Unable to read sequence 'qasrs-bad:AB000095'/
+FP 0 /Warning: /
+FP 2 /Error: /
+FP 0 /Died: /
 //
 
 ID seqret-query-srs-id
@@ -9221,9 +9878,9 @@ CL -auto -out test.out -osf embl qasrs-id:OLD
 FI stderr
 FZ = 116
 FP /^Error: Unable to read sequence 'qasrs-id:OLD'/
-FP 1 /^Error: /
-FP 1 /^Died: /
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 //
 
 ID seqret-query-srsfasta-id
@@ -9284,9 +9941,9 @@ CL -auto -out test.out -osf embl qasrsfasta-id:OLD
 FI stderr
 FZ = 121
 FP /^Error: Unable to read sequence 'qasrsfasta-id:OLD'/
-FP 1 /^Error: /
-FP 1 /^Died: /
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 //
 
 ID seqret-query-srswww-id
@@ -9347,8 +10004,9 @@ CL -auto -out test.out -osf embl qasrswww-id:OLD
 FI stderr
 FZ = 119
 FP /^Error: Unable to read sequence 'qasrswww-id:OLD'/
-FP 1 /^Error: /
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 //
 
 ####################################################
@@ -9367,6 +10025,9 @@ IN tembl:hsfau
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.fasta
 FP /HSFAU/
 //
@@ -9380,6 +10041,9 @@ FI stdout
 FP /HSFAU/
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID seqret-ex3
@@ -9390,6 +10054,9 @@ IN tembl:hsfau
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.gcg
 FP /HSFAU/
 //
@@ -9402,6 +10069,9 @@ CL -outseq gcg::hsfau.gcg
 IN tembl:hsfau
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.gcg
 FP /HSFAU/
 //
@@ -9414,6 +10084,9 @@ IN tembl:hsfau
 IN gcg::hsfau.gcg
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.gcg
 FP /HSFAU/
 //
@@ -9426,6 +10099,9 @@ IN tembl:hsfau
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.fasta
 FP /HSFAU/
 //
@@ -9438,6 +10114,9 @@ IN tembl:hsfau
 IN 
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.fasta
 FP /HSFAU/
 //
@@ -9451,6 +10130,9 @@ IN tembl:hsfau
 IN 
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.fasta
 FP /HSFAU/
 //
@@ -9463,6 +10145,9 @@ IN tembl:hs*
 IN hsall.seq
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsall.seq
 FP /HSFAU/
 //
@@ -9477,6 +10162,9 @@ AP seqret
 CL tembl:hs\*  hsall.seq
 FI stderr
 FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsall.seq
 FP /HSFAU/
 //
@@ -9494,6 +10182,9 @@ IN tembl:hsfau
 IN embl::hsfau.embl
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.embl
 FP /HSFAU/
 //
@@ -9530,7 +10221,9 @@ CL tembl:hsfa*
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.fasta
 FZ = 562
 FP /^>HSFAU /
@@ -9719,7 +10412,9 @@ IN ../../data/globins.msf
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.showalign
 FZ = 2235
 FP /^HBB_HUMAN  --------VHLTPE\.K\.AVTALWG\.VN-VD\.V\.GEA\.GR-LLVvY\.WTQR\.\.ES\.GD\.ST\n/
@@ -9734,7 +10429,9 @@ IN ../../data/globins.msf
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.showalign
 FP /HBB_HUMAN/
 //
@@ -9747,7 +10444,9 @@ IN ../../data/globins.msf
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.showalign
 FP /HBB_HUMAN/
 //
@@ -9760,7 +10459,9 @@ IN ../../data/globins.msf
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.showalign
 FP /HBB_HUMAN/
 //
@@ -9773,7 +10474,9 @@ IN ../../data/globins.msf
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.showalign
 FP /HBB_HUMAN/
 //
@@ -9786,7 +10489,9 @@ IN ../../data/globins.msf
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.showalign
 FP /HBB_HUMAN/
 //
@@ -9799,7 +10504,9 @@ IN ../../data/globins.msf
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.showalign
 FP /HBB_HUMAN/
 //
@@ -9812,7 +10519,9 @@ IN ../../data/globins.msf
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.showalign
 FP /HBB_HUMAN/
 //
@@ -9825,7 +10534,9 @@ IN ../../data/globins.msf
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.showalign
 FP /HBB_HUMAN/
 //
@@ -9838,7 +10549,9 @@ IN ../../data/globins.msf
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.showalign
 FP /HBB_HUMAN/
 //
@@ -9851,7 +10564,9 @@ IN ../../data/globins.msf
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.showalign
 FP /HBB_HUMAN/
 //
@@ -9869,7 +10584,9 @@ IN ../../data/globins.msf
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI globins.showalign
 FP /HBB_HUMAN/
 //
@@ -9879,7 +10596,9 @@ UC Display information on the currently available databases:
 AP showdb
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^tsw\s+P\s+OK\s+OK\s+OK/
 FP /^tembl\s+N\s+OK\s+OK\s+OK/
@@ -9891,7 +10610,9 @@ AP showdb
 CL -outfile showdb.out
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI showdb.out
 FP /^tsw\s+P\s+OK\s+OK\s+OK/
 FP /^tembl\s+N\s+OK\s+OK\s+OK/
@@ -9903,7 +10624,9 @@ AP showdb
 CL -database tsw
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^tsw\s+P\s+OK\s+OK\s+OK/
 FP 0 /^tembl/
@@ -9915,7 +10638,9 @@ AP showdb
 CL -html
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^<tr><td>tsw</td><td>P</td><td>OK/
 FP /^<tr><td>tembl</td><td>N</td><td>OK/
@@ -9927,7 +10652,9 @@ AP showdb
 CL -nonucleic
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^tsw\s+P\s+OK\s+OK\s+OK/
 FP 0 /^[^#]\S*\s+N/
@@ -9939,7 +10666,9 @@ AP showdb
 CL -noheading
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /\A\S+\s+[PN]\s+/
 FP 0 /\A#/
@@ -9960,7 +10689,9 @@ AP showdb
 CL -only -type
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^tsw\s+P\s+\n/
 FP /^tembl\s+N\s+\n/
@@ -9972,7 +10703,9 @@ IN tembl:hsfau1
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau1.showfeat 
 FZ = 1429
 FP /\|=+\| 2016\n/
@@ -9988,7 +10721,9 @@ IN tembl:hsfau1
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau1.showfeat 
 FZ = 1150
 FP /\|=+\| 2016\n/
@@ -10004,7 +10739,9 @@ IN tembl:hsfau1
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau1.showfeat 
 FZ = 54
 FP /CDS/
@@ -10017,7 +10754,9 @@ IN
 IN
 FI stderr
 FC = 10
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI paamir.showorf
 FZ = 22690
 FP /^F1 +1 G  T  A  G  R  A  S  A  R  S  P  P  A  G  R  R  E  17\n/
@@ -10031,7 +10770,9 @@ IN
 IN
 FI stderr
 FC = 12
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI paamir.showseq 
 FZ = 793
 FP 2 /^\s+\|=+\|\n\s+promoter note="/
@@ -10055,7 +10796,9 @@ IN b,s,t,c
 IN 
 FI stderr
 FC = 28
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI paamir.showseq 
 FZ = 511
 FP /^          ggtacc/
@@ -10068,7 +10811,9 @@ CL tembl:paamir -sbeg 1 -send 100 -noname -nodesc -format 0 -thing S
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI paamir.showseq 
 FZ = 143
 FP /^          ggtacc/
@@ -10081,7 +10826,9 @@ CL tsw:rs24_fugru -three -format 2
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI rs24_fugru.showseq
 FZ = 990
 FP /^          MAATVT/
@@ -10094,7 +10841,9 @@ CL tembl:paamir -sbeg 1 -send 100 -format 1 -number
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI paamir.showseq 
 FZ = 232
 FP /^        1 ggtacc/
@@ -10107,7 +10856,9 @@ CL tembl:paamir -sbeg 1 -send 100 -format 1 -number -offset 123
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI paamir.showseq 
 FZ = 233
 FP /^      123 ggtacc/
@@ -10120,7 +10871,9 @@ CL tembl:paamir -sbeg 1 -send 100 -format 1 -slower -upper '25-45,101-203,333-36
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI paamir.showseq 
 FZ = 225
 FP /tgctCGAT/
@@ -10133,7 +10886,9 @@ CL tembl:paamir -sbeg 1 -send 120 -format 4 -trans 25-49,66-76
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI paamir.showseq 
 FZ = 937
 FP /R  S  P  P  A  G  R  R  V/
@@ -10146,7 +10901,9 @@ CL tembl:paamir -sbeg 1 -send 100 -format 2 -send 120 -annotation '13-26 binding
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI paamir.showseq 
 FZ = 919
 FP /binding site/
@@ -10160,7 +10917,9 @@ IN tembl:mmam
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 ##
 ## hard to test - randomised but same length
 ##
@@ -10177,7 +10936,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI ach2_drome.sig
 FP /^[(]1[)] Score 13\.739 length 13 at residues 29->41\n/
 FP /^ Sequence: LLVLLLLCETVQA\n/
@@ -10193,7 +10954,9 @@ IN ecori,hindiii
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.silent 
 FZ = 565
 FP /^HindIII     AAGCTT         267       A\.A    268      A->T  \n/
@@ -10206,7 +10969,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI paamir.sixpack
 FZ = 25535
 FP /^          P  P  A  W  A  G  D  R  S  H  E  R  Q  L  A  A  R  Q  P  A     F1\n/
@@ -10228,7 +10993,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI paamir.sixpack
 FZ = 25535
 FP /^          P  P  A  W  A  G  D  R  S  H  E  R  Q  L  A  A  R  Q  P  A     F1\n/
@@ -10249,6 +11016,9 @@ IN
 IN 
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.sirna
 FZ = 7238
 FP /GAAGAAGACAGGUCGGGCUdTdT AGCCCGACCUGUCUUCUUCdTdT/
@@ -10266,6 +11036,9 @@ IN
 IN 
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.sirna
 FZ = 7721
 FP /\(AA\)GAAGAAGACAGGUCGGGCUdTdT AGCCCGACCUGUCUUCUUCdTdT/
@@ -10282,6 +11055,9 @@ IN
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI eclac.fasta
 FZ = 15618
 FP 5 /^>/
@@ -10295,6 +11071,9 @@ IN tembl:eclac*
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI eclac.fasta
 FZ = 7940
 FP 4 /^>/
@@ -10306,7 +11085,9 @@ AP splitter
 CL tembl:AP000504 ap000504.split
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI ap000504.split
 FZ = 102677
 FP /\A>AP000504_1-10000/
@@ -10321,7 +11102,9 @@ AP splitter
 CL tembl:AP000504 ap000504.split -size=50000 -over=3000
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI ap000504.split
 FZ = 108068
 FP /\A>AP000504_1-50000/
@@ -10336,7 +11119,9 @@ CL tsw:hba_human tsw:hbb_human
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hba_human.stretcher
 FZ > 1442
 FP /^# Matrix: EBLOSUM62\n/
@@ -10355,7 +11140,9 @@ IN ../../data/lac.primers
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI eclac.stssearch
 FZ = 710
 FP /^ECLAC: PrimA PrimerA matched at 532\n/
@@ -10371,7 +11158,9 @@ IN 3.0
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout 
 FZ = 0
 FI supermatcher.error
@@ -10393,7 +11182,9 @@ IN 3.0
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout 
 FZ = 0
 FI supermatcher.error
@@ -10413,7 +11204,9 @@ IN tembl:paamir
 IN ps
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 16
 FP /^Created syco.ps\n/
@@ -10432,7 +11225,9 @@ IN
 IN 
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau1.tcode
 FZ = 21691
 FP /^      1     200   0.673 Non-coding/
@@ -10448,7 +11243,9 @@ IN tembl:hsfau1
 IN 
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 17
 FP /^Created tcode.ps\n/
@@ -10465,7 +11262,9 @@ CL tsw:* 'lactose'
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI 100k_rat.textsearch
 FZ = 169
 FP /^tsw-id:LACI_ECOLI LACI_ECOLI    P03023\s+LACTOSE OPERON REPRESSOR/
@@ -10479,7 +11278,9 @@ CL tsw:*_ecoli 'lactose | permease'
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI laci_ecoli.textsearch
 FZ = 180
 FP /^tsw-id:LACI_ECOLI LACI_ECOLI    P03023\s+LACTOSE OPERON REPRESSOR/
@@ -10493,7 +11294,9 @@ AP textsearch
 CL tembl:* 'lacz' -html -outfile embl.lacz.html
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI embl.lacz.html
 FZ = 349
 FP /^<tr><td>tembl-id:ECLAC</td><td>ECLAC</td><td>J01636</td>\s+<td>E.coli lactose operon with lacI, lacZ, lacY and lacA genes.</td></tr>/
@@ -10507,7 +11310,9 @@ PP export EMBOSS_DATA
 IN ../../data/site.dat
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 0
 FI tffungi
@@ -10534,7 +11339,9 @@ CC On some systems 'more' also reports the filename at the start of the output
 CL wossname
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ > 47000
 FP 1 /^ +Finds programs by keywords in their one-line documentation\n/
@@ -10552,7 +11359,9 @@ IN
 IN
 FI stderr
 FC = 8
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfos.tfscan
 FZ = 466
 FC = 11
@@ -10564,7 +11373,9 @@ AP tmap
 CL tsw:opsd_human -out tmap.res -graph cps
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 16
 FP /^Created tmap.ps\n/
@@ -10583,7 +11394,9 @@ AP tranalign
 CL ../../data/tranalign.seq ../../data/tranalign.pep tranalign2.seq
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI tranalign2.seq
 FZ = 2375
 FP /^>HSFAU1/
@@ -10597,7 +11410,9 @@ AP transeq
 CL tembl:paamir amir.pep
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI amir.pep
 FZ = 821
 FP /^>PAAMIR_1/
@@ -10610,7 +11425,9 @@ AP transeq
 CL tembl:paamir amir.pep -frame=2
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI amir.pep
 FZ = 820
 FP /^>PAAMIR_2/
@@ -10623,7 +11440,9 @@ AP transeq
 CL tembl:paamir amir.pep -frame=-1
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI amir.pep
 FZ = 820
 FP /^>PAAMIR_4/
@@ -10636,7 +11455,9 @@ AP transeq
 CL tembl:paamir amir.pep -frame=F
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI amir.pep
 FZ = 2460
 FP /^>PAAMIR_1/
@@ -10651,7 +11472,9 @@ AP transeq
 CL tembl:paamir amir.pep -frame=R
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI amir.pep
 FZ = 2461
 FP /^>PAAMIR_4/
@@ -10667,7 +11490,9 @@ AP transeq
 CL tembl:paamir amir.pep -frame=6
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI amir.pep
 FZ = 4921
 FP /^>PAAMIR_1/
@@ -10685,7 +11510,9 @@ AP transeq
 CL tembl:paamir amir.pep -reg=2-45,67-201,328-509
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI amir.pep
 FZ = 209
 FP /^>PAAMIR_1/
@@ -10699,7 +11526,9 @@ AP transeq
 CL ../../data/mito.seq mito.pep -table 2
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI mito.pep
 FZ = 5626
 FP /^>NC_001321.1_1/
@@ -10711,7 +11540,9 @@ AP trimest
 CL tembl:hsfau hsfau.seq
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.seq
 FZ = 574
 FP /poly-A tail removed/
@@ -10723,7 +11554,9 @@ AP trimseq
 CL tembl:hsfau hsfau.seq -window 1 -percent 100
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.seq
 FZ = 562
 FP /^>HSFAU /
@@ -10734,7 +11567,9 @@ AP trimseq
 CL tembl:hsfau hsfau.seq -window 5 -percent 40
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.seq
 FZ = 562
 FP /^>HSFAU /
@@ -10745,7 +11580,9 @@ AP trimseq
 CL tembl:hsfau hsfau.seq -window 20 -percent 80
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.seq
 FZ = 562
 FP /^>HSFAU /
@@ -10756,7 +11593,9 @@ AP trimseq
 CL tembl:hsfau hsfau.seq -window 20 -percent 10
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.seq
 FZ = 562
 FP /^>HSFAU /
@@ -10767,7 +11606,9 @@ AP trimseq
 CL tembl:hsfau hsfau.seq -window 20 -percent 50 -strict
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.seq
 FZ = 562
 FP /^>HSFAU /
@@ -10778,7 +11619,9 @@ AP trimseq
 CL tembl:hsfau hsfau.seq -window 1 -percent 100 -star
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.seq
 FZ = 562
 FP /^>HSFAU /
@@ -10789,7 +11632,9 @@ AP trimseq
 CL tembl:hsfau hsfau.seq -window 20 -percent 50 -noright
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.seq
 FZ = 562
 FP /^>HSFAU /
@@ -10806,7 +11651,9 @@ IN 50
 IN 
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.twofeat
 FZ = 516
 FP /484     509   0.000    484    489    509    509/
@@ -10823,7 +11670,9 @@ IN 50
 IN 
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau.twofeat
 FZ = 192
 FP /polyA_signal/
@@ -10836,6 +11685,9 @@ IN @../../data/cds.list
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfau1.fasta
 FZ = 447
 FP 1 /^>/
@@ -10853,7 +11705,9 @@ IN vector.strip
 IN vector.fasta
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI vector.strip
 FZ = 1835
 FP /tcgagagccgtattgcgatatagcgcacatgcgttggacacagatgagca/
@@ -10870,7 +11724,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hba_human.water 
 FZ > 1175
 FP /^# Score: 293.5\n/
@@ -10890,6 +11746,9 @@ IN hsfau1
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI outfile.whichdb
 FZ > 0
 FP /^tembl:hsfau1\n/
@@ -10903,7 +11762,9 @@ IN cps
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 18
 FP /^Created wobble.ps\n/
@@ -10922,7 +11783,9 @@ CL tembl:rnu68037 -wordsize=3
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI rnu68037.wordcount
 FZ = 432
 FP /\Actg\s+54\n/
@@ -10936,7 +11799,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hba_human.wordmatch
 FZ > 608
 FP /^ +5 HBA_HUMAN +58\.\.62 +HBB_HUMAN +63\.\.67\n/
@@ -10968,7 +11833,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hba_human.wordmatch
 FZ > 608
 FP 1 /^HBA_HUMAN         58 HGKKV     62\n/
@@ -10990,7 +11857,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hba_human.wordmatch
 FZ > 608
 FP 1 /^HBA_HUMAN         58 HGKKV     62\n/
@@ -11012,7 +11881,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hba_human.wordmatch
 FZ > 608
 FP 1 /^HBA_HU HGKKV\n/
@@ -11034,7 +11905,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hba_human.wordmatch
 FZ > 608
 FP 1 /^HBA_HU HGKKV\n/
@@ -11057,7 +11930,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hba_human.wordmatch
 FZ > 608
 FP 1 /^        60  \n/
@@ -11078,7 +11953,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hba_human.wordmatch
 FZ > 608
 FP 1 /^>HBA_HUMAN \.\.\nHGKKV\n/
@@ -11098,7 +11975,9 @@ IN
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hba_human.wordmatch
 FZ > 608
 FP 3 /^>HBA_HUMAN \.\.\n/
@@ -11126,7 +12005,9 @@ AP wossname
 CL restrict
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^recoder /
 FP /^remap /
@@ -11141,7 +12022,9 @@ AP wossname
 CL -search ''
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^recoder /
 FP /^remap /
@@ -11157,7 +12040,9 @@ AP wossname
 CL -search '' -alphabetic
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /\AALPHABETIC.*\naaindexextract /
 //
@@ -11168,7 +12053,9 @@ AP wossname
 CL -search '' -groups
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^[A-Z]/
 FP 0 /^[^A-Z]/
@@ -11181,7 +12068,9 @@ CL -groups -html -prelink '#'
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^<li><a href="#ALIGNMENT CONSENSUS">ALIGNMENT CONSENSUS</a></li>\n/
 //
@@ -11195,7 +12084,9 @@ CL -postlink '.html' -out wossname.html
 IN
 FI stderr
 FC = 1
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI wossname.html
 FP /<a href="http:\/\/www\.uk\.embnet\.org\/Software\/EMBOSS\/Apps\/abiview\.html"/
 //
@@ -11211,6 +12102,9 @@ IN
 IN cds.list
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI cds.list
 FZ = 132
 FC = 5
@@ -11231,7 +12125,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +10\/14 \(71\.4%\)/
 FP /^# Score: +38\n/
@@ -11251,7 +12147,9 @@ IN ../../data/alignapart.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +56\/56 \(100\.0%\)/
 FP /^# Score: +280\n/
@@ -11270,7 +12168,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +10\/14 \(71\.4%\)/
 FP /^# Score: +38\n/
@@ -11289,7 +12189,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +7\/10 \(70\.0%\)/
 FP /^# Score: +25\n/
@@ -11308,7 +12210,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +6\/8 \(75\.0%\)/
 FP /^# Score: +24\n/
@@ -11327,7 +12231,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +9\/16 \(56\.2%\)/
 FP /^# Score: +30\n/
@@ -11346,7 +12252,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
@@ -11366,7 +12274,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
@@ -11384,7 +12294,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
@@ -11402,7 +12314,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
@@ -11423,7 +12337,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
@@ -11444,7 +12360,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
@@ -11463,7 +12381,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
@@ -11483,7 +12403,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP 1 /^>AFULL \.\.\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\nAACCGG\n/
 FP 1 /^>BFULL \.\.\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\nAACGGG\n/
@@ -11499,7 +12421,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP 1 /^>AFULL\n/
 FP 1 /^AACCGG\n/
@@ -11517,7 +12441,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP 1 /^AFULL +AACCGG\n/
 FP 1 /^BFULL +AACGGG\n/
@@ -11533,7 +12459,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP 1 /^AFULL +AAACCCGGG\.\.TTT\n/
 FP 1 /^BFULL +AAAC\.\.GGGCCTTT\n/
@@ -11549,7 +12477,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP 1 /^AFULL +TTAACCGGTTACGT\n/
 FP 1 /^BFULL +~~~~~~~~~~~~~~~~~CGGG\.\.\.\.\.\.\.\.\.CC\.\.\.\.TTT~~~~~~~~~~~\n/
@@ -11564,7 +12494,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +10\/14 \(71\.4%\)/
 FP /^# Score: +38\.0\n/
@@ -11582,7 +12514,9 @@ IN ../../data/alignapart.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +56\/56 \(100\.0%\)/
 FP /^# Score: +280\.0\n/
@@ -11599,7 +12533,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +10\/14 \(71\.4%\)/
 FP /^# Score: +38\.0\n/
@@ -11616,7 +12552,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +7\/11 \(63\.6%\)/
 FP /^# Score: +24\.0\n/
@@ -11633,7 +12571,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +6\/8 \(75\.0%\)/
 FP /^# Score: +24\.0\n/
@@ -11650,7 +12590,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +9\/16 \(56\.2%\)/
 FP /^# Score: +30\.0\n/
@@ -11667,7 +12609,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\.0\n/
@@ -11684,7 +12628,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +10\/64 \(15\.6%\)/
 FP /^# Score: +-55\n/
@@ -11703,7 +12649,9 @@ IN ../../data/alignapart.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +56\/64 \(87\.5%\)/
 FP /^# Score: +224\n/
@@ -11722,7 +12670,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +9\/60 \(15\.0%\)/
 FP /^# Score: +-183\n/
@@ -11741,7 +12691,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +6\/15 \(40\.0%\)/
 FP /^# Score: +-18\n/
@@ -11760,7 +12712,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +6\/64 \( 9\.4%\)/
 FP /^# Score: +-226\n/
@@ -11779,7 +12733,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +8\/64 \(12\.5%\)/
 FP /^# Score: +-208\n/
@@ -11798,7 +12754,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/11 \(45\.5%\)/
 FP /^# Score: +-11\n/
@@ -11817,7 +12775,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +8\/64 \(12\.5%\)/
 FP /^# Score: +24\.0\n/
@@ -11834,7 +12794,9 @@ IN ../../data/alignapart.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +56\/64 \(87\.5%\)/
 FP /^# Score: +280\.0\n/
@@ -11851,7 +12813,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +8\/60 \(13\.3%\)/
 FP /^# Score: +24\.0\n/
@@ -11868,7 +12832,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +3\/24 \(12\.5%\)/
 FP /^# Score: +15\.0\n/
@@ -11885,7 +12851,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +6\/64 \( 9\.4%\)/
 FP /^# Score: +22\.0\n/
@@ -11902,7 +12870,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +6\/64 \( 9\.4%\)/
 FP /^# Score: +14\.0\n/
@@ -11919,7 +12889,9 @@ IN ../../data/alignb.dna
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/11 \(45\.5%\)/
 FP /^# Score: +21\.0\n/
@@ -11954,6 +12926,9 @@ IN
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI complex.ujtable
 FZ = 0
 FI hs989235.complex
@@ -11971,6 +12946,9 @@ CL paamir test.out
 FI stderr
 FC < 2
 FP 0 /^CORBA support has not been compiled\n/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID demoalign-check
@@ -11980,6 +12958,9 @@ CL ../../data/dna.msf
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI dna.demoalign
 FZ = 1213
 FP 9 /^MSFM[1-3] +/
@@ -11991,6 +12972,9 @@ CC No documentation, no example
 IN test.out
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI test.out
 FZ = 652
 FP /\A##gff-version 2\.0\n/
@@ -12004,6 +12988,9 @@ CL ../../data/paamir.gff
 FI stderr
 FZ = 1083
 FP 30 /^PAAMIR\tEMBL\t[^ \t]/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID demoreport-check
@@ -12012,6 +12999,9 @@ CC No documentation, no example
 CL tembl:paamir test.out -rformat gff
 FI stderr
 FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI test.out
 FZ = 2043
 FP 10 /^PAAMIR\tEMBL\t/
@@ -12023,6 +13013,9 @@ CC No documentation, no example, and no code
 CC Just checking it does nothing
 FI stderr
 FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID demostring-check
@@ -12033,6 +13026,9 @@ FI stderr
 FZ = 383
 FP /^first token 'How'\n/
 FP /^second token 'long is a piece of string[?]'\n/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID demotable-check
@@ -12043,6 +13039,9 @@ FI stderr
 FC = 9
 FP 7 /^type [a-zA-Z_']+ found/
 FP /^type 'CDS' found 2 times\n/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID entrails-check
@@ -12055,6 +13054,9 @@ FP /^ +taglist +string +"Extra tags to report"\n/
 FP /^ +ausashow +boolean +"N" +"Show the full USA in the alignment"\n/
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID histogramtest-check
@@ -12068,6 +13070,9 @@ FZ > 0
 FP /^%%/
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID intconv-check
@@ -12094,6 +13099,9 @@ IN ACA
 FI stderr
 FC = 94
 FP /^ACA\n15 matches found\n/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID prima-check
@@ -12107,6 +13115,9 @@ IN
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI eclaci.prima
 FZ = 1597
 FP /^3 pairs found\n/
@@ -12119,6 +13130,9 @@ IN tembl:hsfos
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI hsfos.primers
 FZ = 910
 FP /\A\n# PRIMER3 RESULTS FOR HSFOS\n/
@@ -12134,6 +13148,9 @@ IN tembl:paamir
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 163
 FP /^Length:[ \t]+2167 basepairs\n/
@@ -12149,6 +13166,9 @@ FZ = 15618
 FP 5 /^>/
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID seqretallfeat-check
@@ -12158,6 +13178,9 @@ IN tembl:eclac*
 IN eclacall.embl
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI eclacall.embl
 FZ = 33282
 FP 5 /^ID   ECLAC/
@@ -12169,6 +13192,9 @@ IN tembl:eclac*
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI eclac.fasta
 FZ = 15618
 FP 5 /^>/
@@ -12180,6 +13206,9 @@ IN tembl:eclac*
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI eclac.fasta
 FZ = 7678
 FP 1 /^>/
@@ -12193,6 +13222,9 @@ IN
 IN
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FC = 1
 FP /^Created testplot.ps\n/
@@ -12208,6 +13240,9 @@ CC No documentation, no example
 CL -graph ps
 FI stderr
 FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FC = 1
 FP /^Created treetypedisplay.ps\n/
@@ -12239,6 +13274,9 @@ FP 1 /FEnd \[32987\]: /
 FP 1 /FProtein \[N\]:/
 FP 1 /FNucleic \[Y\]: /
 FP 1 /FSize \[81\]: /
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID acd-calc-regexp
@@ -12251,6 +13289,9 @@ FI stderr
 FC = 2
 FP 1 /:/
 FP 1 /Length \[12\]: /
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID acd-calc-seq
@@ -12273,6 +13314,9 @@ FP 1 /Begin \[1\]: /
 FP 1 /End \[2167\]: /
 FP 1 /Protein \[N\]:/
 FP 1 /Nucleic \[Y\]: /
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID acd-calc-seqall
@@ -12295,6 +13339,9 @@ FP 1 /Begin \[1\]: /
 FP 1 /End \[7477\]: /
 FP 1 /Protein \[N\]:/
 FP 1 /Nucleic \[Y\]: /
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID acd-calc-seqset
@@ -12321,6 +13368,9 @@ FP 1 /Protein \[N\]:/
 FP 1 /Nucleic \[Y\]: /
 FP 1 /Totweight \[5\.000\]: /
 FP 1 /Count \[5\]: /
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID acd-calc-string
@@ -12333,6 +13383,9 @@ FI stderr
 FC = 2
 FP 1 /:/
 FP 1 /Length \[7\]: /
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 #######################################
@@ -12351,6 +13404,9 @@ IN
 IN
 FI stderr
 FC = 3
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FC = 3
 FP /^1cs4\n/
@@ -12382,6 +13438,9 @@ IN log.1
 IN log.2
 FI stderr
 FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FC = 2
 FP /^D1CS4A_\n/
@@ -12452,7 +13511,9 @@ IN ../../data/scop.orig
 IN
 FI stderr
 FC = 2
-FP 0 /Warning:/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
 FZ = 0
 //
@@ -12557,6 +13618,9 @@ AA esim4
 CL -help
 FI stderr
 FC = 111
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 #######################################
