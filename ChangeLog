@@ -1,5 +1,21 @@
 Version 2.5.0
 
+	Cleaned up string position code. Inspections showed ajStrPos and
+	related functions gave results from 0 to length of a string. This
+	caused confusion in many other functions and applictaions. These
+	functions are now static strPos functions because only ajstr.c had
+	calls to them (though the ajStrPos versions are still available).
+	All calls were checked for positions out of range. As a result,
+	many calls to ajStrAssSub and AjStrCut were fixed. ajStrInsertC
+	requires a value from 0 to length (start position to insert can be
+	before or after the string, or any position in bwteen). Fixed by
+	passing length+1 to strPosII.
+
+	Added a functions ajUtilCatch for use in debugging with gdb. When
+	a nasty special case occurs, call ajUtilCatch and make it a
+	breakpoint in gdb. The resulting backtrace will give the call stack
+	and all variable values.
+	
 	Cleaned up code for chunk HTML input. Added a new variable
 	EMBOSS_HTTPVERSION which defaults to 1.0 (so HTTP is not chunked)
 	and a DB attribute httpversion. This must be a floating point
