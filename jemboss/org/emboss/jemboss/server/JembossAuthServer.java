@@ -658,12 +658,12 @@ public class JembossAuthServer
       }
       catch(Exception exp){} 
  
-      result.add("msg");
       if(!lfork || !aj.getErrStd().equals(""))
-        return returnError(aj,"Fork process failed in run_prog "+
-                           embossCommand);
-      else
-        result.add("");
+        returnError(aj,"Fork process failed in run_prog "+
+                        embossCommand);
+
+      result.add("msg");
+      result.add("");
 
       try
       {
@@ -1173,6 +1173,9 @@ public class JembossAuthServer
     appendToLogFile("MSG    "+msg,errorLog);
 
     Vector vans = new Vector();
+    vans.add("msg");
+    vans.add(aj.getErrStd());
+
     vans.add("status");
     vans.add("1");
     return vans;

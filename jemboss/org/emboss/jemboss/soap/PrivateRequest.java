@@ -27,6 +27,7 @@ import java.util.*;
 
 import org.emboss.jemboss.JembossParams;
 
+import javax.swing.JOptionPane;
 import java.net.*;
 import org.w3c.dom.*;
 import org.xml.sax.*;
@@ -262,9 +263,14 @@ public class PrivateRequest
 	  for(int j=0;j<n;j+=2)  //assumes it's even sized
           {
             if(vans.get(j).equals("msg"))
-              if(((String)vans.get(j+1)).startsWith("Failed Authorisation"))
+            {
+              String msg = (String)vans.get(j+1);
+              if(msg.startsWith("Failed Authorisation"))
                 throw new JembossSoapException("Authentication Failed");
-
+              else if(msg.startsWith("Error"))
+                JOptionPane.showMessageDialog(null, msg, "alert",
+                                      JOptionPane.ERROR_MESSAGE); 
+            }
 	    proganswer.put(vans.get(j),vans.get(j+1));
           }
         }
