@@ -286,7 +286,7 @@ public class JembossAuthServer
       }
       catch (Exception ioe) 
       {
-        appendToLogFile("IOException: call_ajax creating tmp.jembosstmp",
+        appendToLogFile("Exception: call_ajax creating "+fn,
                          errorLog);
         vans.add("status");
         vans.add("1");
@@ -298,11 +298,10 @@ public class JembossAuthServer
       fn = fileContent;     //looks like db entry or local file name
     }
 
-
-    boolean ok = false;
     if( fexists  || afile ||    //call ajax if sequence file
         fn.indexOf(":") > 0 )   //or db
     {
+      boolean ok = false;
       try
       {
         if(seqtype.startsWith("seqset"))
@@ -325,25 +324,19 @@ public class JembossAuthServer
     }
 
     if(afile)
-      ok = aj.delFile(userName,passwd,environ,fn);
+      aj.delFile(userName,passwd,environ,fn);
 
     for(int i=0;i<passwd.length;i++)
       passwd[i] = '\0';
 
-    if(ok)
-    {
-//    System.out.println("STATUS OK");
-      vans.add("length");
-      vans.add(new Integer(aj.length_soap));
-      vans.add("protein");
-      vans.add(new Boolean(aj.protein_soap));
-      vans.add("weight");
-      vans.add(new Float(aj.weight_soap));
-      vans.add("status");
-      vans.add("0");
-    }
-    else
-      return returnError(aj,"Error: call_ajax status not ok");
+    vans.add("length");
+    vans.add(new Integer(aj.length_soap));
+    vans.add("protein");
+    vans.add(new Boolean(aj.protein_soap));
+    vans.add("weight");
+    vans.add(new Float(aj.weight_soap));
+    vans.add("status");
+    vans.add("0");
 
     return vans;
   }
