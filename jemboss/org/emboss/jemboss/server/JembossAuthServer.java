@@ -1,4 +1,4 @@
-/****************************************************************
+/*
 *      
 *  This program is free software; you can redistribute it and/or
 *  modify it under the terms of the GNU General Public License
@@ -89,8 +89,7 @@ public class JembossAuthServer
   */
   public Vector show_acd(String appName)
   {
-
-    Vector acd = new Vector();
+    Vector acd = new Vector(4);
     StringBuffer acdText = new StringBuffer();
     String acdToParse = new String(jp.getAcdDirToParse() + appName + ".acd");
 
@@ -131,7 +130,7 @@ public class JembossAuthServer
   public Vector getWossname()
   {
     String[] envp = jp.getEmbossEnvironmentArray(env);
-    Vector wossOut = new Vector();
+    Vector wossOut = new Vector(4);
     String embossCommand = new String(embossBin + 
                    "wossname -colon -gui -auto");
  
@@ -166,7 +165,7 @@ public class JembossAuthServer
     if(helptext.equals(""))
       helptext = "No help available for this application.";
 
-    Vector vans = new Vector();
+    Vector vans = new Vector(2);
     vans.add("helptext");
     vans.add(helptext);
 
@@ -187,11 +186,13 @@ public class JembossAuthServer
   public Vector call_ajax(String fileContent, String seqtype,
                           String userName, byte[] passwd)
   {
-
-    Vector vans = new Vector();
+    Vector vans = new Vector(8);
     Ajax aj = new Ajax();
     if(!verifyUser(aj,userName,passwd,vans))
+    {
+      vans.trimToSize();
       return vans;
+    }
 
     boolean afile = false;
     boolean fexists = false;
@@ -234,6 +235,7 @@ public class JembossAuthServer
                          errorLog);
         vans.add("status");
         vans.add("1");
+        vans.trimToSize();
         return vans;
       }
     }
@@ -263,6 +265,7 @@ public class JembossAuthServer
                          errorLog);
         vans.add("status");
         vans.add("1");
+        vans.trimToSize();
         return vans;
       }
     }
@@ -300,7 +303,7 @@ public class JembossAuthServer
     String fn = null;
     File tf = null;
 
-    Vector vans = new Vector();
+    Vector vans = new Vector(8);
 
     // create temporary file
     if( ((fileContent.indexOf(":") < 0) ||
@@ -324,6 +327,7 @@ public class JembossAuthServer
                          errorLog);
         vans.add("status");
         vans.add("1");
+        vans.trimToSize();
         return vans;
       }
     }
@@ -353,6 +357,7 @@ public class JembossAuthServer
                          errorLog);
         vans.add("status");
         vans.add("1");
+        vans.trimToSize();
         return vans;
       }
     }
@@ -375,6 +380,7 @@ public class JembossAuthServer
                          errorLog);
       vans.add("status");
       vans.add("1");
+      vans.trimToSize();
     }
 
     if(afile)
@@ -393,7 +399,7 @@ public class JembossAuthServer
   public Vector show_db()
   {
     String[] envp = jp.getEmbossEnvironmentArray(env);
-    Vector showdbOut = new Vector();
+    Vector showdbOut = new Vector(8);
     String embossCommand = new String(embossBin + "showdb -auto");
 
     RunEmbossApplication2 rea = new RunEmbossApplication2(embossCommand,
@@ -404,7 +410,10 @@ public class JembossAuthServer
     showdbOut.add(rea.getStatus());
      
     if(!rea.getStatus().equals("0"))
+    {
+      showdbOut.trimToSize();
       return showdbOut;
+    }
                         
     showdbOut.add("showdb");
     showdbOut.add(rea.getProcessStdout());
@@ -458,10 +467,9 @@ public class JembossAuthServer
   public synchronized Vector run_prog(String embossCommand, String options,
                             Vector inFiles, String userName, byte[] passwd)
   {
-
     tmproot = tmproot.concat(userName+fs);
     Ajax aj = new Ajax();
-    Vector result = new Vector();
+    Vector result = new Vector(6,1);
 
     if(!verifyUser(aj,userName,passwd,result))
       return result;
@@ -476,6 +484,7 @@ public class JembossAuthServer
       result.add(warn);
       result.add("status");
       result.add("1");
+      result.trimToSize();
       return result;
     }
 
@@ -522,6 +531,7 @@ public class JembossAuthServer
         result.add(warnmsg);
         result.add("status");
         result.add("1");
+        result.trimToSize();
         return result;
       }
     }
@@ -646,7 +656,6 @@ public class JembossAuthServer
 
       for(int i=0;i<passwd.length;i++)
         passwd[i] = '\0';
-
     }
     else      //batch or background
     {
@@ -924,9 +933,12 @@ public class JembossAuthServer
                     String notes, String userName, byte[] passwd)
   {
     Ajax aj = new Ajax();
-    Vector v = new Vector();
+    Vector v = new Vector(4);
     if(!verifyUser(aj,userName,passwd,v))
+    {
+      v.trimToSize();
       return v;
+    }
 
     String fn = tmproot + fs + userName+ fs + 
                      project + fs + filename;
@@ -961,11 +973,13 @@ public class JembossAuthServer
   public Vector delete_saved_results(String project, String cl,
                                 String userName, byte[] passwd)
   {
-
-    Vector dsr = new Vector();
+    Vector dsr = new Vector(4);
     Ajax aj = new Ajax();
     if(!verifyUser(aj,userName,passwd,dsr))
+    {
+      dsr.trimToSize();
       return dsr;
+    }
 
     tmproot = tmproot.concat(userName+fs);
 
@@ -1016,11 +1030,17 @@ public class JembossAuthServer
     boolean lsd = aj.listDirs(userName,passwd,environ,tmproot);
     
     String outStd = aj.getOutStd();
-    StringTokenizer stok = new StringTokenizer(outStd,"\n");
 
-    while(stok.hasMoreTokens())
+    int indStart = 0;
+    int indEnd   = 0;
+//  StringTokenizer stok = new StringTokenizer(outStd,"\n");
+//  while(stok.hasMoreTokens())
+    while((indEnd = outStd.indexOf("\n",indStart)) > -1) 
     {
-      String dirname = stok.nextToken();
+//    String dirname = stok.nextToken();
+      String dirname = outStd.substring(indStart,indEnd);
+      indStart = indEnd+1;
+
       lsr.add(dirname);
       byte fbuf[] = aj.getFile(userName,passwd,environ,
                      tmproot + dirname + fs + ".desc");
@@ -1265,7 +1285,7 @@ public class JembossAuthServer
                     "STDOUT "+aj.getOutStd()+"\n"+
                     "MSG    "+msg,errorLog);
 
-    Vector vans = new Vector();
+    Vector vans = new Vector(4);
     vans.add("msg");
     vans.add(aj.getErrStd());
 
