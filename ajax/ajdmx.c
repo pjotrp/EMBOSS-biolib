@@ -1496,10 +1496,6 @@ ajint ajDmxScopalgGetseqs(AjPScopalg thys, AjPStr **arr)
 
 void ajDmxDummyFunction(void)
 {
-    AjPStr str=NULL;
-    float f=0.0;
-    char c;
-
     return;
 }
 
