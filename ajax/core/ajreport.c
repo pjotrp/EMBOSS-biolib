@@ -61,6 +61,8 @@ static void reportWriteListFile (AjPReport outrpt, AjPFeattable ftable,
 
 static void reportWriteDbMotif (AjPReport outrpt, AjPFeattable ftable,
 				AjPSeq seq);
+static void reportWriteDiffseq (AjPReport outrpt, AjPFeattable ftable,
+				AjPSeq seq);
 static void reportWriteExcel (AjPReport outrpt, AjPFeattable ftable,
 			      AjPSeq seq);
 static void reportWriteFeatTable (AjPReport outrpt, AjPFeattable ftable,
@@ -74,7 +76,6 @@ static void reportWriteSeqTable (AjPReport outrpt, AjPFeattable ftable,
 static void reportWriteTable (AjPReport outrpt, AjPFeattable ftable,
 			      AjPSeq seq);
 
-static AjPStr reportSeqName (AjPReport thys, AjPSeq seq);
 static char* reportCharname (AjPReport thys);
 
 /* @funclist reportFormat *****************************************************
@@ -96,6 +97,7 @@ static ReportOFormat reportFormat[] = {
   {"listfile",  0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteListFile},
   /* feature reports */
   {"dbmotif",   0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteDbMotif},
+  {"diffseq",   0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteDiffseq},
   {"excel",     0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteExcel},
   {"feattable", 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteFeatTable},
   {"motif",     0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteMotif},
@@ -353,6 +355,141 @@ static void reportWriteDbMotif (AjPReport thys,
   return;
 }
 
+/* @funcstatic reportWriteDiffseq *******************************************
+**
+** Writes a report in Diffseq format
+**
+** @param [R] thys [AjPReport] Report object
+** @param [R] ftable [AjPFeattable] Feature table object
+** @param [R] seq [AjPSeq] Sequence object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void reportWriteDiffseq (AjPReport thys,
+				AjPFeattable ftable, AjPSeq seq) {
+
+  AjPFile outf = thys->File;
+  AjIList iterft = NULL;
+  AjPFeature feature = NULL;
+  ajint istart=0, jstart=0;
+  ajint iend=0, jend=0;
+  ajint ilen=0, jlen=0;
+  float score=0.0;
+  AjPStr subseq = NULL;
+  ajint i=0;
+  ajint ifeat=0;
+  AjPStr tmpstr = NULL;
+  AjPStr jname=NULL;
+  AjPStr firstfeat=NULL;
+  AjPStr secondfeat=NULL;
+  AjPStr tagval = NULL;
+
+  static AjPStr tagfirst=NULL, tagsecond=NULL,
+    tagstart=NULL, tagend=NULL, taglength=NULL,
+    tagname=NULL, tagsequence=NULL;
+
+  if (!tagstart) {
+    tagstart = ajStrNewC("start");
+    tagend = ajStrNewC("end");
+    taglength = ajStrNewC("length");
+    tagname = ajStrNewC("name");
+    tagsequence = ajStrNewC("sequence");
+    tagfirst = ajStrNewC("first_feature");
+    tagsecond = ajStrNewC("second_feature");
+  }
+
+  ajReportWriteHeader (thys, ftable, seq);
+
+  iterft = ajListIter(ftable->Features) ;
+  while(ajListIterMore(iterft)) {
+    feature = (AjPFeature)ajListIterNext (iterft) ;
+    istart = feature->Start;
+    iend = feature->End;
+    score = feature->Score;
+    ilen = iend - istart + 1;
+    ajStrAssSub(&subseq, ajSeqStr(seq), istart-1, iend-1);
+    i++;
+
+    if (!ajFeatGetNote(feature, tagstart, &tagval)) {
+      jstart = 0;
+    }
+    else {
+      ajStrToInt(tagval, &jstart);
+    }
+
+    if (!ajFeatGetNote(feature, tagend, &tagval)) {
+      jend = 0;
+    }
+    else {
+      ajStrToInt(tagval, &jend);
+    }
+
+    if (!ajFeatGetNote(feature, taglength, &tagval)) {
+      jlen = 0;
+    }
+    else {
+      ajStrToInt(tagval, &jlen);
+    }
+
+    if (!ajFeatGetNote(feature, tagname, &jname)) {
+      ajStrAssC (&jname, "");
+    }
+
+    if (ilen > 0) {
+      ajFmtPrintF (outf, "\n%S %d-%d Length: %d\n",
+		   ajReportSeqName(thys, seq), istart, iend, ilen);
+      ifeat = 1;
+      while (ajFeatGetNoteI(feature, tagfirst, ifeat++, &firstfeat)) {
+	ajFmtPrintF (outf, "Feature: %S\n", firstfeat);
+      }
+      ajFmtPrintF (outf, "Sequence: %S\n", subseq);
+    }
+    else {
+      ajFmtPrintF (outf, "\n%S %d Length: %d\n",
+		   ajReportSeqName(thys, seq), istart, ilen);
+      ifeat = 1;
+      while (ajFeatGetNoteI(feature, tagfirst, ifeat++, &firstfeat)) {
+	ajFmtPrintF (outf, "Feature: %S\n", firstfeat);
+      }
+      ajFmtPrintF (outf, "Sequence: \n");
+    }
+
+    if (!ajFeatGetNote(feature, tagsequence, &subseq)) {
+      ajStrAssC (&subseq, "");
+    }
+
+    if (jlen > 0) {
+      ajFmtPrintF (outf, "Sequence: %S\n", subseq);
+      ifeat = 1;
+      while (ajFeatGetNoteI(feature, tagsecond, ifeat++, &secondfeat)) {
+	ajFmtPrintF (outf, "Feature: %S\n", secondfeat);
+      }
+      ajFmtPrintF (outf, "%S %d-%d Length: %d\n",
+		   jname, jstart, jend, jlen);
+    }
+    else {
+      ajFmtPrintF (outf, "Sequence: \n");
+      ifeat = 1;
+      while (ajFeatGetNoteI(feature, tagsecond, ifeat++, &secondfeat)) {
+	ajFmtPrintF (outf, "Feature: %S\n", secondfeat);
+      }
+      ajFmtPrintF (outf, "%S %d Length: %d\n",
+		   jname, jstart, jlen);
+    }
+
+    ajStrDelReuse(&tmpstr);
+  }
+
+  ajReportWriteTail (thys, ftable, seq);
+
+  ajListIterFree(iterft);
+  ajStrDel(&subseq);
+  ajStrDel(&tmpstr);
+
+  return;
+}
+
 /* @funcstatic reportWriteExcel *******************************************
 **
 ** Writes a report in Excel (tab delimited) format
@@ -403,7 +540,7 @@ static void reportWriteExcel (AjPReport thys,
     ajStrAssSub(&subseq, ajSeqStr(seq), istart-1, iend-1);
     i++;
     ajFmtPrintF (outf, "%S\t%d\t%d\t%f",
-		 reportSeqName(thys, seq),
+		 ajReportSeqName(thys, seq),
 		 istart, iend, score);  /* then extra tags */
     for (j=0; j < ntags; j++) {
       if (ajFeatGetNote(feature, tagnames[j], &tagval)) {
@@ -477,9 +614,9 @@ static void reportWriteFeatTable (AjPReport thys,
 	ajFmtPrintF (outf, "FT                   /%S=\"%S\"\n",
 		     tagprints[j], tagval);
        }
-      else {
-	ajFmtPrintF (outf, "FT                   /%S=\"<unknown>\"\n",
-		     tagprints[j]);
+      else {			/* skip the missing ones for now */
+	/*ajFmtPrintF (outf, "FT                   /%S=\"<unknown>\"\n",
+	  tagprints[j]);*/
       }
     }
     ajFmtPrintF (outf, "\n");
@@ -526,7 +663,7 @@ static void reportWriteListFile (AjPReport thys,
     ajStrAssSub(&subseq, ajSeqStr(seq), istart-1, iend-1);
     i++;
     ajFmtPrintF (outf, "%-15.15S start:%d end:%d\n",
-		 reportSeqName(thys, seq), istart, iend);
+		 ajReportSeqName(thys, seq), istart, iend);
     ajStrDelReuse(&tmpstr);
   }
 
@@ -821,7 +958,7 @@ static void reportWriteTable (AjPReport thys,
     ajStrAssSub(&subseq, ajSeqStr(seq), istart-1, iend-1);
 
     ajFmtPrintF (outf, "%-15.15S %7d %7d %5d",
-		 reportSeqName(thys, seq),
+		 ajReportSeqName(thys, seq),
 		 istart, iend, (ajint) score);
     for (j=0; j < ntags; j++) {
       jwid = AJMAX(jmin, ajStrLen(tagprints[j]));
@@ -1088,7 +1225,6 @@ void ajReportWrite (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
 	   thys->Format, reportFormat[thys->Format].Name);
 
   ajReportSetType (thys, ftable, seq);
-  ajReportSetHeaderC (thys, "Testing\n1..2..3");
 
   /* EFUNC NOTE: next line Write calls funclist reportFormat() */
 
@@ -1117,8 +1253,14 @@ void ajReportClose (AjPReport thys) {
 
 /* @func ajReportLists ********************************************************
 **
+** Converts a report tagtypes definition (ACD taglist attribute)
+** into arrays of tag types, names and printnames.
 **
-**
+** @param [r] thys [AjPReport] Report object
+** @param [w] types [AjPStr**] Address of array of types generated
+** @param [w] names [AjPStr**] Address of array of names generated
+** @param [w] prints [AjPStr**] Address of array of print names generated
+** @return [ajint] Number of tagtypes (size of arrays created)
 ******************************************************************************/
 
 ajint ajReportLists (AjPReport thys, AjPStr** types, AjPStr** names,
@@ -1126,6 +1268,9 @@ ajint ajReportLists (AjPReport thys, AjPStr** types, AjPStr** names,
 
   ajint itags;
   ajint ntags;
+
+  if (!ajListLength(thys->Tagtypes))
+      return 0;
 
   ntags = ajListToArray (thys->Tagtypes,  (void***) types);
   itags = ajListToArray (thys->Tagnames,  (void***) names);
@@ -1155,9 +1300,39 @@ void ajReportWriteHeader (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
   ajFmtPrintF (outf, "# Rundate:  %D\n", ajTimeTodayF("log"));
 
   ajFmtPrintF (outf, "# Sequence: %S     from: %d   to: %d\n",
-	       reportSeqName(thys, seq), ajSeqBegin(seq), ajSeqEnd(seq));
+	       ajReportSeqName(thys, seq), ajSeqBegin(seq), ajSeqEnd(seq));
   if (ajStrLen(thys->Header)) {
     ajStrAssS (&tmpstr, thys->Header);
+    ajStrSubstituteCC (&tmpstr, "\n", "\1# ");
+    ajStrSubstituteCC (&tmpstr, "\1", "\n");
+    ajFmtPrintF (outf, "#\n");
+    ajFmtPrintF (outf, "# %S\n", tmpstr);
+    ajFmtPrintF (outf, "#\n");
+  }
+  ajFmtPrintF (outf, "########################################\n\n");
+
+  return;
+}
+
+/* @func ajReportWriteTail ************************************************
+**
+** Writes a feature report tail
+**
+** @param [R] thys [AjPReport] Report object
+** @param [R] ftable [AjPFeattable] Feature table object
+** @param [R] seq [AjPSeq] Sequence object
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajReportWriteTail (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
+
+  AjPFile outf = thys->File;
+  AjPStr tmpstr=NULL;
+
+  ajFmtPrintF (outf, "########################################\n");
+  if (ajStrLen(thys->Tail)) {
+    ajStrAssS (&tmpstr, thys->Tail);
     ajStrSubstituteCC (&tmpstr, "\n", "\1# ");
     ajStrSubstituteCC (&tmpstr, "\1", "\n");
     ajFmtPrintF (outf, "#\n");
@@ -1199,6 +1374,40 @@ void ajReportSetHeader (AjPReport thys, AjPStr header) {
 void ajReportSetHeaderC (AjPReport thys, char* header) {
 
   ajStrAssC (&thys->Header, header);
+
+  return;
+}
+
+/* @func ajReportSetTail ************************************************
+**
+** Defines a feature report tail
+**
+** @param [R] thys [AjPReport] Report object
+** @param [R] tail [AjPStr] Report tail with embedded newlines
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajReportSetTail (AjPReport thys, AjPStr tail) {
+
+  ajStrAssS (&thys->Tail, tail);
+
+  return;
+}
+
+/* @func ajReportSetTailC ************************************************
+**
+** Defines a feature report tail
+**
+** @param [R] thys [AjPReport] Report object
+** @param [R] tail [char*] Report tail with embedded newlines
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajReportSetTailC (AjPReport thys, char* tail) {
+
+  ajStrAssC (&thys->Tail, tail);
 
   return;
 }
@@ -1262,7 +1471,7 @@ static char* reportCharname (AjPReport thys) {
   return protstr;
 }
 
-/* @funcstatic reportSeqName **************************************************
+/* @funcstatic ajReportSeqName ************************************************
 **
 ** Returns the sequence name or USA depending on the setting in the
 ** report object (derived from the ACD and command line -rusa option)
@@ -1272,7 +1481,7 @@ static char* reportCharname (AjPReport thys) {
 ** @return [AjPStr] Sequence name for this report
 ******************************************************************************/
 
-static AjPStr reportSeqName (AjPReport thys, AjPSeq seq) {
+AjPStr ajReportSeqName (AjPReport thys, AjPSeq seq) {
 
   if (thys->Showusa)
     return ajSeqGetUsa(seq);
