@@ -421,11 +421,6 @@ A: This most often happens when using GNU LD. If both shared and
 
    make "LDFLAGS=-Wl,-static"
 
-   This is a real swine as it should be the job of the autoconfiguration
-   stuff to provide an option for this. I'll see if I can bend it in an
-   idle moment. At the moment it'll only cause problems on cats-cradle
-   cross-mounted systems such as occur in Norway.
-
    (Alan Bleasby 14 Feb 2001)
 
 
