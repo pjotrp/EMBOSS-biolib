@@ -11,7 +11,7 @@ section: input [
 ]
 
   list: mode  [
-    required: "Y"
+    standard: "Y"
     default: "1"
     minimum: "1"
     maximum: "1"
@@ -36,7 +36,7 @@ section: input [
 # Database parameters
 ########################
   seqset: db [
-    required: "Y"
+    standard: "Y"
     information: "File containing sequences to search or screen"
     help: "In database search mode libscan scans each discriminating
            element against a sequence set.  In library screen mode,
@@ -51,7 +51,7 @@ section: input [
   # other parameters
   ########################
   infile: scopf [
-    required: "Y"
+    standard: "Y"
     information: "SCOP classification file (input)"
     help: "In either mode, a 'scop classification file' is required as
            a source of family classification data.  A scop
@@ -64,135 +64,135 @@ section: input [
   ]
 
  toggle: grib [
-    required: "Y"
+    standard: "Y"
     information: "Use Gribskov profile"
     default: "N"
   ]
 
   toggle: henik [
-    required: "Y"
+    standard: "Y"
     information: "Use Henikoff profile"
     default: "N"
   ]
 
   toggle: hmm [
-    required: "Y"
+    standard: "Y"
     information: "Use HMM profile"
     default: "N"
   ]
 
   toggle: sam [
-    required: "Y"
+    standard: "Y"
     information: "Use SAM HMM profile"
     default: "Y"
   ]
 
   boolean: pssm [
-    required: "Y"
+    standard: "Y"
     information: "Use PSSM profile"
     default: "Y"
   ]
 
   boolean: sig [
-    required: "Y"
+    standard: "Y"
     information: "Use signature"
     default: "N"
   ]
 
 
   string: hmmpath [
-    required: "$(hmm)"
+    standard: "$(hmm)"
     information: "Location of HMM profile files (input)"
     default: "./"
   ]
 
   string: hmmextn  [
-    required: "$(hmm)"
+    standard: "$(hmm)"
     information: "Extension of HMM profile files (input)"
     default: ".hmm"
   ]
 
   string: sampath [
-    required: "$(sam)"
+    standard: "$(sam)"
     information: "Location of SAM HMM profile files (input)"
     default: "./"
   ]
 
   string: samextn [
-    required: "$(sam)"
+    standard: "$(sam)"
     information: "Extension of SAM HMM profile files (input)"
     default: ".mod"
   ]
 
   string: pssmpath [
-    required: "$(pssm)"
+    standard: "$(pssm)"
     information: "Location of PSSM profile files (input)"
     default: "./"
   ]
 
   string: pssmextn [
-    required: "$(pssm)"
+    standard: "$(pssm)"
     information: "Extension of PSSM profile files (input)"
     default: ".chk"
   ]
 
   integer: niter [
-    required: "$(pssm)"
+    standard: "$(pssm)"
     information: " No. of iterations (input)"
     default: "1"
   ]
 
   float: thresh [
-    required: "$(pssm)"
+    standard: "$(pssm)"
     information: "E-value threshold (input)"
     default: "100"
   ]
 
   integer: maxhit [
-    required: "$(pssm)"
+    standard: "$(pssm)"
     information: "Maximum No. of hits to database (input)"
     default: "1000"
   ]
 
  string: gbvpath  [
-    required: "$(grib)"
+    standard: "$(grib)"
     information: "Location of Gribskov profile files (input)"
     default: "./"
   ]
 
 
   string: gbvextn  [
-    required: "$(grib)"
+    standard: "$(grib)"
     information: "Extension of Gribskov profile files (input)"
     default: ".grib"
   ]
 
   string: hnfpath [
-    required: "$(henik)"
+    standard: "$(henik)"
     information: "Location of Hennikoff profile files (input)"
     default: "./"
   ]
 
   string: hnfextn [
-    required: "$(henik)"
+    standard: "$(henik)"
     information: "Extension of Hennikoff profile files (input)"
     default: ".henik"
   ]
 
   string: sigpath  [
-    required: "$(sig)"
+    standard: "$(sig)"
     information: "Location of signature files (input)"
     default: "./"
   ]
 
   string: sigextn [
-    required: "$(sig)"
+    standard: "$(sig)"
     information: "Extension of signature files (input)"
     default: ".sig"
   ]
 
   matrixf: sub [
-    required: "$(sig)" 
+    standard: "$(sig)" 
     information: "Residue substitution matrix"
     default: "EBLOSUM62"
   ]
@@ -207,32 +207,32 @@ section: required [
 
 
    float: gbvgapo [
-    required: "$(grib)"
+    standard: "$(grib)"
     default: "10.0"
     information: "Gap insertion penalty (gribskov)"
   ]
 
   float: gbvgape [
-    required: "$(grib)"
+    standard: "$(grib)"
     default: "0.5"
     information: "Gap extension penalty (gribskov)"
   ]
 
   float: hnfgapo [
-    required: "$(henik)"
+    standard: "$(henik)"
     default: "10.0"
     information: "Gap insertion penalty (henikoff)"
   ]
   
   float: hnfgape [
-    required: "$(henik)"
+    standard: "$(henik)"
     default: "0.5"
     information: "Gap extension penalty (henikoff)"
   ]
 
 
   list: nterm [
-    required: "$(sig)"
+    standard: "$(sig)"
     default: "1"
     minimum: "1"
     maximum: "1"
@@ -246,13 +246,13 @@ section: required [
   ]
 
   float: siggapo [
-    required: "$(sig)"
+    standard: "$(sig)"
     default: "10.0"
     information: "Gap insertion penalty "
   ]
 
   float: siggape [
-    required: "$(sig)"
+    standard: "$(sig)"
     default: "0.5"
     information: "Gap extension penalty "
   ]
@@ -265,28 +265,28 @@ section: output [
 ]
 
   string: hmmoutpath  [
-    required: "$(hmm)"
+    standard: "$(hmm)"
     information: "Location of signature hits/library scan files for
                   hmm searches (output)"
     default: "./"
   ]
 
   string: hmmoutextn [
-    required: "$(hmm)"
+    standard: "$(hmm)"
     information: "Extension of signature hits/library scan files for
                   hmm searches (output)"
     default: ".hmmout"
   ]
 
   string: samoutpath [
-    required: "$(sam)"
+    standard: "$(sam)"
     information: "Location of signature hits/library scan files for
                   sam hmm searches (output)"
     default: "./"
   ]
 
   string: samoutextn [
-    required: "$(sam)"
+    standard: "$(sam)"
     information: "Extension of signature hits/library scan files for
                   sam hmm searches (output)"
     default: ".samout"
@@ -294,56 +294,56 @@ section: output [
 
 
   string: pssmoutpath  [
-    required: "$(pssm)"
+    standard: "$(pssm)"
     information: "Location of signature hits/library scan files for
                   pssm searches (output)"
     default: "./"
   ]
 
   string: pssmoutextn [
-    required: "$(pssm)"
+    standard: "$(pssm)"
     information: "Extension of signature hits/library scan files for
                   pssm searches (output)"
     default: ".pssmout"
   ]
 
   string: gbvoutpath [
-    required: "$(grib)"
+    standard: "$(grib)"
     information: "Location of signature hits/library scan files for
                   Gribskov profile searches (output)"
     default: "./"
   ]
 
   string: gbvoutextn [
-    required: "$(grib)"
+    standard: "$(grib)"
     information: "Extension of signature hits/library scan files for
                   Gribskov profile searches (output)"
     default: ".gribout"
   ]
 
   string: hnfoutpath  [
-    required: "$(henik)"
+    standard: "$(henik)"
     information: "Location of signature hits/library scan files for
                   Henikoff profile searches (output)"
     default: "./"
   ]
 
   string: hnfoutextn [
-    required: "$(henik)"
+    standard: "$(henik)"
     information: "Extension of signature hits/library scan files for
                   Henikoff profile searches (output)"
     default: ".henikout"
   ]
 
   string: sigoutpath [
-    required: "$(sig)"
+    standard: "$(sig)"
     information: "Location of signature hits/library scan files for
                   signature searches (output)"
     default: "./"
   ]
 
   string: sigoutextn [
-    required: "$(sig)"
+    standard: "$(sig)"
     information: "Extension for signature hits/library scan files for
                   signature searches (output)"
     default: ".sigout"
