@@ -85,7 +85,7 @@ public class ShowResultSet extends JFrame
 // now load png files into pane
     for(int i=0; i<stabs.length;i++)
     {
-      s1 = new ScrollPanel(new BorderLayout());
+      s1 = new ScrollPanel(new GridLayout());
       r1 = new JScrollPane(s1);
       r1.getViewport().setBackground(Color.white);
 
@@ -102,14 +102,14 @@ public class ShowResultSet extends JFrame
     String cmd = "cmd";
     if(reslist.containsKey(cmd))
     {
-      s1 = new ScrollPanel(new BorderLayout());
+      s1 = new ScrollPanel(new GridLayout());
       r1 = new JScrollPane(s1);
       r1.getViewport().setBackground(Color.white);
 
       FileEditorDisplay fed = new FileEditorDisplay(null,cmd,
                                          reslist.get(cmd));
       fed.setCaretPosition(0);
-      s1.add(fed, BorderLayout.CENTER);
+      s1.add(fed);
       rtp.add(cmd,r1);
     }
 
@@ -136,7 +136,7 @@ public class ShowResultSet extends JFrame
       String thiskey = (String)enum.nextElement().toString();
       if(!thiskey.equals(cmd))
       {
-        s1 = new ScrollPanel(new BorderLayout());
+        s1 = new ScrollPanel(new GridLayout());
         r1 = new JScrollPane(s1);
         r1.getViewport().setBackground(Color.white);
 
@@ -161,7 +161,7 @@ public class ShowResultSet extends JFrame
           FileEditorDisplay fed = new FileEditorDisplay(null,thiskey,
                                                      h.get(thiskey));
           fed.setCaretPosition(0);
-          s1.add(fed, BorderLayout.CENTER);
+          s1.add(fed);
           rtp.add(thiskey,r1);
         }
       }
