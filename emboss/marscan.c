@@ -24,17 +24,17 @@
 #include "stdlib.h"
 
 
-static AjBool getpos (AjPList l, int *thisprev, int otherprev,
-	AjBool *stored_match, int *stored_dist, int *stored_this_pos,
-	int *stored_other_pos, AjPFeatTable *tab, AjBool this_is_8);
+static AjBool getpos (AjPList l, ajint *thisprev, ajint otherprev,
+	AjBool *stored_match, ajint *stored_dist, ajint *stored_this_pos,
+	ajint *stored_other_pos, AjPFeatTable *tab, AjBool this_is_8);
 
 static void stepdown (AjPList l16, AjPList l8, AjPFeatTable *tab);
 
-static void output_stored_match(AjBool stored_match, int stored_dist,
-	int stored_this_pos, int stored_other_pos, AjPFeatTable *tab,
+static void output_stored_match(AjBool stored_match, ajint stored_dist,
+	ajint stored_this_pos, ajint stored_other_pos, AjPFeatTable *tab,
 	AjBool this_is_8);
 	
-static int    patRestrictStartCompare(const void *a, const void *b);
+static ajint    patRestrictStartCompare(const void *a, const void *b);
 
 
 /* the maximum distance between a length 16 pattern and a length 8
@@ -42,7 +42,7 @@ pattern in a MRS */
 #define MAXDIST 200
 
 
-int main (int argc, char * argv[])
+ajint main (ajint argc, char * argv[])
 {
     AjPSeqall seqall;
     AjPSeq seq;
@@ -53,87 +53,81 @@ int main (int argc, char * argv[])
     AjPStr opattern16=NULL;
     AjBool amino16;
     AjBool carboxyl16;
-    int    type16=0;
-    int    m16;
-    int    plen16;
-    int    *buf16=NULL;    
+    ajint    type16=0;
+    ajint    m16;
+    ajint    plen16;
+    ajint    *buf16=NULL;    
     EmbOPatBYPNode off16[AJALPHA];
-    unsigned int   *sotable16=NULL;
-    unsigned int   solimit16;
+    ajuint   *sotable16=NULL;
+    ajuint   solimit16;
     AjPStr	   regexp16=NULL;
-    int            **skipm16=NULL;
-    int    mismatch16=1;	/* allow a single mismatch */
+    ajint            **skipm16=NULL;
+    ajint    mismatch16=1;	/* allow a single mismatch */
     AjPList l16;
-    int    hits16=0;
+    ajint    hits16=0;
     void   *tidy16=NULL;
     
     AjPStr pattern16rev=ajStrNewC("gnnncwwnnttaywwt");
     AjPStr opattern16rev=NULL;
     AjBool amino16rev;
     AjBool carboxyl16rev;
-    int    type16rev=0;
-    int    m16rev;
-    int    plen16rev;
-    int    *buf16rev=NULL;    
+    ajint    type16rev=0;
+    ajint    m16rev;
+    ajint    plen16rev;
+    ajint    *buf16rev=NULL;    
     EmbOPatBYPNode off16rev[AJALPHA];
-    unsigned int   *sotable16rev=NULL;
-    unsigned int   solimit16rev;
+    ajuint   *sotable16rev=NULL;
+    ajuint   solimit16rev;
     AjPStr	   regexp16rev=NULL;
-    int            **skipm16rev=NULL;
-    int    mismatch16rev=1;	/* allow a single mismatch */
+    ajint            **skipm16rev=NULL;
+    ajint    mismatch16rev=1;	/* allow a single mismatch */
     AjPList l16rev;
-    int    hits16rev=0;
+    ajint    hits16rev=0;
     void   *tidy16rev=NULL;
     
     AjPStr pattern8=ajStrNewC("aataayaa");
     AjPStr opattern8=NULL;
     AjBool amino8;
     AjBool carboxyl8;
-    int    type8=0;
-    int    m8;
-    int    plen8;
-    int    *buf8=NULL;    
+    ajint    type8=0;
+    ajint    m8;
+    ajint    plen8;
+    ajint    *buf8=NULL;    
     EmbOPatBYPNode off8[AJALPHA];
-    unsigned int   *sotable8=NULL;
-    unsigned int   solimit8;
+    ajuint   *sotable8=NULL;
+    ajuint   solimit8;
     AjPStr	   regexp8=NULL;
-    int            **skipm8=NULL;
-    int    mismatch8=0;
+    ajint            **skipm8=NULL;
+    ajint    mismatch8=0;
     AjPList l8;
-    int    hits8=0;
+    ajint    hits8=0;
     void   *tidy8=NULL;
     
     AjPStr pattern8rev=ajStrNewC("ttrttatt");
     AjPStr opattern8rev=NULL;
     AjBool amino8rev;
     AjBool carboxyl8rev;
-    int    type8rev=0;
-    int    m8rev;
-    int    plen8rev;
-    int    *buf8rev=NULL;    
+    ajint    type8rev=0;
+    ajint    m8rev;
+    ajint    plen8rev;
+    ajint    *buf8rev=NULL;    
     EmbOPatBYPNode off8rev[AJALPHA];
-    unsigned int   *sotable8rev=NULL;
-    unsigned int   solimit8rev;
+    ajuint   *sotable8rev=NULL;
+    ajuint   solimit8rev;
     AjPStr	   regexp8rev=NULL;
-    int            **skipm8rev=NULL;
-    int    mismatch8rev=0;
+    ajint            **skipm8rev=NULL;
+    ajint    mismatch8rev=0;
     AjPList l8rev;
-    int    hits8rev=0;
+    ajint    hits8rev=0;
     void   *tidy8rev=NULL;
     
     AjPStr seqname=NULL;
     AjPStr text=NULL;
-    AjPStr desc=NULL;
-    AjBool dodesc;
-    AjPStr acc=NULL;
-    AjBool doacc;
     
-    int thits=0;
-    
-    int    i;
-    int    begin;
-    int    end;
-    int    adj;
+    ajint    i;
+    ajint    begin;
+    ajint    end;
+    ajint    adj;
 
 /* feature table stuff */    
     AjPFeatLexicon dict=NULL;
@@ -276,7 +270,7 @@ int main (int argc, char * argv[])
 **
 ** @param [r] l [AjPList] the list of matching positions 
 ** @param [rw] thisprev [int *] pointer to last stored position of this pattern
-** @param [r] otherprev [int] last stored position of the other pattern
+** @param [r] otherprev [ajint] last stored position of the other pattern
 ** @param [rw] stored_match [AjBool *] flag set to ajtrue if have stored match
 ** @param [rw] stored_dist [int *] distance between the patterns in the stored match
 ** @param [rw] stored_this_pos [int *] position of this pattern match in stored match
@@ -287,13 +281,13 @@ int main (int argc, char * argv[])
 ** @@
 ******************************************************************************/
 
-static AjBool getpos (AjPList l, int *thisprev, int otherprev,
-	AjBool *stored_match, int *stored_dist, int *stored_this_pos,
-	int *stored_other_pos, AjPFeatTable *tab, AjBool this_is_8)
+static AjBool getpos (AjPList l, ajint *thisprev, ajint otherprev,
+	AjBool *stored_match, ajint *stored_dist, ajint *stored_this_pos,
+	ajint *stored_other_pos, AjPFeatTable *tab, AjBool this_is_8)
 {
 
   EmbPMatMatch m;
-  int dist;	/* distance between the two patterns */
+  ajint dist;	/* distance between the two patterns */
 
   while (*thisprev <= otherprev) {
   	
@@ -368,13 +362,13 @@ static AjBool getpos (AjPList l, int *thisprev, int otherprev,
 static void stepdown (AjPList l16, AjPList l8, AjPFeatTable *tab) 
 {
 	
-  int prev16 = -1;	/* we have not got a stored position for length 16 */
-  int prev8 = -1;	/* we have not got a stored position for length 8 */
+  ajint prev16 = -1;	/* we have not got a stored position for length 16 */
+  ajint prev8 = -1;	/* we have not got a stored position for length 8 */
 
   AjBool stored_match = ajFalse;	/* flag ajtrue if have stored match */
-  int stored_dist;	/* distance between the patterns in the stored match */
-  int stored_16_pos;	/* position of 16 pattern match in stored match */
-  int stored_8_pos;	/* position of 8 pattern match in stored match */
+  ajint stored_dist;	/* distance between the patterns in the stored match */
+  ajint stored_16_pos;	/* position of 16 pattern match in stored match */
+  ajint stored_8_pos;	/* position of 8 pattern match in stored match */
   
   AjBool notend16=ajTrue;	/* flag for empty list of length 16 pattern matches*/
   AjBool notend8=ajTrue;	/* flag for empty list of length 8 pattern matches*/
@@ -408,17 +402,17 @@ the last 16 pattern match, stop searching */
 ** Outputs the results of finding a match of the two patterns
 **
 ** @param [r] stored_match [AjBool] flag set to ajtrue if have stored match
-** @param [r] stored_dist [int] distance between the patterns in the stored match
-** @param [r] stored_this_pos [int]  position of this pattern match in stored match
-** @param [r] stored_other_pos [int] position of 8 pattern match in stored match
+** @param [r] stored_dist [ajint] distance between the patterns in the stored match
+** @param [r] stored_this_pos [ajint]  position of this pattern match in stored match
+** @param [r] stored_other_pos [ajint] position of 8 pattern match in stored match
 ** @param [rw] tab [AjPFeatTable*] feature table
 ** @param [r] this_is_8 [AjBool] ajTrue is 'stored_this_pos' is for the length 8 pattern
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void output_stored_match(AjBool stored_match, int stored_dist,
-int stored_this_pos, int stored_other_pos, AjPFeatTable *tab, 
+static void output_stored_match(AjBool stored_match, ajint stored_dist,
+ajint stored_this_pos, ajint stored_other_pos, AjPFeatTable *tab, 
 AjBool this_is_8)
 {
 
@@ -431,7 +425,7 @@ not dependent on the strand(s) it is on */
   AjPFeature feature;
   AjPStr notestr=NULL;
 
-  int a, b, s8, s16, tmp, end;
+  ajint a, b, s8, s16, tmp, end;
 
   if (!stored_match) return;
   	
@@ -484,12 +478,12 @@ the end position of the MRS = second pattern + length of second pattern -1 */
 ** @param [r] a [const void *] First EmbPMatMatch hit
 ** @param [r] b [const void *] Second EmbPMatMatch hit
 **       
-** @return [int] 0 if a and b are equal
+** @return [ajint] 0 if a and b are equal
 **               -ve if a is less than b,
 **               +ve if a is greater than b
 ******************************************************************************/
             
-static int patRestrictStartCompare(const void *a, const void *b)
+static ajint patRestrictStartCompare(const void *a, const void *b)
 {
     return (*(EmbPMatMatch *)a)->start - (*(EmbPMatMatch *)b)->start;
 } 
