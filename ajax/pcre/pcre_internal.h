@@ -224,8 +224,13 @@ variable-length repeat, or a anything other than literal characters. */
 
 typedef int BOOL;
 
+#ifndef FALSE
 #define FALSE   0
+#endif
+
+#ifndef TRUE
 #define TRUE    1
+#endif
 
 /* Escape items that are just an encoding of a particular data value. Note that
 ESC_n is defined as yet another macro, which is set in config.h to either \n
