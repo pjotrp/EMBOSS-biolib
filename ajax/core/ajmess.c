@@ -192,6 +192,7 @@ static void messDump (char *message);
 #define FULL_CRASH_PREFIX_FORMAT "\n   %s Program cannot continue " \
                                  "(%s, in file %s, at line %d):\n"
 #define SYSERR_FORMAT "Something wrong with a system call (%d - %s)"
+#define SYSERR_OK "Successful system call (%d - %s)"
 
 /******************************************************************************
 ** ajMessCrash now reports the file/line no. where ajMessCrash was issued
@@ -977,8 +978,11 @@ char* ajMessSysErrorText (void) {
   static char* errmess = 0 ;
   char *mess ;
 
-  mess = ajFmtString (SYSERR_FORMAT, errno, strerror(errno)) ;
-
+  if (errno)
+      mess = ajFmtString (SYSERR_FORMAT, errno, strerror(errno)) ;
+  else
+      mess = ajFmtString (SYSERR_OK, errno, strerror(errno)) ;
+      
   /* must make copy - will be used when mess* calls itself */
   if (errmess)
     AJFREE(errmess) ;
