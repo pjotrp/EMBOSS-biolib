@@ -117,8 +117,9 @@ AjBool ajSysWhich(AjPStr *s)
     static AjPStr fname=NULL;
 
     p = getenv("PATH");
-    if (!p) {
-      return ajFalse;
+    if (!p)
+    {
+	return ajFalse;
     }
 
     (void) ajStrAssS(&tname, *s);
@@ -228,9 +229,9 @@ AjBool ajSysWhichEnv(AjPStr *s, char **env)
     p=ajStrStr(path);
     p+=5;
     ajStrAssC(&tmp,p);
-
+    
     p=ajSysStrtokR(ajStrStr(tmp),":",&save,&buf);
-
+    
     if(p==NULL)
     {
 	ajStrDel(&fname);
@@ -240,8 +241,8 @@ AjBool ajSysWhichEnv(AjPStr *s, char **env)
 	ajStrDel(&tmp);
 	return ajFalse;
     }
-
-
+    
+    
     ajFmtPrintS(&fname,"%s/%S",p,tname);
     while(!ajFileStat(&fname, AJ_FILE_X))
     {
@@ -256,16 +257,16 @@ AjBool ajSysWhichEnv(AjPStr *s, char **env)
 	}
 	ajFmtPrintS(&fname,"%s/%S",p,tname);
     }
-
-
+    
+    
     ajStrAssS(s,fname);
-
+    
     ajStrDel(&fname);
     ajStrDel(&tname);
     ajStrDel(&path);
     ajStrDel(&buf);
     ajStrDel(&tmp);
-
+    
     return ajTrue;
 }
     
@@ -296,7 +297,7 @@ void ajSystem(AjPStr *cl)
 
     (void) ajStrAssC(&pname, pgm);
     if (!ajSysWhich(&pname))
-      ajFatal("cannot find program '%S'", pname);
+	ajFatal("cannot find program '%S'", pname);
 
     pid=fork();
     if(pid==-1)
@@ -357,7 +358,7 @@ void ajSystemEnv (AjPStr *cl, char **env)
 
     (void) ajStrAssC(&pname, pgm);
     if (!ajSysWhichEnv(&pname, env))
-      ajFatal("cannot find program '%S'", pname);
+	ajFatal("cannot find program '%S'", pname);
 
     pid=fork();
     if(pid==-1)
@@ -430,7 +431,7 @@ void ajSysCanon(AjBool state)
     else
 	tty.c_lflag &= ~(ICANON);
 
-      tcsetattr(1, TCSANOW, &tty);
+    tcsetattr(1, TCSANOW, &tty);
 #endif
     return;
 }
@@ -446,61 +447,66 @@ void ajSysCanon(AjBool state)
 ** @@
 ******************************************************************************/
 
-AjBool ajSysArglist (AjPStr cmdline, char** pgm, char*** arglist) {
-
-  static AjPRegexp argexp = NULL;
-  AjPStr tmpline = NULL;
-  char* cp;
-  ajint ipos = 0;
-  ajint iarg = 0;
-  ajint ilen = 0;
-  ajint i;
-  char** al;
-  AjPStr argstr = NULL;
-
-  if (!argexp)
-    argexp = ajRegCompC ("^[ \t]*(\"([^\"]*)\"|'([^']*)'|([^ \t]+))");
-
-  ajDebug("ajSysArgList '%S'\n", cmdline);
-
-  (void) ajStrAss (&tmpline, cmdline);
-
-  cp = ajStrStr(cmdline);
-  ipos = 0;
-  while (ajRegExecC (argexp, &cp[ipos])) {
-    ipos += ajRegLenI (argexp, 0);
-    iarg++;
-  }
-
-  AJCNEW (*arglist, iarg+1);
-  al = *arglist;
-  ipos = 0;
-  iarg = 0;
-  while (ajRegExecC (argexp, &cp[ipos])) {
-    ilen = ajRegLenI (argexp, 0);
-    (void) ajStrDelReuse(&argstr);
-    for (i=2;i<5;i++) {
-      if (ajRegLenI(argexp, i)) {
-	ajRegSubI (argexp, i, &argstr);
-	/* ajDebug("parsed [%d] '%S'\n", i, argstr);*/
-	break;
-      }
+AjBool ajSysArglist (AjPStr cmdline, char** pgm, char*** arglist)
+{    
+    static AjPRegexp argexp = NULL;
+    AjPStr tmpline = NULL;
+    char* cp;
+    ajint ipos = 0;
+    ajint iarg = 0;
+    ajint ilen = 0;
+    ajint i;
+    char** al;
+    AjPStr argstr = NULL;
+    
+    if (!argexp)
+	argexp = ajRegCompC ("^[ \t]*(\"([^\"]*)\"|'([^']*)'|([^ \t]+))");
+    
+    ajDebug("ajSysArgList '%S'\n", cmdline);
+    
+    (void) ajStrAss (&tmpline, cmdline);
+    
+    cp = ajStrStr(cmdline);
+    ipos = 0;
+    while (ajRegExecC (argexp, &cp[ipos]))
+    {
+	ipos += ajRegLenI (argexp, 0);
+	iarg++;
     }
-    ipos += ilen;
-    if (!iarg) {
-      *pgm = ajCharNewC (ajStrLen(argstr), ajStrStr(argstr));
+    
+    AJCNEW (*arglist, iarg+1);
+    al = *arglist;
+    ipos = 0;
+    iarg = 0;
+    while (ajRegExecC (argexp, &cp[ipos]))
+    {
+	ilen = ajRegLenI (argexp, 0);
+	(void) ajStrDelReuse(&argstr);
+	for (i=2;i<5;i++)
+	{
+	    if (ajRegLenI(argexp, i))
+	    {
+		ajRegSubI (argexp, i, &argstr);
+		/* ajDebug("parsed [%d] '%S'\n", i, argstr);*/
+		break;
+	    }
+	}
+	ipos += ilen;
+	if (!iarg)
+	{
+	    *pgm = ajCharNewC (ajStrLen(argstr), ajStrStr(argstr));
+	}
+	al[iarg] = ajCharNewC (ajStrLen(argstr), ajStrStr(argstr));
+	iarg++;
     }
-    al[iarg] = ajCharNewC (ajStrLen(argstr), ajStrStr(argstr));
-    iarg++;
-  }
-  al[iarg] = NULL;
-
-  ajRegFree(&argexp);
-  argexp = NULL;
-  ajStrDel(&tmpline);
-  ajStrDel(&argstr);
-
-  return ajTrue;
+    al[iarg] = NULL;
+    
+    ajRegFree(&argexp);
+    argexp = NULL;
+    ajStrDel(&tmpline);
+    ajStrDel(&argstr);
+    
+    return ajTrue;
 }
 
 /* @func ajSysArgListFree *****************************************************
@@ -512,18 +518,19 @@ AjBool ajSysArglist (AjPStr cmdline, char** pgm, char*** arglist) {
 ** @@
 ******************************************************************************/
 
-void ajSysArgListFree (char*** arglist) {
+void ajSysArgListFree (char*** arglist)
+{
+    char** ca = *arglist;
+    ajint i;
 
-  char** ca = *arglist;
-  ajint i;
+    i=0;
+    while (ca[i])
+    {
+	AJFREE(ca[i]);
+	++i;
+    }
 
-  i=0;
-  while (ca[i]) {
-    AJFREE(ca[i]);
-    ++i;
-  }
-
-  AJFREE (*arglist);
+    AJFREE (*arglist);
 }
 
 
