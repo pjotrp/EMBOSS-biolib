@@ -22,7 +22,8 @@ pkgdata_DATA = codes.english \
 	histogramtest.acd iep.acd infoalign.acd infoseq.acd isochore.acd \
 	lindna.acd listor.acd marscan.acd maskfeat.acd maskseq.acd \
 	matcher.acd
-pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd needle.acd \
+pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd \
+	mwfilter.acd needle.acd \
 	newcpgreport.acd newcpgseek.acd newseq.acd noreturn.acd \
 	notseq.acd nrscope.acd nthseq.acd octanol.acd oddcomp.acd \
 	palindrome.acd pasteseq.acd patmatdb.acd patmatmotifs.acd \

@@ -27,6 +27,7 @@ findkm freak fuzznuc fuzzpro fuzztran \
 garnier geecee getorf helixturnhelix hmoment \
 iep infoalign infoseq isochore lindna listor \
 marscan maskfeat maskseq matcher megamerger merger msbar \
+mwfilter \
 needle newcpgreport newcpgseek newseq \
 noreturn notseq nrscope nthseq \
 octanol oddcomp \
@@ -123,6 +124,7 @@ matcher_SOURCES = matcher.c
 msbar_SOURCES = msbar.c
 megamerger_SOURCES = megamerger.c
 merger_SOURCES = merger.c
+mwfilter_SOURCES = mwfilter.c
 needle_SOURCES = needle.c
 newcpgreport_SOURCES = newcpgreport.c
 newcpgseek_SOURCES = newcpgseek.c
