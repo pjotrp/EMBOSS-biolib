@@ -18,6 +18,7 @@ string: alignextn  [
 
 endsection: input
 
+section: required [ info: "required Section" type: page ]
 integer: niter  [
   parameter: "Y"
   prompt: "Number of PSIBLAST iterations"
