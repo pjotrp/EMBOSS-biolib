@@ -47,7 +47,7 @@ int main(int argc, char **argv)
     AjPSeqset outseqset; /* set of aligned nucleic sequences */
     ajint proteinseqcount = 0;
     AjPStr degapstr = NULL;
-    ajint pos;		/* start position of guide protein in translation */
+    ajint pos=0;       	/* start position of guide protein in translation */
     AjPSeq newseq = NULL;	/* output aligned nucleic sequence */
     ajint frame;    
     
