@@ -1,7 +1,7 @@
 #define _ (-1)
 
 static const char rcsid[] =
-"$Id: encoding.c,v 1.1 2002/02/25 09:33:49 hgmp Exp $";
+"$Id: encoding.c,v 1.2 2003/05/31 13:40:47 ajb Exp $";
 
 enum { Nfasta_bad=0, Nfasta_nt=1, Nfasta_ws=2, Nfasta_amb=3 };
 extern const unsigned char nfasta_ctype[256];
@@ -24,8 +24,8 @@ const unsigned char nfasta_ctype[] = {
  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
-extern const unsigned char dna_complement[256];
-const unsigned char dna_complement[256] = 
+extern const unsigned char dna_complement[257];
+const unsigned char dna_complement[257] = 
   "                                                                "
   " TVGH  CD  M KN   YSA BWXR       tvgh  cd  m kn   ysa bwxr      "
   "                                                                "
