@@ -238,7 +238,7 @@ for i in s*.jar; do
 done;
 
 echo '         </resources>'                            >> $JNLP
-echo '         <application-desc main-class="org/emboss/jemboss/Jemboss"/>' \
+echo '         <application-desc main-class="org.emboss.jemboss.Jemboss"/>' \
                                                         >> $JNLP
 echo '       </jnlp>'                                   >> $JNLP
  
