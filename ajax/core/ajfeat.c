@@ -7701,3 +7701,29 @@ AjBool ajFeatIsLocalRange (AjPFeature gf, ajint start, ajint end)
 
     return AJTRUE;
 }
+
+
+/* @func ajFeattabOutDel ***************************************************
+**
+** Destructor for a feature table output object
+**
+** @param [w] thys [AjPFeattabOut *] feature format
+** @return [void] Feature table output object
+** @@
+******************************************************************************/
+
+void ajFeattabOutDel (AjPFeattabOut *thys)
+{
+    AjPFeattabOut pthis = *thys;
+
+    ajStrDel(&pthis->Ufo);
+    ajStrDel(&pthis->Formatstr);
+    ajStrDel(&pthis->Filename);
+    ajStrDel(&pthis->Entryname);
+    ajStrDel(&pthis->Type);
+    ajStrDel(&pthis->Seqname);
+
+    AJFREE(pthis);
+    
+    return;
+}

@@ -805,9 +805,8 @@ resulting primer are interleaved */
   ajStrDel(&line);
   (void) ajStrTokenClear(&linetokenhandle);
   ajStrTableFree(&table);
-  ajStrDel(&key);
-  ajStrDel(&value);
 
+  return;
 }
 
 /* @funcstatic primer3_output_report *******************************************

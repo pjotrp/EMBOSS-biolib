@@ -184,6 +184,9 @@ int main(int argc, char **argv)
 			     score, matrix);
     }
 
+    ajAlignClose(align);
+    ajAlignDel(&align);
+
     AJFREE (compass);
     AJFREE (path);
     

@@ -512,26 +512,33 @@ static void showseq_read_file_of_enzyme_names(AjPStr *enzymes)
 ******************************************************************************/
 
 static void showseq_FeatureFilter(AjPFeattable featab, AjPStr
-        matchsource, AjPStr matchtype, ajint matchsense, float minscore,
-        float maxscore, AjPStr matchtag, AjPStr matchvalue)
+				  matchsource, AjPStr matchtype, ajint matchsense, float minscore,
+				  float maxscore, AjPStr matchtag, AjPStr matchvalue)
 {
 
-  AjIList iter = NULL;
-  AjPFeature gf = NULL;
+    AjIList iter = NULL;
+    AjPFeature gf = NULL;
 
-  /* foreach feature in the feature table */
-  if (featab) {
-    iter = ajListIter(featab->Features);
-    while(ajListIterMore(iter)) {
-      gf = (AjPFeature)ajListIterNext(iter);
-      if (!showseq_MatchFeature(gf, matchsource, matchtype, matchsense,
-          minscore, maxscore, matchtag, matchvalue)) {
-        /* no match, so delete feature from feature table */
-        ajFeatDel(&gf);
-        ajListRemove(iter);
-      }  
+    /* foreach feature in the feature table */
+    if (featab)
+    {
+	iter = ajListIter(featab->Features);
+	while(ajListIterMore(iter))
+	{
+	    gf = (AjPFeature)ajListIterNext(iter);
+	    if (!showseq_MatchFeature(gf, matchsource, matchtype, matchsense,
+				      minscore, maxscore, matchtag,
+				      matchvalue))
+	    {
+		/* no match, so delete feature from feature table */
+		ajFeatDel(&gf);
+		ajListRemove(iter);
+	    }  
+	}
+	ajListIterFree(iter);
     }
-  }
+
+    return;
 }
 
 /* @funcstatic showseq_MatchFeature *****************************************

@@ -1586,8 +1586,15 @@ static void seqWriteMsf (AjPSeqout outseq) {
   
   seqWriteSeq (outseq, sf);
   */
+
+  /* AJB: Shouldn't this be left to ajSeqoutDel? */
+  while(ajListPop(outseq->Savelist,(void **)&seq))
+      ajSeqDel(&seq);
   ajListDel(&outseq->Savelist);
 
+
+  AJFREE(seqs);
+  
   return;
 }
 
@@ -3043,7 +3050,8 @@ static void seqsetClone (AjPSeqout outseq, AjPSeqset seqset, ajint i) {
 ******************************************************************************/
 
 static void seqDeclone (AjPSeqout outseq) {
-
+    
+    
   (void) ajStrClear (&outseq->Db);
   (void) ajStrClear (&outseq->Name);
   (void) ajStrClear (&outseq->Acc);

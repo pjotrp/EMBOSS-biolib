@@ -496,6 +496,9 @@ static ajint matcherSim (AjPAlign align,
 	AJFREE(LIST[i]);
     AJFREE(LIST);
 
+    ajSeqDel(&res1);
+    ajSeqDel(&res2);
+
     return 0;
 }
 

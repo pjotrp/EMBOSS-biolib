@@ -135,6 +135,8 @@ int main(int argc, char **argv)
     ajReportWrite(report, TabRpt, seq1);
     (void) ajFeattableDel(&TabRpt);
     (void) ajReportClose(report);
+    ajReportDel(&report);
+    
     ajExit();
     return 0;
 }
@@ -889,5 +891,7 @@ static void diffseq_diffrpt (AjPList matchlist, AjPSeq seq1, AjPSeq seq2,
     (void) ajFeattableDel(&feat1);
     (void) ajFeattableDel(&feat2);
 
+    ajStrDel(&tmpstr);
+    
     return;
 }

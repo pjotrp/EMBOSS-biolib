@@ -244,6 +244,11 @@ int main(int argc, char **argv)
     AJFREE(SS);
     ajStrDel(&aa0str);
     ajStrDel(&aa1str);
+
+    ajSeqDel(&res1);
+    ajSeqDel(&res2);
+
+    
     ajExit();
     return 0;
 }

@@ -561,7 +561,8 @@ static void restrict_reportHits(AjPReport report, AjPSeq seq,
     
     ajListDel(l);
     ajStrDel(&ps);
-
+    ajStrDel(&tmpStr);
+    ajStrDel(&fthit);
     
     return;
 }

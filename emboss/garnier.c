@@ -731,6 +731,12 @@ static void garnier_report(AjPReport report, AjPFeattable TabRpt,
 
   ajReportSetTail (report, tmpStr);
 
+    ajStrDel(&tmpStr);
+    ajStrDel(&strExtend);
+    ajStrDel(&strHelix);
+    ajStrDel(&strTurns);
+    ajStrDel(&strCoil);
+
   return;
 }
 

@@ -33,26 +33,29 @@
 
 #include "ajax.h"
 
-typedef struct AlignSData {
-  ajint* Start;
-  ajint* End;
-  ajint* Offset;
-  AjBool* Rev;
-  AjPSeq* Seq;
-  ajint Len;
-  ajint NumId;			/* Number of identical positions */
-  ajint NumSim;			/* Number of similar positions */
-  ajint NumGap;			/* Number of gap positions */
-  AjPStr Score;
+typedef struct AlignSData
+{
+    ajint  Nseqs;
+    ajint* Start;
+    ajint* End;
+    ajint* Offset;
+    AjBool* Rev;
+    AjPSeq* Seq;
+    ajint Len;
+    ajint NumId;			/* Number of identical positions */
+    ajint NumSim;			/* Number of similar positions */
+    ajint NumGap;			/* Number of gap positions */
+    AjPStr Score;
 } AlignOData, *AlignPData;
 
-typedef struct AlignSFormat {
-  char *Name;
-  AjBool Nuc;
-  AjBool Prot;
-  ajint Minseq;
-  ajint Maxseq;
-  void (*Write) (AjPAlign thys);
+typedef struct AlignSFormat
+{
+    char *Name;
+    AjBool Nuc;
+    AjBool Prot;
+    ajint Minseq;
+    ajint Maxseq;
+    void (*Write) (AjPAlign thys);
 } AlignOFormat, *AlignPFormat;
 
 static void    alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
@@ -508,7 +511,15 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
 
 
     if (markx==4)
+    {
+	for(i=0;i<3;++i)
+	    AJFREE(line[i]);
+	for(i=0;i<2;++i)
+	    AJFREE(cline[i]);
+	
 	return;
+    }
+  
 
     if (markx==3)
     {
@@ -528,6 +539,12 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
 		ajFmtPrintF(outf, "\n");
 	}
 	ajFmtPrintF(outf, "\n");
+
+	for(i=0;i<3;++i)
+	    AJFREE(line[i]);
+	for(i=0;i<2;++i)
+	    AJFREE(cline[i]);
+
 	return;
     }
 
@@ -584,6 +601,11 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
 
 	if ((i-1)%50!=49 || seqc1[i-1]==' ')
 	    ajFmtPrintF(outf, "\n");
+
+	for(i=0;i<3;++i)
+	    AJFREE(line[i]);
+	for(i=0;i<2;++i)
+	    AJFREE(cline[i]);
 
 	return;
     }
@@ -759,6 +781,11 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
 	    ajFmtPrintF (outf,"%s\n",cline[1]);
     }
 
+  for(i=0;i<3;++i)
+      AJFREE(line[i]);
+  for(i=0;i<2;++i)
+      AJFREE(cline[i]);
+  
   return;
 }
 
@@ -883,6 +910,13 @@ static void alignWriteSimple (AjPAlign thys) {
       ajFmtPrintF (outf, "\n");
     }
   }
+
+
+  ajStrDel(&cons);
+  ajStrDel(&mrkcons);
+  ajStrDel(&mrkstr);
+  ajStrDel(&tmpstr);
+  AJFREE(ipos);
   AJFREE (pdata);
 
   return;
@@ -904,7 +938,8 @@ static void alignWriteScore (AjPAlign thys) {
   ajint iali;
   AlignPData* pdata;
   AlignPData data;
-
+  ajint i;
+  
   nali = ajListToArray (thys->Data, (void***) &pdata);
 
   for (iali=0; iali<nali; iali++) {
@@ -923,6 +958,9 @@ static void alignWriteScore (AjPAlign thys) {
     }
   }
 
+  AJFREE(pdata);
+
+  return;
 }
 
 /* @funcstatic alignWriteSrs **************************************************
@@ -1081,6 +1119,11 @@ static void alignWriteSrsAny (AjPAlign thys, ajint imax, AjBool mark) {
     }
   }
 
+  ajStrDel(&mrkcons);
+  ajStrDel(&tmpstr);
+  ajStrDel(&mrkstr);
+  ajStrDel(&cons);
+  AJFREE(ipos);
   AJFREE (pdata);
 
   return;
@@ -1108,6 +1151,8 @@ AjBool ajAlignDefine (AjPAlign thys, AjPSeqset seqset) {
   else {
     thys->Nseqs = ajSeqsetSize(seqset);
   }
+
+  data->Nseqs = thys->Nseqs;
 
   AJCNEW0 (data->Start, thys->Nseqs);
   AJCNEW0 (data->End, thys->Nseqs);
@@ -1199,7 +1244,15 @@ void ajAlignDel (AjPAlign* pthys) {
   ajStrDel (&thys->Formatstr);
   ajStrDel (&thys->Filename);
   ajStrDel (&thys->Extension);
-
+  ajStrDel(&thys->Type);
+  ajStrDel(&thys->Usa);
+  ajStrDel(&thys->SubHeader);
+  ajStrDel(&thys->Header);
+  ajStrDel(&thys->Tail);
+  ajStrDel(&thys->Matrix);
+  ajStrDel(&thys->GapPen);
+  ajStrDel(&thys->ExtPen);
+  
   while (ajListPop(thys->Data, (void**) &data)) {
     alignDataDel(&data);
   }
@@ -1522,6 +1575,8 @@ void ajAlignWriteHeader (AjPAlign thys) {
 
   ++thys->Count;
 
+  ajStrDel(&tmpstr);
+  
   return;
 }
 
@@ -1567,6 +1622,8 @@ void ajAlignWriteTail (AjPAlign thys) {
     ajFmtPrintF (outf, "########################################\n");
   }
 
+  ajStrDel(&tmpstr);
+  
   return;
 }
 
@@ -2259,10 +2316,17 @@ static AjPStr alignSeqName (AjPAlign thys, ajint i) {
 static void alignDataDel (AlignPData* pthys) {
 
   AlignPData thys = *pthys;
-
+  ajint i;
+  
   AJFREE (thys->Start);
   AJFREE (thys->End);
   AJFREE (thys->Rev);
+  AJFREE (thys->Offset);
+
+  ajStrDel(&thys->Score);
+  for(i=0;i<thys->Nseqs;++i)
+      ajSeqDel(&thys->Seq[i]);
+  AJFREE(thys->Seq);
   AJFREE (*pthys);
 
   return;

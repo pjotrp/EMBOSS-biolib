@@ -187,6 +187,8 @@ void ajSeqsetDel(AjPSeqset *thys)
     AJFREE(pthis->Seq);
     AJFREE(pthis->Seqweight);
 
+    AJFREE(pthis);
+
     return;
 }
 
@@ -3127,7 +3129,8 @@ AjPSeqout ajSeqoutNewF (AjPFile file)
 void ajSeqoutDel (AjPSeqout* pthis)
 {
     AjPSeqout thys = *pthis;
-
+    AjPSeq    seq=NULL;
+    
     ajStrDel (&thys->Name);
     ajStrDel (&thys->Acc);
     ajStrDel (&thys->Desc);
@@ -3145,6 +3148,8 @@ void ajSeqoutDel (AjPSeqout* pthis)
     ajStrDel (&thys->Seq);
     ajStrDel (&thys->Extension);
 
+    while(ajListPop(thys->Savelist,(void **)&seq))
+	ajSeqDel(&seq);
     ajListDel(&thys->Savelist);
 
     AJFREE(thys->Ftquery);

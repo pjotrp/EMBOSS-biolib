@@ -3020,6 +3020,12 @@ void embAlignReportGlobal(AjPAlign align, AjPSeq seqa, AjPSeq seqb,
   ajAlignWrite (align);
   ajAlignReset(align);
 
+  ajStrDel(&fa);
+  ajStrDel(&fb);
+  ajSeqsetDel(&seqset);
+  ajSeqDel(&res1);
+  ajSeqDel(&res2);
+
   return;
 }
 
@@ -3088,6 +3094,10 @@ void embAlignReportLocal(AjPAlign align, AjPSeq seqa, AjPSeq seqb,
   ajAlignWrite (align);
   ajAlignReset(align);
 
+  ajSeqsetDel(&seqset);
+  ajSeqDel(&res1);
+  ajSeqDel(&res2);
+  
   return;
 
 }

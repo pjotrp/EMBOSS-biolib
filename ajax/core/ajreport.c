@@ -550,7 +550,8 @@ static void reportWriteDiffseq (AjPReport thys,
   ajStrDel(&subseq);
   ajStrDel(&tmpstr);
   ajStrDel(&tagval);
-
+  ajStrDel(&jname);
+  
   ajListIterFree(iterft);
   return;
 }
@@ -1463,6 +1464,11 @@ static void reportWriteTagseq (AjPReport thys,
   ajStrDel(&subseq);
   ajStrDel(&tagval);
 
+  for(i=0;i<ntags;++i)
+      ajStrDel(&seqmarkup[i]);
+  AJFREE(seqmarkup);
+
+  ajStrDel(&substr);
   ajListIterFree(iterft);
   return;
 }
@@ -1479,11 +1485,36 @@ static void reportWriteTagseq (AjPReport thys,
 void ajReportDel (AjPReport* pthys) {
 
   AjPReport thys = *pthys;
-
+  AjPStr str=NULL;
+  
   ajStrDel (&thys->Name);
+  ajStrDel (&thys->Type);
   ajStrDel (&thys->Formatstr);
   ajStrDel (&thys->Filename);
   ajStrDel (&thys->Extension);
+
+  while(ajListPop(thys->FileTypes,(void **)&str))
+      ajStrDel(&str);
+  ajListDel(&thys->FileTypes);
+  while(ajListPop(thys->FileNames,(void **)&str))
+      ajStrDel(&str);
+  ajListDel(&thys->FileNames);
+
+  while(ajListPop(thys->Tagnames,(void **)&str))
+      ajStrDel(&str);
+  ajListDel(&thys->Tagnames);
+  while(ajListPop(thys->Tagprints,(void **)&str))
+      ajStrDel(&str);
+  ajListDel(&thys->Tagprints);
+  while(ajListPop(thys->Tagtypes,(void **)&str))
+      ajStrDel(&str);
+  ajListDel(&thys->Tagtypes);
+
+  ajStrDel(&thys->Header);
+  ajStrDel(&thys->Tail);
+
+  ajFeattableDel(&thys->Fttable);
+  ajFeattabOutDel(&thys->Ftquery);
 
   AJFREE(*pthys);
 
@@ -1813,17 +1844,21 @@ void ajReportWriteHeader (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
     ajFmtPrintF (outf, "# Program: %s\n", ajAcdProgram());
     ajFmtPrintF (outf, "# Rundate: %D\n", ajTimeTodayF("log"));
     ajFmtPrintF (outf, "# Report_file: %F\n", outf);
-    if (ajListLength(thys->FileNames)) {
+    if (ajListLength(thys->FileNames))
+    {
       i = 0;
       itername = ajListIter(thys->FileNames);
       itertype = ajListIter(thys->FileTypes);
       ajFmtPrintF (outf, "# Additional_files: %d\n",
 		   ajListLength(thys->FileNames));
-      while(ajListIterMore(itername) && ajListIterMore(itertype)) {
+      while(ajListIterMore(itername) && ajListIterMore(itertype))
+      {
 	tmpname = (AjPStr)ajListIterNext (itername) ;
 	tmptype = (AjPStr)ajListIterNext (itertype) ;
 	ajFmtPrintF (outf, "# %d: %S (%S)\n", ++i, tmpname, tmptype);
       }
+      ajListIterFree(itername);
+      ajListIterFree(itertype);
     }
 
     if (!doSingle || thys->Multi) {
@@ -1864,6 +1899,8 @@ void ajReportWriteHeader (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
 
   ++thys->Count;
 
+  ajStrDel(&tmpstr);
+  
   return;
 }
 
@@ -1907,6 +1944,8 @@ void ajReportWriteTail (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
     ajFmtPrintF (outf, "########################################\n");
   }
 
+  ajStrDel(&tmpstr);
+  
   return;
 }
 
@@ -2074,7 +2113,7 @@ void ajReportFileAdd (AjPReport thys, AjPFile file, AjPStr type) {
     thys->FileNames = ajListstrNew();
 
   ajStrAssS(&tmptype, type);
-  ajListstrPushApp (thys->FileTypes, type);
+  ajListstrPushApp (thys->FileTypes, tmptype);
 
   ajFmtPrintS(&tmpname, "%F", file);
   ajListstrPushApp (thys->FileNames, tmpname);
