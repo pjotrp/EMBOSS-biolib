@@ -14,7 +14,7 @@ Description
    
    The contributors of the EMBOSS programs do attempt to provide an
    adequate description of the programs. This documentation is primarily
-   held as HTML pages at http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Apps/
+   held as HTML pages at http://www.uk.embnet.org/Software/EMBOSS/Apps/
    
    The documentation is also available however through the program tfm as
    normal text.
