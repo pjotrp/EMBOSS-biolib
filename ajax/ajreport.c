@@ -1554,10 +1554,15 @@ static void reportWriteTagseq (AjPReport thys,
   ajint jwid=6;
   ajint jmin=6;			/* minimum width for printing special tags */
   AjPStr* seqmarkup;
+  AjPStr seqnumber=NULL;
+  ajint seqbeg;
+  ajint seqend;
   ajint seqlen;
   ajint ilast;
 
   seqlen = ajSeqLen(seq);
+  seqbeg = ajSeqBegin(seq);
+  seqend = ajSeqEnd(seq);
 
   ajReportWriteHeader (thys, ftable, seq);
 
@@ -1567,6 +1572,10 @@ static void reportWriteTagseq (AjPReport thys,
   for (j=0; j < ntags; j++) {
     jwid = AJMAX(jmin, ajStrLen(tagprints[j]));
     ajStrAppKI(&seqmarkup[j], ' ', seqlen);
+  }
+
+  for (i=0; i < seqend-9; i+=10) {
+    ajFmtPrintAppS (&seqnumber, "    .%5d", i+10);
   }
 
   iterft = ajListIter(ftable->Features) ;
@@ -1585,16 +1594,14 @@ static void reportWriteTagseq (AjPReport thys,
     }    
   }
 
-  for (i=0; i < seqlen; i+=50) {
-    ilast = AJMIN (i+50-1, seqlen);
+  for (i=seqbeg-1; i < seqend; i+=50) {
+    ilast = AJMIN (i+50-1, seqend-1);
+
+    ajStrAssSub(&substr, seqnumber, i, ilast);
+    ajFmtPrintF (outf, "      %S\n", substr);
+
     ajStrAssSub(&subseq, ajSeqStr(seq), i, ilast);
     /* ajStrToUpper(&subseq); */
-    ajFmtPrintF (outf, "\n      ");
-
-    for (j=i+9; j <= ilast; j+=10) {
-      ajFmtPrintF (outf, "    .%5d", j+1);
-    }
-    ajFmtPrintF (outf, "\n");
 
     ajFmtPrintF (outf, "      %S\n", subseq);
     for (j=0; j < ntags; j++) {
