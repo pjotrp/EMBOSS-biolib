@@ -144,7 +144,7 @@ static void showDelComp (EmbPShowComp info);
 static void showDelTran (EmbPShowTran info);
 static void showDelRE (EmbPShowRE info);
 static void showDelFT (EmbPShowFT info);
-static void showAddTags(AjPStr *tagsout, AjPList taglist, AjBool values);
+static void showAddTags(AjPStr *tagsout, AjPFeature feat, AjBool values);
 	
 
 
@@ -463,7 +463,7 @@ static void showDelRE (EmbPShowRE info) {
 
 static void showDelFT (EmbPShowFT info) {
 
-  (void) ajFeatTabDel(&(info->feat));
+  (void) ajFeattabDel(&(info->feat));
   AJFREE(info);
 
 }
@@ -676,12 +676,12 @@ void embShowAddRE (EmbPShow thys, ajint sense, AjPList restrictlist,
 ** Adds the Features to be displayed to the list of things to show
 **
 ** @param [P] thys [EmbPShow] Show sequence object
-** @param [r] feat [AjPFeatTable] features
+** @param [r] feat [AjPFeattable] features
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void embShowAddFT (EmbPShow thys, AjPFeatTable feat) {
+void embShowAddFT (EmbPShow thys, AjPFeattable feat) {
 
   EmbPShowFT info;
   (void) ajDebug("embShowAddFT\n");
@@ -2313,13 +2313,13 @@ static void showFillFT(EmbPShow thys, AjPList lines, EmbPShowFT info, ajint pos)
     if (!info->feat)
 	return;
       
-    /*  ajDebug("No. of features=%d", ajFeatTabCount(info->feat)); */
+    /*  ajDebug("No. of features=%d", ajFeattabCount(info->feat)); */
 
     /* reminder of the AjSFeature structure for handy reference
      *
      *
      *  AjEFeatClass      Class ;
-     *  AjPFeatTable      Owner ;
+     *  AjPFeattable      Owner ;
      *  AjPFeatVocFeat     Source ;
      *  AjPFeatVocFeat     Type ;
      *  ajint               Start ;
@@ -2346,7 +2346,7 @@ static void showFillFT(EmbPShow thys, AjPList lines, EmbPShowFT info, ajint pos)
 	    gf = ajListIterNext (iter) ;
     
 	    /* don't output the 'source' feature - it is very irritating! */
-	    if (!ajStrCmpC(gf->Type->name, "source")) continue;
+	    if (!ajStrCmpC(gf->Type, "source")) continue;
 
 	    /*
 	     * check that the feature is within the line to display (NB.
@@ -2357,15 +2357,15 @@ static void showFillFT(EmbPShow thys, AjPList lines, EmbPShowFT info, ajint pos)
 		continue;
 
 	    /*    
-	       ajDebug("type = %S %d-%d", gf->Type->name, gf->Start, gf->End);
+	       ajDebug("type = %S %d-%d", gf->Type, gf->Start, gf->End);
 	     */
 
 	    /* prepare name string */
 	    namestr = ajStrNew();
-	    ajStrAss(&namestr,  gf->Type->name);
+	    ajStrAss(&namestr,  gf->Type);
 
 	    /* add tags to namestr*/
-	    showAddTags(&namestr, gf->Tags, ajTrue);
+	    showAddTags (&namestr, gf, ajTrue);
       
 	    /*
 	     *  note the start and end positions of the name and line
@@ -2645,31 +2645,32 @@ ajDebug("target=>%S<", *line);
 **
 ** writes feature tags to the tagsout string
 **
-** @param [r] tagsout [AjPStr *] tags out string
-** @param [r] taglist [AjPList] list of tags
+** @param [r] tagsout [AjPStr*] tags out string
+** @param [r] feat [AjPFeature] Feature to be processed
 ** @param [r] values [AjBool] display values of tags
 **
 ** @return [void] 
 ** @@
 ******************************************************************************/
 
-static void showAddTags(AjPStr *tagsout, AjPList taglist, AjBool values) {
+static void showAddTags (AjPStr *tagsout, AjPFeature feat, AjBool values) {
 
-  AjIList titer;                /* iterator for taglist */
-  LPFeatTagValue tagstr;        /* tag structure */
+  AjPStr tagnam = NULL;
+  AjPStr tagval = NULL;
+  AjIList titer;
 
 /* iterate through the tags and test for match to patterns */
 /* debug - there is something wrong with the list */
 
-  titer = ajListIter(taglist);
-  while (ajListIterMore(titer)) {
-    tagstr = (LPFeatTagValue)ajListIterNext(titer);
-/* don't display the translation tag - it is far too ajlong :-) */
-    if (ajStrCmpC(tagstr->Tag->VocTag->name, "translation")) {
-      if (values == ajTrue) {
-        (void) ajFmtPrintAppS(tagsout, " %S=\"%S\"", tagstr->Tag->VocTag->name, tagstr->Value);
+  titer = ajFeatTagIter (feat);
+
+  while (ajFeatTagval(titer, &tagnam, &tagval)) {
+/* don't display the translation tag - it is far too long :-) */
+    if (ajStrCmpC(tagnam, "translation")) {
+      if (ajStrLen(tagval)) {
+        (void) ajFmtPrintAppS(tagsout, " %S=\"%S\"", tagnam, tagval);
       } else {
-        (void) ajFmtPrintAppS(tagsout, " %S", tagstr->Tag->VocTag->name);
+        (void) ajFmtPrintAppS(tagsout, " %S", tagnam);
       }
     }
   }

@@ -96,8 +96,8 @@ typedef struct AjSSeqin {
   AjPList List;
   AjPStr Usa;
   AjPStr Ufo;
-  AjPFeatTable Fttable;
-  AjPFeatTabIn Ftquery;
+  AjPFeattable Fttable;
+  AjPFeattabIn Ftquery;
   AjPStr Formatstr;
   AjEnum Format;
   AjPStr Filename;
@@ -200,7 +200,7 @@ typedef struct AjSSeq {
   ajlong Fpos;
   AjPStr Usa;
   AjPStr Ufo;
-  AjPFeatTable Fttable;
+  AjPFeattable Fttable;
   AjPStr Formatstr;
   AjEnum Format;
   AjPStr Filename;

@@ -37,8 +37,9 @@ void    embWordMatchListDelete (AjPList list);
 void    embWordMatchListPrint (AjPFile file, AjPList list);
 void    embWordPrintTable  (AjPTable table);
 void    embWordPrintTableF (AjPTable table, AjPFile outf);
-void    embWordMatchListConvToFeat(AjPList list, AjPFeatTable *tab1, AjPFeatTable *tab2,
-				AjPStr seq1name, AjPStr seq2name);
+void    embWordMatchListConvToFeat(AjPList list,
+				   AjPFeattable *tab1, AjPFeattable *tab2,
+				   AjPSeq seq1, AjPSeq seq2);
 
 void    embWordMatchMin(AjPList matchlist, ajint seq1length, int
         			seq2length);

@@ -335,65 +335,62 @@ void embWordMatchListPrint(AjPFile file, AjPList list)
     return;
 }
 
-/* @func embWordMatchListConvToFeat ***********************************************
+/* @func embWordMatchListConvToFeat *******************************************
 **
 ** convert the word table to feature tables.
 **
 ** @param [Pr] list [AjPList] list to be printed.
-** @param [rw] tab1 [AjPFeatTable*] feature table for sequence 1
-** @param [rw] tab2 [AjPFeatTable*] feature table for sequence 2
-** @param [r] seq1name [AjPStr] sequence name
-** @param [r] seq2name [AjPStr] secondsequence name
+** @param [rw] tab1 [AjPFeattable*] feature table for sequence 1
+** @param [rw] tab2 [AjPFeattable*] feature table for sequence 2
+** @param [r] seq1 [AjPSeq] sequence
+** @param [r] seq2 [AjPSeq] second sequence
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void embWordMatchListConvToFeat(AjPList list, AjPFeatTable *tab1,
-				AjPFeatTable *tab2,AjPStr seq1name,
-				AjPStr seq2name)
-{
-    AjEFeatStrand strand=AjStrandWatson;
-    AjEFeatFrame frame=AjFrameUnknown;
-    AjPStr score=NULL,source=NULL,type=NULL,tag=NULL;
-    AjPFeature feature;
-    AjIList iter=NULL;
-    AjPFeatLexicon dict=NULL;
+void embWordMatchListConvToFeat(AjPList list,
+				AjPFeattable *tab1, AjPFeattable *tab2,
+				AjPSeq seq1, AjPSeq seq2) {
+  char strand = '+';
+  ajint frame = 0;
+  AjPStr source=NULL,type=NULL,tag=NULL;
+  AjPFeature feature;
+  AjIList iter=NULL;
+  float score = 1.0;
 
-    dict = ajFeatGffDictionaryCreate(); 
-    if(!*tab1)
-	*tab1 = ajFeatTabNew(seq1name,dict);
-    if(!*tab2)
-	*tab2 = ajFeatTabNew(seq2name,dict);
+  if(!*tab1)
+    *tab1 = ajFeattableNewSeq(seq1);
+  if(!*tab2)
+    *tab2 = ajFeattableNewSeq(seq2);
   
-    ajStrAssC(&source,"wordmatch");
-    ajStrAssC(&type,"misc_feature");
-    ajStrAssC(&score,"1.0");
-    ajStrAssC(&tag,"note");
+  ajStrAssC(&source,"wordmatch");
+  ajStrAssC(&type,"misc_feature");
+  score = 1.0;
+  ajStrAssC(&tag,"note");
   
-    iter = ajListIter(list);
-    while(ajListIterMore(iter))
-    {
-	EmbPWordMatch p = (EmbPWordMatch) ajListIterNext (iter) ;
-	feature = ajFeatureNew(*tab1, source, type,
-			       p->seq1start+1,p->seq1start+p->length , score, 
-			       strand, frame, NULL , 0, 0) ;
+  iter = ajListIter(list);
+  while(ajListIterMore(iter)) {
+    EmbPWordMatch p = (EmbPWordMatch) ajListIterNext (iter) ;
+    feature = ajFeatureNew(*tab1, source, type,
+			   p->seq1start+1,p->seq1start+p->length , score, 
+			   strand, frame, NULL , 0, 0) ;
 
-	ajFeatSetTagValue(feature, tag, seq2name, 0);
+    ajFeatTagSet(feature, tag, ajSeqGetName(seq2));
 
-	feature = ajFeatureNew(*tab2, source, type,
-			       p->seq2start+1,p->seq2start+p->length , score, 
-			       strand, frame, NULL , 0, 0) ;    
+    feature = ajFeatureNew(*tab2, source, type,
+			   p->seq2start+1,p->seq2start+p->length , score, 
+			   strand, frame, NULL , 0, 0) ;    
 
-	ajFeatSetTagValue(feature, tag, seq1name, 0);
-    }
+    ajFeatTagSet(feature, tag, ajSeqGetName(seq1));
+  }
+  /* delete the iterator */
 
-    ajListIterFree(iter);
-    ajStrDel(&source);
-    ajStrDel(&type);
-    ajStrDel(&score);
-    ajStrDel(&tag);
+  ajListIterFree(iter);
+  ajStrDel(&source);
+  ajStrDel(&type);
+  ajStrDel(&tag);
 
-    return;
+  return;
 }
 
 /* @func embWordGetTable *****************************************************
@@ -979,7 +976,7 @@ static void wordNewListTrace (ajint i, AjPList newlist)
 static void wordCurListTrace (AjPList curlist)
 {
     /*EmbPWordMatch match;*/
-    /*int i, j, ilen;*/
+    /*ajint i, j, ilen;*/
     AjIList iter = ajListIter(curlist);
     /*
        
@@ -1012,7 +1009,7 @@ static void wordCurIterTrace (AjIList curiter)
 {
     /*AjPListNode node;*/
     /*EmbPWordMatch match;*/
-    /*int i, j, ilen;*/
+    /*ajint i, j, ilen;*/
 
     /*
        ajDebug ("curiter ...\n");
@@ -1080,6 +1077,7 @@ static void wordCurIterTrace (AjIList curiter)
 ** @param [r] deady1 [ajint] y position of end of live zone 1
 ** @param [r] deadx2 [ajint] x position of end of live zone 2
 ** @param [r] deady2 [ajint] y position of end of live zone 2
+** @param [r] minlength [ajint] minimum length of match
 ** @return [ajint] 0=in live zone, 1=in dead zone, 2=truncated
 ** @@
 ******************************************************************************/
@@ -1180,13 +1178,14 @@ static ajint deadZone(EmbPWordMatch match, ajint deadx1, ajint deady1,
 }
 
 
-/* func embWordMatchMin ******************************************************
+/* @func embWordMatchMin ******************************************************
 ** Given a list of matches, reduce it to the minimal set of best
 ** non-overlapping matches.
 **
-** @param [P] matchlist [AjPList] list of matches to reduce to non-overlaping set
-** @param [r] seq1length [ajint] length of sequence1 being considered
-** @param [r] seq2length [ajint] length of sequence2 being considered
+** @param [P] matchlist [AjPList] list of matches to reduce to
+**                                non-overlapping set
+** @param [r] seq1length [ajint]  length of sequence1 being considered
+** @param [r] seq2length [ajint]  length of sequence2 being considered
 ** @return [void] 
 ** @@
 ******************************************************************************/
@@ -1290,7 +1289,7 @@ void embWordMatchMin(AjPList matchlist, ajint seq1length, ajint seq2length)
 }
 
 
-/* @func listInsertOld ****************************************************
+/* @funcstatic listInsertOld **************************************************
 **
 ** Obsolete ajListInsert version emulation
 ** Insert an item in a list, using an iterator (if not null)
