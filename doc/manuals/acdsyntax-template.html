@@ -332,53 +332,8 @@ written, please discuss the creation of the new group name with the developer's
 mailing list. Sometimes a new group is required (c.f. the group "Enzyme
 Kinetics" which had to be created to hold 'findkm').</p>
 
-<pre>
-<b>First-level</b>
-       <b>Second-level</b>
-Alignment
-       Consensus       (merging sequences to make a consensus)
-       Differences     (finding differences between sequences)
-       Dot plots
-       Global
-       Local
-       Multiple
-Display                (publication display, not just stuff that plots results)
-Edit                   (sequence manipulation and text searches)
-Enzyme Kinetics        (just 'findkm' at present)
-Feature tables         (manipulation and display of feature tables)
-Hmm                    (Hidden Markov Models)
-Information            (information and help for the user)
-Nucleic
-       2D Structure    (RNA structure)
-       Codon usage
-       Composition     (properties over the whole sequence, GFF not produced)
-       CPG islands
-       Gene finding    (genes and other genomic features)
-       Motifs          (search for patterns - either user-defined or fixed)
-       Mutation
-       Primers
-       Profiles        (create and search for profiles)
-       Repeats
-       Restriction
-       Transcription   (transcription factors, promoters, termination)
-       Translation
-Phylip
-Phylogeny              (mainly the Phylip package)
-Protein
-       2D Structure    (2D structure and topological features)
-       3D Structure
-       Composition     (properties over the whole sequence, GFF not produced)
-       Motifs          (search for defined patterns)
-       Mutation
-       Profiles        (create and search for profiles)
-       Protein Structure
-Utils
-       Database creation
-       Database indexing
-       Misc            (other programs for maintenance)
-Test                   (programs which are not designed for public
-usage)
-</pre>
+<!-- #tablegroups -->
+
 
 <a name=sect23>&nbsp;</a>
 <h2>2.3 Ajax Data Types</h2>
@@ -390,848 +345,25 @@ string objects. The current objects are listed in Table 1.</p>
 
 
 
-<table border=1 cellpadding=0>
- <tr>
-  <td>
-  <p align=center><b>Data type / Object</b></p>
-  </td>
-  <td>
-  <p align=center><b>Description</b></p>
-  </td>
-  <td>
-  <p align=center><b>Calculated Attributes</b></p>
-  </td>
-  <td>
-  <p align=center><b>Specific Attributes</b></p>
-  </td>
-  <td>
-  <p align=center><b>Command Line Qualifiers</b></p>
-  </td>
- </tr>
- <tr>
-  <td colspan=5>
-  <p align=center><b>Simple types</b></p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>All data types</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>default: ""<br>
-  information: <i>Standard</i><br>
-  prompt: ""<br>
-  code: ""<br>
-  help: ""<br>
-  standard: <i>N</i><br>
-  additional: <i>N</i><br>
-  parameter: <i>N</i><br>
-  missing: <i>N</i><br>
-  valid: ""<br>
-  expected: ""<br>
-  comment: ""<br>
-  style: ""<br>
-  needed: Y</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>array</b></p>
-  </td>
-  <td>
-  <p>Array of integer or float values</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>minimum: <i>lowest value</i><br>
-  maximum: <i>highest value</i><br>
-  increment: <i>1.0</i><br>
-  precision: <i>3</i><br>
-  warnrange: <i>Y</i><br>
-  size: 1<br>
-  sum: 1.0<br>
-  tolerance: 0.01</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>boolean</b></p>
-  </td>
-  <td>
-  <p>Boolean (Yes/No)</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>float</b></p>
-  </td>
-  <td>
-  <p>Floating point number</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>minimum: <i>lowest value</i><br>
-  maximum: <i>highest value</i><br>
-  increment: <i>1.0</i><br>
-  precision: <i>3</i><br>
-  warnrange: <i>Y</i></p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>integer</b></p>
-  </td>
-  <td>
-  <p>Integer value</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>minimum: <i>lowest value</i><br>
-  maximum: <i>highest value</i><br>
-  increment: <i>1</i><br>
-  warnrange: <i>Y</i></p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>range</b></p>
-  </td>
-  <td>
-  <p>Sequence range(s) and a string of numbers
-  or as @filename.</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>regexp</b></p>
-  </td>
-  <td>
-  <p>Any regular expression pattern value</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>minlength: <i>1</i><br>
-  maxlength: <i>maximum length</i><br>
-  upper: <i>N</i><br>
-  lower: <i>N</i></p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>string</b></p>
-  </td>
-  <td>
-  <p>Any string value</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>minlength: <i>0</i><br>
-  maxlength: <i>maximum length</i><br>
-  pattern: <i>""</i><br>
-  upper: <i>N</i><br>
-  lower: <i>N</i></p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>variable</b></p>
-  </td>
-  <td>
-  <p>Internal variable</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td colspan=5>
-  <p align=center><b>Input</b></p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>codon</b></p>
-  </td>
-  <td>
-  <p>Codon usage table</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>name: "Ehum"</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>cpdb</b></p>
-  </td>
-  <td>
-  <p>Cleaned Protein Data Bank file</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>name: "1azu"</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>datafile</b></p>
-  </td>
-  <td>
-  <p>Input data file (EMBOSSDATA directory)</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>name: ""<br>
-  extension: ""<br>
-  directory: ""<br>
-  standardtype: ""<br>
-  nullok: <i>N</i></p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>directory</b></p>
-  </td>
-  <td>
-  <p>Directory</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>fullpath: <i>N</i><br>
-  nullok: <i>N</i></p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>dirlist</b></p>
-  </td>
-  <td>
-  <p>Path (list of directories)</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>fullpath: <i>N</i><br>
-  nullok: <i>N</i></p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>features</b></p>
-  </td>
-  <td>
-  <p>Feature table</p>
-  </td>
-  <td>
-  <p>fbegin<br>
-  fend<br>
-  flength<br>
-  fprotein<br>
-  fnucleic<br>
-  fname<br>
-  fsize</p>
-  </td>
-  <td>
-  
-  </td>
-  <td>
-  <p>-fformat<br>
-  -fopenfile<br>
-  -fask<br>
-  -fbegin<br>
-  -fend<br>
-  -freverse</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>infile</b></p>
-  </td>
-  <td>
-  <p>Input file (non-sequence file)</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>standardtype: ""<br>
-  nullok: <i>N</i></p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>matrix</b></p>
-  </td>
-  <td>
-  <p>Scoring matrix (integer) for alignments</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>pname: "EBLOSUM62"<br>
-  nname: "EDNAFULL"<br>
-  protein:<i>Y</i></p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>matrixf</b></p>
-  </td>
-  <td>
-  <p>Scoring matrix (floating point) for
-  alignments</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>pname: "EBLOSUM62"<br>
-  nname: "EDNAFULL"<br>
-  protein:<i>Y</i></p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>scop</b></p>
-  </td>
-  <td>
-  <p>SCOP database file</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>name: "d3sdha"</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>sequence</b></p>
-  </td>
-  <td>
-  <p>Input sequence</p>
-  </td>
-  <td>
-  <p>length<br>
-  name<br>
-  begin<br>
-  end<br>
-  nucleic<br>
-  protein<br>
-  type</p>
-  </td>
-  <td>
-  <p>type:
-  ""<br>
-  features: <i>N</i><br>
-  entry: <i>N</i></p>
-  </td>
-  <td>
-  <p>-sbegin: 0<br>
-  -send: seqlen<br>
-  -sreverse: N<br>
-  -sask: N<br>
-  -snucleotide: N<br>
-  -sprotein: N<br>
-  -slower: N<br>
-  -supper: N<br>
-  -sformat<br>
-  -sopenfile<br>
-  -sdbname<br>
-  -sid<br>
-  -ufo<br>
-  -fformat<br>
-  -fopenfile</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>seqall</b></p>
-  </td>
-  <td>
-  <p>Input all sequences</p>
-  </td>
-  <td>
-  <p>length<br>
-  name<br>
-  begin<br>
-  end<br>
-  nucleic<br>
-  protein<br>
-  type</p>
-  </td>
-  <td>
-  <p>type: ""<br>
-  features: <i>N</i></p>
-  <p>entry: <i>N</i></p>
-  </td>
-  <td>
-  <p>-sbegin: 0<br>
-  -send: seqlen<br>
-  -sreverse: N<br>
-  -sask: N<br>
-  -snucleotide: N<br>
-  -sprotein: N<br>
-  -slower: N<br>
-  -supper: N<br>
-  -sformat<br>
-  -sopenfile<br>
-  -sdbname<br>
-  -sid<br>
-  -ufo<br>
-  -fformat<br>
-  -fopenfile</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>seqset</b></p>
-  </td>
-  <td>
-  <p>Input sequence set</p>
-  </td>
-  <td>
-  <p>length<br>
-  name<br>
-  begin<br>
-  end<br>
-  nucleic<br>
-  protein<br>
-  type<br>
-  totweight<br>
-  count</p>
-  </td>
-  <td>
-  <p>type: ""<br>
-  features: <i>N</i></p>
-  </td>
-  <td>
-  <p>-sbegin: 0<br>
-  -send: seqlen<br>
-  -sreverse: N<br>
-  -sask: N<br>
-  -snucleotide: N<br>
-  -sprotein: N<br>
-  -slower: N<br>
-  -supper: N<br>
-  -sformat<br>
-  -sopenfile<br>
-  -sdbname<br>
-  -sid<br>
-  -ufo<br>
-  -fformat<br>
-  -fopenfile</p>
-  </td>
- </tr>
- <tr>
-  <td colspan=5>
-  <p align=center><b>Selection lists</b></p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>list</b></p>
-  </td>
-  <td>
-  <p>List of option names with descriptions</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>minimum: 1<br>
-  maximum: 1<br>
-  button: N<br>
-  casesensitive: N<br>
-  header: ""<br>
-  delimiter: ";"<br>
-  codedelimiter: ":"<br>
-  values: ""</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>selection</b></p>
-  </td>
-  <td>
-  <p>Selection list of options</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>minimum: 1<br>
-  maximum: 1<br>
-  button: N<br>
-  casesensitive: N<br>
-  header: ""<br>
-  delimiter: ";"<br>
-  values: ""</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td colspan=5>
-  <p align=center><b>Output</b></p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>align</b></p>
-  </td>
-  <td>
-  <p>Alignment output file</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>type: ""<br>
-  taglist: ""<br>
-  minseqs: 0<br>
-  maxseqs: 0<br>
-  multiple: <i>N</i></p>
-  </td>
-  <td>
-  <p>-aformat<br>
-  -aopenfile<br>
-  -aextension<br>
-  -aname<br>
-  -awidth<br>
-  -aaccshow<br>
-  -adesshow<br>
-  -ausashow<br>
-  -aglobal</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>featout</b></p>
-  </td>
-  <td>
-  <p>Output feature table</p>
-  </td>
-  <td>
-  
-  </td>
-  <td>
-  <p>name: <i>""</i><br>
-  extension: <i>""</i></p>
-  </td>
-  <td>
-  <p>-offormat<br>
-  -ofopenfile<br>
-  -ofextension<br>
-  -ofname<br>
-  -ofsingle</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>outfile</b></p>
-  </td>
-  <td>
-  <p>Output file (non-sequence)</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>name: <i>"name"</i><br>
-  extension: <i>"appname"</i><br>
-  standardtype: ""<br>
-  nullok: <i>N</i><br>
-  append: <i>N</i></p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>report</b></p>
-  </td>
-  <td>
-  <p>Report output file</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>name: <i>"name"</i><br>
-  rextension: <i>"appname"</i><br>
-  type: ""<br>
-  taglist: ""<br>
-  mintags: 0<br>
-  multiple: <i>N</i><br>
-  precision: 3</p>
-  </td>
-  <td>
-  <p>-rformat<br>
-  -rname<br>
-  -rextension<br>
-  -raccshow<br>
-  -rdesshow<br>
-  -rusashow</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>seqout</b></p>
-  </td>
-  <td>
-  <p>Output sequence set</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>name: <i>"seqname"</i><br>
-  extension: <i>"format"</i><br>
-  features: <i>N</i></p>
-  </td>
-  <td>
-  <p>-osformat<br>
-  -osextension<br>
-  -osname<br>
-  -osdbname<br>
-  -ossingle<br>
-  -oufo<br>
-  -offormat<br>
-  -ofname</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>seqoutall</b></p>
-  </td>
-  <td>
-  <p>Output all sequences</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>name: <i>"seqname"</i><br>
-  extension: <i>"format"</i><br>
-  features: <i>N</i></p>
-  </td>
-  <td>
-  <p>-osformat<br>
-  -osextension<br>
-  -osname<br>
-  -osdbname<br>
-  -ossingle<br>
-  -oufo<br>
-  -offormat<br>
-  -ofname</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>seqoutset</b></p>
-  </td>
-  <td>
-  <p>Output sequence set</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>name: <i>"seqname"</i><br>
-  extension: <i>"format"</i><br>
-  features: <i>N</i></p>
-  </td>
-  <td>
-  <p>-osformat<br>
-  -osextension<br>
-  -osname<br>
-  -osdbname<br>
-  -ossingle<br>
-  -oufo<br>
-  -offormat<br>
-  -ofname</p>
-  </td>
- </tr>
- <tr>
-  <td colspan=5>
-  <p align=center><b>Graphics</b></p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>graph</b></p>
-  </td>
-  <td>
-  <p>Graph output device</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>standardtype: ""<br>
-  gtitle: ""<br>
-  gsubtitle: ""<br>
-  gxtitle: ""<br>
-  gytitle: ""<br>
-  goutfile: ""</p>
-  </td>
-  <td>
-  <p>-gprompt<br>
-  -gtitle<br>
-  -gsubtitle<br>
-  -gxtitle<br>
-  -gytitle<br>
-  -goutfile</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p align=center><b>xygraph</b></p>
-  </td>
-  <td>
-  <p>2D plot output device</p>
-  </td>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>standardtype: ""<br>
-  gtitle: ""<br>
-  gsubtitle: ""<br>
-  gxtitle: ""<br>
-  gytitle: ""<br>
-  goutfile: ""<br>
-  multiple: <i>1</i></p>
-  </td>
-  <td>
-  <p>-gprompt<br>
-  -gtitle<br>
-  -gsubtitle<br>
-  -gxtitle<br>
-  -gytitle<br>
-  -goutfile</p>
-  </td>
- </tr>
-</table>
-
-<a name=table1>&nbsp;</a>
-<p><b>Table 1. Available Data Types/Objects in ACD.</b></p>
+<!-- #tabletypes -->
 
 <a name=sect231>&nbsp;</a>
 <h3>2.3.1 Description of the data types</h3>
 
 <a name=sect2311>&nbsp;</a>
-<h4>2.3.1.1 Simple types</h4>
+<!-- #acdtype-section-simple -->
+<h4>2.3.1.1 Simple</h4>
 
-<p>Array</p>
+<!-- #acdtype-array -->
+<h5>Array</h5>
 
 <p>Array parameters are lists of numbers, either
 integer or floating point. The ACD attributes control validation, for example
 the number of values, or a list of numbers that adds to a given total. The data
 value is a list of numbers separated by spaces or commas.</p>
 
-<p>Boolean</p>
+<!-- #acdtype-boolean -->
+<h5>Boolean</h5>
 
 <p>Boolean parameters are simple switches. If they
 are entered on the command line the value will be Y (True), if they are absent
@@ -1239,19 +371,22 @@ from the command line the value will be the default value. The name can also be
 prefixed by 'no' to force the value to be N (False). This is needed if the
 default value is Y (True). The data value is Y for yes and N for no.</p>
 
-<p>Integer</p>
+<!-- #acdtype-integer -->
+<h5>Integer</h5>
 
 <p>The integer data type can hold simple integer
 values. The value range can be controlled by minimum and maximum values (a
 minimum value of 0 or 1 is often useful).</p>
 
-<p>Float</p>
+<!-- #acdtype-float -->
+<h5>Float</h5>
 
 <p>Simple float values. The value range can be
 controlled by minimum and maximum ACD attributes (a minimum value of 0.0 is
 often useful).</p>
 
-<p>Range</p>
+<!-- #acdtype-range -->
+<h5>Range</h5>
 
 <p>Ranges of sequence positions. Originally
 defined as a simple list of paired numbers, ranges can now be specified in
@@ -1265,14 +400,19 @@ with text comments. For example:</p>
  67      10348   interesting region
 </pre>
 
-<p>Regexp</p>
+<!-- #acdtype-regexp -->
+<h5>Regexp</h5>
 
 <p>Any regular expression value. The length can be
 controlled by ACD attributes. The case can be set to upper or lower case only.
 The regular expression must be supported by the EMBOSS regular expression
-library (currently the Henry Spencer library).</p>
+library.</p>
 
-<p>String</p>
+<p>EMBOSS uses the "Perl Compatible Regular Expression Library (PCRL)" so any
+regular expression that is valid in Perl 5.0 should be valid here.</p>
+
+<!-- #acdtype-string -->
+<h5>String</h5>
 
 <p>Any string value. The length can be controlled by ACD attributes,
 and a regular expression pattern to provide more general validation if
@@ -1280,39 +420,119 @@ necessary. Most string values are free text, although strings can be
 used by a program for any input that is not covered by a defined ACD
 type.</p>
 
-<p>Variable</p>
-
-<p>Variables can only be used internally and not set by the user from
-the command line, except that their values can depend on ACD values
-set earlier from user input.</p>
-
 <a name=sect2312>&nbsp;</a>
-<h4>2.3.1.2 Input<a name=fnB3> </a><a href="#fn3">[3]</a></h4>
+<a name=fnB3>&nbsp;</a>
+<!-- #acdtype-section-input -->
+<h4>2.3.1.2 Input<a href="#fn3">[3]</a></h4>
 
-<p>Codon</p>
+<!-- #acdtype-codon -->
+<h5>Codon</h5>
 
 <p>Codon usage tables are simple files read from the EMBOSS data
 search path, and are distributed in the emboss/data directory.</p>
 
-<p>Cpdb</p>
+<!-- #acdtype-cpdb -->
+<h5>Cpdb</h5>
 
 <p>Cpdb (Cleaned PDB) files are simple input files
-in CPDB format.</p>
+in CPDB format. See the documentation for pdbparse, part of the
+EMBASSY domainatrix package, which generates
+CPDB files from PDB file input.</p>
 
-<p>Features</p>
+<!-- #acdtype-datafile -->
+<h5>Datafile</h5>
+
+<p>Datafile input refers to a formatted data file to be read from the
+standard
+EMBOSS data file locations (see the EMBOSS Administrator's guide for
+full details).</p>
+
+<p>EMBOSS looks for data files in the local/share/EMBOSS/data
+directory, or in various user directories.
+</p>
+
+<p>Most data files are already defined as their own ACD types -
+matrix, matrixf, codon. Otehrs are hard coded file names that do not
+need their own ACD definition, although users are free to define their
+own file with the appropriate name to override the default file provided.</p>
+
+<!-- #acdtype-directory -->
+<h5>Directory</h5>
+
+<p>Directory defines a directory that can be used for input or output
+definitions.</p>
+
+<p>Directory is intended for future use to replace string definitions
+of directory names in some applications, and to provide additional
+validation of the user input specific to directory specifications.</p>
+
+<!-- #acdtype-dirlist -->
+<h5>Dirlist</h5>
+
+<p>Directory defines a set (list) of directories that can be used for
+input or output definitions.</p>
+
+<p>Dirlist is intended for future use to replace string definitions
+of directory names in some applications, and to provide additional
+validation of the user input specific to directory specifications.</p>
+
+<!-- #acdtype-discretestates -->
+<h5>Discretestates</h5>
+
+<p>Discretestates is a new ACD type implemented specifically for
+the "phylipnew" EMBASSY package. Discretestates input is used by the
+phylip "discrete character" applications. By defining a specific ACD
+type EMBOSS can provide detailed type checking, and can automatically
+detect and validate the various alternative formats that phylip supports
+without the need for complex extra command line options.</p>
+
+<!-- #acdtype-distances -->
+<h5>Distances</h5>
+
+<p>Distances is a new ACD type implemented specifically for
+the "phylipnew" EMBASSY package. Discretestates input is used by the
+phylip "distance matrix" applications. By defining a specific ACD
+type EMBOSS can provide detailed type checking, and can automatically
+detect and validate the various alternative formats that phylip supports
+without the need for complex extra command line options.</p>
+
+<!-- #acdtype-features -->
+<h5>Features</h5>
 
 <p>Feature annotation in any known feature format.
 Features can also be read from a sequence and written with a sequence.</p>
 
-<p>Infile</p>
+<!-- #acdtype-filelist -->
+<h5>Filelist</h5>
+
+<p>Filelist defines a set (list) of input files.</p>
+
+<p>Filelist is intended for future use to replace string definitions
+of input file names in some applications, and to provide additional
+validation of the user input specific to multiple input files.</p>
+
+<!-- #acdtype-frequencies -->
+<h5>Frequencies</h5>
+
+<p>Frequencies is a new ACD type implemented specifically for the
+"phylipnew" EMBASSY package. Discretestates input is used by the
+phylip "gene frequency and continuous character" applications. By
+defining a specific ACD type EMBOSS can provide detailed type
+checking, and can automatically detect and validate the various
+alternative formats that phylip supports without the need for complex extra
+command line options.</p>
+
+<!-- #acdtype-infile -->
+<h5>Infile</h5>
 
 <p>Non-sequence-related data file. This data type
 refers to files that are to be used in the program and do usually not contain
-sequence data. The type of data can be identified by a "standardtype"
+sequence data. The type of data can be identified by a "knowntype"
 attribute and matched to Outfile standard types, or to report, aligm, featout,
 or seqout formats.</p>
 
-<p>Matrix/Matrixf</p>
+<!-- #acdtype-matrix -->
+<h5>Matrix</h5>
 
 <p>Comparison matrix files are used by many
 programs. They are data files read from the EMBOSS data search path, and are
@@ -1331,19 +551,40 @@ type of the input sequence is often used here.</p>
 <p>Remember that any application which uses gap
 penalties will need to set them separately for each matrix.</p>
 
-<p>Scop</p>
+<!-- #acdtype-matrixf -->
+<h5>Matrixf</h5>
+
+<p>Floating point comparison matrices are required by some
+algorithms. An integer matrix file can of course be used equally well
+as a floating point matrix.</p>
+
+<!-- #acdtype-properties -->
+<h5>Properties</h5>
+
+<p>Properties is a new ACD type implemented specifically for the
+"phylipnew" EMBASSY package. Properties input is used by the phylip
+applications to define weights, ancestral states and factors
+(multi-state characters). By defining a specific ACD type EMBOSS can
+provide detailed type checking, and can automatically detect and
+validate the various alternative formats that phylip supports without
+the need for complex extra command line options.</p>
+
+<!-- #acdtype-scop -->
+<h5>Scop</h5>
 
 <p>SCOP files are simple input files in SCOP
 format.</p>
 
-<p>Sequence</p>
+<!-- #acdtype-sequence -->
+<h5>Sequence</h5>
 
 <p>USA (database reference or file) indicating a single sequence. The
 type of sequence can be restricted by specific attribute <i>"type"</i>
 (for example, the program should only accept DNA files). Can also read
 features if the "features" ACD attribute is set.</p>
 
-<p>Seqall</p>
+<!-- #acdtype-seqall -->
+<h5>Seqall</h5>
 
 <p>set of single sequences that can be addressed
 one after another (for example a set of sequences that will be used in an
@@ -1352,7 +593,8 @@ attribute <i>"type"</i> (for example, the program should only accept
 DNA files). Can also read features if the "features" ACD attribute is
 set.</p>
 
-<p>Seqset</p>
+<!-- #acdtype-seqset -->
+<h5>Seqset</h5>
 
 <p>set of single sequences that can be used all at the same time (for
 example a database of some sort that is to be used for a pattern
@@ -1361,28 +603,53 @@ search). The type of sequence can be restricted by specific attribute
 files). Can also read features if the "features" ACD attribute is
 set.</p>
 
+<!-- #acdtype-seqsetall -->
+<h5>Seqsetall</h5>
+
+<p>One or more sets of single sequences that can be used all at the
+same time (for example a database of some sort that is to be used for
+a pattern search). The type of sequence can be restricted by specific
+attribute <i>"type"</i> (for example, the program should only accept DNA
+files). Can also read features if the "features" ACD attribute is
+set.</p>
+
+<!-- #acdtype-tree -->
+<h5>Tree</h5>
+
+<p>Tree is a new ACD type implemented specifically for the "phylipnew"
+EMBASSY package. Properties input is used by the phylip applications
+to define one or more phylogenetic trees. By defining a specific ACD
+type EMBOSS can provide detailed type checking, and can automatically
+detect and validate the various alternative formats that phylip
+supports without the need for complex extra command line options. The
+trees aer currently parsed by phylip itself, but in the near future we
+will implement parsing methods in ACD processing.</p>
+
 <a name=sect2313>&nbsp;</a>
+<!-- #acdtype-section-selection -->
 <h4>2.3.1.3 Selection lists</h4>
 
 <p>Selection lists are a way to present the user with
 a limited list of options he/she can choose from. For the user, the difference
-between the <i>list</i> and <i>select</i> data type is minimal and lies only in
-the way the choices are labelled. In a <i>select</i> data type, the choices are
+between the <i>list</i> and <i>selection</i> data type is minimal and lies only in
+the way the choices are labelled. In a <i>selection</i> data type, the choices are
 numbered automatically from 1 up. In a <i>list</i> data type the choices can be
 labelled by any arbitrary text label. The user can choose one of the options by
-either typing the number (for a <i>select</i> type) or the text of the label
+either typing the number (for a <i>selection</i> type) or the text of the label
 (for a <i>list</i> type) or a non-ambiguous part of the value of the choice. In
 practice, the <i>list</i> data type is much preferred for this reason.</p>
 
 
 
-<p>List</p>
+<!-- #acdtype-list -->
+<h5>List</h5>
 
 <p>A list of text descriptions with short labels.
 The user can enter one (or sometimes more) labels, or can specify partial text
 descriptions. The program is given a list of text labels as input.</p>
 
-<p>Select</p>
+<!-- #acdtype-selection -->
+<h5>Selection</h5>
 
 <p>A list of text descriptions (usually short,
 unlike list data), with generated numbers. The user can enter one (or sometimes
@@ -1394,13 +661,15 @@ type is usually preferred.</p>
 
 <ul type=disc>
  <li>List </li>
- <li>Select</li>
+ <li>Selection</li>
 </ul>
 
 <a name=sect2314>&nbsp;</a>
+<!-- #acdtype-section-output -->
 <h4>2.3.1.4 Output <a href="#fn3">[3]</a></h4>
 
-<p>Align</p>
+<!-- #acdtype-align -->
+<h5>Align</h5>
 
 <p>An output file for sequence alignments. Defined
 in the same way as a plain text "Outfile" but with extra qualifiers
@@ -1409,49 +678,57 @@ alignment will have 2 or more sequences (which limits the possible formats).
 The data is stored as sequences, the available formats include the most common
 sequence formats.</p>
 
-<p>Featout</p>
+<!-- #acdtype-featout -->
+<h5>Featout</h5>
 
 <p>Feature annotation in any known feature format.
 Can also be stored with the sequence if the sequence output
 "features" attribute is set.</p>
 
-<p>Outfile</p>
+<!-- #acdtype-outfile -->
+<h5>Outfile</h5>
 
 <p>Non-sequence-related data file, usually plain
 text. This data type refers to files that are to be used in the program and do
 usually not contain sequence data. The type of data can be identified by a
-"standardtype" attribute and matched to an Infile standard type for
+"knowntype" attribute and matched to an Infile standard type for
 use as input to another program.</p>
 
-<p>Report</p>
+<!-- #acdtype-report -->
+<h5>Report</h5>
 
 <p>An output file for sequence annotation. Defined
 in the same way as a plain "Outfile" but with extra qualifiers to
 allow a choice of report formats. Report data is stored internally as a feature
 table, so the available formats include the most common feature formats.</p>
 
-<p>Seqout</p>
+<!-- #acdtype-seqout -->
+<h5>Seqout</h5>
 
 <p>USA (database reference or file) indicating a
 single sequence. Can also write features if the "features" ACD
 attribute is set.</p>
 
-<p>Seqoutall</p>
+<!-- #acdtype-seqoutall -->
+<h5>Seqoutall</h5>
 
 <p>A set of single sequences to be written to a
 single file. Can also write features if the "features" ACD attribute
 is set.</p>
 
-<p>Seqoutset</p>
+<!-- #acdtype-seqoutset -->
+<h5>Seqoutset</h5>
 
 <p>A set of single sequences stored in memory
 together, usually a multiple sequence alignment. Can also write features if the
 "features" ACD attribute is set.</p>
 
 <a name=sect2315>&nbsp;</a>
+<!-- #acdtype-section-graph -->
 <h4>2.3.1.5 Graphics</h4>
 
-<p>Graph</p>
+<!-- #acdtype-graph -->
+<h5>Graph</h5>
 
 <p>For graphical output of any general kind,
 including dotplots. The data value is the graphics device, as specified by the
@@ -1460,7 +737,8 @@ include "ps" for Postscript, "png" for PNG files, and
 "X11" for X-Windows. A value of "?" in answer to the prompt
 will list the available graphics devices on your installation.</p>
 
-<p>XYGraph</p>
+<!-- #acdtype-xygraph -->
+<h5>Xygraph</h5>
 
 <p>For graphical output as a simple two
 dimensional (2D) XY plot with the sequence along the x-axis. . The data value
@@ -1810,7 +1088,7 @@ streamline the development of ACD files.</p>
 </table>
 
 <p><a name=table2>&nbsp;</a>
-<b>Table 2. Recommended naming conventions.</b></p>
+<b>Table 3. Recommended naming conventions.</b></p>
 
 <a name=sect24>&nbsp;</a>
 <h2>2.4 Attributes</h2>
@@ -2043,7 +1321,7 @@ outseq: outseq [
 </pre>
 
 <p>will assign the name <i>infilename.seq</i> to parameter
-<i>sequence</i>, and <i>outfilename.seq</i> to parameter
+<i>asequence</i>, and <i>outfilename.seq</i> to parameter
 <i>outseq</i>.</p>
 
 <a name=sect24112>&nbsp;</a>
@@ -2122,746 +1400,377 @@ all ACD data type definitions.</p>
 attributes, summarized in Table 1 and described in more detail below.</p>
 
 <a name=sect24121>&nbsp;</a>
-<h5>2.4.1.2.1 Simple types</h5>
+<!-- #acdattr-section-simple -->
+<h5>2.4.1.2.1 Simple</h5>
 
 <p><b>Formalised:</b></p>
 
-<table border=1 cellpadding=0>
- <tr>
-  <td>
-  <p align=center><b>Data</b></p>
-  </td>
-  <td>
-  <p align=center><b>Attribute definition</b></p>
-  </td>
-  <td>
-  <p align=center><b>Description</b></p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>int</p>
-  </td>
-  <td>
-  <p>minimum: <i>integer</i></p>
-  </td>
-  <td>
-  <p>Minimum integer value</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>maximum: <i>integer</i></p>
-  </td>
-  <td>
-  <p>Maximum integer value</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>increment: <i>integer</i></p>
-  </td>
-  <td>
-  <p>Increment value</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>float</p>
-  </td>
-  <td>
-  <p>minimum: <i>float</i></p>
-  </td>
-  <td>
-  <p>Minimum float value</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>maximum: <i>float</i></p>
-  </td>
-  <td>
-  <p>Maximum float value</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>increment: <i>float</i></p>
-  </td>
-  <td>
-  <p>Increment value</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>precision: <i>integer</i></p>
-  </td>
-  <td>
-  <p>Number of significant digits when
-  printing</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>regexp</p>
-  </td>
-  <td>
-  <p>minlen: <i>integer</i></p>
-  </td>
-  <td>
-  <p>Minimum length</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>maxlen: <i>integer</i></p>
-  </td>
-  <td>
-  <p>Maximum length</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>lower: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Conversion to lower case</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>upper: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Conversion to upper case</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>string</p>
-  </td>
-  <td>
-  <p>minlen: <i>integer</i></p>
-  </td>
-  <td>
-  <p>Minimum length</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>maxlen: <i>integer</i></p>
-  </td>
-  <td>
-  <p>Maximum length</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>lower: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Conversion to lower case</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>upper: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Conversion to upper case</p>
-  </td>
- </tr>
-</table>
+<!-- #section-simple -->
 
-<a name=table3>&nbsp;</a>
-<p><b>Table 3. Simple data types - attributes. </b></p>
+<!-- #acdattr-array -->
+<h5>Array</h5>
 
-<p>Int</p>
+<p>The value for an array is a set of floating point numbers with
+white space or commas. The <i>size:</i> attribute sets the number of
+elements in the array. As for the float data type, the <i>minimum:</i>
+and <i>maximum:</i> attributes define the lower and upper value limits
+and default to the boundaries as specified by the systems set-up. For
+validation purposes, the <i>size:</i> attribute defines the total for
+all values in the array (tested unless the <i>sumtest:</i> attribute
+is false), and the <i>tolerance:</i> attribute specifies how closely
+the sum should match the total. Remember that most floating point
+fractions cannot be represented accurately in binary form.
+</p>
 
-<p>The integer data type can hold simple integer
-values. The <i>min</i>: and <i>max</i>: attributes define the boundaries and
-default to the boundaries as specified by the systems setup. The inc: attribute
-defines the steps that this parameter is allowed to take, in case there is a
-need to iterate this parameter.</p>
+<!-- #acdattr-boolean -->
+<h5>Boolean</h5>
 
-<p>Float</p>
+<p>Although there are (currently) no specific attributes for a boolean
+ACD type, care should be taken over the definition of the
+<i>information:</i> and <i>help:</i> attributes. These aer used to
+prompt the user (interactively or via a GUI), and to provide help
+text. The text provided in each case should reflect the expected
+default value of the boolean option, which may be the opposite of what
+the name implies. For example, if set to "Y" by default, then the
+command line option would typically be "-noxxx" where "xxx" is the
+qualifier. If set to "N" by default, then the default action may be
+the opposite of what the information or help text implies. If the
+value is calculated, the user may need some extra guidance.</p>
 
-<p><i>min</i>: and <i>max</i>: attributes define the boundaries and
-default to the boundaries as specified by the systems set-up. The
-<i>inc:</i> attribute defines the steps that this parameter is allowed
-to take, in case there is a need to iterate this parameter. The
-<i>inc:</i> attribute can be any valid float value. The
+<!-- #acdattr-float -->
+<h5>Float</h5>
+
+<p>The <i>minimum</i>: and <i>maximum</i>: attributes define the lower
+and upper value limits and default to the boundaries as specified by
+the systems set-up. The <i>increment:</i> attribute defines the steps
+that this parameter is allowed to take, in case there is a need to
+iterate this parameter. The <i>increment:</i> attribute can be any
+valid float value. The
 <i>precision:</i> attribute defines the maximum number of significant
 decimal places that will be taken into account for this value.</p>
 
-<p>String</p>
+<!-- #acdattr-integer -->
+<h5>Integer</h5>
 
-<p><i>minlen:</i> attribute defines the minimum length the string must
-be, the <i>maxlen:</i> attribute defines the maximum length the string
+<p>The integer data type can hold simple integer values. The
+<i>minimum:</i> and <i>maximum:</i> attributes define the boundaries
+and default to the boundaries as specified by the systems setup. The
+inc: attribute defines the steps that this parameter is allowed to
+take, in case there is a need to iterate this parameter.</p>
+
+<!-- #acdattr-range -->
+<h5>Range</h5>
+
+<p>Sequence ranges have (currently) no specific attributes. The value
+provided by the user is a list of sequence position pairs to be
+interpreted by the application. The upper and lower bounds (sequence
+positions can be negative to count back from the end) will depend on
+the length of the sequence to which they are applied.</p>
+
+<!-- #acdattr-string -->
+<h5>String</h5>
+
+<p>The <i>minlength:</i> attribute defines the minimum length the string must
+be, the <i>maxlength:</i> attribute defines the maximum length the string
 can be.</p>
 
 <a name=sect24122>&nbsp;</a>
+<!-- #acdattr-section-input -->
 <h5>2.4.1.2.2 Input</h5>
 
 <p><b>Formalised:</b></p>
 
-<table border=1 cellpadding=0>
- <tr>
-  <td>
-  <p align=center><b>Data type</b></p>
-  </td>
-  <td>
-  <p align=center><b>Attribute definition</b></p>
-  </td>
-  <td>
-  <p align=center><b>Description</b></p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>codon</p>
-  </td>
-  <td>
-  <p>name: <i>string</i></p>
-  </td>
-  <td>
-  <p>Codon table name default:Ehum.cut</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>cpdb</p>
-  </td>
-  <td>
-  <p>name: <i>string</i></p>
-  </td>
-  <td>
-  <p>Cleaned PDB file in EMBOSS data
-  path</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>datafile</p>
-  </td>
-  <td>
-  <p>name: <i>string</i></p>
-  </td>
-  <td>
-  <p>Default file base name</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>extension: <i>string</i></p>
-  </td>
-  <td>
-  <p>Default file extension</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>directory: <i>string</i></p>
-  </td>
-  <td>
-  <p>Default
-  installed data directory</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>standardtype: <i>string</i></p>
-  </td>
-  <td>
-  <p>Standard
-  named file type</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>nullOK: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Can
-  accept a null filename as 'no file' default:N</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>directory</p>
-  </td>
-  <td>
-  <p>fullpath: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Require full path in value
-  default:N</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>nullOK: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Can
-  accept a null filename as 'no file' default:N</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>dirlist</p>
-  </td>
-  <td>
-  <p>fullpath: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Require
-  full path in value default:N</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>nullOK: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Can
-  accept a null filename as 'no file' default:N</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>features</p>
-  </td>
-  <td>
-  
-  </td>
-  <td>
-  
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>infile</p>
-  </td>
-  <td>
-  <p>standardtype: <i>string</i></p>
-  </td>
-  <td>
-  <p>Type of data in the file</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>nullOK: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Can
-  accept a null filename as 'no file' default:N</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>Matrix</p>
-  <p>Matrixf</p>
-  </td>
-  <td>
-  <p>pname: <i>string</i></p>
-  </td>
-  <td>
-  <p>Default name for protein matrix
-  default:EBLOSUM62</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>nname: <i>string</i></p>
-  </td>
-  <td>
-  <p>Default
-  name for nucleotide matrix default:EDNAFULL</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>protein: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Protein
-  matrix default:Y</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>scop</p>
-  </td>
-  <td>
-  <p>name: <i>string</i></p>
-  </td>
-  <td>
-  <p>SCOP entry name default:d3sdha</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>sequence</p>
-  </td>
-  <td>
-  <p>type: <i>string</i></p>
-  </td>
-  <td>
-  <p>Type of sequence data (DNA, RNA, Protein
-  etc.)</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>features: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Read features if any default:N</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>entry: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Read
-  whole entry text default:N</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>Seqall</p>
-  </td>
-  <td>
-  <p>type: <i>string</i></p>
-  </td>
-  <td>
-  <p>Type of sequence data (DNA, RNA, Protein
-  etc.)</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>features: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Read features if any default:N</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>entry: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Read
-  whole entry text default:N</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>Seqset</p>
-  </td>
-  <td>
-  <p>type: <i>string</i></p>
-  </td>
-  <td>
-  <p>Type of sequence data (DNA, RNA, Protein
-  etc.)</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>features: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Read features if any default:N</p>
-  </td>
- </tr>
-</table>
+<!-- #section-input -->
 
-<a name=table4>&nbsp;</a>
-<p><b>Table 4. Input data types - attributes.</b></p>
+<!-- #acdattr-codon -->
+<h5>Codon</h5>
 
-<p>Sequence/Seqset/Seqall</p>
+<p>Codon usage tables are species-specific, and in some cases specific
+to a class of genes within a species. This makes it useful to specify
+a default value for a codon usage table name. Internally, a default is
+set in the ACD source code. Usually this is "Ehum.cut", the human codon
+usage table provided in the EMBOSS distribution.</p>
 
-<p>type: attribute will force the sequence to be
-of the given type.</p>
+<p>Individual codon inputs can set their own default names with the
+<i>name:</i> attribute which in the current version has the same
+effect as setting the <i>default:</i> attribute.</p>
 
-<p>Matrix</p>
+<!-- #acdattr-cpdb -->
+<h5>Cpdb</h5>
 
-<p>protein: attribute will determine if the
+<p>Cleaned PDB file input has a default value (typically "1azu") set
+in the ACD source code although this is not really a good idea.</p>
+
+<p>Individual cpdb inputs can set their own default names with the
+<i>name:</i> attribute which in the current version has the same
+effect as setting the <i>default:</i> attribute.</p>
+
+
+<!-- #acdattr-datafile -->
+<h5>Datafile</h5>
+
+<p>The default datafile name is defined by two ACD attributes,
+<i>name:</i> and <i>extension:</i>. The <i>directory:</i> attribute
+defines the EMBOSS data subdirectory to be searched.</p>
+
+<!-- #acdattr-directory -->
+<h5>Directory</h5>
+
+<p>The <i>fullpath:</i> attribute can be used to require a full rather
+than a relative path specification for a directory.</p>
+
+<p>If a null value (the current directory) is allowed,the
+<i>nullok:</i> attribute must be set true.</p>
+
+<!-- #acdattr-dirlist -->
+<h5>Dirlist</h5>
+
+<p>The <i>fullpath:</i> attribute can be used to require a full rather
+than a relative path specification for a directory.</p>
+
+<p>If a null value (the current directory) is allowed,the
+<i>nullok:</i> attribute must be set true.</p>
+
+<!-- #acdattr-discretestates -->
+<h5>Discretestates</h5>
+
+<p>The discretestates data type can be replaced by a simple input
+file in GUIs, with the user required to provide the correct data
+format.</p>
+
+<p>The attributes define characteristics required for Phylip
+programs.</p>
+
+<p>The <i>length:</i> attribute defines the number of state values (the
+length of the discrete characters string) in each set
+</p>
+
+<p>The <i>size:</i> attribute defines the number of sets of values,
+usually 1 but some programs will accept multiple sets.
+</p>
+
+<p>The <i>characters:</i> attribute defines which discrete state
+characters can be specified. This is defined as a string containing
+all possible characters.
+</p>
+
+<p>The <i>nullok:</i> attribute allows a default value to be replaced
+by an empty string or by -noxxx on the command line if the application
+can run without a discretestates file.
+</p>
+
+<!-- #acdattr-distances -->
+<h5>Distances</h5>
+
+<p>The distances data type can be replaced by a simple input
+file in GUIs, with the user required to provide the correct data
+format.</p>
+
+<p>The attributes define characteristics required for Phylip
+programs. The distance matrices accepted by ACD include all the
+formats read by Phylip, with automatic interconversion.</p>
+
+<p>The <i>length:</i> attribute defines the number of rows in the
+distance matrix.</p>
+
+<p>The <i>nullok:</i> attribute allows a default value to be replaced
+by an empty string or by -noxxx on the command line if the application
+can run without a distance file.
+</p>
+
+
+<!-- #acdattr-features -->
+<h5>Features</h5>
+
+<p>The <i>type:</i> attribute defines whether the feature input is
+"protein" or "nucleotide". There is a default based on the type of any
+input sequence, but a value should always be specified.</p>
+
+<!-- #acdattr-filelist -->
+<h5>Filelist</h5>
+
+<p>Filelist is equivalent to infile, but allows the user to specify
+one or more input files.</p>
+
+<p>The <i>nullok:</i> attribute specifies that a missing input file is
+acceptable to the application, and that -noxxx can be used on the
+command line to avoid reading the default input file (if any)</p>
+
+<!-- #acdattr-frequencies -->
+<h5>Frequencies</h5>
+
+<p>The frequencies data type can be replaced by a simple input
+file in GUIs, with the user required to provide the correct data
+format.</p>
+
+<p>The attributes define characteristics required for Phylip
+programs. The frequencies files formats accepted by ACD include all the
+formats read by Phylip, with automatic interconversion.</p>
+
+<p>The <i>length:</i> attribute defines the number of loci (or values) in the
+frequencies file.</p>
+
+<p>The <i>size:</i> attribute defines the number of sets of values,
+usually 1 but some programs will accept multiple sets.
+</p>
+
+<p>The <i>continuous:</i> attribute specifies a frequencies file with
+continuous character data values.
+</p>
+
+<p>The <i>genedata:</i> attribute specifies a frequencies file with
+genetic locus data values.
+</p>
+
+<p>The <i>within:</i> attribute specifies a frequencies file with
+continuous data for multiple individuals (additional values on each line).
+</p>
+
+<p>The <i>nullok:</i> attribute allows a default value to be replaced
+by an empty string or by -noxxx on the command line if the application
+can run without a frequencies file.
+</p>
+
+
+<!-- #acdattr-infile -->
+<h5>Infile</h5>
+
+<p>The <i>nullok:</i> attribute specifies that a missing input file is
+acceptable to the application, and that -noxxx can be used on the
+command line to avoid reading the default input ifle (if any)</p>
+
+<!-- #acdattr-matrix -->
+<h5>Matrix</h5>
+
+<p>The <i>protein:</i> attribute will determine if the
+scoring matrix is used as a DNA or Protein matrix.</p>
+
+<!-- #acdattr-matrixf -->
+<h5>Matrixf</h5>
+
+<p>The <i>protein:</i> attribute will determine if the
 scoring matrix is used as a DNA or Protein matrix.</p>
 
 
+<!-- #acdattr-properties -->
+<h5>Properties</h5>
+
+<p>The properties data type can be replaced by a simple input
+file in GUIs, with the user required to provide the correct data
+format.</p>
+
+<p>The attributes define characteristics required for Phylip
+programs. The properties files accepted by ACD include all the
+formats read by Phylip, with automatic interconversion.</p>
+
+<p>The <i>length:</i> attribute defines the number of values in the
+properties file.</p>
+
+<p>The <i>size:</i> attribute defines the number of sets of values,
+usually 1 but some programs will accept multiple sets.
+</p>
+
+<p>The <i>characters:</i> attribute defines which property
+characters can be specified. This is defined as a string containing
+all possible characters.
+</p>
+
+<p>The <i>nullok:</i> attribute allows a default value to be replaced
+by an empty string or by -noxxx on the command line if the application
+can run without a properties file.
+</p>
+
+
+<!-- #acdattr-regexp -->
+<h5>Regexp</h5>
+
+<p>Regular expressions are processed by the "Perl-Compatible Regular
+Expression Library" (PCRE). Any value must be accepted by this
+library's compilation function. Some additional attributes are
+provided for further validation by ACD.</p>
+
+<p>The <i>minlength:</i> attribute defines the minimum length the
+string must be, the <i>maxlength:</i> attribute defines the maximum
+length the regular expression string can be.</p>
+
+<p>The <i>upper:</i> and <i>lower:</i>attributes convert an input
+regular expression to upper or lower case before compiling.</p>
+
+<!-- #acdattr-scop -->
+<h5>Scop</h5>
+
+<p>Scop file input has a default value (typically "d3sdha") set
+in the ACD source code although this is not really a good idea.</p>
+
+<p>Individual scop inputs can set their own default names with the
+<i>name:</i> attribute which in the current version has the same
+effect as setting the <i>default:</i> attribute.</p>
+
+<!-- #acdattr-sequence -->
+<h5>Sequence</h5>
+
+<p>The <i>type:</i> attribute will force the sequence to be
+of the given type. By default, any sequence type is accepted.</p>
+
+<p>We recommend always defining the <i>type:</i> attribute so that the
+accepted input sequence type is always clear.</p>
+
+<!-- #acdattr-seqall -->
+<h5>Seqall</h5>
+
+<p>The <i>type:</i> attribute will force the sequence(s) to be
+of the given type. By default, any sequence type is accepted.</p>
+
+<p>We recommend always defining the <i>type:</i> attribute so that the
+accepted input sequence type is always clear.</p>
+
+<!-- #acdattr-seqset -->
+<h5>Seqset</h5>
+
+<p>The <i>type:</i> attribute will force the sequence set to be
+of the given type. By default, any sequence type is accepted.</p>
+
+<p>We recommend always defining the <i>type:</i> attribute so that the
+accepted input sequence type is always clear.</p>
+
+<!-- #acdattr-seqsetall -->
+<h5>Seqsetall</h5>
+
+<p>The <i>type:</i> attribute will force the sequence set(s) to be
+of the given type. By default, any sequence type is accepted.</p>
+
+<p>We recommend always defining the <i>type:</i> attribute so that the
+accepted input sequence type is always clear.</p>
+
+<!-- #acdattr-tree -->
+<h5>Tree</h5>
+
+<p>The tree data type can be replaced by a simple input
+file in GUIs, with the user required to provide the correct data
+format.</p>
+
+<p>The attributes define characteristics required for Phylip
+programs. The tree files accepted by ACD include all the
+formats read by Phylip, with automatic interconversion.</p>
+
+<p>The <i>size:</i> attribute defines the number of trees in the input file,
+usually 0 but some programs will accept multiple sets. Some can
+only accept a single tree (so the value should be set to "1" for these.
+</p>
+
+<p>The <i>nullok:</i> attribute allows a default value to be replaced
+by an empty string or by -noxxx on the command line if the application
+can run without a properties file.
+</p>
+
+
 <a name=sect24123>&nbsp;</a>
+<!-- #acdattr-section-selection -->
 <h5>2.4.1.2.3 Selection lists</h5>
 
 <p><b>Formalised:</b></p>
 
-<table border=1 cellpadding=0>
- <tr>
-  <td>
-  <p align=center><b>Data type</b></p>
-  </td>
-  <td>
-  <p align=center><b>Attribute definition</b></p>
-  </td>
-  <td>
-  <p align=center><b>Description</b></p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>list</p>
-  </td>
-  <td>
-  <p>minimum: <i>integer</i></p>
-  </td>
-  <td>
-  <p>Minimum number of selections required
-  (defaults to 1)</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>maximum: <i>integer</i></p>
-  </td>
-  <td>
-  <p>Maximum number of selections (defaults to
-  1)</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>button: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>(Not used by ACD) prefer checkboxes in
-  GUI</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>casesensitive: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Case sensitive matching (default:N)</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>header: <i>string</i></p>
-  </td>
-  <td>
-  <p>Text that will appear above the choices</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>delimiter: <i>char</i></p>
-  </td>
-  <td>
-  <p>String delimiter character</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>codedelimiter: <i>char</i></p>
-  </td>
-  <td>
-  <p>Delimiter between label and value</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>values: <i>string</i></p>
-  </td>
-  <td>
-  <p>Formatted values to choose from</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>select</p>
-  </td>
-  <td>
-  <p>minimum: <i>integer</i></p>
-  </td>
-  <td>
-  <p>Minimum number of selections (default to
-  1)</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>maximum: <i>integer</i></p>
-  </td>
-  <td>
-  <p>Maximum number of selections (default to
-  1)</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>button: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>(Not used by ACD) prefer radiobuttons in
-  GUI</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>casesensitive: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Case sensitive matching (default:N)</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>header: <i>string</i></p>
-  </td>
-  <td>
-  <p>Text that will appear above the choices</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>delimiter: <i>char</i></p>
-  </td>
-  <td>
-  <p>String delimiter character</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>values: <i>string</i></p>
-  </td>
-  <td>
-  <p>Values to choose from</p>
-  </td>
- </tr>
-</table>
-
-<a name=table5>&nbsp;</a>
-<p><b>Table 5. Selection lists data types - attributes.</b></p>
+<!-- #section-selection -->
 
 <p>For both selection list types, the values that
 the user can choose from are defined in the <i>values:</i> attribute as a
@@ -2878,7 +1787,8 @@ attribute, which can either be Y(es) or N(o), is used in for web front ends, to
 indicate if radiobuttons/checkbox/selection lists are to be used or if the list
 is simply displayed with a text entry box beneath it, to enter the option.</p>
 
-<p>List</p>
+<!-- #acdattr-list -->
+<h5>List</h5>
 
 <p>Example:</p>
 
@@ -2908,7 +1818,8 @@ Comparison matrices
 Select one [blosum] : PAM
 </pre>
 
-<p>Select</p>
+<!-- #acdattr-selection -->
+<h5>Selection</h5>
 
 <p>Example:</p>
 
@@ -2940,541 +1851,210 @@ Select one [blosum] : PAM
 
 
 <a name=sect24124>&nbsp;</a>
+<!-- #acdattr-section-output -->
 <h5>2.4.1.2.4 Output</h5>
 
 <p><b>Formalised:</b></p>
 
-<table border=1 cellpadding=0>
- <tr>
-  <td>
-  <p align=center><b>Data type</b></p>
-  </td>
-  <td>
-  <p align=center><b>Attribute definition</b></p>
-  </td>
-  <td>
-  <p align=center><b>Description</b></p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>Align</p>
-  </td>
-  <td>
-  <p>type: <i>string</i></p>
-  </td>
-  <td>
-  <p>[P]rotein or [N]ucleotide</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>taglist: <i>string</i></p>
-  </td>
-  <td>
-  <p>Extra
-  tags to report</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>minseqs: <i>integer</i></p>
-  </td>
-  <td>
-  <p>Minimum
-  number of extra tags default:0</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>maxseqs: <i>integer</i></p>
-  </td>
-  <td>
-  <p>Maximum
-  number of extra tags default:0</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>multiple: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>More
-  than one alignment in one file default:N</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>Featout</p>
-  </td>
-  <td>
-  <p>name: <i>string</i></p>
-  </td>
-  <td>
-  <p>Filename</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>extension: <i>string</i></p>
-  </td>
-  <td>
-  <p>Extension of the filename</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>Outfile</p>
-  </td>
-  <td>
-  <p>name: <i>string</i></p>
-  </td>
-  <td>
-  <p>Filename (-ofname preferred)</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>extension: <i>string</i></p>
-  </td>
-  <td>
-  <p>Extension of the filename (-offormat
-  preferred)</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>standardtype: <i>string</i></p>
-  </td>
-  <td>
-  <p>(Not used by ACD) Standard named
-  file type</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>extension: <i>string</i></p>
-  </td>
-  <td>
-  <p>Extension of the filename (-offormat
-  preferred)</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>nullOK: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Can
-  accept a null filename as 'no file' default:N</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>Append: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Append to an existing file default:N</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>Report</p>
-  </td>
-  <td>
-  <p>type: <i>string</i></p>
-  </td>
-  <td>
-  <p>[P]rotein
-  or [N]ucleotide</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>taglist: <i>string</i></p>
-  </td>
-  <td>
-  <p>Extra
-  tags to report</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>mintags: <i>integer</i></p>
-  </td>
-  <td>
-  <p>Minimum
-  number of extra tags default:0</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>multiple: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Multiple
-  sequences in one report default:N</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>precision: <i>integer</i></p>
-  </td>
-  <td>
-  <p>Score precision default:3</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>Seqout</p>
-  </td>
-  <td>
-  <p>name: <i>string</i></p>
-  </td>
-  <td>
-  <p>Output base name (-osname preferred)</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>extension: <i>string</i></p>
-  </td>
-  <td>
-  <p>Output extension (-osextension preferred)</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>Features: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Write features if any default:N</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>Seqoutall</p>
-  </td>
-  <td>
-  <p>name: <i>string</i></p>
-  </td>
-  <td>
-  <p>Output base name (-osname preferred)</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>extension: <i>string</i></p>
-  </td>
-  <td>
-  <p>Extension of the filename</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>Features: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Write features if any default:N</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>Seqoutset</p>
-  </td>
-  <td>
-  <p>name: <i>string</i></p>
-  </td>
-  <td>
-  <p>Output base name (-osname preferred)</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>extension: <i>string</i></p>
-  </td>
-  <td>
-  <p>Extension of the filename</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>Features: <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Write features if any default:N</p>
-  </td>
- </tr>
-</table>
+<!-- #section-output -->
 
-<a name=table6>&nbsp;</a>
-<p><b>Table 6. Output data types - attributes.</b></p>
+<!-- #acdattr-align -->
+<h5>Align</h5>
 
-<p>Align</p>
+<p>The <i>minseqs:</i> and <i>maxseqs:</i> attributes define whether
+the alignment will contain exactly 2 sequences, 1 or more, 3 or more,
+or whatever the program will produce. These values can be used to
+validate the choice of formats on the command line with the
+<i>-aformat</i> qualifier.</p>
+
+The <i>aformat:</a> attribute is required. It defines the default
+value for the <i>-aformat</i> qualifier.</p>
+
+The <i>aglobal:</a> attribute defines the default
+value for the <i>-aglobal</i> qualifier, and should be set true for
+programs that produce a global alignment.</p>
+
+The <i>multiple:</a> attribute should be set true if the output can
+contain more than one alignment from the same input.</p>
+
+<p>The <i>nullok:</i> attribute allows a default value to be replaced
+by an empty string or by -noxxx on the command line if the application
+can run without an alignment output file.
+</p>
+
+
+<!-- #acdattr-featout -->
+<h5>Featout</h5>
+
+<p>The output filename is constructed from the <i>name:</i>
+and <i>extension:</i> attributes in a $( <i>name</i>).$(<i>extension</i>)
+format. If the <i>name:</i> attribute is not defined in the ACD file, it will
+default to the calculated attribute <i>name:</i> of the FIRST sequence that is
+read in ($(asequence.name) if the sequence parameter is named asequence).</p>
+
+<p>The <i>extension:</i> attribute will default to the output feature
+format.</p>
+
+<!-- #acdattr-outfile -->
+<h5>Outfile</h5>
+
+<p>The output filename is constructed from the <i>name:</i>
+and <i>extension:</i> attributes in a $( <i>name</i>).$(<i>extension</i>)
+format. If the <i>name:</i> attribute is not defined in the ACD file, it will
+default to the calculated attribute <i>name:</i> of the FIRST sequence that is
+read in ($(asequence.name) if the sequence parameter is named asequence).</p>
+
+<p>The <i>extension:</i> attribute will default to the program name,
+and is usually left as the default value.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the defaule name
+generation, and uses an empty string (no output file) as the default
+for programs where an output file is only occasionally
+required. Examples include programs where the original output format
+is available, usually for users that still require it for parsing in
+automated scripts.</p>
+
+<p>The <i>nullok:</i> attribute allows a default value to be replaced
+by an empty string or by -noxxx on the command line if the application
+can run without an output file.
+</p>
+
+<p>The <i>knowntype:</i> attribute should always be defined. If the output
+is not of any special type, a knowntype of "(program) output" is the
+recommended value.</p>
+
+
+<!-- #acdattr-report -->
+<h5>Report</h5>
+
+<p>The <i>minseqs:</i> and <i>maxseqs:</i> attributes define whether
+the alignment will contain exactly 2 sequences, 1 or more, 3 or more,
+or whatever the program will produce. These values can be used to
+validate the choice of formats on the command line with the
+<i>-aformat</i> qualifier.</p>
+
+The <i>rformat:</a> attribute is required. It defines the default
+value for the <i>-rformat</i> qualifier.</p>
+
+The <i>taglist:</a> attribute defines the additional tags to be
+reported from the internal feature table. The tag names and types must
+match the source code of the application. Each tag is in the format
+"type:tagname[=columnname]" for example "int:length" or "string:gc=GC%"</p>
+
+The <i>precision:</a> attribute sets the floating point precision of
+the score value. For integer scores this can be set to "0".</p>
+
+The <i>multiple:</a> attribute should be set true if the output can
+contain more than one report from the same input.</p>
+
+The <i>mintags:</a> attribute appears to be obsolete.</p>
+
+<p>The <i>nullok:</i> attribute allows a default value to be replaced
+by an empty string or by -noxxx on the command line if the application
+can run without a report output file.
+</p>
 
 
 
-<p>Featout</p>
-
-
-
-<p>Outfile</p>
+<!-- #acdattr-seqout -->
+<h5>Seqout</h5>
 
 <p>filename is constructed from the <i>name:</i>
 and <i>extension:</i> attribute in a $( <i>name</i>).$(<i>extension</i>)
 format. If the <i>name:</i> attribute is not defined in the ACD file, it will
 default to the calculated attribute <i>name:</i> of the FIRST sequence that is
-read in ($(asequence.name) if the sequence parameter is named asequence).</p>
+read in ($(asequence.name) if the sequence parameter is a named asequence).</p>
 
-<p><i>type:</i> attribute will force the outfile to be of the given type.</p>
+<p>If the <i>features:</i> attribute is set, the sequence output will
+include feature infiormation either in the same file (if the sequence
+format supports it) or in a separate file (by default in GFF format).</p>
 
-<p>Report</p>
+<p>The <i>type:</i> attribute defines the output sequnce
+type. Although this will default to the type of the first input
+sequence, it is ercommended that a value is always defined to make the
+output sequnce type clear.</p>
 
+<p>The <i>nullok:</i> attribute allows a default value to be replaced
+by an empty string or by -noxxx on the command line if the application
+can run without this sequence output.
+</p>
 
-
-<p>Seqout/Seqoutset/Seqoutall</p>
+<!-- #acdattr-seqoutall -->
+<h5>Seqoutall</h5>
 
 <p>filename is constructed from the <i>name:</i>
 and <i>extension:</i> attribute in a $( <i>name</i>).$(<i>extension</i>)
 format. If the <i>name:</i> attribute is not defined in the ACD file, it will
 default to the calculated attribute <i>name:</i> of the FIRST sequence that is
-read in ($(asequence.name) if the sequence parameter is named asequence).</p>
+read in ($(asequence.name) if the sequence parameter is a named asequence).</p>
+
+<p>If the <i>features:</i> attribute is set, the sequence output will
+include feature infiormation either in the same file (if the sequence
+format supports it) or in a separate file (by default in GFF format).</p>
+
+<p>The <i>type:</i> attribute defines the output sequnce
+type. Although this will default to the type of the first input
+sequence, it is ercommended that a value is always defined to make the
+output sequnce type clear.</p>
+
+<p>The <i>nullok:</i> attribute allows a default value to be replaced
+by an empty string or by -noxxx on the command line if the application
+can run without this sequence output.
+</p>
+
+<!-- #acdattr-seqoutset -->
+<h5>Seqoutset</h5>
+
+<p>filename is constructed from the <i>name:</i>
+and <i>extension:</i> attribute in a $( <i>name</i>).$(<i>extension</i>)
+format. If the <i>name:</i> attribute is not defined in the ACD file, it will
+default to the calculated attribute <i>name:</i> of the FIRST sequence that is
+read in ($(asequence.name) if the sequence parameter is a named asequence).</p>
+
+<p>If the <i>features:</i> attribute is set, the sequence output will
+include feature infiormation either in the same file (if the sequence
+format supports it) or in a separate file (by default in GFF format).</p>
+
+<p>The <i>type:</i> attribute defines the output sequnce
+type. Although this will default to the type of the first input
+sequence, it is ercommended that a value is always defined to make the
+output sequnce type clear.</p>
+
+<p>The <i>nullok:</i> attribute allows a default value to be replaced
+by an empty string or by -noxxx on the command line if the application
+can run without this sequence output.
+</p>
 
 <a name=sect24125>&nbsp;</a>
+<!-- #acdattr-section-graph -->
 <h5>2.4.1.2.5 Graphics</h5>
 
 <p><b>Formalised:</b></p>
 
-<table border=1 cellpadding=0>
- <tr>
-  <td>
-  <p align=center><b>Data type</b></p>
-  </td>
-  <td>
-  <p align=center><b>Attribute definition</b></p>
-  </td>
-  <td>
-  <p align=center><b>Description</b></p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>graph</p>
-  </td>
-  <td>
-  <p>standardtype: <i>string</i></p>
-  </td>
-  <td colspan=2>
-  <p>(Not used by ACD) Standard named
-  graph type</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>gtitle: <i>string</i></p>
-  </td>
-  <td colspan=2>
-  <p>Graph title default:''</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>gsubtitle: <i>string</i></p>
-  </td>
-  <td colspan=2>
-  <p>Graph subtitle default:''</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>gxtitle: <i>string</i></p>
-  </td>
-  <td colspan=2>
-  <p>Graph x-axis title default:''</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>gytitle: <i>string</i></p>
-  </td>
-  <td colspan=2>
-  <p>Graph y-axis title default:''</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>outfile: <i>string</i></p>
-  </td>
-  <td colspan=2>
-  <p>Graph output file
-  default:progname.device</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>xygraph</p>
-  </td>
-  <td>
-  <p>standardtype: <i>string</i></p>
-  </td>
-  <td colspan=2>
-  <p>(Not used by ACD) Standard named
-  graph type</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>gtitle: <i>string</i></p>
-  </td>
-  <td colspan=2>
-  <p>Graph title default:''</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>gsubtitle: <i>string</i></p>
-  </td>
-  <td colspan=2>
-  <p>Graph subtitle default:''</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>gxtitle: <i>string</i></p>
-  </td>
-  <td colspan=2>
-  <p>Graph x-axis title default:''</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>gytitle: <i>string</i></p>
-  </td>
-  <td colspan=2>
-  <p>Graph y-axis title default:''</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>outfile: <i>string</i></p>
-  </td>
-  <td colspan=2>
-  <p>Graph output file
-  default:progname.device</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>multiple: <i>Y/N</i></p>
-  </td>
-  <td colspan=2>
-  <p>Graph title default:''</p>
-  </td>
- </tr>
-</table>
-
-<a name=table7>&nbsp;</a>
-<p><b>Table 7. Graphics data types - attributes.</b></p>
-
-<p>Graph</p>
+<!-- #section-graph -->
 
 
+<!-- #acdattr-graph -->
+<h5>Graph</h5>
 
-<p>Graphxy</p>
+<p>The <i>nullok:</i> attribute allows a default value to be replaced
+by an empty string or by -noxxx on the command line if the application
+can run without this graph output.
+</p>
 
+<p>The command line qualifiers can be defined as ACD attributes. The
+most used are <i>gtitle:</i>, <i>gxtitle:</i> and <i>gytitle:</i>. 
+
+<!-- #acdattr-xygraph -->
+<h5>Xygraph</h5>
+
+<p>The <i>nullok:</i> attribute allows a default value to be replaced
+by an empty string or by -noxxx on the command line if the application
+can run without this graph output.
+</p>
+
+<p>The command line qualifiers can be defined as ACD attributes. The
+most used are <i>gtitle:</i>, <i>gxtitle:</i> and <i>gytitle:</i>. 
 
 <a name=sect242>&nbsp;</a>
 <h3>2.4.2 Calculated attributes</h3>
@@ -3492,284 +2072,8 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
 
 <p><b>Formalised:</b></p>
 
-<table border=1 cellpadding=0>
- <tr>
-  <td>
-  <p align=center><b>Data type</b></p>
-  </td>
-  <td>
-  <p align=center><b>Calculated attributes</b></p>
-  </td>
-  <td>
-  <p align=center><b>Description</b></p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>Features</p>
-  </td>
-  <td>
-  <p>flength</p>
-  </td>
-  <td>
-  <p>Total length of sequence (size is number
-  of features)</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>fname</p>
-  </td>
-  <td>
-  <p>The name of the feature table</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>fbegin</p>
-  </td>
-  <td>
-  <p>The beginning of the selection of the
-  feature table</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>fend</p>
-  </td>
-  <td>
-  <p>The end of the selection of the feature
-  table</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>fprotein</p>
-  </td>
-  <td>
-  <p>Boolean, indicates if feature table is
-  protein</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>fnucleic</p>
-  </td>
-  <td>
-  <p>Boolean, indicates if feature table is
-  DNA</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>fsize</p>
-  </td>
-  <td>
-  <p>Integer, number of features</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>regexp</p>
-  </td>
-  <td>
-  <p>length</p>
-  </td>
-  <td>
-  <p>The length of the regular expression</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>sequence, seqall</p>
-  </td>
-  <td>
-  <p>length</p>
-  </td>
-  <td>
-  <p>The total length of the sequence</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>name</p>
-  </td>
-  <td>
-  <p>The name/ID/accession # of the sequence</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>begin</p>
-  </td>
-  <td>
-  <p>The beginning of the selection of the
-  sequence</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>end</p>
-  </td>
-  <td>
-  <p>The end of the selection of the sequence</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>protein</p>
-  </td>
-  <td>
-  <p>Boolean, indicates if sequence is protein</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>nucleic</p>
-  </td>
-  <td>
-  <p>Boolean, indicates if sequence is DNA</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>seqset</p>
-  </td>
-  <td>
-  <p>length</p>
-  </td>
-  <td>
-  <p>The maximum length of the sequence set</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  
-  </td>
-  <td>
-  <p>name</p>
-  </td>
-  <td>
-  <p>The name of the sequence set</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>begin</p>
-  </td>
-  <td>
-  <p>The beginning of the selection of the
-  sequence set</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>end</p>
-  </td>
-  <td>
-  <p>The end of the selection of the sequence
-  set</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>protein</p>
-  </td>
-  <td>
-  <p>Boolean, indicates if sequence set is
-  protein</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>nucleic</p>
-  </td>
-  <td>
-  <p>Boolean, indicates if sequence set is DNA</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>totweight</p>
-  </td>
-  <td>
-  <p>Float, total sequence weight for a set</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>count</p>
-  </td>
-  <td>
-  <p>Integer, number of sequences in the set</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>string</p>
-  </td>
-  <td>
-  <p>length</p>
-  </td>
-  <td>
-  <p>The length of the string</p>
-  </td>
- </tr>
-</table>
+<!-- #tablecalc -->
 
-<a name=table8>&nbsp;</a>
-<p><b>Table 8. Data type-specific calculated attributes.</b></p>
 
 <a name=sect2422>&nbsp;</a>
 <h4>2.4.2.2 The sequence type: attribute </h4>
@@ -3781,141 +2085,7 @@ contents. Possible values for the <i>type:</i> attribute are listed in
 table 8.</p>
 
 
-
-<table border=1 cellpadding=0>
- <tr>
-  <td>
-  <p>Value</p>
-  </td>
-  <td>
-  <p>Description</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>any</p>
-  </td>
-  <td>
-  <p>Any valid sequence characters</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>gapany</p>
-  </td>
-  <td>
-  <p>Any valid sequence characters with gaps</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>dna</p>
-  </td>
-  <td>
-  <p>DNA sequence characters</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>rna</p>
-  </td>
-  <td>
-  <p>RNA sequence characters</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>puredna</p>
-  </td>
-  <td>
-  <p>DNA, bases ACGT only</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>purerna</p>
-  </td>
-  <td>
-  <p>RNA, bases ACGU only</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>nucleotide</p>
-  </td>
-  <td>
-  <p>Nucleotide sequence characters</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>purenucleotide</p>
-  </td>
-  <td>
-  <p>Nucleotide, bases ACGTU only</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>gapnucleotide</p>
-  </td>
-  <td>
-  <p>Nucleotide, bases ACGTU with gaps</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>gapdna</p>
-  </td>
-  <td>
-  <p>DNA sequence characters with gaps</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>gaprna</p>
-  </td>
-  <td>
-  <p>RNA sequence characters with gaps</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>protein</p>
-  </td>
-  <td>
-  <p>Protein sequence characters</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>gapprotein</p>
-  </td>
-  <td>
-  <p>Protein sequence characters with gaps</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>pureprotein</p>
-  </td>
-  <td>
-  <p>Protein sequence without BZ or X</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>stopprotein</p>
-  </td>
-  <td>
-  <p>Protein sequence with a possible stop</p>
-  </td>
- </tr>
-</table>
-
-<a name=table9>&nbsp;</a>
-<p><b>Table 9. Possible values for the <i>type: </i>attribute in input
-sequence data types.</b></p>
+<!-- #tableseq -->
 
 <a name=sect243>&nbsp;</a>
 <h3>2.4.3 Attribute usage</h3>
@@ -4029,100 +2199,11 @@ below.</p>
 
 <p><b>Formalised:</b></p>
 
-<table border=1 cellpadding=0>
- <tr>
-  <td>
-  <p align=center><b>Qualifier definition</b></p>
-  </td>
-  <td>
-  <p align=center><b>Description</b></p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>-acdlog</p>
-  </td>
-  <td>
-  <p>Turns on logging of ACD file processing</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>-acdpretty</p>
-  </td>
-  <td>
-  <p>Outputs a nicely formatted ACD file</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>-auto</p>
-  </td>
-  <td>
-  <p>Turns off any prompting of the user</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>-debug</p>
-  </td>
-  <td>
-  <p>Turns on debugging with ajDebug calls</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>-filter</p>
-  </td>
-  <td>
-  <p>Reads from stdin and writes to stdout and
-  implies -auto</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>-stdout</p>
-  </td>
-  <td>
-  <p>Writes by default to stdout, but still
-  prompts the user</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>-help</p>
-  </td>
-  <td>
-  <p>Will give usage information of this
-  program. See also <i>-verbose</i> below.</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>-verbose</p>
-  </td>
-  <td>
-  <p>When used with <i>-help</i> also gives
-  the associated qualifiers and the general qualifiers (this list)</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>-options</p>
-  </td>
-  <td>
-  <p>Program will also prompt for optional
-  qualifiers.</p>
-  </td>
- </tr>
-</table>
+<!-- #tablequals -->
 
-<a name=table10>&nbsp;</a>
-<p><b>Table 10. Global qualifiers.</b></p>
 
 <a name=sect2521>&nbsp;</a>
 <h4>2.5.2.1 Global qualifier description</h4>
-
 
 <a name=sect25211>&nbsp;</a>
 <h5>2.5.2.1.1 acdlog (for testing only)</h5>
@@ -4355,7 +2436,7 @@ Output length: <i>10</i>
 </pre>
 
 <p>In the first example the application <b>seqdemo</b>
-is run without any parameters or qualifiers and since the <i>sequence</i>
+is run without any parameters or qualifiers and since the <i>asequence</i>
 parameter is a parameter it queries the user for the input filename. It also
 queries the user for the output sequence, since that parameter is labelled as
 being required by the attribute of that name. It will not query the user for
@@ -4434,131 +2515,8 @@ global qualifier.</p>
 <p>The table below lists all environment variables
 for global qualifiers.</p>
 
-<table border=1 cellpadding=0>
- <tr>
-  <td>
-  <p>Environment variable</p>
-  </td>
-  <td>
-  <p>Global qualifier</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_ACDLOG</p>
-  </td>
-  <td>
-  <p>-acdlog</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_ACDPRETTY</p>
-  </td>
-  <td>
-  <p>-acdpretty</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_ACDTABLE</p>
-  </td>
-  <td>
-  <p>-acdtable</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_AUTO</p>
-  </td>
-  <td>
-  <p>-auto</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_DEBUG</p>
-  </td>
-  <td>
-  <p>-debug</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_DIE</p>
-  </td>
-  <td>
-  <p>-die</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_ERROR</p>
-  </td>
-  <td>
-  <p>-error default:Y</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_FATAL</p>
-  </td>
-  <td>
-  <p>-fatal default:Y</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_FILTER</p>
-  </td>
-  <td>
-  <p>-filter</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_HELP</p>
-  </td>
-  <td>
-  <p>-help</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_OPTIONS</p>
-  </td>
-  <td>
-  <p>-options</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_STDOUT</p>
-  </td>
-  <td>
-  <p>-stdout</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_VERBOSE</p>
-  </td>
-  <td>
-  <p>-verbose</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_WARNING</p>
-  </td>
-  <td>
-  <p>-warning default:Y</p>
-  </td>
- </tr>
-</table>
+<!-- #tablequalvars -->
 
-<a name=table11>&nbsp;</a>
-<p><b>Table 11. Environment variables associated with global qualifiers.</b></p>
 
 <p>Environment variables can be specified in the global
 <i>emboss.defaults</i> file, in the user's <i>.embosssrc</i> file or set on the
@@ -4635,258 +2593,24 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
 <a name=sect2531>&nbsp;</a>
 <h4>2.5.3.1 Input</h4>
 
-<p>At the moment there are only qualifiers for
-sequence type data.</p>
-
 <p><b>Formalised:</b></p>
 
-<table border=1 cellpadding=0>
- <tr>
-  <td>
-  <p align=center><b>Data type</b></p>
-  </td>
-  <td>
-  <p align=center><b>Qualifier definition</b></p>
-  </td>
-  <td>
-  <p align=center><b>Description</b></p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>sequence</p>
-  </td>
-  <td>
-  <p>-sformat <i>string</i></p>
-  </td>
-  <td>
-  <p>Format of the input sequence</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>seqset</p>
-  </td>
-  <td>
-  <p>-sdbname <i>string</i></p>
-  </td>
-  <td>
-  <p>Database where the entry must be read
-  from</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>seqsetall</p>
-  </td>
-  <td>
-  <p>-sentry <i>string</i></p>
-  </td>
-  <td>
-  <p>Entry that must be read from specified
-  database</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>-sbegin <i>integer</i></p>
-  </td>
-  <td>
-  <p>Start of the sequence to be used</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>-send <i>integer</i></p>
-  </td>
-  <td>
-  <p>End of the sequence to be used</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>-sreverse <i>Y/N</i></p>
-  </td>
-  <td>
-  <p>Use reverse of the sequence</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>-slower Y/N</p>
-  </td>
-  <td>
-  <p>Convert sequence to lowercase</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>-supper Y/N</p>
-  </td>
-  <td>
-  <p>Convert sequence to uppercase</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>-sask Y/N</p>
-  </td>
-  <td>
-  <p>Ask the user for the sequence range and
-  direction</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>-sopenfile <i>string</i></p>
-  </td>
-  <td>
-  <p><b>CHECK</b></p>
-  </td>
- </tr>
-</table>
-
-<a name=table12>&nbsp;</a>
-<p><b>Table 12. Input qualifiers.</b></p>
+<!-- #qual-input -->
 
 <a name=sect2532>&nbsp;</a>
 <h4>2.5.3.2 Output</h4>
 
-<p>At the moment there are only qualifiers for
-sequence type data.</p>
-
 <p><b>Formalised:</b></p>
 
-<table border=1 cellpadding=0>
- <tr>
-  <td>
-  <p align=center><b>Data type</b></p>
-  </td>
-  <td>
-  <p align=center><b>Qualifier definition</b></p>
-  </td>
-  <td>
-  <p align=center><b>Description</b></p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>seqout</p>
-  </td>
-  <td>
-  <p>-osformat <i>string</i></p>
-  </td>
-  <td>
-  <p>The output format for this sequence</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>seqoutset</p>
-  </td>
-  <td>
-  <p>-osextension <i>string</i></p>
-  </td>
-  <td>
-  <p>The extension to use for this file</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>seqoutall</p>
-  </td>
-  <td>
-  <p>-osdbname <i>string</i></p>
-  </td>
-  <td>
-  <p>The database name to be used for this
-  sequence</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>-ossingle</p>
-  </td>
-  <td>
-  <p>? <b>CHECK</b></p>
-  </td>
- </tr>
-</table>
-
-<a name=table13>&nbsp;</a>
-<p><b>Table 13. Output qualifiers.</b></p>
+<!-- #qual-output -->
 
 <a name=sect2533>&nbsp;</a>
 <h4>2.5.3.3 Graphics</h4>
 
-<p>At the moment there are only qualifiers for
-sequence type data.</p>
-
 <p><b>Formalised:</b></p>
 
-<table border=1 cellpadding=0>
- <tr>
-  <td>
-  <p align=center><b>Data type</b></p>
-  </td>
-  <td>
-  <p align=center><b>Qualifier definition</b></p>
-  </td>
-  <td>
-  <p align=center><b>Description</b></p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>graph</p>
-  </td>
-  <td>
-  <p>-sformat <i>string</i></p>
-  </td>
-  <td>
-  <p>Format of the input sequence</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>graphxy</p>
-  </td>
-  <td>
-  <p>-sdbname <i>string</i></p>
-  </td>
-  <td>
-  <p>Database where the entry must be read
-  from</p>
-  </td>
- </tr>
-</table>
+<!-- #qual-graph -->
 
-<a name=table14>&nbsp;</a>
-<p><b>Table 14. Graphics qualifiers.</b></p>
 
 <a name=sect254>&nbsp;</a>
 <h3>2.5.4 Multiple qualifiers</h3>
@@ -5051,7 +2775,7 @@ integer: window  [
 
 <p>This is an example of using an internal variable, to store the
 intermediate result. The internal variable <i>$(protlen)</i> is
-calculated from the length of the input sequence ( <i>inseq</i> data
+calculated from the length of the input sequence ( <i>sequence</i> data
 type) and used in the definition of maximum size of the <i>window
 </i>parameter.</p>
 
@@ -5144,16 +2868,30 @@ operation resolves to the second value ( <i>iffalse</i>.</p>
 
 <pre>
 string: matrix [
-    default: "@($(sequence.protein) ? BLOSUM62 : DNAMAT)"
+    default: "@($(asequence.protein) ? BLOSUM62 : DNAMAT)"
   ]
 </pre>
 
 <p>The <i>$(sequence.protein)</i> variable is a Boolean value that
-resolves to true if the <i>inseq</i> data type with the name
-<i>sequence</i> is a protein sequence. The operation would resolve to
+resolves to true if the <i>sequence</i> data type with the name
+<i>asequence</i> is a protein sequence. The operation would resolve to
 <i>BLOSUM62</i> if the sequence is a protein sequence and resolve to
 <i>DNAMAT</i> if it was not a protein sequence (i.e. a DNA or RNA
 sequence).</p>
+
+<p>From EMBOSS 2.8.0 the preferred method is to use the automatic ACD
+variable $(acdprotein) which is set to the type of the first input
+sequence. This makes the conversion of ACD files for GUI interfaces and other
+wrappers simpler. The examlpe then becomes:</p>
+
+<pre>
+string: matrix [
+    default: "@($(acdprotein) ? BLOSUM62 : DNAMAT)"
+  ]
+</pre>
+
+<p>The results will be the same because internally EMBOSS will use the
+value of "$(asequence.protein)"</p>
 
 <a name=sect2623>&nbsp;</a>
 <h4>2.6.2.3 Case operation.</h4>
@@ -5186,7 +2924,7 @@ string: matrix [
 </pre>
 
 <p>The <i>$(sequence.type)</i> variable is a
-string value that holds the type of sequence present in the <i>inseq </i>data
+string value that holds the type of sequence present in the <i>sequence</i>data
 type, with the name <i>sequence.</i> If the type is <i>'protein'</i>, the
 operation resolves to <i>BLOSUM62</i>, if the type is <i>'dna'</i> it resolves
 to <i>DNAMAT</i>, etc. If the type is not in this list, the operation resolves
@@ -5206,120 +2944,8 @@ global qualifiers and they are listed here also, for completeness. There are a
 few others that are not directly related to specific data types, but are more
 general to the workings of an EMBOSS program.</p>
 
-<table border=1 cellpadding=0>
- <tr>
-  <td>
-  <p align=center><b>Environment variable</b></p>
-  </td>
-  <td>
-  <p align=center><b>Values</b></p>
-  </td>
-  <td>
-  <p align=center><b>Description</b></p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_ACDLOG</p>
-  </td>
-  <td>
-  <p>YES|TRUE</p>
-  </td>
-  <td>
-  <p>Defines if an ACDLOG file is to be
-  produced.</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_ACDPRETTY</p>
-  </td>
-  <td>
-  <p>YES|TRUE</p>
-  </td>
-  <td>
-  <p>Defines if a pretty printed ACD file is
-  to be produced.</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_ACDPROMPTS</p>
-  </td>
-  <td>
-  <p>int</p>
-  </td>
-  <td>
-  <p>Defines how often a user is queried for a
-  parameter before the program gives up.</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_AUTO</p>
-  </td>
-  <td>
-  <p>YES|TRUE</p>
-  </td>
-  <td>
-  <p>Defines if the programs are to be run
-  with their default values. The user will not be prompted for any missing
-  values.</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_DEBUG</p>
-  </td>
-  <td>
-  <p>YES|TRUE</p>
-  </td>
-  <td>
-  <p>Defines if a debug trace file is to be
-  produced.</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_FILTER</p>
-  </td>
-  <td>
-  <p>YES|TRUE</p>
-  </td>
-  <td>
-  <p>Defines if the programs are to run as
-  filters, that is, to read from standard input (if no input file is provided)
-  and write to standard output.</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_HELP</p>
-  </td>
-  <td>
-  <p>YES|TRUE</p>
-  </td>
-  <td>
-  <p>Defines if the program will show its help
-  information when it is run.</p>
-  </td>
- </tr>
- <tr>
-  <td>
-  <p>EMBOSS_OPTIONS</p>
-  </td>
-  <td>
-  <p>YES|TRUE</p>
-  </td>
-  <td>
-  <p>Defines if it will (also) query the user
-  for optional parameters, if not given on the command line.</p>
-  </td>
- </tr>
-</table>
+<!-- #tableothervars -->
 
-<a name=table15>&nbsp;</a>
-<p><b>Table 15. Environment variables.</b></p>
 
 <a name=sect3>&nbsp;</a>
 <h1>3. Command line syntax</h1>
@@ -5807,9 +3433,11 @@ href="#fnB5">[5]</a>
 The global qualifiers all default to 'false' at this moment, so there
 is no compelling reason to use this syntax.</p>
 
-<p>Notes:</p>
+<h2>Notes:</h2>
 
-<p>Need to add sections</p>
+<p>Need to add sections - how they work and the standard naming</p>
+
+<p>Need to document stndard groups and explain how to add new ones.
 
 <p>Need to add qualifier_assocqualifier syntax</p>
 
@@ -5826,10 +3454,23 @@ output and notes on features in reports</p>
 
 <p>Check the -nooutput option in the example(s)</p>
 
-<p>acd error checks</p>
+<p>acd error checks and how to log and debug the details</p>
 
-<p>acdvalid</p>
+<p>acdvalid warnings and errors, and how to run it</p>
 
+<p>Documentation on ACD variables</p>
+
+<p>nullok wherever used</p>
+
+<p>range could use at least one attribute so it appears</p>
+
+<p>codon, cpdb, scop should all use name and extension attributes
+- makes more sense than just name</p>
+
+<p>datafile - does extension get added to anything the user specifies?
+always, only if it has no extension? </p>
+
+<p>report mintags: can we remove it?</p>
 </body>
 
 </html>
