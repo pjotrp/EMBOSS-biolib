@@ -1559,6 +1559,7 @@ static void reportWriteTagseq (AjPReport thys,
   ajint seqend;
   ajint seqlen;
   ajint ilast;
+  ajint jlast;
 
   seqlen = ajSeqLen(seq);
   seqbeg = ajSeqBegin(seq);
@@ -1596,8 +1597,9 @@ static void reportWriteTagseq (AjPReport thys,
 
   for (i=seqbeg-1; i < seqend; i+=50) {
     ilast = AJMIN (i+50-1, seqend-1);
+    jlast = AJMIN (i+50-1, ajStrLen(seqnumber)-1);
 
-    ajStrAssSub(&substr, seqnumber, i, ilast);
+    ajStrAssSub(&substr, seqnumber, i, jlast);
     ajFmtPrintF (outf, "      %S\n", substr);
 
     ajStrAssSub(&subseq, ajSeqStr(seq), i, ilast);
