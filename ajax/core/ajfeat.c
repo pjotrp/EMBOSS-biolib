@@ -3554,13 +3554,15 @@ static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
 	{
 	    /* anything non-whitespace up to '/' is bad */
 	    ajRegSubI(EmblRegexTvRest, 1, &tmpstr);
-	    ajWarn("Bad feature syntax: skipping '%S'", tmpstr);
+	    ajWarn("Bad feature syntax %S: skipping '%S'",
+		   thys->Seqid, tmpstr);
 	    ajRegPost(EmblRegexTvRest, &tmpstr);
 	    ajStrAssS(tags, tmpstr);
 	}
 	else
 	{
-	    ajWarn("Bad feature syntax: giving up at '%S'", *tags);
+	    ajWarn("Bad feature syntax %S: giving up at '%S'",
+		   thys->Seqid, *tags);
 	    ajStrAssC(tags, "");
 	}
     }
@@ -7562,7 +7564,7 @@ static AjBool featTagSpecialAllConssplice(AjPStr* pval)
     AjBool ret = ajFalse;
 
     if(!exp)
-	exp = ajRegCompC("^[(]5'site:([A-Z]+),3'site:([A-Z]+)[)]$");
+	exp = ajRegCompC("^[(]5'site:([YyEeSsNnOo]+),3'site:([YyEeSsNnOo]+)[)]$");
 
     if(ajRegExec(exp, *pval))
     {
