@@ -55,8 +55,10 @@ public class SequenceList extends JFrame
     //column width
     for(int i=0;i<SequenceListTableModel.modelColumns.length;i++)
     {
-      TableColumn column = table.getColumn(SequenceListTableModel.modelColumns[i].title);
-      column.setPreferredWidth(SequenceListTableModel.modelColumns[i].width);
+      TableColumn column = table.getColumn(
+            SequenceListTableModel.modelColumns[i].title);
+      column.setPreferredWidth(
+             SequenceListTableModel.modelColumns[i].width);
     }
 
     JMenuItem openMenuItem = new JMenuItem("Open");
@@ -68,6 +70,11 @@ public class SequenceList extends JFrame
         String fileName = (String)table.getValueAt(nrow,
                          SequenceListTableModel.COL_NAME);
         System.out.println("FILE NAME IS " +fileName);
+        SequenceData row = (SequenceData)seqModel.modelVector.elementAt(nrow);
+        if(!(row.s_remote.booleanValue()))
+          DragTree.showFilePane(fileName);
+        else
+          RemoteDragTree.showFilePane(fileName);
       }
     });
     popMenu.add(openMenuItem);
@@ -190,7 +197,8 @@ class DragJTable extends JTable implements DragGestureListener,
       {
         final FileNode fn =
            (FileNode)t.getTransferData(FileNode.FILENODE);
-        insertData(seqModel,e.getLocation(),fn.getFile().getCanonicalPath());
+        insertData(seqModel,e.getLocation(),fn.getFile().getCanonicalPath(),
+                   new Boolean(false));
         e.getDropTargetContext().dropComplete(true);
       }
       catch(UnsupportedFlavorException ufe){}
@@ -200,9 +208,8 @@ class DragJTable extends JTable implements DragGestureListener,
     {
       try
       {
-        final RemoteFileNode fn =
-            (RemoteFileNode)t.getTransferData(RemoteFileNode.REMOTEFILENODE);
-        insertData(seqModel,e.getLocation(),fn.getPathName()+"/"+fn.getFile());
+        String dropS = (String)t.getTransferData(DataFlavor.stringFlavor);
+        insertData(seqModel,e.getLocation(),dropS,new Boolean(true));
         e.getDropTargetContext().dropComplete(true);
       }
       catch (Exception exp)
@@ -213,11 +220,13 @@ class DragJTable extends JTable implements DragGestureListener,
   }
 
   public void insertData(SequenceListTableModel seqModel, Point ploc,
-                                         String fileName)
+                         String fileName, Boolean bremote)
   {
     int row = rowAtPoint(ploc);
     seqModel.insertRow(row);
-    seqModel.setValueAt(fileName,row,SequenceListTableModel.COL_NAME);
+    seqModel.modelVector.insertElementAt(new SequenceData(fileName,"","",
+                                   new Boolean(false),bremote),row);
+
     tableChanged(new TableModelEvent(seqModel, row+1, row+1,
             TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT));
   }
@@ -258,10 +267,11 @@ class ColumnData
 */
 class SequenceData
 {
-  public String s_name;
-  public String s_beg;
-  public String s_end;
-  public Boolean s_default;
+  public String s_name;       //seq location
+  public String s_beg;        //seq start
+  public String s_end;        //seq end
+  public Boolean s_default;   //use as the default
+  public Boolean s_remote;    //file on remote file system
 
   public SequenceData()
   {
@@ -269,15 +279,17 @@ class SequenceData
     s_beg = new String();
     s_end = new String();
     s_default = new Boolean(false);
+    s_remote = new Boolean(false);
   }
 
-  public SequenceData(String name, String beg, 
-                      String end, Boolean def)
+  public SequenceData(String name, String beg, String end,
+                      Boolean def, Boolean remote)
   {
     s_name = name;
     s_beg = beg;
     s_end = end;
     s_default = def;
+    s_remote = remote;
   }
 }
 
@@ -285,7 +297,7 @@ class SequenceData
 class SequenceListTableModel extends AbstractTableModel
 {
 
-  private Vector modelVector;
+  protected static Vector modelVector;
 
   public SequenceListTableModel()
   {
@@ -321,10 +333,11 @@ class SequenceListTableModel extends AbstractTableModel
   public void setDefaultData()
   {
     modelVector.removeAllElements();
-    modelVector.addElement(new SequenceData("-","","",new Boolean(false))); 
-    modelVector.addElement(new SequenceData("-","","",new Boolean(false))); 
-    modelVector.addElement(new SequenceData("-","","",new Boolean(false))); 
-    modelVector.addElement(new SequenceData("-","","",new Boolean(false))); 
+    Boolean bdef = new Boolean(false);
+    modelVector.addElement(new SequenceData("-","","",bdef,bdef)); 
+    modelVector.addElement(new SequenceData("-","","",bdef,bdef)); 
+    modelVector.addElement(new SequenceData("-","","",bdef,bdef)); 
+    modelVector.addElement(new SequenceData("-","","",bdef,bdef)); 
   }
   
   public int getRowCount()
