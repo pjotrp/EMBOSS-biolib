@@ -663,7 +663,7 @@ if [ "$EMBOSS_INSTALL" = "" ]; then
   EMBOSS_INSTALL=/usr/local/emboss
 fi
 
-if [ "$EMBOSS_INSTALL/share/EMBOSS/jemboss" ]; then
+if [ -d "$EMBOSS_INSTALL/share/EMBOSS/jemboss" ]; then
   echo 
   echo "Jemboss has already be installed to: "
   echo "$EMBOSS_INSTALL/share/EMBOSS/jemboss "
