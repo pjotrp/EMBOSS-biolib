@@ -4954,7 +4954,8 @@ FP /Exists\n/
 //
 
 ID embossdata-ex2
-UC Display the names of data file in all of the possible data directories:
+UC Display the names of data files in all of the possible data directories:
+UC This is run on a small test system and so the results will probably be different when you run this.
 AP embossdata
 CL -showall
 FI stderr
@@ -7788,7 +7789,7 @@ FP /^             Start position 72 Length 22\n/
 //
 
 ID rebaseextract-keep
-CC needs local copy of REBASE withrefm file
+CC needs local copy of REBASE withrefm and proto file
 AP rebaseextract
 DL keep
 PP mkdir ./REBASE
@@ -7847,6 +7848,8 @@ FP /^  Cut positions 5':1 3':5\n/
 
 ID remap-ex
 UC This example uses only a small region of the input sequence to save space.
+UC This is run with a small test version of the restriction enzyme database
+UC and so you will probably see more enzymes when you run this.
 AP remap
 ## split export EMBOSS_DATA=../rebaseextract-keep/ into two statements
 PP EMBOSS_DATA=../rebaseextract-keep/
@@ -7872,7 +7875,10 @@ FP /^\s+TaqI\s+1\s+\n/
 //
 
 ID remap-ex2
-UC This is an example where all enzymes in the REBASE database are used:
+UC This is an example where all enzymes in the REBASE database are used,
+UC (but only the prototypes of the isoschizomers are reported by default).
+UC This is run with a small test version of the restriction enzyme database
+UC and so you will probably see more enzymes when you run this.
 AP remap
 ## split export EMBOSS_DATA=../rebaseextract-keep/ into two statements
 PP EMBOSS_DATA=../rebaseextract-keep/
@@ -7893,7 +7899,34 @@ FP /^\s+Hin6I\s+2\s+HinP1I,HspAI\n/
 //
 
 ID remap-ex3
+UC This is an example where all enzymes in the REBASE database are used
+UC but the -limit qualifier is not set so that all of the enzymes are
+UC displayed and not just only the prototypes of the isoschizomers.
+UC This is run with a small test version of the restriction enzyme database
+UC and so you will probably see more enzymes when you run this.
+AP remap
+## split export EMBOSS_DATA=../rebaseextract-keep/ into two statements
+PP EMBOSS_DATA=../rebaseextract-keep/
+PP export EMBOSS_DATA
+CL -notran -sbeg 1 -send 60 -nolimit
+IN tembl:eclac
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eclac.remap
+FZ = 1895
+FP /^\s+TaqI\s+1\s+\n/
+//
+
+ID remap-ex4
 UC This shows the 'flat' format:
+UC This is run with a small test version of the restriction enzyme database
+UC and so you will probably see more enzymes when you run this.
 AP remap
 PP EMBOSS_DATA=../rebaseextract-keep/
 PP export EMBOSS_DATA
