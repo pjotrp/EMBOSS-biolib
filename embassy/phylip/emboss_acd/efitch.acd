@@ -55,6 +55,12 @@ section: required [
   type: "page"
 ]
 
+toggle: besttree  [
+  additional: "Y"
+  default: "Y"
+  information: "Search for best tree"
+]
+
 toggle: random  [
   additional: "$(besttree)"
   default: "N"
@@ -89,12 +95,6 @@ endsection: required
 section: additional [
   information: "Additional section"
   type: "page"
-]
-
-toggle: besttree  [
-  additional: "Y"
-  default: "Y"
-  information: "Search for best tree"
 ]
 
 boolean: length  [

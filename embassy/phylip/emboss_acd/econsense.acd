@@ -22,6 +22,12 @@ section: required [
   type: "page"
 ]
 
+toggle: root  [
+  additional: "Y"
+  default: "N"
+  information: "Trees to be treated as rooted"
+]
+
 toggle: og  [
   standard: "$(root)"
   information: "Outgroup root"
@@ -36,19 +42,6 @@ integer: outgnum  [
 ]
 
 endsection: required
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-
-toggle: root  [
-  additional: "Y"
-  default: "N"
-  information: "Trees to be treated as Rooted"
-]
-
-endsection: additional
 
 section: output [
   information: "Output section"
