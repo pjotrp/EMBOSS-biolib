@@ -39,7 +39,7 @@ section: advanced [
     optional: "Y"
     default: "Y"
     information: "Display the reference sequence at the bottom"
-    help: "If this is true then the refernce sequence is displayed at
+    help: "If this is true then the reference sequence is displayed at
            the bottom of the alignment as well as at the top."
   ]
 
@@ -189,7 +189,7 @@ section: advanced [
     default: "0.0"
     minimum: "0.0"
     maximum: "100.0"
-    information: "Required % of identities at a position fro
+    information: "Required % of identities at a position for
                   consensus"
     help: "Provides the facility of setting the required number of
            identities at a position for it to give a consensus. Therefore, if
@@ -201,8 +201,7 @@ section: advanced [
     optional: "Y"
     default: "Y"
     information: "Display the consensus line"
-    help: "If this is true then the consensus line is displayed at the
-           bottom."
+    help: "If this is true then the consensus line is displayed."
   ]
 
 endsection: advanced

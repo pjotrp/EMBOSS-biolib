@@ -835,9 +835,18 @@ static ajint showalign_Output(AjPFile outf, AjPSeqset seqset, ajint nrefseq,
 	    showalign_OutputTicks(outf, pos, width, margin);
 
 
-	/* refseq always at the top */
-	showalign_OutputSeq(outf, ref, pos, end, width, margin, html,
+	/* refseq is always displayed at the top if it is not the consensus */
+        if(nrefseq != -1) 
+        {
+	    showalign_OutputSeq(outf, ref, pos, end, width, margin, html,
 			    highlight, uppercase);
+	} 
+	else if(docon) 
+	{
+	    /* if refseq is consensus and docon is true then display consensus */
+	    showalign_OutputSeq(outf, consensus, pos, end, width, margin,
+			html, highlight, uppercase);
+	}
 
 	/* sequences */
 	for(i=0; i<nseqs; i++)
@@ -846,14 +855,19 @@ static ajint showalign_Output(AjPFile outf, AjPSeqset seqset, ajint nrefseq,
 
 
 	/* refseq at the bottom also */
-	if(bottom)
-	    showalign_OutputSeq(outf, ref, pos, end, width, margin, html,
+        if(nrefseq != -1) 
+        {
+	    if(bottom)
+	        showalign_OutputSeq(outf, ref, pos, end, width, margin, html,
 				highlight, uppercase);
-
-	/* consensus line(if not already displayed) */
-	if(docon && nrefseq != -1)
+            if(docon)
+	        showalign_OutputSeq(outf, consensus, pos, end, width, margin,
+			    html, highlight, uppercase);
+	} 
+	else if(docon && bottom)
 	    showalign_OutputSeq(outf, consensus, pos, end, width, margin,
-				html, highlight, uppercase);
+			html, highlight, uppercase);
+
 
 
 	/* blank line */
