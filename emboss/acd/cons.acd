@@ -53,6 +53,17 @@ section: advanced [
     minimum: "0"
   ]
 
+
+  float: setcase  [
+    additional: "Y"
+    information: "Define a threshold above which the consensus
+                  is given in uppercase"
+    help: "Sets the threshold for the positive matches above which the
+           consensus is is upper-case and below which the consensus is in
+           lower-case."
+    default: "@( $(sequence.totweight) / 2)"
+  ]
+
 endsection: advanced
 
 section: output [
@@ -68,16 +79,6 @@ section: output [
     additional: "Y"
     default: ""
     information: "Name of the consensus sequence"
-  ]
-
-  float: setcase  [
-    additional: "Y"
-    information: "Define a threshold above which the consensus
-                  is given in uppercase"
-    help: "Sets the threshold for the positive matches above which the
-           consensus is is upper-case and below which the consensus is in
-           lower-case."
-    default: "@( $(sequence.totweight) / 2)"
   ]
 
 endsection: output
