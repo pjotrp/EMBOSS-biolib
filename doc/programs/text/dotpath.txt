@@ -1,9 +1,8 @@
 
-                              EMBOSS: dotpath
-     _________________________________________________________________
+                                  dotpath 
+                                      
    
-                                Program dotpath
-                                       
+   
 Function
 
    Displays a non-overlapping wordmatch dotplot of two sequences

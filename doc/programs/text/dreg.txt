@@ -1,9 +1,8 @@
 
-                                EMBOSS: dreg
-     _________________________________________________________________
+                                   dreg 
+                                      
    
-                                 Program dreg
-                                       
+   
 Function
 
    regular expression search of a nucleotide sequence

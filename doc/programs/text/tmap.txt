@@ -1,9 +1,8 @@
 
-                                EMBOSS: tmap
-     _________________________________________________________________
+                                   tmap 
+                                      
    
-                                 Program tmap
-                                       
+   
 Function
 
    Displays membrane spanning regions

@@ -1,9 +1,8 @@
 
-                                EMBOSS: yank
-     _________________________________________________________________
+                                   yank 
+                                      
    
-                                 Program yank
-                                       
+   
 Function
 
    Reads a sequence range, appends the full USA to a list file
@@ -188,6 +187,7 @@ See also
    revseq       Reverse and complement a sequence
    seqret       Reads and writes (returns) sequences
    seqretsplit  Reads and writes (returns) sequences in individual files
+   skipseq      Reads and writes (returns) sequences
    splitter     Split a sequence into (overlapping) smaller sequences
    swissparse   Retrieves sequences from swissprot using keyword search
    trimest      Trim poly-A tails off EST sequences

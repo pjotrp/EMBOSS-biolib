@@ -1,9 +1,8 @@
 
-                              EMBOSS: showorf
-     _________________________________________________________________
+                                  showorf 
+                                      
    
-                                Program showorf
-                                       
+   
 Function
 
    Pretty output of DNA translations

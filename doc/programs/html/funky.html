@@ -7,32 +7,27 @@
   </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
-<table align=center bgcolor="#000070" border=0 cellspacing=0 cellpadding=10>
-<tr>
-<td>
-<a href="index.html" onmouseover="self.status='Go to the EMBOSS home page';return true">
-<img border=0 src="emboss_icon.gif" alt="" width=55 height=55>
-</a>
+
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="../emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
-<td align=middle valign=middle>
-<font face="Arial,Helvetica" size=6 color="#ffffff">
-<H2>
-EMBOSS: funky
-</H2>
-</font>
-</td>
-</tr>
+<td align=left valign=middle>
+<b><font size="+6">
+
+funky
+</font></b>
+</td></tr>
 </table>
-</td>
-</tr>
-</table>
-<p><hr><p>
+<br>&nbsp;
+<p>
+
+
+
 
 <!--END OF HEADER-->
 
-<H1>
-Program funky
-</H1>
 <H2>
     Function
 </H2>
@@ -124,132 +119,18 @@ Here is a sample session with funky:
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
-   Mandatory qualifiers: (none)
-   Optional qualifiers: (none)
-   Advanced qualifiers:
-   -prot               string     Location of protein coordinate files for
-                                  input (embl-like format)
-   -protextn           string     Extension of protein coordinate files
-                                  (embl-like format)
-   -dom                string     Location of domain coordinate files for
-                                  input (embl-like format)
-   -domextn            string     Extension of domain coordinate files
-                                  (embl-like format)
-   -dic                infile     Name of dictionary of heterogen groups
-   -scop               infile     Name of scop file for input (embl-like
-                                  format)
-   -vdwf               infile     Name of data file with van der Waals radii
-   -thresh             float      Threshold contact distance
-   -outf               outfile    Name of output file
-   -logf               outfile    Name of log file
 
-   General qualifiers:
-  -help                bool       report command line options. More
-                                  information on associated and general
-                                  qualifiers can be found with -help -verbose
+   EMBOSS An error in ajacd.c at line 8889:
+attribute gui unknown
 
 
 </pre>
 </td></tr></table>
 <P>
-<table border cellspacing=0 cellpadding=3 bgcolor="#f5f5ff">
-<tr bgcolor="#FFFFD0">
-<th align="left" colspan=2>Mandatory qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
-</tr>
 
-<tr>
-<td colspan=4>(none)</td>
-</tr>
+   EMBOSS An error in ajacd.c at line 8889:
+attribute gui unknown
 
-<tr bgcolor="#FFFFD0">
-<th align="left" colspan=2>Optional qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
-</tr>
-
-<tr>
-<td colspan=4>(none)</td>
-</tr>
-
-<tr bgcolor="#FFFFD0">
-<th align="left" colspan=2>Advanced qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
-</tr>
-
-<tr>
-<td>-prot</td>
-<td>Location of protein coordinate files for input (embl-like format)</td>
-<td>Any string is accepted</td>
-<td>/packages/emboss_dev/jison/emboss/emboss/emboss/waqas</td>
-</tr>
-
-<tr>
-<td>-protextn</td>
-<td>Extension of protein coordinate files (embl-like format)</td>
-<td>Any string is accepted</td>
-<td>.full</td>
-</tr>
-
-<tr>
-<td>-dom</td>
-<td>Location of domain coordinate files for input (embl-like format)</td>
-<td>Any string is accepted</td>
-<td>/data/structure/cpdbscop_embl</td>
-</tr>
-
-<tr>
-<td>-domextn</td>
-<td>Extension of domain coordinate files (embl-like format)</td>
-<td>Any string is accepted</td>
-<td>.pxyz</td>
-</tr>
-
-<tr>
-<td>-dic</td>
-<td>Name of dictionary of heterogen groups</td>
-<td>Input file</td>
-<td>/packages/emboss_dev/jison/emboss/emboss/emboss/waqas/het_dictionary.out</td>
-</tr>
-
-<tr>
-<td>-scop</td>
-<td>Name of scop file for input (embl-like format)</td>
-<td>Input file</td>
-<td>/data/structure/scop/Escop.dat</td>
-</tr>
-
-<tr>
-<td>-vdwf</td>
-<td>Name of data file with van der Waals radii</td>
-<td>Input file</td>
-<td>/data/structure/dat/Evdw.dat</td>
-</tr>
-
-<tr>
-<td>-thresh</td>
-<td>Threshold contact distance</td>
-<td>Any numeric value</td>
-<td>1.0</td>
-</tr>
-
-<tr>
-<td>-outf</td>
-<td>Name of output file</td>
-<td>Output file</td>
-<td>/packages/emboss_dev/jison/emboss/emboss/emboss/waqas/funky.out</td>
-</tr>
-
-<tr>
-<td>-logf</td>
-<td>Name of log file</td>
-<td>Output file</td>
-<td>/packages/emboss_dev/jison/emboss/emboss/emboss/waqas/funky.log</td>
-</tr>
-
-</table>
 
 
 <!--
@@ -518,6 +399,7 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
+<tr><td><a href="aaindexextract.html">aaindexextract</a></td><td>Extract data from AAINDEX</td></tr>
 <tr><td><a href="cutgextract.html">cutgextract</a></td><td>Extract data from CUTG</td></tr>
 <tr><td><a href="domainer.html">domainer</a></td><td>Reads protein coordinate files and writes domains coordinate files</td></tr>
 <tr><td><a href="groups.html">groups</a></td><td>Removes redundant hits from a scop families file</td></tr>
@@ -638,9 +520,6 @@ This program is intended to be used by everyone and everything, from naive users
 
 
 
-
-</TD></TR></TABLE>
-</CENTER>
 
 </BODY>
 </HTML>

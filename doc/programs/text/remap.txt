@@ -1,9 +1,8 @@
 
-                               EMBOSS: remap
-     _________________________________________________________________
+                                   remap 
+                                      
    
-                                 Program remap
-                                       
+   
 Function
 
    Display a sequence with restriction cut sites, translation etc

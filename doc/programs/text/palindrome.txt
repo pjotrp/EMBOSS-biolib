@@ -1,9 +1,8 @@
 
-                             EMBOSS: palindrome
-     _________________________________________________________________
+                                palindrome 
+                                      
    
-                              Program palindrome
-                                       
+   
 Function
 
    Looks for inverted repeats in a nucleotide sequence

@@ -1,9 +1,8 @@
 
-                              EMBOSS: compseq
-     _________________________________________________________________
+                                  compseq 
+                                      
    
-                                Program compseq
-                                       
+   
 Function
 
    Counts the composition of dimer/trimer/etc words in a sequence
@@ -12,8 +11,35 @@ Description
 
    This takes a specified length of sequence and counts the number of
    distinct subsequences of that length that there are in the input
-   sequence(s). It can read in the result of a previous compseq analysis
-   and use this to set the expected frequencies of the subsequences.
+   sequence(s).
+   
+   It can read in the result of a previous compseq analysis and use this
+   to set the expected frequencies of the subsequences.
+   
+   Unless you tell 'compseq' otherwise, it expects each word to be
+   equally likely. The 'Expected' frequency therefore of any dimer is
+   1/16 - this is simply the inverse of the number of possible dimers
+   (AA, AC, AG, AT, CA, CC, CG, CT, GA, GC, GG, GT, TA, TC, TG, TT).
+   
+   Similarly, the 'Expected' frequency of any trimer is 1/64, etc.
+   
+   Obviously this is not the case in real sequences - there will be bias
+   in favour of some words.
+   
+   Compseq cannot otherwise guess what the 'Expected' frequency is. You
+   can, however, tell it what the Expected frequencies are by giving
+   compseq the output of the analysis of another set of sequences,
+   produced by a previous compseq run.
+   
+   So you take a set of sequences that are representative of the type of
+   sequence you expect and you run compseq on it to get your expected
+   sequence frequencies.
+   
+   You then take the sequences you wish to investigate, run compseq on
+   them giving compseq the expected frequencies that you have
+   established, above. You tell compseq what the file of expected
+   frequencies is by specifying it with '-infile filename' on the
+   command-line.
    
 Usage
 

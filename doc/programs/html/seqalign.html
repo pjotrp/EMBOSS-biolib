@@ -7,32 +7,32 @@
   </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
-<table align=center bgcolor="#000070" border=0 cellspacing=0 cellpadding=10>
-<tr>
-<td>
-<a href="index.html" onmouseover="self.status='Go to the EMBOSS home page';return true">
-<img border=0 src="emboss_icon.gif" alt="" width=55 height=55>
-</a>
+
+
+
+
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="../emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
-<td align=middle valign=middle>
-<font face="Arial,Helvetica" size=6 color="#ffffff">
-<H2>
-EMBOSS: seqalign
-</H2>
-</font>
-</td>
-</tr>
+<td align=left valign=middle>
+<b><font size="+6">
+
+seqalign
+</font></b>
+</td></tr>
 </table>
-</td>
-</tr>
-</table>
-<p><hr><p>
+<br>&nbsp;
+<p>
+
+
+
+
+
 
 <!--END OF HEADER-->
 
-<H1>
-Program seqalign
-</H1>
 <H2>
     Function
 </H2>
@@ -128,8 +128,8 @@ Here is a sample session with seqalign:
   [-inpath]            string     Location of scop alignment files (input)
   [-extn]              string     Extention of scop alignment files
    -scopin             infile     Name of scop hits file (input)
-  [-outpath]           string     Location of extended alignment files
-                                  (clustal format output)
+  [-outpath]           string     Location of extended alignment files (Escop
+                                  format output)
   [-outextn]           string     Extention of extended alignment files
 
    Optional qualifiers: (none)
@@ -173,7 +173,7 @@ Here is a sample session with seqalign:
 
 <tr>
 <td>[-outpath]<br>(Parameter 3)</td>
-<td>Location of extended alignment files (clustal format output)</td>
+<td>Location of extended alignment files (Escop format output)</td>
 <td>Any string is accepted</td>
 <td>./</td>
 </tr>
@@ -182,7 +182,7 @@ Here is a sample session with seqalign:
 <td>[-outextn]<br>(Parameter 4)</td>
 <td>Extention of extended alignment files</td>
 <td>Any string is accepted</td>
-<td>.clustal</td>
+<td>.ealign</td>
 </tr>
 
 <tr bgcolor="#FFFFD0">
@@ -593,9 +593,6 @@ This program is intended to be used by everyone and everything, from naive users
 
 
 
-
-</TD></TR></TABLE>
-</CENTER>
 
 </BODY>
 </HTML>

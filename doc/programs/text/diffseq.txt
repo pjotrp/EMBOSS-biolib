@@ -1,9 +1,8 @@
 
-                              EMBOSS: diffseq
-     _________________________________________________________________
+                                  diffseq 
+                                      
    
-                                Program diffseq
-                                       
+   
 Function
 
    Find differences (SNPs) between nearly identical sequences

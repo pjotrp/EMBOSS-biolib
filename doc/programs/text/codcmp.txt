@@ -1,9 +1,8 @@
 
-                               EMBOSS: codcmp
-     _________________________________________________________________
+                                  codcmp 
+                                      
    
-                                Program codcmp
-                                       
+   
 Function
 
    Codon usage table comparison

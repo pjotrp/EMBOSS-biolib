@@ -1,9 +1,8 @@
 
-                             EMBOSS: tranalign
-     _________________________________________________________________
+                                 tranalign 
+                                      
    
-                               Program tranalign
-                                       
+   
 Function
 
    Align nucleic coding regions given the aligned proteins

@@ -1,9 +1,8 @@
 
-                              EMBOSS: oddcomp
-     _________________________________________________________________
+                                  oddcomp 
+                                      
    
-                                Program oddcomp
-                                       
+   
 Function
 
    Finds protein sequence regions with a biased composition

@@ -1,9 +1,8 @@
 
-                               EMBOSS: lindna
-     _________________________________________________________________
+                                  lindna 
+                                      
    
-                                Program lindna
-                                       
+   
 Function
 
    Draws linear maps of DNA constructs

@@ -1,9 +1,8 @@
 
-                              EMBOSS: fuzznuc
-     _________________________________________________________________
+                                  fuzznuc 
+                                      
    
-                                Program fuzznuc
-                                       
+   
 Function
 
    Nucleic acid pattern search

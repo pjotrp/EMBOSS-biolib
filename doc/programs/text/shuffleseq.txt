@@ -1,9 +1,8 @@
 
-                             EMBOSS: shuffleseq
-     _________________________________________________________________
+                                shuffleseq 
+                                      
    
-                              Program shuffleseq
-                                       
+   
 Function
 
    Shuffles a set of sequences maintaining composition

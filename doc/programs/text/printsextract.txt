@@ -1,9 +1,8 @@
 
-                           EMBOSS: printsextract
-     _________________________________________________________________
+                               printsextract 
+                                      
    
-                             Program printsextract
-                                       
+   
 Function
 
    Extract data from PRINTS
@@ -140,6 +139,7 @@ Known bugs
 See also
 
    Program name Description
+   aaindexextract Extract data from AAINDEX
    cutgextract Extract data from CUTG
    domainer Reads protein coordinate files and writes domains coordinate
    files

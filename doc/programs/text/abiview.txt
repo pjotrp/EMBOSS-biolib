@@ -1,9 +1,8 @@
 
-                              EMBOSS: abiview
-     _________________________________________________________________
+                                  abiview 
+                                      
    
-                                Program abiview
-                                       
+   
 Function
 
    Reads ABI file and display the trace

@@ -1,9 +1,8 @@
 
-                            EMBOSS: supermatcher
-     _________________________________________________________________
+                               supermatcher 
+                                      
    
-                             Program supermatcher
-                                       
+   
 Function
 
    Finds a match of a large sequence against one or more sequences
@@ -15,7 +14,7 @@ Description
    the wordmatches between the first sequence and another sequence. Then
    by calculating the highest score for a diagonal we can then use this
    as the centre point for a Smith-Waterman type calculation of a width
-   given by the user. So a narrow diagonal smith-waterman is calculated
+   given by the user. So a narrow diagonal Smith-Waterman is calculated
    hence the results will be rough but due to the space saving much
    larger sequences can be aligned.
    

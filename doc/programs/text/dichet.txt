@@ -1,9 +1,8 @@
 
-                               EMBOSS: dichet
-     _________________________________________________________________
+                                  dichet 
+                                      
    
-                                Program dichet
-                                       
+   
 Function
 
    Parse dictionary of heterogen groups

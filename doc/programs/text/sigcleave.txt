@@ -1,9 +1,8 @@
 
-                             EMBOSS: sigcleave
-     _________________________________________________________________
+                                 sigcleave 
+                                      
    
-                               Program sigcleave
-                                       
+   
 Function
 
    Reports protein signal cleavage sites

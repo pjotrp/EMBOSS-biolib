@@ -1,9 +1,8 @@
 
-                             EMBOSS: dotmatcher
-     _________________________________________________________________
+                                dotmatcher 
+                                      
    
-                              Program dotmatcher
-                                       
+   
 Function
 
    Displays a thresholded dotplot of two sequences
@@ -85,7 +84,7 @@ Command line arguments
    Optional qualifiers Allowed values Default
    -windowsize window size over which to test threshhold Integer 3 or
    more 10
-   -threshold threshold Integer 0 or more 50
+   -threshold threshold Integer 0 or more 24
    -matrixfile Matrix file Comparison matrix file in EMBOSS data path
    EBLOSUM62 for protein
    EDNAFULL for DNA

@@ -1,9 +1,8 @@
 
-                               EMBOSS: pscan
-     _________________________________________________________________
+                                   pscan 
+                                      
    
-                                 Program pscan
-                                       
+   
 Function
 
    Scans proteins using PRINTS

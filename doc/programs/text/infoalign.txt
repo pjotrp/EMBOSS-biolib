@@ -1,9 +1,8 @@
 
-                             EMBOSS: infoalign
-     _________________________________________________________________
+                                 infoalign 
+                                      
    
-                               Program infoalign
-                                       
+   
 Function
 
    Information on a multiple sequence alignment

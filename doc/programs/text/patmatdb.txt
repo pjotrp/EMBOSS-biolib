@@ -1,9 +1,8 @@
 
-                              EMBOSS: patmatdb
-     _________________________________________________________________
+                                 patmatdb 
+                                      
    
-                               Program patmatdb
-                                       
+   
 Function
 
    Search a protein sequence with a motif

@@ -1,9 +1,8 @@
 
-                              EMBOSS: showfeat
-     _________________________________________________________________
+                                 showfeat 
+                                      
    
-                               Program showfeat
-                                       
+   
 Function
 
    Show features of a sequence
@@ -116,8 +115,10 @@ Command line arguments
                                   separate their names with the character
                                   '|', eg:
                                   pax* | 10
-   -sort               menu       Sort features by Type, Start or Source, or
-                                  Nosort (don't sort - use input order)
+   -sort               menu       Sort features by Type, Start or Source,
+                                  Nosort (don't sort - use input order) or
+                                  join coding regions together and leave other
+                                  features in the input order
 
    Advanced qualifiers:
    -html               bool       Use HTML formatting
@@ -242,12 +243,14 @@ Command line arguments
    feature tag valueyou wish to show. The tag value may be wildcarded by
    using '*'. If you wish to show more than one tag value, separate their
    names with the character '|', eg: pax* | 10 Any string is accepted *
-   -sort Sort features by Type, Start or Source, or Nosort (don't sort -
-   use input order)
+   -sort Sort features by Type, Start or Source, Nosort (don't sort - use
+   input order) or join coding regions together and leave other features
+   in the input order
    source (Sort by Source)
    start  (Sort by Start position)
    type   (Sort by Type)
    nosort (No sorting done)
+   join   (Join coding regions together)
    start
    Advanced qualifiers Allowed values Default
    -html Use HTML formatting Yes/No No

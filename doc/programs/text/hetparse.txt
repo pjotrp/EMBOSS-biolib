@@ -1,9 +1,8 @@
 
-                              EMBOSS: hetparse
-     _________________________________________________________________
+                                 hetparse 
+                                      
    
-                               Program hetparse
-                                       
+   
 Function
 
    Converts raw dictionary of heterogen groups to a file in embl-like
@@ -30,11 +29,11 @@ Command line arguments
    Mandatory qualifiers (* if not always prompted):
   [-inf]               infile     Name of input file (raw dictionary of
                                   heterogen groups)
-  [-outf]              outfile    Name of output file (embl format)
    -dogrep             bool       Search a directory of files with keywords?
 *  -path               string     Directory to search with keywords
 *  -extn               string     Exension of files to search in above
                                   directory
+  [-outf]              outfile    Name of output file (embl format)
 
    Optional qualifiers: (none)
    Advanced qualifiers: (none)
@@ -48,13 +47,13 @@ Command line arguments
    [-inf]
    (Parameter 1) Name of input file (raw dictionary of heterogen groups)
    Input file Required
-   [-outf]
-   (Parameter 2) Name of output file (embl format) Output file
-   <sequence>.hetparse
    -dogrep Search a directory of files with keywords? Yes/No No
    -path Directory to search with keywords Any string is accepted ./
    -extn Exension of files to search in above directory Any string is
    accepted .ent
+   [-outf]
+   (Parameter 2) Name of output file (embl format) Output file
+   <sequence>.hetparse
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default
@@ -93,6 +92,7 @@ Known bugs
 See also
 
    Program name Description
+   aaindexextract Extract data from AAINDEX
    cutgextract Extract data from CUTG
    domainer Reads protein coordinate files and writes domains coordinate
    files

@@ -1,9 +1,8 @@
 
-                                EMBOSS: cusp
-     _________________________________________________________________
+                                   cusp 
+                                      
    
-                                 Program cusp
-                                       
+   
 Function
 
    Create a codon usage table

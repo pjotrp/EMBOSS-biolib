@@ -1,9 +1,8 @@
 
-                              EMBOSS: fuzzpro
-     _________________________________________________________________
+                                  fuzzpro 
+                                      
    
-                                Program fuzzpro
-                                       
+   
 Function
 
    Protein pattern search

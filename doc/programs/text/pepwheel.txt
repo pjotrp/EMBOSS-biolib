@@ -1,9 +1,8 @@
 
-                              EMBOSS: pepwheel
-     _________________________________________________________________
+                                 pepwheel 
+                                      
    
-                               Program pepwheel
-                                       
+   
 Function
 
    Shows protein sequences as helices

@@ -1,9 +1,8 @@
 
-                             EMBOSS: psiblasts
-     _________________________________________________________________
+                                 psiblasts 
+                                      
    
-                               Program psiblasts
-                                       
+   
 Function
 
    Runs PSI-BLAST given scopalign alignments

@@ -1,9 +1,8 @@
 
-                               EMBOSS: digest
-     _________________________________________________________________
+                                  digest 
+                                      
    
-                                Program digest
-                                       
+   
 Function
 
    Protein proteolytic enzyme or reagent cleavage digest

@@ -1,9 +1,8 @@
 
-                             EMBOSS: megamerger
-     _________________________________________________________________
+                                megamerger 
+                                      
    
-                              Program megamerger
-                                       
+   
 Function
 
    Merge two large overlapping nucleic acid sequences

@@ -1,9 +1,8 @@
 
-                              EMBOSS: eprimer3
-     _________________________________________________________________
+                                 eprimer3 
+                                      
    
-                               Program eprimer3
-                                       
+   
 Function
 
    Picks PCR primers and hybridization oligos

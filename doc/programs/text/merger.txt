@@ -1,9 +1,8 @@
 
-                               EMBOSS: merger
-     _________________________________________________________________
+                                  merger 
+                                      
    
-                                Program merger
-                                       
+   
 Function
 
    Merge two overlapping nucleic acid sequences

@@ -1,9 +1,8 @@
 
-                            EMBOSS: equicktandem
-     _________________________________________________________________
+                               equicktandem 
+                                      
    
-                             Program equicktandem
-                                       
+   
 Function
 
    Finds tandem repeats

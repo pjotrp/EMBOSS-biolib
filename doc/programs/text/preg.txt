@@ -1,9 +1,8 @@
 
-                                EMBOSS: preg
-     _________________________________________________________________
+                                   preg 
+                                      
    
-                                 Program preg
-                                       
+   
 Function
 
    Regular expression search of a protein sequence

@@ -1,9 +1,8 @@
 
-                               EMBOSS: redata
-     _________________________________________________________________
+                                  redata 
+                                      
    
-                                Program redata
-                                       
+   
 Function
 
    Search REBASE for enzyme name, references, suppliers etc

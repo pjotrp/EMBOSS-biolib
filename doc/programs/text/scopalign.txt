@@ -1,9 +1,8 @@
 
-                             EMBOSS: scopalign
-     _________________________________________________________________
+                                 scopalign 
+                                      
    
-                               Program scopalign
-                                       
+   
 Function
 
    Generate alignments for families in a scop classification file by

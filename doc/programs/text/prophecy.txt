@@ -1,9 +1,8 @@
 
-                              EMBOSS: prophecy
-     _________________________________________________________________
+                                 prophecy 
+                                      
    
-                               Program prophecy
-                                       
+   
 Function
 
    Creates matrices/profiles from multiple alignments

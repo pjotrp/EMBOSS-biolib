@@ -1,9 +1,8 @@
 
-                              EMBOSS: seqalign
-     _________________________________________________________________
+                                 seqalign 
+                                      
    
-                               Program seqalign
-                                       
+   
 Function
 
    Generate extended alignments for families in a scop families file by
@@ -31,8 +30,8 @@ Command line arguments
   [-inpath]            string     Location of scop alignment files (input)
   [-extn]              string     Extention of scop alignment files
    -scopin             infile     Name of scop hits file (input)
-  [-outpath]           string     Location of extended alignment files
-                                  (clustal format output)
+  [-outpath]           string     Location of extended alignment files (Escop
+                                  format output)
   [-outextn]           string     Extention of extended alignment files
 
    Optional qualifiers: (none)
@@ -52,11 +51,11 @@ Command line arguments
    .align
    -scopin Name of scop hits file (input) Input file Required
    [-outpath]
-   (Parameter 3) Location of extended alignment files (clustal format
+   (Parameter 3) Location of extended alignment files (Escop format
    output) Any string is accepted ./
    [-outextn]
    (Parameter 4) Extention of extended alignment files Any string is
-   accepted .clustal
+   accepted .ealign
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default

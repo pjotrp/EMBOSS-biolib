@@ -1,9 +1,8 @@
 
-                             EMBOSS: Stretcher
-     _________________________________________________________________
+                                 stretcher 
+                                      
    
-                               Program Stretcher
-                                       
+   
 Function
 
    Finds the best global alignment between two sequences

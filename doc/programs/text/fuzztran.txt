@@ -1,9 +1,8 @@
 
-                              EMBOSS: fuzztran
-     _________________________________________________________________
+                                 fuzztran 
+                                      
    
-                               Program fuzztran
-                                       
+   
 Function
 
    Protein pattern search after translation

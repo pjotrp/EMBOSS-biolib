@@ -1,9 +1,8 @@
 
-                               EMBOSS: silent
-     _________________________________________________________________
+                                  silent 
+                                      
    
-                                Program silent
-                                       
+   
 Function
 
    Silent mutation restriction enzyme scan

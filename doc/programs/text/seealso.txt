@@ -1,9 +1,8 @@
 
-                              EMBOSS: seealso
-     _________________________________________________________________
+                                  seealso 
+                                      
    
-                                Program seealso
-                                       
+   
 Function
 
    Finds programs sharing group names

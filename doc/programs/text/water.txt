@@ -1,9 +1,8 @@
 
-                               EMBOSS: water
-     _________________________________________________________________
+                                   water 
+                                      
    
-                                 Program water
-                                       
+   
 Function
 
    Smith-Waterman local alignment

@@ -1,9 +1,8 @@
 
-                            EMBOSS: newcpgreport
-     _________________________________________________________________
+                               newcpgreport 
+                                      
    
-                             Program newcpgreport
-                                       
+   
 Function
 
    Report CpG rich areas

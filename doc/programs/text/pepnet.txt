@@ -1,9 +1,8 @@
 
-                               EMBOSS: pepnet
-     _________________________________________________________________
+                                  pepnet 
+                                      
    
-                                Program pepnet
-                                       
+   
 Function
 
    Displays proteins as a helical net

@@ -1,9 +1,8 @@
 
-                              EMBOSS: recoder
-     _________________________________________________________________
+                                  recoder 
+                                      
    
-                                Program recoder
-                                       
+   
 Function
 
    Remove restriction sites but maintain the same translation

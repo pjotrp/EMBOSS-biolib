@@ -1,9 +1,8 @@
 
-                              EMBOSS: octanol
-     _________________________________________________________________
+                                  octanol 
+                                      
    
-                                Program octanol
-                                       
+   
 Function
 
    Displays protein hydropathy

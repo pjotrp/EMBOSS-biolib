@@ -1,9 +1,8 @@
 
-                             EMBOSS: est2genome
-     _________________________________________________________________
+                                est2genome 
+                                      
    
-                              Program est2genome
-                                       
+   
 Function
 
    Align EST and genomic DNA sequences

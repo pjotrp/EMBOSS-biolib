@@ -7,32 +7,28 @@
   </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
-<table align=center bgcolor="#000070" border=0 cellspacing=0 cellpadding=10>
-<tr>
-<td>
-<a href="index.html" onmouseover="self.status='Go to the EMBOSS home page';return true">
-<img border=0 src="emboss_icon.gif" alt="" width=55 height=55>
-</a>
+
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="../emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
-<td align=middle valign=middle>
-<font face="Arial,Helvetica" size=6 color="#ffffff">
-<H2>
-EMBOSS: domainer
-</H2>
-</font>
-</td>
-</tr>
+<td align=left valign=middle>
+<b><font size="+6">
+
+domainer
+</font></b>
+</td></tr>
 </table>
-</td>
-</tr>
-</table>
-<p><hr><p>
+<br>&nbsp;
+<p>
+
+
+
+
 
 <!--END OF HEADER-->
 
-<H1>
-Program domainer
-</H1>
 <H2>
     Function
 </H2>
@@ -173,11 +169,11 @@ D7HBIB_
                                   format input)
   [-cpdb]              string     Location of protein coordinate files (embl
                                   format input)
+  [-cpdbextn]          string     Extension of coordinate files (embl format)
   [-cpdbscop]          string     Location of domain coordinate files (embl
                                   format output)
   [-pdbscop]           string     Location of domain coordinate files (pdb
                                   format output)
-  [-cpdbextn]          string     Extension of coordinate files (embl format)
   [-pdbextn]           string     Extension of coordinate files (pdb format)
    -cpdberrf           outfile    Name of log file for the embl format build
    -pdberrf            outfile    Name of log file for the pdb format build
@@ -215,24 +211,24 @@ D7HBIB_
 </tr>
 
 <tr>
-<td>[-cpdbscop]<br>(Parameter 2)</td>
+<td>[-cpdbextn]<br>(Parameter 2)</td>
+<td>Extension of coordinate files (embl format)</td>
+<td>Any string is accepted</td>
+<td>.pxyz</td>
+</tr>
+
+<tr>
+<td>[-cpdbscop]<br>(Parameter 3)</td>
 <td>Location of domain coordinate files (embl format output)</td>
 <td>Any string is accepted</td>
 <td>./</td>
 </tr>
 
 <tr>
-<td>[-pdbscop]<br>(Parameter 3)</td>
+<td>[-pdbscop]<br>(Parameter 4)</td>
 <td>Location of domain coordinate files (pdb format output)</td>
 <td>Any string is accepted</td>
 <td>./</td>
-</tr>
-
-<tr>
-<td>[-cpdbextn]<br>(Parameter 4)</td>
-<td>Extension of coordinate files (embl format)</td>
-<td>Any string is accepted</td>
-<td>.pxyz</td>
 </tr>
 
 <tr>
@@ -753,6 +749,7 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
+<tr><td><a href="aaindexextract.html">aaindexextract</a></td><td>Extract data from AAINDEX</td></tr>
 <tr><td><a href="cutgextract.html">cutgextract</a></td><td>Extract data from CUTG</td></tr>
 <tr><td><a href="funky.html">funky</a></td><td>Reads clean coordinate files and writes file of protein-heterogen contact data</td></tr>
 <tr><td><a href="groups.html">groups</a></td><td>Removes redundant hits from a scop families file</td></tr>
@@ -877,9 +874,6 @@ for use by others.
 
 
 
-
-</TD></TR></TABLE>
-</CENTER>
 
 </BODY>
 </HTML>

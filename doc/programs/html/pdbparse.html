@@ -7,32 +7,29 @@
   </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
-<table align=center bgcolor="#000070" border=0 cellspacing=0 cellpadding=10>
-<tr>
-<td>
-<a href="index.html" onmouseover="self.status='Go to the EMBOSS home page';return true">
-<img border=0 src="emboss_icon.gif" alt="" width=55 height=55>
-</a>
+
+
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="../emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
-<td align=middle valign=middle>
-<font face="Arial,Helvetica" size=6 color="#ffffff">
-<H2>
-EMBOSS: pdbparse
-</H2>
-</font>
-</td>
-</tr>
+<td align=left valign=middle>
+<b><font size="+6">
+
+pdbparse
+</font></b>
+</td></tr>
 </table>
-</td>
-</tr>
-</table>
-<p><hr><p>
+<br>&nbsp;
+<p>
+
+
+
+
 
 <!--END OF HEADER-->
 
-<H1>
-Program pdbparse
-</H1>
 <H2>
     Function
 </H2>
@@ -127,10 +124,6 @@ Here is a sample session with pdbparse:
    Mandatory qualifiers:
   [-pdb]               string     Location of pdb files (pdb format input)
   [-pdbextn]           string     Extension of pdb files (pdb format input)
-  [-cpdb]              string     Location of coordinate files (embl format
-                                  output)
-  [-cpdbextn]          string     Extension of coordinate files (embl format
-                                  output)
    -nocamask           bool       The group will not appear in either the CO
                                   or SQ records of the clean coordinate file
    -nocamaska          bool       The amino acid will not appear in the CO
@@ -139,6 +132,10 @@ Here is a sample session with pdbparse:
    -atommask           bool       The amino acid will appear not appear in the
                                   CO record but will still be present in the
                                   SQ record of the clean coordinate file
+  [-cpdb]              string     Location of coordinate files (embl format
+                                  output)
+  [-cpdbextn]          string     Extension of coordinate files (embl format
+                                  output)
    -errf               outfile    Name of log file for the build
 
    Optional qualifiers:
@@ -181,20 +178,6 @@ Here is a sample session with pdbparse:
 </tr>
 
 <tr>
-<td>[-cpdb]<br>(Parameter 3)</td>
-<td>Location of coordinate files (embl format output)</td>
-<td>Any string is accepted</td>
-<td>./</td>
-</tr>
-
-<tr>
-<td>[-cpdbextn]<br>(Parameter 4)</td>
-<td>Extension of coordinate files (embl format output)</td>
-<td>Any string is accepted</td>
-<td>.pxyz</td>
-</tr>
-
-<tr>
 <td>-nocamask</td>
 <td>The group will not appear in either the CO or SQ records of the clean coordinate file</td>
 <td>Yes/No</td>
@@ -213,6 +196,20 @@ Here is a sample session with pdbparse:
 <td>The amino acid will appear not appear in the CO record but will still be present in the SQ record of the clean coordinate file</td>
 <td>Yes/No</td>
 <td>No</td>
+</tr>
+
+<tr>
+<td>[-cpdb]<br>(Parameter 3)</td>
+<td>Location of coordinate files (embl format output)</td>
+<td>Any string is accepted</td>
+<td>./</td>
+</tr>
+
+<tr>
+<td>[-cpdbextn]<br>(Parameter 4)</td>
+<td>Extension of coordinate files (embl format output)</td>
+<td>Any string is accepted</td>
+<td>.pxyz</td>
 </tr>
 
 <tr>
@@ -524,6 +521,7 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
+<tr><td><a href="aaindexextract.html">aaindexextract</a></td><td>Extract data from AAINDEX</td></tr>
 <tr><td><a href="cutgextract.html">cutgextract</a></td><td>Extract data from CUTG</td></tr>
 <tr><td><a href="domainer.html">domainer</a></td><td>Reads protein coordinate files and writes domains coordinate files</td></tr>
 <tr><td><a href="funky.html">funky</a></td><td>Reads clean coordinate files and writes file of protein-heterogen contact data</td></tr>
@@ -644,9 +642,6 @@ This program is intended to be used by everyone and everything, from naive users
 
 
 
-
-</TD></TR></TABLE>
-</CENTER>
 
 </BODY>
 </HTML>

@@ -1,9 +1,8 @@
 
-                            EMBOSS: pepwindowall
-     _________________________________________________________________
+                               pepwindowall 
+                                      
    
-                             Program pepwindowall
-                                       
+   
 Function
 
    Displays protein hydropathy of a set of sequences

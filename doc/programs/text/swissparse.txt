@@ -1,9 +1,8 @@
 
-                             EMBOSS: swissparse
-     _________________________________________________________________
+                                swissparse 
+                                      
    
-                              Program swissparse
-                                       
+   
 Function
 
    Retrieves sequences from swissprot using keyword search
@@ -107,6 +106,7 @@ See also
    seqret       Reads and writes (returns) sequences
    seqretsplit  Reads and writes (returns) sequences in individual files
    showfeat     Show features of a sequence
+   skipseq      Reads and writes (returns) sequences
    splitter     Split a sequence into (overlapping) smaller sequences
    trimest      Trim poly-A tails off EST sequences
    trimseq      Trim ambiguous bits off the ends of sequences

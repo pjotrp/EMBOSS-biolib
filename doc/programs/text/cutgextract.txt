@@ -1,9 +1,8 @@
 
-                            EMBOSS: cutgextract
-     _________________________________________________________________
+                                cutgextract 
+                                      
    
-                              Program cutgextract
-                                       
+   
 Function
 
    Extract data from CUTG
@@ -77,6 +76,7 @@ Known bugs
 See also
 
    Program name Description
+   aaindexextract Extract data from AAINDEX
    domainer Reads protein coordinate files and writes domains coordinate
    files
    funky Reads clean coordinate files and writes file of

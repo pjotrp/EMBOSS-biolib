@@ -1,9 +1,8 @@
 
-                              EMBOSS: garnier
-     _________________________________________________________________
+                                  garnier 
+                                      
    
-                                Program garnier
-                                       
+   
 Function
 
    Predicts protein secondary structure

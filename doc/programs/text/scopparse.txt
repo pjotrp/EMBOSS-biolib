@@ -1,9 +1,8 @@
 
-                             EMBOSS: scopparse
-     _________________________________________________________________
+                                 scopparse 
+                                      
    
-                               Program scopparse
-                                       
+   
 Function
 
    Converts raw scop classification files to a file in embl-like format
@@ -90,6 +89,7 @@ Known bugs
 See also
 
    Program name Description
+   aaindexextract Extract data from AAINDEX
    cutgextract Extract data from CUTG
    domainer Reads protein coordinate files and writes domains coordinate
    files

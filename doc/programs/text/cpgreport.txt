@@ -1,9 +1,8 @@
 
-                             EMBOSS: cpgreport
-     _________________________________________________________________
+                                 cpgreport 
+                                      
    
-                               Program cpgreport
-                                       
+   
 Function
 
    Reports all CpG rich regions

@@ -1,9 +1,8 @@
 
-                              EMBOSS: dbiflat
-     _________________________________________________________________
+                                  dbiflat 
+                                      
    
-                                Program dbiflat
-                                       
+   
 Function
 
    Index a flat file database

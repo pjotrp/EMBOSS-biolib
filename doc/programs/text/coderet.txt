@@ -1,9 +1,8 @@
 
-                              EMBOSS: coderet
-     _________________________________________________________________
+                                  coderet 
+                                      
    
-                                Program coderet
-                                       
+   
 Function
 
    Extract CDS, mRNA and translations from feature tables

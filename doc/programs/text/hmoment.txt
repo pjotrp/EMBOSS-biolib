@@ -1,9 +1,8 @@
 
-                              EMBOSS: hmoment
-     _________________________________________________________________
+                                  hmoment 
+                                      
    
-                                Program hmoment
-                                       
+   
 Function
 
    Hydrophobic moment calculation

@@ -1,9 +1,8 @@
 
-                             EMBOSS: textsearch
-     _________________________________________________________________
+                                textsearch 
+                                      
    
-                              Program textsearch
-                                       
+   
 Function
 
    Search sequence documentation text. SRS and Entrez are faster!

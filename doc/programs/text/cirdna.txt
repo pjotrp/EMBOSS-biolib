@@ -1,9 +1,8 @@
 
-                               EMBOSS: cirdna
-     _________________________________________________________________
+                                  cirdna 
+                                      
    
-                                Program cirdna
-                                       
+   
 Function
 
    Draws circular maps of DNA constructs

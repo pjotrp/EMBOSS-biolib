@@ -1,9 +1,8 @@
 
-                                EMBOSS: dan
-     _________________________________________________________________
+                                    dan 
+                                      
    
-                                  Program dan
-                                       
+   
 Function
 
    Calculates DNA RNA/DNA melting temperature

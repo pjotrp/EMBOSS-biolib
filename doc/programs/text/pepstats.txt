@@ -1,9 +1,8 @@
 
-                              EMBOSS: pepstats
-     _________________________________________________________________
+                                 pepstats 
+                                      
    
-                               Program pepstats
-                                       
+   
 Function
 
    Protein statistics

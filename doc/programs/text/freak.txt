@@ -1,9 +1,8 @@
 
-                               EMBOSS: freak
-     _________________________________________________________________
+                                   freak 
+                                      
    
-                                 Program freak
-                                       
+   
 Function
 
    Residue/base frequency table or plot

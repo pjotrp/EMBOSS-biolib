@@ -1,9 +1,8 @@
 
-                              EMBOSS: seqwords
-     _________________________________________________________________
+                                 seqwords 
+                                      
    
-                               Program seqwords
-                                       
+   
 Function
 
    Generate file of hits for scop families by searching swissprot with
@@ -42,11 +41,11 @@ Command line arguments
 
    Mandatory qualifiers Allowed values Default
    [-keyfile]
-   (Parameter 1) Name of keywords file (input) Input file scop.terms
+   (Parameter 1) Name of keywords file (input) Input file Required
    -spfile Name of swissprot database (input) Input file ./seq.dat
    [-outfile]
    (Parameter 2) Name of seqwords hits file (output) Output file
-   scop.seqs
+   test.seqhits
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default

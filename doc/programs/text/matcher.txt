@@ -1,9 +1,8 @@
 
-                              EMBOSS: matcher
-     _________________________________________________________________
+                                  matcher 
+                                      
    
-                                Program matcher
-                                       
+   
 Function
 
    Finds the best local alignments between two sequences

@@ -1,9 +1,8 @@
 
-                             EMBOSS: stssearch
-     _________________________________________________________________
+                                 stssearch 
+                                      
    
-                               Program stssearch
-                                       
+   
 Function
 
    Searches a DNA database for matches with a set of STS primers

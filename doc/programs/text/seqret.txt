@@ -1,9 +1,8 @@
 
-                               EMBOSS: seqret
-     _________________________________________________________________
+                                  seqret 
+                                      
    
-                                Program seqret
-                                       
+   
 Function
 
    Reads and writes (returns) sequences
@@ -628,6 +627,7 @@ See also
    pasteseq     Insert one sequence into another
    revseq       Reverse and complement a sequence
    seqretsplit  Reads and writes (returns) sequences in individual files
+   skipseq      Reads and writes (returns) sequences
    splitter     Split a sequence into (overlapping) smaller sequences
    swissparse   Retrieves sequences from swissprot using keyword search
    trimest      Trim poly-A tails off EST sequences

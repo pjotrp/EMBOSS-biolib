@@ -1,9 +1,8 @@
 
-                           EMBOSS: embossversion
-     _________________________________________________________________
+                               embossversion 
+                                      
    
-                             Program embossversion
-                                       
+   
 Function
 
    Writes the current EMBOSS version number

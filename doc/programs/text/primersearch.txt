@@ -1,6 +1,7 @@
 
-                            EMBOSS: primersearch
-     _________________________________________________________________
+                               primersearch 
+                                      
+   
    
                              Program primersearch
                                        

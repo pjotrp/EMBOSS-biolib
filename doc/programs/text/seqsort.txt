@@ -1,9 +1,8 @@
 
-                              EMBOSS: seqsort
-     _________________________________________________________________
+                                  seqsort 
+                                      
    
-                                Program seqsort
-                                       
+   
 Function
 
    Reads multiple files of hits and writes a non-ambiguous file of hits
@@ -29,8 +28,6 @@ Command line arguments
 
    Mandatory qualifiers (* if not always prompted):
    -mode               menu       Select mode
-   -overlap            integer    number of overlapping residues required for
-                                  merging of two hits
 *  -psipath            string     Location of scop hits files (input)
 *  -psiextn            string     Extension of scop hits files
 *  -swisspath          string     Location of seqwords hits files
@@ -39,6 +36,8 @@ Command line arguments
                                   file (input)
 *  -swissfile          string     Name of file containing processed seqwords
                                   hits file (input)
+   -overlap            integer    number of overlapping residues required for
+                                  merging of two hits
   [-hitsf]             outfile    Name of scop hits file (output)
   [-validf]            outfile    Name of validation file (output)
 
@@ -56,8 +55,6 @@ Command line arguments
    2 (Process swissparse hits)
    3 (Merge psiblast and swissparse hits)
    1
-   -overlap number of overlapping residues required for merging of two
-   hits Any integer value 10
    -psipath Location of scop hits files (input) Any string is accepted ./
    -psiextn Extension of scop hits files Any string is accepted .hits
    -swisspath Location of seqwords hits files Any string is accepted ./
@@ -67,6 +64,8 @@ Command line arguments
    string is accepted An empty string is accepted
    -swissfile Name of file containing processed seqwords hits file
    (input) Any string is accepted An empty string is accepted
+   -overlap number of overlapping residues required for merging of two
+   hits Any integer value 10
    [-hitsf]
    (Parameter 1) Name of scop hits file (output) Output file seqsort.fam
    [-validf]

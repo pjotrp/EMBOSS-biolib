@@ -1,9 +1,8 @@
 
-                             EMBOSS: tfextract
-     _________________________________________________________________
+                                 tfextract 
+                                      
    
-                               Program tfextract
-                                       
+   
 Function
 
    Extract data from TRANSFAC
@@ -171,6 +170,7 @@ Known bugs
 See also
 
    Program name Description
+   aaindexextract Extract data from AAINDEX
    cutgextract Extract data from CUTG
    domainer Reads protein coordinate files and writes domains coordinate
    files

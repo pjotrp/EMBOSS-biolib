@@ -7,32 +7,32 @@
   </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
-<table align=center bgcolor="#000070" border=0 cellspacing=0 cellpadding=10>
-<tr>
-<td>
-<a href="index.html" onmouseover="self.status='Go to the EMBOSS home page';return true">
-<img border=0 src="emboss_icon.gif" alt="" width=55 height=55>
-</a>
+
+
+
+
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="../emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
-<td align=middle valign=middle>
-<font face="Arial,Helvetica" size=6 color="#ffffff">
-<H2>
-EMBOSS: scopseqs
-</H2>
-</font>
-</td>
-</tr>
+<td align=left valign=middle>
+<b><font size="+6">
+
+scopseqs
+</font></b>
+</td></tr>
 </table>
-</td>
-</tr>
-</table>
-<p><hr><p>
+<br>&nbsp;
+<p>
+
+
+
+
+
 
 <!--END OF HEADER-->
 
-<H1>
-Program scopseqs
-</H1>
 <H2>
     Function
 </H2>
@@ -133,16 +133,21 @@ Here is a sample session with scopseqs:
                                   for input (embl-like format)
   [-extn]              string     File extension of clean domain coordinate
                                   files
-  [-thresh]            float      The % sequence identity redundancy threshold
-  [-datafile]          matrixf    Residue substitution matrix
-  [-gapopen]           float      The gap insertion penalty is the score taken
+  [-scopout]           outfile    Name of processed file for output (embl-like
+                                  format)
+  [-errf]              outfile    Name of log file for the build
+
+   Optional qualifiers: (none)
+   Advanced qualifiers:
+   -datafile           matrixf    Residue substitution matrix
+   -gapopen            float      The gap insertion penalty is the score taken
                                   away when a gap is created. The best value
                                   depends on the choice of comparison matrix.
                                   The default value assumes you are using the
                                   EBLOSUM62 matrix for protein sequences, and
                                   the EDNAFULL matrix for nucleotide
                                   sequences.
-  [-gapextend]         float      The gap extension, penalty is added to the
+   -gapextend          float      The gap extension, penalty is added to the
                                   standard gap penalty for each base or
                                   residue in the gap. This is how long gaps
                                   are penalized. Usually you will expect a few
@@ -156,12 +161,7 @@ Here is a sample session with scopseqs:
                                   penalty to zero (or very low) and using the
                                   gap extension penalty to control gap
                                   scoring.
-  [-scopout]           outfile    Name of processed file for output (embl-like
-                                  format)
-  [-errf]              outfile    Name of log file for the build
 
-   Optional qualifiers: (none)
-   Advanced qualifiers: (none)
    General qualifiers:
   -help                bool       report command line options. More
                                   information on associated and general
@@ -196,7 +196,7 @@ Here is a sample session with scopseqs:
 <td>[-dpdb]<br>(Parameter 3)</td>
 <td>Location of clean domain coordinate files for input (embl-like format)</td>
 <td>Any string is accepted</td>
-<td>/data/cpdbscop/</td>
+<td>./</td>
 </tr>
 
 <tr>
@@ -207,42 +207,14 @@ Here is a sample session with scopseqs:
 </tr>
 
 <tr>
-<td>[-thresh]<br>(Parameter 5)</td>
-<td>The % sequence identity redundancy threshold</td>
-<td>Any numeric value</td>
-<td>95.0</td>
-</tr>
-
-<tr>
-<td>[-datafile]<br>(Parameter 6)</td>
-<td>Residue substitution matrix</td>
-<td>Comparison matrix file in EMBOSS data path</td>
-<td>EBLOSUM62</td>
-</tr>
-
-<tr>
-<td>[-gapopen]<br>(Parameter 7)</td>
-<td>The gap insertion penalty is the score taken away when a gap is created. The best value depends on the choice of comparison matrix. The default value assumes you are using the EBLOSUM62 matrix for protein sequences, and the EDNAFULL matrix for nucleotide sequences.</td>
-<td>Floating point number from 1.0 to 100.0</td>
-<td>10.0 for any sequence</td>
-</tr>
-
-<tr>
-<td>[-gapextend]<br>(Parameter 8)</td>
-<td>The gap extension, penalty is added to the standard gap penalty for each base or residue in the gap. This is how long gaps are penalized. Usually you will expect a few long gaps rather than many short gaps, so the gap extension penalty should be lower than the gap penalty. An exception is where one or both sequences are single reads with possible sequencing errors in which case you would expect many single base gaps. You can get this result by setting the gap open penalty to zero (or very low) and using the gap extension penalty to control gap scoring.</td>
-<td>Floating point number from 0.0 to 10.0</td>
-<td>0.5 for any sequence</td>
-</tr>
-
-<tr>
-<td>[-scopout]<br>(Parameter 9)</td>
+<td>[-scopout]<br>(Parameter 5)</td>
 <td>Name of processed file for output (embl-like format)</td>
 <td>Output file</td>
-<td>wibble.dat</td>
+<td>Escop.dat.out</td>
 </tr>
 
 <tr>
-<td>[-errf]<br>(Parameter 10)</td>
+<td>[-errf]<br>(Parameter 6)</td>
 <td>Name of log file for the build</td>
 <td>Output file</td>
 <td>scopseqs.log</td>
@@ -265,7 +237,24 @@ Here is a sample session with scopseqs:
 </tr>
 
 <tr>
-<td colspan=4>(none)</td>
+<td>-datafile</td>
+<td>Residue substitution matrix</td>
+<td>Comparison matrix file in EMBOSS data path</td>
+<td>EBLOSUM62</td>
+</tr>
+
+<tr>
+<td>-gapopen</td>
+<td>The gap insertion penalty is the score taken away when a gap is created. The best value depends on the choice of comparison matrix. The default value assumes you are using the EBLOSUM62 matrix for protein sequences, and the EDNAFULL matrix for nucleotide sequences.</td>
+<td>Floating point number from 1.0 to 100.0</td>
+<td>10.0 for any sequence</td>
+</tr>
+
+<tr>
+<td>-gapextend</td>
+<td>The gap extension, penalty is added to the standard gap penalty for each base or residue in the gap. This is how long gaps are penalized. Usually you will expect a few long gaps rather than many short gaps, so the gap extension penalty should be lower than the gap penalty. An exception is where one or both sequences are single reads with possible sequencing errors in which case you would expect many single base gaps. You can get this result by setting the gap open penalty to zero (or very low) and using the gap extension penalty to control gap scoring.</td>
+<td>Floating point number from 0.0 to 10.0</td>
+<td>0.5 for any sequence</td>
 </tr>
 
 </table>
@@ -537,6 +526,7 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
+<tr><td><a href="aaindexextract.html">aaindexextract</a></td><td>Extract data from AAINDEX</td></tr>
 <tr><td><a href="cutgextract.html">cutgextract</a></td><td>Extract data from CUTG</td></tr>
 <tr><td><a href="domainer.html">domainer</a></td><td>Reads protein coordinate files and writes domains coordinate files</td></tr>
 <tr><td><a href="funky.html">funky</a></td><td>Reads clean coordinate files and writes file of protein-heterogen contact data</td></tr>
@@ -657,9 +647,6 @@ This program is intended to be used by everyone and everything, from naive users
 
 
 
-
-</TD></TR></TABLE>
-</CENTER>
 
 </BODY>
 </HTML>

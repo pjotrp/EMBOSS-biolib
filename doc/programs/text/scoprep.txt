@@ -1,9 +1,8 @@
 
-                              EMBOSS: scoprep
-     _________________________________________________________________
+                                  scoprep 
+                                      
    
-                                Program scoprep
-                                       
+   
 Function
 
    Reorder scop classificaiton file so that the representative structure

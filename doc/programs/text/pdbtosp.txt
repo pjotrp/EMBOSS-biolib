@@ -1,9 +1,8 @@
 
-                              EMBOSS: pdbtosp
-     _________________________________________________________________
+                                  pdbtosp 
+                                      
    
-                                Program pdbtosp
-                                       
+   
 Function
 
    Convert raw swissprot:pdb equivalence file to embl-like format
@@ -43,7 +42,7 @@ Command line arguments
    Mandatory qualifiers Allowed values Default
    [-infilea]
    (Parameter 1) Name of raw swissprot:pdb equivalence file (input) Input
-   file pdbtosp.txt
+   file Required
    [-outfile]
    (Parameter 2) Name of swissprot:pdb equivalence file (embl format
    output) Output file Epdbtosp.dat
@@ -85,6 +84,7 @@ Known bugs
 See also
 
    Program name Description
+   aaindexextract Extract data from AAINDEX
    cutgextract Extract data from CUTG
    domainer Reads protein coordinate files and writes domains coordinate
    files

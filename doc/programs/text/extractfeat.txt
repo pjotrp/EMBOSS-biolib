@@ -1,9 +1,8 @@
 
-                            EMBOSS: extractfeat
-     _________________________________________________________________
+                                extractfeat 
+                                      
    
-                              Program extractfeat
-                                       
+   
 Function
 
    Extract features from a sequence
@@ -357,6 +356,7 @@ See also
    seqret       Reads and writes (returns) sequences
    seqretsplit  Reads and writes (returns) sequences in individual files
    showfeat     Show features of a sequence
+   skipseq      Reads and writes (returns) sequences
    splitter     Split a sequence into (overlapping) smaller sequences
    swissparse   Retrieves sequences from swissprot using keyword search
    trimest      Trim poly-A tails off EST sequences

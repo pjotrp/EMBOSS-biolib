@@ -1,9 +1,8 @@
 
-                              EMBOSS: pepinfo
-     _________________________________________________________________
+                                  pepinfo 
+                                      
    
-                                Program pepinfo
-                                       
+   
 Function
 
    Plots simple amino acid properties in parallel

@@ -1,9 +1,8 @@
 
-                             EMBOSS: newcpgseek
-     _________________________________________________________________
+                                newcpgseek 
+                                      
    
-                              Program newcpgseek
-                                       
+   
 Function
 
    Reports CpG rich regions

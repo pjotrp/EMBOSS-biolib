@@ -1,9 +1,8 @@
 
-                             EMBOSS: wordcount
-     _________________________________________________________________
+                                 wordcount 
+                                      
    
-                               Program wordcount
-                                       
+   
 Function
 
    Counts words of a specified size in a DNA sequence

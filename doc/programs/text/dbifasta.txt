@@ -1,9 +1,8 @@
 
-                              EMBOSS: dbifasta
-     _________________________________________________________________
+                                 dbifasta 
+                                      
    
-                               Program dbifasta
-                                       
+   
 Function
 
    Index a fasta database

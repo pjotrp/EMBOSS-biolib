@@ -1,9 +1,8 @@
 
-                              EMBOSS: profgen
-     _________________________________________________________________
+                                  profgen 
+                                      
    
-                                Program profgen
-                                       
+   
 Function
 
    Generates various profiles for each alignment in a directory
@@ -27,27 +26,19 @@ Usage
 Command line arguments
 
    Mandatory qualifiers (* if not always prompted):
-   -infpath            string     Directory containing the extended alignments
-                                  (input)
-   -infextn            string     File extention of extended alignment files
-                                  (input)
+   -infpath            string     Location of sequence alignment files (input)
+   -infextn            string     Extension of sequence alignment files
    -type               menu       Select type
 *  -threshold          integer    Enter threshold reporting percentage
 *  -datafile           matrixf    Scoring matrix
 *  -open               float      Gap opening penalty
 *  -extension          float      Gap extension penalty
-*  -smpfpath           string     Directory for generated simple profiles
-                                  (output)
-*  -smpfextn           string     File extention of generated simple profile
-                                  (output)
-*  -gbpfpath           string     Directory for generated Gribskov profiles
-                                  (output)
-*  -gbpfextn           string     File extention of generated Gribskov profile
-                                  (output)
-*  -hnpfpath           string     Directory for generated Henikoff profiles
-                                  (output)
-*  -hnpfextn           string     File extention of generated Henikoff profile
-                                  (output)
+*  -smpfpath           string     Location of simple profile files (output)
+*  -smpfextn           string     Extention of simple profile files
+*  -gbpfpath           string     Location of Gribskov profile files (output)
+*  -gbpfextn           string     Extension of Gribskov profile files
+*  -hnpfpath           string     Location of Henikoff profile files (output)
+*  -hnpfextn           string     Extention of Henikoff profile files
 
    Optional qualifiers: (none)
    Advanced qualifiers: (none)
@@ -58,10 +49,10 @@ Command line arguments
    
 
    Mandatory qualifiers Allowed values Default
-   -infpath Directory containing the extended alignments (input) Any
-   string is accepted ./
-   -infextn File extention of extended alignment files (input) Any string
-   is accepted .salign
+   -infpath Location of sequence alignment files (input) Any string is
+   accepted ./
+   -infextn Extension of sequence alignment files Any string is accepted
+   .ealign
    -type Select type
    F (Frequency)
    G (Gribskov)
@@ -73,18 +64,18 @@ Command line arguments
    'Epprofile' for Gribskov type, or EBLOSUM62
    -open Gap opening penalty Any numeric value 3.0
    -extension Gap extension penalty Any numeric value 0.3
-   -smpfpath Directory for generated simple profiles (output) Any string
-   is accepted ./tmp/
-   -smpfextn File extention of generated simple profile (output) Any
-   string is accepted .freq
-   -gbpfpath Directory for generated Gribskov profiles (output) Any
-   string is accepted ./tmp/
-   -gbpfextn File extention of generated Gribskov profile (output) Any
-   string is accepted .gribs
-   -hnpfpath Directory for generated Henikoff profiles (output) Any
-   string is accepted ./tmp/
-   -hnpfextn File extention of generated Henikoff profile (output) Any
-   string is accepted .henik
+   -smpfpath Location of simple profile files (output) Any string is
+   accepted ./tmp/
+   -smpfextn Extention of simple profile files Any string is accepted
+   .freq
+   -gbpfpath Location of Gribskov profile files (output) Any string is
+   accepted ./tmp/
+   -gbpfextn Extension of Gribskov profile files Any string is accepted
+   .gribs
+   -hnpfpath Location of Henikoff profile files (output) Any string is
+   accepted ./tmp/
+   -hnpfextn Extention of Henikoff profile files Any string is accepted
+   .henik
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default

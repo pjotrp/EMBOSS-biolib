@@ -1,9 +1,8 @@
 
-                            EMBOSS: backtranseq
-     _________________________________________________________________
+                                backtranseq 
+                                      
    
-                              Program backtranseq
-                                       
+   
 Function
 
    Back translate a protein sequence

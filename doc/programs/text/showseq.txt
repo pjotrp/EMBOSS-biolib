@@ -1,9 +1,8 @@
 
-                              EMBOSS: showseq
-     _________________________________________________________________
+                                  showseq 
+                                      
    
-                                Program showseq
-                                       
+   
 Function
 
    Display a sequence with features, translation etc

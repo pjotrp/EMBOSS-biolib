@@ -1,9 +1,8 @@
 
-                              EMBOSS: cpgplot
-     _________________________________________________________________
+                                  cpgplot 
+                                      
    
-                                Program cpgplot
-                                       
+   
 Function
 
    Plot CpG rich areas

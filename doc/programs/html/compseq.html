@@ -7,37 +7,22 @@
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
 
-<table align=center bgcolor="#000070" border=0 cellspacing=0 cellpadding=10>
-<tr>
-<td>
-
-<a href="index.html" onmouseover="self.status='Go to the EMBOSS home page';return true">
-<img border=0 src="emboss_icon.gif" alt="" width=55 height=55>
-</a>
-
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="../emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
+<td align=left valign=middle>
+<b><font size="+6">
 
-<td align=middle valign=middle>
-<font face="Arial,Helvetica" size=6 color="#ffffff">
-<H2>
-EMBOSS: compseq
-</H2>
-
-
-</font>
-</td>
-
-</tr>
+compseq
+</font></b>
+</td></tr>
 </table>
-</td>
+<br>&nbsp;
+<p>
 
-</tr>
-</table>
 
-<p><hr><p>
-<H1>
-Program compseq
-</H1>
+
 
 <H2>
     Function
@@ -61,8 +46,52 @@ This takes a specified length of sequence and counts the number of
 distinct subsequences of that length that there are in the input
 sequence(s).
 
+<p>
+
 It can read in the result of a previous compseq analysis and use this
 to set the expected frequencies of the subsequences.
+
+<p>
+
+Unless you tell 'compseq' otherwise, it expects each word to be equally
+likely.  The 'Expected' frequency therefore of any dimer is 1/16 - this
+is simply the inverse of the number of possible dimers (AA, AC, AG, AT,
+CA, CC, CG, CT, GA, GC, GG, GT, TA, TC, TG, TT). 
+
+<p>
+
+
+Similarly, the 'Expected' frequency of any trimer is 1/64, etc. 
+
+<p>
+
+
+Obviously this is not the case in real sequences - there will be bias in
+favour of some words. 
+
+<p>
+
+
+Compseq cannot otherwise guess what the 'Expected' frequency is.  You
+can, however, tell it what the Expected frequencies are by giving
+compseq the output of the analysis of another set of sequences, produced
+by a previous compseq run. 
+
+<p>
+
+So you take a set of sequences that are representative of the type of
+sequence you expect and you run compseq on it to get your expected
+sequence frequencies. 
+
+<p>
+
+You then take the sequences you wish to investigate, run compseq on them
+giving compseq the expected frequencies that you have established,
+above.  You tell compseq what the file of expected frequencies is by
+specifying it with '-infile filename' on the command-line. 
+
+
+
 
 <H2>
     Usage
@@ -483,9 +512,6 @@ from naive users to embedded scripts.
 
 </pre>
 
-
-</TD></TR></TABLE>
-</CENTER>
 
 </BODY>
 </HTML>

@@ -1,9 +1,8 @@
 
-                               EMBOSS: getorf
-     _________________________________________________________________
+                                  getorf 
+                                      
    
-                                Program getorf
-                                       
+   
 Function
 
    Finds and extracts open reading frames (ORFs)

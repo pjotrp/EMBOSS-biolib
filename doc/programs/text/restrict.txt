@@ -1,9 +1,8 @@
 
-                              EMBOSS: restrict
-     _________________________________________________________________
+                                 restrict 
+                                      
    
-                               Program restrict
-                                       
+   
 Function
 
    Finds restriction enzyme cleavage sites

@@ -1,9 +1,8 @@
 
-                                EMBOSS: iep
-     _________________________________________________________________
+                                    iep 
+                                      
    
-                                  Program iep
-                                       
+   
 Function
 
    Calculates the isoelectric point of a protein

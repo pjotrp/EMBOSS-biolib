@@ -1,9 +1,8 @@
 
-                             EMBOSS: prettyplot
-     _________________________________________________________________
+                                prettyplot 
+                                      
    
-                              Program prettyplot
-                                       
+   
 Function
 
    Displays aligned sequences, with colouring and boxing

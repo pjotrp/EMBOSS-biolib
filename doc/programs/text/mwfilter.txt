@@ -1,9 +1,8 @@
 
-                              EMBOSS: mwfilter
-     _________________________________________________________________
+                                 mwfilter 
+                                      
    
-                               Program mwfilter
-                                       
+   
 Function
 
    Filter noisy molwts from mass spec output

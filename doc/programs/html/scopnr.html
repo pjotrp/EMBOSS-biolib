@@ -7,32 +7,32 @@
   </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
-<table align=center bgcolor="#000070" border=0 cellspacing=0 cellpadding=10>
-<tr>
-<td>
-<a href="index.html" onmouseover="self.status='Go to the EMBOSS home page';return true">
-<img border=0 src="emboss_icon.gif" alt="" width=55 height=55>
-</a>
+
+
+
+
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="../emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
-<td align=middle valign=middle>
-<font face="Arial,Helvetica" size=6 color="#ffffff">
-<H2>
-EMBOSS: scopnr
-</H2>
-</font>
-</td>
-</tr>
+<td align=left valign=middle>
+<b><font size="+6">
+
+scopnr
+</font></b>
+</td></tr>
 </table>
-</td>
-</tr>
-</table>
-<p><hr><p>
+<br>&nbsp;
+<p>
+
+
+
+
+
 
 <!--END OF HEADER-->
 
-<H1>
-Program scopnr
-</H1>
 <H2>
     Function
 </H2>
@@ -127,14 +127,14 @@ Here is a sample session with scopnr:
    Mandatory qualifiers (* if not always prompted):
   [-scopin]            infile     Name of scop classification file (embl
                                   format input)
-  [-scopout]           outfile    Name of non-redundant scop classification
-                                  file (embl format output)
    -mode               menu       Select number
 *  -thresh             float      The % sequence identity redundancy threshold
 *  -threshlow          float      The % sequence identity redundancy threshold
                                   (lower limit)
 *  -threshup           float      The % sequence identity redundancy threshold
                                   (upper limit)
+  [-scopout]           outfile    Name of non-redundant scop classification
+                                  file (embl format output)
    -errf               outfile    Name of log file for the build
 
    Optional qualifiers:
@@ -186,13 +186,6 @@ Here is a sample session with scopnr:
 </tr>
 
 <tr>
-<td>[-scopout]<br>(Parameter 2)</td>
-<td>Name of non-redundant scop classification file (embl format output)</td>
-<td>Output file</td>
-<td>EscopNR.dat</td>
-</tr>
-
-<tr>
 <td>-mode</td>
 <td>Select number</td>
 <td><table><tr><td>1</td> <td><i>(Remove redundancy at a single threshold % sequence similarity)</i></td></tr><tr><td>2</td> <td><i>(Remove redundancy outside a range of acceptable threshold % similarity)</i></td></tr></table></td>
@@ -218,6 +211,13 @@ Here is a sample session with scopnr:
 <td>The % sequence identity redundancy threshold (upper limit)</td>
 <td>Any numeric value</td>
 <td>90.0</td>
+</tr>
+
+<tr>
+<td>[-scopout]<br>(Parameter 2)</td>
+<td>Name of non-redundant scop classification file (embl format output)</td>
+<td>Output file</td>
+<td>Escop_90.dat</td>
 </tr>
 
 <tr>
@@ -533,6 +533,7 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
+<tr><td><a href="aaindexextract.html">aaindexextract</a></td><td>Extract data from AAINDEX</td></tr>
 <tr><td><a href="cutgextract.html">cutgextract</a></td><td>Extract data from CUTG</td></tr>
 <tr><td><a href="domainer.html">domainer</a></td><td>Reads protein coordinate files and writes domains coordinate files</td></tr>
 <tr><td><a href="funky.html">funky</a></td><td>Reads clean coordinate files and writes file of protein-heterogen contact data</td></tr>
@@ -653,9 +654,6 @@ This program is intended to be used by everyone and everything, from naive users
 
 
 
-
-</TD></TR></TABLE>
-</CENTER>
 
 </BODY>
 </HTML>

@@ -1,9 +1,8 @@
 
-                              EMBOSS: isochore
-     _________________________________________________________________
+                                 isochore 
+                                      
    
-                               Program isochore
-                                       
+   
 Function
 
    Plots isochores in large DNA sequences

@@ -1,9 +1,8 @@
 
-                             EMBOSS: showalign
-     _________________________________________________________________
+                                 showalign 
+                                      
    
-                               Program showalign
-                                       
+   
 Function
 
    Displays a multiple sequence alignment

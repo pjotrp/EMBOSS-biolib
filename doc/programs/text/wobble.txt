@@ -1,9 +1,8 @@
 
-                               EMBOSS: wobble
-     _________________________________________________________________
+                                  wobble 
+                                      
    
-                                Program wobble
-                                       
+   
 Function
 
    Wobble base plot

@@ -1,9 +1,8 @@
 
-                           EMBOSS: helixturnhelix
-     _________________________________________________________________
+                              helixturnhelix 
+                                      
    
-                            Program helixturnhelix
-                                       
+   
 Function
 
    Report nucleic acid binding motifs

@@ -1,9 +1,8 @@
 
-                              EMBOSS: btwisted
-     _________________________________________________________________
+                                 btwisted 
+                                      
    
-                               Program btwisted
-                                       
+   
 Function
 
    Calculates the twisting in a B-DNA sequence

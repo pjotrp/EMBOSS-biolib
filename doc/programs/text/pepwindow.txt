@@ -1,9 +1,8 @@
 
-                             EMBOSS: pepwindow
-     _________________________________________________________________
+                                 pepwindow 
+                                      
    
-                               Program pepwindow
-                                       
+   
 Function
 
    Displays protein hydropathy

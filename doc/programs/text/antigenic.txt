@@ -1,9 +1,8 @@
 
-                             EMBOSS: antigenic
-     _________________________________________________________________
+                                 antigenic 
+                                      
    
-                               Program antigenic
-                                       
+   
 Function
 
    Finds antigenic sites in proteins

@@ -1,9 +1,8 @@
 
-                               EMBOSS: findkm
-     _________________________________________________________________
+                                  findkm 
+                                      
    
-                                Program findkm
-                                       
+   
 Function
 
    Find Km and Vmax for an enzyme reaction by a Hanes/Woolf plot

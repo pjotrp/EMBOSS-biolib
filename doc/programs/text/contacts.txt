@@ -1,9 +1,8 @@
 
-                              EMBOSS: contacts
-     _________________________________________________________________
+                                 contacts 
+                                      
    
-                               Program contacts
-                                       
+   
 Function
 
    Reads coordinate files and writes files of intra-chain residue-residue
@@ -53,8 +52,8 @@ Command line arguments
   [-cpdb]              string     Location of coordinate files (embl format
                                   input)
   [-cpdbextn]          string     Extension of coordinate files
-   -thresh             float      Threshold contact distance
    -vdwf               string     Name of data file with van der Waals radii
+   -thresh             float      Threshold contact distance
   [-con]               string     Location of contact files for output
   [-conextn]           string     Extension of contact files
    -conerrf            outfile    Name of log file for the build
@@ -80,9 +79,9 @@ Command line arguments
    [-cpdbextn]
    (Parameter 2) Extension of coordinate files Any string is accepted
    .pxyz
-   -thresh Threshold contact distance Any numeric value 1.0
    -vdwf Name of data file with van der Waals radii Any string is
    accepted Evdw.dat
+   -thresh Threshold contact distance Any numeric value 1.0
    [-con]
    (Parameter 3) Location of contact files for output Any string is
    accepted ./

@@ -1,9 +1,8 @@
 
-                              EMBOSS: prophet
-     _________________________________________________________________
+                                  prophet 
+                                      
    
-                                Program prophet
-                                       
+   
 Function
 
    Gapped alignment for profiles

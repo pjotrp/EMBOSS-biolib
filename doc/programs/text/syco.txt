@@ -1,9 +1,8 @@
 
-                                EMBOSS: syco
-     _________________________________________________________________
+                                   syco 
+                                      
    
-                                 Program syco
-                                       
+   
 Function
 
    Synonymous codon usage Gribskov statistic plot

@@ -1,9 +1,8 @@
 
-                               EMBOSS: chaos
-     _________________________________________________________________
+                                   chaos 
+                                      
    
-                                 Program chaos
-                                       
+   
 Function
 
    Create a chaos game representation plot for a sequence

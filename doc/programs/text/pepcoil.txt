@@ -1,9 +1,8 @@
 
-                              EMBOSS: pepcoil
-     _________________________________________________________________
+                                  pepcoil 
+                                      
    
-                                Program pepcoil
-                                       
+   
 Function
 
    Predicts coiled coil regions

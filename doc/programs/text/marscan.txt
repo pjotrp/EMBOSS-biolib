@@ -1,9 +1,8 @@
 
-                              EMBOSS: marscan
-     _________________________________________________________________
+                                  marscan 
+                                      
    
-                                Program marscan
-                                       
+   
 Function
 
    Finds MAR/SAR sites in nucleic sequences

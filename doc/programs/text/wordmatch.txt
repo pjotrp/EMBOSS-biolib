@@ -1,9 +1,8 @@
 
-                             EMBOSS: wordmatch
-     _________________________________________________________________
+                                 wordmatch 
+                                      
    
-                               Program wordmatch
-                                       
+   
 Function
 
    Finds all exact matches of a given size between 2 sequences

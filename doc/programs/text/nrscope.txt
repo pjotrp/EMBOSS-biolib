@@ -1,9 +1,8 @@
 
-                              EMBOSS: nrscope
-     _________________________________________________________________
+                                  nrscope 
+                                      
    
-                                Program nrscope
-                                       
+   
 Function
 
    Converts redundant EMBL-format SCOP file to non-redundant one
@@ -278,6 +277,7 @@ Known bugs
 See also
 
    Program name Description
+   aaindexextract Extract data from AAINDEX
    cutgextract Extract data from CUTG
    domainer Reads protein coordinate files and writes domains coordinate
    files

@@ -1,9 +1,8 @@
 
-                              EMBOSS: scopreso
-     _________________________________________________________________
+                                 scopreso 
+                                      
    
-                               Program scopreso
-                                       
+   
 Function
 
    Removes low resolution domains from a scop classification file
@@ -31,9 +30,9 @@ Command line arguments
                                   input (embl-like format)
   [-cpdbextn]          string     Extension of coordinate files (embl-like
                                   format)
-   -threshold          float      Threshold for inclusion (Angstroms)
   [-scopinf]           infile     Name of SCOP data file for input (embl-like
                                   format)
+   -threshold          float      Threshold for inclusion (Angstroms)
   [-scopoutf]          outfile    Name of SCOP data file for output
 
    Optional qualifiers: (none)
@@ -51,10 +50,10 @@ Command line arguments
    [-cpdbextn]
    (Parameter 2) Extension of coordinate files (embl-like format) Any
    string is accepted .pxyz
-   -threshold Threshold for inclusion (Angstroms) Any numeric value 2.8
    [-scopinf]
    (Parameter 3) Name of SCOP data file for input (embl-like format)
    Input file Escop.dat
+   -threshold Threshold for inclusion (Angstroms) Any numeric value 2.8
    [-scopoutf]
    (Parameter 4) Name of SCOP data file for output Output file
    Escop_2.8.dat

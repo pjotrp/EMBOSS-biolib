@@ -1,9 +1,8 @@
 
-                                EMBOSS: cai
-     _________________________________________________________________
+                                    cai 
+                                      
    
-                                  Program cai
-                                       
+   
 Function
 
    CAI codon adaptation index

@@ -1,9 +1,8 @@
 
-                               EMBOSS: banana
-     _________________________________________________________________
+                                  banana 
+                                      
    
-                                Program banana
-                                       
+   
 Function
 
    Bending and curvature plot in B-DNA

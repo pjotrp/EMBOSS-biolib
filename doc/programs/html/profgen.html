@@ -7,32 +7,31 @@
   </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
-<table align=center bgcolor="#000070" border=0 cellspacing=0 cellpadding=10>
-<tr>
-<td>
-<a href="index.html" onmouseover="self.status='Go to the EMBOSS home page';return true">
-<img border=0 src="emboss_icon.gif" alt="" width=55 height=55>
-</a>
+
+
+
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="../emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
-<td align=middle valign=middle>
-<font face="Arial,Helvetica" size=6 color="#ffffff">
-<H2>
-EMBOSS: profgen
-</H2>
-</font>
-</td>
-</tr>
+<td align=left valign=middle>
+<b><font size="+6">
+
+profgen
+</font></b>
+</td></tr>
 </table>
-</td>
-</tr>
-</table>
-<p><hr><p>
+<br>&nbsp;
+<p>
+
+
+
+
+
 
 <!--END OF HEADER-->
 
-<H1>
-Program profgen
-</H1>
 <H2>
     Function
 </H2>
@@ -125,27 +124,19 @@ Here is a sample session with profgen:
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Mandatory qualifiers (* if not always prompted):
-   -infpath            string     Directory containing the extended alignments
-                                  (input)
-   -infextn            string     File extention of extended alignment files
-                                  (input)
+   -infpath            string     Location of sequence alignment files (input)
+   -infextn            string     Extension of sequence alignment files
    -type               menu       Select type
 *  -threshold          integer    Enter threshold reporting percentage
 *  -datafile           matrixf    Scoring matrix
 *  -open               float      Gap opening penalty
 *  -extension          float      Gap extension penalty
-*  -smpfpath           string     Directory for generated simple profiles
-                                  (output)
-*  -smpfextn           string     File extention of generated simple profile
-                                  (output)
-*  -gbpfpath           string     Directory for generated Gribskov profiles
-                                  (output)
-*  -gbpfextn           string     File extention of generated Gribskov profile
-                                  (output)
-*  -hnpfpath           string     Directory for generated Henikoff profiles
-                                  (output)
-*  -hnpfextn           string     File extention of generated Henikoff profile
-                                  (output)
+*  -smpfpath           string     Location of simple profile files (output)
+*  -smpfextn           string     Extention of simple profile files
+*  -gbpfpath           string     Location of Gribskov profile files (output)
+*  -gbpfextn           string     Extension of Gribskov profile files
+*  -hnpfpath           string     Location of Henikoff profile files (output)
+*  -hnpfextn           string     Extention of Henikoff profile files
 
    Optional qualifiers: (none)
    Advanced qualifiers: (none)
@@ -167,16 +158,16 @@ Here is a sample session with profgen:
 
 <tr>
 <td>-infpath</td>
-<td>Directory containing the extended alignments (input)</td>
+<td>Location of sequence alignment files (input)</td>
 <td>Any string is accepted</td>
 <td>./</td>
 </tr>
 
 <tr>
 <td>-infextn</td>
-<td>File extention of extended alignment files (input)</td>
+<td>Extension of sequence alignment files</td>
 <td>Any string is accepted</td>
-<td>.salign</td>
+<td>.ealign</td>
 </tr>
 
 <tr>
@@ -216,42 +207,42 @@ Here is a sample session with profgen:
 
 <tr>
 <td>-smpfpath</td>
-<td>Directory for generated simple profiles (output)</td>
+<td>Location of simple profile files (output)</td>
 <td>Any string is accepted</td>
 <td>./tmp/</td>
 </tr>
 
 <tr>
 <td>-smpfextn</td>
-<td>File extention of generated simple profile (output)</td>
+<td>Extention of simple profile files</td>
 <td>Any string is accepted</td>
 <td>.freq</td>
 </tr>
 
 <tr>
 <td>-gbpfpath</td>
-<td>Directory for generated Gribskov profiles (output)</td>
+<td>Location of Gribskov profile files (output)</td>
 <td>Any string is accepted</td>
 <td>./tmp/</td>
 </tr>
 
 <tr>
 <td>-gbpfextn</td>
-<td>File extention of generated Gribskov profile (output)</td>
+<td>Extension of Gribskov profile files</td>
 <td>Any string is accepted</td>
 <td>.gribs</td>
 </tr>
 
 <tr>
 <td>-hnpfpath</td>
-<td>Directory for generated Henikoff profiles (output)</td>
+<td>Location of Henikoff profile files (output)</td>
 <td>Any string is accepted</td>
 <td>./tmp/</td>
 </tr>
 
 <tr>
 <td>-hnpfextn</td>
-<td>File extention of generated Henikoff profile (output)</td>
+<td>Extention of Henikoff profile files</td>
 <td>Any string is accepted</td>
 <td>.henik</td>
 </tr>
@@ -664,9 +655,6 @@ This program is intended to be used by everyone and everything, from naive users
 
 
 
-
-</TD></TR></TABLE>
-</CENTER>
 
 </BODY>
 </HTML>

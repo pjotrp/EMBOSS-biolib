@@ -1,9 +1,8 @@
 
-                               EMBOSS: msbar
-     _________________________________________________________________
+                                   msbar 
+                                      
    
-                                 Program msbar
-                                       
+   
 Function
 
    Mutate sequence beyond all recognition

@@ -1,9 +1,8 @@
 
-                              EMBOSS: dbiblast
-     _________________________________________________________________
+                                 dbiblast 
+                                      
    
-                               Program dbiblast
-                                       
+   
 Function
 
    Index a BLAST database

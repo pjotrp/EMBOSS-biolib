@@ -1,9 +1,8 @@
 
-                            EMBOSS: patmatmotifs
-     _________________________________________________________________
+                           EMBOSS: patmatmotifs 
+                                      
    
-                             Program patmatmotifs
-                                       
+   
 Function
 
    Search a PROSITE motif database with a protein sequence

@@ -7,32 +7,30 @@
   </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
-<table align=center bgcolor="#000070" border=0 cellspacing=0 cellpadding=10>
-<tr>
-<td>
-<a href="index.html" onmouseover="self.status='Go to the EMBOSS home page';return true">
-<img border=0 src="emboss_icon.gif" alt="" width=55 height=55>
-</a>
+
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="../emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
-<td align=middle valign=middle>
-<font face="Arial,Helvetica" size=6 color="#ffffff">
-<H2>
-EMBOSS: hmmgen
-</H2>
-</font>
-</td>
-</tr>
+<td align=left valign=middle>
+<b><font size="+6">
+
+hmmgen
+</font></b>
+</td></tr>
 </table>
-</td>
-</tr>
-</table>
-<p><hr><p>
+<br>&nbsp;
+<p>
+
+
+
+
+
 
 <!--END OF HEADER-->
 
-<H1>
-Program hmmgen
-</H1>
+
 <H2>
     Function
 </H2>
@@ -125,12 +123,10 @@ Here is a sample session with hmmgen:
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Mandatory qualifiers:
-   -infpath            string     Directory containing the extended alignments
-                                  (input)
-   -infextn            string     File extention of extended alignment files
-                                  (input)
-   -outfpath           string     Directory to put the hmms (output)
-   -outfextn           string     File extention hmm files (output)
+   -infpath            string     Location of sequence alignment files (input)
+   -infextn            string     Extention of sequence alignment files
+   -outfpath           string     Location of HMM files (output)
+   -outfextn           string     Extention of HMM files
 
    Optional qualifiers: (none)
    Advanced qualifiers: (none)
@@ -152,28 +148,28 @@ Here is a sample session with hmmgen:
 
 <tr>
 <td>-infpath</td>
-<td>Directory containing the extended alignments (input)</td>
+<td>Location of sequence alignment files (input)</td>
 <td>Any string is accepted</td>
 <td>./</td>
 </tr>
 
 <tr>
 <td>-infextn</td>
-<td>File extention of extended alignment files (input)</td>
+<td>Extention of sequence alignment files</td>
 <td>Any string is accepted</td>
-<td>.salign</td>
+<td>.ealign</td>
 </tr>
 
 <tr>
 <td>-outfpath</td>
-<td>Directory to put the hmms (output)</td>
+<td>Location of HMM files (output)</td>
 <td>Any string is accepted</td>
 <td>./</td>
 </tr>
 
 <tr>
 <td>-outfextn</td>
-<td>File extention hmm files (output)</td>
+<td>Extention of HMM files</td>
 <td>Any string is accepted</td>
 <td>.hmm</td>
 </tr>
@@ -586,9 +582,6 @@ This program is intended to be used by everyone and everything, from naive users
 
 
 
-
-</TD></TR></TABLE>
-</CENTER>
 
 </BODY>
 </HTML>

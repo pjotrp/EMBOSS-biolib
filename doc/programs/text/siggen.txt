@@ -1,9 +1,8 @@
 
-                               EMBOSS: siggen
-     _________________________________________________________________
+                                  siggen 
+                                      
    
-                                Program siggen
-                                       
+   
 Function
 
    Generates a sparse protein signature from an alignment and residue
@@ -64,11 +63,9 @@ Name of signature file for output [sig.sig]:
 Command line arguments
 
    Mandatory qualifiers (* if not always prompted):
-  [-algpath]           string     Location of extended alignment files
-                                  (clustal format input)
+  [-algpath]           string     Location of scop structure-based sequence
+                                  alignment files (input)
   [-algextn]           string     Extension of alignment files
-  [-sigpath]           string     Location of signature files (output)
-  [-sigextn]           string     Extension of signature files
    -sparsity           integer    % sparsity of signature
 *  -seqoption          menu       Select number
 *  -datafile           matrixf    Substitution matrix to be used
@@ -83,6 +80,8 @@ Command line arguments
 *  -cpdbextn           string     Extension of coordinate files
 *  -filterpsim         bool       Ignore alignment postitions with
                                   post_similar value of 0
+  [-sigpath]           string     Location of signature files (output)
+  [-sigextn]           string     Extension of signature files
 
    Optional qualifiers: (none)
    Advanced qualifiers:
@@ -96,16 +95,11 @@ Command line arguments
 
    Mandatory qualifiers Allowed values Default
    [-algpath]
-   (Parameter 1) Location of extended alignment files (clustal format
-   input) Any string is accepted ./
+   (Parameter 1) Location of scop structure-based sequence alignment
+   files (input) Any string is accepted ./
    [-algextn]
    (Parameter 2) Extension of alignment files Any string is accepted
-   .align
-   [-sigpath]
-   (Parameter 3) Location of signature files (output) Any string is
-   accepted ./
-   [-sigextn]
-   (Parameter 4) Extension of signature files Any string is accepted .sig
+   .salign
    -sparsity % sparsity of signature Any integer value 10
    -seqoption Select number
    1 (Substitution matrix)
@@ -123,14 +117,18 @@ Command line arguments
    -filtercon Ignore alignment positions making less than a threshold
    number of contacts Yes/No No
    -conthresh Threshold contact number Any integer value 10
-   -conpath Location of contact files (input) Any string is accepted
-   /data/contacts/
+   -conpath Location of contact files (input) Any string is accepted ./
    -conextn Extension of contact files Any string is accepted .con
    -cpdbpath Location of domain coordinate files (embl format input) Any
-   string is accepted /data/cpdbscop/
+   string is accepted ./
    -cpdbextn Extension of coordinate files Any string is accepted .pxyz
    -filterpsim Ignore alignment postitions with post_similar value of 0
    Yes/No No
+   [-sigpath]
+   (Parameter 3) Location of signature files (output) Any string is
+   accepted ./
+   [-sigextn]
+   (Parameter 4) Extension of signature files Any string is accepted .sig
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default

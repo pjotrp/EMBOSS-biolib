@@ -1,9 +1,8 @@
 
-                             EMBOSS: einverted
-     _________________________________________________________________
+                                 einverted 
+                                      
    
-                               Program einverted
-                                       
+   
 Function
 
    Finds DNA inverted repeats

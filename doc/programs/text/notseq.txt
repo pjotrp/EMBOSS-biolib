@@ -1,9 +1,8 @@
 
-                               EMBOSS: notseq
-     _________________________________________________________________
+                                  notseq 
+                                      
    
-                                Program notseq
-                                       
+   
 Function
 
    Excludes a set of sequences and writes out the remaining ones
@@ -190,6 +189,7 @@ See also
    revseq       Reverse and complement a sequence
    seqret       Reads and writes (returns) sequences
    seqretsplit  Reads and writes (returns) sequences in individual files
+   skipseq      Reads and writes (returns) sequences
    splitter     Split a sequence into (overlapping) smaller sequences
    swissparse   Retrieves sequences from swissprot using keyword search
    trimest      Trim poly-A tails off EST sequences

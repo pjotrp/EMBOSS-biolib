@@ -1,9 +1,8 @@
 
-                            EMBOSS: prosextract
-     _________________________________________________________________
+                                prosextract 
+                                      
    
-                              Program prosextract
-                                       
+   
 Function
 
    Builds the PROSITE motif database for patmatmotifs to search
@@ -119,6 +118,7 @@ Known bugs
 See also
 
    Program name Description
+   aaindexextract Extract data from AAINDEX
    cutgextract Extract data from CUTG
    domainer Reads protein coordinate files and writes domains coordinate
    files

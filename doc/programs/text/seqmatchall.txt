@@ -1,9 +1,8 @@
 
-                            EMBOSS: seqmatchall
-     _________________________________________________________________
+                                seqmatchall 
+                                      
    
-                              Program seqmatchall
-                                       
+   
 Function
 
    Does an all-against-all comparison of a set of sequences

@@ -1,6 +1,7 @@
 
-                         EMBOSS: Application Groups
-     _________________________________________________________________
+                            Application Groups 
+                                      
+   
    
             Group                Description
    Alignment consensus     Alignment consensus

@@ -1,9 +1,8 @@
 
-                               EMBOSS: dottup
-     _________________________________________________________________
+                                  dottup 
+                                      
    
-                                Program dottup
-                                       
+   
 Function
 
    Displays a wordmatch dotplot of two sequences

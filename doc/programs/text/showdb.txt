@@ -1,9 +1,8 @@
 
-                               EMBOSS: showdb
-     _________________________________________________________________
+                                  showdb 
+                                      
    
-                                Program showdb
-                                       
+   
 Function
 
    Displays information on the currently available databases

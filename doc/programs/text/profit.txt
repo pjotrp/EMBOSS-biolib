@@ -1,9 +1,8 @@
 
-                               EMBOSS: profit
-     _________________________________________________________________
+                                  profit 
+                                      
    
-                                Program profit
-                                       
+   
 Function
 
    Scan a sequence or database with a matrix or profile

@@ -1,9 +1,8 @@
 
-                                EMBOSS: cons
-     _________________________________________________________________
+                                   cons 
+                                      
    
-                                 Program cons
-                                       
+   
 Function
 
    Creates a consensus from multiple alignments

@@ -1,9 +1,8 @@
 
-                               EMBOSS: tfscan
-     _________________________________________________________________
+                                  tfscan 
+                                      
    
-                                Program tfscan
-                                       
+   
 Function
 
    Scans DNA sequences for transcription factors

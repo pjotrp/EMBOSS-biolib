@@ -1,9 +1,8 @@
 
-                               EMBOSS: charge
-     _________________________________________________________________
+                                  charge 
+                                      
    
-                                Program charge
-                                       
+   
 Function
 
    Protein charge plot

@@ -1,9 +1,8 @@
 
-                             EMBOSS: prettyseq
-     _________________________________________________________________
+                                 prettyseq 
+                                      
    
-                               Program prettyseq
-                                       
+   
 Function
 
    Output sequence with translated ranges

@@ -1,9 +1,8 @@
 
-                             EMBOSS: checktrans
-     _________________________________________________________________
+                                checktrans 
+                                      
    
-                              Program checktrans
-                                       
+   
 Function
 
    Reports STOP codons and ORF statistics of a protein sequence

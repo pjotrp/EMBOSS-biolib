@@ -1,9 +1,8 @@
 
-                              EMBOSS: wossname
-     _________________________________________________________________
+                                 wossname 
+                                      
    
-                               Program wossname
-                                       
+   
 Function
 
    Finds programs by keywords in their one-line documentation

@@ -1,9 +1,8 @@
 
-                              EMBOSS: plotorf
-     _________________________________________________________________
+                                  plotorf 
+                                      
    
-                                Program plotorf
-                                       
+   
 Function
 
    Plot potential open reading frames

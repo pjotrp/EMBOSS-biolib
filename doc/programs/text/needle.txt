@@ -1,9 +1,8 @@
 
-                               EMBOSS: needle
-     _________________________________________________________________
+                                  needle 
+                                      
    
-                                Program needle
-                                       
+   
 Function
 
    Needleman-Wunsch global alignment

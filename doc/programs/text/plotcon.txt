@@ -1,9 +1,8 @@
 
-                              EMBOSS: plotcon
-     _________________________________________________________________
+                                  plotcon 
+                                      
    
-                                Program plotcon
-                                       
+   
 Function
 
    Plots the quality of conservation of a sequence alignment

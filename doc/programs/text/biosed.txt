@@ -1,9 +1,8 @@
 
-                               EMBOSS: biosed
-     _________________________________________________________________
+                                  biosed 
+                                      
    
-                                Program biosed
-                                       
+   
 Function
 
    Replace or delete sequence sections
@@ -130,6 +129,7 @@ See also
    revseq       Reverse and complement a sequence
    seqret       Reads and writes (returns) sequences
    seqretsplit  Reads and writes (returns) sequences in individual files
+   skipseq      Reads and writes (returns) sequences
    splitter     Split a sequence into (overlapping) smaller sequences
    swissparse   Retrieves sequences from swissprot using keyword search
    trimest      Trim poly-A tails off EST sequences

@@ -1,9 +1,8 @@
 
-                                EMBOSS: emma
-     _________________________________________________________________
+                                   emma 
+                                      
    
-                                 Program emma
-                                       
+   
 Function
 
    Multiple alignment program - interface to ClustalW program

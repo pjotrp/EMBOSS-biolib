@@ -1,9 +1,8 @@
 
-                              EMBOSS: whichdb
-     _________________________________________________________________
+                                  whichdb 
+                                      
    
-                                Program whichdb
-                                       
+   
 Function
 
    Search all databases for an entry

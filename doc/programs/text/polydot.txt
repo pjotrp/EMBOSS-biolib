@@ -1,9 +1,8 @@
 
-                              EMBOSS: polydot
-     _________________________________________________________________
+                                  polydot 
+                                      
    
-                                Program polydot
-                                       
+   
 Function
 
    Displays all-against-all dotplots of a set of sequences

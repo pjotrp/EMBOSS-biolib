@@ -7,32 +7,33 @@
   </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
-<table align=center bgcolor="#000070" border=0 cellspacing=0 cellpadding=10>
-<tr>
-<td>
-<a href="index.html" onmouseover="self.status='Go to the EMBOSS home page';return true">
-<img border=0 src="emboss_icon.gif" alt="" width=55 height=55>
-</a>
+
+
+
+
+
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="../emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
-<td align=middle valign=middle>
-<font face="Arial,Helvetica" size=6 color="#ffffff">
-<H2>
-EMBOSS: seqsearch
-</H2>
-</font>
-</td>
-</tr>
+<td align=left valign=middle>
+<b><font size="+6">
+
+seqsearch
+</font></b>
+</td></tr>
 </table>
-</td>
-</tr>
-</table>
-<p><hr><p>
+<br>&nbsp;
+<p>
+
+
+
+
+
 
 <!--END OF HEADER-->
 
-<H1>
-Program seqsearch
-</H1>
 <H2>
     Function
 </H2>
@@ -129,12 +130,12 @@ Here is a sample session with seqsearch:
                                   format input)
   [-align]             string     Location of scop alignment files (input)
   [-alignextn]         string     Extension of scop alignment files
-  [-hits]              string     Location of scop hits files (output)
-  [-hitsextn]          string     Extension of scop hits files
    -niter              integer    Number of PSIBLAST iterations
    -evalue             float      Threshold E-value for inclusion in family
    -maxhits            integer    Maximum number of hits
    -submatrix          string     Residue substitution matrix
+  [-hits]              string     Location of scop hits files (output)
+  [-hitsextn]          string     Extension of scop hits files
    -logf               outfile    Name of log file for the build
 
    Optional qualifiers: (none)
@@ -177,20 +178,6 @@ Here is a sample session with seqsearch:
 </tr>
 
 <tr>
-<td>[-hits]<br>(Parameter 4)</td>
-<td>Location of scop hits files (output)</td>
-<td>Any string is accepted</td>
-<td>./</td>
-</tr>
-
-<tr>
-<td>[-hitsextn]<br>(Parameter 5)</td>
-<td>Extension of scop hits files</td>
-<td>Any string is accepted</td>
-<td>.hits</td>
-</tr>
-
-<tr>
 <td>-niter</td>
 <td>Number of PSIBLAST iterations</td>
 <td>Any integer value</td>
@@ -216,6 +203,20 @@ Here is a sample session with seqsearch:
 <td>Residue substitution matrix</td>
 <td>Any string is accepted</td>
 <td>./EBLOSUM62</td>
+</tr>
+
+<tr>
+<td>[-hits]<br>(Parameter 4)</td>
+<td>Location of scop hits files (output)</td>
+<td>Any string is accepted</td>
+<td>./</td>
+</tr>
+
+<tr>
+<td>[-hitsextn]<br>(Parameter 5)</td>
+<td>Extension of scop hits files</td>
+<td>Any string is accepted</td>
+<td>.hits</td>
 </tr>
 
 <tr>
@@ -633,9 +634,6 @@ This program is intended to be used by everyone and everything, from naive users
 
 
 
-
-</TD></TR></TABLE>
-</CENTER>
 
 </BODY>
 </HTML>

@@ -1,9 +1,8 @@
 
-                               EMBOSS: emowse
-     _________________________________________________________________
+                                  emowse 
+                                      
    
-                                Program emowse
-                                       
+   
 Function
 
    Protein identification by mass spectrometry

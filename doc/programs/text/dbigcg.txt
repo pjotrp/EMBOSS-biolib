@@ -1,9 +1,8 @@
 
-                               EMBOSS: dbigcg
-     _________________________________________________________________
+                                  dbigcg 
+                                      
    
-                                Program dbigcg
-                                       
+   
 Function
 
    Index a GCG formatted database

@@ -1,9 +1,8 @@
 
-                              EMBOSS: etandem
-     _________________________________________________________________
+                                  etandem 
+                                      
    
-                                Program etandem
-                                       
+   
 Function
 
    Looks for tandem repeats in a nucleotide sequence

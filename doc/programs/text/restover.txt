@@ -1,9 +1,8 @@
 
-                              EMBOSS: restover
-     _________________________________________________________________
+                                 restover 
+                                      
    
-                               Program restover
-                                       
+   
 Function
 
    Finds restriction enzymes that produce a specific overhang
