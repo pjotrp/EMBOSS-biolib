@@ -105,9 +105,10 @@ public class Block extends JPanel
     return ((Integer)marker.elementAt(2)).intValue();
   }
 
-  protected void showProperties(final DNADraw draw)
+  protected void showProperties(final JFrame f, final DNADraw draw,
+                                JButton delete)
   {
-    final JFrame f = new JFrame("Properties");
+//  final JFrame f = new JFrame("Properties");
 //set up menu bar
     JMenuBar menuBar = new JMenuBar();
     JMenu fileMenu = new JMenu("File");
@@ -314,6 +315,11 @@ public class Block extends JPanel
       }
     });
     bacross.add(none);
+    bacross.add(Box.createHorizontalGlue());
+    bdown.add(bacross);
+
+    bacross = Box.createHorizontalBox();
+    bacross.add(delete);
     bacross.add(Box.createHorizontalGlue());
     bdown.add(bacross);
 

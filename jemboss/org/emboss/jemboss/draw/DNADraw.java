@@ -103,9 +103,32 @@ public class DNADraw extends ScrollPanel
           {
             if(getComponent(i) instanceof Block)
             {
-              Block drawBlock = (Block)getComponent(i);
+              final Block drawBlock = (Block)getComponent(i);
               if(drawBlock.isOverMe(me.getX(),me.getY()))
-                drawBlock.showProperties(DNADraw.this);
+              {
+                final JFrame f = new JFrame("Properties");
+                JButton butt = new JButton("Delete");
+                butt.addActionListener(new ActionListener()
+                {
+                  public void actionPerformed(ActionEvent e)
+                  {
+                    remove(drawBlock);
+                    current_dna.repaint(); 
+                    f.setVisible(false);
+                    f.dispose();       
+                    Enumeration enum = block.elements();
+                    int nelement = 0;
+                    while(enum.hasMoreElements())
+                    {
+                      Vector v = (Vector)enum.nextElement();
+                      if(v.contains(drawBlock))
+                        block.removeElementAt(nelement);   
+                      nelement++;
+                    }
+                  }
+                }); 
+                drawBlock.showProperties(f,DNADraw.this,butt);
+              }
             }
           }
 
@@ -113,7 +136,6 @@ public class DNADraw extends ScrollPanel
       }
     };
     this.addMouseListener(mouseListener);
-
   }
 
 
