@@ -157,7 +157,7 @@ sub testinput($\@\@) {
     for ($i=0; $i <= $#{$tcast}; $i++) {
 	$tc = ${$tcast}[$i];
 	$tx = ${$tcode}[$i];
-	if ($tc eq "$tdata" && ($tx =~ /[wu]/)) {
+	if (($tc eq "$tdata" || $tc eq "$tdata*")&& ($tx =~ /[wu]/)) {
 	    $ok = 1;
 	}
     }
@@ -448,6 +448,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 
 	    $type = $token; 
 	    ($name, $mrest) = ($data =~ /\S+\s+(\S+)\s*(.*)/gos);
+	    $fname = $name;
 	    print "Macro $name\n";
 	    ### print "args '$margs'\n";
 	    print $OFILE "<hr><h3><a name=\"$name\">\n";
