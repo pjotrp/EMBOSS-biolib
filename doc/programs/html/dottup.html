@@ -60,24 +60,35 @@ Displays a wordmatch dotplot of two sequences
 A dotplot is a graphical representation of the regions of similarity
 between two sequences.
 
-<p>
-The two sequences are placed on the axes of a rectangular image and
-wherever there is a similarity between the sequences a dot is placed on
-the image. 
+<p> 
 
-<p>
+The two sequences are placed on the axes of a rectangular image and
+(in the simplest forms of dotplot) wherever there is a similarity
+between the sequences a dot is placed on the image. 
+
+<p> 
+
 Where the two sequences have substantial regions of similarity, many
 dots align to form diagonal lines.  It is therefore possible to see at a
-glance where there are local regions of similarity.
+glance where there are local regions of similarity as these will have
+long diagonal lines.  It is also easy to see other features such as
+repeats (which form parallel diagonal lines), and insertions or
+deletions (which form breaks or discontinuities in the diagonal lines). 
 
 <p>
-dottup looks for places where words (tuples) of a specified length
-have an exact match in both sequences and draws a diagonal line over
-the position of these words.
+
+<b>dottup</b> looks for places where words (tuples) of a specified
+length have an exact match in both sequences and draws a diagonal line
+over the position of these words.  This is a fast, but not especially
+sensitive way of creating dotplots.  It is an acceptable method for
+displaying regions of substantial similarity between two sequences. 
 
 <p>
-Using a longer word (tuple) size thus displays less random noise, runs
-extremely quickly, but is less sensitive.
+
+Using a longer word (tuple) size displays less random noise, runs
+extremely quickly, but is less sensitive.  Shorter word sizes are more
+sensitive to shorter or fragmentary regions of similarity, but also
+display more random points of similarity (noise) and runs slower. 
 
 <H2>
     Usage
@@ -270,25 +281,35 @@ positions of matching diagonals sorted by length:
     Data files
 </H2>
 
+None.
+
 
 <H2>
     Notes
 </H2>
+
+None.
 
 
 <H2>
     References
 </H2>
 
+None.
+
 
 <H2>
     Warnings
 </H2>
 
+None.
+
 
 <H2>
     Diagnostic Error Messages
 </H2>
+
+None.
 
 
 <H2>
@@ -301,6 +322,8 @@ positions of matching diagonals sorted by length:
 <H2>
     Known bugs
 </H2>
+
+None.
 
 
 <!--
@@ -349,6 +372,7 @@ positions of matching diagonals sorted by length:
         data files?) that seealso doesn't find.
    -->
 
+<p>
 
 <a href="dotmatcher.html">dotmatcher,</a> by comparison, moves a
 window of specified length up each diagonal and displays a line over
