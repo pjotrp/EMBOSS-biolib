@@ -409,7 +409,8 @@ public class BuildProgramMenu
       if(acdStore.containsKey(applName+".acd"))
       {
         Object obj = acdStore.get(applName+".acd");
-        if(obj.getClass().getName().equals("String"))
+
+        if(obj.getClass().getName().equals("java.lang.String"))
           acdText = (String)obj;
         else
           acdText = new String((byte[])obj);
@@ -421,7 +422,7 @@ public class BuildProgramMenu
         GetACD progacd = new GetACD(applName,mysettings);
         acdText = progacd.getAcd();
         System.out.println("Retrieved "+applName+" acd file via soap");
-        acdStore.put(applName,acdText+".acd");
+        acdStore.put(applName+".acd",acdText);
       }
     }
     return acdText;
