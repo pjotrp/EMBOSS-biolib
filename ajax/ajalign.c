@@ -472,9 +472,10 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
     ajint maxout;
     
     static AjPStr cons = NULL;
-    AjPSeqCvt cvt      = NULL;	      /* cvt = ajMatrixCvt(matrix); */
-    ajint **sub        = NULL;	    /* sub = ajMatrixArray(matrix); */
-    float **fsub       = NULL;	    /* sub = ajMatrixArray(matrix); */
+
+    AjPSeqCvt cvt = NULL;	    /* cvt = ajMatrixCvt(matrix);   */
+    ajint **sub   = NULL;	    /* sub = ajMatrixArray(matrix); */
+    float **fsub  = NULL;	    /* sub = ajMatrixArray(matrix); */
     
     ajint llen;
     
@@ -489,7 +490,7 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
     ajint max1;
     
     char *line[3]  = {NULL, NULL, NULL}; /* [MAXOUT] */
-    char *cline[2] = {NULL, NULL};	/* [MAXOUT+10] */
+    char *cline[2] = {NULL, NULL};	 /* [MAXOUT+10] */
     ajint il;
     ajint i;
     ajint lend;
@@ -846,6 +847,7 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 		    line[1][i] = 'X';
 		    i0n = i1n  = -1;
 		}
+
 		if((ioff0-del0 == i00) || (ioff0-del0 == i0n))
 		{
 		    line[1][i] = '^';
@@ -854,6 +856,7 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 		    else
 			i0n = -1;
 		}
+
 		if(ioff1-del1 == i10 || ioff1-del1 == i1n)
 		{
 		    line[1][i] = 'v';
@@ -894,6 +897,8 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
     
     return;
 }
+
+
 
 
 /* @funcstatic alignWriteMatch ************************************************
@@ -2219,6 +2224,7 @@ void ajAlignSetMatrixInt(AjPAlign thys, const AjPMatrix matrix)
 	thys->IMatrix = matrix;
 	ajAlignSetMatrixName(thys, ajMatrixName(matrix));
     }
+
     if(thys->FMatrix)
 	ajMatrixfDel(&thys->FMatrix);
 
@@ -2245,6 +2251,7 @@ void ajAlignSetMatrixFloat(AjPAlign thys, const AjPMatrixf matrix)
 	thys->FMatrix = matrix;
 	ajAlignSetMatrixName(thys, ajMatrixfName(matrix));
     }
+
     if(thys->IMatrix)
 	ajMatrixDel(&thys->IMatrix);
 
@@ -2715,15 +2722,15 @@ AjBool ajAlignSetRange(AjPAlign thys,
     ajDebug("nali:%d set range %d\n", nali, nali-1);
 
     data = pdata[nali-1];
-    data->Start[0] = start1;
-    data->End[0] = end1;
+    data->Start[0]  = start1;
+    data->End[0]    = end1;
     data->Offset[0] = 0;
-    data->Rev[0] = ajFalse;
+    data->Rev[0]    = ajFalse;
 
-    data->Start[1] = start2;
-    data->End[1] = end2;
+    data->Start[1]  = start2;
+    data->End[1]    = end2;
     data->Offset[1] = 0;
-    data->Rev[1] = ajFalse;
+    data->Rev[1]    = ajFalse;
 
     if(thys->SeqExternal)
     {
@@ -3208,12 +3215,14 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 
 
 		    /*
-		       if( iseq != jseq)	/# skip the sequence we are on #/
+		       if( iseq != jseq)
+		       /# skip the sequence we are on #/
 		       {
 		       m2 = ajSeqCvtK(cvt, seqcharptr[jseq][kjpos]);
 		       if(matrix)
 		       {
-		       if(m1 && m2 && matrix[m1][m2] > 0)  /# 'matching' if positive #/
+		       if(m1 && m2 && matrix[m1][m2] > 0)
+		       /# 'matching' if positive #/
 		       {
 		       matching[m1] += seqs[jseq]->Weight;
 		       }
@@ -3288,7 +3297,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 	else
 	{
 	    ajMatrixfChar(thys->FMatrix, identicalmaxindex-1, &debugstr1);
-	    ajMatrixfChar(thys->FMatrix, matchingmaxindex-1, &debugstr2);	    
+	    ajMatrixfChar(thys->FMatrix, matchingmaxindex-1, &debugstr2);
 	    ajDebug("index[%d] ident:%d '%S' %.1f matching:%d '%S' %.1f %.1f "
 		    "high:%d '%c' %.1f\n",
 		    kkpos,
@@ -3524,6 +3533,9 @@ static void alignTraceData(const AjPAlign thys)
     
     return;
 }
+
+
+
 
 /* @func ajAlignPrintFormat ***************************************************
 **
