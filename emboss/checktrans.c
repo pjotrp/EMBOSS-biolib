@@ -30,7 +30,7 @@
 
 static void checktrans_findorfs( AjPSeqout *outseq, AjPFile *outf, ajint s,
 				ajint len, char *seq, char *name, ajint begin,
-				ajint orfml);
+				ajint orfml, AjBool addedasterisk);
 
 static void checktrans_ajbseq(AjPSeqout *outseq, char *seq, ajint begin,
 			      int end, char *name, ajint count);
@@ -55,11 +55,13 @@ int main(int argc, char **argv)
     AjPStr    substr=NULL;
     AjPSeqout outseq=NULL;
     AjPFeattabOut featout=NULL;
+    AjBool    addlast;
     
     ajint begin;
     ajint end;
     ajint len;
     ajint orfml;
+    AjBool addedasterisk = ajFalse;
 
     embInit("checktrans",argc,argv);
     seqall    = ajAcdGetSeqall("sequence");
@@ -67,6 +69,7 @@ int main(int argc, char **argv)
     orfml     = ajAcdGetInt("orfml");
     outseq    = ajAcdGetSeqoutall("outseq");
     featout   = ajAcdGetFeatout("featout");
+    addlast   = ajAcdGetBool("addlast");
 
     substr    = ajStrNew();
 
@@ -79,6 +82,13 @@ int main(int argc, char **argv)
         strand = ajSeqStr(seq);
 
 	ajStrAssSubC(&substr,ajStrStr(strand),begin-1,end-1); 
+        /* end with a '*' if we want to and there is not one there already */
+	ajDebug("last residue =%c\n", ajSeqChar(seq)[end-1]);
+        if (addlast && ajSeqChar(seq)[end-1] != '*') {
+            ajStrAppK(&substr,'*');
+            addedasterisk = ajTrue;
+        }
+	ajDebug("After appending, sequence=%S\n", substr);
         ajStrToUpper(&substr);
 
         len=ajStrLen(substr);
@@ -86,8 +96,8 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outf,"\n\nCHECKTRANS of %s from %d to %d\n\n",
 		    ajSeqName(seq),begin,begin+len-1);
 
-        checktrans_findorfs(&outseq, &outf,0,len,ajStrStr(substr),
-			    ajSeqName(seq),begin,orfml);
+        checktrans_findorfs(&outseq, &outf, 0, len, ajStrStr(substr),
+			    ajSeqName(seq), begin, orfml, addedasterisk);
 
 	checktrans_dumptofeat(featout,0,len,ajStrStr(substr),ajSeqName(seq),
 			      begin,orfml);
@@ -120,12 +130,13 @@ int main(int argc, char **argv)
 ** @param [?] name [char*] Undocumented
 ** @param [?] begin [ajint] Undocumented
 ** @param [?] min_orflength [ajint] Undocumented
+** @param [r] addedasterisk [AjBool] True if an asterisk was added at the end
 ** @@
 ******************************************************************************/
 
 static void checktrans_findorfs (AjPSeqout *outseq, AjPFile *outf, ajint from,
 				 ajint to, char *p, char *name, ajint begin,
-				 ajint min_orflength)
+				 ajint min_orflength, AjBool addedasterisk)
 
 {
     ajint i;
@@ -157,6 +168,10 @@ static void checktrans_findorfs (AjPSeqout *outseq, AjPFile *outf, ajint from,
 	}
     }
 
+    /* don't count the last asterisk if it was added by the program */
+    if (addedasterisk) {
+    	--count;
+    }
     ajFmtPrintF(*outf,"\n\tTotal STOPS: %5d\n\n ",count-1);
 
     return;
