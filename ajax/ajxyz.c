@@ -5212,7 +5212,7 @@ AjBool ajXyzPdbChain(char id, AjPPdb pdb, ajint *chn)
     
     for(a=0;a<pdb->Nchn;a++)
     {
-	if(toupper(pdb->Chains[a]->Id) == toupper(id))
+	if(toupper((int)pdb->Chains[a]->Id) == toupper((int)id))
 	{
 	    *chn=a+1;
 	    return ajTrue;
@@ -8966,8 +8966,8 @@ AjBool   ajXyzCmapRead(AjPFile inf, ajint mode, ajint chn, ajint mod, AjPCmap *t
 	       specified in the original pdb file)*/
 
 	    if(((cn==chn)&&(mode==CMAP_MODE_I)) ||
-	       ((toupper(chnid)==toupper((char)chn))&&(mode==CMAP_MODE_C))||
-	       ((toupper(chnid)=='.') && (toupper((char)chn)!='.') &&(mode==CMAP_MODE_C)))
+	       ((toupper((int)chnid)==toupper(chn))&&(mode==CMAP_MODE_C))||
+	       ((toupper((int)chnid)=='.') && (toupper(chn)!='.') &&(mode==CMAP_MODE_C)))
 	    {
 		idok=ajTrue;
 		
@@ -13250,7 +13250,7 @@ AjBool ajXyzSunidToScopInfo (ajint sunid, AjPStr *family, AjPStr *superfamily, A
 
 
 
-/* @funcstatic  ajXyzDbaseNew **************************************************
+/* @func  ajXyzDbaseNew **************************************************
 **
 ** Constructor for Dbase object
 ** @param [r] n [ajint] number of entries in database
@@ -13258,7 +13258,7 @@ AjBool ajXyzSunidToScopInfo (ajint sunid, AjPStr *family, AjPStr *superfamily, A
 ** @return [AjPDbase] Pointer to Dbase object
 ** @@
 *************************************************************************/
-static AjPDbase  ajXyzDbaseNew(ajint n)
+AjPDbase  ajXyzDbaseNew(ajint n)
 {
     AjPDbase ret=NULL;
     
@@ -13279,7 +13279,7 @@ static AjPDbase  ajXyzDbaseNew(ajint n)
 }
 
 
-/* @funcstatic  ajXyzDbaseDel ***********************************************
+/* @func  ajXyzDbaseDel ***********************************************
 **
 ** Destructor for Dbase object 
 ** @param [r] ptr [AjPDbase*] Pointer to the Dbase object
@@ -13287,7 +13287,7 @@ static AjPDbase  ajXyzDbaseNew(ajint n)
 ** @return [void] 
 ** @@
 ******************************************************************************/
-static void ajXyzDbaseDel(AjPDbase *ptr)
+void ajXyzDbaseDel(AjPDbase *ptr)
 {
   ajint i=0;
   
@@ -13320,7 +13320,7 @@ static void ajXyzDbaseDel(AjPDbase *ptr)
   return;
 }
 
-/* @funcstatic  ajXyzDbaseEntNew *******************************************
+/* @func ajXyzDbaseEntNew *******************************************
 **
 ** Constructor for DbaseEnt object 
 ** @param [r] n [ajint] number of entries in array of domain contact residues
@@ -13328,7 +13328,7 @@ static void ajXyzDbaseDel(AjPDbase *ptr)
 ** @return [AjPDbaseEnt] Pointer to DbaseEnt object
 ** @@
 ******************************************************************************/
-static AjPDbaseEnt ajXyzDbaseEntNew(ajint n)
+AjPDbaseEnt ajXyzDbaseEntNew(ajint n)
 {
   AjPDbaseEnt ret=NULL;
   AJNEW0(ret);
@@ -13352,7 +13352,7 @@ static AjPDbaseEnt ajXyzDbaseEntNew(ajint n)
   return ret;
 }
 
-/* @funcstatic  ajXyzDbaseEntDel *******************************************
+/* @func ajXyzDbaseEntDel *******************************************
 **
 ** Destructor for DbaseEnt object 
 ** @param [w] ptr [AjPDbaseEnt *] DbaseEnt object pointer
@@ -13360,7 +13360,7 @@ static AjPDbaseEnt ajXyzDbaseEntNew(ajint n)
 ** @return [void] 
 ** @@
 ******************************************************************************/
-static void ajXyzDbaseEntDel(AjPDbaseEnt *ptr)
+void ajXyzDbaseEntDel(AjPDbaseEnt *ptr)
 {
   ajint x=0;
     
@@ -13396,7 +13396,7 @@ static void ajXyzDbaseEntDel(AjPDbaseEnt *ptr)
 }
 
 
-/* @funcstatic  ajXyzDomContsNew *******************************************
+/* @func ajXyzDomContsNew *******************************************
 **
 ** Constructor for DomConts object
 ** @param [r] n [ajint] no. of amino acids that make contact with the ligand
@@ -13404,7 +13404,7 @@ static void ajXyzDbaseEntDel(AjPDbaseEnt *ptr)
 ** @return [AjPDomConts] Pointer to DomConts object
 ** @@
 ******************************************************************************/
-static AjPDomConts ajXyzDomContsNew(ajint n)
+AjPDomConts ajXyzDomContsNew(ajint n)
 {
   AjPDomConts ret=NULL;
   ajint i=0;
@@ -13436,7 +13436,7 @@ static AjPDomConts ajXyzDomContsNew(ajint n)
 }
 
          
-/* @funcstatic  ajXyzDomContsDel *******************************************
+/* @func ajXyzDomContsDel *******************************************
 **
 ** Destructor for DomConts object
 ** @param [r]  ptr [AjPDomConts *] pointer to AjPDomConts object
@@ -13444,7 +13444,7 @@ static AjPDomConts ajXyzDomContsNew(ajint n)
 ** @return [AjPDomConts] Pointer to DomConts object
 ** @@
 ******************************************************************************/
-static void ajXyzDomContsDel(AjPDomConts *ptr) 
+void ajXyzDomContsDel(AjPDomConts *ptr) 
 {
   ajint i=0;
 
@@ -13479,6 +13479,16 @@ static void ajXyzDomContsDel(AjPDomConts *ptr)
 
 
 
+/* @func ajXyzFunkyRead ***********************************************
+**
+** Undocumented
+**
+** @param [r]  funky_ptr [AjPFile]  Undocumented
+** @param [r]  all_entries [AjPList*]  Undocumented
+** 
+** @return [AjBool] Undocumented
+** @@
+******************************************************************************/
 
 
 AjBool ajXyzFunkyRead(AjPFile funky_fptr, AjPList *all_entries)
