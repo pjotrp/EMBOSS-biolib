@@ -180,7 +180,7 @@ int main(int argc, char **argv)
   idlist = ajListNew ();
   aclist = ajListNew ();
 
-  inlist = embDbiFileList (directory, filename, exclude);
+  inlist = embDbiFileListExc (directory, filename, exclude);
   ajListSort (inlist, ajStrCmp);
   nfiles = ajListToArray(inlist, &files);
 

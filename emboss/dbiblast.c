@@ -304,7 +304,7 @@ int main(int argc, char **argv)
   idlist = ajListNew ();
   aclist = ajListNew ();
 
-  inlist = embDbiFileList (directory, filename, NULL);
+  inlist = embDbiFileList (directory, filename);
   ajListSort (inlist, ajStrCmp);
   nfiles = ajListToArray(inlist, &files);
 
@@ -315,8 +315,8 @@ int main(int argc, char **argv)
 
   for (ifile=0; ifile<nfiles; ifile++) {
     curfilename = (AjPStr) files[ifile];
-    blastopenlib (curfilename, &db);
     ajDebug ("processing '%S' ...\n", curfilename);
+    blastopenlib (curfilename, &db);
     ajDebug ("processing '%S' ...\n", db->TFile->Name);
     ajStrAssS (&divfiles[ifile], db->TFile->Name);
     ajFileNameTrim(&divfiles[ifile]);
