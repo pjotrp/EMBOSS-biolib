@@ -796,22 +796,7 @@ public class SectionPanel
               boolean ok = true;
               Ajax aj = null;
               if(mysettings.isCygwin())
-              {
-                String command = mysettings.getEmbossBin().concat("cygwin "+fc);
-                RunEmbossApplication2 rea = new RunEmbossApplication2(command,envp,null);
-                rea.waitFor();
-            
-                StringTokenizer stok = new StringTokenizer(rea.getProcessStdout(),"\n:");
-                stok.nextToken();
-                ajaxLength  = Integer.parseInt(stok.nextToken());
-                stok.nextToken();
-                if(stok.nextToken().equalsIgnoreCase("P"))
-                  ajaxProtein = true;
-                else
-                  ajaxProtein = false;
-                stok.nextToken();
-                ajaxWeight  = Float.parseFloat(stok.nextToken());
-              }
+                cygwinSeqAttr(fc,envp,att);
               else
               {
                 aj = new Ajax();
@@ -935,6 +920,42 @@ public class SectionPanel
       }
     }
 
+  }
+
+
+  /**
+  *
+  * Cygwin uses infoseq to get sequence length and type
+  * and uses infoalign to get the sequence weight.  
+  *
+  */
+  private void cygwinSeqAttr(String fc, String[] envp, String att)
+  {
+    String command = mysettings.getEmbossBin().concat(
+     "infoseq -only -type -length -nohead -auto "+fc);
+    RunEmbossApplication2 rea = new RunEmbossApplication2(command,envp,null);
+    rea.waitFor();
+
+    StringTokenizer stok = new StringTokenizer(rea.getProcessStdout(),"\n ");
+    if(stok.nextToken().trim().equalsIgnoreCase("P"))
+      ajaxProtein = true;
+    else
+      ajaxProtein = false;
+
+    Integer.parseInt(stok.nextToken().trim());
+
+    if(att.startsWith("seqset"))
+    {
+      command = mysettings.getEmbossBin().concat(
+                 "infoalign -only -weight  -nohead -out stdout -auto "+fc);
+      rea = new RunEmbossApplication2(command,envp,null);
+      rea.waitFor();
+      stok = new StringTokenizer(rea.getProcessStdout(),"\n");
+      ajaxWeight = 0.f;
+      while(stok.hasMoreTokens())
+        ajaxWeight+= Float.parseFloat(stok.nextToken());
+    }
+//  System.out.println(command+"\n"+rea.getProcessStdout());
   }
 
   /**
