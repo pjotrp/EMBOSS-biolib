@@ -238,10 +238,11 @@ int main(int argc, char **argv)
 		ajFmtPrint("%S\n", cmd);
 		system(ajStrStr(cmd));
 
-		/* run buildmodel to refine the model */
-		ajFmtPrintS(&cmd,"buildmodel %S -train %S -alignfile %S",outname,tmpfname,seqsfname);
-		ajFmtPrint("%S\n", cmd);
-		system(ajStrStr(cmd));
+		/* Could run buildmodel to refine the model 
+		   ajFmtPrintS(&cmd,"buildmodel %S -train %S -alignfile %S",outname,tmpfname,seqsfname);
+		   ajFmtPrint("%S\n", cmd);
+		   system(ajStrStr(cmd));
+		   */
 
 		ajFmtPrintS(&cmd,"rm %S",tmpfname);
 		system(ajStrStr(cmd));
