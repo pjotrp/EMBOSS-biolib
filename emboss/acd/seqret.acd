@@ -3,12 +3,18 @@ appl: seqret [
   groups: "Edit"
 ]
 
+bool: feature [
+  information: "Use feature information"
+]
+
 seqall: sequence  [
   parameter: "Y"
+  feature: "$(feature)"
 ]
 
 seqoutall: outseq  [
   parameter: "Y"
+  feature: "$(feature)"
 ]
 
 bool: firstonly  [
