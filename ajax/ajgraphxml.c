@@ -955,9 +955,12 @@ void ajXmlAddJoinedLineSetEqualGapsF(AjPXmlFile file, float *y,
 				     int numberOfPoints, float startX,
 				     float increment)
 {
-    double xn[numberOfPoints];
-    double yn[numberOfPoints];
+    double *xn;
+    double *yn;
     int i;
+
+    AJCNEW0(xn,numberOfPoints);
+    AJCNEW0(yn,numberOfPoints);
     
     for(i=0.0; i<numberOfPoints; ++i)
     {
@@ -967,6 +970,9 @@ void ajXmlAddJoinedLineSetEqualGapsF(AjPXmlFile file, float *y,
 
     ajXmlAddJoinedLineSet(file, xn, yn, numberOfPoints);
     
+    AJFREE(xn);
+    AJFREE(yn);
+
     return;
 }
 
@@ -1186,15 +1192,54 @@ void ajXmlAddHistogramEqualGapsF(AjPXmlFile file, float *y,
 				 int numPoints, float startX, 
 				 float xGap)
 {
-    int bar;
-    
-    for(bar = 0; bar < numPoints; ++bar)
-	if(y[bar] != 0.0)
-	    ajXmlAddRectangle(file, (startX + (bar * xGap)), 0, 
-			      (startX + ((bar+ 1) * xGap)), y[bar], 
-			      ajTrue);
+	int point;
 
-    return;
+	AjPXmlNode el;
+	AjPStr coord=NULL;
+	AjPStr index=NULL;
+
+		
+	el = xml_GetNodeTypeMakeIfNotC(file, "IndexedFaceSet");
+
+	/* setting up the coords to add */
+	coord = xml_GetPoints(el);
+	index = xml_GetIndex(el);
+
+	for(point = 0; point < numPoints; ++point)
+	if(y[point] != 0.0)
+	{
+		if(!y[point] > 0)
+		{
+			xml_AddACoord(((double) (startX + (point * xGap))),
+										((double) 0), ajFalse, &coord, &index);
+			xml_AddACoord(((double) (startX + (point * xGap))),
+										((double) y[point]), ajTrue, &coord, &index);
+			xml_AddACoord(((double) (startX + ((point+ 1) * xGap))),
+										((double) y[point]), ajTrue, &coord, &index);
+			xml_AddACoord(((double) (startX + ((point+ 1) * xGap))),
+										((double)  0), ajTrue, &coord, &index);
+		}
+		else
+		{
+			xml_AddACoord(((double) (startX + ((point+ 1) * xGap))),
+										((double)  0), ajFalse, &coord, &index);
+			xml_AddACoord(((double) (startX + ((point+ 1) * xGap))),
+										((double) y[point]), ajTrue, &coord, &index);
+			xml_AddACoord(((double) (startX + (point * xGap))),
+										((double) y[point]), ajTrue, &coord, &index);
+			xml_AddACoord(((double) (startX + (point * xGap))),
+										((double)  0), ajTrue, &coord, &index);
+		}
+	}	    
+	xml_SetPoints(el, coord);
+	xml_SetIndex(el, index);
+
+	/* tidy up */
+	xml_UnrefNode(el);
+	ajStrDel(&coord);
+	ajStrDel(&index);
+
+	return;
 }
 
 
@@ -1220,10 +1265,50 @@ void ajXmlAddRectangleSet(AjPXmlFile file, double *x1, double *y1,
 			  AjBool fill)
 {
     int point;
+    AjPXmlNode el;
+    AjPStr coord=NULL;
+    AjPStr index=NULL;
     
-    for(point = 0; point < numPoints; ++point)
-	ajXmlAddRectangle(file, x1[point], y1[point], x2[point], 
-			  y2[point], fill);
+		if(fill)
+		{
+			el = xml_GetNodeTypeMakeIfNotC(file, "IndexedFaceSet");
+
+			/* setting up the coords to add */
+			coord = xml_GetPoints(el);
+			index = xml_GetIndex(el);
+
+			for(point = 0; point < numPoints; ++point)
+			{
+				if(!(((x1[point] > x2[point]) && (y1[point] > y2[point]))
+						 || ((x1[point] < x2[point]) && (y1[point] < y2[point]))) )
+				{
+					xml_AddACoord(x1[point], y1[point], ajFalse, &coord, &index);
+					xml_AddACoord(x1[point], y2[point], ajTrue, &coord, &index);
+					xml_AddACoord(x2[point], y2[point], ajTrue, &coord, &index);
+					xml_AddACoord(x2[point], y1[point], ajTrue, &coord, &index);
+				}
+				else
+				{
+					xml_AddACoord(x2[point], y1[point], ajFalse, &coord, &index);
+					xml_AddACoord(x2[point], y2[point], ajTrue, &coord, &index);
+					xml_AddACoord(x1[point], y2[point], ajTrue, &coord, &index);
+					xml_AddACoord(x1[point], y1[point], ajTrue, &coord, &index);
+				}
+			}	    
+				xml_SetPoints(el, coord);
+				xml_SetIndex(el, index);
+
+				/* tidy up */
+				xml_UnrefNode(el);
+				ajStrDel(&coord);
+				ajStrDel(&index);
+		}
+		else
+		{
+			for(point = 0; point < numPoints; ++point)
+			  ajXmlAddRectangle(file, x1[point], y1[point], x2[point], 
+			  									y2[point], fill);
+		}
 
     return;
 }
@@ -2498,7 +2583,7 @@ void ajXmlAddGraphicC(AjPXmlFile file, char *type)
     }
 
 
-    if(!file->nodeTypes)
+    if(file->nodeTypes)
 	file->nodeTypes = ajStrTableNew(1);
     
     /*  el unrefed above if type == NULL */
@@ -2601,15 +2686,15 @@ void ajXmlAddCircle(AjPXmlFile file, double xCentre, double yCentre,
     AjPStr controlPoints = NULL;
     AjPXmlNode circleNode;
 
-    double controlPointsDbs[14] = 
+    double controlPointsDbs[14] =
     {
-	0, 1, 
-	pow(3, 0.5), 1, 
-	pow(0.75, 0.5), -0.5, 
-	0, 2,
-	-pow(0.75, 0.5), -0.5,
-	-pow(3, 0.5), 1, 
-	0, 1, 
+        0, 1,
+        1.732050808, 1,
+        0.866025403, -0.5,
+        0, 2,
+        -0.866025403, -0.5,
+        -1.732050808, 1,
+        0, 1,
     };
     int i;
 
@@ -3291,7 +3376,7 @@ static void xml_SetIndex(AjPXmlNode passedNode, AjPStr index)
 	    listShapes = gdome_el_getElementsByTagName
 		(xml_GetNodeElement(passedNode), nodeName, &exc);
 	    limit = gdome_nl_length(listShapes, &exc);
-	    for(i=0; i<limit && node == NULL; ++i)
+	    for(i=0; i<limit && tempNode == NULL; ++i)
 		tempNode = xml_SetNode(gdome_nl_item(listShapes, i, &exc));
 
 	    gdome_nl_unref(listShapes, &exc);
@@ -4285,7 +4370,7 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
     }
       
       
-    returnNode2 = xml_SetNode(xml_GetNode(returnNode));
+ /*   returnNode2 = xml_SetNode(xml_GetNode(returnNode));
     gdome_n_ref(xml_GetNode(returnNode), &exc);
 
 
@@ -4299,14 +4384,14 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
     }
     ajTablePut(colourTable, 
 	       (const void *) xml_PresentColourAsString(file),
-	       (void *)returnNode2);
+	       (void *)returnNode2); */
 
     /* listShapes and nodeName unrefed just above */
     /* tempNode, unrefed as required */
 
     /*	ajXmlWriteStdout(file); */
 
-    return returnNode;
+ /*   return returnNode; */
 }
 
 
@@ -4853,8 +4938,8 @@ static AjBool xml_WriteFile(AjPXmlFile file, AjPStr filename)
 {
     GdomeException exc;
 
-    if (!gdome_di_saveDocToFile (file->domimpl, file->doc, 
-				 ajStrStr(filename),
+    if (!gdome_di_saveDocToFileEnc (file->domimpl, file->doc, 
+				 ajStrStr(filename), "UTF-8",
 				 GDOME_SAVE_LIBXML_INDENT, &exc)) 
     {
 	ajDebug("DOMImplementation.saveDocToFile: failed\n\tException #%d\n",
