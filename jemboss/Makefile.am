@@ -14,7 +14,7 @@ all-local:
 	  (if test "${SHELL}" = "/bin/bash" ; then \
 	  declare -x CLASSPATH="lib/JembossPrintAlignment.jar:lib/xerces.jar:lib/mail.jar:lib/activation.jar:lib/jakarta-regexp-1.2.jar:lib/jalview.jar:lib/jcert.jar:lib/jnet.jar:lib/jsse.jar:.:lib/axis/axis-ant.jar:lib/axis/axis.jar:lib/axis/commons-discovery.jar:lib/axis/commons-logging.jar:lib/axis/jaxrpc.jar:lib/axis/log4j-1.2.4.jar:lib/axis/saaj.jar:lib/axis/wsdl4j.jar:lib/grout.jar:$(srcdir)"; \
 	  export CLASSPATH; \
-          javac -d org/emboss/jemboss/draw/DNADraw.java; \
+          javac -d . org/emboss/jemboss/draw/DNADraw.java; \
 	  javac -d . org/emboss/jemboss/Jemboss.java; \
 	  else \
 	  CLASSPATH="lib/JembossPrintAlignment.jar:lib/xerces.jar:lib/mail.jar:lib/activation.jar:lib/jakarta-regexp-1.2.jar:lib/jalview.jar:lib/jcert.jar:lib/jnet.jar:lib/jsse.jar:.:lib/axis/axis-ant.jar:lib/axis/axis.jar:lib/axis/commons-discovery.jar:lib/axis/commons-logging.jar:lib/axis/jaxrpc.jar:lib/axis/log4j-1.2.4.jar:lib/axis/saaj.jar:lib/axis/wsdl4j.jar:lib/grout.jar:$(srcdir)"; \
