@@ -76,6 +76,7 @@ int main(int argc, char **argv)
     pfname = ajStrNewC(DATANAME);
     ajFileDataNewWrite(pfname,&outf);
     printHeader(outf);
+    ajStrDel(&pfname);
     
     line = ajStrNew();
     acc  = ajStrNew();
