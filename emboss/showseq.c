@@ -375,23 +375,23 @@ static void showseq_FormatShow(EmbPShow ss, AjPStr format, AjPTrn trnTable,
 	else if (!ajStrCmpC(code, "B"))
 	    (void) embShowAddBlank(ss);
 	else if (!ajStrCmpC(code, "1"))
-	    (void) embShowAddTran (ss, trnTable, 1, threeletter, numberseq,
-				   translaterange, orfminsize);
+	    (void) embShowAddTran (ss, trnTable, 1, threeletter, numberseq, translaterange,
+				   orfminsize, AJFALSE, AJFALSE, AJFALSE, AJFALSE);
 	else if (!ajStrCmpC(code, "2"))
-	    (void) embShowAddTran (ss, trnTable, 2, threeletter, numberseq,
-				   NULL, orfminsize);
+	    (void) embShowAddTran (ss, trnTable, 2, threeletter, numberseq, NULL,
+				   orfminsize, AJFALSE, AJFALSE, AJFALSE, AJFALSE);
 	else if (!ajStrCmpC(code, "3"))
-	    (void) embShowAddTran (ss, trnTable, 3, threeletter, numberseq,
-				   NULL, orfminsize);
+	    (void) embShowAddTran (ss, trnTable, 3, threeletter, numberseq, NULL, 
+				   orfminsize, AJFALSE, AJFALSE, AJFALSE, AJFALSE);
 	else if (!ajStrCmpC(code, "-1"))
-	    (void) embShowAddTran (ss, trnTable, -1, threeletter, numberseq,
-				   NULL, orfminsize);
+	    (void) embShowAddTran (ss, trnTable, -1, threeletter, numberseq, NULL, 
+				   orfminsize, AJFALSE, AJFALSE, AJFALSE, AJFALSE);
 	else if (!ajStrCmpC(code, "-2"))
-	    (void) embShowAddTran (ss, trnTable, -2, threeletter, numberseq,
-				   NULL, orfminsize);
+	    (void) embShowAddTran (ss, trnTable, -2, threeletter, numberseq, NULL, 
+				   orfminsize, AJFALSE, AJFALSE, AJFALSE, AJFALSE);
 	else if (!ajStrCmpC(code, "-3"))
-	    (void) embShowAddTran (ss, trnTable, -3, threeletter, numberseq,
-				   NULL, orfminsize);
+	    (void) embShowAddTran (ss, trnTable, -3, threeletter, numberseq, NULL, 
+				   orfminsize, AJFALSE, AJFALSE, AJFALSE, AJFALSE);
 	else if (!ajStrCmpC(code, "T"))
 	    (void) embShowAddTicks(ss);
 	else if (!ajStrCmpC(code, "N"))

@@ -269,21 +269,21 @@ int main(int argc, char **argv)
 		(void) embShowAddBlank(ss);
 
 	    (void) embShowAddTran (ss, trnTable, 1, threeletter, numberseq,
-				   NULL, orfminsize);
+				   NULL, orfminsize, AJFALSE, AJFALSE, AJFALSE, AJFALSE);
 	    (void) embShowAddTran (ss, trnTable, 2, threeletter, numberseq,
-				   NULL, orfminsize);
+				   NULL, orfminsize, AJFALSE, AJFALSE, AJFALSE, AJFALSE);
 	    (void) embShowAddTran (ss, trnTable, 3, threeletter, numberseq,
-				   NULL, orfminsize);
+				   NULL, orfminsize, AJFALSE, AJFALSE, AJFALSE, AJFALSE);
 
 	    if (reverse)
 	    {
 		(void) embShowAddTicks(ss);
-		(void) embShowAddTran (ss, trnTable, -3, threeletter,
-				       numberseq, NULL, orfminsize);
-		(void) embShowAddTran (ss, trnTable, -2, threeletter,
-				       numberseq, NULL, orfminsize);
-		(void) embShowAddTran (ss, trnTable, -1, threeletter,
-				       numberseq, NULL, orfminsize);
+		(void) embShowAddTran (ss, trnTable, -3, threeletter, numberseq, 
+				       NULL, orfminsize, AJFALSE, AJFALSE, AJFALSE, AJFALSE);
+		(void) embShowAddTran (ss, trnTable, -2, threeletter, numberseq, 
+				       NULL, orfminsize, AJFALSE, AJFALSE, AJFALSE, AJFALSE);
+		(void) embShowAddTran (ss, trnTable, -1, threeletter, numberseq, 
+				     NULL, orfminsize, AJFALSE, AJFALSE, AJFALSE, AJFALSE);
 	    }
 	}
 
