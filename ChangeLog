@@ -1,4 +1,8 @@
 Version 2.9.0
+        showfeat now has the qualifier '-annotation'.  This allows yo to
+        add your own brief annotations of regions on the displayed
+        figure. 
+
         remap now has has the option '-frame' which allows you to specify
         a list of the frames to be translated and displayed.
 
