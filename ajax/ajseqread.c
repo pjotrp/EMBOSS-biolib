@@ -1873,7 +1873,7 @@ static AjBool seqReadFasta(AjPSeq thys, AjPSeqin seqin)
 
     thys->Fpos = fpos;
 
-    ajDebug("started at fpos %ld ok: %B fposb: %ld\n", fpos, ok, fposb);
+    ajDebug("started at fpos %Ld ok: %B fposb: %Ld\n", fpos, ok, fposb);
 
     return ajTrue;
 }
@@ -1989,7 +1989,7 @@ static AjBool seqReadDbId(AjPSeq thys, AjPSeqin seqin)
 
     thys->Fpos = fpos;
 
-    ajDebug("started at fpos %ld ok: %B fposb: %ld\n", fpos, ok, fposb);
+    ajDebug("started at fpos %Ld ok: %B fposb: %Ld\n", fpos, ok, fposb);
 
     return ajTrue;
 }
@@ -4532,6 +4532,7 @@ static AjBool seqReadNexus(AjPSeq thys, AjPSeqin seqin)
 	if (!phydata->Nexus)
 	{
 	    ajFileBuffReset(buff);
+	    ajDebug("Failed to parse in nexus format\n");
 	    return ajFalse;
 	}
 	phydata->Count = 0;
@@ -4539,6 +4540,7 @@ static AjBool seqReadNexus(AjPSeq thys, AjPSeqin seqin)
 	/* GetTaxa may fail if names are only defined in the sequences */
 	phydata->Names = ajNexusGetTaxa(phydata->Nexus);
 	seqin->Data = phydata;
+	ajDebug("Nexus parsed %d sequences\n", phydata->Nseq);
     }
 
     phydata = seqin->Data;

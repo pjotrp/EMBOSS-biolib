@@ -104,7 +104,7 @@ int main(int argc, char **argv)
         }
 
         if (overlap_file) {
-          ajFmtPrintF (overlap_file, "%ld\n", overlap_base_count);
+          ajFmtPrintF (overlap_file, "%Ld\n", overlap_base_count);
         }
       }
 

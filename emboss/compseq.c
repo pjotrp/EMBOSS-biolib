@@ -424,7 +424,7 @@ int main(int argc, char **argv)
 static void compseq_makebigarray(ajulong no_elements, ajulong **bigarray)
 {
 
-    ajDebug("makebigarray for %ld elements\n", no_elements);
+    ajDebug("makebigarray for %Ld elements\n", no_elements);
     AJCNEW(*bigarray, no_elements);
     ajDebug("makebigarray - after AJCNEW\n");
 

@@ -3754,7 +3754,7 @@ AjBool ajFileBuffGetL(AjPFileBuff thys, AjPStr* pdest, ajlong* fpos)
 		    /* OK - read the new file */
 		    ok = ajFileBuffGetL(thys, pdest, fpos);
 		    ajDebug("End of file - trying next file ok: %B "
-			    "fpos: %ld %ld\n",
+			    "fpos: %Ld %Ld\n",
 			    ok, *fpos, thys->Fpos);
 		    return ok;
 		}
@@ -3775,7 +3775,7 @@ AjBool ajFileBuffGetL(AjPFileBuff thys, AjPStr* pdest, ajlong* fpos)
     if(thys->Nobuff)
     {
 	*fpos = thys->Fpos;
-	/*ajDebug("ajFileBuffGetL unbuffered fpos: %ld\n", *fpos);*/
+	/*ajDebug("ajFileBuffGetL unbuffered fpos: %Ld\n", *fpos);*/
 	return ajTrue;
     }
     
@@ -4675,7 +4675,7 @@ void ajFileBuffTraceFull(const AjPFileBuff thys, size_t nlines,
     AjBool last = ajFalse;
 
     ajDebug("Trace buffer file '%S' End: %B\n"
-	     "             Pos: %d Size: %d Nobuff: %B Fpos: %ld\n",
+	     "             Pos: %d Size: %d Nobuff: %B Fpos: %Ld\n",
 	     thys->File->Name, thys->File->End,
 	     thys->Pos, thys->Size, thys->Nobuff, thys->Fpos);
 

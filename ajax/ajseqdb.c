@@ -870,7 +870,7 @@ static ajint seqCdFileSeek(SeqPCdFile fil, ajuint ipos)
     ret = ajFileSeek(fil->File, jpos, 0);
 
     /*
-       ajDebug("seqCdFileSeek rec %u pos %u tell %ld returns %d\n",
+       ajDebug("seqCdFileSeek rec %u pos %u tell %Ld returns %d\n",
        ipos, jpos, ajFileTell(fil->File), ret);
     */
 
@@ -920,7 +920,7 @@ static size_t seqCdFileReadName(char* name, size_t namesize,
     size_t ret;
     char* sp;
 
-    /* ajDebug("seqCdFileReadName pos %ld\n", ajFileTell(thys->File)); */
+    /* ajDebug("seqCdFileReadName pos %Ld\n", ajFileTell(thys->File)); */
     ret =  ajFileRead(name, namesize, 1, thys->File);
 
     /* ajDebug("seqCdFileReadName was '%s' ret %d\n", name, ret); */
@@ -3668,7 +3668,7 @@ static AjBool seqGcgReadSeq(AjPSeqin seqin)
 	idexp2=ajRegCompC("^>[PF]1;([^ ]+)");
     }
 
-    ajDebug("seqGcgReadSeq pos: %ld\n", ajFileTell(qryd->libs));
+    ajDebug("seqGcgReadSeq pos: %Ld\n", ajFileTell(qryd->libs));
 
     if(!ajFileGets(qryd->libs, &line))	/* end of file */
 	return ajFalse;
@@ -5216,7 +5216,7 @@ AjBool ajSeqAccessOffset(AjPSeqin seqin)
 	return ajFalse;
     }
 
-    ajDebug("ajSeqAccessOffset %S %ld\n", qry->Filename, qry->Fpos);
+    ajDebug("ajSeqAccessOffset %S %Ld\n", qry->Filename, qry->Fpos);
 
     /* ajStrTraceT(qry->Filename, "qry->Filename (before):"); */
 

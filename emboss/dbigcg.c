@@ -742,9 +742,9 @@ static ajint dbigcg_pirgetent(const AjPStr idformat,
     ajRegSubI(pirexp, 1, &reflibstr);
     ajRegSubI(pirexp, 1, libstr);
 
-    ajDebug("dbigcg_pirgetent seqid '%S' spos: %ld\n",
+    ajDebug("dbigcg_pirgetent seqid '%S' spos: %Ld\n",
 	    *libstr, ajFileTell(libs));
-    ajDebug("dbigcg_pirgetent refid '%S' spos: %ld\n",
+    ajDebug("dbigcg_pirgetent refid '%S' spos: %Ld\n",
 	    *libstr, ajFileTell(libr));
 
     parser[iparser].Parser(libr, alistfile,
@@ -770,7 +770,7 @@ static ajint dbigcg_pirgetent(const AjPStr idformat,
     if(spos)
 	ajFileSeek(libs, spos, 0);
 
-    ajDebug("dbigcg_pirgetent end spos %ld line '%S'\n", spos, sline);
+    ajDebug("dbigcg_pirgetent end spos %Ld line '%S'\n", spos, sline);
 
     return gcglen;
 }

@@ -3962,7 +3962,7 @@ void ajSeqinTrace(const AjPSeqin thys)
 	ajDebug( "  List: (%d)\n", ajListLength(thys->List));
 
     if(thys->Filebuff)
-	ajDebug( "  Filebuff: %F (%ld)\n",
+	ajDebug( "  Filebuff: %F (%Ld)\n",
 		ajFileBuffFile(thys->Filebuff),
 		ajFileTell(ajFileBuffFile(thys->Filebuff)));
 
