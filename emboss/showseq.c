@@ -217,7 +217,7 @@ int main(int argc, char **argv)
 	}
 
 	/* get the feature table of the sequence */
-	feat = ajSeqGetFeat(seq);
+	feat = ajSeqCopyFeat(seq);
 
 	/* get the restriction cut sites */
 	/*
@@ -275,8 +275,8 @@ int main(int argc, char **argv)
 
 	/* tidy up */
 	(void) embShowDel(&ss);
-	/* AJB fixed: trying to delete memory already deleted */
-	/*   (void) ajFeattabDel(&feat); */
+
+	(void) ajFeattableDel(&feat);
 	(void) ajListDel(&restrictlist);
 
 	/* add a gratuitous newline at the end of the sequence */
