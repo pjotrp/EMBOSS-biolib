@@ -531,7 +531,7 @@ echo "$JAVA_HOME" >> $RECORD
 #
 # add java bin to path
 #
-PATH=$PATH:$JAVA_HOME/bin/ ; export PATH
+PATH=$JAVA_HOME/bin/:$PATH ; export PATH
 
 #
 #
