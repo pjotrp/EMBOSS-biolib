@@ -1752,6 +1752,8 @@ static AjBool seqReadNcbi (AjPSeq thys, AjPSeqin seqin)
 	return ajFalse;
     }
   
+    ajDebug("parsed id '%S' acc '%S' sv '%S' gi '%S' desc '%S'\n",
+	    id, acc, sv, gi, desc);
     if (ajStrLen(gi))
       ajStrAssS(&thys->Gi, gi);
 
@@ -6517,14 +6519,14 @@ AjBool ajSeqParseNcbi(AjPStr instr, AjPStr* id, AjPStr* acc,
     **   (prefix - remove)
     */
 
-     (void) ajDebug("ajSeqParseNcbi '%S'\n", instr); 
+    /* (void) ajDebug("ajSeqParseNcbi '%S'\n", instr);  */
 
     if (ajStrChar(instr, 3) == ';')	/* then it is really PIR format */
 	return ajFalse;
 
      ajStrAssS (&str, instr);
 
-    /* (void) ajDebug ("id test %B %B\n",
+     /* (void) ajDebug ("id test %B %B\n",
 		    !strchr(MAJSTRSTR(str), (ajint)'|'),
 		    (*MAJSTRSTR(str)!='>')); */
 
@@ -6564,12 +6566,12 @@ AjBool ajSeqParseNcbi(AjPStr instr, AjPStr* id, AjPStr* acc,
 
     if(!strncmp(q,"gi",2))
     {
-      /* (void) ajDebug("gi prefix\n"); */
+        /* (void) ajDebug("gi prefix\n"); */
 	(void) ajStrToken(&token, &handle, NULL);
 	ajStrAssS(gi, token);
 	if (! ajStrToken(&prefix, &handle, NULL)) {
 	  /* we only have a gi prefix */
-	  (void) ajDebug("*only* gi prefix\n");
+	  /* (void) ajDebug("*only* gi prefix\n"); */
 	  (void) ajStrAssS(id, token);
 	  (void) ajStrAssC(acc, "");
 	  (void) ajStrAssS (desc, reststr);
@@ -6591,22 +6593,22 @@ AjBool ajSeqParseNcbi(AjPStr instr, AjPStr* id, AjPStr* acc,
    
     if(!strncmp(MAJSTRSTR(idstr),"gnl|BL_ORD_ID|",14))
     {
-      /* (void) ajDebug("gnl|BL_ORD_ID stripping\n"); */
+        /* (void) ajDebug("gnl|BL_ORD_ID stripping\n"); */
 	(void) ajStrToken(&token, &handle, NULL); /* BL_ORD_ID */
 	(void) ajStrToken(&numtoken, &handle, NULL); /* number */
 	(void) ajStrInsertC(&reststr, 0, ">");
 
-	if(ajSeqParseNcbi(reststr,id,acc,sv,gi,desc)) {	/* recursive??? */
-	  /* (void) ajDebug("ajSeqParseFasta success\n"); */
+	if(ajSeqParseNcbi(reststr,id,acc,sv,gi,desc)) {	/* recursive ... */
+	  /* (void) ajDebug("ajSeqParseNcbi recursive success\n"); */
 	  /* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' sv: '%S' desc: '%S'\n",
-	    prefix, *id, *acc, *sv, *desc); */
+	     prefix, *id, *acc, *sv, *desc); */
 	  return ajTrue;
 	}
-        /* (void) ajDebug("ajSeqParseFasta failed - use the gnl id\n"); */
+        /* (void) ajDebug("ajSeqParseNcbi recursive failed - use the gnl id\n"); */
 	(void) ajStrAss(id,numtoken);
 	(void) ajStrAssC(acc,"");
 	/* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' sv: '%S' desc: '%S'\n",
-	  prefix, *id, *acc, *sv, *desc); */
+	   prefix, *id, *acc, *sv, *desc); */
 	return ajTrue;
     }
 
@@ -6615,18 +6617,18 @@ AjBool ajSeqParseNcbi(AjPStr instr, AjPStr* id, AjPStr* acc,
 
     if(!strcmp(q,"bbs") || !strcmp(q,"lcl"))
     {
-      /* (void) ajDebug("bbs or lcl prefix\n"); */
+        /* (void) ajDebug("bbs or lcl prefix\n"); */
 	(void) ajStrToken(id, &handle, NULL);
 	(void) ajStrAssC(acc,"");
 	(void) ajStrAssS(desc, reststr);
 	/* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
-	  prefix, *id, *acc, *desc); */
+	   prefix, *id, *acc, *desc); */
 	return ajTrue;
     }
     
     if(!strcmp(q,"gnl") || !strcmp(q,"pat"))
     {
-      /* (void) ajDebug("gnl or pat or pdb prefix\n"); */
+        /* (void) ajDebug("gnl or pat or pdb prefix\n"); */
 	(void) ajStrToken(&token, &handle, NULL);
 	(void) ajStrToken(id, &handle, NULL);
 	(void) ajStrAssC(acc,""); /* no accession number */
@@ -6639,7 +6641,7 @@ AjBool ajSeqParseNcbi(AjPStr instr, AjPStr* id, AjPStr* acc,
 	
     if(!strcmp(q,"pdb"))
     {
-      /* (void) ajDebug("gnl or pat or pdb prefix\n"); */
+        /* (void) ajDebug("gnl or pat or pdb prefix\n"); */
 	(void) ajStrToken(id, &handle, NULL);
 	if (ajStrToken(&token, &handle, NULL)) {
 	  /* chain identifier to append */
@@ -6648,7 +6650,7 @@ AjBool ajSeqParseNcbi(AjPStr instr, AjPStr* id, AjPStr* acc,
 	(void) ajStrAssC(acc,""); /* no accession number */
 	(void) ajStrAssS(desc, reststr);
 	/* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
-	  prefix, *id, *acc, *desc); */
+	   prefix, *id, *acc, *desc); */
 	return ajTrue;
     }
     
@@ -6656,7 +6658,7 @@ AjBool ajSeqParseNcbi(AjPStr instr, AjPStr* id, AjPStr* acc,
     if(!strcmp(q,"gb") || !strcmp(q,"emb") || !strcmp(q,"dbj")
        || !strcmp(q,"sp") || !strcmp(q,"ref"))
     {
-      /* (void) ajDebug("gb,emb,dbj,sp,ref prefix\n"); */
+        /* (void) ajDebug("gb,emb,dbj,sp,ref prefix\n"); */
 	(void) ajStrToken(&token, &handle, NULL);
 	vacc = ajIsSeqversion(token);
 	if (vacc)
@@ -6668,24 +6670,24 @@ AjBool ajSeqParseNcbi(AjPStr instr, AjPStr* id, AjPStr* acc,
 	  (void) ajStrAss(acc,token);
 
 	if (!ajStrToken(id, &handle, NULL)) {
-	  /* no ID, reuse accession */
-	  (void) ajStrAssS (id, *acc);
+	  /* no ID, reuse accession token */
+	  (void) ajStrAssS (id, token);
 	}
 	(void) ajStrAssS(desc, reststr);
 	/* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
-	  prefix, *id, *acc, *desc); */
+	   prefix, *id, *acc, *desc); */
 	return ajTrue;
     }
 
 
     if(!strcmp(q,"pir") || !strcmp(q,"prf"))
     {
-      /* (void) ajDebug("pir,prf prefix\n"); */
+        /* (void) ajDebug("pir,prf prefix\n"); */
 	(void) ajStrToken(id, &handle, NULL);
 	(void) ajStrAssS(desc, reststr);
 	(void) ajStrAssC(acc, "");
 	/* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
-	  prefix, *id, *acc, *desc); */
+	   prefix, *id, *acc, *desc); */
 	return ajTrue;
     }
 
@@ -6694,9 +6696,9 @@ AjBool ajSeqParseNcbi(AjPStr instr, AjPStr* id, AjPStr* acc,
 
     /* (void) ajDebug("No prefix accepted - try the last 2 fields\n"); */
 
-  nt = ajStrTokenCount(&idstr,"|");
+    nt = ajStrTokenCount(&idstr,"|");
 
-  /* (void) ajDebug ("Barred tokens - %d found\n", nt); */
+    /* (void) ajDebug ("Barred tokens - %d found\n", nt); */
 
   if(nt < 2)
     return ajFalse;
