@@ -2,13 +2,13 @@
 SUBDIRS = acd data
 
 check_PROGRAMS = ajtest ajtest2 ajtest3 ajtestajnam \
-cluster complex corbatest \
+contacts cluster complex corbatest \
 demofeatures demolist demosequence demostring demotable \
 entrails histogramtest intconv messtest \
 patmattest plplottest proteinmotifsearch \
 seqinfo \
 seqretallfeat seqretfeat seqtofeat \
-simplesw testplot treetypedisplay 
+simplesw swissparse testplot treetypedisplay 
 
 bin_PROGRAMS = abiview acdc antigenic \
 backtranseq banana btwisted \
@@ -36,7 +36,7 @@ prosextract pscan \
 rebaseextract recode redata remap restover restrict revseq scope \
 seealso seqmatchall seqret seqretall seqretset seqretsplit \
 showdb showfeat showorf showseq \
-shuffleseq sigcleave silent splitter stamps stretcher \
+shuffleseq sigcleave silent splitter scopalign stretcher \
 stssearch supermatcher syco \
 textsearch tfextract tfm tfscan \
 tmap transeq trimseq \
@@ -174,7 +174,7 @@ shuffleseq_SOURCES = shuffleseq.c
 sigcleave_SOURCES = sigcleave.c
 silent_SOURCES = silent.c
 splitter_SOURCES = splitter.c
-stamps_SOURCES = stamps.c
+scopalign_SOURCES = scopalign.c
 stretcher_SOURCES = stretcher.c
 stssearch_SOURCES = stssearch.c
 supermatcher_SOURCES = supermatcher.c
@@ -197,6 +197,7 @@ ajtest_SOURCES = ajtest.c
 ajtest2_SOURCES = ajtest2.c
 ajtest3_SOURCES = ajtest3.c
 ajtestajnam_SOURCES = ajtestajnam.c
+contacts_SOURCES = contacts.c
 cluster_SOURCES = cluster.c
 demofeatures_SOURCES = demofeatures.c
 demolist_SOURCES = demolist.c
@@ -208,6 +209,7 @@ messtest_SOURCES = messtest.c
 patmattest_SOURCES = patmattest.c
 plplottest_SOURCES = plplottest.c
 simplesw_SOURCES = simplesw.c
+swissparse_SOURCES = swissparse.c
 seqretallfeat_SOURCES = seqretallfeat.c
 seqretfeat_SOURCES = seqretfeat.c
 seqtofeat_SOURCES = seqtofeat.c
