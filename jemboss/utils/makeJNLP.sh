@@ -8,10 +8,11 @@ echo '*** If you are using SSL the script will use the client.keystore'
 echo '*** in the $JEMBOSS/resources directory to create client.jar'
 echo '*** which is wrapped with the Jemboss client in Jemboss.jar.'
 echo '*** Press any key to continue.'
-read
+read KEY
 
 cd ..
-CWPWD=$PWD
+#CWPWD=$PWD
+CWPWD=`pwd`
 
 while [ ! -d "$CWPWD/resources" ]
 do
@@ -147,8 +148,13 @@ echo '         </security>'                             >> $JNLP
 echo '         <resources>'                             >> $JNLP 
 echo '           <j2se version="1.3+"/>'                >> $JNLP 
 
+echo '             <jar href="'sJemboss.jar'"/>'        >> $JNLP
 for i in s*.jar; do
-  echo '             <jar href="'$i'"/>'                >> $JNLP
+  if [ $i != "sJemboss.jar" ]; then
+    if [ $i != "soap.jar" ]; then
+      echo '             <jar href="'$i'"/>'                >> $JNLP
+    fi
+  fi
 done;
 
 echo '         </resources>'                            >> $JNLP
@@ -170,5 +176,9 @@ echo "*** href at $JNLP."
 echo "*** The 'jnlp' directory will then need to be added to your HTTP"
 echo "*** server configuration file or moved into the www data"
 echo "*** directories."
+echo "*** "
+echo "*** For your http server to recognise the jnlp application, the"
+echo "*** following line needs to be added to the mime.types file:"
+echo "*** application/x-java-jnlp-file jnlp"
 echo
 
