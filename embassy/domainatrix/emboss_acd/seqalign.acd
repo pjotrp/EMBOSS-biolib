@@ -72,17 +72,6 @@ section: required [
     information: "Select number."
   ]
 
-endsection: required
-
-
-
-
-
-section: advanced [
-  information: "Advanced section"
-  type: "page"
-]
-
   boolean: forcetype  [
     standard: "Y"
     information: "Force output of minimal domain classification data."
@@ -90,7 +79,8 @@ section: advanced [
     default: "N"
   ]
 
-endsection: advanced
+endsection: required
+
 
 
 

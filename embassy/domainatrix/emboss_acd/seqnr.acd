@@ -129,8 +129,8 @@ section: required [
 endsection: required
 
 
-section: advanced [
-  information: "Advanced section"
+section: additional [
+  information: "Additional section"
   type: "page"
 ]
 
@@ -175,7 +175,7 @@ section: advanced [
            gap extension penalty to control gap scoring."
   ]
 
-endsection: advanced
+endsection: additional
 
 
 
