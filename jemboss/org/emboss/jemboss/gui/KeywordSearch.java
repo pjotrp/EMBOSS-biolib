@@ -118,6 +118,7 @@ public class KeywordSearch implements HyperlinkListener
     searchHTML.setEditable(false);
     searchHTML.setContentType("text/html");
     searchHTML.setText(woss);
+    searchHTML.setCaretPosition(0);
 
     JScrollPane jsp = new JScrollPane(searchHTML);
     jsp.setPreferredSize(d);
