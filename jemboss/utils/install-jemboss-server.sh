@@ -1143,7 +1143,7 @@ else
 
   echo
   echo "Provide the validity period for these certificates, i.e. the"
-  echo "number of days before they expire and new ones regenerated [90]:"
+  echo "number of days before they expire and new ones need to be made [90]:"
   read VALID
   echo
 
