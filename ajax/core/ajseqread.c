@@ -335,10 +335,10 @@ static SeqOInFormat seqInFormatDef[] = {
        AJFALSE, AJTRUE,  AJFALSE, seqReadAbi},
   {"gff",         AJTRUE,  AJTRUE,  AJTRUE,
        AJTRUE,  AJTRUE,  AJFALSE, seqReadGff},
-  {"selex",       AJTRUE,  AJTRUE,  AJTRUE,
-       AJFALSE, AJTRUE,  AJFALSE, seqReadSelex},
   {"stockholm",   AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  AJFALSE, seqReadStockholm},
+  {"selex",       AJTRUE,  AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE,  AJFALSE, seqReadSelex},
   {"pfam",        AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  AJFALSE, seqReadStockholm},
   {"fitch",       AJTRUE,  AJTRUE,  AJTRUE,
@@ -2342,7 +2342,7 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
 	    if(first)
 	    {
 		first=ajFalse;
-		if(!ajStrPrefixC(line,"#="))
+		if(!ajStrPrefixC(line,"#"))
 		{
 		    ajStrDel(&line);
 		    ajFileBuffReset(buff);
@@ -2474,35 +2474,40 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
     if(!seqin->Stockholm)
     {
 	lpos = ajFileTell(buff->File);
-	ok=ajFileBuffGetStore(buff,&line,
-			       seqin->Text, &thys->TextPtr);
-	if(!ok)
-	  return ajFalse;
+	ok=ajFileBuffGet(buff,&line);
 
-	if(!ok || !ajStrPrefixC(line,"# STOCKHOLM 1.0"))
+	if(!ok || !ajStrPrefixC(line,"# STOCKHOLM 1."))
 	{
+	    if (ok)
+		ajDebug("Stockholm: bad first line: %S", line);
 	    ajFileBuffReset(buff);
 	    ajStrDel(&line);
 	    return ajFalse;
 	}
 
-	while(ok && !ajStrPrefixC(line,"//") && !n)
+	ajDebug("Stockholm: good first line: %S", line);
+
+	while(ok && (ajStrPrefixC(line, "#") || ajStrMatchC(line, "\n")))
 	{
 	    if(ajStrPrefixC(line,"#=GF SQ"))
+	    {
 		ajFmtScanS(line,"%*s%*s%d",&n);
-	    ok=ajFileBuffGetStore(buff,&line,
-				   seqin->Text, &thys->TextPtr);
+		ajDebug("Stockholm: parsed SQ line of %d sequences\n", n);
+	    }
+	    ok=ajFileBuffGet(buff,&line);
+	    ajDebug("Stockholm: SQ search: %S", line);
 	}
 
-	if(!ok || ajStrPrefixC(line,"//"))
+	if (!n)				/* no SQ line, count first block */
 	{
-	    ajFileSeek(buff->File,lpos,0);
-	    ajFileBuffClear(buff,-1);
-	    ajFileBuffReset(buff);
-	    ajStrDel(&line);
-	    return ajFalse;
+	    while(ok && !ajStrMatchC(line, "\n"))
+	    {
+		n++;
+		ok=ajFileBuffGet(buff,&line);
+		ajDebug("Stockholm: block read: %S", line);
+	    }
+	    ajDebug("Stockholm: read block of %d sequences\n", n);
 	}
-
 	ajFileSeek(buff->File,lpos,0);
 	ajFileBuffClear(buff,-1);
 	ajFileBuffReset(buff);
