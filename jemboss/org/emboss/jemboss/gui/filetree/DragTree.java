@@ -259,7 +259,6 @@ public class DragTree extends JTree implements DragGestureListener,
       {
         public void run ()
         {
-          System.out.println("OLDFILE "+oldFile.getParentFile().getAbsolutePath());
           deleteObject(oldNode,oldFile.getParentFile().getAbsolutePath());
           addObject(fnew.getName(),fnew.getParent());
         };
