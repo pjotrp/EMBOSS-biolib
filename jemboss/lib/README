@@ -4,10 +4,7 @@ jakarta-regexp-1.2.jar 	- From Jakarta Project, Regexp 1.2
                           http://jakarta.apache.org/regexp/index.html
                           http://jakarta.apache.org/builds/jakarta-regexp/release/
 
-xerces.jar 		- Xerces XML parser, version 1.4.0, 
-			  from the Apache project
-                          
-xerces.jar              - Xerces XML parser, from Apache.
+xerces.jar              - Xerces XML parser (1.4.0), from Apache.
                           http://xml.apache.org/dist/
                           http://xml.apache.org/dist/xerces-j/
 
