@@ -754,9 +754,9 @@ int main(ajint argc, char **argv)
         if((fptr_alg=ajFileNewIn(temp))==NULL)
         {
             ajFileClose(&fptr_alg);
-            ajWarn("Could not open alignment file");
-            ajStrDel(&temp);
-            continue;       
+            ajFatal("Could not open alignment file");
+/*            ajStrDel(&temp);
+            continue;        */
         }
 
 
@@ -829,8 +829,8 @@ int main(ajint argc, char **argv)
                 /* Open contact data file */
                 if((fptr_con=ajFileNewIn(temp1))==NULL)
                 {
-                    ajWarn("Could not open contact file!!");
-                    continue;           
+                    ajFatal("Could not open contact file!!");
+/*                    continue;            */
                 }   
                 
                 
@@ -881,8 +881,8 @@ int main(ajint argc, char **argv)
                 /* Open coordinate file */
                 if((fptr_cpdb=ajFileNewIn(temp1))==NULL)
                 {
-                    ajWarn("Could not open coordinate file");
-                    continue;           
+                    ajFatal("Could not open coordinate file");
+/*                    continue;            */
                 }   
 
                 /* Read coordinate data file */ 
@@ -1196,8 +1196,8 @@ int main(ajint argc, char **argv)
 	*/
         if((sig_outf=ajFileNewOut(sig_name))==NULL)
         {
-            ajWarn("Could not open signature file for output");
-            ajStrDel(&temp);
+            ajFatal("Could not open signature file for output");
+/*            ajStrDel(&temp); */
 
             continue;       
         }
