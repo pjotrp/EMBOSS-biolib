@@ -4408,48 +4408,48 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 	name = seqCdTrgName(t3,trgfp);
 	ajDebug("last %d '%s'\n",t3,name);
 
+    }
     
 
-	start = b2;
-	end   = t3;
-	for(i=start;i<=end;++i)
+    start = b2;
+    end   = t3;
+    for(i=start;i<=end;++i)
+    {
+	name = seqCdTrgName(i,trgfp);
+	match = ajStrMatchWildCC(name, ajStrStr(fdstr));
+
+	ajDebug("third pass: match:%B i:%d name '%s' queryName '%S'\n",
+		match, i, name, fdstr);
+	if (!match) continue;
+
+	seqCdTrgLine (trgline, i, trgfp);	
+	(void) seqCdFileSeek (hitfp,trgline->FirstHit-1);
+	ajDebug("Query First: %d Count: %d\n",
+		trgline->FirstHit, trgline->NHits);
+	pos = trgline->FirstHit;
+
+	for (j=0;j<trgline->NHits;++j)
 	{
-	    name = seqCdTrgName(i,trgfp);
-	    match = ajStrMatchWildCC(name, ajStrStr(fdstr));
+	    (void) seqCdFileReadInt (&k,hitfp);
+	    --k;
+	    ajDebug("hitlist[%d] entry = %d\n",j,k);
+	    (void) seqCdIdxLine (idxline,k,idxfp);
 
-	    ajDebug("third pass: match:%B i:%d name '%s' queryName '%S'\n",
-		    match, i, name, fdstr);
-	    if (!match) continue;
-
-	    seqCdTrgLine (trgline, i, trgfp);	
-	    (void) seqCdFileSeek (hitfp,trgline->FirstHit-1);
-	    ajDebug("Query First: %d Count: %d\n",
-		    trgline->FirstHit, trgline->NHits);
-	    pos = trgline->FirstHit;
-
-	    for (j=0;j<trgline->NHits;++j)
+	    if (!skip[idxline->DivCode-1])
 	    {
-		(void) seqCdFileReadInt (&k,hitfp);
-		--k;
-		ajDebug("hitlist[%d] entry = %d\n",j,k);
-		(void) seqCdIdxLine (idxline,k,idxfp);
-
-		if (!skip[idxline->DivCode-1])
-		{
-		    AJNEW0(entry);
-		    entry->div = idxline->DivCode;
-		    entry->annoff = idxline->AnnOffset;
-		    entry->seqoff = idxline->SeqOffset;
-		    ajListPushApp(l,(void*)entry);
-		}
-		else
-		{
-		    ajDebug("SKIP: token '%S' [file %d]\n",
-			    queryName,idxline->DivCode);
-		}
+		AJNEW0(entry);
+		entry->div = idxline->DivCode;
+		entry->annoff = idxline->AnnOffset;
+		entry->seqoff = idxline->SeqOffset;
+		ajListPushApp(l,(void*)entry);
 	    }
-	
+	    else
+	    {
+		ajDebug("SKIP: token '%S' [file %d]\n",
+			queryName,idxline->DivCode);
+	    }
 	}
+
     }
     
     (void) seqCdTrgClose (&trgfp, &hitfp);
