@@ -425,6 +425,7 @@ static void seqWriteFasta (AjPSeqout outseq) {
   ajint ilen;
   static AjPStr seq = NULL;
   ajint linelen = 60;
+  ajint iend;
 
   seqDbName (&outseq->Name, outseq->Setdb);
 
@@ -443,7 +444,8 @@ static void seqWriteFasta (AjPSeqout outseq) {
 
   ilen = ajStrLen(outseq->Seq);
   for (i=0; i < ilen; i += linelen) {
-    (void) ajStrAssSub (&seq, outseq->Seq, i, i+linelen-1);
+    iend = AJMIN(ilen-1, i+linelen-1);
+    (void) ajStrAssSub (&seq, outseq->Seq, i, iend);
     (void) ajFmtPrintF (outseq->File, "%S\n", seq);
   }
 
@@ -465,6 +467,7 @@ static void seqWriteNcbi (AjPSeqout outseq) {
   ajint ilen;
   static AjPStr seq = NULL;
   ajint linelen = 60;
+  ajint iend;
 
   if (ajStrLen(outseq->Gi))
     (void) ajFmtPrintF (outseq->File, ">gi|%S|gnl|", outseq->Gi);
@@ -491,7 +494,8 @@ static void seqWriteNcbi (AjPSeqout outseq) {
 
   ilen = ajStrLen(outseq->Seq);
   for (i=0; i < ilen; i += linelen) {
-    (void) ajStrAssSub (&seq, outseq->Seq, i, i+linelen-1);
+    iend = AJMIN(ilen-1, i+linelen-1);
+    (void) ajStrAssSub (&seq, outseq->Seq, i, iend);
     (void) ajFmtPrintF (outseq->File, "%S\n", seq);
   }
 
@@ -3343,7 +3347,11 @@ static void seqClone (AjPSeqout outseq, AjPSeq seq) {
 
   outseq->Fttable = seq->Fttable;
   outseq->Offset = ibegin;
-  (void) ajStrAssSub (&outseq->Seq, seq->Seq, ibegin-1, iend-1);
+
+  if (iend >= ibegin)
+    (void) ajStrAssSub (&outseq->Seq, seq->Seq, ibegin-1, iend-1);
+  else				/* empty sequence */
+    (void) ajStrAssC (&outseq->Seq, "");
 
   ajDebug ("seqClone %d .. %d %d .. %d len: %d type: '%S'\n",
 	   seq->Begin, seq->End, ibegin, iend,
@@ -3398,7 +3406,10 @@ static void seqAllClone (AjPSeqout outseq, AjPSeq seq) {
   outseq->Fttable = seq->Fttable;
   outseq->Offset = ibegin;
 
-  (void) ajStrAssSub (&outseq->Seq, seq->Seq, ibegin-1, iend-1);
+  if (iend >= ibegin)
+    (void) ajStrAssSub (&outseq->Seq, seq->Seq, ibegin-1, iend-1);
+  else				/* empty sequence */
+    (void) ajStrAssC (&outseq->Seq, "");
 
   ajDebug ("seqAllClone %d .. %d %d .. %d len: %d type: '%S'\n",
 	   seq->Begin, seq->End, ibegin, iend,
