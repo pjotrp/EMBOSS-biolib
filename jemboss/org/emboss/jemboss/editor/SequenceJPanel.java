@@ -101,7 +101,13 @@ public class SequenceJPanel extends JPanel
     // Popup menu
     addMouseListener(new PopupListener());
     popup = new JPopupMenu();
-    JLabel labName = new JLabel(" "+seq.getName());
+    JLabel labName = null;
+
+    if(seq.getID() != null)
+      labName = new JLabel(" "+seq.getID());
+    else 
+      labName = new JLabel(" "+seq.getName());
+
     popup.add(labName);
     popup.add(new JSeparator());
     JMenuItem menuItem = new JMenuItem("Delete ");
@@ -377,6 +383,11 @@ public class SequenceJPanel extends JPanel
 
     String res = seq.getSequence().substring(resPos,resPos+1);
     String ls = System.getProperty("line.separator");
+
+    if(seq.getID() != null)
+      return seq.getID()+"\nResidue: "+res+ls+
+           "Position: "+Integer.toString(resPos+1);
+
     return seq.getName()+"\nResidue: "+res+ls+
            "Position: "+Integer.toString(resPos+1);
   }
@@ -505,7 +516,11 @@ public class SequenceJPanel extends JPanel
   {
     if(seq == null)
       return;
+
     String name = seq.getName();
+    if(seq.getID() != null)
+      name = seq.getID();
+
     g2d.setColor(Color.black);
     g2d.drawString(name,0,seqHeight-boundWidth2);
   }
@@ -519,6 +534,9 @@ public class SequenceJPanel extends JPanel
     if(drawSequence)
     {
       sName = seq.getName();
+      if(seq.getID() != null)
+        sName = seq.getID();
+
       seqS  = seq.getSequence();
       int seqLength = seq.getLength();
       if(seqLength < istop)
