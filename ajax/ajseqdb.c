@@ -348,8 +348,8 @@ static AjBool seqAccessEmblcd (AjPSeqin seqin)
 	    if(seqin->Ftquery->Handle)
 		ajFileBuffClear(seqin->Ftquery->Handle,0);
 	    AJFREE(qryd);
-*/
 	}
+*/
     }
     
     ajStrAssS (&seqin->Db, qry->DbName);
