@@ -340,7 +340,6 @@ static void acdPromptDirlist (AcdPAcd thys);
 static void acdPromptFeat (AcdPAcd thys);
 static void acdPromptFeatout (AcdPAcd thys);
 static void acdPromptGraph (AcdPAcd thys);
-static void acdPromptReport (AcdPAcd thys);
 static void acdPromptScop (AcdPAcd thys);
 static void acdPromptSeq (AcdPAcd thys);
 static void acdPromptSeqout (AcdPAcd thys);
@@ -449,7 +448,6 @@ static void acdSetCpdb (AcdPAcd thys);
 static void acdSetScop (AcdPAcd thys);
 static void acdSetRange (AcdPAcd thys);
 static void acdSetRegexp (AcdPAcd thys);
-static void acdSetReport (AcdPAcd thys);
 /*static void acdSetRegions (AcdPAcd thys);*/
 static void acdSetSelect (AcdPAcd thys);
 static void acdSetSeq (AcdPAcd thys);
@@ -647,10 +645,6 @@ AcdOAttr acdAttrRegexp[] = { {"minlength", VT_INT},
 			     {"lower", VT_BOOL},
 			     {NULL, VT_NULL} };
 
-AcdOAttr acdAttrReport[] = { {"name", VT_STR},
-			      {"extension", VT_STR},
-			      {NULL, VT_NULL} };
-
 AcdOAttr acdAttrSelect[] = { {"minimum", VT_INT},
 			     {"maximum", VT_INT},
 			     {"button", VT_BOOL},
@@ -749,14 +743,6 @@ AcdOQual acdQualFeatout[] =
   {"ofextension", "",       "string", "file name extension"},
   {"ofname",      "",       "string", "base file name"},
   {"ofsingle",    "",       "bool",   "separate file for each entry"},
-  {NULL, NULL, NULL, NULL} };
-
-AcdOQual acdQualReport[] =
-{
-  {"rformat",    "",       "string", "report format"},
-  {"ropenfile",  "",       "string", "report file name"},
-  {"rextension", "",       "string", "file name extension"},
-  {"rname",      "",       "string", "base file name"},
   {NULL, NULL, NULL, NULL} };
 
 AcdOQual acdQualSeq[] =
@@ -932,8 +918,6 @@ AcdOType acdType[] =
    NULL,             "Sequence range" },
   {"regexp",	  acdAttrRegexp,     acdSetRegexp,
    NULL,             "Regular expression pattern" },
-  {"report",      acdAttrReport,     acdSetReport,
-   acdQualReport,    "Report file" },
   {"select",      acdAttrSelect,    acdSetSelect,
    NULL,             "Selection from list of values" },
   {"sequence",    acdAttrSeq,       acdSetSeq,
@@ -5025,124 +5009,6 @@ static void acdSetRegexp (AcdPAcd thys) {
   (void) ajStrAssS (&thys->ValStr, reply);
 
   return;
-}
-
-/* @func ajAcdGetReport ******************************************************
-**
-** Returns an item of type Report as defined in a named ACD item.
-** Called by the application after all ACD values have been set,
-** and simply returns what the ACD item already has.
-**
-** @param [r] token [char*] Text token name
-** @return [AjPReport] Report output object. Already opened
-**                      by acdSetFeatout so this just returns the object
-** @cre failure to find an item with the right name and type aborts.
-** @@
-******************************************************************************/
-
-AjPReport ajAcdGetReport (char *token)
-{
-    return acdGetValue (token, "report");
-}
-
-/* @funcstatic acdSetReport **************************************************
-**
-** Using the definition in the ACD file, and any values for the
-** item or its associated qualifiers provided on the command line,
-** prompts the user if necessary (and possible) and
-** sets the actual value for an ACD report item.
-**
-** Understands all attributes and associated qualifiers for this item type.
-**
-** The default value (if no other available) is a null string, which
-** is invalid.
-**
-** Associated qualifiers "-rformat", "-ropenfile"
-** are applied to the UFO before reading the sequence.
-**
-** Associated qualifiers "-rbegin", "-rend" and "-rreverse"
-** are applied as appropriate, with prompting for values,
-** after the sequence has been read. They are applied to the feature table,
-** and the resulting table is what is set in the ACD item.
-**
-** @param [u] thys [AcdPAcd] ACD item.
-** @return [void]
-** @see ajSeqRead
-** @@
-******************************************************************************/
-
-static void acdSetReport (AcdPAcd thys)
-{
-    AjPReport val = NULL;
-
-    AjBool required = ajFalse;
-    AjBool ok = ajFalse;
-    static AjPStr defreply = NULL;
-    static AjPStr reply = NULL;
-    int itry;
-
-    static AjPStr name = NULL;
-    static AjPStr ext = NULL;
-    static AjPStr outfname = NULL;
-
-    static AcdOAttr setattr[] =
-    {
-	{"begin", VT_INT},
-	{"end", VT_INT},
-	{"length", VT_INT},
-	{"protein", VT_BOOL},
-	{"nucleic", VT_BOOL},
-	{"name", VT_STR},
-	{NULL, VT_NULL} };
-
-    required = acdIsRequired(thys);
-    val = ajReportNew();
-
-    acdAttrResolve (thys, "name", &name);
-    if (!acdGetValueAssoc (thys, "rformat", &val->Formatstr))
-	(void) acdAttrResolve (thys, "rextension", &ext);
-
-    (void) acdOutFilename (&outfname, name, val->Formatstr);
-    (void) acdReplyInit (thys, ajStrStr(outfname), &defreply);
-    acdPromptReport (thys);
-
-    for (itry=acdPromptTry; itry && !ok; itry--)
-    {
-	ok = ajTrue;		/* accept the default if nothing changes */
-
-	(void) ajStrAssS (&reply, defreply);
-
-	if (required)
-	    (void) acdUserGet (thys, &reply);
-
-	(void) acdGetValueAssoc (thys, "ropenfile", &val->Filename);
-	ok = ajReportOpen (val, reply);
-	if (!ok)
-	    acdBadVal (thys, required,
-		       "Unable to read sequence '%S'", reply);
-    }
-    if (!ok)
-	acdBadRetry (thys);
-
-    /* reports have special set attributes */
-
-    thys->SAttr = acdAttrListCount (setattr);
-    thys->SetAttr = &setattr[0];
-    thys->SetStr = AJCALLOC0 (thys->SAttr, sizeof (AjPStr));
-
-    /*
-       (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_BEGIN], ajSeqBegin(val));
-       (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_END], ajSeqEnd(val));
-       (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_LENGTH], ajSeqLen(val));
-       (void) ajStrFromBool (&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqIsProt(val));
-       (void) ajStrFromBool (&thys->SetStr[ACD_SEQ_NUCLEIC], ajSeqIsNuc(val));
-       (void) ajStrAssS (&thys->SetStr[ACD_SEQ_NAME], val->Name);
-       */
-
-    thys->Value = val;
-    (void) ajStrAssS (&thys->ValStr, reply);
-
-    return;
 }
 
 /* @func ajAcdGetSelect *******************************************************
@@ -11619,48 +11485,6 @@ static void acdPromptFeatout (AcdPAcd thys) {
     case 2: (void) ajFmtPrintS (prompt, "%dnd output features", count); break;
     case 3: (void) ajFmtPrintS (prompt, "%drd output features", count); break;
     default: (void) ajFmtPrintS (prompt, "%dth output features", count); break;
-    }
-    break;
-  }
-  return;
-}
-
-/* @funcstatic acdPromptReport ************************************************
-**
-** Sets the default prompt for this ACD object to be a report output
-** prompt with "first", "second" etc. added.
-**
-** @param [r] thys [AcdPAcd] Current ACD object.
-** @return [void]
-** @@
-******************************************************************************/
-
-static void acdPromptReport (AcdPAcd thys) {
-  AjPStr* prompt;
-  static int count=0;
-
-  if (!thys->DefStr)
-    return;
-
-  prompt = &thys->DefStr[DEF_PROMPT];
-  if (ajStrLen(*prompt))
-    return;
-
-  count++;
-  switch (count) {
-  case 1: (void) ajFmtPrintS (prompt, "Output report"); break;
-  case 2: (void) ajFmtPrintS (prompt, "Second output report"); break;
-  case 3: (void) ajFmtPrintS (prompt, "Third output report"); break;
-  case 11:
-  case 12:
-  case 13:
-    (void) ajFmtPrintS (prompt, "%dth output report", count); break;
-  default:
-    switch (count % 10) {
-    case 1: (void) ajFmtPrintS (prompt, "%dst output report", count); break;
-    case 2: (void) ajFmtPrintS (prompt, "%dnd output report", count); break;
-    case 3: (void) ajFmtPrintS (prompt, "%drd output report", count); break;
-    default: (void) ajFmtPrintS (prompt, "%dth output report", count); break;
     }
     break;
   }
