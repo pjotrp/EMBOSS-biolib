@@ -119,6 +119,9 @@ public class AdvancedOptions extends JPanel
         {
           cwd = userHome.getText();
           org.emboss.jemboss.Jemboss.tree.newRoot(cwd);
+          if(SetUpMenuBar.localAndRemoteTree != null)
+            SetUpMenuBar.localAndRemoteTree.getLocalDragTree().newRoot(cwd);
+
           if(!f.canWrite())
             JOptionPane.showMessageDialog(null,
                           "You cannot write to this directory.",
@@ -141,6 +144,8 @@ public class AdvancedOptions extends JPanel
       {
         cwd = System.getProperty("user.home");
         org.emboss.jemboss.Jemboss.tree.newRoot(cwd);
+        if(SetUpMenuBar.localAndRemoteTree != null)
+          SetUpMenuBar.localAndRemoteTree.getLocalDragTree().newRoot(cwd);
         userHome.setText(cwd);
       }
     });

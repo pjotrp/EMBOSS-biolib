@@ -42,6 +42,7 @@ public class SetUpMenuBar
 {
 
   public static SequenceList seqList;
+  public static LocalAndRemoteFileTreeFrame localAndRemoteTree = null;
 
   public SetUpMenuBar(final JembossParams mysettings, final JFrame f,
                       final String envp[], final String cwd,
@@ -103,7 +104,10 @@ public class SetUpMenuBar
       public void actionPerformed(ActionEvent e)
       {
         f.setCursor(cbusy);
-        new LocalAndRemoteFileTreeFrame(mysettings);
+        if(localAndRemoteTree == null)
+          localAndRemoteTree = new LocalAndRemoteFileTreeFrame(mysettings);
+        else
+          localAndRemoteTree.setVisible(true);
         f.setCursor(cdone);
       }
     });

@@ -34,6 +34,8 @@ import org.emboss.jemboss.JembossParams;
 public class LocalAndRemoteFileTreeFrame extends JFrame
 {
 
+  private DragTree ltree;
+
 /**
 *
 * @param mysettings JembossParams with settings information
@@ -44,8 +46,8 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
     try
     {  
       RemoteFileTreePanel rtree = new RemoteFileTreePanel(mysettings,false);
-      DragTree ltree = new DragTree(new File(System.getProperty("user.home")), 
-                                                           this, mysettings);
+      ltree = new DragTree(new File(System.getProperty("user.home")), 
+                                                   this, mysettings);
       JScrollPane scrollTree = new JScrollPane(ltree);   
       Dimension d = rtree.getPreferredSize();
       scrollTree.setPreferredSize(d);
@@ -70,6 +72,11 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
     {
       new AuthPopup(mysettings,this);
     }
+  }
+
+  public DragTree getLocalDragTree()
+  {
+    return ltree;
   }
 
 }
