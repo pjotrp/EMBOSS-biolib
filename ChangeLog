@@ -4,5 +4,6 @@ Version 2.3.0
         Seqret has all the functionality of the above.
 	Fix for NBRF accession number reading (ajseqread.c)
 	Whichdb program added.
-	
-	
+	Fix for problem reading plain format sequences by primer3.
+        Primer3 renamed eprimer3 to avoid conflicts with the Whitehead's	
+	  primer3 version 3.0.6.
