@@ -47,7 +47,11 @@ bool: insist  [
   information: "Insist that the sequence type is changed to protein"
 ]
 
-variable: prot "@($(insist) ? @(!$(inseqs.protein)):$(inseqs.protein))"
+bool: prot [
+  optional: N
+  default : "@($(insist) ? @(!$(inseqs.protein)):$(inseqs.protein))"
+  information: "Do not change this value"
+]
 
 list: slowfast  [
   optional: "Y"
