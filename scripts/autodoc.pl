@@ -45,7 +45,7 @@ print OUT "
 <BODY BGCOLOR=\"#FFFFFF\" text=\"#000000\">
 
 
-<!--#include file="header1.inc" -->\n";
+<!--#include file=\"header1.inc\" -->\n";
 
 }
 
@@ -55,7 +55,7 @@ sub header2 (*) {
     local (*OUT) = @_;
    
 print OUT "
-<!--#include file="header2.inc" -->
+<!--#include file=\"header2.inc\" -->
 
 <!--END OF HEADER-->
 
