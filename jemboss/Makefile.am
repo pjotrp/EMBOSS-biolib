@@ -30,7 +30,7 @@ install-exec-hook:
 	echo "(cd $(prefix)/share/$(PACKAGE)/jemboss; java org/emboss/jemboss/Jemboss &)" >> $(bindir)/runJemboss.csh; \
 	chmod 755 $(bindir)/runJemboss.csh;
 
-pkgdata_DATA = LICENSE interface.html readme.html runJemboss.csh setup.html
+pkgdata_DATA = LICENSE readme.html runJemboss.csh README
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/jemboss
 
