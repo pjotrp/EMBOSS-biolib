@@ -126,17 +126,20 @@ static AjBool rocplot_write_summary(AjPDir outdir, AjPFile outf, ajint mode,
 				    ajint numfiles, AjPStr *hitsnames,
 				    ajint roc, 
 				    AjPFloat rocn, AjPInt nrelatives);
-static AjBool   rocplot_write_barchart(AjPDir outdir, AjPStr fname, AjPStr title, 
+static AjBool   rocplot_write_barchart(AjPDir outdir, AjPStr fname,
+				       AjPStr title, 
 				       AjPStr xlabel, AjPStr ylabel, 
 				       ajint nbins, float binstart, 
 				       float binsize, AjPFloat rocn, 
 				       ajint numfiles);
-static AjBool   rocplot_write_classplot(AjPDir outdir, AjPStr fname, AjPStr title, 
+static AjBool   rocplot_write_classplot(AjPDir outdir, AjPStr fname,
+					AjPStr title, 
 					AjPStr xlabel, AjPStr ylabel, 
 					ajint nseries, ajint filen, 
 					AjPStr *legend, AjPFloat2d classx, 
 					AjPFloat3d classy, ajint npoints);
-static AjBool   rocplot_write_rocplot(AjPDir outdir, AjPStr fname, AjPStr title, 
+static AjBool   rocplot_write_rocplot(AjPDir outdir, AjPStr fname,
+				      AjPStr title, 
 				      AjPStr xlabel, AjPStr ylabel, 
 				      ajint nseries, AjPStr *legend, 
 				      AjPFloat2d rocx, AjPFloat2d rocy, 
@@ -211,16 +214,16 @@ int main(int argc, char **argv)
 				    **    relatives.
 				    */
     ajint     thresh     = 0;       /* Overlap threshold for hits from ACD */
-/*  AjPFile   rocbasename    = NULL; */ /* ROC plot file from ACD              */
-    AjPStr    rocbasename    = NULL;    /* ROC plot file from ACD              */
+/*  AjPFile   rocbasename    = NULL; */ /* ROC plot file from ACD          */
+    AjPStr    rocbasename    = NULL;    /* ROC plot file from ACD          */
     AjPFile   outfdata   = NULL;    /* Summary file from ACD.              */
-/*  AjPFile   barbasename    = NULL; */ /* Bar chart for ROC value distribution  
-                                       from ACD.                           */
-    AjPStr    barbasename    = NULL;    /* Bar chart for ROC value distribution  
-                                       from ACD.                           */
+/*  AjPFile   barbasename    = NULL; */ /* Bar chart for ROC value   
+                                           distributionfrom ACD.           */
+    AjPStr    barbasename    = NULL;    /* Bar chart for ROC value  
+                                           distribution from ACD.          */
     AjPStr    classbasename   = NULL;    /* Base name of file(s) containing 
 				       classification plot(s) from ACD.    */
-    AjBool    norange        = NULL;  /* Disregard range data */
+    AjBool    norange        = AJFALSE;  /* Disregard range data */
     
 
     /* For housekeeping */
@@ -487,11 +490,12 @@ int main(int argc, char **argv)
 
 	/* Write classification plot file */
 /*	outfclass = ajFileNewOut(classbasename); */
-	ajFmtPrintS(&classtitle, "Classification plot for %S", hitsnames[0]);	
+	ajFmtPrintS(&classtitle, "Classification plot for %S", hitsnames[0]);
 /*	rocplot_write_classplot(outdir, outfclass, classtitle, classxlabel, 
 				classylabel, NUMCLASSES, 0, classlegend, 
 				classx, classy, hitcnt); */
-	if(!rocplot_write_classplot(outdir, classbasename, classtitle, classxlabel, 
+	if(!rocplot_write_classplot(outdir, classbasename, classtitle,
+				    classxlabel, 
 				    classylabel, NUMCLASSES, 0, classlegend, 
 				    classx, classy, ajIntGet(hitcnt, 0)))
 	    ajFatal("rocplot_write_classplot failed");
@@ -529,7 +533,8 @@ int main(int argc, char **argv)
 
 		ajFmtPrintS(&fullname, "%S%d", classbasename, x);
 /*		outfclass = ajFileNewOut(fullname); */
-/*		rocplot_write_classplot(outdir, outfclass, classtitle, classxlabel, 
+/*		rocplot_write_classplot(outdir, outfclass, classtitle,
+		                        classxlabel, 
 					classylabel, NUMCLASSES, x, 
 					classlegend, classx, classy, 
 					hitcnt); */
@@ -559,7 +564,8 @@ int main(int argc, char **argv)
 	    binsize  = BINSIZE;
 	    /* Could possibly set more sensible values here - wait for 
 	     user feedback. */
-	    if(!rocplot_write_barchart(outdir, barbasename, bartitle, barxlabel, 
+	    if(!rocplot_write_barchart(outdir, barbasename, bartitle,
+				       barxlabel, 
 				       barylabel, nbins, binstart, binsize,
 				       rocn, numfiles))
 		ajFatal("rocplot_write_barchart failed");
@@ -583,7 +589,8 @@ int main(int argc, char **argv)
 	    }
 	    
 /*	    outfclass = ajFileNewOut(classbasename); */
-/*	    rocplot_write_classplot(outdir, outfclass, classtitle, classxlabel, 
+/*	    rocplot_write_classplot(outdir, outfclass, classtitle,
+	                            classxlabel, 
 				    classylabel, NUMCLASSES, 0, classlegend,
 				    classx, classy, hitcnt); */
 
@@ -615,7 +622,8 @@ int main(int argc, char **argv)
 	    }
 
 	    /* Write classification plot files */
-	    if(!rocplot_write_classplot(outdir, classbasename, classtitle, classxlabel, 
+	    if(!rocplot_write_classplot(outdir, classbasename,
+					classtitle, classxlabel, 
 					classylabel, NUMCLASSES, 0, 
 					classlegend,
 					classx, classy, ajIntGet(hitcnt, 0)))
@@ -627,7 +635,8 @@ int main(int argc, char **argv)
     /* WRITE ROC PLOT FILE */
     /***********************/
 
-    if(!rocplot_write_rocplot(outdir, rocbasename, roctitle, rocxlabel, rocylabel, 
+    if(!rocplot_write_rocplot(outdir, rocbasename, roctitle,
+			      rocxlabel, rocylabel, 
 			      nrocseries, roclegend, rocx, rocy, rocn, 
 			      hitcnt))
 	ajFatal("rocplot_write_rocplot failed");
@@ -796,7 +805,7 @@ AjBool rocplot_read_hits_files(int mode, int multimode, int datamode,
     /* Housekeeping variables */
     AjPStr    hitsfile   = NULL;    /* Name of hits file                   */
     AjPStr    tmpname    = NULL;    /* Temp. variable for holding file name*/
-    AjPList   tmpnames   = NULL;    /* List for names only of hits files.  */    
+    AjPList   tmpnames   = NULL;    /* List for names only of hits files.  */  
     AjPFile   inf        = NULL;    /* For hits file (input)               */
     ajint     lastroc    = 0;       /* Last ROC value read in              */
     ajint     filecnt    = 0;       /* Counter for no. hits files parsed   */
@@ -1278,7 +1287,8 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 		if((tmphit = (AjPHitdata)ajListIterNext(iters[x])))
 		{
 		    if(((datamode==1) && 
-			(rocplot_hit_is_unique(tmphit, mrglist, thresh, norange))) ||
+			(rocplot_hit_is_unique(tmphit, mrglist,
+					       thresh, norange))) ||
 		       (datamode==2))
 		    {
 			ajIntInc(hitcnt, 0);
@@ -1290,12 +1300,16 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 						&nottrue))
 			    ajFatal("rocplot_count_class failed");
 			
-			/* Calculate data for roc plot.  Any hit that isn't a 'TRUE' 
-			   is classed as a 'FALSE' when calculating the ROC curve and
-			   value. */
+			/* Calculate data for roc plot.
+			   Any hit that isn't a 'TRUE' 
+			   is classed as a 'FALSE' when calculating
+			   the ROC curve and value.
+			*/
 			if(!ajStrMatchC(tmphit->Class, "TRUE"))
 			    ntrue_sum += (float) ntrue;
-			ajFmtPrintF(errf, "For hit %5d ntrue=%5d ntrue_sum=%5.3f\n", ajIntGet(*hitcnt, x),ntrue, ntrue_sum);
+			ajFmtPrintF(errf,
+				    "For hit %5d ntrue=%5d ntrue_sum=%5.3f\n",
+				    ajIntGet(*hitcnt, x),ntrue, ntrue_sum);
 
 			/* Single list of known true relatives */	
 			if(datamode==1) 
@@ -1327,7 +1341,7 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 			    while(ajListPop(xylist, (void **)&xyptr))
 			    {
 				ajFloat2dPut(rocx, 0, y, xyptr->X);
-				ajFloat2dPut(rocy, 0, y, xyptr->Y);		 
+				ajFloat2dPut(rocy, 0, y, xyptr->Y);	 
 
 				rocplot_XYdataDel(&xyptr);
 				y++;
@@ -1397,7 +1411,9 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 		 value. */
 		if(!ajStrMatchC(tmphit->Class, "TRUE"))
 		    ntrue_sum += (float) ntrue;
-		ajFmtPrintF(errf, "For hit %5d ntrue=%5d ntrue_sum=%5.3f\n", ajIntGet(*hitcnt, x),ntrue, ntrue_sum);
+		ajFmtPrintF(errf,
+			    "For hit %5d ntrue=%5d ntrue_sum=%5.3f\n",
+			    ajIntGet(*hitcnt, x),ntrue, ntrue_sum);
 		
 
 		/* DIAGNOSTICS */
@@ -1589,7 +1605,8 @@ static AjBool rocplot_count_class(AjPHitdata tmphit, ajint hitcnt,
 ** @@
 **
 ****************************************************************************/
-static AjBool   rocplot_write_rocplot(AjPDir outdir,AjPStr fname, AjPStr title, 
+static AjBool   rocplot_write_rocplot(AjPDir outdir,
+				      AjPStr fname, AjPStr title, 
 				      AjPStr xlabel, AjPStr ylabel, 
 				      ajint nseries, AjPStr *legend, 
 				      AjPFloat2d rocx, AjPFloat2d rocy, 
@@ -1739,7 +1756,8 @@ static AjBool   rocplot_write_rocplot(AjPDir outdir,AjPStr fname, AjPStr title,
 ** @@
 **
 ****************************************************************************/
-static AjBool   rocplot_write_classplot(AjPDir outdir,AjPStr fname, AjPStr title, 
+static AjBool   rocplot_write_classplot(AjPDir outdir,
+					AjPStr fname, AjPStr title, 
 					AjPStr xlabel, AjPStr ylabel, 
 					ajint nseries, ajint filen, 
 					AjPStr *legend, AjPFloat2d classx, 
@@ -1879,7 +1897,8 @@ static AjBool   rocplot_write_classplot(AjPDir outdir,AjPStr fname, AjPStr title
 ** @@
 **
 ****************************************************************************/
-static AjBool   rocplot_write_barchart(AjPDir outdir,AjPStr fname, AjPStr title, 
+static AjBool   rocplot_write_barchart(AjPDir outdir,
+				       AjPStr fname, AjPStr title, 
 				       AjPStr xlabel, AjPStr ylabel, 
 				       ajint nbins, float binstart, 
 				       float binsize, AjPFloat rocn, 
@@ -1940,7 +1959,8 @@ static AjBool   rocplot_write_barchart(AjPDir outdir,AjPStr fname, AjPStr title,
 	if(!done)
 	{
 	    ajIntDel(&freqs);
-	    ajFmtPrint("x: %d   numfiles: %d  nbins: %d   binsize: %f   min: %f   max: %f   roc: %f\n", 
+	    ajFmtPrint("x: %d   numfiles: %d  nbins: %d   binsize: %f   "
+		       "min: %f   max: %f   roc: %f\n", 
 		       x, numfiles, nbins, binsize, min, max, roc);
 	    
 	    ajFatal("Could not put data in bin");
@@ -2208,30 +2228,3 @@ ajint rocplot_compX(const void *ptr1, const void *ptr2)
 	return 0;
     return -1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
