@@ -19,20 +19,22 @@ Description
    estimating the level of expression of a gene, and locating nucleic
    acid sequencing errors.
    
+   It is essential to use the correct codon usage file for the species.
+   
 Usage
 
-   Here is a sample session with syco, requesting graphical output.
-
-% syco -plot -cfile pae
-Synonymous codon usage Gribskov statistic plot
-Input sequence: embl:paamir
-Graph type [x11]:
-
-   click here for the result with the correct codon usage file.
+   Here is a sample session with syco
    
-   It is essential to use the correct codon usage file for the species.
-   For example, click here for the result with the default codon usage
-   file (no -cfile qualifier).
+
+% syco -plot -cfile Epae.cut 
+Synonymous codon usage Gribskov statistic plot
+Input sequence: tembl:paamir
+Graph type [x11]: ps
+
+Created syco.ps
+   
+   Go to the input files for this example
+   Go to the output files for this example
    
 Command line arguments
 
@@ -68,18 +70,285 @@ Command line arguments
    Advanced qualifiers Allowed values Default
    -cfile Codon usage file Codon usage file in EMBOSS data path Ehum.cut
    -window Averaging window Any integer value 30
-   -uncommon Show common codon usage Yes/No No
+   -uncommon Show common codon usage Boolean value Yes/No No
    -minimum Minimum value for a common codon Number from 0.000 to 0.990
    .15
-   -plot Produce plot Yes/No No
+   -plot Produce plot Boolean value Yes/No No
    
 Input file format
 
-   Nucleic acid sequence USA.
+   syco reads a nucleic acid sequence USA.
+   
+  Input files for usage example
+  
+   'tembl:paamir' is a sequence entry in the example nucleic acid
+   database 'tembl'
+   
+  Database entry: tembl:paamir
+  
+ID   PAAMIR     standard; DNA; PRO; 2167 BP.
+XX
+AC   X13776; M43175;
+XX
+SV   X13776.1
+XX
+DT   19-APR-1989 (Rel. 19, Created)
+DT   17-FEB-1997 (Rel. 50, Last updated, Version 22)
+XX
+DE   Pseudomonas aeruginosa amiC and amiR gene for aliphatic amidase regulation
+XX
+KW   aliphatic amidase regulator; amiC gene; amiR gene.
+XX
+OS   Pseudomonas aeruginosa
+OC   Bacteria; Proteobacteria; gamma subdivision; Pseudomonadaceae; Pseudomonas
+.
+XX
+RN   [1]
+RP   1167-2167
+RA   Rice P.M.;
+RT   ;
+RL   Submitted (16-DEC-1988) to the EMBL/GenBank/DDBJ databases.
+RL   Rice P.M., EMBL, Postfach 10-2209, Meyerhofstrasse 1, 6900 Heidelberg, FRG
+.
+XX
+RN   [2]
+RP   1167-2167
+RX   MEDLINE; 89211409.
+RA   Lowe N., Rice P.M., Drew R.E.;
+RT   "Nucleotide sequence of the aliphatic amidase regulator gene of Pseudomona
+s
+RT   aeruginosa";
+RL   FEBS Lett. 246:39-43(1989).
+XX
+RN   [3]
+RP   1-1292
+RX   MEDLINE; 91317707.
+RA   Wilson S., Drew R.;
+RT   "Cloning and DNA seqence of amiC, a new gene regulating expression of the
+RT   Pseudomonas aeruginosa aliphatic amidase, and purification of the amiC
+RT   product.";
+RL   J. Bacteriol. 173:4914-4921(1991).
+XX
+RN   [4]
+RP   1-2167
+RA   Rice P.M.;
+RT   ;
+RL   Submitted (04-SEP-1991) to the EMBL/GenBank/DDBJ databases.
+RL   Rice P.M., EMBL, Postfach 10-2209, Meyerhofstrasse 1, 6900 Heidelberg, FRG
+.
+XX
+DR   SWISS-PROT; P10932; AMIR_PSEAE.
+DR   SWISS-PROT; P27017; AMIC_PSEAE.
+DR   SWISS-PROT; Q51417; AMIS_PSEAE.
+
+
+  [Part of this file has been deleted for brevity]
+
+FT                   phenotype"
+FT                   /replace=""
+FT                   /gene="amiC"
+FT   misc_feature    1
+FT                   /note="last base of an XhoI site"
+FT   misc_feature    648..653
+FT                   /note="end of 658bp XhoI fragment, deletion in  pSW3 cause
+s
+FT                   constitutive expression of amiE"
+FT   conflict        1281
+FT                   /replace="g"
+FT                   /citation=[3]
+XX
+SQ   Sequence 2167 BP; 363 A; 712 C; 730 G; 362 T; 0 other;
+     ggtaccgctg gccgagcatc tgctcgatca ccaccagccg ggcgacggga actgcacgat        6
+0
+     ctacctggcg agcctggagc acgagcgggt tcgcttcgta cggcgctgag cgacagtcac       12
+0
+     aggagaggaa acggatggga tcgcaccagg agcggccgct gatcggcctg ctgttctccg       18
+0
+     aaaccggcgt caccgccgat atcgagcgct cgcacgcgta tggcgcattg ctcgcggtcg       24
+0
+     agcaactgaa ccgcgagggc ggcgtcggcg gtcgcccgat cgaaacgctg tcccaggacc       30
+0
+     ccggcggcga cccggaccgc tatcggctgt gcgccgagga cttcattcgc aaccgggggg       36
+0
+     tacggttcct cgtgggctgc tacatgtcgc acacgcgcaa ggcggtgatg ccggtggtcg       42
+0
+     agcgcgccga cgcgctgctc tgctacccga ccccctacga gggcttcgag tattcgccga       48
+0
+     acatcgtcta cggcggtccg gcgccgaacc agaacagtgc gccgctggcg gcgtacctga       54
+0
+     ttcgccacta cggcgagcgg gtggtgttca tcggctcgga ctacatctat ccgcgggaaa       60
+0
+     gcaaccatgt gatgcgccac ctgtatcgcc agcacggcgg cacggtgctc gaggaaatct       66
+0
+     acattccgct gtatccctcc gacgacgact tgcagcgcgc cgtcgagcgc atctaccagg       72
+0
+     cgcgcgccga cgtggtcttc tccaccgtgg tgggcaccgg caccgccgag ctgtatcgcg       78
+0
+     ccatcgcccg tcgctacggc gacggcaggc ggccgccgat cgccagcctg accaccagcg       84
+0
+     aggcggaggt ggcgaagatg gagagtgacg tggcagaggg gcaggtggtg gtcgcgcctt       90
+0
+     acttctccag catcgatacg cccgccagcc gggccttcgt ccaggcctgc catggtttct       96
+0
+     tcccggagaa cgcgaccatc accgcctggg ccgaggcggc ctactggcag accttgttgc      102
+0
+     tcggccgcgc cgcgcaggcc gcaggcaact ggcgggtgga agacgtgcag cggcacctgt      108
+0
+     acgacatcga catcgacgcg ccacaggggc cggtccgggt ggagcgccag aacaaccaca      114
+0
+     gccgcctgtc ttcgcgcatc gcggaaatcg atgcgcgcgg cgtgttccag gtccgctggc      120
+0
+     agtcgcccga accgattcgc cccgaccctt atgtcgtcgt gcataacctc gacgactggt      126
+0
+     ccgccagcat gggcggggga ccgctcccat gagcgccaac tcgctgctcg gcagcctgcg      132
+0
+     cgagttgcag gtgctggtcc tcaacccgcc gggggaggtc agcgacgccc tggtcttgca      138
+0
+     gctgatccgc atcggttgtt cggtgcgcca gtgctggccg ccgccggaag ccttcgacgt      144
+0
+     gccggtggac gtggtcttca ccagcatttt ccagaatggc caccacgacg agatcgctgc      150
+0
+     gctgctcgcc gccgggactc cgcgcactac cctggtggcg ctggtggagt acgaaagccc      156
+0
+     cgcggtgctc tcgcagatca tcgagctgga gtgccacggc gtgatcaccc agccgctcga      162
+0
+     tgcccaccgg gtgctgcctg tgctggtatc ggcgcggcgc atcagcgagg aaatggcgaa      168
+0
+     gctgaagcag aagaccgagc agctccagga ccgcatcgcc ggccaggccc ggatcaacca      174
+0
+     ggccaaggtg ttgctgatgc agcgccatgg ctgggacgag cgcgaggcgc accagcacct      180
+0
+     gtcgcgggaa gcgatgaagc ggcgcgagcc gatcctgaag atcgctcagg agttgctggg      186
+0
+     aaacgagccg tccgcctgag cgatccgggc cgaccagaac aataacaaga ggggtatcgt      192
+0
+     catcatgctg ggactggttc tgctgtacgt tggcgcggtg ctgtttctca atgccgtctg      198
+0
+     gttgctgggc aagatcagcg gtcgggaggt ggcggtgatc aacttcctgg tcggcgtgct      204
+0
+     gagcgcctgc gtcgcgttct acctgatctt ttccgcagca gccgggcagg gctcgctgaa      210
+0
+     ggccggagcg ctgaccctgc tattcgcttt tacctatctg tgggtggccg ccaaccagtt      216
+0
+     cctcgag                                                                216
+7
+//
    
 Output file format
 
-   Graphical display.
+  Output files for usage example
+  
+  File: paamir.syco
+  
+SYCO of PAAMIR from 1 to 2167
+
+
+Frame 1
+Mid base        Gribskov value
+46              0.847
+49              0.850
+52              0.831
+55              0.838
+58              0.823
+61              0.832
+64              0.848
+67              0.866
+70              0.876
+73              0.879
+76              0.893
+79              0.889
+82              0.879
+85              0.864
+88              0.877
+91              0.877
+94              0.880
+97              0.875
+100             0.874
+103             0.881
+106             0.873
+109             0.897
+112             0.914
+115             0.914
+118             0.921
+121             0.932
+124             0.947
+127             0.960
+130             0.960
+133             0.947
+136             0.956
+139             0.948
+142             0.967
+145             0.968
+148             0.963
+151             0.970
+154             0.967
+157             0.938
+160             0.938
+163             0.951
+166             0.941
+169             0.962
+172             0.973
+175             0.984
+178             0.981
+
+
+  [Part of this file has been deleted for brevity]
+
+1971            0.889
+1974            0.892
+1977            0.879
+1980            0.869
+1983            0.869
+1986            0.866
+1989            0.865
+1992            0.873
+1995            0.885
+1998            0.894
+2001            0.894
+2004            0.889
+2007            0.886
+2010            0.897
+2013            0.892
+2016            0.892
+2019            0.901
+2022            0.900
+2025            0.900
+2028            0.890
+2031            0.893
+2034            0.895
+2037            0.906
+2040            0.932
+2043            0.953
+2046            0.941
+2049            0.930
+2052            0.950
+2055            0.969
+2058            0.956
+2061            0.966
+2064            0.959
+2067            0.981
+2070            0.997
+2073            0.994
+2076            0.997
+2079            0.990
+2082            0.992
+2085            0.976
+2088            0.949
+2091            0.941
+2094            0.956
+2097            0.946
+2100            0.933
+2103            0.934
+2106            0.954
+2109            0.937
+2112            0.939
+2115            0.946
+2118            0.961
+2121            0.956
+   
+  Graphics File: syco.ps
+  
+   [syco results]
    
 Data files
 

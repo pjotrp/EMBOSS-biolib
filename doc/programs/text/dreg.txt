@@ -93,13 +93,18 @@ Description
    
 Usage
 
-   Here is a sample session with dreg.
+   Here is a sample session with dreg
+   
 
-% dreg
-Input sequence: embl:paamir
-Output file [paamir.dreg]:
+% dreg 
+regular expression search of a nucleotide sequence
+Input sequence(s): tembl:paamir
 Regular expression pattern: ggtacc
-
+Output file [paamir.dreg]: 
+   
+   Go to the input files for this example
+   Go to the output files for this example
+   
 Command line arguments
 
    Mandatory qualifiers:
@@ -132,15 +137,63 @@ Input file format
 
    Any nucleic sequence.
    
+  Input files for usage example
+  
+   'tembl:paamir' is a sequence entry in the example nucleic acid
+   database 'tembl'
+   
+  Database entry: tembl:paamir
+  
+>PAAMIR X13776.1 Pseudomonas aeruginosa amiC and amiR gene for aliphatic amidas
+e regulation
+ggtaccgctggccgagcatctgctcgatcaccaccagccgggcgacgggaactgcacgat
+ctacctggcgagcctggagcacgagcgggttcgcttcgtacggcgctgagcgacagtcac
+aggagaggaaacggatgggatcgcaccaggagcggccgctgatcggcctgctgttctccg
+aaaccggcgtcaccgccgatatcgagcgctcgcacgcgtatggcgcattgctcgcggtcg
+agcaactgaaccgcgagggcggcgtcggcggtcgcccgatcgaaacgctgtcccaggacc
+ccggcggcgacccggaccgctatcggctgtgcgccgaggacttcattcgcaaccgggggg
+tacggttcctcgtgggctgctacatgtcgcacacgcgcaaggcggtgatgccggtggtcg
+agcgcgccgacgcgctgctctgctacccgaccccctacgagggcttcgagtattcgccga
+acatcgtctacggcggtccggcgccgaaccagaacagtgcgccgctggcggcgtacctga
+ttcgccactacggcgagcgggtggtgttcatcggctcggactacatctatccgcgggaaa
+gcaaccatgtgatgcgccacctgtatcgccagcacggcggcacggtgctcgaggaaatct
+acattccgctgtatccctccgacgacgacttgcagcgcgccgtcgagcgcatctaccagg
+cgcgcgccgacgtggtcttctccaccgtggtgggcaccggcaccgccgagctgtatcgcg
+ccatcgcccgtcgctacggcgacggcaggcggccgccgatcgccagcctgaccaccagcg
+aggcggaggtggcgaagatggagagtgacgtggcagaggggcaggtggtggtcgcgcctt
+acttctccagcatcgatacgcccgccagccgggccttcgtccaggcctgccatggtttct
+tcccggagaacgcgaccatcaccgcctgggccgaggcggcctactggcagaccttgttgc
+tcggccgcgccgcgcaggccgcaggcaactggcgggtggaagacgtgcagcggcacctgt
+acgacatcgacatcgacgcgccacaggggccggtccgggtggagcgccagaacaaccaca
+gccgcctgtcttcgcgcatcgcggaaatcgatgcgcgcggcgtgttccaggtccgctggc
+agtcgcccgaaccgattcgccccgacccttatgtcgtcgtgcataacctcgacgactggt
+ccgccagcatgggcgggggaccgctcccatgagcgccaactcgctgctcggcagcctgcg
+cgagttgcaggtgctggtcctcaacccgccgggggaggtcagcgacgccctggtcttgca
+gctgatccgcatcggttgttcggtgcgccagtgctggccgccgccggaagccttcgacgt
+gccggtggacgtggtcttcaccagcattttccagaatggccaccacgacgagatcgctgc
+gctgctcgccgccgggactccgcgcactaccctggtggcgctggtggagtacgaaagccc
+cgcggtgctctcgcagatcatcgagctggagtgccacggcgtgatcacccagccgctcga
+tgcccaccgggtgctgcctgtgctggtatcggcgcggcgcatcagcgaggaaatggcgaa
+gctgaagcagaagaccgagcagctccaggaccgcatcgccggccaggcccggatcaacca
+ggccaaggtgttgctgatgcagcgccatggctgggacgagcgcgaggcgcaccagcacct
+gtcgcgggaagcgatgaagcggcgcgagccgatcctgaagatcgctcaggagttgctggg
+aaacgagccgtccgcctgagcgatccgggccgaccagaacaataacaagaggggtatcgt
+catcatgctgggactggttctgctgtacgttggcgcggtgctgtttctcaatgccgtctg
+gttgctgggcaagatcagcggtcgggaggtggcggtgatcaacttcctggtcggcgtgct
+gagcgcctgcgtcgcgttctacctgatcttttccgcagcagccgggcagggctcgctgaa
+ggccggagcgctgaccctgctattcgcttttacctatctgtgggtggccgccaaccagtt
+cctcgag
+   
 Output file format
 
-   This is the output from the example run. Sequence embl:paamir begins
-   at a restriction site with the sequence pattern GGTACC.
-
-dreg search of embl:paamir with pattern GGTACC
+  Output files for usage example
+  
+  File: paamir.dreg
+  
+dreg search of tembl:paamir with pattern GGTACC
 Matches in PAAMIR
          PAAMIR     1 GGTACC
-
+   
 Data files
 
    None.

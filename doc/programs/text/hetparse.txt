@@ -47,7 +47,8 @@ Command line arguments
    [-inf]
    (Parameter 1) Name of input file (raw dictionary of heterogen groups)
    Input file Required
-   -dogrep Search a directory of files with keywords? Yes/No No
+   -dogrep Search a directory of files with keywords? Boolean value
+   Yes/No No
    -path Directory to search with keywords Any string is accepted ./
    -extn Exension of files to search in above directory Any string is
    accepted .ent
@@ -98,7 +99,6 @@ See also
    files
    funky Reads clean coordinate files and writes file of
    protein-heterogen contact data
-   groups Removes redundant hits from a scop families file
    nrscope Converts redundant EMBL-format SCOP file to non-redundant one
    pdbparse Parses pdb files and writes cleaned-up protein coordinate
    files
@@ -113,6 +113,7 @@ See also
    embl-like format
    scopseqs Adds pdb and swissprot sequence records to a scop
    classification file
+   seqnr Removes redundant hits from a scop families file
    tfextract Extract data from TRANSFAC
    
 Author(s)

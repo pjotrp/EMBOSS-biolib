@@ -65,13 +65,13 @@ Command line arguments
    (Parameter 2) Extension of pdb files (pdb format input) Any string is
    accepted .ent
    -nocamask The group will not appear in either the CO or SQ records of
-   the clean coordinate file Yes/No No
+   the clean coordinate file Boolean value Yes/No No
    -nocamaska The amino acid will not appear in the CO record but will
-   still be present in the SQ record of the clean coordinate file Yes/No
-   No
+   still be present in the SQ record of the clean coordinate file Boolean
+   value Yes/No No
    -atommask The amino acid will appear not appear in the CO record but
    will still be present in the SQ record of the clean coordinate file
-   Yes/No No
+   Boolean value Yes/No No
    [-cpdb]
    (Parameter 3) Location of coordinate files (embl format output) Any
    string is accepted ./
@@ -83,7 +83,7 @@ Command line arguments
    -chnsiz Minimum number of residues in a chain for it to be parsed Any
    integer value 5
    Advanced qualifiers Allowed values Default
-   -[no]cpdbnaming Use pdbid code to name files Yes/No Yes
+   -[no]cpdbnaming Use pdbid code to name files Boolean value Yes/No Yes
    -maxmis Maximum number of permissible mismatches between the ATOM and
    SEQRES sequences Any integer value 3
    
@@ -126,7 +126,6 @@ See also
    files
    funky Reads clean coordinate files and writes file of
    protein-heterogen contact data
-   groups Removes redundant hits from a scop families file
    hetparse Converts raw dictionary of heterogen groups to a file in
    embl-like format
    nrscope Converts redundant EMBL-format SCOP file to non-redundant one
@@ -141,6 +140,7 @@ See also
    embl-like format
    scopseqs Adds pdb and swissprot sequence records to a scop
    classification file
+   seqnr Removes redundant hits from a scop families file
    tfextract Extract data from TRANSFAC
    
 Author(s)

@@ -31,12 +31,17 @@ Description
    
 Usage
 
-   Here is a sample session with garnier.
+   Here is a sample session with garnier
+   
 
-% garnier
-Input sequence: sw:amic_pseae
-Output file [amic_pseae.garnier]:
-
+% garnier 
+Predicts protein secondary structure
+Input sequence(s): tsw:amic_pseae
+Output report [amic_pseae.garnier]: 
+   
+   Go to the input files for this example
+   Go to the output files for this example
+   
 Command line arguments
 
    Mandatory qualifiers:
@@ -57,7 +62,7 @@ Command line arguments
    [-sequencea]
    (Parameter 1) Sequence database USA Readable sequence(s) Required
    [-outfile]
-   (Parameter 2) Output report file name Report file
+   (Parameter 2) Output report file name Report output file
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default
@@ -78,7 +83,23 @@ Command line arguments
    
 Input file format
 
-   Any protein sequence.
+   garnier read any protein sequence USA.
+   
+  Input files for usage example
+  
+   'tsw:amic_pseae' is a sequence entry in the example protein database
+   'tsw'
+   
+  Database entry: tsw:amic_pseae
+  
+>AMIC_PSEAE P27017 ALIPHATIC AMIDASE EXPRESSION-REGULATING PROTEIN.
+GSHQERPLIGLLFSETGVTADIERSHAYGALLAVEQLNREGGVGGRPIETLSQDPGGDPD
+RYRLCAEDFIRNRGVRFLVGCYMSHTRKAVMPVVERADALLCYPTPYEGFEYSPNIVYGG
+PAPNQNSAPLAAYLIRHYGERVVFIGSDYIYPRESNHVMRHLYRQHGGTVLEEIYIPLYP
+SDDDLQRAVERIYQARADVVFSTVVGTGTAELYRAIARRYGDGRRPPIASLTTSEAEVAK
+MESDVAEGQVVVAPYFSSIDTPASRAFVQACHGFFPENATITAWAEAAYWQTLLLGRAAQ
+AAGNWRVEDVQRHLYDIDIDAPQGPVRVERQNNHSRLSSRIAEIDARGVFQVRWQSPEPI
+RPDPYVVVHNLDDWSASMGGGPLP
    
 Output file format
 
@@ -96,19 +117,21 @@ Output file format
    
    By default garnier writes a 'tagseq' report file.
    
-   Here is the output from the example run.
-  __________________________________________________________________________
-
+  Output files for usage example
+  
+  File: amic_pseae.garnier
+  
 ########################################
 # Program: garnier
-# Rundate: Mon Feb 11 13:42:25 2002
+# Rundate: Fri Aug 23 16:03:30 2002
+# Report_format: tagseq
 # Report_file: amic_pseae.garnier
 ########################################
 
 #=======================================
 #
 # Sequence: AMIC_PSEAE     from: 1   to: 384
-# HitCount: 113
+# HitCount: 111
 #
 # DCH = 0, DCS = 0
 #
@@ -116,66 +139,64 @@ Output file format
 #  Garnier, Osguthorpe and Robson (1978) J. Mol. Biol. 120:97-120
 #
 #
-#
 #=======================================
 
-
           .   10    .   20    .   30    .   40    .   50
-      GSHQERPLIGLLFSETGVTADIERSQRYGALLAVEQLNREGGVGGRPIET
-helix                    HHHHH        HHHHH
-sheet      EE EEEEE                 EE              EEEE
-turns        T                TTTT          TTTT
- coil CCCCC        CCCCCC         CC       C    CCCC
-
+      GSHQERPLIGLLFSETGVTADIERSHAYGALLAVEQLNREGGVGGRPIET
+helix                   HHHHHHHHHHHHHHHHHHH
+sheet      EE EEEEE                                 EEEE
+turns        T                              TTTT
+ coil CCCCC        CCCCC                   C    CCCC
           .   60    .   70    .   80    .   90    .  100
       LSQDPGGDPDRYRLCAEDFIRNRGVRFLVGCYMSHTRKAVMPVVERADAL
 helix               HHHHHH            HHHH H     HHHHHH
 sheet E         EEEE           EEEE          EEEE      E
 turns  TT TT   T          TTTTT    TTT    T T
  coil    C  CCC
-
           .  110    .  120    .  130    .  140    .  150
       LCYPTPYEGFEYSPNIVYGGPAPNQNSAPLAAYLIRHYGERVVFIGSDYI
 helix                              HHH
-sheet EEE    E       EE           E   EEEE    EEEEE
-turns       T TTT  TT  T     TT           TT T     TTTT
- coil    CCC     CC     CCCCC  CCC          C          C
 
-          .  160    .  170    .  180    .  190    .  200
-      YPRESNHVMRHLYRQHGGTVLEEIYIPLYPSDDDVQRAVERIYQARADVV
+
+  [Part of this file has been deleted for brevity]
+
+      YPRESNHVMRHLYRQHGGTVLEEIYIPLYPSDDDLQRAVERIYQARADVV
 helix       HHHH                       HHHHHHHHHHHHH
 sheet           EEE       EEEEEEE                   EEEE
 turns   TTT        TTT             TTTT
  coil CC   C          CCCC       CC
-
           .  210    .  220    .  230    .  240    .  250
       FSTVVGTGTAELYRAIARRYGDGRRPPIASLTTSEAEVAKMESDVAEGQV
 helix          HHHHHHH                HHHHHHHHHHHHHHHHH
 sheet EEEE            EE         EEE                   E
 turns                   TTTTTT
  coil     CCCCC               CCC   CC
-
           .  260    .  270    .  280    .  290    .  300
-      VVAPYFSSIDTAASRAFVQACHGFFPENATITAWAEAAYWQTLLLGRAAQ
-helix            HHHHHHH           HHHHHHHHHHHHH    HHHH
-sheet EEEE  EEE         EE                      E
-turns     TT              TTT   TT
- coil          CC            CCC  C              CCC
-
+      VVAPYFSSIDTPASRAFVQACHGFFPENATITAWAEAAYWQTLLLGRAAQ
+helix               HHHH           HHHHHHHHHHHHH    HHHH
+sheet EEEE   E          EE                      E
+turns     TTT T   T       TTT   TT
+ coil          CCC C         CCC  C              CCC
           .  310    .  320    .  330    .  340    .  350
-      AAGSWRVEDVQRHLYDICIDAPQGPVRVERQNNHSRLSSRIAEIDARGVF
-helix H     HHHH                                HHH
-sheet                 EEEE     EEEEE         EEE      EE
-turns           TTTTTT     T        TT   T         TTT
- coil  CCCCC              C CCC       CCC CCC
-
+      AAGNWRVEDVQRHLYDIDIDAPQGPVRVERQNNHSRLSSRIAEIDARGVF
+helix       HHHHHHH                             HHH
+sheet              E  EEEE     EEEEE         EEE      EE
+turns               TT     T        TT   T         TTT
+ coil CCCCCC              C CCC       CCC CCC
           .  360    .  370    .  380
-      QVRWQSPEPIRPDPYVVVHNLDDWSASMGGGALP
+      QVRWQSPEPIRPDPYVVVHNLDDWSASMGGGPLP
 helix
-sheet EE           EEEEEEE     E       E
-turns   TT    TT           TTT   TTT
-  __________________________________________________________________________
+sheet EE           EEEEEEE     E
+turns   TT    TT           TTT  TTT
+ coil     CCCC  CCC       C   C    CCCCC
 
+#---------------------------------------
+#
+#  Residue totals: H:111   E: 98   T: 81   C: 94
+#         percent: H: 30.2 E: 26.6 T: 22.0 C: 25.5
+#
+#---------------------------------------
+   
 Data files
 
    None.

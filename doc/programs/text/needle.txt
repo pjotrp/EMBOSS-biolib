@@ -417,16 +417,12 @@ HBB_HUMAN         99 DPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH    146
 #---------------------------------------
 #---------------------------------------
    
-   The %id is the percentage of identical matches between the two
-   sequences over the reported aligned region.
+   The Identity: is the percentage of identical matches between the two
+   sequences over the reported aligned region (including any gaps in the
+   length).
    
-   The %similarity is the percentage of matches between the two sequences
-   over the reported aligned region where the scoring matrix value is
-   greater or equal to 0.0.
-   
-   The Overall %id and Overall %similarity are calculated in a similar
-   manner for the number of matches over the length of the longest of the
-   two sequences.
+   The Similarity: is the percentage of matches between the two sequences
+   over the reported aligned region (including any gaps in the length).
    
 Data files
 

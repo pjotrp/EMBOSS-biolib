@@ -116,7 +116,7 @@ Command line arguments
    4 (None)
    4
    -filtercon Ignore alignment positions making less than a threshold
-   number of contacts Yes/No No
+   number of contacts Boolean value Yes/No No
    -conthresh Threshold contact number Any integer value 10
    -conpath Location of contact files (input) Any string is accepted ./
    -conextn Extension of contact files Any string is accepted .con
@@ -124,7 +124,7 @@ Command line arguments
    string is accepted ./
    -cpdbextn Extension of coordinate files Any string is accepted .pxyz
    -filterpsim Ignore alignment postitions with post_similar value of 0
-   Yes/No No
+   Boolean value Yes/No No
    [-sigpath]
    (Parameter 3) Location of signature files (output) Any string is
    accepted ./
@@ -133,7 +133,7 @@ Command line arguments
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default
-   -randomise Generate a randomised signature Yes/No No
+   -randomise Generate a randomised signature Boolean value Yes/No No
    
 Input file format
 
@@ -292,6 +292,7 @@ See also
    contacts Reads coordinate files and writes files of intra-chain
    residue-residue contact data
    dichet Parse dictionary of heterogen groups
+   fraggle Removes fragment sequences from a seqsearch hits file
    hmmgen Generates a hidden Markov model for each alignment in a
    directory
    interface Reads coordinate files and writes files of inter-chain

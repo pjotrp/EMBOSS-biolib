@@ -87,6 +87,7 @@ See also
    contacts Reads coordinate files and writes files of intra-chain
    residue-residue contact data
    dichet Parse dictionary of heterogen groups
+   fraggle Removes fragment sequences from a seqsearch hits file
    hmmgen Generates a hidden Markov model for each alignment in a
    directory
    interface Reads coordinate files and writes files of inter-chain

@@ -67,6 +67,42 @@ parameter and thus very simple to use.
 </H2>
 
 
+<b>Here is a sample session with antigenic</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>antigenic </b>
+Finds antigenic sites in proteins
+Input sequence(s): <b>tsw:act1_fugru</b>
+Minimum length [6]: <b></b>
+Output report [act1_fugru.antigenic]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 2</b>
+<p>
+By using the '-rformat gff' qualifier, a GFF file of the predicted regions can be produced.
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>antigenic -rformat gff</b>
+Finds antigenic sites in proteins
+Input sequence(s): <b>tsw:act1_fugru</b>
+Minimum length [6]: <b></b>
+Output report [act1_fugru.antigenic]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.2">Go to the output files for this example</a><p><p>
+
+
+<!--
 Here is a sample session with antigenic.
 
 <pre>
@@ -78,7 +114,7 @@ Minimum length [6]:
 Output file [act1_fugru.antigenic]: 
 
 </pre>
-
+-->
 
 
 <H2>
@@ -135,7 +171,7 @@ IT IS DONE FOR YOU.
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Output report file name</td>
-<td>Report file</td>
+<td>Report output file</td>
 <td>&nbsp;</td>
 </tr>
 
@@ -170,6 +206,29 @@ IT IS DONE FOR YOU.
 
 The input sequence can be one or more protein sequences.
 
+<p>
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+
+'tsw:act1_fugru' is a sequence entry in the example protein database 'tsw'
+<p>
+<p><h3>Database entry: tsw:act1_fugru</h3>
+<table width="90%"><tr><td bgcolor="#FFDDFF">
+<pre>
+&gt;ACT1_FUGRU P53484 ACTIN, CYTOPLASMIC 1 (BETA-ACTIN 1).
+MEDEIAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDSYVGDEAQS
+KRGILTLKYPIEHGIVTNWDDMEKIWHHTFYNELRVAPEEHPVLLTEAPLNPKANREKMT
+QIMFETFNTPAMYVAIQAVLSLYASGRTTGIVMDSGDGVTHTVPIYEGYALPHAILRLDL
+AGRDLTDYLMKILTERGYSFTTTAEREIVRDIKEKLCYVALDFEQEMGTAASSSSLEKSY
+ELPDGQVITIGNERFRCPEALFQPSFLGMESCGIHETTYNSIMKCDVDIRKDLYANTVLS
+GGTTMYPGIADRMQKEITALAPSTMKIKIIAPPERKYSVWIGGSILASLSTFQQMWISKQ
+EYDESGPSIVHRKCF
+</pre>
+</td></tr></table><p>
+
+
 <H2>
     Output file format
 </H2>
@@ -202,6 +261,121 @@ By default <b>antigenic</b> writes a 'motif' report file.
 
 <p>
 
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: act1_fugru.antigenic</h3>
+<table width="90%"><tr><td bgcolor="#DDFFDD">
+<pre>
+########################################
+# Program: antigenic
+# Rundate: Fri Aug 23 15:43:20 2002
+# Report_format: motif
+# Report_file: act1_fugru.antigenic
+########################################
+
+#=======================================
+#
+# Sequence: ACT1_FUGRU     from: 1   to: 375
+# HitCount: 18
+#=======================================
+
+Max_score_pos at "*"
+
+(1) Score 1.207 length 9 at residues 214-&gt;222
+               *
+ Sequence: EKLCYVALD
+           |       |
+         214       222
+
+(2) Score 1.187 length 15 at residues 131-&gt;145
+                 *
+ Sequence: AMYVAIQAVLSLYAS
+           |             |
+         131             145
+
+(3) Score 1.166 length 8 at residues 5-&gt;12
+              *
+ Sequence: IAALVVDN
+           |      |
+           5      12
+
+(4) Score 1.164 length 12 at residues 27-&gt;38
+                *
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+           |    |
+         327    332
+
+(14) Score 1.074 length 7 at residues 317-&gt;323
+              *
+ Sequence: ITALAPS
+           |     |
+         317     323
+
+(15) Score 1.068 length 7 at residues 186-&gt;192
+                *
+ Sequence: TDYLMKI
+           |     |
+         186     192
+
+(16) Score 1.066 length 7 at residues 40-&gt;46
+              *
+ Sequence: HQGVMVG
+           |     |
+          40     46
+
+(17) Score 1.045 length 7 at residues 269-&gt;275
+           *
+ Sequence: MESCGIH
+           |     |
+         269     275
+
+(18) Score 1.034 length 7 at residues 51-&gt;57
+            *
+ Sequence: DSYVGDE
+           |     |
+          51     57
+
+
+#---------------------------------------
+#---------------------------------------
+</pre>
+</td></tr></table><p>
+
+<a name="output.2"></a>
+<h3>Output files for usage example 2</h3>
+<p><h3>File: act1_fugru.antigenic</h3>
+<table width="90%"><tr><td bgcolor="#DDFFDD">
+<pre>
+##gff-version 2.0
+##date 2002-08-28
+##Type Protein ACT1_FUGRU
+ACT1_FUGRU	antigenic	site	214	222	1.207	+	.	Sequence "ACT1_FUGRU.1" ; note "*pos 218"
+ACT1_FUGRU	antigenic	site	131	145	1.187	+	.	Sequence "ACT1_FUGRU.2" ; note "*pos 137"
+ACT1_FUGRU	antigenic	site	5	12	1.166	+	.	Sequence "ACT1_FUGRU.3" ; note "*pos 8"
+ACT1_FUGRU	antigenic	site	27	38	1.164	+	.	Sequence "ACT1_FUGRU.4" ; note "*pos 32"
+ACT1_FUGRU	antigenic	site	160	183	1.136	+	.	Sequence "ACT1_FUGRU.5" ; note "*pos 173"
+ACT1_FUGRU	antigenic	site	367	372	1.135	+	.	Sequence "ACT1_FUGRU.6" ; note "*pos 372"
+ACT1_FUGRU	antigenic	site	93	108	1.116	+	.	Sequence "ACT1_FUGRU.7" ; note "*pos 103"
+ACT1_FUGRU	antigenic	site	295	301	1.113	+	.	Sequence "ACT1_FUGRU.8" ; note "*pos 296"
+ACT1_FUGRU	antigenic	site	256	266	1.110	+	.	Sequence "ACT1_FUGRU.9" ; note "*pos 264"
+ACT1_FUGRU	antigenic	site	336	352	1.107	+	.	Sequence "ACT1_FUGRU.10" ; note "*pos 347"
+ACT1_FUGRU	antigenic	site	62	76	1.102	+	.	Sequence "ACT1_FUGRU.11" ; note "*pos 68"
+ACT1_FUGRU	antigenic	site	232	250	1.086	+	.	Sequence "ACT1_FUGRU.12" ; note "*pos 245"
+ACT1_FUGRU	antigenic	site	327	332	1.083	+	.	Sequence "ACT1_FUGRU.13" ; note "*pos 330"
+ACT1_FUGRU	antigenic	site	317	323	1.074	+	.	Sequence "ACT1_FUGRU.14" ; note "*pos 320"
+ACT1_FUGRU	antigenic	site	186	192	1.068	+	.	Sequence "ACT1_FUGRU.15" ; note "*pos 191"
+ACT1_FUGRU	antigenic	site	40	46	1.066	+	.	Sequence "ACT1_FUGRU.16" ; note "*pos 43"
+ACT1_FUGRU	antigenic	site	269	275	1.045	+	.	Sequence "ACT1_FUGRU.17" ; note "*pos 269"
+ACT1_FUGRU	antigenic	site	51	57	1.034	+	.	Sequence "ACT1_FUGRU.18" ; note "*pos 52"
+</pre>
+</td></tr></table><p>
+
+
+<!--
 The output from the above example is:
 
 <p>
@@ -370,6 +544,8 @@ ACT1_FUGRU      antigenic       site    40      46      1.066   +       .	Sequen
 ACT1_FUGRU      antigenic       site    269     275     1.045   +       .	Sequence "ACT1_FUGRU.17" ; note "*pos 269"
 ACT1_FUGRU      antigenic       site    51      57      1.034   +       .	Sequence "ACT1_FUGRU.18" ; note "*pos 52"
 </pre>
+-->
+
 
 <H2>
     Data files

@@ -73,6 +73,53 @@ have to put in a space yourself if you require one.
 </H2>
 
 
+<b>Here is a sample session with descseq</b>
+<p>
+Set the name of a sequence to "myclone23" 
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>descseq -seq ../../data/dna.text -out clone23.seq -name "myclone23"</b>
+Alter the name or description of a sequence.
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 2</b>
+<p>
+Set the description of a sequence to "This is my clone number 244" 
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>descseq -seq ../../data/dna.text -out xy24.seq -desc "This is my clone number 244"</b>
+Alter the name or description of a sequence.
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.2">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 3</b>
+<p>
+Append some text to the description of a sequence
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>descseq -seq ../../data/dna.text -out est4.seq -desc " (submitted)" -append</b>
+Alter the name or description of a sequence.
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.3">Go to the output files for this example</a><p><p>
+
+
+<!--
 Set the name of a sequence to "myclone23"
 <pre>
 % descseq -seq clone23 -out clone23.seq -name "myclone23"
@@ -88,7 +135,7 @@ Append some text to the description of a sequence
 <pre>
 % descseq -seq est.seq -out est4.seq -desc " (submitted)" -append
 </pre>
-
+-->
 
 <H2>
     Command line arguments
@@ -177,7 +224,7 @@ IT IS DONE FOR YOU.
 <tr>
 <td>-append</td>
 <td>This allows you to append the name or description you have given on to the end of the existing name or description of the sequence.</td>
-<td>Yes/No</td>
+<td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
@@ -190,14 +237,65 @@ IT IS DONE FOR YOU.
 </H2>
 
 
-Normal sequence.
+<b>descseq</b> reads a normal sequence USA.
+
+<p>
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: ../../data/dna.text</h3>
+<table width="90%"><tr><td bgcolor="#FFDDFF">
+<pre>
+ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTAC
+GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT
+</pre>
+</td></tr></table><p>
+
 
 <H2>
     Output file format
 </H2>
 
 
-The sequence file with a changed name or description.
+<b>descseq</b> writes the sequence file with a changed name or description.
+
+<p>
+
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: clone23.seq</h3>
+<table width="90%"><tr><td bgcolor="#DDFFDD">
+<pre>
+&gt;myclone23
+ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT
+ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT
+</pre>
+</td></tr></table><p>
+
+<a name="output.2"></a>
+<h3>Output files for usage example 2</h3>
+<p><h3>File: xy24.seq</h3>
+<table width="90%"><tr><td bgcolor="#DDFFDD">
+<pre>
+&gt;EMBOSS_001 This is my clone number 244
+ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT
+ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT
+</pre>
+</td></tr></table><p>
+
+<a name="output.3"></a>
+<h3>Output files for usage example 3</h3>
+<p><h3>File: est4.seq</h3>
+<table width="90%"><tr><td bgcolor="#DDFFDD">
+<pre>
+&gt;EMBOSS_001  (submitted)
+ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT
+ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT
+</pre>
+</td></tr></table><p>
+
 
 <H2>
     Data files

@@ -284,7 +284,6 @@ See also
    files
    funky Reads clean coordinate files and writes file of
    protein-heterogen contact data
-   groups Removes redundant hits from a scop families file
    hetparse Converts raw dictionary of heterogen groups to a file in
    embl-like format
    pdbparse Parses pdb files and writes cleaned-up protein coordinate
@@ -300,6 +299,7 @@ See also
    embl-like format
    scopseqs Adds pdb and swissprot sequence records to a scop
    classification file
+   seqnr Removes redundant hits from a scop families file
    tfextract Extract data from TRANSFAC
    
 Author(s)

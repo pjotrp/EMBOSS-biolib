@@ -25,13 +25,17 @@ Description
    
 Usage
 
-   Here is a sample session with cai:
+   Here is a sample session with cai
    
-% cai embl:AB009602
-CAI codon adaptation index
-Codon usage file [Eyeastcai.cut]:
-Output file [ab009602.cai]:
 
+% cai TEMBL:AB009602
+CAI codon adaptation index
+Codon usage file [Eyeastcai.cut]: 
+Output file [ab009602.cai]: 
+   
+   Go to the input files for this example
+   Go to the output files for this example
+   
 Command line arguments
 
    Mandatory qualifiers:
@@ -63,16 +67,33 @@ Input file format
 
    cai reads a nucleic acid sequence of a gene.
    
+  Input files for usage example
+  
+  Database entry: TEMBL:AB009602
+  
+>AB009602 AB009602.1 Schizosaccharomyces pombe mRNA for MET1 homolog, partial c
+ds.
+gttcgatgcctaaaataccttcttttgtccctacacagaccacagttttcctaatggctt
+tacaccgactagaaattcttgtgcaagcactaattgaaagcggttggcctagagtgttac
+cggtttgtatagctgagcgcgtctcttgccctgatcaaaggttcattttctctactttgg
+aagacgttgtggaagaatacaacaagtacgagtctctcccccctggtttgctgattactg
+gatacagttgtaatacccttcgcaacaccgcgtaactatctatatgaattattttccctt
+tattatatgtagtaggttcgtctttaatcttcctttagcaagtcttttactgttttcgac
+ctcaatgttcatgttcttaggttgttttggataatatgcggtcagtttaatcttcgttgt
+ttcttcttaaaatatttattcatggtttaatttttggtttgtacttgttcaggggccagt
+tcattatttactctgtttgtatacagcagttcttttatttttagtatgattttaatttaa
+aacaattctaatggtcaaaaa
+   
 Output file format
 
    cai writes the Codon Adaptation Index to the output file.
    
-   The output from the above example follows:
-     _________________________________________________________________
-   
-CAI = 0.188
-     _________________________________________________________________
-   
+  Output files for usage example
+  
+  File: ab009602.cai
+  
+   Sequence: AB009602 CAI: 0.188
+
 Data files
 
    cai reads a reference codon usage table prepared from a set of genes

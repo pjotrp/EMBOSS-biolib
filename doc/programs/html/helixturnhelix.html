@@ -63,15 +63,20 @@ DNA; the other lies at an angle across DNA.
 </H2>
 
 
-Here is a sample session with helixturnhelix.
+<b>Here is a sample session with helixturnhelix</b>
+<p>
 
-<pre>
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% helixturnhelix
-Input sequence: sw:laci_ecoli
-Output file [laci_ecoli.hth]: 
+% <b>helixturnhelix </b>
+Report nucleic acid binding motifs
+Input sequence(s): <b>tsw:laci_ecoli</b>
+Output report [laci_ecoli.hth]: <b></b>
 
-</pre>
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
 
@@ -126,7 +131,7 @@ IT IS DONE FOR YOU.
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Output report file name</td>
-<td>Report file</td>
+<td>Report output file</td>
 <td>&nbsp;</td>
 </tr>
 
@@ -160,7 +165,7 @@ IT IS DONE FOR YOU.
 <tr>
 <td>-eightyseven</td>
 <td>Use the old (1987) weight data</td>
-<td>Yes/No</td>
+<td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
@@ -183,7 +188,29 @@ IT IS DONE FOR YOU.
 </H2>
 
 
-The input sequence can be one or more protein sequences.
+<b>helixturnhelix</b> reads one or more protein sequence USAs.
+
+<p>
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+
+'tsw:laci_ecoli' is a sequence entry in the example protein database 'tsw'
+<p>
+<p><h3>Database entry: tsw:laci_ecoli</h3>
+<table width="90%"><tr><td bgcolor="#FFDDFF">
+<pre>
+&gt;LACI_ECOLI P03023 LACTOSE OPERON REPRESSOR.
+MKPVTLYDVAEYAGVSYQTVSRVVNQASHVSAKTREKVEAAMAELNYIPNRVAQQLAGKQ
+SLLIGVATSSLALHAPSQIVAAIKSRADQLGASVVVSMVERSGVEACKAAVHNLLAQRVS
+GLIINYPLDDQDAIAVEAACTNVPALFLDVSDQTPINSIIFSHEDGTRLGVEHLVALGHQ
+QIALLAGPLSSVSARLRLAGWHKYLTRNQIQPIAEREGDWSAMSGFQQTMQMLNEGIVPT
+AMLVANDQMALGAMRAITESGLRVGADISVVGYDDTEDSSCYIPPSTTIKQDFRLLGQTS
+VDRLLQLSQGQAVKGNQLLPVSLVKRKTTLAPNTQTASPRALADSLMQLARQVSRLESGQ
+</pre>
+</td></tr></table><p>
+
 
 <H2>
     Output file format
@@ -218,15 +245,16 @@ By default <b>helixturnhelix</b> writes a 'motif' report file.
 
 <p>
 
-Here is a sample output:
 
-<p>
-
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: laci_ecoli.hth</h3>
+<table width="90%"><tr><td bgcolor="#DDFFDD">
 <pre>
-<hr>
 ########################################
 # Program: helixturnhelix
-# Rundate: Mon Feb 11 13:45:02 2002
+# Rundate: Fri Aug 23 16:03:33 2002
+# Report_format: motif
 # Report_file: laci_ecoli.hth
 ########################################
 
@@ -241,7 +269,7 @@ Here is a sample output:
 
 Maximum_score_at at "*"
 
-(1) Score 2160.000 length 22 at residues 4->25
+(1) Score 2160.000 length 22 at residues 4-&gt;25
            *
  Sequence: VTLYDVAEYAGVSYQTVSRVVN
            |                    |
@@ -251,8 +279,9 @@ Maximum_score_at at "*"
 
 #---------------------------------------
 #---------------------------------------
-<hr>
 </pre>
+</td></tr></table><p>
+
 
 <H2>
     Data files

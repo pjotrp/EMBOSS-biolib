@@ -21,14 +21,19 @@ Description
    
 Usage
 
-   Here is a sample session with fuzznuc.
+   Here is a sample session with fuzznuc
+   
 
-% fuzznuc
-Input sequence: embl:hhtetra
+% fuzznuc 
+Nucleic acid pattern search
+Input sequence(s): tembl:hhtetra
 Search pattern: AAGCTT
-Number of mismatches [0]:
-Output file [hhtetra.fuzznuc]:
-
+Number of mismatches [0]: 
+Output report [hhtetra.fuzznuc]: 
+   
+   Go to the input files for this example
+   Go to the output files for this example
+   
 Command line arguments
 
    Mandatory qualifiers:
@@ -97,14 +102,50 @@ Command line arguments
    [CG](5)TG{A}N(1,5)C Any string is accepted An empty string is accepted
    -mismatch Number of mismatches Integer 0 or more 0
    [-outfile]
-   (Parameter 2) Output report file name Report file
+   (Parameter 2) Output report file name Report output file
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default
-   -complement Search complementary strand Yes/No No
+   -complement Search complementary strand Boolean value Yes/No No
    
 Input file format
 
+   fuzznuc reads in normal nucleic acid sequence USAs.
+   
+  Input files for usage example
+  
+   'tembl:hhtetra' is a sequence entry in the example nucleic acid
+   database 'tembl'
+   
+  Database entry: tembl:hhtetra
+  
+>HHTETRA L46634.1 Human herpesvirus 7 (clone ED132'1.2) telomeric repeat region
+.
+aagcttaaactgaggtcacacacgactttaattacggcaacgcaacagctgtaagctgca
+ggaaagatacgatcgtaagcaaatgtagtcctacaatcaagcgaggttgtagacgttacc
+tacaatgaactacacctctaagcataacctgtcgggcacagtgagacacgcagccgtaaa
+ttcaaaactcaacccaaaccgaagtctaagtctcaccctaatcgtaacagtaaccctaca
+actctaatcctagtccgtaaccgtaaccccaatcctagcccttagccctaaccctagccc
+taaccctagctctaaccttagctctaactctgaccctaggcctaaccctaagcctaaccc
+taaccgtagctctaagtttaaccctaaccctaaccctaaccatgaccctgaccctaaccc
+tagggctgcggccctaaccctagccctaaccctaaccctaatcctaatcctagccctaac
+cctagggctgcggccctaaccctagccctaaccctaaccctaaccctagggctgcggccc
+taaccctaaccctagggctgcggcccgaaccctaaccctaaccctaaccctaaccctagg
+gctgcggccctaaccctaaccctagggctgcggccctaaccctaaccctagggctgcggc
+ccgaaccctaaccctaaccctaaccctagggctgcggccctaaccctaaccctagggctg
+cggccctaaccctaaccctaactctagggctgcggccctaaccctaaccctaaccctaac
+cctagggctgcggcccgaaccctagccctaaccctaaccctgaccctgaccctaacccta
+accctaaccctaaccctaaccctaaccctaaccctaaccctaaccctaaccctaacccta
+accctaaccctaaccctaaccctaaccccgcccccactggcagccaatgtcttgtaatgc
+cttcaaggcactttttctgcgagccgcgcgcagcactcagtgaaaaacaagtttgtgcac
+gagaaagacgctgccaaaccgcagctgcagcatgaaggctgagtgcacaattttggcttt
+agtcccataaaggcgcggcttcccgtagagtagaaaaccgcagcgcggcgcacagagcga
+aggcagcggctttcagactgtttgccaagcgcagtctgcatcttaccaatgatgatcgca
+agcaagaaaaatgttctttcttagcatatgcgtggttaatcctgttgtggtcatcactaa
+gttttcaagctt
+   
+  Pattern specification
+  
    Patterns for fuzznuc are based on the format of pattern used in the
    PROSITE database, with the difference that the terminating dot '.' and
    the hyphens, '-', between the characters are optional.
@@ -165,12 +206,15 @@ Output file format
    
    By default fuzznuc writes a 'seqtable' report file.
    
-   The output from the above example is:
-   
+  Output files for usage example
+  
+  File: hhtetra.fuzznuc
+  
 ########################################
 # Program: fuzznuc
-# Rundate: Thu Apr 11 13:34:06 2002
-# Report_file: stdout
+# Rundate: Fri Aug 23 16:03:19 2002
+# Report_format: seqtable
+# Report_file: hhtetra.fuzznuc
 ########################################
 
 #=======================================
@@ -178,7 +222,7 @@ Output file format
 # Sequence: HHTETRA     from: 1   to: 1272
 # HitCount: 2
 #
-# Pattern: aagctt
+# Pattern: AAGCTT
 # Mismatch: 0
 # Complement: No
 #
@@ -190,7 +234,7 @@ Output file format
 
 #---------------------------------------
 #---------------------------------------
-
+   
 Data files
 
    None.

@@ -46,8 +46,8 @@ Codon usage statistics
 </H2>
 
 
-<b>chips</b> calculates Frank Wright's Nc statistic for the effective number of
-codons used (ref 1).
+<b>chips</b> calculates Frank Wright's Nc statistic for the effective
+number of codons used (ref 1). 
 
 <p>
 
@@ -74,23 +74,40 @@ for a meat-free name for the EMBOSS version, "chips". The official
 explanation is "Codon Heterozygosity (Inverse of) in a
 Protein-coding Sequence"
 
+<p>
+
+If the sequence extends beyond the coding region then the start and/or
+end positions of the CDS must be provided because chips analyses
+exclusively protein coding regions. 
+
 <H2>
     Usage
 </H2>
 
-
-Here is a sample session with chips. If the sequence extends beyond
-the coding region then the start and/or end positions of the CDS must
-be provided because chips analyses exclusively protein coding regions.
-
+<b>Here is a sample session with chips</b>
 <p>
 
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>chips -sbeg 135 -send 1292</b>
+Codon usage statistics
+Input sequence(s): <b>tembl:paamir</b>
+Output file [paamir.chips]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+
+
+
+<!--
 <pre>
 % chips -sbeg 135 -send 1292
 Input sequence: embl:paamir
 Output file [paamir.chips]: 
 </pre>
-
+-->
 
 
 <H2>
@@ -113,6 +130,7 @@ IT IS DONE FOR YOU.
    Optional qualifiers: (none)
    Advanced qualifiers:
    -cfile              codon      Codon usage file
+   -[no]sum            boolean    Sum codons over all sequences
 
    General qualifiers:
   -help                boolean    Report command line options. More
@@ -168,6 +186,13 @@ IT IS DONE FOR YOU.
 <td>Ehum.cut</td>
 </tr>
 
+<tr>
+<td>-[no]sum</td>
+<td>Sum codons over all sequences</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
 </table>
 
 
@@ -178,11 +203,77 @@ IT IS DONE FOR YOU.
 
 A nucleic acid sequence USA.
 
+<p>
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+
+'tembl:paamir' is a sequence entry in the example nucleic acid database 'tembl'
+<p>
+<p><h3>Database entry: tembl:paamir</h3>
+<table width="90%"><tr><td bgcolor="#FFDDFF">
+<pre>
+&gt;PAAMIR X13776.1 Pseudomonas aeruginosa amiC and amiR gene for aliphatic amidase regulation
+ggtaccgctggccgagcatctgctcgatcaccaccagccgggcgacgggaactgcacgat
+ctacctggcgagcctggagcacgagcgggttcgcttcgtacggcgctgagcgacagtcac
+aggagaggaaacggatgggatcgcaccaggagcggccgctgatcggcctgctgttctccg
+aaaccggcgtcaccgccgatatcgagcgctcgcacgcgtatggcgcattgctcgcggtcg
+agcaactgaaccgcgagggcggcgtcggcggtcgcccgatcgaaacgctgtcccaggacc
+ccggcggcgacccggaccgctatcggctgtgcgccgaggacttcattcgcaaccgggggg
+tacggttcctcgtgggctgctacatgtcgcacacgcgcaaggcggtgatgccggtggtcg
+agcgcgccgacgcgctgctctgctacccgaccccctacgagggcttcgagtattcgccga
+acatcgtctacggcggtccggcgccgaaccagaacagtgcgccgctggcggcgtacctga
+ttcgccactacggcgagcgggtggtgttcatcggctcggactacatctatccgcgggaaa
+gcaaccatgtgatgcgccacctgtatcgccagcacggcggcacggtgctcgaggaaatct
+acattccgctgtatccctccgacgacgacttgcagcgcgccgtcgagcgcatctaccagg
+cgcgcgccgacgtggtcttctccaccgtggtgggcaccggcaccgccgagctgtatcgcg
+ccatcgcccgtcgctacggcgacggcaggcggccgccgatcgccagcctgaccaccagcg
+aggcggaggtggcgaagatggagagtgacgtggcagaggggcaggtggtggtcgcgcctt
+acttctccagcatcgatacgcccgccagccgggccttcgtccaggcctgccatggtttct
+tcccggagaacgcgaccatcaccgcctgggccgaggcggcctactggcagaccttgttgc
+tcggccgcgccgcgcaggccgcaggcaactggcgggtggaagacgtgcagcggcacctgt
+acgacatcgacatcgacgcgccacaggggccggtccgggtggagcgccagaacaaccaca
+gccgcctgtcttcgcgcatcgcggaaatcgatgcgcgcggcgtgttccaggtccgctggc
+agtcgcccgaaccgattcgccccgacccttatgtcgtcgtgcataacctcgacgactggt
+ccgccagcatgggcgggggaccgctcccatgagcgccaactcgctgctcggcagcctgcg
+cgagttgcaggtgctggtcctcaacccgccgggggaggtcagcgacgccctggtcttgca
+gctgatccgcatcggttgttcggtgcgccagtgctggccgccgccggaagccttcgacgt
+gccggtggacgtggtcttcaccagcattttccagaatggccaccacgacgagatcgctgc
+gctgctcgccgccgggactccgcgcactaccctggtggcgctggtggagtacgaaagccc
+cgcggtgctctcgcagatcatcgagctggagtgccacggcgtgatcacccagccgctcga
+tgcccaccgggtgctgcctgtgctggtatcggcgcggcgcatcagcgaggaaatggcgaa
+gctgaagcagaagaccgagcagctccaggaccgcatcgccggccaggcccggatcaacca
+ggccaaggtgttgctgatgcagcgccatggctgggacgagcgcgaggcgcaccagcacct
+gtcgcgggaagcgatgaagcggcgcgagccgatcctgaagatcgctcaggagttgctggg
+aaacgagccgtccgcctgagcgatccgggccgaccagaacaataacaagaggggtatcgt
+catcatgctgggactggttctgctgtacgttggcgcggtgctgtttctcaatgccgtctg
+gttgctgggcaagatcagcggtcgggaggtggcggtgatcaacttcctggtcggcgtgct
+gagcgcctgcgtcgcgttctacctgatcttttccgcagcagccgggcagggctcgctgaa
+ggccggagcgctgaccctgctattcgcttttacctatctgtgggtggccgccaaccagtt
+cctcgag
+</pre>
+</td></tr></table><p>
+
+
 <H2>
     Output file format
 </H2>
 
 
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: paamir.chips</h3>
+<table width="90%"><tr><td bgcolor="#DDFFDD">
+<pre>
+# CHIPS codon usage statistics
+
+Nc = 32.951
+</pre>
+</td></tr></table><p>
+
+
+<!--
 This is the output from the example run:
 
 <p>
@@ -193,13 +284,14 @@ This is the output from the example run:
 Nc = 32.951
 </pre>
 <hr>
+-->
 
 <p>
 
 If all codons are used, the Nc value will be 61. If only one codon is
-used for each amino acid the Nc value will be 20. Low values therefor
-indicate a strong codon bias, and high values indicate a low bias and
-possibly a non-coding region.
+used for each amino acid the Nc value will be 20. Low values therefore
+indicate a strong codon bias, and high values indicate a low bias (and
+possibly a non-coding region).
 
 <H2>
     Data files

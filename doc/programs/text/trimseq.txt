@@ -117,13 +117,13 @@ Command line arguments
    window required in order to trim a sequence. Any numeric value 100.0
    -strict In nucleic sequences, trim off not only N's and X's, but also
    the nucleotide IUPAC ambiguity codes M, R, W, S, Y, K, V, H, D and B.
-   In protein sequences, trim off not only X's but also B and Z. Yes/No
-   No
+   In protein sequences, trim off not only X's but also B and Z. Boolean
+   value Yes/No No
    -star In protein sequences, trim off not only X's, but also the *'s
-   Yes/No No
+   Boolean value Yes/No No
    Advanced qualifiers Allowed values Default
-   -[no]left Trim at the start Yes/No Yes
-   -[no]right Trim at the end Yes/No Yes
+   -[no]left Trim at the start Boolean value Yes/No Yes
+   -[no]right Trim at the end Boolean value Yes/No Yes
    
 Input file format
 

@@ -70,15 +70,21 @@ investigating.
 </H2>
 
 
-Here is a sample session with getorf.
+<b>Here is a sample session with getorf</b>
+<p>
 
-<pre>
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% getorf -minsize 300
-Input sequence: embl:eclaci
-Output sequence [eclaci.orf]: 
+% <b>getorf -minsize 300</b>
+Finds and extracts open reading frames (ORFs)
+Input sequence(s): <b>tembl:eclaci</b>
+Output sequence [eclaci.orf]: <b></b>
 
-</pre>
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+
 
 
 
@@ -205,21 +211,21 @@ IT IS DONE FOR YOU.
 <tr>
 <td>-[no]methionine</td>
 <td>START codons at the beginning of protein products will usually code for Methionine, despite what the codon will code for when it is internal to a protein. This qualifier sets all such START codons to code for Methionine by default.</td>
-<td>Yes/No</td>
+<td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>
 
 <tr>
 <td>-circular</td>
 <td>Is the sequence circular</td>
-<td>Yes/No</td>
+<td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
 <tr>
 <td>-[no]reverse</td>
 <td>Set this to be false if you do not wish to find ORFs in the reverse complement of the sequence.</td>
-<td>Yes/No</td>
+<td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>
 
@@ -239,7 +245,42 @@ IT IS DONE FOR YOU.
 </H2>
 
 
-Any nucleic acid sequence USA.
+<b>getorf</b> reads any nucleic acid sequence USA.
+
+<p>
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+
+'tembl:eclaci' is a sequence entry in the example nucleic acid database 'tembl'
+<p>
+<p><h3>Database entry: tembl:eclaci</h3>
+<table width="90%"><tr><td bgcolor="#FFDDFF">
+<pre>
+&gt;ECLACI V00294.1 E. coli laci gene (codes for the lac repressor).
+ccggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacgatgtcgca
+gagtatgccggtgtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtt
+tctgcgaaaacgcgggaaaaagtggaagcggcgatggcggagctgaattacattcccaac
+cgcgtggcacaacaactggcgggcaaacagtcgttgctgattggcgttgccacctccagt
+ctggccctgcacgcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactg
+ggtgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcg
+gtgcacaatcttctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgac
+caggatgccattgctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtc
+tctgaccagacacccatcaacagtattattttctcccatgaagacggtacgcgactgggc
+gtggagcatctggtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagt
+tctgtctcggcgcgtctgcgtctggctggctggcataaatatctcactcgcaatcaaatt
+cagccgatagcggaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatg
+caaatgctgaatgagggcatcgttcccactgcgatgctggttgccaacgatcagatggcg
+ctgggcgcaatgcgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggta
+gtgggatacgacgataccgaagacagctcatgttatatcccgccgtcaaccaccatcaaa
+caggattttcgcctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggc
+caggcggtgaagggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctg
+gcgcccaatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggca
+cgacaggtttcccgactggaaagcgggcagtga
+</pre>
+</td></tr></table><p>
+
 
 <H2>
     Output file format
@@ -247,12 +288,15 @@ Any nucleic acid sequence USA.
 
 
 The output is a sequence file containing predicted open reading frames
-longer than the minimum size, which defaults to 30 bases or 10 amino acids.
+longer than the minimum size, which defaults to 30 bases (i.e. 10 amino acids).
 
 <p>
-The results from the example run are:
 
-<p>
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: eclaci.orf</h3>
+<table width="90%"><tr><td bgcolor="#DDFFDD">
 <pre>
 &gt;ECLACI_1 [735 - 1112] E. coli laci gene (codes for the lac repressor).
 GHRSHCDAGCQRSDGAGRNARHYRVRAARWCGYLGSGIRRYRRQLMLYPAVNHHQTGFSP
@@ -271,9 +315,8 @@ RRNISAGSFHSNGILVIQRIVNDQPTDALREKIVHRRFTGFDAASFYHRHHHAGTQLIGA
 RFNRRDNLRRRVQGQTGGGNANQQRLFARQLLCHAVGNVIQLRHRRFHFFPRFRRNVAGL
 VHHAGNGLIRDTGILCDIV
 </pre>
-<p>
+</td></tr></table><p>
 
-All output ORF sequences are written to the specified outut file.
 
 <p> 
 

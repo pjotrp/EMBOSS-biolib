@@ -43,7 +43,8 @@ Command line arguments
    (Parameter 1) Name of raw input file (dictionary of heterogen groups)
    Input file Required
    [-dogrep]
-   (Parameter 2) Search a directory of files with keywords? Yes/No No
+   (Parameter 2) Search a directory of files with keywords? Boolean value
+   Yes/No No
    [-outf]
    (Parameter 3) Name of output file Output file <sequence>.dichet
    -path Directory to search with keywords Any string is accepted ./
@@ -95,6 +96,7 @@ See also
    Program name Description
    contacts Reads coordinate files and writes files of intra-chain
    residue-residue contact data
+   fraggle Removes fragment sequences from a seqsearch hits file
    hmmgen Generates a hidden Markov model for each alignment in a
    directory
    interface Reads coordinate files and writes files of inter-chain

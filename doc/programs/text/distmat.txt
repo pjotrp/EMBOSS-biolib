@@ -182,17 +182,16 @@ distance = -ln(1 - D - 0.2D^2)
    
 Usage
 
-   Here is a sample session with distmat:
+   Here is a sample session with distmat
    
-% distmat pax.align
-Creates a distance matrix from multiple alignments
-Multiple substitution correction methods for proteins
-         0 : Uncorrected
-         1 : Jukes-Cantor
-         2 : Kimura Protein
-Method to use [0]: 2
-Output file [outfile.distmat]:
 
+% distmat ../../data/pax.align
+Creates a distance matrix from multiple alignments
+Error: 2
+failed to open filename ../../data/pax.align
+Error: 
+Unable to read sequence '../../data/pax.align'
+   
 Command line arguments
 
    Mandatory qualifiers (* if not always prompted):
@@ -251,7 +250,8 @@ Command line arguments
    <sequence>.distmat
    Optional qualifiers Allowed values Default
    -ambiguous Option to use the abiguous codes in the calculation of the
-   Jukes-Cantor method or if the sequences are proteins. Yes/No No
+   Jukes-Cantor method or if the sequences are proteins. Boolean value
+   Yes/No No
    -gapweight Option to weight gaps in the uncorrected (nucleotide) and
    Jukes-Cantor distance methods. Any numeric value 0.
    -position Choose base positions to analyse in each codon i.e. 123 (all
@@ -259,7 +259,7 @@ Command line arguments
    integer value 123
    -calculatea This will force the calculation of the a-parameter in the
    Jin-Nei Gamma distance calculation, otherwise the default is 1.0 (see
-   -parametera option). Yes/No No
+   -parametera option). Boolean value Yes/No No
    -parametera User defined a parameter to be use in the Jin-Nei Gamma
    distance calculation. The suggested value to be used is 1.0 [Jin et
    al.] and this is the default. Any numeric value 1.0
@@ -279,37 +279,6 @@ Output file format
    calculated distances between each of the input aligned sequences. The
    distances are expressed in terms of the number of substitutions per
    100 bases or amino acids.
-   
-   The output from the example usage above is:
-     _________________________________________________________________
-   
-Distance Matrix
----------------
-
-Using the Kimura correction method
-Gap weighting is 0.000000
-
-            1       2       3       4       5       6       7       8       9
-     10
-          0.00   96.10  137.41  128.65  161.04  160.26  157.46  154.14  164.22
- 152.59          PAX4_HUMAN 1
-                  0.00  111.86  109.96  156.25  149.70  143.75  135.71  150.60
- 146.87          PAX6_HUMAN 2
-                          0.00   26.21  131.54  143.54  162.95  151.39  163.56
- 159.78          PAX3_HUMAN 3
-                                  0.00  145.45  138.76  158.79  149.96  167.26
- 161.82          PAX7_HUMAN 4
-                                          0.00   44.29  120.84  123.00  131.69
- 130.22          PAX1_HUMAN 5
-                                                  0.00  123.56  130.21  131.64
- 130.17          PAX9_HUMAN 6
-                                                          0.00   36.43   53.12
-  64.32          PAX2_HUMAN 7
-                                                                  0.00   60.88
-  73.82          PAX5_HUMAN 8
-                                                                          0.00
-  20.37          PX8A_HUMAN 9
-     _________________________________________________________________
    
 Data files
 

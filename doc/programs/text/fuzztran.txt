@@ -22,11 +22,14 @@ Description
    
 Usage
 
-   Here is a sample session with fuzztran, using all options.
+   Here is a sample session with fuzztran
+   
 
 % fuzztran -opt
 Protein pattern search after translation
-Input sequence(s): embl:rnops
+Input sequence(s): tembl:rnops
+Search pattern: RA
+Number of mismatches [0]: 
 Translation frames
          1 : 1
          2 : 2
@@ -58,11 +61,12 @@ asma
         21 : Trematode Mitochondrial
         22 : Scenedesmus obliquus
         23 : Thraustochytrium Mitochondrial
-Code to use [0]:
-Search pattern: RA
-Number of mismatches [0]:
-Output file [rnops.fuzztran]:
-
+Code to use [0]: 
+Output report [rnops.fuzztran]: 
+   
+   Go to the input files for this example
+   Go to the output files for this example
+   
 Command line arguments
 
    Mandatory qualifiers:
@@ -133,7 +137,7 @@ Command line arguments
    accepted
    -mismatch Number of mismatches Integer 0 or more 0
    [-outfile]
-   (Parameter 2) Output report file name Report file
+   (Parameter 2) Output report file name Report output file
    Optional qualifiers Allowed values Default
    -frame Frame(s) to translate
    1  (1)
@@ -172,6 +176,44 @@ Command line arguments
    
 Input file format
 
+   fuzztran reads in normal nucleic acid sequence USAs.
+   
+  Input files for usage example
+  
+   'tembl:rnops' is a sequence entry in the example nucleic acid database
+   'tembl'
+   
+  Database entry: tembl:rnops
+  
+>RNOPS Z46957.1 R.norvegicus mRNA for rhodopsin.
+ggagccgtaggtagctgagctcgccaggcagccttggtctctgtctacgaacagcccgtg
+gggcagcctcaagggccgcagccatgaacggcacagagggccccaatttttatgtgccct
+tctccaacatcacgggcgtggtgcgcagcccctttgagcagccgcagtactacctggcgg
+agccatggcagttctccatgctggcagcctacatgttcctgctcatcgtgctgggcttcc
+ccatcaacttcctcacgctctacgtcaccgtacagcacaagaagctgcgcacaccactca
+actacatcctgctcaacttggctgtggctgacctcttcatggtcttcggaggattcacca
+ccaccctctacacctcactgcatggctactttgtctttgggcccacaggctgcaaccttg
+agggcttctttgccacccttggaggtgaaatcggcctgtggtccctggtagtcctggcca
+ttgagcgctacgtggtggtctgcaagcccatgagcaacttccgctttggggagaatcatg
+ccattatgggtgtggccttcacctgggtcatggcgttggcctgtgctgctcccccactgg
+ttggctggtccaggtacatccccgagggcatgcagtgttcatgtgggattgactactata
+cactcaagcctgaggtcaacaatgagtccttcgtcatctacatgttcgtggtccacttca
+ccatccccatgatcgtcatcttcttctgctacgggcagctggtcttcaccgtcaaggagg
+ccgccgcccagcaacaggagtcggctaccactcagaaggcagagaaggaagtcacgcgca
+tggtcatcatcatggtcatcttcttcctgatctgctggcttccctatgccagtgtggcca
+tgtacatctttacccaccagggctccaacttcggccccatcttcatgacccttcccgctt
+tctttgctaagaccgcctccatctacaacccaatcatctacatcatgatgaacaagcagt
+tccggaactgcatgctcaccacgctctgctgcggcaagaatccactgggagatgatgagg
+cctctgccactgcctccaagacggagaccagccaggtggctccagcctaagcctggccag
+agactgtggctgactgtaggagtctcctgtccccactcaccccagccacagcccccacca
+ggagcagcacccgttggaatgaggtcatgcaggctccctcagtgttcttttctttgtttt
+taatgaattcatgaaagcaaaatgaggctccccactcaacagggacagcctgacaaagga
+catccatccaccaagacccccagcctggagtccccaattcccgggggccagcgggatctg
+tacccctcccctcagcttgtgtctcaggaacatgacaagtgtcccggcttacggctaagt
+gtctaggacagaatggaacacatagtagctgattaataaatgctacctggatg
+   
+  Pattern specification
+  
    Patterns for fuzztran are based on the format of pattern used in the
    PROSITE database, with the difference that the terminating dot '.' and
    the hyphens, '-', between the characters are optional.
@@ -224,11 +266,14 @@ Output file format
    
    By default fuzztran writes a 'table' report file.
    
-   The output from the above example is:
-   
+  Output files for usage example
+  
+  File: rnops.fuzztran
+  
 ########################################
 # Program: fuzztran
-# Rundate: Thu Apr 11 13:46:20 2002
+# Rundate: Fri Aug 23 16:03:21 2002
+# Report_format: table
 # Report_file: rnops.fuzztran
 ########################################
 
@@ -257,7 +302,22 @@ Output file format
 
 #---------------------------------------
 #---------------------------------------
-
+   
+   The columns of data are as follows:
+   
+    1. Start - the start position of the pattern in the nucleic acids
+       sequence.
+    2. End - the end position of the pattern in the nucleic acids
+       sequence.
+    3. Score - the score of the match.
+    4. Mismatch - the number of mismatches .
+    5. Frame - the translation frame that the pattern match occurs in.
+    6. PStart - the start position of the match in the resulting protein
+       sequence.
+    7. PEnd - the end position of the match in the resulting protein
+       sequence.
+    8. Translation - the protein sequence that is matched.
+       
 Data files
 
    EMBOSS data files are distributed with the application and stored in

@@ -68,18 +68,27 @@ The score is +1 for a match to the corresponding base
 </H2>
 
 
-Here is a sample session with equicktandem. The input sequence is the
-human herpesvirus tandem repeat.
+<b>Here is a sample session with equicktandem</b>
+<p>
+The input sequence is the human herpesvirus tandem repeat.
+<p>
 
-<pre>
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% equicktandem
-Input sequence: embl:hhtetra
-Output file [hhtetra.qtan]: 
-Maximum repeat size [600]: 
-Threshold score [20]: 
+% <b>equicktandem </b>
+Finds tandem repeats
+Input sequence: <b>tembl:hhtetra</b>
+Maximum repeat size [600]: <b></b>
+Threshold score [20]: <b></b>
+Output report [hhtetra.qtan]: <b></b>
 
-</pre>
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+
+
+
 
 
 
@@ -147,7 +156,7 @@ IT IS DONE FOR YOU.
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Output report file name</td>
-<td>Report file</td>
+<td>Report output file</td>
 <td>&nbsp;</td>
 </tr>
 
@@ -183,7 +192,45 @@ IT IS DONE FOR YOU.
 </H2>
 
 
-The input for equicktandem is a nucleotide sequence
+The input for equicktandem is a nucleotide sequence USA.
+
+<p>
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+
+'tembl:hhtetra' is a sequence entry in the example nucleic acid database 'tembl'
+<p>
+<p><h3>Database entry: tembl:hhtetra</h3>
+<table width="90%"><tr><td bgcolor="#FFDDFF">
+<pre>
+&gt;HHTETRA L46634.1 Human herpesvirus 7 (clone ED132'1.2) telomeric repeat region.
+aagcttaaactgaggtcacacacgactttaattacggcaacgcaacagctgtaagctgca
+ggaaagatacgatcgtaagcaaatgtagtcctacaatcaagcgaggttgtagacgttacc
+tacaatgaactacacctctaagcataacctgtcgggcacagtgagacacgcagccgtaaa
+ttcaaaactcaacccaaaccgaagtctaagtctcaccctaatcgtaacagtaaccctaca
+actctaatcctagtccgtaaccgtaaccccaatcctagcccttagccctaaccctagccc
+taaccctagctctaaccttagctctaactctgaccctaggcctaaccctaagcctaaccc
+taaccgtagctctaagtttaaccctaaccctaaccctaaccatgaccctgaccctaaccc
+tagggctgcggccctaaccctagccctaaccctaaccctaatcctaatcctagccctaac
+cctagggctgcggccctaaccctagccctaaccctaaccctaaccctagggctgcggccc
+taaccctaaccctagggctgcggcccgaaccctaaccctaaccctaaccctaaccctagg
+gctgcggccctaaccctaaccctagggctgcggccctaaccctaaccctagggctgcggc
+ccgaaccctaaccctaaccctaaccctagggctgcggccctaaccctaaccctagggctg
+cggccctaaccctaaccctaactctagggctgcggccctaaccctaaccctaaccctaac
+cctagggctgcggcccgaaccctagccctaaccctaaccctgaccctgaccctaacccta
+accctaaccctaaccctaaccctaaccctaaccctaaccctaaccctaaccctaacccta
+accctaaccctaaccctaaccctaaccccgcccccactggcagccaatgtcttgtaatgc
+cttcaaggcactttttctgcgagccgcgcgcagcactcagtgaaaaacaagtttgtgcac
+gagaaagacgctgccaaaccgcagctgcagcatgaaggctgagtgcacaattttggcttt
+agtcccataaaggcgcggcttcccgtagagtagaaaaccgcagcgcggcgcacagagcga
+aggcagcggctttcagactgtttgccaagcgcagtctgcatcttaccaatgatgatcgca
+agcaagaaaaatgttctttcttagcatatgcgtggttaatcctgttgtggtcatcactaa
+gttttcaagctt
+</pre>
+</td></tr></table><p>
+
 
 <H2>
     Output file format
@@ -218,15 +265,17 @@ By default <b>equicktandem</b> writes a 'table' report file.
 
 <p>
 
-The output from the above example is:
 
-<p>
-
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: hhtetra.qtan</h3>
+<table width="90%"><tr><td bgcolor="#DDFFDD">
 <pre>
 ########################################
 # Program: equicktandem
-# Rundate: Thu Apr 11 13:28:55 2002
-# Report_file: stdout
+# Rundate: Mon Sep 02 14:27:07 2002
+# Report_format: table
+# Report_file: hhtetra.qtan
 ########################################
 
 #=======================================
@@ -243,8 +292,11 @@ The output from the above example is:
     191     935     339      6    124
 
 #---------------------------------------
-#--------------------------------------- 
+#---------------------------------------
 </pre>
+</td></tr></table><p>
+
+
 
 <H2>
     Data files

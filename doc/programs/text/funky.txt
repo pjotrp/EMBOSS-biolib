@@ -113,7 +113,6 @@ See also
    cutgextract Extract data from CUTG
    domainer Reads protein coordinate files and writes domains coordinate
    files
-   groups Removes redundant hits from a scop families file
    hetparse Converts raw dictionary of heterogen groups to a file in
    embl-like format
    nrscope Converts redundant EMBL-format SCOP file to non-redundant one
@@ -130,6 +129,7 @@ See also
    embl-like format
    scopseqs Adds pdb and swissprot sequence records to a scop
    classification file
+   seqnr Removes redundant hits from a scop families file
    tfextract Extract data from TRANSFAC
    
 Author(s)

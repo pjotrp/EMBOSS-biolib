@@ -19,13 +19,17 @@ Description
    
 Usage
 
-   Here is a sample session with freak:
+   Here is a sample session with freak
+   
 
-% freak embl:hsfau
+% freak tembl:hsfau
 Residue/base frequency table or plot
-Residue letters [gc]:
-Output file [hsfau.freak]:
-
+Residue letters [gc]: 
+Output file [hsfau.freak]: 
+   
+   Go to the input files for this example
+   Go to the output files for this example
+   
 Command line arguments
 
    Mandatory qualifiers (* if not always prompted):
@@ -60,17 +64,36 @@ Command line arguments
    -step Stepping value Any integer value 1
    -window Averaging window Any integer value 30
    Advanced qualifiers Allowed values Default
-   -plot Produce graphic Yes/No No
+   -plot Produce graphic Boolean value Yes/No No
    
 Input file format
 
-   Normal sequence USAs.
+   freak reads normal sequence USAs.
+   
+  Input files for usage example
+  
+   'tembl:hsfau' is a sequence entry in the example nucleic acid database
+   'tembl'
+   
+  Database entry: tembl:hsfau
+  
+>HSFAU X65923.1 H.sapiens fau mRNA
+ttcctctttctcgactccatcttcgcggtagctgggaccgccgttcagtcgccaatatgc
+agctctttgtccgcgcccaggagctacacaccttcgaggtgaccggccaggaaacggtcg
+cccagatcaaggctcatgtagcctcactggagggcattgccccggaagatcaagtcgtgc
+tcctggcaggcgcgcccctggaggatgaggccactctgggccagtgcggggtggaggccc
+tgactaccctggaagtagcaggccgcatgcttggaggtaaagttcatggttccctggccc
+gtgctggaaaagtgagaggtcagactcctaaggtggccaaacaggagaagaagaagaaga
+agacaggtcgggctaagcggcggatgcagtacaaccggcgctttgtcaacgttgtgccca
+cctttggcaagaagaagggccccaatgccaactcttaagtcttttgtaattctggctttc
+tctaataaaaaagccacttagttcagtcaaaaaaaaaa
    
 Output file format
 
-   The output from the above example is:
-     _________________________________________________________________
-   
+  Output files for usage example
+  
+  File: hsfau.freak
+  
 FREAK of HSFAU from 1 to 518 Window 30 Step 1
 
 1          0.500000
@@ -106,11 +129,46 @@ FREAK of HSFAU from 1 to 518 Window 30 Step 1
 31         0.633333
 32         0.600000
 33         0.600000
-34         0.633333
-35         0.600000
-36         0.600000
 
-   [listing truncated for brevity]
+
+  [Part of this file has been deleted for brevity]
+
+454        0.333333
+455        0.300000
+456        0.300000
+457        0.300000
+458        0.300000
+459        0.300000
+460        0.266667
+461        0.266667
+462        0.233333
+463        0.233333
+464        0.266667
+465        0.300000
+466        0.333333
+467        0.300000
+468        0.333333
+469        0.333333
+470        0.333333
+471        0.333333
+472        0.366667
+473        0.333333
+474        0.333333
+475        0.333333
+476        0.300000
+477        0.300000
+478        0.300000
+479        0.333333
+480        0.333333
+481        0.300000
+482        0.300000
+483        0.266667
+484        0.266667
+485        0.266667
+486        0.266667
+487        0.266667
+488        0.266667
+489        0.266667
    
    The ouput consists of a title line and then two columns containing the
    position of the start of the window and then the frequency in that
@@ -146,27 +204,26 @@ Known bugs
    
 See also
 
-   Program name Description
-   backtranseq Back translate a protein sequence
-   banana Bending and curvature plot in B-DNA
-   btwisted Calculates the twisting in a B-DNA sequence
-   chaos Create a chaos game representation plot for a sequence
-   charge Protein charge plot
-   checktrans Reports STOP codons and ORF statistics of a protein
-   sequence
-   compseq Counts the composition of dimer/trimer/etc words in a sequence
-   dan Calculates DNA RNA/DNA melting temperature
-   emowse Protein identification by mass spectrometry
-   iep Calculates the isoelectric point of a protein
-   isochore Plots isochores in large DNA sequences
-   mwcontam Shows molwts that match across a set of files
-   mwfilter Filter noisy molwts from mass spec output
-   octanol Displays protein hydropathy
-   pepinfo Plots simple amino acid properties in parallel
-   pepstats Protein statistics
-   pepwindow Displays protein hydropathy
+   Program name                          Description
+   backtranseq  Back translate a protein sequence
+   banana       Bending and curvature plot in B-DNA
+   btwisted     Calculates the twisting in a B-DNA sequence
+   chaos        Create a chaos game representation plot for a sequence
+   charge       Protein charge plot
+   checktrans   Reports STOP codons and ORF statistics of a protein
+   compseq      Counts the composition of dimer/trimer/etc words in a sequence
+   dan          Calculates DNA RNA/DNA melting temperature
+   emowse       Protein identification by mass spectrometry
+   iep          Calculates the isoelectric point of a protein
+   isochore     Plots isochores in large DNA sequences
+   mwcontam     Shows molwts that match across a set of files
+   mwfilter     Filter noisy molwts from mass spec output
+   octanol      Displays protein hydropathy
+   pepinfo      Plots simple amino acid properties in parallel
+   pepstats     Protein statistics
+   pepwindow    Displays protein hydropathy
    pepwindowall Displays protein hydropathy of a set of sequences
-   wordcount Counts words of a specified size in a DNA sequence
+   wordcount    Counts words of a specified size in a DNA sequence
    
 Author(s)
 

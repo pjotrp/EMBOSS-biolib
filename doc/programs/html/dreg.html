@@ -147,6 +147,24 @@ The pattern 'AAAA' will not match the sequence 'aaaa'.
 </H2>
 
 
+<b>Here is a sample session with dreg</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>dreg </b>
+regular expression search of a nucleotide sequence
+Input sequence(s): <b>tembl:paamir</b>
+Regular expression pattern: <b>ggtacc</b>
+Output file [paamir.dreg]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+
+
+<!--
 Here is a sample session with dreg.
 
 <pre>
@@ -157,7 +175,7 @@ Output file [paamir.dreg]:
 Regular expression pattern: ggtacc
 
 </pre>
-
+-->
 
 
 <H2>
@@ -249,12 +267,78 @@ IT IS DONE FOR YOU.
 
 Any nucleic sequence.
 
+<p>
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+
+'tembl:paamir' is a sequence entry in the example nucleic acid database 'tembl'
+<p>
+<p><h3>Database entry: tembl:paamir</h3>
+<table width="90%"><tr><td bgcolor="#FFDDFF">
+<pre>
+&gt;PAAMIR X13776.1 Pseudomonas aeruginosa amiC and amiR gene for aliphatic amidase regulation
+ggtaccgctggccgagcatctgctcgatcaccaccagccgggcgacgggaactgcacgat
+ctacctggcgagcctggagcacgagcgggttcgcttcgtacggcgctgagcgacagtcac
+aggagaggaaacggatgggatcgcaccaggagcggccgctgatcggcctgctgttctccg
+aaaccggcgtcaccgccgatatcgagcgctcgcacgcgtatggcgcattgctcgcggtcg
+agcaactgaaccgcgagggcggcgtcggcggtcgcccgatcgaaacgctgtcccaggacc
+ccggcggcgacccggaccgctatcggctgtgcgccgaggacttcattcgcaaccgggggg
+tacggttcctcgtgggctgctacatgtcgcacacgcgcaaggcggtgatgccggtggtcg
+agcgcgccgacgcgctgctctgctacccgaccccctacgagggcttcgagtattcgccga
+acatcgtctacggcggtccggcgccgaaccagaacagtgcgccgctggcggcgtacctga
+ttcgccactacggcgagcgggtggtgttcatcggctcggactacatctatccgcgggaaa
+gcaaccatgtgatgcgccacctgtatcgccagcacggcggcacggtgctcgaggaaatct
+acattccgctgtatccctccgacgacgacttgcagcgcgccgtcgagcgcatctaccagg
+cgcgcgccgacgtggtcttctccaccgtggtgggcaccggcaccgccgagctgtatcgcg
+ccatcgcccgtcgctacggcgacggcaggcggccgccgatcgccagcctgaccaccagcg
+aggcggaggtggcgaagatggagagtgacgtggcagaggggcaggtggtggtcgcgcctt
+acttctccagcatcgatacgcccgccagccgggccttcgtccaggcctgccatggtttct
+tcccggagaacgcgaccatcaccgcctgggccgaggcggcctactggcagaccttgttgc
+tcggccgcgccgcgcaggccgcaggcaactggcgggtggaagacgtgcagcggcacctgt
+acgacatcgacatcgacgcgccacaggggccggtccgggtggagcgccagaacaaccaca
+gccgcctgtcttcgcgcatcgcggaaatcgatgcgcgcggcgtgttccaggtccgctggc
+agtcgcccgaaccgattcgccccgacccttatgtcgtcgtgcataacctcgacgactggt
+ccgccagcatgggcgggggaccgctcccatgagcgccaactcgctgctcggcagcctgcg
+cgagttgcaggtgctggtcctcaacccgccgggggaggtcagcgacgccctggtcttgca
+gctgatccgcatcggttgttcggtgcgccagtgctggccgccgccggaagccttcgacgt
+gccggtggacgtggtcttcaccagcattttccagaatggccaccacgacgagatcgctgc
+gctgctcgccgccgggactccgcgcactaccctggtggcgctggtggagtacgaaagccc
+cgcggtgctctcgcagatcatcgagctggagtgccacggcgtgatcacccagccgctcga
+tgcccaccgggtgctgcctgtgctggtatcggcgcggcgcatcagcgaggaaatggcgaa
+gctgaagcagaagaccgagcagctccaggaccgcatcgccggccaggcccggatcaacca
+ggccaaggtgttgctgatgcagcgccatggctgggacgagcgcgaggcgcaccagcacct
+gtcgcgggaagcgatgaagcggcgcgagccgatcctgaagatcgctcaggagttgctggg
+aaacgagccgtccgcctgagcgatccgggccgaccagaacaataacaagaggggtatcgt
+catcatgctgggactggttctgctgtacgttggcgcggtgctgtttctcaatgccgtctg
+gttgctgggcaagatcagcggtcgggaggtggcggtgatcaacttcctggtcggcgtgct
+gagcgcctgcgtcgcgttctacctgatcttttccgcagcagccgggcagggctcgctgaa
+ggccggagcgctgaccctgctattcgcttttacctatctgtgggtggccgccaaccagtt
+cctcgag
+</pre>
+</td></tr></table><p>
+
 
 <H2>
     Output file format
 </H2>
 
 
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: paamir.dreg</h3>
+<table width="90%"><tr><td bgcolor="#DDFFDD">
+<pre>
+dreg search of tembl:paamir with pattern GGTACC
+Matches in PAAMIR
+         PAAMIR     1 GGTACC
+</pre>
+</td></tr></table><p>
+
+
+<!--
 This is the output from the example run. Sequence embl:paamir begins
 at a restriction site with the sequence pattern GGTACC.
 
@@ -265,7 +349,7 @@ Matches in PAAMIR
          PAAMIR     1 GGTACC
 
 </pre>
-
+-->
 
 <H2>
     Data files

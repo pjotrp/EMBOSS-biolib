@@ -58,16 +58,23 @@ Description
    predicts 80% of MARs and SARs, suggesting that at least one other type
    of MAR/SAR may exist which does not contain a MRS.
    
+   The problem of how to define and find MARs is still being actively
+   invetsigated. For a recent evaluation of this method and others, see
+   reference 3.
+   
 Usage
 
-   Here is a sample session with marscan:
+   Here is a sample session with marscan
+   
 
-% marscan
-marscan
+% marscan 
 Finds MAR/SAR sites in nucleic sequences
-Input sequence(s): EMBL:HSHBB
-Output file [hshbb.marscan]:
-
+Input sequence(s): tembl:u01317
+Output report [hshbb.marscan]: 
+   
+   Go to the input files for this example
+   Go to the output files for this example
+   
 Command line arguments
 
    Mandatory qualifiers:
@@ -96,7 +103,7 @@ Command line arguments
    regions. This contains details of the MRS in normal GFF format. The
    MRS consists of two recognition sites, one of 8 bp and one of 16 bp on
    either sense strand of the genomic DNA, within 200 bp of each other.
-   Report file
+   Report output file
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default
@@ -104,7 +111,90 @@ Command line arguments
    
 Input file format
 
-   Normal genomic DNA USA.
+   marscan reads a normal genomic DNA USA.
+   
+  Input files for usage example
+  
+   'tembl:u01317' is a sequence entry in the example nucleic acid
+   database 'tembl'
+   
+  Database entry: tembl:u01317
+  
+>HSHBB U01317.1 Human beta globin region on chromosome 11.
+gaattctaatctccctctcaaccctacagtcacccatttggtatattaaagatgtgttgt
+ctactgtctagtatccctcaagtagtgtcaggaattagtcatttaaatagtctgcaagcc
+aggagtggtggctcatgtctgtaattccagcactggagaggtagaagtgggaggactgct
+tgagctcaagagtttgatattatcctggacaacatagcaagacctcgtctctacttaaaa
+aaaaaaaaattagccaggcatgtgatgtacacctgtagtcccagctactcaggaggccga
+aatgggaggatcccttgagctcaggaggtcaaggctgcagtgagacatgatcttgccact
+gcactccagcctggacagcagagtgaaaccttgcctcacgaaacagaatacaaaaacaaa
+caaacaaaaaactgctccgcaatgcgcttccttgatgctctaccacataggtctgggtac
+tttgtacacattatctcattgctgttcgtaattgttagattaattttgtaatattgatat
+tattcctagaaagctgaggcctcaagatgataacttttattttctggacttgtaatagct
+ttctcttgtattcaccatgttgtaactttcttagagtagtaacaatataaagttattgtg
+agtttttgcaaacacagcaaacacaacgacccatatagacattgatgtgaaattgtctat
+tgtcaatttatgggaaaacaagtatgtactttttctactaagccattgaaacaggaataa
+cagaacaagattgaaagaatacattttccgaaattacttgagtattatacaaagacaagc
+acgtggacctgggaggagggttattgtccatgactggtgtgtggagacaaatgcaggttt
+ataatagatgggatggcatctagcgcaatgactttgccatcacttttagagagctcttgg
+ggaccccagtacacaagaggggacgcagggtatatgtagacatctcattctttttcttag
+tgtgagaataagaatagccatgacctgagtttatagacaatgagcccttttctctctccc
+actcagcagctatgagatggcttgccctgcctctctactaggctgactcactccaaggcc
+cagcaatgggcagggctctgtcagggctttgatagcactatctgcagagccagggccgag
+aaggggtggactccagagactctccctcccattcccgagcagggtttgcttatttatgca
+tttaaatgatatatttattttaaaagaaataacaggagactgcccagccctggctgtgac
+atggaaactatgtagaatattttgggttccatttttttttccttctttcagttagaggaa
+aaggggctcactgcacatacactagacagaaagtcaggagctttgaatccaagcctgatc
+atttccatgtcatactgagaaagtccccacccttctctgagcctcagtttctctttttat
+aagtaggagtctggagtaaatgatttccaatggctctcatttcaatacaaaatttccgtt
+tattaaatgcatgagcttctgttactccaagactgagaaggaaattgaacctgagactca
+ttgactggcaagatgtccccagaggctctcattcagcaataaaattctcaccttcaccca
+ggcccactgagtgtcagatttgcatgcactagttcacgtgtgtaaaaaggaggatgcttc
+tttcctttgtattctcacatacctttaggaaagaacttagcacccttcccacacagccat
+cccaataactcatttcagtgactcaacccttgactttataaaagtcttgggcagtataga
+gcagagattaagagtacagatgctggagccagaccacctgagtgattagtgactcagttt
+ctcttagtaattgtatgactcagtttcttcatctgtaaaatggagggttttttaattagt
+ttgtttttgagaaagggtctcactctgtcacccaaatgggagtgtagtggcaaaatctcg
+
+
+  [Part of this file has been deleted for brevity]
+
+ccactcctattcaacatagtgttggaagttctggccagggcaatcaggcaggagaaggaa
+ataaagggcattcaattaggaaaagaggaaggtgaaattgtccctgtttgcagatgacat
+gattgtatatctagaaaaccccattgtctcagcccaaaatctccttaagctgataagcaa
+cttcagcaaagtctcaggatataaaatcagtgtgcaaaaatcacaagtattcctatgcac
+caataacagacaaacagagagccaaatcatgagtgaactcccattcacaattgcttcaaa
+gagaataaaatacctaggaatccaacttacaagggatgtgaaggacctcttcaaggagaa
+ctacaaaccactgctcaatgaaataaaagaggatacaaacaaatggaagaacattccatg
+cttatgggtaggaagaatcatatcgtgaaaatggtcatactgcccaaggtaatttataga
+ttcaatgccatccccatcaagctaccaatgactttcttcacagaactggaaaaaactact
+ttaaagttcatatggaatcaaaaaagagcccacatcaccaaggcaatcctaagccaaaag
+aacaaagctggaggcatcacgctacctgacttcaaactatactacaatgctacggtaacc
+aaaacagcatggtactggtaccaaaacagagatctagaccaatggaacagaacagagccc
+tcagaaataatgccgcatatctacaactatccgatctttgacaaacctgagagaaacaag
+caatggggaaaggattccctatttaataaatggtgctgggaaaactggctagccatatgt
+agaaagctgaaactggatccttccttacaccttatacaaaaattaattcaagatggatta
+aagacttaaacattagacctaaaaccataaaaaccctagaaaaaaacctaggcaatacca
+ttcaggacataggcatgggcaaggacttcatgtctaaaacaccaaaacgaatggcaacaa
+aagacaaaatggacaaacgggatctaattaaactaaagagcttctgcacagctaaagaaa
+ctaccatcagagtgaacaggcaacctacaaaatgggagaaaatttttgcaatctactcat
+ctgacaaagggctaatatccagaatctacaatgaactcaaacaaatttacaagaaaaaac
+aaacaaccccatcaaaaagtgggcaaaggatatgaacagacacttctcaaaagaagacat
+ttatgtaatcaaaaaacacatgaaaaaatgctcatcatcactagccatcagagaaatgca
+aatcaaaaccacaatgagataccatctcacaccagttagaatggcgatcattaaaaagtc
+aggaaacaacaggtgctggagaggatgtggagaaacaggaacaacttttacactgttggt
+gggactgtaaactagttcaaccattgcggaagtcagtgtggcaattcctcaggaatctag
+aactagaaataccatttgacccagccatcccattactgggtagatacccaaaggattata
+aatcatgctgctataaagacacatgcacacgtatgtttattgcagcactattcacaatag
+caaagacttggaaccaacccaaatgtccaacaacgatagattggattaagaaaatgtggc
+acatatacaccatggaatactatgcagccataaaaaatgatgagttcatgtcctttgtag
+ggacatggatgaagctggaaactatcattctcagcaaactatcacaaggacaataaacca
+aacaccgcatgttctcactcataggtgggaattgaacaatgagaacacatggacacatga
+agaggaacatcacactctggggactgttatggggtggggggcaggggcagggatagcact
+aggagatatacctaatgctaaatgacgagttaatgggtgcagcacaccaacatggcacat
+gtatacatatataacaaacctgccgttgtgcacatgtaccctaaaacttgaagtataata
+ataaaaaaaagttatcctattaaaactgatctcacacatccgtagagccattatcaagtc
+tttctctttgaaacagacagaaatttagtgttttctcagtcagttaac
    
 Output file format
 
@@ -122,11 +212,12 @@ Output file format
    
    By default marscan writes a GFF (Gene Feature Format) report file.
    
-   The output from the above example is:
-     _________________________________________________________________
-   
+  Output files for usage example
+  
+  File: hshbb.marscan
+  
 ##gff-version 2.0
-##date 2002-04-04
+##date 2002-08-23
 ##Type DNA HSHBB
 HSHBB   marscan misc_signal     2242    2458    0.000   +       .       Sequenc
 e "HSHBB.1" ; note "*type MAR/SAR recognition site (MRS)" ; note "*start8bp 245
@@ -149,7 +240,6 @@ e "HSHBB.6" ; note "*type MAR/SAR recognition site (MRS)" ; note "*start8bp 651
 HSHBB   marscan misc_signal     65947   65963   0.000   +       .       Sequenc
 e "HSHBB.7" ; note "*type MAR/SAR recognition site (MRS)" ; note "*start8bp 659
 47" ; note "*end8bp 65954" ; note "*start16bp 65948" ; note "*end16bp 65963"
-     _________________________________________________________________
    
 Data files
 
@@ -161,17 +251,23 @@ Notes
    
 References
 
-   The method for finding the MAR/SAR sites is described in:
+   1 The method for finding the MAR/SAR sites is described in:
    
    van Drunen CM., Sewalt RGAB., Oosterling RW., Weisbeek PJ., Smeekens
    SCM. and van Driel R. "A bipartite sequence element associated with
    matrix/scaffold attachment regions" Nucleic Acids Research. 1999. Vol
    27, No. 14, pp. 2924-2930
    
-   The original paper on MASs/SARs is:
+   2 The original paper on MARs/SARs is:
    
    Mirkovitch J., Mirault M-E. and Laemmli UK. Cell. 1984. Vol. 39 pp.
    223-232.
+   
+   3 A recent evaluation of methods to find MARs/SARs:
+   
+   I. Liebich, J. Bode, I. Reuter and E. Wingender "Evaluation of
+   sequence motifs found in scaffold/matrix-attached regions (S/MARs)"
+   Nucleic Acids Research 2002, Vol. 30, No. 15 3433-3442
    
 Warnings
 

@@ -39,14 +39,289 @@ Description
    
 Usage
 
-   Here is a sample session with tfm:
+   Here is a sample session with tfm
+   
 
-% tfm wossname
+% tfm wossname 
+Displays a program's help documentation manual
 
-   You will see a page of documentation on the wossname program. To see
-   further pages, you should press the SPACE bar on your keyboard. To
-   stop seeing the documentation before you get to the end of the text,
-   you can press the key q to quit.
+::::::::::::::
+/packages/emboss_dev/gwilliam/emboss/emboss/doc/programs/text/wossname.txt
+::::::::::::::
+
+                                 wossname
+
+
+
+Function
+
+   Finds programs by keywords in their one-line documentation
+
+Description
+
+   This allows a user to search for keywords or parts of words in the
+   brief documentation (as displayed by a program when it first starts).
+   The program name and the brief description is output. If no words to
+   search for are specified, then details of all the EMBOSS programs are
+   output.
+
+   The program has been written on the assumption that most people will
+   use it to quickly find the name of a program based on that program's
+   description, so the output goes to the screen by default.
+
+   This program may find some use in automatically generating lists of
+   EMBOSS programs and their groups for Web pages.
+
+Usage
+
+   Here are some sample sessions with wossname.
+
+        Search for programs with 'restrict' in their description
+        % wossname restrict
+
+        Display a listing of programs in their groups
+        % wossname -search ''
+
+        Display an alphabetic listing of all programs
+        % wossname -search '' -alphabetic
+
+        Display only the groups that the programs can belong to
+        % wossname -search '' -groups
+
+        Output html tags around the list of program groups
+        % wossname '' -groups -html -prelink '#'
+
+        Output html tags around the list of programs
+        % wossname '' -html -prelink
+          'http://www.sanger.ac.uk/Software/EMBOSS/Apps/' -postlink '.shtml'
+
+Command line arguments
+
+   Mandatory qualifiers:
+  [-search]            string     Enter a word or words here and a
+                                  case-independent search for it will be made
+                                  in the one-line documentation of all of the
+                                  EMBOSS programs. If no keyword is specified,
+                                  all programs will be listed.
+
+   Optional qualifiers (* if not always prompted):
+   -explode            boolean    The groups that EMBOSS applications belong
+                                  to have two forms, exploded and not
+                                  exploded. The exploded group names are more
+                                  numerous and often vaguely phrased than the
+                                  non-exploded ones. The exploded names are
+                                  formed from definitions of the group names
+                                  that start like NAME1:NAME2 and which are
+                                  then expanded into many combinations of the
+                                  names as: 'NAME1', 'NAME2', 'NAME1 NAME2',
+                                  NAME2 NAME1'. The non-expanded names are
+                                  simply like: 'NAME1 NAME2'.
+   -outfile            outfile    If you enter the name of a file here then
+                                  this program will write the program names
+                                  and brief descriptions into that file.
+   -html               boolean    If you are sending the output to a file,
+                                  this will format it for displaying as a
+                                  table in a WWW document.
+*  -prelink            string     If you are outputting to a file in HTML
+                                  format, you can make the program names into
+                                  hyper-links by setting this to be the first
+                                  half of the URL.
+                                  For example, if you wish the program name to
+                                  be a hyperlink to the URL:
+                                  http://www.uk.embnet.org/Software/EMBOSS/Apps
+/programname.html
+                                  then if you enter
+                                  http://www.uk.embnet.org/Software/EMBOSS/Apps
+/
+                                  here, then the first half of the URL before
+                                  the programname will be set.
+*  -postlink           string     If you are outputting to a file in HTML
+                                  format, you can make the program names into
+                                  hyper-links by setting this to be the second
+                                  half of the URL.
+                                  For example, if you wish the program name to
+                                  be a hyperlink to the URL:
+                                  http://www.uk.embnet.org/Software/EMBOSS/Apps
+/programname.html
+                                  then if you enter '.html' here, the second
+                                  half of the URL after the programname will
+                                  be set.
+   -groups             boolean    If you use this option, then only the group
+                                  names will output to the file
+   -alphabetic         boolean    If you use this option, then you will get a
+                                  single list of the program names and
+                                  descriptions instead of the programs being
+                                  listed in their functional groups.
+
+   Advanced qualifiers:
+   -[no]emboss         boolean    If you use this option then EMBOSS program
+                                  documentation will be searched. If this
+                                  option is set to be false, then only the
+                                  EMBASSY programs will be searched (if the
+                                  -embassy option is true). EMBASSY programs
+                                  are not strictly part of EMBOSS, but use the
+                                  same code libraries and share the same look
+                                  and feel, but are generally developed by
+                                  people who wish the programs to be outside
+                                  of the GNU Public Licence sheme, ie. they
+                                  may wish to charge money for them.
+   -[no]embassy        boolean    If you use this option then EMBASSY program
+                                  documentation will be searched. If this
+                                  option is set to be false, then only the
+                                  EMBOSS programs will be searched (if the
+                                  -emboss option is true). EMBASSY programs
+                                  are not strictly part of EMBOSS, but use the
+                                  same code libraries and share the same look
+                                  and feel, but are generally developed by
+                                  people who wish the programs to be outside
+                                  of the GNU Public Licence sheme, ie. they
+                                  may wish to charge money for them.
+   -colon              boolean    The groups that EMBOSS applications belong
+                                  to up to two levels, for example the primary
+                                  group 'ALIGNMENT' has several sub-groups,
+                                  or second-level groups, e.g.: CONSENSUS,
+                                  DIFFERENCES, DOT PLOTS, GLOBAL, LOCAL,
+                                  MULTIPLE. To aid programs that parse the
+                                  output of wossname that require the names of
+                                  these subgroups, a colon ':' will be placed
+                                  between the first and second level of the
+                                  group name if this option is true. Note:
+                                  This does not apply if the group names have
+                                  been exploded with the 'explode' option.
+   -gui                boolean    This option is intended to help those who
+                                  are designing Graphical User Interfaces to
+                                  the EMBOSS applications. Some EMBOSS
+                                  programs are inappropriate for running in a
+                                  GUI, these include other menu programs and
+                                  interactive editors. This option allows you
+                                  to only report those programs that can be
+                                  run from a GUI
+
+   General qualifiers:
+  -help                boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+
+
+   Mandatory qualifiers Allowed values Default
+   [-search]
+   (Parameter 1) Enter a word or words here and a case-independent search
+   for it will be made in the one-line documentation of all of the EMBOSS
+   programs. If no keyword is specified, all programs will be listed. Any
+   string is accepted An empty string is accepted
+   Optional qualifiers Allowed values Default
+   -explode The groups that EMBOSS applications belong to have two forms,
+   exploded and not exploded. The exploded group names are more numerous
+   and often vaguely phrased than the non-exploded ones. The exploded
+   names are formed from definitions of the group names that start like
+   NAME1:NAME2 and which are then expanded into many combinations of the
+   names as: 'NAME1', 'NAME2', 'NAME1 NAME2', NAME2 NAME1'. The
+   non-expanded names are simply like: 'NAME1 NAME2'. Yes/No No
+   -outfile If you enter the name of a file here then this program will
+   write the program names and brief descriptions into that file. Output
+   file stdout
+   -html If you are sending the output to a file, this will format it for
+   displaying as a table in a WWW document. Yes/No No
+   -prelink If you are outputting to a file in HTML format, you can make
+   the program names into hyper-links by setting this to be the first
+   half of the URL. For example, if you wish the program name to be a
+   hyperlink to the URL:
+   http://www.uk.embnet.org/Software/EMBOSS/Apps/programname.html then if
+   you enter http://www.uk.embnet.org/Software/EMBOSS/Apps/ here, then
+   the first half of the URL before the programname will be set. Any
+   string is accepted An empty string is accepted
+   -postlink If you are outputting to a file in HTML format, you can make
+   the program names into hyper-links by setting this to be the second
+   half of the URL. For example, if you wish the program name to be a
+   hyperlink to the URL:
+   http://www.uk.embnet.org/Software/EMBOSS/Apps/programname.html then if
+   you enter '.html' here, the second half of the URL after the
+   programname will be set. Any string is accepted An empty string is
+   accepted
+   -groups If you use this option, then only the group names will output
+   to the file Yes/No No
+   -alphabetic If you use this option, then you will get a single list of
+   the program names and descriptions instead of the programs being
+   listed in their functional groups. Yes/No No
+   Advanced qualifiers Allowed values Default
+   -[no]emboss If you use this option then EMBOSS program documentation
+   will be searched. If this option is set to be false, then only the
+   EMBASSY programs will be searched (if the -embassy option is true).
+   EMBASSY programs are not strictly part of EMBOSS, but use the same
+   code libraries and share the same look and feel, but are generally
+   developed by people who wish the programs to be outside of the GNU
+   Public Licence sheme, ie. they may wish to charge money for them.
+   Yes/No Yes
+   -[no]embassy If you use this option then EMBASSY program documentation
+   will be searched. If this option is set to be false, then only the
+   EMBOSS programs will be searched (if the -emboss option is true).
+   EMBASSY programs are not strictly part of EMBOSS, but use the same
+   code libraries and share the same look and feel, but are generally
+   developed by people who wish the programs to be outside of the GNU
+   Public Licence sheme, ie. they may wish to charge money for them.
+   Yes/No Yes
+   -colon The groups that EMBOSS applications belong to up to two levels,
+   for example the primary group 'ALIGNMENT' has several sub-groups, or
+   second-level groups, e.g.: CONSENSUS, DIFFERENCES, DOT PLOTS, GLOBAL,
+   LOCAL, MULTIPLE. To aid programs that parse the output of wossname
+   that require the names of these subgroups, a colon ':' will be placed
+   between the first and second level of the group name if this option is
+   true. Note: This does not apply if the group names have been exploded
+   with the 'explode' option. Yes/No No
+   -gui This option is intended to help those who are designing Graphical
+   User Interfaces to the EMBOSS applications. Some EMBOSS programs are
+   inappropriate for running in a GUI, these include other menu programs
+   and interactive editors. This option allows you to only report those
+   programs that can be run from a GUI Yes/No No
+
+Input file format
+
+   The program reads the brief descriptions and the program groups from
+   the ACD files. (ACD files control the parameters that the programs
+   expect - don't worry about them unless you are writing EMBOSS
+   programs).
+
+   The format of ACD files is documented elsewhere.
+
+Output file format
+
+   The results are written out as a simple list preceded by the group
+   that the programs belong to or the word that is being searched for.
+   e.g.
+------------------------------------------------------------------------------
+% wossname 'rest'
+SEARCH FOR 'REST'
+redata           Isoschizomers, references and suppliers for restriction enzyme
+s
+restrict         Finds restriction enzyme cleavage sites
+------------------------------------------------------------------------------
+
+   If the -html, -prelink and -postlink qualifiers are specified, then
+   the output will be wrapped in HTML tags, ready for inclusion in a Web
+   page. Note that tags such as
+
+   , , and are not output by this program as the list of programs is
+   expected to form only part of the contents of a web page - the rest of
+   the web page must be supplied by the user. Data files As noted above,
+   the program ACD files are searched. The average user will not need to
+   worry about this. Notes If a program's ACD file does not assign the
+   program to a group, it will be automatically assigned to the group
+   'ASSORTED'. A program can belong to more than one group. The name of
+   this program comes from its use as a favorite word of the author Terry
+   Pratchett. It is used especially by the characters of the parrot in
+   Eric and the dog Gaspode in Moving Pictures and Men at Arms.
+   References None. Warnings None. Diagnostic Error Messages None. Exit
+   status It always exits with status 0 Known bugs None. See also Program
+   name Description infoalign Information on a multiple sequence
+   alignment infoseq Displays some simple information about sequences
+   seealso Finds programs sharing group names showdb Displays information
+   on the currently available databases textsearch Search sequence
+   documentation text. SRS and Entrez are faster! tfm Displays a
+   program's help documentation manual whichdb Search all databases for
+   an entry Author(s) This application was written by Gary Williams
+   (gwilliam@hgmp.mrc.ac.uk) History Finished Target users This program
+   is intended to be used by everyone and everything, from naive users to
+   embedded scripts. Comments
    
 Command line arguments
 
@@ -82,11 +357,12 @@ Command line arguments
    write the program names and brief descriptions into that file. Output
    file stdout
    -html This will format the output for displaying as a WWW document.
-   Yes/No No
+   Boolean value Yes/No No
    -more This uses the standard UNIX utility 'more' to display the text
    page-by-page, waiting for you to read one screen-full before going on
    to the next page. When you have finished reading a page, press the
-   SPACE bar to proceed to the next page. Yes/No @(!$(html))
+   SPACE bar to proceed to the next page. Boolean value Yes/No
+   @(!$(html))
    Advanced qualifiers Allowed values Default
    (none)
    
@@ -100,6 +376,11 @@ Output file format
    
    The table of command line arguments can be a bit difficult to read.
    This is the result of changing HTML Web pages to text.
+   
+   You will see a page of documentation on the wossname program. To see
+   further pages, you should press the SPACE bar on your keyboard. To
+   stop seeing the documentation before you get to the end of the text,
+   you can press the key q to quit.
    
 Data files
 

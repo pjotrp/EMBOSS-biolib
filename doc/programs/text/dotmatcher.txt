@@ -35,11 +35,17 @@ Description
    
 Usage
 
-   Here is a sample session with dotmatcher.
+   Here is a sample session with dotmatcher
    
-% dotmatcher sw:hba_human sw:hbb_human
 
-   click here for result
+% dotmatcher tsw:hba_human tsw:hbb_human -graph cps
+Displays a thresholded dotplot of two sequences
+Display as data [N]: 
+
+Created dotmatcher.ps
+   
+   Go to the input files for this example
+   Go to the output files for this example
    
 Command line arguments
 
@@ -76,7 +82,8 @@ Command line arguments
    (Parameter 1) Sequence USA Readable sequence Required
    [-sequenceb]
    (Parameter 2) Sequence USA Readable sequence Required
-   -data Output the match data to a file instead of plotting it Yes/No No
+   -data Output the match data to a file instead of plotting it Boolean
+   value Yes/No No
    -graph Graph type EMBOSS has a list of known devices, including
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
    x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
@@ -97,15 +104,40 @@ Command line arguments
    EMBOSS data path EBLOSUM62 for protein
    EDNAFULL for DNA
    Advanced qualifiers Allowed values Default
-   -stretch Display a non-proportional graph Yes/No No
+   -stretch Display a non-proportional graph Boolean value Yes/No No
    
 Input file format
 
    Any 2 sequence USAs of the same type (DNA or protein).
    
+  Input files for usage example
+  
+   'tsw:hba_human' is a sequence entry in the example protein database
+   'tsw'
+   
+  Database entry: tsw:hba_human
+  
+>HBA_HUMAN P01922 HEMOGLOBIN ALPHA CHAIN.
+VLSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHFDLSHGSAQVKGHGK
+KVADALTNAVAHVDDMPNALSALSDLHAHKLRVDPVNFKLLSHCLLVTLAAHLPAEFTPA
+VHASLDKFLASVSTVLTSKYR
+   
+  Database entry: tsw:hbb_human
+  
+>HBB_HUMAN P02023 HEMOGLOBIN BETA CHAIN.
+VHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGNPKV
+KAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPENFRLLGNVLVCVLAHHFGK
+EFTPPVQAAYQKVVAGVANALAHKYH
+   
 Output file format
 
    An image is output to the requested graphics device.
+   
+  Output files for usage example
+  
+  Graphics File: dotmatcher.ps
+  
+   [dotmatcher results]
    
 Data files
 

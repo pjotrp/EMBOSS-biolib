@@ -163,15 +163,17 @@ Description
    
 Usage
 
-   Here is a sample session with banana.
+   Here is a sample session with banana
    
-% banana embl:rnu68037
-Bending and curvature plot in B-DNA
-Graph type [x11]:
 
-   click here for result (1st page only)
+% banana -graph data
+Bending and curvature plot in B-DNA
+Input sequence: tembl:rnu68037
+
+Created banana.dat
    
-   Bending is shown in a solid line, curvature is show in a dotted line.
+   Go to the input files for this example
+   Go to the output files for this example
    
 Command line arguments
 
@@ -207,11 +209,42 @@ Command line arguments
    integer value 50
    -outfile Output file name Output file banana.profile
    Advanced qualifiers Allowed values Default
-   -data Output as data Yes/No No
+   -data Output as data Boolean value Yes/No No
    
 Input file format
 
    Any DNA sequence USA.
+   
+  Input files for usage example
+  
+   'tembl:rnu68037' is a sequence entry in the example nucleic acid
+   database 'tembl'
+   
+  Database entry: tembl:rnu68037
+  
+>RNU68037 U68037.1 Rattus norvegicus EP1 prostanoid receptor mRNA, complete cds
+.
+atgagcccctacgggcttaacctgagcctagtggatgaggcaacaacgtgtgtaacaccc
+agggtccccaatacatctgtggtgctgccaacaggcggtaacggcacatcaccagcgctg
+cctatcttctccatgacgctgggtgctgtgtccaacgtgctggcgctggcgctgctggcc
+caggttgcaggcagactgcggcgccgccgctcgactgccaccttcctgttgttcgtcgcc
+agcctgcttgccatcgacctagcaggccatgtgatcccgggcgccttggtgcttcgcctg
+tatactgcaggacgtgcgcccgctggcggggcctgtcatttcctgggcggctgtatggtc
+ttctttggcctgtgcccacttttgcttggctgtggcatggccgtggagcgctgcgtgggt
+gtcacgcagccgctgatccacgcggcgcgcgtgtccgtagcccgcgcacgcctggcacta
+gccctgctggccgccatggctttggcagtggcgctgctgccactagtgcacgtgggtcac
+tacgagctacagtaccctggcacttggtgtttcattagccttgggcctcctggaggttgg
+cgccaggcgttgcttgcgggcctcttcgccggccttggcctggctgcgctccttgccgca
+ctagtgtgtaatacgctcagcggcctggcgctccttcgtgcccgctggaggcggcgtcgc
+tctcgacgtttccgagagaacgcaggtcccgatgatcgccggcgctgggggtcccgtgga
+ctccgcttggcctccgcctcgtctgcgtcatccatcacttcaaccacagctgccctccgc
+agctctcggggaggcggctccgcgcgcagggttcacgcacacgacgtggaaatggtgggc
+cagctcgtgggcatcatggtggtgtcgtgcatctgctggagccccctgctggtattggtg
+gtgttggccatcgggggctggaactctaactccctgcagcggccgctctttctggctgta
+cgcctcgcgtcgtggaaccagatcctggacccatgggtgtacatcctgctgcgccaggct
+atgctgcgccaacttcttcgcctcctacccctgagggttagtgccaagggtggtccaacg
+gagctgagcctaaccaagagtgcctgggaggccagttcactgcgtagctcccggcacagt
+ggcttcagccacttgtga
    
 Output file format
 
@@ -221,55 +254,85 @@ Output file format
    The graphical display shows the sequence together with the local local
    bending (solid line) and macroscopic curvature (dotted line).
    
-   The output data file from the above example is as follows:
-     _________________________________________________________________
-   
-t    0.0      0.0
-g   17.7      0.0
-a   21.1      0.0
-g   28.5      0.0
-c   26.2      0.0
-c   19.7      0.0
-c   18.7      0.0
-c   12.5      0.0
-t    9.7      0.0
-a   14.9      0.0
-c   16.5      0.0
-g   17.5      0.0
-g   26.2      0.0
-g   28.5      0.0
-c   20.7      0.0
-t   11.7      0.0
-t    6.4      0.0
-a    9.3      0.0
-a   14.9      0.0
-c   17.7      0.0
-c   15.7     19.2
-t   15.7     18.5
-g   17.7     17.9
-a   21.1     17.1
-g   28.5     15.9
-c   25.2     14.6
-c   12.5     13.3
-t    7.2     11.9
-a   13.2     10.8
-g   20.1     10.1
-t   19.5      9.6
-g   15.1      9.2
-g   14.9      9.1
-a   19.5      9.5
-t   19.7     10.2
-g   17.7     10.8
-a   17.7     11.0
-g   25.2     11.2
-g   26.2     11.3
-c   15.3     11.5
-a   11.4     11.7
-a   14.5     12.0
-c   13.9     12.2
-a   11.4     12.3
-[output truncated for brevity]
-     _________________________________________________________________
+  Output files for usage example
+  
+  File: banana.profile
+  
+Base   Bend      Curve
+a       0.0      0.0
+t      19.7      0.0
+g      17.7      0.0
+a      21.1      0.0
+g      28.5      0.0
+c      26.2      0.0
+c      19.7      0.0
+c      18.7      0.0
+c      12.5      0.0
+t       9.7      0.0
+a      14.9      0.0
+c      16.5      0.0
+g      17.5      0.0
+g      26.2      0.0
+g      28.5      0.0
+c      20.7      0.0
+t      11.7      0.0
+t       6.4      0.0
+a       9.3      0.0
+a      14.9      0.0
+c      17.7     20.0
+c      15.7     19.2
+t      15.7     18.5
+g      17.7     17.9
+a      21.1     17.1
+g      28.5     15.9
+c      25.2     14.6
+c      12.5     13.3
+t       7.2     11.9
+a      13.2     10.8
+g      20.1     10.1
+t      19.5      9.6
+g      15.1      9.2
+g      14.9      9.1
+
+
+  [Part of this file has been deleted for brevity]
+
+c      21.1     11.1
+g      14.9     10.7
+t       9.7     10.3
+a      16.1      9.8
+g      24.5      9.4
+c      21.1      8.9
+t      15.1      8.4
+c      16.1      7.7
+c      17.5      7.3
+c      15.3      6.9
+g      24.0      6.4
+g      26.2      5.8
+c      20.5      5.4
+a      19.1      5.1
+c      15.3     26.0
+a      16.3      0.0
+g      20.1      0.0
+t      19.5      0.0
+g      25.2      0.0
+g      28.5      0.0
+c      20.7      0.0
+t      13.3      0.0
+t      13.7      0.0
+c      15.7      0.0
+a      19.1      0.0
+g      28.5      0.0
+c      25.2      0.0
+c      19.5      0.0
+a      20.1      0.0
+c      17.9      0.0
+t      13.9      0.0
+t      13.9      0.0
+g      19.1      0.0
+t      19.5      0.0
+g       0.0      0.0
+a       0.0      0.0
    
    The data file consists of three columns separated by blanks or tab
    characters.

@@ -31,16 +31,20 @@ Description
    
 Usage
 
-   Here is a sample session with einverted.
+   Here is a sample session with einverted
+   
 
-% einverted
-Input sequence: embl:hsts1
-Output file [hsts1.inv]:
-Gap penalty [12]:
-Minimum score threshold [50]:
-Match score [3]:
-Mismatch score [-4]:
-
+% einverted tembl:hsts1
+Finds DNA inverted repeats
+Gap penalty [12]: 
+Minimum score threshold [50]: 
+Match score [3]: 
+Mismatch score [-4]: 
+Output file [hsts1.inv]: 
+   
+   Go to the input files for this example
+   Go to the output files for this example
+   
 Command line arguments
 
    Mandatory qualifiers:
@@ -83,25 +87,193 @@ Input file format
 
    The input for einverted is a nucleotide sequence
    
+  Input files for usage example
+  
+   'tembl:hsts1' is a sequence entry in the example nucleic acid database
+   'tembl'
+   
+  Database entry: tembl:hsts1
+  
+>HSTS1 D00596.1 Homo sapiens gene for thymidylate synthase, exons 1, 2, 3, 4, 5
+, 6, 7, complete cds.
+cctgtagtcccagctacgcgagaggctgaggcagcagaattacttgaacccaggaggcgg
+aggttgcagtgagccgagatcgcgccactgcactccagcctgggtgagagagcgagactc
+tgtctcaaaaaaaaaaaaaaaagaccgccagggctcaaacaaaaaacctcggaaaagccc
+tggcggtcttttttttttttttttttttttttttttgggacagtcttgctctgtcgccca
+ggctggagtacaatggtcggatcttggctcactgcaacctctgcctcccaggttcaagca
+attcttctgcctcagcctcccaagtagccaccacgcccagctaatttttgtacttttagt
+agagacgggggtttcaccatgttgtccaggctggtcttgaactcctgacctcaggtgatc
+cacccgcctcggccccccaaagtactaggattacaggcgtgagccaccgcgtccagcgcc
+ctggcggtttttaatcaagtagaaaagctgcattataccacttgcttcggttgcttcagt
+gagaacgaagaaatggaaatgcaaatcccttattagttgtaggaaacagatctcaaacag
+cagttttgttgacaagaccgcaggaaaacgtgggaactgtgctgctggcttagagaaggc
+gcggtcgaccagacggttcccaaagggcgcagtccttcccagccaccgcacctgcatcca
+ggttcccgggtttcctaagactctcagctgtggccctgggctccgttctgtgccacaccc
+gtggctcctgcgtttccccctggcgcacgctctctagagcgggggccgccgcgaccccgc
+cgagcaggaagaggcggagcgcgggacggccgcgggaaaaggcgcgcggaaggggtcctg
+ccaccgcgccacttggcctgcctccgtcccgccgcgccacttggcctgcctccgtcccgc
+cgcgccacttcgcctgcctccgtcccccgcccgccgcgccatgcctgtggccggctcgga
+gctgccgcgccggcccttgccccccgccgcacaggagcgggacgccgagccgcgtccgcc
+gcacggggagctgcagtacctggggcagatccaacacatcctccgctgcggcgtcaggaa
+ggacgaccgcacgggcaccggcaccctgtcggtattcggcatgcaggcgcgctacagcct
+gagaggtgacgccgcgggcccctgcgggacgggtggcgggaaggagggaggcgcggctgg
+ggagagcgctcgggagctgccgggcgctgcggaccccgtttagtcctaacctcaatcctg
+ccagggaggggacgcatcgtcctcctcgccttacagacgccgaaacggagggtcccatta
+gggacgtgactggcgcgggcaacacacacagcagcgacagccgggaggtaagccgcgtcc
+cagcggctccgcggccgggctcgcagtcgccccagtgatgccgtggcccccgaggcgggc
+gtcatcgggcagcgtttgcccagtgctggagggttagggagagctgcctgggcttgaccg
+cgcgccggtctcaaagtcctggctttggcccctcctccgttttcccctgtggaccattcc
+gcttcgcagcgttttcaaaaactggagcgaaagtgatgtgggcggggcaaaggcggcggg
+aagaggacagcactgaagctggcgcgggaacttggtttcctggtggcctcccatccaatc
+cccacgaaccagctttcctcttaaaccttgaaaagagaaattcgggagttcgagttctta
+gtcgtcctttcctctttcctttccgacaggagcaccccaggcaaaaaatgtctcgcgggt
+cattggcgccaggctttcaggggacagtggggcggggcggggtgggcacaggacgttagg
+cagccgttggccctccctaaggccacaccgtcctgccgtcctggatcctgcgccagctgc
+gcgggggaggggactcgaaggtgtgtgagccaggggctgaccttgaccgctcagataaat
+
+
+  [Part of this file has been deleted for brevity]
+
+tataatgaccatttaggatagagttttttttttttttttttaaacttttataaccttaaa
+gggttattttaaaataatctatggactaccattttgccctcattagcttcagcatggtgt
+gacttctctaataatatgcttagattaagcaaggaaaagatgcaaaaccacttcggggtt
+aatcagtgaaatatttttcccttcgttgcataccagatacccccggtgttgcacgactat
+ttttattctgctaatttatgacaagtgttaaacagaacaaggaattattccaacaagtta
+tgcaacatgttgcttattttcaaattacagtttaatgtctaggtgccagcccttgatata
+gctatttttgtaagaacatcctcctggactttgggttagttaaatctaaacttatttaag
+gattaagtaggataacgtgcattgatttgctaaaagaatcaagtaataattacttagctg
+attcctgagggtggtatgacttctagctgaactcatcttgatcggtaggattttttaaat
+ccatttttgtaaaactatttccaagaaattttaagccctttcacttcagaaagaaaaaag
+ttgttggggctgagcacttaattttcttgagcaggaaggagtttcttccaaacttcacca
+tctggagactggtgtttctttacagattcctccttcatttctgttgagtagccgggatcc
+tatcaaagaccaaaaaaatgagtcctgttaacaaccacctggaacaaaaacagattttat
+gcatttatgctgctccaagaaatgcttttacgtctaagccagaggcaattaattaatttt
+tttttttttgacatggagtcactgtccgttgcccaggctgcagtgcagtggcgcaatctt
+ggctcactgcaacctccacctcccaggttcaagtgattctcctgcctcagcctcccatgt
+agctgggatcacaggcacctgccaccatgcccggctaattttttgtattttttgtagaga
+cagggtttcaccatgttggccaggctggtctcaaacacctgacctcaaatgatccacctg
+cctcagcctcccaaagtgttgggattacaggcgtaagccaccatgcccagccctgaatta
+atatttttaaaataagtttggagactgttggaaataatagggcagaggaacatattttac
+tggctacttgccagagttagttaactcatcaaactctttgataatagtttgacctctgtt
+ggtgaaaatgagccatgatctcttgaacatgatcagaataaatgccccagccacacaatt
+gtagtccaaactttttaggtcactaacttgctagatggtgccaggtttttttgcacaagg
+agtgcaaatgttaagatctccactagtgaggaaaggctagtattacagaagccttgtcag
+aggcaattgaacctccaagccctggccctcaggcctgaggattttgatacagacaaactg
+aagaaccgtttgttagtggatattgcaaacaaacaggagtcaaagcttggtgctccacag
+tctagttcacgagacaggcgtggcagtggctggcagcatctcttctcacaggggccctca
+ggcacagcttaccttgggaggcatgtaggaagcccgctggatcatcacgggatacttgaa
+atgctcatgcaggtggtcaacatactcacacaccctaggaggagggaatcagatcggggc
+aatgatgcctgaagtcagattattcacgtggtgctaacttaaagcagaaggagcgagtac
+cactcaattgacagtgttggccaaggcttagctgtgttaccatgcgtttctaggcaagtc
+cctaaacctctgtgcctcaggtccttttcttctaaaatatagcaatgtgaggtggggact
+ttgatgacatgaacacacgaagtccctctgagaggttttgtggtgccctttaaaagggat
+caattcagactctgtaaatatccagaattatttgggttcctctggtcaaaagtcagatga
+atagattaaaatcaccacattttgtgatctatttttcaagaagcgtttgtattttttcat
+atggctgcagcagctgccaggggcttggggtttttttggcaggtagggttgggagg
+   
 Output file format
 
-   Here is the output form the example run. The first two hits are
-   removed to avoid the output lines being too wide.
+  Output files for usage example
+  
+  File: hsts1.inv
+  
 
-......................
+Score 236: 108/130 ( 83%) matches, 0 gaps
+      13 gctacgcgagaggctgaggcagcagaattacttgaacccaggaggcggaggttgcagtgagccgagatcg
+cgccactgcactccagcctgggtgagagagcgagactctgtctcaaaaaaaaaaaaaaaa 142
+         |||||  | ||||||||||||| |||||| ||||||||  |||||| |||||||||||||||| |||||
+  ||| || ||||||||||||| || ||||| ||||| |  |  ||||||||||||||||
+     328 cgatgaaccctccgactccgtcttcttaacgaacttggaccctccgtctccaacgtcactcggttctagg
+ctggtaacatgaggtcggacccgctgtctcgttctgacagggtttttttttttttttttt 199
+
+Score 228: 108/132 ( 81%) matches, 0 gaps
+      11 cagctacgcgagaggctgaggcagcagaattacttgaacccaggaggcggaggttgcagtgagccgagat
+cgcgccactgcactccagcctgggtgagagagcgagactctgtctcaaaaaaaaaaaaaaaa 142
+           |||||  | ||||||||||||| |||||| ||||||||  |||||| |||||||||||||||| ||||
+|   ||| || ||||||||||||| || ||||| ||||| |  |  ||||||||||||||||
+     330 accgatgaaccctccgactccgtcttcttaacgaacttggaccctccgtctccaacgtcactcggttcta
+ggctggtaacatgaggtcggacccgctgtctcgttctgacagggtttttttttttttttttt 199
+
+Score 226: 110/136 ( 80%) matches, 0 gaps
+       7 gtcccagctacgcgagaggctgaggcagcagaattacttgaacccaggaggcggaggttgcagtgagccg
+agatcgcgccactgcactccagcctgggtgagagagcgagactctgtctcaaaaaaaaaaaaaaaa 142
+         ||    |||||  | ||||||||||||| |||||| ||||||||  |||||| ||||||||||||||||
+|||||   ||| || ||||||||||||| || ||||| ||||| |  |  ||||||||||||||||
+     334 caccaccgatgaaccctccgactccgtcttcttaacgaacttggaccctccgtctccaacgtcactcggt
+tctaggctggtaacatgaggtcggacccgctgtctcgttctgacagggtttttttttttttttttt 199
+
+Score 221: 111/139 ( 79%) matches, 0 gaps
+       4 gtagtcccagctacgcgagaggctgaggcagcagaattacttgaacccaggaggcggaggttgcagtgag
+ccgagatcgcgccactgcactccagcctgggtgagagagcgagactctgtctcaaaaaaaaaaaaaaaa 142
+         |  ||    |||||  | ||||||||||||| |||||| ||||||||  |||||| ||||||||||||||
+|| |||||   ||| || ||||||||||||| || ||||| ||||| |  |  ||||||||||||||||
+     337 ccgcaccaccgatgaaccctccgactccgtcttcttaacgaacttggaccctccgtctccaacgtcactc
+ggttctaggctggtaacatgaggtcggacccgctgtctcgttctgacagggtttttttttttttttttt 199
+
+Score 216: 112/142 ( 78%) matches, 0 gaps
+       1 cctgtagtcccagctacgcgagaggctgaggcagcagaattacttgaacccaggaggcggaggttgcagt
+gagccgagatcgcgccactgcactccagcctgggtgagagagcgagactctgtctcaaaaaaaaaaaaaaaa 142
+
+         |  |  ||    |||||  | ||||||||||||| |||||| ||||||||  |||||| |||||||||||
+||||| |||||   ||| || ||||||||||||| || ||||| ||||| |  |  ||||||||||||||||
+     340 gacccgcaccaccgatgaaccctccgactccgtcttcttaacgaacttggaccctccgtctccaacgtca
+ctcggttctaggctggtaacatgaggtcggacccgctgtctcgttctgacagggtttttttttttttttttt 199
+
+
+Score 199: 54/170 ( 31%) matches, 1 gaps
+       1 -cctgtagtcccagctacgcgagaggctgaggcagcagaattacttgaacccaggaggcggaggttgcag
+tgagccgagatcgcgccactgcactccagcctgggtgagagagcgagactctgtctcaaaaaaaaaaaaaaaagaccgc
+cagggctcaaacaaaaaacctc 170
+           |||        |        |  |     |    |  | |   |  | || ||  |     | |
+     | |     || |  |      |   |  ||          |        |  |||||||||||||||| |
+ |     |   ||       ||
+     342 tcgacccgcaccaccgatgaaccctccgactccgtcttcttaacgaacttggaccctccgtctccaacgt
+cactcggttctaggctggtaacatgaggtcggacccgctgtctcgttctgacagggttttttttttttttttttttttt
+tttttctggcggtcccgaaaag 172
+
+Score 175: 56/171 ( 32%) matches, 1 gaps
+       1 -cctgtagtcccagctacgcgagaggctgaggcagcagaattacttgaacccaggaggcggaggttgcag
+tgagccgagatcgcgccactgcactccagcctgggtgagagagcgagactctgtctcaaaaaaaaaaaaaaaagaccgc
+cagggctcaaacaaaaaacctcg 171
+              | | |   |   |      ||  |  |  ||||||  | |           || ||  |  |  |
+      |  |     | ||     | |  |      |          |        | ||||||||||||||| |
+ |      |     |   | |
+     344 aatcgacccgcaccaccgatgaaccctccgactccgtcttcttaacgaacttggaccctccgtctccaac
+gtcactcggttctaggctggtaacatgaggtcggacccgctgtctcgttctgacagggttttttttttttttttttttt
+tttttttctggcggtcccgaaaa 173
+
+Score 172: 100/120 ( 83%) matches, 4 gaps
+     345 tttttgtacttttagtagagacgggggtttcaccatgttgtccaggctggtcttgaactcctgacctcag
+gtgatccacccgcctcggccccccaaagtactaggattacaggcgtgagccacc 468
+         |||||||  | ||||||||||| ||||| || |||||||| |||||||||||   || |||| |||||||
+|||||    | | ||| ||| |||||||   | |||||||||||||||||||||
+    3177 aaaaacacaataatcatctctgaccccacagcggtacaaccggtccgaccagggtttaaggattggagtc
+cacta----gactgagtcggagggtttcgccaccctaatgtccgcactcggtgg 3058
+
+Score 164: 128/174 ( 73%) matches, 3 gaps
+   12128 agaggatttttttttttttttttttttttgagacagagttttgctctgttgcccaggctggaatgcaacg
+gcgtgatcttggctcactgtaacctctgcctcc-tgggttcgagtgattctcctgcctcagcctc-caagtagctggga
+ttaca-gcatgtgccaccatgcctggct 12301
+         ||||  || || || || || |||||    |  ||| || |  |||||||||||||| |||| ||||| |
+|||||||| || ||||||  | ||||    ||| ||||||| | |||| |||  ||||  |||||   ||| | ||| |
+||||| |  || |||||||  |||||||
+   12749 tctcaaaacaacaacaacaacaaaaatttataagtcccagagtgagacaacgggtcctacctcacgttac
+cgcactagtactgagtgatgtcggagtttaaggcacccaagtttactaggagagcggaaccggagacctcaacaacctt
+aatgtccacactcggtggtgtggaccga 12573
 
 Score 80: 44/51 ( 86%) matches, 2 gaps
    12246 ctcctgcctcag-cctccaagtagctgggattaca-gcatgtgccaccatgcc 12296
          |||||| ||||| | |||||   |||||||||||| ||||| |||||||| ||
    13938 gaggacagagtcagaaggtttcacgaccctaatgtccgtactcggtggtatgg 13886
 
-Score 99: 53/65 ( 81%) matches, 1 gaps
-   13884 tgggtatggtggctcatgcctgtaatcccagcactttggaagactgagacaggagcaattgcttga 139
-49
-         ||||| |||||||   ||||||||||||||||    ||| || ||||| ||| || ||||||||||
-   14692 acccacaccaccgtacacggacattagggtcgatggaccctccgactccgtcttc-ttaacgaact 146
-28
-
+Score 130: 74/94 ( 78%) matches, 1 gaps
+   13890 tggtggctcatgcctgtaatcccagcactttggaagactgagacaggagcaattgcttgaggtctggagt
+tcaataccagcctgggcaacataac 13984
+         |||||||| ||||||||||| |||| ||||| | || ||||| |||| |  |   ||||| ||| |||||
+|  | | |||||||| |||||| ||
+   14822 accaccgaatacggacattaaggtcttgaaagcctccgactccgtccaccat-gtgaacttcagtcctca
+aactctagtcggaccggttgtactg 14729
+   
 Data files
 
    None.
@@ -143,23 +315,8 @@ Score 33: 11/11 (100%) matches, 0 gaps
    
 References
 
-   Some assorted references on inverted repeats:
+   None.
    
-    1. Pearson CE, Zorbas H, Price GB, Zannis-Hadjopoulos M Inverted
-       repeats, stem-loops, and cruciforms: significance for initiation
-       of DNA replication. J Cell Biochem 1996 Oct;63(1):1-22
-    2. Waldman AS, Tran H, Goldsmith EC, Resnick MA. q Long inverted
-       repeats are an at-risk motif for recombination in mammalian cells.
-       Genetics. 1999 Dec;153(4):1873-83. PMID: 10581292; UI: 20050682
-    3. Jacobsen SE Gene silencing: Maintaining methylation patterns. Curr
-       Biol 1999 Aug 26;9(16):R617-9
-    4. Lewis S, Akgun E, Jasin M. Palindromic DNA and genome stability.
-       Further studies. Ann N Y Acad Sci. 1999 May 18;870:45-57. PMID:
-       10415472; UI: 99343961
-    5. Dai X, Greizerstein MB, Nadas-Chinni K, Rothman-Denes LB
-       Supercoil-induced extrusion of a regulatory DNA hairpin. Proc Natl
-       Acad Sci U S A 1997 Mar 18;94(6):2174-9
-       
 Warnings
 
    None.

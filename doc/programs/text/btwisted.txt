@@ -15,12 +15,14 @@ Description
    
 Usage
 
-   Here is a sample session with btwisted:
+   Here is a sample session with btwisted
+   
+   
+% btwisted -auto tembl:ab000095 -sbegin 100 -send 120
 
-% btwisted embl:ab000095 -sbegin 100 -send 120
-Calculates the twisting in a B-DNA sequence
-Output file [ab000095.btwisted]:
-
+   Go to the input files for this example
+   Go to the output files for this example
+   
 Command line arguments
 
    Mandatory qualifiers:
@@ -55,18 +57,70 @@ Input file format
 
    Nucleic acid sequence USA.
    
+  Input files for usage example
+  
+   'tembl:ab000095' is a sequence entry in the example nucleic acid
+   database 'tembl'
+   
+  Database entry: tembl:ab000095
+  
+>AB000095 AB000095.1 Homo sapiens mRNA for hepatocyte growth factor activator i
+nhibitor, complete cds.
+cggccgagcccagctctccgagcaccgggtcggaagccgcgacccgagccgcgcaggaag
+ctgggaccggaacctcggcggacccggccccacccaactcacctgcgcaggtcaccagca
+ccctcggaacccagaggcccgcgctctgaaggtgacccccctggggaggaaggcgatggc
+ccctgcgaggacgatggcccgcgcccgcctcgccccggccggcatccctgccgtcgcctt
+gtggcttctgtgcacgctcggcctccagggcacccaggccgggccaccgcccgcgccccc
+tgggctgcccgcgggagccgactgcctgaacagctttaccgccggggtgcctggcttcgt
+gctggacaccaacgcctcggtcagcaacggagctaccttcctggagtcccccaccgtgcg
+ccggggctgggactgcgtgcgcgcctgctgcaccacccagaactgcaacttggcgctagt
+ggagctgcagcccgaccgcggggaggacgccatcgccgcctgcttcctcatcaactgcct
+ctacgagcagaacttcgtgtgcaagttcgcgcccagggagggcttcatcaactacctcac
+gagggaagtgtaccgctcctaccgccagctgcggacccagggctttggagggtctgggat
+ccccaaggcctgggcaggcatagacttgaaggtacaaccccaggaacccctggtgctgaa
+ggatgtggaaaacacagattggcgcctactgcggggtgacacggatgtcagggtagagag
+gaaagacccaaaccaggtggaactgtggggactcaaggaaggcacctacctgttccagct
+gacagtgactagctcagaccacccagaggacacggccaacgtcacagtcactgtgctgtc
+caccaagcagacagaagactactgcctcgcatccaacaaggtgggtcgctgccggggctc
+tttcccacgctggtactatgaccccacggagcagatctgcaagagtttcgtttatggagg
+ctgcttgggcaacaagaacaactaccttcgggaagaagagtgcattctagcctgtcgggg
+tgtgcaaggcccctccatggaaaggcgccatccagtgtgctctggcacctgtcagcccac
+ccagttccgctgcagcaatggctgctgcatcgacagtttcctggagtgtgacgacacccc
+caactgccccgacgcctccgacgaggctgcctgtgaaaaatacacgagtggctttgacga
+gctccagcgcatccatttccccagtgacaaagggcactgcgtggacctgccagacacagg
+actctgcaaggagagcatcccgcgctggtactacaaccccttcagcgaacactgcgcccg
+ctttacctatggtggttgttatggcaacaagaacaactttgaggaagagcagcagtgcct
+cgagtcttgtcgcggcatctccaagaaggatgtgtttggcctgaggcgggaaatccccat
+tcccagcacaggctctgtggagatggctgtcgcagtgttcctggtcatctgcattgtggt
+ggtggtagccatcttgggttactgcttcttcaagaaccagagaaaggacttccacggaca
+ccaccaccacccaccacccacccctgccagctccactgtctccactaccgaggacacgga
+gcacctggtctataaccacaccacccggcccctctgagcctgggtctcaccggctctcac
+ctggccctgcttcctgcttgccaaggcagaggcctgggctgggaaaaactttggaaccag
+actcttgcctgtttcccaggcccactgtgcctcagagaccagggctccagcccctcttgg
+agaagtctcagctaagctcacgtcctgagaaagctcaaaggtttggaaggagcagaaaac
+ccttgggccagaagtaccagactagatggacctgcctgcataggagtttggaggaagttg
+gagttttgtttcctctgttcaaagctgcctgtccctaccccatggtgctaggaagaggag
+tggggtggtgtcagaccctggaggccccaaccctgtcctcccgagctcctcttccatgct
+gtgcgcccagggctgggaggaaggacttccctgtgtagtttgtgctgtaaagagttgctt
+tttgtttatttaatgctgtggcatgggtgaagaggaggggaagaggcctgtttggcctct
+ctgtcctctcttcctcttcccccaagattgagctctctgcccttgatcagccccaccctg
+gcctagaccagcagacagagccaggagaggctcagctgcattccgcagcccccaccccca
+aggttctccaacatcacagcccagcccacccactgggtaataaaagtggtttgtggaaa
+   
 Output file format
 
-   This is the output from the example usage above:
-   
+  Output files for usage example
+  
+  File: ab000095.btwisted
+  
 # Output from BTWISTED
 # Twisting calculated from 100 to 120 of AB000095
-Total twist (degrees): 646.6
-Total turns : 1.80
-Average bases per turn: 11.69
-Total stacking energy : -172.77
-Average stacking energy per dinucleotide: -8.64
-
+Total twist (degrees): 681.1
+Total turns : 1.89
+Average bases per turn: 11.10
+Total stacking energy : -179.34
+Average stacking energy per dinucleotide: -8.97
+   
 Data files
 
    The program reads in two data files.

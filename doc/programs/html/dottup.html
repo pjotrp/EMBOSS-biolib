@@ -85,6 +85,24 @@ display more random points of similarity (noise) and runs slower.
 </H2>
 
 
+<b>Here is a sample session with dottup</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>dottup tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac" -graph cps</b>
+Displays a wordmatch dotplot of two sequences
+Display as data [N]: <b></b>
+
+Created dottup.ps
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+
+
+<!--
 Here is a sample session with dottup.
 
 <pre>
@@ -93,7 +111,7 @@ Here is a sample session with dottup.
 
 </pre>
 <a href="./dottup0.gif">click here for result</a>
-
+-->
 
 
 <H2>
@@ -166,7 +184,7 @@ IT IS DONE FOR YOU.
 <tr>
 <td>-data</td>
 <td>Output the match data to a file instead of plotting it</td>
-<td>Yes/No</td>
+<td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
@@ -200,7 +218,7 @@ IT IS DONE FOR YOU.
 <tr>
 <td>-[no]boxit</td>
 <td>Draw a box around dotplot</td>
-<td>Yes/No</td>
+<td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>
 
@@ -213,7 +231,7 @@ IT IS DONE FOR YOU.
 <tr>
 <td>-stretch</td>
 <td>Use non-proportional axes</td>
-<td>Yes/No</td>
+<td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
@@ -228,12 +246,135 @@ IT IS DONE FOR YOU.
 
 Any two sequence USAs of the same type (DNA or protein).
 
+<p>
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+
+'tembl:eclac' is a sequence entry in the example nucleic acid database 'tembl'
+<p>
+<p><h3>Database entry: tembl:eclac</h3>
+<table width="90%"><tr><td bgcolor="#FFDDFF">
+<pre>
+&gt;ECLAC J01636.1 E.coli lactose operon with lacI, lacZ, lacY and lacA genes.
+gacaccatcgaatggcgcaaaacctttcgcggtatggcatgatagcgcccggaagagagt
+caattcagggtggtgaatgtgaaaccagtaacgttatacgatgtcgcagagtatgccggt
+gtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtttctgcgaaaacg
+cgggaaaaagtggaagcggcgatggcggagctgaattacattcccaaccgcgtggcacaa
+caactggcgggcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcac
+gcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactgggtgccagcgtg
+gtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcggtgcacaatctt
+ctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgaccaggatgccatt
+gctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtctctgaccagaca
+cccatcaacagtattattttctcccatgaagacggtacgcgactgggcgtggagcatctg
+gtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagttctgtctcggcg
+cgtctgcgtctggctggctggcataaatatctcactcgcaatcaaattcagccgatagcg
+gaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatgcaaatgctgaat
+gagggcatcgttcccactgcgatgctggttgccaacgatcagatggcgctgggcgcaatg
+cgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggtagtgggatacgac
+gataccgaagacagctcatgttatatcccgccgtcaaccaccatcaaacaggattttcgc
+ctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggccaggcggtgaag
+ggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctggcgcccaatacg
+caaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcc
+cgactggaaagcgggcagtgagcgcaacgcaattaatgtgagttagctcactcattaggc
+accccaggctttacactttatgcttccggctcgtatgttgtgtggaattgtgagcggata
+acaatttcacacaggaaacagctatgaccatgattacggattcactggccgtcgttttac
+aacgtcgtgactgggaaaaccctggcgttacccaacttaatcgccttgcagcacatcccc
+ctttcgccagctggcgtaatagcgaagaggcccgcaccgatcgcccttcccaacagttgc
+gcagcctgaatggcgaatggcgctttgcctggtttccggcaccagaagcggtgccggaaa
+gctggctggagtgcgatcttcctgaggccgatactgtcgtcgtcccctcaaactggcaga
+tgcacggttacgatgcgcccatctacaccaacgtaacctatcccattacggtcaatccgc
+cgtttgttcccacggagaatccgacgggttgttactcgctcacatttaatgttgatgaaa
+gctggctacaggaaggccagacgcgaattatttttgatggcgttaactcggcgtttcatc
+tgtggtgcaacgggcgctgggtcggttacggccaggacagtcgtttgccgtctgaatttg
+acctgagcgcatttttacgcgccggagaaaaccgcctcgcggtgatggtgctgcgttgga
+gtgacggcagttatctggaagatcaggatatgtggcggatgagcggcattttccgtgacg
+tctcgttgctgcataaaccgactacacaaatcagcgatttccatgttgccactcgcttta
+atgatgatttcagccgcgctgtactggaggctgaagttcagatgtgcggcgagttgcgtg
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+cagcgctggaagtggttattctgaaaacgctgcatatgtttgaagtaccgttcctgctgg
+tgggctgctttaaatatattaccagccagtttgaagtgcgtttttcagcgacgatttatc
+tggtctgtttctgcttctttaagcaactggcgatgatttttatgtctgtactggcgggca
+atatgtatgaaagcatcggtttccagggcgcttatctggtgctgggtctggtggcgctgg
+gcttcaccttaatttccgtgttcacgcttagcggccccggcccgctttccctgctgcgtc
+gtcaggtgaatgaagtcgcttaagcaatcaatgtcggatgcggcgcgacgcttatccgac
+caacatatcataacggagtgatcgcattgaacatgccaatgaccgaaagaataagagcag
+gcaagctatttaccgatatgtgcgaaggcttaccggaaaaaagacttcgtgggaaaacgt
+taatgtatgagtttaatcactcgcatccatcagaagttgaaaaaagagaaagcctgatta
+aagaaatgtttgccacggtaggggaaaacgcctgggtagaaccgcctgtctatttctctt
+acggttccaacatccatataggccgcaatttttatgcaaatttcaatttaaccattgtcg
+atgactacacggtaacaatcggtgataacgtactgattgcacccaacgttactctttccg
+ttacgggacaccctgtacaccatgaattgagaaaaaacggcgagatgtactcttttccga
+taacgattggcaataacgtctggatcggaagtcatgtggttattaatccaggcgtcacca
+tcggggataattctgttattggcgcgggtagtatcgtcacaaaagacattccaccaaacg
+tcgtggcggctggcgttccttgtcgggttattcgcgaaataaacgaccgggataagcact
+attatttcaaagattataaagttgaatcgtcagtttaaattataaaaattgcctgatacg
+ctgcgcttatcaggcctacaagttcagcgatctacattagccgcatccggcatgaacaaa
+gcgcaggaacaagcgtcgcatcatgcctctttgacccacagctgcggaaaacgtactggt
+gcaaaacgcagggttatgatcatcagcccaacgacgcacagcgcatgaaatgcccagtcc
+atcaggtaattgccgctgatactacgcagcacgccagaaaaccacggggcaagcccggcg
+atgataaaaccgattccctgcataaacgccaccagcttgccagcaatagccggttgcaca
+gagtgatcgagcgccagcagcaaacagagcggaaacgcgccgcccagacctaacccacac
+accatcgcccacaataccggcaattgcatcggcagccagataaagccgcagaaccccacc
+agttgtaacaccagcgccagcattaacagtttgcgccgatcctgatggcgagccatagca
+ggcatcagcaaagctcctgcggcttgcccaagcgtcatcaatgccagtaaggaaccgctg
+tactgcgcgctggcaccaatctcaatatagaaagcgggtaaccaggcaatcaggctggcg
+taaccgccgttaatcagaccgaagtaaacacccagcgtccacgcgcggggagtgaatacc
+acgcgaaccggagtggttgttgtcttgtgggaagaggcgacctcgcgggcgctttgccac
+caccaggcaaagagcgcaacaacggcaggcagcgccaccaggcgagtgtttgataccagg
+tttcgctatgttgaactaaccagggcgttatggcggcaccaagcccaccgccgcccatca
+gagccgcggaccacagccccatcaccagtggcgtgcgctgctgaaaccgccgtttaatca
+ccgaagcatcaccgcctgaatgatgccgatccccaccccaccaagcagtgcgctgctaag
+cagcagcgcactttgcgggtaaagctcacgcatcaatgcaccgacggcaatcagcaacag
+actgatggcgacactgcgacgttcgctgacatgctgatgaagccagcttccggccagcgc
+cagcccgcccatggtaaccaccggcagagcggtcgac
+</pre>
+</td></tr></table><p>
+<p><h3>Database entry: tembl:eclaci</h3>
+<table width="90%"><tr><td bgcolor="#FFDDFF">
+<pre>
+&gt;ECLACI V00294.1 E. coli laci gene (codes for the lac repressor).
+ccggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacgatgtcgca
+gagtatgccggtgtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtt
+tctgcgaaaacgcgggaaaaagtggaagcggcgatggcggagctgaattacattcccaac
+cgcgtggcacaacaactggcgggcaaacagtcgttgctgattggcgttgccacctccagt
+ctggccctgcacgcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactg
+ggtgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcg
+gtgcacaatcttctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgac
+caggatgccattgctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtc
+tctgaccagacacccatcaacagtattattttctcccatgaagacggtacgcgactgggc
+gtggagcatctggtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagt
+tctgtctcggcgcgtctgcgtctggctggctggcataaatatctcactcgcaatcaaatt
+cagccgatagcggaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatg
+caaatgctgaatgagggcatcgttcccactgcgatgctggttgccaacgatcagatggcg
+ctgggcgcaatgcgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggta
+gtgggatacgacgataccgaagacagctcatgttatatcccgccgtcaaccaccatcaaa
+caggattttcgcctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggc
+caggcggtgaagggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctg
+gcgcccaatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggca
+cgacaggtttcccgactggaaagcgggcagtga
+</pre>
+</td></tr></table><p>
+
+
 <H2>
     Output file format
 </H2>
 
 
 An image is output to the resquested output device.
+
+<p>
+
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>Graphics File: dottup.ps</h3>
+<p><img src="dottup.1.dottup.gif" alt="[dottup results]">
 
 
 <H2>

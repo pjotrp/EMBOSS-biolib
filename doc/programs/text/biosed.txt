@@ -28,16 +28,28 @@ Description
    
 Usage
 
-   Here is a sample session with biosed:
+   Here is a sample session with biosed
    
    Replace all 'T's with 'U's to create a RNA sequence
    
-% biosed em:hsfau hsfau.rna -target T -replace U
-
-   Replace all 'RGD' protein motifs with 'XXRGDXX'
    
-% biosed sw:A4M1_HUMAN A4M1_HUMAN.pep -target RGD -replace XXRGDXX
+% biosed tembl:hsfau hsfau.rna -target T -replace U
+Replace or delete sequence sections
 
+   Go to the input files for this example
+   Go to the output files for this example
+   
+   Example 2
+   
+   Replace all 'PPP' protein motifs with 'XXPPPXX'
+   
+   
+% biosed tsw:AMIR_PSEAE AMIR_PSEAE.pep -target PPP -replace XXPPPXX
+Replace or delete sequence sections
+
+   Go to the input files for this example
+   Go to the output files for this example
+   
 Command line arguments
 
    Mandatory qualifiers (* if not always prompted):
@@ -66,17 +78,73 @@ Command line arguments
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default
-   -delete Delete the target sequence sections Yes/No No
+   -delete Delete the target sequence sections Boolean value Yes/No No
    
 Input file format
 
    It reads the USA of one or more nucleic acid or protein sequences.
+   
+  Input files for usage example
+  
+   'tembl:hsfau' is a sequence entry in the example nucleic acid database
+   'tembl'
+   
+  Database entry: tembl:hsfau
+  
+>HSFAU X65923.1 H.sapiens fau mRNA
+ttcctctttctcgactccatcttcgcggtagctgggaccgccgttcagtcgccaatatgc
+agctctttgtccgcgcccaggagctacacaccttcgaggtgaccggccaggaaacggtcg
+cccagatcaaggctcatgtagcctcactggagggcattgccccggaagatcaagtcgtgc
+tcctggcaggcgcgcccctggaggatgaggccactctgggccagtgcggggtggaggccc
+tgactaccctggaagtagcaggccgcatgcttggaggtaaagttcatggttccctggccc
+gtgctggaaaagtgagaggtcagactcctaaggtggccaaacaggagaagaagaagaaga
+agacaggtcgggctaagcggcggatgcagtacaaccggcgctttgtcaacgttgtgccca
+cctttggcaagaagaagggccccaatgccaactcttaagtcttttgtaattctggctttc
+tctaataaaaaagccacttagttcagtcaaaaaaaaaa
+   
+  Input files for usage example 2
+  
+   'tsw:AMIR_PSEAE' is a sequence entry in the example protein database
+   'tsw'
+   
+  Database entry: tsw:AMIR_PSEAE
+  
+>AMIR_PSEAE P10932 ALIPHATIC AMIDASE REGULATOR.
+MSANSLLGSLRELQVLVLNPPGEVSDALVLQLIRIGCSVRQCWPPPEAFDVPVDVVFTSI
+FQNGHHDEIAALLAAGTPRTTLVALVEYESPAVLSQIIELECHGVITQPLDAHRVLPVLV
+SARRISEEMAKLKQKTEQLQDRIAGQARINQAKVLLMQRHGWDEREAHQHLSREAMKRRE
+PILKIAQELLGNEPSA
    
 Output file format
 
    The edited sequence is output.
    
    The sequence will be in uppercase.
+   
+  Output files for usage example
+  
+  File: hsfau.rna
+  
+>HSFAU X65923.1 H.sapiens fau mRNA
+UUCCUCUUUCUCGACUCCAUCUUCGCGGUAGCUGGGACCGCCGUUCAGUCGCCAAUAUGC
+AGCUCUUUGUCCGCGCCCAGGAGCUACACACCUUCGAGGUGACCGGCCAGGAAACGGUCG
+CCCAGAUCAAGGCUCAUGUAGCCUCACUGGAGGGCAUUGCCCCGGAAGAUCAAGUCGUGC
+UCCUGGCAGGCGCGCCCCUGGAGGAUGAGGCCACUCUGGGCCAGUGCGGGGUGGAGGCCC
+UGACUACCCUGGAAGUAGCAGGCCGCAUGCUUGGAGGUAAAGUUCAUGGUUCCCUGGCCC
+GUGCUGGAAAAGUGAGAGGUCAGACUCCUAAGGUGGCCAAACAGGAGAAGAAGAAGAAGA
+AGACAGGUCGGGCUAAGCGGCGGAUGCAGUACAACCGGCGCUUUGUCAACGUUGUGCCCA
+CCUUUGGCAAGAAGAAGGGCCCCAAUGCCAACUCUUAAGUCUUUUGUAAUUCUGGCUUUC
+UCUAAUAAAAAAGCCACUUAGUUCAGUCAAAAAAAAAA
+   
+  Output files for usage example 2
+  
+  File: AMIR_PSEAE.pep
+  
+>AMIR_PSEAE P10932 ALIPHATIC AMIDASE REGULATOR.
+MSANSLLGSLRELQVLVLNPPGEVSDALVLQLIRIGCSVRQCWXXPPPXXEAFDVPVDVV
+FTSIFQNGHHDEIAALLAAGTPRTTLVALVEYESPAVLSQIIELECHGVITQPLDAHRVL
+PVLVSARRISEEMAKLKQKTEQLQDRIAGQARINQAKVLLMQRHGWDEREAHQHLSREAM
+KRREPILKIAQELLGNEPSA
    
 Data files
 

@@ -27,14 +27,32 @@ Description
    
 Usage
 
-   Here is a sample session with antigenic.
+   Here is a sample session with antigenic
+   
 
-% antigenic
+% antigenic 
 Finds antigenic sites in proteins
-Input sequence: sw:act1_fugru
-Minimum length [6]:
-Output file [act1_fugru.antigenic]:
+Input sequence(s): tsw:act1_fugru
+Minimum length [6]: 
+Output report [act1_fugru.antigenic]: 
+   
+   Go to the input files for this example
+   Go to the output files for this example
+   
+   Example 2
+   
+   By using the '-rformat gff' qualifier, a GFF file of the predicted
+   regions can be produced.
+   
 
+% antigenic -rformat gff
+Finds antigenic sites in proteins
+Input sequence(s): tsw:act1_fugru
+Minimum length [6]: 
+Output report [act1_fugru.antigenic]: 
+   
+   Go to the output files for this example
+   
 Command line arguments
 
    Mandatory qualifiers:
@@ -55,7 +73,7 @@ Command line arguments
    (Parameter 1) Sequence database USA Readable sequence(s) Required
    -minlen Minimum length Integer from 1 to 50 6
    [-outfile]
-   (Parameter 2) Output report file name Report file
+   (Parameter 2) Output report file name Report output file
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default
@@ -64,6 +82,22 @@ Command line arguments
 Input file format
 
    The input sequence can be one or more protein sequences.
+   
+  Input files for usage example
+  
+   'tsw:act1_fugru' is a sequence entry in the example protein database
+   'tsw'
+   
+  Database entry: tsw:act1_fugru
+  
+>ACT1_FUGRU P53484 ACTIN, CYTOPLASMIC 1 (BETA-ACTIN 1).
+MEDEIAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDSYVGDEAQS
+KRGILTLKYPIEHGIVTNWDDMEKIWHHTFYNELRVAPEEHPVLLTEAPLNPKANREKMT
+QIMFETFNTPAMYVAIQAVLSLYASGRTTGIVMDSGDGVTHTVPIYEGYALPHAILRLDL
+AGRDLTDYLMKILTERGYSFTTTAEREIVRDIKEKLCYVALDFEQEMGTAASSSSLEKSY
+ELPDGQVITIGNERFRCPEALFQPSFLGMESCGIHETTYNSIMKCDVDIRKDLYANTVLS
+GGTTMYPGIADRMQKEITALAPSTMKIKIIAPPERKYSVWIGGSILASLSTFQQMWISKQ
+EYDESGPSIVHRKCF
    
 Output file format
 
@@ -81,12 +115,14 @@ Output file format
    
    By default antigenic writes a 'motif' report file.
    
-   The output from the above example is:
-     _________________________________________________________________
-   
+  Output files for usage example
+  
+  File: act1_fugru.antigenic
+  
 ########################################
 # Program: antigenic
-# Rundate: Mon Feb 11 12:01:10 2002
+# Rundate: Fri Aug 23 15:43:20 2002
+# Report_format: motif
 # Report_file: act1_fugru.antigenic
 ########################################
 
@@ -118,61 +154,10 @@ Max_score_pos at "*"
 
 (4) Score 1.164 length 12 at residues 27->38
                 *
- Sequence: PRAVFPSIVGRP
-           |          |
-          27          38
 
-(5) Score 1.136 length 24 at residues 160->183
-                        *
- Sequence: THTVPIYEGYALPHAILRLDLAGR
-           |                      |
-         160                      183
 
-(6) Score 1.135 length 6 at residues 367->372
-                *
- Sequence: PSIVHR
-           |    |
-         367    372
+  [Part of this file has been deleted for brevity]
 
-(7) Score 1.116 length 16 at residues 93->108
-                     *
- Sequence: ELRVAPEEHPVLLTEA
-           |              |
-          93              108
-
-(8) Score 1.113 length 7 at residues 295->301
-            *
- Sequence: ANTVLSG
-           |     |
-         295     301
-
-(9) Score 1.110 length 11 at residues 256->266
-                   *
- Sequence: RCPEALFQPSF
-           |         |
-         256         266
-
-(10) Score 1.107 length 17 at residues 336->352
-                      *
- Sequence: KYSVWIGGSILASLSTF
-           |               |
-         336               352
-
-(11) Score 1.102 length 15 at residues 62->76
-                 *
- Sequence: RGILTLKYPIEHGIV
-           |             |
-          62             76
-
-(12) Score 1.086 length 19 at residues 232->250
-                        *
- Sequence: SSSSLEKSYELPDGQVITI
-           |                 |
-         232                 250
-
-(13) Score 1.083 length 6 at residues 327->332
-              *
- Sequence: IKIIAP
            |    |
          327    332
 
@@ -209,20 +194,13 @@ Max_score_pos at "*"
 
 #---------------------------------------
 #---------------------------------------
-     _________________________________________________________________
    
-   By using the '-rformat gff' qualifier, a GFF file of the predicted
-   regions can be produced. For example:
-   
-% antigenic -rformat gff
-Finds antigenic sites in proteins
-Input sequence(s): sw:act1_fugru
-Minimum length [6]:
-Output file [act1_fugru.antigenic]:
-
-% more act1_fugru.antigenic
+  Output files for usage example 2
+  
+  File: act1_fugru.antigenic
+  
 ##gff-version 2.0
-##date 2002-02-11
+##date 2002-08-28
 ##Type Protein ACT1_FUGRU
 ACT1_FUGRU      antigenic       site    214     222     1.207   +       .
 Sequence "ACT1_FUGRU.1" ; note "*pos 218"
@@ -260,7 +238,7 @@ ACT1_FUGRU      antigenic       site    269     275     1.045   +       .
 Sequence "ACT1_FUGRU.17" ; note "*pos 269"
 ACT1_FUGRU      antigenic       site    51      57      1.034   +       .
 Sequence "ACT1_FUGRU.18" ; note "*pos 52"
-
+   
 Data files
 
    Antigenic uses a data file called Eantigenic.dat.

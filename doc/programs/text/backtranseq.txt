@@ -25,22 +25,33 @@ Description
    
 Usage
 
-   Here is a sample session with backtranseq. Note that this is a human
-   protein and so the default (human) codon frequency file is used (i.e.
-   is not specified).
+   Here is a sample session with backtranseq
    
-% backtranseq
-Back translate a protein sequence
-Input sequence: sw:opsd_human
-Output sequence [opsd_human.fasta]:
+   Note that this is a human protein and so the default human codon
+   frequency file is used ie. is not specified
+   
 
-   Here is a session using a drosophila sequence and codon table:
+% backtranseq 
+Back translate a protein sequence
+Input sequence: tsw:opsd_human
+Output sequence [opsd_human.fasta]: 
    
+   Go to the input files for this example
+   Go to the output files for this example
+   
+   Example 2
+   
+   This uses a drosophila sequence and codon table.
+   
+
 % backtranseq -cfile Edrosophila.cut
 Back translate a protein sequence
-Input sequence: sw:ach2_drome
-Output sequence [ach2_drome.fasta]:
-
+Input sequence: tsw:ach2_drome
+Output sequence [ach2_drome.fasta]: 
+   
+   Go to the input files for this example
+   Go to the output files for this example
+   
 Command line arguments
 
    Mandatory qualifiers:
@@ -72,17 +83,48 @@ Input file format
 
    Any DNA sequence USA.
    
+  Input files for usage example
+  
+   'tsw:opsd_human' is a sequence entry in the example protein database
+   'tsw'
+   
+  Database entry: tsw:opsd_human
+  
+>OPSD_HUMAN P08100 RHODOPSIN.
+MNGTEGPNFYVPFSNATGVVRSPFEYPQYYLAEPWQFSMLAAYMFLLIVLGFPINFLTLY
+VTVQHKKLRTPLNYILLNLAVADLFMVLGGFTSTLYTSLHGYFVFGPTGCNLEGFFATLG
+GEIALWSLVVLAIERYVVVCKPMSNFRFGENHAIMGVAFTWVMALACAAPPLAGWSRYIP
+EGLQCSCGIDYYTLKPEVNNESFVIYMFVVHFTIPMIIIFFCYGQLVFTVKEAAAQQQES
+ATTQKAEKEVTRMVIIMVIAFLICWVPYASVAFYIFTHQGSNFGPIFMTIPAFFAKSAAI
+YNPVIYIMMNKQFRNCMLTTICCGKNPLGDDEASATVSKTETSQVAPA
+   
+  Input files for usage example 2
+  
+  Database entry: tsw:ach2_drome
+  
+>ACH2_DROME P17644 ACETYLCHOLINE RECEPTOR PROTEIN, ALPHA-LIKE CHAIN 2 PRECURSOR
+.
+MAPGCCTTRPRPIALLAHIWRHCKPLCLLLVLLLLCETVQANPDAKRLYDDLLSNYNRLI
+RPVSNNTDTVLVKLGLRLSQLIDLNLKDQILTTNVWLEHEWQDHKFKWDPSEYGGVTELY
+VPSEHIWLPDIVLYNNADGEYVVTTMTKAILHYTGKVVWTPPAIFKSSCEIDVRYFPFDQ
+QTCFMKFGSWTYDGDQIDLKHISQKNDKDNKVEIGIDLREYYPSVEWDILGVPAERHEKY
+YPCCAEPYPDIFFNITLRRKTLFYTVNLIIPCVGISYLSVLVFYLPADSGEKIALCISIL
+LSQTMFFLLISEIIPSTSLALPLLGKYLLFTMLLVGLSVVITIIILNIHYRKPSTHKMRP
+WIRSFFIKRLPKLLLMRVPKDLLRDLAANKINYGLKFSKTKFGQALMDEMQMNSGGSSPD
+SLRRMQGRVGAGGCNGMHVTTATNRFSGLVGALGGGLSTLSGYNGLPSVLSGLDDSLSDV
+AARKKYPFELEKAIHNVMFIQHHMQRQDEFNAEDQDWGFVAMVMDRLFLWLFMIASLVGT
+FVILGEAPSLYDDTKAIDVQLSDVAKQIYNLTEKKN
+   
 Output file format
 
    The output is a nucleotide sequence containing the most favoured back
    translation of the specified protein, and using the specified
    translation table (which defaults to human).
    
-   The output from the backtranslation of the human protein sw:opsd_human
-   follows:
-     _________________________________________________________________
-   
-% more opsd_human.fasta
+  Output files for usage example
+  
+  File: opsd_human.fasta
+  
 >OPSD_HUMAN P08100 RHODOPSIN.
 ATGAACGGCACCGAGGGCCCCAACTTCTACGTGCCCTTCAGCAACGCCACCGGCGTGGTG
 AGAAGCCCCTTCGAGTACCCCCAGTACTACCTGGCCGAGCCCTGGCAGTTCAGCATGCTG
@@ -102,7 +144,42 @@ AGCAACTTCGGCCCCATCTTCATGACCATCCCCGCCTTCTTCGCCAAGAGCGCCGCCATC
 TACAACCCCGTGATCTACATCATGATGAACAAGCAGTTCAGAAACTGCATGCTGACCACC
 ATCTGCTGCGGCAAGAACCCCCTGGGCGACGACGAGGCCAGCGCCACCGTGAGCAAGACC
 GAGACCAGCCAGGTGGCCCCCGCC
-     _________________________________________________________________
+   
+  Output files for usage example 2
+  
+  File: ach2_drome.fasta
+  
+>ACH2_DROME P17644 ACETYLCHOLINE RECEPTOR PROTEIN, ALPHA-LIKE CHAIN 2 PRECURSOR
+.
+ATGGCCCCCGGCTGCTGCACCACCCGCCCCCGCCCCATCGCCCTGCTGGCCCACATCTGG
+CGCCACTGCAAGCCCCTGTGCCTGCTGCTGGTGCTGCTGCTGCTGTGCGAGACCGTGCAG
+GCCAACCCCGACGCCAAGCGCCTGTACGACGACCTGCTGTCCAACTACAACCGCCTGATC
+CGCCCCGTGTCCAACAACACCGACACCGTGCTGGTGAAGCTGGGCCTGCGCCTGTCCCAG
+CTGATCGACCTGAACCTGAAGGACCAGATCCTGACCACCAACGTGTGGCTGGAGCACGAG
+TGGCAGGACCACAAGTTCAAGTGGGACCCCTCCGAGTACGGCGGCGTGACCGAGCTGTAC
+GTGCCCTCCGAGCACATCTGGCTGCCCGACATCGTGCTGTACAACAACGCCGACGGCGAG
+TACGTGGTGACCACCATGACCAAGGCCATCCTGCACTACACCGGCAAGGTGGTGTGGACC
+CCCCCCGCCATCTTCAAGTCCTCCTGCGAGATCGACGTGCGCTACTTCCCCTTCGACCAG
+CAGACCTGCTTCATGAAGTTCGGCTCCTGGACCTACGACGGCGACCAGATCGACCTGAAG
+CACATCTCCCAGAAGAACGACAAGGACAACAAGGTGGAGATCGGCATCGACCTGCGCGAG
+TACTACCCCTCCGTGGAGTGGGACATCCTGGGCGTGCCCGCCGAGCGCCACGAGAAGTAC
+TACCCCTGCTGCGCCGAGCCCTACCCCGACATCTTCTTCAACATCACCCTGCGCCGCAAG
+ACCCTGTTCTACACCGTGAACCTGATCATCCCCTGCGTGGGCATCTCCTACCTGTCCGTG
+CTGGTGTTCTACCTGCCCGCCGACTCCGGCGAGAAGATCGCCCTGTGCATCTCCATCCTG
+CTGTCCCAGACCATGTTCTTCCTGCTGATCTCCGAGATCATCCCCTCCACCTCCCTGGCC
+CTGCCCCTGCTGGGCAAGTACCTGCTGTTCACCATGCTGCTGGTGGGCCTGTCCGTGGTG
+ATCACCATCATCATCCTGAACATCCACTACCGCAAGCCCTCCACCCACAAGATGCGCCCC
+TGGATCCGCTCCTTCTTCATCAAGCGCCTGCCCAAGCTGCTGCTGATGCGCGTGCCCAAG
+GACCTGCTGCGCGACCTGGCCGCCAACAAGATCAACTACGGCCTGAAGTTCTCCAAGACC
+AAGTTCGGCCAGGCCCTGATGGACGAGATGCAGATGAACTCCGGCGGCTCCTCCCCCGAC
+TCCCTGCGCCGCATGCAGGGCCGCGTGGGCGCCGGCGGCTGCAACGGCATGCACGTGACC
+ACCGCCACCAACCGCTTCTCCGGCCTGGTGGGCGCCCTGGGCGGCGGCCTGTCCACCCTG
+TCCGGCTACAACGGCCTGCCCTCCGTGCTGTCCGGCCTGGACGACTCCCTGTCCGACGTG
+GCCGCCCGCAAGAAGTACCCCTTCGAGCTGGAGAAGGCCATCCACAACGTGATGTTCATC
+CAGCACCACATGCAGCGCCAGGACGAGTTCAACGCCGAGGACCAGGACTGGGGCTTCGTG
+GCCATGGTGATGGACCGCCTGTTCCTGTGGCTGTTCATGATCGCCTCCCTGGTGGGCACC
+TTCGTGATCCTGGGCGAGGCCCCCTCCCTGTACGACGACACCAAGGCCATCGACGTGCAG
+CTGTCCGACGTGGCCAAGCAGATCTACAACCTGACCGAGAAGAAGAAC
    
 Data files
 
@@ -152,28 +229,27 @@ Known bugs
    
 See also
 
-   Program name Description
-   charge Protein charge plot
-   checktrans Reports STOP codons and ORF statistics of a protein
-   sequence
-   coderet Extract CDS, mRNA and translations from feature tables
-   compseq Counts the composition of dimer/trimer/etc words in a sequence
-   emowse Protein identification by mass spectrometry
-   freak Residue/base frequency table or plot
-   iep Calculates the isoelectric point of a protein
-   mwcontam Shows molwts that match across a set of files
-   mwfilter Filter noisy molwts from mass spec output
-   octanol Displays protein hydropathy
-   pepinfo Plots simple amino acid properties in parallel
-   pepstats Protein statistics
-   pepwindow Displays protein hydropathy
+   Program name                          Description
+   charge       Protein charge plot
+   checktrans   Reports STOP codons and ORF statistics of a protein
+   coderet      Extract CDS, mRNA and translations from feature tables
+   compseq      Counts the composition of dimer/trimer/etc words in a sequence
+   emowse       Protein identification by mass spectrometry
+   freak        Residue/base frequency table or plot
+   iep          Calculates the isoelectric point of a protein
+   mwcontam     Shows molwts that match across a set of files
+   mwfilter     Filter noisy molwts from mass spec output
+   octanol      Displays protein hydropathy
+   pepinfo      Plots simple amino acid properties in parallel
+   pepstats     Protein statistics
+   pepwindow    Displays protein hydropathy
    pepwindowall Displays protein hydropathy of a set of sequences
-   plotorf Plot potential open reading frames
-   prettyseq Output sequence with translated ranges
-   remap Display a sequence with restriction cut sites, translation etc
-   showorf Pretty output of DNA translations
-   showseq Display a sequence with features, translation etc
-   transeq Translate nucleic acid sequences
+   plotorf      Plot potential open reading frames
+   prettyseq    Output sequence with translated ranges
+   remap        Display a sequence with restriction cut sites, translation etc
+   showorf      Pretty output of DNA translations
+   showseq      Display a sequence with features, translation etc
+   transeq      Translate nucleic acid sequences
    
 Author(s)
 

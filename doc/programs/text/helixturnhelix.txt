@@ -18,12 +18,17 @@ Description
    
 Usage
 
-   Here is a sample session with helixturnhelix.
+   Here is a sample session with helixturnhelix
+   
 
-% helixturnhelix
-Input sequence: sw:laci_ecoli
-Output file [laci_ecoli.hth]:
-
+% helixturnhelix 
+Report nucleic acid binding motifs
+Input sequence(s): tsw:laci_ecoli
+Output report [laci_ecoli.hth]: 
+   
+   Go to the input files for this example
+   Go to the output files for this example
+   
 Command line arguments
 
    Mandatory qualifiers:
@@ -47,18 +52,33 @@ Command line arguments
    [-sequence]
    (Parameter 1) Sequence database USA Readable sequence(s) Required
    [-outfile]
-   (Parameter 2) Output report file name Report file
+   (Parameter 2) Output report file name Report output file
    Optional qualifiers Allowed values Default
    -mean Mean value Number from 1.000 to 10000.000 238.71
    -sd Standard Deviation value Number from 1.000 to 10000.000 293.61
    -minsd Minimum SD Number from 0.000 to 100.000 2.5
-   -eightyseven Use the old (1987) weight data Yes/No No
+   -eightyseven Use the old (1987) weight data Boolean value Yes/No No
    Advanced qualifiers Allowed values Default
    (none)
    
 Input file format
 
-   The input sequence can be one or more protein sequences.
+   helixturnhelix reads one or more protein sequence USAs.
+   
+  Input files for usage example
+  
+   'tsw:laci_ecoli' is a sequence entry in the example protein database
+   'tsw'
+   
+  Database entry: tsw:laci_ecoli
+  
+>LACI_ECOLI P03023 LACTOSE OPERON REPRESSOR.
+MKPVTLYDVAEYAGVSYQTVSRVVNQASHVSAKTREKVEAAMAELNYIPNRVAQQLAGKQ
+SLLIGVATSSLALHAPSQIVAAIKSRADQLGASVVVSMVERSGVEACKAAVHNLLAQRVS
+GLIINYPLDDQDAIAVEAACTNVPALFLDVSDQTPINSIIFSHEDGTRLGVEHLVALGHQ
+QIALLAGPLSSVSARLRLAGWHKYLTRNQIQPIAEREGDWSAMSGFQQTMQMLNEGIVPT
+AMLVANDQMALGAMRAITESGLRVGADISVVGYDDTEDSSCYIPPSTTIKQDFRLLGQTS
+VDRLLQLSQGQAVKGNQLLPVSLVKRKTTLAPNTQTASPRALADSLMQLARQVSRLESGQ
    
 Output file format
 
@@ -76,12 +96,14 @@ Output file format
    
    By default helixturnhelix writes a 'motif' report file.
    
-   Here is a sample output:
-  __________________________________________________________________________
-
+  Output files for usage example
+  
+  File: laci_ecoli.hth
+  
 ########################################
 # Program: helixturnhelix
-# Rundate: Mon Feb 11 13:45:02 2002
+# Rundate: Fri Aug 23 16:03:33 2002
+# Report_format: motif
 # Report_file: laci_ecoli.hth
 ########################################
 
@@ -106,8 +128,7 @@ Maximum_score_at at "*"
 
 #---------------------------------------
 #---------------------------------------
-  __________________________________________________________________________
-
+   
 Data files
 
    The data files are stored in the standard EMBOSS data directory. The

@@ -24,15 +24,19 @@ Description
    
 Usage
 
-   Here is a sample session with isochore. This reads yeast chromosome 3
-   from a remote web server so the sequence reading may take a little
-   time.
+   Here is a sample session with isochore
+   
+   This reads yeast chromosome 3 from a remote web server so the sequence
+   reading may take a little time.
+   
 
-% isochore
-Input sequence: tgb:scchriii
+% isochore tgb:scchriii -graph cps
+Plots isochores in large DNA sequences
 Output file [scchriii.iso]:
-
-   click here for result
+Created isochore.ps
+   
+   Go to the input files for this example
+   Go to the output files for this example
    
 Command line arguments
 
@@ -69,14 +73,182 @@ Command line arguments
    
 Input file format
 
+   isochore reads a normal nucleic acid USA.
+   
+  Input files for usage example
+  
+  Database entry: tgb:scchriii
+  
+>SCCHRIII X59720.2 S.cerevisiae chromosome III complete DNA sequence
+cccacacaccacacccacaccacacccacacaccacacacaccacacccacacacccaca
+ccacaccacacccacaccacacccacacacccacacccacacaccacacccacacacacc
+acacccacacacacccacacccacacaccacacccacacacacaccacacccacacacac
+cacaccacacccacaccacacccacacccacacaccacacccacacccacaccccacacc
+cacacaccacacccacacacaccacacccacacacacccacaccacacccacacaccaca
+cccacacacccacacccacacacaccacacccacaccacacccacacccacacacccaca
+ccctaacactaccctaacactaccctattctaaccctgattttacctgtctcccaactta
+ctctccattaccctacctctccactcgttaccctgtctcattcaaccgtaccactcccaa
+ccaccatccatctctctacttactaccaccaacccaccgtccaccataaccgttaccctc
+caactacccgtatccaactccactaccgcttaccctaccatcgaccatgtcctactcact
+gtactgttgttcacccaccatattgaaacgtctacaaatgatcgtaaataatacacatat
+acttatcctaccactctaatcccactaccacatgccatactcaccttcacttgtattctg
+atcggtcatacgcacacggatgctacagtatataccatctcaaacttaccctactttcat
+attccactccatcacccatctctcaccatcagtaccaaatgcactcgcatcattatgcac
+ggcacttgcctcagcggtctataccctgtgccatttacgcataacgcccatcattatcca
+cattttaatatctatatctcattcggcgacaccaaatattgtataactgcccttaataca
+tacgttataccacttttacaccatatactaaccactcaatttatacacacttatgtcaat
+ataaccacaaaatcaccactaaaatcacctaaacataaaaatattctactcttcaacaat
+aatacataaacacactcaattgcgtatctataccaccatgacgtcattaacgtaaaagtt
+ccttaatattgcaaattgcttgaacggatgccatttcatgttgaatgtggtaacccaata
+gcatgatatgagtaatgctttagtattgtttcagagttgtttcagtaatgttttagacaa
+ggagaacatatagtagcaaacctctaatccggtagtacttaagaaactacagtttctatg
+tacgaaagcagtaactatgtaattattacatttacatgacatataggaaggtccaataaa
+cttactacattatgacctataagctagatcgtaattcattacgtcaacaggttatgagcc
+ctcagagcaatgcttctgagaacataatcaatctatctagccccaacaattataaacagt
+ggctgtacggtatcgagaccgctgctgaatatgctaacgaatatatgaacgaattcgttc
+ataccggagatatccaatcaatgaaaagggattacaatctcagcgcgaatgatgaaagct
+ttgtcaaaaccgtatttaacagtttcctggtaaagctctacaagaaaactatcgtgggtg
+aagctgcatgtgaaatgaactggatatgtgatgattcgcttggaagggtctctgcttatg
+atattttctcgcacttcgaagaaaactataatgaagtcactattggatccaggcttactc
+ttatagaggacctaccaaatatatcctccaagcctgtagatgaaattgcttcctttttga
+aaactctattcacgatgcttgaagacaatagcgaagaacaggacaaaaaaaaaagacgcg
+acaccaatatcgcgttgttattaatgaccttcttacccgagttaaaagaatcattccacg
+agaaattcggtgactctaaggctcttcagctatcacaagtcattagattctgtaaattaa
+
+
+  [Part of this file has been deleted for brevity]
+
+atcttatggtaaaactccctttagtatctaccaaggtaaatggaacgtgttgaacagaga
+ttttgagcgtgatattattccaatggctaggcatttcggtatggccctcgccccatggga
+tgtcatgggaggtggaagatttcagagtaaaaaagcaatggaggaacggaggaagaatgg
+agagggtattcgttctttcgttggcgcctccgaacaaacagatgcagaaatcaagattag
+tgaagcattggccaagattgctgaggaacatggcactgagtctgttactgctattgctat
+tgcctatgttcgctctaaggcgaaaaatttttttccgtcggttgaaggaggaaaaattga
+ggatctcaaagagaacattaaggctctcagtatcgatctaacgccagacaatataaaata
+cttagaaagtatagttccttttgacatcggatttcctaataattttatcgtgttaaattc
+cttgactcaaaaatatggtacgaataatgtttagataatttttcagtaatcaactacgca
+agtaaagcagtaaatacgttactgctggtattaatgtcatgtattgaggcaatgatgcta
+tgctcttaacgacatgtagcttacaaaacgttcctatggttttactgcatggtatttaca
+aattagatagcagttccatccgcccttgacatattattattcagacaaggtgtatatgag
+cataaatatgtatatatgcacatgaggtttgtattaaccttgcaactgtaccaaaataca
+atcttctttgctgctatttaacggcgtatgtgcagttcataaatgcgtgttctgtatagt
+acatccgcgcacattcttcctagcggaagacatattaacgtagcccgtacgccctggtta
+agacttggtatagttccaataattggaatattactgcatagtggtccaatagcaggattt
+agcataaacatgataatatttagagatgctttcatccctctgacgaaggtggtagagaac
+aagaaaatgaataacattatatcatattcctatatatatatatatatatatatatatatc
+atataacggtggaaaatcccggcgatattacagataaacattacacccgcatgaatgtga
+gccactactatattataacttagtgaataaagagtgttacaatagtgaggtgcatattat
+tctaatgtaaggtctgtataagtacgaaatattctgaagtggcatccagtcaagcaaatg
+gtaatattaaggaacttttaagttaatgacgtcatggtagtgctcgtacttcaagtcaaa
+gtgtttatgtattatggttgaagaatagaatatttttatgtttaggtgattttagtggtg
+atttttctgtaatattgacataagtgtatataaattaagtggttagtatacggtgaaaaa
+gaggtataacgtatgtattaagggaatttatacgatatttgggcccgccgaatgagatat
+agatattaaaatgtggataatcgtgggctttatgggtaaatggcacagggtatagaccgc
+tgaggcaagtgccgtgcataatgatgtgggtgcatttggtactgatttagtgagaatggg
+ccatggattggagtgtgagagtagggtaacttgagagtggtatatactgtagcatccgtg
+tgcgtatgccccatcaatataagtgaaggtgagtatggcatgtggtggtggtatagagtg
+gtagggtaagtatgtatgtattatttacgatcatttgttaacgtttcaatatggtgggtg
+aacaacagtacagtgagtaggacatggtggatggtagggtaatagtagggtaagtggtgg
+tggagttggatatgggtaattggagggtaacggttatgatgggcggtggatggtggtagt
+aagtagagagatggatggtggttgggagtggtatggttgagtggggcagggtaacgagtg
+gggaggtagggtaatgtgagggtaggtttggagacaggtaaaatcagggttagaataggg
+tagtgttagggtagtgtgtgggtgtgggtgtgtgggtgtggtgtgtgggtgtggtgtgtg
+tgggtgtggtgtgtgggtgtgggtgtgtgggtgtggtgggtgtggtgtgtgtg
+   
 Output file format
 
-   The graph from the example run
+  Output files for usage example
+  
+  Graphics File: isochore.ps
+  
+   [isochore results]
+   
+  File: scchriii.iso
+  
+Position        Percent G+C 1 .. 316613
+500     0.506
+600     0.469
+700     0.446
+800     0.417
+900     0.390
+1000    0.379
+1100    0.367
+1200    0.370
+1300    0.367
+1400    0.355
+1500    0.362
+1600    0.375
+1700    0.375
+1800    0.380
+1900    0.398
+2000    0.404
+2100    0.400
+2200    0.404
+2300    0.408
+2400    0.414
+2500    0.417
+2600    0.421
+2700    0.422
+2800    0.419
+2900    0.417
+3000    0.426
+3100    0.429
+3200    0.437
+3300    0.432
+3400    0.422
+3500    0.416
+3600    0.412
+3700    0.401
+3800    0.391
+
+
+  [Part of this file has been deleted for brevity]
+
+312600  0.337
+312700  0.341
+312800  0.348
+312900  0.351
+313000  0.352
+313100  0.360
+313200  0.381
+313300  0.375
+313400  0.379
+313500  0.394
+313600  0.394
+313700  0.389
+313800  0.390
+313900  0.392
+314000  0.399
+314100  0.408
+314200  0.403
+314300  0.419
+314400  0.415
+314500  0.397
+314600  0.396
+314700  0.391
+314800  0.386
+314900  0.390
+315000  0.384
+315100  0.363
+315200  0.349
+315300  0.341
+315400  0.330
+315500  0.338
+315600  0.351
+315700  0.365
+315800  0.367
+315900  0.372
+316000  0.389
+316100  0.421
    
 Data files
 
+   None.
+   
 Notes
 
+   None.
+   
 References
 
     1. Bernardi G Isochores and the evolutionary genomics of vertebrates.
@@ -89,12 +261,20 @@ References
        
 Warnings
 
+   None.
+   
 Diagnostic Error Messages
 
+   None.
+   
 Exit status
 
+   It always exits with a status of 0.
+   
 Known bugs
 
+   None.
+   
 See also
 
    Program name                          Description

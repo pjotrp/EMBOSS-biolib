@@ -84,10 +84,15 @@ Description
    
 Usage
 
-   Here is a sample session with eprimer3:
+   Here is a sample session with eprimer3
+   
+   
+% eprimer3 tembl:hsfau1 hsfau.eprimer3 -explain
+Picks PCR primers and hybridization oligos
 
-% eprimer3 em:hsfau1 hsfau.eprimer3 -explain
-
+   Go to the input files for this example
+   Go to the output files for this example
+   
 Command line arguments
 
    Mandatory qualifiers:
@@ -821,7 +826,7 @@ Command line arguments
    RIGHT-EXPLAIN, and INTERNAL-OLIGO-EXPLAIN output tags, which are
    intended to provide information on the number of oligos and primer
    pairs that EPrimer3 examined, and statistics on the number discarded
-   for various reasons. Yes/No No
+   for various reasons. Boolean value Yes/No No
    -fileflag If the associated value is non-0, then EPrimer3 creates two
    output files for each input SEQUENCE. File (sequence-id).for lists all
    acceptable forward primers for (sequence-id), and (sequence-id).rev
@@ -829,7 +834,7 @@ Command line arguments
    (sequence-id) is the value of the SEQUENCE-ID tag (which must be
    supplied). In addition, if the input tag TASK is 1 or 4, EPrimer3
    produces a file (sequence-id).int, which lists all acceptable internal
-   oligos. Yes/No No
+   oligos. Boolean value Yes/No No
    -firstbaseindex This parameter is the index of the first base in the
    input sequence. For input and output using 1-based indexing (such as
    that used in GenBank and to which many users are accustomed) set this
@@ -839,7 +844,7 @@ Command line arguments
    integer value 1
    -pickanyway If true pick a primer pair even if LEFT-INPUT,
    RIGHT-INPUT, or INTERNAL-OLIGO-INPUT violates specific constraints.
-   Yes/No No
+   Boolean value Yes/No No
    -mispriminglibrary The name of a file containing a nucleotide sequence
    library of sequences to avoid amplifying (for example repetitive
    sequences, or possibly the sequences of genes in a gene family that
@@ -948,73 +953,122 @@ Command line arguments
    
 Input file format
 
-   It reads a normal nucleic acid sequence
+   eprimer3 reads a normal nucleic acid sequence USA.
+   
+  Input files for usage example
+  
+   'tembl:hsfau1' is a sequence entry in the example nucleic acid
+   database 'tembl'
+   
+  Database entry: tembl:hsfau1
+  
+>HSFAU1 X65921.1 H.sapiens fau 1 gene
+ctaccattttccctctcgattctatatgtacactcgggacaagttctcctgatcgaaaac
+ggcaaaactaaggccccaagtaggaatgccttagttttcggggttaacaatgattaacac
+tgagcctcacacccacgcgatgccctcagctcctcgctcagcgctctcaccaacagccgt
+agcccgcagccccgctggacaccggttctccatccccgcagcgtagcccggaacatggta
+gctgccatctttacctgctacgccagccttctgtgcgcgcaactgtctggtcccgccccg
+tcctgcgcgagctgctgcccaggcaggttcgccggtgcgagcgtaaaggggcggagctag
+gactgccttgggcggtacaaatagcagggaaccgcgcggtcgctcagcagtgacgtgaca
+cgcagcccacggtctgtactgacgcgccctcgcttcttcctctttctcgactccatcttc
+gcggtagctgggaccgccgttcaggtaagaatggggccttggctggatccgaagggcttg
+tagcaggttggctgcggggtcagaaggcgcggggggaaccgaagaacggggcctgctccg
+tggccctgctccagtccctatccgaactccttgggaggcactggccttccgcacgtgagc
+cgccgcgaccaccatcccgtcgcgatcgtttctggaccgctttccactcccaaatctcct
+ttatcccagagcatttcttggcttctcttacaagccgtcttttctttactcagtcgccaa
+tatgcagctctttgtccgcgcccaggagctacacaccttcgaggtgaccggccaggaaac
+ggtcgcccagatcaaggtaaggctgcttggtgcgccctgggttccattttcttgtgctct
+tcactctcgcggcccgagggaacgcttacgagccttatctttccctgtaggctcatgtag
+cctcactggagggcattgccccggaagatcaagtcgtgctcctggcaggcgcgcccctgg
+aggatgaggccactctgggccagtgcggggtggaggccctgactaccctggaagtagcag
+gccgcatgcttggaggtgagtgagagaggaatgttctttgaagtaccggtaagcgtctag
+tgagtgtggggtgcatagtcctgacagctgagtgtcacacctatggtaatagagtacttc
+tcactgtcttcagttcagagtgattcttcctgtttacatccctcatgttgaacacagacg
+tccatgggagactgagccagagtgtagttgtatttcagtcacatcacgagatcctagtct
+ggttatcagcttccacactaaaaattaggtcagaccaggccccaaagtgctctataaatt
+agaagctggaagatcctgaaatgaaacttaagatttcaaggtcaaatatctgcaactttg
+ttctcattacctattgggcgcagcttctctttaaaggcttgaattgagaaaagaggggtt
+ctgctgggtggcaccttcttgctcttacctgctggtgccttcctttcccactacaggtaa
+agtccatggttccctggcccgtgctggaaaagtgagaggtcagactcctaaggtgagtga
+gagtattagtggtcatggtgttaggactttttttcctttcacagctaaaccaagtccctg
+ggctcttactcggtttgccttctccctccctggagatgagcctgagggaagggatgctag
+gtgtggaagacaggaaccagggcctgattaaccttcccttctccaggtggccaaacagga
+gaagaagaagaagaagacaggtcgggctaagcggcggatgcagtacaaccggcgctttgt
+caacgttgtgcccacctttggcaagaagaagggccccaatgccaactcttaagtcttttg
+taattctggctttctctaataaaaaagccacttagttcagtcatcgcattgtttcatctt
+tacttgcaaggcctcagggagaggtgtgcttctcgg
    
 Output file format
 
-   An example output file follows:
-     _________________________________________________________________
-   
+  Output files for usage example
+  
+  File: hsfau.eprimer3
+  
+
 # EPRIMER3 RESULTS FOR HSFAU1
 
 # FORWARD PRIMER STATISTICS:
-# considered 18855
+# considered 16422
 # GC content failed 156
 # low tm 3616
-# high tm 11295
-# high any compl 1
-# high end compl 1
+# high tm 9306
+# high any compl 9
+# high end compl 26
 # long poly-x seq 45
-# ok 3741
+#high 3' stability 304
+# ok 2960
 
 # REVERSE PRIMER STATISTICS:
-# considered 18706
+# considered 16330
 # GC content failed 161
 # low tm 3580
-# high tm 11241
+# high tm 9309
+# high any compl 2
+# high end compl 9
 # long poly-x seq 66
-# ok 3658
+#high 3' stability 301
+# ok 2902
 
 # PRIMER PAIR STATISTICS:
-# considered 188
-# unacceptable product size 169
-# high end compl 4
-# ok 15
+# considered 2652
+# unacceptable product size 2444
+# high any compl 2
+# high end compl 20
+# ok 186
 
 #                      Start  Len   Tm     GC%   Sequence
 
-   1 PRODUCT SIZE: 289
-     FORWARD PRIMER    1725   20  59.96  55.00  AGGGAAGGGATGCTAGGTGT
+   1 PRODUCT SIZE: 202
+     FORWARD PRIMER     801   20  59.72  60.00  CCCAGGAGCTACACACCTTC
 
-     REVERSE PRIMER    1994   20  59.99  55.00  AGAAGCACACCTCTCCCTGA
-
-
-   2 PRODUCT SIZE: 290
-     FORWARD PRIMER    1725   20  59.96  55.00  AGGGAAGGGATGCTAGGTGT
-
-     REVERSE PRIMER    1995   20  59.99  60.00  GAGAAGCACACCTCTCCCTG
+     REVERSE PRIMER     983   20  59.81  55.00  GGAGCACGACTTGATCTTCC
 
 
-   3 PRODUCT SIZE: 288
-     FORWARD PRIMER    1725   20  59.96  55.00  AGGGAAGGGATGCTAGGTGT
+   2 PRODUCT SIZE: 203
+     FORWARD PRIMER    1810   20  59.43  55.00  GAAGAAGACAGGTCGGGCTA
 
      REVERSE PRIMER    1993   20  59.99  60.00  GAAGCACACCTCTCCCTGAG
 
 
-   4 PRODUCT SIZE: 286
-     FORWARD PRIMER    1728   20  60.07  55.00  GAAGGGATGCTAGGTGTGGA
+   3 PRODUCT SIZE: 204
+     FORWARD PRIMER    1810   20  59.43  55.00  GAAGAAGACAGGTCGGGCTA
 
      REVERSE PRIMER    1994   20  59.99  55.00  AGAAGCACACCTCTCCCTGA
 
 
-   5 PRODUCT SIZE: 284
-     FORWARD PRIMER    1731   20  60.07  55.00  GGGATGCTAGGTGTGGAAGA
+   4 PRODUCT SIZE: 196
+     FORWARD PRIMER    1266   20  59.43  60.00  GGGAGACTGAGCCAGAGTGT
 
-     REVERSE PRIMER    1995   20  59.99  60.00  GAGAAGCACACCTCTCCCTG
+     REVERSE PRIMER    1442   20  60.06  50.00  GCGCCCAATAGGTAATGAGA
 
 
-     _________________________________________________________________
+   5 PRODUCT SIZE: 205
+     FORWARD PRIMER     801   20  59.72  60.00  CCCAGGAGCTACACACCTTC
+
+     REVERSE PRIMER     986   20  60.41  55.00  CCAGGAGCACGACTTGATCT
    
+
+
    If the '-explain' flag has been used, as in the example, then
    statistics are output describing the number of primers that were
    considered and rejected for various reasons.
@@ -1034,8 +1088,8 @@ Output file format
    Note that if you compare the results to the output from the public
    Primer3 web site you will see a difference in the reverse primer
    positions - this is because the original Primer3 program reports the
-   reverse primer positions as couted from the 3' end. The convention in
-   EMBOSS is to report both forward and reverse featyres as counted from
+   reverse primer positions as counted from the 3' end. The convention in
+   EMBOSS is to report both forward and reverse features as counted from
    the 5' end, so the reverse primer positions are given counted from the
    5' start of the sequence.
    
