@@ -223,8 +223,8 @@ public class ParseAcd
                svalue = svalue.toLowerCase();
 
              appF.setParam(numofParams, attr, svalue);
-             System.out.println(" ATTR " + attr + " SVALUE " + 
-                            getParamValueStr(numofFields,numofParams));
+//           System.out.println(" ATTR " + attr + " SVALUE " + 
+//                          getParamValueStr(numofFields,numofParams));
           }   
           else if ( ttype == java.io.StreamTokenizer.TT_NUMBER) 
           {
