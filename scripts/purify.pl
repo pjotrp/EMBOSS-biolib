@@ -70,7 +70,7 @@ sub runtest ($) {
 	  "revseq" => "revseq tembl:hsfau -auto",
 	  "restrict" => "restrict tembl:hsfau -auto",
 	  "restover" => "restover tembl:hsfau -seqcomp acgt -auto",
-	  "remap"    => "remap -auto",
+	  "remap"    => "remap -notran -sbeg 1 -send 60 tembl:eclac -enzymes 'taqi,bsu6i,acii,bsski' -auto",
 	  "recoder" => "recoder tembl:hsfau -sbeg 31 -send 50 -auto",
 	  "prophecy" => "prophecy $ENV{EPURE}/../test/data/globins.msf -type g -auto",
 	  "prophet" => "prophet tsw:100k_rat $ENV{EPURE}/../test/data/prophecy.gribskov -auto",
