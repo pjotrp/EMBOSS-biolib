@@ -122,6 +122,8 @@ AjPFeattabIn  ajFeattabInNew (void);
 AjPFeattabIn  ajFeattabInNewSS (AjPStr fmt, AjPStr name, char* type);
 AjPFeattabIn  ajFeattabInNewSSF (AjPStr fmt, AjPStr name, char* type,
 				 AjPFileBuff buff);
+AjBool        ajFeattabInSetType(AjPFeattabIn thys, AjPStr type);
+AjBool        ajFeattabInSetTypeC(AjPFeattabIn thys, char* type);
 void          ajFeattabOutDel (AjPFeattabOut* pthis);
 AjPFile       ajFeattabOutFile (AjPFeattabOut thys);
 AjPStr        ajFeattabOutFilename (AjPFeattabOut thys);
@@ -133,6 +135,8 @@ AjPFeattabOut ajFeattabOutNewSSF (AjPStr fmt, AjPStr name, char* type,
 AjBool        ajFeattabOutOpen (AjPFeattabOut thys, AjPStr ufo);
 AjBool        ajFeattabOutSet (AjPFeattabOut thys, AjPStr ufo);
 void          ajFeattabOutSetBasename (AjPFeattabOut thys, AjPStr basename);
+AjBool        ajFeattabOutSetType(AjPFeattabOut thys, AjPStr type);
+AjBool        ajFeattabOutSetTypeC(AjPFeattabOut thys, char* type);
 AjPFeattable  ajFeattabRead (AjPFeattabIn ftin) ;
 AjBool        ajFeatTagAdd (AjPFeature thys, AjPStr tag, AjPStr value);
 AjBool        ajFeatTagAddC (AjPFeature thys, const char* tag, AjPStr value);

@@ -471,6 +471,60 @@ static AjPRegexp SwRegexNext          = NULL;
 
 static AjPRegexp DummyRegExec     = NULL;
 
+/* @datastatic FeatPTypeIn ****************************************************
+**
+** feature input types
+**
+** @alias FeatSTypeIn
+** @alias FeatOTypeIn
+**
+** @attr Name [char*] Specified name
+** @attr Value [char*] Internal type "P" or "N"
+** @@
+******************************************************************************/
+
+typedef struct FeatSTypeIn
+{
+    char* Name;
+    char* Value;
+} FeatOTypeIn, *FeatPTypeIn;
+
+static FeatOTypeIn featInTypes[] =
+{
+    {"P", "P"},
+    {"protein", "P"},
+    {"N", "N"},
+    {"nucleotide", "N"},
+    {NULL, NULL}
+};
+
+/* @datastatic FeatPTypeOut ***************************************************
+**
+** Feature output types
+**
+** @alias FeatSTypeOut
+** @alias FeatOTypeOut
+**
+** @attr Name [char*] Specified name
+** @attr Value [char*] Internal type "P" or "N"
+** @@
+******************************************************************************/
+
+typedef struct FeatSTypeOut
+{
+    char* Name;
+    char* Value;
+} FeatOTypeOut, *FeatPTypeOut;
+
+static FeatOTypeOut featOutTypes[] =
+{
+    {"P", "P"},
+    {"protein", "P"},
+    {"N", "N"},
+    {"nucleotide", "N"},
+    {NULL, NULL}
+};
+
 /* ==================================================================== */
 /* ======================== private methods ========================= */
 /* ==================================================================== */
@@ -780,17 +834,7 @@ AjPFeattabOut ajFeattabOutNewSSF (AjPStr fmt, AjPStr name, char* type,
     pthis = ajFeattabOutNew ();
     ajStrAssC (&pthis->Formatstr, featOutFormat[iformat].Name);
     pthis->Format = iformat;
-    switch (*type)
-    {
-    case 'p':
-    case 'P':
-	ajStrAssC (&pthis->Type, "P");
-	break;
-    default:
-	ajStrAssC (&pthis->Type, "N");
-	break;
-    }
-
+    ajFeattabOutSetTypeC(pthis, type);
     ajStrAssS (&pthis->Seqname, name);
     pthis->Handle = file;
     pthis->Local = ajTrue;
@@ -2228,7 +2272,7 @@ static AjBool featReadPir (AjPFeattable thys, AjPFileBuff file)
 
 	(void) ajStrChomp(&line) ;
 
-	ajDebug ("++ line '%S'\n", line);
+	/* ajDebug ("++ line '%S'\n", line); */
 
 	if(ajStrPrefixC (line, "F;"))
 	{
@@ -2383,7 +2427,7 @@ static AjBool featReadSwiss  (AjPFeattable thys, AjPFileBuff file)
 
 	(void) ajStrChomp(&line) ;
 
-	ajDebug ("++ line '%S'\n", line);
+	/* ajDebug ("++ line '%S'\n", line); */
 
 	if(ajStrPrefixC (line, "FT   "))
 	{
@@ -2691,8 +2735,9 @@ static AjPFeature featSwissFromLine ( AjPFeattable thys,
     
     if (newft || !origline)		/* process the last feature */
     {
-	ajDebug ("++ feat+from+to '%S' '%S' '%S'\n+ saveline '%S'\n",
-		 *savefeat, *savefrom, *saveto, *saveline);
+	/* ajDebug ("++ feat+from+to '%S' '%S' '%S'\n+ saveline '%S'\n",
+		 *savefeat, *savefrom, *saveto, *saveline); */
+
 	if (ajStrLen(*savefrom))      /* finish the current feature */
 	{
 	    gf = featSwissProcess (thys, *savefeat, *savefrom, *saveto,
@@ -2910,6 +2955,7 @@ static AjPFeature featEmblFromLine ( AjPFeattable thys,
     {
 	/* ajDebug ("++ saveloc '%S'\n+ saveline '%S'\n",
 	 *saveloc, *saveline); */
+
 	if (ajStrLen(*saveloc))
 	{
 	    gf = featEmblProcess (thys, *savefeat, source, saveloc, saveline);
@@ -5635,6 +5681,94 @@ AjBool ajFeatSetDesc (AjPFeature thys, AjPStr desc)
     ajFeatTagSetC (thys, "note", desc);
 
     return ajTrue;
+}
+
+/* @func ajFeattabInSetType **************************************************
+**
+** Sets the type for feature input
+**
+** @param [r] thys [AjPFeattabIn] Feature input object
+** @param [r] type [AjPStr] Feature type "nucleotide" "protein"
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+AjBool ajFeattabInSetType(AjPFeattabIn thys, AjPStr type)
+{
+    return ajFeattabInSetTypeC(thys, ajStrStr(type));
+}
+
+/* @func ajFeattabInSetTypeC **************************************************
+**
+** Sets the type for feature input
+**
+** @param [r] thys [AjPFeattabIn] Feature input object
+** @param [r] type [char*] Feature type "nucleotide" "protein"
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+AjBool ajFeattabInSetTypeC(AjPFeattabIn thys, char* type)
+{
+    ajint i = 0;
+
+    if (!*type)
+	return ajTrue;
+
+    while (featInTypes[i].Name)
+    {
+	if (ajStrMatchCaseCC(featInTypes[i].Name, type))
+	{
+	    ajStrAssC (&thys->Type, featInTypes[i].Value);
+	    return ajTrue;
+	}
+    }
+    ajErr("Unrecognized feature input type '%s'", type);
+    return ajFalse;
+}
+
+/* @func ajFeattabOutSetType **************************************************
+**
+** Sets the type for feature output
+**
+** @param [r] thys [AjPFeattabOut] Feature output object
+** @param [r] type [AjPStr] Feature type "nucleotide" "protein"
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+AjBool ajFeattabOutSetType(AjPFeattabOut thys, AjPStr type)
+{
+    return ajFeattabOutSetTypeC(thys, ajStrStr(type));
+}
+
+/* @func ajFeattabOutSetTypeC *************************************************
+**
+** Sets the type for feature output
+**
+** @param [r] thys [AjPFeattabOut] Feature output object
+** @param [r] type [char*] Feature type "nucleotide" "protein"
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+AjBool ajFeattabOutSetTypeC(AjPFeattabOut thys, char* type)
+{
+    ajint i = 0;
+
+    if (!*type)
+	return ajTrue;
+
+    while (featOutTypes[i].Name)
+    {
+	if (ajStrMatchCaseCC(featOutTypes[i].Name, type))
+	{
+	    ajStrAssC (&thys->Type, featOutTypes[i].Value);
+	    return ajTrue;
+	}
+    }
+    ajErr("Unrecognized feature output type '%s'", type);
+    return ajFalse;
 }
 
 /* @func ajFeatTagSetC ********************************************************
