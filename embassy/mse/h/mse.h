@@ -3,7 +3,7 @@
 **
 **  MSE, Multiple Sequence Editor
 **
-**  William Gilbert, Copyright (c) Whitehead Insitute
+**  William Gilbert, Copyright (c) Whitehead Institute
 **
 ******************************************************************************/
 #include "boolean.h"
