@@ -309,10 +309,10 @@ int main(int argc, char **argv)
 
     /* set up the pdbtosp object list */
     if(getswiss)
-	list = embPdbtospReadAllNew(pdbtosp_inf);
+	list = ajPdbtospReadAllNew(pdbtosp_inf);
    
     /* Start of main application loop */
-    while((scop=(embScopReadCNew(scop_inf, "*"))))
+    while((scop=(ajScopReadCNew(scop_inf, "*"))))
     {
 	ajStrAssS(&dpdb_name,scop->Entry);
 	ajStrToLower(&dpdb_name);
@@ -332,7 +332,7 @@ int main(int argc, char **argv)
 	}
 	
 	/*Read the coordinate file for the domain*/
-	if((!(pdb=embPdbReadNew(dpdb_inf))))
+	if((!(pdb=ajPdbReadNew(dpdb_inf))))
 	{
 	    ajFmtPrintF(errf, "%-15s\n", "FILE_READ");  
 	    ajFmtPrintS(&msg, "Error reading dpdb file %S", dpdb_name);
@@ -358,7 +358,7 @@ int main(int argc, char **argv)
 	/* if we do not need the swissprot sequence */
 	if(!getswiss)
 	{
-	    embScopWrite(scop_outf,scop); 
+	    ajScopWrite(scop_outf,scop); 
 	    ajFileClose(&dpdb_inf);  
 	    ajSeqDel(&pdb_seq);
 	    ajPdbDel(&pdb);
@@ -373,7 +373,7 @@ int main(int argc, char **argv)
 	{
 	    ajWarn("Will not retrieve swissprot sequence for segmented domain %S\n",dpdb_name);
 	    ajFmtPrintF(errf, "%-15s\n", "SEGMENTED_DOMAIN_NO_SP_SEQ");  
-	    embScopWrite(scop_outf,scop);
+	    ajScopWrite(scop_outf,scop);
 	    ajFileClose(&dpdb_inf);
 	    ajScopDel(&scop);
 	    ajPdbDel(&pdb);
@@ -388,7 +388,7 @@ int main(int argc, char **argv)
 	    /*JISON added tidy up and log file code*/
 	    ajWarn("No accession number found for domain %S\n",dpdb_name);
 	    ajFmtPrintF(errf, "%-15s\n", "NO_ACCESSION_NUMBER");  
-	    embScopWrite(scop_outf,scop);
+	    ajScopWrite(scop_outf,scop);
 	    ajFileClose(&dpdb_inf);
 	    ajScopDel(&scop);
 	    ajPdbDel(&pdb);
@@ -409,7 +409,7 @@ int main(int argc, char **argv)
 	if(!(ajSeqGetFromUsa(db,ajTrue,&sp_seq)))
         {
             ajFmtPrintF(errf, "%-15s\n", "ENTRY_NOT_FOUND_IN_SW");
-            embScopWrite(scop_outf,scop);
+            ajScopWrite(scop_outf,scop);
 	    ajFileClose(&dpdb_inf);
 	    ajScopDel(&scop);
 	    ajPdbDel(&pdb);
@@ -455,7 +455,7 @@ int main(int argc, char **argv)
 	ajStrAssS(&scop->SeqSpr,sp_dom_seq);
 
 	/*write out the scop structure */
-	embScopWrite(scop_outf,scop);
+	ajScopWrite(scop_outf,scop);
 
 	/* clean up */
 	start = 0;

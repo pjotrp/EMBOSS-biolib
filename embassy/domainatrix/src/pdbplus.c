@@ -280,8 +280,8 @@ int main(ajint argc, char **argv)
 	fflush(stdout);
 
         /* Parse protein coordinate data (from clean format file) into 
-	   AjPPdb object.  embPdbRead will create the AjPPdb object. */
-      if(!(pdb_old=embPdbReadNew(cpdb_inf)))
+	   AjPPdb object.  ajPdbRead will create the AjPPdb object. */
+      if(!(pdb_old=ajPdbReadNew(cpdb_inf)))
         {
 	    ajWarn("ERROR Clean coordinate file read" 
 		   "error: %S\n//\n", tempstr);
@@ -612,7 +612,7 @@ int main(ajint argc, char **argv)
         cpdb_outf = ajFileNewOut(out_name);
         
         /* Write AjPPdb object to the output file in clean format. */
-        if(!embPdbWriteAll(cpdb_outf, pdb))
+        if(!ajPdbWriteAll(cpdb_outf, pdb))
         {               
 	    ajWarn("%s%S\n//\n","Could not write results file: ", 
                         out_name);  
@@ -1181,7 +1181,7 @@ AjBool pdbplus_CpdbReadOldTwo(AjPFile inf, AjPPdb *thys)
 		else if(atom->Type == 'W')
 		    ajListPushApp((*thys)->Water,(void *)atom);
 		else
-		    ajFatal("Unexpected parse error in embPdbRead. "
+		    ajFatal("Unexpected parse error in ajPdbRead. "
 			    "Email jison@hgmp.mrc.ac.uk");
 	    }
 	    else

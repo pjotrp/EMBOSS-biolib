@@ -527,7 +527,7 @@ int main(int argc, char **argv)
 
 
     /* Start of main application loop*/
-    while((scop=(embScopReadCNew(scopf, "*"))))
+    while((scop=(ajScopReadCNew(scopf, "*"))))
     {
 	/* A new family */
 /*	if(ajStrMatch(last_fam, scop->Family)==ajFalse)  */

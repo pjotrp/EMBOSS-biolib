@@ -579,7 +579,7 @@ int main(int argc, char **argv)
 
   
     /* create the scop list */
-    while((entry = (embScopReadCNew(scopf, "*"))))
+    while((entry = (ajScopReadCNew(scopf, "*"))))
 	ajListPushApp(scoplist,(AjPScop)entry); 
     ajFileClose(&scopf);
   

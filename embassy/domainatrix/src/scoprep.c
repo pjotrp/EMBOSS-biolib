@@ -307,7 +307,7 @@ int main(int argc, char **argv)
     
 
     /* Start of main application loop*/
-    while((scop=(embScopReadCNew(scopin, "*"))))
+    while((scop=(ajScopReadCNew(scopin, "*"))))
     {
 	/* A new family */
 	if( last_famid !=  scop->Sunid_Family)
@@ -432,13 +432,13 @@ int main(int argc, char **argv)
 			    ignore = x;
 			}
 		    }
-		    embScopWrite(scopout, arr[ignore]);
+		    ajScopWrite(scopout, arr[ignore]);
 		    for(x=0;x<famsize;x++)
 		    {
 			if(x==ignore)
 			    continue;
 			else
-			    embScopWrite(scopout, arr[x]);
+			    ajScopWrite(scopout, arr[x]);
 		    }
 
 
@@ -462,7 +462,7 @@ int main(int argc, char **argv)
 		{
 		    while(ajListPop(famlist,(void**)&tmp))
 		    {
-			embScopWrite(scopout, tmp);
+			ajScopWrite(scopout, tmp);
 			ajScopDel(&tmp);
 		    }
 		    ajListDel(&famlist);
@@ -603,13 +603,13 @@ int main(int argc, char **argv)
 		ignore = x;
 	    }
 	}
-	embScopWrite(scopout, arr[ignore]);
+	ajScopWrite(scopout, arr[ignore]);
 	for(x=0;x<famsize;x++)
 	{
 	    if(x==ignore)
 		continue;
 	    else
-		embScopWrite(scopout, arr[x]);
+		ajScopWrite(scopout, arr[x]);
 	}
 	
 	
@@ -633,7 +633,7 @@ int main(int argc, char **argv)
     {
 	while(ajListPop(famlist,(void**)&tmp))
 	{
-	    embScopWrite(scopout, tmp);
+	    ajScopWrite(scopout, tmp);
 	    ajScopDel(&tmp);
 	}
 	ajListDel(&famlist);

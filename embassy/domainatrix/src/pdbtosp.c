@@ -220,8 +220,8 @@ int main(int argc, char **argv)
     outf  =  ajAcdGetOutfile("outfile");
 
 
-    list = embPdbtospReadAllRawNew(inf1);
-    embPdbtospWrite(outf, list);
+    list = ajPdbtospReadAllRawNew(inf1);
+    ajPdbtospWrite(outf, list);
         
 
     /* Clean up */

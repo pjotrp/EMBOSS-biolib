@@ -893,7 +893,7 @@ int main(ajint argc, char **argv)
                     id=ajStrChar(alg->Codes[x], 5);
                     if(id=='_') id='.';
                     
-                    cmaps[x] = embCmapReadCNew(fptr_con, id, 1);
+                    cmaps[x] = ajCmapReadCNew(fptr_con, id, 1);
 		    
 
 		    /*DIAGNOSTICS
@@ -905,7 +905,7 @@ int main(ajint argc, char **argv)
                 {
                     /*Not sure of a chain identifier so read the first chain*/
                     ajWarn("Uncertain of chain identifier so reading first chain");
-                    cmaps[x] = embCmapReadINew(fptr_con, 1,1);
+                    cmaps[x] = ajCmapReadINew(fptr_con, 1,1);
                 }
                 
                 
@@ -933,7 +933,7 @@ int main(ajint argc, char **argv)
                 }   
 
                 /* Read coordinate data file */ 
-                pdb = embPdbReadNew(fptr_cpdb);
+                pdb = ajPdbReadNew(fptr_cpdb);
                 
                 /* Determine the chain number */
                 if(idok)

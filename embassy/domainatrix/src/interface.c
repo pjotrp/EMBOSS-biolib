@@ -312,12 +312,12 @@ int main(ajint argc, char **argv)
 	  if(!vdwf)
 	  ajFatal("Cannot open %S",vdwfstr); */
 
-    if(!(vdw=embVdwallReadNew(vdwf)))
+    if(!(vdw=ajVdwallReadNew(vdwf)))
 	ajFatal("Error reading vdw radii file\n");
 
 
     /* Read pdb structure */
-    if(!(pdb=embPdbReadNew(cpdb_inf)))
+    if(!(pdb=ajPdbReadNew(cpdb_inf)))
     {
 	ajFmtPrintS(&msg, "ERROR file read error");
 	ajWarn(ajStrStr(msg));

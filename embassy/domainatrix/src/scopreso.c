@@ -270,7 +270,7 @@ int main(ajint argc, char **argv)
 
 
         /* Read coordinate data file */ 
-	pdb = embPdbReadNew(fptr_cpdb);
+	pdb = ajPdbReadNew(fptr_cpdb);
         
 
         /* Check if resolution is above threshold */
@@ -298,12 +298,12 @@ int main(ajint argc, char **argv)
     
     /* Read Escop.dat and compare IDs to those in list          */
     /* if not present then write scop structure data to output  */
-    while((scop=(embScopReadCNew(scopinf, "*"))))
+    while((scop=(ajScopReadCNew(scopinf, "*"))))
     {
 	/* SCOP id not found in the list of domains with resolution 
 	   above the threshold, so include it in the output file */
 	if((StrBinSearchScop(scop->Entry, entryarr, num))==-1)
-	    embScopWrite(scopoutf, scop);
+	    ajScopWrite(scopoutf, scop);
 
         /* Delete scop structure */
         ajScopDel(&scop);

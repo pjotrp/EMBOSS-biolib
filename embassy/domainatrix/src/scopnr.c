@@ -302,7 +302,7 @@ int main(int argc, char **argv)
 
     
     /* Start of main application loop */
-    while((scop=(embScopReadCNew(scop_inf, "*"))))
+    while((scop=(ajScopReadCNew(scop_inf, "*"))))
     {
 	/* If we are on to a new family*/
 /*	if(ajStrMatch(last_fam, scop->Family)==ajFalse) */
@@ -347,7 +347,7 @@ int main(int argc, char **argv)
 			(scop_tmp=(AjPScop)ajListIterNext(iter));
 			x++)
 			if(ajIntGet(keep,x))
-			    embScopWrite(scop_outf, scop_tmp);
+			    ajScopWrite(scop_outf, scop_tmp);
 		    ajListIterFree(iter);	
 
 
@@ -474,7 +474,7 @@ int main(int argc, char **argv)
 	    (scop_tmp=(AjPScop)ajListIterNext(iter));
 	    x++)
 	    if(ajIntGet(keep,x))
-		embScopWrite(scop_outf, scop_tmp);
+		ajScopWrite(scop_outf, scop_tmp);
 	ajListIterFree(iter);	
     
 

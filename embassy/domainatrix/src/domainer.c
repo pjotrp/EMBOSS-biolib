@@ -109,7 +109,7 @@ int main(int argc, char **argv)
 
 
     /*Start of main application loop*/
-    while((scop = (embScopReadCNew(scop_inf, "*"))))
+    while((scop = (ajScopReadCNew(scop_inf, "*"))))
     {
 	/* Write diagnostic */
 	ajFmtPrint("%S\n", scop->Entry);   
@@ -135,7 +135,7 @@ int main(int argc, char **argv)
 	
 	
 	/* Write pdb structure */
-	if(!(pdb=embPdbReadNew(cpdb_inf)))
+	if(!(pdb=ajPdbReadNew(cpdb_inf)))
 	{
 	    ajFmtPrintS(&msg, "Error reading cpdb file %S", cpdb_name);
 	    ajWarn(ajStrStr(msg));
@@ -192,7 +192,7 @@ int main(int argc, char **argv)
 	
 	
 	/* Write domain coordinate file in pdb format */
-	if(!embPdbWriteDomainRaw(moden, pdb, scop, pdbscop_outf, errf1))
+	if(!ajPdbWriteDomainRaw(moden, pdb, scop, pdbscop_outf, errf1))
 	{
 	    ajFmtPrintS(&msg, "Error writing pdbscop file %S", pdbscop_name);
 	    ajWarn(ajStrStr(msg));
@@ -206,7 +206,7 @@ int main(int argc, char **argv)
 
 
 	/* Write domain coordinate file in embl-like format */
-	if(!embPdbWriteDomain(cpdbscop_outf, pdb, scop, errf2))
+	if(!ajPdbWriteDomain(cpdbscop_outf, pdb, scop, errf2))
 	{
 	    ajFmtPrintS(&msg, "Error writing cpdbscop file %S", 
 			cpdbscop_name);

@@ -74,10 +74,10 @@ int main(int argc, char **argv)
 
 
     /* Main body of code */
-    list = embScopReadAllRawNew(inf1, inf2, outputall);
+    list = ajScopReadAllRawNew(inf1, inf2, outputall);
     while(ajListPop(list, (void **) &tmp))
     {
-	embScopWrite(outf, tmp);
+	ajScopWrite(outf, tmp);
 	ajScopDel(&tmp);
     }
     

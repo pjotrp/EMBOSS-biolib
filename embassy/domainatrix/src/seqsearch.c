@@ -402,7 +402,7 @@ int main(int argc, char **argv)
     ajFileScan(align,temp,&list,ajFalse,ajFalse,NULL,NULL,ajFalse,NULL); 
     
     /* create a list of scop objects */
-    scoplist = embScopReadAllNew(escop);
+    scoplist = ajScopReadAllNew(escop);
     ajFileClose(&escop);
     
     /* need to sort the list before binary search otherwise does not work */

@@ -559,7 +559,7 @@ int main(int argc, char **argv)
 
     /* Create list of scop objects for entire Escop.dat */
     scop_list  = ajListNew();
-    while((tmp_scop = (embScopReadCNew(scop_inf,"*"))))
+    while((tmp_scop = (ajScopReadCNew(scop_inf,"*"))))
         ajListPushApp(scop_list,tmp_scop);
     
     /* Order the list of Scop objects by Domain Id and create an array */

@@ -239,7 +239,7 @@ int main(ajint argc, char **argv)
 	
 	
 	/* Parse pdb file and write pdb structure */
-	if(!(pdb=embPdbReadRawNew(pdb_inf, pdbid, min_chain_size, max_mismatch, 
+	if(!(pdb=ajPdbReadRawNew(pdb_inf, pdbid, min_chain_size, max_mismatch, 
 				 camask, camask1, atommask, logf)))
 	{	
 	    ajFmtPrintS(&msg, "Clean coordinate file not generated for %S", temp);
@@ -289,7 +289,7 @@ int main(ajint argc, char **argv)
 	
 	
 	/* Write pdb file */
-	if(!embPdbWriteAll(cpdb_outf, pdb))
+	if(!ajPdbWriteAll(cpdb_outf, pdb))
 	{
 	    ajFmtPrintS(&msg, "Could not write file %S", cpdb_name);
 	    ajWarn(ajStrStr(msg));
