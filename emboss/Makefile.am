@@ -24,7 +24,7 @@ testplot treetypedisplay
 bin_PROGRAMS = abiview acdc alignwrap antigenic \
 backtranseq banana biosed btwisted \
 cai chaos charge checktrans chips cirdna codcmp coderet \
-contacts coordenew compseq cons cpgplot cpgreport cusp cutgextract cutseq \
+contacts compseq cons cpgplot cpgreport cusp cutgextract cutseq \
 dan dbiblast dbifasta dbiflat dbigcg \
 degapseq descseq dichet diffseq digest distmat domainer \
 dotmatcher dotpath dottup dreg \
@@ -74,7 +74,6 @@ cirdna_SOURCES = cirdna.c
 codcmp_SOURCES = codcmp.c
 coderet_SOURCES = coderet.c
 complex_SOURCES = complex.c
-coordenew_SOURCES = coordenew.c
 compseq_SOURCES = compseq.c
 cons_SOURCES = cons.c
 contacts_SOURCES = contacts.c
