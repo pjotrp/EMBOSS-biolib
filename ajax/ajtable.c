@@ -545,7 +545,10 @@ void ** ajTableToarray(AjPTable table, void *end)
 
 void ajTableFree(AjPTable* table)
 {
-    assert(table && *table);
+    if (!table)
+	return;
+    if (!*table)
+	return;
 
     if((*table)->length > 0)
     {
@@ -878,7 +881,7 @@ void ajStrTablePrint(AjPTable table)
 
 /* @funcstatic tableStrPrint **************************************************
 **
-** Print function for entries in a a table with a string key.
+** Print function for entries in a table with a string key.
 **
 ** @param [r] key [const void*] Standard argument. Table key.
 ** @param [r] value [void**] Standard argument. Table item.
