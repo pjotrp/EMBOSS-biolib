@@ -114,7 +114,9 @@ int main(ajint argc, char **argv)
     
     ajint      min_chain_size=0; /* Minimum length of a SEQRES chain 
 				    for it to be parsed */
-    ajint      max_mismatch=0; /* Maximum number of permissible 
+    ajint      max_mismatch=0; /* Max. no. residues to trim when checking
+				  for missing C-terminal SEQRES residues. */
+    ajint      max_trim=0;   /* Maximum number of permissible 
 				  mismatches between the ATOM and 
 				  SEQRES sequences */
     ajint      pos          =0; /* Location of the file extension in 
@@ -148,6 +150,7 @@ int main(ajint argc, char **argv)
     logf         = ajAcdGetOutfile("errf");
     min_chain_size=ajAcdGetInt("chnsiz");
     max_mismatch  =ajAcdGetInt("maxmis");
+    max_trim      =ajAcdGetInt("maxtrim");
     ccfnaming   = ajAcdGetBool("ccfnaming");
     camask     = ajAcdGetBool("camask");
     camask1    = ajAcdGetBool("camaska");
@@ -197,7 +200,7 @@ int main(ajint argc, char **argv)
 
 	/* Parse pdb file and write pdb structure */
 	if(!(pdb=ajPdbReadRawNew(pdb_inf, pdbid, min_chain_size, max_mismatch, 
-				 camask, camask1, atommask, logf)))
+				 max_trim, camask, camask1, atommask, logf)))
 	{	
 	    ajFmtPrintS(&msg, "Clean coordinate file not generated for %S", temp);
 	    ajWarn(ajStrStr(msg));
