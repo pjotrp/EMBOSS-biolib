@@ -41,18 +41,30 @@ import java.awt.event.*;
 public class SetUpMenuBar
 {
 
+  /** sequence store list */
   public static SequenceList seqList;
+  /** local and remote file manager window */
   public static LocalAndRemoteFileTreeFrame localAndRemoteTree = null;
+  /** local and remote file manager menu item */
   private JMenuItem showLocalRemoteFile;
+  /** show saved results menu item */
   private JMenuItem fileMenuShowres;
+  /** server settings */
   private ServerSetup ss = null;
 
+  /**
+  *
+  * @param mysettings	jemboss properties
+  * @param f		frame
+  * @param cwd		current working directory
+  * @param withSoap	true if in client-server mode
+  *
+  */
   public SetUpMenuBar(final JembossParams mysettings, final JFrame f,
-                      final String envp[], final String cwd,
-                      final boolean withSoap)
+                      final String cwd, final boolean withSoap)
   {
 
-    // cursors to show when we're at work
+    // cursors to show when busy
     final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
     final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
@@ -171,27 +183,6 @@ public class SetUpMenuBar
     prefsMenu.add(serverSettings);
 
     
-//  JMenuItem showEnvironment = new JMenuItem("Show Environment");
-//  showEnvironment.addActionListener(new ActionListener()
-//  {
-//    public void actionPerformed(ActionEvent e) 
-//    {
-//      if(withSoap)
-//        JOptionPane.showMessageDialog(f,
-//         "Public Server: " + mysettings.getPublicSoapURL() +
-//         "\nPublic Server Name: " + mysettings.getPublicSoapService() +
-//         "\nPrivate Server: " + mysettings.getPrivateSoapURL() +
-//         "\nPrivate Server Name: " + mysettings.getPrivateSoapService());
-//      else
-//        JOptionPane.showMessageDialog(f, 
-//            envp[0] + "\n" + envp[1] + "\n" +
-//            envp[2] + "\n" + envp[3] + "\n");
-//    }
-//  });
-//  prefsMenu.add(showEnvironment);
-    menuPanel.add(prefsMenu);
-
-
     JMenu toolMenu = new JMenu("Tools");
     toolMenu.setMnemonic(KeyEvent.VK_T);
 
@@ -300,16 +291,34 @@ public class SetUpMenuBar
 
    }
 
+   /**
+   *
+   * Enable/disable file manager menu item
+   * @param b	true to enable file manager menu item
+   *
+   */
    public void setEnableFileManagers(boolean b)
    {
      showLocalRemoteFile.setEnabled(b);
    }
 
+   /**
+   *
+   * Enable/disable show results menu item
+   * @param b   true to enable show results menu item
+   *
+   */
    public void setEnableShowResults(boolean b)
    {
      fileMenuShowres.setEnabled(b);
    }
 
+   /**
+   *
+   *  Get local file manager 
+   *  @return 	local file manager
+   *
+   */
    public static DragTree getLocalDragTree()
    {
      if(localAndRemoteTree == null)
@@ -318,11 +327,13 @@ public class SetUpMenuBar
      return localAndRemoteTree.getLocalDragTree();
    }
 
-/**
-*
-*  Delete temporary files
-*
-*/
+  /**
+  *
+  *  Delete temporary files
+  *  @param cwd		current working directory
+  *  @param suffix	suffix of files to delete
+  *
+  */
   public void deleteTmp(File cwd, final String suffix) 
   {
 
@@ -341,11 +352,11 @@ public class SetUpMenuBar
     }
   }
 
-/**
-*
-* Save the sequence list for a future session.
-*
-*/
+  /**
+  *
+  * Save the sequence list for a future session.
+  *
+  */
   public static void saveSequenceList()
   {
     File fseq = new File(System.getProperty("user.home")

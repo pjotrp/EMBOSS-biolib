@@ -217,7 +217,7 @@ public class Jemboss implements ActionListener
 
     // setup the top menu bar
     SetUpMenuBar mainMenu = new SetUpMenuBar(
-                mysettings, f, envp, cwd, withSoap);
+                  mysettings,f,cwd,withSoap);
 
     // add to Jemboss main frame and locate it center left of screen
     f.getContentPane().add(pmain);
@@ -233,12 +233,12 @@ public class Jemboss implements ActionListener
   }
 
 
-/**
-*
-*  Action event to open the file manager
-*  @param ae		the action event generated
-*
-*/
+  /**
+  *
+  *  Action event to open the file manager
+  *  @param ae		the action event generated
+  *
+  */
   public void actionPerformed(ActionEvent ae)
   {
     if( p3.getComponentCount() > 0 )
@@ -258,13 +258,13 @@ public class Jemboss implements ActionListener
 
   }
 
-/**
-*
-*  Delete temporary files
-*  @param cwd 		current working directory (local)
-*  @param suffix 	suffix of the file to delete
-*
-*/
+  /**
+  *
+  *  Delete temporary files
+  *  @param cwd 		current working directory (local)
+  *  @param suffix 	suffix of the file to delete
+  *
+  */
   private void deleteTmp(File cwd, final String suffix) 
   {
 
@@ -284,11 +284,11 @@ public class Jemboss implements ActionListener
   }
 
 
-/**
-*
-* Extends WindowAdapter to close window 
-*
-*/
+  /**
+  *
+  * Extends WindowAdapter to close window 
+  *
+  */
   class winExit extends WindowAdapter
   {
      public void windowClosing(WindowEvent we)
@@ -303,11 +303,11 @@ public class Jemboss implements ActionListener
   }
 
 
-/**
-*
-* Launches Jemboss in standalone or client-server mode.
-*
-*/
+  /**
+  *
+  * Launches Jemboss in standalone or client-server mode.
+  *
+  */
   public static void main (String args[])
   {
     
@@ -328,7 +328,6 @@ public class Jemboss implements ActionListener
       withSoap = true;
 
     new Jemboss();
-
   }
 
 }
