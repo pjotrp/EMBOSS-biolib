@@ -9,9 +9,11 @@ $global_recsize = 0;
 %indexfiles = (
 	       "division.lkp" => "division.lkp",
 	       "division"     => "division.lkp",
+	       "div"          => "division.lkp",
 	       "lkp"          => "division.lkp",
 	       "entrynam.idx" => "entrynam.idx",
 	       "entrynam"     => "entrynam.idx",
+	       "ent"          => "entrynam.idx",
 	       "idx"          => "entrynam.idx",
 	       "acnum.hit"    => "acnum.hit",
 	       "hit"          => "acnum.hit",
@@ -162,7 +164,7 @@ sub record (*$) {
 sub divreport ($$) {
   my ($buff, $nrecord) = @_;
   my $namelen = $global_recsize - 2;
-  my $template = "vA$namelen";
+  my $template = "va$namelen";
   my ($num,$name) = unpack ($template, $buff);
   printf "%8d: number: %d   name '%s'\n", $nrecord, $num, $name;
   return;
