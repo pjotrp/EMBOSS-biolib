@@ -1,4 +1,3 @@
-
 /* @source sigplot application
 **
 ** Reads a signature hits file and validation file and generates gnuplot
@@ -37,10 +36,17 @@
 **  
 **  
 **  Input and Output
-**  sigplot reads a signature hits file that should contain the results of a
-**  search of a discriminator for a scop family against a sequence database.  
-**  sigplot also reads a scop validation file and generates gnuplot data files
-**  for graphs illustrating the diagnostic performance of the discriminator.  
+**  sigplot reads a directory containing signature hits files; each must contain
+**  the results of search of a discriminator for a scop family against a 
+**  sequence database.   sigplot also reads a scop validation file and generates
+**  gnuplot data files for graphs illustrating the diagnostic performance of the
+**  discriminator. 
+**  sigplot runs in one of two modes either (i) "do not merge mode" or (ii) 
+**  "merge mode". In "do not merge mode", ROC analysis is performed on each 
+**  signature hits file individually; a graph is generated containing a ROC plot
+**  for each signature hits file.  In "merge mode" the lists of hits in the 
+**  signature hits files are merged and ROC analysis is performed on the whole;
+**  a single plot on the graph is given.
 **  Optionally, sigplot will read a scop family alignment file (from which 
 **  the signature was derived) and a signature alignment file and write a file
 **  containing matrices of residue similarity data (see below). The names of
@@ -315,13 +321,13 @@ int main(int argc, char **argv)
     AjPStr     	outdir      = NULL;      /* Location of gnuplot data files for output      */
 
 
-    ajint	vali_TN     = 0;         /* ajint for storing validation information       */
-    ajint	vali_FN     = 0;         /* ajint for storing validation information       */
-    ajint	vali_true   = 0;         /* ajint for storing validation information       */
-    ajint	vali_r      = 0;         /* ajint for storing validation information       */
-    ajint	vali_nr     = 0;         /* ajint for storing validation information       */
-    ajint	redun       = 0;         /* ajint for storing no. of redundant hits        */
-    ajint	non_redun   = 0;         /* ajint for storing no. of non-redundant hits    */
+    ajint	vali_TN     = NULL;      /* ajint for storing validation information       */
+    ajint	vali_FN     = NULL;      /* ajint for storing validation information       */
+    ajint	vali_true   = NULL;      /* ajint for storing validation information       */
+    ajint	vali_r   = NULL;      /* ajint for storing validation information       */
+    ajint	vali_nr   = NULL;      /* ajint for storing validation information       */
+    ajint	redun       = NULL;      /* ajint for storing no. of redundant hits        */
+    ajint	non_redun   = NULL;      /* ajint for storing no. of non-redundant hits    */
     ajint	nseqs	    = 0;         /* No. of sequences                               */
     ajint	x	    = 0;         /* Counter                                        */
     ajint	list_num    = 0;         /* Number of nodes on list                        */
@@ -367,9 +373,24 @@ int main(int argc, char **argv)
     AjPStr	data2	    = NULL;
     AjPStr	mat	    = NULL;
     AjPStr	alg_temp    = NULL;
+    AjPStr *mode       = NULL;		/* Mode of operation from acd*/
 
     
     AjPList     list        = NULL;   /* Used to hold list of names of files in a directory */
+    AjPList     mrglist     = NULL;   /* Holds hits from the signature hits files */
+    AjPHitlist  tmphitlist  = NULL;   
+    AjPHitlist  outhitlist  = NULL;   
+    ajint z=0;
+    AjPStr      tmpname     =NULL;
+    AjPFile     tmpfile     =NULL;
+    AjPHit      tmphit      =NULL;
+    ajint       tmpvali_TN=0;
+    ajint       tmpvali_FN=0;
+    ajint       tmpvali_true=0;
+    ajint       tmpvali_r=0;
+    ajint       tmpvali_nr=0;
+    
+    
 
     ajNamInit("emboss");
     ajAcdInitP("sigplot", argc, argv, "DOMAINATRIX");
@@ -387,12 +408,13 @@ int main(int argc, char **argv)
     mat       = ajStrNew();
     temp      = ajStrNew();
     hitextn   = ajStrNew();
-    hitname   = ajStrNew();
+/*    hitname   = ajStrNew();*/
     aligndir  = ajStrNew();
     alignextn = ajStrNew();
     alg_temp  = ajStrNew();
 
     /* GET VALUES FROM ACD */
+    mode        = ajAcdGetList("mode");
     hitdir      = ajAcdGetString("hitdir");
     hitextn     = ajAcdGetString("hitextn");
     validatin   = ajAcdGetInfile("validatin");
@@ -458,10 +480,98 @@ int main(int argc, char **argv)
 	    ajFmtPrint("Alignment file read ok\n");
     }
 
+    
 
+    if(ajStrChar(*mode,0)=='2')
+    {
+	/* Create merged list and hitlist for holding merged results*/
+	mrglist = ajListNew();
+	outhitlist = ajXyzHitlistNew(0);
+	
+
+	/* Read each signature hits file in turn */
+	while(ajListPop(list,(void **)&hitname))
+	{
+	    /* Open hits file*/
+	    if((hitsin = ajFileNewIn(hitname)) == NULL)
+		ajFatal("Could not open for reading %S", hitname);
+	    
+	    /* Read hits file ... Get SCOP info.
+	                      ... push hits onto merged list */
+	    tmphitlist = ajXyzSignatureHitsRead(hitsin);
+	    for(z=0;z<tmphitlist->N;z++)
+		ajListPush(mrglist, tmphitlist->hits[z]);
+	    tmphitlist->N=0;
+	    ajXyzHitlistDel(&tmphitlist);
+
+	    /* Write Scopdata object */
+	    data = sigplot_ScopdataNew();
+	    ajStrAssS(&data->Class, tmphitlist->Class);
+	    ajStrAssS(&data->Fold, tmphitlist->Fold);
+	    ajStrAssS(&data->Superfamily, tmphitlist->Superfamily);
+	    ajStrAssS(&data->Family, tmphitlist->Family);
+	    data->Sunid = tmphitlist->Sunid_Family;
+	    
+	    /* Close hits file */
+	    ajFileClose(&hitsin);
+
+	    
+	    /* Call sigplot_ValidatRead to count number of hits for validation */
+	    sigplot_ValidatRead(validatin, &data, &tmpvali_TN, &tmpvali_FN, 
+				&tmpvali_true,&tmpvali_r, &tmpvali_nr);
+	    sigplot_ScopdataDel(&data);
+	    
+
+	    /* Ammend total number of hits for validation */
+	    vali_TN+=tmpvali_TN;
+	    vali_FN+=tmpvali_FN;
+	    vali_true+=tmpvali_true;
+	    vali_r+=tmpvali_r;
+	    vali_nr+=tmpvali_nr;
+	    
+
+	    /* Copy classification data to output hitlist, this will 
+	       contain the classification data of the last individual
+	       signature hits file read */
+	    ajStrAssS(&outhitlist->Class, tmphitlist->Class);
+	    ajStrAssS(&outhitlist->Fold, tmphitlist->Fold);
+	    ajStrAssS(&outhitlist->Superfamily, tmphitlist->Superfamily);
+	    ajStrAssS(&outhitlist->Family, tmphitlist->Family);
+	    outhitlist->Sunid_Family = tmphitlist->Sunid_Family;
+	    
+	    ajStrDel(&hitname);
+	}	
+
+	/* Sort merged list of hits and create Hitlist for printing merged signature hits file */
+	ajListSort(mrglist, ajXyzCompScore);
+	outhitlist->N=ajListToArray(mrglist, (void ***)&(outhitlist->hits));	
+	
+
+	/* Create temporary file */
+    tmpname = ajStrNew();
+    ajRandomSeed();
+    ajStrAssC(&tmpname, ajFileTempName(NULL));
+    
+    
+    /* Write & close temporary file and push its name onto list */
+    tmpfile = ajFileNewOut(tmpname);
+    ajXyzSignatureHitsWriteHitlist(tmpfile, outhitlist, roc_val);
+    
+
+    ajListPush(list, tmpname);
+    ajStrDel(&tmpname);
+    ajFileClose(&tmpfile);
+    
+    /* Free merged list */
+    while(ajListPop(mrglist, (void **)&tmphit))
+	ajXyzHitDel(&tmphit);
+    ajListDel(&mrglist);
+    }
+    
+    
 
     
-	
+
     /* Start of main application loop                     */   
     /* Pop hits files off list one at a time and generate */
     /* data files for each in turn 			  */
@@ -469,7 +579,7 @@ int main(int argc, char **argv)
     { 
 	ajFmtPrint("PROCESSING %S\n", hitname);
 
-        /* Open alignment file*/
+        /* Open hits file*/
         if((hitsin = ajFileNewIn(hitname)) == NULL)
             ajFmtPrint("Could not open for reading %S", hitname);
 
@@ -545,6 +655,7 @@ int main(int argc, char **argv)
 	    AJFREE(data);
 	    AJFREE(alg);
 	
+
 	    ajFileClose(&hitsin);
 	    ajFileClose(&datafile);
 	    ajFileClose(&ssdatafile);
@@ -588,8 +699,9 @@ int main(int argc, char **argv)
 	vali_nr = 0;
 	
 	/* Call sigplot_ValidatRead */
-	sigplot_ValidatRead(validatin, &data, &vali_TN, &vali_FN, 
-			    &vali_true,&vali_r, &vali_nr);
+	if(ajStrChar(*mode,0)=='1')
+	    sigplot_ValidatRead(validatin, &data, &vali_TN, &vali_FN, 
+				&vali_true,&vali_r, &vali_nr);
 	/*
 	printf("vali_TN   = %d\n", vali_TN);
 	printf("vali_FN   = %d\n", vali_FN);
@@ -774,9 +886,21 @@ int main(int argc, char **argv)
 	    ajSeqDel(&hit_seq);
 	}
 	
-    }    
+    }
+	
 
     /* Tidy up the rest */
+    if(ajStrChar(*mode,0)=='2')
+    {
+	/* Delete temporary file */
+	ajSysUnlink(&tmpname);
+    }
+    
+    
+	    
+
+
+
     for(x=0;x<data->num_hits;x++)
 	ajStrDel(&codes[x]);	
     AJFREE(codes);
