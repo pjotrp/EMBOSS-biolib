@@ -40,7 +40,7 @@ bool: translation  [
 
 bool: reverse  [
   default: "Y"
-  information: "Display cut sites and translation of reverse sense"
+  information: "Display translation of reverse sense"
 ]
 
 integer: orfminsize  [
@@ -63,13 +63,8 @@ range: highlight  [
   help: "Regions to colour if formatting for HTML. \ If this is left blank, then the sequence is left alone. \ A set of regions is specified by a set of pairs of positions. \ The positions are integers. \ They are followed by any valid HTML font colour. \ Examples of region specifications are: \ 24-45 blue 56-78 orange \ 1-100 green 120-156 red \ A file of ranges to colour (one range per line) can be specifed as '@filename'."
 ]
 
-bool: threeletter  [
-  default: "N"
-  information: "Display protein sequences in three-letter code"
-]
-
 bool: number  [
-  default: "N"
+  default: "Y"
   information: "Number the sequences"
 ]
 

@@ -55,7 +55,6 @@ int main(int argc, char **argv)
     ajint table;
     AjPRange uppercase;
     AjPRange highlight;
-    AjBool threeletter;
     AjBool numberseq;
     AjBool nameseq;
     ajint width;
@@ -69,7 +68,6 @@ int main(int argc, char **argv)
     AjPTrn trnTable;
     AjBool translation;
     AjBool reverse;
-    EmbPMatMatch mm=NULL;
 
 
 
@@ -80,7 +78,6 @@ int main(int argc, char **argv)
     tablelist = ajAcdGetList ("table");
     uppercase = ajAcdGetRange ("uppercase");
     highlight = ajAcdGetRange ("highlight");
-    threeletter = ajAcdGetBool ("threeletter");
     numberseq = ajAcdGetBool ("number");
     width = ajAcdGetInt ("width");
     length = ajAcdGetInt ("length");
@@ -141,8 +138,24 @@ int main(int argc, char **argv)
 	    (void) ajFmtPrintF(outfile, "<PRE>");
 
 	/* create the format to display */
-	(void) embShowAddBlank(ss);
-	(void) embShowAddSeq(ss, numberseq, threeletter, uppercase, highlight);
+
+	if (translation)
+	{
+	  if (reverse) 
+	    (void) embShowAddBlank(ss);
+	  (void) embShowAddBlank(ss);
+	  
+
+	    (void) embShowAddTran (ss, trnTable, 1, FALSE, numberseq,
+				   NULL, orfminsize);
+	    (void) embShowAddTran (ss, trnTable, 2, FALSE, numberseq,
+				   NULL, orfminsize);
+	    (void) embShowAddTran (ss, trnTable, 3, FALSE, numberseq,
+				   NULL, orfminsize);
+	}
+
+	/*	(void) embShowAddBlank(ss);*/
+	(void) embShowAddSeq(ss, numberseq, FALSE, uppercase, highlight);
 
 	if (!numberseq)
 	    (void) embShowAddTicknum(ss);
@@ -156,23 +169,12 @@ int main(int argc, char **argv)
 	if (translation)
 	{
 	    if (reverse)
-		(void) embShowAddBlank(ss);
-
-	    (void) embShowAddTran (ss, trnTable, 1, threeletter, numberseq,
-				   NULL, orfminsize);
-	    (void) embShowAddTran (ss, trnTable, 2, threeletter, numberseq,
-				   NULL, orfminsize);
-	    (void) embShowAddTran (ss, trnTable, 3, threeletter, numberseq,
-				   NULL, orfminsize);
-
-	    if (reverse)
 	    {
-		(void) embShowAddTicks(ss);
-		(void) embShowAddTran (ss, trnTable, -3, threeletter,
+		(void) embShowAddTran (ss, trnTable, -3, FALSE,
 				       numberseq, NULL, orfminsize);
-		(void) embShowAddTran (ss, trnTable, -2, threeletter,
+		(void) embShowAddTran (ss, trnTable, -2, FALSE,
 				       numberseq, NULL, orfminsize);
-		(void) embShowAddTran (ss, trnTable, -1, threeletter,
+		(void) embShowAddTran (ss, trnTable, -1, FALSE,
 				       numberseq, NULL, orfminsize);
 	    }
 	}
