@@ -2627,13 +2627,13 @@ ajint ajStrRFindC (const AjPStr thys, const char* text) {
 **
 ** @param [r] str1 [const void*] First string
 ** @param [r] str2 [const void*] Second string
-** @return [ajint] -1 if first string should sort before second, +1 if the
+** @return [int] -1 if first string should sort before second, +1 if the
 **         second string should sort first. 0 if they are identical
 **         in length and content.
 ** @@
 ******************************************************************************/
 
-ajint ajStrCmp (const void* str1, const void* str2) {
+int ajStrCmp (const void* str1, const void* str2) {
 
   return strcmp((*(AjPStr*)str1)->Ptr, (*(AjPStr*)str2)->Ptr);
 }
@@ -2645,13 +2645,13 @@ ajint ajStrCmp (const void* str1, const void* str2) {
 **
 ** @param [r] thys [const AjPStr] First string
 ** @param [r] anoth [const AjPStr] Second string
-** @return [ajint] -1 if first string should sort before second, +1 if the
+** @return [int] -1 if first string should sort before second, +1 if the
 **         second string should sort first. 0 if they are identical
 **         in length and content.
 ** @@
 ******************************************************************************/
 
-ajint ajStrCmpO (const AjPStr thys, const AjPStr anoth) {
+int ajStrCmpO (const AjPStr thys, const AjPStr anoth) {
 
   return strcmp(thys->Ptr, anoth->Ptr);
 }
@@ -2662,13 +2662,13 @@ ajint ajStrCmpO (const AjPStr thys, const AjPStr anoth) {
 **
 ** @param [r] thys [const AjPStr] String object
 ** @param [r] text [const char*] Text string
-** @return [ajint] -1 if first string should sort before second, +1 if the
+** @return [int] -1 if first string should sort before second, +1 if the
 **         second string should sort first. 0 if they are identical
 **         in length and content.
 ** @@
 ******************************************************************************/
 
-ajint ajStrCmpC (const AjPStr thys, const char* text) {
+int ajStrCmpC (const AjPStr thys, const char* text) {
 
   return strcmp(thys->Ptr, text);
 }
@@ -2680,13 +2680,13 @@ ajint ajStrCmpC (const AjPStr thys, const char* text) {
 ** @param [r] thys [const AjPStr] String object
 ** @param [r] anoth [const AjPStr] Second string object
 ** @param [r] n [ajint] Length to compare
-** @return [ajint] -1 if first string should sort before second, +1 if the
+** @return [int] -1 if first string should sort before second, +1 if the
 **         second string should sort first. 0 if they are identical
 **         in length and content.
 ** @@
 ******************************************************************************/
 
-ajint ajStrNCmpO (const AjPStr thys, const AjPStr anoth, ajint n) {
+int ajStrNCmpO (const AjPStr thys, const AjPStr anoth, ajint n) {
 
   return strncmp(thys->Ptr, anoth->Ptr, n);
 }
@@ -2698,13 +2698,13 @@ ajint ajStrNCmpO (const AjPStr thys, const AjPStr anoth, ajint n) {
 ** @param [r] thys [const AjPStr] String object
 ** @param [r] text [const char*] Text string
 ** @param [r] n [ajint] Length to compare
-** @return [ajint] -1 if first string should sort before second, +1 if the
+** @return [int] -1 if first string should sort before second, +1 if the
 **         second string should sort first. 0 if they are identical
 **         in length and content.
 ** @@
 ******************************************************************************/
 
-ajint ajStrNCmpC (const AjPStr thys, const char* text, ajint n) {
+int ajStrNCmpC (const AjPStr thys, const char* text, ajint n) {
 
   return strncmp(thys->Ptr, text, n);
 }
@@ -2717,13 +2717,13 @@ ajint ajStrNCmpC (const AjPStr thys, const char* text, ajint n) {
 ** @param [r] str1 [const char*] Text string
 ** @param [r] str2 [const char*] Text string
 ** @param [r] len  [ajint] length
-** @return [ajint] -1 if first string should sort before second, +1 if the
+** @return [int] -1 if first string should sort before second, +1 if the
 **         second string should sort first. 0 if they are identical
 **         in length and content.
 ** @@
 ******************************************************************************/
 
-ajint ajStrNCmpCaseCC (const char* str1, const char* str2, ajint len)
+int ajStrNCmpCaseCC (const char* str1, const char* str2, ajint len)
 {
 
     const char* cp;
@@ -2749,13 +2749,13 @@ ajint ajStrNCmpCaseCC (const char* str1, const char* str2, ajint len)
 **
 ** @param [r] str1 [const AjPStr] text string
 ** @param [r] str2 [const AjPStr] Text string
-** @return [ajint] -1 if first string should sort before second, +1 if the
+** @return [int] -1 if first string should sort before second, +1 if the
 **         second string should sort first. 0 if they are identical
 **         in length and content.
 ** @@
 ******************************************************************************/
 
-ajint ajStrCmpCase (const AjPStr str1, const AjPStr str2) {
+int ajStrCmpCase (const AjPStr str1, const AjPStr str2) {
 
   const char* cp;
   const char* cq;
@@ -2779,13 +2779,13 @@ ajint ajStrCmpCase (const AjPStr str1, const AjPStr str2) {
 **
 ** @param [r] str1 [const char*] Text string
 ** @param [r] str2 [const char*] Text string
-** @return [ajint] -1 if first string should sort before second, +1 if the
+** @return [int] -1 if first string should sort before second, +1 if the
 **         second string should sort first. 0 if they are identical
 **         in length and content.
 ** @@
 ******************************************************************************/
 
-ajint ajStrCmpCaseCC (const char* str1, const char* str2) {
+int ajStrCmpCaseCC (const char* str1, const char* str2) {
 
   const char* cp;
   const char* cq;

@@ -40,7 +40,7 @@ static ajint cmpatom(const void *x, const void *y) {
 	return x != y;
 }
 static ajuint hashatom(const void *key, ajuint hashsize) {
-	return ((ajulong)key>>2) % hashsize;
+	return ((unsigned long)key>>2) % hashsize;
 }
 
 static void tableStrPrint (const void* key, void** value, void* cl);
@@ -511,7 +511,7 @@ ajint ajStrTableCmpCaseC (const void* x, const void* y) {
   char* sx = (char*) x;
   char* sy = (char*) y;
 
-  return ajStrCmpCaseCC (sx, sy);
+  return (ajint)ajStrCmpCaseCC (sx, sy);
 }
 
 /* @func ajStrTableCmpCase **************************************************
@@ -530,7 +530,7 @@ ajint ajStrTableCmpCase (const void* x, const void* y) {
   AjPStr sx = (AjPStr) x;
   AjPStr sy = (AjPStr) y;
 
-  return ajStrCmpCase (sx, sy);
+  return (ajint)ajStrCmpCase (sx, sy);
 }
 
 /* @func ajStrTableCmpC ******************************************************
@@ -548,7 +548,7 @@ ajint ajStrTableCmpC (const void* x, const void* y) {
   char* sx = (char*) x;
   char* sy = (char*) y;
 
-  return strcmp (sx, sy);
+  return (ajint)strcmp (sx, sy);
 }
 
 /* @func ajStrTableCmp ******************************************************
@@ -566,7 +566,7 @@ ajint ajStrTableCmp (const void* x, const void* y) {
   AjPStr sx = (AjPStr) x;
   AjPStr sy = (AjPStr) y;
 
-  return ajStrCmpO (sx, sy);
+  return (ajint)ajStrCmpO (sx, sy);
 }
 
 /* @func ajStrTablePrint ******************************************************

@@ -1626,7 +1626,7 @@ static void listArrayTrace (void** array)
 ** @@
 ******************************************************************************/
 
-void ajListSort (AjPList thys, ajint (*compar) (const void*, const void*))
+void ajListSort (AjPList thys, int (*compar) (const void*, const void*))
 {
     void** array = NULL;
     ajint i = 0;
