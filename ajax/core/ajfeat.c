@@ -3765,7 +3765,7 @@ static AjBool featEmblLocNum(AjPStr loc, AjBool* bound, ajint* num)
 
     while (*cp)
     {
-	if(!isdigit(*cp))
+	if(!isdigit((ajint)*cp))
 	    return ajFalse;
 	*num = 10* (*num) + (*cp - '0');
 	cp++;
@@ -3819,7 +3819,7 @@ static AjBool featEmblLocRange(AjPStr loc, ajint* num1, ajint* num2)
 	    if(ipos != ajStrLen(loc)) return ajFalse;
 	    break;
 	default:
-	    if(!isdigit(*cp))
+	    if(!isdigit((ajint)*cp))
 		return ajFalse;
 	    if(dot)
 		*num2 = 10* (*num2) + (*cp - '0');
@@ -3868,7 +3868,7 @@ static AjBool featEmblTvTagVal(AjPStr* tags, AjPStr* name, AjPStr* value)
 
     cq = cp;
     i=0;
-    while(isalpha(*cp) || (*cp == '_'))
+    while(isalpha((ajint)*cp) || (*cp == '_'))
     {
 	i++;
 	cp++;

@@ -3547,7 +3547,7 @@ AjBool ajStrKeepAlphaC(AjPStr* s, const char* charset)
 
     while(*p)
     {
-	if(isalpha(*p))
+	if(isalpha((ajint)*p))
 	    *q++=*p;
 	else if(strchr(charset, *p))
 	    *q++=*p;
