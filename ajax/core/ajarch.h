@@ -15,7 +15,7 @@ extern "C"
 #define HAVE64
 #endif
 
-#if !defined(AJ_LinuxLF) && !defined(AJ_SolarisLF) && !defined(AJ_IRIXLF) && !defined(AJ_AIX64) && !defined(AJ_HPUX64) && !defined(AJ_MACOSXLF)
+#if !defined(AJ_LinuxLF) && !defined(AJ_SolarisLF) && !defined(AJ_IRIXLF) && !defined(AJ_AIXLF) && !defined(AJ_HPUXLF) && !defined(AJ_MACOSXLF)
 typedef int ajint;
 typedef long ajlong;
 typedef unsigned int ajuint;
@@ -60,7 +60,9 @@ typedef unsigned short ajushort;
 typedef unsigned long long ajulong;
 #define ftell(a) ftello(a)
 #define fseek(a,b,c) fseeko(a,b,c)
+#if !defined(AJ_HPUX64)
 #define fopen(a,b) (FILE*)fopen64(a,b)
+#endif
 #endif
 
 #ifdef AJ_IRIXLF
