@@ -271,7 +271,7 @@ int main(int argc, char **argv)
 	    ajStrAssC(&pro,"");
 	}
 	
-	if (ajFeatSize(tab))
+	if (ajFeattableSize(tab))
 	{
 	  (void) ajReportWrite(report, tab, seq);
 	  ajFeattableDel(&tab);

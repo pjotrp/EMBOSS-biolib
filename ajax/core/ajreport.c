@@ -1900,7 +1900,7 @@ void ajReportWrite (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
 
   ajDebug ("ajReportWrite %d '%s' %d\n",
 	   thys->Format, reportFormat[thys->Format].Name,
-	   ajFeatSize(ftable));
+	   ajFeattableSize(ftable));
 
   ajReportSetType (thys, ftable, seq);
 
@@ -2039,7 +2039,7 @@ void ajReportWriteHeader (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
     ajFmtPrintF (outf, "# Description: %S\n", ajSeqGetDesc(seq));
 
   ajFmtPrintF (outf, "# HitCount: %d\n",
-		 ajFeatSize(ftable));
+		 ajFeattableSize(ftable));
 
   if (ajStrLen(thys->Header)) {
     ajStrAssS (&tmpstr, thys->Header);
