@@ -620,18 +620,18 @@ FP 0 /Died: /
 FP /Error: File .*dupassoc.acd line 5: \(sbegin\) Associated qualifier 'sbegin' clashes with 'sbegin' in ACD file\n/
 //
 
-ID acd-dupassoc2
+ID acd-dupassocb
 AP acdc
 ER 1
 PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
-CL dupassoc2
+CL dupassocb
 FI stderr
 FZ > 0
 FP 0 /Warning: /
 FP 1 /Error: /
 FP 0 /Died: /
-FP /Error: File .*dupassoc2.acd line 5: \(mybool\) Associated qualifier 'sbegin' clashes with 'mybool'\/'sbegin' in ACD file\n/
+FP /Error: File .*dupassocb.acd line 5: \(mybool\) Associated qualifier 'sbegin' clashes with 'mybool'\/'sbegin' in ACD file\n/
 //
 
 ID acd-wrongattr
@@ -1099,7 +1099,7 @@ FZ > 0
 FP 1 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FP /^Warning: Alignment width \(-awidth=9\) too narrow, reset to 10\n/
+FP /Warning: Alignment width \(-awidth=9\) too narrow, reset to 10\n/
 FI outfile.testalignok
 FZ = 0
 //
@@ -3244,7 +3244,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI division.lkp
-FZ = 366
+FZ = 344
 FP /\A.{300}\001\000wormpep.clone.AB\000/
 FI entrynam.idx
 FZ = 1488
@@ -3568,7 +3568,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI division.lkp
-FZ = 378
+FZ = 366
 FP /\A.{300}\001\000new_seq\.dat\000/
 FI entrynam.idx
 FZ = 400
@@ -3597,7 +3597,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI division.lkp
-FZ = 378
+FZ = 366
 FP /\A.{300}\001\000new_seq\.dat\000/
 FI entrynam.idx
 FZ = 400
@@ -3650,7 +3650,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI division.lkp
-FZ = 378
+FZ = 366
 FP /\A.{300}\001\000new_seq\.dat\000/
 FI entrynam.idx
 FZ = 400
@@ -3818,7 +3818,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI division.lkp
-FZ = 570
+FZ = 520
 ## Pattern needs 's' modifier ... binary data includes a newline
 FP s /\A.{300}\001\000gbbct1.seq\000/
 FI entrynam.idx
@@ -7984,6 +7984,27 @@ FP /^Text1 x1 1121.670044 y1 1056.329956 colour 0 size 0.300000 No. Length  Line
 FP /^Text1 x1 1121.670044 y1 1023.659973 colour 0 size 0.300000   1    146     8    248 HBB_HUMAN\n/
 //
 
+ID polydot-feat
+AP polydot
+CL ../../data/globins.fasta -gtitle="Polydot of globins.fasta"
+CL -graph cps -dumpfeat
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FZ = 19
+FP /^Created polydot.ps\n/
+FI polydot.ps
+FP /^%%Title: PLplot Graph\n/
+FP /^%%Pages: 1\n/
+FI globins.gff
+FP /HBB_HUMAN\s+wordmatch\s+misc_feature\s+88\s+111\s+1.000\s+[+]\s+[.]\s+Sequence "HBB_HUMAN.1" ; note "HBB_HORSE"\n/
+//
+
 ID preg-ex
 AP preg
 IN tsw:*_rat
@@ -8190,8 +8211,8 @@ ID prophecy-ex2
 AP prophecy
 IN ../../data/globins.msf
 IN g
-IN globins
 IN
+IN globins
 IN
 IN
 IN
@@ -14655,12 +14676,33 @@ FC = 31
 #######################################
 
 ID ajtest-check
-## Hard to test ... could be anything
-## Only -help is 'guaranteed' to work
 AQ ajtest
-CL -help
+IN tembl:paamir
+IN ../../data/globins.msf
 FI stderr
-FC > 0
+FC = 4
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI kim1.out
+FZ = 3390
+FP /^ID   PAAMIR     standard; DNA; UNC; 2167 BP.\n/
+//
+
+ID ajtest-all-check
+AQ ajtest
+CL -nostdout -outfile
+CL -outseq outseq
+IN tembl:paamir
+IN ../../data/globins.msf
+FI stderr
+FC = 4
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI kim1.out
+FZ = 3390
+FP /^ID   PAAMIR     standard; DNA; UNC; 2167 BP.\n/
 //
 
 ID complex-check
@@ -14847,9 +14889,12 @@ AQ patmattest
 CC No documentation, no example
 IN tembl:paamir
 IN ACA
-FI stderr
-FC = 94
+IN
+FI stdout
+FC = 93
 FP /^ACA\n15 matches found\n/
+FI stderr
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
