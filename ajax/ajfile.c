@@ -2865,7 +2865,7 @@ AjBool ajFileBuffGetStore(AjPFileBuff thys, AjPStr* pdest,
     if(store && ret)
     {
 	ajDebug("ajFileBuffGetStore:\n%S", *pdest);
-	ajFmtPrintAppS(astr,"%S",*pdest);
+	ajStrApp(astr,*pdest);
     }
 
     return ret;
@@ -2903,7 +2903,7 @@ AjBool ajFileBuffGetStoreL(AjPFileBuff thys, AjPStr* pdest,
     if(store && ret)
     {
 	ajDebug("ajFileBuffGetStoreL:\n%S", *pdest);
-	ajFmtPrintAppS(astr,"%S",*pdest);
+	ajStrApp(astr,*pdest);
     }
 
     return ret;
@@ -3743,19 +3743,46 @@ void ajFileBuffClearStore(AjPFileBuff thys, ajint lines,
 ** first run down the buffer.
 **
 ** @param [r] thys [AjPFileBuff] Buffered file object.
-** @return [void]
+** @return [AjBool] ajTrue if the file was unbuffered before
 ** @@
 ******************************************************************************/
 
-void ajFileBuffNobuff(AjPFileBuff thys)
+AjBool ajFileBuffNobuff(AjPFileBuff thys)
 {
+    AjBool ret;
+
+    if(!thys)
+	return ajFalse;
+
+    ret = thys->Nobuff;
+    ajDebug("ajFileBuffNobuff %F buffsize: %d\n", thys->File, thys->Size);
+    thys->Nobuff = ajTrue;
+
+    return ret;
+}
+
+
+/* @func ajFileBuffIsbuff *****************************************************
+**
+** Sets file to be buffered.
+**
+** @param [r] thys [AjPFileBuff] Buffered file object.
+** @return [AjBool] ajTrue if the file was unbuffered before
+** @@
+******************************************************************************/
+
+AjBool ajFileBuffIsbuff(AjPFileBuff thys)
+{
+    AjBool ret;
+
     if(!thys)
 	return;
 
-    ajDebug("ajFileBuffNoBuff %F buffsize: %d\n", thys->File, thys->Size);
-    thys->Nobuff = ajTrue;
+    ret = thys->Nobuff;
+    ajDebug("ajFileBuffIsbuff %F buffsize: %d\n", thys->File, thys->Size);
+    thys->Nobuff = ajFalse;
 
-    return;
+    return ret;
 }
 
 
