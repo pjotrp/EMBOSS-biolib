@@ -9,8 +9,8 @@
 **  Journal of Molecular Biology 162:705-708
 **
 ** @author Copyright (C) 2003--2004 Damian Counsell
-** @version $Revision: 1.12 $
-** @modified $Date: 2004/06/23 13:17:59 $
+** @version $Revision: 1.13 $
+** @modified $Date: 2004/11/25 20:25:14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -42,8 +42,8 @@
 enum constant
     {
 	/* DDDDEBUG */
-	enumDebugLevel        =  0,
-	enumTraceArrayOffset  =  1
+	enumDebugLevel       = 0,
+	enumTraceArrayOffset = 1
     };
 
 /* ==================================================================== */
@@ -160,20 +160,20 @@ void embGotohCellDel(AjPGotohCell* pthis)
 
     if(!pthis)
 	return;
-
+    
     if(!*pthis)
 	return;
-
+    
     thys->ajIntRowPointer = 0;
     thys->ajIntColumnPointer = 0;
     thys->fSubScore = 0.0;
     thys->cDownResidue = '\0';
     thys->cAcrossResidue = '\0';
     thys->ajBoolIsIndel = AJFALSE;
-
+    
     AJFREE(thys);
     *pthis = NULL;
-
+    
     return;
 }
 
@@ -191,54 +191,54 @@ void embGotohCellDel(AjPGotohCell* pthis)
 ******************************************************************************/
 
 
-AjPGotohCell** const embGotohCellGetArray(ajint ajIntDownSeqLen,
-					  ajint ajIntAcrossSeqLen)
+AjPGotohCell** embGotohCellGetArray(ajint ajIntDownSeqLen,
+				    ajint ajIntAcrossSeqLen)
 {
-  ajint ajIntRow;
-  ajint ajIntColumn;
-
-  AjPGotohCell **ajpGotohCellGotohScores;
-
-  AJCNEW0(ajpGotohCellGotohScores,(ajIntDownSeqLen + enumTraceArrayOffset));
-
-  for(ajIntRow = 0;
-      ajIntRow < (ajIntDownSeqLen + enumTraceArrayOffset);
-      ajIntRow++)
+    ajint ajIntRow;
+    ajint ajIntColumn;
+    
+    AjPGotohCell **ajpGotohCellGotohScores;
+    
+    AJCNEW0(ajpGotohCellGotohScores,(ajIntDownSeqLen + enumTraceArrayOffset));
+    
+    for(ajIntRow = 0;
+	ajIntRow < (ajIntDownSeqLen + enumTraceArrayOffset);
+	ajIntRow++)
     {
-      AJCNEW0(ajpGotohCellGotohScores[ajIntRow],(ajIntAcrossSeqLen + enumTraceArrayOffset));
+	AJCNEW0(ajpGotohCellGotohScores[ajIntRow],(ajIntAcrossSeqLen + enumTraceArrayOffset));
     }
-
-  for(ajIntRow = 0;
-      ajIntRow < (ajIntDownSeqLen + enumTraceArrayOffset);
-      ajIntRow++)
+    
+    for(ajIntRow = 0;
+	ajIntRow < (ajIntDownSeqLen + enumTraceArrayOffset);
+	ajIntRow++)
     {
-      for(ajIntColumn = 0;
-	  ajIntColumn < (ajIntAcrossSeqLen + enumTraceArrayOffset);
-	  ajIntColumn++)
+	for(ajIntColumn = 0;
+	    ajIntColumn < (ajIntAcrossSeqLen + enumTraceArrayOffset);
+	    ajIntColumn++)
 	{
-	  AJNEW0(ajpGotohCellGotohScores[ajIntRow][ajIntColumn]);
+	    AJNEW0(ajpGotohCellGotohScores[ajIntRow][ajIntColumn]);
 	}
     }
-
-  /* set default values   */
-  for(ajIntRow = 0;
-      ajIntRow < (ajIntDownSeqLen + enumTraceArrayOffset);
-      ajIntRow++)
+    
+    /* set default values   */
+    for(ajIntRow = 0;
+	ajIntRow < (ajIntDownSeqLen + enumTraceArrayOffset);
+	ajIntRow++)
     {
-    for(ajIntColumn = 0;
-	ajIntColumn < (ajIntAcrossSeqLen + enumTraceArrayOffset);
-	ajIntColumn++)
-      {
-  	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore = 0.0;
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRowPointer = 0;
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntColumnPointer = 0;
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajBoolIsIndel = AJFALSE;
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cDownResidue = '$';
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cAcrossResidue = '#';
-      }
+	for(ajIntColumn = 0;
+	    ajIntColumn < (ajIntAcrossSeqLen + enumTraceArrayOffset);
+	    ajIntColumn++)
+	{
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore = 0.0;
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRowPointer = 0;
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntColumnPointer = 0;
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajBoolIsIndel = AJFALSE;
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cDownResidue = '$';
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cAcrossResidue = '#';
+	}
     }
-
-  return ajpGotohCellGotohScores;
+    
+    return ajpGotohCellGotohScores;
 }
 
 
@@ -257,9 +257,10 @@ AjPGotohCell** const embGotohCellGetArray(ajint ajIntDownSeqLen,
 ** @param [r] ajpFloat2dPairScores [const AjPFloat2d] Pair score array
 ** @param [r] ajpSeqDown [const AjPSeq] Sequence down
 ** @param [r] ajpSeqAcross [const AjPSeq] Seqeunce across
-** @param [w] ajpGotohCellGotohScores [AjPGotohCell** const] Gotoh cell array
+** @param [w] ajpGotohCellGotohScores [AjPGotohCell**] Gotoh cell array
 ** @param [r] fGapPenalty [float] Gap penalty
 ** @param [r] fExtensionPenalty [float] Gap extension penalty
+** @param [r] ajBoolZeroEndPenalty [AjBool] are end gaps free
 ** @return [void]
 ** @category modify [AjPGotohCell] fill in alignment array of
 **                  ajGotohCells
@@ -270,168 +271,260 @@ AjPGotohCell** const embGotohCellGetArray(ajint ajIntDownSeqLen,
 void embGotohCellCalculateSumScore(const AjPFloat2d ajpFloat2dPairScores,
 				   const AjPSeq ajpSeqDown,
 				   const AjPSeq ajpSeqAcross,
-				   AjPGotohCell const **ajpGotohCellGotohScores,
+				   AjPGotohCell **ajpGotohCellGotohScores,
 				   float fGapPenalty,
-				   float fExtensionPenalty)
+				   float fExtensionPenalty,
+				   AjBool ajBoolZeroEndPenalty)
 {
-  ajint ajIntRowMax;
-  ajint ajIntColumnMax;
-  const AjPStr ajpStrDownSeq = NULL;
-  const AjPStr ajpStrAcrossSeq = NULL;
-  ajint ajIntRow;
-  ajint ajIntColumn;
-  ajint ajIntMaxRowPosition;
-  ajint ajIntMaxColumnPosition;
-  float fUpperLeftSum;
-  float fUpperPenalty;
-  float fLeftPenalty;
-  float fUpperSum;
-  float fLeftSum;
-  float fMaxSum;
-  AjBool ajbIsCurrentIndel;
-
-  /* obtain proper scores for all cells                       */
-
-  /* deal with boundary conditions                            */
-  /* first set top left cell to zero...                       */
-  ajpGotohCellGotohScores[0][0]->fSubScore= 0.0;
-  ajpGotohCellGotohScores[0][0]->ajIntRowPointer = 0;
-  ajpGotohCellGotohScores[0][0]->ajIntColumnPointer = 0;
-  ajpGotohCellGotohScores[0][0]->cDownResidue = '|';
-  ajpGotohCellGotohScores[0][0]->cAcrossResidue = '_';
-  ajpGotohCellGotohScores[0][0]->ajBoolIsIndel = AJFALSE;
-
-  /* get dimensions of matrix */
-  ajIntRowMax = ajSeqLen(ajpSeqDown);
-  ajIntColumnMax = ajSeqLen(ajpSeqAcross);
-
-  /* get sequence strings */
-  ajpStrDownSeq = ajSeqStr(ajpSeqDown);
-  ajpStrAcrossSeq = ajSeqStr(ajpSeqAcross);
-
-  /* ...then set topmost row to multiples of extension penalty */
-  ajIntRow = 0;
-  for (ajIntColumn = enumTraceArrayOffset;
-       ajIntColumn < (ajIntColumnMax + enumTraceArrayOffset);
-       ajIntColumn++)
-  {
-      ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore
-	  = ajFloat2dGet(ajpFloat2dPairScores, ajIntRow, ajIntColumn);
-      ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRowPointer
-	  = ajIntRow;
-      ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntColumnPointer
-	  = (ajIntColumn - 1);
-      ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajBoolIsIndel
-	  = AJTRUE;
-      ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cDownResidue
-	  = '|';
-      ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cAcrossResidue
-	  = ajStrChar(ajpStrAcrossSeq, ajIntColumn - enumTraceArrayOffset);
-  }
-  
-  /* ...then set leftmost column to multiples of extension penalty */
-  ajIntColumn = 0;
-  for (ajIntRow = enumTraceArrayOffset;
-       ajIntRow < (ajIntRowMax + enumTraceArrayOffset);
-       ajIntRow++)
+    ajint ajIntRowMax;
+    ajint ajIntColumnMax;
+    const AjPStr ajpStrDownSeq = NULL;
+    const AjPStr ajpStrAcrossSeq = NULL;
+    ajint ajIntRow;
+    ajint ajIntColumn;
+    ajint ajIntMaxRowPosition;
+    ajint ajIntMaxColumnPosition;
+    float fUpperLeftSum;
+    float fUpperPenalty;
+    float fLeftPenalty;
+    float fUpperSum;
+    float fLeftSum;
+    float fMaxSum;
+    AjBool ajbIsCurrentIndel;
+    
+    /* obtain proper scores for all cells                       */
+    
+    /* deal with boundary conditions                            */
+    /* first set top left cell to zero...                       */
+    ajpGotohCellGotohScores[0][0]->fSubScore= 0.0;
+    ajpGotohCellGotohScores[0][0]->ajIntRowPointer = 0;
+    ajpGotohCellGotohScores[0][0]->ajIntColumnPointer = 0;
+    ajpGotohCellGotohScores[0][0]->cDownResidue = '|';
+    ajpGotohCellGotohScores[0][0]->cAcrossResidue = '_';
+    ajpGotohCellGotohScores[0][0]->ajBoolIsIndel = AJFALSE;
+    
+    /* get dimensions of matrix */
+    ajIntRowMax = ajSeqLen(ajpSeqDown);
+    ajIntColumnMax = ajSeqLen(ajpSeqAcross);
+    
+    /* get sequence strings */
+    ajpStrDownSeq = ajSeqStr(ajpSeqDown);
+    ajpStrAcrossSeq = ajSeqStr(ajpSeqAcross);
+    
+    /* set topmost row to zero unless... */
+    ajIntRow = 0;
+    if(ajBoolZeroEndPenalty)
     {
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore
-	    = ajFloat2dGet(ajpFloat2dPairScores, ajIntRow, ajIntColumn);
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRowPointer
-	    = (ajIntRow - 1);
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntColumnPointer
-	    = ajIntColumn ;
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajBoolIsIndel
-	    = AJTRUE;
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cDownResidue
-	    = ajStrChar(ajpStrDownSeq, ajIntRow - enumTraceArrayOffset);
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cAcrossResidue
-	    = '_';
+	for (ajIntColumn = enumTraceArrayOffset;
+	     ajIntColumn < (ajIntColumnMax + enumTraceArrayOffset);
+	     ajIntColumn++)
+	{
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore
+		= 0.0;
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRowPointer
+		= ajIntRow;
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntColumnPointer
+		= (ajIntColumn - 1);
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajBoolIsIndel
+		= AJTRUE;
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cDownResidue
+		= '|';
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cAcrossResidue
+		= ajStrChar(ajpStrAcrossSeq, ajIntColumn - enumTraceArrayOffset);
+	}
     }
-  
-  ajbIsCurrentIndel = AJFALSE;
-
-  /* fill in the rest:                          */
-  /*  start one row from top-left cell          */
-  /*  and finish one row from bottom-right cell */
-  for(ajIntRow = enumTraceArrayOffset;
-      ajIntRow < (ajIntRowMax + enumTraceArrayOffset);
-      ajIntRow++)
-  {
-      /* start one column from top-left cell                   */
-      /*  and finish one column from bottom-right cell         */
-      for(ajIntColumn = enumTraceArrayOffset;
-	  ajIntColumn < (ajIntColumnMax + enumTraceArrayOffset);
-	  ajIntColumn++)
-      {
-	  /* THIS IS THE CORE DYNAMIC PROGRAMMING ALGORITHM */
-
-	  /* calculate cumulative score for north-west cell */
-	  fUpperLeftSum =
-	      ajpGotohCellGotohScores[ajIntRow-1][ajIntColumn-1]->fSubScore +
-	      ajFloat2dGet(ajpFloat2dPairScores, ajIntRow, ajIntColumn);
-
-	  /* calculate cumulative (affine gap) score for north cell */  
-	  if(ajpGotohCellGotohScores[ajIntRow-1][ajIntColumn]->ajBoolIsIndel)
-	  {
-	      fUpperPenalty = fExtensionPenalty;
-	  }
-	  else fUpperPenalty = fGapPenalty;
-	  fUpperSum =
-	      ajpGotohCellGotohScores[ajIntRow-1][ajIntColumn]->fSubScore +
-	      fUpperPenalty;
-	  
-	  /* calculate cumulative (affine gap) score for west cell */
-	  if(ajpGotohCellGotohScores[ajIntRow][ajIntColumn-1]->ajBoolIsIndel)
-	  {
-	      fLeftPenalty = fExtensionPenalty;
-	  }
-	  else fLeftPenalty = fGapPenalty;
-	  fLeftSum =
-	      ajpGotohCellGotohScores[ajIntRow][ajIntColumn-1]->fSubScore +
-	      fLeftPenalty;
-
-	  /* find maximum score of the three */
-
-	  /* default to north-west as max    */
-	  fMaxSum = fUpperLeftSum;
-	  ajIntMaxRowPosition = ajIntRow-1;
-	  ajIntMaxColumnPosition = ajIntColumn-1;
-	  ajbIsCurrentIndel = AJFALSE;
-
-	  /* if north greater, make it max */
-	  if(fUpperSum > fMaxSum)
-	  {
-	    fMaxSum = fUpperSum;
-	    ajbIsCurrentIndel = AJTRUE;
-	    ajIntMaxColumnPosition = ajIntColumn;
+    /*
+     * ...end gaps are to be penalized,then set
+     * topmost row to multiples of extension penalty
+     */
+    else
+    {
+	for (ajIntColumn = enumTraceArrayOffset;
+	     ajIntColumn < (ajIntColumnMax + enumTraceArrayOffset);
+	     ajIntColumn++)
+	{
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore
+		= ( (float)(ajIntColumn)*fExtensionPenalty );
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRowPointer
+		= ajIntRow;
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntColumnPointer
+		= (ajIntColumn - 1);
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajBoolIsIndel
+		= AJTRUE;
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cDownResidue
+		= '|';
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cAcrossResidue
+		= ajStrChar(ajpStrAcrossSeq, ajIntColumn - enumTraceArrayOffset);
+	}
+    }
+    
+    /* set leftmost column to zero unless... */
+    ajIntColumn = 0;
+    if(ajBoolZeroEndPenalty)
+    {
+	for (ajIntRow = enumTraceArrayOffset;
+	     ajIntRow < (ajIntRowMax + enumTraceArrayOffset);
+	     ajIntRow++)
+	{
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore
+		= 0.0;
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRowPointer
+		= (ajIntRow - 1);
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntColumnPointer
+		= ajIntColumn ;
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajBoolIsIndel
+		= AJTRUE;
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cDownResidue
+		= ajStrChar(ajpStrDownSeq, ajIntRow - enumTraceArrayOffset);
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cAcrossResidue
+		= '_';
+	}  
+    }
+    /*
+     * ...end gaps are to be penalized,then set
+     * leftmost column to multiples of extension penalty
+     */
+    else
+    {
+	for (ajIntRow = enumTraceArrayOffset;
+	     ajIntRow < (ajIntRowMax + enumTraceArrayOffset);
+	     ajIntRow++)
+	{
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore
+		= ( (float)(ajIntRow)*fExtensionPenalty );
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRowPointer
+		= (ajIntRow - 1);
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntColumnPointer
+		= ajIntColumn ;
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajBoolIsIndel
+		= AJTRUE;
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cDownResidue
+		= ajStrChar(ajpStrDownSeq, ajIntRow - enumTraceArrayOffset);
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cAcrossResidue
+		= '_';
+	}
+    }
+    
+    ajbIsCurrentIndel = AJFALSE;
+    
+    /* fill in the rest:                          */
+    /*  start one row from top-left cell          */
+    /*  and finish one row from bottom-right cell */
+    for(ajIntRow = enumTraceArrayOffset;
+	ajIntRow < (ajIntRowMax + enumTraceArrayOffset);
+	ajIntRow++)
+    {
+	/* start one column from top-left cell                   */
+	/*  and finish one column from bottom-right cell         */
+	for(ajIntColumn = enumTraceArrayOffset;
+	    ajIntColumn < (ajIntColumnMax + enumTraceArrayOffset);
+	    ajIntColumn++)
+	{
+	    /* THIS IS THE CORE GOTOH SCORING ALGORITHM */
+	    
+	    /* calculate cumulative score for north-west cell */
+	    fUpperLeftSum =
+		ajpGotohCellGotohScores[ajIntRow-1][ajIntColumn-1]->fSubScore +
+		ajFloat2dGet(ajpFloat2dPairScores, ajIntRow, ajIntColumn);
+	    
+	    /* calculate cumulative score for north cell */
+	    /* if at end of sequence check for end penalty */
+	    /* don't penalize sequence end... */
+	    if(ajIntColumn == ajIntColumnMax)
+	    {
+		if(ajBoolZeroEndPenalty)
+		{
+		    fUpperPenalty = 0.0;
+		}
+		/* unlesss you have chosen to do so specifically */
+		else
+		{
+		    fUpperPenalty = fExtensionPenalty;
+		}
+	    }
+	    /* if in a gap already, only use extension penalty (affine scoring) */
+	    else if(ajpGotohCellGotohScores[ajIntRow-1][ajIntColumn]->ajBoolIsIndel)
+	    {
+		fUpperPenalty = fExtensionPenalty;
+	    }
+	    else
+	    {
+		fUpperPenalty = fGapPenalty;
+	    }
+	    
+	    fUpperSum =
+		ajpGotohCellGotohScores[ajIntRow-1][ajIntColumn]->fSubScore +
+		fUpperPenalty;
+	    
+	    /* calculate cumulative (affine gap) score for west cell */
+	    /* don't penalize sequence end... */
+	    if(ajIntRow == ajIntRowMax)
+	    {
+		if(ajBoolZeroEndPenalty)
+		{
+		    fLeftPenalty = 0.0;
+		}
+		/* unlesss you have chosen to do so specifically */
+		else
+		{
+		    fLeftPenalty = fExtensionPenalty;
+		}
+	    }
+	    /* if in a gap already, only use extension penalty (affine scoring) */
+	    else if(ajpGotohCellGotohScores[ajIntRow][ajIntColumn-1]->ajBoolIsIndel)
+	    {
+		fLeftPenalty = fExtensionPenalty;
+	    }
+	    else
+	    {
+		fLeftPenalty = fGapPenalty;
+	    }
+	    
+	    fLeftSum =
+		ajpGotohCellGotohScores[ajIntRow][ajIntColumn-1]->fSubScore +
+		fLeftPenalty;
+	    
+	    /* find maximum score of the three */
+	    
+	    /* default to north-west as max    */
+	    fMaxSum = fUpperLeftSum;
 	    ajIntMaxRowPosition = ajIntRow-1;
-	  }
-
-	  /* if west greater, make it max */
-	  if(fLeftSum > fMaxSum)
-	  {
-	      fMaxSum = fLeftSum;
-	      ajbIsCurrentIndel = AJTRUE;
-	      ajIntMaxRowPosition = ajIntRow;
-	      ajIntMaxColumnPosition = ajIntColumn-1;
-	  }
-	  
-	  /* set resulting current cell score */
-	  ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRowPointer =
-	      ajIntMaxRowPosition;
-	  ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntColumnPointer =
-	      ajIntMaxColumnPosition;
-	  ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore =
-	      fMaxSum;
-	  ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cDownResidue =
-	      ajStrChar(ajpStrDownSeq , ajIntRow - enumTraceArrayOffset);
-	  ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cAcrossResidue =
-	      ajStrChar(ajpStrAcrossSeq , ajIntColumn - enumTraceArrayOffset);
-	  ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajBoolIsIndel =
-	      ajbIsCurrentIndel;
-	  
-      }
+	    ajIntMaxColumnPosition = ajIntColumn-1;
+	    ajbIsCurrentIndel = AJFALSE;
+	    
+	    /* if north greater, make it max */
+	    if(fUpperSum > fMaxSum)
+	    {
+		fMaxSum = fUpperSum;
+		ajbIsCurrentIndel = AJTRUE;
+		ajIntMaxColumnPosition = ajIntColumn;
+		ajIntMaxRowPosition = ajIntRow-1;
+	    }
+	    
+	    /* if west greater, make it max */
+	    if(fLeftSum > fMaxSum)
+	    {
+		fMaxSum = fLeftSum;
+		ajbIsCurrentIndel = AJTRUE;
+		ajIntMaxRowPosition = ajIntRow;
+		ajIntMaxColumnPosition = ajIntColumn-1;
+	    }	  
+	    
+	    /* set resulting current cell score */
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRowPointer =
+		ajIntMaxRowPosition;
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntColumnPointer =
+		ajIntMaxColumnPosition;
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore =
+		fMaxSum;
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cDownResidue =
+		ajStrChar(ajpStrDownSeq , ajIntRow - enumTraceArrayOffset);
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cAcrossResidue =
+		ajStrChar(ajpStrAcrossSeq , ajIntColumn - enumTraceArrayOffset);
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajBoolIsIndel =
+		ajbIsCurrentIndel;
+	    
+	}
     }
 }
 
@@ -449,7 +542,7 @@ void embGotohCellCalculateSumScore(const AjPFloat2d ajpFloat2dPairScores,
 **  to the method of Gotoh,  O., "An Improved algorithm for matching
 **  biological sequences." Journal of Molecular Biology 162:705-708
 **
-** @param [r] ajpGotohCellGotohScores [AjPGotohCell const **] Gotoh cell array
+** @param [r] ajpGotohCellGotohScores [AjPGotohCell **] Gotoh cell array
 ** @param [r] ajpSeqDown [const AjPSeq] Sequence down
 ** @param [r] ajpSeqAcross [const AjPSeq] Sequence across
 ** @param [u] ajpListGotohCellsMaxScoringTrace [AjPList] Trace
@@ -459,44 +552,44 @@ void embGotohCellCalculateSumScore(const AjPFloat2d ajpFloat2dPairScores,
 ** @@
 ******************************************************************************/
 
-ajint embGotohCellBacktrace(AjPGotohCell const **ajpGotohCellGotohScores,
+ajint embGotohCellBacktrace(AjPGotohCell **ajpGotohCellGotohScores,
 			    const AjPSeq ajpSeqDown,
 			    const AjPSeq ajpSeqAcross,
 			    AjPList ajpListGotohCellsMaxScoringTrace)
 {
-  AjPGotohCell ajpGotohCellBackTrace;
-  ajint ajIntRowMax;
-  ajint ajIntColumnMax;
-  ajint ajIntMaxScoreRow;
-  ajint ajIntMaxScoreColumn;
-  ajint ajIntRow;
-  ajint ajIntColumn;
-  ajint ajIntNextRow;
-  ajint ajIntNextColumn;
-  ajint ajIntAlignmentLen;
-  float fMaxScore;
-
-  AJNEW0(ajpGotohCellBackTrace);
-
-  /* 
-   * search for starting (highest scoring) AjOGotohCell;
-   * default to bottom right hand corner cell of sum matrix
-   */
-  ajIntRowMax = ajSeqLen(ajpSeqDown);
-  ajIntColumnMax = ajSeqLen(ajpSeqAcross);
-  ajIntMaxScoreRow = ajIntRowMax;
-  ajIntMaxScoreColumn = ajIntColumnMax;
-  fMaxScore =
-      ajpGotohCellGotohScores[ajIntRowMax][ajIntColumnMax]->fSubScore;
-
-  /* scan last column for max score */
-  ajIntColumn = ajIntColumnMax;
-  for (ajIntRow = ajIntRowMax;
-       ajIntRow >= enumTraceArrayOffset;
-       ajIntRow--)
-  {   
-      if(ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore > fMaxScore)
-      {
+    AjPGotohCell ajpGotohCellBackTrace;
+    ajint ajIntRowMax;
+    ajint ajIntColumnMax;
+    ajint ajIntMaxScoreRow;
+    ajint ajIntMaxScoreColumn;
+    ajint ajIntRow;
+    ajint ajIntColumn;
+    ajint ajIntNextRow;
+    ajint ajIntNextColumn;
+    ajint ajIntAlignmentLen;
+    float fMaxScore;
+    
+    AJNEW0(ajpGotohCellBackTrace);
+    
+    /* 
+     * search for starting (highest scoring) AjOGotohCell;
+     * default to bottom right hand corner cell of sum matrix
+     */
+    ajIntRowMax = ajSeqLen(ajpSeqDown);
+    ajIntColumnMax = ajSeqLen(ajpSeqAcross);
+    ajIntMaxScoreRow = ajIntRowMax;
+    ajIntMaxScoreColumn = ajIntColumnMax;
+    fMaxScore =
+	ajpGotohCellGotohScores[ajIntRowMax][ajIntColumnMax]->fSubScore;
+    
+    /* scan last column for max score */
+    ajIntColumn = ajIntColumnMax;
+    for (ajIntRow = ajIntRowMax;
+	 ajIntRow >= enumTraceArrayOffset;
+	 ajIntRow--)
+    {   
+	if(ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore > fMaxScore)
+	{
 	  ajIntMaxScoreRow = ajIntRow;
 	  ajIntMaxScoreColumn = ajIntColumn;
 	  fMaxScore =
@@ -531,7 +624,6 @@ ajint embGotohCellBacktrace(AjPGotohCell const **ajpGotohCellGotohScores,
   /* continue back-trace until you're in the top left-hand corner */
   do
     {
-	
 	ajpGotohCellBackTrace->ajIntRowPointer = 
 	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRowPointer;
 	ajpGotohCellBackTrace->ajIntColumnPointer =
@@ -599,6 +691,7 @@ ajint embGotohCellBacktrace(AjPGotohCell const **ajpGotohCellGotohScores,
 ** @param [r] ajpSeqDown [const AjPSeq] first sequence
 ** @param [r] ajpSeqAcross [const AjPSeq] second sequence
 ** @param [r] fExtensionPenalty [float] alignment extension penalty
+** @param [r] ajBoolZeroEndPenalty [AjBool] are end gaps free
 **
 ** @return [AjPFloat2d] 2D matrix of pair scores
 ** @@
@@ -607,8 +700,7 @@ ajint embGotohCellBacktrace(AjPGotohCell const **ajpGotohCellGotohScores,
 
 AjPFloat2d embGotohPairScore(const AjPMatrixf ajpMatrixFscoring,
 			     const AjPSeq ajpSeqDown,
-			     const AjPSeq ajpSeqAcross,
-			     float fExtensionPenalty)
+			     const AjPSeq ajpSeqAcross)
 {
   ajint ajIntDownSeqLen;
   ajint ajIntAcrossSeqLen;
@@ -644,7 +736,7 @@ AjPFloat2d embGotohPairScore(const AjPMatrixf ajpMatrixFscoring,
 
   /* first let's have an array for the scores */
   if (ajIntDownSeqLen > ajIntAcrossSeqLen)
-    {
+  {
 	ajpFloat2dPairScores =
 	    ajFloat2dNewL(ajIntDownSeqLen + enumTraceArrayOffset);
     }
@@ -660,26 +752,24 @@ AjPFloat2d embGotohPairScore(const AjPMatrixf ajpMatrixFscoring,
 
   /* zero horizontal counter */
   ajIntColumn = 0;
-  /* ...then set leftmost column to multiples of extension penalty... */
+
+  /* ...then set leftmost column to zero... */
   for (ajIntRow = enumTraceArrayOffset;
        ajIntRow < (ajIntDownSeqLen + enumTraceArrayOffset);
        ajIntRow++)
   {
-      ajFloat2dPut(&ajpFloat2dPairScores, ajIntRow, ajIntColumn,
-		   (float)(ajIntRow)*fExtensionPenalty);
+      ajFloat2dPut(&ajpFloat2dPairScores, ajIntRow, ajIntColumn, 0.0);
   }
-
+  
   /* zero vertical counter */
   ajIntRow = 0;
-  /* ...then set topmost row to multiples of extension penalty */
+
+  /* ...then set topmost row to zero... */
   for (ajIntColumn = enumTraceArrayOffset;
        ajIntColumn < (ajIntAcrossSeqLen + enumTraceArrayOffset);
        ajIntColumn++)
   {
-      ajFloat2dPut(&ajpFloat2dPairScores,
-		   ajIntRow,
-		   ajIntColumn,
-		   (float)(ajIntColumn)*fExtensionPenalty);
+      ajFloat2dPut(&ajpFloat2dPairScores, ajIntRow, ajIntColumn, 0.0);
   }
 
   /* score two numerical versions of sequences */
@@ -700,8 +790,7 @@ AjPFloat2d embGotohPairScore(const AjPMatrixf ajpMatrixFscoring,
 			       [(ajint)ajStrChar(ajpStrAcrossNumerical,
 						 (ajIntColumn - enumTraceArrayOffset))]));
       }
-    }
-  
+  }
   return ajpFloat2dPairScores;
 }
 
@@ -751,12 +840,12 @@ ajint embGotohReadOffBacktrace(const AjPList ajpListGotohCellsMaxScoringTrace,
   ajbIsAcrossGap = AJFALSE;
 
   do
-    {
+  {
       ajpGotohCellCurrentInBackTrace = ajListIterNext(ajListIterBacktrace);
-
+      
       cBufferCurrentDown = ajpGotohCellCurrentInBackTrace->cDownResidue;
       cBufferCurrentAcross = ajpGotohCellCurrentInBackTrace->cAcrossResidue;
-
+      
       ajStrAppK(&strDownTrace, cBufferCurrentDown);
       ajStrAppK(&strAcrossTrace, cBufferCurrentAcross);
       
@@ -764,8 +853,8 @@ ajint embGotohReadOffBacktrace(const AjPList ajpListGotohCellsMaxScoringTrace,
       if(enumDebugLevel > 1)
 	  ajFmtPrint("\nthis template residue: %c , this query residue: %c\n",
 		     cBufferCurrentDown , cBufferCurrentAcross); 
-
-    }
+      
+  }
   while(ajListIterMore(ajListIterBacktrace));
 
   /* DDDDEBUG */
