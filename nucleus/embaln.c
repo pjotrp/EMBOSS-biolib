@@ -2897,21 +2897,115 @@ void embAlignReportGlobal(AjPAlign align, AjPSeq seqa, AjPSeq seqb,
   AjPSeq res2 = NULL;
   ajint end1;
   ajint end2;
-
+  AjPStr fa=NULL;
+  AjPStr fb=NULL;
   AjPSeqset seqset = NULL;
+  ajint maxlen;
+  ajint i;
+  ajint alen;
+  ajint blen;
+  ajint apos;
+  ajint bpos;
+  ajint nc;
+  char* a;
+  char* b;
 
-  ajDebug("embAlignReportLocal %d %d\n", start1, start2);
+  ajDebug("embAlignReportGlobal %d %d\n", start1, start2);
+  ajDebug("  seqa: '%S' \n", ajSeqStr(seqa));
+  ajDebug("  seqb: '%S' \n", ajSeqStr(seqb));
+  ajDebug("  alim: '%S' \n", m);
+  ajDebug("  alin: '%S' \n", n);
+
+  maxlen = AJMAX(ajSeqLen(seqa), ajSeqLen(seqb));
 
   seqset = ajSeqsetNew();
   res1 = ajSeqNew();
-
   res2 = ajSeqNew();
+
   ajSeqAssName (res1, ajSeqGetName(seqa));
   ajSeqAssName (res2, ajSeqGetName(seqb));
   ajSeqAssUsa (res1, ajSeqGetUsa(seqa));
   ajSeqAssUsa (res2, ajSeqGetUsa(seqb));
-  ajSeqAssSeq (res1, m);
-  ajSeqAssSeq (res2, n);
+
+  a = ajSeqChar(seqa);
+  b = ajSeqChar(seqb);
+
+  /* generate the full aligned sequences */
+
+  ajStrModL (&fa, maxlen);
+  ajStrModL (&fb, maxlen);
+
+  /* pad the start of either sequence */
+
+  if(start1>start2)
+  {
+    for(i=0;i<start1;++i)
+    {
+      (void) ajStrAppK(&fa,a[i]);
+    }
+    nc=start1-start2;
+    for(i=0;i<nc;++i) (void) ajStrAppK(&fb,' ');
+    for(++nc;i<start1;++i) (void) ajStrAppK(&fb,b[i-nc]);
+  }
+  else if(start2>start1)
+  {
+    for(i=0;i<start2;++i)
+    {
+      (void) ajStrAppK(&fb,b[i]);
+    }
+    nc=start2-start1;
+    for(i=0;i<nc;++i) (void) ajStrAppK(&fa,' ');
+    for(++nc;i<start2;++i) (void) ajStrAppK(&fa,a[i-nc]);
+  }
+
+  apos = start1 + ajStrLen(m) - ajSeqGapCountS(m);
+  bpos = start2 + ajStrLen(n) - ajSeqGapCountS(n);
+
+  ajStrApp(&fa, m);
+  ajStrApp(&fb, n);
+
+  alen=ajSeqLen(seqa) - apos;
+  blen=ajSeqLen(seqb) - bpos;
+
+  ajDebug("alen: %d blen: %d apos: %d bpos: %d\n", alen, blen, apos, bpos);
+
+  if(alen>blen)
+  {
+    (void) ajStrAppC(&fa,&a[apos]);
+    for(i=0;i<blen;++i)
+    {
+      (void) ajStrAppK(&fb,b[bpos+i]);
+    }
+    nc=alen-blen;
+    for(i=0;i<nc;++i)
+    {
+      (void) ajStrAppC(&fb," ");
+    }
+  }
+  else if(blen>alen)
+  {
+    (void) ajStrAppC(&fb,&b[bpos]);
+    for(i=0;i<alen;++i)
+    {
+      (void) ajStrAppK(&fa,a[apos+i]);
+    }
+    nc=blen-alen;
+    for(i=0;i<nc;++i)
+    {
+      (void) ajStrAppC(&fa," ");
+    }
+  }
+  else			/* same length, just copy */
+  {
+    (void) ajStrAppC(&fa,&a[apos]);
+    (void) ajStrAppC(&fb,&b[bpos]);
+  }
+
+  ajDebug("  res1: %5d '%S' \n", ajStrLen(fa), fa);
+  ajDebug("  res2: %5d '%S' \n", ajStrLen(fb), fb);
+  ajSeqAssSeq (res1, fa);
+  ajSeqAssSeq (res2, fb);
+
   ajSeqsetFromPair (seqset, res1, res2);
 
   ajAlignDefine (align, seqset);
