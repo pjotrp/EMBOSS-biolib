@@ -61,8 +61,13 @@
 ******************************************************************************/
 int main(int argc, char **argv)
 {
-    AjPList  inseqs    = NULL;  /* Directory of DAF file (domain alignment 
+    AjPList  inseqs    = NULL;  /* Directory of input sequences. Is made to 
+				   point to inseqsdhf or inseqsdaf. */
+    AjPList  inseqsdhf = NULL;  /* Directory of DAF file (domain alignment 
 				   file) or singlet  sequence files (input).   */
+    AjPList  inseqsdaf = NULL;  /* Directory of DAF file (domain alignment 
+				   file) or singlet  sequence files (input).   */
+
     AjPStr  inname     = NULL;  /* Full name of the current DAF or singlet file*/
     AjPFile inf        = NULL;  /* DAF or singlet file (input)                 */
 
@@ -148,7 +153,8 @@ int main(int argc, char **argv)
     ajNamInit("emboss");
     ajAcdInitP("seqalign",argc,argv,"DOMAINATRIX");
 
-    inseqs    = ajAcdGetDirlist("inseqspath");
+    inseqsdhf = ajAcdGetDirlist("dhfinpath");
+    inseqsdaf = ajAcdGetDirlist("dafinpath");
     dhfin     = ajAcdGetDirectory("dhfindir");
     dafout    = ajAcdGetOutdir("dafoutdir");
     logf      = ajAcdGetOutfile("logfile");    
@@ -171,6 +177,14 @@ int main(int argc, char **argv)
 
 
     /* Read each domain alignment file */
+    if(modei==1)
+	inseqs = inseqsdhf;
+    else if(modei==2)
+    	inseqs = inseqsdaf;
+    else
+	ajFatal("Unrecognised mode");
+    
+   
     while(ajListPop(inseqs,(void **)&inname))
     {
 	ajFmtPrint("Processing %S\n", inname);
@@ -428,6 +442,7 @@ int main(int argc, char **argv)
 		ajFmtPrintF(clustinf2,"%S\n", ajSeqStr(seq_sing));
 	    }
 	}
+	
 
 	if(hitlist_h)
 	{
@@ -585,8 +600,10 @@ int main(int argc, char **argv)
 	if(seqin_a)
 	    ajSeqinDel(&seqin_a);
 
+
 	if(hit_sing) 
 	    ajDmxScophitDel(&hit_sing);
+	
 	if(seq_sing)
 	    ajSeqDel(&seq_sing);
 	if(seqin_sing)

@@ -456,6 +456,11 @@ static AjBool sigscan_SignatureAlignWriteBlock(AjPFile outf,
 }
 
 
+/* To prevent compiler grumbling */
+void sigscan_dummy_function(void)
+{
+    sigscan_SignatureAlignWrite(NULL, NULL, NULL);
+}
 
 
 

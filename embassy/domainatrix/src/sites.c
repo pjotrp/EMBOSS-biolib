@@ -317,6 +317,8 @@ int main(ajint argc, char **argv)
     dist_thresh = ajAcdGetFloat("threshold");
     outf        = ajAcdGetOutfile("outfile");
     logf        = ajAcdGetOutfile("logfile");
+
+
     
 
 
@@ -1093,7 +1095,7 @@ static AjBool    sites_HeterogenContactsWrite(AjPFile outf,
   /* Start of loop to print out data for each entry (ligand:domain pair) */
   for(i=0;i<dbase->n;i++)
   {
-      if((dbase)->entries[i]->no_sites >0)
+    if((dbase)->entries[i]->no_sites >0)
       {
 	  
 	  for(j=0;j<(dbase)->entries[i]->no_sites; j++)
@@ -1113,6 +1115,12 @@ static AjBool    sites_HeterogenContactsWrite(AjPFile outf,
 
 	      /* DE */
 	      ajFmtPrintF(outf, "DE   %S\n", dbase->entries[i]->ful);
+	      ajFmtPrintF(outf, "XX\n");
+
+	      
+	      /* SI */
+	      ajFmtPrintF(outf, "%-5sSN %d; NS %d\n", "SI", j+1, 
+			  (dbase)->entries[i]->no_sites);		
 	      ajFmtPrintF(outf, "XX\n");
 
 

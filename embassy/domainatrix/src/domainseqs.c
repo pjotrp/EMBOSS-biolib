@@ -244,7 +244,6 @@ int main(int argc, char **argv)
 	   structures. */
 	if(!embPdbidToAcc(ajDomainGetPdb(domain),&acc,list))
 	{
-	    ajWarn("No accession number found for domain %S\n",dpdb_name);
 	    ajFmtPrintF(errf, "%-15s\n", "NO_ACCESSION_NUMBER");  
 	    ajDomainWrite(domain_outf,domain);
 	    ajFileClose(&dpdb_inf);

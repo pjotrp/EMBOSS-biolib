@@ -201,7 +201,6 @@ static AjBool siggen_Con_Thresh(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cm
 			 ajint conthresh, AjBool *noca, AjPInt2d seq_pos, 
 			 AjPInt *atom_idx);
 
-static AjPSigdat siggen_SigdatNew(ajint nres, ajint ngap);
 
 
 
@@ -761,6 +760,7 @@ int main(ajint argc, char **argv)
         }
 
         /* Write and close signature file. */
+	sig->Typesig = aj1D;
         if(!embSignatureWrite(sig_outf, sig))
             ajFatal("Error writing signature file");
         ajFileClose(&sig_outf);
@@ -2389,7 +2389,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
        advance, these are set below, but set the window size here. */
     for(x=0; x<sig->npos; x++)
     {
-	sig->dat[x]=siggen_SigdatNew(0, 0);
+	sig->dat[x]=embSigdatNew(0, 0);
 	sig->dat[x]->wsiz=wsiz;
     }
     
@@ -3427,7 +3427,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
        advance, these are set below, but set the window size here. */
     for(x=0; x<sig->npos; x++)
     {
-	sig->dat[x]=siggen_SigdatNew(0, 0);
+	sig->dat[x]=embSigdatNew(0, 0);
 	sig->dat[x]->wsiz=wsiz;
     }
     
@@ -3962,7 +3962,7 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
        advance, these are set below, but set the window size here. */
     for(x=0; x<sig->npos; x++)
     {
-	sig->dat[x]=siggen_SigdatNew(0, 0);
+	sig->dat[x]=embSigdatNew(0, 0);
 	sig->dat[x]->wsiz=wsiz;
     }
     
@@ -4247,72 +4247,3 @@ static void siggen_ScorealgDel(AjPScorealg *pthis)
 
     return;
 }	
-
-
-
-
-/* @funcstatic siggen_SigdatNew ***********************************************
-**
-** Sigdat object constructor. This is normally called by the 
-** embSignatureReadNew function. Fore-knowledge of the number of empirical 
-** residues and gaps is required.
-** Important: Functions which manipulate the Sigdat object rely on data in 
-** the gap arrays (gsiz and grfq) being filled in order of increasing gap 
-** size.
-** Identical to the similarly named function in emb.c ... but that function
-** should really remain hidden hence duplicated here. 
-**
-** @param [r] nres [ajint]   Number of emprical residues.
-** @param [r] ngap [ajint]   Number of emprical gaps.
-** 
-** @return [AjPSigdat] Pointer to a Sigdat object
-** @@
-******************************************************************************/
-
-static AjPSigdat siggen_SigdatNew(ajint nres, 
-				  ajint ngap)
-{
-    AjPSigdat ret = NULL;
-
-
-    AJNEW0(ret);
-    ret->nres = nres;
-    ret->ngap = ngap;
-
-    if(ngap)
-    {
-	ret->gsiz = ajIntNewL((ajint) ngap);
-	ret->gfrq = ajIntNewL((ajint) ngap);
-	ajIntPut(&ret->gsiz, ngap-1, (ajint)0);
-	ajIntPut(&ret->gfrq, ngap-1, (ajint)0);
-    }
-    else
-    {
-	ret->gsiz = ajIntNew();
-	ret->gfrq = ajIntNew();
-	ajIntPut(&ret->gsiz, 0, (ajint)0);
-	ajIntPut(&ret->gfrq, 0, (ajint)0);
-    }
-
-    if(nres)
-    {
-	ret->rids = ajChararrNewL((ajint) nres);
-	ret->rfrq = ajIntNewL((ajint) nres);
-        ajIntPut(&ret->rfrq, nres-1, (ajint)0);
-	ajChararrPut(&ret->rids, nres-1, (char)' ');
-    }
-    else
-    {
-	ret->rids = ajChararrNew();
-	ret->rfrq = ajIntNew();
-	ajIntPut(&ret->rfrq, 0, (ajint)0);
-	ajChararrPut(&ret->rids, 0, (char)' ');
-    }
-    
-    return ret;
-}
-
-
-
-
-
