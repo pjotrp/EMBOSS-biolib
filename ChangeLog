@@ -1,4 +1,11 @@
 Version 2.5.0
+	SPLITTER changed to match documentation. Old behaviour is
+	now selectable by using the -addoverlap command line
+	option.
+
+	Configuration modifications. --without-x works. Removed odd
+	but harmless -I definitions. PNG detection improved.
+
 	Corrected EMBLCD index searching for queries that start with a
 	wildcard. For example, tembl-key:?* should search for all entries
 	that have a keyword (key:* is regarded as 'all entries'). Entries
@@ -54,7 +61,7 @@ Version 2.5.0
 	the Version 4.0 (current) feature table document.
 
 	Allow ? before from and to feature locations in SwissProt. For
-	now, these are ignored, though we could ad dsomething to hold them
+	now, these are ignored, though we could add something to hold them
 	for accurate output.
 	
 	Added modified Harrison solubility probability to PEPSTATS
@@ -135,6 +142,7 @@ Version 2.5.0
 	     profgen.c / acd
 	     funky.c / acd
 	     hmmgen.c / acd
+	     fraggle.c / acd
 	     
 	Some applications have been deleted: 
 	     scope.c / acd
