@@ -293,6 +293,15 @@ public class SetUpMenuBar
 
    }
 
+
+   public static DragTree getLocalDragTree()
+   {
+     if(localAndRemoteTree == null)
+       return null;
+
+     return localAndRemoteTree.getLocalDragTree();
+   }
+
 /**
 *
 *  Delete temporary files
