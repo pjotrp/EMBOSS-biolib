@@ -21,6 +21,7 @@
 package org.emboss.jemboss.editor;
 
 import java.awt.*;
+import java.awt.print.Paper;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
 import java.awt.image.BufferedImage;
@@ -170,19 +171,40 @@ public class PrintAlignmentImage extends ScrollPanel
   * Print to a jpeg or png file
   *
   */
-  public void print(int nResPerLine, String type,String filePrefix)
+  public void print(int nResPerLine, String type,
+                    String filePrefix, boolean landscape,
+                    double leftMargin, double rightMargin,
+                    double topMargin, double btmMargin)
   {
+    this.nResPerLine = nResPerLine;
     PrinterJob printerJob = PrinterJob.getPrinterJob();
     format = new PageFormat();
+    if(landscape)
+      format.setOrientation(PageFormat.LANDSCAPE);
+    else
+      format.setOrientation(PageFormat.PORTRAIT);
+
+    if(leftMargin > 0.d)
+    {
+      Paper paper  = format.getPaper();
+      double width = paper.getWidth()-(72*(leftMargin+rightMargin)); 
+      double hgt   = paper.getHeight()-(72*(topMargin+btmMargin));
+      paper.setImageableArea(leftMargin*72,topMargin*72,
+                             width,hgt);
+      format.setPaper(paper);
+    }
+
+    if(nResPerLine <= 0)
+      this.nResPerLine = gsc.getResiduesPerLine(format);
 
     try
     {
-      int npages = gsc.getNumberPages(format,nResPerLine);
+      int npages = gsc.getNumberPages(format,this.nResPerLine);
       for(int i=0;i<npages;i++)
       {
         RenderedImage rendImage = createAlignmentImage(i);
         writeImageToFile(rendImage,
-                      new File(filePrefix+i+"."+type),type);
+                       new File(filePrefix+i+"."+type),type);
       }
     }
     catch(NoClassDefFoundError ex)

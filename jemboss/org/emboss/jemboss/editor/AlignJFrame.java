@@ -914,7 +914,7 @@ public class AlignJFrame extends JFrame
               "           charge\n"+
               "           size\n"+
               "           base\n\n"+
-              "           java org/emboss/jemboss/editor/AlignJFrame file -color size\n\n"+
+              "       java org.emboss.jemboss.editor.AlignJFrame file -color size\n\n"+
               "-font      Set the font size.\n"+
               "-id        Display a percentage ID pair table.\n"+
               "-noshow    Turns of the alignment display.\n"+
@@ -933,6 +933,11 @@ public class AlignJFrame extends JFrame
               "           used along with the print flag\n"+
               "           -prefix    prefix for image file.\n"+
               "           -type      png or jpeg (default is jpeg).\n"+
+              "           -landscape Print as landscape (the default is portrait).\n"+
+              "           -margin    Define the left, right, top and bottom margin\n"+
+              "                      (in cm).\n"+
+              "       java org.emboss.jemboss.editor.AlignJFrame file -matrix EBLOSUM62 \\\n"+
+              "                   -noshow -print -margin 0.5 0.5 0.5 0.5\n\n"+
               "-matrix    To define a scoring matrix. Used with the -pretty and -calc\n"+
               "           option.\n"+
               "-list      List the available scoring matrix files.\n\n"+
@@ -959,7 +964,7 @@ public class AlignJFrame extends JFrame
       String type   = "jpeg";
       boolean show  = true;
       boolean print = false;
-      int nresiduesPerLine = 20;
+      int nresiduesPerLine = 0;
 
       float wgt = 0.f;
       Vector vseq = gsc.getSequenceCollection();
@@ -971,12 +976,17 @@ public class AlignJFrame extends JFrame
           wgt+=s.getWeight();
       }
 
+      double lmargin = -0.5;  // left margin
+      double rmargin = -0.5;  // right margin
+      double tmargin = -0.5;  // top margin
+      double bmargin = -0.5;  // bottom margin
       float plu = wgt/2.f;
       float cas = wgt/2.f;
       int ident = 0;
       Color colID    = Color.red;
       Color colMatch = Color.blue;
       boolean prettyBox = true;
+      boolean landscape = false;
 
       for(int i=0;i<args.length;i++)
       {
@@ -1011,6 +1021,15 @@ public class AlignJFrame extends JFrame
           prettyBox = false;
         else if(args[i].indexOf("-font") > -1)
           gsc.setFontSizeForCollection(Integer.parseInt(args[i+1]));
+        else if(args[i].indexOf("-landscape") > -1)
+          landscape = true;
+        else if(args[i].indexOf("-margin") > -1)
+        {
+          lmargin = Double.parseDouble(args[i+1]);
+          rmargin = Double.parseDouble(args[i+2]);
+          tmargin = Double.parseDouble(args[i+3]);
+          bmargin = Double.parseDouble(args[i+4]);
+        }
       }
 
       for(int i=0;i<args.length;i++)
@@ -1099,7 +1118,8 @@ public class AlignJFrame extends JFrame
       if(print)
       {
         PrintAlignmentImage pai = new PrintAlignmentImage(gsc);
-        pai.print(nresiduesPerLine,type,prefix);
+        pai.print(nresiduesPerLine,type,prefix,landscape,
+                  lmargin,rmargin,tmargin,bmargin);
       }
       if(!show)
         System.exit(0);
