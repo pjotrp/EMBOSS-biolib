@@ -80,8 +80,6 @@ public class Jemboss implements ActionListener
   public Jemboss()
   {
 
-    String fs = new String(System.getProperty("file.separator"));
-
     // initialize settings
     JembossParams mysettings = new JembossParams();
 
@@ -89,27 +87,7 @@ public class Jemboss implements ActionListener
     fwdArrow = new ImageIcon(cl.getResource("images/Forward_arrow_button.gif"));
     bwdArrow = new ImageIcon(cl.getResource("images/Backward_arrow_button.gif"));
 
-    String[] envp = new String[4];  /* environment vars */
-
-    if(!withSoap)
-    {
-      String ps = new String(System.getProperty("path.separator"));
-      String plplot = mysettings.getPlplot();
-      String embossData = mysettings.getEmbossData();
-      String embossBin  = mysettings.getEmbossBin();
-      String embossPath = mysettings.getEmbossPath();
-      embossPath = new String("PATH" + ps +
-                      embossPath + ps + embossBin + ps);
-      envp[0] = "PATH=" + embossPath;        
-      envp[1] = "PLPLOT_LIB=" + plplot;
-      envp[2] = "EMBOSS_DATA=" + embossData;
-
-      String homeDirectory = new String(
-                       System.getProperty("user.home") + fs);
-
-      envp[3] = "HOME=" + homeDirectory;
-    }
-    else if(mysettings.getPublicSoapURL().startsWith("https"))
+    if(withSoap && mysettings.getPublicSoapURL().startsWith("https"))
     {
       //SSL settings
 
@@ -138,7 +116,8 @@ public class Jemboss implements ActionListener
                         "resources/client.keystore");
 
       String jembossClientKeyStore = System.getProperty("user.home") + 
-                       fs + ".jembossClientKeystore";
+                                System.getProperty("file.separator") + 
+                                             ".jembossClientKeystore";
 
       try
       {
@@ -226,7 +205,7 @@ public class Jemboss implements ActionListener
     f.setLocation(0,((int)d.getHeight()-f.getHeight())/2);
 
     new BuildProgramMenu(p1,p2,pform,scrollProgForm,
-                         envp,mysettings,withSoap,
+                         mysettings,withSoap,
                          mainMenu,f,jform);
 
     f.addWindowListener(new winExit());

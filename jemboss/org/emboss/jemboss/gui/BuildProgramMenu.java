@@ -24,8 +24,6 @@ package org.emboss.jemboss.gui;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.tree.*;
-import java.util.zip.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
@@ -36,7 +34,6 @@ import org.emboss.jemboss.programs.*;      // running EMBOSS programs
 import org.emboss.jemboss.gui.startup.*;   // finds progs, groups, docs & db's
 import org.emboss.jemboss.soap.*;
 import org.emboss.jemboss.gui.form.*;      // prog forms constructed from ACD
-import org.emboss.jemboss.soap.GetWossname;
 
 /**
 *
@@ -57,6 +54,9 @@ public class BuildProgramMenu
   private AuthPopup splashing;
   /** thread for progress monitor on the login window */
   private SplashThread splashThread;
+  /** environment vars */
+  private String[] envp;
+
   
   /**
   *
@@ -64,7 +64,6 @@ public class BuildProgramMenu
   *  @param  p2 		form pane
   *  @param  pform 		pane containing emboss form and job manager
   *  @param  scrollProgForm 	EMBOSS form scroll pane 
-  *  @param  envp		array of environment variables for EMBOSS applications
   *  @param  mysettings		Jemboss settings
   *  @param  withSoap 		true if using SOAP server
   *  @param  mainMenu		Jemboss main menu bar
@@ -74,7 +73,7 @@ public class BuildProgramMenu
   */
   public BuildProgramMenu(final JPanel p1, final ScrollPanel p2, 
            final JPanel pform, final JScrollPane scrollProgForm,
-           final String envp[], final JembossParams mysettings,
+           final JembossParams mysettings,
            final boolean withSoap, final SetUpMenuBar mainMenu,
            final JFrame f, final Dimension jform)
   {
@@ -96,6 +95,20 @@ public class BuildProgramMenu
       splashThread = new SplashThread(splashing,400-4);
       splashThread.start();
     }
+    else 
+    {
+      envp = new String[4];  /* environment vars */
+      String ps = new String(System.getProperty("path.separator"));
+      String embossBin  = mysettings.getEmbossBin();
+      String embossPath = mysettings.getEmbossPath();
+      embossPath = new String("PATH" + ps +
+                      embossPath + ps + embossBin + ps);
+      envp[0] = "PATH=" + embossPath;
+      envp[1] = "PLPLOT_LIB=" + mysettings.getPlplot();
+      envp[2] = "EMBOSS_DATA=" + mysettings.getEmbossData();
+      envp[3] = "HOME=" + System.getProperty("user.home") + fs;
+    }
+
 
     SwingWorker groupworker = new SwingWorker() 
     {
@@ -181,16 +194,16 @@ public class BuildProgramMenu
               mainMenu.setEnableFileManagers(false);
               mainMenu.setEnableShowResults(false);
 
-              Hashtable hshowdb = (new JembossJarUtil("resources/showdb.jar")).getHash();
-              mainMenu.setEnableFileManagers(false);
-              mainMenu.setEnableShowResults(false);   
+//            Hashtable hshowdb = (new JembossJarUtil("resources/showdb.jar")).getHash();
+//            mainMenu.setEnableFileManagers(false);
+//            mainMenu.setEnableShowResults(false);   
 
-              if(hshowdb.containsKey("showdb.out"))
-              {
-                String showdbOut = new String((byte[])hshowdb.get("showdb.out"));
-                Database d = new Database(showdbOut);
-                db = d.getDB();
-              }
+//            if(hshowdb.containsKey("showdb.out"))
+//            {
+//              String showdbOut = new String((byte[])hshowdb.get("showdb.out"));
+//              Database d = new Database(showdbOut);
+//              db = d.getDB();
+//            }
             }
             catch (Exception ex){ System.out.println("calling the server"); }
 
