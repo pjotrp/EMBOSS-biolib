@@ -462,6 +462,7 @@ AjPSeqall ajSeqallFile(AjPStr usa)
     
     seqin = seqall->Seqin;
     seqin->multi = ajTrue;
+    seqin->Single = ajFalse;
     seq = seqall->Seq;
 
     ajSeqinUsa(&seqin,usa);
@@ -943,7 +944,7 @@ static AjBool seqRead (AjPSeq thys, AjPSeqin seqin)
     ajint i;
     ajint stat;
 
-    AjPFileBuff buff = seqin->Filebuff;
+/*    AjPFileBuff buff = seqin->Filebuff; unused */
     SeqPInFormat inform = seqInFormat;
 
     if (seqin->Single && seqin->Count)
