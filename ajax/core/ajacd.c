@@ -62,22 +62,25 @@
 /*static AjBool acdDebug = 0;*/
 /*static AjBool acdDebugSet = 0;*/
 /*static AjPStr acdProgram = NULL;*/
-static AjBool acdDoHelp = 0;
-static AjBool acdDoLog = 0;
+static AjBool acdDoHelp = AJFALSE;
+static AjBool acdDoLog = AJFALSE;
 static AjBool acdDoWarnRange =AJTRUE;
-static AjBool acdDoPretty = 0;
-static AjBool acdDoTable = 0;
-static AjBool acdDoValid = 0;
-static AjBool acdVerbose = 0;
-static AjBool acdAuto = 0;
-static AjBool acdFilter = 0;
-static AjBool acdOptions = 0;
-static AjBool acdStdout = 0;
-static AjBool acdCodeSet = 0;
-static AjPTable acdCodeTable = 0;
+static AjBool acdDoPretty = AJFALSE;
+static AjBool acdDoTable = AJFALSE;
+static AjBool acdDoTrace = AJFALSE;
+static AjBool acdDoValid = AJFALSE;
+static AjBool acdVerbose = AJFALSE;
+static AjBool acdAuto = AJFALSE;
+static AjBool acdFilter = AJFALSE;
+static AjBool acdOptions = AJFALSE;
+static AjBool acdStdout = AJFALSE;
+static AjBool acdCodeSet = AJFALSE;
+static AjPTable acdCodeTable = NULL;
+
 static ajint acdInFile = 0;
 static ajint acdOutFile = 0;
 static ajint acdPromptTry = 2;
+
 static AjPStr acdInFName = NULL;
 static AjPStr acdInTypeFeatName = NULL;
 static AjPStr acdInTypeSeqName = NULL;
@@ -126,7 +129,8 @@ static AjPList acdListCount = NULL;
 
 typedef enum
 {
-    QUAL_STAGE, APPL_STAGE, VAR_STAGE, SEC_STAGE, ENDSEC_STAGE, BAD_STAGE
+    QUAL_STAGE, APPL_STAGE, VAR_STAGE, REL_STAGE,
+    SEC_STAGE, ENDSEC_STAGE, BAD_STAGE
 } AcdEStage ;
 
 static AcdEStage acdCurrentStage;
@@ -139,7 +143,7 @@ enum AcdELevel
     ACD_PARAM,				/* parameter */
     ACD_QUAL,				/* qualifier */
     ACD_VAR,				/* variable */
-    ACD_IF,				/* if test */
+    ACD_RELATION,			/* relation */
     ACD_SEC,				/* start new section */
     ACD_ENDSEC				/* end section */
 };
@@ -609,6 +613,7 @@ static AcdPAcd   acdNewEndsec(const AjPStr name);
 static AcdPAcd   acdNewQual(const AjPStr name, const AjPStr token,
 			    AjPStr* type, ajint pnum);
 static AcdPAcd   acdNewQualQual(const AjPStr name, AjPStr* type);
+static AcdPAcd   acdNewRel(const AjPStr name);
 static AcdPAcd   acdNewSec(const AjPStr name);
 static AcdPAcd   acdNewVar(const AjPStr name);
 static ajint     acdNextParam(ajint pnum);
@@ -722,6 +727,7 @@ static AjBool    acdUserGetPrompt(const char* prompt, AjPStr* reply);
 static void      acdValidAppl(const AcdPAcd thys);
 static void      acdValidApplGroup(const AjPStr groups);
 static void      acdValidKnowntype(const AcdPAcd thys);
+static void      acdValidRelation(const AcdPAcd thys);
 static void      acdValidSection(const AcdPAcd thys);
 static void      acdValidSectionFull(AjPStr* secname);
 static AjBool    acdValidSectionMatch(const char* secname);
@@ -838,6 +844,7 @@ static void acdHelpExpectString(const AcdPAcd thys, AjPStr* str);
 static void acdSetXxxx(AcdPAcd thys);
 static void acdSetAppl(AcdPAcd thys);
 static void acdSetEndsec(AcdPAcd thys);
+static void acdSetRel(AcdPAcd thys);
 static void acdSetSec(AcdPAcd thys);
 static void acdSetVar(AcdPAcd thys);
 static void acdSetAlign(AcdPAcd thys);
@@ -930,7 +937,7 @@ enum AcdEDef
     DEF_EXPECTED,
     DEF_NEEDED,
     DEF_KNOWNTYPE,
-    DEF_RELATION,
+    DEF_RELATIONS,
     DEF_STYLE,
     DEF_QUALIFIER,
     DEF_TEMPLATE,
@@ -973,8 +980,8 @@ AcdOAttr acdAttrDef[] =
     {"knowntype", VT_STR, "",
 	 "Known standard type, "
 	     "used to define inputs and output types for workflows"},
-    {"relation", VT_STR, "",
-	 "Relationship between this ACD item and others, "
+    {"relations", VT_STR, "",
+	 "Relationships between this ACD item and others, "
 	     "defined as specially formatted text"},
     {"style", VT_STR, "",
 	 "Style for SoapLab's ACD files"},
@@ -1502,6 +1509,15 @@ AcdOAttr acdAttrRegexp[] =
 	 NULL}
 };
 
+AcdOAttr acdAttrRel[] =
+{
+    {"relations", VT_STR, "",
+	 "Relationships between this ACD item and others, "
+	     "defined as specially formatted text"},
+    {NULL, VT_NULL, NULL,
+	 NULL}
+};
+
 AcdOAttr acdAttrReport[] =
 {
     {"type", VT_STR, "",
@@ -1958,6 +1974,7 @@ AcdOKey acdKeywords[] =
     {"qualifier",   QUAL_STAGE,   NULL,          NULL},
     {"application", APPL_STAGE,   acdAttrAppl,   acdSetAppl},
     {"variable",    VAR_STAGE,    acdAttrVar,    acdSetVar},
+    {"relations",   REL_STAGE,    acdAttrRel,    acdSetRel},
     {"section",     SEC_STAGE,    acdAttrSec,    acdSetSec},
     {"endsection",  ENDSEC_STAGE, acdAttrEndsec, acdSetEndsec},
     {NULL, BAD_STAGE, NULL, NULL}
@@ -2866,7 +2883,7 @@ static AcdEStage acdStage(const AjPStr token)
     if(ifound == 1)
     {
 	if (acdDoValid)
-	    acdWarn("Ambiguous stage '%S'", token);
+	    acdWarn("Abbreviated stage '%S' (%S)", token, ambigList);
 	return j;
     }
 
@@ -3052,6 +3069,23 @@ static void acdParse(AjPList listwords, AjPList listcount)
 	    acdPretty("\n%s: %S \"%S\"\n",
 		      acdKeywords[acdCurrentStage].Name,
 		      acdStrName, acdStrValue);
+	    break;
+	    
+	case REL_STAGE:
+	    /* relation: name [ attrlist ] */
+	    acdParseName(listwords, &acdStrName);
+	    
+	    acdNewCurr = acdNewRel(acdStrName);
+	    
+	    acdPretty("\n%s: %S [\n",
+		      acdKeywords[acdCurrentStage].Name, acdStrName);
+	    
+	    acdParseAttributes(acdNewCurr, listwords);
+	    
+	    acdValidRelation(acdNewCurr);
+
+	    acdPrettyShift();
+	    
 	    break;
 	    
 	case BAD_STAGE:			/* test badstage.acd */
@@ -3619,6 +3653,38 @@ static AcdPAcd acdNewVar(const AjPStr name)
 
 
 
+/* @funcstatic acdNewRel ******************************************************
+**
+** Constructor front end for a relation ACD object.
+**
+** @param [r] name [const AjPStr] Token name to be used by applications
+** @return [AcdPAcd] ACD variable object for name.
+** @@
+******************************************************************************/
+
+static AcdPAcd acdNewRel(const AjPStr name)
+{
+    AcdPAcd acd;
+    static ajint firstcall = 1;
+    static ajint ikey;
+
+    if(firstcall)
+    {
+	ikey = acdFindKeyC("relation");
+	firstcall = 0;
+    }
+
+    acdLog("acdNewRel '%S'\n", name);
+
+    acd = acdNewAcdKey(name, name, ikey);
+    acd->Level = ACD_RELATION;
+
+    return acd;
+}
+
+
+
+
 /* @funcstatic acdNewSec ******************************************************
 **
 ** Constructor front end for a section ACD object.
@@ -4149,16 +4215,17 @@ static AcdPAcd acdFindAssoc(const AcdPAcd thys, const AjPStr name,
     if(ifound == 1)
     {
 	if (acdDoValid)
-	    acdWarn("Ambiguous associated qualifier '%S'", name);
+	    acdWarn("Abbreviated associated qualifier '%S' (%S)",
+		    name, ambigList);
 	return ret;
     }
     if(ifound > 1)
     {
 	ajWarn("Ambiguous name/token '%S' (%S)", name, ambigList);
-	ajStrDelReuse(&ambigList);
 	acdErrorAcd(thys,		/* ambigdefattr.acd */
-		    "Attribute or qualifier '%S' ambiguous\n",
-		    name);
+		    "Attribute or qualifier '%S' ambiguous (%S)\n",
+		    name, ambigList);
+	ajStrDelReuse(&ambigList);
     }
 
     return NULL;
@@ -4211,7 +4278,8 @@ static AcdPAcd acdTestAssoc(const AcdPAcd thys, const AjPStr name,
     if(ifound == 1)
     {
 	if (acdDoValid)
-	    acdWarn("Ambiguous associated qualifier '%S'", name);
+	    acdWarn("Abbreviated associated qualifier '%S' (%S)",
+		    name, ambigList);
 	return ret;
     }
     return NULL;
@@ -4855,6 +4923,8 @@ static void acdSetAppl(AcdPAcd thys)
 	ajUser("%S", appldoc);
     }
 
+    ajStrAssS(&thys->ValStr, thys->Name);
+
     return;
 }
 
@@ -5452,7 +5522,7 @@ AjPCod ajAcdGetCodon(const char *token)
 ** source file. This can be overridden for any codon definition by the
 ** "name" attribute.
 **
-** Perhaps "name:" should be a requiredc attribute rather than using
+** Perhaps "name:" should be a required attribute rather than using
 ** a hidden internal default.
 **
 ** Various file naming options are defined, but not yet implemented here.
@@ -9160,6 +9230,32 @@ static void acdSetRegexp(AcdPAcd thys)
 
 
 
+/* @funcstatic acdSetRel ******************************************************
+**
+** Defines an ACD relation.
+**
+** Called when a "variable" type ACD item is checked. Should not be called
+** for any other item.
+**
+** At present there is nothing to prompt for here, though there could
+** be, for example, a report of what the program does which would appear
+** before any user prompts.
+**
+** @param [u] thys [AcdPAcd] ACD for the application item.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdSetRel(AcdPAcd thys)
+{
+    acdAttrToStr(thys, "relations", "", &thys->ValStr);
+    
+    return;
+}
+
+
+
+
 /* @func ajAcdGetReport *******************************************************
 **
 ** Returns an item of type Report as defined in a named ACD item.
@@ -11905,7 +12001,8 @@ static void* acdGetValueNum(const char *token, const char* type, ajint pnum)
 	       ret->Name, ret->PNum, ret->ValStr);
 	ret->Used |= USED_GET;
 	if (acdDoValid)
-	    acdWarn("Ambiguous qualifier '%S'", token);
+	    acdWarn("Abbreviated qualifier '%S' (%S)", token, ambigList);
+	ajStrDelReuse(&ambigList);
 	return ret->Value;
     }
 
@@ -14035,7 +14132,8 @@ static ajint acdFindAttr(const AcdPAttr attr, const AjPStr attrib)
     if(ifound == 1)
     {
 	if (acdDoValid)
-	    acdWarn("Ambiguous attribute '%S'", attrib);
+	    acdWarn("Abbreviated attribute '%S' (%S)", attrib, ambigList);
+	ajStrDelReuse(&ambigList);
 	return j;
     }
 
@@ -14087,7 +14185,8 @@ static ajint acdFindAttrC(const AcdPAttr attr, const char* attrib)
     if(ifound == 1)
     {
 	if (acdDoValid)
-	    acdWarn("Ambiguous attribute '%s'", attrib);
+	    acdWarn("Abbreviated attribute '%s', %S", attrib, ambigList);
+	ajStrDelReuse(&ambigList);
 	return j;
     }
     if(ifound > 1)
@@ -14188,21 +14287,70 @@ static void acdSetAll(void)
 {
     AcdPAcd pa;
 
-    ajint i = 0;
+    AjBool isstd;
+    AjBool isadd;
 
+    char* stdstring = "std";
+    char* addstring = "opt";
+    char* advstring = "   ";
+    char* nostring = "   ";
+    char* level;
+    ajint iendsec = 0;
+
+    if (acdDoTrace)
+    {
+	iendsec = acdFindKeyC("endsection");
+	ajUser("");
+	ajUser("Line Std        ACD_Type  Name and 'value'");
+	ajUser("---- --- ---------------  ----------------");
+    }
 
     for(acdSetCurr=acdList; acdSetCurr; acdSetCurr = acdSetCurr->Next)
     {
 	pa = acdSetCurr;
-	if(acdIsStype(pa)) continue;
 
-	/* Call funclist acdType() else call acdKeywords */
-	if(acdIsQtype(pa))
+	if(acdIsStype(pa))
+	    ;
+	else if (acdIsQtype(pa))
 	    acdType[pa->Type].TypeSet(pa);
 	else
 	    acdKeywords[pa->Type].KeySet(pa);
-
-	i++;
+	if (acdDoTrace)
+	{
+	    if(acdIsQtype(pa))
+	    {
+		acdAttrToBool(pa, "standard", ajFalse, &isstd);
+		acdAttrToBool(pa, "parameter", isstd, &isstd);
+		acdAttrToBool(pa, "additional", ajFalse, &isadd);
+		if (isstd)
+		    level = stdstring;
+		else if (isadd)
+		    level = addstring;
+		else
+		    level = advstring;
+		
+		if (pa->Assoc)
+		    continue;
+		else
+		    ajUser("%4d %s %15s: %S '%S'",
+			   pa->LineNum, level, acdType[pa->Type].Name,
+			   pa->Name, pa->ValStr);
+	    }
+	    else if(acdIsStype(pa))
+	    {
+		ajUser("%4d %s %15s: %S",
+		       pa->LineNum, level, acdKeywords[pa->Type].Name,
+		       pa->Name);
+		if (pa->Type == iendsec)
+		    ajUser("");
+	    }
+	    else
+	    {
+		ajUser("%4d %s %15s: %S '%S'",
+		       pa->LineNum, nostring, acdKeywords[pa->Type].Name,
+		       pa->Name, pa->ValStr);
+	    }
+	}
     }
 
     return;
@@ -14983,6 +15131,12 @@ static AjBool acdVarResolve(AjPStr* var)
     if(ifun > 1)
 	acdLog("Recursive expressions in '%S'\n", savein);
     
+    if (acdDoTrace)
+    {
+	if (ifun || ivar)
+	    ajUser("                          resolved '%S' => '%S'",
+		   savein, *var);
+    }
     ajStrDelReuse(&savein);
     ajStrDelReuse(&token);
     ajStrDelReuse(&result);
@@ -16079,7 +16233,8 @@ static AjBool acdExpCase(AjPStr* result, const AjPStr str)
 	    }
 	    acdLog("%S ~= %S : '%S'\n", testvar, acdExpTmpstr, *result);
 	    if (acdDoValid)
-		acdWarn("Ambiguous case expression '%S'", testvar);
+		acdWarn("Ambiguous case expression '%S' (%S)",
+			testvar, *result);
 	    return ajTrue;
 	}
 
@@ -16363,7 +16518,8 @@ static AjBool acdAttrValueStr(const AcdPAcd thys,
 **
 ** Sets special internal variables to reflect their presence.
 **
-** Currently these are "acdlog", "acdpretty", "acdtable", "acdvalid"
+** Currently these are "acdlog", "acdpretty", "acdtable", "acdtrace" and
+** "acdvalid"
 **
 ** @param [r] optionName [const char*] option name
 ** @return [AjBool] ajTrue if option was recognised
@@ -16387,6 +16543,12 @@ AjBool ajAcdSetControl(const char* optionName)
     if(!ajStrCmpCaseCC(optionName, "acdtable"))
     {
 	acdDoTable = ajTrue;
+	return ajTrue;
+    }
+
+    if(!ajStrCmpCaseCC(optionName, "acdtrace"))
+    {
+	acdDoTrace = ajTrue;
 	return ajTrue;
     }
 
@@ -17108,7 +17270,8 @@ static AcdPAcd acdFindItem(const AjPStr item, ajint number)
     if(ifound == 1)
     {
 	if (acdDoValid)
-	    acdWarn("Ambiguous item '%S'", item);
+	    acdWarn("Abbreviated item '%S' (%S)", item, ambigList);
+	ajStrDelReuse(&ambigList);
 	return ret;
     }
     if(ifound > 1)
@@ -17244,7 +17407,8 @@ static AcdPAcd acdFindQual(const AjPStr qual, const AjPStr noqual,
 	if(isparam)
 	    *iparam = ret->PNum;
 	if (acdDoValid)
-	    acdWarn("Ambiguous qualifier '%S'", qual);
+	    acdWarn("Abbreviated qualifier '%S' (%S)", qual, ambigList);
+	ajStrDelReuse(&ambigList);
 	return ret;
     }
 
@@ -17431,7 +17595,9 @@ static AcdPAcd acdFindQualMaster(const AjPStr qual, const AjPStr noqual,
     {
 	acdListCurr = ret;
 	if (acdDoValid)
-	    acdWarn("Ambiguous associated qualifier '%S_%S'", qual, master);
+	    acdWarn("Abbreviated associated qualifier '%S_%S' (%S)",
+		    qual, master, ambigList);
+	ajStrDelReuse(&ambigList);
 	return ret;
     }
 
@@ -17518,7 +17684,9 @@ static AcdPAcd acdFindQualAssoc(const AcdPAcd thys,
     {
 	acdListCurr = ret;
 	if (acdDoValid)
-	    acdWarn("Ambiguous associated qualifier '%S'", qual);
+	    acdWarn("Abbreviated associated qualifier '%S' (%S)",
+		    qual, ambigList);
+	ajStrDelReuse(&ambigList);
 	return acdListCurr;
     }
 
@@ -20640,6 +20808,29 @@ static void acdValidAppl(const AcdPAcd thys)
 
 
 
+
+/* @funcstatic acdValidRelation ***********************************************
+**
+** Validation for a relation definition
+**
+** @param [r] thys [const AcdPAcd] ACD object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdValidRelation(const AcdPAcd thys)
+{
+    AjPStr tmpstr   = NULL;
+
+    if(!acdDoValid)
+	return;
+
+    tmpstr = acdAttrValue(thys, "relations");
+
+    ajStrDel(&tmpstr);
+
+    return;
+}
 
 /* @funcstatic acdValidSection ************************************************
 **
