@@ -45,8 +45,6 @@ import org.emboss.jemboss.soap.*;           // results manager
 public class Jemboss implements ActionListener
 {
 
-// Swing components
-
 /** Jemboss frame      */
   private JFrame f;
 /** Jemboss split pain */
@@ -156,7 +154,7 @@ public class Jemboss implements ActionListener
     }
 
     f = new JFrame("Jemboss");
-// make the local file manager
+    // make the local file manager
     tree = new DragTree(new File(mysettings.getUserHome()),
                         f, mysettings);
 
@@ -176,7 +174,7 @@ public class Jemboss implements ActionListener
 
     JMenuBar btmMenu = new JMenuBar();
 
-// button to extend window
+    // button to extend window
     extend = new JButton(fwdArrow);
     extend.setBorder(BorderFactory.createMatteBorder(0,0,0,0, Color.black));
     extend.addActionListener(this);
@@ -202,7 +200,7 @@ public class Jemboss implements ActionListener
 
     int arrowSize = fwdArrow.getIconWidth();
     Dimension jform;
-// set window dimensions, dependent on screen size
+    // set window dimensions, dependent on screen size
     if(d.getWidth()<1024)
     {
       jdim = new Dimension(615,500);
@@ -220,11 +218,11 @@ public class Jemboss implements ActionListener
       jform = new Dimension(660-180+arrowSize,500);
     }
 
-// setup the top menu bar
+    // setup the top menu bar
     SetUpMenuBar mainMenu = new SetUpMenuBar(
                 mysettings, f, envp, cwd, withSoap);
 
-// add to Jemboss main frame and locate it center left of screen
+    // add to Jemboss main frame and locate it center left of screen
     f.getContentPane().add(pmain);
     f.pack();
     f.setLocation(0,((int)d.getHeight()-f.getHeight())/2);
@@ -241,7 +239,7 @@ public class Jemboss implements ActionListener
 /**
 *
 *  Action event to open the file manager
-*
+*  @param ae		the action event generated
 *
 */
   public void actionPerformed(ActionEvent ae)
@@ -266,7 +264,8 @@ public class Jemboss implements ActionListener
 /**
 *
 *  Delete temporary files
-*  @param current working directory (local)
+*  @param cwd 		current working directory (local)
+*  @param suffix 	suffix of the file to delete
 *
 */
   private void deleteTmp(File cwd, final String suffix) 
