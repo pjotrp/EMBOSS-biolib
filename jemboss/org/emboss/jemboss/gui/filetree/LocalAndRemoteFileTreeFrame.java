@@ -42,6 +42,7 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
 * @param mysettings JembossParams with settings information
 */
   public LocalAndRemoteFileTreeFrame(final JembossParams mysettings) 
+                                throws JembossSoapException
   {
     super("File Manager");
     try
@@ -138,7 +139,8 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
     }
     catch(JembossSoapException jse)
     {
-      new AuthPopup(mysettings,this);
+      throw new JembossSoapException();
+//    new AuthPopup(mysettings,this);
     }
   }
 
