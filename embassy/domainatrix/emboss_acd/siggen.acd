@@ -106,6 +106,21 @@ section: input [
     knowntype: "domain clean coordinates"
   ]
 
+  list: seqoption [
+    standard: "@($(mode)==2)"
+    default: "3"
+    minimum: "1"
+    maximum: "1"
+    delimiter: ","
+    codedelimiter: ":"
+    values: "1: Substitution matrix, 2: Residue class, 3: None"
+    header: "Sequence variability scoring method"
+    information: "Select number"
+    help: "This option specifies the sequence-based scoring scheme.
+           SIGGEN provides 2 sequence-based scoring schemes that are used to
+           score the input alignment."
+  ]
+
   matrixf: datafile [
     standard: "@($(seqoption)==1)"
     information: "Substitution matrix to be used"
@@ -148,21 +163,6 @@ section: required [
            (window size is identified by the WSIZ record in the signature
            output file)."
     default: "0"
-  ]
-
-  list: seqoption [
-    standard: "@($(mode)==2)"
-    default: "3"
-    minimum: "1"
-    maximum: "1"
-    delimiter: ","
-    codedelimiter: ":"
-    values: "1: Substitution matrix, 2: Residue class, 3: None"
-    header: "Sequence variability scoring method"
-    information: "Select number"
-    help: "This option specifies the sequence-based scoring scheme.
-           SIGGEN provides 2 sequence-based scoring schemes that are used to
-           score the input alignment."
   ]
 
   toggle: filtercon [
