@@ -1155,6 +1155,8 @@ AcdOAttr acdAttrDistances[] =
 	 "Number of rows"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null filename as 'no file'"},
+    {"missval", VT_INT, "N",
+	 "Can have missing values (replicates zero)"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -1771,7 +1773,7 @@ static AcdOAttr acdCalcDistances[] =
 	 "Number of distance rows"},
     {"replicates", VT_BOOL, "",
 	 "Replicates data found in input"},
-    {"missval", VT_BOOL, "",
+    {"hasmissing", VT_BOOL, "",
 	 "Missing values found(replicates=N)"},
     {NULL, VT_NULL, NULL,
 	 NULL}
