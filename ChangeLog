@@ -1,3 +1,8 @@
+Change by Jon Ison
+Thu May  6 15:24:23 BST 2004
+'extension' ACD attribute added for dirlist datatype (ajacd.c edited)
+	
+
 Version 2.9.0
 	Fixes for list files with sequence ranges in the USAs. The
 	sequence input object is now reset during list processing.
