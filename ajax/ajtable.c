@@ -143,7 +143,7 @@ void * ajTableKey(AjPTable table, const void *key) {
       break;
   }
 
-  return p ? p->key : NULL;
+  return p ? (void*)p->key : NULL;
 }
 
 /* @func ajTableTrace ***************************************************
