@@ -740,6 +740,9 @@ static void showfeat_AddTagsStr(AjPStr *tagsout, AjPFeature feat,
     AjPStr tagnam = NULL;
     AjPStr tagval = NULL;
 
+    tagnam = ajStrNew();
+    tagval = ajStrNew();
+
     /* iterate through the tags and test for match to patterns */
     /* debug - there is something wrong with the list */
 
@@ -758,6 +761,10 @@ static void showfeat_AddTagsStr(AjPStr *tagsout, AjPFeature feat,
 	}
 
     (void) ajListIterFree(titer);
+
+    ajStrDel(&tagnam);
+    ajStrDel(&tagval);
+
     return;
 }
 
