@@ -1,5 +1,28 @@
 #!/usr/local/bin/perl -w
 
+sub runtest ($) {
+  my ($name) = @_;
+  print "Test $name\n";
+
+  if (defined($tests{$name})) {
+  print "Running $purepath$tests{$name}\n";
+    $status = system ("$purepath$tests{$name}");
+    
+    if ($status) {
+      print STDERR "Purify test $name returned status $status\n";
+    }
+    else {
+      print STDERR "Purify test $name OK\n";
+    }
+  return $status;
+  }
+  else {
+      print STDERR "ERROR: Unknown test $name \n";
+      return -1;
+  }
+
+}
+
 %tests = (
 	  "feat1" => "seqretallfeat -auto tembl:hsfau",
 	  "featmany" => "seqretallfeat -auto 'tembl:hsf*'",
@@ -7,7 +30,6 @@
 	  "setmany" => "seqretset -auto 'tsw:opsd_*'",
 	  "embl1" => "seqret -auto tembl:hsfau",
 	  "emblmany" => "seqret -auto 'tembl:hsf*'",
-	  "" => "",
 	  "wossname" => "wossname -search codon -auto",
 	  "wordmatch" => "wordmatch tembl:hsfau tembl:hsfau1 -auto",
           "wordcount" => "wordcount tembl:hsfau -auto",
@@ -81,22 +103,27 @@ else {
 @dotest = @ARGV;
 
 foreach $name (@dotest) {
-  print "Test $name\n";
-
-  if (defined($tests{$name})) {
-  print "Running $purepath$tests{$name}\n";
-    $status = system ("$purepath$tests{$name}");
-    
-    if ($status) {
-      print STDERR "Purify test $name returned status $status\n";
+  if ($name =~ /^-(\S+)$/) {
+    $arg = $1;
+    if ($arg eq "all") {
+      foreach $x (sort (keys (%tests))) {
+	runtest($x);
+      }
+      exit;
+    }
+    elsif ($arg eq "list") {
+      foreach $x (sort (keys (%tests))) {
+	printf "%-15s %s\n", $x, $tests{$x};
+      }
+      exit;
     }
     else {
-      print STDERR "Purify test $name OK\n";
+      print STDERR "Invalid argument $name (ignored)\n";
+      next;
     }
   }
-  else {
-      print STDERR "ERROR: Unknown test $name \n";
-  }
+  runtest ($name);
 }
+
 
 exit();
