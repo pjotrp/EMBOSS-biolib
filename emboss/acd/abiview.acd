@@ -75,6 +75,7 @@ section: output [
     additional: "Y"
     default: "GATC"
     information: "Base graphs to be displayed"
+    pattern: "[GATC]+"
   ]
 
 endsection: output
