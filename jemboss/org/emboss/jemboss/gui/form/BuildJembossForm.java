@@ -523,7 +523,8 @@ public class BuildJembossForm implements ActionListener
           }
           catch (IOException ioe)
           {
-            System.out.println("Failed to open sequence file " + seqoutResult);
+            if(mysettings.getDebug())
+              System.out.println("Failed to open sequence file " + seqoutResult);
           }
         }
         else if (parseAcd.isOutputGraph(j))
