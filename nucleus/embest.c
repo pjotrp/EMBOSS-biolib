@@ -743,6 +743,9 @@ EmbPEstAlign embEstAlignNonRecursive ( AjPSeq est, AjPSeq genome,
     {
       s3 = s1; s1 = s2; s2 = s3;
 
+      if ((gpos % 1000) == 0)
+	  ajDebug(" genome base %d\n", gpos);
+
       g = gseq[gpos];
 
       if ( backtrack )
@@ -1872,12 +1875,15 @@ void embEstOutBlastStyle ( AjPFile blast, AjPSeq genome, AjPSeq est,
   float percent;
   char *genomestr = ajSeqChar(genome);
   char *eststr = ajSeqChar(est);
+  ajint goff, eoff;
 
   if (verbose)
     ajDebug ("debugging set to %d\n", debug);
 
   gsub = gpos = ge->gstart;
   esub = epos = ge->estart;
+  goff = ajSeqOffset(genome);
+  eoff = ajSeqOffset(est);
 
   if (debug)
     ajDebug("blast_style_output: gsub %d esub %d\n", gsub, esub);
@@ -1898,21 +1904,24 @@ void embEstOutBlastStyle ( AjPFile blast, AjPSeq genome, AjPSeq est,
 		  {
 		      ajFmtPrintF( blast,
 			      "?Intron  %5d %5.1f %5d %5d %-12s\n",
-			      -intron_penalty, (float) 0.0, gpos+1,
-			      gpos+ge->align_path[p+1], ajSeqName(genome) );
+			      -intron_penalty, (float) 0.0, goff+gpos+1,
+			      goff+gpos+ge->align_path[p+1],
+				  ajSeqName(genome) );
 		  }
 		else /* proper intron */
 		  {
 		    if ( ge->align_path[p] == FORWARD_SPLICED_INTRON )
 		      ajFmtPrintF( blast,
-			      "+Intron  %5d %5.1f %5d %5d %-12s\n",
-			      -splice_penalty, (float) 0.0, gpos+1,
-			      gpos+ge->align_path[p+1], ajSeqName(genome) );
+				  "+Intron  %5d %5.1f %5d %5d %-12s\n",
+				  -splice_penalty, (float) 0.0, goff+gpos+1,
+				  goff+gpos+ge->align_path[p+1],
+				  ajSeqName(genome) );
 		    else
 		      ajFmtPrintF( blast,
-			      "-Intron  %5d %5.1f %5d %5d %-12s\n",
-			      -splice_penalty, (float) 0.0, gpos+1,
-			      gpos+ge->align_path[p+1], ajSeqName(genome) );
+				  "-Intron  %5d %5.1f %5d %5d %-12s\n",
+				  -splice_penalty, (float) 0.0, goff+gpos+1,
+				  goff+gpos+ge->align_path[p+1],
+				  ajSeqName(genome) );
 
 		  }
 	      }
@@ -1985,15 +1994,15 @@ void embEstOutBlastStyle ( AjPFile blast, AjPSeq genome, AjPSeq est,
 	  if ( reverse )
 	    ajFmtPrintF( blast,
 		     "\nSpan     %5d %5.1f %5d %5d %-12s %5d %5d %-12s  %S\n",
-		     ge->score, percent, ge->gstart+1, ge->gstop+1,
-		     ajSeqName(genome), ajSeqLen(est)-ge->estart,
-		     ajSeqLen(est)-ge->estop,
+		     ge->score, percent, goff+ge->gstart+1, goff+ge->gstop+1,
+		     ajSeqName(genome), eoff+ajSeqLen(est)-ge->estart,
+		     eoff+ajSeqLen(est)-ge->estop,
 		     ajSeqName(est), ajSeqGetDesc(est) );
 	  else
 	    ajFmtPrintF( blast,
 		    "\nSpan     %5d %5.1f %5d %5d %-12s %5d %5d %-12s  %S\n",
-		    ge->score, percent, ge->gstart+1, ge->gstop+1,
-		    ajSeqName(genome), ge->estart+1, ge->estop+1,
+		    ge->score, percent, goff+ge->gstart+1, goff+ge->gstop+1,
+		    ajSeqName(genome), eoff+ge->estart+1, eoff+ge->estop+1,
                     ajSeqName(est), ajSeqGetDesc(est) );
 	}
 
@@ -2028,6 +2037,10 @@ static void estWriteMsp( AjPFile ofile, ajint *matches,
 {
 
   float percent;
+  ajint goff, eoff;
+
+  goff = ajSeqOffset(genome);
+  eoff = ajSeqOffset(est);
 
   if ( *len > 0 )
     percent = (*matches/(float)(*len))*(float)100.0;
@@ -2043,12 +2056,12 @@ static void estWriteMsp( AjPFile ofile, ajint *matches,
       if ( reverse )
 	ajFmtPrintF(ofile, "%5d %5.1f %5d %5d %-12s %5d %5d %-12s  %S\n",
 		    *tsub, percent, gsub+1, gpos, ajSeqName(genome),
-		    ajSeqLen(est)-esub,  ajSeqLen(est)-epos+1,
+		    eoff+ajSeqLen(est)-esub,  eoff+ajSeqLen(est)-epos+1,
 		    ajSeqName(est), ajSeqGetDesc(est) );
       else
 	ajFmtPrintF(ofile, "%5d %5.1f %5d %5d %-12s %5d %5d %-12s  %S\n",
-		*tsub, percent, gsub+1, gpos, ajSeqName(genome),
-		esub+1, epos, ajSeqName(est), ajSeqGetDesc(est) );
+		*tsub, percent, goff+gsub+1, goff+gpos, ajSeqName(genome),
+		eoff+esub+1, eoff+epos, ajSeqName(est), ajSeqGetDesc(est) );
     }
   *matches = *len = *tsub = 0;
 }
