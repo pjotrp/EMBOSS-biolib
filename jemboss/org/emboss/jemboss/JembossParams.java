@@ -147,6 +147,8 @@ public class JembossParams
   private String embossBinName = "embossBin";
   private String embossPath = "/usr/bin/:/bin";
   private String embossPathName = "embossPath";
+  private String embossEnvironment = "";
+  private String embossEnvironmentName = "embossEnvironment";
   private String acdDirToParse = "/usr/local/share/EMBOSS/acd/";
   private String acdDirToParseName = "acdDirToParse";
 
@@ -176,6 +178,7 @@ public class JembossParams
     defaults.put(embossDataName,embossData);
     defaults.put(embossBinName,embossBin);
     defaults.put(embossPathName,embossPath);
+    defaults.put(embossEnvironmentName,embossEnvironment);
     defaults.put(acdDirToParseName,acdDirToParse);
 
     defaults.put(useProxyName, new Boolean(useProxy).toString());
@@ -291,6 +294,7 @@ public class JembossParams
       embossData = jembossSettings.getProperty(embossDataName);
       embossBin = jembossSettings.getProperty(embossBinName);
       embossPath = jembossSettings.getProperty(embossPathName);
+      embossEnvironment = jembossSettings.getProperty(embossEnvironmentName);
       acdDirToParse = jembossSettings.getProperty(acdDirToParseName);
       tmp = jembossSettings.getProperty(jembossServerName);
       jembossServer = new Boolean(tmp).booleanValue();
@@ -573,6 +577,46 @@ public class JembossParams
     return embossPath;
   }
 
+  public String getEmbossEnvironment()
+  {
+    embossEnvironment = embossEnvironment.trim();
+    embossEnvironment = embossEnvironment.replace(':',' ');
+    embossEnvironment = embossEnvironment.replace(',',' ');
+    return embossEnvironment;
+  }
+
+  public String[] getEmbossEnvironmentArray(String[] envp)
+  {
+    embossEnvironment = embossEnvironment.trim();
+    embossEnvironment = embossEnvironment.replace(':',' ');
+    embossEnvironment = embossEnvironment.replace(',',' ');
+
+    if(embossEnvironment.equals(""))
+      return envp;
+
+    StringTokenizer st = new StringTokenizer(embossEnvironment," ");
+    int n=0;
+    while(st.hasMoreTokens())
+    {
+      st.nextToken();
+      n++;
+    }
+    
+    int sizeEnvp = envp.length;
+    String environ[] = new String[n+sizeEnvp];
+    st = new StringTokenizer(embossEnvironment," ");
+    for(int i=0;i<sizeEnvp;i++)
+      environ[i] = envp[i];
+
+    n=sizeEnvp;
+    while(st.hasMoreTokens())
+    {
+      environ[n] = new String(st.nextToken()); 
+      n++;
+    }
+
+    return environ;
+  }
 
   public String getAcdDirToParse()
   {
