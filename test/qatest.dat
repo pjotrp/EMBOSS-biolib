@@ -4874,6 +4874,16 @@ FP /^>NC_001321.1_1/
 FP /^VNY\*SAHDHNMTEVSYIWYFFIFFGGLARTPLWP\*\*VSSQSDKL\*LGLDVFVIWLAQPTC\n/
 //
 
+ID trimest-ex
+AP trimest
+CL tembl:hsfau hsfau.seq
+FI stderr
+FC = 1
+FI hsfau.seq
+FZ = 572
+FP /poly-A tail removed/
+//
+
 # madness - never trims anything
 ID trimseq-ex
 AP trimseq
@@ -5096,7 +5106,7 @@ IN
 FI stderr
 FC = 2
 FI stdout
-FP /^<li><a href="#ALIGNMENT">ALIGNMENT<\/a><\/li>\n/
+FP /^<li><a href="#ALIGNMENT CONSENSUS">ALIGNMENT CONSENSUS</a></li>\n/
 //
 
 # change the URL :-)
