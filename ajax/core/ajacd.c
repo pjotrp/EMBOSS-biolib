@@ -318,8 +318,8 @@ typedef struct AcdSTableItem
 ** @attr AttrStr [AjPStr*] Definitions of ACD type-specific attributes
 ** @attr SAttr [ajint] Number of calculated attributes for this ACD type
 ** @attr SetAttr [AcdPAttr] Definitions of calculated attributes
-** @attr SetStr [AjPPStr] Values for the calculated attributes (SetAttr)
-** @attr DefStr [AjPPStr] Values for the default attributes
+** @attr SetStr [AjPStr*] Values for the calculated attributes (SetAttr)
+** @attr DefStr [AjPStr*] Values for the default attributes
 ** @attr Defined [AjBool] Set when a value is defined by the user
 ** @attr Used [ajint] Use count, saved for a possible diagnostic message to
 **                    catch ACD items declared and never referenced by the
@@ -351,8 +351,8 @@ typedef struct AcdSAcd
     AjPStr* AttrStr;
     ajint SAttr;
     AcdPAttr SetAttr;
-    AjPPStr SetStr;
-    AjPPStr DefStr;
+    AjPStr* SetStr;
+    AjPStr* DefStr;
     AjBool Defined;
     ajint Used;
     AjBool Assoc;
@@ -471,8 +471,8 @@ static AcdPAcd acdSetCurr = NULL;
 static ajint acdNParam=0;
 static void      acdAmbigApp(AjPStr* pambiglist, const AjPStr str);
 static void      acdAmbigAppC(AjPStr* pambiglist, const char* txt);
-static void      acdArgsParse(ajint argc, char * const argv[]);
-static void      acdArgsScan(ajint argc, char * const argv[]);
+static void      acdArgsParse(ajint argc, char *argv[]);
+static void      acdArgsScan(ajint argc, char *argv[]);
 static ajint     acdAttrCount(ajint itype);
 static ajint     acdAttrKeyCount(ajint ikey);
 static ajint     acdAttrListCount(const AcdPAttr attr);
@@ -571,7 +571,7 @@ static AjBool    acdHelpCodeDef(const AcdPAcd thys, AjPStr *msg);
 static void      acdHelpShow(const AjPStr str, const char* title);
 static void      acdHelpTable(const AcdPAcd thys, AjPList tablist,
 			       char flag);
-static void      acdHelpTableShow(const AjPList tablist, const char* title);
+static void      acdHelpTableShow(AjPList tablist, const char* title);
 static void      acdHelpText(const AcdPAcd thys, AjPStr* msg);
 static void      acdHelpValid(const AcdPAcd thys, AjPStr *str);
 static AjBool    acdHelpVarResolve(AjPStr* str, const AjPStr src);
@@ -593,7 +593,7 @@ static AjBool    acdIsQtype(const AcdPAcd thys);
 static AjBool    acdIsRequired(const AcdPAcd thys);
 static AjBool    acdIsRightB(AjPStr* pstr, AjPList listwords);
 static AjBool    acdIsStype(const AcdPAcd thys);
-static void      acdListAttr(const AcdPAttr attr, const AjPPStr valstr,
+static void      acdListAttr(const AcdPAttr attr, AjPStr* valstr,
 			     ajint nattr);
 static void      acdListPrompt(const AcdPAcd thys);
 static void      acdListReport(const char *title);
@@ -616,17 +616,17 @@ static AjBool    acdNotLeftB(const AjPList listwords);
 static AjBool    acdOutDirectory(AjPStr* outdir);
 static AjBool    acdOutFilename(AjPStr* outfname, const AjPStr name,
 				const AjPStr ext);
-static ajint     acdOutFormatCodon(const AjPStr format);
-static ajint     acdOutFormatCpdb(const AjPStr format);
-static ajint     acdOutFormatData(const AjPStr format);
-static ajint     acdOutFormatDiscrete(const AjPStr format);
-static ajint     acdOutFormatDistance(const AjPStr format);
-static ajint     acdOutFormatFreq(const AjPStr format);
-static ajint     acdOutFormatMatrix(const AjPStr format);
-static ajint     acdOutFormatMatrixf(const AjPStr format);
-static ajint     acdOutFormatProperties(const AjPStr format);
-static ajint     acdOutFormatScop(const AjPStr format);
-static ajint     acdOutFormatTree(const AjPStr format);
+static ajint     acdOutFormatCodon(AjPStr format);
+static ajint     acdOutFormatCpdb(AjPStr format);
+static ajint     acdOutFormatData(AjPStr format);
+static ajint     acdOutFormatDiscrete(AjPStr format);
+static ajint     acdOutFormatDistance(AjPStr format);
+static ajint     acdOutFormatFreq(AjPStr format);
+static ajint     acdOutFormatMatrix(AjPStr format);
+static ajint     acdOutFormatMatrixf(AjPStr format);
+static ajint     acdOutFormatProperties(AjPStr format);
+static ajint     acdOutFormatScop(AjPStr format);
+static ajint     acdOutFormatTree(AjPStr format);
 static void      acdParse(AjPList listwords, AjPList listcount);
 static void      acdParseAlpha(AjPList listwords, AjPStr* pword);
 static void      acdParseAttributes(const AcdPAcd acd,
@@ -637,9 +637,8 @@ static void      acdPretty(const char *fmt, ...);
 static void      acdPrettyShift();
 static void      acdPrettyWrap(ajint left, const char *fmt, ...);
 static void      acdPrettyUnShift();
-static void      acdPrintCalcAttr(AjPFile outf, const AjBool full,
-				  const char* acdtype,
-				  const AcdOAttr calcattr[]);
+static void      acdPrintCalcAttr(const AjPFile outf, const AjBool full,
+				  const char* acdtype, AcdOAttr calcattr[]);
 static void      acdProcess(void);
 static void      acdPromptAlign(AcdPAcd thys);
 static void      acdPromptCodon(AcdPAcd thys);
@@ -666,10 +665,9 @@ static void      acdPromptReport(AcdPAcd thys);
 static void      acdPromptScop(AcdPAcd thys);
 static void      acdPromptSeq(AcdPAcd thys);
 static void      acdPromptSeqout(AcdPAcd thys);
-static void      acdPromptStandard(AcdPAcd thys, const char* type,
-				   ajint* count);
-static void      acdPromptStandardAlt(AcdPAcd thys, const char* firsttype,
-				      const char* type, ajint* count);
+static void      acdPromptStandard(AcdPAcd thys, char* type, ajint* count);
+static void      acdPromptStandardAlt(AcdPAcd thys, char* firsttype,
+				      char* type, ajint* count);
 static void      acdPromptTree(AcdPAcd thys);
 static void      acdQualParse(AjPStr* pqual, AjPStr* pnoqual,
 			      AjPStr* pqmaster, ajint* number);
@@ -694,13 +692,13 @@ static AjBool    acdReplyInit(const AcdPAcd thys,
 static AjBool    acdSet(const AcdPAcd thys, AjPStr* attrib,
 			const AjPStr value);
 static void      acdSetAll(void);
-static AjBool    acdSetDef(AcdPAcd thys, const AjPStr value);
-static AjBool    acdSetDefC(AcdPAcd thys, const char* value);
+static AjBool    acdSetDef(const AcdPAcd thys, const AjPStr value);
+static AjBool    acdSetDefC(const AcdPAcd thys, const char* value);
 static AjPOutfile acdSetOutType(AcdPAcd thys, const char* type);
 static AjBool    acdSetQualAppl(const AcdPAcd thys, AjBool val);
-static AjBool    acdSetQualDefBool(AcdPAcd thys,
+static AjBool    acdSetQualDefBool(const AcdPAcd thys,
 				   const char* name, AjBool value);
-static AjBool    acdSetQualDefInt(AcdPAcd thys,
+static AjBool    acdSetQualDefInt(const AcdPAcd thys,
 				  const char* name, ajint value);
 static AjBool    acdSetKey(const AcdPAcd thys, AjPStr* attrib,
 			   const AjPStr value);
@@ -724,7 +722,7 @@ static void      acdValidApplGroup(const AjPStr groups);
 static void      acdValidKnowntype(const AcdPAcd thys);
 static void      acdValidSection(const AcdPAcd thys);
 static void      acdValidSectionFull(AjPStr* secname);
-static AjBool    acdValidSectionMatch(const char* secname);
+static AjBool    acdValidSectionMatch(char* secname);
 static void      acdValidQual(const AcdPAcd thys);
 static AjBool    acdValIsBool(const char* arg);
 static AjBool    acdVarResolve(AjPStr* str);
@@ -1983,7 +1981,7 @@ typedef struct AcdSOuttype
     char* Name;
     char* Format;
     void (*Prompt)(AcdPAcd thys);
-    ajint (*Outformat)(const AjPStr format);
+    ajint (*Outformat)(AjPStr format);
 } AcdOOuttype;
 
 #define AcdPOuttype AcdOOuttype*
@@ -2597,13 +2595,13 @@ AcdOValid acdValue[] =
 **                              of the ACD file
 ** @param [r] argc [ajint] Number of arguments provided on the command line,
 **        usually passsed as-is by the calling application.
-** @param [r] argv [char* const[]] Actual arguments as an array of text.
+** @param [r] argv [char* []] Actual arguments as an array of text.
 ** @param [r] package [const char*] Package name, used to find the ACD file
 ** @return [AjStatus] Always returns ajStatusOK or aborts.
 ** @@
 ******************************************************************************/
 
-AjStatus ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
+AjStatus ajAcdInitP(const char *pgm, ajint argc, char *argv[],
 		    const char *package)
 {    
     static AjPFile acdFile = NULL;
@@ -2797,12 +2795,12 @@ AjStatus ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 **                              of the ACD file
 ** @param [r] argc [ajint] Number of arguments provided on the command line,
 **        usually passsed as-is by the calling application.
-** @param [r] argv [char* const[]] Actual arguments as an array of text.
+** @param [r] argv [char* []] Actual arguments as an array of text.
 ** @return [AjStatus] Always returns ajStatusOK or aborts.
 ** @@
 ******************************************************************************/
 
-AjStatus ajAcdInit(const char *pgm, ajint argc, char * const argv[])
+AjStatus ajAcdInit(const char *pgm, ajint argc, char *argv[])
 {
     return ajAcdInitP(pgm, argc, argv, "");
 }
@@ -2886,10 +2884,9 @@ static AcdEStage acdStage(const AjPStr token)
 **
 ** Parse the command line definition and build data structures from it.
 **
-** @param [u] listwords [AjPList] List of words (as strings)
-**                      from ACD file. List empty on completion
-** @param [u] listcount [AjPList] List of word count before each line.
-**                      List empty on completion
+** @param [r] listwords [AjPList] List of words (as strings)
+**                      from ACD file
+** @param [r] listcount [AjPList] List of word count before each line
 ** @return [void]
 ** @see acdNewAppl
 ** @see acdNewQual
@@ -3187,8 +3184,8 @@ static AjPStr acdParseValue(AjPList listwords)
 **
 ** Returns the next word from a list
 **
-** @param [u] listwords [AjPList] List of words parsed from ACD file
-** @param [w] pword [AjPStr*] Next word from the list
+** @param [r] listwords [AjPList] List of words parsed from ACD file
+** @param [r] pword [AjPStr*] Next word from the list
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
@@ -3213,8 +3210,8 @@ static AjBool acdWordNext(AjPList listwords, AjPStr* pword)
 **
 ** Returns the next word from a list, in lower case.
 **
-** @param [u] listwords [AjPList] List of words parsed from ACD file
-** @param [w] pword [AjPStr*] Next word from the list
+** @param [r] listwords [AjPList] List of words parsed from ACD file
+** @param [r] pword [AjPStr*] Next word from the list
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
@@ -3244,8 +3241,8 @@ static AjBool acdWordNextLower(AjPList listwords, AjPStr* pword)
 ** This must be an ACD name (type or attribute) alphabetic only,
 ** with a trailing ':'
 **
-** @param [u] listwords [AjPList] List of words parsed from ACD file
-** @param [w] pword [AjPStr*] Next word from the list
+** @param [r] listwords [AjPList] List of words parsed from ACD file
+** @param [r] pword [AjPStr*] Next word from the list
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
@@ -3279,8 +3276,8 @@ static AjBool acdWordNextName(AjPList listwords, AjPStr* pword)
 ** This must be an ACD name (alphanumeric allowed as this is not used
 ** for qualifier names)
 **
-** @param [u] listwords [AjPList] List of words parsed from ACD file
-** @param [w] pword [AjPStr*] Next word from the list
+** @param [r] listwords [AjPList] List of words parsed from ACD file
+** @param [r] pword [AjPStr*] Next word from the list
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -3307,8 +3304,8 @@ static void acdParseName(AjPList listwords, AjPStr* pword)
 **
 ** This must be an alphabetic word, no numbers or underscores allowed.
 **
-** @param [u] listwords [AjPList] List of words parsed from ACD file
-** @param [w] pword [AjPStr*] Next word from the list
+** @param [r] listwords [AjPList] List of words parsed from ACD file
+** @param [r] pword [AjPStr*] Next word from the list
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -3365,7 +3362,7 @@ static AjBool acdNotLeftB(const AjPList listwords)
 **
 ** Tests the start of the next word in the list for '[' at the start
 **
-** @param [u] listwords [AjPList] List of words parsed from ACD file
+** @param [r] listwords [AjPList] List of words parsed from ACD file
 ** @return [AjBool] ajTrue if start of string matches '['
 ** @@
 ******************************************************************************/
@@ -3410,7 +3407,7 @@ static AjBool acdIsLeftB(AjPList listwords)
 ** Afterwards, the value of pstr is the last word with any ']' removed
 **
 ** @param [w] pstr [AjPStr*] String which has a trailing ']' removed if found
-** @param [u] listwords [AjPList] List of remaining words to be parsed
+** @param [r] listwords [AjPList] List of remaining words to be parsed
 ** @return [AjBool] ajTrue if end of string matches ']'
 ** @@
 ******************************************************************************/
@@ -3462,7 +3459,7 @@ static AjBool acdIsRightB(AjPStr* pstr, AjPList listwords)
 ** Parse the attribute list for an ACD type
 **
 ** @param [r] acd [const AcdPAcd] Acd object
-** @param [u] listwords [AjPList] List of parsed words
+** @param [r] listwords [AjPList] List of parsed words
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -3533,7 +3530,6 @@ static void acdParseAttributes(const AcdPAcd acd, AjPList listwords)
 **
 ** @param [r] name [const AjPStr] Token name to be used by applications
 ** @return [AcdPAcd] ACD application object for name.
-** @category new [AcdPAcd] Creates an ACD application
 ** @@
 ******************************************************************************/
 
@@ -3594,7 +3590,6 @@ static AcdPAcd acdNewAppl(const AjPStr name)
 **
 ** @param [r] name [const AjPStr] Token name to be used by applications
 ** @return [AcdPAcd] ACD variable object for name.
-** @category new [AcdPAcd] Creates an ACD variable
 ** @@
 ******************************************************************************/
 
@@ -3729,11 +3724,9 @@ static AcdPAcd acdNewEndsec(const AjPStr name)
 **
 ** @param [r] name [const AjPStr] Token name to be used by applications
 ** @param [r] token [const AjPStr] Qualifier name to be used on command line
-** @param [u] type [AjPStr*] Type of value to be defined. Expanded to full
-**                           type name.
+** @param [r] type [AjPStr*] Type of value to be defined
 ** @param [r] pnum [ajint] Parameter number (zero for general qualifiers)
 ** @return [AcdPAcd] ACD parameter object for name.
-** @category new [AcdPAcd] Creates a qualifier ACD
 ** @@
 ******************************************************************************/
 
@@ -3816,10 +3809,8 @@ static AcdPAcd acdNewQual(const AjPStr name, const AjPStr token,
 ** Constructor front end for an associated qualifier ACD object.
 **
 ** @param [r] name [const AjPStr] Qualifier name to be used on command line
-** @param [u] type [AjPStr*] Type of value to be defined. Expanded to full
-**                           type name.
+** @param [r] type [AjPStr*] Type of value to be defined
 ** @return [AcdPAcd] ACD parameter object for name.
-** @category new [AcdPAcd] Creates an associated qualifier ACD
 ** @@
 ******************************************************************************/
 
@@ -3852,7 +3843,6 @@ static AcdPAcd acdNewQualQual(const AjPStr name, AjPStr* type)
 ** @param [r] itype [ajint] Integer type of value to be defined
 **        as defined in acdFindType
 ** @return [AcdPAcd] ACD parameter object for name.
- ** @category new [AcdPAcd] General constructor
 ** @@
 ******************************************************************************/
 
@@ -4780,7 +4770,7 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** The function does not need to return a value. It either succeeds in filling
 ** in all values, or aborts with a suitable error messages.
 **
-** @param [u] thys [AcdPAcd] ACD for current item (which is
+** @param [r] thys [AcdPAcd] ACD for current item (which is
 **        always of type Xxxx)
 ** @return [void]
 ** @@
@@ -4838,7 +4828,7 @@ static void acdSetXxxx(AcdPAcd thys)
 ** be, for example, a report of what the program does which would appear
 ** before any user prompts.
 **
-** @param [u] thys [AcdPAcd] ACD for the application item.
+** @param [r] thys [AcdPAcd] ACD for the application item.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -4872,7 +4862,7 @@ static void acdSetAppl(AcdPAcd thys)
 ** be, for example, a blank line at the end of a section where
 ** something was prompted for.
 **
-** @param [u] thys [AcdPAcd] ACD for the endsection item.
+** @param [r] thys [AcdPAcd] ACD for the endsection item.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -4902,7 +4892,7 @@ static void acdSetEndsec(AcdPAcd thys)
 ** This would be stored (the 'info' attribute) and used in the standard
 ** prompting functions.
 **
-** @param [u] thys [AcdPAcd] ACD for the section item.
+** @param [r] thys [AcdPAcd] ACD for the section item.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -4986,7 +4976,7 @@ static void acdSetSec(AcdPAcd thys)
 ** be, for example, a report of what the program does which would appear
 ** before any user prompts.
 **
-** @param [u] thys [AcdPAcd] ACD for the application item.
+** @param [r] thys [AcdPAcd] ACD for the application item.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -5320,7 +5310,7 @@ static void acdSetArray(AcdPAcd thys)
 	acdBadRetry(thys);
     
     thys->Value = val;
-    ajFloatStr(val, precision, &thys->ValStr);
+    ajFloatStr(&thys->ValStr, val, precision);
     
     return;
 }
@@ -5487,14 +5477,14 @@ static void acdSetCodon(AcdPAcd thys)
     {
 	ok = ajTrue;	   /* accept the default if nothing changes */
 
-	ajStrAssS(&reply, defreply);
+	ajStrAss(&reply, defreply);
 
 	if(required)
 	    acdUserGet(thys, &reply);
 
 	if(ajStrLen(reply))
 	{
-	    if(!ajCodRead(val, reply))
+	    if(!ajCodRead(reply,&val))
 	    {
 		acdBadVal(thys, required,
 			  "Unable to read codon usage '%S'", reply);
@@ -5584,7 +5574,7 @@ static void acdSetCpdb(AcdPAcd thys)
     {
 	ok = ajTrue;	   /* accept the default if nothing changes */
 
-	ajStrAssS(&reply, defreply);
+	ajStrAss(&reply, defreply);
 
 	if(required)
 	    acdUserGet(thys, &reply);
@@ -5961,24 +5951,30 @@ static void acdSetDirlist(AcdPAcd thys)
     
     val = ajListstrNew();		/* set the default value */
     t   = ajStrNewC("*");
+
+    if(MAJSTRLEN(ext))
+    {
+	if(ajStrChar(ext, 0) != '.')
+	    ajStrInsertC(&ext, 0, ".");
+	ajStrApp(&t, ext);
+    }
+    
+    ajFmtPrint("term: %S\n", t);
+    
+
     ajFileScan(reply,t,&val,ajFalse,ajFalse,NULL,NULL,ajFalse,NULL);
     
     n = ajListLength(val);
 
-    ajStrInsertC(&ext, 0, ".");
-    
     for(i=0;i<n;++i)
     {
 	ajFmtPrintS(&t,"");
 	ajListPop(val,(void **)&v);
 	ajStrApp(&t,v);
 	ajStrAssC(&v,ajStrStr(t));
-	if(ajStrSuffix(v, ext))
-	    ajListPushApp(val,(void *)v);
-	else
-	    ajStrDel(&v);
+	ajListPushApp(val,(void *)v);
     }
-    
+
     ajStrDel(&t);
     
     thys->Value = val;
@@ -6390,12 +6386,10 @@ static void acdSetFeat(AcdPAcd thys)
 	acdGetValueAssoc(thys, "fformat", &tabin->Formatstr);
 	acdGetValueAssoc(thys, "fopenfile", &tabin->Filename);
 
-	val = ajFeatUfoRead(tabin, reply);
-	if(!val) {
-	    ok = ajFalse;
+	ok = ajFeatUfoRead(&val, tabin, reply);
+	if(!ok)
 	    acdBadVal(thys, required,
 		      "Unable to read feature table '%S'", reply);
-	}
     }
 
     if(!ok)
@@ -7743,7 +7737,7 @@ static void acdSetMatrix(AcdPAcd thys)
     {
 	ok = ajTrue;	   /* accept the default if nothing changes */
 	
-	ajStrAssS(&reply, defreply);
+	ajStrAss(&reply, defreply);
 	
 	if(required)
 	    acdUserGet(thys, &reply);
@@ -7768,7 +7762,7 @@ static void acdSetMatrix(AcdPAcd thys)
 	acdBadRetry(thys);
     
     thys->Value = val;
-    ajStrAssS(&thys->ValStr, reply);
+    ajStrAss(&thys->ValStr, reply);
     
     return;
 }
@@ -7829,7 +7823,7 @@ static void acdSetMatrixf(AcdPAcd thys)
     {
 	ok = ajTrue;	   /* accept the default if nothing changes */
 
-	ajStrAssS(&reply, defreply);
+	ajStrAss(&reply, defreply);
 
 	if(required)
 	    acdUserGet(thys, &reply);
@@ -8997,13 +8991,12 @@ static void acdSetRange(AcdPAcd thys)
     {
 	ok = ajTrue;	   /* accept the default if nothing changes */
 
-	ajStrAssS(&reply, defreply);
+	ajStrAss(&reply, defreply);
 
 	if(required)
 	    acdUserGet(thys, &reply);
 
-	val = ajRangeGet(reply);
-	if(!val)
+	if(!ajRangeGet(&val,reply))
 	{
 	    acdBadVal(thys, required,
 		      "Bad range specification '%S'", reply);
@@ -9377,7 +9370,7 @@ static void acdSetScop(AcdPAcd thys)
     {
 	ok = ajTrue;	   /* accept the default if nothing changes */
 
-	ajStrAssS(&reply, defreply);
+	ajStrAss(&reply, defreply);
 
 	if(required)
 	    acdUserGet(thys, &reply);
@@ -11741,7 +11734,7 @@ static void* acdGetValue(const char *token, const char* type)
 
     acdLog("acdGetValue '%s' result %x\n", token, ret);
 
-    ajCharFree(&cp);
+    ajCharFree(cp);
 
     return ret;
 }
@@ -11808,7 +11801,7 @@ static AjBool acdGetValueAssoc(const AcdPAcd thys, const char *token,
     acdLog("acdGetValueAssoc '%s' (%S)\n", token, thys->Name);
 
     acdTokenToLower(cp, &pnum);
-    ajCharFree(&cp);
+    ajCharFree(cp);
 
     if(pnum)
 	acdErrorAcd(thys,
@@ -12115,7 +12108,7 @@ static void acdHelp(void)
 ** is processed.
 **
 ** @param [r] thys [const AcdPAcd]  ACD object
-** @param [u] str [AjPStr*] Help text being built
+** @param [r] str [AjPStr*] Help text being built
 ** @param [r] name [const char*] Single name to process
 ** @return [void]
 ** @@
@@ -12178,7 +12171,7 @@ static void acdHelpAssoc(const AcdPAcd thys, AjPStr *str, const char* name)
 ** Appends a qualifier and its help text to a help category string.
 **
 ** @param [r] thys [const AcdPAcd]  ACD object
-** @param [u] str [AjPStr*] Help text being built
+** @param [r] str [AjPStr*] Help text being built
 ** @param [r] flag [char] Flag character. Usually blank, but an asterisk
 **                         is used if the status (optional/required) is
 **                         uncertain.
@@ -12251,14 +12244,13 @@ static void acdHelpAppend(const AcdPAcd thys, AjPStr *str, char flag)
 ** Generates valid description for an input sequence type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void acdHelpValidSeq(const AcdPAcd thys, AjPStr* str)
 {
-    ajStrAssC(str, "");
     return;
 }
 
@@ -12270,14 +12262,13 @@ static void acdHelpValidSeq(const AcdPAcd thys, AjPStr* str)
 ** Generates valid description for an output sequence type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void acdHelpValidSeqout(const AcdPAcd thys, AjPStr* str)
 {
-    ajStrAssC(str, "");
     return;
 }
 
@@ -12289,14 +12280,13 @@ static void acdHelpValidSeqout(const AcdPAcd thys, AjPStr* str)
 ** Generates valid description for an outfile type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void acdHelpValidOut(const AcdPAcd thys, AjPStr* str)
 {
-    ajStrAssC(str, "");
     return;
 }
 
@@ -12308,14 +12298,13 @@ static void acdHelpValidOut(const AcdPAcd thys, AjPStr* str)
 ** Generates valid description for an infile type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void acdHelpValidIn(const AcdPAcd thys, AjPStr* str)
 {
-    ajStrAssC(str, "");
     return;
 }
 
@@ -12327,14 +12316,13 @@ static void acdHelpValidIn(const AcdPAcd thys, AjPStr* str)
 ** Generates valid description for a datafile type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void acdHelpValidData(const AcdPAcd thys, AjPStr* str)
 {
-    ajStrAssC(str, "");
     return;
 }
 
@@ -12346,7 +12334,7 @@ static void acdHelpValidData(const AcdPAcd thys, AjPStr* str)
 ** Generates valid description for an integer type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -12392,7 +12380,7 @@ static void acdHelpValidInt(const AcdPAcd thys, AjPStr* str)
 ** Generates valid description for a floating point type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -12443,14 +12431,13 @@ static void acdHelpValidFloat(const AcdPAcd thys, AjPStr* str)
 ** Generates valid description for a codon usage table type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void acdHelpValidCodon(const AcdPAcd thys, AjPStr* str)
 {
-    ajStrAssC(str, "");
     return;
 }
 
@@ -12462,14 +12449,13 @@ static void acdHelpValidCodon(const AcdPAcd thys, AjPStr* str)
 ** Generates valid description for a dirlist type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void acdHelpValidDirlist(const AcdPAcd thys, AjPStr* str)
 {
-    ajStrAssC(str, "");
     return;
 }
 
@@ -12481,14 +12467,13 @@ static void acdHelpValidDirlist(const AcdPAcd thys, AjPStr* str)
 ** Generates valid description for a filelist type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void acdHelpValidFilelist(const AcdPAcd thys, AjPStr* str)
 {
-    ajStrAssC(str, "");
     return;
 }
 
@@ -12500,14 +12485,13 @@ static void acdHelpValidFilelist(const AcdPAcd thys, AjPStr* str)
 ** Generates valid description for a comparison matrix type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void acdHelpValidMatrix(const AcdPAcd thys, AjPStr* str)
 {
-    ajStrAssC(str, "");
     return;
 }
 
@@ -12519,14 +12503,13 @@ static void acdHelpValidMatrix(const AcdPAcd thys, AjPStr* str)
 ** Generates valid description for a feature output type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void acdHelpValidFeatout(const AcdPAcd thys, AjPStr* str)
 {
-    ajStrAssC(str, "");
     return;
 }
 
@@ -12543,14 +12526,13 @@ static void acdHelpValidFeatout(const AcdPAcd thys, AjPStr* str)
 ** Generates valid description for a sequence range.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void acdHelpValidRange(const AcdPAcd thys, AjPStr* str)
 {
-    ajStrAssC(str, "");
     return;
 }
 
@@ -12562,7 +12544,7 @@ static void acdHelpValidRange(const AcdPAcd thys, AjPStr* str)
 ** Generates valid description for a graphics device type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -12601,7 +12583,7 @@ static void acdHelpValidGraph(const AcdPAcd thys, AjPStr* str)
 ** Generates valid description for a string type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -12655,7 +12637,7 @@ static void acdHelpValidString(const AcdPAcd thys, AjPStr* str)
 ** Generates valid description for a regular expression type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -12710,7 +12692,7 @@ static void acdHelpValidRegexp(const AcdPAcd thys, AjPStr* str)
 ** Generates valid description for a list type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -12764,7 +12746,7 @@ static void acdHelpValidList(const AcdPAcd thys, AjPStr* str)
 ** Generates valid description for a select type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -12803,8 +12785,7 @@ static void acdHelpValidSelect(const AcdPAcd thys, AjPStr* str)
 ** and code settings.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated. Only written to if
-**                          initially empty
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -12845,7 +12826,7 @@ static void acdHelpValid(const AcdPAcd thys, AjPStr* str)
 ** Generates expected value description for an input sequence type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -12865,7 +12846,7 @@ static void acdHelpExpectSeq(const AcdPAcd thys, AjPStr* str)
 ** Generates expected value description for an output sequence type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -12888,7 +12869,7 @@ static void acdHelpExpectSeqout(const AcdPAcd thys, AjPStr* str)
 ** Generates expected value description for an outfile type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -12911,7 +12892,7 @@ static void acdHelpExpectOut(const AcdPAcd thys, AjPStr* str)
 ** Generates expected value description for an integer type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -12938,7 +12919,7 @@ static void acdHelpExpectInt(const AcdPAcd thys, AjPStr* str)
 ** Generates expected value description for a floating point type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -12970,7 +12951,7 @@ static void acdHelpExpectFloat(const AcdPAcd thys, AjPStr* str)
 ** Generates expected value description for an infile type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -12990,7 +12971,7 @@ static void acdHelpExpectIn(const AcdPAcd thys, AjPStr* str)
 ** Generates expected value description for a datafile type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -13010,7 +12991,7 @@ static void acdHelpExpectData(const AcdPAcd thys, AjPStr* str)
 ** Generates expected value description for a codon usage table type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -13032,7 +13013,7 @@ static void acdHelpExpectCodon(const AcdPAcd thys, AjPStr* str)
 ** Generates expected value description for a dirlist type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -13056,7 +13037,7 @@ static void acdHelpExpectDirlist(const AcdPAcd thys, AjPStr* str)
 ** Generates expected value description for a filelist type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -13078,7 +13059,7 @@ static void acdHelpExpectFilelist(const AcdPAcd thys, AjPStr* str)
 ** Generates expected value description for a comparison matrix type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -13098,7 +13079,7 @@ static void acdHelpExpectMatrix(const AcdPAcd thys, AjPStr* str)
 ** Generates expected value description for a feature output type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -13118,7 +13099,7 @@ static void acdHelpExpectFeatout(const AcdPAcd thys, AjPStr* str)
 ** Generates expected value description for a sequence range type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -13138,7 +13119,7 @@ static void acdHelpExpectRange(const AcdPAcd thys, AjPStr* str)
 ** Generates expected value description for a graphics device type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -13158,7 +13139,7 @@ static void acdHelpExpectGraph(const AcdPAcd thys, AjPStr* str)
 ** Generates expected value description for a regular expression type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -13187,7 +13168,7 @@ static void acdHelpExpectRegexp(const AcdPAcd thys, AjPStr* str)
 ** Generates expected value description for a string type.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -13217,7 +13198,7 @@ static void acdHelpExpectString(const AcdPAcd thys, AjPStr* str)
 ** Generates expected value text for an ACD object code settings.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -13268,7 +13249,7 @@ static void acdHelpExpect(const AcdPAcd thys, AjPStr* str)
 ** and code settings.
 **
 ** @param [r] thys [const AcdPAcd] ACD object
-** @param [w] str [AjPStr*] Help text (if any) generated
+** @param [r] str [AjPStr*] Help text (if any) generated
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -13357,13 +13338,13 @@ static void acdHelpShow(const AjPStr str, const char* title)
 ** Prints the qualifier category and the help for any
 ** qualifiers in that category (or "(none)" if there are none).
 **
-** @param [r] tablist [const AjPList] Help text (if any).
+** @param [r] tablist [AjPList] Help text (if any)
 ** @param [r] title [const char*] Title line for this call
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void acdHelpTableShow(const AjPList tablist, const char* title)
+static void acdHelpTableShow(AjPList tablist, const char* title)
 {
     AcdPTableItem item;
     AjIList iter = NULL;
@@ -13385,7 +13366,7 @@ static void acdHelpTableShow(const AjPList tablist, const char* title)
     }
     else
     {
-	iter = ajListIterRead(tablist);
+	iter = ajListIter(tablist);
 	while((item = ajListIterNext(iter)))
 	{
 	    ajUser("<tr>");
@@ -13397,7 +13378,7 @@ static void acdHelpTableShow(const AjPList tablist, const char* title)
 	}
     }
 
-    ajListIterFree(&iter);
+    ajListIterFree(iter);
 
     return;
 }
@@ -13410,7 +13391,7 @@ static void acdHelpTableShow(const AjPList tablist, const char* title)
 ** Appends an associated qualifier and its help text to the table list.
 **
 ** @param [r] thys [const AcdPAcd]  ACD object
-** @param [u] tablist [AjPList] Help text list being built
+** @param [r] tablist [AjPList] Help text list being built
 ** @param [r] flag [char] Flag character. Usually blank, but an asterisk
 **                         is used if the status (optional/required) is
 **                         uncertain.
@@ -13473,7 +13454,7 @@ static void acdHelpAssocTable(const AcdPAcd thys, AjPList tablist, char flag)
 ** Appends a qualifier and its help text to the table list.
 **
 ** @param [r] thys [const AcdPAcd]  ACD object
-** @param [u] tablist [AjPList] Help text list being built
+** @param [r] tablist [AjPList] Help text list being built
 ** @param [r] flag [char] Flag character. Usually blank, but an asterisk
 **                         is used if the status (optional/required) is
 **                         uncertain.
@@ -13652,13 +13633,13 @@ static void acdListReport(const char* title)
 ** Reports all attributes for an ACD attribute list.
 **
 ** @param [r] attr [const AcdPAttr] Attribute list
-** @param [r] valstr [const AjPPStr] Array of string attribute values
+** @param [r] valstr [AjPStr*] Array of string attribute values
 ** @param [r] nattr [ajint] Number of attributes in list
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void acdListAttr(const AcdPAttr attr, const AjPPStr valstr, ajint nattr)
+static void acdListAttr(const AcdPAttr attr, AjPStr* valstr, ajint nattr)
 {
     ajint i;
 
@@ -13686,7 +13667,7 @@ static void acdListAttr(const AcdPAttr attr, const AjPPStr valstr, ajint nattr)
 ** All attributes, of whatever type, are treated as strings at this stage.
 **
 ** @param [r] thys [const AcdPAcd] ACD item.
-** @param [u] attrib [AjPStr*] Attribute name - converted to full name
+** @param [r] attrib [AjPStr*] Attribute name
 ** @param [r] value [const AjPStr] Attribute value
 ** @return [AjBool] ajTrue if attribute is valid.
 ** @cre Aborts if attribute is not found.
@@ -13766,7 +13747,7 @@ static AjBool acdSet(const AcdPAcd thys, AjPStr* attrib, const AjPStr value)
 ** All attributes, of whatever type, are treated as strings at this stage.
 **
 ** @param [r] thys [const AcdPAcd] ACD item.
-** @param [u] attrib [AjPStr*] Attribute name, converted to full name
+** @param [r] attrib [AjPStr*] Attribute name
 ** @param [r] value [const AjPStr] Attribute value
 ** @return [AjBool] ajTrue if attribute is valid.
 ** @cre Aborts if attribute is not found.
@@ -13843,13 +13824,13 @@ static AjBool acdDef(AcdPAcd thys, const AjPStr value)
 **
 ** Sets the default value for an ACD item.
 **
-** @param [u] thys [AcdPAcd] ACD item
+** @param [u] thys [const AcdPAcd] ACD item
 ** @param [r] value [const AjPStr] Default value
 ** @return [AjBool] ajTrue always.
 ** @@
 ******************************************************************************/
 
-static AjBool acdSetDef(AcdPAcd thys, const AjPStr value)
+static AjBool acdSetDef(const AcdPAcd thys, const AjPStr value)
 {
     AjPStr* attrstr = thys->DefStr;
 
@@ -13870,13 +13851,13 @@ static AjBool acdSetDef(AcdPAcd thys, const AjPStr value)
 **
 ** Sets the default value for an ACD item.
 **
-** @param [u] thys [AcdPAcd] ACD item
+** @param [u] thys [const AcdPAcd] ACD item
 ** @param [r] value [const char *] Default value
 ** @return [AjBool] ajTrue always.
 ** @@
 ******************************************************************************/
 
-static AjBool acdSetDefC(AcdPAcd thys, const char* value)
+static AjBool acdSetDefC(const AcdPAcd thys, const char* value)
 {
     AjPStr *attrstr = thys->DefStr;
 
@@ -13895,16 +13876,16 @@ static AjBool acdSetDefC(AcdPAcd thys, const char* value)
 
 /* @funcstatic acdSetQualDefBool **********************************************
 **
-** Sets the default value for an ACD item or one of its associated qualifiers
+** Sets the default value for an ACD item.
 **
-** @param [u] thys [AcdPAcd] ACD item
+** @param [u] thys [const AcdPAcd] ACD item
 ** @param [r] name [const char *] Qualifier name
 ** @param [r] value [AjBool] Default value
 ** @return [AjBool] ajTrue always.
 ** @@
 ******************************************************************************/
 
-static AjBool acdSetQualDefBool(AcdPAcd thys,
+static AjBool acdSetQualDefBool(const AcdPAcd thys,
 				const char* name, AjBool value)
 {
     AjPStr *attrstr;
@@ -13934,16 +13915,16 @@ static AjBool acdSetQualDefBool(AcdPAcd thys,
 
 /* @funcstatic acdSetQualDefInt ***********************************************
 **
-** Sets the default value for an ACD item or one of its associated qualifiers
+** Sets the default value for an ACD item.
 **
-** @param [u] thys [AcdPAcd] ACD item
+** @param [u] thys [const AcdPAcd] ACD item
 ** @param [r] name [const char *] Qualifier name
 ** @param [r] value [ajint] Default value
 ** @return [AjBool] ajTrue always.
 ** @@
 ******************************************************************************/
 
-static AjBool acdSetQualDefInt(AcdPAcd thys, const char* name,
+static AjBool acdSetQualDefInt(const AcdPAcd thys, const char* name,
 			       ajint value)
 {
     AjPStr *attrstr;
@@ -14754,7 +14735,7 @@ static AjBool acdAttrResolve(const AcdPAcd thys, const char *attr,
 ** Used to check whether variables might be used before we have set
 ** their values..
 **
-** @param [r] var [const AjPStr] String value
+** @param [w] var [const AjPStr] String value
 ** @return [AjBool] ajTrue if a variable was found
 ** @@
 ******************************************************************************/
@@ -14781,7 +14762,7 @@ static AjBool acdVarTest(const AjPStr var)
 **
 ** Used by acdvalid to check for dependencies that are too complex
 **
-** @param [r] var [const AjPStr] String value
+** @param [w] var [const AjPStr] String value
 ** @param [w] toggle [AjBool*] ajTrue if the value is a simple true or false
 **                             test of a toggle variable
 ** @return [AjBool] ajTrue if a variable was found
@@ -15090,7 +15071,7 @@ static AjBool acdFunResolve(AjPStr* result, const AjPStr str)
 **
 ** Looks for and resolves an expression @( num + num )
 **
-** @param [w] result [AjPStr*] Expression result
+** @param [r] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
 ** @return [AjBool] ajTrue if successfully resolved
 ** @@
@@ -15148,7 +15129,7 @@ static AjBool acdExpPlus(AjPStr* result, const AjPStr str)
 **
 ** Looks for and resolves an expression @( num - num )
 **
-** @param [w] result [AjPStr*] Expression result
+** @param [r] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
 ** @return [AjBool] ajTrue if successfully resolved
 ** @@
@@ -15206,7 +15187,7 @@ static AjBool acdExpMinus(AjPStr* result, const AjPStr str)
 **
 ** Looks for and resolves an expression @( num * num )
 **
-** @param [w] result [AjPStr*] Expression result
+** @param [r] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
 ** @return [AjBool] ajTrue if successfully resolved
 ** @@
@@ -15264,7 +15245,7 @@ static AjBool acdExpStar(AjPStr* result, const AjPStr str)
 **
 ** Looks for and resolves an expression @( num / num )
 **
-** @param [w] result [AjPStr*] Expression result
+** @param [r] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
 ** @return [AjBool] ajTrue if successfully resolved
 ** @@
@@ -15326,7 +15307,7 @@ static AjBool acdExpDiv(AjPStr* result, const AjPStr str)
 ** or @(not bool). An invalid bool value is treated as false,
 ** so it will return a true value.
 **
-** @param [w] result [AjPStr*] Expression result
+** @param [r] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
 ** @return [AjBool] ajTrue if successfully resolved
 ** @@
@@ -15371,7 +15352,7 @@ static AjBool acdExpNot(AjPStr* result, const AjPStr str)
 **
 ** Looks for and resolves an expression @( num == num )
 **
-** @param [w] result [AjPStr*] Expression result
+** @param [r] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
 ** @return [AjBool] ajTrue if successfully resolved
 ** @@
@@ -15457,7 +15438,7 @@ static AjBool acdExpEqual(AjPStr* result, const AjPStr str)
 **
 ** Looks for and resolves an expression @( num != num )
 **
-** @param [w] result [AjPStr*] Expression result
+** @param [r] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
 ** @return [AjBool] ajTrue if successfully resolved
 ** @@
@@ -15543,7 +15524,7 @@ static AjBool acdExpNotEqual(AjPStr* result, const AjPStr str)
 **
 ** Looks for and resolves an expression @( num > num )
 **
-** @param [w] result [AjPStr*] Expression result
+** @param [r] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
 ** @return [AjBool] ajTrue if successfully resolved
 ** @@
@@ -15629,7 +15610,7 @@ static AjBool acdExpGreater(AjPStr* result, const AjPStr str)
 **
 ** Looks for and resolves an expression @( num < num )
 **
-** @param [w] result [AjPStr*] Expression result
+** @param [r] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
 ** @return [AjBool] ajTrue if successfully resolved
 ** @@
@@ -15715,7 +15696,7 @@ static AjBool acdExpLesser(AjPStr* result, const AjPStr str)
 **
 ** Looks for and resolves an expression @( num | num )
 **
-** @param [w] result [AjPStr*] Expression result
+** @param [r] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
 ** @return [AjBool] ajTrue if successfully resolved
 ** @@
@@ -15805,7 +15786,7 @@ static AjBool acdExpOr(AjPStr* result, const AjPStr str)
 **
 ** Looks for and resolves an expression @( num & num )
 **
-** @param [w] result [AjPStr*] Expression result
+** @param [r] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
 ** @return [AjBool] ajTrue if successfully resolved
 ** @@
@@ -15894,7 +15875,7 @@ static AjBool acdExpAnd(AjPStr* result, const AjPStr str)
 **
 ** Looks for and resolves an expression @( bool ? trueval : falseval )
 **
-** @param [w] result [AjPStr*] Expression result
+** @param [r] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
 ** @return [AjBool] ajTrue if successfully resolved
 ** @@
@@ -15936,7 +15917,7 @@ static AjBool acdExpCond(AjPStr* result, const AjPStr str)
 ** @( var == { vala | valb | valc } )
 ** @( var != { vala | valb | valc } )
 **
-** @param [w] result [AjPStr*] Expression result
+** @param [r] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
 ** @return [AjBool] ajTrue if successfully resolved
 ** @@
@@ -16009,7 +15990,7 @@ static AjBool acdExpOneof(AjPStr* result, const AjPStr str)
 ** Looks for and resolves an expression as a switch/case statement
 ** @( var = casea : vala, caseb: valb else: val )
 **
-** @param [w] result [AjPStr*] Expression result
+** @param [r] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
 ** @return [AjBool] ajTrue if successfully resolved
 ** @@
@@ -16099,7 +16080,7 @@ static AjBool acdExpCase(AjPStr* result, const AjPStr str)
 ** Looks for an expression @(file: string) and returns a trimmed
 ** lower case file name prefix or suffix.
 **
-** @param [w] result [AjPStr*] Expression result
+** @param [r] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
 ** @return [AjBool] ajTrue if successfully resolved
 ** @@
@@ -16135,7 +16116,7 @@ static AjBool acdExpFilename(AjPStr* result, const AjPStr str)
 ** Looks for an expression @(is string) and returns ajTrue
 ** if there is a value, and ajFalse if there is none
 **
-** @param [w] result [AjPStr*] Expression result
+** @param [r] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
 ** @return [AjBool] ajTrue if successfully resolved
 ** @@
@@ -16424,12 +16405,12 @@ AjBool ajAcdSetControl(const char* optionName)
 ** "-warning", "-error", "-fatal", "-die"
 **
 ** @param [r] argc [ajint] Number of arguments
-** @param [r] argv [char* const[]] Actual arguments as a text array.
+** @param [r] argv [char* []] Actual arguments as a text array.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void acdArgsScan(ajint argc, char * const argv[])
+static void acdArgsScan(ajint argc, char *argv[])
 {
     ajint i;
 
@@ -16495,12 +16476,12 @@ static void acdArgsScan(ajint argc, char * const argv[])
 ** and otherwise treating them as parameters.
 **
 ** @param [r] argc [ajint] Number of arguments
-** @param [r] argv [char* const[]] Actual arguments as a text array.
+** @param [r] argv [char* []] Actual arguments as a text array.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void acdArgsParse(ajint argc, char * const argv[])
+static void acdArgsParse(ajint argc, char *argv[])
 {    
     ajint i;
     ajint j;
@@ -16512,8 +16493,8 @@ static void acdArgsParse(ajint argc, char * const argv[])
     ajint jtestparam = 0;
     AcdPAcd acd;
     
-    const char *cp;
-    const char *cq;
+    char *cp;
+    char *cq;
     
     static AjPStr qual  = NULL;
     static AjPStr value = NULL;
@@ -17946,7 +17927,7 @@ char* ajAcdProgram(void)
 **
 ** Sets the default prompt for this ACD object to be a codon usage file
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -17966,7 +17947,7 @@ static void acdPromptCodon(AcdPAcd thys)
 **
 ** Sets the default prompt for this ACD object to be a dirlist
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -17986,7 +17967,7 @@ static void acdPromptDirlist(AcdPAcd thys)
 **
 ** Sets the default prompt for this ACD object to be a filelist
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18007,7 +17988,7 @@ static void acdPromptFilelist(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a feature table
 ** prompt with "first", "second" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18027,7 +18008,7 @@ static void acdPromptFeat(AcdPAcd thys)
 **
 ** Sets the default prompt for this ACD object to be a clean PDB file
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18047,7 +18028,7 @@ static void acdPromptCpdb(AcdPAcd thys)
 **
 ** Sets the default prompt for this ACD object to be a scop entry
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18069,7 +18050,7 @@ static void acdPromptScop(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a sequence
 ** prompt with "first", "second" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18095,7 +18076,7 @@ static void acdPromptSeq(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a tree file
 ** prompt with "first", "second" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18116,7 +18097,7 @@ static void acdPromptTree(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a sequence
 ** prompt with "first", "second" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18136,7 +18117,7 @@ static void acdPromptGraph(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a features output
 ** prompt with "first", "second" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18156,7 +18137,7 @@ static void acdPromptFeatout(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a report output
 ** prompt with "first", "second" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18176,7 +18157,7 @@ static void acdPromptAlign(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a report output
 ** prompt with "first", "second" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18196,7 +18177,7 @@ static void acdPromptReport(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a sequence output
 ** prompt with "first", "second" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18216,7 +18197,7 @@ static void acdPromptSeqout(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a simple
 ** prompt with "second", "third" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18237,7 +18218,7 @@ static void acdPromptOutcodon(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a simple
 ** prompt with "second", "third" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18258,7 +18239,7 @@ static void acdPromptOutcpdb(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a simple
 ** prompt with "second", "third" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18279,7 +18260,7 @@ static void acdPromptOutdata(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a simple
 ** prompt with "second", "third" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18300,7 +18281,7 @@ static void acdPromptOutdir(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a simple
 ** prompt with "second", "third" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18321,7 +18302,7 @@ static void acdPromptOutdiscrete(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a simple
 ** prompt with "second", "third" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18342,7 +18323,7 @@ static void acdPromptOutdistance(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a simple
 ** prompt with "second", "third" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18363,7 +18344,7 @@ static void acdPromptOutfreq(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a simple
 ** prompt with "second", "third" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18384,7 +18365,7 @@ static void acdPromptOutmatrix(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a simple
 ** prompt with "second", "third" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18405,7 +18386,7 @@ static void acdPromptOutproperties(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a simple
 ** prompt with "second", "third" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18426,7 +18407,7 @@ static void acdPromptOutscop(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a simple
 ** prompt with "second", "third" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18447,14 +18428,14 @@ static void acdPromptOuttree(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be an output
 ** file with "first", "second" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
-** @param [r] type [const char*] Data type for prompt
-** @param [w] count [ajint*] count for number of calls
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @param [r] type [char*] Data type for prompt
+** @param [r] count [ajint*] count for number of calls
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void acdPromptStandard(AcdPAcd thys, const char* type, ajint* count)
+static void acdPromptStandard(AcdPAcd thys, char* type, ajint* count)
 {
     AjPStr *prompt;
 
@@ -18517,16 +18498,16 @@ static void acdPromptStandard(AcdPAcd thys, const char* type, ajint* count)
 ** Sets the default prompt for this ACD object to as sepcified, with
 ** "second", "third" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
-** @param [r] firsttype [const char*] Data type for prompt first time
-** @param [r] type [const char*] Data type for prompt subsequent times
-** @param [w] count [ajint*] count for number of calls
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @param [r] firsttype [char*] Data type for prompt first time
+** @param [r] type [char*] Data type for prompt subsequent times
+** @param [r] count [ajint*] count for number of calls
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void acdPromptStandardAlt(AcdPAcd thys, const char* firsttype,
-				 const char* type, ajint* count)
+static void acdPromptStandardAlt(AcdPAcd thys, char* firsttype, char* type,
+				 ajint* count)
 {
     AjPStr *prompt;
 
@@ -18591,7 +18572,7 @@ static void acdPromptStandardAlt(AcdPAcd thys, const char* firsttype,
 ** Sets the default prompt for this ACD object to be an output
 ** file with "first", "second" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -18613,7 +18594,7 @@ static void acdPromptOutfile(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be an input
 ** file with "first", "second" etc. added.
 **
-** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] thys [AcdPAcd] Current ACD object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -20150,7 +20131,7 @@ static AjBool acdIsStype(const AcdPAcd thys)
 **
 ** Converts backslash codes in a string into special characters
 **
-** @param [u] text [AjPStr*] Text with backslash codes
+** @param [r] text [AjPStr*] Text with backslash codes
 ** @return [AjBool] ajTrue if successful
 ** @@
 ******************************************************************************/
@@ -20194,7 +20175,7 @@ void ajAcdDummyFunction(void)
 ** Report details of all known ACD types.
 ** For use by EMBOSS entrails.
 **
-** @param [u] outf [AjPFile] Output file
+** @param [r] outf [AjPFile] Output file
 ** @param [r] full [AjBool] Full report
 ** @return [void]
 **
@@ -20292,16 +20273,16 @@ void ajAcdPrintType(AjPFile outf, AjBool full)
 ** Report calculated attributes set
 ** For use by EMBOSS entrails.
 **
-** @param [u] outf [AjPFile] Output file
+** @param [r] outf [const AjPFile] Output file
 ** @param [r] full [AjBool] Full report
 ** @param [r] acdtype [const char*] ACD type name
-** @param [r] calcattr [const AcdOAttr[]] Acd calculated attributes
+** @param [r] calcattr [AcdOAttr[]] Acd calculated attributes
 ** @return [void]
 **
 ******************************************************************************/
 
-static void acdPrintCalcAttr(AjPFile outf, AjBool full,
-			     const char* acdtype, const AcdOAttr calcattr[])
+static void acdPrintCalcAttr(const AjPFile outf, AjBool full,
+			     const char* acdtype, AcdOAttr calcattr[])
 {
     ajint i;
 
@@ -20330,7 +20311,7 @@ static void acdPrintCalcAttr(AjPFile outf, AjBool full,
 ** Report details of all known ACD qualifiers for all applications.
 ** For use by EMBOSS entrails.
 **
-** @param [u] outf [AjPFile] Output file
+** @param [r] outf [AjPFile] Output file
 ** @param [r] full [AjBool] Full report
 ** @return [void]
 **
@@ -21541,10 +21522,10 @@ static void acdValidKnowntype(const AcdPAcd thys)
 
 /* @funcstatic acdReadKnowntypes **********************************************
 **
-** Read standard file of ACD sections and store in new AjPTable objects
+** Read standard table of ACD sections and store in AjPTable objects
 **
-** @param [wN] desctable [AjPTable*] String table of section names and types
-** @param [wN] typetable [AjPTable*] String table of section names and
+** @param [r] desctable [AjPTable*] String table of section names and types
+** @param [r] typetable [AjPTable*] String table of section names and
 **                                 descriptions
 ** @return [void]
 ** @@
@@ -21767,10 +21748,10 @@ static AjPTable acdReadGroups(void)
 
 /* @funcstatic acdReadSections ************************************************
 **
-** Read standard file of ACD sections and store in AjPTable objects
+** Read standard table of ACD sections and store in AjPTable objects
 **
-** @param [wN] typetable [AjPTable*] String table of section names and types
-** @param [wN] infotable [AjPTable*] String table of section names and
+** @param [r] typetable [AjPTable*] String table of section names and types
+** @param [r] infotable [AjPTable*] String table of section names and
 **                                 descriptions
 ** @return [void]
 ** @@
@@ -21862,12 +21843,12 @@ static void acdReadSections(AjPTable* typetable, AjPTable* infotable)
 **
 ** Tests whether a named section appears in the current section list
 **
-** @param [r] secname [const char*] Section name
+** @param [r] secname [char*] Section name
 ** @return [AjBool] ajTrue if the named section was found
 ** @@
 ******************************************************************************/
 
-static AjBool acdValidSectionMatch(const char* secname)
+static AjBool acdValidSectionMatch(char* secname)
 {
     AjIList iter = NULL;
     AjPStr listsecname;
@@ -21876,7 +21857,7 @@ static AjBool acdValidSectionMatch(const char* secname)
     if(!ajListLength(acdSecList))
 	return ajFalse;
 
-    iter = ajListIterRead(acdSecList);
+    iter = ajListIter(acdSecList);
 
     while (ajListIterMore(iter))
     {
@@ -21888,7 +21869,7 @@ static AjBool acdValidSectionMatch(const char* secname)
 	}
     }
 
-    ajListIterFree(&iter);
+    ajListIterFree(iter);
 
     return ret;
 }
@@ -21898,7 +21879,7 @@ static AjBool acdValidSectionMatch(const char* secname)
 ** Returns the full section name with the top level and any fame
 ** sub-sections
 **
-** @param [w] secname [AjPStr*] Section name
+** @param [r] secname [AjPStr*] Section name
 ** @return [void]
 ******************************************************************************/
 
@@ -21912,7 +21893,7 @@ static void acdValidSectionFull(AjPStr* secname)
     if(!ajListLength(acdSecList))
 	return;
 
-    iter = ajListIterRead(acdSecList);
+    iter = ajListIter(acdSecList);
 
     while (ajListIterMore(iter))
     {
@@ -21922,7 +21903,7 @@ static void acdValidSectionFull(AjPStr* secname)
 	ajStrApp(secname, listsecname);
     }
 
-    ajListIterFree(&iter);
+    ajListIterFree(iter);
 
     return;
 }
@@ -21931,12 +21912,12 @@ static void acdValidSectionFull(AjPStr* secname)
 **
 ** Tests the output format for an outcodon ACD type
 **
-** @param [r] name [const AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
 
-static ajint acdOutFormatCodon(const AjPStr name)
+static ajint acdOutFormatCodon(AjPStr name)
 {
     ajint i;
     char* format[] = 
@@ -21957,12 +21938,12 @@ static ajint acdOutFormatCodon(const AjPStr name)
 **
 ** Tests the output format for an outcpdb ACD type
 **
-** @param [r] name [const AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
 
-static ajint acdOutFormatCpdb(const AjPStr name)
+static ajint acdOutFormatCpdb(AjPStr name)
 {
     ajint i;
     char* format[] = 
@@ -21983,12 +21964,12 @@ static ajint acdOutFormatCpdb(const AjPStr name)
 **
 ** Tests the output format for an out ACD type
 **
-** @param [r] name [const AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
 
-static ajint acdOutFormatData(const AjPStr name)
+static ajint acdOutFormatData(AjPStr name)
 {
     ajint i;
     char* format[] = 
@@ -22009,12 +21990,12 @@ static ajint acdOutFormatData(const AjPStr name)
 **
 ** Tests the output format for an out ACD type
 **
-** @param [r] name [const AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
 
-static ajint acdOutFormatDiscrete(const AjPStr name)
+static ajint acdOutFormatDiscrete(AjPStr name)
 {
     ajint i;
     char* format[] = 
@@ -22035,12 +22016,12 @@ static ajint acdOutFormatDiscrete(const AjPStr name)
 **
 ** Tests the output format for an outdistance ACD type
 **
-** @param [r] name [const AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
 
-static ajint acdOutFormatDistance(const AjPStr name)
+static ajint acdOutFormatDistance(AjPStr name)
 {
     ajint i;
     char* format[] = 
@@ -22061,12 +22042,12 @@ static ajint acdOutFormatDistance(const AjPStr name)
 **
 ** Tests the output format for an outfreq ACD type
 **
-** @param [r] name [const AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
 
-static ajint acdOutFormatFreq(const AjPStr name)
+static ajint acdOutFormatFreq(AjPStr name)
 {
     ajint i;
     char* format[] = 
@@ -22087,12 +22068,12 @@ static ajint acdOutFormatFreq(const AjPStr name)
 **
 ** Tests the output format for an outmatrix ACD type
 **
-** @param [r] name [const AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
 
-static ajint acdOutFormatMatrix(const AjPStr name)
+static ajint acdOutFormatMatrix(AjPStr name)
 {
     ajint i;
     char* format[] = 
@@ -22113,12 +22094,12 @@ static ajint acdOutFormatMatrix(const AjPStr name)
 **
 ** Tests the output format for an outmatrixf ACD type
 **
-** @param [r] name [const AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
 
-static ajint acdOutFormatMatrixf(const AjPStr name)
+static ajint acdOutFormatMatrixf(AjPStr name)
 {
     ajint i;
     char* format[] = 
@@ -22139,12 +22120,12 @@ static ajint acdOutFormatMatrixf(const AjPStr name)
 **
 ** Tests the output format for an outproperties ACD type
 **
-** @param [r] name [const AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
 
-static ajint acdOutFormatProperties(const AjPStr name)
+static ajint acdOutFormatProperties(AjPStr name)
 {
     ajint i;
     char* format[] = 
@@ -22165,12 +22146,12 @@ static ajint acdOutFormatProperties(const AjPStr name)
 **
 ** Tests the output format for an outscop ACD type
 **
-** @param [r] name [const AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
 
-static ajint acdOutFormatScop(const AjPStr name)
+static ajint acdOutFormatScop(AjPStr name)
 {
     ajint i;
     char* format[] = 
@@ -22191,12 +22172,12 @@ static ajint acdOutFormatScop(const AjPStr name)
 **
 ** Tests the output format for an outtree ACD type
 **
-** @param [r] name [const AjPStr] Format name
+** @param [r] name [AjPStr] Format name
 ** @return [ajint] Internal format index, of -1 if not found
 ** @@
 ******************************************************************************/
 
-static ajint acdOutFormatTree(const AjPStr name)
+static ajint acdOutFormatTree(AjPStr name)
 {
     ajint i;
     char* format[] = 
