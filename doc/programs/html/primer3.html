@@ -87,6 +87,11 @@ Primer3 picks primers for PCR reactions, considering as criteria:
 
 All of these criteria are user-specifiable as constraints.
 
+<p>
+
+<p>primer3</p> can also pick hybridisation oligos that are internal to
+the product. 
+
 
 <H3>ADVICE FOR PICKING PRIMERS</H3>
 
@@ -198,7 +203,7 @@ Here is a sample session with primer3:
 <pre>
    Mandatory qualifiers:
   [-sequence]          seqall     The sequence from which to choose primers.
-                                  The sequence must be presented 5' -> 3'
+                                  The sequence must be presented 5' to 3'
   [-outfile]           outfile    Output file name
 
    Optional qualifiers (* if not always prompted):
@@ -226,9 +231,9 @@ Here is a sample session with primer3:
                                   vector, and should be excluded from
                                   consideration. The value for this parameter
                                   has the form
-                                  <start>,<end>
-                                  where <start> is the index of the first base
-                                  to consider, and <end> is the last in the
+                                  (start),(end)
+                                  where (start) is the index of the first base
+                                  to consider, and (end) is the last in the
                                   primer-picking region.
    -target             range      If one or more Targets is specified then a
                                   legal primer pair must flank at least one of
@@ -236,19 +241,19 @@ Here is a sample session with primer3:
                                   repeat site (for example a CA repeat) or a
                                   single-base-pair polymorphism. The value
                                   should be a space-separated list of
-                                  <start>,<end>
-                                  pairs where <start> is the index of the
-                                  first base of a Target, and <end> is the
+                                  (start),(end)
+                                  pairs where (start) is the index of the
+                                  first base of a Target, and (end) is the
                                   last
                                   E.g. 50,51 requires primers to surround the
                                   2 bases at positions 50 and 51.
    -excludedregion     range      Primer oligos may not overlap any region
                                   specified in this tag. The associated value
                                   must be a space-separated list of
-                                  <start>,<end>
-                                  pairs where <start> is the index of the
+                                  (start),(end)
+                                  pairs where (start) is the index of the
                                   first base of the excluded region, and and
-                                  <end> is the last. This tag is useful for
+                                  (end) is the last. This tag is useful for
                                   tasks such as excluding regions of low
                                   sequence quality or for excluding regions
                                   containing repetitive elements such as ALUs
@@ -348,8 +353,8 @@ Here is a sample session with primer3:
                                   the product that the user wants the primers
                                   to create, and is a space separated list of
                                   elements of the form
-                                  <x>-<y>
-                                  where an <x>-<y> pair is a legal range of
+                                  (x)-(y)
+                                  where an (x)-(y) pair is a legal range of
                                   lengths for the product. For example, if one
                                   wants PCR products to be between 100 to 150
                                   bases (inclusive) then one would set this
@@ -407,9 +412,9 @@ Here is a sample session with primer3:
 *  -oligoexcludedregion range      Middle oligos may not overlap any region
                                   specified by this tag. The associated value
                                   must be a space-separated list of
-                                  <start>,<end>
-                                  pairs, where <start> is the index of the
-                                  first base of an excluded region, and <end>
+                                  (start),(end)
+                                  pairs, where (start) is the index of the
+                                  first base of an excluded region, and (end)
                                   is the last. Often one would make Target
                                   regions excluded regions for internal
                                   oligos.
@@ -489,8 +494,8 @@ Here is a sample session with primer3:
                                   between two oligos. In order to estimate
                                   3'-anchored global alignments for candidate
                                   oligos, Primer assumes that the sequence
-                                  from which to choose oligos is presented
-                                  5'->3'.
+                                  from which to choose oligos is presented 5'
+                                  to 3'.
                                   INTERNAL-OLIGO-SELF-END is meaningless when
                                   applied to internal oligos used for
                                   hybridization-based detection, since
@@ -511,15 +516,15 @@ Here is a sample session with primer3:
                                   various reasons.
    -fileflag           bool       If the associated value is non-0, then
                                   Primer3 creates two output files for each
-                                  input SEQUENCE. File <sequence-id>.for lists
+                                  input SEQUENCE. File (sequence-id).for lists
                                   all acceptable forward primers for
-                                  <sequence-id>, and <sequence-id>.rev lists
+                                  (sequence-id), and (sequence-id).rev lists
                                   all acceptable reverse primers for
-                                  <sequence-id>, where <sequence-id> is the
+                                  (sequence-id), where (sequence-id) is the
                                   value of the SEQUENCE-ID tag (which must be
                                   supplied). In addition, if the input tag
                                   TASK is 1 or 4, Primer3 produces a file
-                                  <sequence-id>.int, which lists all
+                                  (sequence-id).int, which lists all
                                   acceptable internal oligos.
    -firstbaseindex     integer    This parameter is the index of the first
                                   base in the input sequence. For input and
@@ -636,7 +641,7 @@ Here is a sample session with primer3:
                                   3'-anchored global alignments for candidate
                                   primers and primer pairs, Primer assumes
                                   that the sequence from which to choose
-                                  primers is presented 5'->3'. It is
+                                  primers is presented 5' to 3'. It is
                                   nonsensical to provide a larger value for
                                   this parameter than for the Maximum (local)
                                   Complementarity parameter because the score
@@ -724,7 +729,7 @@ Here is a sample session with primer3:
 
 <tr>
 <td>[-sequence]<br>(Parameter 1)</td>
-<td>The sequence from which to choose primers. The sequence must be presented 5' -> 3'</td>
+<td>The sequence from which to choose primers. The sequence must be presented 5' to 3'</td>
 <td>Readable sequence(s)</td>
 <td><b>Required</b></td>
 </tr>
@@ -761,8 +766,8 @@ Briefly, an 'internal oligo' is intended to be used as a hybridization probe (hy
 <tr>
 <td>-includedregion</td>
 <td>A sub-region of the given sequence in which to pick primers. For example, often the first dozen or so bases of a sequence are vector, and should be excluded from consideration. The value for this parameter has the form
-<start>,<end>
-where <start> is the index of the first base to consider, and <end> is the last in the primer-picking region.</td>
+(start),(end)
+where (start) is the index of the first base to consider, and (end) is the last in the primer-picking region.</td>
 <td>Sequence range</td>
 <td><i>full sequence</i></td>
 </tr>
@@ -770,8 +775,8 @@ where <start> is the index of the first base to consider, and <end> is the last 
 <tr>
 <td>-target</td>
 <td>If one or more Targets is specified then a legal primer pair must flank at least one of them. A Target might be a simple sequence repeat site (for example a CA repeat) or a single-base-pair polymorphism. The value should be a space-separated list of
-<start>,<end>
-pairs where <start> is the index of the first base of a Target, and <end> is the last
+(start),(end)
+pairs where (start) is the index of the first base of a Target, and (end) is the last
 E.g. 50,51 requires primers to surround the 2 bases at positions 50 and 51.</td>
 <td>Sequence range</td>
 <td><i>full sequence</i></td>
@@ -780,8 +785,8 @@ E.g. 50,51 requires primers to surround the 2 bases at positions 50 and 51.</td>
 <tr>
 <td>-excludedregion</td>
 <td>Primer oligos may not overlap any region specified in this tag. The associated value must be a space-separated list of
-<start>,<end>
-pairs where <start> is the index of the first base of the excluded region, and and <end> is the last. This tag is useful for tasks such as excluding regions of low sequence quality or for excluding regions containing repetitive elements such as ALUs or LINEs.
+(start),(end)
+pairs where (start) is the index of the first base of the excluded region, and and (end) is the last. This tag is useful for tasks such as excluding regions of low sequence quality or for excluding regions containing repetitive elements such as ALUs or LINEs.
 E.g. 401,407 68,70 forbids selection of primers in the 7 bases starting at 401 and the 3 bases at 68.</td>
 <td>Sequence range</td>
 <td><i>full sequence</i></td>
@@ -910,8 +915,8 @@ See ADVICE FOR PICKING PRIMERS.</td>
 <tr>
 <td>-productsizerange</td>
 <td>The associated values specify the lengths of the product that the user wants the primers to create, and is a space separated list of elements of the form
-<x>-<y>
-where an <x>-<y> pair is a legal range of lengths for the product. For example, if one wants PCR products to be between 100 to 150 bases (inclusive) then one would set this parameter to 100-150. If one desires PCR products in either the range from 100 to 150 bases or in the range from 200 to 250 bases then one would set this parameter to 100-150 200-250.
+(x)-(y)
+where an (x)-(y) pair is a legal range of lengths for the product. For example, if one wants PCR products to be between 100 to 150 bases (inclusive) then one would set this parameter to 100-150. If one desires PCR products in either the range from 100 to 150 bases or in the range from 200 to 250 bases then one would set this parameter to 100-150 200-250.
 Primer3 favors ranges to the left side of the parameter string. Primer3 will return legal primers pairs in the first range regardless the value of the objective function for these pairs. Only if there are an insufficient number of primers in the first range will Primer3 return primers in a subsequent range.</td>
 <td>Sequence range</td>
 <td>100-300</td>
@@ -944,8 +949,8 @@ A similar formula is used by the prime primer selection program in GCG http://ww
 <tr>
 <td>-oligoexcludedregion</td>
 <td>Middle oligos may not overlap any region specified by this tag. The associated value must be a space-separated list of
-<start>,<end>
-pairs, where <start> is the index of the first base of an excluded region, and <end> is the last. Often one would make Target regions excluded regions for internal oligos.</td>
+(start),(end)
+pairs, where (start) is the index of the first base of an excluded region, and (end) is the last. Often one would make Target regions excluded regions for internal oligos.</td>
 <td>Sequence range</td>
 <td><i>full sequence</i></td>
 </tr>
@@ -1052,7 +1057,7 @@ is not considered. Scores are non-negative, and a score of 0.00 indicates that t
 <tr>
 <td>-oligoselfend</td>
 <td>The maximum allowable 3'-anchored global alignment score when testing a single oligo for self-complementarity.
-The scoring system is as for the Maximum Complementarity argument. In the examples above the scores are 7.00 and 6.00 respectively. Scores are non-negative, and a score of 0.00 indicates that there is no reasonable 3'-anchored global alignment between two oligos. In order to estimate 3'-anchored global alignments for candidate oligos, Primer assumes that the sequence from which to choose oligos is presented 5'->3'.
+The scoring system is as for the Maximum Complementarity argument. In the examples above the scores are 7.00 and 6.00 respectively. Scores are non-negative, and a score of 0.00 indicates that there is no reasonable 3'-anchored global alignment between two oligos. In order to estimate 3'-anchored global alignments for candidate oligos, Primer assumes that the sequence from which to choose oligos is presented 5' to 3'.
 INTERNAL-OLIGO-SELF-END is meaningless when applied to internal oligos used for hybridization-based detection, since primer-dimer will not occur. We recommend that INTERNAL-OLIGO-SELF-END be set at least as high as INTERNAL-OLIGO-SELF-ANY.</td>
 <td>Number up to 9999.990</td>
 <td>12.00</td>
@@ -1080,7 +1085,7 @@ INTERNAL-OLIGO-SELF-END is meaningless when applied to internal oligos used for 
 
 <tr>
 <td>-fileflag</td>
-<td>If the associated value is non-0, then Primer3 creates two output files for each input SEQUENCE. File <sequence-id>.for lists all acceptable forward primers for <sequence-id>, and <sequence-id>.rev lists all acceptable reverse primers for <sequence-id>, where <sequence-id> is the value of the SEQUENCE-ID tag (which must be supplied). In addition, if the input tag TASK is 1 or 4, Primer3 produces a file <sequence-id>.int, which lists all acceptable internal oligos.</td>
+<td>If the associated value is non-0, then Primer3 creates two output files for each input SEQUENCE. File (sequence-id).for lists all acceptable forward primers for (sequence-id), and (sequence-id).rev lists all acceptable reverse primers for (sequence-id), where (sequence-id) is the value of the SEQUENCE-ID tag (which must be supplied). In addition, if the input tag TASK is 1 or 4, Primer3 produces a file (sequence-id).int, which lists all acceptable internal oligos.</td>
 <td>Yes/No</td>
 <td>No</td>
 </tr>
@@ -1154,7 +1159,7 @@ or
 5' AGGCTATGGGCCTCGCGA 3'
 ...............||||||
 ............3' AGCGCTCCGGGTATCGGA 5'
-The scoring system is as for the Maximum Complementarity argument. In the examples above the scores are 7.00 and 6.00 respectively. Scores are non-negative, and a score of 0.00 indicates that there is no reasonable 3'-anchored global alignment between two oligos. In order to estimate 3'-anchored global alignments for candidate primers and primer pairs, Primer assumes that the sequence from which to choose primers is presented 5'->3'. It is nonsensical to provide a larger value for this parameter than for the Maximum (local) Complementarity parameter because the score of a local alignment will always be at least as great as the score of a global alignment.</td>
+The scoring system is as for the Maximum Complementarity argument. In the examples above the scores are 7.00 and 6.00 respectively. Scores are non-negative, and a score of 0.00 indicates that there is no reasonable 3'-anchored global alignment between two oligos. In order to estimate 3'-anchored global alignments for candidate primers and primer pairs, Primer assumes that the sequence from which to choose primers is presented 5' to 3'. It is nonsensical to provide a larger value for this parameter than for the Maximum (local) Complementarity parameter because the score of a local alignment will always be at least as great as the score of a global alignment.</td>
 <td>Number 0.000 or more</td>
 <td>3.00</td>
 </tr>
@@ -1410,8 +1415,15 @@ None.
         Useful things you can do with this program.
    -->
 
-None.
+The Whitehead Institute program that is run by this program is available from:
+http://www-genome.wi.mit.edu/genome_software/other/primer3.html
+<br>
+(Then see the link 'Get release 0.9')
+<p>
 
+The version that is run by this program is 3.0.9
+currently available from:
+http://www-genome.wi.mit.edu/ftp/distribution/software/primer3_0_9_test.tar.gz
 
 
 
