@@ -14,7 +14,7 @@ appl: trimseq [
 
   seqall: sequence [
 	param: Y
-	type: any
+	type: gapany
   ]
 
   seqoutall: outseq [
