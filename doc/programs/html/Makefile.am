@@ -37,8 +37,8 @@ pkgdata2_DATA = isochore0.gif lindna.gif octanol0.gif pepinfo1.gif \
                findkm.html fitch.html freak.html fuzznuc.html fuzzpro.html \
                fuzztran.html garnier.html geecee.html gendist.html \
                gene_finding_group.html getorf.html groups.html \
-               helixturnhelix.html hydropathy_group.html iep.html \
-               index.html infoseq.html isochore.html kitsch.html
+               helixturnhelix.html hmoment.html hydropathy_group.html \
+               iep.html index.html infoseq.html isochore.html kitsch.html
 pkgdata2_DATA = lindna.html marscan.html maskfeat.html maskseq.html \
                matcher.html megamerger.html menus_group.html merger.html \
                mix.html motifs_group.html msbar.html mse.html \
