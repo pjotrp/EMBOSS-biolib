@@ -1170,5 +1170,7 @@ void wordUnused(void){
     
     (void) getWholeMatch (&match,ajptable);
     positionListDelete((void *)&x,(void *)y);
+    wordCurListTrace(NULL);
+    wordCurIterTrace(NULL);
 }
 
