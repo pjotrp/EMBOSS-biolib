@@ -118,6 +118,9 @@ public class BuildProgramMenu
       {
         if(withSoap) 
         {
+          mainMenu.setEnableFileManagers(false);
+          mainMenu.setEnableShowResults(false);
+
           if(mysettings.getPublicSoapURL().startsWith("https") &&
              !mysettings.getUseHTTPSProxy())
           {
@@ -192,8 +195,8 @@ public class BuildProgramMenu
               if(hwoss.containsKey("wossname.out"))
                 woss = new String((byte[])hwoss.get("wossname.out"));
 
-              mainMenu.setEnableFileManagers(false);
-              mainMenu.setEnableShowResults(false);
+//            mainMenu.setEnableFileManagers(false);
+//            mainMenu.setEnableShowResults(false);
 
 //            Hashtable hshowdb = (new JembossJarUtil("resources/showdb.jar")).getHash();
 //            mainMenu.setEnableFileManagers(false);
