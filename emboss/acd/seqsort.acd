@@ -1,6 +1,6 @@
 appl: seqsort [
-  documentation: "Removes ambiguities from a set of hits resulting from a database search"
-  groups: "PROTEIN: structure"
+  documentation: "Removes ambiguities from a database search"
+  groups: "PROTEIN: 3D STRUCTURE"
 ]
 
 list: mode  [
