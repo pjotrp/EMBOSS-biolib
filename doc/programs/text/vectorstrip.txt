@@ -366,6 +366,8 @@ Sequences output to file:
 
 Data files
 
+   None.
+   
 Notes
 
    None.
