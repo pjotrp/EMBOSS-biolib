@@ -89,12 +89,12 @@ void srand48(long seedval);
 #define Log2 0.693147				/* log(2) */
 
 /* max and min for all seasons */
-/*
+
 #ifndef MAX
 #define MIN(X,Y) ((X) < (Y) ? (X) : (Y))
 #define MAX(X,Y) ((X) > (Y) ? (X) : (Y))
 #endif
-*/
+
 
 /* swapping any two items x and y of type "type"*/
 #define SWAP(type, x, y) {type tmp; tmp = (x); (x) = (y); (y) = (tmp);}
@@ -192,5 +192,5 @@ typedef int BOOLEAN;
 #define fprintf if (mpMyID() == 0) fprintf
 #endif
 
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/INCLUDE/macros.h,v 1.1 2000/11/05 21:47:55 ajb Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/INCLUDE/macros.h,v 1.2 2000/11/05 22:27:29 ajb Exp $ */
 
