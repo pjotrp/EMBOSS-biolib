@@ -1,4 +1,9 @@
 Version 2.9.0
+	New output types ni ACD for all input data types, including those
+	for phylogenetics and protein structure data. Initially these rae
+	a new AjPOutfile type with a defined format (fixed until any of
+	them has a choice).
+
 	Programs that produce graphics or text (outfile) output now
 	by default will not create the outfile if there is a graph (done
 	by setting the nullok attribute of the outfile).
@@ -98,7 +103,7 @@ Version 2.9.0
 	directory in the division.lkp file - directory is specified in the
 	database definition. This was only done originally to share index
 	files with "efetch" at the Sanger Centre. With index files and
-	data files in the same direwctory (as for efetch) it is not needed.
+	data files in the same directory (as for efetch) it is not needed.
 
 	All ACD files revised for new acdvalid checks.
 

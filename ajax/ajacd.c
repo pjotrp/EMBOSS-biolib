@@ -468,7 +468,6 @@ static AcdPAcd acdProcCurr = NULL;
 static AcdPAcd acdSetCurr = NULL;
 
 static ajint acdNParam=0;
-
 static void      acdAmbigApp(AjPStr* pambiglist, const AjPStr str);
 static void      acdAmbigAppC(AjPStr* pambiglist, const char* txt);
 static void      acdArgsParse(ajint argc, char *argv[]);
@@ -616,6 +615,17 @@ static AjBool    acdNotLeftB(const AjPList listwords);
 static AjBool    acdOutDirectory(AjPStr* outdir);
 static AjBool    acdOutFilename(AjPStr* outfname, const AjPStr name,
 				const AjPStr ext);
+static ajint     acdOutFormatCodon(AjPStr format);
+static ajint     acdOutFormatCpdb(AjPStr format);
+static ajint     acdOutFormatData(AjPStr format);
+static ajint     acdOutFormatDiscrete(AjPStr format);
+static ajint     acdOutFormatDistance(AjPStr format);
+static ajint     acdOutFormatFreq(AjPStr format);
+static ajint     acdOutFormatMatrix(AjPStr format);
+static ajint     acdOutFormatMatrixf(AjPStr format);
+static ajint     acdOutFormatProperties(AjPStr format);
+static ajint     acdOutFormatScop(AjPStr format);
+static ajint     acdOutFormatTree(AjPStr format);
 static void      acdParse(AjPList listwords, AjPList listcount);
 static void      acdParseAlpha(AjPList listwords, AjPStr* pword);
 static void      acdParseAttributes(const AcdPAcd acd,
@@ -637,10 +647,24 @@ static void      acdPromptFeatout(AcdPAcd thys);
 static void      acdPromptFilelist(AcdPAcd thys);
 static void      acdPromptGraph(AcdPAcd thys);
 static void      acdPromptInfile(AcdPAcd thys);
+static void      acdPromptOutcodon(AcdPAcd thys);
+static void      acdPromptOutcpdb(AcdPAcd thys);
+static void      acdPromptOutdata(AcdPAcd thys);
+static void      acdPromptOutdir(AcdPAcd thys);
+static void      acdPromptOutdiscrete(AcdPAcd thys);
+static void      acdPromptOutdistance(AcdPAcd thys);
 static void      acdPromptOutfile(AcdPAcd thys);
+static void      acdPromptOutfreq(AcdPAcd thys);
+static void      acdPromptOutmatrix(AcdPAcd thys);
+static void      acdPromptOutproperties(AcdPAcd thys);
+static void      acdPromptOutscop(AcdPAcd thys);
+static void      acdPromptOuttree(AcdPAcd thys);
 static void      acdPromptReport(AcdPAcd thys);
 static void      acdPromptSeq(AcdPAcd thys);
 static void      acdPromptSeqout(AcdPAcd thys);
+static void      acdPromptStandard(AcdPAcd thys, char* type, ajint* count);
+static void      acdPromptStandardAlt(AcdPAcd thys, char* firsttype,
+				      char* type, ajint* count);
 static void      acdPromptTree(AcdPAcd thys);
 static void      acdQualParse(AjPStr* pqual, AjPStr* pnoqual,
 			      AjPStr* pqmaster, ajint* number);
@@ -667,6 +691,7 @@ static AjBool    acdSet(const AcdPAcd thys, AjPStr* attrib,
 static void      acdSetAll(void);
 static AjBool    acdSetDef(const AcdPAcd thys, const AjPStr value);
 static AjBool    acdSetDefC(const AcdPAcd thys, const char* value);
+static AjPOutfile acdSetOutType(AcdPAcd thys, const char* type);
 static AjBool    acdSetQualAppl(const AcdPAcd thys, AjBool val);
 static AjBool    acdSetQualDefBool(const AcdPAcd thys,
 				   const char* name, AjBool value);
@@ -831,8 +856,21 @@ static void acdSetInfile(AcdPAcd thys);
 static void acdSetList(AcdPAcd thys);
 static void acdSetMatrix(AcdPAcd thys);
 static void acdSetMatrixf(AcdPAcd thys);
+static void acdSetOutcodon(AcdPAcd thys);
+static void acdSetOutcpdb(AcdPAcd thys);
+static void acdSetOutdata(AcdPAcd thys);
 static void acdSetOutdir(AcdPAcd thys);
+static void acdSetOutdiscrete(AcdPAcd thys);
+static void acdSetOutdistance(AcdPAcd thys);
 static void acdSetOutfile(AcdPAcd thys);
+static void acdSetOutfreq(AcdPAcd thys);
+static void acdSetOutmatrix(AcdPAcd thys);
+static void acdSetOutmatrixf(AcdPAcd thys);
+static void acdSetOutproperties(AcdPAcd thys);
+static void acdSetOutscop(AcdPAcd thys);
+static void acdSetOuttree(AcdPAcd thys);
+static void acdSetCpdb(AcdPAcd thys);
+static void acdSetScop(AcdPAcd thys);
 static void acdSetProperties(AcdPAcd thys);
 static void acdSetRange(AcdPAcd thys);
 static void acdSetRegexp(AcdPAcd thys);
@@ -1273,6 +1311,38 @@ AcdOAttr acdAttrMatrixf[] =
 	 NULL}
 };
 
+AcdOAttr acdAttrOutcodon[] =
+{
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
+    {NULL, VT_NULL, NULL,
+	 NULL}
+};
+
+AcdOAttr acdAttrOutcpdb[] =
+{
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
+    {NULL, VT_NULL, NULL,
+	 NULL}
+};
+
+AcdOAttr acdAttrOutdata[] =
+{
+    {"type", VT_STR, "",
+	 "Data type"},
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
+    {NULL, VT_NULL, NULL,
+	 NULL}
+};
+
 AcdOAttr acdAttrOutdir[] =
 {
     {"fullpath", VT_BOOL, "N",
@@ -1287,6 +1357,26 @@ AcdOAttr acdAttrOutdir[] =
 	 NULL}
 };
 
+AcdOAttr acdAttrOutdiscrete[] =
+{
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
+    {NULL, VT_NULL, NULL,
+	 NULL}
+};
+
+AcdOAttr acdAttrOutdistance[] =
+{
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
+    {NULL, VT_NULL, NULL,
+	 NULL}
+};
+
 AcdOAttr acdAttrOutfile[] =
 {
     {"name", VT_STR, "",
@@ -1295,6 +1385,66 @@ AcdOAttr acdAttrOutfile[] =
 	 "Default file extension"},
     {"append", VT_BOOL, "N",
 	 "Append to an existing file"},
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
+    {NULL, VT_NULL, NULL,
+	 NULL}
+};
+
+AcdOAttr acdAttrOutfreq[] =
+{
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
+    {NULL, VT_NULL, NULL,
+	 NULL}
+};
+
+AcdOAttr acdAttrOutmatrix[] =
+{
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
+    {NULL, VT_NULL, NULL,
+	 NULL}
+};
+
+AcdOAttr acdAttrOutmatrixf[] =
+{
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
+    {NULL, VT_NULL, NULL,
+	 NULL}
+};
+
+AcdOAttr acdAttrOutproperties[] =
+{
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
+    {NULL, VT_NULL, NULL,
+	 NULL}
+};
+
+AcdOAttr acdAttrOutscop[] =
+{
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
+    {NULL, VT_NULL, NULL,
+	 NULL}
+};
+
+AcdOAttr acdAttrOuttree[] =
+{
     {"nulldefault", VT_BOOL, "N",
 	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, "N",
@@ -1791,6 +1941,53 @@ AcdOKey acdKeywords[] =
 };
 
 
+/* @datastatic AcdPOuttype ****************************************************
+**
+** Output types data structure for utput data types and format validation
+**
+** @alias AcdSOuttype
+** @alias AcdOouttype
+**
+** @attr Name [char*] Output type name
+** @attr Format [char*] Default format (needs to be stored elsewhere)
+** @attr Prompt [(void*)] Function to define standard prompt
+** @attr Outformat [(ajint*)] Function to test output format
+** @@
+******************************************************************************/
+
+typedef struct AcdSOuttype
+{
+    char* Name;
+    char* Format;
+    void (*Prompt)(AcdPAcd thys);
+    ajint (*Outformat)(AjPStr format);
+} AcdOOuttype;
+
+#define AcdPOuttype AcdOOuttype*
+
+/* @funclist acdOuttype ******************************************************
+**
+** Processing output types and their formats
+**
+******************************************************************************/
+
+AcdOOuttype acdOuttype[] =
+{
+    {"outcodon",      "cutg",   acdPromptOutcodon,      acdOutFormatCodon},
+    {"outcpdb",       "cpdb",   acdPromptOutcpdb,       acdOutFormatCpdb},
+    {"outdata",       "text",   acdPromptOutdata,       acdOutFormatData},
+    {"outdiscrete",   "phylip", acdPromptOutdiscrete,   acdOutFormatDiscrete},
+    {"outdistance",   "phylip", acdPromptOutdistance,   acdOutFormatDistance},
+    {"outfreq",       "phylip", acdPromptOutfreq,       acdOutFormatFreq},
+    {"outmatrix",     "emboss", acdPromptOutmatrix,     acdOutFormatMatrix},
+    {"outmatrixf",    "emboss", acdPromptOutmatrix,     acdOutFormatMatrixf},
+    {"outproperties", "phylip", acdPromptOutproperties,acdOutFormatProperties},
+    {"outscop",       "",       acdPromptOutscop,       acdOutFormatScop},
+    {"outtree",       "phylip", acdPromptOuttree,       acdOutFormatTree},
+    {NULL, NULL, NULL}
+};
+
+
 /* Type-specific associated qualifiers which can be used positionally
 ** or numbered if tied to a parameter */
 
@@ -1887,9 +2084,86 @@ AcdOQual acdQualGraphxy[] =
     {NULL, NULL, NULL, NULL}
 };
 
+AcdOQual acdQualOutcodon[] =
+{
+    {"odirectory","",  "string",  "Output directory"},
+    {"oformat","",  "string",  "Output format specific to this output type"},
+    {NULL, NULL, NULL, NULL}
+};
+
+AcdOQual acdQualOutcpdb[] =
+{
+    {"odirectory","",  "string",  "Output directory"},
+    {"oformat","",  "string",  "Output format specific to this output type"},
+    {NULL, NULL, NULL, NULL}
+};
+
+AcdOQual acdQualOutdata[] =
+{
+    {"odirectory","",  "string",  "Output directory"},
+    {"oformat","",  "string",  "Output format specific to this output type"},
+    {NULL, NULL, NULL, NULL}
+};
+
+AcdOQual acdQualOutdiscrete[] =
+{
+    {"odirectory","",  "string",  "Output directory"},
+    {"oformat","",  "string",  "Output format specific to this output type"},
+    {NULL, NULL, NULL, NULL}
+};
+
+AcdOQual acdQualOutdistance[] =
+{
+    {"odirectory","",  "string",  "Output directory"},
+    {"oformat","",  "string",  "Output format specific to this output type"},
+    {NULL, NULL, NULL, NULL}
+};
+
 AcdOQual acdQualOutfile[] =
 {
     {"odirectory","",  "string",  "Output directory"},
+    {NULL, NULL, NULL, NULL}
+};
+
+AcdOQual acdQualOutfreq[] =
+{
+    {"odirectory","",  "string",  "Output directory"},
+    {"oformat","",  "string",  "Output format specific to this output type"},
+    {NULL, NULL, NULL, NULL}
+};
+
+AcdOQual acdQualOutmatrix[] =
+{
+    {"odirectory","",  "string",  "Output directory"},
+    {"oformat","",  "string",  "Output format specific to this output type"},
+    {NULL, NULL, NULL, NULL}
+};
+
+AcdOQual acdQualOutmatrixf[] =
+{
+    {"odirectory","",  "string",  "Output directory"},
+    {"oformat","",  "string",  "Output format specific to this output type"},
+    {NULL, NULL, NULL, NULL}
+};
+
+AcdOQual acdQualOutproperties[] =
+{
+    {"odirectory","",  "string",  "Output directory"},
+    {"oformat","",  "string",  "Output format specific to this output type"},
+    {NULL, NULL, NULL, NULL}
+};
+
+AcdOQual acdQualOutscop[] =
+{
+    {"odirectory","",  "string",  "Output directory"},
+    {"oformat","",  "string",  "Output format specific to this output type"},
+    {NULL, NULL, NULL, NULL}
+};
+
+AcdOQual acdQualOuttree[] =
+{
+    {"odirectory","",  "string",  "Output directory"},
+    {"oformat","",  "string",  "Output format specific to this output type"},
     {NULL, NULL, NULL, NULL}
 };
 
@@ -2051,6 +2325,9 @@ AcdOQual acdQualSeqoutall[] =
 
 AcdOType acdType[] =
 {
+/*   Name                  Group               Section
+**       Attributes        TypeSet function    Qualifiers
+**       StdPrompt UseCount Description of valid string for help */
     {"align",              "output",           acdSecOutput,
 	 acdAttrAlign,     acdSetAlign,        acdQualAlign,
 	 AJTRUE,  &acdUseAlign, "Alignment output file" },
@@ -2111,13 +2388,46 @@ AcdOType acdType[] =
     {"matrixf",            "input",            acdSecInput,
 	 acdAttrMatrixf,   acdSetMatrixf,      NULL,
 	 AJFALSE, &acdUseData, "Comparison matrix file in EMBOSS data path" },
-    {"outdir",             "output",            NULL,
+    {"outcodon",	   "output",           acdSecOutput,
+	 acdAttrOutcodon,  acdSetOutcodon,     NULL,
+	 AJTRUE,  &acdUseData, "Codon usage file" },
+    {"outcpdb", 	   "output",           acdSecOutput,
+	 acdAttrOutcpdb,   acdSetOutcpdb,      NULL,
+	 AJTRUE,  &acdUseData, "Cleaned PDB file" },
+    {"outdata",            "output",           acdSecOutput,
+	 acdAttrOutdata,   acdSetOutdata,   acdQualOutdata,
+	 AJTRUE,  &acdUseOutfile, "Formatted output file" },
+    {"outdir",             "output",            acdSecOutput,
 	 acdAttrOutdir,    acdSetOutdir,    NULL,
-	 AJFALSE, &acdUseMisc, "Output directory" },
+	 AJTRUE,  &acdUseMisc, "Output directory" },
+    {"outdiscrete",        "output",            acdSecOutput,
+	 acdAttrOutdiscrete, acdSetOutdiscrete,    acdQualOutdiscrete,
+	 AJTRUE,  &acdUseOutfile, "Discrete states file" },
+    {"outdistance",        "output",            acdSecOutput,
+	 acdAttrOutdistance, acdSetOutdistance,    NULL,
+	 AJTRUE,  &acdUseOutfile, "Distance matrix" },
     {"outfile",            "output",           acdSecOutput,
 	 acdAttrOutfile,   acdSetOutfile,   acdQualOutfile,
 	 AJTRUE,  &acdUseOutfile, "Output file" },
-    {"properties",         "input",            NULL,
+    {"outfreq",            "output",           acdSecOutput,
+	 acdAttrOutfreq,   acdSetOutfreq,   acdQualOutfreq,
+	 AJTRUE,  &acdUseOutfile, "Frequency value(s)" },
+    {"outmatrix",          "output",           acdSecOutput,
+	 acdAttrOutmatrix, acdSetOutmatrix,  acdQualOutmatrix,
+	 AJTRUE,  &acdUseOutfile, "Comparison matrix file" },
+    {"outmatrixf",          "output",           acdSecOutput,
+	 acdAttrOutmatrixf, acdSetOutmatrixf,  acdQualOutmatrixf,
+	 AJTRUE,  &acdUseOutfile, "Comparison matrix file" },
+    {"outproperties",      "output",            acdSecOutput,
+	 acdAttrOutproperties,acdSetOutproperties, acdQualOutproperties,
+	 AJTRUE,  &acdUseOutfile, "Property value(s)" },
+    {"outscop",            "output",           acdSecOutput,
+	 acdAttrOutscop,   acdSetOutscop,   acdQualOutscop,
+	 AJTRUE,  &acdUseOutfile, "Scop entry" },
+    {"outtree",            "output",           acdSecOutput,
+	 acdAttrOuttree,   acdSetOuttree,   acdQualOuttree,
+	 AJTRUE,  &acdUseOutfile, "Phylogenetic tree" },
+    {"properties",         "input",            acdSecInput,
 	 acdAttrProperties,acdSetProperties, NULL,
 	 AJTRUE,  &acdUseData, "Property value(s)" },
     {"range",	           "simple",           NULL,
@@ -4678,8 +4988,8 @@ AjPAlign ajAcdGetAlign(const char *token)
 ** The default value (if no other available) is a null string, which
 ** is invalid.
 **
-** Associated qualifiers "-aformat"
-** are applied to the UAO before reading the sequence.
+** Associated qualifier "-aformat"
+** is applied when writing the sequences.
 **
 ** @param [u] thys [AcdPAcd] ACD item.
 ** @return [void]
@@ -6824,6 +7134,115 @@ static void acdSetGraphxy(AcdPAcd thys)
 
 
 
+/* @func ajAcdGetInfile *******************************************************
+**
+** Returns an item of type Outfile as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPFile] File object. The file was already opened by
+**         acdSetOutfile so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPFile ajAcdGetInfile(const char *token)
+{
+    return acdGetValue(token, "infile");
+}
+
+
+
+
+/* @funcstatic acdSetInfile ***************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD infile item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if filtering is on) is "stdin", but then
+** prompting is turned off.
+**
+** Otherwise there is no default value unless the ACD file has one.
+**
+** Various file naming options are defined, but not yet implemented here.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajFileNewIn
+** @@
+******************************************************************************/
+
+static void acdSetInfile(AcdPAcd thys)
+{
+    AjPFile val;
+    
+    AjBool required = ajFalse;
+    AjBool ok       = ajFalse;
+
+    static AjPStr defreply = NULL;
+    static AjPStr reply    = NULL;
+    ajint itry;
+    AjBool nullok;
+    
+    static AjPStr infname = NULL;
+    
+    val = NULL;				/* set the default value */
+    
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    
+    acdInFilename(&infname);
+    required = acdIsRequired(thys);
+    acdReplyInit(thys, ajStrStr(infname), &defreply);
+    acdPromptInfile(thys);
+    
+    for(itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+
+	ajStrAssS(&reply, defreply);
+
+	if(required)
+	    acdUserGet(thys, &reply);
+
+	if(ajStrLen(reply))
+	{
+	    val = ajFileNewIn(reply);
+	    if(!val)
+	    {
+		acdBadVal(thys, required,
+			  "Unable to open file '%S' for input",
+			  reply);
+		ok = ajFalse;
+	    }
+	}
+	else
+	    if(!nullok)
+	    {
+		acdBadVal(thys, required,
+			  "Input file is required");
+		ok = ajFalse;
+	    }
+    }
+
+    if(!ok)
+	acdBadRetry(thys);
+    
+    acdInFileSave(reply);
+    
+    thys->Value = val;
+    ajStrAssS(&thys->ValStr, reply);
+    
+    return;
+}
+
+
+
+
 /* @func ajAcdGetInt **********************************************************
 **
 ** Returns an item of type ajint as defined in a named ACD item. Called by the
@@ -6939,115 +7358,6 @@ static void acdSetInt(AcdPAcd thys)
     
     thys->Value = val;
     ajStrFromInt(&thys->ValStr, *val);
-    
-    return;
-}
-
-
-
-
-/* @func ajAcdGetInfile *******************************************************
-**
-** Returns an item of type Outfile as defined in a named ACD item.
-** Called by the application after all ACD values have been set,
-** and simply returns what the ACD item already has.
-**
-** @param [r] token [const char*] Text token name
-** @return [AjPFile] File object. The file was already opened by
-**         acdSetOutfile so this just returns the pointer.
-** @cre failure to find an item with the right name and type aborts.
-** @@
-******************************************************************************/
-
-AjPFile ajAcdGetInfile(const char *token)
-{
-    return acdGetValue(token, "infile");
-}
-
-
-
-
-/* @funcstatic acdSetInfile ***************************************************
-**
-** Using the definition in the ACD file, and any values for the
-** item or its associated qualifiers provided on the command line,
-** prompts the user if necessary (and possible) and
-** sets the actual value for an ACD infile item.
-**
-** Understands all attributes and associated qualifiers for this item type.
-**
-** The default value (if filtering is on) is "stdin", but then
-** prompting is turned off.
-**
-** Otherwise there is no default value unless the ACD file has one.
-**
-** Various file naming options are defined, but not yet implemented here.
-**
-** @param [u] thys [AcdPAcd] ACD item.
-** @return [void]
-** @see ajFileNewIn
-** @@
-******************************************************************************/
-
-static void acdSetInfile(AcdPAcd thys)
-{
-    AjPFile val;
-    
-    AjBool required = ajFalse;
-    AjBool ok       = ajFalse;
-
-    static AjPStr defreply = NULL;
-    static AjPStr reply    = NULL;
-    ajint itry;
-    AjBool nullok;
-    
-    static AjPStr infname = NULL;
-    
-    val = NULL;				/* set the default value */
-    
-    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
-    
-    acdInFilename(&infname);
-    required = acdIsRequired(thys);
-    acdReplyInit(thys, ajStrStr(infname), &defreply);
-    acdPromptInfile(thys);
-    
-    for(itry=acdPromptTry; itry && !ok; itry--)
-    {
-	ok = ajTrue;	   /* accept the default if nothing changes */
-
-	ajStrAssS(&reply, defreply);
-
-	if(required)
-	    acdUserGet(thys, &reply);
-
-	if(ajStrLen(reply))
-	{
-	    val = ajFileNewIn(reply);
-	    if(!val)
-	    {
-		acdBadVal(thys, required,
-			  "Unable to open file '%S' for input",
-			  reply);
-		ok = ajFalse;
-	    }
-	}
-	else
-	    if(!nullok)
-	    {
-		acdBadVal(thys, required,
-			  "Input file is required");
-		ok = ajFalse;
-	    }
-    }
-
-    if(!ok)
-	acdBadRetry(thys);
-    
-    acdInFileSave(reply);
-    
-    thys->Value = val;
-    ajStrAssS(&thys->ValStr, reply);
     
     return;
 }
@@ -7395,6 +7705,290 @@ static void acdSetMatrixf(AcdPAcd thys)
 
 
 
+/* @funcstatic acdSetOutType **************************************************
+**
+** Generic definition for any of the ACD formatted output types.
+** May be erplaced by a specific acdSet function is additional attributes
+** or qualifiers are to be processed.
+**
+** Understands all attributes and associated qualifiers for these item types.
+**
+** The default value (if no other available) is a null string, which
+** is invalid.
+**
+** Associated qualifiers "-oformat"
+** are stored in the object and applied to the data on output.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @@
+******************************************************************************/
+
+static AjPOutfile acdSetOutType(AcdPAcd thys, const char* type)
+{
+    AjPOutfile val = NULL;
+    
+    AjBool required = ajFalse;
+    AjBool ok       = ajFalse;
+
+    static AjPStr defreply = NULL;
+    static AjPStr reply    = NULL;
+    ajint itry;
+    AjBool nullok;
+    AjBool nulldefault;
+    
+    static AjPStr name      = NULL;
+    static AjPStr ext       = NULL;
+    static AjPStr fmt       = NULL;
+    static AjPStr dir       = NULL;
+    static AjPStr outfname  = NULL;
+    static AjPStr fullfname = NULL;
+    ajint itype = -1;
+    ajint i;
+    
+    val = NULL;
+
+    for (i=0; acdOuttype[i].Name; i++)
+    {
+	if (ajStrMatchCC(acdOuttype[i].Name, type))
+	{
+	    itype = i;
+	    break;
+	}
+    }
+
+    if (itype < 0)
+	acdError("Unknown output type '%s'", type);
+
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
+    acdAttrResolve(thys, "extension", &ext);
+    acdAttrResolve(thys, "name", &name);
+
+    acdGetValueAssoc(thys, "oformat", &fmt);
+    acdGetValueAssoc(thys, "odirectory", &dir);
+
+    acdOutDirectory(&dir);
+    required = acdIsRequired(thys);
+    if(nullok && nulldefault)
+    {
+	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
+	    acdOutFilename(&defreply, name, ext);
+	else				/* leave empty */
+	    acdReplyInit(thys, "", &defreply);
+    }
+    else
+    {
+	acdOutFilename(&outfname, name, ext);
+	acdReplyInit(thys, ajStrStr(outfname), &defreply);
+    }
+
+    if(acdOuttype[itype].Prompt)
+	acdOuttype[itype].Prompt(thys);
+    
+    for(itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+
+	ajStrAssS(&reply, defreply);
+
+	if(required)
+	    acdUserGet(thys, &reply);
+
+	if(ajStrLen(reply))
+	{
+	    ajStrAssS(&fullfname, reply);
+	    ajFileSetDir(&fullfname, dir);
+	    val = ajOutfileNew(fullfname);
+	    if(!ok)
+	    {
+		acdBadVal(thys, required,
+			  "Unable to open output file '%S'", fullfname);
+		ajOutfileDel(&val);
+	    }
+	    ajStrSet(&val->Formatstr, fmt);
+	    ajStrSetC(&val->Type, type);
+	    if(acdOuttype[itype].Outformat)
+	    {
+		val->Format = acdOuttype[itype].Outformat(fmt);
+		if(val->Format < 0)
+		{			/* test acdc-outbadformat */
+		    ajDie("Output option -%S: Format validation failed",
+			  thys->Name);
+		}
+	    }
+    
+	}
+	else
+	    if(!nullok)
+	    {
+		acdBadVal(thys, required,
+			  "Output file is required");
+		ok = ajFalse;
+	    }
+    }
+
+    if(!ok)
+	acdBadRetry(thys);
+    
+    thys->Value = val;
+    ajStrAssS(&thys->ValStr, fullfname);
+    
+    return val;
+}
+
+
+
+
+/* @func ajAcdGetOutcodon *****************************************************
+**
+** Returns an item of type Outcodon as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPFile] File object. The file was already opened by
+**         acdSetOut so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPOutfile ajAcdGetOutcodon(const char *token)
+{
+    return acdGetValue(token, "outcodon");
+}
+
+
+
+/* @funcstatic acdSetOutcodon**************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD outcodon item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other available) is a null string, which
+** is invalid.
+**
+** Associated qualifiers "-oformat"
+** are stored in the object and applied to the data on output.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajSeqRead
+** @@
+******************************************************************************/
+
+static void acdSetOutcodon(AcdPAcd thys)
+{
+    AjPOutfile val = NULL;
+
+    val = acdSetOutType(thys, "outcodon");
+    return;
+}
+    
+/* @func ajAcdGetOutcpdb ******************************************************
+**
+** Returns an item of type Outcpdb as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPFile] File object. The file was already opened by
+**         acdSetOut so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPOutfile ajAcdGetOutcpdb(const char *token)
+{
+    return acdGetValue(token, "outcpdb");
+}
+
+
+
+/* @funcstatic acdSetOutcpdb***************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD outcpdb item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other available) is a null string, which
+** is invalid.
+**
+** Associated qualifiers "-oformat"
+** are stored in the object and applied to the data on output.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajSeqRead
+** @@
+******************************************************************************/
+
+static void acdSetOutcpdb(AcdPAcd thys)
+{
+    AjPOutfile val = NULL;
+
+    val = acdSetOutType(thys, "outcpdb");
+    return;
+}
+
+    
+/* @func ajAcdGetOutdata ******************************************************
+**
+** Returns an item of type Outdata as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPFile] File object. The file was already opened by
+**         acdSetOut so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPOutfile ajAcdGetOutdata(const char *token)
+{
+    return acdGetValue(token, "outdata");
+}
+
+
+
+/* @funcstatic acdSetOutdata **************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD outdata item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other available) is a null string, which
+** is invalid.
+**
+** Associated qualifiers "-oformat"
+** are stored in the object and applied to the data on output.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajSeqRead
+** @@
+******************************************************************************/
+
+static void acdSetOutdata(AcdPAcd thys)
+{
+    AjPOutfile val = NULL;
+
+    val = acdSetOutType(thys, "outdata");
+    return;
+}
+
+    
 /* @func ajAcdGetOutdir *******************************************************
 **
 ** Returns an item of type AjPDir which has been validated as an output
@@ -7479,6 +8073,7 @@ static void acdSetOutdir(AcdPAcd thys)
     required = acdIsRequired(thys);
     acdReplyInit(thys, ".", &defreply);
 
+    acdPromptOutdir(thys);
     for(itry=acdPromptTry; itry && !ok; itry--)
     {
 	ok = ajTrue;	   /* accept the default if nothing changes */
@@ -7525,6 +8120,106 @@ static void acdSetOutdir(AcdPAcd thys)
 
 
 
+/* @func ajAcdGetOutdiscrete **************************************************
+**
+** Returns an item of type Outdiscrete as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPFile] File object. The file was already opened by
+**         acdSetOut so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPOutfile ajAcdGetOutdiscrete(const char *token)
+{
+    return acdGetValue(token, "outdiscrete");
+}
+
+
+
+/* @funcstatic acdSetOutdiscrete **********************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD outdiscrete item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other available) is a null string, which
+** is invalid.
+**
+** Associated qualifiers "-oformat"
+** are stored in the object and applied to the data on output.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajSeqRead
+** @@
+******************************************************************************/
+
+static void acdSetOutdiscrete(AcdPAcd thys)
+{
+    AjPOutfile val = NULL;
+
+    val = acdSetOutType(thys, "outdiscrete");
+    return;
+}
+
+    
+/* @func ajAcdGetOutdistance **************************************************
+**
+** Returns an item of type Outdistance as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPFile] File object. The file was already opened by
+**         acdSetOut so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPOutfile ajAcdGetOutdistance(const char *token)
+{
+    return acdGetValue(token, "outdistance");
+}
+
+
+
+/* @funcstatic acdSetOutdistance **********************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD outdistance item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other available) is a null string, which
+** is invalid.
+**
+** Associated qualifiers "-oformat"
+** are stored in the object and applied to the data on output.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajSeqRead
+** @@
+******************************************************************************/
+
+static void acdSetOutdistance(AcdPAcd thys)
+{
+    AjPOutfile val = NULL;
+
+    val = acdSetOutType(thys, "outdistance");
+    return;
+}
+
+    
 /* @func ajAcdGetOutfile ******************************************************
 **
 ** Returns an item of type Outfile as defined in a named ACD item.
@@ -7661,6 +8356,306 @@ static void acdSetOutfile(AcdPAcd thys)
 
 
 
+/* @func ajAcdGetOutfreq ******************************************************
+**
+** Returns an item of type Outfreq as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPFile] File object. The file was already opened by
+**         acdSetOut so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPOutfile ajAcdGetOutfreq(const char *token)
+{
+    return acdGetValue(token, "outfreq");
+}
+
+
+
+/* @funcstatic acdSetOutfreq **************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD outfreq item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other available) is a null string, which
+** is invalid.
+**
+** Associated qualifiers "-oformat"
+** are stored in the object and applied to the data on output.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajSeqRead
+** @@
+******************************************************************************/
+
+static void acdSetOutfreq(AcdPAcd thys)
+{
+    AjPOutfile val = NULL;
+
+    val = acdSetOutType(thys, "outfreq");
+    return;
+}
+
+    
+/* @func ajAcdGetOutmatrix ****************************************************
+**
+** Returns an item of type Outmatrix as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPFile] File object. The file was already opened by
+**         acdSetOut so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPOutfile ajAcdGetOutmatrix(const char *token)
+{
+    return acdGetValue(token, "outmatrix");
+}
+
+
+
+/* @funcstatic acdSetOutmatrix ************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD outmatrix item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other available) is a null string, which
+** is invalid.
+**
+** Associated qualifiers "-oformat"
+** are stored in the object and applied to the data on output.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajSeqRead
+** @@
+******************************************************************************/
+
+static void acdSetOutmatrix(AcdPAcd thys)
+{
+    AjPOutfile val = NULL;
+
+    val = acdSetOutType(thys, "outmatrix");
+    return;
+}
+
+    
+/* @func ajAcdGetOutmatrixf ***************************************************
+**
+** Returns an item of type Outmatrixf as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPFile] File object. The file was already opened by
+**         acdSetOut so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPOutfile ajAcdGetOutmatrixf(const char *token)
+{
+    return acdGetValue(token, "outmatrixf");
+}
+
+
+
+/* @funcstatic acdSetOutmatrixf ***********************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD outmatrixf item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other available) is a null string, which
+** is invalid.
+**
+** Associated qualifiers "-oformat"
+** are stored in the object and applied to the data on output.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajSeqRead
+** @@
+******************************************************************************/
+
+static void acdSetOutmatrixf(AcdPAcd thys)
+{
+    AjPOutfile val = NULL;
+
+    val = acdSetOutType(thys, "outmatrixf");
+    return;
+}
+
+    
+/* @func ajAcdGetOutproperties ************************************************
+**
+** Returns an item of type Outproperties as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPFile] File object. The file was already opened by
+**         acdSetOut so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPOutfile ajAcdGetOutproperties(const char *token)
+{
+    return acdGetValue(token, "outproperties");
+}
+
+
+
+/* @funcstatic acdSetOutproperties*********************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD outproperties item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other available) is a null string, which
+** is invalid.
+**
+** Associated qualifiers "-oformat"
+** are stored in the object and applied to the data on output.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajSeqRead
+** @@
+******************************************************************************/
+
+static void acdSetOutproperties(AcdPAcd thys)
+{
+    AjPOutfile val = NULL;
+
+    val = acdSetOutType(thys, "properties");
+    return;
+}
+
+    
+/* @func ajAcdGetOutscop ******************************************************
+**
+** Returns an item of type Outscop as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPFile] File object. The file was already opened by
+**         acdSetOut so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPOutfile ajAcdGetOutscop(const char *token)
+{
+    return acdGetValue(token, "outscop");
+}
+
+
+
+/* @funcstatic acdSetOutscop **************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD outscop item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other available) is a null string, which
+** is invalid.
+**
+** Associated qualifiers "-oformat"
+** are stored in the object and applied to the data on output.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajSeqRead
+** @@
+******************************************************************************/
+
+static void acdSetOutscop(AcdPAcd thys)
+{
+    AjPOutfile val = NULL;
+
+    val = acdSetOutType(thys, "outscop");
+    return;
+}
+
+    
+/* @func ajAcdGetOuttree ******************************************************
+**
+** Returns an item of type Outtree as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPFile] File object. The file was already opened by
+**         acdSetOut so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPOutfile ajAcdGetOuttree(const char *token)
+{
+    return acdGetValue(token, "outtree");
+}
+
+
+
+/* @funcstatic acdSetOuttree ************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD outtree item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other available) is a null string, which
+** is invalid.
+**
+** Associated qualifiers "-oformat"
+** are stored in the object and applied to the data on output.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajSeqRead
+** @@
+******************************************************************************/
+
+static void acdSetOuttree(AcdPAcd thys)
+{
+    AjPOutfile val = NULL;
+
+    val = acdSetOutType(thys, "tree");
+    return;
+}
+
+    
 /* @func ajAcdGetProperties ***************************************************
 **
 ** Returns an item of type Properties as defined in a named ACD item.
@@ -8570,6 +9565,1097 @@ static void acdSetSeq(AcdPAcd thys)
 
 
 
+/* @func ajAcdGetSeqall *******************************************************
+**
+** Returns an item of type Seq as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPSeqall] Sequence stream object. The sequence was already
+**         loaded by acdSetSeqall so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPSeqall ajAcdGetSeqall(const char *token)
+{
+    return acdGetValue(token, "seqall");
+}
+
+
+
+
+/* @funcstatic acdSetSeqall ***************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD sequence item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other available) is a null string, which
+** is invalid.
+**
+** Associated qualifiers "-sformat", "-sdbname", "-sopenfile", "-sid"
+** are applied to the USA before reading the sequence.
+**
+** Associated qualifier "-sask" is applied
+** after reading.
+**
+** Associated qualifiers "-supper", "-slower" are applied
+** globally
+**
+** Associated qualifiers "-sbegin", "-send" and "-sreverse"
+** are applied as appropriate, with prompting for values,
+** after the sequence has been read. They are applied to the sequence,
+** and the resulting sequence is what is set in the ACD item.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajSeqRead
+** @@
+******************************************************************************/
+
+static void acdSetSeqall(AcdPAcd thys)
+{
+    AjPSeqall val;
+    AjPSeqin seqin;
+    AjPSeq seq;
+    
+    AjBool required = ajFalse;
+    AjBool ok       = ajFalse;
+    AjBool okbeg    = ajFalse;
+    AjBool okend    = ajFalse;
+    AjBool okrev    = ajFalse;
+
+    static AjPStr defreply    = NULL;
+    static AjPStr reply       = NULL;
+    static AjPStr promptreply = NULL;
+    static AjPStr tmpstr      = NULL;
+    ajint itry;
+    AjBool nullok = ajFalse;
+    
+    static AjPStr infname = NULL;
+    
+    ajint sbegin = 0;
+    ajint send   = 0;
+    AjBool sreverse = ajFalse;
+    AjBool sprompt  = ajFalse;
+    AjBool snuc     = ajFalse;
+    AjBool sprot    = ajFalse;
+    
+    val = ajSeqallNew();		/* set the default value */
+    seqin = val->Seqin;
+    seqin->multi = ajTrue;
+    seq = val->Seq;
+    
+    acdQualToBool(thys, "snucleotide", ajFalse, &snuc, &defreply);
+    acdQualToBool(thys, "sprotein", ajFalse, &sprot, &defreply);
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    
+    acdInFilename(&infname);
+    required = acdIsRequired(thys);
+    acdReplyInit(thys, ajStrStr(infname), &defreply);
+    acdPromptSeq(thys);
+    
+    for(itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+	
+	ajStrAssS(&reply, defreply);
+	
+	if(required)
+	    acdUserGet(thys, &reply);
+	
+	if(!ajStrLen(reply) && nullok)
+	    break;
+	
+	ajSeqinUsa(&seqin, reply);
+	
+	if(acdAttrToStr(thys, "type", "", &seqin->Inputtype))
+	    acdInTypeSeqSave(seqin->Inputtype);
+	else
+	    acdInTypeSeqSave(NULL);
+	
+	acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
+	acdAttrToBool(thys, "entry", ajFalse, &seqin->Text);
+	
+	acdGetValueAssoc(thys, "sformat", &seqin->Formatstr);
+	acdGetValueAssoc(thys, "sdbname", &seqin->Db);
+/*	acdGetValueAssoc(thys, "sopenfile", &seqin->Filename);*/ /* obsolete */
+	acdGetValueAssoc(thys, "sid", &seqin->Entryname);
+	
+	acdGetValueAssoc(thys, "ufo", &seqin->Ufo);
+	acdGetValueAssoc(thys, "fformat", &seqin->Ftquery->Formatstr);
+	acdGetValueAssoc(thys, "fopenfile", &seqin->Ftquery->Filename);
+	
+	acdQualToBool(thys, "supper", ajFalse, &seqin->Upper, &tmpstr);
+	acdQualToBool(thys, "slower", ajFalse, &seqin->Lower, &tmpstr);
+	okbeg = acdQualToSeqbegin(thys, "sbegin", 0, &seqin->Begin, &tmpstr);
+	okend = acdQualToSeqend(thys, "send", 0, &seqin->End, &tmpstr);
+	okrev = acdQualToBool(thys, "sreverse",
+			      ajFalse, &seqin->Rev, &tmpstr);
+
+	if(snuc)
+	    ajSeqinSetNuc(seqin);
+	
+	if(sprot)
+	    ajSeqinSetProt(seqin);
+	
+	if(ajStrLen(seqin->Ufo))
+	    seqin->Features = ajTrue;
+	
+	ok = ajSeqAllRead(seq, seqin);
+	if(!ok)
+	    acdBadVal(thys, required,
+		      "Unable to read sequence '%S'", reply);
+    }
+
+    if(!ok)
+	acdBadRetry(thys);
+    
+    /*  commentedout__ajSeqinDel(&seqin);*/
+    
+    acdInFileSave(ajSeqallGetName(val)); /* save the sequence name */
+    
+    acdQualToBool(thys, "sask", ajFalse, &sprompt, &defreply);
+    
+    /* now process the begin, end and reverse options */
+    
+    if(seqin->Begin)
+    {
+	okbeg = ajTrue;
+	val->Begin = seq->Begin = seqin->Begin;
+    }
+    
+    for(itry=acdPromptTry; itry && !okbeg; itry--)
+    {
+	ajStrAssC(&promptreply, "start");
+	if(sprompt)
+	    acdUserGetPrompt(" Begin at position", &promptreply);
+	if(ajStrMatchCaseC(promptreply, "start"))
+	    ajStrAssC(&promptreply, "0");
+	okbeg = ajStrToInt(promptreply, &sbegin);
+	if(!okbeg)
+	    acdBadVal(thys, sprompt,
+		      "Invalid integer value '%S'", promptreply);
+    }
+
+    if(!okbeg)
+	acdBadRetry(thys);
+    
+    if(sbegin)
+    {
+	seqin->Begin = sbegin;
+	seq->Begin = sbegin;
+	val->Begin = sbegin;
+	acdSetQualDefInt(thys, "sbegin", sbegin);
+    }
+    
+    if(seqin->End)
+    {
+	okend = ajTrue;
+	val->End = seq->End = seqin->End;
+    }
+    
+    for(itry=acdPromptTry; itry && !okend; itry--)
+    {
+	ajStrAssC(&promptreply, "end");
+	if(sprompt)
+	    acdUserGetPrompt("   End at position", &promptreply);
+	if(ajStrMatchCaseC(promptreply, "end"))
+	    ajStrAssC(&promptreply, "0");
+	okend = ajStrToInt(promptreply, &send);
+	if(!okend)
+	    acdBadVal(thys, sprompt,
+		      "Invalid integer value '%S'", promptreply);
+    }
+
+    if(!okend)
+	acdBadRetry(thys);
+    
+    if(send)
+    {
+	seqin->End = send;
+	seq->End = send;
+	val->End = send;
+	acdSetQualDefInt(thys, "send", send);
+    }
+
+    if(ajSeqIsNuc(seq))
+    {
+	if(seqin->Rev)
+	{
+	    okrev = ajTrue;
+	    val->Rev = seq->Rev = seqin->Rev;
+	}
+
+	for(itry=acdPromptTry; itry && !okrev; itry--)
+	{
+	    ajStrAssC(&promptreply, "N");
+	    if(sprompt)
+		acdUserGetPrompt("    Reverse strand", &promptreply);
+	    okrev = ajStrToBool(promptreply, &sreverse);
+	    if(!okrev)
+		acdBadVal(thys, sprompt,
+			  "Invalid Y/N value '%S'", promptreply);
+	}
+
+	if(!okrev)
+	    acdBadRetry(thys);
+
+	if(sreverse)
+	{
+	    seqin->Rev = sreverse;
+	    seq->Rev = sreverse;
+	    val->Rev = sreverse;
+	    acdSetQualDefBool(thys, "sreverse", sreverse);
+	}
+    }
+    
+    if(val->Rev)
+	ajSeqallReverse(val);
+    
+    acdLog("sbegin: %d, send: %d, sreverse: %s\n",
+	   sbegin, send, ajStrBool(sreverse));
+    
+    /* sequences have special set attributes */
+    
+    thys->SAttr = acdAttrListCount(acdCalcSeqall);
+    thys->SetAttr = &acdCalcSeqall[0];
+    thys->SetStr = AJCALLOC0(thys->SAttr, sizeof(AjPStr));
+    
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_BEGIN], ajSeqallBegin(val));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_END], ajSeqallEnd(val));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_LENGTH], ajSeqLen(seq));
+    ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqIsProt(seq));
+    ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC], ajSeqIsNuc(seq));
+    ajStrAssS(&thys->SetStr[ACD_SEQ_NAME], seq->Name);
+    
+    acdInFileSave(ajSeqallGetNameSeq(val));
+
+    thys->Value = val;
+    ajStrAssS(&thys->ValStr, reply);
+    
+    return;
+}
+
+
+
+
+/* @funcstatic acdSetSeqsetall ************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD sequence item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other available) is a null string, which
+** is invalid.
+**
+** Associated qualifiers "-sformat", "-sdbname", "-sopenfile", "-sid"
+** are applied to the USA before reading the sequence.
+**
+** Associated qualifiers "-supper", "-slower" and "-sask" are applied
+** after reading.
+**
+** Associated qualifiers "-sbegin", "-send" and "-sreverse"
+** are applied as appropriate, with prompting for values,
+** after the sequence has been read. They are applied to the sequence,
+** and the resulting sequence is what is set in the ACD item.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajSeqRead
+** @@
+******************************************************************************/
+
+
+static void acdSetSeqsetall(AcdPAcd thys)
+{
+    AjPSeqset *val;
+    AjPSeqin seqin;
+    
+    AjBool required = ajFalse;
+    AjBool ok       = ajFalse;
+    AjBool okbeg    = ajFalse;
+    AjBool okend    = ajFalse;
+    AjBool okrev    = ajFalse;
+
+    static AjPStr defreply    = NULL;
+    static AjPStr reply       = NULL;
+    static AjPStr promptreply = NULL;
+    static AjPStr tmpstr      = NULL;
+    ajint itry;
+    ajint iattr;
+    
+    static AjPStr infname = NULL;
+    
+    ajint sbegin = 0;
+    ajint send   = 0;
+    AjBool sreverse = ajFalse;
+    AjBool sprompt  = ajFalse;
+    AjBool snuc     = ajFalse;
+    AjBool sprot    = ajFalse;
+    AjBool nullok   = ajFalse;
+    void **sets     = NULL;
+    AjPList seqlist;
+
+    ajint iset = 0;
+    ajint nsets;
+
+    seqlist = ajListNew();
+    seqin = ajSeqinNew();		/* set the default value */
+    
+    seqin->multi = ajTrue;
+    
+    acdQualToBool(thys, "snucleotide", ajFalse, &snuc, &defreply);
+    acdQualToBool(thys, "sprotein", ajFalse, &sprot, &defreply);
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    
+    acdInFilename(&infname);
+    required = acdIsRequired(thys);
+    acdReplyInit(thys, ajStrStr(infname), &defreply);
+    acdPromptSeq(thys);
+    
+    for(itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+	
+	ajStrAssS(&reply, defreply);
+	
+	if(required)
+	    acdUserGet(thys, &reply);
+	
+	if(!ajStrLen(reply) && nullok)
+	    break;;
+
+	ajSeqinUsa(&seqin, reply);
+	
+	if(acdAttrToStr(thys, "type", "", &seqin->Inputtype))
+	    acdInTypeSeqSave(seqin->Inputtype);
+	else
+	    acdInTypeSeqSave(NULL);
+	
+	acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
+	
+	acdGetValueAssoc(thys, "sformat", &seqin->Formatstr);
+	acdGetValueAssoc(thys, "sdbname", &seqin->Db);
+/*	acdGetValueAssoc(thys, "sopenfile", &seqin->Filename);*/ /* obsolete */
+	acdGetValueAssoc(thys, "sid", &seqin->Entryname);
+	
+	acdGetValueAssoc(thys, "ufo", &seqin->Ufo);
+	acdGetValueAssoc(thys, "fformat", &seqin->Ftquery->Formatstr);
+	acdGetValueAssoc(thys, "fopenfile", &seqin->Ftquery->Filename);
+	
+	acdQualToBool(thys, "supper", ajFalse, &seqin->Upper, &tmpstr);
+	acdQualToBool(thys, "slower", ajFalse, &seqin->Lower, &tmpstr);
+	okbeg = acdQualToSeqbegin(thys, "sbegin", 0, &seqin->Begin, &tmpstr);
+	okend = acdQualToSeqend(thys, "send", 0, &seqin->End, &tmpstr);
+	okrev = acdQualToBool(thys, "sreverse",
+			      ajFalse, &seqin->Rev, &tmpstr);
+	
+	if(snuc)
+	    ajSeqinSetNuc(seqin);
+	
+	if(sprot)
+	    ajSeqinSetProt(seqin);
+	
+	if(ajStrLen(seqin->Ufo))
+	    seqin->Features = ajTrue;
+	
+	ok = ajSeqsetallRead(seqlist, seqin);
+
+	if(!ok)
+	    acdBadVal(thys, required,
+		      "Unable to read sequence '%S'", reply);
+    }
+
+    if(!ok)
+	acdBadRetry(thys);
+
+    nsets = ajListToArray(seqlist,(void***) &sets);
+    val   = (AjPSeqset*) sets;
+
+    acdInFileSave(ajSeqsetGetName(val[0])); /* save the sequence name */
+    
+    acdQualToBool(thys, "sask", ajFalse, &sprompt, &defreply);
+    
+    /* now process the begin, end and reverse options */
+    
+    if(seqin->Begin)
+    {
+	okbeg = ajTrue;
+	val[iset]->Begin = seqin->Begin;
+    }
+    
+    for(itry=acdPromptTry; itry && !okbeg; itry--)
+    {
+	ajStrAssC(&promptreply, "start");
+	if(sprompt)
+	    acdUserGetPrompt(" Begin at position", &promptreply);
+	if(ajStrMatchCaseC(promptreply, "start"))
+	    ajStrAssC(&promptreply, "0");
+	okbeg = ajStrToInt(promptreply, &sbegin);
+	if(!okbeg)
+	    acdBadVal(thys, sprompt,
+		      "Invalid integer value '%S'", promptreply);
+    }
+
+    if(!okbeg)
+	acdBadRetry(thys);
+    
+    if(sbegin)
+    {
+	seqin->Begin = sbegin;
+	val[iset]->Begin = sbegin;
+	acdSetQualDefInt(thys, "sbegin", sbegin);
+    }
+    
+    if(seqin->End)
+    {
+	okend = ajTrue;
+	val[iset]->End = seqin->End;
+    }
+    
+    for(itry=acdPromptTry; itry && !okend; itry--)
+    {
+	ajStrAssC(&promptreply, "end");
+	if(sprompt)
+	    acdUserGetPrompt("   End at position", &promptreply);
+	if(ajStrMatchCaseC(promptreply, "end"))
+	    ajStrAssC(&promptreply, "0");
+	okend = ajStrToInt(promptreply, &send);
+	if(!okend)
+	    acdBadVal(thys, sprompt,
+		      "Invalid integer value '%S'", promptreply);
+    }
+
+    if(!okend)
+	acdBadRetry(thys);
+    
+    if(send)
+    {
+	seqin->End = send;
+	val[iset]->End = send;
+	acdSetQualDefInt(thys, "send", send);
+    }
+
+    if(ajSeqsetIsNuc(val[0]))
+    {
+	if(seqin->Rev)
+	{
+	    okrev = ajTrue;
+	    val[iset]->Rev = seqin->Rev;
+	}
+
+	for(itry=acdPromptTry; itry && !okrev; itry--)
+	{
+	    ajStrAssC(&promptreply, "N");
+	    if(sprompt)
+		acdUserGetPrompt("    Reverse strand", &promptreply);
+	    okrev = ajStrToBool(promptreply, &sreverse);
+	    if(!okrev)
+		acdBadVal(thys, sprompt,
+			  "Invalid Y/N value '%S'", promptreply);
+	}
+
+	if(!okrev)
+	    acdBadRetry(thys);
+
+	if(sreverse)
+	{
+	    seqin->Rev = sreverse;
+	    val[iset]->Rev = sreverse;
+	    acdSetQualDefBool(thys, "sreverse", sreverse);
+	}
+    }
+    
+    acdLog("sbegin: %d, send: %d, sreverse: %s\n",
+	   sbegin, send, ajStrBool(sreverse));
+    
+    if(val[iset]->Rev)
+	ajSeqsetReverse(val[iset]);
+    
+    ajSeqinDel(&seqin);
+    
+    /* sequences have special set attributes */
+    
+    thys->SAttr = acdAttrListCount(acdCalcSeqsetall);
+    thys->SetAttr = &acdCalcSeqsetall[0];
+    thys->SetStr = AJCALLOC0(thys->SAttr, sizeof(AjPStr));
+    
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_BEGIN], ajSeqsetBegin(val[0]));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_END], ajSeqsetEnd(val[0]));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_LENGTH], ajSeqsetLen(val[0]));
+    ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN],
+		  ajSeqsetIsProt(val[0]));
+    ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC],
+		  ajSeqsetIsNuc(val[0]));
+    ajStrAssS(&thys->SetStr[ACD_SEQ_NAME], val[0]->Name);
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_MULTICOUNT], nsets);
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_COUNT], ajSeqsetSize(val[0]));
+    
+    acdInFileSave(ajSeqsetGetName(val[0]));
+
+    for(iattr=0; iattr < thys->SAttr; iattr++)
+	ajDebug("CalcAttr %s: '%S'\n",
+		acdCalcSeqset[iattr].Name, thys->SetStr[iattr]);
+
+    thys->Value = val;
+    ajStrAssS(&thys->ValStr, reply);
+    
+    return;
+}
+
+
+
+
+/* @func ajAcdGetSeqout *******************************************************
+**
+** Returns an item of type Seqout as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPSeqout] Sequence output object. The file was already opened by
+**         acdSetSeqout so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPSeqout ajAcdGetSeqout(const char *token)
+{
+    return acdGetValue(token, "seqout");
+}
+
+
+
+
+/* @funcstatic acdSetSeqout ***************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD sequence output item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other is available) is "stdout".
+**
+** Associated qualifier "-osformat"
+** is applied to the USA before opening the output file.
+**
+** Associated qualifiers are defined but not yet implemented.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajFileNewOut
+** @@
+******************************************************************************/
+
+static void acdSetSeqout(AcdPAcd thys)
+{
+    AjPSeqout val;
+    
+    AjBool required = ajFalse;
+    AjBool ok       = ajFalse;
+
+    static AjPStr defreply = NULL;
+    static AjPStr reply    = NULL;
+    ajint itry;
+    AjBool nullok;
+    AjBool nulldefault;
+    
+    static AjPStr name     = NULL;
+    static AjPStr ext      = NULL;
+    static AjPStr fmt      = NULL;
+    static AjPStr sing     = NULL;
+    static AjPStr outfname = NULL;
+    AjBool osfeat;
+
+    val = NULL;
+
+    if(!acdGetValueAssoc(thys, "osname", &name))
+	acdAttrResolve(thys, "name", &name);
+    
+    if(!acdGetValueAssoc(thys, "osextension", &ext))
+	acdAttrResolve(thys, "extension", &ext);
+    
+    acdGetValueAssoc(thys, "osformat", &fmt);
+    ajStrSet(&ext, fmt);
+    if(!ajStrLen(ext))
+	ajSeqOutFormatDefault(&ext);
+    
+    acdAttrToBool(thys, "features", ajFalse, &osfeat);
+    
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
+
+    required = acdIsRequired(thys);
+    if(nullok && nulldefault)
+    {
+	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
+	    acdOutFilename(&defreply, name, ext);
+	else				/* leave empty */
+	    acdReplyInit(thys, "", &defreply);
+    }
+    else
+    {
+	acdOutFilename(&outfname, name, ext);
+	acdReplyInit(thys, ajStrStr(outfname), &defreply);
+    }
+
+    acdPromptSeqout(thys);
+    
+    for(itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+	
+	ajStrAssS(&reply, defreply);
+	
+	if(required)
+	    acdUserGet(thys, &reply);
+	
+        if(ajStrLen(reply))
+	{
+	    val = ajSeqoutNew();	/* set the default value */
+    
+	    ajSeqoutUsa(&val, reply);	/* resets the AjPSeqout */
+	    val->Features = osfeat;
+	    acdGetValueAssoc(thys, "osdirectory", &val->Directory);
+	    acdGetValueAssoc(thys, "osdbname", &val->Setdb);
+    
+	    acdOutDirectory(&val->Directory);
+	    acdLog("acdSetSeqout features: %B dir '%S'\n",
+		   val->Features, val->Directory);
+
+	    ajStrSet(&val->Formatstr, fmt);
+	    if(!ajStrLen(val->Formatstr))
+		ajSeqOutFormatDefault(&val->Formatstr);
+
+	    ajStrSet(&val->Extension, ext);
+	    ajStrSet(&val->Extension, val->Formatstr);
+
+	    acdGetValueAssoc(thys, "oufo", &val->Ufo);
+	    acdGetValueAssoc(thys, "offormat", &val->Ftquery->Formatstr);
+	    if(!ajStrLen(val->Ftquery->Formatstr))
+		ajFeatOutFormatDefault(&val->Ftquery->Formatstr);
+	    acdGetValueAssoc(thys, "ofname", &val->Ftquery->Filename);
+	    acdGetValueAssoc(thys, "ofdirectory",
+			     &val->Ftquery->Directory);
+	    acdOutDirectory(&val->Ftquery->Directory);
+
+	    acdQualToBool(thys, "ossingle",
+			  ajFalse,
+			  &val->Single, &sing);
+
+	    if(!acdAttrToStr(thys, "type", "", &val->Outputtype))
+		if(!acdInTypeSeq(&val->Outputtype))
+		    ajWarn("No output type specified for '%S'", thys->Name);
+
+	    if(!ajSeqoutOpen(val))
+	    {
+		if(ajStrLen(val->Directory))
+		    acdBadVal(thys, required,
+			      "Unable to write sequence to '%S%S'",
+			      val->Directory, reply);
+		else
+		    acdBadVal(thys, required,
+			      "Unable to write sequence to '%S'",
+			      reply);
+		ok = ajFalse;
+		ajSeqoutDel(&val);
+	    }
+	}
+	else
+	    if(!nullok)
+	    {
+		acdBadVal(thys, required,
+			  "Output USA is required");
+		ok = ajFalse;
+	    }
+    }
+
+    if(!ok)
+	acdBadRetry(thys);
+    
+    thys->Value = val;
+    ajStrAssS(&thys->ValStr, reply);
+    if (val)
+    {
+	acdLog("acdSetSeqout features: %B\n", val->Features);
+	if(val->Features)
+	    acdLog("acdSetSeqout with features UFO '%S'\n", val->Ufo);
+    }
+
+    return;
+}
+
+
+
+
+/* @func ajAcdGetSeqoutall ****************************************************
+**
+** Returns an item of type Seqoutall as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPSeqout] Sequence output object. The file was already
+**         opened by acdSetSeqoutall so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPSeqout ajAcdGetSeqoutall(const char *token)
+{
+    return acdGetValue(token, "seqoutall");
+}
+
+
+
+
+/* @funcstatic acdSetSeqoutall ************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD sequence output item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other is available) is "stdout".
+**
+** Associated qualifier "-osformat"
+** is applied to the USA before opening the output file.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajFileNewOut
+** @@
+******************************************************************************/
+
+static void acdSetSeqoutall(AcdPAcd thys)
+{
+    AjPSeqout val;
+    
+    AjBool required = ajFalse;
+    AjBool ok       = ajFalse;
+
+    static AjPStr defreply = NULL;
+    static AjPStr reply    = NULL;
+    ajint itry;
+    AjBool nullok;
+    AjBool nulldefault;
+    
+    static AjPStr name     = NULL;
+    static AjPStr ext      = NULL;
+    static AjPStr fmt      = NULL;
+    static AjPStr sing     = NULL;
+    static AjPStr outfname = NULL;
+    AjBool osfeat;
+    
+    val = NULL;
+
+    if(!acdGetValueAssoc(thys, "osname", &name))
+	acdAttrResolve(thys, "name", &name);
+    
+    if(!acdGetValueAssoc(thys, "osextension", &ext))
+	acdAttrResolve(thys, "extension", &ext);
+    
+    acdGetValueAssoc(thys, "osformat", &fmt);
+    ajStrSet(&ext, fmt);
+    if(!ajStrLen(ext))
+	ajSeqOutFormatDefault(&ext);
+    
+    
+    acdAttrToBool(thys, "features", ajFalse, &osfeat);
+    
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
+
+    required = acdIsRequired(thys);
+    if(nullok && nulldefault)
+    {
+	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
+	    acdOutFilename(&defreply, name, ext);
+	else				/* leave empty */
+	    acdReplyInit(thys, "", &defreply);
+    }
+    else
+    {
+	acdOutFilename(&outfname, name, ext);
+        acdReplyInit(thys, ajStrStr(outfname), &defreply);
+    }
+    acdPromptSeqout(thys);
+    
+    for(itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+	
+	ajStrAssS(&reply, defreply);
+	
+	if(required)
+	    acdUserGet(thys, &reply);
+	
+	if(ajStrLen(reply))
+	{
+	    val = ajSeqoutNew();		/* set the default value */
+	    ajSeqoutUsa(&val, reply);
+	    val->Features = osfeat;
+	    acdGetValueAssoc(thys, "osdirectory", &val->Directory);
+	    acdGetValueAssoc(thys, "osdbname", &val->Setdb);
+	    acdOutDirectory(&val->Directory);
+	    acdLog("acdSetSeqoutall features: %B\n", val->Features);
+
+	    ajStrSet(&val->Formatstr, fmt);
+	    if(!ajStrLen(val->Formatstr))
+		ajSeqOutFormatDefault(&val->Formatstr);
+
+	    ajStrSet(&val->Extension, ext);
+	    ajStrSet(&val->Extension, val->Formatstr);
+
+	    acdGetValueAssoc(thys, "oufo", &val->Ufo);
+	    acdGetValueAssoc(thys, "offormat", &val->Ftquery->Formatstr);
+	    if(!ajStrLen(val->Ftquery->Formatstr))
+		ajFeatOutFormatDefault(&val->Ftquery->Formatstr);
+
+	    acdGetValueAssoc(thys, "ofname", &val->Ftquery->Filename);
+	    acdGetValueAssoc(thys, "ofdirectory",
+			     &val->Ftquery->Directory);
+	    acdOutDirectory(&val->Ftquery->Directory);
+
+	    acdLog("acdSetSeqoutall ossingle default: %B\n",
+		   ajSeqOutFormatSingle(val->Formatstr));
+
+	    acdQualToBool(thys, "ossingle",
+			  ajSeqOutFormatSingle(val->Formatstr),
+			  &val->Single, &sing);
+
+	    acdLog("acdSetSeqoutall ossingle value %B '%S'\n",
+		   val->Single, sing);
+
+	    if(!acdAttrToStr(thys, "type", "", &val->Outputtype))
+		if(!acdInTypeSeq(&val->Outputtype))
+		    ajWarn("No output type specified for '%S'", thys->Name);
+
+	    if(!ajSeqoutOpen(val))
+	    {
+		if(ajStrLen(val->Directory))
+		    acdBadVal(thys, required,
+			      "Unable to write sequence to '%S%S'",
+			      val->Directory, reply);
+		else
+		    acdBadVal(thys, required,
+			      "Unable to write sequence to '%S'",
+			      reply);
+		ok = ajFalse;
+		ajSeqoutDel(&val);
+	    }
+	}
+	else
+	    if(!nullok)
+	    {
+		acdBadVal(thys, required,
+			  "Output USA is required");
+		ok = ajFalse;
+	    }
+    }
+
+    if(!ok)
+	acdBadRetry(thys);
+    
+    thys->Value = val;
+    ajStrAssS(&thys->ValStr, reply);
+    
+    return;
+}
+
+
+
+
+/* @func ajAcdGetSeqoutset ****************************************************
+**
+** Returns an item of type Seqoutset as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPSeqout] Sequence output object. The file was already
+**        opened by acdSetSeqoutset so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPSeqout ajAcdGetSeqoutset(const char *token)
+{
+    return acdGetValue(token, "seqoutset");
+}
+
+
+
+
+/* @funcstatic acdSetSeqoutset ************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD sequence output item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other is available) is "stdout".
+**
+** Associated qualifier "-osformat"
+** is applied to the USA before opening the output file.
+**
+** Associated qualifiers are defined but not yet implemented.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajFileNewOut
+** @@
+******************************************************************************/
+
+static void acdSetSeqoutset(AcdPAcd thys)
+{
+    AjPSeqout val;
+    
+    AjBool required = ajFalse;
+    AjBool ok       = ajFalse;
+    AjBool nullok;
+    AjBool nulldefault;
+
+    static AjPStr defreply = NULL;
+    static AjPStr reply    = NULL;
+    ajint itry;
+    
+    static AjPStr name     = NULL;
+    static AjPStr ext      = NULL;
+    static AjPStr fmt      = NULL;
+    static AjPStr sing     = NULL;
+    static AjPStr outfname = NULL;
+    AjBool osfeat;
+    
+    val = NULL;
+
+    if(!acdGetValueAssoc(thys, "osname", &name))
+	acdAttrResolve(thys, "name", &name);
+    
+    if(!acdGetValueAssoc(thys, "osextension", &ext))
+	acdAttrResolve(thys, "extension", &ext);
+    
+    acdGetValueAssoc(thys, "osformat", &fmt);
+    ajStrSet(&ext, fmt);
+    if(!ajStrLen(ext))
+	ajSeqOutFormatDefault(&ext);
+    
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
+
+    
+    
+    acdAttrToBool(thys, "features", ajFalse, &osfeat);
+    
+    required = acdIsRequired(thys);
+    if(nullok && nulldefault)
+    {
+	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
+	    acdOutFilename(&defreply, name, ext);
+	else				/* leave empty */
+	    acdReplyInit(thys, "", &defreply);
+    }
+    else
+    {
+	acdOutFilename(&outfname, name, ext);
+	acdReplyInit(thys, ajStrStr(outfname), &defreply);
+    }
+    acdPromptSeqout(thys);
+    
+    for(itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+	
+	ajStrAssS(&reply, defreply);
+	
+	if(required)
+	    acdUserGet(thys, &reply);
+	
+	if(ajStrLen(reply))
+	{
+	    val = ajSeqoutNew();		/* set the default value */
+    
+	    ajSeqoutUsa(&val, reply);
+	    acdGetValueAssoc(thys, "osdbname", &val->Setdb);
+	    val->Features = osfeat;
+	    acdGetValueAssoc(thys, "osdirectory", &val->Directory);
+	    acdOutDirectory(&val->Directory);
+	    acdLog("acdSetSeqoutset features: %B\n", val->Features);
+
+	    ajStrSet(&val->Formatstr, fmt);
+	    if(!ajStrLen(val->Formatstr))
+		ajSeqOutFormatDefault(&val->Formatstr);
+
+	    ajStrSet(&val->Extension, ext);
+	    ajStrSet(&val->Extension, val->Formatstr);
+
+	    acdGetValueAssoc(thys, "oufo", &val->Ufo);
+	    acdGetValueAssoc(thys, "offormat", &val->Ftquery->Formatstr);
+	    if(!ajStrLen(val->Ftquery->Formatstr))
+		ajFeatOutFormatDefault(&val->Ftquery->Formatstr);
+	    acdGetValueAssoc(thys, "ofname", &val->Ftquery->Filename);
+	    acdGetValueAssoc(thys, "ofdirectory",
+			     &val->Ftquery->Directory);
+	    acdOutDirectory(&val->Ftquery->Directory);
+
+	    acdQualToBool(thys, "ossingle",
+			  ajSeqOutFormatSingle(val->Formatstr),
+			  &val->Single, &sing);
+
+	    if(!acdAttrToStr(thys, "type", "", &val->Outputtype))
+		if(!acdInTypeSeq(&val->Outputtype))
+		    ajWarn("No output type specified for '%S'", thys->Name);
+
+	    if(!ajSeqoutOpen(val))
+	    {
+		if(ajStrLen(val->Directory))
+		    acdBadVal(thys, required,
+			      "Unable to write sequence to '%S%S'",
+			      val->Directory, reply);
+		else
+		    acdBadVal(thys, required,
+			      "Unable to write sequence to '%S'",
+			      reply);
+		ok = ajFalse;
+		ajSeqoutDel(&val);
+	    }
+	}
+	else
+	    if(!nullok)
+	    {
+		acdBadVal(thys, required,
+			  "Output USA is required");
+		ok = ajFalse;
+	    }
+    }
+
+    if(!ok)
+	acdBadRetry(thys);
+    
+    thys->Value = val;
+    ajStrAssS(&thys->ValStr, reply);
+    
+    return;
+}
+
+
+
+
 /* @func ajAcdGetSeqset *******************************************************
 **
 ** Returns an item of type Seqset as defined in a named ACD item.
@@ -8894,1097 +10980,6 @@ AjPSeqset ajAcdGetSeqsetallI(const char *token, ajint num)
 		   num, token, i-1);
 
     return val[num-1];
-}
-
-
-
-
-/* @func ajAcdGetSeqall *******************************************************
-**
-** Returns an item of type Seq as defined in a named ACD item.
-** Called by the application after all ACD values have been set,
-** and simply returns what the ACD item already has.
-**
-** @param [r] token [const char*] Text token name
-** @return [AjPSeqall] Sequence stream object. The sequence was already
-**         loaded by acdSetSeqall so this just returns the pointer.
-** @cre failure to find an item with the right name and type aborts.
-** @@
-******************************************************************************/
-
-AjPSeqall ajAcdGetSeqall(const char *token)
-{
-    return acdGetValue(token, "seqall");
-}
-
-
-
-
-/* @funcstatic acdSetSeqsetall ************************************************
-**
-** Using the definition in the ACD file, and any values for the
-** item or its associated qualifiers provided on the command line,
-** prompts the user if necessary (and possible) and
-** sets the actual value for an ACD sequence item.
-**
-** Understands all attributes and associated qualifiers for this item type.
-**
-** The default value (if no other available) is a null string, which
-** is invalid.
-**
-** Associated qualifiers "-sformat", "-sdbname", "-sopenfile", "-sid"
-** are applied to the USA before reading the sequence.
-**
-** Associated qualifiers "-supper", "-slower" and "-sask" are applied
-** after reading.
-**
-** Associated qualifiers "-sbegin", "-send" and "-sreverse"
-** are applied as appropriate, with prompting for values,
-** after the sequence has been read. They are applied to the sequence,
-** and the resulting sequence is what is set in the ACD item.
-**
-** @param [u] thys [AcdPAcd] ACD item.
-** @return [void]
-** @see ajSeqRead
-** @@
-******************************************************************************/
-
-
-static void acdSetSeqsetall(AcdPAcd thys)
-{
-    AjPSeqset *val;
-    AjPSeqin seqin;
-    
-    AjBool required = ajFalse;
-    AjBool ok       = ajFalse;
-    AjBool okbeg    = ajFalse;
-    AjBool okend    = ajFalse;
-    AjBool okrev    = ajFalse;
-
-    static AjPStr defreply    = NULL;
-    static AjPStr reply       = NULL;
-    static AjPStr promptreply = NULL;
-    static AjPStr tmpstr      = NULL;
-    ajint itry;
-    ajint iattr;
-    
-    static AjPStr infname = NULL;
-    
-    ajint sbegin = 0;
-    ajint send   = 0;
-    AjBool sreverse = ajFalse;
-    AjBool sprompt  = ajFalse;
-    AjBool snuc     = ajFalse;
-    AjBool sprot    = ajFalse;
-    AjBool nullok   = ajFalse;
-    void **sets     = NULL;
-    AjPList seqlist;
-
-    ajint iset = 0;
-    ajint nsets;
-
-    seqlist = ajListNew();
-    seqin = ajSeqinNew();		/* set the default value */
-    
-    seqin->multi = ajTrue;
-    
-    acdQualToBool(thys, "snucleotide", ajFalse, &snuc, &defreply);
-    acdQualToBool(thys, "sprotein", ajFalse, &sprot, &defreply);
-    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
-    
-    acdInFilename(&infname);
-    required = acdIsRequired(thys);
-    acdReplyInit(thys, ajStrStr(infname), &defreply);
-    acdPromptSeq(thys);
-    
-    for(itry=acdPromptTry; itry && !ok; itry--)
-    {
-	ok = ajTrue;	   /* accept the default if nothing changes */
-	
-	ajStrAssS(&reply, defreply);
-	
-	if(required)
-	    acdUserGet(thys, &reply);
-	
-	if(!ajStrLen(reply) && nullok)
-	    break;;
-
-	ajSeqinUsa(&seqin, reply);
-	
-	if(acdAttrToStr(thys, "type", "", &seqin->Inputtype))
-	    acdInTypeSeqSave(seqin->Inputtype);
-	else
-	    acdInTypeSeqSave(NULL);
-	
-	acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
-	
-	acdGetValueAssoc(thys, "sformat", &seqin->Formatstr);
-	acdGetValueAssoc(thys, "sdbname", &seqin->Db);
-/*	acdGetValueAssoc(thys, "sopenfile", &seqin->Filename);*/ /* obsolete */
-	acdGetValueAssoc(thys, "sid", &seqin->Entryname);
-	
-	acdGetValueAssoc(thys, "ufo", &seqin->Ufo);
-	acdGetValueAssoc(thys, "fformat", &seqin->Ftquery->Formatstr);
-	acdGetValueAssoc(thys, "fopenfile", &seqin->Ftquery->Filename);
-	
-	acdQualToBool(thys, "supper", ajFalse, &seqin->Upper, &tmpstr);
-	acdQualToBool(thys, "slower", ajFalse, &seqin->Lower, &tmpstr);
-	okbeg = acdQualToSeqbegin(thys, "sbegin", 0, &seqin->Begin, &tmpstr);
-	okend = acdQualToSeqend(thys, "send", 0, &seqin->End, &tmpstr);
-	okrev = acdQualToBool(thys, "sreverse",
-			      ajFalse, &seqin->Rev, &tmpstr);
-	
-	if(snuc)
-	    ajSeqinSetNuc(seqin);
-	
-	if(sprot)
-	    ajSeqinSetProt(seqin);
-	
-	if(ajStrLen(seqin->Ufo))
-	    seqin->Features = ajTrue;
-	
-	ok = ajSeqsetallRead(seqlist, seqin);
-
-	if(!ok)
-	    acdBadVal(thys, required,
-		      "Unable to read sequence '%S'", reply);
-    }
-
-    if(!ok)
-	acdBadRetry(thys);
-
-    nsets = ajListToArray(seqlist,(void***) &sets);
-    val   = (AjPSeqset*) sets;
-
-    acdInFileSave(ajSeqsetGetName(val[0])); /* save the sequence name */
-    
-    acdQualToBool(thys, "sask", ajFalse, &sprompt, &defreply);
-    
-    /* now process the begin, end and reverse options */
-    
-    if(seqin->Begin)
-    {
-	okbeg = ajTrue;
-	val[iset]->Begin = seqin->Begin;
-    }
-    
-    for(itry=acdPromptTry; itry && !okbeg; itry--)
-    {
-	ajStrAssC(&promptreply, "start");
-	if(sprompt)
-	    acdUserGetPrompt(" Begin at position", &promptreply);
-	if(ajStrMatchCaseC(promptreply, "start"))
-	    ajStrAssC(&promptreply, "0");
-	okbeg = ajStrToInt(promptreply, &sbegin);
-	if(!okbeg)
-	    acdBadVal(thys, sprompt,
-		      "Invalid integer value '%S'", promptreply);
-    }
-
-    if(!okbeg)
-	acdBadRetry(thys);
-    
-    if(sbegin)
-    {
-	seqin->Begin = sbegin;
-	val[iset]->Begin = sbegin;
-	acdSetQualDefInt(thys, "sbegin", sbegin);
-    }
-    
-    if(seqin->End)
-    {
-	okend = ajTrue;
-	val[iset]->End = seqin->End;
-    }
-    
-    for(itry=acdPromptTry; itry && !okend; itry--)
-    {
-	ajStrAssC(&promptreply, "end");
-	if(sprompt)
-	    acdUserGetPrompt("   End at position", &promptreply);
-	if(ajStrMatchCaseC(promptreply, "end"))
-	    ajStrAssC(&promptreply, "0");
-	okend = ajStrToInt(promptreply, &send);
-	if(!okend)
-	    acdBadVal(thys, sprompt,
-		      "Invalid integer value '%S'", promptreply);
-    }
-
-    if(!okend)
-	acdBadRetry(thys);
-    
-    if(send)
-    {
-	seqin->End = send;
-	val[iset]->End = send;
-	acdSetQualDefInt(thys, "send", send);
-    }
-
-    if(ajSeqsetIsNuc(val[0]))
-    {
-	if(seqin->Rev)
-	{
-	    okrev = ajTrue;
-	    val[iset]->Rev = seqin->Rev;
-	}
-
-	for(itry=acdPromptTry; itry && !okrev; itry--)
-	{
-	    ajStrAssC(&promptreply, "N");
-	    if(sprompt)
-		acdUserGetPrompt("    Reverse strand", &promptreply);
-	    okrev = ajStrToBool(promptreply, &sreverse);
-	    if(!okrev)
-		acdBadVal(thys, sprompt,
-			  "Invalid Y/N value '%S'", promptreply);
-	}
-
-	if(!okrev)
-	    acdBadRetry(thys);
-
-	if(sreverse)
-	{
-	    seqin->Rev = sreverse;
-	    val[iset]->Rev = sreverse;
-	    acdSetQualDefBool(thys, "sreverse", sreverse);
-	}
-    }
-    
-    acdLog("sbegin: %d, send: %d, sreverse: %s\n",
-	   sbegin, send, ajStrBool(sreverse));
-    
-    if(val[iset]->Rev)
-	ajSeqsetReverse(val[iset]);
-    
-    ajSeqinDel(&seqin);
-    
-    /* sequences have special set attributes */
-    
-    thys->SAttr = acdAttrListCount(acdCalcSeqsetall);
-    thys->SetAttr = &acdCalcSeqsetall[0];
-    thys->SetStr = AJCALLOC0(thys->SAttr, sizeof(AjPStr));
-    
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_BEGIN], ajSeqsetBegin(val[0]));
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_END], ajSeqsetEnd(val[0]));
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_LENGTH], ajSeqsetLen(val[0]));
-    ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN],
-		  ajSeqsetIsProt(val[0]));
-    ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC],
-		  ajSeqsetIsNuc(val[0]));
-    ajStrAssS(&thys->SetStr[ACD_SEQ_NAME], val[0]->Name);
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_MULTICOUNT], nsets);
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_COUNT], ajSeqsetSize(val[0]));
-    
-    acdInFileSave(ajSeqsetGetName(val[0]));
-
-    for(iattr=0; iattr < thys->SAttr; iattr++)
-	ajDebug("CalcAttr %s: '%S'\n",
-		acdCalcSeqset[iattr].Name, thys->SetStr[iattr]);
-
-    thys->Value = val;
-    ajStrAssS(&thys->ValStr, reply);
-    
-    return;
-}
-
-
-
-
-/* @funcstatic acdSetSeqall ***************************************************
-**
-** Using the definition in the ACD file, and any values for the
-** item or its associated qualifiers provided on the command line,
-** prompts the user if necessary (and possible) and
-** sets the actual value for an ACD sequence item.
-**
-** Understands all attributes and associated qualifiers for this item type.
-**
-** The default value (if no other available) is a null string, which
-** is invalid.
-**
-** Associated qualifiers "-sformat", "-sdbname", "-sopenfile", "-sid"
-** are applied to the USA before reading the sequence.
-**
-** Associated qualifier "-sask" is applied
-** after reading.
-**
-** Associated qualifiers "-supper", "-slower" are applied
-** globally
-**
-** Associated qualifiers "-sbegin", "-send" and "-sreverse"
-** are applied as appropriate, with prompting for values,
-** after the sequence has been read. They are applied to the sequence,
-** and the resulting sequence is what is set in the ACD item.
-**
-** @param [u] thys [AcdPAcd] ACD item.
-** @return [void]
-** @see ajSeqRead
-** @@
-******************************************************************************/
-
-static void acdSetSeqall(AcdPAcd thys)
-{
-    AjPSeqall val;
-    AjPSeqin seqin;
-    AjPSeq seq;
-    
-    AjBool required = ajFalse;
-    AjBool ok       = ajFalse;
-    AjBool okbeg    = ajFalse;
-    AjBool okend    = ajFalse;
-    AjBool okrev    = ajFalse;
-
-    static AjPStr defreply    = NULL;
-    static AjPStr reply       = NULL;
-    static AjPStr promptreply = NULL;
-    static AjPStr tmpstr      = NULL;
-    ajint itry;
-    AjBool nullok = ajFalse;
-    
-    static AjPStr infname = NULL;
-    
-    ajint sbegin = 0;
-    ajint send   = 0;
-    AjBool sreverse = ajFalse;
-    AjBool sprompt  = ajFalse;
-    AjBool snuc     = ajFalse;
-    AjBool sprot    = ajFalse;
-    
-    val = ajSeqallNew();		/* set the default value */
-    seqin = val->Seqin;
-    seqin->multi = ajTrue;
-    seq = val->Seq;
-    
-    acdQualToBool(thys, "snucleotide", ajFalse, &snuc, &defreply);
-    acdQualToBool(thys, "sprotein", ajFalse, &sprot, &defreply);
-    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
-    
-    acdInFilename(&infname);
-    required = acdIsRequired(thys);
-    acdReplyInit(thys, ajStrStr(infname), &defreply);
-    acdPromptSeq(thys);
-    
-    for(itry=acdPromptTry; itry && !ok; itry--)
-    {
-	ok = ajTrue;	   /* accept the default if nothing changes */
-	
-	ajStrAssS(&reply, defreply);
-	
-	if(required)
-	    acdUserGet(thys, &reply);
-	
-	if(!ajStrLen(reply) && nullok)
-	    break;
-	
-	ajSeqinUsa(&seqin, reply);
-	
-	if(acdAttrToStr(thys, "type", "", &seqin->Inputtype))
-	    acdInTypeSeqSave(seqin->Inputtype);
-	else
-	    acdInTypeSeqSave(NULL);
-	
-	acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
-	acdAttrToBool(thys, "entry", ajFalse, &seqin->Text);
-	
-	acdGetValueAssoc(thys, "sformat", &seqin->Formatstr);
-	acdGetValueAssoc(thys, "sdbname", &seqin->Db);
-/*	acdGetValueAssoc(thys, "sopenfile", &seqin->Filename);*/ /* obsolete */
-	acdGetValueAssoc(thys, "sid", &seqin->Entryname);
-	
-	acdGetValueAssoc(thys, "ufo", &seqin->Ufo);
-	acdGetValueAssoc(thys, "fformat", &seqin->Ftquery->Formatstr);
-	acdGetValueAssoc(thys, "fopenfile", &seqin->Ftquery->Filename);
-	
-	acdQualToBool(thys, "supper", ajFalse, &seqin->Upper, &tmpstr);
-	acdQualToBool(thys, "slower", ajFalse, &seqin->Lower, &tmpstr);
-	okbeg = acdQualToSeqbegin(thys, "sbegin", 0, &seqin->Begin, &tmpstr);
-	okend = acdQualToSeqend(thys, "send", 0, &seqin->End, &tmpstr);
-	okrev = acdQualToBool(thys, "sreverse",
-			      ajFalse, &seqin->Rev, &tmpstr);
-
-	if(snuc)
-	    ajSeqinSetNuc(seqin);
-	
-	if(sprot)
-	    ajSeqinSetProt(seqin);
-	
-	if(ajStrLen(seqin->Ufo))
-	    seqin->Features = ajTrue;
-	
-	ok = ajSeqAllRead(seq, seqin);
-	if(!ok)
-	    acdBadVal(thys, required,
-		      "Unable to read sequence '%S'", reply);
-    }
-
-    if(!ok)
-	acdBadRetry(thys);
-    
-    /*  commentedout__ajSeqinDel(&seqin);*/
-    
-    acdInFileSave(ajSeqallGetName(val)); /* save the sequence name */
-    
-    acdQualToBool(thys, "sask", ajFalse, &sprompt, &defreply);
-    
-    /* now process the begin, end and reverse options */
-    
-    if(seqin->Begin)
-    {
-	okbeg = ajTrue;
-	val->Begin = seq->Begin = seqin->Begin;
-    }
-    
-    for(itry=acdPromptTry; itry && !okbeg; itry--)
-    {
-	ajStrAssC(&promptreply, "start");
-	if(sprompt)
-	    acdUserGetPrompt(" Begin at position", &promptreply);
-	if(ajStrMatchCaseC(promptreply, "start"))
-	    ajStrAssC(&promptreply, "0");
-	okbeg = ajStrToInt(promptreply, &sbegin);
-	if(!okbeg)
-	    acdBadVal(thys, sprompt,
-		      "Invalid integer value '%S'", promptreply);
-    }
-
-    if(!okbeg)
-	acdBadRetry(thys);
-    
-    if(sbegin)
-    {
-	seqin->Begin = sbegin;
-	seq->Begin = sbegin;
-	val->Begin = sbegin;
-	acdSetQualDefInt(thys, "sbegin", sbegin);
-    }
-    
-    if(seqin->End)
-    {
-	okend = ajTrue;
-	val->End = seq->End = seqin->End;
-    }
-    
-    for(itry=acdPromptTry; itry && !okend; itry--)
-    {
-	ajStrAssC(&promptreply, "end");
-	if(sprompt)
-	    acdUserGetPrompt("   End at position", &promptreply);
-	if(ajStrMatchCaseC(promptreply, "end"))
-	    ajStrAssC(&promptreply, "0");
-	okend = ajStrToInt(promptreply, &send);
-	if(!okend)
-	    acdBadVal(thys, sprompt,
-		      "Invalid integer value '%S'", promptreply);
-    }
-
-    if(!okend)
-	acdBadRetry(thys);
-    
-    if(send)
-    {
-	seqin->End = send;
-	seq->End = send;
-	val->End = send;
-	acdSetQualDefInt(thys, "send", send);
-    }
-
-    if(ajSeqIsNuc(seq))
-    {
-	if(seqin->Rev)
-	{
-	    okrev = ajTrue;
-	    val->Rev = seq->Rev = seqin->Rev;
-	}
-
-	for(itry=acdPromptTry; itry && !okrev; itry--)
-	{
-	    ajStrAssC(&promptreply, "N");
-	    if(sprompt)
-		acdUserGetPrompt("    Reverse strand", &promptreply);
-	    okrev = ajStrToBool(promptreply, &sreverse);
-	    if(!okrev)
-		acdBadVal(thys, sprompt,
-			  "Invalid Y/N value '%S'", promptreply);
-	}
-
-	if(!okrev)
-	    acdBadRetry(thys);
-
-	if(sreverse)
-	{
-	    seqin->Rev = sreverse;
-	    seq->Rev = sreverse;
-	    val->Rev = sreverse;
-	    acdSetQualDefBool(thys, "sreverse", sreverse);
-	}
-    }
-    
-    if(val->Rev)
-	ajSeqallReverse(val);
-    
-    acdLog("sbegin: %d, send: %d, sreverse: %s\n",
-	   sbegin, send, ajStrBool(sreverse));
-    
-    /* sequences have special set attributes */
-    
-    thys->SAttr = acdAttrListCount(acdCalcSeqall);
-    thys->SetAttr = &acdCalcSeqall[0];
-    thys->SetStr = AJCALLOC0(thys->SAttr, sizeof(AjPStr));
-    
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_BEGIN], ajSeqallBegin(val));
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_END], ajSeqallEnd(val));
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_LENGTH], ajSeqLen(seq));
-    ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqIsProt(seq));
-    ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC], ajSeqIsNuc(seq));
-    ajStrAssS(&thys->SetStr[ACD_SEQ_NAME], seq->Name);
-    
-    acdInFileSave(ajSeqallGetNameSeq(val));
-
-    thys->Value = val;
-    ajStrAssS(&thys->ValStr, reply);
-    
-    return;
-}
-
-
-
-
-/* @func ajAcdGetSeqout *******************************************************
-**
-** Returns an item of type Seqout as defined in a named ACD item.
-** Called by the application after all ACD values have been set,
-** and simply returns what the ACD item already has.
-**
-** @param [r] token [const char*] Text token name
-** @return [AjPSeqout] Sequence output object. The file was already opened by
-**         acdSetSeqout so this just returns the pointer.
-** @cre failure to find an item with the right name and type aborts.
-** @@
-******************************************************************************/
-
-AjPSeqout ajAcdGetSeqout(const char *token)
-{
-    return acdGetValue(token, "seqout");
-}
-
-
-
-
-/* @funcstatic acdSetSeqout ***************************************************
-**
-** Using the definition in the ACD file, and any values for the
-** item or its associated qualifiers provided on the command line,
-** prompts the user if necessary (and possible) and
-** sets the actual value for an ACD sequence output item.
-**
-** Understands all attributes and associated qualifiers for this item type.
-**
-** The default value (if no other is available) is "stdout".
-**
-** Associated qualifier "-osformat"
-** is applied to the USA before opening the output file.
-**
-** Associated qualifiers are defined but not yet implemented.
-**
-** @param [u] thys [AcdPAcd] ACD item.
-** @return [void]
-** @see ajFileNewOut
-** @@
-******************************************************************************/
-
-static void acdSetSeqout(AcdPAcd thys)
-{
-    AjPSeqout val;
-    
-    AjBool required = ajFalse;
-    AjBool ok       = ajFalse;
-
-    static AjPStr defreply = NULL;
-    static AjPStr reply    = NULL;
-    ajint itry;
-    AjBool nullok;
-    AjBool nulldefault;
-    
-    static AjPStr name     = NULL;
-    static AjPStr ext      = NULL;
-    static AjPStr fmt      = NULL;
-    static AjPStr sing     = NULL;
-    static AjPStr outfname = NULL;
-    AjBool osfeat;
-
-    val = NULL;
-
-    if(!acdGetValueAssoc(thys, "osname", &name))
-	acdAttrResolve(thys, "name", &name);
-    
-    if(!acdGetValueAssoc(thys, "osextension", &ext))
-	acdAttrResolve(thys, "extension", &ext);
-    
-    acdGetValueAssoc(thys, "osformat", &fmt);
-    ajStrSet(&ext, fmt);
-    if(!ajStrLen(ext))
-	ajSeqOutFormatDefault(&ext);
-    
-    acdAttrToBool(thys, "features", ajFalse, &osfeat);
-    
-    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
-    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
-
-    required = acdIsRequired(thys);
-    if(nullok && nulldefault)
-    {
-	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
-	    acdOutFilename(&defreply, name, ext);
-	else				/* leave empty */
-	    acdReplyInit(thys, "", &defreply);
-    }
-    else
-    {
-	acdOutFilename(&outfname, name, ext);
-	acdReplyInit(thys, ajStrStr(outfname), &defreply);
-    }
-
-    acdPromptSeqout(thys);
-    
-    for(itry=acdPromptTry; itry && !ok; itry--)
-    {
-	ok = ajTrue;	   /* accept the default if nothing changes */
-	
-	ajStrAssS(&reply, defreply);
-	
-	if(required)
-	    acdUserGet(thys, &reply);
-	
-        if(ajStrLen(reply))
-	{
-	    val = ajSeqoutNew();	/* set the default value */
-    
-	    ajSeqoutUsa(&val, reply);	/* resets the AjPSeqout */
-	    val->Features = osfeat;
-	    acdGetValueAssoc(thys, "osdirectory", &val->Directory);
-	    acdGetValueAssoc(thys, "osdbname", &val->Setdb);
-    
-	    acdOutDirectory(&val->Directory);
-	    acdLog("acdSetSeqout features: %B dir '%S'\n",
-		   val->Features, val->Directory);
-
-	    ajStrSet(&val->Formatstr, fmt);
-	    if(!ajStrLen(val->Formatstr))
-		ajSeqOutFormatDefault(&val->Formatstr);
-
-	    ajStrSet(&val->Extension, ext);
-	    ajStrSet(&val->Extension, val->Formatstr);
-
-	    acdGetValueAssoc(thys, "oufo", &val->Ufo);
-	    acdGetValueAssoc(thys, "offormat", &val->Ftquery->Formatstr);
-	    if(!ajStrLen(val->Ftquery->Formatstr))
-		ajFeatOutFormatDefault(&val->Ftquery->Formatstr);
-	    acdGetValueAssoc(thys, "ofname", &val->Ftquery->Filename);
-	    acdGetValueAssoc(thys, "ofdirectory",
-			     &val->Ftquery->Directory);
-	    acdOutDirectory(&val->Ftquery->Directory);
-
-	    acdQualToBool(thys, "ossingle",
-			  ajFalse,
-			  &val->Single, &sing);
-
-	    if(!acdAttrToStr(thys, "type", "", &val->Outputtype))
-		if(!acdInTypeSeq(&val->Outputtype))
-		    ajWarn("No output type specified for '%S'", thys->Name);
-
-	    if(!ajSeqoutOpen(val))
-	    {
-		if(ajStrLen(val->Directory))
-		    acdBadVal(thys, required,
-			      "Unable to write sequence to '%S%S'",
-			      val->Directory, reply);
-		else
-		    acdBadVal(thys, required,
-			      "Unable to write sequence to '%S'",
-			      reply);
-		ok = ajFalse;
-		ajSeqoutDel(&val);
-	    }
-	}
-	else
-	    if(!nullok)
-	    {
-		acdBadVal(thys, required,
-			  "Output USA is required");
-		ok = ajFalse;
-	    }
-    }
-
-    if(!ok)
-	acdBadRetry(thys);
-    
-    thys->Value = val;
-    ajStrAssS(&thys->ValStr, reply);
-    if (val)
-    {
-	acdLog("acdSetSeqout features: %B\n", val->Features);
-	if(val->Features)
-	    acdLog("acdSetSeqout with features UFO '%S'\n", val->Ufo);
-    }
-
-    return;
-}
-
-
-
-
-/* @func ajAcdGetSeqoutset ****************************************************
-**
-** Returns an item of type Seqoutset as defined in a named ACD item.
-** Called by the application after all ACD values have been set,
-** and simply returns what the ACD item already has.
-**
-** @param [r] token [const char*] Text token name
-** @return [AjPSeqout] Sequence output object. The file was already
-**        opened by acdSetSeqoutset so this just returns the pointer.
-** @cre failure to find an item with the right name and type aborts.
-** @@
-******************************************************************************/
-
-AjPSeqout ajAcdGetSeqoutset(const char *token)
-{
-    return acdGetValue(token, "seqoutset");
-}
-
-
-
-
-/* @funcstatic acdSetSeqoutset ************************************************
-**
-** Using the definition in the ACD file, and any values for the
-** item or its associated qualifiers provided on the command line,
-** prompts the user if necessary (and possible) and
-** sets the actual value for an ACD sequence output item.
-**
-** Understands all attributes and associated qualifiers for this item type.
-**
-** The default value (if no other is available) is "stdout".
-**
-** Associated qualifier "-osformat"
-** is applied to the USA before opening the output file.
-**
-** Associated qualifiers are defined but not yet implemented.
-**
-** @param [u] thys [AcdPAcd] ACD item.
-** @return [void]
-** @see ajFileNewOut
-** @@
-******************************************************************************/
-
-static void acdSetSeqoutset(AcdPAcd thys)
-{
-    AjPSeqout val;
-    
-    AjBool required = ajFalse;
-    AjBool ok       = ajFalse;
-    AjBool nullok;
-    AjBool nulldefault;
-
-    static AjPStr defreply = NULL;
-    static AjPStr reply    = NULL;
-    ajint itry;
-    
-    static AjPStr name     = NULL;
-    static AjPStr ext      = NULL;
-    static AjPStr fmt      = NULL;
-    static AjPStr sing     = NULL;
-    static AjPStr outfname = NULL;
-    AjBool osfeat;
-    
-    val = NULL;
-
-    if(!acdGetValueAssoc(thys, "osname", &name))
-	acdAttrResolve(thys, "name", &name);
-    
-    if(!acdGetValueAssoc(thys, "osextension", &ext))
-	acdAttrResolve(thys, "extension", &ext);
-    
-    acdGetValueAssoc(thys, "osformat", &fmt);
-    ajStrSet(&ext, fmt);
-    if(!ajStrLen(ext))
-	ajSeqOutFormatDefault(&ext);
-    
-    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
-    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
-
-    
-    
-    acdAttrToBool(thys, "features", ajFalse, &osfeat);
-    
-    required = acdIsRequired(thys);
-    if(nullok && nulldefault)
-    {
-	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
-	    acdOutFilename(&defreply, name, ext);
-	else				/* leave empty */
-	    acdReplyInit(thys, "", &defreply);
-    }
-    else
-    {
-	acdOutFilename(&outfname, name, ext);
-	acdReplyInit(thys, ajStrStr(outfname), &defreply);
-    }
-    acdPromptSeqout(thys);
-    
-    for(itry=acdPromptTry; itry && !ok; itry--)
-    {
-	ok = ajTrue;	   /* accept the default if nothing changes */
-	
-	ajStrAssS(&reply, defreply);
-	
-	if(required)
-	    acdUserGet(thys, &reply);
-	
-	if(ajStrLen(reply))
-	{
-	    val = ajSeqoutNew();		/* set the default value */
-    
-	    ajSeqoutUsa(&val, reply);
-	    acdGetValueAssoc(thys, "osdbname", &val->Setdb);
-	    val->Features = osfeat;
-	    acdGetValueAssoc(thys, "osdirectory", &val->Directory);
-	    acdOutDirectory(&val->Directory);
-	    acdLog("acdSetSeqoutset features: %B\n", val->Features);
-
-	    ajStrSet(&val->Formatstr, fmt);
-	    if(!ajStrLen(val->Formatstr))
-		ajSeqOutFormatDefault(&val->Formatstr);
-
-	    ajStrSet(&val->Extension, ext);
-	    ajStrSet(&val->Extension, val->Formatstr);
-
-	    acdGetValueAssoc(thys, "oufo", &val->Ufo);
-	    acdGetValueAssoc(thys, "offormat", &val->Ftquery->Formatstr);
-	    if(!ajStrLen(val->Ftquery->Formatstr))
-		ajFeatOutFormatDefault(&val->Ftquery->Formatstr);
-	    acdGetValueAssoc(thys, "ofname", &val->Ftquery->Filename);
-	    acdGetValueAssoc(thys, "ofdirectory",
-			     &val->Ftquery->Directory);
-	    acdOutDirectory(&val->Ftquery->Directory);
-
-	    acdQualToBool(thys, "ossingle",
-			  ajSeqOutFormatSingle(val->Formatstr),
-			  &val->Single, &sing);
-
-	    if(!acdAttrToStr(thys, "type", "", &val->Outputtype))
-		if(!acdInTypeSeq(&val->Outputtype))
-		    ajWarn("No output type specified for '%S'", thys->Name);
-
-	    if(!ajSeqoutOpen(val))
-	    {
-		if(ajStrLen(val->Directory))
-		    acdBadVal(thys, required,
-			      "Unable to write sequence to '%S%S'",
-			      val->Directory, reply);
-		else
-		    acdBadVal(thys, required,
-			      "Unable to write sequence to '%S'",
-			      reply);
-		ok = ajFalse;
-		ajSeqoutDel(&val);
-	    }
-	}
-	else
-	    if(!nullok)
-	    {
-		acdBadVal(thys, required,
-			  "Output USA is required");
-		ok = ajFalse;
-	    }
-    }
-
-    if(!ok)
-	acdBadRetry(thys);
-    
-    thys->Value = val;
-    ajStrAssS(&thys->ValStr, reply);
-    
-    return;
-}
-
-
-
-
-/* @func ajAcdGetSeqoutall ****************************************************
-**
-** Returns an item of type Seqoutall as defined in a named ACD item.
-** Called by the application after all ACD values have been set,
-** and simply returns what the ACD item already has.
-**
-** @param [r] token [const char*] Text token name
-** @return [AjPSeqout] Sequence output object. The file was already
-**         opened by acdSetSeqoutall so this just returns the pointer.
-** @cre failure to find an item with the right name and type aborts.
-** @@
-******************************************************************************/
-
-AjPSeqout ajAcdGetSeqoutall(const char *token)
-{
-    return acdGetValue(token, "seqoutall");
-}
-
-
-
-
-/* @funcstatic acdSetSeqoutall ************************************************
-**
-** Using the definition in the ACD file, and any values for the
-** item or its associated qualifiers provided on the command line,
-** prompts the user if necessary (and possible) and
-** sets the actual value for an ACD sequence output item.
-**
-** Understands all attributes and associated qualifiers for this item type.
-**
-** The default value (if no other is available) is "stdout".
-**
-** Associated qualifier "-osformat"
-** is applied to the USA before opening the output file.
-**
-** @param [u] thys [AcdPAcd] ACD item.
-** @return [void]
-** @see ajFileNewOut
-** @@
-******************************************************************************/
-
-static void acdSetSeqoutall(AcdPAcd thys)
-{
-    AjPSeqout val;
-    
-    AjBool required = ajFalse;
-    AjBool ok       = ajFalse;
-
-    static AjPStr defreply = NULL;
-    static AjPStr reply    = NULL;
-    ajint itry;
-    AjBool nullok;
-    AjBool nulldefault;
-    
-    static AjPStr name     = NULL;
-    static AjPStr ext      = NULL;
-    static AjPStr fmt      = NULL;
-    static AjPStr sing     = NULL;
-    static AjPStr outfname = NULL;
-    AjBool osfeat;
-    
-    val = NULL;
-
-    if(!acdGetValueAssoc(thys, "osname", &name))
-	acdAttrResolve(thys, "name", &name);
-    
-    if(!acdGetValueAssoc(thys, "osextension", &ext))
-	acdAttrResolve(thys, "extension", &ext);
-    
-    acdGetValueAssoc(thys, "osformat", &fmt);
-    ajStrSet(&ext, fmt);
-    if(!ajStrLen(ext))
-	ajSeqOutFormatDefault(&ext);
-    
-    
-    acdAttrToBool(thys, "features", ajFalse, &osfeat);
-    
-    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
-    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
-
-    required = acdIsRequired(thys);
-    if(nullok && nulldefault)
-    {
-	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
-	    acdOutFilename(&defreply, name, ext);
-	else				/* leave empty */
-	    acdReplyInit(thys, "", &defreply);
-    }
-    else
-    {
-	acdOutFilename(&outfname, name, ext);
-        acdReplyInit(thys, ajStrStr(outfname), &defreply);
-    }
-    acdPromptSeqout(thys);
-    
-    for(itry=acdPromptTry; itry && !ok; itry--)
-    {
-	ok = ajTrue;	   /* accept the default if nothing changes */
-	
-	ajStrAssS(&reply, defreply);
-	
-	if(required)
-	    acdUserGet(thys, &reply);
-	
-	if(ajStrLen(reply))
-	{
-	    val = ajSeqoutNew();		/* set the default value */
-	    ajSeqoutUsa(&val, reply);
-	    val->Features = osfeat;
-	    acdGetValueAssoc(thys, "osdirectory", &val->Directory);
-	    acdGetValueAssoc(thys, "osdbname", &val->Setdb);
-	    acdOutDirectory(&val->Directory);
-	    acdLog("acdSetSeqoutall features: %B\n", val->Features);
-
-	    ajStrSet(&val->Formatstr, fmt);
-	    if(!ajStrLen(val->Formatstr))
-		ajSeqOutFormatDefault(&val->Formatstr);
-
-	    ajStrSet(&val->Extension, ext);
-	    ajStrSet(&val->Extension, val->Formatstr);
-
-	    acdGetValueAssoc(thys, "oufo", &val->Ufo);
-	    acdGetValueAssoc(thys, "offormat", &val->Ftquery->Formatstr);
-	    if(!ajStrLen(val->Ftquery->Formatstr))
-		ajFeatOutFormatDefault(&val->Ftquery->Formatstr);
-
-	    acdGetValueAssoc(thys, "ofname", &val->Ftquery->Filename);
-	    acdGetValueAssoc(thys, "ofdirectory",
-			     &val->Ftquery->Directory);
-	    acdOutDirectory(&val->Ftquery->Directory);
-
-	    acdLog("acdSetSeqoutall ossingle default: %B\n",
-		   ajSeqOutFormatSingle(val->Formatstr));
-
-	    acdQualToBool(thys, "ossingle",
-			  ajSeqOutFormatSingle(val->Formatstr),
-			  &val->Single, &sing);
-
-	    acdLog("acdSetSeqoutall ossingle value %B '%S'\n",
-		   val->Single, sing);
-
-	    if(!acdAttrToStr(thys, "type", "", &val->Outputtype))
-		if(!acdInTypeSeq(&val->Outputtype))
-		    ajWarn("No output type specified for '%S'", thys->Name);
-
-	    if(!ajSeqoutOpen(val))
-	    {
-		if(ajStrLen(val->Directory))
-		    acdBadVal(thys, required,
-			      "Unable to write sequence to '%S%S'",
-			      val->Directory, reply);
-		else
-		    acdBadVal(thys, required,
-			      "Unable to write sequence to '%S'",
-			      reply);
-		ok = ajFalse;
-		ajSeqoutDel(&val);
-	    }
-	}
-	else
-	    if(!nullok)
-	    {
-		acdBadVal(thys, required,
-			  "Output USA is required");
-		ok = ajFalse;
-	    }
-    }
-
-    if(!ok)
-	acdBadRetry(thys);
-    
-    thys->Value = val;
-    ajStrAssS(&thys->ValStr, reply);
-    
-    return;
 }
 
 
@@ -16689,18 +17684,9 @@ char* ajAcdProgram(void)
 
 static void acdPromptCodon(AcdPAcd thys)
 {
-    AjPStr *prompt;
+    static ajint count=0;
 
-    if(!thys->DefStr)
-	return;
-
-    prompt = &thys->DefStr[DEF_PROMPT];
-    if(ajStrLen(*prompt))
-	return;
-
-
-    ajFmtPrintS(&thys->StdPrompt, "Codon usage file");
-
+    acdPromptStandard(thys, "Codon usage file", &count);
     return;
 }
 
@@ -16718,16 +17704,9 @@ static void acdPromptCodon(AcdPAcd thys)
 
 static void acdPromptDirlist(AcdPAcd thys)
 {
-    AjPStr *prompt;
+    static ajint count=0;
 
-    if(!thys->DefStr)
-	return;
-
-    prompt = &thys->DefStr[DEF_PROMPT];
-    if(ajStrLen(*prompt))
-	return;
-
-    ajFmtPrintS(&thys->StdPrompt, "Directory with files");
+    acdPromptStandard(thys, "Directory with files", &count);
     return;
 }
 
@@ -16745,16 +17724,9 @@ static void acdPromptDirlist(AcdPAcd thys)
 
 static void acdPromptFilelist(AcdPAcd thys)
 {
-    AjPStr *prompt;
+    static ajint count=0;
 
-    if(!thys->DefStr)
-	return;
-
-    prompt = &thys->DefStr[DEF_PROMPT];
-    if(ajStrLen(*prompt))
-	return;
-
-    ajFmtPrintS(&thys->StdPrompt, "Comma-separated file list");
+    acdPromptStandard(thys, "Comma-separated file list", &count);
     return;
 }
 
@@ -16773,49 +17745,52 @@ static void acdPromptFilelist(AcdPAcd thys)
 
 static void acdPromptFeat(AcdPAcd thys)
 {
-    AjPStr *prompt;
-    static ajint count = 0;
+    static ajint count=0;
 
-    count++;
-
-    if(!thys->DefStr)
-	return;
-
-    prompt = &thys->DefStr[DEF_PROMPT];
-    if(ajStrLen(*prompt))
-	return;
-
-    switch(count)
-    {
-    case 1:
-	ajFmtPrintS(&thys->StdPrompt, "Input features");
-	break;
-    case 2: ajFmtPrintS(&thys->StdPrompt, "Second features"); break;
-    case 3: ajFmtPrintS(&thys->StdPrompt, "Third features"); break;
-    case 11:
-    case 12:
-    case 13:
-	ajFmtPrintS(&thys->StdPrompt, "%dth features", count); break;
-    default:
-	switch(count % 10)
-	{
-	case 1: ajFmtPrintS(&thys->StdPrompt,
-			    "%dst features", count); break;
-	case 2: ajFmtPrintS(&thys->StdPrompt,
-			    "%dnd features", count); break;
-	case 3: ajFmtPrintS(&thys->StdPrompt,
-			    "%drd features", count); break;
-	default: ajFmtPrintS(&thys->StdPrompt,
-			     "%dth features", count); break;
-	}
-	break;
-    }
-
+    acdPromptStandard(thys, "input features", &count);
     return;
 }
 
 
 
+
+/* @funcstatic acdPromptCpdb **************************************************
+**
+** Sets the default prompt for this ACD object to be a clean PDB file
+**
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPromptCpdb(AcdPAcd thys)
+{
+    static ajint count=0;
+
+    acdPromptStandard(thys, "clean PDB file", &count);
+    return;
+}
+
+
+
+
+/* @funcstatic acdPromptScop **************************************************
+**
+** Sets the default prompt for this ACD object to be a scop entry
+**
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPromptScop(AcdPAcd thys)
+{
+    static ajint count=0;
+
+    acdPromptStandard(thys, "scop entry", &count);
+
+    return;
+}
 
 
 
@@ -16832,43 +17807,8 @@ static void acdPromptFeat(AcdPAcd thys)
 
 static void acdPromptSeq(AcdPAcd thys)
 {
-    AjPStr *prompt;
-    static ajint count = 0;
-
-    count++;
-
-    if(!thys->DefStr)
-	return;
-
-    prompt = &thys->DefStr[DEF_PROMPT];
-    if(ajStrLen(*prompt))
-	return;
-
-    switch(count)
-    {
-    case 1:
-	ajFmtPrintS(&thys->StdPrompt, "Input sequence");
-	break;
-    case 2: ajFmtPrintS(&thys->StdPrompt, "Second sequence"); break;
-    case 3: ajFmtPrintS(&thys->StdPrompt, "Third sequence"); break;
-    case 11:
-    case 12:
-    case 13:
-	ajFmtPrintS(&thys->StdPrompt, "%dth sequence", count); break;
-    default:
-	switch(count % 10)
-	{
-	case 1: ajFmtPrintS(&thys->StdPrompt,
-			    "%dst sequence", count); break;
-	case 2: ajFmtPrintS(&thys->StdPrompt,
-			    "%dnd sequence", count); break;
-	case 3: ajFmtPrintS(&thys->StdPrompt,
-			    "%drd sequence", count); break;
-	default: ajFmtPrintS(&thys->StdPrompt,
-			     "%dth sequence", count); break;
-	}
-	break;
-    }
+    static ajint count=0;
+    acdPromptStandardAlt(thys, "Input sequence", "sequence", &count);
 
     if(ajStrMatchCC(acdType[thys->Type].Name, "seqset"))
 	ajStrAppC(&thys->StdPrompt, " set");
@@ -16893,43 +17833,8 @@ static void acdPromptSeq(AcdPAcd thys)
 
 static void acdPromptTree(AcdPAcd thys)
 {
-    AjPStr *prompt;
-    static ajint count = 0;
-
-    count++;
-
-    if(!thys->DefStr)
-	return;
-
-    prompt = &thys->DefStr[DEF_PROMPT];
-    if(ajStrLen(*prompt))
-	return;
-
-    switch(count)
-    {
-    case 1:
-	ajFmtPrintS(&thys->StdPrompt, "Input tree file");
-	break;
-    case 2: ajFmtPrintS(&thys->StdPrompt, "Second tree file"); break;
-    case 3: ajFmtPrintS(&thys->StdPrompt, "Third tree file"); break;
-    case 11:
-    case 12:
-    case 13:
-	ajFmtPrintS(&thys->StdPrompt, "%dth tree file", count); break;
-    default:
-	switch(count % 10)
-	{
-	case 1: ajFmtPrintS(&thys->StdPrompt,
-			    "%dst tree file", count); break;
-	case 2: ajFmtPrintS(&thys->StdPrompt,
-			    "%dnd tree file", count); break;
-	case 3: ajFmtPrintS(&thys->StdPrompt,
-			    "%drd tree file", count); break;
-	default: ajFmtPrintS(&thys->StdPrompt,
-			     "%dth tree file", count); break;
-	}
-	break;
-    }
+    static ajint count=0;
+    acdPromptStandardAlt(thys, "Input tree file", "tree file", &count);
 
     return;
 }
@@ -16949,16 +17854,8 @@ static void acdPromptTree(AcdPAcd thys)
 
 static void acdPromptGraph(AcdPAcd thys)
 {
-    AjPStr *prompt;
-
-    if(!thys->DefStr)
-	return;
-
-    prompt = &thys->DefStr[DEF_PROMPT];
-    if(ajStrLen(*prompt))
-	return;
-
-    ajFmtPrintS(&thys->StdPrompt, "Graph type");
+    static ajint count=0;
+    acdPromptStandard(thys, "graph type", &count);
     return;
 }
 
@@ -16977,52 +17874,8 @@ static void acdPromptGraph(AcdPAcd thys)
 
 static void acdPromptFeatout(AcdPAcd thys)
 {
-    AjPStr *prompt;
-    static ajint count = 0;
-
-    count++;
-
-    if(!thys->DefStr)
-	return;
-
-    prompt = &thys->DefStr[DEF_PROMPT];
-    if(ajStrLen(*prompt))
-	return;
-
-    switch(count)
-    {
-    case 1:
-	ajFmtPrintS(&thys->StdPrompt,
-		    "Output features");
-	break;
-    case 2: ajFmtPrintS(&thys->StdPrompt,
-			"Second output features"); break;
-    case 3: ajFmtPrintS(&thys->StdPrompt,
-			"Third output features"); break;
-    case 11:
-    case 12:
-    case 13:
-	ajFmtPrintS(&thys->StdPrompt,
-		    "%dth output features", count); break;
-    default:
-	switch(count % 10)
-	{
-	case 1: ajFmtPrintS(&thys->StdPrompt,
-			    "%dst output features", count);
-	    break;
-	case 2: ajFmtPrintS(&thys->StdPrompt,
-			    "%dnd output features", count);
-	    break;
-	case 3: ajFmtPrintS(&thys->StdPrompt,
-			    "%drd output features", count);
-	    break;
-	default: ajFmtPrintS(&thys->StdPrompt,
-			     "%dth output features", count);
-	    break;
-	}
-	break;
-    }
-
+    static ajint count=0;
+    acdPromptStandard(thys, "output features", &count);
     return;
 }
 
@@ -17041,52 +17894,8 @@ static void acdPromptFeatout(AcdPAcd thys)
 
 static void acdPromptAlign(AcdPAcd thys)
 {
-    AjPStr *prompt;
-    static ajint count = 0;
-
-    count++;
-
-    if(!thys->DefStr)
-	return;
-
-    prompt = &thys->DefStr[DEF_PROMPT];
-    if(ajStrLen(*prompt))
-	return;
-
-    switch(count)
-    {
-    case 1:
-	ajFmtPrintS(&thys->StdPrompt,
-		    "Output alignment");
-	break;
-    case 2: ajFmtPrintS(&thys->StdPrompt,
-			"Second output alignment"); break;
-    case 3: ajFmtPrintS(&thys->StdPrompt,
-			"Third output alignment"); break;
-    case 11:
-    case 12:
-    case 13:
-	ajFmtPrintS(&thys->StdPrompt,
-		    "%dth output alignment", count); break;
-    default:
-	switch(count % 10)
-	{
-	case 1: ajFmtPrintS(&thys->StdPrompt,
-			    "%dst output alignment", count);
-	    break;
-	case 2: ajFmtPrintS(&thys->StdPrompt,
-			    "%dnd output alignment", count);
-	    break;
-	case 3: ajFmtPrintS(&thys->StdPrompt,
-			    "%drd output alignment", count);
-	    break;
-	default: ajFmtPrintS(&thys->StdPrompt,
-			     "%dth output alignment", count);
-	    break;
-	}
-	break;
-    }
-
+    static ajint count=0;
+    acdPromptStandard(thys, "output alignment", &count);
     return;
 }
 
@@ -17105,52 +17914,8 @@ static void acdPromptAlign(AcdPAcd thys)
 
 static void acdPromptReport(AcdPAcd thys)
 {
-    AjPStr *prompt;
-    static ajint count = 0;
-
-    count++;
-
-    if(!thys->DefStr)
-	return;
-
-    prompt = &thys->DefStr[DEF_PROMPT];
-    if(ajStrLen(*prompt))
-	return;
-
-    switch(count)
-    {
-    case 1:
-	ajFmtPrintS(&thys->StdPrompt,
-		    "Output report");
-	break;
-    case 2: ajFmtPrintS(&thys->StdPrompt,
-			"Second output report"); break;
-    case 3: ajFmtPrintS(&thys->StdPrompt,
-			"Third output report"); break;
-    case 11:
-    case 12:
-    case 13:
-	ajFmtPrintS(&thys->StdPrompt,
-		    "%dth output report", count); break;
-    default:
-	switch(count % 10)
-	{
-	case 1: ajFmtPrintS(&thys->StdPrompt,
-			    "%dst output report", count);
-	    break;
-	case 2: ajFmtPrintS(&thys->StdPrompt,
-			    "%dnd output report", count);
-	    break;
-	case 3: ajFmtPrintS(&thys->StdPrompt,
-			    "%drd output report", count);
-	    break;
-	default: ajFmtPrintS(&thys->StdPrompt,
-			     "%dth output report", count);
-	    break;
-	}
-	break;
-    }
-
+    static ajint count=0;
+    acdPromptStandard(thys, "output report", &count);
     return;
 }
 
@@ -17169,48 +17934,308 @@ static void acdPromptReport(AcdPAcd thys)
 
 static void acdPromptSeqout(AcdPAcd thys)
 {
-    AjPStr *prompt;
-    static ajint count = 0;
+    static ajint count=0;
+    acdPromptStandard(thys, "output sequence", &count);
+    return;
+}
 
-    count++;
+
+
+
+/* @funcstatic acdPromptOutcodon **********************************************
+**
+** Sets the default prompt for this ACD object to be a simple
+** prompt with "second", "third" etc. added.
+**
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPromptOutcodon(AcdPAcd thys)
+{
+    static ajint count=0;
+
+    acdPromptStandard(thys, "output codon usage file", &count);
+    return;
+}
+
+
+
+
+/* @funcstatic acdPromptOutcpdb **********************************************
+**
+** Sets the default prompt for this ACD object to be a simple
+** prompt with "second", "third" etc. added.
+**
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPromptOutcpdb(AcdPAcd thys)
+{
+    static ajint count=0;
+
+    acdPromptStandard(thys, "output clean PDB file", &count);
+    return;
+}
+
+
+
+
+/* @funcstatic acdPromptOutdata **********************************************
+**
+** Sets the default prompt for this ACD object to be a simple
+** prompt with "second", "third" etc. added.
+**
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPromptOutdata(AcdPAcd thys)
+{
+    static ajint count=0;
+
+    acdPromptStandard(thys, "output data file", &count);
+    return;
+}
+
+
+
+
+/* @funcstatic acdPromptOutdir **********************************************
+**
+** Sets the default prompt for this ACD object to be a simple
+** prompt with "second", "third" etc. added.
+**
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPromptOutdir(AcdPAcd thys)
+{
+    static ajint count=0;
+
+    acdPromptStandard(thys, "output directory", &count);
+    return;
+}
+
+
+
+
+/* @funcstatic acdPromptOutdiscrete *******************************************
+**
+** Sets the default prompt for this ACD object to be a simple
+** prompt with "second", "third" etc. added.
+**
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPromptOutdiscrete(AcdPAcd thys)
+{
+    static ajint count=0;
+
+    acdPromptStandard(thys, "output discrete data file", &count);
+    return;
+}
+
+
+
+
+/* @funcstatic acdPromptOutdistance *******************************************
+**
+** Sets the default prompt for this ACD object to be a simple
+** prompt with "second", "third" etc. added.
+**
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPromptOutdistance(AcdPAcd thys)
+{
+    static ajint count=0;
+
+    acdPromptStandard(thys, "output distance data file", &count);
+    return;
+}
+
+
+
+
+/* @funcstatic acdPromptOutfreq **********************************************
+**
+** Sets the default prompt for this ACD object to be a simple
+** prompt with "second", "third" etc. added.
+**
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPromptOutfreq(AcdPAcd thys)
+{
+    static ajint count=0;
+
+    acdPromptStandard(thys, "output frequency data file", &count);
+    return;
+}
+
+
+
+
+/* @funcstatic acdPromptOutmatrix *********************************************
+**
+** Sets the default prompt for this ACD object to be a simple
+** prompt with "second", "third" etc. added.
+**
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPromptOutmatrix(AcdPAcd thys)
+{
+    static ajint count=0;
+
+    acdPromptStandard(thys, "output matrix file", &count);
+    return;
+}
+
+
+
+
+/* @funcstatic acdPromptOutproperties *****************************************
+**
+** Sets the default prompt for this ACD object to be a simple
+** prompt with "second", "third" etc. added.
+**
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPromptOutproperties(AcdPAcd thys)
+{
+    static ajint count=0;
+
+    acdPromptStandard(thys, "output properties data file", &count);
+    return;
+}
+
+
+
+
+/* @funcstatic acdPromptOutscop **********************************************
+**
+** Sets the default prompt for this ACD object to be a simple
+** prompt with "second", "third" etc. added.
+**
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPromptOutscop(AcdPAcd thys)
+{
+    static ajint count=0;
+
+    acdPromptStandard(thys, "output scop file", &count);
+    return;
+}
+
+
+
+
+/* @funcstatic acdPromptOuttree **********************************************
+**
+** Sets the default prompt for this ACD object to be a simple
+** prompt with "second", "third" etc. added.
+**
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPromptOuttree(AcdPAcd thys)
+{
+    static ajint count=0;
+
+    acdPromptStandard(thys, "output tree file", &count);
+    return;
+}
+
+
+
+
+/* @funcstatic acdPromptStandard **********************************************
+**
+** Sets the default prompt for this ACD object to be an output
+** file with "first", "second" etc. added.
+**
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @param [r] type [char*] Data type for prompt
+** @param [r] count [ajint*] count for number of calls
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPromptStandard(AcdPAcd thys, char* type, ajint* count)
+{
+    AjPStr *prompt;
+
+    (*count)++;
+
+    acdLog("acdPromptStandard '%s' count %d\n", type, *count);
 
     if(!thys->DefStr)
+    {
+	acdLog("acdPromptStandard '%s' thys->DefStr NULL\n", type);
 	return;
+    }
 
     prompt = &thys->DefStr[DEF_PROMPT];
     if(ajStrLen(*prompt))
+    {
+	acdLog("acdPromptStandard '%s' found thys->DefStr[DEF_PROMPT] '%S'\n",
+	       type, *prompt);
+	/*ajStrTrace(*prompt);*/
+	/*ajStrTrace(thys->DefStr[DEF_PROMPT]);*/
 	return;
+    }
 
-    switch(count)
+    switch(*count)
     {
     case 1:
 	ajFmtPrintS(&thys->StdPrompt,
-		    "Output sequence");
+		    "%s", type);
+	ajStrToTitle(&thys->StdPrompt);
 	break;
     case 2: ajFmtPrintS(&thys->StdPrompt,
-			"Second output sequence"); break;
+			"Second %s", type); break;
     case 3: ajFmtPrintS(&thys->StdPrompt,
-			"Third output sequence"); break;
+			"Third %s", type); break;
     case 11:
     case 12:
     case 13:
 	ajFmtPrintS(&thys->StdPrompt,
-		    "%dth output sequence", count); break;
+		    "%dth %s", count, type); break;
     default:
-	switch(count % 10)
+	switch(*count % 10)
 	{
 	case 1: ajFmtPrintS(&thys->StdPrompt,
-			    "%dst output sequence", count);
-	    break;
+			    "%dst %s", count, type); break;
 	case 2: ajFmtPrintS(&thys->StdPrompt,
-			    "%dnd output sequence", count);
-	    break;
+			    "%dnd %s", count, type); break;
 	case 3: ajFmtPrintS(&thys->StdPrompt,
-			    "%drd output sequence", count);
-	    break;
+			    "%drd %s", count, type); break;
 	default: ajFmtPrintS(&thys->StdPrompt,
-			     "%dth output sequence", count);
-	    break;
+			     "%dth %s", count, type); break;
 	}
 	break;
     }
@@ -17218,6 +18243,77 @@ static void acdPromptSeqout(AcdPAcd thys)
     return;
 }
 
+/* @funcstatic acdPromptStandardAlt *******************************************
+**
+** Sets the default prompt for this ACD object to as sepcified, with
+** "second", "third" etc. added.
+**
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @param [r] firsttype [char*] Data type for prompt first time
+** @param [r] type [char*] Data type for prompt subsequent times
+** @param [r] count [ajint*] count for number of calls
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPromptStandardAlt(AcdPAcd thys, char* firsttype, char* type,
+				 ajint* count)
+{
+    AjPStr *prompt;
+
+    (*count)++;
+
+    acdLog("acdPromptStandardAlt '%s' count %d\n", type, *count);
+
+    if(!thys->DefStr)
+    {
+	acdLog("acdPromptStandardAlt '%s' thys->DefStr NULL\n", type);
+	return;
+    }
+
+    prompt = &thys->DefStr[DEF_PROMPT];
+    if(ajStrLen(*prompt))
+    {
+	acdLog("acdPromptStandardAlt '%s' "
+	       "found thys->DefStr[DEF_PROMPT] '%S'\n",
+	       type, *prompt);
+	/*ajStrTrace(*prompt);*/
+	/*ajStrTrace(thys->DefStr[DEF_PROMPT]);*/
+	return;
+    }
+
+    switch(*count)
+    {
+    case 1:
+	ajFmtPrintS(&thys->StdPrompt,
+		    "%s", firsttype);
+	break;
+    case 2: ajFmtPrintS(&thys->StdPrompt,
+			"Second %s", type); break;
+    case 3: ajFmtPrintS(&thys->StdPrompt,
+			"Third %s", type); break;
+    case 11:
+    case 12:
+    case 13:
+	ajFmtPrintS(&thys->StdPrompt,
+		    "%dth %s", count, type); break;
+    default:
+	switch(*count % 10)
+	{
+	case 1: ajFmtPrintS(&thys->StdPrompt,
+			    "%dst %s", count, type); break;
+	case 2: ajFmtPrintS(&thys->StdPrompt,
+			    "%dnd %s", count, type); break;
+	case 3: ajFmtPrintS(&thys->StdPrompt,
+			    "%drd %s", count, type); break;
+	default: ajFmtPrintS(&thys->StdPrompt,
+			     "%dth %s", count, type); break;
+	}
+	break;
+    }
+
+    return;
+}
 
 
 
@@ -17233,58 +18329,9 @@ static void acdPromptSeqout(AcdPAcd thys)
 
 static void acdPromptOutfile(AcdPAcd thys)
 {
-    AjPStr *prompt;
     static ajint count = 0;
 
-    count++;
-
-    acdLog("acdPromptOutfile count %d\n", count);
-
-    if(!thys->DefStr)
-    {
-	acdLog("acdPromptOutfile thys->DefStr NULL\n");
-	return;
-    }
-
-    prompt = &thys->DefStr[DEF_PROMPT];
-    if(ajStrLen(*prompt))
-    {
-	acdLog("acdPromptOutfile found thys->DefStr[DEF_PROMPT] '%S'\n",
-	       *prompt);
-	/*ajStrTrace(*prompt);*/
-	/*ajStrTrace(thys->DefStr[DEF_PROMPT]);*/
-	return;
-    }
-
-    switch(count)
-    {
-    case 1:
-	ajFmtPrintS(&thys->StdPrompt,
-		    "Output file");
-	break;
-    case 2: ajFmtPrintS(&thys->StdPrompt,
-			"Second output file"); break;
-    case 3: ajFmtPrintS(&thys->StdPrompt,
-			"Third output file"); break;
-    case 11:
-    case 12:
-    case 13:
-	ajFmtPrintS(&thys->StdPrompt,
-		    "%dth output file", count); break;
-    default:
-	switch(count % 10)
-	{
-	case 1: ajFmtPrintS(&thys->StdPrompt,
-			    "%dst output file", count); break;
-	case 2: ajFmtPrintS(&thys->StdPrompt,
-			    "%dnd output file", count); break;
-	case 3: ajFmtPrintS(&thys->StdPrompt,
-			    "%drd output file", count); break;
-	default: ajFmtPrintS(&thys->StdPrompt,
-			     "%dth output file", count); break;
-	}
-	break;
-    }
+    acdPromptStandard(thys, "output file", &count);
 
     return;
 }
@@ -17304,43 +18351,9 @@ static void acdPromptOutfile(AcdPAcd thys)
 
 static void acdPromptInfile(AcdPAcd thys)
 {
-    AjPStr *prompt;
     static ajint count = 0;
 
-    count++;
-
-    if(!thys->DefStr)
-	return;
-
-    prompt = &thys->DefStr[DEF_PROMPT];
-    if(ajStrLen(*prompt))
-	return;
-
-    switch(count)
-    {
-    case 1:
-	ajFmtPrintS(&thys->StdPrompt, "Input file");
-	break;
-    case 2: ajFmtPrintS(&thys->StdPrompt, "Second input file"); break;
-    case 3: ajFmtPrintS(&thys->StdPrompt, "Third input file"); break;
-    case 11:
-    case 12:
-    case 13:
-	ajFmtPrintS(&thys->StdPrompt, "%dth input file", count); break;
-    default:
-	switch(count % 10)
-	{
-	case 1: ajFmtPrintS(&thys->StdPrompt,
-			    "%dst input file", count); break;
-	case 2: ajFmtPrintS(&thys->StdPrompt,
-			    "%dnd input file", count); break;
-	case 3: ajFmtPrintS(&thys->StdPrompt,
-			    "%drd input file", count); break;
-	default: ajFmtPrintS(&thys->StdPrompt,
-			     "%dth input file", count); break;
-	}
-	break;
-    }
+    acdPromptStandard(thys, "input file", &count);
 
     return;
 }
@@ -20643,4 +21656,291 @@ static void acdValidSectionFull(AjPStr* secname)
     ajListIterFree(iter);
 
     return;
+}
+
+/* @funcstatic acdOutFormatCodon ********************************************
+**
+** Tests the output format for an outcodon ACD type
+**
+** @param [R] format [AjPStr] Format name
+** @return [ajint] Internal format index, of -1 if not found
+** @@
+******************************************************************************/
+
+static ajint acdOutFormatCodon(AjPStr name)
+{
+    ajint i;
+    char* format[] = 
+    {
+	"cutg",
+	NULL
+    };
+
+    for (i=0; format[i]; i++)
+    {
+	if(ajStrMatchCaseC(name, format[i]))
+	    return i;
+    }
+    return -1;
+}
+
+/* @funcstatic acdOutFormatCpdb ********************************************
+**
+** Tests the output format for an outcpdb ACD type
+**
+** @param [R] format [AjPStr] Format name
+** @return [ajint] Internal format index, of -1 if not found
+** @@
+******************************************************************************/
+
+static ajint acdOutFormatCpdb(AjPStr name)
+{
+    ajint i;
+    char* format[] = 
+    {
+	"cpdb",
+	NULL
+    };
+
+    for (i=0; format[i]; i++)
+    {
+	if(ajStrMatchCaseC(name, format[i]))
+	    return i;
+    }
+    return -1;
+}
+
+/* @funcstatic acdOutFormatData ********************************************
+**
+** Tests the output format for an out ACD type
+**
+** @param [R] format [AjPStr] Format name
+** @return [ajint] Internal format index, of -1 if not found
+** @@
+******************************************************************************/
+
+static ajint acdOutFormatData(AjPStr name)
+{
+    ajint i;
+    char* format[] = 
+    {
+	"text",
+	NULL
+    };
+
+    for (i=0; format[i]; i++)
+    {
+	if(ajStrMatchCaseC(name, format[i]))
+	    return i;
+    }
+    return -1;
+}
+
+/* @funcstatic acdOutFormatDiscrete *******************************************
+**
+** Tests the output format for an out ACD type
+**
+** @param [R] format [AjPStr] Format name
+** @return [ajint] Internal format index, of -1 if not found
+** @@
+******************************************************************************/
+
+static ajint acdOutFormatDiscrete(AjPStr name)
+{
+    ajint i;
+    char* format[] = 
+    {
+	"phylip",
+	NULL
+    };
+
+    for (i=0; format[i]; i++)
+    {
+	if(ajStrMatchCaseC(name, format[i]))
+	    return i;
+    }
+    return -1;
+}
+
+/* @funcstatic acdOutFormatDistance *******************************************
+**
+** Tests the output format for an outdistance ACD type
+**
+** @param [R] format [AjPStr] Format name
+** @return [ajint] Internal format index, of -1 if not found
+** @@
+******************************************************************************/
+
+static ajint acdOutFormatDistance(AjPStr name)
+{
+    ajint i;
+    char* format[] = 
+    {
+	"phylip",
+	NULL
+    };
+
+    for (i=0; format[i]; i++)
+    {
+	if(ajStrMatchCaseC(name, format[i]))
+	    return i;
+    }
+    return -1;
+}
+
+/* @funcstatic acdOutFormatFreq ********************************************
+**
+** Tests the output format for an outfreq ACD type
+**
+** @param [R] format [AjPStr] Format name
+** @return [ajint] Internal format index, of -1 if not found
+** @@
+******************************************************************************/
+
+static ajint acdOutFormatFreq(AjPStr name)
+{
+    ajint i;
+    char* format[] = 
+    {
+	"phylip",
+	NULL
+    };
+
+    for (i=0; format[i]; i++)
+    {
+	if(ajStrMatchCaseC(name, format[i]))
+	    return i;
+    }
+    return -1;
+}
+
+/* @funcstatic acdOutFormatMatrix ********************************************
+**
+** Tests the output format for an outmatrix ACD type
+**
+** @param [R] format [AjPStr] Format name
+** @return [ajint] Internal format index, of -1 if not found
+** @@
+******************************************************************************/
+
+static ajint acdOutFormatMatrix(AjPStr name)
+{
+    ajint i;
+    char* format[] = 
+    {
+	"emboss",
+	NULL
+    };
+
+    for (i=0; format[i]; i++)
+    {
+	if(ajStrMatchCaseC(name, format[i]))
+	    return i;
+    }
+    return -1;
+}
+
+/* @funcstatic acdOutFormatMatrixf ********************************************
+**
+** Tests the output format for an outmatrixf ACD type
+**
+** @param [R] format [AjPStr] Format name
+** @return [ajint] Internal format index, of -1 if not found
+** @@
+******************************************************************************/
+
+static ajint acdOutFormatMatrixf(AjPStr name)
+{
+    ajint i;
+    char* format[] = 
+    {
+	"emboss",
+	NULL
+    };
+
+    for (i=0; format[i]; i++)
+    {
+	if(ajStrMatchCaseC(name, format[i]))
+	    return i;
+    }
+    return -1;
+}
+
+/* @funcstatic acdOutFormatProperties *****************************************
+**
+** Tests the output format for an outproperties ACD type
+**
+** @param [R] format [AjPStr] Format name
+** @return [ajint] Internal format index, of -1 if not found
+** @@
+******************************************************************************/
+
+static ajint acdOutFormatProperties(AjPStr name)
+{
+    ajint i;
+    char* format[] = 
+    {
+	"phylip",
+	NULL
+    };
+
+    for (i=0; format[i]; i++)
+    {
+	if(ajStrMatchCaseC(name, format[i]))
+	    return i;
+    }
+    return -1;
+}
+
+/* @funcstatic acdOutFormatScop ********************************************
+**
+** Tests the output format for an outscop ACD type
+**
+** @param [R] format [AjPStr] Format name
+** @return [ajint] Internal format index, of -1 if not found
+** @@
+******************************************************************************/
+
+static ajint acdOutFormatScop(AjPStr name)
+{
+    ajint i;
+    char* format[] = 
+    {
+	"scop",
+	NULL
+    };
+
+    for (i=0; format[i]; i++)
+    {
+	if(ajStrMatchCaseC(name, format[i]))
+	    return i;
+    }
+    return -1;
+}
+
+/* @funcstatic acdOutFormatTree ***********************************************
+**
+** Tests the output format for an outtree ACD type
+**
+** @param [R] format [AjPStr] Format name
+** @return [ajint] Internal format index, of -1 if not found
+** @@
+******************************************************************************/
+
+static ajint acdOutFormatTree(AjPStr name)
+{
+    ajint i;
+    char* format[] = 
+    {
+	"phylip",
+	"newick",
+	NULL
+    };
+
+    for (i=0; format[i]; i++)
+    {
+	if(ajStrMatchCaseC(name, format[i]))
+	    return i;
+    }
+    return -1;
 }
