@@ -10,8 +10,11 @@ bin_PROGRAMS = allversusall cathparse contacts \
                scopparse seqalign seqnr seqsearch seqfraggle seqsort seqwords \
                sigscan siggen sites ssematch
                
-
+if LOCALLINK
 INCLUDES = -I../../../plplot -I../../../ajax -I../../../nucleus
+else
+INCLUDES = -I${embprefix}/include
+endif
 
 if ISSHARED
 if ISAIXIA64
@@ -51,4 +54,8 @@ sigscan_SOURCES = sigscan.c
 sites_SOURCES = sites.c
 ssematch_SOURCES = ssematch.c
 
+if LOCALLINK
 LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
+else
+LDADD = -L${embprefix}/lib -lnucleus -lajax -lplplot $(XLIB)
+endif
