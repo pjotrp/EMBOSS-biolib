@@ -65,7 +65,7 @@ static AjPList rematch(AjPStr sstr, AjPList ressite, AjPFile outf,
                        AjPStr sname, ajint RStotal, ajint radj, AjBool rev,
                        ajint begin, ajint end, AjBool tshow);
 static AjPList checkTrans(AjPStr seq,AjPFile outf,EmbPMatMatch match,
-                        AjPRinfo rlp, ajint begin,int radj, AjBool rev,
+                        AjPRinfo rlp, ajint begin, ajint radj, AjBool rev,
 	                ajint end, ajint pos,AjBool* empty);
 static AjBool checkPat(AjPStr seq,AjPFile outf,EmbPMatMatch match, 
                      AjPRinfo rlp, ajint radj, AjBool rev, ajint begin,
@@ -203,8 +203,18 @@ int main(int argc, char **argv)
 ** Looks for RE matches and test new bases to find those that
 ** give the same translation.
 **
-** returns: Mutant list of those RS sites removed but 
-**          maintaining same translation.
+** @param [r] sstr [AjPStr] Search sequence as a string
+** @param [r] relist [AjPList] Regular expression list
+** @param [r] outf [AjPFile] Output file
+** @param [r] sname [AjPStr] Sequence name
+** @param [r] RStotal [ajint] Restriction sites
+** @param [r] radj [ajint] Position adjustment for reversed sequence
+** @param [r] rev [AjBool] Reverse sequence
+** @param [r] begin [ajint] Start position
+** @param [r] end [ajint] End position
+** @param [r] tshow [AjBool] Show translation
+** @return [AjPList] Mutant list of those RS sites removed but 
+**                   maintaining same translation.
 *************************************************************************/
 
 static AjPList rematch(AjPStr sstr, AjPList relist, AjPFile outf, 
@@ -331,7 +341,9 @@ static AjPList rematch(AjPStr sstr, AjPList relist, AjPFile outf,
 **
 ** Read in RE information from REBASE file.
 **
-** returns: restriction site information as a list
+** @param [w] relist [AjPList*] returns restriction site information as a list
+** @param [r] enzymes [AjPStr] Selected enzymes to read
+** @return [ajint] Number of restriction sites in list
 **
 *************************************************************************/
 static ajint readRE(AjPList *relist,AjPStr enzymes)
@@ -413,6 +425,16 @@ static ajint readRE(AjPList *relist,AjPStr enzymes)
 **
 ** Checks whether the RS pattern falls within the sequence string
 **
+** @param [r] seq [AjPStr] Sequence as a string
+** @param [r] outf [AjPFile] Output file
+** @param [r] match [EmbPMatMatch] Match data
+** @param [r] rlp [AjPRinfo] Restriction site info
+** @param [r] radj [ajint] Adjustment for reversed sequence
+** @param [r] rev [AjBool] Reverse sequence
+** @param [r] begin [ajint] Start position
+** @param [r] end [ajint] End position
+** @return [AjBool] ajTrue if the pattern is found
+**
 *************************************************************************/
 static AjBool checkPat(AjPStr seq,AjPFile outf,EmbPMatMatch match, 
             AjPRinfo rlp, ajint radj, AjBool rev, ajint begin, ajint end)
@@ -464,11 +486,22 @@ static AjBool checkPat(AjPStr seq,AjPFile outf,EmbPMatMatch match,
 ** Identify mutations at a site in the RS pattern that result in the 
 ** same translation.
 **
-** returns: list of de-restricted sites which maintain same translation.
+** @param [r] seq [AjPStr] Sequence as a string
+** @param [r] outf [AjPFile] Output file
+** @param [r] match [EmbPMatMatch] Match data
+** @param [r] rlp [AjPRinfo] Restriction site info
+** @param [r] begin [ajint] Start position
+** @param [r] radj [ajint] Adjustment for reversed sequence
+** @param [r] rev [AjBool] Reverse sequence
+** @param [r] end [ajint] End position
+** @param [r] pos [ajint] Base position in site
+** @param [w] empty [AjBool*] ajTrue if the list is empty
+** @return [AjPList] List of de-restricted sites which maintain same
+**                   translation.
 **          
 *************************************************************************/
 static AjPList checkTrans(AjPStr seq,AjPFile outf,EmbPMatMatch match, 
-                  AjPRinfo rlp, ajint begin,int radj, AjBool rev, 
+                  AjPRinfo rlp, ajint begin, ajint radj, AjBool rev, 
 		  ajint end, ajint pos, AjBool* empty)
 {
     char *pseq;
@@ -570,7 +603,9 @@ static AjPList checkTrans(AjPStr seq,AjPFile outf,EmbPMatMatch match,
 ** Use IUB code to return alternative nucleotides to that provided
 ** same translation.
 **
-** returns: alternative bases in tbase and the number of bases
+** @param [r] pbase [char] Base
+** @param [r] tbase [char*] C string with alternative bases
+** @return [ajint] number of bases stored in tbase
 **
 *************************************************************************/
 static ajint changebase(char pbase, char* tbase)
@@ -635,6 +670,12 @@ static ajint changebase(char pbase, char* tbase)
 **
 ** Write sequence to the output file.
 **
+** @param [r] seq [AjPStr] Sequence as a string
+** @param [r] outf [AjPFile] Output file
+** @param [r] start [ajint] Start position
+** @param [r] num [AjBool] Numbered sequence
+** @return [void]
+**
 *************************************************************************/
 static void fmt_seq(AjPStr seq, AjPFile outf, ajint start, AjBool num)
 {
@@ -682,6 +723,9 @@ static void fmt_seq(AjPStr seq, AjPFile outf, ajint start, AjBool num)
 **
 ** Write de-restricted sites to outputfile
 **
+** @param [r] muts [AjPList] List of derestricted sites
+** @param [r] outf [AjPFile] Output file
+** @return [void]
 *************************************************************************/
 static void fmt_muts(AjPList muts, AjPFile outf)
 {
@@ -708,8 +752,11 @@ static void fmt_muts(AjPList muts, AjPFile outf)
 
 /* @funcstatic basecompare **********************************************
 **
-** Combare 2 base positions in the nucleotide sequence
+** Compare 2 base positions in the nucleotide sequence
 **
+** @param [r] a [const void *] First base
+** @param [r] b [const void *] Second base
+** @return [ajint] Comparison result
 *************************************************************************/
 static ajint basecompare(const void *a, const void *b)
 {
@@ -722,6 +769,8 @@ static ajint basecompare(const void *a, const void *b)
 **
 ** Free allocated memory for mutant structure
 **
+** @param [d] mut [Mutant*] Mutant structure to be deleted
+** @return [void]
 *************************************************************************/
 static void mutFree(Mutant* mut)
 {

@@ -33,7 +33,7 @@
 ** @param [r] input  [AjPList]    List of ajPSeq's 
 ** @param [w] keep   [AjPInt*]    0: rejected (redundant) sequence, 1: the 
                                   sequence was retained
-** @param [w] nset   [int*]       Number of sequences in nr set (no. of 1's in
+** @param [w] nset   [ajint*]     Number of sequences in nr set (no. of 1's in
 **                                the keep array)
 ** @param [r] matrix    [AjPMatrixf] Residue substitution matrix
 ** @param [r] gapopen   [float]      Gap insertion penalty
