@@ -32,7 +32,7 @@
 
 /* [XXXX ajIntCount1, ajIntCount2 SHOULD BE REPLACED WITH MORE MEANINGFUL NAMES] */
 static AjPFeature write_count(AjPFeattable ajpFeattableCounts,
-			      ajint ajIntFeatureResidueType,
+			      ajint ajIntFeatureResType,
 			      ajint ajIntCount1,
 			      ajint ajIntCount2);
 
@@ -54,7 +54,7 @@ int main( int argc , char **argv )
     AjPList ajpListCmapFiles    = NULL; /* list of contact map files */
 
     /* position counters and limits */
-    ajint ajIntResidueTypeCurrent = 0;
+    ajint ajIntResTypeCurrent = 0;
     ajint ajIntContactNumber      = 0;
     ajint ajIntNumberOfContactFiles = 0;
     ajint ajIntRow = 0;
@@ -63,20 +63,28 @@ int main( int argc , char **argv )
     ajint ajIntColumnMax = 0;
 
     /* contact map */
-    AjPStr ajpStrAlphabet        = ajStrNewC("ABCDEFGHIJKLMNOPQRSTUVWZYZ");
     AjPFile ajpFileCmapCurrent   = NULL; /* file                      */
     AjPCmap ajpCmapCurrent       = NULL; /* object                    */
     AjPInt2d ajpInt2dContactMap  = NULL; /* Cmap matrix               */
     AjPStr ajpStrChainId         = NULL; /* chain id attribute        */
     AjPStr ajpStrChainSeq        = NULL; /* seq string attribute      */
     AjPSeq ajpSeqChain           = NULL; /* seq AjPStr as seq object  */
-    char cFirstResidueType       = '\0'; /* first residue in contact  */
-    char cSecondResidueType      = '\0'; /* second residue in contact */
-    ajint ajIntFirstResidueType  = 0;    /* first residue in contact  */
-    ajint ajIntSecondResidueType = 0;    /* second residue in contact */
+    char cFirstResType       = '\0'; /* first residue in contact  */
+    char cSecondResType      = '\0'; /* second residue in contact */
+    ajint ajIntFirstResType  = 0;    /* first residue in contact  */
+    ajint ajIntSecondResType = 0;    /* second residue in contact */
+
+    /* count matrix */
+    AjPStr ajStrNaturalAlphabet;
+    AjPStr ajStrResTypeAlphabet;
+    AjPStr ajStrFirstResType;
+    AjPStr ajStrSecondResType;
+    AjIStr ajStrIterFirstResType;
+    AjIStr ajStrIterSecondResType;
+    
 
     /* scoring matrix */
-    ajint ajIntNumberOfResidueTypes = 0;
+    ajint ajIntNumberOfResTypes = 0;
     AjPInt2d ajpInt2dCounts         = NULL;
     ajint ajIntTempCount            = 0;
 
@@ -105,14 +113,14 @@ int main( int argc , char **argv )
     ajIntNumberOfContactFiles = ajListLength(ajpListCmapFiles);
 
     /* create a 2-D array (count array) to store the scores */
-    ajpStrAlphabet = ajStrNewC("ABCDEFGHIJKLMNOPQRSTUVWZYZ");
-    ajIntNumberOfResidueTypes = ajStrLen(ajpStrAlphabet);
-    ajpInt2dCounts = ajInt2dNewL(ajIntNumberOfResidueTypes);
+    ajStrNaturalAlphabet = ajStrNewC("ABCDEFGHIJKLMNOPQRSTUVWZYZ");
+    ajIntNumberOfResTypes = ajStrLen(ajStrNaturalAlphabet);
+    ajpInt2dCounts = ajInt2dNewL(ajIntNumberOfResTypes);
 
     /* empty count array */
-    for(ajIntRow = 0;ajIntRow < ajIntNumberOfResidueTypes;ajIntRow++)
+    for(ajIntRow = 0;ajIntRow < ajIntNumberOfResTypes;ajIntRow++)
     {
-	for(ajIntColumn = 0;ajIntColumn < ajIntNumberOfResidueTypes;ajIntColumn++)
+	for(ajIntColumn = 0;ajIntColumn < ajIntNumberOfResTypes;ajIntColumn++)
 	{
 	    ajInt2dPut(&ajpInt2dCounts, ajIntRow, ajIntColumn,0);
 	}
@@ -152,20 +160,20 @@ int main( int argc , char **argv )
 	/* loop through all cells in map */
 	for(ajIntRow = 0;ajIntRow<ajIntRowMax;ajIntRow++)
 	{
-	    cFirstResidueType = ajStrChar(ajpStrChainSeq, ajIntRow);
+	    cFirstResType = ajStrChar(ajpStrChainSeq, ajIntRow);
 	    for(ajIntColumn = 0;ajIntColumn < ajIntColumnMax;ajIntColumn++)
 	    {
-		cSecondResidueType = ajStrChar(ajpStrChainSeq, ajIntColumn);
-		ajIntFirstResidueType = ajAZToInt(cFirstResidueType);
-		ajIntSecondResidueType = ajAZToInt(cSecondResidueType);
+		cSecondResType = ajStrChar(ajpStrChainSeq, ajIntColumn);
+		ajIntFirstResType = ajAZToInt(cFirstResType);
+		ajIntSecondResType = ajAZToInt(cSecondResType);
 		if(ajInt2dGet(ajpInt2dContactMap, ajIntRow, ajIntColumn))
 		{
 		    ajIntTempCount = ajInt2dGet(ajpInt2dCounts,
-						ajIntFirstResidueType,
-						ajIntSecondResidueType);
+						ajIntFirstResType,
+						ajIntSecondResType);
 		    ajInt2dPut(&ajpInt2dCounts,
-			       ajIntFirstResidueType,
-			       ajIntSecondResidueType,
+			       ajIntFirstResType,
+			       ajIntSecondResType,
 			       ajIntTempCount+1);
 		}	    
 	    }
@@ -216,22 +224,47 @@ int main( int argc , char **argv )
     /* DDDDEBUGGING */
     if(DEBUG_LEVEL)
     {
-	ajFmtPrint("AFTER AND OUTSIDE LOOP: ajIntNumberOfResidueTypes:\t%d\n",
-		   ajIntNumberOfResidueTypes);
+	ajFmtPrint("AFTER AND OUTSIDE LOOP: ajIntNumberOfResTypes:\t%d\n",
+		   ajIntNumberOfResTypes);
     }
     
     
     /* read elements in count array */
-    for(ajIntRow = 0;ajIntRow < ajIntNumberOfResidueTypes;ajIntRow++)
+    for(ajIntRow = 0;ajIntRow < ajIntNumberOfResTypes;ajIntRow++)
     {
-	for(ajIntColumn = 0;ajIntColumn < ajIntNumberOfResidueTypes;ajIntColumn++)
+	for(ajIntColumn = 0;ajIntColumn < ajIntNumberOfResTypes;ajIntColumn++)
 	{
-	    cFirstResidueType = ajIntToAZ(ajIntRow);
-	    cSecondResidueType = ajIntToAZ(ajIntColumn);
+	    cFirstResType = ajIntToAZ(ajIntRow);
+	    cSecondResType = ajIntToAZ(ajIntColumn);
 	    ajIntTempCount = ajInt2dGet(ajpInt2dCounts, ajIntRow, ajIntColumn);
 	    ajFmtPrint("%d\t", ajIntTempCount);
 	}
 	ajFmtPrint("\n");
+    }
+
+    /* new string iterator over BLOSUM list of residue types */
+    ajStrResTypeAlphabet = ajStrNewC("ARNDCQEGHILKMFPSTWYVBZX*");
+    ajStrIterFirstResType = ajStrIter(ajStrResTypeAlphabet);
+
+    ajIntRow = 0;
+    ajIntColumn =0;
+    
+    /* write scores to data file */
+    while(ajStrIterNext(ajStrIterFirstResType))
+    {
+	cFirstResType = ajStrIterGetK(ajStrIterFirstResType);
+	ajIntRow = ajAZToInt(cFirstResType);
+	ajStrIterSecondResType = ajStrIter(ajStrResTypeAlphabet);
+	while(ajStrIterNext(ajStrIterSecondResType))
+	{
+	    cSecondResType = ajStrIterGetK(ajStrIterSecondResType);
+	    ajIntColumn = ajAZToInt(cSecondResType);
+	    /* DDDDEBUG */
+	    ajFmtPrint("(%4c, %4c)-", cFirstResType, cSecondResType);
+	    ajFmtPrint("(%4d, %4d) ", ajIntRow, ajIntColumn);
+	}
+	ajFmtPrint("\n");
+	ajStrIterFree(&ajStrIterSecondResType);
     }
 
     /* DDDDEBUG TEST INFO FOR TAIL OF REPORT */
@@ -260,7 +293,12 @@ int main( int argc , char **argv )
     ajSeqDel(&ajpSeqChain);
     ajStrDel(&ajpStrChainSeq);
 
-
+    /* tidy up other stuff */
+    ajStrIterFree(&ajStrIterFirstResType);
+    ajStrIterFree(&ajStrIterSecondResType);
+    ajStrDel(&ajStrFirstResType);
+    ajStrDel(&ajStrSecondResType);
+    
     /*  tidy up everything else... */
     ajExit();
 
@@ -275,7 +313,7 @@ int main( int argc , char **argv )
 ** writes frequency features to a feature table and returns new feature  
 **
 ** @param [r] ajpFeattableCounts [AjPFeattable] table to write frequency to
-** @param [r] ajIntFeatureResidueType [ajint] residue type that count
+** @param [r] ajIntFeatureResType [ajint] residue type that count
 **                                            belongs to
 ** @param [r] ajIntCount1 [ajint] phi torsion angle for residue
 ** @param [r] ajIntCount2 [ajint] psi torsion angle for residue
@@ -284,7 +322,7 @@ int main( int argc , char **argv )
 ******************************************************************************/
 
 static AjPFeature write_count (AjPFeattable ajpFeattableCounts,
-			       ajint ajIntFeatureResidueType,
+			       ajint ajIntFeatureResType,
 			       ajint ajIntCount1,
 			       ajint ajIntCount2)
 {
@@ -295,8 +333,8 @@ static AjPFeature write_count (AjPFeattable ajpFeattableCounts,
 
     /* create feature for count and write per residue and per type frequency */
     ajpFeatCounts = ajFeatNewII(ajpFeattableCounts,
-				ajIntFeatureResidueType,
-				ajIntFeatureResidueType);
+				ajIntFeatureResType,
+				ajIntFeatureResType);
     ajFmtPrintS(&ajpStrFeatTemp, "*count1 %d", ajIntCount1);
     ajFeatTagAdd(ajpFeatCounts, NULL, ajpStrFeatTemp);
     ajFmtPrintS(&ajpStrFeatTemp, "*count2 %d", ajIntCount2);
@@ -306,4 +344,7 @@ static AjPFeature write_count (AjPFeattable ajpFeattableCounts,
     
     return ajpFeatCounts;
 }
+
+
+
 
