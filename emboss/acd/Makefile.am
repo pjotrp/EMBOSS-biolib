@@ -34,9 +34,6 @@ pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd \
 	preg.acd prettyplot.acd prettyseq.acd prima.acd \
 	primers.acd primersearch.acd printsextract.acd profit.acd \
 	prophecy.acd prophet.acd prosextract.acd pscan.acd  \
-	qatest.acd qatestcalcfeat.acd qatestcalcregexp.acd \
-	qatestcalcseq.acd qatestcalcseqall.acd qatestcalcseqset.acd \
-	qatestcalcstring.acd \
 	rebaseextract.acd recoder.acd redata.acd remap.acd \
 	restover.acd restrict.acd revseq.acd \
 	seealso.acd \
