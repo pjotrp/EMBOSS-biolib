@@ -149,7 +149,7 @@ public class JembossAuthServer
   {
 
     Vector acd = new Vector();
-    String acdText = new String("");
+    StringBuffer acdText = new StringBuffer();
     String acdToParse = new String(jp.getAcdDirToParse() + appName + ".acd");
 
     try
@@ -162,7 +162,7 @@ public class JembossAuthServer
         { 
           line = line.trim();
           line = line.replace('}',')');
-          acdText = acdText.concat(line + "\n");
+          acdText.append(line + "\n");
         }
       }
     }
@@ -174,7 +174,7 @@ public class JembossAuthServer
     acd.add("status");
     acd.add("0");
     acd.add("acd");
-    acd.add(acdText);
+    acd.add(acdText.toString());
 
     return acd;
   }
@@ -738,16 +738,20 @@ public class JembossAuthServer
   */
   private String quoteMe(String s)
   {
-    String qs = "";
+    StringBuffer qs = new StringBuffer();
     StringTokenizer st = new StringTokenizer(s.trim()," ");
     String tok;
     while (st.hasMoreTokens())
     {
       tok = st.nextToken().trim();
       if(!tok.equals(" "))
-        qs = qs.concat("\""+tok+"\" ");
+      {
+        qs.append("\"");
+        qs.append(tok);
+        qs.append("\" ");
+      }
     }
-    return qs;
+    return qs.toString();
   }
 
   /**
@@ -934,9 +938,7 @@ public class JembossAuthServer
     if(!verifyUser(aj,userName,passwd,ssr))
       return ssr;
 
-    tmproot = tmproot.concat(userName+fs); 
-
-    project = tmproot.concat(project);
+    project = tmproot.concat(userName+fs+project);
 
     if(cl.equals(""))
     {
@@ -1224,7 +1226,7 @@ public class JembossAuthServer
       try
       {
         aj.getFile(userName,passwd,environ,
-                 tmproot+fs+thiskey+fs+".finished");
+                 tmproot+thiskey+fs+".finished");
       }
       catch(Exception ex){}
 
