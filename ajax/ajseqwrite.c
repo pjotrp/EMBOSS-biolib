@@ -1158,6 +1158,12 @@ static void seqWriteNexus(AjPSeqout outseq)
 	    ilen = ajSeqLen(seq);
     }
     
+    for(i=0; i < isize; i++)
+    {
+	seq = seqarr[i];
+	ajSeqGapLen(seq, '-', '-', ilen); /* need to pad if any are shorter */
+    }
+    
     ajFmtPrintF(outseq->File,		/* header text */
 		"#NEXUS\n");
     ajFmtPrintF(outseq->File,		/* dummy title */
