@@ -234,13 +234,15 @@ void ajSeqinDel (AjPSeqin* pthis) {
       ajFeatTabDel(&thys->Fttable);
   }
   
-  if(thys->Ftquery)
+  if(thys->Ftquery && ! thys->multi)
   {
-      ajStrDel(&thys->Ftquery->Handle->File->Name);
-      ajStrDel(&thys->Ftquery->Handle->File->Buff);
-      ajFeatTabInDel(&thys->Ftquery);
+      if(thys->Ftquery->Handle->File->Name)
+	  ajStrDel(&thys->Ftquery->Handle->File->Name);
+      if(thys->Ftquery->Handle->File->Buff)
+	  ajStrDel(&thys->Ftquery->Handle->File->Buff);
   }
-  
+  if(thys->Ftquery)  
+      ajFeatTabInDel(&thys->Ftquery);
   
   AJFREE(*pthis);
 
