@@ -134,13 +134,39 @@ sub runtest ($) {
 	    return 0;
 	}
     }
-    elsif ($line =~ /^AP\s+(\S+)/) {$testapp = $1; $apcount{$testapp}++}
+    elsif ($line =~ /^AP\s+(\S+)/) {
+	$testapp = $1;
+	$apcount{$testapp}++;
+	if (!defined($tfm{$testapp})) {
+	    $tfm{$testapp}=0;
+	    if (-e "../../doc/programs/html/$testapp.html") {$tfm{$testapp}++}
+	    else {print STDERR "No HTML docs for $testapp\n";$misshtml++;}
+	    if (-e "../../doc/programs/text/$testapp.txt") {$tfm{$testapp}++}
+	    else {print STDERR "No tfm text docs for $testapp\n";$misstext++;}
+	}
+    }
     elsif ($line =~ /^DL\s+(success|keep|all)/) {$globaltestdelete = $1}
     elsif ($line =~ /^PP\s*(.*)/) {$ppcmd .= "$1 ; "}
     elsif ($line =~ /^QQ\s*(.*)/) {$qqcmd .= " ; $1"}
     elsif ($line =~ /^IN\s*(.*)/) {$testin .= "$1\n"}
-    elsif ($line =~ /^AQ\s*(.*)/) {$testq = 1; $testapp = $1; $apcount{$testapp}++}
-    elsif ($line =~ /^AA\s*(.*)/) {$testa = 1; $testapp = $1; $apcount{$testapp}++}
+    elsif ($line =~ /^AQ\s*(.*)/) {
+	$testq = 1;
+	$testapp = $1;
+	$apcount{$testapp}++;
+	### no need to test docs for a make check application
+    }
+    elsif ($line =~ /^AA\s*(.*)/) {
+	$testa = 1;
+	$testapp = $1;
+	$apcount{$testapp}++;
+	if (!defined($tfm{$testapp})) {
+	    $tfm{$testapp}=0;
+	    if (-e "../../doc/programs/html/$testapp.html") {$tfm{$testapp}++}
+	    else {print STDERR "No HTML docs for $testapp\n";$misshtml++;}
+	    if (-e "../../doc/programs/text/$testapp.txt") {$tfm{$testapp}++}
+	    else {print STDERR "No tfm text docs for $testapp\n";$misstext++;}
+	}
+    }
     elsif ($line =~ /^AB\s*(.*)/) {$packa = $1}
     elsif ($line =~ /^CL\s+(.*)/) {
       if ($cmdline ne "") {$cmdline .= " "}
@@ -628,8 +654,12 @@ $timeoutdef=60;			# default timeout in seconds
 
 $numtests = 0;
 $testappname=0;
+$misshtml=0;
+$misstext=0;
 %without = ();
 %dotest = ();
+%tfm = ();
+
 foreach $test (@ARGV) {
   if ($test =~ /^-(.*)/) {
     $opt=$1;
@@ -857,6 +887,7 @@ print STDERR "Tests total: $totall pass: $tpass fail: $tfail\n";
 print STDERR "Skipped: $totskip check: $skipcheck embassy: $skipembassy requirements: $skipreq\n";
 
 print STDERR "No tests: $tnotest\n";
+print STDERR "Missing documentation html: $misshtml text: $misstext\n";
 print STDERR "Time: $alltime seconds\n";
 print LOG "Time: $alltime seconds\n";
 
