@@ -375,6 +375,9 @@ typedef struct AjSBtpage
 ** @attr replace [AjPStr] Undocumented
 ** @attr count [ajlong] Undocumented
 ** @attr deleted [AjBool] Undocumented
+** @attr slevel [ajint] Undocumented
+** @attr sorder [ajint] Undocumented
+** @attr snperbucket [ajint] Undocumented
 ** @attr secrootblock [ajlong] secondary tree root block
 ******************************************************************************/
 
@@ -407,7 +410,9 @@ typedef struct AjSBtCache
 **
 ** Btree primary keyword
 **
-** @attr keyword [AjPStr] keyword
+** @attr keyword [AjPStr] Keyword
+** @attr treeblock [ajlong] Tree block number
+** @attr id [AjPStr] Identifier
 ** @attr treeblock [ajlong] disc block of secondary tree
 ******************************************************************************/
 
@@ -454,7 +459,7 @@ typedef struct AjSPriBucket
 ** @attr Nentries [ajint] Number of entries
 ** @attr Overflow [ajlong] Offset to overflow block
 ** @attr keylen [ajint*] key lengths
-** @attr Ids [AjPStr*] Ids
+** @attr ids [AjPStr*] Ids
 ******************************************************************************/
 
 typedef struct AjSSecBucket
