@@ -3169,10 +3169,10 @@ FP 1 /Died: /
 ID dbifasta-ex-keep
 DL keep
 AP dbifasta
+IN EMROD
 IN idacc
 IN ../../data
 IN emrod
-IN EMROD
 IN
 IN
 FI stderr
@@ -3198,10 +3198,10 @@ ID dbifasta-allsys-keep
 DL keep
 AP dbifasta
 CL -fields="acnum,seqvn,des"
+IN EMROD
 IN idacc
 IN ../../data
 IN emrod
-IN EMROD
 IN
 IN
 FI stderr
@@ -3241,10 +3241,10 @@ ID dbifasta-allnosys-keep
 DL keep
 AP dbifasta
 CL -fields="acnum,seqvn,des" -nosystemsort
+IN EMROD
 IN idacc
 IN ../../data
 IN emrod
-IN EMROD
 IN
 IN
 FI stderr
@@ -3354,10 +3354,10 @@ FP 2 />/
 ID dbifasta-swiss-keep
 DL keep
 AP dbifasta
+IN SWNEW
 IN idacc
 IN ../../data
 IN swnew
-IN SWNEW
 IN
 IN
 FI stderr
@@ -3453,10 +3453,10 @@ FP 2 />/
 ID dbifasta-worm-keep
 DL keep
 AP dbifasta
+IN WORM
 IN simple
 IN ../../data
 IN wormpep.clone.*
-IN WORM
 IN
 IN
 FI stderr
@@ -3563,9 +3563,9 @@ ID dbiflat-ex-keep
 DL keep
 AP dbiflat
 IN EMBL
+IN EMBL
 IN ../../embl
 IN rod.dat
-IN EMBL
 IN
 IN
 FI stderr
@@ -3592,9 +3592,9 @@ DL keep
 AP dbiflat
 CL -nosystemsort
 IN EMBL
+IN EMBL
 IN ../../embl
 IN rod.dat
-IN EMBL
 IN
 IN
 FI stderr
@@ -3777,10 +3777,10 @@ FP 16 />/
 ID dbiflat-swiss-keep
 DL keep
 AP dbiflat
+IN SWNEW
 IN
 IN ../../swnew
 IN
-IN SWNEW
 IN
 IN
 FI stderr
@@ -3806,10 +3806,10 @@ ID dbiflat-swiss-allsys-keep
 DL keep
 AP dbiflat
 CL -fields="acnum,seqvn,des,keyword,taxon"
+IN SWNEW
 IN
 IN ../../swnew
 IN
-IN SWNEW
 IN
 IN
 FI stderr
@@ -3859,10 +3859,10 @@ ID dbiflat-swiss-allnosys-keep
 DL keep
 AP dbiflat
 CL -nosystemsort -fields="acnum,seqvn,des,keyword,taxon"
+IN SWNEW
 IN
 IN ../../swnew
 IN
-IN SWNEW
 IN
 IN
 FI stderr
@@ -4028,9 +4028,9 @@ ID dbiflat-genbank-keep
 DL keep
 AP dbiflat
 IN GENBANK
+IN GENBANK
 IN ../../genbank
 IN *.seq
-IN GENBANK
 IN
 IN
 FI stderr
@@ -4062,9 +4062,9 @@ DL keep
 TI 120
 AP dbigcg
 IN EMBL
+IN EMBL
 IN ../../embl
 IN
-IN EMBL
 IN
 IN
 FI stderr
@@ -4289,9 +4289,9 @@ TI 120
 AP dbigcg
 CL -fields "acnum,seqvn,des,keyword,taxon"
 IN EMBL
+IN EMBL
 IN ../../embl
 IN
-IN EMBL
 IN
 IN
 FI stderr
@@ -4662,9 +4662,9 @@ TI 120
 AP dbigcg
 CL -fields "acnum,seqvn,des,keyword,taxon" -nosystem
 IN EMBL
+IN EMBL
 IN ../../embl
 IN
-IN EMBL
 IN
 IN
 FI stderr
@@ -4720,9 +4720,9 @@ DL keep
 TI 120
 AP dbigcg
 IN PIR
+IN PIR
 IN ../../pir
 IN
-IN PIR
 IN
 IN
 FI stderr
@@ -4894,9 +4894,9 @@ TI 120
 AP dbigcg
 CL -fields "acnum,des,keyword,taxon"
 IN PIR
+IN PIR
 IN ../../pir
 IN
-IN PIR
 IN
 IN
 FI stderr
@@ -7732,8 +7732,8 @@ AP newseq
 IN cytoc
 IN fragment of cytochrome c
 IN p
-IN swiss::mycc.pep
 IN KKKEERADLIAY
+IN swiss::mycc.pep
 FI stderr
 FC = 5
 FP 0 /Warning: /
@@ -9986,7 +9986,7 @@ FZ = 863
 FP /^  Name: 'EMBL'\n/
 FP /^  Accession: 'E10002'\n/
 FP /^  SeqVersion: 'E10002.34'\n/
-FP /^  GI Version: ''\n/
+FP /^  GenInfo Id: ''\n/
 FP /^  Description: 'EMBL FORMAT DNA SEQUENCE'\n/
 FP /^  Keywordlist: \(2\)\n/
 FP /^    'DNA binding protein'\n/
@@ -10020,7 +10020,7 @@ FZ = 856
 FP /^  Name: 'EMBL'\n/
 FP /^  Accession: 'E10002'\n/
 FP /^  SeqVersion: 'E10002.34'\n/
-FP /^  GI Version: ''\n/
+FP /^  GenInfo Id: ''\n/
 FP /^  Description: 'EMBL FORMAT DNA SEQUENCE'\n/
 FP /^  Keywordlist: \(2\)\n/
 FP /^    'DNA binding protein'\n/
