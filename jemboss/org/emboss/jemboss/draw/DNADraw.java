@@ -934,12 +934,12 @@ public class DNADraw extends ScrollPanel
     optionMenu.add(tickMarks);
 
 
-    JMenuItem gmarker = new JMenuItem("Genetic Markers");
+    JMenuItem gmarker = new JMenuItem("Genetic Features");
     gmarker.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
-        JFrame f = new JFrame("Genetic Marker");
+        JFrame f = new JFrame("Genetic Features");
         GeneticMarker gm = new GeneticMarker(current_dna,
                                              block);
         JScrollPane gmScroll = new JScrollPane(gm);
