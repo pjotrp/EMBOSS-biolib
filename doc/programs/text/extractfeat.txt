@@ -14,6 +14,10 @@ Description
    that have been annotated as being a specific type of feature. These
    sub-sequences are writen to the output sequence file.
    
+   If the feature is annotated as being in the reverse sense of a nucleic
+   acid sequence, then that feature's sub-sequence is
+   reverse-complemented before being written out.
+   
    It is often useful to have some information on the context of the
    feature. extractfeat allows you to specify a number of bases or
    residues before and/or after the feature to write out.
@@ -270,6 +274,9 @@ Output file format
    description of the sequence in brackets, e.g.: '[exon]'.
    
    The sequence is written out as a normal sequence.
+   
+   If the feature is in the reverse sense of a nucleic acid sequence,
+   then it is reverse-complemented before being written.
    
 Data files
 
