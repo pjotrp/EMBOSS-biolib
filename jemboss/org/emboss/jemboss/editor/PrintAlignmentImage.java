@@ -60,6 +60,8 @@ public class PrintAlignmentImage extends ScrollPanel
   private JTextField statusField = new JTextField("");
   /** number of residues per line    */
   private int nResPerLine = 0;
+  /** use anti aliasing (default is false) */
+  private boolean antiAlias = false;
 
   /**
   *
@@ -368,6 +370,16 @@ public class PrintAlignmentImage extends ScrollPanel
 
   /**
   *
+  *
+  *
+  */
+  protected void setAntiAlias(boolean antiAlias)
+  {
+    this.antiAlias = antiAlias;
+  }
+
+  /**
+  *
   *  Returns a generated image 
   *  @param pageIndex	page number
   *  @return 		image
@@ -383,6 +395,14 @@ public class PrintAlignmentImage extends ScrollPanel
                                   BufferedImage.TYPE_INT_RGB);
     // Create a graphics contents on the buffered image
     Graphics2D g2d = bufferedImage.createGraphics();
+   
+    if(antiAlias)
+    {
+      System.out.println("Anit-alias on!");
+      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+               RenderingHints.VALUE_ANTIALIAS_ON);
+    }
+
     g2d.setColor(Color.white);
     g2d.fillRect(0,0,width,height);
     // Draw graphics

@@ -1026,14 +1026,15 @@ public class AlignJFrame extends JFrame
               "           magenta , orange, pink, white, yellow, black\n"+     
               "-print     Print the alignment image. The following 2 flags can be\n"+
               "           used along with the print flag\n"+
-              "           -prefix    prefix for image output file.\n"+
-              "           -onePage   fit the alignment to one page. This option must be\n"+
-              "                      be used with the -nres flag to define the residues\n"+
-              "                      per line.\n"+
-              "           -type      png or jpeg (default is jpeg).\n"+
-              "           -landscape Print as landscape (the default is portrait).\n"+
-              "           -margin    Define the left, right, top and bottom margin\n"+
-              "                      (in cm).\n"+
+              "           -prefix     prefix for image output file.\n"+
+              "           -onePage    fit the alignment to one page. This option must be\n"+
+              "                       be used with the -nres flag to define the residues\n"+
+              "                       per line.\n"+
+              "           -type       png or jpeg (default is jpeg).\n"+
+              "           -antialias  turn anti-aliasing on.\n"+
+              "           -landscape  Print as landscape (the default is portrait).\n"+
+              "           -margin     Define the left, right, top and bottom margin\n"+
+              "                       (in cm).\n"+
               "       java org.emboss.jemboss.editor.AlignJFrame file -matrix EBLOSUM62 \\\n"+
               "                -noshow -print -margin 0.5 0.5 0.5 0.5\n\n"+
               "-matrix    To define a scoring matrix. Used with the -pretty and -calc\n"+
@@ -1084,6 +1085,7 @@ public class AlignJFrame extends JFrame
       boolean prettyBox  = true;
       boolean landscape  = false;
       boolean onePage    = false;
+      boolean antialias  = false;
 
       for(int i=0;i<args.length;i++)
       {
@@ -1143,6 +1145,8 @@ public class AlignJFrame extends JFrame
         }
         else if(args[i].indexOf("-onePage") > -1)
           onePage = true;
+        else if(args[i].indexOf("-antialias") > -1)
+          antialias = true;
       }
 
       for(int i=0;i<args.length;i++)
@@ -1233,12 +1237,16 @@ public class AlignJFrame extends JFrame
         if(onePage)
         {
           PrintAlignmentImage pai = new PrintAlignmentImage(gsc);
+          if(antialias)
+            pai.setAntiAlias(true);
           pai.print(nresiduesPerLine,type,prefix,                               
                     lmargin,rmargin,tmargin,bmargin);
         }
         else
         {
           PrintAlignmentImage pai = new PrintAlignmentImage(gsc);
+          if(antialias)
+            pai.setAntiAlias(true);
           pai.print(nresiduesPerLine,type,prefix,landscape,
                     lmargin,rmargin,tmargin,bmargin);
         }
