@@ -57,7 +57,6 @@ static ajint limit_rpair_size=LIMIT_RPAIR_SIZE;
 static ajint lsimmat[256][256];
 static AjBool verbose;
 static AjBool debug;
-static ajint indentation;
 static float estRand3 (ajint *idum);
 static char* estShuffleSeq( char *s, ajint *seed );
 static ajint estPairRemember( ajint col, ajint row );
@@ -1227,7 +1226,6 @@ static EmbPEstAlign estAlignRecursive ( AjPSeq est, AjPSeq genome,
       }
       else /* failure because we ran out of memory */
 	{
-	  indentation -= 3;
 	  if ( verbose ) {
 	    estIndent();
 	    (void) ajDebug("Stack memory overflow ... splitting\n");
@@ -1340,7 +1338,6 @@ static EmbPEstAlign estAlignRecursive ( AjPSeq est, AjPSeq genome,
   embEstFreeAlign(&left_ge);
   embEstFreeAlign(&right_ge );
 
-  indentation -= 3;
   if (verbose)
     (void) ajDebug ("end returns ge gstart:%d estart:%d gstop:%d estop:%d\n",
 		    ge->gstart, ge->estart, ge->gstop, ge->estop);
@@ -1776,18 +1773,15 @@ static ajint estDoNotForget( ajint col, ajint row ) {
 
 /* @funcstatic estIndent ******************************************************
 **
-** Indent report by printing spaces to standard output.
-**
-** @return [void]
-** @@
-******************************************************************************/
+** Indent report by printing two spaces to debug file
+ **
+ ** @return [void]
+ ** @@
+ ******************************************************************************/
 
-static void estIndent( void) {
+ static void estIndent( void) {
 
-  ajint n = indentation;
-
-  while(n--)
-    (void) fputc(' ',stdout);
+   (void) ajDebug("  ");
 }
 
 /* @func embEstOutBlastStyle *************************************************
