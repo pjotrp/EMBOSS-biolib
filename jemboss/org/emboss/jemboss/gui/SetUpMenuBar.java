@@ -232,28 +232,14 @@ public class SetUpMenuBar
         ClassLoader cl = this.getClass().getClassLoader();
         try
         {
-          URL inURL = cl.getResource("resources/readme.txt");
-                                      
-          JTextPane textURL = new JTextPane();
-
-          ScrollPanel pscroll = new ScrollPanel(new BorderLayout());
-          JScrollPane rscroll = new JScrollPane(pscroll);
-          rscroll.getViewport().setBackground(Color.white);
-          textURL.setPage(inURL);
-          textURL.setEditable(false);
-          pscroll.add(textURL);
-          JOptionPane jop = new JOptionPane();
-          rscroll.setPreferredSize(new Dimension(560,400));
-          rscroll.setMinimumSize(new Dimension(560,400));
-          rscroll.setMaximumSize(new Dimension(560,400));
-
-          jop.showMessageDialog(f,rscroll,"Jemboss Help",
-                              JOptionPane.PLAIN_MESSAGE);
+          URL inURL = cl.getResource("resources/readme.html");
+          new Browser(inURL,"resources/readme.html");
         } 
         catch (Exception ex)
         {
-          System.out.println("Didn't find resources/" +
-                             "readme.txt");
+          JOptionPane.showMessageDialog(null,
+                              "About Jemboss Guide not found!",
+                              "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
