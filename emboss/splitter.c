@@ -128,7 +128,7 @@ int main(int argc, char **argv)
 ******************************************************************************/
 
 static void splitter_write(AjPSeqout seqout, AjPSeq subseq, ajint start,
-			   ajint end, constAjPSeq seq)
+			   ajint end, const AjPSeq seq)
 {
     AjPStr name  = NULL;
     AjPStr value = NULL;
