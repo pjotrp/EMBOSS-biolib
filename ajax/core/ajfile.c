@@ -2565,7 +2565,7 @@ void ajFileBuffReset (const AjPFileBuff thys) {
   return;
 }
 
-/* @func ajFileBuffResetPos ******************************************************
+/* @func ajFileBuffResetPos ***************************************************
 **
 ** Resets the pointer and current record of a file buffer so the next read
 ** starts at the first buffered line.
