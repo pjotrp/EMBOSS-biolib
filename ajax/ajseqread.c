@@ -1110,7 +1110,7 @@ static ajint seqReadFmt (AjPSeq thys, AjPSeqin seqin, SeqPInFormat inform,
       ajFileBuffReset(seqin->Filebuff);
       ajDebug("Format %d (%s) failed, file buffer reset by seqReadFmt\n",
 	      format, inform[format].Name);
-      ajFileBuffTraceFull(seqin->Filebuff, 10, 10);
+      /* ajFileBuffTraceFull(seqin->Filebuff, 10, 10);*/
     }
     ajDebug ("++seqReadFmt failed - nothing read\n");
     return FMT_FAIL;
@@ -1292,7 +1292,7 @@ static AjBool seqReadFasta (AjPSeq thys, AjPSeqin seqin)
     AjBool ok = ajTrue;
 
     ajDebug ("seqReadFasta\n");
-    ajFileBuffTrace (buff);
+    /* ajFileBuffTrace (buff); */
 
     ok = ajFileBuffGetL (buff, &rdline, &fpos);
     if (!ok)
@@ -1385,7 +1385,7 @@ static AjBool seqReadDbId (AjPSeq thys, AjPSeqin seqin)
     AjBool ok = ajTrue;
 
     ajDebug ("seqReadDbId\n");
-    ajFileBuffTrace (buff);
+    /* ajFileBuffTrace (buff); */
 
     ok = ajFileBuffGetL (buff, &rdline, &fpos);
     if (!ok)
@@ -6173,7 +6173,7 @@ static AjBool seqQueryMatch (AjPSeq thys, AjPSeqQuery query)
 	ajDebug ("... try description '%S' '%S'\n", thys->Desc,
 		     query->Des);
 	    
-	if (ajStrMatchWild (thys->Desc, query->Des))
+	if (ajStrMatchWord (thys->Desc, query->Des))
 	  return ajTrue;
 
 	tested = ajTrue;
