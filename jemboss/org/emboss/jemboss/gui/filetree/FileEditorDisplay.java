@@ -89,7 +89,7 @@ public class FileEditorDisplay
      {
        try
        {
-         doc.insertString(0, (String)contents, null);
+         doc.insertString(0, (String)contents, seqText.getStyle("regular"));
        }
        catch (BadLocationException ble)
        {
