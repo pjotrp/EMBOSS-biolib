@@ -11,6 +11,15 @@ section: input [
   type: "page"
 ]
 
+  string: dbname  [
+    parameter: "Y"
+    maxlength: "19"
+    minlength: "1"
+    information: "Database name"
+    knowntype: "emboss database name"
+    pattern: "[A-z][A-z0-9_]+"
+  ]
+
   directory: directory  [
     standard: "Y"
     default: "."
@@ -32,15 +41,6 @@ section: required [
   information: "Required section"
   type: "page"
 ]
-
-  string: dbname  [
-    parameter: "Y"
-    maxlength: "19"
-    minlength: "1"
-    information: "Database name"
-    knowntype: "emboss database name"
-    pattern: "[A-z][A-z0-9_]+"
-  ]
 
   string: release  [
     standard: "Y"

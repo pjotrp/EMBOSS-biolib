@@ -11,6 +11,15 @@ section: input [
   type: "page"
 ]
 
+  string: dbname  [
+    parameter: "Y"
+    maxlength: "19"
+    minlength: "1"
+    information: "Database name"
+    knowntype: "emboss database name"
+    pattern: "[A-z][A-z0-9_]+"
+  ]
+
   list: idformat  [
     standard: "y"
     information: "ID line format"
@@ -43,15 +52,6 @@ section: required [
   information: "Required section"
   type: "page"
 ]
-
-  string: dbname  [
-    parameter: "Y"
-    maxlength: "19"
-    minlength: "1"
-    information: "Database name"
-    knowntype: "emboss database name"
-    pattern: "[A-z][A-z0-9_]+"
-  ]
 
   string: release  [
     standard: "Y"
