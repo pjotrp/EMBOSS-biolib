@@ -32,7 +32,6 @@ typedef struct AjSSeqout {
   AjPStr Gi;
   AjPStr Tax;
   AjPStr Desc;
-  AjPStr Directory;
   AjPStr Type;
   AjEnum EType;
   AjPStr Db;
@@ -52,6 +51,7 @@ typedef struct AjSSeqout {
   AjPStr Formatstr;
   AjEnum Format;
   AjPStr Filename;
+  AjPStr Directory;
   AjPStr Entryname;
   AjPList Acclist;
   AjPList Keylist;
