@@ -271,13 +271,15 @@ static void showfeat_ShowFeatSeq (AjPFile outfile, AjPSeq seq, ajint beg,
 	    /* sort by: sense, source, type, start */
 	    ajListSort(feat->Features, showfeat_CompareFeatSource);
 	else if (!ajStrCmpC(sortlist[0], "start"))
-	    /* sort by: sense, source, type, start */
+	    /* sort by: sense, start, type, source, source */
 	    ajListSort(feat->Features, showfeat_CompareFeatPos);
-	else
+	else if (!ajStrCmpC(sortlist[0], "start"))
 	    /* type */
 	    /* sort by: sense, type, source, start */
 	    ajListSort(feat->Features, showfeat_CompareFeatType);
-  
+/*      else */
+            /* no sort */
+
 	iter = ajListIter(feat->Features) ;
 
 	while(ajListIterMore(iter))

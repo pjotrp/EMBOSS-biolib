@@ -50,10 +50,10 @@ list: sort  [
   minimum: "1"
   maximum: "1"
   header: "Sorting features"
-  values: "source:Sort by Source, start:Sort by Start position, type:Sort by Type"
+  values: "source:Sort by Source, start:Sort by Start position, type:Sort by Type, nosort:No sorting done"
   delimiter: ","
   codedelimiter: ":"
-  information: "Sort features by Type, Start or Source"
+  information: "Sort features by Type, Start or Source, or don't sort"
 ]
 
 bool: html  [
