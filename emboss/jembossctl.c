@@ -860,7 +860,7 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
     unsigned long block=0;
 
     FILE *fp;
-#if defined (__SVR4) && defined (__sun)
+#if defined (__SVR4) && defined (__sun) && !defined (__GNUC__)
     struct tm tbuf;
 #endif
     struct tm *tp=NULL;
@@ -1152,7 +1152,7 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
     if(chdir(ajStrStr(dir))==-1)
 	exit(-1);
 
-#if defined (__SVR4) && defined (__sun)
+#if defined (__SVR4) && defined (__sun) && !defined (__GNUC__)
     tp = localtime_r(&tim,&tbuf);
 #else
     tp = localtime(&tim);
@@ -1898,7 +1898,7 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
     for(ret=readdir_r(dirp,(struct dirent *)dbuf,&dp);dp;
 	ret=readdir_r(dirp,(struct dirent *)dbuf,&dp))
 #else
-#if defined (__SVR4) && defined (__sun)
+#if defined (__SVR4) && defined (__sun) && !defined (__GNUC__)
     for(dp=readdir_r(dirp,(struct dirent *)dbuf);dp;
 	dp=readdir_r(dirp,(struct dirent *)dbuf))
 #else
@@ -2044,7 +2044,7 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
     for(ret=readdir_r(dirp,(struct dirent *)dbuf,&dp);dp;
 	ret=readdir_r(dirp,(struct dirent *)dbuf,&dp))
 #else
-#if defined (__SVR4) && defined (__sun)
+#if defined (__SVR4) && defined (__sun) && !defined (__GNUC__)
     for(dp=readdir_r(dirp,(struct dirent *)dbuf);dp;
 	dp=readdir_r(dirp,(struct dirent *)dbuf))
 #else
