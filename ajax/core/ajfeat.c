@@ -118,7 +118,7 @@ static AjBool   FeatInitSwiss      = AJFALSE;
 static AjPTable FeatTypeTableSwiss = NULL;
 static AjPTable FeatTagsTableSwiss = NULL;
 
-
+static ajint featWarnCount = 0;
 
 
 static void         featClear ( AjPFeature thys );
@@ -140,6 +140,18 @@ static void         featDumpPir(const AjPFeature thys, const AjPStr location,
 				AjPFile file);
 static void         featDumpSwiss(const AjPFeature thys, AjPFile file,
 				  const AjPFeature gftop);
+static AjBool       featEmblLoc(AjPStr loc, AjPStr* begstr, AjBool* between,
+				AjBool* simple, AjPStr* endstr);
+static AjBool       featEmblLocNum(AjPStr loc, AjBool* bound, ajint* num);
+static AjBool       featEmblLocRange(AjPStr loc, ajint* num1, ajint* num2);
+static AjBool       featEmblOperIn(AjPStr loc, AjPStr* opnam, AjPStr* value,
+				   AjPStr* rest);
+static AjBool       featEmblOperNone(AjPStr loc, AjPStr* entryid,
+				     AjPStr* value, AjPStr* rest);
+static AjBool       featEmblOperOut(AjPStr loc,
+				    AjPStr* opnam, AjPStr* value);
+static AjBool       featEmblTvRest(AjPStr* tags, AjPStr* skip);
+static AjBool       featEmblTvTagVal(AjPStr* tags, AjPStr* tag, AjPStr* value);
 static AjPFeature   featFeatNew(AjPFeattable thys,
 				const AjPStr source,
 				const AjPStr type,
@@ -159,6 +171,8 @@ static AjPFeature   featFeatNewProt(AjPFeattable thys,
 				    ajint  End,
 				    float score,
 				    ajint flags );
+static AjBool       featFeatType(AjPStr line, AjPStr* type, AjPStr* tag,
+				 AjPStr* req);
 static AjPFeature   featFeatureNew(void);
 static AjBool       featFindInFormat(const AjPStr format, ajint* iformat);
 static AjBool       featFindOutFormat(const AjPStr format, ajint* iformat);
@@ -201,14 +215,16 @@ static void         featTableInit(AjPFeattable thys,
 				  const AjPStr name);
 static AjPFeattable featTableNew(void);
 static AjPFeattable featTableNewS(const AjPStr name);
-static AjPStr       featTableTag(const AjPStr tag, const AjPTable table);
-static AjPStr       featTableTagC(const char *tag, const AjPTable table);
+static AjPStr       featTableTag(const AjPStr tag, const AjPTable table,
+				 AjBool* known);
+static AjPStr       featTableTagC(const char *tag, const AjPTable table,
+				 AjBool* known);
 static AjPStr       featTableType(const AjPStr type, const AjPTable table);
 static AjBool       feattableWriteEmbl(const AjPFeattable Feattab,
 				       AjPFile file,
 				       AjBool IsEmbl);
 static AjBool       featTagAllLimit(AjPStr* pval, const AjPStr values);
-static AjPStr       featTagDna(const AjPStr type);
+static AjPStr       featTagDna(const AjPStr type, AjBool* known);
 static void         featTagEmblDefault(AjPStr* pout,
 				       const AjPStr tag, AjPStr* pval);
 static void         featTagEmblWrapC(AjPStr* pval, ajint width,
@@ -221,7 +237,9 @@ static void         featTagGffDefault(AjPStr* pout, const AjPStr tag,
 static AjBool       featTagGffSpecial(AjPStr* pval, const AjPStr tag);
 static void         featTagLimit(const AjPStr name, const AjPTable table,
 				 AjPStr* retstr);
-static AjPStr       featTagProt(const AjPStr type);
+static AjBool       featTagName(AjPStr line, AjPStr* name, AjPStr* type,
+				AjPStr* rest);
+static AjPStr       featTagProt(const AjPStr type, AjBool* known);
 static void         featTagQuoteEmbl(AjPStr* pval);
 static void         featTagQuoteGff(AjPStr* pval);
 static void         featTagSetDefault(AjPFeature thys,
@@ -259,7 +277,7 @@ static AjBool       featTypePirOut(AjPStr* type);
 static AjPStr       featTypeProt(const AjPStr type);
 static AjBool       featVocabRead(const char *name,
 				  AjPTable pTypeTable, AjPTable pTagsTable);
-
+static void         featWarn(const char* fmt, ...);
 
 
 
@@ -505,23 +523,6 @@ static AjPRegexp GffRegexregion    = NULL;
 static AjPRegexp GffRegexcomment   = NULL;
 
 static AjPRegexp GffRegexTvTagval  = NULL;
-
-static AjPRegexp EmblRegexNew         = NULL;
-static AjPRegexp EmblRegexNext        = NULL;
-static AjPRegexp EmblRegexTv          = NULL;
-static AjPRegexp EmblRegexTvRest      = NULL;
-static AjPRegexp EmblRegexTvTag       = NULL;
-static AjPRegexp EmblRegexTvTagBrace  = NULL;
-static AjPRegexp EmblRegexTvTagQuote  = NULL;
-static AjPRegexp EmblRegexTvTagQuote2 = NULL;
-static AjPRegexp EmblRegexTvTagUnquote2 = NULL;
-static AjPRegexp EmblRegexOperIn      = NULL;
-static AjPRegexp EmblRegexOperOut     = NULL;
-static AjPRegexp EmblRegexOperNone    = NULL;
-static AjPRegexp EmblRegexLocMulti    = NULL;
-static AjPRegexp EmblRegexLoc         = NULL;
-static AjPRegexp EmblRegexLocRange    = NULL;
-static AjPRegexp EmblRegexLocNum      = NULL;
 
 static AjPRegexp PirRegexAll          = NULL;
 static AjPRegexp PirRegexCom          = NULL;
@@ -1456,7 +1457,7 @@ static AjPFeature featFeatNew(AjPFeattable thys,
     if(ajStrLen(label))
     {
 	ajStrAssS(&ret->Label, label);
-	ajWarn("%S: Feature label '%S' used",
+	featWarn("%S: Feature label '%S' used",
 	       thys->Seqid, label);
     }
     
@@ -2501,7 +2502,7 @@ static AjPFeature featPirFromLine(AjPFeattable thys,
     }
     
     if (mother)
-	ajWarn("featPirFromLine: Did not understand location '%S'", locstr);
+	featWarn("featPirFromLine: Did not understand location '%S'", locstr);
     
     return gf;
 }
@@ -2622,11 +2623,11 @@ static void featFlagSet (AjPFeature gf, const AjPStr flagstr)
 	    ajStrAssS(&gf->Remote, valstr);
 	else if(ajStrMatchCaseC(typstr, "label"))
 	{
-	    ajWarn("GFF label '%S' used", valstr);
+	    featWarn("GFF label '%S' used", valstr);
 	    ajStrAssS(&gf->Label, valstr);
 	}
 	else
-	    ajWarn("Unknown GFF FeatFlags type '%S:%S'", typstr, valstr);
+	    featWarn("Unknown GFF FeatFlags type '%S:%S'", typstr, valstr);
 
 	ajRegPost(moreexp, &tmpstr);
 	ajStrAssS(&savstr, tmpstr);
@@ -2691,7 +2692,7 @@ static void featGroupSet(AjPFeature gf, AjPFeattable table,
 	    {
 		/*ajDebug("GFF group field '%S' table '%S'\n",
 			 grouptag, table->Seqid);*/
-		ajWarn("GFF group field '%S' for table '%S'",
+		featWarn("GFF group field '%S' for table '%S'",
 		       grouptag, table->Seqid);
 	    }
 	}
@@ -2786,7 +2787,7 @@ static void featGffProcessTagval(AjPFeature gf, AjPFeattable table,
 	else
 	{
 	    /*ajDebug("Choked on '%S'\n", TvString);*/
-	    ajWarn("GFF tag parsing failed on '%S' in\n'%S'",
+	    featWarn("GFF tag parsing failed on '%S' in\n'%S'",
 		   TvString, groupfield);
 	    ajStrDel(&TvString);
 	}
@@ -2887,7 +2888,7 @@ static AjPFeature featSwissFromLine(AjPFeattable thys,
 	    ajStrApp(saveline, temp);
 	}
 	else
-	    ajWarn("%S: Bad SwissProt feature line:\n%S",
+	    featWarn("%S: Bad SwissProt feature line:\n%S",
 		   thys->Seqid, origline);
     }
     
@@ -3031,10 +3032,15 @@ static AjPFeature featSwissProcess(AjPFeattable thys, const AjPStr feature,
 
 /* @funcstatic featEmblFromLine ***********************************************
 **
-** Converts an input EMBL format line into a feature
+** Converts an input EMBL format line into a feature.
+** Starts a new feature by processing any existing feature data.
+** Creates or appends the type, location and tagvalue pairs.
+** With a NULL as the input line, simply processes the type, location
+** and tagvalues.
 **
 ** @param [u] thys     [AjPFeattable] Feature table
-** @param [r] origline [const AjPStr] Input line
+** @param [r] origline [const AjPStr] Input line (NULL to process last
+**                                    feature at end of input)
 ** @param [w] savefeat [AjPStr*] Stored feature type
 ** @param [w] saveloc  [AjPStr*] Continued location
 ** @param [w] saveline [AjPStr*] Continued tag-value pairs
@@ -3053,33 +3059,45 @@ static AjPFeature featEmblFromLine(AjPFeattable thys,
     static AjPStr line   = NULL;
     static AjPStr temp   = NULL;
     AjBool newft         = ajFalse;
-    
+    AjBool doft         = ajFalse;
+    AjPStrTok split = NULL;
+
     if(!source)
 	source = ajStrNewC("EMBL");
     
     /* ajDebug("featEmblFromLine '%S'\n", origline); */
     
     ajStrAssS(&line,origline);        /* As BufferFile cannot be edited */
-    
+    ajStrTrim(&line, 5);	      /* chop first 5 characters */
     if(origline)
-	newft = ajRegExec(EmblRegexNew, line);
-    
+    {
+	if (ajStrChar(line, 0) != ' ')	/* look for the feature key */
+	{
+	    newft = ajTrue;
+	    if(ajStrLen(*saveloc))
+		doft = ajTrue;
+	}
+    }
+    else
+    {
+	newft = ajFalse;		/* no new data, just process */
+	if(ajStrLen(*saveloc))
+	    doft = ajTrue;
+    }
+
     /*
-       ajDebug ("+ newft: %B\n+ line '%S'\n",
-		newft, line);
+       ajDebug ("+ newft: %B doft: %B\n+ line '%S'\n",
+		newft, doft, line);
     */
     
-    if(newft || !origline) 		/* process the last feature */
+    if(doft) 		/* process the last feature */
     {
 	/*
 	   ajDebug("++ saveloc '%S'\n+ saveline '%S'\n",
 	           *saveloc, *saveline);
 	*/
 
-	if (ajStrLen(*saveloc))
-	    gf = featEmblProcess(thys, *savefeat, source, saveloc, saveline);
-	else
-	    gf = NULL;
+	gf = featEmblProcess(thys, *savefeat, source, saveloc, saveline);
 
 	ajStrDelReuse(saveloc);
 	ajStrDelReuse(saveline);
@@ -3088,44 +3106,38 @@ static AjPFeature featEmblFromLine(AjPFeattable thys,
     if(!origline)		/* we are only cleaning up */
 	return gf;
     
+    ajStrClean(&line);
+
     if(newft) 		/* if new feature initialise for it */
     {
-	ajRegSubI(EmblRegexNew, 1, savefeat);
-	ajRegSubI(EmblRegexNew, 2, saveloc);
-	ajRegSubI(EmblRegexNew, 3, saveline);
-	ajStrChomp(savefeat);
+	split = ajStrTokenInit (line, " ");
+	ajStrToken(savefeat, &split, NULL);
+	if(ajStrToken(saveloc, &split, " /"))
+	    ajStrTokenRest(saveline, &split);
+	else
+	    ajStrAssCL(saveline, "", 512);	/* location only */
+	ajStrTokenClear(&split);
 	return gf;
     }
-    else if(!ajStrLen(*saveline))  /* more location? */
+    else if(!ajStrLen(*saveline))  /* no tag-values yet, more location? */
     {
-	if(ajRegExec(EmblRegexNext, line))
+	if(ajStrChar(line, 0) != '/')
 	{
-	    ajRegSubI(EmblRegexNext, 1, &temp);
-	    if(temp)
+	    split = ajStrTokenInit (line, " ");
+	    ajStrToken(&temp, &split, NULL);
+	    if(ajStrLen(temp))
 		ajStrApp(saveloc, temp);
-	    ajRegSubI(EmblRegexNext, 2, &temp);
-	    if(temp)
+	    ajStrTokenRest(&temp, &split);
+	    if(ajStrLen(temp))
 		ajStrApp(saveline, temp);
-	}
-	else
-	{
-	    /*ajDebug("Bad EMBL feature line:\n%S\n", line);*/
-	    ajWarn("%S: Bad EMBL feature line:\n%S", thys->Seqid, line);
+	    ajStrTokenClear(&split);
+	    return gf;
 	}
     }
-    else 				/* tag-values */
-    {
-	if(ajRegExec(EmblRegexTv, line))
-	{
-	    ajRegSubI(EmblRegexTv, 1, &temp);
-	    ajStrApp(saveline, temp);
-	}
-	else
-	{
-	    /*ajDebug("Bad EMBL feature line:\n%S\n", line);*/
-	    ajWarn("%S: Bad EMBL feature line:\n%S", thys->Seqid, line);
-	}
-    }
+
+    /* tag-values continued */
+    ajStrAppK(saveline, ' ');
+    ajStrApp(saveline, line);
     
     return gf;
 }
@@ -3157,12 +3169,14 @@ static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
     AjPStr opnam    = NULL;
     AjPStr opval    = NULL;
     AjPStr tmpstr   = NULL;
+    AjPStr prestr   = NULL;
     AjBool Fwd      = ajTrue;
     AjBool LocFwd   = ajTrue;
     AjPStr begstr   = NULL;
     AjPStr delstr   = NULL;
     AjPStr endstr   = NULL;
     AjPStr locstr   = NULL;
+    AjPStr rest     = NULL;
     AjBool Simple   = ajFalse;	/* Simple - single position (see also label) */
     AjBool BegBound = ajFalse;
     AjBool EndBound = ajFalse;
@@ -3186,6 +3200,8 @@ static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
     AjBool RemoteId = ajFalse;
     AjBool IsLabel  = ajFalse;	/* uses obsolete label  */
     ajint Exon      = 0;
+    ajint ipos;
+    ajint itags = 0;
     
     ajStrCleanWhite(loc);	/* no white space needed */
     ajStrClean(tags);		/* single spaces only */
@@ -3197,13 +3213,12 @@ static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
     /*ajDebug("Clean tags '%S'\n", *tags);*/
     
     ajStrAssS(&opval, *loc);
-    if(ajRegExec(EmblRegexLocMulti, opval))
+    ipos = ajStrFindK(opval, ',');	/* multiple locations */
+    if(ipos >= 0)
     {
 	/* ajDebug("Multiple locations, test operator(s)\n"); */
-	while(ajStrLen(opval) && ajRegExec (EmblRegexOperOut, opval))
+	while(ajStrLen(opval) && featEmblOperOut(opval, &opnam, &tmpstr))
 	{
-	    ajRegSubI(EmblRegexOperOut, 1, &opnam);
-	    ajRegSubI(EmblRegexOperOut, 2, &tmpstr);
 	    if(!ajStrParentheses(tmpstr))
 		break;
 
@@ -3224,8 +3239,8 @@ static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
 		Group = ajTrue;
 
 	    else
-		ajWarn("%S: unrecognised operator '%S()'",
-		       thys->Seqid, opnam);
+		featWarn("%S: unrecognised operator '%S()' in '%S'",
+		       thys->Seqid, opnam, opval);
 
 	    ajStrAssS(&opval, tmpstr);
 	}
@@ -3245,14 +3260,15 @@ static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
 
 	ajStrDelReuse(&entryid);
 	ajStrDelReuse(&label);
-	if(ajRegExec(EmblRegexOperIn, opval))
+
+	/* check for complement() */
+	/* set locstr as the whole (or rest) of the location */
+
+	if(featEmblOperIn(opval, &opnam, &locstr, &tmpstr))
 	{
-	    ajRegSubI(EmblRegexOperIn, 1, &opnam);
-	    ajRegSubI(EmblRegexOperIn, 2, &locstr);
 	    /* ajDebug("OperIn %S( '%S' )\n", opnam, locstr); */
 	    if(ajStrMatchCaseC(opnam, "complement"))
 		LocFwd = !LocFwd;
-	    ajRegPost(EmblRegexOperIn, &tmpstr);
 	    ajStrAssS(&opval, tmpstr);
 	    /* ajDebug("rest: '%S'\n", opval); */
 	    HasOper = ajTrue;
@@ -3262,56 +3278,39 @@ static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
 	    ajStrAssS(&locstr, opval);
 	    /* ajDebug("OperIn simple '%S'\n", locstr); */
 	}
-	if(ajRegExec(EmblRegexOperNone, locstr))  /* one exon */
+
+	if(featEmblOperNone(locstr, &entryid, &tmpstr, &rest))  /* one exon */
 	{
-	    ajRegSubI(EmblRegexOperNone, 2, &entryid); /* if any */
-	    ajRegSubI(EmblRegexOperNone, 3, &tmpstr);	/* pos (or label) */
 	    /* ajDebug("OperNone '%S' \n", tmpstr); */
 	    if(ajStrLen(entryid))
 	    {
 		/* ajDebug("External entryid '%S'\n", entryid); */
 		RemoteId = ajTrue;
 	    }
-	    if (ajRegExec(EmblRegexLoc, tmpstr))  /* xxx..xxx or xxx^xxx */
-	    {
-		ajRegSubI(EmblRegexLoc, 1, &begstr);
-		ajRegSubI(EmblRegexLoc, 2, &delstr);
-		if(ajStrMatchC(delstr, "^"))
-		    Between = ajTrue;
-		ajRegSubI(EmblRegexLoc, 3, &endstr);
-		/* ajDebug("Location: '%S' '%S' '%S'\n",
-		   begstr, delstr, endstr); */
-	    }
-	    else
+	    if (!featEmblLoc(tmpstr, &begstr, &Between, &Simple, &endstr))
 	    {
 		ajStrAssS(&begstr, tmpstr);
 		ajStrAssS(&endstr, begstr);
 		Simple = ajTrue;
-		/* ajDebug("Simple feature location '%S' in '%S' - "
+		ajDebug("Bad feature numeric location '%S' in '%S' - "
 		   "test later for label",
-		   begstr, locstr); */
+		   begstr, locstr);
 	    }
-	    
-	    ajRegPost(EmblRegexOperNone, &tmpstr);
+
+	    ajStrAssS(&tmpstr, rest);
+
 	    if(!HasOper)
 		ajStrAssS(&opval, tmpstr);
 	    
-	    if(ajRegExec(EmblRegexLocNum, begstr))
+	    if(featEmblLocNum(begstr, &BegBound, &BegNum))
 	    {
-		ajRegSubI(EmblRegexLocNum, 1, &tmpstr);
-		if (ajStrLen(tmpstr))
-		    BegBound=ajTrue;
-		ajRegSubI(EmblRegexLocNum, 2, &tmpstr);
-		ajStrToInt(tmpstr, &BegNum);
+		Beg2 = 0;
 		/* ajDebug ("Begin '%S' %d  Bound: %B\n",
 		   begstr, BegNum, BegBound); */
 	    }
-	    else if(ajRegExec(EmblRegexLocRange, begstr))
+	    else if(featEmblLocRange(begstr, &BegNum, &Beg2))
 	    {
-		ajRegSubI(EmblRegexLocRange, 1, &tmpstr);
-		ajStrToInt(tmpstr, &BegNum);
-		ajRegSubI(EmblRegexLocRange, 2, &tmpstr);
-		ajStrToInt(tmpstr, &Beg2);
+		BegBound = ajFalse;
 		/* ajDebug ("Begin range (%d . %d)\n", BegNum, Beg2); */
 	    }
 	    else
@@ -3320,26 +3319,19 @@ static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
 		IsLabel = ajTrue;
 		Simple  = ajTrue;
 		ajStrAssS(&label, begstr);
-		ajWarn("%S: Simple feature begin '%S' in '%S'",
+		featWarn("%S: Simple feature location '%S' in '%S'",
 		       thys->Seqid, begstr, locstr);
 	    }
 	    
-	    if(ajRegExec(EmblRegexLocNum, endstr))
+	    if(featEmblLocNum(endstr, &EndBound, &EndNum))
 	    {
-		ajRegSubI(EmblRegexLocNum, 1, &tmpstr);
-		if(ajStrLen(tmpstr))
-		    EndBound=ajTrue;
-		ajRegSubI(EmblRegexLocNum, 2, &tmpstr);
-		ajStrToInt(tmpstr, &EndNum);
+		End2 = 0;
 		/* ajDebug ("  End '%S' %d  Bound: %B\n",
 		   endstr, EndNum, EndBound); */
 	    }
-	    else if(ajRegExec(EmblRegexLocRange, endstr))
+	    else if(featEmblLocRange(endstr, &End2, &EndNum))
 	    {
-		ajRegSubI(EmblRegexLocRange, 1, &tmpstr);
-		ajStrToInt(tmpstr, &End2);
-		ajRegSubI(EmblRegexLocRange, 2, &tmpstr);
-		ajStrToInt(tmpstr, &EndNum);
+		EndBound = ajFalse;
 		/* ajDebug ("  End range (%d . %d)\n", End2, EndNum); */
 	    }
 	    else
@@ -3348,13 +3340,14 @@ static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
 		Simple  = ajTrue;
 		ajStrAssS(&label, endstr);
 		/* ajDebug("  End is a label '%S'\n", endstr); */
-		ajWarn("%S: Simple feature end '%S' in '%S'",
-		       thys->Seqid, begstr, locstr);
+		ajErr("%S: Simple feature end '%S' in '%S'",
+		      thys->Seqid, begstr, locstr);
 	    }
 	}
 	else
+	{
 	    ajErr ("Unable to parse location:\n'%S'", opval);
-	
+	}
 	/* location has been read in, now store it */
 	
 	Flags = 0;
@@ -3397,7 +3390,7 @@ static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
 	if(IsLabel)
 	    Flags |= FEATFLAG_LABEL;
 	if(IsLabel)
-	    ajWarn("%S: Feature location with label '%S'",
+	    featWarn("%S: Feature location with label '%S'",
 		   thys->Seqid, locstr);
 	
 	/* ajDebug("Calling featFeatNew, Flags: %x\n", Flags); */
@@ -3417,77 +3410,33 @@ static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
     
     while(ajStrLen(*tags))
     {
-	if(ajRegExec (EmblRegexTvTag, *tags))
+	itags++;
+
+	if(featEmblTvTagVal(tags, &tag, &val))
 	{
-	    /*
-	    ** first process quoted values,
-	    ** which can look like multiple values
-	    ** watch for "" double internal quotes
-	    */
-
-	    if(ajRegExec(EmblRegexTvTagQuote, *tags)) /* /tag="val" */
-	    {
-		ajRegSubI(EmblRegexTvTagQuote, 1, &tag);
-		ajRegSubI(EmblRegexTvTagQuote, 2, &val);
-		ajRegPost(EmblRegexTvTagQuote, &tmpstr);
-		ajStrAssS(tags, tmpstr);
-
-		/* internal quotes are "" - save and fix after */
-		while(ajRegExec(EmblRegexTvTagQuote2, *tags))
-		{				/* "quoted ""val""" */
-		    ajRegSubI(EmblRegexTvTagQuote2, 1, &tmpstr);
-		    if (ajRegExec(EmblRegexTvTagUnquote2,tmpstr))
-		    {
-			ajWarn("Extra quote detected at end: /%S=%S%S...",
-			       tag, val, tmpstr);
-			ajStrTrimStartC(tags, "\" ");
-			break;
-		    }
-		    ajStrApp(&val, tmpstr);
-		    ajRegPost(EmblRegexTvTagQuote2, &tmpstr);
-		    ajStrAssS(tags, tmpstr);
-		}
-		ajStrQuoteStrip(&val);
-	    }
-	    else if(ajRegExec(EmblRegexTvTagBrace, *tags)) /* /tag=(aa, bb) */
-	    {
-		ajRegSubI(EmblRegexTvTagBrace, 1, &tag);
-		ajRegSubI(EmblRegexTvTagBrace, 2, &val);
-		ajStrCleanWhite(&val);
-		ajRegPost(EmblRegexTvTagBrace, &tmpstr);
-		ajStrAssS(tags, tmpstr);
-	    }
-	    else
-	    {
-		ajRegSubI(EmblRegexTvTag, 1, &tag);
-		ajRegSubI(EmblRegexTvTag, 3, &val);
-		ajRegPost(EmblRegexTvTag, &tmpstr);
-		ajStrAssS(tags, tmpstr);
-	    }
+	    ajStrQuoteStrip(&val);
 	    if(!ajFeatTagAdd (ret, tag, val))
-		ajWarn("%S: Bad value '%S' for tag '/%S'",
+		featWarn("%S: Bad value '%S' for tag '/%S'",
 		       thys->Seqid, val, tag) ;
 	}
-	else if (ajRegExec(EmblRegexTvRest, *tags))
+	else if (featEmblTvRest(tags, &tmpstr))
 	{
 	    /* anything non-whitespace up to '/' is bad */
-	    ajRegSubI(EmblRegexTvRest, 1, &tmpstr);
-	    ajWarn("Bad feature syntax %S: skipping '%S'",
-		   thys->Seqid, tmpstr);
-	    ajRegPost(EmblRegexTvRest, &tmpstr);
-	    ajStrAssS(tags, tmpstr);
-	    ajWarn("Bad feature syntax %S: continuing '%S'",
+	    featWarn("Bad feature syntax %S: skipping '%S'",
 		   thys->Seqid, tmpstr);
 	}
 	else
 	{
-	    ajWarn("Bad feature syntax %S: giving up at '%S'",
+	    featWarn("Bad feature syntax %S: giving up at '%S'",
 		   thys->Seqid, *tags);
 	    ajStrAssC(tags, "");
 	}
     }
 
+    ajDebug("featEmblProcess found %d feature tags\n", itags);
+
     ajStrDel(&tmpstr);
+    ajStrDel(&prestr);
     ajStrDel(&val);
     ajStrDel(&tag);
     ajStrDel(&begstr);
@@ -3496,11 +3445,710 @@ static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
     ajStrDel(&opval);
     ajStrDel(&locstr);
     ajStrDel(&endstr);
+    ajStrDel(&rest);
     
     return ret;
 }
 
+/* @funcstatic featEmblOperOut ************************************************
+**
+** Process operator and contents up to matching right parenthesis at end
+**
+** Return operator and content of parentheses
+**
+** Ignores internal operators
+** For example:
+**
+** join(complement(12..15),complement(1..3))
+** returns "join" and "complement(12..15),complement(1..3)"
+** 
+** complement(12..15),complement(1..3)
+** fails because both complement() operators cover only part of the string
+** and will be processed as separate locations.
+**
+** @param [r] loc [const AjPStr] Feature location
+** @param [w] opnam [AjPStr*] Operator name
+** @param [w] value [AjPStr*] Operator value
+** @return [AjBool] ajTrue if an operator was found
+******************************************************************************/
 
+static AjBool featEmblOperOut(AjPStr loc, AjPStr* opnam, AjPStr* value)
+{
+    ajint left=0;
+    ajint right=0;
+    ajint ipos=0;
+    ajint bracepos = 0;;
+    const char* cp = ajStrStr(loc);
+
+    if (*cp == '(') return ajFalse;	/* starts with '(' */
+    if(!isalpha((ajint)*cp)) return ajFalse; /* starts with location */
+    if(!islower((ajint)*cp)) return ajFalse; /* starts with location */
+
+    while (*cp)
+    {
+	ipos ++;
+	switch (*cp++)
+	{
+	case ',':
+	    if(!left) return ajFalse;	/* loc,loc,oper(loc),loc */
+	    break;
+	case '(':
+	    if (!left) bracepos = ipos-1;
+	    left++;
+	    break;
+	case ')':
+	    right++;
+	    if (right == left)
+	    {
+		if (ipos != ajStrLen(loc)) /* partial operator */
+		    return ajFalse;
+	    }
+	    else if (right > left) return ajFalse;
+	    break;
+	default:
+	    break;
+	}
+    }
+
+    if (!left) return ajFalse;		/* no parentheses */
+    if (right != left) return ajFalse;	/* unmatched '(' */
+
+    
+    ajStrAssSub(opnam, loc, 0, bracepos-1);
+    ajStrAssSub(value, loc, bracepos+1, ipos-2);
+    return ajTrue;
+}
+
+/* @funcstatic featEmblOperIn ************************************************
+**
+** Process operator and contents up to matching right parenthesis at end
+**
+** Return operator and content of parentheses
+**
+** For operators with single locations, though the location can include ()
+** For example:
+**
+** complement(12..15)
+**
+** complement((11.12)..(14.15))
+**
+** @param [r] loc [const AjPStr] Feature location
+** @param [w] opnam [AjPStr*] Operator name
+** @param [w] value [AjPStr*] Operator value
+** @param [w] rest [AjPStr*] Remainder of location
+** @return [AjBool] ajTrue if an operator was found
+******************************************************************************/
+
+static AjBool featEmblOperIn(AjPStr loc, AjPStr* opnam, AjPStr* value,
+			     AjPStr* rest)
+{
+    ajint left=0;
+    ajint right=0;
+    ajint depth;
+    ajint ipos=0;
+    ajint bracepos = 0;;
+    const char* cp = ajStrStr(loc);
+
+    if (*cp == '(') return ajFalse;	/* starts with '(' */
+
+    while (*cp)
+    {
+	if(*cp == ',') break;
+	ipos ++;
+	switch (*cp++)
+	{
+	case '(':
+	    if (!left) bracepos = ipos-1;
+	    left++;
+	    if (left>3) return ajFalse;
+	    depth = left - right;
+	    if(depth > 2) return ajFalse;
+	    break;
+	case ')':
+	    right++;
+	    if (right>3) return ajFalse;
+	    if (right > left) return ajFalse;
+	    break;
+	default:
+	    break;
+	}
+    }
+
+    if (!left) return ajFalse;		/* no parentheses */
+    if (right != left) return ajFalse;	/* unmatched '(' */
+
+    
+    ajStrAssSub(opnam, loc, 0, bracepos-1);
+    ajStrAssSub(value, loc, bracepos+1, ipos-2);
+
+    if(ipos < ajStrLen(loc))
+	ajStrAssSub(rest, loc, ipos+1, -1);
+    else
+	ajStrAssC(rest, "");
+
+    return ajTrue;
+}
+
+/* @funcstatic featEmblOperNone ***********************************************
+**
+** Process anything up to ':' as an entry ID (a feature in another entry)
+** Anything up to ',' is this location
+**
+** @param [r] loc [const AjPStr] Feature location
+** @param [w] entryid [AjPStr*] Entry ID if found, else empty
+** @param [w] value [AjPStr*] Location with entryID removed
+** @param [w] rest [AjPStr*] Remainder of location
+** @return [AjBool] ajTrue if a match was found
+**                  ajFalse means an error occurred
+******************************************************************************/
+
+static AjBool featEmblOperNone(AjPStr loc, AjPStr* entryid, AjPStr* value,
+			       AjPStr* rest)
+{
+    ajint ipos=0;
+    ajint idpos = 0;
+    const char* cp = ajStrStr(loc);
+
+    while (*cp)
+    {
+	if(*cp == ',') break;
+	ipos ++;
+
+	switch (*cp++)
+	{
+	case ':':
+	    idpos = ipos;
+	    break;
+	default:
+	    break;
+	}
+    }
+
+    if(idpos)
+    {
+	ajStrAssSub(entryid, loc, 0, idpos-2);
+	ajStrAssSub(value, loc, idpos, ipos-1);
+    }
+    else
+    {
+	ajStrAssC(entryid, "");
+	ajStrAssSub(value, loc, 0, ipos-1);
+    }
+
+    if(ipos < ajStrLen(loc))
+	ajStrAssSub(rest, loc, ipos+1, -1);
+    else
+	ajStrAssC(rest, "");
+
+   return ajTrue;
+}
+
+
+/* @funcstatic featEmblLoc ***********************************************
+**
+** Process simple feature location in the forms begin..end or begin^end
+**
+** @param [r] loc [const AjPStr] Feature location
+** @param [w] begstr [AjPStr*] Start position
+** @param [w] between [AjBool*] ajTrue for '^' as a position between 2 bases
+** @param [w] simple [AjBool*] ajTrue for single base location
+** @param [w] endstr [AjPStr*] End position
+** @return [AjBool] ajTrue if a match was found
+**                  ajFalse means an error occurred
+******************************************************************************/
+
+static AjBool featEmblLoc(AjPStr loc, AjPStr* begstr, AjBool* between,
+			  AjBool* simple, AjPStr* endstr)
+{
+    ajint ipos=0;
+    ajint bracket=0;
+    AjBool numeric=ajTrue;
+    AjBool dot = ajFalse;
+    AjBool end = ajFalse;
+    ajint iend = 0;
+    ajint ibeg = 0;
+    const char* cp = ajStrStr(loc);
+
+    *between = ajFalse;
+    *simple  = ajFalse;
+    ajStrAssC(begstr, "");
+    ajStrAssC(endstr, "");
+
+    while (*cp)
+    {
+	ipos ++;
+
+	switch (*cp)
+	{
+	case '.':
+	    if(bracket)
+		break;
+	    if(dot)
+	    {
+		if (end) return ajFalse;
+		end = ajTrue;
+		ibeg = ipos - 2;
+		iend = ipos - 1;
+	    }
+	    else
+		dot = ajTrue;
+	    break;
+	case '^':
+	    ibeg = ipos - 1;
+	    iend = ipos - 1;
+	    end = ajTrue;
+	    *between = ajTrue;
+	    break;
+	case '(':
+	    bracket++;
+	    numeric = ajFalse;
+	    break;
+	case ')':
+	    if(!bracket)
+		return ajFalse;
+	    bracket--;
+	    break;
+	default:
+	    if(!isdigit((ajint) *cp))
+	       numeric = ajFalse;
+	    break;
+	}
+	cp++;
+    }
+
+    if(dot && !end)
+	return ajFalse;
+
+    if(end)
+    {
+	ajStrAssSub(begstr, loc, 0, ibeg-1);
+	ajStrAssSub(endstr, loc, iend+1, ipos);
+    }
+    else			/* simple location e.g. 43 */
+    {
+	*simple = ajTrue;
+	ajStrAssSub(begstr, loc, 0, -1);
+	if(numeric)
+	    ajStrAssSub(endstr, loc, 0, -1);
+	else
+	    ajStrAssC(endstr, "");
+    }
+
+    return ajTrue;
+}
+
+
+/* @funcstatic featEmblLocNum *************************************************
+**
+** Process a single base position with a possible less than or greater than
+** character in front to mark a position beyond the bounds of the sequence.
+**
+** @param [r] loc [const AjPStr] Feature location
+** @param [w] bound [AjBool*] ajTrue if less than or greater than specified
+** @param [w] value [AjPStr*] Location with entryID removed
+** @return [AjBool] ajTrue if a match was found
+**                  ajFalse means an error occurred
+******************************************************************************/
+
+static AjBool featEmblLocNum(AjPStr loc, AjBool* bound, ajint* num)
+{
+    const char* cp = ajStrStr(loc);
+
+    *bound = ajFalse;
+    *num = 0;
+
+    if((*cp == '<') || (*cp == '>'))
+    {
+	*bound = ajTrue;
+	cp++;
+    }
+
+    while (*cp)
+    {
+	if(!isdigit(*cp))
+	    return ajFalse;
+	*num = 10* (*num) + (*cp - '0');
+	cp++;
+    }
+
+   return ajTrue;
+}
+
+
+/* @funcstatic featEmblLocRange ***********************************************
+**
+** Process a range position (12.14) meaning any base from 12 to 14 as the
+** start or end of a feature location.
+**
+** @param [r] loc [const AjPStr] Feature location
+** @param [w] num [ajint*] First base position
+** @param [w] num [ajint*] Last base position
+** @return [AjBool] ajTrue if a match was found
+**                  ajFalse means an error occurred
+******************************************************************************/
+
+static AjBool featEmblLocRange(AjPStr loc, ajint* num1, ajint* num2)
+{
+    ajint ipos=0;
+    AjBool dot = ajFalse;
+    const char* cp = ajStrStr(loc);
+
+    if (*cp != '(')
+	return ajFalse;
+    if (ajStrChar(loc, -1) != ')')
+	return ajFalse;
+
+    *num1 = 0;
+    *num2 = 0;
+
+    while (*cp)
+    {
+	ipos ++;
+
+	switch (*cp)
+	{
+	case '.':
+	    if(dot)
+		return ajFalse;
+	    dot = ajTrue;
+	    break;
+	case '(':
+	    if(ipos != 1) return ajFalse;
+	    break;
+	case ')':
+	    if(ipos != ajStrLen(loc)) return ajFalse;
+	    break;
+	default:
+	    if(!isdigit(*cp))
+		return ajFalse;
+	    if(dot)
+		*num2 = 10* (*num2) + (*cp - '0');
+	    else
+		*num1 = 10* (*num1) + (*cp - '0');
+	    break;
+	}
+	cp++;
+    }
+
+    if(!dot)
+	return ajFalse;
+
+    return ajTrue;
+}
+
+/* @funcstatic featEmblTvTagVal ***********************************************
+**
+** Tests for a feature tag value next in the input string 
+**
+** @param [u] tags [AjPStr*] Feature tagvalues string, returned with
+**                           current tagvalue removed
+** @param [w] name [AjPStr*] Feature tag name
+** @param [w] value [AjPStr*] Feature tag value
+** @return [AjBool] ajTrue if a match was found
+**                  ajFalse means an error occurred
+******************************************************************************/
+
+static AjBool featEmblTvTagVal(AjPStr* tags, AjPStr* name, AjPStr* value)
+{
+    const char* cp = ajStrStr(*tags);
+    const char* cq;
+    ajint i;
+    AjPStr testtags = NULL;
+    AjPStr testname = NULL;
+    AjPStr testvalue = NULL;
+    static ajint depth = 0;
+
+    ajStrAssC(value, "");
+
+    while ((*cp == ' '))
+	cp++;
+
+    if (*cp++ != '/')
+	return ajFalse;
+
+    cq = cp;
+    i=0;
+    while(isalpha(*cp) || (*cp == '_'))
+    {
+	i++;
+	cp++;
+    }
+    ajStrAssCI(name, cq, i);
+
+    while(*cp == ' ')
+	cp++;
+
+    if(!ajStrLen(*name))
+	return ajFalse;
+
+    switch(*cp)
+    {
+    case '\0':				/* /name is end of input */
+	ajStrAssC(tags,"");
+	ajStrAssC(value,"");
+	return ajTrue;
+    case '/':				/* /name then next tag, no value */
+	ajStrAssC(tags, cp);
+	ajStrAssC(value,"");
+	return ajTrue;
+    case '=':				/* /name=value */
+	break;
+    default:				/* anything else is bad */
+	return ajFalse;
+    }
+    cp++;
+
+    if(*cp == '"')			/* /name="... */
+    {
+	cq = cp;
+	cp++;
+	i=0;
+	while(*cp)
+	{
+	    i++;
+	    if (*cp == '"')
+	    {
+		ajStrAppCI(value, cq, i);
+		i = 0;
+		cp++;
+		if(!*cp || (*cp != '"')) /* all done */
+		{
+		    while(*cp == ' ')
+			cp++;
+		    if(*cp)
+			ajStrAssC(tags, cp);
+		    else
+			ajStrAssC(tags, "");
+		    return ajTrue;
+		}
+		else			/* "" but is it really internal */
+		{
+		    if(depth)
+		    {
+			return ajTrue;
+		    }
+		    depth++;
+		    ajStrAssC(&testtags, cp);
+		    if(featEmblTvTagVal(&testtags, &testname, &testvalue))
+		    {	       /* looks like an extra closing quote */
+			depth--;
+			ajStrDel(&testtags);
+			ajStrDel(&testname);
+			ajStrDel(&testvalue);
+			cp++;
+			while (*cp == ' ')
+			    cp++;
+			ajStrAssC(tags, cp);
+			return ajTrue;
+		    }
+		    else		/* really an internal " */
+		    {
+			depth--;
+			cq = cp-1;
+			i = 1;
+		    }
+		}
+	    }
+	    cp++;
+	}
+	ajStrAssC(tags, "");
+    }
+    else
+    {
+	cq = cp;
+	i=0;
+	while(*cp && (*cp != ' ') && (*cp != '/'))
+	{
+	    cp++;
+	    i++;
+	}
+	ajStrAssCI(value, cq, i);
+	ajStrAssC(tags, cp);
+	return ajTrue;
+    }
+
+    return ajFalse;
+
+}
+
+
+/* @funcstatic featEmblTvRest ***********************************************
+**
+** Process bad tag-value text up to next qualifier
+**
+** @param [u] tags [AjPStr*] Feature tagvalues string, returned with
+**                          skipped text removed
+** @param [w] skip [AjPStr*] Skipped text
+** @return [AjBool] ajTrue if a match was found
+**                  ajFalse means an error occurred
+******************************************************************************/
+
+static AjBool featEmblTvRest(AjPStr* tags, AjPStr* skip)
+{
+    AjPStr testtags = NULL;
+    AjPStr testname = NULL;
+    AjPStr testvalue = NULL;
+    AjBool ok = ajFalse;
+    const char* cp = ajStrStr(*tags);
+
+    ajStrAssC(skip, "");
+
+    while (*cp)
+    {
+	if(*cp == '/')
+	{
+	    ajStrAssC(&testtags,cp);
+	    ok = featEmblTvTagVal(&testtags, &testname, &testvalue);
+	    ajStrDel(&testtags);
+	    ajStrDel(&testname);
+	    ajStrDel(&testvalue);
+	    if(ok)
+	    {
+		ajStrAssC(tags, cp);
+		return ajTrue;
+	    }
+	}
+	else
+	{
+	    ajStrAppK(skip, *cp);
+	}
+	cp++;
+    }
+
+    ajStrAssC(tags, "");
+
+    return ajTrue;
+}
+
+
+/* @funcstatic featTagName ****************************************************
+**
+** Process anything up to ':' as an entry ID (a feature in another entry)
+** Anything up to ',' is this location
+**
+** @param [r] line [const AjPStr] Tags file line
+** @param [w] name [AjPStr*] Tag name
+** @param [w] type [AjPStr*] Tag type
+** @param [w] rest [AjPStr*] Remainder of line
+** @return [AjBool] ajTrue if a match was found
+**                  ajFalse means an error occurred
+******************************************************************************/
+
+static AjBool featTagName(AjPStr line, AjPStr* name, AjPStr* type,
+			  AjPStr* rest)
+{
+    const char* cp = ajStrStr(line);
+
+    ajStrAssC(name, "");
+    ajStrAssC(type, "");
+    ajStrAssC(rest, "");
+
+    while (isspace((ajint)*cp))
+	cp++;
+
+    while(*cp && !isspace((ajint)*cp))
+    {
+	ajStrAppK(name, *cp++);
+    }
+
+    while (isspace((ajint)*cp))
+	cp++;
+
+    if(!*cp)
+    {
+	ajStrAssC(name, "");
+	return ajFalse;
+    }
+
+    while(isalpha((ajint)*cp))
+    {
+	ajStrAppK(type, *cp++);
+    }
+
+    if(!ajStrMatchC(*type, "LIMITED") || ajStrMatchC(*type, "QLIMITED"))
+	return ajTrue;
+
+    while (isspace((ajint)*cp))
+	cp++;
+
+    while(*cp)
+    {
+	ajStrAppK(rest, *cp++);
+    }
+
+    return ajTrue;
+}
+
+
+/* @funcstatic featFeatType ***********************************************
+**
+** Process Efeatures file line
+**
+** Lines starting with text are new types
+** Lines starting with / or m/ are tags for the current type
+**
+** @param [r] line [const AjPStr] Tags file line
+** @param [w] type [AjPStr*] Feature type
+** @param [w] tag [AjPStr*] Tag name
+** @param [w] req [AjPStr*] Required (mandatory) code
+**                          M = mandatory, m = alternate mandatory
+** @return [AjBool] ajTrue if a match was found
+**                  ajFalse means an error occurred
+******************************************************************************/
+
+static AjBool featFeatType(AjPStr line, AjPStr* type, AjPStr* tag,
+			   AjPStr* req)
+{
+    const char* cp = ajStrStr(line);
+    const char* cq;
+    ajint i;
+    AjBool istag = ajFalse;
+
+    ajStrAssC(type, "");
+    ajStrAssC(tag, "");
+    ajStrAssC(req, "");
+
+    while (isspace((ajint)*cp))
+	cp++;
+
+    if(!*cp) return ajFalse;
+
+    if (*cp == '/')
+	istag = ajTrue;
+    else if (*cp == 'm' || *cp == 'M')
+    {
+	if(*(cp+1) == '/')
+	{
+	    istag = ajTrue;
+	    ajStrAppK(req, *cp++);
+	}
+    }
+    if(istag)
+    {
+	cp++;
+	cq = cp;
+	i = 0;
+	while(*cp && !isspace((ajint)*cp++))
+	{
+	    i++;
+	}
+	ajStrAssCI(tag, cq, i);
+	if(!ajStrLen(*tag)) return ajFalse;
+    }
+    else
+    {
+	cq = cp;
+	i = 0;
+	while(*cp && !isspace((ajint)*cp++))
+	{
+	    i++;
+	}
+	ajStrAssCI(type, cq, i);
+	if(!ajStrLen(*type)) return ajFalse;
+    }
+
+    return ajTrue;
+}
 
 
 /* @funcstatic featGffFromLine ************************************************
@@ -3794,55 +4442,7 @@ static AjBool featRegInitEmbl(void)
 
     /*ajDebug("Tables embl Type: %x Tags: %x\n",
 	    FeatTypeTableEmbl, FeatTagsTableEmbl);*/
-
-    /*
-     ** from FTv5.0 labels are no longer allowed in locations
-     ** not really a problem, as they were never used in the database!!! ... 
-     ** mainly because GenBank could not define constant /label names
-     ** although EMBL could
-     */
-
-    EmblRegexLoc  = ajRegCompC("^(.*)([.][.]|\\^)(.*)$"); /* start+end */
-
-    EmblRegexLocMulti  = ajRegCompC(",") ; /* multiple location */
-    EmblRegexLocNum    = ajRegCompC("^([<>]?)([0-9]+)$"); /* <n >n */
-    EmblRegexLocRange  = ajRegCompC("^[(]([0-9]+)[.]([0-9]+)[)]$"); /* (n.n) */
-
-    EmblRegexNew = ajRegCompC("^..   ([^ ]+) +([^/]*)(/.*)?"); 	/* start
-								   of
-								   new
-								   feature */
-    EmblRegexNext = ajRegCompC("^..    +([^/]*)(/.*)?");  /* continued
-							     feature */
-    /* oper()  internal but can be complement((a.b)..(c.d)) */
-    EmblRegexOperIn = ajRegCompC("^([a-zA-Z_]+)[(]("
-				 "([(][^)]+[)])?" /* possibly (a.b) */
-				 "[^()]+"
-				 "([(][^)]+[)])?" /* possibly (a.b) */
-				 ")[)],?");
-
-    /* simple location */
-    EmblRegexOperNone = ajRegCompC("^(([^:,]+):)?([^,]+),?");
-    /* oper() outside used if there is a ',' must end at final ')' */
-    /*EmblRegexOperOut = ajRegCompC("^([a-zA-Z_]+)[(]"
-				  "((?:[^()]+(?:[(][^()]+[)])?)+)[)]$");*/
-    EmblRegexOperOut = ajRegCompC("^([a-zA-Z_]+)[(]"
-				  "(.*)[)]$");
-    EmblRegexTv = ajRegCompC("^..    +( .*)") ;	/* start of new feature */
-    EmblRegexTvTag = ajRegCompC("^ */([^/= ]+)(=([^/ ]+))?"); /* tag=val */
-    EmblRegexTvRest = ajRegCompC("^ *([^ /][^/]*)");
-    /* spare text up to next tag */
  
-   /* quoted strings include the first quote, but not the last */
-    EmblRegexTvTagQuote = ajRegCompC("^ */([^/\"= ]+)=(\"[^\"]*\")");
- 
-    EmblRegexTvTagQuote2 = ajRegCompC("^(\"[^\"]*\")"); /* more string */
-    EmblRegexTvTagUnquote2 = ajRegCompC("^\" +(.*/[^/= ]+=\")"); /* or extra " before /qual=" */
-
-   /* Genbank uses (value, value) with a space but no quotes for cons_splice */
-    EmblRegexTvTagBrace = ajRegCompC("^ */([^/\"= ]+)="
-				     "(\\([^\\(\\)]*(\\([^\\)]*\\))?\\))");
-
     FeatInitEmbl = ajTrue;
 
     return ajTrue;
@@ -3984,20 +4584,6 @@ static AjBool featDelRegEmbl(void)
 {
     if (!FeatInitEmbl)
 	return ajTrue;
-
-    ajRegFree(&EmblRegexLoc);
-    ajRegFree(&EmblRegexLocMulti);
-    ajRegFree(&EmblRegexLocNum);
-    ajRegFree(&EmblRegexLocRange);
-    ajRegFree(&EmblRegexNew);
-    ajRegFree(&EmblRegexNext);
-    ajRegFree(&EmblRegexOperIn);
-    ajRegFree(&EmblRegexOperNone);
-    ajRegFree(&EmblRegexOperOut);
-    ajRegFree(&EmblRegexTv);
-    ajRegFree(&EmblRegexTvTag);
-    ajRegFree(&EmblRegexTvTagQuote);
-    ajRegFree(&EmblRegexTvTagQuote2);
 
     ajStrTableFree(&FeatTypeTableEmbl);
     ajStrTableFree(&FeatTagsTableEmbl);
@@ -4955,7 +5541,7 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
 	++i;
 	if(off)
 	{
-	    ajWarn("Too many joins");
+	    featWarn("Too many joins");
 	    return ajFalse;
 	}
 	len = ajStrLen(str);
@@ -4997,7 +5583,7 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
 	    ent = featLocToSeq(token,db,&begin,&end);
 	    if (!ent)
 	    {
-		ajWarn("Couldn't find embedded entry %S\n",token);
+		featWarn("Couldn't find embedded entry %S\n",token);
 		return ajFalse;
 	    }
 	    ajStrAssSubC(&tmp,ajSeqChar(ent),--begin,--end);
@@ -5013,7 +5599,7 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
 			end = begin;
 		    else
 		    {
-			ajWarn("LocToSeq: Unpaired range");
+			featWarn("LocToSeq: Unpaired range");
 			return ajFalse;
 		    }
 		}
@@ -5618,15 +6204,13 @@ static AjBool featVocabRead(const char* name,
     AjPStr TagsFName = NULL;
     AjPStr TypeFName = NULL;
 
-    static AjPRegexp ValExp   = NULL;
-    static AjPRegexp TagExp   = NULL;
-    static AjPRegexp VocabExp = NULL;
-    
     ajint numtype   = -1;
     ajint typecount = 0;
     ajint tagscount = 0;
     ajint linecount = 0;
     ajint i;
+
+    AjPStrTok split = NULL;
 
     char* TagType[] =
     {
@@ -5642,13 +6226,6 @@ static AjBool featVocabRead(const char* name,
 	"TAGVAL",		       /* /type=value for swissprot */
 	NULL
     };
-    
-    if(!ValExp)
-	ValExp = ajRegCompC("([^ \t]+) +([^ \t]+)") ;
-    if(!TagExp)
-	TagExp = ajRegCompC("(([mM])?/([^ \t]+))|([^/ \t]+)") ;
-    if(!VocabExp)
-	VocabExp = ajRegCompC("([^\", \t]+)") ;
     
     /* First read in the list of all possible tags */
     
@@ -5670,12 +6247,10 @@ static AjBool featVocabRead(const char* name,
 	ajStrClean(&line);
 	if(ajStrLen(line) && ajStrNCmpC(line,"#",1)) /* skip comments */
 	{
-	    if(ajRegExec(ValExp,line))
+	    tagname = NULL;		/* create a new tag */
+	    if(featTagName(line, &tagname, &tagtype, &tmpstr))
 	    {
 		numtype = -1;
-		tagname = NULL;		/* create a new tag */
-		ajRegSubI(ValExp, 1, &tagname) ;
-		ajRegSubI(ValExp, 2, &tagtype) ;
 		
 		for(i=0; TagType[i]; i++)
 		{
@@ -5718,15 +6293,13 @@ static AjBool featVocabRead(const char* name,
 		if(ajStrMatchCaseCC(TagType[numtype], "LIMITED") ||
 		   ajStrMatchCaseCC(TagType[numtype], "QLIMITED"))
 		{
-		    ajRegPost(ValExp,&tmpstr);
-		    
-		    while(ajRegExec(VocabExp, tmpstr))
+		    split = ajStrTokenInit(tmpstr, "\", \t");
+		    while(ajStrToken(&token, &split, NULL))
 		    {
-			ajRegSubI (VocabExp, 1, &token) ;
 			ajFmtPrintAppS(&tagstr, "%S;", token);
-			ajRegPost(VocabExp,&tmpstr);
 		    }
 		    ajStrDelReuse(&tmpstr);
+		    ajStrTokenClear(&split);
 		}
 		
 		if(ajTablePut (pTagsTable, tagname, tagstr))
@@ -5758,9 +6331,6 @@ static AjBool featVocabRead(const char* name,
     if(!TypeFile)
     {
 	ajErr("Unable to read data file '%S'\n", TagsFName);
-	ajRegFree(&ValExp);
-	ajRegFree(&TagExp);
-	ajRegFree(&VocabExp);
 	return ajFalse;
     }
     
@@ -5770,12 +6340,8 @@ static AjBool featVocabRead(const char* name,
 	ajStrClean(&line);
 	if(ajStrNCmpC(line,"#",1)) /* if a comment skip it */
 	{
-	    if(ajRegExec(TagExp,line))
+	    if(featFeatType(line, &type, &tag, &req))
 	    {
-		ajRegSubI(TagExp, 2, &req) ;    /* get the mandatory code */
-		ajRegSubI(TagExp, 3, &tag) ;    /* and get the tag ... */
-		ajRegSubI(TagExp, 4, &type) ;    /* ... or, get the type */
-		
 		if(ajStrLen(type))	/* new feature type */
 		{
 		    typecount++;
@@ -5810,8 +6376,10 @@ static AjBool featVocabRead(const char* name,
 		else			/* tag name */
 		{
 		    if(!ajTableGet(pTagsTable, tag))
-			ajWarn("%S: tag %S (feature %S) not in Etags file",
+		    {
+			featWarn("%S: tag %S (feature %S) not in Etags file",
 			       TypeFName, tag, savetype);
+		    }
 
 		    if(ajStrLen(req))
 			ajFmtPrintAppS(&typtagstr, "*");
@@ -6140,6 +6708,7 @@ AjBool ajFeatTagSet(AjPFeature thys, const AjPStr tag,const  AjPStr value)
 {
     AjBool ret     = ajTrue;
     FeatPTagval tv = NULL;
+    AjBool knowntag = ajTrue;
 
     static AjPStr oldvalue = NULL;
 
@@ -6157,12 +6726,12 @@ AjBool ajFeatTagSet(AjPFeature thys, const AjPStr tag,const  AjPStr value)
     
     if(thys->Protein)
     {
-	tmptag = featTableTag(tag, FeatTagsTableProtein);
+	tmptag = featTableTag(tag, FeatTagsTableProtein, &knowntag);
 	featTagFmt(tmptag,  FeatTagsTableProtein, &tmpfmt);
     }
     else
     {
-	tmptag = featTableTag(tag, FeatTagsTableDna);
+	tmptag = featTableTag(tag, FeatTagsTableDna, &knowntag);
 	featTagFmt(tmptag,  FeatTagsTableDna, &tmpfmt);
     }
     
@@ -6207,7 +6776,7 @@ AjBool ajFeatTagSet(AjPFeature thys, const AjPStr tag,const  AjPStr value)
 	/* ajDebug("case qword\n"); */
 	break;
     default:
-	ajWarn("Unknown internal feature tag type '%S' for '%S'",
+	featWarn("Unknown internal feature tag type '%S' for '%S'",
 	       tmpfmt, tmptag);
     }
     
@@ -6302,6 +6871,7 @@ AjBool ajFeatTagAdd(AjPFeature thys, const AjPStr tag, const AjPStr value)
     FeatPTagval tv = NULL;
     AjPStr tmptag  = NULL;		/* this comes from AjPTable */
                                        /* so please, please don't delete */
+    AjBool knowntag = ajTrue;
     static AjPStr tmpfmt = NULL;
     static AjPStr tmpval = NULL;
     static AjPStr outtag = NULL;
@@ -6314,12 +6884,12 @@ AjBool ajFeatTagAdd(AjPFeature thys, const AjPStr tag, const AjPStr value)
     
     if(thys->Protein)
     {
-	tmptag = featTableTag(tag, FeatTagsTableProtein);
+	tmptag = featTableTag(tag, FeatTagsTableProtein, &knowntag);
 	featTagFmt(tmptag,  FeatTagsTableProtein, &tmpfmt);
     }
     else
     {
-	tmptag = featTableTag(tag, FeatTagsTableDna);
+	tmptag = featTableTag(tag, FeatTagsTableDna, &knowntag);
 	featTagFmt(tmptag,  FeatTagsTableDna, &tmpfmt);
     }
     
@@ -6360,12 +6930,14 @@ AjBool ajFeatTagAdd(AjPFeature thys, const AjPStr tag, const AjPStr value)
 	break;
     case CASE2('Q','T') :		    /* escape quotes, wrap at space */
 	/* ajDebug("case qtext\n"); */
+	if(!knowntag && tag)
+	    ajFmtPrintS(&tmpval, "*%S: %S", tag, value);
 	break;
     case CASE2('Q','W') :		    /* escape quotes, remove space */
 	/* ajDebug("case qword\n"); */
 	break;
     default:
-	ajWarn("Unknown internal feature tag type '%S' for '%S'",
+	featWarn("Unknown internal feature tag type '%S' for '%S'",
 	       tmpfmt, tmptag);
     }
     
@@ -6922,12 +7494,13 @@ static FeatPTagval featTagvalNewDna(const AjPStr tag, const AjPStr value)
 {
     FeatPTagval ret;
     AjPStr tmptag = NULL;	     /* from AjPTable, don't delete */
+    AjBool knowntag = ajTrue;
 
     featInit();
 
     AJNEW0(ret);
 
-    tmptag = featTableTag(tag, FeatTagsTableDna);
+    tmptag = featTableTag(tag, FeatTagsTableDna, &knowntag);
 
     ajStrAssS(&ret->Tag, tmptag);
     ajStrAssS(&ret->Value, value);
@@ -6952,12 +7525,13 @@ static FeatPTagval featTagvalNewProt (const AjPStr tag, const AjPStr value)
 {
     FeatPTagval ret;
     AjPStr tmptag = NULL;	     /* from AjPTable, don't delete */
+    AjBool knowntag = ajTrue;
 
     featInit();
 
     AJNEW0(ret);
 
-    tmptag = featTableTag(tag, FeatTagsTableProtein);
+    tmptag = featTableTag(tag, FeatTagsTableProtein, &knowntag);
 
     ajStrAssS(&ret->Tag, tmptag);
     ajStrAssS(&ret->Value, value);
@@ -7305,11 +7879,11 @@ static AjPStr featTypeProt(const AjPStr type)
 ** @@
 ******************************************************************************/
 
-static AjPStr featTagDna(const AjPStr thys)
+static AjPStr featTagDna(const AjPStr thys, AjBool* knowntag)
 {
     featInit();
 
-    return featTableTag (thys, FeatTagsTableDna);
+    return featTableTag (thys, FeatTagsTableDna, knowntag);
 }
 
 
@@ -7325,11 +7899,11 @@ static AjPStr featTagDna(const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-static AjPStr featTagProt(const AjPStr thys)
+static AjPStr featTagProt(const AjPStr thys, AjBool* knowntag)
 {
     featInit();
 
-    return featTableTag (thys, FeatTagsTableProtein);
+    return featTableTag (thys, FeatTagsTableProtein, knowntag);
 }
 
 
@@ -7385,7 +7959,8 @@ static AjPStr featTableType(const AjPStr type, const AjPTable table)
 ** @@
 ******************************************************************************/
 
-static AjPStr featTableTag(const AjPStr tag, const AjPTable table)
+static AjPStr featTableTag(const AjPStr tag, const AjPTable table,
+			   AjBool* knowntag)
 {
     static AjPStr ret     = NULL;
     static AjPStr emptytag = NULL;
@@ -7398,6 +7973,7 @@ static AjPStr featTableTag(const AjPStr tag, const AjPTable table)
 	ret = (AjPStr) ajTableKey (table, tag);
 	if(ret)
 	{
+	    *knowntag = ajTrue;
 	    /* ajDebug ("featTag '%S' found in internal table as '%S'\n",
 	       tag, ret); */
 
@@ -7405,6 +7981,7 @@ static AjPStr featTableTag(const AjPStr tag, const AjPTable table)
 	}
 	else
 	{
+	    *knowntag = ajFalse;
 	    ret = (AjPStr) ajTableGet (table, emptytag);
 	    /* ajDebug("featTag '%S' not in internal table %x,"
 	       " default to '%S'\n",
@@ -7414,6 +7991,7 @@ static AjPStr featTableTag(const AjPStr tag, const AjPTable table)
     }
     else
     {
+	*knowntag = ajFalse;
 	ret = (AjPStr) ajTableGet(table, emptytag);
 	/* ajDebug("featTag '%S' use default '%S'\n",
 	   tag, ret); */
@@ -7432,11 +8010,14 @@ static AjPStr featTableTag(const AjPStr tag, const AjPTable table)
 **
 ** @param [r]   tag  [const char*] Type name
 ** @param [r]   table [const AjPTable]  Feature table
+** @param [w] knowntag [AjBool*] ajTrue if the tag name is known
+**                               ajFalse if the default name was substituted
 ** @return [AjPStr] Valid feature tag name
 ** @@
 ******************************************************************************/
 
-static AjPStr featTableTagC (const char* tag, const AjPTable table)
+static AjPStr featTableTagC (const char* tag, const AjPTable table,
+			   AjBool* knowntag)
 {
     static AjPStr ret    = NULL;
     static AjPStr tmptag = NULL;
@@ -7446,6 +8027,7 @@ static AjPStr featTableTagC (const char* tag, const AjPTable table)
     ret = (AjPStr) ajTableKey(table, tmptag);
     if(ret)
     {
+	*knowntag = ajTrue;
 	/*
 	   ajDebug("featTag '%S' found in internal table as '%S'\n",
 	   tag, ret);
@@ -7454,11 +8036,12 @@ static AjPStr featTableTagC (const char* tag, const AjPTable table)
     }
     else
     {
+	*knowntag = ajFalse;
 	ret = (AjPStr) ajTableGet(table, ajStrNew());
 	/* ajDebug("featTag '%S' not in internal table %x, default to '%S'\n",
 	   tag, table, ret); */
 	/* ajStrTableTrace(table); */
-	ajWarn("Unrecognised feature tag '%s'", tag);
+	featWarn("Unrecognised feature tag '%s'", tag);
     }
 
     return ret;
@@ -7486,6 +8069,7 @@ static AjBool featTagSpecialAllAnticodon(const AjPStr val)
     static AjPStr begstr = NULL;
     static AjPStr endstr = NULL;
     static AjPStr aastr  = NULL;
+    AjBool saveit = ajFalse;
     AjBool ret = ajFalse;
 
     if(!exp)
@@ -7494,15 +8078,18 @@ static AjBool featTagSpecialAllAnticodon(const AjPStr val)
     if(ajRegExec(exp, val))
     {
 	ret = ajTrue;
-	ajRegSubI(exp, 1, &begstr);
-	ajRegSubI(exp, 2, &endstr);
-	ajRegSubI(exp, 3, &aastr);
+	if(saveit)
+	{
+	    ajRegSubI(exp, 1, &begstr);
+	    ajRegSubI(exp, 2, &endstr);
+	    ajRegSubI(exp, 3, &aastr);
+	}
     }
 
     if(!ret)
     {
 	/*ajDebug("bad /anticodon value '%S'\n", val);*/
-	ajWarn("bad /anticodon value '%S'",   val);
+	featWarn("bad /anticodon value '%S'",   val);
     }
 
     return ret;
@@ -7525,24 +8112,36 @@ static AjBool featTagSpecialAllAnticodon(const AjPStr val)
 
 static AjBool featTagSpecialAllCitation(const AjPStr val)
 {
-    static AjPRegexp exp = NULL;
-
     static AjPStr numstr = NULL;
+    const char* cp = ajStrStr(val);
+    const char* cq;
+    ajint i = 0;
+    AjBool saveit = ajFalse;
     AjBool ret = ajFalse;
 
-    if(!exp)
-	exp = ajRegCompC("^\\[([0-9]+)\\]$");
-
-    if(ajRegExec(exp, val))
+    if(*cp++ == '[')
     {
-	ret = ajTrue;
-	ajRegSubI(exp, 1, &numstr);
+	cq = cp;
+	while(*cp)
+	{
+	    if(!isdigit((ajint)*cp))
+	       break;
+	    i++;
+	    cp++;
+	}
+	if(saveit)
+	    ajStrAssCI(&numstr, cq,i);
+	if(*cp++ == ']')
+	    if(!*cp)
+		ret = ajTrue;
+	if(!i)
+	    ret = ajFalse;
     }
 
     if(!ret)
     {
 	/*ajDebug("bad /citation value '%S'\n", val);*/
-	ajWarn("bad /citation value '%S'",   val);
+	featWarn("bad /citation value '%S'",   val);
     }
 
     return ret;
@@ -7572,6 +8171,7 @@ static AjBool featTagSpecialAllCodon(AjPStr* pval)
 
     static AjPStr seqstr = NULL;
     static AjPStr aastr  = NULL;
+    AjBool saveit = ajFalse;
     AjBool ret = ajFalse;
 
     if(!exp)
@@ -7582,23 +8182,26 @@ static AjBool featTagSpecialAllCodon(AjPStr* pval)
     if(ajRegExec(exp, *pval))
     {
 	ret = ajTrue;
-	ajRegSubI(exp, 1, &seqstr);
-	ajRegSubI(exp, 2, &aastr);
+	if(saveit)
+	{
+	    ajRegSubI(exp, 1, &seqstr);
+	    ajRegSubI(exp, 2, &aastr);
+	}
     }
 
     else if(ajRegExec(badexp, *pval))
     {
 	ret = ajTrue;
-	ajRegSubI(badexp, 1, &seqstr);
+	ajRegSubI(badexp, 1, &seqstr);	/* needed for correction */
 	ajRegSubI(badexp, 2, &aastr);
 	ajFmtPrintS(pval, "(seq:\"%S\",aa:%S)",seqstr, aastr);
-	ajWarn("unquoted /codon value corrected to '%S'", *pval);
+	featWarn("unquoted /codon value corrected to '%S'", *pval);
     }
 
     if(!ret)
     {
 	/*ajDebug("bad /codon value '%S'\n", *pval);*/
-	ajWarn("bad /codon value '%S'",   *pval);
+	featWarn("bad /codon value '%S'",   *pval);
     }
 
     return ret;
@@ -7629,71 +8232,89 @@ static AjBool featTagSpecialAllConssplice(AjPStr* pval)
 
     static AjPStr begstr = NULL;
     static AjPStr endstr = NULL;
-    AjBool islower = ajFalse;
+    const char* cp;
+    const char* cq;
+    ajint i;
+    AjBool islow = ajFalse;
     AjBool ret = ajFalse;
 
     if(!exp)
 	exp = ajRegCompC("^[(]5'site:([A-Za-z]+),3'site:([A-Za-z]+)[)]$");
 
-    if(ajRegExec(exp, *pval))
+
+    if (ajStrPrefixC(*pval, "(5'site:") && ajStrChar(*pval,-1) == ')')
     {
-	ret = ajTrue;
-	ajRegSubI(exp, 1, &begstr);
-	ajRegSubI(exp, 2, &endstr);
-	switch (ajStrChar(begstr, 0))
+	cp = ajStrStr(*pval);
+	cp += 8;
+	cq = cp;
+	i=0;
+	while (*cp && (*cp != ','))
 	{
-	case 'y':
-	    islower = ajTrue;
-	case 'Y':
-	    if (!ajStrMatchCaseC(begstr, "yes")) ret = ajFalse;
-	    break;
-	case 'n':
-	    islower = ajTrue;
-	case 'N':
-	    if (!ajStrMatchCaseC(begstr, "no")) ret = ajFalse;
-	    break;
-	case 'a':
-	    islower = ajTrue;
-	case 'A':
-	    if (!ajStrMatchCaseC(begstr, "absent")) ret = ajFalse;
-	    break;
-	default:
-	    ret = ajFalse;
+	    if(islower((ajint)*cp++))
+		islow = ajTrue;
+	    i++;
 	}
-	switch (ajStrChar(endstr, 0))
+	ajStrAssCI(&begstr, cq, i);
+
+	if(ajStrPrefixCC(cp, ",3'site:"))
 	{
-	case 'y':
-	    islower = ajTrue;
-	case 'Y':
-	    if (!ajStrMatchCaseC(endstr, "yes")) ret = ajFalse;
-	    break;
-	case 'n':
-	    islower = ajTrue;
-	case 'N':
-	    if (!ajStrMatchCaseC(endstr, "no")) ret = ajFalse;
-	    break;
-	case 'a':
-	    islower = ajTrue;
-	case 'A':
-	    if (!ajStrMatchCaseC(endstr, "absent")) ret = ajFalse;
-	    break;
-	default:
-	    ret = ajFalse;
+	    cp += 8;
+	    cq = cp;
+	    i=0;
+	    while(*cp && (*cp != ')'))
+	    {
+		if(islower((ajint)*cp++))
+		    islow = ajTrue;
+		i++;
+	    }
+	    ajStrAssCI(&endstr, cq, i);
+
+	    if(*cp == ')' && !*(cp+1) &&
+	       ajStrLen(begstr) && ajStrLen(endstr))
+		ret = ajTrue;
+
+	    switch (ajStrChar(begstr, 0))
+	    {
+	    case 'Y':
+		if (!ajStrMatchCaseC(begstr, "yes")) ret = ajFalse;
+		break;
+	    case 'N':
+		if (!ajStrMatchCaseC(begstr, "no")) ret = ajFalse;
+		break;
+	    case 'A':
+		if (!ajStrMatchCaseC(begstr, "absent")) ret = ajFalse;
+		break;
+	    default:
+		ret = ajFalse;
+	    }
+	    switch (ajStrChar(endstr, 0))
+	    {
+	    case 'Y':
+		if (!ajStrMatchCaseC(endstr, "yes")) ret = ajFalse;
+		break;
+	    case 'N':
+		if (!ajStrMatchCaseC(endstr, "no")) ret = ajFalse;
+		break;
+	    case 'A':
+		if (!ajStrMatchCaseC(endstr, "absent")) ret = ajFalse;
+		break;
+	    default:
+		ret = ajFalse;
+	    }
 	}
     }
 
     if(!ret)
     {
 	/*ajDebug("bad /cons_splice value '%S'\n", *pval);*/
-	ajWarn("bad /cons_splice value '%S'",   *pval);
+	featWarn("bad /cons_splice value '%S'",   *pval);
+	ajUser("beg: '%S' end: '%S'", begstr, endstr);
     }
 
-    if (islower)
+    if (islow)
     {
-	ajStrToUpper(&begstr);
-	ajStrToUpper(&endstr);
 	ajFmtPrintS(pval, "(5'site:%S,3'site:%S)", begstr, endstr);
-	ajWarn("bad /cons_splice value corrected to '%S'", *pval);
+	featWarn("bad /cons_splice value corrected to '%S'", *pval);
     }
     return ret;
 }
@@ -7735,6 +8356,7 @@ static AjBool featTagSpecialAllRptunit(const AjPStr val)
     static AjPStr begstr = NULL;
     static AjPStr endstr = NULL;
     static AjPStr labstr = NULL;
+    AjBool saveit = ajFalse;
     AjBool ret = ajFalse;
 
     if(!exp)				/* base range */
@@ -7749,14 +8371,28 @@ static AjBool featTagSpecialAllRptunit(const AjPStr val)
     if(ajRegExec(exp, val))
     {
 	ret = ajTrue;
-	ajRegSubI(exp, 1, &begstr);
-	ajRegSubI(exp, 3, &endstr);
+	if(saveit)
+	{
+	    ajRegSubI(exp, 1, &begstr);
+	    ajRegSubI(exp, 3, &endstr);
+	}
     }
 
-    if(ajRegExec(labexp, val))
+    else if(ajRegExec(labexp, val))
     {
-	ajRegSubI(exp, 1, &labstr);
 	ret = ajTrue;
+	if(saveit)
+	    ajRegSubI(exp, 1, &labstr);
+    }
+
+    else if(ajRegExec(compexp, val))
+    {
+	ret = ajTrue;
+	if(saveit)
+	{
+	    ajRegSubI(exp, 3, &begstr);
+	    ajRegSubI(exp, 1, &endstr);
+	}
     }
 
     if(ajRegExec(compexp, val))
@@ -7771,16 +8407,17 @@ static AjBool featTagSpecialAllRptunit(const AjPStr val)
        /rpt_unit=(A)n
        */
 
-    if(ajRegExec(seqexp, val))
+    else if(ajRegExec(seqexp, val))
     {
-	ajRegSubI(exp, 1, &labstr);
 	ret = ajTrue;
+	if(saveit)
+	    ajRegSubI(exp, 1, &labstr);
     }
 
     if(!ret)
     {
 	/*ajDebug("bad /rpt_unit value '%S'\n", val);*/
-	ajWarn("bad /rpt_unit value '%S'",   val);
+	featWarn("bad /rpt_unit value '%S'",   val);
     }
 
     return ret;
@@ -7816,6 +8453,7 @@ static AjBool featTagSpecialAllTranslexcept(const AjPStr val)
     static AjPStr begstr = NULL;
     static AjPStr endstr = NULL;
     static AjPStr aastr  = NULL;
+    AjBool saveit = ajFalse;
     AjBool ret = ajFalse;
 
     if(!exp)
@@ -7832,16 +8470,22 @@ static AjBool featTagSpecialAllTranslexcept(const AjPStr val)
     if(ajRegExec(exp, val))
     {
 	ret = ajTrue;
-	ajRegSubI(exp, 1, &begstr);
-	ajRegSubI(exp, 2, &endstr);
-	ajRegSubI(exp, 3, &aastr);
+	if(saveit)
+	{
+	    ajRegSubI(exp, 1, &begstr);
+	    ajRegSubI(exp, 2, &endstr);
+	    ajRegSubI(exp, 3, &aastr);
+	}
     }
     else if(ajRegExec(compexp, val))
     {
 	ret = ajTrue;
-	ajRegSubI(compexp, 1, &begstr);
-	ajRegSubI(compexp, 2, &endstr);
-	ajRegSubI(compexp, 3, &aastr);
+	if(saveit)
+	{
+	    ajRegSubI(compexp, 1, &begstr);
+	    ajRegSubI(compexp, 2, &endstr);
+	    ajRegSubI(compexp, 3, &aastr);
+	}
     }
 
 /* Can have single base (or 2 base) positions where trailing As are
@@ -7850,20 +8494,26 @@ static AjBool featTagSpecialAllTranslexcept(const AjPStr val)
     else if(ajRegExec(badexp, val))
     {
 	ret = ajTrue;
-	ajRegSubI(badexp, 1, &begstr);
-	ajRegSubI(badexp, 2, &aastr);
+	if(saveit)
+	{
+	    ajRegSubI(badexp, 1, &begstr);
+	    ajRegSubI(badexp, 2, &aastr);
+	}
     }
     else if(ajRegExec(badcompexp, val))
     {
 	ret = ajTrue;
-	ajRegSubI(badcompexp, 1, &begstr);
-	ajRegSubI(badcompexp, 2, &aastr);
+	if(saveit)
+	{
+	    ajRegSubI(badcompexp, 1, &begstr);
+	    ajRegSubI(badcompexp, 2, &aastr);
+	}
     }
 
     if(!ret)
     {
 	/*ajDebug("bad /transl_except value '%S'\n", val);*/
-	ajWarn("bad /transl_except value '%S'",   val);
+	featWarn("bad /transl_except value '%S'",   val);
     }
 
     return ret;
@@ -7883,29 +8533,39 @@ static AjBool featTagSpecialAllTranslexcept(const AjPStr val)
 
 static AjBool featTagSpecialAllDbxref(const AjPStr val)
 {
-    static AjPRegexp exp = NULL;
-
     static AjPStr dbstr  = NULL;
     static AjPStr idstr  = NULL;
-    AjBool ret           = ajFalse;
+    const char* cp = NULL;
+    AjBool saveit = ajFalse;
+    AjBool ret           = ajTrue;
 
-    if(!exp)
-	exp = ajRegCompC("^([^:]+):(.+)$");
+    cp = ajStrStr(val);
+    if(saveit)
+	ajStrAssCL(&dbstr, "", ajStrLen(val));
 
-    /*  if(!exp)
-	exp = ajRegCompC("^\"([^:]+):(.+)\"$");*/
-
-    if(ajRegExec(exp, val))
+    while (*cp && (*cp != ':'))
     {
-	ret = ajTrue;
-	ajRegSubI(exp, 1, &dbstr);
-	ajRegSubI(exp, 2, &idstr);
+	if(saveit)
+	    ajStrAppK(&dbstr, *cp);
+	cp++;
     }
+
+    if (!*cp)
+	ret = ajFalse;
+    else
+    {
+	cp++;
+	if (!*cp)
+	    ret = ajFalse;
+    }
+
+    if(saveit)
+	ajStrAssC(&idstr, cp);
 
     if(!ret)
     {
 	/*ajDebug("bad /db_xref value '%S'\n", val);*/
-	ajWarn("bad /db_xref value '%S'",   val);
+	featWarn("bad /db_xref value '%S'",   val);
     }
 
     return ret;
@@ -7928,33 +8588,78 @@ static AjBool featTagSpecialAllDbxref(const AjPStr val)
 
 static AjBool featTagSpecialAllProteinid(const AjPStr val)
 {
-    static AjPRegexp exp   = NULL;
-
     static AjPStr idstr    = NULL;
     static AjPStr preidstr = NULL;
+    const char* cp = ajStrStr(val);
+    const char* cq;
+    ajint icp;
+    ajint i = 0;
+    ajint idot = 0;
+    AjBool saveit = ajFalse;
     AjBool ret = ajFalse;
 
-/* protein_id should be ABC123456.1
-   but can be ENSP01234567890 for an ENSEMBL ID
-*/
-
-    if(!exp)
-	exp = ajRegCompC("^(([A-Z0-9]+)[.]?[0-9]+)$");
-
-    /* if(!exp)
-       exp = ajRegCompC("^\"(([A-Z0-9]+)[.][0-9]+)\"$");*/
-
-    if(ajRegExec(exp, val))
+    if (ajStrPrefixC(val, "ENSP"))  /* older entries had ENSEMBL Protein IDs */
     {
-	ret = ajTrue;
-	ajRegSubI(exp, 1, &idstr);
-	ajRegSubI(exp, 2, &preidstr);
+	cp += 4;
+	while (*cp)
+	{
+	    if (!isdigit((ajint)*cp++))
+		break;
+	    i++;
+	}
+	if(!*cp && i > 5)		/* ENSP then all numbers */
+	    ret = ajTrue;
+
+	if(ret)
+	    featWarn("ENSEMBL /protein_id value '%S'",   val);
+	if(saveit)
+	{
+	    ajStrAssS(&preidstr, val);
+	    ajStrAssS(&idstr, val);
+	}
+    }
+    else
+    {
+	cp = ajStrStr(val);
+	cq = cp;
+	i=0;
+	while(*cp)
+	{
+	    i++;
+	    icp = *cp;
+	    if(i <= 3) {
+		if(!isalpha(icp) || !isupper(icp))
+		    break;
+	    }
+	    else if(*cp == '.')
+	    {
+		if(idot)		/* once only */
+		    break;
+		idot = i;
+		if(idot < 9)	/* at least ABC12345. */
+		    break;
+	    }
+	    else
+	    {
+		if(!isdigit(icp))
+		    break;
+	    }
+	    cp++;
+	}
+	if(saveit)
+	{
+	    ajStrAssCI(&preidstr, cq, idot-1);
+	    ajStrAssCI(&idstr, cq, i);
+	}
+
+	if(!*cp && idot && (i > idot))
+	    ret = ajTrue;
     }
 
     if(!ret)
     {
 	/*ajDebug("bad /protein_id value '%S'\n", val);*/
-	ajWarn("bad /protein_id value '%S'",   val);
+	featWarn("bad /protein_id value '%S'", val);
     }
 
     return ret;
@@ -8014,7 +8719,7 @@ static AjBool featTagSpecialAllReplace (AjPStr* pval)
     if(!ret)
     {
 	/*ajDebug("bad /replace value '%S'\n", tmpstr);*/
-	ajWarn("bad /replace value '%S'",   tmpstr);
+	featWarn("bad /replace value '%S'",   tmpstr);
     }
 
     return ret;
@@ -8039,26 +8744,39 @@ static AjBool featTagSpecialAllReplace (AjPStr* pval)
 
 static AjBool featTagSpecialAllTranslation(AjPStr* pval)
 {
-    static AjPRegexp exp = NULL;
-
     static AjPStr seqstr = NULL;
+    const char* cp;
+    ajint icp;
+    AjBool saveit = ajFalse;
     AjBool ret = ajFalse;
 
-    if(!exp)		/* yes, B does occur e.g. rat or rac codons */
-	exp = ajRegCompC("^([ABCDEFGHIKLMNPQRSTUVWYXZ]+)$");
-
     ajStrCleanWhite(pval);   /* remove wrapping spaces in long seq. */
+    cp = ajStrStr(*pval);
 
-    if(ajRegExec(exp, *pval))
+    if(saveit)
+	ajStrAssCL(&seqstr, "", ajStrLen(*pval));
+
+    while(*cp)
     {
-	ret = ajTrue;
-	ajRegSubI(exp, 1, &seqstr);
+	icp = *cp;
+	if(!isalpha(icp))
+	    break;
+	if(!isupper(icp))
+	    break;
+	if(strchr("JO",icp))
+	    break;
+	if(saveit)
+	    ajStrAppK(&seqstr, *cp);
+	cp++;
     }
+
+    if(!*cp)
+	ret = ajTrue;
 
     if(!ret)
     {
 	/*ajDebug("bad /translation value '%S'\n", *pval);*/
-	ajWarn("bad /translation value '%S'",   *pval);
+	featWarn("bad /translation value '%S'",   *pval);
     }
 
     return ret;
@@ -8084,6 +8802,7 @@ static AjBool featTagSpecialAllEstimatedlength(AjPStr* pval)
     static AjPRegexp exp   = NULL;
 
     static AjPStr numstr = NULL;
+    AjBool saveit = ajFalse;
     AjBool ret = ajFalse;
 
     if(!exp)
@@ -8092,13 +8811,14 @@ static AjBool featTagSpecialAllEstimatedlength(AjPStr* pval)
     if(ajRegExec(exp, *pval))
     {
 	ret = ajTrue;
-	ajRegSubI(exp, 1, &numstr);
+	if(saveit)
+	    ajRegSubI(exp, 1, &numstr);
     }
 
     if(!ret)
     {
 	/*ajDebug("bad /estimated_length value '%S'\n", *pval);*/
-	ajWarn("bad /estimated_length value '%S' corrected to 'unknown'",
+	featWarn("bad /estimated_length value '%S' corrected to 'unknown'",
 	       *pval);
 	ajStrAssC(pval, "unknown");
     }
@@ -8126,6 +8846,7 @@ static AjBool featTagSpecialAllCompare(const AjPStr val)
     static AjPRegexp exp   = NULL;
 
     static AjPStr numstr = NULL;
+    AjBool saveit = ajFalse;
     AjBool ret = ajFalse;
 
 /* value is a sequence version accnumber.number */
@@ -8135,13 +8856,14 @@ static AjBool featTagSpecialAllCompare(const AjPStr val)
     if(ajRegExec(exp, val))
     {
 	ret = ajTrue;
-	ajRegSubI(exp, 1, &numstr);
+	if(saveit)
+	    ajRegSubI(exp, 1, &numstr);
     }
 
     if(!ret)
     {
 	/*ajDebug("bad /cmopare value '%S'\n", val);*/
-	ajWarn("bad /compare value '%S'", val);
+	featWarn("bad /compare value '%S'", val);
     }
 
     return ret;
@@ -8153,7 +8875,9 @@ static AjBool featTagSpecialAllCompare(const AjPStr val)
 /* @funcstatic featTagQuoteEmbl ***********************************************
 **
 ** Internal quotes converted to two double quotes
-** for EMBL feature tag values
+** for EMBL feature tag values.
+**
+** Quotes added around the outside.
 **
 ** @param  [u] pval [AjPStr*] parameter value
 ** @return [void]
@@ -8162,30 +8886,32 @@ static AjBool featTagSpecialAllCompare(const AjPStr val)
 
 static void featTagQuoteEmbl(AjPStr* pval)
 {
-    static AjPRegexp quoteexp = NULL;
-    static AjPStr substr      = NULL;
-    static AjPStr valcopy     = NULL;
-    static AjPStr tmpstr      = NULL;
-
-    if(!quoteexp)
-	quoteexp = ajRegCompC("([^\"]*)\"");
+    AjPStr tmpstr = NULL;
+    const char* cp;
 
     /* ajDebug("featTagQuoteEmbl '%S'\n", *pval); */
 
-    ajStrAssS(&valcopy, *pval);
-    ajStrDelReuse(pval);
-    while(ajRegExec(quoteexp, valcopy))
+    if(ajStrFindK(*pval, '"') < 0)
     {
-	ajRegSubI(quoteexp, 1, &substr);
-	/* ajDebug("part '%S'\n", substr); */
-	ajStrApp(pval, substr);
-	ajStrAppC(pval, "\"\"");
-	ajRegPost(quoteexp, &tmpstr);
-	ajStrAssS (&valcopy, tmpstr);
+	ajStrQuote(pval);
     }
-    /* ajDebug("rest '%S'\n", valcopy); */
-    ajStrApp(pval, valcopy);
-    ajStrQuote(pval);
+    else /* double up internal quotes */
+    {
+	ajStrAssS(&tmpstr, *pval);
+	ajStrAssC(pval, "\"");
+
+	cp = ajStrStr(tmpstr);
+
+	while(*cp)
+	{
+	    if(*cp == '"')
+		ajStrAppK(pval, '"');
+	    ajStrAppK(pval, *cp++);
+	}
+	ajStrAppK(pval, '"');
+    }
+
+    ajStrDel(&tmpstr);
 
     return;
 }
@@ -8505,35 +9231,42 @@ static void featTagSwissWrapC(AjPStr *pval, ajint margin, const char* prefix,
 
 static AjBool featTagAllLimit(AjPStr* pval, const AjPStr values)
 {
-    static AjPRegexp limitexp = NULL;
-    static AjPStr limstr      = NULL;
-    static AjPStr valcopy     = NULL;
-    static AjPStr tmpstr      = NULL;
+    AjPStr limstr = NULL;
+    const char* cp = NULL;
+    const char* cq = NULL;
+    ajint i=0;
     AjBool ret = ajFalse;
-
-    if(!limitexp)
-	limitexp = ajRegCompC("([^,]+),?");
 
     /* ajDebug("featTagAllLimit '%S' '%S'\n", *pval, values); */
 
-    ajStrAssS(&valcopy, values);
+    ajStrAssCL(&limstr, "", 16);
+    cp = ajStrStr(values);
+    cq = cp;
 
-    while(ajRegExec(limitexp, valcopy))
+    while(*cp)
     {
-	ajRegSubI(limitexp, 1, &limstr);
-	/* ajDebug("test '%S'\n", limstr); */
-	if(ajStrMatchCase(*pval, limstr))
+	if(*cp == ',')
 	{
-	    if(!ajStrMatch(*pval, limstr))
+	    ajStrAssCI(&limstr, cq, i);
+	    if(ajStrMatchCase(*pval, limstr))
 	    {
-		ajStrAssS(pval, limstr);
+		if(!ajStrMatch(*pval, limstr))
+		{
+		    ajStrAssS(pval, limstr);
+		}
+		ret = ajTrue;
+		break;
 	    }
-	    ret = ajTrue;
-	    break;
+	    ajStrAssC(&limstr, "");
+	    cq = cp+1;
+	    i=0;
 	}
-	ajRegPost(limitexp, &tmpstr);
-	ajStrAssS(&valcopy, tmpstr);
+	else
+	    i++;
+	cp++;
     }
+
+    ajStrDel(&limstr);
 
     return ret;
 }
@@ -8639,7 +9372,7 @@ static AjBool featTagSpecial(AjPStr* pval, const AjPStr tag)
 	return featTagSpecialAllCompare(*pval);
 
     /*ajDebug("Unrecognised special EMBL feature tag '%S'\n", tag);*/
-    ajWarn("Unrecognised special EMBL feature tag '%S'",   tag);
+    featWarn("Unrecognised special EMBL feature tag '%S'",   tag);
 
     return ajFalse;
 }
@@ -8701,7 +9434,7 @@ static AjBool featTagGffSpecial(AjPStr* pval, const AjPStr tag)
 	return featTagSpecialAllCompare(*pval);
 
     /*ajDebug("Unrecognised special GFF feature tag '%S'\n", tag);*/
-    ajWarn("Unrecognised special GFF feature tag '%S'",   tag);
+    featWarn("Unrecognised special GFF feature tag '%S'",   tag);
 
     return ajFalse;
 }
@@ -8737,6 +9470,7 @@ static void featDumpEmbl(const AjPFeature feat, const AjPStr location,
     static AjPStr tmpval = NULL;
     static AjPStr tmplim = NULL;
     static AjPStr deftag = NULL;
+    AjBool knowntag = ajTrue;
     const char* cp;
     AjPStr wrapstr           = NULL;
     static AjPStr preftyploc = NULL;
@@ -8776,7 +9510,7 @@ static void featDumpEmbl(const AjPFeature feat, const AjPStr location,
     {
 	tv = ajListIterNext(iter);
 	++i;
-	tmptag = featTableTag(tv->Tag, FeatTagsTableEmbl);
+	tmptag = featTableTag(tv->Tag, FeatTagsTableEmbl, &knowntag);
 	featTagFmt(tmptag, FeatTagsTableEmbl, &tmpfmt);
 	/* ajDebug(" %3d  %S value: '%S'\n", i, tv->Tag, tv->Value); */
 	/* ajDebug(" %3d  %S format: '%S'\n", i, tmptag, tmpfmt); */
@@ -8806,7 +9540,7 @@ static void featDumpEmbl(const AjPFeature feat, const AjPStr location,
 		/* ajDebug ("case qspecial\n"); */
 		if(!featTagSpecial(&tmpval, tmptag))
 		{
-		    ajWarn("%S: Bad special tag value", Seqid);
+		    featWarn("%S: Bad special tag value", Seqid);
 		    featTagEmblDefault(&outstr, tmptag, &tmpval);
 		}
 		else
@@ -8819,7 +9553,7 @@ static void featDumpEmbl(const AjPFeature feat, const AjPStr location,
 		/* ajDebug("case special\n"); */
 		if(!featTagSpecial(&tmpval, tmptag))
 		{
-		    ajWarn("%S: Bad special tag value", Seqid);
+		    featWarn("%S: Bad special tag value", Seqid);
 		    featTagEmblDefault(&outstr, tmptag, &tmpval);
 		}
 		else
@@ -8846,7 +9580,7 @@ static void featDumpEmbl(const AjPFeature feat, const AjPStr location,
 		ajFmtPrintAppS(&outstr, "=%S\n", tmpval);
 		break;
 	    default:
-		ajWarn("Unknown EMBL feature tag type '%S' for '%S'",
+		featWarn("Unknown EMBL feature tag type '%S' for '%S'",
 		       tmpfmt, tmptag);
 	    }
 	}
@@ -8895,6 +9629,7 @@ static void featDumpPir(const AjPFeature thys, const AjPStr location,
     static AjPStr tmpval  = NULL;
     AjPStr outval         = NULL;
     FeatPTagval tv        = NULL;
+    AjBool knowntag = ajTrue;
     const char* cp;
     AjBool typmod;
     AjPFeature copy = NULL;
@@ -8923,7 +9658,7 @@ static void featDumpPir(const AjPFeature thys, const AjPStr location,
     while(ajListIterMore(iter))
     {
 	tv = ajListIterNext(iter);
-	outtag = featTableTag(tv->Tag, FeatTagsTablePir);
+	outtag = featTableTag(tv->Tag, FeatTagsTablePir, &knowntag);
 	featTagFmt(outtag, FeatTagsTablePir, &outfmt);
 	/*ajDebug("Tag '%S' => '%S' %S '%S'\n",
 		tv->Tag, outtag, outfmt, tv->Value);*/
@@ -8988,6 +9723,7 @@ static void featDumpSwiss(const AjPFeature thys, AjPFile file,
     AjPStr outval        = NULL;
     FeatPTagval tv       = NULL;
     ajint i =0;
+    AjBool knowntag = ajTrue;
     const char* cp;
     AjPStr wrapstr        = NULL;
     static AjPStr fromstr = NULL;
@@ -9030,7 +9766,7 @@ static void featDumpSwiss(const AjPFeature thys, AjPFile file,
     while(ajListIterMore(iter))
     {
 	tv = ajListIterNext(iter);
-	outtag = featTableTag(tv->Tag, FeatTagsTableSwiss);
+	outtag = featTableTag(tv->Tag, FeatTagsTableSwiss, &knowntag);
 	featTagFmt(outtag, FeatTagsTableSwiss, &outfmt);
 	/*ajDebug("Tag '%S' => '%S' %S '%S'\n",
 		tv->Tag, outtag, outfmt, tv->Value);*/
@@ -9071,7 +9807,7 @@ static void featDumpSwiss(const AjPFeature thys, AjPFile file,
 		ajFmtPrintAppS(&outstr, "(%S)", tmpval);
 		break;
 	    default:
-		ajWarn("Unknown SWISS feature tag type '%S' for '%S'",
+		featWarn("Unknown SWISS feature tag type '%S' for '%S'",
 		       outfmt, outtag);
 	    }
 	}
@@ -9126,6 +9862,7 @@ static void featDumpGff(const AjPFeature thys, const AjPFeattable owner,
     AjPStr outval        = NULL;
     FeatPTagval tv       = NULL;
     ajint i = 0;
+    AjBool knowntag = ajTrue;
     const char* cp;
     AjPStr flagdata      = NULL;
     
@@ -9210,7 +9947,7 @@ static void featDumpGff(const AjPFeature thys, const AjPFeattable owner,
     while(ajListIterMore(iter))
     {
 	tv     = ajListIterNext(iter);
-	outtag = featTableTag(tv->Tag, FeatTagsTableGff);
+	outtag = featTableTag(tv->Tag, FeatTagsTableGff, &knowntag);
 	featTagFmt(outtag, FeatTagsTableGff, &outfmt);
 	/*ajDebug("Tag '%S' => '%S' %S '%S'\n",
 		tv->Tag, outtag, outfmt, tv->Value);*/
@@ -9277,7 +10014,7 @@ static void featDumpGff(const AjPFeature thys, const AjPFeattable owner,
 		/*ajDebug("case void\n");*/
 		break;
 	    default:
-		ajWarn("Unknown GFF feature tag type '%S' for '%S'",
+		featWarn("Unknown GFF feature tag type '%S' for '%S'",
 		       outfmt, outtag);
 	    }
 	}
@@ -9374,22 +10111,26 @@ static AjBool featTypePirOut(AjPStr* type)
 static void featTagFmt(const AjPStr name, const AjPTable table,
 		       AjPStr* retstr)
 {
-    static AjPStr valtype   = NULL;
-    static AjPStr tagstr    = NULL;
-    static AjPRegexp ExpTag = NULL;
-
-    if(!ExpTag)
-	ExpTag = ajRegCompC("([^;]*);");
+    AjPStr tagstr    = NULL;
+    const char* cp;
+    const char* cq;
+    ajint i;
 
     tagstr = (AjPStr) ajTableGet(table, name);
 
-    ajRegExec(ExpTag, tagstr);
-    ajRegSubI(ExpTag, 1, &valtype);
+    cp = ajStrStr(tagstr);
+
+    ajStrAssC(retstr, "");
+
+    cq = cp;
+    i=0;
+    while(*cp && (*cp++ != ';'))
+	i++;
+
+    ajStrAssCI(retstr, cq, i);
 
     /* ajDebug("featTagFmt '%S' type '%S' (%S)\n",
-       name, valtype, tagstr); */
-
-    ajStrAssS(retstr, valtype);
+       name, *retstr, tagstr); */
 
     return;
 }
@@ -9411,22 +10152,19 @@ static void featTagFmt(const AjPStr name, const AjPTable table,
 static void featTagLimit(const AjPStr name, const AjPTable table,
 			 AjPStr* retstr)
 {
-    static AjPStr vallist   = NULL;
-    static AjPStr tagstr    = NULL;
-    static AjPRegexp ExpTag = NULL;
+    AjPStr tagstr;
+    const char* cp = NULL;
 
-    if(!ExpTag)
-	ExpTag = ajRegCompC("[^;]*;(.*)");
-
+    ajStrAssC(retstr, "");
     tagstr = (AjPStr) ajTableGet(table, name);
+    cp = ajStrStr(tagstr);
 
-    ajRegExec(ExpTag, tagstr);
-    ajRegSubI(ExpTag, 1, &vallist);
+    while (*cp && (*cp != ';'))
+	cp++;
+    if(!*cp)
+	return;
 
-    /* ajDebug("featTagLimit '%S' list '%S' (%S)\n",
-       name, vallist, tagstr); */
-
-    ajStrAssS(retstr, vallist);
+    ajStrAssC(retstr, cp);
 
     return;
 }
@@ -9491,12 +10229,13 @@ void ajFeatExit(void)
 
 void ajFeatUnused(void)
 {
+    AjBool knowntag = ajTrue;
     if(!DummyRegExec)
 	DummyRegExec = ajRegCompC(".*");
 
-    featTagDna(NULL);
-    featTagProt(NULL);
-    featTableTagC(NULL, NULL);
+    featTagDna(NULL, &knowntag);
+    featTagProt(NULL, &knowntag);
+    featTableTagC(NULL, NULL, &knowntag);
 }
 
 
@@ -9949,3 +10688,48 @@ AjBool ajFeatTrimOffRange(AjPFeature ft, ajint ioffset,
 
     return ok;
 }
+
+/* @funcstatic featWarn *******************************************************
+**
+** Formatted write as a warning message.
+**
+** @param [r] fmt [const char*] Format string
+** @param [v] [...] Format arguments.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void featWarn(const char* fmt, ...)
+{
+    va_list args;
+    AjPStr errstr = NULL;
+    AjPStr tmpstr = NULL;
+    static AjBool dowarn = AJTRUE;
+
+    if (!featWarnCount)
+    {
+	if(ajNamGetValueC("featwarn", &tmpstr))
+	{
+	    ajStrToBool(tmpstr, &dowarn);
+	}
+	ajStrDel(&tmpstr);
+    }
+
+    featWarnCount++;
+
+    if (!dowarn)
+	return;
+
+    va_start(args, fmt) ;
+    ajFmtVPrintS(&errstr, fmt, args);
+    va_end(args) ;
+
+    ajWarn("%S", errstr);
+    ajStrDel(&errstr);
+
+    return;
+}
+
+
+
+
