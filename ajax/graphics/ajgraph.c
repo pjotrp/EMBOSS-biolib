@@ -39,7 +39,8 @@ static char *colournum[] = { "BLACK", "RED", "YELLOW", "GREEN", "AQUAMARINE",
 		"PINK", "WHEAT", "GREY", "BROWN", "BLUE", "BLUEVIOLET",
 		"CYAN", "TURQUOISE", "MAGENTA", "SALMON", "WHITE"};
 
-struct graphSData {
+struct graphSData
+{
     AjPFile  File;
     AjPStr   FName;
     AjPStr   Ext;
@@ -124,12 +125,13 @@ static AjBool   GraphxyYtitlearg (char *name, va_list args);
 ** @@
 ******************************************************************************/
 
-typedef struct GraphSType {
-  char* Name;			/* Name recognized by AJAX calls */
-  char* Device;			/* PLPLOT name */
-  char* ext;			/* file extension */
-  void (*XYDisplay) (AjPGraph thys, AjBool closeit, char *ext);
-  void (*GOpen) (AjPGraph thys, char *ext);
+typedef struct GraphSType
+{
+    char* Name;			   /* Name recognized by AJAX calls */
+    char* Device;			/* PLPLOT name */
+    char* ext;				/* file extension */
+    void (*XYDisplay) (AjPGraph thys, AjBool closeit, char *ext);
+    void (*GOpen) (AjPGraph thys, char *ext);
 } GraphOType, *GraphPType;
 
 /* @funclist graphType ********************************************************
@@ -591,7 +593,6 @@ static void GraphArrayGapsI(ajint numofpoints, ajint *x, ajint *y)
 
 static void GraphFill(ajint numofpoints, float *x, float *y)
 {
-
     if (numofpoints)
 	ajDebug("=g= plfill ( %d, %.2f .. %.2f, %.2f .. %.2f) "
 		"[num x..x y..y]\n",
@@ -676,7 +677,8 @@ static void GraphClose(void)
 	ajStrDel(&tmpStr);
     }
 
-    if (graphData){
+    if (graphData)
+    {
 	ajListstrDel(&graphData->List);
 	ajFileClose(&graphData->File);
 	ajStrDel(&graphData->FName);
@@ -852,7 +854,6 @@ PLPLOT CALLS *END*
 
 void ajGraphOpenPlot(AjPGraph thys, ajint numofsets)
 {
-
     ajGraphSetDevice(thys);
     GraphSetNumSubPage(numofsets);
     ajGraphColourBack();
@@ -2653,7 +2654,6 @@ static void GraphxyDisplayToData (AjPGraph graphs, AjBool closeit, char *ext)
 	{
 	    (void) ajFmtPrintF(outf,"##Xtitle %S\n",graphs->xaxis);
 	    (void) ajFmtPrintF(outf,"##Ytitle %S\n",graphs->yaxis);
-
 	}
 	else
 	{
@@ -3158,7 +3158,6 @@ void ajGraphxyDel (AjPGraph mult)
 
 static void GraphxyInitData (AjPGraphData graph)
 {
-
     ajDebug("GraphInitData title: %x subtitle: %x xaxis: %x yaxis: %x\n",
 	    graph->title, graph->subtitle, graph->xaxis, graph->yaxis);
 
@@ -3382,9 +3381,7 @@ ajint ajGraphxyAddGraph(AjPGraph mult, AjPGraphData graphdata)
 
 	/* ajDebug("Trace data [%d]\n", mult->numofgraphs);
 	   ajGraphDataTrace (graphdata); */
-
     }
-  
     else
     {
 	/*
@@ -4062,7 +4059,6 @@ void ajGraphxyCheckMaxMin (AjPGraph graphs)
 	if(graphdata->minX == graphdata->maxX ||
 	   graphdata->minY == graphdata->maxY)
 	{
-
 	    graphdata->minX = graphdata->minY =  64000;
 	    graphdata->maxX = graphdata->maxY =  -64000;
 	    for( j = 0 ; j < graphdata->numofpoints; j++)
@@ -4175,8 +4171,7 @@ static void GraphxyGeneral (AjPGraph graphs, AjBool closeit)
 	    (void) ajGraphSetLineStyle(old2);
 	    (void) ajGraphSetFore(old);
 	}
-	GraphObjDraw(graphs);
-	
+	GraphObjDraw(graphs);	
     }
     else
     {
@@ -4215,8 +4210,7 @@ static void GraphxyGeneral (AjPGraph graphs, AjBool closeit)
 	    (void) ajGraphSetLineStyle(old2);
 	    (void) ajGraphSetFore(old);
 	    GraphDataObjDraw(g);
-	}
-	
+	}	
     }
     if(closeit)
 	GraphClose();
@@ -5271,7 +5265,6 @@ AjStatus ajGraphInitP (char *pgm, ajint argc, char *argv[], char *package)
 
 static void GraphRegister (void)
 {
-
     callRegister("ajGraphNew",(CallFunc)ajGraphNew);
     callRegister("ajGraphSet",(CallFunc)GraphSetarg);
     callRegister("ajGraphxySet",(CallFunc)GraphxySetarg);
@@ -5656,7 +5649,6 @@ static void GraphDrawTextOnCurve(PLFLT xcentre, PLFLT ycentre,
 	ajGraphDrawTextOnLine(xy1[0], xy1[1], xy2[0], xy2[1], &text[i], just);
 	AJFREE(xy1);
 	AJFREE(xy2);
-
     }
     AJFREE(text);
 }

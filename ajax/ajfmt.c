@@ -67,11 +67,12 @@
 ** @@
 ******************************************************************************/
 
-typedef struct FmtSBuf {
-  char* buf;			/* buffer to write */
-  char* bp;			/* next position in buffer */
-  ajint size;			/* size of buffer from malloc */
-  AjBool fixed;			/* if ajTrue, cannot reallocate */
+typedef struct FmtSBuf
+{
+    char* buf;				/* buffer to write */
+    char* bp;				/* next position in buffer */
+    ajint size;			      /* size of buffer from malloc */
+    AjBool fixed;		    /* if ajTrue, cannot reallocate */
 } FmtOBuf, *FmtPBuf;
 
 #define pad(n,c) do { ajint nn = (n); \
@@ -201,7 +202,6 @@ static AjBool c_notin(ajint c, char *list)
 static void cvt_s(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision)
 {
-
     char *str = va_arg(VA_V(ap), char *);
 
     if (str)
@@ -232,7 +232,6 @@ static void cvt_s(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 static void cvt_d(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision)
 {
-
     long val=0;
 #if defined(HAVE64)
     ajlong hval=0;
@@ -965,7 +964,6 @@ static ajint fmtAppend(ajint c, void* cl)
 void ajFmtPuts (const char* str, ajint len, int put(int c, void* cl), void* cl,
 		ajuint* flags, ajint width, ajint precision)
 {
-
     (void) assert(str);
     (void) assert(len >= 0);
     (void) assert(flags);
@@ -1534,7 +1532,6 @@ char* ajFmtVString(const char* fmt, va_list ap)
 void ajFmtVfmt (int put(int c, void* cl), void* cl, const char* fmt,
 		va_list ap)
 {
-
     (void) assert(put);
     (void) assert(fmt);
     (void) assert(cl);
@@ -1984,8 +1981,6 @@ static ajint ajFmtVscan(char *thys,const char *fmt,va_list ap)
 	 *  so just increment q
 	 */
 	++q;
-
-
     }
 
 

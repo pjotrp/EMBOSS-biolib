@@ -32,8 +32,9 @@
 #include <string.h>
 
 #ifndef HAVE_MEMMOVE
-static void* memmove (void *dst, const void* src, size_t len) {
-  return (void *)bcopy (src, dst, len);
+static void* memmove (void *dst, const void* src, size_t len)
+{
+    return (void *)bcopy (src, dst, len);
 }
 #endif
 
@@ -121,7 +122,6 @@ AjPChar ajChararrNewL(ajint size)
 
 void ajChararrDel(AjPChar *thys)
 {
-
     if(!thys || !*thys)
 	return;
 
@@ -221,12 +221,6 @@ char* ajChararrChararr(AjPChar thys)
 }
 
 
-
-
-
-
-
-
 /* @func ajIntNew *************************************************************
 **
 ** Default constructor for empty AJAX integer arrays.
@@ -246,7 +240,6 @@ AjPInt ajIntNew(void)
 
     return thys;
 }
-
 
 
 /* @func ajIntNewL ************************************************************
@@ -287,7 +280,6 @@ AjPInt ajIntNewL(ajint size)
 
 void ajIntDel(AjPInt *thys)
 {
-
     if(!thys || !*thys)
 	return;
 
@@ -605,7 +597,6 @@ AjPFloat ajFloatNewL(ajint size)
 
 void ajFloatDel(AjPFloat *thys)
 {
-
     if(!thys || !*thys)
 	return;
 
@@ -825,7 +816,6 @@ AjPDouble ajDoubleNewL(ajint size)
 
 void ajDoubleDel(AjPDouble *thys)
 {
-
     if(!thys || !*thys)
 	return;
 
@@ -1044,7 +1034,6 @@ AjPShort ajShortNewL(ajint size)
 
 void ajShortDel(AjPShort *thys)
 {
-
     if(!thys || !*thys)
 	return;
 
@@ -1263,7 +1252,6 @@ AjPLong ajLongNewL(ajint size)
 
 void ajLongDel(AjPLong *thys)
 {
-
     if(!thys || !*thys)
 	return;
 
@@ -1434,33 +1422,34 @@ ajlong ajLongLen(AjPLong thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajFloatParse (AjPStr str, AjPFloat* array) {
+AjBool ajFloatParse (AjPStr str, AjPFloat* array)
+{
+    static AjPRegexp numexp = NULL;
+    ajint i=0;
+    float t=0.0;
 
-  static AjPRegexp numexp = NULL;
-  ajint i=0;
-  float t=0.0;
+    static AjPStr tmpstr = NULL;
+    static AjPStr numstr = NULL;
 
-  static AjPStr tmpstr = NULL;
-  static AjPStr numstr = NULL;
+    if (!numexp)
+	numexp = ajRegCompC ("[+-]?[0-9.]+");
 
-  if (!numexp)
-    numexp = ajRegCompC ("[+-]?[0-9.]+");
+    ajStrAssS (&tmpstr, str);
 
-  ajStrAssS (&tmpstr, str);
+    while (ajRegExec (numexp, tmpstr))
+    {
+	if (i >(*array)->Len) return ajFalse;
+	ajRegSubI (numexp, 0, &numstr);
+	ajRegPost (numexp, &tmpstr);
+	ajDebug ("array [%d] '%S'\n", i, numstr);
+	ajStrToFloat (numstr, &t);
+	(void) ajFloatPut(array,i,t);
+	i++;
+    }
 
-  while (ajRegExec (numexp, tmpstr)) {
-    if (i >(*array)->Len) return ajFalse;
-    ajRegSubI (numexp, 0, &numstr);
-    ajRegPost (numexp, &tmpstr);
-    ajDebug ("array [%d] '%S'\n", i, numstr);
-    ajStrToFloat (numstr, &t);
-    (void) ajFloatPut(array,i,t);
-    i++;
-  }
+    if (i < (*array)->Len) return ajFalse;
 
-  if (i < (*array)->Len) return ajFalse;
-
-  return ajTrue;
+    return ajTrue;
 }
 
 /* @func ajFloatStr ***********************************************************
@@ -1474,16 +1463,17 @@ AjBool ajFloatParse (AjPStr str, AjPFloat* array) {
 ** @@
 ******************************************************************************/
 
-void ajFloatStr (AjPStr* str, AjPFloat array, ajint precision) {
+void ajFloatStr (AjPStr* str, AjPFloat array, ajint precision)
+{
+    ajint i;
 
-  ajint i;
-
-  for (i=0; i < array->Len; i++) {
-    if (i)
-      ajStrAppK (str, ' ');
-    ajFmtPrintAppS (str, "%.*f", precision, ajFloatGet(array,i));
-  }
-  return;
+    for (i=0; i < array->Len; i++)
+    {
+	if (i)
+	    ajStrAppK (str, ' ');
+	ajFmtPrintAppS (str, "%.*f", precision, ajFloatGet(array,i));
+    }
+    return;
 }
 
 /* @func ajFloatTrace *********************************************************
@@ -1497,17 +1487,18 @@ void ajFloatStr (AjPStr* str, AjPFloat array, ajint precision) {
 ** @@
 ******************************************************************************/
 
-void ajFloatTrace (AjPFloat array, ajint precision, char* text) {
+void ajFloatTrace (AjPFloat array, ajint precision, char* text)
+{
+    ajint i;
 
-  ajint i;
+    ajDebug ("%s\n", text);
+    for (i=0; i < array->Len; i++)
+    {
+	ajDebug ("%3d: %.*f\n", i, precision, ajFloatGet(array,i));
+    }
+    ajDebug ("\n");
 
-  ajDebug ("%s\n", text);
-  for (i=0; i < array->Len; i++) {
-      ajDebug ("%3d: %.*f\n", i, precision, ajFloatGet(array,i));
-  }
-  ajDebug ("\n");
-
-  return;
+    return;
 }
 
 
@@ -1566,8 +1557,8 @@ ajint ajArrCommaList(AjPStr s, AjPStr **a)
 ******************************************************************************/
 
 double* ajArrDoubleLine(AjPStr *line, const char *delim, ajint cols,
-			ajint startcol, ajint endcol) {
-
+			ajint startcol, ajint endcol)
+{
     AjPStrTok t=NULL;
     AjPStr tmp=NULL;
     static double *ret;
@@ -1615,8 +1606,8 @@ double* ajArrDoubleLine(AjPStr *line, const char *delim, ajint cols,
 ******************************************************************************/
 
 ajint* ajArrIntLine(AjPStr *line, const char *delim, ajint cols,
-		  ajint startcol, ajint endcol) {
-
+		  ajint startcol, ajint endcol)
+{
     AjPStrTok t=NULL;
     AjPStr tmp=NULL;
     static ajint *ret;
@@ -1663,8 +1654,8 @@ ajint* ajArrIntLine(AjPStr *line, const char *delim, ajint cols,
 ******************************************************************************/
 
 float* ajArrFloatLine(AjPStr *line, const char *delim, ajint cols,
-		      ajint startcol, ajint endcol) {
-
+		      ajint startcol, ajint endcol)
+{
     AjPStrTok t=NULL;
     AjPStr tmp=NULL;
     static float *ret;

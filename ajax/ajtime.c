@@ -14,17 +14,19 @@
 ** @@
 ******************************************************************************/
 
-typedef struct TimeSFormat {
-  char* Name;
-  char* Format;
+typedef struct TimeSFormat
+{
+    char* Name;
+    char* Format;
 } TimeOFormat, *TimePFormat;
 
-static TimeOFormat timeFormat[] = { /* formats for strftime */
-  {"GFF", "%Y-%m-%d"},
-  {"yyyy-mm-dd", "%Y-%m-%d"},
-  {"dd Mon yyyy", "%d %b %Y"},
-  {"log", "%a %b %d %H:%M:%S %Y"},
-  { NULL, NULL}
+static TimeOFormat timeFormat[] =  /* formats for strftime */
+{
+    {"GFF", "%Y-%m-%d"},
+    {"yyyy-mm-dd", "%Y-%m-%d"},
+    {"dd Mon yyyy", "%d %b %Y"},
+    {"log", "%a %b %d %H:%M:%S %Y"},
+    { NULL, NULL}
 };
 
 /* @func ajTimeToday **********************************************************
@@ -34,16 +36,16 @@ static TimeOFormat timeFormat[] = { /* formats for strftime */
 ** @exception  'Mem_Failed' from memory allocations
 ** @@
 ******************************************************************************/
-AjPTime ajTimeToday (void) {
+AjPTime ajTimeToday (void)
+{
+    static AjPTime thys = NULL;
+    const time_t tim = time(0);
 
-  static AjPTime thys = NULL;
-  const time_t tim = time(0);
+    if (!thys) AJNEW0(thys);
+    thys->time = localtime(&tim);
+    thys->format = NULL;
 
-  if (!thys) AJNEW0(thys);
-  thys->time = localtime(&tim);
-  thys->format = NULL;
-
-  return thys;
+    return thys;
 }
 
 /* @funcstatic TimeFormat *****************************************************
@@ -56,22 +58,24 @@ AjPTime ajTimeToday (void) {
 ******************************************************************************/
 static char* TimeFormat(char *timefmt)
 {
-  ajint i;
-  AjBool ok    = ajFalse;
-  char *format = NULL ;
+    ajint i;
+    AjBool ok    = ajFalse;
+    char *format = NULL ;
 
-  for (i=0; timeFormat[i].Name; i++) {
-    if (ajStrMatchCaseCC(timefmt, timeFormat[i].Name)) {
-      ok = ajTrue;
-      break;
+    for (i=0; timeFormat[i].Name; i++)
+    {
+	if (ajStrMatchCaseCC(timefmt, timeFormat[i].Name))
+	{
+	    ok = ajTrue;
+	    break;
+	}
     }
-  }
-  if (ok)
-    format = timeFormat[i].Format;
-  else
-    ajWarn ("Unknown date/time format %s", timefmt);
-
-  return format ;
+    if (ok)
+	format = timeFormat[i].Format;
+    else
+	ajWarn ("Unknown date/time format %s", timefmt);
+  
+    return format ;
 }
 
 /* @func ajTimeTodayF *********************************************************
@@ -86,17 +90,17 @@ static char* TimeFormat(char *timefmt)
 ** @@
 **
 ******************************************************************************/
-AjPTime ajTimeTodayF (char* timefmt) {
+AjPTime ajTimeTodayF (char* timefmt)
+{
+    static AjPTime thys = NULL;
+    const time_t tim = time(0);
 
-  static AjPTime thys = NULL;
-  const time_t tim = time(0);
+    if (!thys) AJNEW0(thys);
+    thys->time = localtime(&tim);
 
-  if (!thys) AJNEW0(thys);
-  thys->time = localtime(&tim);
+    thys->format = TimeFormat(timefmt) ;
 
-  thys->format = TimeFormat(timefmt) ;
-
-  return thys;
+    return thys;
 }
 
 /* @func ajTimeTrace **********************************************************
@@ -108,9 +112,10 @@ AjPTime ajTimeTodayF (char* timefmt) {
 ** @@
 ******************************************************************************/
 
-void ajTimeTrace (AjPTime thys) {
-  ajDebug ("Time value trace '%D'\n", thys);
-  ajDebug ("format: '%s'\n", thys->format);
+void ajTimeTrace (AjPTime thys) 
+{
+    ajDebug ("Time value trace '%D'\n", thys);
+    ajDebug ("format: '%s'\n", thys->format);
 }
 
 /* @func ajTimeSet ************************************************************
@@ -127,15 +132,16 @@ void ajTimeTrace (AjPTime thys) {
 ** @return [AjPTime] An AjPTime object
 ** @@
 ******************************************************************************/
-AjPTime ajTimeSet( char *timefmt, ajint mday, ajint mon, ajint year) {
-   AjPTime thys = ajTimeTodayF (timefmt) ;
+AjPTime ajTimeSet( char *timefmt, ajint mday, ajint mon, ajint year)
+{
+    AjPTime thys = ajTimeTodayF (timefmt) ;
 
-   thys->time->tm_mday  = mday ;
-   thys->time->tm_mon   = mon-1;
-   if (year > 1899) year = year-1900;
-   thys->time->tm_year  = year ;
+    thys->time->tm_mday  = mday ;
+    thys->time->tm_mon   = mon-1;
+    if (year > 1899) year = year-1900;
+    thys->time->tm_year  = year ;
 
-   (void) mktime (thys->time);
+    (void) mktime (thys->time);
 
-   return thys ;
+    return thys ;
 }

@@ -95,8 +95,7 @@ void ajHistDisplay (AjPHist hist)
     
     /* calculate max and min for each set */
     if(hist->numofsets != 1)
-    {
-	
+    {	
 	/* if NOT side by side max and min as the sets added together */
 	if(hist->displaytype == HIST_SIDEBYSIDE)
 	{
@@ -244,8 +243,7 @@ void ajHistDisplay (AjPHist hist)
 		    num = 0;
 		    tot = 0;
 		    start +=bin_range;
-		}
-		
+		}		
 	    }
 	}
     }
@@ -253,8 +251,7 @@ void ajHistDisplay (AjPHist hist)
     {
 	bar_width = bin_range;
 	for(i=0;i<hist->numofsets;i++)
-	{
-	    
+	{	    
 	    if (totals[i] <= 0.01)
 	    {			       /* apparently the ymin value */
 		if (totals[i] < 0.0)
@@ -295,8 +292,7 @@ void ajHistDisplay (AjPHist hist)
 		    num = 0;
 		    tot = 0;
 		    start +=bin_range;
-		}
-		
+		}		
 	    }
 	}
     }
@@ -453,7 +449,6 @@ AjPHist ajHistNew(ajint numofsets, ajint numofpoints)
 ******************************************************************************/
 AjPHist ajHistNewG (ajint numofsets, ajint numofpoints, AjPGraph graph)
 {
-
     AjPHist hist = ajHistNew (numofsets, numofpoints);
     hist->graph = graph;
     ajGraphSetDevice (graph);
@@ -474,7 +469,6 @@ AjPHist ajHistNewG (ajint numofsets, ajint numofpoints, AjPGraph graph)
 ******************************************************************************/
 void ajHistSetMultiTitle(AjPHist hist, ajint index, AjPStr title)
 {
-
     if(index >= hist->numofdatapoints || index < 0)
     {
 	ajErr("Histograms can only be allocated from 0 to %d. NOT %d",
@@ -563,7 +557,6 @@ void ajHistSetMultiXTitleC(AjPHist hist, ajint index, char *title)
 ******************************************************************************/
 void ajHistSetMultiYTitle(AjPHist hist, ajint index, AjPStr title)
 {
-
     if(index >= hist->numofdatapoints || index < 0)
     {
 	ajErr("Histograms can only be allocated from 0 to %d. NOT %d",
@@ -586,7 +579,6 @@ void ajHistSetMultiYTitle(AjPHist hist, ajint index, AjPStr title)
 ******************************************************************************/
 void ajHistSetMultiYTitleC(AjPHist hist, ajint index, char *title)
 {
-
     if(index >= hist->numofdatapoints || index < 0)
     {
 	ajErr("Histograms can only be allocated from 0 to %d. NOT %d",
@@ -609,7 +601,6 @@ void ajHistSetMultiYTitleC(AjPHist hist, ajint index, char *title)
 ******************************************************************************/
 void ajHistSetPtrToData(AjPHist hist, ajint index, PLFLT *data)
 {
-
     if(index >= hist->numofdatapoints || index < 0)
     {
 	ajErr("Histograms can only be allocated from 0 to %d. NOT %d",
@@ -724,7 +715,6 @@ void ajHistSetYAxisRightC(AjPHist hist, char* string)
 ******************************************************************************/
 void ajHistSetColour(AjPHist hist, ajint index, ajint colour)
 {
-
     if(index >= hist->numofdatapoints || index < 0)
     {
 	ajErr("Histograms can only be allocated from 0 to %d. NOT %d",
@@ -748,7 +738,6 @@ void ajHistSetColour(AjPHist hist, ajint index, ajint colour)
 ******************************************************************************/
 void ajHistSetPattern(AjPHist hist, ajint index, ajint style)
 {
-
     if(index >= hist->numofdatapoints || index < 0)
     {
 	ajErr("Histograms can only be allocated from 0 to %d. NOT %d",

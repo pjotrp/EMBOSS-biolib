@@ -276,7 +276,6 @@ void ajCodCalcGribskov(AjPCod *nrm, AjPStr s)
     {
 	p = ajCodTriplet(i);
 	(*nrm)->tcount[i] = ajCodRandom(NA,NC,NG,NT,len,p);
-
     }
 
 

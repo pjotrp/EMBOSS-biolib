@@ -37,39 +37,42 @@ static ajlong memZero = 0;
 ** @@
 ******************************************************************************/
 
-void* ajMemAlloc (ajlong nbytes, const char* file, ajint line) {
-  void *ptr;
+void* ajMemAlloc (ajlong nbytes, const char* file, ajint line)
+{
+    void *ptr;
 
-  if (nbytes <= 0) {
+    if (nbytes <= 0)
+    {
 #ifdef HAVE_JAVA
-      fprintf(stderr,"Attempt to allocate <=0 bytes");
-      exit(-1);
+	fprintf(stderr,"Attempt to allocate <=0 bytes");
+	exit(-1);
 #else
-      ajExceptRaise(&Mem_Badcount, file, line);
+	ajExceptRaise(&Mem_Badcount, file, line);
 #endif
-  }
+    }
 
-  ptr = malloc(nbytes);
+    ptr = malloc(nbytes);
 #ifdef HAVE_JAVA
-  if(ptr == NULL)
-  {
-      fprintf(stderr,"Memory allocation failed in ajMemAlloc");
-      exit(-1);
-  }
+    if(ptr == NULL)
+    {
+	fprintf(stderr,"Memory allocation failed in ajMemAlloc");
+	exit(-1);
+    }
 #else
-  if (ptr == NULL) {
-    if (file == NULL)
-      AJRAISE(Mem_Failed);
-    else
-      ajExceptRaise(&Mem_Failed, file, line);
-  }
+    if (ptr == NULL)
+    {
+	if (file == NULL)
+	    AJRAISE(Mem_Failed);
+	else
+	    ajExceptRaise(&Mem_Failed, file, line);
+    }
 #endif
 
-  memAlloc += nbytes;
-  memCount++;
-  memTotal++;
+    memAlloc += nbytes;
+    memCount++;
+    memTotal++;
 
-  return ptr;
+    return ptr;
 }
 
 /* @func ajMemCalloc **********************************************************
@@ -86,34 +89,35 @@ void* ajMemAlloc (ajlong nbytes, const char* file, ajint line) {
 ******************************************************************************/
 
 void* ajMemCalloc (ajlong count, ajlong nbytes,
-		   const char* file, ajint line) {
+		   const char* file, ajint line)
+{
+    void *ptr;
 
-  void *ptr;
+    assert(count > 0);
+    assert(nbytes > 0);
 
-  assert(count > 0);
-  assert(nbytes > 0);
-
-  ptr = calloc(count, nbytes);
+    ptr = calloc(count, nbytes);
 #ifdef HAVE_JAVA
-  if(ptr == NULL)
-  {
-      fprintf(stderr,"Memory allocation failed in ajMemCalloc");
-      exit(-1);
-  }
+    if(ptr == NULL)
+    {
+	fprintf(stderr,"Memory allocation failed in ajMemCalloc");
+	exit(-1);
+    }
 #else
-  if (ptr == NULL) {
-    if (file == NULL)
-      AJRAISE(Mem_Failed);
-    else
-      ajExceptRaise(&Mem_Failed, file, line);
-  }
+    if (ptr == NULL)
+    {
+	if (file == NULL)
+	    AJRAISE(Mem_Failed);
+	else
+	    ajExceptRaise(&Mem_Failed, file, line);
+    }
 #endif
 
-  memAlloc += (count*nbytes);
-  memCount++;
-  memTotal++;
+    memAlloc += (count*nbytes);
+    memCount++;
+    memTotal++;
 
-  return ptr;
+    return ptr;
 }
 
 /* @func ajMemCalloc0 *********************************************************
@@ -132,15 +136,16 @@ void* ajMemCalloc (ajlong count, ajlong nbytes,
 ******************************************************************************/
 
 void* ajMemCalloc0 (ajlong count, ajlong nbytes,
-		    const char* file, ajint line) {
-  void *ptr;
+		    const char* file, ajint line)
+{
+    void *ptr;
 
-  ptr = ajMemCalloc(count, nbytes, file, line);
-  (void) memset (ptr, 0, count*nbytes);
+    ptr = ajMemCalloc(count, nbytes, file, line);
+    (void) memset (ptr, 0, count*nbytes);
 
-  memZero += (count*nbytes);
+    memZero += (count*nbytes);
 
-  return ptr;
+    return ptr;
 }
 
 /* @func ajMemFree ************************************************************
@@ -155,14 +160,16 @@ void* ajMemCalloc0 (ajlong count, ajlong nbytes,
 ** @@
 ******************************************************************************/
 
-void ajMemFree (void* ptr, const char* file, ajint line) {
-  if (ptr) {
-    free(ptr);
-    memCount--;
-    memFree++;
-    ptr = NULL;
-  }
-  return;
+void ajMemFree (void* ptr, const char* file, ajint line)
+{
+    if (ptr)
+    {
+	free(ptr);
+	memCount--;
+	memFree++;
+	ptr = NULL;
+    }
+    return;
 }
 
 /* @func ajMemResize **********************************************************
@@ -182,36 +189,38 @@ void ajMemFree (void* ptr, const char* file, ajint line) {
 ******************************************************************************/
 
 void* ajMemResize (void* ptr, ajlong nbytes,
-		   const char* file, ajint line) {
+		   const char* file, ajint line)
+{
+    assert(nbytes > 0);
 
-  assert(nbytes > 0);
+    if (ptr == NULL)
+    {
+	ptr = ajMemAlloc(nbytes, file, line);
+	return ptr;
+    }
 
-  if (ptr == NULL) {
-    ptr = ajMemAlloc(nbytes, file, line);
-    return ptr;
-  }
-
-  ptr = realloc(ptr, nbytes);
+    ptr = realloc(ptr, nbytes);
 
 #ifdef HAVE_JAVA
-  if(ptr == NULL)
-  {
-      fprintf(stderr,"Memory allocation failed in ajMemResize");
-      exit(-1);
-  }
+    if(ptr == NULL)
+    {
+	fprintf(stderr,"Memory allocation failed in ajMemResize");
+	exit(-1);
+    }
 #else
-  if (ptr == NULL) {
-    if (file == NULL)
-      AJRAISE(Mem_Failed);
-    else
-      ajExceptRaise(&Mem_Failed, file, line);
-  }
+    if (ptr == NULL)
+    {
+	if (file == NULL)
+	    AJRAISE(Mem_Failed);
+	else
+	    ajExceptRaise(&Mem_Failed, file, line);
+    }
 #endif
-
-  memResize += nbytes;
-  memResizeCount++;
-
-  return ptr;
+  
+    memResize += nbytes;
+    memResizeCount++;
+  
+    return ptr;
 }
 
 /* @func ajMemArrB ************************************************************
@@ -224,8 +233,9 @@ void* ajMemResize (void* ptr, ajlong nbytes,
 ** @@
 ******************************************************************************/
 
-ajint* ajMemArrB (size_t size) {
-  return AJCALLOC (size, sizeof(AjBool));
+ajint* ajMemArrB (size_t size)
+{
+    return AJCALLOC (size, sizeof(AjBool));
 }
 
 /* @func ajMemArrI ************************************************************
@@ -238,8 +248,9 @@ ajint* ajMemArrB (size_t size) {
 ** @@
 ******************************************************************************/
 
-ajint* ajMemArrI (size_t size) {
-  return AJCALLOC (size, sizeof(ajint));
+ajint* ajMemArrI (size_t size)
+{
+    return AJCALLOC (size, sizeof(ajint));
 }
 
 /* @func ajMemArrF ************************************************************
@@ -252,8 +263,9 @@ ajint* ajMemArrI (size_t size) {
 ** @@
 ******************************************************************************/
 
-float* ajMemArrF (size_t size) {
-  return AJCALLOC (size, sizeof(float));
+float* ajMemArrF (size_t size)
+{
+    return AJCALLOC (size, sizeof(float));
 }
 
 /* @func ajMemStat ************************************************************
@@ -265,34 +277,36 @@ float* ajMemArrF (size_t size) {
 ** @@
 ******************************************************************************/
 
-void ajMemStat (char* title) {
+void ajMemStat (char* title)
+{
+    static ajlong statAlloc = 0;
+    static ajlong statCount = 0;
+    static ajlong statFree = 0;
+    static ajlong statResize = 0;
+    static ajlong statResizeCount = 0;
+    static ajlong statTotal = 0;
+    static ajlong statZero = 0;
 
-  static ajlong statAlloc = 0;
-  static ajlong statCount = 0;
-  static ajlong statFree = 0;
-  static ajlong statResize = 0;
-  static ajlong statResizeCount = 0;
-  static ajlong statTotal = 0;
-  static ajlong statZero = 0;
+    ajDebug ("Memory usage since last call %s:\n", title);
+    ajDebug ("Memory usage (bytes): %ld allocated, %ld reallocated "
+	     "%ld zeroed\n",
+	     memAlloc - statAlloc, memResize - statResize, memZero - statZero);
+    ajDebug ("Memory usage (number): %ld allocates, "
+	     "%ld frees, %ld resizes, %ld in use\n",
+	     memTotal - statTotal, memFree - statFree,
+	     memResizeCount - statResizeCount, memCount - statCount);
 
-  ajDebug ("Memory usage since last call %s:\n", title);
-  ajDebug ("Memory usage (bytes): %ld allocated, %ld reallocated %ld zeroed\n",
-	   memAlloc - statAlloc, memResize - statResize, memZero - statZero);
-  ajDebug ("Memory usage (number): %ld allocates, "
-	   "%ld frees, %ld resizes, %ld in use\n",
-	   memTotal - statTotal, memFree - statFree,
-	   memResizeCount - statResizeCount, memCount - statCount);
+    statAlloc = memAlloc;
+    statCount = memCount;
+    statFree = memFree;
+    statResize = memResize;
+    statResizeCount = memResizeCount;
+    statTotal = memTotal;
+    statZero = memZero;
 
-  statAlloc = memAlloc;
-  statCount = memCount;
-  statFree = memFree;
-  statResize = memResize;
-  statResizeCount = memResizeCount;
-  statTotal = memTotal;
-  statZero = memZero;
-
-  return;
+    return;
 }
+
 /* @func ajMemExit ************************************************************
 **
 ** Prints a summary of memory usage with debug calls
@@ -301,13 +315,14 @@ void ajMemStat (char* title) {
 ** @@
 ******************************************************************************/
 
-void ajMemExit (void) {
+void ajMemExit (void)
+{
+    ajDebug ("Memory usage (bytes): %ld allocated, %ld reallocated "
+	     "%ld zeroed\n",
+	     memAlloc, memResize, memZero);
+    ajDebug ("Memory usage (number): %ld allocates, "
+	     "%ld frees, %ld resizes, %ld in use\n",
+	     memTotal, memFree, memResizeCount, memCount);
 
-  ajDebug ("Memory usage (bytes): %ld allocated, %ld reallocated %ld zeroed\n",
-	   memAlloc, memResize, memZero);
-  ajDebug ("Memory usage (number): %ld allocates, "
-	   "%ld frees, %ld resizes, %ld in use\n",
-	   memTotal, memFree, memResizeCount, memCount);
-
-  return;
+    return;
 }
