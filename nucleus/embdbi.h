@@ -57,7 +57,7 @@ void      embDbiHeaderSize (AjPFile file, ajint filesize, ajint recordcnt);
 void      embDbiMaxlen (AjPStr* token, ajint* maxlen);
 void      embDbiMemEntry (AjPList idlist, AjPList* fieldList, ajint nfields,
 			  EmbPEntry entry, ajint ifile);
-void      embDbiMemWriteEntry (AjPFile entFile, ajint maxidlen,
+ajint     embDbiMemWriteEntry (AjPFile entFile, ajint maxidlen,
 			       AjPList idlist, void ***ids);
 ajint     embDbiMemWriteFields (AjPStr dbname, AjPStr release,
 				char date[4], AjPStr indexdir,

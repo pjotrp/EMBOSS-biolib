@@ -936,16 +936,17 @@ ajint embDbiSortWriteEntry (AjPFile entFile, ajint maxidlen,
 ** @param [r] maxidlen [ajint] Maximum entry id length
 ** @param [r] idlist [AjPList] List of entry IDs to be written
 ** @param [w] ids [void***] AjPStr* array of IDs from list
-** @return [void]
+** @return [ajint] Number of entries written (excluding duplicates)
 ******************************************************************************/
 
-void embDbiMemWriteEntry (AjPFile entFile, ajint maxidlen,
+ajint embDbiMemWriteEntry (AjPFile entFile, ajint maxidlen,
 			  AjPList idlist, void ***ids)
 {
     ajint idCount;
     ajint i;
     static AjPStr idstr=NULL;
     EmbPEntry entry;
+    ajint idcnt = 0;
 
     idCount = ajListToArray (idlist, ids);
     qsort (*ids, idCount, sizeof(void*), embDbiCmpId);
@@ -954,12 +955,18 @@ void embDbiMemWriteEntry (AjPFile entFile, ajint maxidlen,
     for (i = 0; i < idCount; i++)
     {
 	entry = (EmbPEntry)(*ids)[i];
+	if (ajStrMatchCaseC(idstr, entry->entry))
+	{
+	    ajErr ("Duplicate ID found: '%S'. ", idstr);
+	    continue;
+	}
 	ajStrAssC(&idstr, entry->entry);
 	embDbiWriteEntryRecord (entFile, maxidlen, idstr,
 				entry->rpos, entry->spos, entry->filenum);
+	idcnt++;
     }
 
-    return;
+    return idcnt;
 }
 
 /* @func embDbiSortWriteFields ************************************************
