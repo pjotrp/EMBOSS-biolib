@@ -212,7 +212,8 @@ static void alignWriteFasta (AjPAlign thys) {
 
   seqset = ajSeqsetNew();
   for (i=0; i< thys->Nseqs; i++) {
-    /* ajSeqGapStandard(alignSeq(thys, i, 0), '.'); */
+    /* gap whitespace and change gaps from '-' to '.'*/
+    ajSeqGapStandard(alignSeq(thys, i, 0), '.');
     ajSeqsetApp (seqset, alignSeq(thys, i, 0));
   }
 
