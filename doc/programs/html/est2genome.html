@@ -69,6 +69,65 @@ indicates, based on the splice site information, the gene's predicted
 direction of transcription. Optionally the full sequence alignment is
 printed as well (see the example).
 
+
+
+
+
+<H2>
+    Algorithm
+</H2>
+    
+<!--
+ Algorithms
+ Pseudocode/Vague description/Handwaving/web links to useful pages
+-->   
+
+
+The program uses a linear-space divide-and-conquer strategy (Myers and 
+Miller, 1988; Huang, 1994) to limit memory use:
+
+<p>
+
+1. A first pass Smith-Waterman local alignment scan is done to find the 
+start and end of the maximally scoring segments.
+
+<p>
+
+2. Subsequences corresponding to these segments are extracted
+
+<p>
+
+3a. If the product of the subsequences' lengths is less than a 
+user-defined threshold (i.e. they will fit in memory) the segments are 
+realigned using the Needleman-Wunsch global alignment algorithm, which 
+will give the same result as the Smith-Waterman since the subsequences 
+are guaranteed to align end-to-end.
+
+<p>
+
+3b. If the product of the lengths exceeds the threshold (a full 
+alignment will not fit in memory) the alignment is made recursively by 
+splitting the spliced (EST) sequence in half and finding the genome 
+sequence position which aligns with the mid-point. The process is 
+repeated until the product of gthe lengths is less than the threshold. 
+The divided sequences are aligned separately and then merged.
+
+<p>
+
+4. The genome sequence is searched against the forward and reverse 
+strands of the spliced (EST) sequence, assuming a forward gene splicing 
+direction (i.e. GT/AG consensus).
+
+<p>
+
+5. Then the best-scoring orientation is realigned assuming reverse 
+splicing (CT/AC consensus). The overall best alignment is reported.
+
+
+
+
+
+
 <H2>
     Usage
 </H2>
@@ -160,7 +219,7 @@ IT IS DONE FOR YOU.
    -width              integer    Alignment width
 
    General qualifiers:
-  -help                boolean    Report command line options. More
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
 
@@ -169,8 +228,8 @@ IT IS DONE FOR YOU.
 </td></tr></table>
 <P>
 
-<table border cellspacing=0 cellpadding=3 bgcolor="#f5f5ff">
-<tr bgcolor="#FFFFD0">
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Mandatory qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
@@ -197,7 +256,7 @@ IT IS DONE FOR YOU.
 <td><i>&lt;sequence&gt;</i>.est2genome</td>
 </tr>
 
-<tr bgcolor="#FFFFD0">
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Optional qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
@@ -245,7 +304,7 @@ IT IS DONE FOR YOU.
 <td>30</td>
 </tr>
 
-<tr bgcolor="#FFFFD0">
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Advanced qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
@@ -776,7 +835,25 @@ length so the program runs only about 1.5 times slower.
 </H2>
 
 
-Mott, R (19) CABIOS.
+1. Mott R. (1997) EST_GENOME: a program to align spliced DNA sequences to 
+unspliced genomic DNA.  Comput. Applic. 13:477-478
+
+<p>
+
+2. Huang X (1994) On global sequence alignment. Comput. Applic. Biosci. 
+10:227-235.
+
+<p>
+
+3. Myers, EW and Miller, W (1988) Optimal alignments in linear space. 
+Comput. Applic. Biosci. 4:11-17
+
+<p>
+
+4. Smith, TE and Waterman, MS (1981) Identification of common molecular 
+subseqeunces. J. Mol. Biol. 147:195-197
+
+
 
 <H2>
     Warnings
@@ -825,10 +902,12 @@ None.
 </H2>
 
 
-This application was modified for inclusion in EMBOSS by Peter Rice <a
-href="mailto:pmr@ebi.ac.uk">(pmr@ebi.ac.uk)</a> Informatics
-Division, The EBI, Wellcome Trust Genome Campus, Hinxton,
-Cambridge, CB10 1SA, UK.
+This application was modified for inclusion in EMBOSS by 
+Peter Rice (pmr&nbsp;&copy;&nbsp;ebi.ac.uk)
+<br>
+Informatics Division, European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+
+
 
 <p>
 The original program was est_genome, written by Richard Mott at the Sanger
@@ -842,33 +921,7 @@ ftp://ftp.sanger.ac.uk/pub/pmr/est_genome.4.tar.Z</a>
 
 <!--
 <p>
-<table border cellspacing=0 cellpadding=3 bgcolor="#FFFFCC">
-<tr><th>Date</th><th>Editor</th><th>Comment</th></tr>
-<tr><td>2000/09/19</td><td>ajb</td><td>ACD file: First ever bioperl cvs for emboss</td></tr>
-<tr><td>2000/09/19</td><td>ajb</td><td>ACD file: branches:  1.1.1;</td></tr>
-<tr><td>2000/09/19</td><td>ajb</td><td>Program: First ever bioperl cvs for emboss</td></tr>
-<tr><td>2000/09/19</td><td>ajb</td><td>Program: branches:  1.1.1;</td></tr>
-<tr><td>2000/10/01</td><td>ajb</td><td>Program: Memory leak fixes and friendly warnings</td></tr>
-<tr><td>2001/02/10</td><td>ajb</td><td>Program: ajint mods</td></tr>
-<tr><td>2001/04/27</td><td>rice</td><td>Program: estgenome using AjPSeq, removing redundant functions</td></tr>
-<tr><td>2001/05/10</td><td>gwilliam</td><td>ACD file: groups changed</td></tr>
-<tr><td>2001/06/05</td><td>rice</td><td>Program: missing @func headers</td></tr>
-<tr><td>2001/06/12</td><td>rice</td><td>Program: Bad comment - caused skip of memory resize</td></tr>
-<tr><td>2001/06/12</td><td>rice</td><td>Program: fix to bad comment fix</td></tr>
-<tr><td>2001/06/25</td><td>ajb</td><td>Program: function rename</td></tr>
-<tr><td>2001/10/29</td><td>ajb</td><td>ACD file: acdpretty version</td></tr>
-<tr><td>2002/01/10</td><td>rice</td><td>Program: do not ajSeqDel the ajSeqallNext temp seq</td></tr>
-<tr><td>2002/02/12</td><td>rice</td><td>Program: documentation additions/corrections</td></tr>
-<tr><td>2002/02/13</td><td>rice</td><td>ACD file: ACD section and endsection added by Thomas Laurent</td></tr>
-<tr><td>2002/02/20</td><td>timc</td><td>ACD file: gui/batch/cpu</td></tr>
-<tr><td>2002/03/06</td><td>rice</td><td>ACD file: outfile param not just required</td></tr>
-<tr><td>2002/03/07</td><td>rice</td><td>Program: cleanup comments (program description for example</td></tr>
-<tr><td>2002/03/15</td><td>rice</td><td>ACD file: help text for threshold</td></tr>
-<tr><td>2002/03/25</td><td>rice</td><td>Program: write output for mode=forward and mode=reverse</td></tr>
-<tr><td>2002/05/13</td><td>rice</td><td>Program: removed duplicate ajAcdGetInt call</td></tr>
-<tr><td>2002/08/22</td><td>rice</td><td>Program: cleanup spaces, long lines, and header comments</td></tr>
-</table>
-
+[an error occurred while processing this directive]
 -->
 
 <H2>
