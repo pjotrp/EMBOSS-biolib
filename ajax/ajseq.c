@@ -3725,7 +3725,7 @@ void ajSeqGapStandard (AjPSeq thys, char gapch) {
 
 ajint ajSeqFill (AjPSeq seq, ajint len)
 {
-    ajint ilen;
+    ajint ilen=0;
 
     ajDebug ("ajSeqFill (len: %d -> ilen:%d)\n", ajSeqLen(seq), ilen);
 
