@@ -147,6 +147,7 @@ void         ajSeqMod (AjPSeq thys);
 float        ajSeqMW (const AjPStr seq);
 char*        ajSeqName (const AjPSeq seq);
 AjPSeq       ajSeqNew (void);
+AjPSeq       ajSeqNewC (const char* seq, const char* name);
 AjPSeq       ajSeqNewL (size_t size);
 AjPSeq       ajSeqNewS (const AjPSeq seq);
 AjPSeq       ajSeqNewStr (const AjPStr seq);
