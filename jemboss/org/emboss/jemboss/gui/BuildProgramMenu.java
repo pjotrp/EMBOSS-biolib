@@ -33,6 +33,7 @@ import java.util.*;
 
 import org.emboss.jemboss.programs.*;        // running EMBOSS programs
 import org.emboss.jemboss.gui.startup.*;     // finds programs, groups, docs & db's
+import org.emboss.jemboss.soap.*;
 import org.emboss.jemboss.gui.form.*;        // program forms constructed from ACD
 import org.emboss.jemboss.soap.GetWossname;
 import uk.ac.mrc.hgmp.embreo.*;
@@ -80,14 +81,14 @@ public class BuildProgramMenu
 *  @param  String current working directory (local)
 *  @param  String location of the ACD directory
 *  @param  JFrame Jemboss frame
-*  @param  Splash splash frame
+*  @param  AuthPopup splash frame
 *
 */
   public BuildProgramMenu(final JPanel p1, final JPanel p2, 
            final JScrollPane scrollProgForm, final String embossBin,
            final String envp[], final EmbreoParams mysettings, 
            final boolean withSoap, final String cwd,
-           final String acdDirToParse, JFrame frame, final Splash splashing)
+           final String acdDirToParse, JFrame frame, final AuthPopup splashing)
   {
   
     f = frame;
@@ -111,7 +112,6 @@ public class BuildProgramMenu
         if(withSoap) 
         {
           splashing.doneSomething("Connecting with server");
-//        EmbreoAuthPrompt pfa = new EmbreoAuthPrompt(mysettings);
           GetWossname ewoss = new GetWossname(mysettings);
           woss = ewoss.getDBText();
           splashing.doneSomething("Found EMBOSS applications");
@@ -294,15 +294,6 @@ public class BuildProgramMenu
         p1.setVisible(false);
         p1.setVisible(true);
 
-// get database available
-//      if(withSoap)
-//      {
-//        EmbreoShowDB showdb = new EmbreoShowDB(mysettings);
-//        showdbOut = showdb.getDBText();
-//      }
-
-//      Database d = new Database(showdbOut);
-//      db = d.getDB();
 
       }
     };

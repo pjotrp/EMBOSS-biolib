@@ -35,8 +35,8 @@ import uk.ac.mrc.hgmp.embreo.*;
 import org.emboss.jemboss.parser.*;
 import org.emboss.jemboss.programs.*;
 import org.emboss.jemboss.*;
-
 import org.emboss.jemboss.gui.*;
+import org.emboss.jemboss.soap.*;
 import org.emboss.jemboss.gui.sequenceChooser.*;
 
 
@@ -421,20 +421,19 @@ public class BuildJembossForm implements ActionListener
 
           try
           {
-            EmbreoRun thisrun = new EmbreoRun(embossCommand,"",filesToMove,mysettings);
+            JembossRun thisrun = new JembossRun(embossCommand,"",filesToMove,mysettings);
             if (mysettings.getCurrentMode().equals("batch"))
             {
-              EmbreoResult er = new EmbreoResult((String)thisrun.get("jobid"));
+              JembossProcess er = new JembossProcess((String)thisrun.get("jobid"));
               Jemboss.resultsManager.addResult(er);
               Jemboss.resultsManager.updateStatus();
             }
             else
               new ShowResultSet(thisrun.hash());
           }
-          catch (EmbreoAuthException eae)
+          catch (JembossSoapException eae)
           {
-            new EmbreoAuthPopup(mysettings,f);
-            EmbreoAuthPrompt pfa = new EmbreoAuthPrompt(mysettings);
+            new AuthPopup(mysettings,f);
             f.setCursor(cdone);
           }
         }

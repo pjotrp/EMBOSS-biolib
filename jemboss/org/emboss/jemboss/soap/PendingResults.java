@@ -20,18 +20,276 @@ package org.emboss.jemboss.soap;
 
 import uk.ac.mrc.hgmp.embreo.*;
 import org.emboss.jemboss.gui.*;
+import org.emboss.jemboss.programs.*;
 
+import java.util.*;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import org.apache.soap.rpc.*;
 
-public class PendingResults extends EmbreoPendingResults
+public class PendingResults 
 {
 
-  EmbreoParams mysettings;
+  private int completed_jobs = 0;
+  private int running_jobs = 0;
+  private EmbreoParams mysettings;
+  private Vector pendingResults;
+  private String currentRes = null;
+  private JButton jobButton = null;
+  private JComboBox jobComboBox = null;
+  // cursors to show when we're at work
+  final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
+  final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
   public PendingResults(EmbreoParams mysettings)
   {
-    super(mysettings);
     this.mysettings = mysettings;
+    pendingResults = new Vector();
+  }
+
+  public int numCompleted() 
+  {
+    return completed_jobs;
+  }
+
+  public int numRunning() 
+  {
+    return running_jobs;
+  }
+
+  public void resetCount() 
+  {
+    completed_jobs = 0;
+    running_jobs = 0;
+    pendingResults.removeAllElements();
+  }
+
+  public void addResult(JembossProcess res) 
+  {
+    pendingResults.add(res);
+  }
+
+/**
+* Gives which of the available datasets is currently
+* being looked at by the gui
+*/
+  public String getCurrent() 
+  {
+    return(currentRes);
+  }
+
+/**
+*
+* Save the name of a dataset, marking it as the current dataset
+* @param s  The name of the dataset
+*
+*/
+  public void setCurrent(String s)
+  {
+    currentRes = s;
+  }
+
+  public void removeResult(JembossProcess res)
+  {
+    pendingResults.remove(res);
+  }
+
+  public Hashtable descriptionHash() 
+  {
+    Hashtable h = new Hashtable();
+    for (int i=0 ; i < pendingResults.size(); ++i) 
+    {
+      JembossProcess er = (JembossProcess)pendingResults.get(i);
+      String desc = er.getDescription();
+      if (desc == null) { desc = "";}
+      h.put(er.getJob(),desc);
+    }
+    return h;
+  }
+
+  public Hashtable statusHash() 
+  {
+    Hashtable h = new Hashtable();
+    for (int i=0 ; i < pendingResults.size(); ++i)
+    {
+      JembossProcess er = (JembossProcess)pendingResults.get(i);
+      h.put(er.getJob(),new Boolean(er.isCompleted()));
+    }
+    return h;
+  }
+
+  public void updateJobStats() 
+  {
+    int ic = 0;
+    int ir = 0;
+    for (int i=0 ; i < pendingResults.size(); ++i) 
+    {
+      JembossProcess er = (JembossProcess)pendingResults.get(i);
+      if(er.isCompleted())  
+        ++ic; 
+      if(er.isRunning())  
+        ++ir; 
+    }
+    completed_jobs = ic;
+    running_jobs = ir;
+  }
+
+  public String jobStatus() 
+  {
+    String sc =  new Integer(completed_jobs).toString();
+    String sr =  new Integer(running_jobs).toString();
+    String s;
+
+    if (completed_jobs == 0) 
+    {
+      if(running_jobs == 0) 
+        s = "Jobs: no pending jobs";
+      else 
+        s = "Jobs: " + sr + " running";
+    }
+    else
+    {
+      if (running_jobs == 0) 
+        s = "Jobs: " + sc + " completed";
+      else 
+        s = "Jobs: " + sc + " completed / " + sr + " running";
+    }
+    return s;
+  }
+
+/**
+*
+* Connect to the embreo server, and update the status of the jobs
+* in the list. If a statusPanel is active, updates the text on that.
+*
+*/
+  public void updateStatus() 
+  {
+    Vector params = new Vector();
+    Hashtable resToQuery = new Hashtable();
+
+    //initialize hash with project/jobid
+    for (int i=0 ; i < pendingResults.size(); ++i) 
+    {
+      JembossProcess er = (JembossProcess)pendingResults.get(i);
+      resToQuery.put(er.getJob(),er.getProject());
+    }
+
+    params.addElement(new Parameter("prog", String.class,
+                                    "", null));
+    params.addElement(new Parameter("options", String.class,
+                                    "", null));
+    params.addElement(new Parameter("queries", Hashtable.class,
+                                    resToQuery, null));
+    try 
+    {
+      PrivateRequest eq = new PrivateRequest(mysettings,
+                               "update_result_status", params);
+      // update the results
+      for(int i=0; i < pendingResults.size(); ++i) 
+      {
+        JembossProcess er = (JembossProcess)pendingResults.get(i);
+        String jobid = er.getJob();
+        String s = (String)eq.getVal(jobid);
+        if (mysettings.getDebug()) 
+          System.out.println("PendingResults: "+jobid+" : "+s);
+
+        if (s.equals("complete"))
+        {
+          er.complete();
+          String sd = (String)eq.getVal(jobid+"-description");
+          if (!sd.equals("")) 
+            er.setDescription(sd);
+        }
+      }
+      updateJobStats();
+      if (jobButton != null) 
+        jobButton.setText(jobStatus());
+      
+    } 
+    catch (JembossSoapException e)
+    {
+      //throw new EmbreoAuthException();
+    }
+
+  }
+
+
+/**
+*
+* Updates the mode on the combo box to reflect the current state
+*
+*/
+  public void updateMode() 
+  {
+    if (jobComboBox != null) {
+      jobComboBox.setSelectedItem(mysettings.getCurrentMode());
+    }
+  }
+
+/**
+*
+* Updates the mode on the combo box to reflect the
+* requested value
+*
+*/
+  public void updateMode(String s) 
+  {
+    mysettings.setCurrentMode(s);
+    if (jobComboBox != null) 
+      jobComboBox.setSelectedItem(mysettings.getCurrentMode());
+  }
+
+
+/**
+*
+* A panel with appropriate gadgets to show the status of any jobs
+* and to view them, and to set the mode.
+* @param f The parent frame, to which dialogs will be attached.
+*
+*/
+  public JPanel statusPanel(final JFrame f) 
+  {
+    if (mysettings.getDebug()) 
+      System.out.println("PendingResults: initialized panel with mode " 
+                        + mysettings.getCurrentMode());
+    
+    final JPanel jobPanel = new JPanel(new BorderLayout());
+//  JLabel jobLabel = new JLabel("Job Manager: ");
+    ClassLoader cl = this.getClass().getClassLoader();
+    ImageIcon jobIcon = new ImageIcon(cl.getResource("images/Job_manager_button.gif"));
+    JLabel jobLabel = new JLabel(jobIcon);
+    jobLabel.setToolTipText("Job Manager");
+
+    jobPanel.add(jobLabel,BorderLayout.WEST);
+    jobButton = new JButton("(No Current Jobs)");
+    jobButton.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        jobPanel.setCursor(cbusy);
+        showPendingResults(f);
+        jobPanel.setCursor(cdone);
+      }
+    });
+    jobPanel.add(jobButton,BorderLayout.CENTER);
+    jobComboBox = new JComboBox(mysettings.modeVector());
+
+    updateMode();
+    jobComboBox.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e) 
+      {
+        JComboBox cb = (JComboBox)e.getSource();
+        String modeName = (String)cb.getSelectedItem();
+        mysettings.setCurrentMode(modeName);
+        if (mysettings.getDebug()) 
+          System.out.println("PendingResults: set mode to " + modeName);
+      }
+    });
+    jobPanel.add(jobComboBox,BorderLayout.EAST);
+    return jobPanel;
   }
 
   public void showPendingResults(JFrame f) 
@@ -46,13 +304,11 @@ public class PendingResults extends EmbreoPendingResults
     {
       try
       {
-//	ResListView epv = new ResListView(mysettings, this);
         new ShowSavedResults(mysettings, this);
       } 
-      catch (EmbreoAuthException eae) 
+      catch (JembossSoapException eae) 
       {
-	EmbreoAuthPopup ep = new EmbreoAuthPopup(mysettings,f);
-	EmbreoAuthPrompt epp = new EmbreoAuthPrompt(mysettings);
+        new AuthPopup(mysettings,f);
       }
     }
   } 

@@ -42,7 +42,11 @@ import java.util.*;
 public class ShowResultSet
 {
 
-/**  @param the data to display */
+/**
+*  
+* @param the data to display
+*
+*/
   public ShowResultSet(Hashtable reslist)
   {
     JTabbedPane rtp = new JTabbedPane();

@@ -32,6 +32,8 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 
+import org.emboss.jemboss.programs.*;
+import org.emboss.jemboss.soap.*;
 import uk.ac.mrc.hgmp.embreo.*;
 
 /**
@@ -88,7 +90,7 @@ public class ShowSavedResults
 
     try
     {
-      final EmbreoResList reslist = new EmbreoResList(mysettings);
+      final ResultList reslist = new ResultList(mysettings);
 
       JMenu resFileMenu = new JMenu("File");
       resMenu.add(resFileMenu);
@@ -105,7 +107,7 @@ public class ShowSavedResults
           try
           {
             savedResFrame.setCursor(cbusy);
-            EmbreoResList newlist = new EmbreoResList(mysettings);
+            ResultList newlist = new ResultList(mysettings);
             savedResFrame.setCursor(cdone);
             if (newlist.getStatus().equals("0")) 
             {
@@ -123,10 +125,9 @@ public class ShowSavedResults
               EmbreoUtils.warningPopup(savedResFrame,newlist.getStatusMsg());
             }
           } 
-          catch (EmbreoAuthException eae) 
+          catch (JembossSoapException eae) 
           {
-            EmbreoAuthPopup ep = new EmbreoAuthPopup(mysettings,savedResFrame);
-            EmbreoAuthPrompt epp = new EmbreoAuthPrompt(mysettings);
+            new AuthPopup(mysettings,savedResFrame);
           }
         }
       });
@@ -187,15 +188,14 @@ public class ShowSavedResults
             try
             {
               savedResFrame.setCursor(cbusy);
-              EmbreoResList thisres = new EmbreoResList(mysettings, reslist.getCurrent(),
+              ResultList thisres = new ResultList(mysettings, reslist.getCurrent(),
                                                       "show_saved_results");
               new ShowResultSet(thisres.hash());
               savedResFrame.setCursor(cdone);
             } 
-            catch (EmbreoAuthException eae) 
+            catch (JembossSoapException eae) 
             {  
-              new EmbreoAuthPopup(mysettings,f);
-              EmbreoAuthPrompt pfa = new EmbreoAuthPrompt(mysettings);
+              new AuthPopup(mysettings,f);
             }
           }
         }
@@ -215,15 +215,14 @@ public class ShowSavedResults
 	    try 
 	    {
 	      savedResFrame.setCursor(cbusy);
-	      EmbreoResList thisres = new EmbreoResList(mysettings, reslist.getCurrent(), 
+	      ResultList thisres = new ResultList(mysettings, reslist.getCurrent(), 
                                                        "show_saved_results");
               new ShowResultSet(thisres.hash());
 	      savedResFrame.setCursor(cdone);
 	    } 
-            catch (EmbreoAuthException eae)
+            catch (JembossSoapException eae)
             {
-              new EmbreoAuthPopup(mysettings,f);
-              EmbreoAuthPrompt pfa = new EmbreoAuthPrompt(mysettings);
+              new AuthPopup(mysettings,f);
 	    }
 	  } 
 	  else 
@@ -245,7 +244,7 @@ public class ShowSavedResults
             try        // ask the server to delete these results
 	    {
 	      savedResFrame.setCursor(cbusy);
-	      EmbreoResList thisres = new EmbreoResList(mysettings, reslist.getCurrent(), 
+	      ResultList thisres = new ResultList(mysettings, reslist.getCurrent(), 
                                                        "delete_saved_results");
 	      savedResFrame.setCursor(cdone);
 	       
@@ -261,10 +260,9 @@ public class ShowSavedResults
 	      datasets.remove(index);
 	      st.setSelectedIndex(-1);
 	    } 
-	    catch (EmbreoAuthException eae) 
+	    catch (JembossSoapException eae) 
 	    {
-              new EmbreoAuthPopup(mysettings,f);
-              EmbreoAuthPrompt pfa = new EmbreoAuthPrompt(mysettings);
+              new AuthPopup(mysettings,f);
 	    }
 	  } 
           else 
@@ -282,16 +280,10 @@ public class ShowSavedResults
       savedResFrame.pack();
       savedResFrame.setVisible(true);
     } 
-    catch (EmbreoAuthException eae) 
+    catch (JembossSoapException eae) 
     {
-      new EmbreoAuthPopup(mysettings,f);
-      EmbreoAuthPrompt pfa = new EmbreoAuthPrompt(mysettings);
+      new AuthPopup(mysettings,f);
     }
-//  catch (NullPointerException npe)
-//  {
-//    new EmbreoAuthPopup(mysettings,f);
-//    EmbreoAuthPrompt pfa = new EmbreoAuthPrompt(mysettings);
-//  }
 
   }
 
@@ -301,8 +293,8 @@ public class ShowSavedResults
 * Show the results sent to a batch queue.
 *
 */
-  public ShowSavedResults(final EmbreoParams mysettings, final EmbreoPendingResults epr)
-                                           throws EmbreoAuthException
+  public ShowSavedResults(final EmbreoParams mysettings, final PendingResults epr)
+                                           throws JembossSoapException
   {
 
     this("Current Sessions Results");
@@ -366,7 +358,7 @@ public class ShowSavedResults
 	if (theList.isSelectionEmpty()) 
         {
 	  if (mysettings.getDebug()) 
-	    System.out.println("EmbreoResListView: Empty selection");
+	    System.out.println("ResListView: Empty selection");
 	  
 	} 
         else
@@ -392,7 +384,7 @@ public class ShowSavedResults
 	  try
           {
 	    savedResFrame.setCursor(cbusy);
-	    EmbreoResList thisres = new EmbreoResList(mysettings, epr.getCurrent(), 
+	    ResultList thisres = new ResultList(mysettings, epr.getCurrent(), 
                                                      "show_saved_results");
 	    savedResFrame.setCursor(cdone);
 	    if (thisres.getStatus().equals("0")) 
@@ -401,17 +393,15 @@ public class ShowSavedResults
 	      EmbreoUtils.errorPopup(savedResFrame,thisres.getStatusMsg());
  
 	  } 
-          catch (EmbreoAuthException eae) 
+          catch (JembossSoapException eae) 
           {
-	    EmbreoAuthPopup ep = new EmbreoAuthPopup(mysettings,savedResFrame);
-	    EmbreoAuthPrompt epp = new EmbreoAuthPrompt(mysettings);
+	    new AuthPopup(mysettings,savedResFrame);
 	  }
 	}
       }
     });
     sp.add(st);
     
-    // action buttons
     // display retrieves all the files and shows them in a window
    
     JPanel resButtonPanel = new JPanel();
@@ -424,7 +414,7 @@ public class ShowSavedResults
 	  try
           {
 	    savedResFrame.setCursor(cbusy);
-	    EmbreoResList thisres = new EmbreoResList(mysettings, epr.getCurrent(), 
+	    ResultList thisres = new ResultList(mysettings, epr.getCurrent(), 
                                                       "show_saved_results");
 	    savedResFrame.setCursor(cdone);
 	    if (thisres.getStatus().equals("0")) 
@@ -433,18 +423,16 @@ public class ShowSavedResults
 	      EmbreoUtils.errorPopup(savedResFrame,thisres.getStatusMsg());
 	    
 	  } 
-          catch (EmbreoAuthException eae) 
+          catch (JembossSoapException eae) 
           {
             savedResFrame.setCursor(cdone);
-	    EmbreoAuthPopup ep = new EmbreoAuthPopup(mysettings,savedResFrame);
-	    EmbreoAuthPrompt epp = new EmbreoAuthPrompt(mysettings);
+	    new AuthPopup(mysettings,savedResFrame);
 	  }
 	}
       }
     });
     
-    // delete removes the file on the server
-    // and edits the list
+    // delete removes the file on the server and edits the list
    
     JButton delResButton = new JButton("Delete");
     delResButton.addActionListener(new ActionListener()
@@ -456,7 +444,7 @@ public class ShowSavedResults
 	  try 
           {
 	    savedResFrame.setCursor(cbusy);
-	    EmbreoResList thisres = new EmbreoResList(mysettings, epr.getCurrent(),
+	    ResultList thisres = new ResultList(mysettings, epr.getCurrent(),
                                                       "delete_saved_results");
 	    savedResFrame.setCursor(cdone);
 	    JOptionPane.showMessageDialog(savedResFrame,"Result set\n"
@@ -471,11 +459,10 @@ public class ShowSavedResults
 	    datasets.remove(index);
 	    st.setSelectedIndex(-1);
 	  }
-          catch (EmbreoAuthException eae)
+          catch (JembossSoapException eae)
           {
 	    // shouldn't happen
-	    EmbreoAuthPopup ep = new EmbreoAuthPopup(mysettings,savedResFrame);
-	    EmbreoAuthPrompt epp = new EmbreoAuthPrompt(mysettings);
+	    new AuthPopup(mysettings,savedResFrame);
 	  }
 	}
       }

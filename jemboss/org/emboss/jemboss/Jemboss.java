@@ -98,7 +98,7 @@ public class Jemboss implements ActionListener
     fwdArrow = new ImageIcon(cl.getResource("images/Forward_arrow_button.gif"));
     bwdArrow = new ImageIcon(cl.getResource("images/Backward_arrow_button.gif"));
 
-    Splash splashing=null;
+    AuthPopup splashing = null;
     if(!withSoap)
     {
       JembossParams jp = new JembossParams();
@@ -143,7 +143,8 @@ public class Jemboss implements ActionListener
     Dimension d = f.getToolkit().getScreenSize();
     if(withSoap)
     {
-      splashing = new Splash(mysettings,3);   //splash frame
+      splashing = new AuthPopup(mysettings,3);
+//    splashing = new Splash(mysettings,3);   //splash frame
       resultsManager = new PendingResults(mysettings);
       btmMenu.add(resultsManager.statusPanel(f));
     }

@@ -24,6 +24,7 @@ package org.emboss.jemboss.gui;
 
 
 import org.emboss.jemboss.*;
+import org.emboss.jemboss.soap.*;
 import uk.ac.mrc.hgmp.embreo.*;
 import uk.ac.mrc.hgmp.embreo.filemgr.*;
 
@@ -91,8 +92,7 @@ public class SetUpMenuBar
         catch (Exception expf) 
         {
           f.setCursor(cdone); 
-          EmbreoAuthPopup ep = new EmbreoAuthPopup(mysettings,f);
-          EmbreoAuthPrompt epp = new EmbreoAuthPrompt(mysettings);
+          new AuthPopup(mysettings,f);
         }
         f.setCursor(cdone);
       }
@@ -186,9 +186,25 @@ public class SetUpMenuBar
     helpMenuAbout.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
-      {
-        JOptionPane.showMessageDialog(f,"Developers Version, written" +
-                 " by Tim Carver and Peter Tribble at the HGMP-RC, UK");
+      { 
+        ClassLoader cl = this.getClass().getClassLoader();
+        String fc = "";
+        try
+        {
+          String line;
+
+          InputStream in = cl.getResourceAsStream("resources/version");
+          BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+          while((line = reader.readLine()) != null)
+            fc = fc.concat(line);
+        }
+        catch (Exception ex)
+        {
+          System.out.println("Didn't find resources/" +
+                             "version");
+        }
+        JOptionPane.showMessageDialog(f, fc +
+                  " by the EMBOSS team at the HGMP-RC (UK)");
       }
     });
     helpMenu.add(helpMenuAbout);
