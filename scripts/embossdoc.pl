@@ -49,6 +49,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
   $type = "";
   $acnt = 0;
   $rtype = "";
+  $ismacro = 0;
   @largs = ();
   while ($cc =~ m/@((\S+)([^@]+))/gos) {
     $data = $1;
@@ -70,6 +71,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
     }
 
     if ($token eq "func")  {
+      $ismacro = 0;
       $OFILE = HTML;
       if ($sect NE $lastfsect) {
         print $OFILE "<hr><h2><a name=\"$sect\">\n";
@@ -133,6 +135,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
     }
 
     if ($token eq "funcstatic")  {
+      $ismacro = 0;
       $OFILE = HTMLB;
       if ($sect NE $laststatfsect) {
         print $OFILE "<hr><h2><a name=\"$sect\">\n";
@@ -194,6 +197,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
     }
 
     if ($token eq "macro")  {
+      $ismacro = 1;
       $OFILE = HTML;
       if ($sect NE $lastfsect) {
         print $OFILE "<hr><h2><a name=\"$sect\">\n";
@@ -205,7 +209,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
       $type = $token; 
       ($name, $mrest) = ($data =~ /\S+\s+(\S+)\s*(.*)/gos);
       print "Macro $name\n";
-      print "args '$margs'\n";
+      ### print "args '$margs'\n";
       print $OFILE "<hr><h3><a name=\"$name\">\n";
       print $OFILE "Macro</a> ".srsref($name)."</h3>\n";
       $srest = $mrest;
@@ -253,10 +257,10 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	  $tcast = $curarg;
 	  if (!$var && $curarg eq "...") {$var = $tname = "vararg"}
       }
-      if ($cast ne $tcast) {
+      if (!$ismacro && ($cast ne $tcast)) {
 	print "bad cast <$cast> <$tcast>\n";
       }
-      if ($var ne $tname) {
+      if (!$ismacro && ($var ne $tname)) {
 	print "bad var <$var> <$tname>\n";
       }
       $acnt++;
@@ -284,7 +288,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	$intable = 1;
       }
       ($rtype, $rrest) = ($data =~ /\S+\s+\[([^\]]+)\]\s*(.*)/gos);
-      if ($rtype ne $ftype) {print "bad return type <$rtype> <$ftype>\n"}
+      if (!$ismacro && $rtype ne $ftype) {print "bad return type <$rtype> <$ftype>\n"}
       if (!$rrest && $rtype ne "void") {print "bad \@return [$rtype], no description\n"}
       $rrest =~ s/>/\&gt;/gos;
       $rrest =~ s/</\&lt;/gos;
