@@ -4,7 +4,7 @@ lib_LTLIBRARIES = libnucleus.la
 
 INCLUDES = -I$(top_srcdir)/plplot $(X_CFLAGS) -I$(srcdir)/ -I$(top_srcdir)/ajax
 
-
+LIBS =
 
 NUCLSRC =  embaln.c embcom.c embdata.c embest.c embexit.c \
 	   embgroup.c embiep.c \

@@ -43,10 +43,6 @@ vectorstrip \
 water wobble wordcount wordmatch \
 wossname
 
-
-
-#FLAGS=-lX11
-
 INCLUDES = -I$(top_srcdir)/nucleus -I$(top_srcdir)/ajax -I$(top_srcdir)/plplot
 
 abiview_SOURCES = abiview.c
@@ -213,6 +209,3 @@ if PURIFY
 else
 
 endif
-
-
-
