@@ -133,7 +133,7 @@ AjPFeature   ajFeatAdd (AjPFeattable thys, AjPStr type,
 AjPFeature   ajFeatAddC (AjPFeattable thys, char* type,
 		       ajint start, ajint end, float score,
 		       char strand, ajint frame, AjPStr desc);
-void         ajFileExit (void);
+void         ajFeatExit (void);
 AjPFeature   ajFeatNew (AjPFeattable thys,
 			     AjPStr       source, 
 			     AjPStr       type,
