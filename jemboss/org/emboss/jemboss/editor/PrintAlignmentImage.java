@@ -217,25 +217,54 @@ public class PrintAlignmentImage extends ScrollPanel
 
   /**
   *
-  * Print to a jpeg or png file
+  * Print to one jpeg or png file
+  *
+  */
+  public void print(String type,
+                    double leftMargin, double rightMargin,
+                    double topMargin, double btmMargin)
+  {
+    this.print(nResPerLine,type,filePrefix,
+               leftMargin,rightMargin,topMargin,btmMargin);
+  }
+
+
+  /**
+  *
+  * Print to one jpeg or png file
   *
   */
   public void print(int nResPerLine, String type,
-                    String filePrefix)
+                    String filePrefix,
+                    double leftMargin, double rightMargin,
+                    double topMargin, double btmMargin)
   {
     this.nResPerLine = nResPerLine;
     PrinterJob printerJob = PrinterJob.getPrinterJob();
     format = new PageFormat();
 
     Dimension d = gsc.getImageableSize(nResPerLine);
-    double width  = d.getWidth();
-    double height = d.getHeight();
+    double imageWidth  = d.getWidth();
+    double imageHeight = d.getHeight();
     Paper paper  = format.getPaper();
 
-    System.out.println("width "+width+"  height "+height);
-    paper.setSize(width,height);
-    paper.setImageableArea(0,0,
-                           width,height);
+    if(leftMargin > 0.d)
+    {
+      leftMargin  = leftMargin*72;
+      topMargin   = topMargin*72;
+      rightMargin = rightMargin*72;
+      btmMargin   = btmMargin*72;
+      paper.setSize(imageWidth+(leftMargin+rightMargin),
+                    imageHeight+(topMargin+btmMargin));
+    }
+    else
+    {
+      paper.setSize(imageWidth,imageHeight);
+      leftMargin = 0;
+      topMargin  = 0;
+    }
+    paper.setImageableArea(leftMargin,topMargin,
+                           imageWidth,imageHeight);
     format.setPaper(paper);
 
     try
@@ -258,7 +287,7 @@ public class PrintAlignmentImage extends ScrollPanel
   * @param showFileOptions	display file options
   *	
   */
-  private String showOptions(boolean showFileOptions)
+  protected String showOptions(boolean showFileOptions)
   {
     JPanel joptions = new JPanel();
     Box YBox = Box.createVerticalBox();
@@ -295,6 +324,8 @@ public class PrintAlignmentImage extends ScrollPanel
 
 // no. of residues per line
     XBox = Box.createHorizontalBox();
+    if(format == null)
+      format = new PageFormat();
     String mres = Integer.toString(gsc.getResiduesPerLine(format));
     JLabel jres = new JLabel("Residues per line: [max:"+mres+"]");
     if(nResPerLine != 0)
@@ -363,6 +394,94 @@ public class PrintAlignmentImage extends ScrollPanel
     return bufferedImage;
   }
 
+  /**
+  *
+  * Display a single page print preview page
+  *
+  */
+  protected void printSinglePagePreview()
+  {
+    Border loweredbevel = BorderFactory.createLoweredBevelBorder();
+    Border raisedbevel = BorderFactory.createRaisedBevelBorder();
+    Border compound = BorderFactory.createCompoundBorder(raisedbevel,loweredbevel);
+    statusField.setBorder(compound);
+    statusField.setEditable(false);
+                                 
+    format = new PageFormat();
+    Dimension d = gsc.getImageableSize(nResPerLine);
+    double imageWidth  = d.getWidth();
+    double imageHeight = d.getHeight();
+    Paper paper  = format.getPaper();
+                                                                                                                               
+//  if(leftMargin > 0.d)
+//  {
+//    leftMargin  = leftMargin*72;
+//    topMargin   = topMargin*72;
+//    rightMargin = rightMargin*72;
+//    btmMargin   = btmMargin*72;
+//    paper.setSize(imageWidth+(leftMargin+rightMargin),
+//                  imageHeight+(topMargin+btmMargin));
+//  }
+//  else
+//  {
+//    paper.setSize(imageWidth,imageHeight);
+//    leftMargin = 0;
+//    topMargin  = 0;
+//  }
+ 
+    paper.setSize(imageWidth,imageHeight);
+    paper.setImageableArea(0,0,imageWidth,imageHeight);
+    format.setPaper(paper);
+                                                                                              
+//  showOptions(false);
+    statusField.setText(pageIndex+"1 of 1 page(s)");
+    final JFrame f = new JFrame("Print Preview");
+    JPanel jpane = (JPanel)f.getContentPane();
+    JScrollPane scrollPane = new JScrollPane(this);
+    jpane.setLayout(new BorderLayout());
+    jpane.add(scrollPane,BorderLayout.CENTER);
+    jpane.add(statusField,BorderLayout.SOUTH);
+ 
+    final Dimension dScreen = f.getToolkit().getScreenSize();
+    d = new Dimension((int)format.getWidth(),(int)format.getHeight());
+    setPreferredSize(d);
+    d = new Dimension((int)(dScreen.getWidth()/2),
+                      (int)((dScreen.getHeight()*3)/4));
+    f.setSize(d);
+
+// menus
+    JMenuBar menuBar = new JMenuBar();
+    JMenu filemenu = new JMenu("File");
+    menuBar.add(filemenu);
+
+// print png/jpeg
+    JMenuItem printImage = new JMenuItem("Print Image File (png/jpeg)...");
+    printImage.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        print();
+      }
+    });
+    filemenu.add(printImage);
+                                                                                                                               
+// close
+    filemenu.add(new JSeparator());
+    JMenuItem menuClose = new JMenuItem("Close");
+    menuClose.setAccelerator(KeyStroke.getKeyStroke(
+              KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+                                                                                                                               
+    filemenu.add(menuClose);
+    menuClose.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        f.dispose();
+      }
+    });
+    f.setJMenuBar(menuBar);
+    f.setVisible(true);
+  }
 
   /**
   *
@@ -382,7 +501,7 @@ public class PrintAlignmentImage extends ScrollPanel
 
     showOptions(false);
     final int npages = gsc.getNumberPages(format,nResPerLine);
-    statusField.setText(pageIndex+1+" of "+npages+" pages");
+    statusField.setText(pageIndex+"1 of "+npages+" page(s)");
 
     final JFrame f = new JFrame("Print Preview");
     JPanel jpane = (JPanel)f.getContentPane();
@@ -391,16 +510,17 @@ public class PrintAlignmentImage extends ScrollPanel
     jpane.add(scrollPane,BorderLayout.CENTER);
     jpane.add(statusField,BorderLayout.SOUTH);
 
-    Dimension d = new Dimension((int)format.getWidth(),
-                                (int)format.getHeight());
+    final Dimension dScreen = f.getToolkit().getScreenSize();
+    Dimension d = new Dimension((int)format.getWidth(),(int)format.getHeight());
     setPreferredSize(d);
+    d = new Dimension((int)(dScreen.getWidth()/2),
+                      (int)((dScreen.getHeight()*3)/4));
     f.setSize(d);
 
     JMenuBar menuBar = new JMenuBar();
 
     JMenu filemenu = new JMenu("File");
     menuBar.add(filemenu);
-
 
 // print postscript
     JMenu printMenu = new JMenu("Print");
@@ -417,7 +537,7 @@ public class PrintAlignmentImage extends ScrollPanel
     printMenu.add(print);
 
 // print png/jpeg
-    JMenuItem printImage = new JMenuItem("Print png/jpeg Image...");
+    JMenuItem printImage = new JMenuItem("Print Image Files (png/jpeg)...");
     printImage.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)

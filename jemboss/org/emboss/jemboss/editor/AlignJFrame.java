@@ -223,7 +223,7 @@ public class AlignJFrame extends JFrame
     printMenu.add(print);
 
 //
-    JMenuItem printImage = new JMenuItem("Print png/jpeg Image...");
+    JMenuItem printImage = new JMenuItem("Print Image Files (png/jpeg)...");
     printImage.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -233,10 +233,24 @@ public class AlignJFrame extends JFrame
       }
     });
     printMenu.add(printImage);
-    
+ 
+    JMenuItem printOneImage = new JMenuItem("Print to Single Image File...");
+    printOneImage.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {   
+        PrintAlignmentImage pai = new PrintAlignmentImage(gsc);
+        String type = pai.showOptions(true);
+        pai.print(type,0.,0.,0.,0.);
+      }
+    });
+    printMenu.add(printOneImage);
 
 // print preview
-    JMenuItem printPreview = new JMenuItem("Print Preview...");
+    JMenu printPreviewMenu = new JMenu("Print Preview");
+    fileMenu.add(printPreviewMenu);
+
+    JMenuItem printPreview = new JMenuItem("Multiple Pages...");
     printPreview.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -245,8 +259,21 @@ public class AlignJFrame extends JFrame
         pai.printPreview();
       }
     });
-    fileMenu.add(printPreview);
+    printPreviewMenu.add(printPreview);
 
+    JMenuItem printSinglePreview = new JMenuItem("Single Page...");
+    printSinglePreview.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {  
+        PrintAlignmentImage pai = new PrintAlignmentImage(gsc);
+        String type = pai.showOptions(false);
+        pai.printSinglePagePreview();
+      }
+    });
+    printPreviewMenu.add(printSinglePreview);
+
+// close
     fileMenu.add(new JSeparator());
     if(!useExitMenu)
     {
@@ -1000,7 +1027,9 @@ public class AlignJFrame extends JFrame
               "-print     Print the alignment image. The following 2 flags can be\n"+
               "           used along with the print flag\n"+
               "           -prefix    prefix for image output file.\n"+
-              "           -onePage   fit the alignment to one page.\n"+
+              "           -onePage   fit the alignment to one page. This option must be\n"+
+              "                      be used with the -nres flag to define the residues\n"+
+              "                      per line.\n"+
               "           -type      png or jpeg (default is jpeg).\n"+
               "           -landscape Print as landscape (the default is portrait).\n"+
               "           -margin    Define the left, right, top and bottom margin\n"+
@@ -1204,7 +1233,8 @@ public class AlignJFrame extends JFrame
         if(onePage)
         {
           PrintAlignmentImage pai = new PrintAlignmentImage(gsc);
-          pai.print(nresiduesPerLine,type,prefix);
+          pai.print(nresiduesPerLine,type,prefix,                               
+                    lmargin,rmargin,tmargin,bmargin);
         }
         else
         {
