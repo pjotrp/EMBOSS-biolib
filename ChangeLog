@@ -1,4 +1,12 @@
 Version 2.7.0
+
+	Sirna now has the qualifier '-context' which writes the first
+	two bases (in brackets) of the 23 base target region.
+
+	Maskseq and maskfeat now both have the qualifier '-tolower'
+	which will change the masked regions to lower-case characters
+	instead of replacing them with a mask character. 
+
 	ACD parsing internals are rewritten to find and report errors more
 	cleanly and to make the syntax stricter for other ACD parsers used
 	by (for example) GUI developers.
@@ -8,7 +16,7 @@ Version 2.7.0
 	this is good enough as a default. For those which add gaps or
 	translate DNA to protein (or vice versa) a 'type:' attribute will
 	be needed. This is to improve support for automated workflow
-	building by more stringly typing input and output data.
+	building by more strongly typing input and output data.
 
 	acdpretty now wraps long lines of ACD definitions, splitting at
 	any lone backslash (which defines a newline for -help output) or
