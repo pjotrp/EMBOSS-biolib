@@ -30,7 +30,8 @@ pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd needle.acd \
 	primersearch.acd printsextract.acd profit.acd prophecy.acd \
 	prophet.acd prosextract.acd pscan.acd \
 	rebaseextract.acd recoder.acd redata.acd remap.acd \
-	restover.acd restrict.acd revseq.acd scope.acd seealso.acd \
+	restover.acd restrict.acd revseq.acd \
+	scopalign.acd scope.acd seealso.acd \
 	seqinfo.acd seqmatchall.acd seqret.acd seqretall.acd \
 	seqretallfeat.acd seqretset.acd \
 	seqretsplit.acd seqrettype.acd showalign.acd\
