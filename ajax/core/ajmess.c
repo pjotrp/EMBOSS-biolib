@@ -345,7 +345,7 @@ AjMessOutRoutine ajMessWarningReg (AjMessOutRoutine func) {
 /* @func ajMessBeep ***********************************************************
 **
 ** Calls the defined beep function, if any. Otherwise prints ASCII 7 to
-** standard output.
+** standard error.
 **
 ** @return [void]
 ** @@
@@ -355,8 +355,8 @@ void ajMessBeep (void) {
   if (beepRoutine)
     (*beepRoutine)() ;
   else {
-    (void) printf ("%c",0x07) ;  /* bell character, I hope */
-    (void) fflush (stderr) ;	/* added by fw 02.Feb 1994 */
+    (void) printf ("%c",0x07) ;
+    (void) fflush (stdout) ;
   }
 
   return;
@@ -365,7 +365,7 @@ void ajMessBeep (void) {
 /* @func ajMessOutLine ********************************************************
 **
 ** Formats a message. Calls the defined output function (if any).
-** Otherwise prints the message to standard output with an extra newline.
+** Otherwise prints the message to standard error with an extra newline.
 **
 ** @param [r] format [char*] Format string
 ** @param [v] [...] Variable length argument list
@@ -392,7 +392,7 @@ void ajMessOutLine (char *format,...) {
 /* @func ajMessOut ************************************************************
 **
 ** Formats a message. Calls the defined output function (if any).
-** Otherwise prints the message to standard output with no newline.
+** Otherwise prints the message to standard error with no newline.
 **
 ** @param [r] format [char*] Format string
 ** @param [v] [...] Variable length argument list
@@ -419,7 +419,7 @@ void ajMessOut (char *format,...) {
 /* @func ajMessVOut ***********************************************************
 **
 ** Formats a message. Calls the defined output function (if any).
-** Otherwise prints the message to standard output.
+** Otherwise prints the message to standard error.
 **
 ** @param [r] format [char*] Format string
 ** @param [v] args [va_list] Variable length argument list
