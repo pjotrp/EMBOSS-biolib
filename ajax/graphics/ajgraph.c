@@ -88,6 +88,7 @@ static void     GraphxyInitData (AjPGraphData graph);
 static AjPGraph GraphxyNewIarg (char *name, va_list args);
 static AjBool   GraphxySet2 (AjPGraph thys, AjPStr type,AjBool *res);
 static AjBool   GraphxySetarg (char *name, va_list args);
+static AjBool   GraphxySetDirarg (char *name, va_list args);
 static AjBool   GraphxySetOutarg (char *name, va_list args);
 static AjBool   GraphxySubtitlearg (char *name, va_list args);
 static AjBool   GraphxyTitlearg (char *name, va_list args);
@@ -2344,6 +2345,28 @@ void ajGraphxySetOutC (AjPGraph mult, char* txt) {
   return;
 }
 
+/* @func ajGraphxySetDir ******************************************************
+**
+** Set the directory of the output file. Only used later if the device
+** plotter is capable of postscript output. ps and cps.
+**
+** @param [w] mult [AjPGraph] Graph structure to write file name too.
+** @param [r] txt [AjPStr] Name of the file.
+** @return [void]
+** @@
+******************************************************************************/
+void ajGraphxySetDir (AjPGraph mult, AjPStr txt) {
+
+  if(!ajStrLen(txt))
+    return;
+
+  if (ajStrChar(txt, -1) != '/')
+  (void) ajStrInsertC(&mult->outputfile, 0, "/");
+  (void) ajStrInsert(&mult->outputfile, 0, txt);
+
+  return;
+}
+
 /* @func ajGraphxySetLineType *************************************************
 **
 ** Set the line type for this graph.
@@ -4453,6 +4476,30 @@ static AjBool GraphxyYtitlearg(char *name, va_list args){
   return retval;
 }
 
+/* @funcstatic GraphxySetDirarg ***********************************************
+**
+** Passes argument list to ajGraphxySetDir. Note that the callRegister
+** method prevents any prototype checking on the call.
+**
+** @param [r] name [char*] Function name, required by callRegister but ignored.
+** @param [r] args [va_list] Argument list, really must be (AjPGraph, AjPStr)
+** @return [AjBool] always ajTrue.
+** @@
+******************************************************************************/
+
+static AjBool GraphxySetDirarg(char *name, va_list args) {
+  AjPGraph temp = NULL;
+  AjPStr temp2 = NULL;
+  AjBool retval = AJTRUE;
+
+  temp = va_arg(args, AjPGraph);
+  temp2 = va_arg(args, AjPStr);
+
+  ajGraphxySetDir(temp,temp2);
+
+  return retval;
+}
+
 /* @funcstatic GraphxySetOutarg ***********************************************
 **
 ** Passes argument list to ajGraphxySetOut. Note that the callRegister
@@ -4601,6 +4648,7 @@ static void GraphRegister (void) {
   callRegister("ajGraphTrace",(CallFunc)GraphTracearg);
   callRegister("ajGraphxyNewI",(CallFunc)GraphxyNewIarg);
   callRegister("ajGraphxySetOutputFile",(CallFunc)GraphxySetOutarg);
+  callRegister("ajGraphxySetOutputDir",(CallFunc)GraphxySetDirarg);
 
   return;
 }
