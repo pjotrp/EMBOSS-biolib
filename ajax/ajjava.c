@@ -935,8 +935,13 @@ static AjBool java_pass(AjPStr username,AjPStr password,ajint *uid,
 
     ajStrAssC(home,pwd->pw_dir);
 
+#ifndef DEBIAN
     retval = pam_start("login",ajStrStr(username),
 		       (struct pam_conv*)&conv,&pamh);
+#else
+    retval = pam_start("ssh",ajStrStr(username),
+		       (struct pam_conv*)&conv,&pamh);
+#endif
 
     if (retval == PAM_SUCCESS)
 	retval= pam_authenticate(pamh,PAM_SILENT);
