@@ -45,7 +45,8 @@ import org.emboss.jemboss.JembossParams;
 *
 */
 public class DragTree extends JTree implements DragGestureListener,
-                 DragSourceListener, DropTargetListener, ActionListener 
+                 DragSourceListener, DropTargetListener, ActionListener,
+                 Autoscroll 
 {
 
   /** jemboss properties */
@@ -62,7 +63,10 @@ public class DragTree extends JTree implements DragGestureListener,
   private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   /** done cursor */
   private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
-
+  /** AutoScroll margin */
+  private static final int AUTOSCROLL_MARGIN = 45;
+  /** used by AutoScroll method */
+  private Insets autoscrollInsets = new Insets( 0, 0, 0, 0 );
 
   /**
   *
@@ -88,9 +92,8 @@ public class DragTree extends JTree implements DragGestureListener,
     setModel(model);
     createTreeModelListener();
 
-
     this.getSelectionModel().setSelectionMode
-                  (TreeSelectionModel.SINGLE_TREE_SELECTION);
+                  (TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
 
     // Popup menu
     addMouseListener(new PopupListener());
@@ -119,7 +122,10 @@ public class DragTree extends JTree implements DragGestureListener,
     menuItem = new JMenuItem("Delete...");
     menuItem.addActionListener(this);
     popup.add(menuItem);
-
+    popup.add(new JSeparator());
+    menuItem = new JMenuItem("De-select All");
+    menuItem.addActionListener(this);
+    popup.add(menuItem);
 
     //Listen for when a file is selected
     MouseListener mouseListener = new MouseAdapter() 
@@ -152,10 +158,7 @@ public class DragTree extends JTree implements DragGestureListener,
           if(!node.isExplored()) 
           {  
             f.setCursor(cbusy);
-            DefaultTreeModel model = (DefaultTreeModel)getModel();
-            node.explore();
-            openNode.add(node);
-            model.nodeStructureChanged(node);
+            exploreNode(node);
             f.setCursor(cdone);
           }
         }
@@ -163,6 +166,7 @@ public class DragTree extends JTree implements DragGestureListener,
     });
 
   }
+
 
   /**
   *
@@ -175,7 +179,6 @@ public class DragTree extends JTree implements DragGestureListener,
 
     JMenuItem source = (JMenuItem)(e.getSource());
     final FileNode node = getSelectedNode();
-
 
     if(source.getText().equals("Refresh")) 
     {
@@ -205,7 +208,7 @@ public class DragTree extends JTree implements DragGestureListener,
     else if(source.getText().equals("New Folder..."))
     {
       String path = null;
-      if(isFileSelection())
+      if(node.isLeaf())
         path = f.getParent();
       else
         path = f.getAbsolutePath();
@@ -235,26 +238,22 @@ public class DragTree extends JTree implements DragGestureListener,
     }
     else if(source.getText().equals("Delete..."))
     {
+      File fn[] = getSelectedFiles();
+      String names = "";
+      for(int i=0; i<fn.length;i++)
+         names = names.concat(fn[i].getAbsolutePath()+"\n");
       int n = JOptionPane.showConfirmDialog(null,
-                                 "Delete "+f.getAbsolutePath()+"?",
-                                 "Delete f.getAbsolutePath()",
+                                 "Delete \n"+names+"?",
+                                 "Delete Files",
                                  JOptionPane.YES_NO_OPTION);
+
+      FileNode nodes[] = getSelectedNodes();
       if(n == JOptionPane.YES_OPTION)
-      {
-        if(f.delete())
-        {
-          Runnable deleteFileFromTree = new Runnable()
-          {
-            public void run () { deleteObject(node); };
-          };
-          SwingUtilities.invokeLater(deleteFileFromTree);
-        }
-        else
-          JOptionPane.showMessageDialog(null,"Cannot delete\n"+
-                             f.getAbsolutePath(),"Warning",
-                             JOptionPane.ERROR_MESSAGE);
-      }
+        for(int i=0; i<nodes.length;i++)
+          deleteFile(nodes[i]);
     }
+    else if(source.getText().equals("De-select All"))
+      clearSelection();
     else if(isFileSelection() && source.getText().equals("Rename..."))
     {
       String inputValue = (String)JOptionPane.showInputDialog(null,
@@ -276,6 +275,31 @@ public class DragTree extends JTree implements DragGestureListener,
     }
   }
 
+
+  /**
+  *
+  * Delete a file from the tree
+  * @param node		node to delete
+  *
+  */
+  public void deleteFile(final FileNode node)
+  {
+    File f = node.getFile();
+    if(f.delete())
+    {
+      Runnable deleteFileFromTree = new Runnable()
+      {
+        public void run () { deleteObject(node); };
+      };
+      SwingUtilities.invokeLater(deleteFileFromTree);
+    }
+    else
+      JOptionPane.showMessageDialog(null,"Cannot delete\n"+
+                         f.getAbsolutePath(),"Warning",
+                         JOptionPane.ERROR_MESSAGE);
+  }
+ 
+ 
   /**
   *
   * Method to rename a file and update the filenode's.
@@ -306,15 +330,14 @@ public class DragTree extends JTree implements DragGestureListener,
         SwingUtilities.invokeLater(renameFileInTree);
       }
       else
-      {
         JOptionPane.showMessageDialog(null, 
                    "Cannot rename \n"+oldFile.getAbsolutePath()+
                    "\nto\n"+fnew.getAbsolutePath(), "Rename Error",
                    JOptionPane.ERROR_MESSAGE);
-      }
     }
     return;
   }
+
 
   /**
   * 
@@ -331,6 +354,7 @@ public class DragTree extends JTree implements DragGestureListener,
     setModel(model);
   }
 
+
   /**
   *
   * Refresh
@@ -344,6 +368,308 @@ public class DragTree extends JTree implements DragGestureListener,
     model.nodeStructureChanged(node);
   }
 
+
+  /**
+  *
+  * Get FileNode of selected node
+  * @return     node that is currently selected
+  *
+  */
+  public FileNode getSelectedNode()
+  {
+    TreePath path = getLeadSelectionPath();
+    if(path == null)
+      return null;
+    FileNode node = (FileNode)path.getLastPathComponent();
+    return node;
+  }
+
+
+  /**
+  *
+  * Get FileNodes of selected nodes
+  * @return     node that is currently selected
+  *
+  */
+  public FileNode[] getSelectedNodes()
+  {
+    TreePath path[] = getSelectionPaths();
+    if(path == null)
+      return null;
+
+    int numberSelected = path.length;
+    FileNode nodes[] = new FileNode[numberSelected];
+    for(int i=0;i<numberSelected;i++)
+       nodes[i] = (FileNode)path[i].getLastPathComponent();
+
+    return nodes;
+  }
+
+
+  /**
+  *
+  * Get selected files
+  * @return     node that is currently selected
+  *
+  */
+  public File[] getSelectedFiles()
+  {
+    FileNode[] fn = getSelectedNodes();
+    int numberSelected = fn.length;
+    File files[] = new File[numberSelected];
+    for(int i=0;i<numberSelected;i++)
+       files[i] = fn[i].getFile();
+
+    return files;
+  }
+
+
+  /**
+  *
+  * Return true if selected node is a file
+  * @return true is a file is selected, false if
+  *         a directory is selected
+  *
+  */
+  public boolean isFileSelection()
+  {
+    TreePath path = getLeadSelectionPath();
+    if(path == null)
+      return false;
+
+    FileNode node = (FileNode)path.getLastPathComponent();
+    return node.isLeaf();
+  }
+
+
+  /**
+  *
+  * Make the given directory the root and create a new
+  * DefaultTreeModel.
+  * @param root         root directory
+  * @param              tree model with the root node set
+  *                     to the given directory
+  *
+  */
+  private DefaultTreeModel createTreeModel(File root)
+  {
+    FileNode rootNode = new FileNode(root);
+    rootNode.explore();
+    openNode = new Vector();
+    openNode.add(rootNode);
+    return new DefaultTreeModel(rootNode);
+  }
+
+
+  /**
+  *
+  * Adding a file (or directory) to the file tree manager.
+  * This looks to see if the directory has already been opened
+  * and updates the filetree if it has.
+  * @param child        new child to add in
+  * @param path         path to where child is to be added
+  * @param node         node to add child to
+  *
+  */
+  public DefaultMutableTreeNode addObject(String child,
+                            String path, FileNode node)
+  {
+
+    DefaultTreeModel model = (DefaultTreeModel)getModel();
+    if(node == null)
+    {
+      node = getNode(path);
+      if(node==null)
+        return null;
+    }
+
+    FileNode parentNode = getNode(path);
+    File newleaf = new File(path + fs + child);
+    FileNode childNode = null;
+
+    if(parentNode.isExplored())
+    {
+      childNode = new FileNode(newleaf);
+      int index = getAnIndex(parentNode,child);
+      if(index > -1)
+        model.insertNodeInto(childNode, parentNode, index);
+    }
+    else if(parentNode.isDirectory())
+    {
+      exploreNode(parentNode);
+      childNode = getNode(path + fs + child);
+    }
+
+    // Make sure the user can see the new node.
+    this.scrollPathToVisible(new TreePath(childNode.getPath()));
+    return childNode;
+  }
+
+
+  /**
+  *
+  * Delete a node from the JTree
+  * @param node         node for deletion
+  *
+  */
+  public void deleteObject(FileNode node)
+  {
+    DefaultTreeModel model =(DefaultTreeModel)getModel();
+    FileNode parentNode = getNode(node.getFile().getParent());
+    model.removeNodeFromParent(node);
+  }
+
+
+  /**
+  *
+  * Explore a directory node
+  * @param dirNode      direcory node to display
+  *
+  */
+  public void exploreNode(FileNode dirNode)
+  {
+    DefaultTreeModel model = (DefaultTreeModel)getModel();
+    dirNode.explore();
+    openNode.add(dirNode);
+    model.nodeStructureChanged(dirNode);
+  }
+
+  /**
+  *
+  * Gets the node from the existing explored nodes and their
+  * children.
+  * @param path         path to a file or directory
+  * @return             corresponding node if the directory or
+  *                     file is visible otherwise returns null.
+  *
+  */
+  private FileNode getNode(String path)
+  {
+    Enumeration en = openNode.elements();
+
+    while(en.hasMoreElements())
+    {
+      FileNode node = (FileNode)en.nextElement();
+      String nodeName = node.getFile().getAbsolutePath();
+      if(nodeName.equals(path))
+        return node;
+    }
+
+// check children of explored nodes
+    en = openNode.elements();
+    while(en.hasMoreElements())
+    {
+      FileNode child = getChildNode((FileNode)en.nextElement(),path);
+      if(child != null)
+        return child;
+    }
+
+    return null;
+  }
+
+
+  /**
+  *
+  * Gets the child node of a parent node
+  * @param parent       parent node
+  * @param childName    name of child
+  * @return the child node
+  *
+  */
+  private FileNode getChildNode(FileNode parent, String childName)
+  {
+    for(Enumeration children = parent.children(); children.hasMoreElements() ;)
+    {
+      FileNode childNode = (FileNode)children.nextElement();
+      String nodeName = childNode.getFile().getAbsolutePath();
+      if(childName.equals(nodeName))
+        return childNode;
+    }
+
+    return null;
+  }
+
+  /**
+  *
+  * Finds a new index for adding a new file to the file manager.
+  * @param parentNode   parent directory node
+  * @param child        new child node
+  * @return             index of the child in the directory
+  *
+  */
+  private int getAnIndex(FileNode parentNode, String child)
+  {
+    //find the index for the child
+    int num = parentNode.getChildCount();
+    int childIndex = num;
+    for(int i=0;i<num;i++)
+    {
+      String nodeName =
+            ((FileNode)parentNode.getChildAt(i)).getFile().getName();
+      if(nodeName.compareTo(child) > 0)
+      {
+        childIndex = i;
+        break;
+      }
+      else if (nodeName.compareTo(child) == 0)  //file already exists
+      {
+        childIndex = -1;
+        break;
+      }
+    }
+    return childIndex;
+  }
+
+
+  /**
+  *
+  * Read a file into a byte array.
+  * @param filename     file name
+  * @return             byte[] contents of file
+  *
+  */
+  protected static byte[] readByteFile(String filename)
+  {
+
+    File fn = new File(filename);
+    byte[] b = null;
+    try
+    {
+      long s = fn.length();
+      if(s == 0)
+        return b;
+      b = new byte[(int)s];
+      FileInputStream fi = new FileInputStream(fn);
+      fi.read(b);
+      fi.close();
+    }
+    catch (IOException ioe)
+    {
+      System.out.println("Cannot read file: " + filename);
+    }
+    return b;
+
+  }
+
+  /**
+  *
+  * Opens a JFrame with the file contents displayed.
+  * @param filename     file name to display
+  * @param mysettings   jemboss properties
+  *
+  */
+  public static void showFilePane(String filename, JembossParams mysettings)
+  {
+    Hashtable contents = new Hashtable();
+    contents.put(filename,readByteFile(filename));
+    ShowResultSet srs = new ShowResultSet(contents,mysettings);
+    srs.setTitle("Local File");
+  }
+
+
+////////////////////
+// DRAG AND DROP
+////////////////////
 // drag source
   public void dragGestureRecognized(DragGestureEvent e) 
   {
@@ -352,7 +678,7 @@ public class DragTree extends JTree implements DragGestureListener,
     if(ie instanceof MouseEvent) 
       if(((MouseEvent)ie).isPopupTrigger()) 
         return;
-
+    
     // drag only files 
     if(isFileSelection())
       e.startDrag(DragSource.DefaultCopyDrop,     // cursor
@@ -391,6 +717,7 @@ public class DragTree extends JTree implements DragGestureListener,
        {
          FileNode fn = (FileNode)t.getTransferData(FileNode.FILENODE);
          fn = getNode(fn.getFile().getAbsolutePath());
+
          if (dropNode.isLeaf())
          {
            e.rejectDrop();
@@ -474,6 +801,7 @@ public class DragTree extends JTree implements DragGestureListener,
 
   }
 
+
   /**
   *
   * When a suitable DataFlavor is offered over a remote file
@@ -522,278 +850,52 @@ public class DragTree extends JTree implements DragGestureListener,
   public void dropActionChanged(DropTargetDragEvent e) {}
   public void dragExit(DropTargetEvent e){}
 
+
+////////////////////
+// AUTO SCROLLING //
+////////////////////
   /**
   *
-  * Get path of selected node
-  * @return 	path name to file that is currently selected
+  * Handles the auto scrolling of the JTree.
+  * @param location The location of the mouse.
   *
   */
-  public String getFilename()
+  public void autoscroll( Point location )
   {
-    TreePath path = getLeadSelectionPath();
-    FileNode node = (FileNode)path.getLastPathComponent();
-    return ((File)node.getUserObject()).getAbsolutePath();
-  }
-
-  /**
-  *
-  * Get FileNode of selected node
-  * @return 	node that is currently selected
-  *
-  */
-  public FileNode getSelectedNode()
-  {
-    TreePath path = getLeadSelectionPath();
-    if(path == null)
-      return null;
-    FileNode node = (FileNode)path.getLastPathComponent();
-//  System.out.println(node.getFile().getAbsolutePath());
-    return node;
-  }
-
-  /**
-  *
-  * Return true if selected node is a file
-  * @return true is a file is selected, false if
-  *         a directory is selected
-  *
-  */
-  public boolean isFileSelection() 
-  {
-    TreePath path = getLeadSelectionPath();
-    if(path == null)
-      return false;
-
-    FileNode node = (FileNode)path.getLastPathComponent();
-    return !node.isDirectory();
-  }
-
-  /**
-  *
-  * Make the given directory the root and create a new
-  * DefaultTreeModel.
-  * @param root 	root directory
-  * @param 		tree model with the root node set 
-  *        		to the given directory
-  *
-  */
-  private DefaultTreeModel createTreeModel(File root) 
-  {
-    FileNode rootNode = new FileNode(root);
-    rootNode.explore();
-    openNode = new Vector();
-    openNode.add(rootNode);
-    return new DefaultTreeModel(rootNode);
+    int top = 0, left = 0, bottom = 0, right = 0;
+    Dimension size = getSize();
+    Rectangle rect = getVisibleRect();
+    int bottomEdge = rect.y + rect.height;
+    int rightEdge = rect.x + rect.width;
+    if( location.y - rect.y < AUTOSCROLL_MARGIN && rect.y > 0 ) 
+      top = AUTOSCROLL_MARGIN;
+    if( location.x - rect.x < AUTOSCROLL_MARGIN && rect.x > 0 )
+      left = AUTOSCROLL_MARGIN;
+    if( bottomEdge - location.y < AUTOSCROLL_MARGIN && bottomEdge < size.height )
+      bottom = AUTOSCROLL_MARGIN;
+    if( rightEdge - location.x < AUTOSCROLL_MARGIN && rightEdge < size.width ) 
+      right = AUTOSCROLL_MARGIN;
+    rect.x += right - left;
+    rect.y += bottom - top;
+    scrollRectToVisible( rect );
   }
 
 
   /**
   *
-  * Adding a file (or directory) to the file tree manager.
-  * This looks to see if the directory has already been opened
-  * and updates the filetree if it has.
-  * @param child	new child to add in
-  * @param path		path to where child is to be added
-  * @param node		node to add child to
+  * Gets the insets used for the autoscroll.
+  * @return The insets.
   *
   */
-  public DefaultMutableTreeNode addObject(String child,
-                            String path, FileNode node)
+  public Insets getAutoscrollInsets()
   {
-
-    DefaultTreeModel model = (DefaultTreeModel)getModel();
-    if(node == null)
-    {
-      node = getNode(path); 
-      if(node==null)
-        return null;
-    }
-
-    FileNode parentNode = getNode(path);
-    File newleaf = new File(path + fs + child);
-    FileNode childNode = new FileNode(newleaf);
-
-    try
-    {
-      if(parentNode.isExplored()) 
-      {
-        int index = getAnIndex(parentNode,child);
-        if(index > -1)     
-          model.insertNodeInto(childNode, parentNode, index);
-      }
-    }
-    catch(NullPointerException npe)
-    {
-      parentNode = node;
-      if(node.isLeaf())
-        parentNode = (FileNode)node.getParent();
-      parentNode.explore();
-      model.nodeChanged(parentNode);
-      model.nodeStructureChanged(parentNode);
-    }
-
-    // Make sure the user can see the new node.
-    this.scrollPathToVisible(new TreePath(childNode.getPath()));
-
-    return childNode;
-  }
-
-  /**
-  *
-  * Gets the node from the existing explored nodes and their
-  * children.
-  * @param path 	path to a file or directory
-  * @return 		corresponding node if the directory or
-  *         		file is visible otherwise returns null.
-  *
-  */
-  private FileNode getNode(String path)
-  {
-    Enumeration en = openNode.elements();
-
-    while(en.hasMoreElements()) 
-    {
-      FileNode node = (FileNode)en.nextElement();
-      String nodeName = node.getFile().getAbsolutePath();
-      if(nodeName.equals(path))
-        return node;
-    }
-
-// check children of explored nodes
-    en = openNode.elements();
-    while(en.hasMoreElements())
-    {
-      FileNode child = getChildNode((FileNode)en.nextElement(),path);
-      if(child != null)
-        return child;
-    }
-
-
-    return null;
-  }
-
-  /**
-  *
-  * Gets the child node of a parent node
-  * @param parent       parent node
-  * @param childName    name of child
-  * @return the child node
-  *
-  */
-  private FileNode getChildNode(FileNode parent, String childName)
-  {
-    for(Enumeration children = parent.children(); children.hasMoreElements() ;)
-    {
-      FileNode childNode = (FileNode)children.nextElement();
-      String nodeName = childNode.getFile().getAbsolutePath();
-      if(childName.equals(nodeName))
-        return childNode;
-    }
-
-    return null;
-  }
-
-  /**
-  *
-  * Finds a new index for adding a new file to the file manager.
-  * @param parentNode 	parent directory node
-  * @param child	new child node
-  * @return 		index of the child in the directory
-  *
-  */
-  private int getAnIndex(FileNode parentNode, String child)
-  {
-    //find the index for the child
-    int num = parentNode.getChildCount();
-    int childIndex = num;
-    for(int i=0;i<num;i++)
-    {
-      String nodeName = 
-            ((FileNode)parentNode.getChildAt(i)).getFile().getName();
-      if(nodeName.compareTo(child) > 0)
-      {
-        childIndex = i;
-        break;
-      }
-      else if (nodeName.compareTo(child) == 0)  //file already exists
-      {
-        childIndex = -1;
-        break;
-      }
-    }
-    return childIndex;
-  }
-
-  /**
-  *
-  * Delete a node from the JTree
-  * @param node 	node for deletion
-  *
-  */
-  public void deleteObject(FileNode node)
-  {
-    DefaultTreeModel model =(DefaultTreeModel)getModel();
-    FileNode parentNode = getNode(node.getFile().getParent());
-    model.removeNodeFromParent(node);
-//  parentNode.reExplore();
-//  model.nodeStructureChanged(parentNode);
-  }
-
-  /**
-  *
-  * Read a file into a byte array.
-  * @param filename     file name
-  * @return             byte[] contents of file
-  *
-  */
-  protected static byte[] readByteFile(String filename)
-  {
-
-    File fn = new File(filename);
-    byte[] b = null;
-    try
-    {
-      long s = fn.length();
-      if(s == 0)
-        return b;
-      b = new byte[(int)s];
-      FileInputStream fi = new FileInputStream(fn);
-      fi.read(b);
-      fi.close();
-    }
-    catch (IOException ioe)
-    {
-      System.out.println("Cannot read file: " + filename);
-    }
-    return b;
-
-  }
-
-  /**
-  *
-  * Opens a JFrame with the file contents displayed.
-  * @param filename	file name to display
-  * @param mysettings	jemboss properties
-  *
-  */
-  public static void showFilePane(String filename, JembossParams mysettings)
-  {
-    Hashtable contents = new Hashtable();
-    contents.put(filename,readByteFile(filename));
-    ShowResultSet srs = new ShowResultSet(contents,mysettings);
-    srs.setTitle("Local File");
-//  JFrame ffile = new JFrame(filename);
-//  JPanel pfile = (JPanel)ffile.getContentPane();
-//  pfile.setLayout(new BorderLayout());
-
-//  FileEditorDisplay fed = new FileEditorDisplay(filename);
-//  new ResultsMenuBar(ffile,fed,mysettings);
-
-//  JScrollPane rscroll = new JScrollPane(fed);
-//  pfile.add(rscroll, BorderLayout.CENTER);
-//  fed.setCaretPosition(0);
-//  ffile.setSize(450,400);
-//  ffile.setVisible(true);
+    Dimension size = getSize();
+    Rectangle rect = getVisibleRect();
+    autoscrollInsets.top = rect.y + AUTOSCROLL_MARGIN;
+    autoscrollInsets.left = rect.x + AUTOSCROLL_MARGIN;
+    autoscrollInsets.bottom = size.height - (rect.y+rect.height) + AUTOSCROLL_MARGIN;
+    autoscrollInsets.right  = size.width - (rect.x+rect.width) + AUTOSCROLL_MARGIN;
+    return autoscrollInsets;
   }
 
   /**
