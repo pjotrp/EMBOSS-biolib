@@ -6,7 +6,7 @@ application: aaindexextract [
   cpu: "medium"
 ]
 
-section: input
+section: input [
   information: "Input section"
   type: "page"
 ]

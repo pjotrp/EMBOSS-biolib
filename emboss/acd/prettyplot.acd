@@ -4,7 +4,7 @@ application: prettyplot [
   groups: "Alignment:Multiple, Display"
 ]
 
-section: input
+section: input [
   information: "Input section"
   type: "page"
 ]
@@ -18,7 +18,7 @@ section: input
 
 endsection: input
 
-section: advanced
+section: advanced [
   information: "Advanced section"
   type: "page"
 ]
@@ -154,7 +154,7 @@ section: advanced
     expected: "Half the total sequence weighting"
   ]
 
-  section: consensussection
+  section: consensussection [
     information: "consensus Section"
     type: "frame"
   ]
@@ -215,7 +215,7 @@ section: advanced
 
 endsection: advanced
 
-section: output
+section: output [
   information: "Output section"
   type: "page"
 ]

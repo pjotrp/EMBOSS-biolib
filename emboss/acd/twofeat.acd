@@ -4,7 +4,7 @@ application: twofeat [
   groups: "Feature tables"
 ]
 
-section: input
+section: input [
   information: "Input section"
   type: "page"
 ]
@@ -15,7 +15,7 @@ section: input
     features: "Y"
   ]
 
-  section: afeature
+  section: afeature [
     information: "Select feature a"
     type: "page"
   ]
@@ -127,7 +127,7 @@ section: input
 
   endsection: afeature
 
-  section: bfeature
+  section: bfeature [
     information: "Select feature b"
     type: "page"
   ]
@@ -239,7 +239,7 @@ section: input
 
   endsection: bfeature
 
-  section: relation
+  section: relation [
     information: "relation Section"
     type: "page"
   ]
@@ -331,7 +331,7 @@ section: input
 
 endsection: input
 
-section: output
+section: output [
   information: "Output section"
   type: "page"
 ]

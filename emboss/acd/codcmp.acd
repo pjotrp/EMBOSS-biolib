@@ -3,7 +3,7 @@ application: codcmp [
   groups: "Nucleic:Codon usage"
 ]
 
-section: input
+section: input [
   information: "Input section"
   type: "page"
 ]
@@ -20,7 +20,7 @@ section: input
 
 endsection: input
 
-section: output
+section: output [
   information: "Output section"
   type: "page"
 ]

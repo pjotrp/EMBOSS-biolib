@@ -7,7 +7,7 @@ application: diffseq [
   cpu: "medium"
 ]
 
-section: input
+section: input [
   information: "Input section"
   type: "page"
 ]
@@ -26,7 +26,7 @@ section: input
 
 endsection: input
 
-section: required
+section: required [
   information: "Required section"
   type: "page"
 ]
@@ -48,7 +48,7 @@ section: required
 
 endsection: required
 
-section: output
+section: output [
   information: "Output section"
   type: "page"
 ]

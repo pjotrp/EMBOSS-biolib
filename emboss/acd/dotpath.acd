@@ -7,7 +7,7 @@ application: dotpath [
   cpu: "high"
 ]
 
-section: input
+section: input [
   information: "Input section"
   type: "page"
 ]
@@ -24,7 +24,7 @@ section: input
 
 endsection: input
 
-section: required
+section: required [
   information: "Required section"
   type: "page"
 ]
@@ -38,7 +38,7 @@ section: required
 
 endsection: required
 
-section: output
+section: output [
   information: "Output section"
   type: "page"
 ]
@@ -57,7 +57,7 @@ section: output
     information: "Draw a box around dotplot"
   ]
 
-  section: datasection
+  section: datasection [
     information: "Data section"
     type: "frame"
   ]

@@ -4,7 +4,7 @@ application: prima [
   groups: "Nucleic:Primers"
 ]
 
-section: input
+section: input [
   information: "Input section"
   type: "page"
 ]
@@ -16,7 +16,7 @@ section: input
 
 endsection: input
 
-section: required
+section: required [
   information: "Required section"
   type: "page"
 ]
@@ -41,12 +41,12 @@ section: required
 
 endsection: required
 
-section: advanced
+section: advanced [
   information: "Advanced section"
   type: "page"
 ]
 
-  section: targetrangesection
+  section: targetrangesection [
     information: "targetrangesection Section"
     type: "frame"
   ]
@@ -72,7 +72,7 @@ section: advanced
     information: "Minimum overlap of sequences"
   ]
 
-  section: primersection
+  section: primersection [
     information: "primer Section"
     type: "frame"
   ]
@@ -103,7 +103,7 @@ section: advanced
 
   endsection: primersection
 
-  section: productsection
+  section: productsection [
     information: "product Section"
     type: "frame"
   ]
@@ -157,7 +157,7 @@ section: advanced
 
 endsection: advanced
 
-section: output
+section: output [
   information: "Output section"
   type: "page"
 ]

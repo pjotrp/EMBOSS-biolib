@@ -3,7 +3,7 @@ application: sirna [
   groups: "Nucleic:Composition"
 ]
 
-section: input
+section: input [
   information: "Input section"
   type: "page"
 ]
@@ -14,7 +14,7 @@ section: input
     features: "Y"
   ]
 
-  section: selection
+  section: selection [
     information: "selection Section"
     type: "page"
   ]
@@ -66,7 +66,7 @@ section: input
 
 endsection: input
 
-section: output
+section: output [
   information: "Output section"
   type: "page"
 ]

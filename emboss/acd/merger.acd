@@ -4,7 +4,7 @@ application: merger [
   groups: "Alignment:Consensus"
 ]
 
-section: input
+section: input [
   information: "Input section"
   type: "page"
 ]
@@ -21,7 +21,7 @@ section: input
 
 endsection: input
 
-section: advanced
+section: advanced [
   information: "Advanced section"
   type: "page"
 ]
@@ -54,7 +54,7 @@ section: advanced
 
 endsection: advanced
 
-section: output
+section: output [
   information: "Output section"
   type: "page"
 ]

@@ -6,7 +6,7 @@ application: printsextract [
   cpu: "medium"
 ]
 
-section: input
+section: input [
   information: "Required section"
   type: "page"
 ]

@@ -3,7 +3,7 @@ application: pepwheel [
   groups: "Display, Protein:2D Structure"
 ]
 
-section: input
+section: input [
   information: "Input section"
   type: "page"
 ]
@@ -15,7 +15,7 @@ section: input
 
 endsection: input
 
-section: output
+section: output [
   information: "Output section"
   type: "page"
 ]
@@ -45,7 +45,7 @@ section: output
            value divided by this value."
   ]
 
-  section: amphipathicsection
+  section: amphipathicsection [
     information: "amphipathic Section"
     type: "frame"
   ]
@@ -83,7 +83,7 @@ section: output
 
   endsection: amphipathicsection
 
-  section: datasection
+  section: datasection [
     information: "Data section"
     type: "frame"
   ]

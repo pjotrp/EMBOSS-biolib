@@ -4,7 +4,7 @@ application: demoalign [
   groups: "Test"
 ]
 
-section: input
+section: input [
   information: "Input section"
   type: "page"
 ]
@@ -16,7 +16,7 @@ section: input
 
 endsection: input
 
-section: output
+section: output [
   information: "Output section"
   type: "page"
 ]
@@ -28,7 +28,7 @@ section: output
 
 endsection: output
 
-section: advanced
+section: advanced [
   information: "Advanced section"
   type: "page"
 ]

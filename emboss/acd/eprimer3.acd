@@ -4,7 +4,7 @@ application: eprimer3 [
   external: "primer3_core"
 ]
 
-section: input
+section: input [
   information: "Input section"
   type: "page"
 ]
@@ -18,12 +18,12 @@ section: input
 
 endsection: input
 
-section: advanced
+section: advanced [
   information: "Advanced section"
   type: "page"
 ]
 
-  section: program
+  section: program [
     information: "Program Options"
     type: "frame"
   ]
@@ -99,7 +99,7 @@ section: advanced
 
   endsection: program
 
-  section: sequenceopt
+  section: sequenceopt [
     information: "Sequence options"
     type: "frame"
   ]
@@ -170,7 +170,7 @@ section: advanced
 
   endsection: sequenceopt
 
-  section: primer
+  section: primer [
     information: "Primer Details"
     type: "frame"
   ]
@@ -449,7 +449,7 @@ section: advanced
 
   endsection: primer
 
-  section: product
+  section: product [
     information: "Product details"
     type: "frame"
   ]
@@ -531,7 +531,7 @@ section: advanced
 
   endsection: product
 
-  section: primerweights
+  section: primerweights [
     information: "Primer Penalty Weights"
     type: "frame"
   ]
@@ -556,7 +556,7 @@ section: advanced
 
   endsection: primerweights
 
-  section: oligosinput
+  section: oligosinput [
     information: "Internal Oligo Input"
     type: "frame"
   ]
@@ -585,7 +585,7 @@ section: advanced
 
   endsection: oligosinput
 
-  section: oligos
+  section: oligos [
     information: "Internal Oligo Details"
     type: "frame"
   ]
@@ -797,7 +797,7 @@ section: advanced
 
 endsection: advanced
 
-section: output
+section: output [
   information: "Output section"
   type: "page"
 ]

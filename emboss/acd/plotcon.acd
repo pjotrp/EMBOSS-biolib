@@ -4,7 +4,7 @@ application: plotcon [
   groups: "Alignment:Multiple"
 ]
 
-section: input
+section: input [
   information: "Input section"
   type: "page"
 ]
@@ -18,7 +18,7 @@ section: input
 
 endsection: input
 
-section: required
+section: required [
   information: "Required section"
   type: "page"
 ]
@@ -33,7 +33,7 @@ section: required
 
 endsection: required
 
-section: advanced
+section: advanced [
   information: "Advanced section"
   type: "page"
 ]
@@ -50,7 +50,7 @@ section: advanced
 
 endsection: advanced
 
-section: output
+section: output [
   information: "Output section"
   type: "page"
 ]
