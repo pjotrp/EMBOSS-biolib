@@ -157,7 +157,7 @@ public class BuildJembossForm implements ActionListener
            cl.getResource("images/Information_button.gif")));
     bhelp.addActionListener(this);
     bhelp.setMargin(new Insets(0,1,0,1));
-
+    bhelp.setToolTipText("Help");
 
     bhelp.addActionListener(new ActionListener()
     {
