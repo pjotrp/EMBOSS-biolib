@@ -330,6 +330,8 @@ public class JembossServer
 
 /**
 *
+* Private Server
+* 
 * Run an EMBOSS application
 * @param command line to run
 * @param unused
@@ -350,6 +352,28 @@ public class JembossServer
 
     return result;
   }
+
+/**
+*
+* Run an EMBOSS application
+* @param command line to run
+* @param unused
+* @param Hashtable of input files
+* @return output files from application run
+*
+*/
+  public Vector run_prog(String embossCommand, String options, Hashtable inFiles,
+                         String userName)
+  {
+    System.out.println("Running runProg now with Strings[].... " + tmproot + userName);
+
+    tmproot = tmproot.concat(userName+fs);
+    Vector result = new Vector();
+    result = run_prog(embossCommand,options,inFiles);
+
+    return result;
+  }
+
 
 /**
 *
@@ -504,6 +528,27 @@ public class JembossServer
 
 /**
 *
+* Private Server
+*
+* Returns the results for a saved project.
+* @param project/directory name
+* @param unused
+* @return saved results files
+*
+*/
+  public Vector show_saved_results(String project, String cl,
+                                   String userName)
+  {
+    Vector ssr = new Vector();
+    tmproot = tmproot.concat(userName+fs); 
+    ssr = show_saved_results(project,cl);
+    return ssr;
+  }
+
+/**
+*
+* Private Server
+*
 * Returns the results for a saved project.
 * @param project/directory name
 * @param unused
@@ -530,6 +575,27 @@ public class JembossServer
 
 
 /**
+*  
+* Private server
+*
+* Deletes a projects saved results.
+* @param project/directory name
+* @param unused
+* @return message
+*
+*/
+  public Vector delete_saved_results(String project, String cl,
+                                     String userName)
+  {
+    Vector dsr = new Vector();
+    tmproot = tmproot.concat(userName+fs);
+    dsr = delete_saved_results(project,cl);
+    return dsr;
+  }
+
+/**
+*
+* Private server
 *
 * Deletes a projects saved results.
 * @param project/directory name
@@ -559,6 +625,25 @@ public class JembossServer
 
 
 /**
+*
+* Private Server
+*
+* List of the saved results on the server.
+* @return list of the saved results.
+*
+*/
+  public Vector list_saved_results(String userName)
+  {
+    Vector lsr = new Vector();
+    tmproot = tmproot.concat(userName+fs);
+    tmprootDir = new File(tmproot);
+    lsr = list_saved_results();
+    return lsr;
+  }
+
+/**
+*
+* Private Server
 *
 * List of the saved results on the server.
 * @return list of the saved results.
@@ -600,8 +685,8 @@ public class JembossServer
       }
       catch (IOException ioe)
       {
-        System.out.println("IOException in list_saved_results " +fs +
-                                          resFiles[i] + fs + ".desc");
+        System.out.println("IOException in list_saved_results " +tmproot + fs +
+                                               resFiles[i] + fs + ".desc");
       }
     }
 
@@ -712,53 +797,53 @@ public class JembossServer
     return result;
   }
  
-  public Vector embreo_roots()
-  {
-    Vector vans = new Vector();
-    vans.add("status");
-    vans.add("0");
-    vans.add("msg");
-    vans.add("");
-    vans.add("default-root");
-    vans.add("HOME");
-    vans.add("HOME");
-    vans.add("/m3/users/tim");    
+//public Vector embreo_roots()
+//{
+//  Vector vans = new Vector();
+//  vans.add("status");
+//  vans.add("0");
+//  vans.add("msg");
+//  vans.add("");
+//  vans.add("default-root");
+//  vans.add("HOME");
+//  vans.add("HOME");
+//  vans.add("/m3/users/tim");    
 
-    return vans;
-  }
-
-
-  public Vector directory_shortls(String options, String dirname)
-  {
-    Vector vans = new Vector();
-    File dir = new File("/m3/users/tim/");
+//  return vans;
+//}
 
 
-    File files[] = dir.listFiles();
-    
-    System.out.println("HERE IN directory_shortls");
-    String listFiles = "";
-    String listDir = "";
+//public Vector directory_shortls(String options, String dirname)
+//{
+//  Vector vans = new Vector();
+//  File dir = new File("/m3/users/tim/");
 
-    for(int i=0;i<files.length;i++)
-    {
-      if(files[i].isDirectory())
-        listDir = listDir.concat(files[i].getName() + "\n");
-      else
-        listFiles = listFiles.concat(files[i].getName() + "\n");
-    }
 
-    vans.add("status");
-    vans.add("0");
-    vans.add("msg");
-    vans.add("");
-    vans.add("list");
-    vans.add(listFiles);
-    vans.add("dirlist");
-    vans.add(listDir);
+//  File files[] = dir.listFiles();
+//  
+//  System.out.println("HERE IN directory_shortls");
+//  String listFiles = "";
+//  String listDir = "";
 
-    return vans;
-  }
+//  for(int i=0;i<files.length;i++)
+//  {
+//    if(files[i].isDirectory())
+//      listDir = listDir.concat(files[i].getName() + "\n");
+//    else
+//      listFiles = listFiles.concat(files[i].getName() + "\n");
+//  }
+
+//  vans.add("status");
+//  vans.add("0");
+//  vans.add("msg");
+//  vans.add("");
+//  vans.add("list");
+//  vans.add(listFiles);
+//  vans.add("dirlist");
+//  vans.add(listDir);
+
+//  return vans;
+//}
 
 
 /**
@@ -767,47 +852,47 @@ public class JembossServer
 * processes.
 *
 */
-  public Vector update_result_status(String prog, String opt, 
-                                     Hashtable resToQuery)
-  {
+//public Vector update_result_status(String prog, String opt, 
+//                                   Hashtable resToQuery)
+//{
 
-    Vector vans = new Vector();
-    Enumeration enum = resToQuery.keys();
-    while (enum.hasMoreElements())
-    {
-      String thiskey = (String)enum.nextElement().toString();
-      String thiselm = (String)resToQuery.get(thiskey);
+//  Vector vans = new Vector();
+//  Enumeration enum = resToQuery.keys();
+//  while (enum.hasMoreElements())
+//  {
+//    String thiskey = (String)enum.nextElement().toString();
+//    String thiselm = (String)resToQuery.get(thiskey);
 //    System.out.println("KEY : "+thiskey+" ELEMENT: "+thiselm);
-      File f = new File(tmproot+fs+thiskey+fs+".finished");
-      if(f.exists())
-      {
-        vans.add(thiskey);
-        vans.add("complete");
-        String fc = "";
-        try
-        {
-          String line;
-          BufferedReader in = new BufferedReader(new FileReader(tmproot+
-                                                fs+thiskey+fs+".desc"));
-          while((line = in.readLine()) != null)
-            fc = fc.concat(line + "\n");
-        }
-        catch (IOException ioe)
-        {
-          fc = "Error in reading information file";
-        }
-        vans.add(thiskey+"-description");
-        vans.add(fc);
-      }
-      else
-      {
-        vans.add(thiskey);
-        vans.add("pending");
-      }
-    }
+//    File f = new File(tmproot+fs+thiskey+fs+".finished");
+//    if(f.exists())
+//    {
+//      vans.add(thiskey);
+//      vans.add("complete");
+//      String fc = "";
+//      try
+//      {
+//        String line;
+//        BufferedReader in = new BufferedReader(new FileReader(tmproot+
+//                                              fs+thiskey+fs+".desc"));
+//        while((line = in.readLine()) != null)
+//          fc = fc.concat(line + "\n");
+//      }
+//      catch (IOException ioe)
+//      {
+//        fc = "Error in reading information file";
+//      }
+//      vans.add(thiskey+"-description");
+//      vans.add(fc);
+//    }
+//    else
+//    {
+//      vans.add(thiskey);
+//      vans.add("pending");
+//    }
+//  }
 
-    return vans;
-  }
+//  return vans;
+//}
 
 
 }
