@@ -15,6 +15,77 @@ extern "C"
 
 
 
+/* @data AjPDomConts ***********************************************************
+**
+** Ajax DomConts object.
+**
+** Holds the domain contact data
+**
+** AjPDomConts is implemented as a pointer to a C data structure.
+**
+** @alias AjSDomConts
+** @alias AjODomConts
+**
+** @@
+******************************************************************************/
+
+
+
+typedef struct AjSDomConts
+{
+  AjPStr het_name;       /* 3-character code of heterogen */
+  AjPStr scop_name;      /* 7-character scop id domain name */  
+  ajint  no_keyres;      /* number of key binding residues */
+  AjPStr *aa_code;       /* Array for 3-character amino acid codes */ 
+  AjPInt res_pos;        /* Array of ints for residue positions in domain file */
+  AjPStr *res_pos2;      /* Array of residue positions in complete protein 
+			    coordinate file - exist as strings */
+}AjODomConts, *AjPDomConts;
+
+
+/* @data AjPDbaseEnt ***********************************************************
+**
+** Ajax DbaseEnt object.
+**
+** Holds the data required for the database of functional sites
+**
+** AjPDbaseDat is implemented as a pointer to a C data structure.
+**
+** @alias AjSDbaseEnt
+** @alias AjODbaseEnt
+**
+** @@
+******************************************************************************/
+typedef struct AjSDbaseEnt
+{
+  AjPStr      abv;         /* 3-letter abbreviation of heterogen */
+  AjPStr      ful;         /* Full name */
+  ajint       no_dom;      /* number of domains */
+  AjPDomConts *cont_data;  /* array of domain contact data (derived from tmp)*/
+  AjPList     tmp;         /* Temp. list of domain contact data */
+} AjODbaseEnt, *AjPDbaseEnt;
+
+
+/* @data AjPDbase ***********************************************************
+**
+** Ajax Dbase object.
+**
+** Holds a Database of functional residues.
+**
+** AjPDbase is implemented as a pointer to a C data structure.
+**
+** @alias AjSDbase
+** @alias AjODbase  
+**
+** @@
+******************************************************************************/
+typedef struct AjSDbase
+{
+  ajint         n;        /* Number of entries */
+  AjPDbaseEnt *entries;   /* Array of entries */
+} AjODbase, *AjPDbase;
+
+
 
 
 /*@data AjPCath **********************************************************
@@ -852,6 +923,48 @@ typedef struct AjSHet
 
 
 
+typedef struct AjSCoord
+{
+    AjPStr   Class;        /* SCOP class */
+    AjPStr   Fold;         /* SCOP fold */
+    AjPStr   Superfamily;  /* SCOP superfamily */
+    AjPStr   Family;       /* SCOP family */
+    ajint    Sunid_Family; /* the sun_id for a given SCOP family */
+    AjPStr   Model_Type;   /* The type of model used to generate the scores */
+    AjPStr   Acc;          /* Accession number of sequence entry  */
+    AjPStr   Spr;          /* Swissprot code of sequence entry */
+    ajint    x;            /* The score interval */
+    ajint    y;            /* Frequency of scores */
+} AjOCoord, *AjPCoord;
+
+
+
+typedef struct AjSDatapoint
+{
+    AjPStr    Acc;                      /* Accession number of sequence entry  */
+    AjPStr    Spr;                      /* Swissprot code of sequence entry */
+    ajint     x;                        /* The score interval */
+    ajint     y;                        /* Frequency of scores */
+} AjODatapoint, *AjPDatapoint;
+
+
+typedef struct AjSDiscord
+{
+    AjPStr        Class;                /* SCOP class */
+    AjPStr        Fold;                 /* SCOP fold */
+    AjPStr        Superfamily;          /* SCOP superfamily */
+    AjPStr        Family;               /* SCOP family */
+    ajint         Sunid_Family;         /* the sun_id for a given SCOP family */
+    AjPStr        Model_Type;           /* The type of model used to generate the scores */
+    ajint         N;                    /* No. of data points */
+
+    AjPDatapoint  *Points;              /* an array of coordinates */
+} AjODiscord, *AjPDiscord;
+
+
+
+
+
 
 
 
@@ -871,7 +984,34 @@ typedef struct AjSHet
 
 
 
+/* Waqas funky */
+AjBool      ajXyzFunkyRead(AjPFile funky_fptr, AjPList *all_entries);
+AjPDbase    ajXyzDbaseNew(ajint n);
+void        ajXyzDbaseDel(AjPDbase *ptr);
 
+AjPDbaseEnt ajXyzDbaseEntNew(ajint n);
+void        ajXyzDbaseEntDel(AjPDbaseEnt *ptr);
+
+AjPDomConts ajXyzDomContsNew(ajint n);
+void        ajXyzDomContsDel(AjPDomConts *ptr);
+
+
+/*  Ranjeeva stuff */
+
+ajint ajXyzCoordBinSearchScore(float score, AjPCoord *arr, ajint siz);
+float ajXyzScoreToPvalue (float score, AjPList list);
+float ajXyzPvalueFromDist (float score, AjPList list);
+AjBool ajXyzDiscordWrite(AjPFile outf, AjPDiscord thys);
+AjBool ajXyzDiscordRead(AjPFile inf, char *delim, AjPDiscord *thys);
+void ajXyzDatapointDel(AjPDatapoint *thys);
+void ajXyzDiscordDel(AjPDiscord *pthis);
+AjPDatapoint ajXyzDatapointNew(void);
+AjPDiscord  ajXyzDiscordNew(ajint n);
+AjBool ajXyzDiscordToCoords(AjPDiscord dis_cord, AjPList *out);
+void ajXyzCoordDel(AjPCoord *pthis);
+AjPCoord ajXyzCoordNew(void);
+
+AjBool ajXyzSunidToScopInfo (ajint sunid, AjPStr *family, AjPStr *superfamily, AjPStr *fold, AjPList list);
 
 
 AjPPdbtosp ajXyzPdbtospNew(ajint n);
@@ -980,6 +1120,7 @@ AjPScophit    ajXyzScophitNew(void);
 void          ajXyzScophitDel(AjPScophit *pthis);
 void          ajXyzScophitDelWrap(const void  **ptr);
 AjBool        ajXyzScophitsToHitlist(AjPList in, AjPHitlist *out,   AjIList *iter);
+AjBool ajXyzScophitsWrite(AjPFile outf, AjPList list);
 AjBool ajXyzScophitsAccToHitlist(AjPList in, AjPHitlist *out,   AjIList *iter);
 AjBool        ajXyzScophitsOverlap(AjPScophit h1, AjPScophit h2, ajint n);
 AjBool        ajXyzScophitsOverlapAcc(AjPScophit h1, AjPScophit h2, ajint n);
@@ -1007,8 +1148,8 @@ ajint         ajXyzScophitCompFold(const void *hit1, const void *hit2);
 ajint         ajXyzScophitCompSfam(const void *hit1, const void *hit2);
 ajint         ajXyzScophitCompFam(const void *hit1, const void *hit2);
 ajint         ajXyzScophitCompAcc(const void *hit1, const void *hit2);
-ajint ajXyzScophitCompSunid(const void *entry1, const void *entry2);
-
+ajint         ajXyzScophitCompSunid(const void *entry1, const void *entry2);
+ajint         ajXyzScophitCompScore(const void *hit1, const void *hit2); 
 
 AjPHit        ajXyzHitNew(void);
 void          ajXyzHitDel(AjPHit *pthis);
@@ -1116,6 +1257,8 @@ AjBool        ajXyzSignatureHitsWrite(AjPFile outf, AjPSignature sig,
 				      AjPHitlist hits, ajint n);
 AjBool        ajXyzSignatureAlignWrite(AjPFile outf, AjPSignature sig, 
 				       AjPHitlist hits);
+AjBool        ajXyzSignatureAlignWriteBlock(AjPFile outf, AjPSignature sig, 
+				       AjPHitlist hits);
 
 
 AjPHetent     ajXyzHetentNew(void);
@@ -1139,4 +1282,6 @@ ajint StrComp(const void *str1, const void *str2);
 #ifdef __cplusplus
 }
 #endif
+
+
 

@@ -2460,7 +2460,6 @@ AjBool        ajXyzSignatureAlignSeq(AjPSignature S, AjPSeq seq, AjPHit *hit,
     dim = nres * S->npos;
 
 
-
     /* ALLOCATE MEMORY */
     /*First time the function is called */
     if(!path)
@@ -2891,7 +2890,8 @@ AjBool        ajXyzHitsOverlap(AjPHit h1, AjPHit h2, ajint n)
 **
 ** Writes the alignments of a Signature to a list of AjOHit objects to an output 
 ** file. This is intended for displaying the results from scans of a signature 
-** against a protein sequence database. 
+** against a protein sequence database.  Segments of sequences / alignment
+** are given for all sequences in the same block.
 **
 ** @param [w] outf [AjPFile]      Output file stream
 ** @param [r] sig  [AjPSignature] Signature object pointer
@@ -3011,6 +3011,127 @@ AjBool        ajXyzSignatureAlignWrite(AjPFile outf, AjPSignature sig,
 }
 
 
+
+/* @func ajXyzSignatureAlignWriteBlock ********************************************
+**
+** Writes the alignments of a Signature to a list of AjOHit objects to an output 
+** file. This is intended for displaying the results from scans of a signature 
+** against a protein sequence database. The full sequence / alignment is 
+** printed out for each sequence in its own block.
+**
+** @param [w] outf [AjPFile]      Output file stream
+** @param [r] sig  [AjPSignature] Signature object pointer
+** @param [r] hits [AjPHitlist]   Hitlist objects with hits from scan
+**
+** @return [AjBool] True if file was written
+** @@
+******************************************************************************/
+AjBool        ajXyzSignatureAlignWriteBlock(AjPFile outf, AjPSignature sig, 
+				       AjPHitlist hits)
+{
+    /*A line of the alignment (including accession number, a space and the 
+      sequence) in the output file is 70 characters long. An index number is 
+      also printed after this 70 character field.*/
+    ajint  wid1=0;     /*Temp. width of Accession Number */
+    ajint  mwid1=0;    /*Max. width of Accession Number or the string "Number". 
+			 This is the field width the accession numbers will be 
+			 printed into */
+    ajint  mwid2=0;    /*Width of region to print sequence into*/
+    ajint  len=0;      /*Temp. length of sequence*/
+    ajint  mlen=0;     /*Max. length of sequence*/
+    char   *ptrp=NULL; /*Pointer to sequence string*/ 
+    char   *ptrs=NULL; /*Pointer to alignment string */ 
+    ajint  idx=0;      /*Start position for printing*/
+    ajint  niter=0;    /*No. iterations of loop for printing out sequence blocks*/
+    ajint  fwid1=70;   /*Including accession number, a space, 7 characters 
+			 for the first index number, and the sequence*/
+    ajint  fwid2=7;    /*Field width for the first index number*/
+    ajint  num=0;      /*Index number for alignment*/
+    ajint  y=0;        /*Loop counter*/
+    ajint  x=0;        /*Loop counter*/
+    
+
+    /*Check args*/
+    if(!outf || !hits || !sig)
+	return ajFalse;
+
+    /*Cycle through hits to find longest width of accession number*/
+    for(len=0, mlen=0, wid1=0, mwid1=0, x=0;
+	x<hits->N; 
+	x++)
+    {
+	if((wid1=MAJSTRLEN(hits->hits[x]->Acc))>mwid1)
+	    mwid1=wid1; 
+	if((len=MAJSTRLEN(hits->hits[x]->Seq))>mlen)
+	    mlen=len;
+    }
+
+    /*Assign field widths and number of iterations for printing*/
+    if((wid1=strlen("SIGNATURE"))>mwid1)
+	mwid1=wid1;
+    mwid1++;   /*A space*/
+    mwid2=fwid1-fwid2-mwid1;
+    niter=(ajint)ceil( ((double)mlen/(double)mwid2));
+    
+
+    /*Print header info and SCOP classification records of signature */
+    ajFmtPrintF(outf, "DE   Results of signature search\nXX\n");
+    ajFmtPrintF(outf,"CL   %S",sig->Class);
+    ajFmtPrintSplit(outf,sig->Fold,"\nXX\nFO   ",75," \t\n\r");
+    ajFmtPrintSplit(outf,sig->Superfamily,"XX\nSF   ",75," \t\n\r");
+    ajFmtPrintSplit(outf,sig->Family,"XX\nFA   ",75," \t\n\r");
+    ajFmtPrintF(outf,"XX\nSI   %d\n", sig->Sunid_Family);
+    ajFmtPrintF(outf,"XX\n");
+    
+
+
+    /*Main loop for printing alignment*/
+    for(x=0;x<hits->N; x++)
+    {
+	/*Get pointer to sequence & alignment string*/
+	ptrp=ajStrStr(hits->hits[x]->Seq);
+	ptrs=ajStrStr(hits->hits[x]->Alg);
+
+	/*Loop for each protein in Hitlist*/
+	for(num=0, idx=0, y=0;y<niter;y++)
+	{
+	    num+=mwid2;
+
+	    /*There is some of the sequence left to print*/
+	    if(idx<MAJSTRLEN(hits->hits[x]->Seq))
+	    {
+		ajFmtPrintF(outf,"%-*S%-*d%-*.*s %d\n", 
+			    mwid1, hits->hits[x]->Acc, fwid2, 
+			    (num-mwid2+1), mwid2, mwid2, ptrp+idx, num);
+		ajFmtPrintF(outf,"%-*s%-*c%-*.*s\n", 
+			    mwid1, "SIGNATURE", fwid2, '-', mwid2, 
+			    mwid2, ptrs+idx);
+	    }	
+	    
+	    /*We have printed all the sequence already*/
+	    else
+	    {
+		ajFmtPrintF(outf,"%-*S%-*d%-*.*s %d\n", 
+			    mwid1, hits->hits[x]->Acc, fwid2,  
+			    (num-mwid2+1), mwid2, mwid2, ".", num);
+		ajFmtPrintF(outf,"%-*s%-*c%-*.*s\n", 
+			    mwid1, "SIGNATURE", fwid2, '-', mwid2, 
+			    mwid2, "." );
+	    }
+	    idx+=mwid2;
+	}
+	/*Print spacer*/
+	ajFmtPrintF(outf, "XX\n");
+    }	 
+
+    
+    /*Print tail info*/
+    ajFmtPrintF(outf, "//\n");
+
+    
+    /*Tidy up and return */
+    return ajTrue;
+}
 
 
 
@@ -4394,10 +4515,16 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop
 	    while((atm=(AjPAtom)ajListIterNext(iter)))
 	    {
 		/* JCI hard-coded to work on model 1*/
-		/* Break if a non-protein atom is found or model no. !=1*/
-		if(atm->Type!='P' || atm->Mod!=1 
+		/* Continue if a non-protein atom is found or break if model no. !=1*/
+		if(atm->Mod!=1 || (found_start && found_end))
+		    break; 
+		if(atm->Type!='P')
+		    continue;
+
+
+/*		if(atm->Type!='P' || atm->Mod!=1 
 		   || (found_start && found_end))
-		    break;
+		    break; */
 
 
 		/* If we are onto a new residue*/
@@ -4585,9 +4712,15 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop
 	/* Iterate through the list of atoms*/
 	while((atm=(AjPAtom)ajListIterNext(iter)))
 	{
-	    /* Break if a non-protein atom is found or model no. !=1*/
-	    if(atm->Mod!=1 || atm->Type!='P')
+	    /* Continue if a non-protein atom is found or break if model no. !=1*/
+	    if(atm->Mod!=1)
 		break;
+	    if(atm->Type!='P')
+		continue;
+
+
+/*	    if(atm->Mod!=1 || atm->Type!='P')
+		break; */
 	    
 	    
 	    /* The start position has not been found yet*/
@@ -5283,13 +5416,21 @@ AjBool ajXyzPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	}
 	
 
-	  
+	
 	for(; atm; atm=(AjPAtom)ajListIterNext(iter)) 	
 	{
-	    /* Break if a non-protein atom is found or model no. is
+
+	    /* Continue / break if a non-protein atom is found or model no. is
 	     incorrect */
-	    if(atm->Mod!=mod || atm->Type!='P')
+
+
+	    if(atm->Mod!=mod)  
 		break;
+	    if(atm->Type!='P')
+		continue;
+/*	    if(atm->Mod!=mod || atm->Type!='P')
+		break; */
+
 
 
 	    /* The start position was specified, but has not 
@@ -5319,6 +5460,7 @@ AjBool ajXyzPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 		    continue;
 	    }	
 	    
+
 
 	    /* The end position was specified, but has not 
 		       been found yet*/
@@ -5368,7 +5510,7 @@ AjBool ajXyzPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	    /* Assign pointer for this chain*/
 	    atm2=atm;
 	}
-	
+
 	
 	/* Diagnostic if start was specified but not found*/
 	if(!found_start && !nostart)
@@ -5397,6 +5539,7 @@ AjBool ajXyzPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	ajListIterFree(iter);	
     }
     
+
 
     /* Write the TER record to the pdb file*/
     ajFmtPrintF(outf, "%-6s%5d      %-4S%c%4d%54s\n", 
@@ -5698,9 +5841,11 @@ AjBool ajXyzPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	while((atm=(AjPAtom)ajListIterNext(iter)))
 	{
 	    /* JCI hard-coded to work on model 1*/	
-	    /* Break if a non-protein atom is found or model no. !=1*/
-	    if(atm->Type!='P' || atm->Mod!=1)
+	    /* Continue / break if a non-protein atom is found or model no. !=1*/
+	    if(atm->Mod!=1)
 		break;
+	    if(atm->Type!='P') 
+		continue;
 	
 	    
 	    /* If we are onto a new residue*/
@@ -5943,8 +6088,16 @@ AjBool ajXyzPrintPdbSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb,
     {
 	/* JCI hard-coded to work on model 1*/	
 	/* Break if a non-protein atom is found or model no. !=1*/
-	if(atm->Type!='P' || atm->Mod!=1)
-	    break;
+
+	    /* Continue / break if a non-protein atom is found or model no. !=1*/
+	    if(atm->Mod!=1)
+		break;
+	    if(atm->Type!='P') 
+		continue;
+
+
+/*	if(atm->Type!='P' || atm->Mod!=1)
+	    break; */
 	
 
 	/* If we are onto a new residue*/
@@ -10101,6 +10254,37 @@ ajint ajXyzCompId(const void *hit1, const void *hit2)
 }
 
 
+/* @func ajXyzScophitCompScore ******************************************************
+ **
+ ** Function to sort AjOScophit objects by score record. Usually called by 
+ ** ajListSort.  The sorting order is inverted - i.e. it returns -1 if score1 
+ ** > score2 (as opposed to ajXyzCompScore).
+ **
+ ** @param [r] hit1  [const void*] Pointer to AjOHit object 1
+ ** @param [r] hit2  [const void*] Pointer to AjOHit object 2
+ **
+ ** @return [ajint] 1 if score1<score2, 0 if score1==score2, else -1.
+ ** @@
+ ******************************************************************************/
+ajint ajXyzScophitCompScore(const void *hit1, const void *hit2)
+{
+    AjPScophit p  = NULL;
+    AjPScophit q  = NULL;
+
+    p = (*(AjPScophit*)hit1);
+    q = (*(AjPScophit*)hit2);
+    
+    if(p->Score < q->Score)
+        return -1;
+    else if (p->Score == q->Score)
+        return 0;
+    else
+        return 1;
+
+
+}
+
+
 
 /* @func ajXyzScophitCompAcc *********************************************************
 **
@@ -10884,9 +11068,15 @@ AjBool  ajXyzPdbToIdx(ajint *idx, AjPPdb pdb, AjPStr res, ajint chn)
 	    continue;
 	
 	/* JCI hard-coded to work on model 1*/
-	/* Break if a non-protein atom is found or model no. !=1*/
-	if(atm->Type!='P' || atm->Mod!=1)
+	/* Continue / break if a non-protein atom is found or model no. !=1*/
+	if(atm->Mod!=1)
 	    break;
+	if(atm->Type!='P') 
+	    continue;
+
+
+/*	if(atm->Type!='P' || atm->Mod!=1)
+	    break; */
 
 	/* If we have found the residue*/
 	if(ajStrMatch(res, atm->Pdb))
@@ -10952,9 +11142,14 @@ AjBool   ajXyzPdbAtomIndexI(AjPPdb pdb, ajint chn, AjPInt *idx)
 	    continue;
 	
 	/* JCI hard-coded to work on model 1*/
-	/* Break if a non-protein atom is found or model no. !=1*/
-	if(atm->Type!='P' || atm->Mod!=1)
+	/* Continue / break if a non-protein atom is found or model no. !=1*/
+	if(atm->Mod!=1)
 	    break;
+	if(atm->Type!='P') 
+	    continue;
+
+/*	if(atm->Type!='P' || atm->Mod!=1)
+	    break; */
 
 	/* If we are onto a new residue*/
 	this_rn=atm->Idx;
@@ -11065,9 +11260,13 @@ AjBool   ajXyzPdbAtomIndexICA(AjPPdb pdb, ajint chn, AjPInt *idx, ajint *nres)
 	    continue;
 	
 	/* JCI hard-coded to work on model 1*/
-	/* Break if a non-protein atom is found or model no. !=1*/
-	if(atm->Type!='P' || atm->Mod!=1)
+	/* Continue / break if a non-protein atom is found or model no. !=1*/
+	if(atm->Mod!=1)
 	    break;
+	if(atm->Type!='P') 
+	    continue;
+/*	if(atm->Type!='P' || atm->Mod!=1)
+	    break; */
 
 	/* If we are onto a new residue*/
 	this_rn=atm->Idx;
@@ -11640,6 +11839,76 @@ AjBool ajXyzScopalgToScop(AjPScopalg align, AjPScop *scop_arr, ajint scop_dim,
     ajStrDel(&entry_up);
     
 
+    return ajTrue;
+}
+
+
+
+
+/* @func ajXyzScophitsWrite ***************************************************
+**
+** Write contents of a list of Scophits to an output file in embl-like format.
+** Text for Class, Fold, Superfamily and Family is only written if the text
+** is available - in case of a scop validation file, some of these records 
+** may be written 
+** @param [w] outf [AjPFile] Output file stream
+** @param [r] thys [AjPList] list object
+**
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+AjBool ajXyzScophitsWrite(AjPFile outf, AjPList list)
+{
+
+    AjIList iter     = NULL;
+    
+    AjPScophit thys = NULL;
+    
+
+    while((thys = (AjPScophit)ajListIterNext(iter)))
+    {
+        
+        if(!thys)
+            return ajFalse;
+
+        if(MAJSTRLEN(thys->Class))
+            ajFmtPrintF(outf,"CL   %S\n",thys->Class);
+        if(MAJSTRLEN(thys->Fold))
+            ajFmtPrintSplit(outf,thys->Fold,"XX\nFO   ",75," \t\n\r");
+        if(MAJSTRLEN(thys->Superfamily))
+            ajFmtPrintSplit(outf,thys->Superfamily,"XX\nSF   ",75," \t\n\r");
+        if(MAJSTRLEN(thys->Family))
+            ajFmtPrintSplit(outf,thys->Family,"XX\nFA   ",75," \t\n\r");
+        if(MAJSTRLEN(thys->Family))
+            ajFmtPrintF(outf,"XX\nSI   %d\n", thys->Sunid_Family);
+    
+        ajFmtPrintF(outf, "%-5s%S\n", "TY", thys->Typeobj);
+        ajFmtPrintF(outf, "XX\n");
+        ajFmtPrintF(outf, "%-5s%.5f\n", "SC", thys->Score);
+        ajFmtPrintF(outf, "XX\n");
+        ajFmtPrintF(outf, "%-5s%.5f\n", "EV", thys->Eval);
+        ajFmtPrintF(outf, "XX\n");
+        
+        if(MAJSTRLEN(thys->Group))
+        {
+            ajFmtPrintF(outf, "%-5s%S\n", "GP", thys->Group);
+            ajFmtPrintF(outf, "XX\n");
+        }
+
+        ajFmtPrintF(outf, "%-5s%S\n", "AC", thys->Acc);
+        ajFmtPrintF(outf, "XX\n");
+        ajFmtPrintF(outf, "%-5s%d START; %d END;\n", "RA", thys->Start, thys->End);
+        ajFmtPrintF(outf, "XX\n");
+        ajSeqWriteXyz(outf, thys->Seq, "SQ");
+        ajFmtPrintF(outf, "XX\n");
+    
+        ajFmtPrintF(outf, "//\n");
+    }
+
+    ajListIterFree(iter);
+    
+    
+    /* Return */
     return ajTrue;
 }
 
@@ -12283,4 +12552,1042 @@ ajint ajXyzCathBinSearchPdb(AjPStr id, AjPCath *arr, ajint siz)
 	    return m;
     }
     return -1;
+}
+
+
+
+
+
+
+
+
+
+
+/* @func ajXyzCoordNew ***********************************************************
+ **
+ ** Coord object constructor. This is normally called by the ajXyzDiscordToCoords
+ ** function.
+
+ **
+ ** 
+ ** @return [AjPCoord] Pointer to a Coord object
+ ** @@
+ ******************************************************************************/
+AjPCoord ajXyzCoordNew(void)
+{
+    AjPCoord ret   = NULL;
+
+    AJNEW0(ret);
+    ret->Class       = ajStrNew();
+    ret->Fold        = ajStrNew();
+    ret->Superfamily = ajStrNew();
+    ret->Family      = ajStrNew();
+    ret->Model_Type  = ajStrNew();
+    ret->Acc         = ajStrNew();
+    ret->Spr         = ajStrNew();
+    ret->x           = 0.0;
+    ret->y           = 0.0;
+
+
+    return ret;
+}
+
+
+/* @func ajXyzCoordDel *******************************************************
+ **
+ ** Destructor for Coord object.
+ **
+ ** @param [w] pthis [AjPCoord*] Coord object pointer
+ **
+ ** @return [void]
+ ** @@
+ ******************************************************************************/
+void ajXyzCoordDel(AjPCoord *pthis)
+{
+    ajStrDel(&(*pthis)->Class);
+    ajStrDel(&(*pthis)->Fold);
+    ajStrDel(&(*pthis)->Superfamily);
+    ajStrDel(&(*pthis)->Family);
+    ajStrDel(&(*pthis)->Acc);
+    ajStrDel(&(*pthis)->Spr);
+ 
+    AJFREE(*pthis);
+    *pthis=NULL;
+    
+    return;
+}
+
+
+/* @func ajXyzDiscordToCoords **********************************************
+ **
+ ** Read from a list of Discoord structures and writes a list of Coord 
+ ** structures.
+ ** 
+ ** @param [r] in      [AjPList]  List of pointers to Hitlist structures
+ ** @param [w] out     [AjPList*] Pointer to list of Scophit structures
+ **
+ ** @return [AjBool] True on success (lists were processed ok)
+ ** @@
+ ******************************************************************************/
+AjBool ajXyzDiscordToCoords(AjPDiscord dis_cord, AjPList *out)
+{
+    AjPCoord    coord    = NULL;        /* Pointer to  Coord */
+    ajint  x             = 0;           /* Loop counter */
+  
+  
+    /* Check args */
+    if(!dis_cord)
+    {
+        ajWarn("Null arg passed to ajXyzDiscordToCoords");
+        return ajFalse;
+    }
+  
+    /* Loop for each hit in discord structure */
+    for(x=0; x<dis_cord->N; ++x)
+    {
+        /* Create a new coord structure */
+        coord = ajXyzCoordNew();
+    
+        /* Assign scop classification records from discord structure */
+        ajStrAssS(&coord->Class, dis_cord->Class);
+        ajStrAssS(&coord->Fold, dis_cord->Fold);
+        ajStrAssS(&coord->Superfamily, dis_cord->Superfamily);
+        ajStrAssS(&coord->Family, dis_cord->Family);
+        coord->Sunid_Family = dis_cord->Sunid_Family;
+    
+        /* Assign records from hit structure */
+        ajStrAssS(&coord->Acc, dis_cord->Points[x]->Acc);
+        ajStrAssS(&coord->Spr, dis_cord->Points[x]->Spr);
+        coord->x = dis_cord->Points[x]->x;
+        coord->y = dis_cord->Points[x]->y;
+    
+        /* Push coord onto list */
+        ajListPushApp(*out,coord);
+    }
+  
+    return ajTrue;
+}
+
+
+/* @func ajXyzDiscordNew ***********************************************************
+ **
+ ** Discord object constructor. This is normally called by the ajXyzDiscordRead
+ ** function. Fore-knowledge of the number of coordinated is required.
+ **
+ ** @param [r] n [int] Number of coordinates
+ ** 
+ ** @return [AjPDiscord] Pointer to a Discord object
+ ** @@
+ ******************************************************************************/
+AjPDiscord  ajXyzDiscordNew(ajint n)
+{
+    AjPDiscord ret = NULL;
+    ajint i=0;
+    
+
+    AJNEW0(ret);
+    ret->Class = ajStrNew();
+    ret->Fold = ajStrNew();
+    ret->Superfamily = ajStrNew();
+    ret->Family = ajStrNew();
+    ret->Model_Type = ajStrNew();
+
+    ret->N = n;
+
+    if(n)
+    {
+        AJCNEW0(ret->Points,n);
+        for(i=0;i<n;++i)
+            ret->Points[i] = ajXyzDatapointNew();
+    }   
+
+    return ret;
+}
+
+
+/* @func ajXyzDatapointNew ***********************************************************
+ **
+ ** Datapoint object constructor.
+ ** This is normally called by the ajXyzDiscordNew function.
+ **
+ ** @return [AjPDatapoint] Pointer to an Datapoint object
+ ** @@
+ ******************************************************************************/
+
+AjPDatapoint ajXyzDatapointNew(void)
+{
+    AjPDatapoint ret = NULL;
+
+    AJNEW0(ret);
+    
+    ret->Acc   = ajStrNew();
+    ret->Spr   = ajStrNew();
+
+    return ret;
+}
+
+/* @func ajXyzDiscordDel *******************************************************
+ **
+ ** Destructor for Discord object.
+ **
+ ** @param [w] pthis [AjPDiscord*] Discord object pointer
+ **
+ ** @return [void]
+ ** @@
+ ******************************************************************************/
+void ajXyzDiscordDel(AjPDiscord *pthis)
+{
+    int x = 0;                          /* Counter */
+    
+    if(!(*pthis))
+    {
+        ajWarn("Null pointer passed to ajXyzHitlistDel");
+        return;
+    }
+    
+    if((*pthis)->Class)
+        ajStrDel(&(*pthis)->Class);
+    if((*pthis)->Fold)
+        ajStrDel(&(*pthis)->Fold);
+    if((*pthis)->Superfamily)
+        ajStrDel(&(*pthis)->Superfamily);
+    if((*pthis)->Family)
+        ajStrDel(&(*pthis)->Family);
+    
+    for(x=0;x<(*pthis)->N; x++)
+        if((*pthis)->Points[x])
+            ajXyzDatapointDel(&(*pthis)->Points[x]);
+
+    if((*pthis)->Points)
+        AJFREE((*pthis)->Points);
+    
+    if(*pthis)
+        AJFREE(*pthis);
+    
+    *pthis=NULL;
+    
+    return;
+}
+
+
+/* @func ajXyzDatapointDel ***********************************************************
+ **
+ ** Destructor for Datapoint object.
+ **
+ ** @param [w] thys [AjPDatapoint*] Datapoint object pointer
+ **
+ ** @return [void]
+ ** @@
+ ******************************************************************************/
+
+void ajXyzDatapointDel(AjPDatapoint *thys)
+{
+    AjPDatapoint pthis = *thys;
+
+    if(!thys || !pthis)
+        return;
+
+
+    ajStrDel(&pthis->Acc);
+    ajStrDel(&pthis->Spr);
+
+    AJFREE(pthis);
+    pthis=NULL;
+
+    return;
+}
+
+
+/* @func ajXyzDiscordRead ****************************************************
+**
+** Read a Discord object from a file in embl-like format. 
+** 
+** @param [r] inf      [AjPFile] Input file stream
+** @param [r] delim    [char *]  Delimiter for block of hits (in case the file
+**                               contains multiple hitlists).
+** @param [w] thys     [AjPDiscord*] Discord object
+**
+** @return [AjBool] True on success (a list of hits was read)
+** @@
+******************************************************************************/
+AjBool ajXyzDiscordRead(AjPFile inf, char *delim, AjPDiscord *thys)
+{
+  AjPStr  line         = NULL;     /* Line of text */
+  AjPStr  class        = NULL;
+  AjPStr  fold         = NULL;
+  AjPStr  super        = NULL;
+  AjPStr  family       = NULL;
+  AjPStr  model_type   = NULL;
+  AjBool  ok           = ajFalse;
+  ajint   x            = 0;        /* the x coordinate */
+  ajint   y            = 0;        /* the y coordinate */
+  ajint   n            = 0;        /* Number of current sequence */
+  ajint   nset         = 0;        /* Number in set */
+  ajint   Sunid_Family = 0;        /* SCOP sunid for family */
+  
+  /* Allocate strings */
+  class      = ajStrNew();
+  fold       = ajStrNew();
+  super      = ajStrNew();
+  family     = ajStrNew();
+
+  model_type = ajStrNew();
+  line       = ajStrNew();  
+  
+  /* Read first line */
+  ok = ajFileReadLine(inf,&line);
+  
+  while(ok && !ajStrPrefixC(line,delim))
+  {
+      if(ajStrPrefixC(line,"XX"))
+      {
+          ok = ajFileReadLine(inf,&line);
+          continue;
+      }
+
+
+      /* Get the sunid */
+      else if(ajStrPrefixC(line,"SI"))
+      {
+          ajFmtScanS(line, "%*s %d", &Sunid_Family);
+      }
+
+
+      /* Get the class */
+      else if(ajStrPrefixC(line,"CL"))
+      {
+          ajStrAssC(&class,ajStrStr(line)+3);
+          ajStrClean(&class);
+      }
+
+
+      /* Get the fold */
+      else if(ajStrPrefixC(line,"FO"))
+      {
+          ajStrAssC(&fold,ajStrStr(line)+3);
+          while((ok = ajFileReadLine(inf,&line)))
+          {
+              if(ajStrPrefixC(line,"XX"))
+                  break;
+              ajStrAppC(&fold,ajStrStr(line)+3);
+          }
+          ajStrClean(&fold);
+      }
+
+
+      /* Get the superfamily */
+      else if(ajStrPrefixC(line,"SF"))
+      {
+          ajStrAssC(&super,ajStrStr(line)+3);
+          while((ok = ajFileReadLine(inf,&line)))
+          {
+              if(ajStrPrefixC(line,"XX"))
+                  break;
+              ajStrAppC(&super,ajStrStr(line)+3);
+          }
+          ajStrClean(&super);
+      }
+
+
+      /* Get the family */
+      else if(ajStrPrefixC(line,"FA"))
+      {
+          ajStrAssC(&family,ajStrStr(line)+3);
+          while((ok = ajFileReadLine(inf,&line)))
+          {
+              if(ajStrPrefixC(line,"XX"))
+                  break;
+              ajStrAppC(&family,ajStrStr(line)+3);
+          }
+
+          ajStrClean(&family);
+      }
+
+      /* Get the type of model */
+      else if(ajStrPrefixC(line,"TY"))
+      {
+          ajStrAssC(&model_type,ajStrStr(line)+3);
+          ajStrClean(&model_type);
+      }
+
+ 
+      /* Get the number of points in the set */
+      else if(ajStrPrefixC(line,"NS"))
+      {
+          ajFmtScanS(line, "NS %d", &nset);
+            
+          /* Create discord structure */
+          (*thys)=ajXyzDiscordNew(nset);
+          (*thys)->N=nset;
+          ajStrAssS(&(*thys)->Class, class);
+          ajStrAssS(&(*thys)->Fold, fold);
+          ajStrAssS(&(*thys)->Superfamily, super);
+          ajStrAssS(&(*thys)->Family, family);
+          ajStrAssS(&(*thys)->Model_Type,model_type);
+          (*thys)->Sunid_Family = Sunid_Family;
+      }
+
+      else if(ajStrPrefixC(line,"NN"))
+      {
+          /* Increment hit counter */
+          n++;
+      
+
+          /* Safety check */
+          if(n>nset)
+          {
+              ajFatal("Dangerous error in input file caught in ajXyzHitlistRead.\n Email jison@hgmp.mrc.ac.uk");
+              printf("n...%d  nset...%d\n", n, nset);
+          }
+      }
+
+      /* get accession number for each data point */
+
+      else if(ajStrPrefixC(line,"AC"))
+      {
+          ajStrAssC(&(*thys)->Points[n-1]->Acc,ajStrStr(line)+3);
+          ajStrClean(&(*thys)->Points[n-1]->Acc);
+      }
+
+      /* get swissprot identifier for each data point */
+      else if(ajStrPrefixC(line,"ID"))
+      {
+          ajStrAssC(&(*thys)->Points[n-1]->Spr,ajStrStr(line)+3);
+          ajStrClean(&(*thys)->Points[n-1]->Spr);
+      }
+
+      /* get x,y co-ordiantes for each data point */
+      else if(ajStrPrefixC(line,"CO"))
+      {
+          ajFmtScanS(line, "%*s %d %*s %d", &x, &y);
+          (*thys)->Points[n-1]->x = x;
+          (*thys)->Points[n-1]->y = y;
+      }
+
+      ok = ajFileReadLine(inf,&line);
+  }
+  
+  ajStrDel(&line);
+  ajStrDel(&class);
+  ajStrDel(&fold);
+  ajStrDel(&super);
+  ajStrDel(&family);
+
+  
+  
+  /* Return */
+  if(!ok)
+      return ajFalse;
+  else
+      return ajTrue;
+}
+
+
+/* @func ajXyzDiscordWrite ***************************************************
+**
+** Write contents of a Discord object to an output file in embl-like format.
+** Text for Class, Fold, Superfamily and Family is only written if the text
+** is available - in case of a scop validation file, some of these records 
+** may be written 
+** @param [w] outf [AjPFile] Output file stream
+** @param [r] thys [AjPDiscord] Discord object
+**
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+AjBool ajXyzDiscordWrite(AjPFile outf, AjPDiscord thys)
+{
+    ajint x=0;  /* Counter */
+    
+    if(!thys)
+        return ajFalse;
+
+    if(MAJSTRLEN(thys->Class))
+        ajFmtPrintF(outf,"CL   %S\n",thys->Class);
+    if(MAJSTRLEN(thys->Fold))
+        ajFmtPrintSplit(outf,thys->Fold,"XX\nFO   ",75," \t\n\r");
+    if(MAJSTRLEN(thys->Superfamily))
+        ajFmtPrintSplit(outf,thys->Superfamily,"XX\nSF   ",75," \t\n\r");
+    if(MAJSTRLEN(thys->Family))
+        ajFmtPrintSplit(outf,thys->Family,"XX\nFA   ",75," \t\n\r");
+    if(MAJSTRLEN(thys->Family))
+        ajFmtPrintF(outf,"XX\nSI   %d\n", thys->Sunid_Family);
+    if(MAJSTRLEN(thys->Model_Type))
+      ajFmtPrintF(outf,"XX\nTY   %S\n",thys->Model_Type);
+
+
+
+    ajFmtPrintF(outf,"XX\nNS   %d\nXX\n",thys->N);
+
+    for(x=0;x<thys->N;x++)
+    {
+        ajFmtPrintF(outf, "%-5s[%d]\nXX\n", "NN", x+1);
+        ajFmtPrintF(outf, "%-5s%S\n", "AC", thys->Points[x]->Acc);
+        ajFmtPrintF(outf, "XX\n");
+        ajFmtPrintF(outf, "%-5s%S\n", "ID", thys->Points[x]->Spr);
+        ajFmtPrintF(outf, "XX\n");
+        ajFmtPrintF(outf, "%-5s%d X; %d Y;\n", "CO", thys->Points[x]->x, thys->Points[x]->y);
+        ajFmtPrintF(outf, "XX\n");
+    }
+    ajFmtPrintF(outf, "//\n");
+
+    /* Return */
+
+    return ajTrue;
+}
+
+
+/* @func ajXyzPvalueFromDist **********************************************************
+ **
+ ** Read a hmm distribution and calculates the p-value. Relies on a list 
+ ** of Coord objects sorted by score.
+ ** 
+ ** @param [r] score  [float]    The sunid_family 
+ ** @param [r] list   [AjPList]  Sorted list of Coord objects
+ **
+ ** @return [float] a p-value calculated from a list of score.
+ ** @@
+ *************************************************************************************/
+float ajXyzPvalueFromDist (float score, AjPList list)
+{
+    AjPCoord *arr     = NULL;           /* array derived from list */
+    ajint    dim      = 0;              /* size of the array */
+    ajint    idx      = 0;              /* index into the array for the score */
+
+    float    p_value  = 0.0;
+    ajint    i        = 0;
+    ajint    total    = 0;              /* total number of scores */
+    ajint    subtotal = 0;              /* the total of scores upto a particular score */
+
+
+    if(!score || !list)
+      ajWarn("Bad args passed to ajXyzPvalueFromDist");
+
+    if(!dim)
+      ajWarn("Empty list passed to ajXyzPvalueFromDist");
+
+    dim = ajListToArray(list,(void***)&(arr));
+
+    /* sum the total number of scores */
+    for(i = 0; i < dim; i++)
+      total = (total + (arr[i]->y));
+
+
+    if((idx = ajXyzCoordBinSearchScore(score, arr, dim))==-1)
+    {
+      AJFREE(arr);
+      ajFatal("ajXyzPvalueFromDist fatal error.");
+    }
+    
+      for(i=0;i<idx;i++)
+        subtotal = (subtotal+(arr[i]->y));
+        
+      p_value = (1-((float)subtotal/(float)total));  
+      AJFREE(arr);
+      
+      return p_value;
+}
+
+/* @func ajXyzScoreToPvalue *******************************************************
+ **
+ ** Read a score  and calculates the p-value. Relies on a list 
+ ** of Coord objects sorted by score.
+ ** 
+ ** @param [r] score  [float]    The sunid_family 
+ ** @param [r] list   [AjPList]  Sorted list of Coord objects
+ **
+ ** @return [float] a p-value calculated from a list of scores.
+ ** @@
+ *************************************************************************************/
+float ajXyzScoreToPvalue (float score, AjPList list)
+{
+    AjPCoord *arr     = NULL;           /* array derived from list */
+    ajint    dim      = 0;              /* size of the array */
+    ajint    idx      = 0;              /* index into the array for the score */
+    float    p_value  = 0.0;
+    
+    if(!score || !list)
+    {
+        ajWarn("Bad args passed to ajXyzScoreToPvalue");
+    }
+    
+    dim = ajListToArray(list,(void***)&(arr));
+    
+    if(!dim)
+    {
+        ajWarn("Empty list passed to ajXyzScoreToPvalue");
+    }
+    
+    if((idx = ajXyzCoordBinSearchScore(score, arr, dim))==-1)
+    {
+      AJFREE(arr);
+      ajFatal("ajXyzScoreToPvalue fatal error.");
+
+      return p_value;
+    }
+    
+    else
+    {
+/*      printf("subtotal = %d  total = %d\n",arr[idx]->y,arr[dim-1]->y);*/
+      p_value = ((1-(float)arr[idx]->y/(float)arr[dim-1]->y));  
+      AJFREE(arr);
+      
+      return p_value;
+    }
+    
+}
+
+/* @func ajXyzCoordBinSearchScore **********************************************
+ **
+ ** Performs a binary search for a given score over an array of score generated 
+ ** from a model on a set of randomly generated protein sequences. 
+ **
+ ** @param [r] id  [ajint]            Search score
+ ** @param [r] arr [AjPCoord    *]    Array of AjPCoord objects
+ ** @param [r] siz [ajint]            Size of array
+ **
+ ** @return [ajint] Index of first AjPScop object found with an PDB code
+ ** matching id, or -1 if id is not found.
+ ** @@
+ ******************************************************************************/
+ajint ajXyzCoordBinSearchScore(float score, AjPCoord *arr, ajint siz)
+{
+    int l;
+    int m;
+    int h;
+  
+    l=0;
+    h=siz-1;
+  
+    while(l<=h)
+    {
+        m=(l+h)>>1;
+    
+        if( (m==0) && (score < arr[m]->x))
+          return m;
+
+        else if( (m<siz-1) &&  (score >= arr[m]->x) && (score < arr[m+1]->x))
+          return m;
+
+        else if( (m==siz-1) &&  (score >= arr[m]->x))
+          return m;
+
+        else if(score < arr[m]->x)
+          h=m-1;
+
+        else if(score > arr[m]->x)
+          l=m+1;
+    }
+
+    return -1;
+}
+
+
+
+
+
+
+
+
+
+/* @func ajXyzSunidToScopInfo *******************************************************
+ **
+ ** Read a sunid  and writes the relavent scop infomation for it. Relies on a list 
+ ** of scop objects sorted by Sunid_Family code.
+ ** 
+ ** @param [r] sunid  [ajint]   The sunid_family 
+ ** @param [w] family [AjPStr*]  Family 
+ ** @param [w] family [AjPStr*]  Superfamily
+ ** @param [w] family [AjPStr*]  Fold
+ ** @param [r] list   [AjPList]  Sorted list of scop objects
+ **
+ ** @return [AjBool]  True if a swissprot identifier code was found for the Scop code.
+ ** @@
+ *************************************************************************************/
+AjBool ajXyzSunidToScopInfo (ajint sunid, AjPStr *family, AjPStr *superfamily, AjPStr *fold, AjPList list)
+{
+    AjPScop *arr    = NULL;             /* array derived from list */
+    ajint  dim      = 0;                /* size of the array */
+    ajint  idx      = 0;                /* index into the array for the Sunid_family */
+    
+    if(!sunid || !list)
+    {
+        ajWarn("Bad args passed to ajXyzSunidToScopInfo");
+        return ajFalse;
+    }
+    
+    dim = ajListToArray(list,(void***)&(arr));
+    
+    if(!dim)
+    {
+        ajWarn("Empty list passed to ajXyzSunidToScopInfo");
+        return ajFalse;
+    }
+
+    if( (idx = ajXyzScopBinSearchSunid(sunid, arr, dim))==-1)
+    {
+        AJFREE(arr);
+        return ajFalse;
+    }   
+    
+    else
+    {
+        ajStrAssS(family, arr[idx]->Family);
+        ajStrAssS(superfamily, arr[idx]->Superfamily);
+        ajStrAssS(fold, arr[idx]->Fold);
+
+        AJFREE(arr);
+        return ajTrue;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+/* @funcstatic  ajXyzDbaseNew **************************************************
+**
+** Constructor for Dbase object
+** @param [r] n [ajint] number of entries in database
+** 
+** @return [AjPDbase] Pointer to Dbase object
+** @@
+*************************************************************************/
+static AjPDbase  ajXyzDbaseNew(ajint n)
+{
+    AjPDbase ret=NULL;
+    
+    AJNEW0(ret);
+    
+    ret->n=n;
+    
+    if(n)
+    {
+	AJCNEW0(ret->entries, n);
+    }
+    else
+    {
+	ajWarn("Arg with value zero passed to ajXyzDbaseNew");
+	ret->entries=NULL;
+    }
+    return ret;
+}
+
+
+/* @funcstatic  ajXyzDbaseDel ***********************************************
+**
+** Destructor for Dbase object 
+** @param [r] ptr [AjPDbase*] Pointer to the Dbase object
+**
+** @return [void] 
+** @@
+******************************************************************************/
+static void ajXyzDbaseDel(AjPDbase *ptr)
+{
+  ajint i=0;
+  
+  /* Check arg's */
+  if(ptr==NULL) 
+    {	
+      ajWarn("Attemp to free NULL pointer in ajXyzDbaseDel");
+      return; 
+    }
+
+  if(*ptr==NULL) 
+    {	
+      ajWarn("Attemp to free NULL pointer in ajXyzDbaseDel");
+      return; 
+    }
+
+  if((*ptr)->entries)
+    {
+	for(i=0;i<(*ptr)->n;i++)
+	{
+	    if((*ptr)->entries[i])
+	    {
+		ajXyzDbaseEntDel(&((*ptr)->entries[i]));
+	    }
+	} 
+	AJFREE((*ptr)->entries);
+    }
+  AJFREE((*ptr));
+  *ptr=NULL;
+  return;
+}
+
+/* @funcstatic  ajXyzDbaseEntNew *******************************************
+**
+** Constructor for DbaseEnt object 
+** @param [r] n [ajint] number of entries in array of domain contact residues
+**
+** @return [AjPDbaseEnt] Pointer to DbaseEnt object
+** @@
+******************************************************************************/
+static AjPDbaseEnt ajXyzDbaseEntNew(ajint n)
+{
+  AjPDbaseEnt ret=NULL;
+  AJNEW0(ret);
+
+
+  ret->abv=ajStrNew();
+  ret->ful=ajStrNew();
+  ret->tmp=ajListNew();
+  ret->no_dom = n;
+  
+
+  if(n)
+    {
+      AJCNEW0(ret->cont_data, n);
+    }
+  else
+    {
+      /*ajWarn("Zero sized arg passed to ajXyzDbaseEntNew.\n");*/
+      ret->cont_data = NULL;
+    }
+  return ret;
+}
+
+/* @funcstatic  ajXyzDbaseEntDel *******************************************
+**
+** Destructor for DbaseEnt object 
+** @param [w] ptr [AjPDbaseEnt *] DbaseEnt object pointer
+**
+** @return [void] 
+** @@
+******************************************************************************/
+static void ajXyzDbaseEntDel(AjPDbaseEnt *ptr)
+{
+  ajint x=0;
+    
+  /* Check arg's */
+  if(*ptr==NULL) 
+    {	
+      ajWarn("Attemp to free NULL pointer in ajXyzDbaseEntDel");
+      return; 
+    }
+
+  ajStrDel(&(*ptr)->abv);
+  ajStrDel(&(*ptr)->ful);
+  ajListDel(&(*ptr)->tmp);
+  
+  if((*ptr)->cont_data)
+  {
+      /*
+      ajFmtPrint("no_dom = %d\n", (*ptr)->no_dom);
+      */
+
+      for(x=0;x<(*ptr)->no_dom;x++)
+      {
+	  ajXyzDomContsDel(&((*ptr)->cont_data[x]));
+      }
+      AJFREE((*ptr)->cont_data);
+  }
+  
+    
+  AJFREE((*ptr));
+  *ptr=NULL;
+
+  return;
+}
+
+
+/* @funcstatic  ajXyzDomContsNew *******************************************
+**
+** Constructor for DomConts object
+** @param [r] n [ajint] no. of amino acids that make contact with the ligand
+** 
+** @return [AjPDomConts] Pointer to DomConts object
+** @@
+******************************************************************************/
+static AjPDomConts ajXyzDomContsNew(ajint n)
+{
+  AjPDomConts ret=NULL;
+  ajint i=0;
+  AJNEW0(ret);
+
+  ret->scop_name=ajStrNew();
+  ret->het_name=ajStrNew();
+  ret->no_keyres=n;
+  
+  if(n)
+    {
+	AJCNEW0(ret->aa_code, n);      
+	AJCNEW0(ret->res_pos2, n);      
+      for(i=0;i<n;i++)
+	{
+	  ret->aa_code[i]=ajStrNew();
+	  ret->res_pos2[i]=ajStrNew(); /* NEW */
+	}
+      ret->res_pos=ajIntNewL(n);    
+    }
+  else
+    {
+      /* ajWarn("Zero sized arg passed to ajXyzDomContsNew.\n"); */
+      ret->res_pos=ajIntNew();    
+      ret->aa_code=NULL;
+      ret->res_pos2=NULL;              /* NEW */
+    }	
+  return ret;
+}
+
+         
+/* @funcstatic  ajXyzDomContsDel *******************************************
+**
+** Destructor for DomConts object
+** @param [r]  ptr [AjPDomConts *] pointer to AjPDomConts object
+** 
+** @return [AjPDomConts] Pointer to DomConts object
+** @@
+******************************************************************************/
+static void ajXyzDomContsDel(AjPDomConts *ptr) 
+{
+  ajint i=0;
+
+  /* Check arg's */
+  if(*ptr==NULL) 
+    {	
+      ajWarn("Attemp to free NULL pointer in ajXyzDomContsDel");
+      return; 
+    }
+  ajStrDel(&(*ptr)->scop_name);
+  ajStrDel(&(*ptr)->het_name);
+  
+
+  for(i=0;i<(*ptr)->no_keyres;++i)
+  {
+      ajStrDel(&(*ptr)->aa_code[i]);
+      ajStrDel(&(*ptr)->res_pos2[i]); /* NEW */
+  }
+  if((*ptr)->aa_code)
+      AJFREE((*ptr)->aa_code);
+  if((*ptr)->res_pos2)
+      AJFREE((*ptr)->res_pos2);           /* NEW */
+
+
+  ajIntDel(&(*ptr)->res_pos);
+  AJFREE(*ptr);
+  *ptr=NULL;
+
+  return;
+}
+
+
+
+
+
+
+AjBool ajXyzFunkyRead(AjPFile funky_fptr, AjPList *all_entries)
+{
+  AjPStr          line=NULL;        /*Current line*/
+  AjPDbaseEnt     entry=NULL;       /*DbaseEnt for current hetrogen*/
+  AjPDomConts     domc=NULL;        /*DomConts for current domain */
+  
+  AjPStr          temp1=NULL;       /*Temporary string to account for multiple 
+DE lines*/
+
+  AjPStr          temp_aacode=NULL; /*Temporary string for amino acid code*/
+  ajint           temp_respos=0;    /*Temporary integer for domain residue 
+position*/
+  AjPStr          temp_respos2=NULL;/*Temporary string for protein residue 
+position*/
+
+  ajint           resIdx=0;         /*Counter for residue index*/
+
+  AjPList          tempList_aacode=NULL;
+  AjPList          tempList_respos2=NULL;
+ 
+
+  /*Check args*/
+  if((!funky_fptr))
+    {
+      ajWarn("Bad args passed to ajXyzFunkyRead\n");
+      return ajFalse;
+    }
+
+  /*Create Dbase object if necessary*/
+  /*   if(!(dbase)) */
+  /*     { */
+  /*       *dbase=ajXyzDbaseNew(0); */
+  /*     } */
+  
+  /*Create string and list objects*/
+  line=ajStrNew();
+  
+  
+  /*Read lines from file*/
+  while(ajFileReadLine(funky_fptr, &line))
+    {
+      if(ajStrPrefixC(line, "ID   "))
+        {
+          if(entry)
+            {
+              ajListToArray(entry->tmp, (void ***) &(entry)->cont_data);
+              ajListPushApp(*all_entries, entry);
+            }
+          entry=ajXyzDbaseEntNew(0);
+          ajFmtScanS(line, "%*s %S", &entry->abv);
+          /* ajFmtPrint("%S\n", entry->abv); */
+        }
+      else if(ajStrPrefixC(line, "DE   "))
+        {
+          ajStrAssSub(&temp1, line, 5, -1);
+          if(ajStrLen(entry->ful))
+            ajStrApp(&entry->ful, temp1);
+          else
+            ajStrAssS(&entry->ful, temp1);
+        }
+      else if(ajStrPrefixC(line, "ND   "))
+        ajFmtScanS(line, "%*s %d", &entry->no_dom);
+      else if(ajStrPrefixC(line, "SC   "))
+        {
+          domc=ajXyzDomContsNew(0);
+          resIdx=0;
+          tempList_aacode=ajListNew();
+          tempList_respos2=ajListNew();
+          ajFmtScanS(line, "%*s %S", &domc->scop_name);
+          /* ajFmtPrint("%S\n", domc->scop_name); */
+          ajStrAss(&domc->het_name, entry->abv);
+        }
+      else if(ajStrPrefixC(line, "NR   "))
+        {
+          ajFmtScanS(line, "%*s %d", &domc->no_keyres);
+          /* ajFmtPrint("*******%d\n", domc->no_keyres); */
+        }
+      else if(ajStrPrefixC(line, "RE   "))
+        {
+          resIdx++;
+          temp_aacode=ajStrNew();
+          temp_respos2=ajStrNew();
+          temp_respos=0;
+          ajFmtScanS(line, "%*s %S %d %S", &temp_aacode, &temp_respos, 
+&temp_respos2);
+          /* ajFmtPrint("%d for %S\n", resIdx, domc->scop_name); */
+          /* ajFmtPrint("%S\t%d\t%S\n", temp_aacode, temp_respos, temp_respos2); 
+*/
+          ajListPushApp(tempList_aacode, temp_aacode);
+          ajIntPut(&domc->res_pos, resIdx-1, temp_respos);
+          ajListPushApp(tempList_respos2, temp_respos2);
+
+          temp_aacode=NULL;
+          temp_respos2=NULL;
+          
+          if(resIdx == domc->no_keyres)
+            {
+              ajListToArray(tempList_aacode, (void ***) &(domc)->aa_code);
+              ajListstrDel(&tempList_aacode);
+              ajListToArray(tempList_respos2, (void ***) &(domc)->res_pos2);
+              ajListstrDel(&tempList_respos2);
+              ajListPushApp(entry->tmp, domc);
+            }
+        }
+    }  
+  ajListToArray(entry->tmp, (void ***) &(entry)->cont_data);
+  ajListPushApp(*all_entries, entry);
+  return ajTrue;          
+  
 }
