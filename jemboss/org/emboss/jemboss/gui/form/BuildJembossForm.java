@@ -59,6 +59,9 @@ public class BuildJembossForm implements ActionListener
   private JCheckBox  checkBox[];
   private InputSequenceAttributes inSeqAttr[];
   private ListFilePanel filelist[];
+  /** png/jemboss graphics selection */
+  private JComboBox graphics;
+
   protected static OutputSequenceAttributes outSeqAttr;
 
   private Box advSectionBox;
@@ -349,13 +352,16 @@ public class BuildJembossForm implements ActionListener
         Jemboss.resultsManager.updateMode("interactive");
 //  }
 
+    String type[] = {"Jemboss Graphics","PNG"};
+    graphics = new JComboBox(type);
+
     for(int j=0;j<nsection;j++)
     {
       if(nfield < numofFields)
       {
         SectionPanel sp = new SectionPanel(f,p3,fieldPane,parseAcd,
               nfield,textf,textInt,textFloat,rangeField,checkBox,
-              inSeqAttr,fieldOption,multiOption,inSeq,filelist,
+              inSeqAttr,fieldOption,multiOption,inSeq,filelist,graphics,
               db,appDescription,lab,numofFields,mysettings,withSoap,envp);
 
         if(sp.isReportFormat())
@@ -629,8 +635,15 @@ public class BuildJembossForm implements ActionListener
       if(att.startsWith("appl"))
         appN = new String(att);
       else if (parseAcd.isOutputGraph(j))
-        options = options.concat(" -" + val + " png");
+      {
+        if(graphics == null)
+          System.out.println("graphics is NULL");
 
+        if(((String)graphics.getSelectedItem()).equals("PNG") ) 
+          options = options.concat(" -" + val + " png");
+        else
+          options = options.concat(" -" + val + " data");
+      }
       if ( att.startsWith("dirlist")|| att.startsWith("featout")||
            att.startsWith("string")  || att.startsWith("seqout") ||
            att.startsWith("outfile") || att.startsWith("codon") ||
@@ -670,7 +683,6 @@ public class BuildJembossForm implements ActionListener
       }
       else if ( att.startsWith("select") )   
       {
-
         double max = 1.;
         if(parseAcd.isMaxParamValue(j))
           max = Double.parseDouble(parseAcd.getMaxParam(j));
