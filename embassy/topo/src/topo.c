@@ -202,7 +202,10 @@ int getValFromStr(AjPStr str){
     shape = 5;
 
   if(!shape)                     /* if no shape return */
-    return 0;
+  {
+      ajStrDel(&tmpstr);
+      return 0;
+  }
 
   if(strstr(colstr,"G")!=NULL)
     col = 1;
@@ -217,10 +220,14 @@ int getValFromStr(AjPStr str){
   else if(strstr(colstr,"Y")!=NULL)
     col = 6;
   else if(strstr(colstr,"F")!=NULL)    /* NO FILL */
+  {
+    ajStrDel(&tmpstr);
     return shape;
+  }
 
   symval = ((shape*8)-2)+col;
 
+  ajStrDel(&tmpstr);
   return symval;
 }
 
@@ -475,7 +482,7 @@ int main(int argc, char * argv[]) {
     isigend = (int *) AJALLOC(sizeof(int));               
     /*    ajRangeValues(regions,i,isigstart,isigend);*/
     for(i=0;i<ii;i++){
-      AjPStr val;
+      AjPStr val = NULL;
       ajRangeValues(regions,i,isigstart,isigend);
       if(ajRangeText(regions,i,&val)){
 	symsign = getValFromStr(val);
@@ -486,7 +493,10 @@ int main(int argc, char * argv[]) {
       for(j=*isigstart;j<=*isigend ;j++) {
 	syms[j]=symsign ;
       }  /*end for*/
+      ajStrDel(&val);
     }
+    AJFREE(isigstart);
+    AJFREE(isigend);
   }
     
   /*c determine if this is a draft plot */ 
