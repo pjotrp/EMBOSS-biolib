@@ -52,6 +52,8 @@ direction  LIMITED left,right,both
 
 EC_number QTEXT
 
+environmental_sample VOID
+
 evidence LIMITED experimental,not_experimental
 
 exception QTEXT
@@ -71,6 +73,8 @@ haplotype QTEXT
 insertion_seq QTEXT
 
 isolate QTEXT
+
+isolation_source QTEXT
 
 # removed in FTv3.0 Jan 2001
 # kinetoplast VOID  
@@ -149,6 +153,8 @@ sub_strain TEXT
 tissue_lib QTEXT
 
 tissue_type QTEXT
+
+transgenic VOID
 
 translation QSPECIAL
 
