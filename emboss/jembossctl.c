@@ -36,9 +36,12 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <sys/time.h>
+#include <strings.h>
 
 #define UIDLIMIT 100
 #define GIDLIMIT 100
+
+#define R_BUFFER 2048
 
 static AjBool jctl_up(char *buf,int *uid,int *gid,AjPStr *home);
 static AjBool jctl_do_fork(char *buf, int uid, int gid);
@@ -65,7 +68,10 @@ static void jctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
 #endif
 #include <crypt.h>
 
-#ifdef SHADOW
+#ifdef N_SHADOW
+#include <shadow.h>
+#endif
+#ifdef R_SHADOW
 #include <shadow.h>
 #endif
 
@@ -321,7 +327,7 @@ static void jctl_empty_core_dump()
 
 
 
-#ifdef SHADOW
+#ifdef N_SHADOW
 static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 			      ajint *gid, AjPStr *home)
 {
@@ -448,7 +454,62 @@ static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 }
 #endif
 
+#ifdef R_SHADOW
+static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
+			ajint *gid, AjPStr *home)
+{
+    struct spwd *shadow = NULL;
+    struct spwd sresult;
+    struct passwd *pwd  = NULL;
+    struct passwd presult;
+    char *p = NULL;
+    char *sbuf = NULL;
+    char *buf  = NULL;
 
+    if(!(buf=(char*)malloc(R_BUFFER)) || !(sbuf=(char*)malloc(R_BUFFER)))
+	return ajFalse;
+
+    shadow = getspnam_r(ajStrStr(username),&sresult,sbuf,R_BUFFER);
+    
+    if(!shadow)                 /* No such username */
+    {
+	AJFREE(buf);
+	AJFREE(sbuf);
+        return ajFalse;
+    }
+    
+    
+
+    pwd = getpwnam_r(ajStrStr(username),&presult,buf,R_BUFFER);
+    
+    if(!pwd)
+    {
+	AJFREE(buf);
+	AJFREE(sbuf);
+        return ajFalse;
+    }
+    
+    
+    *uid = pwd->pw_uid;
+    *gid = pwd->pw_gid;
+
+    ajStrAssC(home,pwd->pw_dir);
+    
+    p = crypt(ajStrStr(password),shadow->sp_pwdp);
+
+    if(!strcmp(p,shadow->sp_pwdp))
+    {
+	AJFREE(buf);
+	AJFREE(sbuf);
+        return ajTrue;
+    }
+
+    AJFREE(buf);
+    AJFREE(sbuf);
+
+    return ajFalse;
+}
+#endif
 
 
 #ifdef PAM

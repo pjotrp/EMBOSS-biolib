@@ -56,10 +56,10 @@
 
 #define R_BUFFER 2048		/* Reentrant buffer size */
 
-#ifdef SHADOW
+#ifdef N_SHADOW
 #include <shadow.h>
 #endif
-#ifdef RSHADOW
+#ifdef R_SHADOW
 #include <shadow.h>
 #endif
 
@@ -452,7 +452,7 @@ static void java_core_dump()
 
 
 
-#ifdef SHADOW
+#ifdef N_SHADOW
 static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
 			ajint *gid, AjPStr *home)
 {
@@ -488,14 +488,14 @@ static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
 
 
 
-#ifdef RSHADOW
+#ifdef R_SHADOW
 static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
 			ajint *gid, AjPStr *home)
 {
     struct spwd *shadow = NULL;
     struct spwd sresult;
     struct passwd *pwd  = NULL;
-    struct passwd *presult;
+    struct passwd presult;
     char *p = NULL;
     char *sbuf = NULL;
     char *buf  = NULL;
@@ -514,7 +514,7 @@ static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
     
     
 
-    pwd = getpwnam_r(ajStrStr(username),&result,buf,R_BUFFER);
+    pwd = getpwnam_r(ajStrStr(username),&presult,buf,R_BUFFER);
     
     if(!pwd)
     {
