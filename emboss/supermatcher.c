@@ -521,7 +521,10 @@ static ajint supermatcher_findstartpoints(AjPTable *seq1MatchTable,AjPSeq b,
 
     ajDebug("++ end1 %d -> %d end2 %d -> %d\n", *end1, amax, *end2, bmax);
     while(*end1<amax && *end2<bmax)
-	(*end1)++; (*end2)++;
+    {
+	(*end1)++;
+	(*end2)++;
+    }
 
     ajDebug("++ end1 %d end2 %d\n", *end1, *end2);
     
