@@ -1,4 +1,15 @@
 Version 2.5.0
+
+	Changed the default output filename from 'stdout' to a file for
+	the following:
+	    infoalign
+	    megamerger
+	    merger
+	    showalign
+	    showfeat
+	    showseq
+	    textsearch
+
 	Lindna/cirdna can now draw filled boxes and the user can change the
  	text size on the command-line. They can also read and display
  	complete genomic sequences.
