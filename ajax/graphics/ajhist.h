@@ -66,7 +66,8 @@ typedef struct AjSHistData {
   AjPStr title;
   AjPStr xaxis;
   AjPStr yaxis;
-} AjOHistData, *AjPHistData;
+} AjOHistData;
+#define AjPHistData AjOHistData*
 
 /* @data AjPHist **************************************************************
 **
@@ -105,7 +106,8 @@ typedef struct AjSHist {
   AjPStr yaxisright;
   AjPGraph graph;
   AjPHistData *hists;
-} AjOHist, *AjPHist;
+} AjOHist;
+#define AjPHist AjOHist*
 
 void    ajHistClose (void);
 void    ajHistCopyData (AjPHist hist, ajint index, const PLFLT *data);

@@ -376,8 +376,8 @@ ajint       ajFileWriteStr  (AjPFile thys, const AjPStr str, ajint len);
 
 void        ajOutfileClose(AjPOutfile* pthis);
 void        ajOutfileDel(AjPOutfile* pthis);
-AjPFile     ajOutfileFile (AjPOutfile thys);
-FILE*       ajOutfileFp (AjPOutfile thys);
+AjPFile     ajOutfileFile (const AjPOutfile thys);
+FILE*       ajOutfileFp (const AjPOutfile thys);
 AjPOutfile  ajOutfileNew(const AjPStr name);
 
 /* ============= definitions =========================*/

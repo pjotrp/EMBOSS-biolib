@@ -41,7 +41,8 @@ typedef struct AjSChar {
   ajint Res;
   ajint Len;
   char *Ptr;
-} AjOChar, *AjPChar;
+} AjOChar;
+#define AjPChar AjOChar*
 
 
 
@@ -74,7 +75,8 @@ typedef struct AjSInt {
   ajint Res;
   ajint Len;
   ajint *Ptr;
-} AjOInt, *AjPInt;
+} AjOInt;
+#define AjPInt AjOInt*
 
 
 
@@ -107,7 +109,8 @@ typedef struct AjSInt2d {
   ajint Res;
   ajint Len;
   AjPInt *Ptr;
-} AjOInt2d, *AjPInt2d;
+} AjOInt2d;
+#define AjPInt2d AjOInt2d*
 
 
 
@@ -140,7 +143,8 @@ typedef struct AjSInt3d {
   ajint Res;
   ajint Len;
   AjPInt2d *Ptr;
-} AjOInt3d, *AjPInt3d;
+} AjOInt3d;
+#define AjPInt3d AjOInt3d*
 
 
 
@@ -173,7 +177,8 @@ typedef struct AjSFloat {
   ajint Res;
   ajint Len;
   float *Ptr;
-} AjOFloat, *AjPFloat;
+} AjOFloat;
+#define AjPFloat AjOFloat*
 
 
 
@@ -206,7 +211,8 @@ typedef struct AjSFloat2d {
   ajint Res;
   ajint Len;
   AjPFloat *Ptr;
-} AjOFloat2d, *AjPFloat2d;
+} AjOFloat2d;
+#define AjPFloat2d AjOFloat2d*
 
 
 
@@ -239,7 +245,8 @@ typedef struct AjSFloat3d {
   ajint Res;
   ajint Len;
   AjPFloat2d  *Ptr;
-} AjOFloat3d, *AjPFloat3d;
+} AjOFloat3d;
+#define AjPFloat3d AjOFloat3d*
 
 
 
@@ -272,7 +279,8 @@ typedef struct AjSDouble {
   ajint Res;
   ajint Len;
   double *Ptr;
-} AjODouble, *AjPDouble;
+} AjODouble;
+#define AjPDouble AjODouble*
 
 
 
@@ -305,7 +313,8 @@ typedef struct AjSDouble2d {
   ajint Res;
   ajint Len;
   AjPDouble *Ptr;
-} AjODouble2d, *AjPDouble2d;
+} AjODouble2d;
+#define AjPDouble2d AjODouble2d*
 
 
 
@@ -338,7 +347,8 @@ typedef struct AjSDouble3d {
   ajint Res;
   ajint Len;
   AjPDouble2d  *Ptr;
-} AjODouble3d, *AjPDouble3d;
+} AjODouble3d;
+#define AjPDouble3d AjODouble3d*
 
 
 
@@ -371,7 +381,8 @@ typedef struct AjSShort {
   ajint Res;
   ajint Len;
   short *Ptr;
-} AjOShort, *AjPShort;
+} AjOShort;
+#define AjPShort AjOShort*
 
 
 
@@ -404,7 +415,8 @@ typedef struct AjSShort2d {
   ajint Res;
   ajint Len;
   AjPShort *Ptr;
-} AjOShort2d, *AjPShort2d;
+} AjOShort2d;
+#define AjPShort2d AjOShort2d*
 
 
 
@@ -437,7 +449,8 @@ typedef struct AjSShort3d {
   ajint Res;
   ajint Len;
   AjPShort2d  *Ptr;
-} AjOShort3d, *AjPShort3d;
+} AjOShort3d;
+#define AjPShort3d AjOShort3d*
 
 
 
@@ -470,7 +483,8 @@ typedef struct AjSLong {
   ajint Res;
   ajint Len;
   ajlong *Ptr;
-} AjOLong, *AjPLong;
+} AjOLong;
+#define AjPLong AjOLong*
 
 
 
@@ -503,7 +517,8 @@ typedef struct AjSLong2d {
   ajint Res;
   ajint Len;
   AjPLong *Ptr;
-} AjOLong2d, *AjPLong2d;
+} AjOLong2d;
+#define AjPLong2d AjOLong2d*
 
 
 
@@ -536,7 +551,8 @@ typedef struct AjSLong3d {
   ajint Res;
   ajint Len;
   AjPLong2d  *Ptr;
-} AjOLong3d, *AjPLong3d;
+} AjOLong3d;
+#define AjPLong3d AjOLong3d*
 
 
 

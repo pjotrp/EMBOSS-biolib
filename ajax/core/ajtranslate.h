@@ -68,7 +68,8 @@ typedef struct AjSTrn {
   AjPStr Title;
   char GC[15][15][15];
   char Starts[15][15][15];
-} AjOTrn, *AjPTrn;
+} AjOTrn;
+#define AjPTrn AjOTrn*
 
 
 /* table to convert character of base to translation array element value */

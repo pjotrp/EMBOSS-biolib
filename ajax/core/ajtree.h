@@ -16,7 +16,7 @@ enum AjETreeType {ajETreeAny, ajETreeStr};
 ** Substructure of AjPTree
 **
 ** @attr Next [struct AjSTreeNode*] next item
-** @attr Prev [struct AjSTreeNode*] previous item
+** @attr Up   [struct AjSTreeNode*] previous item
 ** @attr Item [void*] data value
 ** @@
 ******************************************************************************/
@@ -43,7 +43,8 @@ typedef struct AjSTreeNode {
 ** @new ajTreeNew Creates a new general tree.
 ** @new ajTreestrNew Creates a new AjPStr tree.
 **
-** @attr nodes [AjPList] List of top level nodes
+** @attr Nodes [AjPList] List of top level nodes
+** @attr Top [AjPTreeNode] Top node in the tree
 ** @attr Type [AjEnum] Tree type (any, string, etc.)
 ** @@
 ******************************************************************************/

@@ -143,7 +143,8 @@ typedef struct GraphSType
     AjBool plplot;
     void (*XYDisplay) (AjPGraph thys, AjBool closeit, const char *ext);
     void (*GOpen) (AjPGraph thys, const char *ext);
-} GraphOType, *GraphPType;
+} GraphOType;
+#define GraphPType GraphOType*
 
 
 
@@ -5703,7 +5704,8 @@ static void GraphDraw(AjPGraph thys)
 
 void ajGraphClear(AjPGraph thys)
 {
-    AjPGraphPlpObj Obj,anoth;
+    AjPGraphPlpObj Obj;
+    AjPGraphPlpObj anoth;
 
     if (!thys->plplot)
 	return;

@@ -82,18 +82,18 @@ extern "C"
 ** 
 ** 
 ** @new   ajDmxScophitNew Default Scophit object constructor. 
-** @del   ajDmxScophitDel Default Scophit object destructor. 
-** @del   ajDmxScophitDelWrap Wrapper to destructor for Scophit object for use
+** @delete ajDmxScophitDel Default Scophit object destructor. 
+** @delete ajDmxScophitDelWrap Wrapper to destructor for Scophit object for use
 **        with generic functions.
-** @ass   ajDmxScophitListCopy Reads a list of Scophit structures and returns
+** @assign ajDmxScophitListCopy Reads a list of Scophit structures and returns
 **        a pointer to a duplicate of the list. 
 ** @use   ajDmxScophitCheckTarget Checks to see if the Target element of a 
 **        Scophit object == ajTrue.
-** @mod   ajDmxScophitTarget Sets the Target element of a Scophit object to 
+** @modify ajDmxScophitTarget Sets the Target element of a Scophit object to 
 **        True.
-** @mod   ajDmxScophitTarget2 Sets the Target2 element of a Scophit object to 
+** @modify ajDmxScophitTarget2 Sets the Target2 element of a Scophit object to 
 **        True.
-** @mod   ajDmxScophitTargetLowPriority  Sets the Target element of a Scophit 
+** @modify ajDmxScophitTargetLowPriority  Sets the Target element of a Scophit 
 **        object to True if its Priority is low.
 ** @use   ajDmxScophitCompSpr Function to sort Scophit object by Spr element. 
 ** @use   ajDmxScophitCompStart  Function to sort Scophit object by Spr 
@@ -117,7 +117,7 @@ extern "C"
 **        of a list of Scop objects that is provided.  
 ** @output ajDmxScophitsWrite Write contents of a list of Scophits to an output
 **        file.
-** @ass   ajDmxScophitCopy Copies the contents from one Scophit object to 
+** @assign ajDmxScophitCopy Copies the contents from one Scophit object to 
 **        another.
 ** @@
 ****************************************************************************/
@@ -146,7 +146,8 @@ typedef struct AjSScophit
     AjBool    Target;
     AjBool    Target2;
     AjBool    Priority;
-} AjOScophit, *AjPScophit;
+} AjOScophit;
+#define AjPScophit AjOScophit*
 
 
 
@@ -195,7 +196,7 @@ typedef struct AjSScophit
 **        format (just the alignment without the SCOP classification 
 **        information).
 ** @new   ajDmxScopalgNew Scopalg object constructor.
-** @del   ajDmxScopalgDel Scopalg object destructor.
+** @delete ajDmxScopalgDel Scopalg object destructor.
 ** @input ajDmxScopalgGetseqs Read a Scopalg object and writes an array of 
 **        AjPStr containing the sequences without gaps.
 ** @@
@@ -213,7 +214,8 @@ typedef struct AjSScopalg
     AjPStr  *Seqs;
     AjPStr   Post_similar;
     AjPStr   Positions;
-} AjOScopalg, *AjPScopalg;
+} AjOScopalg;
+#define AjPScopalg AjOScopalg*
 
 
 

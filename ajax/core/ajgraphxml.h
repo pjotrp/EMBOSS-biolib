@@ -23,7 +23,8 @@ extern "C"
 typedef struct AjSXmlNode
 {
     GdomeNode *theNode;
-} AjOXmlNode, *AjPXmlNode;
+} AjOXmlNode;
+#define AjPXmlNode AjOXmlNode*
 
 /* @data AjPXmlFile ***********************************************************
 **
@@ -49,7 +50,8 @@ typedef struct AjSXmlFile
     AjPXmlNode currentScene;
     double colour[3];
     AjPTable nodeTypes;
-} AjOXmlFile, *AjPXmlFile;
+} AjOXmlFile;
+#define AjPXmlFile AjOXmlFile*
 
 #define AjPGraphXml AjOXmlFile*
 

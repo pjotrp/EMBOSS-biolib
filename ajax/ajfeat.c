@@ -57,7 +57,8 @@ typedef struct FeatSTagval
 {
     AjPStr Tag;
     AjPStr Value;
-} FeatOTagval, *FeatPTagval;
+} FeatOTagval;
+#define FeatPTagval FeatOTagval*
 
 
 
@@ -270,7 +271,8 @@ typedef struct FeatSInFormat
     AjBool (*Read)  (AjPFeattable thys, AjPFileBuff file);
     AjBool (*InitReg)();
     AjBool (*DelReg)();
-} FeatOInFormat, *FeatPInFormat;
+} FeatOInFormat;
+#define FeatPInFormat FeatOInFormat*
 
 /* name             Dna   Protein
    input-function   init-regex-function del-regex-function */
@@ -339,7 +341,8 @@ typedef struct FeatSTypePir
 {
     char* Pir;
     char* Internal;
-} FeatOTypePir, *FeatPTypePir;
+} FeatOTypePir;
+#define FeatPTypePir FeatOTypePir*
 
 static FeatOTypePir FeatPirType[] =
 {
@@ -433,7 +436,8 @@ typedef struct FeatSOutFormat
     char* Name;
     AjBool (*VocInit) ();
     AjBool (*Write) (const AjPFeattable thys, AjPFile file);
-} FeatOOutFormat, *FeatPOutFormat;
+} FeatOOutFormat;
+#define FeatPOutFormat FeatOOutFormat*
 
 
 
@@ -531,7 +535,8 @@ typedef struct FeatSTypeIn
 {
     char* Name;
     char* Value;
-} FeatOTypeIn, *FeatPTypeIn;
+} FeatOTypeIn;
+#define FeatPTypeIn FeatOTypeIn*
 
 
 
@@ -565,7 +570,8 @@ typedef struct FeatSTypeOut
 {
     char* Name;
     char* Value;
-} FeatOTypeOut, *FeatPTypeOut;
+} FeatOTypeOut;
+#define FeatPTypeOut FeatOTypeOut*
 
 
 

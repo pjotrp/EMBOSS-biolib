@@ -30,7 +30,8 @@ typedef struct AjSGraphPlpObj {
   float y1;
   float y2;
   struct AjSGraphPlpObj *next;
-} AjOGraphPlpObj, *AjPGraphPlpObj;
+} AjOGraphPlpObj;
+#define AjPGraphPlpObj AjOGraphPlpObj*
 
 /* @data AjPGraphPlpData ******************************************************
 **
@@ -85,7 +86,8 @@ typedef struct AjSGraphPlpData {
   ajint colour;
   ajint lineType;
   AjPGraphPlpObj Obj;
-} AjOGraphPlpData, *AjPGraphPlpData;
+} AjOGraphPlpData;
+#define AjPGraphPlpData AjOGraphPlpData*
 
 /* @data AjPGraphPlp **********************************************************
 **
@@ -141,7 +143,8 @@ typedef struct AjSGraphPlp {
   AjPStr outputfile;
   AjPGraphPlpData *graphs;
   AjPGraphPlpObj Obj;
-} AjOGraphPlp, *AjPGraphPlp;
+} AjOGraphPlp;
+#define AjPGraphPlp AjOGraphPlp*
 
 /* @data AjPGraph *************************************************************
 **
@@ -157,7 +160,8 @@ typedef struct AjSGraph {
     ajint numsets;
     AjPGraphPlp plplot;
     AjPGraphXml xml;
-} AjOGraph, *AjPGraph;
+} AjOGraph;
+#define AjPGraph AjOGraph*
 
 enum AjEGraphColours {BLACK, RED, YELLOW, GREEN, AQUAMARINE,
 		      PINK, WHEAT, GREY, BROWN, BLUE, BLUEVIOLET,

@@ -45,7 +45,8 @@ typedef struct TimeSFormat
 {
     char* Name;
     char* Format;
-} TimeOFormat, *TimePFormat;
+} TimeOFormat;
+#define TimePFormat TimeOFormat*
 
 
 

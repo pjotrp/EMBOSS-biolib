@@ -46,7 +46,8 @@ typedef struct AjSRange
     ajint *start;
     ajint *end;
     AjPStr *text;
-} AjORange,*AjPRange;
+} AjORange;
+#define AjPRange AjORange*
 
 
 AjBool    ajRangeBegin (AjPRange thys, ajint begin);
