@@ -5,7 +5,11 @@ bin_PROGRAMS = eclique econsense econtml econtrast ednacomp ednadist ednainvar \
 ednaml ednamlk ednapars ednapenny edollop edolpenny efactor efitch egendist \
 ekitsch emix epenny eprotdist eprotpars erestml eseqboot eneighbor
 
+if LOCALLINK
 INCLUDES = -I../include -I../../../ajax
+else
+INCLUDES = -I../include -I${embprefix}/include
+endif
 
 
 if ISSHARED
@@ -42,5 +46,8 @@ erestml_SOURCES = restml.c restml2.c
 eseqboot_SOURCES = seqboot.c
 eneighbor_SOURCES = neighbor.c
 
-
+if LOCALLINK
 LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
+else
+LDADD = -L${embprefix}/lib -lnucleus -lajax -lplplot $(XLIB)
+endif
