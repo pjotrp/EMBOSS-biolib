@@ -31,7 +31,9 @@ void ajExit (void) {
   ajFileExit();
   ajFeatExit();
   ajAcdExit(ajFalse);
+  ajNamExit();
   ajMemExit();
+  ajMessExit();	      /* clears data for ajDebug - do this last!!!  */
   exit (0);
   return;
 }
