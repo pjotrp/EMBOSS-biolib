@@ -475,6 +475,16 @@ typedef struct AjSScop
     char   *Chain;        /* Chain identifiers */
     AjPStr *Start;        /* PDB residue number of first residue in domain */
     AjPStr *End;          /* PDB residue number of last residue in domain */
+
+    ajint  Sunid;         /* SCOP sunid for domain data */
+    AjPStr Acc;           /* Accession number of sequence entry  */
+    AjPStr Spr;           /* Swissprot code of sequence entry */
+    AjPStr SeqPdb;	  /* Sequence (from pdb) as string */
+    AjPStr SeqSpr;	  /* Sequence (from swissprot) as string */
+    ajint  Startd;      /* Start of sequence relative to full length 
+			    swissprot sequence */
+    ajint  Endd;        /* End of sequence relative to full length 
+			    swissprot sequence */
 } AjOScop,*AjPScop;
 
 
