@@ -1,10 +1,16 @@
-pkgdata_DATA =  abiview0.gif banana0.gif chaos0.gif cirdna.gif cpgplot0.gif \
-               dotmatcher0.gif dottup0.gif emboss_icon.gif findkm0.gif \
-               isochore0.gif lindna.gif octanol0.gif pepinfo1.gif \
-               pepinfo2.gif pepnet0.gif pepwheel0.gif pepwindow0.gif \
-               pepwindowall0.gif plotorf0.gif polydot0.gif prettyplot3.gif \
-               prettyplot4.gif syco0.gif syco1.gif tmap0.gif topo.gif \
-               wobble0.gif aaindexextract.html abiview.html ajtest.html \
+pkgdata_DATA =  abiview.1.abiview.gif chaos.1.chaos.gif cirdna.1.cirdna.gif \
+               cpgplot.1.cpgplot.gif dan.2.dan.gif \
+               dotmatcher.1.dotmatcher.gif dotpath.1.dotpath.gif \
+               dottup.1.dottup.gif emboss_icon.gif findkm.1.findkm.gif \
+               isochore.1.isochore.gif lindna.1.lindna.gif \
+               octanol.1.octanol.gif pepinfo.1.pepinfo.gif \
+               pepnet.1.pepnet.gif pepwheel.1.pepwheel.gif \
+               pepwindow.1.pepwindow.gif pepwindowall.1.pepwindowall.gif \
+               plotcon.1.plotcon.gif plotorf.1.plotorf.gif \
+               plotorf.2.plotorf.gif polydot.1.polydot.gif \
+               prettyplot.1.prettyplot.gif prettyplot.2.prettyplot.gif \
+               syco.1.syco.gif tmap.1.tmap.gif topo.gif wobble.1.wobble.gif \
+               aaindexextract.html abiview.html ajtest.html \
                alignment_consensus_group.html \
                alignment_differences_group.html \
                alignment_dot_plots_group.html alignment_global_group.html \
