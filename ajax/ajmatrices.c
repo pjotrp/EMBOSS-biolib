@@ -143,6 +143,7 @@ AjPMatrixf ajMatrixfNew(AjPStr* codes, ajint n, AjPStr filename)
 void ajMatrixfDel(AjPMatrixf *thys)
 {
     ajint isize = 0;
+    ajint jsize = 0;
     ajint i     = 0;
 
 
@@ -150,7 +151,8 @@ void ajMatrixfDel(AjPMatrixf *thys)
 	return;
 
     isize = (*thys)->Size;
-    for(i=0; i<isize; ++i)
+    jsize = isize - 1;
+    for(i=0; i<jsize; ++i)
 	ajStrDel(&(*thys)->Codes[i]);
     AJFREE((*thys)->Codes);
 
@@ -180,6 +182,7 @@ void ajMatrixfDel(AjPMatrixf *thys)
 void ajMatrixDel(AjPMatrix *thys)
 {
     ajint isize = 0;
+    ajint jsize = 0;
     ajint i     = 0;
 
 
@@ -187,7 +190,8 @@ void ajMatrixDel(AjPMatrix *thys)
 	return;
 
     isize = (*thys)->Size;
-    for(i=0; i<isize; ++i)
+    jsize = isize - 1;
+    for(i=0; i<jsize; ++i)
 	ajStrDel(&(*thys)->Codes[i]);
     AJFREE((*thys)->Codes);
 
