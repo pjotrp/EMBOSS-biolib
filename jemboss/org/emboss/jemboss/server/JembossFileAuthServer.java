@@ -77,7 +77,7 @@ public class JembossFileAuthServer
     vans.add(userHomeDir);
 
     vans.add("EMBOSS results");
-    vans.add("/m2/SOAPRESULTS/"+userName);
+    vans.add("/tmp/SOAP/emboss/"+userName);
  
 //ADD IN OTHER USER ROOT DIRECTORIES HERE
 
