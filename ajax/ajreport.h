@@ -23,24 +23,24 @@ extern "C"
 ******************************************************************************/
 
 typedef struct AjSReport {
-  AjPStr Name;
-  AjPStr Type;
-  AjPStr Formatstr;
-  AjEnum Format;
-  AjPFeattable Fttable;
-  AjPFeattabOut Ftquery;
-  AjPStr Filename;
-  AjPStr Extension;
-  AjPFile File;
-  AjPList Tagnames;
-  AjPList Tagprints;
-  AjPList Tagtypes;
-  AjPStr Header;
-  AjPStr Tail;
-  AjBool Showusa;
-  AjBool Multi;
-  ajint Mintags;
-  ajint Count;
+  AjPStr Name;			/* As "Source" for features, usually empty */
+  AjPStr Type;			/* "P" Protein or "N" Nucleotide */
+  AjPStr Formatstr;		/* Report format (-rformat) */
+  AjEnum Format;		/* Report format (index number) */
+  AjPFeattable Fttable;		/* Feature table to use (obsolete?) */
+  AjPFeattabOut Ftquery;	/* Output definition for features*/
+  AjPStr Filename;		/* Output file name */
+  AjPStr Extension;		/* Output file extension */
+  AjPFile File;			/* Output file object */
+  AjPList Tagnames;		/* List of extra tag names (from ACD) */
+  AjPList Tagprints;		/* List of extra tag printnames (from ACD) */
+  AjPList Tagtypes;		/* List of extra tag datatypes (from ACD) */
+  AjPStr Header;		/* Text to add to header with newlines */
+  AjPStr Tail;			/* Text to add to tail with newlines */
+  AjBool Showusa;		/* Report USA (-rusa) or only seqname */
+  AjBool Multi;			/* if true, assume >1 sequence */
+  ajint Mintags;		/* Minimum number of tags to report */
+  ajint Count;			/* Number of sequences reported so far */
 } AjOReport, *AjPReport;
 
 void         ajReportClose (AjPReport pthys);
