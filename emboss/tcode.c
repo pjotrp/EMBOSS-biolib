@@ -117,7 +117,7 @@ int main(int argc, char **argv)
     AjPInt   to        = NULL;
 
     AjPGraph graph     = NULL;
-    AjPGraphData this  = NULL;
+    AjPGraphPlpData this  = NULL;
 
     ajint i;
     float ymin = 0.;
@@ -130,7 +130,7 @@ int main(int argc, char **argv)
     seqall   = ajAcdGetSeqall("sequence");
     window   = ajAcdGetInt("window");
     datafile = ajAcdGetDatafile("datafile");
-    plot     = ajAcdGetBool("plot");
+    plot     = ajAcdGetToggle("plot");
     step     = ajAcdGetInt("step");
     
     if(plot)
@@ -186,10 +186,10 @@ int main(int argc, char **argv)
 	    tcode_report(report, from, to, testcodes, npoints, ftable, seq);
 	else
 	{
-	    this = ajGraphxyDataNewI(npoints);
-	    ajGraphDataxySetTypeC(this,"2D plot");
+	    this = ajGraphPlpDataNewI(npoints);
+	    ajGraphPlpDataSetTypeC(this,"2D plot");
 	    ajGraphxySetOverLap(graph,ajFalse);
-	    ajGraphDataxyMaxMin(this->y,npoints,&ymin,&ymax);
+	    ajGraphArrayMaxMin(this->y,npoints,&ymin,&ymax);
 
 	    for(i=0;i<npoints;++i)
 	    {
@@ -197,24 +197,24 @@ int main(int argc, char **argv)
 				    / 2);
 		this->y[i] = ajFloatGet(testcodes,i);
 	    }
-	    ajGraphDataxySetMaxima(this,this->x[0],this->x[npoints-1],
+	    ajGraphPlpDataSetMaxima(this,this->x[0],this->x[npoints-1],
 				   0.,1.37);
 
 
 
-	    ajGraphxySetTitleDo (graph, ajTrue);
-	    ajGraphxyDataSetYtitleC(this,"TESTCODE value");
-	    ajGraphxyDataSetXtitleC(this,"Sequence mid position");
+	    ajGraphSetTitleDo(graph, ajTrue);
+	    ajGraphPlpDataSetYTitleC(this,"TESTCODE value");
+	    ajGraphPlpDataSetXTitleC(this,"Sequence mid position");
 
 	    
-	    ajGraphxyTitleC(graph,"Fickett TESTCODE plot");
+	    ajGraphSetTitleC(graph,"Fickett TESTCODE plot");
 
-	    ajGraphDataObjAddLine(this,this->x[0],0.74,this->x[npoints-1],
+	    ajGraphPlpDataAddLine(this,this->x[0],0.74,this->x[npoints-1],
 				  0.74,1);
-	    ajGraphDataObjAddLine(this,this->x[0],0.95,this->x[npoints-1],
+	    ajGraphPlpDataAddLine(this,this->x[0],0.95,this->x[npoints-1],
 				  0.95,3);
 
-	    ajGraphxyAddGraph(graph,this);
+	    ajGraphDataAdd(graph,this);
 	    ajGraphxyDisplay(graph,ajTrue);
 	}
 	
