@@ -983,15 +983,15 @@ public class AlignJFrame extends JFrame
               "           positive matches.\n"+
               "           -noBox         switch off box drawing around identical and\n"+
               "                          positive matches.\n"+
-              "           -colID         define a colour for identities.\n"+
               "           -minID         define the minimum number of identities. The\n"+
               "                          default for this is the number of sequences\n"+
               "                          in the file.\n"+
               "           -match         define a threshold value for the number of\n"+
               "                          positive matches, the default is half the\n"+
               "                          total wgt.\n"+
-              "           -colMatch      define a colour for positive matches.\n"+  
+              "           -colID         define a lettering colour for the identities.\n"+
               "           -colIDBack     define a background colour for identities.\n"+
+              "           -colMatch      define a lettering  colour for positive matches.\n"+  
               "           -colMatchBack  define a background colour for positive\n"+
               "                           matches.\n"+
               "           Available colour options:\n"+  
@@ -999,7 +999,7 @@ public class AlignJFrame extends JFrame
               "           magenta , orange, pink, white, yellow, black\n"+     
               "-print     Print the alignment image. The following 2 flags can be\n"+
               "           used along with the print flag\n"+
-              "           -prefix    prefix for image file.\n"+
+              "           -prefix    prefix for image output file.\n"+
               "           -type      png or jpeg (default is jpeg).\n"+
               "           -landscape Print as landscape (the default is portrait).\n"+
               "           -margin    Define the left, right, top and bottom margin\n"+
