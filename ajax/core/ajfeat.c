@@ -1735,6 +1735,7 @@ void ajFeattableAdd(AjPFeattable thys, AjPFeature feature)
     }
     ajListPushApp(thys->Features, feature);
 
+/*
     if(feature->Type)
 	ajDebug("ajFeattableAdd list size %d '%S' %d %d\n",
 		ajListLength(thys->Features), feature->Type,
@@ -1743,6 +1744,7 @@ void ajFeattableAdd(AjPFeattable thys, AjPFeature feature)
 	ajDebug("ajFeattableAdd list size %d '%S' %d %d\n",
 		ajListLength(thys->Features), NULL,
 		feature->Start, feature->End);
+*/
 
     return;
 }
@@ -3301,6 +3303,9 @@ static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
 	{
 	    ajRegSubI(EmblRegexOperOut, 1, &opnam);
 	    ajRegSubI(EmblRegexOperOut, 2, &tmpstr);
+	    if(!ajStrParentheses(tmpstr))
+		break;
+
 	    /* ajDebug("OperOut %S( '%S' )\n", opnam, tmpstr); */
 	    if (ajStrMatchCaseC(opnam, "complement"))
 		Fwd = !Fwd;
@@ -3348,8 +3353,10 @@ static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
 	    HasOper = ajTrue;
 	}
 	else
+	{
 	    ajStrAssS(&locstr, opval);
-
+	    /* ajDebug("OperIn simple '%S'\n", locstr); */
+	}
 	if(ajRegExec(EmblRegexOperNone, locstr))  /* one exon */
 	{
 	    ajRegSubI(EmblRegexOperNone, 2, &entryid); /* if any */
@@ -3874,8 +3881,10 @@ static AjBool featRegInitEmbl(void)
     /* simple location */
     EmblRegexOperNone = ajRegCompC("^(([^:,]+):)?([^,]+),?");
     /* oper() outside used if there is a ',' must end at final ')' */
+    /*EmblRegexOperOut = ajRegCompC("^([a-zA-Z_]+)[(]"
+				  "((?:[^()]+(?:[(][^()]+[)])?)+)[)]$");*/
     EmblRegexOperOut = ajRegCompC("^([a-zA-Z_]+)[(]"
-				  "(([^[()]+([(][^()]+[)])?)+)[)]$");
+				  "(.*)[)]$");
     EmblRegexTv = ajRegCompC("^..    +( .*)") ;	/* start of new feature */
     EmblRegexTvTag = ajRegCompC("^ */([^/= ]+)(=([^/ ]+))?"); /* tag=val */
  
@@ -7728,8 +7737,12 @@ static AjBool featTagSpecialAllProteinid(AjPStr* pval)
     static AjPStr preidstr = NULL;
     AjBool ret = ajFalse;
 
+/* protein_id should be ABC123456.1
+   but can be ENSP01234567890 for an ENSEMBL ID
+*/
+
     if(!exp)
-	exp = ajRegCompC("^(([A-Z0-9]+)[.][0-9]+)$");
+	exp = ajRegCompC("^(([A-Z0-9]+)[.]?[0-9]+)$");
 
     /* if(!exp)
        exp = ajRegCompC("^\"(([A-Z0-9]+)[.][0-9]+)\"$");*/
@@ -8301,7 +8314,7 @@ static void featTagGffDefault(AjPStr* pout, const AjPStr tag, AjPStr* pval)
 
 static AjBool featTagSpecial(AjPStr* pval, const AjPStr tag)
 {
-    ajDebug("featTagSpecial '%S'\n", tag);
+    /*ajDebug("featTagSpecial '%S'\n", tag);*/
 
     if(ajStrMatchC(tag, "anticodon"))
 	return featTagSpecialAllAnticodon(pval);
