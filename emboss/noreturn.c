@@ -49,8 +49,9 @@ int main(int argc, char **argv)
     {
 	p   = MAJSTRSTR(line);
 	len = ajStrLen(line);
-	if(p[len-1] == 0x0d)
-	    p[len-1] = 0x00;
+	if(len)
+	    if(p[len-1] == 0x0d)
+		p[len-1] = 0x00;
 
 	ajFmtPrintF(outf,"%s\n",p);
     }
