@@ -1,7 +1,7 @@
 The EMBOSS Frequently Asked Questions list
 ==========================================
 
-Last modified: 10-Oct-2000
+Last modified: 29 Jan 2001
 
 
 SECTION A - Help and Support
@@ -723,3 +723,15 @@ Q) In the editor 'mse', but I don't know how to save my edited sequences
 
 A) Use Control-Z to get into command mode.
    Then use the SAVE command which will prompt for the file name.
+
+
+Q) I would like to know if EMBOSS can perform nucleotide contig assembly
+   similar to the function that GCG gelproject/gelview has.  And if yes, is
+   there any size restriction on the number of basepair and the number of
+   contigs? thank you. 
+
+A) EMBOSS does not cover the sort of contig assembly you describe.  We
+   leave that as the province of the Staden package from the LMB in
+   Cambridge (down the road).  Rodger Stadens group is developing a GUI
+   (Spin) which uses both EMBOSS and his gel assembly programs. 
+   (29 Jan 2001)
