@@ -5457,7 +5457,7 @@ AjPScophit  ajXyzScophitMerge(AjPScophit hit1, AjPScophit hit2)
     }	
     else
     {
-	ajStrASs(&(ret->Seq), hit2->Seq);
+	ajStrAss(&(ret->Seq), hit2->Seq);
     	ret->Start = hit2->Start;
 	end=hit2->End;
 	start=hit1->Start;
