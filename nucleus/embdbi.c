@@ -907,7 +907,9 @@ ajint embDbiSortWriteEntry (AjPFile entFile, ajint maxidlen,
 	ajRegSubI (idsrtexp, 1, &idstr);
 	if (ajStrMatchCase(idstr, lastidstr))
 	{
-	    ajWarn ("Duplicate ID skipped: '%S'", idstr);
+	    ajWarn ("Duplicate ID skipped: '%S' "
+		    "All hits will point to first ID found",
+		    idstr);
 	    continue;
 	}
 	ajRegSubI (idsrtexp, 2, &tmpstr);
