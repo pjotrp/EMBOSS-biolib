@@ -14,17 +14,17 @@ section: input [
   type: "page"
 ]
 
-  infile: sigin [
+  infile: siginfile [
     parameter: "Y"
     information: "Name of signature file (input)"
     help: "This option specifies the name of the signature file
            (input). A 'signature file' contains a sparse sequence signature
            suitable for use with the SIGSCAN program. The files are generated
            by using SIGGEN."
-    knowntype: "Signature file"
+    knowntype: "signature file"
   ]
 
-  seqall: database [
+  seqall: dbsequence [
     parameter: "Y"
     information: "Name of database to search."
     help: "This option specifies the name of the database to search."
@@ -120,7 +120,7 @@ section: output [
   type: "page"
 ]
 
-  outfile: hitsf [
+  outfile: hitsfile [
     parameter: "Y"
     information: "Name of DHF file (domain hits file) (output)"
     help: "This option specifies the name of the DHF file (domain hits
@@ -133,10 +133,10 @@ section: output [
            by using SEQSEARCH or various types of HMM and profile by using
            LIBSCAN."
     default: "SIGSCAN.dhf"
-    knowntype: "Domain hits file"
+    knowntype: "domain hits file"
   ]
 
-  outfile: alignf [
+  outfile: alignfile [
     parameter: "Y"
     information: "Name of DAF file (domain alignment file) for
                   signature-sequence alignments (output)"
@@ -150,7 +150,7 @@ section: output [
            returned by scanning a signature (for a family of domains) against
            a sequence database."
     default: "SIGSCAN.aln"
-    knowntype: "Domain alignment file"
+    knowntype: "domain alignment file"
   ]
 
 endsection: output

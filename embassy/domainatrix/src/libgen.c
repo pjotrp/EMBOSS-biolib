@@ -143,10 +143,10 @@ int main(int argc, char **argv)
     
     /* ACD processing. */
     mode       = ajAcdGetList("mode");
-    indir      = ajAcdGetDirlist("dafin");
-    outdir     = ajAcdGetDirectory("outdir");
+    indir      = ajAcdGetDirlist("dafinpath");
+    outdir     = ajAcdGetOutdir("outdir");
     threshold  = ajAcdGetInt("threshold");
-    matrixf    = ajAcdGetMatrixf("matrixf");
+    matrixf    = ajAcdGetMatrixf("matrixfile");
     gapopen    = ajAcdGetFloat("gapopen");
     gapextend  = ajAcdGetFloat("gapextend");
 

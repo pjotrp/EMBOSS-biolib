@@ -203,15 +203,15 @@ int main(int argc, char **argv)
     /* Read data from acd. */
     ajNamInit("emboss");
     ajAcdInitP("domainalign",argc,argv,"DOMAINATRIX");
-    dcfin       = ajAcdGetInfile("dcfin");
-    pdb           = ajAcdGetDirectory("pdb");
-    daf          = ajAcdGetDirectory("daf");
-    super         = ajAcdGetDirectory("super");
+    dcfin       = ajAcdGetInfile("dcfinfile");
+    pdb           = ajAcdGetDirectory("pdbdir");
+    daf          = ajAcdGetOutdir("dafoutdir");
+    super         = ajAcdGetOutdir("superoutdir");
+    singlets      = ajAcdGetOutdir("singletsoutdir");
     node          = ajAcdGetList("node");
     mode          = ajAcdGetList("mode");    
     keepsinglets  = ajAcdGetToggle("keepsinglets");
-    singlets      = ajAcdGetDirectory("singlets");
-    logf          = ajAcdGetOutfile("logf");
+    logf          = ajAcdGetOutfile("logfile");
    
 
     /* Convert the selected node and mode to an integer. */

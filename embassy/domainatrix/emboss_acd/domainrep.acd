@@ -14,7 +14,7 @@ section: input [
   type: "page"
 ]
 
-  infile: dcfin [
+  infile: dcfinfile [
     parameter: "Y"
     information: "Name of DCF file (domain classification file)
                   (input)."
@@ -60,7 +60,7 @@ section: output [
   type: "page"
 ]
 
-  outfile: dcfout [
+  outfile: dcfoutfile [
     parameter: "Y"
     information: "Name of DCF file (domain classification file)
                   (output)."
@@ -71,7 +71,7 @@ section: output [
            SCOPPARSE and CATHPARSE. Domain sequence information can be added
            to the file by using DOMAINSEQS."
     default: "test.scop"
-    knowntype: "Domain classification file"
+    knowntype: "domain classification file"
   ]
 
 endsection: output

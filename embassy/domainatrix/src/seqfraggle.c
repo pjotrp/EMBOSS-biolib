@@ -122,8 +122,8 @@ int main(int argc, char **argv)
     /* Read data from acd. */
     ajNamInit("emboss");
     ajAcdInitP("seqfraggle",argc,argv,"DOMAINATRIX"); 
-    dhfin      = ajAcdGetDirlist("dhfin");
-    dhfout     = ajAcdGetDirectory("dhfout");
+    dhfin      = ajAcdGetDirlist("dhfinpath");
+    dhfout     = ajAcdGetOutdir("dhfoutdir");
     thresh      = ajAcdGetInt("thresh");
     
 

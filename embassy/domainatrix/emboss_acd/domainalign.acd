@@ -14,7 +14,7 @@ section: input [
   type: "page"
 ]
 
-  infile: dcfin [
+  infile: dcfinfile [
     parameter: "Y"
     information: "Name of DCF file (domain classification file)
                   (input)."
@@ -27,7 +27,7 @@ section: input [
     knowntype: "Domain classification file"
   ]
 
-  directory: pdb [
+  directory: pdbdir [
     parameter: "Y"
     information: "Location of domain PDB files (input)."
     help: "This option specifies the location of domain PDB files
@@ -36,7 +36,7 @@ section: input [
            by using DOMAINER."
     default: "./"
     extension: "ent"
-    knowntype: "Domain PDB files"
+    knowntype: "domain pdb file"
   ]
 
 endsection: input
@@ -94,7 +94,7 @@ section: output [
   type: "page"
 ]
 
-  directory: singlets [
+  outdir: singletsoutdir [
     standard: "$(keepsinglets)"
     information: "Location of DHF files (domain hits files) for
                   singlet sequences (output)."
@@ -104,10 +104,10 @@ section: output [
            (sequences) with domain classification information, in FASTA
            format."
     extension: "dhf"
-    knowntype: "Domain hits files"
+    knowntype: "domain hits file"
   ]
 
-  directory: daf [
+  outdir: dafoutdir [
     parameter: "Y"
     information: "Location of DAF files (domain alignment
                   files) (output)."
@@ -122,10 +122,10 @@ section: output [
            SEQALIGN."
     default: "./"
     extension: "daf"
-    knowntype: "Domain alignment files"
+    knowntype: "domain alignment file"
   ]
 
-  directory: super [
+  outdir: superoutdir [
     standard: "@($(mode)==1)"
     information: "Location of structural superimposition files
                   (output)."
@@ -135,17 +135,17 @@ section: output [
            STAMP algorithm is used."
     default: "./"
     extension: "ent"
-    knowntype: "PDB files"
+    knowntype: "pdb file"
   ]
 
-  outfile: logf [
+  outfile: logfile [
     standard: "Y"
     information: "Name of log file (output)."
     help: "This option specifies the name of log file (output). The
            log file contains messages about any errors arising while
            domainalign ran."
     default: "domainalign.log"
-    knowntype: "DOMAINALIGN log file"
+    knowntype: "domainatrix log file"
   ]
 
 endsection: output

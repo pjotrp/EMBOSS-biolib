@@ -84,12 +84,12 @@ int main(int argc, char **argv)
     /* Read data from acd */
     ajNamInit("emboss");
     ajAcdInitP("allversusall",argc,argv,"DOMAINATRIX");
-    in        = ajAcdGetDirlist("seqin");
+    in        = ajAcdGetDirlist("seqinpath");
     matrix    = ajAcdGetMatrixf("matrix");
     gapopen   = ajAcdGetFloat("gapopen");
     gapextend = ajAcdGetFloat("gapextend");
-    out       = ajAcdGetDirectory("datout");
-    logf      = ajAcdGetOutfile("logf");
+    out       = ajAcdGetOutdir("datoutdir");
+    logf      = ajAcdGetOutfile("logfile");
 
 
 

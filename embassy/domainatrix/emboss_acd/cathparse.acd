@@ -5,6 +5,7 @@ application: cathparse [
   gui: "yes"
   batch: "yes"
   cpu: "low"
+  embassy: "domainatrix"
 ]
 
 section: input [
@@ -12,7 +13,7 @@ section: input [
   type: "page"
 ]
 
-  infile: listf [
+  infile: listfile [
     parameter: "Y"
     information: "Name of raw CATH classification file
                   (caths.list.vX.X) (input)."
@@ -24,7 +25,7 @@ section: input [
     knowntype: "Raw cath list file"
   ]
 
-  infile: domf [
+  infile: domfile [
     parameter: "Y"
     information: "Name of raw CATH classification file
                   (domlist.vX.X) (input)."
@@ -36,7 +37,7 @@ section: input [
     knowntype: "Raw cath domlist file"
   ]
 
-  infile: namesf [
+  infile: namesfile [
     parameter: "Y"
     information: "Name of raw CATH classification file
                   (CAT.names.all.vX.X) (input)."
@@ -55,7 +56,7 @@ section: output [
   type: "page"
 ]
 
-  outfile: outf [
+  outfile: outfile [
     parameter: "Y"
     information: "Name of CATH DCF file (domain classification
                   file) (output)."
@@ -66,13 +67,15 @@ section: output [
            SCOPPARSE and CATHPARSE. Domain sequence information can be added
            to the file by using DOMAINSEQS."
     default: "Ecath.dat"
+    knowntype: "domain classification file"
   ]
 
-  outfile: logf [
+  outfile: logfile [
     standard: "Y"
-    information: "Name of CATHPARSE log file."
+    information: "Name of CATHPARSE log file"
     help: "This option specifies the name of the CATHPARSE log file."
     default: "CATHPARSE.log"
+    knowntype: "domainatrix log file"
   ]
 
 endsection: output

@@ -136,14 +136,14 @@ int main(ajint argc, char **argv)
     /* Read data from acd. */
     ajNamInit("emboss");
     ajAcdInitP("contacts",argc,argv,"DOMAINATRIX"); 
-    cpdb_path     = ajAcdGetDirlist("cpdb");
-    con_path      = ajAcdGetDirectory("con");
-    logf          = ajAcdGetOutfile("conerrf");
-    thresh        = ajAcdGetFloat("thresh");
+    cpdb_path     = ajAcdGetDirlist("cpdbdir");
+    con_path      = ajAcdGetOutdir("conoutdir");
+    logf          = ajAcdGetOutfile("conerrfile");
+    thresh        = ajAcdGetFloat("threshold");
     ccfnaming     = ajAcdGetBool("ccfnaming");
     skip          = ajAcdGetBool("skip");
     ignore        = ajAcdGetFloat("ignore");
-    vdwf       = ajAcdGetDatafile("vdwf");
+    vdwf          = ajAcdGetDatafile("vdwfile");
 
 
 

@@ -143,18 +143,18 @@ int main(int argc, char **argv)
     ajNamInit("emboss");
     ajAcdInitP("domainseqs",argc,argv,"DOMAINATRIX");
 
-    domain_inf    = ajAcdGetInfile("dcfin");
+    domain_inf    = ajAcdGetInfile("dcfinfile");
     getswiss    = ajAcdGetToggle("getswiss");
     if(getswiss)
     {
-	pdbtosp_inf = ajAcdGetInfile("pdbtosp");
+	pdbtosp_inf = ajAcdGetInfile("pdbtospfile");
 	matrix      = ajAcdGetMatrixf("datafile");
 	gapopen     = ajAcdGetFloat("gapopen");
 	gapextend   = ajAcdGetFloat("gapextend");
     }
-    domain_outf   = ajAcdGetOutfile("dcfout");
-    dpdb_path   = ajAcdGetDirectory("dpdb");
-    errf        = ajAcdGetOutfile("errf");
+    domain_outf   = ajAcdGetOutfile("dcfoutfile");
+    dpdb_path   = ajAcdGetDirectory("dpdbdir");
+    errf        = ajAcdGetOutfile("errfile");
 
 
 

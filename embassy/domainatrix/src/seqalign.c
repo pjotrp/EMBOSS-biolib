@@ -148,10 +148,10 @@ int main(int argc, char **argv)
     ajNamInit("emboss");
     ajAcdInitP("seqalign",argc,argv,"DOMAINATRIX");
 
-    inseqs    = ajAcdGetDirlist("inseqs");
-    dhfin     = ajAcdGetDirectory("dhfin");
-    dafout    = ajAcdGetDirectory("dafout");
-    logf      = ajAcdGetOutfile("logf");    
+    inseqs    = ajAcdGetDirlist("inseqspath");
+    dhfin     = ajAcdGetDirectory("dhfindir");
+    dafout    = ajAcdGetOutdir("dafoutdir");
+    logf      = ajAcdGetOutfile("logfile");    
     amode     = ajAcdGetList("amode");  
     mode      = ajAcdGetList("mode");    
     forcetype = ajAcdGetBool("forcetype");

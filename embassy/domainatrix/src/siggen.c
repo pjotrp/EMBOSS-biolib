@@ -319,7 +319,7 @@ int main(ajint argc, char **argv)
     /* Read data from acd. */
     ajNamInit("emboss");
     ajAcdInitP("siggen",argc,argv,"DOMAINATRIX"); 
-    sig_path      = ajAcdGetDirectory("sigpath");
+    sig_path      = ajAcdGetOutdir("sigoutdir");
     alg_path      = ajAcdGetDirlist("algpath");
     sig_sparse    = ajAcdGetInt("sparsity");
     wsiz          = ajAcdGetInt("wsiz");

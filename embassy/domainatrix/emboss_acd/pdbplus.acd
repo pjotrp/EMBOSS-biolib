@@ -14,7 +14,7 @@ section: input [
   type: "page"
 ]
 
-  dirlist: ccfin [
+  dirlist: ccfinpath [
     parameter: "Y"
     information: "Location of CCF files (clean coordinate
                   files) (input)"
@@ -29,10 +29,10 @@ section: input [
            secondary structure are added to the file by using PDBPLUS."
     default: "./"
     extension: "ccf"
-    knowntype: "Clean protein coordinate files"
+    knowntype: "protein clean coordinates"
   ]
 
-  directory: pdbin [
+  directory: pdbindir [
     parameter: "Y"
     information: "Location of PDB files (input)"
     help: "This option specifies the location of PDB files (input). A
@@ -41,7 +41,7 @@ section: input [
            site http://www.rcsb.org/pdb/info.html"
     default: "./"
     extension: "ent"
-    knowntype: "PDB files"
+    knowntype: "pdb file"
   ]
 
 endsection: input
@@ -56,7 +56,7 @@ section: required [
     information: "File prefix of PDB files (if any)"
     help: "This option specifies the file prefix of PDB files (if
            any)"
-    knowntype: "PDB file prefix"
+    knowntype: "pdb file prefix"
     default: ""
   ]
 
@@ -90,7 +90,7 @@ section: output [
   type: "page"
 ]
 
-  directory: ccfout [
+  outdir: ccfoutdir [
     parameter: "Y"
     information: "Location of CCF files (clean coordinate
                   files) (output)"
@@ -105,7 +105,7 @@ section: output [
            secondary structure are added to the file by using PDBPLUS."
     default: "./"
     extension: "ccf"
-    knowntype: "Clean protein coordinate files"
+    knowntype: "protein clean coordinates"
   ]
 
   outfile: errfile [
@@ -113,7 +113,7 @@ section: output [
     information: "Name of log file for PDBPLUS"
     help: "This option specifies the name of the log file for PDBPLUS"
     default: "pdbplus.log"
-    knowntype: "PDBPLUS log file"
+    knowntype: "domainatrix log file"
   ]
 
   outfile: serrfile [
@@ -121,7 +121,7 @@ section: output [
     information: "Name of log file for STRIDE"
     help: "This option specifies the name of the log file for STRIDE"
     default: "stride.log"
-    knowntype: "PDBPLUS STRIDE log file"
+    knowntype: "stride log file"
   ]
 
   outfile: nerrfile [
@@ -129,7 +129,7 @@ section: output [
     information: "Name of log file for NACCESS"
     help: "This option specifies the name of the log file for NACCESS"
     default: "naccess.log"
-    knowntype: "PDBPLUS NACCESS log file"
+    knowntype: "naccess log file"
   ]
 
 endsection: output

@@ -147,12 +147,12 @@ int main(int argc, char **argv)
     /* Read data from acd */
     ajNamInit("emboss");
     ajAcdInitP("domainnr",argc,argv,"DOMAINATRIX");
-    domain_inf  = ajAcdGetInfile("dcfin");
-    domain_outf = ajAcdGetOutfile("dcfout");
+    domain_inf  = ajAcdGetInfile("dcfinfile");
+    domain_outf = ajAcdGetOutfile("dcfoutfile");
     matrix    = ajAcdGetMatrixf("datafile");
     gapopen   = ajAcdGetFloat("gapopen");
     gapextend = ajAcdGetFloat("gapextend");
-    errf      = ajAcdGetOutfile("errf");
+    errf      = ajAcdGetOutfile("errfile");
     mode      = ajAcdGetList("mode");
     node      = ajAcdGetList("node");
     retain    = ajAcdGetToggle("retain");
@@ -160,7 +160,7 @@ int main(int argc, char **argv)
     if(ajStrChar(*mode, 0) == '1')
 	{
 	    moden=1;
-	    thresh    = ajAcdGetFloat("thresh");
+	    thresh    = ajAcdGetFloat("threshold");
 	}
     
     else if(ajStrChar(*mode, 0) == '2')
@@ -170,7 +170,7 @@ int main(int argc, char **argv)
 	    threshup     = ajAcdGetFloat("threshup");
 	}
     if(retain)
-	red_outf = ajAcdGetOutfile("redout");
+	red_outf = ajAcdGetOutfile("redoutfile");
 
 
     

@@ -99,10 +99,10 @@ int main(int argc, char **argv)
     /* Read data from acd */
     ajNamInit("emboss");
     ajAcdInitP("domainsse",argc,argv,"DOMAINATRIX");
-    dcf_inf    = ajAcdGetInfile("dcfin");
-    dcf_outf   = ajAcdGetOutfile("dcfout");
-    dccf        = ajAcdGetDirectory("dccf");
-    errf        = ajAcdGetOutfile("errf");
+    dcf_inf    = ajAcdGetInfile("dcfinfile");
+    dcf_outf   = ajAcdGetOutfile("dcfoutfile");
+    dccf        = ajAcdGetDirectory("dccfdir");
+    errf        = ajAcdGetOutfile("errfile");
 
 
 

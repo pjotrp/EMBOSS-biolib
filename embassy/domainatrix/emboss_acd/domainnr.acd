@@ -15,7 +15,7 @@ section: input [
   type: "page"
 ]
 
-  infile: dcfin [
+  infile: dcfinfile [
     parameter: "Y"
     information: "Name of DCF file (domain classification file)
                   (input)."
@@ -97,7 +97,7 @@ section: required [
     information: "Select number."
   ]
 
-  float: thresh [
+  float: threshold [
     standard: "@($(mode)==1)"
     information: "The % sequence identity redundancy
                   threshold."
@@ -186,7 +186,7 @@ section: output [
   type: "page"
 ]
 
-  outfile: dcfout [
+  outfile: dcfoutfile [
     parameter: "Y"
     information: "Name of non-redundant DCF file (domain
                   classification file) (output)"
@@ -200,7 +200,7 @@ section: output [
     knowntype: "Domain classification file"
   ]
 
-  outfile: redout [
+  outfile: redoutfile [
     standard: "$(retain)"
     information: "Name of DCF file (domain classification file)
                   for redundant sequences (output)."
@@ -216,14 +216,14 @@ section: output [
     knowntype: "Domain classification file"
   ]
 
-  outfile: errf [
+  outfile: errfile [
     standard: "Y"
     information: "Name of log file for the build."
     help: "This option specifies the name of log file for the build.
            The log file contains messages about any errors arising while
            domainnr ran."
     default: "domainnr.log"
-    knowntype: "DOMAINNR log file"
+    knowntype: "domainatrix log file"
   ]
 
 endsection: output

@@ -108,11 +108,11 @@ int main(int argc, char **argv)
     /* Read data from acd. */
     ajNamInit("emboss");
     ajAcdInitP("seqnr",argc,argv,"DOMAINATRIX");
-    in        = ajAcdGetDirlist("dhfin");
+    in        = ajAcdGetDirlist("dhfinpath");
     dosing    = ajAcdGetToggle("dosing");
-    singlets    = ajAcdGetDirectory("singlets");
+    singlets    = ajAcdGetDirectory("singletsdir");
     dosets    = ajAcdGetToggle("dosets");
-    insets    = ajAcdGetDirectory("insets");
+    insets    = ajAcdGetDirectory("insetsdir");
     mode      = ajAcdGetList("mode");  
     thresh    = ajAcdGetFloat("thresh");
     threshlow = ajAcdGetFloat("threshlow");
@@ -120,10 +120,10 @@ int main(int argc, char **argv)
     matrix    = ajAcdGetMatrixf("matrix");
     gapopen   = ajAcdGetFloat("gapopen");
     gapextend = ajAcdGetFloat("gapextend");
-    out       = ajAcdGetDirectory("dhfout");
+    out       = ajAcdGetOutdir("dhfoutdir");
     dored     = ajAcdGetToggle("dored");
-    outred    = ajAcdGetDirectory("outred");
-    logf      = ajAcdGetOutfile("logf");
+    outred    = ajAcdGetOutdir("redoutdir");
+    logf      = ajAcdGetOutfile("logfile");
 
 
 

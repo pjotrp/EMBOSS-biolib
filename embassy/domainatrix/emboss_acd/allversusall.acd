@@ -1,7 +1,7 @@
 application: allversusall [
   documentation: "Does an all-versus-all global alignment for
                   each set of sequences in an input directory and writes
-                  files of sequence similarity values."
+                  files of sequence similarity values"
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"
@@ -14,19 +14,19 @@ section: input [
   type: "page"
 ]
 
-  dirlist: seqin [
+  dirlist: seqinpath [
     parameter: "Y"
-    information: "Location of sequence files (input)."
+    information: "Location of sequence files (input"
     help: "This option specifies the location of sequence files
-           (input)."
+           (input)"
     default: "./"
     extension: "fasta"
-    knowntype: "Sequence files"
+    knowntype: "Sequence file"
   ]
 
   matrixf: matrix [
     additional: "Y"
-    information: "Residue substitution matrix."
+    information: "Residue substitution matrix"
     help: "This option specifies the residue substitution matrix that
            is used for sequence comparison."
     default: "EBLOSUM62"
@@ -48,9 +48,9 @@ section: additional [
 
   float: gapopen [
     additional: "Y"
-    information: "Gap insertion penalty."
-    minimum: "1."
-    maximum: "100."
+    information: "Gap insertion penalty"
+    minimum: "1.0"
+    maximum: "100.0"
     default: "10"
     valid: "Floating point number from 1.0 to 100.0"
     expected: "10.0 for any sequence"
@@ -64,9 +64,9 @@ section: additional [
 
   float: gapextend [
     additional: "Y"
-    information: "Gap extension penalty."
+    information: "Gap extension penalty"
     minimum: "0.0"
-    maximum: "10."
+    maximum: "10.0"
     default: "0.5"
     valid: "Floating point number from 0.0 to 10.0"
     expected: "0.5 for any sequence"
@@ -89,10 +89,10 @@ section: output [
   type: "page"
 ]
 
-  directory: datout [
+  outdir: datoutdir [
     parameter: "Y"
     information: "Location of sequence similarity data files
-                  (output)."
+                  (output)"
     help: "This option specifies the location of sequence similarity
            data files (output)."
     default: "./"
@@ -100,14 +100,14 @@ section: output [
     knowntype: "allversusall output"
   ]
 
-  outfile: logf [
+  outfile: logfile [
     standard: "Y"
-    information: "Name allversusall log file (output)."
+    information: "Name allversusall log file (output)"
     default: "ALLVERSUSALL.log"
     help: "This option specifies the name of ALLVERSUSALL log file
            (output). The log file contains messages about any errors arising
            while ALLVERSUSALL ran."
-    knowntype: "allversusall log file"
+    knowntype: "domainatrix log file"
   ]
 
 endsection: output

@@ -13,7 +13,7 @@ section: input [
   type: "page"
 ]
 
-  dirlist: dafin [
+  dirlist: dafinpath [
     parameter: "Y"
     default: "./"
     information: "Location of DAF files (domain alignment
@@ -28,10 +28,10 @@ section: input [
            with sequence relatives (of unknown structure) by using SEQALIGN."
     default: "./"
     extension: "daf"
-    knowntype: "Domain alignment files"
+    knowntype: "domain alignment file"
   ]
 
-  matrixf: matrixf [
+  matrixf: matrixfile [
     standard: "Y"
     information: "Residue substitution matrix."
     default: "EBLOSUM62"
@@ -114,7 +114,7 @@ section: output [
   type: "page"
 ]
 
-  directory: outdir [
+  outdir: outdir [
     parameter: "Y"
     default: "./"
     extension: "disc"
@@ -125,7 +125,7 @@ section: output [
            Hennikoff profiles, hidden Markov models (HMMER package), hidden
            Markov models (SAM-T2K package) and position-specific scoring
            matrices."
-    knowntype: "Discriminator files"
+    knowntype: "discriminator file"
   ]
 
 endsection: output

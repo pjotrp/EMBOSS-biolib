@@ -84,7 +84,7 @@ int main(int argc, char **argv)
     fin     = ajAcdGetInfile("infile");
     fout    = ajAcdGetOutfile("outfile");
     dogrep  = ajAcdGetToggle("dogrep");
-    dirlist = ajAcdGetDirlist("dirlist");
+    dirlist = ajAcdGetDirlist("dirlistpath");
     
     
 

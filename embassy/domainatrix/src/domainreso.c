@@ -106,8 +106,8 @@ int main(ajint argc, char **argv)
     ajAcdInitP("domainreso",argc,argv,"DOMAINATRIX"); 
     cpdb_path     = ajAcdGetDirlist("cpdbpath");    
     threshold     = ajAcdGetFloat("threshold");
-    dcfin         = ajAcdGetInfile("dcfin");
-    dcfout        = ajAcdGetOutfile("dcfout");
+    dcfin         = ajAcdGetInfile("dcfinfile");
+    dcfout        = ajAcdGetOutfile("dcfoutfile");
 
 
 

@@ -13,7 +13,7 @@ section: input [
   type: "page"
 ]
 
-  infile: infilea [
+  infile: classfile [
     information: "Name of raw SCOP classification file
                   dir.cla.scop.txt_X.XX (input)."
     help: "This option specifies the name of raw SCOP classification
@@ -24,7 +24,7 @@ section: input [
     parameter: "Y"
   ]
 
-  infile: infileb [
+  infile: desfile [
     information: "Name of raw SCOP description file
                   dir.des.scop.txt_X.XX (input)."
     help: "This option specifies the name of raw SCOP description file
@@ -90,7 +90,7 @@ section: output [
   type: "page"
 ]
 
-  outfile: dcf [
+  outfile: dcffile [
     information: "Name of SCOP DCF file (domain classification
                   file) (output)."
     help: "This option specifies the name of SCOP DCF file (domain

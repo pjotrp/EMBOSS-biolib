@@ -119,17 +119,17 @@ int main(int argc, char **argv)
     /* Read data from acd */
     ajNamInit("emboss");
     ajAcdInitP("ssematch",argc,argv,"DOMAINATRIX");
-    dcfin       = ajAcdGetInfile("dcfin");
-    ssin       = ajAcdGetInfile("ssin");
+    dcfin       = ajAcdGetInfile("dcfinfile");
+    ssin       = ajAcdGetInfile("ssinfile");
     max_hits      = ajAcdGetInt("maxhits");
     matrix        = ajAcdGetMatrixf("datafile");
     gapopen_sss   = ajAcdGetFloat("gapopenr");
     gapextend_sss = ajAcdGetFloat("gapextendr");
     gapopen_sse   = ajAcdGetFloat("gapopene");
     gapextend_sse = ajAcdGetFloat("gapextende");
-    out_ss        = ajAcdGetOutfile("outss");
-    out_se        = ajAcdGetOutfile("outse");
-    logf       = ajAcdGetOutfile("logf");
+    out_ss        = ajAcdGetOutfile("outssfile");
+    out_se        = ajAcdGetOutfile("outsefile");
+    logf       = ajAcdGetOutfile("logfile");
 
 
 

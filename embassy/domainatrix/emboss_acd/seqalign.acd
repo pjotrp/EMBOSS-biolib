@@ -33,7 +33,7 @@ section: input [
            specify which."
   ]
 
-  dirlist: inseqs [
+  dirlist: inseqspath [
     parameter: "Y"
     information: "Location of sequences, e.g. DAF files (domain
                   alignment files) (input)."
@@ -49,11 +49,11 @@ section: input [
            known structure only. Such alignments can be extended with
            sequence relatives (of unknown structure) by using SEQALIGN."
     default: "./"
-    extension: "dhf"
-    knowntype: "Domain alignment files"
+    extension: "daf"
+    knowntype: "domain alignment file"
   ]
 
-  directory: dhfin [
+  directory: dhfindir [
     parameter: "Y"
     information: "Location of DHF files (domain hits files)
                   (input)."
@@ -66,7 +66,7 @@ section: input [
            SEQSEARCH."
     default: "./"
     extension: "dhf"
-    knowntype: "Domain hits files"
+    knowntype: "domain hits file"
   ]
 
 endsection: input
@@ -91,8 +91,8 @@ section: required [
 
 endsection: required
 
-section: advanced [
-  information: "Advanced section"
+section: additional [
+  information: "Additional section"
   type: "page"
 ]
 
@@ -107,14 +107,14 @@ section: advanced [
     default: "N"
   ]
 
-endsection: advanced
+endsection: additional
 
 section: output [
   information: "Output section"
   type: "page"
 ]
 
-  directory: dafout [
+  outdir: dafoutdir [
     parameter: "Y"
     information: "Location of DAF files (domain alignment
                   files) (output)."
@@ -128,17 +128,17 @@ section: output [
            with sequence relatives (of unknown structure) by using SEQALIGN."
     default: "./"
     extension: "daf"
-    knowntype: "Domain alignment files"
+    knowntype: "domain alignment file"
   ]
 
-  outfile: logf [
+  outfile: logfile [
     standard: "Y"
     information: "Name of log file for the build."
     default: "seqalign.log"
     help: "This option specifies the name of log file for the build.
            The log file contains messages about any errors arising while
            SEQALIGN ran."
-    knowntype: "SEQALIGN log file"
+    knowntype: "domainatrix log file"
   ]
 
 endsection: output

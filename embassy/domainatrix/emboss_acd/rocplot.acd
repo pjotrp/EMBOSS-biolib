@@ -17,7 +17,7 @@ section: input [
   type: "page"
 ]
 
-  dirlist: hitsfiles [
+  dirlist: hitsfilespath [
     parameter: "Y"
     information: "Directory of hits files (input)."
     help: "This option specifies the directory of hits files (input).
@@ -30,7 +30,7 @@ section: input [
            run on the files to perform Receiver Operator Characteristic
            (ROC) analysis on the hits."
     default: "rocplot"
-    knowntype: "Hits files"
+    knowntype: "hits file"
   ]
 
 endsection: input
@@ -168,12 +168,13 @@ section: output [
   type: "page"
 ]
 
-  directory: outdir [
+  outdir: outdir [
     parameter: "Y"
     information: "Directory for output files."
     help: "This option specifies the directory where output files are
            written."
     default: "./"
+    knowntype: "output directory"
   ]
 
   string: rocbasename [
@@ -191,15 +192,16 @@ section: output [
            depending upon the mode rocplot is run in, a plot of the
            distribution of ROC values."
     default: "_rocplot"
+    knowntype: "filename prefix"
   ]
 
-  outfile: outfdata [
+  outfile: outfile [
     standard: "Y"
     information: "Name of summary file (output)."
     help: "This option specifies the name of summary file (output). A
            text file summarising the analysis."
     default: "_summary"
-    knowntype: "ROCPLOT summary file"
+    knowntype: "rocplot summary file"
   ]
 
   string: barbasename [
@@ -212,6 +214,7 @@ section: output [
            of hits) are provided and the user has specified 'Do not combine
            data (multiple ROC curves)."
     default: "_barchart"
+    knowntype: "filename prefix"
   ]
 
   string: classbasename [
@@ -227,12 +230,13 @@ section: output [
            multiple input files are provided and the user has specified 'Do
            not combine data (multiple ROC curves)' mode."
     default: "_classplot"
+    knowntype: "filename prefix"
   ]
 
-  outfile: errf [
+  outfile: errfile [
     information: "Name of error file (output)."
     default: "rocplot.errors"
-    knowntype: "ROCPLOT log file"
+    knowntype: "domainatrix log file"
   ]
 
 endsection: output

@@ -117,12 +117,12 @@ int main(ajint argc, char **argv)
     /* Read data from acd */
     ajNamInit("emboss");
     ajAcdInitP("interface",argc,argv,"DOMAINATRIX"); 
-    cpdb_inf      = ajAcdGetInfile("in");
-    con_outf      = ajAcdGetOutfile("out");
-    logf          = ajAcdGetOutfile("conerrf");
+    cpdb_inf      = ajAcdGetInfile("infile");
+    con_outf      = ajAcdGetOutfile("outfile");
+    logf          = ajAcdGetOutfile("conerrfile");
     thresh        = ajAcdGetFloat("thresh");
     ignore        = ajAcdGetFloat("ignore");
-    vdwf       = ajAcdGetDatafile("vdwf");
+    vdwf       = ajAcdGetDatafile("vdwfile");
 
 
     

@@ -93,11 +93,11 @@ int main(int argc, char **argv)
     ajNamInit("emboss");
     ajAcdInitP("rocon",argc,argv,"DOMAINATRIX");
 
-    hitsin   = ajAcdGetInfile("hitsin");
-    validin  = ajAcdGetInfile("validin");
+    hitsin   = ajAcdGetInfile("hitsinfile");
+    validin  = ajAcdGetInfile("validinfile");
     thresh   = ajAcdGetInt("thresh");
     mode     = ajAcdGetList("mode");  
-    hitsout  = ajAcdGetOutfile("hitsout");
+    hitsout  = ajAcdGetOutfile("hitsoutfile");
 
 
     

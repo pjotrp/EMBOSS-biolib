@@ -134,9 +134,9 @@ int main(ajint argc, char **argv)
     /* Read data from acd */
     ajNamInit("emboss");
     ajAcdInitP("pdbparse",argc,argv,"DOMAINATRIX"); 
-    pdb_path     = ajAcdGetDirlist("pdb");
-    ccf_path    = ajAcdGetDirectory("ccf");
-    logf         = ajAcdGetOutfile("errf");
+    pdb_path     = ajAcdGetDirlist("pdbpath");
+    ccf_path    = ajAcdGetOutdir("ccfoutdir");
+    logf         = ajAcdGetOutfile("errfile");
     min_chain_size=ajAcdGetInt("chnsiz");
     max_mismatch  =ajAcdGetInt("maxmis");
     max_trim      =ajAcdGetInt("maxtrim");

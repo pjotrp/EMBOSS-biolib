@@ -128,12 +128,12 @@ int main(int argc, char **argv)
     ajNamInit("emboss");
     ajAcdInitP("seqsort",argc,argv,"DOMAINATRIX");
     sig_overlap    = ajAcdGetInt("overlap");
-    ambigf         = ajAcdGetOutfile("ambigf");
-    hitsf          = ajAcdGetOutfile("hitsf");
+    ambigf         = ajAcdGetOutfile("ambigfile");
+    hitsf          = ajAcdGetOutfile("hitsfile");
     dofamilies     = ajAcdGetToggle("dofamilies");
     doambiguities  = ajAcdGetToggle("doambiguities");
-    dhfin          = ajAcdGetDirectory("dhfin");
-    dhfout         = ajAcdGetDirectory("dhfout");
+    dhfin          = ajAcdGetDirectory("dhfindir");
+    dhfout         = ajAcdGetOutdir("dhfoutdir");
 
 
     /* Memory allocation & initialisation */

@@ -13,7 +13,7 @@ section: input [
   type: "page"
 ]
 
-  dirlist: dhfin [
+  dirlist: dhfinpath [
     parameter: "Y"
     information: "Location of DHF files (domain hits files) or
                   other sequence files (input)."
@@ -27,7 +27,7 @@ section: input [
            accept sequence or sequence sets in any of the common formats."
     extension: "dhf"
     default: "./"
-    knowntype: "Domain hits files"
+    knowntype: "domain hits file"
   ]
 
 endsection: input
@@ -57,7 +57,7 @@ section: output [
   type: "page"
 ]
 
-  directory: dhfout [
+  outdir: dhfoutdir [
     parameter: "Y"
     information: "Location of DHF files (domain hits files)
                   (output)."
@@ -71,7 +71,7 @@ section: output [
            common formats."
     default: "./"
     extension: "dhf"
-    knowntype: "Domain hits files"
+    knowntype: "domain hits file"
   ]
 
 endsection: output

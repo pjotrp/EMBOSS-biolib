@@ -355,8 +355,8 @@ int main(int argc, char **argv)
     ajNamInit("emboss");
     ajAcdInitP("rocplot", argc, argv, "DOMAINATRIX");
 
-    hitsfiles     = ajAcdGetDirlist("hitsfiles");
-    outdir        = ajAcdGetDirectory("outdir");
+    hitsfiles     = ajAcdGetDirlist("hitsfilespath");
+    outdir        = ajAcdGetOutdir("outdir");
     mode          = ajAcdGetList("mode");
     if(ajStrChar(*mode,0)=='2')
 	multimode = ajAcdGetList("multimode");
@@ -366,7 +366,7 @@ int main(int argc, char **argv)
        (ajStrChar(*datamode,0)=='1'))
 	thresh    = ajAcdGetInt("thresh");
     rocbasename       = ajAcdGetString("rocbasename");
-    outfdata      = ajAcdGetOutfile("outfdata");
+    outfdata      = ajAcdGetOutfile("outfile");
     if((ajStrChar(*mode,0)=='2') && (ajStrChar(*multimode,0)=='1'))
 	barbasename   = ajAcdGetString("barbasename");
     classbasename      = ajAcdGetString("classbasename");
@@ -374,7 +374,7 @@ int main(int argc, char **argv)
     
 
     /* DIAGNOSTICS */
-    errf          = ajAcdGetOutfile("errf");    
+    errf          = ajAcdGetOutfile("errfile");    
 
 
 

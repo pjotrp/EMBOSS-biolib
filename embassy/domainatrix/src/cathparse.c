@@ -72,11 +72,11 @@ int main(int argc, char **argv)
     ajNamInit("emboss");
     ajAcdInitP("cathparse", argc, argv, "DOMAINATRIX");
 
-    listf  =  ajAcdGetInfile("listf");   
-    domf   =  ajAcdGetInfile("domf");    
-    namesf =  ajAcdGetInfile("namesf");  
-    outf   =  ajAcdGetOutfile("outf");   
-    logf   =  ajAcdGetOutfile("logf");   
+    listf  =  ajAcdGetInfile("listfile");   
+    domf   =  ajAcdGetInfile("domfile");    
+    namesf =  ajAcdGetInfile("namesfile");  
+    outf   =  ajAcdGetOutfile("outfile");   
+    logf   =  ajAcdGetOutfile("logfile");   
 
     
     list = ajCathReadAllRawNew(listf, domf, namesf, logf);
@@ -85,7 +85,7 @@ int main(int argc, char **argv)
 	ajCathWrite(outf, tmp);
 	ajCathDel(&tmp);
     }
-    
+
 
 
     /* Close CATH parsable files and output file */

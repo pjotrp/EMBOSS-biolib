@@ -23,13 +23,6 @@ section: input [
     knowntype: "Raw dictionary of heterogen groups"
   ]
 
-endsection: input
-
-section: required [
-  information: "Required section"
-  type: "page"
-]
-
   toggle: dogrep [
     standard: "Y"
     information: "Search a directory of PDB files with
@@ -41,14 +34,22 @@ section: required [
     default: "N"
   ]
 
-  dirlist: dirlist [
+  dirlist: dirlistpath [
     standard: "$(dogrep)"
     information: "Directory to search with keywords"
     help: "This option specifies the directory to search with
            keywords."
     default: "./"
     extension: "ent"
+    knowntype: "pdb file"
   ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
 
 endsection: required
 

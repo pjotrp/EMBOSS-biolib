@@ -101,21 +101,21 @@ int main(int argc, char **argv)
     
 
     /* GET VALUES FROM ACD */
-    sigin      = ajAcdGetInfile("sigin");
-    database   = ajAcdGetSeqall("database");
+    sigin      = ajAcdGetInfile("siginfile");
+    database   = ajAcdGetSeqall("dbsequence");
     sub        = ajAcdGetMatrixf("sub");
     gapo       = ajAcdGetFloat("gapo");
     gape       = ajAcdGetFloat("gape");
     nhits      = ajAcdGetInt("nhits");
-    hitsf      = ajAcdGetOutfile("hitsf");
-    alignf     = ajAcdGetOutfile("alignf"); 
+    hitsf      = ajAcdGetOutfile("hitsfile");
+    alignf     = ajAcdGetOutfile("alignfile"); 
     nterm      = ajAcdGetList("nterm");
 
 
     /*Assign N-terminal matching option */
     ajFmtScanS(nterm[0], "%d", &ntopt);
     
-    
+
     /* READ SIGNATURE FILE */
     if(!(sig = embSignatureReadNew(sigin)))
     {	

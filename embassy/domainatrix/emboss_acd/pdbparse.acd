@@ -13,7 +13,7 @@ section: input [
   type: "page"
 ]
 
-  dirlist: pdb [
+  dirlist: pdbpath [
     parameter: "Y"
     information: "Location of PDB files (input)"
     help: "This option specifies the location of PDB files (input). A
@@ -22,7 +22,7 @@ section: input [
            site http://www.rcsb.org/pdb/info.html."
     default: "./"
     extension: "ent"
-    knowntype: "PDB files"
+    knowntype: "pdb file"
   ]
 
 endsection: input
@@ -117,7 +117,7 @@ section: output [
   type: "page"
 ]
 
-  directory: ccf [
+  outdir: ccfoutdir [
     parameter: "Y"
     information: "Location of CCF files (clean coordinate
                   files) (output)"
@@ -130,16 +130,16 @@ section: output [
            secondary structure are added to the file by using PDBPLUS."
     default: "./"
     extension: "ccf"
-    knowntype: "Clean protein coordinate files"
+    knowntype: "protein clean coordinates"
   ]
 
-  outfile: errf [
+  outfile: errfile [
     standard: "Y"
     information: "Name of log file for the build."
     help: "This option specifies tame of the log file for the build.
            The log file may contain messages about inconsistencies or errors
            in the PDB files that were parsed."
-    knowntype: "PDBPARSE log file"
+    knowntype: "domainatrix log file"
     default: "pdbparse.log"
   ]
 

@@ -91,10 +91,10 @@ int main(int argc, char **argv)
     /* Read data from acd */
     ajNamInit("emboss");
     ajAcdInitP("domainer",argc,argv,"DOMAINATRIX"); 
-    cpdb_dir     = ajAcdGetDirectory("ccfp");
+    cpdb_dir     = ajAcdGetDirectory("ccfpdir");
     mode          = ajAcdGetList("mode");
-    cpdbscop_dir = ajAcdGetOutdir("ccfdir");
-    pdbscop_dir  = ajAcdGetOutdir("pdbdir");
+    cpdbscop_dir = ajAcdGetOutdir("ccfoutdir");
+    pdbscop_dir  = ajAcdGetOutdir("pdboutdir");
     scop_inf      = ajAcdGetInfile("scopfile");
     errf1         = ajAcdGetOutfile("pdberrfile");
     errf2         = ajAcdGetOutfile("cpdberrfile");

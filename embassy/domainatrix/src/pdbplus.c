@@ -157,10 +157,10 @@ int main(ajint argc, char **argv)
     ajNamInit("emboss");
     ajAcdInitP("pdbplus",argc,argv,"DOMAINATRIX");
 
-    ccfin        = ajAcdGetDirlist("ccfin");  
-    pdbin        = ajAcdGetDirectory("pdbin"); 
+    ccfin        = ajAcdGetDirlist("ccfinpath");  
+    pdbin        = ajAcdGetDirectory("pdbindir"); 
     pdbprefix    = ajAcdGetString("pdbprefix");
-    ccfout       = ajAcdGetDirectory("ccfout");
+    ccfout       = ajAcdGetOutdir("ccfoutdir");
     mode         = ajAcdGetList("mode");
     errf         = ajAcdGetOutfile("errfile");
     if(ajStrChar(*mode, 0) != '2')

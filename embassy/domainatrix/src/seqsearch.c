@@ -151,12 +151,12 @@ int main(int argc, char **argv)
     ajNamInit("emboss");
     ajAcdInitP("seqsearch",argc,argv,"DOMAINATRIX"); 
     mode       = ajAcdGetList("mode");
-    inseqs     = ajAcdGetDirlist("inseqs");
-    dhfout     = ajAcdGetDirectory("dhfout");
+    inseqs     = ajAcdGetDirlist("inseqspath");
+    dhfout     = ajAcdGetOutdir("dhfoutdir");
     maxhits    = ajAcdGetInt("maxhits");
     niter      = ajAcdGetInt("niter");
     evalue     = ajAcdGetFloat("evalue");
-    logf       = ajAcdGetOutfile("logf");
+    logf       = ajAcdGetOutfile("logfile");
     database   = ajAcdGetString("database");    
 
 

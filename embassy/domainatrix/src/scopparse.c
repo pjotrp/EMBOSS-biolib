@@ -73,9 +73,9 @@ int main(int argc, char **argv)
     /* Read data from acd. */
     ajNamInit("emboss");
     ajAcdInitP("scopparse", argc, argv, "DOMAINATRIX");
-    inf1         =  ajAcdGetInfile("infilea");
-    inf2         =  ajAcdGetInfile("infileb");
-    outf         = ajAcdGetOutfile("dcf");
+    inf1         =  ajAcdGetInfile("classfile");
+    inf2         =  ajAcdGetInfile("desinfile");
+    outf         = ajAcdGetOutfile("dcffile");
     nosegments   =  ajAcdGetBool("nosegments");
     nomultichain =  ajAcdGetBool("nomultichain");
     nominor      =  ajAcdGetBool("nominor");

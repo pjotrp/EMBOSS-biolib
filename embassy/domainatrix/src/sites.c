@@ -309,14 +309,14 @@ int main(ajint argc, char **argv)
     /* READ ACD FILE */
     ajNamInit("emboss");
     ajAcdInitP("sites",argc,argv,"DOMAINATRIX"); 
-    prot        = ajAcdGetDirlist("prot");
-    dom         = ajAcdGetDirectory("dom");
-    dcf_fptr    = ajAcdGetInfile("dcf");
-    het_fptr    = ajAcdGetInfile("dic");
-    outf        = ajAcdGetOutfile("outf");
-    vdwf        = ajAcdGetDatafile("vdwf");
-    dist_thresh = ajAcdGetFloat("thresh");
-    logf        = ajAcdGetOutfile("logf");
+    prot        = ajAcdGetDirlist("protpath");
+    dom         = ajAcdGetDirectory("domaindir");
+    dcf_fptr    = ajAcdGetInfile("dcffile");
+    het_fptr    = ajAcdGetDatafile("dicfile");
+    vdwf        = ajAcdGetDatafile("vdwfile");
+    dist_thresh = ajAcdGetFloat("threshold");
+    outf        = ajAcdGetOutfile("outfile");
+    logf        = ajAcdGetOutfile("logfile");
     
 
 

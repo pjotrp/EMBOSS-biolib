@@ -5,6 +5,7 @@ application: ssematch [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
+  embassy: "domainatrix"
 ]
 
 section: input [
@@ -12,7 +13,7 @@ section: input [
   type: "page"
 ]
 
-  infile: ssin [
+  infile: ssinfile [
     parameter: "Y"
     information: "Name of file of secondary structure (input)."
     help: "This option specifies the name of the file of secondary
@@ -20,7 +21,7 @@ section: input [
     knowntype: "Secondary structure file"
   ]
 
-  infile: dcfin [
+  infile: dcfinfile [
     parameter: "Y"
     information: "Name of DCF file (domain classification file)
                   (input)."
@@ -31,6 +32,14 @@ section: input [
            SCOPPARSE and CATHPARSE. Domain sequence information can be added
            to the file by using DOMAINSEQS."
     knowntype: "Domain classification file"
+  ]
+
+  matrixf: datafile [
+    additional: "Y"
+    information: "Residue substitution matrix"
+    help: "This option specifies the secondary structure substitution
+           matrix."
+    default: "SSSUB"
   ]
 
 endsection: input
@@ -54,14 +63,6 @@ section: additional [
   information: "Additional section"
   type: "page"
 ]
-
-  matrixf: datafile [
-    additional: "Y"
-    information: "Residue substitution matrix"
-    help: "This option specifies the secondary structure substitution
-           matrix."
-    default: "SSSUB"
-  ]
 
   float: gapopenr [
     additional: "Y"
@@ -148,7 +149,7 @@ section: output [
   type: "page"
 ]
 
-  outfile: outss [
+  outfile: outssfile [
     parameter: "Y"
     information: "Name of DCF file (domain classification file)
                   containing top-scoring domains for residue-based alinnment
@@ -157,10 +158,10 @@ section: output [
            top-scoring domains for residue-based alinnment (output).A 'domain
            classification file' contains classification and other data for
            domains from SCOP or CATH, in DCF format (EMBL-like)."
-    knowntype: "Domain classification file"
+    knowntype: "domain classification file"
   ]
 
-  outfile: outse [
+  outfile: outsefile [
     parameter: "Y"
     information: "Name of DCF file (domain classification file)
                   containing top-scoring domains for secondary structure
@@ -170,16 +171,16 @@ section: output [
            alinnment (output). A 'domain classification file' contains
            classification and other data for domains from SCOP or CATH, in
            DCF format (EMBL-like)."
-    knowntype: "Domain classification file"
+    knowntype: "domain classification file"
   ]
 
-  outfile: logf [
+  outfile: logfile [
     standard: "Y"
     information: "Name ssematch log file (output)"
     help: "This option specifies the name of the ssematch log file
            (output)."
     default: "SSEMATCH.log"
-    knowntype: "SSEMATCH log file"
+    knowntype: "domainatrix log file"
   ]
 
 endsection: output
