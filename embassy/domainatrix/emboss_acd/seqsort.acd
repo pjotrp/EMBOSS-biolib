@@ -76,7 +76,7 @@ section: required [
 
   integer: overlap  [
     standard: "Y"
-    information: "number of overlapping residues required for
+    information: "Number of overlapping residues required for
                   merging of two hits"
     default: "10"
   ]

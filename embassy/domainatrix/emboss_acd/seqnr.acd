@@ -110,7 +110,7 @@ section: required [
              sequence alignemnts (no scop families file), 2: Validation file
              for signatures from extended alignments (plus non-redundant scop
              families file)"
-    help: "seqnr writes (i) a scop validation file, which contains all
+    help: "Seqnr writes (i) a scop validation file, which contains all
            the hits from the scop families and ambiguities files, plus hits
            corresponding to sequences in the alignment. If run in mode 2 it
            will generate (ii) a scop families file, which is identical to the

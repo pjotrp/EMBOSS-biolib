@@ -71,7 +71,7 @@ section: required [
 
   integer: sparsity  [
     standard: "@($(mode)!=1)"
-    information: "% sparsity of signature"
+    information: "Percentage sparsity of signature"
     help: "The signature sparsity is a user-defined parameter that
            determines how many residues the final signature will contain, for
            example, if the average sequence length of the proteins in the

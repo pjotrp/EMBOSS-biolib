@@ -17,7 +17,7 @@ list: mode  [
   header: "The scanning modes"
   information: "Select mode of operation"
   button: "Y"
-  help: "libscan runs in one of two modes either (i) database search
+  help: "Libscan runs in one of two modes either (i) database search
          mode or (ii) library screen mode. In database search mode libscan
          reads one or more directories each containing a single type of
          discriminating element, the permitted types are sparse sequence

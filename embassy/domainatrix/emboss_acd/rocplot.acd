@@ -37,9 +37,9 @@ endsection: input
 
 
 
-section: standard 
+section: required 
 [
-  information: "Standard section"
+  information: "Required section"
   type: "page"
 ]
 

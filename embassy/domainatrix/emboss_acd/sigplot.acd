@@ -25,7 +25,7 @@ section: input [
     header: "Plotting mode"
     information: "Select mode of operation"
     button: "Y"
-    help: "sigplot runs in one of two modes either (i) 'do not merge
+    help: "Sigplot runs in one of two modes either (i) 'do not merge
            mode' or (ii) 'merge mode'. In 'do not merge mode', ROC analysis
            is performed on each signature hits file individually; the results
            are presented as different lines within a single graph. In 'merge
