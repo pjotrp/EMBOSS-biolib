@@ -1311,6 +1311,7 @@ static void showInsertHTML(AjPStr *target, ajint pos, AjPStr insert)
     ajint j;
     AjBool tag = ajFalse;
 
+    /* find the required position, not including tags */
     for(i=0, j=0; j<pos && i<ajStrLen(*target); i++)
 	if(tag == ajFalse)
 	{
@@ -1325,6 +1326,15 @@ static void showInsertHTML(AjPStr *target, ajint pos, AjPStr insert)
 		tag = ajFalse;
 	}
 
+    /* we may have some tags at this position which still need to be skippped */
+    while (ajStrStr(*target)[i] == '<') 
+    {
+    	while (ajStrStr(*target)[i] != '>') 
+    	    i++;
+        i++;
+    }
+    
+   
     ajStrInsert(target, i, insert);
 
     return;
