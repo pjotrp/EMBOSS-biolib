@@ -1827,11 +1827,11 @@ AjBool ajReportSetTags (AjPReport thys, AjPStr taglist, ajint mintags) {
   /* assume the tags are a simple list in this format:
   ** type: name[=printname]
   **
-  ** spaces are not allowd in names (for ease of parsing the results)
+  ** spaces are not allowed in names (for ease of parsing the results)
   */
 
   if (!tagexp)
-    tagexp = ajRegCompC(" *([^:]+):([^= ]+)(=([^ ]+))?");
+    tagexp = ajRegCompC("^ *([^:]+):([^= ]+)(=([^ ]+))?");
 
   ajStrAssS(&tmplist, taglist);
   while (ajRegExec(tagexp, tmplist)) {
@@ -1859,6 +1859,11 @@ AjBool ajReportSetTags (AjPReport thys, AjPStr taglist, ajint mintags) {
     ajListPushApp (thys->Tagprints, tagprint);
   }
 
+  if (ajStrLen(tmplist)) {	/* test acdc-reportbadtaglist */
+    ajErr ("Bad report taglist at '%S'", tmplist);
+    return ajFalse;
+  }
+
   return ajTrue;
 }
 
@@ -1876,21 +1881,22 @@ AjBool ajReportSetTags (AjPReport thys, AjPStr taglist, ajint mintags) {
 
 AjBool ajReportValid (AjPReport thys) {
 
-  if (!thys->Format) {
+  if (!thys->Format) {		/* test acdc-reportbadformat */
     if (!ajReportFindFormat(thys->Formatstr, &thys->Format)) {
-      ajWarn("Unknown report format '%S'", thys->Formatstr);
+      ajErr ("Unknown report format '%S'", thys->Formatstr);
       return ajFalse;
     }
   }
-
+				/* test acdc-reportbadtags */
   if (thys->Mintags > ajListLength(thys->Tagnames)) {
-      ajWarn("Report specifies %d tags, has only %d",
+      ajErr ("Report specifies %d tags, has only %d",
 	     thys->Mintags, ajListLength(thys->Tagnames));
       return ajFalse;
   }
 
+				/* so far, no format has mintags non-zero */
   if ( reportFormat[thys->Format].Mintags > ajListLength(thys->Tagnames)) {
-      ajWarn("Report format '%S' needs %d tags, has only %d",
+      ajErr ("Report format '%S' needs %d tags, has only %d",
 	     reportFormat[thys->Format].Mintags,
 	     ajListLength(thys->Tagnames));
       return ajFalse;
@@ -1944,7 +1950,7 @@ void ajReportWrite (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
 
   if (!thys->Format) {
     if (!ajReportFindFormat(thys->Formatstr, &thys->Format)) {
-      ajErr ("unknown report format '%S'", thys->Formatstr);
+      ajDie ("unknown report format '%S'", thys->Formatstr);
     }
   }
 
