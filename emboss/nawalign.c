@@ -6,8 +6,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.1 $
-** @modified $Date: 2004/09/06 19:55:13 $
+** @version $Revision: 1.2 $
+** @modified $Date: 2004/11/17 18:02:43 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@
 
 enum constant
     {
-	enumDebugLevel        =  2,
+	enumDebugLevel        =  0,
 	enumArrayOffset       =  1,
 	enumTotalResTypes     = 30,
 	enumAsciiOffset       = 65,
@@ -47,10 +47,10 @@ enum constant
 int main(int argc , char **argv)
 {
     /* sequence objects */
-    AjPSeq ajpSeqDown = NULL;   /* query sequence---no structure             */
-    AjPSeq ajpSeqAcross = NULL; /* template sequence---has structure         */
-    AjPSeq ajpSeqDownCopy = NULL;   /* rewritable query sequence             */
-    AjPSeq ajpSeqAcrossCopy = NULL; /* rewritable template sequence          */
+    AjPSeq ajpSeqDown = NULL;   /* query sequence---no structure     */
+    AjPSeq ajpSeqAcross = NULL; /* template sequence---has structure */
+    AjPSeq ajpSeqDownCopy = NULL;   /* rewritable query sequence     */
+    AjPSeq ajpSeqAcrossCopy = NULL; /* rewritable template sequence  */
     /* sequence lengths */
     ajint ajIntDownSeqLen;
     ajint ajIntAcrossSeqLen;
