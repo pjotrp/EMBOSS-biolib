@@ -1153,12 +1153,12 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
 	java_tidy_command(&prog,&cl,&envi,&dir,&outstd,&errstd);
 	i = 0;
 	while(argp[i])
-	    AJFREE(argp[i]);
+	    AJFREE(argp[i++]);
 	AJFREE(argp);
 
 	i = 0;
 	while(envp[i])
-	    AJFREE(envp[i]);
+	    AJFREE(envp[i++]);
 	AJFREE(envp);
 
 	return (unsigned char)ajFalse;
@@ -2522,7 +2522,7 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
 	java_tidy_command2(&unused,&cl,&clemboss,&dir,&envi,&prog,buff);
 	i = 0;
 	while(envp[i])
-	    AJFREE(envp[i]);
+	    AJFREE(envp[i++]);
 	AJFREE(envp);
 	return -1;
     }
