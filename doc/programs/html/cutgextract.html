@@ -3,7 +3,7 @@
 <HTML>
 <HEAD>
   <TITLE>
-  EMBOSS: abiview
+  EMBOSS: cutgextract
   </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
@@ -17,7 +17,7 @@
 <td align=middle valign=middle>
 <font face="Arial,Helvetica" size=6 color="#ffffff">
 <H2>
-EMBOSS: abiview
+EMBOSS: cutgextract
 </H2>
 </font>
 </td>
@@ -31,12 +31,12 @@ EMBOSS: abiview
 <!--END OF HEADER-->
 
 <H1>
-Program abiview
+Program cutgextract
 </H1>
 <H2>
     Function
 </H2>
-Reads ABI file and display the trace
+Extract data from CUTG
 
 <!--
 DON'T WRITE ANYTHING HERE.
@@ -59,17 +59,10 @@ IT IS DONE FOR YOU.
         Algorithms
   -->
 
-<b>abiview</b> reads in an ABI sequence trace file and graphically
-displays the results. 
+**************** 
+EDIT HERE
+**************** 
 
-<p>
-
-The data for each nucleotide is plotted and the assigned nucleotide (G,
-A, T, C or N) in the ABI file is overlayed on the graphs. 
-
-<p>
-
-It also writes out the sequence to an output sequence file. 
 
 
 
@@ -92,17 +85,17 @@ It also writes out the sequence to an output sequence file.
  -->
 
 
-Here is a sample session with abiview:
+Here is a sample session with cutgextract:
 
 <pre>
 
-% abiview
-Name of the ABI trace file: ba16d2.s1
-Output sequence [outfile.fasta]: 
-Graph type [x11]: 
+% cutgextract
 
 </pre>
 
+**************** 
+EDIT HERE
+**************** 
 
 
 
@@ -123,18 +116,11 @@ Graph type [x11]:
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Mandatory qualifiers:
-  [-fname]             string     Name of the ABI trace file
-  [-outseq]            seqout     Sequence file
-   -graph              xygraph    Graph type
+  [-directory]         dirlist    CUTG directory
 
-   Optional qualifiers:
-   -yticks             bool       Display y-axis ticks
-   -[no]sequence       bool       Display the sequence on the graph
-   -window             integer    Sequence display window size
-   -bases              string     Base graphs to be displayed
-
+   Optional qualifiers: (none)
    Advanced qualifiers:
-   -separate           bool       Separate the trace graphs for the 4 bases
+   -wildspec           string     Type of codon file
 
    General qualifiers:
   -help                bool       report command line options. More
@@ -146,81 +132,10 @@ Graph type [x11]:
 </td></tr></table>
 <P>
 <table border cellspacing=0 cellpadding=3 bgcolor="#f5f5ff">
-<tr bgcolor="#FFFFD0">
-<th align="left" colspan=2>Mandatory qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
-</tr>
 
-<tr>
-<td>[-fname]<br>(Parameter 1)</td>
-<td>Name of the ABI trace file</td>
-<td>Any string is accepted</td>
-<td><i>An empty string is accepted</i></td>
-</tr>
+   EMBOSS An error in ajacd.c at line 10715:
+unknown attribute 'name' for 'directory'
 
-<tr>
-<td>[-outseq]<br>(Parameter 2)</td>
-<td>Sequence file</td>
-<td>Writeable sequence</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
-</tr>
-
-<tr>
-<td>-graph</td>
-<td>Graph type</td>
-<td>EMBOSS has a list of known devices, including postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows, x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm, png</td>
-<td><i>EMBOSS_GRAPHICS</i> value, or x11</td>
-</tr>
-
-<tr bgcolor="#FFFFD0">
-<th align="left" colspan=2>Optional qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
-</tr>
-
-<tr>
-<td>-yticks</td>
-<td>Display y-axis ticks</td>
-<td>Yes/No</td>
-<td>No</td>
-</tr>
-
-<tr>
-<td>-[no]sequence</td>
-<td>Display the sequence on the graph</td>
-<td>Yes/No</td>
-<td>Yes</td>
-</tr>
-
-<tr>
-<td>-window</td>
-<td>Sequence display window size</td>
-<td>Any integer value</td>
-<td>40</td>
-</tr>
-
-<tr>
-<td>-bases</td>
-<td>Base graphs to be displayed</td>
-<td>Any string is accepted</td>
-<td>GATC</td>
-</tr>
-
-<tr bgcolor="#FFFFD0">
-<th align="left" colspan=2>Advanced qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
-</tr>
-
-<tr>
-<td>-separate</td>
-<td>Separate the trace graphs for the 4 bases</td>
-<td>Yes/No</td>
-<td>No</td>
-</tr>
-
-</table>
 
 
 <!--
@@ -246,8 +161,10 @@ IT IS DONE FOR YOU.
         happens in unusual cases - null input, etc. 
    -->
 
+**************** 
+EDIT HERE
+**************** 
 
-This reads in a standard ABI trace file.
 
 
 
@@ -271,21 +188,12 @@ This reads in a standard ABI trace file.
         happens in unusual cases - null output, errors etc. 
    -->
 
-It outputs a file holding a normal nucleotide sequence.
-<p>
+**************** 
+EDIT HERE
+**************** 
 
-It outputs a graphical image of the traces.
-<br>
-<a href = "abiview0.gif">The graphical output from the above example is here.</A>
 
-<p>
 
-The horizontal scale of the output image labelled 'Residue Position' is
-only a very approximate indication of the spacing of residues in the
-image.  The real residue spacing is variable, as it relies on the speed
-with which the oligo-nucleotides are eluted in the ABI sequencer.  Do
-not be surprised to see the nucleotide signals spaced at a much greater
-distance than the horizontal scale might suggest. 
 
 
 
@@ -353,7 +261,9 @@ The directories are searched in the following order:
 
    -->
 
-None.
+**************** 
+EDIT HERE
+**************** 
 
 
 
@@ -479,19 +389,13 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="cirdna.html">cirdna</a></td><td>Draws circular maps of DNA constructs</td></tr>
-<tr><td><a href="lindna.html">lindna</a></td><td>Draws linear maps of DNA constructs</td></tr>
-<tr><td><a href="pepnet.html">pepnet</a></td><td>Displays proteins as a helical net</td></tr>
-<tr><td><a href="pepwheel.html">pepwheel</a></td><td>Shows protein sequences as helices</td></tr>
-<tr><td><a href="prettyplot.html">prettyplot</a></td><td>Displays aligned sequences, with colouring and boxing</td></tr>
-<tr><td><a href="prettyseq.html">prettyseq</a></td><td>Output sequence with translated ranges</td></tr>
-<tr><td><a href="remap.html">remap</a></td><td>Display a sequence with restriction cut sites, translation etc</td></tr>
-<tr><td><a href="seealso.html">seealso</a></td><td>Finds programs sharing group names</td></tr>
-<tr><td><a href="showalign.html">showalign</a></td><td>Displays a multiple sequence alignment</td></tr>
-<tr><td><a href="showdb.html">showdb</a></td><td>Displays information on the currently available databases</td></tr>
-<tr><td><a href="showfeat.html">showfeat</a></td><td>Show features of a sequence</td></tr>
-<tr><td><a href="showseq.html">showseq</a></td><td>Display a sequence with features, translation etc</td></tr>
-<tr><td><a href="textsearch.html">textsearch</a></td><td>Search sequence documentation text. SRS and Entrez are faster!</td></tr>
+<tr><td><a href="domainer.html">domainer</a></td><td>Build domain coordinate files</td></tr>
+<tr><td><a href="nrscope.html">nrscope</a></td><td>Converts redundant EMBL-format SCOP file to non-redundant one</td></tr>
+<tr><td><a href="printsextract.html">printsextract</a></td><td>Extract data from PRINTS</td></tr>
+<tr><td><a href="prosextract.html">prosextract</a></td><td>Builds the PROSITE motif database for patmatmotifs to search</td></tr>
+<tr><td><a href="rebaseextract.html">rebaseextract</a></td><td>Extract data from REBASE</td></tr>
+<tr><td><a href="scope.html">scope</a></td><td>Convert raw scop classification file to embl-like format</td></tr>
+<tr><td><a href="tfextract.html">tfextract</a></td><td>Extract data from TRANSFAC</td></tr>
 </table>
 
 <!-- 
@@ -515,8 +419,12 @@ None.
         Who has worked on the program in the past.
    -->
 
-This application was written by Tim Carver <a
-href="mailto:tcarver@hgmp.mrc.ac.uk">(tcarver@hgmp.mrc.ac.uk)</a>
+This application was written by Alan Bleasby <a
+href="mailto:ableasby@hgmp.mrc.ac.uk">(ableasby@hgmp.mrc.ac.uk)</a>
+
+**************** 
+EDIT HERE
+**************** 
 
 
 
@@ -541,7 +449,11 @@ href="mailto:tcarver@hgmp.mrc.ac.uk">(tcarver@hgmp.mrc.ac.uk)</a>
         What changes have been made.
    -->
 
-Written (January 2001) - Tim Carver
+Written (date) - author.
+
+**************** 
+EDIT HERE
+**************** 
 
 
 

@@ -238,6 +238,7 @@ Known bugs
 See also
 
    Program name Description
+   primer3 Picks primers for PCR reactions
    primersearch Searches DNA sequences for matches with primer pairs
    stssearch Searches a DNA database for matches with a set of STS
    primers

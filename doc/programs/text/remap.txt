@@ -617,7 +617,6 @@ See also
 
    Program name Description
    abiview Reads ABI file and display the trace
-   ajtest Finds restriction enzyme cleavage sites
    backtranseq Back translate a protein sequence
    cirdna Draws circular maps of DNA constructs
    coderet Extract CDS, mRNA and translations from feature tables

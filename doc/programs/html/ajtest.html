@@ -2,7 +2,7 @@
 
 <HEAD>
   <TITLE>
-  EMBOSS: seqretallfeat
+  EMBOSS: ajtest
   </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
@@ -20,7 +20,7 @@
 <td align=middle valign=middle>
 <font face="Arial,Helvetica" size=6 color="#ffffff">
 <H2>
-EMBOSS: seqretallfeat
+EMBOSS: ajtest
 </H2>
 
 
@@ -36,7 +36,7 @@ EMBOSS: seqretallfeat
 
 <p><hr><p>
 <H1>
-Program seqretallfeat
+Program ajtest
 </H1>
 
 <H2>
@@ -49,7 +49,7 @@ Program seqretallfeat
 DON'T WRITE ANYTHING HERE.
 IT IS DONE FOR YOU.
 -->
-Reads and writes (returns) one or more sequences
+Test file for ACD parsing
 
 
 <H2>
@@ -57,26 +57,16 @@ Reads and writes (returns) one or more sequences
 </H2>
 
 
-
-
-
-
-
-
-
-
-
-
 <H2>
     Usage
 </H2>
 
 
-Here is a sample session with seqretallfeat.
+Here is a sample session with ajtest.
 
 <pre>
 
-% seqretallfeat
+% ajtest
 
 </pre>
 
@@ -97,7 +87,7 @@ IT IS DONE FOR YOU.
 <pre>
    Mandatory qualifiers:
   [-sequence]          seqall     Sequence database USA
-  [-outseq]            seqoutall  Output sequence(s) USA
+  [-seqset]            seqset     Sequence set USA
 
    Optional qualifiers: (none)
    Advanced qualifiers: (none)
@@ -126,10 +116,10 @@ IT IS DONE FOR YOU.
 </tr>
 
 <tr>
-<td>[-outseq]<br>(Parameter 2)</td>
-<td>Output sequence(s) USA</td>
-<td>Writeable sequence(s)</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>[-seqset]<br>(Parameter 2)</td>
+<td>Sequence set USA</td>
+<td>Readable sequences</td>
+<td><b>Required</b></td>
 </tr>
 
 <tr bgcolor="#FFFFD0">
@@ -161,69 +151,47 @@ IT IS DONE FOR YOU.
 </H2>
 
 
-
-
-
-
-
-
+Reads DNA or protein sequences
 
 <H2>
     Output file format
 </H2>
 
 
-
-
-
-
-
-
-
-
-
 <H2>
     Data files
 </H2>
-
-None.
 
 
 <H2>
     Notes
 </H2>
 
-None.
 
 <H2>
     References
 </H2>
 
-None.
 
 <H2>
     Warnings
 </H2>
 
-None.
 
 <H2>
     Diagnostic Error Messages
 </H2>
 
-None.
 
 <H2>
     Exit status
 </H2>
 
-It always exits with a status of zero.
 
 <H2>
     Known bugs
 </H2>
 
-None.
 
 <!--
 <H2>
@@ -233,7 +201,7 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="ajtest.html">ajtest</a></td><td>Test file for ACD parsing</td></tr>
+<tr><td><a href="seqretallfeat.html">seqretallfeat</a></td><td>Reads and writes (returns) one or more sequences</td></tr>
 </table>
 
 <!--
@@ -247,16 +215,14 @@ None.
 </H2>
 
 
-This application was written by Peter Rice <a
-href="mailto:pmr@sanger.ac.uk">(pmr@sanger.ac.uk)</a> Informatics
-Division, The Sanger Centre, Wellcome Trust Genome Campus, Hinxton,
-Cambridge, CB10 1SA, UK.
+This application is used for general testing and is not considered an
+official part of EMBOSS. Authorship and code may change without
+notice.
 
 <H2>
     History
 </H2>
 
-Written 2001 - Peter Rice
 
 <H2>
     Target users
@@ -270,7 +236,6 @@ from naive users to embedded scripts.
     Comments
 </H2>
 
-None.
 
 <pre>
 

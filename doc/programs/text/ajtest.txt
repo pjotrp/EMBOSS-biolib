@@ -1,26 +1,26 @@
 
-                           EMBOSS: seqretallfeat
+                               EMBOSS: ajtest
      _________________________________________________________________
    
-                             Program seqretallfeat
+                                Program ajtest
                                        
 Function
 
-   Reads and writes (returns) one or more sequences
+   Test file for ACD parsing
    
 Description
 
 Usage
 
-   Here is a sample session with seqretallfeat.
+   Here is a sample session with ajtest.
 
-% seqretallfeat
+% ajtest
 
 Command line arguments
 
    Mandatory qualifiers:
   [-sequence]          seqall     Sequence database USA
-  [-outseq]            seqoutall  Output sequence(s) USA
+  [-seqset]            seqset     Sequence set USA
 
    Optional qualifiers: (none)
    Advanced qualifiers: (none)
@@ -33,9 +33,8 @@ Command line arguments
    Mandatory qualifiers Allowed values Default
    [-sequence]
    (Parameter 1) Sequence database USA Readable sequence(s) Required
-   [-outseq]
-   (Parameter 2) Output sequence(s) USA Writeable sequence(s)
-   <sequence>.format
+   [-seqset]
+   (Parameter 2) Sequence set USA Readable sequences Required
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default
@@ -43,56 +42,40 @@ Command line arguments
    
 Input file format
 
+   Reads DNA or protein sequences
+   
 Output file format
 
 Data files
 
-   None.
-   
 Notes
 
-   None.
-   
 References
 
-   None.
-   
 Warnings
 
-   None.
-   
 Diagnostic Error Messages
 
-   None.
-   
 Exit status
 
-   It always exits with a status of zero.
-   
 Known bugs
 
-   None.
-   
 See also
 
-   Program name        Description
-   ajtest       Test file for ACD parsing
+   Program name                    Description
+   seqretallfeat Reads and writes (returns) one or more sequences
    
 Author(s)
 
-   This application was written by Peter Rice (pmr@sanger.ac.uk)
-   Informatics Division, The Sanger Centre, Wellcome Trust Genome Campus,
-   Hinxton, Cambridge, CB10 1SA, UK.
+   This application is used for general testing and is not considered an
+   official part of EMBOSS. Authorship and code may change without
+   notice.
    
 History
 
-   Written 2001 - Peter Rice
-   
 Target users
 
    This program is intended to be used by everyone and everything, from
    naive users to embedded scripts.
    
 Comments
-
-   None.
