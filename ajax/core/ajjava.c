@@ -48,7 +48,7 @@
 #include <sys/ioctl.h>
 
 
-#ifdef HAVE_POLL
+#ifdef HAVE_POLL		/* Only for OSs without FD macros */
 #include <poll.h>
 #endif
 
@@ -56,10 +56,10 @@
 #define UIDLIMIT 100		/* Minimum acceptable uid and gid     */
 #define GIDLIMIT 1		/* Alter these to suit security prefs */
 
-#define AJ_OUTBUF 10000		/* Socket buffer size */
-#define AJNOTFOUND -999		/* Error flag         */
+#define AJ_OUTBUF 10000		/* pipe buffer size      */
+#define R_BUFFER  2048		/* Reentrant buffer size */
 
-#define TIMEOUT 30
+#define TIMEOUT 30		/* Arbitrary timeout (secs) */
 
 #if defined (__SVR4) && defined (__sun)
 #include <sys/filio.h>
@@ -74,7 +74,7 @@
 #include <crypt.h>
 #endif
 
-#define R_BUFFER 2048		/* Reentrant buffer size */
+
 
 #ifdef N_SHADOW
 #include <shadow.h>
@@ -97,15 +97,6 @@
 #ifdef HPUX_SHADOW
 #include <prot.h>
 #endif
-
-
-#define UIDLIMIT 100		/* Minimum acceptable uid and gid     */
-#define GIDLIMIT 1		/* Alter these to suit security prefs */
-
-
-#define AJ_OUTBUF 10000		/* Socket buffer size */
-#define AJNOTFOUND -999		/* Error flag         */
-
 
 
 /*
@@ -132,8 +123,8 @@ static int PAM_conv(int num_msg, struct pam_message **msg,
  *  system
  */
 static char **make_array(AjPStr str);
-static void java_tidy_command(AjPStr *uniq, AjPStr *cl, AjPStr *clemboss,
-			      AjPStr *dir, AjPStr *envi, AjPStr *prog);
+static void java_tidy_command(AjPStr *str1, AjPStr *str2, AjPStr *str3,
+			      AjPStr *str4, AjPStr *str5, AjPStr *str6);
 static void java_tidy_command2(AjPStr *uniq, AjPStr *cl, AjPStr *clemboss,
 			       AjPStr *dir, AjPStr *envi, AjPStr *prog,
 			       char *buf);
@@ -192,6 +183,10 @@ static int java_pipe_read(int rchan, char *buf, int n, int seconds,
 			  AjPStr *errstd);
 static int java_snd(int tchan,char *buf,int len,AjPStr *errstd);
 static int java_rcv(int rchan, char *buf, AjPStr *errstd);
+
+
+
+
 
 
 
@@ -414,18 +409,34 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userInfo
     if(juser)
 	ajStrAssC(&username,juser);
     else
+    {
+	ajStrDel(&username);
+	ajStrDel(&password);
+	ajStrDel(&home);
 	return (unsigned char)ajFalse;
+    }
+    
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
     jpass = (char *) (*env)->GetStringUTFChars(env,key,0);
     if(jpass)
 	ajStrAssC(&password,jpass);
     else
+    {
+	ajStrDel(&username);
+	ajStrDel(&password);
+	ajStrDel(&home);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,key,jpass);
 
     if(!ajStrLen(username) || !ajStrLen(password))
+    {
+	ajStrDel(&username);
+	ajStrDel(&password);
+	ajStrDel(&home);
 	return (unsigned char)ajFalse;
+    }
 
 #ifndef NO_AUTH
     ok = java_pass(username,password,&uid,&gid,&home);
@@ -646,6 +657,11 @@ static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
     if(trusted)
     {
 	shadow = getspnam(ajStrStr(username));
+	if(!shadow)
+	{
+	    AJFREE(epwd);
+	    return ajFalse;
+	}
 	strcpy(epwd,shadow->sp_pwdp);
     }
     
@@ -1122,7 +1138,21 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
     envp = make_array(envi);
 
     if(!ajSysWhichEnv(&prog,envp))
+    {
+	java_tidy_command(&prog,&cl,&envi,&dir,&outstd,&errstd);
+	i = 0;
+	while(argp[i])
+	    AJFREE(argp[i]);
+	AJFREE(argp);
+	
+	i = 0;
+	while(envp[i])
+	    AJFREE(envp[i]);
+	AJFREE(envp);
+	
 	return (unsigned char)ajFalse;
+    }
+    
 
     while(pipe(outpipe)==-1);
     while(pipe(errpipe)==-1);
@@ -1134,7 +1164,21 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
 #endif
 
     if(pid == -1)
+    {
+	java_tidy_command(&prog,&cl,&envi,&dir,&outstd,&errstd);
+	i = 0;
+	while(argp[i])
+	    AJFREE(argp[i]);
+	AJFREE(argp);
+	
+	i = 0;
+	while(envp[i])
+	    AJFREE(envp[i]);
+	AJFREE(envp);
+	
 	return (unsigned char)ajFalse;
+    }
+
     
     if(!pid)			/* Child */
     {
@@ -2073,10 +2117,6 @@ static void java_wait_for_file(int pid,AjPStr *outstd, AjPStr *errstd,
 
     *buf = '\0';
     
-
-
-
-
     if(size)
 	ptr = fbuf;
 
@@ -2272,7 +2312,7 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
 			   unsigned char **fbuf, int *fsize)
 {
     AjPStr dir=NULL;
-    AjPStr uniq=NULL;
+    AjPStr unused=NULL;
 
     AjPStr prog=NULL;    /* Fork strings */
     AjPStr cl=NULL;
@@ -2307,6 +2347,7 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
     cuser = ajStrStr(username);
     cpass = ajStrStr(password);
 
+    unused   = ajStrNew();
     clemboss = ajStrNew();
     dir      = ajStrNew();
     cl       = ajStrNew();
@@ -2317,7 +2358,7 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
     if(!(buff=(char*)malloc(JBUFFLEN)))
     {
 	ajStrAppC(errstd,"Malloc error\n");
-	java_tidy_command(&uniq,&cl,&clemboss,&dir,&envi,&prog);
+	java_tidy_command(&unused,&cl,&clemboss,&dir,&envi,&prog);
 	return -1;
     }
     
@@ -2332,7 +2373,11 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
     if(!ajSysWhichEnv(&prog,envp))
     {
 	ajStrAppC(errstd,"Cannot locate jembossctl\n");
-	java_tidy_command2(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff);
+	java_tidy_command2(&unused,&cl,&clemboss,&dir,&envi,&prog,buff);
+	i = 0;
+	while(envp[i])
+	    AJFREE(envp[i]);
+	AJFREE(envp);
 	return -1;
     }
 
@@ -2357,14 +2402,23 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
     if(pid == -1)
     {
 	ajStrAppC(errstd,"Fork error\n");
-	java_tidy_command3(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff,
+	java_tidy_command3(&unused,&cl,&clemboss,&dir,&envi,&prog,buff,
 			   commpipe,outpipe,errpipe);
+	i = 0;
+	while(argp[i])
+	    AJFREE(argp[i]);
+	AJFREE(argp);
+	
+	i = 0;
+	while(envp[i])
+	    AJFREE(envp[i]);
+	AJFREE(envp);
 	return -1;
     }
 
 
 
-    if(!pid)			/* Child (doit suid prog) */
+    if(!pid)			/* Child (jembossctl) prog */
     {
 	dup2(commpipe[0],0);
 	dup2(outpipe[1],1);
@@ -2397,7 +2451,7 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
     if(rlen==-1)
     {
 	ajStrAppC(errstd,"Pipe Recv error 1\n");
-	java_tidy_command3(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff,
+	java_tidy_command3(&unused,&cl,&clemboss,&dir,&envi,&prog,buff,
 			   commpipe,outpipe,errpipe);
 	return -1;
     }
@@ -2405,7 +2459,7 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
     if(rlen<2 || strncmp(buff,"OK",2))
     {
 	ajStrAppC(errstd,"Incorrect ACK error\n");
-	java_tidy_command3(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff,
+	java_tidy_command3(&unused,&cl,&clemboss,&dir,&envi,&prog,buff,
 			   commpipe,outpipe,errpipe);
 	return -1;
     }
@@ -2497,13 +2551,9 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
     }
     
 
-    java_tidy_command3(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff,
+    java_tidy_command3(&unused,&cl,&clemboss,&dir,&envi,&prog,buff,
 		       commpipe,outpipe,errpipe);
 
-/*
-    fprintf(ajb,"Finished\n");
-    fclose(ajb);
-*/    
 
     return retval;
 }
@@ -2513,26 +2563,26 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
 **
 ** Delete allocated memory
 **
-** @param [w] uniq [AjPStr*] unique name
-** @param [w] cl [AjPStr] command line
-** @param [w] clemboss [AjPStr*] emboss command line
-** @param [w] dir [AjPStr*] directory
-** @param [w] envi [AjPStr*] environment
-** @param [w] prog [AjPStr*] program name
+** @param [w] str1 [AjPStr*] any string
+** @param [w] str2 [AjPStr*] any string
+** @param [w] str3 [AjPStr*] any string
+** @param [w] str4 [AjPStr*] any string
+** @param [w] str5 [AjPStr*] any string
+** @param [w] str6 [AjPStr*] any string
 **
 ** @return [void]
 ******************************************************************************/
 
-static void java_tidy_command(AjPStr *uniq, AjPStr *cl, AjPStr *clemboss,
-			      AjPStr *dir, AjPStr *envi, AjPStr *prog)
+static void java_tidy_command(AjPStr *str1, AjPStr *str2, AjPStr *str3,
+			      AjPStr *str4, AjPStr *str5, AjPStr *str6)
 {
 
-    ajStrDel(uniq);
-    ajStrDel(cl);
-    ajStrDel(clemboss);
-    ajStrDel(dir);
-    ajStrDel(envi);
-    ajStrDel(prog);
+    ajStrDel(str1);
+    ajStrDel(str2);
+    ajStrDel(str3);
+    ajStrDel(str4);
+    ajStrDel(str5);
+    ajStrDel(str6);
 
     return;
 }
@@ -2657,7 +2707,11 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userAuth
     if(juser)
 	ajStrAssC(&username,juser);
     else
+    {
+	java_tidy_command(&username,&password,&home,&envi,&outstd,&errstd);
 	return (unsigned char)ajFalse;
+    }
+    
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
 
@@ -2673,11 +2727,17 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userAuth
     if(jenv)
 	ajStrAssC(&envi,jenv);
     else
+    {
+	java_tidy_command(&username,&password,&home,&envi,&outstd,&errstd);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,environment,jenv);
 
     if(!ajStrLen(username) || !ajStrLen(password) || !ajStrLen(envi))
+    {
+	java_tidy_command(&username,&password,&home,&envi,&outstd,&errstd);
 	return (unsigned char)ajFalse;
+    }
 
     ok = ajFalse;
     if(!java_jembossctl(COMM_AUTH,username,password,envi,NULL,NULL,&outstd,
@@ -2702,14 +2762,8 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userAuth
     (*env)->SetObjectField(env,obj,field,estr);
 
 
-    
-    ajStrDel(&username);
-    ajStrDel(&password);
-    ajStrDel(&home);
-    ajStrDel(&envi);
-    ajStrDel(&outstd);
-    ajStrDel(&errstd);
-    
+    java_tidy_command(&username,&password,&home,&envi,&outstd,&errstd);    
+
 
     if(!ok)
 	return (unsigned char)ajFalse;
@@ -2777,12 +2831,22 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkBatch
     if(juser)
 	ajStrAssC(&username,juser);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&commandline,
+			  &outstd,&errstd);
+	ajStrDel(&directory);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
 
     if(!(jpass=(char *)malloc(plen+1)))
+    {
+	java_tidy_command(&username,&password,&envi,&commandline,
+			  &outstd,&errstd);
+	ajStrDel(&directory);
 	return (unsigned char)ajFalse;
+    }
     bzero((void *)jpass,plen+1);
     for(i=0;i<plen;++i)
 	jpass[i] = (char)ca[i];
@@ -2794,7 +2858,13 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkBatch
     if(jenv)
 	ajStrAssC(&envi,jenv);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&commandline,
+			  &outstd,&errstd);
+	ajStrDel(&directory);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,environment,jenv);
 
 
@@ -2802,19 +2872,37 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkBatch
     if(jcl)
 	ajStrAssC(&commandline,jcl);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&commandline,
+			  &outstd,&errstd);
+	ajStrDel(&directory);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,cline,jcl);
 
     jdir = (char *) (*env)->GetStringUTFChars(env,direct,0);
     if(jdir)
 	ajStrAssC(&directory,jdir);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&commandline,
+			  &outstd,&errstd);
+	ajStrDel(&directory);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,direct,jdir);
 
 
     if(!ajStrLen(username) || !ajStrLen(password) || !ajStrLen(envi))
+    {
+	java_tidy_command(&username,&password,&envi,&commandline,
+			  &outstd,&errstd);
+	ajStrDel(&directory);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
 
     ok = ajFalse;
     if(!java_jembossctl(BATCH_FORK,username,password,envi,commandline,
@@ -2831,16 +2919,10 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkBatch
     (*env)->SetObjectField(env,obj,field,estr);
 
 
-    
-    ajStrDel(&username);
-    ajStrDel(&password);
-    ajStrDel(&envi);
-    ajStrDel(&outstd);
-    ajStrDel(&errstd);
-
-    ajStrDel(&commandline);
+    java_tidy_command(&username,&password,&envi,&commandline,
+		      &outstd,&errstd);
     ajStrDel(&directory);
-    
+    AJFREE(jpass);    
 
     if(!ok)
 	return (unsigned char)ajFalse;
@@ -2909,12 +2991,22 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkEmboss
     if(juser)
 	ajStrAssC(&username,juser);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&commandline,
+			  &outstd,&errstd);
+	ajStrDel(&directory);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
 
     if(!(jpass=(char *)malloc(plen+1)))
+    {
+	java_tidy_command(&username,&password,&envi,&commandline,
+			  &outstd,&errstd);
+	ajStrDel(&directory);
 	return (unsigned char)ajFalse;
+    }
     bzero((void *)jpass,plen+1);
     for(i=0;i<plen;++i)
 	jpass[i] = (char)ca[i];
@@ -2926,7 +3018,13 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkEmboss
     if(jenv)
 	ajStrAssC(&envi,jenv);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&commandline,
+			  &outstd,&errstd);
+	ajStrDel(&directory);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,environment,jenv);
 
 
@@ -2934,19 +3032,37 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkEmboss
     if(jcl)
 	ajStrAssC(&commandline,jcl);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&commandline,
+			  &outstd,&errstd);
+	ajStrDel(&directory);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,cline,jcl);
 
     jdir = (char *) (*env)->GetStringUTFChars(env,direct,0);
     if(jdir)
 	ajStrAssC(&directory,jdir);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&commandline,
+			  &outstd,&errstd);
+	ajStrDel(&directory);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,direct,jdir);
 
 
     if(!ajStrLen(username) || !ajStrLen(password) || !ajStrLen(envi))
+    {
+	java_tidy_command(&username,&password,&envi,&commandline,
+			  &outstd,&errstd);
+	ajStrDel(&directory);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
 
     ok = ajFalse;
     if(!java_jembossctl(EMBOSS_FORK,username,password,envi,commandline,
@@ -2963,16 +3079,10 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkEmboss
     (*env)->SetObjectField(env,obj,field,estr);
 
 
-    
-    ajStrDel(&username);
-    ajStrDel(&password);
-    ajStrDel(&envi);
-    ajStrDel(&outstd);
-    ajStrDel(&errstd);
-
-    ajStrDel(&commandline);
+    java_tidy_command(&username,&password,&envi,&commandline,
+		      &outstd,&errstd);
     ajStrDel(&directory);
-    
+    AJFREE(jpass);
 
     if(!ok)
 	return (unsigned char)ajFalse;
@@ -3037,12 +3147,20 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_makeDir
     if(juser)
 	ajStrAssC(&username,juser);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
 
     if(!(jpass=(char *)malloc(plen+1)))
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
 	return (unsigned char)ajFalse;
+    }
     bzero((void *)jpass,plen+1);
     for(i=0;i<plen;++i)
 	jpass[i] = (char)ca[i];
@@ -3053,21 +3171,33 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_makeDir
     if(jenv)
 	ajStrAssC(&envi,jenv);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,environment,jenv);
 
     if(!ajStrLen(username) || !ajStrLen(password) || !ajStrLen(envi))
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
 
     jdir = (char *) (*env)->GetStringUTFChars(env,direct,0);
     if(jdir)
 	ajStrAssC(&directory,jdir);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,direct,jdir);
-
-
-
 
     ok = ajFalse;
     if(!java_jembossctl(MAKE_DIRECTORY,username,password,envi,directory,NULL,
@@ -3084,14 +3214,9 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_makeDir
     (*env)->SetObjectField(env,obj,field,estr);
 
 
-    
-    ajStrDel(&username);
-    ajStrDel(&password);
-    ajStrDel(&envi);
-    ajStrDel(&outstd);
-    ajStrDel(&errstd);
-    
-    ajStrDel(&directory);
+    java_tidy_command(&username,&password,&envi,&directory,
+		      &outstd,&errstd);
+    AJFREE(jpass);
 
     if(!ok)
 	return (unsigned char)ajFalse;
@@ -3157,12 +3282,20 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delFile
     if(juser)
 	ajStrAssC(&username,juser);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&file,
+			  &outstd,&errstd);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
 
     if(!(jpass=(char *)malloc(plen+1)))
+    {
+	java_tidy_command(&username,&password,&envi,&file,
+			  &outstd,&errstd);
 	return (unsigned char)ajFalse;
+    }
     bzero((void *)jpass,plen+1);
     for(i=0;i<plen;++i)
 	jpass[i] = (char)ca[i];
@@ -3174,17 +3307,32 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delFile
     if(jenv)
 	ajStrAssC(&envi,jenv);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&file,
+			  &outstd,&errstd);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,environment,jenv);
 
     if(!ajStrLen(username) || !ajStrLen(password) || !ajStrLen(envi))
+    {
+	java_tidy_command(&username,&password,&envi,&file,
+			  &outstd,&errstd);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
 
     jfil = (char *) (*env)->GetStringUTFChars(env,filename,0);
     if(jfil)
 	ajStrAssC(&file,jfil);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&file,
+			  &outstd,&errstd);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,filename,jfil);
 
 
@@ -3205,14 +3353,9 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delFile
     (*env)->SetObjectField(env,obj,field,estr);
 
 
-    
-    ajStrDel(&username);
-    ajStrDel(&password);
-    ajStrDel(&envi);
-    ajStrDel(&outstd);
-    ajStrDel(&errstd);
-    
-    ajStrDel(&file);
+    java_tidy_command(&username,&password,&envi,&file,
+		      &outstd,&errstd);
+    AJFREE(jpass);
 
     if(!ok)
 	return (unsigned char)ajFalse;
@@ -3277,12 +3420,20 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delDir
     if(juser)
 	ajStrAssC(&username,juser);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
 
     if(!(jpass=(char *)malloc(plen+1)))
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
 	return (unsigned char)ajFalse;
+    }
     bzero((void *)jpass,plen+1);
     for(i=0;i<plen;++i)
 	jpass[i] = (char)ca[i];
@@ -3294,20 +3445,33 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delDir
     if(jenv)
 	ajStrAssC(&envi,jenv);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,environment,jenv);
 
     if(!ajStrLen(username) || !ajStrLen(password) || !ajStrLen(envi))
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
 
     jdir = (char *) (*env)->GetStringUTFChars(env,direct,0);
     if(jdir)
 	ajStrAssC(&directory,jdir);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,direct,jdir);
-
-
 
 
     ok = ajFalse;
@@ -3325,14 +3489,9 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delDir
     (*env)->SetObjectField(env,obj,field,estr);
 
 
-    
-    ajStrDel(&username);
-    ajStrDel(&password);
-    ajStrDel(&envi);
-    ajStrDel(&outstd);
-    ajStrDel(&errstd);
-    
-    ajStrDel(&directory);
+    java_tidy_command(&username,&password,&envi,&directory,
+		      &outstd,&errstd);
+    AJFREE(jpass);
 
     if(!ok)
 	return (unsigned char)ajFalse;
@@ -3398,12 +3557,20 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listFiles
     if(juser)
 	ajStrAssC(&username,juser);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
 
     if(!(jpass=(char *)malloc(plen+1)))
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
 	return (unsigned char)ajFalse;
+    }
     bzero((void *)jpass,plen+1);
     for(i=0;i<plen;++i)
 	jpass[i] = (char)ca[i];
@@ -3416,20 +3583,33 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listFiles
     if(jenv)
 	ajStrAssC(&envi,jenv);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,environment,jenv);
 
     if(!ajStrLen(username) || !ajStrLen(password) || !ajStrLen(envi))
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
 
     jdir = (char *) (*env)->GetStringUTFChars(env,direct,0);
     if(jdir)
 	ajStrAssC(&directory,jdir);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,direct,jdir);
-
-
 
 
     ok = ajFalse;
@@ -3447,14 +3627,9 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listFiles
     (*env)->SetObjectField(env,obj,field,estr);
 
 
-    
-    ajStrDel(&username);
-    ajStrDel(&password);
-    ajStrDel(&envi);
-    ajStrDel(&outstd);
-    ajStrDel(&errstd);
-    
-    ajStrDel(&directory);
+    java_tidy_command(&username,&password,&envi,&directory,
+		      &outstd,&errstd);
+    AJFREE(jpass);
 
     if(!ok)
 	return (unsigned char)ajFalse;
@@ -3520,11 +3695,19 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listDirs
     if(juser)
 	ajStrAssC(&username,juser);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
     if(!(jpass=(char *)malloc(plen+1)))
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
 	return (unsigned char)ajFalse;
+    }
     bzero((void *)jpass,plen+1);
     for(i=0;i<plen;++i)
 	jpass[i] = (char)ca[i];
@@ -3536,20 +3719,33 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listDirs
     if(jenv)
 	ajStrAssC(&envi,jenv);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,environment,jenv);
 
     if(!ajStrLen(username) || !ajStrLen(password) || !ajStrLen(envi))
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
 
     jdir = (char *) (*env)->GetStringUTFChars(env,direct,0);
     if(jdir)
 	ajStrAssC(&directory,jdir);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&directory,
+			  &outstd,&errstd);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,direct,jdir);
-
-
 
 
     ok = ajFalse;
@@ -3567,14 +3763,9 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listDirs
     (*env)->SetObjectField(env,obj,field,estr);
 
 
-    
-    ajStrDel(&username);
-    ajStrDel(&password);
-    ajStrDel(&envi);
-    ajStrDel(&outstd);
-    ajStrDel(&errstd);
-    
-    ajStrDel(&directory);
+    java_tidy_command(&username,&password,&envi,&directory,
+		      &outstd,&errstd);
+    AJFREE(jpass);
 
     if(!ok)
 	return (unsigned char)ajFalse;
@@ -3651,7 +3842,11 @@ JNIEXPORT jbyteArray JNICALL Java_org_emboss_jemboss_parser_Ajax_getFile
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
     if(!(jpass=(char *)malloc(plen+1)))
+    {
+	java_tidy_command(&username,&password,&envi,&file,
+			  &outstd,&errstd);
 	return NULL;
+    }
     bzero((void *)jpass,plen+1);
     for(i=0;i<plen;++i)
 	jpass[i] = (char)ca[i];
@@ -3731,16 +3926,11 @@ JNIEXPORT jbyteArray JNICALL Java_org_emboss_jemboss_parser_Ajax_getFile
     (*env)->SetByteArrayRegion(env,jb,0,size,(jbyte *)fbuf);
 
 
-    
-    ajStrDel(&username);
-    ajStrDel(&password);
-    ajStrDel(&envi);
-    ajStrDel(&outstd);
-    ajStrDel(&errstd);
-    
-    ajStrDel(&file);
-    AJFREE(fbuf);
 
+    java_tidy_command(&username,&password,&envi,&file,
+		      &outstd,&errstd);
+    AJFREE(jpass);
+    AJFREE(fbuf);
 
     return jb;
 }
@@ -3797,8 +3987,9 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_putFile
 
 
     size = len;
-    if(!(fbuf=(unsigned char *)malloc(size)))
-	return (unsigned char)ajFalse;
+    if(size)
+	if(!(fbuf=(unsigned char *)malloc(size)))
+	    return (unsigned char)ajFalse;
     for(i=0;i<size;++i)
 	fbuf[i] = (unsigned char)ba[i];
     (*env)->ReleaseByteArrayElements(env,arr,ba,0);
@@ -3815,11 +4006,23 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_putFile
     if(juser)
 	ajStrAssC(&username,juser);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&file,
+			  &outstd,&errstd);
+	if(size)
+	    AJFREE(fbuf);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
     if(!(jpass=(char *)malloc(plen+1)))
+    {
+	java_tidy_command(&username,&password,&envi,&file,
+			  &outstd,&errstd);
+	if(size)
+	    AJFREE(fbuf);
 	return (unsigned char)ajFalse;
+    }
     bzero((void *)jpass,plen+1);
     for(i=0;i<plen;++i)
 	jpass[i] = (char)ca[i];
@@ -3831,17 +4034,38 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_putFile
     if(jenv)
 	ajStrAssC(&envi,jenv);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&file,
+			  &outstd,&errstd);
+	if(size)
+	    AJFREE(fbuf);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,environment,jenv);
 
     if(!ajStrLen(username) || !ajStrLen(password) || !ajStrLen(envi))
+    {
+	java_tidy_command(&username,&password,&envi,&file,
+			  &outstd,&errstd);
+	if(size)
+	    AJFREE(fbuf);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
 
     jfil = (char *) (*env)->GetStringUTFChars(env,filename,0);
     if(jfil)
 	ajStrAssC(&file,jfil);
     else
+    {
+	java_tidy_command(&username,&password,&envi,&file,
+			  &outstd,&errstd);
+	if(size)
+	    AJFREE(fbuf);
+	AJFREE(jpass);
 	return (unsigned char)ajFalse;
+    }
     (*env)->ReleaseStringUTFChars(env,filename,jfil);
 
 
@@ -3862,14 +4086,11 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_putFile
 
     if(size)
 	AJFREE(fbuf);
-    
-    ajStrDel(&username);
-    ajStrDel(&password);
-    ajStrDel(&envi);
-    ajStrDel(&outstd);
-    ajStrDel(&errstd);
-    
-    ajStrDel(&file);
+
+    java_tidy_command(&username,&password,&envi,&file,
+		      &outstd,&errstd);
+    AJFREE(jpass);
+
 
     if(!ok)
 	return (unsigned char)ajFalse;

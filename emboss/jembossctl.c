@@ -50,16 +50,18 @@
 #endif
 
 #ifndef TOMCAT_UID
-#define TOMCAT_UID 506	  /* Set this to be the UID of the tomcat process */
+#define TOMCAT_UID 6055	  /* Set this to be the UID of the tomcat process */
 #endif
 
 #define UIDLIMIT 0
 #define GIDLIMIT 0
 
 
-#define TIMEOUT 30
+#define TIMEOUT 30	/* Arbitrary pipe timeout (secs)                  */
+#define TIMEBUFFER 256	/* Arbitrary length buffer for time printing      */
+#define PUTTIMEOUT  120	/* Max no. of secs to write a file                */
 
-#define R_BUFFER 2048
+#define R_BUFFER 2048   /* Arbitrary length buffer for reentrant syscalls */
 
 static AjBool jctl_up(char *buf,int *uid,int *gid,AjPStr *home);
 static AjBool jctl_do_fork(char *buf, int uid, int gid);
@@ -168,7 +170,7 @@ int main(int argc, char **argv)
     /* Only allow user with the real uid TOMCAT_UID to proceed */
     if(getuid() != TOMCAT_UID)
 	exit(-1);
-
+    
     home = ajStrNew();
     tstr = ajStrNew();
     retlist = ajStrNew();
@@ -229,6 +231,7 @@ int main(int argc, char **argv)
 	exit(-1);
     }
 
+
     switch(command)
     {
     case COMM_AUTH:
@@ -251,15 +254,10 @@ int main(int argc, char **argv)
 
     case EMBOSS_FORK:
 	ajStrAssC(&tstr,cbuf);
-	c='\0';
 	ok = jctl_up(ajStrStr(tstr),&uid,&gid,&home);
 
 	if(ok)
-	{
 	    ok = jctl_do_fork(cbuf,uid,gid);
-	    if(ok)
-		c=1;
-	}
 	break;
 
     case MAKE_DIRECTORY:
@@ -317,15 +315,10 @@ int main(int argc, char **argv)
 
     case BATCH_FORK:
 	ajStrAssC(&tstr,cbuf);
-	c='\0';
 	ok = jctl_up(ajStrStr(tstr),&uid,&gid,&home);
 
 	if(ok)
-	{
 	    ok = jctl_do_batch(cbuf,uid,gid);
-	    if(ok)
-		c=1;
-	}
 	break;
 
     default:
@@ -460,6 +453,11 @@ static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
     if(trusted)
     {
 	shadow = getspnam(ajStrStr(username));
+	if(!shadow)
+	{
+	    AJFREE(epwd);
+	    return ajFalse;
+	}
 	strcpy(epwd,shadow->sp_pwdp);
     }
     
@@ -865,7 +863,7 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
 #endif
     struct tm *tp=NULL;
     const time_t tim = time(0);
-    char timstr[256];
+    char timstr[TIMEBUFFER];
     
     outstd = ajStrNew();
     errstd = ajStrNew();
@@ -979,13 +977,17 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
     if(ioctl(outpipe[0],FIONBIO,&block)==-1)
     {
 	fprintf(stderr,"Cannot unblock\n");
-	return -1;
+	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	return ajFalse;
     }
     if(ioctl(errpipe[0],FIONBIO,&block)==-1)
     {
 	fprintf(stderr,"Cannot unblock\n");
-	return -1;
+	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	return ajFalse;
     }
+
+    *buf = '\0';
 
 #ifdef HAVE_POLL
     while((retval=waitpid(pid,&status,WNOHANG))!=pid)
@@ -1118,12 +1120,14 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
     if(ioctl(outpipe[0],FIONBIO,&block)==-1)
     {
 	fprintf(stderr,"Cannot block\n");
-	return -1;
+	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	return ajFalse;
     }
     if(ioctl(errpipe[0],FIONBIO,&block)==-1)
     {
 	fprintf(stderr,"Cannot block\n");
-	return -1;
+	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	return ajFalse;
     }
 
 
@@ -1144,27 +1148,51 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
 
 
     if(setgid(gid)==-1)
-	exit(-1);
+    {
+	fprintf(stderr,"Setgid error (do_batch)\n");
+	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	return ajFalse;
+    }
+
 
     if(setuid(uid)==-1)
-	exit(-1);
+    {
+	fprintf(stderr,"Setgid error (do_batch)\n");
+	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	return ajFalse;
+    }
+
 
     if(chdir(ajStrStr(dir))==-1)
-	exit(-1);
+    {
+	fprintf(stderr,"chdir error (do_batch)\n");
+	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	return ajFalse;
+    }
+
 
 #if defined (__SVR4) && defined (__sun) && !defined (__GNUC__)
     tp = localtime_r(&tim,&tbuf);
 #else
     tp = localtime(&tim);
 #endif
-    strftime(timstr,256,"%a %b %d %H:%M:%S %Z %Y",tp);
+    strftime(timstr,TIMEBUFFER,"%a %b %d %H:%M:%S %Z %Y",tp);
 
 
     if(!(fp=fopen(".finished","w")))
-	exit(-1);
+    {
+	fprintf(stderr,"fopen error (do_batch)\n");
+	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	return ajFalse;
+    }
+
     fprintf(fp,"%s\n",timstr);
     if(fclose(fp))
-	exit(-1);
+    {
+	fprintf(stderr,"fclose error (do_batch)\n");
+	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	return ajFalse;
+    }
 
     jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 
@@ -1331,14 +1359,18 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
     if(ioctl(outpipe[0],FIONBIO,&block)==-1)
     {
 	fprintf(stderr,"Cannot unblock\n");
-	return -1;
+	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	return ajFalse;
     }
     if(ioctl(errpipe[0],FIONBIO,&block)==-1)
     {
 	fprintf(stderr,"Cannot unblock\n");
-	return -1;
+	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	return ajFalse;
     }
 
+
+    *buf = '\0';
 
 #ifdef HAVE_POLL
     while((retval=waitpid(pid,&status,WNOHANG))!=pid)
@@ -1471,12 +1503,14 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
     if(ioctl(outpipe[0],FIONBIO,&block)==-1)
     {
 	fprintf(stderr,"Cannot block\n");
-	return -1;
+	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	return ajFalse;
     }
     if(ioctl(errpipe[0],FIONBIO,&block)==-1)
     {
 	fprintf(stderr,"Cannot block\n");
-	return -1;
+	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	return ajFalse;
     }
 
 
@@ -1878,6 +1912,7 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
     {
 	fprintf(stderr,"chdir error (list files)\n");
 	ajStrDel(&dir);
+	ajStrDel(&full);
 	return ajFalse;
     }
     
@@ -1930,7 +1965,7 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
     }
     
 
-    ajListFree(&list);
+    ajListDel(&list);
     
     ajStrDel(&full);
     ajStrDel(&dir);
@@ -2075,7 +2110,7 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 	ajStrDel(&tstr);
     }
     
-    ajListFree(&list);
+    ajListDel(&list);
 
     ajStrDel(&full);
     ajStrDel(&dir);
@@ -2117,20 +2152,10 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     int fd;
     int sum=0;
     unsigned long block=0;
-/*
-    FILE *ajb;
-    char fred[100];
+    long then=0L;
+    long now=0L;
     struct timeval tv;
-
-
-    gettimeofday(&tv,NULL);
-    sprintf(fred,"/tmp/zzz.%d",tv.tv_usec);
     
-    ajb = fopen(fred,"w");
-    fprintf(ajb,"Start\n");
-    fflush(ajb);
-*/
-        
     file     = ajStrNew();
 
     if(!jctl_initgroups(buf,gid))
@@ -2167,6 +2192,8 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
 	if(jctl_snd(ajStrStr(message),ajStrLen(message)+1)==-1)
 	{
 	    fprintf(stderr,"get file send error\n");
+	    ajStrDel(&file);
+	    ajStrDel(&message);
 	    return ajFalse;
 	}
 	ajStrDel(&message);
@@ -2182,6 +2209,8 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
 	if(jctl_snd(ajStrStr(message),ajStrLen(message)+1)==-1)
 	{
 	    fprintf(stderr,"get file send error\n");
+	    ajStrDel(&file);
+	    ajStrDel(&message);
 	    return ajFalse;
 	}
 	ajStrDel(&message);
@@ -2199,6 +2228,8 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
 	if(jctl_snd(ajStrStr(message),ajStrLen(message)+1)==-1)
 	{
 	    fprintf(stderr,"get file send error\n");
+	    ajStrDel(&file);
+	    ajStrDel(&message);
 	    return ajFalse;
 	}
 	ajStrDel(&message);
@@ -2223,6 +2254,8 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     if(jctl_snd(ajStrStr(message),ajStrLen(message)+1)==-1)
     {
 	fprintf(stderr,"get file send error\n");
+	ajStrDel(&file);
+	ajStrDel(&message);
 	return ajFalse;
     }
 
@@ -2257,18 +2290,35 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     if(ioctl(fd,FIONBIO,&block)==-1)
     {
 	fprintf(stderr,"Cannot unblock\n");
+	ajStrDel(&file);
+	ajStrDel(&message);
 	return ajFalse;
     }
 
 
+    gettimeofday(&tv,NULL);
+    then = tv.tv_sec;
+
     p = q = (char *)*fbuf;
     while(sum!=n)
     {
+	gettimeofday(&tv,NULL);
+	now = tv.tv_sec;
+	if(now-then >= TIMEOUT)
+	{
+	    fprintf(stderr,"getfile TIMEOUT\n");
+	    ajStrDel(&file);
+	    ajStrDel(&message);
+	    return ajFalse;
+	}
+
 	while((sofar=read(fd,p,n-(p-q)))==-1 && errno==EINTR);
 	if(sofar > 0)
 	{
 	    sum += sofar;
 	    p   += sofar;
+	    gettimeofday(&tv,NULL);
+	    then = tv.tv_sec;
 	}
     }
 
@@ -2277,6 +2327,8 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     if(ioctl(fd,FIONBIO,&block)==-1)
     {
 	fprintf(stderr,"Cannot block\n");
+	ajStrDel(&file);
+	ajStrDel(&message);
 	return ajFalse;
     }
 
@@ -2290,15 +2342,54 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     }
 
 
+    gettimeofday(&tv,NULL);
+    then = tv.tv_sec;
+
+
     while(pos+JBUFFLEN < n)
     {
-	pos += fwrite((void*)&(*fbuf)[pos],1,JBUFFLEN,stdout);
+	gettimeofday(&tv,NULL);
+	now = tv.tv_sec;
+	if(now-then >= TIMEOUT)
+	{
+	    fprintf(stderr,"getfile TIMEOUT\n");
+	    ajStrDel(&file);
+	    ajStrDel(&message);
+	    return ajFalse;
+	}
+
+	sofar = fwrite((void*)&(*fbuf)[pos],1,JBUFFLEN,stdout);
+	if(sofar > 0)
+	{
+	    pos += sofar;
+	    gettimeofday(&tv,NULL);
+	    then = tv.tv_sec;
+	}
     }
     if(n)
 	if(n-pos)
 	{
 	    while(pos!=n)
-		pos += fwrite((void *)&(*fbuf)[pos],1,n-pos,stdout);
+	    {
+		gettimeofday(&tv,NULL);
+		now = tv.tv_sec;
+		if(now-then >= TIMEOUT)
+		{
+		    fprintf(stderr,"getfile TIMEOUT\n");
+		    ajStrDel(&file);
+		    ajStrDel(&message);
+		    return ajFalse;
+		}
+
+		sofar = fwrite((void *)&(*fbuf)[pos],1,n-pos,stdout);
+		if(sofar > 0)
+		{
+		    pos += sofar;
+		    gettimeofday(&tv,NULL);
+		    then = tv.tv_sec;
+		}
+	    }
+	    
 	}
 	
     ajStrDel(&file);
@@ -2341,8 +2432,6 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
     int got=0;
 
 
-    gettimeofday(&tv,NULL);
-    then = tv.tv_sec;
     
     file     = ajStrNew();
 
@@ -2350,6 +2439,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
     {
 	fprintf(stderr,"Initgroups failure (do_putfile)\n");
 	ajStrDel(&file);
+	ajStrDel(&message);
 	return ajFalse;
     }
 
@@ -2414,11 +2504,14 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
     }
 
 
+    gettimeofday(&tv,NULL);
+    then = tv.tv_sec;
+
     while(sofar != size)
     {
 	gettimeofday(&tv,NULL);
 	now = tv.tv_sec;
-	if(now-then>120)
+	if(now-then>PUTTIMEOUT)
 	{
 	    fprintf(stderr,"jctl timeout error (jctl_do_putfile)\n");
 	    ajStrDel(&file);
@@ -2440,6 +2533,8 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
 	{
 	    memcpy((void *)&fbuf[sofar],(const void *)buf,mlen);
 	    sofar += mlen;
+	    gettimeofday(&tv,NULL);
+	    then = tv.tv_sec;
 	}
     }
 
@@ -2450,6 +2545,8 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
     if(setgid(gid)==-1)
     {
 	fprintf(stderr,"setgid error (put file)\n");
+	if(size)
+	    AJFREE(fbuf);
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
@@ -2457,6 +2554,8 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
     if(setuid(uid)==-1)
     {
 	fprintf(stderr,"setuid error (put file)\n");
+	if(size)
+	    AJFREE(fbuf);
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
@@ -2464,7 +2563,10 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
     if(!jctl_chdir(ajStrStr(file)))
     {
 	fprintf(stderr,"chdir error (put file)\n");
+	if(size)
+	    AJFREE(fbuf);
 	ajStrDel(&file);
+	ajStrDel(&message);
 	return ajFalse;
     }
 
@@ -2472,6 +2574,8 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
     if((fd=open(ajStrStr(file),O_CREAT|O_WRONLY|O_TRUNC,0600))<0)
     {
 	fprintf(stderr,"jctl open error (jctl_do_putfile)\n");
+	if(size)
+	    AJFREE(fbuf);
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
@@ -2482,26 +2586,53 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
     if(ioctl(fd,FIONBIO,&block)==-1)
     {
 	fprintf(stderr,"Cannot unblock\n");
+	if(size)
+	    AJFREE(fbuf);
+	ajStrDel(&file);
+	ajStrDel(&message);
 	return ajFalse;
     }
 
 
+    gettimeofday(&tv,NULL);
+    then = tv.tv_sec;
+
     while(sum<size)
     {
+	gettimeofday(&tv,NULL);
+	now = tv.tv_sec;
+	if(now-then>PUTTIMEOUT)
+	{
+	    fprintf(stderr,"jctl timeout error (jctl_do_putfile)\n");
+	    ajStrDel(&file);
+	    ajStrDel(&message);
+	    return ajFalse;
+	}
+
 	if((got=write(fd,(void *)fbuf,size))>0)
+	{
 	    sum += got;
+	    gettimeofday(&tv,NULL);
+	    then = tv.tv_sec;
+	}
     }
 
     block = 0;
     if(ioctl(fd,FIONBIO,&block)==-1)
     {
 	fprintf(stderr,"Cannot unblock\n");
+	if(size)
+	    AJFREE(fbuf);
+	ajStrDel(&file);
+	ajStrDel(&message);
 	return ajFalse;
     }
 
     if(close(fd)<0)
     {
 	fprintf(stderr,"jctl close error (jctl_do_putfile)\n");
+	if(size)
+	    AJFREE(fbuf);
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
