@@ -19,7 +19,7 @@ patmattest \
 prima primers \
 seqinfo seqretall seqretallfeat seqretset seqretsingle \
 sigplot \
-testplot treetypedisplay alignret
+testplot treetypedisplay
 
 bin_PROGRAMS = abiview acdc alignwrap antigenic \
 backtranseq banana biosed btwisted \
