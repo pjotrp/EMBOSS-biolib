@@ -115,12 +115,31 @@ public class FileNode extends DefaultMutableTreeNode
 
      childrenNames = new String[newChildren.length];
      childrenNames[newChildren.length-1] = new String(newleaf);
-     for(int i=0; i < childrenNames.length-1; ++i)
+     for(int i=0; i < childrenNames.length; ++i)
        childrenNames[i] = newChildren[i];
 
      return index;
    }
 
+   protected void deleteAnIndex(String newleaf)
+   {
+     String newChildren[] = new String[childrenNames.length-1];
+
+     int j=0;
+     for(int i=0; i < childrenNames.length; ++i) 
+     {
+       if(!childrenNames[i].equals(newleaf))
+       {
+         newChildren[j] = childrenNames[i];
+         j++;
+       }
+     }
+
+     childrenNames = new String[newChildren.length];
+     for(int i=0; i < newChildren.length; ++i)
+       childrenNames[i] = newChildren[i];
+     
+   }
   
 // Transferable
     public DataFlavor[] getTransferDataFlavors()

@@ -161,7 +161,7 @@ public class DragTree extends JTree implements DragGestureListener,
     JMenuItem source = (JMenuItem)(e.getSource());
     if(source.getText().equals("Refresh")) 
     {
-      newRoot(System.getProperty("user.home"));
+      newRoot(org.emboss.jemboss.gui.AdvancedOptions.getHomeDirectory());
       return;
     }
 
@@ -538,7 +538,10 @@ public class DragTree extends JTree implements DragGestureListener,
     FileNode childNode = new FileNode(newleaf,openNodeDir);
     if(parentNode.isExplored()) 
     {
-      int index = parentNode.getAnIndex(child);
+      int index = parentNode.getAnIndex(child)-1;
+      if(index < 0)
+        index=0;
+      
       model.insertNodeInto(childNode, parentNode, index);
     }
     else
@@ -558,7 +561,6 @@ public class DragTree extends JTree implements DragGestureListener,
   {
 
     FileNode parentNode = (FileNode)node.getParent();
-    Enumeration enum = openNodeDir.keys();
 
     if(parentNode == null)
       return;
@@ -568,6 +570,8 @@ public class DragTree extends JTree implements DragGestureListener,
       parentNode.explore(openNodeDir);
       model.nodeStructureChanged(parentNode);
     }
+    else
+      parentNode.deleteAnIndex(node.getFile().getName());
 
     model.removeNodeFromParent(node);
 
