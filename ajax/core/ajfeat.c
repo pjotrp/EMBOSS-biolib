@@ -2385,6 +2385,8 @@ static AjPFeature featSwissFromLine ( AjPFeattable thys,
 				      AjPStr* saveto,
 				      AjPStr* saveline)
 {
+  static AjPStr qryfrom  = NULL;
+  static AjPStr qryto    = NULL;
   static AjPStr source   = NULL;
   static AjPStr temp     = NULL;
   static AjPFeature gf   = NULL ;    /* made static so that it's easy
@@ -2416,6 +2418,8 @@ static AjPFeature featSwissFromLine ( AjPFeattable thys,
     ajStrDelReuse(savefrom);
     ajStrDelReuse(saveto);
     ajStrDelReuse(saveline);
+    ajStrDelReuse(&qryfrom);
+    ajStrDelReuse(&qryto);
   }
 
   if (!origline)		/* we are only cleaning up */
@@ -2423,9 +2427,11 @@ static AjPFeature featSwissFromLine ( AjPFeattable thys,
 
   if (newft) {	/* if new feature initialise for it */
     ajRegSubI (SwRegexNew, 2, savefeat);
-    ajRegSubI (SwRegexNew, 3, savefrom);
-    ajRegSubI (SwRegexNew, 4, saveto);
-    ajRegSubI (SwRegexNew, 5, saveline);
+    ajRegSubI (SwRegexNew, 3, &qryfrom);
+    ajRegSubI (SwRegexNew, 4, savefrom);
+    ajRegSubI (SwRegexNew, 5, &qryto);
+    ajRegSubI (SwRegexNew, 6, saveto);
+    ajRegSubI (SwRegexNew, 7, saveline);
     ajStrChomp(savefeat);
     ajDebug (" newft type '%S' from '%S' to '%S' rest '%S'\n",
 	     *savefeat, *savefrom, *saveto, *saveline);
@@ -3225,7 +3231,7 @@ static AjBool featRegInitSwiss (void)
 
   ajDebug ("featRegInitSwiss Compiling regexps\n");
   if (!SwRegexNew)
-    SwRegexNew = ajRegCompC("^FT   (([^ ]+) +([0-9]+) +([0-9]+) *)(.*)$") ;
+    SwRegexNew = ajRegCompC("^FT   (([^ ]+) +([?]?)([0-9]+) +([?]?)([0-9]+) *)(.*)$") ;
   if (!SwRegexNext)
     SwRegexNext = ajRegCompC("^FT    +(.*)$") ;
   if (!SwRegexComment)
