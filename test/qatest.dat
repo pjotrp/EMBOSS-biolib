@@ -4991,12 +4991,14 @@ FP /^   Max score: 1\.283 \(probability 0\.21\)\n/
 FP /^Prediction starts at 233\n/
 FP /^Probable coiled-coil from 233 to 281 \(49 residues\)\n/
 FP /^   Max score: 1\.910 \(probability 1\.00\)\n/
+OC The SwissProt annotation marks the true leucine zipper motif as from 253 to 274.
+OC The leucine zipper is a special case of a coiled-coil region.
 //
 
 ID pepinfo-ex
 AP pepinfo
 IN tsw:opsd_human
-IN ps
+IN cps
 IN
 FI stderr
 FC = 2
@@ -5010,7 +5012,7 @@ FP 3 /^\s+4\s+T\s+1\n/
 FP 6 /^\s+4\s+T\s+0\n/
 FP 3 /^\s+4\s+T\s+0\.000\n/
 FI pepinfo.ps
-FZ = 670365
+FZ = 758243
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 2\n/
 //
@@ -5021,7 +5023,7 @@ CL -sask
 IN tsw:gcn4_yeast
 IN 253
 IN 274
-IN ps
+IN cps
 FI stderr
 FC = 2
 FP 0 /Warning:/
@@ -5029,7 +5031,7 @@ FI stdout
 FZ = 18
 FP /^Created pepnet.ps\n/
 FI pepnet.ps
-FZ = 12009
+FZ = 13045
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 2\n/
 //
@@ -5054,7 +5056,7 @@ FP /^Tiny\s+\(A\+C\+G\+S\+T\)\s+121\s+33\.611\n/
 ID pepwheel-ex
 AP pepwheel
 CL tsw:hbb_human -send 30
-IN ps
+IN cps
 FI stderr
 FC = 2
 FP 0 /Warning:/
@@ -5062,7 +5064,7 @@ FI stdout
 FZ = 20
 FP /^Created pepwheel.ps\n/
 FI pepwheel.ps
-FZ = 12395
+FZ = 13599
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -5070,7 +5072,7 @@ FP /^%%Pages: 1\n/
 ID pepwindow-ex
 AP pepwindow
 CL tsw:hba_human
-IN ps
+IN cps
 FI stderr
 FC = 2
 FP 0 /Warning:/
@@ -5078,7 +5080,7 @@ FI stdout
 FZ = 21
 FP /^Created pepwindow.ps\n/
 FI pepwindow.ps
-FZ = 14647
+FZ = 14717
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -5133,7 +5135,7 @@ FP 0 /Warning:/
 ID pepwindowall-ex
 AP pepwindowall
 CL ../../data/globins.msf -gxtitle="Base Number" -gytitle="hydropathy"
-IN ps
+IN cps
 FI stderr
 FC = 11
 FP 0 /Warning:/
@@ -5141,7 +5143,7 @@ FI stdout
 FZ = 24
 FP /^Created pepwindowall.ps\n/
 FI pepwindowall.ps
-FZ = 13691
+FZ = 13789
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -5149,7 +5151,7 @@ FP /^%%Pages: 1\n/
 # change example to use globins.msf
 ID plotcon-ex
 AP plotcon
-CL -sformat msf ../../data/globins.msf -graph ps
+CL -sformat msf ../../data/globins.msf -graph cps
 IN
 FI stderr
 FC = 2
@@ -5158,7 +5160,7 @@ FI stdout
 FZ = 19
 FP /^Created plotcon.ps\n/
 FI plotcon.ps
-FZ = 20866
+FZ = 20936
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -5200,7 +5202,7 @@ FP /^%%Pages: 1\n/
 ID polydot-ex
 AP polydot
 CL ../../data/globins.fasta -gtitle="Polydot of globins.fasta"
-CL -graph ps
+CL -graph cps
 IN
 FI stderr
 FC = 2
@@ -5230,7 +5232,7 @@ ID prettyplot-ex
 AP prettyplot
 CL -resbreak=10 -boxcol -consensus -plurality=3
 IN ../../data/globins.msf
-IN ps
+IN cps
 FI stderr
 FC = 2
 FP 0 /Warning:/
@@ -5245,7 +5247,7 @@ FP /^%%Pages: 3\n/
 ID prettyplot-ex2
 AP prettyplot
 CL ../../data/globins.msf -plurality=3 -docolour
-IN ps
+IN cps
 FI stderr
 FC = 2
 FP 0 /Warning:/
@@ -5291,6 +5293,7 @@ FP /^\tAmplimer length: 261 bp\n/
 //
 
 ID primersearch-ex2
+UC Here we run the same example but allowing 20% mismatch between the primers and the sequence:
 AP primersearch
 CL tembl:z52466
 IN ../../data/primers
@@ -5308,24 +5311,27 @@ FP /^\tCACACATGCACATGCAC hits forward strand at 49 with 2 mismatches\n/
 
 ## commit a data/seqs.list file for input
 
-ID primersearch-ex3
-CC Need the seqs.list input list
-AP primersearch
-CL @../../data/seqs.list
-IN ../../data/primers
-IN
-IN
-FI stderr
-FC = 2
-FP 0 /Warning:/
-FI hs214yg7.primersearch
-FZ = 0
-//
+##ID primersearch-ex3
+##UC Here is an example of running with a file containing a list of sequences:
+##CC Need the seqs.list input list
+##AP primersearch
+##CL @../../data/seqs.list
+##IN ../../data/primers
+##IN
+##IN
+##FI stderr
+##FC = 2
+##FP 0 /Warning:/
+##FI hs214yg7.primersearch
+##FZ = 0
+##//
 
 ID printsextract-keep
 DL keep
 PP mkdir ./PRINTS
-PP export EMBOSS_DATA=./
+## split export EMBOSS_DATA=./ into two statements
+PP EMBOSS_DATA=./
+PP export EMBOSS_DATA
 AP printsextract
 IN ../../data/prints.test
 FI stderr
@@ -5344,15 +5350,17 @@ CC No example in documentation
 # Note - failed to find any results
 ID profit-ex
 AP profit
-IN ../../data/globins.prophecy
+## changed to a matrix file which produces some results
+##IN ../../data/globins.prophecy
+IN ../../data/outfile.prophecy
 IN tsw:*
 IN
 FI stderr
 FC = 2
 FP 0 /Warning:/
-FI globins.profit
-FZ = 93
-FP /^#\Z/
+FI outfile.profit
+FZ = 122
+FP /^HBB_HUMAN/
 //
 
 #fix example to match this.
@@ -5430,7 +5438,9 @@ DI PROSITE
 
 ID pscan-ex
 AP pscan
-PP export EMBOSS_DATA=./
+## split export EMBOSS_DATA=./ into two statements
+PP EMBOSS_DATA=../printsextract-keep/
+PP export EMBOSS_DATA
 IN tsw:opsd_human
 IN
 IN
@@ -5439,7 +5449,7 @@ FI stderr
 FC = 2
 FP 0 /Warning:/
 FI opsd_human.pscan 
-FZ = 1501
+FZ = 794
 FP /^Fingerprint GPCRRHODOPSN Elements 7\n    Accession number PR00237\n/
 FP /^  Element 1 Threshold 54% Score 64%\n/
 FP /^             Start position 39 Length 25\n/
