@@ -141,7 +141,7 @@ int main(int argc, char **argv)
 	    patmatdb_spaces(&outf, length);
 	    ajFmtPrintF(outf, "%-d\n\n\n", end);
 	}
-
+	embPatMatchDel(&match);
     }	
 
 
