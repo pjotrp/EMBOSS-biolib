@@ -39,14 +39,14 @@ static void restrict_reportHits(AjPReport report, AjPSeq seq,
 				ajint hits, ajint begin, ajint end,
 				AjBool ambiguity, ajint mincut, ajint maxcut,
 				AjBool plasmid, AjBool blunt, AjBool sticky,
-				ajint sitelen, AjBool limit, AjBool equiv,
+				ajint sitelen, AjBool limit,
 				AjPTable table, AjBool alpha, AjBool frags,
 				AjBool nameit, AjBool ifrag);
 static void restrict_printHits(AjPFile *outf, AjPList *l, AjPStr *name,
 			       ajint hits, ajint begin, ajint end,
 			       AjBool ambiguity, ajint mincut, ajint maxcut,
 			       AjBool plasmid, AjBool blunt, AjBool sticky,
-			       ajint sitelen, AjBool limit, AjBool equiv,
+			       ajint sitelen, AjBool limit,
 			       AjPTable table, AjBool alpha, AjBool frags,
 			       AjBool nameit);
 static void restrict_read_equiv(AjPFile *equfile, AjPTable *table);
@@ -82,7 +82,6 @@ int main(int argc, char **argv)
     AjBool commercial;
     AjBool nameit;
     AjBool limit;
-    AjBool equiv;
     AjBool frags;
     AjPStr dfile;
 
@@ -116,11 +115,10 @@ int main(int argc, char **argv)
     plasmid   = ajAcdGetBool("plasmid");
     commercial = ajAcdGetBool("commercial");
     limit      = ajAcdGetBool("limit");
-    equiv      = ajAcdGetBool("preferred");
     frags      = ajAcdGetBool("fragments");
     nameit     = ajAcdGetBool("name");
     dfile      = ajAcdGetString("datafile");
-    ifrag      = ajAcdGetBool("individual");
+    ifrag      = ajAcdGetBool("solofragment");
     
     /* obsolete. Can be uncommented in acd file and here to reuse */
 
@@ -153,11 +151,11 @@ int main(int argc, char **argv)
 
 
 
-    if(equiv)
+    if(limit)
     {
 	ajFileDataNewC(EQUDATA,&equfile);
 	if(!equfile)
-	    equiv=ajFalse;
+	    limit=ajFalse;
 	else
 	    restrict_read_equiv(&equfile,&table);
     }
@@ -183,13 +181,13 @@ int main(int argc, char **argv)
 				  &l,hits,begin,end,
 				  ambiguity,min,max,
 				  plasmid,blunt,sticky,sitelen,
-				  limit,equiv,table,
+				  limit,table,
 				  alpha,frags,nameit,ifrag);
 	    if (outf)
 	      restrict_printHits(&outf,&l,&name,hits,begin,end,
 				 ambiguity,min,max,
 				 plasmid,blunt,sticky,sitelen,
-				 limit,equiv,table,
+				 limit,table,
 				 alpha,frags,nameit);
 	    ajStrDel(&name);
 	}
@@ -234,7 +232,6 @@ int main(int argc, char **argv)
 ** @param [r] sticky [AjBool] allow sticky cutters
 ** @param [r] sitelen [ajint] length of cut site
 ** @param [r] limit [AjBool] limit count
-** @param [r] equiv [AjBool] show equivalents
 ** @param [r] table [AjPTable] supplier table
 ** @param [r] alpha [AjBool] alphabetic sort
 ** @param [r] frags [AjBool] show fragment lengths
@@ -247,7 +244,7 @@ static void restrict_printHits(AjPFile *outf, AjPList *l, AjPStr *name,
 			       ajint hits, ajint begin, ajint end,
 			       AjBool ambiguity, ajint mincut, ajint maxcut,
 			       AjBool plasmid, AjBool blunt, AjBool sticky,
-			       ajint sitelen, AjBool limit, AjBool equiv,
+			       ajint sitelen, AjBool limit,
 			       AjPTable table, AjBool alpha, AjBool frags,
 			       AjBool nameit)
 {
@@ -312,7 +309,7 @@ static void restrict_printHits(AjPFile *outf, AjPList *l, AjPStr *name,
 	}
 
 
-	if(equiv && limit)
+	if(limit)
 	{
 	    value=ajTableGet(table,m->cod);
 	    if(value)
@@ -404,7 +401,6 @@ static void restrict_printHits(AjPFile *outf, AjPList *l, AjPStr *name,
 ** @param [r] sticky [AjBool] allow sticky cutters
 ** @param [r] sitelen [ajint] length of cut site
 ** @param [r] limit [AjBool] limit count
-** @param [r] equiv [AjBool] show equivalents
 ** @param [r] table [AjPTable] supplier table
 ** @param [r] alpha [AjBool] alphabetic sort
 ** @param [r] frags [AjBool] show fragment lengths
@@ -419,7 +415,7 @@ static void restrict_reportHits(AjPReport report, AjPSeq seq,
 				ajint hits, ajint begin, ajint end,
 				AjBool ambiguity, ajint mincut, ajint maxcut,
 				AjBool plasmid, AjBool blunt, AjBool sticky,
-				ajint sitelen, AjBool limit, AjBool equiv,
+				ajint sitelen, AjBool limit,
 				AjPTable table, AjBool alpha, AjBool frags,
 				AjBool nameit, AjBool ifrag)
 {
@@ -506,7 +502,7 @@ static void restrict_reportHits(AjPReport report, AjPSeq seq,
 	}
 
 
-	if(equiv && limit)
+	if(limit)
 	{
 	    value=ajTableGet(table,m->cod);
 	    if(value)
@@ -601,7 +597,7 @@ static void restrict_reportHits(AjPReport report, AjPSeq seq,
 		continue;
 
 
-	    if(equiv && limit)
+	    if(limit)
 	    {
 		value=ajTableGet(table,m->cod);
 		if(value)
