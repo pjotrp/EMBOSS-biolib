@@ -501,7 +501,7 @@ static void remap_NoCutList (AjPFile outfile, AjPList restrictlist,
 	    if(*p < 'A' || *p > 'Z')
 		continue;
 	    code = ajStrNew();
-	    ajStrAss(&code, enz->cod);
+	    ajStrAssS(&code, enz->cod);
 	    ajListstrPushApp(nocutlist, code);
 	}
 
@@ -546,7 +546,7 @@ static void remap_NoCutList (AjPFile outfile, AjPList restrictlist,
 	ajStrTokenClear(&tok);
     }
     (void) ajListIterFree(riter);
-    
+    ajStrDel(&code);
     
     /*** Remove from the nocutlist all enzymes and isoschizomers that cut */
     ajDebug("Remove from the nocutlist all enzymes and isoschizomers "
