@@ -1626,7 +1626,7 @@ static void seqWritePhylip3 (AjPSeqout outseq)
     int itest;
     static AjPStr sseq = NULL;
     int ipos;
-    int iend;
+    int iend=0;
     AjPStr tstr=NULL;
 
     ajDebug ("seqWritePhylip3 list size %d\n", ajListLength(outseq->Savelist));

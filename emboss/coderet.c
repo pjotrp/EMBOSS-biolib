@@ -25,8 +25,6 @@
 void put_seq(AjPSeq seq, AjPStr strseq, int n, char *name, int type,
 	     AjPSeqout seqout);
 
-AjBool ajSeqGetFromUsa (AjPStr entry, AjBool protein, AjPSeq *fred);
-
 
 
 int main(int argc, char **argv)

@@ -2645,9 +2645,6 @@ static AjBool seqReadSwiss (AjPSeq thys, AjPSeqin seqin)
     AjPFileBuff ftfile = NULL;
     static AjPStr ftfmt = NULL;
     AjBool dofeat = ajFalse;
-    AjPStr *fred=NULL;
-    int n;
-    int i;
     
     /*
        ajFileBuffTraceFull (buff, 50);
