@@ -2824,6 +2824,9 @@ static AjBool seqReadGenbank (AjPSeq thys, AjPSeqin seqin) {
   }
   else {			/* read the sequence and terminator */
     ajDebug("sequence start at '%S'\n", rdline);
+    while(!ajStrPrefixC(rdline,"ORIGIN"))
+	if(!ajFileBuffGet(buff,&rdline))
+	    break;
     ok = ajFileBuffGet (buff, &rdline);
     while (ok && !ajStrPrefixC(rdline, "//")) {
       if (!ajStrPrefixC(rdline, "ORIGIN"))
