@@ -228,7 +228,33 @@ public class SequenceList extends JFrame
     {
       public void actionPerformed(ActionEvent e)
       {
+        //create Sequence List file
+        
+//      File fseq = new File(System.getProperty("user.home")  
+//                           + System.getProperty("file.separator")
+//                           + ".jembossSeqList");
+//      try
+//      {
+//        PrintWriter fout = new PrintWriter(new FileWriter(fseq));
+
+//        for(int i=0;i<seqModel.getRowCount();i++)
+//        {
+//          SequenceData seqData = seqModel.getSequenceData(i);
+//           
+//          if(!seqData.s_name.equals(""))
+//            fout.println(seqData.s_name + " " +
+//                         seqData.s_beg + " " +
+//                         seqData.s_end + " " +
+//                         seqData.s_default.toString() + " " +
+//                         seqData.s_remote.toString() + " " +
+//                         seqData.s_listFile.toString() );
+//        }
+//        fout.close();
+//      }
+//      catch (IOException ioe){}
+
         setVisible(false);
+
       }
     });
     fileMenu.add(closeFrame);
