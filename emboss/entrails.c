@@ -42,6 +42,7 @@ int main(int argc, char **argv)
     full = ajAcdGetBool("fullreport");
 
     ajAcdPrintType(outf, full);
+    ajAcdPrintQual(outf, full);
     ajSeqPrintInFormat(outf, full);
     ajSeqPrintOutFormat(outf, full);
     ajSeqPrintType(outf, full);

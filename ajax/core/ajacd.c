@@ -936,7 +936,7 @@ AcdOAttr acdAttrArray[] =
 	 "Minimum value"},
     {"maximum", VT_FLOAT, "(FLT_MAX)",
 	 "Maximum value"},
-    {"increment", VT_FLOAT, "",
+    {"increment", VT_FLOAT, "0",
 	 "(Not used by ACD) Increment for GUIs"},
     {"precision", VT_INT, "0",
 	 "(Not used by ACD) Floating precision for GUIs"},
@@ -944,7 +944,7 @@ AcdOAttr acdAttrArray[] =
 	 "Warning if values are out of range"},
     {"size", VT_INT, "1",
 	 "Number of values required"},
-    {"sum", VT_FLOAT, "",
+    {"sum", VT_FLOAT, "1.0",
 	 "Total for all values"},
     {"sumtest", VT_BOOL, "Y",
 	 "Test sum of all values"},
@@ -1074,7 +1074,7 @@ AcdOAttr acdAttrFloat[] =
 	 "Minimum value"},
     {"maximum", VT_FLOAT, "(FLT_MAX)",
 	 "Maximum value"},
-    {"increment", VT_FLOAT, "",
+    {"increment", VT_FLOAT, "1.0",
 	 "(Not used by ACD) Increment for GUIs"},
     {"precision", VT_INT, "3",
 	 "Precision for printing values"},
@@ -1122,7 +1122,7 @@ AcdOAttr acdAttrGraphxy[] =
 
 AcdOAttr acdAttrInt[] =
 {
-    {"minimum", VT_INT, "(NIT_MIN)",
+    {"minimum", VT_INT, "(INT_MIN)",
 	 "Minimum value"},
     {"maximum", VT_INT, "(INT_MAX)",
 	 "Maximum value"},
@@ -1661,8 +1661,8 @@ AcdOKey acdKeywords[] =
 
 /* "qualifier"  "default" "type" */
 
-AcdOQual acdQualAppl[] =	/* careful: index numbers used in*/
-/* acdSetQualAppl */
+AcdOQual acdQualAppl[] =	  /* careful: index numbers used in */
+				  /* acdSetQualAppl */
 {
     {"auto",       "N", "boolean", "Turn off prompts"},
     {"stdout",     "N", "boolean", "Write standard output"},
@@ -18437,7 +18437,7 @@ void ajAcdPrintType(AjPFile outf, AjBool full)
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "# ACD Types\n");
     ajFmtPrintF(outf, "# Name\n");
-    ajFmtPrintF(outf, "#     Attribute    Type       Comment\n");
+    ajFmtPrintF(outf, "#     Attribute    Type       Default Comment\n");
     ajFmtPrintF(outf, "#     Qualifier    Type       Default Helptext\n");
     ajFmtPrintF(outf, "AcdType {\n");
     
@@ -18455,6 +18455,7 @@ void ajAcdPrintType(AjPFile outf, AjBool full)
 	    {
 		ajFmtPrintF(outf, "      %-12s", attr->Name);
 		ajFmtPrintF(outf, " %-10s", acdValNames[attr->Type]);
+		ajFmtPrintF(outf, " \"%s\"", attr->Default);
 		ajFmtPrintF(outf, " \"%s\"", attr->Help);
 		ajFmtPrintF(outf, "\n");
 	    }
@@ -18540,7 +18541,7 @@ static void acdPrintCalcAttr(const AjPFile outf, AjBool full,
 	{
 	    ajFmtPrintF(outf, "      %-12s", calcattr[i].Name);
 	    ajFmtPrintF(outf, " %-10s", acdValNames[calcattr[i].Type]);
-	    ajFmtPrintF(outf, " \"%s\"", acdAttrDef[i].Default);
+	    ajFmtPrintF(outf, " \"%s\"", calcattr[i].Default);
 	    ajFmtPrintF(outf, " \"%s\"", calcattr[i].Help);
 	    ajFmtPrintF(outf, "\n");
 	}
@@ -18551,7 +18552,38 @@ static void acdPrintCalcAttr(const AjPFile outf, AjBool full,
 }
 
 
+/* @func ajAcdPrintQual *******************************************************
+**
+** Report details of all known ACD qualifiers for all applications.
+** For use by EMBOSS entrails.
+**
+** @param [r] outf [AjPFile] Output file
+** @param [r] full [AjBool] Full report
+** @return [void]
+**
+******************************************************************************/
 
+void ajAcdPrintQual(AjPFile outf, AjBool full)
+{
+    ajint i;
+    AcdPQual qual;
+
+    ajFmtPrintF(outf, "\n");
+    ajFmtPrintF(outf, "# ACD Application Qualifiers\n");
+    ajFmtPrintF(outf, "# Qualifier    Type       Default Helptext\n");
+    
+    for(i=0; acdQualAppl[i].Name; i++)
+    {
+	qual = &acdQualAppl[i];
+	ajFmtPrintF(outf, "%-12s", qual->Name);
+	ajFmtPrintF(outf, " %-10s", qual->Type);
+	ajFmtPrintF(outf, " \"%s\"", qual->Default);
+	ajFmtPrintF(outf, " \"%s\"", qual->Help);
+	ajFmtPrintF(outf, "\n");
+    }
+    ajFmtPrintF(outf, "\n");
+    return;
+}
 
 /* @funcstatic acdVocabCheck **************************************************
 **

@@ -149,57 +149,57 @@ static SeqOType seqType[] =
     {"any",            AJFALSE, AJTRUE,  ISANY,  NULL,          NULL,
 	 seqTypeCharAny,
 	 "any valid sequence"},		/* reset type */
+    {"gapany",         AJTRUE,  AJTRUE,  ISANY,  NULL,          NULL,
+	 seqTypeCharAnyGap,
+	 "any valid sequence with gaps"}, /* reset type */
     {"dna",            AJFALSE, AJTRUE,  ISNUC,  "Uu", "Tt",
 	 seqTypeCharAny,
 	 "DNA sequence"},
+    {"puredna",        AJFALSE, AJFALSE, ISNUC,  "Uu", "Tt",
+	 seqTypeCharNucPure,
+	 "DNA sequence, bases ACGT only"},
+    {"gapdna",         AJTRUE,  AJTRUE,  ISNUC,  "Uu",   "Tt",
+	 seqTypeCharNucGap,
+	 "DNA sequence with gaps"},
     {"rna",            AJFALSE, AJTRUE,  ISNUC,  "Tt", "Uu",
 	 seqTypeCharAny,
 	 "RNA sequence"},
-    {"puredna",        AJFALSE, AJFALSE, ISNUC,  "Uu", "Tt",
-	 seqTypeCharNucPure,
-	 "DNA, bases ACGT only"},
     {"purerna",        AJFALSE, AJFALSE, ISNUC,  "Tt", "Uu",
 	 seqTypeCharNucPure,
-	 "RNA, bases ACGU only"},
+	 "RNA sequence, bases ACGU only"},
+    {"gaprna",         AJTRUE,  AJTRUE,  ISNUC,  "Tt", "Uu",
+	 seqTypeCharNucGap,
+	 "RNA sequence with gaps"},
     {"nucleotide",     AJFALSE, AJTRUE,  ISNUC,  NULL,          NULL,
 	 seqTypeCharNuc,
 	 "nucleotide sequence"},
     {"purenucleotide", AJFALSE, AJFALSE, ISNUC,  NULL,          NULL,
 	 seqTypeCharNucPure,
-	 "nucleotide, bases ACGTU only"},
+	 "nucleotide sequence, bases ACGTU only"},
     {"gapnucleotide",  AJTRUE,  AJTRUE,  ISNUC,  NULL,          NULL,
 	 seqTypeCharNucGap,
-	 "nucleotide, bases ACGTU with gaps"},
-    {"gapdna",         AJTRUE,  AJTRUE,  ISNUC,  "Uu",   "Tt",
-	 seqTypeCharNucGap,
-	 "DNA sequence with gaps"},
-    {"gaprna",         AJTRUE,  AJTRUE,  ISNUC,  "Tt", "Uu",
-	 seqTypeCharNucGap,
-	 "RNA sequence with gaps"},
+	 "nucleotide sequence with gaps"},
     {"protein",        AJFALSE, AJTRUE,  ISPROT, "*",           "X",
 	 seqTypeCharProt,
 	 "protein sequence"},
-    {"proteinstandard",AJFALSE, AJTRUE,  ISPROT, "Uu",  "Xx",
-	 seqTypeCharProt,
-	 "protein sequence with no selenocysteine"},
-    {"gapprotein",     AJTRUE,  AJTRUE,  ISPROT, "*",           "X",
-	 seqTypeCharProtGap,
-	 "protein sequence with gaps"},
-    {"gapproteinstandard", AJTRUE,  AJTRUE, ISPROT, "*Uu", "XXx",
-	 seqTypeCharProtGap,
-	 "protein sequence with gaps but no selenocysteine"},
     {"pureprotein",    AJFALSE, AJFALSE, ISPROT, NULL,          NULL,
 	 seqTypeCharProtPure,
 	 "protein sequence without BZ U or X"},
     {"stopprotein",    AJFALSE, AJTRUE,  ISPROT, NULL,          NULL,
 	 seqTypeCharProtStop,
 	 "protein sequence with a possible stop"},
+    {"gapprotein",     AJTRUE,  AJTRUE,  ISPROT, "*",           "X",
+	 seqTypeCharProtGap,
+	 "protein sequence with gaps"},
+    {"proteinstandard",AJFALSE, AJTRUE,  ISPROT, "Uu",  "Xx",
+	 seqTypeCharProt,
+	 "protein sequence with no selenocysteine"},
     {"stopproteinstandard",AJFALSE, AJTRUE, ISPROT, "Uu", "Xx",
 	 seqTypeCharProtStop,
 	 "protein sequence with a possible stop but no selenocysteine"},
-    {"gapany",         AJTRUE,  AJTRUE,  ISANY,  NULL,          NULL,
-	 seqTypeCharAnyGap,
-	 "any valid sequence with gaps"}, /* reset type */
+    {"gapproteinstandard", AJTRUE,  AJTRUE, ISPROT, "*Uu", "XXx",
+	 seqTypeCharProtGap,
+	 "protein sequence with gaps but no selenocysteine"},
     {NULL,             AJFALSE, AJTRUE,  ISANY,  NULL,          NULL,
 	 NULL,
 	 NULL}
@@ -1308,14 +1308,22 @@ void ajSeqPrintType(const AjPFile outf, AjBool full)
 
     char* typeName[] = {"ANY", "NUC", "PRO"};
 
-    ajFmtPrintF(outf, "\n#Sequence Types\n");
-    ajFmtPrintF(outf, "# Name            Gap N/P Desciption\n");
+    ajFmtPrintF(outf, "\n# Sequence Types\n");
+    ajFmtPrintF(outf, "# Name                 Gap Ambig N/P From To Desciption\n");
     ajFmtPrintF(outf, "seqType {\n");
     for(i=0; seqType[i].Name; i++)
     {
-	ajFmtPrintF(outf, "  %-15s %3B %s \"%s\"\n",
-		    seqType[i].Name, seqType[i].Gaps,
-		    typeName[seqType[i].Type], seqType[i].Desc);
+	if (seqType[i].ConvertFrom)
+	    ajFmtPrintF(outf, "  %-20s %3B   %3B %s \"%s\" \"%s\" \"%s\"\n",
+			seqType[i].Name, seqType[i].Gaps,
+			seqType[i].Ambig, typeName[seqType[i].Type],
+			seqType[i].ConvertFrom, seqType[i].ConvertTo,
+			seqType[i].Desc);
+	else
+	    ajFmtPrintF(outf, "  %-20s %3B   %3B %s \"\" \"\" \"%s\"\n",
+			seqType[i].Name, seqType[i].Gaps,
+			seqType[i].Ambig, typeName[seqType[i].Type],
+			seqType[i].Desc);
     }
     ajFmtPrintF(outf, "}\n");
 
