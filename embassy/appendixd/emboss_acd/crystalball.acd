@@ -1,0 +1,70 @@
+appl: crystalball [
+  documentation: "Answers every drug discovery question you have about
+  this sequence."
+  groups: "AppendixD"
+]
+
+section: input [ info: "input Section" type: page ]
+
+sequence: sequence  [
+  parameter: "Y"
+]
+
+endsection: input
+
+section: advanced [ info: "advanced Section" type: page ]
+
+bool: competition  [
+  optional: "Y"
+  information: "Who else is working with this target?"
+]
+
+bool: rdtime  [
+  optional: "Y"
+  information: "Total research and development time to bring a drug for this target to market."
+]
+
+bool: rdcost  [
+  optional: "Y"
+  information: "Total cost of our research and development effort."
+]
+
+bool: animalstudies  [
+  optional: "Y"
+  information: "What will we learn from the animal studies?"
+]
+
+bool: clinicaltrials  [
+  optional: "Y"
+  information: "Detail all of the surprises we'll get from the clinical trials."
+]
+
+bool: fdaproblems  [
+  optional: "Y"
+  information: "List all of the issues the FDA will raise with our paperwork."
+]
+
+bool: fdatime  [
+  optional: "Y"
+  information: "How long will the FDA take to render a decision?"
+]
+
+bool: profit  [
+  optional: "Y"
+  information: "How much will we make after the drug gets to market?"
+]
+
+bool: everythingelse  [
+  information: "Tell us everything else we'd really like to know now
+  rather than later"
+]
+
+endsection: advanced
+
+section: output [ info: "output Section" type: page ]
+outfile: outfile  [
+  parameter: "Y"
+]
+
+endsection: output
+

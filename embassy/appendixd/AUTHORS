@@ -1,0 +1,11 @@
+The crystalball program was defined by Scott Markel and Darryl Leon
+of LION bioscience AG in Appendix D of their book "Sequence Analysis
+in a Nutshell"
+
+This section of the book is a complete definition of the ACD
+interface, and a clear description of the output and the functions
+intended for the ACD command line options.
+
+In recognition of their interest in EMBOSS, and in reaction to a
+sentence in the appendix that says the program does not exists,
+"crystalball" was written (in about 30 minutes) by the EMBOSS team.

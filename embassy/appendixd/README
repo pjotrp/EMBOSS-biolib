@@ -1,0 +1,45 @@
+Emboss problems mail emboss-bug@embnet.org
+
+Installation from .tar file.
+
+
+1) Go to the emboss directory 
+cd EMBOSS
+
+2) make new directory embassy if it does not exist already.
+mkdir embassy
+
+3) Go into that directory
+cd embassy
+
+4) unzip and untar the file
+gunzip APPENDIXD-0.1.tar.gz
+tar xvf APPENDIXD-0.1.tar
+
+5) go into the appendixd directory
+cd APPENDIXD-0.1
+
+6) configure and compile
+./configure (use same options as you used to compile emboss)
+make
+make install
+
+
+Installation for anonymous cvs.
+(compile emboss first)
+
+1) Go to the appendixd directory 
+cd embassy/appendixd
+
+2) Create configure script
+aclocal
+autoconf
+automake -a
+
+3) Configure the makefile.
+./configure (use same arguments as those used to build emboss)
+
+4) Compile and install
+make
+make install
+
