@@ -71,6 +71,7 @@ sub runtest ($) {
   my $timeout = $timeoutdef;
   my $ppcmd = "";
   my $qqcmd = "";
+  my %testfile = ();
 
 # these are globals, used by the caller
 
@@ -210,6 +211,7 @@ sub runtest ($) {
 # The easiest infinite loop is an unexpected prompt, which waits on stdin
 
   eval {
+    $status = 0;
     alarm($timeout);
     $sysstat = system("$ppcmd $testapp $cmdline > stdout 2> stderr $stdin $qqcmd");
     alarm(0);
@@ -542,7 +544,7 @@ sub testnum ($$) {
 $defdelete="success";		# success, all, keep
 $timeoutdef=60;			# default timeout in seconds
 
-$numtests = $#ARGV;
+$numtests = 0;
 %dotest = ();
 foreach $test (@ARGV) {
   if ($test =~ /^-(.*)/) {
@@ -555,6 +557,7 @@ foreach $test (@ARGV) {
   }
   else {
     $dotest{$test} = 1;
+    $numtests++;
   }
 }
 
@@ -622,7 +625,7 @@ while (<IN>) {
 # end of definition - fire up the test
 
   if (/^\/\//) {
-    if (($numtests >= 0) && !$dotest{$id}) {next}
+    if (($numtests > 0) && !$dotest{$id}) {next}
 
     $result = runtest ($testdef);
     $tcount++;
