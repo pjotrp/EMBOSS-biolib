@@ -44,7 +44,7 @@ public class ServerSetup extends JTabbedPane
   private JCheckBox userAuth;
   private JCheckBox useProxy;
 
-  private JembossParams mysettings; 
+  private JembossParams myset; 
 
 /**
 *
@@ -55,25 +55,25 @@ public class ServerSetup extends JTabbedPane
   public ServerSetup(JembossParams mysettings)
   {
 
-    this.mysettings = mysettings;
+    this.myset = mysettings;
 
     Vector PublicServerURL = new Vector();
-    PublicServerURL.add(mysettings.getPublicSoapURL());
+    PublicServerURL.add(myset.getPublicSoapURL());
 
     Vector PrivateServerURL = new Vector();
-    PrivateServerURL.add(mysettings.getPrivateSoapURL());
+    PrivateServerURL.add(myset.getPrivateSoapURL());
 
     Vector PublicServerName = new Vector();
-    PublicServerName.add(mysettings.getPublicSoapService());
+    PublicServerName.add(myset.getPublicSoapService());
 
     Vector PrivateServerName = new Vector();
-    PrivateServerName.add(mysettings.getPrivateSoapService());
+    PrivateServerName.add(myset.getPrivateSoapService());
 
     Vector proxyNameSettings = new Vector();
-    proxyNameSettings.add(mysettings.getProxyHost());
+    proxyNameSettings.add(myset.getProxyHost());
 
     Vector proxyPortSettings = new Vector();
-    proxyPortSettings.add(new Integer(mysettings.getProxyPortNum()));
+    proxyPortSettings.add(new Integer(myset.getProxyPortNum()));
 
 
 //servers tabbed pane
@@ -116,7 +116,7 @@ public class ServerSetup extends JTabbedPane
 
 //authentication 
     userAuth = new JCheckBox("User authentication required by private server",
-                              mysettings.getUseAuth());
+                              myset.getUseAuth());
 
     general.add(jpWest,BorderLayout.WEST);
     general.add(jpCenter,BorderLayout.CENTER);
@@ -129,7 +129,7 @@ public class ServerSetup extends JTabbedPane
     gl = new GridLayout(6,1,6,6);
     JPanel proxy = new JPanel(new BorderLayout());
     useProxy = new JCheckBox("Use proxy settings",
-                              mysettings.getUseProxy());
+                              myset.getUseProxy());
 
     jpWest = new JPanel(gl);
     jpCenter = new JPanel(gl);
@@ -155,9 +155,13 @@ public class ServerSetup extends JTabbedPane
       {
         proxyName.setEnabled(useProxy.isSelected());
         proxyPort.setEnabled(useProxy.isSelected());
+        String settings[] = new String[1];
+        settings[0] = new String("proxy.override=true");
+        myset.updateJembossPropStrings(settings);
       }
     });
-
+  
+    jpWest.add(new JLabel(myset.proxyDescription()));
 
 //separator
     jpWest.add(new JLabel(""));
@@ -193,38 +197,39 @@ public class ServerSetup extends JTabbedPane
     client.add(jpCenter, BorderLayout.CENTER);
 
     addTab("Client properties",client);
+    
   }
 
   public JembossParams setNewSettings()
   {
     String settings[] = new String[8];
-    settings[0] = 
-       new String("server.public="+(String)publicURL.getSelectedItem());
-    settings[1] = 
-       new String("server.private="+(String)privateURL.getSelectedItem());
-    settings[2] = 
-       new String("service.public="+(String)publicName.getSelectedItem());
-    settings[3] = 
-       new String("service.private="+(String)privateName.getSelectedItem());
+    settings[0] = new String("server.public="+
+                             (String)publicURL.getSelectedItem());
+    settings[1] = new String("server.private="+
+                             (String)privateURL.getSelectedItem());
+    settings[2] = new String("service.public="+
+                             (String)publicName.getSelectedItem());
+    settings[3] = new String("service.private="+
+                             (String)privateName.getSelectedItem());
 
     if(userAuth.isSelected())
       settings[4] = new String("user.auth=true");
     else
       settings[4] = new String("user.auth=false");
 
-    settings[6] =
-         new String("proxy.host="+(String)proxyName.getSelectedItem());
-    settings[7] =
-         new String("proxy.port="+((Integer)proxyPort.getSelectedItem()).toString());
+    settings[6] = new String("proxy.host="+
+                             (String)proxyName.getSelectedItem());
+    settings[7] = new String("proxy.port="+
+               ((Integer)proxyPort.getSelectedItem()).toString());
 
     if(useProxy.isSelected())
       settings[5] = new String("proxy.use=true");
     else
       settings[5] = new String("proxy.use=false");
 
-    mysettings.updateJembossPropStrings(settings);
+    myset.updateJembossPropStrings(settings);
 
-    return mysettings;
+    return myset;
   }
 
 }
