@@ -45,7 +45,7 @@ int main (int argc, char *argv[]) {
       ajGraphOpenWin(graph,-0.1,1.4,-0.1,1.1);
   else
       ajFmtPrintF(outf,"##Graphic\n##Screen x1 %f y1 %f x2 %f y2 %f\n",
-		  -0.1,1.4,-0.1,1.1);
+		  -0.1,-0.1,1.4,1.1);
 
   ajSeqToLower(sequence);
   ptr = ajSeqChar(sequence);
