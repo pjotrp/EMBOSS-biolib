@@ -33,15 +33,30 @@ matrix: matrixfile  [
   protein: "$(sequencea.protein)"
 ]
 
-bool: data  [
+bool: stretch  [
   required: "N"
+  default: "N"
+  information: "Stretch plot"
+  help: "Display a non-proportional graph"
+]
+
+bool: data  [
+  required: "@(!$(stretch))"
   default: "N"
   information: "Display as data"
   help: "Output the match data to a file instead of plotting it"
 ]
 
 graph: graph  [
-  required: "@(!$(data))"
+  required: "@(@(!$(data)) & @(!$(stretch)))"
+  optional: "N"
+  gtitle: "Dotmatcher: $(sequencea.name) vs $(sequenceb.name)"
+  gxtitle: "$(sequencea.name)"
+  gytitle: "$(sequenceb.name)"
+]
+
+xygraph: xygraph  [
+  required: "$(stretch)"
   optional: "N"
   gtitle: "Dotmatcher: $(sequencea.name) vs $(sequenceb.name)"
   gxtitle: "$(sequencea.name)"
@@ -49,7 +64,7 @@ graph: graph  [
 ]
 
 outfile: outfile  [
-  required: "$(data)"
+  required: "@($(data) & @(!$(stretch)))"
   nullok: "Y"
   information: "Display as data"
 ]
