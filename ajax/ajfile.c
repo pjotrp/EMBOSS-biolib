@@ -2459,10 +2459,46 @@ AjBool ajFileBuffGetStore (const AjPFileBuff thys, AjPStr* pdest,
 
   ret =  ajFileBuffGetL (thys, pdest, &fpos);
 
-  if(!store)
-      return ret;
+  if (store && ret)
+  {
+      ajDebug ("ajFileBuffGetStore:\n%S", *pdest);
+      ajFmtPrintAppS(astr,"%S",*pdest);
+  }
 
-  ajFmtPrintAppS(astr,"%S",*pdest);
+  return ret;
+}
+
+/* @func ajFileBuffGetStoreL **************************************************
+**
+** Reads a line from a buffered file. Also appends the line to
+** a given string if the append flag is true. A double NULL character
+** is added afterwards. If the buffer has data, reads from the
+** buffer. If the buffer is exhausted, reads from the file. If the file is
+** exhausted, sets end of file and returns. If end of file was already set,
+** looks for another file to open.
+**
+** @param [r] thys [const AjPFileBuff] Buffered input file.
+** @param [w] pdest [AjPStr*] Buffer to hold results.
+** @param [w] fpos [ajlong*] File position before the read.
+** @param [r] store [AjBool] append if true
+** @param [w] astr [AjPStr*] string to append to
+** @return [AjBool] ajTrue if data was read.
+** @@
+******************************************************************************/
+
+AjBool ajFileBuffGetStoreL (const AjPFileBuff thys, AjPStr* pdest,
+			    ajlong* fpos,
+			    AjBool store, AjPStr *astr)
+{
+  AjBool ret;
+
+  ret =  ajFileBuffGetL (thys, pdest, fpos);
+
+  if (store && ret)
+  {
+      ajDebug ("ajFileBuffGetStoreL:\n%S", *pdest);
+      ajFmtPrintAppS(astr,"%S",*pdest);
+  }
 
   return ret;
 }
@@ -2919,6 +2955,27 @@ void ajFileBuffReset (const AjPFileBuff thys) {
   return;
 }
 
+/* @func ajFileBuffResetStore *************************************************
+**
+** Resets the pointer and current record of a file buffer so the next read
+** starts at the first buffered line.
+**
+** @param [u] thys [const AjPFileBuff] File buffer
+** @param [r] store [AjBool] append if true
+** @param [w] astr [AjPStr*] string to append to
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajFileBuffResetStore (const AjPFileBuff thys,
+			   AjBool store, AjPStr *astr)
+{
+    ajFileBuffReset (thys);
+    if (store)
+	ajStrAssC (astr, "");
+    return;
+}
+
 /* @func ajFileBuffResetPos ***************************************************
 **
 ** Resets the pointer and current record of a file buffer so the next read
@@ -3119,6 +3176,31 @@ void ajFileBuffClear (const AjPFileBuff thys, ajint lines) {
   }
 
   return;
+}
+
+/* @func ajFileBuffClear ******************************************************
+**
+** Deletes processed lines from a file buffer. The buffer has a record
+** (Pos) of the next unprocessed line in the buffer.
+**
+** Unbuffered files need special handling. The buffer can be turned off
+** while it still contains data. If so, we have to carefully run it down.
+** If this runs it to zero, we may want to save the last line read.
+**
+** @param [u] thys [const AjPFileBuff] File buffer
+** @param [r] lines [ajint] Number of lines to retain. -1 deletes everything.
+** @param [r] store [AjBool] append if true
+** @param [w] astr [AjPStr*] string to append to
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajFileBuffClearStore (const AjPFileBuff thys, ajint lines,
+			   AjPStr rdline, AjBool store, AjPStr *astr)
+{
+    ajFileBuffClear (thys, lines);
+    if (store && ajStrLen(rdline))
+	ajStrTrim (astr, -ajStrLen(rdline));
 }
 
 /* @func ajFileBuffNobuff *****************************************************
