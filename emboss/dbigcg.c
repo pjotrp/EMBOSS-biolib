@@ -1355,7 +1355,7 @@ static AjBool dbigcg_ParseGenbank (AjPFile libr,
 }
 
 
-/* @funcstatic dbigcg_ParsePir ********************************************
+/* @funcstatic dbigcg_ParsePir ************************************************
 **
 ** Parse the ID, accession from a PIR entry
 **
@@ -1465,8 +1465,10 @@ static AjBool dbigcg_ParsePir (AjPFile libr,
 
     ajFileGets(libr, &rline);
     ajDebug ("line-2 '%S'\n", rline);
-    while (ajRegExec(wrdexp, rline))
+    if (desfield >= 0)
     {
+      while (ajRegExec(wrdexp, rline))
+      {
 	ajRegSubI (wrdexp, 1, &tmpfd);
 	ajStrToUpper(&tmpfd);
 	ajDebug("++des '%S'\n", tmpfd);
@@ -1479,6 +1481,7 @@ static AjBool dbigcg_ParsePir (AjPFile libr,
 	    ajListPushApp (fdl[desfield], fd);
 	}
 	ajRegPost (wrdexp, &rline);
+      }
     }
 
     while (ajStrChar(rline,0)!='>')
@@ -1506,8 +1509,10 @@ static AjBool dbigcg_ParsePir (AjPFile libr,
 	    }
 	}
 
-	if (ajRegExec (keyexp, rline))
+	if (keyfield >= 0)
 	{
+	  if (ajRegExec (keyexp, rline))
+	  {
 	    ajRegPost (keyexp, &tmpline);
 	    while (ajRegExec(phrexp, tmpline))
 	    {
@@ -1524,10 +1529,13 @@ static AjBool dbigcg_ParsePir (AjPFile libr,
 		}
 		ajRegPost (phrexp, &tmpline);
 	    }
+	  }
 	}
 
-	if (ajRegExec (taxexp, rline))
+	if (taxfield >= 0)
 	{
+	  if (ajRegExec (taxexp, rline))
+	  {
 	    ajRegPost (taxexp, &tmpline);
 	    while (ajRegExec(phrexp, tmpline))
 	    {
@@ -1544,6 +1552,7 @@ static AjBool dbigcg_ParsePir (AjPFile libr,
 		}
 		ajRegPost (phrexp, &tmpline);
 	    }
+	  }
 	}
 
 	if (!ajFileGets(libr, &rline))
