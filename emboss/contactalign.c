@@ -6,8 +6,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.21 $
-** @modified $Date: 2004/06/22 17:27:37 $
+** @version $Revision: 1.22 $
+** @modified $Date: 2004/06/23 13:19:04 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -65,7 +65,6 @@ int main(int argc , char **argv)
     ajint ajIntDownSeqLen;
     ajint ajIntAcrossSeqLen;
     ajint ajIntAlignmentLen;
-
     
     AjPSeqout ajpSeqoutAligned = NULL; /* output object to write alignment   */
 
@@ -77,22 +76,20 @@ int main(int argc , char **argv)
     AjPMatrixf ajpMatrixfSubstitutionScoring = NULL;
     /* contact-based scoring matrix */
     AjPMatrixf ajpMatrixfContactScoring = NULL;
-
     /* array for pair scores according to conventional scoring matrix  */
     AjPFloat2d ajpFloat2dPairScores = NULL;
     /* array for pair scores according to contact-based scoring matrix */
     float **floatArrayContactScores = NULL;
 
     /* array for recursively summed scores in alignment backtrace */
-    AjPGotohCell **ajpGotohCellGotohScores;
+    AjPGotohCell const **ajpGotohCellGotohScores;
     /* stack of backtraced cells */
     AjPList ajpListGotohCellsMaxScoringTrace = NULL;
 
-    /* DDDDEBUG temporary contact map filename */
+    /* DDDDEBUG input contact map filename */
     AjPStr ajpStrOriginalCmapFile = NULL;
     AjPFile ajpFileOriginalCmap = NULL;
-
-    /* DDDDEBUG temporary contact map filename */
+    /* DDDDEBUG output contact map filename */
     AjPStr ajpStrUpdatedCmapFile = NULL;
     AjPFile ajpFileUpdatedCmap = NULL;
     
@@ -102,14 +99,14 @@ int main(int argc , char **argv)
     AjPInt2d ajpInt2dCmapResTypes = NULL;
     AjPInt2d ajpInt2dCmapPositions = NULL;
 
+    /* has contact map been read successfully? */
     AjBool ajBoolOriginalCmapFileRead = ajFalse;
+    /* has contact map been written successfully? */
     AjBool ajBoolUpdatedCmapFileWritten = ajFalse;
 
     embInit("contactalign", argc, argv);
   
     /* DDDDEBUGGING: DEFAULT GAP AND EXTENSION PENALTIES SET BELOW */
-    fGapPenalty       = -10.0;
-    fExtensionPenalty =  -0.5;
 
     /* ajAcdGet functions access acd values embInit has put in memory */
     ajpSeqDown   = ajAcdGetSeq("down");
@@ -117,6 +114,10 @@ int main(int argc , char **argv)
     ajpMatrixfSubstitutionScoring = ajAcdGetMatrixf("substitutionscoringfile");
     ajpMatrixfContactScoring = ajAcdGetMatrixf("contactscoringfile");
     ajpSeqoutAligned  = ajAcdGetSeqout("aligned");
+/*     fGapPenalty       = -10.0; */
+/*     fExtensionPenalty =  -0.5; */
+    fGapPenalty       = -ajAcdGetFloat("gapopen");
+    fExtensionPenalty =  -ajAcdGetFloat("gapextend");
 
     /* get sequence lengths: no. rows and columns in Gotoh sum array */
     ajIntDownSeqLen = ajSeqLen(ajpSeqDown);
@@ -249,11 +250,11 @@ int main(int argc , char **argv)
     /* write contact arrays to a new contact map file */
     ajBoolUpdatedCmapFileWritten =
 	embWriteCmapFile (ajpFileUpdatedCmap,
-			 ajIntAcrossSeqLen,
-			 &ajpInt2dCmapSummary,
-			 &ajpCmapHeader,
-			 &ajpInt2dCmapResTypes,
-			 &ajpInt2dCmapPositions);
+			  ajIntAcrossSeqLen,
+			  &ajpInt2dCmapSummary,
+			  &ajpCmapHeader,
+			  &ajpInt2dCmapResTypes,
+			  &ajpInt2dCmapPositions);
 
     /* XXXX LOOK UP PROBABILITY SCORE FOR PAIR */
 
