@@ -663,9 +663,12 @@ public class SectionPanel
                 ajaxLength  = aj.length;
                 ajaxWeight  = aj.weight;
                 ajaxProtein = aj.protein;
-                if(updateBeginEnd(inSeqAttr[h].getBegSeq(),inSeqAttr[h].getEndSeq()))
+                if( (updateBeginEnd(inSeqAttr[h].getBegSeq(),
+                                    inSeqAttr[h].getEndSeq())) &&
+                    (!att.startsWith("seqset")) &&
+                    (!att.startsWith("seqall"))  )
                 {
-                  inSeqAttr[h].setBegSeq(0);
+                  inSeqAttr[h].setBegSeq(1);
                   inSeqAttr[h].setEndSeq(aj.length);
                 }
                 resolveDependents(nod,dep,sifc.getFileChosen(),varName);
@@ -690,9 +693,12 @@ public class SectionPanel
                   ajaxWeight  = ca.getWeight();
                   ajaxProtein = ca.isProtein();
                   int seqLen  = ca.getLength();
-                  if(updateBeginEnd(inSeqAttr[h].getBegSeq(),inSeqAttr[h].getEndSeq()))
+                  if( (updateBeginEnd(inSeqAttr[h].getBegSeq(),
+                                    inSeqAttr[h].getEndSeq())) &&
+                    (!att.startsWith("seqset")) &&
+                    (!att.startsWith("seqall"))  )
                   {
-                    inSeqAttr[h].setBegSeq(0);     
+                    inSeqAttr[h].setBegSeq(1);     
                     inSeqAttr[h].setEndSeq(seqLen);
                   }
                   resolveDependents(nod,dep,sifc.getFileChosen(),varName);
