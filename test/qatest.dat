@@ -991,9 +991,9 @@ IN
 FI stderr
 FC = 11
 FI opsd_human.digest
-FP /^246\s+248\s+346[.]378\s+\(K\) AEK \(E\)\s*\n/
+FP /^    246     248 346\.378    K      E      AEK\s*\n/
 FP /yields 14 fragments/
-FC = 18
+FC = 34
 //
 
 
