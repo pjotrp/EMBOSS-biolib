@@ -39,7 +39,7 @@ void ajExit (void) {
 
 /* @func ajExitBad ************************************************************
 **
-** Calls 'exit' with an unsuccessful code (-1).
+** Calls 'exit' with an unsuccessful code (EXIT_FAILURE defined in stdlib.h).
 **
 ** No cleanup or reporting routines are called. Simply crashes.
 **
@@ -48,8 +48,8 @@ void ajExit (void) {
 ******************************************************************************/
 
 ajint ajExitBad (void) {
-  exit (-1);
-  return -1;
+  exit (EXIT_FAILURE);
+  return EXIT_FAILURE;
 }
 
 /* @func ajLogInfo ************************************************************
