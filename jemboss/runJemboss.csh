@@ -1,4 +1,4 @@
 #!/bin/csh -f
 setenv CLASSPATH :lib/soap.jar:lib/xerces.jar:lib/mail.jar:lib/activation.jar:lib/jakarta-regexp-1.2.jar:embreo/embreo-full.jar:.:
-#setenv LD_LIBRARY_PATH /packages/emboss_dev/tcarver/embossjava/emboss/ajax/.libs
-/packages/java/jdk1.3/bin/java org/emboss/jemboss/Jemboss &
+#setenv LD_LIBRARY_PATH /usr/local/lib
+java org/emboss/jemboss/Jemboss &
