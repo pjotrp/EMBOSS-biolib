@@ -2458,6 +2458,45 @@ void ajFileTrace(const AjPFile thys)
 /* ============================ Casts ==================================*/
 /* ==================================================================== */
 
+/* @section Outfile Casts *****************************************************
+**
+** These functions examine the contents of an outfile object and return some
+** derived information. Some of them provide access to the internal
+** components of a file object. They are provided for programming convenience
+** but should be used with caution.
+**
+******************************************************************************/
+
+/* @func ajOutfileFile ********************************************************
+**
+** Returns the AjPFile for an AjPOutfile object
+**
+** @param [r] thys [AjPOutfile] Outfile object
+** @return [AjPFile] AjPFile object
+******************************************************************************/
+
+AjPFile ajOutfileFile (AjPOutfile thys)
+{
+    return thys->File;
+}
+
+
+
+/* @func ajOutfileFp ********************************************************
+**
+** Returns the C FILE* for an AjPOutfile object
+**
+** @param [r] thys [AjPOutfile] Outfile object
+** @return [FILE*] C file pointer
+******************************************************************************/
+
+FILE* ajOutfileFp (AjPOutfile thys)
+{
+    return thys->File->fp;
+}
+
+
+
 /* @section File Casts ********************************************************
 **
 ** These functions examine the contents of a file object and return some
