@@ -4,11 +4,11 @@ SUBDIRS =
 
 bin_PROGRAMS = allversusall cathparse contacts \
                domainer domainalign domainnr domainrep domainreso domainseqs domainsse \
-               hetparse interface libgen \
+               hetparse interface libgen matgen3d \
                pdbtosp pdbparse pdbplus \
                rocplot rocon \
                scopparse seqalign seqnr seqsearch seqfraggle seqsort seqwords \
-               sigscan siggen sites ssematch
+               sigscan sigscanlig siggen siggenlig sites ssematch
                
 if LOCALLINK
 INCLUDES = -I../../../plplot -I../../../ajax -I../../../nucleus
@@ -37,6 +37,7 @@ domainsse_SOURCES = domainsse.c
 hetparse_SOURCES = hetparse.c
 interface_SOURCES = interface.c
 libgen_SOURCES = libgen.c
+matgen3d_SOURCES = matgen3d.c
 pdbtosp_SOURCES = pdbtosp.c
 pdbparse_SOURCES = pdbparse.c
 pdbplus_SOURCES = pdbplus.c
@@ -50,7 +51,9 @@ seqfraggle_SOURCES = seqfraggle.c
 seqsort_SOURCES = seqsort.c
 seqwords_SOURCES = seqwords.c
 siggen_SOURCES = siggen.c
+siggenlig_SOURCES = siggenlig.c
 sigscan_SOURCES = sigscan.c
+sigscanlig_SOURCES = sigscanlig.c
 sites_SOURCES = sites.c
 ssematch_SOURCES = ssematch.c
 
