@@ -27,6 +27,7 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.event.*;
+import org.emboss.jemboss.gui.form.Separator;
 
 
 public class AdvancedOptions extends JPanel
@@ -35,6 +36,8 @@ public class AdvancedOptions extends JPanel
   public static JCheckBox prefjni;
   public static JCheckBox prefShadeGUI;
   public static JComboBox jobMgr;
+  public static JTextField mailServer;
+  public static JTextField userHome;
   private String time[] = new String[6];
 
   public AdvancedOptions()
@@ -56,6 +59,7 @@ public class AdvancedOptions extends JPanel
     bleft.add(prefShadeGUI);
     bleft.add(Box.createHorizontalGlue());
     bdown.add(bleft);
+    bdown.add(Box.createVerticalStrut(4));
 
 //use JNI to calculate parameter dependencies
     prefjni = new JCheckBox("Calculate dependencies (JNI)");
@@ -64,6 +68,7 @@ public class AdvancedOptions extends JPanel
     bleft.add(prefjni);
     bleft.add(Box.createHorizontalGlue());
     bdown.add(bleft);
+    bdown.add(Box.createVerticalStrut(5));
 
 //frequency of job manager updates
     jobMgr = new JComboBox(time);
@@ -78,6 +83,44 @@ public class AdvancedOptions extends JPanel
     bleft.add(ljobMgr);
     bleft.add(Box.createHorizontalGlue());
     bdown.add(bleft);
+    bdown.add(Box.createVerticalStrut(5));
+
+//set users home directory
+    userHome = new JTextField();
+    userHome.setText(System.getProperty("user.home"));
+    bleft =  Box.createHorizontalBox();
+    bleft.add(userHome);
+    JLabel lhome = new JLabel(" Home directory");
+    lhome.setForeground(Color.black);
+    bleft.add(lhome);
+    bdown.add(bleft);
+    JButton jroot = new JButton("Load as local filemanger root directory");
+    bleft =  Box.createHorizontalBox();
+    bleft.add(jroot);
+    bdown.add(bleft);
+    
+    jroot.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        File f = new File(userHome.getText());
+        if(f.exists() && f.canRead())
+        {
+          org.emboss.jemboss.Jemboss.tree.newRoot(userHome.getText());
+          if(!f.canWrite())
+            JOptionPane.showMessageDialog(null,
+                          "You cannot write to this directory.",
+                          "Warning: Write",
+                          JOptionPane.WARNING_MESSAGE);
+        }
+        else
+          JOptionPane.showMessageDialog(null,
+                          "No access to this directory.",
+                          "Error: Access",
+                          JOptionPane.ERROR_MESSAGE);
+
+      }
+    });
 
     this.add(bdown);
   }

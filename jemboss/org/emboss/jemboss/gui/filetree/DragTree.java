@@ -49,14 +49,17 @@ public class DragTree extends JTree implements DragGestureListener,
   private Hashtable openNodeDir;
   private EmbreoParams mysettings;
 
+  private File root;
   private String fs = new String(System.getProperty("file.separator"));
   final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
 
-  public DragTree(final File root, final JFrame f, EmbreoParams mysettings) 
+  public DragTree(File rt, final JFrame f, EmbreoParams mysettings) 
   {
     this.mysettings = mysettings;
+    this.root = rt;
+
     openNodeDir = new Hashtable();
     DragSource dragSource = DragSource.getDefaultDragSource();
 
@@ -125,6 +128,13 @@ public class DragTree extends JTree implements DragGestureListener,
       }
     });
 
+  }
+
+  public void newRoot(String newRoot)
+  {
+    root = new File(newRoot);
+    model = createTreeModel(root);
+    setModel(model);
   }
 
 // drag source

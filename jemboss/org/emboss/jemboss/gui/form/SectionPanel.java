@@ -689,6 +689,11 @@ public class SectionPanel
                   else
                     fname = sifc.getFileChosen();
 
+                  if(fname.startsWith("@"))
+                    fname = fname.substring(1);
+                  else if (fname.startsWith("list::"))
+                    fname = fname.substring(6);
+
                   if( (new File(fname)).exists() )       // Sequence file
                   {
                     BufferedReader in = new BufferedReader(new FileReader(fname));
@@ -810,8 +815,9 @@ public class SectionPanel
         ((e!=null) && (!e.equals(""))) )
     {
       int n = JOptionPane.showConfirmDialog(f,
-            "Do you want to overwrite the input sequence " + ls +
-            "start " + s + " and end " + e + " , values already set?",
+            "Overwrite the input sequence " + ls +
+            "start :" + s + ls + "end :" + e + 
+            ls + " values already set?",
             "Confirm",
             JOptionPane.YES_NO_OPTION);
 

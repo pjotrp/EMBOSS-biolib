@@ -40,6 +40,8 @@ public class LaunchJalView extends JFrame
     super("Jalview ");
 
     final TextFieldSink tfs = new TextFieldSink();
+    final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
+    final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
     Box bacross = Box.createHorizontalBox();
     final Box bdown = Box.createVerticalBox();
@@ -79,6 +81,17 @@ public class LaunchJalView extends JFrame
     bdown.add(format);
     bdown.add(Box.createVerticalStrut(5));
 
+    final JTextField mailServer = new JTextField();
+    mailServer.setText("mercury.hgmp.mrc.ac.uk");
+    bacross =  Box.createHorizontalBox();
+    bacross.add(Box.createHorizontalStrut(1));
+    bacross.add(mailServer);
+    JLabel lmail = new JLabel(" Mail Server ");
+    lmail.setForeground(Color.black);
+    bacross.add(lmail);
+    bdown.add(bacross);
+    bdown.add(Box.createVerticalStrut(5));
+
     final JButton launch = new JButton("LAUNCH");
     bacross = Box.createHorizontalBox();
     bacross.add(Box.createHorizontalStrut(1));
@@ -90,18 +103,29 @@ public class LaunchJalView extends JFrame
     {
       public void actionPerformed(ActionEvent e)
       {
-//      new AlignFrame(null,tfs.getText(),"File",(String)format.getSelectedItem());
-        String args[] = { 
-          tfs.getText(),                      //alignment file
-          "File",
-          (String)format.getSelectedItem(),   //format 
-          "-mail",
-          "mercury.hgmp.mrc.ac.uk"            //mail server
+      
+        SwingWorker launchworker = new SwingWorker()
+        {
+
+          public Object construct()
+          {
+            setCursor(cbusy);
+            String args[] = { 
+              tfs.getText(),                         //alignment file
+              "File",
+              (String)format.getSelectedItem(),      //format 
+              "-mail",
+              mailServer.getText()                   //mail server
+            };
+            AlignFrame af = AlignFrame.parseArgs(args);
+            af.setSize(700,500);
+            setCursor(cdone);
+            setVisible(false);
+            af.show();
+            return null;
+          }
         };
-        AlignFrame af = AlignFrame.parseArgs(args);
-        af.setSize(700,500);
-        af.show();
-        setVisible(false);
+        launchworker.start();
       }
     });
 

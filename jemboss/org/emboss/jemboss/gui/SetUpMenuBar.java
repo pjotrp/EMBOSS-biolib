@@ -112,14 +112,12 @@ public class SetUpMenuBar
     JMenu prefsMenu = new JMenu("Preferences");
     prefsMenu.setMnemonic(KeyEvent.VK_P);
 
-    AdvancedOptions ao = new AdvancedOptions();
+    final AdvancedOptions ao = new AdvancedOptions();
     JMenuItem showAdvOpt = new JMenuItem("Advanced Options");
     showAdvOpt.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
-        AdvancedOptions ao = new AdvancedOptions();
-
         JOptionPane jao = new JOptionPane();
         jao.showMessageDialog(f,ao,"Advanced Options",
                               JOptionPane.PLAIN_MESSAGE);
