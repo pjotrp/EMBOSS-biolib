@@ -249,6 +249,20 @@ FP 1 /Error: /
 FP 0 /Died: /
 //
 
+ID acd-secondappl
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL secondappl
+FI stderr
+FZ > 0
+FP /Error: File .*secondappl.acd line 9: Application definition allowed only at start\n/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
+//
+
 ID acd-noleftq
 AP acdc
 ER 1
@@ -5334,7 +5348,12 @@ AP entret
 CC Fails ... ABI reading functions use raw file pointer not the buffer
 CL -auto ../../data/abiview.abi test.out
 FI test.out
-FZ = 152547
+FZ = 0
+FI stderr
+FP /Warning: Unable to read text from binary ABI file ..\/..\/data\/abiview.abi/
+FP 1 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID entret-inauto-selex
@@ -6489,20 +6508,14 @@ FP /^Created isochore.ps\n/
 
 ID jembossctl-ex
 CC for jemboss installations
+CC can only be run through tomcat so simply exits here
 AP jembossctl
 CL jctl.file
-IN
 FI stderr
-FC = 2
+FC = 0
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI file1.list
-FZ = 115
-FC = 4
-FP 4 /^fasta::/
-FP 3 /file1/
-FP 1 /file2/
 //
 
 # remove the extra 2 prompts from the example
@@ -7783,9 +7796,10 @@ PP mkdir ./REBASE
 PP EMBOSS_DATA=./
 PP export EMBOSS_DATA
 IN ../../data/withrefm
+IN ../../data/proto
 FI embossre.equ
-FZ = 260
-FP 1 /EcoRII Acc38I/
+FZ = 76
+FP 1 /BshI HaeIII/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -7848,12 +7862,12 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI eclac.remap 
-FZ = 1064
-FP /^# Enzymes that cut.*\n(\s+\S+\s+1\s+\n){4}\n/
+FZ = 1074
+FP /^# Enzymes that cut.*\n(\s+\S+\s+1\s+\S*\n){4}\n/
 FP /^# Enzymes that do not cut.*\n\n/
 FP /^\s+AciI\s+1\s+\n/
 FP /^\s+BssKI\s+1\s+\n/
-FP /^\s+Bsu6I\s+1\s+\n/
+FP /^\s+Ksp632I\s+1\s+Bsu6I\n/
 FP /^\s+TaqI\s+1\s+\n/
 //
 
@@ -7874,7 +7888,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI eclac.remap
-FZ = 1663
+FZ = 1686
 FP /^\s+Hin6I\s+2\s+HinP1I,HspAI\n/
 //
 
@@ -7894,7 +7908,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI eclac.remap
-FZ = 2060
+FZ = 2080
 FP /^\s+Hin6I\s+2\s+HinP1I,HspAI\n/
 //
 
@@ -7932,8 +7946,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hsfau.restrict
-FP /^\s+11\s+14\s+0\s+TaqI\s+TCGA\s+11\s+13\s+[.]\s+[.]\n/
-FP /^\s+125\s+135\s+0\s+Hin4I\s+GAYNNNNNVTC\s+116\s+111\s+148\s+143\n/
+FP /^\s+11\s+14\s+TaqI\s+TCGA\s+11\s+13\s+[.]\s+[.]\n/
+FP /^\s+125\s+135\s+Hin4I\s+GAYNNNNNVTC\s+116\s+111\s+148\s+143\n/
 //
 
 ID revseq-ex
@@ -12433,7 +12447,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FZ > 47000
+FZ > 43000
 FP 1 /^ +Finds programs by keywords in their one-line documentation\n/
 FP 2 /^ +-explode/
 //
@@ -14034,7 +14048,7 @@ CC No documentation, no example
 CL paamir test.out
 FI stderr
 FC < 2
-FP 0 /^CORBA support has not been compiled\n/
+FP 1 /^CORBA support has not been compiled\n/
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -14112,10 +14126,11 @@ AQ demostring
 CC No documentation, no example
 IN How long is a piece of string?
 FI stderr
-FZ = 383
+FZ = 874
 FP /^first token 'How'\n/
 FP /^second token 'long is a piece of string[?]'\n/
-FP 0 /Warning: /
+FP /Warning: Unknown date/time format fred\n/
+FP 1 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 //
@@ -14543,146 +14558,535 @@ FZ = 29889
 FP /^ATOM\s+31\s+CA\s+PHE\s+A   6\s+60.914 -11.143  59.200  1.00 58.07\s+C\s+\n/
 FI d1cs4a_.pxyz
 FZ = 82217
+FP /SQ   SEQUENCE    52 AA;   5817 MW;  47362A43 CRC32;\n/
+FP /CO +1 +1 +[.] +P +3 +397( +[.])+ +I +ILE +CD1( +[-]?[0-9]+[.][0-9]+)+/
 FI d1ii7a_.ent
 FZ = 29727
+FP /ATOM      1  N   ASP A   8       7.977  32.254  19.055  1.00 26.65           N  /
 FI d1ii7a_.pxyz
 FZ = 81546
+FP /SQ   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;/
+FP /CO   1    1    .    P    8     8( +[.])+ +D    ASP    OD2( +[-]?[0-9]+[.][0-9]+)+/
 //
 
 ID fraggle-ex
 AB domainatrix
 AA fraggle
-CC No example in the documentation
+IN ../../data/structure
+IN
+IN
+IN 
+IN .fhits
+FI stdout
+FZ = 86
+FC = 2
+FP /Processing ../../data/structure/54894.hits\n/
+FP /Processing ../../data/structure/55074.hits\n/
+FI stderr
+FZ = 305
+FP 0 /^Warning:/
+FP 0 /^Error:/
+FP 0 /^Died:/
+FI 54894.fhits
+FZ = 6877
+FP /^CL   Alpha and beta proteins [(]a[+]b[)]\n/
+FP 27 /^SQ/
+FI 55074.fhits
+FZ = 38972
+FP /^CL   Alpha and beta proteins [(]a[+]b[)]\n/
+FP 112 /^SQ/
 //
 
 ID hetparse-ex
 AB domainatrix
 AA hetparse
-CC No example in the documentation
+IN ../../data/structure/het.txt
+IN Y
+IN ../../data/structure
+IN
+IN Ehet.dat
+FI stdout
+FC = 2
+FP 2 /^Processing/
+FI stderr
+FZ = 255
+FP 0 /^Warning:/
+FP 0 /^Error:/
+FP 0 /^Died:/
+FI Ehet.dat
+FZ = 949
+FP 9 /^ID/
 //
 
 ID hmmgen-ex
 AB domainatrix
 AA hmmgen
-CC No example in the documentation
+IN ../../data/structure
+IN
+IN
+IN
+FI stdout
+FZ > 2800
+FP /^Saving model to file +... done. \[.\/55074.hmm\]\n/
+FI stderr
+FZ = 254
+FP 0 /^Warning:/
+FP 0 /^Error:/
+FP 0 /^Died:/
+FI 54894.hmm
+FC = 306
+FP /    94( +-?\d+){21}\n/
+FI 55074.hmm
+FC = 636
+FP /    94( +-?\d+){21}\n/
 //
 
 ID interface-ex
 AB domainatrix
 AA interface
-CC No example in the documentation
+IN ../../data/structure/2hhb.pxyz
+IN
+IN 2hhb.con
+IN
+FI stdout
+FZ = 5
+FP /2hhb\n/
+FI stderr
+FZ = 191
+FP 0 /^Warning:/
+FP 0 /^Error:/
+FP 0 /^Died:/
+FI 2hhb.con
+FZ = 3940
+FP /^ID   2hhb\n/
+FP 158 /^SM   /
+FI interface.log
+FZ = 5
+FP /2hhb\n/
 //
 
 ID pdbparse-ex
 AB domainatrix
 AA pdbparse
-CC No example in documentation
+IN ../../data/structure
+IN
+IN
+IN Y
+IN
+IN
+IN
+IN
+FI stdout
+FC = 2
+FP 2 /^Processing /
+FI stderr
+FC = 2
+FP 0 /^Warning:/
+FP 0 /^Error:/
+FP 0 /^Died:/
+FI pdbparse.log
+FC = 14
+FP 2 /^SEQRESLENDIF/
+FP 2 /^SECSTART       1 1 ILE 384\n/
+FP 3 /^SECBOTH/
+FP /^SECBOTH        1 1 VAL 78 ILE 81\n/
+FI 1cs4.pxyz
+FC = 491
+FP 475 /^CO /
+FI 1ii7.pxyz
+FC = 419
+FP 402 /^CO /
 //
 
-ID pdbtosp-ex
+ID pdbtosp-keep
 AB domainatrix
 AA pdbtosp
-CC No example in documentation
-//
-
-ID profgen-ex
-AB domainatrix
-AA profgen
-CC No example in documentation
-//
-
-ID scopalign-ex
-CC missing input file(s)
-CC needs stamp to be installed
-AB domainatrix
-AA scopalign
-IN ../../data/scop.orig
+DL keep
+IN ../../data/structure/pdbtosp.txt
 IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
+FI Epdbtosp.dat
+FZ = 422
+FP 7 /^EN   /
+FP /^IN   XYLA_ACTMI ID; P12851 ACC;\n/
+//
+
+ID profgen-ex
+AB domainatrix
+AA profgen
+IN ../../data/structure
+IN
+IN g
+IN
+IN
+IN
+IN
+IN
+FI stderr
+FC = 6
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI 54894.gribs
+FC = 110
+FP /^Length\t\t97\n/
+FP /^Max_score\t1013.29\n/
+FI 55074.gribs
+FC = 292
+FP /^Length\t\t279\n/
+FP /^Max_score\t1572.10\n/
+//
+
+ID scopalign-ex
+AB domainatrix
+AA scopalign
+CC requires a modified stamp to be installed
+IN ../../data/structure/all.scop2
+IN
+IN
+IN
+IN
+FI stderr
+FC = 18
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 FI stdout
+FC = 14
+FP 2 /^stamp/
+FI 54898.salign
+FZ = 0
+FI 55074.salign
 FZ = 0
 //
 
 ID scopnr-ex
 AB domainatrix
 AA scopnr
-CC No example in documentation
+IN ../../data/structure/all_s.scop
+IN
+IN
+IN all_nr.scop
+IN
+FI stdout
+FC = 4
+FP 2 /^\/\/ /
+FP 2 /^D1/
+FI stderr
+FC = 5
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI all_nr.scop
+FC = 55
+FP 2 /^ID/
+FI scopnr.log
+FC = 10
+FP 2 /^Retained/
+FP 2 /^Rejected/
+FP 2 /^\/\//
 //
 
-ID scopparse-ex
+ID scopparse-keep
 AB domainatrix
 AA scopparse
-CC No example in documentation
+DL keep
+IN ../../data/structure/scop.cla.raw
+IN ../../data/structure/scop.des.raw
+IN all.scop.new
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI all.scop.new
+FC = 48
+FP 2 /^ID/
 //
 
 ID scoprep-ex
 AB domainatrix
 AA scoprep
-CC No example in documentation
+CC documentation says stamp is required
+CC but the test case does not fail without it
+IN ../scopparse-keep/all.scop.new
+IN all_rep1st.scop.new
+FI stderr
+FC = 3
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI all_rep1st.scop.new
+FC = 48
+FP 2 /^ID/
 //
 
 ID scopreso-ex
 AB domainatrix
 AA scopreso
-CC No example in documentation
+IN ../../data/structure
+IN .dxyz
+IN ../../data/structure/all.scop
+IN 2.3
+IN all_2.3.scop
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI all_2.3.scop
+FC = 24
+FP 1 /^ID/
 //
 
 ID scopseqs-ex
 AB domainatrix
 AA scopseqs
-CC No example in documentation
+CC Warnings - no accession number for both entries
+CL -pdbtosp ../pdbtosp-keep/Epdbtosp.dat
+IN ../scopparse-keep/all.scop.new
+IN ../../data/structure
+IN .dxyz
+IN all_s.scop
+IN
+FI stderr
+FC = 5
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 4
+FP 2 /^\/\/\n/
+FI all_s.scop
+FC = 55
+FP 2 /^ID   /
+FI scopseqs.log
+FC = 4
+FP 2 /^\/\/\n/
 //
 
 ID seqalign-ex
 AB domainatrix
 AA seqalign
-CC No example in documentation
+CC Apparently requires clustalw 1.83 for long filenames
+CC clustalw 1.82 failed with 'unable to read .aln file'
+CC this was a clustalw error message
+CC renaming the files and running clustalw worked
+IN ../../data/structure
+IN
+IN ../../data/structure/scop.all
+IN ./
+IN
+FI stderr
+FC = 3
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 7293
+FP 150 /^Sequence /
+FP 6963 /^Sequences /
+FI 54894.ealign
+FC = 70
+FP /^Q8TVB1_7_98 +-VKRIEMGTVLDHLPPGTAPQIMRILDIDPTET---TLLVAINVESS-KMGRKDILKIEG\n/
+FI 55074.ealign
+FC = 590
+FP /^P32870_263_448 +--FHRIYIQK--HENVSILFADIVGFTVLSSQC----SAQELVRLLNELFGRFDQLAHDN\n/
 //
 
 ID seqnr-ex
 AB domainatrix
 AA seqnr
-CC No example in documentation
+IN ../../data/structure/scop.fam
+IN ../../data/structure/scop.oth
+IN ../../data/structure/all.scop2
+IN ../../data/structure/
+IN
+IN 20
+IN 40
+IN
+IN scop.all
+IN seqnr.log
+FI stderr
+FC = 15
+FP 8 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 2
+FP 2 /^Processing/
+FI famnr.hits
+FZ = 0
+FI seqnr.log
+FC = 10
+FP 2 /\/\//
+FP 2 /^Overlap between/
+FI scop.all
+FC = 2419
+FP 140 /^SQ   /
 //
 
 ID seqsearch-ex
+CC Uses blastpgp to search
 AB domainatrix
 AA seqsearch
-CC No example in documentation
+IN ../../data/structure/all.scop
+IN ../../data/structure
+IN
+IN ../../data/swnew
+IN 1
+IN 0.001
+IN 100
+IN
+IN
+IN
+IN
+FI stderr
+FC = 10
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 6
+FP 2 /^blastpgp/
+FI 54894.hits
+FC = 12
+FP 1 /^SI/
+FI 55074.hits
+FC = 12
+FP 1 /^SI/
+FI seqsearch.log
+FC = 4
+FP 2 /[.]salign\n/
 //
 
 ID seqsort-ex
 AB domainatrix
 AA seqsort
-CC No example in documentation
+IN
+IN ../../data/structure
+IN
+IN 20
+IN scop.fam
+IN scop.oth
+FI stderr
+FC = 9
+FP 3 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI scop.fam
+FC = 2139
+FP 140 /^SQ   /
+FI scop.oth
+FZ = 0
 //
 
 ID seqwords-ex
 AB domainatrix
 AA seqwords
-CC No example in documentation
+IN ../../data/structure/test.terms
+IN ../../data/structure/test.seq
+IN test.seqhits
+FI stderr
+FC = 3
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI test.seqhits
+FC = 31
+FP 1 /^SQ   /
 //
 
-ID siggen-ex
+ID siggen-keep
+DL keep
 AB domainatrix
 AA siggen
-CC Missing example files test/data/jontest/*
+IN ../../data/structure
+IN
+IN 2
+IN 15
+IN
+IN 1
+IN
+IN 5
+IN Y
+IN
+IN
+FI stderr
+FC = 17
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI 54894.sig
+FC = 124
+FP 14 /^IN   /
+FI 55074.sig
+FC = 279
+FP 32 /^IN   /
 //
 
 ID sigplot-ex
+CC requires gnuplot
+CC fails - no true hits in input
+CC and the Usage case says so too
 AB domainatrix
 AA sigplot
-CC No documentation, no example
+IN 2
+IN ../../data/structure
+IN .hits
+IN ../../data/structure/scop.all
+IN Y
+IN
+IN n
+IN
+FI stderr
+FC = 6
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 2
+FP 1 /^Validation file read ok\n/
+FP 1 /^PROCESSING/
+FI 54894.hits.dat
+FZ = 0
+FI 54894.hits.dat2
+FZ = 0
 //
 
 ID sigscan-ex
 AB domainatrix
 AA sigscan
-CC No example in documentation
+CL -targetf ../../data/structure/scop.all
+IN ../siggen-keep/54894.sig
+IN ../../data/structure/test.seq
+IN
+IN
+IN
+IN
+IN 1
+IN
+IN
+IN 54894.sighits
+IN 54894.sigalign
+FI stderr
+FC = 6
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 7
+FP 7 / ok\n/
+FI 54894.sigalign
+FC = 188
+FP 85 /^SIGNATURE /
+FI 54894.sighits
+FC = 19
+FP 1 /^SI   /
 //
 
 ######################################
