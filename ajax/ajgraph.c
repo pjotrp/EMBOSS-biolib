@@ -7118,7 +7118,7 @@ void ajGraphUnused(void)
     GraphOpenNull(NULL,NULL);
 
 #ifndef GROUT
-    GraphOpenXml(NULL,NULL)
+    GraphOpenXml(NULL,NULL);
 #endif
     return;
 }
