@@ -53,6 +53,10 @@
 #include <sys/filio.h>
 #endif
 
+#if defined(__CYGWIN__)
+#include <sys/termios.h>
+#endif
+
 #ifndef TOMCAT_UID
 #define TOMCAT_UID 506	  /* Set this to be the UID of the tomcat process */
 #endif
@@ -123,7 +127,11 @@ static AjBool jctl_GetSeqsetFromUsa(AjPStr thys, AjPSeqset *seq);
 #endif
 
 #ifdef PAM
+#if defined(__ppc__)
+#include <pam/pam_appl.h>
+#else
 #include <security/pam_appl.h>
+#endif
 #endif
 
 #ifdef AIX_SHADOW
@@ -799,8 +807,13 @@ static AjBool jctl_check_pass(AjPStr username,AjPStr password,ajint *uid,
 
     ajStrAssC(home,pwd->pw_dir);
 
+#if defined(__ppc__)
+    retval = pam_start("login",ajStrStr(username),
+		       (struct pam_conv*)&conv,&pamh);
+#else
     retval = pam_start("emboss_auth",ajStrStr(username),
 		       (struct pam_conv*)&conv,&pamh);
+#endif
 
     if (retval == PAM_SUCCESS)
 	retval= pam_authenticate(pamh,PAM_SILENT);

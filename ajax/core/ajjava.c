@@ -56,6 +56,11 @@
 #include <signal.h>
 #endif
 
+#if defined(__CYGWIN__)
+#include <sys/termios.h>
+#endif
+
+
 #ifdef HAVE_POLL		/* Only for OSs without FD macros */
 #include <poll.h>
 #endif
@@ -95,7 +100,11 @@
 #endif
 
 #ifdef PAM
+#if defined(__ppc__)
+#include <pam/pam_appl.h>
+#else
 #include <security/pam_appl.h>
+#endif
 #endif
 
 #ifdef AIX_SHADOW
@@ -908,8 +917,13 @@ static AjBool java_pass(AjPStr username,AjPStr password,ajint *uid,
 
     ajStrAssC(home,pwd->pw_dir);
 
+#if defined(__ppc__)
+    retval = pam_start("login",ajStrStr(username),
+		       (struct pam_conv*)&conv,&pamh);
+#else
     retval = pam_start("emboss_auth",ajStrStr(username),
 		       (struct pam_conv*)&conv,&pamh);
+#endif
 
     if (retval == PAM_SUCCESS)
 	retval= pam_authenticate(pamh,PAM_SILENT);
