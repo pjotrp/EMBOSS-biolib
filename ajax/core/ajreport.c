@@ -2218,8 +2218,11 @@ void ajReportWriteHeader(AjPReport thys, const AjPFeattable ftable, AjPSeq seq)
     AjIList itertype = NULL;
     AjBool doSingle  =ajFalse; /* turned off for now - always multi format */
     int i;
-
+    AjPTime today = NULL;
+    
     outf = thys->File;
+
+    today =  ajTimeTodayF("log");
     
     /* Header for the top of the file (first call for report only) */
     
@@ -2227,7 +2230,7 @@ void ajReportWriteHeader(AjPReport thys, const AjPFeattable ftable, AjPSeq seq)
     {
 	ajFmtPrintF(outf, "########################################\n");
 	ajFmtPrintF(outf, "# Program: %s\n", ajAcdProgram());
-	ajFmtPrintF(outf, "# Rundate: %D\n", ajTimeTodayF("log"));
+	ajFmtPrintF(outf, "# Rundate: %D\n", today);
 	ajFmtPrintF(outf, "# Report_format: %S\n", thys->Formatstr);
 	ajFmtPrintF(outf, "# Report_file: %F\n", outf);
 	if(ajListLength(thys->FileNames))
@@ -2292,6 +2295,7 @@ void ajReportWriteHeader(AjPReport thys, const AjPFeattable ftable, AjPSeq seq)
     ++thys->Count;
     
     ajStrDel(&tmpstr);
+    AJFREE(today);
     
     return;
 }
