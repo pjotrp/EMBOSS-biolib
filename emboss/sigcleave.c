@@ -203,7 +203,7 @@ int main(int argc, char **argv)
 	    if(outf)
 		ajFmtPrintF(outf,"\nNo scores over %.2f\n",minweight);
 	    ajFmtPrintS(&tailStr,"\nNo scores over %.2f\n",minweight);
-	    ajReportSetTail(report, tailStr);
+	    ajReportSetSubTail(report, tailStr);
 	}
 	else
 	{
