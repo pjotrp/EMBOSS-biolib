@@ -5,8 +5,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.4 $
-** @modified $Date: 2004/11/17 18:03:36 $
+** @version $Revision: 1.5 $
+** @modified $Date: 2004/11/19 17:58:14 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 enum constant
     {
 	enumCountZero  = 0,
-	enumDebugLevel = 0
+	enumDebugLevel = 2
     };
 
 #include "emboss.h"
