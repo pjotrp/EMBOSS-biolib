@@ -1,5 +1,9 @@
 Version 2.7.0
 
+	Megamerger now has the qualifier '-prefer' which makes it use
+	the first sequence to create the merged sequence whenever there is a
+	mismatch between the two sequences. 
+
 	Sirna now has the qualifier '-context' which writes the first
 	two bases (in brackets) of the 23 base target region.
 
