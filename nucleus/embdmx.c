@@ -1177,8 +1177,7 @@ AjBool embDmxScophitMergeInsertThisTargetBoth(const AjPList list,
 ** @param [r] input  [const AjPList]    List of ajPSeq's 
 ** @param [w] keep   [AjPInt*]    0: rejected (redundant) sequence, 1: the 
                                   sequence was retained
-** @param [w] nset   [ajint*]     Number of sequences in nr set (no. of 1's 
-**                                in the keep array)
+** @param [w] nset   [ajint*]     Number of non-garbage sequences in nr set 
 ** @param [r] matrix    [const AjPMatrixf] Residue substitution matrix
 ** @param [r] gapopen   [float]      Gap insertion penalty
 ** @param [r] gapextend [float]      Gap extension penalty
@@ -1394,8 +1393,10 @@ AjBool embDmxSeqNR(const AjPList input, AjPInt *keep, ajint *nset,
     }
 
     for(x=0; x<nin; x++)
-    	if(ajIntGet(*keep,x))
-	    (*nset)++;
+	if((!inseqs[x]->Garbage))
+	    if(ajIntGet(*keep,x))
+		(*nset)++;
+    
 
     /* Keep first sequence in case all have been processed out */
     if(*nset == 0)
@@ -1458,8 +1459,7 @@ AjBool embDmxSeqNR(const AjPList input, AjPInt *keep, ajint *nset,
 ** @param [r] input  [const AjPList]    List of ajPSeq's
 ** @param [w] keep   [AjPInt*]    0: rejected (redundant) sequence, 1: the
                                   sequence was retained
-** @param [w] nset   [ajint*]     Number of sequences in nr set (no. of 1's
-**                                in the keep array)
+** @param [w] nset   [ajint*]     Number of non-garbage sequences in nr set.
 ** @param [r] matrix    [const AjPMatrixf] Residue substitution matrix
 ** @param [r] gapopen   [float]      Gap insertion penalty
 ** @param [r] gapextend [float]      Gap extension penalty
@@ -1689,8 +1689,9 @@ AjBool embDmxSeqNRRange(const AjPList input, AjPInt *keep, ajint *nset,
     */
 
     for(x=0; x<nin; x++)
-    	if(ajIntGet(*keep,x))
-	    (*nset)++;
+	if((!inseqs[x]->Garbage))
+	    if(ajIntGet(*keep,x))
+		(*nset)++;
 
 
 
