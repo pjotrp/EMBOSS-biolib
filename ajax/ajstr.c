@@ -1797,7 +1797,7 @@ AjBool ajStrChompEnd (AjPStr* pthis){
   static AjPStr spaces = NULL;
 
   if (!spaces)
-    (void) ajStrAssC(&spaces,"\t \n");
+    (void) ajStrAssC(&spaces,"\t \n\r");
 
   ret = ajStrMod (pthis);
   (void) ajStrTrimEndC(pthis, spaces->Ptr);
@@ -2589,7 +2589,7 @@ AjBool ajStrCleanWhite(AjPStr *s) {
   len=ajStrLen(t);
 
   for(i=0;i<len;++i)
-      if(p[i]=='\t' || p[i]=='\n')
+      if(p[i]=='\t' || p[i]=='\n' || p[i]=='\r')
 	  p[i]=' ';
   for(i=0;i<len;++i)
   {
