@@ -480,10 +480,9 @@ static AjBool seqAccessEmblcd (AjPSeqin seqin)
 
 	if (!seqCdQryOpen(qry))
 	{
-	    ajWarn("seqCdQry failed");
+	    ajWarn ("seqCdQry failed");
 	    return ajFalse;
 	}
-
 
 	qryd = qry->QryData;
 
@@ -496,9 +495,9 @@ static AjBool seqAccessEmblcd (AjPSeqin seqin)
 	    {
 	      ajDebug ("EMBLCD Entry failed\n");
 	      if (ajStrLen(qry->Id))
-		  ajErr ("Database Entry '%S' not found", qry->Id);
+		  ajDebug ("Database Entry '%S' not found\n", qry->Id);
 	      else
-		  ajErr ("Database Entry '%S' not found", qry->Acc);
+		  ajDebug ("Database Entry '%S' not found\n", qry->Acc);
 	    }
 	}
 	if (qry->Type == QRY_QUERY)
@@ -508,19 +507,19 @@ static AjBool seqAccessEmblcd (AjPSeqin seqin)
 	    {
 	      ajDebug ("EMBLCD Query failed\n");
 	      if (ajStrLen(qry->Id))
-		  ajErr ("Database Query '%S' not found", qry->Id);
-	      else if (ajStrLen(qry->Id))
-		  ajErr ("Database Query '%S' not found", qry->Acc);
+		  ajDebug ("Database Query '%S' not found\n", qry->Id);
+	      else if (ajStrLen(qry->Acc))
+		  ajDebug ("Database Query '%S' not found\n", qry->Acc);
 	      else if (ajStrLen(qry->Sv))
-		  ajErr ("Database Query 'sv:%S' not found", qry->Sv);
+		  ajDebug ("Database Query 'sv:%S' not found\n", qry->Sv);
 	      else if (ajStrLen(qry->Des))
-		  ajErr ("Database Query 'des:%S' not found", qry->Des);
+		  ajDebug ("Database Query 'des:%S' not found\n", qry->Des);
 	      else if (ajStrLen(qry->Key))
-		  ajErr ("Database Query 'key:%S' not found", qry->Key);
+		  ajDebug ("Database Query 'key:%S' not found\n", qry->Key);
 	      else if (ajStrLen(qry->Org))
-		  ajErr ("Database Query 'org:%S' not found", qry->Org);
+		  ajDebug ("Database Query 'org:%S' not found\n", qry->Org);
 	      else
-		  ajErr ("Database Query '%S' not found", qry->Acc);
+		  ajDebug ("Database Query '%S' not found\n", qry->Acc);
 	    }
 	}
     }
@@ -1196,7 +1195,7 @@ static ajint seqCdTrgSearch (SeqPCdTrg trgLine, AjPStr entry, SeqPCdFile fp)
 	itry = (ilo + ihi)/2;
 	if (itry == ipos)
 	{
-	    ajDebug("'%S' not found in .trg\n", entrystr);
+	    ajDebug ("'%S' not found in .trg\n", entrystr);
 	    ajStrDel (&entrystr);
 	    return -1;
 	}
@@ -1968,7 +1967,10 @@ static AjBool seqCdQryOpen (AjPSeqQuery qry)
 
     qryd->ifp = seqCdFileOpen(qry->IndexDir, "entrynam.idx", &qryd->idxfile);
     if (!qryd->ifp)
-	ajFatal("Cannot open index file '%S'", qryd->idxfile);
+    {
+      ajErr ("Cannot open index file '%S'", qryd->idxfile);
+      return ajFalse;
+    }
 
     ajStrDel (&fullName);
     ajCharFree (name);
@@ -2359,8 +2361,9 @@ static AjBool seqCdQryNext (AjPSeqQuery qry)
     if (entry->div != qryd->div)
     {
 	qryd->div = entry->div;
-    ajDebug ("div: %d\n", qryd->div);
-	seqCdQryFile (qry);
+	ajDebug ("div: %d\n", qryd->div);
+	if (!seqCdQryFile (qry))
+	  return ajFalse;
     }
 
     ajDebug ("Offsets (cd) %d %d\n", entry->annoff, entry->seqoff);
@@ -2958,20 +2961,22 @@ static AjBool seqGcgAll (const AjPSeqin seqin)
 
     if (!called)
     {
-	if (ajUtilBigendian())
-	    seqCdReverse = ajTrue;
-	called = 1;
+      if (ajUtilBigendian())
+	seqCdReverse = ajTrue;
+      called = 1;
     }
 
     ajDebug ("seqGcgAll\n");
 
     if (!qry->QryData)
     {
-	ajDebug ("seqGcgAll initialising\n");
-	seqin->Single = ajTrue;
-	if (!seqCdQryOpen(qry))
-	    ajFatal ("seqGcgAll failed");
-
+      ajDebug ("seqGcgAll initialising\n");
+      seqin->Single = ajTrue;
+      if (!seqCdQryOpen(qry))
+      {
+	ajErr ("seqGcgAll failed");
+	return ajFalse;
+      }
     }
 
     qryd = qry->QryData;
@@ -2980,17 +2985,20 @@ static AjBool seqGcgAll (const AjPSeqin seqin)
 
     if (!qryd->libr)
     {
-        if (!seqCdDivNext(qry))
-	{
-	    ajDebug ("seqGcgAll finished\n");
-	    return ajFalse;
-	}
-	if (!seqCdQryFile (qry))
-	    ajFatal ("seqGcgAll out of data");
-	ajDebug("seqCdQryOpen processing file %2d '%F'\n", qryd->div,
-		qryd->libr);
-	if (qryd->libs)
-	    ajDebug("               sequence file    '%F'\n", qryd->libs);
+      if (!seqCdDivNext(qry))
+      {
+	ajDebug ("seqGcgAll finished\n");
+	return ajFalse;
+      }
+      if (!seqCdQryFile (qry))
+      {
+	ajErr ("seqGcgAll out of data");
+	return ajFalse;
+      }
+      ajDebug("seqCdQryOpen processing file %2d '%F'\n", qryd->div,
+	      qryd->libr);
+      if (qryd->libs)
+	ajDebug("               sequence file    '%F'\n", qryd->libs);
     }
     seqGcgLoadBuff (seqin);
 
@@ -3048,7 +3056,10 @@ static AjBool seqAccessBlast (AjPSeqin seqin)
 	seqin->Single = ajTrue;
 
 	if (!seqCdQryOpen(qry))		/* open the table file */
-	    ajFatal ("seqCdQryOpen failed");
+	{
+	  ajErr ("seqCdQryOpen failed");
+	  return ajFalse;
+	}
 
 	qryd = qry->QryData;
 	ajFileBuffDel (&seqin->Filebuff);
@@ -3060,13 +3071,19 @@ static AjBool seqAccessBlast (AjPSeqin seqin)
 	{
 	    ajDebug ("entry id: '%S' acc: '%S'\n", qry->Id, qry->Acc);
 	    if (!seqCdQryEntry (qry))
-		ajErr ("BLAST Entry failed");
+	    {
+	      ajDebug ("BLAST Entry failed\n");
+	      return ajFalse;
+	    }
 	}
 	if (qry->Type == QRY_QUERY)
 	{
 	    ajDebug ("query id: '%S' acc: '%S'\n", qry->Id, qry->Acc);
 	    if (!seqCdQryQuery (qry))
-		ajErr ("BLAST Query failed");
+	    {
+	      ajDebug ("BLAST Query failed\n");
+	      return ajFalse;
+	    }
 	}
 	AJFREE(qryd->trgLine);
     }
@@ -3139,14 +3156,17 @@ static AjBool seqBlastOpen (AjPSeqQuery qry, AjBool next)
 
     if (!qry->QryData)
     {
-	if (!seqCdQryOpen (qry))
-	    ajFatal ("Blast database open failed");
+      if (!seqCdQryOpen (qry))
+      {
+	ajErr ("Blast database open failed");
+	return ajFalse;
+      }
     }
 
     if (next)
     {
-	if (!seqCdDivNext(qry))	/* set qryd->div to next (included) file */
-	  return ajFalse;
+      if (!seqCdDivNext(qry))	/* set qryd->div to next (included) file */
+	return ajFalse;
     }
 
     qryd = qry->QryData;
@@ -3520,8 +3540,10 @@ static AjBool seqCdQryFile (AjPSeqQuery qry)
 
     /**(void) ajCharToLower(qryd->name);**/
     if (!ajRegExecC (divexp, qryd->name))
-	ajFatal ("index division file error '%S'", qryd->name);
-
+    {
+      ajErr ("index division file error '%S'", qryd->name);
+      return ajFalse;
+    }
     ajRegSubI (divexp, 1, &qryd->datfile);
     ajRegSubI (divexp, 3, &qryd->seqfile);
     ajDebug ("File(s) '%S' '%S'\n", qryd->datfile, qryd->seqfile);
@@ -3529,16 +3551,24 @@ static AjBool seqCdQryFile (AjPSeqQuery qry)
     ajFileClose(&qryd->libr);
     qryd->libr = ajFileNewDF (qry->Directory, qryd->datfile);
     if (!qryd->libr)
-	ajFatal("Cannot open database file '%S'", qryd->datfile);
+    {
+      ajDebug ("Cannot open database file '%S'\n", qryd->datfile);
+      ajErr ("Cannot open database file '%S'", qryd->datfile);
+      return ajFalse;
+    }
     if (ajStrLen(qryd->seqfile))
     {
-        ajFileClose(&qryd->libs);
-	qryd->libs = ajFileNewDF (qry->Directory, qryd->seqfile);
-	if (!qryd->libs)
-	    ajFatal("Cannot open sequence file '%S'", qryd->seqfile);
+      ajFileClose(&qryd->libs);
+      qryd->libs = ajFileNewDF (qry->Directory, qryd->seqfile);
+      if (!qryd->libs)
+      {
+	ajDebug ("Cannot open sequence file '%S'\n", qryd->seqfile);
+	ajErr ("Cannot open sequence file '%S'", qryd->seqfile);
+	return ajFalse;
+      }
     }
     else
-	qryd->libs = NULL;
+      qryd->libs = NULL;
 
     return ajTrue;
 }
