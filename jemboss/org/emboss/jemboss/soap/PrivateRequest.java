@@ -118,7 +118,6 @@ public class PrivateRequest
      SOAPHTTPConnection proglistconn = new SOAPHTTPConnection();
 
      // if proxy, set the proxy values
-
      if (mysettings.getUseProxy(soapURLName) == true) 
      {
        if (mysettings.getDebug()) 
@@ -133,7 +132,6 @@ public class PrivateRequest
 
 
      // add authentication headers if required
-
      if(mysettings.getUseAuth() == true) 
      {
        if(mysettings.getServiceUserName() != null) 
@@ -142,6 +140,13 @@ public class PrivateRequest
 	   proglistconn.setUserName(mysettings.getServiceUserName());
 	   proglistconn.setPassword(mysettings.getServicePasswd());
 	 }
+     }
+     else          //No authorization required, so use user name here 
+     {             //to create own sand box on server
+                  
+        String userName = System.getProperty("user.name");
+        args.addElement(new Parameter("USERNAME", String.class,
+                                      userName, null));
      }
 
      Call proglistcall = new Call();
