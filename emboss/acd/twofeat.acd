@@ -234,7 +234,7 @@ bool: twoout [
 # specify the name of the output 'type'
 string: typeout [
   optional: "@(!$(twoout))"
-  default: "misc_signal"
+  default: "misc_feature"
   information: "Name of the output new feature"
   help: "If you have specified that the pairs of features that are found should be reported as one feature in the ouput, then you can specify the 'type' name of the new feature here.  By default every feature in the feature table is allowed.  See http://www3.ebi.ac.uk/Services/WebFeat/ for a list of the EMBL feature types and see Appendix A of the Swissprot user manual in http://www.expasy.ch/txt/userman.txt for a list of the Swissprot feature types.  If you specify an invalid feature type name, then the default name 'misc_feature' is used."
 ]
@@ -242,9 +242,9 @@ string: typeout [
 report: outfile  [
   parameter: "Y"
   taglist: "int:starta int:enda int:startb int:endb"
-  rformat: "gff"
+  rformat: "table"
   information: "Output feature report"
-  help: "File for output of neighbouring feature regions. This contains details of the pairs of features. By default, it is written in GFF format."
+  help: "File for output of neighbouring feature regions. This contains details of the pairs of features. By default, it is written in TABLE format."
 ]
 
 endsection: output
