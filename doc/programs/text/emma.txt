@@ -1108,6 +1108,7 @@ See also
    Program name                        Description
    plotcon      Plots the quality of conservation of a sequence alignment
    prettyplot   Displays aligned sequences, with colouring and boxing
+   showalign    Display a multiple sequence alignment
    
 Author(s)
 

@@ -244,7 +244,8 @@ Known bugs
    
 See also
 
-   Program name Description
+   Program name                Description
+   embossversion Writes the current EMBOSS version number
    
 Author(s)
 

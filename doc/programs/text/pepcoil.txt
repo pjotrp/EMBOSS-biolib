@@ -127,7 +127,7 @@ See also
    patmatmotifs   Search a PROSITE motif database with a protein sequence
    pepnet         Displays proteins as a helical net
    pepwheel       Shows protein sequences as helices
-   preg           regular expression search of a protein sequence
+   preg           Regular expression search of a protein sequence
    pscan          Scans proteins using PRINTS
    sigcleave      Reports protein signal cleavage sites
    tmap           Displays membrane spanning regions
