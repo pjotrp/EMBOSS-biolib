@@ -193,6 +193,12 @@ if test "`uname`" = "HP-UX"; then
 CPPFLAGS="-DAJ_HPUXLF -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 $CPPFLAGS"
 fi
 
+dnl Test for MacOSX large file support off_t and fpos_t are always 64-bit
+dnl CPPFLAGS="-DAJ_MACOSXLF
+if test "`uname`" = "Darwin"; then
+CPPFLAGS="-DAJ_MACOSXLF"
+fi
+
 AC_MSG_RESULT(done)
 fi
 
