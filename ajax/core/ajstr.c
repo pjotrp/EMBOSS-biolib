@@ -2538,6 +2538,54 @@ AjBool ajStrTrimEndC(AjPStr* pthis, const char* chars)
 
 
 
+/* @func ajStrTrimStartC ******************************************************
+**
+** Removes a set of characters from the start of a string
+**
+** @param [u] pthis [AjPStr*] string
+** @param [r] chars [const char*] Characters to delete from the end
+** @return [AjBool] ajTrue if string was reallocated
+** @category modify [AjPStr] Removes a set of characters from end of
+**                a string
+** @@
+******************************************************************************/
+
+AjBool ajStrTrimStartC(AjPStr* pthis, const char* chars)
+{
+    AjBool ret = ajFalse;
+    AjPStr thys;
+    const char* cp;
+    ajint i;
+
+    if(!pthis)
+	return ret;
+
+    if(!*pthis)
+	return ret;
+
+    ret = ajStrMod(pthis);
+    thys = *pthis;
+    if(!thys->Len)
+	return ret;
+
+    cp = thys->Ptr;
+    i = 0;
+    while(thys->Len && strchr(chars, *cp))
+    {
+	i++;
+	thys->Len--;
+	cp++;
+    }
+
+    if(i)
+	memmove(thys->Ptr, &thys->Ptr[i], thys->Len+1);
+
+    return ret;
+}
+
+
+
+
 /* @func ajStrCut *************************************************************
 **
 ** Cut out a range of characters from a string.

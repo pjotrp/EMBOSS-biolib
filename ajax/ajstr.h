@@ -92,6 +92,7 @@ extern "C"
 ** @modify ajStrTrim  Removes a number of characters from start of end of a string
 ** @modify ajStrTrimC Removes a set of characters from start of end of a string
 ** @modify ajStrTrimEndC Removes a set of characters from end of a string
+** @modify ajStrTrimStartC Removes a set of characters from start of a string
 ** @modify ajStrCut Removes a range of character positions from a string
 ** @modify ajStrMask Masks out a range of characters from a string
 ** @modify ajStrRev Reverses the order of characters in a string
@@ -472,6 +473,7 @@ void       ajStrTraceT (const AjPStr thys, const char* title);
 AjBool     ajStrTrim  (AjPStr* pthis, ajint num);
 AjBool     ajStrTrimC (AjPStr* pthis, const char* chars);
 AjBool     ajStrTrimEndC (AjPStr* pthis, const char* chars);
+AjBool     ajStrTrimStartC (AjPStr* pthis, const char* chars);
 AjBool     ajStrTruncate (AjPStr* pthis, ajint pos);
 AjBool     ajStrWhole (const AjPStr thys, ajint begin, ajint end);
 AjBool     ajStrWildPrefix (AjPStr* str);
