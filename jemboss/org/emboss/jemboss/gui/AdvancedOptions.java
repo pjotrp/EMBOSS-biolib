@@ -27,7 +27,7 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.event.*;
-import org.emboss.jemboss.gui.form.Separator;
+//import org.emboss.jemboss.gui.form.Separator;
 
 
 public class AdvancedOptions extends JPanel
