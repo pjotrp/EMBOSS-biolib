@@ -131,6 +131,7 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
       scrollTree.setPreferredSize(pSize);
       treePane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                                         rtree,scrollTree);
+      treePane.setOneTouchExpandable(true);
       getContentPane().add(treePane);
       pack();
       setVisible(true);
