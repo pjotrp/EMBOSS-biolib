@@ -29,7 +29,6 @@ import java.util.*;
 public class JembossFileAuthServer
 {
 
-
   public Vector embreo_roots(String userName, String passwd)
   {
 
@@ -51,7 +50,9 @@ public class JembossFileAuthServer
     vans.add("HOME");
     vans.add(userHomeDir);
  
-    System.out.println(userHomeDir);
+//ADD IN OTHER USER ROOT DIRECTORIES HERE
+
+//  System.out.println(userHomeDir);
 //  vans.add("SCRATCH");
 //  vans.add("/m3/users/tim/soap");
   
@@ -88,15 +89,14 @@ public class JembossFileAuthServer
                            String userName, String passwd)
   {
 
-    System.out.println("directory_shortls\n");
     Vector vans = new Vector();
     Ajax aj = new Ajax();
     if(!verifyUser(aj,userName,passwd,vans))
       return vans;
 
     // remember the original uid & uid
-    int sgid = aj.getgid();
-    int suid = aj.getuid();
+//  int sgid = aj.getgid();
+//  int suid = aj.getuid();
 
     int split = options.indexOf("=")+1;
 
@@ -104,8 +104,8 @@ public class JembossFileAuthServer
                         + "/" + dirname);
 
     // change to user id
-    if(!changeUser(aj,vans,userName,aj.uid,aj.gid))
-      return vans;
+//  if(!changeUser(aj,vans,userName,aj.uid,aj.gid))
+//    return vans;
 
 // filter out dot files
     File files[] = dir.listFiles(new FilenameFilter()
@@ -135,8 +135,8 @@ public class JembossFileAuthServer
     vans.add("dirlist");
     vans.add(listDir);
 
-    aj.setegid(sgid);
-    aj.seteuid(suid);
+//  aj.setegid(sgid);
+//  aj.seteuid(suid);
 
     return vans;
   }
@@ -155,8 +155,10 @@ public class JembossFileAuthServer
     int suid = aj.getuid();
 
     int split = options.indexOf("=")+1;    
-    File dir = new File(getRoot(options.substring(split),userName,passwd)
-                         + "/" + filename);
+    String fullFileName = getRoot(options.substring(split),userName,passwd)
+                         + "/" + filename;
+
+    File dir = new File(fullFileName);
 
     // change to user id
     if(!changeUser(aj,vans,userName,aj.uid,aj.gid))
@@ -164,22 +166,36 @@ public class JembossFileAuthServer
 
     String line = new String("");
     String fc = new String("");
-    try
+
+    if(fullFileName.toLowerCase().endsWith(".png") ||
+       fullFileName.toLowerCase().endsWith(".gif") ||
+       fullFileName.toLowerCase().endsWith(".jpeg") )
     {
-      BufferedReader in = new BufferedReader(new FileReader(dir));
-      while((line = in.readLine()) != null)
-        fc = fc.concat(line + "\n");
+      byte[] data = JembossAuthServer.readByteFile(fullFileName);
+      vans.add("contents");
+      vans.add(data);
     }
-    catch (IOException ioe){}
-    vans.add("contents");
-    vans.add(fc);
+    else
+    {
+      try
+      {
+        BufferedReader in = new BufferedReader(new FileReader(dir));
+        while((line = in.readLine()) != null)
+          fc = fc.concat(line + "\n");
+      }
+      catch (IOException ioe){}
+      vans.add("contents");
+      vans.add(fc);
+      System.out.println("YYYYYYYYYY "+fc);
+    }
+ 
+    aj.setegid(sgid);
+    aj.seteuid(suid);
+
     vans.add("status");
     vans.add("0");
     vans.add("msg");
     vans.add("");
-
-    aj.setegid(sgid);
-    aj.seteuid(suid);
 
     return vans;
   } 
