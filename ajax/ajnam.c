@@ -28,11 +28,12 @@
 #include <dirent.h>
 #include <unistd.h>
 
-#define TYPE_ENV 1
-#define TYPE_DB  2
-#define TYPE_RESOURCE 3
-#define TYPE_IFILE 4
-
+enum NamEType { TYPE_UNKNOWN,	/* no type set */
+		TYPE_ENV,	/* env or set variable */
+		TYPE_DB,	/* database definition */
+		TYPE_RESOURCE,	/* resource definition */
+		TYPE_IFILE	/* include filename */
+};
 #define NAM_INCLUDE_ESTIMATE 5	/* estimate of maximum number of include */
                                 /* statements in emboss.default          */
 
@@ -49,7 +50,7 @@ static AjPStr namRootStr  = NULL;
 
 static AjBool namListParseOK = AJFALSE;
 
-char* namTypes[] = { "unknown", "START", "ENV", "DB", "OPT", "IFILE" };
+char* namTypes[] = { "unknown", "SET", "DBNAME", "RESOURCE", "INCLUDE" };
 
 /* source directory where control and data files can be found */
 
@@ -118,7 +119,7 @@ typedef struct NamSValid {
 
 
 NamOAttr namDbAttrs[] = {
-  {"name", "", "Database name (required)"},
+  {"name", "", "database name (required)"},
   {"format", "", "database entry format (required, at some level)"},
   {"method", "", "access method (required, at some level)"},
   {"type", "", "database type 'Nucleotide', 'Protein', etc (required)"},
@@ -131,18 +132,18 @@ NamOAttr namDbAttrs[] = {
   {"command", "", "command line to return entry/ies"},
   {"comment", "", "text comment for the DB definition"},
   {"dbalias", "", "database name to be used by access method if different"},
-  {"description", "", "Short database description"},
-  {"directory", "", "Data directory"},
+  {"description", "", "short database description"},
+  {"directory", "", "data directory"},
   {"exclude", "", "wildcard filenames to exclude from 'filename'"},
   {"fields", "", "extra database fields available, ID and ACC are standard"},
-  {"filename", "", "(Wildcard) database filename"},
+  {"filename", "", "(wildcard) database filename"},
 
   {"formatall", "", "database entry format for 'methodall' access"},
   {"formatentry", "", "database entry format for 'methodentry' access"},
   {"formatquery", "", "database entry format for 'methodall' access"},
 
   {"httpversion", "", "HTTP version for GET requests (URL, SRSWWW)"},
-  {"identifier", "", "Standard identifier (defaults to name)"},
+  {"identifier", "", "standard identifier (defaults to name)"},
   {"indexdirectory", "", "Index directory, defaults to data 'directory'"},
 
   {"methodall", "", "access method for all entries"},
@@ -156,10 +157,10 @@ NamOAttr namDbAttrs[] = {
 };
 
 NamOAttr namRsAttrs[] = {
-  {"name", "", "Resource name (required)"},
+  {"name", "", "resource name (required)"},
   {"type", "", "resource type (required)"},
 
-  {"identifier", "", "Standard identifier (defaults to name)"},
+  {"identifier", "", "standard identifier (defaults to name)"},
   {"release", "", "release of the resource"},
   {NULL, NULL, NULL}
 };
@@ -870,9 +871,16 @@ static void namListParse (AjPList listwords, AjPList listcount,
   AjBool namstatus;
 
   /* ndbattr = count database attributes */
-  for (ndbattr=0; namDbAttrs[ndbattr].Name; ndbattr++) ;
+  if (!ndbattr)
+    for (ndbattr=0; namDbAttrs[ndbattr].Name; ndbattr++) ;
   /* nrsattr = count resource attributes */
-  for (nrsattr=0; namRsAttrs[nrsattr].Name; nrsattr++) ;
+  if (!nrsattr)
+    for (nrsattr=0; namRsAttrs[nrsattr].Name; nrsattr++) ;
+
+  ajStrDel (&name);
+  ajStrDel (&value);
+  quoteopen = 0;
+  quoteclose = 0;
 
   namLine = 1;
   namUser("namListParse of %F words: %d lines: %d\n", 
@@ -882,6 +890,8 @@ static void namListParse (AjPList listwords, AjPList listcount,
   {
     while (ajListLength(listcount) && (lineword < wordcount))
     {
+      namUser("ajListPop %d < %d list %d\n",
+	      lineword, wordcount, ajListLength(listcount));
       ajListPop(listcount, (void**) &iword);
       lineword = *iword;
       linecount++;
@@ -906,16 +916,22 @@ static void namListParse (AjPList listwords, AjPList listcount,
       else if(ajStrPrefixCO("include",curword))
 	namParseType = TYPE_IFILE;
 
-      if (!namParseType)
+      if (!namParseType)	/* test: badtype.rc */
 	namError ("Invalid definition type '%S'", curword);
       namUser("type set to %s curword '%S'\n",
 	      namTypes[namParseType], curword);
     }
+    else if (quoteopen && ajStrMatchC(curword, "]"))
+    {				/* test; dbnoquote.rc */
+      namError ("']' found, unclosed quotes in '%S'\n", value);
+      quoteopen = 0;
+      namParseType = 0;
+    }
     else if (quoteopen)
-      {		/* quote is open, so append word until close quote is found, */
+    {		/* quote is open, so append word until close quote is found, */
 	        /* and set the appropriate save flag */
       namUser ("<%c>..<%c> quote processing\n", quoteopen, quoteclose);
-      (void) ajStrAppC(&value," ");
+     (void) ajStrAppC(&value," ");
       (void) ajStrApp(&value,curword);
       if(ajStrChar(curword,-1) == quoteclose){  /* close quote here ?? */
 	namUser ("close quotes\n");
@@ -1029,7 +1045,7 @@ static void namListParse (AjPList listwords, AjPList listcount,
 	  (void) ajStrToLower(&curword);	  /* make it lower case */
 	  namNoColon(&curword);
 	  rs_input = namRsAttr(curword);
-	  if (rs_input < 0)
+	  if (rs_input < 0)	/* test: badresattr.rc */
 	    namError ("Bad attribute '%S' for resource '%S'",
 		    curword, name);
 	}
@@ -1073,7 +1089,9 @@ static void namListParse (AjPList listwords, AjPList listcount,
       if(!Ifiles)
 	Ifiles = ajStrTableNew(NAM_INCLUDE_ESTIMATE);
       namParseType = 0;
-      if(!ajTableGet(Ifiles,curword))
+      if(ajTableGet(Ifiles,curword))	/* test: includeagain.rc */
+	namError("%S already read .. skipping\n", curword);
+      else
       {
 	includefn = ajStrNew();
 	ajStrAss(&includefn,curword);
@@ -1086,23 +1104,24 @@ static void namListParse (AjPList listwords, AjPList listcount,
 	val = ajStrNewC(ajStrStr(includefn));
 	ajTablePut(Ifiles,key,val);
 
-	if(!(iinf = ajFileNewIn(includefn)))
+	if(!(iinf = ajFileNewIn(includefn))) /* test: badinclude.rc */
+	{
+	  namError ("Failed to open include file '%S'\n", includefn);
 	  (void) ajStrAppC(&namFileOrig,"(Failed)");
+	}
 	else
 	{
 	  (void) ajStrAppC(&namFileOrig,"(OK)");
 	  namstatus = namProcessFile(iinf);	/* replaces namFile */
 	  namFile = file;	/* reset namFile */
 	  namLine = linecount-1;
-	  if (!namstatus)
+	  if (!namstatus)	/* test: badsummary.rc */
 	    namError("Error(s) found in included file %F", iinf);
 	  ajFileClose(&iinf);
 	}
 
 	ajStrDel(&includefn);
       }
-      else
-	namUser("%S already read .. skipping\n", curword);
 
       namListParseOK = ajTrue;
     }
@@ -1174,6 +1193,13 @@ static void namListParse (AjPList listwords, AjPList listcount,
       dbattr = 0;
     }
   }
+  if (namParseType)
+  {				/* test: badset.rc baddb.rc  */
+    namError("Unexpected end of file in %s definition",
+	     namTypes[namParseType]);
+    namParseType = 0;
+  }
+
   return;
 }
 
@@ -1381,6 +1407,10 @@ static AjBool namProcessFile (AjPFile file) {
     }
   }
 
+  AJNEW0(k);
+  *k = ajListLength(listwords);
+  ajListPushApp(listcount, k);
+
   namListParseOK = ajTrue;
 
   namUser("ready to parse\n");
@@ -1560,7 +1590,7 @@ void ajNamInit (char* prefix)
     ajStrDel(&prefixStr);
     ajStrDel(&prefixCap);
 
-    if (namErrorCount)
+    if (namErrorCount)		/* test: badsummary.rc */
       ajDie ("Error(s) in configuration files");
     return;
 }
@@ -1586,8 +1616,7 @@ static void namNoColon (AjPStr* thys) {
 ** Return the index for a database attribute name.
 **
 ** @param [P] thys [AjPStr] Attribute name.
-** @return [ajint] Index in namDbAttrs, or 1 beyond the last known attribute
-**               on failure.
+** @return [ajint] Index in namDbAttrs, or -1 on failure.
 ** @@
 ******************************************************************************/
 
@@ -1600,8 +1629,7 @@ static ajint namDbAttr (AjPStr thys) {
 ** Return the index for a database attribute name.
 **
 ** @param [P] str [char*] Attribute name.
-** @return [ajint] Index in namDbAttrs, or 1 beyond the last known attribute
-**               on failure.
+** @return [ajint] Index in namDbAttrs, or -1 on failure.
 ** @@
 ******************************************************************************/
 
@@ -1621,8 +1649,7 @@ static ajint namDbAttrC (char* str) {
   if (ifound == 1)
     return j;
 
-  namError ("Bad database attribute '%s'", str);
-  return i;
+  return -1;
 }
 
 /* @funcstatic namRsAttr ******************************************************
@@ -1630,8 +1657,7 @@ static ajint namDbAttrC (char* str) {
 ** Return the index for a resource attribute name.
 **
 ** @param [P] thys [AjPStr] Attribute name.
-** @return [ajint] Index in namRsAttrs, or 1 beyond the last known attribute
-**               on failure.
+** @return [ajint] Index in namRsAttrs, or -1 on failure.
 ** @@
 ******************************************************************************/
 
@@ -1644,8 +1670,7 @@ static ajint namRsAttr (AjPStr thys) {
 ** Return the index for a resource attribute name.
 **
 ** @param [P] str [char*] Attribute name.
-** @return [ajint] Index in namRsAttrs, or 1 beyond the last known attribute
-**               on failure.
+** @return [ajint] Index in namRsAttrs, or -1 on failure.
 ** @@
 ******************************************************************************/
 
@@ -1665,8 +1690,7 @@ static ajint namRsAttrC (char* str) {
   if (ifound == 1)
     return j;
 
-  namError ("Bad resource attribute '%s'", str);
-  return i;
+  return -1;
 }
 
 /* @func ajNamExit ************************************************************
@@ -2164,7 +2188,8 @@ static AjBool namValid(NamPEntry entry)
   else if (entry->type == TYPE_RESOURCE)
      return namValidResource (entry);
 
-  namError ("Unknown definition type number %d", entry->type);
+  namError ("Unknown definition type number %d", /* fatal: cannot test - should not happen */
+	    entry->type);
   return ajFalse;
 }
 
@@ -2190,7 +2215,7 @@ static AjBool namValidDatabase(NamPEntry entry)
 
   attrs = entry->data;
   if (!attrs)
-  {
+  {				/* test: dbempty.rc */
     namError ("Database '%S' has no attributes", entry->name);
     return ajFalse;
   }
@@ -2202,14 +2227,14 @@ static AjBool namValidDatabase(NamPEntry entry)
       if (ajStrPrefixCC(namDbAttrs[j].Name, "format"))
       {
 	hasformat=ajTrue;
-	if (!ajSeqFormatTest(attrs[j]))
+	if (!ajSeqFormatTest(attrs[j]))	/* test: dbunknowns.rc */
 	  namError("Database '%S' %s: '%S' unknown\n",
 		   entry->name, namDbAttrs[j].Name, attrs[j]);
       }
       if (ajStrPrefixCC(namDbAttrs[j].Name, "method"))
       {
 	hasmethod=ajTrue;
-	if (!ajSeqMethodTest(attrs[j]))
+	if (!ajSeqMethodTest(attrs[j]))	/* test: dbunknowns.rc */
 	  namError("Database '%S' %s: '%S' unknown\n",
 		   entry->name, namDbAttrs[j].Name, attrs[j]);
       }
@@ -2222,21 +2247,29 @@ static AjBool namValidDatabase(NamPEntry entry)
 	  if (ajStrMatchCaseC(attrs[j], namDbTypes[k].Name)) 
 	    ok = ajTrue;
 	}
-	if (!ok)
+	if (!ok)		/* test: dbunknowns.rc */
 	  namError ("Database '%S' %s: '%S' unknown\n",
 		    entry->name, namDbAttrs[j].Name, attrs[j]);
       }
     }
   }
-  if (!iattr)
-    namError ("Database '%S' has no attributes", entry->name);
-  if (!hasformat)
+  ok = ajTrue;
+  if (!hasformat)		/* test: dbempty.rc */
+  {
     namError ("Database '%S' has no format definition", entry->name);
-  if (!hastype)
+    ok = ajFalse;
+  }
+  if (!hastype)			/* test: dbempty.rc */
+  {
     namError ("Database '%S' has no type definition", entry->name);
-  if (!hasmethod)
+    ok = ajFalse;
+  }
+  if (!hasmethod)		/* test: dbempty.rc */
+  {
     namError ("Database '%S' has no access method definition", entry->name);
-  return ajTrue;
+    ok = ajFalse;
+  }
+  return ok;
 }
 
 /* @funcstatic namValidResource ***********************************************
@@ -2257,7 +2290,7 @@ static AjBool namValidResource (NamPEntry entry)
 
   attrs = entry->data;
   if (!attrs)
-  {
+  {				/* test: rsempty.rc */
     namError ("Resource '%S' has no attributes", entry->name);
     return ajFalse;
   }
@@ -2270,8 +2303,6 @@ static AjBool namValidResource (NamPEntry entry)
 	hastype=ajTrue;
     }
   }
-  if (!iattr)
-    namError ("Resource '%S' has no attributes", entry->name);
   return ajTrue;
 }
 
