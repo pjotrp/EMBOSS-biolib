@@ -153,7 +153,8 @@ Here is a sample session with sigscan:
    -thresh             integer    Minimum length (residues) of overlap
                                   required for two hits with the same code to
                                   be counted as the same hit.
-   -sub                matrixf    Residue substitution matrix
+   -sub                matrixf    This is the scoring matrix file used when
+                                  comparing sequences.
    -gapo               float      The gap insertion penalty is the score taken
                                   away when a gap is created. The best value
                                   depends on the choice of comparison matrix.
@@ -227,9 +228,9 @@ Here is a sample session with sigscan:
 
 <tr>
 <td>-sub</td>
-<td>Residue substitution matrix</td>
+<td>This is the scoring matrix file used when comparing sequences.</td>
 <td>Comparison matrix file in EMBOSS data path</td>
-<td>./EBLOSUM62</td>
+<td>EBLOSUM62</td>
 </tr>
 
 <tr>

@@ -124,7 +124,12 @@ IT IS DONE FOR YOU.
   [-outfile]           align      (no help text) align value
 
    Optional qualifiers:
-   -datafile           matrix     Matrix file
+   -datafile           matrix     This is the scoring matrix file used when
+                                  comparing sequences. By default it is the
+                                  file 'EBLOSUM62' (for proteins) or the file
+                                  'EDNAFULL' (for nucleic sequences). These
+                                  files are found in the 'data' directory of
+                                  the EMBOSS installation.
    -alternatives       integer    This sets the number of alternative matches
                                   output. By default only the highest scoring
                                   alignment is shown. A value of 2 gves you
@@ -201,7 +206,7 @@ IT IS DONE FOR YOU.
 
 <tr>
 <td>-datafile</td>
-<td>Matrix file</td>
+<td>This is the scoring matrix file used when comparing sequences. By default it is the file 'EBLOSUM62' (for proteins) or the file 'EDNAFULL' (for nucleic sequences). These files are found in the 'data' directory of the EMBOSS installation.</td>
 <td>Comparison matrix file in EMBOSS data path</td>
 <td>EBLOSUM62 for protein<br>EDNAFULL for DNA</td>
 </tr>

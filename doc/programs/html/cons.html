@@ -135,7 +135,12 @@ Output file [outfile.cons]: aligned.cons
   [-outseq]            seqout     Output sequence USA
 
    Optional qualifiers:
-   -datafile           matrix     Scoring matrix
+   -datafile           matrix     This is the scoring matrix file used when
+                                  comparing sequences. By default it is the
+                                  file 'EBLOSUM62' (for proteins) or the file
+                                  'EDNAFULL' (for nucleic sequences). These
+                                  files are found in the 'data' directory of
+                                  the EMBOSS installation.
    -plurality          float      Set a cut-off for the number of positive
                                   matches below which there is no consensus.
                                   The default plurality is taken as half the
@@ -192,7 +197,7 @@ Output file [outfile.cons]: aligned.cons
 
 <tr>
 <td>-datafile</td>
-<td>Scoring matrix</td>
+<td>This is the scoring matrix file used when comparing sequences. By default it is the file 'EBLOSUM62' (for proteins) or the file 'EDNAFULL' (for nucleic sequences). These files are found in the 'data' directory of the EMBOSS installation.</td>
 <td>Comparison matrix file in EMBOSS data path</td>
 <td>EBLOSUM62 for protein<br>EDNAFULL for DNA</td>
 </tr>

@@ -94,9 +94,14 @@ IT IS DONE FOR YOU.
   [-outfile]           align      (no help text) align value
 
    Optional qualifiers:
-   -datafile           matrix     Matrix file
-   -gappenalty         integer    gappenalty
-   -gaplength          integer    gap length penalty
+   -datafile           matrix     This is the scoring matrix file used when
+                                  comparing sequences. By default it is the
+                                  file 'EBLOSUM62' (for proteins) or the file
+                                  'EDNAFULL' (for nucleic sequences). These
+                                  files are found in the 'data' directory of
+                                  the EMBOSS installation.
+   -gappenalty         integer    Gap penalty
+   -gaplength          integer    Gap length penalty
 
    Advanced qualifiers: (none)
    General qualifiers:
@@ -145,21 +150,21 @@ IT IS DONE FOR YOU.
 
 <tr>
 <td>-datafile</td>
-<td>Matrix file</td>
+<td>This is the scoring matrix file used when comparing sequences. By default it is the file 'EBLOSUM62' (for proteins) or the file 'EDNAFULL' (for nucleic sequences). These files are found in the 'data' directory of the EMBOSS installation.</td>
 <td>Comparison matrix file in EMBOSS data path</td>
 <td>EBLOSUM62 for protein<br>EDNAFULL for DNA</td>
 </tr>
 
 <tr>
 <td>-gappenalty</td>
-<td>gappenalty</td>
+<td>Gap penalty</td>
 <td>Positive integer</td>
 <td>12 for protein, 16 for nucleic</td>
 </tr>
 
 <tr>
 <td>-gaplength</td>
-<td>gap length penalty</td>
+<td>Gap length penalty</td>
 <td>Positive integer</td>
 <td>2 for protein, 4 for nucleic</td>
 </tr>

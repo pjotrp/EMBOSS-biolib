@@ -122,7 +122,12 @@ IT IS DONE FOR YOU.
    Optional qualifiers:
    -windowsize         integer    window size over which to test threshhold
    -threshold          integer    threshold
-   -matrixfile         matrix     Matrix file
+   -matrixfile         matrix     This is the scoring matrix file used when
+                                  comparing sequences. By default it is the
+                                  file 'EBLOSUM62' (for proteins) or the file
+                                  'EDNAFULL' (for nucleic sequences). These
+                                  files are found in the 'data' directory of
+                                  the EMBOSS installation.
 
    Advanced qualifiers:
    -stretch            bool       Display a non-proportional graph
@@ -203,12 +208,12 @@ IT IS DONE FOR YOU.
 <td>-threshold</td>
 <td>threshold</td>
 <td>Integer 0 or more</td>
-<td>24</td>
+<td>23</td>
 </tr>
 
 <tr>
 <td>-matrixfile</td>
-<td>Matrix file</td>
+<td>This is the scoring matrix file used when comparing sequences. By default it is the file 'EBLOSUM62' (for proteins) or the file 'EDNAFULL' (for nucleic sequences). These files are found in the 'data' directory of the EMBOSS installation.</td>
 <td>Comparison matrix file in EMBOSS data path</td>
 <td>EBLOSUM62 for protein<br>EDNAFULL for DNA</td>
 </tr>

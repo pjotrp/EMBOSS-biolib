@@ -140,7 +140,12 @@ IT IS DONE FOR YOU.
                                   consensus.If any of these give a top score
                                   for matching or identical scores then a
                                   collision has occured.
-   -matrixfile         matrix     Matrix file
+   -matrixfile         matrix     This is the scoring matrix file used when
+                                  comparing sequences. By default it is the
+                                  file 'EBLOSUM62' (for proteins) or the file
+                                  'EDNAFULL' (for nucleic sequences). These
+                                  files are found in the 'data' directory of
+                                  the EMBOSS installation.
    -showscore          integer    Print residue scores
    -portrait           bool       Set page to Portrait
 
@@ -351,7 +356,7 @@ The only four letters allowed are BPLW, in any order.</td>
 
 <tr>
 <td>-matrixfile</td>
-<td>Matrix file</td>
+<td>This is the scoring matrix file used when comparing sequences. By default it is the file 'EBLOSUM62' (for proteins) or the file 'EDNAFULL' (for nucleic sequences). These files are found in the 'data' directory of the EMBOSS installation.</td>
 <td>Comparison matrix file in EMBOSS data path</td>
 <td>EBLOSUM62 for protein<br>EDNAFULL for DNA</td>
 </tr>

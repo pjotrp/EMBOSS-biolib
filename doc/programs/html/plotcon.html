@@ -110,7 +110,12 @@ Here is a sample session with <b>plotcon</b>:
 *  -outfile            outfile    Display as data
 
    Optional qualifiers:
-   -scorefile          matrix     Comparison matrix file
+   -scorefile          matrix     This is the scoring matrix file used when
+                                  comparing sequences. By default it is the
+                                  file 'EBLOSUM62' (for proteins) or the file
+                                  'EDNAFULL' (for nucleic sequences). These
+                                  files are found in the 'data' directory of
+                                  the EMBOSS installation.
 
    Advanced qualifiers:
    -data               bool       Output the match data to a file instead of
@@ -168,7 +173,7 @@ Here is a sample session with <b>plotcon</b>:
 
 <tr>
 <td>-scorefile</td>
-<td>Comparison matrix file</td>
+<td>This is the scoring matrix file used when comparing sequences. By default it is the file 'EBLOSUM62' (for proteins) or the file 'EDNAFULL' (for nucleic sequences). These files are found in the 'data' directory of the EMBOSS installation.</td>
 <td>Comparison matrix file in EMBOSS data path</td>
 <td>EBLOSUM62 for protein<br>EDNAFULL for DNA</td>
 </tr>
