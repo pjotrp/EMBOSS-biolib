@@ -421,7 +421,9 @@ public class JembossAuthServer
       }
       catch(Exception exp){}
 
-      if(ok && aj.getErrStd().equals(""))
+//    if(ok && aj.getErrStd().equals(""))
+//    Linux fix - ignore stderr here
+      if(ok)
         appendToLogFile("Created directory "+tmproot,errorLog);
       else
       {
