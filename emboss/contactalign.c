@@ -6,8 +6,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.17 $
-** @modified $Date: 2004/06/02 10:38:12 $
+** @version $Revision: 1.18 $
+** @modified $Date: 2004/06/03 13:40:19 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -358,6 +358,10 @@ int main(int argc , char **argv)
 	ajStrNewC("/users/damian/EMBOSS/emboss/emboss/emboss/conts/test.con");
     ajpFileUpdatedCmap = ajFileNewOut(ajpStrUpdatedCmapFile);
 
+
+
+
+
     /* write contact arrays to a new contact map file */
     ajBoolUpdatedCmapFileWritten =
 	write_cmap_file (ajpFileUpdatedCmap,
@@ -568,8 +572,8 @@ static AjBool read_cmap_file (AjPFile ajpFileCmap,
 	    
 	    /* get position of last contact in column */
 	    ajIntLastContact = ajInt2dGet(ajpInt2dCmapSummary,
-					   enumLastContactIndex,
-					   ajIntFirstPosition);
+					  enumLastContactIndex,
+					  ajIntFirstPosition);
 	    /* XXXX DEBUG */
 	    if( enumDebugLevel > 2 )
 	    {
@@ -1229,7 +1233,25 @@ static AjBool write_cmap_header (AjPFile ajpFileUpdatedCmap,
 				    pAjpStrBlankLine);
 
     ajBoolSuccess = write_cmap_line(ajpFileUpdatedCmap,
+				    &(ajpHeaderToWrite->ajpStrCmapEx));
+
+    ajBoolSuccess = write_cmap_line(ajpFileUpdatedCmap,
+				    pAjpStrBlankLine);
+
+    ajBoolSuccess = write_cmap_line(ajpFileUpdatedCmap,
 				    &(ajpHeaderToWrite->ajpStrCmapMo));
+
+    ajBoolSuccess = write_cmap_line(ajpFileUpdatedCmap,
+				    pAjpStrBlankLine);
+
+    ajBoolSuccess = write_cmap_line(ajpFileUpdatedCmap,
+				    &(ajpHeaderToWrite->ajpStrCmapIn));
+
+    ajBoolSuccess = write_cmap_line(ajpFileUpdatedCmap,
+				    pAjpStrBlankLine);
+
+    ajBoolSuccess = write_cmap_line(ajpFileUpdatedCmap,
+				    &(ajpHeaderToWrite->ajpStrCmapSq));
 
     ajBoolSuccess = write_cmap_line(ajpFileUpdatedCmap,
 				    pAjpStrBlankLine);
