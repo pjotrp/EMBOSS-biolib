@@ -306,6 +306,25 @@ int main(int argc, char **argv)
 		ajSeqinDel(&seqin_a);
 	    continue;
 	}
+	else
+	{
+	    /* JON - Check to see if file is empty */
+	    if(!ajFileReadLine(hitsinf, &line))
+	    {	    
+		ajWarn("Empty domain hits file %S", hitsname);
+		ajFmtPrintF(logf, "Empty domain hits file %S", hitsname);
+		if(scopalign)
+		    ajDmxScopalgDel(&scopalign);
+		if(seqset_a)
+		    ajSeqsetDel(&seqset_a);
+		if(seqin_a)
+		    ajSeqinDel(&seqin_a);
+		continue;
+	    }
+	    else	/* rewind file */
+		ajFileSeek(hitsinf, 0, 0);
+	}
+	
 
 	
 	/* Create Hitlist from domain hits file */
