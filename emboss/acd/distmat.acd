@@ -63,7 +63,7 @@ appl: distmat [
   ]
 
   float: gapweight [
-        optional: "@(@($(nucmethod)<2 & @(!$(msf.protein))) |
+        optional: "@(@(@($(nucmethod)<2) & @(!$(msf.protein))) |
                 @($(msf.protein) & @($(protmethod)!=2)))"
         info: "Weight given to gaps"
         def: 0.
