@@ -1377,6 +1377,14 @@ static ajint prettyplot_fillinboxes(float ystart, ajint length, ajint numseq,
 		}
 	    }
 	}
+	else if (shownumbers)	/* usually set in the boxit block */
+	{
+	  for(j=seqstart,l=0; j< seqend; j++,l++)
+	  {
+	    if(ajSeqCvtK (cvt, seqcharptr[j][k]))
+	      seqcount[j]++;
+	  }
+	}
 	if(consensus && (numseq==seqend))
 	{
 	    res[0] = constr[k];
