@@ -1,6 +1,4 @@
-pkgdata_DATA = JembossServer.java JembossFileServer.java  JembossThread.java \
-                JembossAuthServer.java JembossAuthThread.java \
-                JembossFileAuthServer.java 
+pkgdata_DATA = JembossServer.java JembossFileServer.java  JembossThread.java 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/jemboss/org/emboss/jemboss/server
 
 install-exec-hook:
