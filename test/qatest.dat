@@ -438,10 +438,9 @@ IN
 FI stderr
 FC = 2
 FI paamir.dan
-FP /   1 GGTACCGCTGGCCGAGCATC   20 Tm=64\.9 GC%=70\.0/
-FP /   2 GTACCGCTGGCCGAGCATCT   21 Tm=63\.7 GC%=65\.0/
-FZ = 103140
-FC = 2150
+FP / 1      20 64\.9   70\.0 .* ggtaccgctggccgagcatc *\n/
+FP / 2      21 63\.7   65\.0 .* gtaccgctggccgagcatct *\n/
+FC = 2165
 //
 
 ID dan-ex2
@@ -567,13 +566,13 @@ FI acnum.hit
 FZ = 312
 FP /\A.{300}\001/
 FI acnum.trg
-FZ = 384
+FZ = 414
 FP /\A.{308}L48662\000/
 FI division.lkp
 FZ = 322
 FP /\A.{300}\001\000emrod\000/
 FI entrynam.idx
-FZ = 390
+FZ = 420
 FP /\A.{300}MMAM\000/
 //
 
@@ -628,13 +627,13 @@ FI acnum.hit
 FZ = 320
 FP /\A.{300}\003/
 FI acnum.trg
-FZ = 440
+FZ = 490
 FP /\A.{308}P53450\000/
 FI division.lkp
 FZ = 322
 FP /\A.{300}\001\000swnew\000/
 FI entrynam.idx
-FZ = 450
+FZ = 500
 FP /\A.{300}CO9_FUGRU\000/
 //
 
@@ -973,7 +972,6 @@ IN
 FI stderr
 FC = 2
 FI ap000504.diffseq
-FZ = 14312
 FP /^# AP000504 overlap starts at 1\n/
 FP /^# AF129756 overlap starts at 6036\n/
 FP /^AP000504 2655-2658 Length: 4\nSequence: tgtg\n/
@@ -1473,8 +1471,7 @@ IN
 FI stderr
 FC = 2
 FI amic_pseae.garnier
-FZ = 2943
-FP /^ Residue totals: H:111   E: 98   T: 81   C: 94\n/
+FP /^#  Residue totals: H:111   E: 98   T: 81   C: 94\n/
 //
 
 ID geecee-ex
@@ -1511,7 +1508,6 @@ IN
 FI stderr
 FC = 2
 FI laci_ecoli.hth
-FZ = 525
 FP /^[(]1[)] Score 2160[.]000 length 22 at residues 4->25\n/
 FP /^ Standard_deviations: 6.54\n/
 //
@@ -2199,7 +2195,7 @@ FI plotcon.ps
 FZ = 20866
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
-FI outfile.plotcon
+FI globins.plotcon
 FZ = 0
 //
 
@@ -2238,7 +2234,7 @@ FC = 2
 FI polydot.ps
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
-FI outfile.polydot
+FI globins.polydot
 FZ = 0
 //
 
@@ -2397,7 +2393,7 @@ IN
 IN
 FI stderr
 FC = 6
-FI outfile.prophecy 
+FI globins.prophecy 
 FZ = 13782
 FC = 173
 FP /^Maximum score\s+496\n/
@@ -2416,7 +2412,7 @@ IN
 IN
 FI stderr
 FC = 6
-FI outfile.prophecy 
+FI globins.prophecy 
 FZ = 24742
 FP /^Max_score\s+645\.45\n/
 FP /^Consensus\s+PIVDT.*ELGYQG\n/
@@ -2635,7 +2631,7 @@ IN 15
 IN
 FI stderr
 FC = 2
-FI outfile.seqmatchall
+FI eclac.seqmatchall
 FZ = 210
 FP /^1832  5646 7477 ECLAC 1 1832 ECLACA\n/
 FP /^1113  49 1161 ECLAC 1 1113 ECLACI\n/
