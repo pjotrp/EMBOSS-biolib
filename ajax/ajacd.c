@@ -16162,8 +16162,10 @@ static AjBool acdExpOneof(AjPStr* result, const AjPStr str)
 	else
 	    ajStrAssC(result, "Y");
 	return ajTrue;
+/* Unreachable code
 	acdLog("%S != else : '%S'\n", testvar, *result);
 	return ajTrue;
+*/
     }
     
     return ajFalse;
