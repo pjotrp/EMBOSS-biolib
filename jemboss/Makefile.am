@@ -11,9 +11,15 @@ all-local:
 	@if test "${JAVA_OK}" != "yes" ; then \
 	  echo "Not compiling Jemboss"; \
 	else \
+	  (if test "${SHELL}" != "/bin/sh" ; then \
 	  declare -x CLASSPATH=":lib/soap.jar:lib/xerces.jar:lib/mail.jar:lib/activation.jar:lib/jakarta-regexp-1.2.jar:embreo/embreo-full.jar:.:"; \
 	  export CLASSPATH; \
 	  javac org/emboss/jemboss/Jemboss.java; \
+	  else \
+	  CLASSPATH=":lib/soap.jar:lib/xerces.jar:lib/mail.jar:lib/activation.jar:lib/jakarta-regexp-1.2.jar:embreo/embreo-full.jar:.:"; \
+	  export CLASSPATH; \
+	  javac org/emboss/jemboss/Jemboss.java; \
+	  fi); \
 	fi
 
 install-exec-hook:
