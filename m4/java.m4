@@ -178,6 +178,12 @@ AC_ARG_WITH(thread,
 		LIBS="$LIBS -lpthread"
 	  fi
 
+	  if test "$withval" = "freebsd" ; then
+	        CFLAGS="$CFLAGS -D_THREAD_SAFE -pthread" 
+		LDFLAGS="$LDFLAGS"
+		LIBS="$LIBS -lc_r"
+	  fi
+
 	  if test "$withval" = "linux" ; then
 	        CFLAGS="$CFLAGS -D_REENTRANT" 
 		LDFLAGS="$LDFLAGS -lpthread"
