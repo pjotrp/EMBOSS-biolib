@@ -74,7 +74,6 @@ public class FileEditorDisplay
        setText(text,"png",seqText);
      else
        setText(text,"regular",seqText);
-
    }
 
 
@@ -88,7 +87,7 @@ public class FileEditorDisplay
      if(contents.getClass().equals(String.class))
      {
        try
-       {
+       { 
          doc.insertString(0, (String)contents, seqText.getStyle("regular"));
        }
        catch (BadLocationException ble)
@@ -166,7 +165,7 @@ public class FileEditorDisplay
      {
        try
        {
-         doc.insertString(0, text, null);
+         doc.insertString(0, text, seqText.getStyle("regular"));
        }
        catch (BadLocationException ble)
        {
