@@ -80,6 +80,7 @@ static AjPStr acdExpTmpstr = NULL;
 
 static AjPStr acdLogFName = NULL;
 static AjPFile acdLogFile = NULL;
+static AjPList acdSecList = NULL;
 
 static AjPStr acdPrettyFName = NULL;
 static AjPFile acdPrettyFile = NULL;
@@ -370,8 +371,9 @@ static AjPStr acdStrDiff (AjPStr str1, AjPStr str2);
 static void acdLog (char *fmt, ...);
 static void acdPretty (char *fmt, ...);
 static AjBool acdIsQtype (AcdPAcd thys);
+static AjBool acdIsStype (AcdPAcd thys);
 static AjBool acdTextFormat (AjPStr* text);
-AjBool acdVocabCheck (AjPStr str, char** vocab);
+static AjBool acdVocabCheck (AjPStr str, char** vocab);
 
 /* expression processing */
 
@@ -400,6 +402,7 @@ typedef struct AcdSExpList {
 **
 ** Functions for processing expressions in ACD dependencies
 **
+** @return [void]
 ******************************************************************************/
 
 static AcdOExpList explist[] = {
@@ -783,6 +786,7 @@ typedef struct AcdSKey
 ** Processing predefined ACD keywords (application, variable, section,
 ** endsection)
 **
+** @return [void]
 ******************************************************************************/
 
 AcdOKey acdKeywords[] =
@@ -992,6 +996,7 @@ AcdOQual acdQualGraphxy[] =
 **
 ** Includes the acdSet functions for each ACD type
 **
+** @return [void]
 ******************************************************************************/
 
 AcdOType acdType[] =
@@ -1073,6 +1078,7 @@ typedef struct AcdSValid
 ** ACD type help processing, includes functions to describe valid
 ** values and expected values in -help output and -acdtable output
 **
+** @return [void]
 ******************************************************************************/
 
 AcdOValid acdValid[] =
@@ -1136,7 +1142,8 @@ AjStatus ajAcdInitP (char *pgm, ajint argc, char *argv[], char *package)
     ajint i;
    
     acdProgram = ajStrNewC (pgm);
-  
+    acdSecList = ajListstrNew();
+
     ajDebug ("testing acdprompts");
     if (ajNamGetValueC ("acdprompts", &tmpstr))
     {
@@ -1381,6 +1388,7 @@ static void acdParse (AjPStr text)
     char white[] = " \t\n\r";
     char whiteplus[] = " \t\n\r:=";
     AjBool done=ajFalse;
+    AjPStr secname = NULL;
 
     tokenhandle = ajStrTokenInit (text, whiteplus);
   
@@ -1594,6 +1602,14 @@ static void acdParse (AjPStr text)
 	(void) ajStrToLower (&acdtmp);
     }
     acdLog ("-- All Done --\n");
+
+    if (ajListstrLength(acdSecList)) {
+      while (ajListstrPop(acdSecList, &secname)) {
+	ajErr("Section '%S' has no endsection", secname);
+	ajStrDel(&secname);
+      }
+      ajFatal("Unclosed sections in ACD file");
+    }
 
     if (acderr) ajErr ("\n*** %d ERRORS FOUND ***\n", acderr);
 
@@ -1926,6 +1942,7 @@ static AcdPAcd acdNewSec (AjPStr name)
     AcdPAcd acd;
     static ajint firstcall = 1;
     static ajint ikey;
+    AjPStr secname=NULL;
 
     if (firstcall)
     {
@@ -1935,6 +1952,9 @@ static AcdPAcd acdNewSec (AjPStr name)
 
     acd = acdNewAcdKey(name, name, ikey);
     acd->Level = ACD_SEC;
+
+    ajStrAssS(&secname, name);
+    ajListPush (acdSecList, secname);
 
     return acd;
 }
@@ -1953,11 +1973,25 @@ static AcdPAcd acdNewEndsec (AjPStr name)
     AcdPAcd acd;
     static ajint firstcall = 1;
     static ajint ikey;
+    AjPStr secname=NULL;
 
     if (firstcall)
     {
 	ikey = acdFindKeyC ("endsection");
 	firstcall = 0;
+    }
+
+    if(!ajListstrLength (acdSecList)) {
+	ajFatal("Bad endsection '%S'\nNot in a section", name, secname);
+    }
+
+    else {
+      ajListstrPop (acdSecList, &secname);
+
+      if (!ajStrMatch(name, secname)) {
+	ajFatal("Bad endsection '%S'\nCurrent section is '%S'", name, secname);
+      }
+      ajStrDel(&secname);
     }
 
     acd = acdNewAcdKey(name, name, ikey);
@@ -2239,6 +2273,7 @@ static void acdTestAssoc (AjPStr name)
 
     for (pa=acdList; pa; pa=pa->Next)
     {
+        if (acdIsStype(pa)) continue;
 	if (!pa->Assoc && ajStrMatch(pa->Name, name) &&
 	    ajStrMatch(pa->Token, name))
 	{
@@ -2269,6 +2304,7 @@ static AcdPAcd acdFindAcd (AjPStr name, AjPStr token, ajint pnum)
     acdLog ("acdFindAcd ('%S', '%S', %d)\n", name, token, pnum);
     for (pa=acdList; pa; pa=pa->Next)
     {
+        if (acdIsStype(pa)) continue;
 	if (ajStrMatch(pa->Name, name) && ajStrMatch(pa->Token, token))
 	    if (!pa->PNum || !pnum || (pa->PNum == pnum))
 	    {
@@ -2369,6 +2405,7 @@ static AjBool acdTestQualC (char *name)
     {
 	for (pa=acdList; pa; pa=pa->Next)
 	{
+	    if (acdIsStype(pa)) continue;
 	    if (ajStrMatch (pa->Name, qmaster))
 	    {
 		ajDebug ("  *master matched* '%S'\n", pa->Name);
@@ -2406,6 +2443,7 @@ static AjBool acdTestQualC (char *name)
     {
 	for (pa=acdList; pa; pa=pa->Next)
 	{
+	    if (acdIsStype(pa)) continue;
 	    if (ajStrMatch (pa->Name, qstr))
 	    {
 		ajDebug ("   *matched* '%S'\n", pa->Name);
@@ -5423,14 +5461,14 @@ static void acdSetRegexp (AcdPAcd thys) {
 
     if (len < minlen) {
       acdBadVal (thys, required,
-		 "Too short - minimum length is %d characters",
-		 minlen);
+		 "Too short (%S) - minimum length is %d characters",
+		 thys->Name, minlen);
       ok = ajFalse;
     }
     if (len > maxlen) {
       acdBadVal (thys, required,
-		 "Too long - maximum length is %d characters",
-		 maxlen);
+		 "Too long (%S) - maximum length is %d characters",
+		 thys->Name,maxlen);
       ok = ajFalse;
     }
     if (upper)
@@ -6935,19 +6973,19 @@ static void acdSetString (AcdPAcd thys) {
 
     if (len < minlen) {
       acdBadVal (thys, required,
-		 "Too short (%S)- minimum length is %d characters",
-		 thys->Name,minlen);
+		 "Too short (%S) - minimum length is %d characters",
+		 thys->Name, minlen);
       ok = ajFalse;
     }
     if (len > maxlen) {
       acdBadVal (thys, required,
-		 "Too long (%S)- maximum length is %d characters",
-		 thys->Name,maxlen);
+		 "Too long (%S) - maximum length is %d characters",
+		 thys->Name, maxlen);
       ok = ajFalse;
     }
     if (patexp && !ajRegExec (patexp, reply)) {
       acdBadVal (thys, required,
-		 "String does no match pattern '%S'",
+		 "String does not match pattern '%S'",
 		 pattern);
       ok = ajFalse;
     }
@@ -7173,6 +7211,7 @@ static void* acdGetValueNum (char *token, char* type, ajint pnum) {
     itype = acdFindTypeC(type);
 
   for (pa=acdList; pa; pa=pa->Next) {
+    if (acdIsStype(pa)) continue;
     if (ajStrMatchC(pa->Token, token)) {
       if ((itype>=0) && (pa->Type != itype))
 	ajFatal ("Token %s is not of type %s\n", token, type);
@@ -7252,6 +7291,7 @@ static void acdHelp (void) {
 
   acdLog ("++ acdHelp\n");
   for (pa=acdList; pa; pa=pa->Next) {
+    if (acdIsStype(pa)) continue;
     hlpFlag = ' ';
     acdLog ("++ Name %S Level %d Assoc %B AssocQuals %x\n",
 	    pa->Name, pa->Level, pa->Assoc, pa->AssocQuals);
@@ -9086,7 +9126,7 @@ static ajint acdFindAttrC (AcdPAttr attr, char* attrib) {
 /* @funcstatic acdProcess *****************************************************
 **
 ** Steps through all the ACD items, filling in missing information.
-** Parameters are definied in the default attributes. The parameter
+** Parameters are defined in the default attributes. The parameter
 ** number is generated here in the order they are found.
 **
 ** @return [void]
@@ -9151,6 +9191,7 @@ static void acdSetAll (void) {
   ajint i = 0;
 
   for (pa=acdList; pa; pa=pa->Next) {
+    if (acdIsStype(pa)) continue;
     if (acdIsQtype(pa))
       acdType[pa->Type].Set (pa);
     else
@@ -11271,6 +11312,8 @@ static AjBool acdValIsBool (char* arg) {
 ** (optionally) a given qualifier number. If the qualifier number
 ** is given, it is checked. If not, the first hit is used.
 **
+** Section and Endsection do not count
+**
 ** @param [r] item [AjPStr] Item name
 ** @param [r] number [ajint] Item number (zero if a general item)
 ** @return [AcdPAcd] ACD item required
@@ -11288,6 +11331,7 @@ static AcdPAcd acdFindItem (AjPStr item, ajint number) {
   (void) ajStrAssC(&ambigList, "");
 
   for (pa=acdList; pa; pa=pa->Next) {
+    if (acdIsStype(pa)) continue;
     found = ajFalse;
     if (ajStrPrefix (pa->Name, item)) {
       if (!number || number == pa->PNum)
@@ -11356,6 +11400,7 @@ static AcdPAcd acdFindQual (AjPStr qual, AjPStr master,
      qual, PNum, *iparam);
 
   for (pa=acdList; pa; pa=pa->Next) {
+    if (acdIsStype(pa)) continue;
     found = ajFalse;
     if (pa->Level == ACD_QUAL) {
       if (ajStrPrefix (pa->Name, qual)) {
@@ -11456,6 +11501,7 @@ static AcdPAcd acdFindQualMaster (AjPStr qual, AjPStr master,
      qual, master, PNum);
 
   for (pa=acdList; pa; pa=pa->Next) {
+    if (acdIsStype(pa)) continue;
     found = ajFalse;
     if (pa->Level == ACD_QUAL) {
       if (ajStrPrefix (pa->Name, master)) {
@@ -11653,6 +11699,7 @@ static AcdPAcd acdFindParam (ajint PNum) {
   AcdPAcd pa ;
 
   for (pa=acdList; pa; pa=pa->Next) {
+    if (acdIsStype(pa)) continue;
     if ((pa->Level == ACD_PARAM) && (pa->PNum == PNum)) {
       acdListCurr = pa;
       return pa;
@@ -13381,6 +13428,23 @@ static AjBool acdIsQtype (AcdPAcd thys) {
   return ajFalse;
 }
 
+/* @funcstatic acdIsStype *****************************************************
+**
+** Tests whether an ACD object is a section or endsection type.
+**
+** @param [r] thys [AcdPAcd] ACD object
+** @return [AjBool] ajTrue if the object is a qualifier or parameter
+** @@
+******************************************************************************/
+
+static AjBool acdIsStype (AcdPAcd thys) {
+
+  if ((thys->Level == ACD_SEC) || (thys->Level == ACD_ENDSEC))
+    return ajTrue;
+
+  return ajFalse;
+}
+
 /* @funcstatic acdTextFormat ************************************************
 **
 ** Converts backslash codes in a string into special characters
@@ -13481,7 +13545,7 @@ void ajAcdPrintType (AjPFile outf, AjBool full) {
 ** @return [AjBool] ajTrue if the string matched on of the words
 ******************************************************************************/
 
-AjBool acdVocabCheck (AjPStr str, char** vocab) {
+static AjBool acdVocabCheck (AjPStr str, char** vocab) {
 
   ajint i=0;
   while (vocab[i]) {
