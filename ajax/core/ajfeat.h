@@ -647,6 +647,7 @@ AjBool               ajFeatTableWriteSwiss (AjPFeatTable features, AjPFile file)
 AjPFeatVocFeat       CheckDictForFeature(AjPFeatTable table, AjPStr feature);
 AjPFeatVocTag        CheckDictForTag(AjPFeatTable table, AjPStr tag);
 void                 ajFeatDickTracy(AjPFeatLexicon dictionary);
+AjPFeatLexicon       ajFeatTableDict(AjPFeatTable thys);
 
 
 

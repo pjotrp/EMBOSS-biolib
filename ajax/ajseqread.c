@@ -421,6 +421,7 @@ AjBool ajSeqallNext (AjPSeqall seqall, AjPSeq* retseq) {
 
   *retseq = NULL;
   ajDebug("ajSeqallNext failed\n");
+  
   return ajFalse;
 }
 
@@ -464,7 +465,6 @@ void ajSeqinClear (AjPSeqin thys) {
   thys->Filecount = 0;
   ajSeqQueryClear(thys->Query);
   thys->Data = NULL;
-  ajFeatTabInClear(thys->Ftquery);
   
   return;
 }
@@ -545,7 +545,7 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin) {
     }
     /* (c) Must be a USA - decode it */
     if (!seqUsaProcess (thys, seqin))
-      return ajFalse;
+	return ajFalse;
   }
 
   /* Now read whatever we got */
@@ -559,13 +559,17 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin) {
     (void) ajListstrPop (seqin->List, &usa);
     ajSeqinUsa (&seqin, usa);
     ajStrDel(&usa);
+
     if (!seqUsaProcess (thys, seqin))
-      return ajFalse;
+	return ajFalse;
+
     ret = seqRead (thys, seqin);
   }
 
   if (!ret)
-    return ajFalse;
+      return ajFalse;
+
+  
 
   /* if values are missing in the sequence object, we can use defaults
      from seqin or calculate where possible */
@@ -2631,6 +2635,7 @@ static AjBool seqReadEmbl (AjPSeq thys, AjPSeqin seqin) {
   }
 
   if (dofeat) {
+    ajFeatTabInDel(&seqin->Ftquery);
     seqin->Ftquery = ajFeatTabInNewSSF (ftfmt, thys->Name, ftfile);
     ajDebug ("EMBL FEAT TabIn %x\n", seqin->Ftquery);
     ftfile = NULL;		/* now copied to seqin->FeatTabIn */
