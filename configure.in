@@ -148,7 +148,7 @@ fi
 
 
 dnl Use libtool to make a shared library.
-AM_PROG_LIBTOOL
+AC_PROG_LIBTOOL
 
 dnl endian test for indexing system
 AC_C_BIGENDIAN(CPPFLAGS="$CPPFLAGS -DBENDIAN",CPPFLAGS="$CPPFLAGS -DLENDIAN")

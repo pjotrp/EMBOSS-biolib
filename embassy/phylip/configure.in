@@ -42,6 +42,11 @@ if test "`uname`" = "Linux"; then
 CPPFLAGS="-DAJ_Linux64 $CPPFLAGS"
 fi
 
+dnl Test for FreeBSD 64 bit
+if test "`uname`" = "FreeBSD"; then
+CPPFLAGS="-DAJ_FreeBSD64 $CPPFLAGS"
+fi
+
 dnl Test for Solaris 64 bit. This is done in the optimisation section...
 dnl Another Solaris feature is that -fast implies -xarch=v8 and
 dnl therefore switches off -xarch=v9 if it is given first.
@@ -122,6 +127,11 @@ if test "`uname`" = "Linux"; then
 CFLAGS="$CFLAGS -O2"
 fi
 
+dnl Test for FreeBSD optimisation
+if test "`uname`" = "FreeBSD"; then
+CFLAGS="$CFLAGS -O2"
+fi
+
 else
 CFLAGS="$CFLAGS -O2"
 fi
@@ -136,7 +146,7 @@ dnl End of Optimisation tests
 
 
 dnl Use libtool to make a shared library.
-AM_PROG_LIBTOOL
+AC_PROG_LIBTOOL
 
 dnl endian test for indexing system
 AC_C_BIGENDIAN(CPPFLAGS="$CPPFLAGS -DBENDIAN",CPPFLAGS="$CPPFLAGS -DLENDIAN")
@@ -209,6 +219,11 @@ AC_CHECK_LIB(c, gethostbyname, LIBS="$LIBS", LIBS="$LIBS -lnsl")
 AC_CHECK_LIB(c, socket, LIBS="$LIBS" , LIBS="$LIBS -lsocket")
 AC_CHECK_LIB(m, main)
 
+dnl GD for FreeBSD requires libiconv
+if test "`uname`" = "FreeBSD"; then
+AC_CHECK_LIB(iconv, main, LIBS="$LIBS", LIBS="-liconv $LIBS")
+fi
+
 AM_CONDITIONAL(AMPNG, false)
 
 CHECK_GENERAL
@@ -276,6 +291,11 @@ AC_MSG_CHECKING(for large file support)
 dnl Test for Linux large file support
 if test "`uname`" = "Linux"; then
 CPPFLAGS="-DAJ_LinuxLF -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE $CPPFLAGS"
+fi
+
+dnl Test for FreeBSD large file support
+if test "`uname`" = "FreeBSD"; then
+CPPFLAGS="-DAJ_FreeBSDLF $CPPFLAGS"
 fi
 
 dnl Test for Solaris large file support

@@ -57,6 +57,11 @@ if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64"; then
 CPPFLAGS="-DAJ_IRIX64 $CPPFLAGS"
 fi
 
+dnl Test for FreeBSD 64 bit
+if test "`uname`" = "FreeBSD"; then
+CPPFLAGS="-DAJ_FreeBSD64 $CPPFLAGS"
+fi
+
 dnl Test for AIX 64 bit
 if test "`uname`" = "AIX"; then
 CPPFLAGS="-DAJ_AIX64 $CPPFLAGS"
@@ -122,6 +127,11 @@ if test "`uname`" = "Linux"; then
 CFLAGS="$CFLAGS -O2"
 fi
 
+dnl Test for FreeBSD optimisation
+if test "`uname`" = "FreeBSD"; then
+CFLAGS="$CFLAGS -O2"
+fi
+
 else
 CFLAGS="$CFLAGS -O2"
 fi
@@ -136,7 +146,7 @@ dnl End of Optimisation tests
 
 
 dnl Use libtool to make a shared library.
-AM_PROG_LIBTOOL
+AC_PROG_LIBTOOL
 
 dnl endian test for indexing system
 AC_C_BIGENDIAN(CPPFLAGS="$CPPFLAGS -DBENDIAN",CPPFLAGS="$CPPFLAGS -DLENDIAN")
@@ -208,6 +218,11 @@ dnl Library checks
 AC_CHECK_LIB(c, gethostbyname, LIBS="$LIBS", LIBS="$LIBS -lnsl")
 AC_CHECK_LIB(c, socket, LIBS="$LIBS" , LIBS="$LIBS -lsocket")
 AC_CHECK_LIB(m, main)
+
+dnl GD for FreeBSD requires libiconv
+if test "`uname`" = "FreeBSD"; then
+AC_CHECK_LIB(iconv, main, LIBS="$LIBS", LIBS="-liconv $LIBS")
+fi
 
 AM_CONDITIONAL(AMPNG, false)
 
@@ -310,6 +325,11 @@ dnl Test for MacOSX large file support off_t and fpos_t are always 64-bit
 dnl CPPFLAGS="-DAJ_MACOSXLF
 if test "`uname`" = "Darwin"; then
 CPPFLAGS="-DAJ_MACOSXLF"
+fi
+
+dnl Test for FreeBSD large file support
+if test "`uname`" = "FreeBSD"; then
+CPPFLAGS="-DAJ_FreeBSDLF $CPPFLAGS"
 fi
 
 AC_MSG_RESULT(done)
