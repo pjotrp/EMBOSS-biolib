@@ -24,7 +24,7 @@ Command line arguments
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -tmpdir             directory  Temp directory
+   -tmpdir             outdir     Temp directory
 
    Associated qualifiers:
 
@@ -67,7 +67,7 @@ Command line arguments
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default
-   -tmpdir Temp directory Directory /tmp
+   -tmpdir Temp directory Output directory /tmp
 
 Input file format
 

@@ -270,17 +270,11 @@ Known bugs
 See also
 
    Program name Description
-   cathparse Reads raw CATH classification files and writes DCF file
-   (domain classification file)
    cutgextract Extract data from CUTG
-   domainsse Adds secondary structure records to a DCF file (domain
-   classification file)
    printsextract Extract data from PRINTS
    prosextract Builds the PROSITE motif database for patmatmotifs to
    search
    rebaseextract Extract data from REBASE
-   ssematch Searches a DCF file (domain classification file) for
-   secondary structure matches
    tfextract Extract data from TRANSFAC
 
    The programs pepwindow and pepwindowall normally use the standard

@@ -43,7 +43,209 @@ CONTENTS
 
    The format of the DHF is described in SEQSEARCH documentation. See
    also the example of the DHF file for hit sequences and validation
-   sequences below. <--
+   sequences below.
+
+  Input files for usage example
+
+  File: rocon/rocon.dhf
+
+> Q9YBD5^.^11^105^SCOP^.^54894^Class 1^.^.^Fold 1^Superfamily 1^Family 1^SPARSE
+^61.50^0.000e+00^4.000e-10
+VRKIRSGVVIDHIPPGRAFTMLKALGLLPPRGYRWRIAVVINAESSKLGRKDILKIEGYKPRQRDLEVLGIIAPGATFN
+VIEDYKVVEKVKLKLP
+> Q9YBD5^.^95^135^SCOP^.^54894^Class 1^.^.^Fold 1^Superfamily 1^Family 1^SPARSE
+^11.50^0.000e+00^4.000e-5
+VRKIRSGVVIDHIPPGRAFTMLKALGLLPPRGYRWRIAVVINAESSKLGRKDILKIEGYKPRQRDLEVLGIIAPGATFN
+VIEDYKVVEKVKLKLP
+> Q9YBD5^.^181^235^SCOP^.^54894^Class 1^.^.^Fold 1^Superfamily 1^Family 1^SPARS
+E^161.50^0.000e+00^4.000e-5
+VRKIRSGVVIDHIPPGRAFTMLKALGLLPPRGYRWRIAVVINAESSKLGRKDILKIEGYKPRQRDLEVLGIIAPGATFN
+VIEDYKVVEKVKLKLP
+> O26938^.^11^101^SCOP^.^54894^Class 1^.^.^Fold 1^Superfamily 1^Family 1^PSIBLA
+ST^81.90^0.000e+00^3.000e-16
+VKPIKNGTVIDHITANRSLNVLNILGLPDGRSKVTVAMNMDSSQLGSKDIVKIENRELKPSEVDQIALIAPRATINIVR
+DYKIVEKAKVRL
+> Q8Z130^.^8^99^SCOP^.^54894^Class 1^.^.^Fold 1^Superfamily 1^Family 1^PSIBLAST
+^181.00^0.000e+00^0.000e+00
+VEAIKCGTVIDHIPAQVGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLTDEQVNQLALYAPQATVNRID
+NYDVVGKSRPSLP
+> Q7MX57^.^8^99^SCOP^.^54894^Class 1^.^.^Fold 1^Superfamily 1^Family 1^PSIBLAST
+^80.80^0.000e+00^7.000e-16
+VAAIRNGIVIDHIPPTKLFKVATLLQLDDLDKRITIGNNLRSRSHGSKGVIKIEDKTFEEEELNRIALIAPNVRLNIIR
+DYEVVEKRQVEVP
+> Q8TVB1^.^7^98^SCOP^.^54894^Class 1^.^.^Fold 1^Superfamily 1^Family 1^PSIBLAST
+^72.70^0.000e+00^2.000e-13
+VKRIEMGTVLDHLPPGTAPQIMRILDIDPTETTLLVAINVESSKMGRKDILKIEGKILSEEEANKVALVAPNATVNIVR
+DYSVAEKFQVKPP
+> P96175^.^8^99^SCOP^.^54894^Class 1^.^.^Fold 1^Superfamily 1^Family 1^PSIBLAST
+^107.00^0.000e+00^7.000e-24
+VEAICNGYVIDHIPSGQGVKILRLFSLTDTKQRVTVGFNLPSHDGTTKDLIKVENTEITKSQANQLALLAPNATVNIIE
+NFKVTDKHSLALP
+
+  File: rocon.valid
+
+> Q9YBD5^.^11^105^SCOP^.^1^Class 1^.^.^Fold 1^Superfamily 1^Family 1^PSIBLAST^6
+1.50^0.000e+00^4.000e-10
+VRKIRSGVVIDHIPPGRAFTMLKALGLLPPRGYRWRIAVVINAESSKLGRKDILKIEGYKPRQRDLEVLGIIAPGATFN
+VIEDYKVVEKVKLKLP
+> Q9UX07^.^12^104^SCOP^.^1^Class 1^.^.^Fold 1^Superfamily 1^Family 1^PSIBLAST^6
+5.80^0.000e+00^2.000e-11
+VSKIRNGTVIDHIPAGRALAVLRILGIRGSEGYRVALVMNVESKKIGRKDIVKIEDRVIDEKEASLITLIAPSATINII
+RDYVVTEKRHLEVP
+> Q9KP65^.^9^100^SCOP^.^1^Class 1^.^.^Fold 1^Superfamily 1^Family 1^PSIBLAST^12
+8.00^0.000e+00^3.000e-30
+VEAIKNGTVIDHIPAKVGIKVLKLFDMHNSAQRVTIGLNLPSSALGSKDLLKIENVFISEAQANKLALYAPHATVNQIE
+NYEVVKKLALQLP
+> Q9K1K9^.^8^99^SCOP^.^1^Class 1^.^.^Fold 1^Superfamily 1^Family 1^PSIBLAST^101
+.00^0.000e+00^5.000e-22
+VEAIEKGTVIDHIPAGRGLTILRQFKLLHYGNAVTVGFNLPSKTQGSKDIIKIKGVCLDDKAADRLALFAPEAVVNTID
+NFKVVQKRHLNLP
+> Q9JWY6^.^8^99^SCOP^.^1^Class 1^.^.^Fold 1^Superfamily 1^Family 1^PSIBLAST^98.
+90^0.000e+00^2.000e-21
+VEAIEKGTVIDHIPAGRGLTILRQFKLLHYGNAVTVGFNLPSKTQGSKDIIKIKGVCLDDKAADRLALFAPEAVVNTID
+HFKVVQKRHLNLP
+> Q9HKM3^.^7^99^SCOP^.^1^Class 1^.^.^Fold 1^Superfamily 1^Family 1^PSIBLAST^79.
+60^0.000e+00^2.000e-15
+ISKIRDGTVIDHVPSGKGIRVIGVLGVHEDVNYTVSLAIHVPSNKMGFKDVIKIENRFLDRNELDMISLIAPNATISII
+KNYEISEKFQVELP
+> Q9HHN3^.^9^101^SCOP^.^1^Class 1^.^.^Fold 1^Superfamily 1^Family 1^PSIBLAST^78
+.50^0.000e+00^4.000e-15
+VSKIQAGTVIDHIPAGQALQVLQILGTNGASDDQITVGMNVTSERHHRKDIVKIEGRELSQDEVDVLSLIAPDATINIV
+RDYEVDEKRRVDRP
+> Q97FS4^.^4^93^SCOP^.^2^Class 1^.^.^Fold 1^Superfamily 1^Family 2^PSIBLAST^49.
+20^0.000e+00^2.000e-06
+INSIKNGIVIDHIKAGHGIKIYNYLKLGEAEFPTALIMNAISKKNKAKDIIKIENVMDLDLAVLGFLDPNITVNIIEDE
+KIRQKIQLKLP
+> Q97B28^.^8^100^SCOP^.^2^Class 1^.^.^Fold 1^Superfamily 1^Family 2^PSIBLAST^79
+.20^0.000e+00^2.000e-15
+ISKIKDGTVIDHIPSGKALRVLSILGIRDDVDYTVSVGMHVPSSKMEYKDVIKIENRSLDKNELDMISLTAPNATISII
+KNYEISEKFKVELP
+> Q970X3^.^11^101^SCOP^.^2^Class 1^.^.^Fold 1^Superfamily 1^Family 2^PSIBLAST^7
+8.50^0.000e+00^3.000e-15
+VSKIKNGTVIDHIPAGRALAVLRILKIAEGYRIALVMNVESKKMGKKDIVKIENKEVDEKEANLITLIAPTATINIIRD
+YEVVEKKKLKIP
+> Q8ZTG2^.^7^99^SCOP^.^2^Class 1^.^.^Fold 1^Superfamily 1^Family 2^PSIBLAST^66.
+10^0.000e+00^2.000e-11
+VSKIENGTVIDHIPAGRALTVLRILGISGKEGLRVALVMNVESKKLGKKDIVKIEGRELTPEEVNIISAVAPTATINII
+RNFAVVKKFKVTPP
+> Q8ZB38^.^9^100^SCOP^.^2^Class 1^.^.^Fold 1^Superfamily 1^Family 2^PSIBLAST^15
+6.00^0.000e+00^1.000e-38
+VEAIKCGTVIDHIPAQIGFKLLSLFKLTATDQRITIGLNLPSKRSGRKDLIKIENTFLTEQQANQLAMYAPDATVNRID
+NYEVVKKLTLSLP
+> Q8Z130^.^8^99^SCOP^.^2^Class 1^.^.^Fold 1^Superfamily 1^Family 2^PSIBLAST^181
+.00^0.000e+00^0.000e+00
+VEAIKCGTVIDHIPAQVGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLTDEQVNQLALYAPQATVNRID
+NYDVVGKSRPSLP
+> Q8U374^.^6^99^SCOP^.^2^Class 1^.^.^Fold 1^Superfamily 1^Family 2^PSIBLAST^92.
+00^0.000e+00^3.000e-19
+VSAIKEGTVIDHIPAGKGLKVIQILGLGELKNGGAVLLAMNVPSKKLGRKDIVKVEGKFLSEEEVNKIALVAPTATVNI
+IREYKVVEKFKVEIP
+> Q8TVB1^.^7^98^SCOP^.^3^Class 1^.^.^Fold 1^Superfamily 2^Family 1^PSIBLAST^72.
+70^0.000e+00^2.000e-13
+VKRIEMGTVLDHLPPGTAPQIMRILDIDPTETTLLVAINVESSKMGRKDILKIEGKILSEEEANKVALVAPNATVNIVR
+DYSVAEKFQVKPP
+> Q8THL3^.^9^100^SCOP^.^3^Class 1^.^.^Fold 1^Superfamily 2^Family 1^PSIBLAST^69
+.20^0.000e+00^2.000e-12
+IQAIENGTVIDHITAGQALNVLRILRISSAFRATVSFVMNAPGARGKKDVVKIEGKELSVEELNRIALISPKATINIIR
+DFEVVQKNKVVLP
+> Q8PXK6^.^9^100^SCOP^.^3^Class 1^.^.^Fold 1^Superfamily 2^Family 1^PSIBLAST^62
+.70^0.000e+00^2.000e-10
+VQAIESGTVIDHIKSGQALNVLRILGISSAFRATISFVMNAPGAGGKKDVVKIEGKELSVEELNRIALISPKATINIIR
+DFVVVQKNNVVLP
+> Q8K9H8^.^8^99^SCOP^.^3^Class 1^.^.^Fold 1^Superfamily 2^Family 1^PSIBLAST^146
+.00^0.000e+00^1.000e-35
+VEAIKSGSVIDHIPAHIGFKLLSLFRFTETEKRITIGLNLPSQKLDKKDIIKIENTFLSDDQINQLAIYAPCATVNYIE
+KYNLVGKIFPSLP
+> Q8DCF7^.^9^100^SCOP^.^3^Class 1^.^.^Fold 1^Superfamily 2^Family 1^PSIBLAST^12
+7.00^0.000e+00^9.000e-30
+VEAIKNGTVIDHIPAQVGIKVLKLFDMHNSSQRVTIGLNLPSSALGNKDLLKIENVFINEEQASKLALYAPHATVNQIE
+DYQVVKKLALELP
+> Q8D1W6^.^9^100^SCOP^.^4^Class 1^.^.^Fold 1^Superfamily 2^Family 2^PSIBLAST^12
+3.00^0.000e+00^1.000e-28
+VEAIFGGTVIDHIPAQVGLKLLSLFKWLHTKERITMGLNLPSNQQKKKDLIKLENVLLNEDQANQLSIYAPLATVNQIK
+NYIVIKKQKLKLP
+> Q8A9S4^.^10^101^SCOP^.^4^Class 1^.^.^Fold 1^Superfamily 2^Family 2^PSIBLAST^6
+3.80^0.000e+00^9.000e-11
+VAALKNGTVIDHIPSEKLFTVVQLLGVEQMKCNITIGFNLDSKKLGKKGIIKIADKFFCDEEINRISVVAPYVKLNIIR
+DYEVVEKKEVRMP
+> Q891I9^.^4^94^SCOP^.^4^Class 1^.^.^Fold 1^Superfamily 2^Family 2^PSIBLAST^52.
+30^0.000e+00^2.000e-07
+ITSIKDGIVIDHIKSGYGIKIFNYLNLKNVEYSVALIMNVFSSKLGKKDIIKIANKEIDIDFTVLGLIDPTITINIIED
+EKIKEKLNLELP
+> Q87LF7^.^9^100^SCOP^.^4^Class 1^.^.^Fold 1^Superfamily 2^Family 2^PSIBLAST^13
+0.00^0.000e+00^7.000e-31
+VEAIKNGTVIDHIPAQIGIKVLKLFDMHNSSQRVTIGLNLPSSALGHKDLLKIENVFINEEQASKLALYAPHATVNQIE
+NYEVVKKLALELP
+> Q83IL8^.^8^99^SCOP^.^4^Class 1^.^.^Fold 1^Superfamily 2^Family 2^PSIBLAST^189
+.00^0.000e+00^0.000e+00
+VEAIKRGTVIDHIPAQIGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLSEEQVDQLALYAPQATVNRID
+NYEVVGKSRPSLP
+> Q7P144^.^7^98^SCOP^.^4^Class 1^.^.^Fold 1^Superfamily 2^Family 2^PSIBLAST^128
+.00^0.000e+00^3.000e-30
+VEALKQGTVIDHIPAGEGVKILRLFKLTETGERVTVGLNLVSRHMGSKDLIKVENVALTEEQANELALFAPKATVNVID
+NFEVVKKHKLTLP
+> Q7MZ14^.^9^100^SCOP^.^4^Class 1^.^.^Fold 1^Superfamily 2^Family 2^PSIBLAST^15
+0.00^0.000e+00^6.000e-37
+VEAIRCGTVIDHIPAQVGFKLLSLFKLTETDQRITIGLNLPSNRLGKKDLIKIENTFLTEQQANQLAMYAPNATVNCIE
+NYEVVKKLPINLP
+> Q7MX57^.^8^99^SCOP^.^5^Class 1^.^.^Fold 2^Superfamily 1^Family 1^PSIBLAST^80.
+80^0.000e+00^7.000e-16
+VAAIRNGIVIDHIPPTKLFKVATLLQLDDLDKRITIGNNLRSRSHGSKGVIKIEDKTFEEEELNRIALIAPNVRLNIIR
+DYEVVEKRQVEVP
+> Q7MHF0^.^9^100^SCOP^.^5^Class 1^.^.^Fold 2^Superfamily 1^Family 1^PSIBLAST^12
+7.00^0.000e+00^8.000e-30
+VEAIKNGTVIDHIPAQVGIKVLKLFDMHNSSQRVTIGLNLPSSALGNKDLLKIENVFINEEQASKLALYAPHATVNQIE
+DYQVVKKLALELP
+> Q58801^.^9^99^SCOP^.^5^Class 1^.^.^Fold 2^Superfamily 1^Family 1^PSIBLAST^61.
+50^0.000e+00^5.000e-10
+VKKITNGTVIDHIDAGKALMVFKVLNVPKETSVMIAINVPSKKKGKKDILKIEGIELKKEDVDKISLISPDVTINIIRN
+GKVVEKLKPQIP
+> P96175^.^8^99^SCOP^.^5^Class 1^.^.^Fold 2^Superfamily 1^Family 1^PSIBLAST^107
+.00^0.000e+00^7.000e-24
+VEAICNGYVIDHIPSGQGVKILRLFSLTDTKQRVTVGFNLPSHDGTTKDLIKVENTEITKSQANQLALLAPNATVNIIE
+NFKVTDKHSLALP
+> P96111^.^375^472^SCOP^.^5^Class 1^.^.^Fold 2^Superfamily 1^Family 1^PSIBLAST^
+47.30^0.000e+00^9.000e-06
+GIKPIENGTVIDHIAKGKTPEEIYSTILKIRKILRLYDVDSADGIFRSSDGSFKGYISLPDRYLSKKEIKKLSAISPNT
+TVNIIKNSTVVEKYRIKLP
+> P77919^.^6^99^SCOP^.^6^Class 1^.^.^Fold 2^Superfamily 1^Family 2^PSIBLAST^93.
+50^0.000e+00^1.000e-19
+VSAIKEGTVIDHIPAGKGLKVIEILKLGKLTNGGAVLLAMNVPSKKLGRKDIVKVEGRFLSEEEVNKIALVAPNATVNI
+IRDYKVVEKFKVEVP
+> P74766^.^12^104^SCOP^.^6^Class 1^.^.^Fold 2^Superfamily 1^Family 2^PSIBLAST^7
+4.20^0.000e+00^7.000e-14
+VSKIKNGTVIDHIPAGRAFAVLNVLGIKGHEGFRIALVINVDSKKMGKKDIVKIEDKEISDTEANLITLIAPTATINIV
+REYEVVKKTKLEVP
+> P57451^.^8^99^SCOP^.^7^Class 1^.^.^Fold 2^Superfamily 2^Family 1^PSIBLAST^143
+.00^0.000e+00^1.000e-34
+VEAIKSGSVIDHIPEYIGFKLLSLFRFTETEKRITIGLNLPSKKLGRKDIIKIENTFLSDEQINQLAIYAPHATVNYIN
+EYNLVRKVFPTLP
+> P19936^.^8^99^SCOP^.^7^Class 1^.^.^Fold 2^Superfamily 2^Family 1^PSIBLAST^159
+.00^0.000e+00^1.000e-39
+VEAIKCGTVIDHIPAQIGFKLLTLFKLTATDQRITIGLNLPSNELGRKDLIKIENTFLTEQQANQLAMYAPKATVNRID
+NYEVVRKLTLSLP
+> P08421^.^8^99^SCOP^.^7^Class 1^.^.^Fold 2^Superfamily 2^Family 1^PSIBLAST^183
+.00^0.000e+00^0.000e+00
+VEAIKCGTVIDHIPAQVGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLTEEQVNQLALYAPQATVNRID
+NYDVVGKSRPSLP
+> P00478^.^8^99^SCOP^.^8^Class 1^.^.^Fold 2^Superfamily 2^Family 2^PSIBLAST^191
+.00^0.000e+00^0.000e+00
+VEAIKRGTVIDHIPAQIGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLSEDQVDQLALYAPQATVNRID
+NYEVVGKSRPSLP
+> O58452^.^6^99^SCOP^.^8^Class 1^.^.^Fold 2^Superfamily 2^Family 2^PSIBLAST^94.
+30^0.000e+00^6.000e-20
+VSAIKEGTVIDHIPAGKGLKVIEILGLSKLSNGGSVLLAMNVPSKKLGRKDIVKVEGKFLSEEEVNKIALVAPTATVNI
+IRNYKVVEKFKVEVP
+> O30129^.^6^98^SCOP^.^9^Class 2^.^.^Fold 1^Superfamily 1^Family 1^PSIBLAST^79.
+60^0.000e+00^2.000e-15
+VSKIKEGTVIDHINAGKALLVLKILKIQPGTDLTVSMAMNVPSSKMGKKDIVKVEGMFIRDEELNKIALISPNATINLI
+RDYEIERKFKVSPP
+> O26938^.^11^101^SCOP^.^10^Class 1^.^.^Fold 1^Superfamily 1^Family 1^PSIBLAST^
+81.90^0.000e+00^3.000e-16
+VKPIKNGTVIDHITANRSLNVLNILGLPDGRSKVTVAMNMDSSQLGSKDIVKIENRELKPSEVDQIALIAPRATINIVR
+DYKIVEKAKVRL
+
+   <--
    Figure 1 Excerpt of DHF file (hit sequences) 
 
 > Q9YBD5^.^11^105^.^54894^Class 1^.^.^Fold 1^Superfamily 1^Family 1^SPARSE^61.5
@@ -248,6 +450,20 @@ DYKIVEKAKVRL
 
    The format of the hits file is described in ROCPLOT documentation.
 
+  Output files for usage example
+
+  File: rocon.hits
+
+> RELATED 8 ; ROC 2
+CROSS        Q8Z130    8     99
+UNKNOWN      Q9YBD5    181   235
+FALSE        P96175    8     99
+TRUE         O26938    11    101
+FALSE        Q7MX57    8     99
+CROSS        Q8TVB1    7     98
+TRUE         Q9YBD5    11    105
+TRUE         Q9YBD5    95    135
+
 5.0 DATA FILES
 
    None.
@@ -257,7 +473,7 @@ DYKIVEKAKVRL
   6.1 COMMAND LINE ARGUMENTS
 
    Standard (Mandatory) qualifiers:
-  [-hitsin]            infile     This option specifies the location of the
+  [-hitsinfile]        infile     This option specifies the location of the
                                   DHF file (domain hits file) (input). A
                                   'domain hits file' contains database hits
                                   (sequences) with domain classification
@@ -270,7 +486,7 @@ DYKIVEKAKVRL
                                   protein signatare by using SIGSCAN or
                                   various types of HMM and profile by using
                                   LIBSCAN.
-  [-validin]           infile     This option specifies the name of domain
+  [-validinfile]       infile     This option specifies the name of domain
                                   families file (input). A 'domain families
                                   file' contains sequence relatives (hits) for
                                   each of a number of different SCOP or CATH
@@ -305,7 +521,7 @@ DYKIVEKAKVRL
    -mode               menu       This option specifies the classification
                                   scheme to use. See ROCON on-line
                                   documentation for more information.
-  [-hitsout]           outfile    This option specifies the name of the hits
+  [-hitsoutfile]       outfile    This option specifies the name of the hits
                                   files (output). A 'hits file'contains a list
                                   of hits (e.g. from a prediction method)
                                   that are classified and rank-ordered on the
@@ -323,7 +539,7 @@ DYKIVEKAKVRL
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
-   "-hitsout" associated qualifiers
+   "-hitsoutfile" associated qualifiers
    -odirectory3        string     Output directory
 
    General qualifiers:
@@ -343,7 +559,7 @@ DYKIVEKAKVRL
 
 
    Standard (Mandatory) qualifiers Allowed values Default
-   [-hitsin]
+   [-hitsinfile]
    (Parameter 1) This option specifies the location of the DHF file
    (domain hits file) (input). A 'domain hits file' contains database
    hits (sequences) with domain classification information, in the DHF
@@ -353,7 +569,7 @@ DYKIVEKAKVRL
    SEQSEARCH, hits retrieved by a sparse protein signatare by using
    SIGSCAN or various types of HMM and profile by using LIBSCAN. Input
    file Required
-   [-validin]
+   [-validinfile]
    (Parameter 2) This option specifies the name of domain families file
    (input). A 'domain families file' contains sequence relatives (hits)
    for each of a number of different SCOP or CATH families found from
@@ -380,7 +596,7 @@ DYKIVEKAKVRL
    1 (Family classification scheme)
    2 ((Not yet available))
    1
-   [-hitsout]
+   [-hitsoutfile]
    (Parameter 3) This option specifies the name of the hits files
    (output). A 'hits file'contains a list of hits (e.g. from a prediction
    method) that are classified and rank-ordered on the basis of score,
@@ -397,7 +613,26 @@ DYKIVEKAKVRL
 
   6.2 EXAMPLE SESSION
 
-   An example of interactive use of ROCON is shown below.
+   An example of interactive use of ROCON is shown below. Here is a
+   sample session with rocon
+
+
+% rocon 
+Reads a DHF file (domain hits file) of hits (sequences of unknown
+structural classification) and a DHF file of validation sequences (known
+classification) and writes a 'hits file' for the hits, which are classified and
+rank-ordered on the basis of score.
+Name of DHF file (domain hits file) (input).: rocon/rocon.dhf
+Name of domain families file (input).: rocon.valid
+Overlap threshold for hits. [10]: 10
+Classification scheme to use
+         1 : Family classification scheme
+         2 : (Not yet available)
+Select number. [1]: 1
+Name of hits files (output). [hits.dhf]: rocon.hits
+
+   Go to the input files for this example
+   Go to the output files for this example
 
 7.0 KNOWN BUGS & WARNINGS
 

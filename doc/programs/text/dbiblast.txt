@@ -110,7 +110,7 @@ Command line arguments
    -[no]systemsort     boolean    Use system sort utility
    -[no]cleanup        boolean    Clean up temporary files
    -sourcefile         boolean    Use FASTA source file
-   -indexdirectory     outdir     Index directory
+   -indexoutdir        outdir     Index directory
 
    Associated qualifiers: (none)
    General qualifiers:
@@ -165,7 +165,7 @@ Command line arguments
    -[no]systemsort Use system sort utility Boolean value Yes/No Yes
    -[no]cleanup Clean up temporary files Boolean value Yes/No Yes
    -sourcefile Use FASTA source file Boolean value Yes/No No
-   -indexdirectory Index directory Output directory .
+   -indexoutdir Index directory Output directory .
 
 Input file format
 

@@ -176,7 +176,7 @@ Output file format
 
 ########################################
 # Program: patmatdb
-# Rundate: Thu Jan 20 2005 17:37:39
+# Rundate: Thu Jul 15 2004 12:00:00
 # Report_format: dbmotif
 # Report_file: 100k_rat.patmatdb
 ########################################

@@ -68,7 +68,7 @@ Command line arguments
                                   with keywords. If set, HETPARSE will search
                                   the directory and will count the number of
                                   files that each heterogen appears in.
-*  -dirlist            dirlist    This option specifies the directory to
+*  -dirlistpath        dirlist    This option specifies the directory to
                                   search with keywords.
   [-outfile]           outfile    This option specifies the name of EMBL-like
                                   format dictionary of heterogen groups.
@@ -106,8 +106,8 @@ Command line arguments
    (typically PDB files) with keywords. If set, HETPARSE will search the
    directory and will count the number of files that each heterogen
    appears in. Toggle value Yes/No No
-   -dirlist This option specifies the directory to search with keywords.
-   Directory with files ./
+   -dirlistpath This option specifies the directory to search with
+   keywords. Directory with files ./
    [-outfile]
    (Parameter 2) This option specifies the name of EMBL-like format
    dictionary of heterogen groups. Output file Ehet.dat

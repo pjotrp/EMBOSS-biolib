@@ -121,7 +121,7 @@ Output file format
 
 ########################################
 # Program: seqmatchall
-# Rundate: Thu Jan 20 2005 17:40:54
+# Rundate: Thu Jul 15 2004 12:00:00
 # Align_format: match
 # Report_file: eclac.seqmatchall
 ########################################

@@ -5,7 +5,7 @@
 
 Function
 
-   [an error occurred while processing this directive]
+   Runs degapseq program on all sequence pairs in a directory
 
 Description
 
@@ -17,26 +17,53 @@ Algorithm
 
 Usage
 
-   [an error occurred while processing this directive]
+   Under development, no final example yet
 
 Command line arguments
 
-   [an error occurred while processing this directive]
+   Standard (Mandatory) qualifiers:
+  [-gappedseqsdir]     dirlist    Input directory of files containing sequence
+                                  pairs for degapping
+  [-pathtocommand]     directory  Directory where degapping executable lives
+  [-commandname]       string     Name of degapping executable
+  [-degappedseqsoutdir] outdir     Name of directory containing degapped
+                                  sequence pairs
+  [-outfilesuffix]     string     Appended to end of all output file names
 
-   [an error occurred while processing this directive]
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers: (none)
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+
+
+   Error: File /homes/pmr/local/share/EMBOSS/acd/degapseqrunner.acd line
+   12: (gappedseqsdir) Unknown attribute 'name'
 
 Input file format
 
    degapseqrunner reads any normal sequence USAs.
 
-   [an error occurred while processing this directive]
+   Under development, no example input file(s) yet
 
 Output file format
 
    degapseqrunner outputs a graph to the specified graphics device.
    outputs a report format file. The default format is ...
 
-   [an error occurred while processing this directive]
+   Under development, no example output file(s) yet
 
 Data files
 
@@ -64,7 +91,36 @@ Exit status
 
 Known bugs
 
-   None. [an error occurred while processing this directive]
+   None.
+
+See also
+
+   Program name                          Description
+   biosed       Replace or delete sequence sections
+   cutseq       Removes a specified section from a sequence
+   degapseq     Removes gap characters from sequences
+   descseq      Alter the name or description of a sequence
+   entret       Reads and writes (returns) flatfile entries
+   extractfeat  Extract features from a sequence
+   extractseq   Extract regions from a sequence
+   listor       Writes a list file of the logical OR of two sets of sequences
+   maskfeat     Mask off features of a sequence
+   maskseq      Mask off regions of a sequence
+   newseq       Type in a short new sequence
+   noreturn     Removes carriage return from ASCII files
+   notseq       Excludes a set of sequences and writes out the remaining ones
+   nthseq       Writes one sequence from a multiple set of sequences
+   pasteseq     Insert one sequence into another
+   revseq       Reverse and complement a sequence
+   seqret       Reads and writes (returns) sequences
+   seqretsplit  Reads and writes (returns) sequences in individual files
+   skipseq      Reads and writes (returns) sequences, skipping the first few
+   splitter     Split a sequence into (overlapping) smaller sequences
+   trimest      Trim poly-A tails off EST sequences
+   trimseq      Trim ambiguous bits off the ends of sequences
+   union        Reads sequence fragments and builds one sequence
+   vectorstrip  Strips out DNA between a pair of vector sequences
+   yank         Reads a sequence range, appends the full USA to a list file
 
 Author(s)
 
@@ -74,8 +130,6 @@ Author(s)
 
 History
 
-   [an error occurred while processing this directive]
-
 Target users
 
    This program is intended to be used by everyone and everything, from
@@ -83,4 +137,4 @@ Target users
 
 Comments
 
-   [an error occurred while processing this directive]
+   None

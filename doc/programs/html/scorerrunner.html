@@ -26,7 +26,7 @@ scorerrunner
 <H2>
     Function
 </H2>
-[an error occurred while processing this directive]
+Runs scorer to compare ordered pairs of substituted seqs in two directories and write the scores to a third
 
 <!--
 DON'T WRITE ANYTHING HERE.
@@ -98,7 +98,8 @@ EDIT HERE
         Many examples illustrating different behaviours is good.
  -->
 
-[an error occurred while processing this directive]
+<i>Under development, no final example yet</i>
+
 
 
 
@@ -108,11 +109,41 @@ EDIT HERE
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
-[an error occurred while processing this directive]
+   Standard (Mandatory) qualifiers:
+  [-pathtocommand]     directory  Directory where alignment executables live
+  [-goldseqsdirlist]   dirlist    First directory containing paired traces
+  [-testseqsdirlist]   dirlist    Second directory containing paired traces
+  [-scoresoutdir]      outdir     Name of directory containing output scores
+  [-scoresoutfilename] string     Name of comma-separated variable file
+                                  containing identity scores for pairs of gold
+                                  and test sequences directory
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers: (none)
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+
+
 </pre>
 </td></tr></table>
 <P>
-[an error occurred while processing this directive]
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+Error: File /homes/pmr/local/share/EMBOSS/acd/scorerrunner.acd line 21: (goldseqsdirlist) Unknown attribute 'name'
+
+
 
 <!--
 DON'T WRITE ANYTHING HERE.
@@ -141,7 +172,8 @@ IT IS DONE FOR YOU.
 
 <p>
 
-[an error occurred while processing this directive]
+<i>Under development, no example input file(s) yet</i>
+
 
 
 
@@ -169,7 +201,8 @@ outputs a report format file. The default format is ...
 
 <p>
 
-[an error occurred while processing this directive]
+<i>Under development, no example output file(s) yet</i>
+
 
 
 
@@ -315,7 +348,23 @@ None.
     See also
 </H2>
 -->
-[an error occurred while processing this directive]
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th><th>Description</th></tr>
+<tr><td><a href="alignrunner.html">alignrunner</a></td><td>Runs alignment program on all sequence pairs in a directory</td></tr>
+<tr><td><a href="contactalign.html">contactalign</a></td><td>EMBOSS implementation of Damian Counsell's 2.5-D alignment algorithm</td></tr>
+<tr><td><a href="../esim4/esim4.html">esim4</a></td><td>Align an mRNA to a genomic DNA sequence</td></tr>
+<tr><td><a href="../../apps/est2genome.html">est2genome</a></td><td>Align EST and genomic DNA sequences</td></tr>
+<tr><td><a href="nawalign.html">nawalign</a></td><td>Damian Counsell's implementation for protein sequences of the Needleman and Wunsch alignment algorithm</td></tr>
+<tr><td><a href="nawalignrunner.html">nawalignrunner</a></td><td>Runs nawalign alignment program on all sequence pairs in a directory</td></tr>
+<tr><td><a href="../../apps/needle.html">needle</a></td><td>Needleman-Wunsch global alignment</td></tr>
+<tr><td><a href="needlerunner.html">needlerunner</a></td><td>Runs needle alignment program on all sequence pairs in a directory</td></tr>
+<tr><td><a href="scorer.html">scorer</a></td><td>Scores accuracy of protein-protein sequence alignment against gold standard structure-structure alignment</td></tr>
+<tr><td><a href="../../apps/stretcher.html">stretcher</a></td><td>Finds the best global alignment between two sequences</td></tr>
+<tr><td><a href="substitute.html">substitute</a></td><td>Substitutes matches from first (query) sequence of two aligned sequences in a trace into second (template sequence)</td></tr>
+<tr><td><a href="substituterunner.html">substituterunner</a></td><td>Runs substitute on directory of traces and writes substituted sequences to another</td></tr>
+</table>
+
 <!-- 
         Add any comments about other associated programs (to prepare
         data files?) that seealso doesn't find. 
@@ -345,7 +394,8 @@ Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
     History
 </H2>
 
-[an error occurred while processing this directive]
+
+
 
 
 
@@ -370,7 +420,8 @@ This program is intended to be used by everyone and everything, from naive users
     Comments
 </H2>
 
-[an error occurred while processing this directive]
+None
+
 
 </BODY>
 </HTML>

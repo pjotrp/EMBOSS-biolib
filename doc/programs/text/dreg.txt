@@ -895,7 +895,7 @@ Output file format
 
 ########################################
 # Program: dreg
-# Rundate: Thu Jan 20 2005 17:33:44
+# Rundate: Thu Jul 15 2004 12:00:00
 # Report_format: seqtable
 # Report_file: paamir.dreg
 ########################################

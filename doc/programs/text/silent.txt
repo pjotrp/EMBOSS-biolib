@@ -208,7 +208,7 @@ Output file format
 
 ########################################
 # Program: silent
-# Rundate: Thu Jan 20 2005 17:42:00
+# Rundate: Thu Jul 15 2004 12:00:00
 # Report_format: table
 # Report_file: hsfau.silent
 ########################################

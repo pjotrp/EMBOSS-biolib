@@ -85,11 +85,11 @@ CONTENTS
   6.1 COMMAND LINE ARGUMENTS
 
    Standard (Mandatory) qualifiers:
-  [-seqin]             dirlist    This option specifies the location of
-                                  sequence files (input).
-  [-datout]            directory  This option specifies the location of
+  [-seqinpath]         dirlist    This option specifies the location of
+                                  sequence files (input)
+  [-datoutdir]         outdir     This option specifies the location of
                                   sequence similarity data files (output).
-   -logf               outfile    This option specifies the name of
+   -logfile            outfile    This option specifies the name of
                                   ALLVERSUSALL log file (output). The log file
                                   contains messages about any errors arising
                                   while ALLVERSUSALL ran.
@@ -125,7 +125,7 @@ CONTENTS
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
-   "-logf" associated qualifiers
+   "-logfile" associated qualifiers
    -odirectory         string     Output directory
 
    General qualifiers:
@@ -145,13 +145,13 @@ CONTENTS
 
 
    Standard (Mandatory) qualifiers Allowed values Default
-   [-seqin]
+   [-seqinpath]
    (Parameter 1) This option specifies the location of sequence files
-   (input). Directory with files ./
-   [-datout]
+   (input) Directory with files ./
+   [-datoutdir]
    (Parameter 2) This option specifies the location of sequence
-   similarity data files (output). Directory ./
-   -logf This option specifies the name of ALLVERSUSALL log file
+   similarity data files (output). Output directory ./
+   -logfile This option specifies the name of ALLVERSUSALL log file
    (output). The log file contains messages about any errors arising
    while ALLVERSUSALL ran. Output file ALLVERSUSALL.log
    Additional (Optional) qualifiers Allowed values Default
@@ -185,10 +185,10 @@ CONTENTS
 
 % allversusall 
 Does an all-versus-all global alignment for each set of sequences in an
-input directory and writes files of sequence similarity values.
-Location of sequence files (input). [./]: allversusall/
-Location of sequence similarity data files (output). [./]: 
-Name allversusall log file (output). [ALLVERSUSALL.log]: 
+input directory and writes files of sequence similarity values
+Location of sequence files (input [./]: allversusall/
+Location of sequence similarity data files (output) [./]: 
+Name allversusall log file (output) [ALLVERSUSALL.log]: 
 
 Processing /ebi/services/idata/pmr/hgmp/test/data/structure/allversusall/swtiny
 1.fasta

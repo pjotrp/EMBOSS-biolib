@@ -405,7 +405,7 @@ Output file format
 
 ########################################
 # Program: restrict
-# Rundate: Thu Jan 20 2005 17:40:33
+# Rundate: Thu Jul 15 2004 12:00:00
 # Report_format: table
 # Report_file: hsfau.restrict
 ########################################
@@ -490,7 +490,7 @@ Output file format
 
 ########################################
 # Program: restrict
-# Rundate: Thu Jan 20 2005 17:40:33
+# Rundate: Thu Jul 15 2004 12:00:00
 # Report_format: table
 # Report_file: hsfau.restrict
 ########################################
@@ -600,7 +600,7 @@ Output file format
 
 ########################################
 # Program: restrict
-# Rundate: Thu Jan 20 2005 17:40:34
+# Rundate: Thu Jul 15 2004 12:00:00
 # Report_format: table
 # Report_file: hsfau.restrict
 ########################################

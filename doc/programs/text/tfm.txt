@@ -303,7 +303,7 @@ tcode            Fickett TESTCODE statistic to identify protein-coding DNA
 wobble           Wobble base plot
 
 NUCLEIC MOTIFS
-dreg             regular expression search of a nucleotide sequence
+dreg             Regular expression search of a nucleotide sequence
 fuzznuc          Nucleic acid pattern search
 fuzztran         Protein pattern search after translation
 marscan          Finds MAR/SAR sites in nucleic sequences
@@ -366,7 +366,7 @@ PHYLOGENY DISCRETE CHARACTERS
 eclique          Largest clique program
 edollop          Dollo and polymorphism parsimony algorithm
 edolpenny        Penny algorithm Dollo or polymorphism
-efactor          multistate to binary recoding program
+efactor          Multistate to binary recoding program
 emix             Mixed parsimony algorithm
 epenny           Penny algorithm, branch-and-bound to find all most parsimoniou
 s trees
@@ -448,12 +448,16 @@ topo             Draws an image of a transmembrane protein
 PROTEIN 3D STRUCTURE
 contactcount     Counts specific versus non-specific contacts in a directory of
  cleaned protein chain contact files
-domainalign      Generates structure-based sequence alignments for nodes in a D
-CF file (domain classification file)
+contacts         Reads CCF files (clean coordinate files) and writes CON files
+(contact files) of intra-chain residue-residue contact data
+domainalign      Generates DAF files (domain alignment files) of structure-base
+d sequence alignments for nodes in a DCF file (domain classification file)
 domainrep        Reorder DCF file (domain classification file) so that the repr
 esentative structure of each user-specified node is given first
 domainreso       Removes low resolution domains from a DCF file (domain classif
 ication file)
+interface        Reads CCF files (clean coordinate files) and writes CON files
+(contact files) of inter-chain residue-residue contact data
 libgen           Generates various types of discriminating elements for each al
 ignment in a directory
 psiphi           Calculates phi and psi torsion angles from cleaned EMBOSS-styl
@@ -467,14 +471,21 @@ ce of discriminating elements (e.g. profiles for protein families). rocplot rea
 ds file(s) of hits from discriminator-database search(es), performs ROC analysi
 s on the hits, and writes graphs illustrating the diagnostic performance of the
  discriminating elements
-seqalign         Reads a DAF file (domain alignment file) and a DHF (domain hit
-s file) and writes a DAF file extended with the hits
+seqalign         Reads a DAF file (domain alignment file) and a DHF file (domai
+n hits file) and writes a DAF file extended with the hits
 seqfraggle       Removes fragments from DHF files (domain hits files) or other
 files of sequences
 seqsearch        Generate database hits (sequences) for nodes in a DCF file (do
 main classification file) by using PSI-BLAST
 seqsort          Reads DHF files (domain hits files) of database hits (sequence
 s) and removes hits of ambiguous classification
+seqwords         Generates DHF files (domain hits files) of database hits (sequ
+ences) for nodes in a DCF file (domain classification file) by keyword search o
+f UniProt
+siggen           Generates a sparse protein signature from an alignment and res
+idue contact data
+sigscan          Generates a DHF file (domain hits file) of hits (sequences) fr
+om scanning a signature against a sequence database
 
 PROTEIN COMPOSITION
 backtranseq      Back translate a protein sequence
@@ -524,6 +535,10 @@ myseq            Demonstration of sequence reading
 
 UTILS DATABASE CREATION
 aaindexextract   Extract data from AAINDEX
+allversusall     Does an all-versus-all global alignment for each set of sequen
+ces in an input directory and writes files of sequence similarity values
+cathparse        Reads raw CATH classification files and writes DCF file (domai
+n classification file)
 cutgextract      Extract data from CUTG
 domainer         Reads CCF files (clean coordinate files) for proteins and writ
 es CCF files for domains, taken from a DCF file (domain classification file)
@@ -532,8 +547,15 @@ on file). The file must contain domain sequence information, which can be added
  by using DOMAINSEQS
 domainseqs       Adds sequence records to a DCF file (domain classification fil
 e)
+domainsse        Adds secondary structure records to a DCF file (domain classif
+ication file)
+hetparse         Converts raw dictionary of heterogen groups to a file in EMBL-
+like format
 pdbparse         Parses PDB files and writes CCF files (clean coordinate files)
  for proteins
+pdbplus          Add residue solvent accessibility and secondary structure data
+ to a CCF file (clean coordinate file) for a protein or domain
+pdbtosp          Convert raw swissprot:PDB equivalence file to EMBL-like format
 printsextract    Extract data from PRINTS
 prosextract      Builds the PROSITE motif database for patmatmotifs to search
 rebaseextract    Extract data from REBASE
@@ -541,6 +563,11 @@ scopparse        Reads raw SCOP classification files and writes a DCF file (dom
 ain classification file)
 seqnr            Removes redundancy from DHF files (domain hits files) or other
  files of sequences
+sites            Reads CCF files (clean coordinate files) and writes CON files
+(contact files) of residue-ligand contact data for domains in a DCF file (domai
+n classification file)
+ssematch         Searches a DCF file (domain classification file) for secondary
+ structure matches
 tfextract        Extract data from TRANSFAC
 
 UTILS DATABASE INDEXING
@@ -571,12 +598,16 @@ acdtable         Creates an HTML table from an ACD file
 acdtrace         ACD compiler on-screen trace
 acdvalid         ACD file validation
 alignrunner      Runs alignment program on all sequence pairs in a directory
+allversusall     Does an all-versus-all global alignment for each set of sequen
+ces in an input directory and writes files of sequence similarity values
 antigenic        Finds antigenic sites in proteins
 backtranseq      Back translate a protein sequence
 banana           Bending and curvature plot in B-DNA
 biosed           Replace or delete sequence sections
 btwisted         Calculates the twisting in a B-DNA sequence
 cai              CAI codon adaptation index
+cathparse        Reads raw CATH classification files and writes DCF file (domai
+n classification file)
 chaos            Create a chaos game representation plot for a sequence
 charge           Protein charge plot
 checktrans       Reports STOP codons and ORF statistics of a protein
@@ -590,6 +621,8 @@ contactalign     EMBOSS implementation of Damian Counsell's 2.5-D alignment alg
 orithm
 contactcount     Counts specific versus non-specific contacts in a directory of
  cleaned protein chain contact files
+contacts         Reads CCF files (clean coordinate files) and writes CON files
+(contact files) of intra-chain residue-residue contact data
 cpgplot          Plot CpG rich areas
 cpgreport        Reports all CpG rich regions
 crystalball      Answers every drug discovery question you have about this sequ
@@ -608,8 +641,8 @@ descseq          Alter the name or description of a sequence
 diffseq          Find differences between nearly identical sequences
 digest           Protein proteolytic enzyme or reagent cleavage digest
 distmat          Creates a distance matrix from multiple alignments
-domainalign      Generates structure-based sequence alignments for nodes in a D
-CF file (domain classification file)
+domainalign      Generates DAF files (domain alignment files) of structure-base
+d sequence alignments for nodes in a DCF file (domain classification file)
 domainer         Reads CCF files (clean coordinate files) for proteins and writ
 es CCF files for domains, taken from a DCF file (domain classification file)
 domainnr         Removes redundant domains from a DCF file (domain classificati
@@ -621,10 +654,12 @@ domainreso       Removes low resolution domains from a DCF file (domain classif
 ication file)
 domainseqs       Adds sequence records to a DCF file (domain classification fil
 e)
+domainsse        Adds secondary structure records to a DCF file (domain classif
+ication file)
 dotmatcher       Displays a thresholded dotplot of two sequences
 dotpath          Displays a non-overlapping wordmatch dotplot of two sequences
 dottup           Displays a wordmatch dotplot of two sequences
-dreg             regular expression search of a nucleotide sequence
+dreg             Regular expression search of a nucleotide sequence
 ealistat         Statistics for multiple alignment files
 eclique          Largest clique program
 econsense        Majority-rule and strict consensus tree
@@ -641,7 +676,7 @@ ednapars         DNA parsimony algorithm
 ednapenny        Penny algorithm for DNA
 edollop          Dollo and polymorphism parsimony algorithm
 edolpenny        Penny algorithm Dollo or polymorphism
-efactor          multistate to binary recoding program
+efactor          Multistate to binary recoding program
 efitch           Fitch-Margoliash and Least-Squares Distance Methods
 egendist         Genetic Distance Matrix program
 ehmmalign        Align sequences with an HMM
@@ -728,10 +763,14 @@ garnier          Predicts protein secondary structure
 geecee           Calculates the fractional GC content of nucleic acid sequences
 getorf           Finds and extracts open reading frames (ORFs)
 helixturnhelix   Report nucleic acid binding motifs
+hetparse         Converts raw dictionary of heterogen groups to a file in EMBL-
+like format
 hmoment          Hydrophobic moment calculation
 iep              Calculates the isoelectric point of a protein
 infoalign        Information on a multiple sequence alignment
 infoseq          Displays some simple information about sequences
+interface        Reads CCF files (clean coordinate files) and writes CON files
+(contact files) of inter-chain residue-residue contact data
 isochore         Plots isochores in large DNA sequences
 libgen           Generates various types of discriminating elements for each al
 ignment in a directory
@@ -770,6 +809,9 @@ patmatdb         Search a protein sequence with a motif
 patmatmotifs     Search a PROSITE motif database with a protein sequence
 pdbparse         Parses PDB files and writes CCF files (clean coordinate files)
  for proteins
+pdbplus          Add residue solvent accessibility and secondary structure data
+ to a CCF file (clean coordinate file) for a protein or domain
+pdbtosp          Convert raw swissprot:PDB equivalence file to EMBL-like format
 pepcoil          Predicts coiled coil regions
 pepinfo          Plots simple amino acid properties in parallel
 pepnet           Displays proteins as a helical net
@@ -815,8 +857,8 @@ gold standard structure-structure alignment
 scorerrunner     Runs scorer to compare ordered pairs of substituted seqs in tw
 o directories and write the scores to a third
 seealso          Finds programs sharing group names
-seqalign         Reads a DAF file (domain alignment file) and a DHF (domain hit
-s file) and writes a DAF file extended with the hits
+seqalign         Reads a DAF file (domain alignment file) and a DHF file (domai
+n hits file) and writes a DAF file extended with the hits
 seqfraggle       Removes fragments from DHF files (domain hits files) or other
 files of sequences
 seqmatchall      Does an all-against-all comparison of a set of sequences
@@ -828,6 +870,9 @@ seqsearch        Generate database hits (sequences) for nodes in a DCF file (do
 main classification file) by using PSI-BLAST
 seqsort          Reads DHF files (domain hits files) of database hits (sequence
 s) and removes hits of ambiguous classification
+seqwords         Generates DHF files (domain hits files) of database hits (sequ
+ences) for nodes in a DCF file (domain classification file) by keyword search o
+f UniProt
 showalign        Displays a multiple sequence alignment
 showdb           Displays information on the currently available databases
 showfeat         Show features of a sequence
@@ -835,11 +880,20 @@ showorf          Pretty output of DNA translations
 showseq          Display a sequence with features, translation etc
 shuffleseq       Shuffles a set of sequences maintaining composition
 sigcleave        Reports protein signal cleavage sites
+siggen           Generates a sparse protein signature from an alignment and res
+idue contact data
+sigscan          Generates a DHF file (domain hits file) of hits (sequences) fr
+om scanning a signature against a sequence database
 silent           Silent mutation restriction enzyme scan
 sirna            Finds siRNA duplexes in mRNA
+sites            Reads CCF files (clean coordinate files) and writes CON files
+(contact files) of residue-ligand contact data for domains in a DCF file (domai
+n classification file)
 sixpack          Display a DNA sequence with 6-frame translation and ORFs
 skipseq          Reads and writes (returns) sequences, skipping the first few
 splitter         Split a sequence into (overlapping) smaller sequences
+ssematch         Searches a DCF file (domain classification file) for secondary
+ structure matches
 stretcher        Finds the best global alignment between two sequences
 stssearch        Searches a DNA database for matches with a set of STS primers
 substitute       Substitutes matches from first (query) sequence of two aligned
@@ -1268,13 +1322,6 @@ ALIGNMENT LOCAL
    Program name                      Description
    matcher      Finds the best local alignments between two sequences
    [Part of this file has been deleted for brevity]
-   sigcleave    Reports protein signal cleavage sites
-
-PROTEIN MUTATION
-
-   Program name                     Description
-   msbar        Mutate sequence beyond all recognition
-   shuffleseq   Shuffles a set of sequences maintaining composition
 
 PROTEIN PROFILES
 
@@ -1294,6 +1341,11 @@ UTILS DATABASE CREATION
 
    Program name Description
    aaindexextract Extract data from AAINDEX
+   allversusall Does an all-versus-all global alignment for each set of
+   sequences in an input directory and writes files of sequence
+   similarity values
+   cathparse Reads raw CATH classification files and writes DCF file
+   (domain classification file)
    cutgextract Extract data from CUTG
    domainer Reads CCF files (clean coordinate files) for proteins and
    writes CCF files for domains, taken from a DCF file (domain
@@ -1303,8 +1355,15 @@ UTILS DATABASE CREATION
    information, which can be added by using DOMAINSEQS
    domainseqs Adds sequence records to a DCF file (domain classification
    file)
+   domainsse Adds secondary structure records to a DCF file (domain
+   classification file)
+   hetparse Converts raw dictionary of heterogen groups to a file in
+   EMBL-like format
    pdbparse Parses PDB files and writes CCF files (clean coordinate
    files) for proteins
+   pdbplus Add residue solvent accessibility and secondary structure data
+   to a CCF file (clean coordinate file) for a protein or domain
+   pdbtosp Convert raw swissprot:PDB equivalence file to EMBL-like format
    printsextract Extract data from PRINTS
    prosextract Builds the PROSITE motif database for patmatmotifs to
    search
@@ -1313,6 +1372,11 @@ UTILS DATABASE CREATION
    (domain classification file)
    seqnr Removes redundancy from DHF files (domain hits files) or other
    files of sequences
+   sites Reads CCF files (clean coordinate files) and writes CON files
+   (contact files) of residue-ligand contact data for domains in a DCF
+   file (domain classification file)
+   ssematch Searches a DCF file (domain classification file) for
+   secondary structure matches
    tfextract Extract data from TRANSFAC
 
 UTILS DATABASE INDEXING

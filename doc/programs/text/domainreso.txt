@@ -153,7 +153,7 @@ CH   A CHAIN; . START; . END;
                                   Records for residue solvent accessibility
                                   and secondary structure are added to the
                                   file by using PDBPLUS.
-  [-dcfin]             infile     This option specifies the name of DCF file
+  [-dcfinfile]         infile     This option specifies the name of DCF file
                                   (domain classification file) (input). A
                                   'domain classification file' contains
                                   classification and other data for domains
@@ -166,7 +166,7 @@ CH   A CHAIN; . START; . END;
                                   inclusion (Angstroms). Domains exceeding the
                                   threshold for inclusion (Angstroms) will
                                   not be given in the output file.
-  [-dcfout]            outfile    This option specifies the name of DCF file
+  [-dcfoutfile]        outfile    This option specifies the name of DCF file
                                   (domain classification file) (output). A
                                   'domain classification file' contains
                                   classification and other data for domains
@@ -180,7 +180,7 @@ CH   A CHAIN; . START; . END;
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
-   "-dcfout" associated qualifiers
+   "-dcfoutfile" associated qualifiers
    -odirectory3        string     Output directory
 
    General qualifiers:
@@ -209,7 +209,7 @@ CH   A CHAIN; . START; . END;
    data that is self-consistent and error-corrected. Records for residue
    solvent accessibility and secondary structure are added to the file by
    using PDBPLUS. Directory with files ./
-   [-dcfin]
+   [-dcfinfile]
    (Parameter 2) This option specifies the name of DCF file (domain
    classification file) (input). A 'domain classification file' contains
    classification and other data for domains from SCOP or CATH, in DCF
@@ -219,7 +219,7 @@ CH   A CHAIN; . START; . END;
    -threshold This option specifies the threshold for inclusion
    (Angstroms). Domains exceeding the threshold for inclusion (Angstroms)
    will not be given in the output file. Any numeric value 2.8
-   [-dcfout]
+   [-dcfoutfile]
    (Parameter 3) This option specifies the name of DCF file (domain
    classification file) (output). A 'domain classification file' contains
    classification and other data for domains from SCOP or CATH, in DCF

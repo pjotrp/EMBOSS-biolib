@@ -165,11 +165,11 @@ ALLVERSUSALL uses a residue substitution matrix.
 
 <pre>
    Standard (Mandatory) qualifiers:
-  [-seqin]             dirlist    This option specifies the location of
-                                  sequence files (input).
-  [-datout]            directory  This option specifies the location of
+  [-seqinpath]         dirlist    This option specifies the location of
+                                  sequence files (input)
+  [-datoutdir]         outdir     This option specifies the location of
                                   sequence similarity data files (output).
-   -logf               outfile    This option specifies the name of
+   -logfile            outfile    This option specifies the name of
                                   ALLVERSUSALL log file (output). The log file
                                   contains messages about any errors arising
                                   while ALLVERSUSALL ran.
@@ -205,7 +205,7 @@ ALLVERSUSALL uses a residue substitution matrix.
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
-   "-logf" associated qualifiers
+   "-logfile" associated qualifiers
    -odirectory         string     Output directory
 
    General qualifiers:
@@ -235,21 +235,21 @@ ALLVERSUSALL uses a residue substitution matrix.
 </tr>
 
 <tr>
-<td>[-seqin]<br>(Parameter 1)</td>
-<td>This option specifies the location of sequence files (input).</td>
+<td>[-seqinpath]<br>(Parameter 1)</td>
+<td>This option specifies the location of sequence files (input)</td>
 <td>Directory with files</td>
 <td>./</td>
 </tr>
 
 <tr>
-<td>[-datout]<br>(Parameter 2)</td>
+<td>[-datoutdir]<br>(Parameter 2)</td>
 <td>This option specifies the location of sequence similarity data files (output).</td>
-<td>Directory</td>
+<td>Output directory</td>
 <td>./</td>
 </tr>
 
 <tr>
-<td>-logf</td>
+<td>-logfile</td>
 <td>This option specifies the name of ALLVERSUSALL log file (output). The log file contains messages about any errors arising while ALLVERSUSALL ran.</td>
 <td>Output file</td>
 <td>ALLVERSUSALL.log</td>
@@ -306,10 +306,10 @@ An example of interactive use of ALLVERSUSALL is shown below.
 
 % <b>allversusall </b>
 Does an all-versus-all global alignment for each set of sequences in an
-input directory and writes files of sequence similarity values.
-Location of sequence files (input). [./]: <b>allversusall/</b>
-Location of sequence similarity data files (output). [./]: <b></b>
-Name allversusall log file (output). [ALLVERSUSALL.log]: <b></b>
+input directory and writes files of sequence similarity values
+Location of sequence files (input [./]: <b>allversusall/</b>
+Location of sequence similarity data files (output) [./]: <b></b>
+Name allversusall log file (output) [ALLVERSUSALL.log]: <b></b>
 
 Processing /ebi/services/idata/pmr/hgmp/test/data/structure/allversusall/swtiny1.fasta
 Processing /ebi/services/idata/pmr/hgmp/test/data/structure/allversusall/swtiny2.fasta
@@ -404,12 +404,12 @@ Standard N&W type alignment.
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
 <tr><td><a href="../../apps/aaindexextract.html">aaindexextract</a></td><td>Extract data from AAINDEX</td></tr>
-<tr><td><a href="../../apps/cathparse.html">cathparse</a></td><td>Reads raw CATH classification files and writes DCF file (domain classification file)</td></tr>
+<tr><td><a href="cathparse.html">cathparse</a></td><td>Reads raw CATH classification files and writes DCF file (domain classification file)</td></tr>
 <tr><td><a href="../../apps/cutgextract.html">cutgextract</a></td><td>Extract data from CUTG</td></tr>
 <tr><td><a href="domainer.html">domainer</a></td><td>Reads CCF files (clean coordinate files) for proteins and writes CCF files for domains, taken from a DCF file (domain classification file)</td></tr>
 <tr><td><a href="domainnr.html">domainnr</a></td><td>Removes redundant domains from a DCF file (domain classification file). The file must contain domain sequence information, which can be added by using DOMAINSEQS</td></tr>
 <tr><td><a href="domainseqs.html">domainseqs</a></td><td>Adds sequence records to a DCF file (domain classification file)</td></tr>
-<tr><td><a href="../../apps/domainsse.html">domainsse</a></td><td>Adds secondary structure records to a DCF file (domain classification file)</td></tr>
+<tr><td><a href="domainsse.html">domainsse</a></td><td>Adds secondary structure records to a DCF file (domain classification file)</td></tr>
 <tr><td><a href="hetparse.html">hetparse</a></td><td>Converts raw dictionary of heterogen groups to a file in EMBL-like format</td></tr>
 <tr><td><a href="pdbparse.html">pdbparse</a></td><td>Parses PDB files and writes CCF files (clean coordinate files) for proteins</td></tr>
 <tr><td><a href="pdbplus.html">pdbplus</a></td><td>Add residue solvent accessibility and secondary structure data to a CCF file (clean coordinate file) for a protein or domain</td></tr>
@@ -420,7 +420,7 @@ Standard N&W type alignment.
 <tr><td><a href="scopparse.html">scopparse</a></td><td>Reads raw SCOP classification files and writes a DCF file (domain classification file)</td></tr>
 <tr><td><a href="seqnr.html">seqnr</a></td><td>Removes redundancy from DHF files (domain hits files) or other files of sequences</td></tr>
 <tr><td><a href="sites.html">sites</a></td><td>Reads CCF files (clean coordinate files) and writes CON files (contact files) of residue-ligand contact data for domains in a DCF file (domain classification file)</td></tr>
-<tr><td><a href="../../apps/ssematch.html">ssematch</a></td><td>Searches a DCF file (domain classification file) for secondary structure matches</td></tr>
+<tr><td><a href="ssematch.html">ssematch</a></td><td>Searches a DCF file (domain classification file) for secondary structure matches</td></tr>
 <tr><td><a href="../../apps/tfextract.html">tfextract</a></td><td>Extract data from TRANSFAC</td></tr>
 </table>
 

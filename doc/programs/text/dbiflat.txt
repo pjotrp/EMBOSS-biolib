@@ -80,7 +80,7 @@ Command line arguments
                                   field
    -[no]systemsort     boolean    Use system sort utility
    -[no]cleanup        boolean    Clean up temporary files
-   -indexdirectory     outdir     Index directory
+   -indexoutdir        outdir     Index directory
 
    Associated qualifiers: (none)
    General qualifiers:
@@ -131,7 +131,7 @@ Command line arguments
    Any string is accepted -T . -k 1,1
    -[no]systemsort Use system sort utility Boolean value Yes/No Yes
    -[no]cleanup Clean up temporary files Boolean value Yes/No Yes
-   -indexdirectory Index directory Output directory .
+   -indexoutdir Index directory Output directory .
 
 Input file format
 

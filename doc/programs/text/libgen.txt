@@ -461,7 +461,7 @@ LLSAEDGKDYEVEAGCGDERAGAGAVADPIKGFKILLIPSRNFAALRLDREXFD
   6.1 COMMAND LINE ARGUMENTS
 
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-dafin]             dirlist    This option specifies the location of DAF
+  [-dafinpath]         dirlist    This option specifies the location of DAF
                                   files (domain alignment files) (input). A
                                   'domain alignment file' contains a sequence
                                   alignment of domains belonging to the same
@@ -474,7 +474,7 @@ LLSAEDGKDYEVEAGCGDERAGAGAVADPIKGFKILLIPSRNFAALRLDREXFD
                                   alignments can be extended with sequence
                                   relatives (of unknown structure) by using
                                   SEQALIGN.
-   -matrixf            matrixf    This option specifies the residue
+   -matrixfile         matrixf    This option specifies the residue
                                   substitution matrix. Epprofile for Gribskov
                                   profiles or EBLOSUM62 otherwise.
    -mode               menu       This option specifies the mode of LIBGEN
@@ -512,7 +512,7 @@ LLSAEDGKDYEVEAGCGDERAGAGAVADPIKGFKILLIPSRNFAALRLDREXFD
                                   penalty to zero (or very low) and using the
                                   gap extension penalty to control gap
                                   scoring.
-  [-outdir]            directory  This option specifies the location of
+  [-outdir]            outdir     This option specifies the location of
                                   discriminator files (output). The
                                   discriminator files contain one of the
                                   supported profiles, including simple
@@ -542,7 +542,7 @@ LLSAEDGKDYEVEAGCGDERAGAGAVADPIKGFKILLIPSRNFAALRLDREXFD
 
 
    Standard (Mandatory) qualifiers Allowed values Default
-   [-dafin]
+   [-dafinpath]
    (Parameter 1) This option specifies the location of DAF files (domain
    alignment files) (input). A 'domain alignment file' contains a
    sequence alignment of domains belonging to the same SCOP or CATH
@@ -552,7 +552,7 @@ LLSAEDGKDYEVEAGCGDERAGAGAVADPIKGFKILLIPSRNFAALRLDREXFD
    structure only. Such alignments can be extended with sequence
    relatives (of unknown structure) by using SEQALIGN. Directory with
    files ./
-   -matrixf This option specifies the residue substitution matrix.
+   -matrixfile This option specifies the residue substitution matrix.
    Epprofile for Gribskov profiles or EBLOSUM62 otherwise. Comparison
    matrix file in EMBOSS data path Epprofile for Gribskov type, or
    EBLOSUM62
@@ -594,7 +594,7 @@ LLSAEDGKDYEVEAGCGDERAGAGAVADPIKGFKILLIPSRNFAALRLDREXFD
    profiles, including simple frequency matrices, Gribskov profiles,
    Hennikoff profiles, hidden Markov models (HMMER package), hidden
    Markov models (SAM-T2K package) and position-specific scoring
-   matrices. Directory ./
+   matrices. Output directory ./
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default

@@ -211,6 +211,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   Emassmod.dat
   Etcode.dat
   Evdw.dat
+  Ehet.dat
 
 
 DIRECTORY: /homes/pmr/local/share/EMBOSS/data/AAINDEX

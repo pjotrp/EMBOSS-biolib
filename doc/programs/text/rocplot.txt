@@ -787,78 +787,6 @@ hitsnames[1]: data2.hits
 
 
 
-LISTS OF HITS IN EACH FILE
->>>>>  FILE 0 >>>>>
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-TRUE
-
-
-  [Part of this file has been deleted for brevity]
-
-For hit     0 ntrue=   27 ntrue_sum=349.000
-For hit     0 ntrue=   28 ntrue_sum=349.000
-For hit     0 ntrue=   28 ntrue_sum=377.000
-For hit     0 ntrue=   28 ntrue_sum=405.000
-For hit     0 ntrue=   28 ntrue_sum=433.000
-For hit     0 ntrue=   28 ntrue_sum=461.000
-For hit     0 ntrue=   28 ntrue_sum=489.000
-For hit     0 ntrue=   28 ntrue_sum=517.000
-For hit     0 ntrue=   28 ntrue_sum=545.000
-For hit     0 ntrue=   28 ntrue_sum=573.000
-For hit     0 ntrue=   29 ntrue_sum=573.000
-For hit     0 ntrue=   30 ntrue_sum=573.000
-For hit     0 ntrue=   30 ntrue_sum=603.000
-For hit     0 ntrue=   30 ntrue_sum=633.000
-For hit     0 ntrue=   30 ntrue_sum=663.000
-For hit     0 ntrue=   30 ntrue_sum=693.000
-For hit     0 ntrue=   30 ntrue_sum=723.000
-For hit     0 ntrue=   30 ntrue_sum=753.000
-For hit     0 ntrue=   30 ntrue_sum=783.000
-For hit     0 ntrue=   30 ntrue_sum=813.000
-For hit     0 ntrue=   30 ntrue_sum=843.000
-For hit     0 ntrue=   30 ntrue_sum=873.000
-For hit     0 ntrue=   30 ntrue_sum=903.000
-For hit     0 ntrue=   30 ntrue_sum=933.000
-For hit     0 ntrue=   30 ntrue_sum=963.000
-For hit     0 ntrue=   30 ntrue_sum=993.000
-For hit     0 ntrue=   30 ntrue_sum=1023.000
-For hit     0 ntrue=   30 ntrue_sum=1053.000
-For hit     0 ntrue=   30 ntrue_sum=1083.000
-For hit     0 ntrue=   30 ntrue_sum=1113.000
-For hit     0 ntrue=   30 ntrue_sum=1143.000
-For hit     0 ntrue=   30 ntrue_sum=1173.000
-For hit     0 ntrue=   30 ntrue_sum=1203.000
-For hit     0 ntrue=   30 ntrue_sum=1233.000
-For hit     0 ntrue=   30 ntrue_sum=1263.000
-For hit     0 ntrue=   30 ntrue_sum=1293.000
 ROC NUMBER
 roc: 50
 
@@ -883,7 +811,7 @@ hitcnt[0]: 80
   6.1 COMMAND LINE ARGUMENTS
 
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-hitsfiles]         dirlist    This option specifies the directory of hits
+  [-hitsfilespath]     dirlist    This option specifies the directory of hits
                                   files (input). A 'hits file'contains a list
                                   of hits (e.g. from a prediction method) that
                                   are classified and rank-ordered on the
@@ -977,7 +905,7 @@ hitcnt[0]: 80
                                   points of 1-100 and 91 - 190 respectively
                                   are considered to be the same hit if the
                                   overlap threshold is 10 or less.
-  [-outdir]            directory  This option specifies the directory where
+  [-outdir]            outdir     This option specifies the directory where
                                   output files are written.
   [-rocbasename]       string     This option specifies the base name of ROC
                                   plot file(s) (output). A file of meta data
@@ -995,7 +923,7 @@ hitcnt[0]: 80
                                   also generated and, depending upon the mode
                                   rocplot is run in, a plot of the
                                   distribution of ROC values.
-   -outfdata           outfile    This option specifies the name of summary
+   -outfile            outfile    This option specifies the name of summary
                                   file (output). A text file summarising the
                                   analysis.
 *  -barbasename        string     This option specifies the base name of bar
@@ -1027,14 +955,14 @@ hitcnt[0]: 80
                                   as unique if they have different accession
                                   numbers (no requirement for overlapping
                                   ranges).
-   -errf               outfile    Name of error file (output).
+   -errfile            outfile    Name of error file (output).
 
    Associated qualifiers:
 
-   "-outfdata" associated qualifiers
+   "-outfile" associated qualifiers
    -odirectory         string     Output directory
 
-   "-errf" associated qualifiers
+   "-errfile" associated qualifiers
    -odirectory         string     Output directory
 
    General qualifiers:
@@ -1054,7 +982,7 @@ hitcnt[0]: 80
 
 
    Standard (Mandatory) qualifiers Allowed values Default
-   [-hitsfiles]
+   [-hitsfilespath]
    (Parameter 1) This option specifies the directory of hits files
    (input). A 'hits file'contains a list of hits (e.g. from a prediction
    method) that are classified and rank-ordered on the basis of score,
@@ -1128,7 +1056,7 @@ hitcnt[0]: 80
    threshold is 10 or less. Any integer value 10
    [-outdir]
    (Parameter 2) This option specifies the directory where output files
-   are written. Directory ./
+   are written. Output directory ./
    [-rocbasename]
    (Parameter 3) This option specifies the base name of ROC plot file(s)
    (output). A file of meta data that contains graphs that illustrate the
@@ -1141,7 +1069,7 @@ hitcnt[0]: 80
    plot and value, are also generated and, depending upon the mode
    rocplot is run in, a plot of the distribution of ROC values. Any
    string is accepted _rocplot
-   -outfdata This option specifies the name of summary file (output). A
+   -outfile This option specifies the name of summary file (output). A
    text file summarising the analysis. Output file _summary
    -barbasename This option specifies the base name of bar chart for ROC
    value distribution (output). A bar chart giving the distribution of
@@ -1164,7 +1092,7 @@ hitcnt[0]: 80
    files are disregarded, two hits are classed as unique if they have
    different accession numbers (no requirement for overlapping ranges).
    Boolean value Yes/No No
-   -errf Name of error file (output). Output file rocplot.errors
+   -errfile Name of error file (output). Output file rocplot.errors
 
   6.2 EXAMPLE SESSION
 

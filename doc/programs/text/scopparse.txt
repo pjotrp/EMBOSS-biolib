@@ -203,13 +203,13 @@ CH   A CHAIN; . START; . END;
   6.1 COMMAND LINE ARGUMENTS
 
    Standard (Mandatory) qualifiers:
-  [-infilea]           infile     This option specifies the name of raw SCOP
+  [-classfile]         infile     This option specifies the name of raw SCOP
                                   classification file dir.cla.scop.txt_X.XX
                                   (input). This is the raw SCOP classification
                                   file available at
                                   http://scop.mrc-lmb.cam.ac.uk/scop/parse/dir.
 cla.scop.txt_1.57.
-  [-infileb]           infile     This option specifies the name of raw SCOP
+  [-desfile]           infile     This option specifies the name of raw SCOP
                                   description file dir.des.scop.txt_X.XX
                                   (input). This is the raw SCOP description
                                   file available at
@@ -223,7 +223,7 @@ des.scop.txt_1.57.
                                   domains comprising segments from more than
                                   one chain. This is necessary if a continuous
                                   residue sequence is required.
-  [-dcf]               outfile    This option specifies the name of SCOP DCF
+  [-dcffile]           outfile    This option specifies the name of SCOP DCF
                                   file (domain classification file) (output).
                                   A 'domain classification file' contains
                                   classification and other data for domains
@@ -245,7 +245,7 @@ des.scop.txt_1.57.
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
-   "-dcf" associated qualifiers
+   "-dcffile" associated qualifiers
    -odirectory3        string     Output directory
 
    General qualifiers:
@@ -265,13 +265,13 @@ des.scop.txt_1.57.
 
 
    Standard (Mandatory) qualifiers Allowed values Default
-   [-infilea]
+   [-classfile]
    (Parameter 1) This option specifies the name of raw SCOP
    classification file dir.cla.scop.txt_X.XX (input). This is the raw
    SCOP classification file available at
    http://scop.mrc-lmb.cam.ac.uk/scop/parse/dir.cla.scop.txt_1.57. Input
    file Required
-   [-infileb]
+   [-desfile]
    (Parameter 2) This option specifies the name of raw SCOP description
    file dir.des.scop.txt_X.XX (input). This is the raw SCOP description
    file available at
@@ -283,7 +283,7 @@ des.scop.txt_1.57.
    -nomultichain This option specifies whether to omit domains comprising
    segments from more than one chain. This is necessary if a continuous
    residue sequence is required. Boolean value Yes/No No
-   [-dcf]
+   [-dcffile]
    (Parameter 3) This option specifies the name of SCOP DCF file (domain
    classification file) (output). A 'domain classification file' contains
    classification and other data for domains from the SCOP or CATH

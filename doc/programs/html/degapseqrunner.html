@@ -26,7 +26,7 @@ degapseqrunner
 <H2>
     Function
 </H2>
-[an error occurred while processing this directive]
+Runs degapseq program on all sequence pairs in a directory
 
 <!--
 DON'T WRITE ANYTHING HERE.
@@ -98,7 +98,8 @@ EDIT HERE
         Many examples illustrating different behaviours is good.
  -->
 
-[an error occurred while processing this directive]
+<i>Under development, no final example yet</i>
+
 
 
 
@@ -108,11 +109,41 @@ EDIT HERE
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
-[an error occurred while processing this directive]
+   Standard (Mandatory) qualifiers:
+  [-gappedseqsdir]     dirlist    Input directory of files containing sequence
+                                  pairs for degapping
+  [-pathtocommand]     directory  Directory where degapping executable lives
+  [-commandname]       string     Name of degapping executable
+  [-degappedseqsoutdir] outdir     Name of directory containing degapped
+                                  sequence pairs
+  [-outfilesuffix]     string     Appended to end of all output file names
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers: (none)
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+
+
 </pre>
 </td></tr></table>
 <P>
-[an error occurred while processing this directive]
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+Error: File /homes/pmr/local/share/EMBOSS/acd/degapseqrunner.acd line 12: (gappedseqsdir) Unknown attribute 'name'
+
+
 
 <!--
 DON'T WRITE ANYTHING HERE.
@@ -141,7 +172,8 @@ IT IS DONE FOR YOU.
 
 <p>
 
-[an error occurred while processing this directive]
+<i>Under development, no example input file(s) yet</i>
+
 
 
 
@@ -169,7 +201,8 @@ outputs a report format file. The default format is ...
 
 <p>
 
-[an error occurred while processing this directive]
+<i>Under development, no example output file(s) yet</i>
+
 
 
 
@@ -315,7 +348,36 @@ None.
     See also
 </H2>
 -->
-[an error occurred while processing this directive]
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th><th>Description</th></tr>
+<tr><td><a href="../../apps/biosed.html">biosed</a></td><td>Replace or delete sequence sections</td></tr>
+<tr><td><a href="../../apps/cutseq.html">cutseq</a></td><td>Removes a specified section from a sequence</td></tr>
+<tr><td><a href="../../apps/degapseq.html">degapseq</a></td><td>Removes gap characters from sequences</td></tr>
+<tr><td><a href="../../apps/descseq.html">descseq</a></td><td>Alter the name or description of a sequence</td></tr>
+<tr><td><a href="../../apps/entret.html">entret</a></td><td>Reads and writes (returns) flatfile entries</td></tr>
+<tr><td><a href="../../apps/extractfeat.html">extractfeat</a></td><td>Extract features from a sequence</td></tr>
+<tr><td><a href="../../apps/extractseq.html">extractseq</a></td><td>Extract regions from a sequence</td></tr>
+<tr><td><a href="../../apps/listor.html">listor</a></td><td>Writes a list file of the logical OR of two sets of sequences</td></tr>
+<tr><td><a href="../../apps/maskfeat.html">maskfeat</a></td><td>Mask off features of a sequence</td></tr>
+<tr><td><a href="../../apps/maskseq.html">maskseq</a></td><td>Mask off regions of a sequence</td></tr>
+<tr><td><a href="../../apps/newseq.html">newseq</a></td><td>Type in a short new sequence</td></tr>
+<tr><td><a href="../../apps/noreturn.html">noreturn</a></td><td>Removes carriage return from ASCII files</td></tr>
+<tr><td><a href="../../apps/notseq.html">notseq</a></td><td>Excludes a set of sequences and writes out the remaining ones</td></tr>
+<tr><td><a href="../../apps/nthseq.html">nthseq</a></td><td>Writes one sequence from a multiple set of sequences</td></tr>
+<tr><td><a href="../../apps/pasteseq.html">pasteseq</a></td><td>Insert one sequence into another</td></tr>
+<tr><td><a href="../../apps/revseq.html">revseq</a></td><td>Reverse and complement a sequence</td></tr>
+<tr><td><a href="../../apps/seqret.html">seqret</a></td><td>Reads and writes (returns) sequences</td></tr>
+<tr><td><a href="../../apps/seqretsplit.html">seqretsplit</a></td><td>Reads and writes (returns) sequences in individual files</td></tr>
+<tr><td><a href="../../apps/skipseq.html">skipseq</a></td><td>Reads and writes (returns) sequences, skipping the first few</td></tr>
+<tr><td><a href="../../apps/splitter.html">splitter</a></td><td>Split a sequence into (overlapping) smaller sequences</td></tr>
+<tr><td><a href="../../apps/trimest.html">trimest</a></td><td>Trim poly-A tails off EST sequences</td></tr>
+<tr><td><a href="../../apps/trimseq.html">trimseq</a></td><td>Trim ambiguous bits off the ends of sequences</td></tr>
+<tr><td><a href="../../apps/union.html">union</a></td><td>Reads sequence fragments and builds one sequence</td></tr>
+<tr><td><a href="../../apps/vectorstrip.html">vectorstrip</a></td><td>Strips out DNA between a pair of vector sequences</td></tr>
+<tr><td><a href="../../apps/yank.html">yank</a></td><td>Reads a sequence range, appends the full USA to a list file</td></tr>
+</table>
+
 <!-- 
         Add any comments about other associated programs (to prepare
         data files?) that seealso doesn't find. 
@@ -345,7 +407,8 @@ Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
     History
 </H2>
 
-[an error occurred while processing this directive]
+
+
 
 
 
@@ -370,7 +433,8 @@ This program is intended to be used by everyone and everything, from naive users
     Comments
 </H2>
 
-[an error occurred while processing this directive]
+None
+
 
 </BODY>
 </HTML>
