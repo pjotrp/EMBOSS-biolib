@@ -159,7 +159,7 @@ static void alignWriteSimple (AjPAlign thys, AjPSeqset seqset) {
 
   AjPFile outf = thys->File;
   int nseq = ajSeqsetSize(seqset);
-  int nali =ajListLength(thys->Data);
+  int nali;
   AjPStr *seqs = NULL;
   AlignPData* pdata;
   AlignPData data;
@@ -176,7 +176,7 @@ static void alignWriteSimple (AjPAlign thys, AjPSeqset seqset) {
   if (thys->Width)
     iwidth = thys->Width;
 
-  ajListToArray (thys->Data, (void***) &pdata);
+  nali = ajListToArray (thys->Data, (void***) &pdata);
 
   AJCNEW (seqs, nseq);
   for (i=0; i<nseq; i++) {
