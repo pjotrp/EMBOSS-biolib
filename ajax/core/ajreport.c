@@ -41,6 +41,7 @@
 ** Ajax feature report formats 
 **
 ** @attr Name [char*] Format name
+** @attr Desc [char*] Format description
 ** @attr Mintags [ajint] Minimum number of special tags needed
 ** @attr Showseq [AjBool] ajTrue if sequence is to be included
 ** @attr Nuc [AjBool] ajTrue if format can work with nucleotide sequences
@@ -51,6 +52,7 @@
 typedef struct ReportSFormat
 {
     char *Name;
+    char *Desc;
     ajint Mintags;
     AjBool Showseq;
     AjBool Nuc;
@@ -123,33 +125,54 @@ static char* reportCharname(const AjPReport thys);
 
 static ReportOFormat reportFormat[] =
 {
-   /* Name  MinTags  Showseq  Nuc      Prot     Function */
-    /* standard feature formats */
-    {"embl",      0, AJFALSE, AJTRUE,  AJFALSE, reportWriteEmbl},
-    {"genbank",   0, AJFALSE, AJTRUE,  AJFALSE, reportWriteGenbank},
-    {"gff",       0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteGff},
-    {"pir",       0, AJFALSE, AJFALSE, AJTRUE,  reportWritePir},
-    {"swiss",     0, AJFALSE, AJFALSE, AJTRUE,  reportWriteSwiss},
+/*   Name         Description */
+/* MinTags  Showseq  Nuc      Prot     Function */
+   /* standard feature formats */
+    {"embl",      "EMBL feature format",
+	 0, AJFALSE, AJTRUE,  AJFALSE, reportWriteEmbl},
+    {"genbank",   "Genbank feature format",
+	 0, AJFALSE, AJTRUE,  AJFALSE, reportWriteGenbank},
+    {"gff",       "GFF feature format",
+	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteGff},
+    {"pir",       "PIR feature format",
+	 0, AJFALSE, AJFALSE, AJTRUE,  reportWritePir},
+    {"swiss",     "Swissprot feature format",
+	 0, AJFALSE, AJFALSE, AJTRUE,  reportWriteSwiss},
     /* trace  for debug */
-    {"trace",     0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteTrace},
+    {"trace",     "Debugging trace of full internal data content",
+	 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteTrace},
     /* list file for input to other programs */
-    {"listfile",  0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteListFile},
+    {"listfile",  "EMBOSS list file of sequence USAs with ranges",
+	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteListFile},
     /* feature reports */
-    {"dbmotif",   0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteDbMotif},
-    {"diffseq",   0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteDiffseq},
+    {"dbmotif",   "Motif database hits",
+	 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteDbMotif},
+    {"diffseq",   "Differences between a pair of sequences",
+	 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteDiffseq},
 /*    cirdna/lindna input format - looks horrible in those programs */
-/*    {"draw",      0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteDraw},*/
-    {"excel",     0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteExcel},
-    {"feattable", 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteFeatTable},
-    {"motif",     0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteMotif},
-    {"nametable", 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteNameTable},
-    {"regions",   0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteRegions},
-    {"seqtable",  0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteSeqTable},
-    {"simple",    0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteSimple},
-    {"srs",       0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteSrs},
-    {"table",     0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteTable},
-    {"tagseq",    0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteTagseq},
-    {NULL, 0, 0, 0, 0, NULL}
+/*    {"draw",      "",
+	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteDraw},*/
+    {"excel",     "Tab-delimited file for import to Miscrosoft Excel",
+	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteExcel},
+    {"feattable", "EMBL format feature table with internal tags",
+	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteFeatTable},
+    {"motif",     "Motif report",
+	 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteMotif},
+    {"nametable", "Simple table with sequence name",
+	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteNameTable},
+    {"regions",   "Annotated sequence regions",
+	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteRegions},
+    {"seqtable",  "Simple table with sequence on each line",
+	 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteSeqTable},
+    {"simple",    "Simple report",
+	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteSimple},
+    {"srs",       "Simple report format for SRS",
+	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteSrs},
+    {"table",     "Simple table",
+	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteTable},
+    {"tagseq",    "Sequence with features marked below",
+	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteTagseq},
+    {NULL, NULL, 0, 0, 0, 0, NULL}
 };
 
 
@@ -2865,17 +2888,18 @@ void ajReportPrintFormat(AjPFile outf, AjBool full)
 
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "# report output formats\n");
-    ajFmtPrintF(outf, "# Name         Mintags Showseq Nuc Pro\n");
+    ajFmtPrintF(outf, "# Name         Mintags Showseq Nuc Pro Description\n");
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "RFormat {\n");
     for(i=0; reportFormat[i].Name; i++)
     {
-	ajFmtPrintF(outf, "  %-12s %7d     %3B %3B %3B\n",
+	ajFmtPrintF(outf, "  %-12s %7d     %3B %3B %3B '%s'\n",
 		     reportFormat[i].Name,
 		     reportFormat[i].Mintags,
 		     reportFormat[i].Showseq,
 		     reportFormat[i].Nuc,
-		     reportFormat[i].Prot);
+		     reportFormat[i].Prot,
+		     reportFormat[i].Name);
     }
     ajFmtPrintF(outf, "}\n\n");
 
