@@ -151,6 +151,8 @@ public class BuildJembossForm implements ActionListener
 
 // Help button
     JButton bhelp = new JButton("Help");
+    ImageIcon rfii = new ImageIcon("images/Information_button.gif");
+    bhelp.setIcon(rfii);
     bhelp.addActionListener(this);
 
 // Display results button
@@ -159,7 +161,10 @@ public class BuildJembossForm implements ActionListener
 
 
 // Go button
+    
     JButton bgo = new JButton("GO");
+    rfii = new ImageIcon("images/Go_button.gif");
+    bgo.setIcon(rfii);
     bgo.addActionListener(this);
 
 // Advanced options
