@@ -27,14 +27,15 @@ enum constant
     {
 	enumDebugLevel        =  0,
 	enumZeroContacts      =  0,
-	enumNoCmapLine        =  0,
 	enumFirstResType      =  0,
 	enumFirstContactIndex =  0,
+	enumNoCmapLine        =  0,
+	enumTraceArrayOffset  =  1,
 	enumLastContactIndex  =  1,
 	enumHeaderCmapLine    =  1,
 	enumBlankCmapLine     =  2,
 	enumContactCmapLine   =  3,
-	enumTraceArrayOffset  =  1,
+	enumMaxContactsPerRes = 20,
 	enumTotalResTypes     = 30,
 	enumNoResTypeMatch    = 29,
 	enumMaxCmapLineLen    = 80
@@ -102,7 +103,6 @@ static AjBool read_cmap_line (AjPFile ajpFileOriginalCmap,
 			      AjPCmapHeader *pAjpCmapHeader,
 			      AjPContact *pAjpContactToRead);
 
-
 static AjBool parse_cmap_line (AjPStr *pAjpStrCmapLine,
 			       AjPContact *pAjpContactLoaded);
 
@@ -128,10 +128,14 @@ static AjBool string3_to_ajint1 (AjPStr ajpStrThreeLetterCode);
 
 static AjPStr ajint1_to_string3 (ajint ajIntCode);
 
-static void debug_int_map (AjPInt2d *pAjpInt2dCmapSummary,
-			   AjPInt2d *ajpInt2dTemplateContacts,
+static void debug_int_map (AjPInt2d *pAjpInt2dSummary,
+			   AjPInt2d *ajpInt2dContacts,
 			   char *pcSeq,
 			   ajint ajIntSeqLen);
+
+static void debug_int_summary (AjPInt2d *pAjpInt2dSummary,
+			       char *pcSeq,
+			       ajint ajIntSeqLen);
 
 static AjPInt2d get_int_map (ajint ajIntAcrossSeqLen);
 
@@ -278,10 +282,15 @@ int main(int argc , char **argv)
     pcSeqAcross = ajSeqCharCopy(ajpSeqAcross);
 
     /* DDDDEBUGGING */
+    debug_int_summary(&ajpInt2dCmapSummary,
+		      pcSeqAcross,
+		      ajIntAcrossSeqLen);
+
     debug_int_map(&ajpInt2dCmapSummary,
 		  &ajpInt2dCmapResTypes,
 		  pcSeqAcross,
 		  ajIntAcrossSeqLen);
+
     debug_int_map(&ajpInt2dCmapSummary,
 		  &ajpInt2dCmapPositions,
 		  pcSeqAcross,
@@ -300,10 +309,12 @@ int main(int argc , char **argv)
 		  &ajpInt2dCmapResTypes,
 		  pcSeqAcross,
 		  ajIntAcrossSeqLen);
+
     debug_int_map(&ajpInt2dCmapSummary,
 		  &ajpInt2dCmapPositions,
 		  pcSeqAcross,
 		  ajIntAcrossSeqLen);
+
     print_cmap_header(&ajpCmapHeader);
 
     /* DDDD DEBUG DUMMY FILENAME BELOW */
@@ -450,13 +461,14 @@ static AjBool read_cmap_file (AjPFile ajpFileOriginalCmap,
 
     /* structure to hold header text */
     AjPCmapHeader ajpCmapHeader = NULL;
+
     /* arrays to hold contacts */
     AjPInt2d ajpInt2dCmapSummary = NULL;
     AjPInt2d ajpInt2dCmapResTypes = NULL;
     AjPInt2d ajpInt2dCmapPositions = NULL;
     /* dereference pointers to same */
     ajpCmapHeader = *pAjpCmapHeader;
-    ajpInt2dCmapResTypes = *pAjpInt2dCmapSummary;
+    ajpInt2dCmapSummary = *pAjpInt2dCmapSummary;
     ajpInt2dCmapResTypes = *pAjpInt2dCmapResTypes;
     ajpInt2dCmapPositions = *pAjpInt2dCmapPositions;    
 
@@ -472,11 +484,12 @@ static AjBool read_cmap_file (AjPFile ajpFileOriginalCmap,
 
     /* there are no contacts in any of the columns of the contact arrays yet */
     ajIntTempContacts = enumZeroContacts;
+
     for(ajIntColumnCount = 0; ajIntColumnCount < ajIntSeqLen; ajIntColumnCount++)
 	ajInt2dPut(&ajpInt2dCmapSummary,
-		   ajIntTempContacts,
 		   enumLastContactIndex,
-		   ajIntColumnCount);
+		   ajIntColumnCount,
+		   ajIntTempContacts);
 
     /* reserve memory for current contact object */
     ajpContactTemp = ajContactNew();
@@ -554,7 +567,7 @@ static AjBool read_cmap_file (AjPFile ajpFileOriginalCmap,
 
 /* @funcstatic read_cmap_line ************************************************
 **
-** reads single contact from ajxyz contact map file and returns an ajint
+** reads single line from ajxyz contact map file and returns an ajint
 **  corresponding to type of line 0: no line, 1: header line, 2: contact line
 **
 ** @param [r] ajpFileOriginalCmap [AjPFile]  input file stream of current cmap
@@ -936,23 +949,23 @@ static AjPInt2d get_cmap_summary (ajint ajIntAcrossSeqLen)
 {
     ajint ajIntColumnCount;
     
-    AjPInt2d ajpInt2dContacts = NULL;
+    AjPInt2d ajpInt2dSummary = NULL;
 
-    ajpInt2dContacts = ajInt2dNewL(ajIntAcrossSeqLen);
+    ajpInt2dSummary = ajInt2dNewL(ajIntAcrossSeqLen);
 
     for(ajIntColumnCount = 0;ajIntColumnCount < ajIntAcrossSeqLen;ajIntColumnCount++)
     {
-	ajInt2dPut(&ajpInt2dContacts,
+	ajInt2dPut(&ajpInt2dSummary,
 		   enumFirstContactIndex,
-		   enumZeroContacts,
-		   ajIntColumnCount);
-	ajInt2dPut(&ajpInt2dContacts,
+		   ajIntColumnCount,
+		   enumZeroContacts);
+	ajInt2dPut(&ajpInt2dSummary,
 		   enumLastContactIndex,
-		   enumZeroContacts,
-		   ajIntColumnCount);
+		   ajIntColumnCount,
+		   enumZeroContacts);
     }
 	
-    return ajpInt2dContacts;
+    return ajpInt2dSummary;
 }
 
 
@@ -969,20 +982,24 @@ static AjPInt2d get_cmap_summary (ajint ajIntAcrossSeqLen)
 
 static AjPInt2d get_int_map (ajint ajIntAcrossSeqLen)
 {
-    ajint ajIntCount;
+    ajint ajIntRowCount;
+    ajint ajIntColumnCount;
     
     AjPInt2d ajpInt2dContacts = NULL;
 
     ajpInt2dContacts = ajInt2dNewL(ajIntAcrossSeqLen);
 
-    for(ajIntCount = 0;ajIntCount < ajIntAcrossSeqLen;ajIntCount++)
+    for(ajIntRowCount = 0;ajIntRowCount < enumMaxContactsPerRes;ajIntRowCount++)
     {
-	ajInt2dPut(&ajpInt2dContacts,
-		   enumLastContactIndex,
-		   ajIntCount,
-		   enumZeroContacts);
+	for(ajIntColumnCount = 0;ajIntColumnCount < ajIntAcrossSeqLen;ajIntColumnCount++)
+	{
+	    ajInt2dPut(&ajpInt2dContacts,
+		       ajIntRowCount,
+		       ajIntColumnCount,
+		       enumZeroContacts);
+	}
     }
-	
+
     return ajpInt2dContacts;
 }
 
@@ -1277,9 +1294,9 @@ static void debug_int_map(AjPInt2d *pAjpInt2dCmapSummary,
 /*                                                                            */
 /* checks that array contacts is properly built                               */
 
-static void debug_int_map(AjPInt2d *pAjpInt2dCmapSummary,
-			  char *pcSeq,
-			  ajint ajIntSeqLen)
+static void debug_int_summary(AjPInt2d *pAjpInt2dCmapSummary,
+			      char *pcSeq,
+			      ajint ajIntSeqLen)
 {
     char cTemp;
     
@@ -1290,11 +1307,9 @@ static void debug_int_map(AjPInt2d *pAjpInt2dCmapSummary,
     ajint ajIntTempSecondRes;
     
     AjPInt2d ajpInt2dCmapSummary = NULL;
-    AjPInt2d ajpInt2dCmapContacts = NULL;
     
     /* dereference pointers */
     ajpInt2dCmapSummary = *pAjpInt2dCmapSummary;
-    ajpInt2dCmapContacts = *pAjpInt2dCmapContacts;
     
     ajFmtPrint("====================================================================================================\n");
     ajFmtPrint("====================================================================================================\n");
@@ -1321,7 +1336,7 @@ static void debug_int_map(AjPInt2d *pAjpInt2dCmapSummary,
 	if(ajIntTempLastContact)
 	    for (ajIntRowCount = 0;ajIntRowCount < ajIntTempLastContact;ajIntRowCount++)
 	    {
-		ajIntTempSecondRes = ajInt2dGet(ajpInt2dCmapContacts,
+		ajIntTempSecondRes = ajInt2dGet(ajpInt2dCmapSummary,
 						ajIntRowCount,
 						ajIntColumnCount);
 		ajFmtPrint("%3d ", ajIntTempSecondRes);
