@@ -21,13 +21,18 @@ Description
    independently devised during the late 1960's and early 1970's for use
    in the fields of speech processing and computer science.
    
-   What is the optimal local alignment? Dynamic programming methods
-   ensure the optimal local alignment by exploring all possible
-   alignments and choosing the best. It does this by reading in a scoring
-   matrix that contains values for every possible residue or nucleotide
-   match. water finds an alignment with the maximum possible score where
-   the score of an alignment is equal to the sum of the matches taken
-   from the scoring matrix.
+   A local alignment searches for regions of local similarity between two
+   sequences and need not include the entire length of the sequences.
+   Local alignment methods are very useful for scanning databases or
+   other circumsatnces when you wish to find matches between small
+   regions of sequences, for example between protein domains.
+   
+   Dynamic programming methods ensure the optimal local alignment by
+   exploring all possible alignments and choosing the best. It does this
+   by reading in a scoring matrix that contains values for every possible
+   residue or nucleotide match. water finds an alignment with the maximum
+   possible score where the score of an alignment is equal to the sum of
+   the matches taken from the scoring matrix.
    
    An important problem is the treatment of gaps, i.e., spaces inserted
    to optimise the alignment score. A penalty is subtracted from the
@@ -173,9 +178,18 @@ References
        
 Warnings
 
+   Local alignment methods only report the best matching areas between
+   two sequences - there may be a large number of alternative local
+   alignments that do not score as highly. If two proteins share more
+   than one common region, for example one has a single copy of a
+   particular domain while the other has two copies, it may be possible
+   to "miss" the second and subsequent alignments. You will be able to
+   see this situation if you have done a dotplot and your local alignment
+   does not show all the features you expected to see.
+   
    water is for aligning the best matching subsequences of two sequences.
    It does not necessarily align whole sequences against each other; you
-   should use water if you wish to align closely related sequenecs along
+   should use needle if you wish to align closely related sequences along
    their whole lengths.
    
    The memory and time required to do the search is proportional to (on
@@ -208,7 +222,17 @@ See also
    Program name                      Description
    matcher      Finds the best local alignments between two sequences
    
+   matcher is a local alignment program that is less rigorous than
+   
+   water
+   and therefore runs more quickly. It may be useful for database
+   searching.
+   
+   supermatcher is designed for local alignments of very large sequences
+   and is even less rigorous in its implementation.
+   
    supermatcher Finds a match of a large sequence against one or more
+   sequences matcher Finds the best local alignments between two
    sequences
    
 Author(s)

@@ -69,7 +69,14 @@ independently devised during the late 1960's and early 1970's for use in
 the fields of speech processing and computer science. 
 <P>
 
-What is the optimal local alignment? Dynamic programming methods ensure
+A local alignment searches for regions of local similarity between two
+sequences and need not include the entire length of the sequences. 
+Local alignment methods are very useful for scanning databases or other
+circumsatnces when you wish to find matches between small regions of
+sequences, for example between protein domains. 
+<P>
+
+Dynamic programming methods ensure
 the optimal local alignment by exploring all possible alignments and
 choosing the best.  It does this by reading in a scoring matrix that
 contains values for every possible residue or nucleotide match.  <b>water</b>
@@ -324,10 +331,20 @@ of time.
     Warnings
 </H2>
 
+Local alignment methods only report the best matching areas between two
+sequences - there may be a large number of alternative local alignments
+that do not score as highly.  If two proteins share more than one common
+region, for example one has a single copy of a particular domain while
+the other has two copies, it may be possible to "miss" the second and
+subsequent alignments.  You will be able to see this situation if you
+have done a dotplot and your local alignment does not show all the
+features you expected to see. 
+<P>
+
 <b>water</b> is for aligning the best matching subsequences of two
 sequences.  It does not necessarily align whole sequences against each
-other; you should use <b>water</b> if you wish to align closely related
-sequenecs along their whole lengths. 
+other; you should use <b>needle</b> if you wish to align closely related
+sequences along their whole lengths. 
 <P>
 
 The memory and time required to do the search is proportional to (on the
@@ -384,7 +401,15 @@ None.
    -->
 
 <p>
-<a href="supermatcher">supermatcher</a> Finds a match of a large sequence against one or more sequences
+<b>matcher</b> is a local alignment program that is less rigorous than <p>water</p> and therefore runs more quickly. It may be useful for database searching.
+
+<p>
+<b>supermatcher</b> is designed for local alignments of very large sequences and is even less rigorous in its implementation.
+
+
+<p>
+<a href="supermatcher.html">supermatcher</a> Finds a match of a large sequence against one or more sequences
+<a href="matcher.html">matcher</a> Finds the best local alignments between two sequences
 
 <H2>
     Author(s)
