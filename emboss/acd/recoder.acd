@@ -48,7 +48,7 @@ section: output [
     parameter: "Y"
     rformat: "table"
     taglist: "str:Dir str:enzyme=EnzymeName str:rspattern=RS-Pattern
-              int:baseposn=Base-Posn str:aa=AA str:mutation=Mutation"
+              int:baseposn=Base-Posn rstr:aa=AAs rstr:mutation=Mutation"
     rscoreshow: "N"
   ]
 

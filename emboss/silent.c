@@ -193,12 +193,11 @@ int main(int argc, char **argv)
 		       "EnzymeName: Enzyme name\n"
 		       "RS-Pattern: Restriction enzyme recognition site "
 		       "pattern\n"
-		       "Match-Posn: Position of the first base of RS pattern "
-		       "in sequence\n"
-		       "AA: Amino acid. Original sequence(.)After mutation\n"
 		       "Base-Posn: Position of base to be mutated\n"
-		       "Mutation: The base mutation to perform\n"
-		       "Creating silent mutations\n\n");
+		       "AAs: Amino acid. Original sequence(.)After mutation\n"
+		       "Silent: Yes for unchanged amino acid\n"
+		       "Mutation: The base mutation to perform\n\n"
+		       "Creating silent and non-silent mutations\n");
 
     silent_fmt_hits(shits,feat, ajTrue, ajFalse);
     if(allmut)

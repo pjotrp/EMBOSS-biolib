@@ -8302,8 +8302,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hsfau.recoder
-FZ = 3275
-FP 3 / +77 +81 . +EcoRII +CCWGG +78 P.P +C->[ACGT] +\n/
+FZ = 3209
+FP 3 / +77 +81 . +EcoRII +CCWGG +78 +P.P +C->[ACGT]\n/
 //
 
 ID recoder-seqs
@@ -8321,8 +8321,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hsfau.recoder
-FZ = 5102
-FP 3 / +77 +81 . +EcoRII +CCWGG +78 P.P +C->[ACGT] +\n/
+FZ = 5036
+FP 3 / +77 +81 . +EcoRII +CCWGG +78 +P.P +C->[ACGT]\n/
 FP /# 61 +AGCTCTTTGT CCGCGCCCAG GAGCTACACA CCTTCGAGGT GACCGGCCAG GAAACGGTCG \n/
 //
 
@@ -12639,8 +12639,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hsfau.silent 
-FZ = 897
-FP /^ +272 +267 Rev +HindIII +AAGCTT +268 A.A +Yes +A->T +\n/
+FZ = 885
+FP /^ +272 +267 Rev +HindIII +AAGCTT +268 +A.A +Yes +A->T\n/
 //
 
 ID silent-seqs
@@ -12657,8 +12657,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hsfau.silent 
-FZ = 2713
-FP /^ +272 +267 Rev +HindIII +AAGCTT +268 A.A +Yes +A->T +\n/
+FZ = 2701
+FP /^ +272 +267 Rev +HindIII +AAGCTT +268 +A.A +Yes +A->T\n/
 FP /^\n/
 //
 
