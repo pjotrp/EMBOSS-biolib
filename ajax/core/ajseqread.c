@@ -4901,6 +4901,9 @@ static AjBool seqReadAbi (AjPSeq thys, AjPSeqin seqin)
 	return ajFalse;
     }
 
+    if (seqin->Text)
+	ajWarn("Unable to read text from binary ABI file %F", fp);
+
     filestat = ajFileSeek(fp,0L,0);
     ajDebug ("filestat %d\n", filestat);
 
