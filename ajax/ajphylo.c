@@ -1,3 +1,27 @@
+/******************************************************************************
+** @source AJAX Phylogeny functions
+** These functions create and control linked lists.
+**
+** @author Copyright (C) 2003 Peter Rice
+** @version 1.0
+** @@
+**
+** This library is free software; you can redistribute it and/or
+** modify it under the terms of the GNU Library General Public
+** License as published by the Free Software Foundation; either
+** version 2 of the License, or (at your option) any later version.
+**
+** This library is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+** Library General Public License for more details.
+**
+** You should have received a copy of the GNU Library General Public
+** License along with this library; if not, write to the
+** Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+** Boston, MA  02111-1307, USA.
+******************************************************************************/
+
 #include "ajax.h"
 #include "ajphylo.h"
 
@@ -9,10 +33,13 @@
 ** @param [r]  [] 
 ** @return [void]
 ******************************************************************************/
-void ajPhylo (void)
+
+void ajPhylo(void)
 {
     return;
 }
+
+
 
 
 /* @func ajPhyloDistNew ******************************************************
@@ -22,7 +49,7 @@ void ajPhylo (void)
 ** @return [AjPPhyloDist]
 ******************************************************************************/
 
-AjPPhyloDist ajPhyloDistNew (void)
+AjPPhyloDist ajPhyloDistNew(void)
 {
     AjPPhyloDist ret = NULL;
 
@@ -32,6 +59,8 @@ AjPPhyloDist ajPhyloDistNew (void)
 }
 
 
+
+
 /* @func ajPhyloFreqNew ******************************************************
 **
 ** Constructor for AjPPhyloFreq
@@ -39,7 +68,7 @@ AjPPhyloDist ajPhyloDistNew (void)
 ** @return [AjPPhyloFreq]
 ******************************************************************************/
 
-AjPPhyloFreq ajPhyloFreqNew (void)
+AjPPhyloFreq ajPhyloFreqNew(void)
 {
     AjPPhyloFreq ret = NULL;
 
@@ -49,6 +78,8 @@ AjPPhyloFreq ajPhyloFreqNew (void)
 }
 
 
+
+
 /* @func ajPhyloPropNew ******************************************************
 **
 ** Constructor for AjPPhyloProp
@@ -56,7 +87,7 @@ AjPPhyloFreq ajPhyloFreqNew (void)
 ** @return [AjPPhyloProp]
 ******************************************************************************/
 
-AjPPhyloProp ajPhyloPropNew (void)
+AjPPhyloProp ajPhyloPropNew(void)
 {
     AjPPhyloProp ret = NULL;
 
@@ -67,6 +98,7 @@ AjPPhyloProp ajPhyloPropNew (void)
 
 
 
+
 /* @func ajPhyloStateNew *****************************************************
 **
 ** Constructor for AjPPhyloState
@@ -74,7 +106,7 @@ AjPPhyloProp ajPhyloPropNew (void)
 ** @return [AjPPhyloState]
 ******************************************************************************/
 
-AjPPhyloState ajPhyloStateNew (void)
+AjPPhyloState ajPhyloStateNew(void)
 {
     AjPPhyloState ret = NULL;
 
@@ -85,6 +117,7 @@ AjPPhyloState ajPhyloStateNew (void)
 
 
 
+
 /* @func ajPhyloTreeNew ******************************************************
 **
 ** Constructor for AjPPhyloTree
@@ -92,7 +125,7 @@ AjPPhyloState ajPhyloStateNew (void)
 ** @return [AjPPhyloTree]
 ******************************************************************************/
 
-AjPPhyloTree ajPhyloTreeNew (void)
+AjPPhyloTree ajPhyloTreeNew(void)
 {
     AjPPhyloTree ret = NULL;
 
@@ -102,6 +135,8 @@ AjPPhyloTree ajPhyloTreeNew (void)
 }
 
 
+
+
 /* @func ajPhyloDistDel ******************************************************
 **
 ** Destructor for AjPPhyloDist
@@ -109,23 +144,25 @@ AjPPhyloTree ajPhyloTreeNew (void)
 ** @param [d] pthys [AjPPhyloDist]
 ******************************************************************************/
 
-void ajPhyloDistDel (AjPPhyloDist* pthis)
+void ajPhyloDistDel(AjPPhyloDist* pthis)
 {
     AjPPhyloDist thys = *pthis;
     ajint i;
 
-    if (thys->Names)
-    {
-	for (i=0; i < thys->Size; i++)
+    if(thys->Names)
+	for(i=0; i < thys->Size; i++)
 	    ajStrDel(&thys->Names[i]);
-    }
 
     AJFREE(thys->Data);
     AJFREE(thys->Replicates);
 
     AJFREE(*pthis);
+
     return;
 }
+
+
+
 
 /* @func ajPhyloFreqDel ******************************************************
 **
@@ -134,16 +171,16 @@ void ajPhyloDistDel (AjPPhyloDist* pthis)
 ** @param [d] pthys [AjPPhyloFreq]
 ******************************************************************************/
 
-void ajPhyloFreqDel (AjPPhyloFreq* pthis)
+void ajPhyloFreqDel(AjPPhyloFreq* pthis)
 {
-    AjPPhyloFreq thys = *pthis;
+    AjPPhyloFreq thys;
     ajint i;
 
-    if (thys->Names)
-    {
-	for (i=0; i < thys->Size; i++)
+    thys = *pthis;
+
+    if(thys->Names)
+	for(i=0; i < thys->Size; i++)
 	    ajStrDel(&thys->Names[i]);
-    }
 
     AJFREE(thys->Locus);
     AJFREE(thys->Allele);
@@ -152,8 +189,12 @@ void ajPhyloFreqDel (AjPPhyloFreq* pthis)
     AJFREE(thys->Data);
 
     AJFREE(*pthis);
+
     return;
 }
+
+
+
 
 /* @func ajPhyloPropDel *******************************************************
 **
@@ -162,20 +203,23 @@ void ajPhyloFreqDel (AjPPhyloFreq* pthis)
 ** @param [d] pthys [AjPPhyloProp]
 ******************************************************************************/
 
-void ajPhyloPropDel (AjPPhyloProp* pthis)
+void ajPhyloPropDel(AjPPhyloProp* pthis)
 {
-    AjPPhyloProp thys = *pthis;
+    AjPPhyloProp thys;
     ajint i;
 
-    if (thys->Str)
-    {
-	for (i=0; i < thys->Size; i++)
+    thys = *pthis;
+
+    if(thys->Str)
+	for(i=0; i < thys->Size; i++)
 	    ajStrDel(&thys->Str[i]);
-    }
 
     AJFREE(*pthis);
     return;
 }
+
+
+
 
 /* @func ajPhyloStateDel ******************************************************
 **
@@ -184,26 +228,29 @@ void ajPhyloPropDel (AjPPhyloProp* pthis)
 ** @param [d] pthys [AjPPhyloState]
 ******************************************************************************/
 
-void ajPhyloStateDel (AjPPhyloState* pthis)
+void ajPhyloStateDel(AjPPhyloState* pthis)
 {
-    AjPPhyloState thys = *pthis;
+    AjPPhyloState thys;
     ajint i;
 
-    if (thys->Names)
-    {
-	for (i=0; i < thys->Size; i++)
+    thys = *pthis;
+
+    if(thys->Names)
+	for(i=0; i < thys->Size; i++)
 	    ajStrDel(&thys->Names[i]);
-    }
-    if (thys->Str)
-    {
-	for (i=0; i < thys->Size; i++)
+
+    if(thys->Str)
+	for(i=0; i < thys->Size; i++)
 	    ajStrDel(&thys->Str[i]);
-    }
 
     ajStrDel(&thys->Characters);
     AJFREE(*pthis);
+
     return;
 }
+
+
+
 
 /* @func ajPhyloTreeDel *******************************************************
 **
@@ -212,15 +259,21 @@ void ajPhyloStateDel (AjPPhyloState* pthis)
 ** @param [d] pthys [AjPPhyloTree]
 ******************************************************************************/
 
-void ajPhyloTreeDel (AjPPhyloTree* pthis)
+void ajPhyloTreeDel(AjPPhyloTree* pthis)
 {
-    AjPPhyloTree thys = *pthis;
+    AjPPhyloTree thys;
+
+    thys = *pthis;
 
     ajStrDel(&thys->Tree);
 
     AJFREE(*pthis);
+
     return;
 }
+
+
+
 
 /* @func ajPhyloDistRead ******************************************************
 **
@@ -233,11 +286,11 @@ void ajPhyloTreeDel (AjPPhyloTree* pthis)
 **                        NULL on failure
 ******************************************************************************/
 
-AjPPhyloDist ajPhyloDistRead (AjPStr filename, ajint size, AjBool missing)
+AjPPhyloDist ajPhyloDistRead(AjPStr filename, ajint size, AjBool missing)
 {
-    AjPPhyloDist ret = NULL;
-    AjPFile distfile = NULL;
-    AjPStr rdline = NULL;
+    AjPPhyloDist ret   = NULL;
+    AjPFile distfile   = NULL;
+    AjPStr rdline      = NULL;
     AjPRegexp floatexp = NULL;
     ajint count;
     ajint irow;
@@ -247,35 +300,34 @@ AjPPhyloDist ajPhyloDistRead (AjPStr filename, ajint size, AjBool missing)
     ajint ncells;
     float dval;
     ajint ival;
-    ajint ipos=0;
+    ajint ipos = 0;
     ajint iend;
     ajint idiag;
     ajint jpos;
-    AjBool done = ajFalse;
-    AjPStr tmpstr = NULL;
-    AjPStr tmpval = NULL;
+    AjBool done     = ajFalse;
+    AjPStr tmpstr   = NULL;
+    AjPStr tmpval   = NULL;
     AjBool lowertri = ajFalse;
     AjBool uppertri = ajFalse;
 
-    if (!floatexp)
+    if(!floatexp)
 	floatexp = ajRegCompC("^\\s*([0-9]+[.][0-9]*)\\s+(([0-9]+)[^0-9.])?");
 
     distfile = ajFileNewIn(filename);
 
-    if (!distfile)
-    {
+    if(!distfile)
 	return NULL;
-    }
 
     ajFileGetsTrim(distfile, &rdline);
-    if (!ajStrToInt(rdline, &count))
+    if(!ajStrToInt(rdline, &count))
     {
 	ajErr("Distance file '%S' bad header record '%S'",
 	      filename, rdline);
 	return NULL;
     }
     ajDebug("DistRead: row count: %d\n", count);
-    if (size && (count != size))
+
+    if(size && (count != size))
     {
 	ajErr("Distance file '%S' found %d expected %d rows '%S'",
 	      filename, count, size);
@@ -291,80 +343,75 @@ AjPPhyloDist ajPhyloDistRead (AjPStr filename, ajint size, AjBool missing)
 
     irow = -1;
     icol = 0;
+
     i = 0;
     done = ajFalse;
-    while (!done && ajFileGets(distfile, &rdline))
+    while(!done && ajFileGets(distfile, &rdline))
     {
 	ajDebug("DistRead line: %S", rdline);
-	if (!i || !ajRegExec(floatexp, rdline))
+	if(!i || !ajRegExec(floatexp, rdline))
 	{
-	    if (ajStrLen(rdline) < 11)	/* skip this line? */
+	    if(ajStrLen(rdline) < 11)	/* skip this line? */
 		continue;
-	    if (!irow)			/* how long was that first row */
+	    if(!irow)		     /* how long was that first row */
 	    {
-		if (!icol)		/* empty - lower triangular */
+		if(!icol)		/* empty - lower triangular */
 		{
 		    lowertri = ajTrue;
 		    ajDebug("DistRead: ++Lower-Triangular form++\n");
 		}
-		else if (icol == (count - 1))/* one short - upper triangular */
+		else if(icol == (count - 1)) /* one short - upper triangular */
 		{
 		    uppertri = ajTrue;
 		    ajDebug("DistRead: ++Upper-Triangular form++\n");
 
 		    /* now we need to move along one */
 
-		    for (j=count-1; j; j--)
+		    for(j=count-1; j; j--)
 		    {
 			ret->Data[j] = ret->Data[j-1];
 			ret->Replicates[j] = ret->Replicates[j-1];
 		    }
 		}
-		else if (icol != count)		/* something wrong */
+		else if(icol != count)	/* something wrong */
 		{
 		    ajErr("Distance file %S: Row '%S' has %d values",
 			  filename, ret->Names[irow], icol);
 		}
 	    }
-	    else if (irow > 0) /* later rows - we know what to expect */
+	    else if(irow > 0) /* later rows - we know what to expect */
 	    {
-		if (lowertri)
+		if(lowertri)
 		{
 		    ajDebug("DistRead Lower irow: %d i: %d\n",
 			    irow, i);
-		    if (icol != irow)
-		    {
+		    if(icol != irow)
 			ajErr("Distance file %S: Row '%S' has %d values"
 			      " in lower-triangular format",
 			      filename, ret->Names[irow], icol);
-		    }
 		}
-		else if (uppertri)
+		else if(uppertri)
 		{
 		    ajDebug("DistRead Upper irow: %d i: %d\n",
 			    irow, i);
-		    if (i)
-		    {
+		    if(i)
 			ajErr("Distance file %S: Row '%S' has %d values"
 			      " in upper-triangular format",
 			      filename, ret->Names[irow], icol - irow - 1);
-		    }
 		}
 		else
 		{
 		    ajDebug("DistRead Square irow: %d i: %d\n",
 			    irow, i);
-		    if (icol)
-		    {
+		    if(icol)
 			ajErr("Distance file %S: Row '%S' has %d values"
 			      " in upper-triangular format",
 			      filename, ret->Names[irow], icol);
-		    }
 		}
 	    }
 
 	    irow++;
-	    if (irow > count)
+	    if(irow > count)
 	    {
 		ajErr("Distances file read beyond %d rows", count);
 		return NULL;
@@ -374,32 +421,32 @@ AjPPhyloDist ajPhyloDistRead (AjPStr filename, ajint size, AjBool missing)
 	    ajStrChompEnd(&ret->Names[irow]);
 	    ajDebug("DistRead name [%d] '%S' i: %d\n",
 		    irow, ret->Names[irow], i);
-	    if (uppertri)
+	    if(uppertri)
 	    {
 		icol = irow + 1;
 		i = irow + 1;
 	    }
-	    else {
+	    else
+	    {
 		i = 0;
 		icol = 0;
 	    }
 	}
 
-	while (ajRegExec(floatexp, rdline))
+	while(ajRegExec(floatexp, rdline))
 	{
 	    ajRegSubI(floatexp, 1, &tmpval);
 	    ajStrToFloat(tmpval, &dval);
 	    ajRegSubI(floatexp, 3, &tmpval);
-	    if (ajStrLen(tmpval))
+	    if(ajStrLen(tmpval))
 	    {
 		ajStrToInt(tmpval, &ival);
-		if (ival)
-		{
+
+		if(ival)
 		    ret->HasReplicates = ajTrue;
-		}
 		else
 		{
-		    if (!missing)
+		    if(!missing)
 		    {
 			ajErr("Distances file %S: Zero (%S) replicates for %S",
 			      filename, tmpval, ret->Names[irow]);
@@ -421,30 +468,30 @@ AjPPhyloDist ajPhyloDistRead (AjPStr filename, ajint size, AjBool missing)
 	    ret->Replicates[ipos] = ival;
 	    i++;
 	    icol++;
-	    if (i == count)
+	    if(i == count)
 		i = 0;
 	    ajRegPost(floatexp, &tmpstr);
 	    ajStrAssS(&rdline, tmpstr);
 	}
     }
 
-    if (irow != (count-1))
+    if(irow != (count-1))
     {
 	ajErr("Distances file found %d rows, expected %d", irow, count);
 	return NULL;
     }
 
-    if (lowertri)			/* fill in the rest */
+    if(lowertri)			/* fill in the rest */
     {
-	for (i=0; i < count; i++)
+	for(i=0; i < count; i++)
 	{
-	    idiag = i*count + i;		/* diagonal */
+	    idiag = i*count + i;	/* diagonal */
 	    ret->Data[idiag] = 0.0;
 	    ret->Replicates[idiag] = 1;
 	    iend = i*count+count;	/* end of row */
 	    ipos = idiag + 1;
 	    jpos = ipos + count - 1;
-	    while (ipos < iend)
+	    while(ipos < iend)
 	    {
 		ret->Data[ipos] = ret->Data[jpos];
 		ret->Replicates[ipos] = ret->Replicates[jpos];
@@ -454,16 +501,16 @@ AjPPhyloDist ajPhyloDistRead (AjPStr filename, ajint size, AjBool missing)
 	}
     }
 
-    if (uppertri)			/* fill in the rest */
+    if(uppertri)			/* fill in the rest */
     {
-	for (i=0; i < count; i++)
+	for(i=0; i < count; i++)
 	{
-	    idiag = i*count + i;		/* diagonal */
+	    idiag = i*count + i;	/* diagonal */
 	    ret->Data[idiag] = 0.0;
 	    ret->Replicates[idiag] = 1;
-	    ipos = i*count;	/* start of row*/
+	    ipos = i*count;		/* start of row*/
 	    jpos = i;
-	    while (ipos < idiag)
+	    while(ipos < idiag)
 	    {
 		ret->Data[ipos] = ret->Data[jpos];
 		ret->Replicates[ipos] = ret->Replicates[jpos];
@@ -473,10 +520,13 @@ AjPPhyloDist ajPhyloDistRead (AjPStr filename, ajint size, AjBool missing)
 	}
     }
 
-    ajPhyloDistTrace (ret);
+    ajPhyloDistTrace(ret);
 
     return ret;
 }
+
+
+
 
 /* @func ajPhyloDistTrace *****************************************************
 **
@@ -486,7 +536,7 @@ AjPPhyloDist ajPhyloDistRead (AjPStr filename, ajint size, AjBool missing)
 ** @return [void]
 ******************************************************************************/
 
-void ajPhyloDistTrace (AjPPhyloDist thys)
+void ajPhyloDistTrace(AjPPhyloDist thys)
 {
     ajint i;
     ajint j;
@@ -499,30 +549,28 @@ void ajPhyloDistTrace (AjPPhyloDist thys)
 	    thys->Size, thys->HasReplicates, thys->HasMissing);
 
     jend = 0;
-    j = 0;
+    j    = 0;
 
     ajDebug("%-10.10s", "Name");
-    for (i=0; i < thys->Size; i++)
-    {
+    for(i=0; i < thys->Size; i++)
 	ajDebug(" %6d ++", (i+1));
-    }
+
     ajDebug("\n");
 
     ajDebug("==========");
-    for (i=0; i < thys->Size; i++)
-    {
+    for(i=0; i < thys->Size; i++)
 	ajDebug(" ====== ==");
-    }
+
     ajDebug("\n");
 
-    for (i=0; i < thys->Size; i++)
+    for(i=0; i < thys->Size; i++)
     {
 	jend += thys->Size;
-	ajDebug ("%-10.10S", thys->Names[i]);
-	while (j < jend)
+	ajDebug("%-10.10S", thys->Names[i]);
+	while(j < jend)
 	{
-	    ajDebug (" %6.3f %2d",
-		     thys->Data[j], thys->Replicates[j]);
+	    ajDebug(" %6.3f %2d",
+		    thys->Data[j], thys->Replicates[j]);
 	    j++;
 	}
 	ajDebug("\n");
@@ -530,6 +578,9 @@ void ajPhyloDistTrace (AjPPhyloDist thys)
 
     return;
 }
+
+
+
 
 /* @func ajPhyloFreqRead ******************************************************
 **
@@ -544,19 +595,19 @@ void ajPhyloDistTrace (AjPPhyloDist thys)
 **                        NULL on failure
 ******************************************************************************/
 
-AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
-			      AjBool contchar, AjBool genedata, AjBool indiv)
+AjPPhyloFreq ajPhyloFreqRead(AjPStr filename,
+			     AjBool contchar, AjBool genedata, AjBool indiv)
 {
-    AjPPhyloFreq ret = NULL;
+    AjPPhyloFreq ret   = NULL;
     AjPRegexp floatexp = NULL;
-    AjPRegexp intexp = NULL;
+    AjPRegexp intexp   = NULL;
     AjPRegexp indivexp = NULL;
 
     AjPFile freqfile = NULL;
-    AjPStr rdline = NULL;
-    AjPStr tmpline = NULL;
-    AjPStr tmpstr = NULL;
-    AjPStr tmpval = NULL;
+    AjPStr rdline    = NULL;
+    AjPStr tmpline   = NULL;
+    AjPStr tmpstr    = NULL;
+    AjPStr tmpval    = NULL;
     ajint count;
     ajint len;
     ajint ncells;
@@ -573,7 +624,7 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
     ajint jpos = 0;
     float jtot;
     float jrest;
-    AjBool done = ajFalse;
+    AjBool done    = ajFalse;
     AjBool alldata = ajFalse;
 
     ajint totfreq;
@@ -581,27 +632,25 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
     ajint isp;
 
     float dval;
-    float** pvals;
+    float** pvals = NULL;
 
-    if (!floatexp)
+    if(!floatexp)
 	floatexp = ajRegCompC("^\\s*([-]?[0-9]+[.][0-9]*)\\s+");
-    if (!intexp)
+    if(!intexp)
 	intexp = ajRegCompC("^\\s*([1-9][0-9]*)(\\s+[0-9\\s]*)$");
-    if (!indivexp)
+    if(!indivexp)
 	indivexp = ajRegCompC("^(\\S.........)\\s+([1-9][0-9]*)\\s*$");
 
     freqfile = ajFileNewIn(filename);
 
-    if (!freqfile)
-    {
+    if(!freqfile)
 	return NULL;
-    }
 
     ajFileGets(freqfile, &rdline);
 
-/* process header */
+    /* process header */
 
-    if (!ajRegExec(intexp, rdline))
+    if(!ajRegExec(intexp, rdline))
     {
 	ajErr("Frequencies file %S: Bad header line '%S'",
 	      filename, rdline);
@@ -612,7 +661,7 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
     ajStrToInt(tmpval, &count);
     ajRegSubI(intexp, 2, &tmpstr);
 
-     if (!ajRegExec(intexp, tmpstr))
+    if(!ajRegExec(intexp, tmpstr))
     {
 	ajErr("Frequencies file %S: Bad header line '%S'",
 	      filename, rdline);
@@ -628,21 +677,21 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
     AJCNEW0(ret->Names,count);
     AJCNEW0(ret->Allele,len);
 
-/* process alleles counts, if any */
+    /* process alleles counts, if any */
 
     ajFileGets(freqfile, &rdline);
-    if (ajRegExec(intexp, rdline))	/* allele counts */
+    if(ajRegExec(intexp, rdline))	/* allele counts */
     {
-	if (contchar)
+	if(contchar)
 	{
 	    ajErr("Frequencies file %S: Has gene frequency data",
 		  filename);
 	    return NULL;
 	}
 	ajStrAssS(&tmpline, rdline);
-	for (i=0; i < len; i++)
+	for(i=0; i < len; i++)
 	{
-	    if (!ajRegExec(intexp, rdline))
+	    if(!ajRegExec(intexp, rdline))
 	    {
 		ajErr("Frequencies file %S: Bad allele header,"
 		      " expected %d allele counts, found %d",
@@ -654,9 +703,10 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
 	    ajRegSubI(intexp, 2, &tmpstr);
 	    ajStrAssS(&rdline, tmpstr);
 
-	    nfreq += ret->Allele[i]; /* assume all values */
+	    nfreq += ret->Allele[i];	/* assume all values */
 	}
-	if (ajRegExec(intexp, rdline))
+
+	if(ajRegExec(intexp, rdline))
 	{
 	    ajErr("Frequencies file %S: Bad allele header,"
 		  " more than expected %d allele counts",
@@ -666,9 +716,9 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
 	ret->Len = nfreq;
 	AJCNEW0(ret->Locus,nfreq);
 	jpos = 0;
-	for (i=0; i < len; i++)
+	for(i=0; i < len; i++)
 	{
-	    for (j=0; j < ret->Allele[i]; j++)
+	    for(j=0; j < ret->Allele[i]; j++)
 		ret->Locus[jpos++] = i;
 	}
 	ncells = count*nfreq;
@@ -677,7 +727,7 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
     }
     else
     {
-	if (genedata)
+	if(genedata)
 	{
 	    ajErr("Frequencies file %S: Has continuous character data",
 		  filename);
@@ -690,12 +740,13 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
 	ret->Len = nfreq;
 	AJCNEW0(ret->Data,ncells);
 	AJCNEW0(ret->Locus,nfreq);
-	for (i=0; i < len; i++)
+	for(i=0; i < len; i++)
 	{
 	    ret->Locus[i] = i;
 	    ret->Allele[i] = 2;
 	}
-	if (ajRegExec(indivexp, rdline))
+
+	if(ajRegExec(indivexp, rdline))
 	{
 	    ret->Within = ajTrue;
 	    AJCNEW0(ret->Individuals, count);
@@ -706,24 +757,23 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
 
     irow = -1;
     icol = 0;
-    i = 0;
+    i    = 0;
     done = ajFalse;
 
-    if (ret->Within)
+    if(ret->Within)
     {
 	totfreq = 0;
-	totsp = 0;
-	while (!done)
+	totsp   = 0;
+	while(!done)
 	{
-	    if (ajRegExec(indivexp, rdline))
+	    if(ajRegExec(indivexp, rdline))
 	    {
 		irow++;
-		if (irow && icol != nfreq)
-		{
-			ajErr("Frequencies file %S: Read %d values"
-			      " for '%S', expected %d",
-			      filename, icol, ret->Names[irow], nfreq);
-		}
+		if(irow && icol != nfreq)
+		    ajErr("Frequencies file %S: Read %d values"
+			  " for '%S', expected %d",
+			  filename, icol, ret->Names[irow], nfreq);
+
 		ajRegSubI(indivexp, 1, &ret->Names[irow]);
 		ajStrChompEnd(&ret->Names[irow]);
 		ajRegSubI(indivexp, 2, &tmpval);
@@ -735,7 +785,7 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
 		icol = 0;
 	    }
 	    
-	    while (ajRegExec(floatexp, rdline))
+	    while(ajRegExec(floatexp, rdline))
 	    {
 		ajRegSubI(floatexp, 1, &tmpval);
 		ajStrToFloat(tmpval, &dval);
@@ -745,11 +795,12 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
 		icol++;
 		ipos++;
 	    }
-	    if (!ajFileGets(freqfile, &rdline))
+
+	    if(!ajFileGets(freqfile, &rdline))
 		break;
 	}
 
-	if (irow != (count-1))
+	if(irow != (count-1))
 	{
 	    ajErr("Frequencies file %S: found %d rows, expected %d",
 		  filename, irow, count);
@@ -757,14 +808,14 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
 	}
 	AJCNEW0(ret->Data, totfreq);
 	AJCNEW0(ret->Species, totsp);
-	isp = 0;
+	isp  = 0;
 	ipos = 0;
-	for (i=0; i < count; i++)
+	for(i=0; i < count; i++)
 	{
-	    for (j=0; j < ret->Individuals[i]; j++)
+	    for(j=0; j < ret->Individuals[i]; j++)
 		ret->Species[isp++] = i;
 	    nfreq = ret->Individuals[i]*len;
-	    for (j=0; j < nfreq; j++)
+	    for(j=0; j < nfreq; j++)
 		ret->Data[ipos++] = pvals[i][j];
 	    AJFREE(pvals[i]);
 	}
@@ -774,23 +825,23 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
 	return ret;
     }
 
-/* We read, for each 'species', a 10-character name and 'nfreq' values */
+    /* We read, for each 'species', a 10-character name and 'nfreq' values */
 
-    while (!done)
+    while(!done)
     {
 	ajDebug("FreqRead line: %S", rdline);
-	if (!ajRegExec(floatexp, rdline))
+	if(!ajRegExec(floatexp, rdline))
 	{
 	    irow++;
-	    if (irow == 1)
+	    if(irow == 1)
 	    {
-		if (icol == nfreq)
+		if(icol == nfreq)
 		    alldata = ajTrue;
-		else if (!ret->ContChar && icol == (nfreq - len))
+		else if(!ret->ContChar && icol == (nfreq - len))
 		    alldata = ajFalse;
 		else
 		{
-		    if (ret->ContChar)
+		    if(ret->ContChar)
 			ajErr("Frequencies file %S: Read %d values,"
 			      " expected %d",
 			      filename, icol, nfreq);
@@ -801,16 +852,18 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
 		    return NULL;
 		}
 	    }
-	    if (irow > count)
+
+	    if(irow > count)
 	    {
 		ajErr("Frequencies file read beyond %d rows", count);
 		return NULL;
 	    }
-	    if (irow)
+
+	    if(irow)
 	    {
-		if (alldata)
+		if(alldata)
 		{
-		    if (icol != nfreq)
+		    if(icol != nfreq)
 		    {
 			ajErr("Frequencies file %S:"
 			      " read only %d rows for %S",
@@ -820,7 +873,7 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
 		}
 		else
 		{
-		    if (icol != (nfreq - len))
+		    if(icol != (nfreq - len))
 		    {
 			ajErr("Frequencies file %S:"
 			      " read only %d rows for %S",
@@ -839,7 +892,7 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
 	    ipos = irow * nfreq;
 	}
 
-	while (ajRegExec(floatexp, rdline))
+	while(ajRegExec(floatexp, rdline))
 	{
 	    ajRegSubI(floatexp, 1, &tmpval);
 	    ajStrToFloat(tmpval, &dval);
@@ -849,28 +902,29 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
 	    icol++;
 	    ipos++;
 	}
-	if (!ajFileGets(freqfile, &rdline))
+
+	if(!ajFileGets(freqfile, &rdline))
 	    break;
     }
 
-    if (irow != (count-1))
+    if(irow != (count-1))
     {
 	ajErr("Frequencies file %S: found %d rows, expected %d",
 	      filename, irow, count);
 	return NULL;
     }
 
-    if (!alldata)			/* fill in the missing frequencies */
+    if(!alldata)		 /* fill in the missing frequencies */
     {
-	for (i=0; i < count; i++)	/* for each row (Name) */
+	for(i=0; i < count; i++)	/* for each row (Name) */
 	{
 	    misspos = i*nfreq + nfreq - 1;
 	    jnew = misspos - 1;
 	    jold = misspos - ret->Loci;
-	    for (j=ret->Loci; j; j--)
+	    for(j=ret->Loci; j; j--)
 	    {
 		jtot = 0.0;
-		for (k=1; k < ret->Allele[j-1]; k++)
+		for(k=1; k < ret->Allele[j-1]; k++)
 		{
 		    jtot += ret->Data[jold];
 		    ret->Data[jnew--] = ret->Data[jold--];
@@ -883,10 +937,13 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
 	}
     }
 
-    ajPhyloFreqTrace (ret);
+    ajPhyloFreqTrace(ret);
 
     return ret;
 }
+
+
+
 
 /* @func ajPhyloFreqTrace *****************************************************
 **
@@ -896,7 +953,7 @@ AjPPhyloFreq ajPhyloFreqRead (AjPStr filename,
 ** @return [void]
 ******************************************************************************/
 
-void ajPhyloFreqTrace (AjPPhyloFreq thys)
+void ajPhyloFreqTrace(AjPPhyloFreq thys)
 {
     ajint i;
     ajint j;
@@ -911,60 +968,53 @@ void ajPhyloFreqTrace (AjPPhyloFreq thys)
 	    thys->Size, thys->Len, thys->Loci,
 	    thys->ContChar, thys->Within);
 
-    if (thys->ContChar)			/* no alleles */
+    if(thys->ContChar)			/* no alleles */
     {
 	ajDebug("  Continuous frequency data\n");
 	ajDebug("  -------------------------\n");
 	ajDebug("%-10.10s", "Name");
-	for (j=0; j < thys->Len; j++)
-	{
+	for(j=0; j < thys->Len; j++)
 	    ajDebug(" %7d", 1+thys->Locus[j]);
-	}
-	ajDebug ("\n");
+
+	ajDebug("\n");
 
 	ajDebug("==========");
-	for (j=0; j < thys->Len; j++)
-	{
+	for(j=0; j < thys->Len; j++)
 	    ajDebug(" =======");
-	}
-	ajDebug ("\n");
 
-	if (thys->Species)
+	ajDebug("\n");
+
+	if(thys->Species)
 	{
-	    isp = 0;
+	    isp  = 0;
 	    ipos = 0;
-	    for (i=0; i < thys->Size; i++)
+	    for(i=0; i < thys->Size; i++)
 	    {
-		for (k=0; k < thys->Individuals[i]; k++)
+		for(k=0; k < thys->Individuals[i]; k++)
 		{
-		    if (k)
-		    {
+		    if(k)
 			ajDebug("sp.%3d %3d", thys->Species[isp]+1, k+1);
-		    }
 		    else
-		    {
 			ajDebug("%-10.10S", thys->Names[i]);
-		    }
-		    for (j=0; j < thys->Len; j++)
-		    {
+
+		    for(j=0; j < thys->Len; j++)
 			ajDebug(" %7.3f", thys->Data[ipos++]);
-		    }
-		    ajDebug ("\n");
+
+		    ajDebug("\n");
 		    isp++;
 		}
 	    }
 	}
 	else
 	{
-	    for (i=0; i < thys->Size; i++)
+	    for(i=0; i < thys->Size; i++)
 	    {
 		ajDebug("%-10.10S", thys->Names[i]);
 		ipos = i*thys->Len;
-		for (j=0; j < thys->Len; j++)
-		{
+		for(j=0; j < thys->Len; j++)
 		    ajDebug(" %7.3f", thys->Data[ipos++]);
-		}
-		ajDebug ("\n");
+
+		ajDebug("\n");
 	    }
 	}
     }
@@ -972,40 +1022,39 @@ void ajPhyloFreqTrace (AjPPhyloFreq thys)
     {
 	ajDebug("  Allele frequency data\n");
 	ajDebug("  ---------------------\n");
-	for (j=0; j < thys->Loci; j++)
-	{
-	    ajDebug ("Locus %d Alleles %d\n", j+1, thys->Allele[j]);
-	}
-	ajDebug ("\n");
+	for(j=0; j < thys->Loci; j++)
+	    ajDebug("Locus %d Alleles %d\n", j+1, thys->Allele[j]);
+
+	ajDebug("\n");
 
 	ajDebug("%-10.10s", "Name");
-	for (j=0; j < thys->Len; j++)
-	{
+	for(j=0; j < thys->Len; j++)
 	    ajDebug(" Loc. %2d", 1+thys->Locus[j]);
-	}
-	ajDebug ("\n");
+
+	ajDebug("\n");
 
 	ajDebug("==========");
-	for (j=0; j < thys->Len; j++)
-	{
+	for(j=0; j < thys->Len; j++)
 	    ajDebug(" =======");
-	}
-	ajDebug ("\n");
 
-	for (i=0; i < thys->Size; i++)
+	ajDebug("\n");
+
+	for(i=0; i < thys->Size; i++)
 	{
 	    ajDebug("%-10.10S", thys->Names[i]);
 	    ipos = i*thys->Len;
-	    for (j=0; j < thys->Len; j++)
-	    {
+	    for(j=0; j < thys->Len; j++)
 		ajDebug(" %7.3f", thys->Data[ipos++]);
-	    }
-	    ajDebug ("\n");
+
+	    ajDebug("\n");
 	}
     }
 
     return;
 }
+
+
+
 
 /* @func ajPhyloPropRead ******************************************************
 **
@@ -1021,44 +1070,44 @@ void ajPhyloFreqTrace (AjPPhyloFreq thys)
 **                        NULL on failure
 ******************************************************************************/
 
-AjPPhyloProp ajPhyloPropRead (AjPStr filename, AjPStr propchars,
+AjPPhyloProp ajPhyloPropRead(AjPStr filename, AjPStr propchars,
 			      ajint len, ajint size)
 {
-    AjPPhyloProp ret = NULL;
-    AjPFile propfile = NULL;
-    AjPList proplist = NULL;
+    AjPPhyloProp ret  = NULL;
+    AjPFile propfile  = NULL;
+    AjPList proplist  = NULL;
     AjPRegexp propexp = NULL;
-    AjBool propok = ajFalse;
-    AjPStr token = NULL;
-    void ** props = NULL;
+    AjBool propok     = ajFalse;
+    AjPStr token      = NULL;
+    void ** props     = NULL;
     ajint i;
     ajint ilen;
     const char* cp;
-    AjPStr rdline = NULL;
+    AjPStr rdline  = NULL;
     AjPStr proppat = NULL;
     AjPStr propstr = NULL;
     ajint count;
 
     ret = ajPhyloPropNew();
 
-    if (ajStrMatchC(propchars, ""))
+    if(ajStrMatchC(propchars, ""))
 	ajFmtPrintS(&proppat, "\\S+");
     else
 	ajFmtPrintS(&proppat, "[%S]+", propchars);
-    propexp = ajRegComp (proppat);
+    propexp = ajRegComp(proppat);
 
     proplist = ajListstrNew();
     count = size;
-    if (count < 1)
+    if(count < 1)
 	count = 1;
 
     propfile = ajFileNewIn(filename);
-    if (!propfile)
+    if(!propfile)
     {
-	if (!ajRegExec(propexp, filename))
+	if(!ajRegExec(propexp, filename))
 	    return NULL;
 	ajRegSubI(propexp, 0, &token);
-	if (!ajStrMatch(filename, token))
+	if(!ajStrMatch(filename, token))
 	    return NULL;
 	size = 1;
 	len = ajStrLen(token);
@@ -1066,40 +1115,41 @@ AjPPhyloProp ajPhyloPropRead (AjPStr filename, AjPStr propchars,
 	ajStrAssS(&ret->Str[0], token);
     }
 
-    if (propfile)
+    if(propfile)
     {
-	for (i = 0; i < count; i++)
+	for(i = 0; i < count; i++)
 	{
 	    propstr = ajStrNewL(len+1);
 	    propok = ajFalse;
 	    ilen = 0;
-	    while (!propok && ajFileGetsTrim(propfile, &rdline))
+	    while(!propok && ajFileGetsTrim(propfile, &rdline))
 	    {
 		ajStrToUpper(&rdline);
 		cp = ajStrStr(rdline);
-		while (cp && ajRegExecC(propexp, cp))
+		while(cp && ajRegExecC(propexp, cp))
 		{
-		    ajRegSubI (propexp, 0, &token);
-		    (void) ajStrApp (&propstr, token);
+		    ajRegSubI(propexp, 0, &token);
+		    ajStrApp(&propstr, token);
 		    ilen += ajStrLen(token);
-		    (void) ajRegPostC (propexp, &cp);
+		    ajRegPostC(propexp, &cp);
 		}
 
-		if (ilen == len)
+		if(ilen == len)
 		    propok = ajTrue;
-		else if (ilen > len)
+		else if(ilen > len)
 		    ajErr("Bad properties file '%S':"
 			  " read %d properties, expected %d",
 			  filename, ilen, len);
 	    }
-	    if (!propok)
+
+	    if(!propok)
 		ajErr("End of properties file '%S':"
 		      " after %d properties, expected %d",
 		      filename, ilen, len);
 	    ajListstrPushApp(proplist, propstr);
 	}
 	ajFileClose(&propfile);
-	ajListToArray (proplist, (void***) &props);
+	ajListToArray(proplist, (void***) &props);
 	ret->Str = (AjPStr*) props;
     }
 
@@ -1108,6 +1158,9 @@ AjPPhyloProp ajPhyloPropRead (AjPStr filename, AjPStr propchars,
 
     return ret;
 }
+
+
+
 
 /* @func ajPhyloPropGetSize ***************************************************
 **
@@ -1119,13 +1172,16 @@ AjPPhyloProp ajPhyloPropRead (AjPStr filename, AjPStr propchars,
 **                        NULL on failure
 ******************************************************************************/
 
-ajint ajPhyloPropGetSize (AjPPhyloProp thys)
+ajint ajPhyloPropGetSize(AjPPhyloProp thys)
 {
-    if (!thys)
+    if(!thys)
 	return 0;
 
     return thys->Size;
 }
+
+
+
 
 /* @func ajPhyloStateRead *****************************************************
 **
@@ -1137,21 +1193,21 @@ ajint ajPhyloPropGetSize (AjPPhyloProp thys)
 **                        NULL on failure
 ******************************************************************************/
 
-AjPPhyloState* ajPhyloStateRead (AjPStr filename, AjPStr statechars)
+AjPPhyloState* ajPhyloStateRead(AjPStr filename, AjPStr statechars)
 {
-    AjPPhyloState* ret = NULL;
+    AjPPhyloState* ret  = NULL;
     AjPPhyloState state = NULL;
-    AjPRegexp stateexp = NULL;
-    AjPRegexp intexp = NULL;
-    AjPRegexp charexp = NULL;
+    AjPRegexp stateexp  = NULL;
+    AjPRegexp intexp    = NULL;
+    AjPRegexp charexp   = NULL;
 
     AjPFile statefile = NULL;
     AjPList statelist = NULL;
-    AjPStr rdline = NULL;
-    AjPStr tmpstr = NULL;
-    AjPStr tmpval = NULL;
-    AjPStr charpat = NULL;
-    AjPStr token = NULL;
+    AjPStr rdline     = NULL;
+    AjPStr tmpstr     = NULL;
+    AjPStr tmpval     = NULL;
+    AjPStr charpat    = NULL;
+    AjPStr token      = NULL;
 
     ajint size;
     ajint len;
@@ -1161,31 +1217,29 @@ AjPPhyloState* ajPhyloStateRead (AjPStr filename, AjPStr statechars)
     const char* cp;
     void **states = NULL;
 
-    if (!intexp)
+    if(!intexp)
 	intexp = ajRegCompC("^\\s+([1-9][0-9]*)\\s+([1-9][0-9]*)\\s+([1-9][0-9]*)?\\s*$");
 
-    if (!stateexp)
+    if(!stateexp)
 	stateexp = ajRegCompC("^(\\S.........)\\s*(\\S.*)$");
 
-    if (ajStrMatchC(statechars, ""))
+    if(ajStrMatchC(statechars, ""))
 	ajFmtPrintS(&charpat, "\\S+");
     else
 	ajFmtPrintS(&charpat, "[%S]+", statechars);
-    charexp = ajRegComp (charpat);
+    charexp = ajRegComp(charpat);
 
     statelist = ajListNew();
 
     statefile = ajFileNewIn(filename);
 
-    if (!statefile)
-    {
+    if(!statefile)
 	return NULL;
-    }
 
-    while (ajFileGets(statefile, &rdline))
+    while(ajFileGets(statefile, &rdline))
     {
 	
-	if (!ajRegExec(intexp, rdline))
+	if(!ajRegExec(intexp, rdline))
 	{
 	    ajErr("Discrete states file %S: Bad header line '%S'",
 		  filename, rdline);
@@ -1199,7 +1253,7 @@ AjPPhyloState* ajPhyloStateRead (AjPStr filename, AjPStr statechars)
 	ajStrToInt(tmpval, &len);
 	
 	ajRegSubI(intexp, 3, &tmpval);
-	if (ajStrLen(tmpval))
+	if(ajStrLen(tmpval))
 	    ajStrToInt(tmpval, &count);
 	else
 	    count = 1;
@@ -1214,10 +1268,10 @@ AjPPhyloState* ajPhyloStateRead (AjPStr filename, AjPStr statechars)
 	/* process alleles counts, if any */
 	
 	ilen = 0;
-	i = 0;
-	while (ajFileGets(statefile, &rdline))
+	i    = 0;
+	while(ajFileGets(statefile, &rdline))
 	{
-	    if (ilen == 0 && ajRegExec(stateexp, rdline))
+	    if(ilen == 0 && ajRegExec(stateexp, rdline))
 	    {
 		ajRegSubI(stateexp, 1, &state->Names[i]);
 		ajStrChompEnd(&state->Names[i]);
@@ -1227,19 +1281,20 @@ AjPPhyloState* ajPhyloStateRead (AjPStr filename, AjPStr statechars)
 	    
 	    ajStrToUpper(&rdline);
 	    cp = ajStrStr(rdline);
-	    while (cp && ajRegExecC(charexp, cp))
+	    while(cp && ajRegExecC(charexp, cp))
 	    {
-		ajRegSubI (charexp, 0, &token);
-		(void) ajStrApp (&state->Str[i], token);
+		ajRegSubI(charexp, 0, &token);
+		ajStrApp(&state->Str[i], token);
 		ilen += ajStrLen(token);
-		(void) ajRegPostC (charexp, &cp);
+		ajRegPostC(charexp, &cp);
 	    }
-	    if (ilen == len)
+
+	    if(ilen == len)
 	    {
 		ilen = 0;
 		i++;
 	    }
-	    else if (ilen > len)
+	    else if(ilen > len)
 	    {
 		ajErr("Bad discrete states file '%S':"
 		      " read %d states for '%S', expected %d",
@@ -1248,7 +1303,7 @@ AjPPhyloState* ajPhyloStateRead (AjPStr filename, AjPStr statechars)
 	    }
 	}
 	
-	if (i != size)
+	if(i != size)
 	{
 	    ajErr("Bad discrete states file '%S':"
 		  " read %d states for '%S', expected %d",
@@ -1258,11 +1313,14 @@ AjPPhyloState* ajPhyloStateRead (AjPStr filename, AjPStr statechars)
 	ajListPushApp(statelist, state);
     }
     ajFileClose(&statefile);
-    ajListToArray (statelist, (void***) &states);
+    ajListToArray(statelist, (void***) &states);
     ret = (AjPPhyloState*) states;
     
     return ret;
 }
+
+
+
 
 /* @func ajPhyloTreeRead ******************************************************
 **
@@ -1275,74 +1333,73 @@ AjPPhyloState* ajPhyloStateRead (AjPStr filename, AjPStr statechars)
 **                        NULL on failure
 ******************************************************************************/
 
-AjPPhyloTree* ajPhyloTreeRead (AjPStr filename, ajint size)
+AjPPhyloTree* ajPhyloTreeRead(AjPStr filename, ajint size)
 {
     AjPPhyloTree* ret = NULL;
     AjPPhyloTree tree = NULL;
-    AjPFile treefile = NULL;
-    AjPList treelist = NULL;
+    AjPFile treefile  = NULL;
+    AjPList treelist  = NULL;
     AjBool treeok;
     void ** trees = NULL;
     ajint i;
     ajint count;
     ajint headcount = 0;
     const char* cp;
-    AjPStr rdline = NULL;
-    AjPStr token = NULL;
-    AjPStr treecopy = NULL;
-    AjPStr pretoken = NULL;
+    AjPStr rdline    = NULL;
+    AjPStr token     = NULL;
+    AjPStr treecopy  = NULL;
+    AjPStr pretoken  = NULL;
     AjPStr posttoken = NULL;
 
-    static AjPRegexp treeexp = NULL;
-    static AjPRegexp rootexp = NULL;
+    static AjPRegexp treeexp   = NULL;
+    static AjPRegexp rootexp   = NULL;
     static AjPRegexp unrootexp = NULL;
-    static AjPRegexp multiexp = NULL;
-    static AjPRegexp quartexp = NULL;
+    static AjPRegexp multiexp  = NULL;
+    static AjPRegexp quartexp  = NULL;
     
-    if (!treeexp)			/* tree definition */
-	treeexp = ajRegCompC ("\\S+");
-    if (!rootexp)			/* (a,b) node to be trimmed */
+    if(!treeexp)			/* tree definition */
+	treeexp = ajRegCompC("\\S+");
+    if(!rootexp)			/* (a,b) node to be trimmed */
 	rootexp = ajRegCompC("^(.+)(\\([^\\)]+\\))");
-    if (!unrootexp)			/* remaining unrooted (a,b,c); */
+    if(!unrootexp)			/* remaining unrooted (a,b,c); */
 	unrootexp = ajRegCompC("^\\([^,]*,[^,]*,.*\\);$");
-    if (!multiexp)			/* multifurcating (a,b,c) anywhere */
+    if(!multiexp)			/* multifurcating (a,b,c) anywhere */
 	multiexp = ajRegCompC("^\\([^,]*,[^,]*,.*\\)$");
-    if (!quartexp)			/* unrooted quartet ((a,b),(c,d)); */
+    if(!quartexp)			/* unrooted quartet ((a,b),(c,d)); */
 	quartexp = ajRegCompC("^\\(\\.*\\)\\);$");
 
     treelist = ajListNew();
     count = size;
-    if (count < 1)
+    if(count < 1)
 	count = 1;
 
     treefile = ajFileNewIn(filename);
-    if (!treefile) {
+    if(!treefile)
 	return NULL;
-    }
 
-    if (treefile)
+    if(treefile)
     {
         treeok = ajFalse;
 	i = 0;
-	while (!treeok)
+	while(!treeok)
 	{
 	    ajDebug("ajPhyloTreeRead i: %d count: %d size: %d\n",
 		    i, count, size);
 	    tree = ajPhyloTreeNew();
-	    while (ajFileGetsTrim(treefile, &rdline))
+	    while(ajFileGetsTrim(treefile, &rdline))
 	    {
-		if (!i && !ajStrLen(tree->Tree))
+		if(!i && !ajStrLen(tree->Tree))
 		{
-		    if (ajStrToInt(rdline, &headcount))
+		    if(ajStrToInt(rdline, &headcount))
 		    {
 			ajDebug("ajPhyloTreeRead count: %d\n", headcount);
-			if (size)
+			if(size)
 			{
-			    if (size < headcount)
+			    if(size < headcount)
 				ajWarn("Tree file '%S' has %d trees,"
 				       " expected %d",
 				       filename, headcount, size);
-			    if (size > headcount)
+			    if(size > headcount)
 				ajErr("Tree file '%S' has %d trees,"
 				      " required %d",
 				      filename, headcount, size);
@@ -1353,45 +1410,45 @@ AjPPhyloTree* ajPhyloTreeRead (AjPStr filename, ajint size)
 		}
 		cp = ajStrStr(rdline);
 		ajDebug("ajPhyloTreeRead rdline '%S'\n", rdline);
-		while (cp && ajRegExecC(treeexp, cp))
+		while(cp && ajRegExecC(treeexp, cp))
 		{
-		    if (!size && !headcount && !ajStrLen(tree->Tree))
+		    if(!size && !headcount && !ajStrLen(tree->Tree))
 		    {
 			count++;
 			ajDebug("ajPhyloTreeRead count++ %d\n", count);
 		    }
-		    ajRegSubI (treeexp, 0, &token);
-		    (void) ajStrApp (&tree->Tree, token);
+		    ajRegSubI(treeexp, 0, &token);
+		    ajStrApp(&tree->Tree, token);
 		    ajDebug("ajPhyloTreeRead token '%S'\n", token);
-		    (void) ajRegPostC (treeexp, &cp);
+		    ajRegPostC(treeexp, &cp);
 		}
 
-		if (ajStrChar(tree->Tree, -1) == ';')
+		if(ajStrChar(tree->Tree, -1) == ';')
 		    break;
 		ajDebug("ajPhyloTreeRead processing tree->Tree '%S'\n",
 			tree->Tree);
 	    }
 
-	    if (ajStrLen(tree->Tree) && ajStrChar(tree->Tree, -1) == ';')
+	    if(ajStrLen(tree->Tree) && ajStrChar(tree->Tree, -1) == ';')
 	    {
 		ajDebug("ajPhyloTreeRead tree done tree->Tree '%S'\n",
 			tree->Tree);
 		tree->BaseBifurcated = ajTrue;
-		if (ajRegExec(quartexp, tree->Tree))
+		if(ajRegExec(quartexp, tree->Tree))
 		{
 		    tree->BaseBifurcated = ajFalse; /* but rooted for phylip */
 		    tree->BaseQuartet = ajTrue;
 		}
 		tree->Multifurcated = ajFalse;
 		ajStrAssS(&treecopy, tree->Tree);
-		while (ajRegExec(rootexp, treecopy))
+		while(ajRegExec(rootexp, treecopy))
 		{
 		    ajRegSubI(rootexp, 1, &pretoken);
 		    ajRegSubI(rootexp, 2, &token);
 		    ajRegPost(rootexp, &posttoken);
 		    ajDebug("ajPhyloTreeRead root match '%S': '%S'\n",
 			    treecopy, token);
-		    if (ajRegExec(multiexp, token))
+		    if(ajRegExec(multiexp, token))
 		    {
 			tree->Multifurcated = ajTrue;
 			ajDebug("ajPhyloTree multifurcated node '%S'\n",
@@ -1400,7 +1457,8 @@ AjPPhyloTree* ajPhyloTreeRead (AjPStr filename, ajint size)
 		    ajStrAssS(&treecopy, pretoken);
 		    ajStrApp(&treecopy, posttoken);
 		}
-		if (ajRegExec(unrootexp, treecopy))
+
+		if(ajRegExec(unrootexp, treecopy))
 		    tree->BaseBifurcated = ajFalse;
 		ajDebug("ajPhyloTreeRead tree '%S' rooted: %B "
 			"basetrifurcated: %B"
@@ -1408,18 +1466,17 @@ AjPPhyloTree* ajPhyloTreeRead (AjPStr filename, ajint size)
 			tree->Tree, tree->BaseBifurcated,
 			tree->BaseTrifurcated, treecopy);
 		ajListPushApp(treelist, tree);
+
 		i++;
-		if (i == headcount)
+		if(i == headcount)
 		    treeok = ajTrue;
-		else if (size && size == i)
+		else if(size && size == i)
 		    treeok = ajTrue;
 	    }
 	    else
 	    {
-		if (ajFileEof(treefile))
-		{
+		if(ajFileEof(treefile))
 		    treeok = ajTrue;
-		}
 		else
 		{
 		    ajErr("Tree file %S: Unexpected end of file",
@@ -1428,7 +1485,8 @@ AjPPhyloTree* ajPhyloTreeRead (AjPStr filename, ajint size)
 		}
 	    }
 	}
-	if (size && size != i)
+
+	if(size && size != i)
 	{
 	    ajErr("Tree file '%S' has %d trees,"
 		  " required %d",
@@ -1439,7 +1497,7 @@ AjPPhyloTree* ajPhyloTreeRead (AjPStr filename, ajint size)
 		" required %d\n",
 		  filename, i, ajListLength(treelist), size);
         ajFileClose(&treefile);
-	ajListToArray (treelist, (void***) &trees);
+	ajListToArray(treelist, (void***) &trees);
 	ret = (AjPPhyloTree*) trees;
     }
     
