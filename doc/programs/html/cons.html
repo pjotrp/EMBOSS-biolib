@@ -136,12 +136,22 @@ Output file [outfile.cons]: aligned.cons
 
    Optional qualifiers:
    -datafile           matrix     Scoring matrix
-   -plurality          float      Defines the number of positive scoring
+   -plurality          float      Set a cut-off for the number of positive
                                   matches below which there is no consensus.
-   -setcase            float      Define a threshold above which the consensus
-                                  is given in uppercase.
-   -identity           integer    Only match those with N identices in all
-                                  sequences.
+                                  The default plurality is taken as half the
+                                  total weight of all the sequences in the
+                                  alignment. A value of zero means there will
+                                  always be a consensus.
+   -setcase            float      Sets the threshold for the positive matches
+                                  above which the consensus is is upper-case
+                                  and below which the consensus is in
+                                  lower-case.
+   -identity           integer    Provides the facility of setting the
+                                  required number of identities at a site for
+                                  it to give a consensus at that position.
+                                  Therefore, if this is set to the number of
+                                  sequences in the alignment only columns of
+                                  identities contribute to the consensus.
 
    Advanced qualifiers: (none)
 
@@ -184,21 +194,21 @@ Output file [outfile.cons]: aligned.cons
 
 <tr>
 <td>-plurality</td>
-<td>Defines the number of positive scoring matches below which there is no consensus.</td>
+<td>Set a cut-off for the number of positive matches below which there is no consensus. The default plurality is taken as half the total weight of all the sequences in the alignment. A value of zero means there will always be a consensus.</td>
 <td>Any integer value</td>
 <td>Half the total sequence weighting</td>
 </tr>
 
 <tr>
 <td>-setcase</td>
-<td>Define a threshold above which the consensus is given in uppercase.</td>
+<td>Sets the threshold for the positive matches above which the consensus is is upper-case and below which the consensus is in lower-case.</td>
 <td>Any integer value</td>
 <td>0</td>
 </tr>
 
 <tr>
 <td>-identity</td>
-<td>Only match those with N identices in all sequences.</td>
+<td>Provides the facility of setting the required number of identities at a site for it to give a consensus at that position. Therefore, if this is set to the number of sequences in the alignment only columns of identities contribute to the consensus.</td>
 <td>Integer 0 or more</td>
 <td>0</td>
 </tr>
@@ -263,14 +273,14 @@ The USA of a set of aligned sequences.
         happens in unusual cases - null output, errors etc. 
    -->
 
-The output consists of a line "Consensus" followed by one of more lines
-holding the consensus sequence. For example:
+The output consists of a sequence file holding the consensus sequence. 
+For example:
 
 <P>
 <HR>
 <pre>
-Consensus 
-tagctga-ct-ac-ggactgatgcgt
+>Consensus 
+tagctgacctgacgggactgatgcgt
 </pre>
 <HR>
 

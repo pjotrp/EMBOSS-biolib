@@ -57,12 +57,22 @@ Command line arguments
 
    Optional qualifiers:
    -datafile           matrix     Scoring matrix
-   -plurality          float      Defines the number of positive scoring
+   -plurality          float      Set a cut-off for the number of positive
                                   matches below which there is no consensus.
-   -setcase            float      Define a threshold above which the consensus
-                                  is given in uppercase.
-   -identity           integer    Only match those with N identices in all
-                                  sequences.
+                                  The default plurality is taken as half the
+                                  total weight of all the sequences in the
+                                  alignment. A value of zero means there will
+                                  always be a consensus.
+   -setcase            float      Sets the threshold for the positive matches
+                                  above which the consensus is is upper-case
+                                  and below which the consensus is in
+                                  lower-case.
+   -identity           integer    Provides the facility of setting the
+                                  required number of identities at a site for
+                                  it to give a consensus at that position.
+                                  Therefore, if this is set to the number of
+                                  sequences in the alignment only columns of
+                                  identities contribute to the consensus.
 
    Advanced qualifiers: (none)
    
@@ -76,13 +86,19 @@ Command line arguments
    -datafile Scoring matrix Comparison matrix file in EMBOSS data path
    EBLOSUM62 for protein
    EDNAMAT for DNA
-   -plurality Defines the number of positive scoring matches below which
-   there is no consensus. Any integer value Half the total sequence
-   weighting
-   -setcase Define a threshold above which the consensus is given in
-   uppercase. Any integer value 0
-   -identity Only match those with N identices in all sequences. Integer
-   0 or more 0
+   -plurality Set a cut-off for the number of positive matches below
+   which there is no consensus. The default plurality is taken as half
+   the total weight of all the sequences in the alignment. A value of
+   zero means there will always be a consensus. Any integer value Half
+   the total sequence weighting
+   -setcase Sets the threshold for the positive matches above which the
+   consensus is is upper-case and below which the consensus is in
+   lower-case. Any integer value 0
+   -identity Provides the facility of setting the required number of
+   identities at a site for it to give a consensus at that position.
+   Therefore, if this is set to the number of sequences in the alignment
+   only columns of identities contribute to the consensus. Integer 0 or
+   more 0
    Advanced qualifiers Allowed values Default
    (none)
    
@@ -92,12 +108,12 @@ Input file format
    
 Output file format
 
-   The output consists of a line "Consensus" followed by one of more
-   lines holding the consensus sequence. For example:
+   The output consists of a sequence file holding the consensus sequence.
+   For example:
      _________________________________________________________________
    
-Consensus
-tagctga-ct-ac-ggactgatgcgt
+>Consensus
+tagctgacctgacgggactgatgcgt
      _________________________________________________________________
    
 Data files
