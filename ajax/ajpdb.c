@@ -1069,7 +1069,7 @@ ajint  ajPdbGetEStrideType(const AjPPdb obj, ajint chn, AjPStr *EStrideType)
     }
     
     /* Set all positions to . */
-    ajStrAppKI(EStrideType,  (const char) '.', obj->Chains[idx]->Nres);   
+    ajStrAppKI(EStrideType,  '.', obj->Chains[idx]->Nres);   
 
     iter=ajListIterRead(obj->Chains[idx]->Atoms);
     while((tmp=(AjPAtom)ajListIterNext(iter)))
