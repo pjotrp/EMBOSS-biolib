@@ -207,8 +207,9 @@ See also
 Author(s)
 
    This application was written by Bernd Jagla bernd@golgi.ski.mskcc.org
-   Freie Universitat Berlin, Institut fur Med./Techn. Physik und
-   Lasermedizin, Krahmerstrasse 6-10, 12045 Berlin, Germany.
+   Cellular Biochemistry and Biophysics Program, Rockefeller Research
+   Laboratories, Memorial Sloan-Kettering Cancer Center, 1275 York
+   Avenue, Box 251,New York, NY 10021.
    
 History
 
