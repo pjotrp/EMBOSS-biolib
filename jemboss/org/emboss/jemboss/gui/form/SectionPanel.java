@@ -384,29 +384,29 @@ public class SectionPanel
           pan.add(setLabelText(" Report format ("+def+")",
                   ReportFormat.getToolTip()));
 
-          Box pan2 = new Box(BoxLayout.X_AXIS);
-          section.add(pan2);
+//        Box pan2 = new Box(BoxLayout.X_AXIS);
+//        section.add(pan2);
           // -raccshow  show accession 
-          checkBox[h] = new JCheckBox();
-          pan2.add(checkBox[h]);
-          pan2.add(setLabelText("Accession number",
-              "Displays the accession number in the report"));
-          pan2.add(Box.createHorizontalStrut(20));
+//        checkBox[h] = new JCheckBox();
+//        pan2.add(checkBox[h]);
+//        pan2.add(setLabelText("Accession number",
+//            "Displays the accession number in the report"));
+//        pan2.add(Box.createHorizontalStrut(20));
 
           // -rdesshow  show description
-          checkBox[h+1] = new JCheckBox();
-          pan2.add(checkBox[h+1]);
-          pan2.add(setLabelText("Description", 
-              "Displays the sequence description in the report"));
-          pan2.add(Box.createHorizontalStrut(20));
+//        checkBox[h+1] = new JCheckBox();
+//        pan2.add(checkBox[h+1]);
+//        pan2.add(setLabelText("Description", 
+//            "Displays the sequence description in the report"));
+//        pan2.add(Box.createHorizontalStrut(20));
 
           // -rusashow  show the full USA
-          checkBox[h+2] = new JCheckBox();
-          pan2.add(checkBox[h+2]);
-          pan2.add(setLabelText("Full USA", 
-              "Displays the universal sequence address in the report"));
+//        checkBox[h+2] = new JCheckBox();
+//        pan2.add(checkBox[h+2]);
+//        pan2.add(setLabelText("Full USA", 
+//            "Displays the universal sequence address in the report"));
 
-          pan2.add(Box.createHorizontalGlue());
+//        pan2.add(Box.createHorizontalGlue());
         }
         else if(att.startsWith("list") || att.startsWith("select"))
         {
