@@ -1,4 +1,4 @@
-#SET emboss_tempdata name_of_emboss_test_database_directory
+SET emboss_tempdata /m2/emboss/emboss/test
 
 # Logfile - set this to a file that any user can append to
 # and EMBOSS applications will automatically write log information
@@ -54,21 +54,22 @@ DB tgb [ type: N method: url format: genbank
 # GENBANK from the Canadian EMBnet node SRSWWW server
 #######################################################################
 
-#DB genbank [ type: N method: url format: genbank
-#   url: "http://www.ca.embnet.org/srs6.1bin/cgi-bin/wgetz?-e+[genbank-id:%s]"
-#   comment: "Genbank IDs" ]
 
-#DB gb [ type: N method: url format: genbank
-#   url: "http://www.ca.embnet.org/srs6.1bin/cgi-bin/wgetz?-e+[genbank-id:%s]"
-#   comment: "Genbank IDs" ]
+DB genbank [ type: N method: url format: genbank
+   url: "http://www.ca.embnet.org/srs6bin/cgi-bin/wgetz?-id+-e+[genbank:'%s']+-vn+2"
+   comment: "Genbank IDs" ]
 
-#DB genbanka [ type: N method: url format: genbank
-#   url: "http://www.ca.embnet.org/srs6.1bin/cgi-bin/wgetz?-e+[genbank-acc:%s]"
-#   comment: "Genbank ACs" ]
+DB gb [ type: N method: url format: genbank
+   url: "http://www.ca.embnet.org/srs6bin/cgi-bin/wgetz?-id+-e+[genbank:'%s']+-vn+2"
+   comment: "Genbank IDs" ]
 
-#DB gba [ type: N method: url format: genbank
-#   url: "http://www.ca.embnet.org/srs6.1bin/cgi-bin/wgetz?-e+[genbank-acc:%s]"
-#   comment: "Genbank ACs" ]
+DB genbanka [ type: N method: url format: genbank
+   url: "http://www.ca.embnet.org/srs6bin/cgi-bin/wgetz?-acc+-e+[genbank:'%s']+-vn+2"
+   comment: "Genbank ACs" ]
+
+DB gba [ type: N method: url format: genbank
+   url: "http://www.ca.embnet.org/srs6bin/cgi-bin/wgetz?-acc+-e+[genbank:'%s']+-vn+2"
+   comment: "Genbank ACs" ]
 
 
 #######################################################################
