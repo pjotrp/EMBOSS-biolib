@@ -6,6 +6,7 @@
 # ID Test name (for the test directory)
 # AP Application name (for the command line and for statistics)
 # CL Command line (rest of the command line)
+# ER error return code
 # ## Comment
 # CC Comment
 # IN Line(s) of standard input
@@ -29,6 +30,7 @@ $tfail=0;
 	    "2" => "Failed to run",
 	    "3" => "Unknown file",
 	    "4" => "Failed pattern",
+	    "5" => "Unexpected success",
 	    "6" => "Not empty file",
 	    "7" => "Failed size",
 	    "8" => "Failed linecount",
@@ -51,8 +53,8 @@ while (<IN>) {
     $tcount++;
     $result = runtest ($testdef);
     if ($result) {
-      print STDERR "test $id failed code $result\n";
-      print LOG "test $id failed code $result\n";
+      print STDERR "$id test failed code $result\n\n";
+      print LOG "$id test failed code $result\n";
       $tfail++;
     }
     else {print LOG "test $id success\n"}
@@ -84,6 +86,10 @@ sub runtest ($) {
   my $ip = $iq = 0;
   my $i = $j = $k = 0;
   my $testerr = "";
+  my $cmdline = "";
+  my $testret = 0;
+  my $testid = "";
+  my $testin = "";
 
   foreach $line  (split (/^/, $testdef)) {
     ###print "<$line>\n";
@@ -106,9 +112,13 @@ sub runtest ($) {
     }
     elsif ($line =~ /^\#\#/) {next}
     elsif ($line =~ /^CC/) {next}
+    elsif ($line =~ /^ER\s+(\d+)/) {$testret = $1}
     elsif ($line =~ /^AP\s+(\S+)/) {$testapp = $1}
     elsif ($line =~ /^IN\s+(\S*)/) {$testin .= "$1\n"}
-    elsif ($line =~ /^CL\s+(.*)/) {$cmdline = $1}
+    elsif ($line =~ /^CL\s+(.*)/) {
+      if ($cmdline ne "") {$cmdline .= " "}
+      $cmdline .= $1;
+    }
     elsif ($line =~ /^FI\s+(\S+)/) {
       $outfile{$1} = $ifile;
       $outfilepatt{$ifile} = $ipatt;
@@ -145,11 +155,22 @@ sub runtest ($) {
   $sysstat = system( "$testapp $cmdline > stdout 2> stderr $stdin");
   $status = $sysstat >> 8;
   if ($status) {
-    $testerr = "$retcode{2} '$testapp $cmdline $stdin', status $status\n";
-    print STDERR $testerr;
-    chdir ("..");
-    return 2;
+    if ($status != $testret) {
+      $testerr = "$retcode{2} '$testapp $cmdline $stdin', status $status/$testret\n";
+      print STDERR $testerr;
+      chdir ("..");
+      return 2;
+    }
   }
+  else {
+    if ($testret) {
+      $testerr = "$retcode{5} '$testapp $cmdline $stdin', status $status/$testret\n";
+      print STDERR $testerr;
+      chdir ("..");
+      return 5;
+    }
+  }
+
   opendir (DIR, ".");
   @allfiles = readdir(DIR);
   closedir DIR;
