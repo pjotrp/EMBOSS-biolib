@@ -363,7 +363,7 @@ public class SectionPanel
         {
           inSeq[h] = new SetInFileCard(sectionPane,h,db,
                               "Multiple Sequence Filename",
-                              appName,inSeqAttr,true);
+                              appName,inSeqAttr,true,mysettings);
           pan.add(inSeq[h].getInCard());
         }
         else if(att.startsWith("sequence") || att.startsWith("seqall"))
@@ -373,12 +373,12 @@ public class SectionPanel
             tit = "Sequence Filename";
 
           inSeq[h] = new SetInFileCard(sectionPane,h,db,tit,
-                                appName,inSeqAttr,true);
+                                appName,inSeqAttr,true,mysettings);
           pan.add(inSeq[h].getInCard());
         }
         else if(att.startsWith("filelist"))
         {
-          filelist[h] = new ListFilePanel(15);
+          filelist[h] = new ListFilePanel(15,mysettings);
           pan.add(filelist[h]);
           pan.add(Box.createVerticalStrut(100));
         }

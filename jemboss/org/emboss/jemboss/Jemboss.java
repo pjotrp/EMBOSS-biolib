@@ -146,8 +146,12 @@ public class Jemboss implements ActionListener
 
     f = new JFrame("Jemboss");
 // make the local file manager
-    tree = new DragTree( new File(System.getProperty("user.home")), 
-                                                    f, mysettings);
+//  tree = new DragTree( new File(System.getProperty("user.home")), 
+//                                                  f, mysettings);
+
+    tree = new DragTree(new File(mysettings.getUserHome()),
+                        f, mysettings);
+
     scrollTree = new JScrollPane(tree);
 
     JPanel p1 = new JPanel(new BorderLayout());     // menu panel

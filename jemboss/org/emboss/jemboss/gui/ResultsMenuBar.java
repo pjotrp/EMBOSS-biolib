@@ -128,7 +128,8 @@ public class ResultsMenuBar extends JMenuBar
 * @param JTextPane text area to add listener to
 *
 */
-  public ResultsMenuBar(final JFrame frame, final FileEditorDisplay fed)
+  public ResultsMenuBar(final JFrame frame, final FileEditorDisplay fed, 
+                        final JembossParams mysettings)
   {
     setResultsMenuBar(frame,false);
 
@@ -137,7 +138,7 @@ public class ResultsMenuBar extends JMenuBar
     {
       public void actionPerformed(ActionEvent e)
       {
-        FileSaving fsave = new FileSaving(fed, fed.getPNGContent());
+        FileSaving fsave = new FileSaving(fed, fed.getPNGContent(), mysettings);
 
         if(fsave.writeOK())
         {
@@ -345,7 +346,7 @@ public class ResultsMenuBar extends JMenuBar
 
         SecurityManager sm = System.getSecurityManager();
         System.setSecurityManager(null);
-        JFileChooser fc = new JFileChooser(AdvancedOptions.cwd);
+        JFileChooser fc = new JFileChooser(mysettings.getUserHome());
         System.setSecurityManager(sm);
 
         fc.addChoosableFileFilter(new SequenceFilter());

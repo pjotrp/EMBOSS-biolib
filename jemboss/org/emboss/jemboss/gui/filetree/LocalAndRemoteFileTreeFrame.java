@@ -57,8 +57,11 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
       final JPanel remotePanel = new JPanel(new BorderLayout());
       final RemoteFileTreePanel rtree =
                            new RemoteFileTreePanel(mysettings,false);
-      ltree = new DragTree(new File(System.getProperty("user.home")), 
-                                                   this, mysettings);
+   
+      ltree = new DragTree(new File(mysettings.getUserHome()),
+                           this, mysettings);
+//    ltree = new DragTree(new File(System.getProperty("user.home")), 
+//                                                 this, mysettings);
 
       final JPanel localPanel = new JPanel(new BorderLayout());
       JScrollPane localTree = new JScrollPane(ltree);   

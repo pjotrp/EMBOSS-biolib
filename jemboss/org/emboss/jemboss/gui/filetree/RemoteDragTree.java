@@ -55,7 +55,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
   final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
 
-  public RemoteDragTree(JembossParams mysettings, FileRoots froots,
+  public RemoteDragTree(final JembossParams mysettings, FileRoots froots,
                         final JPanel viewPane) 
   {
 
@@ -105,7 +105,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
           if(node==null)
             return;
           if(node.isLeaf())
-            showFilePane(node.getFullName());
+            showFilePane(node.getFullName(),mysettings);
           setCursor(cdone);
         }
       }
@@ -600,7 +600,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
 * @param the file name
 *
 */
-  public static void showFilePane(String filename)
+  public static void showFilePane(String filename, JembossParams mysettings)
   {
     try
     {
@@ -624,7 +624,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
 
       FileEditorDisplay fed = new FileEditorDisplay(ffile,filename,
                                    gReq.getHash().get("contents"));
-      new ResultsMenuBar(ffile,fed);
+      new ResultsMenuBar(ffile,fed,mysettings);
       pfile.add(rscroll, BorderLayout.CENTER);
       JTextPane seqText = fed.getJTextPane();
       pscroll.add(seqText, BorderLayout.CENTER);
