@@ -6,8 +6,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.20 $
-** @modified $Date: 2004/06/16 17:06:26 $
+** @version $Revision: 1.21 $
+** @modified $Date: 2004/06/22 17:27:37 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -46,44 +46,47 @@ enum constant
 
 int main(int argc , char **argv)
 {
+    /* sequence objects */
+    AjPSeq ajpSeqDown = NULL;   /* query sequence---no structure             */
+    AjPSeq ajpSeqAcross = NULL; /* template sequence---has structure         */
+    AjPSeq ajpSeqDownCopy = NULL;   /* rewritable query sequence             */
+    AjPSeq ajpSeqAcrossCopy = NULL; /* rewritable template sequence          */
+    /* sequence characters */
     char cTempTraceDown;
     char cTempTraceAcross;
+    /* sequence strings */
     char *pcSeqAcross;
     char *pcTraceDown;
     char *pcTraceAcross;
     char *pcUpdatedSeqAcross;
-
-    /* sequence objects and copies */
-    AjPSeq ajpSeqDown = NULL;
-    AjPSeq ajpSeqAcross = NULL;
-    AjPSeq ajpSeqDownCopy = NULL;
-    AjPSeq ajpSeqAcrossCopy = NULL;
-    /* object to write out aligned sequence */
-    AjPSeqout ajpSeqoutAligned = NULL;
-    /* prebuilt scoring AjpMatrix (e.g. BLOSUM62) */
-    AjPMatrixf ajpMatrixfSubstitutionScoring = NULL;
-    /* contact-based scoring AjpMatrix  */
-    AjPMatrixf ajpMatrixfContactScoring = NULL;
-
-    /* array for pair scores according to conventional scoring matrix */
-    AjPFloat2d ajpFloat2dPairScores = NULL;
-    /* array for pair scores according to contact-based scoring matrix */
-    float **floatArrayContactScores = NULL;
-
-    /* array for recursively summed scores in backtrace */
-    AjPGotohCell **ajpGotohCellGotohScores;
-
-    /* lengths of strings of numbers */
+    /* sequence lengths */
     ajint ajIntSeqCount;
     ajint ajIntTraceCount;
     ajint ajIntDownSeqLen;
     ajint ajIntAcrossSeqLen;
     ajint ajIntAlignmentLen;
 
-    /* stack of backtraced cells */
-    AjPList ajpListGotohCellsMaxScoringTrace = NULL;
+    
+    AjPSeqout ajpSeqoutAligned = NULL; /* output object to write alignment   */
+
+    /* alignment gap extension and gap penalty scores */
     float fExtensionPenalty;
     float fGapPenalty;
+
+    /* prebuilt scoring matrix (e.g. BLOSUM62) */
+    AjPMatrixf ajpMatrixfSubstitutionScoring = NULL;
+    /* contact-based scoring matrix */
+    AjPMatrixf ajpMatrixfContactScoring = NULL;
+
+    /* array for pair scores according to conventional scoring matrix  */
+    AjPFloat2d ajpFloat2dPairScores = NULL;
+    /* array for pair scores according to contact-based scoring matrix */
+    float **floatArrayContactScores = NULL;
+
+    /* array for recursively summed scores in alignment backtrace */
+    AjPGotohCell **ajpGotohCellGotohScores;
+    /* stack of backtraced cells */
+    AjPList ajpListGotohCellsMaxScoringTrace = NULL;
 
     /* DDDDEBUG temporary contact map filename */
     AjPStr ajpStrOriginalCmapFile = NULL;
@@ -102,7 +105,7 @@ int main(int argc , char **argv)
     AjBool ajBoolOriginalCmapFileRead = ajFalse;
     AjBool ajBoolUpdatedCmapFileWritten = ajFalse;
 
-    embInit( "contactalign" , argc , argv);
+    embInit("contactalign", argc, argv);
   
     /* DDDDEBUGGING: DEFAULT GAP AND EXTENSION PENALTIES SET BELOW */
     fGapPenalty       = -10.0;
@@ -124,26 +127,10 @@ int main(int argc , char **argv)
 					     ajpSeqDown,
 					     ajpSeqAcross,
 					     fExtensionPenalty);
-
-    /* DDDDEBUG CHECK THAT WORKED */
-    if(enumDebugLevel > 2)
-    {
-	debug_pair_score(ajpFloat2dPairScores,
-			 ajpSeqDown,
-			 ajpSeqAcross);
-    }
     
     /* initialize Gotoh score array */
     ajpGotohCellGotohScores = embGotohCellGetArray(ajIntDownSeqLen,
 						   ajIntAcrossSeqLen);
-    
-    /* DDDDEBUG CHECK THAT WORKED */
-    if(enumDebugLevel > 2)
-    {
-	debug_Gotoh_score(ajpGotohCellGotohScores,
-			  ajIntDownSeqLen,
-			  ajIntAcrossSeqLen);
-    }
 
     embGotohCellCalculateSumScore(ajpFloat2dPairScores,
 				  ajpSeqDown,
@@ -151,14 +138,6 @@ int main(int argc , char **argv)
 				  ajpGotohCellGotohScores,
 				  fGapPenalty,
 				  fExtensionPenalty);
-
-    /* DDDDEBUG CHECK THAT WORKED */
-    if(enumDebugLevel > 2)
-    {
-	debug_Gotoh_score(ajpGotohCellGotohScores,
-			  ajIntDownSeqLen,
-			  ajIntAcrossSeqLen);
-    }
     
     /* copy original sequences into new sequence objects */
     ajpSeqDownCopy = ajSeqNewS(ajpSeqDown);
@@ -312,9 +291,3 @@ int main(int argc , char **argv)
     /* exit properly (main() was declared as an int) */
     return 0;
 }
-
-
-
-
-
-
