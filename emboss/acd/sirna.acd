@@ -1,0 +1,45 @@
+appl: sirna [
+  documentation: "Finds siRNA duplexes in mRNA"
+  groups: "Nucleic:Composition"
+]
+
+section: input [ info: "input Section" type: page ]
+
+seqall: sequence  [
+  parameter: "Y"
+  type: "DNA"
+  features: "Y"
+]
+
+endsection: input
+
+section: selection [ info: "selection Section" type: page ]
+
+bool: poliii [
+  optional: "Y"
+  default: "Y"
+  information: "Select probes for Pol III expression vectors"
+  help: "This option allows you to select the 21 base probes that start with a purine and so can be expressed from Pol III expression vectors."
+]
+
+bool: aa [
+  optional: "Y"
+  default: "N"
+  information: "Select regions that start with AA"
+  help: "This option allows you to select the 23 base regions that start with 
+AA. "
+]
+
+endsection: selection
+
+section: output [ info: "output Section" type: page ]
+
+report: outfile  [
+  parameter: "Y"
+  information: "Output data file"
+  help: ""
+  rformat: "table"
+  taglist: "float:gc=GC% string:forward=Sense_siRNA string:reverse=Antisense_siRNA"
+]
+
+endsection: output
