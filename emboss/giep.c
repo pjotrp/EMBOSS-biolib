@@ -63,7 +63,7 @@ int main(int argc, char **argv)
     double charge;
 
 #ifndef GROUT
-    AjPGraphData phGraph=NULL;
+    AjPGraphPlpData phGraph=NULL;
 #endif
     AjPStr tit=NULL;
     AjPStr tmp=NULL;
