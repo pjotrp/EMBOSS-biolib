@@ -136,8 +136,7 @@ Input file format
    (7) SQ - protein sequence. The number of residues is given before AA
    on the first line. The protein sequence is given on subsequent lines.
    
-   (8) CO - coordinate data. The records are as follows (column numbers
-   are given in parentheses).
+   (8) CO - coordinate data. The columns of the records are as follows.
     1. CO is always given.
     2. Model number (always 1 for domain coordinate files).
     3. Chain number (always 1 for domain coordinate files).
