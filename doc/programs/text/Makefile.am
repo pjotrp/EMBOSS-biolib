@@ -44,8 +44,8 @@ pkgdata2_DATA = infoalign.txt infoseq.txt isochore.txt kitsch.txt lindna.txt \
                stretcher.txt stssearch.txt supermatcher.txt swissparse.txt \
                syco.txt textsearch.txt tfextract.txt tfm.txt tfscan.txt \
                tmap.txt topo.txt transeq.txt trimest.txt trimseq.txt \
-               vectorstrip.txt water.txt wobble.txt wordcount.txt \
-               wordmatch.txt wossname.txt
+               vectorstrip.txt water.txt whichdb.txt wobble.txt \
+               wordcount.txt wordmatch.txt wossname.txt
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/programs/text
 pkgdata2dir=$(prefix)/share/$(PACKAGE)/doc/programs/text

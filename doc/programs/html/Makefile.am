@@ -80,8 +80,8 @@ pkgdata2_DATA = isochore.html kitsch.html lindna.html listor.html \
                transeq.html trimest.html trimseq.html \
                utils_database_creation_group.html \
                utils_database_indexing_group.html utils_misc_group.html \
-               vectorstrip.html water.html wobble.html wordcount.html \
-               wordmatch.html wossname.html
+               vectorstrip.html water.html whichdb.html wobble.html \
+               wordcount.html wordmatch.html wossname.html
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/programs/html
 pkgdata2dir=$(prefix)/share/$(PACKAGE)/doc/programs/html
