@@ -543,8 +543,10 @@ static void fileClose (const AjPFile thys) {
 
   if (thys->Handle) {
     ajDebug ("closing file '%F'\n", thys);
-    if(fclose (thys->fp))
-      ajFatal("File close in fileClose");
+    if (thys->fp != stdout && thys->fp != stderr) {
+      if(fclose (thys->fp))
+	ajFatal("File close problem in fileClose");
+    }
     thys->Handle = 0;
 
     fileCloseCnt++;
