@@ -16,20 +16,22 @@ complex corbatest \
 demoalign demofeatures demolist demoreport demosequence demostring demotable \
 entrails histogramtest intconv \
 patmattest \
+plotfeat \
+primers \
 prima primers \
 seqinfo seqretall seqretallfeat seqretset seqretsingle \
 sigplot \
-testplot treetypedisplay
+testplot treetypedisplay alignret
 
 bin_PROGRAMS = abiview acdc alignwrap antigenic \
 backtranseq banana biosed btwisted \
 cai chaos charge checktrans chips cirdna codcmp coderet \
 contacts compseq cons cpgplot cpgreport cusp cutgextract cutseq \
 dan dbiblast dbifasta dbiflat dbigcg \
-degapseq descseq dichet diffseq digest distmat domainer \
+degapseq descseq  diffseq digest distmat domainer \
 dotmatcher dotpath dottup dreg \
 einverted embossdata embossversion emma emowse entret \
-equicktandem est2genome etandem extractfeat extractseq \
+eprimer3 equicktandem est2genome etandem extractfeat extractseq \
 findkm freak fuzznuc fuzzpro fuzztran \
 garnier geecee getorf helixturnhelix hmoment \
 iep infoalign infoseq interface isochore lindna listor \
@@ -42,7 +44,7 @@ palindrome pasteseq patmatdb patmatmotifs \
 pdbtosp pepcoil pepinfo pepnet pepstats \
 pepwheel pepwindow pepwindowall \
 plotcon plotorf polydot preg \
-prettyplot prettyseq primer3 primersearch printsextract \
+prettyplot prettyseq primersearch printsextract \
 profit prophecy prophet \
 prosextract pscan psiblasts \
 rebaseextract recoder redata remap restover restrict revseq scope scopparse \
@@ -103,6 +105,7 @@ emma_SOURCES = emma.c
 emowse_SOURCES = emowse.c
 entrails_SOURCES = entrails.c
 entret_SOURCES = entret.c
+eprimer3_SOURCES = eprimer3.c
 equicktandem_SOURCES = equicktandem.c
 est2genome_SOURCES = est2genome.c
 etandem_SOURCES = etandem.c
@@ -164,7 +167,6 @@ preg_SOURCES = preg.c
 prettyplot_SOURCES = prettyplot.c
 prettyseq_SOURCES = prettyseq.c
 prima_SOURCES = prima.c
-primer3_SOURCES = primer3.c
 primers_SOURCES = primers.c
 primersearch_SOURCES = primersearch.c
 printsextract_SOURCES = printsextract.c
@@ -236,6 +238,7 @@ demotable_SOURCES = demotable.c
 dichet_SOURCES = dichet.c
 histogramtest_SOURCES = histogramtest.c
 patmattest_SOURCES = patmattest.c
+plotfeat_SOURCES = plotfeat.c
 psiblasts_SOURCES = psiblasts.c
 seqretsingle_SOURCES = seqretsingle.c
 sigplot_SOURCES = sigplot.c

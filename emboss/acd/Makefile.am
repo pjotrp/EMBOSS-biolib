@@ -15,7 +15,7 @@ pkgdata_DATA = codes.english \
 	digest.acd distmat.acd domainer.acd \
 	dotmatcher.acd dotpath.acd dottup.acd \
 	dreg.acd einverted.acd embossdata.acd embossversion.acd emma.acd \
-	emowse.acd entrails.acd entret.acd equicktandem.acd \
+	emowse.acd entrails.acd entret.acd eprimer3.acd equicktandem.acd \
 	est2genome.acd etandem.acd extractseq.acd extractfeat.acd findkm.acd \
 	freak.acd fuzznuc.acd fuzzpro.acd fuzztran.acd \
 	garnier.acd geecee.acd getorf.acd helixturnhelix.acd hmoment.acd \
@@ -30,7 +30,7 @@ pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd \
 	patmattest.acd pdbtosp.acd pepcoil.acd pepinfo.acd pepnet.acd \
 	pepstats.acd pepwheel.acd pepwindow.acd pepwindowall.acd \
 	plotcon.acd plotorf.acd polydot.acd \
-	preg.acd prettyplot.acd prettyseq.acd prima.acd primer3.acd \
+	preg.acd prettyplot.acd prettyseq.acd prima.acd \
 	primers.acd primersearch.acd printsextract.acd profit.acd \
 	prophecy.acd prophet.acd prosextract.acd pscan.acd psiblasts.acd \
 	rebaseextract.acd recoder.acd redata.acd remap.acd \
