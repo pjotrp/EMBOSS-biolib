@@ -111,7 +111,8 @@ public class JembossParams
   // we don't remember these perhaps we should for captive systems
   private String serviceUserName = "";
   private String serviceUserNameName = "user.name";
-  private String servicePasswd = null;
+  private char[] servicePasswd = null;
+  private byte[] servicePasswdByte = null;
 
   Properties jembossSettings;
 
@@ -673,10 +674,32 @@ public class JembossParams
 * Return the password needed for the remote service
 *
 */
-  public String getServicePasswd() 
+  public char[] getServicePasswd() 
   {
     return servicePasswd;
   }
+
+
+  public byte[] getServicePasswdByte()
+  {
+    return servicePasswdByte;
+  }
+
+/**
+*
+* Return the password as byte array
+*
+*/
+  private static byte[] toByteArr(char ch[])
+  {
+    int len = ch.length;
+    byte msb[] = new byte[len];
+
+    for(int i=0;i<len;i++)
+      msb[i] = (byte)(ch[i]);
+    return msb;
+  }
+
 
 /**
 *
@@ -684,9 +707,15 @@ public class JembossParams
 * @param newPasswd  The username
 *
 */
-  public void setServicePasswd(String newPasswd) 
+  public void setServicePasswd(char[] newPasswd) 
   {
-    servicePasswd = newPasswd;
+    int csize = newPasswd.length;
+    servicePasswd = new char[csize];
+
+    for(int i=0;i<csize;i++)
+      servicePasswd[i] = newPasswd[i];
+
+    servicePasswdByte = toByteArr(newPasswd);
   }
 
 /**
