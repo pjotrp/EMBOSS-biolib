@@ -1,7 +1,7 @@
 The EMBOSS Frequently Asked Questions list
 ==========================================
 
-Last modified: 29 Jan 2001
+Last modified: 3 Oct 2001
 
 
 SECTION A - Help and Support
@@ -112,7 +112,49 @@ Q) I'm trying to compile EMBOSS with the PNG support
 A) If you have  gd-1.7.3, zlib-1.1.3 and libpng-1.0.5 or greater
    then the normal compile should work! However due to gd no longer
    supporting gif format then you may need to install gd, zlib and
-   libpng locally. i.e. /home/joe/local
+   libpng locally. Buy default everything (including EMBOSS) installs
+   in /usr/local but in the examples below we use /home/joe/local
+
+   To install, pick up the sources and then:
+
+   gunzip -c zlib-1_1_3_tar.gz   | tar xf -
+   gunzip -c libpng-1_0_8_tar.gz | tar xf -
+   gunzip -c gd-1.8.3.tar.gz     | tar xf -
+
+   ln -s zlib-1.1.3   zlib
+   ln -s libpng-1.0.8 libpng
+   ln -s gd-1.8.3     gd
+
+   cd zlib
+   ./configure --prefix=/home/joe/local
+   make
+   make install
+   cd ..
+
+   cd libpng
+   cp scripts/makefile.linux makefile
+   ##
+   ## edit makefile, change prefix to be /home/joe/local
+   ## and any other places - some files point to ../zlib
+   ## others use /usr/local/lib and /usr/local/include
+   ##
+   ## on HP-UX this is trickier. CFLAGS has to match zlib
+   ##
+   make
+   make install
+   cd ..
+
+   cd gd
+   ##
+   ## edit Makefile, change:
+   ##         INCLUDEDIRS, LIBDIRS, INSTALL_LIB, INSTALL_INCLUDE, INSTALL_BIN
+   ##         all          /usr/local
+   ##         to           /home/joe/local
+   ##
+   make
+   make install
+   cd ..
+
 
    To compile with the local version your configure line should now
    read:-
@@ -121,7 +163,8 @@ A) If you have  gd-1.7.3, zlib-1.1.3 and libpng-1.0.5 or greater
    This will look for the graphics libraries in your local
    installation under /home/joe/local instead of a system-wide location
 
-
+   configure keeps a copy of the previous settings. You may need to delete
+   file config.cache and config.status if configure has been run before.
 
 
 Q) When installing EMBOSS recently I get a load of errors due to
@@ -182,7 +225,14 @@ A) Yes. Here is the information you will need:-
 Q) How do i compile the CVS version?
 
 A) You will need automake, autoconf, gmake and libtool for this.
-   
+
+   The gcc compiler is recommended. The host cc compiler should work,
+   but there is a problem with automake which generates the Makefiles.
+   automake generates dependencies for you, in a '.deps' subdirectory,
+   to keep Makefile.in clean, but since automake 1.4 this uses gcc. If
+   you are not using gcc, you can use 'automake --include-deps' to
+   put the dependencies into each Makefile.in file
+
    Scripts are available to compile the cvs version.
    
    i.e. source make-static-developers
@@ -192,11 +242,11 @@ A) You will need automake, autoconf, gmake and libtool for this.
 
    aclocal -I m4
    autoconf
-   automake -a
+   automake -a            #   --include-deps  # if you are not using gcc
    ./configure --disable-shared
    make
 
-   For more info on the configurabillity of the build try 
+   For more info on the configurability of the build try 
    ./configure --help
   
 
