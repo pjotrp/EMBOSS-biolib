@@ -915,6 +915,7 @@ public class AlignJFrame extends JFrame
               "           size\n"+
               "           base\n\n"+
               "           java org/emboss/jemboss/editor/AlignJFrame file -color size\n\n"+
+              "-font      Set the font size.\n"+
               "-id        Display a percentage ID pair table.\n"+
               "-noshow    Turns of the alignment display.\n"+
               "-nres      Number of residues to each line is a print out.\n"+
@@ -1008,6 +1009,8 @@ public class AlignJFrame extends JFrame
         }
         else if(args[i].indexOf("-noBox") > -1)
           prettyBox = false;
+        else if(args[i].indexOf("-font") > -1)
+          gsc.setFontSizeForCollection(Integer.parseInt(args[i+1]));
       }
 
       for(int i=0;i<args.length;i++)

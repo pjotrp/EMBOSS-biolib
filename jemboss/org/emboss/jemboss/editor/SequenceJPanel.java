@@ -776,6 +776,7 @@ public class SequenceJPanel extends JPanel
     if(seq.getID() != null)
       name = seq.getID();
 
+    g2d.setFont(font);
     g2d.setColor(Color.black);
     g2d.drawString(name,0,seqHeight-boundWidth2);
   }
@@ -795,6 +796,7 @@ public class SequenceJPanel extends JPanel
     String sName = null;
     String seqS  = null; 
 
+    g2d.setFont(font);
     if(drawSequence)
     {
       sName = seq.getName();
