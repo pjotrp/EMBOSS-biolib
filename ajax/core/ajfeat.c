@@ -964,10 +964,12 @@ AjPFeattable ajFeatRead( AjPFeattabIn  ftin )
     AjPFeattable features = NULL ;
     AjBool result         = ajFalse ;
 
-    assert (ftin);
+    if (!ftin)
+	return NULL;
 
     file = ftin->Handle ;
-    assert (file);
+    if(!file)
+	return NULL;
 
     format = ftin->Format ;
 
@@ -2357,12 +2359,14 @@ AjBool ajFeatWrite(const AjPFeattabOut ftout, AjPFeattable features)
 
     if(features)
     {
+	if(!ftout)
+	    return ajFalse;
+
 	ajDebug("ajFeatWrite Validating arguments\n");
 
-	assert(ftout);
-
 	file = ftout->Handle;
-	assert(file);
+	if(!file)
+	    return ajFalse;
 
 	format  = ftout->Format;
 
@@ -3780,7 +3784,8 @@ AjBool ajFeattableWriteGff(AjPFeattable Feattab, const AjPFile file)
 
     /* Check arguments */
     /* ajDebug ("ajFeattableWriteGff Checking arguments\n"); */
-    assert(file);
+    if(!file)
+	return ajFalse;
     
     /* Print header first */
     ajFmtPrintF(file, "##gff-version 2.0\n") ;
@@ -4217,7 +4222,8 @@ static AjBool feattableWriteEmbl(AjPFeattable thys, const AjPFile file,
     
     /* ajDebug("feattableWriteEmbl Checking arguments\n"); */
 
-    assert(file);
+    if(!file)
+	return ajFalse;
     
     ajFeattableSetDna(thys);
     
@@ -4431,7 +4437,8 @@ static AjBool feattableWriteEmbl(AjPFeattable thys, const AjPFile file,
 static AjBool ajFeattableWriteUnknown(AjPFeattable thys,
 				      const AjPFile file)
 {
-    assert(file);
+    if(!file)
+	return ajFalse;
     ajFmtPrintF(file, "Unknown feature format hence no output."
 		"Except this line!!\n");
 
@@ -4460,7 +4467,8 @@ AjBool ajFeattableWriteSwiss(AjPFeattable thys, const AjPFile file)
 
     /* Check arguments */
     ajDebug("ajFeattableWriteSwiss Checking arguments\n");
-    assert(file);
+    if(!file)
+	return ajFalse;
 
     ajFeattableSetProt(thys);
 
@@ -4518,7 +4526,8 @@ AjBool ajFeattableWritePir (AjPFeattable thys, const AjPFile file)
     /* Check arguments */
     
     ajDebug("ajFeattableWritePir Checking arguments\n");
-    assert(file);
+    if(!file)
+	return ajFalse;
     
     ajFeattableSetProt(thys);
     
