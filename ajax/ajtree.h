@@ -53,15 +53,12 @@ AjPTree ajTreeAddSubNode(AjPTree thys);
 AjPTree ajTreeCopy(const AjPTree thys);
 
 void    ajTreeDel(AjPTree* pthis);
-const AjPTree ajTreeDown(AjPTree thys);
 void    ajTreeExit(void);
 void    ajTreeFree(AjPTree* pthis);
 AjBool  ajTreeGetData(AjPTree thys, void** data);
 ajint   ajTreeLength(const AjPTree thys);
 void    ajTreeMap(AjPTree thys, void apply(void** x, void* cl), void* cl);
 AjPTree ajTreeNew(void);
-const AjPTree ajTreeNext(AjPTree thys);
-const AjPTree ajTreePrev(AjPTree thys);
 AjPTree ajTreestrCopy(const AjPTree thys);
 void    ajTreestrDel(AjPTree* pthis);
 void    ajTreestrFree(AjPTree* pthis);
@@ -70,7 +67,6 @@ AjPTree ajTreestrNew(void);
 ajint   ajTreestrToArray(const AjPTree thys, AjPStr** array);
 ajint   ajTreeToArray(const AjPTree thys, void*** array);
 void    ajTreeTrace(const AjPTree thys);
-const AjPTree ajTreeUp(AjPTree thys);
 
 void    ajTreeDummyFunction();
 
