@@ -1,13 +1,13 @@
 /* @source contactalign application
 **
-** aligns two sequences: seqDownSequence and seqAcrossSequence
-**  (eventually using a structure-weighted alignment method)---at the
-**   moment implementing Needleman and Wunsch 
+** aligns two protein sequences, seqDownSequence and seqAcrossSequence,
+**  by modifying a Needleman and Wunsch backtrace matrix according to
+**  a contact-based scoring scheme
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.23 $
-** @modified $Date: 2004/07/13 16:50:50 $
+** @version $Revision: 1.24 $
+** @modified $Date: 2004/09/06 19:54:24 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -40,8 +40,9 @@ enum constant
 
 /* @prog contactalign ********************************************************
 ** 
-** align two protein sequence of unknown structure to protein sequence of
-**  known structure, given residue contact information
+** align one protein sequence of unknown structure to another protein sequence
+**  of known structure, using both a one-dimensional substitution scoring
+**  scheme and on the basis of additional residue contact information
 **
 ******************************************************************************/
 
@@ -61,12 +62,13 @@ int main(int argc , char **argv)
     char *pcTraceAcross;
     char *pcUpdatedSeqAcross;
     /* sequence lengths */
-    ajint ajIntSeqCount;
-    ajint ajIntTraceCount;
     ajint ajIntDownSeqLen;
     ajint ajIntAcrossSeqLen;
     ajint ajIntAlignmentLen;
-    
+    /* sequence counts */    
+    ajint ajIntSeqCount;
+    ajint ajIntTraceCount;
+
     AjPSeqout ajpSeqoutAligned = NULL; /* output object to write alignment   */
 
     /* alignment gap extension and gap penalty scores */
@@ -115,8 +117,6 @@ int main(int argc , char **argv)
     ajpMatrixfSubstitutionScoring = ajAcdGetMatrixf("substitutionscoringfile");
     ajpMatrixfContactScoring = ajAcdGetMatrixf("contactscoringfile");
     ajpSeqoutAligned  = ajAcdGetSeqout("aligned");
-/*     fGapPenalty       = -10.0; */
-/*     fExtensionPenalty =  -0.5; */
     fGapPenalty       = -ajAcdGetFloat("gapopen");
     fExtensionPenalty =  -ajAcdGetFloat("gapextend");
 

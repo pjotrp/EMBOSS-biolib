@@ -1,54 +1,69 @@
-application: scorer [
-  documentation: "scores accuracy of protein-protein sequence
-	alignment algorithm against gold standard structure-structure alignment"
+application: scorer
+[
+  documentation: "scores accuracy of protein-protein sequence alignment algorithm against gold standard structure-structure alignment"
   groups: "protein: 3D structure"
 ]
 
-section: input [
+section: input
+[
   information: "input section"
   type: "page"
 ]
 
-  dirlist: goldalignmentsdir [
+  dirlist: golddirlist
+  [
     parameter: "Y"
     default: "/data/structure/people/mhurley/Database/HOMSTRAD/class/all_alpha/glob"
-    information: "directory containing gold standard alignment files"
+    information: "directory containing gold standard substituted sequences"
   ]
 
-  dirlist: scoredalignmentsdir [
+  dirlist: testdir
+  [
     parameter: "Y"
-    default: "/data/structure/people/mhurley/Database/HOMSTRAD/class/all_alpha/glob"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/substituted_sequences"
     information: "directory containing alignment files for scoring"
   ]
 
-  outfile: dummyfile [
+  directory: scoreddir
+  [
+    parameter: "Y"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/scored_substituted"
+    information: "name of directory containing scored substituted alignments"
+    extension: "sco"
+  ]
+
+  outfile: dummyfile
+  [
     parameter: "Y"
     default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_scoring_files/dummy_score_report.dat"
     information: "dummy file of output scores"
   ]
 endsection: input
 
-section: required [
+section: required
+[
   information: "required section"
   type: "page"
 ]
-
 endsection: required
 
 
-section: advanced [
+section: advanced
+[
   information: "advanced section"
   type: "page"
 ]
-
 endsection: advanced
 
-section: output [
+
+section: output
+[
   information: "output Section"
   type: "page"
 ]
 
-  report: outfile [
+  report: outfile
+  [
     parameter: "Y"
     rformat: "table"
     multiple: "N"
@@ -58,11 +73,10 @@ section: output [
     default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_scoring_files/scores.txt"
   ]
 
-seqout: aligned
+  seqout: scored
   [
     param: "Y"
     type: "gapprotein"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_scoring_files/13Jul04.fasta"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_scoring_files/09Aug04.fasta"
   ]
-
 endsection: output

@@ -10,9 +10,40 @@ section: input [
 
   dirlist: seqpairsdir [
     parameter: "Y"
-    default: "/data/structure/people/mhurley/Database/HOMSTRAD/class/all_alpha/glob"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/degapped"
     information: "input directory of files containing sequence pairs for alignment"
   ]
+
+  directory: pathtocommands [
+    parameter: "Y"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss"
+    information: "directory where alignment executables live"
+  ]
+
+  string: firstcommandname [
+    parameter: "Y"
+    default: "needle"
+    information: "name of first alignment executable"
+  ]
+
+  string: secondcommandname [
+    parameter: "Y"
+    default: "nawalign"
+    information: "name of second alignment executable"
+  ]
+
+  directory: scoringmatrixdirname [
+    parameter: "Y"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/data"
+    information: "directory where scoring matrix lives"
+  ]
+
+  string: scoringmatrixname [
+    parameter: "Y"
+    default: "EBLOSUM62"
+    information: "name of second alignment executable"
+  ]
+
 endsection: input
 
 section: required [
@@ -34,5 +65,39 @@ section: output [
   information: "output Section"
   type: "page"
 ]
+
+  outdir: firstalignedseqsoutdir
+  [
+    parameter: "Y"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_output_alignments/needle"
+    information: "name of directory containing sequences aligned by first method"
+    extension: "needle"
+  ]
+ 
+  outdir: secondalignedseqsoutdir
+  [
+    parameter: "Y"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_output_alignments/nawalign"
+    information: "name of directory containing sequences aligned by second method"
+    extension: "nawalign"
+  ]
+
+  string: firstoutfilesuffix [
+    parameter: "Y"
+    default: ".needle"
+    information: "appended to end of all output file names of sequences aligned by first alignment method"
+  ]
+
+  string: secondoutfilesuffix [
+    parameter: "Y"
+    default: ".nawalign"
+    information: "appended to end of all output file names of sequences aligned by second alignment method"
+  ]
+
+  string: outfileformat [
+    parameter: "Y"
+    default: "fasta"
+    information: "format of output alignments for both methods"
+  ]
 
 endsection: output

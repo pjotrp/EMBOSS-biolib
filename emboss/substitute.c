@@ -5,8 +5,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.7 $
-** @modified $Date: 2004/07/23 15:47:31 $
+** @version $Revision: 1.8 $
+** @modified $Date: 2004/09/06 19:54:00 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -46,7 +46,7 @@ int main(int argc , char **argv)
 {
     /* sequence objects and strings */
     const AjPSeq ajpSeqTraceAcross = NULL; /* template---structure known   */
-    const AjPSeq ajpSeqTraceDown   = NULL; /* query---no structure         */
+    const AjPSeq ajpSeqTraceDown   = NULL; /* query---structure unknown    */
     AjPSeq ajpSeqSingle            = NULL; /* rewritable template seq      */
     AjPSeqset ajpSeqsetPairCurrent = NULL;
     char *pcTraceDown              = NULL;
@@ -64,18 +64,18 @@ int main(int argc , char **argv)
     ajint ajIntAcrossTraceLen;
     
     /* file details for aligned sequence pairs */
-    AjPStr ajpStrPairFileName            = NULL; /* input file name         */
-    AjPStr ajpStrSingleFileName          = NULL; /* output file name        */
-    AjPFile ajpFileSingleCurrent         = NULL; /* output file             */
-    AjPList ajpListPairFiles             = NULL; /* list of pair files      */
+    AjPStr ajpStrPairFileName       = NULL; /* input file name         */
+    AjPStr ajpStrSingleFileName     = NULL; /* output file name        */
+    AjPFile ajpFileSingleCurrent    = NULL; /* output file             */
+    AjPList ajpListPairFiles        = NULL; /* list of pair files      */
 
     /* alignment parameters */
-    AjPDir ajpDirPairs                   = NULL; /* dir of seq pair files   */
-    AjPStr ajpStrInFileSuffix            = NULL; /* extension pair files    */
-    AjPStr ajpStrOutFileSuffix           = NULL; /* extension sub'd files   */
-    AjPStr ajpStrSingleSeq               = NULL; /* substituted seq string  */
-    const AjPStr ajpStrSeqoutFormat      = NULL; /* format of sub'd seqfile */
-    AjPSeqout ajpSeqoutSingle            = NULL; /* to write sub'd seq to   */
+    AjPDir ajpDirPairs              = NULL; /* dir of seq pair files   */
+    AjPStr ajpStrInFileSuffix       = NULL; /* extension pair files    */
+    AjPStr ajpStrOutFileSuffix      = NULL; /* extension sub'd files   */
+    AjPStr ajpStrSingleSeq          = NULL; /* substituted seq string  */
+    const AjPStr ajpStrSeqoutFormat = NULL; /* format of sub'd seqfile */
+    AjPSeqout ajpSeqoutSingle       = NULL; /* to write sub'd seq to   */
 
     embInit("substitute", argc, argv);
 
@@ -84,13 +84,12 @@ int main(int argc , char **argv)
     ajpDirPairs        = ajAcdGetDirectory("pairsdir");
     ajpStrInFileSuffix = ajDirExt(ajpDirPairs);
 
-    ajpStrOutFileSuffix = ajStrNewC("substituted");
+    ajpStrOutFileSuffix = ajStrNewC("sbs");
     ajpStrSeqoutFormat  = ajStrNewC("fasta");
 
     /* loop over pair files in alignment directory */
     while(ajListPop(ajpListPairFiles, (void **)&ajpStrPairFileName))
     {
-
 	/* DDDDEBUG: PRINT CURRENT FILENAME FROM ALIGNMENT DIRECTORY */
 	ajFmtPrint("\n%S", ajpStrPairFileName);
 
