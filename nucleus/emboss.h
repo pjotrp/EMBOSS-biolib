@@ -22,5 +22,6 @@
 #include "embmol.h"
 #include "embxyz.h"
 #include "embindex.h"
+#include "embgotoh.h"
 
 #endif

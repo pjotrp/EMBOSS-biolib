@@ -26,7 +26,7 @@ bin_PROGRAMS = aaindexextract abiview acdc acdpretty acdtable acdvalid \
 antigenic \
 backtranseq banana biosed btwisted \
 cai chaos charge checktrans chips cirdna codcmp coderet \
-compseq cons cpgplot cpgreport cusp cutgextract cutseq \
+compseq cons contactalign contactcount cpgplot cpgreport cusp cutgextract cutseq \
 dan dbiblast dbifasta dbiflat dbigcg \
 degapseq descseq diffseq digest distmat \
 dotmatcher dotpath dottup dreg \
@@ -46,11 +46,11 @@ pepwheel pepwindow pepwindowall \
 plotcon plotorf polydot preg \
 prettyplot prettyseq primersearch printsextract \
 profit prophecy prophet \
-prosextract pscan \
+prosextract pscan psiphi\
 rebaseextract recoder redata remap restover restrict revseq \
 seealso seqmatchall seqret seqretsplit \
 showalign showdb showfeat showorf showseq \
-shuffleseq sigcleave silent sirna sixpack skipseq \
+shuffleseq sideshowblob sigcleave silent sirna sixpack skipseq \
 splitter stretcher \
 stssearch supermatcher syco \
 tcode textsearch tfextract tfm tfscan \
@@ -82,6 +82,8 @@ codcmp_SOURCES = codcmp.c
 coderet_SOURCES = coderet.c
 compseq_SOURCES = compseq.c
 cons_SOURCES = cons.c
+contactalign_SOURCES = contactalign.c
+contactcount_SOURCES = contactcount.c
 cpgplot_SOURCES = cpgplot.c
 cpgreport_SOURCES = cpgreport.c
 cusp_SOURCES = cusp.c
@@ -174,6 +176,7 @@ prophecy_SOURCES = prophecy.c
 prophet_SOURCES = prophet.c
 prosextract_SOURCES = prosextract.c
 pscan_SOURCES = pscan.c
+psiphi_SOURCES = psiphi.c
 rebaseextract_SOURCES = rebaseextract.c
 recoder_SOURCES = recoder.c
 redata_SOURCES = redata.c
@@ -191,6 +194,7 @@ showfeat_SOURCES = showfeat.c
 showorf_SOURCES = showorf.c
 showseq_SOURCES = showseq.c
 shuffleseq_SOURCES = shuffleseq.c
+sideshowblob_SOURCES = sideshowblob.c
 sigcleave_SOURCES = sigcleave.c
 silent_SOURCES = silent.c
 sirna_SOURCES = sirna.c

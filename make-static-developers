@@ -41,7 +41,7 @@
 aclocal -I m4
 autoconf
 automake -a
-./configure --disable-shared
+./configure --enable-warnings --disable-shared --enable-debug
 make
 
 #cd plplot4p99j
