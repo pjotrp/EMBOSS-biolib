@@ -191,7 +191,7 @@ Version 2.5.1
 	no install data directory, and to check EMBOSS_DATA (if defined) is
 	a real directory.
 	
-	sigcleave options pval and nval hardcoded. They depend on the
+	Sigcleave options pval and nval hardcoded. They depend on the
 	weight matrix size - which is hardcoded as 15 in the ACD file and
 	is not checked in the program. They were introduced in EGCG in
 	1988 but never used because no other weight matrix length was
@@ -276,34 +276,34 @@ Version 2.5.0
 	applications. Sequences and alignments still have a "type"
 	attribute for protein or dna sequence types.
 	
-	aaindexextract (new) reads the AAINDEX database and writes each
+	Aaindexextract (new) reads the AAINDEX database and writes each
 	entry to data/AAINDEX directory. New function ajFileDataDirNew to
 	read data files from a named directory. New ACD datafile attribute
 	'directory' passed to ajFileDataDirNew. AAINDEX directory defined
 	for pepwindow and pepwindowall.
 	
-	palindrome can now read in multiple sequences
+	Palindrome can now read in multiple sequences
 
-        palindrome now does not print a '|' in an alignment where there
+        Palindrome now does not print a '|' in an alignment where there
         is a mismatched pair of bases.
 
 	Added filelist datatype to ACD
 
-	mwcontam program added. Displays molecular weights that are common
+	Mwcontam program added. Displays molecular weights that are common
 	across a set of files.
 
-	showfeat - added '-sort join' to display joined features on one line.
+	Showfeat - added '-sort join' to display joined features on one line.
 
-	diffseq - don't give summary of SNPs if the sequences are proteins.
+	Diffseq - don't give summary of SNPs if the sequences are proteins.
 
 	Inclusion of stat64 and readdir64 for offsetbits=64 (ajfile.c
 	and ajsys.c)
 
 	Workaround for broken Solaris readdir64_r (jembossctl)
 	
-        infoseq can now optionally display GI and Sequence Version numbers.
+        Infoseq can now optionally display GI and Sequence Version numbers.
 
-	notseq can now read in a file of sequence names.
+	Notseq can now read in a file of sequence names.
 
 	Added '-alternative' qualifier to transeq to allow reverse frame
 	translations to be done using the codons counted from the start
@@ -449,11 +449,13 @@ Version 2.5.0
 	logfile. Takes the logfile name on the command line. Reports
 	total use, most active user, and total user count.
 
-	extractseq now only reads one sequence as input. 
+	Extractseq now only reads one sequence as input. 
 
 Version 2.4.1
 	Fixed error reading multiple databases
+
 	Fixed MacOSX reading of incomplete sequence files
+
 	Fixed indexing of REFSEQ
 
 Version 2.4.0
@@ -565,10 +567,10 @@ Version 2.4.0
 	Database entry text and sequence saved for binary formats (GCG, BLAST)
 	for use by entret and other applications
 
-	dbiblast indices with split databases (formatdb -v) fixed for reading
+	Dbiblast indices with split databases (formatdb -v) fixed for reading
 	all entries (was only reading the first file)
 
-	dbiblast and dbigcg indices support exclude and file definitions
+	Dbiblast and dbigcg indices support exclude and file definitions
 	to create database subsets
 
 	Database include and file definitions can use the simple filename.
@@ -622,7 +624,7 @@ Version 2.4.0
 	Missing description, keyword, organism, or seqversion fields cause
 	queries to fail if they are used on inappropriate data.
 
-	dbiflat, dbigcg dbifasta and dbiblast can index the new
+	Dbiflat, dbigcg dbifasta and dbiblast can index the new
 	fields. All fields are available in dbiflat and dbigcg. The sv and
 	des fields are available in dbifasta and dbiblast. If any specific
 	formats make it possible to parse the org (or key) field they can
@@ -669,27 +671,43 @@ Version 2.4.0
 	
 Version 2.3.1
 
-	est2genome fixed for large alignments (over 40Mbase for
-	est * genomic sequence length)
-	sequence reading for ABI files fixed (and selex files tested)
-	genbank feature input working
-	pepinfo PNG output larger to make the text readable (only affects
-	PNG output)
-	empty sequence file input fails gracefully
-	empty sequence input fails gracefully (and only needs one
-	^D from stdin)
+	Est2genome fixed for large alignments (over 40Mbase for
+	est * genomic sequence length).
+
+	Sequence reading for ABI files fixed (and selex files tested).
+
+	Genbank feature input working.
+
+	Pepinfo PNG output larger to make the text readable (only affects
+	PNG output).
+
+	Empty sequence file input fails gracefully.
+
+	Empty sequence input fails gracefully (and only needs one
+	^D from stdin).
 	
 Version 2.3.0
 
 	Seqretall, seqretallfeat and seqretset moved to 'make check'.
+
 	Seqret has all the functionality of the above.
-	Fix for NBRF accession number reading (ajseqread.c)
+
+	Fix for NBRF accession number reading (ajseqread.c).
+
 	Whichdb program added.
-	Fix for dbifasta and wormpep
+
+	Fix for dbifasta and wormpep.
+
 	Fix for problem reading plain format sequences by primer3.
-	Primer3 renamed eprimer3 to avoid conflicts with the Whitehead's
-	primer3 version 3.0.6.
-	transeq's '-frame' can have a list of values, as: '-frame=1,2,3'
-	Non-existent files in lists are again ignored
-	Various wildcard database search fixes
-	ESIM4 added as an embassy package
+
+	Primer3 renamed eprimer3 to avoid conflicts with the Whitehead's.
+
+	Primer3 version 3.0.6.
+
+	Transeq's '-frame' can have a list of values, as: '-frame=1,2,3'.
+
+	Non-existent files in lists are again ignored.
+
+	Various wildcard database search fixes.
+
+	ESIM4 added as an embassy package.
