@@ -285,7 +285,7 @@ Output file format
 
    The sequences of the specified features are written out.
    
-   The ID name of the sequence is formed from the original sequence anme
+   The ID name of the sequence is formed from the original sequence name
    with the start and end positions of the feature appended to it. So if
    the feature came from a sequence with an ID name of 'XYZ' from
    positions 10 to 22, then the resulting ID name of the feature sequence
