@@ -26,16 +26,29 @@ import java.awt.event.*;
 import java.util.*;
 import org.emboss.jemboss.gui.ScrollPanel;
 
+/**
+*
+* Colour pallette display and editor.
+*
+*/
 public class ColourJFrame extends JFrame
 {
-  private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
-  private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
+  /** Popup menu system                        */
   private JPopupMenu popup;
+  /** Container for the all the residue colour */
   private Box YBox = new Box(BoxLayout.Y_AXIS);
+  /** Colour scheme                            */
   private Hashtable colourTable;
+  /** Scroll pane for the colour pallette      */
   private JScrollPane jspColour;
+  /** Associated alignment viewer              */
   private AlignJFrame align;
 
+  /**
+  *
+  * @param align 	alignment viewer
+  *
+  */
   public ColourJFrame(AlignJFrame align)
   {
     super("Colour");
@@ -76,6 +89,12 @@ public class ColourJFrame extends JFrame
     setSize(70,150);
   }
 
+  /**
+  *
+  * Set the colour scheme to display
+  * @param colourTable	hashtable containing a colour scheme
+  *
+  */
   public void setCurrentColour(Hashtable colourTable)
   {
     this.colourTable = colourTable;
@@ -102,11 +121,22 @@ public class ColourJFrame extends JFrame
     jspColour.getViewport().setViewPosition(new Point(0,0));
   }
 
+  /**
+  *
+  * Get the colour scheme as a hashtable
+  * @return 	the colour scheme as a hashtable
+  *
+  */
   public Hashtable getCurrentColourScheme()
   {
     return colourTable;
   }
 
+  /**
+  *
+  * Colour panel for each individual residue in the pallette
+  *
+  */
   class ColourPanel extends JPanel
                         implements ActionListener
   {
@@ -116,6 +146,12 @@ public class ColourJFrame extends JFrame
     private int ysize = 20;
     private JPopupMenu popup;
 
+    /**
+    *
+    * @param res	residue symbol
+    * @param col 	colour of residue
+    *
+    */
     public ColourPanel(String res,Color col)
     {
       super();
@@ -131,7 +167,10 @@ public class ColourJFrame extends JFrame
     }
 
     /**
+    *
     * Popup menu actions
+    * @param e	action event
+    *
     */
     public void actionPerformed(ActionEvent e)
     {
@@ -143,6 +182,12 @@ public class ColourJFrame extends JFrame
       align.repaintSequences(colourTable);
     }
 
+    /**
+    *
+    * Override paintComponent 
+    * @param g	graphics
+    *
+    */
     public void paintComponent(Graphics g)
     {
 // let UI delegate paint first (incl. background filling)
@@ -153,6 +198,12 @@ public class ColourJFrame extends JFrame
       g.drawRect(0,0,xsize,ysize);
     }
 
+
+    /**
+    *
+    * Popup listener
+    *
+    */
     class PopupListener extends MouseAdapter
     {
       public void mousePressed(MouseEvent e)
