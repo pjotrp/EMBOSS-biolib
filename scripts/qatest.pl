@@ -88,7 +88,7 @@ sub runtest ($) {
   my $testq = 0;
   my $testa = 0;
   my $testpath="";
-  my $packa="";
+  my $packa="unknown";
 
 # these are globals, used by the caller
 
@@ -108,6 +108,7 @@ sub runtest ($) {
       $testin = "";
       $cmdline = "";
       $ifile=0;
+      $packa = "unknown";
       print LOG "Test <$testid>\n";
       $sysstat = system( "rm -rf $testid");
       $status = $sysstat >> 8;
@@ -161,13 +162,16 @@ sub runtest ($) {
 	$testa = 1;
 	$testapp = $1;
 	$apcount{$testapp}++;
+	if ($packa eq "unknown") {
+	    print STDERR "No AB line before AA line in test $testid\n";
+	}
 	if (!defined($tfm{$testapp})) {
 	    $tfm{$testapp}=0;
 	    if (-e "../../doc/programs/html/$testapp.html") {$tfm{$testapp}++}
 	    else {print STDERR "No HTML docs for $testapp\n";$misshtml++;}
 	    if (-e "../../doc/programs/text/$testapp.txt") {$tfm{$testapp}++}
 	    else {print STDERR "No tfm text docs for $testapp\n";$misstext++;}
-	    if (-e "../../doc/sourceforge/apps/$testapp.html") {$sf{$testapp}++}
+	    if (-e "../../doc/sourceforge/embassy/$packa/$testapp.html") {$sf{$testapp}++}
 	    else {print STDERR "No SourceForge docs for $testapp\n";$misssf++;}
 	}
     }
