@@ -1,144 +1,100 @@
-appl: siggen
-[
-        doc: "Generates a sparse protein signature"
-        groups: "PROTEIN:3D STRUCTURE"
+appl: siggen [
+  documentation: "Generates a sparse protein signature"
+  groups: "PROTEIN:3D STRUCTURE"
 ]
 
-
-string: algpath
-[
-        param: Y
-        prompt: "Location of alignment files for input"
-        def: "./"
+string: algpath  [
+  parameter: "Y"
+  prompt: "Location of alignment files for input"
+  default: "./"
 ]
 
-
-string: algextn
-[
-        param: Y
-        prompt: "Extension of alignment files for input"
-        def: ".align"
+string: algextn  [
+  parameter: "Y"
+  prompt: "Extension of alignment files for input"
+  default: ".align"
 ]
 
-
-string: sigpath
-[
-        param: Y
-        prompt: "Location of signature files for output"
-        def: "./"
+string: sigpath  [
+  parameter: "Y"
+  prompt: "Location of signature files for output"
+  default: "./"
 ]
 
-
-string: sigextn
-[
-        param: Y
-        prompt: "Extension of signature files for output"
-        def: ".sig"
+string: sigextn  [
+  parameter: "Y"
+  prompt: "Extension of signature files for output"
+  default: ".sig"
 ]
 
-
-int: sparsity
-[
-        param: Y
-	prompt: "% sparsity of signature"
-        def: 10
+integer: sparsity  [
+  parameter: "Y"
+  prompt: "% sparsity of signature"
+  default: "10"
 ]
 
-
-bool: randomise
-[
-        param: Y
-        prompt: "Generate a randomised signature"
-        def: N
+bool: randomise  [
+  parameter: "Y"
+  prompt: "Generate a randomised signature"
+  default: "N"
 ]
 
-
-list: seqoption
-[
-# Only prompt for this if randomise==N
-	req: @(!$(randomise))
-        default: "3"
-        minimum: "1"
-        maximum: "3"
-        delimiter: ","
-        codedelim: ":"
-	values: "1: Substitution matrix, 2: Residue class, 3: None"
-        header: "Sequence variability scoring method"
-        prompt: "Select number"
+list: seqoption  [
+  required: "@(!$(randomise))"
+  default: "3"
+  minimum: "1"
+  maximum: "3"
+  delimiter: ","
+  codedelimiter: ":"
+  values: "1: Substitution matrix, 2: Residue class, 3: None"
+  header: "Sequence variability scoring method"
+  prompt: "Select number"
 ]
 
-
-matrixf: datafile
-[
-# Only prompt for this if randomise==N
-	req: @($(seqoption)==1)
-        prompt: "Substitution matrix to be used"
-	def: "./EBLOSUM62"
+matrixf: datafile  [
+  required: "@($(seqoption)==1)"
+  prompt: "Substitution matrix to be used"
+  default: "./EBLOSUM62"
 ]
 
-
-list conoption 
-[
-	req: @(!$(randomise))
-	default: "4"
-	minimum: "1"
-        maximum: "4"
-        delimiter: ","
-        codedelim: ":"
-	values: "1: Number, 2: Conservation, 3: Number and conservation, 4: None"
-        header: "Residue contacts scoring method"
-        prompt: "Select number"
+list: conoption  [
+  required: "@(!$(randomise))"
+  default: "4"
+  minimum: "1"
+  maximum: "4"
+  delimiter: ","
+  codedelimiter: ":"
+  values: "1: Number, 2: Conservation, 3: Number and conservation, 4: None"
+  header: "Residue contacts scoring method"
+  prompt: "Select number"
 ]
 
-
-
-bool: filtercon
-[
-	req: @(!$(randomise))
-	prompt: "Ignore alignment positions making less than a threshold number of contacts"
-        def: N
+bool: filtercon  [
+  required: "@(!$(randomise))"
+  prompt: "Ignore alignment positions making less than a threshold number of contacts"
+  default: "N"
 ]
 
-
-int: conthresh
-[
-	req: $(filtercon)
-	prompt: "Threshold contact number"
-	def: 10
+integer: conthresh  [
+  required: "$(filtercon)"
+  prompt: "Threshold contact number"
+  default: "10"
 ]
 
-
-
-string: conpath
-[ 
-	req: @($(filtercon)||@($(conoption)!=4))
-        prompt: "Location of contact files for input"
-        def: "/data/contacts/"
+string: conpath  [
+  required: "@($(filtercon)||@($(conoption)!=4))"
+  prompt: "Location of contact files for input"
+  default: "/data/contacts/"
 ]
 
-
-string: conextn
-[ 
-	req: @($(filtercon)||@($(conoption)!=4))
-        prompt: "Extension of contact files"
-        def: ".con"
+string: conextn  [
+  required: "@($(filtercon)||@($(conoption)!=4))"
+  prompt: "Extension of contact files"
+  default: ".con"
 ]
 
-
-
-bool: filterpsim
-[
-	req: @(!$(randomise))
-        prompt: "Ignore alignment postitions with post_similar value of 0"
-        def: N
+bool: filterpsim  [
+  required: "@(!$(randomise))"
+  prompt: "Ignore alignment postitions with post_similar value of 0"
+  default: "N"
 ]
-
-
-
-
-
-
-
-
-
-

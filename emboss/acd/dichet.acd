@@ -1,44 +1,32 @@
-appl: dichet
-[
-	doc: "Parse dictionary of heterogen groups"
-	groups: "PROTEIN:3D STRUCTURE"
+appl: dichet [
+  documentation: "Parse dictionary of heterogen groups"
+  groups: "PROTEIN:3D STRUCTURE"
 ]
 
-infile: inf
-[
-	param: Y
-	prompt: "Name of raw input file (dictionary of heterogen groups)"
+infile: inf  [
+  parameter: "Y"
+  prompt: "Name of raw input file (dictionary of heterogen groups)"
 ]
 
-
-outfile: outf
-[
-	param: Y
-	prompt: "Name of output file"
+outfile: outf  [
+  parameter: "Y"
+  prompt: "Name of output file"
 ]
 
-bool: dogrep
-[
-	param: Y
-	prompt: "Search a directory of files with keywords?"
-	def: N
+bool: dogrep  [
+  parameter: "Y"
+  prompt: "Search a directory of files with keywords?"
+  default: "N"
 ]
 
-string: path
-[
-	req: $(dogrep)
-	prompt: "Directory to search with keywords"
-	def: "./"
+string: path  [
+  required: "$(dogrep)"
+  prompt: "Directory to search with keywords"
+  default: "./"
 ]
 
-string: extn
-[
-	req: $(dogrep)
-	prompt: "Exension of files to search in above directory"
-	def: ".ent"
+string: extn  [
+  required: "$(dogrep)"
+  prompt: "Exension of files to search in above directory"
+  default: ".ent"
 ]
-
-
-
-
-

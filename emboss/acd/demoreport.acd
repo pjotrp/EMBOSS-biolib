@@ -1,20 +1,14 @@
-# DEMOREPORT application
-# AJAX COMMAND DEFINITION (ACD) FILE
-
-# use "" for missing values - these are required.
-# values in "" are trimmed to single spaces.
-# everything is treated as single tokens delimited by white space
-# (space, tab, newline)
-
-# pmr 22-apr-98
-
 appl: demoreport [
-	doc: "Reads a sequence and feature table, writes a report"
-	groups: "Test"
+  documentation: "Reads a sequence and feature table, writes a report"
+  groups: "Test"
 ]
 
-  sequence: sequence [ param: Y feat: Y]
+sequence: sequence  [
+  parameter: "Y"
+  features: "Y"
+]
 
-  report: report [ param: Y
-  taglist: "int:demo=demo_tag float:test int:pos=Maximum_position" ]
-
+report: report  [
+  parameter: "Y"
+  taglist: "int:demo=demo_tag float:test int:pos=Maximum_position"
+]
