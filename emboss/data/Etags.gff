@@ -89,6 +89,7 @@ virion VOID
 Target QTEXT note
 Sequence QTEXT note
 
+comment QTEXT
 
 # GFF allows multiple values up to a semicolon.
 # we could define ANY for these special cases
