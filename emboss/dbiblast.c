@@ -1079,7 +1079,7 @@ static AjBool dbiblast_parseNcbi (AjPStr line, PBlastDb db, AjPStr* id,
     if(!ajSeqParseNcbi(t,id,&tmpac,&desc))
 	return ajFalse;
 
-    if(!ajStrLen(tmpac))
+    if(ajStrLen(tmpac))
       (void) ajStrToUpper(&tmpac);
     else
       (void) ajFmtPrintS(&tmpac,"ZZ%07d",v++);
