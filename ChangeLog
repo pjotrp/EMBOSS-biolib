@@ -1,4 +1,15 @@
 Version 3.0.0
+	tranalign now allows for the proteins to have Methionine residues
+	at the start which now match a START codon in the corresponding
+	nucleic acid sequence.
+
+	diffseq has a new option '-global' which makes it treat the whole
+	of the sequences as regions to be aligned, rather than the
+	default which looks for the longest region of overlap and only
+	reports differences within that overlapping region.  This new
+	option is useful when looking at protein and mRNA sequences
+	which are expected to align over their whole length.
+
 	Alignment output issues resolved. Specifying begin and end of
 	input sequences now works for all alignment formats. Markx formats
 	have been rewritten as the original code we used has nasty
