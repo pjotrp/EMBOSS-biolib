@@ -1255,7 +1255,6 @@ ajint ajListstrToArray(AjPList thys, AjPStr** array)
     ajint n;
     AjPListNode rest;
 
-
     n = thys->Count;
     rest = thys->First;
 
@@ -1265,13 +1264,66 @@ ajint ajListstrToArray(AjPList thys, AjPStr** array)
 	return 0;
     }
 
-    *array = AJALLOC((n)*sizeof(array));
+    *array = AJALLOC((n+1)*sizeof(array));
 
     for(i = 0; i < n; i++)
     {
 	(*array)[i] = (AjPStr) rest->Item;
 	rest = rest->Next;
     }
+    (*array)[n] = 0;
+
+    return n;
+}
+
+
+
+
+/* @func ajListstrToArrayApp **************************************************
+**
+** append to an array of the pointers to the data.
+**
+** @param [r] thys [AjPList] List
+** @param [w] array [AjPStr**] Array of Strings.
+**
+** @return [ajint] Size of array of pointers.
+**
+** @@
+******************************************************************************/
+
+ajint ajListstrToArrayApp(AjPList thys, AjPStr** array)
+{
+    ajint i;
+    ajint n;
+    ajint j;
+    AjPListNode rest;
+
+    rest = thys->First;
+
+    if (*array)
+    {
+	for (j=0; array[j]; j++)
+	    continue;
+    }
+    else
+	j = 0;
+
+    n = thys->Count + j;
+
+    if(!n)
+    {
+	*array = NULL;
+	return 0;
+    }
+
+    AJCRESIZE(*array, (n+1));
+
+    for(i = j; i < n; i++)
+    {
+	(*array)[i] = (AjPStr) rest->Item;
+	rest = rest->Next;
+    }
+    (*array)[n] = 0;
 
     return n;
 }
