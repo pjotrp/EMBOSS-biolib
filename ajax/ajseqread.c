@@ -1785,7 +1785,7 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
     
     if(!seqin->Selex)
     {
-        if (ajFileBuffEof(buff))
+        if (ajFileBuffEof(buff) && ajFileStdin(ajFileBuffFile(buff)))
 	  return ajFalse;
 	ajFileBuffClear(buff,-1);
 	ajFileBuffReset(buff);
@@ -4459,9 +4459,15 @@ static AjBool seqReadAbi (AjPSeq thys, AjPSeqin seqin)
     AjPFile fp = ajFileBuffFile (buff);
     ajint filestat;
 
+    ajDebug("seqReadAbi file %F\n", fp);
     /* ajFileBuffTraceFull(buff, 10, 10); */
+
+    if (ajFileBuffEnd(buff))
+      return ajFalse;
+
     if(!ajSeqABITest(fp))
     {
+        ajDebug("seqReadAbi ajSeqABITest failed on %F\n", fp);
 	ajFileBuffResetPos(buff);
 	return ajFalse;
     }
@@ -4482,7 +4488,7 @@ static AjBool seqReadAbi (AjPSeq thys, AjPSeqin seqin)
     sample = ajStrNew();
     ajSeqABISampleName(fp, &sample);
 
-    /* replace dots in the sample name with undescore */
+    /* replace dots in the sample name with underscore */
     dotsexp = ajRegCompC ("^(.*)[.](.*)$");
     smpl = ajStrNew();
 
@@ -4500,7 +4506,7 @@ static AjBool seqReadAbi (AjPSeq thys, AjPSeqin seqin)
     
     ajSeqSetNuc (thys);
 
-    ajFileNext(buff->File);
+    ajFileBuffClear(buff, -1);
     buff->File->End=ajTrue;
 
     ajStrDel(&smpl);

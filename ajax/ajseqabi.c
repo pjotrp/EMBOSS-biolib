@@ -43,23 +43,31 @@ AjBool ajSeqABITest(AjPFile fp)
   char pabi[5];
   pabi[4] = '\0'; 
 
-  if (fp->End)
+  ajDebug("ajSeqABITest file %F end: %B\n", fp, fp->End);
+
+  if (fp->End && ajFileStdin(fp))
   {
     ajDebug("EOF: ajSeqABITest already at end file %F\n", fp);
     return ajFalse;
   }
 
-  if(ajFileRead((void *)pabi,4,1,fp))
+  if(ajFileSeek(fp,0,SEEK_SET) >= 0)
   {
-    if(ajStrPrefixCC(pabi,"ABIF"))
-      return ajTrue;
-  } 
+    if(ajFileRead((void *)pabi,4,1,fp))
+      {
+	ajDebug("ajSeqABITest was at '%s'\n", pabi);
+	if(ajStrPrefixCC(pabi,"ABIF"))
+	  return ajTrue;
+      } 
+  }
 
-  if(ajFileSeek(fp,26,SEEK_SET))
+  if(ajFileSeek(fp,26,SEEK_SET) >= 0)
   {
+    ajDebug("ajSeqABITest seek to pos 26\n");
     if(ajFileRead((void*)pabi,4,1,fp))
     {
-      if(ajStrPrefixCC(pabi,"ABIF"))
+     ajDebug("ajSeqABITest seek to '%s'\n", pabi);
+     if(ajStrPrefixCC(pabi,"ABIF"))
 	return ajTrue;
     }
   }
@@ -84,6 +92,8 @@ AjBool ajSeqABIReadSeq(AjPFile fp,ajlong baseO,ajlong numBases,
 {
     ajint i;
     char pseq;
+
+    ajDebug("ajSeqABIReadSeq base0 %ld numBases %ld\n", baseO, numBases);
 
     ajFileSeek(fp,baseO,SEEK_SET);
     for (i=0;i<(ajint)numBases;i++)
@@ -495,7 +505,7 @@ static AjBool seqABIReadInt4(AjPFile fp,ajlong *i4)
          ((ajulong)buf[1]<<16) +
          ((ajulong)buf[0]<<24));
 
-    ajDebug("seqABIReadInt4 %c %c %c %c",buf[0],buf[1],buf[2],buf[3]);  
+    ajDebug("seqABIReadInt4 %c %c %c %c\n",buf[0],buf[1],buf[2],buf[3]);  
     return (AJTRUE);
 }
 
