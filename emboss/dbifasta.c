@@ -719,6 +719,7 @@ static AjBool dbifasta_ParseFasta (AjPFile libr, ajint* dpos,
 {
   static AjPStr tmpac = NULL; 
   static AjPStr tmpsv = NULL; 
+  static AjPStr tmpgi = NULL; 
   static AjPStr token = NULL;
   char* ac;
   ajint ipos;
@@ -783,7 +784,7 @@ static AjBool dbifasta_ParseFasta (AjPFile libr, ajint* dpos,
       ajStrDelReuse(&tmpac);
       break;
   case NCBI:
-      if(!ajSeqParseNcbi(rline,id,&tmpac,&tmpsv,&token))
+      if(!ajSeqParseNcbi(rline,id,&tmpac,&tmpsv,&tmpgi,&token))
       {
 	  (void) ajStrDelReuse(&tmpac);
 	  return ajFalse;

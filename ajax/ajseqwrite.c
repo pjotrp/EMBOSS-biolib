@@ -435,6 +435,8 @@ static void seqWriteFasta (AjPSeqout outseq) {
   else if (ajStrLen(outseq->Acc))
     (void) ajFmtPrintF (outseq->File, " %S", outseq->Acc);
 
+  /* no need to bother with outseq->Gi because we have Sv anyway */
+
   if (ajStrLen(outseq->Desc))
     (void) ajFmtPrintF (outseq->File, " %S", outseq->Desc);
   (void) ajFmtPrintF (outseq->File, "\n");
@@ -464,7 +466,10 @@ static void seqWriteNcbi (AjPSeqout outseq) {
   static AjPStr seq = NULL;
   ajint linelen = 60;
 
-  (void) ajFmtPrintF (outseq->File, ">gnl|");
+  if (ajStrLen(outseq->Gi))
+    (void) ajFmtPrintF (outseq->File, ">gi|%S|gnl|", outseq->Gi);
+  else
+    (void) ajFmtPrintF (outseq->File, ">gnl|");
   if (ajStrLen(outseq->Db))
     (void) ajFmtPrintF (outseq->File, "%S|", outseq->Db);
   else
@@ -1765,6 +1770,8 @@ static void seqWriteEmbl (AjPSeqout outseq) {
   if (ajStrLen(outseq->Sv))
     (void) ajFmtPrintF (outseq->File, "SV   %S\n", outseq->Sv);
 
+  /* no need to bother with outseq->Gi because EMBL doesn't use it */
+
   if (ajStrLen(outseq->Desc))
     (void) ajFmtPrintF (outseq->File, "DE   %S\n", outseq->Desc);
 
@@ -2072,7 +2079,13 @@ static void seqWriteGenbank (AjPSeqout outseq) {
   }
 
   if (ajStrLen(outseq->Sv))
-    (void) ajFmtPrintF (outseq->File, "VERSION     %S\n", outseq->Sv);
+  {
+    if (ajStrLen(outseq->Gi))
+      (void) ajFmtPrintF (outseq->File, "VERSION     %S  GI:%S\n",
+			  outseq->Sv, outseq->Gi);
+    else 
+      (void) ajFmtPrintF (outseq->File, "VERSION     %S\n", outseq->Sv);
+  }
 
   if (ajListLength(outseq->Keylist))
   {
@@ -2594,6 +2607,7 @@ static void seqWriteDebug (AjPSeqout outseq) {
   }
       
   (void) ajFmtPrintF (outseq->File, "  SeqVersion: '%S'\n", outseq->Sv);
+  (void) ajFmtPrintF (outseq->File, "  GI Version: '%S'\n", outseq->Gi);
   (void) ajFmtPrintF (outseq->File, "  Description: '%S'\n", outseq->Desc);
   if (ajListLength(outseq->Keylist))
   {
@@ -3293,6 +3307,7 @@ static void seqClone (AjPSeqout outseq, AjPSeq seq) {
   (void) ajStrSet (&outseq->Acc, seq->Acc);
   (void) ajListstrClone(seq->Acclist, outseq->Acclist);
   (void) ajStrSet (&outseq->Sv, seq->Sv);
+  (void) ajStrSet (&outseq->Gi, seq->Gi);
   (void) ajStrSet (&outseq->Tax, seq->Tax);
   (void) ajListstrClone(seq->Taxlist, outseq->Taxlist);
   (void) ajListstrClone(seq->Keylist, outseq->Keylist);
@@ -3347,6 +3362,7 @@ static void seqAllClone (AjPSeqout outseq, AjPSeq seq) {
   (void) ajStrAssS (&outseq->Acc, seq->Acc);
   (void) ajListstrClone(seq->Acclist, outseq->Acclist);
   (void) ajStrAssS (&outseq->Sv, seq->Sv);
+  (void) ajStrAssS (&outseq->Gi, seq->Gi);
   (void) ajStrAssS (&outseq->Tax, seq->Tax);
   (void) ajListstrClone(seq->Taxlist, outseq->Taxlist);
   (void) ajListstrClone(seq->Keylist, outseq->Keylist);
@@ -3408,6 +3424,7 @@ static void seqDeclone (AjPSeqout outseq) {
   (void) ajStrClear (&outseq->Name);
   (void) ajStrClear (&outseq->Acc);
   (void) ajStrClear (&outseq->Sv);
+  (void) ajStrClear (&outseq->Gi);
   (void) ajStrClear (&outseq->Tax);
   (void) ajStrClear (&outseq->Desc);
   (void) ajStrClear (&outseq->Type);
@@ -3502,6 +3519,7 @@ void ajSeqoutClear (AjPSeqout thys) {
   (void) ajStrClear(&thys->Name);
   (void) ajStrClear(&thys->Acc);
   (void) ajStrClear(&thys->Sv);
+  (void) ajStrClear(&thys->Gi);
   (void) ajStrClear(&thys->Tax);
   (void) ajStrClear(&thys->Desc);
   (void) ajStrClear(&thys->Type);
@@ -3622,6 +3640,8 @@ void ajSeqoutTrace (AjPSeqout seq) {
   }
   if (ajStrLen(seq->Sv))
     ajDebug ( "  SeqVersion: '%S'\n", seq->Sv);
+  if (ajStrLen(seq->Gi))
+    ajDebug ( "  GI Version: '%S'\n", seq->Gi);
   if (ajStrLen(seq->Desc))
     ajDebug ( "  Description: '%S'\n", seq->Desc);
   if (ajStrSize(seq->Seq))

@@ -1068,6 +1068,7 @@ static AjBool dbiblast_parseNcbi (AjPStr line, PBlastDb db, AjPStr* id,
     static AjPStr desc = NULL;
     static AjPStr tmpac = NULL;
     static AjPStr tmpsv = NULL;
+    static AjPStr tmpgi = NULL;
     static AjPStr t = NULL;
     static ajint v=1;
   
@@ -1077,7 +1078,7 @@ static AjBool dbiblast_parseNcbi (AjPStr line, PBlastDb db, AjPStr* id,
   
     (void) ajFmtPrintS(&t,">%S",line);
   
-    if(!ajSeqParseNcbi(t,id,&tmpac,&tmpsv,&desc))
+    if(!ajSeqParseNcbi(t,id,&tmpac,&tmpsv,&tmpgi,&desc))
 	return ajFalse;
 
     if(ajStrLen(tmpac))

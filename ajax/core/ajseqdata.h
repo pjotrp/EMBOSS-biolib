@@ -344,6 +344,7 @@ typedef struct AjSSeq {
   AjPStr Name;			/* Name (ID) */
   AjPStr Acc;			/* Accession number (primary only) */
   AjPStr Sv;			/* SeqVersion number */
+  AjPStr Gi;			/* GI NCBI version number */
   AjPStr Tax;			/* Main taxonomy (species) */
   AjPStr Type;			/* Type N or P */
   AjEnum EType;			/* unused, obsolete */

@@ -29,6 +29,7 @@ typedef struct AjSSeqout {
   AjPStr Name;
   AjPStr Acc;
   AjPStr Sv;
+  AjPStr Gi;
   AjPStr Tax;
   AjPStr Desc;
   AjPStr Type;

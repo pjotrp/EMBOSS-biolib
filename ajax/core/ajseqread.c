@@ -1727,6 +1727,7 @@ static AjBool seqReadNcbi (AjPSeq thys, AjPSeqin seqin)
     static AjPStr id = NULL;
     static AjPStr acc = NULL;
     static AjPStr sv = NULL;
+    static AjPStr gi = NULL;
     static AjPStr desc = NULL;
   
     AjPFileBuff buff = seqin->Filebuff;
@@ -1741,15 +1742,19 @@ static AjBool seqReadNcbi (AjPSeq thys, AjPSeqin seqin)
     (void) ajStrAssC(&id,"");
     (void) ajStrAssC(&acc,"");
     (void) ajStrAssC(&sv,"");
+    (void) ajStrAssC(&gi,"");
     (void) ajStrAssC(&desc,"");
 
 
-    if(!ajSeqParseNcbi(rdline,&id,&acc,&sv,&desc))
+    if(!ajSeqParseNcbi(rdline,&id,&acc,&sv,&gi,&desc))
     {
 	ajFileBuffReset(buff);
 	return ajFalse;
     }
   
+    if (ajStrLen(gi))
+      ajStrAssS(&thys->Gi, gi);
+
     if (ajStrLen(sv))
 	(void) seqSvSave (thys, sv);
 
@@ -4357,6 +4362,11 @@ static AjBool seqReadGenbank (AjPSeq thys, AjPSeqin seqin)
 	    (void) ajStrToken (&token, &handle, NULL); /* 'VERSION' */
 	    (void) ajStrToken (&token, &handle, NULL);
 	    seqSvSave (thys, token);
+	    if (ajStrToken (&token, &handle, ": \n\r"))	/* GI: */
+	    {
+	      (void) ajStrToken (&token, &handle, NULL);
+	      ajStrAssS(&thys->Gi, token);
+	    }
 	}
 	if (ajStrPrefixC(rdline, "FEATURES"))
 	{
@@ -5357,6 +5367,8 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
 			     usatest, qry->Field, qry->DbName);
 		      return ajFalse;
 		  }
+
+		  /* treat Gi as another Sv, so no new query field */
 		  if (ajStrMatchCaseC (qry->Field, "sv"))
 		    (void) ajStrAss (&qry->Sv, qry->QryString);
 		  else if (ajStrMatchCaseC (qry->Field, "des"))
@@ -5455,6 +5467,9 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
 		      (void) ajStrAss (&qry->Id, qry->QryString);
 		    else if (ajStrMatchCaseC (qry->Field, "acc"))
 		      (void) ajStrAss (&qry->Acc, qry->QryString);
+
+		  /* treat Gi as another Sv, so no new query field */
+
 		    else if (ajStrMatchCaseC (qry->Field, "sv"))
 		      (void) ajStrAss (&qry->Sv, qry->QryString);
 		    else if (ajStrMatchCaseC (qry->Field, "des"))
@@ -6080,9 +6095,12 @@ static AjBool seqQueryMatch (AjPSeq thys, AjPSeqQuery query)
 	ok = ajFalse;
     }
 
-    if (ajStrLen(query->Sv))
+    if (ajStrLen(query->Sv))	/* test Sv and Gi */
     {
 	if (ajStrMatchWild (thys->Sv, query->Sv))
+	    return ajTrue;
+
+	if (ajStrMatchWild (thys->Gi, query->Sv))
 	    return ajTrue;
 
 	ajDebug ("sv test failed\n");
@@ -6448,12 +6466,13 @@ AjBool ajSeqParseFasta(AjPStr instr, AjPStr* id, AjPStr* acc,
 ** @param [w] id [AjPStr*]   id.
 ** @param [w] acc [AjPStr*]  accession number.
 ** @param [w] sv [AjPStr*]  sequence version number.
+** @param [w] gi [AjPStr*]  GI version number.
 ** @param [w] desc [AjPStr*] description.
 ** @return [AjBool] ajTrue if ncbi format
 ** @@
 ******************************************************************************/
 AjBool ajSeqParseNcbi(AjPStr instr, AjPStr* id, AjPStr* acc,
-		      AjPStr* sv, AjPStr* desc)
+		      AjPStr* sv, AjPStr* gi, AjPStr* desc)
 {
     static AjPStrTok idhandle = NULL;
     static AjPStrTok handle = NULL;
@@ -6547,9 +6566,10 @@ AjBool ajSeqParseNcbi(AjPStr instr, AjPStr* id, AjPStr* acc,
     {
       /* (void) ajDebug("gi prefix\n"); */
 	(void) ajStrToken(&token, &handle, NULL);
+	ajStrAssS(gi, token);
 	if (! ajStrToken(&prefix, &handle, NULL)) {
 	  /* we only have a gi prefix */
-	  /* (void) ajDebug("*only* gi prefix\n"); */
+	  (void) ajDebug("*only* gi prefix\n");
 	  (void) ajStrAssS(id, token);
 	  (void) ajStrAssC(acc, "");
 	  (void) ajStrAssS (desc, reststr);
@@ -6576,7 +6596,7 @@ AjBool ajSeqParseNcbi(AjPStr instr, AjPStr* id, AjPStr* acc,
 	(void) ajStrToken(&numtoken, &handle, NULL); /* number */
 	(void) ajStrInsertC(&reststr, 0, ">");
 
-	if(ajSeqParseNcbi(reststr,id,acc,sv,desc)) {
+	if(ajSeqParseNcbi(reststr,id,acc,sv,gi,desc)) {	/* recursive??? */
 	  /* (void) ajDebug("ajSeqParseFasta success\n"); */
 	  /* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' sv: '%S' desc: '%S'\n",
 	    prefix, *id, *acc, *sv, *desc); */
@@ -6637,7 +6657,16 @@ AjBool ajSeqParseNcbi(AjPStr instr, AjPStr* id, AjPStr* acc,
        || !strcmp(q,"sp") || !strcmp(q,"ref"))
     {
       /* (void) ajDebug("gb,emb,dbj,sp,ref prefix\n"); */
-	(void) ajStrToken(acc, &handle, NULL);
+	(void) ajStrToken(&token, &handle, NULL);
+	vacc = ajIsSeqversion(token);
+	if (vacc)
+	  {
+	    (void) ajStrAss(sv,token);
+	    (void) ajStrAss(acc,vacc);
+	  }
+	else if (ajIsAccession(token))
+	  (void) ajStrAss(acc,token);
+
 	if (!ajStrToken(id, &handle, NULL)) {
 	  /* no ID, reuse accession */
 	  (void) ajStrAssS (id, *acc);

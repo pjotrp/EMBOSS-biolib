@@ -1100,6 +1100,7 @@ AjPSeq ajSeqNewL (size_t size)
     pthis->Name = ajStrNew();
     pthis->Acc = ajStrNew();
     pthis->Sv = ajStrNew();
+    pthis->Gi = ajStrNew();
     pthis->Tax = ajStrNew();
     pthis->Type = ajStrNew();
     pthis->Db = ajStrNew();
@@ -1153,6 +1154,7 @@ AjPSeq ajSeqNewS (AjPSeq seq)
     (void) ajStrAssS(&pthis->Name, seq->Name);
     (void) ajStrAssS(&pthis->Acc, seq->Acc);
     (void) ajStrAssS(&pthis->Sv, seq->Sv);
+    (void) ajStrAssS(&pthis->Gi, seq->Gi);
     (void) ajStrAssS(&pthis->Tax, seq->Tax);
     (void) ajStrAssS(&pthis->Type, seq->Type);
     (void) ajStrAssS(&pthis->Db, seq->Db);
@@ -1491,6 +1493,7 @@ void ajSeqDel (AjPSeq* pthis)
     ajStrDel (&thys->Name);
     ajStrDel (&thys->Acc);
     ajStrDel (&thys->Sv);
+    ajStrDel (&thys->Gi);
     ajStrDel (&thys->Tax);
     ajStrDel (&thys->Type);
     ajStrDel (&thys->Db);
@@ -1659,6 +1662,7 @@ void ajSeqClear (AjPSeq thys)
     (void) ajStrClear (&thys->Name);
     (void) ajStrClear (&thys->Acc);
     (void) ajStrClear (&thys->Sv);
+    (void) ajStrClear (&thys->Gi);
     (void) ajStrClear (&thys->Tax);
     (void) ajStrClear (&thys->Type);
     (void) ajStrClear (&thys->Db);
@@ -1803,6 +1807,40 @@ void ajSeqAssSv (AjPSeq thys, AjPStr str)
 void ajSeqAssSvC (AjPSeq thys, char* text)
 {
     (void) ajStrAssC(&thys->Sv, text);
+
+    return;
+}
+
+/* @func ajSeqAssGi ********************************************************
+**
+** Assigns the GI version number.
+**
+** @param [u] thys [AjPSeq] Sequence object.
+** @param [r] str [AjPStr] GI number as a string.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqAssGi (AjPSeq thys, AjPStr str)
+{
+    (void) ajStrAss(&thys->Gi, str);
+
+    return;
+}
+
+/* @func ajSeqAssGiC ********************************************************
+**
+** Assigns the GI version number.
+**
+** @param [u] thys [AjPSeq] Sequence object.
+** @param [r] text [char*] GI number as a C character string.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqAssGiC (AjPSeq thys, char* text)
+{
+    (void) ajStrAssC(&thys->Gi, text);
 
     return;
 }
@@ -2707,6 +2745,8 @@ void ajSeqTrace (AjPSeq seq)
     }
     if (ajStrLen(seq->Sv))
 	ajDebug ( "  SeqVersion: '%S'\n", seq->Sv);
+    if (ajStrLen(seq->Gi))
+	ajDebug ( "  GI Version: '%S'\n", seq->Gi);
     if (ajStrLen(seq->Type))
 	ajDebug ( "  Type: '%S' (%d)\n", seq->Type, seq->EType);
     if (ajStrLen(seq->Desc))
@@ -3397,6 +3437,24 @@ AjPStr ajSeqGetSv (AjPSeq thys)
     return thys->Sv;
 }
 
+/* @func ajSeqGetGi *********************************************************
+**
+** Returns the GI version number.
+** Because this is a pointer to the real internal string
+** the caller must take care not to change the character string in any way.
+** If the string is to be changed (case for example) then it must first
+** be copied.
+**
+** @param [u] thys [AjPSeq] Sequence object.
+** @return [AjPStr] SeqVersion number as a string.
+** @@
+******************************************************************************/
+
+AjPStr ajSeqGetGi (AjPSeq thys)
+{
+    return thys->Gi;
+}
+
 /* @func ajSeqGetDesc ********************************************************
 **
 ** Returns the sequence description.
@@ -3524,6 +3582,7 @@ AjPSeqout ajSeqoutNew (void)
     pthis->Name = ajStrNew();
     /* pthis->Acc = ajStrNew(); */
     pthis->Sv = ajStrNew();
+    pthis->Gi = ajStrNew();
     pthis->Tax = ajStrNew();
     pthis->Desc = ajStrNew();
     pthis->Type = ajStrNew();
@@ -3596,6 +3655,7 @@ void ajSeqoutDel (AjPSeqout* pthis)
     ajStrDel (&thys->Name);
     /* ajStrDel (&thys->Acc); */
     ajStrDel (&thys->Sv);
+    ajStrDel (&thys->Gi);
     ajStrDel (&thys->Tax);
     ajStrDel (&thys->Desc);
     ajStrDel (&thys->Type);
