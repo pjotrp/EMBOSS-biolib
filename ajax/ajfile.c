@@ -824,6 +824,7 @@ AjBool ajFileNext (const AjPFile thys) {
     return ajFalse;
   }
 
+  ajDebug ("ajFileNext for non-list file %F name '%S'\n", thys, thys->Name);
   ajListTrace(thys->List);
   if (!ajListPop (thys->List, (void*) &name)) { /* end of list */
     /*    ajStrDel (&thys->Name);
@@ -834,9 +835,12 @@ AjBool ajFileNext (const AjPFile thys) {
   }
 
   ajDebug("ajFileNext filename '%S'\n", name);
-  if (!ajFileReopen (thys, name))
+  if (!ajFileReopen (thys, name)) {
+    ajStrDel(&name);		/* popped from the list */
     return ajFalse;
+  }
 
+  ajStrDel(&name);		/* popped from the list */
   thys->End = ajFalse;
 
   ajDebug("ajFileNext success\n");
