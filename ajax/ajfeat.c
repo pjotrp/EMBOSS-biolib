@@ -6203,14 +6203,12 @@ AjBool ajFeatTagSet(AjPFeature thys, const AjPStr tag,const  AjPStr value)
 	ajDebug("...replaced old value '%S'\n", oldvalue);
 	return ret;
     }
-    else				/* new tag-value */
-    {
-	tv = featTagvalNew(thys, outtag, tmpval);
-	ajListPushApp(thys->Tags, tv);
-	/* ajDebug("...new tag-value\n"); */
-	return ret;
-    }
-    
+
+    /* new tag-value */
+    tv = featTagvalNew(thys, outtag, tmpval);
+    ajListPushApp(thys->Tags, tv);
+    /* ajDebug("...new tag-value\n"); */
+
     return ret;
 }
 

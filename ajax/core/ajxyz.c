@@ -7918,36 +7918,32 @@ AjBool ajXyzScopToScophit(AjPScop source, AjPScophit* target)
 	return ajFalse;
     }
     
+
+    ajStrAssS(&(*target)->Class,source->Class);
+    ajStrAssS(&(*target)->Fold,source->Fold);
+    ajStrAssS(&(*target)->Superfamily,source->Superfamily);
+    ajStrAssS(&(*target)->Family,source->Family);
+    (*target)->Sunid_Family = source->Sunid_Family;
+    
+    /* The swissprot sequence was not available */
+    if(ajStrLen(source->SeqSpr)==0)
+    {
+	ajStrAssS(&(*target)->Seq,source->SeqPdb);
+	(*target)->Start = 0;
+	(*target)->End   = 0;
+	ajStrAssC(&(*target)->Acc,"Not_available");
+	ajStrAssC(&(*target)->Spr,"Not_available");
+    }
     else
     {
-	ajStrAssS(&(*target)->Class,source->Class);
-	ajStrAssS(&(*target)->Fold,source->Fold);
-	ajStrAssS(&(*target)->Superfamily,source->Superfamily);
-	ajStrAssS(&(*target)->Family,source->Family);
-	(*target)->Sunid_Family = source->Sunid_Family;
-	
-	/* The swissprot sequence was not available */
-	if(ajStrLen(source->SeqSpr)==0)
-	{
-	    ajStrAssS(&(*target)->Seq,source->SeqPdb);
-	    (*target)->Start = 0;
-	    (*target)->End   = 0;
-	    ajStrAssC(&(*target)->Acc,"Not_available");
-	    ajStrAssC(&(*target)->Spr,"Not_available");
-	}
-	else
-	{
-	    ajStrAssS(&(*target)->Seq,source->SeqSpr);
-	    (*target)->Start = source->Startd;
-	    (*target)->End   = source->Endd;
-	    ajStrAssS(&(*target)->Acc,source->Acc);
-	    ajStrAssS(&(*target)->Spr,source->Spr);
-	}
-	
-	return ajTrue;
+	ajStrAssS(&(*target)->Seq,source->SeqSpr);
+	(*target)->Start = source->Startd;
+	(*target)->End   = source->Endd;
+	ajStrAssS(&(*target)->Acc,source->Acc);
+	ajStrAssS(&(*target)->Spr,source->Spr);
     }
-
-    return ajFalse;
+    
+    return ajTrue;
 }
 
 
@@ -8696,15 +8692,12 @@ AjBool ajXyzHitlistReadNode(AjPFile scopf, AjPList *list,
 	    }
 	}
     } 
-    else
-    {
-	ajWarn("Bad arguments passed to ajXyzHitlistReadNode\n");
-	if(donemem)
-	    ajListDel(&(*list));
-	return ajFalse;
-    }
+
+    ajWarn("Bad arguments passed to ajXyzHitlistReadNode\n");
+    if(donemem)
+	ajListDel(&(*list));
     
-    return ajTrue;
+    return ajFalse;
 }
 
 

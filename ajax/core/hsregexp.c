@@ -850,16 +850,12 @@ ajint hsregexec(register regexp *prog,const char *str)
 		return(1);
 	return(0);
     }
-    else
-    {
-	/* We don't -- general case. */
-	for (s = string; !regtry(&ex, prog, s); s++)
-	    if (*s == '\0')
-		return(0);
-	return(1);
-    }
-    /* NOTREACHED */
-    return 0;
+
+    /* We don't -- general case. */
+    for (s = string; !regtry(&ex, prog, s); s++)
+	if (*s == '\0')
+	    return(0);
+    return(1);
 }
 
 
@@ -1124,12 +1120,11 @@ static size_t regrepeat(register struct exec *ep,char *node)
 	return(strcspn(ep->reginput, OPERAND(node)));
 	/*break;*/
     default:				/* Oh dear.  Called inappropriately. */
-	hsregerror("internal error: bad call of regrepeat");
-	return(0);			/* Best compromise. */
-	/*break;*/
+	break;
     }
-    /* NOTREACHED */
-    return 0;
+
+    hsregerror("internal error: bad call of regrepeat");
+    return(0);			/* Best compromise. */
 }
 
 

@@ -15235,7 +15235,8 @@ static AjBool acdValIsBool(const char* arg)
     {
     case 'n':
     case 'N':
-	if(!arg[1]) return ajTrue;
+	if(!arg[1])
+	    return ajTrue;
 	return ajStrMatchCaseCC(arg, "no");
 	break;
 
@@ -15273,7 +15274,7 @@ static AjBool acdValIsBool(const char* arg)
 	break;
 
     default:
-	return ajFalse;
+	break;
     }
 
     return ajFalse;

@@ -2489,7 +2489,7 @@ static char* reportCharname(const AjPReport thys)
     case 'N':
 	return nucstr;
     default:
-	return protstr;
+	break;
     }
 
     return protstr;
