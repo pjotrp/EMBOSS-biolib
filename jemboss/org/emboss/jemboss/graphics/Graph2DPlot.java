@@ -91,8 +91,8 @@ public class Graph2DPlot extends ScrollPanel
   private static int LINE = 1;
   private static int TEXT = 2;
   private static int RECTANGLE = 3;
-
-  private static int AXIS = 4;
+  private static int FILLED_RECTANGLE = 4;
+  private static int AXIS = 5;
 
   // draw rectangle around graph
   private boolean draw_axes  = true;
@@ -153,6 +153,15 @@ public class Graph2DPlot extends ScrollPanel
     }
     catch(FileNotFoundException fnne){}
     catch(IOException ioe){}
+
+    if(fileName.indexOf("plotorf") > -1)
+    {
+      WID = 1000;
+      HGT = 400;
+      width  = WID;
+      height = HGT;
+    }
+
     calcMinMax();
   }
 
@@ -171,6 +180,15 @@ public class Graph2DPlot extends ScrollPanel
     }
     catch(FileNotFoundException fnne){}
     catch(IOException ioe){}  
+
+    if(fileName.indexOf("plotorf") > -1)
+    {
+      WID = 1000;
+      HGT = 400;
+      width  = WID;
+      height = HGT;
+    }
+
     calcMinMax();
   }
 
@@ -732,10 +750,10 @@ public class Graph2DPlot extends ScrollPanel
         ymin = ymin_screen;
     }
 
-    System.out.println("xmin "+xmin);
-    System.out.println("xmax "+xmax);
-    System.out.println("ymin "+ymin);
-    System.out.println("ymax "+ymax);
+//  System.out.println("xmin "+xmin);
+//  System.out.println("xmax "+xmax);
+//  System.out.println("ymin "+ymin);
+//  System.out.println("ymax "+ymax);
   }
 
   public int getWidth()
@@ -773,13 +791,13 @@ public class Graph2DPlot extends ScrollPanel
       og.setFont(getFont()); 
       og.setColor(Color.white);
       og.fillRect(0,0,getWidth(),getHeight());
-      og.setColor(Color.black);
 
       if(emboss_data.length == 2)   // 2d plot
         drawPoints(og);
       else
         drawGraphics(og,fm);   
 
+      og.setColor(Color.black);
       if(draw_axes)
         drawAxes(og,tick_height);
     }
@@ -806,13 +824,13 @@ public class Graph2DPlot extends ScrollPanel
     g.setFont(getFont()); 
     g.setColor(Color.white);
     g.fillRect(0,0,getWidth(),getHeight());
-    g.setColor(Color.black);
 
     if(emboss_data.length == 2)   // 2d plot
       drawPoints(g);
     else
       drawGraphics(g,fm);
 
+    g.setColor(Color.black);
     if(draw_axes)
       drawAxes(g,tick_height);
   }
@@ -827,6 +845,7 @@ public class Graph2DPlot extends ScrollPanel
     Graphics2D g2d = (Graphics2D)g;
     FontMetrics fm = getFontMetrics(getFont());
     int font_height = fm.getHeight();
+    int font_height2 = font_height/2;
 
     if(maintitle_field != null)
       maintitle = maintitle_field.getText();
@@ -902,7 +921,7 @@ public class Graph2DPlot extends ScrollPanel
       }
 
       g2d.drawString( myformat.format(xpos),
-                      xpos_major, font_height+tick_height );
+                      xpos_major-font_height2, font_height+tick_height );
     }
 
 
@@ -1049,9 +1068,11 @@ public class Graph2DPlot extends ScrollPanel
   {
     DecimalFormat myformat = null;
 
-    if(max < 1000)
+    if(max < 10)
       myformat = new DecimalFormat("##0.00");
     else if(max < 10000)
+      myformat = new DecimalFormat("##0.0");
+    else if(max < 100000)
       myformat = new DecimalFormat("##0.#E0");
     else if(max < 1000000)
       myformat = new DecimalFormat("#0.##E0");
@@ -1111,8 +1132,6 @@ public class Graph2DPlot extends ScrollPanel
 
     float xendPoint = (float)(xend.getValue()-xstart.getValue())*xfactor;
     float yendPoint = (float)(yend.getValue()-ystart.getValue())*yfactor;
-
-    System.out.println("HERE "+fileName);
  
     g2d.translate(xborder, getHeight()-yborder);
     for(int i=0; i<xnum; i++)
@@ -1124,10 +1143,10 @@ public class Graph2DPlot extends ScrollPanel
         x2 =  ( ((Float)emboss_data[3][i]).floatValue() - (float)xstart.getValue())*xfactor;
         y2 = -( ((Float)emboss_data[4][i]).floatValue() - (float)ystart.getValue())*yfactor;
 
-        if( x1 >= 0 && x2 >= 0 &&
-            x1 <= xendPoint && x2 <= xendPoint &&
-            y1 <= 0 && y2 <= 0 &&
-            y1 >= -yendPoint && y2 >= -yendPoint )
+        if( ( x1 >= 0 && x2 >= 0 &&
+              x1 <= xendPoint && x2 <= xendPoint &&
+              y1 <= 0 && y2 <= 0 &&
+              y1 >= -yendPoint && y2 >= -yendPoint ) || !draw_axes )
         {
           int colourID = (int) ((Float)emboss_data[5][i]).floatValue();
 
@@ -1140,7 +1159,33 @@ public class Graph2DPlot extends ScrollPanel
           g.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
         }
       }
-      else if( ((Integer)emboss_data[0][i]).intValue() == TEXT)   // text
+      else if( ((Integer)emboss_data[0][i]).intValue() == RECTANGLE ||
+               ((Integer)emboss_data[0][i]).intValue() == FILLED_RECTANGLE )
+      {
+        x2 =  ( ((Float)emboss_data[3][i]).floatValue() - (float)xstart.getValue())*xfactor;
+        y2 = -( ((Float)emboss_data[4][i]).floatValue() - (float)ystart.getValue())*yfactor;
+       
+        int colourID = (int) ((Float)emboss_data[5][i]).floatValue();
+
+        if(graph_colour != null &&
+           graph_colour != Color.black)
+          g.setColor(graph_colour);
+        else if(colourID >= 0 || colourID < 16)
+          g.setColor(plplot_colour[colourID]);
+
+        if(x1 > x2)
+        {
+          float x1_tmp = x1;
+          x1 = x2;
+          x2 = x1_tmp;
+        }
+ 
+        if(((Integer)emboss_data[0][i]).intValue() == RECTANGLE)
+          g.drawRect((int)x1,(int)y2,(int)Math.abs(x2-x1),(int)Math.abs(y1-y2));
+        else
+          g.fillRect((int)x1,(int)y2,(int)Math.abs(x2-x1),(int)Math.abs(y1-y2));
+      }
+      else if( ((Integer)emboss_data[0][i]).intValue() == TEXT)   
       {
         boolean number = true;
         try
@@ -1283,7 +1328,8 @@ public class Graph2DPlot extends ScrollPanel
     while((line = in.readLine()) != null )
     {
       graph_data.append(line+"\n");
-      if((line.startsWith("Line") || line.startsWith("Rectangle")) && !xygraph)
+      if((line.startsWith("Line") || line.startsWith("Rectangle") ||
+          line.startsWith("Filled Rectangle")) && !xygraph)
       {
         vx.add(line);
       }
@@ -1306,8 +1352,6 @@ public class Graph2DPlot extends ScrollPanel
         ymax_screen = Float.parseFloat(tok.nextToken());
         screen_min_max = true;
       }
-//    else if(line.startsWith("Rectangle"))
-//      rectangle = true;
       else if(!line.startsWith("#") && !line.equals("") && 
               !line.startsWith("Text") && !line.startsWith("Line"))
       {
@@ -1324,11 +1368,15 @@ public class Graph2DPlot extends ScrollPanel
       {
         int ind = line.indexOf(" ");
         xtitle = line.substring(ind).trim();
+        if(xtitle.equals("<null>"))
+          xtitle = "x";
       }
       else if(line.startsWith("##Ytitle"))
       {
         int ind = line.indexOf(" ");
         ytitle = line.substring(ind).trim();
+        if(ytitle.equals("<null>"))
+          ytitle = "y";
       }
       else if(line.startsWith("##Maintitle "))
       {
@@ -1336,17 +1384,7 @@ public class Graph2DPlot extends ScrollPanel
         maintitle = line.substring(ind).trim();
       }
       else if(line.startsWith("Text") && !line.startsWith("Textline"))
-      {
-//      in.mark(100);
         vx.add(line);
-//      if((line = in.readLine()) != null )
-//      {
-//        if(!isTick(line,false))
-//          in.reset();      
-//        else
-//          continue;
-//      }
-      }
     }
 
     npoints = vx.size();
@@ -1388,6 +1426,11 @@ public class Graph2DPlot extends ScrollPanel
       emboss_data[0][i] = new Integer(TEXT);
     else if(type.equals("Rectangle"))
       emboss_data[0][i] = new Integer(RECTANGLE);
+    else if(type.equals("Filled"))
+    {
+      emboss_data[0][i] = new Integer(FILLED_RECTANGLE);
+      tok.nextToken();
+    }
 
     tok.nextToken();
     emboss_data[1][i] = Float.valueOf(tok.nextToken());
@@ -1398,7 +1441,8 @@ public class Graph2DPlot extends ScrollPanel
     tok.nextToken();
     emboss_data[4][i] = Float.valueOf(tok.nextToken());
 
-    if(type.equals("Line"))
+    if(type.equals("Line") || type.equals("Rectangle") || 
+       type.equals("Filled"))
     {
       tok.nextToken();
       emboss_data[5][i] = Float.valueOf(tok.nextToken());
