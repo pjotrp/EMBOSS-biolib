@@ -5619,7 +5619,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim)
 			
 			if(siz_substr == 1)
 			{
-			    loc_ptr = seqres_ptr;
+			    loc_ptr = (char *) seqres_ptr;
 			    nmismatches++;
 			    founderr=ajTrue;
 			}
