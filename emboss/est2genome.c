@@ -242,7 +242,7 @@ int main(int argc, char **argv)
 	else
 	    splice_sites = NULL;
 
-	if(search_mode == BOTH)
+	if(search_mode == BOTH && splice)
 	    reversed_splice_sites = embEstFindSpliceSites( genome, 0 );
 	else
 	    reversed_splice_sites = NULL;
