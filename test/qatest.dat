@@ -9225,6 +9225,23 @@ FZ = 6035
 FP /aaaagtgagaggtcagactccta/
 //
 
+ID sirna-ex2
+UC Show the first two bases of the 23 base target region in brackets. These do not form part of the sequence to be ordered, but it is useful to see if the 23 base region starts with an 'AA'.
+AP sirna
+CL -context
+IN tembl:hsfau
+IN 
+IN 
+FI stderr
+FC = 2
+FI hsfau.sirna
+FZ = 7721
+FP /\(AA\)GAAGAAGACAGGUCGGGCUdTdT AGCCCGACCUGUCUUCUUCdTdT/
+FI hsfau.fasta
+FZ = 6035
+FP /aaaagtgagaggtcagactccta/
+//
+
 ID skipseq-ex
 UC This does not skip any sequences. It is exactly equivalent to seqret:
 AP skipseq
