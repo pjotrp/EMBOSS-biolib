@@ -1994,6 +1994,7 @@ void ajReportWriteHeader (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
     ajFmtPrintF (outf, "########################################\n");
     ajFmtPrintF (outf, "# Program: %s\n", ajAcdProgram());
     ajFmtPrintF (outf, "# Rundate: %D\n", ajTimeTodayF("log"));
+    ajFmtPrintF (outf, "# Report_format: %S\n", thys->Formatstr);
     ajFmtPrintF (outf, "# Report_file: %F\n", outf);
     if (ajListLength(thys->FileNames))
     {
