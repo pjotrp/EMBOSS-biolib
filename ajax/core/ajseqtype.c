@@ -177,7 +177,7 @@ static SeqOType seqType[] =
 	 seqTypeCharNucGapPhylo,
 	 "DNA sequence with gaps and queries"},
     {"rna",            AJFALSE, AJTRUE,  ISNUC,  "?XxTt", "NNNUu",
-	 seqTypeCharAny,
+	 seqTypeCharNuc,
 	 "RNA sequence"},
     {"purerna",        AJFALSE, AJFALSE, ISNUC,  "Tt", "Uu",
 	 seqTypeCharNucPure,
