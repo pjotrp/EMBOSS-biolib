@@ -160,6 +160,12 @@ public class DragTree extends JTree implements DragGestureListener,
   {
 
     JMenuItem source = (JMenuItem)(e.getSource());
+    if(source.getText().equals("Refresh")) 
+    {
+      newRoot(System.getProperty("user.home"));
+      return;
+    }
+
     final FileNode node = getNodename();
     if(node == null)
     {
@@ -171,23 +177,20 @@ public class DragTree extends JTree implements DragGestureListener,
     
     final File f = node.getFile();
 
-    if(source.getText().equals("Refresh"))
-      newRoot(System.getProperty("user.home"));
-    else if(source.getText().equals("New Folder..."))
+    if(source.getText().equals("New Folder..."))
     {
+      String path = null;
+      if(isFileSelection())
+        path = f.getParent();
+      else
+        path = f.getAbsolutePath();
+
       String inputValue = JOptionPane.showInputDialog(null,
-                          "Folder Name","Create New Folder in",
-                          JOptionPane.QUESTION_MESSAGE);
+                    "Folder Name","Create New Folder in "+path,
+                    JOptionPane.QUESTION_MESSAGE);
 
       if(inputValue != null && !inputValue.equals("") )
       {
- 
-        String path = null;
-        if(isFileSelection())
-          path = f.getParent();
-        else
-          path = f.getAbsolutePath();
- 
         String fullname = path+System.getProperty("file.separator")+
                           inputValue;
         File dir = new File(fullname);
