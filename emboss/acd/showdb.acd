@@ -4,7 +4,7 @@
 
 appl: showdb [
 	doc: "Displays information on the currently available databases"
-	groups: "Display, Help"
+	groups: "Display, Information"
 ]
 
 string:	database [

@@ -4,7 +4,7 @@
 
 appl: seealso [
 	doc: "Finds programs sharing group names"
-	groups: "Display, Help"
+	groups: "Display, Information"
 ]
 
   string: search [
