@@ -90,24 +90,27 @@ public class Browser extends JFrame implements HyperlinkListener,
       try
       {
         htmlPane = new JEditorPane(initialURL);
-        htmlPane.setEditable(false);
         htmlPane.addHyperlinkListener(this);
-        JScrollPane scrollPane = new JScrollPane(htmlPane);
-        getContentPane().add(scrollPane, BorderLayout.CENTER);
       } 
       catch(IOException ioe) 
       {
-        setCursor(cdone);
         throw new IOException();
       }
     }
 
+    htmlPane.setEditable(false);
+    htmlPane.setCaretPosition(0);
+    JScrollPane scrollPane = new JScrollPane(htmlPane);
+
+    getContentPane().add(scrollPane, BorderLayout.CENTER);
+    
     Dimension screenSize = getToolkit().getScreenSize();
-    int width = screenSize.width * 5 / 10;
+    int width  = screenSize.width * 5 / 10;
     int height = screenSize.height * 4 / 10;
     setBounds(width/5, height/4, width, height);
     setVisible(true);
   }
+
 
   public void actionPerformed(ActionEvent event) 
   {
