@@ -5931,6 +5931,7 @@ AjPSeqQuery ajSeqQueryNew (void)
     pthis->Directory = ajStrNew();
     pthis->Filename = ajStrNew();
     pthis->Application = ajStrNew();
+    pthis->Field = ajStrNew();
 
     pthis->Type = QRY_UNKNOWN;
     pthis->Access = NULL;
@@ -5979,7 +5980,10 @@ void ajSeqQueryDel (AjPSeqQuery* pthis)
     ajStrDel(&thys->Filename);
     ajStrDel(&thys->Application);
     ajStrDel(&thys->QryString);
-    
+
+    ajStrDel(&thys->Field);
+    AJFREE(thys->QryData);
+
     AJFREE(*pthis);
 
     return;
