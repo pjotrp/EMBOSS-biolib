@@ -324,11 +324,12 @@ public class BuildProgramMenu
             {
               f.setCursor(cbusy);
               JMenuItem source = (JMenuItem)(e.getSource());
+              String p = source.getText();
+              int ind = p.indexOf(" ");
+              p = p.substring(0,ind).trim();
+
               for(int k=0;k<numProgs;k++)
               {
-                String p = source.getText();
-                int ind = p.indexOf(" ");
-                p = p.substring(0,ind).trim();
                 if(p.equalsIgnoreCase(allAcd[k]))
                 {
                   p2.removeAll();
@@ -451,7 +452,7 @@ public class BuildProgramMenu
         {
           public void mouseClicked(MouseEvent e)
           {
-            System.gc();
+//          System.gc();
             f.setCursor(cbusy);
             JList source = (JList)e.getSource();
             source.setSelectionBackground(Color.cyan);
