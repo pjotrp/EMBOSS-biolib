@@ -1,5 +1,5 @@
 appl: yank [
-  documentation: "Reads a range from a sequence, appends the full USA to a list file"
+  documentation: "Reads a sequence range, appends the full USA to a list file"
   groups: "Edit"
 ]
 
