@@ -361,7 +361,6 @@ public class JembossAuthServer
     showdbOut.add("codons");
     showdbOut.add(matrices);
 
-
     return showdbOut;
   }
 
@@ -575,7 +574,7 @@ public class JembossAuthServer
 
 //get the output files
       result = loadFilesContent(aj,userName,passwd,
-                      projectDir,project,result);
+                      projectDir,project,result,inFiles);
 
       for(int i=0;i<passwd.length;i++)
         passwd[i] = '\0';
@@ -629,7 +628,7 @@ public class JembossAuthServer
     project = tmproot.concat(project);
     File projectDir = new File(project);
     ssr = loadFilesContent(aj,userName,passwd,
-                      projectDir,project,ssr);
+                      projectDir,project,ssr,null);
      
     ssr.add("status");
     ssr.add("0");
@@ -792,7 +791,8 @@ public class JembossAuthServer
 *
 */
   private Vector loadFilesContent(Ajax aj, String userName, 
-          byte[] passwd, File projectDir, String project, Vector result)
+            byte[] passwd, File projectDir, String project,
+            Vector result, Hashtable inFiles)
   {
 
     boolean ls = false;
@@ -817,7 +817,16 @@ public class JembossAuthServer
     StringTokenizer stok = new StringTokenizer(outStd,"\n");
     Vector outFiles = new Vector();
     while(stok.hasMoreTokens()) 
-      outFiles.add(stok.nextToken());
+    {
+      String fn = stok.nextToken();
+      if(inFiles != null)
+      {
+        if(!inFiles.containsKey(fn))        // leave out input files
+          outFiles.add(fn);
+      }
+      else
+        outFiles.add(fn);
+    }
 
     Enumeration en = outFiles.elements();
     while(en.hasMoreElements()) 
