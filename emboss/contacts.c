@@ -231,7 +231,8 @@ int main(ajint argc, char **argv)
     ajFileScan(cpdb_path, temp, &list, ajFalse, ajFalse, NULL, NULL, 
 	       ajFalse, NULL); 
 
-
+    ajStrDel(&temp);
+    
     /* Allocate and read Vdwall object */
     ajFileDataNew(vdwfstr,&vdwf);
     if(!vdwf)
