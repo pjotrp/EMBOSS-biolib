@@ -1,6 +1,9 @@
 appl: fuzznuc [
   documentation: "Nucleic acid pattern search"
   groups: "Nucleic:Motifs"
+  gui: yes
+  batch: yes
+  cpu: medium
 ]
 
 section: input [ info: "input Section" type: page ]

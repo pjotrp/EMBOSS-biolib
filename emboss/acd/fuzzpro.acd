@@ -1,6 +1,9 @@
 appl: fuzzpro [
   documentation: "Protein pattern search"
   groups: "Protein:Motifs"
+  gui: yes
+  batch: yes
+  cpu: medium
 ]
 
 section: input [ info: "input Section" type: page ]

@@ -1,6 +1,9 @@
 appl: fuzztran [
   documentation: "Protein pattern search after translation"
   groups: "Nucleic:Motifs, Protein:Motifs"
+  gui: yes
+  batch: yes
+  cpu: medium
 ]
 
 section: input [ info: "input Section" type: page ]
