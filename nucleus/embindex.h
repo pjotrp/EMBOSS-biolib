@@ -23,9 +23,17 @@ extern "C"
 #define BT_LEAF	    4
 #define BT_BUCKET   8
 #define BT_OVERFLOW 16
+#define BT_PRIBUCKET 32
+#define BT_SECBUCKET 64
 
 #define BTNO_BALANCE 100L
 #define BTNO_NODE    100L
+
+
+
+
+
+
 
 
 /* @data EmbPBtNode ***********************************************************
@@ -161,7 +169,8 @@ typedef struct EmbSBucket
 #define PBT_BUCKNENTRIES(p) (p + sizeof(ajint))
 #define PBT_BUCKOVERFLOW(p) (p + sizeof(ajint) + sizeof(ajint))
 #define PBT_BUCKKEYLEN(p) (p + sizeof(ajint) + sizeof(ajint) + sizeof(ajlong))
-
+#define BT_BUCKPRILEN(str) (ajStrLen(str) + 1 + sizeof(ajlong))
+#define BT_BUCKSECLEN(str) (ajStrLen(str) +1)
 
 /*
 ** Macros to return a page entry value within a bucket
@@ -366,6 +375,7 @@ typedef struct EmbSBtpage
 ** @attr replace [AjPStr] Undocumented
 ** @attr count [ajlong] Undocumented
 ** @attr deleted [AjBool] Undocumented
+** @attr secrootblock [ajlong] secondary tree root block
 ******************************************************************************/
 
 typedef struct EmbSBtCache
@@ -383,8 +393,79 @@ typedef struct EmbSBtCache
     AjPStr replace;
     ajlong count;
     AjBool deleted;
+    ajint slevel;
+    ajint sorder;
+    ajint snperbucket;
+    ajlong secrootblock;
 } EmbOBtcache;
 #define EmbPBtcache EmbOBtcache*
+
+
+
+
+/* @data EmbPBtPri ***************************************************
+**
+** Btree primary keyword
+**
+** @attr keyword [AjPStr] keyword
+** @attr treeblock [ajlong] disc block of secondary tree
+******************************************************************************/
+
+typedef struct EmbSBtPri
+{
+    AjPStr keyword;
+    ajlong treeblock;
+    AjPStr id;
+} EmbOBtPri;
+#define EmbPBtPri EmbOBtPri*
+
+
+
+
+/* @data EmbPPriBucket ***************************************************
+**
+** Keyword primary bucket structure on disc
+**
+** @attr NodeType [ajint] Node type
+** @attr Nentries [ajint] Number of entries
+** @attr Overflow [ajlong] Offset to overflow block
+** @attr keylen [ajint*] key lengths
+** @attr Ids [EmbPBtId*] Ids
+******************************************************************************/
+
+typedef struct EmbSPriBucket
+{
+    ajint    NodeType;
+    ajint    Nentries;
+    ajlong   Overflow;
+    ajint    *keylen;
+    EmbPBtPri *codes;
+} EmbOPriBucket;
+#define EmbPPriBucket EmbOPriBucket*
+
+
+
+
+/* @data EmbPSecBucket ***************************************************
+**
+** Keyword secondary bucket structure on disc
+**
+** @attr NodeType [ajint] Node type
+** @attr Nentries [ajint] Number of entries
+** @attr Overflow [ajlong] Offset to overflow block
+** @attr keylen [ajint*] key lengths
+** @attr Ids [AjPStr*] Ids
+******************************************************************************/
+
+typedef struct EmbSSecBucket
+{
+    ajint    NodeType;
+    ajint    Nentries;
+    ajlong   Overflow;
+    ajint    *keylen;
+    AjPStr   *ids;
+} EmbOSecBucket;
+#define EmbPSecBucket EmbOSecBucket*
 
 
 
@@ -395,7 +476,7 @@ EmbPBtcache embBtreeCacheNewC(const char *file, const char *ext,
 			      ajint level, ajint cachesize);
 EmbPBtpage  embBtreeCacheRead(EmbPBtcache cache, ajlong pageno);
 EmbPBtpage  embBtreeCacheWrite(EmbPBtcache cache, ajlong pageno);
-void        embBtreeCreateRootNode(EmbPBtcache cache);
+void        embBtreeCreateRootNode(EmbPBtcache cache, ajlong rootpage);
 EmbPBtpage  embBtreeFindInsert(EmbPBtcache cache, const char *key);
 
 ajint embBtreeReadDir(AjPStr **filelist, const AjPStr fdirectory,
@@ -411,11 +492,12 @@ EmbPBtId embBtreeIdNew(void);
 EmbPBtId embBtreeIdFromKey(EmbPBtcache cache, const char *key);
 void     embBtreeWriteParams(const EmbPBtcache cache, const char *fn,
 			     const char *ext, const char *idir);
-void     embBtreeReadParams(const char *fn, const char *ext,
-			    const char *idir, ajint *order,
-			    ajint *nperbucket, ajint *pagesize, ajint *level,
-			    ajint *cachesize);
-void     embBtreeCacheSync(EmbPBtcache cache);
+void embBtreeReadParams(const char *fn, const char *ext,
+			const char *idir, ajint *order,
+			ajint *nperbucket, ajint *pagesize, ajint *level,
+			ajint *cachesize, ajint *sorder,
+			ajint *snperbucket, ajint *count);
+void     embBtreeCacheSync(EmbPBtcache cache, ajlong rootpage);
 
 AjBool   embBtreeDeleteId(EmbPBtcache cache, const EmbPBtId id);
 void     embBtreeJoinLeaves(EmbPBtcache cache);
@@ -430,6 +512,30 @@ AjPStr*    embBtreeReadEntries(const char *filename, const char *indexdir);
 void       embBtreeInsertDupId(EmbPBtcache cache, EmbPBtId id);
 AjPList    embBtreeDupFromKey(EmbPBtcache cache, const char *key);
 
+
+
+
+void embBtreeEmblKW(const AjPStr kwline, AjPList kwlist);
+void embBtreeEmblDE(const AjPStr deline, AjPList kwlist);    
+EmbPBtPri embBtreePriNew(void);
+void      embBtreePriDel(EmbPBtPri *thys);
+EmbPBtPri embBtreePriFromKeyword(EmbPBtcache cache, const char *key);
+
+EmbPBtcache embBtreeSecCacheNewC(const char *file, const char *ext,
+				 const char *idir, const char *mode,
+				 ajint pagesize, ajint order, ajint fill,
+				 ajint level, ajint cachesize,
+				 ajint sorder, ajint slevel, ajint sfill,
+				 ajint count);
+EmbPBtpage embBtreeSecFindInsert(EmbPBtcache cache, const char *key);
+void       embBtreeInsertSecId(EmbPBtcache cache, const AjPStr id);
+AjBool     embBtreeSecFromId(EmbPBtcache cache, const char *key);
+
+AjPList embBtreeSecLeafList(EmbPBtcache cache, ajlong rootblock);
+AjBool embBtreeVerifyId(EmbPBtcache cache, ajlong rootblock, char *id);
+
+
+void btreeLockTest(EmbPBtcache cache);
 
 #endif
 
