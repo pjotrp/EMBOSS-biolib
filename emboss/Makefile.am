@@ -5,7 +5,7 @@ EXTRA_DIST = emboss.default.template
 
 check_PROGRAMS = ajtest \
 complex corbatest \
-demoalign demofeatures demolist demoreport demosequence demostring demotable \
+demoalign demofeatures demolist demoreport demosequence demostring demotable dichet \
 entrails histogramtest intconv \
 patmattest \
 psiblasts \
@@ -39,7 +39,7 @@ prosextract pscan \
 rebaseextract recoder redata remap restover restrict revseq scope \
 seealso seqmatchall seqret seqretall seqretallfeat seqretset seqretsplit \
 showalign showdb showfeat showorf showseq \
-shuffleseq sigcleave siggen silent splitter scopalign stretcher \
+shuffleseq sigcleave siggen silent splitter scopalign sigplot stretcher \
 stssearch supermatcher swissparse syco \
 textsearch tfextract tfm tfscan \
 tmap transeq trimest trimseq \
@@ -184,6 +184,7 @@ sigcleave_SOURCES = sigcleave.c
 silent_SOURCES = silent.c
 splitter_SOURCES = splitter.c
 scopalign_SOURCES = scopalign.c
+sigplot_SOURCES = sigplot.c
 stretcher_SOURCES = stretcher.c
 stssearch_SOURCES = stssearch.c
 supermatcher_SOURCES = supermatcher.c
@@ -212,6 +213,7 @@ demoreport_SOURCES = demoreport.c
 demosequence_SOURCES = demosequence.c
 demostring_SOURCES = demostring.c
 demotable_SOURCES = demotable.c
+dichet_SOURCES = dichet.c
 histogramtest_SOURCES = histogramtest.c
 patmattest_SOURCES = patmattest.c
 psiblasts_SOURCES = psiblasts.c
