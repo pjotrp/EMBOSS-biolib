@@ -8,6 +8,8 @@
 ** Outputs plain text files containing basic accuracy scores
 **
 ** @author: Copyright (C) Damian Counsell
+** @version $Revision: 1.2 $
+** @modified $Date: 2004/07/14 11:10:37 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

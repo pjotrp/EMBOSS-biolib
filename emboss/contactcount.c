@@ -7,6 +7,8 @@
 ** Outputs plain text files containing EMBOSS format scoring matrices
 **
 ** @author: Copyright (C) Damian Counsell
+** @version $Revision: 1.15 $
+** @modified $Date: 2004/07/14 11:11:11 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
