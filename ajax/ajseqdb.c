@@ -694,7 +694,7 @@ static ajint seqCdIdxSearch (SeqPCdIdx idxLine, AjPStr entry, SeqPCdFile fil)
     {
 	ipos = (ilo + ihi)/2;
 	name = seqCdIdxName (ipos, fil);
-	icmp = ajStrCmpCaseCC(ajStrStr(entrystr), name);
+	icmp = ajStrCmpC(entrystr, name);
 	ajDebug ("idx test %d '%s' %2d (+/- %d)\n", ipos, name, icmp, ihi-ilo);
 	if (!icmp) break;
 	if (icmp < 0)
@@ -771,7 +771,7 @@ static AjBool seqCdIdxQuery (AjPSeqQuery qry)
 	    ipos = (ilo + ihi)/2;
 	    name = seqCdIdxName (ipos, fil);
 	    name[ilen] = '\0';
-	    icmp = ajStrCmpCaseCC(ajStrStr(idpref), name); /* test prefix */
+	    icmp = ajStrCmpC(idpref, name); /* test prefix */
 	    ajDebug ("idx test %d '%s' %2d (+/- %d)\n",
 		     ipos, name, icmp, ihi-ilo);
 	    if (!icmp)
@@ -809,7 +809,7 @@ static AjBool seqCdIdxQuery (AjPSeqQuery qry)
 	    ipos = (ilo + ihi)/2;
 	    name = seqCdIdxName (ipos, fil);
 	    name[ilen] = '\0';
-	    icmp = ajStrCmpCaseCC(ajStrStr(idpref), name);
+	    icmp = ajStrCmpC(idpref, name);
 	    ajDebug ("idx test %d '%s' %2d (+/- %d)\n",
 		     ipos, name, icmp, ihi-ilo);
 	    if (!icmp)
@@ -921,7 +921,7 @@ static ajint seqCdTrgSearch (SeqPCdTrg trgLine, AjPStr entry, SeqPCdFile fp)
     icmp = -1;
     ajDebug ("seqCdTrgSearch '%S' recSize: %d\n", entry, fp->RecSize);
     name = seqCdTrgName (ipos, fp);
-    icmp = ajStrCmpCaseCC(ajStrStr(entrystr), name);
+    icmp = ajStrCmpC(entrystr, name);
 
     ajDebug ("trg test %d '%s' %2d (+/- %d)\n", ipos, name, icmp, ihi-ilo);
 
@@ -940,7 +940,7 @@ static ajint seqCdTrgSearch (SeqPCdTrg trgLine, AjPStr entry, SeqPCdFile fp)
 	}
 	ipos = itry;
 	name = seqCdTrgName (ipos, fp);
-	icmp = ajStrCmpCaseCC(ajStrStr(entrystr), name);
+	icmp = ajStrCmpC(entrystr, name);
 	ajDebug ("trg test %d '%s' %2d (+/- %d)\n", ipos, name, icmp, ihi-ilo);
     }
 
@@ -3656,7 +3656,7 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 	    pos = (t+b)/2;
 	    name = seqCdTrgName(pos,trgfp);
 	    name[len]='\0';
-	    cmp = ajStrCmpCaseCC(ajStrStr(actmp),name);
+	    cmp = ajStrCmpC(actmp,name);
 /*	    cmp = ajStrMatchWildC(acstr,name);*/
 	    ajDebug(" trg test %d '%s' %2d (+/- %d)\n",pos,name,cmp,t-b);
 	    if(!cmp)
@@ -3692,7 +3692,7 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 	    pos = (t+b)/2;
 	    name = seqCdTrgName(pos,trgfp);
 	    name[len]='\0';
-	    cmp = ajStrCmpCaseCC(ajStrStr(actmp),name);
+	    cmp = ajStrCmpC(actmp,name);
 /*	    cmp = ajStrMatchWildC(acstr,name);*/
 	    ajDebug(" trg test %d '%s' %2d (+/- %d)\n",pos,name,cmp,t-b);
 	    if(!cmp)
