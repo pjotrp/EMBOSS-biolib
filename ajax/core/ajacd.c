@@ -1732,7 +1732,10 @@ AjStatus ajAcdInitP (char *pgm, ajint argc, char *argv[], char *package)
     acdListReport("Results of parsing command line arguments");
     
     /* set the true values and prompt for missing required values */
-    
+
+    if (acdDoTable)
+	acdHelp();
+
     acdSetAll();
     
     /* report on what we have now */
