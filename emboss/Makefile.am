@@ -251,7 +251,10 @@ seqrettype_SOURCES = seqrettype.c
 testplot_SOURCES = testplot.c
 treetypedisplay_SOURCES = treetypedisplay.c
 
-LDADD = ../nucleus/libnucleus.la ../ajax/libajaxg.la ../ajax/libajax.la ../plplot/libplplot.la $(XLIB)
+# Uncomment to use dual libraries
+#LDADD = ../nucleus/libnucleus.la ../ajax/libajaxg.la ../ajax/libajax.la ../plplot/libplplot.la $(XLIB)
+# Uncomment to use single library
+LDADD = ../nucleus/libnucleus.la ../ajax/libajax.la ../plplot/libplplot.la $(XLIB)
 
 pkgdata_DATA = emboss.default.template
 pkgdatadir=$(prefix)/share/$(PACKAGE)

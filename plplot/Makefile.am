@@ -18,6 +18,11 @@ AM_CFLAGS =
 endif
 endif
 
+if ISCYGWIN
+AM_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import -lX11 -lgd -lpng -lz
+endif
+
+
 INCLUDES = $(X_CFLAGS) -I$(srcdir)/ -I/usr/include/gd
 LIBS =
 
