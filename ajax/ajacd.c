@@ -335,11 +335,12 @@ static AjBool acdSetQualDefInt (AcdPAcd thys, char* name, int value);
 static AjBool acdSetKey (AcdPAcd thys, AjPStr* attrib, AjPStr value);
 static AjBool acdSetVarDef (AcdPAcd thys, AjPStr value);
 static void acdPromptCodon (AcdPAcd thys);
+static void acdPromptCpdb (AcdPAcd thys);
 static void acdPromptDirlist (AcdPAcd thys);
 static void acdPromptFeat (AcdPAcd thys);
 static void acdPromptFeatout (AcdPAcd thys);
 static void acdPromptGraph (AcdPAcd thys);
-static void acdPromptCpdb (AcdPAcd thys);
+static void acdPromptReport (AcdPAcd thys);
 static void acdPromptScop (AcdPAcd thys);
 static void acdPromptSeq (AcdPAcd thys);
 static void acdPromptSeqout (AcdPAcd thys);
@@ -448,6 +449,7 @@ static void acdSetCpdb (AcdPAcd thys);
 static void acdSetScop (AcdPAcd thys);
 static void acdSetRange (AcdPAcd thys);
 static void acdSetRegexp (AcdPAcd thys);
+static void acdSetReport (AcdPAcd thys);
 /*static void acdSetRegions (AcdPAcd thys);*/
 static void acdSetSelect (AcdPAcd thys);
 static void acdSetSeq (AcdPAcd thys);
@@ -478,7 +480,7 @@ static void acdSetString (AcdPAcd thys);
 
 /* Default attributes available for all types */
 
-static int nDefAttr = 11;
+static int nDefAttr = 15;
 
 enum AcdEDef { DEF_DEFAULT,
 	       DEF_PROMPT,
@@ -490,7 +492,11 @@ enum AcdEDef { DEF_DEFAULT,
 	       DEF_MISSING,
 	       DEF_PARAMETER,
 	       DEF_VALID,
-	       DEF_EXPECTED
+	       DEF_EXPECTED,
+	       DEF_COMMENT,
+	       DEF_CORBA,
+	       DEF_STYLE,
+	       DEF_NEEDED
 };
 
 AcdOAttr acdAttrDef[] = { {"default", VT_STR}, /* default value */
@@ -504,6 +510,10 @@ AcdOAttr acdAttrDef[] = { {"default", VT_STR}, /* default value */
 			  {"parameter", VT_BOOL}, /* accept as a parameter */
 			  {"valid", VT_STR}, /* help: allowed values  */
 			  {"expected", VT_STR}, /* help: expected value  */
+			  {"comment", VT_STR}, /* comment for AppLab  */
+			  {"corba", VT_STR}, /* corba spec for AppLab  */
+			  {"style", VT_STR}, /* style for AppLab  */
+			  {"needed", VT_BOOL}, /* include in GUI form */
 			  {NULL, VT_NULL}
 };
 
@@ -527,50 +537,29 @@ AcdOAttr acdAttrArray[] = { {"minimum", VT_FLOAT},
 			    {"size", VT_INT},
 			    {"sum", VT_FLOAT},
 			    {"tolerance", VT_FLOAT},
-			    {"comment", VT_STR},
-			    {"corba", VT_STR},
-			    {"style",VT_STR},
 			  {NULL, VT_NULL} };
 
 AcdOAttr acdAttrBool[] = {
-			    {"comment", VT_STR},
-			    {"corba", VT_STR},
-			    {"style",VT_STR},
 			  {NULL, VT_NULL} };
 
 AcdOAttr acdAttrCodon[] = { {"name", VT_STR},
-			    {"comment", VT_STR},
-			    {"corba", VT_STR},
-			    {"style",VT_STR},
 			    {NULL, VT_NULL} };
 
 
 AcdOAttr acdAttrDirectory[] = { {"fullpath", VT_BOOL},
 				{"nullok", VT_BOOL},
-				{"comment", VT_STR},
-				{"corba", VT_STR},
-				{"style",VT_STR},
 				{NULL, VT_NULL} };
 
 AcdOAttr acdAttrDirlist[] = { {"fullpath", VT_BOOL},
 			      {"nullok", VT_BOOL},
-			      {"comment", VT_STR},
-			      {"corba", VT_STR},
-			      {"style",VT_STR},
 			      {NULL, VT_NULL} };
 
 AcdOAttr acdAttrFeat[] = { {"name", VT_STR},
 			   {"extension", VT_STR},
-			   {"comment", VT_STR},
-			   {"corba", VT_STR},
-			   {"style",VT_STR},
 			   {NULL, VT_NULL} };
 
 AcdOAttr acdAttrFeatout[] = { {"name", VT_STR},
 			      {"extension", VT_STR},
-			      {"comment", VT_STR},
-			      {"corba", VT_STR},
-			      {"style",VT_STR},
 			      {NULL, VT_NULL} };
 
 AcdOAttr acdAttrFloat[] = { {"minimum", VT_FLOAT},
@@ -578,9 +567,6 @@ AcdOAttr acdAttrFloat[] = { {"minimum", VT_FLOAT},
 			    {"increment", VT_FLOAT},
 			    {"precision", VT_INT},
 			    {"warnrange", VT_BOOL},
-			    {"comment", VT_STR},
-			    {"corba", VT_STR},
-			    {"style",VT_STR},
 			    {NULL, VT_NULL} };
 
 AcdOAttr acdAttrGraph[] = { {"type", VT_STR},
@@ -589,9 +575,6 @@ AcdOAttr acdAttrGraph[] = { {"type", VT_STR},
 			    {"gxtitle",VT_STR}, 
 			    {"gytitle",VT_STR}, 
 			    {"goutfile",VT_STR},
-			    {"comment", VT_STR},
-			    {"corba", VT_STR},
-			    {"style",VT_STR},
 			    {NULL, VT_NULL} };
 
 AcdOAttr acdAttrGraphxy[] = { {"type", VT_STR},
@@ -601,36 +584,24 @@ AcdOAttr acdAttrGraphxy[] = { {"type", VT_STR},
 			      {"gytitle",VT_STR}, 
 			      {"goutfile",VT_STR},
 			      {"multiple", VT_INT},
-			      {"comment", VT_STR},
-			      {"corba", VT_STR},
-			      {"style",VT_STR},
 			      {NULL, VT_NULL} };
 
 AcdOAttr acdAttrInt[] = { {"minimum", VT_INT},
 			  {"maximum", VT_INT},
 			  {"increment", VT_INT},
 			  {"warnrange", VT_BOOL},
-			  {"comment", VT_STR},
-			  {"corba", VT_STR},
-			  {"style",VT_STR},
 			  {NULL, VT_NULL} };
 
 AcdOAttr acdAttrDatafile[] = { {"name", VT_STR},
 			       {"extension", VT_STR},
 			       {"type", VT_STR},
 			       {"nullok", VT_BOOL},
-			       {"comment", VT_STR},
-			       {"corba", VT_STR},
-			       {"style",VT_STR},
 			       {NULL, VT_NULL} };
 
 AcdOAttr acdAttrInfile[] = { {"name", VT_STR},
 			     {"extension", VT_STR},
 			     {"type", VT_STR},
 			     {"nullok", VT_BOOL},
-			     {"comment", VT_STR},
-			     {"corba", VT_STR},
-			     {"style",VT_STR},
 			     {NULL, VT_NULL} };
 
 AcdOAttr acdAttrList[] = { {"minimum", VT_INT},
@@ -641,53 +612,32 @@ AcdOAttr acdAttrList[] = { {"minimum", VT_INT},
 			   {"delimiter", VT_STR},
 			   {"codedelimiter", VT_STR},
 			   {"values", VT_STR},
-			   {"comment", VT_STR},
-			   {"corba", VT_STR},
-			   {"style",VT_STR},
 			   {NULL, VT_NULL} };
 
 AcdOAttr acdAttrMatrix[] = { {"pname", VT_STR},
 			   {"nname", VT_STR},
 			   {"protein", VT_BOOL},
-			   {"comment", VT_STR},
-			   {"corba", VT_STR},
-			   {"style",VT_STR},
 			   {NULL, VT_NULL} };
 
 AcdOAttr acdAttrMatrixf[] = { {"pname", VT_STR},
 			    {"nname", VT_STR},
 			    {"protein", VT_BOOL},
-			    {"comment", VT_STR},
-			    {"corba", VT_STR},
-			    {"style",VT_STR},
 			    {NULL, VT_NULL} };
 
 AcdOAttr acdAttrOutfile[] = { {"name", VT_STR},
 			      {"extension", VT_STR},
 			      {"type", VT_STR},
 			      {"nullok", VT_BOOL},
-			      {"comment", VT_STR},
-			      {"corba", VT_STR},
-			      {"style",VT_STR},
 			      {NULL, VT_NULL} };
 
 AcdOAttr acdAttrCpdb[] = { {"name", VT_STR},
-			    {"comment", VT_STR},
-			    {"corba", VT_STR},
-			    {"style",VT_STR},
 			    {NULL, VT_NULL} };
 
 AcdOAttr acdAttrScop[] = { {"name", VT_STR},
-			    {"comment", VT_STR},
-			    {"corba", VT_STR},
-			    {"style",VT_STR},
 			    {NULL, VT_NULL} };
 
 
 AcdOAttr acdAttrRange[] = { 
-			    {"comment", VT_STR},
-			    {"corba", VT_STR},
-			    {"style",VT_STR},
 			    {NULL, VT_NULL} };
 
 
@@ -695,10 +645,11 @@ AcdOAttr acdAttrRegexp[] = { {"minlength", VT_INT},
 			     {"maxlength", VT_INT},
 			     {"upper", VT_BOOL},
 			     {"lower", VT_BOOL},
-			     {"comment", VT_STR},
-			     {"corba", VT_STR},
-			     {"style",VT_STR},
 			     {NULL, VT_NULL} };
+
+AcdOAttr acdAttrReport[] = { {"name", VT_STR},
+			      {"extension", VT_STR},
+			      {NULL, VT_NULL} };
 
 AcdOAttr acdAttrSelect[] = { {"minimum", VT_INT},
 			     {"maximum", VT_INT},
@@ -707,56 +658,35 @@ AcdOAttr acdAttrSelect[] = { {"minimum", VT_INT},
 			     {"header", VT_STR},
 			     {"delimiter", VT_STR},
 			     {"values", VT_STR},
-			     {"comment", VT_STR},
-			     {"corba", VT_STR},
-			     {"style",VT_STR},
 			     {NULL, VT_NULL} };
 
 AcdOAttr acdAttrSeqout[] = { {"name", VT_STR},
 			     {"extension", VT_STR},
 			     {"features", VT_BOOL},
-			     {"comment", VT_STR},
-			     {"corba", VT_STR},
-			     {"style",VT_STR},
 			     {NULL, VT_NULL} };
 
 AcdOAttr acdAttrSeqoutset[] = { {"name", VT_STR},
 				{"extension", VT_STR},
 				{"features", VT_BOOL},
-			        {"comment", VT_STR},
-			        {"corba", VT_STR},
-			        {"style",VT_STR},
 				{NULL, VT_NULL} };
 
 AcdOAttr acdAttrSeqoutall[] = { {"name", VT_STR},
 				{"extension", VT_STR},
 				{"features", VT_BOOL},
-			        {"comment", VT_STR},
-			        {"corba", VT_STR},
-			        {"style",VT_STR},
 				{NULL, VT_NULL} };
 
 AcdOAttr acdAttrSeq[] = { {"type", VT_STR},
 			  {"features", VT_BOOL},
 			  {"entry", VT_BOOL},
-			  {"comment", VT_STR},
-			  {"corba", VT_STR},
-			  {"style",VT_STR},
 			  {NULL, VT_NULL} };
 
 AcdOAttr acdAttrSeqset[] = { {"type", VT_STR},
 			     {"features", VT_BOOL},
-			     {"comment", VT_STR},
-			     {"corba", VT_STR},
-			     {"style",VT_STR},
 			     {NULL, VT_NULL} };
 
 AcdOAttr acdAttrSeqall[] = { {"type", VT_STR},
 			     {"features", VT_BOOL},
 			     {"entry", VT_BOOL},
-			     {"comment", VT_STR},
-			     {"corba", VT_STR},
-			     {"style",VT_STR},
 			     {NULL, VT_NULL} };
 
 AcdOAttr acdAttrString[] = { {"minlength", VT_INT},
@@ -764,15 +694,9 @@ AcdOAttr acdAttrString[] = { {"minlength", VT_INT},
 			     {"pattern", VT_STR},
        			     {"upper", VT_BOOL},
 			     {"lower", VT_BOOL},
-			     {"comment", VT_STR},
-			     {"corba", VT_STR},
-			     {"style",VT_STR},
 		     {NULL, VT_NULL} };
 
 AcdOAttr acdAttrVar[] = {
-                             {"comment", VT_STR},
-			     {"corba", VT_STR},
-			     {"style",VT_STR},
                           {NULL, VT_NULL} };
 
 typedef struct AcdSKey
@@ -820,11 +744,19 @@ AcdOQual acdQualFeat[] =
 
 AcdOQual acdQualFeatout[] =
 {
-  {"offormat",    "",       "string", "output seq format"},
+  {"offormat",    "",       "string", "output feature format"},
   {"ofopenfile",  "",       "string", "features file name"},
   {"ofextension", "",       "string", "file name extension"},
   {"ofname",      "",       "string", "base file name"},
   {"ofsingle",    "",       "bool",   "separate file for each entry"},
+  {NULL, NULL, NULL, NULL} };
+
+AcdOQual acdQualReport[] =
+{
+  {"rformat",    "",       "string", "report format"},
+  {"ropenfile",  "",       "string", "report file name"},
+  {"rextension", "",       "string", "file name extension"},
+  {"rname",      "",       "string", "base file name"},
   {NULL, NULL, NULL, NULL} };
 
 AcdOQual acdQualSeq[] =
@@ -1000,6 +932,8 @@ AcdOType acdType[] =
    NULL,             "Sequence range" },
   {"regexp",	  acdAttrRegexp,     acdSetRegexp,
    NULL,             "Regular expression pattern" },
+  {"report",      acdAttrReport,     acdSetReport,
+   acdQualReport,    "Report file" },
   {"select",      acdAttrSelect,    acdSetSelect,
    NULL,             "Selection from list of values" },
   {"sequence",    acdAttrSeq,       acdSetSeq,
@@ -1058,7 +992,7 @@ AcdOValid acdValid[] =
 
 /*** command line retrieval routines ***/
 
-/* @func ajAcdInitP ************************************************************
+/* @func ajAcdInitP ***********************************************************
 **
 ** Initialises everything. Reads an ACD (AJAX Command Definition) file
 ** prompts the user for any missing information, reads all sequences
@@ -1216,7 +1150,13 @@ AjStatus ajAcdInitP (char *pgm, int argc, char *argv[], char *package)
     (void) ajStrStat ("after acdListReport3");
   
     /* all done */
-  
+
+    /* debugging the defaults files and their contents
+      ajNamDebugOrigin();
+      ajNamDebugDatabases();
+      ajNamDebugEnvironmentals();
+    */
+
     return ajStatusOK;
 }
 
@@ -3424,13 +3364,13 @@ static void acdSetDirectory (AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [char*] Text token name
-** @return [AjPFeatTable] Feature Table object. The table was already loaded by
+** @return [AjPFeattable] Feature Table object. The table was already loaded by
 **         acdSetFeat so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
 ******************************************************************************/
 
-AjPFeatTable ajAcdGetFeat (char *token)
+AjPFeattable ajAcdGetFeat (char *token)
 {
     return acdGetValue (token, "features");
 }
@@ -3463,8 +3403,8 @@ AjPFeatTable ajAcdGetFeat (char *token)
 
 static void acdSetFeat (AcdPAcd thys)
 {
-    AjPFeatTable val = NULL;
-    AjPFeatTabIn tabin = NULL;
+    AjPFeattable val = NULL;
+    AjPFeattabIn tabin = NULL;
 
     AjBool required = ajFalse;
     AjBool ok = ajFalse;
@@ -3491,7 +3431,7 @@ static void acdSetFeat (AcdPAcd thys)
     AjBool fprompt=ajFalse;
     int iattr;
 
-    tabin = ajFeatTabInNew();		/* set the default value */
+    tabin = ajFeattabInNew();		/* set the default value */
 
     required = acdIsRequired(thys);
     (void) acdQualToBool (thys, "fask", ajFalse, &fprompt, &defreply);
@@ -3573,11 +3513,11 @@ static void acdSetFeat (AcdPAcd thys)
        if (freverse)
        ajFeatReverse (val);
        
-       ajFeatTabSetRange(val, fbegin, fend);
-       ajfeatTabInSetRange(tabin, fbegin, fend);
+       ajFeattabSetRange(val, fbegin, fend);
+       ajFeattabInSetRange(tabin, fbegin, fend);
        */
 
-    ajFeatTabInDel (&tabin);
+    ajFeattabInDel (&tabin);
 
     /* features tables have special set attributes */
 
@@ -3606,13 +3546,13 @@ static void acdSetFeat (AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [char*] Text token name
-** @return [AjPFeatTabOut] Feature Table output object. Already opened
+** @return [AjPFeattabOut] Feature Table output object. Already opened
 **                      by acdSetFeatout so this just returns the object
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
 ******************************************************************************/
 
-AjPFeatTabOut ajAcdGetFeatout (char *token)
+AjPFeattabOut ajAcdGetFeatout (char *token)
 {
     return acdGetValue (token, "featout");
 }
@@ -3645,7 +3585,7 @@ AjPFeatTabOut ajAcdGetFeatout (char *token)
 
 static void acdSetFeatout (AcdPAcd thys)
 {
-    AjPFeatTabOut val = NULL;
+    AjPFeattabOut val = NULL;
 
     AjBool required = ajFalse;
     AjBool ok = ajFalse;
@@ -3668,7 +3608,7 @@ static void acdSetFeatout (AcdPAcd thys)
 	{NULL, VT_NULL} };
 
     required = acdIsRequired(thys);
-    val = ajFeatTabOutNew();
+    val = ajFeattabOutNew();
 
     acdAttrResolve (thys, "name", &name);
     if (!acdGetValueAssoc (thys, "offormat", &val->Formatstr))
@@ -3688,7 +3628,7 @@ static void acdSetFeatout (AcdPAcd thys)
 	    (void) acdUserGet (thys, &reply);
 
 	(void) acdGetValueAssoc (thys, "ofopenfile", &val->Filename);
-	ok = ajFeatTabOutOpen (val, reply);
+	ok = ajFeattabOutOpen (val, reply);
 	if (!ok)
 	    acdBadVal (thys, required,
 		       "Unable to read sequence '%S'", reply);
@@ -5087,6 +5027,124 @@ static void acdSetRegexp (AcdPAcd thys) {
   return;
 }
 
+/* @func ajAcdGetReport ******************************************************
+**
+** Returns an item of type Report as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [char*] Text token name
+** @return [AjPReport] Report output object. Already opened
+**                      by acdSetFeatout so this just returns the object
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPReport ajAcdGetReport (char *token)
+{
+    return acdGetValue (token, "report");
+}
+
+/* @funcstatic acdSetReport **************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD report item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other available) is a null string, which
+** is invalid.
+**
+** Associated qualifiers "-rformat", "-ropenfile"
+** are applied to the UFO before reading the sequence.
+**
+** Associated qualifiers "-rbegin", "-rend" and "-rreverse"
+** are applied as appropriate, with prompting for values,
+** after the sequence has been read. They are applied to the feature table,
+** and the resulting table is what is set in the ACD item.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajSeqRead
+** @@
+******************************************************************************/
+
+static void acdSetReport (AcdPAcd thys)
+{
+    AjPReport val = NULL;
+
+    AjBool required = ajFalse;
+    AjBool ok = ajFalse;
+    static AjPStr defreply = NULL;
+    static AjPStr reply = NULL;
+    int itry;
+
+    static AjPStr name = NULL;
+    static AjPStr ext = NULL;
+    static AjPStr outfname = NULL;
+
+    static AcdOAttr setattr[] =
+    {
+	{"begin", VT_INT},
+	{"end", VT_INT},
+	{"length", VT_INT},
+	{"protein", VT_BOOL},
+	{"nucleic", VT_BOOL},
+	{"name", VT_STR},
+	{NULL, VT_NULL} };
+
+    required = acdIsRequired(thys);
+    val = ajReportNew();
+
+    acdAttrResolve (thys, "name", &name);
+    if (!acdGetValueAssoc (thys, "rformat", &val->Formatstr))
+	(void) acdAttrResolve (thys, "rextension", &ext);
+
+    (void) acdOutFilename (&outfname, name, val->Formatstr);
+    (void) acdReplyInit (thys, ajStrStr(outfname), &defreply);
+    acdPromptReport (thys);
+
+    for (itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;		/* accept the default if nothing changes */
+
+	(void) ajStrAssS (&reply, defreply);
+
+	if (required)
+	    (void) acdUserGet (thys, &reply);
+
+	(void) acdGetValueAssoc (thys, "ropenfile", &val->Filename);
+	ok = ajReportOpen (val, reply);
+	if (!ok)
+	    acdBadVal (thys, required,
+		       "Unable to read sequence '%S'", reply);
+    }
+    if (!ok)
+	acdBadRetry (thys);
+
+    /* reports have special set attributes */
+
+    thys->SAttr = acdAttrListCount (setattr);
+    thys->SetAttr = &setattr[0];
+    thys->SetStr = AJCALLOC0 (thys->SAttr, sizeof (AjPStr));
+
+    /*
+       (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_BEGIN], ajSeqBegin(val));
+       (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_END], ajSeqEnd(val));
+       (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_LENGTH], ajSeqLen(val));
+       (void) ajStrFromBool (&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqIsProt(val));
+       (void) ajStrFromBool (&thys->SetStr[ACD_SEQ_NUCLEIC], ajSeqIsNuc(val));
+       (void) ajStrAssS (&thys->SetStr[ACD_SEQ_NAME], val->Name);
+       */
+
+    thys->Value = val;
+    (void) ajStrAssS (&thys->ValStr, reply);
+
+    return;
+}
+
 /* @func ajAcdGetSelect *******************************************************
 **
 ** Returns an item of type Select as defined in a named ACD item,
@@ -6122,10 +6180,8 @@ static void acdSetSeqoutset (AcdPAcd thys) {
     (void) ajStrSet(&val->Extension, val->Formatstr);
 
     (void) acdGetValueAssoc (thys, "oufo", &val->Ufo);
-    /*
     (void) acdGetValueAssoc (thys, "offormat", &val->Ftquery->Formatstr);
     (void) acdGetValueAssoc (thys, "ofname", &val->Ftquery->Filename);
-    */
 
     (void) acdQualToBool (thys, "ossingle",
 			  ajSeqOutFormatSingle(val->Formatstr),
@@ -6245,10 +6301,9 @@ static void acdSetSeqoutall (AcdPAcd thys) {
     (void) ajStrSet(&val->Extension, val->Formatstr);
 
     (void) acdGetValueAssoc (thys, "oufo", &val->Ufo);
-    /*
     (void) acdGetValueAssoc (thys, "offormat", &val->Ftquery->Formatstr);
     (void) acdGetValueAssoc (thys, "ofname", &val->Ftquery->Filename);
-    */
+
     (void) acdLog ("acdSetSeqoutall ossingle default: %B\n",
 		    ajSeqOutFormatSingle(val->Formatstr));
 
@@ -9484,7 +9539,7 @@ static AjBool acdExpEqual (AjPStr* result, AjPStr str) {
     return ajTrue;
   }
 
-  if (!dexp)			/* float + float */
+  if (!dexp)			/* float == float */
     dexp = ajRegCompC("^[ \t]*([0-9.+-]+)[ \t]*[=][=][ \t]*"
 			  "([0-9.+-]+)[ \t]*$");
 
@@ -9503,7 +9558,7 @@ static AjBool acdExpEqual (AjPStr* result, AjPStr str) {
     return ajTrue;
   }
 
-  if (!texp)			/* float + float */
+  if (!texp)			/* string == string */
     texp = ajRegCompC("^[ \t]*([^ \t]+)[ \t]*[=][=][ \t]*"
 			  "([^ \t]+)[ \t]*$");
 
@@ -11368,8 +11423,6 @@ static void acdPromptDirlist (AcdPAcd thys) {
   return;
 }
 
-
-
 /* @funcstatic acdPromptFeat **************************************************
 **
 ** Sets the default prompt for this ACD object to be a feature table
@@ -11566,6 +11619,48 @@ static void acdPromptFeatout (AcdPAcd thys) {
     case 2: (void) ajFmtPrintS (prompt, "%dnd output features", count); break;
     case 3: (void) ajFmtPrintS (prompt, "%drd output features", count); break;
     default: (void) ajFmtPrintS (prompt, "%dth output features", count); break;
+    }
+    break;
+  }
+  return;
+}
+
+/* @funcstatic acdPromptReport ************************************************
+**
+** Sets the default prompt for this ACD object to be a report output
+** prompt with "first", "second" etc. added.
+**
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPromptReport (AcdPAcd thys) {
+  AjPStr* prompt;
+  static int count=0;
+
+  if (!thys->DefStr)
+    return;
+
+  prompt = &thys->DefStr[DEF_PROMPT];
+  if (ajStrLen(*prompt))
+    return;
+
+  count++;
+  switch (count) {
+  case 1: (void) ajFmtPrintS (prompt, "Output report"); break;
+  case 2: (void) ajFmtPrintS (prompt, "Second output report"); break;
+  case 3: (void) ajFmtPrintS (prompt, "Third output report"); break;
+  case 11:
+  case 12:
+  case 13:
+    (void) ajFmtPrintS (prompt, "%dth output report", count); break;
+  default:
+    switch (count % 10) {
+    case 1: (void) ajFmtPrintS (prompt, "%dst output report", count); break;
+    case 2: (void) ajFmtPrintS (prompt, "%dnd output report", count); break;
+    case 3: (void) ajFmtPrintS (prompt, "%drd output report", count); break;
+    default: (void) ajFmtPrintS (prompt, "%dth output report", count); break;
     }
     break;
   }
