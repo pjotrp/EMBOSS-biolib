@@ -1953,7 +1953,7 @@ static void acdParse (AjPList listwords, AjPList listcount)
 	    
 	    acdNewCurr = acdNewSec (acdStrName);
 	    
-	    acdPretty ("\n%s: %S\n",
+	    acdPretty ("\n%s: %S [\n",
 		       acdKeywords[acdCurrentStage].Name, acdStrName);
 	    
 	    acdParseAttributes (acdNewCurr, listwords);
@@ -16281,7 +16281,7 @@ static void acdValidQual (AcdPAcd thys)
 
     if (itype > 1)
     {
-	acdErrorValid("Multiple definition of parametere/required/optional");
+	acdErrorValid("Multiple definition of parameter/required/optional");
     }
 
     tmpinfo = acdAttrValue(thys, "information");
