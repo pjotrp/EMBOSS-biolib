@@ -48,7 +48,14 @@ bool: trim  [
   optional: "Y"
   default: "N"
   prompt: "Trim trailing X's and *'s"
-  help: "This removes all X and * characters from the right end of the translation. The trimming process starts at the end and continues until the next character is not a X or a *"
+  help: "This removes all 'X' and '*' characters from the right end of the translation. The trimming process starts at the end and continues until the next character is not a 'X' or a '*'"
+]
+
+bool: clean  [
+  optional: "Y"
+  default: "N"
+  prompt: "Change all *'s to X's"
+  help: "This changes all STOP codon positions from the '*' character to 'X' (an unknown residue). This is useful because some programs will not accept protein sequences with '*' characters in them."
 ]
 
 bool: alternative  [
