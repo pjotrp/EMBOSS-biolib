@@ -28,6 +28,7 @@ AjBool ajNamGetenvC (const char* name, AjPStr* value);
 AjBool ajNamGetValue (const AjPStr name, AjPStr* value);
 AjBool ajNamGetValueC (const char *name, AjPStr* value);
 void   ajNamInit (const char* prefix);
+AjBool ajNamIsDbname(const AjPStr name);
 void   ajNamListDatabases(void); /* test routine */
 void   ajNamListListDatabases (AjPList dbnames);
 void   ajNamListListResources (AjPList dbnames);

@@ -6860,16 +6860,16 @@ static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
 
     if(!fmtexp)
 	fmtexp = ajRegCompC("^([A-Za-z0-9]*)::(.*)$");
-    /* \1 format */
-    /* \2 remainder */
+    /* \1 format letters and numbers only */
+    /* \2 remainder (filename, etc.)*/
 
     if(!dbexp)
-	dbexp = ajRegCompC("^([A-Za-z0-9_]+)([-]([A-Za-z]+))?"
+	dbexp = ajRegCompC("^([A-Za-z][A-Za-z0-9_]+)([-]([A-Za-z]+))?"
 			   "([:{]([^}]*)}?)?$");
 
-    /* \1 dbname */
-    /* \2 -id or -acc */
-    /* \3 qry->Field (id or acc) */
+    /* \1 dbname (start with a letter, then alphanumeric) */
+    /* \2 -id or -acc etc. */
+    /* \3 qry->Field (id or acc etc.) */
     /* \4 :qry->QryString */
     /* \5 qry->QryString */
 

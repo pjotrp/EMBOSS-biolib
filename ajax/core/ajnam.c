@@ -277,6 +277,7 @@ static AjBool namValidDatabase(const NamPEntry entry);
 static AjBool namValidResource(const NamPEntry entry);
 static AjBool namValidVariable(const NamPEntry entry);
 static AjBool namVarResolve(AjPStr* var);
+static void   namWarn(const char* fmt, ...);
 
 
 
@@ -1226,6 +1227,8 @@ static void namListParse(AjPList listwords, AjPList listcount,
 	    else
 	    {
 		ajStrAssS(&name, curword);
+		if(!ajNamIsDbname(name))
+		    ajErr("Invalid database name '%S'", name);
 		namUser("saving db name '%S'\n", name);
 	    }
 	}
@@ -1424,6 +1427,44 @@ static void namListParse(AjPList listwords, AjPList listcount,
     }
     
     return;
+}
+
+
+
+
+/* @func ajNamIsDbname ********************************************************
+**
+** Returns true if the name is a valid database name.
+** 
+** Database names must start with a letter, and have 1 or more letters,
+** numbers or underscores. No othr characters are permitted.
+**
+** @param [r] name [const AjPStr] character string to find in getenv list
+** @param [w] value [AjPStr*] String for the value.
+** @return [AjBool] True if name was defined.
+** @@
+**
+******************************************************************************/
+
+AjBool ajNamIsDbname(const AjPStr name)
+{
+    const char* cp = ajStrStr(name);
+
+    if (!*cp)
+	return ajFalse;
+
+    if (!isalpha(*cp++))
+	return ajFalse;
+    if (!*cp)
+	return ajFalse;
+
+    while (*cp)
+    {
+	if(!isalnum(*cp) && (*cp != '_'))
+	    return ajFalse;
+	cp++;
+    }
+    return ajTrue;
 }
 
 
@@ -2451,6 +2492,35 @@ static void namError(const char* fmt, ...)
     va_end(args);
 
     ajErr("File %S line %d: %S", namFileName, namLine, errstr);
+    ajStrDel(&errstr);
+
+    return;
+}
+
+
+
+/* @funcstatic namWarn ********************************************************
+**
+** Formatted write as a warning message.
+**
+** @param [r] fmt [const char*] Format string
+** @param [v] [...] Format arguments.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void namWarn(const char* fmt, ...)
+{
+    va_list args;
+    AjPStr errstr = NULL;
+  
+    namErrorCount++;
+
+    va_start(args, fmt);
+    ajFmtVPrintS(&errstr, fmt, args);
+    va_end(args);
+
+    ajWarn("File %S line %d: %S", namFileName, namLine, errstr);
     ajStrDel(&errstr);
 
     return;
