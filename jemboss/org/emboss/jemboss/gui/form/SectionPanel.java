@@ -258,7 +258,8 @@ public class SectionPanel
         }
         else if(att.startsWith("matrix") || att.startsWith("string") ||
                 att.startsWith("infile") || att.startsWith("regexp") ||
-                att.startsWith("codon")  || att.startsWith("featout") )
+                att.startsWith("codon")  || att.startsWith("featout") ||
+                att.startsWith("dirlist") )
         {
           if(parseAcd.isDefaultParamValueStr(nf)) 
             if( !(parseAcd.getDefaultParamValueStr(nf).startsWith("@") ||
@@ -837,7 +838,7 @@ public class SectionPanel
               att.startsWith("string")  || att.startsWith("seqout") ||
               att.startsWith("outfile") || att.startsWith("matrix") ||
               att.startsWith("infile")  || att.startsWith("regexp") ||
-              att.startsWith("codon") )
+              att.startsWith("codon")   || att.startsWith("dirlist") )
       {
 
         if( (type.startsWith("opt") || type.startsWith("req"))

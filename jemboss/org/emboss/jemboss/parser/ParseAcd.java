@@ -478,7 +478,7 @@ public class ParseAcd
          dataType.startsWith("string")   || dataType.startsWith("seqout") ||
          dataType.startsWith("outfile")  || dataType.startsWith("matrix") ||
          dataType.startsWith("infile")   || dataType.startsWith("regexp") ||
-         dataType.startsWith("codon") )
+         dataType.startsWith("codon")    || dataType.startsWith("dirlist") )
     {
       appF.setGuiHandleNumber(ntextf);
       ntextf++;

@@ -613,7 +613,8 @@ public class BuildJembossForm implements ActionListener
       if ( att.startsWith("datafile")|| att.startsWith("featout")||
            att.startsWith("string")  || att.startsWith("seqout") ||
            att.startsWith("outfile") || att.startsWith("matrix") ||
-           att.startsWith("regexp") || att.startsWith("codon") )
+           att.startsWith("regexp") || att.startsWith("codon") ||
+           att.startsWith("dirlist") )
       {
         if(!(textf[h].getText()).equals("") && textf[h].isVisible()
                                             && textf[h].isEnabled()) 
