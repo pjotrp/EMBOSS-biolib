@@ -11869,8 +11869,8 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI globins.showalign
 FZ = 2235
-FP /^HBB_HUMAN  --------VHLTPEEKS\.VTALWGKVN-VDEV\.GEALG\.-\.LVVY\.WTqR\.\.ES\.GD\.\.T\n/
-FP /^Consensus  xxxxxxxxxxxxxxxxxAxxxxxxxxxxxxxxGxxxxxRxLxxxxPxxLxFFxxFxxLSx\n/
+FP /^HBB_HUMAN  --------VHLTPE\.K\.AVTALWG\.VN-VD\.V\.GEA\.GR-LLVvY\.WTQR\.\.ES\.GD\.ST\n/
+FP /^Consensus  xxxxxxxxxxxxxxExSxxxxxxxKxxxxxExGxxxLxxxxxxIxPxxxxFFxxFxxLxx\n/
 //
 
 ID showalign-ex2
