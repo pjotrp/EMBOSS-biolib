@@ -1,108 +1,128 @@
-appl: erestml [
-    doc: "Restriction site Maximum Likelihood method"
-    group: "phylip"
-   ]
+application: erestml [
+  documentation: "Restriction site Maximum Likelihood method"
+  groups: "phylip"
+]
 
-infile: datafile [ 
-         param: Y 
-	 info: "Input file" ]
+infile: datafile  [
+  parameter: "Y"
+  information: "Input file"
+]
 
-outfile: outfile [ 
-         param: Y
-         def: "erestml.outfile" ]
+outfile: outfile  [
+  parameter: "Y"
+  default: "erestml.outfile"
+]
 
-bool: besttree [
-      opt: Y
-      def: Y
-      info: "Search for best tree" ]
+boolean: besttree  [
+  optional: "Y"
+  default: "Y"
+  information: "Search for best tree"
+]
 
-bool: allsites [
-      opt: Y 
-      def: Y
-      info: "Are all sites detected" ]
+boolean: allsites  [
+  optional: "Y"
+  default: "Y"
+  information: "Are all sites detected"
+]
 
-bool: lengths [
-      opt: "@(!$(besttree))"
-      def: N
-      info: "Use lengths from user trees" ]
+boolean: lengths  [
+  optional: "@(!$(besttree))"
+  default: "N"
+  information: "Use lengths from user trees"
+]
 
-int: sitelen [
-     opt : Y
-     def: 6
-     min: 1
-     max: 8
-     info: "Site length" ]
+integer: sitelen  [
+  optional: "Y"
+  default: "6"
+  minimum: "1"
+  maximum: "8"
+  information: "Site length"
+]
 
-float: extrap [
-       opt: Y
-       def: 100.0
-       min: 0.001
-       info: "Extrapolation factor" ]
+float: extrap  [
+  optional: "Y"
+  default: "100.0"
+  minimum: "0.001"
+  information: "Extrapolation factor"
+]
 
-bool: global [
-      opt: "$(besttree)" 
-      def: N
-      info: "Global rearrangements" ]
+boolean: global  [
+  optional: "$(besttree)"
+  default: "N"
+  information: "Global rearrangements"
+]
 
-bool: random [ 
-      req: "$(besttree)"
-      def: N 
-      info: "Randomize input order of species" ]
+boolean: random  [
+  required: "$(besttree)"
+  default: "N"
+  information: "Randomize input order of species"
+]
 
-int: randseed [ 
-     req: "$(random)" 
-     def: 3
-     info: "Random number seed (must be odd)" ]
+integer: randseed  [
+  required: "$(random)"
+  default: "3"
+  information: "Random number seed (must be odd)"
+]
 
-int: randtimes [ 
-     req: "$(random)" 
-     def: 3
-     info: "How many times to randomise" ]
+integer: randtimes  [
+  required: "$(random)"
+  default: "3"
+  information: "How many times to randomise"
+]
 
-bool: og [ 
-      opt: Y 
-      info: "Outgroup root" 
-      def: N ]
+boolean: og  [
+  optional: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
 
-int: outgnum [ 
-     req: "$(og)"
-     min: 1 
-     def: 1
-     info: "number of the outgroup" ]
+integer: outgnum  [
+  required: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "number of the outgroup"
+]
 
-bool:  multsets [ 
-       opt: Y 
-       def: N 
-       info: "Analyze multiple data sets" ]
+boolean: multsets  [
+  optional: "Y"
+  default: "N"
+  information: "Analyze multiple data sets"
+]
 
-int: datasets [
-     req: "$(multsets)"
-     min: 2
-     def: 2
-     info: "number of sets" ]
+integer: datasets  [
+  required: "$(multsets)"
+  minimum: "2"
+  default: "2"
+  information: "number of sets"
+]
 
-bool: printdata [ 
-      opt: Y 
-      def: N 
-      info: "Print out the data at start of run" ]
+boolean: printdata  [
+  optional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
 
-bool: progress [ 
-      opt: Y 
-      def: N 
-      info: "Print indications of progress of run" ]
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
 
-bool: drawtree [ 
-      opt: Y 
-      def: Y
-      information: "Draw tree" ]
+boolean: drawtree  [
+  optional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
 
-bool: trout [ 
-      param: Y 
-      def: Y
-      information: "Create a tree file" ]
+boolean: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
 
-outfile: treefile [
-          req: "$(trout)" 
-          def: "erestml.treefile"
-          info: "Tree file name" 
-          prompt: "Output treefile name" ]
+outfile: treefile  [
+  required: "$(trout)"
+  default: "erestml.treefile"
+  information: "Tree file name"
+  prompt: "Output treefile name"
+]

@@ -1,52 +1,69 @@
-appl: freak [
+application: freak [
   documentation: "Residue/base frequency table or plot"
   groups: "Nucleic:Composition, Protein:Composition"
 ]
 
-section: input [ info: "input Section" type: page ]
-seqall: seqall  [
-  parameter: "Y"
-  type: "any"
+section: input [
+  information: "input Section"
+  type: "page"
 ]
+
+  seqall: seqall  [
+    parameter: "Y"
+    type: "any"
+  ]
 
 endsection: input
 
-section: required [ info: "required Section" type: page ]
-string: letters  [
-  required: "Y"
-  default: "gc"
-  information: "Residue letters"
+section: required [
+  information: "required Section"
+  type: "page"
 ]
+
+  string: letters  [
+    required: "Y"
+    default: "gc"
+    information: "Residue letters"
+  ]
 
 endsection: required
 
-section: advanced [ info: "advanced Section" type: page ]
-integer: step  [
-  optional: "Y"
-  default: "1"
-  information: "Stepping value"
+section: advanced [
+  information: "advanced Section"
+  type: "page"
 ]
 
-integer: window  [
-  optional: "Y"
-  default: "30"
-  information: "Averaging window"
-]
+  integer: step  [
+    optional: "Y"
+    default: "1"
+    information: "Stepping value"
+  ]
+
+  integer: window  [
+    optional: "Y"
+    default: "30"
+    information: "Averaging window"
+  ]
 
 endsection: advanced
 
-section: output [ info: "output Section" type: page ]
-bool: plot  [
-  optional: "N"
-  default: "N"
-  information: "Produce graphic"
+section: output [
+  information: "output Section"
+  type: "page"
 ]
 
-xygraph: graph  [
-  required: "$(plot)"
-]
+  boolean: plot  [
+    optional: "N"
+    default: "N"
+    information: "Produce graphic"
+  ]
 
-outfile: outfile  [
-  required: "@(!$(plot))"
-]
+  xygraph: graph  [
+    required: "$(plot)"
+  ]
+
+  outfile: outfile  [
+    required: "@(!$(plot))"
+  ]
+
 endsection: output

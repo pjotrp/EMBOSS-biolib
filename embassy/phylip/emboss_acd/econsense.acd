@@ -1,62 +1,69 @@
-appl: econsense [
-    doc: "Majority-rule and strict consensus tree"
-    group: "phylip"
-   ]
+application: econsense [
+  documentation: "Majority-rule and strict consensus tree"
+  groups: "phylip"
+]
 
-infile: infile [ 
-        param: Y 
-	info: "file to read in (New Hampshire standard form)"
-	prompt: "input file" ]
+infile: infile  [
+  parameter: "Y"
+  information: "file to read in (New Hampshire standard form)"
+  prompt: "input file"
+]
 
+outfile: outfile  [
+  parameter: "Y"
+  default: "econsense.outfile"
+]
 
-outfile: outfile [ 
-         param: Y
-	 def: "econsense.outfile" ]
+boolean: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
 
-bool: trout [ 
-      param: Y 
-      def: Y
-      information: "Create a tree file" ]
+boolean: drawtree  [
+  optional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
 
-bool: drawtree [ 
-      opt: Y 
-      def: Y
-      information: "Draw tree" ]
+outfile: treefile  [
+  parameter: "Y"
+  default: "econsense.treefile"
+  information: "tree file name"
+  prompt: "tree file"
+]
 
-outfile: treefile [
-         param: Y
-	 def: "econsense.treefile"
-	 info: "tree file name"
-	 prompt: "tree file" ]
+boolean: root  [
+  optional: "Y"
+  default: "N"
+  information: "Trees to be treated as Rooted"
+  prompt: "Trees to be treated as Rooted"
+]
 
-bool: root [
-      opt: Y
-      def: N
-      info: "Trees to be treated as Rooted"
-      prompt: "Trees to be treated as Rooted" ]
-      
-bool: og [ 
-      req: "$(root)" 
-      info: "Outgroup root" 
-      def: N ]
+boolean: og  [
+  required: "$(root)"
+  information: "Outgroup root"
+  default: "N"
+]
 
-int: outgnum [ 
-     req: "$(og)" 
-     min: 1
-     def: 1
-#     max: "@($(msf.count))"  
-     info: "number of the outgroup" 
-     prompt: "number of the outgroup" ]
+integer: outgnum  [
+  required: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "number of the outgroup"
+  prompt: "number of the outgroup"
+]
 
-bool: progress [ 
-      opt: Y 
-      def: N 
-      info: "Print indications of progress of run" 
-      prompt: "Print indications of progress of run" ]
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+  prompt: "Print indications of progress of run"
+]
 
-bool: printsets [
-      opt: Y
-      def: Y
-      info: "Print out the sets of species"
-      prompt: "Print out the sets of species" ]
-
+boolean: printsets  [
+  optional: "Y"
+  default: "Y"
+  information: "Print out the sets of species"
+  prompt: "Print out the sets of species"
+]

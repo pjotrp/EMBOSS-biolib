@@ -1,25 +1,33 @@
-appl: seqretset [
-  documentation: "Reads and writes (returns) a set of sequences all at once"
+application: seqretset [
+  documentation: "Reads and writes (returns) a set of
+                  sequences all at once"
   groups: "Edit"
 ]
 
-section: input [ info: "input Section" type: page ]
-bool: feature  [
-  information: "Use feature information"
+section: input [
+  information: "input Section"
+  type: "page"
 ]
 
-seqset: sequence  [
-  parameter: "Y"
-  features: "$(feature)"
-]
+  boolean: feature  [
+    information: "Use feature information"
+  ]
+
+  seqset: sequence  [
+    parameter: "Y"
+    features: "$(feature)"
+  ]
 
 endsection: input
 
-section: output [ info: "output Section" type: page ]
-seqoutset: outseq  [
-  parameter: "Y"
-  features: "$(feature)"
+section: output [
+  information: "output Section"
+  type: "page"
 ]
 
-endsection: output
+  seqoutset: outseq  [
+    parameter: "Y"
+    features: "$(feature)"
+  ]
 
+endsection: output

@@ -1,5 +1,6 @@
-appl: demoreport [
-  documentation: "Reads a sequence and feature table, writes a report"
+application: demoreport [
+  documentation: "Reads a sequence and feature table, writes
+                  a report"
   groups: "Test"
 ]
 

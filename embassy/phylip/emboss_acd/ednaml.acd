@@ -1,163 +1,172 @@
-appl: ednaml [
-    doc: "Estimates phylogenies from nucleic acid sequence Maximum Likelihood"
-    group: "phylip"
-    gui: yes
-    batch: yes
-    cpu: high
-   ]
-
-seqset: msf [ 
-        param: Y
-        type: gapany
-        prompt: "Sequences file to be read in"
-        help: "File containing a sequence allignment" ]
-
-outfile: outfile [ 
-         param: Y
-         def: "ednaml.outfile" ]
-
-bool: besttree [
-      opt: Y
-      def: Y
-      info: "Search for best tree" ]
-
-bool: lengths [
-      req: @(!$(besttree))
-      def: N
-      info: "Use lengths from user trees" ]
-
-bool: global [
-      req: "$(besttree)"
-      def: N
-      info: "Global rearrangements" ]
-
-bool: random [ 
-      req: "$(besttree)"
-      def: N 
-      info: "Randomize input order of species" ]
-
-int: randseed [ 
-     req: "$(random)" 
-     def: 3
-     info: "Random number seed (must be odd)" ]
-
-int: randtimes [ 
-     req: "$(random)" 
-     def: 3
-     info: "How many times to randomise" ]
-
-float: ttratio [
-       opt: Y
-       def: 2.0
-       info: "Transition/transversion ratio"
-       prompt: "Transition/transversion ratio"]
-
-bool: basefrequency [ 
-      opt: Y 
-      def: Y
-      prompt: "Use empirical base frequencies" ]
-
-float: freqa [ 
-       req: @(!$(basefrequency)) 
-       min: 0.0 
-       max: 1.0 
-       def: 0.25
-       prompt: "Frequency for A" ]
-
-float: freqc [
-        req: @(!$(basefrequency)) 
-       min: 0.0 
-       max: 1.0 
-       def: 0.25
-       prompt: "Frequency for C" ]
-
-float: freqg [ 
-       req: @(!$(basefrequency)) 
-       min: 0.0 
-       max: 1.0 
-       def: 0.25
-       prompt: "Frequency for G" ]
-
-float: freqt [ 
-       req: @(!$(basefrequency)) 
-       min: 0.0 
-       max: 1.0 
-       def: 0.25
-       prompt: "Frequency for T/U" ]
-
-bool: categories [ 
-     opt: Y  
-     def: N
-     prompt: "More then one category of substitution rates" ]
-
-int: catnum [ 
-     req: "$(categories)"
-     min: 2  
-     max: 9
-     def: 2
-     prompt: "Number of categories of substitution rates" ]
-
-
-string: catvals [
-	req: "$(categories)"
-	prompt: "space seperated category values"]
-
-string: catprob [
-	req: "$(categories)"
-	prompt: "space seperated probabillity values"]
-
-
-
-bool: autog [
-       req: "$(categories)"
-       def: N
-       prompt: "Use Defualt Mean block length of sites"
+application: ednaml [
+  documentation: "Estimates phylogenies from nucleic acid
+                  sequence Maximum Likelihood"
+  groups: "phylip"
+  gui: "yes"
+  batch: "yes"
+  cpu: "high"
 ]
 
-float: lambda [
-       req: @(!$(autog))
-       min: 1.0
-       def: 1.0
-       info: "Mean block length of sites having the same rate (greater than 1)" ]
-       
-bool: og [ 
-      opt: Y 
-      info: "Outgroup root" 
-      def: N ]
+seqset: msf  [
+  parameter: "Y"
+  type: "gapany"
+  prompt: "Sequences file to be read in"
+  help: "File containing a sequence allignment"
+]
 
-int: outgnum [ 
-     req: "$(og)"
-     min: 1 
-     def: 1
-     info: "number of the outgroup" ]
+outfile: outfile  [
+  parameter: "Y"
+  default: "ednaml.outfile"
+]
 
-#bool:  multsets [ 
-#       opt: Y 
-#       def: N 
-#       info: "Analyze multiple data sets" ]
+boolean: besttree  [
+  optional: "Y"
+  default: "Y"
+  information: "Search for best tree"
+]
 
-bool: printdata [ 
-      opt: Y 
-      def: N 
-      info: "Print out the data at start of run" ]
+boolean: lengths  [
+  required: "@(!$(besttree))"
+  default: "N"
+  information: "Use lengths from user trees"
+]
 
-bool: progress [ 
-      opt: Y 
-      def: N 
-      info: "Print indications of progress of run" ]
+boolean: global  [
+  required: "$(besttree)"
+  default: "N"
+  information: "Global rearrangements"
+]
 
-bool: drawtree [ 
-      opt: Y 
-      def: Y
-      information: "Draw tree" ]
+boolean: random  [
+  required: "$(besttree)"
+  default: "N"
+  information: "Randomize input order of species"
+]
 
-bool: trout [ 
-      param: Y 
-      def: Y
-      information: "Create a tree file" ]
+integer: randseed  [
+  required: "$(random)"
+  default: "3"
+  information: "Random number seed (must be odd)"
+]
 
-outfile: treefile [
-          req: "$(trout)" 
-          def: "ednaml.treefile"
-          info: "Tree file name" 
-          prompt: "Output treefile name" ]
+integer: randtimes  [
+  required: "$(random)"
+  default: "3"
+  information: "How many times to randomise"
+]
+
+float: ttratio  [
+  optional: "Y"
+  default: "2.0"
+  information: "Transition/transversion ratio"
+  prompt: "Transition/transversion ratio"] bool: basefrequency [
+           opt: Y def: Y prompt: "Use empirical base frequencies"
+]
+
+float: freqa  [
+  required: "@(!$(basefrequency))"
+  minimum: "0.0"
+  maximum: "1.0"
+  default: "0.25"
+  prompt: "Frequency for A"
+]
+
+float: freqc  [
+  required: "@(!$(basefrequency))"
+  minimum: "0.0"
+  maximum: "1.0"
+  default: "0.25"
+  prompt: "Frequency for C"
+]
+
+float: freqg  [
+  required: "@(!$(basefrequency))"
+  minimum: "0.0"
+  maximum: "1.0"
+  default: "0.25"
+  prompt: "Frequency for G"
+]
+
+float: freqt  [
+  required: "@(!$(basefrequency))"
+  minimum: "0.0"
+  maximum: "1.0"
+  default: "0.25"
+  prompt: "Frequency for T/U"
+]
+
+boolean: categories  [
+  optional: "Y"
+  default: "N"
+  prompt: "More then one category of substitution rates"
+]
+
+integer: catnum  [
+  required: "$(categories)"
+  minimum: "2"
+  maximum: "9"
+  default: "2"
+  prompt: "Number of categories of substitution rates"
+]
+
+string: catvals  [
+  required: "$(categories)"
+  prompt: "space seperated category values"] string: catprob [ req:
+           "$(categories)"
+  prompt: "space seperated probabillity values"] bool: autog [ req:
+           "$(categories)"
+  default: "N"
+  prompt: "Use Defualt Mean block length of sites"
+]
+
+float: lambda  [
+  required: "@(!$(autog))"
+  minimum: "1.0"
+  default: "1.0"
+  information: "Mean block length of sites having the same rate
+                (greater than 1)"
+]
+
+boolean: og  [
+  optional: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum  [
+  required: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "number of the outgroup"
+]
+
+boolean: printdata  [
+  optional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+boolean: drawtree  [
+  optional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
+
+boolean: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
+
+outfile: treefile  [
+  required: "$(trout)"
+  default: "ednaml.treefile"
+  information: "Tree file name"
+  prompt: "Output treefile name"
+]

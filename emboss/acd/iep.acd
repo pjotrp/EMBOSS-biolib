@@ -1,58 +1,71 @@
-appl: iep [
-  documentation: "Calculates the isoelectric point of a protein"
+application: iep [
+  documentation: "Calculates the isoelectric point of a
+                  protein"
   groups: "Protein:Composition"
 ]
 
-section: input [ info: "input Section" type: page ]
-seqall: sequencea  [
-  parameter: "Y"
-  type: "pureprotein"
+section: input [
+  information: "input Section"
+  type: "page"
 ]
+
+  seqall: sequencea  [
+    parameter: "Y"
+    type: "pureprotein"
+  ]
 
 endsection: input
 
-section: advanced [ info: "advanced Section" type: page ]
-float: step  [
-  required: "N"
-  information: "pH step value"
-  minimum: ".01"
-  maximum: "1."
-  default: ".5"
+section: advanced [
+  information: "advanced Section"
+  type: "page"
 ]
 
-integer: amino  [
-  required: "N"
-  information: "Number of N-termini"
-  default: "1"
-]
+  float: step  [
+    required: "N"
+    information: "pH step value"
+    minimum: ".01"
+    maximum: "1."
+    default: ".5"
+  ]
 
-bool: termini  [
-  required: "N"
-  default: "Y"
-  information: "Include charge at N and C terminus"
-]
+  integer: amino  [
+    required: "N"
+    information: "Number of N-termini"
+    default: "1"
+  ]
+
+  boolean: termini  [
+    required: "N"
+    default: "Y"
+    information: "Include charge at N and C terminus"
+  ]
 
 endsection: advanced
 
-section: output [ info: "output Section" type: page ]
-bool: plot  [
-  required: "N"
-  default: "N"
-  information: "Plot charge vs pH"
+section: output [
+  information: "output Section"
+  type: "page"
 ]
 
-bool: report  [
-  required: "N"
-  default: "Y"
-  information: "Write results to a file"
-]
+  boolean: plot  [
+    required: "N"
+    default: "N"
+    information: "Plot charge vs pH"
+  ]
 
-xygraph: graph  [
-  required: "$(plot)"
-]
+  boolean: report  [
+    required: "N"
+    default: "Y"
+    information: "Write results to a file"
+  ]
 
-outfile: outfile  [
-  required: "$(report)"
-]
+  xygraph: graph  [
+    required: "$(plot)"
+  ]
+
+  outfile: outfile  [
+    required: "$(report)"
+  ]
 
 endsection: output

@@ -1,101 +1,118 @@
-appl: econtml [
-    doc: "Continuous character Maximum Likelihood method"
-    group: "phylip"
-    gui: yes
-    batch: yes
-    cpu: high
-   ]
+application: econtml [
+  documentation: "Continuous character Maximum Likelihood
+                  method"
+  groups: "phylip"
+  gui: "yes"
+  batch: "yes"
+  cpu: "high"
+]
 
-infile: infile [ 
-        param: Y 
-	info: "input file"
-	prompt: "input file" ]
+infile: infile  [
+  parameter: "Y"
+  information: "input file"
+  prompt: "input file"
+]
 
+outfile: outfile  [
+  parameter: "Y"
+  default: "econtml.outfile"
+]
 
-outfile: outfile [ 
-         param: Y
-	 def: "econtml.outfile" ]
+boolean: besttree  [
+  optional: "Y"
+  default: "Y"
+  information: "Search for best tree"
+]
 
-bool: besttree [
-      opt: Y
-      def: Y
-      info: "Search for best tree" ]
+boolean: lengths  [
+  required: "@(!$(besttree))"
+  default: "N"
+  information: "Use lengths from user trees"
+]
 
-bool: lengths [
-      req: @(!$(besttree))
-      def: N
-      info: "Use lengths from user trees" ]
+boolean: global  [
+  required: "$(besttree)"
+  default: "N"
+  information: "Global rearrangements"
+]
 
-bool: global [
-      req: "$(besttree)"
-      def: N
-      info: "Global rearrangements" ]
+boolean: random  [
+  required: "$(besttree)"
+  default: "N"
+  information: "Randomize input order of species"
+]
 
-bool: random [ 
-      req: "$(besttree)"
-      def: N 
-      info: "Randomize input order of species" ]
+integer: randseed  [
+  required: "$(random)"
+  default: "3"
+  information: "Random number seed (must be odd)"
+]
 
-int: randseed [ 
-     req: "$(random)" 
-     def: 3
-     info: "Random number seed (must be odd)" ]
+boolean: continuous  [
+  optional: "Y"
+  default: "N"
+  information: "continuous characters (else Gene frequencies)"
+]
 
-bool: continuous [ 
-      opt: Y 
-      def: N
-      information: "continuous characters (else Gene frequencies)" ]
+boolean: all  [
+  required: "@(!$(continuous))"
+  default: "N"
+  information: "Input file has all alleles at each locus"
+]
 
-bool: all [
-      req: @(!$(continuous))     
-      def: N
-      information: "Input file has all alleles at each locus" ]
+boolean: og  [
+  optional: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
 
-bool: og [ 
-      opt: Y 
-      info: "Outgroup root" 
-      def: N ]
+integer: outgnum  [
+  required: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "number of the outgroup"
+]
 
-int: outgnum [ 
-     req: "$(og)"
-     min: 1 
-     def: 1
-     info: "number of the outgroup" ]
+boolean: multsets  [
+  optional: "Y"
+  default: "N"
+  information: "Analyze multiple data sets"
+]
 
-bool:  multsets [ 
-       opt: Y 
-       def: N 
-       info: "Analyze multiple data sets" ]
+integer: datasets  [
+  required: "$(multsets)"
+  minimum: "1"
+  default: "1"
+  information: "How many data sets"
+]
 
-int: datasets [ 
-     req: "$(multsets)"
-     min: 1
-     def: 1 
-     info: "How many data sets" ]
+boolean: printdata  [
+  optional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
 
-bool: printdata [ 
-      opt: Y 
-      def: N 
-      info: "Print out the data at start of run" ]
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
 
-bool: progress [ 
-      opt: Y 
-      def: N 
-      info: "Print indications of progress of run" ]
+boolean: drawtree  [
+  optional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
 
-bool: drawtree [ 
-      opt: Y 
-      def: Y
-      information: "Draw tree" ]
+boolean: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
 
-bool: trout [ 
-      param: Y 
-      def: Y
-      information: "Create a tree file" ]
-
-outfile: treefile [
-          req: "$(trout)" 
-	  def: "econtml.treefile"
-          info: "Tree file name" 
-          prompt: "Output treefile name" ]
-
+outfile: treefile  [
+  required: "$(trout)"
+  default: "econtml.treefile"
+  information: "Tree file name"
+  prompt: "Output treefile name"
+]

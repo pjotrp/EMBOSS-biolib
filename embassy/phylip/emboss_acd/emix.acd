@@ -1,118 +1,133 @@
-appl: emix [
-    doc: "Mixed parsimony algorithm"
-    group: "phylip"
-   ]
-
-infile: infile [
-	param: Y
-	prompt: "data file" ]
-
-outfile: outfile [ 
-         param: Y
-         def: "emix.outfile" ]
-
-bool: besttree [
-      param: Y
-      def: Y
-      info: "Search for best tree" ]
-
-list: method [ req: y min: 1 max: 1
-    header: "Method"
-    values: "Wag:Wagner;
-             Cam:Camin-Sokal;
-             Mix:Mixed;
-    prompt: "Choose the method to use"
-    def: Wag
+application: emix [
+  documentation: "Mixed parsimony algorithm"
+  groups: "phylip"
 ]
 
-bool: random [ 
-      opt: "$(besttree)" 
-      def: N 
-      info: "Randomize input order of species" ]
+infile: infile  [
+  parameter: "Y"
+  prompt: "data file"
+]
 
-int: randseed [ 
-     req: "$(random)" 
-     info: "Random number seed (must be odd)" ]
+outfile: outfile  [
+  parameter: "Y"
+  default: "emix.outfile"
+]
 
-int: randtimes [ 
-     req: "$(random)" 
-     info: "Number of times to jumble" ]
+boolean: besttree  [
+  parameter: "Y"
+  default: "Y"
+  information: "Search for best tree"
+]
 
-#bool: global [ 
-#      opt: "$(besttree)" 
-#      def: N 
-#      info: "Global rearrangements" ]
+list: method  [
+  required: "y"
+  minimum: "1"
+  maximum: "1"
+  header: "Method"
+  values: "Wag:Wagner; Cam:Camin-Sokal; Mix:Mixed; prompt: "Choose
+           the method to use"
+  default: "Wag"
+]
 
-bool: og [ 
-      req: Y 
-      info: "Outgroup root" 
-      def: N ]
+boolean: random  [
+  optional: "$(besttree)"
+  default: "N"
+  information: "Randomize input order of species"
+]
 
-int: outgnum [ 
-     req: "$(og)" 
-     min: 1
-     def: 1
-#     max: "@($(msf.count))"  
-     info: "number of the outgroup" ]
+integer: randseed  [
+  required: "$(random)"
+  information: "Random number seed (must be odd)"
+]
 
-bool: thresh [
-      req: N
-      def: N
-      info: "Use Threshold parsimony" ]
+integer: randtimes  [
+  required: "$(random)"
+  information: "Number of times to jumble"
+]
 
-float: valthresh [
-     req: "$(thresh)"
-     min: 1.0
-     def: 1.0
-     info: "threshold value" ]
+boolean: og  [
+  required: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
 
-bool: ancestral [
-      opt: Y
-      def : N
-      info: "Use ancestral states in input file"
-      prompt: "Use ancestral states in input file" ]
+integer: outgnum  [
+  required: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "number of the outgroup"
+]
 
-bool:  multsets [ 
-       opt: Y 
-       def: N 
-       info: "Analyze multiple data sets" ]
+boolean: thresh  [
+  required: "N"
+  default: "N"
+  information: "Use Threshold parsimony"
+]
 
-int: datasets [ 
-     req: "$(multsets)" 
-     info: "How many data sets" ]
+float: valthresh  [
+  required: "$(thresh)"
+  minimum: "1.0"
+  default: "1.0"
+  information: "threshold value"
+]
 
-bool: printdata [ 
-      opt: Y 
-      def: N 
-      info: "Print out the data at start of run" ]
+boolean: ancestral  [
+  optional: "Y"
+  default: "N"
+  information: "Use ancestral states in input file"
+  prompt: "Use ancestral states in input file"
+]
 
-bool: progress [ 
-      opt: Y 
-      def: N 
-      info: "Print indications of progress of run" ]
+boolean: multsets  [
+  optional: "Y"
+  default: "N"
+  information: "Analyze multiple data sets"
+]
 
-bool: statesatnodes [ 
-      opt: Y 
-      def: N
-      information: "Print states at all nodes of tree" ]
+integer: datasets  [
+  required: "$(multsets)"
+  information: "How many data sets"
+]
 
-bool: steps [ 
-      opt: Y 
-      def: N
-      information: "Print out steps in each character" ]
+boolean: printdata  [
+  optional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
 
-bool: trout [ 
-      param: Y 
-      def: Y
-      information: "Create a tree file" ]
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
 
-bool: drawtree [ 
-      opt: Y 
-      def: Y
-      information: "Draw tree" ]
+boolean: statesatnodes  [
+  optional: "Y"
+  default: "N"
+  information: "Print states at all nodes of tree"
+]
 
-outfile: treefile [
-          req: "$(trout)" 
-          def: "emix.treefile" 
-          info: "Tree file name" 
-          prompt: "Treefile name" ]
+boolean: steps  [
+  optional: "Y"
+  default: "N"
+  information: "Print out steps in each character"
+]
+
+boolean: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
+
+boolean: drawtree  [
+  optional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
+
+outfile: treefile  [
+  required: "$(trout)"
+  default: "emix.treefile"
+  information: "Tree file name"
+  prompt: "Treefile name"
+]

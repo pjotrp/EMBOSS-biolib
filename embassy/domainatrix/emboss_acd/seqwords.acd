@@ -1,38 +1,38 @@
-appl: seqwords [
-  documentation: "Generate file of hits for scop families by searching swissprot with keywords."
+application: seqwords [
+  documentation: "Generate file of hits for scop families by
+                  searching swissprot with keywords."
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"
   cpu: "low"
 ]
 
-
-
-section: input [ info: "input Section" type: page ]
-infile: keyfile  [
-  information: "Name of keywords file (input)"
-  parameter: "Y"
+section: input [
+  information: "input Section"
+  type: "page"
 ]
 
-infile: spfile  [
-  information: "Name of swissprot database (input)"
-  required: "Y"
-]
+  infile: keyfile  [
+    information: "Name of keywords file (input)"
+    parameter: "Y"
+  ]
+
+  infile: spfile  [
+    information: "Name of swissprot database (input)"
+    required: "Y"
+  ]
+
 endsection: input
 
-
-
-
-
-section: output [ info: "output Section" type: page ]
-outfile: outfile  [
-  information: "Name of scop hits file (output)"
-  default: "test.hits"
-  parameter: "Y"
+section: output [
+  information: "output Section"
+  type: "page"
 ]
+
+  outfile: outfile  [
+    information: "Name of scop hits file (output)"
+    default: "test.hits"
+    parameter: "Y"
+  ]
+
 endsection: output
-
-
-
-
-

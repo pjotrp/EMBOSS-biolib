@@ -1,4 +1,4 @@
-appl: demostring [
+application: demostring [
   documentation: "demonstration of the string functions"
   groups: "demo"
 ]

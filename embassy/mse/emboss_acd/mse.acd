@@ -1,14 +1,17 @@
-appl: mse [
-        doc: "Multiple Sequence Editor"
-        groups: "alignment"
-	gui: N
+application: mse [
+  documentation: "Multiple Sequence Editor"
+  groups: "alignment"
+  gui: "N"
 ]
 
-  seqset: msf [ 
-        param: Y 
-        prompt: "Sequences file to be read in"
-        help: "File containing a sequence alignment"
-	type: gapany
-  ]
+seqset: msf  [
+  parameter: "Y"
+  prompt: "Sequences file to be read in"
+  help: "File containing a sequence alignment"
+  type: "gapany"
+]
 
-  string: tmpdir [ req: N def: "/tmp" prompt: "temp directory" ]	
+string: tmpdir  [
+  default: "/tmp"
+  prompt: "temp directory"
+]

@@ -1,4 +1,4 @@
-appl: ajtest [
+application: ajtest [
   documentation: "Test file for ACD parsing"
   groups: "Test"
 ]

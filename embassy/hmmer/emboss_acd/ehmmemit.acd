@@ -1,27 +1,40 @@
-appl: ehmmemit [
-        doc: "Extract HMM sequences"
-        groups: "HMM"
-        gui: yes
-        batch: yes
-        cpu: medium
+application: ehmmemit [
+  documentation: "Extract HMM sequences"
+  groups: "HMM"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
 ]
 
-
-infile: infile [
-	param: Y
+infile: infile  [
+  parameter: "Y"
 ]
 
-bool: selex [ req: N def: N info: "Output in selex format"
+boolean: selex  [
+  required: "N"
+  default: "N"
+  information: "Output in selex format"
 ]
 
-bool: consensus [ req: N def: N info: "Output consensus sequence"
+boolean: consensus  [
+  required: "N"
+  default: "N"
+  information: "Output consensus sequence"
 ]
 
-int: number [ req: N def: 10 info: "Number of sequences to produce"
+integer: number  [
+  required: "N"
+  default: "10"
+  information: "Number of sequences to produce"
 ]
 
-int: seed [ req: N def: 0 min: 0 info: "Random seed"
+integer: seed  [
+  required: "N"
+  default: "0"
+  minimum: "0"
+  information: "Random seed"
 ]
 
-outfile: outfile [ param: Y
+outfile: outfile  [
+  parameter: "Y"
 ]

@@ -1,4 +1,4 @@
-appl: demolist [
+application: demolist [
   documentation: "demonstration of the list functions"
   groups: "Test"
 ]

@@ -1,115 +1,137 @@
-appl: efitch [
-    doc: "Fitch-Margoliash and Least-Squares Distance Methods"
-    group: "phylip"
-    gui: yes
-    batch: yes
-    cpu: high
-   ]
+application: efitch [
+  documentation: "Fitch-Margoliash and Least-Squares Distance
+                  Methods"
+  groups: "phylip"
+  gui: "yes"
+  batch: "yes"
+  cpu: "high"
+]
 
-infile: infile [
-	param: Y
-	prompt: "data file" ]
+infile: infile  [
+  parameter: "Y"
+  prompt: "data file"
+]
 
-outfile: outfile [ 
-         param: Y
-         def: "efitch.outfile" ]
+outfile: outfile  [
+  parameter: "Y"
+  default: "efitch.outfile"
+]
 
-bool: besttree [
-      param: Y
-      def: Y
-      info: "Search for best tree" ]
+boolean: besttree  [
+  parameter: "Y"
+  default: "Y"
+  information: "Search for best tree"
+]
 
-bool: length [
-     opt: @(!$(besttree))
-     def: N
-     info: "Use lengths from user trees" ]
+boolean: length  [
+  optional: "@(!$(besttree))"
+  default: "N"
+  information: "Use lengths from user trees"
+]
 
-float: power [
-     opt: Y
-     def: 3.0
-     info: "Power" ]
+float: power  [
+  optional: "Y"
+  default: "3.0"
+  information: "Power"
+]
 
-bool: negbranch [
-      opt: Y
-      def: N
-      info: "Negative branch lengths allowed" ]
+boolean: negbranch  [
+  optional: "Y"
+  default: "N"
+  information: "Negative branch lengths allowed"
+]
 
-bool: random [ 
-      opt: "$(besttree)" 
-      def: N 
-      info: "Randomize input order of species" ]
+boolean: random  [
+  optional: "$(besttree)"
+  default: "N"
+  information: "Randomize input order of species"
+]
 
-int: randseed [ 
-     req: "$(random)" 
-     info: "Random number seed (must be odd)" ]
+integer: randseed  [
+  required: "$(random)"
+  information: "Random number seed (must be odd)"
+]
 
-int: randtimes [ 
-     req: "$(random)" 
-     info: "Number of times to jumble" ]
+integer: randtimes  [
+  required: "$(random)"
+  information: "Number of times to jumble"
+]
 
-bool: global [ 
-      opt: "$(besttree)" 
-      def: N 
-      info: "Global rearrangements" ]
+boolean: global  [
+  optional: "$(besttree)"
+  default: "N"
+  information: "Global rearrangements"
+]
 
-bool: og [ 
-      req: Y 
-      info: "Outgroup root" 
-      def: N ]
+boolean: og  [
+  required: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
 
-int: outgnum [ 
-     req: "$(og)" 
-     min: 1
-     def: 1
-#     max: "@($(msf.count))"  
-     info: "number of the outgroup" ]
+integer: outgnum  [
+  required: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "number of the outgroup"
+]
 
-bool: lt [ 
-      opt: Y 
-      def: N 
-      info: "Lower-triangular data matrix"       ]
+boolean: lt  [
+  optional: "Y"
+  default: "N"
+  information: "Lower-triangular data matrix"
+]
 
-bool: ut [ 
-      opt: Y 
-      def: N 
-      info: "Upper-triangular data matrix" ]
+boolean: ut  [
+  optional: "Y"
+  default: "N"
+  information: "Upper-triangular data matrix"
+]
 
-bool: replicates [ 
-      opt: Y 
-      def: N 
-      info: "Subreplicates" ]
+boolean: replicates  [
+  optional: "Y"
+  default: "N"
+  information: "Subreplicates"
+]
 
-bool:  multsets [ 
-       opt: Y 
-       def: N 
-       info: "Analyze multiple data sets" ]
+boolean: multsets  [
+  optional: "Y"
+  default: "N"
+  information: "Analyze multiple data sets"
+]
 
-int: datasets [ 
-     req: "$(multsets)" 
-     info: "How many data sets" ]
+integer: datasets  [
+  required: "$(multsets)"
+  information: "How many data sets"
+]
 
-bool: printdata [ 
-      opt: Y 
-      def: N 
-      info: "Print out the data at start of run" ]
+boolean: printdata  [
+  optional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
 
-bool: progress [ 
-      opt: Y 
-      def: N 
-      info: "Print indications of progress of run" ]
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
 
-bool: trout [ 
-      param: Y 
-      def: Y
-      information: "Create a tree file" ]
+boolean: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
 
-bool: drawtree [ 
-      opt: Y 
-      def: Y
-      information: "Draw tree" ]
+boolean: drawtree  [
+  optional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
 
-outfile: treefile [
-          req: "$(trout)" 
-          ext: "treefile" 
-          info: "Tree file name" 
-          prompt: "Treefile name" ]
+outfile: treefile  [
+  required: "$(trout)"
+  extension: "treefile"
+  information: "Tree file name"
+  prompt: "Treefile name"
+]

@@ -1,101 +1,119 @@
-appl: edollop [
-    doc: "Dollo and polymorphism parsimony algorithm"
-    group: "phylip"
-   ]
+application: edollop [
+  documentation: "Dollo and polymorphism parsimony algorithm"
+  groups: "phylip"
+]
 
-infile: datafile [ 
-         param: Y
-	 info: "data file to be read in" ]
+infile: datafile  [
+  parameter: "Y"
+  information: "data file to be read in"
+]
 
-outfile: outfile [ 
-         param: Y
-         def: "edollop.outfile" ]
+outfile: outfile  [
+  parameter: "Y"
+  default: "edollop.outfile"
+]
 
+boolean: besttree  [
+  optional: "Y"
+  default: "Y"
+  information: "Search for best tree"
+]
 
-bool: besttree [
-      opt: Y
-      def: Y
-      info: "Search for best tree" ]
+boolean: random  [
+  optional: "$(besttree)"
+  default: "N"
+  information: "Randomize input order of species"
+]
 
-bool: random [ 
-      opt: "$(besttree)"
-      def: N 
-      info: "Randomize input order of species" ]
+integer: randseed  [
+  required: "$(random)"
+  default: "3"
+  information: "Random number seed (must be odd)"
+]
 
-int: randseed [ 
-     req: "$(random)" 
-     def: 3
-     info: "Random number seed (must be odd)" ]
+integer: randtimes  [
+  required: "$(random)"
+  default: "3"
+  information: "How many times to randomise"
+]
 
-int: randtimes [ 
-     req: "$(random)" 
-     def: 3
-     info: "How many times to randomise" ]
+boolean: dollo  [
+  optional: "Y"
+  default: "Y"
+  information: "Do Dollo (else Polymorphism)"
+]
 
-bool: dollo [
-      opt: Y
-      def: Y
-      info: "Do Dollo (else Polymorphism)" ]
+boolean: thresh  [
+  required: "N"
+  default: "N"
+  information: "Use Threshold parsimony"
+]
 
-bool: thresh [
-      req: N
-      def: N
-      info: "Use Threshold parsimony" ]
+float: valthresh  [
+  required: "$(thresh)"
+  minimum: "1.0"
+  default: "1.0"
+  information: "threshold value"
+]
 
-float: valthresh [
-     req: "$(thresh)"
-     min: 1.0
-     def: 1.0
-     info: "threshold value" ]
+boolean: ancest  [
+  optional: "Y"
+  default: "N"
+  information: "Use ancestral states in input file"
+]
 
-bool: ancest [
-      opt: Y
-      def: N 
-      info: "Use ancestral states in input file" ]
+boolean: multsets  [
+  optional: "Y"
+  default: "N"
+  information: "Analyze multiple data sets"
+]
 
-bool:  multsets [ 
-       opt: Y 
-       def: N 
-       info: "Analyze multiple data sets" ]
+integer: datasets  [
+  required: "$(multsets)"
+  minimum: "2"
+  default: "2"
+  information: "number of sets"
+]
 
-int: datasets [
-     req: "$(multsets)"
-     min: 2
-     def: 2
-     info: "number of sets" ]
+boolean: printdata  [
+  optional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
 
-bool: printdata [ 
-      opt: Y 
-      def: N 
-      info: "Print out the data at start of run" ]
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
 
-bool: progress [ 
-      opt: Y 
-      def: N 
-      info: "Print indications of progress of run" ]
+boolean: steps  [
+  optional: "Y"
+  default: "N"
+  information: "Print out steps in each site"
+]
 
-bool: steps [ 
-      opt: Y 
-      def: N
-      information: "Print out steps in each site" ]
+boolean: statesatnodes  [
+  optional: "Y"
+  default: "N"
+  information: "Print states at all nodes of tree"
+]
 
-bool: statesatnodes [ 
-      opt: Y 
-      def: N
-      information: "Print states at all nodes of tree" ]
+boolean: drawtree  [
+  optional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
 
-bool: drawtree [ 
-      opt: Y 
-      def: Y
-      information: "Draw tree" ]
+boolean: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
 
-bool: trout [ 
-      param: Y 
-      def: Y
-      information: "Create a tree file" ]
-
-outfile: treefile [
-          req: "$(trout)" 
-          def: "edollop.treefile"
-          info: "Tree file name" 
-          prompt: "Output treefile name" ]
+outfile: treefile  [
+  required: "$(trout)"
+  default: "edollop.treefile"
+  information: "Tree file name"
+  prompt: "Output treefile name"
+]

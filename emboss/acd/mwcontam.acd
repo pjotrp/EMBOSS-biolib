@@ -1,31 +1,42 @@
-appl: mwcontam [
-  documentation: "Shows molwts that match across a set of files"
+application: mwcontam [
+  documentation: "Shows molwts that match across a set of
+                  files"
   groups: "Protein:Composition"
 ]
 
-section: input [ info: "input Section" type: page ]
-filelist: files  [
-  parameter: "Y"
-  information: "Comma separated file list"
+section: input [
+  information: "input Section"
+  type: "page"
 ]
+
+  filelist: files  [
+    parameter: "Y"
+    information: "Comma separated file list"
+  ]
 
 endsection: input
 
-section: required [ info: "required Section" type: page ]
-
-float: tolerance  [
-  required: "Y"
-  information: "ppm tolerance"
-  default: "50.0"
+section: required [
+  information: "required Section"
+  type: "page"
 ]
+
+  float: tolerance  [
+    required: "Y"
+    information: "ppm tolerance"
+    default: "50.0"
+  ]
 
 endsection: required
 
-
-section: output [ info: "output Section" type: page ]
-outfile: outfile  [
-  parameter: "Y"
-  extension: "mwcontam"
+section: output [
+  information: "output Section"
+  type: "page"
 ]
-endsection: output
 
+  outfile: outfile  [
+    parameter: "Y"
+    extension: "mwcontam"
+  ]
+
+endsection: output

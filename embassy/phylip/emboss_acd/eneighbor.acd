@@ -1,92 +1,105 @@
-appl: eneighbor [
-    doc: "Phylogenies from distance matrix by N-J or UPGMA method"
-    group: "phylip"
-    gui: yes
-    batch: yes
-    cpu: high
-   ]
+application: eneighbor [
+  documentation: "Phylogenies from distance matrix by N-J or
+                  UPGMA method"
+  groups: "phylip"
+  gui: "yes"
+  batch: "yes"
+  cpu: "high"
+]
 
-infile: infile [ 
-	param: Y ]
+infile: infile  [
+  parameter: "Y"
+]
 
-outfile: outfile [ 
-	 param: Y 
-	 def: "eneighbor.outfile" ]
+outfile: outfile  [
+  parameter: "Y"
+  default: "eneighbor.outfile"
+]
 
-bool: trout [ 
-      param: Y 
-      def: Y
-      information: "Create a tree file" ]
+boolean: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
 
-bool: drawtree [ 
-      opt: Y 
-      def: Y
-      information: "Draw tree" ]
+boolean: drawtree  [
+  optional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
 
-outfile: treefile [
-	  req: "$(trout)" 
-	  def: "eneighbor.treefile" 
-	  info: "Tree file name" 
-	  prompt: "Treefile name" ]
+outfile: treefile  [
+  required: "$(trout)"
+  default: "eneighbor.treefile"
+  information: "Tree file name"
+  prompt: "Treefile name"
+]
 
-bool: nj [ 
-      req: Y 
-      info: "Neighbor-joining" 
-      def: Y]
+boolean: nj  [
+  required: "Y"
+  information: "Neighbor-joining"
+  default: "Y"
+]
 
+boolean: og  [
+  required: "$(nj)"
+  information: "Outgroup root"
+  default: "N"
+]
 
-bool: og [ 
-      req: "$(nj)" 
-      info: "Outgroup root" 
-      def: N ]
+integer: outgnum  [
+  required: "$(og)"
+  information: "number of the outgroup"
+]
 
-int: outgnum [ 
-     req: "$(og)" 
-     info: "number of the outgroup" ]
+boolean: lt  [
+  optional: "Y"
+  default: "N"
+  information: "Lower-triangular data matrix"
+]
 
+boolean: ut  [
+  optional: "Y"
+  default: "N"
+  information: "Upper-triangular data matrix"
+]
 
-bool: lt [ 
-      opt: Y 
-      def: N 
-      info: "Lower-triangular data matrix"       ]
+boolean: sr  [
+  optional: "Y"
+  default: "Y"
+  information: "Subreplicates"
+]
 
-bool: ut [ 
-      opt: Y 
-      def: N 
-      info: "Upper-triangular data matrix" ]
+boolean: random  [
+  optional: "Y"
+  default: "N"
+  information: "Randomize input order of species"
+]
 
-bool: sr [ 
-      opt: Y 
-      def: Y 
-      info: "Subreplicates" ]
+integer: randseed  [
+  required: "$(random)"
+  information: "Random number seed (must be odd)"
+]
 
+boolean: multsets  [
+  optional: "Y"
+  default: "N"
+  information: "Analyze multiple data sets"
+]
 
-bool: random [ 
-      opt: Y 
-      def: N 
-      info: "Randomize input order of species" ]
+integer: datasets  [
+  required: "$(multsets)"
+  information: "How many data sets"
+]
 
-int: randseed [ 
-     req: "$(random)" 
-     info: "Random number seed (must be odd)" ]
+boolean: printdata  [
+  optional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
 
-
-bool:  multsets [ 
-       opt: Y 
-       def: N 
-       info: "Analyze multiple data sets" ]
-
-int: datasets [ 
-     req: "$(multsets)" 
-     info: "How many data sets" ]
-
-bool: printdata [ 
-      opt: Y 
-      def: N 
-      info: "Print out the data at start of run" ]
-
-bool: progress [ 
-      opt: Y 
-      def: N 
-      info: "Print indications of progress of run" ]
-
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]

@@ -1,4 +1,4 @@
-appl: demofeatures [
+application: demofeatures [
   documentation: "demonstration of the feature functions"
   groups: "demo"
 ]
@@ -8,32 +8,34 @@ featout: featout  [
   default: "gff:demofeatures.gff"
   information: "feature file for output"
   help: "File for output of normal tab delimited gff's"
+  type: "any"
 ]
 
-bool: typesort  [
+boolean: typesort  [
   required: "N"
   default: "N"
   prompt: "Do you want to Sort by Type"
   help: "Sort output features by their type"
 ]
 
-bool: startsort  [
+boolean: startsort  [
   required: "N"
   default: "N"
   prompt: "Do you want to Sort by Start position"
   help: "Sort output features by their start position"
 ]
 
-bool: dictionary  [
+boolean: dictionary  [
   required: "N"
   default: "Y"
   prompt: "Read in the Gff Dictionary"
   help: "No will mean no checking of values"
 ]
 
-bool: tracedict  [
+boolean: tracedict  [
   required: "N"
   default: "Y"
   prompt: "Dump out the Dictionary at the end"
-  help: "Useful if you specify nodictionary as newly created one will be produced"
+  help: "Useful if you specify nodictionary as newly created one will
+         be produced"
 ]

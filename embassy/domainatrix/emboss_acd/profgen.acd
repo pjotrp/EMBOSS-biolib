@@ -1,124 +1,127 @@
-appl: profgen [
-  documentation: "Generates various profiles for each alignment in a directory."
+application: profgen [
+  documentation: "Generates various profiles for each
+                  alignment in a directory."
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"
   cpu: "medium"
 ]
 
-
-
-
-
-section: input [ info: "input Section" type: page ]
-string: infpath [
-        param: Y
-        def: "./"
-        information: "Location of scop alignment files (input)"
-	help: "A 'scop family alignment file' contains a sequence alignment of domains belonging to the same scop family.  The file is in embl-like format and is annotated with records describing the SCOP classification of the family.  A scop family alignment file generatd by scopalign will contain a structure-based sequence alignment of domains of known structure only.  Such alignments can be extended with sequence relatives (of unknown structure) to the family in question by using seqalign."
+section: input [
+  information: "input Section"
+  type: "page"
 ]
 
-string: infextn [
-        param: Y
-        def: ".ealign"
-        information: "Extension of scop alignment files"
-]
+  string: infpath  [
+    parameter: "Y"
+    default: "./"
+    information: "Location of scop alignment files (input)"
+    help: "A 'scop family alignment file' contains a sequence
+           alignment of domains belonging to the same scop family. The file
+           is in embl-like format and is annotated with records describing
+           the SCOP classification of the family. A scop family alignment
+           file generatd by scopalign will contain a structure-based sequence
+           alignment of domains of known structure only. Such alignments can
+           be extended with sequence relatives (of unknown structure) to the
+           family in question by using seqalign."
+  ]
+
+  string: infextn  [
+    parameter: "Y"
+    default: ".ealign"
+    information: "Extension of scop alignment files"
+  ]
+
 endsection: input
 
-
-
-
-
-section: required [ info: "required Section" type: page ]
-list: type  [
-  required: "Y"
-  default: "F"
-  minimum: "1"
-  maximum: "1"
-  values: "F:Frequency,G:Gribskov,H:Henikoff"
-  delimiter: ","
-  codedelimiter: ":"
-  header: "Profile type"
-  information: "Select type"
-  button: "Y"
+section: required [
+  information: "required Section"
+  type: "page"
 ]
 
-variable:  dogap "@($(type) != f)"
+  list: type  [
+    required: "Y"
+    default: "F"
+    minimum: "1"
+    maximum: "1"
+    values: "F:Frequency,G:Gribskov,H:Henikoff"
+    delimiter: ","
+    codedelimiter: ":"
+    header: "Profile type"
+    information: "Select type"
+    button: "Y"
+  ]
 
-integer: threshold  [
-  required: "@($(type)==F)"
-  default: "75"
-  minimum: "1"
-  maximum: "100"
-  information: "Enter threshold reporting percentage"
-]
+  variable: dogap "@($(type) != f)"
 
-matrixf: datafile  [
-  required: "@($(type)!=F)"
-  information: "Residue substitution matrix"
-  default: "@($(type) = G: Epprofile H: EBLOSUM62 F: EBLOSUM62)"
-  expected: "'Epprofile' for Gribskov type, or EBLOSUM62"
-]
+  integer: threshold  [
+    required: "@($(type)==F)"
+    default: "75"
+    minimum: "1"
+    maximum: "100"
+    information: "Enter threshold reporting percentage"
+  ]
 
-float: open  [
-  required: "$(dogap)"
-  information: "Gap insertion penalty"
-  default: "3.0"
-]
+  matrixf: datafile  [
+    required: "@($(type)!=F)"
+    information: "Residue substitution matrix"
+    default: "@($(type) = G: Epprofile H: EBLOSUM62 F: EBLOSUM62)"
+    expected: "'Epprofile' for Gribskov type, or EBLOSUM62"
+  ]
 
-float: extension  [
-  required: "$(dogap)"
-  information: "Gap extension penalty"
-  default: "0.3"
-]
+  float: open  [
+    required: "$(dogap)"
+    information: "Gap insertion penalty"
+    default: "3.0"
+  ]
+
+  float: extension  [
+    required: "$(dogap)"
+    information: "Gap extension penalty"
+    default: "0.3"
+  ]
+
 endsection: required
 
-
-
-
-
-section: output [ info: "output Section" type: page ]
-string: smpfpath [
-        req: "@($(type)==F)"
-        def: "./"
-        information: "Location of simple profile files (output)"
+section: output [
+  information: "output Section"
+  type: "page"
 ]
 
-string: smpfextn [
-        req: "@($(type)==F)"
-        def: ".freq"
-        information: "Extention of simple profile files"
-]
+  string: smpfpath  [
+    required: "@($(type)==F)"
+    default: "./"
+    information: "Location of simple profile files (output)"
+  ]
 
-string: gbpfpath [
-        req: "@($(type)==G)"
-        def: "./"
-        information: "Location of Gribskov profile files (output)"
-]
+  string: smpfextn  [
+    required: "@($(type)==F)"
+    default: ".freq"
+    information: "Extention of simple profile files"
+  ]
 
-string: gbpfextn [
-        req: "@($(type)==G)"
-        def: ".gribs"
-        information: "Extension of Gribskov profile files"
-]
+  string: gbpfpath  [
+    required: "@($(type)==G)"
+    default: "./"
+    information: "Location of Gribskov profile files (output)"
+  ]
 
-string: hnpfpath [
-        req: "@($(type)==H)"
-        def: "./"
-        information: "Location of Henikoff profile files (output)"
-]
+  string: gbpfextn  [
+    required: "@($(type)==G)"
+    default: ".gribs"
+    information: "Extension of Gribskov profile files"
+  ]
 
-string: hnpfextn [
-        req: "@($(type)==H)"
-        def: ".henik"
-        information: "Extention of Henikoff profile files"
-]
+  string: hnpfpath  [
+    required: "@($(type)==H)"
+    default: "./"
+    information: "Location of Henikoff profile files (output)"
+  ]
+
+  string: hnpfextn  [
+    required: "@($(type)==H)"
+    default: ".henik"
+    information: "Extention of Henikoff profile files"
+  ]
+
 endsection: output
-
-
-
-
-
-
-
-

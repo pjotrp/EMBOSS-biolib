@@ -1,46 +1,57 @@
-appl: silent [
+application: silent [
   documentation: "Silent mutation restriction enzyme scan"
   groups: "Nucleic:Restriction"
 ]
 
-section: input [ info: "input Section" type: page ]
-sequence: seq  [
-  parameter: "Y"
+section: input [
+  information: "input Section"
+  type: "page"
 ]
+
+  sequence: seq  [
+    parameter: "Y"
+  ]
 
 endsection: input
 
-section: required [ info: "required Section" type: page ]
-string: enzymes  [
-  required: "Y"
-  default: "all"
-  information: "Comma separated enzyme list"
+section: required [
+  information: "required Section"
+  type: "page"
 ]
+
+  string: enzymes  [
+    required: "Y"
+    default: "all"
+    information: "Comma separated enzyme list"
+  ]
 
 endsection: required
 
-section: output [ info: "output Section" type: page ]
-bool: sshow  [
-  required: "N"
-  default: "N"
-  information: "Display untranslated sequence"
+section: output [
+  information: "output Section"
+  type: "page"
 ]
 
-bool: tshow  [
-  required: "N"
-  default: "N"
-  information: "Display translated sequence"
-]
+  boolean: sshow  [
+    required: "N"
+    default: "N"
+    information: "Display untranslated sequence"
+  ]
 
-bool: allmut  [
-  required: "N"
-  default: "N"
-  information: "Display all mutations"
-]
+  boolean: tshow  [
+    required: "N"
+    default: "N"
+    information: "Display translated sequence"
+  ]
 
-outfile: outf  [
-  parameter: "Y"
-]
+  boolean: allmut  [
+    required: "N"
+    default: "N"
+    information: "Display all mutations"
+  ]
+
+  outfile: outf  [
+    parameter: "Y"
+  ]
 
 endsection: output
-

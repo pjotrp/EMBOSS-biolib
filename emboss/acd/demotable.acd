@@ -1,4 +1,4 @@
-appl: demotable [
+application: demotable [
   documentation: "demonstration of the table functions"
   groups: "demo"
 ]

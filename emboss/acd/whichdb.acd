@@ -1,9 +1,9 @@
-appl: whichdb [
+application: whichdb [
   documentation: "Search all databases for an entry"
   groups: "Information"
-  gui: yes
-  batch: yes
-  cpu: low
+  gui: "yes"
+  batch: "yes"
+  cpu: "low"
 ]
 
 string: entry  [
@@ -11,13 +11,13 @@ string: entry  [
   information: "ID or Accession number"
 ]
 
-bool: get  [
+boolean: get  [
   required: "N"
   default: "N"
   information: "Retrieve sequences"
 ]
 
-bool: showall  [
+boolean: showall  [
   required: "N"
   default: "N"
   information: "Show failed attempts"

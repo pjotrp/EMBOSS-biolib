@@ -1,32 +1,46 @@
-appl: findkm [
-  documentation: "Find Km and Vmax for an enzyme reaction by a Hanes/Woolf plot"
+application: findkm [
+  documentation: "Find Km and Vmax for an enzyme reaction by
+                  a Hanes/Woolf plot"
   groups: "Enzyme Kinetics"
 ]
 
-section: input [ info: "input Section" type: page ]
-infile: infile  [
-  parameter: "Y"
-  prompt: "Enter name of file containing data"
+section: input [
+  information: "input Section"
+  type: "page"
 ]
+
+  infile: infile  [
+    parameter: "Y"
+    prompt: "Enter name of file containing data"
+  ]
 
 endsection: input
 
-section: advanced [ info: "advanced Section" type: page ]
-bool: plot  [
-  required: "N"
-  default: "Y"
-  information: "S/V vs S"
+section: advanced [
+  information: "advanced Section"
+  type: "page"
 ]
+
+  boolean: plot  [
+    required: "N"
+    default: "Y"
+    information: "S/V vs S"
+  ]
 
 endsection: advanced
 
-section: output [ info: "output Section" type: page ]
-outfile: outfile  [
-  parameter: "Y"
+section: output [
+  information: "output Section"
+  type: "page"
 ]
 
-xygraph: graphlb  [
-  required: "Y"
-  multiple: "2"
-]
+  outfile: outfile  [
+    parameter: "Y"
+  ]
+
+  xygraph: graphlb  [
+    required: "Y"
+    multiple: "2"
+  ]
+
 endsection: output

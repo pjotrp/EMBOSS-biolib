@@ -1,18 +1,21 @@
-appl: ehmmfetch [
-        doc: "Extract HMM from a database"
-        groups: "HMM"
-        gui: yes
-        batch: yes
-        cpu: medium
+application: ehmmfetch [
+  documentation: "Extract HMM from a database"
+  groups: "HMM"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
 ]
 
-
-
-string: database [ param: Y info: "Database name"
+string: database  [
+  parameter: "Y"
+  information: "Database name"
 ]
 
-string: consensus [ param: Y info: "Entry name"
+string: consensus  [
+  parameter: "Y"
+  information: "Entry name"
 ]
 
-outfile: outfile [ param: Y
+outfile: outfile  [
+  parameter: "Y"
 ]

@@ -1,53 +1,86 @@
-appl: ehmmsearch [
-        doc: "Search sequence database with an HMM"
-        groups: "HMM"
-        gui: yes
-        batch: yes
-        cpu: medium
+application: ehmmsearch [
+  documentation: "Search sequence database with an HMM"
+  groups: "HMM"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
 ]
 
-
-seqall: sequences [
-	param: Y
+seqall: sequences  [
+  parameter: "Y"
 ]
 
-string: hmmfile [
-	param: Y
-	info: "HMM file"
+string: hmmfile  [
+  parameter: "Y"
+  information: "HMM file"
 ]
 
-int: nalign [ req: N def: 100 info: "Number of alignments"
+integer: nalign  [
+  required: "N"
+  default: "100"
+  information: "Number of alignments"
 ]
 
-float: evalue [ req: N def: 10. info: "E-value cutoff"
+float: evalue  [
+  required: "N"
+  default: "10."
+  information: "E-value cutoff"
 ]
 
-float: hitcut [ req: N def: -1000000. info: "Hit score cutoff"
+float: hitcut  [
+  required: "N"
+  default: "-1000000."
+  information: "Hit score cutoff"
 ]
 
-int: dbsize [ req: N def: 59021 info: "Calc E-value for DB size n"
+integer: dbsize  [
+  required: "N"
+  default: "59021"
+  information: "Calc E-value for DB size n"
 ]
 
-int: cpu [ req: N def: 0 info: "Number of CPUs"
+integer: cpu  [
+  required: "N"
+  default: "0"
+  information: "Number of CPUs"
 ]
 
-float: dome [ req: N def: 1000000. info: "E-value domain cutoff"
+float: dome  [
+  required: "N"
+  default: "1000000."
+  information: "E-value domain cutoff"
 ]
 
-float: domt [ req: N def: -1000000. info: "Hit score domain cutoff"
+float: domt  [
+  required: "N"
+  default: "-1000000."
+  information: "Hit score domain cutoff"
 ]
 
-bool: forward [ req: N def: N info: "Use forward algorithm"
+boolean: forward  [
+  required: "N"
+  default: "N"
+  information: "Use forward algorithm"
 ]
 
-bool: nulltwo [ req: N def: N info: "Turn off second null model"
+boolean: nulltwo  [
+  required: "N"
+  default: "N"
+  information: "Turn off second null model"
 ]
 
-bool: pvm [ req: N def: N info: "Use parallel virtual machine"
+boolean: pvm  [
+  required: "N"
+  default: "N"
+  information: "Use parallel virtual machine"
 ]
 
-bool: xnu [ req: N def: N info: "Use XNU filtering"
+boolean: xnu  [
+  required: "N"
+  default: "N"
+  information: "Use XNU filtering"
 ]
 
-outfile: outfile [ param: Y
+outfile: outfile  [
+  parameter: "Y"
 ]

@@ -1,84 +1,88 @@
-appl: ednacomp [
-    doc: "DNA compatibility algorithm"
-    group: "phylip"
-   ]
-
-seqset: msf [ 
-	param: Y
-        type: gapany
-        prompt: "Sequences file to be read in"
-        help: "File containing a sequence allignment"
+application: ednacomp [
+  documentation: "DNA compatibility algorithm"
+  groups: "phylip"
 ]
 
-outfile: outfile [ 
-         param: Y 
-         def: "ednacomp.outfile" ]
+seqset: msf  [
+  parameter: "Y"
+  type: "gapany"
+  prompt: "Sequences file to be read in"
+  help: "File containing a sequence allignment"
+]
 
-# EMBOSS problems reading PHTLIP with USER TREE's in.
-#bool: besttree [ 
-#      param: Y 
-#      def: Y
-#      information: "Search for best tree" ]
+outfile: outfile  [
+  parameter: "Y"
+  default: "ednacomp.outfile"
+]
 
-bool: trout [ 
-      param: Y 
-      def: Y
-      information: "Create a tree file" ]
+boolean: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
 
-bool: drawtree [ 
-      opt: Y 
-      def: Y
-      information: "Draw tree" ]
+boolean: drawtree  [
+  optional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
 
-outfile: treefile [
-          req: "$(trout)" 
-          def: "ednacomp.treefile" 
-          info: "Tree file name" 
-          prompt: "Treefile name" ]
+outfile: treefile  [
+  required: "$(trout)"
+  default: "ednacomp.treefile"
+  information: "Tree file name"
+  prompt: "Treefile name"
+]
 
-bool: og [ 
-      req: Y 
-      info: "Outgroup root" 
-      def: N ]
+boolean: og  [
+  required: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
 
-int: outgnum [ 
-     req: "$(og)" 
-     min: 1
-     def: 1
-#     max: "@($(msf.count))"  
-     info: "number of the outgroup" ]
+integer: outgnum  [
+  required: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "number of the outgroup"
+]
 
-bool: printdata [ 
-      opt: Y 
-      def: N 
-      info: "Print out the data at start of run" ]
+boolean: printdata  [
+  optional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
 
-bool: progress [ 
-      opt: Y 
-      def: N 
-      info: "Print indications of progress of run" ]
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
 
-bool: stepoutput [ 
-      opt: Y 
-      def: N 
-      info: "Print steps & compatibility at sites" ]
+boolean: stepoutput  [
+  optional: "Y"
+  default: "N"
+  information: "Print steps & compatibility at sites"
+]
 
-bool: allnodes [
-      opt: Y 
-      def: N 
-      info: "Print sequences at all nodes of tree" ]
+boolean: allnodes  [
+  optional: "Y"
+  default: "N"
+  information: "Print sequences at all nodes of tree"
+]
 
-bool: random [ 
-      opt: Y 
-      def: N 
-      info: "Randomize input order of species" ]
+boolean: random  [
+  optional: "Y"
+  default: "N"
+  information: "Randomize input order of species"
+]
 
-int: randseed [ 
-     req: "$(random)" 
-     info: "Random number seed (must be odd)" ]
+integer: randseed  [
+  required: "$(random)"
+  information: "Random number seed (must be odd)"
+]
 
-int: randtimes [ 
-     req: "$(random)" 
-     info: "Number of times to jumble" ]
-
-
+integer: randtimes  [
+  required: "$(random)"
+  information: "Number of times to jumble"
+]

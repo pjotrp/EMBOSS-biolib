@@ -1,5 +1,6 @@
-appl: intconv [
-  documentation: "Convert ints to ajints and longs to ajlongs"
+application: intconv [
+  documentation: "Convert ints to ajints and longs to
+                  ajlongs"
   groups: "Test"
 ]
 

@@ -1,24 +1,33 @@
-appl: seqretsingle [
-  documentation: "Reads and writes (returns) a single sequence"
+application: seqretsingle [
+  documentation: "Reads and writes (returns) a single
+                  sequence"
   groups: "Test"
 ]
 
-section: input [ info: "input Section" type: page ]
-bool: feature  [
-  information: "Use feature information"
+section: input [
+  information: "input Section"
+  type: "page"
 ]
 
-sequence: sequence  [
-  parameter: "Y"
-  features: "$(feature)"
-]
+  boolean: feature  [
+    information: "Use feature information"
+  ]
+
+  sequence: sequence  [
+    parameter: "Y"
+    features: "$(feature)"
+  ]
 
 endsection: input
 
-section: output [ info: "output Section" type: page ]
-seqout: outseq  [
-  parameter: "Y"
-  features: "$(feature)"
+section: output [
+  information: "output Section"
+  type: "page"
 ]
+
+  seqout: outseq  [
+    parameter: "Y"
+    features: "$(feature)"
+  ]
 
 endsection: output

@@ -1,42 +1,65 @@
-appl: ehmmcalibrate [
-        doc: "Calibrate a hidden Markov model"
-        groups: "HMM"
-        gui: yes
-        batch: yes
-        cpu: medium
+application: ehmmcalibrate [
+  documentation: "Calibrate a hidden Markov model"
+  groups: "HMM"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
 ]
 
-
-infile: infile [
-	param: Y
+infile: infile  [
+  parameter: "Y"
 ]
 
-
-int: cpu [ req: N def: 0 info: "Number of CPUs"
+integer: cpu  [
+  required: "N"
+  default: "0"
+  information: "Number of CPUs"
 ]
 
-int: fixed [ req: N def:0 min: 0
-    info: "Length fix for random sequences"
+integer: fixed  [
+  required: "N"
+  default: "0"
+  minimum: "0"
+  information: "Length fix for random sequences"
 ]
 
-string: histogram [ req: N def: ""
-    info: "Name for histogram file"
+string: histogram  [
+  required: "N"
+  default: ""
+  information: "Name for histogram file"
 ]
 
-float: mean [ req: N def: 350. info: "Mean length of synthetic sequences"
+float: mean  [
+  required: "N"
+  default: "350."
+  information: "Mean length of synthetic sequences"
 ]
 
-int: num [ req: N def: 5000 info: "Number of synthetic sequences"
+integer: num  [
+  required: "N"
+  default: "5000"
+  information: "Number of synthetic sequences"
 ]
 
-bool: pvm [ req: N def: N info: "Run on parallel virtual machines"
+boolean: pvm  [
+  required: "N"
+  default: "N"
+  information: "Run on parallel virtual machines"
 ]
 
-float: sd [ req: N def: 350. info: "Standard deviation of syntheic sequences"
+float: sd  [
+  required: "N"
+  default: "350."
+  information: "Standard deviation of syntheic sequences"
 ]
 
-int: seed [ req: N def: 0 min: 0 info: "Random seed"
+integer: seed  [
+  required: "N"
+  default: "0"
+  minimum: "0"
+  information: "Random seed"
 ]
 
-outfile: outfile [ param: Y
+outfile: outfile  [
+  parameter: "Y"
 ]

@@ -1,8 +1,8 @@
-appl: libscan [
-  documentation: "Scans a database with a set of models that represents a family"
+application: libscan [
+  documentation: "Scans a database with a set of models that
+                  represents a family"
   groups: "Protein:3D Structure"
 ]
-
 
 list: mode  [
   required: "Y"
@@ -13,281 +13,267 @@ list: mode  [
   codedelimiter: ":"
   values: "1: Database search mode, 2: Library screen mode"
   header: "The scanning modes"
-  information: "Select mode of operation "
+  information: "Select mode of operation"
   button: "Y"
-  help: "libscan runs in one of two modes either (i) database search mode or (ii) library screen mode. In database search mode libscan reads one or more directories each containing a single type of discriminating element, the permitted types are sparse sequence signature, Gribskov profile, Henikoff profile or hidden Markov model.  In library screen mode, libscan reads a sequence set, screens each sequence against the library (directories of discriminating elements) and writes a library scan file (of top-scoring families) for each one."
+  help: "libscan runs in one of two modes either (i) database search
+         mode or (ii) library screen mode. In database search mode libscan
+         reads one or more directories each containing a single type of
+         discriminating element, the permitted types are sparse sequence
+         signature, Gribskov profile, Henikoff profile or hidden Markov
+         model. In library screen mode, libscan reads a sequence set, screens
+         each sequence against the library (directories of discriminating
+         elements) and writes a library scan file (of top-scoring families)
+         for each one."
 ]
 
 seqset: db  [
   required: "Y"
   prompt: "File containing sequences to search or screen"
-  help: "In database search mode libscan scans each discriminating element against a sequence set.  In library screen mode, libscan reads a sequence set and screens each sequence against the library (directories of disciminating elements)"
+  help: "In database search mode libscan scans each discriminating
+         element against a sequence set. In library screen mode, libscan
+         reads a sequence set and screens each sequence against the library
+         (directories of disciminating elements)"
 ]
 
-bool: grib
-[
+boolean: grib  [
   required: "Y"
-  information: "Use Gribskov profile "
+  information: "Use Gribskov profile"
   default: "Y"
 ]
 
-
-bool: henik
-[
+boolean: henik  [
   required: "Y"
-  information: "Use Henikoff profile "
+  information: "Use Henikoff profile"
   default: "Y"
 ]
 
-bool: hmm
-[
+boolean: hmm  [
   required: "Y"
-  information: "Use HMM profile "
+  information: "Use HMM profile"
   default: "Y"
 ]
 
-bool: sig
-[
+boolean: sig  [
   required: "Y"
-  information: "Use signature "
+  information: "Use signature"
   default: "Y"
 ]
 
-
-#####################
-# Hmm  parameters
-#####################
-
-string: hmmpath [
-  required:"$(hmm)"
+string: hmmpath  [
+  required: "$(hmm)"
   information: "Location of HMM profile files (input)"
   default: "./"
 ]
 
-string: hmmextn [
-  required:"$(hmm)"
+string: hmmextn  [
+  required: "$(hmm)"
   information: "Extension of HMM profile files (input)"
   default: ".hmm"
 ]
 
-string: hmmoutpath [
+string: hmmoutpath  [
   required: "$(hmm) : N"
-  information: "Location of signature hits/library scan files for hmm searches (output)"
+  information: "Location of signature hits/library scan files
+                for hmm searches (output)"
   default: "./"
 ]
 
-string: hmmoutextn [
+string: hmmoutextn  [
   required: "$(hmm) : N"
-  information: "Extension of signature hits/library scan files for hmm searches (output)"
+  information: "Extension of signature hits/library scan files
+                for hmm searches (output)"
   default: ".hmmout"
 ]
 
-
-#######################
-# Gribskov  parameters
-#######################
-
-string: gbvpath [
-  required:"$(grib)"
+string: gbvpath  [
+  required: "$(grib)"
   information: "Location of Gribskov profile files (input)"
   default: "./"
 ]
 
-
-string: gbvextn [
-  required:"$(grib)"
+string: gbvextn  [
+  required: "$(grib)"
   information: "Extension of Gribskov profile files (input)"
   default: ".gribs"
-
 ]
 
-float: gbvgapo [
+float: gbvgapo  [
   required: "$(grib)"
   default: "1.0"
-  information: "Gap insertion penalty "
+  information: "Gap insertion penalty"
 ]
 
-float: gbvgape [
+float: gbvgape  [
   required: "$(grib)"
   default: "1.0"
-  information: "Gap extension penalty "
+  information: "Gap extension penalty"
 ]
 
-string: gbvoutpath [
+string: gbvoutpath  [
   required: "$(grib) : N"
-  information: "Location of signature hits/library scan files for Gribskov profile searches (output)"
+  information: "Location of signature hits/library scan files
+                for Gribskov profile searches (output)"
   default: "./"
 ]
 
-string: gbvoutextn [
+string: gbvoutextn  [
   required: "$(grib) : N"
-  information: "Extension of signature hits/library scan files for Gribskov profile searches (output)"
+  information: "Extension of signature hits/library scan files
+                for Gribskov profile searches (output)"
   default: ".gribout"
 ]
 
-
-#######################
-# Hennikoff  parameters
-#######################
-
-string: hnfpath [
-  required:"$(henik)"
+string: hnfpath  [
+  required: "$(henik)"
   information: "Location of Hennikoff profile files (input)"
   default: "./"
 ]
 
-string: hnfextn [
-  required:"$(henik)"
+string: hnfextn  [
+  required: "$(henik)"
   information: "Extension of Hennikoff profile files (input)"
   default: ".henik"
 ]
 
-
-float: hnfgapo [
+float: hnfgapo  [
   required: "$(henik)"
   default: "1.0"
-  information: "Gap insertion penalty "
+  information: "Gap insertion penalty"
 ]
 
-float: hnfgape [
+float: hnfgape  [
   required: "$(henik)"
   default: "1.0"
-
-  information: "Gap extension penalty "
+  information: "Gap extension penalty"
 ]
 
-string: hnfoutpath [
+string: hnfoutpath  [
   required: "$(henik) : N"
-  information: "Location of signature hits/library scan files for Henikoff profile searches (output)"
+  information: "Location of signature hits/library scan files
+                for Henikoff profile searches (output)"
   default: "./"
 ]
 
-string: hnfoutextn [
+string: hnfoutextn  [
   required: "$(henik) : N"
-  information: "Extension of signature hits/library scan files for Henikoff profile searches (output)"
+  information: "Extension of signature hits/library scan files
+                for Henikoff profile searches (output)"
   default: ".henikout"
 ]
 
-
-
-########################
-# Signature parameters
-########################
-
-string: sigpath [
-  required:"$(sig)"
+string: sigpath  [
+  required: "$(sig)"
   information: "Location of signature files (input)"
   default: "./"
-
 ]
 
-string: sigextn [
-   required:"$(sig)"
+string: sigextn  [
+  required: "$(sig)"
   information: "Extension of signature files (input)"
   default: ".sig"
 ]
 
-
 list: nterm  [
-  required:"$(sig)"
+  required: "$(sig)"
   default: "1"
-
   minimum: "1"
   maximum: "3"
-  values: "1: Align anywhere and allow only complete signature-sequence fit,2: Align anywhere and allow partial signature-sequence fit,3: Use empirical gaps only"
+  values: "1: Align anywhere and allow only complete
+           signature-sequence fit,2: Align anywhere and allow partial
+           signature-sequence fit,3: Use empirical gaps only"
   delimiter: ","
   codedelimiter: ":"
   header: "N-terminal matching options"
   information: "Select number"
 ]
 
-
 matrixf: sub  [
-  required: "$(sig)" 
+  required: "$(sig)"
   information: "Residue substitution matrix"
   default: "EBLOSUM62"
 ]
 
-float: siggapo [
+float: siggapo  [
   required: "$(sig)"
-
   default: "10.0"
-  information: "Gap insertion penalty "
+  information: "Gap insertion penalty"
 ]
 
-float: siggape [
+float: siggape  [
   required: "$(sig)"
   default: "0.5"
-  information: "Gap extension penalty "
+  information: "Gap extension penalty"
 ]
 
-string: sigoutpath [
+string: sigoutpath  [
   required: "$(sig) : N"
-  information: "Location of signature hits/library scan files for signature searches (output)"
+  information: "Location of signature hits/library scan files
+                for signature searches (output)"
   default: "./"
 ]
 
-string: sigoutextn [
+string: sigoutextn  [
   required: "$(sig) : N"
-  information: "Extension for signature hits/library scan files for signature searches (output)"
+  information: "Extension for signature hits/library scan files
+                for signature searches (output)"
   default: ".sigout"
 ]
-
 
 infile: scopf  [
   required: "Y"
   prompt: "SCOP classification file (input)"
-  help: "In either mode, a 'scop classification file' is required as a source of family classification data.  A scop classification file contains classification and other data for domains from the scop database.  The file is in embl-like format and is generated by scopparse.  Domain sequence information can be added to the file by using scopseqs."
+  help: "In either mode, a 'scop classification file' is required as a
+         source of family classification data. A scop classification file
+         contains classification and other data for domains from the scop
+         database. The file is in embl-like format and is generated by
+         scopparse. Domain sequence information can be added to the file by
+         using scopseqs."
 ]
 
 infile: targetf  [
   prompt: "Name of validation file (input)"
-  help: "A 'scop validation file' contains sequence relatives (hits) for each of a number of different scop families, superfamilies and folds.  The file contains the collated results from psiblast searches of a sequence database for the indvidual scop families; hits of unambiguous family assignment are listed under their respective family, otherwise a hit is assigned as relatives to a scop superfamily or fold instead.  The scop validation file is generated by seqnr and is in embl-like format."
+  help: "A 'scop validation file' contains sequence relatives (hits)
+         for each of a number of different scop families, superfamilies and
+         folds. The file contains the collated results from psiblast searches
+         of a sequence database for the indvidual scop families; hits of
+         unambiguous family assignment are listed under their respective
+         family, otherwise a hit is assigned as relatives to a scop
+         superfamily or fold instead. The scop validation file is generated
+         by seqnr and is in embl-like format."
   required: "@($(mode)==1)"
   nullok: "Y"
 ]
 
-
 integer: maxhits  [
   required: "@($(mode)==1)"
-  information: "The maximum number of hits to be written to the signature hits file."
+  information: "The maximum number of hits to be written to the
+                signature hits file."
   default: "50"
 ]
 
-
 integer: overlap  [
   required: "@($(mode)==1)"
-  information: "Number of overlapping residues required for two hits to be classed as the same hit."
+  information: "Number of overlapping residues required for two
+                hits to be classed as the same hit."
   default: "10"
-  help: "When estimating the statistical significance of scored matches of different types of discriminating element to a sequence, two (or more) p-values are only ever multiplied together if corresponding hit is to the same region of the protein.  'Same' is defined as two hits overlapping by a user-defined number of residues."
+  help: "When estimating the statistical significance of scored
+         matches of different types of discriminating element to a sequence,
+         two (or more) p-values are only ever multiplied together if
+         corresponding hit is to the same region of the protein. 'Same' is
+         defined as two hits overlapping by a user-defined number of
+         residues."
 ]
 
-
-########################
-# Merged parameters
-########################
-string: mrgoutpath [
-  required: "Y" 
-
-  information: "Location of signature hits / library scan files for merged results (output)"
+string: mrgoutpath  [
+  required: "Y"
+  information: "Location of signature hits / library scan files
+                for merged results (output)"
   default: "./"
 ]
 
-string: mrgoutextn [
+string: mrgoutextn  [
   required: "Y"
-  information: "Extension for signature hits / library scan files for merged results (output)"
+  information: "Extension for signature hits / library scan
+                files for merged results (output)"
   default: ".mrgout"
 ]
-
-
-
-
-
-
-
-
-
-
-
-
-

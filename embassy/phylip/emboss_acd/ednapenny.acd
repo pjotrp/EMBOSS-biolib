@@ -1,91 +1,102 @@
-appl: ednapenny [
-    doc: "Penny algorithm for DNA "
-    group: "phylip"
-   ]
+application: ednapenny [
+  documentation: "Penny algorithm for DNA"
+  groups: "phylip"
+]
 
-seqset: msf [ 
-        param: Y
-        type: gapany
-        prompt: "Sequences file to be read in"
-        help: "File containing a sequence" ]
+seqset: msf  [
+  parameter: "Y"
+  type: "gapany"
+  prompt: "Sequences file to be read in"
+  help: "File containing a sequence"
+]
 
-outfile: outfile [ 
-         param: Y
-         def: "ednapenny.outfile" ]
+outfile: outfile  [
+  parameter: "Y"
+  default: "ednapenny.outfile"
+]
 
-int: numgroups [
-     opt: Y
-     info: "How many groups of  100 trees"
-     def: 1000 ]
+integer: numgroups  [
+  optional: "Y"
+  information: "How many groups of 100 trees"
+  default: "1000"
+]
 
-int: howoften [
-     opt: Y
-     info: "How often to report, in trees"
-     def: 100 ]
+integer: howoften  [
+  optional: "Y"
+  information: "How often to report, in trees"
+  default: "100"
+]
 
-bool: simple [
-      opt: Y
-      info: "Branch and bound is simple" ]
+boolean: simple  [
+  optional: "Y"
+  information: "Branch and bound is simple"
+]
 
-bool: og [ 
-      opt: Y 
-      info: "Outgroup root" 
-      def: N ]
+boolean: og  [
+  optional: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
 
-int: outgnum [ 
-     req: "$(og)"
-     min: 1 
-     def: 1
-     info: "number of the outgroup" ]
+integer: outgnum  [
+  required: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "number of the outgroup"
+]
 
-bool: thresh [
-      req: N
-      def: N
-      info: "Use Threshold parsimony" ]
+boolean: thresh  [
+  required: "N"
+  default: "N"
+  information: "Use Threshold parsimony"
+]
 
-float: valthresh [
-     req: "$(thresh)"
-     min: 1.0
-     def: 1.0
-     info: "threshold value" ]
+float: valthresh  [
+  required: "$(thresh)"
+  minimum: "1.0"
+  default: "1.0"
+  information: "threshold value"
+]
 
-#bool:  multsets [ 
-#       opt: Y 
-#       def: N 
-#       info: "Analyze multiple data sets" ]
+boolean: printdata  [
+  optional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
 
-bool: printdata [ 
-      opt: Y 
-      def: N 
-      info: "Print out the data at start of run" ]
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
 
-bool: progress [ 
-      opt: Y 
-      def: N 
-      info: "Print indications of progress of run" ]
+boolean: steps  [
+  optional: "Y"
+  default: "N"
+  information: "Print out steps in each site"
+]
 
-bool: steps [ 
-      opt: Y 
-      def: N
-      information: "Print out steps in each site" ]
+boolean: seqatnodes  [
+  optional: "Y"
+  default: "N"
+  information: "Print sequences at all nodes of tree"
+]
 
-bool: seqatnodes [ 
-      opt: Y 
-      def: N
-      information: "Print sequences at all nodes of tree" ]
+boolean: drawtree  [
+  optional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
 
-bool: drawtree [ 
-      opt: Y 
-      def: Y
-      information: "Draw tree" ]
+boolean: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
 
-bool: trout [ 
-      param: Y 
-      def: Y
-      information: "Create a tree file" ]
-
-outfile: treefile [
-          req: "$(trout)" 
-          def: "ednapenny.treefile"
-          info: "Tree file name" 
-          prompt: "Output treefile name" ]
+outfile: treefile  [
+  required: "$(trout)"
+  default: "ednapenny.treefile"
+  information: "Tree file name"
+  prompt: "Output treefile name"
+]

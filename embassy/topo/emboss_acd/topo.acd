@@ -1,485 +1,238 @@
-# TOPO application
-# AJAX COMMAND DEFINITION (ACD) FILE
-
-# use "" for missing values - these are required.
-# values in "" are trimmed to single spaces.
-# everything is treated as single tokens delimited by white space
-# (space, tab, newline)
-
-# IL 19 Jan 2000
-
-appl: topo [
-        doc: "Draws an image of a transmembrane protein"
-        group: "PROTEIN:2D STRUCTURE"
+application: topo [
+  documentation: "Draws an image of a transmembrane protein"
+  groups: "PROTEIN:2D STRUCTURE"
 ]
 
-  sequence: sequence [ param: Y]
+sequence: sequence  [
+  parameter: "Y"
+]
 
-  graph: graph [
-  req: Y
-  ]
+graph: graph  [
+  required: "Y"
+]
 
-  range: sections [
-        req: y
-	prompt: "Transmembrane Sections"
-	help: "Examples of region
-specifications are: \ 24-45, 56-78 \ 1:45, 67=99;765..888 \
-1,5,8,10,23,45,57,99"
-  ]
+range: sections  [
+  required: "y"
+  prompt: "Transmembrane Sections"
+  help: "Examples of region specifications are: \
+         24-45, 56-78 \
+         1:45, 67=99;765..888 \
+         1,5,8,10,23,45,57,99"
+]
 
-  bool: membrane [
-	req: Y
-	prompt: "First membrane from the outside"
-	def: Y
-  ]
+boolean: membrane  [
+  required: "Y"
+  prompt: "First membrane from the outside"
+  default: "Y"
+]
 
-  list: cyssymbol [
-	opt: Y
-	def: "CF"
-	min: 1
-	max: 1
-	header: "Symbol type for CYS sites outside of membrane"
-	values:
-		"N: None,
-		CF: circle,
-		SF: square,
-		HF: hexagon,
-		UF: up arrpw,
-		DF: down arrow,
-		C: black circle,
-		CG: green circle,		
-		CR: red circle,		
-		CB: blue circle,		
-		CA: aqua circle,
-		CM: magenta circle,
-		CY: yellow circle,
-		S: black square,
-		SG: green square,		
-		SR: red square,		
-		SB: blue square,		
-		SA: aqua square,
-		SM: magenta square,
-		SY: yellow square,
-		H: black hexagon,
-		HG: green hexagon,		
-		HR: red hexagon,		
-		HB: blue hexagon,		
-		HA: aqua hexagon,
-		HM: magenta hexagon,
-		HY: yellow hexagon,
-		U: black up arrow,
-		UG: green up arrow,		
-		UR: red up arrow,		
-		UB: blue up arrow,		
-		UA: aqua up arrow,
-		UM: magenta up arrow,
-		UY: yellow up arrow,
-		D: black down arrow,
-		DG: green down arrow,		
-		DR: red down arrow,		
-		DB: blue down arrow,		
-		DA: aqua down arrow,
-		DM: magenta down arrow,
-		DY: yellow down arrow"
-	delim: ","
-	codedelim: ":"
-	prompt: "Symbol to display cys sites"
-	help: "Code representing shape and colour for cys \ 
-i.e. SR square red, HY hexagon yellow \
-CF circle NOfill, UG up arrow green"
-  ]	
+list: cyssymbol  [
+  optional: "Y"
+  default: "CF"
+  minimum: "1"
+  maximum: "1"
+  header: "Symbol type for CYS sites outside of membrane"
+  values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
+           arrpw, DF: down arrow, C: black circle, CG: green circle, CR: red
+           circle, CB: blue circle, CA: aqua circle, CM: magenta circle, CY:
+           yellow circle, S: black square, SG: green square, SR: red square,
+           SB: blue square, SA: aqua square, SM: magenta square, SY: yellow
+           square, H: black hexagon, HG: green hexagon, HR: red hexagon, HB:
+           blue hexagon, HA: aqua hexagon, HM: magenta hexagon, HY: yellow
+           hexagon, U: black up arrow, UG: green up arrow, UR: red up arrow,
+           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow, UY:
+           yellow up arrow, D: black down arrow, DG: green down arrow, DR:
+           red down arrow, DB: blue down arrow, DA: aqua down arrow, DM:
+           magenta down arrow, DY: yellow down arrow"
+  delimiter: ","
+  codedelimiter: ":"
+  prompt: "Symbol to display cys sites"
+  help: "Code representing shape and colour for cys \
+         i.e. SR square red, HY hexagon yellow \
+         CF circle NOfill, UG up arrow green"
+]
 
+list: glysymbol  [
+  optional: "Y"
+  default: "CF"
+  minimum: "1"
+  maximum: "1"
+  header: "Symbol type for N-glycosylation sites outside of
+           membrane"
+  values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
+           arrpw, DF: down arrow, C: black circle, CG: green circle, CR: red
+           circle, CB: blue circle, CA: aqua circle, CM: magenta circle, CY:
+           yellow circle, S: black square, SG: green square, SR: red square,
+           SB: blue square, SA: aqua square, SM: magenta square, SY: yellow
+           square, H: black hexagon, HG: green hexagon, HR: red hexagon, HB:
+           blue hexagon, HA: aqua hexagon, HM: magenta hexagon, HY: yellow
+           hexagon, U: black up arrow, UG: green up arrow, UR: red up arrow,
+           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow, UY:
+           yellow up arrow, D: black down arrow, DG: green down arrow, DR:
+           red down arrow, DB: blue down arrow, DA: aqua down arrow, DM:
+           magenta down arrow, DY: yellow down arrow"
+  delimiter: ","
+  codedelimiter: ":"
+  prompt: "Symbol to display N-glycosylation sites outside of
+           membrane"
+  help: "Symbol to display N-glycosylation sites outside of membrane
+         see cyssymbol for examples"
+]
 
-  list: glysymbol [
-	opt: Y
-	def: "CF"
-	min: 1
-	max: 1
-	header: "Symbol type for N-glycosylation sites outside of membrane "
-	values:
-		"N: None,
-		CF: circle,
-		SF: square,
-		HF: hexagon,
-		UF: up arrpw,
-		DF: down arrow,
-		C: black circle,
-		CG: green circle,		
-		CR: red circle,		
-		CB: blue circle,		
-		CA: aqua circle,
-		CM: magenta circle,
-		CY: yellow circle,
-		S: black square,
-		SG: green square,		
-		SR: red square,		
-		SB: blue square,		
-		SA: aqua square,
-		SM: magenta square,
-		SY: yellow square,
-		H: black hexagon,
-		HG: green hexagon,		
-		HR: red hexagon,		
-		HB: blue hexagon,		
-		HA: aqua hexagon,
-		HM: magenta hexagon,
-		HY: yellow hexagon,
-		U: black up arrow,
-		UG: green up arrow,		
-		UR: red up arrow,		
-		UB: blue up arrow,		
-		UA: aqua up arrow,
-		UM: magenta up arrow,
-		UY: yellow up arrow,
-		D: black down arrow,
-		DG: green down arrow,		
-		DR: red down arrow,		
-		DB: blue down arrow,		
-		DA: aqua down arrow,
-		DM: magenta down arrow,
-		DY: yellow down arrow"
-	delim: ","
-	codedelim: ":"
-	prompt: "Symbol to display N-glycosylation sites outside of membrane"
-	help: "Symbol to display N-glycosylation sites outside of
-	membrane see cyssymbol for examples"
-  ]	
-		
-  list: acidicaa [
-	opt: Y
-	def: "CF"
-	min: 1
-	max: 1
-	header: "Acidic amino acid Symbol type "
-	values:
-		"N: None,
-		CF: circle,
-		SF: square,
-		HF: hexagon,
-		UF: up arrpw,
-		DF: down arrow,
-		C: black circle,
-		CG: green circle,		
-		CR: red circle,		
-		CB: blue circle,		
-		CA: aqua circle,
-		CM: magenta circle,
-		CY: yellow circle,
-		S: black square,
-		SG: green square,		
-		SR: red square,		
-		SB: blue square,		
-		SA: aqua square,
-		SM: magenta square,
-		SY: yellow square,
-		H: black hexagon,
-		HG: green hexagon,		
-		HR: red hexagon,		
-		HB: blue hexagon,		
-		HA: aqua hexagon,
-		HM: magenta hexagon,
-		HY: yellow hexagon,
-		U: black up arrow,
-		UG: green up arrow,		
-		UR: red up arrow,		
-		UB: blue up arrow,		
-		UA: aqua up arrow,
-		UM: magenta up arrow,
-		UY: yellow up arrow,
-		D: black down arrow,
-		DG: green down arrow,		
-		DR: red down arrow,		
-		DB: blue down arrow,		
-		DA: aqua down arrow,
-		DM: magenta down arrow,
-		DY: yellow down arrow"
-	delim: ","
-	codedelim: ":"
-	prompt: "Symbol to display acidic amino acids"
-  ]	
+list: acidicaa  [
+  optional: "Y"
+  default: "CF"
+  minimum: "1"
+  maximum: "1"
+  header: "Acidic amino acid Symbol type"
+  values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
+           arrpw, DF: down arrow, C: black circle, CG: green circle, CR: red
+           circle, CB: blue circle, CA: aqua circle, CM: magenta circle, CY:
+           yellow circle, S: black square, SG: green square, SR: red square,
+           SB: blue square, SA: aqua square, SM: magenta square, SY: yellow
+           square, H: black hexagon, HG: green hexagon, HR: red hexagon, HB:
+           blue hexagon, HA: aqua hexagon, HM: magenta hexagon, HY: yellow
+           hexagon, U: black up arrow, UG: green up arrow, UR: red up arrow,
+           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow, UY:
+           yellow up arrow, D: black down arrow, DG: green down arrow, DR:
+           red down arrow, DB: blue down arrow, DA: aqua down arrow, DM:
+           magenta down arrow, DY: yellow down arrow"
+  delimiter: ","
+  codedelimiter: ":"
+  prompt: "Symbol to display acidic amino acids"
+]
 
-  list: basicaa [
-	opt: Y
-	def: "CF"
-	min: 1
-	max: 1
-	header: "Basic amino acid Symbol type "
-	values:
-		"N: None,
-		CF: circle,
-		SF: square,
-		HF: hexagon,
-		UF: up arrpw,
-		DF: down arrow,
-		C: black circle,
-		CG: green circle,		
-		CR: red circle,		
-		CB: blue circle,		
-		CA: aqua circle,
-		CM: magenta circle,
-		CY: yellow circle,
-		S: black square,
-		SG: green square,		
-		SR: red square,		
-		SB: blue square,		
-		SA: aqua square,
-		SM: magenta square,
-		SY: yellow square,
-		H: black hexagon,
-		HG: green hexagon,		
-		HR: red hexagon,		
-		HB: blue hexagon,		
-		HA: aqua hexagon,
-		HM: magenta hexagon,
-		HY: yellow hexagon,
-		U: black up arrow,
-		UG: green up arrow,		
-		UR: red up arrow,		
-		UB: blue up arrow,		
-		UA: aqua up arrow,
-		UM: magenta up arrow,
-		UY: yellow up arrow,
-		D: black down arrow,
-		DG: green down arrow,		
-		DR: red down arrow,		
-		DB: blue down arrow,		
-		DA: aqua down arrow,
-		DM: magenta down arrow,
-		DY: yellow down arrow"
-	delim: ","
-	codedelim: ":"
-	prompt: "Symbol to display basic amino acids"
-  ]	
+list: basicaa  [
+  optional: "Y"
+  default: "CF"
+  minimum: "1"
+  maximum: "1"
+  header: "Basic amino acid Symbol type"
+  values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
+           arrpw, DF: down arrow, C: black circle, CG: green circle, CR: red
+           circle, CB: blue circle, CA: aqua circle, CM: magenta circle, CY:
+           yellow circle, S: black square, SG: green square, SR: red square,
+           SB: blue square, SA: aqua square, SM: magenta square, SY: yellow
+           square, H: black hexagon, HG: green hexagon, HR: red hexagon, HB:
+           blue hexagon, HA: aqua hexagon, HM: magenta hexagon, HY: yellow
+           hexagon, U: black up arrow, UG: green up arrow, UR: red up arrow,
+           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow, UY:
+           yellow up arrow, D: black down arrow, DG: green down arrow, DR:
+           red down arrow, DB: blue down arrow, DA: aqua down arrow, DM:
+           magenta down arrow, DY: yellow down arrow"
+  delimiter: ","
+  codedelimiter: ":"
+  prompt: "Symbol to display basic amino acids"
+]
 
-  list: amineaa [
-	opt: Y
-	def: "CF"
-	min: 1
-	max: 1
-	header: "Amine amino acid Symbol type "
-	values:
-		"N: None,
-		CF: circle,
-		SF: square,
-		HF: hexagon,
-		UF: up arrpw,
-		DF: down arrow,
-		C: black circle,
-		CG: green circle,		
-		CR: red circle,		
-		CB: blue circle,		
-		CA: aqua circle,
-		CM: magenta circle,
-		CY: yellow circle,
-		S: black square,
-		SG: green square,		
-		SR: red square,		
-		SB: blue square,		
-		SA: aqua square,
-		SM: magenta square,
-		SY: yellow square,
-		H: black hexagon,
-		HG: green hexagon,		
-		HR: red hexagon,		
-		HB: blue hexagon,		
-		HA: aqua hexagon,
-		HM: magenta hexagon,
-		HY: yellow hexagon,
-		U: black up arrow,
-		UG: green up arrow,		
-		UR: red up arrow,		
-		UB: blue up arrow,		
-		UA: aqua up arrow,
-		UM: magenta up arrow,
-		UY: yellow up arrow,
-		D: black down arrow,
-		DG: green down arrow,		
-		DR: red down arrow,		
-		DB: blue down arrow,		
-		DA: aqua down arrow,
-		DM: magenta down arrow,
-		DY: yellow down arrow"
-	delim: ","
-	codedelim: ":"
-	prompt: "Symbol to display amine amino acids"
-  ]	
+list: amineaa  [
+  optional: "Y"
+  default: "CF"
+  minimum: "1"
+  maximum: "1"
+  header: "Amine amino acid Symbol type"
+  values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
+           arrpw, DF: down arrow, C: black circle, CG: green circle, CR: red
+           circle, CB: blue circle, CA: aqua circle, CM: magenta circle, CY:
+           yellow circle, S: black square, SG: green square, SR: red square,
+           SB: blue square, SA: aqua square, SM: magenta square, SY: yellow
+           square, H: black hexagon, HG: green hexagon, HR: red hexagon, HB:
+           blue hexagon, HA: aqua hexagon, HM: magenta hexagon, HY: yellow
+           hexagon, U: black up arrow, UG: green up arrow, UR: red up arrow,
+           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow, UY:
+           yellow up arrow, D: black down arrow, DG: green down arrow, DR:
+           red down arrow, DB: blue down arrow, DA: aqua down arrow, DM:
+           magenta down arrow, DY: yellow down arrow"
+  delimiter: ","
+  codedelimiter: ":"
+  prompt: "Symbol to display amine amino acids"
+]
 
-  list: ohaa [
-	opt: Y
-	def: "CF"
-	min: 1
-	max: 1
-	header: "OH-  amino acid Symbol type "
-	values:
-		"N: None,
-		CF: circle,
-		SF: square,
-		HF: hexagon,
-		UF: up arrpw,
-		DF: down arrow,
-		C: black circle,
-		CG: green circle,		
-		CR: red circle,		
-		CB: blue circle,		
-		CA: aqua circle,
-		CM: magenta circle,
-		CY: yellow circle,
-		S: black square,
-		SG: green square,		
-		SR: red square,		
-		SB: blue square,		
-		SA: aqua square,
-		SM: magenta square,
-		SY: yellow square,
-		H: black hexagon,
-		HG: green hexagon,		
-		HR: red hexagon,		
-		HB: blue hexagon,		
-		HA: aqua hexagon,
-		HM: magenta hexagon,
-		HY: yellow hexagon,
-		U: black up arrow,
-		UG: green up arrow,		
-		UR: red up arrow,		
-		UB: blue up arrow,		
-		UA: aqua up arrow,
-		UM: magenta up arrow,
-		UY: yellow up arrow,
-		D: black down arrow,
-		DG: green down arrow,		
-		DR: red down arrow,		
-		DB: blue down arrow,		
-		DA: aqua down arrow,
-		DM: magenta down arrow,
-		DY: yellow down arrow"
-	delim: ","
-	codedelim: ":"
-	prompt: "Symbol to display OH- amino acids"
-  ]	
+list: ohaa  [
+  optional: "Y"
+  default: "CF"
+  minimum: "1"
+  maximum: "1"
+  header: "OH- amino acid Symbol type"
+  values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
+           arrpw, DF: down arrow, C: black circle, CG: green circle, CR: red
+           circle, CB: blue circle, CA: aqua circle, CM: magenta circle, CY:
+           yellow circle, S: black square, SG: green square, SR: red square,
+           SB: blue square, SA: aqua square, SM: magenta square, SY: yellow
+           square, H: black hexagon, HG: green hexagon, HR: red hexagon, HB:
+           blue hexagon, HA: aqua hexagon, HM: magenta hexagon, HY: yellow
+           hexagon, U: black up arrow, UG: green up arrow, UR: red up arrow,
+           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow, UY:
+           yellow up arrow, D: black down arrow, DG: green down arrow, DR:
+           red down arrow, DB: blue down arrow, DA: aqua down arrow, DM:
+           magenta down arrow, DY: yellow down arrow"
+  delimiter: ","
+  codedelimiter: ":"
+  prompt: "Symbol to display OH- amino acids"
+]
 
-  list: araa [
-	opt: Y
-	def: "CF"
-	min: 1
-	max: 1
-	header: "Aromatic amino acid Symbol type "
-	values:
-		"N: None,
-		CF: circle,
-		SF: square,
-		HF: hexagon,
-		UF: up arrpw,
-		DF: down arrow,
-		C: black circle,
-		CG: green circle,		
-		CR: red circle,		
-		CB: blue circle,		
-		CA: aqua circle,
-		CM: magenta circle,
-		CY: yellow circle,
-		S: black square,
-		SG: green square,		
-		SR: red square,		
-		SB: blue square,		
-		SA: aqua square,
-		SM: magenta square,
-		SY: yellow square,
-		H: black hexagon,
-		HG: green hexagon,		
-		HR: red hexagon,		
-		HB: blue hexagon,		
-		HA: aqua hexagon,
-		HM: magenta hexagon,
-		HY: yellow hexagon,
-		U: black up arrow,
-		UG: green up arrow,		
-		UR: red up arrow,		
-		UB: blue up arrow,		
-		UA: aqua up arrow,
-		UM: magenta up arrow,
-		UY: yellow up arrow,
-		D: black down arrow,
-		DG: green down arrow,		
-		DR: red down arrow,		
-		DB: blue down arrow,		
-		DA: aqua down arrow,
-		DM: magenta down arrow,
-		DY: yellow down arrow"
-	delim: ","
-	codedelim: ":"
-	prompt: "Symbol to display aromatic amino acids"
-  ]	
+list: araa  [
+  optional: "Y"
+  default: "CF"
+  minimum: "1"
+  maximum: "1"
+  header: "Aromatic amino acid Symbol type"
+  values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
+           arrpw, DF: down arrow, C: black circle, CG: green circle, CR: red
+           circle, CB: blue circle, CA: aqua circle, CM: magenta circle, CY:
+           yellow circle, S: black square, SG: green square, SR: red square,
+           SB: blue square, SA: aqua square, SM: magenta square, SY: yellow
+           square, H: black hexagon, HG: green hexagon, HR: red hexagon, HB:
+           blue hexagon, HA: aqua hexagon, HM: magenta hexagon, HY: yellow
+           hexagon, U: black up arrow, UG: green up arrow, UR: red up arrow,
+           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow, UY:
+           yellow up arrow, D: black down arrow, DG: green down arrow, DR:
+           red down arrow, DB: blue down arrow, DA: aqua down arrow, DM:
+           magenta down arrow, DY: yellow down arrow"
+  delimiter: ","
+  codedelimiter: ":"
+  prompt: "Symbol to display aromatic amino acids"
+]
 
+list: proline  [
+  optional: "Y"
+  default: "CF"
+  minimum: "1"
+  maximum: "1"
+  header: "Prolines Symbol type"
+  values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
+           arrpw, DF: down arrow, C: black circle, CG: green circle, CR: red
+           circle, CB: blue circle, CA: aqua circle, CM: magenta circle, CY:
+           yellow circle, S: black square, SG: green square, SR: red square,
+           SB: blue square, SA: aqua square, SM: magenta square, SY: yellow
+           square, H: black hexagon, HG: green hexagon, HR: red hexagon, HB:
+           blue hexagon, HA: aqua hexagon, HM: magenta hexagon, HY: yellow
+           hexagon, U: black up arrow, UG: green up arrow, UR: red up arrow,
+           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow, UY:
+           yellow up arrow, D: black down arrow, DG: green down arrow, DR:
+           red down arrow, DB: blue down arrow, DA: aqua down arrow, DM:
+           magenta down arrow, DY: yellow down arrow"
+  delimiter: ","
+  codedelimiter: ":"
+  prompt: "Symbol to display prolines"
+]
 
-  list: proline [
-	opt: Y
-	def: "CF"
-	min: 1
-	max: 1
-	header: "Prolines Symbol type "
-	values:
-		"N: None,
-		CF: circle,
-		SF: square,
-		HF: hexagon,
-		UF: up arrpw,
-		DF: down arrow,
-		C: black circle,
-		CG: green circle,		
-		CR: red circle,		
-		CB: blue circle,		
-		CA: aqua circle,
-		CM: magenta circle,
-		CY: yellow circle,
-		S: black square,
-		SG: green square,		
-		SR: red square,		
-		SB: blue square,		
-		SA: aqua square,
-		SM: magenta square,
-		SY: yellow square,
-		H: black hexagon,
-		HG: green hexagon,		
-		HR: red hexagon,		
-		HB: blue hexagon,		
-		HA: aqua hexagon,
-		HM: magenta hexagon,
-		HY: yellow hexagon,
-		U: black up arrow,
-		UG: green up arrow,		
-		UR: red up arrow,		
-		UB: blue up arrow,		
-		UA: aqua up arrow,
-		UM: magenta up arrow,
-		UY: yellow up arrow,
-		D: black down arrow,
-		DG: green down arrow,		
-		DR: red down arrow,		
-		DB: blue down arrow,		
-		DA: aqua down arrow,
-		DM: magenta down arrow,
-		DY: yellow down arrow"
-	delim: ","
-	codedelim: ":"
-	prompt: "Symbol to display prolines"
-  ]	
+boolean: signature  [
+  optional: "Y"
+  default: "N"
+  prompt: "Are there any signature areas to be marked"
+]
 
-  bool: signature [
-	opt: Y
-	def: N
-	prompt: "Are there any signature areas to be marked"
-  ]
+range: sigrange  [
+  required: "$(signature)"
+  prompt: "Signature Sections"
+  help: "Examples of ranges specifications are: \
+         10-10 CF, 56-78 SY\ 1:45 SR, 67=99 HY;765..888 SF \
+         1,5,HG,8,10,HY,23,45,SR,57,99,UG"
+]
 
-  range: sigrange [
-        req: $(signature)
-	prompt: "Signature Sections"
-	help: "Examples of ranges
-specifications are: \ 10-10 CF, 56-78 SY\ 1:45 SR, 67=99 HY;765..888 SF \
-1,5,HG,8,10,HY,23,45,SR,57,99,UG"
-  ]
-  
-  bool: draft [
-	opt: Y
-	def: N
-	prompt: "Is this a draft plot"
-  ]
+boolean: draft  [
+  optional: "Y"
+  default: "N"
+  prompt: "Is this a draft plot"
+]

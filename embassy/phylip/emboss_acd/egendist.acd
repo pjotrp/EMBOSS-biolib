@@ -1,49 +1,55 @@
-appl: egendist [
-    doc: "Genetic Distance Matrix program"
-    group: "phylip"
-   ]
-
-infile: infile [
-	param: Y
-	prompt: "data file" ]
-
-outfile: outfile [ 
-         param: Y
-         def: "egendist.outfile" ]
-
-bool: all [
-      opt: Y
-      def: N
-      info: "Input file contains all alleles at each locus (else one)" ]
-
-list: method [ req: y min: 1 max: 1
-    header: "Distance methods"
-    values: "Nei:Nei genetic distance;
-             Cav:Cavalli-Sforza chord measur;
-             Rey:Reynolds genetic distance;
-    info: "Choose the method to use"
-    def: Nei
+application: egendist [
+  documentation: "Genetic Distance Matrix program"
+  groups: "phylip"
 ]
 
-bool: lowertriangle [
-      opt: Y
-      def: N
-      info: "Lower-triangular (else Square)" ]
+infile: infile  [
+  parameter: "Y"
+  prompt: "data file"
+]
 
-bool:  multsets [ 
-       opt: Y 
-       def: N 
-       info: "Analyze multiple data sets" ]
+outfile: outfile  [
+  parameter: "Y"
+  default: "egendist.outfile"
+]
 
-int: datasets [ 
-     req: "$(multsets)" 
-     info: "How many data sets" ]
+boolean: all  [
+  optional: "Y"
+  default: "N"
+  information: "Input file contains all alleles at each locus
+                (else one)"
+]
 
-bool: progress [ 
-      opt: Y 
-      def: N 
-      info: "Print indications of progress of run" ]
+list: method  [
+  required: "y"
+  minimum: "1"
+  maximum: "1"
+  header: "Distance methods"
+  values: "Nei:Nei genetic distance; Cav:Cavalli-Sforza chord
+           measur; Rey:Reynolds genetic distance; info: "Choose the method to
+           use"
+  default: "Nei"
+]
 
+boolean: lowertriangle  [
+  optional: "Y"
+  default: "N"
+  information: "Lower-triangular (else Square)"
+]
 
+boolean: multsets  [
+  optional: "Y"
+  default: "N"
+  information: "Analyze multiple data sets"
+]
 
+integer: datasets  [
+  required: "$(multsets)"
+  information: "How many data sets"
+]
 
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]

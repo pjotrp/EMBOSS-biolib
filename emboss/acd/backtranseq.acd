@@ -1,26 +1,38 @@
-appl: backtranseq [
+application: backtranseq [
   documentation: "Back translate a protein sequence"
   groups: "Nucleic:Translation, Protein:Composition"
 ]
 
-section: input [ info: "input Section" type: page ]
-sequence: sequence  [
-  parameter: "Y"
-  type: "GapProtein"
+section: input [
+  information: "input Section"
+  type: "page"
 ]
+
+  sequence: sequence  [
+    parameter: "Y"
+    type: "GapProtein"
+  ]
 
 endsection: input
 
-section: advanced [ info: "advanced Section" type: page ]
-codon: cfile  [
-  optional: "Y"
+section: advanced [
+  information: "advanced Section"
+  type: "page"
 ]
+
+  codon: cfile  [
+    optional: "Y"
+  ]
 
 endsection: advanced
 
-section: output [ info: "output Section" type: page ]
-seqout: outfile  [
-  parameter: "Y"
+section: output [
+  information: "output Section"
+  type: "page"
 ]
-endsection: output
 
+  seqout: outfile  [
+    parameter: "Y"
+  ]
+
+endsection: output

@@ -1,11 +1,11 @@
-appl: ehmmindex [
-        doc: "Index an HMM database"
-        groups: "HMM"
-        gui: yes
-        batch: yes
-        cpu: medium
+application: ehmmindex [
+  documentation: "Index an HMM database"
+  groups: "HMM"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
 ]
 
-
-
-infile: infile [ param: Y ]
+infile: infile  [
+  parameter: "Y"
+]

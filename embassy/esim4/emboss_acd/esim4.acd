@@ -1,190 +1,196 @@
-# AJAX COMMAND DEFINITION (ACD) FILE
-# DRM 12 December 2001
-# The default value -1000000 is used for some variables to 
-# indicate that they were NOT specified on the command line
-# Inside the program this equates to ESIM4_NOVALUE
-
-appl: esim4 [
-	doc: "Align an mRNA to a genomic DNA sequence"
-	groups: "alignment"
+application: esim4 [
+  documentation: "Align an mRNA to a genomic DNA sequence"
+  groups: "alignment"
 ]
 
-  sequence: sequence [ 
-	param: Y 
-	type: dna 
-	prompt: "mRNA sequence" 
-  ]
+sequence: sequence  [
+  parameter: "Y"
+  type: "dna"
+  prompt: "mRNA sequence"
+]
 
-  seqall: genome [ 
-	param: Y 
-	type: dna 
-	prompt: "Genomic sequence" 
-  ]
+seqall: genome  [
+  parameter: "Y"
+  type: "dna"
+  prompt: "Genomic sequence"
+]
 
+outfile: outfile  [
+  parameter: "Y"
+]
 
-  outfile: outfile [
-	param: Y
-  ]
+integer: word  [
+  optional: "Y"
+  default: "12"
+  information: "(W) Sets the word size for blast hits. Default
+                value: 12."
+]
 
-  int: word [ 
-	opt: Y
-	def: 12 
-	info: "(W) Sets the word size for blast hits. Default value: 12."
-  ]
+integer: extend  [
+  optional: "Y"
+  default: "12"
+  information: "(X) Sets the word extension termination limit
+                for the blast-like stage of the algorithm. Default value:
+                12."
+]
 
-  int: extend [ 
-	opt: Y
-	def: 12 
-	info: "(X) Sets the word extension termination limit for
-the blast-like stage of the algorithm.  Default value: 12."
-  ]
+integer: cutoff  [
+  optional: "Y"
+  default: "3"
+  maximum: "10"
+  information: "(E) Sets the cutoff in range [3,10]."
+]
 
-  int: cutoff [ 
-	opt: Y
-	def: 3 
-	max: 10
-	info: "(E) Sets the cutoff in range [3,10]."
-  ]
-  
-  bool: usermspa [ 
-	opt: Y
-        def: N
-	info: "False: esim4 calculates mspA, True: value from mspA command line argument."
-  ]
+boolean: usermspa  [
+  optional: "Y"
+  default: "N"
+  information: "False: esim4 calculates mspA, True: value from
+                mspA command line argument."
+]
 
-  int: mspa [ 
-	opt: $(usermspA)
-        def: 16
-	info: "(K) MSP score threshold for the first stage of the algorithm."
-	help: "(K) MSP score threshold for the first stage of the algorithm.
-(If this option is not specified, the threshold is computed from the
-lengths of the sequences, using statistical criteria.) For example, a
-good value for genomic sequences in the range of a few hundred Kb is 16.
-To avoid spurious matches, however, a larger value may be needed for
-longer sequences."
-  ]
-       
-  bool: usermspb [ 
-	opt: Y
-        def: N
-	info: "False: esim4 calculates mspB, True:  value from mspB command line argument."
-  ]
+integer: mspa  [
+  optional: "$(usermspA)"
+  default: "16"
+  information: "(K) MSP score threshold for the first stage of
+                the algorithm."
+  help: "(K) MSP score threshold for the first stage of the algorithm.
+         (If this option is not specified, the threshold is computed from
+         the lengths of the sequences, using statistical criteria.) For
+         example, a good value for genomic sequences in the range of a few
+         hundred Kb is 16. To avoid spurious matches, however, a larger value
+         may be needed for longer sequences."
+]
 
-  int: mspb [ 
-	opt: $(usermspB)
-        req: $(usermspB)
-        def: 12
-	info: "(C) Sets the MSP score threshold during the second stage of the algorithm."
-        help: "(C) Sets the threshold for the MSP scores when aligning
-the as-yet-unmatched fragments, during the second stage of the
-algorithm. By default, the smaller of the constant 12 and a
-statistics-based threshold is chosen."
-  ]
+boolean: usermspb  [
+  optional: "Y"
+  default: "N"
+  information: "False: esim4 calculates mspB, True: value from
+                mspB command line argument."
+]
 
-  int: weight [ 
-	opt: Y
-        def: 0
-	info: "(H) Sets the weight value (undocumented).  0 uses a default, >0 is a value"
-  ]
+integer: mspb  [
+  optional: "$(usermspB)"
+  required: "$(usermspB)"
+  default: "12"
+  information: "(C) Sets the MSP score threshold during the
+                second stage of the algorithm."
+  help: "(C) Sets the threshold for the MSP scores when aligning the
+         as-yet-unmatched fragments, during the second stage of the
+         algorithm. By default, the smaller of the constant 12 and a
+         statistics-based threshold is chosen."
+]
 
-  int: diagonal [ 
-	opt: Y
-	def: 10
-	info: "(K) Sets the bound for the diagonal distance within consecutive MSPs in an exon."
-  ]
+integer: weight  [
+  optional: "Y"
+  default: "0"
+  information: "(H) Sets the weight value (undocumented). 0
+                uses a default, >0 is a value"
+]
 
-  string: strand [ 
-	opt: Y
-	def: both 
-	info: "(R) Align mRNA to specified genome strand(s)."
-	help: "(R) This determines the strand of the genome with which the mRNA will
-be aligned.  The default value is 'both', in which case both strands of the genome
-are attempted.  The other allowed modes are 'forward' and 'reverse'."
-  ]
-  
-  int: format [ 
-	opt: Y
-        minimum: 0
-        maximum: 5
-	def: 0 
-	info: "(A) Sets the output format"
-	help: "(A) Sets the output format.  Exon endpoints only (format=0), exon endpoints and
-boundaries of the coding region (CDS) in the genomic sequence, when
-specified for the input mRNA (-format=5), alignment text (-format=1),
-alignment in lav-block format (-format=2), or both exon endpoints and
-alignment text (-format=3 or -format=4). If a reverse complement match
-is found, -format=0,1,2,3,5 will give its position in the plus strand of
-the longer sequence and the minus strand of the shorter sequence.
--format=4 will give its position in the plus strand of the first
-sequence (mRNA) and the minus strand of the second sequence
-(genome), regardless of which sequence is longer. The -format=5 option
-can be used with the S command line option to specify the endpoints of
-the CDS in the mRNA, and produces output in the exons file format
-required by PipMaker." 
-  ]
-  
-  bool: cliptails [ 
-	opt: Y
-	def: N 
-	info: "(P) Trim poly-A tails" 
-        help: "(P) Trim poly-A tails.  Specifies whether or not the
-program should report the fragment of the alignment containing the
-poly-A tail (if found). By default (-nocliptails) the alignment is
-displayed as computed. When this feature is enabled (-cliptails), sim4
-will remove the poly-A tails and all format options will produce
-additional lav alignment headers."
-  ]
+integer: diagonal  [
+  optional: "Y"
+  default: "10"
+  information: "(K) Sets the bound for the diagonal distance
+                within consecutive MSPs in an exon."
+]
 
-  bool: smallexons [ 
-	opt: Y
-	def: N 
-	info: "(N) Search for small marginal exons" 
-	help: "(N) Requests an additional search for small marginal exons (N=1) guided
-by the splice-site recognition signals. This option can be used when
-a high accuracy match is expected. The default value is N=0,
-specifying no additional search. "
-  ]
+string: strand  [
+  optional: "Y"
+  default: "both"
+  information: "(R) Align mRNA to specified genome strand(s)."
+  help: "(R) This determines the strand of the genome with which the
+         mRNA will be aligned. The default value is 'both', in which case
+         both strands of the genome are attempted. The other allowed modes
+         are 'forward' and 'reverse'."
+]
 
-  bool: ambiguity [
-	opt: Y
-	def: Y 
-	info: "(B) Disallow ambiguity characters" 
-	help: "(B) Controls the set of characters allowed in the
-input sequences. By default (-ambiguity), ambiguity
-characters (ABCDGHKMNRSTVWXY) are allowed. By
-specifying -noambiguity, the set of acceptable
-characters is restricted to A,C,G,T,N and X
-only. "
-  ]
+integer: format  [
+  optional: "Y"
+  minimum: "0"
+  maximum: "5"
+  default: "0"
+  information: "(A) Sets the output format"
+  help: "(A) Sets the output format. Exon endpoints only (format=0),
+         exon endpoints and boundaries of the coding region (CDS) in the
+         genomic sequence, when specified for the input mRNA (-format=5),
+         alignment text (-format=1), alignment in lav-block format
+         (-format=2), or both exon endpoints and alignment text (-format=3 or
+         -format=4). If a reverse complement match is found,
+         -format=0,1,2,3,5 will give its position in the plus strand of the
+         longer sequence and the minus strand of the shorter sequence.
+         -format=4 will give its position in the plus strand of the first
+         sequence (mRNA) and the minus strand of the second sequence
+         (genome), regardless of which sequence is longer. The -format=5
+         option can be used with the S command line option to specify the
+         endpoints of the CDS in the mRNA, and produces output in the exons
+         file format required by PipMaker."
+]
 
-  string: cdsregion [ 
-	opt: Y
-	info: "(S) Define CDS ends in mRNA"
-	help: "(S) Allows the user to specify the endpoints of the CDS in the input
-mRNA, with the syntax: -cdsregion=n1..n2. This option is only available
-with the -format=5 flag, which produces output in the format required
-by PipMaker. Alternatively, the CDS coordinates could appear in
-a construct CDS=n1..n2 in the FastA header of the mRNA sequence.
-When the second file is an mRNA database, the command line
-specification for the CDS will apply to the first sequence in
-the file only. 
-"
-  ]
+boolean: cliptails  [
+  optional: "Y"
+  default: "N"
+  information: "(P) Trim poly-A tails"
+  help: "(P) Trim poly-A tails. Specifies whether or not the program
+         should report the fragment of the alignment containing the poly-A
+         tail (if found). By default (-nocliptails) the alignment is
+         displayed as computed. When this feature is enabled (-cliptails),
+         sim4 will remove the poly-A tails and all format options will
+         produce additional lav alignment headers."
+]
 
-  int: offseta [ 
-	opt: Y
-        info: "(f) Undocumented - some sort of offset in first sequence."
-  ]
-  int: offsetb [ 
-	opt: Y
-        info: "(F) Undocumented - some sort of offset in second sequence."
-  ]
-  int: toa [ 
-	opt: Y
-        info: "(t) Undocumented - offset end of first sequence?"
-  ]
-  int: tob [ 
-	opt: Y
-        info: "(T) Undocumented - offset end of second sequence?"
-  ]
+boolean: smallexons  [
+  optional: "Y"
+  default: "N"
+  information: "(N) Search for small marginal exons"
+  help: "(N) Requests an additional search for small marginal exons
+         (N=1) guided by the splice-site recognition signals. This option can
+         be used when a high accuracy match is expected. The default value
+         is N=0, specifying no additional search."
+]
 
+boolean: ambiguity  [
+  optional: "Y"
+  default: "Y"
+  information: "(B) Disallow ambiguity characters"
+  help: "(B) Controls the set of characters allowed in the input
+         sequences. By default (-ambiguity), ambiguity characters
+         (ABCDGHKMNRSTVWXY) are allowed. By specifying -noambiguity, the set
+         of acceptable characters is restricted to A,C,G,T,N and X only."
+]
+
+string: cdsregion  [
+  optional: "Y"
+  information: "(S) Define CDS ends in mRNA"
+  help: "(S) Allows the user to specify the endpoints of the CDS in
+         the input mRNA, with the syntax: -cdsregion=n1..n2. This option is
+         only available with the -format=5 flag, which produces output in the
+         format required by PipMaker. Alternatively, the CDS coordinates
+         could appear in a construct CDS=n1..n2 in the FastA header of the
+         mRNA sequence. When the second file is an mRNA database, the command
+         line specification for the CDS will apply to the first sequence in
+         the file only."
+]
+
+integer: offseta  [
+  optional: "Y"
+  information: "(f) Undocumented - some sort of offset in first
+                sequence."
+]
+
+integer: offsetb  [
+  optional: "Y"
+  information: "(F) Undocumented - some sort of offset in
+                second sequence."
+]
+
+integer: toa  [
+  optional: "Y"
+  information: "(t) Undocumented - offset end of first
+                sequence?"
+]
+
+integer: tob  [
+  optional: "Y"
+  information: "(T) Undocumented - offset end of second
+                sequence?"
+]

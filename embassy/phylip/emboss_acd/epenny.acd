@@ -1,102 +1,122 @@
-appl: epenny [
-    doc: "Penny algorithm, branch-and-bound to find all most parsimonious trees "
-    group: "phylip"
-   ]
-
-infile: infile [
-	param: Y
-	prompt: "data file" ]
-
-outfile: outfile [ 
-         param: Y
-         def: "epenny.outfile" ]
-
-list: method [ req: y min: 1 max: 1
-    header: "Method"
-    values: "Wag:Wagner;
-             Cam:Camin-Sokal;
-             Mix:Mixed;"
-    prompt: "Choose the method to use"
-    def: Wag
+application: epenny [
+  documentation: "Penny algorithm, branch-and-bound to find
+                  all most parsimonious trees"
+  groups: "phylip"
 ]
 
-int: numgroups [
-     opt: Y
-     info: "How many groups of  100 trees"
-     def: 1000 ]
+infile: infile  [
+  parameter: "Y"
+  prompt: "data file"
+]
 
-int: howoften [
-     opt: Y
-     info: "How often to report, in trees"
-     def: 100 ]
+outfile: outfile  [
+  parameter: "Y"
+  default: "epenny.outfile"
+]
 
-bool: simple [
-      opt: Y
-      info: "Branch and bound is simple" ]
+list: method  [
+  required: "y"
+  minimum: "1"
+  maximum: "1"
+  header: "Method"
+  values: "Wag:Wagner; Cam:Camin-Sokal; Mix:Mixed;"
+  prompt: "Choose the method to use"
+  default: "Wag"
+]
 
-bool: og [ 
-      opt: Y 
-      info: "Outgroup root" 
-      def: N ]
+integer: numgroups  [
+  optional: "Y"
+  information: "How many groups of 100 trees"
+  default: "1000"
+]
 
-int: outgnum [ 
-     req: "$(og)"
-     min: 1 
-     def: 1
-     info: "number of the outgroup" ]
+integer: howoften  [
+  optional: "Y"
+  information: "How often to report, in trees"
+  default: "100"
+]
 
-bool: thresh [
-      req: N
-      def: N
-      info: "Use Threshold parsimony" ]
+boolean: simple  [
+  optional: "Y"
+  information: "Branch and bound is simple"
+]
 
-float: valthresh [
-     req: "$(thresh)"
-     min: 1.0
-     def: 1.0
-     info: "threshold value" ]
+boolean: og  [
+  optional: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
 
-bool:  multsets [ 
-       opt: Y 
-       def: N 
-       info: "Analyze multiple data sets" ]
+integer: outgnum  [
+  required: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "number of the outgroup"
+]
 
-int: datasets [ 
-     req: "$(multsets)" 
-     info: "How many data sets" ]
+boolean: thresh  [
+  required: "N"
+  default: "N"
+  information: "Use Threshold parsimony"
+]
 
-bool: printdata [ 
-      opt: Y 
-      def: N 
-      info: "Print out the data at start of run" ]
+float: valthresh  [
+  required: "$(thresh)"
+  minimum: "1.0"
+  default: "1.0"
+  information: "threshold value"
+]
 
-bool: progress [ 
-      opt: Y 
-      def: N 
-      info: "Print indications of progress of run" ]
+boolean: multsets  [
+  optional: "Y"
+  default: "N"
+  information: "Analyze multiple data sets"
+]
 
-bool: steps [ 
-      opt: Y 
-      def: N
-      information: "Print out steps in each site" ]
+integer: datasets  [
+  required: "$(multsets)"
+  information: "How many data sets"
+]
 
-bool: seqatnodes [ 
-      opt: Y 
-      def: N
-      information: "Print sequences at all nodes of tree" ]
+boolean: printdata  [
+  optional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
 
-bool: drawtree [ 
-      opt: Y 
-      def: Y
-      information: "Draw tree" ]
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
 
-bool: trout [ 
-      param: Y 
-      def: Y
-      information: "Create a tree file" ]
+boolean: steps  [
+  optional: "Y"
+  default: "N"
+  information: "Print out steps in each site"
+]
 
-outfile: treefile [
-          req: "$(trout)" 
-          def: "epenny.treefile"
-          info: "Tree file name" 
-          prompt: "Output treefile name" ]
+boolean: seqatnodes  [
+  optional: "Y"
+  default: "N"
+  information: "Print sequences at all nodes of tree"
+]
+
+boolean: drawtree  [
+  optional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
+
+boolean: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
+
+outfile: treefile  [
+  required: "$(trout)"
+  default: "epenny.treefile"
+  information: "Tree file name"
+  prompt: "Output treefile name"
+]

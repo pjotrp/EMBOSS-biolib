@@ -1,121 +1,181 @@
-appl: ehmmbuild [
-        doc: "Build HMM"
-        groups: "HMM"
-        gui: yes
-        batch: yes
-        cpu: medium
+application: ehmmbuild [
+  documentation: "Build HMM"
+  groups: "HMM"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
 ]
 
-
-seqset: sequences [
-	param: Y
+seqset: sequences  [
+  parameter: "Y"
 ]
 
-list: strategy [
-	req: N
-	default: "L"
-	minimum: "1"
-	maximum: "1"
-	values: "M:multiple,L:local,G:global"
-	delimiter: ","
-	codedelim: ":"
-	header: "Local/Global preference"
-	prompt: "Select preference"
-	button: "Y"
+list: strategy  [
+  required: "N"
+  default: "L"
+  minimum: "1"
+  maximum: "1"
+  values: "M:multiple,L:local,G:global"
+  delimiter: ","
+  codedelimiter: ":"
+  header: "Local/Global preference"
+  prompt: "Select preference"
+  button: "Y"
 ]
 
-string: name [ req: N def: "Ehmm" info: "Name for the HMM"
+string: name  [
+  required: "N"
+  default: "Ehmm"
+  information: "Name for the HMM"
 ]
 
-string: resave [ req: N def: "" info: "Resave selex file"
+string: resave  [
+  required: "N"
+  default: ""
+  information: "Resave selex file"
 ]
 
-bool: append [ req: N def: N info: "Append to file"
+boolean: append  [
+  required: "N"
+  default: "N"
+  information: "Append to file"
 ]
 
-bool: force [ req: N def: N info: "Force overwriting"
+boolean: force  [
+  required: "N"
+  default: "N"
+  information: "Force overwriting"
 ]
 
-bool: amino [ req: N def: N info: "Treat as protein"
+boolean: amino  [
+  required: "N"
+  default: "N"
+  information: "Treat as protein"
 ]
 
-bool: nucleic [ req: N def: N info: "Treat as dna"
+boolean: nucleic  [
+  required: "N"
+  default: "N"
+  information: "Treat as dna"
 ]
 
-float: archpri [ req: N def: 0.85 info: "Architecture prior"
+float: archpri  [
+  required: "N"
+  default: "0.85"
+  information: "Architecture prior"
 ]
 
-bool: binary [ req: N def: N info: "Write HMM as binary"
+boolean: binary  [
+  required: "N"
+  default: "N"
+  information: "Write HMM as binary"
 ]
 
-string: cfile [ req: N def: "" info: "Emission and transition count file"
+string: cfile  [
+  required: "N"
+  default: ""
+  information: "Emission and transition count file"
 ]
 
-list: cstrategy [
-	req: N
-	default: "F"
-	minimum: "1"
-	maximum: "1"
-	values: "F:Fast,H:Hand"
-	delimiter: ","
-	codedelim: ":"
-	header: "Fast or by hand"
-	prompt: "Select strategy"
-	button: "Y"
+list: cstrategy  [
+  required: "N"
+  default: "F"
+  minimum: "1"
+  maximum: "1"
+  values: "F:Fast,H:Hand"
+  delimiter: ","
+  codedelimiter: ":"
+  header: "Fast or by hand"
+  prompt: "Select strategy"
+  button: "Y"
 ]
 
-bool: fast [ req: N def: N info: "Work in fast mode"
+boolean: fast  [
+  required: "N"
+  default: "N"
+  information: "Work in fast mode"
 ]
 
-float: gapmax [ req: N def: 0.5 info: "Fast mode control"
+float: gapmax  [
+  required: "N"
+  default: "0.5"
+  information: "Fast mode control"
 ]
 
-bool: hand [ req: N def: N info: "specify model by hand"
+boolean: hand  [
+  required: "N"
+  default: "N"
+  information: "specify model by hand"
 ]
 
-float: idlevel [ req: N def: 0.62 info: "Cutoff ID threhold"
+float: idlevel  [
+  required: "N"
+  default: "0.62"
+  information: "Cutoff ID threhold"
 ]
 
-bool: efficiency [ req: N def: Y info: "Be efficient"
+boolean: efficiency  [
+  required: "N"
+  default: "Y"
+  information: "Be efficient"
 ]
 
-string: null [ req: N def: "" info: "NULL model file"
+string: null  [
+  required: "N"
+  default: ""
+  information: "NULL model file"
 ]
 
-string: pam [ req: N def: "" info: "PAM file"
+string: pam  [
+  required: "N"
+  default: ""
+  information: "PAM file"
 ]
 
-float: pamweight [ req: N def: 20.0 info: "Weighting for PAM"
+float: pamweight  [
+  required: "N"
+  default: "20.0"
+  information: "Weighting for PAM"
 ]
 
-string: prior [ req: N def: "" info: "Prior file"
+string: prior  [
+  required: "N"
+  default: ""
+  information: "Prior file"
 ]
 
-float: swentry [ req: N def: 0.5
-	info: "Probability control for local entries"
+float: swentry  [
+  required: "N"
+  default: "0.5"
+  information: "Probability control for local entries"
 ]
 
-float: swexit [ req: N def: 0.5
-	info: "Probability control for exits"
+float: swexit  [
+  required: "N"
+  default: "0.5"
+  information: "Probability control for exits"
 ]
 
-bool: more [ req: N def: N info: "Verbosity"
+boolean: more  [
+  required: "N"
+  default: "N"
+  information: "Verbosity"
 ]
 
-list: weighting [
-	req: N
-	default: "G"
-	minimum: "1"
-	maximum: "1"
-	values: "B:Blosum,G:Gerstein/Sonnhammer/Chothia,K:Krogh/Mitchison,N:None,V:Voronoi"
-	delimiter: ","
-	codedelim: ":"
-	header: "Weighting method"
-	prompt: "Select weighting"
-	button: "Y"
+list: weighting  [
+  required: "N"
+  default: "G"
+  minimum: "1"
+  maximum: "1"
+  values:
+           "B:Blosum,G:Gerstein/Sonnhammer/Chothia,K:Krogh/Mitchison,N:None,V:Voronoi"
+  delimiter: ","
+  codedelimiter: ":"
+  header: "Weighting method"
+  prompt: "Select weighting"
+  button: "Y"
 ]
 
-
-
-outfile: outfile [ param: Y
+outfile: outfile  [
+  parameter: "Y"
 ]
