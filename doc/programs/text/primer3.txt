@@ -400,9 +400,7 @@ Command line arguments
                                   information on the number of oligos and
                                   primer pairs that Primer3 examined, and
                                   statistics on the number discarded for
-                                  various reasons. If -format-output is set
-                                  similar information is produced in the
-                                  user-oriented output.
+                                  various reasons.
    -fileflag           bool       If the associated value is non-0, then
                                   Primer3 creates two output files for each
                                   input SEQUENCE. File .for lists
@@ -493,12 +491,12 @@ Command line arguments
                                   gap. Only single-base-pair gaps are allowed.
                                   For example, the alignment
                                   5' ATCGNA 3'
-                                  || | |
+                                  ...|| | |
                                   3' TA-CGT 5'
                                   is allowed (and yields a score of 1.75), but
                                   the alignment
                                   5' ATCCGNA 3'
-                                  || | |
+                                  ...|| | |
                                   3' TA--CGT 5'
                                   is not considered. Scores are non-negative,
                                   and a score of 0.00 indicates that there is
@@ -514,12 +512,12 @@ Command line arguments
                                   the likelihood of PCR-priming primer-dimers,
                                   for example
                                   5' ATGCCCTAGCTTCCGGATG 3'
-                                  ||| |||||
-                                  3' AAGTCCTACATTTAGCCTAGT 5'
+                                  .............||| |||||
+                                  ..........3' AAGTCCTACATTTAGCCTAGT 5'
                                   or
-                                  5` AGGCTATGGGCCTCGCGA 3'
-                                  ||||||
-                                  3' AGCGCTCCGGGTATCGGA 5'
+                                  5' AGGCTATGGGCCTCGCGA 3'
+                                  ...............||||||
+                                  ............3' AGCGCTCCGGGTATCGGA 5'
                                   The scoring system is as for the Maximum
                                   Complementarity argument. In the examples
                                   above the scores are 7.00 and 6.00
@@ -825,8 +823,7 @@ Command line arguments
    RIGHT-EXPLAIN, and INTERNAL-OLIGO-EXPLAIN output tags, which are
    intended to provide information on the number of oligos and primer
    pairs that Primer3 examined, and statistics on the number discarded
-   for various reasons. If -format-output is set similar information is
-   produced in the user-oriented output. Yes/No No
+   for various reasons. Yes/No No
    -fileflag If the associated value is non-0, then Primer3 creates two
    output files for each input SEQUENCE. File .for lists all acceptable
    forward primers for , and .rev lists all acceptable reverse primers
@@ -885,8 +882,8 @@ Command line arguments
    system gives 1.00 for complementary bases, -0.25 for a match of any
    base (or N) with an N, -1.00 for a mismatch, and -2.00 for a gap. Only
    single-base-pair gaps are allowed. For example, the alignment 5'
-   ATCGNA 3' || | | 3' TA-CGT 5' is allowed (and yields a score of 1.75),
-   but the alignment 5' ATCCGNA 3' || | | 3' TA--CGT 5' is not
+   ATCGNA 3' ...|| | | 3' TA-CGT 5' is allowed (and yields a score of
+   1.75), but the alignment 5' ATCCGNA 3' ...|| | | 3' TA--CGT 5' is not
    considered. Scores are non-negative, and a score of 0.00 indicates
    that there is no reasonable local alignment between two oligos. Number
    from 0.000 to 9999.990 8.00
@@ -895,9 +892,10 @@ Command line arguments
    allowable 3'-anchored global alignment score when testing for
    complementarity between forward and reverse primers. The 3'-anchored
    global alignment score is taken to predict the likelihood of
-   PCR-priming primer-dimers, for example 5' ATGCCCTAGCTTCCGGATG 3' |||
-   ||||| 3' AAGTCCTACATTTAGCCTAGT 5' or 5` AGGCTATGGGCCTCGCGA 3' ||||||
-   3' AGCGCTCCGGGTATCGGA 5' The scoring system is as for the Maximum
+   PCR-priming primer-dimers, for example 5' ATGCCCTAGCTTCCGGATG 3'
+   .............||| ||||| ..........3' AAGTCCTACATTTAGCCTAGT 5' or 5'
+   AGGCTATGGGCCTCGCGA 3' ...............|||||| ............3'
+   AGCGCTCCGGGTATCGGA 5' The scoring system is as for the Maximum
    Complementarity argument. In the examples above the scores are 7.00
    and 6.00 respectively. Scores are non-negative, and a score of 0.00
    indicates that there is no reasonable 3'-anchored global alignment
@@ -960,40 +958,79 @@ Output file format
    
 # PRIMER3 RESULTS FOR HSFAU1
 
+# FORWARD PRIMER STATISTICS:
+# considered 18855
+# GC content failed 156
+# low tm 3616
+# high tm 11295
+# high any compl 1
+# high end compl 1
+# long poly-x seq 45
+# ok 3741
+
+# REVERSE PRIMER STATISTICS:
+# considered 18706
+# GC content failed 161
+# low tm 3580
+# high tm 11241
+# long poly-x seq 66
+# ok 3658
+
+# PRIMER PAIR STATISTICS:
+# considered 188
+# unacceptable product size 169
+# high end compl 4
+# ok 15
+
 #                      Start  Len   Tm     GC%   Sequence
 
    1 PRODUCT SIZE: 289
      FORWARD PRIMER    1725   20  59.96  55.00  AGGGAAGGGATGCTAGGTGT
 
-     REVERSE PRIMER    2013   20  59.99  55.00  AGAAGCACACCTCTCCCTGA
+     REVERSE PRIMER    1994   20  59.99  55.00  AGAAGCACACCTCTCCCTGA
 
 
-   2 PRODUCT SIZE: 288
+   2 PRODUCT SIZE: 290
      FORWARD PRIMER    1725   20  59.96  55.00  AGGGAAGGGATGCTAGGTGT
 
-     REVERSE PRIMER    2012   20  59.99  60.00  GAAGCACACCTCTCCCTGAG
+     REVERSE PRIMER    1995   20  59.99  60.00  GAGAAGCACACCTCTCCCTG
 
 
-   3 PRODUCT SIZE: 286
+   3 PRODUCT SIZE: 288
+     FORWARD PRIMER    1725   20  59.96  55.00  AGGGAAGGGATGCTAGGTGT
+
+     REVERSE PRIMER    1993   20  59.99  60.00  GAAGCACACCTCTCCCTGAG
+
+
+   4 PRODUCT SIZE: 286
      FORWARD PRIMER    1728   20  60.07  55.00  GAAGGGATGCTAGGTGTGGA
 
-     REVERSE PRIMER    2013   20  59.99  55.00  AGAAGCACACCTCTCCCTGA
+     REVERSE PRIMER    1994   20  59.99  55.00  AGAAGCACACCTCTCCCTGA
 
 
-   4 PRODUCT SIZE: 284
+   5 PRODUCT SIZE: 284
      FORWARD PRIMER    1731   20  60.07  55.00  GGGATGCTAGGTGTGGAAGA
 
-     REVERSE PRIMER    2014   20  59.99  60.00  GAGAAGCACACCTCTCCCTG
+     REVERSE PRIMER    1995   20  59.99  60.00  GAGAAGCACACCTCTCCCTG
+
 
      _________________________________________________________________
    
-   Headers describing the input file name and the names of the outp[ut
+   If the '-explain' flag has been used, as in the example, then
+   statistics are output describing the number of primers that were
+   considered and rejected for various reasons.
+   
+   Headers describing the input file name and the names of the output
    columns are displayed.
    
    The best 5 primer pairs are displayed with the product size.
    
    The reverse sequence is displayed as the reverse complement to the
    input forward sense sequence.
+   
+   The 'Start' positions are given counting from the start of the
+   sequence for both the forward and reverse primer (and for the internal
+   oligos).
    
 Data files
 
@@ -1031,6 +1068,7 @@ See also
 
    Program name Description
    prima Selects primers for PCR and DNA amplification
+   primers Simple version of primer3 to pick PCR primers
    primersearch Searches DNA sequences for matches with primer pairs
    stssearch Searches a DNA database for matches with a set of STS
    primers
