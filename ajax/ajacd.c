@@ -337,7 +337,8 @@ static AjBool acdIsParam (char* arg, AjPStr* param, ajint* iparam,
 static ajint acdIsQual (char* arg, char* arg2, ajint *iparam, AjPStr *pqual,
                       AjPStr *pvalue, ajint* number, AcdPAcd* acd);
 static AjBool acdValIsBool (char* arg);
-static void acdQualParse (AjPStr* pqual, AjPStr* pqmaster, ajint* number);
+static void acdQualParse (AjPStr* pqual, AjPStr* pnoqual, AjPStr* pqmaster,
+			  ajint* number);
 static void acdTokenToLower (char *token, ajint* number);
 static void acdNoComment (AjPStr* text);
 static AjPStr acdParseValue (AjPStrTok* tokenhandle, char* delim);
@@ -355,7 +356,7 @@ static void acdTestUnknown (AjPStr name, AjPStr token, ajint pnum);
 static void acdTestAssoc (AjPStr name);
 static AjBool acdTestQualC (char *name);
 static AcdPAcd acdFindAcd (AjPStr name, AjPStr token, ajint pnum);
-static AcdPAcd acdFindAssoc (AcdPAcd thys, AjPStr name);
+static AcdPAcd acdFindAssoc (AcdPAcd thys, AjPStr name, AjPStr altname);
 static ajint acdAttrCount (ajint itype);
 static ajint acdAttrKeyCount (ajint ikey);
 static ajint acdAttrListCount (AcdPAttr attr);
@@ -413,11 +414,12 @@ static AjPStr acdAttrValue (AcdPAcd thys, char *attrib);
 static AjBool acdAttrValueStr (AcdPAcd thys, char *attrib, char* def,
 			       AjPStr *str);
 static AcdPAcd acdFindItem (AjPStr item, ajint number);
-static AcdPAcd acdFindQual (AjPStr qual, AjPStr master,
+static AcdPAcd acdFindQual (AjPStr qual, AjPStr noqual, AjPStr master,
 			    ajint PNum, ajint *iparam);
-static AcdPAcd acdFindQualMaster (AjPStr qual, AjPStr master,
+static AcdPAcd acdFindQualMaster (AjPStr qual, AjPStr noqual, AjPStr master,
 				  ajint PNum);
-static AcdPAcd acdFindQualAssoc (AcdPAcd pa, AjPStr qual, ajint pnum);
+static AcdPAcd acdFindQualAssoc (AcdPAcd pa, AjPStr qual, AjPStr noqual,
+				 ajint PNum);
 static AcdPAcd acdFindParam (ajint PNum);
 static ajint acdNextParam (ajint pnum);
 static AjBool acdIsParamValue (AjPStr pval);
@@ -2671,11 +2673,13 @@ static AcdPAcd acdFindAcd (AjPStr name, AjPStr token, ajint pnum)
 **
 ** @param [r] thys [AcdPAcd] ACD object for the parameter
 ** @param [r] name [AjPStr] Token name to be used by applications
+** @param [r] altname [AjPStr] Alternative token name (e.g. qualifier
+**            with "no" prefix removed)
 ** @return [AcdPAcd] ACD object for the selected qualifier
 ** @@
 ******************************************************************************/
 
-static AcdPAcd acdFindAssoc (AcdPAcd thys, AjPStr name)
+static AcdPAcd acdFindAssoc (AcdPAcd thys, AjPStr name, AjPStr noname)
 {
     AcdPAcd pa;
     ajint ifound=0;
@@ -2684,11 +2688,13 @@ static AcdPAcd acdFindAssoc (AcdPAcd thys, AjPStr name)
 
     (void) ajStrAssC(&ambigList, "");
 
-    for (pa=thys->AssocQuals; pa->Assoc; pa=pa->Next)
+    for (pa=thys->AssocQuals; pa && pa->Assoc; pa=pa->Next)
     {
-	if (ajStrPrefix(pa->Name, name))
+	if (ajStrPrefix(pa->Name, name) ||
+	    ajStrPrefix(pa->Name, noname))
 	{
-	    if (ajStrMatch(pa->Name, name))
+	    if (ajStrMatch(pa->Name, name) ||
+		ajStrMatch(pa->Name, noname))
 		return pa;
 	    ifound++;
 	    ret = pa;
@@ -2713,7 +2719,7 @@ static AcdPAcd acdFindAssoc (AcdPAcd thys, AjPStr name)
 /* @funcstatic acdTestQualC ***************************************************
 **
 ** Tests whether "name" is a valid qualifier name.
-** To be valid, it must begin with "-".
+** To be valid, it must begin with "-" or '/'.
 ** If not, it can be taken as a value for the previous qualifier
 **
 ** @param [r] name [char*] Qualifier name
@@ -2724,6 +2730,7 @@ static AcdPAcd acdFindAssoc (AcdPAcd thys, AjPStr name)
 static AjBool acdTestQualC (char *name)
 {
     static AjPStr  qstr = NULL;
+    static AjPStr  qnostr = NULL;
     static AjPStr  qmaster = NULL;
     AcdPAcd pa;
     AcdPAcd qa;
@@ -2737,18 +2744,23 @@ static AjBool acdTestQualC (char *name)
 
     ajDebug ("acdTestQualC '%s'\n", name);
 
-    if (*name != '-')
-	return ajFalse;
+    if (*name != '-' && *name != '/' && !strstr(name, "="))
+	return ajFalse;		/* not a qualifier name */
 
-    (void) ajStrAssC (&qstr, name+1);
+    (void) ajStrAssC (&qstr, name+1); /* lose the - or / prefix */
 
     i = ajStrFindC(qstr, "=");		/* qualifier with value */
     if (i > 0)
 	(void) ajStrSub(&qstr, 0, i-1);	/* strip any value and keep testing */
 
-    acdQualParse (&qstr, &qmaster, &qnum);
+    if (ajStrPrefixC(qstr, "no")) /* check for -no qualifiers */
+      ajStrAssSub(&qnostr, qstr, 2, -1);
+    else
+      ajStrAssC (&qnostr, "");
 
-    if (ajStrLen(qmaster))
+    acdQualParse (&qstr, &qnostr, &qmaster, &qnum);
+
+    if (ajStrLen(qmaster))	/* master qualifier was specified */
     {
 	for (pa=acdList; pa; pa=pa->Next)
 	{
@@ -2756,7 +2768,7 @@ static AjBool acdTestQualC (char *name)
 	    if (ajStrMatch (pa->Name, qmaster))
 	    {
 		ajDebug ("  *master matched* '%S'\n", pa->Name);
-		qa = acdFindAssoc(pa, qstr);
+		qa = acdFindAssoc(pa, qstr, qnostr);
 		if (qa)
 		    return ajTrue;
 		else
@@ -2773,7 +2785,7 @@ static AjBool acdTestQualC (char *name)
 
 	if (ifound == 1)
 	{
-	    qa = acdFindAssoc(savepa, qstr);
+	    qa = acdFindAssoc(savepa, qstr, qnostr);
 	    if (qa)
 		return ajTrue;
 	    else
@@ -2786,7 +2798,7 @@ static AjBool acdTestQualC (char *name)
 	    (void) ajStrDelReuse(&ambigList);
 	}
     }
-    else
+    else			/* just qualifier name */
     {
 	for (pa=acdList; pa; pa=pa->Next)
 	{
@@ -7551,7 +7563,7 @@ static AjBool acdGetValueAssoc (AcdPAcd thys, char *token, AjPStr *result) {
   if (pnum)
     ajFatal("associated token '%s' is numbered - not allowed\n");
 
-  for (pa=thys->AssocQuals; pa->Assoc; pa=pa->Next) {
+  for (pa=thys->AssocQuals; pa && pa->Assoc; pa=pa->Next) {
     if (ajStrMatchC(pa->Token, token)) {
       (void) ajStrAssS(result, pa->ValStr);
       return pa->Defined;
@@ -9000,7 +9012,7 @@ static void acdHelpAssocTable (AcdPAcd thys, AjPList tablist, char flag) {
   acdLog ("++ type %d quals %x\n", thys->Type, quals);
 
   i=0;
-  for (pa=thys->AssocQuals; pa->Assoc; pa=pa->Next) {
+  for (pa=thys->AssocQuals; pa && pa->Assoc; pa=pa->Next) {
       acdLog ("++ assoc[%d].Name %S\n", i, pa->Name);
       AJNEW0 (item);
       if (thys->PNum)
@@ -9244,7 +9256,7 @@ static AjBool acdSet (AcdPAcd thys, AjPStr* attrib, AjPStr value) {
   else {			/* recursion with associated qualifiers */
     aqual = NULL;
     if (thys->AssocQuals)
-      aqual = acdFindAssoc(thys, *attrib);
+      aqual = acdFindAssoc(thys, *attrib, NULL);
     if (!aqual)
       ajFatal ("attribute %S unknown\n", *attrib );
     /*(void) ajStrAssC(&defattrib, "default");
@@ -9293,7 +9305,7 @@ static AjBool acdSetKey (AcdPAcd thys, AjPStr* attrib, AjPStr value) {
   else {			/* recursion with associated qualifiers */
     aqual = NULL;
     if (thys->AssocQuals)
-      aqual = acdFindAssoc(thys, *attrib);
+      aqual = acdFindAssoc(thys, *attrib, NULL);
     if (!aqual)
       ajFatal ("attribute %S unknown\n", *attrib );
     (void) ajStrAssC(&defattrib, "default");
@@ -9392,7 +9404,7 @@ static AjBool acdSetQualDefBool (AcdPAcd thys, char* name, AjBool value) {
   AcdPAcd acd;
 
   (void) ajStrAssC (&qname, name);
-  acd = acdFindQualAssoc (thys, qname, 0);
+  acd = acdFindQualAssoc (thys, qname, NULL, 0);
   if (!acd) return ajFalse;
 
   attrstr = acd->DefStr;
@@ -9426,7 +9438,7 @@ static AjBool acdSetQualDefInt (AcdPAcd thys, char* name, ajint value) {
   AcdPAcd acd;
 
   (void) ajStrAssC (&qname, name);
-  acd = acdFindQualAssoc (thys, qname, 0);
+  acd = acdFindQualAssoc (thys, qname, NULL, 0);
   if (!acd) return ajFalse;
 
   attrstr = acd->DefStr;
@@ -11367,7 +11379,7 @@ static void acdArgsParse (ajint argc, char *argv[]) {
           for (itestparam = acd->PNum+1; itestparam <= acdNParam;
 	       itestparam++) {
 	    acdLog ("test [%d] '%S'\n", itestparam, qual);
-            acd = acdFindQual (qual, NULL, itestparam, &jtestparam);
+            acd = acdFindQual (qual, NULL, NULL, itestparam, &jtestparam);
             if (acd) {
               (void) acdDef (acd, value);
               acdLog ("set next qualifier -%S[%d] (param %d) = %S\n",
@@ -11545,7 +11557,10 @@ static ajint acdIsQual (char* arg, char* arg2, ajint *iparam, AjPStr *pqual,
   AjBool gotvalue = ajFalse;
   AjBool ismissing = ajFalse;
   AjBool qstart = ajFalse;
+  AjBool nullok = ajFalse;
+  AjBool attrok = ajFalse;
   static AjPStr qmaster = NULL;
+  static AjPStr noqual = NULL;
 
   *number = 0;
 
@@ -11567,42 +11582,42 @@ static ajint acdIsQual (char* arg, char* arg2, ajint *iparam, AjPStr *pqual,
   ret = 1;
   (void) ajStrAssC (pqual, cp);	/* qualifier with '-' or '/' removed */
 
+
   /*
-  ** qualifiers starting 'no' are boolean 'no'
+  ** pqual could be
+  ** qualname (unless boolean, look for next arg as the value)
+  ** qualname=value (value as part of arg)
+  ** noqualname (boolean negative, or nullok set to empty string
   */
 
-  if (qstart && ajStrPrefixC(*pqual, "no")) { /* boolean prefix */
-    acdQualParse (pqual, &qmaster, number);
-    (void) ajStrSub(pqual, 2, -1);
-    (void) ajStrAssC(pvalue, "N");
+  /*
+  ** First check whether we have a value (set gotvalue) in the first arg
+  */
+
+  i = ajStrFindC(*pqual, "=");
+  if (i >= 0) {
+    (void) ajStrAssSub(pvalue, *pqual, (i+1), -1);
+
+    ajDebug("qualifier value '%S' '%S' %d .. %d\n",
+	    *pvalue, *pqual, (i+1), -1);
+    (void) ajStrSub (pqual, 0, (i-1));
     gotvalue = ajTrue;
   }
-
   else {
-    i = ajStrFindC(*pqual, "=");
-    if (i >= 0) {
-      (void) ajStrAssSub(pvalue, *pqual, (i+1), -1);
-
-      ajDebug("qualifier value '%S' '%S' %d .. %d\n",
-	      *pvalue, *pqual, (i+1), -1);
-      (void) ajStrSub (pqual, 0, (i-1));
-      gotvalue = ajTrue;
-    }
-    else {
-      if (!qstart)		/* no start, no "=" */
-	return 0;
-      if (!ajStrIsAlnum(*pqual))
-	return 0;
-    }
-    acdQualParse (pqual, &qmaster, number);
+    if (!qstart)		/* no start, no "=" assume it's a parameter */
+      return 0;
+    if (!ajStrIsAlnum(*pqual))	/* funny characters, fail */
+      return 0;
   }
 
-  if (ajStrLen(qmaster))	/* specific master, turn off auto processing */
-    acdMasterQual = NULL;
+  acdQualParse (pqual, &noqual, &qmaster, number);
 
-  if (acdMasterQual) {
+  if (ajStrLen(qmaster))	/* specific master, turn off auto processing */
+    acdMasterQual = NULL;	/* qmaster resets this in acdFindQual below */
+
+  if (acdMasterQual) {		/* we are still working with a master */
     acdLog ("(a) master, try associated with acdFindQualAssoc\n");
-    *acd = acdFindQualAssoc (acdMasterQual, *pqual, *number);
+    *acd = acdFindQualAssoc (acdMasterQual, *pqual, noqual, *number);
     if (!*acd) {
       acdLog ("acdMasterQual cleared, was -%S\n", acdMasterQual->Name);
       acdMasterQual = NULL;
@@ -11616,25 +11631,53 @@ static ajint acdIsQual (char* arg, char* arg2, ajint *iparam, AjPStr *pqual,
 
   if (!acdMasterQual) {
     acdLog ("(b) no master, general test with acdFindQual\n");
-    *acd = acdFindQual (*pqual, qmaster, *number, iparam);
+    *acd = acdFindQual (*pqual, noqual, qmaster, *number, iparam);
   }
 
   if (!*acd)
     ajFatal ("unknown qualifier %s\n", arg);
 
-  if ((*acd)->AssocQuals) {
+  if ((*acd)->AssocQuals) {	/* this one is a new master */
     acdLog ("acdMasterQual set to -%S\n", (*acd)->Name);
     acdMasterQual = *acd;
   }
 
-
-  if (!gotvalue) {
+  if (gotvalue) {
+    if (ajStrPrefix ((*acd)->Name, noqual)) { /* we have a -noqual matched */
+      ajFatal ("'no' prefix used with value for %s\n", arg);
+    }
+  }
+  else {
     acdLog ("testing for a value\n");
 
     /*
     ** Bool qualifiers can have no value
     ** or can be followed by a valid Bool value
     */
+
+    if (ajStrPrefix ((*acd)->Name, noqual)) { /* we have a -noqual matched */
+      acdLog ("we matched with -no\n");
+      if (!strcmp(acdType[acdListCurr->Type].Name, "boolean")) { /* -nobool */
+	acdLog ("-no%S=N boolean accepted\n", noqual);
+	gotvalue = ajTrue;
+	ret = 1;
+	ajStrAssC(pvalue, "N");
+	return ret;
+      }
+      attrok = acdAttrToBool(*acd, "nullok", /* -no for null value */
+			     ajFalse, &nullok);
+      acdLog ("check for nullok, found:%B value:%B\n", attrok, nullok);
+      if (nullok) {
+	acdLog ("-no%S='' nullOK accepted\n", noqual);
+	gotvalue = ajTrue;
+	ret = 1;
+	ajStrAssC(pvalue, "");
+	return ret;
+      }
+      else {			/* oops: -no prefix not allowed  */
+	  ajFatal ("'no' prefix invalid for %s\n", arg);
+      }
+    }
 
     if (!strcmp(acdType[acdListCurr->Type].Name, "boolean")) {
       if (acdValIsBool(arg2)) {	/* bool value, accept */
@@ -11794,6 +11837,8 @@ static AcdPAcd acdFindItem (AjPStr item, ajint number) {
 ** General qualifiers have no specified number and can match at any time.
 **
 ** @param [r] qual [AjPStr] Qualifier name
+** @param [r] noqual [AjPStr] Alternative qualifier name
+**        (qual with "no" prefix removed, or empty, or NULL)
 ** @param [rN] master [AjPStr] Master qualifier name
 ** @param [r] PNum [ajint] Qualifier number (zero if a general qualifier)
 ** @param [u] iparam [ajint*]  Current parameter number
@@ -11801,7 +11846,7 @@ static AcdPAcd acdFindItem (AjPStr item, ajint number) {
 ** @@
 ******************************************************************************/
 
-static AcdPAcd acdFindQual (AjPStr qual, AjPStr master,
+static AcdPAcd acdFindQual (AjPStr qual, AjPStr noqual, AjPStr master,
 			    ajint PNum, ajint *iparam) {
 
   /* test for match of parameter number and type */
@@ -11820,19 +11865,20 @@ static AcdPAcd acdFindQual (AjPStr qual, AjPStr master,
 
   if (ajStrLen(master)) {
     *iparam = 0;
-    return acdFindQualMaster (qual, master, PNum);
+    return acdFindQualMaster (qual, noqual, master, PNum);
   }
 
   (void) ajStrAssC(&ambigList, "");
 
-  acdLog ("acdFindQual '%S' PNum: %d iparam: %d\n",
-     qual, PNum, *iparam);
+  acdLog ("acdFindQual '%S' (%S) PNum: %d iparam: %d\n",
+     qual, noqual, PNum, *iparam);
 
   for (pa=acdList; pa; pa=pa->Next) {
     if (acdIsStype(pa)) continue;
     found = ajFalse;
     if (pa->Level == ACD_QUAL) {
-      if (ajStrPrefix (pa->Name, qual)) {
+      if (ajStrPrefix (pa->Name, qual) ||
+	  ajStrPrefix (pa->Name, noqual)) {
 	acdLog ("..matched qualifier '%S' [%d]\n", pa->Name, pa->PNum);
 	if (PNum) {               /* -begin2 forces match to #2 */
 	  if (PNum == pa->PNum) {
@@ -11852,7 +11898,8 @@ static AcdPAcd acdFindQual (AjPStr qual, AjPStr master,
           found = ajTrue;
 	}
 	if (found) {
-	  if (ajStrMatch (pa->Name, qual)) {
+	  if (ajStrMatch (pa->Name, qual) ||
+	      ajStrMatch (pa->Name, noqual)) {
 	    acdListCurr = pa;
 	    return pa;
 	  }
@@ -11864,9 +11911,11 @@ static AcdPAcd acdFindQual (AjPStr qual, AjPStr master,
       }
     }
     else if (pa->Level == ACD_PARAM) {
-      if (ajStrPrefix (pa->Name, qual)) {
+      if (ajStrPrefix (pa->Name, qual) ||
+	  ajStrPrefix (pa->Name, noqual)) {
 	acdLog ("..matched param '%S' [%d]\n", pa->Name, pa->PNum);
-	if (ajStrMatch (pa->Name, qual)) {
+	if (ajStrMatch (pa->Name, qual) ||
+	    ajStrMatch (pa->Name, noqual)) {
 	  acdListCurr = pa;
 	  *iparam = pa->PNum;
 	  return pa;
@@ -11902,13 +11951,15 @@ static AcdPAcd acdFindQual (AjPStr qual, AjPStr master,
 ** General qualifiers have no specified number and can match at any time.
 **
 ** @param [r] qual [AjPStr] Qualifier name
+** @param [r] noqual [AjPStr] Alternative qualifier name
+**        (qual with "no" prefix removed, or empty, or NULL)
 ** @param [rN] master [AjPStr] Master qualifier name
 ** @param [r] PNum [ajint] Qualifier number (zero if a general qualifier)
 ** @return [AcdPAcd] ACD item for qualifier
 ** @@
 ******************************************************************************/
 
-static AcdPAcd acdFindQualMaster (AjPStr qual, AjPStr master,
+static AcdPAcd acdFindQualMaster (AjPStr qual, AjPStr noqual, AjPStr master,
 				  ajint PNum) {
 
   /* test for match of parameter number and type */
@@ -11926,8 +11977,8 @@ static AcdPAcd acdFindQualMaster (AjPStr qual, AjPStr master,
 
   (void) ajStrAssC(&ambigList, "");
 
-  acdLog ("acdFindQualMaster '%S_%S' PNum: %d\n",
-     qual, master, PNum);
+  acdLog ("acdFindQualMaster '%S_%S' (%S) PNum: %d\n",
+     qual, master, noqual, PNum);
 
   for (pa=acdList; pa; pa=pa->Next) {
     if (acdIsStype(pa)) continue;
@@ -11996,9 +12047,10 @@ static AcdPAcd acdFindQualMaster (AjPStr qual, AjPStr master,
   acdLog ("..master qualifier found '%S' %d\n", ret->Name, ret->PNum);
 
   ifound = 0;
-  for (pa=ret->AssocQuals; pa->Assoc; pa=pa->Next) {
+  for (pa=ret->AssocQuals; pa && pa->Assoc; pa=pa->Next) {
     found = ajFalse;
-    if (ajStrPrefix (pa->Name, qual)) {
+    if (ajStrPrefix (pa->Name, qual) ||
+	ajStrPrefix (pa->Name, noqual)) {
       acdLog ("..matched qualifier '%S' [%d]\n", pa->Name, pa->PNum);
       if (PNum) {               /* -begin2 forces match to #2 */
 	if (PNum == pa->PNum) {
@@ -12018,7 +12070,8 @@ static AcdPAcd acdFindQualMaster (AjPStr qual, AjPStr master,
 	found = ajTrue;
       }
       if (found) {
-	if (ajStrMatch (pa->Name, qual)) {
+	if (ajStrMatch (pa->Name, qual) ||
+	    ajStrMatch (pa->Name, noqual)) {
 	  acdListCurr = pa;
 	  return pa;
 	}
@@ -12057,13 +12110,16 @@ static AcdPAcd acdFindQualMaster (AjPStr qual, AjPStr master,
 **
 ** @param [r] thys [AcdPAcd] Master ACD item
 ** @param [r] qual [AjPStr] Qualifier name
-** @param [r] pnum [ajint] Qualifier number (zero if a general qualifier)
+** @param [r] noqual [AjPStr] Alternative qualifier name
+**        (qual with "no" prefix removed, or empty, or NULL)
+** @param [r] PNum [ajint] Qualifier number (zero if a general qualifier)
 ** @return [AcdPAcd] ACD item for associated qualifier
 ** @error NULL returned if not found.
 ** @@
 ******************************************************************************/
 
-static AcdPAcd acdFindQualAssoc (AcdPAcd thys, AjPStr qual, ajint pnum) {
+static AcdPAcd acdFindQualAssoc (AcdPAcd thys, AjPStr qual, AjPStr noqual,
+				 ajint PNum) {
 
   /* test for match of parameter number and type */
 
@@ -12081,12 +12137,14 @@ static AcdPAcd acdFindQualAssoc (AcdPAcd thys, AjPStr qual, ajint pnum) {
 
   /* ajDebug ("acdFindQualAssoc '%S' pnum: %d\n", qual, pnum); */
 
-  if (pnum  && (pa->PNum != pnum)) /* must be for same number (if any) */
+  if (PNum  && (pa->PNum != PNum)) /* must be for same number (if any) */
     return NULL;
 
-  for (; pa->Assoc; pa=pa->Next) {
-    if (ajStrPrefix (pa->Name, qual)) {
-      if (ajStrMatch (pa->Name, qual)) {
+  for (; pa && pa->Assoc; pa=pa->Next) {
+    if (ajStrPrefix (pa->Name, qual) ||
+	ajStrPrefix (pa->Name, noqual)) {
+      if (ajStrMatch (pa->Name, qual) ||
+	  ajStrMatch (pa->Name, noqual)) {
 	/* ajDebug ("   *matched* '%S'\n", pa->Name); */
 	acdListCurr = pa;
 	return acdListCurr;
@@ -12243,13 +12301,16 @@ static AjBool acdGetAttr (AjPStr* result, AjPStr name, AjPStr attrib) {
 **
 ** @param [uP] pqual [AjPStr*] Qualifier name set to lower case
 **        with number suffix removed
+** @param [uP] pnoqual [AjPStr*] Qualifier name as pqual, with "no" prefix
+**        removed, or empty string id pqual doesn't start with "no"
 ** @param [uP] pqmaster [AjPStr*] Master name for associated qualifier
 ** @param [w] number [ajint*] Qualifier number suffix if any
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void acdQualParse (AjPStr* pqual, AjPStr* pqmaster, ajint* number) {
+static void acdQualParse (AjPStr* pqual, AjPStr* pnoqual, AjPStr* pqmaster,
+			  ajint* number) {
 
   static AjPRegexp qualexp = NULL;
   static AjPStr tmpqual = NULL;
@@ -12267,11 +12328,16 @@ static void acdQualParse (AjPStr* pqual, AjPStr* pqmaster, ajint* number) {
   ajRegSubI(qualexp, 1, pqual);
   ajRegSubI(qualexp, 3, pqmaster);
   ajRegSubI(qualexp, 4, &tmpnum);
-  if (ajStrLen(tmpnum))
-      (void) ajStrToInt(tmpnum, number);
+  if (ajStrPrefixC(*pqual, "no"))
+    ajStrAssSub(pnoqual, *pqual, 2, -1);
+  else
+    ajStrAssC (pnoqual, "");
 
-  acdLog ("pqual '%S' pqmaster '%S' tmpnum '%S' number %d\n",
-	  *pqual, *pqmaster, tmpnum, *number);
+  if (ajStrLen(tmpnum))
+    (void) ajStrToInt(tmpnum, number);
+
+  acdLog ("pqual '%S' pnoqual '%S' pqmaster '%S' tmpnum '%S' number %d\n",
+	  *pqual, *pnoqual, *pqmaster, tmpnum, *number);
 
   return;
 }
@@ -13066,6 +13132,7 @@ static void acdCodeInit (void) {
   static AjPStr codeValue = NULL;
   static AjPStr codeLine = NULL;
   static AjPStr codeText = NULL;
+  static AjPStr codeLanguage = NULL;
   AjPRegexp codexp = NULL;
 
   if (acdCodeSet) return;
@@ -13074,20 +13141,23 @@ static void acdCodeInit (void) {
   (void) ajNamRootInstall (&codeRootInst);
   (void) ajFileDirFix (&codeRootInst);
 
+  if (!ajNamGetValueC ("language", &codeLanguage))
+    ajStrAssC (&codeLanguage, "english");
+
   if (ajNamGetValueC ("acdroot", &codeRoot)) {
     (void) ajFileDirFix (&codeRoot);
-    ajFmtPrintS (&codeFName, "%Scodes.english", codeRoot);
+    ajFmtPrintS (&codeFName, "%Scodes.%S", codeRoot, codeLanguage);
     codeFile = ajFileNewIn (codeFName);
   }
   else {
-    ajFmtPrintS (&codeFName, "%Sshare/%S/acd/codes.english",
-		 codeRootInst, codePack);
+    ajFmtPrintS (&codeFName, "%Sshare/%S/acd/codes.%S",
+		 codeRootInst, codePack, codeLanguage);
     codeFile = ajFileNewIn (codeFName);
     if (!codeFile) {
       ajDebug ("codefile '%S' not opened\n", codeFName);
       (void) ajNamRoot (&codeRoot);
       (void) ajFileDirFix (&codeRoot);
-      ajFmtPrintS (&codeFName, "%Sacd/codes.english", codeRoot);
+      ajFmtPrintS (&codeFName, "%Sacd/codes.%S", codeRoot, codeLanguage);
       codeFile = ajFileNewIn (codeFName);
     }
   }
