@@ -1,4 +1,10 @@
 Version 2.7.0
+	Eprimer3 now reports the primer positions using the coordinates
+	of the original sequence when -sbegin and -send are used to
+	specify a sub-sequence to consider.  The input ranges, such as
+	the -exclude and -target ranges are always given using the
+	positions from the original sequence. 
+
 	tfm looks for documentation in EMBOSS_DOCROOT (an environment
 	variable, or defined in emboss.defaault), then in the install
 	directory, and finally the original build directory.
