@@ -1,3 +1,8 @@
+Version 2.9.0
+	Cirdna and lindna now dynamically allocate memory. For simplicity
+	they do still have an upper limit for the number of groups and
+	labels per group, but no longer have static arrays.
+
 Version 2.8.0
 	tfm accepts the PAGER environment variable. It can be overrided
 	by EMBOSS_PAGER.
