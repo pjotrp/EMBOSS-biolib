@@ -168,7 +168,7 @@ AjPSeqset seqset;
 
 	seqset = ajAcdGetSeqset("sequence");
 
-	tmpdir = ajAcdGetDirectory("tmpdir");
+	tmpdir = ajAcdGetDirectoryName("tmpdir");
 
         envptr = env;
 
