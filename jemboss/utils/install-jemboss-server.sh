@@ -948,8 +948,18 @@ if [ -d "$TOMCAT_ROOT/shared/classes" ]; then
   
   cp -R $EMBOSS_DOWNLOAD/jemboss/lib/axis $JEMBOSS/lib
   
+# Ensure that the native library is not loaded more than once.
+# To avoid place classes that load native libraries outside of the
+# web app, and ensure that the loadLibrary() call is executed only once
+# during the lifetime of a particular JVM.
+
+  cd $JEMBOSS
+  jar cvf Ajax.jar org/emboss/jemboss/parser/Ajax.*
+  mv Ajax.jar $TOMCAT_ROOT/shared/lib/
+  rm -f org/emboss/jemboss/parser/Ajax.class
+  cd $WORK_DIR
 # logging jar need moving
-  mv $TOMCAT_ROOT/webapps/axis/WEB-INF/lib/log4j-1.2.4.jar $TOMCAT_ROOT/server/lib
+#  mv $TOMCAT_ROOT/webapps/axis/WEB-INF/lib/log4j-1.2.4.jar $TOMCAT_ROOT/server/lib
 else
   echo "WARNING: no $TOMCAT_ROOT/shared/classes "
   echo "Jemboss classpath not added to Tomcat"
