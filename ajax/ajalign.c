@@ -3788,7 +3788,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     setcase = ident;
     
     ajDebug("alignConsStats ali:%d mlen:%d\n", iali, mlen);
-    
+
     /* ajDebug("fplural:%.1f ident:%.1f setcase:%.1f mlen: %d\n",
 	    fplural, ident, setcase, mlen); */
     
@@ -3865,7 +3865,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 	    
 	    for(jseq=iseq+1;jseq<nseqs;jseq++)
 	    {
-		kjpos = kkpos + data->SubOffset[jseq] + data->Start[iseq];
+		kjpos = kkpos + data->SubOffset[jseq];
 		m2 = ajSeqCvtK(cvt,seqcharptr[jseq][kjpos]);
 		if (m2 < 0)
 		{
