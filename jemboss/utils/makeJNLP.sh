@@ -18,7 +18,6 @@
 #
 #
 # Install EMBOSS & Jemboss
-# last changed: 15/10/02
 #
 #
 
@@ -137,8 +136,10 @@ fi
 cd $CWPWD
 jar cf Jemboss.jar images/* org/emboss/jemboss/*class resources/*.jar \
         resources/version resources/jemboss.properties \
-        resources/*html org/emboss/jemboss/*/*class \
-        org/emboss/jemboss/*/*/*class 
+        resources/*html 
+jar uf Jemboss.jar org/emboss/jemboss/*/*class 
+jar uf Jemboss.jar org/emboss/jemboss/*/*/*class 
+
 mv Jemboss.jar jnlp
 cp lib/*jar jnlp
 cp lib/axis/*jar jnlp
