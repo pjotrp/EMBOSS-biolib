@@ -1,5 +1,5 @@
 appl: cai [
-        doc: "CAI codon usage statistic"
+        doc: "CAI codon adaptation index"
         groups: "DNA: sequence composition, gene finding"
 ]
 
