@@ -65,7 +65,7 @@ public class Splash
     JPanel logoPanel = new JPanel(new BorderLayout());
 
     ImageIcon ii = new ImageIcon("images/Jemboss_logo_greyback.gif");
-    logoPanel.add(new JLabel(ii));
+    logoPanel.add(new JLabel(ii),BorderLayout.WEST);
     splashp.add(logoPanel, BorderLayout.NORTH);
 
     //if required, a login prompt
