@@ -19,7 +19,6 @@
 *
 ********************************************************************/
 
-
 package org.emboss.jemboss.gui.form;
 
 import java.awt.*;
@@ -42,79 +41,118 @@ import org.emboss.jemboss.JembossParams;
 
 /**
 *
-* Responsible for displaying the graphical representation
-* of an ACD section. This also handles events related to
+* Responsible for displaying the Jemboss application form
+* generated from the ACD file. This also handles events related to
 * dependent parameters.
 *
 */
 public class SectionPanel
 {
+
+  /** text field sink    */
   private TextFieldSink textf[];
+  /** integer field sink */
   private TextFieldInt textInt[];
+  /** float field sink   */
   private TextFieldFloat textFloat[];
+  /** range field        */
   private JTextField rangeField[];
+  /** boolean fields     */
   private JCheckBox  checkBox[];
+  /** input sequence attributes */
   private InputSequenceAttributes inSeqAttr[];
+  /** list file panel    */
   private ListFilePanel filelist[];
-
+  /** checkbox popup field for list and select */
   private JembossComboPopup fieldOption[];
+  /** multiple option field for list and select */
   private JList multiOption[];
+  /** input sequence field */
   private SetInFileCard inSeq[];
+  /** field label container */
   private Box lab[];
+  /** available databases */
   private String db[];
-
+  /** ACD parser for the application selected */
   private ParseAcd parseAcd;
+  /** number of fields in the ACD */
   private int numofFields;
+  /** field number to start from */
   private int nf;
+  /** sequence length */
   public static int ajaxLength;
+  /** sequence weight */
   public static float ajaxWeight;
+  /** sequence type   */
   public static boolean ajaxProtein;
+  /** true if in client-server mode */
   private boolean withSoap;
+  /** application name   */
   private String appName = "";
+  /** Jemboss form panel */
   private JPanel p3;
+  /** container for this ACD section */
   private JPanel sectionPane;
+  /** container for this ACD section */
   private Box sectionBox;
-
+  /** jemboss properties */
   private JembossParams mysettings;
 
 // input, required, advanced & output sections
+  /** true if the input section    */
   private boolean isInp = false;
+  /** true if the required section */
   private boolean isReq = false;
+  /** true if the advanced section */
   private boolean isAdv = false;
+  /** true if the output section   */
   private boolean isOut = false;
 
+  /** true if shading disabled fields, otherwise they 
+      are removed from the form */
   private boolean isShadedGUI;
 
+  /** label colour */
   public static Color labelColor = new Color(0, 0, 0);
-  public static Font labfont = new Font("SansSerif", Font.BOLD, 12);
+  /** label font   */
+  public static Font labfont = new Font("SansSerif", Font.BOLD, 12);  
+  /** small label font */
   public static Font labfont2 = new Font("SansSerif", Font.BOLD, 11);
 
+  /** maximum width of the form */
   private final int maxSectionWidth = 498;
+  /** Jemboss frame    */
   private JFrame f;
+  /** report format    */
   private ReportFormat rf=null;
+  /** alignment format */
   private AlignFormat af=null;
 
-/**
-*
-* @param JFrame Jemboss frame
-* @param JPanel ACD form panel
-* @param Box containing all the fields 
-* @param ParseAcd representing the ACD file to display as a form
-* @param int field number
-* @param TextFieldSink for the text fields in the form
-* @param TextFieldInt for the integer fields in the form
-* @param JCheckBox for the boolean switches
-* @param InputSequenceAttributes for the input sequence(s)
-* @param JembossComboPopup for the list/selection data types
-* @param JList for multiple selection lists
-* @param String array containing the databases
-* @param String containing the one line description for the application
-* @param Box for all the component labels
-* @param int total number of fields
-* @param JembossParams mysettings
-* @param boolean withSoap true if using a soap server
-*
-*/
+  /**
+  *
+  * @param f 		Jemboss frame
+  * @param p3		JPanel ACD form panel
+  * @param fieldPane	containing all the fields 
+  * @param parseAcd	representing the ACD file to display as a form
+  * @param nff		field number
+  * @param textf		text fields in the form
+  * @param textInt	integer fields in the form
+  * @param textFloat	float fields in the form
+  * @param rangeField	ranges in the form
+  * @param checkBox	for the boolean switches
+  * @param inSeqAttr	the input sequence(s) attributes
+  * @param fieldOption	for the list/selection data types
+  * @param multiOption	for multiple selection lists
+  * @param inSeq 		the input sequence(s)
+  * @param filelist	list file panel
+  * @param db		String array containing the databases
+  * @param des		String containing the one line description for the application
+  * @param lab		Box for all the component labels
+  * @param numofFields	total number of fields
+  * @param mysettings	jemboss properties
+  * @param withSoap 	true if using a soap server
+  *
+  */
   protected SectionPanel(JFrame f, JPanel p3, Box fieldPane, 
             ParseAcd parseAcd, int nff, final TextFieldSink textf[], 
             TextFieldInt textInt[], TextFieldFloat textFloat[],
@@ -361,7 +399,7 @@ public class SectionPanel
           inSeq[h] = new SetInFileCard(sectionPane,h,db,
                               "Multiple Sequence Filename",
                               appName,inSeqAttr,true,mysettings);
-          pan.add(inSeq[h].getInCard());
+          pan.add(inSeq[h]);
         }
         else if(att.startsWith("sequence") || att.startsWith("seqall"))
         {
@@ -371,7 +409,7 @@ public class SectionPanel
 
           inSeq[h] = new SetInFileCard(sectionPane,h,db,tit,
                                 appName,inSeqAttr,true,mysettings);
-          pan.add(inSeq[h].getInCard());
+          pan.add(inSeq[h]);
         }
         else if(att.startsWith("filelist"))
         {
@@ -501,8 +539,15 @@ public class SectionPanel
     
   }
 
+  /** Get the report format */
   protected ReportFormat getReportFormat() { return rf; }
 
+  /**
+  *
+  * Determine if report formats are used in the EMBOSS program
+  * @return	true if a report format is used
+  *
+  */
   protected boolean isReportFormat()
   {
     if(rf==null)
@@ -510,8 +555,15 @@ public class SectionPanel
     return true;
   }
 
+  /** Get the alignment format */
   protected AlignFormat getAlignFormat() { return af; }
   
+  /**
+  *
+  * Determine if alignment formats are used in the EMBOSS program
+  * @return     true if a alignment format is used
+  *
+  */
   protected boolean isAlignFormat()
   {
     if(af==null)
@@ -519,23 +571,34 @@ public class SectionPanel
     return true;
   }
 
-
+  /** get the panel for this section */
   protected JPanel getSectionPanel() { return sectionPane; }
+  /** get the box or this section    */
   protected Box getSectionBox() { return sectionBox; }
-
+  /** @return     true if the input section  */
   protected boolean isInputSection() { return isInp; }
+  /** @return     true if the output section */
   protected boolean isOutputSection() { return isOut; }
+  /** @return     true if the required section */
   protected boolean isRequiredSection() { return isReq; }
+  /** @return     true if the advanced section */
   protected boolean isAdvancedSection() { return isAdv; }
 
+  /** 
+  *
+  * Get the current field 
+  * @return 	current field number
+  *
+  */
   protected int getFieldNum() { return nf; }
 
-/**
-*
-* @param String short description of the program
-* @param JPanel for the ACD form
-*
-*/
+  /**
+  *
+  * Set the application title panel
+  * @param des	short description of the program
+  * @param p3	JPanel for the ACD form
+  *
+  */
   private void setAppTitle(String des, JPanel p3)
   {
     appName = parseAcd.getParamValueStr(nf,0).toUpperCase();
@@ -566,14 +629,18 @@ public class SectionPanel
   }
 
 
-/**
-*
-* @param String minimum value for parameter 
-* @param String maximum value for parameter
-* @param int the number in the ACD of the parameter field
-* @param String of (min: max: default:) if specified
-*
-*/
+  /**
+  *
+  * Get the min, max and default values for a field in
+  * the ACD as a string representation in the form 
+  * (min: max: default:)
+  * @param min		minimum value for parameter 
+  * @param max		maximum value for parameter
+  * @param def		default value for parameter
+  * @param nfield	field number in ACD
+  * @return		string of (min: max: default:) if specified
+  *
+  */
   private String getMinMaxDefault(String min,String max,
                                  String def, int nfield)
   {
@@ -637,12 +704,12 @@ public class SectionPanel
   }
 
 
-/**
-*
-* Checks for dependent variables and adds in action listeners
-* @param Box
-*
-*/
+  /**
+  *
+  * Checks for dependent variables and adds in action listeners
+  * @param section	form container for parameters
+  *
+  */
   private void checkDependents(Box section)
   {
     final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
@@ -816,7 +883,15 @@ public class SectionPanel
 
   }
 
-
+  /**
+  *
+  * Check sbeg and send values before updating in the
+  * panel to avoid overriding user selection
+  * @param s	start
+  * @param e	end
+  * @return 	true to automatically update
+  *
+  */
   private boolean updateBeginEnd(String s, String e)
   {
     if( ((s!=null) && (!s.equals(""))) ||
@@ -837,17 +912,16 @@ public class SectionPanel
   }
 
 
-/**
-*
-* Given an ACD variable and the value it takes, resolve any dependent 
-* attribute values.
-*
-* @param int nod number of dependent values
-* @param Dependent dep[] dependents
-* @param String textVal value of variable
-* @param String varName variable name
-*
-*/
+  /**
+  *
+  * Given an ACD variable and the value it takes, resolve any dependent 
+  * attribute values.
+  * @param nod 		number of dependent values
+  * @param dep[] 	dependents
+  * @param textVal 	value of variable
+  * @param varName 	variable name
+  *
+  */
   private void resolveDependents(int nod, Dependent dep[], String textVal, 
                                  String varName)
   {
@@ -1015,7 +1089,14 @@ public class SectionPanel
 
   }
 
-
+  /**
+  *
+  * Set the shading or visibility of a component
+  * @param c		component 
+  * @param useThis	true if enabled/visible
+  * @param field	field number in the ACD
+  *
+  */
   private void setShadingAndVisibility(Component c, 
                         boolean useThis, int field)
   {
@@ -1033,7 +1114,12 @@ public class SectionPanel
     }
   }
 
-
+  /**
+  *
+  * Resize the section panel
+  * @param p 	section panel
+  *
+  */
   private void sectionResize(JPanel p)
   {
     if(p != null)
