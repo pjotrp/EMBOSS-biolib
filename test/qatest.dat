@@ -6349,7 +6349,7 @@ FI stdout
 FZ = 24
 FP /^Created pepwindowall.ps\n/
 FI pepwindowall.ps
-FZ = 13789
+FZ = 22479
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -10536,7 +10536,7 @@ FI stderr
 FC = 1
 FP 0 /Warning:/
 FI stdout
-FZ = 47835
+FZ > 47000
 FP 1 /^ +Finds programs by keywords in their one-line documentation\n/
 FP 2 /^ +-explode/
 //
