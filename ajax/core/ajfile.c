@@ -64,10 +64,55 @@ static DIR*   fileOpenDir(AjPStr *dir);
 /* ========================= constructors ============================= */
 /* ==================================================================== */
 
-/* @section Directory Constructors *************************************************
+/* @section Outfile Constructors ********************************************
 **
 ** All constructors return a new open file by pointer. It is the responsibility
 ** of the user to first destroy any previous file pointer. The target pointer
+** does not need to be initialised to NULL, but it is good programming practice
+** to do so anyway.
+**
+** To replace or reuse an existing file, see instead
+** the {File Assignments} and {File Modifiers} functions.
+**
+** The range of constructors is provided to allow flexibility in how
+** applications can open files to read various kinds of data.
+**
+******************************************************************************/
+
+
+
+/* @func ajOutfileNew *********************************************************
+**
+** Creates a new formatted output file object with a specified name.
+**
+** 'stdout' and 'stderr' are special names for standard output and
+** standard error respectively.
+**
+** @param [r] name [const AjPStr] File name.
+** @return [AjPOutfile] New output file object.
+** @@
+******************************************************************************/
+
+AjPOutfile ajOutfileNew(const AjPStr name)
+{
+    AjPOutfile thys;
+
+    AJNEW0(thys);
+    thys->File = ajFileNewOut(name);
+    if(!thys->File)
+	return NULL;
+
+    return thys;
+}
+
+
+
+
+/* @section Directory Constructors ********************************************
+**
+** All constructors return a directory object by pointer.
+** It is the responsibility of the user to first destroy any previous
+** directory pointer. The target pointer
 ** does not need to be initialised to NULL, but it is good programming practice
 ** to do so anyway.
 **
@@ -369,8 +414,9 @@ AjPFile ajFileNewInPipe(const AjPStr name)
 	ajSysArglist(tmpname, &pgm, &arglist);
 	ajDebug("execvp ('%S', NULL)\n", tmpname);
 	execvp(pgm, arglist);
-	ajFatal("execvp ('%S', NULL) failed: '%s'\n",
+	ajErr("execvp ('%S', NULL) failed: '%s'\n",
 		tmpname, strerror(errno));
+	ajExitBad();
     }
     
     ajDebug("pid %d, pipe '%d', '%d'\n",
@@ -946,6 +992,107 @@ AjPFile ajFileNewF(FILE* file)
 /* ==================================================================== */
 /* =========================== destructor ============================= */
 /* ==================================================================== */
+
+/* @section Outfile Destructors ***********************************************
+**
+** Destruction is achieved by closing the file.
+**
+** Unlike ANSI C, there are tests to ensure a file is not closed twice.
+**
+******************************************************************************/
+
+/* @func ajOutfileClose *******************************************************
+**
+** Close and free an outfile object.
+**
+** @param [w] pthis [AjPOutfile*] Output file.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajOutfileClose(AjPOutfile* pthis)
+{
+    AjPOutfile thys;
+
+    thys = pthis ? *pthis : 0;
+
+    if(!pthis)
+	return;
+    if(!*pthis)
+	return;
+
+    fileClose(thys->File);
+    ajStrDel(&thys->Type);
+    ajStrDel(&thys->Formatstr);
+    AJFREE(*pthis);
+
+    return;
+}
+
+
+/* @func ajOutfileDel *******************************************************
+**
+** Close and free an outfile object.
+**
+** @param [w] pthis [AjPOutfile*] Output file.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajOutfileDel(AjPOutfile* pthis)
+{
+    ajOutfileClose(pthis);
+    return;
+}
+
+
+
+
+/* @section Directory Destructors *********************************************
+**
+** Destruction is achieved by deleting the object.
+**
+******************************************************************************/
+
+/* @func ajDirDel *******************************************************
+**
+** Close and free a directory object.
+**
+** @param [w] pthis [AjPDir*] Directory object.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajDirDel(AjPDir* pthis)
+{
+    AjPDir thys;
+
+    ajStrDel(&thys->Name);
+    ajStrDel(&thys->Prefix);
+    ajStrDel(&thys->Extension);
+    AJFREE(*pthis);
+
+    return;
+}
+
+
+
+/* @func ajDiroutDel *******************************************************
+**
+** Close and free a directory object.
+**
+** @param [w] pthis [AjPDir*] Directory object.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajDiroutDel(AjPDir* pthis)
+{
+    ajDirDel(pthis);
+    return;
+}
+
+
 
 /* @section File Destructors **************************************************
 **

@@ -164,8 +164,39 @@ typedef struct AjSDir {
 
 #define AjPDir AjODir*
 
+/* @data AjPFile **************************************************************
+**
+** Ajax file object. Holds information for an open (unbuffered)
+** input or output file.
+**
+** On output, conversion code "%F" writes the filename.
+**
+** @new ajOutfileNew Default constructor for an input file
+** @delete ajOutfileClose Close file and descruct
+** @delete ajOutfileDel Default destructor
+**
+** @attr File [AjPFile] File object
+** @attr Type [AjPStr] Named data file type
+** @attr Itype [ajint] Index number for Type
+** @attr Formatstr [AjPStr] Format specific for this data type
+** @attr Format [ajint] Index for Formatstr for this data type
+** @@
+******************************************************************************/
+
+typedef struct AjSOutfile {
+  AjPFile File;
+  AjPStr Type;
+  ajint Itype;
+  AjPStr Formatstr;
+  ajint Format;
+} AjOOutfile;
+
+#define AjPOutfile AjOOutfile*
+
 /* ============= prototypes =========================*/
 
+void        ajDirDel (AjPDir* pthis);
+void        ajDiroutDel (AjPDir* pthis);
 AjPStr      ajDirExt(const AjPDir thys);
 AjPStr      ajDirName(const AjPDir thys);
 AjPDir      ajDirNew (const AjPStr name);
@@ -304,6 +335,10 @@ ajint       ajFileWriteInt2 (const AjPFile thys, short i);
 ajint       ajFileWriteInt4 (const AjPFile thys, ajint i);
 ajint       ajFileWriteInt8 (const AjPFile thys, ajlong i);
 ajint       ajFileWriteStr  (const AjPFile thys, AjPStr str, ajint len);
+
+void        ajOutfileClose(AjPOutfile* pthis);
+void        ajOutfileDel(AjPOutfile* pthis);
+AjPOutfile  ajOutfileNew(const AjPStr name);
 
 /* ============= definitions =========================*/
 #define AJ_FILE_R S_IRUSR
