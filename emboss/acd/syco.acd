@@ -1,6 +1,6 @@
 appl: syco [
   documentation: "Synonymous codon usage Gribskov statistic plot"
-  groups: "Nucleic:Codon usage Nucleic:Gene finding"
+  groups: "Nucleic:Codon usage, Nucleic:Gene finding"
 ]
 
 section: input [ info: "input Section" type: page ]
