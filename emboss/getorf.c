@@ -569,14 +569,18 @@ static void getorf_WriteORF(AjPSeq seq, ajint len, ajint seqlen, AjBool sense,
     /* we want to reverse the reported positions if this is the reverse
        sense */
     if (!sense) {
-	s = seqlen-s+1;
-	e = seqlen-e+1;
+	s = len-s+1;
+	e = len-e+1;
     
         /* shift the positions back into the range 1..len as far as possible
            without going into negative numbers */
         while (e > len) {
             s -= len;	
             e -= len;	
+        }
+        while (e < 0 || s < 0) {
+            s += len;	
+            e += len;	
         }
     }
     (void) ajStrFromInt(&value, s);	/* the base before the stop codon
