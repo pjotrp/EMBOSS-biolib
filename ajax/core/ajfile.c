@@ -3122,6 +3122,9 @@ void ajFileBuffClear (const AjPFileBuff thys, ajint lines) {
 
 void ajFileBuffNobuff (const AjPFileBuff thys) {
 
+  if (!thys)
+    return;
+
   ajDebug ("ajFileBuffNoBuff %F buffsize: %d\n", thys->File, thys->Size);
   thys->Nobuff = ajTrue;
 
