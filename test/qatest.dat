@@ -3426,6 +3426,36 @@ FP /^ID   .* 100 BP\.\n/
 FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
 //
 
+ID seqret-inauto-nbrf
+AP seqret
+CL -auto ../../data/prot.nbrf test.out -osf swiss
+FI test.out
+FZ = 238
+FP /^ID   pir .* 90 AA\.\n/
+FP /^DE   example pir format\n/
+FP /^SQ   SEQUENCE    90 AA;   9815 MW;  12E48C24 CRC32;\n/
+//
+
+ID seqret-inusa-nbrf
+AP seqret
+CL -auto nbrf::../../data/prot.nbrf test.out -osf swiss
+FI test.out
+FZ = 238
+FP /^ID   pir .* 90 AA\.\n/
+FP /^DE   example pir format\n/
+FP /^SQ   SEQUENCE    90 AA;   9815 MW;  12E48C24 CRC32;\n/
+//
+
+ID seqret-in-nbrf
+AP seqret
+CL -auto ../../data/prot.nbrf -sf nbrf test.out -osf swiss
+FI test.out
+FZ = 238
+FP /^ID   pir .* 90 AA\.\n/
+FP /^DE   example pir format\n/
+FP /^SQ   SEQUENCE    90 AA;   9815 MW;  12E48C24 CRC32;\n/
+//
+
 ID seqret-inauto-raw
 AP seqret
 CL -auto ../../data/dna.text test.out -osf embl
