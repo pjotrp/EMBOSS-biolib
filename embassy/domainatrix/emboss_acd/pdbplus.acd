@@ -1,4 +1,4 @@
-appl: pdbplus [
+application: pdbplus [
   documentation: "Add records for secondary structure and residue accessibility to a coordinate file"
   groups: "Utils:Database creation"
   gui:   "yes"
@@ -6,7 +6,7 @@ appl: pdbplus [
   cpu:   "medium"
 ]
 
-section: input [ info: "Input section" type: page ]
+section: input [ information: "Input section" type: page ]
 string: pdbpath  
 [
   parameter: "Y"
@@ -32,14 +32,14 @@ string: pdbprefix
 string: inputemblpdbpath  
 [
   parameter: "Y"
-  information: "Location of protein coordinate files (EMBL format input)"
+  information: "Location of protein coordinate files (embl-like format input)"
   default: "./"
 ]
 
 string: inputemblpdbextn  
 [
   parameter: "Y"
-  information: "Extension of protein coordinate files (EMBL format input)"
+  information: "Extension of protein coordinate files (embl-like format input)"
   default: ".pxyz"
 ]
 endsection: input
@@ -47,7 +47,7 @@ endsection: input
 
 
 
-section: required [ info: "Required section" type: page ]
+section: required [ information: "Required section" type: page ]
 list: mode  [
   standard: "Y"
   default: "1"
@@ -59,7 +59,7 @@ list: mode  [
   header: "Mode of operation"
   information: "Select mode"
 ]
-int: thresholdsize
+integer: thresholdsize
 [
     standard: "@($(mode)!=2)"
     information: "Threshold size for SSEs (secondary structure elements)"
@@ -68,7 +68,7 @@ int: thresholdsize
 endsection: required
 
 
-section: output [ info: "Output section" type: page ]
+section: output [ information: "Output section" type: page ]
 outfile: errfile 
 [
   standard: "Y"
@@ -97,14 +97,14 @@ outfile: nerrfile
 string: outputemblpdbpath  
 [
   parameter: "Y"
-  information: "Location of protein coordinate files (EMBL format output)"
+  information: "Location of protein coordinate files (embl-like format output)"
   default: "./"
 ]
 
 string: outputemblpdbextn  
 [
   parameter: "Y"
-  information: "Extension of protein coordinate files (EMBL format output)"
+  information: "Extension of protein coordinate files (embl-like format output)"
   default: ".pxyz"
 ]
 endsection: output
