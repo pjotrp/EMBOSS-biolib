@@ -71,7 +71,7 @@ ajint  ajFmtVfmtStrCL (char** buf, ajint pos, ajint *size,
 		       const char* fmt, va_list ap);
 
 ajint  ajFmtScanS (const AjPStr thys, const char* fmt, ...);
-
+ajint  ajFmtScanC (const char* thys, const char* fmt, ...);
 
 #endif
 

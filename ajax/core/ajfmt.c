@@ -4,7 +4,7 @@
 ** String formatting routines. Similar to printf, fprintf, vprintf
 ** etc but the set of conversion specifiers is not fixed, and cannot
 ** store more characters than it can hold.
-** There is also ajFmtScanS which is an extended sscanf.
+** There is also ajFmtScanS / ajFmtScanC which is an extended sscanf.
 **
 ** Special formatting provided here:
 **   %B : AJAX boolean
@@ -20,6 +20,7 @@
 ** @author Copyright (C) 1999 Alan Bleasby
 ** @version 1.0
 ** @modified Copyright (C) 2001 Alan Bleasby. Added ajFmtScanS functs
+** @modified Copyright (C) 2003 Jon Ison. Added ajFmtScanC functs
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2025,6 +2026,47 @@ ajint ajFmtScanS(const AjPStr thys, const char* fmt, ...)
 #endif
 
     n = fmtVscan(thys->Ptr,fmt,ap);
+
+#if defined(__PPC__) && defined(_CALL_SYSV)
+    __va_copy(ap,save_ap);
+#endif
+
+
+    va_end(ap);
+
+    return n;
+}
+
+
+
+
+/* @func ajFmtScanC  **********************************************************
+**
+** Scan a string according to fmt and load the ... variable pointers
+** Like C function sscanf.
+**
+** @param [r] thys [const char*] String.
+** @param [r] fmt [const char*] Format string.
+** @param [v] [...] Variable length argument list
+** @return [ajint] number of successful conversions
+** @@
+******************************************************************************/
+
+ajint ajFmtScanC(const char* thys, const char* fmt, ...)
+{
+    va_list ap;
+    ajint   n;
+#if defined(__PPC__) && defined(_CALL_SYSV)
+    va_list save_ap;
+#endif
+
+    va_start(ap, fmt);
+
+#if defined(__PPC__) && defined(_CALL_SYSV)
+    __va_copy(save_ap,ap);
+#endif
+
+    n = fmtVscan(thys,fmt,ap);
 
 #if defined(__PPC__) && defined(_CALL_SYSV)
     __va_copy(ap,save_ap);
