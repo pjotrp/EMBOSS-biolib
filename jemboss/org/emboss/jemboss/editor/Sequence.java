@@ -201,6 +201,7 @@ public class Sequence
     length++;
   }
 
+
   /**
   *
   * Delete a residue from the sequence
@@ -213,6 +214,21 @@ public class Sequence
           seq.substring(pos+1);
     length--;
   }
+
+
+  /**
+  *
+  * Trim a sequence 
+  * @param start	new start position
+  * @param end		new end position
+  *
+  */
+  public void trim(int start, int end)
+  {
+    seq    = seq.substring(start-1,end);
+    length = end-start+1;
+  }
+
 
   /**
   *
@@ -240,6 +256,7 @@ public class Sequence
     seq = new String(tmpChar);
   }
 
+
   /**
   *
   *  Reverse and complement the sequence 
@@ -254,7 +271,8 @@ public class Sequence
     
     seq = new String(tmpChar);
   }
-  
+ 
+ 
   /**
   *
   * Set the sequence type
@@ -289,6 +307,7 @@ public class Sequence
     return protein;
   }
 
+
   /**
   *
   * Complement the sequence
@@ -303,6 +322,7 @@ public class Sequence
    
     seq = new String(tmpChar);
   }
+
 
   /**
   *

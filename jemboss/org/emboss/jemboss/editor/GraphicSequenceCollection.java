@@ -328,7 +328,7 @@ public class GraphicSequenceCollection extends JPanel
   * Calculate the longest sequence length
   *
   */
-  private void setMaxSeqLength()
+  protected void setMaxSeqLength()
   {
     MAXSEQLENGTH = 0;
     Enumeration enum = seqs.elements();
@@ -353,18 +353,41 @@ public class GraphicSequenceCollection extends JPanel
 
   /**
   *
-  * Set the sequence name JButton selection
-  * @param 	true to select or false to deselect
+  * Lock/group the sequences
+  * @param 	true to lock sequences
   *
   */
-  protected void setSequenceSelection(boolean b)
+  protected void setSequenceLock(boolean llock)
   {
     Enumeration enum = graphicName.elements();
+    if(!llock)
+    {
+      while(enum.hasMoreElements())
+        ((SequenceNameJButton)enum.nextElement()).setSelected(false); 
+      enum = graphicSequence.elements();
+      while(enum.hasMoreElements())
+        ((SequenceJPanel)enum.nextElement()).detachAll();  
+       
+      return;
+    }
+
+    int i = 0;
+    Vector selected = new Vector();
     while(enum.hasMoreElements())
     {
       SequenceNameJButton sbutt = (SequenceNameJButton)enum.nextElement();
-      if(!sbutt.getText().equals(""))
-        sbutt.setSelected(b);
+      if(sbutt.isSelected())
+        selected.add((SequenceJPanel)graphicSequence.get(i));
+      i++;
+    }
+
+    // group sequences
+    for(i=0;i<selected.size();i++)
+    {
+      SequenceJPanel si = (SequenceJPanel)selected.get(i);
+      for(int j=0;j<selected.size();j++)
+        if(i!=j)
+          ((SequenceJPanel)selected.get(j)).attach(si);
     }
   }
 

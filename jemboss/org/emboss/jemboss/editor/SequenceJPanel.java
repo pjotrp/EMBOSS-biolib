@@ -26,6 +26,7 @@ import java.awt.print.*;
 import javax.swing.*;
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.Enumeration;
 
 /**
 *
@@ -83,6 +84,8 @@ public class SequenceJPanel extends JPanel
   protected JComponent viewPane;
   /** pop up menu */
   private JPopupMenu popup;
+  /** observer panels in this group */
+  private Vector observers;
 
   /**
   *
@@ -206,16 +209,10 @@ public class SequenceJPanel extends JPanel
     FontMetrics metrics = getFontMetrics(font);
     boundWidth = metrics.stringWidth("A");
     boundWidth2 = boundWidth/2;
-//tjc
-//  resWidth  = metrics.stringWidth("A")+boundWidth;
     resWidth  = metrics.stringWidth("A")+boundWidth2;
-
-//tjc
-//  seqHeight = resWidth;
     seqHeight = metrics.stringWidth("A")+boundWidth;
 
     setPreferredSize(getPreferredSize());
-//  setMaximumSize(getPreferredSize());
   }
 
   /**
@@ -242,30 +239,97 @@ public class SequenceJPanel extends JPanel
         {
           Point loc = e.getPoint();
           int resPos = (int)(loc.x/resWidth);
-          String seqS = seq.getSequence();
-
-          if(resPos == pressedResidue+1 && resPos > 0)
-          {
-            seq.insertResidue(padChar,pressedResidue);
-            ((GraphicSequenceCollection)viewPane).setMaxSequenceLength(seq.getLength());
-            pressedResidue = pressedResidue+1;
-            paintComponent(getGraphics());
-            viewPaneResize();
-          }
-          else if(resPos == pressedResidue-1 && resPos > -1)
-          {
-            if(seqS.substring(resPos,resPos+1).equals(padChar))
-            {
-              seq.deleteResidue(resPos);
-              pressedResidue = pressedResidue-1;
-              paintComponent(getGraphics());
-            }
-          }
+          notifyGroup(resPos,pressedResidue);
+          update(resPos,pressedResidue);
         }
       });
     }
 
   }
+
+
+  /**
+  *
+  *  Implement update() for observers i.e. members of the
+  *  same sequence group
+  *
+  */
+  protected void update(int resPos, int pressed)
+  {
+    this.pressedResidue = pressed;
+    if(resPos == pressedResidue+1 && resPos > 0)
+    {
+      seq.insertResidue(padChar,pressedResidue);
+      ((GraphicSequenceCollection)viewPane).setMaxSequenceLength(seq.getLength());
+      pressedResidue = pressedResidue+1;
+      repaint();
+      viewPaneResize();
+    }
+    else if(resPos == pressedResidue-1 && resPos > -1)
+    {
+      if(seq.getResidueAt(resPos).equals(padChar))
+      {
+        seq.deleteResidue(resPos);
+        pressedResidue = pressedResidue-1;
+        repaint();
+      }
+    }
+  }
+
+
+  /**
+  *
+  *  Attach sequence display to the same group  
+  *
+  */
+  protected void attach(SequenceJPanel sjp)
+  {
+    if(observers == null)
+      observers = new Vector();
+    observers.add(sjp);
+//  System.out.println("Attach "+sjp.getName()+" to "+seq.getName());
+  }
+
+  
+  /**
+  *
+  * Detach sequence display from this group
+  *
+  */
+  protected void detach(SequenceJPanel sjp)
+  {
+    if(observers != null)
+      if(observers.contains(sjp))
+        observers.remove(sjp);
+  }
+
+
+  /**
+  *
+  * Detach all sequence displays from this group
+  *
+  */
+  protected void detachAll()
+  {
+    observers = null;
+  }
+                                                                                                     
+                                                                                                     
+  /**
+  *
+  * Update all observers
+  *
+  */
+  protected void notifyGroup(int res, int pressed)
+  {
+    if(observers != null)
+    {
+      Enumeration enum = observers.elements();
+      while(enum.hasMoreElements())
+        ((SequenceJPanel)enum.nextElement()).update(res,pressed);
+    }
+  }
+
 
   /**
   *
@@ -282,12 +346,8 @@ public class SequenceJPanel extends JPanel
     boundWidth  = metrics.stringWidth("A");
     boundWidth2 = boundWidth/2;
     int boundWidth4 = boundWidth2/2;
-//tjc
-//    resWidth = metrics.stringWidth("A")+boundWidth;
     resWidth = metrics.stringWidth("A")+boundWidth2;
 
-//tjc
-//    seqHeight = resWidth;
     seqHeight = metrics.stringWidth("A")+boundWidth;
 
     String sName = null;
@@ -442,6 +502,7 @@ public class SequenceJPanel extends JPanel
     return leftResidue;
   }
 
+
   /**
   *
   * Find all occurences of the pattern in the sequence between
@@ -477,6 +538,7 @@ public class SequenceJPanel extends JPanel
     return pvec;
   }
 
+
   /**
   *
   * Find all occurences of the pattern in the sequence between
@@ -506,6 +568,7 @@ public class SequenceJPanel extends JPanel
     return pvec;
   }
 
+
   /**
   *
   * Set pattern to high light
@@ -517,7 +580,8 @@ public class SequenceJPanel extends JPanel
     highlightPattern = true;
     this.pattern = pattern.toLowerCase();
   }
-  
+ 
+ 
   /**
   *
   * Set prettyplot display
@@ -528,6 +592,7 @@ public class SequenceJPanel extends JPanel
   {
     this.prettyPlot = prettyPlot;
   }
+
 
   /**
   *
@@ -557,6 +622,7 @@ public class SequenceJPanel extends JPanel
            "Position: "+Integer.toString(resPos+1);
   }
 
+
   /**
   *
   * Get the tool tip location
@@ -571,6 +637,7 @@ public class SequenceJPanel extends JPanel
     int y = seqHeight-(resWidth/2);
     return new Point(x,y);
   }
+
 
   /**
   *
@@ -588,6 +655,7 @@ public class SequenceJPanel extends JPanel
     return getBackground();
   }
  
+
   /**
   *
   * Set a default colour scheme 
@@ -601,6 +669,7 @@ public class SequenceJPanel extends JPanel
     colorTable.put("C",Color.blue);
     colorTable.put("G",Color.white);
   }
+
 
   /**
   *
@@ -616,6 +685,7 @@ public class SequenceJPanel extends JPanel
 //  paintComponent(getGraphics());
   }
 
+
   /**
   *
   * Set whether to colour residues
@@ -630,6 +700,7 @@ public class SequenceJPanel extends JPanel
 //  paintComponent(getGraphics());
   }
 
+
   /**
   *
   * Set the font size and set the size
@@ -643,21 +714,14 @@ public class SequenceJPanel extends JPanel
                       Font.PLAIN, fontSize);
     FontMetrics metrics = getFontMetrics(font);
     boundWidth = metrics.stringWidth("A");
-
-//tjc
-//    resWidth = metrics.stringWidth("A")+boundWidth;
     resWidth = metrics.stringWidth("A")+boundWidth/2;
-//tjc
-//  seqHeight = resWidth;
     seqHeight = metrics.stringWidth("A")+boundWidth;
-
     setPreferredSize(getPreferredSize());
-//  setMaximumSize(getPreferredSize());
-//  setMinimumSize(getPreferredSize());
-
-    paintComponent(getGraphics());
+    repaint();
+//  paintComponent(getGraphics());
   }
  
+
   /**
   *
   * Get the width of a residue
@@ -669,6 +733,7 @@ public class SequenceJPanel extends JPanel
     return resWidth;
   }
 
+
   /**
   *
   * Set the colour scheme 
@@ -679,8 +744,8 @@ public class SequenceJPanel extends JPanel
   {
     this.colorTable = colorHash;
     setPrettyPlot(false);
-//  paintComponent(getGraphics());
   }
+
 
   /**
   *
@@ -693,6 +758,7 @@ public class SequenceJPanel extends JPanel
     return fontSize;
   }
 
+
   /**
   *
   * Get the preferred size dimension
@@ -703,6 +769,7 @@ public class SequenceJPanel extends JPanel
   {
     return new Dimension(getSequenceWidth(),getSequenceHeight());
   }
+
 
   /**
   *
@@ -723,6 +790,7 @@ public class SequenceJPanel extends JPanel
     gsc.setJScrollPaneViewportView();
   }
 
+
   /**
   *
   * Get the sequence panel height
@@ -733,6 +801,7 @@ public class SequenceJPanel extends JPanel
   {
     return seqHeight+ypad;
   }
+
 
   /**
   *
@@ -745,6 +814,7 @@ public class SequenceJPanel extends JPanel
     return resWidth*seqLength;
   }
 
+
   /**
   *
   * Get the width of a residue
@@ -755,6 +825,7 @@ public class SequenceJPanel extends JPanel
   {
     return resWidth;
   }
+
 
   /**
   *
@@ -767,14 +838,18 @@ public class SequenceJPanel extends JPanel
     seqLength = s;
   }
 
+
   /**
   *
+  * Get the sequence name associated with this display
+  * @return	sequence name
   *
   */
-  public String getDescription()
+  public String getName()
   {
-    return getName();
+    return seq.getName();
   }
+
 
   /**
   *
@@ -796,6 +871,7 @@ public class SequenceJPanel extends JPanel
     g2d.drawString(name,0,seqHeight-boundWidth2);
   }
  
+
   /**
   *
   * Render the sequence graphic
@@ -863,6 +939,7 @@ public class SequenceJPanel extends JPanel
     }
   }
  
+
   /**
   *
   * Override actionPerformed for popup menu actions
@@ -893,6 +970,7 @@ public class SequenceJPanel extends JPanel
     }
   }
 
+
   /**
   *
   * Popup listener
@@ -917,7 +995,6 @@ public class SequenceJPanel extends JPanel
                 e.getX(), e.getY());
     }
   }
-
 
 }
 

@@ -28,6 +28,7 @@ import java.io.File;
 import javax.swing.border.*;
 import java.net.URL;
 
+import org.emboss.jemboss.gui.form.TextFieldInt;
 import org.emboss.jemboss.gui.sequenceChooser.SequenceFilter;
 import org.emboss.jemboss.gui.filetree.FileEditorDisplay;
 import org.emboss.jemboss.gui.ScrollPanel;
@@ -42,7 +43,6 @@ import org.emboss.jemboss.gui.Browser;
 public class AlignJFrame extends JFrame
 {
 
-  private Vector seqs;               // Vector containing Sequence objects
   private Vector graphicSequence;    // Vector containing graphical seqs
   protected JScrollPane jspSequence; // Sequence scrollpane
   protected static GraphicSequenceCollection gsc;
@@ -124,22 +124,30 @@ public class AlignJFrame extends JFrame
 
     final Dimension dScreen = getToolkit().getScreenSize();
     int interval = 10;
-    seqs = new Vector();
+//  Vector seqs = new Vector();
     mat = new Matrix("resources/resources.jar",
                      "EBLOSUM62");
     
     jspSequence = new JScrollPane();
     jspSequence.getViewport().setBackground(Color.white);
 
-    final JCheckBox leftbutt = new JCheckBox("Select All");
-    leftbutt.setBackground(Color.white);
+    final JButton leftbutt = new JButton("Lock");
     jspSequence.setCorner(JScrollPane.LOWER_LEFT_CORNER,
                                               leftbutt);
     leftbutt.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
-        gsc.setSequenceSelection(leftbutt.isSelected());
+        if(leftbutt.getText().equals("Lock"))
+        {
+          gsc.setSequenceLock(true);
+          leftbutt.setText("Unlock");
+        }
+        else
+        {
+          gsc.setSequenceLock(false);
+          leftbutt.setText("Lock");
+        }
       }
     });
 
@@ -267,9 +275,58 @@ public class AlignJFrame extends JFrame
       });
       fileMenu.add(fileMenuExit);
     }
-
     menuBar.add(fileMenu);
   
+// Edit menu
+    JMenu editMenu = new JMenu("Edit");
+    menuBar.add(editMenu);
+
+    JMenuItem trimMenu = new JMenuItem("Trim Sequences");
+    editMenu.add(trimMenu);
+    trimMenu.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        ScrollPanel pane = new ScrollPanel(new BorderLayout());
+        Box bacross = Box.createHorizontalBox();
+        TextFieldInt start = new TextFieldInt();
+        start.setValue(1);
+        TextFieldInt end   = new TextFieldInt();  
+        end.setValue(gsc.getMaxSeqLength());
+        bacross.add(start);
+        bacross.add(new JLabel(" start "));
+        bacross.add(end);
+        bacross.add(new JLabel(" end"));
+        pane.add(bacross,BorderLayout.CENTER);
+        int selectedValue = JOptionPane.showConfirmDialog(null,
+                          pane, "Select Sequence Range to Use",
+                          JOptionPane.OK_CANCEL_OPTION,      
+                          JOptionPane.QUESTION_MESSAGE);
+        if(selectedValue == JOptionPane.OK_OPTION)
+        {
+          Vector vseq = gsc.getSequenceCollection();
+          Enumeration enum = vseq.elements();
+          while(enum.hasMoreElements())
+          {
+            Sequence s = (Sequence)enum.nextElement();
+            s.trim(start.getValue(),end.getValue());  
+          }
+          gsc.setMaxSeqLength();
+          gsc.repaint();
+        }
+      }
+    });
+
+    JMenuItem unlock = new JMenuItem("Unlock All Sequences");
+    editMenu.add(unlock);
+    unlock.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        gsc.setSequenceLock(false);
+      }
+    });
+
 // View menu
     JMenu viewMenu = new JMenu("View");
     viewMenu.setMnemonic(KeyEvent.VK_V);
@@ -334,7 +391,7 @@ public class AlignJFrame extends JFrame
     colourMenus(viewMenu);
    
 //pretty plot
-    final JMenuItem pretty = new JMenuItem("Identical Matches");
+    final JMenuItem pretty = new JMenuItem("Colour Identical/Matches");
     viewMenu.add(pretty);
     viewMenu.add(new JSeparator());
 
