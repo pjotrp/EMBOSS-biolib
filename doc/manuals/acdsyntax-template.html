@@ -408,8 +408,9 @@ controlled by ACD attributes. The case can be set to upper or lower case only.
 The regular expression must be supported by the EMBOSS regular expression
 library.</p>
 
-<p>EMBOSS uses the "Perl Compatible Regular Expression Library (PCRL)" so any
-regular expression that is valid in Perl 5.0 should be valid here.</p>
+<p>EMBOSS uses the "Perl-Compatible Regular Expression Library"
+(PCRE), so any regular expression that is valid in Perl 5.0 should be
+valid here.</p>
 
 <!-- #acdtype-string -->
 <h5>String</h5>
@@ -756,7 +757,7 @@ devices on your installation.</p>
 <p><b>Formalised:</b></p>
 
 <pre>
-<i>datatype</i>: <i>parametername</i> [
+<i>datatype:</i> <i>parametername</i> [
  ]
 </pre>
 
@@ -879,7 +880,7 @@ streamline the development of ACD files.</p>
   <td>
   <p>primary output sequence, generally
   required, generally should default to the primary input sequence name,
-  extension defaults to the name of the output sequence format..</p>
+  extension defaults to the name of the output sequence format.</p>
   </td>
  </tr>
  <tr>
@@ -1103,7 +1104,7 @@ parameter definition and are placed between the square brackets.</p>
 <p><b>Formalised:</b></p>
 
 <pre>
-<i>datatype</i>: <i>parametername</i> [ 
+<i>datatype:</i> <i>parametername</i> [ 
     <i>attribute: "value"</i>
   ]
 </pre>
@@ -1246,7 +1247,7 @@ parameter name.</p>
 <p><b>Formalised:</b></p>
 
 <pre>
-<i>datatype</i>: <i>parametername</i> [
+<i>datatype:</i> <i>parametername</i> [
     parameter: Y/N
   ]
 </pre>
@@ -1415,7 +1416,7 @@ white space or commas. The <i>size:</i> attribute sets the number of
 elements in the array. As for the float data type, the <i>minimum:</i>
 and <i>maximum:</i> attributes define the lower and upper value limits
 and default to the boundaries as specified by the systems set-up. For
-validation purposes, the <i>size:</i> attribute defines the total for
+validation purposes, the <i>sum:</i> attribute defines the total for
 all values in the array (tested unless the <i>sumtest:</i> attribute
 is false), and the <i>tolerance:</i> attribute specifies how closely
 the sum should match the total. Remember that most floating point
@@ -1440,14 +1441,18 @@ value is calculated, the user may need some extra guidance.</p>
 <!-- #acdattr-float -->
 <h5>Float</h5>
 
-<p>The <i>minimum</i>: and <i>maximum</i>: attributes define the lower
+<p>The <i>minimum:</i> and <i>maximum:</i> attributes define the lower
 and upper value limits and default to the boundaries as specified by
-the systems set-up. The <i>increment:</i> attribute defines the steps
+the systems set-up.</p>
+
+<p>The <i>increment:</i> attribute defines the steps
 that this parameter is allowed to take, in case there is a need to
 iterate this parameter. The <i>increment:</i> attribute can be any
-valid float value. The
-<i>precision:</i> attribute defines the maximum number of significant
+valid float value.</p>
+
+<p>The <i>precision:</i> attribute defines the maximum number of significant
 decimal places that will be taken into account for this value.</p>
+
 
 <!-- #acdattr-integer -->
 <h5>Integer</h5>
@@ -1473,6 +1478,11 @@ the length of the sequence to which they are applied.</p>
 <p>The <i>minlength:</i> attribute defines the minimum length the string must
 be, the <i>maxlength:</i> attribute defines the maximum length the string
 can be.</p>
+
+<p>The <i>pattern:</i> attribute defines a regular expression used to
+check the string value. ACD uses the Perl-compatible regular
+expression library (PCRE) so any Perl-compatible regular expression should be
+usable.</p>
 
 <a name=sect24122>&nbsp;</a>
 <!-- #acdattr-section-input -->
@@ -1715,6 +1725,24 @@ of the given type. By default, any sequence type is accepted.</p>
 <p>We recommend always defining the <i>type:</i> attribute so that the
 accepted input sequence type is always clear.</p>
 
+<p>If the <i>features:</i> attribute is set, the sequence input will
+include feature information either in the same file (if the sequence
+format supports it) or in a separate file (by default in GFF format).</p>
+
+<p>If the <i>entry:</i> attribute is set, the sequence input will
+include the full original text of the input sequence or database entry.</p>
+
+<p>The <i>nullok:</i> attribute allows a default value to be replaced
+by an empty string or by -noxxx on the command line if the application
+can run without a sequence input.</p>
+
+<p>The <i>sask:</i> attribute sets the defauklt for the <i>-sask</i>
+qualifier, and if set to "Y" specifies that the program will prompt
+the user for a sequence begin and end position, and prompt for the
+reversing of a nucleotide sequence. The EMBOSS "yank" program works
+with fragments of sequences, and uses the <i>sask:</i> attribute to
+prompt the user.</p>
+
 <!-- #acdattr-seqall -->
 <h5>Seqall</h5>
 
@@ -1723,6 +1751,17 @@ of the given type. By default, any sequence type is accepted.</p>
 
 <p>We recommend always defining the <i>type:</i> attribute so that the
 accepted input sequence type is always clear.</p>
+
+<p>If the <i>features:</i> attribute is set, the sequence input will
+include feature information either in the same file (if the sequence
+format supports it) or in a separate file (by default in GFF format).</p>
+
+<p>If the <i>entry:</i> attribute is set, the sequence input will
+include the full original text of the input sequence or database entry.</p>
+
+<p>The <i>nullok:</i> attribute allows a default value to be replaced
+by an empty string or by -noxxx on the command line if the application
+can run without a sequence input.</p>
 
 <!-- #acdattr-seqset -->
 <h5>Seqset</h5>
@@ -1733,6 +1772,17 @@ of the given type. By default, any sequence type is accepted.</p>
 <p>We recommend always defining the <i>type:</i> attribute so that the
 accepted input sequence type is always clear.</p>
 
+<p>If the <i>features:</i> attribute is set, the sequence input will
+include feature information either in the same file (if the sequence
+format supports it) or in a separate file (by default in GFF format).</p>
+
+<p>If the <i>entry:</i> attribute is set, the sequence input will
+include the full original text of the input sequence or database entry.</p>
+
+<p>The <i>nullok:</i> attribute allows a default value to be replaced
+by an empty string or by -noxxx on the command line if the application
+can run without a sequence input.</p>
+
 <!-- #acdattr-seqsetall -->
 <h5>Seqsetall</h5>
 
@@ -1741,6 +1791,17 @@ of the given type. By default, any sequence type is accepted.</p>
 
 <p>We recommend always defining the <i>type:</i> attribute so that the
 accepted input sequence type is always clear.</p>
+
+<p>If the <i>features:</i> attribute is set, the sequence input will
+include feature information either in the same file (if the sequence
+format supports it) or in a separate file (by default in GFF format).</p>
+
+<p>If the <i>entry:</i> attribute is set, the sequence input will
+include the full original text of the input sequence or database entry.</p>
+
+<p>The <i>nullok:</i> attribute allows a default value to be replaced
+by an empty string or by -noxxx on the command line if the application
+can run without a sequence input.</p>
 
 <!-- #acdattr-tree -->
 <h5>Tree</h5>
@@ -1790,6 +1851,35 @@ is simply displayed with a text entry box beneath it, to enter the option.</p>
 <!-- #acdattr-list -->
 <h5>List</h5>
 
+<p>The <i>values:</i> attribute contains the list of valid code names and
+values. The <i>delimiter:</i> and <i>codedelimiter:</i> attributes
+specify how to parse this string into individual list items.</p>
+
+<p>The <i>minimum:</i> attribute specifies the minimum number of
+selections required. By default, 1 selection is required.</p>
+
+<p>The <i>maximum:</i> attribute specifies the maximum number of
+selections required. By default, exactly 1 selection is required. A
+higher value allows multiple selections.</p>
+
+<p>The <i>header:</i> attribute defines text to appear before the list
+is presented to the user. The <i>information:</i> attribute defines
+text to be used as a prompt after the list.</p>
+
+<p>The <i>delimiter:</i> attribute specifies the character used in the
+<i>values:</i> string to separate list items.</p>
+
+<p>The <i>codedelimiter:</i> attribute  specifies the character used in the
+<i>values:</i> string to separate codes (names) and descriptions of
+list items.</p>
+
+<p>The <i>button:</i> attribute suggests whether a list is best
+represented as checkboxes or radio buttons in an interface (value "Y")
+or as a pull-down list.</p>
+
+<p>The <i>casesensitive:</i> attribute defines whether the input must
+match the exact case of the selection list item.</p>
+
 <p>Example:</p>
 
 <pre>
@@ -1820,6 +1910,31 @@ Select one [blosum] : PAM
 
 <!-- #acdattr-selection -->
 <h5>Selection</h5>
+
+<p>The <i>values:</i> attribute contains the list of valid values. The
+<i>delimiter:</i> attribute specifies how to parse this string into
+individual selection list items.</p>
+
+<p>The <i>minimum:</i> attribute specifies the minimum number of
+selections required. By default, 1 selection is required.</p>
+
+<p>The <i>maximum:</i> attribute specifies the maximum number of
+selections required. By default, exactly 1 selection is required. A
+higher value allows multiple selections.</p>
+
+<p>The <i>header:</i> attribute defines text to appear before the
+selection list is presented to the user. The <i>information:</i>
+attribute defines text to be used as a prompt after the list.</p>
+
+<p>The <i>delimiter:</i> attribute specifies the character used in the
+<i>values:</i> string to separate list items.</p>
+
+<p>The <i>button:</i> attribute suggests whether a selection list is best
+represented as checkboxes or radio buttons in an interface (value "Y")
+or as a pull-down list.</p>
+
+<p>The <i>casesensitive:</i> attribute defines whether the input must
+match the exact case of the selection list item.</p>
 
 <p>Example:</p>
 
@@ -1895,6 +2010,17 @@ read in ($(asequence.name) if the sequence parameter is named asequence).</p>
 <p>The <i>extension:</i> attribute will default to the output feature
 format.</p>
 
+<p>The <i>type:</i> attribute defines whether the feature output is
+"protein" or "nucleotide". There is a default based on the type of any
+input sequence, but a value should always be specified.</p>
+
+<p>The <i>offormat:</i> attribute defines the default value for the
+<i>-offormat</i> qualifier, used as the feature format and the default
+feature file extension.</p>
+
+<p>The <i>ofname:</i> attribute defines the default value for the
+<i>-ofname</i> qualifier, used as the default base file name</p>
+
 <!-- #acdattr-outfile -->
 <h5>Outfile</h5>
 
@@ -1922,6 +2048,10 @@ can run without an output file.
 <p>The <i>knowntype:</i> attribute should always be defined. If the output
 is not of any special type, a knowntype of "(program) output" is the
 recommended value.</p>
+
+<p>The <i>append:</i> attribute specifies that output is appended to
+the end of an existing output file. By default, the output file will
+be overwritten.</p>
 
 
 <!-- #acdattr-report -->
@@ -1954,7 +2084,12 @@ by an empty string or by -noxxx on the command line if the application
 can run without a report output file.
 </p>
 
+The <i>rextension:</i> attribute sets the default value for the
+<i>-rextension</i> qualifier, which is normally the program name..</p>
 
+The <i>rscoreshow:</i> attribute specifies whether the feature score
+value should appear in the report. WHere a score is not set by the
+program, the default 0.0 score is normally excluded in this way.</p>
 
 <!-- #acdattr-seqout -->
 <h5>Seqout</h5>
@@ -1966,7 +2101,7 @@ default to the calculated attribute <i>name:</i> of the FIRST sequence that is
 read in ($(asequence.name) if the sequence parameter is a named asequence).</p>
 
 <p>If the <i>features:</i> attribute is set, the sequence output will
-include feature infiormation either in the same file (if the sequence
+include feature information either in the same file (if the sequence
 format supports it) or in a separate file (by default in GFF format).</p>
 
 <p>The <i>type:</i> attribute defines the output sequnce
@@ -1989,7 +2124,7 @@ default to the calculated attribute <i>name:</i> of the FIRST sequence that is
 read in ($(asequence.name) if the sequence parameter is a named asequence).</p>
 
 <p>If the <i>features:</i> attribute is set, the sequence output will
-include feature infiormation either in the same file (if the sequence
+include feature information either in the same file (if the sequence
 format supports it) or in a separate file (by default in GFF format).</p>
 
 <p>The <i>type:</i> attribute defines the output sequnce
@@ -2002,6 +2137,11 @@ by an empty string or by -noxxx on the command line if the application
 can run without this sequence output.
 </p>
 
+<p>The <i>ossingle:</i> attribute sets the default value for the
+<i>-ossingle</i> qualifier and can be set to "Y" to direct output to
+multiple sequence files. For example, the EMBOSS program "seqretsplit"
+splits an input sequence input multiple files using this attribute.</p>
+
 <!-- #acdattr-seqoutset -->
 <h5>Seqoutset</h5>
 
@@ -2012,7 +2152,7 @@ default to the calculated attribute <i>name:</i> of the FIRST sequence that is
 read in ($(asequence.name) if the sequence parameter is a named asequence).</p>
 
 <p>If the <i>features:</i> attribute is set, the sequence output will
-include feature infiormation either in the same file (if the sequence
+include feature information either in the same file (if the sequence
 format supports it) or in a separate file (by default in GFF format).</p>
 
 <p>The <i>type:</i> attribute defines the output sequnce
@@ -2055,6 +2195,15 @@ can run without this graph output.
 
 <p>The command line qualifiers can be defined as ACD attributes. The
 most used are <i>gtitle:</i>, <i>gxtitle:</i> and <i>gytitle:</i>. 
+
+<p>The <i>multiple:</i> attribute specifies the number of multiple XY
+graphs in a single output. The default value is 1, but is sometimes
+defined in ACD files.</p>
+
+<p>The <i>goutfile:</i> attribute specifies the base file name for
+output. It can be used, for example by the EMBOSS program "tmap" to
+direct output to a named file rather than default to the first
+sequence name in the input.</p>
 
 <a name=sect242>&nbsp;</a>
 <h3>2.4.2 Calculated attributes</h3>
@@ -2155,7 +2304,7 @@ this parameter.</p>
 naming them on the command line and specifically unset by prefixing
 the qualifier with 'no', but since the global qualifiers all default
 to false anyway, there is no specific need to use this syntax at the
-moment..</p>
+moment.</p>
 
 <p>Example:</p>
 
@@ -3435,42 +3584,43 @@ is no compelling reason to use this syntax.</p>
 
 <h2>Notes:</h2>
 
-<p>Need to add sections - how they work and the standard naming</p>
+<p>Need to add sections documentation - how they work and the standard
+naming</p>
 
-<p>Need to document stndard groups and explain how to add new ones.
+<p>Need to explain how to add new groups to groups.standard</p>
 
 <p>Need to add qualifier_assocqualifier syntax</p>
-
-<p>Need to check list of groups (2.2.1.2) from
-wossname and note where to find it. Make this a table rather than preformatted
-text</p>
 
 <p>Need to add a lot more on features input and
 output and notes on features in reports</p>
 
-<p>Need to add more on align and report</p>
-
-<p>Check details for ranges</p>
+<p>Check details for ranges - can we add some attributes
+e.g. forwardonly so range appears in the tables</p>
 
 <p>Check the -nooutput option in the example(s)</p>
 
-<p>acd error checks and how to log and debug the details</p>
+<p>acd error checks - list and example for each - and how to log and
+debug the details</p>
 
 <p>acdvalid warnings and errors, and how to run it</p>
 
 <p>Documentation on ACD variables</p>
 
-<p>nullok wherever used</p>
-
-<p>range could use at least one attribute so it appears</p>
+<p>test attributes in acdstats match attributes documented</p>
 
 <p>codon, cpdb, scop should all use name and extension attributes
-- makes more sense than just name</p>
+- makes more sense than just name. Only codon should have a default.</p>
 
 <p>datafile - does extension get added to anything the user specifies?
 always, only if it has no extension? </p>
 
 <p>report mintags: can we remove it?</p>
+
+<p>knowntype table of standard values - check against acdstats</p>
+
+<p>When checking attribute (etc) documentation sections, add a
+subsection number to the h5 header</p>
+
 </body>
 
 </html>
