@@ -313,6 +313,121 @@ void ajUtilRev8(ajlong* ival)
 
 
 
+/* @func ajUtilRevShort ******************************************************
+**
+** Reverses the byte order in a short integer.
+**
+** @param [u] sval [short*] Short integer in wrong byte order.
+**                          Returned in correct order.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajUtilRevShort(short* sval)
+{
+    union lbytes
+    {
+	char chars[8];
+	short s;
+    } data, revdata;
+    char* cs;
+    char* cd;
+    ajint i;
+
+    data.s = *sval;
+    cs     = data.chars;
+    cd     = &revdata.chars[sizeof(short)-1];
+
+    for(i=0; i < sizeof(short); i++)
+    {
+	*cd = *cs++;
+	--cd;
+    }
+
+    *sval = revdata.s;
+
+    return;
+}
+
+
+
+
+/* @func ajUtilRevInt *********************************************************
+**
+** Reverses the byte order in an integer.
+**
+** @param [u] ival [ajint*] Integer in wrong byte order.
+**                        Returned in correct order.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajUtilRevInt(ajint* ival)
+{
+    union lbytes
+    {
+	char chars[8];
+	ajint i;
+    } data, revdata;
+    char* cs;
+    char* cd;
+    ajint i;
+
+    data.i = *ival;
+    cs     = data.chars;
+    cd     = &revdata.chars[sizeof(ajint)-1];
+    for(i=0; i < sizeof(ajint); i++)
+    {
+	*cd = *cs++;
+	--cd;
+    }
+
+    *ival = revdata.i;
+
+    return;
+}
+
+
+
+
+/* @func ajUtilRevLong *******************************************************
+**
+** Reverses the byte order in a long.
+**
+** @param [u] ival [ajlong*] Integer in wrong byte order.
+**                           Returned in correct order.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajUtilRevLong(ajlong* lval)
+{
+    union lbytes
+    {
+	char chars[8];
+	ajlong l;
+    } data, revdata;
+    char* cs;
+    char* cd;
+    ajint i;
+    
+    data.l = *lval;
+    cs     = data.chars;
+    cd     = &revdata.chars[sizeof(ajlong)-1];
+    for(i=0; i < sizeof(ajlong); i++)
+    {
+	*cd = *cs++;
+	--cd;
+    }
+    
+    *lval = revdata.l;
+    
+    return;
+}
+
+
+
+
 /* @func ajUtilCatch **********************************************************
 **
 ** Dummy function to be called in special cases so it can be used when
