@@ -678,7 +678,20 @@ static AjBool jctl_up(char *buf, int *uid, int *gid, AjPStr *home)
     cstr     = ajStrNew();
 
     ajStrAssC(&cstr,buf);
-    ajFmtScanS(cstr,"%d%S%S",&command,&username,&password);
+    if(ajFmtScanS(cstr,"%d%S%S",&command,&username,&password)!=3)
+    {
+	if(ajStrLen(username))
+	   bzero((void*)ajStrStr(username),ajStrLen(username));
+	if(ajStrLen(password))
+	   bzero((void*)ajStrStr(password),ajStrLen(password));
+	jctl_zero(buf);
+	
+	ajStrDel(&username);
+	ajStrDel(&password);
+	ajStrDel(&cstr);
+	return ajFalse;
+    }
+    
 
     
 #ifndef NO_AUTH
