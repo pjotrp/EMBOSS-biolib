@@ -6,7 +6,13 @@ lib_LTLIBRARIES = libplplot.la
 
 if ISSHARED
 if ISAIXIA64
+
+if AMPNG
+AM_CFLAGS = -Wl,-G -lgd -lpng -lz -lX11 -lm
+else
 AM_CFLAGS = -Wl,-G -lX11
+endif
+
 else
 AM_CFLAGS =
 endif
