@@ -153,6 +153,7 @@ transeq = transeq -frame r tembl:hsfau -auto
 trimseq = trimseq tembl:hsfau -window 20 -percent 10 -auto
 vectorstrip = vectorstrip tembl:hsfau -vectors ../data/data.vectorstrip -vectorfile -auto
 water = water tsw:opsd_human tsw:opsd_xenla -auto
+whichdb = whichdb hsfau1 -auto
 wobble = wobble tembl:hsfau -graph ps -auto
 wordcount = wordcount tembl:hsfau -auto
 wordmatch = wordmatch tembl:hsfau tembl:hsfau1 -auto
