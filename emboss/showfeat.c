@@ -177,6 +177,7 @@ int main(int argc, char **argv)
 
 
 	/* show the features */
+
 	(void) showfeat_ShowFeatSeq (outfile, seq, beg, end, matchsource,
 				     matchtype, matchtag, matchvalue,
 				     sortlist, width, collapse, forward,
@@ -354,6 +355,8 @@ static void showfeat_ShowFeatSeq (AjPFile outfile, AjPSeq seq, ajint beg,
     ajStrDel(&tagsout);
     ajStrDel(&posout);
     ajStrDel(&lineout);
+    ajStrDel(&sourceout);
+    ajStrDel(&typeout);
   
     return;
 }
