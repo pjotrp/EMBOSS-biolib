@@ -1,4 +1,11 @@
 Version 2.9.0
+	HTML data from remote sites is becoming more complex. EMBOSS now
+	makes a first pass to look for a single preformatted block and
+	accepts this as the data (thus avoiding horrors such as the Entrez
+	headers and javascript which NCBI's search service includes).
+	At the sdame time, an old fix to patch SRS 6.1.0 output has been
+	removed as this clashed with the new code.
+
 	Optional outputs have a new behaviour. With nulldefault defined,
 	an output is, by default, turned off and will return a NULL value
 	to the calling program if nullok is set. Setting the value to ""

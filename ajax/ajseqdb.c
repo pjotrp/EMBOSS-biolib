@@ -1879,8 +1879,7 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
 
     alarm(0);
 
-    if(!ajFileBuffStripSrs(seqin->Filebuff))
-	ajFileBuffStripHtml(seqin->Filebuff);
+    ajFileBuffStripHtml(seqin->Filebuff);
 
     ajStrAssS(&seqin->Db, qry->DbName);
 
@@ -3780,8 +3779,7 @@ static AjBool seqAccessUrl(AjPSeqin seqin)
 
     alarm(0);
 
-    if(!ajFileBuffStripSrs(seqin->Filebuff))
-	ajFileBuffStripHtml(seqin->Filebuff);
+    ajFileBuffStripHtml(seqin->Filebuff);
 
     ajStrAssS(&seqin->Db, qry->DbName);
 

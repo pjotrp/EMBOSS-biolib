@@ -3059,7 +3059,7 @@ void ajFileBuffStripHtml(AjPFileBuff thys)
     AjPStr hexstr   = NULL;
     
     tagexp   = ajRegCompC("^(.*)(<[!/A-Za-z][^>]*>)(.*)$");
-    fullexp  = ajRegCompC("^(.*)(<(TITLE)>.*</TITLE>)(.*)$");
+    fullexp  = ajRegCompC("^(.*)(<([A-Za-z]+)[^>]*>.*</\\3>)(.*)$");
     httpexp  = ajRegCompC("^HTTP/");
     nullexp  = ajRegCompC("^\r?\n?$");
     chunkexp = ajRegCompC("^Transfer-Encoding: +chunked");
@@ -3071,6 +3071,8 @@ void ajFileBuffStripHtml(AjPFileBuff thys)
     /* first take out the HTTP header (HTTP 1.0 onwards) */
     
     
+    ajFileBuffPrint(thys, "Before ajFileBuffStripHtml");
+
     i = 0;
     
     ajDebug("First line [%d] '%S' \n",
@@ -3078,7 +3080,7 @@ void ajFileBuffStripHtml(AjPFileBuff thys)
     
     if(ajRegExec(httpexp, thys->Curr->Line))
     {
-	/* ^HTTP */
+	/* ^HTTP  header processing */
 	while(thys->Pos < thys->Size &&
 	      !ajRegExec(nullexp, thys->Curr->Line))
 	{
@@ -3229,10 +3231,17 @@ void ajFileBuffStripHtml(AjPFileBuff thys)
 	ajFileBuffTraceFull(thys, 999999, 0);
 	ajStrDel(&hexstr);
 	ajStrDel(&nullLine);
+	ajFileBuffPrint(thys, "Chunks resolved");
     }
     
     ajFileBuffReset(thys);
+
+    /*
+     ** Now we have a clean single file to process
+     */
     
+    ajFileBuffStripHtmlPre(thys);
+
     while(thys->Curr)
     {
 	if(ajRegExec(ncbiexp, thys->Curr->Line))
@@ -3245,7 +3254,8 @@ void ajFileBuffStripHtml(AjPFileBuff thys)
 	    ajRegSubI(fullexp, 1, &s1);
 	    ajRegSubI(fullexp, 2, &s2);
 	    ajRegSubI(fullexp, 4, &s3);
-	    ajDebug("removing '%S' [%d]\n", s2, ajStrRef(thys->Curr->Line));
+	    ajDebug("removing (full) '%S' [%d]\n",
+		    s2, ajStrRef(thys->Curr->Line));
 	    ajFmtPrintS(&thys->Curr->Line, "%S%S", s1, s3);
 	}
 
@@ -3254,9 +3264,10 @@ void ajFileBuffStripHtml(AjPFileBuff thys)
 	    ajRegSubI(tagexp, 1, &s1);
 	    ajRegSubI(tagexp, 2, &s2);
 	    ajRegSubI(tagexp, 3, &s3);
-	    ajDebug("removing '%S' [%d]\n", s2, ajStrRef(thys->Curr->Line));
+	    ajDebug("removing (tag) '%S' [%d]\n",
+		    s2, ajStrRef(thys->Curr->Line));
 	    ajFmtPrintS(&thys->Curr->Line, "%S%S", s1, s3);
-	    ajDebug("leaving '%S''%S'\n", s1,s3);
+	    ajDebug("leaving '%S'+'%S'\n", s1,s3);
 	}
 
 	if(ajRegExec(srsdbexp, thys->Curr->Line))
@@ -3264,7 +3275,7 @@ void ajFileBuffStripHtml(AjPFileBuff thys)
 	    ajRegSubI(srsdbexp,1,&s1);
 	    ajRegSubI(srsdbexp,2,&s2);
 	    ajRegSubI(srsdbexp,3,&s3);
-	    ajDebug("removing '%S%S%S' [%d]\n",
+	    ajDebug("removing (srsdb) '%S%S%S' [%d]\n",
 		     s1,s2,s3,ajStrRef(thys->Curr->Line));
 	    fileBuffLineDel(thys);
 	    ++i;
@@ -3280,7 +3291,8 @@ void ajFileBuffStripHtml(AjPFileBuff thys)
 	}
 	else
 	{
-	    ajDebug(":[%d] %S", ajStrRef(thys->Curr->Line), thys->Curr->Line);
+	    ajDebug(":[%d] %S\n",
+		    ajStrRef(thys->Curr->Line), thys->Curr->Line);
 	    fileBuffLineNext(thys);
 	}
 	i++;
@@ -3304,6 +3316,8 @@ void ajFileBuffStripHtml(AjPFileBuff thys)
     ajRegFree(&ncbiexp2);
     ajRegFree(&srsdbexp);
     
+    ajFileBuffPrint(thys, "After ajFileBuffStripHtml");
+
     return;
 }
 
@@ -3909,6 +3923,53 @@ void ajFileBuffTraceFull(const AjPFileBuff thys, size_t nlines,
 	line = line->Next;
     }
 
+    return;
+}
+
+
+
+
+/* @func ajFileBuffPrint ******************************************************
+**
+** Writes the full contents of a buffered file to the debug file
+**
+** @param [r] thys [const AjPFileBuff] Buffered file.
+** @param [r] title [const char*] Report title
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajFileBuffPrint(const AjPFileBuff thys, const char* title)
+{
+    ajint i;
+    AjPFileBuffList line;
+    ajint last = 0;
+    AjPStr tmpstr = NULL;
+
+    ajDebug("=== File Buffer: %s ===\n", title);
+    line = thys->Lines;
+    for(i=1; line; i++)
+    {
+	ajStrAssS(&tmpstr, line->Line);
+	ajStrRemoveNewline(&tmpstr);
+	if(line == thys->Curr)
+	    ajDebug("*%S\n", tmpstr);
+	else
+	    ajDebug(" %S\n", tmpstr);
+	line = line->Next;
+    }
+
+    line = thys->Free;
+    for(i=1; line;  i++)
+    {
+	if(line == thys->Freelast) last = i;
+	line = line->Next;
+    }
+    if (!last)
+	last = i;
+    ajDebug("=== end of file, free list %d lines ===\n", last);
+
+    ajStrDel(&tmpstr);
     return;
 }
 
@@ -4634,102 +4695,96 @@ ajint ajFileWriteStr(const AjPFile thys, AjPStr str, ajint len)
 
 
 
-/* @func ajFileBuffStripSrs  **************************************************
+/* @func ajFileBuffStripHtmlPre ***********************************************
 **
-** Strip out SRS6.1 header lines.
+** If we only have one pre-formatted section in HTML, that is all we keep.
 **
 ** @param [u] thys [AjPFileBuff] buffer
-** @return [ajint] Return 1=success 0=not SRS6.1
+** @return [AjBool] ajTrue=cleaned ajFalse=unchanged
 ** @@
 ******************************************************************************/
-ajint ajFileBuffStripSrs(AjPFileBuff thys)
+
+AjBool ajFileBuffStripHtmlPre(AjPFileBuff thys)
 {
     AjPFileBuffList lptr    = NULL;
     AjPFileBuffList tptr    = NULL;
-    AjPFileBuffList lastptr = NULL;
-    
+    AjPRegexp preexp = NULL;
+    AjPRegexp endexp = NULL;
+    ajint ifound = 0;
     AjBool found;
     
     found = ajFalse;
     lptr = thys->Curr;
     
-    
+    preexp = ajRegCompC("<[Pp][Rr][Ee]>");
+    endexp = ajRegCompC("</[Pp][Rr][Ee]>");
     lptr=thys->Curr;
     
-    /* SRS 6.1 etc has '&nbsp' lines. If not found then return false */
-    /* There must be a better way but LION were unresponsive         */
-    while(lptr && !found)
+    ajDebug("ajFileBuffStripHtmlPre testing for <pre> line(s)\n");
+    while(lptr)
     {
-	if(ajStrPrefixC(lptr->Line,"&nbsp"))
-	    found = ajTrue;
+	if(ajRegExec(preexp, lptr->Line))
+	    ifound++;
 	lptr = lptr->Next;
     }
     
-    if(!found)
+    if(!ifound)
+    {
+	ajDebug("ajFileBuffStripHtmlPre no <pre> line(s)\n");
 	return ajFalse;
-    
+    }
+
+    if (ifound > 1)
+    {
+	ajDebug("ajFileBuffStripHtmlPre found %d <pre> lines\n", ifound);
+	return ajFalse;
+    }
+
+    ajDebug("ajFileBuffStripHtmlPre found <pre> block\n");
     found = ajFalse;
     lptr=thys->Curr;
     
-    while(lptr && !found)
+
+    ajDebug("++ajFileBuffStripHtmlPre skip to <pre>\n");
+    while(lptr && !ajRegExec(preexp, lptr->Line))
     {
-	if(!ajStrPrefixC(lptr->Line,"<pre>"))
-	{
-	    tptr = lptr;
-	    lptr = lptr->Next;
-	    thys->Curr=lptr;
-	    ajStrDel(&tptr->Line);
-	    AJFREE(tptr);
-	    thys->Size--;
-	}
-	else
-	    found = ajTrue;
+	ajDebug("skip before: %S\n", lptr->Line);
+	tptr = lptr;
+	lptr = lptr->Next;
+	ajStrDel(&tptr->Line);
+	AJFREE(tptr);
+	thys->Size--;
     }
     
-    thys->Lines = thys->Curr;
-    
-    
-    
-    while(lptr && !ajStrPrefixC(lptr->Line,"</pre>"))
+    if (lptr)
+	ajDebug("++ajFileBuffStripHtmlPre <pre> at: %S\n", lptr->Line);
+    thys->Lines = thys->Curr = lptr;
+    ajRegPost(preexp, &lptr->Line);
+
+    ajDebug("++ajFileBuffStripHtmlPre skip to </pre>\n");
+    while(lptr && !ajRegExec(endexp,lptr->Line))
     {
-	lastptr = lptr;
+	ajDebug("keep: %S\n", lptr->Line);
 	lptr    = lptr->Next;
     }
     
-    
-    
+    ajRegPre(endexp, &lptr->Line);
+    thys->Last = lptr;
+    lptr = lptr->Next;
+
     while(lptr)
     {
-	while(lptr && !ajStrPrefixC(lptr->Line,"<pre>"))
-	{
-	    tptr = lptr;
-	    lptr = lptr->Next;
-	    ajStrDel(&tptr->Line);
-	    AJFREE(tptr);
-	    thys->Size--;
-	}
-
-	if(!lptr)
-	{
-	    lastptr->Next = NULL;
-	    continue;
-	}
-
-	lastptr->Next = lptr;
-	while(lptr && !ajStrPrefixC(lptr->Line,"</pre>"))
-	{
-	    lastptr = lptr;
-	    lptr    = lptr->Next;
-	}
-    }
-    
-    lptr = thys->Curr;
-    while(lptr)
-    {
-	ajStrRemoveHtml(&lptr->Line);
+	ajDebug("skip after: %S\n", lptr->Line);
+	tptr = lptr;
 	lptr = lptr->Next;
+	ajStrDel(&tptr->Line);
+	AJFREE(tptr);
+	thys->Size--;
     }
-    
+
+    thys->Last->Next = NULL;
+    ajFileBuffReset(thys);
+    ajFileBuffPrint(thys, "ajFileBuffStripHtmlPre completed");
     return ajTrue;
 }
 
