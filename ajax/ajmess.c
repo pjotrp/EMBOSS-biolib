@@ -1374,7 +1374,7 @@ void ajMessCodesDelete (void) {
   errorTable = 0;
   return;
 }
-/* @func ajDebug*******************************************************
+/* @func ajDebug *******************************************************
 **
 ** Writes a debug message to the debug file if debugging is on.
 ** Typically, debugging is turned on by adding '-debug' to the command line
