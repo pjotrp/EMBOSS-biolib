@@ -4249,6 +4249,43 @@ ajint ajStrTokenCount(AjPStr* line, const char *delim)
     return count;
 }
 
+
+/* @func ajStrTokenCountR *****************************************************
+**
+** Returns the number of tokens in a string (reentrant)
+**
+** @param [r] line [AjPStr*] String to examine.
+** @param [r] delim [const char *] String of delimiter characters.
+** @return [ajint] The number of tokens
+** @@
+******************************************************************************/
+
+ajint ajStrTokenCountR(AjPStr* line, const char *delim)
+{
+    AjPStr buf=NULL;
+    ajint count;
+    char  *p;
+    char  *save=NULL;
+    
+    if(!*line)
+	return 0;
+
+    buf = ajStrNew();
+    
+    p = ajSysStrtokR(ajStrStr(*line),delim,&save,&buf);
+    if(!p)
+    {
+	ajStrDel(&buf);
+	return 0;
+    }
+
+    count=1;
+    while(ajSysStrtokR(NULL,delim,&save,&buf)) ++count;
+    
+    ajStrDel(&buf);
+    return count;
+}
+
 /* @func ajStrRoom *******************************************************
 **
 ** Returns the additional space available in a string.

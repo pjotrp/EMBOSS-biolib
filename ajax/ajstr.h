@@ -436,6 +436,7 @@ AjBool     ajStrTokenAss (AjPStrTok *ptok, const AjPStr thys,
 			  const char *delim);
 void       ajStrTokenClear (AjPStrTok *token);
 ajint      ajStrTokenCount(AjPStr *line, const char *delim);
+ajint      ajStrTokenCountR(AjPStr* line, const char *delim);
 AjPStrTok  ajStrTokenInit (const AjPStr thys, const char *delim);
 void       ajStrTokenReset (AjPStrTok* ptok);
 AjBool     ajStrTokenRest (AjPStr* pthis, AjPStrTok* ptoken);
