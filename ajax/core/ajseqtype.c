@@ -318,7 +318,7 @@ static AjBool seqTypeTestI(AjPSeq thys, ajint itype)
     }
 
     ajRegSubI(badchars, 1, &tmpstr);
-    ajDebug("Sequence must be %s,\n found bad character '%c'",
+    ajDebug("Sequence must be %s,\n found bad character '%c'\n",
 	    seqType[itype].Desc, ajStrChar(tmpstr, 0));
     ajStrDel(&tmpstr);
 
@@ -377,6 +377,9 @@ static AjBool seqTypeFix(AjPSeq thys, ajint itype)
 	    return ajFalse;
 	}
     }
+
+    if (ajStrMatchCC(seqType[itype].Name, "pureprotein"))
+	    seqTypeStopTrimS(&thys->Seq);
 
     return seqTypeTestI(thys, itype);
 }
