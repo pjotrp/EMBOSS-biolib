@@ -13,14 +13,12 @@ seqall: sequence  [
   features: "$(feature)"
 ]
 
-endsection: input
-
-section: advanced [ info: "advanced Section" type: page ]
 integer: skip  [
+  required: "Y"
+  default: "0" 
   information: "Number of sequences to skip at start"
 ]
-
-endsection: advanced
+endsection: input
 
 section: output [ info: "output Section" type: page ]
 seqoutall: outseq  [
