@@ -43,13 +43,16 @@
 
 
 
-static AjPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg, AjPFile psif);
+static AjPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg, AjPHitlist hit, 
+					       AjPFile psif);
 static AjPFile seqsearch_psialigned(AjPStr seqname, AjPScopalg *scopalg,  
 				    AjPStr *psiname, ajint niter, ajint maxhits, 
 				    float evalue,  AjPStr database);
-static AjPFile seqsearch_psisingle(AjPStr seqname, AjPStr *psiname, 
+static AjPFile seqsearch_psisingle(AjPStr seqname, AjPHitlist *hit, AjPStr *psiname, 
 				   ajint niter, ajint maxhits, 
 				   float evalue,  AjPStr database);
+
+
 
 
 
@@ -95,8 +98,10 @@ int main(int argc, char **argv)
     AjPList    listin     = NULL;   /* a list of hitlist for eleminating the identical hits */
     AjPList    listout    = NULL;   /* a list of scophit for eleminating the identical hits */
     
-    AjPScopalg scopalg   = NULL;   /*Scop alignment from input file */
+    AjPScopalg scopalg   = NULL;   /* Scop alignment from input file */
+    AjPHitlist scophit   = NULL;   /* Hitlist of single hit from input file (singlets) */
     
+
     AjPHitlist tmphitlist = NULL;
     AjPHitlist hitlist   = NULL;   /* Hitlist object for holding results of 
                                       PSIBLAST hits*/  
@@ -160,7 +165,7 @@ int main(int argc, char **argv)
 	
 	/* Single sequences */
 	if(modei==1) 
-	    psif = seqsearch_psisingle(inname, &psiname,
+	    psif = seqsearch_psisingle(inname, &scophit, &psiname,
 				       niter,maxhits,evalue,database);
 	/* Sequence sets */
 	else if(modei==2) 
@@ -174,8 +179,9 @@ int main(int argc, char **argv)
 
 
         /*  Parse the Psi-Blast output file and write a Hitlist object. It
-	 is OK for scopalg to be NULL (i.e. if modei ==1) */
-        tmphitlist = seqsearch_ReadPsiblastOutput(scopalg, psif);
+	 is OK for scopalg to be NULL (i.e. if modei ==1) or scophit to be 
+	 NULL (i.e. if modei ==2 and sometimes if modei==1) */
+        tmphitlist = seqsearch_ReadPsiblastOutput(scopalg, scophit, psif);
         
         /* Delete psiblast output file*/
 	ajFmtPrintS(&temp, "rm %S", psiname);
@@ -257,6 +263,8 @@ int main(int argc, char **argv)
 		embHitlistDel(&hitlist);
 		if(modei==2) 
 		    ajDmxScopalgDel(&scopalg);  
+		if(scophit)
+		    embHitlistDel(&scophit);
 		ajFileClose(&psif); 
 
 		/* free up listin */
@@ -300,6 +308,9 @@ int main(int argc, char **argv)
 	    embHitlistDel(&hitlist);
 	    if(modei==2)
 		ajDmxScopalgDel(&scopalg);
+	    if(scophit)
+		embHitlistDel(&scophit);
+
 	    ajFileClose(&psif);     
 	    ajStrDel(&inname);
 	}
@@ -510,6 +521,7 @@ static AjPFile seqsearch_psialigned(AjPStr seqname, AjPScopalg *scopalg,
  ** database. The psiblast output file is created and a pointer to it provided.
  **
  ** @param [r] seqname    [AjPStr]      Full name of sequence file 
+ ** @param [r] hit        [AjPHitlist]  Hitlist of single hit
  ** @param [r] psiname    [AjPStr *]    Name of psiblast output file created
  ** @param [r] niter      [ajint]       No. psiblast iterations
  ** @param [r] maxhits    [ajint]       Maximum number of hits to generate
@@ -524,7 +536,7 @@ static AjPFile seqsearch_psialigned(AjPStr seqname, AjPScopalg *scopalg,
  ** need to pass in a pointer to the alignment file itself. Write ScopalgWrite
  ** and modify this function accordingly - not urgent.
  ******************************************************************************/
-static AjPFile seqsearch_psisingle(AjPStr seqname, AjPStr *psiname, 
+static AjPFile seqsearch_psisingle(AjPStr seqname, AjPHitlist *hit, AjPStr *psiname, 
 				   ajint niter, ajint maxhits, 
 				   float evalue,  AjPStr database)
 {
@@ -536,16 +548,29 @@ static AjPFile seqsearch_psisingle(AjPStr seqname, AjPStr *psiname,
     AjPFile   seqinf    = NULL;         /* File pointer for  PSIBLAST input file (single sequence)*/
     AjPFile   psif      = NULL;         /* Pointer to psiblast output file*/
 
+    AjPFile   dhfin     = NULL;         /* File pointer for reading DHF input file (if provided)
+					   otherwise the sequence is read via USA */
+    
+
     AjPSeq    seq       = NULL;
     AjPSeqin  seqin     = NULL;
 
 
-    /* Set the filename via USA. ajSeqRead interprets it to find the filename. */
-    seq    = ajSeqNew();
-    seqin  = ajSeqinNew();
-    ajSeqinUsa(&seqin, seqname);
-    ajSeqRead(seq, seqin);
-    
+    /* Open dhf (or other format) sequence file */
+    dhfin = ajFileNewIn(seqname);
+
+    /* Read dhf file if appropriate */
+    if(!(*hit = embHitlistReadFasta(dhfin)))
+    {   
+	ajWarn("embHitlistReadFasta call failed in seqsearch_psisingle");
+	
+	/* Read sequence instead */ 
+	/* Set the filename via USA. ajSeqRead interprets it to find the filename. */
+	seq    = ajSeqNew();
+	seqin  = ajSeqinNew();
+	ajSeqinUsa(&seqin, seqname);
+	ajSeqRead(seq, seqin);
+    }
 
     /* Allocate strings */
     name      = ajStrNew();
@@ -564,7 +589,10 @@ static AjPFile seqsearch_psisingle(AjPStr seqname, AjPStr *psiname,
     seqinf = ajFileNewOut(seq_in);
     
     /* Write psiblast input file of single sequence */    
-    ajFmtPrintF(seqinf,">\n%S\n",ajSeqStr(seq));
+    if((*hit))
+	ajFmtPrintF(seqinf,">\n%S\n",(*hit)->hits[0]->Seq);
+    else
+	ajFmtPrintF(seqinf,">\n%S\n",ajSeqStr(seq));
     
     /* Close psiblast input file before psiblast opens them */
     ajFileClose(&seqinf);
@@ -580,11 +608,14 @@ static AjPFile seqsearch_psisingle(AjPStr seqname, AjPStr *psiname,
     system(ajStrStr(temp)); 
 
     /* Tidy up */
+    ajFileClose(&dhfin);
     ajStrDel(&name);
     ajStrDel(&temp);
     ajStrDel(&seq_in);   
-    ajSeqDel(&seq);
-    ajSeqinDel(&seqin);
+    if(seq)
+	ajSeqDel(&seq);
+    if(seqin)
+	ajSeqinDel(&seqin);
 
 
     /* Open psiblast output file and return pointer */
@@ -599,13 +630,16 @@ static AjPFile seqsearch_psisingle(AjPStr seqname, AjPStr *psiname,
  ** hits.
  **
  ** @param [r] scopalg   [AjPScopalg]  Alignment    
+ ** @param [r] scophit   [AjPHitlist]  Hit 
  ** @param [r] psif      [AjPFile]     psiblast output file 
  **
  ** @return [AjPHitlist] Pointer to Hitlist object (or NULL if 0 hits were found)
  ** @@
  ** 
  ******************************************************************************/
-static AjPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg, AjPFile psif)
+static AjPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg, 
+					       AjPHitlist scophit, 
+					       AjPFile psif)
 {
     /* The hits are organised into blocks, each block contains hits to 
        a protein with a unique accession number.  
@@ -663,9 +697,17 @@ static AjPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg, AjPFile psif)
 	ajStrAssS(&hitlist->Family, scopalg->Family);
 	hitlist->Sunid_Family = scopalg->Sunid_Family;
     }
+    else if(scophit)
+    {    
+	ajStrAssS(&hitlist->Class, scophit->Class);
+	ajStrAssS(&hitlist->Fold, scophit->Fold);
+	ajStrAssS(&hitlist->Superfamily, scophit->Superfamily);
+	ajStrAssS(&hitlist->Family, scophit->Family);
+	hitlist->Sunid_Family = scophit->Sunid_Family;
+    }
     /* It is ok that these records are not written if there is no
-       scopalg object (i.e. single sequences or sequences sets as 
-       input), they just will not appear in the seqsearch output file */
+       scopalg or hit object (i.e. single sequences or sequences sets 
+       were used as input), they just will not appear in the seqsearch output file */
     
 
     /* Loop for whole of input file*/
@@ -748,8 +790,6 @@ static AjPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg, AjPFile psif)
 
     return hitlist;
 }
-
-
 
 
 
