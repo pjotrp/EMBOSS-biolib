@@ -29,6 +29,7 @@ extern "C"
 ** @attr ajIntSecondPosition [ajint] position of second residue in contact
 ** @attr ajpStrFirstResType [AjPStr] 1st residue type in contact (3 lett code)
 ** @attr ajpStrSecondResType [AjPStr] 2nd residue type in contact (3 lett code)
+** @attr fContactScore [AjPStr] frequency-based score of contact
 ** @@
 ******************************************************************************/
 
@@ -39,6 +40,8 @@ typedef struct EmbSContact
     ajint ajIntSecondPosition;
     AjPStr ajpStrFirstResType; 
     AjPStr ajpStrSecondResType;
+    float fContactScore;
+    
 } EmbOContact;
 #define EmbPContact EmbOContact*
 
@@ -113,7 +116,17 @@ AjBool embReadCmapFile (AjPFile ajpFileOriginalCmap,
 			AjPInt2d *pAjPInt2dCmapResTypes,
 			AjPInt2d *pAjPInt2dCmapPositions);
 
+AjBool embReadAndReviseCmapFile (AjPFile ajpFileCmap,
+				 ajint ajIntSeqLen,
+				 AjPInt2d *pAjpInt2dCmapSummary,
+				 EmbPCmapHeader *pAjpCmapHeader,
+				 AjPInt2d *pAjpInt2dCmapResTypes,
+				 AjPInt2d *pAjpInt2dCmapPositions,
+				 char *pcUpdatedSeqAcross);
+
 AjPStr embReadCmapLine (AjPFile ajpFileOriginalCmap);
+
+ajint  embTypeCmapLine (const AjPStr ajpStrCmapLine);
 
 ajint  embTypeCmapLine (const AjPStr ajpStrCmapLine);
 
@@ -125,17 +138,17 @@ AjBool embLoadContactLine (const AjPStr pAjpStrCmapLine,
 
 AjBool embWriteCmapFile (AjPFile ajpFileCmap,
 			 ajint ajIntSeqLen,
-			 AjPInt2d *pAjPInt2dSummary,
+			 AjPInt2d *pEmbpInt2dSummary,
 			 EmbPCmapHeader *pEmbpFileCmapHeader,
-			 AjPInt2d *pAjPInt2dCmapResTypes,
-			 AjPInt2d *pAjPInt2dCmapPositions);
+			 AjPInt2d *pAjpInt2dCmapResTypes,
+			 AjPInt2d *pAjpInt2dCmapPositions);
 
 AjBool embWriteUpdatedCmapFile (AjPFile ajpFileUpdatedCmap,
 				ajint ajIntSeqLen,
-				AjPInt2d *pAjPInt2dSummary,
+				AjPInt2d *pAjpInt2dSummary,
 				EmbPCmapHeader *pEmbpFileUpdatedCmapHeader,
-				AjPInt2d *pAjPInt2dCmapResTypes,
-				AjPInt2d *pAjPInt2dCmapPositions,
+				AjPInt2d *pAjpInt2dCmapResTypes,
+				AjPInt2d *pAjpInt2dCmapPositions,
 				const AjPMatrixf ajpMatrixfContactScoring);
 
 AjBool embPrintContact (const EmbPContact embpContactToPrint);
@@ -150,8 +163,7 @@ void embWriteContact (AjPFile ajpFileUpdatedCmap,
 		      const EmbPContact embpContactToWrite);
 
 void embWriteUpdatedContact (AjPFile ajpFileUpdatedCmap,
-			     const EmbPContact embpContactToWrite,
-			     float fContactScore);
+			     const EmbPContact embpContactToWrite);
 
 EmbPCmapHeader embCmapHeaderNew (void);
 
