@@ -201,7 +201,7 @@ section: output [
     default: "famnr.hits"
   ]
 
-  infile: voutfname  [
+  string: voutfname  [
     parameter: "Y"
     information: "Name of scop validation file (output)"
     help: "A 'scop validation file' contains sequence relatives (hits)
