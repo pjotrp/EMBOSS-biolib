@@ -82,6 +82,8 @@ int main(int argc, char **argv)
     AjBool dodifcount;
     AjBool dochange;
     AjBool dodesc;
+    AjBool dowt;
+
     ajint  seqlength;
     ajint  alignlength;
     ajint  gaps;
@@ -99,7 +101,6 @@ int main(int argc, char **argv)
 					   is not known */
     AjPStr altname;
 
-    AjPStr desc;
     AjPStr xxx = NULL;
 
     embInit("infoalign", argc, argv);
@@ -126,6 +127,7 @@ int main(int argc, char **argv)
     dodifcount    = ajAcdGetBool("diffcount");
     dochange      = ajAcdGetBool("change");
     dodesc        = ajAcdGetBool("description");
+    dowt          = ajAcdGetBool("weight");
 
     /* consensus parameters */
     fplural   = ajAcdGetFloat("plurality");
@@ -262,6 +264,15 @@ int main(int argc, char **argv)
 		ajFmtPrintF(outfile, "%% Change\t");
 	}
 
+        if(dowt)
+        {
+            if(html)
+                ajFmtPrintF(outfile, "<th>Weight</th>");
+            else
+                ajFmtPrintF(outfile, "Weight\t");
+        }
+
+
 	if(dodesc)
 	{
 	    if(html)
@@ -292,13 +303,10 @@ int main(int argc, char **argv)
 	if(ajStrLen(name) == 0)
 	    name = altname;
 
-	desc = ajSeqGetDesc(seq);
-
 	/* get the stats from the comparison to the reference sequence */
 	infoalign_Compare(ref, seq, sub, cvt, &seqlength, &alignlength,
 			  &gaps, &gapcount, &idcount, &simcount,
 			  &difcount, &change);
-
 
 	/* start table line */
 	if(html)
@@ -306,60 +314,67 @@ int main(int argc, char **argv)
 
 	if(dousa)
 	    infoalign_OutputStr(outfile, usa, html,
-				(dodesc || dochange ||
+				(dodesc || dowt || dochange ||
 				 dodifcount || dosimcount ||
 				 doidcount || dogapcount || dogaps ||
 				 doseqlength || doalignlength || doname), 18);
 	
 	if(doname)
 	    infoalign_OutputStr(outfile, name, html,
-				(dodesc || dochange ||
+				(dodesc || dowt || dochange ||
 				 dodifcount || dosimcount ||
 				 doidcount || dogapcount || dogaps ||
 				 doseqlength || doalignlength), 14);
 	
 	if(doseqlength)
 	    infoalign_OutputInt(outfile, seqlength, html,
-				(dodesc || dochange ||
+				(dodesc || dowt || dochange ||
 				 dodifcount || dosimcount ||
 				 doidcount || dogapcount ||
 				 dogaps || doalignlength));
 	
 	if(doalignlength)
 	    infoalign_OutputInt(outfile, alignlength, html,
-				(dodesc || dochange ||
+				(dodesc || dowt || dochange ||
 				 dodifcount || dosimcount ||
 				 doidcount || dogapcount || dogaps));
 	
 	if(dogaps)
 	    infoalign_OutputInt(outfile, gaps, html,
-				(dodesc || dochange ||
+				(dodesc || dowt || dochange ||
 				 dodifcount || dosimcount ||
 				 doidcount || dogapcount));
 	
 	if(dogapcount)
 	    infoalign_OutputInt(outfile, gapcount, html,
-				(dodesc || dochange ||
+				(dodesc || dowt || dochange ||
 				 dodifcount || dosimcount ||
 				 doidcount));
 	
 	if(doidcount)
 	    infoalign_OutputInt(outfile, idcount, html,
-				(dodesc || dochange || dodifcount ||
-				 dosimcount));
+				(dodesc || dowt || dochange ||
+                                 dodifcount || dosimcount));
 	
 	if(dosimcount)
-	    infoalign_OutputInt(outfile, simcount, html, (dodesc || dochange ||
-							  dodifcount));
+	    infoalign_OutputInt(outfile, simcount, html, 
+                                (dodesc || dowt || dochange ||
+				 dodifcount));
 	
 	if(dodifcount)
-	    infoalign_OutputInt(outfile, difcount, html, (dodesc || dochange));
+	    infoalign_OutputInt(outfile, difcount, html, 
+           		        (dodesc || dowt || dochange));
 	
 	if(dochange)
-	    infoalign_OutputFloat(outfile, change, html, dodesc);
+	    infoalign_OutputFloat(outfile, change, html, (dodesc || dowt) );
 	
+        if(dowt)
+            infoalign_OutputFloat(outfile, ajSeqsetWeight(seqset,i), html, 
+            	dodesc);
+
 	if(dodesc)
-	    infoalign_OutputStr(outfile, desc, html, ajFalse, NOLIMIT);
+	    infoalign_OutputStr(outfile, ajSeqGetDesc(seq), html, ajFalse, 
+	    	NOLIMIT);
 	
 	/* end table line */
 	if(html)
@@ -475,7 +490,7 @@ static void infoalign_OutputInt(AjPFile outfile, ajint num, AjBool html,
 ** @param [r] after [AjBool] True if we want to output more columns
 **                           after this one
 ** @param [r] minlength [ajint] minimum length of field to print the
-**                              string in (NOLIMIT = no limit)
+**                              string in (-1 (NOLIMIT) = no limit)
 ** @return [void]
 ** @@
 ******************************************************************************/

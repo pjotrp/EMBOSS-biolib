@@ -95,7 +95,7 @@ section: output [
     help: "This is a way of shortening the command line if you only
            want a few things to be displayed. Instead of specifying: \
            '-nohead -nousa -noname -noalign -nogaps -nogapcount -nosimcount
-           -noidcount -nodiffcount' \
+           -noidcount -nodiffcount -noweight' \
            to get only the sequence length output, you can specify \
            '-only -seqlength'"
   ]
@@ -155,9 +155,15 @@ section: output [
     information: "Display % number of changed positions"
   ]
 
+  boolean: weight  [
+    default: "@(!$(only))"
+    information: "Display 'weight' column"
+  ]
+
   boolean: description  [
     default: "@(!$(only))"
     information: "Display 'description' column"
   ]
+
 
 endsection: output
