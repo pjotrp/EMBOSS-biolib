@@ -34,9 +34,9 @@ pkgdata2_DATA = jembossctl.txt kitsch.txt lindna.txt listor.txt marscan.txt \
                polydot.txt preg.txt prettyplot.txt prettyseq.txt \
                primersearch.txt printsextract.txt profit.txt prophecy.txt \
                prophet.txt prosextract.txt protdist.txt pscan.txt \
-               rebaseextract.txt recode.txt recoder.txt redata.txt \
-               remap.txt restml.txt restover.txt restrict.txt revseq.txt \
-               scopalign.txt scope.txt seealso.txt seqboot.txt \
+               psiblasts.txt rebaseextract.txt recode.txt recoder.txt \
+               redata.txt remap.txt restml.txt restover.txt restrict.txt \
+               revseq.txt scopalign.txt scope.txt seealso.txt seqboot.txt \
                seqmatchall.txt seqret.txt seqretall.txt seqretallfeat.txt \
                seqretfeat.txt seqretset.txt seqretsplit.txt showalign.txt \
                showdb.txt showfeat.txt showorf.txt showseq.txt \
