@@ -1361,7 +1361,7 @@ static AjPStr cirdna_ReadGroup(AjPFile infile, float *From, float *To,
 	       ajStrMatchCaseC(GroupName, "endgroup") )
 		ajStrAssC(&GroupName, " ");
 	    if( ajStrLen(GroupName)>20 )
-		ajStrCut( &GroupName, 20, ajStrLen(GroupName) );
+		ajStrCut( &GroupName, 20, ajStrLen(GroupName)-1 );
 	    break;
 	}
     }
