@@ -2323,8 +2323,8 @@ void ajAlignSetMatrixInt(AjPAlign thys, const AjPMatrix matrix)
 {
     if(!thys->IMatrix)
     {
-	thys->IMatrix = matrix;
-	ajAlignSetMatrixName(thys, ajMatrixName(matrix));
+	thys->IMatrix = (AjPMatrix) matrix;
+	ajAlignSetMatrixName(thys, ajMatrixName((AjPMatrix)matrix));
     }
 
     if(thys->FMatrix)
@@ -2350,8 +2350,8 @@ void ajAlignSetMatrixFloat(AjPAlign thys, const AjPMatrixf matrix)
 {
     if(!thys->FMatrix)
     {
-	thys->FMatrix = matrix;
-	ajAlignSetMatrixName(thys, ajMatrixfName(matrix));
+	thys->FMatrix = (AjPMatrixf) matrix;
+	ajAlignSetMatrixName(thys, ajMatrixfName((AjPMatrixf)matrix));
     }
 
     if(thys->IMatrix)
