@@ -10,7 +10,7 @@ entrails histogramtest intconv \
 patmattest \
 psiblasts \
 seqinfo seqretsingle \
-sigscan \
+sigplot sigscan \
 testplot treetypedisplay 
 
 bin_PROGRAMS = abiview acdc antigenic \
@@ -39,7 +39,7 @@ prosextract pscan \
 rebaseextract recoder redata remap restover restrict revseq scope \
 seealso seqmatchall seqret seqretall seqretallfeat seqretset seqretsplit \
 showalign showdb showfeat showorf showseq \
-shuffleseq sigcleave siggen silent splitter scopalign sigplot stretcher \
+shuffleseq sigcleave siggen silent splitter scopalign stretcher \
 stssearch supermatcher swissparse syco \
 textsearch tfextract tfm tfscan \
 tmap transeq trimest trimseq \
@@ -184,7 +184,6 @@ sigcleave_SOURCES = sigcleave.c
 silent_SOURCES = silent.c
 splitter_SOURCES = splitter.c
 scopalign_SOURCES = scopalign.c
-sigplot_SOURCES = sigplot.c
 stretcher_SOURCES = stretcher.c
 stssearch_SOURCES = stssearch.c
 supermatcher_SOURCES = supermatcher.c
@@ -218,6 +217,7 @@ histogramtest_SOURCES = histogramtest.c
 patmattest_SOURCES = patmattest.c
 psiblasts_SOURCES = psiblasts.c
 seqretsingle_SOURCES = seqretsingle.c
+sigplot_SOURCES = sigplot.c
 sigscan_SOURCES = sigscan.c
 testplot_SOURCES = testplot.c
 treetypedisplay_SOURCES = treetypedisplay.c
