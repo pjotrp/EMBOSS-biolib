@@ -9,7 +9,8 @@ pkgdata_DATA = dna.acedb dna.aln dna.asn1 dna.codata dna.embl dna.fasta \
                prot.ig prot.m-acedb prot.m-codata prot.m-fasta prot.m-nbrf \
                prot.m-ncbi prot.m-swiss prot.nbrf prot.ncbi prot.swiss \
                prot.text z83307.seq \
-               aligna.dna alignapart.dna alignb.dna
+               aligna.dna alignapart.dna alignb.dna \
+               aligna.prot alignapart.prot alignb.prot
 
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/test/data
