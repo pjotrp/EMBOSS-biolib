@@ -1,5 +1,5 @@
 application: degapseqrunner [
-  documentation: "runs degapseqprogram on all sequence pairs in a directory"
+  documentation: "runs degapseq program on all sequence pairs in a directory"
   groups: "protein: 3D structure"
 ]
 
@@ -10,9 +10,10 @@ section: input [
 
   dirlist: gappedseqsdir [
     parameter: "Y"
-#    default: "/data/structure/people/mhurley/Database/HOMSTRAD/class/alpha+beta/cystatin"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_input_sequences"
-    information: "input directory of files containing sequence pairs for alignment"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_input_sequences/gold/60_65"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_input_sequences/gold/55_60"
+    information: "input directory of files containing sequence pairs for degapping"
+    extension: "gold"
   ]
 
   string: pathtocommand [
@@ -52,7 +53,8 @@ section: output [
   outdir: degappedseqsoutdir
   [
     parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/degapped"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/60_65"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/55_60"
     information: "name of directory containing degapped sequence pairs"
     extension: "deg"
   ]

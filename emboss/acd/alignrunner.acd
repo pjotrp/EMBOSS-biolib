@@ -11,6 +11,7 @@ section: input [
   dirlist: seqpairsdir [
     parameter: "Y"
     default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/55_60"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/60_65"
     information: "input directory of files containing sequence pairs for alignment"
     extension: "deg"
   ]
@@ -105,6 +106,7 @@ section: output [
   [
     parameter: "Y"
     default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/needle/55_60"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/needle/60_65"
     information: "name of directory containing sequences aligned by first method"
     extension: "needle"
   ]
@@ -113,6 +115,7 @@ section: output [
   [
     parameter: "Y"
     default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/nawalign/55_60"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/nawalign/60_65"
     information: "name of directory containing sequences aligned by second method"
     extension: "nawalign"
   ]
