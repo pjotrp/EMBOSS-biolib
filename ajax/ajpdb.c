@@ -2607,14 +2607,14 @@ ajint  ajPdbGetEStrideType(AjPPdb obj, ajint chn, AjPStr *EStrideType)
 ** Finds the chain number for a given chain identifier in a pdb structure
 **
 ** @param [r] id  [char]    Chain identifier
-** @param [r] pdb [AjPPdb]  Pdb object
+** @param [r] pdb [const AjPPdb]  Pdb object
 ** @param [w] chn [ajint *] Chain number
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
 
-AjBool ajPdbChnidToNum(char id, AjPPdb pdb, ajint *chn)
+AjBool ajPdbChnidToNum(char id, const AjPPdb pdb, ajint *chn)
 {
     ajint a;
     
