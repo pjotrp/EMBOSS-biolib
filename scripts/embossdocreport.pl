@@ -3,6 +3,7 @@
 $errfile = 0;
 $errfunc = 0;
 $errcount = 0;
+$errtotcount = 0;
 $totcount = 0;
 $totfile = 0;
 $filelib = "unknown";
@@ -11,6 +12,7 @@ $filename = "unknown";
 open (LOG, ">embossdocreport.log") || die "Cannot open embossdocreport.log";
 
 %badfiles = ();
+%badtotfiles = ();
 
 while (<>) {
     $newfunc = 0;
@@ -62,19 +64,21 @@ while (<>) {
 
     if ($newfunc || $newfile) {
 	if ($errcount) {
+	    $errtotcount += $errcount;
 	    $totcount += $errcount;
 	    $errfunc++;
 	    $errfile++;
-	}
 	$errcount = 0;
+	}
     }
-
     if ($newfile) {
 	if ($errfile) {
 	    $badfiles{$filelib."_".$filename}=$errfile;
+	    $badtotfiles{$filelib."_".$filename}=$errtotcount;
 	    $totfile++;
 	}
 	$errfile = 0;
+	$errtotcount = 0;
 	$filename = $newfilename;
 	if ($newfiletype ne "") {
 	    if ($newfiletype eq "include") {$filename .= ".h"}
@@ -83,6 +87,7 @@ while (<>) {
 	}
 	$filelib = $newfilelib;
     }
+
 
     if (/^bad/) {
 	if (!$errcount) {
@@ -109,7 +114,7 @@ if ($errcount) {
 if ($errfile) {$badfiles{$filelib."_".$filename}=$errfile}
 
 foreach $x (sort (keys (%badfiles))) {
-    printf "%4d %s\n", $badfiles{$x}, $x;
+    printf "%4d %4d %s\n", $badtotfiles{$x}, $badfiles{$x}, $x;
 }
 
 print STDERR "$totcount errors in $errfunc functions in $totfile files\n";
