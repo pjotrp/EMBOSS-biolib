@@ -16,7 +16,7 @@ Description
    sequences, seqret.
    
    seqret has an option to allow it to only read the first sequence from
-   a multiple set of sequences (-single). seqret cannot, however, skip
+   a multiple set of sequences (-firstonly). seqret cannot, however, skip
    the first few sequences from a multiple set of sequence, writing out
    the rest; this is what seqret is for.
    
