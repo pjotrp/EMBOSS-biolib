@@ -1,0 +1,121 @@
+application: fpenny [
+  documentation: "Penny algorithm, branch-and-bound to find
+                  all most parsimonious trees"
+  groups: "Phylogeny:Discrete_characters"
+]
+
+infile: infile  [
+  parameter: "Y"
+  prompt: "data file"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  default: "epenny.outfile"
+]
+
+list: method  [
+  required: "y"
+  minimum: "1"
+  maximum: "1"
+  header: "Method"
+  values: "Wag:Wagner; Cam:Camin-Sokal; Mix:Mixed;"
+  prompt: "Choose the method to use"
+  default: "Wag"
+]
+
+integer: numgroups  [
+  optional: "Y"
+  information: "How many groups of 100 trees"
+  default: "1000"
+]
+
+integer: howoften  [
+  optional: "Y"
+  information: "How often to report, in trees"
+  default: "100"
+]
+
+boolean: simple  [
+  optional: "Y"
+  information: "Branch and bound is simple"
+]
+
+boolean: og  [
+  optional: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum  [
+  required: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "number of the outgroup"
+]
+
+boolean: thresh  [
+  default: "N"
+  information: "Use Threshold parsimony"
+]
+
+float: valthresh  [
+  required: "$(thresh)"
+  minimum: "1.0"
+  default: "1.0"
+  information: "threshold value"
+]
+
+boolean: multsets  [
+  optional: "Y"
+  default: "N"
+  information: "Analyze multiple data sets"
+]
+
+integer: datasets  [
+  required: "$(multsets)"
+  information: "How many data sets"
+]
+
+boolean: printdata  [
+  optional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+boolean: steps  [
+  optional: "Y"
+  default: "N"
+  information: "Print out steps in each site"
+]
+
+boolean: seqatnodes  [
+  optional: "Y"
+  default: "N"
+  information: "Print sequences at all nodes of tree"
+]
+
+boolean: drawtree  [
+  optional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
+
+boolean: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
+
+outfile: treefile  [
+  required: "$(trout)"
+  default: "epenny.treefile"
+  information: "Tree file name"
+  prompt: "Output treefile name"
+]

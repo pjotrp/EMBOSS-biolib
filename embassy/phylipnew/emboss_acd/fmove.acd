@@ -1,0 +1,6 @@
+application: fmove [
+  documentation: "Interactive mixed method parsimony"
+  groups: "Phylogeny:Discrete_characters"
+  batch: "no"
+]
+

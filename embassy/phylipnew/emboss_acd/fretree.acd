@@ -1,0 +1,5 @@
+application: frestdist [
+  documentation: "Interactive Tree Rearrangement"
+  groups: "Phylogeny:Tree_drawing"
+]
+

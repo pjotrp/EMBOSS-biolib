@@ -1,0 +1,5 @@
+application: frestdist [
+  documentation: "compute distance matrix from restriction sites or fragments"
+  groups: "Phylogeny:Molecular_sequence"
+]
+

@@ -1,0 +1,107 @@
+application: fdnapars [
+  documentation: "DNA parsimony algorithm"
+  groups: "Phylogeny:Molecular sequence"
+]
+
+seqset: sequence  [
+  parameter: "Y"
+  type: "gapany"
+  help: "File containing a sequence alignment"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  standardtype: "dnapars output"
+]
+
+boolean: besttree  [
+  optional: "Y"
+  default: "Y"
+  information: "Search for best tree"
+]
+
+boolean: random  [
+  required: "$(besttree)"
+  default: "N"
+  information: "Randomize input order of species"
+]
+
+integer: randseed  [
+  required: "$(random)"
+  default: "3"
+  information: "Random number seed (must be odd)"
+]
+
+integer: randtimes  [
+  required: "$(random)"
+  default: "3"
+  information: "How many times to randomise"
+]
+
+boolean: og  [
+  optional: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum  [
+  required: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "number of the outgroup"
+]
+
+boolean: thresh  [
+  default: "N"
+  information: "Use Threshold parsimony"
+]
+
+float: valthresh  [
+  required: "$(thresh)"
+  minimum: "1.0"
+  default: "1.0"
+  information: "threshold value"
+]
+
+boolean: printdata  [
+  optional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+boolean: steps  [
+  optional: "Y"
+  default: "N"
+  information: "Print out steps in each site"
+]
+
+boolean: seqatnodes  [
+  optional: "Y"
+  default: "N"
+  information: "Print sequences at all nodes of tree"
+]
+
+boolean: drawtree  [
+  optional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
+
+boolean: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
+
+outfile: treefile  [
+  required: "$(trout)"
+  default: "ednapars.treefile"
+  information: "Tree file name"
+  standardtype: "Newick tree"
+]

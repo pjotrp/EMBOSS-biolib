@@ -1,0 +1,189 @@
+application: fdnaml [
+  documentation: "Estimates phylogenies from nucleic acid
+                  sequence Maximum Likelihood"
+  groups: "Phylogeny:Molecular_sequence"
+  gui: "yes"
+  batch: "yes"
+  cpu: "high"
+]
+
+seqsetall: sequence  [
+  parameter: "Y"
+  type: "gapany"
+  prompt: "Sequences file to be read in"
+  help: "File containing a sequence allignment"
+]
+
+tree: intreefile [
+  parameter: "Y"
+  nullok: "Y"
+  information: "Tree file"
+  standardtype: "Newick tree"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+]
+
+outfile: outtreefile  [
+  extension: "treefile"
+  information: "Tree file name"
+  standardtype: "Newick tree"
+  nullok: "Y"
+]
+
+list: gamma  [
+  optional: "y"
+  minimum: "1"
+  maximum: "1"
+  header: "Gamma distribution"
+  values: "gamma:Gamma distribution, coefficient of variation (cvi) required;
+           invar:Gamma+invariant, cvi and invarfrac values required;
+           hmm:Hidden Markov categopries and rates;
+           none:No distribution parameteres used"
+  information: "Gamma distribution"
+  default: "none"
+]
+
+float: coefficient [
+  information: "Coefficient of variation"
+  minimum: "0.001"
+  maximum: "1.0"
+  default: "1.0"
+]
+
+float: invarfrac  [
+  optional: "Y"
+  information: "Fraction of invariant sites"
+  default: "0.0"
+  minimum: "0.0"
+  maximum: "0.9999"
+]
+
+integer: ncategories  [
+  optional: "Y"
+  default: "1"	
+  minimum: "1"
+  maximum: "9"
+  information: "Number of substitution rate categories"
+]
+
+properties: categories  [
+  optional: "Y"
+  characters: "1-$(ncategories)"
+  information: "File of substitution rate categories"
+  nullok: "Y"
+]
+
+array: rates [
+  optional: "$(categories)"
+  information: "Category rates"
+  default: "1.0"
+  minimum: "0.0"
+  size: "$(ncategories)"
+  sumtest: "N"
+]
+
+integer: nhmmcategories  [
+  optional: "Y"
+  default: "1"	
+  minimum: "1"
+  maximum: "9"
+  information: "Number of HMM rate categories"
+]
+
+array: hmmrates [
+  optional: "$(hmmcategories)"
+  information: "HMM category rates"
+  default: "1.0"
+  minimum: "0.0"
+  size: "$(nhmmcategories)"
+  sumtest: "N"
+]
+
+array: hmmprobabilities [
+  optional: "$(hmmcategories)"
+  information: "Probability for each HMM category"
+  default: "1.0"
+  minimum: "0.0"
+  maximum: "1.0"
+  size: "$(nhmmcategories)"
+  sum: "1.0"
+]
+
+float: lambda [
+  default: "1.0"
+  information: "Mean block length of sites having the same rate"
+  minimum: "1.0"
+]
+
+properties: weights  [
+  optional: "Y"
+  characters: "01"
+  information: "Weights file: Ignore sites with weight zero"
+  nullok: "Y"
+]
+
+float: ttratio  [
+  required: "y"
+  information: "Transition/transversion ratio"
+  default: "2.0"
+  maximum: "100.0"
+]
+
+array: basefreqs [
+  information: "Base frequencies"
+  size: "4"
+  minimum: "0.0"
+  maximum: "1.0"
+  default: "0.25 0.25 0.25 0.25"
+  sum: "1.0"
+]
+
+boolean: printdata  [
+  optional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+boolean: global [
+  optional: "Y"
+  default: "N"
+  information: "Global rearrangements"
+]
+
+boolean: lengths [
+  optional: "Y"
+  default: "N"
+  information: "Use branch lengths from user trees"
+]
+
+boolean: reconsider [
+  optional: "Y"
+  default: "N"
+  information: "Rearrange starting with user tree"
+]
+
+boolean: improve [
+  optional: "Y"
+  default: "N"
+  information: "Slower but less rough analysis"
+]
+
+boolean: hypstate [
+  optional: "Y"
+  default: "N"
+  information: "Reconstruct hypothetical sequences"
+]
+
+boolean: freqsfrom [
+  optional: "Y"
+  default: "Y"
+  information: "Use empirical base frequencies from seqeunce input"
+]

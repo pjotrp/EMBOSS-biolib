@@ -1,0 +1,132 @@
+application: fmix [
+  documentation: "Mixed parsimony algorithm"
+  groups: "Phylogeny:Discrete_characters"
+]
+
+infile: infile  [
+  parameter: "Y"
+  prompt: "data file"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  default: "emix.outfile"
+]
+
+boolean: besttree  [
+  parameter: "Y"
+  default: "Y"
+  information: "Search for best tree"
+]
+
+list: method  [
+  required: "y"
+  minimum: "1"
+  maximum: "1"
+  header: "Method"
+  values: "Wag:Wagner; Cam:Camin-Sokal; Mix:Mixed; prompt: "Choose
+           the method to use"
+  default: "Wag"
+]
+
+boolean: random  [
+  optional: "$(besttree)"
+  default: "N"
+  information: "Randomize input order of species"
+]
+
+integer: randseed  [
+  required: "$(random)"
+  information: "Random number seed (must be odd)"
+]
+
+integer: randtimes  [
+  required: "$(random)"
+  information: "Number of times to jumble"
+]
+
+boolean: og  [
+  required: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum  [
+  required: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "number of the outgroup"
+]
+
+boolean: thresh  [
+  default: "N"
+  information: "Use Threshold parsimony"
+]
+
+float: valthresh  [
+  required: "$(thresh)"
+  minimum: "1.0"
+  default: "1.0"
+  information: "threshold value"
+]
+
+boolean: ancestral  [
+  optional: "Y"
+  default: "N"
+  information: "Use ancestral states in input file"
+  prompt: "Use ancestral states in input file"
+]
+
+boolean: multsets  [
+  optional: "Y"
+  default: "N"
+  information: "Analyze multiple data sets"
+]
+
+integer: datasets  [
+  required: "$(multsets)"
+  information: "How many data sets"
+]
+
+boolean: printdata  [
+  optional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+boolean: statesatnodes  [
+  optional: "Y"
+  default: "N"
+  information: "Print states at all nodes of tree"
+]
+
+boolean: steps  [
+  optional: "Y"
+  default: "N"
+  information: "Print out steps in each character"
+]
+
+boolean: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
+
+boolean: drawtree  [
+  optional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
+
+outfile: treefile  [
+  required: "$(trout)"
+  default: "emix.treefile"
+  information: "Tree file name"
+  prompt: "Treefile name"
+]

@@ -1,0 +1,101 @@
+application: fdnapenny [
+  documentation: "Penny algorithm for DNA"
+  groups: "Phylogeny:Molecular_sequence"
+]
+
+seqset: msf  [
+  parameter: "Y"
+  type: "gapany"
+  prompt: "Sequences file to be read in"
+  help: "File containing a sequence"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  default: "ednapenny.outfile"
+]
+
+integer: numgroups  [
+  optional: "Y"
+  information: "How many groups of 100 trees"
+  default: "1000"
+]
+
+integer: howoften  [
+  optional: "Y"
+  information: "How often to report, in trees"
+  default: "100"
+]
+
+boolean: simple  [
+  optional: "Y"
+  information: "Branch and bound is simple"
+]
+
+boolean: og  [
+  optional: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum  [
+  required: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "number of the outgroup"
+]
+
+boolean: thresh  [
+  default: "N"
+  information: "Use Threshold parsimony"
+]
+
+float: valthresh  [
+  required: "$(thresh)"
+  minimum: "1.0"
+  default: "1.0"
+  information: "threshold value"
+]
+
+boolean: printdata  [
+  optional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+boolean: steps  [
+  optional: "Y"
+  default: "N"
+  information: "Print out steps in each site"
+]
+
+boolean: seqatnodes  [
+  optional: "Y"
+  default: "N"
+  information: "Print sequences at all nodes of tree"
+]
+
+boolean: drawtree  [
+  optional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
+
+boolean: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
+
+outfile: treefile  [
+  required: "$(trout)"
+  default: "ednapenny.treefile"
+  information: "Tree file name"
+  prompt: "Output treefile name"
+]

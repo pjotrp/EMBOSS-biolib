@@ -1,0 +1,128 @@
+application: frestml [
+  documentation: "Restriction site maximum Likelihood method"
+  groups: "Phylogeny:Molecular_sequence"
+]
+
+infile: datafile  [
+  parameter: "Y"
+  information: "Input file"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  default: "erestml.outfile"
+]
+
+boolean: besttree  [
+  optional: "Y"
+  default: "Y"
+  information: "Search for best tree"
+]
+
+boolean: allsites  [
+  optional: "Y"
+  default: "Y"
+  information: "Are all sites detected"
+]
+
+boolean: lengths  [
+  optional: "@(!$(besttree))"
+  default: "N"
+  information: "Use lengths from user trees"
+]
+
+integer: sitelen  [
+  optional: "Y"
+  default: "6"
+  minimum: "1"
+  maximum: "8"
+  information: "Site length"
+]
+
+float: extrap  [
+  optional: "Y"
+  default: "100.0"
+  minimum: "0.001"
+  information: "Extrapolation factor"
+]
+
+boolean: global  [
+  optional: "$(besttree)"
+  default: "N"
+  information: "Global rearrangements"
+]
+
+boolean: random  [
+  required: "$(besttree)"
+  default: "N"
+  information: "Randomize input order of species"
+]
+
+integer: randseed  [
+  required: "$(random)"
+  default: "3"
+  information: "Random number seed (must be odd)"
+]
+
+integer: randtimes  [
+  required: "$(random)"
+  default: "3"
+  information: "How many times to randomise"
+]
+
+boolean: og  [
+  optional: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum  [
+  required: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "number of the outgroup"
+]
+
+boolean: multsets  [
+  optional: "Y"
+  default: "N"
+  information: "Analyze multiple data sets"
+]
+
+integer: datasets  [
+  required: "$(multsets)"
+  minimum: "2"
+  default: "2"
+  information: "number of sets"
+]
+
+boolean: printdata  [
+  optional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+boolean: drawtree  [
+  optional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
+
+boolean: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
+
+outfile: treefile  [
+  required: "$(trout)"
+  default: "erestml.treefile"
+  information: "Tree file name"
+  prompt: "Output treefile name"
+]

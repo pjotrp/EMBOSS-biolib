@@ -1,0 +1,306 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<TITLE>treedist</TITLE>
+<META NAME="description" CONTENT="treedist">
+<META NAME="keywords" CONTENT="treedist">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+</HEAD>
+<BODY BGCOLOR="#ccffff">
+<DIV ALIGN=RIGHT>
+version 3.6
+</DIV>
+<P>
+<DIV ALIGN=CENTER>
+<H1>TREEDIST -- distances between trees</H1>
+</DIV>
+<P>
+&#169; Copyright 2002 by The University of
+Washington.  Written by Joseph Felsenstein.  Permission is granted to copy 
+this document provided that no fee is charged for it and that this copyright 
+notice is not removed. 
+<P>
+This program computes distances between trees.  The distance that is
+computed is the Symmetric Distance of Robinson and Foulds (1981).  This
+does not use branch length information, only the tree topologies.  It
+must also be borne in mind that the distance does not have any immediate
+statistical interpretation -- we cannot say whether a larger distance is
+significantly larger than a smaller one.
+<P>
+The Symmetric Distance is computed by considering each of the branches of
+the two trees.  Each branch divides the set of species into two groups --
+the ones connected to one end of the branch and the ones connected to the
+other.  This makes a partition of the full set of species.  (in Newick notation)
+<PRE>
+  ((A,C),(D,(B,E))) 
+</PRE>
+has two internal branches.  One induces the partition {A,&nbsp;C&nbsp;&nbsp;|&nbsp;&nbsp;B,&nbsp;D,&nbsp;E}
+and the other induces the partition {A,&nbsp;C,&nbsp;D&nbsp;&nbsp;|&nbsp;&nbsp;B,&nbsp;E}.  A different tree
+with the same set of species,
+<PRE>
+  (((A,D),C),(B,E))) 
+</PRE>
+has internal branches that correspond to the two partitions  {A,&nbsp;C,&nbsp;D&nbsp;&nbsp;|&nbsp;&nbsp;B,&nbsp;E}
+and {A,&nbsp;D&nbsp;&nbsp;|&nbsp;&nbsp;B,&nbsp;C,&nbsp;E}.  Note that the other branches, all of which are
+external branches, induce partitions that separate one species from all the
+others.  Thus there are 5 partitions like this: {C&nbsp;&nbsp;|&nbsp;&nbsp;A,&nbsp;B,&nbsp;D,&nbsp;E} on each
+of these trees.  These are always present on all trees, provided that each
+tree has each species at the end of its own branch.
+<P>
+The Symmetric Distance is simply a count of how many partitions there are,
+among the two trees, that are on one tree and not on the other.  In the
+example above there are two partitions, {A,&nbsp;C&nbsp;&nbsp;|&nbsp;&nbsp;B,&nbsp;D,&nbsp;E} and {A,&nbsp;D&nbsp;&nbsp;|&nbsp;&nbsp;B,&nbsp;C,&nbsp;E},
+each of which is present on only one of the two trees.  The Symmetric
+Distance between the two trees is therefore 2.   When the two trees are
+fully resolved bifurcating trees, their symmetric distance must be an even
+number; it can range from 0 to twice the number of internal branches, which
+for <I>n</I> species is 4n-6.
+<P>
+We have assumed that nothing is lost if the trees are treated as unrooted trees.
+It is easy to define a counterpart to the Symmetric Distance for rooted trees.
+each branch then defines a set of species, namely the clade defined by that
+branch.  Thus if the first of the two trees above were considered as a rooted
+tree it would define the three clades {A,&nbsp;C}, {B,&nbsp;D,&nbsp;E}, and {B,&nbsp;E}.  The
+symmetric distance between two rooted trees is simply the count of the number
+of clades that are defined by one but not by the other.  For the second tree
+the clades would be {A,&nbsp;D}, {B,&nbsp;C,&nbsp;E}, and {B,&nbsp;E}.  The Symmetric Distance
+between thee two rooted trees would then be 4.
+<P>
+Although the examples we have discussed have involved fully
+bifurcating trees, the input trees can have multifurcations.
+This can lead to distances that are odd numbers.
+<P>
+<H2>INPUT AND OPTIONS</H2>
+<P>
+The program reads one or two input tree files.  If there is one input tree
+file, its default name is <TT>intree</TT>.  If there are two their default
+names are <TT>intree</TT> and <TT>intree2</TT>.  The tree files may either
+have the number of trees on their first line, or not.  If the number of
+trees is given, it is actually ignored and all trees in the tree file
+are considered, even if there are more trees than indicated by the number.
+(This is a bug and it will be fixed in the future).
+<P>
+The options are selected from a menu, which looks like this:
+<P>
+<TABLE><TR><TD BGCOLOR=white>
+<PRE>
+
+Tree distance program, version 3.6a3
+
+Settings for this run:
+ O                         Outgroup root:  No, use as outgroup species  1
+ R         Trees to be treated as Rooted:  No
+ T    Terminal type (IBM PC, ANSI, none):  (none)
+ 1  Print indications of progress of run:  Yes
+ 2                 Tree distance submenu:  Distance between adjacent pairs
+
+Are these settings correct? (type Y or the letter for one to change)
+
+</PRE>
+</TD></TR></TABLE>
+<P>
+The O option allows you to root the trees using an outgroup.  It is specified
+by giving its number, where the species are numbered in the order they
+appear in the first tree.  Outgroup-rooting all the trees does not
+affect the unrooted Symmetric Distance, and if it is done and trees are
+treated as rooted, the distances turn out to be the same as the unrooted
+ones.  Thus it is unlikely that you will find this option of interest.
+<P>
+The R option controls whether the Summetric Distance that is computed is
+to treat the trees as unrooted or rooted.  Unrooted is the default.
+<P>
+The terminal type (0) and progress (1) options do not need description here.
+<P>
+Option 2 controls how many tree files are read in, which trees are to
+be compared, and how the output is to be presented.  It causes 
+another menu to appear:
+<P>
+<TABLE><TR><TD BGCOLOR=white>
+<PRE>
+Tree Pairing Submenu:
+ A     Distances between adjacent pairs in tree file.
+ P     Distances between all possible pairs in tree file.
+ C     Distances between corresponding pairs in one tree file and another.
+ L     Distances between all pairs in one tree file and another.
+</PRE>
+</TD></TR></TABLE>
+<P>
+Option A computes the distances between successive pairs of trees in the
+tree input file -- between trees 1 and 2, trees 3 and 4, trees
+5 and 6, and so on.  If there are an odd number of trees in the input tree
+file the last tree will be ignored and a warning message printed to
+remind the user that nothing was done with it.
+<P>
+Option P computes distances between all pairs of trees in the input tree
+file.  Thus with 10 trees 10 x 10 = 100 distances will be computed,
+including distances between each tree and itself.
+<P>
+Option C takes input from two tree files and cmputes distances between
+corresponding members of the two tree files.  Thus distances will be
+computed between tree 1 of the first tree file and tree 1 of the second one,
+between tree 2 of the first file and tree 2 of the second one, and so on.
+If the number of trees in the two files differs, the extra trees in the
+file that has more of them are ignored and a warning is printed out.
+<P>
+Option L computes distances between all pairs of trees, where one tree is
+taken from one tree file and the other from the other tree file.  Thus if
+the first tree file has 7 trees and the second has 5 trees, 7 x 5 = 35
+different distances will be computed. <B> Note -- this option seems not
+to work at the moment.  We hope to fix this soon.</B>
+<P>
+If option 2 is not selected, the program defaults to looking at one tree
+file and computing distances of adjacent pairs (so that option A is
+the default).
+<P>
+<H2>OUTPUT</H2>
+<P>
+The results of the analysis are written onto an output file whose
+default file name is <TT>outfile</TT>.
+<P>
+If any of the four types of analysis are selected, the program asks the
+user how they want the results presented.  Here is that menu for options
+P or L:
+<P>
+<TABLE><TR><TD BGCOLOR=white>
+<PRE>
+
+Distances output options:
+ F     Full matrix.
+ V     One pair per line, verbose.
+ S     One pair per line, sparse.
+
+ Choose one: (F,V,S)
+</PRE>
+</TD></TR></TABLE>
+<P>
+The Full matrix (choice F) is a table showing all distances.  It is
+written onto the output file.  The table is presented as groups of
+10 columns.  Here is the Full matrix for the 12 trees in the input
+tree file which is given as an example at the end of this page.
+<P>
+<TABLE><TR><TD BGCOLOR=white>
+<PRE>
+
+Tree distance program, version 3.6
+
+Symmetric differences between all pairs of trees in tree file:
+
+          1     2     3     4     5     6     7     8     9    10    
+      \------------------------------------------------------------
+    1 |   0     4     2    10    10    10    10    10    10    10  
+    2 |   4     0     2    10     8    10     8    10     8    10  
+    3 |   2     2     0    10    10    10    10    10    10    10  
+    4 |  10    10    10     0     2     2     4     2     4     0  
+    5 |  10     8    10     2     0     4     2     4     2     2  
+    6 |  10    10    10     2     4     0     2     2     4     2  
+    7 |  10     8    10     4     2     2     0     4     2     4  
+    8 |  10    10    10     2     4     2     4     0     2     2  
+    9 |  10     8    10     4     2     4     2     2     0     4  
+   10 |  10    10    10     0     2     2     4     2     4     0  
+   11 |   2     2     0    10    10    10    10    10    10    10  
+   12 |  10    10    10     2     4     2     4     0     2     2  
+
+
+         11    12    
+      \------------
+    1 |   2    10  
+    2 |   2    10  
+    3 |   0    10  
+    4 |  10     2  
+    5 |  10     4  
+    6 |  10     2  
+    7 |  10     4  
+    8 |  10     0  
+    9 |  10     2  
+   10 |  10     2  
+   11 |   0    10  
+   12 |  10     0  
+
+
+</PRE>
+</TD></TR></TABLE>
+<P>
+The Full matrix is only available for analyses P and L (not for A or C).
+<P>
+Option V (Verbose) writes one distance per line.  The Verbose
+output is the default.  Here it is for the example data set given below: 
+<P>
+<TABLE><TR><TD BGCOLOR=white>
+<PRE>
+
+Tree distance program, version 3.6a3
+
+Symmetric differences between adjacent pairs of trees:
+
+Trees 1 and 2:    4
+Trees 3 and 4:    10
+Trees 5 and 6:    4
+Trees 7 and 8:    4
+Trees 9 and 10:    4
+Trees 11 and 12:    10
+
+</PRE>
+</TD></TR></TABLE>
+<P>
+Option S (Sparse or terse) is similar except that all that is
+given on each line are the numbers of the two trees and the distance,
+separated by blanks.  This may be a convenient format if you want to
+write a program to read these numbers in, and you want to spare yourself
+the effort of having the program wade through the words on each line
+in the Verbose output.
+The first four lines of the Sparse output are titles that your program would
+want to skip past.  Here is the Sparse output for the example trees.
+<P>
+<TABLE><TR><TD BGCOLOR=white>
+<PRE>
+
+Tree distance program, version 3.6
+
+Symmetric differences between adjacent pairs of trees:
+
+1 2 4
+3 4 10
+5 6 4
+7 8 4
+9 10 4
+11 12 10
+</PRE>
+</TD></TR></TABLE>
+<P>
+<H2>CREDITS AND FUTURE</H2>
+<P>
+TREEDIST was written by Dan Fineman.  In the future we hope to expand it
+to consider a distance based on branch lengths as well as tree topologies.
+The Branch Score distance defined by Kuhner and Felsenstein (1994) is
+the one we have in mind (the Branch Score defined by them is actually
+the square of the distance).  We also hope to compute a distance based on
+quartets shared and not shared by trees (implicit in the work of Estabrook, McMorris, and
+Meacham, 1985).
+<P>
+<HR>
+<P>
+<H3>TEST DATA SET</H3>
+<P>
+<TABLE><TR><TD BGCOLOR=white>
+<PRE>
+(A,(B,(H,(D,(J,(((G,E),(F,I)),C))))));
+(A,(B,(D,((J,H),(((G,E),(F,I)),C)))));
+(A,(B,(D,(H,(J,(((G,E),(F,I)),C))))));
+(A,(B,(E,(G,((F,I),((J,(H,D)),C))))));
+(A,(B,(E,(G,((F,I),(((J,H),D),C))))));
+(A,(B,(E,((F,I),(G,((J,(H,D)),C))))));
+(A,(B,(E,((F,I),(G,(((J,H),D),C))))));
+(A,(B,(E,((G,(F,I)),((J,(H,D)),C)))));
+(A,(B,(E,((G,(F,I)),(((J,H),D),C)))));
+(A,(B,(E,(G,((F,I),((J,(H,D)),C))))));
+(A,(B,(D,(H,(J,(((G,E),(F,I)),C))))));
+(A,(B,(E,((G,(F,I)),((J,(H,D)),C)))));
+</PRE>
+</TD></TR></TABLE>
+<P>
+The output from default settings for this test set is given above (it is the
+Verbose output example).
+</BODY>
+</HTML>

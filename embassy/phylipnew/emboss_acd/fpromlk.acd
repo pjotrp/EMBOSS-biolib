@@ -1,0 +1,6 @@
+application: fpromlk [
+  documentation: "Protein maximum Likelihood program with molecular clock"
+  groups: "Phylogeny:Molecular_sequence"
+  batch: "no"
+]
+

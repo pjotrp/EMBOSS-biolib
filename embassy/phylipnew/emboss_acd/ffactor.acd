@@ -1,0 +1,32 @@
+application: ffactor [
+  documentation: "Multistate to binary recoding program"
+  groups: "Phylogeny:Discrete_characters"
+]
+
+infile: datafile  [
+  parameter: "Y"
+  prompt: "data file"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  default: "efactor.outfile"
+]
+
+boolean: anc  [
+  optional: "Y"
+  default: "N"
+  prompt: "put ancestral states in output file"
+]
+
+boolean: factors  [
+  optional: "Y"
+  default: "N"
+  prompt: "put factors information in output file"
+]
+
+boolean: progress  [
+  optional: "Y"
+  default: "Y"
+  information: "show progress"
+]

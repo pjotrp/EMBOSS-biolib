@@ -1,0 +1,6 @@
+application: fdnamove [
+  documentation: "Interactive DNA parsimony"
+  groups: "Phylogeny:Molecular_sequence"
+  batch: "no"
+]
+

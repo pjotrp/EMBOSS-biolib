@@ -1,0 +1,80 @@
+application: fconsense [
+  documentation: "Majority-rule and strict consensus tree"
+  groups: "Phylogeny:Consensus"
+]
+
+tree: intreefile [
+  parameter: "Y"
+  information: "file to read in (Newick standard form)"
+  standardtype: "Newick tree"
+]
+
+list: method [
+  required: "Y"
+  minimum: "1"
+  maximum: "1"
+  information: "Consensus method"
+  values: "strict:strict consensus tree; mr:Majority Rule;
+           mre:Majority Rule (extended); ml:Minimum fraction (0.5 to
+           1.0)"
+  default: "mre"
+]
+
+outfile: outfile [
+  parameter: "Y"
+  standardtype: "consense output"
+]
+
+boolean: trout [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
+
+boolean: drawtree [
+  optional: "Y"
+  default: "Y"
+  information: "Write out trees to tree file"
+]
+
+outfile: outtreefile [
+  parameter: "Y"
+  information: "Tree file name"
+  extension: "treefile"
+  standardtype: "Newick tree"
+]
+
+boolean: root [
+  optional: "Y"
+  default: "N"
+  information: "Trees to be treated as Rooted"
+  prompt: "Trees to be treated as Rooted"
+]
+
+boolean: og [
+  required: "$(root)"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum [
+  required: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "number of the outgroup"
+  prompt: "number of the outgroup"
+]
+
+boolean: progress [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+  prompt: "Print indications of progress of run"
+]
+
+boolean: printsets [
+  optional: "Y"
+  default: "Y"
+  information: "Print out the sets of species"
+  prompt: "Print out the sets of species"
+]

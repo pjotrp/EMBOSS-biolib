@@ -1,0 +1,49 @@
+application: ftreedist [
+  documentation: "Distances between trees"
+  groups: "Phylogeny:Consensus"
+]
+
+infile: intreefile [
+  parameter: "Y"
+  standardtype: "Newick tree"
+]
+
+infile: bintreefile [
+  parameter: "Y"
+  standardtype: "Newick tree"
+  information: "Second input tree file"
+  nullok: "Y"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  standardtype: "treedist file"
+]
+
+list: pairing [
+  information: "Tree pairing method"
+  values: "Adjacent:Distances between adjacent pairs in tree file;
+           Pairs:Distances between all possible pairs in tree file;
+           Correspond:Distances between corresponding pairs in one
+  tree file and another;
+           ListAll:Distances between all pairs in one tree file and
+  another"
+  default: "Adjacent"
+]
+
+list: style [
+  information: "Distances output option"
+  values: "Full:Full_matrix;
+           Verbose:One pair per line;
+           Sparse:One pair per line"
+  default: "Verbose"
+]
+
+
+boolean: progress [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+  prompt: "Print indications of progress of run"
+]
+

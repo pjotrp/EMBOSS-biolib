@@ -1,0 +1,50 @@
+application: fdnainvar [
+  documentation: "Nucleic acid sequence Invariants method"
+  groups: "Phylogeny:Molecular_sequence"
+]
+
+seqsetall: sequence  [
+  parameter: "Y"
+  type: "gapdna"
+]
+
+properties: weights [
+  required: "Y"
+  information: "Weights file"
+  nullok: "Y"
+  standardtype: "Phylip weights"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+]
+
+boolean: printdata  [
+  optional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: printdotdiff [
+  optional: "Y"
+  default: "Y"
+  information: "Use dot-differencing to display data"
+]
+
+boolean: printpattern [
+  optional: "Y"
+  default: "Y"
+  information: "Print out the counts of patterns"
+]
+
+boolean: printinvariant  [
+  optional: "Y"
+  default: "Y"
+  information: "Print out the invariants"
+]
+
+boolean: progress  [
+  optional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
