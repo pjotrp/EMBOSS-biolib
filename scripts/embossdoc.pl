@@ -28,6 +28,13 @@ sub secttest($$) {
     return $stype;
 }
 
+sub testvar($) {
+    my ($tvar) = @_;
+    if (defined($cppreserved{$tvar})) {
+	print "bad variable '$tvar' - reserved word in C++, use '$cppreserved{$tvar}'\n";
+    }
+}
+
 sub testnew($$) {
     my ($tdata, $ttype) = @_;
     if ($tdata ne $ttype) {
@@ -195,9 +202,11 @@ $lib = "unknown";
 $countglobal=0;
 $countstatic=0;
 
+### cppreserved is a list of C++ reserved words not to be used as param names.
 ### test is whether to test the return etc.
 ### body is whether to print the body code
 
+%cppreserved = ("this" => "thys", "bool" => "boule", "string" => "strng");
 %test = ("func" => 1, "funcstatic" => 1, "funclist" => 0, "prog" => 0);
 %body = ("func" => 1, "funcstatic" => 1, "funclist" => 1, "prog" => 1);
 
@@ -552,6 +561,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 		print "bad code <$code> var: <$var>\n";
 	    }
 
+	    testvar($var);
 	    if ($ismacro) {               # No code to test for macros
 	    }
 	    else {
