@@ -55,7 +55,7 @@ public class JembossServer
   private File tmprootDir = new File(tmproot);
 
   private String[] envp = {
-    "PATH=" + embossPath,
+    "PATH=" + embossPath + ps + embossBin,
     "PLPLOT_LIB=" + plplot,
     "EMBOSS_DATA=" + embossData,
     "HOME=" + homeDirectory
