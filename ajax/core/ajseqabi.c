@@ -746,74 +746,6 @@ AjBool ajSeqABISampleName(AjPFile fp, AjPStr *sample)
 }
 
 
-/* @funcstatic seqReadAbi ****************************************************
-**
-** Given data in a sequence structure, tries to read everything needed
-** using ABI format.
-**
-** @param [wP] thys [AjPSeq] Sequence object
-** @param [P] seqin [AjPSeqin] Sequence input object
-** @return [AjBool] ajTrue on success
-** @@
-******************************************************************************/
-
-static AjBool seqReadAbi (AjPSeq thys, AjPSeqin seqin)
-{
-    AjPFileBuff buff = seqin->Filebuff;
-    AjPFile fp=NULL;
-    AjBool  ok=ajFalse;
-    ajlong baseO=0L;
-    ajlong numBases=0L;
-    AjPStr sample=NULL;
-    AjPStr smpl=NULL;
-    static AjPRegexp dotsexp = NULL;
-
-
-    fp = buff->File;
-    if(!ajSeqABITest(fp))
-    {
-	ajFileBuffReset(buff);
-	return ajFalse;
-    }
-
-    ajFileSeek(fp,0L,0);
-
-    numBases = ajSeqABIGetNBase(fp);
-    /* Find BASE tag & get offset                    */
-    baseO = ajSeqABIGetBaseOffset(fp);
-    /* Read in sequence         */
-    ok = ajSeqABIReadSeq(fp,baseO,numBases,&thys->Seq);
-
-    sample = ajStrNew();
-    ajSeqABISampleName(fp, &sample);
-
-    /* replace dots in the sample name with undescore */
-    dotsexp = ajRegCompC ("^(.*)[.](.*)$");
-    smpl = ajStrNew();
-
-    while(ajRegExec(dotsexp,sample))
-    {
-      ajStrClear(&sample);
-      ajRegSubI(dotsexp,1,&smpl);
-      ajStrAppC(&smpl,"_");
-      ajStrApp(&sample,smpl);
-      ajRegSubI(dotsexp,2,&smpl);
-      ajStrApp(&sample,smpl);
-    }
-
-    ajStrAssC(&thys->Name,ajStrStr(sample));
-    
-    ajSeqSetNuc (thys);
-
-    ajFileNext(buff->File);
-    buff->File->End=ajTrue;
-
-    ajStrDel(&smpl);
-    ajStrDel(&sample);
-    
-    return ajTrue;
-}
-
 /* @func seqAbiUnused ****************************************************
 **
 ** Unused functions for clean compile
@@ -822,10 +754,6 @@ static AjBool seqReadAbi (AjPSeq thys, AjPSeqin seqin)
 
 void seqAbiUnused(void)
 {
-    AjPSeq seq=NULL;
-    AjPSeqin seqin=NULL;
-
-    seqReadAbi(seq,seqin);
 
     return;
 }
