@@ -97,60 +97,6 @@ public class ResultsMenuBar extends JMenuBar
 
   /**
   *
-  * Sets up a results menu bar with save and close
-  * @param frame 		frame containing the results
-  * @param addRemoteSaveMenu	true to add a remote save menu
-  *
-  */
-  public void setResultsMenuBar(final JFrame frame, boolean addRemoteSaveMenu)
-  {
-    this.frame = frame;
-    add(Box.createRigidArea(new Dimension(5,24)));
-
-    JMenu fileMenu = new JMenu("File");
-    fileMenu.setMnemonic(KeyEvent.VK_F);
-
-    if(addRemoteSaveMenu)
-    {
-      saveToRemoteFile = new JMenuItem("Save to Server File");
-      fileMenu.add(saveToRemoteFile);
-    }
-    saveToLocalFile = new JMenuItem("Save to Local File...");
-    fileMenu.add(saveToLocalFile);
-    fileMenu.addSeparator();
-
-    // undo - redo
-    fileMenu.add(undo);
-    undo.setEnabled(false);
-    undo.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_U, ActionEvent.CTRL_MASK));
-    fileMenu.add(redo);
-    redo.setEnabled(false);
-    redo.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_R, ActionEvent.CTRL_MASK));
-    fileMenu.addSeparator();
-
-    // close
-    JMenuItem resFileMenuExit = new JMenuItem("Close");
-    resFileMenuExit.setAccelerator(KeyStroke.getKeyStroke(
-                    KeyEvent.VK_E, ActionEvent.CTRL_MASK));
-    
-    resFileMenuExit.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        frame.setVisible(false);
-      }
-    });
-    fileMenu.add(resFileMenuExit);
-    add(fileMenu);
-    
-    frame.setJMenuBar(this);
-    frame.getContentPane().add(toolBar, BorderLayout.NORTH);
-  }
-
-  /**
-  *
   * Adds action listener to save contents of a JTextPane. This
   * allows editing of the area to be saved.
   * @param frame 	frame containing the results
@@ -571,6 +517,60 @@ public class ResultsMenuBar extends JMenuBar
 
   /**
   *
+  * Sets up a results menu bar with save and close
+  * @param frame                frame containing the results
+  * @param addRemoteSaveMenu    true to add a remote save menu
+  *
+  */
+  public void setResultsMenuBar(final JFrame frame, boolean addRemoteSaveMenu)
+  {
+    this.frame = frame;
+    add(Box.createRigidArea(new Dimension(5,24)));
+
+    JMenu fileMenu = new JMenu("File");
+    fileMenu.setMnemonic(KeyEvent.VK_F);
+
+    if(addRemoteSaveMenu)
+    {
+      saveToRemoteFile = new JMenuItem("Save to Server File");
+      fileMenu.add(saveToRemoteFile);
+    }
+    saveToLocalFile = new JMenuItem("Save to Local File...");
+    fileMenu.add(saveToLocalFile);
+    fileMenu.addSeparator();
+
+    // undo - redo
+    fileMenu.add(undo);
+    undo.setEnabled(false);
+    undo.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_U, ActionEvent.CTRL_MASK));
+    fileMenu.add(redo);
+    redo.setEnabled(false);
+    redo.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_R, ActionEvent.CTRL_MASK));
+    fileMenu.addSeparator();
+
+    // close
+    JMenuItem resFileMenuExit = new JMenuItem("Close");
+    resFileMenuExit.setAccelerator(KeyStroke.getKeyStroke(
+                    KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+
+    resFileMenuExit.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        frame.setVisible(false);
+      }
+    });
+    fileMenu.add(resFileMenuExit);
+    add(fileMenu);
+
+    frame.setJMenuBar(this);
+    frame.getContentPane().add(toolBar, BorderLayout.NORTH);
+  }
+
+  /**
+  *
   * Update the undo and redo menus and enable or disable
   * dependent on the editing event that proceeded.
   *
@@ -628,10 +628,10 @@ public class ResultsMenuBar extends JMenuBar
   * @return 	menu bar
   *
   */ 
-  public JMenuBar getJMenuBar()
-  {
-    return this;
-  }
+//public JMenuBar getJMenuBar()
+//{
+//  return this;
+//}
 
   /**
   * 

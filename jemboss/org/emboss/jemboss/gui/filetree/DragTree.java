@@ -31,9 +31,11 @@ import javax.swing.tree.*;
 import java.io.*;
 import java.util.Vector;
 import java.util.Enumeration;
+import java.util.Hashtable;
 
 import org.emboss.jemboss.soap.PrivateRequest;
 import org.emboss.jemboss.gui.ResultsMenuBar;
+import org.emboss.jemboss.gui.ShowResultSet;
 import org.emboss.jemboss.JembossParams;
 
 /**
@@ -703,6 +705,36 @@ public class DragTree extends JTree implements DragGestureListener,
 
   /**
   *
+  * Read a file into a byte array.
+  * @param filename     file name
+  * @return             byte[] contents of file
+  *
+  */
+  protected static byte[] readByteFile(String filename)
+  {
+
+    File fn = new File(filename);
+    byte[] b = null;
+    try
+    {
+      long s = fn.length();
+      if(s == 0)
+        return b;
+      b = new byte[(int)s];
+      FileInputStream fi = new FileInputStream(fn);
+      fi.read(b);
+      fi.close();
+    }
+    catch (IOException ioe)
+    {
+      System.out.println("Cannot read file: " + filename);
+    }
+    return b;
+
+  }
+
+  /**
+  *
   * Opens a JFrame with the file contents displayed.
   * @param filename	file name to display
   * @param mysettings	jemboss properties
@@ -710,18 +742,22 @@ public class DragTree extends JTree implements DragGestureListener,
   */
   public static void showFilePane(String filename, JembossParams mysettings)
   {
-    JFrame ffile = new JFrame(filename);
-    JPanel pfile = (JPanel)ffile.getContentPane();
-    pfile.setLayout(new BorderLayout());
+    Hashtable contents = new Hashtable();
+    contents.put(filename,readByteFile(filename));
+    ShowResultSet srs = new ShowResultSet(contents,mysettings);
+    srs.setTitle("Local File");
+//  JFrame ffile = new JFrame(filename);
+//  JPanel pfile = (JPanel)ffile.getContentPane();
+//  pfile.setLayout(new BorderLayout());
 
-    FileEditorDisplay fed = new FileEditorDisplay(filename);
-    new ResultsMenuBar(ffile,fed,mysettings);
+//  FileEditorDisplay fed = new FileEditorDisplay(filename);
+//  new ResultsMenuBar(ffile,fed,mysettings);
 
-    JScrollPane rscroll = new JScrollPane(fed);
-    pfile.add(rscroll, BorderLayout.CENTER);
-    fed.setCaretPosition(0);
-    ffile.setSize(450,400);
-    ffile.setVisible(true);
+//  JScrollPane rscroll = new JScrollPane(fed);
+//  pfile.add(rscroll, BorderLayout.CENTER);
+//  fed.setCaretPosition(0);
+//  ffile.setSize(450,400);
+//  ffile.setVisible(true);
   }
 
   /**

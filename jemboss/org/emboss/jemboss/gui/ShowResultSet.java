@@ -23,12 +23,19 @@
 package org.emboss.jemboss.gui;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+
 import org.apache.regexp.*;
 import java.io.*;
 import java.util.Hashtable;
 import java.util.Enumeration;
 
+import org.emboss.grout.*;
 import org.emboss.jemboss.gui.filetree.FileEditorDisplay;
 import org.emboss.jemboss.JembossParams;
 
@@ -39,6 +46,11 @@ import org.emboss.jemboss.JembossParams;
 */
 public class ShowResultSet extends JFrame
 {
+
+  /** menu bar */
+  private ResultsMenuBar menuBar;
+  /** tabbed pane */
+  private JTabbedPane rtp;
 
   /**
   * 
@@ -67,6 +79,17 @@ public class ShowResultSet extends JFrame
   /**
   *
   * @param reslist      result list
+  * @param mysettings   jemboss properties
+  *
+  */
+  public ShowResultSet(Hashtable reslist, JembossParams mysettings)
+  {
+    this(reslist,null,null,mysettings); 
+  }
+
+  /**
+  *
+  * @param reslist      result list
   * @param inputFiles   input files
   * @param mysettings   jemboss properties
   *
@@ -89,7 +112,7 @@ public class ShowResultSet extends JFrame
                        String project, JembossParams mysettings)
   {
     super("Saved Results on the Server");
-    JTabbedPane rtp = new JTabbedPane();
+    rtp = new JTabbedPane();
 
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -124,11 +147,40 @@ public class ShowResultSet extends JFrame
       rtp.add(cmd,r1);
     }
 
-    new ResultsMenuBar(this,rtp,reslist,inputFiles,project,mysettings);
+    menuBar = new ResultsMenuBar(this,rtp,reslist,inputFiles,
+                                 project,mysettings);
 
-    setSize(640,480);
+    rtp.addChangeListener(new ChangeListener() 
+    {
+       public void stateChanged(ChangeEvent e) 
+       {
+         setJMenuBar();
+       }
+    });
+                      
+    setJMenuBar();        
+    setSize(640,580);
     getContentPane().add(rtp,BorderLayout.CENTER);
     setVisible(true);
+  }
+
+  /**
+  *
+  * Set the menu bar based on the title of the
+  * tabbed pane
+  *
+  */
+  public void setJMenuBar()
+  {
+    int index = rtp.getSelectedIndex();
+    String title = rtp.getTitleAt(index);
+    if(title.endsWith("x3d"))
+    {
+      JMenuBar groutMenuBar = ((GroutPanel)rtp.getSelectedComponent()).getMenuBar();
+      setJMenuBar(groutMenuBar);
+    }
+    else
+      setJMenuBar(menuBar);
   }
 
   /**
@@ -171,6 +223,35 @@ public class ShowResultSet extends JFrame
             r1.getViewport().setBackground(Color.white);
             rtp.add(thiskey,r1);
           }
+        }
+        else if (thiskey.endsWith("x3d")) // grout
+        {
+          GroutPanel panel = new GroutPanel()
+          {
+            protected void addDisposeOfGroutPanelMenuItem(JMenu menu)
+            {
+              JMenuItem menuItem = new JMenuItem("Close");
+              menuItem.setAccelerator(KeyStroke.getKeyStroke(
+                        KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+
+              menuItem.addActionListener(new ActionListener()
+              {
+                public void actionPerformed(ActionEvent e)
+                {
+                  dispose();
+                }
+              });
+              menu.add(menuItem);                         
+            }
+          };
+
+          if(h.get(thiskey) instanceof String)
+            panel.setX3DFile((String)h.get(thiskey));
+          else
+            panel.setX3DFile(new String((byte[])h.get(thiskey)));
+          rtp.add(thiskey,panel);
+          setJMenuBar(panel.getMenuBar());
+
         }
         else
         {
@@ -220,4 +301,12 @@ public class ShowResultSet extends JFrame
     return -1;
   }
 
+
+  public class GroutPanelListener implements ActionListener
+  {
+    public void actionPerformed(ActionEvent e)
+    {
+      dispose();
+    }
+  }
 }

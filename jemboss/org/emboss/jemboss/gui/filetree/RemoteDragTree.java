@@ -31,6 +31,7 @@ import javax.swing.tree.*;
 import java.io.*;
 import java.util.*;
 
+import org.emboss.jemboss.gui.ShowResultSet;
 import org.emboss.jemboss.gui.ResultsMenuBar;
 import org.emboss.jemboss.soap.*;
 import org.emboss.jemboss.JembossParams;
@@ -670,9 +671,9 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
   {
     try
     {
-      JFrame ffile = new JFrame(filename);
-      JPanel pfile = (JPanel)ffile.getContentPane();
-      pfile.setLayout(new BorderLayout());
+//    JFrame ffile = new JFrame(filename);
+//    JPanel pfile = (JPanel)ffile.getContentPane();
+//    pfile.setLayout(new BorderLayout());
 
       Vector params = new Vector();
       String options= "fileroot=" + froots.getCurrentRoot();
@@ -681,17 +682,29 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
 
       PrivateRequest gReq = new PrivateRequest(mysettings,"EmbreoFile",
                                                     "get_file",params);
-       
-      FileEditorDisplay fed = new FileEditorDisplay(filename,
-                                   gReq.getHash().get("contents"));
-      new ResultsMenuBar(ffile,fed,mysettings);
-      JScrollPane rscroll = new JScrollPane(fed);
+  
+      Hashtable hfile = new Hashtable();
+      Object contents = gReq.getHash().get("contents");
+      if(contents instanceof String)
+        hfile.put(filename, ((String)contents).getBytes() );
+      else
+        hfile.put(filename, (byte[])contents);
+//    if(hfile.containsKey("msg"))
+//      hfile.remove("msg");
+//    if(hfile.containsKey("status"))
+//      hfile.remove("status");
+      ShowResultSet srs = new ShowResultSet(hfile,mysettings);
+      srs.setTitle("Remote File");
+//    FileEditorDisplay fed = new FileEditorDisplay(filename,
+//                                 gReq.getHash().get("contents"));
+//    new ResultsMenuBar(ffile,fed,mysettings);
+//    JScrollPane rscroll = new JScrollPane(fed);
 
-      pfile.add(rscroll, BorderLayout.CENTER);
-      fed.setCaretPosition(0);
-      ffile.pack();
-      ffile.setSize(450,400);
-      ffile.setVisible(true);
+//    pfile.add(rscroll, BorderLayout.CENTER);
+//    fed.setCaretPosition(0);
+//    ffile.pack();
+//    ffile.setSize(450,400);
+//    ffile.setVisible(true);
     }
     catch(JembossSoapException eae)
     {  
