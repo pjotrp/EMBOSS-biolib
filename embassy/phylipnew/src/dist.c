@@ -186,7 +186,7 @@ void dist_inputdata(AjPPhyloDist dist,
     initnamedist(dist,i);
     for (j = 0; j < spp; j++) {
       x[i][j] = dist->Data[ipos];
-      reps[i][j] = dist->Data[ipos++];
+      reps[i][j] = dist->Replicates[ipos++];
     }
   }
 
@@ -198,7 +198,7 @@ void dist_inputdata(AjPPhyloDist dist,
     putc(' ', outfile);
     for (j = 1; j <= spp; j++) {
       fprintf(outfile, "%10.5f", x[i][j - 1]);
-      if (replicates)
+      if (replicates || !replicates)
         fprintf(outfile, " (%3ld)", reps[i][j - 1]);
       if (j % columns == 0 && j < spp) {
         putc('\n', outfile);
@@ -218,6 +218,7 @@ void coordinates(node *p, double lengthsum, long *tipy, double *tipmax,
   /* establishes coordinates of nodes */
   node *q, *first, *last;
 
+  printf("coordinates lengthsum: %f\n", lengthsum);
   if (p->tip) {
     p->xcoord = (long)(over * lengthsum + 0.5);
     p->ycoord = *tipy;
@@ -230,6 +231,8 @@ void coordinates(node *p, double lengthsum, long *tipy, double *tipmax,
   }
   q = p->next;
    do {
+     if (q->back)
+       printf("Calling coordinates q->v %f\n", q->v);
      if (q->back)
        coordinates(q->back, lengthsum + q->v, tipy,tipmax, start, njoin);
     q = q->next;
