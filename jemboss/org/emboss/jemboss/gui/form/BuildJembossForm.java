@@ -132,8 +132,8 @@ public class BuildJembossForm implements ActionListener
     if(!withSoap) 
     {
       String command = embossBin.concat("tfm " + applName + " -html -nomore");
-      RunEmbossApplication rea = new RunEmbossApplication(command,envp,null);
-      rea.isProcessStdout();
+      RunEmbossApplication2 rea = new RunEmbossApplication2(command,envp,null);
+      rea.waitFor();
       helptext = rea.getProcessStdout(); 
     }
 
@@ -413,19 +413,11 @@ public class BuildJembossForm implements ActionListener
 
         if(!embossCommand.equals("NOT OK"))
         {
-          RunEmbossApplication rea = new RunEmbossApplication(
+          RunEmbossApplication2 rea = new RunEmbossApplication2(
                                            embossCommand,envp,null);
-          rea.isProcessStdout();
+          rea.waitFor();
           stdout = rea.getProcessStdout();
-          Process p = rea.getProcess();
-          try
-          {
-            p.waitFor();
-          } 
-          catch (InterruptedException interre)
-          {
-            f.setCursor(cdone);
-          }
+          f.setCursor(cdone);
           bresults.setVisible(true);
         }
       }
