@@ -19,9 +19,10 @@ entrails histogramtest intconv \
 patmattest \
 prima primers \
 seqinfo seqretall seqretallfeat seqretset seqretsingle \
-testplot treetypedisplay
+testplot treetypedisplay wreport
 
-bin_PROGRAMS = aaindexextract abiview acdc antigenic \
+bin_PROGRAMS = aaindexextract abiview acdc acdlog acdpretty acdtable \
+antigenic \
 backtranseq banana biosed btwisted \
 cai chaos charge checktrans chips cirdna codcmp coderet \
 compseq cons cpgplot cpgreport cusp cutgextract cutseq \
@@ -62,6 +63,9 @@ INCLUDES = -I$(top_srcdir)/nucleus -I$(top_srcdir)/ajax -I$(top_srcdir)/plplot
 aaindexextract_SOURCES = aaindexextract.c
 abiview_SOURCES = abiview.c
 acdc_SOURCES = acdc.c
+acdlog_SOURCES = acdlog.c
+acdpretty_SOURCES = acdpretty.c
+acdtable_SOURCES = acdtable.c
 antigenic_SOURCES = antigenic.c
 backtranseq_SOURCES = backtranseq.c
 banana_SOURCES = banana.c
@@ -238,6 +242,7 @@ patmattest_SOURCES = patmattest.c
 seqretsingle_SOURCES = seqretsingle.c
 testplot_SOURCES = testplot.c
 treetypedisplay_SOURCES = treetypedisplay.c
+wreport_SOURCES = wreport.c
 
 LDADD = ../nucleus/libnucleus.la ../ajax/libajaxg.la ../ajax/libajax.la ../plplot/libplplot.la $(XLIB)
 
