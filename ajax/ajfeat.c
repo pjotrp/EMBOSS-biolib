@@ -523,6 +523,7 @@ static FeatOTypeOut featOutTypes[] =
     {"protein", "P"},
     {"N", "N"},
     {"nucleotide", "N"},
+    {"any", ""},
     {NULL, NULL}
 };
 
