@@ -1,34 +1,34 @@
 application: pdbparse [
-  documentation: "Parses pdb files and writes cleaned-up
-                  protein coordinate files."
+  documentation: "Parses PDB files and writes CCF files (clean coordinate files) for proteins."
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"
   cpu: "low"
-  embassy: "domainatrix"
 ]
+
+
+
+
 
 section: input [
   information: "Input section"
   type: "page"
 ]
 
-  string: pdb  [
+  dirlist: pdb  [
     parameter: "Y"
-    information: "Location of pdb files (pdb format input)"
-    help: "A detailed explanation of the pdb file format is available
-           on the pdb web site http://www.rcsb.org/pdb/info.html"
+    information: "Location of PDB files (input)"
+    help: "This option specifies the location of PDB files (input).  These are PDB format files for protein coordinate data.  A detailed explanation of the PDB file format is available on the PDB web site http://www.rcsb.org/pdb/info.html."
     default: "./"
-  ]
-
-
-  string: pdbextn  [
-    parameter: "Y"
-    information: "Extension of pdb files (pdb format input)"
-    default: ".ent"
+    extension: "ent"
+    knowntype: "PDB files"
   ]
 
 endsection: input
+
+
+
+
 
 section: required [
   information: "Required section"
@@ -38,18 +38,20 @@ section: required [
   boolean: camask  [
     standard: "Y"
     information: "Mask non-amino acid groups in protein chains
-                  that do not contain a C-alpha atom"
-    help: "The group will not appear in either the CO or SQ records of
-           the clean coordinate file"
+                  that do not contain a C-alpha atom."
+    help: "This option specifies whether to to mask non-amino acid groups in protein chains
+                  that do not contain a C-alpha atom.  If masked, the group will not appear in either the CO or SQ records of
+           the clean coordinate file."
     default: "N"
   ]
 
   boolean: camaska  [
     standard: "Y"
     information: "Mask amino acids in protein chains that do
-                  not contain a C-alpha atom"
-    help: "The amino acid will not appear in the CO record but will
-           still be present in the SQ record of the clean coordinate file"
+                  not contain a C-alpha atom."
+    help: "This option specifies whether to mask amino acids in protein chains that do
+                  not contain a C-alpha atom. If masked, the amino acid will not appear in the CO record but will
+           still be present in the SQ record of the clean coordinate file."
     default: "N"
   ]
 
@@ -57,79 +59,90 @@ section: required [
   boolean: atommask  [
     standard: "Y"
     information: "Mask amino acid residues in protein chains
-                  with a single atom only"
-    help: "The amino acid will appear not appear in the CO record but
-           will still be present in the SQ record of the clean coordinate
-           file"
+                  with a single atom only."
+    help: "This option specifies whether to mask amino acid residues in protein chains
+                  with a single atom only. If masked, the amino acid will appear not appear in the CO record but
+           will still be present in the SQ record of the clean coordinate file."
     default: "N"
-  ]
-
-
-  outfile: errf  [
-    standard: "Y"
-    information: "Name of log file for the build"
-    help: "The log file may contain messages about inconsistencies or
-           errors in the pdb files that were parsed."
-    default: "pdbparse.log"
   ]
 
 endsection: required
 
-section: advanced [
-  information: "Advanced section"
+
+
+
+
+section: additional [
+  information: "Additional section"
   type: "page"
 ]
-
-  boolean: cpdbnaming  [
+  boolean: ccfnaming  [
     additional: "Y"
-    information: "Use pdbid code to name files"
-    help: "The user specifies whether the output files have the same
-           names as the input files or whether the pdb identifier code (from
-           the pdb file) are used to name the files."
+    information: "Use pdbid code to name files."
+    help: "This option specifies whether to use pdbid code to name the output files.  If set, the PDB identifier code (from the PDB file) is used to name the file. Otherwise, the output files have the same names as the input files."
     default: "Y"
   ]
 
   integer: chnsiz  [
     additional: "Y"
     information: "Minimum number of amino acid residues in a
-                  chain for it to be parsed"
+                  chain for it to be parsed."
     default: "5"
   ]
-
 
   integer: maxmis  [
     additional: "Y"
     information: "Maximum number of permissible mismatches
-                  between the ATOM and SEQRES sequences"
+                  between the ATOM and SEQRES sequences."
     default: "3"
   ]
 
+endsection: additional
+
+
+
+
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
 endsection: advanced
+
+
+
+
 
 section: output [
   information: "Output section"
   type: "page"
 ]
 
-
-  string: cpdb  [
+  directory: ccf  [
     parameter: "Y"
-    information: "Location of coordinate files (embl format
-                  output)"
-    help: "A 'protein coordinate file' contains protein coordinate and
-           other data extracted from a single pdb file. The files are in
-           embl-like format and contain 'cleaned-up' data that is
-           self-consistent and error-corrected."
+    information: "Location of CCF files (clean coordinate files) (output)"
+    help: "This option specifies the location of CCF files (clean coordinate files) (output). A 'protein clean cordinate file' contains protein coordinate and other data for a single PDB file.           The files, generated by using PDBPARSE, are in CCF 
+           format (EMBL-like) and contain 'cleaned-up' data that is self-consistent and error-corrected.  Records for residue solvent accessibility and secondary structure are added to the file by using PDBPLUS."
     default: "./"
+    extension: "ccf"
+    knowntype: "Clean coordinate files (protein)"
   ]
 
-
-  string: cpdbextn  [
-    parameter: "Y"
-    information: "Extension of coordinate files (embl format
-                  output)"
-    default: ".pxyz"
+  outfile: errf  [
+    standard: "Y"
+    information: "Name of log file for the build."
+    help: "This option specifies tame of the log file for the build.  The log file may contain messages about inconsistencies or
+           errors in the PDB files that were parsed."
+    knowntype: "PDBPARSE log file"
+    default: "pdbparse.log"
   ]
 
 endsection: output
+
+
+
+
+
+
 
