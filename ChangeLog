@@ -1,5 +1,7 @@
 Version 2.5.0
 
+        infoseq can now optionally display GI and Sequence Version numbers.
+
 	notseq can now read in a file of sequence names.
 
 	Added '-alternative' qualifier to transeq to allow reverse frame
