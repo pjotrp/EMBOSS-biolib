@@ -1997,6 +1997,66 @@ FP /Note .* forward est and forward genome, .* imply forward gene/
 FP /^Exon       129  99.2  1380  1510 HSA1280        428   558 pax6/
 //
 
+ID est2genome-mode-both
+TI 200
+AP est2genome
+CL -mode both
+IN ../../data/pax6_cdna.fasta
+IN ../../data/z83307.seq
+IN
+FI stderr
+FC = 2
+FI pax6.est2genome
+FZ = 2104
+FP /Note .* forward est and forward genome, .* imply forward gene/
+FP /^Exon       129  99.2  1380  1510 HSA1280        428   558 pax6/
+//
+
+ID est2genome-mode-forward
+TI 200
+AP est2genome
+CL -mode forward
+IN ../../data/pax6_cdna.fasta
+IN ../../data/z83307.seq
+IN
+FI stderr
+FC = 2
+FI pax6.est2genome
+FZ = 2050
+FP /Note requested forward est and forward genome/
+FP /^Exon       129  99.2  1380  1510 HSA1280        428   558 pax6/
+//
+
+ID est2genome-mode-reverse
+TI 200
+AP est2genome
+CL -mode reverse -srev1
+IN ../../data/pax6_cdna.fasta
+IN ../../data/z83307.seq
+IN
+FI stderr
+FC = 2
+FI pax6.est2genome
+FZ = 2051
+FP /Note requested reversed est and forward genome/
+FP /^Exon       129  99.2  1380  1510 HSA1280        428   558 pax6/
+//
+
+ID est2genome-mode-reverse2
+TI 200
+AP est2genome
+CL -mode reverse
+IN ../../data/pax6_cdna.fasta
+IN ../../data/z83307.seq
+IN
+FI stderr
+FC = 2
+FI pax6.est2genome
+FZ = 47
+FP /Note requested reversed est and forward genome/
+FP 0 /^Exon/
+//
+
 ID etandem-ex
 AP etandem
 IN tembl:hhtetra
