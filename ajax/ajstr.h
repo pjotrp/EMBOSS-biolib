@@ -209,7 +209,7 @@ typedef struct AjSStrIter {
   size_t End;
   size_t Curr;
   AjPStr Obj;
-  AjPStr Loc;
+  char   *Loc;
 } *AjIStr;
 
 
