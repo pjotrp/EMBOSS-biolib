@@ -64,6 +64,9 @@ section: additional [
            character, then the sequence is 'masked' by changing it to
            lower-case, just as with the '-lowercase' flag."
     expected: "'X' for protein, 'N' for nucleic"
+    maxlength: "1"
+    minlength: "1"
+    knowntype: "sequence mask character"
   ]
 
 endsection: additional
