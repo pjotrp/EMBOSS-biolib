@@ -358,7 +358,7 @@ static void emowse_match(EmbPMdata* data, ajint dno, AjPList flist,
     double qtol;
     double f;
     double sumf;
-    double bestmw;
+    double bestmw=0.;
     static double min=(double)0.;
     static ajint    n = 0;
     
@@ -1188,6 +1188,7 @@ static void emowse_print_hits(AjPFile outf, AjPList hlist, ajint dno,
 	for(i=0;i<len;++i)
 	    AJFREE(hits->frags[i]);
 	AJFREE(hits->frags);
+	AJFREE(hits);
     }
 
     ajListIterFree(iter);
