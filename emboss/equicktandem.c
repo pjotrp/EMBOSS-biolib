@@ -88,6 +88,11 @@ int main(int argc, char **argv)
     ajSeqNum (sequence, cvt, &tseq);
     sq = ajStrStr(tseq);
 
+    /* careful - sequence can be shgorter than the maximum repeat length */
+
+    if (ajStrLen(substr) < maxrepeat)
+      maxrepeat = ajStrLen(substr);
+
     for (gap = 1 ; gap <= maxrepeat ; ++gap)
     {
 	back = sq ; front = back + gap ;
