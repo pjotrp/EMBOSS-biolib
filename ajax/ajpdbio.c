@@ -5920,8 +5920,8 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		    if((nres[i] - atm_idx) > (len - seqres_idx))
 			break;
 		    
-		    /**************************************************/		    
-		    /* This will have to change for 1st residue       */
+		    /**************************************************/
+                    /* This will have to change for 1st residue       */
 		    /**************************************************/
 		    
 		    /* Try and find an exact match within the gap for the 
@@ -5930,9 +5930,9 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		    if(founderr)
 		    {
 			/*DIAGNOSTIC */
-			 ajFmtPrintF(logf, "About to try (seqres_idx_last: %d,  
-			  seqres_idx: %d) ...\n", seqres_idx_last, 
-			  seqres_idx); 
+			 ajFmtPrintF(logf, "About to try (seqres_idx_last:"
+				     " %d, seqres_idx: %d) ...\n",
+				     seqres_idx_last, seqres_idx); 
 			
 			
 			aa_last = ajStrChar(substr, 0);
