@@ -7907,7 +7907,7 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
 	if(ajStrMatchWild(seq->Sv, thys->Sv))
 	    return ajTrue;
 
-	if(ajStrMatchWild(seq->Gi, thys->Sv))
+	if(ajStrMatchWild(seq->Gi, thys->Gi))
 	    return ajTrue;
 
 	ajDebug("sv test failed\n");
