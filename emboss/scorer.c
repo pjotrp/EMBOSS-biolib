@@ -10,8 +10,8 @@
 **  and each mismatch scores zero.
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.4 $
-** @modified $Date: 2004/10/14 19:08:19 $
+** @version $Revision: 1.5 $
+** @modified $Date: 2004/10/28 18:15:57 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -53,20 +53,31 @@ int main(int argc, char **argv)
     /* counts */
     ajint ajIntTempMatchScore;
     ajint ajIntSeqLen;
+    float fPercentIdentity;
 
     /* substituted sequences */
-    AjPSeq ajpSeqGold               = NULL; /* ideal substituted seq       */
-    AjPSeq ajpSeqTest               = NULL; /* test substituted seq        */
-    AjPSeq ajpSeqScored             = NULL; /* score sequence              */
-    char *pcGoldSeq                 = NULL; /* ideal seq string            */
-    char *pcTestSeq                 = NULL; /* test seq string             */
+    AjPSeq ajpSeqGold           = NULL; /* ideal substituted seq       */
+    AjPSeq ajpSeqTest           = NULL; /* test substituted seq        */
+    AjPSeq ajpSeqScored         = NULL; /* score sequence              */
+    char *pcGoldSeq             = NULL; /* ideal seq string            */
+    char *pcTestSeq             = NULL; /* test seq string             */
+
+    AjPStrTok ajpStrTokSeqNames = NULL;
+    AjPStr ajpStrTemplateName   = NULL;
+    AjPStr ajpStrQueryName      = NULL;
     
+    const char *pcSeqNameSeparator  = "_";
+
+    AjPFile ajpFileScores = NULL;
+
     embInit("scorer", argc, argv);
 
     /* get gold standard aligned and substituted sequence*/
     ajpSeqGold = ajAcdGetSeq("goldsubstituted");
     /* get test aligned and substituted sequence*/
     ajpSeqTest = ajAcdGetSeq("testsubstituted");
+    ajpFileScores = ajAcdGetOutfile("seqscorefile");
+    
 
     pcGoldSeq = ajSeqCharCopy(ajpSeqGold);
     pcTestSeq = ajSeqCharCopy(ajpSeqTest);
@@ -85,15 +96,26 @@ int main(int argc, char **argv)
     ajIntTempMatchScore = 0;
     ajIntSeqLen = ajSeqLen(ajpSeqGold);
     ajIntTempMatchScore = match_count(ajpSeqGold, ajpSeqTest);
-    if( enumDebugLevel )
-    {
-	ajFmtPrint("\n%S:\t%d", ajpSeqGold->Name,
-		   (ajIntTempMatchScore/ajIntSeqLen));
-    }    
+    fPercentIdentity = (float)(ajIntTempMatchScore)/(float)(ajIntSeqLen);
+
+    ajpStrTokSeqNames = ajStrTokenInit(ajpSeqGold->Name, pcSeqNameSeparator);
+    ajStrToken(&ajpStrTemplateName, &ajpStrTokSeqNames,"_");
+    ajStrToken(&ajpStrQueryName, &ajpStrTokSeqNames,"_");
+
+    /*    ajpStrTemplateName = ajStrTokC(ajpSeqGold->Name, pcSeqNameSeparator); */
+    /*     ajpStrQueryName = ajStrTokC(NULL, pcSeqNameSeparator); */
+
+    ajFmtPrintF(ajpFileScores, "%S, %S, %3.2f\n", ajpStrTemplateName, ajpStrQueryName, fPercentIdentity);    
+    ajFmtPrint("%S, %S, %3.2f\n", ajpStrTemplateName, ajpStrQueryName, fPercentIdentity);
 
     /* tidy up */
     ajSeqDel(&ajpSeqGold);
     ajSeqDel(&ajpSeqTest);
+
+    ajFileClose(&ajpFileScores);
+    
+    ajStrTokenClear(&ajpStrTokSeqNames);
+
     ajExit();
 
     return 0;
@@ -154,7 +176,3 @@ ajint match_count(const AjPSeq ajpSeqGold,
 
     return ajIntMatchCount;
 }
-
-
-
-
