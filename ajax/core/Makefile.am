@@ -11,7 +11,7 @@ ajbase.c \
 ajcall.c ajcod.c \
 ajcorba.c ajcorbaemc.c ajcorbaems.c \
 ajdan.c ajexcept.c \
-ajfeat.c ajfile.c ajfmt.c ajlist.c \
+ajfeat.c ajfile.c ajfmt.c ajjava.c ajlist.c \
 ajmath.c ajmatrices.c ajmem.c ajmess.c ajnam.c \
 ajposreg.c ajrange.c ajreg.c ajreport.c \
 ajseq.c ajseqabi.c ajseqdb.c ajseqread.c ajseqtype.c ajseqwrite.c \
@@ -28,7 +28,7 @@ ajacd.h ajalign.h ajarr.h ajassert.h \
 ajbase.h ajcall.h ajcod.h \
 ajcorba.h ajcorbaembl.h \
 ajdan.h ajexcept.h ajfeat.h ajfeatdata.h ajfile.h ajfmt.h \
-ajgraph.h ajgraphstruct.h ajhist.h ajlist.h \
+ajgraph.h ajgraphstruct.h ajhist.h ajjava.h ajlist.h \
 ajmath.h ajmatrices.h ajmem.h ajmess.h ajnam.h \
 ajposreg.h ajrange.h ajreg.h ajreport.h \
 ajseq.h ajseqabi.h ajseqdata.h ajseqdb.h ajseqread.h ajseqtype.h ajseqwrite.h \
