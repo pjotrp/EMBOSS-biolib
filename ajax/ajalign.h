@@ -14,10 +14,13 @@ extern "C"
 **
 ** @new ajAlignNew Default constructor
 ** @delete ajAlignDel Default destructor
-** @set ajAlignClear Resets ready for reuse.
-** @use ajAlignWrite Master sequence output routine
-** @use ajAlignNewOut Opens an output file for sequence writing.
+** @set ajAlignReset Resets ready for reuse.
+** @use ajAlignWrite Master alignment output routine
+** @use ajAlignWriteHeader Master header output routine
+** @use ajAlignWriteTail Master footer output routine
 ** @other AjPSeqout Sequence output
+** @other AjPFeatout Feature output
+** @other AjPReport Report output
 ** @other AjPFile Input and output files
 ** @@
 ******************************************************************************/

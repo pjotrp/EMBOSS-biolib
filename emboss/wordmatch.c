@@ -69,9 +69,9 @@ int main(int argc, char **argv)
     {
       ajAlignDefineSS (align, seq1, seq2);
       ajAlignSetScoreI(align, len);
-      ajAlignSetRange (align,
-		       start1 + 1, start1 + len,
-		       start2 + 1, start2 + len);
+      ajAlignSetSubRange (align,
+			  start1, start1 + 1, start1 + len,
+			  start2, start2 + 1, start2 + len);
     }
     ajListIterFree(iter) ;
 
