@@ -4085,11 +4085,16 @@ static void fileBuffLineDel (AjPFileBuff thys) {
       thys->Curr = thys->Lines = thys->Lines->Next;
       ajStrDel(&thys->Prev->Line);
       AJFREE(thys->Prev);
-      ajDebug ("first line gone, new start [%d] %x, '%S' len %d\n",
-	   ajStrRef(thys->Curr->Line), thys->Curr->Line, thys->Curr->Line,
-	   ajStrLen(thys->Curr->Line));
-
       --thys->Size;
+      if (thys->Curr)
+	ajDebug ("first line gone, new start [%d] %x, '%S' len %d\n",
+		 ajStrRef(thys->Curr->Line), thys->Curr->Line,
+		 thys->Curr->Line,
+		 ajStrLen(thys->Curr->Line));
+      else
+	ajDebug("first line gone, current line gone, Size %d Pos %d\n",
+		thys->Size, thys->Pos);
+
       return;
   }
 
@@ -4103,7 +4108,8 @@ static void fileBuffLineDel (AjPFileBuff thys) {
 	   ajStrRef(thys->Curr->Line), thys->Curr->Line, thys->Curr->Line,
 	   ajStrLen(thys->Curr->Line));
   else
-    ajDebug("no next line\n");
+    ajDebug("no next line, Size %d Pos %d\n",
+	    thys->Size, thys->Pos);
 
   return;
 }
