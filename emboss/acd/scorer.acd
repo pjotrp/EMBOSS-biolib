@@ -1,29 +1,33 @@
 application: scorer
 [
-  documentation: "scores accuracy of protein-protein sequence alignment against gold standard structure-structure alignment"
-  groups: "protein: 3D structure"
+  documentation: "Scores accuracy of protein-protein sequence
+                  alignment against gold standard structure-structure
+                  alignment"
+  groups: "Alignment:global"
 ]
 
 section: input
 [
-  information: "input section"
+  information: "Input section"
   type: "page"
 ]
 
-  sequence: goldsubstituted
+  sequence: goldsequence
   [
     parameter: "Y"
 #    default: "/data/structure/people/mhurley/Database/HOMSTRAD/class/all_alpha/glob"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/gold/1csn_3erk.sbs"
-    information: "test aligned and substituted sequence"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/gold/1csn_3erk.sbs"
+    information: "Test aligned and substituted sequence"
+    type: "Protein"
   ]
 
-  sequence: testsubstituted
+  sequence: testsequence
   [
     parameter: "Y"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/substituted_sequences"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/needle/1csn_3erk.sbs"
-    information: "gold standard aligned and substituted sequence"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/needle/1csn_3erk.sbs"
+    information: "Gold standard aligned and substituted sequence"
+    type: "Protein"
   ]
 
 
@@ -31,7 +35,7 @@ endsection: input
 
 section: required
 [
-  information: "required section"
+  information: "Required section"
   type: "page"
 ]
 endsection: required
@@ -39,7 +43,7 @@ endsection: required
 
 section: advanced
 [
-  information: "advanced section"
+  information: "Advanced section"
   type: "page"
 ]
 endsection: advanced
@@ -47,16 +51,17 @@ endsection: advanced
 
 section: output
 [
-  information: "output Section"
+  information: "Output section"
   type: "page"
 ]
 
-  outfile: seqscorefile
+  outfile: outfile
 [
     parameter: "Y"
     extension: "scored"
     help: "If you enter the name of a file here then this program will
            write the score details into that file."
+	   knowntype: "scorer output"
 ]
 
 endsection: output

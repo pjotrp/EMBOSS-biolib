@@ -4,8 +4,8 @@
 ** and writes the resulting ungapped sequence pairs into a new directory
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.3 $
-** @modified $Date: 2005/01/07 10:48:36 $
+** @version $Revision: 1.4 $
+** @modified $Date: 2005/01/21 18:10:43 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -76,7 +76,7 @@ int main( int argc , char **argv )
      * get command-line parameters from ACD
      */
     ajpListSeqPairFiles = ajAcdGetDirlist("gappedseqsdir");
-    ajpStrPathToCommand = ajAcdGetString("pathtocommand");
+    ajpStrPathToCommand = ajAcdGetDirectoryname("pathtocommand");
     ajpStrPathToOutFile = ajAcdGetOutdirName("degappedseqsoutdir");
     ajpStrCommandName   = ajAcdGetString("commandname");
     ajpStrOutFileSuffix = ajAcdGetString("outfilesuffix");

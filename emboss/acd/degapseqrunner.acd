@@ -1,41 +1,43 @@
 application: degapseqrunner [
-  documentation: "runs degapseq program on all sequence pairs in a directory"
-  groups: "protein: 3D structure"
+  documentation: "Runs degapseq program on all sequence pairs in a directory"
+  groups: "Edit"
 ]
 
 section: input [
-  information: "input section"
+  information: "Input section"
   type: "page"
 ]
 
   dirlist: gappedseqsdir [
     parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_input_sequences/gold/25_30"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_input_sequences/gold/25_30"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_input_sequences/gold/30_35"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_input_sequences/gold/40_45"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_input_sequences/gold/50_55"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_input_sequences/gold/55_60"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_input_sequences/gold/60_65"
-    information: "input directory of files containing sequence pairs for degapping"
+    information: "Input directory of files containing sequence pairs for degapping"
     extension: "ali"
   ]
 
-  string: pathtocommand [
+  directory: pathtocommand [
     parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss"
-    information: "directory where degapping executable lives"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss"
+    information: "Directory where degapping executable lives"
+    knowntype: "input directory"
   ]
 
   string: commandname [
     parameter: "Y"
     default: "degapseq"
-    information: "name of degapping executable"
+    information: "Name of degapping executable"
+    knowntype: "external program"
   ]
 
 endsection: input
 
 section: required [
-  information: "required section"
+  information: "Required section"
   type: "page"
 ]
 
@@ -43,34 +45,36 @@ endsection: required
 
 
 section: advanced [
-  information: "advanced section"
+  information: "Advanced section"
   type: "page"
 ]
 
 endsection: advanced
 
 section: output [
-  information: "output Section"
+  information: "Output section"
   type: "page"
 
 ]
   outdir: degappedseqsoutdir
   [
     parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/25_30"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/25_30"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/30_35"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/40_45"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/50_55"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/55_60"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/60_65"
-    information: "name of directory containing degapped sequence pairs"
+    information: "Name of directory containing degapped sequence pairs"
     extension: "deg"
+    knowntype: "output directory"
   ]
 
   string: outfilesuffix [
     parameter: "Y"
     default: ".deg"
-    information: "appended to end of all output file names"
+    information: "Appended to end of all output file names"
+    knowntype: "file extension"
   ]
 
 endsection: output

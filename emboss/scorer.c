@@ -10,8 +10,8 @@
 **  and each mismatch scores zero.
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.6 $
-** @modified $Date: 2004/11/25 20:23:35 $
+** @version $Revision: 1.7 $
+** @modified $Date: 2005/01/21 18:10:43 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -72,10 +72,10 @@ int main(int argc, char **argv)
     embInit("scorer", argc, argv);
 
     /* get gold standard aligned and substituted sequence*/
-    ajpSeqGold = ajAcdGetSeq("goldsubstituted");
+    ajpSeqGold = ajAcdGetSeq("goldsequence");
     /* get test aligned and substituted sequence*/
-    ajpSeqTest = ajAcdGetSeq("testsubstituted");
-    ajpFileScores = ajAcdGetOutfile("seqscorefile");    
+    ajpSeqTest = ajAcdGetSeq("testsequence");
+    ajpFileScores = ajAcdGetOutfile("outfile");    
 
     pcGoldSeq = ajSeqCharCopy(ajpSeqGold);
     pcTestSeq = ajSeqCharCopy(ajpSeqTest);

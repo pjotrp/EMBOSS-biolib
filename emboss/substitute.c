@@ -6,8 +6,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.14 $
-** @modified $Date: 2005/01/07 10:48:36 $
+** @version $Revision: 1.15 $
+** @modified $Date: 2005/01/21 18:10:43 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -101,8 +101,8 @@ int main(int argc , char **argv)
     embInit("substitute", argc, argv);
 
     /* get alignment from ACD */
-    ajpSeqsetPair = ajAcdGetSeqset("alignedpair");
-    ajpSeqoutSubstituted  = ajAcdGetSeqout("substitutedseq");
+    ajpSeqsetPair = ajAcdGetSeqset("alignedpairsequence");
+    ajpSeqoutSubstituted  = ajAcdGetSeqout("substitutedoutseq");
     
     /* if there aren't two sequences in alignment, bail */ 
     if(ajpSeqsetPair->Size != enumPair)

@@ -1,48 +1,50 @@
 application: needlerunner [
-  documentation: "runs needle alignment program on all sequence pairs in a directory"
-  groups: "protein: 3D structure"
+  documentation: "Runs needle alignment program on all sequence pairs in a directory"
+  groups: "Alignment:global"
 ]
 
 section: input [
-  information: "input section"
+  information: "Input section"
   type: "page"
 ]
 
   dirlist: seqpairsdir [
     parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_paired_sequences"
-    information: "input directory of files containing sequence pairs for alignment"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_paired_sequences"
+    information: "Input directory of files containing sequence pairs for alignment"
     extension: "deg"
   ]
 
   directory: pathtocommand [
     parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss"
-    information: "directory where alignment executable lives"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss"
+    information: "Directory where alignment executable lives"
   ]
 
   string: commandname [
     parameter: "Y"
     default: "needle"
-    information: "name of alignment executable"
+    information: "Name of alignment executable"
+    knowntype: "external program"
   ]
 
   directory: scoringmatrixdirname [
     parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/data"
-    information: "directory where scoring matrix lives"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/data"
+    information: "Directory where scoring matrix lives"
   ]
 
   string: scoringmatrixname [
     parameter: "Y"
     default: "EBLOSUM62"
-    information: "name of alignment scoring matrix"
+    information: "Name of alignment scoring matrix"
+    knowntype: "comparison matrix name"
   ]
 
 endsection: input
 
 section: required [
-  information: "required section"
+  information: "Required section"
   type: "page"
 ]
 
@@ -84,35 +86,38 @@ endsection: required
 
 
 section: advanced [
-  information: "advanced section"
+  information: "Advanced section"
   type: "page"
 ]
 
 endsection: advanced
 
 section: output [
-  information: "output Section"
+  information: "Output section"
   type: "page"
 ]
 
   outdir: alignedseqsoutdir
   [
     parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_output_alignments/needle"
-    information: "name of directory containing sequences aligned by needle"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_output_alignments/needle"
+    information: "Name of directory containing sequences aligned by needle"
     extension: "nawalign"
+    knowntype: "output directory"
   ]
 
   string: outfilesuffix [
     parameter: "Y"
     default: ".needle"
-    information: "appended to end of all output alignment file names"
+    information: "Appended to end of all output alignment file names"
+    knowntype: "file extension"
   ]
 
   string: outfileformat [
     parameter: "Y"
     default: "fasta"
-    information: "format of output alignments"
+    information: "Format of output alignments"
+    knowntype: "output format"
   ]
 
 endsection: output

@@ -1,32 +1,32 @@
 application: scorerrunner
 [
-  documentation: "runs scorer to compare ordered pairs of substituted seqs in two directories and write the scores to a third"
-  groups: "protein: global alignment"
+  documentation: "Runs scorer to compare ordered pairs of substituted seqs in two directories and write the scores to a third"
+  groups: "Alignment:global"
 ]
 
 section: input
 [
-  information: "input section"
+  information: "Input section"
   type: "page"
 ]
 
   directory: pathtocommand
   [
     parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss"
-    information: "directory where alignment executables live"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss"
+    information: "Directory where alignment executables live"
   ]
 
   dirlist: goldseqsdirlist
   [
     parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/gold/25_30"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/gold/25_30"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/gold/30_35"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/gold/40_45"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/gold/50_55"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/gold/55_60"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/gold/60_65"
-    information: "first directory containing paired traces"
+    information: "First directory containing paired traces"
     extension: "sbs"
   ]
 
@@ -39,13 +39,13 @@ section: input
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/needle/50_55"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/needle/55_60"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/needle/60_65"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/nawalign/25_30"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/nawalign/25_30"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/nawalign/30_35"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/nawalign/40_45"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/nawalign/50_55"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/nawalign/55_60"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/nawalign/60_65"
-    information: "second directory containing paired traces"
+    information: "Second directory containing paired traces"
     extension: "sbs"
   ]
 
@@ -54,7 +54,7 @@ endsection: input
 
 section: required
 [
-  information: "required section"
+  information: "Required section"
   type: "page"
 ]
 endsection: required
@@ -62,7 +62,7 @@ endsection: required
 
 section: advanced
 [
-  information: "advanced section"
+  information: "Advanced section"
   type: "page"
 ]
 endsection: advanced
@@ -70,22 +70,23 @@ endsection: advanced
 
 section: output
 [
-  information: "output Section"
+  information: "Output section"
   type: "page"
 ]
 
   outdir: scoresoutdir
   [
     parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_scoring_files/17Jan05"
-    information: "name of directory containing output scores"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_scoring_files/17Jan05"
+    information: "Name of directory containing output scores"
+    knowntype: "output directory"
   ]
   string: scoresoutfilename
   [
     parameter: "Y"
     default: "scores.csv"
-    information: "name of comma-separated variable file containing identity scores for pairs of gold and test sequences directory"
-    knowntype: "scorerrunner output file name"
+    information: "Name of comma-separated variable file containing
+  identity scores for pairs of gold and test sequences directory"
   ]
 
 

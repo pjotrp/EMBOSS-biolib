@@ -2,6 +2,7 @@
 # Known Types
 # Type Knowntype_string Comment
 
+file clean_coordinates Clean protein structure coordinates
 file aaindex_database AAINDEX database file
 datafile aaindex_data AAINDEX data entry
 file abi_trace ABI sequencing trace file
@@ -22,7 +23,8 @@ file clique_input Phylip clique program input file
 file clique_output Phylip clique program output file
 string codon_list Codon triplet(s)
 file comparison_matrix Comparison matrix file
-file complex_temporary_output Program complex tenmporary file
+string comparison_matrix_name Comparison matrix name
+file complex_temporary_output Program complex temporary file
 file compseq_output Output from compseq
 file consense_output Phylip consense program output file
 file contml_input Phylip contml program input file
@@ -58,9 +60,8 @@ file entry_full_text Full text of a sequence database entry
 file enzyme_data enzyme kinetics data (application-specific)
 string enzyme_name Restriction enzyme name
 string enzyme_list Restriction enzyme name list
+string external_program External program name
 datafile restriction_enzyme_data Restriction enzyme datafile
-file factboot_input Phylip factboot program input file
-file factboot_output Phylip factboot program output file
 file factor_input Phylip factor program input file
 file factor_output Phylip factor program output file
 string feature_key Feature table keys with wildcards, separated by |
@@ -112,7 +113,7 @@ datafile newcoils_datafile Data file for newcoils
 string nucleotide_codes DNA/RNA sequence characters - see pattern for allowed set
 string nucleotide_sequence DNA/RNA sequence
 directory input_directory Directory for input files
-directory output_directory Directory for output files
+outdir output_directory Directory for output files
 file peptide_molweights Peptide molecular weight values
 string plot_colour Plot colour name
 string plot_shading Plot shading BPLW in any order
@@ -133,6 +134,7 @@ file pars_output Phylip pars program output file
 file profile_or_matrix Profile or weight matrix file
 file primer3_output Output from the Whitehead primer3_core program
 file profile_or_matrix_file Profile or weight matrix file
+string program_name Program name with command line options to follow
 file proml_output Phylip proml program output file
 file promlk_output Phylip promlk program output file
 string prosite_nucleotide_pattern PROSITE nucleotide pattern
@@ -183,3 +185,5 @@ string name Single word without spaces
 datafile testcode_data Testcode data file
 file overlap_file Sequence overlap length(s)
 datafile transfac_data Transfac database file
+string file_extension Filename extension
+string output_format Output file format

@@ -1,21 +1,21 @@
 application: substitute
 [
-  documentation: "substitutes matches from first (query) sequence of two aligned sequences in a trace into second (template sequence)"
-  groups: "protein: global alignment"
+  documentation: "Substitutes matches from first (query) sequence of two aligned sequences in a trace into second (template sequence)"
+  groups: "alignment:global "
 ]
 
 
 section: input
 [
-  information: "input section"
+  information: "Input section"
   type: "page"
 ]
 
-  seqset: alignedpair [
-    param: "Y"
+  seqset: alignedpairsequence [
+    parameter: "Y"
     type: "gapprotein"
     minseqs: 2
-    information: "pair of polypeptide sequences to be substituted"
+    information: "Pair of polypeptide sequences to be substituted"
   ]
 
 
@@ -24,7 +24,7 @@ endsection: input
 
 section: required
 [
-  information: "required section"
+  information: "Required section"
   type: "page"
 ]
 endsection: required
@@ -32,7 +32,7 @@ endsection: required
 
 section: advanced
 [
-  information: "advanced section"
+  information: "Advanced section"
   type: "page"
 ]
 endsection: advanced
@@ -40,13 +40,13 @@ endsection: advanced
 
 section: output
 [
-  information: "output Section"
+  information: "Output section"
   type: "page"
 ]
 
-  seqout: substitutedseq
+  seqout: substitutedoutseq
   [
-    param: "Y"
+    parameter: "Y"
     type: "gapprotein"
   ]
 

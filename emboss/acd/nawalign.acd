@@ -1,28 +1,28 @@
 application: nawalign [
     documentation: "Damian Counsell's implementation for protein sequences of the Needleman and Wunsch alignment algorithm"
-    groups: "alignment: global"
+    groups: "alignment:global"
 ]
 
 section: input [
-  information: "input section"
+  information: "Input section"
   type: "page"
 ]
 
   sequence: across [
-    param: "Y"
+    parameter: "Y"
     type: "protein"
-    information: "first (template) polypeptide sequence to be aligned"
+    information: "First (template) polypeptide sequence to be aligned"
   ]
 
   sequence: down [
-    param: "Y"
+    parameter: "Y"
     type: "protein"
-    information: "second (query) polypeptide sequence to be aligned"
+    information: "Second (query) polypeptide sequence to be aligned"
   ]
 
   matrixf: substitutionscoringfile [
     optional: "Y"	
-    info: "matrix of scores for specific amino acid residue type substitution within
+    information: "Matrix of scores for specific amino acid residue type substitution within
     one-dimensional sequence strings"
     protein: $(down.protein)
     default: "/users/damian/EMBOSS/emboss/emboss/emboss/data/EBLOSUM62"	
@@ -31,7 +31,7 @@ section: input [
 endsection: input
 
 section: required [
-  information: "required section"
+  information: "Required section"
   type: "page"
 ]
 
@@ -69,30 +69,31 @@ section: required [
            the gap opening penalty."
   ]
 
-  boolean: zeroend  [
-    default: "Y"
-    information: "Do not penalize gaps at sequence ends"
-    help: "If this option is true then no penalty is added for gaps at either ends of a trace."
-  ]
-
 endsection: required
 
 
 section: advanced [
-  information: "advanced section"
+  information: "Advanced section"
   type: "page"
 ]
+
+  boolean: zeroend  [
+    default: "Y"
+    information: "Do not penalize gaps at sequence ends"
+    help: "If this option is true then no penalty is added for gaps at
+           either ends of a trace."
+  ]
 
 endsection: advanced
 
 section: output [
-  information: "output Section"
+  information: "Output section"
   type: "page"
 ]
 
-seqout: aligned
+seqout: alignedoutfile
   [
-    param: "Y"
+    parameter: "Y"
     type: "gapprotein"
   ]
 

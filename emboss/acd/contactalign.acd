@@ -1,47 +1,47 @@
 application: contactalign [
     documentation: "EMBOSS implementation of Damian Counsell's 2.5-D alignment algorithm"
-    groups: "alignment: global"
+    groups: "alignment:global"
 ]
 
 section: input [
-  information: "input section"
+  information: "Input section"
   type: "page"
 ]
 
-  sequence: down [
+  sequence: downsequence [
     parameter: "Y"
     type: "protein"
-    information: "first (query) polypeptide sequence to be aligned"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/contacts/seqs/1mho.fasta"	
+    information: "First (query) polypeptide sequence to be aligned"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/contacts/seqs/1mho.fasta"	
   ]
 
-  sequence: across [
+  sequence: acrosssequence [
     parameter: "Y"
     type: protein
-    information: "second (template) polypeptide sequence to be aligned"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/contacts/seqs/1psra.fasta"	
+    information: "Second (template) polypeptide sequence to be aligned"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/contacts/seqs/1psra.fasta"	
   ]
 
   matrixf: substitutionscoringfile [
     optional: "Y"	
-    info: "matrix of scores for specific amino acid residue type substitution within
-    one-dimensional sequence strings"
+    information: "Matrix of scores for specific amino acid residue type
+    substitution within one-dimensional sequence strings"
     protein: $(down.protein)
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/data/EBLOSUM62"	
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/data/EBLOSUM62"	
   ]
 
   matrixf: contactscoringfile [
     optional: "Y"	
-    info: "matrix of scores for frequency of contacts between specific
+    information: "Matrix of scores for frequency of contacts between specific
     amino acid residue types"
     protein: $(down.protein)
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/contacts/contactscore.dat"	
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/contacts/contactscore.dat"	
   ]
 
 endsection: input
 
 section: required [
-  information: "required section"
+  information: "Required section"
   type: "page"
 ]
 
@@ -50,7 +50,7 @@ section: required [
     information: "Gap opening penalty"
     minimum: "1."
     maximum: "100."
-    default: "@($(acdprotein)? 10.0 : 10.0 )"
+ #   default: "@($(acdprotein)? 10.0 : 10.0 )"
     valid: "Floating point number from 1.0 to 100.0"
     expected: "10.0 for any sequence"
     help: "The gap opening penalty is subtracted from the total score 
@@ -79,6 +79,14 @@ section: required [
            the gap opening penalty."
   ]
 
+endsection: required
+
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
   boolean: zeroend  [
     default: "Y"
     information: "Do not penalize gaps at sequence ends"
@@ -86,24 +94,16 @@ section: required [
            either ends of a trace."
   ]
 
-endsection: required
-
-
-section: advanced [
-  information: "advanced section"
-  type: "page"
-]
-
 endsection: advanced
 
 section: output [
-  information: "output Section"
+  information: "Output section"
   type: "page"
 ]
 
-seqout: aligned
+seqout: alignedoutfile
   [
-    param: "Y"
+    parameter: "Y"
     type: "gapprotein"
   ]
 

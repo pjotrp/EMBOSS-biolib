@@ -7,8 +7,8 @@
 ** Outputs plain text files containing EMBOSS format scoring matrices
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.16 $
-** @modified $Date: 2005/01/17 15:25:00 $
+** @version $Revision: 1.17 $
+** @modified $Date: 2005/01/21 18:10:43 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -81,7 +81,7 @@ int main( int argc , char **argv )
     ajpListCmapFiles = ajAcdGetDirlist("cmapdir");
 
     /* get test output file from ACD */
-    ajpFile2dScoringMatrix = ajAcdGetOutfile("matrixfile");
+    ajpFile2dScoringMatrix = ajAcdGetOutfile("outfile");
 
     ajIntNumberOfContactFiles = ajListLength(ajpListCmapFiles);
 

@@ -1,23 +1,23 @@
 application: contactcount [
-  documentation: "counts specific versus non-specific contacts in a directory of cleaned protein chain contact files"
-  groups: "protein: 3D structure"
+  documentation: "Counts specific versus non-specific contacts in a directory of cleaned protein chain contact files"
+  groups: "protein:3D structure"
 ]
 
 section: input [
-  information: "input section"
+  information: "Input section"
   type: "page"
 ]
 
   dirlist: cmapdir [
     parameter: "Y"
-    default: "./test_contact_maps"
-    information: "directory of cleaned-chain contact files"
+#    default: "./test_contact_maps"
+    information: "Directory of cleaned-chain contact files"
   ]
 
 endsection: input
 
 section: required [
-  information: "required section"
+  information: "Required section"
   type: "page"
 ]
 
@@ -25,21 +25,22 @@ endsection: required
 
 
 section: advanced [
-  information: "advanced section"
+  information: "Advanced section"
   type: "page"
 ]
 
 endsection: advanced
 
 section: output [
-  information: "output Section"
+  information: "Output section"
   type: "page"
 ]
 
-  outfile: matrixfile [
+  outfile: outfile [
     parameter: "Y"
-    default: "./contacttest/contactscore.dat"
-    information: "file containing contact-based scoring matrix"
+#    default: "./contacttest/contactscore.dat"
+    information: "File containing contact-based scoring matrix"
+    knowntype: "contactcount output"
   ]
 
 endsection: output

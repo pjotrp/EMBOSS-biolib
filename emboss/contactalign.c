@@ -6,8 +6,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.30 $
-** @modified $Date: 2005/01/21 17:29:12 $
+** @version $Revision: 1.31 $
+** @modified $Date: 2005/01/21 18:10:43 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -124,11 +124,11 @@ int main(int argc , char **argv)
     /* DDDDEBUGGING: DEFAULT GAP AND EXTENSION PENALTIES SET BELOW */
 
     /* ajAcdGet functions access acd values embInit has put in memory */
-    ajpSeqDown   = ajAcdGetSeq("down");
-    ajpSeqAcross = ajAcdGetSeq("across");
+    ajpSeqDown   = ajAcdGetSeq("downsequence");
+    ajpSeqAcross = ajAcdGetSeq("acrosssequence");
     ajpMatrixfSubstitutionScoring = ajAcdGetMatrixf("substitutionscoringfile");
     ajpMatrixfContactScoring = ajAcdGetMatrixf("contactscoringfile");
-    ajpSeqoutAligned  = ajAcdGetSeqout("aligned");
+    ajpSeqoutAligned  = ajAcdGetSeqout("alignedoutfile");
     fGapPenalty       = -ajAcdGetFloat("gapopen");
     fExtensionPenalty =  -ajAcdGetFloat("gapextend");
     ajBoolZeroEndPenalty =  ajAcdGetBool("zeroend");

@@ -1,10 +1,10 @@
 application: alignrunner [
-  documentation: "runs alignment program on all sequence pairs in a directory"
-  groups: "protein: 3D structure"
+  documentation: "Runs alignment program on all sequence pairs in a directory"
+  groups: "Alignment:global"
 ]
 
 section: input [
-  information: "input section"
+  information: "Input section"
   type: "page"
 ]
 
@@ -16,44 +16,47 @@ section: input [
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/50_55"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/55_60"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/60_65"
-    information: "input directory of files containing sequence pairs for alignment"
+    information: "Input directory of files containing sequence pairs for alignment"
     extension: "deg"
   ]
 
   directory: pathtocommands [
     parameter: "Y"
     default: "/users/damian/EMBOSS/emboss/emboss/emboss"
-    information: "directory where alignment executables live"
+    information: "Directory where alignment executables live"
   ]
 
   string: firstcommandname [
     parameter: "Y"
     default: "needle"
-    information: "name of first alignment executable"
+    information: "Name of first alignment executable"
+    knowntype: "external program"
   ]
 
   string: secondcommandname [
     parameter: "Y"
     default: "contactalign"
-    information: "name of second alignment executable"
+    information: "Name of second alignment executable"
+    knowntype: "external program"
   ]
 
   directory: scoringmatrixdirname [
     parameter: "Y"
     default: "/users/damian/EMBOSS/emboss/emboss/emboss/data"
-    information: "directory where scoring matrix lives"
+    information: "Directory where scoring matrix lives"
   ]
 
   string: scoringmatrixname [
     parameter: "Y"
     default: "EBLOSUM62"
-    information: "name of second alignment executable"
+    information: "Name of scoring matrix"
+    knowntype: "comparison matrix name"
   ]
 
 endsection: input
 
 section: required [
-  information: "required section"
+  information: "Required section"
   type: "page"
 ]
 
@@ -102,14 +105,14 @@ endsection: required
 
 
 section: advanced [
-  information: "advanced section"
+  information: "Advanced section"
   type: "page"
 ]
 
 endsection: advanced
 
 section: output [
-  information: "output Section"
+  information: "Output section"
   type: "page"
 ]
 
@@ -122,8 +125,9 @@ section: output [
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/needle/50_55"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/needle/55_60"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/needle/60_65"
-    information: "name of directory containing sequences aligned by first method"
+    information: "Name of directory containing sequences aligned by first method"
     extension: "needle"
+    knowntype: "output directory"
   ]
  
   outdir: secondalignedseqsoutdir
@@ -136,28 +140,35 @@ section: output [
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/nawalign/50_55"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/nawalign/55_60"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/nawalign/60_65"
-    information: "name of directory containing sequences aligned by second method"
+    information: "Name of directory containing sequences aligned by second method"
     extension: "contactalign"
 #    extension: "nawalign"
+    knowntype: "output directory"
   ]
 
   string: firstoutfilesuffix [
     parameter: "Y"
     default: ".needle"
-    information: "appended to end of all output file names of sequences aligned by first alignment method"
+    information: "First output file suffix"
+    help: "Appended to end of all output file names of sequences
+    aligned by first alignment method"
+    knowntype: "file extension"
   ]
 
   string: secondoutfilesuffix [
     parameter: "Y"
     default: ".contactalign"
 #    default: ".nawalign"
-    information: "appended to end of all output file names of sequences aligned by second alignment method"
+    information: "Second output file suffix"
+    help: "Appended to end of all output file names of sequences aligned by second alignment method"
+    knowntype: "file extension"
   ]
 
   string: outfileformat [
     parameter: "Y"
     default: "fasta"
-    information: "format of output alignments for both methods"
+    information: "Format of output alignments for both methods"
+    knowntype: "output format"
   ]
 
 endsection: output
