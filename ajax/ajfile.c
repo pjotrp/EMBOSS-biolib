@@ -3328,20 +3328,17 @@ AjBool ajFileNameDirSetC (AjPStr* filename, const char* dir) {
   if (!fileexp)
     fileexp = ajRegCompC ("(.*/)?([^/]+)$");
 
-  ajDebug ("ajFileNameDirSetC '%S', '%s'\n", *filename, dir);
   ajStrAssS (&tmpstr, *filename);
   if (ajRegExec(fileexp, tmpstr)) {
     ajRegSubI(fileexp, 1, &tmpdir);
     ajRegSubI(fileexp, 2, &tmpnam);
     if (ajStrLen(tmpdir)) {
-      ajDebug ("Directory not replaced\n");
       return ajFalse;			/* we already have a directory */
     }
     if (dir[strlen(dir)-1] == '/')
       ajFmtPrintS (filename, "%s%S", dir, tmpnam);
     else
       ajFmtPrintS (filename, "%s/%S", dir, tmpnam);
-    ajDebug ("Directory replaced: '%S'\n", *filename);
   }
   return ajTrue;
 }
@@ -3579,9 +3576,6 @@ AjBool ajFileTestSkip (AjPStr fullname, AjPStr exc, AjPStr inc,
   static AjPStr token = NULL;
   static AjPStr tmpname=NULL;
 
-  ajDebug ("ajFileTestSkip: file '%S' exclude: '%S' include: '%S'\n",
-	   fullname, exc, inc);
-
   ajStrAssS (&tmpname, fullname);
   if (ignoredirectory)
     ajFileDirTrim(&tmpname);
@@ -3592,8 +3586,6 @@ AjBool ajFileTestSkip (AjPStr fullname, AjPStr exc, AjPStr inc,
       if (ajStrMatchWild (fullname, token) ||
 	  (ignoredirectory && ajStrMatchWild (tmpname, token))) {
 	ret = ajFalse;
-	ajDebug ("ajFileTestSkip: file '%S' excluded by '%S'\n",
-	  fullname, token);
       }
     }
     (void) ajStrTokenReset (&handle);
@@ -3604,8 +3596,6 @@ AjBool ajFileTestSkip (AjPStr fullname, AjPStr exc, AjPStr inc,
     if (ajStrMatchWild (fullname, token) ||
 	  (ignoredirectory && ajStrMatchWild (tmpname, token))) {
       ret = ajTrue;
-      ajDebug ("ajFileTestSkip: file '%S' included by '%S'\n",
-	       fullname, token);
     }
   }
   (void) ajStrTokenReset (&handle);
@@ -3616,8 +3606,6 @@ AjBool ajFileTestSkip (AjPStr fullname, AjPStr exc, AjPStr inc,
       if (ajStrMatchWild (fullname, token) ||
 	  (ignoredirectory && ajStrMatchWild (tmpname, token))) {
 	ret = ajFalse;
-	ajDebug ("ajFileTestSkip: file '%S' excluded by '%S'\n",
-	  fullname, token);
       }
     }
     (void) ajStrTokenReset (&handle);
@@ -3638,7 +3626,6 @@ AjBool ajFileDirTrim (AjPStr* name)
 {
   ajint i;
 
-  ajDebug ("ajFileDirTrim input: '%S'\n", *name);
   if (!ajStrLen(*name))
     return ajFalse;
 
@@ -3647,7 +3634,6 @@ AjBool ajFileDirTrim (AjPStr* name)
     return ajFalse;
 
   ajStrTrim (name, i+1);
-  ajDebug ("ajFileDirTrim result: '%S'\n", *name);
 
   return ajTrue;
 }
