@@ -60,11 +60,11 @@ AjPMatrix ajMatrixNew(AjPStr* codes, ajint n, AjPStr filename)
 
     ajStrAssS(&ret->Name, filename);
 
-    AJCNEW0(ret->Codes, nsize);
-    for(i=0; i<nsize; i++)
+    AJCNEW0(ret->Codes, n);
+    for(i=0; i<n; i++)
 	ret->Codes[i] = ajStrNew();
     
-    for(i=0; i<nsize; i++)
+    for(i=0; i<n; i++)
 	ajStrAssS(&ret->Codes[i], codes[i]);
 
     ret->Size = nsize;
@@ -111,8 +111,8 @@ AjPMatrixf ajMatrixfNew(AjPStr* codes, ajint n, AjPStr filename)
 
     ajStrAssS(&ret->Name, filename);
 
-    AJCNEW0(ret->Codes, nsize);
-    for(i=0; i<nsize; i++)
+    AJCNEW0(ret->Codes, n);
+    for(i=0; i<n; i++)
 	ret->Codes[i] = ajStrNew();
 
     for(i=0; i<nsize; i++)
