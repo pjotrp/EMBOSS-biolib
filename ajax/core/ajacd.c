@@ -13126,8 +13126,8 @@ static void acdSelectPrompt (AcdPAcd thys) {
 
 static void acdListPrompt (AcdPAcd thys) {
   AjPStr hdrstr;
-  AjPStr codedelim;
-  AjPStr delim;
+  AjPStr codedelim=NULL;
+  AjPStr delim=NULL;
   AjPStr value;
   AjPStrTok handle;
   AjPStrTok codehandle;
@@ -13135,7 +13135,9 @@ static void acdListPrompt (AcdPAcd thys) {
   static AjPStr code = NULL;
   static AjPStr desc = NULL;
   static char* white = " \t\n\r";
-
+  AjBool ddelim=ajFalse;
+  AjBool cdelim=ajFalse;
+  
   if (acdAuto) return;
 
   hdrstr = acdAttrValue (thys, "header");
@@ -13144,10 +13146,17 @@ static void acdListPrompt (AcdPAcd thys) {
 
   delim = acdAttrValue (thys, "delimiter");
   if (!ajStrLen(delim))
-    (void) ajStrAssC(&delim, ";");
+  {
+      ddelim = ajTrue;
+      (void) ajStrAssC(&delim, ";");
+  }
+  
   codedelim = acdAttrValue (thys, "codedelimiter");
   if (!ajStrLen(codedelim))
-    (void) ajStrAssC(&codedelim, ":");
+  {
+      cdelim = ajTrue;
+      (void) ajStrAssC(&codedelim, ":");
+  }
 
   value = acdAttrValue (thys, "value");
   handle = ajStrTokenInit (value, ajStrStr(delim));
@@ -13165,7 +13174,11 @@ static void acdListPrompt (AcdPAcd thys) {
   (void) ajStrDelReuse (&line);
   (void) ajStrDelReuse (&code);
   (void) ajStrDelReuse (&desc);
-
+  if(ddelim)
+      ajStrDel(&delim);
+  if(cdelim)
+      ajStrDel(&codedelim);
+  
   return;
 }
 
