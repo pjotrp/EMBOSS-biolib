@@ -29,6 +29,7 @@ import java.util.*;
 import java.text.DecimalFormat;
 import java.awt.geom.AffineTransform;
 
+import org.emboss.jemboss.gui.filetree.FileEditorDisplay;
 import org.emboss.jemboss.gui.form.TextFieldInt;
 import org.emboss.jemboss.gui.form.TextFieldFloat;
 import org.emboss.jemboss.gui.ScrollPanel;
@@ -40,7 +41,6 @@ import org.emboss.jemboss.gui.ScrollPanel;
 */
 public class Graph2DPlot extends ScrollPanel
 {
-
   private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
@@ -49,6 +49,8 @@ public class Graph2DPlot extends ScrollPanel
   private float xmax = 0;
   private float ymin = 0;
   private float ymax = 0;
+  
+  private StringBuffer graph_data;
 
   private TextFieldFloat xstart;
   private TextFieldFloat xend;
@@ -150,6 +152,25 @@ public class Graph2DPlot extends ScrollPanel
     JMenuBar menubar = new JMenuBar();
     JMenu fileMenu = new JMenu("File");
     fileMenu.setMnemonic(KeyEvent.VK_F);
+
+    JMenuItem showMenu = new JMenuItem("Display data...");
+    showMenu.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        JFrame frame = new JFrame("EMBOSS data file");
+        FileEditorDisplay fed = new FileEditorDisplay("graph_data.dat",
+                                                  graph_data.toString());
+        JScrollPane jsp = new JScrollPane(fed);
+        fed.setCaretPosition(0);
+        frame.getContentPane().add(jsp);
+        frame.pack();
+        frame.setSize(640,580);
+        frame.setVisible(true);
+      }
+    });
+    fileMenu.add(showMenu);
+
 
     JMenuItem printMenu = new JMenuItem("Print...");
     printMenu.addActionListener(new ActionListener()
@@ -910,11 +931,13 @@ public class Graph2DPlot extends ScrollPanel
     String line;
     Vector vx = new Vector();
     Vector vy = new Vector();
-
+ 
+    graph_data = new StringBuffer();
     int npoints = 0;
 
     while((line = in.readLine()) != null )
     {
+      graph_data.append(line+"\n");
       if(line.startsWith("Line"))
       {
         vx.add(line);
