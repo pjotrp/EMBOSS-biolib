@@ -19,7 +19,6 @@
 *
 ********************************************************************/
 
-
 package org.emboss.jemboss.gui;
 
 
@@ -32,6 +31,8 @@ import java.awt.event.*;
 import java.net.*;
 import java.io.*;
 import java.util.Vector;
+import javax.swing.border.*;
+
 import org.emboss.jemboss.JembossParams;
 
 
@@ -44,6 +45,8 @@ public class Browser extends JFrame
                      implements HyperlinkListener, ActionListener
 {
 
+  /** status field */
+  private JTextField statusField;
   /** URL cache combo field */
   private MemoryComboBox urlField;
   /** HTML pane   */
@@ -416,7 +419,16 @@ public class Browser extends JFrame
 
     // ensures html wraps properly
     htmlPane.setPreferredSize(getPreferredSize());
-    getContentPane().add(sp, BorderLayout.CENTER);   
+    getContentPane().add(sp, BorderLayout.CENTER);  
+
+    // status field
+    Border loweredbevel = BorderFactory.createLoweredBevelBorder();
+    Border raisedbevel = BorderFactory.createRaisedBevelBorder();
+    Border compound = BorderFactory.createCompoundBorder(raisedbevel,loweredbevel);
+    statusField = new JTextField();
+    statusField.setBorder(compound);
+    statusField.setEditable(false);
+    getContentPane().add(statusField, BorderLayout.SOUTH);
   }
 
   /**
@@ -503,7 +515,7 @@ public class Browser extends JFrame
   */
   public void hyperlinkUpdate(HyperlinkEvent event) 
   {
-    if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
+    if(event.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
     {
       setCursor(cbusy);
       try 
@@ -527,6 +539,10 @@ public class Browser extends JFrame
       
       setCursor(cdone);
     }
+    else if(event.getEventType() == HyperlinkEvent.EventType.ENTERED)
+      statusField.setText(event.getDescription());
+    else if(event.getEventType() == HyperlinkEvent.EventType.EXITED)
+      statusField.setText("");
   }
 
 
