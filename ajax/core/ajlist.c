@@ -107,7 +107,7 @@ static AjPList listNew(AjEnum type)
     list->Type = type;
 
     list->Last = listDummyNode (&list->First);
-  
+
     return list;
 }
 
@@ -128,7 +128,8 @@ void ajListPush (AjPList thys, void* x)
 
     listInsertNode (&thys->First, x);
 
-    thys->Count++;
+    if(!thys->Count++)
+	thys->Last->Prev = thys->First;
 
     return;
 }
@@ -388,7 +389,7 @@ void ajListAppend(AjPList thys, AjPListNode morenodes)
         
     listNodesTrace(morenodes);
 
-    more->Prev = thys->Last;
+    more->Next->Prev = thys->Last;
     thys->Last->Next = more->Next;
     thys->Last->Item = more->Item;
 
@@ -430,9 +431,6 @@ void ajListPushApp(AjPList thys, void* x)
     }
     
     thys->Last->Item = x;
-    for(node=tmp=thys->First; node->Next; node = node->Next)
-	tmp = node;
-    thys->Last->Prev = tmp;
 
     tmp = thys->Last;
     thys->Last = listDummyNode(&thys->Last->Next);
@@ -1568,8 +1566,7 @@ void ajListPushList (AjPList thys, AjPList* pmore)
 
 	if (thys->Count)
 	{				/* master list has items */
-	    for(node=more->First; node->Next; node = node->Next)
-		tmp = node;
+	    tmp = more->Last->Prev;
 	    
 	    more->Last->Item = thys->First->Item;
 	    more->Last->Next = thys->First->Next;
