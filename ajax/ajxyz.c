@@ -251,6 +251,9 @@ ajFloatPut(&ret->seqvar_score, len-1, (float)0.0);
     /* JCIMATT new stuff*/  
 
 
+        ret->ncon_thresh = ajIntNewL((ajint)len);
+	ajIntPut(&ret->ncon_thresh , len-1, (int)0);
+
 	ret->post_similar = ajIntNewL((ajint)len);
 	ajIntPut(&ret->post_similar , len-1, (int)0);
 	ret->ncon_score   = ajFloatNewL((ajint)len);
@@ -823,8 +826,8 @@ void ajXyzScorealgDel(AjPScorealg *pthis)
 /*JCIMATT     ajFloatDel(&(*pthis)->seq_score);*/
 /* JCIMATT new stuff */
     
-ajFloatDel(&(*pthis)->seqmat_score);
-ajFloatDel(&(*pthis)->seqvar_score);
+    ajFloatDel(&(*pthis)->seqmat_score);
+    ajFloatDel(&(*pthis)->seqvar_score);
 
 
 
@@ -833,6 +836,7 @@ ajFloatDel(&(*pthis)->seqvar_score);
     ajFloatDel(&(*pthis)->ccon_score);
     ajIntDel(&(*pthis)->nccon_score);
     ajIntDel(&(*pthis)->combi_score);
+    ajIntDel(&(*pthis)->ncon_thresh);
 
     AJFREE(*pthis);    
     *pthis=NULL;

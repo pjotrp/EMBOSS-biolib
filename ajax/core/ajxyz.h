@@ -37,6 +37,7 @@ typedef struct AjSScorealg
     AjPFloat  ccon_score;      /* Array of scores based on convervation of contacts */
     AjPInt    nccon_score;     /* Array of total score based on convervation and number of contacts */
     AjPInt    combi_score;     /* Array of total score based on users scoring criteria  */
+    AjPInt    ncon_thresh;     /* Array of positions with > threshold number of contacts */
     AjBool    seqmat_do;       /* Whether to use score based on residue convervation */
     AjBool    seqvar_do;       /* Whether to use score based on residue variablility */
     AjBool    filterpsim;       /* Whether to filter on basis of post_similar line      */
