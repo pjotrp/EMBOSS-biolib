@@ -132,7 +132,7 @@ public class LaunchJalView extends JFrame
               String ls = System.getProperty("line.separator");
               JOptionPane.showMessageDialog(fr,
                        "Check the sequence entered " + ls +
-                       "and the format choosen.",
+                       "and the format chosen.",
                        "Error Message", JOptionPane.ERROR_MESSAGE);
             }
             return null;
