@@ -643,7 +643,7 @@ public class SectionPanel
                 fname = sifc.getSequence(1);
               else
                 fname = sifc.getFileChosen();
-              fc = Ajax.getFileOrDatabaseForAjax(fname,db,f,withSoap);
+              fc = AjaxUtil.getFileOrDatabaseForAjax(fname,db,f,withSoap);
             }
             else                                     // Cut-n-Paste
             {
