@@ -1,4 +1,10 @@
 Version 2.8.0
+	Removed the Henry Spencer regular expression libraries. There were
+	a few calls to the ajPosReg functions, but only to test it worked
+	the same way as ajReg. Added a case-insensitive ajRegComp and
+	ajRegCompC (which the ajPosReg functions had) using
+	PCRE. Farewell, Henry. You were a great servant to EMBOSS.
+
 	Water S-W alignment program no longer truncates some matches
 
 	Vector arithmetic added to ajax library.
