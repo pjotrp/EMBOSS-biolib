@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 
     filename = ajAcdGetString("filename");
     fetch    = ajAcdGetBool("fetch");
-    showall  = ajAcdGetBool("showall");
+    showall  = ajAcdGetToggle("showall");
     rstrs    = ajAcdGetSelect("reject");
     outf     = ajAcdGetOutfile("outfile");
 

@@ -79,6 +79,7 @@ section: output [
     additional: "Y"
     default: ""
     information: "Name of the consensus sequence"
+    knowntype: "sequence id output"
   ]
 
 endsection: output

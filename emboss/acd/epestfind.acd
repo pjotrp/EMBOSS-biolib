@@ -20,6 +20,7 @@ section: input [
     default: "Eamino.dat"
     help: "File of amino acid properties and molecular masses."
     information: "Amino acid data file"
+    knowntype: "amino acid properties"
   ]
 
 endsection: input
@@ -94,7 +95,7 @@ section: output [
   outfile: outfile  [
     parameter: "Y"
     help: "Name of file to which results will be written."
-    knowntype: "pestfind output"
+    knowntype: "epestfind output"
   ]
 
   xygraph: graph  [

@@ -14,6 +14,7 @@ section: input [
   string: entry  [
     parameter: "Y"
     information: "ID or Accession number"
+    knowntype: "sequence id input"
   ]
 
 endsection: input

@@ -112,7 +112,7 @@ integer: diagonal  [
                 within consecutive MSPs in an exon."
 ]
 
-string: strand  [
+list: strand  [
   additional: "Y"
   default: "both"
   information: "Align mRNA to specified (R) genome strand(s)."
@@ -120,6 +120,9 @@ string: strand  [
          mRNA will be aligned. The default value is 'both', in which case
          both strands of the genome are attempted. The other allowed modes
          are 'forward' and 'reverse'."
+  values: "both:Both strands;
+           forward:Forward strand only;
+           reverse:Reverse strand only"
 ]
 
 integer: format  [
@@ -187,6 +190,7 @@ string: cdsregion  [
          mRNA sequence. When the second file is an mRNA database, the command
          line specification for the CDS will apply to the first sequence in
          the file only."
+  knowntype: "sequence range"
 ]
 
 integer: offseta  [

@@ -18,6 +18,7 @@ section: input [
     information: "Aaindex database file"
     directory: "AAINDEX"
     default: "Enakai.dat"
+    knowntype: "aaindex data"
   ]
 
 endsection: input

@@ -61,7 +61,6 @@ int main(int argc, char **argv)
     AjPStr tmpStr = NULL;
     AjPList  l;
     AjPList  pa;
-    AjPStr   datafn = NULL;
     AjPFile mfptr   = NULL;
 
     ajint     ncomp;
@@ -76,7 +75,7 @@ int main(int argc, char **argv)
     overlap     = ajAcdGetBool("overlap");
     allpartials = ajAcdGetBool("allpartials");
     report      = ajAcdGetReport("outfile");
-    datafn      = ajAcdGetString("aadata");
+    mfptr       = ajAcdGetDatafile("aadata");
 
     /* obsolete. Can be uncommented in acd file and here to reuse */
 
@@ -96,10 +95,6 @@ int main(int argc, char **argv)
     rname = ajStrNew();
     
     TabRpt = ajFeattableNewSeq(a);
-    
-    ajFileDataNew(datafn, &mfptr);
-    if(!mfptr)
-	ajFatal("%S  not found\n",datafn);
     
     embPropAminoRead(mfptr);
     

@@ -84,7 +84,7 @@ int main(int argc, char **argv)
     AjBool nameit;
     AjBool limit;
     AjBool frags;
-    AjPStr dfile;
+    AjPFile dfile;
 
     AjPFile enzfile = NULL;
     AjPFile equfile = NULL;
@@ -118,7 +118,7 @@ int main(int argc, char **argv)
     limit      = ajAcdGetBool("limit");
     frags      = ajAcdGetBool("fragments");
     nameit     = ajAcdGetBool("name");
-    dfile      = ajAcdGetString("datafile");
+    dfile      = ajAcdGetDatafile("datafile");
     ifrag      = ajAcdGetBool("solofragment");
     
     /* obsolete. Can be uncommented in acd file and here to reuse */
@@ -138,7 +138,7 @@ int main(int argc, char **argv)
     /* read the local file of enzymes names */
     restrict_read_file_of_enzyme_names(&enzymes);
 
-    if(!*ajStrStr(dfile))
+    if(!dfile)
     {
 	ajFileDataNewC(ENZDATA,&enzfile);
 	if(!enzfile)
@@ -146,9 +146,7 @@ int main(int argc, char **argv)
     }
     else
     {
-	enzfile = ajFileNewIn(dfile);
-	if(!enzfile)
-	    ajFatal("Cannot locate user supplied enzyme file %S.",dfile);
+	enzfile = dfile;
     }
 
 

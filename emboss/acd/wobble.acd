@@ -36,7 +36,8 @@ section: advanced [
 
   string: bases  [
     default: "GC"
-    information: "Bases used"
+    information: "Bases used"	
+    knowntype: "nucleotide codes"
   ]
 
 endsection: advanced

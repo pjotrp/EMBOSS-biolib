@@ -43,7 +43,7 @@ outfile: treefile  [
   parameter: "Y"
   default: "eclique.treefile"
   information: "Tree file"
-  knowntype: "tree file"
+  knowntype: "newick tree"
   nullok: "Y"
 ]
 

@@ -52,10 +52,11 @@ section: advanced [
     information: "Enzyme or reagent"
   ]
 
-  string: aadata  [
+  datafile: aadata  [
     information: "Amino acid data file"
     help: "Molecular weight data for amino acids"
     default: "Eamino.dat"
+    knowntype: "amino acid properties"
   ]
 
   integer: pcrange  [
@@ -65,9 +66,10 @@ section: advanced [
     information: "Allowed whole sequence weight variability"
   ]
 
-  string: frequencies  [
+  datafile: frequencies  [
     default: "Efreqs.dat"
     information: "Frequencies file"
+    knowntype: "amino acid frequencies"
   ]
 
   float: tolerance  [

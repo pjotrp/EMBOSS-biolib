@@ -18,6 +18,7 @@ section: input [
     default: ""
     minlength: "2"
     information: "Regular expression to search sequence for."
+    knowntype: "regular expression"
   ]
 
 endsection: input

@@ -82,7 +82,7 @@ outfile: treefile  [
   standard: "Y"
   default: "ekitsch.treefile"
   information: "Tree file name"
-  knowntype: "tree file"
+  knowntype: "newick tree"
 ]
 
 endsection: output

@@ -24,6 +24,7 @@ section: required [
     standard: "Y"
     default: "gc"
     information: "Residue letters"
+    knowntype: "nucleotide sequence"
   ]
 
 endsection: required

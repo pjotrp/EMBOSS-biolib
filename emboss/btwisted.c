@@ -40,8 +40,6 @@ int main(int argc, char **argv)
 {
 
     AjPSeq   seq   = NULL;
-    AjPStr   afile = NULL;
-    AjPStr   efile = NULL;
     AjPFile  angles   = NULL;
     AjPFile  energies = NULL;
     AjPFile  result   = NULL;
@@ -68,20 +66,12 @@ int main(int argc, char **argv)
     embInit ("btwisted", argc, argv);
 
     seq    = ajAcdGetSeq ("sequence");
-    afile  = ajAcdGetString("angledata");
-    efile  = ajAcdGetString("energydata");
+    angles  = ajAcdGetDatafile("angledata");
+    energies  = ajAcdGetDatafile("energydata");
     result = ajAcdGetOutfile ("outfile");
 
 
     nucs = ajStrNew();
-
-    ajFileDataNew(afile,&angles);
-    if(!angles)
-	ajFatal("Cannot open file %S",afile);
-    ajFileDataNew(efile,&energies);
-
-    if(!energies)
-	ajFatal("Cannot open file %S",efile);
 
     angletable  = btwisted_getdinucdata(angles);
     energytable = btwisted_getdinucdata(energies);

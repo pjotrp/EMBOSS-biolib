@@ -91,7 +91,7 @@ section: advanced [
            donor-acceptor sites then set this to be false."
   ]
 
-  string: mode  [
+  list: mode  [
     default: "both"
     information: "Comparison mode"
     help: "This determines the comparion mode. The default value is
@@ -101,6 +101,9 @@ section: advanced [
            direction. The other allowed modes are 'forward', when just the
            forward strand is searched, and 'reverse', ditto for the reverse
            strand."
+   values: "both:Both strands;
+            forward:Forward strand only;
+            reverse:Reverse strand only"
   ]
 
   boolean: best  [

@@ -18,7 +18,7 @@ properties: ancestral [
   additional: "Y"
   characters: "01"
   length: "$(infile.discretelength)"
-  knowntype: "Ancestral states"
+  knowntype: "ancestral states"
   nullok: "Y"
   default: ""
 ]
@@ -27,7 +27,7 @@ properties: multistate [
   additional: "Y"
   characters: ""
   length: "$(infile.discretelength)"
-  knowntype: "Multistate factors"
+  knowntype: "multistate factors"
   nullok: "Y"
   default: ""
 ]
@@ -63,7 +63,7 @@ outfile: outtreefile  [
   parameter: "Y"
   extension: "treefile"
   information: "Tree file"
-  knowntype: "Newick tree"
+  knowntype: "newick tree"
   nullok: "Y"
 ]
 

@@ -51,7 +51,7 @@ section: required [
   type: "page"
 ]
 
-boolean: getswiss  [
+toggle: getswiss  [
   standard: "Y"
   information: "Retrieve swissprot sequence"
   default: "N"

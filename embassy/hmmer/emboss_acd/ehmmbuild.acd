@@ -16,6 +16,27 @@ section: input [
     type: "any"
   ]
 
+  infile: priorfile  [
+    default: ""
+    information: "Dirichlet prior file"
+    knowntype: "dirichlet prior"
+    nullok: "Y"
+  ]
+
+  infile: nullfile  [
+    default: ""
+    information: "NULL model file"
+    knowntype: "hmmer null model"
+    nullok: "Y"
+  ]
+
+  infile: pamfile  [
+    default: ""
+    information: "PAM file"
+    knowntype: "hmmer matrix file"
+    nullok: "Y"
+  ]
+
 endsection: input
 
 section: advanced [
@@ -35,24 +56,9 @@ section: advanced [
     button: "Y"
   ]
 
-  string: name  [
-    default: "Ehmm"
-    information: "Name for the HMM"
-  ]
-
-  string: resave  [
-    default: ""
-    information: "Resave selex file"
-  ]
-
   boolean: append  [
     default: "N"
     information: "Append to file"
-  ]
-
-  boolean: force  [
-    default: "N"
-    information: "Force overwriting"
   ]
 
   boolean: amino  [
@@ -73,11 +79,6 @@ section: advanced [
   boolean: binary  [
     default: "N"
     information: "Write HMM as binary"
-  ]
-
-  string: cfile  [
-    default: ""
-    information: "Emission and transition count file"
   ]
 
   list: cstrategy  [
@@ -117,24 +118,9 @@ section: advanced [
     information: "Be efficient"
   ]
 
-  string: null  [
-    default: ""
-    information: "NULL model file"
-  ]
-
-  string: pam  [
-    default: ""
-    information: "PAM file"
-  ]
-
   float: pamweight  [
     default: "20.0"
     information: "Weighting for PAM"
-  ]
-
-  string: prior  [
-    default: ""
-    information: "Prior file"
   ]
 
   float: swentry  [
@@ -175,6 +161,20 @@ section: output [
   outfile: outfile  [
     parameter: "Y"
     knowntype: "hmm file"
+  ]
+
+  outfile: resavefile  [
+    default: ""
+    information: "Resave selex filename"
+    knowntype: "selex file"
+    nullok: "Y"
+  ]
+
+  outfile: cfile  [
+    default: ""
+    information: "Emission and transition count file"
+    knowntype: "hmmer count file"
+    nullok: "Y"
   ]
 
 endsection: output

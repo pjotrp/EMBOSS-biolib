@@ -21,7 +21,7 @@ section: required [
   type: "page"
 ]
 
-  boolean: targetrange  [
+  toggle: targetrange  [
     parameter: "Y"
     default: "N"
     information: "Specify a Target Range?"

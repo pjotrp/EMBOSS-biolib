@@ -81,14 +81,14 @@ integer: categories  [
   information: "Number of categories of substitution rates"
 ]
 
-boolean: basefrequency  [
+toggle: basefrequency  [
   additional: "@($(method) == ML)"
   default: "Y"
   information: "Use empirical base frequencies"
 ]
 
 float: freqa  [
-  additional: "@($(method) == ML)"
+  additional: "@(!$(basefrequency))"
   minimum: "0.0"
   maximum: "1.0"
   default: "0.25"
@@ -96,7 +96,7 @@ float: freqa  [
 ]
 
 float: freqc  [
-  additional: "@($(method) == ML)"
+  additional: "@(!$(basefrequency))"
   minimum: "0.0"
   maximum: "1.0"
   default: "0.25"
@@ -104,7 +104,7 @@ float: freqc  [
 ]
 
 float: freqg  [
-  additional: "@($(method) == ML)"
+  additional: "@(!$(basefrequency))"
   minimum: "0.0"
   maximum: "1.0"
   default: "0.25"
@@ -112,7 +112,7 @@ float: freqg  [
 ]
 
 float: freqt  [
-  additional: "@($(method) == ML)"
+  additional: "@(!$(basefrequency))"
   minimum: "0.0"
   maximum: "1.0"
   default: "0.25"

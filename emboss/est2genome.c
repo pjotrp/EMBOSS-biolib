@@ -163,7 +163,7 @@ int main(int argc, char **argv)
     ** is always in the forward direction.
     */
 
-    modestr = ajAcdGetString("mode");
+    modestr = ajAcdGetListI("mode",1);
     mode    = ajStrStr(modestr);
 
     if(!strcmp(mode,"both"))

@@ -62,7 +62,7 @@
 #ifndef __lint     
 /*@unused@*/       
 static const char rcsid[] =
-"$Id: sim4.init.c,v 1.4 2004/01/26 12:36:50 rice Exp $";
+"$Id: sim4.init.c,v 1.5 2004/03/11 17:58:19 rice Exp $";
 #endif         
            
 
@@ -774,7 +774,7 @@ AjPStr   esim4_cdsregion;
         args->ali_flag    = ajAcdGetInt ("format");
         args->poly_flag   = ajAcdGetBool ("cliptails");
         args->acc_flag    = ajAcdGetBool ("smallexons");
-        esim4_strand      = ajAcdGetString ("strand");
+        esim4_strand      = ajAcdGetListI ("strand", 1);
         args->DRANGE      = ajAcdGetInt ("diagonal");
         args->weight      = ajAcdGetInt ("weight");
         args->cutoff      = ajAcdGetInt ("cutoff");

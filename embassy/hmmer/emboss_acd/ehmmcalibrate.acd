@@ -35,11 +35,6 @@ integer: fixed  [
   information: "Length fix for random sequences"
 ]
 
-string: histogram  [
-  default: ""
-  information: "Name for histogram file"
-]
-
 float: mean  [
   default: "350."
   information: "Mean length of synthetic sequences"
@@ -76,6 +71,13 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "hmmcalibrate output"
+]
+
+outfile: histogramfile  [
+  default: ""
+  information: "Name for histogram file"
+  knowntype: "hmmer histogram"
+  nullok: "Y"
 ]
 
 endsection: output

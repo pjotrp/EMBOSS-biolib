@@ -25,10 +25,11 @@ section: advanced [
     information: "Include charge at N and C terminus"
   ]
 
-  string: aadata  [
+  datafile: aadata  [
     information: "Amino acid data file"
     help: "Molecular weight data for amino acids"
     default: "Eamino.dat"
+    knowntype: "amino acid properties"
   ]
 
 endsection: advanced

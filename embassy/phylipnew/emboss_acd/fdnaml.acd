@@ -21,7 +21,7 @@ seqsetall: sequence  [
 tree: intreefile [
   parameter: "Y"
   nullok: "Y"
-  knowntype: "Newick tree"
+  knowntype: "newick"
 ]
 
 integer: ncategories  [
@@ -61,7 +61,7 @@ outfile: outfile  [
 outfile: outtreefile  [
   extension: "treefile"
   information: "Tree file name"
-  knowntype: "Newick tree"
+  knowntype: "newick tree"
   nullok: "Y"
 ]
 

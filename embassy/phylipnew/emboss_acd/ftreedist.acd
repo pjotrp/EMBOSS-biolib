@@ -10,13 +10,13 @@ section: input [
 
 infile: intreefile [
   parameter: "Y"
-  knowntype: "Newick tree"
+  knowntype: "newick tree"
   information: "Tree file"
 ]
 
 infile: bintreefile [
   parameter: "Y"
-  knowntype: "Newick tree"
+  knowntype: "newick tree"
   information: "Second input tree file"
   nullok: "Y"
 ]
@@ -30,7 +30,7 @@ section: output [
 
 outfile: outfile  [
   parameter: "Y"
-  knowntype: "treedist file"
+  knowntype: "treedist output"
 ]
 
 

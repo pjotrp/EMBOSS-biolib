@@ -29,6 +29,7 @@ section: required [
            For example: \
            human|mouse \
            will find text with either 'human' OR 'mouse' in the text"
+    knowntype: "regular expression"
   ]
 
 endsection: required

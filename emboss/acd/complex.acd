@@ -94,7 +94,6 @@ outfile: outfile  [
 ]
 
 outfile: ujtablefile  [
-  standard: "$(sim)"
   default: "complex.ujtable"
   information: "UjTable temporary file name"
   knowntype: "complex temporary output"

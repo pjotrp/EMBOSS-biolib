@@ -20,6 +20,7 @@ section: input [
     help: "The default data file is Etcode.dat and contains coding
            probabilities for each base. The probabilities are for both
            positional and compositional information."
+    knowntype: "testcode data"
   ]
 
 endsection: input

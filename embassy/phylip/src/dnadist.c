@@ -99,7 +99,7 @@ AjPFile outf;
     ttratio = (double)ajAcdGetFloat("ttratio");
 
   /*  categories = ajAcdGetInt("categories");*/
-  /*basefrequency = ajAcdGetBool("basefrequency");*/
+  /*basefrequency = ajAcdGetToggle("basefrequency");*/
   printdata = ajAcdGetBool("printinitial");
 
   if(ml){

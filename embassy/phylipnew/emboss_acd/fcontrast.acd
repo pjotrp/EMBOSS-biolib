@@ -14,7 +14,7 @@ frequencies: infile  [
 
 tree: intreefile  [
   parameter: "Y"
-  knowntype: "Newick tree"
+  knowntype: "newick"
 ]
 
 endsection: input

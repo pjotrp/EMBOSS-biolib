@@ -84,7 +84,7 @@ outfile: treefile  [
   standard: "$(trout)"
   default: "emix.treefile"
   information: "Tree file name"
-  knowntype: "tree file"
+  knowntype: "newick tree"
 ]
 
 endsection: output

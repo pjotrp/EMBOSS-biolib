@@ -86,7 +86,7 @@ typedef struct SHits
 
 
 
-static void emowse_read_freqs(AjPStr ffile, AjPDouble *freqs);
+static void emowse_read_freqs(AjPFile finf, AjPDouble *freqs);
 static AjBool emowse_molwt_outofrange(double thys, double given, double range);
 static ajint emowse_read_data(AjPFile inf, EmbPMdata** data);
 static ajint emowse_sort_data(const void *a, const void *b);
@@ -126,7 +126,7 @@ int main(int argc, char **argv)
     AjPSeqall seqall;
     AjPFile outf;
     AjPFile mwinf;
-    AjPStr ffile;
+    AjPFile ffile;
     AjPStr *enzyme;
     ajint smolwt;
     ajint range;
@@ -143,7 +143,6 @@ int main(int argc, char **argv)
     ajint dno;
     ajint nfrags;
     AjPList hlist = NULL;
-    AjPStr datafn = NULL;
     AjPFile mfptr = NULL;
 
     embInit("emowse", argc, argv);
@@ -153,16 +152,11 @@ int main(int argc, char **argv)
     enzyme   = ajAcdGetList("enzyme");
     smolwt   = ajAcdGetInt("weight");
     range    = ajAcdGetInt("pcrange");
-    ffile    = ajAcdGetString("frequencies");
+    ffile    = ajAcdGetDatafile("frequencies");
     tol      = ajAcdGetFloat("tolerance");
     partials = ajAcdGetFloat("partials");
     outf     = ajAcdGetOutfile("outfile");
-    datafn   = ajAcdGetString("aadata");
-
-
-   ajFileDataNew(datafn, &mfptr);
-    if(!mfptr)
-	ajFatal("%S  not found\n",datafn);
+    mfptr   = ajAcdGetDatafile("aadata");
 
     embPropAminoRead(mfptr);
 
@@ -220,22 +214,17 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [?] ffile [AjPStr] Undocumented
+** @param [?] ffile [AjPFile] Undocumented
 ** @param [?] freqs [AjPDouble*] Undocumented
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void emowse_read_freqs(AjPStr ffile, AjPDouble *freqs)
+static void emowse_read_freqs(AjPFile finf, AjPDouble *freqs)
 {
-    AjPFile finf=NULL;
     ajint c;
     AjPStr  str;
     double f;
-
-    ajFileDataNew(ffile,&finf);
-    if(!finf)
-	ajFatal("Cannot open frequencies file %S",ffile);
 
     c   = 0;
     str = ajStrNew();

@@ -22,22 +22,26 @@ section: input [
     type: "gapany"
   ]
 
+  infile: mapalifile  [
+    default: ""
+    information: "Map alignment"
+    knowntype: "hmmer alignment"
+    nullok: "Y"
+  ]
+
+  infile: withalifile  [
+    default: ""
+    information: "Heuristic alignment"
+    knowntype: "hmmer alignment"
+    nullok: "Y"
+  ]
+
 endsection: input
 
 section: advanced [
   information: "Advanced section"
   type: "page"
 ]
-
-  string: mapali  [
-    default: ""
-    information: "Map alignment"
-  ]
-
-  string: withali  [
-    default: ""
-    information: "Heuristic alignment"
-  ]
 
   boolean: matchonly  [
     default: "N"

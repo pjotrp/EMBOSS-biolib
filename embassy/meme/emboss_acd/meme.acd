@@ -183,6 +183,7 @@ string: cons  [
   additional: "Y"
   default: ""
   information: "Consensus sequence to start EM from"
+  knowntype: "sequence id input"
 ]
 
 float: chi  [

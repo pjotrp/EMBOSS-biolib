@@ -16,14 +16,14 @@ seqsetall: sequence  [
 
 tree: intreefile  [
   nullok: "Y"
-  knowntype: "Newick tree"
+  knowntype: "newick"
 ]
 
 properties: weights [
   standard: "Y"
   information: "Weights file"
   nullok: "Y"
-  knowntype: "Phylip weights"
+  knowntype: "weights"
 ]
 
 endsection: input
@@ -47,7 +47,7 @@ boolean: drawtree  [
 outfile: outtreefile  [
   extension: "treefile"
   information: "Tree file name"
-  knowntype: "Newick tree"
+  knowntype: "newick tree"
   nullok: "Y"
 ]
 
@@ -84,8 +84,8 @@ boolean: ancseq  [
 
 endsection: output
 
-section: required [
-  information: "Required section"
+section: additional [
+  information: "Additional section"
   type: "page"
 ]
 
@@ -98,11 +98,11 @@ integer: jumble [
 ]
 
 integer: seed [
-  standard: "$(jumble)"
+  additional: "@($(jumble) != 1)"
   information: "Random number seed (must be odd)"
   minimum: 1
   maximum: "32765"
   default: 1
 ]
 
-endsection: required
+endsection: additional

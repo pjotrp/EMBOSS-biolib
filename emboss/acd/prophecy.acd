@@ -28,7 +28,7 @@ section: input [
   ]
 
   matrixf: datafile  [
-    standard: "@($(type)!=F)"
+    standard: "@($(type) != F)"
     information: "Scoring matrix"
     default: "@($(type) = G: Epprofile H: EBLOSUM62 F:
               EBLOSUM62)"
@@ -47,9 +47,8 @@ section: required [
     standard: "Y"
     default: "mymatrix"
     information: "Enter a name for the profile"
+    knowntype: "name"
   ]
-
-  variable: dogap "@($(type) != f)"
 
   section: profiletypesection [
     information: "Profile type specific options"
@@ -57,7 +56,7 @@ section: required [
   ]
 
     integer: threshold  [
-      standard: "@($(type)==F)"
+      standard: "@($(type) == F)"
       default: "75"
       minimum: "1"
       maximum: "100"
@@ -72,13 +71,13 @@ section: required [
   ]
 
     float: open  [
-      standard: "$(dogap)"
+      standard: "@($(type) != F)"
       information: "Gap opening penalty"
       default: "3.0"
     ]
 
     float: extension  [
-      standard: "$(dogap)"
+      standard: "@($(type) != F)"
       information: "Gap extension penalty"
       default: "0.3"
     ]

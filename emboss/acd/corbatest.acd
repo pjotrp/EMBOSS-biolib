@@ -12,6 +12,7 @@ string: entry  [
   parameter: "Y"
   information: "Enter an EMBL ID or ACCNO"
   default: "hsfau"
+  knowntype: "sequence id input"
 ]
 
 endsection: input

@@ -14,7 +14,7 @@
  * Score an HMM against random sequence data sets;
  * set histogram fitting parameters.
  * 
- * RCS $Id: ehmmcalibrate.c,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: ehmmcalibrate.c,v 1.2 2004/03/11 17:57:30 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -126,7 +126,7 @@ int main(int argc, char **argv)
 
     int   num_threads;			/* number of worker threads */   
 
-    AjPStr ajhistfile=NULL;
+    AjPFile ajhistfile=NULL;
     AjPStr ajstr=NULL;
     AjBool ajpvm=ajFalse;
     AjPFile ajhmm=NULL;
@@ -161,9 +161,10 @@ int main(int argc, char **argv)
 
     num_threads = ajAcdGetInt("cpu");
     fixedlen   = ajAcdGetInt("fixed");
-    ajhistfile = ajAcdGetString("histogram");
-    if(!*ajStrStr(ajhistfile))
-	histfile = NULL;
+    ajhistfile = ajAcdGetOutfile("histogramfile");
+    if(ajhistfile)
+	histfile = ajCharNew(ajFileGetName(ajhistfile));
+    ajFileClose(&ajhistfile);
     lenmean    = ajAcdGetFloat("mean");
     nsample    = ajAcdGetInt("num");
     ajpvm      = ajAcdGetBool("pvm");
@@ -345,7 +346,6 @@ int main(int argc, char **argv)
 #endif
 
 
-    ajStrDel(&ajhistfile);
     ajStrDel(&ajstr);
   
     ajExit();

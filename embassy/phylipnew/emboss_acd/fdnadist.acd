@@ -120,7 +120,7 @@ integer: ncategories  [
 ]
 
 array: rates [
-  additional: "@($(categories) > 1)"
+  additional: "@($(ncategories) > 1)"
   information: "Category rates"
   default: "1.0"
   minimum: "0.0"

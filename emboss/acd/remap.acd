@@ -43,6 +43,7 @@ section: required [
            hindiii \
            HinfI \
            PpiI"
+    knowntype: "enzyme list"
   ]
 
   integer: sitelen  [

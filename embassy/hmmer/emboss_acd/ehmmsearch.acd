@@ -16,7 +16,7 @@ seqall: seqall  [
   type: "any"
 ]
 
-string: hmmfile  [
+infile: hmmfile  [
   parameter: "Y"
   information: "HMM file"
   knowntype: "hmm file"

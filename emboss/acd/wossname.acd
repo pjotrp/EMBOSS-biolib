@@ -17,6 +17,7 @@ section: input [
            for it will be made in the one-line documentation of all of the
            EMBOSS programs. If no keyword is specified, all programs will be
            listed."
+    knowntype: "emboss keyword"
   ]
 
 endsection: input
@@ -135,6 +136,7 @@ section: output [
              then if you enter \
              http://www.uk.embnet.org/Software/EMBOSS/Apps/ here, then the
              first half of the URL before the programname will be set."
+      knowntype: "url prefix"
     ]
 
     string: postlink  [
@@ -149,6 +151,7 @@ section: output [
              http://www.uk.embnet.org/Software/EMBOSS/Apps/programname.html \
              then if you enter '.html' here, the second half of the URL after
              the programname will be set."
+      knowntype: "url suffix"
     ]
 
   endsection: htmlsection

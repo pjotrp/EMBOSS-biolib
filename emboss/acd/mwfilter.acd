@@ -17,7 +17,7 @@ section: input [
   datafile: datafile  [
     default: "Emwfilter.dat"
     information: "Data file of noisy molecular weights"
-    knowntype: "molwt list"
+    knowntype: "standard molwt list"
   ]
 
 endsection: input

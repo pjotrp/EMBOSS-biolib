@@ -36,6 +36,7 @@ section: additional [
            If you wish to mask more than one type, separate their names with
            spaces or commas, eg: \
            *UTR repeat*"
+    knowntype: "feature key list"
   ]
 
   toggle: tolower  [
@@ -54,12 +55,14 @@ section: additional [
     additional: "@(!$(tolower))"
     default: "@($(acdprotein)?X:N)"
     information: "Character to mask with"
+    maxlength: "1"
     help: "Character to use when masking. \
            Default is 'X' for protein sequences, 'N' for nucleic sequences. \
            If the mask character is set to be the SPACE character or a null
            character, then the sequence is 'masked' by changing it to
            lower-case, just as with the '-lowercase' flag."
     expected: "'X' for protein, 'N' for nucleic"
+    knowntype: "sequence"
   ]
 
 endsection: additional

@@ -42,10 +42,12 @@ section: additional [
       information: "Do alignment using an old dendrogram"
     ]
 
-    string: dendfile  [
+    infile: dendfile  [
       additional: "$(dend)"
-      default: "NULL"
+      default: ""
+      nullok: "@(!$(dend))"
       information: "Name of old dendrogram file"
+      knowntype: "dendrogram"
     ]
 
   endsection: dendsection
@@ -154,10 +156,12 @@ section: additional [
 
     variable: usermatrix "@($(pwmatrix) == o)"
 
-    string: pairwisedata  [
+    infile: pairwisedata  [
       additional: "$(usermatrix)"
-      default: "NULL"
+      default: ""
+      nullok: "@(!$(usermatrix))"
       information: "Filename of user pairwise matrix"
+      knowntype: "comparison matrix"
     ]
 
   endsection: protalignsection
@@ -297,12 +301,14 @@ section: additional [
              single matrix (not a series) can be selected."
     ]
 
-    variable: umamatrix "(@($(dnamatrix) == own) ? True : False)"
+    variable: umamatrix "@($(dnamatrix) == own)"
 
-    string: mamatrix  [
-      additional: "@($(usermamatrix)?True:@$(umamatrix))"
-      default: "NULL"
+    infile: mamatrix  [
+      additional: "@($(usermamatrix)?True:$(umamatrix))"
+      default: ""
+      nullok: "@($(usermamatrix)?@(!$(umamatrix)):True)"
       information: "Filename of user multiple alignment matrix"
+      knowntype: "comparison matrix"
     ]
 
   endsection: matrixsection
@@ -377,6 +383,7 @@ section: additional [
       help: "This is a set of the residues 'considered' to be
              hydrophilic. It is used when introducing Hydrophilic gap
              penalties."
+      knowntype: "protein codes"
     ]
 
     boolean: nohgap  [

@@ -57,11 +57,13 @@ section: required [
   string: linkera  [
     standard: "@(!$(vectorfile))"
     information: "The 5' sequence"
+    knowntype: "nucleotide sequence"
   ]
 
   string: linkerb  [
     standard: "@(!$(vectorfile))"
     information: "The 3' sequence"
+    knowntype: "nucleotide sequence"
   ]
 
 endsection: required

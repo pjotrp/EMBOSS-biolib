@@ -24,6 +24,7 @@ section: required [
   string: seqcomp  [
     parameter: "Y"
     information: "Overlap sequence"
+    knowntype: "nucleotide sequence"
   ]
 
 endsection: required
@@ -83,9 +84,11 @@ section: advanced [
     information: "Only enzymes with suppliers"
   ]
 
-  string: datafile  [
+  datafile: datafile  [
     default: ""
     information: "Alternative RE data file"
+    nullok: Y
+    knowntype: "restriction enzyme data"
   ]
 
 endsection: advanced

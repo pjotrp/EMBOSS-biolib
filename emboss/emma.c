@@ -52,7 +52,8 @@ int main(int argc, char **argv, char **env)
     AjBool are_prot = ajFalse;
     AjBool do_slow;
     AjBool use_dend;
-    AjPStr dend_file = NULL;
+    AjPFile dend_file = NULL;
+    AjPStr dend_filename = NULL;
 
     ajint ktup;
     ajint gapw;
@@ -62,7 +63,7 @@ int main(int argc, char **argv, char **env)
 
     AjPStr *pw_matrix;
     AjPStr *pw_dna_matrix ;
-    AjPStr pairwise_matrix = NULL;
+    AjPFile pairwise_matrix = NULL;
     float pw_gapc;
     float pw_gapv;
 
@@ -79,7 +80,7 @@ int main(int argc, char **argv, char **env)
 
     AjPStr *matrix;
     AjPStr *dna_matrix;
-    AjPStr ma_matrix = NULL;
+    AjPFile ma_matrix = NULL;
     float gapc;
     float gapv;
     AjBool endgaps;
@@ -119,7 +120,10 @@ int main(int argc, char **argv, char **env)
 
     only_dend = ajAcdGetToggle("onlydend");
     use_dend  = ajAcdGetToggle("dend");
-    dend_file = ajAcdGetString("dendfile");
+    dend_file = ajAcdGetInfile("dendfile");
+    if (dend_file)
+	ajStrAssS(&dend_filename, ajFileGetName(dend_file));
+    ajFileClose(&dend_file);
 
     do_slow = ajAcdGetToggle("slow");
 
@@ -154,7 +158,7 @@ int main(int argc, char **argv, char **env)
     else if(pwdc=='o')
 	ajStrAssC(&pwdstr,"own");
 
-    pairwise_matrix = ajAcdGetString("pairwisedata");
+    pairwise_matrix = ajAcdGetInfile("pairwisedata");
 
     pw_gapc = ajAcdGetFloat( "pwgapc");
     pw_gapv = ajAcdGetFloat( "pwgapv");
@@ -185,7 +189,7 @@ int main(int argc, char **argv, char **env)
 	ajStrAssC(&m2str,"own");
 
 
-    ma_matrix = ajAcdGetString("mamatrix");
+    ma_matrix = ajAcdGetInfile("mamatrix");
     gapc      = ajAcdGetFloat("gapc");
     gapv      = ajAcdGetFloat("gapv");
     endgaps   = ajAcdGetBool("endgaps");
@@ -289,7 +293,7 @@ int main(int argc, char **argv, char **env)
         }
         else
         {
-            if(ajStrCmpC(pairwise_matrix, "NULL") == 0)
+            if(!pairwise_matrix)
             {
 		if(are_prot)
 		{
@@ -308,7 +312,7 @@ int main(int argc, char **argv, char **env)
 		    ajStrAppC(&cmd, " -pwmatrix=");
 		else
 		    ajStrAppC(&cmd, " -pwdnamatrix=");
-		ajStrApp(&cmd, pairwise_matrix);
+		ajStrApp(&cmd, ajFileGetName(pairwise_matrix));
             }
             ajStrAppC(&cmd, " -pwgapopen=");
             ajStrFromFloat(&tmp, pw_gapc, 3);
@@ -325,7 +329,7 @@ int main(int argc, char **argv, char **env)
     if(use_dend)
     {
         ajStrAppC(&cmd, " -usetree=");
-        ajStrApp(&cmd, dend_file);
+        ajStrApp(&cmd, dend_filename);
     }
     else
     {
@@ -335,7 +339,7 @@ int main(int argc, char **argv, char **env)
         ajStrApp(&cmd, tmp_dendfilename);
     }
 
-    if(ajStrCmpC(ma_matrix, "NULL") == 0)
+    if(!ma_matrix)
     {
 	if(are_prot)
 	{
@@ -354,7 +358,7 @@ int main(int argc, char **argv, char **env)
 	    ajStrAppC(&cmd, " -matrix=");
 	else
 	    ajStrAppC(&cmd, " -pwmatrix=");
-	ajStrApp(&cmd, ma_matrix);
+	ajStrApp(&cmd, ajFileGetName(ma_matrix));
     }
 
     ajStrAppC(&cmd, " -gapopen=");

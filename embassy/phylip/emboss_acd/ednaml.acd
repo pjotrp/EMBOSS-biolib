@@ -59,7 +59,7 @@ outfile: treefile  [
   standard: "$(trout)"
   default: "ednaml.treefile"
   information: "Tree file name"
-  knowntype: "tree file"
+  knowntype: "newick tree"
 ]
 endsection: output
 
@@ -159,11 +159,13 @@ integer: catnum  [
 string: catvals  [
   standard: "$(categories)"
   information: "Space separated category values"
+  knowntype: "phylip category values"
 ]
 
 string: catprob [
   standard: "$(categories)"
-  information: "Space separated probabillity values"
+  information: "Space separated probability values"
+  knowntype: "phylip probability values"
 ]
 
 toggle: autog [

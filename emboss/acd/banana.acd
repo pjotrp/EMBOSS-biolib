@@ -17,6 +17,7 @@ section: input [
     additional: "Y"
     information: "Angles data file"
     default: "Eangles_tri.dat"
+    knowntype: "base trimer roll angles"
   ]
 
 endsection: input

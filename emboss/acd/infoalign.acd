@@ -36,6 +36,7 @@ section: input [
            sequences are compared. If this is set to 0 then the consensus
            sequence will be used as the reference sequence. By default the
            consensus sequence is used as the reference sequence."
+    knowntype: "sequence id input"
   ]
 
 endsection: input

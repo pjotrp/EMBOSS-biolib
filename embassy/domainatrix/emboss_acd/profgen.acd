@@ -58,8 +58,6 @@ list: type  [
   button: "Y"
 ]
 
-variable:  dogap "@($(type) != f)"
-
 integer: threshold  [
   standard: "@($(type)==F)"
   default: "75"
@@ -76,13 +74,13 @@ matrixf: datafile  [
 ]
 
 float: open  [
-  standard: "$(dogap)"
+  standard: "@($(type)==F)"
   information: "Gap insertion penalty"
   default: "3.0"
 ]
 
 float: extension  [
-  standard: "$(dogap)"
+  standard: "@($(type)==F)"
   information: "Gap extension penalty"
   default: "0.3"
 ]

@@ -66,7 +66,7 @@ outfile: treefile  [
   standard: "$(trout)"
   default: "ednapars.treefile"
   information: "Tree file name"
-  knowntype: "Newick tree"
+  knowntype: "newick tree"
 ]
 
 endsection: output

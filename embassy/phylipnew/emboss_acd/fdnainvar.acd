@@ -17,7 +17,7 @@ properties: weights [
   standard: "Y"
   help: "Weights file"
   nullok: "Y"
-  knowntype: "Phylip weights"
+  knowntype: "weights"
 ]
 
 endsection: input

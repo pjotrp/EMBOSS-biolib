@@ -53,7 +53,7 @@ section: additional [
            sequence over this mismatch region. The default action is to
            create the merged sequence using the sequence where the mismatch
            is closest to that sequence's centre. If this option is used, then
-           the fist sequence (seqa) will always be used in preference to the
+           the first sequence (seqa) will always be used in preference to the
            other sequence when there is a mismatch."
   ]
 
@@ -72,7 +72,7 @@ section: output [
   outfile: outfile  [
     parameter: "Y"
     extension: "megamerger"
-    knowntype: "megamerger report"
+    knowntype: "megamerger output"
   ]
 
 endsection: output

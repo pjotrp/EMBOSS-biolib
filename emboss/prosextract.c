@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 
     embInit("prosextract", argc, argv);
 
-    temp = ajAcdGetString("infdat");
+    temp = ajAcdGetDirectoryName("infdat");
 
     line = ajStrNew();
     text = ajStrNew();

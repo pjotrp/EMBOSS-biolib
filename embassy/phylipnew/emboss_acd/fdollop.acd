@@ -97,7 +97,7 @@ outfile: outtreefile  [
   standard: "$(trout)"
   extension: "treefile"
   information: "Tree file name"
-  knowntype: "Newick tree"
+  knowntype: "newick tree"
 ]
 
 endsection: output
@@ -178,7 +178,7 @@ individual run)."
 ]
 
 integer: seed [
-  standard: "$(jumble)"
+  standard: "$(jumble)!=1"
   information: "Random number seed (must be odd)"
   minimum: 1
   maximum: "32765"
@@ -195,7 +195,7 @@ integer: seed [
 Some people have asked what are good values of the random number
 seed. The random number seed is used to start a process of choosing
 'random' (actually pseudorandom) numbers, which behave as if they were
-unpredictably randomly chosen between 0 and 232-1 (which is
+unpredictably randomly chosen between 0 and 2**32-1 (which is
 4,294,967,296). You could put in the number 133 and find that the next
 random number was 1,876,973,009. As they are effectively
 unpredictable, there is no such thing as a choice that is better than

@@ -58,7 +58,7 @@ outfile: treefile  [
   standard: "$(trout)"
   extension: "treefile"
   information: "Tree file name"
-  knowntype: "Newick tree"
+  knowntype: "newick tree"
 ]
 
 endsection: output
@@ -164,18 +164,20 @@ integer: catnum  [
 
 string: catvals  [
   standard: "$(categories)"
-  information: "Space seperated category values"
+  information: "Space separated category values"
+  knowntype: "phylip category values"
 ]
 
 string: catprob [
   standard: "$(categories)"
-  information: "Space seperated probabillity values"
+  information: "Space separated probabillity values"
+  knowntype: "phylip probability values"
 ]
 
 toggle: autog [
   standard: "$(categories)"
   default: "N"
-  information: "Use Defualt Mean block length of sites"
+  information: "Use Default Mean block length of sites"
 ]
 
 float: lambda  [

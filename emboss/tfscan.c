@@ -99,11 +99,14 @@ int main(int argc, char **argv)
     else if(*p=='V')
 	ajStrAssC(&pname,"tfvertebrate");
     else if(*p=='C')
-	pname = ajAcdGetString("custom");
+	inf = ajAcdGetDatafile("custom");
 
-    ajFileDataNew(pname,&inf);
-    if(!inf)
-	ajFatal("Either EMBOSS_DATA undefined or TFEXTRACT needs running");
+    if(*p!='C')
+    {
+	ajFileDataNew(pname,&inf);
+	if(!inf)
+	    ajFatal("Either EMBOSS_DATA undefined or TFEXTRACT needs running");
+    }
 
     name     = ajStrNew();
     acc      = ajStrNew();

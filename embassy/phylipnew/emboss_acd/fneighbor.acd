@@ -70,7 +70,7 @@ outfile: treefile  [
   standard: "$(trout)"
   extension: "treefile"
   information: "Tree file name"
-  knowntype: "Newick tree"
+  knowntype: "newick tree"
 ]
 
 boolean: printdata  [

@@ -10,7 +10,7 @@ section: input [
 
 tree: intreefile [
   parameter: "Y"
-  knowntype: "Newick tree"
+  knowntype: "newick"
 ]
 
 list: method [
@@ -52,7 +52,7 @@ outfile: outtreefile [
   parameter: "Y"
   information: "Tree file name"
   extension: "treefile"
-  knowntype: "Newick tree"
+  knowntype: "newick tree"
 ]
 
 

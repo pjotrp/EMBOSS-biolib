@@ -14,12 +14,12 @@ section: input [
 
 frequencies: infile [
   parameter: "Y"
-  knowntype: "contml input"
+  knowntype: "continuous character"
 ]
 
 tree: intreefile [
   parameter: "Y"
-  knowntype: "Newick tree"
+  knowntype: "newick"
   nullok: "Y"
 ]
 
@@ -57,7 +57,7 @@ outfile: outtreefile  [
   standard: "Y"
   extension: "treefile"
   information: "Tree file name"
-  knowntype: "Newick tree"
+  knowntype: "newick tree"
 ]
 
 endsection: output
@@ -72,11 +72,10 @@ integer: jumble [
   information: "Number of times to jumble"
   minimum: "1"
   default: "1"
-
 ]
 
 integer: seed [
-  additional: "$(jumble)"
+  additional: "@($(jumble) != 1)"
   information: "Random number seed (must be odd)"
   minimum: 1
   maximum: "32765"

@@ -11,7 +11,7 @@ section: input [
 infile: infile  [
   parameter: "Y"
   information: "Continuous character frequency file"
-  knowntype: "Continuous character frequency file"
+  knowntype: "continuous character frequency file"
 ]
 
 infile: treefile  [

@@ -59,18 +59,21 @@ section: additional [
     additional: "Y"
     information: "Colour to display identical residues (RED)"
     default: "RED"
+    knowntype: "plot colour"
   ]
 
   string: csimilarity  [
     additional: "Y"
     information: "Colour to display similar residues (GREEN)"
     default: "GREEN"
+    knowntype: "plot colour"
   ]
 
   string: cother  [
     additional: "Y"
     information: "Colour to display other residues (BLACK)"
     default: "BLACK"
+    knowntype: "plot colour"
   ]
 
   boolean: docolour  [
@@ -97,6 +100,10 @@ section: additional [
            under 0.5 ....... WHITE (W) \
            The only four letters allowed are BPLW, in any order."
     default: ""
+    maxlength: "4"
+    minlength: "0"
+    knowntype: "plot shading"
+    pattern: "^([BPLW]{4})?$"
   ]
 
   string: pair  [
@@ -104,6 +111,7 @@ section: additional [
     information: "Values to represent identical similar
                   related"
     default: "1.5,1.0,0.5"
+    knowntype: "threshold identity similar related"
   ]
 
   integer: identity  [
@@ -130,6 +138,7 @@ section: additional [
     additional: "Y"
     information: "Colour to be used for background. (GREY)"
     default: "GREY"
+    knowntype: "plot colour"
   ]
 
   boolean: name  [

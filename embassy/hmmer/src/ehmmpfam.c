@@ -15,7 +15,7 @@
  * Conditionally includes PVM parallelization when HMMER_PVM is defined
  *    at compile time; hmmpfam --pvm runs the PVM version.
  *    
- * RCS $Id: ehmmpfam.c,v 1.2 2003/10/06 09:00:54 rice Exp $
+ * RCS $Id: ehmmpfam.c,v 1.3 2004/03/11 17:57:30 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -164,12 +164,13 @@ int main(int argc, char **argv)
     int   num_threads;		/* number of worker threads */   
 
 
-    AjPStr ajhmmfile=NULL;
+    AjPFile ajhmmfile=NULL;
     AjPSeqall seqall=NULL;
     AjBool ajb;
     AjPFile outf=NULL;
     AjPSeq ajseq=NULL;
     AjPStr ajstr=NULL;
+    AjPStr infname=NULL;
   
 
 #ifdef MEMDEBUG
@@ -206,11 +207,15 @@ int main(int argc, char **argv)
     ajNamInit("emboss");
     ajAcdInitP("ehmmpfam",argc,argv,"HMMER");
 
-    ajhmmfile = ajAcdGetString("hmmfile");
-    if(!ajStrLen(ajhmmfile))
-	hmmfile = NULL;
+    ajhmmfile = ajAcdGetInfile("hmmfile");
+    if (ajhmmfile)
+    {
+	infname = ajStrNewC((char *)ajFileName(ajhmmfile));
+	ajFileClose(&ajhmmfile);
+	hmmfile = ajStrStr(infname);
+    }
     else
-	hmmfile = ajStrStr(ajhmmfile);
+	hmmfile = NULL;
   
     seqall = ajAcdGetSeqall("seqall");
     ajb = ajAcdGetBool("nucleic");

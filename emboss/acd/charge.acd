@@ -16,6 +16,7 @@ section: input [
   datafile: aadata  [
     default: "Eamino.dat"
     information: "Amino acid property data file name"
+    knowntype: "amino acid properties"
   ]
 
 endsection: input

@@ -24,6 +24,7 @@ section: required [
     standard: "Y"
     information: "Sequence section to match"
     default: "N"
+    knowntype: "sequence"
   ]
 
   toggle: delete  [
@@ -35,6 +36,7 @@ section: required [
     standard: "@(!$(delete))"
     information: "Replacement sequence section"
     default: "A"
+    knowntype: "sequence"
   ]
 
 endsection: required

@@ -17,6 +17,7 @@ section: input [
     additional: "Y"
     default: "Ewhite-wimley.dat"
     information: "White-Wimley data file"
+    knowntype: "octanol datafile"
   ]
 
 endsection: input

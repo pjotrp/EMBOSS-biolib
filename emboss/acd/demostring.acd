@@ -11,6 +11,7 @@ section: input [
 string: instring  [
   standard: "Y"
   information: "Value for instr"
+  knowntype: "string"
 ]
 
 endsection: input

@@ -236,7 +236,7 @@ int main(int argc, char **argv)
     saltconc = ajAcdGetFloat("saltconc");
     dnaconc  = ajAcdGetFloat("dnaconc");
 
-    targetrange = ajAcdGetBool("targetrange");
+    targetrange = ajAcdGetToggle("targetrange");
     targetstart = ajAcdGetInt("targetstart");
     targetend   = ajAcdGetInt("targetend");
 

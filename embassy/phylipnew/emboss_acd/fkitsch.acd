@@ -50,7 +50,7 @@ section: output [
 
 outfile: outfile  [
   parameter: "Y"
-  knowntype: "kitch output"
+  knowntype: "kitsch output"
 ]
 
 boolean: printdata  [
@@ -75,7 +75,7 @@ outfile: treefile  [
   standard: "Y"
   default: "ekitsch.treefile"
   information: "Tree file name"
-  knowntype: "Newick tree"
+  knowntype: "newick tree"
 ]
 
 endsection: output

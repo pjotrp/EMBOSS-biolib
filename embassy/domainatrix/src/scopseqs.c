@@ -282,7 +282,7 @@ int main(int argc, char **argv)
     ajAcdInitP("scopseqs",argc,argv,"DOMAINATRIX");
 
     scop_inf    = ajAcdGetInfile("scopin");
-    getswiss    = ajAcdGetBool("getswiss");
+    getswiss    = ajAcdGetToggle("getswiss");
     if(getswiss)
 	pdbtosp_inf = ajAcdGetInfile("pdbtosp");
     scop_outf   = ajAcdGetOutfile("scopout");

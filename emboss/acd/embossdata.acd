@@ -9,7 +9,7 @@ section: input [
   type: "page"
 ]
 
-  boolean: showall  [
+  toggle: showall  [
     additional: "Y"
     information: "Show all potential EMBOSS data files"
   ]
@@ -26,7 +26,9 @@ section: input [
     help: "This specifies the name of the file that should be fetched
            into the current directory or searched for in all of the
            directories that EMBOSS programs search when looking for a data
-           file. The name of the file is not altered when it is fetched."
+           file. The name of the file is not altered when it is
+    fetched."
+    knowntype: "filename"
   ]
 
 endsection: input
