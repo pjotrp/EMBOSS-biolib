@@ -134,18 +134,18 @@ int main(int argc, char **argv)
 	    ajStrAssC(&temp,p+1);
 	    ajStrAssC(&savereg,p+1);
 
-	    match = embPatPosMatchFind(temp, str);
-	    number = embPatPosMatchGetNumber(match);
+	    match = embPatMatchFind(temp, str);
+	    number = embPatMatchGetNumber(match);
 
 	    for(i=0; i<number; i++)
 	    {
 		seqlength = ajStrLen(str);
 
-		start = 1+embPatPosMatchGetStart(match, i);
+		start = 1+embPatMatchGetStart(match, i);
 
-		end = 1+embPatPosMatchGetEnd(match, i);
+		end = 1+embPatMatchGetEnd(match, i);
 
-		length = embPatPosMatchGetLen(match, i);
+		length = embPatMatchGetLen(match, i);
 
 		gf = ajFeatNew(tab, NULL, fthit, start, end,
 			       (float) length, ' ', 0);

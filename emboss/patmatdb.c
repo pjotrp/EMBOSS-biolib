@@ -81,10 +81,10 @@ int main(int argc, char **argv)
 	ajStrToUpper(&str);
 
 	/* comparing the reg exps to sequence for matches. */
-	match 	= embPatPosMatchFind(regexp, str);
+	match 	= embPatMatchFind(regexp, str);
 
 	/*returns the number of posix matches in the structure. */
-	number 	= embPatPosMatchGetNumber(match);
+	number 	= embPatMatchGetNumber(match);
 
 	if(number)
 	  tab = ajFeattableNewSeq(seq);
@@ -94,19 +94,19 @@ int main(int argc, char **argv)
 	    seqlength = ajStrLen(str);
 
 	    /*returns length from pattern match for index'th item. */
-	    length = embPatPosMatchGetLen(match, i);
+	    length = embPatMatchGetLen(match, i);
 
 	    /*
 	    ** returns the start position from the pattern match for the
             ** index'th item.
 	    */
-	    start = 1+embPatPosMatchGetStart(match, i);
+	    start = 1+embPatMatchGetStart(match, i);
 
 	    /*
 	    ** returns the end point for the pattern match for the
 	    ** index'th item.
 	    */
-	    end	= 1+embPatPosMatchGetEnd(match, i);
+	    end	= 1+embPatMatchGetEnd(match, i);
 
 	    gf = ajFeatNewProt(tab, NULL, fthit, start, end,
 			       (float) length);

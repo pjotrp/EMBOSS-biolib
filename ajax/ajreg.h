@@ -47,6 +47,9 @@ typedef struct AjSRegexp {
 AjPRegexp ajRegComp (AjPStr exp);
 AjPRegexp ajRegCompC (const char* exp);
 
+AjPRegexp ajRegCompCase (AjPStr exp);
+AjPRegexp ajRegCompCaseC (const char* exp);
+
 /* execute expression match */
 
 AjBool ajRegExec (AjPRegexp prog, const AjPStr str);

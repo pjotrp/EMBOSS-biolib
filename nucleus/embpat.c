@@ -428,294 +428,6 @@ void embPatMatchDel(EmbPPatMatch* pthis)
 
 
 
-
-/* @func embPatPosSeqCreateRegExp *********************************************
-**
-** Create a posix regular expression for a string and substitute the chars
-** for Nucleotides or proteins as needed.
-**
-** @param [r] thys [AjPStr] string to create reg expr from.
-** @param [r] protein [AjBool] is it a protein.
-**
-** @return [AjPStr] the new regular expression.
-******************************************************************************/
-
-AjPStr embPatPosSeqCreateRegExp(AjPStr thys, AjBool protein)
-{
-    return embPatPosSeqCreateRegExpC(ajStrStr(thys), protein);
-}
-
-
-
-
-/* @func embPatPosSeqCreateRegExpC ********************************************
-**
-** Create a posix regular expression for a string and substitute the chars for
-** Nucleotides or proteins as needed.
-**
-** @param [r] ptr [char *] text to create reg expr from.
-** @param [r] protein [AjBool] is it a protein.
-**
-** @return [AjPStr] the new regular expression.
-******************************************************************************/
-
-AjPStr embPatPosSeqCreateRegExpC(char *ptr, AjBool protein)
-{
-    return embPatSeqCreateRegExpC(ptr,protein);
-}
-
-
-
-
-/* @func embPatPosSeqMatchFind ************************************************
-**
-** Find all the regular expression matches of reg in the string string.
-**
-** @param [r] seq [AjPSeq] Sequence to be searched.
-** @param [r] reg [AjPStr] regular expression string.
-**
-** @return [EmbPPatMatch] Results of the pattern matching.
-**
-******************************************************************************/
-
-EmbPPatMatch embPatPosSeqMatchFind(AjPSeq seq, AjPStr reg)
-{
-    return embPatPosSeqMatchFindC(seq, ajStrStr(reg));
-}
-
-
-
-
-/* @func embPatPosSeqMatchFindC ***********************************************
-**
-** Find all the posix regular expression matches of reg in the string string.
-**
-** @param [r] seq [AjPSeq] Sequence to be searched.
-** @param [r] reg [char*] regular expression text.
-**
-** @return [EmbPPatMatch] Results of the pattern matching.
-**
-******************************************************************************/
-
-EmbPPatMatch embPatPosSeqMatchFindC(AjPSeq seq, char *reg)
-{
-    AjPStr regexp = NULL;
-    AjBool protein;
-    EmbPPatMatch results;
-
-    protein = ajSeqIsProt(seq);
-
-    regexp  = embPatPosSeqCreateRegExpC(reg,protein);
-    results = embPatPosMatchFind(regexp, ajSeqStr(seq));
-
-    ajStrDel(&regexp);
-
-    return results;
-}
-
-
-
-
-/* @func embPatPosMatchFind ***************************************************
-**
-** Find all the posix regular expression matches of reg in the string string.
-**
-** @param [r] regexp [AjPStr] Regular expression string.
-** @param [r] string   [AjPStr] String to be searched.
-**
-** @return [EmbPPatMatch] Results of the pattern matching.
-**
-******************************************************************************/
-
-EmbPPatMatch embPatPosMatchFind(AjPStr regexp, AjPStr string)
-{
-    return embPatPosMatchFindC(regexp, ajStrStr(string));
-}
-
-
-
-
-/* @func embPatPosMatchFindC **************************************************
-**
-** Find all the posix regular expression matches of reg in the string string.
-**
-** @param [r] regexp [AjPStr] Regular expression string.
-** @param [r] sptr   [char *] String to be searched.
-**
-** @return [EmbPPatMatch] Results of the pattern matching.
-**
-******************************************************************************/
-
-EmbPPatMatch embPatPosMatchFindC(AjPStr regexp, char *sptr)
-{
-    AjPPosRegexp regcomp = NULL;
-    EmbPPatMatch results = NULL;
-    AjPList poslist;
-    AjPList lenlist;
-    AjIList iter;
-    ajint *pos;
-    ajint *len;
-    ajint posi;
-    ajint i;
-    char *ptr;
-
-    poslist = ajListNew();
-    lenlist = ajListNew();
-    ptr     = sptr;
-    regcomp = ajPosRegComp(regexp);
-
-    AJNEW(results);
-
-    while(*sptr != '\0' && ajPosRegExecC(regcomp,sptr))
-    {
-	AJNEW(pos);
-	*pos = posi = ajPosRegOffset(regcomp);
-	AJNEW(len);
-	*len = ajPosRegLenI(regcomp,0);
-	*pos +=sptr-ptr;
-	ajListAppend(poslist, ajListNodesNew(pos, NULL));
-	ajListAppend(lenlist, ajListNodesNew(len, NULL));
-	sptr += posi+1;
-    }
-
-    ajPosRegFree(&regcomp);
-    results->number  = ajListLength(poslist);
-    if(results->number)
-    {
-	AJCNEW(results->start, results->number);
-	AJCNEW(results->len, results->number);
-
-	i = 0;
-	iter=ajListIter(poslist);
-	while(ajListIterMore(iter))
-	{
-	    results->start[i] = *(ajint *) ajListIterNext(iter);
-	    i++;
-	}
-	ajListIterFree(iter);
-
-	i = 0;
-	iter = ajListIter(lenlist);
-	while(ajListIterMore(iter))
-	{
-	    results->len[i] = *(ajint *) ajListIterNext(iter);
-	    i++;
-	}
-	ajListIterFree(iter);
-
-	ajListMap(poslist,patStringFree, NULL);
-	ajListMap(lenlist,patStringFree, NULL);
-	ajListFree(&poslist);
-	ajListFree(&lenlist);
-
-    }
-    else
-    {
-	ajListFree(&poslist);
-	ajListFree(&lenlist);
-    }
-
-    return results;
-}
-
-
-
-
-/* @func  embPatPosMatchGetLen*************************************************
-**
-** Returns the length from the posix pattern match structure for index'th item.
-**
-** @param [r] data [EmbPPatMatch] results of match.
-** @param [r] index   [ajint] index to structure.
-**
-** @return [ajint] returns -1 if not available.
-**
-******************************************************************************/
-
-ajint embPatPosMatchGetLen(EmbPPatMatch data, ajint index)
-{
-    return embPatMatchGetLen(data,index);
-}
-
-
-
-
-/* @func  embPatPosMatchGetEnd*************************************************
-**
-** Returns the End point for the posix pattern match structure for index'th
-** item.
-**
-** @param [r] data [EmbPPatMatch] results of match.
-** @param [r] index   [ajint] index to structure.
-**
-** @return [ajint] returns -1 if not available.
-**
-******************************************************************************/
-
-ajint embPatPosMatchGetEnd(EmbPPatMatch data, ajint index)
-{
-    return embPatMatchGetEnd(data,index);
-}
-
-
-
-
-/* @func   embPatPosMatchGetNumber*********************************************
-**
-** Returns the number of posix pattern matches in the structure.
-**
-** @param [r] data [EmbPPatMatch] results of match.
-**
-** @return [ajint] returns -1 if not available.
-**
-******************************************************************************/
-
-ajint embPatPosMatchGetNumber(EmbPPatMatch data)
-{
-    return embPatMatchGetNumber(data);
-}
-
-
-
-
-/* @func  embPatPosMatchGetStart***********************************************
-**
-** Returns the start position from the posix pattern match structure for
-** index'th item.
-**
-** @param [r] data [EmbPPatMatch] results of match.
-** @param [r] index   [ajint] index to structure.
-**
-** @return [ajint] returns -1 if not available.
-**
-******************************************************************************/
-
-ajint embPatPosMatchGetStart(EmbPPatMatch data, ajint index)
-{
-    return embPatMatchGetStart(data,index);
-}
-
-
-
-
-/* @func embPatPosMatchDel ****************************************************
-**
-** Free all the memory from a posix pattern match search.
-**
-** @param [u] pthis [EmbPPatMatch*] results to be freed.
-** @return [void]
-******************************************************************************/
-
-void embPatPosMatchDel(EmbPPatMatch* pthis)
-{
-    embPatMatchDel(pthis);
-
-    return;
-}
-
-
-
-
 /* @func embPatPrositeToRegExp ************************************************
 **
 ** Convert a prosite pattern to a regular expression
@@ -3306,12 +3018,12 @@ ajint embPatVariablePattern(AjPStr *pattern, AjPStr opattern, AjPStr text,
         **/
 	AJFREE(sotable);
 	regexp = embPatPrositeToRegExp(&opattern);
-	ppm = embPatPosMatchFind(regexp,text);
-	n = embPatPosMatchGetNumber(ppm);
+	ppm = embPatMatchFind(regexp,text);
+	n = embPatMatchGetNumber(ppm);
 	for(i=0;i<n;++i)
 	{
-	    start = embPatPosMatchGetStart(ppm,i);
-	    end   = embPatPosMatchGetEnd(ppm,i);
+	    start = embPatMatchGetStart(ppm,i);
+	    end   = embPatMatchGetEnd(ppm,i);
 	    if(amino && start)
 	    {
 		n = 0;
@@ -4171,12 +3883,12 @@ void embPatFuzzSearch(ajint type, ajint begin, AjPStr pattern,
 	break;
 
     case 5:
-	ppm = embPatPosMatchFind(regexp,text);
-	n   = embPatPosMatchGetNumber(ppm);
+	ppm = embPatMatchFind(regexp,text);
+	n   = embPatMatchGetNumber(ppm);
 	for(i=0;i<n;++i)
 	{
-	    start = embPatPosMatchGetStart(ppm,i);
-	    end   = embPatPosMatchGetEnd(ppm,i);
+	    start = embPatMatchGetStart(ppm,i);
+	    end   = embPatMatchGetEnd(ppm,i);
 	    if(left && start)
 	    {
 		n = 0;

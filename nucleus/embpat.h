@@ -134,18 +134,6 @@ ajint           embPatMatchGetLen (EmbPPatMatch data, ajint index);
 ajint           embPatMatchGetNumber (EmbPPatMatch data);
 ajint           embPatMatchGetStart (EmbPPatMatch data, ajint index);
 
-EmbPPatMatch    embPatPosMatchFind  (AjPStr regexp, AjPStr string);
-EmbPPatMatch    embPatPosMatchFindC (AjPStr regexp, char *sptr);
-void            embPatPosMatchDel (EmbPPatMatch* pthis);
-ajint           embPatPosMatchGetEnd (EmbPPatMatch data, ajint index);
-ajint           embPatPosMatchGetNumber (EmbPPatMatch data);
-ajint           embPatPosMatchGetLen (EmbPPatMatch data, ajint index);
-ajint           embPatPosMatchGetStart (EmbPPatMatch data, ajint index);
-AjPStr          embPatPosSeqCreateRegExp  (AjPStr thys, AjBool protein);
-AjPStr          embPatPosSeqCreateRegExpC (char *ptr, AjBool protein);
-EmbPPatMatch    embPatPosSeqMatchFind  (AjPSeq seq, AjPStr reg);
-EmbPPatMatch    embPatPosSeqMatchFindC (AjPSeq seq, char *reg);
-
 AjPStr          embPatPrositeToRegExp (AjPStr *s);
 
 void            embPatPushHit (AjPList l, AjPStr *name, ajint pos, ajint plen,

@@ -52,8 +52,6 @@ extern "C"
 #include "ajmess.h"
 
 #include "ajphylo.h"
-#include "ajhsreg.h"
-#include "ajposreg.h"
 #include "ajreg.h"
 #include "ajtranslate.h"
 #include "ajsys.h"

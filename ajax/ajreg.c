@@ -106,7 +106,65 @@ AjPRegexp ajRegCompC(const char* exp)
     regAlloc += sizeof(ret);
     regCount ++;
     regTotal ++;
-    /*ajDebug("ajRegComp %x size %d regexp '%s'\n",
+    /*ajDebug("ajRegCompC %x size %d regexp '%s'\n",
+      ret, (int) sizeof(ret), exp);*/
+
+    return ret;
+}
+
+
+
+/* @func ajRegCompCase ********************************************************
+**
+** Compiles a case-insensitive regular expression.
+**
+** @param [r] exp [AjPStr] Regular expression string.
+** @return [AjPRegexp] Compiled regular expression.
+** @@
+******************************************************************************/
+
+AjPRegexp ajRegCompCase(AjPStr exp)
+{
+    return ajRegCompCaseC(ajStrStr(exp));
+}
+
+
+
+
+
+/* @func ajRegCompCaseC *******************************************************
+**
+** Compiles a case-insensitive regular expression.
+**
+** @param [r] exp [const char*] Regular expression character string.
+** @return [AjPRegexp] Compiled regular expression.
+** @@
+******************************************************************************/
+
+AjPRegexp ajRegCompCaseC(const char* exp)
+{
+    AjPRegexp ret;
+    int options = PCRE_CASELESS;
+    int errpos  = 0;
+    const char *errptr            = NULL;
+    const unsigned char *tableptr = NULL;
+
+    AJNEW0(ret);
+    AJCNEW0(ret->ovector, AJREG_OVECSIZE);
+    ret->ovecsize = AJREG_OVECSIZE/3;
+    ret->pcre = pcre_compile(exp, options, &errptr, &errpos, tableptr);
+    if(!ret->pcre)
+    {
+	ajErr("Failed to compile regular expression '%s' at position %d: %s",
+	      exp, errpos, errptr);
+	AJFREE(ret);
+	return NULL;
+    }
+
+    regAlloc += sizeof(ret);
+    regCount ++;
+    regTotal ++;
+    /*ajDebug("ajRegCompCaseC %x size %d regexp '%s'\n",
       ret, (int) sizeof(ret), exp);*/
 
     return ret;

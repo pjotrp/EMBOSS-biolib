@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 
     AjPStr desc = NULL;
 
-    AjPPosRegexp exp = NULL;
+    AjPRegexp exp = NULL;
 
 
     embInit("textsearch", argc, argv);
@@ -80,9 +80,9 @@ int main(int argc, char **argv)
 
     /* compile the regular expression with or without case-sensitivity */
     if(casesensitive)
-	exp = ajPosRegComp(pattern);
+	exp = ajRegComp(pattern);
     else
-	exp = ajPosRegCompCase(pattern);
+	exp = ajRegCompCase(pattern);
 
 
     /* start the HTML table */
@@ -106,7 +106,7 @@ int main(int argc, char **argv)
 	name = ajSeqGetName(seq);
 	ajStrAss(&desc, ajSeqGetDesc(seq));
 
-	if(ajStrLen(desc) && ajPosRegExec(exp, desc))
+	if(ajStrLen(desc) && ajRegExec(exp, desc))
 	{
 	    /* get the usa ('-' if unknown) */
 	    usa = ajSeqGetUsa(seq);
@@ -227,7 +227,7 @@ int main(int argc, char **argv)
     ajStrDel(&altusa);
     ajStrDel(&altname);
     ajStrDel(&altacc);
-    ajPosRegFree(&exp);
+    ajRegFree(&exp);
 
     ajExit();
 
