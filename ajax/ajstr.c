@@ -5621,10 +5621,13 @@ AjBool ajStrWrap(AjPStr* pthis, ajint width ) {
 
 /* @func ajStrWrapLeft ********************************************************
 **
-** Inserts newlines into a ajlong string, at white space if possible,
+** Inserts newlines into a long string, at white space if possible,
 ** so that it wraps when printed.
 **
 ** This version asks for a left margin of space characters.
+**
+** The margin is not added to the start of the string.
+** At present the margin is added to the end of the string.
 **
 ** @param [uP] pthis [AjPStr*] Target string
 ** @param [r] width [ajint] Line width
