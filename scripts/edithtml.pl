@@ -90,7 +90,7 @@ if (!defined $desc) {die "wossname can't find $application\nExiting.\n";}
 
 # we need to cd to the directory where the application was committed
 chdir "/packages/emboss_dev/$ENV{'USER'}/emboss/emboss/emboss/";
-$result = system "cvs log $application.c 2>/dev/null >/dev/null";
+$result = system "cvs log $application.c  >/dev/null";
 $result /= 256;
 if ($result == 1) {
 	print "WARNING: This program has not yet been committed to CVS.\n";
