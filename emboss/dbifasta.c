@@ -51,7 +51,7 @@
 #define FASTATYPE_SIMPLE    1
 #define FASTATYPE_IDACC     2
 #define FASTATYPE_GCGID     3
-#define FASTATYPE_GCGIDACC  4
+#define FASTATYPE_GCGIDACC 4
 #define FASTATYPE_NCBI      5
 #define FASTATYPE_DBID      6
 #define FASTATYPE_ACCID     7
@@ -407,29 +407,29 @@ static AjPRegexp dbifasta_getExpr(AjPStr idformat, ajint *type)
     else if(ajStrMatchC(idformat,"idacc"))
     {
 	*type = FASTATYPE_IDACC;
-	exp   = ajRegCompC("^>([.A-Za-z0-9_-]+)+[ \t]+([A-Za-z0-9-]+)");
+	exp   = ajRegCompC("^>([.A-Za-z0-9_-]+)+[ \t]+([A-Za-z0-9_-]+)");
     }
     else if(ajStrMatchC(idformat,"accid"))
     {
 	*type = FASTATYPE_ACCID;
-	exp   = ajRegCompC("^>([A-Za-z0-9_-]+)+[ \t]+([A-Za-z0-9-]+)");
+	exp   = ajRegCompC("^>([A-Za-z0-9_-]+)+[ \t]+([A-Za-z0-9_-]+)");
     }
     else if(ajStrMatchC(idformat,"gcgid"))
     {
 	*type = FASTATYPE_GCGID;
-	exp   = ajRegCompC("^>[A-Za-z0-9_-]+:([A-Za-z0-9-]+)");
+	exp   = ajRegCompC("^>[A-Za-z0-9_-]+:([A-Za-z0-9_-]+)");
     }
     else if(ajStrMatchC(idformat,"gcgidacc"))
     {
 	*type = FASTATYPE_GCGIDACC;
 	exp   = ajRegCompC(
-		     "^>[A-Za-z0-9_-]+:([A-Za-z0-9-]+)[ \t]+([A-Za-z0-9-]+)");
+		     "^>[A-Za-z0-9_-]+:([A-Za-z0-9_-]+)[ \t]+([A-Za-z0-9-]+)");
     }
     else if(ajStrMatchC(idformat,"gcgaccid"))
     {
 	*type = FASTATYPE_GCGACCID;
 	exp   = ajRegCompC(
-		     "^>[A-Za-z0-9_-]+:([A-Za-z0-9-]+)[ \t]+([A-Za-z0-9-]+)");
+		     "^>[A-Za-z0-9_-]+:([A-Za-z0-9_-]+)[ \t]+([A-Za-z0-9-]+)");
     }
     else if(ajStrMatchC(idformat,"ncbi"))
     {
