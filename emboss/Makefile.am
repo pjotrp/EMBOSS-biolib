@@ -37,7 +37,7 @@ rebaseextract recode redata remap restover restrict revseq scope \
 seealso seqmatchall seqret seqretall seqretset seqretsplit \
 showdb showfeat showorf showseq \
 shuffleseq sigcleave silent splitter scopalign stretcher \
-stssearch supermatcher swissparse syco \
+stssearch supermatcher syco \
 textsearch tfextract tfm tfscan \
 tmap transeq trimseq \
 vectorstrip \
@@ -177,7 +177,6 @@ splitter_SOURCES = splitter.c
 scopalign_SOURCES = scopalign.c
 stretcher_SOURCES = stretcher.c
 stssearch_SOURCES = stssearch.c
-swissparse_SOURCES = swissparse.c
 supermatcher_SOURCES = supermatcher.c
 syco_SOURCES = syco.c
 textsearch_SOURCES = textsearch.c
