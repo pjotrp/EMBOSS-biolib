@@ -359,8 +359,10 @@ static void acdPromptOutfile (AcdPAcd thys);
 static void acdPromptInfile (AcdPAcd thys);
 static void acdListPrompt (AcdPAcd thys);
 static void acdSelectPrompt (AcdPAcd thys);
-static AjPStr* acdListValue (AcdPAcd thys, ajint min, ajint max, AjPStr reply);
-static AjPStr* acdSelectValue (AcdPAcd thys, ajint min, ajint max, AjPStr reply);
+static AjPStr* acdListValue (AcdPAcd thys, ajint min, ajint max,
+			     AjPStr reply);
+static AjPStr* acdSelectValue (AcdPAcd thys, ajint min, ajint max,
+			       AjPStr reply);
 static void acdAmbigApp (AjPStr* pambiglist, AjPStr str);
 static void acdAmbigAppC (AjPStr* pambiglist, char* txt);
 static AjBool acdDataFilename (AjPStr* datafname, AjPStr name, AjPStr ext);
@@ -1027,7 +1029,7 @@ AcdOType acdType[] =
   {"integer",     acdAttrInt,       acdSetInt,
    NULL,             "Integer" },
   {"list",        acdAttrList,      acdSetList,
-   NULL,             "Selection from list of values" },
+   NULL,             "Choose from menu list of values" },
   {"matrix",      acdAttrMatrix,    acdSetMatrix,
    NULL,             "Comparison matrix file in EMBOSS data path" },
   {"matrixf",     acdAttrMatrixf,   acdSetMatrixf,
@@ -1045,7 +1047,7 @@ AcdOType acdType[] =
   {"report",      acdAttrReport,     acdSetReport,
    acdQualReport,    "Report file" },
   {"select",      acdAttrSelect,    acdSetSelect,
-   NULL,             "Selection from list of values" },
+   NULL,             "Choose from selection list of values" },
   {"sequence",    acdAttrSeq,       acdSetSeq,
    acdQualSeq,       "Readable sequence" },
   {"seqset",      acdAttrSeqset,    acdSetSeqset,
@@ -4790,7 +4792,7 @@ static void acdSetList (AcdPAcd thys)
 	val = acdListValue(thys, min, max, reply);
 	if (!val)
 	{
-	    acdBadVal (thys, required, "Bad list option '%S'", reply);
+	    acdBadVal (thys, required, "Bad menu option '%S'", reply);
 	    ok = ajFalse;
 	}
     }
@@ -7505,7 +7507,12 @@ static void acdHelpAppend (AcdPAcd thys, AjPStr *str, char flag) {
 
   if (!nullstr) nullstr = ajStrNew();
 
-  (void) ajStrAssC (&type, acdType[thys->Type].Name);
+  if (ajStrMatchCC("list", acdType[thys->Type].Name)) {
+    (void) ajStrAssC (&type, "menu");
+  }
+  else {
+    (void) ajStrAssC (&type, acdType[thys->Type].Name);
+  }
 
   if (thys->DefStr)
     defstr = thys->OrigStr;
@@ -8384,7 +8391,7 @@ static void acdHelpExpectString (AcdPAcd thys, AjPStr* str) {
 
 /* @funcstatic acdHelpExpect **************************************************
 **
-** Generates expected value text for an ACD objectcode settings.
+** Generates expected value text for an ACD object code settings.
 **
 ** @param [r] thys [AcdPAcd] ACD object
 ** @param [r] str [AjPStr*] Help text (if any) generated
@@ -12865,7 +12872,7 @@ static void acdListPrompt (AcdPAcd thys) {
 
 /* @funcstatic acdListValue **************************************************
 **
-** Checks the user setting against the list of codes and descriptions.
+** Checks the user setting against the menu list of codes and descriptions.
 **
 ** An unambiguous match to the codes counts as valid.
 ** If this fails, an unambiguous match to the descriptions counts.
@@ -12895,6 +12902,7 @@ static AjPStr* acdListValue (AcdPAcd thys, ajint min, ajint max, AjPStr reply) {
   AjPList list = NULL;
   static AjPStr repstr = NULL;
   static AjPStr hitstr = NULL;
+  static AjPStr validstr = NULL;
   AjPStr hitstr1 = NULL;
   AjPStr hitstr2 = NULL;
   static AjPStr repdelim = NULL;
@@ -12904,6 +12912,7 @@ static AjPStr* acdListValue (AcdPAcd thys, ajint min, ajint max, AjPStr reply) {
   ajint ifound = 0;
   ajint jfound = 0;
   ajint ilen;
+  ajint itoken=0;
 
   AjBool ok = ajTrue;
 
@@ -12917,16 +12926,17 @@ static AjPStr* acdListValue (AcdPAcd thys, ajint min, ajint max, AjPStr reply) {
   if (!repdelim) {
     repdelim = ajStrNewL(10);
     (void) ajStrAssC (&repdelim, ",");
-    (void) ajStrAppC (&repdelim, white);
+    /*(void) ajStrAppC (&repdelim, white);*/ /* sorry, no white space */
   }
 
   value = acdAttrValue (thys, "value");
 
   /* ajDebug ("reply: '%S' delim '%S'", reply, repdelim); */
 
+  ajStrAssC(&validstr, "");
   rephandle = ajStrTokenInit (reply, ajStrStr(repdelim));
   while (ajStrToken (&repstr, &rephandle, NULL)) {
-
+    itoken++;
     ajDebug("testing '%S'\n", repstr);
     handle = ajStrTokenInit (value, ajStrStr(delim));
     ifound = jfound = 0;
@@ -12939,6 +12949,12 @@ static AjPStr* acdListValue (AcdPAcd thys, ajint min, ajint max, AjPStr reply) {
       (void) ajStrTrimC (&desc, white);
       /* ajDebug ("desc:  '%S'\n", desc); */
       /* ajDebug ("test '%S' code: '%S' desc: %S'\n", repstr, code, desc); */
+
+      if (itoken == 1) {
+	if (ajStrLen(validstr))
+	  ajStrAppK(&validstr, ',');
+	ajStrApp(&validstr, code);
+      }
 
       if (ajStrMatch(code, repstr) ||
 	  (!exactcase && ajStrMatch(code, repstr))) {
@@ -12982,10 +12998,13 @@ static AjPStr* acdListValue (AcdPAcd thys, ajint min, ajint max, AjPStr reply) {
       ajListstrPushApp (list, hitstr);
     }
     else {
-      if (ifound || jfound)
+      if (ifound || jfound) {
 	ajErr("'%S' is ambiguous", repstr);
-      else
-	ajErr("'%S' is not a valid list option", repstr);
+      }
+      else {
+	ajErr("'%S' is not a valid menu option\nAccepted short codes are: %S",
+	      repstr, validstr);
+      }
       ok = ajFalse;
       break;
     }
@@ -12997,7 +13016,24 @@ static AjPStr* acdListValue (AcdPAcd thys, ajint min, ajint max, AjPStr reply) {
   ilen = ajListstrLength(list);
   ajDebug ("Found %d matches OK: %b min: %d max: %d\n",
 	   ilen, ok, min, max);
-  if (ok && ilen >= min && ilen <= max) {
+  if (ok) {
+    if (ilen < min) {
+      if (min <= 1)
+	ajErr("Menu needs %d value", min);
+      else
+	ajErr("Menu needs %d values", min);
+      ok = ajFalse;
+    }
+    if (ilen > max) {
+      if (max <= 1)
+	ajErr("Menu allows no more than %d value", max);
+      else
+	ajErr("Menu allows no more than %d values", max);
+      ok = ajFalse;
+    }
+  }
+
+  if (ok) {
     AJCNEW0(val, ilen+1);
     for (k = 0; k < ilen; k++) {
       (void) ajListstrPop (list, &val[k]);
@@ -13006,7 +13042,7 @@ static AjPStr* acdListValue (AcdPAcd thys, ajint min, ajint max, AjPStr reply) {
   }
 
   ajDebug ("Found %d matches\n", ilen);
-  ajDebug ("List length now %d\n", ajListstrLength(list));
+  ajDebug ("Menu length now %d\n", ajListstrLength(list));
   if (ok) ajDebug ("before return val[0] '%S'\n", val[0]);
 
   /* do not delete hitstr - it is copied as the last list item stored in val */
@@ -13028,7 +13064,7 @@ static AjPStr* acdListValue (AcdPAcd thys, ajint min, ajint max, AjPStr reply) {
 
 /* @funcstatic acdSelectValue ************************************************
 **
-** Checks the user setting against the select set of codes
+** Checks the user setting against the selection list set of codes
 **
 ** An unambiguous match to the codes counts as valid.
 ** If this fails, an unambiguous match to the descriptions counts.
@@ -13056,6 +13092,7 @@ static AjPStr* acdSelectValue (AcdPAcd thys, ajint min, ajint max, AjPStr reply)
   AjPList list = NULL;
   static AjPStr repstr = NULL;
   static AjPStr hitstr = NULL;
+  static AjPStr validstr = NULL;
   AjPStr hitstr2 = NULL;
   static AjPStr repdelim = NULL;
   static char* white = " \t\n\r";
@@ -13065,6 +13102,7 @@ static AjPStr* acdSelectValue (AcdPAcd thys, ajint min, ajint max, AjPStr reply)
   ajint jfound = 0;
   ajint icnt = 0;
   ajint ilen;
+  ajint itoken=0;
 
   AjBool ok = ajTrue;
 
@@ -13079,15 +13117,17 @@ static AjPStr* acdSelectValue (AcdPAcd thys, ajint min, ajint max, AjPStr reply)
   if (!repdelim) {
     repdelim = ajStrNewL(10);
     (void) ajStrAssC (&repdelim, ",");
-    (void) ajStrAppC (&repdelim, white);
+    /*(void) ajStrAppC (&repdelim, white);*/ /* sorry no white space */
   }
 
   value = acdAttrValue (thys, "value");
 
   /* ajDebug ("reply: '%S' delim '%S'", reply, repdelim); */
 
+  ajStrAssC(&validstr, "");
   rephandle = ajStrTokenInit (reply, ajStrStr(repdelim));
   while (ajStrToken (&repstr, &rephandle, NULL)) {
+    itoken++;
 
     ajDebug("testing '%S'\n", repstr);
     handle = ajStrTokenInit (value, ajStrStr(delim));
@@ -13097,6 +13137,12 @@ static AjPStr* acdSelectValue (AcdPAcd thys, ajint min, ajint max, AjPStr reply)
       /* ajDebug ("desc:  '%S'\n", desc); */
       /* ajDebug ("test '%S' desc: %S'\n", repstr, desc); */
  
+      if (itoken == 1) {
+	if (ajStrLen(validstr))
+	  ajStrAppK(&validstr, ',');
+	ajStrApp(&validstr, desc);
+      }
+
       if (ajStrMatch(desc, repstr) ||
 	  (!exactcase && ajStrMatchCase(desc, repstr))) {
 	jfound = 1;
@@ -13125,7 +13171,8 @@ static AjPStr* acdSelectValue (AcdPAcd thys, ajint min, ajint max, AjPStr reply)
       if (jfound)
 	ajErr("'%S' is ambiguous", repstr);
       else
-	ajErr("'%S' is not a valid list option", repstr);
+	ajErr("'%S' is not a valid selection list option\nAccepted values are: %S",
+	      repstr, validstr);
       ok = ajFalse;
       break;
     }
@@ -13135,7 +13182,25 @@ static AjPStr* acdSelectValue (AcdPAcd thys, ajint min, ajint max, AjPStr reply)
   (void) ajStrDelReuse (&repstr);
 
   ilen = ajListstrLength(list);
-  if (ok && ilen >= min && ilen <= max) {
+
+  if (ok) {
+    if (ilen < min) {
+      if (min <= 1)
+	ajErr("Seelction list needs %d value", min);
+      else
+	ajErr("Selection list needs %d values", min);
+      ok = ajFalse;
+    }
+    if (ilen > max) {
+      if (max <= 1)
+	ajErr("Selection list allows no more than %d value", max);
+      else
+	ajErr("Selection list allows no more than %d values", max);
+      ok = ajFalse;
+    }
+  }
+
+  if (ok) {
     AJCNEW0(val, ilen+1);
     for (k = 0; k < ilen; k++) {
       (void) ajListstrPop (list, &val[k]);
