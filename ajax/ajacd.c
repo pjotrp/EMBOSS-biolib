@@ -3179,7 +3179,8 @@ static void acdSetDirlist (AcdPAcd thys)
 
     required = acdIsRequired(thys);
     (void) acdReplyInit (thys, ".", &defreply);
-
+    acdPromptDirlist(thys);
+    
     for (itry=acdPromptTry; itry && !ok; itry--)
     {
 	ok = ajTrue;		/* accept the default if nothing changes */
@@ -4750,7 +4751,7 @@ static void acdSetCpdb (AcdPAcd thys)
 
 	if (ajStrLen(reply))
 	{
-	    if(inf=ajFileNewIn(reply))
+	    if((inf=ajFileNewIn(reply)))
 	    {
 		if (ajCpdbRead(inf,&val))
 		    ajFileClose(&inf);
