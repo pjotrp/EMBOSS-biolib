@@ -6,8 +6,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.2 $
-** @modified $Date: 2004/11/17 18:02:43 $
+** @version $Revision: 1.3 $
+** @modified $Date: 2004/11/25 20:22:14 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -58,9 +58,10 @@ int main(int argc , char **argv)
     
     AjPSeqout ajpSeqoutAligned = NULL; /* output object to write alignment   */
 
-    /* alignment gap extension and gap penalty scores */
+    /* alignment gap extension and gap penalty parameters */
     float fExtensionPenalty;
     float fGapPenalty;
+    AjBool ajBoolZeroEndPenalty;
 
     /* prebuilt scoring matrix (e.g. BLOSUM62) */
     AjPMatrixf ajpMatrixfSubstitutionScoring = NULL;
@@ -79,9 +80,10 @@ int main(int argc , char **argv)
     ajpSeqDown   = ajAcdGetSeq("down");
     ajpSeqAcross = ajAcdGetSeq("across");
     ajpMatrixfSubstitutionScoring = ajAcdGetMatrixf("substitutionscoringfile");
-    ajpSeqoutAligned  = ajAcdGetSeqout("aligned");
-    fGapPenalty       = -ajAcdGetFloat("gapopen");
-    fExtensionPenalty =  -ajAcdGetFloat("gapextend");
+    ajpSeqoutAligned     = ajAcdGetSeqout("aligned");
+    fGapPenalty          = -ajAcdGetFloat("gapopen");
+    fExtensionPenalty    = -ajAcdGetFloat("gapextend");
+    ajBoolZeroEndPenalty = ajAcdGetBool("zeroend");
 
     /* get sequence lengths: no. rows and columns in Gotoh sum array */
     ajIntDownSeqLen = ajSeqLen(ajpSeqDown);
@@ -90,8 +92,7 @@ int main(int argc , char **argv)
     /* score the sequences to produce a scoring AjpMatrix */
     ajpFloat2dPairScores = embGotohPairScore(ajpMatrixfSubstitutionScoring,
 					     ajpSeqDown,
-					     ajpSeqAcross,
-					     fExtensionPenalty);
+					     ajpSeqAcross);
     
     /* initialize Gotoh score array */
     ajpGotohCellGotohScores = embGotohCellGetArray(ajIntDownSeqLen,
@@ -102,7 +103,8 @@ int main(int argc , char **argv)
 				  ajpSeqAcross,
 				  ajpGotohCellGotohScores,
 				  fGapPenalty,
-				  fExtensionPenalty);
+				  fExtensionPenalty,
+				  ajBoolZeroEndPenalty);
     
     /* copy original sequences into new sequence objects */
     ajpSeqDownCopy = ajSeqNewS(ajpSeqDown);
