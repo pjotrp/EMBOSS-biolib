@@ -553,9 +553,15 @@ public class DNADraw extends ScrollPanel
     int start = getStart();
     int end   = getEnd();
 
+    if(majorTick == 0)
+      return;
+
     for(int i=startTick; i<end; i+=majorTick)
       if(i >= start)
         majorTicks.add(new Integer(i));
+
+    if(minorTick == 0)
+      return;
 
     for(int i=startTick; i<end; i+=minorTick)
     {
