@@ -85,12 +85,12 @@ while ($line = <IN>) {
 
 # heading found
     if ($line !~ /^\s/) {
-	print OUT qq|<H2><A NAME="$count">$line</A></H2>|;
-        $count++;
 	if ($pre_flag) {
             print OUT qq|</PRE>|;
             $pre_flag = 0;
         }
+	print OUT qq|<H2><A NAME="$count">$line</A></H2>|;
+        $count++;
         next;
     }
 
