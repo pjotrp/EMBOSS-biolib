@@ -1,6 +1,6 @@
 /* @source coderet application
 **
-** Retrieves CDS and mRNA sequences from feature tables
+** Retrieves CDS, mRNA and translations from feature tables
 **
 ** @author: Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
 ** @@
@@ -28,6 +28,7 @@ void put_seq(AjPSeq seq, AjPStr strseq, int n, char *name, int type,
 
 int main(int argc, char **argv)
 {
+    AjPSeqall seqall=NULL;
     AjPSeq seq=NULL;
     AjPSeqout seqout=NULL;
     
@@ -38,7 +39,6 @@ int main(int argc, char **argv)
 
     AjPStr cds=NULL;
     AjPStr mrna=NULL;
-    AjPStr tran=NULL;
     
     AjBool ret=ajFalse;
     AjPStr *cdslines=NULL;
@@ -51,7 +51,7 @@ int main(int argc, char **argv)
     
     embInit("coderet",argc,argv);
     
-    seq  = ajAcdGetSeq("sequence");
+    seqall  = ajAcdGetSeqall("seqall");
     
     domrna = ajAcdGetBool("mrna");
     docds  = ajAcdGetBool("cds");
@@ -61,66 +61,71 @@ int main(int argc, char **argv)
     
     cds  = ajStrNew();
     mrna = ajStrNew();
-    tran = ajStrNew();
     
-
-    if(docds)
+    while(ajSeqallNext(seqall,&seq))
     {
-	ncds = ajFeatGetLocs(seq->TextPtr, &cdslines, "CDS");
-    
-	for(i=0;i<ncds;++i)
+	if(docds)
 	{
-	    ret = ajFeatLocToSeq(ajSeqStr(seq),cdslines[i],&cds);
-	    if(!ret)
+	    ncds = ajFeatGetLocs(seq->TextPtr, &cdslines, "CDS");
+    
+	    for(i=0;i<ncds;++i)
 	    {
-		ajWarn("Cannot extract");
-		continue;
+		ret = ajFeatLocToSeq(ajSeqStr(seq),cdslines[i],&cds);
+		if(!ret)
+		{
+		    ajWarn("Cannot extract");
+		    continue;
+		}
+		put_seq(seq,cds,i,"cds",0,seqout);
+		ajStrDel(&cdslines[i]);
 	    }
-	    put_seq(seq,cds,i,"cds",0,seqout);
-	    ajStrDel(&cdslines[i]);
+	    if(ncds)
+		AJFREE(cdslines);
 	}
-	if(ncds)
-	    AJFREE(cdslines);
-    }
     
-    if(domrna)
-    {
-	nmrna = ajFeatGetLocs(seq->TextPtr, &mrnalines, "mRNA");
-    
-	for(i=0;i<nmrna;++i)
+	if(domrna)
 	{
-	    ret = ajFeatLocToSeq(ajSeqStr(seq),mrnalines[i],&mrna);
-	    if(!ret)
+	    nmrna = ajFeatGetLocs(seq->TextPtr, &mrnalines, "mRNA");
+    
+	    for(i=0;i<nmrna;++i)
 	    {
-		ajWarn("Cannot extract");
-		continue;
+		ret = ajFeatLocToSeq(ajSeqStr(seq),mrnalines[i],&mrna);
+		if(!ret)
+		{
+		    ajWarn("Cannot extract");
+		    continue;
+		}
+		put_seq(seq,mrna,i,"mrna",0,seqout);
+		ajStrDel(&mrnalines[i]);
 	    }
-	    put_seq(seq,mrna,i,"mrna",0,seqout);
-	    ajStrDel(&mrnalines[i]);
+
+	    if(nmrna)
+		AJFREE(mrnalines);
 	}
 
-	if(nmrna)
-	    AJFREE(mrnalines);
-    }
 
-
-    if(dotran)
-    {
-	ntran = ajFeatGetTrans(seq->TextPtr, &tranlines);
-    
-	for(i=0;i<ntran;++i)
+	if(dotran)
 	{
-	    put_seq(seq,tranlines[i],i,"pro",1,seqout);
-	    ajStrDel(&tranlines[i]);
+	    ntran = ajFeatGetTrans(seq->TextPtr, &tranlines);
+    
+	    for(i=0;i<ntran;++i)
+	    {
+		put_seq(seq,tranlines[i],i,"pro",1,seqout);
+		ajStrDel(&tranlines[i]);
+	    }
+
+	    if(nmrna)
+		AJFREE(tranlines);
 	}
-
-	if(nmrna)
-	    AJFREE(tranlines);
     }
-
 
     
     ajSeqWriteClose(seqout);
+
+
+    ajStrDel(&cds);
+    ajStrDel(&mrna);
+    
 
     ajExit();
     return 0;

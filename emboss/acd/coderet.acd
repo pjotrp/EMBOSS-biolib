@@ -1,9 +1,9 @@
 appl: coderet [
-        doc: "Extract CDS and mRNA sequences from feature tables"
+        doc: "Extract CDS, mRNA and translations from feature tables"
         groups: "sequence features"
 ]
 
-sequence: sequence [
+seqall: seqall [
 	param: Y
 	type: DNA
 	entry: Y
