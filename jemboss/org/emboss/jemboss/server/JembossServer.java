@@ -1,5 +1,5 @@
 /****************************************************************
-*    
+*      
 *  This program is free software; you can redistribute it and/or
 *  modify it under the terms of the GNU General Public License
 *  as published by the Free Software Foundation; either version 2
@@ -30,7 +30,7 @@ import java.util.*;
 
 /**
 *
-* HGMP Jemboss Server for SOAP
+* Jemboss Server for SOAP
 *
 */
 public class JembossServer
@@ -363,7 +363,7 @@ public class JembossServer
   public Vector run_prog(String embossCommand, String options, Hashtable inFiles)
   {
 
-    System.out.println("Running runProg now.... " + tmproot + " OPTIONS " + options);
+    System.out.println("Running runProg now.... " + tmproot );
     Enumeration enum = inFiles.keys();
     String appl   = embossCommand.substring(0,embossCommand.indexOf(" "));
     String rest   = embossCommand.substring(embossCommand.indexOf(" "));
@@ -395,9 +395,14 @@ public class JembossServer
 //create description file
     File desc = new File(new String(project + fs + ".desc"));
 
+    String descript = "";
     try
     {
       PrintWriter dout = new PrintWriter(new FileWriter(desc));
+
+      descript = descript.concat("EMBOSS run details"+ls+ls+
+                                 "Application: "+appl+ls+rest+
+                                 "Started at "+dat+ls+ls+"Input files:");
       dout.println("EMBOSS run details" + ls + ls);
       dout.println("Application: " + appl + ls + rest);
       dout.println("Started at " + dat + ls + ls + "Input files:");
@@ -407,6 +412,7 @@ public class JembossServer
         String thiskey = (String)enum.nextElement().toString();
         String filec = (String)inFiles.get(thiskey);
         File f = new File(project + fs + thiskey);
+        descript = descript.concat(project+fs+thiskey);
         dout.println(project + fs + thiskey);
         try
         {
@@ -425,18 +431,9 @@ public class JembossServer
     }
     catch (IOException ioe) {} 
  
-    RunEmbossApplication rea = new RunEmbossApplication(embossCommand,envp,new File(project));
+    RunEmbossApplication rea = new RunEmbossApplication(embossCommand,
+                                               envp,new File(project));
     
-//create finished file
-    File finished = new File(new String(project + fs + ".finished"));
-    try
-    {
-      PrintWriter fout = new PrintWriter(new FileWriter(finished));
-      fout.println((new Date()).toString());
-      fout.close();
-    }
-    catch (IOException ioe) {}
-
     result.add("cmd");
     result.add(appl + " " + rest);
     result.add("msg");
@@ -451,8 +448,32 @@ public class JembossServer
         result.add("stdout");
         result.add(rea.getProcessStdout());
       }
+      createFinishedFile(project);
     }
-    System.out.println("JEMBOSSSERVER running " + embossCommand);
+    else      //batch or background
+    {
+//    try
+//    {
+//      Process p = rea.getProcess();
+//      p.waitFor();
+//      createFinishedFile(project);
+//    }
+//    catch(InterruptedException intr){}
+      JembossThread jt = new JembossThread(rea.getProcess(),project);
+      jt.start();
+
+//    if(jt.isAlive())
+//      System.out.println("THREAD IS ALIVE!");
+
+      result.add("job_submitted");
+      result.add("Job " + projectDir.getName() + "submitted.");
+      result.add("jobid");
+      result.add(projectDir.getName());
+      result.add("description");
+      result.add(descript+ls+"Application pending"+ls);
+    }
+
+    System.out.println("JEMBOSSSERVER running");
     
 //get the output files
     result = loadFilesContent(projectDir,project,result);
@@ -461,7 +482,26 @@ public class JembossServer
     return result;
   }
 
- 
+/**
+*
+* Creates a file named "finished" in the project directory,
+* that contains a time stamp.
+* @param String project directory name
+*
+*/ 
+  private void createFinishedFile(String project)
+  {
+    File finished = new File(new String(project + fs + ".finished"));
+    try
+    {
+      PrintWriter fout = new PrintWriter(new FileWriter(finished));
+      fout.println((new Date()).toString());
+      fout.close();
+    }
+    catch (IOException ioe) {}
+  }
+
+
 /**
 *
 * Returns the results for a saved project.
@@ -720,6 +760,55 @@ public class JembossServer
     return vans;
   }
 
- 
+
+/**
+*
+* Used to provide information on the batch/background 
+* processes.
+*
+*/
+  public Vector update_result_status(String prog, String opt, 
+                                     Hashtable resToQuery)
+  {
+
+    Vector vans = new Vector();
+    Enumeration enum = resToQuery.keys();
+    while (enum.hasMoreElements())
+    {
+      String thiskey = (String)enum.nextElement().toString();
+      String thiselm = (String)resToQuery.get(thiskey);
+//    System.out.println("KEY : "+thiskey+" ELEMENT: "+thiselm);
+      File f = new File(tmproot+fs+thiskey+fs+".finished");
+      if(f.exists())
+      {
+        vans.add(thiskey);
+        vans.add("complete");
+        String fc = "";
+        try
+        {
+          String line;
+          BufferedReader in = new BufferedReader(new FileReader(tmproot+
+                                                fs+thiskey+fs+".desc"));
+          while((line = in.readLine()) != null)
+            fc = fc.concat(line + "\n");
+        }
+        catch (IOException ioe)
+        {
+          fc = "Error in reading information file";
+        }
+        vans.add(thiskey+"-description");
+        vans.add(fc);
+      }
+      else
+      {
+        vans.add(thiskey);
+        vans.add("pending");
+      }
+    }
+
+    return vans;
+  }
+
+
 }
 
