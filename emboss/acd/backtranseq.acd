@@ -10,7 +10,7 @@ section: input [
 
   sequence: sequence  [
     parameter: "Y"
-    type: "GapProtein"
+    type: "gapprotein"
   ]
 
 endsection: input
@@ -33,6 +33,7 @@ section: output [
 
   seqout: outfile  [
     parameter: "Y"
+    type: "gapnucleotide"
   ]
 
 endsection: output
