@@ -343,7 +343,7 @@ int main(int argc, char **argv)
 		    {
 			ajFmtPrintF(outfile,
 				    "Note Best alignment is between forward "
-				    "est and forward genome, but splice  "
+				    "est and forward genome, but splice "
 				    "sites imply REVERSED GENE\n");
 			est2genome_make_output(outfile, genome, est, bge,
 					       match, mismatch, gap_penalty,
@@ -362,7 +362,7 @@ int main(int argc, char **argv)
 		    {
 			ajFmtPrintF(outfile,
 				    "Note Best alignment is between forward "
-				    "est and forward genome, and splice  "
+				    "est and forward genome, and splice "
 				    "sites imply forward gene\n");
 			est2genome_make_output(outfile, genome, est, fge,
 					       match, mismatch,
@@ -410,8 +410,8 @@ int main(int argc, char **argv)
 		    else
 		    {
 			ajFmtPrintF(outfile,
-				    "Note Best alignment is between reversed"
-				    " est and forward genome, and splice  "
+				    "Note Best alignment is between reversed "
+				    "est and forward genome, and splice "
 				    "sites imply forward gene\n");
 			est2genome_make_output(outfile, genome, reversed_est,
 					       rge, match, mismatch,
