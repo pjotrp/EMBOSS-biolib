@@ -112,6 +112,27 @@ section: additional [
                   order"
   ]
 
+  range: annotation  [
+    additional: "Y"
+    default: ""
+    information: "Regions to mark (eg: 4-57 promoter region
+                  78-94 first exon)"
+    help: "Regions to annotate by marking. \
+           If this is left blank, then no annotation is added. \
+           A set of regions is specified by a set of pairs of positions
+           followed by optional text. \
+           The positions are integers. \
+           They are followed by any text (but not digits when on the
+           command-line). \
+           Examples of region specifications are: \
+           24-45 new domain 56-78 match to Mouse \
+           1-100 First part 120-156 oligo \
+           A file of ranges to annotate (one range per line) can be specified
+           as '@filename'."
+    expected: "If this is left blank, then no annotation is
+               added."
+  ]    
+
 endsection: additional
 
 section: advanced [

@@ -34,7 +34,7 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, AjPSeq seq, ajint beg,
 				 AjBool unknown, AjBool strand,
 				 AjBool source, AjBool position,
 				 AjBool type, AjBool tags, AjBool values, 
-				 AjBool stricttags);
+				 AjBool stricttags, AjPRange annotation);
 
 static void showfeat_WriteFeat(AjPStr line, char strand, ajint fstart,
 			       ajint fend, ajint width, ajint beg, ajint end);
@@ -92,7 +92,8 @@ int main(int argc, char **argv)
     AjBool tags;
     AjBool values;
     AjBool stricttags;
-
+    AjPRange annotation;
+    
     ajint i;
     ajint beg;
     ajint end;
@@ -123,7 +124,8 @@ int main(int argc, char **argv)
     tags        = ajAcdGetBool("tags");
     values      = ajAcdGetBool("values");
     stricttags  = ajAcdGetBool("stricttags");
-
+    annotation  = ajAcdGetRange("annotation"); 
+    
     while(ajSeqallNext(seqall, &seq))
     {
 	/* get begin and end positions */
@@ -180,7 +182,8 @@ int main(int argc, char **argv)
 			     matchtype, matchtag, matchvalue,
 			     sortlist, width, collapse, forward,
 			     reverse, unknown, strand, source,
-			     position, type, tags, values, stricttags);
+			     position, type, tags, values, stricttags,
+			     annotation);
 
 	/* end the HTML PRE block */
 	if(html)
@@ -226,7 +229,8 @@ int main(int argc, char **argv)
 ** @param [r] tags [AjBool] show tags and values of feature
 ** @param [r] values [AjBool] show tag values of feature
 ** @param [r] stricttags [AjBool] only show those tags that
-**            match the specified patterns
+**                                match the specified patterns
+** @param [r] annotation [AjPRange] annotation range object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -240,7 +244,7 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, AjPSeq seq, ajint beg,
 				 AjBool unknown, AjBool strand,
 				 AjBool source, AjBool position,
 				 AjBool type, AjBool tags, AjBool values, 
-				 AjBool stricttags)
+				 AjBool stricttags, AjPRange annotation)
 {
     AjIList    iter = NULL ;
     AjPFeature gf   = NULL ;
@@ -253,6 +257,11 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, AjPSeq seq, ajint beg,
     AjPStr tagstmp   = NULL;
     AjPStr tagsout   = NULL;
     AjPStr posout    = NULL;
+
+    ajint  count;	/* annotation range count */
+    ajint  rstart;	/* annotation range start */
+    ajint  rend;	/* annotation range end */
+    AjPStr ann_text;	/* annotation range text */
 
     AjBool gotoutput = ajFalse;		 /* have a line to output */
 
@@ -395,6 +404,60 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, AjPSeq seq, ajint beg,
 	    showfeat_FeatOut(outfile, lineout, strandout, sourceout, posout,
 			     typeout, tagsout, width, strand, source, type,
 			     tags, position);
+
+
+
+        /* 
+        ** Now do the annotation range object, if we have one
+        */
+        if (annotation && ajRangeNumber(annotation)) {
+            ann_text = ajStrNew();
+            gotoutput = ajFalse;
+            for(count = 0; count < ajRangeNumber(annotation); count++)
+            {
+                ajRangeValues(annotation, count, &rstart, &rend);
+
+	        /* check that the feature is within the range we wish to display */
+	        if(beg+1 > rend || end+1 < rstart)
+		    continue;
+
+                /* get the annotation text */                 
+                ajRangeText(annotation, count, &ann_text);
+
+                /* don't start a new line if collapse and previous text is the same */
+                if (!collapse || ajStrCmpCase(ann_text, typeout)) {
+		    if(gotoutput)
+                        showfeat_FeatOut(outfile, lineout, strandout, sourceout,
+				     posout, typeout, tagsout, width, strand,
+				     source, type, tags, position);
+
+		    /* reset the strings for the new line */
+		    ajStrClear(&lineout);
+		    ajStrAppKI(&lineout, ' ', width);
+		    ajStrAssC(&sourceout, "Annotation");
+                    ajStrAss(&typeout, ann_text);
+		    strandout = '\0';
+		    ajStrClear(&tagsout);
+		    ajStrClear(&posout);
+		    /* something to output */
+		    gotoutput = ajTrue;
+		}
+
+	        /* add positions to posout */
+	        showfeat_AddPos(&posout, rstart, rend);
+
+	        /* write the feature on the line */
+	        showfeat_WriteFeat(lineout, strandout, rstart, rend, width,
+			       beg, end);
+	    }
+	    /* print out any last line */
+	    if(gotoutput)
+	        showfeat_FeatOut(outfile, lineout, strandout, sourceout, posout,
+			     typeout, tagsout, width, strand, source, type,
+			     tags, position);
+
+            ajStrDel(&ann_text);
+        }
 
 	ajListIterFree(iter) ;
 
