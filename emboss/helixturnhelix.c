@@ -92,7 +92,7 @@ int main(int argc, char **argv)
     ajint cols;
     ajint lastcol;
 
-    ajint n;
+    ajint n=0;
 
     ajint sp;
     ajint se;
