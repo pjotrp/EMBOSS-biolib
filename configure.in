@@ -19,7 +19,6 @@ AC_PROG_CPP
 dnl Test whether --with-sgiabi given for IRIX (n32m3 n32m4 64m3 64m4)
 if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64" ; then
 if test "$CC" != "gcc"; then
-  CC=cc
   CFLAGS="$CFLAGS -woff 1048"
   CHECK_SGI
 fi
