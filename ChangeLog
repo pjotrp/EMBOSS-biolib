@@ -1,3 +1,74 @@
+Version 2.4.0
+
+	NBRF sequence reading trims last character only if it is '*'
+	to catch cases where SRS reports the sequence as 'plain'
+
+	GCG database text has the spaces in ". ." strings removed.
+
+	Database entry text and sequence saved for binary formats (GCG, BLAST)
+	for use by entret and other applications
+
+	dbiblast indices with split databases (formatdb -v) fixed for reading
+	all entries (was only reading the first file)
+
+	dbiblast and dbigcg indices support exclude and file definitions
+	to create database subsets
+
+	Database include and file definitions can use the simple filename.
+	In some cases the full path was used. Database files are checked
+	both with and without the directory path for back-compatibility.
+
+	srswww access method created to query a remote web server.
+	Preferred to using URL access as SRS queries can be built
+
+	Sequence objects include the SeqVersion, Keyword list and Taxonomy
+	list.
+
+	SeqVersion (EMBL SV line, GenBank VERSION line) is used in preference
+	to accession number where available. Can also be read in FASTA
+	and NCBI formats. Where only the SeqVersion is available, the
+	accession number is generated.
+	
+	USA queries implement searches by SV, DES, ORG and KEY. These work
+	with SRS access methods (SRS, SRSFASTA, SRSWWW) by building SRS
+	queries, and with direct access (simple file reading) by
+	testing the sequence object.
+
+	Key and Org queries are for full keywords (including spaces) and
+	for each level of the taxonomy.
+
+	Des queries, if the access method does not provide a mechanism,
+	(if the access method does not have its own index) are applied to
+	words within the description. Words start with a letter or number,
+	and end with a letter or number. SRS typically does the same, but
+	allows a single quote at the end. This catches words such as 3'
+	and 5' but is a problem with some quoted text.
+
+	Queries for ID ACC SV DES ORG and KEY are valid for all file
+	access methods, including URL, external, cmd, app, file and by
+	default any new method added. If the internal query data is not
+	flagged by the access method (to show the database has been
+	queried) the sequence object is automatically tested.
+
+	Missing description, keyword, organism, or seqversion fields cause
+	queries to fail if they are used on inappropriate data.
+	
+	Known problem: Queries of dbiflat (etc.) databases for SV DES ORG
+	and KEY will need new index files.
+
+	New database definition token 'fields' with a list of indexed fields
+	can be set to 'sv des org key' for SRS databases. 
+
+	USAs check the query field against the database 'fields'
+	definition.  ID and ACC are always allowed. dbname:name still
+	searches ID and ACC (no change from previous version)
+
+	USAs with a filename can include the new query fields. The syntax is
+	filename:field:query for example empro.dat:id:eclaci (the extended
+	syntax is because empro.dat-id:eclaci looks like a filename ending
+	in -id)
+
+	
 Version 2.3.1
 
         est2genome fixed for large alignments (over 40Mbase for
