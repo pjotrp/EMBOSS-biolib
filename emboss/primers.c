@@ -972,13 +972,13 @@ PRIMER_PRODUCT_SIZE=137
   (void) ajFmtPrintF(outfile, "#                      Start  Len   Tm     GC%%   Sequence\n\n");
 
 /* get the results */
-  for (i=1; i <= numreturn; i++) {
+  for (i=0; i <= numreturn; i++) {
 
 /* product data */
     size = primers_tableget("PRIMER_PRODUCT_SIZE", i, "", table);
     if (size != NULL) {
       (void) ajFmtPrintF(outfile, "%4d PRODUCT SIZE: %S\n",
-    	i, size);
+    	i+1, size);
     }
 
 /* left primer data */
@@ -1033,7 +1033,7 @@ static AjPStr primers_tableget(char *key1, ajint number, char *key2, AjPTable ta
   AjPStr value = NULL;
 
   ajStrAssC(&fullkey, key1);
-  if (number > 1) {
+  if (number > 0) {
     ajStrAppC(&fullkey, "_");
     ajStrFromInt(&keynum, number);
     ajStrApp(&fullkey, keynum);
