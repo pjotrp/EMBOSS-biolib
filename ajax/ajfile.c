@@ -1834,6 +1834,8 @@ AjBool ajFileGetsTrim(AjPFile thys, AjPStr* pdest)
     if(dest->Ptr[dest->Len-1] == '\n')
 	dest->Ptr[--dest->Len] = '\0';
 
+    /* PC files have \r\n Macintosh files have just \r : this fixes both */
+
     if(dest->Len && dest->Ptr[dest->Len-1] == '\r')
     {
 	ajDebug("Remove carriage-return characters from PC-style files\n");
