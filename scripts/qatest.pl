@@ -79,7 +79,7 @@ sub runtest ($) {
   my $testid = "";
   my $testin = "";
   my $timeout = $timeoutdef;
-  my $ppcmd = "";
+  my $ppcmd = "EMBOSSRC=../../ ;export EMBOSSRC ;EMBOSS_RCHOME=N ;export EMBOSS_RCHOME ;";
   my $qqcmd = "";
   my %testfile = ();
   my %outfile = ();
@@ -107,6 +107,7 @@ sub runtest ($) {
       $testid = $1;
       $testin = "";
       $cmdline = "";
+      $dirname = "";
       $ifile=0;
       $packa = "unknown";
       print LOG "Test <$testid>\n";
@@ -194,6 +195,18 @@ sub runtest ($) {
       $outdir{$dirname} = $idir;
       print LOG "Known directory [$idir] <$1>\n";
       $idir++;
+    }
+
+# directoryfile - output file example
+
+    elsif ($line =~ /^DF\s+(\S+)/) {
+      if (!$idir) {
+	$testerr = "$retcode{22} $testid/*/$1\n";
+	print STDERR $testerr;
+	print LOG $testerr;
+	return 20;
+      }
+      print LOG "Known example in directory [$idir] <$dirname/$1>\n";
     }
 
 # filename - must be unique
@@ -670,6 +683,8 @@ $misssf=0;
 %tfm = ();
 %sf = ();
 
+$logfile = "qatest.log";
+
 foreach $test (@ARGV) {
   if ($test =~ /^-(.*)/) {
     $opt=$1;
@@ -678,6 +693,7 @@ foreach $test (@ARGV) {
     elsif ($opt eq "ka") {$defdelete="all"}
     elsif ($opt =~ /without=(\S+)/) {$without{$1}=1}
     elsif ($opt =~ /t=([0-9]+)/) {$timeoutdef=int($1)}
+    elsif ($opt =~ /logfile=(\S+)/) {$logfile=$1}
     else {print STDERR "+++ unknown option '$opt'\n"; usage()}
   }
   else {
@@ -730,6 +746,7 @@ $SIG{ALRM} = sub { print STDERR "+++ timeout handler\n"; die "qatest timeout" };
 	    "19" => "Directory not found",
 	    "20" => "Duplicate directory definition",
 	    "21" => "Not empty directory",
+	    "22" => "Undefined directory",
             "99" => "Testing"
 );
 
@@ -767,7 +784,7 @@ if (!$numtests) {
 }
 
 open (IN, "../qatest.dat") || die "Cannot open qatest.dat";
-open (LOG, ">qatest.log") || die "Cannot open qatest.log";
+open (LOG, ">$logfile") || die "Cannot open $logfile";
 
 # make qatest.log unbuffered and be sure to reset the current filehandle
 $fh = select LOG; $|=1; select $fh;

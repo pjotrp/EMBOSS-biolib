@@ -7,20 +7,27 @@
 
 ###############################################################################
 #
-# Changes needed for SourceForge version
+# To be done
+# ==========
+# programs/html version to have separate embassy directories
 #
-# handle .html file extensions for SSI (using .htaccess file to turn on)
-# fix to seealso for -noembassy (now looks for embassy: attribute)
-# avoid running test cases - can we simply use the files in the test directory?
-#    ... or at least run in a temporary directory and cleanup afterwards
+# check emboss.cvs for files that need to be added - do not assume
+# the cvs add will be run
+#
+# Why did domainatrix files get updated as zero length when the tests failed?
+#
+# Skeleton version for sourceforge apps directory (for Jemboss)
+#
+# embassy docs - /apps/ redirect (checked)
+#     and embassy/*/ main pages (not yet checked?)
+#
+# plotorf copies plotorf.gif 3 times in 2 tests
+#
+# Changes needed for SourceForge version
+# ======================================
 # flag failed test cases so we don't use their results
-# modified header for sourceforge
 # need to update index.html for embassy packages
 # need to be better at identifying and fixing embassy missing documentation
-# ACD file has embassy: attribute, testdef has AB line
-# Use qatest.dat as source, rather than directory search after tests with -kk
-#     then run test with -kk and use results directly
-#     with any extra validation added to qatest.pl
 # Need to check for EFUNC and EDATA HTML file updates with main server
 #     including the index.html pages
 ###############################################################################
@@ -50,19 +57,32 @@ my %progs;	    # hash of key=program name, value = description
 my %groups;	    # hash of key=lowercase group name, value = program names
 my %embassyprogs;   # hash of embassy package names for each program
 my %missingdoc;     # hash of missing program documentation.
-                    #Value is the directory it should be in
+                    # Value is the directory it should be in
 
 # where the URL for the html pages is
 my $url = "http://emboss.sourceforge.net/apps";
 
+# where the original distribution lives
+my $distribtop = "./";
+
+# where the installed package lives
+my $installtop = "./";
+
+open (VERS, "embossversion -full -auto|") || die "Cannot run embossversion";
+while (<VERS>) {
+    if(/InstallDirectory: +(\S+)/) {$installtop = $1}
+    if(/BaseDirectory: +(\S+)/) {$distribtop = $1}
+}
+close VERS;
+
 # where the CVS tree program doc pages are
-my $cvsdoc = "/homes/pmr/hgmp/doc/programs";
+my $cvsdoc = "$distribtop/doc/programs";
 
 # where the CVS tree scripts are
-my $scripts = "/homes/pmr/hgmp/scripts";
+my $scripts = "$distribtop/scripts";
  
 # where the web pages live
-my $doctop = "/homes/pmr/hgmp/doc/sourceforge";
+my $doctop = "$distribtop/doc/sourceforge";
 
 my @embassylist = ("appendixd",
 		   "domainatrix",
@@ -95,6 +115,14 @@ my $cvsdoctextadd = '';
 my $cvsdoctextcommit = '';
 my $badlynx = 0;
 
+$doccreate = "";
+
+if ($#ARGV >= 0) {
+    $argdoccreate = $ARGV[0];
+    if ($argdoccreate =~ /^[-]create/i) {$doccreate = "Y"}
+}
+
+$cvscommit = $doccreate;
 
 ######################################################################
 ######################################################################
@@ -113,7 +141,7 @@ my $badlynx = 0;
 #	runs diff on two files and returns 1 if they differ
 # 
 # Args: 
-# 	$silent	- false = print the output of diff
+# 	$silent	- 0: silent, else print the output of diff
 #                 1: to stdout 2: to autodoc.log
 # 	$afile - first filename
 # 	$bfile - second filename
@@ -125,7 +153,9 @@ my $badlynx = 0;
 sub filediff ( $$$ ) {
     my ($silent, $afile, $bfile) = @_;
     if ($silent == 2) {
-	print LOG "$afile " . (-s $afile) . ", $bfile " . (-s $bfile) . "\n";
+	if ((-s $afile) !=  (-s $bfile)) {
+	  print LOG "$afile " . (-s $afile) . ", $bfile " . (-s $bfile) . "\n";
+	}
     }
     system ("diff -b $afile $bfile > z.z");
     $s = (-s "z.z");
@@ -263,7 +293,7 @@ sub indexheader (*) {
 <table align=center border=0 cellspacing=0 cellpadding=0>
 <tr><td valign=top>
 <A HREF=\"http://emboss.sourceforge.net/\" ONMOUSEOVER=\"self.status='Go to the EMBOSS home page';return true\">
-<img border=0 src=\"/imagesemboss_icon.jpg\" alt=\"\" width=150 height=48></a>
+<img border=0 src=\"/images/emboss_icon.jpg\" alt=\"\" width=150 height=48></a>
 </td>
 <td align=left valign=middle>
 <b><font size=\"+6\"> 
@@ -349,7 +379,8 @@ sub getprogramnames ( ) {
     my $capgrp;	# uppcase group name
     my $grp;	# lowercase group name
 
-    open (PROGS, "wossname -noembassy -auto |") || die "Cannot run wossname";
+    open (PROGS, "wossname -noembassy -auto |") ||
+	die "Cannot run wossname";
     while ($prog = <PROGS>) {
 	if ($prog =~ /^\s*$/) {	# ignore blank lines
 	    next;
@@ -423,13 +454,24 @@ sub createnewdocumentation ( $$ ) {
     print LOG "createnewdocumentation missing $progdocdir/$thisprogram.html\n";
     print "\n$progdocdir/$thisprogram.html =missing=\n";
     print STDERR "\n$progdocdir/$thisprogram.html =missing=\n";
-    print STDERR "Create a web page for this program? (y/n) ";
-    $ans = <STDIN>;
+    if ($doccreate) {
+	print STDERR "Create a web page for this program? (y/n) ";
+	$ans = <STDIN>;
+    }
+    else {
+	$ans = "skip";
+	print STDERR "Create later - run with create on commandline\n";
+    }
     if ($ans =~ /^y/) {
-        system("cp $docdir/template.html.save $progdocdir/$thisprogram.html");
+        system("cp $progdocdir/template.html.save $progdocdir/$thisprogram.html");
         system "perl -p -i -e 's/ProgramNameToBeReplaced/$thisprogram/g;' $progdocdir/$thisprogram.html";
 	chmod 0664, "$progdocdir/$thisprogram.html";
 	if (defined $ENV{'EDITOR'} && $ENV{'EDITOR'} ne "") {
+	    print STDERR "Generated $thisprogram.html:
+	    Fill in the description section
+	    Describe the input and output
+	    Add notes, references
+";
 	    system("$ENV{'EDITOR'} $progdocdir/$thisprogram.html");
 	    open (INDEX2, ">> $indexfile") || die "Cannot open $indexfile\n";
 	    print INDEX2 "
@@ -439,6 +481,173 @@ $progs{$thisprogram}
 </td></tr>
 ";
 	    close (INDEX2);
+	    print STDERR "Edit $progdocdir/index.html:
+	    Look for $thisprogram line (at end)
+	    Replace INSTITUTE for $thisprogram
+	    Move $thisprogram line to be in alphabetic order
+";
+	    system("$ENV{'EDITOR'} $progdocdir/index.html");
+	}
+	else {
+	    print "*********************************
+
+YOU DO NOT HAVE AN EDITOR DEFINED
+REMEMBER TO EDIT THESE FILES:
+ $progdocdir/$thisprogram.html
+ $indexfile\n\n\n";
+	}
+        return 1;
+    }
+    else {
+	$missingdoc{$thisprogram} = $progdocdir;
+	return 0;
+    }
+}
+
+######################################################################
+# 
+# Name: createnewdocumentationembassy
+# 
+# Description: 
+# 	Asks if the user wishes to create and edit new documentation
+#	for an embassy program.
+#	If so, the top level redirect is created, and then 
+#       the embassy template file is copied and the user's favorite
+#	editor is started.
+#
+# Args: 
+# 	$thisprogram - the name of the program
+#	$progdocdir - the location of the web pages
+#	
+#
+# Returns:
+#	1 if the document is created and edited
+#	0 if no document is created
+# 
+######################################################################
+
+sub createnewdocumentationembassy ( $$ ) {
+
+    my ($thisprogram, $progdocdir) = @_;
+    my $ans;
+    my $indexfile = "$progdocdir/index.html";
+
+# application's document is missing
+    print LOG "createnewdocumentationembassy missing $progdocdir/$thisprogram.html\n";
+    print "\n$progdocdir/$thisprogram.html =missing=\n";
+    print STDERR "\n$progdocdir/$thisprogram.html =missing=\n";
+    print STDERR "Create a web page for this program? (y/n) ";
+    if ($doccreate) {
+	print STDERR "Create a web page for this program? (y/n) ";
+	$ans = <STDIN>;
+    }
+    else {
+	$ans = "skip";
+	print STDERR "Create later - run with create on commandline\n";
+    }
+    if ($ans =~ /^y/) {
+        system("cp $progdocdir/template.html.save $progdocdir/$thisprogram.html");
+        system "perl -p -i -e 's/ProgramNameToBeReplaced/$thisprogram/g;' $progdocdir/$thisprogram.html";
+	chmod 0664, "$progdocdir/$thisprogram.html";
+	if (defined $ENV{'EDITOR'} && $ENV{'EDITOR'} ne "") {
+	    print STDERR "Generated $thisprogram.html:
+	    Fill in the description section
+	    Describe the input and output
+	    Add notes, references
+";
+	    system("$ENV{'EDITOR'} $progdocdir/$thisprogram.html");
+	    open (INDEX2, ">> $indexfile") || die "Cannot open $indexfile\n";
+	    print INDEX2 "
+
+<tr><td><a href=\"$thisprogram.html\">$thisprogram</a></td><td>INSTITUTE</td><td>
+$progs{$thisprogram}
+</td></tr>
+";
+	    close (INDEX2);
+	    print STDERR "Edit $progdocdir/index.html:
+	    Look for $thisprogram line (at end)
+	    Replace INSTITUTE for $thisprogram
+";
+	    system("$ENV{'EDITOR'} $progdocdir/index.html");
+	}
+	else {
+	    print "*********************************
+
+YOU DO NOT HAVE AN EDITOR DEFINED
+REMEMBER TO EDIT THESE FILES:
+ $progdocdir/$thisprogram.html
+ $indexfile\n\n\n";
+	}
+        return 1;
+    }
+    else {
+	$missingdoc{$thisprogram} = $progdocdir;
+	return 0;
+    }
+}
+
+######################################################################
+# 
+# Name: createnewdoclinkembassy
+# 
+# Description: 
+# 	Asks if the user wishes to create and edit new documentation
+#	for an embassy program.
+#	If so, the top level redirect is created, and then 
+#       the embassy template file is copied and the user's favorite
+#	editor is started.
+#
+# Args: 
+# 	$thisprogram - the name of the program
+#	$progdocdir - the location of the web pages
+#	
+#
+# Returns:
+#	1 if the document is created and edited
+#	0 if no document is created
+# 
+######################################################################
+
+sub createnewdoclinkembassy ( $$$ ) {
+
+    my ($thisprogram, $thisembassy, $progdocdir) = @_;
+    my $ans;
+    my $indexfile = "$progdocdir/index.html";
+
+# application's document is missing
+    print LOG "createnewdocumentationembassy missing $progdocdir/$thisprogram.html\n";
+    print "\n$progdocdir/$thisprogram.html =missing=\n";
+    print STDERR "\n$progdocdir/$thisprogram.html =missing=\n";
+    print STDERR "Create a web page for this program? (y/n) ";
+    if ($doccreate) {
+	print STDERR "Create a web page for this program? (y/n) ";
+	$ans = <STDIN>;
+    }
+    else {
+	$ans = "skip";
+	print STDERR "Create later - run with create on commandline\n";
+    }
+    if ($ans =~ /^y/) {
+        system("cp $progdocdir/template-embassy.html.save $progdocdir/$thisprogram.html");
+        system "perl -p -i -e 's/ProgramNameToBeReplaced/$thisprogram/g;' $progdocdir/$thisprogram.html";
+        system "perl -p -i -e 's/EmbassyNameToBeReplaced/$thisembassy/g;' $progdocdir/$thisprogram.html";
+	chmod 0664, "$progdocdir/$thisprogram.html";
+	print STDERR "Generated $thisprogram.html: no need to edit\n";
+	if (defined $ENV{'EDITOR'} && $ENV{'EDITOR'} ne "") {
+	    system("$ENV{'EDITOR'} $progdocdir/$thisprogram.html");
+	    open (INDEX2, ">> $indexfile") || die "Cannot open $indexfile\n";
+	    print INDEX2 "
+
+<tr><td><a href=\"../embassy/$thisembassy/$thisprogram.html\">$thisprogram</a></td><td>INSTITUTE</td><td>
+$progs{$thisprogram}
+</td></tr>
+";
+	    close (INDEX2);
+	    print STDERR "Edit $progdocdir/index.html:
+	    Look for $thisprogram line (at end)
+	    Replace INSTITUTE for $thisprogram
+	    Move $thisprogram line to $thisembassy section
+";
 	    system("$ENV{'EDITOR'} $progdocdir/index.html");
 	}
 	else {
@@ -462,7 +671,7 @@ REMEMBER TO EDIT THESE FILES:
 # Name: checkincludefile
 # 
 # Description: 
-# 	This checks for the existance of one of several types of include file
+# 	This checks for the existence of one of several types of include file
 #	If the file doesn't exist, it is created from the 'x.x' file.
 #	If the file exists, a new one is created and checked to see if it
 #	is different to the old one, if different, it is updated
@@ -511,7 +720,7 @@ sub checkincludefile ( $$$ ) {
 ##################################################################
 ##################################################################
 
-open(LOGEX, ">makeexample.log") || die "Cannot open makeexamples.log";
+open(LOGEX, ">makeexample.log") || die "Cannot open makeexample.log";
 close (LOGEX);
 
 open(LOG, ">autodoc.log") || die "Cannot open autodoc.log";
@@ -578,10 +787,12 @@ foreach $docdir (@doclist) {
 	    if (!createnewdocumentation($thisprogram, $docdir)) {next;}
 	}
 	else {
-# don't try to create documentation for an embassy program at present -
-# should probably be added at some time
 ###	  print "$progdocdir/$thisprogram.html missing - EMBASSY $embassyprogs{$thisprogram}\n";
-	    if (!createnewdocumentation($thisprogram, $progdocdir)) {next;}
+	    print STDERR "Missing embassy documentation $docdir/$thisprogram.html\n";
+	    print STDERR "docdir: $docdir\n";
+	    print STDERR "progdocdir: $progdocdir\n";
+	    print STDERR "embassyprogs: $embassyprogs{$thisprogram}\n";
+	    if (!createnewdocumentationembassy($thisprogram, $docdir)) {next;}
 	}
 
 # note whether we now have a documentation file or not
@@ -590,6 +801,21 @@ foreach $docdir (@doclist) {
 	}
 	else {
 	    print "++ Missing main docs: $thisprogram ++ \n";
+	}
+
+# For embassy, also check the embassy specific directory
+	if (defined($embassyprogs{$thisprogram})) {
+	    if (-e "$docdir/$thisprogram.html") {
+###	  print "$docdir/$thisprogram.html found\n";
+		$progdir{$thisprogram} = $embassyprogs{$thisprogram};
+	    }
+	    else {
+###	      print "$docdir/$thisprogram.html missing - EMBASSY $embassyprogs{$thisprogram}\n";
+		print STDERR "Missing embassy link $progdocdir/$thisprogram.html\n";
+		print STDERR "docdir: $docdir\n";
+		print STDERR "embassyprogs: $embassyprogs{$thisprogram}\n";
+		if (!createnewdoclinkembassy($thisprogram, $embassyprogs{$thisprogram}, $progdocdir)) {next;}
+	    }
 	}
 
 # check on the existence of the one-line description include file
@@ -659,7 +885,15 @@ foreach $docdir (@doclist) {
 	checkincludefile($thisprogram, $progdocdir, 'isee');
 
 # create the '.usage', '.input' and '.output' include files
-	system "$scripts/makeexample.pl $thisprogram";
+	if ($embassy eq "") {
+	    $mkstatus = system "$scripts/makeexample.pl $thisprogram";
+	}
+	else {
+	    $mkstatus = system "$scripts/makeexample.pl $thisprogram $embassy";
+	}
+	if ($mkstatus) {
+	    print STDERR "$thisprogram: makeexample.pl status $mkstatus\n";
+	}
 
 # check to see if the CVS tree copy of the text documentation needs updating
 	if (-e "$cvsdoc/text/$thisprogram.txt") {
@@ -764,6 +998,29 @@ foreach $thisprogram (sort (keys %progs)) {
 #
 #############################
 
+open (GRPSTD, "$installtop/share/EMBOSS/acd/groups.standard") ||
+    die "Cannot open $installtop/share/EMBOSS/acd/groups.standard";
+while (<GRPSTD>) {
+    if (/^\#/) {next}
+    if (/^([^ ]+) (.*)/) {
+	$gname = $1;
+	$gname =~ s/:/ /g;
+	$gname =~ s/_/ /g;
+	$gname = ucfirst(lc($gname));
+	$gname =~ s/[Dd]na/DNA/;
+	$gname =~ s/[Rr]na/RNA/;
+	$gname =~ s/[Cc]pg/CpG/;
+	$gname =~ s/Hmm/HMM/i;
+	$gdesc = ucfirst(lc($2));
+	$gdesc =~ s/[Dd]na/DNA/;
+	$gdesc =~ s/[Rr]na/RNA/;
+	$gdesc =~ s/[Cc]pg/CpG/;
+	$gdesc =~ s/Hmm/HMM/i;
+	$grpdef{$gname} = $gdesc;
+    }
+}
+close GRPSTD;
+
 $docdir = "$doctop/apps";
 
 open ( SUM, ">g.g") || die "cannot open temporary groups summary file";
@@ -784,11 +1041,16 @@ foreach $g (sort (keys %groups)) {
 # change the capitalisation on a few group names - most are lowercase
     $name = $g;
     $name =~ s/_/ /g;
-    $name = ucfirst($name);
+    $name = ucfirst(lc($name));
     $name =~ s/[Dd]na/DNA/;
     $name =~ s/[Rr]na/RNA/;
-    $name =~ s/Cpg/CpG/;
-    $desc = $name;
+    $name =~ s/Cpg/CpG/i;
+    $name =~ s/Hmm/HMM/i;
+    if(!defined($grpdef{$name})){
+	print STDERR "Unknown group '$name'\n";
+	$grpdef{$name} = $name;
+    }
+    $desc = $grpdef{$name};
 
 # this group's name is too long for the Makefile 
     $filename = $g;
@@ -968,27 +1230,46 @@ chdir "$cvsdoc/html";
 
 if ($cvsdochtmladd ne "") {
     print "cvs add -m'documentation added' $cvsdochtmladd\n";
-#  system "cvs add -m'documentation added' $cvsdochtmladd";
+    print STDERR "cvs add -m'documentation added' $cvsdochtmladd\n";
+    if ($cvscommit) {
+	system "cvs add -m'documentation added' $cvsdochtmladd";
+    }
 }
 if ($cvsdochtmlcommit ne "") {
     print "cvs commit -m'documentation committed' $cvsdochtmlcommit\n";
-#  system "cvs commit -m'documentation committed' $cvsdochtmlcommit";
+    print STDERR "cvs commit -m'documentation committed' $cvsdochtmlcommit\n";
+    if ($cvscommit) {
+	system "cvs commit -m'documentation committed' $cvsdochtmlcommit";
+    }
+}
+else {
+    print STDERR "HTML docs unchanged\n";
 }
 
 chdir "$cvsdoc/text";
 
 if ($cvsdoctextadd ne "") {
     print "cvs add -m'documentation added' $cvsdoctextadd\n";
-#  system "cvs add -m'documentation added' $cvsdoctextadd";
+    print STDERR "cvs add -m'documentation added' $cvsdoctextadd\n";
+    if ($cvscommit) {
+	system "cvs add -m'documentation added' $cvsdoctextadd";
+    }
 }
 if ($cvsdoctextcommit ne "") {
-    print "cvs commit -m'documentation committed' $cvsdoctextcommit";
-#  system "cvs commit -m'documentation committed' $cvsdoctextcommit";
+    print "cvs commit -m'documentation committed' $cvsdoctextcommit\n";
+    print STDERR "cvs commit -m'documentation committed' $cvsdoctextcommit\n";
+    if ($cvscommit) {
+	system "cvs commit -m'documentation committed' $cvsdoctextcommit";
+    }
+}
+else {
+    print STDERR "TEXT docs unchanged\n";
 }
 
-print "Create make files\n";
-system("$scripts/makeMake.pl");	# no parameter == do text
-system("$scripts/makeMake.pl html");
+# No need to make these makefiles ... now they use wildcards
+#print "Create make files\n";
+#system("$scripts/makeMake.pl");	       # no parameter == do text
+#system("$scripts/makeMake.pl html");   # any parameter == do html
 
 print "\n";
 print LOG "\n";

@@ -26,18 +26,43 @@ open (LOG,">>makeexample.log") || die "Cannot append to makeexample.log";
 # Some useful definitions
 #
 ###################################################################
-# where the URL for the html pages is
-#$url = "http://www.uk.embnet.org/Software/EMBOSS/Apps/";
+
+open (VERS, "embossversion -full -auto|") || die "Cannot run embossversion";
+while (<VERS>) {
+#   if(/InstallDirectory: +(\S+)/) {$installtop = $1}
+    if(/BaseDirectory: +(\S+)/) {$distribtop = $1}
+}
+close VERS;
 
 # where the qa directories are
-$qatop = "/homes/pmr/hgmp/test";
-$scripts = "/homes/pmr/hgmp/scripts";
+$qatop = "$distribtop/test";
+$scripts = "$distribtop/scripts";
 $embassy = "";
 
+###################################################################
+# get the name of the application
+if ($#ARGV < 0) {
+    print "Name of the program >";
+    $application = <STDIN>;
+} else {
+    $application = $ARGV[0];
+    if ($#ARGV > 0) {$embassy = $ARGV[1]}
+}
+chomp $application;
+if (!defined $application || $application eq "") {
+    die "No program specified\n";
+}
+
 # where the web pages and include files live
-$doctop = "/homes/pmr/hgmp/doc/sourceforge/";
-$docdir = "$doctop/apps/";
-$incdir = "$doctop/apps/inc/";
+$doctop = "$distribtop/doc/sourceforge";
+if ($embassy eq "") {
+    $docdir = "$doctop/apps";
+    $incdir = "$doctop/apps/inc";
+}
+else {
+    $docdir = "$doctop/embassy/$embassy";
+    $incdir = "$doctop/embassy/$embassy/inc";
+}
 
 
 # some HTML
@@ -48,6 +73,7 @@ $unbold = "</b>";
 # maximum number of lines of a file to be displayed
 $MaxLines = 100;
 %testok = ();
+%testkeep = ();
 
 # names of test databases
 @testdbs = (
@@ -79,18 +105,6 @@ $OUTPUT = "";
 # debug
 #open (OUT, "> /people/gwilliam/jjj.html") || die "Can't open debug OUT\n";
 
-###################################################################
-# get the name of the application
-if ($#ARGV != 0) {
-    print "Name of the program >";
-    $application = <STDIN>;
-} else {
-    $application = $ARGV[0];
-}
-chomp $application;
-if (!defined $application || $application eq "") {
-    die "No program specified\n";
-}
 
 print LOG "\n";
 print LOG "Doing $application\n";
@@ -99,21 +113,21 @@ print LOG "Doing $application\n";
 # check for any qa '*-ex' example directories
 
 @dirs=();
-@dirk=();
 
 open (QATEST, "$qatop/qatest.dat") || die "Cannot open $qatop/qatest.dat";
 $expex = qr/^$application[-]ex/;
+$expcheck = qr/^$application[-]check/;
 $expkeep = qr/^$application[-]keep$/;
 while (<QATEST>) {
     if (/^ID +(\S+)/) {
 	$idqa = $1;
 	if ($idqa =~ /$expex/) {push @dirs, $idqa};
-	if ($idqa =~ /$expkeep/) {push @dirk, $idqa};
+	if ($idqa =~ /$expcheck/) {push @dirs, $idqa};
+	if ($idqa =~ /$expkeep/) {push @dirs, $idqa};
     }
 }
 
 # are there any results directories?
-if ($#dirs == -1) {push @dirs, @dirk}
 if ($#dirs == -1) {
     errorexit("No qa tests were found for $application");
 }
@@ -127,18 +141,25 @@ chdir ("$qatop/qa");
 # get next example directory
 $count = 0;
 foreach $dotest (@dirs) {
-    $dir = "$dotest/";
+    $dir = "$dotest";
     print "Doing test $dotest\n";
     print LOG "Doing test $dotest\n";
     # run the test with -kk
-    open (TEST,"$scripts/qatest.pl -kk $dotest 2>&1|");
+    open (TEST,"$scripts/qatest.pl -kk -logfile=qatest.doclog $dotest 2>&1|");
     $testok{$dotest} = 0;
+    $testkeep{$dotest} = 0;
     while (<TEST>) {
 	if (/^Tests total: 1 pass: 1 fail: 0$/) {$testok{$dotest}=1}
     }
     if (!$testok{$dotest}) {
 	print LOG "Test $dotest failed\n";
 	print "Test $dotest failed\n";
+	if ($embassy eq "") {
+	    print STDERR "Test $dotest failed, ignored\n";
+	}
+	else {
+	    print STDERR "Test ($embassy) $dotest failed, ignored\n";
+	}
 	next;
     }
     $count++;
@@ -160,10 +181,18 @@ foreach $dotest (@dirs) {
 
 ###################################################################
 # read in 'stderr' file of prompts
+# Watch out for acdtrace which has extra lines
+# in all other cases, @prompts = <PROMPTS> would be correct and simpler.
     $promptfile = "$dir/stderr";
     open (PROMPTS, "< $promptfile" ) || errorexit("Couldn't open file $promptfile");
-    @prompts = <PROMPTS>;
+    $plines="";
+    while (<PROMPTS>) {
+	s/Trace:.*\n//;
+	s/\n/\n\r/;
+	$plines .= $_;
+    }
     close (PROMPTS);
+    (@prompts) = split(/\r/, $plines);
 
 ###################################################################
 # read in 'stdin' file of responses to prompts
@@ -182,25 +211,26 @@ foreach $dotest (@dirs) {
     close (RESULTS);
 
 ###################################################################
-# get list of other results files
-    @outfiles = glob("$dir/*");
-
-# remove stderr, stdin, stdout, testdef, testlog from this list
-    @outfiles = grep !/stdin|stderr|stdout|testdef|testlog/, @outfiles;
-
-###################################################################
 # parse 'CL, UC, IC, OC' lines from 'testdef'
     foreach $line (@testdef) {
         if ($line =~ /^CL\s+(.+)/) {$commandline .= "$1 ";}
         if ($line =~ /^UC\s+(.+)/) {$usagecomment .= "$1 ";}
         if ($line =~ /^IC\s+(.+)/) {$inputcomment .= "$1 ";}
+        if ($line =~ /^FI\s+(.+)/) {push(@outfiles, "$dir/$1");}
+        if ($line =~ /^DI\s+(.+)/) {push(@outfiles, "$dir/$1");$savedir = $1;}
+        if ($line =~ /^DF\s+(.+)/) {$outdirfiles{$savedir} .= "$1 ";
+				push(@outfiles, "$dir/$savedir/$1");}
         if ($line =~ /^OC\s+(.+)/) {$outputcomment .= "$1 ";}
-        if ($line =~ /^AB\s+(.+)/) {
-	    $embassy .= "$1 ";
-	    $docdir = "$doctop/embassy/$1";
+        if ($line =~ /^DL\s+keep/) {$testkeep{$dotest} = 1;}
+        if ($line =~ /^AB\s+(\S+)/) {
+	    $embassypackage = "$1";
+	    $docdir = "$doctop/embassy/$embassypackage";
 	    $incdir = "$docdir/inc";
 	}
     }
+
+# remove stderr, stdin, stdout, testdef, testlog from this list
+    @outfiles = grep !/stdin|stderr|stdout|testdef|testlog/, @outfiles;
 
 ###################################################################
 # change any ampersands or angle brackets to HTML codes
@@ -378,17 +408,17 @@ foreach $dotest (@dirs) {
 # application name and command line (we just use the test results)
 #    print "Doing: \% $application $commandline\n";
     $usecommandline = $commandline;
-    $usecommandline =~ s/..\/..\/data\/[^\/]+\///; # ../../data/(embassy)/
-    $usecommandline =~ s/..\/..\/data\///;	   # ../../data/
-    $usecommandline =~ s/..\/..\///;		   # ../../embl (etc.)
+    $usecommandline =~ s/[.][.]\/..\/data\/[^\/]+\///; # ../../data/(embassy)/
+    $usecommandline =~ s/[.][.]\/..\/data\///;	       # ../../data/
+    $usecommandline =~ s/[.][.]\/..\///;               # ../../embl (etc.)
     $USAGE .= qq|% $bold$application $usecommandline$unbold\n|;
 
 # intercalate prompts and answers
     @pr = ();
     foreach $line (@prompts) {
-	$line =~ s/..\/..\/data\/[^\/]+\///; # ../../data/(embassy)/
-	$line =~ s/..\/..\/data\///;	   # ../../data/
-	$line =~ s/..\/..\///;		   # ../../embl (etc.)
+	$line =~ s/[.][.]\/..\/data\/[^\/]+\///;       # ../../data/(embassy)/
+	$line =~ s/[.][.]\/..\/data\///;	       # ../../data/
+	$line =~ s/[.][.]\/..\///;		       # ../../embl (etc.)
 	push @pr, split /([^\s]+: )/, $line;
     }
     foreach $line (@pr) {
@@ -420,9 +450,9 @@ foreach $dotest (@dirs) {
 #		}
 		$ans = "\n";
 	    }
-	    $ans =~ s/..\/..\/data\/[^\/]+\///; # ../../data/(embassy)/
-	    $ans =~ s/..\/..\/data\///;	   # ../../data/
-	    $ans =~ s/..\/..\///;		   # ../../embl (etc.)
+	    $ans =~ s/[.][.]\/..\/data\/[^\/]+\///; # ../../data/(embassy)/
+	    $ans =~ s/[.][.]\/..\/data\///;	   # ../../data/
+	    $ans =~ s/[.][.]\/..\///;		   # ../../embl (etc.)
 	    $USAGE .= "$bold$ans$unbold\n";
 	}
     }
@@ -463,9 +493,9 @@ test $dotest hasn't used ", $#answers+1, " answers\n";
     foreach $file (@infiles) {
 #print "input file=$file\n";
 	$shortfile = $file;
-	$shortfile =~ s/..\/..\/data\/[^\/]+\///; # ../../data/(embassy)/
-	$shortfile =~ s/..\/..\/data\///;	  # ../../data/
-	$shortfile =~ s/..\/..\///;		  # ../../embl (etc.)
+	$shortfile =~ s/[.][.]\/..\/data\/[^\/]+\///; # ../../data/(embassy)/
+	$shortfile =~ s/[.][.]\/..\/data\///;	  # ../../data/
+	$shortfile =~ s/[.][.]\/..\///;		  # ../../embl (etc.)
 
 # if this some sort of binary file?
 	if (checkBinary("$dir/$file")) {
@@ -527,7 +557,12 @@ test $dotest hasn't used ", $#answers+1, " answers\n";
     foreach $path (@outfiles) {
 #print "output file=$path\n";
 
-	$file = basename($path);
+#	$basefile = basename($path);
+
+	if ($path !~ /^$dir\//) {next} # multiple tests
+
+	$file = $path;
+	$file =~ s/^$dir\///;
 
 # if this a .gif, .ps or .png graphics file?
 	if ($file =~ /\.gif$|\.ps$|\.png$/) {
@@ -559,6 +594,19 @@ test $dotest hasn't used ", $#answers+1, " answers\n";
 	    $O .= $p . qq|<img src="$newfile" alt="[$application results]">\n|;
 
 # if this some other binary file?
+	}
+	elsif (-d $path) {
+	    $O .= $p . "<h3>Directory: $file</h3>\n";
+	    $O .= $p . "This directory contains output files";
+	    if(defined($outdirfiles{$file})) {
+		$outtmp = $outdirfiles{$file};
+		$outtmp =~ s/ (\S+) $/ and $1/;
+		$outtmp =~ s/ $//;
+		$O .= ", for example $outtmp\.\n";
+	    }
+	    else {
+		$O .= ".\n$p\n";
+	    }
 	}
 	elsif (checkBinary($path)) {
 	    $O .= $p . "<h3>File: $file</h3>\n";
@@ -605,6 +653,25 @@ test $dotest hasn't used ", $#answers+1, " answers\n";
     $USAGE .= "$p\n";
 }
 
+$testsfailed = "";
+$nfailed = 0;
+foreach $dotest (@dirs) {
+    if (!$testok{$dotest}) {
+	if ($nfailed) {$testsfailed .= ", "}
+	$testsfailed .= "$dotest";
+	$nfailed++;
+    }
+}
+if ($nfailed) {
+    if($nfailed == 1) {
+	errorexit("Test $testsfailed failed");
+    }
+    else {
+	errorexit("Tests $testsfailed failed");
+    }
+}
+
+
 ###################################################################
 # create the usage, input and output documentation files
 
@@ -620,7 +687,9 @@ writeOutput($OUTPUT);
 
 foreach $dotest (@dirs) {
     if ($testok{$dotest}) {
-	system ("rm -rf $dotest");
+	if (!$testkeep{$dotest}) {
+	    system ("rm -rf $dotest");
+	}
     }
 }
 
@@ -634,22 +703,29 @@ exit(0);
 
 ###################################################################
 # Name:		errorexit
-# Function:	writes dummy files and exits with an error message
+# Function:	leaves output files unchanged and exits with an error message
 # Args:		string - error message
 # Returns:	exits - no return
 ###################################################################
 sub errorexit {
     my $msg = $_[0];
 
-    my $usage = $msg;
-    my $input = $msg;
-    my $output = $msg;
+    my $usage = "Error: $msg";
+    my $input = "Error: $msg";
+    my $output = "Error: $msg";
 
-    writeUsage($usage);
-    writeInput($input);
-    writeOutput($output);
+#    writeUsage($usage);
+#    writeInput($input);
+#    writeOutput($output);
     
-    print "$msg\n";
+    if ($embassy eq "") {
+	print STDERR "Error: $msg\n";
+	print "Error: $msg\n";
+    }
+    else {
+	print STDERR "Error: ($embassy) $msg\n";
+	print "Error: ($embassy) $msg\n";
+    }
     exit 1;
 }
 
@@ -696,7 +772,8 @@ sub writeOutput {
 
     my $out = "$incdir/$application.output";
     open (OUT, "> $out") || die "Can't open $out";
-    $output =~ s/Rundate:  ... ... \d\d [0-9:]+ 2[0-9][0-9][0-9]$/Rundate:  Thu Jul 15 12:00:00 2004/go;
+    $output =~ s/Rundate: ... ... \d\d 2[0-9][0-9][0-9] [0-9:]+$/Rundate: Thu Jul 15 2004 12:00:00/go;
+    $output =~ s/\#\#date 2[0-9][0-9][0-9][-][0-9][0-9][-][0-9][0-9]$/\#\#date 2004-07-15/go;
     $output =~ s/seqalign\-[0-9]+[.][0-9+][.]/seqalign-1234567890.1234./go;
     $output =~ s/seqsearch\-[0-9]+[.][0-9+][.]/seqsearch-1234567890.1234./go;
     print OUT $output;
