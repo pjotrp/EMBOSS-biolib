@@ -2757,7 +2757,7 @@ static void seqWriteMase(AjPSeqout outseq)
 
     if (!ajFileTell(outseq->File))
 	ajFmtPrintF(outseq->File, ";;Written by EMBOSS on %D\n",
-		ajTimeTodayRefF("log"));
+		ajTimeTodayRefF("report"));
 
     ajFmtPrintF(outseq->File, ";%S\n",
 		outseq->Desc);

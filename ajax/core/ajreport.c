@@ -2407,7 +2407,7 @@ void ajReportWriteHeader(AjPReport thys,
     
     outf = thys->File;
 
-    today =  ajTimeTodayF("log");
+    today =  ajTimeTodayF("report");
     
     /* Header for the top of the file (first call for report only) */
     
