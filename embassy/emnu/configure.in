@@ -87,7 +87,7 @@ AC_MSG_CHECKING(for with_curses)
 CPPFLAGS="$CPPFLAGS -I${with_curses}/include"
 LDFLAGS="$LDFLAGS -L${with_curses}/lib"
 fi
-AC_CHECK_LIB(ncurses, main, LIBS="$LIBS -lform -lmenu -lncurses", LIBS="$LIBS -lform -lmenu -lcurses")
+AC_CHECK_LIB(ncurses, main, LIBS="$LIBS -lncurses", LIBS="$LIBS -lcurses")
 
 dnl Test if --enable-debug given
 AC_ARG_ENABLE(warnings,
