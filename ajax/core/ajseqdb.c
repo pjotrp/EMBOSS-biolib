@@ -326,9 +326,11 @@ static AjBool     seqAccessBlast(AjPSeqin seqin);
 /* static AjBool     seqAccessCmd(AjPSeqin seqin);*/ /* not implemented */
 static AjBool     seqAccessDirect(AjPSeqin seqin);
 static AjBool     seqAccessEmblcd(AjPSeqin seqin);
+static AjBool     seqAccessEntrez(AjPSeqin seqin);
 static AjBool     seqAccessFreeEmblcd(void* qryd);
 static AjBool     seqAccessGcg(AjPSeqin seqin);
 /* static AjBool     seqAccessNbrf(AjPSeqin seqin); */ /* obsolete */
+static AjBool     seqAccessSeqhound(AjPSeqin seqin);
 static AjBool     seqAccessSrs(AjPSeqin seqin);
 static AjBool     seqAccessSrsfasta(AjPSeqin seqin);
 static AjBool     seqAccessSrswww(AjPSeqin seqin);
@@ -384,6 +386,7 @@ static AjBool     seqCdTrgQuery(AjPSeqQuery qry);
 static ajint      seqCdTrgSearch(SeqPCdTrg trgLine, const AjPStr name,
 				SeqPCdFile fp);
 
+static AjBool     seqEntrezQryNext(AjPSeqQuery qry, AjPSeqin seqin);
 static AjBool     seqGcgAll(AjPSeqin seqin);
 static void       seqGcgBinDecode(AjPStr *pthis, ajint rdlen);
 static void       seqGcgLoadBuff(AjPSeqin seqin);
@@ -404,6 +407,7 @@ static FILE*      seqHttpSocket(const AjPSeqQuery qry,
 				const AjPStr host, ajint iport,
 				const AjPStr get);
 static AjBool     seqHttpVersion(const AjPSeqQuery qry, AjPStr* httpver);
+static AjBool     seqSeqhoundQryNext(AjPSeqQuery qry, AjPSeqin seqin);
 static void       seqSocketTimeout(int sig);
 
 
@@ -418,6 +422,8 @@ static void       seqSocketTimeout(int sig);
 static SeqOAccess seqAccess[] =
 {
     {"emblcd", seqAccessEmblcd, seqAccessFreeEmblcd},
+    {"entrez",seqAccessEntrez, NULL},
+    {"seqhound",seqAccessSeqhound, NULL},
     {"srs",seqAccessSrs, NULL},
     {"srsfasta",seqAccessSrsfasta, NULL},
     {"srswww",seqAccessSrswww, NULL},
@@ -574,20 +580,24 @@ static AjBool seqAccessEmblcd(AjPSeqin seqin)
 
 	if(qry->Type == QRY_ENTRY)
 	{
-	    ajDebug("entry id: '%S' acc: '%S'\n", qry->Id, qry->Acc);
+	    ajDebug("entry id: '%S' acc: '%S' gi: '%S'\n",
+		    qry->Id, qry->Acc, qry->Gi);
 	    if(!seqCdQryEntry(qry))
 	    {
 		ajDebug("EMBLCD Entry failed\n");
 		if(ajStrLen(qry->Id))
-		    ajDebug("Database Entry '%S' not found\n", qry->Id);
+		    ajDebug("Database Entry id-'%S' not found\n", qry->Id);
+		else if(ajStrLen(qry->Gi))
+		    ajDebug("Database Entry gi-'%S' not found\n", qry->Gi);
 		else
-		    ajDebug("Database Entry '%S' not found\n", qry->Acc);
+		    ajDebug("Database Entry acc-'%S' not found\n", qry->Acc);
 	    }
 	}
 
 	if(qry->Type == QRY_QUERY)
 	{
-	    ajDebug("query id: '%S' acc: '%S'\n", qry->Id, qry->Acc);
+	    ajDebug("query id: '%S' acc: '%S' gi: '%S'\n",
+		    qry->Id, qry->Acc, qry->Gi);
 	    if(!seqCdQryQuery(qry))
 	    {
 		ajDebug("EMBLCD Query failed\n");
@@ -597,6 +607,8 @@ static AjBool seqAccessEmblcd(AjPSeqin seqin)
 		    ajDebug("Database Query '%S' not found\n", qry->Acc);
 		else if(ajStrLen(qry->Sv))
 		    ajDebug("Database Query 'sv:%S' not found\n", qry->Sv);
+		else if(ajStrLen(qry->Gi))
+		    ajDebug("Database Query 'gi:%S' not found\n", qry->Gi);
 		else if(ajStrLen(qry->Des))
 		    ajDebug("Database Query 'des:%S' not found\n", qry->Des);
 		else if(ajStrLen(qry->Key))
@@ -1618,6 +1630,681 @@ static AjBool seqCdTrgClose(SeqPCdFile* ptrgfil, SeqPCdFile* phitfil)
 
 
 /*=============================================================================
+** Entrez indexed database access
+**===========================================================================*/
+
+/* @section Entrez Database Indexing ****************************************
+**
+** These functions manage the SeqHound remote web API access methods.
+**
+******************************************************************************/
+
+
+/* @funcstatic seqAccessEntrez ************************************************
+**
+** Reads sequence(s) using Entrez. Sends a query to a remote Entrez
+** web server. Opens a file using the results and returns to the caller to
+** read the data.
+**
+** @param [u] seqin [AjPSeqin] Sequence input.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+static AjBool seqAccessEntrez(AjPSeqin seqin)
+{
+    AjPStr host      = NULL;
+    AjPStr urlsearch = NULL;
+    AjPStr get       = NULL;
+    AjPStr proxyName = NULL;		/* host for proxy access.*/
+    AjPStr httpver   = NULL;		/* HTTP version for GET */
+    ajint iport;
+    ajint proxyPort;
+    AjPStr searchdb = NULL;
+    FILE *fp;
+    AjPSeqQuery qry;
+    AjPStr gilist=NULL;
+    AjPStr giline=NULL;
+    AjPFile gifile=NULL;
+    AjPStr tmpstr=NULL;
+    ajint numgi=0;
+    ajint icount=0;
+    static AjPRegexp countexp=NULL;
+    static AjPRegexp idexp = NULL;
+    static AjPRegexp giexp = NULL;
+
+    if (!countexp)
+	countexp = ajRegCompC("<Count>(\\d+)</Count>");
+    if (!idexp)
+	idexp = ajRegCompC("<Id>(\\d+)</Id>");
+    if (!giexp)
+	giexp = ajRegCompC("(\\d+)");
+
+    qry = seqin->Query;
+
+    if (!qry->QryData)
+    {
+	seqin->Single = ajTrue;
+
+	iport     = 80;
+	proxyPort = 0;			/* port for proxy axxess */
+
+	if(!ajNamDbGetDbalias(qry->DbName, &searchdb))
+	    ajStrAssS(&searchdb, qry->DbName);
+	ajDebug("seqAccessEntrez %S:%S\n", searchdb, qry->Id);
+
+	ajStrAssC(&host, "eutils.ncbi.nlm.nih.gov");
+	iport = 80;
+	ajStrAssC(&urlsearch, "/entrez/eutils/esearch.fcgi");
+
+	seqHttpVersion(qry, &httpver);
+	if(seqHttpProxy(qry, &proxyPort, &proxyName))
+	    ajFmtPrintS(&get, "GET http://%S:%d%S?",
+			host, iport, urlsearch);
+	else
+	    ajFmtPrintS(&get, "GET %S?", urlsearch);
+
+	ajStrAppC(&get, "tool=emboss&email=pmr@ebi.ac.uk&retmax=1000");
+	if(ajStrPrefixCaseC(qry->DbType, "N"))
+	    ajStrAppC(&get, "&db=nucleotide");
+	else
+	    ajStrAppC(&get, "&db=protein");
+
+	if(ajStrLen(qry->Id))
+	{
+	    ajFmtPrintAppS(&get, "&term=%S",
+			   qry->Id);
+	}
+	else if(ajStrLen(qry->Acc))
+	    ajFmtPrintAppS(&get, "&term=%S[accn]",
+			   qry->Acc);
+	else if(ajStrLen(qry->Gi))
+	    ajStrAssS(&gilist,qry->Gi);
+	else if(ajStrLen(qry->Sv))
+	{
+	    tmpstr = ajIsSeqversion(qry->Sv);
+	    if (tmpstr)
+		ajFmtPrintAppS(&get,"&term=%S[accn]",
+			       tmpstr);
+	    else
+		ajWarn("Entrez invalid Seqversion '%S'", qry->Sv);
+	    tmpstr = NULL;
+	}
+	else if(ajStrLen(qry->Des))
+	{
+	    ajStrAssS(&tmpstr, qry->Des);
+	    ajStrSubstituteKK(&tmpstr, ' ', '+');
+	    ajFmtPrintAppS(&get, "&term=%S[titl]",
+			   tmpstr);
+	    ajStrDel(&tmpstr);
+	}
+	else if(ajStrLen(qry->Org))
+	{
+	    ajStrAssS(&tmpstr, qry->Org);
+	    ajStrSubstituteKK(&tmpstr, ' ', '+');
+	    ajFmtPrintAppS(&get, "&term=%S[orgn]",
+			   tmpstr);
+	    ajStrDel(&tmpstr);
+	}
+	else if(ajStrLen(qry->Key))
+	{
+	    ajStrAssS(&tmpstr, qry->Key);
+	    ajStrSubstituteKK(&tmpstr, ' ', '+');
+	    ajFmtPrintAppS(&get, "&term=%S[kywd]",
+			   tmpstr);
+	    ajStrDel(&tmpstr);
+	}
+	else
+	    ajFmtPrintAppS(&get, "+%S",
+			   searchdb);
+	ajStrDel(&searchdb);
+
+	if (!ajStrLen(gilist))
+	{
+	    /*
+	     ** search to find list of GIs
+	     ** use GI list to retrieve genbank entries
+	     */
+
+	    ajDebug("searching with Entrez url '%S'\n", get);
+
+	    ajFmtPrintAppS(&get, " HTTP/%S\n", httpver);
+
+	    ajStrAssS(&seqin->Db, qry->DbName);
+
+	    /* finally we have set the GET command */
+	    ajDebug("host '%S' port %d get '%S'\n", host, iport, get);
+
+	    if(ajStrLen(proxyName))
+		fp = seqHttpGetProxy(qry, proxyName, proxyPort,
+				     host, iport, get);
+	    else
+		fp = seqHttpGet(qry, host, iport, get);
+	    if(!fp)
+		return ajFalse;
+
+	    signal(SIGALRM, seqSocketTimeout);
+	    alarm(180);	    /* allow 180 seconds to read from the socket */
+
+	    /*
+	     ** read out list of GI numbers
+	     ** use to build new query
+	     ** return genbank format results
+	     */
+
+	    ajDebug("GI list returned\n");
+	    gifile = ajFileNewF(fp);
+	    while (ajFileGetsTrim(gifile, &giline)) {
+		ajDebug("+%S\n", giline);
+		if(!ajStrLen(giline)) break;
+	    }
+
+	    numgi=0;
+	    while (ajFileGetsTrim(gifile, &giline)) {
+		ajStrChomp(&giline);
+		ajDebug("-%S\n", giline);
+		if (!icount && ajRegExec(countexp,giline))
+		{
+		    ajRegSubI(countexp, 1, &tmpstr);
+		    ajStrToInt(tmpstr, &icount);
+		    if(!icount)
+			return ajFalse;
+		}
+		if (ajRegExec(idexp, giline))
+		{
+		    ajRegSubI(idexp, 1, &tmpstr);
+		    if (numgi)
+			ajStrAppK(&gilist, '+');
+		    ajStrApp(&gilist, tmpstr);
+		    numgi++;
+		}
+	    }
+	    ajFileClose(&gifile);
+	    ajStrDel(&giline);
+	}
+	if (!ajStrLen(gilist))
+	    return ajFalse;
+	qry->QryData = gilist;
+    }
+
+    ajDebug("seqAccessEntrez ready '%S' '%S'\n",
+	    gilist, (AjPStr) qry->QryData);
+    if(!seqEntrezQryNext(qry, seqin))
+	return ajFalse;
+    ajDebug("seqAccessEntrez after QryNext '%S' '%S'\n",
+	    gilist, (AjPStr) qry->QryData);
+
+    return ajTrue;
+}
+
+
+
+
+
+/* @funcstatic seqEntrezQryNext *********************************************
+**
+** Processes next GI in list and sets up file buffer with a genbank entry
+**
+** @param [u] qry [AjPSeqQuery] Query data
+** @param [u] seqin [AjPSeqin] Sequence input, including query data.
+** @return [AjBool] ajTrue if we can continue,
+**                  ajFalse if all is done.
+** @@
+******************************************************************************/
+
+static AjBool seqEntrezQryNext(AjPSeqQuery qry, AjPSeqin seqin)
+{
+    AjPStr host      = NULL;
+    AjPStr urlget    = NULL;
+    AjPStr urlfetch  = NULL;
+    AjPStr get       = NULL;
+    AjPStr proxyName = NULL;		/* host for proxy access.*/
+    AjPStr httpver   = NULL;		/* HTTP version for GET */
+    ajint iport;
+    ajint proxyPort;
+    AjPStr searchdb = NULL;
+    AjPStr gilist = NULL;
+    FILE *sfp;
+    AjPStr gistr = NULL;
+    AjPStr tmpstr=NULL;
+    static AjPRegexp giexp = NULL;
+    AjPFileBuff seqfile = NULL;
+    ajint ihead=0;
+    AjPStr seqline=NULL;
+
+    if (!giexp)
+	giexp = ajRegCompC("(\\d+)");
+
+    iport     = 80;
+    proxyPort = 0;			/* port for proxy access */
+
+    gilist = qry->QryData;
+    ajStrAssC(&urlfetch, "/entrez/eutils/efetch.fcgi");
+
+    ajStrAssC(&host, "eutils.ncbi.nlm.nih.gov");
+    iport = 80;
+
+    if (!gilist)
+    {
+	ajDebug("seqEntrezQryNext null gilist\n");
+	return ajFalse;
+    }
+    if(!ajRegExec(giexp, gilist))
+    {
+	ajDebug("seqEntrezQryNext no match gilist '%S'\n", gilist);
+	ajStrDel((AjPStr*)&qry->QryData);
+	return ajFalse;
+    }
+
+    ajRegSubI(giexp, 1, &gistr);
+    ajRegPost(giexp, &tmpstr);
+    ajStrAss((AjPStr*)&qry->QryData, tmpstr);
+    ajDebug("seqEntrezQryNext next gi '%S'\n", gistr);
+
+    if(!ajNamDbGetDbalias(qry->DbName, &searchdb))
+	ajStrAssS(&searchdb, qry->DbName);
+
+    seqHttpVersion(qry, &httpver);
+    if(seqHttpProxy(qry, &proxyPort, &proxyName))
+	ajFmtPrintS(&get,
+		    "GET http://%S:%d%S?", host, iport, urlfetch);
+    else
+	ajFmtPrintS(&get, "GET %S?", urlfetch);
+
+    ajStrAppC(&get, "tool=emboss&email=pmr@ebi.ac.uk&retmax=1000");
+    if(ajStrPrefixCaseC(qry->DbType, "N"))
+	ajStrAppC(&get, "&db=nucleotide&rettype=gb");
+    else
+	ajStrAppC(&get, "&db=protein&rettype=gp");
+
+    ajFmtPrintAppS(&get, "&id=%S", gistr);
+    ajFmtPrintAppS(&get, " HTTP/%S\n", httpver);
+
+    if(ajStrLen(proxyName))
+	sfp = seqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
+    else
+	sfp = seqHttpGet(qry, host, iport, get);
+    if(!sfp)
+	return ajFalse;
+
+    ajFileBuffDel(&seqin->Filebuff);
+    seqin->Filebuff = ajFileBuffNew();
+    seqfile = ajFileBuffNewF(sfp);
+    if(!seqfile)
+    {
+	ajDebug("socket buffer attach failed\n");
+	ajErr("socket buffer attach failed for database '%S'",
+	      qry->DbName);
+	return ajFalse;
+    }
+
+    ihead=1;
+    while(ajFileBuffGet(seqfile, &seqline))
+    {
+	if(ihead)
+	{
+	    ajStrChomp(&seqline);
+	    if(!ajStrLen(seqline))
+		ihead=0;
+	}
+	else
+	{
+	    ajDebug("Processing %S\n", seqline);
+	    ajFileBuffLoadS(seqin->Filebuff, seqline);
+	    if(ajStrPrefixC(seqline, "//"))
+		break;
+	}
+    }
+    ajFileBuffDel(&seqfile);
+
+    alarm(0);
+
+    ajStrAssS(&seqin->Db, qry->DbName);
+
+    ajStrDelReuse(&host);
+    ajStrDelReuse(&get);
+    ajStrDelReuse(&urlget);
+    ajStrDel(&proxyName);
+    ajStrDel(&httpver);
+
+    qry->QryDone = ajTrue;
+
+    return ajTrue;
+}
+
+
+
+
+
+/*=============================================================================
+** SeqHound indexed database access
+**===========================================================================*/
+
+/* @section SeqHound Database Indexing ****************************************
+**
+** These functions manage the SeqHound remote web API access methods.
+**
+******************************************************************************/
+
+
+/* @funcstatic seqAccessSeqhound **********************************************
+**
+** Reads sequence(s) using Seqhound. Sends a query to a remote Seqhound
+** web server. Uses the query to construct a list of GenInfo Identifiers
+** (GI numbers). Uses these to return full entries in Genbank format.
+** Opens a file using the results and returns to the caller to
+** read the data.
+**
+** Seqhound access currently does not allow query by description or keyword
+**  - but this may be included in SeqHound in the near future.
+**
+** Taxonomy queries require a numeric taxon ID. In future, a way to use
+** taxon names may be added.
+**
+** @param [u] seqin [AjPSeqin] Sequence input.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+static AjBool seqAccessSeqhound(AjPSeqin seqin)
+{
+    AjPStr host      = NULL;
+    AjPStr urlget    = NULL;
+    AjPStr get       = NULL;
+    AjPStr proxyName = NULL;		/* host for proxy access.*/
+    AjPStr httpver   = NULL;		/* HTTP version for GET */
+    ajint iport;
+    ajint proxyPort;
+    AjPStr searchdb = NULL;
+    AjPStr gilist = NULL;
+    FILE *fp;
+    AjPFile gifile = NULL;
+    AjPStr giline = NULL;
+    AjPSeqQuery qry;
+    ajint numgi = 0;
+    AjPStr tmpstr=NULL;
+
+    qry = seqin->Query;
+
+    if (!qry->QryData)
+    {
+	seqin->Single = ajTrue;
+
+	/* new query - build a GI list */
+	iport     = 80;
+	proxyPort = 0;			/* port for proxy access */
+
+	if(!ajNamDbGetDbalias(qry->DbName, &searchdb))
+	    ajStrAssS(&searchdb, qry->DbName);
+	ajDebug("seqAccessSeqhound %S:%S\n", searchdb, qry->Id);
+
+	if(!seqHttpUrl(qry, &iport, &host, &urlget))
+	    return ajFalse;
+
+	seqHttpVersion(qry, &httpver);
+	if(seqHttpProxy(qry, &proxyPort, &proxyName))
+	    ajFmtPrintS(&get, "GET http://%S:%d%S?",
+			host, iport, urlget);
+	else
+	    ajFmtPrintS(&get, "GET %S?", urlget);
+
+	/* Id FindNameList&pname= */
+	if(ajStrLen(qry->Id))
+	    ajFmtPrintAppS(&get, "fnct=SeqHoundFindNameList&pname=%S",
+			   qry->Id);
+	/* Acc FindAccList&pnacc= */
+	else if(ajStrLen(qry->Acc))
+	    ajFmtPrintAppS(&get, "fnct=SeqHoundFindAccList&pacc=%S",
+			   qry->Acc);
+	/* Gi Use directly! */
+	else if(ajStrLen(qry->Gi))
+	    ajStrAssS(&gilist,qry->Gi);
+	/* Sv trim to Acc */
+	else if(ajStrLen(qry->Sv))
+	{
+	    tmpstr = ajIsSeqversion(qry->Sv);
+	    if (tmpstr)
+		ajFmtPrintAppS(&get,"fnct=SeqHoundFindAccList&pacc=%S",
+			       tmpstr);
+	    else
+		ajWarn("SeqHound invalid Seqversion '%S'", qry->Sv);
+	}
+	/* Des not yet available - will have Lucene soon */
+	else if(ajStrLen(qry->Des))
+	{
+	    ajWarn("SeqHound search by description not yet available\n");
+	    /*ajFmtPrintAppS(&get, "fnct=SeqHoundFindDesList&pdes=%S",
+	      qry->Des);*/
+	}
+	/* Tax need to find taxid [Protein|DNA]FromTaxIDList&taxid= */
+	else if(ajStrLen(qry->Org))
+	{
+	    if(ajStrPrefixCaseC(qry->DbType, "N"))
+		ajFmtPrintAppS(&get, "SeqHoundDNAFromTaxIDList&taxid=%S",
+			       qry->Org);
+	    else
+		ajFmtPrintAppS(&get, "SeqHoundProteinFromTaxIDList&taxid=%S",
+			       qry->Org);
+	}
+	/* Key not yet available - will have Lucene soon */
+	else if(ajStrLen(qry->Key))
+	{
+	    ajWarn("SeqHound search by keyword not yet available\n");
+	    /*ajFmtPrintAppS(&get, "fnct=SeqHoundFindKeyList&pkey=%S",
+	      qry->Key);*/
+	}
+	/* whole database = maybe taxid=1 or 0 (root)? */
+	else
+	    ajFmtPrintAppS(&get, "+%S",
+			   searchdb);
+	ajStrDel(&searchdb);
+
+	if (!ajStrLen(gilist))  /*  could be set directly for GI search */
+	{
+	    /*
+	     ** search to find list of GIs
+	     ** use GI list to retrieve genbank entries
+	     */
+
+	    ajDebug("searching with SeqHound url '%S'\n", get);
+
+	    ajFmtPrintAppS(&get, " HTTP/%S\n", httpver);
+
+	    ajStrAssS(&seqin->Db, qry->DbName);
+
+	    /* finally we have set the GET command */
+	    ajDebug("host '%S' port %d get '%S'\n", host, iport, get);
+
+	    if(ajStrLen(proxyName))
+		fp = seqHttpGetProxy(qry, proxyName, proxyPort,
+				     host, iport, get);
+	    else
+		fp = seqHttpGet(qry, host, iport, get);
+	    if(!fp)
+		return ajFalse;
+
+	    signal(SIGALRM, seqSocketTimeout);
+	    alarm(180);	    /* allow 180 seconds to read from the socket */
+
+	    /*
+	     ** read out list of GI numbers
+	     ** use to build new query
+	     ** return genbank format results
+	     */
+
+	    ajDebug("GI list returned\n");
+	    gifile = ajFileNewF(fp);
+	    while (ajFileGetsTrim(gifile, &giline)) {
+		ajDebug("+%S\n", giline);
+		if(!ajStrLen(giline)) break;
+	    }
+
+	    ajFileGetsTrim(gifile, &giline);
+	    ajDebug("=%S\n", giline);
+	    ajStrChomp(&giline);
+	    if (!ajStrMatchC(giline, "SEQHOUND_OK"))
+	    {
+		ajDebug("SeqHound returned code '%S'", giline);
+		return ajFalse;
+	    }
+
+	    numgi=0;
+	    while (ajFileGetsTrim(gifile, &giline)) {
+		ajStrChomp(&giline);
+		ajDebug("-%S\n", giline);
+		if (numgi)
+		    ajStrAppK(&gilist, '+');
+		else
+		    if (ajStrMatchC(giline, "(null)"))
+		    {
+			ajDebug("SeqHound found no entries");
+			return ajFalse;
+		    }
+		ajStrApp(&gilist, giline);
+		numgi++;
+	    }
+	    ajFileClose(&gifile);
+	    ajStrDel(&giline);
+	}
+	if (!ajStrLen(gilist))
+	    return ajFalse;
+	qry->QryData = gilist;
+    }
+
+    ajDebug("seqAccessSeqhound ready '%S' '%S'\n",
+	    gilist, (AjPStr) qry->QryData);
+    if(!seqSeqhoundQryNext(qry, seqin))
+	return ajFalse;
+    ajDebug("seqAccessSeqhound after QryNext '%S' '%S'\n",
+	    gilist, (AjPStr) qry->QryData);
+
+    return ajTrue;
+
+}
+
+/* @funcstatic seqSeqhoundQryNext *********************************************
+**
+** Processes next GI in list and sets up file buffer with a genbank entry
+**
+** @param [u] qry [AjPSeqQuery] Query data
+** @param [u] seqin [AjPSeqin] Sequence input, including query data.
+** @return [AjBool] ajTrue if we can continue,
+**                  ajFalse if all is done.
+** @@
+******************************************************************************/
+
+static AjBool seqSeqhoundQryNext(AjPSeqQuery qry, AjPSeqin seqin)
+{
+    AjPStr host      = NULL;
+    AjPStr urlget    = NULL;
+    AjPStr get       = NULL;
+    AjPStr proxyName = NULL;		/* host for proxy access.*/
+    AjPStr httpver   = NULL;		/* HTTP version for GET */
+    ajint iport;
+    ajint proxyPort;
+    AjPStr searchdb = NULL;
+    AjPStr gilist = NULL;
+    FILE *fp;
+    AjPStr giline = NULL;
+    AjPStr gistr = NULL;
+    AjPStr tmpstr=NULL;
+    static AjPRegexp giexp = NULL;
+
+    if (!giexp)
+	giexp = ajRegCompC("(\\d+)");
+
+    iport     = 80;
+    proxyPort = 0;			/* port for proxy access */
+
+    gilist = qry->QryData;
+
+    if (!gilist)
+    {
+	ajDebug("seqSeqhoundQryNext null gilist\n");
+	return ajFalse;
+    }
+    if(!ajRegExec(giexp, gilist))
+    {
+	ajDebug("seqSeqhoundQryNext no match gilist '%S'\n", gilist);
+	ajStrDel((AjPStr*)&qry->QryData);
+	return ajFalse;
+    }
+
+    ajRegSubI(giexp, 1, &gistr);
+    ajRegPost(giexp, &tmpstr);
+    ajStrAss((AjPStr*)&qry->QryData, tmpstr);
+    ajDebug("seqSeqhoundQryNext next gi '%S'\n", gistr);
+
+    if(!ajNamDbGetDbalias(qry->DbName, &searchdb))
+	ajStrAssS(&searchdb, qry->DbName);
+
+    if(!seqHttpUrl(qry, &iport, &host, &urlget))
+	return ajFalse;
+
+    seqHttpVersion(qry, &httpver);
+    if(seqHttpProxy(qry, &proxyPort, &proxyName))
+	ajFmtPrintS(&get, "GET http://%S:%d%S?",
+		    host, iport, urlget);
+    else
+	ajFmtPrintS(&get, "GET %S?", urlget);
+    if(ajStrLen(proxyName))
+	ajFmtPrintS(&get, "GET http://%S:%d%S?",
+		    host, iport, urlget);
+    else
+	ajFmtPrintS(&get, "GET %S?", urlget);
+
+    ajFmtPrintAppS(&get, "fnct=SeqHoundGetGenBankff&gi=%S", gistr);
+    ajFmtPrintAppS(&get, " HTTP/%S\n", httpver);
+
+    if(ajStrLen(proxyName))
+	fp = seqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
+    else
+	fp = seqHttpGet(qry, host, iport, get);
+    if(!fp)
+	return ajFalse;
+
+    ajFileBuffDel(&seqin->Filebuff);
+    seqin->Filebuff = ajFileBuffNewF(fp);
+    if(!seqin->Filebuff)
+    {
+	ajDebug("socket buffer attach failed\n");
+	ajErr("socket buffer attach failed for database '%S'", qry->DbName);
+	return ajFalse;
+    }
+
+    ajFileBuffLoad(seqin->Filebuff);
+
+    alarm(0);
+
+    ajFileBuffStripHtml(seqin->Filebuff);
+    ajFileBuffGet(seqin->Filebuff, &giline);
+    ajStrChomp(&giline);
+    if (!ajStrMatchC(giline, "SEQHOUND_OK"))
+    {
+	ajFileBuffReset(seqin->Filebuff);
+	return ajFalse;
+    }
+    ajFileBuffClear(seqin->Filebuff, 0);
+    ajFileBuffPrint(seqin->Filebuff, "Genbank data");
+
+    ajStrAssS(&seqin->Db, qry->DbName);
+
+    ajStrDelReuse(&host);
+    ajStrDelReuse(&get);
+    ajStrDelReuse(&urlget);
+    ajStrDel(&proxyName);
+    ajStrDel(&httpver);
+
+    qry->QryDone = ajTrue;
+
+    return ajTrue;
+}
+
+
+
+
+
+/*=============================================================================
 ** SRS indexed database access
 **===========================================================================*/
 
@@ -1665,6 +2352,9 @@ static AjBool seqAccessSrs(AjPSeqin seqin)
     else if(ajStrLen(qry->Acc))
 	ajFmtPrintS(&seqin->Filename, "%S -e '[%S-acc:%S]'|",
 		    qry->Application, searchdb, qry->Acc);
+    else if(ajStrLen(qry->Gi))	      /* do any SRS servers support GI? How? */
+	ajFmtPrintS(&seqin->Filename,"%S -e '[%S-gi:%S]'|",
+		    qry->Application, searchdb, qry->Gi);
     else if(ajStrLen(qry->Sv))
 	ajFmtPrintS(&seqin->Filename,"%S -e '[%S-sv:%S]'|",
 		    qry->Application, searchdb, qry->Sv);
@@ -1736,6 +2426,11 @@ static AjBool seqAccessSrsfasta(AjPSeqin seqin)
     else if(ajStrLen(qry->Acc))
 	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta [%S-acc:%S]|",
 		    qry->Application, searchdb, qry->Acc);
+    else if(ajStrLen(qry->Gi))
+    {
+        ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta [%S-gi:%S]|",
+		    qry->Application, searchdb, qry->Gi);
+    }
     else if(ajStrLen(qry->Sv))
     {
         ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta [%S-sv:%S]|",
@@ -1829,6 +2524,9 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
     else if(ajStrLen(qry->Acc))
 	ajFmtPrintAppS(&get, "+[%S-acc:%S]",
 		       searchdb, qry->Acc);
+    else if(ajStrLen(qry->Gi))
+	ajFmtPrintAppS(&get,"+[%S-gi:%S]",
+		       searchdb, qry->Gi);
     else if(ajStrLen(qry->Sv))
 	ajFmtPrintAppS(&get,"+[%S-sv:%S]",
 		       searchdb, qry->Sv);
@@ -2148,6 +2846,48 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
     }
 
     /*
+     ** if needed, search by SeqVersion
+     */
+
+    if(ipos < 0 &&
+       ajStrLen(qry->Gi) &&
+       seqCdTrgOpen(qry->IndexDir, "gi",
+		    &qryd->trgfp, &qryd->hitfp))
+    {
+	trghit = seqCdTrgSearch(qryd->trgLine, qry->Gi, qryd->trgfp);
+	if(trghit >= 0)
+	{
+	    ajint i;
+	    ajint j;
+	    seqCdFileSeek(qryd->hitfp, qryd->trgLine->FirstHit-1);
+	    ajDebug("seqvn First: %d Count: %d\n",
+		    qryd->trgLine->FirstHit, qryd->trgLine->NHits);
+	    ipos = qryd->trgLine->FirstHit;
+	    for(i = 0; i < qryd->trgLine->NHits; i++)
+	    {
+		seqCdFileReadInt(&j, qryd->hitfp);
+		j--;
+		ajDebug("hitlist[%d] entry = %d\n", i, j);
+		seqCdIdxLine(qryd->idxLine, j, qryd->ifp);
+
+		if(!qryd->Skip[qryd->idxLine->DivCode-1])
+		{
+		    AJNEW0(entry);
+		    entry->div = qryd->idxLine->DivCode;
+		    entry->annoff = qryd->idxLine->AnnOffset;
+		    entry->seqoff = qryd->idxLine->SeqOffset;
+		    ajListPushApp(qryd->List, (void*)entry);
+		}
+		else
+		    ajDebug("SKIP: seqvn '%S' [file %d]\n",
+			    qry->Acc, qryd->idxLine->DivCode);
+	    }
+	}
+	seqCdTrgClose(&qryd->trgfp, &qryd->hitfp);
+	ajStrDel(&qryd->trgLine->Target);
+    }
+
+    /*
      ** if needed, search by Description
      */
 
@@ -2312,6 +3052,7 @@ static AjBool seqCdQryQuery(AjPSeqQuery qry)
 
     if(ajStrLen(qry->Acc) ||
        ajStrLen(qry->Sv) ||
+       ajStrLen(qry->Gi) ||
        ajStrLen(qry->Des) ||
        ajStrLen(qry->Key) ||
        ajStrLen(qry->Org))
@@ -4404,7 +5145,7 @@ AjBool ajSeqAccessOffset(AjPSeqin seqin)
 ** The sequence input object holds a directory name and a (wildcard)
 ** file specification.
 **
-** Updated to use exclude and include definitions for files in the directory.
+** Can also use exclude definitions for files in the directory.
 **
 ** @param [u] seqin [AjPSeqin] Sequence input.
 ** @return [AjBool] ajTrue on success.
@@ -4414,7 +5155,6 @@ AjBool ajSeqAccessOffset(AjPSeqin seqin)
 static AjBool seqAccessDirect(AjPSeqin seqin)
 {
     AjPSeqQuery qry;
-    AjPList list;
 
     ajDebug("seqAccessDirect %S\n", seqin->Query->DbName);
 
@@ -4972,6 +5712,9 @@ static AjBool seqCdTrgQuery(AjPSeqQuery qry)
 
     if(ajStrLen(qry->Sv))
 	ret += seqCdTrgFind(qry, "seqvn", qry->Sv);
+
+    if(ajStrLen(qry->Gi))
+	ret += seqCdTrgFind(qry, "gi", qry->Gi);
 
     if(ajStrLen(qry->Acc))
 	ret += seqCdTrgFind(qry, "acnum", qry->Acc);
