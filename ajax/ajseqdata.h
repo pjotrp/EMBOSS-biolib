@@ -276,13 +276,16 @@ typedef struct AjSSeqin {
   AjBool IsNuc;			/* true: known to be nucleic */
   AjBool IsProt;		/* true: known to be protein */
   AjBool multi;			/* ???? see also Single */
+  AjBool multiset;		/* true: seqsetall input */
+  AjBool multidone;		/* seqsetall input: true when set completed */
   AjBool Lower;			/* true: convert to lower case -slower */
   AjBool Upper;			/* true: convert to upper case -supper */
   AjBool Text;			/* true: save full text of entry */
   ajint Count;			/* count of entries so far. Used
 			           when ACD reads first sequence and
 				   we need to reuse it in a Next loop */
-  ajint Filecount;		/* Unused */
+  ajint Filecount;	   /* Number of files read - used by seqsetall input */
+  ajint Fileseqs;	 /* Number of seqs in file - used by seqsetall input */
   ajlong Fpos;			/* File position (fseek) for building USA */
   AjPSeqQuery Query;		/* Query data - see AjPSeqQuery */
   AjPSelex Selex;

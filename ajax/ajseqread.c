@@ -32,6 +32,8 @@ static AjBool seqInFormatSet = AJFALSE;
 ** @attr Name [char*] Format name
 ** @attr Try [AjBool] If true, try for an unknown input. Duplicate names
 **                    and read-anything formats are set false
+** @attr Multiset [AjBool] If true, supports multiple sequence sets
+**                         If false, multiple sets must be in separate files
 ** @attr Read [(AjBool*)] Input function, returns ajTrue on success
 ** @@
 ******************************************************************************/
@@ -40,6 +42,7 @@ typedef struct SeqSInFormat
 {
   char *Name;
   AjBool Try;
+  AjBool Multiset;
   AjBool (*Read) (AjPSeq thys, AjPSeqin seqin);
 } SeqOInFormat;
 
@@ -152,7 +155,8 @@ static AjBool     seqListProcess (AjPSeq thys, AjPSeqin seqin, AjPStr usa);
 static void       seqMsfTabDel (const void *key, void **value, void *cl);
 static void       seqMsfTabList (const void *key, void **value, void *cl);
 static AjBool     seqPhylipReadseq (const AjPStr rdline, AjPTable phytable,
-				    const AjPStr token);
+				    const AjPStr token,
+				    ajint len, ajint* ilen, AjBool* done);
 static AjBool     seqQueryField (const AjPSeqQuery qry, const AjPStr field);
 static AjBool     seqQueryFieldC (const AjPSeqQuery qry, char* field);
 static AjBool     seqQueryMatch (AjPSeq thys, const AjPSeqQuery query);
@@ -219,52 +223,56 @@ static void       seqUsaSave (SeqPListUsa node, const AjPSeqin seqin);
 ******************************************************************************/
 
 static SeqOInFormat seqInFormatDef[] = { /* AJFALSE = ignore (duplicates) */
-  {"unknown",    AJFALSE, seqReadText},	/* alias for text */
-  {"gcg",        AJTRUE,  seqReadGcg}, /* test first ... headers mislead */
-  {"gcg8",       AJFALSE, seqReadGcg}, /* alias for gcg (reads pre-9.0 too) */
-  {"embl",       AJTRUE,  seqReadEmbl},
-  {"em",         AJFALSE, seqReadEmbl},	/* alias for embl */
-  {"swiss",      AJTRUE,  seqReadSwiss},
-  {"sw",         AJFALSE, seqReadSwiss}, /* alias for swiss */
-  {"swissprot",  AJTRUE,  seqReadSwiss},
-  {"nbrf",       AJTRUE,  seqReadNbrf},	/* test before NCBI */
-  {"pir",        AJFALSE, seqReadNbrf},	/* alias for nbrf */
-  {"fasta",      AJTRUE,  seqReadNcbi}, /* alias for ncbi, preferred name */
-  {"ncbi",       AJFALSE, seqReadNcbi}, /* test before pearson */
-  {"pearson",    AJTRUE,  seqReadFasta}, /* plain fasta can read bad files */
-  {"genbank",    AJTRUE,  seqReadGenbank},
-  {"gb",         AJFALSE, seqReadGenbank}, /* alias for genbank */
-  {"ddbj",       AJFALSE, seqReadGenbank}, /* alias for genbank */
-  {"codata",     AJTRUE,  seqReadCodata},
-  {"strider",    AJTRUE,  seqReadStrider},
-  {"clustal",    AJTRUE,  seqReadClustal},
-  {"aln",        AJFALSE, seqReadClustal}, /* alias for clustal */
-  {"phylip",     AJTRUE,  seqReadPhylip},
-  {"acedb",      AJTRUE,  seqReadAcedb},
-  {"dbid",       AJFALSE, seqReadDbId},	/* odd fasta with id as second token */
-  {"msf",        AJTRUE,  seqReadMsf},
-  {"hennig86",   AJTRUE,  seqReadHennig86},
-  {"jackknifer", AJTRUE,  seqReadJackknifer},
-  {"jackknifernon", AJTRUE,  seqReadJackknifernon},
-  {"nexus",      AJTRUE,  seqReadNexus},
-  {"nexusnon",   AJTRUE,  seqReadNexusnon},
-  {"paup",       AJFALSE,  seqReadNexus}, /* alias for nexus */
-  {"paupnon",    AJFALSE,  seqReadNexusnon}, /* alias for nexusnon */
-  {"treecon",    AJTRUE,  seqReadTreecon},
-  {"mega",       AJTRUE,  seqReadMega},
-  {"meganon",    AJTRUE,  seqReadMeganon},
-  {"ig",         AJFALSE, seqReadIg}, /* can read almost anything */
-  {"experiment", AJFALSE, seqReadStaden}, /* can read almost anything */
-  {"staden",     AJFALSE, seqReadStaden}, /* alias for experiment */
-  {"text",       AJFALSE, seqReadText}, /* can read almost anything */
-  {"plain",      AJFALSE, seqReadText},	/* alias for text */
-  {"abi",        AJTRUE,  seqReadAbi},
-  {"gff",        AJTRUE,  seqReadGff},
-  {"selex",      AJTRUE,  seqReadSelex},
-  {"stockholm",  AJTRUE,  seqReadStockholm},
-  {"pfam",       AJTRUE,  seqReadStockholm},
-  {"raw",        AJTRUE,  seqReadRaw}, /* OK - only sequence chars allowed */
-  {NULL, 0, NULL}
+  {"unknown",    AJFALSE, AJFALSE, seqReadText},	/* alias for text */
+  {"gcg",        AJTRUE,  AJFALSE, seqReadGcg}, /* do first, headers mislead */
+  {"gcg8",       AJFALSE, AJFALSE, seqReadGcg}, /* alias for gcg (8.x too) */
+  {"embl",       AJTRUE,  AJFALSE, seqReadEmbl},
+  {"em",         AJFALSE, AJFALSE, seqReadEmbl},	/* alias for embl */
+  {"swiss",      AJTRUE,  AJFALSE, seqReadSwiss},
+  {"sw",         AJFALSE, AJFALSE, seqReadSwiss}, /* alias for swiss */
+  {"swissprot",  AJTRUE,  AJFALSE, seqReadSwiss},
+  {"nbrf",       AJTRUE,  AJFALSE, seqReadNbrf},	/* test before NCBI */
+  {"pir",        AJFALSE, AJFALSE, seqReadNbrf},	/* alias for nbrf */
+  {"fasta",      AJTRUE,  AJFALSE, seqReadNcbi}, /* alias for ncbi,
+						    preferred name */
+  {"ncbi",       AJFALSE, AJFALSE, seqReadNcbi}, /* test before pearson */
+  {"pearson",    AJTRUE,  AJFALSE, seqReadFasta}, /* plain fasta - off by
+						 default, can read bad files */
+  {"genbank",    AJTRUE,  AJFALSE, seqReadGenbank},
+  {"gb",         AJFALSE, AJFALSE, seqReadGenbank}, /* alias for genbank */
+  {"ddbj",       AJFALSE, AJFALSE, seqReadGenbank}, /* alias for genbank */
+  {"codata",     AJTRUE,  AJFALSE, seqReadCodata},
+  {"strider",    AJTRUE,  AJFALSE, seqReadStrider},
+  {"clustal",    AJTRUE,  AJFALSE, seqReadClustal},
+  {"aln",        AJFALSE, AJFALSE, seqReadClustal}, /* alias for clustal */
+  {"phylip",     AJTRUE,  AJTRUE,  seqReadPhylip},
+  {"acedb",      AJTRUE,  AJFALSE, seqReadAcedb},
+  {"dbid",       AJFALSE, AJFALSE, seqReadDbId},    /* odd fasta with id as
+						       second token */
+  {"msf",        AJTRUE,  AJFALSE, seqReadMsf},
+  {"hennig86",   AJTRUE,  AJFALSE, seqReadHennig86},
+  {"jackknifer", AJTRUE,  AJFALSE, seqReadJackknifer},
+  {"jackknifernon", AJTRUE, AJFALSE, seqReadJackknifernon},
+  {"nexus",      AJTRUE,  AJFALSE, seqReadNexus},
+  {"nexusnon",   AJTRUE,  AJFALSE, seqReadNexusnon},
+  {"paup",       AJFALSE, AJFALSE, seqReadNexus}, /* alias for nexus */
+  {"paupnon",    AJFALSE, AJFALSE, seqReadNexusnon}, /* alias for nexusnon */
+  {"treecon",    AJTRUE,  AJFALSE, seqReadTreecon},
+  {"mega",       AJTRUE,  AJFALSE, seqReadMega},
+  {"meganon",    AJTRUE,  AJFALSE, seqReadMeganon},
+  {"ig",         AJFALSE, AJFALSE, seqReadIg}, /* can read almost anything */
+  {"experiment", AJFALSE, AJFALSE, seqReadStaden}, /* reads almost anything */
+  {"staden",     AJFALSE, AJFALSE, seqReadStaden}, /* alias for experiment */
+  {"text",       AJFALSE, AJFALSE, seqReadText}, /* can read almost anything */
+  {"plain",      AJFALSE, AJFALSE, seqReadText},	/* alias for text */
+  {"abi",        AJTRUE,  AJFALSE, seqReadAbi},
+  {"gff",        AJTRUE,  AJFALSE, seqReadGff},
+  {"selex",      AJTRUE,  AJFALSE, seqReadSelex},
+  {"stockholm",  AJTRUE,  AJFALSE, seqReadStockholm},
+  {"pfam",       AJTRUE,  AJFALSE, seqReadStockholm},
+  {"raw",        AJTRUE,  AJFALSE, seqReadRaw}, /* OK - only sequence chars
+						allowed - but off by default*/
+  {NULL, 0, 0, NULL}
 };
 
 /* ==================================================================== */
@@ -322,10 +330,12 @@ AjPSeqin ajSeqinNew (void)
     pthis->Text  = ajFalse;
     pthis->Count = 0;
     pthis->Filecount = 0;
+    pthis->Fileseqs = 0;
     pthis->Query = ajSeqQueryNew();
     pthis->Data = NULL;
     pthis->Ftquery = ajFeattabInNew(); /* empty object */
     pthis->multi = ajFalse;
+    pthis->multiset = ajFalse;
 
     return pthis;
 }
@@ -1041,6 +1051,106 @@ AjBool ajSeqsetRead (AjPSeqset thys, AjPSeqin seqin)
     ajListFree (&setlist);
 
     ajDebug ("ajSeqsetRead total %d sequences\n", iseq);
+
+    return ajTrue;
+}
+
+/* @func ajSeqsetallRead ******************************************************
+**
+** Parse a USA Uniform Sequence Address into format, access, file and entry
+**
+** Split at delimiters. Check for the first part as a valid format
+** Check for the remaining first part as a database name or as a file
+** that can be opened.
+** Anything left is an entryname spec.
+**
+** Read all the sequences into sequence sets until done
+**
+** Start a new set for each multiple sequence input
+**
+** Return the results in the AjPList object with AjPSeqset nodes
+**
+** @param [w] thys [AjPList] List of sequence sets returned.
+** @param [u] seqin [AjPSeqin] Sequence input definitions
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+AjBool ajSeqsetallRead (AjPList thys, AjPSeqin seqin)
+{
+    AjPSeq seq;
+    AjPList setlist;
+    AjPSeqset seqset=NULL;
+
+    ajint iseq = 0;
+
+    seq = ajSeqNew();
+    seqset = ajSeqsetNew();
+
+    ajDebug ("ajSeqsetallRead\n");
+
+    if (!seqUsaProcess (seq, seqin))
+	return ajFalse;
+
+    (void) ajStrAss (&seqset->Usa, seqin->Usa);
+    (void) ajStrAss (&seqset->Ufo, seqin->Ufo);
+    seqset->Begin = seqin->Begin;
+    seqset->End = seqin->End;
+
+    setlist = ajListNew();
+
+    ajDebug("ready to start reading format '%S' '%S' %d..%d\n",
+	    seqin->Formatstr, seq->Formatstr, seqin->Begin, seqin->End);
+
+    while (ajSeqRead (seq, seqin))
+    {
+	ajDebug("read name '%S' length %d format '%S' '%S' "
+		"seqindata: %x multidone: %B\n",
+	  seq->Entryname, ajSeqLen(seq),
+	  seqin->Formatstr, seq->Formatstr, seqin->Data, seqin->multidone);
+	(void) ajStrSet (&seq->Db, seqin->Db);
+	if (!ajStrLen(seq->Type))
+	    ajSeqType (seq);
+
+	/*ajDebug ("ajSeqsetallRead read sequence %d '%s' %d..%d\n",
+	  iseq, ajSeqName(seq), seq->Begin, seq->End);*/
+	/*ajSeqTrace(seq);*/
+	iseq++;
+
+	ajListPushApp (setlist, seq);
+
+	/*ajDebug("appended to list\n");*/
+
+	/* add to a list of sequences */
+
+	seq = ajSeqNew();
+	(void) seqFormatSet (seq, seqin);
+	if (seqin->multidone)
+	{
+	    ajSeqsetFromList (seqset, setlist);
+	    ajListFree (&setlist);
+	    ajListPushApp (thys, seqset);
+	    ajDebug("ajSeqsetallRead multidone save set %d of %d sequences\n",
+		    ajListLength(thys), ajSeqsetSize(seqset));
+	    setlist = ajListNew();
+	}
+    }
+    ajSeqDel(&seq);
+
+    if (!iseq)
+	return ajFalse;
+
+    /* convert the list of sequences into a seqset structure */
+
+    if (ajListLength(setlist))
+    {
+	ajSeqsetFromList (seqset, setlist);
+	ajListFree (&setlist);
+	ajListPushApp (thys, seqset);
+    }
+
+    ajDebug ("ajSeqsetallRead total %d sets of %d sequences\n",
+	     ajListLength(thys), iseq);
 
     return ajTrue;
 }
@@ -3149,6 +3259,8 @@ static AjBool seqReadPhylip (AjPSeq thys, AjPSeqin seqin)
     ajint iseq = 0;
     ajint jseq = 0;
     ajint len = 0;
+    ajint ilen = 0;
+    ajint maxlen = 0;
     AjPFileBuff buff = seqin->Filebuff;
     AjPTable phytable = NULL;
     SeqPMsfItem phyitem = NULL;
@@ -3158,6 +3270,7 @@ static AjBool seqReadPhylip (AjPSeq thys, AjPSeqin seqin)
     static AjPRegexp headexp = NULL;
     static AjPRegexp seqexp = NULL;
     ajint i;
+    AjBool done = ajFalse;
 
     ajDebug("seqReadPhylip seqin->Data %x\n", seqin->Data);
 
@@ -3172,6 +3285,7 @@ static AjBool seqReadPhylip (AjPSeq thys, AjPSeqin seqin)
 
     if (!seqin->Data)
     {	/* start of file */
+	seqin->multidone = ajFalse;
 	ok = ajFileBuffGetStore (buff, &rdline,
 				 seqin->Text, &thys->TextPtr);
 	if (!ok)
@@ -3201,6 +3315,7 @@ static AjBool seqReadPhylip (AjPSeq thys, AjPSeqin seqin)
 	ok = ajFileBuffGetStore (buff, &rdline,
 				 seqin->Text, &thys->TextPtr);
 	bufflines++;
+	ilen = 0;
 	while (ok && (jseq < iseq))
 	{   /* first set - create table */
 	    if (!ajRegExec (headexp, rdline))
@@ -3214,15 +3329,36 @@ static AjBool seqReadPhylip (AjPSeq thys, AjPSeqin seqin)
 	    phyitem->Weight = 1.0;
 	    (void) ajRegPost (headexp, &seqstr);
 	    (void) seqAppend (&phyitem->Seq, seqstr);
-
+	    ilen = ajStrLen(phyitem->Seq);
+	    if (ilen == len)
+		done = ajTrue;
+	    else if (ilen > len)
+	    {
+		ajDebug("Phylip format: sequence %S header size %d exceeded\n",
+		      phyitem->Name, len);
+		return ajFalse;
+	    }
 	    (void) ajTablePut(phytable, phyitem->Name, phyitem);
 	    ajListstrPushApp (phylist, phyitem->Name);
+	    if (!jseq)
+		maxlen = ilen;
+	    else
+	    {
+		if (ilen != maxlen)
+		{
+		    ajWarn("phylip format length mismatch in header");
+		    return ajFalse;
+		}
+	    }
 	    jseq++;
 	    ajDebug ("first set %d: '%S'\n", jseq, rdline);
 
-	    ok = ajFileBuffGetStore (buff, &rdline,
-				     seqin->Text, &thys->TextPtr);
-	    bufflines++;
+	    if (jseq < iseq)
+	    {
+		ok = ajFileBuffGetStore (buff, &rdline,
+					 seqin->Text, &thys->TextPtr);
+		bufflines++;
+	    }
 	}
 
 	ajDebug ("Header has %d sequences\n", jseq);
@@ -3238,19 +3374,48 @@ static AjBool seqReadPhylip (AjPSeq thys, AjPSeqin seqin)
 	}
 	ajListstrFree(&phylist);
 
-	jseq=0;
-	while (ajFileBuffGetStore (buff, &rdline,
-				   seqin->Text, &thys->TextPtr))
-	{   /* now read the rest */
-	    bufflines++;
-	    if (seqPhylipReadseq(rdline, phytable, phydata->Names[jseq]))
+	if (ilen < maxlen)
+	{
+	    jseq=0;
+	    while (ajFileBuffGetStore (buff, &rdline,
+				       seqin->Text, &thys->TextPtr))
+	    {   /* now read the rest */
+		ajDebug("seqReadPhylip line '%S\n", rdline);
+		bufflines++;
+		if (seqPhylipReadseq(rdline, phytable, phydata->Names[jseq],
+				     len, &ilen, &done))
+		{
+		    if (!jseq)
+			maxlen = ilen;
+		    else
+		    {
+			if (ilen != maxlen)
+			{
+			    ajDebug("phylip format length mismatch at %dan",
+				   maxlen);
+			    return ajFalse;
+			}
+		    }
+
+		    jseq++;
+		    if (jseq == iseq) jseq = 0;
+		    if (!jseq && done)
+		    {
+			ajDebug("seqReadPhylip set done\n");
+			break;
+		    }
+		    done = ajTrue;		/* for end-of-file */
+		}
+	    }
+	    if (!done)
+		return ajFalse;
+	    if (jseq)
 	    {
-		jseq++;
-		if (jseq == iseq) jseq = 0;
+		ajDebug ("Phylip format %d sequences partly read at end\n",
+		       iseq-jseq);
+		return ajFalse;
 	    }
 	}
-	if (jseq)
-	    ajWarn ("seqReadPhylip %d sequences partly read at end", jseq);
 
 	ajTableMap (phytable, seqMsfTabList, NULL);
 	phydata->Nseq = iseq;
@@ -3261,16 +3426,7 @@ static AjBool seqReadPhylip (AjPSeq thys, AjPSeqin seqin)
 
     phydata = seqin->Data;
     phytable = phydata->Table;
-    if (phydata->Count >=phydata->Nseq)
-    {
-	ajFileBuffClear(seqin->Filebuff, 0);
-	ajTableMap(phytable, seqMsfTabDel, NULL);
-	ajTableFree(&phytable);
-	AJFREE(phydata->Names);
-	AJFREE(phydata);
-	seqin->Data = NULL;
-	return ajFalse;
-    }
+
     i = phydata->Count;
     ajDebug ("returning [%d] '%S'\n", i, phydata->Names[i]);
     phyitem = ajTableGet(phytable, phydata->Names[i]);
@@ -3282,6 +3438,17 @@ static AjBool seqReadPhylip (AjPSeq thys, AjPSeqin seqin)
     ajStrDel(&phyitem->Seq);
 
     phydata->Count++;
+    if (phydata->Count >=phydata->Nseq)
+    {
+	seqin->multidone = ajTrue;
+	ajDebug("seqReadPhylip multidone\n");
+	ajFileBuffClear(seqin->Filebuff, 0);
+	ajTableMap(phytable, seqMsfTabDel, NULL);
+	ajTableFree(&phytable);
+	AJFREE(phydata->Names);
+	AJFREE(phydata);
+	seqin->Data = NULL;
+    }
 
     return ajTrue;
 }
@@ -3294,16 +3461,21 @@ static AjBool seqReadPhylip (AjPSeq thys, AjPSeqin seqin)
 ** @param [r] rdline [const AjPStr] Line from input file.
 ** @param [r] phytable [AjPTable] MSF format sequence table.
 ** @param [r] token [const AjPStr] Name of sequence so it can append
+** @param [r] len [ajint] Final length of each sequence (from file header)
+** @param [w] ilen [ajint*] Length of each sequence so far
+** @param [w] done [AjBool*] ajTrue if sequence was completed
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
 static AjBool seqPhylipReadseq (const AjPStr rdline, AjPTable phytable,
-				const AjPStr token)
+				const AjPStr token,
+				ajint len, ajint* ilen, AjBool* done)
 {
     static AjPRegexp seqexp = NULL;
     SeqPMsfItem phyitem;
 
+    *done = ajFalse;
     if (!seqexp)
 	seqexp = ajRegCompC("[^ \t\n\r]");
 
@@ -3315,7 +3487,19 @@ static AjBool seqPhylipReadseq (const AjPStr rdline, AjPTable phytable,
 	return ajFalse;
 
     (void) seqAppend (&phyitem->Seq, rdline);
+    *ilen = ajStrLen(phyitem->Seq);
 
+    if (*ilen == len)
+	*done = ajTrue;
+    else if (*ilen > len)
+    {
+	ajDebug("Phylip format error, sequence %S length %d exceeded\n",
+	      token, len);
+	return ajFalse;
+    }
+
+    ajDebug("seqPhylipReadSeq '%S' len: %d ilen: %d done: %B\n",
+	    token, len, *ilen, *done);
     return ajTrue;
 }
 

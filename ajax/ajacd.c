@@ -54,6 +54,7 @@
 #define	ACD_SEQ_NUCLEIC 4
 #define	ACD_SEQ_NAME 5
 #define	ACD_SEQ_WEIGHT 6
+#define	ACD_SEQ_MULTICOUNT 6
 #define	ACD_SEQ_COUNT 7
 
 #define USED_GET 1
@@ -141,7 +142,7 @@ static char* acdLevel[] =
 enum AcdEValtype
 {
     VT_APPL, VT_STR, VT_WORD,
-    VT_BOOL, VT_INT, VT_FLOAT,
+    VT_BOOL, VT_INT, VT_FLOAT, VT_CHAR,
     VT_NULL
 };
 
@@ -385,6 +386,8 @@ static AjBool    acdAttrToFloat (const AcdPAcd thys,
 				 const char *attr, float defval,
 				 float *result);
 static AjBool    acdAttrTest (const AcdPAcd thys, const char *attrib);
+static AjBool    acdAttrToChar (const AcdPAcd thys,
+			       const char *attr, char defval, char *result);
 static AjBool    acdAttrToInt (const AcdPAcd thys,
 			       const char *attr, ajint defval, ajint *result);
 static AjBool    acdAttrToStr (const AcdPAcd thys,
@@ -700,10 +703,13 @@ static void acdSetCodon (AcdPAcd thys);
 static void acdSetDirlist (AcdPAcd thys);
 static void acdSetDatafile (AcdPAcd thys);
 static void acdSetDirectory (AcdPAcd thys);
+static void acdSetDiscretestates (AcdPAcd thys);
+static void acdSetDistances (AcdPAcd thys);
 static void acdSetFeat (AcdPAcd thys);
 static void acdSetFeatout (AcdPAcd thys);
 static void acdSetFilelist (AcdPAcd thys);
 static void acdSetFloat (AcdPAcd thys);
+static void acdSetFrequencies (AcdPAcd thys);
 static void acdSetGraph (AcdPAcd thys);
 static void acdSetGraphxy (AcdPAcd thys);
 static void acdSetInt (AcdPAcd thys);
@@ -714,18 +720,21 @@ static void acdSetMatrixf (AcdPAcd thys);
 static void acdSetOutfile (AcdPAcd thys);
 static void acdSetCpdb (AcdPAcd thys);
 static void acdSetScop (AcdPAcd thys);
+static void acdSetProperties (AcdPAcd thys);
 static void acdSetRange (AcdPAcd thys);
 static void acdSetRegexp (AcdPAcd thys);
 static void acdSetReport (AcdPAcd thys);
 /*static void acdSetRegions (AcdPAcd thys);*/
 static void acdSetSelect (AcdPAcd thys);
 static void acdSetSeq (AcdPAcd thys);
-static void acdSetSeqset (AcdPAcd thys);
 static void acdSetSeqall (AcdPAcd thys);
 static void acdSetSeqout (AcdPAcd thys);
-static void acdSetSeqoutset (AcdPAcd thys);
 static void acdSetSeqoutall (AcdPAcd thys);
+static void acdSetSeqoutset (AcdPAcd thys);
+static void acdSetSeqset (AcdPAcd thys);
+static void acdSetSeqsetall (AcdPAcd thys);
 static void acdSetString (AcdPAcd thys);
+static void acdSetTree (AcdPAcd thys);
 
 /*
 ** Known item types
@@ -828,6 +837,7 @@ AcdOAttr acdAttrArray[] =
     {"warnrange", VT_BOOL, "Warning if values are out of range default:Y"},
     {"size", VT_INT, "Number of values required default:1"},
     {"sum", VT_FLOAT, "Total for all values default:1.0"},
+    {"sumtest", VT_BOOL, "Test sum of all values default:Y"},
     {"tolerance", VT_FLOAT, "Tolerance (sum +/- tolerance) of the total "
 	 "default:0.01"},
     {NULL, VT_NULL, NULL}
@@ -874,6 +884,24 @@ AcdOAttr acdAttrDirlist[] =
     {NULL, VT_NULL, NULL}
 };
 
+AcdOAttr acdAttrDiscrete[] =
+{
+    {"length", VT_INT, "Number of discrete state values per set default:0"},
+    {"size", VT_INT, "Number of discrete state set default:1"},
+    {"characters", VT_STR, "Allowed discrete state characters default:'' (any)"},
+    {"standardtype", VT_STR, "Standard discrete state file type"},
+    {"nullok", VT_BOOL, "Can accept a null filename as 'no file' default:N"},
+    {NULL, VT_NULL, NULL}
+};
+
+AcdOAttr acdAttrDistances[] =
+{
+    {"size", VT_INT, "Number of rows default:1"},
+    {"standardtype", VT_STR, "Standard property file type"},
+    {"nullok", VT_BOOL, "Can accept a null filename as 'no file' default:N"},
+    {NULL, VT_NULL, NULL}
+};
+
 AcdOAttr acdAttrEndsec[] =
 {
     {NULL, VT_NULL, NULL}
@@ -907,6 +935,18 @@ AcdOAttr acdAttrFloat[] =
     {"increment", VT_FLOAT, "(Not used by ACD) Increment for GUIs"},
     {"precision", VT_INT, "Precision for printing values default:3"},
     {"warnrange", VT_BOOL, "Warning if values are out of range default:Y"},
+    {NULL, VT_NULL, NULL}
+};
+
+AcdOAttr acdAttrFrequencies[] =
+{
+    {"length", VT_INT, "Number of frequency loci/values per set default:0"},
+    {"size", VT_INT, "Number of frequency sets default:1"},
+    {"continuous", VT_BOOL, "Continuous character data only"},
+    {"genedata", VT_BOOL, "Gene frequency data only"},
+    {"within", VT_BOOL, "Continuous data for multiple individuals"},
+    {"standardtype", VT_STR, "Standard frequency file type"},
+    {"nullok", VT_BOOL, "Can accept a null filename as 'no file' default:N"},
     {NULL, VT_NULL, NULL}
 };
 
@@ -976,7 +1016,18 @@ AcdOAttr acdAttrOutfile[] =
     {"extension", VT_STR, "Default file extension"},
     {"standardtype", VT_STR, "(Not used by ACD) Standard named file type"},
     {"nullok", VT_BOOL, "Can accept a null filename as 'no file' default:N"},
+    {"nulldefault", VT_BOOL, "Defaults to 'no file' default:N"},
     {"append", VT_BOOL, "Append to an existing file default:N"},
+    {NULL, VT_NULL, NULL}
+};
+
+AcdOAttr acdAttrProperties[] =
+{
+    {"length", VT_INT, "Number of property values per set default:0"},
+    {"size", VT_INT, "Number of property sets default:1"},
+    {"characters", VT_STR, "Allowed property characters default:'01'"},
+    {"standardtype", VT_STR, "Standard property file type"},
+    {"nullok", VT_BOOL, "Can accept a null filename as 'no file' default:N"},
     {NULL, VT_NULL, NULL}
 };
 
@@ -1087,6 +1138,14 @@ AcdOAttr acdAttrSeqset[] =
     {NULL, VT_NULL, NULL}
 };
 
+AcdOAttr acdAttrSeqsetall[] =
+{
+    {"type", VT_STR, "Input sequence type (protein, gapprotein, etc.)"},
+    {"features", VT_BOOL, "Read features if any default:N"},
+    {"nullok", VT_BOOL, "Can accept a null filename as 'no file' default:N"},
+    {NULL, VT_NULL, NULL}
+};
+
 AcdOAttr acdAttrString[] =
 {
     {"minlength", VT_INT, "Minimum length default:0"},
@@ -1098,12 +1157,37 @@ AcdOAttr acdAttrString[] =
     {NULL, VT_NULL, NULL}
 };
 
+AcdOAttr acdAttrTree[] =
+{
+    {"size", VT_INT, "Number of trees default:1"},
+    {"standardtype", VT_STR, "Standard tree file type"},
+    {"nullok", VT_BOOL, "Can accept a null filename as 'no file' default:N"},
+    {"size", VT_INT, "Number of trees default:0 (any)"},
+    {NULL, VT_NULL, NULL}
+};
+
 AcdOAttr acdAttrVar[] =
 {
     {NULL, VT_NULL, NULL}
 };
 
 /* Calculated attributes */
+
+static AcdOAttr acdCalcDiscrete[] =
+{
+    {"discretelength", VT_INT, "Number of discrete state values per set"},
+    {"discretesize", VT_INT, "Number of discrete state sets"},
+    {"discretecount", VT_INT, "Number of sets of discrete states"},
+    {NULL, VT_NULL, NULL}
+};
+
+static AcdOAttr acdCalcDistances[] =
+{
+    {"distancesize", VT_INT, "Number of distance rows"},
+    {"replicates", VT_BOOL, "Replicates data in input"},
+    {"missing", VT_BOOL, "Missing values found (replicates=0)"},
+    {NULL, VT_NULL, NULL}
+};
 
 static AcdOAttr acdCalcFeat[] =
 {
@@ -1114,6 +1198,24 @@ static AcdOAttr acdCalcFeat[] =
     {"fnucleic", VT_BOOL, "Boolean, indicates if feature table is DNA"},
     {"fname", VT_STR, "The name of the feature table"},
     {"fsize", VT_STR, "Integer, number of features"},
+    {NULL, VT_NULL, NULL}
+};
+
+static AcdOAttr acdCalcFrequencies[] =
+{
+    {"freqlength", VT_INT, "Number of frequency values per set"},
+    {"freqsize", VT_INT, "Number of frequency sets"},
+    {"freqloci", VT_INT, "Number of frequency loci"},
+    {"freqgenedata", VT_BOOL, "Gene frequency data"},
+    {"freqcontinuous", VT_BOOL, "Continuous frequency data"},
+    {"freqwithin", VT_BOOL, "Individual within species frequency data"},
+    {NULL, VT_NULL, NULL}
+};
+
+static AcdOAttr acdCalcProperties[] =
+{
+    {"propertylength", VT_INT, "Number of property values per set"},
+    {"propertysize", VT_INT, "Number of property sets"},
     {NULL, VT_NULL, NULL}
 };
 
@@ -1158,9 +1260,28 @@ static AcdOAttr acdCalcSeqset[] =
     {NULL, VT_NULL, NULL}
 };
 
+static AcdOAttr acdCalcSeqsetall[] =
+{
+    {"begin", VT_INT, "The beginning of the selection of the sequence"},
+    {"end", VT_INT, "The end of the selection of the sequence"},
+    {"length", VT_INT, "The maximum length of the sequence set"},
+    {"protein", VT_BOOL, "Boolean, indicates if sequence set is protein"},
+    {"nucleic", VT_BOOL, "Boolean, indicates if sequence set is DNA"},
+    {"name", VT_STR, "The name of the sequence set"},
+    {"count", VT_INT, "Integer, number of sequences in each set"},
+    {"multicount", VT_INT, "Integer, number of sets of sequences"},
+    {NULL, VT_NULL, NULL}
+};
+
 static AcdOAttr acdCalcString[] =
 {
     {"length", VT_INT, "The length of the string"},
+    {NULL, VT_NULL, NULL}
+};
+
+static AcdOAttr acdCalcTree[] =
+{
+    {"treecount", VT_INT, "Number of trees"},
     {NULL, VT_NULL, NULL}
 };
 
@@ -1363,6 +1484,26 @@ AcdOQual acdQualSeqset[] =
     {NULL, NULL, NULL, NULL}
 };
 
+AcdOQual acdQualSeqsetall[] =
+{
+    {"sbegin",     "0", "integer", "First base used"},
+    {"send",       "0", "integer", "Last base used, def=seq length"},
+    {"sreverse",   "N", "boolean", "Reverse (if DNA)"},
+    {"sask",       "N", "boolean", "Ask for begin/end/reverse"},
+    {"snucleotide","N", "boolean", "Sequence is nucleotide"},
+    {"sprotein",   "N", "boolean", "Sequence is protein"},
+    {"slower",     "N", "boolean", "Make lower case"},
+    {"supper",     "N", "boolean", "Make upper case"},
+    {"sformat",    "",  "string",  "Input sequence format"},
+    {"sopenfile",  "",  "string",  "Input filename"},
+    {"sdbname",    "",  "string",  "Database name"},
+    {"sid",        "",  "string",  "Entryname"},
+    {"ufo",        "",  "string",  "UFO features"},
+    {"fformat",    "",  "string",  "Features format"},
+    {"fopenfile",  "",  "string",  "Features file name"},
+    {NULL, NULL, NULL, NULL}
+};
+
 AcdOQual acdQualSeqall[] =
 {
     {"sbegin",     "0", "integer", "First base used"},
@@ -1470,6 +1611,12 @@ AcdOType acdType[] =
     {"dirlist",	           "input",            acdSecInput,
 	 acdAttrDirlist,   acdSetDirlist,      NULL,
 	 AJFALSE, "Directory with files" },
+    {"discretestates",     "input",            NULL,
+	 acdAttrDiscrete,acdSetDiscretestates, NULL,
+	 AJFALSE, "Distance matrix" },
+    {"distances",         "input",            NULL,
+	 acdAttrDistances,acdSetDistances, NULL,
+	 AJFALSE, "Distance matrix" },
     {"features",           "input",            acdSecInput,
 	 acdAttrFeat,      acdSetFeat,         acdQualFeat,
 	 AJTRUE,  "Readable feature table" },
@@ -1482,6 +1629,9 @@ AcdOType acdType[] =
     {"float",              "simple",           NULL,
 	 acdAttrFloat,     acdSetFloat,        NULL,
 	 AJFALSE, "Floating point number" },
+    {"frequencies",         "input",            NULL,
+	 acdAttrFrequencies,acdSetFrequencies, NULL,
+	 AJFALSE, "Frequency value(s)" },
     {"graph",              "graph",            acdSecOutput,
 	 acdAttrGraph,     acdSetGraph,        acdQualGraph,
 	 AJTRUE,  "Graph device for a general graph" },
@@ -1503,6 +1653,9 @@ AcdOType acdType[] =
     {"outfile",            "output",           acdSecOutput,
 	 acdAttrOutfile,   acdSetOutfile,   acdQualOutfile,
 	 AJTRUE,  "Output file" },
+    {"properties",         "input",            NULL,
+	 acdAttrProperties,acdSetProperties, NULL,
+	 AJFALSE, "Property value(s)" },
     {"range",	           "simple",           NULL,
 	 acdAttrRange,     acdSetRange,        NULL,
 	 AJFALSE, "Sequence range" },
@@ -1536,13 +1689,19 @@ AcdOType acdType[] =
     {"seqset",             "input",            acdSecInput,
 	 acdAttrSeqset,    acdSetSeqset,       acdQualSeqset,
 	 AJTRUE,  "Readable sequences" },
+    {"seqsetall",          "input",            acdSecInput,
+	 acdAttrSeqsetall, acdSetSeqsetall,    acdQualSeqsetall,
+	 AJTRUE,  "Readable sequences" },
     {"string",             "simple",           NULL,
 	 acdAttrString,    acdSetString,       NULL,
+	 AJFALSE, "String value" },
+    {"tree",               "input",            NULL,
+	 acdAttrTree,      acdSetTree,         NULL,
 	 AJFALSE, "String value" },
     {"xygraph",            "graph",            acdSecOutput,
 	 acdAttrGraphxy,   acdSetGraphxy,      acdQualGraphxy,
 	 AJTRUE,  "Graph device for a 2D graph" },
-    {NULL, NULL, NULL, NULL, NULL, NULL, AJFALSE, NULL}
+     {NULL, NULL, NULL, NULL, NULL, NULL, AJFALSE, NULL}
 };
 
 /* @datastatic AcdPValid ******************************************************
@@ -3895,7 +4054,6 @@ static void acdSetAlign (AcdPAcd thys)
     static AjPStr outfname = NULL;
     static AjPStr fullfname = NULL;
     
-    required = acdIsRequired(thys);
     val = ajAlignNew();
     
     (void) acdAttrToStr (thys, "type", "", &val->Type);
@@ -3921,6 +4079,7 @@ static void acdSetAlign (AcdPAcd thys)
     
     (void) acdOutDirectory (&dir);
     (void) acdOutFilename (&outfname, name, ext);
+    required = acdIsRequired(thys);
     (void) acdReplyInit (thys, ajStrStr(outfname), &defreply);
     acdPromptAlign(thys);
     
@@ -3996,6 +4155,7 @@ static void acdSetArray (AcdPAcd thys)
     static AjPStr reply = NULL;
     ajint itry;
     AjBool warnrange;
+    AjBool sumtest;
     
     float fmin;
     float fmax;
@@ -4027,6 +4187,8 @@ static void acdSetArray (AcdPAcd thys)
     
     (void) acdAttrToBool (thys, "warnrange", ajTrue, &warnrange);
     acdLog ("warnrange: %B\n", warnrange);
+    (void) acdAttrToBool (thys, "sumtest", ajTrue, &sumtest);
+    acdLog ("sumtest: %B\n", sumtest);
     
     (void) acdAttrToInt (thys, "size", 1, &size);
     acdLog ("size: %d\n", size);
@@ -4044,7 +4206,7 @@ static void acdSetArray (AcdPAcd thys)
 	ajFmtPrintAppS (&deflist, "%.*f", precision, fdef);
     }
     
-    val = ajFloatNew();			/* create storage for the result */
+    val = ajFloatNewL(size);	   /* create storage for the result */
     
     required = acdIsRequired(thys);
     (void) acdReplyInit (thys, ajStrStr(deflist), &defreply);
@@ -4057,11 +4219,16 @@ static void acdSetArray (AcdPAcd thys)
 	    (void) acdUserGet (thys, &reply);
 	
 	ok = ajFloatParse(reply, &val);
+	if (ok && ajFloatLen(val) != size)
+	{
+	    ajErr("Bad array value, expected %d values, found %d",
+		  size, ajFloatLen(val));
+	    ok = ajFalse;
+	}
 	if (!ok)
 	    acdBadVal (thys, required,
 		       "Invalid array value '%S', please try again",
 		       reply);
-	
 	array = ajFloatFloat(val);
 	ftot = 0.0;
 	for (i=0; i< size; i++)
@@ -4087,7 +4254,7 @@ static void acdSetArray (AcdPAcd thys)
 	}
 	
 	ftol = (float) fabs (ftot -sum);
-	if (ftol > tolerance)
+	if (sumtest && ftol > tolerance)
 	{
 	    ajWarn ("Bad total %.*f, required total is %.*f with "
 		    "tolerance %.*f",
@@ -4248,7 +4415,6 @@ static void acdSetCodon (AcdPAcd thys)
 	(void) ajStrAssC(&name,DEFCODON);
 
     required = acdIsRequired(thys);
-
     (void) acdReplyInit (thys, ajStrStr(name), &defreply);
     acdPromptCodon (thys);
 
@@ -4343,7 +4509,6 @@ static void acdSetCpdb (AcdPAcd thys)
 	(void) ajStrAssC(&name,DEFCPDB);
     
     required = acdIsRequired(thys);
-    
     (void) acdReplyInit (thys, ajStrStr(name), &defreply);
     acdPromptCpdb(thys);
     
@@ -4448,8 +4613,8 @@ static void acdSetDatafile (AcdPAcd thys)
     (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
     acdLog ("nullok: %B\n", nullok);
     
-    required = acdIsRequired(thys);
     (void) acdDataFilename (&datafname, name, ext);
+    required = acdIsRequired(thys);
     (void) acdReplyInit (thys, ajStrStr(datafname), &defreply);
     acdPromptInfile (thys);
     
@@ -4701,6 +4866,289 @@ static void acdSetDirlist (AcdPAcd thys)
     return;
 }
 
+/* @func ajAcdGetDiscretestates ***********************************************
+**
+** Returns an item of type Discrete states as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPPhyoState*] Discrete state object. The string was already set by
+**         acdSetDiscretestates so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPPhyloState* ajAcdGetDiscretestates(const char *token)
+{
+    return acdGetValue (token, "discretestates");
+}
+
+/* @func ajAcdGetDiscretestatesI **********************************************
+**
+** Returns an from an array item of type Discrete states as defined in a named
+** ACD item, which is an array of strings terminated by a null value.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @param [r] num [ajint] Token number (1 for the first)
+** @return [AjPhyloState] Properties object. The data was already set by
+**         acdSetDiscretestates so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPPhyloState ajAcdGetDiscretestatesI (const char *token, ajint num)
+{
+    AjPPhyloState* val;
+    ajint i;
+
+    val = acdGetValue (token, "discretestates");
+    for (i=1; i<num; i++)
+	if (!val[i])
+	    ajWarn ("value %d not found for %s, last value was %d\n",
+		    num, token, i-1);
+
+    return val[num-1];
+}
+/* @funcstatic acdSetDiscretestates *******************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD weights file item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other is available) is an empty string.
+**
+** Attributes for length and maximum property character are applied with error
+** messages if exceeded.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdSetDiscretestates (AcdPAcd thys)
+{
+    AjPPhyloState* val = NULL;
+
+    AjBool required = ajFalse;
+    AjBool ok = ajFalse;
+    static AjPStr defreply = NULL;
+    static AjPStr reply = NULL;
+    static AjPStr infname = NULL;
+    ajint itry;
+    
+    AjBool nullok = ajFalse;
+    ajint size;
+    ajint len;
+    AjPStr statechars=NULL;
+    ajint i;
+
+    val = NULL;
+
+    (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
+    (void) acdAttrToInt (thys, "size", 1, &size);
+    (void) acdAttrToInt (thys, "length", 1, &len);
+    (void) acdAttrToStr (thys, "characters", "01", &statechars);
+
+    (void) acdInFilename (&infname);
+
+    required = acdIsRequired(thys);
+    (void) acdReplyInit (thys, ajStrStr(infname), &defreply);
+    acdPromptInfile (thys);
+    
+    for (itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+
+	(void) ajStrAssS (&reply, defreply);
+
+	if (required)
+	    (void) acdUserGet (thys, &reply);
+
+	if (ajStrLen(reply))
+	{
+	    val = ajPhyloStateRead(reply, statechars);
+	    if (!val)
+	    {
+		acdBadVal (thys, required,
+			   "Unable to read frequencies file '%S'",
+			   reply);
+		ok = ajFalse;
+	    }
+	}
+	else
+	{
+	    if (!nullok)
+	    {
+		acdBadVal (thys, required,
+			   "Input frequencies file is required");
+		ok = ajFalse;
+	    }
+	}
+    }
+    if (!ok)
+	acdBadRetry (thys);
+    (void) acdInFileSave(reply);
+    
+    /* properties have special set attributes */
+    
+    thys->SAttr = acdAttrListCount (acdCalcDiscrete);
+    thys->SetAttr = &acdCalcDiscrete[0];
+    thys->SetStr = AJCALLOC0 (thys->SAttr, sizeof (AjPStr));
+    
+    if (val)
+    {
+	for (i=0;val[i];i++)
+	    continue;
+	(void) ajStrFromInt (&thys->SetStr[0],val[0]->Len); /* string length */
+	(void) ajStrFromInt (&thys->SetStr[1],val[0]->Size); /* string count */
+	(void) ajStrFromInt (&thys->SetStr[2],i); /* number of sets */
+ 	(void) ajStrAssS (&thys->ValStr, reply);
+	ajDebug("acdSetDiscretestates calc len: %d size: %d sets: %d\n",
+		val[0]->Len, val[0]->Size, i);
+    }
+    else
+    {
+	(void) ajStrFromInt (&thys->SetStr[0],0); /* string length */
+	(void) ajStrFromInt (&thys->SetStr[1],0); /* string count */
+	(void) ajStrFromInt (&thys->SetStr[2],0); /* number of sets */
+	(void) ajStrAssC (&thys->ValStr, "");
+    }
+
+    thys->Value = val;
+   
+    return;
+}
+
+
+/* @func ajAcdGetDistances ***************************************************
+**
+** Returns an item of type Distances as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPPhyoDist] Distances object. The string was already set by
+**         acdSetDistances so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPPhyloDist ajAcdGetDistances(const char *token)
+{
+    return acdGetValue (token, "distances");
+}
+
+/* @funcstatic acdSetDistances ***********************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD weights file item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other is available) is an empty string.
+**
+** Attributes for length and maximum property character are applied with error
+** messages if exceeded.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdSetDistances (AcdPAcd thys)
+{
+    AjPPhyloDist val = NULL;
+
+    AjBool required = ajFalse;
+    AjBool ok = ajFalse;
+    static AjPStr defreply = NULL;
+    static AjPStr reply = NULL;
+    static AjPStr infname = NULL;
+    ajint itry;
+    
+    AjBool nullok = ajFalse;
+    ajint size;
+    AjBool missing;
+
+    val = NULL;
+
+    (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
+    (void) acdAttrToInt (thys, "size", 0, &size);
+    (void) acdAttrToBool (thys, "missing", ajFalse, &missing);
+
+    (void) acdInFilename (&infname);
+    required = acdIsRequired(thys);
+    (void) acdReplyInit (thys, ajStrStr(infname), &defreply);
+    acdPromptInfile (thys);
+    
+    for (itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+
+	(void) ajStrAssS (&reply, defreply);
+
+	if (required)
+	    (void) acdUserGet (thys, &reply);
+
+	if (ajStrLen(reply))
+	{
+	    val = ajPhyloDistRead(reply, size, missing);
+	    if (!val)
+	    {
+		acdBadVal (thys, required,
+			   "Unable to read distance file '%S'",
+			   reply);
+		ok = ajFalse;
+	    }
+	}
+	else
+	{
+	    if (!nullok)
+	    {
+		acdBadVal (thys, required,
+			   "Distances file is required");
+		ok = ajFalse;
+	    }
+	}
+    }
+    if (!ok)
+	acdBadRetry (thys);
+    (void) acdInFileSave(reply);
+    
+    /* properties have special set attributes */
+    
+    thys->SAttr = acdAttrListCount (acdCalcDistances);
+    thys->SetAttr = &acdCalcDistances[0];
+    thys->SetStr = AJCALLOC0 (thys->SAttr, sizeof (AjPStr));
+
+    if (val)
+    {
+	(void) ajStrFromInt (&thys->SetStr[0],val->Size); /* string count */
+	(void) ajStrFromBool (&thys->SetStr[1],val->HasReplicates);
+	(void) ajStrFromBool (&thys->SetStr[2],val->HasMissing);
+ 	(void) ajStrAssS (&thys->ValStr, reply);
+    }
+    else
+    {
+	(void) ajStrFromInt (&thys->SetStr[0],0); /* string count */
+	(void) ajStrFromBool (&thys->SetStr[1],ajFalse);
+	(void) ajStrFromBool (&thys->SetStr[2],ajFalse);
+	(void) ajStrAssC (&thys->ValStr, "");
+    }
+
+    thys->Value = val;
+   
+    return;
+}
+
 /* @func ajAcdGetFeat *********************************************************
 **
 ** Returns an item of type Features as defined in a named ACD item.
@@ -4767,8 +5215,7 @@ static void acdSetFeat (AcdPAcd thys)
     
     tabin = ajFeattabInNew();		/* set the default value */
     
-    required = acdIsRequired(thys);
-    (void) acdQualToBool (thys, "fask", ajFalse, &fprompt, &defreply);
+   (void) acdQualToBool (thys, "fask", ajFalse, &fprompt, &defreply);
     
     if (acdAttrToStr(thys, "type", "", &type))
     {
@@ -4782,6 +5229,7 @@ static void acdSetFeat (AcdPAcd thys)
     }
 
     (void) acdInFilename (&infname);
+    required = acdIsRequired(thys);
     (void) acdReplyInit (thys, ajStrStr(infname), &defreply);
     acdPromptFeat (thys);
     
@@ -4936,7 +5384,6 @@ static void acdSetFeatout (AcdPAcd thys)
     static AjPStr outfname = NULL;
     static AjPStr type = NULL;
    
-    required = acdIsRequired(thys);
     val = ajFeattabOutNew();
     
     if (!acdGetValueAssoc (thys, "ofname", &name))
@@ -4964,6 +5411,7 @@ static void acdSetFeatout (AcdPAcd thys)
 
     (void) acdOutDirectory (&val->Directory);
     (void) acdOutFilename (&outfname, name, ext);
+    required = acdIsRequired(thys);
     (void) acdReplyInit (thys, ajStrStr(outfname), &defreply);
     acdPromptFeatout (thys);
     
@@ -5197,6 +5645,140 @@ static void acdSetFloat (AcdPAcd thys)
     return;
 }
 
+/* @func ajAcdGetFrequencies **************************************************
+**
+** Returns an item of type Frequencies as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPPhyloFreq] Frequencies object. The string was already set by
+**         acdSetFrequencies so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPPhyloFreq ajAcdGetFrequencies(const char *token)
+{
+    return acdGetValue (token, "frequencies");
+}
+
+/* @funcstatic acdSetFrequencies **********************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD weights file item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other is available) is an empty string.
+**
+** Attributes for length and maximum property character are applied with error
+** messages if exceeded.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdSetFrequencies (AcdPAcd thys)
+{
+    AjPPhyloFreq val;
+
+    AjBool required = ajFalse;
+    AjBool ok = ajFalse;
+    static AjPStr defreply = NULL;
+    static AjPStr reply = NULL;
+    static AjPStr infname = NULL;
+    ajint itry;
+    
+    AjBool nullok = ajFalse;
+    AjBool contchar = ajFalse;
+    AjBool genedata = ajFalse;
+    AjBool within = ajFalse;
+    ajint size;
+
+    val = NULL;
+
+    (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
+    (void) acdAttrToInt (thys, "size", 1, &size);
+    (void) acdAttrToBool (thys, "continuous", ajFalse, &contchar);
+    (void) acdAttrToBool (thys, "genedata", ajFalse, &genedata);
+    (void) acdAttrToBool (thys, "within", ajFalse, &within);
+
+    (void) acdInFilename (&infname);
+
+    required = acdIsRequired(thys);
+    (void) acdReplyInit (thys, ajStrStr(infname), &defreply);
+    acdPromptInfile (thys);
+    
+    for (itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+
+	(void) ajStrAssS (&reply, defreply);
+
+	if (required)
+	    (void) acdUserGet (thys, &reply);
+
+	if (ajStrLen(reply))
+	{
+	    val = ajPhyloFreqRead(reply, contchar, genedata, within);
+	    if (!val)
+	    {
+		acdBadVal (thys, required,
+			   "Unable to read frequencies file '%S'",
+			   reply);
+		ok = ajFalse;
+	    }
+	}
+	else
+	{
+	    if (!nullok)
+	    {
+		acdBadVal (thys, required,
+			   "Input frequencies file is required");
+		ok = ajFalse;
+	    }
+	}
+    }
+    if (!ok)
+	acdBadRetry (thys);
+    (void) acdInFileSave(reply);
+    
+    /* properties have special set attributes */
+    
+    thys->SAttr = acdAttrListCount (acdCalcFrequencies);
+    thys->SetAttr = &acdCalcFrequencies[0];
+    thys->SetStr = AJCALLOC0 (thys->SAttr, sizeof (AjPStr));
+    
+    if (val)
+    {
+	(void) ajStrFromInt (&thys->SetStr[0],val->Len); /* string count */
+	(void) ajStrFromInt (&thys->SetStr[1],val->Size); /* string count */
+	(void) ajStrFromInt (&thys->SetStr[2],val->Loci); /* string count */
+	(void) ajStrFromBool (&thys->SetStr[3],!val->ContChar); /* genes */
+	(void) ajStrFromBool (&thys->SetStr[4],val->ContChar); /* contin */
+	(void) ajStrFromBool (&thys->SetStr[5],val->Within); /* indivs */
+ 	(void) ajStrAssS (&thys->ValStr, reply);
+    }
+    else
+    {
+	(void) ajStrFromInt (&thys->SetStr[0],0); /* string count */
+	(void) ajStrFromInt (&thys->SetStr[1],0); /* string count */
+	(void) ajStrFromInt (&thys->SetStr[2],0); /* string count */
+	(void) ajStrFromBool (&thys->SetStr[3],0); /* genes */
+	(void) ajStrFromBool (&thys->SetStr[4],0); /* contin */
+	(void) ajStrFromBool (&thys->SetStr[5],0); /* indivs */
+	(void) ajStrAssC (&thys->ValStr, "");
+    }
+
+    thys->Value = val;
+   
+    return;
+}
+
 /* @func ajAcdGetGraph ********************************************************
 **
 ** Returns a graph object which hold user graphics options.
@@ -5247,9 +5829,8 @@ static void acdSetGraph (AcdPAcd thys)
 	 acdLog ("multi: %d\n", multi);
 	 */
     
-    required = acdIsRequired(thys);
-    
     (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
+    required = acdIsRequired(thys);
     if(ajNamGetValueC ("GRAPHICS",&gdev))
 	(void) acdReplyInit (thys, ajStrStr(gdev), &defreply);
     else
@@ -5365,7 +5946,6 @@ static void acdSetGraphxy (AcdPAcd thys)
     if (multi < 1) multi = 1;
     acdLog ("multi: %d\n", multi);
     
-    required = acdIsRequired(thys);
     /*
        (void) acdReplyInit (thys, "xwindows", &defreply);
        if(ajNamGetValueC(ajStrStr(name),&value))
@@ -5375,6 +5955,7 @@ static void acdSetGraphxy (AcdPAcd thys)
        }
        */
     
+    required = acdIsRequired(thys);
     if(ajNamGetValueC("GRAPHICS",&gdev))
 	(void) acdReplyInit (thys, ajStrStr(gdev), &defreply);
     else
@@ -5603,8 +6184,8 @@ static void acdSetInfile (AcdPAcd thys)
     
     (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
     
-    required = acdIsRequired(thys);
     (void) acdInFilename (&infname);
+    required = acdIsRequired(thys);
     (void) acdReplyInit (thys, ajStrStr(infname), &defreply);
     acdPromptInfile (thys);
     
@@ -5832,7 +6413,6 @@ static void acdSetMatrix (AcdPAcd thys)
     
     val = NULL;				/* set the default value */
     
-    required = acdIsRequired(thys);
     (void) acdAttrToBool (thys, "protein", ajTrue, &isprot);
     if (isprot)
     {
@@ -5846,6 +6426,8 @@ static void acdSetMatrix (AcdPAcd thys)
 	if (!ajStrLen(infname))
 	    (void) ajStrAssC(&infname, DEFDNA);
     }
+
+    required = acdIsRequired(thys);
     (void) acdReplyInit (thys, ajStrStr(infname), &defreply);
     
     for (itry=acdPromptTry; itry && !ok; itry--)
@@ -5912,7 +6494,6 @@ static void acdSetMatrixf (AcdPAcd thys)
     
     val = NULL;				/* set the default value */
     
-    required = acdIsRequired(thys);
     (void) acdAttrToBool (thys, "protein", ajTrue, &isprot);
     if (isprot)
     {
@@ -5926,6 +6507,8 @@ static void acdSetMatrixf (AcdPAcd thys)
 	if (!ajStrLen(infname))
 	    (void) ajStrAssC(&infname, DEFDNA);
     }
+
+    required = acdIsRequired(thys);
     (void) acdReplyInit (thys, ajStrStr(infname), &defreply);
     
     for (itry=acdPromptTry; itry && !ok; itry--)
@@ -6012,6 +6595,7 @@ static void acdSetOutfile (AcdPAcd thys)
     static AjPStr reply = NULL;
     ajint itry;
     AjBool nullok;
+    AjBool nulldefault;
     AjBool append;
     
     static AjPStr name = NULL;
@@ -6027,10 +6611,11 @@ static void acdSetOutfile (AcdPAcd thys)
     (void) acdGetValueAssoc(thys, "odirectory", &dir);
     
     (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
+    (void) acdAttrToBool (thys, "nulldefault", ajFalse, &nulldefault);
     (void) acdAttrToBool (thys, "append", ajFalse, &append);
     
     required = acdIsRequired(thys);
-    if (nullok)				/* do not make up a filename */
+    if (nullok && nulldefault)	/* do not make up a filename */
     {
 	(void) acdReplyInit (thys, "", &defreply);
     }
@@ -6088,6 +6673,131 @@ static void acdSetOutfile (AcdPAcd thys)
     thys->Value = val;
     (void) ajStrAssS (&thys->ValStr, fullfname);
     
+    return;
+}
+
+/* @func ajAcdGetProperties ***************************************************
+**
+** Returns an item of type Properties as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPPhyloProp*] Properties array. The data was already set by
+**         acdSetProperties so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPPhyloProp ajAcdGetProperties(const char *token)
+{
+    return acdGetValue (token, "properties");
+}
+
+/* @funcstatic acdSetProperties ***********************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD proerties file item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other is available) is an empty string.
+**
+** Attributes for length and maximum property character are applied with error
+** messages if exceeded.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdSetProperties (AcdPAcd thys)
+{
+    AjPPhyloProp val;
+    
+    AjBool required = ajFalse;
+    AjBool ok = ajFalse;
+    static AjPStr defreply = NULL;
+    static AjPStr reply = NULL;
+    static AjPStr infname = NULL;
+    ajint itry;
+    
+    AjBool nullok = ajFalse;
+    ajint size;
+    ajint len;
+    AjPStr propchars=NULL;
+
+    val = NULL;
+
+    (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
+    (void) acdAttrToInt (thys, "length", 0, &len);
+    (void) acdAttrToInt (thys, "size", 1, &size);
+    (void) acdAttrToStr(thys, "characters", "", &propchars);
+
+    ajDebug("acdSetProperties len: %d size: %d\n", len, size);
+
+    (void) acdInFilename (&infname);
+    required = acdIsRequired(thys);
+    (void) acdReplyInit (thys, ajStrStr(infname), &defreply);
+    acdPromptInfile (thys);
+    
+    for (itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+
+	(void) ajStrAssS (&reply, defreply);
+
+	if (required)
+	    (void) acdUserGet (thys, &reply);
+
+	if (ajStrLen(reply))
+	{
+	    val = ajPhyloPropRead(reply, propchars, len, size);
+	    if (!val)
+	    {
+		acdBadVal (thys, required,
+			   "Unable to open file '%S' for input",
+			   reply);
+		ok = ajFalse;
+	    }
+	}
+	else
+	{
+	    if (!nullok)
+	    {
+		acdBadVal (thys, required,
+			   "Input file is required");
+		ok = ajFalse;
+	    }
+	}
+    }
+    if (!ok)
+	acdBadRetry (thys);
+    (void) acdInFileSave(reply);
+    
+    /* properties have special set attributes */
+    
+    thys->SAttr = acdAttrListCount (acdCalcProperties);
+    thys->SetAttr = &acdCalcProperties[0];
+    thys->SetStr = AJCALLOC0 (thys->SAttr, sizeof (AjPStr));
+    
+    if (val)
+    {
+	(void) ajStrFromInt (&thys->SetStr[0],val->Len); /* string length */
+	(void) ajStrFromInt (&thys->SetStr[1],val->Size); /* string count */
+ 	(void) ajStrAssS (&thys->ValStr, val->Str[0]);
+    }
+    else
+    {
+	(void) ajStrFromInt (&thys->SetStr[0],0); /* string length */
+	(void) ajStrFromInt (&thys->SetStr[1],0); /* string count */
+	(void) ajStrAssC (&thys->ValStr, "");
+    }
+
+    thys->Value = val;
+   
     return;
 }
 
@@ -6343,7 +7053,6 @@ static void acdSetReport (AcdPAcd thys)
     static AjPStr taglist = NULL;
     ajint mintags = 0;
     
-    required = acdIsRequired(thys);
     val = ajReportNew();
     
     (void) acdAttrToStr (thys, "type", "", &val->Type);
@@ -6378,6 +7087,7 @@ static void acdSetReport (AcdPAcd thys)
     
     (void) acdOutDirectory (&dir);
     (void) acdOutFilename (&outfname, name, ext);
+    required = acdIsRequired(thys);
     (void) acdReplyInit (thys, ajStrStr(outfname), &defreply);
     acdPromptReport (thys);
     
@@ -6464,7 +7174,6 @@ static void acdSetScop (AcdPAcd thys)
 	(void) ajStrAssC(&name,DEFSCOP);
     
     required = acdIsRequired(thys);
-    
     (void) acdReplyInit (thys, ajStrStr(name), &defreply);
     acdPromptScop(thys);
     
@@ -6715,8 +7424,8 @@ static void acdSetSeq (AcdPAcd thys)
     (void) acdQualToBool (thys, "sprotein", ajFalse, &sprot, &defreply);
     (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
     
-    required = acdIsRequired(thys);
     (void) acdInFilename (&infname);
+    required = acdIsRequired(thys);
     (void) acdReplyInit (thys, ajStrStr(infname), &defreply);
     acdPromptSeq (thys);
     
@@ -6983,8 +7692,8 @@ static void acdSetSeqset (AcdPAcd thys)
     (void) acdQualToBool (thys, "sprotein", ajFalse, &sprot, &defreply);
     (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
     
-    required = acdIsRequired(thys);
     (void) acdInFilename (&infname);
+    required = acdIsRequired(thys);
     (void) acdReplyInit (thys, ajStrStr(infname), &defreply);
     acdPromptSeq (thys);
     
@@ -7166,6 +7875,52 @@ static void acdSetSeqset (AcdPAcd thys)
     return;
 }
 
+/* @func ajAcdGetSeqsetall ****************************************************
+**
+** Returns an item of type Seqset as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPSeqset*] Sequence setall object.
+**         The sequence was already loaded by
+**         acdSetSeqset so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPSeqset* ajAcdGetSeqsetall (const char *token)
+{
+    return acdGetValue (token, "seqsetall");
+}
+
+/* @func ajAcdGetSeqsetall ****************************************************
+**
+** Returns an item of type Seqset as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPSeqset] Sequence set object. The sequence was already loaded by
+**         acdSetSeqset so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPSeqset ajAcdGetSeqsetallI (const char *token, ajint num)
+{
+    AjPSeqset* val;
+    ajint i;
+
+    val = acdGetValue (token, "seqsetall");
+    for (i=1; i<num; i++)
+	if (!val[i])
+	    ajWarn ("value %d not found for %s, last value was %d\n",
+		    num, token, i-1);
+
+    return val[num-1];
+}
+
 /* @func ajAcdGetSeqall *******************************************************
 **
 ** Returns an item of type Seq as defined in a named ACD item.
@@ -7182,6 +7937,269 @@ static void acdSetSeqset (AcdPAcd thys)
 AjPSeqall ajAcdGetSeqall (const char *token)
 {
     return acdGetValue (token, "seqall");
+}
+
+/* @funcstatic acdSetSeqsetall ************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD sequence item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other available) is a null string, which
+** is invalid.
+**
+** Associated qualifiers "-sformat", "-sdbname", "-sopenfile", "-sid"
+** are applied to the USA before reading the sequence.
+**
+** Associated qualifiers "-supper", "-slower" and "-sask" are applied
+** after reading.
+**
+** Associated qualifiers "-sbegin", "-send" and "-sreverse"
+** are applied as appropriate, with prompting for values,
+** after the sequence has been read. They are applied to the sequence,
+** and the resulting sequence is what is set in the ACD item.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajSeqRead
+** @@
+******************************************************************************/
+
+
+static void acdSetSeqsetall (AcdPAcd thys)
+{
+    AjPSeqset* val;
+    AjPSeqin seqin;
+    
+    AjBool required = ajFalse;
+    AjBool ok = ajFalse;
+    AjBool okbeg = ajFalse;
+    AjBool okend = ajFalse;
+    AjBool okrev = ajFalse;
+    static AjPStr defreply = NULL;
+    static AjPStr reply = NULL;
+    static AjPStr promptreply = NULL;
+    static AjPStr tmpstr = NULL;
+    ajint itry;
+    ajint iattr;
+    
+    static AjPStr infname = NULL;
+    
+    ajint sbegin=0;
+    ajint send=0;
+    AjBool sreverse=ajFalse;
+    AjBool sprompt=ajFalse;
+    AjBool snuc=ajFalse;
+    AjBool sprot=ajFalse;
+    AjBool nullok=ajFalse;
+    void ** sets = NULL;
+    AjPList seqlist;
+    ajint iset=0;
+    ajint nsets;
+
+    seqlist = ajListNew();
+    seqin = ajSeqinNew();		/* set the default value */
+    
+    seqin->multi = ajTrue;
+    
+    (void) acdQualToBool (thys, "snucleotide", ajFalse, &snuc, &defreply);
+    (void) acdQualToBool (thys, "sprotein", ajFalse, &sprot, &defreply);
+    (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
+    
+    (void) acdInFilename (&infname);
+    required = acdIsRequired(thys);
+    (void) acdReplyInit (thys, ajStrStr(infname), &defreply);
+    acdPromptSeq (thys);
+    
+    for (itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;		/* accept the default if nothing changes */
+	
+	(void) ajStrAssS (&reply, defreply);
+	
+	if (required)
+	    (void) acdUserGet (thys, &reply);
+	
+	
+	if(!ajStrLen(reply) && nullok)
+	    break;;
+
+	ajSeqinUsa (&seqin, reply);
+	
+	if (acdAttrToStr(thys, "type", "", &seqin->Inputtype))
+	    acdInTypeSeqSave(seqin->Inputtype);
+	else
+	    acdInTypeSeqSave(NULL);
+	
+	(void) acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
+	
+	(void) acdGetValueAssoc (thys, "sformat", &seqin->Formatstr);
+	(void) acdGetValueAssoc (thys, "sdbname", &seqin->Db);
+	(void) acdGetValueAssoc (thys, "sopenfile", &seqin->Filename);
+	(void) acdGetValueAssoc (thys, "sid", &seqin->Entryname);
+	
+	(void) acdGetValueAssoc (thys, "ufo", &seqin->Ufo);
+	(void) acdGetValueAssoc (thys, "fformat", &seqin->Ftquery->Formatstr);
+	(void) acdGetValueAssoc (thys, "fopenfile", &seqin->Ftquery->Filename);
+	
+	(void) acdQualToBool (thys, "supper", ajFalse, &seqin->Upper, &tmpstr);
+	(void) acdQualToBool (thys, "slower", ajFalse, &seqin->Lower, &tmpstr);
+	okbeg = acdQualToSeqbegin (thys, "sbegin", 0, &seqin->Begin, &tmpstr);
+	okend = acdQualToSeqend (thys, "send", 0, &seqin->End, &tmpstr);
+	okrev = acdQualToBool (thys, "sreverse",
+			       ajFalse, &seqin->Rev, &tmpstr);
+	
+	if (snuc)
+	    ajSeqinSetNuc (seqin);
+	
+	if (sprot)
+	    ajSeqinSetProt (seqin);
+	
+	if (ajStrLen(seqin->Ufo))
+	    seqin->Features = ajTrue;
+	
+	ok = ajSeqsetallRead(seqlist, seqin);
+	if (!ok)
+	{
+	    acdBadVal (thys, required,
+		       "Unable to read sequence '%S'", reply);
+	}
+    }
+    if (!ok)
+	acdBadRetry (thys);
+
+    nsets = ajListToArray (seqlist, (void***) &sets);
+    val = (AjPSeqset*) sets;
+
+    (void) acdInFileSave(ajSeqsetGetName(val[0])); /* save the sequence name */
+    
+    (void) acdQualToBool (thys, "sask", ajFalse, &sprompt, &defreply);
+    
+    /* now process the begin, end and reverse options */
+    
+    if (seqin->Begin)
+    {
+	okbeg = ajTrue;
+	val[iset]->Begin = seqin->Begin;
+    }
+    
+    for (itry=acdPromptTry; itry && !okbeg; itry--)
+    {
+	(void) ajStrAssC (&promptreply, "start");
+	if (sprompt)
+	    (void) acdUserGetPrompt (" Begin at position", &promptreply);
+	if (ajStrMatchCaseC(promptreply, "start"))
+	    (void) ajStrAssC(&promptreply, "0");
+	okbeg = ajStrToInt(promptreply, &sbegin);
+	if (!okbeg)
+	    acdBadVal (thys, sprompt,
+		       "Invalid integer value '%S'", promptreply);
+    }
+    if (!okbeg)
+	acdBadRetry (thys);
+    
+    if (sbegin)
+    {
+	seqin->Begin = sbegin;
+	val[iset]->Begin = sbegin;
+	(void) acdSetQualDefInt(thys, "sbegin", sbegin);
+    }
+    
+    if (seqin->End)
+    {
+	okend = ajTrue;
+	val[iset]->End = seqin->End;
+    }
+    
+    for (itry=acdPromptTry; itry && !okend; itry--)
+    {
+	(void) ajStrAssC (&promptreply, "end");
+	if (sprompt)
+	    (void) acdUserGetPrompt ("   End at position", &promptreply);
+	if (ajStrMatchCaseC(promptreply, "end"))
+	    (void) ajStrAssC(&promptreply, "0");
+	okend = ajStrToInt(promptreply, &send);
+	if (!okend)
+	    acdBadVal (thys, sprompt,
+		       "Invalid integer value '%S'", promptreply);
+    }
+    if (!okend)
+	acdBadRetry (thys);
+    
+    if (send)
+    {
+	seqin->End = send;
+	val[iset]->End = send;
+	(void) acdSetQualDefInt(thys, "send", send);
+    }
+
+    if (ajSeqsetIsNuc(val[0]))
+    {
+	if (seqin->Rev)
+	{
+	    okrev = ajTrue;
+	    val[iset]->Rev = seqin->Rev;
+	}
+	for (itry=acdPromptTry; itry && !okrev; itry--)
+	{
+	    (void) ajStrAssC (&promptreply, "N");
+	    if (sprompt)
+		(void) acdUserGetPrompt ("    Reverse strand", &promptreply);
+	    okrev = ajStrToBool(promptreply, &sreverse);
+	    if (!okrev)
+		acdBadVal (thys, sprompt,
+			   "Invalid Y/N value '%S'", promptreply);
+	}
+	if (!okrev)
+	    acdBadRetry (thys);
+	if (sreverse)
+	{
+	    seqin->Rev = sreverse;
+	    val[iset]->Rev = sreverse;
+	    (void) acdSetQualDefBool(thys, "sreverse", sreverse);
+	}
+    }
+    
+    acdLog ("sbegin: %d, send: %d, sreverse: %s\n",
+	    sbegin, send, ajStrBool(sreverse));
+    
+    if (val[iset]->Rev)
+	ajSeqsetReverse (val[iset]);
+    
+    ajSeqinDel (&seqin);
+    
+    /* sequences have special set attributes */
+    
+    thys->SAttr = acdAttrListCount (acdCalcSeqsetall);
+    thys->SetAttr = &acdCalcSeqsetall[0];
+    thys->SetStr = AJCALLOC0 (thys->SAttr, sizeof (AjPStr));
+    
+    (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_BEGIN], ajSeqsetBegin(val[0]));
+    (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_END], ajSeqsetEnd(val[0]));
+    (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_LENGTH], ajSeqsetLen(val[0]));
+    (void) ajStrFromBool (&thys->SetStr[ACD_SEQ_PROTEIN],
+			  ajSeqsetIsProt(val[0]));
+    (void) ajStrFromBool (&thys->SetStr[ACD_SEQ_NUCLEIC],
+			  ajSeqsetIsNuc(val[0]));
+    (void) ajStrAssS (&thys->SetStr[ACD_SEQ_NAME], val[0]->Name);
+    (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_MULTICOUNT], nsets);
+    (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_COUNT], ajSeqsetSize(val[0]));
+    
+    (void) acdInFileSave(ajSeqsetGetName(val[0]));
+
+    for (iattr=0; iattr < thys->SAttr; iattr++)
+    {
+	ajDebug("CalcAttr %s: '%S'\n",
+		acdCalcSeqset[iattr].Name, thys->SetStr[iattr]);
+    }
+
+    thys->Value = val;
+    (void) ajStrAssS (&thys->ValStr, reply);
+    
+    return;
 }
 
 /* @funcstatic acdSetSeqall ***************************************************
@@ -7252,8 +8270,8 @@ static void acdSetSeqall (AcdPAcd thys)
     (void) acdQualToBool (thys, "sprotein", ajFalse, &sprot, &defreply);
     (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
     
-    required = acdIsRequired(thys);
     (void) acdInFilename (&infname);
+    required = acdIsRequired(thys);
     (void) acdReplyInit (thys, ajStrStr(infname), &defreply);
     acdPromptSeq (thys);
     
@@ -8026,6 +9044,156 @@ static void acdSetString (AcdPAcd thys)
     
     return;
 }
+
+/* @func ajAcdGetTree *********************************************************
+**
+** Returns an item of type Tree as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPPhyloTree] Tree object. The data was already set by
+**         acdSetTree so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPPhyloTree* ajAcdGetTree (const char *token)
+{
+    return acdGetValue (token, "tree");
+}
+
+/* @func ajAcdGetTreeI ********************************************************
+**
+** Returns an item of type Tree as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @param [r] num [ajint] Token number (1 for the first)
+** @return [AjPPhyloTree] Tree object. The data was already set by
+**         acdSetTree so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPPhyloTree ajAcdGetTreeI (const char *token, ajint num)
+{
+    AjPPhyloTree* val;
+    ajint i;
+
+    val = acdGetValue (token, "tree");
+    for (i=1; i<num; i++)
+	if (!val[i])
+	    ajWarn ("value %d not found for %s, last value was %d\n",
+		    num, token, i-1);
+
+    return val[num-1];
+ }
+
+/* @funcstatic acdSetTree *****************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD tree file item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other is available) is an empty string.
+**
+** Attributes for number of trees (size) are applied with error
+** messages if exceeded.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdSetTree (AcdPAcd thys)
+{
+    AjPPhyloTree* val;
+
+    AjBool required = ajFalse;
+    AjBool ok = ajFalse;
+    static AjPStr defreply = NULL;
+    static AjPStr reply = NULL;
+    static AjPStr infname = NULL;
+    ajint itry;
+    ajint i;
+    
+    ajint size;
+    AjBool nullok = ajFalse;
+
+    val = NULL;
+
+    (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
+    (void) acdAttrToInt (thys, "size", 0, &size);
+
+    (void) acdInFilename (&infname);
+    required = acdIsRequired(thys);
+    (void) acdReplyInit (thys, ajStrStr(infname), &defreply);
+    acdPromptInfile (thys);
+    
+    for (itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+
+	(void) ajStrAssS (&reply, defreply);
+
+	if (required)
+	    (void) acdUserGet (thys, &reply);
+
+	if (ajStrLen(reply))
+	{
+	    val = ajPhyloTreeRead(reply, size);
+	    if (!val)
+	    {
+		acdBadVal (thys, required,
+			   "Unable to open file '%S' for input",
+			   reply);
+		ok = ajFalse;
+	    }
+	}
+	else
+	{
+	    if (!nullok)
+	    {
+		acdBadVal (thys, required,
+			   "Input file is required");
+		ok = ajFalse;
+	    }
+	}
+    }
+    if (!ok)
+	acdBadRetry (thys);
+    (void) acdInFileSave(reply);
+    
+    /* trees have special set attributes */
+
+    thys->SAttr = acdAttrListCount (acdCalcTree);
+    thys->SetAttr = &acdCalcTree[0];
+    thys->SetStr = AJCALLOC0 (thys->SAttr, sizeof (AjPStr));
+
+    if (val)
+    {
+	for (i=0;val[i];i++)
+	    continue;
+
+	(void) ajStrFromInt (&thys->SetStr[0],i); /* number of trees */
+	(void) ajStrAssS (&thys->ValStr, val[0]->Tree);
+    }
+    else
+    {
+	(void) ajStrFromInt (&thys->SetStr[0],0);
+	(void) ajStrAssC (&thys->ValStr, "");
+    }
+
+    thys->Value = val;
+    
+    return;
+}
+
 
 /* @func ajAcdValue ***********************************************************
 **
@@ -10871,6 +12039,37 @@ static AjBool acdAttrToStr (const AcdPAcd thys,
     return ajFalse;
 }
 
+/* @funcstatic acdAttrToChar **************************************************
+**
+** Resolves an attribute to a character with translation of variable name(s).
+**
+** @param [r] thys [const AcdPAcd] ACD item
+** @param [r] attr [const char*] Attribute name
+** @param [r] defval [char] Default value
+** @param [w] result [char*] Resulting value.
+** @return [AjBool] ajTrue if a value was defined, ajFalse if the
+**         default value was used.
+** @@
+******************************************************************************/
+
+static AjBool acdAttrToChar (const AcdPAcd thys,
+			    const char *attr, char defval,
+			    char* result)
+{
+    static AjPStr str = NULL;
+
+    (void) acdAttrResolve(thys, attr, &str);
+
+    if (ajStrLen(str))
+    {
+	*result = ajStrChar(str, 0);
+	return ajTrue;
+    }
+
+    *result = defval;
+    return ajFalse;
+}
+
 /* @funcstatic acdAttrResolve *************************************************
 **
 ** Resolves an attribute to a string with translation of variable name(s).
@@ -13341,7 +14540,8 @@ static AjBool acdGetAttr (AjPStr* result,
     AcdPAcd pa=NULL;
     AcdPAttr attr=NULL;
     ajint i;
-    
+
+    acdLog("acdGetAttr name '%S' attrib '%S'\n", name, attrib);
     (void) ajStrDelReuse (result);
     
     (void) ajStrAssS (&tempstr, name);
@@ -13410,7 +14610,11 @@ static AjBool acdGetAttr (AjPStr* result,
     
     if (pa->SAttr)
     {
+	acdLog("++calc++ Testing SAttr %d\n", pa->SAttr);
 	attr = pa->SetAttr;
+	for (i=0; i < pa->SAttr; i++)
+	    acdLog("calcattr[%d] '%s'\n",
+		   i, attr[i].Name);
 	i = acdFindAttr (attr, attrib);
 	if (i >= 0)
 	{
@@ -15737,8 +16941,10 @@ void ajAcdDummyFunction(void)
     AjPStr ajpstr=NULL;
     AcdPAcd acdpacd=NULL;
     float f=0.0;
+    char c;
 
     acdSetXxxx(acdpacd);	    /* template function for acdSet */
+    (void) acdAttrToChar(acdpacd, "attr", '.', &c);
     (void) acdQualToFloat(acdpacd, "", 0.0, 0, &f, &ajpstr);
 }
 
@@ -15816,12 +17022,17 @@ void ajAcdPrintType (AjPFile outf, AjBool full)
     ajFmtPrintF (outf, "# Name\n");
     ajFmtPrintF (outf, "#     Attribute    Type       Comment\n");
     
+    acdPrintCalcAttr (outf, full, "distances", acdCalcDistances);
     acdPrintCalcAttr (outf, full, "features", acdCalcFeat);
+    acdPrintCalcAttr (outf, full, "frequencies", acdCalcFrequencies);
+    acdPrintCalcAttr (outf, full, "properties", acdCalcProperties);
     acdPrintCalcAttr (outf, full, "regexp", acdCalcRegexp);
     acdPrintCalcAttr (outf, full, "sequence", acdCalcSeq);
     acdPrintCalcAttr (outf, full, "seqall", acdCalcSeqall);
     acdPrintCalcAttr (outf, full, "seqset", acdCalcSeqset);
+    acdPrintCalcAttr (outf, full, "seqsetall", acdCalcSeqsetall);
     acdPrintCalcAttr (outf, full, "string", acdCalcString);
+    acdPrintCalcAttr (outf, full, "tree", acdCalcTree);
     
     return;
 }
@@ -16061,17 +17272,20 @@ void ajAcdExit (AjBool silent)
 	 ** the value is not needed
 	 */
 
-	if (!staySilent) return;
+	/* if (!staySilent) return; */
 
+	ajDebug("ajAcdExit Name................ Assoc Level  Used\n");
 	for (pa=acdList; pa; pa=pa->Next)
 	{
+	    ajDebug("ajAcdExit %20S   %3B   %3d   %3B\n",
+		    pa->Name, pa->Assoc, pa->Level, pa->Used);
 	    if (pa->Assoc)
 		continue;
 	    if (pa->Level != ACD_PARAM && pa->Level != ACD_QUAL)
 		continue;
 	    if (!pa->Used)
 	    {
-		acdLog ("ACD qualifier never used: %S = '%S' (assoc %B)",
+		ajWarn ("ACD qualifier never used: %S = '%S' (assoc %B)",
 			pa->Name, pa->ValStr, pa->Assoc);
 	    }
 	}

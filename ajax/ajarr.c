@@ -1438,7 +1438,6 @@ AjBool ajFloatParse (AjPStr str, AjPFloat* array)
 
     while (ajRegExec (numexp, tmpstr))
     {
-	if (i >(*array)->Len) return ajFalse;
 	ajRegSubI (numexp, 0, &numstr);
 	ajRegPost (numexp, &tmpstr);
 	ajDebug ("array [%d] '%S'\n", i, numstr);
@@ -1447,7 +1446,8 @@ AjBool ajFloatParse (AjPStr str, AjPFloat* array)
 	i++;
     }
 
-    if (i < (*array)->Len) return ajFalse;
+    if (!i)
+	return ajFalse;
 
     return ajTrue;
 }

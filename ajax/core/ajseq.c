@@ -27,6 +27,7 @@
 
 #include "ajax.h"
 #include <limits.h>
+#include <float.h>
 
 static ajulong seqCrcTable[256];
 
@@ -4248,3 +4249,332 @@ ajint ajSeqFill (AjPSeq seq, ajint len)
 
     return ilen;
 }
+
+/* @funcstatic ajSeqsetConsStats **********************************************
+**
+** Calculates alignment statistics (and a consensus) from a sequence set.
+**
+** @param [u] thys [AjPSetset] Sequence set.
+** @param [w] mymatrix [AjPMatrix] User-defined matrix, or NULL for the default
+** @param [w] cons [AjPStr*] the created consensus sequence
+** @param [r] retident [ajint*] number of residues identical in all sequences
+** @param [r] retsim   [ajint*] number of residues similar in all sequences
+** @param [r] retgap   [ajint*] number of residues with a gap in 1 sequence
+** @param [r] retlen [ajint*] length of the alignment
+** @return [void]
+******************************************************************************/
+
+AjBool ajSeqsetConsStats (AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
+			   ajint* retident, ajint* retsim, ajint* retgap,
+			   ajint* retlen)
+{
+    AjPMatrix imatrix = NULL;
+    AjPStr matname = NULL;
+    ajint   imat;     /* iterate over identical and matching arrays */
+    ajint   iseq;	     /* iterate over sequences (outer loop) */
+    ajint   jseq;	     /* iterate over sequences (inner loop) */
+    
+    ajint   **matrix = NULL;
+    float   **fmatrix = NULL;
+    ajint   m1=0;
+    ajint   m2=0;
+    ajint   matsize;
+    ajint   matchingmaxindex;
+    ajint   identicalmaxindex;
+    ajint   nseqs;
+    ajint   mlen;
+    
+    float   max;
+    float   contri=0;
+    float   contrj=0;
+    
+    AjPSeqCvt cvt=0;
+    AjPFloat  posScore=NULL;	/* cumulative similarity scores by sequence */
+                                /* for matching all other sequences */
+    float   *identical;		/* cum. weight for each valid character */
+    float   *matching;		/* cum. weight for matching this character */
+    ajint   highindex;		/* position of highest score in posScore */
+    ajint   kkpos;		/* alignment position loop variable */
+    ajint   kipos;		/* alignment position kkpos + iseq start */
+    ajint   kjpos;		/* alignment position kkpos + jseq start */
+    ajint   khpos;		/* alignment position in highindex */
+    
+    float himatch = 0.0;		/* highest match score (often used) */
+    
+    char **seqcharptr;
+    char res;
+    char nocon;
+    char gapch;
+    float fplural;
+    float fplurality = 51.0;
+    float setcase = 0.0;
+    float ident;
+    AjBool isident;
+    AjBool issim;
+    AjBool isgap;
+    AjPSeq* seqs;
+    ajint numres;			/* number of residues (not spaces) */
+    
+    if (mymatrix)
+	imatrix = mymatrix;
+    if (!imatrix)
+    {
+	if(ajSeqsetIsNuc(thys))
+	    ajStrAssC (&matname, "EDNAFULL");
+	else
+	    ajStrAssC (&matname, "EBLOSUM62");
+	ajMatrixRead(&imatrix, matname);
+    }
+    
+    *retident=0;
+    *retsim=0;
+    *retgap=0;
+    
+    nseqs = thys->Size;
+    mlen = thys->Len;
+    fplural = ajSeqsetTotweight(thys) * fplurality / 100.;
+    ident = ajSeqsetTotweight(thys);
+    setcase = ident;
+    
+    ajDebug("fplural:%.2f ident:%.1f setcase:%.1f mlen: %d\n",
+	    fplural, ident, setcase, mlen);
+    
+    matrix  = ajMatrixArray(imatrix);
+    cvt     = ajMatrixCvt(imatrix); /* return conversion table */
+    matsize = ajMatrixSize(imatrix);
+    
+    AJCNEW(seqs,nseqs);
+    AJCNEW(seqcharptr,nseqs);
+    AJCNEW(identical,matsize);
+    AJCNEW(matching,matsize);
+    
+    posScore = ajFloatNew();
+    
+    gapch = '-';
+    nocon = 'x';
+    
+    for(iseq=0;iseq<nseqs;iseq++)	   /* get sequence as string */
+    {
+	seqcharptr[iseq] =  ajSeqsetSeq(thys, iseq);
+	seqs[iseq] =  ajSeqsetGetSeq(thys, iseq);
+    }
+    
+    /* For each position in the alignment, calculate consensus character */
+    
+    for(kkpos=0; kkpos< mlen; kkpos++)
+    {
+	res = gapch;
+	
+	isident=ajFalse;
+	issim=ajFalse;
+	isgap=ajFalse;
+	
+	/*
+	 ** reset identities and +ve matches
+	 */
+	
+	for(imat=0;imat<matsize;imat++)
+	{
+	    identical[imat] = 0.0; /* weights of all sequence chars in col. */
+	    matching[imat] = 0.0;
+	}
+	
+	/*
+	 ** reset the posScore array
+	 */
+	
+	for(iseq=0;iseq<nseqs;iseq++)
+	    ajFloatPut(&posScore,iseq,0.);
+	
+	/*
+	 ** generate scores (identical, posScore) for columns
+	 */
+	
+	for(iseq=0;iseq<nseqs;iseq++)
+	{
+	    kipos = kkpos;
+	    m1 = ajSeqCvtK(cvt,seqcharptr[iseq][kipos]);
+	    if(m1)
+		identical[m1] += seqs[iseq]->Weight;
+	    
+	    for(jseq=iseq+1;jseq<nseqs;jseq++)
+	    {
+		kjpos = kkpos;
+		m2 = ajSeqCvtK(cvt,seqcharptr[jseq][kjpos]);
+		if(m1 && m2)
+		{
+		    if (matrix)
+		    {
+			contri = (float)matrix[m1][m2]*seqs[jseq]->Weight;
+			+ajFloatGet(posScore,iseq);
+			contrj = (float)matrix[m1][m2]*seqs[iseq]->Weight;
+			+ajFloatGet(posScore,jseq);
+		    }
+		    else
+		    {
+			contri = fmatrix[m1][m2]*seqs[jseq]->Weight;
+			+ajFloatGet(posScore,iseq);
+			contrj = fmatrix[m1][m2]*seqs[iseq]->Weight;
+			+ajFloatGet(posScore,jseq);
+		    }
+		    ajFloatPut(&posScore,iseq,contri);
+		    ajFloatPut(&posScore,jseq,contrj);
+		}
+	    }
+	}
+	/*
+	 ** highindex is the highest scoring position (seq no.) in posScore
+	 ** for 2 sequences this appears to be usually 0
+	 */
+	
+	highindex = -1;
+	max = -FLT_MAX;
+	numres=0;
+	for(iseq=0;iseq<nseqs;iseq++)
+	{
+	    kipos = kkpos;
+	    if (seqcharptr[iseq][kipos] != ' ' &&
+		seqcharptr[iseq][kipos] != '-')
+		numres++;
+	    
+	    if(ajFloatGet(posScore,iseq) > max)
+	    {
+		highindex = iseq;
+		max       = ajFloatGet(posScore,iseq);
+	    }
+	}
+	
+	/* highindex is now set */
+	
+	/*
+	 ** find +ve matches in the column
+	 ** m1 is non-zero for a valid character in iseq
+	 ** m2 is non-zero for a valid character in jseq
+	 */
+	
+	for(iseq=0;iseq<nseqs;iseq++)
+	{
+	    kipos = kkpos;
+	    m1 = ajSeqCvtK (cvt, seqcharptr[iseq][kipos]);
+	    if(!matching[m1]) /* first time we have met this character */
+	    {
+		for(jseq=0;jseq<nseqs;jseq++) /* all (other) sequences */
+		{
+		    kjpos = kkpos;
+		    m2 = ajSeqCvtK (cvt, seqcharptr[jseq][kjpos]);
+		    if (matrix)
+		    {
+			if(m1 && m2 && matrix[m1][m2] > 0) 
+			{		/* 'matching' if positive */
+			    matching[m1] += seqs[jseq]->Weight;
+			}
+		    }
+		    else
+		    {
+			if(m1 && m2 && fmatrix[m1][m2] > 0.0)
+			{
+			    matching[m1] += seqs[jseq]->Weight;
+			}
+		    }
+
+		}
+	    }
+	}
+	
+	matchingmaxindex  = 0;      /* get max matching and identical */
+	identicalmaxindex = 0;
+	for(iseq=0;iseq<nseqs;iseq++)
+	{
+	    kipos = kkpos;
+	    m1 = ajSeqCvtK(cvt,seqcharptr[iseq][kipos]);
+	    if(identical[m1] > identical[identicalmaxindex])
+		identicalmaxindex= m1;
+	}
+	
+	for(iseq=0;iseq<nseqs;iseq++)
+	{
+	    kipos = kkpos;
+	    m1 = ajSeqCvtK(cvt,seqcharptr[iseq][kipos]);
+	    if(matching[m1] > matching[matchingmaxindex])
+	    {
+		matchingmaxindex= m1;
+	    }
+	    else if(matching[m1] ==  matching[matchingmaxindex])
+	    {
+		if(identical[m1] > identical[matchingmaxindex])
+		{
+		    matchingmaxindex= m1;
+		}
+	    }
+	    if (seqcharptr[iseq][kipos] == '-' ||
+		seqcharptr[iseq][kipos] == ' ')
+	    {
+		isgap=ajTrue;
+	    }
+	}
+	khpos = kkpos;
+	himatch = matching[ajSeqCvtK(cvt,seqcharptr[highindex][khpos])];
+	
+	ajDebug("index[%d] ident:%d '%c' %.1f matching:%d '%c' %.1f %.1f "
+		"high:%d '%c' %.1f\n",
+		kkpos,
+		identicalmaxindex,
+		ajMatrixChar(imatrix, identicalmaxindex-1),
+		identical[identicalmaxindex],
+		matchingmaxindex,
+		ajMatrixChar(imatrix, matchingmaxindex-1),
+		matching[matchingmaxindex],
+		himatch,
+		highindex, seqcharptr[highindex][khpos],
+		seqs[highindex]->Weight);
+	
+	if (identical[identicalmaxindex] >= ident) isident=ajTrue;
+	if (matching[matchingmaxindex] >= fplural) issim=ajTrue;
+	
+	/* plurality check */
+	res = gapch;
+	if(himatch >= fplural)
+	{
+	    if (seqcharptr[highindex][khpos] != '-')
+	    {
+		res = toupper((int)seqcharptr[highindex][khpos]);
+	    }
+	}
+	if(nseqs > 1 && himatch == seqs[highindex]->Weight)
+	{
+	    if (numres > 1)
+		res = nocon;
+	    else
+		res = gapch;
+	}
+	
+	if (issim && ! isident)
+	    res = tolower((int)res);
+	
+	ajStrAppK(cons,res);
+	if (isident) ++*retident;
+	if (issim) ++*retsim;
+	if (isgap) ++*retgap;
+	
+	ajDebug ("id:%b sim:%b gap:%b res:%c '", isident, issim, isgap, res);
+	for (iseq=0; iseq<nseqs; iseq++)
+	{
+	    kipos = kkpos;
+	    ajDebug("%c", seqcharptr[iseq][kipos]);
+	}
+	ajDebug ("'\n");	
+    }
+    
+    *retlen = ajSeqsetLen(thys);
+    
+    ajDebug ("ret ident:%d sim:%d gap:%d len:%d\n",
+	     *retident, *retsim, *retgap, *retlen);
+    
+    AJFREE(seqcharptr);
+    AJFREE(matching);
+    AJFREE(identical);
+    ajFloatDel(&posScore);
+    
+    return ajTrue;    
+}
+

@@ -61,7 +61,7 @@ ajint  ajRegOffsetI (AjPRegexp rp, ajint isub);
 /* get substrings */
 
 AjBool ajRegPost (AjPRegexp rp, AjPStr* post);
-AjBool ajRegPostC (AjPRegexp rp, char** post);
+AjBool ajRegPostC (AjPRegexp rp, const char** post);
 void   ajRegSubI (AjPRegexp rp, ajint isub, AjPStr* dest);
 
 /* destructor */

@@ -63,6 +63,7 @@ AjBool       ajSeqsetGetFromUsa(const AjPStr thys, AjPSeqset *seq);
 AjBool       ajSeqsetFromList (AjPSeqset thys, AjPList list);
 ajint        ajSeqsetFromPair (AjPSeqset thys,
 			       const AjPSeq seqa, const AjPSeq seqb);
+AjBool       ajSeqsetallRead (AjPList thys, AjPSeqin seqin);
 AjBool       ajSeqsetRead (AjPSeqset thys, AjPSeqin seqin);
 
 #endif

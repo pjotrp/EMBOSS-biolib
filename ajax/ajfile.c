@@ -1971,6 +1971,20 @@ FILE* ajFileFp (const AjPFile thys)
     return thys->fp;
 }
 
+/* @func ajFileEof ************************************************************
+**
+** Tests whether we have reached end of file already
+**
+** @param [u] thys [const AjPFile] File
+** @return [AjBool] ajTrue if we already set end-of-file
+** @@
+******************************************************************************/
+
+AjBool ajFileEof (const AjPFile thys)
+{
+    return thys->End;
+}
+
 /* ==================================================================== */
 /* ========================= constructors ============================= */
 /* ==================================================================== */

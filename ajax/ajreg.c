@@ -284,12 +284,12 @@ AjBool ajRegPost (AjPRegexp rp, AjPStr* post)
 ** changes then the results are undefined.
 **
 ** @param [r] rp [AjPRegexp] Compiled regular expression.
-** @param [w] post [char**] Character string to hold the result.
+** @param [w] post [const char**] Character string to hold the result.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajRegPostC (AjPRegexp rp, char** post)
+AjBool ajRegPostC (AjPRegexp rp, const char** post)
 {
     if (rp->ovector[1])
     {
