@@ -157,6 +157,8 @@ static AjBool     seqBlastReadTable (const AjPSeqin seqin,
 static void       seqBlastStripNcbi (AjPStr* line);
 
 static AjBool     seqCdAll (AjPSeqin seqin);
+static int        seqCdEntryCmp (const void* a, const void* b);
+static void       seqCdEntryDel (void** pentry, void* cl);
 static SeqPCdFile seqCdFileOpen (AjPStr dir, char* name, AjPStr* fullname);
 static size_t     seqCdFileRead (void* ptr, size_t element_size,
 				 SeqPCdFile thys);
@@ -344,6 +346,16 @@ static AjBool seqAccessEmblcd (AjPSeqin seqin)
 	      ajDebug ("EMBLCD Query failed\n");
 	      if (ajStrLen(qry->Id))
 		  ajErr ("Database Query '%S' not found", qry->Id);
+	      else if (ajStrLen(qry->Id))
+		  ajErr ("Database Query '%S' not found", qry->Acc);
+	      else if (ajStrLen(qry->Sv))
+		  ajErr ("Database Query 'sv:%S' not found", qry->Sv);
+	      else if (ajStrLen(qry->Des))
+		  ajErr ("Database Query 'des:%S' not found", qry->Des);
+	      else if (ajStrLen(qry->Key))
+		  ajErr ("Database Query 'key:%S' not found", qry->Key);
+	      else if (ajStrLen(qry->Org))
+		  ajErr ("Database Query 'org:%S' not found", qry->Org);
 	      else
 		  ajErr ("Database Query '%S' not found", qry->Acc);
 	    }
@@ -1343,6 +1355,7 @@ static AjBool seqAccessSrsfasta (AjPSeqin seqin)
 static AjBool seqAccessSrswww (AjPSeqin seqin)
 {
     static AjPRegexp urlexp = NULL;
+    static AjPRegexp proxexp = NULL;
 
     static AjPStr url = NULL;
     static AjPStr host = NULL;
@@ -1358,7 +1371,27 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
     ajint status;
     FILE *fp;
 
+    AjPStr proxyName=NULL;	/* host for proxy access.*/
+    ajint proxyPort=0;		/* port for proxy axxess */
+    AjPStr proxyStr=NULL;
+    AjPStr proxy=NULL;		/* proxy from variable or query */
+
     AjPSeqQuery qry = seqin->Query;
+
+    ajNamGetValueC ("proxy", &proxy);
+    if (ajStrLen(qry->DbProxy))
+      ajStrAssS (&proxy, qry->DbProxy);
+
+    if (ajStrMatchC(proxy, ":"))
+      ajStrAssC (&proxy, "");
+
+    proxexp = ajRegCompC("^([a-z0-9.-]+):([0-9]+)$");
+    if (ajRegExec (proxexp, proxy))
+    {
+	ajRegSubI(proxexp, 1, &proxyName);
+	ajRegSubI(proxexp, 2, &proxyStr);
+	(void) ajStrToInt (proxyStr, &proxyPort);
+    }
 
     if (!ajNamDbGetUrl (qry->DbName, &url))
     {
@@ -1388,7 +1421,12 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
 
     ajDebug ("seqAccessSrswww %S:%S url: '%S'\n", searchdb, qry->Id, urlget);
 
-    (void) ajFmtPrintS(&get, "GET %S?-e+-ascii", urlget);
+    if (ajStrLen(proxyName))
+      (void) ajFmtPrintS(&get, "GET http://%S:%d%S?-e+-ascii",
+			 host, iport, urlget);
+    else
+      (void) ajFmtPrintS(&get, "GET %S?-e+-ascii", urlget);
+
     if (ajStrLen(qry->Id))
     {
 	(void) ajFmtPrintAppS(&get, "+[%S-id:%S]",
@@ -1419,7 +1457,7 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
 
     ajDebug ("searching with SRS url '%S'\n", get);
 
-    (void) ajFmtPrintAppS(&get, " HTTP/1.0\n");
+    (void) ajFmtPrintAppS(&get, " HTTP/1.1\n");
 
     (void) ajStrAssS (&seqin->Db, qry->DbName);
 
@@ -1427,9 +1465,14 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
 
     ajDebug ("host '%S' port '%S' (%d) get '%S'\n", host, port, iport, get);
 
-    hp = gethostbyname(ajStrStr(host));
+    if (ajStrLen(proxyName))
+      hp = gethostbyname(ajStrStr(proxyName));
+    else
+      hp = gethostbyname(ajStrStr(host));
+
     if (!hp)
     {
+	ajDebug ("Unable to get host '%S'\n", host);
 	ajErr ("Unable to get host '%S'", host);
 	return ajFalse;
     }
@@ -1438,21 +1481,29 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
     sock = socket(AF_INET, SOCK_STREAM, 0); 
     if (sock < 0)
     {
+	ajDebug ("Socket create failed, sock: %d\n", sock);
 	ajErr ("Socket create failed");
 	return ajFalse;
     }
 
     ajDebug ("setup socket data \n");
     sin.sin_family = AF_INET;
-    sin.sin_port = htons(iport);	/* convert to short in network byte order */
+
+    if (ajStrLen(proxyName))	/* convert to short in network byte order */
+      sin.sin_port = htons(proxyPort);
+    else
+      sin.sin_port = htons(iport);
+
 #ifndef __VMS
     (void) memcpy (&sin.sin_addr, hp->h_addr, hp->h_length);
 #endif
-    ajDebug ("connecting to socket\n");
+    ajDebug ("connecting to socket %d\n", sock);
     status = connect (sock, (struct sockaddr*) &sin, sizeof(sin));
     if (status < 0)
     {
+	ajDebug ("socket connect failed, status: %d\n", status);
 	ajErr ("socket connect failed");
+	perror("Socket connet failed");
 	return ajFalse;
     }
 
@@ -1480,12 +1531,14 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
     fp = ajSysFdopen (sock, "r");
     if (!fp)
     {
+	ajDebug ("socket open failed sock: %d\n", sock);
 	ajErr ("socket open failed");
 	return ajFalse;
     }
     seqin->Filebuff = ajFileBuffNewF(fp);
     if (!seqin->Filebuff)
     {
+	ajDebug ("socket buffer attach failed\n");
 	ajErr ("socket buffer attach failed");
 	return ajFalse;
     }
@@ -1703,6 +1756,178 @@ static AjBool seqCdQryEntry (AjPSeqQuery qry)
 	ajStrDel (&qryd->trgLine->Target);
     }
 
+    /*
+    ** if needed, search by SeqVersion
+    */
+
+    if (ipos < 0 &&
+	ajStrLen(qry->Sv) &&
+	seqCdTrgOpen (qry->IndexDir, "seqvn",
+		      &qryd->trgfp, &qryd->hitfp))
+    { 
+	trghit = seqCdTrgSearch (qryd->trgLine, qry->Sv, qryd->trgfp);
+	if (trghit >= 0)
+	{
+	    ajint i;
+	    ajint j;
+	    (void) seqCdFileSeek (qryd->hitfp, qryd->trgLine->FirstHit-1);
+	    ajDebug("seqvn First: %d Count: %d\n",
+		    qryd->trgLine->FirstHit, qryd->trgLine->NHits);
+	    ipos = qryd->trgLine->FirstHit;
+	    for (i = 0; i < qryd->trgLine->NHits; i++)
+	    {
+		(void) seqCdFileReadInt (&j, qryd->hitfp);
+		j--;
+		ajDebug("hitlist[%d] entry = %d\n", i, j);
+		(void) seqCdIdxLine (qryd->idxLine, j, qryd->ifp);
+
+		if (!qryd->Skip[qryd->idxLine->DivCode-1])
+		{
+		    AJNEW0(entry);
+		    entry->div = qryd->idxLine->DivCode;
+		    entry->annoff = qryd->idxLine->AnnOffset;
+		    entry->seqoff = qryd->idxLine->SeqOffset;
+		    ajListPushApp (qryd->List, (void*)entry);
+		}
+		else
+		    ajDebug("SKIP: seqvn '%S' [file %d]\n",
+			    qry->Acc, qryd->idxLine->DivCode);
+	    }
+	  
+	}
+	(void) seqCdTrgClose (&qryd->trgfp, &qryd->hitfp);
+	ajStrDel (&qryd->trgLine->Target);
+    }
+
+    /*
+    ** if needed, search by Description
+    */
+
+    if (ipos < 0 &&
+	ajStrLen(qry->Sv) &&
+	seqCdTrgOpen (qry->IndexDir, "des",
+		      &qryd->trgfp, &qryd->hitfp))
+    { 
+	trghit = seqCdTrgSearch (qryd->trgLine, qry->Des, qryd->trgfp);
+	if (trghit >= 0)
+	{
+	    ajint i;
+	    ajint j;
+	    (void) seqCdFileSeek (qryd->hitfp, qryd->trgLine->FirstHit-1);
+	    ajDebug("des First: %d Count: %d\n",
+		    qryd->trgLine->FirstHit, qryd->trgLine->NHits);
+	    ipos = qryd->trgLine->FirstHit;
+	    for (i = 0; i < qryd->trgLine->NHits; i++)
+	    {
+		(void) seqCdFileReadInt (&j, qryd->hitfp);
+		j--;
+		ajDebug("hitlist[%d] entry = %d\n", i, j);
+		(void) seqCdIdxLine (qryd->idxLine, j, qryd->ifp);
+
+		if (!qryd->Skip[qryd->idxLine->DivCode-1])
+		{
+		    AJNEW0(entry);
+		    entry->div = qryd->idxLine->DivCode;
+		    entry->annoff = qryd->idxLine->AnnOffset;
+		    entry->seqoff = qryd->idxLine->SeqOffset;
+		    ajListPushApp (qryd->List, (void*)entry);
+		}
+		else
+		    ajDebug("SKIP: des '%S' [file %d]\n",
+			    qry->Acc, qryd->idxLine->DivCode);
+	    }
+	  
+	}
+	(void) seqCdTrgClose (&qryd->trgfp, &qryd->hitfp);
+	ajStrDel (&qryd->trgLine->Target);
+    }
+
+    /*
+    ** if needed, search by Keyword
+    */
+
+    if (ipos < 0 &&
+	ajStrLen(qry->Sv) &&
+	seqCdTrgOpen (qry->IndexDir, "keyword",
+		      &qryd->trgfp, &qryd->hitfp))
+    { 
+	trghit = seqCdTrgSearch (qryd->trgLine, qry->Key, qryd->trgfp);
+	if (trghit >= 0)
+	{
+	    ajint i;
+	    ajint j;
+	    (void) seqCdFileSeek (qryd->hitfp, qryd->trgLine->FirstHit-1);
+	    ajDebug("key First: %d Count: %d\n",
+		    qryd->trgLine->FirstHit, qryd->trgLine->NHits);
+	    ipos = qryd->trgLine->FirstHit;
+	    for (i = 0; i < qryd->trgLine->NHits; i++)
+	    {
+		(void) seqCdFileReadInt (&j, qryd->hitfp);
+		j--;
+		ajDebug("hitlist[%d] entry = %d\n", i, j);
+		(void) seqCdIdxLine (qryd->idxLine, j, qryd->ifp);
+
+		if (!qryd->Skip[qryd->idxLine->DivCode-1])
+		{
+		    AJNEW0(entry);
+		    entry->div = qryd->idxLine->DivCode;
+		    entry->annoff = qryd->idxLine->AnnOffset;
+		    entry->seqoff = qryd->idxLine->SeqOffset;
+		    ajListPushApp (qryd->List, (void*)entry);
+		}
+		else
+		    ajDebug("SKIP: key '%S' [file %d]\n",
+			    qry->Acc, qryd->idxLine->DivCode);
+	    }
+	  
+	}
+	(void) seqCdTrgClose (&qryd->trgfp, &qryd->hitfp);
+	ajStrDel (&qryd->trgLine->Target);
+    }
+
+    /*
+    ** if needed, search by Taxonomy
+    */
+
+    if (ipos < 0 &&
+	ajStrLen(qry->Org) &&
+	seqCdTrgOpen (qry->IndexDir, "taxon",
+		      &qryd->trgfp, &qryd->hitfp))
+    { 
+	trghit = seqCdTrgSearch (qryd->trgLine, qry->Org, qryd->trgfp);
+	if (trghit >= 0)
+	{
+	    ajint i;
+	    ajint j;
+	    (void) seqCdFileSeek (qryd->hitfp, qryd->trgLine->FirstHit-1);
+	    ajDebug("tax First: %d Count: %d\n",
+		    qryd->trgLine->FirstHit, qryd->trgLine->NHits);
+	    ipos = qryd->trgLine->FirstHit;
+	    for (i = 0; i < qryd->trgLine->NHits; i++)
+	    {
+		(void) seqCdFileReadInt (&j, qryd->hitfp);
+		j--;
+		ajDebug("hitlist[%d] entry = %d\n", i, j);
+		(void) seqCdIdxLine (qryd->idxLine, j, qryd->ifp);
+
+		if (!qryd->Skip[qryd->idxLine->DivCode-1])
+		{
+		    AJNEW0(entry);
+		    entry->div = qryd->idxLine->DivCode;
+		    entry->annoff = qryd->idxLine->AnnOffset;
+		    entry->seqoff = qryd->idxLine->SeqOffset;
+		    ajListPushApp (qryd->List, (void*)entry);
+		}
+		else
+		    ajDebug("SKIP: tax '%S' [file %d]\n",
+			    qry->Acc, qryd->idxLine->DivCode);
+	    }
+	  
+	}
+	(void) seqCdTrgClose (&qryd->trgfp, &qryd->hitfp);
+	ajStrDel (&qryd->trgLine->Target);
+    }
+
     if (ipos < 0)
 	return ajFalse;
     if (!ajListLength(qryd->List))
@@ -1725,22 +1950,77 @@ static AjBool seqCdQryEntry (AjPSeqQuery qry)
 
 static AjBool seqCdQryQuery (AjPSeqQuery qry)
 {
+    SeqPCdQry qryd;
+
     qry->QryDone = ajTrue;
 
     if(ajStrLen(qry->Id))
     {
 	if (!seqCdIdxQuery (qry))
 	    return ajFalse;
+	qryd = qry->QryData;
+	ajListUnique(qryd->List, seqCdEntryCmp, seqCdEntryDel);
 	return ajTrue;
     }
-    else if(ajStrLen(qry->Acc))
+    else if(ajStrLen(qry->Acc) ||
+	    ajStrLen(qry->Sv) ||
+	    ajStrLen(qry->Des) ||
+	    ajStrLen(qry->Key) ||
+	    ajStrLen(qry->Org))
     {
 	if(!seqCdTrgQuery(qry))
 	    return ajFalse;
+	qryd = qry->QryData;
+	ajListUnique(qryd->List, seqCdEntryCmp, seqCdEntryDel);
 	return ajTrue;
     }
-      
+
+
     return ajFalse;
+}
+
+/* @funcstatic seqCdEntryCmp ********************************************
+**
+** Compares two SeqPEntry objects
+**
+** @param [r] qry [AjPSeqQuery] Query data
+** @return [AjBool] ajTrue if successful
+** @@
+******************************************************************************/
+static int seqCdEntryCmp (const void* pa, const void* pb) {
+
+  SeqPCdEntry a = *(SeqPCdEntry*) pa;
+  SeqPCdEntry b = *(SeqPCdEntry*) pb;
+
+  ajDebug ("seqCdEntryCmp %x %d %d : %x %d %d\n",
+	  a, a->div, a->annoff,
+	  b, b->div, b->annoff);
+
+  if (a->div != b->div)
+    return (a->div - b->div);
+
+  return (a->annoff - b->annoff);
+}
+
+/* @funcstatic seqCdEntryDel********************************************
+**
+** Deletes a SeqPCdEntry object
+**
+** @param [r] qry [AjPSeqQuery] Query data
+** @return [AjBool] ajTrue if successful
+** @@
+******************************************************************************/
+static void seqCdEntryDel (void** pentry, void* cl) {
+
+  /* SeqPCdEntry a = (SeqPCdEntry) *pentry; */
+
+  /*
+  ajDebug ("seqCdEntryDel %x %x %d %d\n", pentry,
+	  a, a->div, a->annoff);
+  */
+
+  AJFREE (*pentry);
+  return;
 }
 
 /* @funcstatic seqCdQryNext ********************************************
@@ -1763,22 +2043,27 @@ static AjBool seqCdQryNext (AjPSeqQuery qry)
 	return ajFalse;
 
     ajDebug ("qryd->List (b) length %d\n", ajListLength(qryd->List));
-    /*ajListTrace (qryd->List);*/
+    ajListTrace (qryd->List);
     (void) ajListPop (qryd->List, &item);
     entry = (SeqPCdEntry) item;
 
-    ajDebug ("entry: %X div: %d (%d) ann: %d seq: %d\n",
+    ajDebug ("entry: %x div: %d (%d) ann: %d seq: %d\n",
 	     entry, entry->div, qryd->div, entry->annoff, entry->seqoff);
 
     qryd->idnum = entry->annoff - 1;
 
+    ajDebug ("idnum: %d\n", qryd->idnum);
+
     if (entry->div != qryd->div)
     {
 	qryd->div = entry->div;
+    ajDebug ("div: %d\n", qryd->div);
 	seqCdQryFile (qry);
     }
   
     ajDebug ("Offsets (cd) %d %d\n", entry->annoff, entry->seqoff);
+    ajDebug ("libr %x\n", qryd->libr);
+    ajDebug ("libr %F\n", qryd->libr);
 
     ajFileSeek (qryd->libr, entry->annoff,0);
     if (qryd->libs)
@@ -2882,13 +3167,18 @@ static AjBool seqBlastAll (const AjPSeqin seqin)
 
 static AjBool seqCdQryFile (AjPSeqQuery qry)
 {
-    SeqPCdQry qryd = qry->QryData;
+    SeqPCdQry qryd;
 
     short j;
     static AjPRegexp divexp = NULL;
 
     if (!divexp)
 	divexp = ajRegCompC("^([^ ]+)( +([^ ]+))?");
+
+    ajDebug ("seqCdQryFile qry %x\n",qry);
+    qryd = qry->QryData;
+    ajDebug ("seqCdQryFile qryd %x\n",qryd);
+    ajDebug ("seqCdQryFile %F\n",qryd->dfp->File);
 
     (void) seqCdFileSeek (qryd->dfp, (qryd->div - 1));
 
@@ -3002,22 +3292,43 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
 {
     struct sockaddr_in sin;
     struct hostent *hp;
-
     ajint sock;
     ajint status;
     FILE *fp;
 
+    AjPStr proxyName=NULL;	/* host for proxy access.*/
+    ajint proxyPort=0;		/* port for proxy axxess */
+    AjPStr proxyStr=NULL;
+    AjPStr proxy=NULL;		/* proxy from variable or query */
+
     AjPSeqQuery qry = seqin->Query;
 
     static AjPRegexp urlexp = NULL;
+    static AjPRegexp proxexp = NULL;
 
     static AjPStr url = NULL;
     static AjPStr host = NULL;
     static AjPStr port = NULL;
     static AjPStr urlget = NULL;
     static AjPStr get = NULL;
+    static AjPStr gethead = NULL;
     ajint iport = 80;
     ajint ipos;
+
+    ajNamGetValueC ("proxy", &proxy);
+    if (ajStrLen(qry->DbProxy))
+      ajStrAssS (&proxy, qry->DbProxy);
+
+    if (ajStrMatchC(proxy, ":"))
+      ajStrAssC (&proxy, "");
+
+    proxexp = ajRegCompC("^([a-z0-9.-]+):([0-9]+)$");
+    if (ajRegExec (proxexp, proxy))
+    {
+	ajRegSubI(proxexp, 1, &proxyName);
+	ajRegSubI(proxexp, 2, &proxyStr);
+	(void) ajStrToInt (proxyStr, &proxyPort);
+    }
 
     if (!ajNamDbGetUrl (qry->DbName, &url))
     {
@@ -3041,7 +3352,12 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
 	(void) ajStrToInt (port, &iport);
     }
     ajRegSubI(urlexp, 3, &urlget);
-    (void) ajFmtPrintS(&get, "GET %S HTTP/1.0\n", urlget);
+
+    if (ajStrLen(proxyName))
+      (void) ajFmtPrintS(&get, "GET http://%S:%d%S HTTP/1.1\n",
+			 host, iport, urlget);
+    else
+      (void) ajFmtPrintS(&get, "GET %S HTTP/1.1\n", urlget);
 
     ipos = ajStrFindC(get, "%s");
     while (ipos >= 0)
@@ -3054,7 +3370,11 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
 
     ajDebug ("host '%S' port '%S' (%d) get '%S'\n", host, port, iport, get);
 
-    hp = gethostbyname(ajStrStr(host));
+    if (ajStrLen(proxyName))
+      hp = gethostbyname(ajStrStr(proxyName));
+    else
+      hp = gethostbyname(ajStrStr(host));
+
     if (!hp)
     {
 	ajErr ("Unable to get host '%S'", host);
@@ -3072,48 +3392,60 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
 
     ajDebug ("setup socket data \n");
     sin.sin_family = AF_INET;
-    sin.sin_port = htons(iport);	/* convert to short in network byte order */
+
+    if (ajStrLen(proxyName))	/* convert to short in network byte order */
+      sin.sin_port = htons(proxyPort);
+    else
+      sin.sin_port = htons(iport);
+
 #ifndef __VMS
     (void) memcpy (&sin.sin_addr, hp->h_addr, hp->h_length);
 #endif
-    ajDebug ("connecting to socket\n");
+    ajDebug ("connecting to socket %d\n\n");
     status = connect (sock, (struct sockaddr*) &sin, sizeof(sin));
     if (status < 0)
     {
+	ajDebug ("socket connect failed, status: %d\n", status);
 	ajErr ("socket connect failed");
+	perror("Socket connet failed");
 	return ajFalse;
     }
 
-    ajDebug ("sending: '%S'\n", get);
+
+    ajDebug ("sending: '%S'\n", get); /* the URL we want */
     (void) send (sock, ajStrStr(get), ajStrLen(get), 0);
 
     /*
-       (void) ajFmtPrintS(&get, "Accept: \n");
-       ajDebug ("sending: '%S'\n", get);
-       (void) send (sock, ajStrStr(get), ajStrLen(get), 0);
-       
-       (void) ajFmtPrintS(&get, "User-Agent: EMBOSS\n");
-       ajDebug ("sending: '%S'\n", get);
-       (void) send (sock, ajStrStr(get), ajStrLen(get), 0);
-       */
+       (void) ajFmtPrintS(&gethead, "Accept: \n");
+       ajDebug ("sending: '%S'\n", gethead);
+       (void) send (sock, ajStrStr(gethead), ajStrLen(gethead), 0);
 
-    (void) ajFmtPrintS(&get, "Host: %S:%d\n", host, iport);
-    ajDebug ("sending: '%S'\n", get);
-    (void) send (sock, ajStrStr(get), ajStrLen(get), 0);
+       (void) ajFmtPrintS(&gethead, "User-Agent: EMBOSS\n");
+       ajDebug ("sending: '%S'\n", gethead);
+       (void) send (sock, ajStrStr(gethead), ajStrLen(gethead), 0);
+    */
+      
 
-    (void) ajFmtPrintS(&get, "\n");
-    ajDebug ("sending: '%S'\n", get);
-    (void) send (sock, ajStrStr(get), ajStrLen(get), 0);
+
+    (void) ajFmtPrintS(&gethead, "Host: %S:%d\n", host, iport);
+    ajDebug ("sending: '%S'\n", gethead);
+    (void) send (sock, ajStrStr(gethead), ajStrLen(gethead), 0);
+
+    (void) ajFmtPrintS(&gethead, "\n");
+    ajDebug ("sending: '%S'\n", gethead);
+    (void) send (sock, ajStrStr(gethead), ajStrLen(gethead), 0);
 
     fp = ajSysFdopen (sock, "r");
     if (!fp)
     {
+	ajDebug ("socket open failed sock: %d\n", sock);
 	ajErr ("socket open failed");
 	return ajFalse;
     }
     seqin->Filebuff = ajFileBuffNewF(fp);
     if (!seqin->Filebuff)
     {
+	ajDebug ("socket buffer attach failed\n");
 	ajErr ("socket buffer attach failed");
 	return ajFalse;
     }
@@ -3232,7 +3564,6 @@ static AjBool seqAccessApp (AjPSeqin seqin)
     ajStrDel (&pipename);
 
     qry->QryDone = ajTrue;
-    
 
     return ajTrue;
 }
@@ -3914,14 +4245,14 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
     AjPList   l = wild->List;
     SeqPCdTrg trgline = wild->trgLine;
     SeqPCdIdx idxline = wild->idxLine;
-    AjPStr acname = qry->Acc;
+    AjPStr queryName = NULL;
     SeqPCdFile idxfp = wild->ifp;
     SeqPCdFile trgfp = wild->trgfp;
     SeqPCdFile hitfp = wild->hitfp;
     AjBool *skip = wild->Skip;
     
-    AjPStr acstr = NULL;
-    AjPStr actmp = NULL;
+    AjPStr fdstr = NULL;
+    AjPStr fdtmp = NULL;
 
     ajint t;
     ajint b;
@@ -3942,21 +4273,47 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 
     SeqPCdEntry entry;
 
-
-    if(!seqCdTrgOpen (qry->IndexDir,"acnum",&trgfp, &hitfp))
+    if (ajStrLen(qry->Org))
+    {
+      queryName = qry->Org;
+      if(!seqCdTrgOpen (qry->IndexDir,"taxon",&trgfp, &hitfp))
 	return ajFalse;
-    
+    }
+    else if (ajStrLen(qry->Key))
+    {
+      queryName = qry->Key;
+      if(!seqCdTrgOpen (qry->IndexDir,"keyword",&trgfp, &hitfp))
+	return ajFalse;
+    }
+    else if (ajStrLen(qry->Des))
+    {
+      queryName = qry->Des;
+      if(!seqCdTrgOpen (qry->IndexDir,"des",&trgfp, &hitfp))
+	return ajFalse;
+    }
+    else if (ajStrLen(qry->Sv))
+    {
+      queryName = qry->Sv;
+      if(!seqCdTrgOpen (qry->IndexDir,"seqvn",&trgfp, &hitfp))
+	return ajFalse;
+    }
+    else if (ajStrLen(qry->Acc))
+    {
+      queryName = qry->Acc;
+      if(!seqCdTrgOpen (qry->IndexDir,"acnum",&trgfp, &hitfp))
+	return ajFalse;
+    }
 
-    (void) ajStrAssS (&acstr,acname);
-    (void) ajStrToUpper(&acstr);
-    (void) ajStrAssC(&actmp,ajStrStr(acstr));
+    (void) ajStrAssS (&fdstr,queryName);
+    (void) ajStrToUpper(&fdstr);
+    (void) ajStrAssC(&fdtmp,ajStrStr(fdstr));
 
-    (void) ajStrWildPrefix(&actmp);
+    (void) ajStrWildPrefix(&fdtmp);
 
     b = b2 = 0;
     t = t2 = t3 = trgfp->NRecords - 1;
 
-    len = ajStrLen(actmp);
+    len = ajStrLen(fdtmp);
     first = ajTrue;
 
     
@@ -3967,8 +4324,8 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 	    pos = (t+b)/2;
 	    name = seqCdTrgName(pos,trgfp);
 	    name[len]='\0';
-	    cmp = ajStrCmpC(actmp,name);
-/*	    cmp = ajStrMatchWildC(acstr,name);*/
+	    cmp = ajStrCmpC(fdtmp,name);
+/*	    cmp = ajStrMatchWildC(fdstr,name);*/
 	    ajDebug(" trg test %d '%s' %2d (+/- %d)\n",pos,name,cmp,t-b);
 	    if(!cmp)
 	    {
@@ -3989,8 +4346,8 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 
 	if(first)
 	{
-	    ajStrDel(&actmp);
-	    ajStrDel(&acstr);
+	    ajStrDel(&fdtmp);
+	    ajStrDel(&fdstr);
 	    seqCdTrgClose(&trgfp,&hitfp);
 	    return ajFalse;
 	}
@@ -4003,8 +4360,8 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 	    pos = (t+b)/2;
 	    name = seqCdTrgName(pos,trgfp);
 	    name[len]='\0';
-	    cmp = ajStrCmpC(actmp,name);
-/*	    cmp = ajStrMatchWildC(acstr,name);*/
+	    cmp = ajStrCmpC(fdtmp,name);
+/*	    cmp = ajStrMatchWildC(fdstr,name);*/
 	    ajDebug(" trg test %d '%s' %2d (+/- %d)\n",pos,name,cmp,t-b);
 	    if(!cmp)
 	    {
@@ -4031,7 +4388,7 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 	{
 	    seqCdTrgLine (trgline, i, trgfp);	
 	    (void) seqCdFileSeek (hitfp,trgline->FirstHit-1);
-	    ajDebug("acnum First: %d Count: %d\n",
+	    ajDebug("Query First: %d Count: %d\n",
 		    trgline->FirstHit, trgline->NHits);
 	    pos = trgline->FirstHit;
 
@@ -4052,8 +4409,8 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 		}
 		else
 		{
-		    ajDebug("SKIP: accnum '%S' [file %d]\n",
-			    qry->Acc,idxline->DivCode);
+		    ajDebug("SKIP: token '%S' [file %d]\n",
+			    queryName,idxline->DivCode);
 		}
 	    }
 	
@@ -4064,11 +4421,15 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 
 
     ajStrDel(&trgline->Target);
-    ajStrDel(&acstr);
-    ajStrDel(&actmp);
+    ajStrDel(&fdstr);
+    ajStrDel(&fdtmp);
     
     if(ajListLength(l))
 	return ajTrue;
 
     return ajFalse;
 }
+
+
+
+
