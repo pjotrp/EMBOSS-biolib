@@ -284,7 +284,6 @@ int main(int argc, char **argv)
     AjPStr  map    = NULL;		/* string for motif map */
     AjPStr  str    = NULL;		/* sequence string */
     AjPStr  substr = NULL;		/* sequence sub-string */
-    AjPStr  datafn = NULL;		/* data filename */
     AjPStr  sorder = NULL;		/* sort order */
     AjIList itrlst = NULL;		/* iterator list */
     AjIStr  itrbeg = NULL;		/* iterator begin of motif */
@@ -364,7 +363,7 @@ int main(int argc, char **argv)
     dspmap = ajAcdGetBool("map");
     trshld = ajAcdGetFloat("threshold");
     outf   = ajAcdGetOutfile("outfile");
-    datafn = ajAcdGetString("aadata");
+    mfptr = ajAcdGetDatafile("aadata");
     sorder = ajAcdGetSelectI("order", 1);
     graph  = ajAcdGetGraphxy("graph");
     begin  = ajSeqBegin(seq);
@@ -373,10 +372,6 @@ int main(int argc, char **argv)
     str    = ajStrNew();
     substr = ajStrNew();
     reslst = ajListNew();
-    
-    ajFileDataNew(datafn, &mfptr); /* Open the amino acid datafile. */
-    if(!mfptr)
-	ajFatal("Amino acid datafile %S not found\n", datafn);
     
     embPropAminoRead(mfptr);
     ajFileClose(&mfptr);	  /* Close the amino acid datafile. */
@@ -759,7 +754,6 @@ int main(int argc, char **argv)
     ajStrDel(&map);		/* Delete the map string. */
     ajStrDel(&str);		/* Delete the sequence string. */
     ajStrDel(&substr);		/* Delete the sequence sub-string. */
-    ajStrDel(&datafn);	       	/* Delete the data file name string. */
     ajStrDel(&sorder);		/* Delete the sort order string. */
     ajListIterFree(itrlst);	/* Delete the result list iterator. */
     ajStrIterFree(&itrbeg); 	/* Delete the iterator of the outer loop. */

@@ -73,8 +73,8 @@ int main(int argc, char **argv)
     AjPSeq inseq;
     AjPFile outfile;
     ajint hwindow;
-    AjPStr aa_properties;
-    AjPStr aa_hydropathy;
+    AjPFile aa_properties;
+    AjPFile aa_hydropathy;
 
     AjBool do_seq;
     AjBool do_general;
@@ -151,8 +151,8 @@ int main(int argc, char **argv)
     do_general    = ajAcdGetBool("generalplot");
     do_hydropathy = ajAcdGetBool("hydropathyplot");
 
-    aa_properties = ajAcdGetString("aaproperties");
-    aa_hydropathy = ajAcdGetString("aahydropathy");
+    aa_properties = ajAcdGetDatafile("aaproperties");
+    aa_hydropathy = ajAcdGetDatafile("aahydropathy");
 
     graphs = ajAcdGetGraphxy("graph");
 
@@ -182,7 +182,7 @@ int main(int argc, char **argv)
 
 	/*initialize properties list*/
 	aa_props = ajListNew();
-	embDataListInit(aa_props, aa_properties);
+	embDataListRead(aa_props, aa_properties);
 
 	/* Get first table from properties list of tables */
 	listIter = ajListIter(aa_props);
@@ -288,7 +288,7 @@ int main(int argc, char **argv)
 
 	/* get data from amino acid properties */
 	aa_hydro = ajListNew();
-	embDataListInit(aa_hydro, aa_hydropathy);
+	embDataListRead(aa_hydro, aa_hydropathy);
 
 	/* Get first table from properties list */
 	listIter = ajListIter(aa_hydro);

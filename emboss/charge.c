@@ -54,7 +54,6 @@ int main(int argc, char **argv)
     AjPFile    outf;
     AjPFile    cdata;
     AjPStr     str    = NULL;
-    AjPStr     aadata = NULL;
 
     AjBool     plot;
     AjPGraph   graph = NULL;
@@ -87,17 +86,12 @@ int main(int argc, char **argv)
     seqall    = ajAcdGetSeqall("seqall");
     plot      = ajAcdGetBool("plot");
     window    = ajAcdGetInt("window");
-    aadata    = ajAcdGetString("aadata");
+    cdata    = ajAcdGetDatafile("aadata");
 
     /* only one will be used - see variable 'plot' */
 
     outf  = ajAcdGetOutfile("outfile");
     graph = ajAcdGetGraphxy("graph");
-
-    ajFileDataNew(aadata,&cdata);
-    if(!cdata)
-	ajFatal("Cannot open amino acid data file %S",aadata);
-
 
     chg = charge_read_amino(&cdata);
 
