@@ -58,7 +58,7 @@ public class SetUpMenuBar
 
     JMenu fileMenu = new JMenu("File");
     fileMenu.setMnemonic(KeyEvent.VK_F);
-    JMenuItem fileMenuShowres = new JMenuItem("Show Saved Results");
+    JMenuItem fileMenuShowres = new JMenuItem("Saved Results");
     fileMenuShowres.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e) 
@@ -70,7 +70,7 @@ public class SetUpMenuBar
     });
     fileMenu.add(fileMenuShowres);
 
-    JMenuItem showRemoteFile = new JMenuItem("Show Remote Files");
+    JMenuItem showRemoteFile = new JMenuItem("Remote Files");
     showRemoteFile.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -92,7 +92,20 @@ public class SetUpMenuBar
       }
     });
     fileMenu.add(showRemoteFile);
+
+    JMenuItem showLocalRemoteFile = new JMenuItem("Local and Remote Files");
+    showLocalRemoteFile.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        f.setCursor(cbusy);
+        new LocalAndRemoteFileTreeFrame(mysettings);
+        f.setCursor(cdone);
+      }
+    });
+    fileMenu.add(showLocalRemoteFile);
     fileMenu.addSeparator();
+
 
     JMenuItem fileMenuExit = new JMenuItem("Exit");
     fileMenuExit.addActionListener(new ActionListener()
