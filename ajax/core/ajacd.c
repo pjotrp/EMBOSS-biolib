@@ -4759,6 +4759,7 @@ static void acdSetSeq (AcdPAcd thys) {
 		 "Unable to read sequence '%S'", reply);
     }
   }
+  
   if (!ok)
     acdBadRetry (thys);
 
@@ -4769,7 +4770,7 @@ static void acdSetSeq (AcdPAcd thys) {
   (void) acdQualToBool (thys, "supper", ajFalse, &supper, &defreply);
   (void) acdQualToBool (thys, "slower", ajFalse, &slower, &defreply);
   (void) acdQualToBool (thys, "sask", ajFalse, &sprompt, &defreply);
-
+  
   /* now process the begin, end and reverse options */
 
   ok = acdQualToSeqbegin (thys, "sbegin", 0, &sbegin, &defreply);

@@ -958,6 +958,7 @@ void ajSeqDel (AjPSeq* pthis) {
 
   AjPSeq thys = pthis ? *pthis : 0;
   AjPStr ptr=NULL;
+  AjPFeatLexicon dict=NULL;
   
   if (!pthis) return;
   if (!*pthis) return;
@@ -976,7 +977,13 @@ void ajSeqDel (AjPSeq* pthis) {
   ajStrDel (&thys->Filename);
   ajStrDel (&thys->Entryname);
   ajStrDel (&thys->Seq);
-  ajFeatTabDel(&thys->Fttable);
+
+  if(thys->Fttable)
+  {
+      dict = ajFeatTableDict(thys->Fttable);
+      ajFeatDeleteDict(dict);
+      ajFeatTabDel(&thys->Fttable);
+  }
 
   while(ajListstrPop(thys->Acclist,&ptr))
       ajStrDel(&ptr);
