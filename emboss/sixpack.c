@@ -146,16 +146,16 @@ int main(int argc, char **argv)
 	  (void) embShowAddBlank(ss);
 	  
 
-	    (void) embShowAddTran (ss, trnTable, 1, FALSE, numberseq,
+	    (void) embShowAddTran (ss, trnTable, 1, ajFalse, numberseq,
 				   NULL, orfminsize);
-	    (void) embShowAddTran (ss, trnTable, 2, FALSE, numberseq,
+	    (void) embShowAddTran (ss, trnTable, 2, ajFalse, numberseq,
 				   NULL, orfminsize);
-	    (void) embShowAddTran (ss, trnTable, 3, FALSE, numberseq,
+	    (void) embShowAddTran (ss, trnTable, 3, ajFalse, numberseq,
 				   NULL, orfminsize);
 	}
 
 	/*	(void) embShowAddBlank(ss);*/
-	(void) embShowAddSeq(ss, numberseq, FALSE, uppercase, highlight);
+	(void) embShowAddSeq(ss, numberseq, ajFalse, uppercase, highlight);
 
 	if (!numberseq)
 	    (void) embShowAddTicknum(ss);
@@ -170,11 +170,11 @@ int main(int argc, char **argv)
 	{
 	    if (reverse)
 	    {
-		(void) embShowAddTran (ss, trnTable, -3, FALSE,
+		(void) embShowAddTran (ss, trnTable, -3, ajFalse,
 				       numberseq, NULL, orfminsize);
-		(void) embShowAddTran (ss, trnTable, -2, FALSE,
+		(void) embShowAddTran (ss, trnTable, -2, ajFalse,
 				       numberseq, NULL, orfminsize);
-		(void) embShowAddTran (ss, trnTable, -1, FALSE,
+		(void) embShowAddTran (ss, trnTable, -1, ajFalse,
 				       numberseq, NULL, orfminsize);
 	    }
 	}
