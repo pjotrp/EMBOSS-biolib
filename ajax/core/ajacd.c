@@ -1933,6 +1933,8 @@ static AcdOAttr acdCalcTree[] =
 {
     {"treecount", VT_INT, "",
 	 "Number of trees"},
+    {"haslengths", VT_BOOL, "",
+	 "Branch lengths defined"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -11732,11 +11734,13 @@ static void acdSetTree(AcdPAcd thys)
 	    continue;
 
 	ajStrFromInt(&thys->SetStr[0],i); /* number of trees */
+	ajStrFromBool(&thys->SetStr[1],val[0]->HasLengths);
 	ajStrAssS(&thys->ValStr, val[0]->Tree);
     }
     else
     {
 	ajStrFromInt(&thys->SetStr[0],0);
+	ajStrFromBool(&thys->SetStr[1],ajFalse);
 	ajStrAssC(&thys->ValStr, "");
     }
 

@@ -1,3 +1,13 @@
+Version 3.0.0
+	Added a calculated attribute "haslengths" to (phylogenetic) tree
+	input in ACD for use in phylipnew interfaces
+
+	Added an "embassy" string attribute to the application in ACD so
+	that wossname can find whether an application is in EMBASSY or
+	not. Wossname was depending on the source directory, but could not
+	distinguish between EMBOSS and EMBASSY ACD files once they were
+	installed. 
+
 Version 2.9.0
 	ajListMapRead and ajListstrMapRead functions for read-only lists.
 	As an added check, the functions these call for each element have
