@@ -7455,12 +7455,13 @@ AjBool ajPdbWriteAllRaw(ajint mode, AjPPdb pdb, AjPFile outf, AjPFile errf)
 		ajFmtPrintF(outf, "%-80s\n", "ENDMDL");
 	}
 
-    
-	/* Write END record */
-	ajFmtPrintF(outf, "%-80s\n", "END");
-    
-	return ajTrue;
     }	
+
+    /* Write END record */
+    ajFmtPrintF(outf, "%-80s\n", "END");
+    
+    return ajTrue;
+
 }    
 
 
