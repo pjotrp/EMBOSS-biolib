@@ -71,7 +71,7 @@ public class FileSaving
           fsave.fileSaving(seqText.getText());
       
         if(!fsave.fileExists())
-          org.emboss.jemboss.Jemboss.tree.addObject(fileSelected,cwd);
+          org.emboss.jemboss.Jemboss.tree.addObject(fileSelected,cwd,null);
       }
       seqText.setCursor(cdone);
     }

@@ -47,10 +47,10 @@ public class DragTree extends JTree implements DragGestureListener,
 {
 
   public static DefaultTreeModel model;
-  private Hashtable openNodeDir;
   private JembossParams mysettings;
 
   private File root;
+  private Vector openNode;
   private String fs = new String(System.getProperty("file.separator"));
 
   private JPopupMenu popup;
@@ -63,7 +63,6 @@ public class DragTree extends JTree implements DragGestureListener,
     this.mysettings = mysettings;
     this.root = rt;
 
-    openNodeDir = new Hashtable();
     DragSource dragSource = DragSource.getDefaultDragSource();
 
     dragSource.createDefaultDragGestureRecognizer(
@@ -120,6 +119,7 @@ public class DragTree extends JTree implements DragGestureListener,
           selected = selected.substring(sep+1,selected.length());
           selected = root.toString().concat(fs +selected);
           showFilePane(selected);
+          
           f.setCursor(cdone);
         }
       }
@@ -140,7 +140,8 @@ public class DragTree extends JTree implements DragGestureListener,
           {  
             f.setCursor(cbusy);
             model = (DefaultTreeModel)getModel();
-            node.explore(openNodeDir);
+            node.explore();
+            openNode.add(node);
             model.nodeStructureChanged(node);
             f.setCursor(cdone);
           }
@@ -202,7 +203,7 @@ public class DragTree extends JTree implements DragGestureListener,
         else
         {
           dir.mkdir();
-          addObject(inputValue,path);
+          addObject(inputValue,path,node);
         }
       }
     }
@@ -259,8 +260,8 @@ public class DragTree extends JTree implements DragGestureListener,
       {
         public void run ()
         {
+          addObject(fnew.getName(),fnew.getParent(),oldNode);
           deleteObject(oldNode,oldFile.getParentFile().getAbsolutePath());
-          addObject(fnew.getName(),fnew.getParent());
         };
       };
       SwingUtilities.invokeLater(deleteFileFromTree);
@@ -342,7 +343,7 @@ public class DragTree extends JTree implements DragGestureListener,
         {
           File dropDest = null;
           String dropDir = null;
-          FileNode fdropPath = (FileNode)dropPath.getLastPathComponent();
+          final FileNode fdropPath = (FileNode)dropPath.getLastPathComponent();
           if (fdropPath.isLeaf()) 
           {
             FileNode pn = (FileNode)fdropPath.getParent();
@@ -377,7 +378,7 @@ public class DragTree extends JTree implements DragGestureListener,
                 final String ndropDir = dropDir;
                 Runnable updateTheTree = new Runnable() 
                 {
-                  public void run () { addObject(fn.getFile(),ndropDir); };
+                  public void run () { addObject(fn.getFile(),ndropDir,fdropPath); };
                 };
                 SwingUtilities.invokeLater(updateTheTree);
               }
@@ -485,8 +486,10 @@ public class DragTree extends JTree implements DragGestureListener,
 
   private DefaultTreeModel createTreeModel(File root) 
   {
-    FileNode rootNode = new FileNode(root,openNodeDir);
-    rootNode.explore(openNodeDir);
+    FileNode rootNode = new FileNode(root);
+    rootNode.explore();
+    openNode = new Vector();
+    openNode.add(rootNode);
     return new DefaultTreeModel(rootNode);
   }
 
@@ -503,50 +506,33 @@ public class DragTree extends JTree implements DragGestureListener,
 * @param file to add to the tree
 *
 */
-  public DefaultMutableTreeNode addObject(String child, String path)
+  public DefaultMutableTreeNode addObject(String child, String path, FileNode node)
   {
 
-    FileNode parentNode = null;
-    Enumeration enum = openNodeDir.keys();
-
-    while(enum.hasMoreElements())
+    if(node == null)
     {
-      String thiskey = (String)enum.nextElement();
-      try
-      {
-        if(thiskey.equals(path))
-        {
-          parentNode = (FileNode)openNodeDir.get(thiskey);
-          break;
-        }
-        else if((new File(thiskey)).getCanonicalPath().equals(path))  //check canonical path -
-        {                                                             //resolves mount dirs
-          parentNode = (FileNode)openNodeDir.get(thiskey);
-          break;
-        }
-      }
-      catch(IOException ioe) {}
+      node = getNode(path); 
+      if(node==null)
+        return null;
     }
 
-
-    if(parentNode == null)
-      return null;
+    FileNode parentNode = node;
+    if(node.isLeaf())
+      parentNode = (FileNode)node.getParent();
 
     File newleaf = new File(parentNode.getFile().getAbsolutePath() +
                             fs + child);
 
-    FileNode childNode = new FileNode(newleaf,openNodeDir);
+    FileNode childNode = new FileNode(newleaf);
     if(parentNode.isExplored()) 
     {
-      int index = parentNode.getAnIndex(child)-1;
-      if(index < 0)
-        index=0;
-      
-      model.insertNodeInto(childNode, parentNode, index);
+      int index = getAnIndex(parentNode,child);
+      if(index > -1)     
+        model.insertNodeInto(childNode, parentNode, index);
     }
     else
     {
-      parentNode.explore(openNodeDir);
+      parentNode.explore();
       model.nodeChanged(parentNode);
       model.nodeStructureChanged(parentNode);
     }
@@ -556,6 +542,53 @@ public class DragTree extends JTree implements DragGestureListener,
 
     return childNode;
   }
+
+  /**
+  *
+  * Gets the node from the existing explored nodes.
+  * 
+  */
+  private FileNode getNode(String path)
+  {
+    Enumeration en = openNode.elements();
+
+    while(en.hasMoreElements()) 
+    {
+      FileNode node = (FileNode)en.nextElement();
+      String nodeName = node.getFile().getAbsolutePath();
+      if(nodeName.equals(path))
+        return node;
+    }
+    return null;
+  }
+
+  /**
+  *
+  * Finds a new index for adding a new file to the file manager.
+  *
+  */
+  private int getAnIndex(FileNode parentNode, String child)
+  {
+    //find the index for the child
+    int num = parentNode.getChildCount();
+    int childIndex = num;
+    for(int i=0;i<num;i++)
+    {
+      String nodeName = ((FileNode)parentNode.getChildAt(i)).getFile().getName();
+      if(nodeName.compareTo(child) > 0)
+      {
+        childIndex = i;
+        break;
+      }
+      else if (nodeName.compareTo(child) == 0)  //file already exists
+      {
+        childIndex = -1;
+        break;
+      }
+    }
+    return childIndex;
+  }
+
 
   public void deleteObject(FileNode node, String parentPath)
   {
@@ -567,11 +600,9 @@ public class DragTree extends JTree implements DragGestureListener,
     else if(!parentNode.isExplored())
     {
       model = (DefaultTreeModel)getModel();
-      parentNode.explore(openNodeDir);
+      parentNode.explore();
       model.nodeStructureChanged(parentNode);
     }
-    else
-      parentNode.deleteAnIndex(node.getFile().getName());
 
     model.removeNodeFromParent(node);
 

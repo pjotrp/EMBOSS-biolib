@@ -203,7 +203,7 @@ public class ResultsMenuBar
               if(fsave.doWrite())
                 fsave.fileSaving(hash.get(thiskey));
               if(!fsave.fileExists())
-                org.emboss.jemboss.Jemboss.tree.addObject(fileSelected,cwd);
+                org.emboss.jemboss.Jemboss.tree.addObject(fileSelected,cwd,null);
             }
           }
 
