@@ -57,7 +57,7 @@ public class BuildProgramMenu
   private AuthPopup splashing;
   /** thread for progress monitor on the login window */
   private SplashThread splashThread;
-
+  
   /**
   *
   *  @param  p1 		menu pane
@@ -67,7 +67,6 @@ public class BuildProgramMenu
   *  @param  envp		array of environment variables for EMBOSS applications
   *  @param  mysettings		Jemboss settings
   *  @param  withSoap 		true if using SOAP server
-  *  @param  cwd 		current working directory (local)
   *  @param  mainMenu		Jemboss main menu bar
   *  @param  f			Jemboss frame
   *  @param  jform 		form pane dimension
@@ -76,11 +75,12 @@ public class BuildProgramMenu
   public BuildProgramMenu(final JPanel p1, final ScrollPanel p2, 
            final JPanel pform, final JScrollPane scrollProgForm,
            final String envp[], final JembossParams mysettings,
-           final boolean withSoap, final String cwd,
-           final SetUpMenuBar mainMenu, final JFrame f,
-           final Dimension jform)
+           final boolean withSoap, final SetUpMenuBar mainMenu,
+           final JFrame f, final Dimension jform)
   {
   
+    final String fs = new String(System.getProperty("file.separator"));
+    final String cwd = new String(System.getProperty("user.dir") + fs);
     final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
     final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
   

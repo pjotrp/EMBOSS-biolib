@@ -51,17 +51,18 @@ public class SetUpMenuBar
   private JMenuItem fileMenuShowres;
   /** server settings */
   private ServerSetup ss = null;
+  /** advanced options */
+  private AdvancedOptions ao;
 
   /**
   *
   * @param mysettings	jemboss properties
   * @param f		frame
-  * @param cwd		current working directory
   * @param withSoap	true if in client-server mode
   *
   */
   public SetUpMenuBar(final JembossParams mysettings, final JFrame f,
-                      final String cwd, final boolean withSoap)
+                      final boolean withSoap)
   {
 
     // cursors to show when busy
@@ -130,21 +131,22 @@ public class SetUpMenuBar
       fileMenu.addSeparator();
     }
 
-    final AdvancedOptions ao = new AdvancedOptions(mysettings);
+//  final AdvancedOptions ao = new AdvancedOptions(mysettings);
+    ao = new AdvancedOptions(mysettings);
     JMenuItem fileMenuExit = new JMenuItem("Exit");
     fileMenuExit.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e) 
       {
+        exitJemboss();
+//      if(ao.isSaveUserHomeSelected())
+//        ao.userHomeSave();
 
-        if(ao.isSaveUserHomeSelected())
-          ao.userHomeSave();
+//      if(seqList.isStoreSequenceList())  //create a SequenceList file
+//        saveSequenceList();
 
-        if(seqList.isStoreSequenceList())  //create a SequenceList file
-          saveSequenceList();
-
-        deleteTmp(new File(cwd), ".jembosstmp");
-        System.exit(0);
+//      deleteTmp(new File(cwd), ".jembosstmp");
+//      System.exit(0);
       }
     });
     fileMenu.add(fileMenuExit);
@@ -330,13 +332,11 @@ public class SetUpMenuBar
   /**
   *
   *  Delete temporary files
-  *  @param cwd		current working directory
   *  @param suffix	suffix of files to delete
   *
   */
   public void deleteTmp(File cwd, final String suffix) 
   {
-
     String tmpFiles[] = cwd.list(new FilenameFilter()
     {
       public boolean accept(File cwd, String name)
@@ -350,6 +350,21 @@ public class SetUpMenuBar
       File tf = new File(tmpFiles[h]);
       tf.delete();
     }
+  }
+
+
+  public void exitJemboss()
+  {
+    String fs = new String(System.getProperty("file.separator"));
+    String cwd = new String(System.getProperty("user.dir") + fs);
+    if(ao.isSaveUserHomeSelected())
+      ao.userHomeSave();
+
+    if(seqList.isStoreSequenceList())  //create a SequenceList file
+      saveSequenceList();
+
+    deleteTmp(new File(cwd),".jembosstmp");
+    System.exit(0);
   }
 
   /**

@@ -69,6 +69,8 @@ public class Jemboss implements ActionListener
   private ImageIcon fwdArrow;
 /** Image for hiding the local filemanager */
   private ImageIcon bwdArrow;
+/** Jemboss main menu */
+  private SetUpMenuBar mainMenu;
 
   /**
   *
@@ -79,7 +81,6 @@ public class Jemboss implements ActionListener
   {
 
     String fs = new String(System.getProperty("file.separator"));
-    String cwd = new String(System.getProperty("user.dir") + fs);
 
     // initialize settings
     JembossParams mysettings = new JembossParams();
@@ -216,8 +217,8 @@ public class Jemboss implements ActionListener
     }
 
     // setup the top menu bar
-    SetUpMenuBar mainMenu = new SetUpMenuBar(
-                  mysettings,f,cwd,withSoap);
+    mainMenu = new SetUpMenuBar(mysettings,f,
+                                withSoap);
 
     // add to Jemboss main frame and locate it center left of screen
     f.getContentPane().add(pmain);
@@ -225,7 +226,7 @@ public class Jemboss implements ActionListener
     f.setLocation(0,((int)d.getHeight()-f.getHeight())/2);
 
     new BuildProgramMenu(p1,p2,pform,scrollProgForm,
-                         envp,mysettings,withSoap,cwd,
+                         envp,mysettings,withSoap,
                          mainMenu,f,jform);
 
     f.addWindowListener(new winExit());
@@ -258,47 +259,18 @@ public class Jemboss implements ActionListener
 
   }
 
-  /**
-  *
-  *  Delete temporary files
-  *  @param cwd 		current working directory (local)
-  *  @param suffix 	suffix of the file to delete
-  *
-  */
-  private void deleteTmp(File cwd, final String suffix) 
-  {
-
-    String tmpFiles[] = cwd.list(new FilenameFilter()
-    {
-      public boolean accept(File cwd, String name)
-      {
-        return name.endsWith(suffix);
-      };
-    });
-
-    for(int h =0;h<tmpFiles.length;h++)
-    {
-      File tf = new File(tmpFiles[h]);
-      tf.delete();
-    }
-  }
-
 
   /**
   *
-  * Extends WindowAdapter to close window 
+  * Extends WindowAdapter to close window and
+  * save any session properties and clean up
   *
   */
   class winExit extends WindowAdapter
   {
      public void windowClosing(WindowEvent we)
      {
-        String cwd = new String(
-                       System.getProperty("user.dir") + 
-                       System.getProperty("file.separator"));
-
-        deleteTmp(new File(cwd), ".jembosstmp");
-        System.exit(0);
+        mainMenu.exitJemboss();
      }
   }
 
