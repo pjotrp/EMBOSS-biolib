@@ -514,7 +514,7 @@ int main(int argc, char **argv)
 
     iac=0;
     j = 0;
-    k = 0;
+    k = 1;
     if (systemsort)
     {
 	i=0;
