@@ -25,9 +25,9 @@ in the index files. It requires all strings in the index to be padded
 to the length of the longest string - not a problem for ID or
 accession, but a big problem for a des index. May be worth
 investigating a different format which has a separate offset file,
-needing only to rename the .trg file to .inx and to add a .off file
-which can be easily created from the .inx file with a list of (ajlong)
-offsets.
+needing only to rename the "XXXXX.trg" file to "XXXXX.str" and to add
+an "XXXXX.bin" file which can be easily created from the "XXXXX.str"
+file with a list of (ajlong) offsets.
 
 For each database there is a "division lookup" file division.lkp which
 lists all the data files. Each division (think of EMBL or GenBank) can
@@ -43,6 +43,9 @@ Other index files (at present, only the accession numbers) have two
 files. The XXXXX.trg file lists the known values in sorted order, and
 has two numbers: the number of entries in the XXXXX.hit files, and the
 offset to the first entry in the XXXXX.hit file.
+
+The XXXXX.hit file has a simple list of offsets (record numbers) in
+the entryname.idx file.
 
 Building these files uses temporary output files with lists of all
 values (accessions) and their IDs. These are then sorted by value and
