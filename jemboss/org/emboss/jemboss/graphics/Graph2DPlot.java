@@ -287,7 +287,7 @@ public class Graph2DPlot extends ScrollPanel
 
 // x-ticks
         bacross = Box.createHorizontalBox();
-        if(xticks == null)
+        if(xstart == null)
         {
           xstart = new TextFieldFloat();
           xstart.setValue(xmin);
@@ -299,8 +299,6 @@ public class Graph2DPlot extends ScrollPanel
         bacross.add(new JLabel(" Start X Tick  "));
         bacross.add(Box.createHorizontalGlue());
         xbdown.add(bacross);
-        xbdown.add(Box.createVerticalStrut(5));
-        xbdown.add(new JSeparator());
         xbdown.add(Box.createVerticalStrut(5));
 
 // y-ticks
@@ -318,9 +316,43 @@ public class Graph2DPlot extends ScrollPanel
         bacross.add(Box.createHorizontalGlue());
         ybdown.add(bacross);
         ybdown.add(Box.createVerticalStrut(5));
+      
+// x-ticks
+        bacross = Box.createHorizontalBox();
+        if(xend == null)
+        {
+          xend = new TextFieldFloat();
+          xend.setValue(xmax);
+        }
+        xend.setPreferredSize(dim);
+        xend.setMaximumSize(dim);
+
+        bacross.add(xend);
+        bacross.add(new JLabel(" End X Tick  "));
+        bacross.add(Box.createHorizontalGlue());
+        xbdown.add(bacross);
+        xbdown.add(Box.createVerticalStrut(5));
+        xbdown.add(new JSeparator());
+        xbdown.add(Box.createVerticalStrut(5));
+
+// y-ticks
+        bacross = Box.createHorizontalBox();
+        if(yend == null)
+        {
+          yend = new TextFieldFloat();
+          yend.setValue(ymax);
+        }
+        yend.setPreferredSize(dim);
+        yend.setMaximumSize(dim);
+
+        bacross.add(yend);
+        bacross.add(new JLabel(" End Y Tick"));
+        bacross.add(Box.createHorizontalGlue());
+        ybdown.add(bacross);
+        ybdown.add(Box.createVerticalStrut(5));
         ybdown.add(new JSeparator());
         ybdown.add(Box.createVerticalStrut(5));
-      
+
 // x-label
         bacross = Box.createHorizontalBox();
         if(xtitle_field == null)
@@ -926,19 +958,24 @@ public class Graph2DPlot extends ScrollPanel
     float x2;
     float y2;
 
-    g2d.translate(xborder, getHeight()-yborder);
+    float xendPoint = (float)(xend.getValue()-xstart.getValue())*xfactor;
+    float yendPoint = (float)(yend.getValue()-ystart.getValue())*yfactor;
 
+    g2d.translate(xborder, getHeight()-yborder);
     for(int i=1; i<xnum; i++)
     {
       x2 =  (emboss_data[0][i] - (float)xstart.getValue())*xfactor;
       y2 = -(emboss_data[1][i] - (float)ystart.getValue())*yfactor;
 
-      g.drawLine((int)x1,(int)y1,(int)x2,(int)y2);   
+      if( x1 >= 0 && x2 >= 0 &&
+          x1 <= xendPoint && x2 <= xendPoint &&
+          y1 <= 0 && y2 <= 0 &&
+          y1 >= -yendPoint && y2 >= -yendPoint )
+        g.drawLine((int)x1,(int)y1,(int)x2,(int)y2);   
 
       x1 = x2;
       y1 = y2;
     }
-
     g2d.translate(-xborder, -getHeight()+yborder);
   }
 
