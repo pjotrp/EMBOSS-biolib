@@ -595,10 +595,10 @@ public class SectionPanel
         Box left = new Box(BoxLayout.X_AXIS);
         JButton upload = new JButton("USE THIS SEQUENCE");
 
-        upload.setToolTipText("<html><b><font size=3> " +
-                "After entering your sequence above, click here. This " +
-                "will <BR>display the input parameters for " + appName +
-                " that are <BR>dependent on the sequence attributes.");
+        upload.setToolTipText(
+                "After entering your sequence above, click here. This\n" +
+                "will display the input parameters for " + appName + "\n" +
+                " that are dependent on the sequence attributes.");
 
         upload.setForeground(Color.red);
         Dimension d = upload.getPreferredSize();
