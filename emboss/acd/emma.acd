@@ -15,7 +15,7 @@ seqall: inseqs  [
 endsection: input
 
 section: advanced [ info: "advanced Section" type: page ]
-section: dendsection [ info: "dendsection Section" type: frame ]
+section: dendsection [ info: "dendrogram Section" type: frame ]
 bool: onlydend  [
   optional: "Y"
   default: "No"
@@ -27,7 +27,7 @@ bool: dend  [
   optional: "@(!$(onlydend))"
   default: "No"
   information: "select if you want to do alignment using an old dendrogram"
-  prompt: "Do you want to use an old dendogram file?"
+  prompt: "Do you want to use an old dendrogram file?"
 ]
 
 string: dendfile  [
