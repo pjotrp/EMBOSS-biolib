@@ -13038,6 +13038,7 @@ static AjBool acdSetQualAppl (AcdPAcd thys, AjBool val) {
   AjBool setval;
   static AjPStr setstr = NULL;
   static AjPStr valstr = NULL;
+  static AjPStr bufstr = NULL;
 
   ajDebug("acdSetQualAppl '%S'\n", thys->Name);
 
@@ -13070,6 +13071,9 @@ static AjBool acdSetQualAppl (AcdPAcd thys, AjBool val) {
 	acdDebug = setval;
 	/* ajDebug ("acdSetQualAppl acdDebug %B\n", acdDebug); */
 	acdDebugSet = ajTrue;
+	if (ajNamGetValueC("debugbuffer", &bufstr)) {
+	  (void) ajStrToBool(bufstr, &acdDebugBuffer);
+	}
 	break;
       case 5: acdDoLog    = setval; break;
       case 6: acdDoPretty = setval; break;
