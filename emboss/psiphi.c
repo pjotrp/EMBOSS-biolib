@@ -162,8 +162,8 @@ int main( int argc , char **argv )
     ajIntFinishResidueNumber = ajAcdGetInt("finishresiduenumber");
 
     /* reserve memory for and read in structure */
-    ajXyzCpdbRead(ajpFileCleanProteinStructure, &ajpPdbCleanStructure);
-
+    /* JISON */    ajpPdbCleanStructure = embPdbReadNew(ajpFileCleanProteinStructure);
+    
     /* check and set number of chain to be analysed */
     ajIntHighestChainNumber = ajpPdbCleanStructure->Nchn;
     ajIntChainIndex = chain_index(ajIntSelectedChainNumber,
@@ -394,7 +394,7 @@ int main( int argc , char **argv )
     ajReportDel(&ajpReportTorsionAngles);
 
     /* clear up the structure */
-    ajXyzPdbDel(&ajpPdbCleanStructure);
+    /* JISON */ ajPdbDel(&ajpPdbCleanStructure);
     ajSeqDel(&ajpSeqCleanChain);
 
     /*  tidy up everything else... */
