@@ -489,6 +489,7 @@ static AjPRegexp GffRegexTvTagval  = NULL;
 static AjPRegexp EmblRegexNew         = NULL;
 static AjPRegexp EmblRegexNext        = NULL;
 static AjPRegexp EmblRegexTv          = NULL;
+static AjPRegexp EmblRegexTvRest      = NULL;
 static AjPRegexp EmblRegexTvTag       = NULL;
 static AjPRegexp EmblRegexTvTagQuote  = NULL;
 static AjPRegexp EmblRegexTvTagQuote2 = NULL;
@@ -3289,11 +3290,12 @@ static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
     
     ajStrCleanWhite(loc);	/* no white space needed */
     ajStrClean(tags);		/* single spaces only */
+
     /* ajDebug("cleaned feat loc: '%S'\n            tags: '%S'\n",
      *loc, *tags);*/
-    
-    
-    /* ajDebug("Location '%S'\n", *loc); */
+
+    /*ajDebug("Clean location '%S'\n", *loc);*/
+    /*ajDebug("Clean tags '%S'\n", *tags);*/
     
     ajStrAssS(&opval, *loc);
     if(ajRegExec(EmblRegexLocMulti, opval))
@@ -3510,39 +3512,59 @@ static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
 	Mother = ajFalse;
     }
     
-    while(ajStrLen(*tags) && ajRegExec (EmblRegexTvTag, *tags))
+    while(ajStrLen(*tags))
     {
-	/* first process quoted values, which can look like multiple values */
-	/* watch for "" double internal quotes */
-
-	if(ajRegExec(EmblRegexTvTagQuote, *tags)) /* /tag="val" */
+	if(ajRegExec (EmblRegexTvTag, *tags))
 	{
-	    ajRegSubI(EmblRegexTvTagQuote, 1, &tag);
-	    ajRegSubI(EmblRegexTvTagQuote, 2, &val);
-	    ajRegPost(EmblRegexTvTagQuote, &tmpstr);
-	    ajStrAssS(tags, tmpstr);
+	    /*
+	    ** first process quoted values,
+	    ** which can look like multiple values
+	    ** watch for "" double internal quotes
+	    */
 
-	    /* internal quotes are "" - save and fix after */
-	    while(ajRegExec(EmblRegexTvTagQuote2, *tags))
-	    {				/* "quoted ""val""" */
-		ajRegSubI(EmblRegexTvTagQuote2, 1, &tmpstr);
-		ajStrApp(&val, tmpstr);
-		ajRegPost(EmblRegexTvTagQuote2, &tmpstr);
+	    if(ajRegExec(EmblRegexTvTagQuote, *tags)) /* /tag="val" */
+	    {
+		ajRegSubI(EmblRegexTvTagQuote, 1, &tag);
+		ajRegSubI(EmblRegexTvTagQuote, 2, &val);
+		ajRegPost(EmblRegexTvTagQuote, &tmpstr);
+		ajStrAssS(tags, tmpstr);
+
+		/* internal quotes are "" - save and fix after */
+		while(ajRegExec(EmblRegexTvTagQuote2, *tags))
+		{				/* "quoted ""val""" */
+		    ajRegSubI(EmblRegexTvTagQuote2, 1, &tmpstr);
+		    ajStrApp(&val, tmpstr);
+		    ajRegPost(EmblRegexTvTagQuote2, &tmpstr);
+		    ajStrAssS(tags, tmpstr);
+		}
+		ajStrQuoteStrip(&val);
+	    }
+	    else
+	    {
+		ajRegSubI(EmblRegexTvTag, 1, &tag);
+		ajRegSubI(EmblRegexTvTag, 3, &val);
+		ajRegPost(EmblRegexTvTag, &tmpstr);
 		ajStrAssS(tags, tmpstr);
 	    }
-	    ajStrQuoteStrip(&val);
+	    if(!ajFeatTagAdd (ret, tag, val))
+		ajWarn("%S: Bad value '%S' for tag '/%S'",
+		       thys->Seqid, val, tag) ;
+	}
+	else if (ajRegExec(EmblRegexTvRest, *tags))
+	{
+	    /* anything non-whitespace up to '/' is bad */
+	    ajRegSubI(EmblRegexTvRest, 1, &tmpstr);
+	    ajWarn("Bad feature syntax: skipping '%S'", tmpstr);
+	    ajRegPost(EmblRegexTvRest, &tmpstr);
+	    ajStrAssS(tags, tmpstr);
 	}
 	else
 	{
-	    ajRegSubI(EmblRegexTvTag, 1, &tag);
-	    ajRegSubI(EmblRegexTvTag, 3, &val);
-	    ajRegPost(EmblRegexTvTag, &tmpstr);
-	    ajStrAssS(tags, tmpstr);
+	    ajWarn("Bad feature syntax: giving up at '%S'", *tags);
+	    ajStrAssC(tags, "");
 	}
-	if(!ajFeatTagAdd (ret, tag, val))
-	    ajWarn("%S: Bad value '%S' for tag '/%S'", thys->Seqid, val, tag) ;
     }
-    
+
     ajStrDel(&tmpstr);
     ajStrDel(&val);
     ajStrDel(&tag);
@@ -3887,6 +3909,8 @@ static AjBool featRegInitEmbl(void)
 				  "(.*)[)]$");
     EmblRegexTv = ajRegCompC("^..    +( .*)") ;	/* start of new feature */
     EmblRegexTvTag = ajRegCompC("^ */([^/= ]+)(=([^/ ]+))?"); /* tag=val */
+    EmblRegexTvRest = ajRegCompC("^ *([^ /][^/]*)");
+    /* spare text up to next tag */
  
    /* quoted strings include the first quote, but not the last */
     EmblRegexTvTagQuote = ajRegCompC("^ */([^/\"= ]+)=(\"[^\"]*\")");
