@@ -1,5 +1,5 @@
 appl: showalign [
-	doc: "Display a multiple sequence alignment"
+	doc: "Displays a multiple sequence alignment"
 	groups: "Alignment:Multiple, Display"
 ]
 
