@@ -2341,11 +2341,13 @@ AjBool ajStrClean(AjPStr *s) {
   p=ajStrStr(t);
   len=strlen(p);
 
+  if(!len)
+      return ajFalse;
+
   for(i=0;i<len;++i) if(p[i]=='\t') p[i]=' ';
 
   i=0;
-  while(1) {
-    if(!p[i]) break;
+  while(p[i]) {
     if(p[i]!=' ') break;
     ++i;
   }
