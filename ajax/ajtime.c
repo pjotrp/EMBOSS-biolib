@@ -1,6 +1,32 @@
+/******************************************************************************
+** @source AJAX time functions
+**
+** @author Copyright (C) 1998 Ian Longden
+** @version 1.0
+** @@
+**
+** This library is free software; you can redistribute it and/or
+** modify it under the terms of the GNU Library General Public
+** License as published by the Free Software Foundation; either
+** version 2 of the License, or (at your option) any later version.
+**
+** This library is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+** Library General Public License for more details.
+**
+** You should have received a copy of the GNU Library General Public
+** License along with this library; if not, write to the
+** Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+** Boston, MA  02111-1307, USA.
+******************************************************************************/
+
 #include "ajax.h"
 #include "ajtime.h"
 #include <time.h>
+
+
+
 
 /* @datastatic TimePFormat ****************************************************
 **
@@ -20,6 +46,9 @@ typedef struct TimeSFormat
     char* Format;
 } TimeOFormat, *TimePFormat;
 
+
+
+
 static TimeOFormat timeFormat[] =  /* formats for strftime */
 {
     {"GFF", "%Y-%m-%d"},
@@ -29,6 +58,9 @@ static TimeOFormat timeFormat[] =  /* formats for strftime */
     { NULL, NULL}
 };
 
+
+
+
 /* @func ajTimeToday **********************************************************
 **
 ** AJAX function to return today's time as an AjPTime object
@@ -36,17 +68,25 @@ static TimeOFormat timeFormat[] =  /* formats for strftime */
 ** @exception  'Mem_Failed' from memory allocations
 ** @@
 ******************************************************************************/
-AjPTime ajTimeToday (void)
+
+AjPTime ajTimeToday(void)
 {
     static AjPTime thys = NULL;
-    const time_t tim = time(0);
+    time_t tim;
 
-    if (!thys) AJNEW0(thys);
-    thys->time = localtime(&tim);
+    tim = time(0);
+
+    if(!thys)
+	AJNEW0(thys);
+
+    thys->time   = localtime(&tim);
     thys->format = NULL;
 
     return thys;
 }
+
+
+
 
 /* @funcstatic TimeFormat *****************************************************
 **
@@ -56,27 +96,30 @@ AjPTime ajTimeToday (void)
 ** @return [char*] ANSI C time format, or NULL if none found
 ** @@
 ******************************************************************************/
+
 static char* TimeFormat(const char *timefmt)
 {
     ajint i;
     AjBool ok    = ajFalse;
     char *format = NULL ;
 
-    for (i=0; timeFormat[i].Name; i++)
-    {
-	if (ajStrMatchCaseCC(timefmt, timeFormat[i].Name))
+    for(i=0; timeFormat[i].Name; i++)
+	if(ajStrMatchCaseCC(timefmt, timeFormat[i].Name))
 	{
 	    ok = ajTrue;
 	    break;
 	}
-    }
-    if (ok)
+
+    if(ok)
 	format = timeFormat[i].Format;
     else
-	ajWarn ("Unknown date/time format %s", timefmt);
+	ajWarn("Unknown date/time format %s", timefmt);
   
-    return format ;
+    return format;
 }
+
+
+
 
 /* @func ajTimeTodayF *********************************************************
 **
@@ -90,18 +133,26 @@ static char* TimeFormat(const char *timefmt)
 ** @@
 **
 ******************************************************************************/
-AjPTime ajTimeTodayF (const char* timefmt)
+
+AjPTime ajTimeTodayF(const char* timefmt)
 {
     static AjPTime thys = NULL;
-    const time_t tim = time(0);
+    time_t tim;
 
-    if (!thys) AJNEW0(thys);
+    tim = time(0);
+
+    if(!thys)
+	AJNEW0(thys);
+
     thys->time = localtime(&tim);
 
-    thys->format = TimeFormat(timefmt) ;
+    thys->format = TimeFormat(timefmt);
 
     return thys;
 }
+
+
+
 
 /* @func ajTimeTrace **********************************************************
 **
@@ -112,11 +163,16 @@ AjPTime ajTimeTodayF (const char* timefmt)
 ** @@
 ******************************************************************************/
 
-void ajTimeTrace (const AjPTime thys) 
+void ajTimeTrace(const AjPTime thys) 
 {
-    ajDebug ("Time value trace '%D'\n", thys);
-    ajDebug ("format: '%s'\n", thys->format);
+    ajDebug("Time value trace '%D'\n", thys);
+    ajDebug("format: '%s'\n", thys->format);
+
+    return;
 }
+
+
+
 
 /* @func ajTimeSet ************************************************************
 **
@@ -132,16 +188,19 @@ void ajTimeTrace (const AjPTime thys)
 ** @return [AjPTime] An AjPTime object
 ** @@
 ******************************************************************************/
+
 AjPTime ajTimeSet( const char *timefmt, ajint mday, ajint mon, ajint year)
 {
-    AjPTime thys = ajTimeTodayF (timefmt) ;
+    AjPTime thys;
+
+    thys = ajTimeTodayF(timefmt) ;
 
     thys->time->tm_mday  = mday ;
     thys->time->tm_mon   = mon-1;
-    if (year > 1899) year = year-1900;
+    if(year > 1899) year = year-1900;
     thys->time->tm_year  = year ;
 
-    (void) mktime (thys->time);
+    mktime(thys->time);
 
     return thys ;
 }
