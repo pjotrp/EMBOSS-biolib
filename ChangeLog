@@ -1,3 +1,13 @@
+Version 2.6.0
+	Added PESTFIND
+
+	Moved the following programs into the "domainatrix" embassy
+	package:
+	 contacts, domainer, fraggle, hetparse, hmmgen, interface,
+	 pdbparse, pdbtosp, profgen, scopalign, scopnr, scopparse,
+	 scoprep, scopreso, scopseqs, seqalign, seqnr, seqsearch,
+	 seqsort, seqwords, siggen, sigplot, sigscan
+	
 	Palindrome no longer reports palindromes that are only composed
 	of N's
 
