@@ -45,26 +45,49 @@ import org.emboss.jemboss.JembossParams;
 *
 * Sets up a results menu bar with save and close
 * 
-*
 */
 public class ResultsMenuBar extends JMenuBar
 {
 
-  private JMenuItem fileMenuShowres;
+  /** menu to save to local file   */
+  private JMenuItem saveToLocalFile;
+  /** menu to save to remote file  */
   private JMenuItem saveToRemoteFile;
+  /** frame containing the results */
   private JFrame frame;
+  /** tool bar */
   private JToolBar toolBar = new JToolBar();
+  /** undo menu item */
   private JMenuItem undo = new JMenuItem("Undo");
+  /** redo menu item */
   private JMenuItem redo = new JMenuItem("Redo");
+  /** undo manager   */
   private UndoManager undoManager = new UndoManager();
 
-  
+  /**
+  *
+  * Sets up a results menu bar with save and close
+  * @param frame 	frame containing the results
+  * @param rtb		tabbed pane for results 
+  * @param hashOut	output/result files
+  * @param mysettings 	jemboss properties
+  *
+  */ 
   public ResultsMenuBar(final JFrame frame, final JTabbedPane rtb,
                         final Hashtable hashOut, JembossParams mysettings)
   {
     this(frame,rtb,hashOut,null,null,mysettings); 
   }
 
+  /**
+  *
+  * Sets up a results menu bar with save and close
+  * @param frame        frame containing the results
+  * @param rtb          tabbed pane for results
+  * @param hashOut      output/result files
+  * @param hashIn	input files
+  *
+  */
   public ResultsMenuBar(final JFrame frame, final JTabbedPane rtb,
                         final Hashtable hashOut, final Hashtable hashIn)
   {
@@ -72,12 +95,13 @@ public class ResultsMenuBar extends JMenuBar
   }
 
 
-/**
-*
-* Sets up a results menu bar with save and close
-* @param JFrame frame containing the results
-*
-*/
+  /**
+  *
+  * Sets up a results menu bar with save and close
+  * @param frame 		frame containing the results
+  * @param addRemoteSaveMenu	true to add a remote save menu
+  *
+  */
   public void setResultsMenuBar(final JFrame frame, boolean addRemoteSaveMenu)
   {
     this.frame = frame;
@@ -91,8 +115,8 @@ public class ResultsMenuBar extends JMenuBar
       saveToRemoteFile = new JMenuItem("Save to Server File");
       fileMenu.add(saveToRemoteFile);
     }
-    fileMenuShowres = new JMenuItem("Save to Local File...");
-    fileMenu.add(fileMenuShowres);
+    saveToLocalFile = new JMenuItem("Save to Local File...");
+    fileMenu.add(saveToLocalFile);
     fileMenu.addSeparator();
 
     // undo - redo
@@ -125,21 +149,21 @@ public class ResultsMenuBar extends JMenuBar
     frame.getContentPane().add(toolBar, BorderLayout.NORTH);
   }
 
-
-/**
-*
-* Adds action listener to save contents of a JTextPane. This
-* allows editing of the area to be saved.
-* @param JFrame frame containing the results
-* @param JTextPane text area to add listener to
-*
-*/
+  /**
+  *
+  * Adds action listener to save contents of a JTextPane. This
+  * allows editing of the area to be saved.
+  * @param frame 	frame containing the results
+  * @param fed		text area to add listener to
+  * @param mysettings	jemboss properties
+  *
+  */
   public ResultsMenuBar(final JFrame frame, final FileEditorDisplay fed, 
                         final JembossParams mysettings)
   {
     setResultsMenuBar(frame,false);
 
-    fileMenuShowres.addActionListener(new ActionListener()
+    saveToLocalFile.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
@@ -322,16 +346,17 @@ public class ResultsMenuBar extends JMenuBar
  }
 
 
-/**
-*
-* Adds action listener to save contents of contents of a
-* tabbed pane. Allows saving to files of text and png files.
-* @param JFrame frame containing the results
-* @param JTabbedPane tab pane containing results
-* @param Hashtable containing results
-* @param Hashtable containing input files
-*
-*/
+  /**
+  *
+  * Adds action listener to save contents of contents of a
+  * tabbed pane. Allows saving to files of text and png files.
+  * @param frame 	frame containing the results
+  * @param rtb 		tab pane containing results
+  * @param hashIn 	containing results
+  * @param project	project name
+  * @param mysettings	jemboss properties
+  *
+  */
   public ResultsMenuBar(final JFrame frame, final JTabbedPane rtb,
                         final Hashtable hashOut, final Hashtable hashIn,
                         final String project, final JembossParams mysettings)
@@ -342,7 +367,7 @@ public class ResultsMenuBar extends JMenuBar
 
     setResultsMenuBar(frame, addRemoteSaveMenu);
 
-    fileMenuShowres.addActionListener(new ActionListener()
+    saveToLocalFile.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
@@ -544,13 +569,12 @@ public class ResultsMenuBar extends JMenuBar
 
   }
 
-
-/**
-*
-* Update the undo and redo menus and enable or disable
-* dependent on the editing event that proceeded.
-*
-*/
+  /**
+  *
+  * Update the undo and redo menus and enable or disable
+  * dependent on the editing event that proceeded.
+  *
+  */
   private void updateMenu()
   {
     undo.setText(undoManager.getUndoPresentationName());
@@ -559,12 +583,29 @@ public class ResultsMenuBar extends JMenuBar
     redo.setEnabled(undoManager.canRedo());
   }
 
+  /**
+  *
+  * Save to a local file
+  * @param cwd		current working directory
+  * @param fileSelected	selected file
+  * @param tabTitle	title of tab pane to save content of
+  * @param h		hash table
+  *
+  */
   private void fileSave(String cwd, String fileSelected, 
                         String tabTitle, Hashtable h)
   {
     fileSave(cwd,fileSelected,h.get(tabTitle));
   }
 
+  /**
+  *
+  * Save to a local file
+  * @param cwd          current working directory
+  * @param fileSelected selected file
+  * @param fileContents contents to save
+  *
+  */
   private void fileSave(String cwd, String fileSelected,
                         Object fileContents)
   {
@@ -581,11 +622,24 @@ public class ResultsMenuBar extends JMenuBar
     }
   }
 
+  /**
+  *
+  * Get the menu bar
+  * @return 	menu bar
+  *
+  */ 
   public JMenuBar getJMenuBar()
   {
     return this;
   }
 
+  /**
+  * 
+  * Get selected text pane from tabbed pane
+  * @param rtb	tabbed pane
+  * @return	text pane
+  *
+  */
   private JTextPane getSelectedJTextPane(JTabbedPane rtb)
   {
     try
@@ -597,6 +651,14 @@ public class ResultsMenuBar extends JMenuBar
     return null;
   }
 
+  /**
+  *
+  * Get text component from a tabbed pane
+  * @param rtb		tabbed pane
+  * @param index	tab index
+  * @return		text component
+  *
+  */
   private JTextComponent getJTextComponentAt(JTabbedPane rtb, int index)
   {
     try
@@ -604,13 +666,17 @@ public class ResultsMenuBar extends JMenuBar
       JScrollPane jsp = (JScrollPane)(rtb.getComponentAt(index));
       return (JTextComponent)(jsp.getViewport().getView());
     } catch(ClassCastException cce) {}
-
     
     return null;
   }
   
 }
 
+/**
+*
+* Colour pallette menu
+*
+*/
 class ColorMenu extends JMenu
 {
   protected Border unselectedBorder;
