@@ -5,10 +5,13 @@ install-exec-hook:
 		   else \
 			mkdir $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources; \
 		   fi); \
-	          rm -f $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources/acdstore.jar; \
+	          rm -f   $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources/acdstore.jar; \
 		  cd $(EMBOSS_TOP)/emboss/acd; \
 		  jar cvf $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources/acdstore.jar *.acd; \
-                  rm -f $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources/Ajax.jar; \
+                  rm -f   $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources/resources.jar; \
+                  cd $(DESTDIR)$(prefix)/share/$(PACKAGE)/data; \
+                  jar cvf $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources/resources.jar EPAM* EBLOSUM* ENUC*; \
+                  rm -f   $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources/Ajax.jar; \
                   cd $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss; \
                   jar cvf $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources/Ajax.jar org/emboss/jemboss/parser/Ajax.class; \
 	  fi
