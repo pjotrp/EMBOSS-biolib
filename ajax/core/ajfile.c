@@ -3459,42 +3459,58 @@ ajint ajFileBuffStripSrs(AjPFileBuff thys)
 
     thys->Lines = thys->Curr;
     
+    
 
-    /* Remove '<pre>' at the start of the entry */
-    tmp = ajStrNew();
-    ajStrAssS(&tmp,lptr->Line);
-    ajStrAssSub(&lptr->Line,tmp,5,-1);
-    ajStrDel(&tmp);
-
-    /* Remove anything between and including angle brackets */
     while(lptr && !ajStrPrefixC(lptr->Line,"</pre>"))
     {
-	ajStrRemoveHtml(&lptr->Line);
+	
 	lastptr = lptr;
 	lptr = lptr->Next;
     }
 
 
+
     while(lptr)
     {
-	tptr = lptr->Next;
-	ajStrDel(&lptr->Line);
-	AJFREE(lptr);
-	thys->Size--;
-	lptr = tptr;
+	while(lptr && !ajStrPrefixC(lptr->Line,"<pre>"))
+	{
+	    tptr = lptr;
+	    lptr = lptr->Next;
+	    ajStrDel(&tptr->Line);
+	    AJFREE(tptr);
+	    thys->Size--;
+	}
+
+	if(!lptr)
+	{
+	    lastptr->Next = NULL;
+	    continue;
+	}
+	
+	lastptr->Next = lptr;
+	while(lptr && !ajStrPrefixC(lptr->Line,"</pre>"))
+	{
+	    lastptr = lptr;
+	    lptr = lptr->Next;
+	}
     }
-
-    lastptr->Next = NULL;
-
-/*  Test print
+    
+    lptr = thys->Curr;
+    while(lptr)
+    {
+	ajStrRemoveHtml(&lptr->Line);
+	lptr = lptr->Next;
+    }
+    
+/*  Test print routine
     lptr=thys->Curr;
     while(lptr)
     {
 	printf("%s",ajStrStr(lptr->Line));
 	lptr=lptr->Next;
     }
-    printf("Hello %d\n",thys->Size);
     fflush(stdout);
+    exit(0);
 */
 
     return ajTrue;
