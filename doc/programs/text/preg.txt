@@ -98,7 +98,7 @@ Description
    hexapeptide'.
    
    Regular expressions are case-sensitive. The pattern 'AAAA' will not
-   match the sequence 'aaaa'. For this reason, bothh your pattern and the
+   match the sequence 'aaaa'. For this reason, both your pattern and the
    input sequences are converted to upper-case.
    
 The syntax in detail
