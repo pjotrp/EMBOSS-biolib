@@ -1,10 +1,12 @@
 Version 2.6.0
-	SigCleave sorts results highest score first
+	Added sirna - designs siRNA probes in mRNA
 
-	HelixTurnHelix sorts results highest score first and reports the
+	Sigcleave sorts results highest score first
+
+	Helixturnhelix sorts results highest score first and reports the
 	score position as an integer
 
-	Added PESTFIND
+	Added pestfind
 
 	Moved the following programs into the "domainatrix" embassy
 	package:
