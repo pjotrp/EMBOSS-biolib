@@ -52,13 +52,32 @@ Command line arguments
    Mandatory qualifiers:
   [-sequencea]         sequence   Sequence USA
   [-seqall]            seqall     Sequence database USA
-   -gapopen            float      Gap opening penalty
-   -gapextend          float      Gap extension penalty
+   -gapopen            float      The gap open penalty is the score taken away
+                                  when a gap is created. The best value
+                                  depends on the choice of comparison matrix.
+                                  The default value assumes you are using the
+                                  EBLOSUM62 matrix for protein sequences, and
+                                  the EDNAMAT matrix for nucleotide sequences.
+   -gapextend          float      The gap extension, penalty is added to the
+                                  standard gap penalty for each base or
+                                  residue in the gap. This is how long gaps
+                                  are penalized. Usually you will expect a few
+                                  long gaps rather than many short gaps, so
+                                  the gap extension penalty should be lower
+                                  than the gap penalty. An exception is where
+                                  one or both sequences are single reads with
+                                  possible sequencing errors in which case you
+                                  would expect many single base gaps. You can
+                                  get this result by setting the gap open
+                                  penalty to zero (or very low) and using the
+                                  gap extension penalty to control gap
+                                  scoring.
   [-outfile]           outfile    Output file name
 
    Optional qualifiers:
    -datafile           matrixf    Matrix file
-   -showinternals      bool       Show internals
+   -showinternals      bool       Show debugging information on the internal
+                                  state of the search.
 
    Advanced qualifiers: (none)
    
@@ -67,17 +86,28 @@ Command line arguments
    (Parameter 1) Sequence USA Readable sequence Required
    [-seqall]
    (Parameter 2) Sequence database USA Readable sequence(s) Required
-   -gapopen Gap opening penalty Number from 1.000 to 100.000 10.0 for any
-   sequence
-   -gapextend Gap extension penalty Number from 0.100 to 10.000 0.5 for
-   any sequence
+   -gapopen The gap open penalty is the score taken away when a gap is
+   created. The best value depends on the choice of comparison matrix.
+   The default value assumes you are using the EBLOSUM62 matrix for
+   protein sequences, and the EDNAMAT matrix for nucleotide sequences.
+   Number from 1.000 to 100.000 10.0 for any sequence
+   -gapextend The gap extension, penalty is added to the standard gap
+   penalty for each base or residue in the gap. This is how long gaps are
+   penalized. Usually you will expect a few long gaps rather than many
+   short gaps, so the gap extension penalty should be lower than the gap
+   penalty. An exception is where one or both sequences are single reads
+   with possible sequencing errors in which case you would expect many
+   single base gaps. You can get this result by setting the gap open
+   penalty to zero (or very low) and using the gap extension penalty to
+   control gap scoring. Number from 0.100 to 10.000 0.5 for any sequence
    [-outfile]
    (Parameter 3) Output file name Output file <sequence>.water
    Optional qualifiers Allowed values Default
    -datafile Matrix file Comparison matrix file in EMBOSS data path
    EBLOSUM62 for protein
    EDNAMAT for DNA
-   -showinternals Show internals Yes/No No
+   -showinternals Show debugging information on the internal state of the
+   search. Yes/No No
    Advanced qualifiers Allowed values Default
    (none)
    
@@ -154,6 +184,8 @@ Warnings
    roughly 100 times longer and uses 100 times more memory than aligning
    two 100-residue sequences.
    
+   If you run out of memory, try using supermatcher or matcher.
+   
 Diagnostic Error Messages
 
 Uncaught exception
@@ -161,7 +193,7 @@ Uncaught exception
  raised at ajmem.c:xxx
 
    Probably means you have run out of memory. Try using supermatcher or
-   stretcher if this happens.
+   matcher if this happens.
    
 Exit status
 
@@ -175,6 +207,9 @@ See also
 
    Program name                      Description
    matcher      Finds the best local alignments between two sequences
+   
+   supermatcher Finds a match of a large sequence against one or more
+   sequences
    
 Author(s)
 

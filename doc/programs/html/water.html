@@ -122,13 +122,32 @@ IT IS DONE FOR YOU.
    Mandatory qualifiers:
   [-sequencea]         sequence   Sequence USA
   [-seqall]            seqall     Sequence database USA
-   -gapopen            float      Gap opening penalty
-   -gapextend          float      Gap extension penalty
+   -gapopen            float      The gap open penalty is the score taken away
+                                  when a gap is created. The best value
+                                  depends on the choice of comparison matrix.
+                                  The default value assumes you are using the
+                                  EBLOSUM62 matrix for protein sequences, and
+                                  the EDNAMAT matrix for nucleotide sequences.
+   -gapextend          float      The gap extension, penalty is added to the
+                                  standard gap penalty for each base or
+                                  residue in the gap. This is how long gaps
+                                  are penalized. Usually you will expect a few
+                                  long gaps rather than many short gaps, so
+                                  the gap extension penalty should be lower
+                                  than the gap penalty. An exception is where
+                                  one or both sequences are single reads with
+                                  possible sequencing errors in which case you
+                                  would expect many single base gaps. You can
+                                  get this result by setting the gap open
+                                  penalty to zero (or very low) and using the
+                                  gap extension penalty to control gap
+                                  scoring.
   [-outfile]           outfile    Output file name
 
    Optional qualifiers:
    -datafile           matrixf    Matrix file
-   -showinternals      bool       Show internals
+   -showinternals      bool       Show debugging information on the internal
+                                  state of the search.
 
    Advanced qualifiers: (none)
 
@@ -159,14 +178,14 @@ IT IS DONE FOR YOU.
 
 <tr>
 <td>-gapopen</td>
-<td>Gap opening penalty</td>
+<td>The gap open penalty is the score taken away when a gap is created. The best value depends on the choice of comparison matrix. The default value assumes you are using the EBLOSUM62 matrix for protein sequences, and the EDNAMAT matrix for nucleotide sequences.</td>
 <td>Number from 1.000 to 100.000</td>
 <td>10.0 for any sequence</td>
 </tr>
 
 <tr>
 <td>-gapextend</td>
-<td>Gap extension penalty</td>
+<td>The gap extension, penalty is added to the standard gap penalty for each base or residue in the gap. This is how long gaps are penalized. Usually you will expect a few long gaps rather than many short gaps, so the gap extension penalty should be lower than the gap penalty. An exception is where one or both sequences are single reads with possible sequencing errors in which case you would expect many single base gaps. You can get this result by setting the gap open penalty to zero (or very low) and using the gap extension penalty to control gap scoring.</td>
 <td>Number from 0.100 to 10.000</td>
 <td>0.5 for any sequence</td>
 </tr>
@@ -193,7 +212,7 @@ IT IS DONE FOR YOU.
 
 <tr>
 <td>-showinternals</td>
-<td>Show internals</td>
+<td>Show debugging information on the internal state of the search.</td>
 <td>Yes/No</td>
 <td>No</td>
 </tr>
@@ -316,6 +335,10 @@ order of) mn, where 'n' and 'm' are the lengths of the two sequences.
 This means that aligning two 1000-residue sequences takes roughly 100
 times longer and uses 100 times more memory than aligning two
 100-residue sequences. 
+<P>
+
+If you run out of memory, try using <b>supermatcher</b> or
+<b>matcher</b>.
 
 <H2>
     Diagnostic Error Messages
@@ -329,7 +352,7 @@ Uncaught exception
 <P>
 
 Probably means you have run out of memory.  Try using
-<b>supermatcher</b> or <b>stretcher</b> if this happens. 
+<b>supermatcher</b> or <b>matcher</b> if this happens. 
 
 <H2>
     Exit status
@@ -360,6 +383,8 @@ None.
         data files?) that seealso doesn't find.
    -->
 
+<p>
+<a href="supermatcher.html">supermatcher</a> Finds a match of a large sequence against one or more sequences
 
 <H2>
     Author(s)
