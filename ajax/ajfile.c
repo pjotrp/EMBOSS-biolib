@@ -4120,16 +4120,17 @@ AjBool ajFileBuffNobuff(AjPFileBuff thys)
 }
 
 
-/* @func ajFileBuffIsbuff *****************************************************
+/* @func ajFileBuffBuff *****************************************************
 **
-** Sets file to be buffered.
+** Sets file to be buffered. If it already has buffered data, we have to
+** first run down the buffer.
 **
 ** @param [r] thys [AjPFileBuff] Buffered file object.
 ** @return [AjBool] ajTrue if the file was unbuffered before
 ** @@
 ******************************************************************************/
 
-AjBool ajFileBuffIsbuff(AjPFileBuff thys)
+AjBool ajFileBuffBuff(AjPFileBuff thys)
 {
     AjBool ret;
 
@@ -4137,10 +4138,30 @@ AjBool ajFileBuffIsbuff(AjPFileBuff thys)
 	return ajFalse;
 
     ret = thys->Nobuff;
-    ajDebug("ajFileBuffIsbuff %F buffsize: %d\n", thys->File, thys->Size);
+    ajDebug("ajFileBuffBuff %F buffsize: %d\n", thys->File, thys->Size);
     thys->Nobuff = ajFalse;
 
     return ret;
+}
+
+
+/* @func ajFileBuffIsBuffered *************************************************
+** Tests whether an input file is buffered.
+**
+** @param [r] thys [AjPFileBuff] Buffered file object.
+** @return [AjBool] ajTrue if the file was unbuffered before
+** @@
+******************************************************************************/
+
+AjBool ajFileBuffIsBuffered(AjPFileBuff thys)
+{
+    if(!thys)
+	return ajFalse;
+
+    if(thys->Nobuff)
+	return ajFalse;
+
+    return ajTrue;
 }
 
 
