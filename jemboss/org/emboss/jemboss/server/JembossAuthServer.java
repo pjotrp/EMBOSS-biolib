@@ -50,7 +50,7 @@ public class JembossAuthServer
   String embossBin  = jp.getEmbossBin();
   String embossPath = embossBin + ps + jp.getEmbossPath();
   String acdDirToParse     = jp.getAcdDirToParse();
-  String embossEnvironment = jp.getEmbossEnvironment();
+//String embossEnvironment = jp.getEmbossEnvironment();
 
   private String[] env = 
   {
@@ -313,7 +313,7 @@ public class JembossAuthServer
     }
 
     if(afile)
-      aj.delFile(userName,passwd,environ,fn);
+      ok = aj.delFile(userName,passwd,environ,fn);
 
     for(int i=0;i<passwd.length;i++)
       passwd[i] = '\0';
@@ -558,24 +558,26 @@ public class JembossAuthServer
     Enumeration enum = inFiles.keys();
     String appl   = embossCommand.substring(0,embossCommand.indexOf(" "));
     String rest   = embossCommand.substring(embossCommand.indexOf(" "));
-    embossCommand = embossBin.concat(embossCommand);
-    String msg = new String("");
+//  embossCommand = embossBin.concat(embossCommand);
+//  String msg = new String("");
 
     boolean ok=false; 
     boolean lsd = false;
     try
-    {
-     lsd = aj.listDirs(userName,passwd,environ,tmproot);
+    { 
+      aj.setErrStd();
+      lsd = aj.listDirs(userName,passwd,environ,tmproot);
     }
     catch(Exception exp){}
 
 //  appendToLogFile("listDirs "+name+" STDERR "+aj.getErrStd(),errorLog);   //DEBUG
 
 // create the results directory structure for this user if necessary
-    if(!lsd || !aj.getErrStd().equals(""))
+    if(!lsd)
     {
       try
       {
+        aj.setErrStd();
         ok = aj.makeDir(userName,passwd,environ,tmproot);
       }
       catch(Exception exp){}
@@ -607,13 +609,14 @@ public class JembossAuthServer
     File projectDir = new File(project);
     try
     {
+      aj.setErrStd();
       ok = aj.makeDir(userName,passwd,environ,project);
     }
     catch(Exception exp){}
 
 //  appendToLogFile("makeDir "+name+" STDERR "+aj.getErrStd(),errorLog);  //DEBUG
 
-    if(!ok || !aj.getErrStd().equals("")) 
+    if(!ok) 
       return returnError(aj,"run_prog failed to create dir "+
                           project);
 
@@ -631,6 +634,7 @@ public class JembossAuthServer
       ok = false;
       try
       {
+        aj.setErrStd();
         ok = aj.putFile(userName,passwd,environ,
                  new String(project+fs+thiskey),
                  (byte[])inFiles.get(thiskey));
@@ -647,6 +651,7 @@ public class JembossAuthServer
     ok = false;
     try
     {
+      aj.setErrStd();
       ok = aj.putFile(userName,passwd,environ,
            new String(project + fs + ".desc"),
            descript.getBytes());
@@ -670,12 +675,13 @@ public class JembossAuthServer
       boolean lfork=true;
       try
       {
+        aj.setErrStd();
         lfork = aj.forkEmboss(userName,passwd,environ,
                                embossCommand,project);
       }
       catch(Exception exp){} 
  
-      if(!lfork || !aj.getErrStd().equals(""))
+      if(!lfork)
       {
         returnError(aj,"Fork process failed in run_prog "+
                         embossCommand);
@@ -690,6 +696,7 @@ public class JembossAuthServer
 
       try
       {
+        aj.setErrStd();
         ok = aj.putFile(userName,passwd,environ,
              new String(project+fs+".finished"),
             (new Date()).toString().getBytes());
@@ -809,8 +816,6 @@ public class JembossAuthServer
     project = tmproot.concat(project);
     File projectDir = new File(project);
 
-//  ssr = loadFilesContent(aj,userName,passwd,
-//                    projectDir,project,ssr,null);
     if(cl.equals(""))
     {
       ssr = loadFilesContent(aj,userName,passwd,
@@ -941,10 +946,11 @@ public class JembossAuthServer
     lsr.add("msg");
     lsr.add("OK");
 
+    aj.setErrStd();
     boolean lsd = aj.listDirs(userName,passwd,environ,tmproot);
     
-    if(!lsd || !aj.getErrStd().equals(""))
-      return returnError(aj,"Failed list_saved_results "+tmproot);
+//  if(!lsd || !aj.getErrStd().equals(""))
+//    return returnError(aj,"Failed list_saved_results "+tmproot);
 
     String outStd = aj.getOutStd();
     StringTokenizer stok = new StringTokenizer(outStd,"\n");
@@ -991,7 +997,7 @@ public class JembossAuthServer
       bw.newLine();
       bw.flush();
     } 
-    catch (IOException ioe) 
+    catch (Exception ioe) 
     {
       System.out.println("Error writing to log file "+logFile);
       ioe.printStackTrace();
