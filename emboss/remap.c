@@ -483,7 +483,7 @@ static void remap_CutList (AjPFile outfile,
         }  
         (void) ajFmtPrintF (outfile, "\n");
         if (html)
-	    (void) ajFmtPrintF(outfile, "</PRE>");
+	    (void) ajFmtPrintF(outfile, "</PRE>\n");
     }
 /* enzymes that cut <mincuts */
     /* print title */
@@ -514,7 +514,7 @@ static void remap_CutList (AjPFile outfile,
 	}  
         (void) ajFmtPrintF (outfile, "\n");
         if (html)
-	    (void) ajFmtPrintF(outfile, "</PRE>");
+	    (void) ajFmtPrintF(outfile, "</PRE>\n");
     }
 
 /* enzymes that cut >maxcuts */
@@ -547,7 +547,7 @@ static void remap_CutList (AjPFile outfile,
 
         (void) ajFmtPrintF (outfile, "\n");
         if (html)
-	    (void) ajFmtPrintF(outfile, "</PRE>");
+	    (void) ajFmtPrintF(outfile, "</PRE>\n");
 
 /* tidy up */
 	AJFREE(array);
@@ -823,7 +823,7 @@ static void remap_NoCutList (AjPFile outfile, AjPTable hittable,
     
     /* end the output */
     (void) ajFmtPrintF (outfile, "\n");
-    if (html) {(void) ajFmtPrintF(outfile, "</PRE>");} 
+    if (html) {(void) ajFmtPrintF(outfile, "</PRE>\n");} 
     
 
 
