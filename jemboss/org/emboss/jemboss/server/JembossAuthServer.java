@@ -179,6 +179,7 @@ public class JembossAuthServer
     return acd;
   }
 
+
   /**
   *
   * Returns the output of the EMBOSS utility wossname
@@ -472,11 +473,11 @@ public class JembossAuthServer
         return !fileName.isDirectory();
       };
     });
-    String matrices ="";
+    StringBuffer matrices = new StringBuffer();
     for(int i=0;i<dataFile.length;i++)
-      matrices=matrices.concat(dataFile[i]+"\n");
+      matrices.append(dataFile[i]+"\n");
     showdbOut.add("matrices");
-    showdbOut.add(matrices);
+    showdbOut.add(matrices.toString());
 
     // find available codon usage tables
     
@@ -488,11 +489,11 @@ public class JembossAuthServer
         return !fileName.isDirectory();
       };
     });
-    matrices ="";
+    matrices = new StringBuffer();
     for(int i=0;i<dataFile.length;i++)
-      matrices=matrices.concat(dataFile[i]+"\n");
+      matrices.append(dataFile[i]+"\n");
     showdbOut.add("codons");
-    showdbOut.add(matrices);
+    showdbOut.add(matrices.toString());
 
     return showdbOut;
   }
@@ -602,23 +603,19 @@ public class JembossAuthServer
     String ls = System.getProperty("line.separator");
 //create description file & input files
     StringBuffer descript = new StringBuffer();
-    descript.append("EMBOSS run details for");
+    descript.append("EMBOSS run details for ");
     descript.append(appl);
     descript.append(ls);
     descript.append(ls);
     descript.append("Parameters Used: ");
     descript.append(embossCommand);
     descript.append(ls);
-    descript.append("Started at ");
+    descript.append("Started: ");
     descript.append(dat);
     descript.append(ls);
     descript.append(ls);
     descript.append("Input files:");
     descript.append(ls);
-
-//  String descript = "EMBOSS run details for"+appl+ls+ls+
-//                    "Parameters Used: "+embossCommand+ls+
-//                    "Started at "+dat+ls+ls+"Input files:"+ls;
 
 //write input files to project directory
     Vector inFileNames = new Vector();
@@ -626,6 +623,7 @@ public class JembossAuthServer
     {
       String thiskey = (String)e.nextElement();  // file name
       inFileNames.add(thiskey);
+
       descript.append(project);
       descript.append(fs);
       descript.append(thiskey);
@@ -776,15 +774,6 @@ public class JembossAuthServer
     scriptIt.append("cd "+project+"\n"+embossCommand+"\n");
     scriptIt.append("date > "+project+"/.finished\n");
 
-//  String scriptIt = "#PBS -j oe\n";
-//  scriptIt = scriptIt.concat("#PBS -S /bin/sh\n");
-//  scriptIt = scriptIt.concat(environ.replace(' ','\n'));
-//  scriptIt = scriptIt.concat("\nexport PATH\n");
-//  scriptIt = scriptIt.concat("export PLPLOT_LIB\n");
-//  scriptIt = scriptIt.concat("export EMBOSS_DATA\n");
-//  scriptIt = scriptIt.concat("cd "+project+"\n"+embossCommand+"\n");
-//  scriptIt = scriptIt.concat("date > "+project+"/.finished\n");
-
     String scriptFile = new String(project+fs+".scriptfile");
     boolean ok = false;
     try
@@ -795,11 +784,9 @@ public class JembossAuthServer
     catch(Exception exp){}
 
     if(!ok)
-    {
-      appendToLogFile("Failed to make file "+project+fs+".scriptfile",errorLog);
-      appendToLogFile("STDERR "+aj.getErrStd(),errorLog);
-      appendToLogFile("STDOUT "+aj.getOutStd(),errorLog);
-    }
+      appendToLogFile("Failed to make file "+project+fs+".scriptfile\n"+
+                      "STDERR "+aj.getErrStd()+"\n"+
+                      "STDOUT "+aj.getOutStd(),errorLog);
 
     boolean lfork=true;
     try
@@ -1082,9 +1069,6 @@ public class JembossAuthServer
     aj.setErrStd();
     boolean lsd = aj.listDirs(userName,passwd,environ,tmproot);
     
-//  if(!lsd || !aj.getErrStd().equals(""))
-//    return returnError(aj,"Failed list_saved_results "+tmproot);
-
     String outStd = aj.getOutStd();
     StringTokenizer stok = new StringTokenizer(outStd,"\n");
 
@@ -1093,16 +1077,14 @@ public class JembossAuthServer
       String dirname = stok.nextToken();
       lsr.add(dirname);
       byte fbuf[] = aj.getFile(userName,passwd,environ,
-                tmproot + fs + dirname + fs + ".desc");
+                     tmproot + dirname + fs + ".desc");
       lsr.add(new String(fbuf));
 
       if(aj.getFileok()!=1)
-      {
-        appendToLogFile("Calling getFile : "+tmproot + fs +
+        appendToLogFile("Calling getFile : "+tmproot + 
                         dirname + fs + ".desc\n"+
                         "STDERR "+aj.getErrStd()+"\n"+
                         "STDOUT "+aj.getOutStd(),errorLog);
-      }
     }
     
     lsr.add("list");
@@ -1140,11 +1122,11 @@ public class JembossAuthServer
     finally                     // always close the file
     {                       
       if(bw != null) 
-        try
-        {
-          bw.close();
-        } 
-        catch (IOException ioe2) {}
+      try
+      {
+        bw.close();
+      } 
+      catch (IOException ioe2) {}
     }
 
   }
