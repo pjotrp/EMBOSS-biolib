@@ -677,7 +677,7 @@ if [ "$AUTH" = "y" ]; then
   echo
   echo "(1) shadow      (3) PAM         (5) HP-UX shadow"
   echo "(2) no shadow   (4) AIX shadow  (6) Re-entrant shadow"
-  echo "(7) Pain re-entrant"  
+  echo "(7) Plain re-entrant"  
   echo 
   echo "Type of unix password method being used "
   echo "(select 1, 2, 3, 4, 5, 6 or 7 )[1]"
@@ -1088,7 +1088,7 @@ if [ "$AUTH" = "y" ]; then
   echo "   chmod u+s $EMBOSS_INSTALL/bin/jembossctl"
   echo "   chown root $EMBOSS_INSTALL/bin/jembossctl"                        
   echo
-  echo "Tomcat may still be running! Ensure it is running as the non-priveleged"
+  echo "Tomcat may still be running! Ensure it is running as the non-priveliged"
   echo "tomcat user. Use the tomstop & tomstart scripts to stop & start tomcat."
   echo 
 else
