@@ -5580,7 +5580,7 @@ IN ../../data/globins.fasta
 IN
 IN
 FI stderr
-FC = 3
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
