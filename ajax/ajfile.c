@@ -3155,7 +3155,10 @@ ajint ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
     ajStrDel(&tpath);
     ajListDel(&dirs);
 
-    return ajListLength(*list);
+    if(result)
+	return ajListLength(*result);
+
+    return 0;
 }
 
 /* @func ajFileTestSkip ****************************************************
