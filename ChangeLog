@@ -1,3 +1,7 @@
+JISON - Mon Apr  8 16:48:19 BST 2002
+New embxyz.c / .h committed for	embXyzSeqsetNRRange
+
+
 Version 2.4.0
 
 	Report format "table" is the default for several applications. In
