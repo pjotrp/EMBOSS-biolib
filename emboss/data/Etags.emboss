@@ -131,6 +131,8 @@ rpt_unit SPECIAL
 
 sequenced_mol QLIMITED cDNA,cDNA to genomic RNA,cDNA to mRNA,cDNA to other RNA,cDNA to rRNA,DNA,mRNA,RNA,rRNA,scRNA,snRNA,tRNA
 
+serovar QTEXT
+
 serotype QTEXT
 
 sex QTEXT
