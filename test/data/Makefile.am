@@ -1,5 +1,5 @@
 pkgdata_DATA = aaindex1.test prosite.dat prosite.doc prints.test withrefm \
-               site.dat \
+               site.dat cutg.codon \
                dna.acedb dna.aln dna.asn1 dna.codata dna.embl dna.fasta \
                dna.fitch dna.gcg dna.gcg8 dna.genbank dna.ig dna.m-acedb \
                dna.m-codata dna.m-embl dna.m-fasta dna.m-fasta-long \
