@@ -1,4 +1,11 @@
 Version 2.5.1
+
+	Writing data files used EMBOSS_DATA, or by default the install
+	directory. Earlier versions, if not installed, could write to the
+	source tree emboss/data directory. Fixed to continue if there is
+	no install data directory, and to check EMBOSS_DATA (if defined) is
+	a real directory.
+	
 	sigcleave options pval and nval hardcoded. They depend on the
 	weight matrix size - which is hardcoded as 15 in the ACD file and
 	is not checked in the program. They were introduced in EGCG in
