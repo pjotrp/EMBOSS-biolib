@@ -102,6 +102,7 @@
 **  The following command line would achieve the same result.
 **  interface /data/structure/test_data/2hhb.pxyz 
 **  /data/structure/test_data/2hhb.conl -thresh 1 -conerrf interface.log
+**  -vdwf Evdw.dat
 **  
 **  
 **  

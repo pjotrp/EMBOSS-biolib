@@ -35,7 +35,8 @@
 **  Input and Output
 **  scopseqs parses a scop classification file and writes a file containing 
 **  the same data in the same embl-like format, except that domain sequence 
-**  information derived from structure and sequence databases are added.  
+**  information derived from structure and, optionally, sequence databases are
+**  added.  
 **  Domain sequences are extracted from domain coordinate files and from the 
 **  swissprot database.  Accession numbers corresponding to pdb identifiers 
 **  (and therefore scop domain identifiers) are taken from a swissprot:pdb 
@@ -63,6 +64,8 @@
 **  
 **  
 **  Notes
+**  The user specifies whether or not to retrieve swissprot sequences for the 
+**  domains.
 **  scopseqs will not attempt to retrieve a swissprot sequence for any domains 
 **  comprised of more than a single segment, i.e. for domains whose NC record 
 **  in the domain coordinate file has a value other than 1 (see scopparse.c).
@@ -133,6 +136,7 @@
 **  An example of interactive use of scopseqs is shown below.
 **  Adds pdb and swissprot sequence records to a scop classification file.
 **  Name of scop file for input (embl format): /test_data/all.scop
+**  Retrieve swissprot sequence [Y]: 
 **  Name of the pdbcodes to swissprot indexing file (embl format) [Epdbtosp.dat]: 
 **  Location of clean domain coordinate files for input (embl format) [./]: /test_data
 **  File extension of clean domain coordinate files [.pxyz]: .dxyz
@@ -155,8 +159,8 @@
 **  /test_data/scopseqs.log was written.
 **  
 **  The following command line would achieve the same result.
-**  scopseqs /test_data/all.scop /test_data .dxyz /test_data/all_s.scop 
-**  /test_data/scopseqs.log
+**  scopseqs /test_data/all.scop /test_data .dxyz -getswiss Y -pdbtosp 
+**  Epdbtosp.dat /test_data/all_s.scop /test_data/scopseqs.log
 **  
 **  
 **  
@@ -256,6 +260,8 @@ int main(int argc, char **argv)
     AjPScop    scop       = NULL; /* Pointer to scop structure */
     AjPPdb     pdb        = NULL; /* Pointer to pdb structure */
 
+    AjBool     getswiss   = ajFalse; /*Whether to retrieve swissprot 
+				       sequences for the domains */
     
     
     /* Initialise strings, lists,  etc */
@@ -276,7 +282,9 @@ int main(int argc, char **argv)
     ajAcdInitP("scopseqs",argc,argv,"DOMAINATRIX");
 
     scop_inf    = ajAcdGetInfile("scopin");
-    pdbtosp_inf = ajAcdGetInfile("pdbtosp");
+    getswiss    = ajAcdGetBool("getswiss");
+    if(getswiss)
+	pdbtosp_inf = ajAcdGetInfile("pdbtosp");
     scop_outf   = ajAcdGetOutfile("scopout");
     dpdb_path   = ajAcdGetString("dpdb");
     dpdb_extn   = ajAcdGetString("extn");
@@ -293,7 +301,8 @@ int main(int argc, char **argv)
 
 
     /* set up the pdbtosp object list */
-    ajXyzPdbtospReadAll(pdbtosp_inf,&list);
+    if(getswiss)
+	ajXyzPdbtospReadAll(pdbtosp_inf,&list);
    
     /* Start of main application loop */
     while((ajXyzScopReadC(scop_inf, "*", &scop)))
@@ -338,7 +347,18 @@ int main(int argc, char **argv)
 	/* add pdb sequence to the scop structure */
 	ajStrAssS(&scop->SeqPdb, dpdb_seq);
 
-
+	
+	/* if we do not need the swissprot sequence */
+	if(!getswiss)
+	{
+	    ajXyzScopWrite(scop_outf,scop); 
+	    ajFileClose(&dpdb_inf);  
+	    ajSeqDel(&pdb_seq);
+	    ajXyzPdbDel(&pdb);
+	    ajXyzScopDel(&scop);
+	    continue;
+	}
+	
 
 	/* We only want to retrieve a swissprot sequence 
 	   if the domain is not comprised of segments */
@@ -454,7 +474,8 @@ int main(int argc, char **argv)
     ajStrDel(&acc);
     ajFileClose(&errf);   
     ajFileClose(&scop_inf);
-    ajFileClose(&pdbtosp_inf);
+    if(getswiss)
+	ajFileClose(&pdbtosp_inf);
     ajFileClose(&scop_outf);	    
     
 

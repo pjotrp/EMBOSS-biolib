@@ -56,7 +56,12 @@
 **  
 **  
 **  Notes
-**  
+**  Some SCOP domains are comprised of more than one segments of polypeptide 
+**  chain, these segments belonging to a single or more than one polypeptide 
+**  chains.  It is debatable whether a domain (using the widely accepted 
+**  definition) can truly consist of regions from more than polypeptide. 
+**  Accordingly, scopparse gives the option of omitting from the output file 
+**  domains that consist of segments from different chains.
 **  
 **  
 **  Known bugs & warnings
@@ -94,15 +99,17 @@
 **  Converts raw scop classification files to a file in embl-like format.
 **  Name of scop classification file (raw format dir.cla.scop.txt_X.XX for input): /test_data/scop.cla.raw
 **  Name of scop description file (raw format dir.des.scop.txt_X.XX for input): /test_data/scop.des.raw
+**  Write multi-chain domains [N]: 
 **  Name of scop classification file (embl format output) [test.scop]: /test_data/all.scop.new
 **  Unix % 
 **  
 **  The raw scop classification files /test_data/scop.cla.raw and 
 **  /test_data/scop.des.raw and a scop classification file in embl-like format
-**  called /test_data/all.scop.new was written.
+**  called /test_data/all.scop.new was written. The output file does not
+**  contain domains that comprise segments from more than one chain.
 **  
 **  The following command line would achieve the same result.
-**  scopparse /test_data/scop.cla.raw /test_data/scop.des.raw 
+**  scopparse /test_data/scop.cla.raw /test_data/scop.des.raw -outputall N
 **  /test_data/all.scop.new
 **  
 **  
@@ -282,7 +289,7 @@
 **  XX
 **  SP   GLB1_SCAIN
 **  XX
-**  RA   1 START; 146 END;
+**  RA   1 START; 146 END; 
 **  XX
 **  SQ   SEQUENCE   146 AA;  15947 MW;  5868B4E5 CRC32;
 **       PSVYDAAAQL TADVKKDLRD SWKVIGSDKK GNGVALMTTL FADNQETIGY FKRLGDVSQG
