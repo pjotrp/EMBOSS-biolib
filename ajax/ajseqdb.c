@@ -2507,36 +2507,39 @@ static AjBool seqAccessSrsfasta(AjPSeqin seqin)
     ajDebug("seqAccessSrsfasta %S:%S\n", searchdb, qry->Id);
     if(ajStrLen(qry->Id))
     {
-	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta [%S-id:%S]|",
+	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta '[%S-id:%S]",
 		    qry->Application, searchdb, qry->Id);
 	if(ajStrMatch(qry->Id, qry->Acc))
-	    ajFmtPrintAppS(&seqin->Filename, "[%S-acc:%S]|",
+	    ajFmtPrintAppS(&seqin->Filename, "|[%S-acc:%S]'|",
+			   searchdb, qry->Id);
+	else				/* just the ID query */
+	    ajFmtPrintAppS(&seqin->Filename, "'|",
 			   searchdb, qry->Id);
     }
     else if(ajStrLen(qry->Acc))
-	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta [%S-acc:%S]|",
+	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta '[%S-acc:%S]'|",
 		    qry->Application, searchdb, qry->Acc);
     else if(ajStrLen(qry->Gi))
     {
-        ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta [%S-gi:%S]|",
+        ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta '[%S-gi:%S]'|",
 		    qry->Application, searchdb, qry->Gi);
     }
     else if(ajStrLen(qry->Sv))
     {
-        ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta [%S-sv:%S]|",
+        ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta '[%S-sv:%S]'|",
 		    qry->Application, searchdb, qry->Sv);
     }
     else if(ajStrLen(qry->Des))
-	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta [%S-des:%S]|",
+	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta '[%S-des:%S]'|",
 		    qry->Application, searchdb, qry->Des);
     else if(ajStrLen(qry->Org))
-	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta [%S-org:%S]|",
+	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta '[%S-org:%S]'|",
 		    qry->Application, searchdb, qry->Org);
     else if(ajStrLen(qry->Key))
-	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta [%S-key:%S]|",
+	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta '[%S-key:%S]'|",
 		    qry->Application, searchdb, qry->Key);
     else
-	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta %S|",
+	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta '%S'|",
 		    qry->Application, searchdb);
 
     ajDebug("searching with SRS command '%S'\n", seqin->Filename);
