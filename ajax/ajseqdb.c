@@ -1064,7 +1064,7 @@ static char* seqCdTrgName (ajint ipos, SeqPCdFile fil)
     static ajint maxNameSize = 0;
     ajint nameSize;
 
-    nameSize = fil->RecSize-10;
+    nameSize = fil->RecSize-8;
 
     if (maxNameSize < nameSize)
     {
@@ -1098,7 +1098,7 @@ static void seqCdTrgLine (SeqPCdTrg trgLine, ajint ipos, SeqPCdFile fil)
     static ajint maxNameSize = 0;
     ajint nameSize;
 
-    nameSize = fil->RecSize-10;
+    nameSize = fil->RecSize-8;
 
     if (maxNameSize < nameSize)
     {
