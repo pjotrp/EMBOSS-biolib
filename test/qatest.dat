@@ -1,4 +1,4 @@
-###########################################################################
+s###########################################################################
 # Things to do
 #
 # (1) database extract programs to write to a local directory
@@ -147,11 +147,11 @@ FI paamir.out2
 FZ = 0
 //
 
-ID acdc-0010
-AP acdc
+ID acdpretty-ex
+AP acdpretty
 PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
-CL qatest -acdpretty
+CL qatest
 FI qatest.acdpretty
 FZ = 810
 FP 3 /^string:/
@@ -182,8 +182,8 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest -help -verbose
 FI stderr
-FZ = 4145
-FP 29 /   boolean /
+FZ = 3931
+FP 26 /   boolean /
 FP  6 /   integer /
 FP 28 /   string /
 FP /   [-]testalen           string     asequence length \.\.\.\n/
@@ -720,7 +720,7 @@ FZ > 0
 FP 1 /Warning: /
 FP 0 /Error: /
 FP 1 /Died: /
-FP /Warning: Ambiguous master qualifier 'a' in sbegin_a \(auto,acdlog,acdpretty,acdtable,asequence\)/
+FP /Warning: Ambiguous master qualifier 'a' in sbegin_a \(auto,asequence\)/
 FP /Died: Unknown qualifier -sbegin_a/
 //
 
@@ -734,7 +734,7 @@ FI stderr
 FP 1 /Warning: /
 FP 0 /Error: /
 FP 1 /Died: /
-FP /Warning: ambiguous qualifier 'a' \(auto,acdlog,acdpretty,acdtable,asequence,aint\)/
+FP /Warning: ambiguous qualifier 'a' \(auto,asequence,aint\)/
 FP /Died: Unknown qualifier -a\n/
 //
 
@@ -1694,12 +1694,70 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FZ = 19
-FP /^Created banana.dat\n/
+FC = 9
+FP /^Created banana1.dat\n/
+FI banana1.dat
+FC > 1
+FP /^##/
+FI banana2.dat
+FC > 1
+FP /^##/
+FI banana3.dat
+FC > 1
+FP /^##/
+FI banana4.dat
+FC > 1
+FP /^##/
+FI banana5.dat
+FC > 1
+FP /^##/
+FI banana6.dat
+FC > 1
+FP /^##/
+FI banana7.dat
+FC > 1
+FP /^##/
+FI banana8.dat
+FC > 1
+FP /^##/
+FI banana9.dat
+FC > 1
+FP /^##/
+//
+
+ID banana-data
+AP banana
+CL -outfile banana.data -nograph
+IN tembl:rnu68037
+FI banana.data
+FC = 1219
+FP /c      17.7     20.0\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID banana-graph
+AP banana
+CL -nooutfile -graph ps
+IN tembl:rnu68037
+FI stdout
+FC = 1
+FP /^Created banana.ps\n/
+FI banana.ps
+FC > 1
+FP /%%Title: PLplot Graph\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 ID biosed-ex
-UC Replace all 'T's with 'U's to create a RNA sequence
+UC Replace all 'T's with 'U's to create an RNA sequence
 AP biosed
 CL tembl:hsfau hsfau.rna -target T -replace U
 FI stderr
@@ -1767,6 +1825,26 @@ FP /^%%Pages: 1\n/
 FI stdout
 FZ = 17
 FP /^Created chaos.ps\n/
+//
+
+ID chaos-data
+AP chaos
+CL tembl:eclac -graph data
+FI stdout
+FC = 1
+FP /^Created chaos1.dat\n/
+FI stderr
+FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI chaos1.dat
+FC = 7493
+FP /^##Screen x1 -0.100000 y1 -0.100000 x2 1.400000 y2 1.100000\n/
+FP /^Line x1 0.090456 y1 0.242971 x2 0.090556 y2 0.242971 colour 0\n/
+FP /^Text3 x1 0.000000 y1 0.000000 colour 0 size 1.000000 A\n/
+FP /^Text1 x1 1.100000 y1 0.750000 colour 0 size 0.500000 A 1739\n/
+FP /^Text1 x1 1.100000 y1 0.450000 colour 0 size 0.500000 [%]A 23.26\n/
 //
 
 ID charge-ex
@@ -1994,8 +2072,11 @@ IN
 IN
 IN
 IN
+FI stdout
+FC = 3
+FP /^Created cpgplot3.dat\n/
 FI stderr
-FC = 4
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -2168,6 +2249,9 @@ IN
 IN
 IN
 IN
+FI stdout
+FC = 1
+FP /^Created dan1.dat\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -4799,9 +4883,8 @@ FC = 17
 ID dotmatcher-ex
 AP dotmatcher
 CL tsw:hba_human tsw:hbb_human -graph cps
-IN
 FI stderr
-FC = 2
+FC = 1
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -4811,6 +4894,45 @@ FP /^%%Pages: 1\n/
 FI stdout
 FZ = 22
 FP /^Created dotmatcher.ps\n/
+//
+
+ID dotmatcher-data
+AP dotmatcher
+CL tsw:hba_human tsw:hbb_human -graph data
+FI stderr
+FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 1
+FP /Created dotmatcher1.dat\n/
+FI dotmatcher1.dat
+FC = 30
+FP /^Text2 x1 73.000000 y1 163.519989 colour 0 size 1.000000 Dotmatcher: HBA_HUMAN vs HBB_HUMAN\n/
+//
+
+ID dotmatcher-stretchdata
+AP dotmatcher
+CL tsw:hba_human tsw:hbb_human -stretch -xygraph data
+FI stderr
+FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 1
+FP /Created dotmatcher1.dat\n/
+FI dotmatcher1.dat
+FC = 27
+FP /^##Title Dotmatcher: HBA_HUMAN vs HBB_HUMAN\n/
+FP /^##XminA 1.000000 XmaxA 141.000000 YminA 1.000000 YmaxA 146.000000\n/
+FP /^##Xmin 1.000000 Xmax 141.000000 Ymin 1.000000 Ymax 146.000000\n/
+FP /^##ScaleXmin 1.000000 ScaleXmax 141.000000 ScaleYmin 1.000000 ScaleYmax 146.000000\n/
+FP /^##Maintitle \(windowsize = 10, threshold = 23.00  [0-9\/]+\)\n/
+FP /^Line x1 108.000000 y1 113.000000 x2 127.000000 y2 132.000000 colour 0\n/
+FP /^##GraphObjects\n/
+FP /^##Number 0\n/
 //
 
 ID dotmatcher-stretch
@@ -4857,10 +4979,13 @@ AP dotpath
 ## timeout 60 seconds on original test system
 ##
 TI 400
-CL tembl:AF129756 tembl:AP000504 -word 20 -data -out af.path
-FI af.path
-FP /^##Number 118\n/
-FC = 133
+CL tembl:AF129756 tembl:AP000504 -word 20 -graph data
+FI dotpath1.dat
+FP /^Line x1 10963.000000 y1 4915.000000 x2 10999.000000 y2 4951.000000 colour 0\n/
+FC = 146
+FI stdout
+FC = 1
+FP /^Created dotpath1.dat\n/
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -4880,7 +5005,43 @@ FZ > 66990
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 FI stderr
-FC = 2
+FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID dottup-data
+AP dottup
+CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac"
+CL -graph data
+IN
+FI stdout
+FC = 1
+FP /^Created dottup1.dat\n/
+FI dottup1.dat
+FC = 2283
+FP /^Line x1 5250.000000 y1 394.000000 x2 5261.000000 y2 405.000000 colour 0\n/
+FI stderr
+FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID dottup-stretchdata
+AP dottup
+CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac"
+CL -stretch -xygraph data
+IN
+FI stdout
+FC = 1
+FP /^Created dottup1.dat\n/
+FI dottup1.dat
+FC = 2265
+FP /^Line x1 5510.000000 y1 195.000000 x2 5521.000000 y2 206.000000 colour 0\n/
+FI stderr
+FC = 1
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -7297,9 +7458,31 @@ FI stdout
 FZ = 18
 FP /^Created pepnet.ps\n/
 FI pepnet.ps
-FZ = 13045
+FZ = 12979
 FP /^%%Title: PLplot Graph\n/
-FP /^%%Pages: 2\n/
+FP /^%%Pages: 1\n/
+//
+
+ID pepnet-data
+AP pepnet
+CL -sask -graph data
+## No -outfile qualifier - fixed filename
+IN tsw:gcn4_yeast
+IN 253
+IN 274
+IN cps
+FI stdout
+FC = 1
+FP /^Created pepnet1.dat\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI pepnet1.dat
+FC = 104
+FP /^Text1 x1 139.599991 y1 93.500000 colour 1 size 0.750000 D\n/
+FP /^Rectangle x1 134.499985 y1 85.430000 x2 137.499985 y2 88.430000 colour 9\n/
 //
 
 ID pepstats-ex
@@ -7337,6 +7520,23 @@ FI pepwheel.ps
 FZ = 13599
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
+//
+
+ID pepwheel-data
+AP pepwheel
+CL tsw:hbb_human -send 30 -graph data
+FI stdout
+FC = 1
+FP /^Created pepwheel1.dat\n/
+FI stderr
+FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI pepwheel1.dat
+FC = 138
+FP /^Text1 x1 -0.000000 y1 0.453300 colour 9 size 1.000000 V\n/
+FP /^Rectangle x1 -0.025000 y1 0.431300 x2 0.025000 y2 0.481300 colour 9\n/
 //
 
 ID pepwindow-ex
@@ -7473,6 +7673,24 @@ FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
 
+ID plotcon-data
+AP plotcon
+CL -sformat msf ../../data/globins.msf -graph data
+IN
+FI stdout
+FC = 1
+FP /^Created plotcon1.dat\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI plotcon1.dat
+FC = 179
+FP /^##Points 164\n/
+FP /^10.000000\s+0.000744\n/
+//
+
 ID plotorf-ex
 AP plotorf
 IN tembl:paamir
@@ -7529,6 +7747,28 @@ FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
 
+ID polydot-data
+AP polydot
+CL ../../data/globins.fasta -gtitle="Polydot of globins.fasta"
+CL -graph data
+IN
+FI stdout
+FC = 1
+FP /^Created polydot1.dat\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI polydot1.dat
+FC = 201
+FP /^##Screen x1 -163.350006 y1 -163.350006 x2 1690.672485 y2 1252.349976\n/
+FP /^Textline x1 -98.010010 y1 73.000000 x2 -98.010010 y2 146.000000 colour 0 size 0.300000 HBB_HUMAN\n/
+FP /^Rectangle x1 0.000000 y1 156.000000 x2 146.000000 y2 302.000000 colour 0\n/
+FP /^Text1 x1 1121.670044 y1 1056.329956 colour 0 size 0.300000 No. Length  Lines  Points Sequence\n/
+FP /^Text1 x1 1121.670044 y1 1023.659973 colour 0 size 0.300000   1    146     8    248 HBB_HUMAN\n/
+//
+
 ID preg-ex
 AP preg
 IN tsw:*_rat
@@ -7559,7 +7799,31 @@ FZ = 22
 FP /^Created prettyplot.ps\n/
 FI prettyplot.ps
 FP /^%%Title: PLplot Graph\n/
-FP /^%%Pages: 3\n/
+FP /^%%Pages: 2\n/
+//
+
+ID prettyplot-data
+AP prettyplot
+CL -resbreak=10 -boxcol -consensus -plurality=3
+CL -graph data
+IN ../../data/globins.msf
+FI stdout
+FC = 2
+FP /^Created prettyplot2.dat\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI prettyplot1.dat
+FC = 1252
+FP /^Text1 x1 -10.000000 y1 50.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
+FP /^Text1 x1 -10.000000 y1 43.599998 colour 0 size 8.000000 Consensus\n/
+FP /^Text1 x1 59.000000 y1 53.500000 colour 0 size 8.000000 50\n/
+FP /^Text1 x1 4.000000 y1 53.500000 colour 0 size 8.000000 D\n/
+FI prettyplot2.dat
+FC = 130
+FP /^Text1 x1 -10.000000 y1 50.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
 //
 
 ID prettyplot-ex2
