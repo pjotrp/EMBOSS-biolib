@@ -46,7 +46,9 @@ extern "C"
 ** and or manipulated by the EMBOSS applications seqsearch, seqsort, and 
 ** sigscan.
 **
-** @attr  Basic variables defining the hit.
+**
+** Variables are described below:
+** Basic variables defining the hit.
 ** @attr  Seq	   [AjPStr]  Sequence as string.
 ** @attr  Start    [ajint]   Start of sequence or signature alignment relative
 **	           	     to full length swissprot sequence, this is an 
@@ -61,7 +63,7 @@ extern "C"
 ** @attr  Eval     [float]   E-value of hit 
 ** @attr  Pval     [float]   p-value of hit 
 **  
-** @attr  Variables for classifying the hit.
+** Variables for classifying the hit.
 ** @attr  Typeobj  [AjPStr]  Primary (objective) classification of hit.
 ** @attr  Typesbj  [AjPStr]  Secondary (subjective) classification of hit 
 ** @attr  Model    [AjPStr]  String for model type if used (HMM, Gribskov etc) 
@@ -73,6 +75,64 @@ extern "C"
 ** @attr  Priority [AjBool]  Also used for garbage collection.
 **
 ** AjPHit is implemented as a pointer to a C data structure.
+**
+** 
+** Functions that use this object are described below:
+** @new    embSignatureNew Default Signature constructor
+** @new    embHitlistNew Default Hitlist constructor
+** @new    embHitNew Default Hit constructor
+** @new    embSignatureNew Default Signature constructor
+** @delete embHitlistDel Default Hitlist destructor
+** @delete embHitDel Default Hit destructor
+** @delete embSignatureDel Default Signature destructor
+** @ass    embHitMerge Create new Hit from merging two Hit objects
+** @use    embHitlistMatchFold Sort Hitlist objects by Fold element
+** @use    embMatchScore Sort Hit objects by Score element.
+** @use    embMatchinvScore Sort (inverted order) Hit objects by Score 
+**         element.
+** @attr   embHitsOverlap Checks for overlap between two Hit objects.
+** @other  embHitlistRead
+** @other  embSignatureReadNew Read signature from file & constructor for 
+**         object.
+** @other  embSignatureWrite Write signature to file.
+** @other  embHitlistRead Construct Hitlist object from reading the next entry
+**         from a file in embl-like format (see documentation for the 
+**         DOMAINATRIX "seqsearch" application). 
+** @other  embHitlistReadNode Construct Hitlist object from reading a specific
+**         entry from a file in embl-like format (see documentation for the 
+**         DOMAINATRIX "seqsearch" application). 
+** @other  embHitlistWrite Write Hitlist to file in embl-like format (see 
+**         documentation for the DOMAINATRIX "seqsearch" application). 
+** @other  embHitlistWriteSubset Write a subset of a Hitlist to file in 
+**         embl-like format (see documentation for the DOMAINATRIX "seqsearch"
+**         application). 
+** @other  embSignatureReadNew Construct a Signature object from reading a 
+**         file in embl-like format (see documentation for the DOMAINATRIX
+**         "sigscan" application).
+** @other  embSignatureWrite Write a Signature object to a file in embl-like 
+**         format (see documentation for the DOMAINATRIX "sigscan" 
+**         application).
+** @other  embSignatureHitsRead Construct a Hitlist object from reading a 
+**         signature hits file (see documentation for the DOMAINATRIX 
+**         "sigscan" application). 
+** @other  embSignatureHitsWrite Writes a list of Hit objects to a 
+**         signature hits file (see documentation for the DOMAINATRIX 
+**         "sigscan" application). 
+** @other  embHitlistClassify Classifies a list of signature-sequence hits 
+**         (held in a Hitlist object) according to list of target sequences 
+**         (a list of Hitlist objects).
+** @other  embSignatureCompile Compiles a Signature object.  The signature 
+**         must first have been allocated by using the embSignatureNew 
+**         function.
+** @other  embSignatureAlignSeq Performs an alignment of a signature to a 
+**         protein sequence. The signature must have first been compiled by 
+**         calling embSignatureCompile.  Write a Hit object with the result.
+** @other  embSignatureAlignSeqall Performs an alignment of a signature to
+**         protein sequences. The signature must have first been compiled by 
+**         calling embSignatureCompile.  Write a list of Hit objects with 
+**         the result.
+**
+**
 **
 ** @alias AjSHit
 ** @alias AjOHit
@@ -113,6 +173,8 @@ typedef struct AjSHit
 ** Holds an array of hit structures and associated SCOP classification 
 ** records.
 **
+**
+** Variables are described below:
 ** @attr  Class         [AjPStr]    SCOP classification.
 ** @attr  Fold;         [AjPStr]    SCOP classification.
 ** @attr  Superfamily;  [AjPStr]    SCOP classification.
@@ -124,6 +186,19 @@ typedef struct AjSHit
 ** @attr  hits;         [AjPhHit*]  Array of hits. 
 **
 ** AjPHitlist is implemented as a pointer to a C data structure.
+**
+** 
+** Functions that use this object are described below:
+** @new
+** @delete
+** @ass
+** @mod
+** @use 
+** @attr
+** @cast
+** @other
+** @io
+** 
 **
 ** @alias AjSHitlist
 ** @alias AjOHitlist
@@ -154,12 +229,26 @@ typedef struct AjSHitlist
 **
 ** Holds data for compiled signature position
 **
+** Variables are described below:
 ** @attr  ngaps [ajint]   No. of gaps 
 ** @attr  gsiz  [ajint*]  Gap sizes 
 ** @attr  gpen  [float*]  Gap penalties 
 ** @attr  subs  [float*]  Residue match values 
 ** 
 ** AjPSigpos is implemented as a pointer to a C data structure.
+**
+** 
+** Functions that use this object are described below:
+** @new
+** @delete
+** @ass
+** @mod
+** @use 
+** @attr
+** @cast
+** @other
+** @io
+** 
 **
 ** @alias AjSSigpos
 ** @alias AjOSigpos
@@ -187,6 +276,8 @@ typedef struct AJSSigpos
 ** the gap arrays (gsiz and grfq) being filled in order of increasing gap 
 ** size.
 **
+**
+** Variables are described below:
 ** @attr  nres [ajint]    No. diff. types of residue
 ** @attr  rids [AjPChar]  Residue id's 
 ** @attr  rfrq [AjPInt]   Residue frequencies 
@@ -197,6 +288,19 @@ typedef struct AJSSigpos
 ** @attr  wsiz [ajint]    Window size for this gap 
 **
 ** AjPSigdat is implemented as a pointer to a C data structure.
+**
+** 
+** Functions that use this object are described below:
+** @new
+** @delete
+** @ass
+** @mod
+** @use 
+** @attr
+** @cast
+** @other
+** @io
+** 
 **
 ** @alias AjSSigdat
 ** @alias AjOSigdat
@@ -222,8 +326,8 @@ typedef struct AJSSigdat
 **
 ** Ajax Signature object.
 **
-** Holds data for 
 **
+** Variables are described below:
 ** @attr  Class        [AjPStr]      SCOP classification.
 ** @attr  Fold         [AjPStr]      SCOP classification.
 ** @attr  Superfamily  [AjPStr]      SCOP classification.
@@ -235,6 +339,19 @@ typedef struct AJSSigdat
 ** @attr  dat          [AjPSigdat*]  Array of empirical data.
 **
 ** AjPSignature is implemented as a pointer to a C data structure.
+**
+** 
+** Functions that use this object are described below:
+** @new
+** @delete
+** @ass
+** @mod
+** @use 
+** @attr
+** @cast
+** @other
+** @io
+** 
 **
 ** @alias AjSSignature
 ** @alias AjOSignature

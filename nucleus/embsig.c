@@ -107,6 +107,268 @@ AjBool       embHitlistReadFold(AjPFile scopf, AjPStr fam, AjPStr sfam,
 /* ======================================================================= */
 /* ========================== private functions ========================== */
 /* ======================================================================= */
+/* @func embSigdatNew *******************************************************
+**
+** Sigdat object constructor. This is normally called by the 
+** embSignatureReadNew function. Fore-knowledge of the number of empirical 
+** residues and gaps is required.
+** Important: Functions which manipulate the Sigdat object rely on data in 
+** the gap arrays (gsiz and grfq) being filled in order of increasing gap 
+** size.
+**
+** @param [r] nres [ajint]   Number of emprical residues.
+** @param [r] ngap [ajint]   Number of emprical gaps.
+** 
+** @return [AjPSigdat] Pointer to a Sigdat object
+** @@
+****************************************************************************/
+
+AjPSigdat embSigdatNew(ajint nres, ajint ngap)
+{
+    AjPSigdat ret = NULL;
+
+
+    AJNEW0(ret);
+    ret->nres = nres;
+    ret->ngap = ngap;
+
+    if(ngap)
+    {
+	ret->gsiz = ajIntNewL((ajint) ngap);
+	ret->gfrq = ajIntNewL((ajint) ngap);
+	ajIntPut(&ret->gsiz, ngap-1, (ajint)0);
+	ajIntPut(&ret->gfrq, ngap-1, (ajint)0);
+    }
+    else
+    {
+	ret->gsiz = ajIntNew();
+	ret->gfrq = ajIntNew();
+	ajIntPut(&ret->gsiz, 0, (ajint)0);
+	ajIntPut(&ret->gfrq, 0, (ajint)0);
+    }
+
+    if(nres)
+    {
+	ret->rids = ajChararrNewL((ajint) nres);
+	ret->rfrq = ajIntNewL((ajint) nres);
+        ajIntPut(&ret->rfrq, nres-1, (ajint)0);
+	ajChararrPut(&ret->rids, nres-1, (char)' ');
+    }
+    else
+    {
+	ret->rids = ajChararrNew();
+	ret->rfrq = ajIntNew();
+	ajIntPut(&ret->rfrq, 0, (ajint)0);
+	ajChararrPut(&ret->rids, 0, (char)' ');
+    }
+    
+    return ret;
+}
+
+
+
+
+/* @func embSigposNew *******************************************************
+**
+** Sigpos object constructor. This is normally called by the
+** embSignatureCompile function. Fore-knowledge of the number of permissible
+** gaps is required.
+**
+** @param [r] ngap [ajint]   Number of permissible gaps.
+** 
+** @return [AjPSigpos] Pointer to a Sigpos object
+** @@
+****************************************************************************/
+
+AjPSigpos embSigposNew(ajint ngap)
+{
+    AjPSigpos ret = NULL;
+    
+    AJNEW0(ret);
+    ret->ngaps = ngap;
+    
+    /* Create arrays */
+    AJCNEW0(ret->gsiz, ngap);
+    AJCNEW0(ret->gpen, ngap);
+    AJCNEW0(ret->subs, 26);
+        
+    return ret;
+}
+
+
+
+
+/* @func embSigposDel *******************************************************
+**
+** Destructor for Sigpos object.
+**
+** @param [w] pthis [AjPSigpos*] Sigpos object pointer
+**
+** @return [void]
+** @@
+****************************************************************************/
+
+void embSigposDel(AjPSigpos *pthis)
+{
+    AJFREE((*pthis)->gsiz);
+    AJFREE((*pthis)->gpen);
+    AJFREE((*pthis)->subs);
+
+    AJFREE(*pthis); 
+    *pthis = NULL;
+    
+    return; 
+}
+
+
+
+
+
+/* @func embSigdatDel *******************************************************
+**
+** Destructor for Sigdat object.
+**
+** @param [w] pthis [AjPSigdat*] Sigdat object pointer
+**
+** @return [void]
+** @@
+****************************************************************************/
+
+void embSigdatDel(AjPSigdat *pthis)
+{
+
+    ajIntDel(&(*pthis)->gsiz);
+    ajIntDel(&(*pthis)->gfrq);
+    ajIntDel(&(*pthis)->rfrq);
+    ajChararrDel(&(*pthis)->rids);
+    
+    AJFREE(*pthis);    
+    *pthis = NULL;
+
+    return; 
+}
+
+
+
+
+/* @func embHitidxNew *******************************************************
+**
+** Hitidx object constructor. This is normally called by the 
+** embHitlistClassify function.
+**
+** @return [EmbPHitidx] Pointer to a Hitidx object
+** @@
+****************************************************************************/
+
+EmbPHitidx embHitidxNew(void)
+{
+    EmbPHitidx ret  =NULL;
+
+    AJNEW0(ret);
+
+    ret->Id         = ajStrNew();
+    ret->hptr       = NULL;
+    ret->lptr       = NULL;
+    
+    return ret;
+}
+
+
+
+
+/* @func embHitidxDel *******************************************************
+**
+** Destructor for Hitidx object.
+**
+** @param [w] pthis [EmbPHitidx*] Hitidx object pointer
+**
+** @return [void]
+** @@
+****************************************************************************/
+
+void embHitidxDel(EmbPHitidx *pthis)
+{
+    ajStrDel(&(*pthis)->Id);
+
+    AJFREE(*pthis);
+    *pthis = NULL;
+    
+    return;
+}
+
+
+
+
+/* @func embHitidxBinSearch *************************************************
+**
+** Performs a binary search for an accession number over an array of Hitidx
+** structures (which of course must first have been sorted). This is a 
+** case-insensitive search.
+**
+** @param [r] id  [AjPStr]       Search term
+** @param [r] arr [EmbPHitidx*]  Array of EmbOHitidx objects
+** @param [r] siz [ajint]        Size of array
+**
+** @return [ajint] Index of first Hitidx object found with an Id element 
+** matching id, or -1 if id is not found.
+** @@
+****************************************************************************/
+
+ajint embHitidxBinSearch(AjPStr id, EmbPHitidx *arr, ajint siz)
+{
+    int l;
+    int m;
+    int h;
+    int c;
+
+
+    l = 0;
+    h = siz-1;
+    while(l<=h)
+    {
+        m=(l+h)>>1;
+
+        if((c=ajStrCmpCase(id, arr[m]->Id)) < 0) 
+	    h = m-1;
+        else if(c>0) 
+	    l = m+1;
+        else 
+	    return m;
+    }
+
+    return -1;
+}
+
+
+
+
+/* @func embHitidxMatchId ***************************************************
+**
+** Function to sort Hitidx objects by Id element. Usually called by 
+** embHitlistClassify.
+**
+** @param [r] hit1  [const void*] Pointer to Hitidx object 1
+** @param [r] hit2  [const void*] Pointer to Hitidx object 2
+**
+** @return [ajint] -1 if Id1 should sort before Id2, +1 if the Id2 should sort 
+** first. 0 if they are identical in length and content. 
+** @@
+****************************************************************************/
+
+ajint embHitidxMatchId(const void *hit1, const void *hit2)
+{
+    EmbPHitidx p = NULL;
+    EmbPHitidx q = NULL;
+
+    p = (*(EmbPHitidx*)hit1);
+    q = (*(EmbPHitidx*)hit2);
+    
+    return ajStrCmpO(p->Id, q->Id);
+
+}
+
+
+
 
 /* @func embHitlistReadFam **************************************************
 **
@@ -286,6 +548,9 @@ AjBool embHitlistReadFold(AjPFile scopf, AjPStr fam, AjPStr sfam,
 
 
 
+
+
+
 /* ======================================================================= */
 /* =========================== constructors ============================== */
 /* ======================================================================= */
@@ -299,136 +564,40 @@ AjBool embHitlistReadFold(AjPFile scopf, AjPStr fam, AjPStr sfam,
 **
 ****************************************************************************/
 
-
-
-
-
-/* ======================================================================= */
-/* =========================== destructors =============================== */
-/* ======================================================================= */
-
-/* @section Structure Destructors *******************************************
+/* @func embHitlistNew ******************************************************
 **
-** All destructor functions receive the address of the instance to be
-** deleted.  The original pointer is set to NULL so is ready for re-use.
+** Hitlist object constructor. This is normally called by the embHitlistRead
+** function. Fore-knowledge of the number of hits is required.
 **
-****************************************************************************/
-
-
-
-
-
-/* ======================================================================= */
-/* ============================ Assignments ============================== */
-/* ======================================================================= */
-
-/* @section Assignments *****************************************************
-**
-** These functions overwrite the instance provided as the first argument
-** A NULL value is always acceptable so these functions are often used to
-** create a new instance by assignment.
-**
-****************************************************************************/
-
-
-
-
-
-/* ======================================================================= */
-/* ============================= Modifiers =============================== */
-/* ======================================================================= */
-
-/* @section Modifiers *******************************************************
-**
-** These functions use the contents of an instance and update them.
-**
-****************************************************************************/
-
-
-
-
-
-/* ======================================================================= */
-/* ========================== Operators ===================================*/
-/* ======================================================================= */
-
-/* @section Operators *******************************************************
-**
-** These functions use the contents of an instance but do not make any 
-** changes.
-**
-****************************************************************************/
-
-
-
-
-
-/* ======================================================================= */
-/* ============================== Casts ===================================*/
-/* ======================================================================= */
-
-/* @section Casts ***********************************************************
-**
-** These functions examine the contents of an instance and return some
-** derived information. Some of them provide access to the internal
-** components of an instance. They are provided for programming convenience
-** but should be used with caution.
-**
-****************************************************************************/
-
-
-
-
-
-/* ======================================================================= */
-/* =========================== Reporters ==================================*/
-/* ======================================================================= */
-
-/* @section Reporters *******************************************************
-**
-** These functions return the contents of an instance but do not make any 
-** changes.
-**
-****************************************************************************/
-
-
-
-
-
-/* ======================================================================= */
-/* ========================== Input & Output ============================= */
-/* ======================================================================= */
-
-/* @section Input & output **************************************************
-**
-** These functions are used for formatted input and output to file.    
-**
-****************************************************************************/
-
-/* @func embSigposNew *******************************************************
-**
-** Sigpos object constructor. This is normally called by the
-** embSignatureCompile function. Fore-knowledge of the number of permissible
-** gaps is required.
-**
-** @param [r] ngap [ajint]   Number of permissible gaps.
+** @param [r] n [ajint] Number of hits
 ** 
-** @return [AjPSigpos] Pointer to a Sigpos object
+** @return [AjPHitlist] Pointer to a hitlist object
 ** @@
 ****************************************************************************/
 
-AjPSigpos embSigposNew(ajint ngap)
+AjPHitlist embHitlistNew(ajint n)
 {
-    AjPSigpos ret = NULL;
+    AjPHitlist ret = NULL;
+    ajint i = 0;
     
+
     AJNEW0(ret);
-    ret->ngaps = ngap;
+    ret->Class       = ajStrNew();
+    ret->Fold        = ajStrNew();
+    ret->Superfamily = ajStrNew();
+    ret->Family      = ajStrNew();
+    ret->Model       = ajStrNew();
+    ret->Priority    = ajFalse;
     
-    /* Create arrays */
-    AJCNEW0(ret->gsiz, ngap);
-    AJCNEW0(ret->gpen, ngap);
-    AJCNEW0(ret->subs, 26);
-        
+    ret->N=n;
+
+    if(n)
+    {
+	AJCNEW0(ret->hits,n);
+	for(i=0;i<n;++i)
+	    ret->hits[i] = embHitNew();
+    }	
+
     return ret;
 }
 
@@ -436,63 +605,43 @@ AjPSigpos embSigposNew(ajint ngap)
 
 
 
-/* @func embSigdatNew *******************************************************
+/* @func embHitNew **********************************************************
 **
-** Sigdat object constructor. This is normally called by the 
-** embSignatureReadNew function. Fore-knowledge of the number of empirical 
-** residues and gaps is required.
-** Important: Functions which manipulate the Sigdat object rely on data in 
-** the gap arrays (gsiz and grfq) being filled in order of increasing gap 
-** size.
+** Hit object constructor. This is normally called by the embHitlistNew
+** function.
 **
-** @param [r] nres [ajint]   Number of emprical residues.
-** @param [r] ngap [ajint]   Number of emprical gaps.
-** 
-** @return [AjPSigdat] Pointer to a Sigdat object
+** @return [AjPHit] Pointer to a hit object
 ** @@
 ****************************************************************************/
 
-AjPSigdat embSigdatNew(ajint nres, ajint ngap)
+AjPHit embHitNew(void)
 {
-    AjPSigdat ret = NULL;
-
+    AjPHit ret = NULL;
 
     AJNEW0(ret);
-    ret->nres = nres;
-    ret->ngap = ngap;
 
-    if(ngap)
-    {
-	ret->gsiz = ajIntNewL((ajint) ngap);
-	ret->gfrq = ajIntNewL((ajint) ngap);
-	ajIntPut(&ret->gsiz, ngap-1, (ajint)0);
-	ajIntPut(&ret->gfrq, ngap-1, (ajint)0);
-    }
-    else
-    {
-	ret->gsiz = ajIntNew();
-	ret->gfrq = ajIntNew();
-	ajIntPut(&ret->gsiz, 0, (ajint)0);
-	ajIntPut(&ret->gfrq, 0, (ajint)0);
-    }
+    ret->Seq       = ajStrNew();
+    ret->Acc       = ajStrNew();
+    ret->Spr       = ajStrNew();
+    ret->Typeobj   = ajStrNew();
+    ret->Typesbj   = ajStrNew();
+    ret->Model     = ajStrNew();
+    ret->Alg       = ajStrNew();
+    ret->Group     = ajStrNew();
+    ret->Start     = 0;
+    ret->End       = 0;
+    ret->Rank      = 0;
+    ret->Score     = 0;    
+    ret->Eval      = 0;
+    ret->Pval      = 0;
+    ret->Target    = ajFalse;
+    ret->Target2   = ajFalse;
+    ret->Priority  = ajFalse;
 
-    if(nres)
-    {
-	ret->rids = ajChararrNewL((ajint) nres);
-	ret->rfrq = ajIntNewL((ajint) nres);
-        ajIntPut(&ret->rfrq, nres-1, (ajint)0);
-	ajChararrPut(&ret->rids, nres-1, (char)' ');
-    }
-    else
-    {
-	ret->rids = ajChararrNew();
-	ret->rfrq = ajIntNew();
-	ajIntPut(&ret->rfrq, 0, (ajint)0);
-	ajChararrPut(&ret->rids, 0, (char)' ');
-    }
-    
     return ret;
 }
+
+
 
 
 
@@ -536,54 +685,92 @@ AjPSignature embSignatureNew(ajint n)
 
 
 
-/* @func embSigposDel *******************************************************
+/* ======================================================================= */
+/* =========================== destructors =============================== */
+/* ======================================================================= */
+
+/* @section Structure Destructors *******************************************
 **
-** Destructor for Sigpos object.
+** All destructor functions receive the address of the instance to be
+** deleted.  The original pointer is set to NULL so is ready for re-use.
 **
-** @param [w] pthis [AjPSigpos*] Sigpos object pointer
+****************************************************************************/
+
+/* @func embHitlistDel ******************************************************
+**
+** Destructor for hitlist object.
+**
+** @param [w] ptr [AjPHitlist*] Hitlist object pointer
 **
 ** @return [void]
 ** @@
 ****************************************************************************/
 
-void embSigposDel(AjPSigpos *pthis)
+void embHitlistDel(AjPHitlist *ptr)
 {
-    AJFREE((*pthis)->gsiz);
-    AJFREE((*pthis)->gpen);
-    AJFREE((*pthis)->subs);
+    int x = 0;  /* Counter */
 
-    AJFREE(*pthis); 
-    *pthis = NULL;
+    if(!(*ptr))
+    {
+	ajWarn("Null pointer passed to embHitlistDel");
+	return;
+    }
     
-    return; 
+    if((*ptr)->Class)
+	ajStrDel(&(*ptr)->Class);
+    if((*ptr)->Fold)
+	ajStrDel(&(*ptr)->Fold);
+    if((*ptr)->Superfamily)
+	ajStrDel(&(*ptr)->Superfamily);
+    if((*ptr)->Family)
+	ajStrDel(&(*ptr)->Family);
+    if((*ptr)->Model)
+	ajStrDel(&(*ptr)->Model);
+    
+    for(x=0;x<(*ptr)->N; x++)
+	if((*ptr)->hits[x])
+	    embHitDel(&(*ptr)->hits[x]);
+
+    if((*ptr)->hits)
+	AJFREE((*ptr)->hits);
+    
+    if(*ptr)
+	AJFREE(*ptr);
+    
+    *ptr = NULL;
+    
+    return;
 }
 
 
 
 
 
-/* @func embSigdatDel *******************************************************
+/* @func embHitDel **********************************************************
 **
-** Destructor for Sigdat object.
+** Destructor for hit object.
 **
-** @param [w] pthis [AjPSigdat*] Sigdat object pointer
+** @param [w] ptr [AjPHit*] Hit object pointer
 **
 ** @return [void]
 ** @@
 ****************************************************************************/
 
-void embSigdatDel(AjPSigdat *pthis)
+void embHitDel(AjPHit *ptr)
 {
+    ajStrDel(&(*ptr)->Seq);
+    ajStrDel(&(*ptr)->Acc);
+    ajStrDel(&(*ptr)->Spr);
+    ajStrDel(&(*ptr)->Typeobj);
+    ajStrDel(&(*ptr)->Typesbj);
+    ajStrDel(&(*ptr)->Model);
+    ajStrDel(&(*ptr)->Alg);
+    ajStrDel(&(*ptr)->Group);
 
-    ajIntDel(&(*pthis)->gsiz);
-    ajIntDel(&(*pthis)->gfrq);
-    ajIntDel(&(*pthis)->rfrq);
-    ajChararrDel(&(*pthis)->rids);
+    AJFREE(*ptr);
+    *ptr = NULL;
     
-    AJFREE(*pthis);    
-    *pthis = NULL;
-
-    return; 
+    return;
 }
 
 
@@ -636,6 +823,793 @@ void embSignatureDel(AjPSignature *ptr)
     *ptr = NULL;
 
     return;
+}
+
+
+
+
+
+/* ======================================================================= */
+/* ============================ Assignments ============================== */
+/* ======================================================================= */
+
+/* @section Assignments *****************************************************
+**
+** These functions overwrite the instance provided as the first argument
+** A NULL value is always acceptable so these functions are often used to
+** create a new instance by assignment.
+**
+****************************************************************************/
+
+
+/* @func embHitMerge ********************************************************
+**
+** Creates a new Hit object which corresponds to a merging of the two 
+** sequences from the Hit objects hit1 and hit2. 
+**
+** The Typeobj of the merged hit is set.  The merged hit is classified 
+** as follows :
+** If hit1 or hit2 is a SEED, the merged hit is classified as a SEED.
+** Otherwise, if hit1 or hit2 is HIT, the merged hit is clsasified as a HIT.
+** If hit1 and hit2 are both OTHER, the merged hit remains classified as 
+** OTHER.
+** 
+** @param [r] hit1     [AjPHit]  Hit 1
+** @param [r] hit2     [AjPHit]  Hit 2
+**
+** @return [AjPHit] Pointer to Hit object.
+** @@
+****************************************************************************/
+
+AjPHit embHitMerge(AjPHit hit1, AjPHit hit2)
+{
+    AjPHit ret;
+    ajint start = 0;      /* Start of N-terminal-most sequence */
+    ajint end   = 0;      /* End of N-terminal-most sequence */
+    AjPStr temp = NULL;
+    
+    /* Check args */
+    if(!hit1 || !hit2)
+    {
+	ajWarn("Bad arg's passed to AjPHitMerge");
+	return NULL;
+    }
+
+    if(!ajStrMatch(hit1->Acc, hit2->Acc))
+    {
+	ajWarn("Merge attempted on 2 hits with different accession numbers");
+	return NULL;
+    }
+
+    /* Allocate memory */
+    ret  = embHitNew();
+    temp = ajStrNew();
+    
+
+    ajStrAssS(&(ret->Acc), hit1->Acc);
+    ajStrAssS(&(ret->Spr), hit1->Spr);
+        
+
+
+    /*
+    ** Copy the N-terminal most sequence to our new sequence 
+    ** and assign start point of new hit
+    */
+    if(hit1->Start <= hit2->Start)
+    {
+	ajStrAssS(&(ret->Seq), hit1->Seq);
+	ret->Start = hit1->Start;
+	end   = hit1->End;
+	start = hit2->Start;
+    }	
+    else
+    {
+	ajStrAssS(&(ret->Seq), hit2->Seq);
+    	ret->Start = hit2->Start;
+	end   = hit2->End;
+	start = hit1->Start;
+    }
+    
+
+    /* Assign end point of new hit */
+    if(hit1->End >= hit2->End)
+	ret->End = hit1->End;
+    else
+    	ret->End = hit2->End;
+
+
+    /* Assign the C-terminus of the sequence of the new hit     
+       if necessary */
+    if(hit2->End > end)
+    {
+	ajStrAssSub(&temp, hit2->Seq, end-start+1, -1);
+	ajStrApp(&(ret->Seq),temp);
+    }
+    else if(hit1->End > end)
+    {
+	ajStrAssSub(&temp, hit1->Seq, end-start+1, -1);
+	ajStrApp(&(ret->Seq),temp);
+    }
+
+
+    /* Classify the merged hit */
+    if(ajStrMatchC(hit1->Typeobj, "SEED") ||
+       ajStrMatchC(hit1->Typeobj, "SEED"))
+	ajStrAssC(&(ret->Typeobj), "SEED");
+    else if(ajStrMatchC(hit1->Typeobj, "HIT") ||
+	    ajStrMatchC(hit1->Typeobj, "HIT"))
+	ajStrAssC(&(ret->Typeobj), "HIT");
+    else
+	ajStrAssC(&(ret->Typeobj), "OTHER");
+
+
+    if(ajStrMatch(hit1->Model, hit2->Model))
+	ajStrAssS(&ret->Model, hit1->Model);
+    
+
+    
+    /* All other elements of structure are left as NULL / o / ajFalse */
+        
+    ajStrDel(&temp);
+
+    return ret;
+}
+
+
+
+
+
+/* ======================================================================= */
+/* ============================= Modifiers =============================== */
+/* ======================================================================= */
+
+/* @section Modifiers *******************************************************
+**
+** These functions use the contents of an instance and update them.
+**
+****************************************************************************/
+
+
+
+
+
+/* ======================================================================= */
+/* ========================== Operators ===================================*/
+/* ======================================================================= */
+
+/* @section Operators *******************************************************
+**
+** These functions use the contents of an instance but do not make any 
+** changes.
+**
+****************************************************************************/
+
+
+/* @func embHitlistMatchFold ************************************************
+**
+** Function to sort Hitlist object by Fold element. 
+**
+** @param [r] hit1  [const void*] Pointer to Hitlist object 1
+** @param [r] hit2  [const void*] Pointer to Hitlist object 2
+**
+** @return [ajint] -1 if Fold1 should sort before Fold2, +1 if the Fold2 
+** should sort first. 0 if they are identical.
+** @@
+****************************************************************************/
+
+ajint embHitlistMatchFold(const void *hit1, const void *hit2)
+{
+    AjPHitlist p = NULL;
+    AjPHitlist q = NULL;
+
+    p = (*(AjPHitlist*)hit1);
+    q = (*(AjPHitlist*)hit2);
+    
+    return ajStrCmpO(p->Fold, q->Fold);
+}
+
+
+
+
+
+/* @func embMatchScore ******************************************************
+**
+** Function to sort Hit objects by score record. Usually called by 
+** ajListSort.
+**
+** @param [r] hit1  [const void*] Pointer to Hit object 1
+** @param [r] hit2  [const void*] Pointer to Hit object 2
+**
+** @return [ajint] 1 if score1<score2, 0 if score1==score2, else -1.
+** @@
+****************************************************************************/
+
+ajint embMatchScore(const void *hit1, const void *hit2)
+{
+    AjPHit p = NULL;
+    AjPHit q = NULL;
+
+    p = (*(AjPHit*)hit1);
+    q = (*(AjPHit*)hit2);
+    
+    if(p->Score < q->Score)
+	return -1;
+    else if (p->Score == q->Score)
+	return 0;
+
+    return 1;
+}
+
+
+
+/* @func embMatchinvScore ***************************************************
+**
+** Function to sort Hit objects by score record. Usually called by 
+** ajListSort.  The sorting order is inverted - i.e. it returns -1 if score1 
+** > score2 (as opposed to embMatchScore).
+**
+** @param [r] hit1  [const void*] Pointer to Hit object 1
+** @param [r] hit2  [const void*] Pointer to Hit object 2
+**
+** @return [ajint] 1 if score1<score2, 0 if score1==score2, else -1.
+** @@
+****************************************************************************/
+
+ajint embMatchinvScore(const void *hit1, const void *hit2)
+{
+    AjPHit p = NULL;
+    AjPHit q = NULL;
+
+    p = (*(AjPHit*)hit1);
+    q = (*(AjPHit*)hit2);
+    
+    if(p->Score > q->Score)
+	return -1;
+    else if (p->Score == q->Score)
+	return 0;
+
+    return 1;
+}
+
+
+
+
+
+
+/* ======================================================================= */
+/* ============================== Casts ===================================*/
+/* ======================================================================= */
+
+/* @section Casts ***********************************************************
+**
+** These functions examine the contents of an instance and return some
+** derived information. Some of them provide access to the internal
+** components of an instance. They are provided for programming convenience
+** but should be used with caution.
+**
+****************************************************************************/
+
+
+
+
+
+/* ======================================================================= */
+/* =========================== Reporters ==================================*/
+/* ======================================================================= */
+
+/* @section Reporters *******************************************************
+**
+** These functions return the contents of an instance but do not make any 
+** changes.
+**
+****************************************************************************/
+
+/* @func embHitsOverlap *****************************************************
+**
+** Checks for overlap between two hits.
+**
+** @param [r] hit1  [AjPHit]     Pointer to hit object 1
+** @param [r] hit2  [AjPHit]     Pointer to hit object 2
+** @param [r] n     [ajint]      Threshold number of residues for overlap
+**
+** @return [AjBool] True if the overlap between the sequences is at least as 
+** long as the threshold. False otherwise.
+** @@
+****************************************************************************/
+
+AjBool embHitsOverlap(AjPHit hit1, AjPHit hit2, ajint n)
+{
+    if((MAJSTRLEN(hit1->Seq)<n) || (MAJSTRLEN(hit2->Seq)<n))
+    {
+	ajWarn("Sequence length smaller than overlap limit in "
+	       "embHitsOverlap ... checking for string match instead");
+
+	if((ajStrFind(hit1->Seq, hit2->Seq)!=-1) ||
+	   (ajStrFind(hit2->Seq, hit1->Seq)!=-1))
+	    return ajTrue;
+	else
+	    return ajFalse;
+    }
+
+    if( (((hit1->End - hit2->Start + 1)>=n) && 
+	 (hit2->Start >= hit1->Start)) ||
+       (((hit2->End - hit1->Start + 1)>=n) && 
+	(hit1->Start >= hit2->Start)))
+	return ajTrue;
+
+    return ajFalse;
+}
+
+
+
+
+/* ======================================================================= */
+/* ========================== Input & Output ============================= */
+/* ======================================================================= */
+
+/* @section Input & output **************************************************
+**
+** These functions are used for formatted input and output to file.    
+**
+****************************************************************************/
+
+/* @func embHitlistRead *****************************************************
+**
+** Read a hitlist object from a file in embl-like format (see documentation
+** for the DOMAINATRIX "seqsearch" application). 
+** 
+** @param [r] inf      [AjPFile] Input file stream
+**
+** @return [AjPHitlist] Hitlist object
+** @@
+****************************************************************************/
+
+AjPHitlist embHitlistRead(AjPFile inf) 
+{
+    AjPHitlist ret = NULL;
+    
+    AjPStr line   = NULL;   /* Line of text */
+    AjPStr class  = NULL;
+    AjPStr fold   = NULL;
+    AjPStr super  = NULL;
+    AjPStr family = NULL;
+    AjBool   ok   = ajFalse;
+    ajint    n    = 0;              /* Number of current sequence */
+    ajint    nset = 0;              /* Number in set */
+    ajint  Sunid_Family = 0;        /* SCOP sunid for family */
+
+
+
+    /* Allocate strings */
+    class   = ajStrNew();
+    fold    = ajStrNew();
+    super   = ajStrNew();
+    family  = ajStrNew();
+    line    = ajStrNew();
+    
+
+    
+    /* Read first line */
+    ok = ajFileReadLine(inf,&line);
+
+    /* '//' is the delimiter for block of hits (in case the file 
+       contains multiple hitlists). */
+
+    while(ok && !ajStrPrefixC(line,"//"))
+    {
+	if(ajStrPrefixC(line,"XX"))
+	{
+	    ok = ajFileReadLine(inf,&line);
+	    continue;
+	}
+	else if(ajStrPrefixC(line,"SI"))
+	{
+	    ajFmtScanS(line, "%*s %d", &Sunid_Family);
+	}
+	else if(ajStrPrefixC(line,"CL"))
+	{
+	    ajStrAssC(&class,ajStrStr(line)+3);
+	    ajStrClean(&class);
+	}
+	else if(ajStrPrefixC(line,"FO"))
+	{
+	    ajStrAssC(&fold,ajStrStr(line)+3);
+	    while((ok = ajFileReadLine(inf,&line)))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&fold,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&fold);
+	}
+	else if(ajStrPrefixC(line,"SF"))
+	{
+	    ajStrAssC(&super,ajStrStr(line)+3);
+	    while((ok = ajFileReadLine(inf,&line)))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&super,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&super);
+	}
+	else if(ajStrPrefixC(line,"FA"))
+	{
+	    ajStrAssC(&family,ajStrStr(line)+3);
+	    while((ok = ajFileReadLine(inf,&line)))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&family,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&family);
+	}
+	else if(ajStrPrefixC(line,"NS"))
+	{
+	    ajFmtScanS(line, "NS %d", &nset);
+
+
+	    /* Create hitlist structure */
+	    (ret)=embHitlistNew(nset);
+	    (ret)->N=nset;
+	    ajStrAssS(&(ret)->Class, class);
+	    ajStrAssS(&(ret)->Fold, fold);
+	    ajStrAssS(&(ret)->Superfamily, super);
+	    ajStrAssS(&(ret)->Family, family);
+	    (ret)->Sunid_Family = Sunid_Family;
+	}
+	else if(ajStrPrefixC(line,"NN"))
+	{
+	    /* Increment hit counter */
+	    n++;
+	    
+	    /* Safety check */
+	    if(n>nset)
+		ajFatal("Dangerous error in input file caught "
+			"in embHitlistRead.\n Email jison@hgmp.mrc.ac.uk");
+	}
+	else if(ajStrPrefixC(line,"SC"))
+	{
+	    ajFmtScanS(line, "%*s %f", &(ret)->hits[n-1]->Score);
+	}
+	else if(ajStrPrefixC(line,"AC"))
+	{
+	    ajStrAssC(&(ret)->hits[n-1]->Acc,ajStrStr(line)+3);
+	    ajStrClean(&(ret)->hits[n-1]->Acc);
+	}
+	else if(ajStrPrefixC(line,"SP"))
+	{
+	    ajStrAssC(&(ret)->hits[n-1]->Spr,ajStrStr(line)+3);
+	    ajStrClean(&(ret)->hits[n-1]->Spr);
+	}
+	else if(ajStrPrefixC(line,"TY"))
+	{
+	    ajStrAssC(&(ret)->hits[n-1]->Typeobj,ajStrStr(line)+3);	
+	    ajStrClean(&(ret)->hits[n-1]->Typeobj);		
+	}
+	else if(ajStrPrefixC(line,"MO"))
+	{
+	    ajStrAssC(&(ret)->hits[n-1]->Model,ajStrStr(line)+3);	
+	    ajStrClean(&(ret)->hits[n-1]->Model);		
+	}
+	else if(ajStrPrefixC(line,"RA"))
+	    ajFmtScanS(line, "%*s %d %*s %d", &(ret)->hits[n-1]->Start,
+		       &(ret)->hits[n-1]->End);
+	else if(ajStrPrefixC(line,"GP"))
+	    ajFmtScanS(line, "%*s %S", &(ret)->hits[n-1]->Group);
+	else if(ajStrPrefixC(line,"SQ"))
+	{
+	    while((ok=ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"XX"))
+		ajStrAppC(&(ret)->hits[n-1]->Seq,ajStrStr(line));
+	    ajStrCleanWhite(&(ret)->hits[n-1]->Seq);
+	    continue;
+	}
+	
+	ok = ajFileReadLine(inf,&line);
+    }
+
+
+    ajStrDel(&line);
+    ajStrDel(&class);
+    ajStrDel(&fold);
+    ajStrDel(&super);
+    ajStrDel(&family);
+    
+    if(!ok)
+	return NULL;
+
+    return ret;
+}
+
+
+
+
+
+/* @func embHitlistReadNode *************************************************
+**
+** Reads a scop families file (see documentation for the EMBASSY 
+** DOMAINATRIX package) and writes a list of Hitlist objects containing 
+** all domains matching the scop classification provided.
+**
+** @param [r] inf    [AjPFile]   File containing multiple Hitlist objects
+** @param [r] fam    [AjPStr]    Family.
+** @param [r] sfam   [AjPStr]    Superfamily.
+** @param [r] fold   [AjPStr]    Fold.
+** @param [r] klass  [AjPStr]    Class.
+** 
+** @return [AjPList] List of Hitlist objects or NULL.
+** @@
+****************************************************************************/
+
+AjPList embHitlistReadNode(AjPFile inf, AjPStr fam, AjPStr sfam, 
+			   AjPStr fold, AjPStr klass)
+{
+    AjPList ret = NULL;
+    AjPStr class   = NULL;
+
+    class = klass;
+
+    if(!inf)
+	ajFatal("NULL arg passed to embHitlistReadNode");
+
+    /* Allocate the list if it does not already exist */
+
+    (ret) = ajListNew();
+
+    
+    /*
+    ** if family is specified then the other fields
+    ** also have to be specified.
+    */
+    if(fam)
+    {
+	if(!sfam || !fold || !class)
+	{
+	    ajWarn("Bad arguments passed to embHitlistReadNode\n");
+		ajListDel(&(ret));
+	    return NULL;
+	}
+	else
+	{
+	    if((embHitlistReadFam(inf,fam,sfam,fold,class,&ret)))
+		return ret;
+	    else
+	    {
+		    ajListDel(&(ret));
+		return NULL;
+	    }
+	}
+    }
+    /*
+    ** if superfamily is specified then the other fields
+    ** also have to be specified.
+    */
+    else if(sfam)
+    {
+	if(!fold || !class)
+	{
+	    ajWarn("Bad arguments passed to embHitlistReadNode\n");
+		ajListDel(&(ret));
+	    return NULL;
+	}
+	else
+	{
+	    if((embHitlistReadSfam(inf,fam,sfam,fold,class,&ret)))
+		return ret;
+	    else
+	    {
+		    ajListDel(&(ret));
+		return NULL;
+	    }
+	}	   
+    }
+    /*
+    ** if fold is specified then the other fields also have
+    ** to be specified.
+    */
+    else if(fold)
+    {
+	if(!class)
+	{
+	    ajWarn("Bad arguments passed to embHitlistReadNode\n");
+		ajListDel(&(ret));
+	    return NULL;
+	}
+	else
+	{
+	    if((embHitlistReadFold(inf,fam,sfam,fold,class,&ret)))
+		return ret;
+	    else
+	    {
+		    ajListDel(&(ret));
+		return NULL;
+	    }
+	}
+    } 
+
+    ajWarn("Bad arguments passed to embHitlistReadNode\n");
+	ajListDel(&(ret));
+
+    return ret;
+}
+
+
+
+
+
+/* @func embHitlistWrite ****************************************************
+**
+** Write contents of a Hitlist object to an output file in embl-like format
+** (see documentation for the DOMAINATRIX "seqsearch" application).
+** Text for Class, Fold, Superfamily and Family is only written if the text
+** is available.
+** 
+** @param [w] outf [AjPFile] Output file stream
+** @param [r] obj [AjPHitlist] Hitlist object
+**
+** @return [AjBool] True on success
+** @@
+****************************************************************************/
+
+AjBool embHitlistWrite(AjPFile outf, AjPHitlist obj)
+{
+    ajint x = 0;  /* Counter */
+    
+    if(!obj)
+	return ajFalse;
+
+    if(MAJSTRLEN(obj->Class))
+	ajFmtPrintF(outf,"CL   %S\n",obj->Class);
+
+    if(MAJSTRLEN(obj->Fold))
+	ajFmtPrintSplit(outf,obj->Fold,"XX\nFO   ",75," \t\n\r");
+
+    if(MAJSTRLEN(obj->Superfamily))
+	ajFmtPrintSplit(outf,obj->Superfamily,"XX\nSF   ",75," \t\n\r");
+
+    if(MAJSTRLEN(obj->Family))
+	ajFmtPrintSplit(outf,obj->Family,"XX\nFA   ",75," \t\n\r");
+
+    if(MAJSTRLEN(obj->Family) && obj->Sunid_Family)
+	ajFmtPrintF(outf,"XX\nSI   %d\n", obj->Sunid_Family);
+    
+
+    ajFmtPrintF(outf,"XX\nNS   %d\nXX\n",obj->N);
+
+    for(x=0;x<obj->N;x++)
+    {
+	ajFmtPrintF(outf, "%-5s[%d]\nXX\n", "NN", x+1);
+	if(MAJSTRLEN(obj->hits[x]->Model))
+	{
+	    ajFmtPrintF(outf, "%-5s%S\n", "MO", obj->hits[x]->Model);
+	    ajFmtPrintF(outf, "XX\n");
+	}
+	
+	if(MAJSTRLEN(obj->hits[x]->Typeobj))
+	    ajFmtPrintF(outf, "%-5s%S\n", "TY", obj->hits[x]->Typeobj);
+	ajFmtPrintF(outf, "XX\n");
+	ajFmtPrintF(outf, "%-5s%.2f\n", "SC", obj->hits[x]->Score);
+	ajFmtPrintF(outf, "XX\n");
+	if(MAJSTRLEN(obj->hits[x]->Group))
+	{
+	    ajFmtPrintF(outf, "%-5s%S\n", "GP", obj->hits[x]->Group);
+	    ajFmtPrintF(outf, "XX\n");
+	}
+
+	ajFmtPrintF(outf, "%-5s%S\n", "AC", obj->hits[x]->Acc);
+	ajFmtPrintF(outf, "XX\n");
+	if(MAJSTRLEN(obj->hits[x]->Spr))
+	{
+	    ajFmtPrintF(outf, "%-5s%S\n", "SP", obj->hits[x]->Spr);
+	    ajFmtPrintF(outf, "XX\n");
+	}
+	
+	ajFmtPrintF(outf, "%-5s%d START; %d END;\n", "RA",
+		    obj->hits[x]->Start, obj->hits[x]->End);
+	ajFmtPrintF(outf, "XX\n");
+	ajSeqWriteXyz(outf, obj->hits[x]->Seq, "SQ");
+	ajFmtPrintF(outf, "XX\n");
+    }
+    ajFmtPrintF(outf, "//\n");
+
+    return ajTrue;
+}
+
+
+
+
+
+/* @func embHitlistWriteSubset **********************************************
+**
+** Write contents of a Hitlist object to an output file in embl-like format
+** (see documentation for the DOMAINATRIX "seqsearch" application).
+** Only those hits are written for which a 1 is given in the corresponding
+** position in array of integers.
+** Text for Class, Fold, Superfamily and Family is only written if the text
+** is available.
+** 
+** @param [w] outf  [AjPFile]    Output file stream
+** @param [r] obj   [AjPHitlist] Hitlist object
+** @param [r] ok    [AjPInt]     Whether hits are to be printed or not
+**
+** @return [AjBool] True on success
+** @@
+****************************************************************************/
+
+AjBool embHitlistWriteSubset(AjPFile outf, AjPHitlist obj, AjPInt ok)
+{
+    ajint x    = 0;  /* Counter */
+    ajint y    = 0;  /* Counter */
+    ajint nset = 0;  /* No. in set to be printed out */
+    
+
+    if(!obj)
+	return ajFalse;
+
+    if(MAJSTRLEN(obj->Class))
+	ajFmtPrintF(outf,"CL   %S\n",obj->Class);
+
+    if(MAJSTRLEN(obj->Fold))
+	ajFmtPrintSplit(outf,obj->Fold,"XX\nFO   ",75," \t\n\r");
+
+    if(MAJSTRLEN(obj->Superfamily))
+	ajFmtPrintSplit(outf,obj->Superfamily,"XX\nSF   ",75," \t\n\r");
+
+    if(MAJSTRLEN(obj->Family))
+	ajFmtPrintSplit(outf,obj->Family,"XX\nFA   ",75," \t\n\r");
+
+    if(MAJSTRLEN(obj->Family))
+	ajFmtPrintF(outf,"XX\nSI   %d\n", obj->Sunid_Family);
+
+
+    for(nset=0, x=0;x<obj->N;x++)
+	if(ajIntGet(ok, x) == 1)
+	    nset++;
+	    
+    ajFmtPrintF(outf,"XX\nNS   %d\nXX\n",nset);
+
+    for(x=0;x<obj->N;x++)
+    { 
+	if(ajIntGet(ok, x) == 1)
+	{
+	    y++;
+
+	    ajFmtPrintF(outf, "%-5s[%d]\nXX\n", "NN", y);
+	    if(MAJSTRLEN(obj->hits[x]->Model))
+	    {
+		ajFmtPrintF(outf, "%-5s%S\n", "MO", obj->hits[x]->Model);
+		ajFmtPrintF(outf, "XX\n");
+	    }
+	    
+	    if(MAJSTRLEN(obj->hits[x]->Typeobj))
+		ajFmtPrintF(outf, "%-5s%S\n", "TY", obj->hits[x]->Typeobj);
+	    ajFmtPrintF(outf, "XX\n");
+	    ajFmtPrintF(outf, "%-5s%.2f\n", "SC", obj->hits[x]->Score);
+	    ajFmtPrintF(outf, "XX\n");
+	    if(MAJSTRLEN(obj->hits[x]->Group))
+	    {
+		ajFmtPrintF(outf, "%-5s%S\n", "GP", obj->hits[x]->Group);
+		ajFmtPrintF(outf, "XX\n");
+	    }
+	    
+	    ajFmtPrintF(outf, "%-5s%S\n", "AC", obj->hits[x]->Acc);
+	    ajFmtPrintF(outf, "XX\n");
+	    if(MAJSTRLEN(obj->hits[x]->Spr))
+	    {
+		ajFmtPrintF(outf, "%-5s%S\n", "SP", obj->hits[x]->Spr);
+		ajFmtPrintF(outf, "XX\n");
+	    }
+
+	    ajFmtPrintF(outf, "%-5s%d START; %d END;\n", "RA",
+			obj->hits[x]->Start, obj->hits[x]->End);
+	    ajFmtPrintF(outf, "XX\n");
+	    ajSeqWriteXyz(outf, obj->hits[x]->Seq, "SQ");
+	    ajFmtPrintF(outf, "XX\n");
+	}
+    }
+    ajFmtPrintF(outf, "//\n");
+	
+    return ajTrue;
 }
 
 
@@ -1078,6 +2052,322 @@ AjBool embSignatureHitsWrite(AjPFile outf, AjPSignature sig,
     
 
     ajFmtPrintF(outf, "XX\n//\n");
+
+    return ajTrue;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ======================================================================= */
+/* ======================== Miscellaneous =================================*/
+/* ======================================================================= */
+
+/* @section Miscellaneous ***************************************************
+**
+** These functions may have diverse functions that do not fit into the other
+** categories. 
+**
+****************************************************************************/
+
+/* @func embHitlistClassify *************************************************
+**
+** Classifies a list of signature-sequence hits (held in a Hitlist object) 
+** according to list of target sequences (a list of Hitlist objects).
+** 
+** Writes the Group, Typeobj (primary classification) & Typesbj (secondary
+** classification) elements depending on how the SCOP classification 
+** records of the Hit object and target sequence in question compare.
+** 
+**
+** The following classification of hits is taken from the documentation
+** for the DOMAINATRIX "sigscan" application :
+** Definition of classes of hit 
+** The primary classification is an objective definition of the hit and has 
+** one of the following values:
+** SEED - the sequence was included in the original alignment from which the 
+** signature was generated.
+** HIT - A protein which was detected by psiblast  (see psiblasts.c) to 
+** be a homologue to at least one of the proteins in the family from which 
+** the signature was derived. Such proteins are identified by the 'HIT' 
+** record in the scop families file.
+** OTHER - A true member of the family but not a homologue as detected by 
+** psi-blast. Such proteins may have been found from the literature and 
+** manually added to the scop families file or may have been detected by the 
+** EMBOSS program swissparse (see swissparse.c). They are identified in the 
+** scop families file by the 'OTHER' record.
+** CROSS - A protein which is homologous to a protein of the same fold,
+** but differnt family, of the proteins from which the signature was
+** derived.
+** FALSE - A homologue to a protein with a different fold to the family
+** of the signature.
+** UNKNOWN - The protein is not known to be CROSS, FALSE or a true hit (a 
+** SEED, HIT or OTHER).
+** The secondary classification is provided for convenience and a value as 
+** follows:
+** Hits of SEED, HIT and OTHER classification are all listed as TRUE.
+** Hits of CROSS, FALSE or UNKNOWN objective
+** classification are listed as CROSS, 
+** FALSE or UNKNOWN respectively.
+**
+** The Group element is copied from the target sequence for 'TRUE' objective
+** hits, whereas 'NOT_APPLICABLE' is given for other types of hit.
+**
+** The subjective column allows for hand-annotation of the hits files so that 
+** proteins of UNKNOWN objective classification can re-classified by a human 
+** expert as TRUE, FALSE, CROSS or otherwise
+** left as UNKNOWN for the purpose of 
+** generating signature performance plots with the EMBOSS application sigplot.
+**
+**
+** @param [r] hits    [AjPHitlist*] Pointer to Hitlist object with hits
+** @param [r] targets [AjPList]     List of AjOHitlist objects with targets
+** @param [r] thresh  [ajint]       Minimum length (residues) of overlap 
+** required for two hits with the same code to be counted as the same hit.
+**
+** @return [AjBool] True on success, else False
+** @@
+****************************************************************************/
+
+AjBool embHitlistClassify(AjPHitlist *hits, AjPList targets, ajint thresh)
+{  
+    /*
+    ** A list of Hitidx structures is derived from the list of AjOHitlist 
+    ** objects to allow rapid searching for a given protein accession number
+    */
+    AjIList itert   = NULL;	/* List iterator for targets */
+    AjPHitlist ptrt = NULL;	/* Pointer for targets (hitlist structure) */
+    EmbPHitidx ptri  = NULL;	/* Pointer for index (Hitidx structure) */
+
+    EmbPHitidx *idxarr = NULL;	/* Array of Hitidx structures */
+    AjPList idxlist   = NULL;	/* List of Hitidx structures */
+
+    ajint idxsiz = 0;		/* No.target sequences */
+    ajint pos    = 0;		/* Position of a matching code in Hitidx 
+					  structure */
+    ajint tpos = 0;		/* Temp. position counter */
+    ajint x    = 0;		/* Loop counter */
+
+    AjPStr tmpstr = NULL;
+    
+
+    
+    /* Check args */
+    if(!(*hits) || (!targets))
+    {
+	ajWarn("NULL args passed to embHitlistClassify\n");
+	return ajFalse;
+    }
+    
+
+
+    /* Create list & list iterator & other memory */
+    itert   = ajListIter(targets);
+    idxlist = ajListNew();
+    tmpstr  = ajStrNew();
+    
+
+    /* Loop through list of targets filling list of Hitidx structures */
+    while((ptrt=(AjPHitlist)ajListIterNext(itert)))
+    {
+	/* Write Hitidx structure */
+	for(x=0;x<ptrt->N;x++)
+	{
+	    ptri = embHitidxNew();
+	    ptri->hptr=ptrt->hits[x];
+	    ptri->lptr=ptrt;
+	    if(MAJSTRLEN(ptrt->hits[x]->Acc))
+		ajStrAssS(&ptri->Id, ptrt->hits[x]->Acc);
+	    else
+		ajStrAssS(&ptri->Id, ptrt->hits[x]->Spr);
+	    
+	    ajListPush(idxlist,(EmbPHitidx) ptri);
+	}
+    }
+
+    
+    /* Order the list of Hitidx structures by Id and transform 
+       into an array */
+    ajListSort(idxlist, embHitidxMatchId);
+    idxsiz = ajListToArray(idxlist, (void ***) &idxarr);
+        
+
+    /* Loop through list of hits */
+    for(x=0; x<(*hits)->N; x++)
+    {
+	if((MAJSTRLEN((*hits)->hits[x]->Acc)))
+	    pos=embHitidxBinSearch((*hits)->hits[x]->Acc, idxarr, idxsiz);
+	else
+	    pos=embHitidxBinSearch((*hits)->hits[x]->Spr, idxarr, idxsiz);
+	if(pos!=-1)
+	{
+	    /*
+	    ** Id was found
+	    ** The list may contain multiple entries for the same Id, so 
+	    ** search the current position and then up the list for other 
+	    ** matching strings
+	    */
+	    tpos=pos; 
+
+	    if(MAJSTRLEN((*hits)->hits[x]->Acc))
+		ajStrAssS(&tmpstr, (*hits)->hits[x]->Acc);
+	    else
+		ajStrAssS(&tmpstr, (*hits)->hits[x]->Spr);
+
+	    while(ajStrMatchCase(idxarr[tpos]->Id, tmpstr))
+	    {
+		if(embHitsOverlap(idxarr[tpos]->hptr, 
+				    (*hits)->hits[x], thresh))
+		{	
+
+		    if( (idxarr[tpos]->lptr)->Sunid_Family ==
+		       (*hits)->Sunid_Family)
+			/* SCOP family is identical */
+		    {
+			ajStrAssS(&(*hits)->hits[x]->Typeobj, 
+				  (idxarr[tpos]->hptr)->Typeobj);
+
+			ajStrAssC(&(*hits)->hits[x]->Typesbj, 
+				  "TRUE");
+			ajStrAssS(&(*hits)->hits[x]->Group, 
+				  (idxarr[tpos]->hptr)->Group);
+		    }
+		    else if((ajStrMatchCase((idxarr[tpos]->lptr)->Fold, 
+					   (*hits)->Fold)) &&
+			    (ajStrMatchCase((idxarr[tpos]->lptr)->Class, 
+					   (*hits)->Class)))
+			/* SCOP folds are identical */
+		    {
+			ajStrAssC(&(*hits)->hits[x]->Typeobj, "CROSS");
+			ajStrAssC(&(*hits)->hits[x]->Typesbj, "CROSS");
+
+			ajStrAssC(&(*hits)->hits[x]->Group, "NOT_APPLICABLE");
+		    }
+		    else
+			/* SCOP folds are different */
+		    {
+			ajStrAssC(&(*hits)->hits[x]->Typeobj, "FALSE");
+			ajStrAssC(&(*hits)->hits[x]->Typesbj, "FALSE");
+			ajStrAssC(&(*hits)->hits[x]->Group, "NOT_APPLICABLE");
+		    }
+		}
+		else
+		{
+		    /*
+		    ** Id was found but there was no overlap so set 
+		    ** classification to UNKNOWN, but only if it has 
+		    ** not already been set
+		    */
+		    if((!ajStrMatchC((*hits)->hits[x]->Typesbj, "TRUE")) &&
+		       (!ajStrMatchC((*hits)->hits[x]->Typesbj, "CROSS")) &&
+		       (!ajStrMatchC((*hits)->hits[x]->Typesbj, "FALSE")))
+		    {
+			ajStrAssC(&(*hits)->hits[x]->Typeobj, "UNKNOWN");
+			ajStrAssC(&(*hits)->hits[x]->Typesbj, "UNKNOWN");
+			ajStrAssC(&(*hits)->hits[x]->Group, "NOT_APPLICABLE");
+		    }
+		}
+		tpos--;	
+		if(tpos<0) 
+		    break;
+	    }	    
+				    
+	    /* Search down the list */
+	    tpos = pos+1; 
+
+	    if(MAJSTRLEN((*hits)->hits[x]->Acc))
+		ajStrAssS(&tmpstr, (*hits)->hits[x]->Acc);
+	    else
+		ajStrAssS(&tmpstr, (*hits)->hits[x]->Spr);
+
+	    if(tpos<idxsiz) 
+		while(ajStrMatchCase(idxarr[tpos]->Id, tmpstr))
+		{
+
+		    if(embHitsOverlap(idxarr[tpos]->hptr, 
+					(*hits)->hits[x], thresh))
+		    {	
+			if( (idxarr[tpos]->lptr)->Sunid_Family ==
+			   (*hits)->Sunid_Family)
+
+			    /* SCOP family is identical */
+			{
+			    ajStrAssS(&(*hits)->hits[x]->Typeobj, 
+				     (idxarr[tpos]->hptr)->Typeobj);
+			    ajStrAssC(&(*hits)->hits[x]->Typesbj, "TRUE");
+			    ajStrAssS(&(*hits)->hits[x]->Group, 
+				      (idxarr[tpos]->hptr)->Group);
+			}
+			else if((ajStrMatchCase((idxarr[tpos]->lptr)->Fold, 
+					       (*hits)->Fold)) &&
+				(ajStrMatchCase((idxarr[tpos]->lptr)->Class, 
+					   (*hits)->Class)))
+			    /* SCOP fold is identical */
+			{	
+			    ajStrAssC(&(*hits)->hits[x]->Typeobj, "CROSS");
+			    ajStrAssC(&(*hits)->hits[x]->Typesbj, "CROSS");
+			    ajStrAssC(&(*hits)->hits[x]->Group,
+				      "NOT_APPLICABLE");
+			}
+			else
+			    /* SCOP folds are different */
+			{
+			    ajStrAssC(&(*hits)->hits[x]->Typeobj, "FALSE");
+			    ajStrAssC(&(*hits)->hits[x]->Typesbj, "FALSE");
+			    ajStrAssC(&(*hits)->hits[x]->Group,
+				      "NOT_APPLICABLE");
+			}
+		    }
+  		    else
+		    {
+			/*
+			** Id was found but there was no overlap so set 
+			** classification to UNKNOWN, but only if it has 
+			** not already been set
+			*/
+			if((!ajStrMatchC((*hits)->hits[x]->Typesbj, "TRUE")) &&
+		       (!ajStrMatchC((*hits)->hits[x]->Typesbj, "CROSS")) &&
+		       (!ajStrMatchC((*hits)->hits[x]->Typesbj, "FALSE")))
+			{
+			    ajStrAssC(&(*hits)->hits[x]->Typeobj, "UNKNOWN");
+			    ajStrAssC(&(*hits)->hits[x]->Typesbj, "UNKNOWN");
+			    ajStrAssC(&(*hits)->hits[x]->Group,
+				      "NOT_APPLICABLE");
+			}
+		    }
+		    tpos++;	
+		    if(tpos==idxsiz) 
+			break;
+		}
+	}
+	else
+	{
+	    /* Id was NOT found so set classification to UNKNOWN */
+	    ajStrAssC(&(*hits)->hits[x]->Typeobj, "UNKNOWN");
+	    ajStrAssC(&(*hits)->hits[x]->Typesbj, "UNKNOWN");
+	    ajStrAssC(&(*hits)->hits[x]->Group, "NOT_APPLICABLE");
+	}
+    }
+    
+
+    while(ajListPop(idxlist, (void **) &ptri))
+	embHitidxDel(&ptri);	
+    ajListDel(&idxlist);
+    AJFREE(idxarr);
+    ajListIterFree(itert);
+    ajStrDel(&tmpstr);
 
     return ajTrue;
 }
@@ -1672,1304 +2962,3 @@ AjBool embSignatureAlignSeqall(AjPSignature sig, AjPSeqall db, ajint n,
 
 
 
-
-/* @func embHitNew **********************************************************
-**
-** Hit object constructor. This is normally called by the embHitlistNew
-** function.
-**
-** @return [AjPHit] Pointer to a hit object
-** @@
-****************************************************************************/
-
-AjPHit embHitNew(void)
-{
-    AjPHit ret = NULL;
-
-    AJNEW0(ret);
-
-    ret->Seq       = ajStrNew();
-    ret->Acc       = ajStrNew();
-    ret->Spr       = ajStrNew();
-    ret->Typeobj   = ajStrNew();
-    ret->Typesbj   = ajStrNew();
-    ret->Model     = ajStrNew();
-    ret->Alg       = ajStrNew();
-    ret->Group     = ajStrNew();
-    ret->Start     = 0;
-    ret->End       = 0;
-    ret->Rank      = 0;
-    ret->Score     = 0;    
-    ret->Eval      = 0;
-    ret->Pval      = 0;
-    ret->Target    = ajFalse;
-    ret->Target2   = ajFalse;
-    ret->Priority  = ajFalse;
-
-    return ret;
-}
-
-
-
-
-
-/* @func embHitDel **********************************************************
-**
-** Destructor for hit object.
-**
-** @param [w] ptr [AjPHit*] Hit object pointer
-**
-** @return [void]
-** @@
-****************************************************************************/
-
-void embHitDel(AjPHit *ptr)
-{
-    ajStrDel(&(*ptr)->Seq);
-    ajStrDel(&(*ptr)->Acc);
-    ajStrDel(&(*ptr)->Spr);
-    ajStrDel(&(*ptr)->Typeobj);
-    ajStrDel(&(*ptr)->Typesbj);
-    ajStrDel(&(*ptr)->Model);
-    ajStrDel(&(*ptr)->Alg);
-    ajStrDel(&(*ptr)->Group);
-
-    AJFREE(*ptr);
-    *ptr = NULL;
-    
-    return;
-}
-
-
-
-
-/* @func embHitMerge ********************************************************
-**
-** Creates a new Hit object which corresponds to a merging of the two 
-** sequences from the Hit objects hit1 and hit2. 
-**
-** The Typeobj of the merged hit is set.  The merged hit is classified 
-** as follows :
-** If hit1 or hit2 is a SEED, the merged hit is classified as a SEED.
-** Otherwise, if hit1 or hit2 is HIT, the merged hit is clsasified as a HIT.
-** If hit1 and hit2 are both OTHER, the merged hit remains classified as 
-** OTHER.
-** 
-** @param [r] hit1     [AjPHit]  Hit 1
-** @param [r] hit2     [AjPHit]  Hit 2
-**
-** @return [AjPHit] Pointer to Hit object.
-** @@
-****************************************************************************/
-
-AjPHit embHitMerge(AjPHit hit1, AjPHit hit2)
-{
-    AjPHit ret;
-    ajint start = 0;      /* Start of N-terminal-most sequence */
-    ajint end   = 0;      /* End of N-terminal-most sequence */
-    AjPStr temp = NULL;
-    
-    /* Check args */
-    if(!hit1 || !hit2)
-    {
-	ajWarn("Bad arg's passed to AjPHitMerge");
-	return NULL;
-    }
-
-    if(!ajStrMatch(hit1->Acc, hit2->Acc))
-    {
-	ajWarn("Merge attempted on 2 hits with different accession numbers");
-	return NULL;
-    }
-
-    /* Allocate memory */
-    ret  = embHitNew();
-    temp = ajStrNew();
-    
-
-    ajStrAssS(&(ret->Acc), hit1->Acc);
-    ajStrAssS(&(ret->Spr), hit1->Spr);
-        
-
-
-    /*
-    ** Copy the N-terminal most sequence to our new sequence 
-    ** and assign start point of new hit
-    */
-    if(hit1->Start <= hit2->Start)
-    {
-	ajStrAssS(&(ret->Seq), hit1->Seq);
-	ret->Start = hit1->Start;
-	end   = hit1->End;
-	start = hit2->Start;
-    }	
-    else
-    {
-	ajStrAssS(&(ret->Seq), hit2->Seq);
-    	ret->Start = hit2->Start;
-	end   = hit2->End;
-	start = hit1->Start;
-    }
-    
-
-    /* Assign end point of new hit */
-    if(hit1->End >= hit2->End)
-	ret->End = hit1->End;
-    else
-    	ret->End = hit2->End;
-
-
-    /* Assign the C-terminus of the sequence of the new hit     
-       if necessary */
-    if(hit2->End > end)
-    {
-	ajStrAssSub(&temp, hit2->Seq, end-start+1, -1);
-	ajStrApp(&(ret->Seq),temp);
-    }
-    else if(hit1->End > end)
-    {
-	ajStrAssSub(&temp, hit1->Seq, end-start+1, -1);
-	ajStrApp(&(ret->Seq),temp);
-    }
-
-
-    /* Classify the merged hit */
-    if(ajStrMatchC(hit1->Typeobj, "SEED") ||
-       ajStrMatchC(hit1->Typeobj, "SEED"))
-	ajStrAssC(&(ret->Typeobj), "SEED");
-    else if(ajStrMatchC(hit1->Typeobj, "HIT") ||
-	    ajStrMatchC(hit1->Typeobj, "HIT"))
-	ajStrAssC(&(ret->Typeobj), "HIT");
-    else
-	ajStrAssC(&(ret->Typeobj), "OTHER");
-
-
-    if(ajStrMatch(hit1->Model, hit2->Model))
-	ajStrAssS(&ret->Model, hit1->Model);
-    
-
-    
-    /* All other elements of structure are left as NULL / o / ajFalse */
-        
-    ajStrDel(&temp);
-
-    return ret;
-}
-
-
-
-
-
-/* @func embHitsOverlap *****************************************************
-**
-** Checks for overlap between two hits.
-**
-** @param [r] hit1  [AjPHit]     Pointer to hit object 1
-** @param [r] hit2  [AjPHit]     Pointer to hit object 2
-** @param [r] n     [ajint]      Threshold number of residues for overlap
-**
-** @return [AjBool] True if the overlap between the sequences is at least as 
-** long as the threshold. False otherwise.
-** @@
-****************************************************************************/
-
-AjBool embHitsOverlap(AjPHit hit1, AjPHit hit2, ajint n)
-{
-    if((MAJSTRLEN(hit1->Seq)<n) || (MAJSTRLEN(hit2->Seq)<n))
-    {
-	ajWarn("Sequence length smaller than overlap limit in "
-	       "embHitsOverlap ... checking for string match instead");
-
-	if((ajStrFind(hit1->Seq, hit2->Seq)!=-1) ||
-	   (ajStrFind(hit2->Seq, hit1->Seq)!=-1))
-	    return ajTrue;
-	else
-	    return ajFalse;
-    }
-
-    if( (((hit1->End - hit2->Start + 1)>=n) && 
-	 (hit2->Start >= hit1->Start)) ||
-       (((hit2->End - hit1->Start + 1)>=n) && 
-	(hit1->Start >= hit2->Start)))
-	return ajTrue;
-
-    return ajFalse;
-}
-
-
-
-
-
-/* @func embMatchScore ******************************************************
-**
-** Function to sort Hit objects by score record. Usually called by 
-** ajListSort.
-**
-** @param [r] hit1  [const void*] Pointer to Hit object 1
-** @param [r] hit2  [const void*] Pointer to Hit object 2
-**
-** @return [ajint] 1 if score1<score2, 0 if score1==score2, else -1.
-** @@
-****************************************************************************/
-
-ajint embMatchScore(const void *hit1, const void *hit2)
-{
-    AjPHit p = NULL;
-    AjPHit q = NULL;
-
-    p = (*(AjPHit*)hit1);
-    q = (*(AjPHit*)hit2);
-    
-    if(p->Score < q->Score)
-	return -1;
-    else if (p->Score == q->Score)
-	return 0;
-
-    return 1;
-}
-
-
-
-
-
-/* @func embHitidxMatchId ***************************************************
-**
-** Function to sort Hitidx objects by Id element. Usually called by 
-** embHitlistClassify.
-**
-** @param [r] hit1  [const void*] Pointer to Hitidx object 1
-** @param [r] hit2  [const void*] Pointer to Hitidx object 2
-**
-** @return [ajint] -1 if Id1 should sort before Id2, +1 if the Id2 should sort 
-** first. 0 if they are identical in length and content. 
-** @@
-****************************************************************************/
-
-ajint embHitidxMatchId(const void *hit1, const void *hit2)
-{
-    EmbPHitidx p = NULL;
-    EmbPHitidx q = NULL;
-
-    p = (*(EmbPHitidx*)hit1);
-    q = (*(EmbPHitidx*)hit2);
-    
-    return ajStrCmpO(p->Id, q->Id);
-
-}
-
-
-
-
-
-/* @func embMatchinvScore ***************************************************
-**
-** Function to sort Hit objects by score record. Usually called by 
-** ajListSort.  The sorting order is inverted - i.e. it returns -1 if score1 
-** > score2 (as opposed to embMatchScore).
-**
-** @param [r] hit1  [const void*] Pointer to Hit object 1
-** @param [r] hit2  [const void*] Pointer to Hit object 2
-**
-** @return [ajint] 1 if score1<score2, 0 if score1==score2, else -1.
-** @@
-****************************************************************************/
-
-ajint embMatchinvScore(const void *hit1, const void *hit2)
-{
-    AjPHit p = NULL;
-    AjPHit q = NULL;
-
-    p = (*(AjPHit*)hit1);
-    q = (*(AjPHit*)hit2);
-    
-    if(p->Score > q->Score)
-	return -1;
-    else if (p->Score == q->Score)
-	return 0;
-
-    return 1;
-}
-
-
-
-
-
-/* @func embHitlistNew ******************************************************
-**
-** Hitlist object constructor. This is normally called by the embHitlistRead
-** function. Fore-knowledge of the number of hits is required.
-**
-** @param [r] n [ajint] Number of hits
-** 
-** @return [AjPHitlist] Pointer to a hitlist object
-** @@
-****************************************************************************/
-
-AjPHitlist embHitlistNew(ajint n)
-{
-    AjPHitlist ret = NULL;
-    ajint i = 0;
-    
-
-    AJNEW0(ret);
-    ret->Class       = ajStrNew();
-    ret->Fold        = ajStrNew();
-    ret->Superfamily = ajStrNew();
-    ret->Family      = ajStrNew();
-    ret->Model       = ajStrNew();
-    ret->Priority    = ajFalse;
-    
-    ret->N=n;
-
-    if(n)
-    {
-	AJCNEW0(ret->hits,n);
-	for(i=0;i<n;++i)
-	    ret->hits[i] = embHitNew();
-    }	
-
-    return ret;
-}
-
-
-
-
-
-/* @func embHitlistDel ******************************************************
-**
-** Destructor for hitlist object.
-**
-** @param [w] ptr [AjPHitlist*] Hitlist object pointer
-**
-** @return [void]
-** @@
-****************************************************************************/
-
-void embHitlistDel(AjPHitlist *ptr)
-{
-    int x = 0;  /* Counter */
-
-    if(!(*ptr))
-    {
-	ajWarn("Null pointer passed to embHitlistDel");
-	return;
-    }
-    
-    if((*ptr)->Class)
-	ajStrDel(&(*ptr)->Class);
-    if((*ptr)->Fold)
-	ajStrDel(&(*ptr)->Fold);
-    if((*ptr)->Superfamily)
-	ajStrDel(&(*ptr)->Superfamily);
-    if((*ptr)->Family)
-	ajStrDel(&(*ptr)->Family);
-    if((*ptr)->Model)
-	ajStrDel(&(*ptr)->Model);
-    
-    for(x=0;x<(*ptr)->N; x++)
-	if((*ptr)->hits[x])
-	    embHitDel(&(*ptr)->hits[x]);
-
-    if((*ptr)->hits)
-	AJFREE((*ptr)->hits);
-    
-    if(*ptr)
-	AJFREE(*ptr);
-    
-    *ptr = NULL;
-    
-    return;
-}
-
-
-
-
-
-/* @func embHitlistRead *****************************************************
-**
-** Read a hitlist object from a file in embl-like format (see documentation
-** for the DOMAINATRIX "seqsearch" application). 
-** 
-** @param [r] inf      [AjPFile] Input file stream
-**
-** @return [AjPHitlist] Hitlist object
-** @@
-****************************************************************************/
-
-AjPHitlist embHitlistRead(AjPFile inf) 
-{
-    AjPHitlist ret = NULL;
-    
-    AjPStr line   = NULL;   /* Line of text */
-    AjPStr class  = NULL;
-    AjPStr fold   = NULL;
-    AjPStr super  = NULL;
-    AjPStr family = NULL;
-    AjBool   ok   = ajFalse;
-    ajint    n    = 0;              /* Number of current sequence */
-    ajint    nset = 0;              /* Number in set */
-    ajint  Sunid_Family = 0;        /* SCOP sunid for family */
-
-
-
-    /* Allocate strings */
-    class   = ajStrNew();
-    fold    = ajStrNew();
-    super   = ajStrNew();
-    family  = ajStrNew();
-    line    = ajStrNew();
-    
-
-    
-    /* Read first line */
-    ok = ajFileReadLine(inf,&line);
-
-    /* '//' is the delimiter for block of hits (in case the file 
-       contains multiple hitlists). */
-
-    while(ok && !ajStrPrefixC(line,"//"))
-    {
-	if(ajStrPrefixC(line,"XX"))
-	{
-	    ok = ajFileReadLine(inf,&line);
-	    continue;
-	}
-	else if(ajStrPrefixC(line,"SI"))
-	{
-	    ajFmtScanS(line, "%*s %d", &Sunid_Family);
-	}
-	else if(ajStrPrefixC(line,"CL"))
-	{
-	    ajStrAssC(&class,ajStrStr(line)+3);
-	    ajStrClean(&class);
-	}
-	else if(ajStrPrefixC(line,"FO"))
-	{
-	    ajStrAssC(&fold,ajStrStr(line)+3);
-	    while((ok = ajFileReadLine(inf,&line)))
-	    {
-		if(ajStrPrefixC(line,"XX"))
-		    break;
-		ajStrAppC(&fold,ajStrStr(line)+3);
-	    }
-	    ajStrClean(&fold);
-	}
-	else if(ajStrPrefixC(line,"SF"))
-	{
-	    ajStrAssC(&super,ajStrStr(line)+3);
-	    while((ok = ajFileReadLine(inf,&line)))
-	    {
-		if(ajStrPrefixC(line,"XX"))
-		    break;
-		ajStrAppC(&super,ajStrStr(line)+3);
-	    }
-	    ajStrClean(&super);
-	}
-	else if(ajStrPrefixC(line,"FA"))
-	{
-	    ajStrAssC(&family,ajStrStr(line)+3);
-	    while((ok = ajFileReadLine(inf,&line)))
-	    {
-		if(ajStrPrefixC(line,"XX"))
-		    break;
-		ajStrAppC(&family,ajStrStr(line)+3);
-	    }
-	    ajStrClean(&family);
-	}
-	else if(ajStrPrefixC(line,"NS"))
-	{
-	    ajFmtScanS(line, "NS %d", &nset);
-
-
-	    /* Create hitlist structure */
-	    (ret)=embHitlistNew(nset);
-	    (ret)->N=nset;
-	    ajStrAssS(&(ret)->Class, class);
-	    ajStrAssS(&(ret)->Fold, fold);
-	    ajStrAssS(&(ret)->Superfamily, super);
-	    ajStrAssS(&(ret)->Family, family);
-	    (ret)->Sunid_Family = Sunid_Family;
-	}
-	else if(ajStrPrefixC(line,"NN"))
-	{
-	    /* Increment hit counter */
-	    n++;
-	    
-	    /* Safety check */
-	    if(n>nset)
-		ajFatal("Dangerous error in input file caught "
-			"in embHitlistRead.\n Email jison@hgmp.mrc.ac.uk");
-	}
-	else if(ajStrPrefixC(line,"SC"))
-	{
-	    ajFmtScanS(line, "%*s %f", &(ret)->hits[n-1]->Score);
-	}
-	else if(ajStrPrefixC(line,"AC"))
-	{
-	    ajStrAssC(&(ret)->hits[n-1]->Acc,ajStrStr(line)+3);
-	    ajStrClean(&(ret)->hits[n-1]->Acc);
-	}
-	else if(ajStrPrefixC(line,"SP"))
-	{
-	    ajStrAssC(&(ret)->hits[n-1]->Spr,ajStrStr(line)+3);
-	    ajStrClean(&(ret)->hits[n-1]->Spr);
-	}
-	else if(ajStrPrefixC(line,"TY"))
-	{
-	    ajStrAssC(&(ret)->hits[n-1]->Typeobj,ajStrStr(line)+3);	
-	    ajStrClean(&(ret)->hits[n-1]->Typeobj);		
-	}
-	else if(ajStrPrefixC(line,"MO"))
-	{
-	    ajStrAssC(&(ret)->hits[n-1]->Model,ajStrStr(line)+3);	
-	    ajStrClean(&(ret)->hits[n-1]->Model);		
-	}
-	else if(ajStrPrefixC(line,"RA"))
-	    ajFmtScanS(line, "%*s %d %*s %d", &(ret)->hits[n-1]->Start,
-		       &(ret)->hits[n-1]->End);
-	else if(ajStrPrefixC(line,"GP"))
-	    ajFmtScanS(line, "%*s %S", &(ret)->hits[n-1]->Group);
-	else if(ajStrPrefixC(line,"SQ"))
-	{
-	    while((ok=ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"XX"))
-		ajStrAppC(&(ret)->hits[n-1]->Seq,ajStrStr(line));
-	    ajStrCleanWhite(&(ret)->hits[n-1]->Seq);
-	    continue;
-	}
-	
-	ok = ajFileReadLine(inf,&line);
-    }
-
-
-    ajStrDel(&line);
-    ajStrDel(&class);
-    ajStrDel(&fold);
-    ajStrDel(&super);
-    ajStrDel(&family);
-    
-    if(!ok)
-	return NULL;
-
-    return ret;
-}
-
-
-
-
-
-/* @func embHitlistReadNode *************************************************
-**
-** Reads a scop families file (see documentation for the EMBASSY 
-** DOMAINATRIX package) and writes a list of Hitlist objects containing 
-** all domains matching the scop classification provided.
-**
-** @param [r] inf    [AjPFile]   File containing multiple Hitlist objects
-** @param [r] fam    [AjPStr]    Family.
-** @param [r] sfam   [AjPStr]    Superfamily.
-** @param [r] fold   [AjPStr]    Fold.
-** @param [r] klass  [AjPStr]    Class.
-** 
-** @return [AjPList] List of Hitlist objects or NULL.
-** @@
-****************************************************************************/
-
-AjPList embHitlistReadNode(AjPFile inf, AjPStr fam, AjPStr sfam, 
-			   AjPStr fold, AjPStr klass)
-{
-    AjPList ret = NULL;
-    AjPStr class   = NULL;
-
-    class = klass;
-
-    if(!inf)
-	ajFatal("NULL arg passed to embHitlistReadNode");
-
-    /* Allocate the list if it does not already exist */
-
-    (ret) = ajListNew();
-
-    
-    /*
-    ** if family is specified then the other fields
-    ** also have to be specified.
-    */
-    if(fam)
-    {
-	if(!sfam || !fold || !class)
-	{
-	    ajWarn("Bad arguments passed to embHitlistReadNode\n");
-		ajListDel(&(ret));
-	    return NULL;
-	}
-	else
-	{
-	    if((embHitlistReadFam(inf,fam,sfam,fold,class,&ret)))
-		return ret;
-	    else
-	    {
-		    ajListDel(&(ret));
-		return NULL;
-	    }
-	}
-    }
-    /*
-    ** if superfamily is specified then the other fields
-    ** also have to be specified.
-    */
-    else if(sfam)
-    {
-	if(!fold || !class)
-	{
-	    ajWarn("Bad arguments passed to embHitlistReadNode\n");
-		ajListDel(&(ret));
-	    return NULL;
-	}
-	else
-	{
-	    if((embHitlistReadSfam(inf,fam,sfam,fold,class,&ret)))
-		return ret;
-	    else
-	    {
-		    ajListDel(&(ret));
-		return NULL;
-	    }
-	}	   
-    }
-    /*
-    ** if fold is specified then the other fields also have
-    ** to be specified.
-    */
-    else if(fold)
-    {
-	if(!class)
-	{
-	    ajWarn("Bad arguments passed to embHitlistReadNode\n");
-		ajListDel(&(ret));
-	    return NULL;
-	}
-	else
-	{
-	    if((embHitlistReadFold(inf,fam,sfam,fold,class,&ret)))
-		return ret;
-	    else
-	    {
-		    ajListDel(&(ret));
-		return NULL;
-	    }
-	}
-    } 
-
-    ajWarn("Bad arguments passed to embHitlistReadNode\n");
-	ajListDel(&(ret));
-
-    return ret;
-}
-
-
-
-
-
-/* @func embHitlistWrite ****************************************************
-**
-** Write contents of a Hitlist object to an output file in embl-like format
-** (see documentation for the DOMAINATRIX "seqsearch" application).
-** Text for Class, Fold, Superfamily and Family is only written if the text
-** is available.
-** 
-** @param [w] outf [AjPFile] Output file stream
-** @param [r] obj [AjPHitlist] Hitlist object
-**
-** @return [AjBool] True on success
-** @@
-****************************************************************************/
-
-AjBool embHitlistWrite(AjPFile outf, AjPHitlist obj)
-{
-    ajint x = 0;  /* Counter */
-    
-    if(!obj)
-	return ajFalse;
-
-    if(MAJSTRLEN(obj->Class))
-	ajFmtPrintF(outf,"CL   %S\n",obj->Class);
-
-    if(MAJSTRLEN(obj->Fold))
-	ajFmtPrintSplit(outf,obj->Fold,"XX\nFO   ",75," \t\n\r");
-
-    if(MAJSTRLEN(obj->Superfamily))
-	ajFmtPrintSplit(outf,obj->Superfamily,"XX\nSF   ",75," \t\n\r");
-
-    if(MAJSTRLEN(obj->Family))
-	ajFmtPrintSplit(outf,obj->Family,"XX\nFA   ",75," \t\n\r");
-
-    if(MAJSTRLEN(obj->Family) && obj->Sunid_Family)
-	ajFmtPrintF(outf,"XX\nSI   %d\n", obj->Sunid_Family);
-    
-
-    ajFmtPrintF(outf,"XX\nNS   %d\nXX\n",obj->N);
-
-    for(x=0;x<obj->N;x++)
-    {
-	ajFmtPrintF(outf, "%-5s[%d]\nXX\n", "NN", x+1);
-	if(MAJSTRLEN(obj->hits[x]->Model))
-	{
-	    ajFmtPrintF(outf, "%-5s%S\n", "MO", obj->hits[x]->Model);
-	    ajFmtPrintF(outf, "XX\n");
-	}
-	
-	if(MAJSTRLEN(obj->hits[x]->Typeobj))
-	    ajFmtPrintF(outf, "%-5s%S\n", "TY", obj->hits[x]->Typeobj);
-	ajFmtPrintF(outf, "XX\n");
-	ajFmtPrintF(outf, "%-5s%.2f\n", "SC", obj->hits[x]->Score);
-	ajFmtPrintF(outf, "XX\n");
-	if(MAJSTRLEN(obj->hits[x]->Group))
-	{
-	    ajFmtPrintF(outf, "%-5s%S\n", "GP", obj->hits[x]->Group);
-	    ajFmtPrintF(outf, "XX\n");
-	}
-
-	ajFmtPrintF(outf, "%-5s%S\n", "AC", obj->hits[x]->Acc);
-	ajFmtPrintF(outf, "XX\n");
-	if(MAJSTRLEN(obj->hits[x]->Spr))
-	{
-	    ajFmtPrintF(outf, "%-5s%S\n", "SP", obj->hits[x]->Spr);
-	    ajFmtPrintF(outf, "XX\n");
-	}
-	
-	ajFmtPrintF(outf, "%-5s%d START; %d END;\n", "RA",
-		    obj->hits[x]->Start, obj->hits[x]->End);
-	ajFmtPrintF(outf, "XX\n");
-	ajSeqWriteXyz(outf, obj->hits[x]->Seq, "SQ");
-	ajFmtPrintF(outf, "XX\n");
-    }
-    ajFmtPrintF(outf, "//\n");
-
-    return ajTrue;
-}
-
-
-
-
-
-/* @func embHitlistWriteSubset **********************************************
-**
-** Write contents of a Hitlist object to an output file in embl-like format
-** (see documentation for the DOMAINATRIX "seqsearch" application).
-** Only those hits are written for which a 1 is given in the corresponding
-** position in array of integers.
-** Text for Class, Fold, Superfamily and Family is only written if the text
-** is available.
-** 
-** @param [w] outf  [AjPFile]    Output file stream
-** @param [r] obj   [AjPHitlist] Hitlist object
-** @param [r] ok    [AjPInt]     Whether hits are to be printed or not
-**
-** @return [AjBool] True on success
-** @@
-****************************************************************************/
-
-AjBool embHitlistWriteSubset(AjPFile outf, AjPHitlist obj, AjPInt ok)
-{
-    ajint x    = 0;  /* Counter */
-    ajint y    = 0;  /* Counter */
-    ajint nset = 0;  /* No. in set to be printed out */
-    
-
-    if(!obj)
-	return ajFalse;
-
-    if(MAJSTRLEN(obj->Class))
-	ajFmtPrintF(outf,"CL   %S\n",obj->Class);
-
-    if(MAJSTRLEN(obj->Fold))
-	ajFmtPrintSplit(outf,obj->Fold,"XX\nFO   ",75," \t\n\r");
-
-    if(MAJSTRLEN(obj->Superfamily))
-	ajFmtPrintSplit(outf,obj->Superfamily,"XX\nSF   ",75," \t\n\r");
-
-    if(MAJSTRLEN(obj->Family))
-	ajFmtPrintSplit(outf,obj->Family,"XX\nFA   ",75," \t\n\r");
-
-    if(MAJSTRLEN(obj->Family))
-	ajFmtPrintF(outf,"XX\nSI   %d\n", obj->Sunid_Family);
-
-
-    for(nset=0, x=0;x<obj->N;x++)
-	if(ajIntGet(ok, x) == 1)
-	    nset++;
-	    
-    ajFmtPrintF(outf,"XX\nNS   %d\nXX\n",nset);
-
-    for(x=0;x<obj->N;x++)
-    { 
-	if(ajIntGet(ok, x) == 1)
-	{
-	    y++;
-
-	    ajFmtPrintF(outf, "%-5s[%d]\nXX\n", "NN", y);
-	    if(MAJSTRLEN(obj->hits[x]->Model))
-	    {
-		ajFmtPrintF(outf, "%-5s%S\n", "MO", obj->hits[x]->Model);
-		ajFmtPrintF(outf, "XX\n");
-	    }
-	    
-	    if(MAJSTRLEN(obj->hits[x]->Typeobj))
-		ajFmtPrintF(outf, "%-5s%S\n", "TY", obj->hits[x]->Typeobj);
-	    ajFmtPrintF(outf, "XX\n");
-	    ajFmtPrintF(outf, "%-5s%.2f\n", "SC", obj->hits[x]->Score);
-	    ajFmtPrintF(outf, "XX\n");
-	    if(MAJSTRLEN(obj->hits[x]->Group))
-	    {
-		ajFmtPrintF(outf, "%-5s%S\n", "GP", obj->hits[x]->Group);
-		ajFmtPrintF(outf, "XX\n");
-	    }
-	    
-	    ajFmtPrintF(outf, "%-5s%S\n", "AC", obj->hits[x]->Acc);
-	    ajFmtPrintF(outf, "XX\n");
-	    if(MAJSTRLEN(obj->hits[x]->Spr))
-	    {
-		ajFmtPrintF(outf, "%-5s%S\n", "SP", obj->hits[x]->Spr);
-		ajFmtPrintF(outf, "XX\n");
-	    }
-
-	    ajFmtPrintF(outf, "%-5s%d START; %d END;\n", "RA",
-			obj->hits[x]->Start, obj->hits[x]->End);
-	    ajFmtPrintF(outf, "XX\n");
-	    ajSeqWriteXyz(outf, obj->hits[x]->Seq, "SQ");
-	    ajFmtPrintF(outf, "XX\n");
-	}
-    }
-    ajFmtPrintF(outf, "//\n");
-	
-    return ajTrue;
-}
-
-
-
-
-
-/* @func embHitlistClassify *************************************************
-**
-** Classifies a list of signature-sequence hits (held in a Hitlist object) 
-** according to list of target sequences (a list of Hitlist objects).
-** 
-** Writes the Group, Typeobj (primary classification) & Typesbj (secondary
-** classification) elements depending on how the SCOP classification 
-** records of the Hit object and target sequence in question compare.
-** 
-**
-** The following classification of hits is taken from the documentation
-** for the DOMAINATRIX "sigscan" application :
-** Definition of classes of hit 
-** The primary classification is an objective definition of the hit and has 
-** one of the following values:
-** SEED - the sequence was included in the original alignment from which the 
-** signature was generated.
-** HIT - A protein which was detected by psiblast  (see psiblasts.c) to 
-** be a homologue to at least one of the proteins in the family from which 
-** the signature was derived. Such proteins are identified by the 'HIT' 
-** record in the scop families file.
-** OTHER - A true member of the family but not a homologue as detected by 
-** psi-blast. Such proteins may have been found from the literature and 
-** manually added to the scop families file or may have been detected by the 
-** EMBOSS program swissparse (see swissparse.c). They are identified in the 
-** scop families file by the 'OTHER' record.
-** CROSS - A protein which is homologous to a protein of the same fold,
-** but differnt family, of the proteins from which the signature was
-** derived.
-** FALSE - A homologue to a protein with a different fold to the family
-** of the signature.
-** UNKNOWN - The protein is not known to be CROSS, FALSE or a true hit (a 
-** SEED, HIT or OTHER).
-** The secondary classification is provided for convenience and a value as 
-** follows:
-** Hits of SEED, HIT and OTHER classification are all listed as TRUE.
-** Hits of CROSS, FALSE or UNKNOWN objective
-** classification are listed as CROSS, 
-** FALSE or UNKNOWN respectively.
-**
-** The Group element is copied from the target sequence for 'TRUE' objective
-** hits, whereas 'NOT_APPLICABLE' is given for other types of hit.
-**
-** The subjective column allows for hand-annotation of the hits files so that 
-** proteins of UNKNOWN objective classification can re-classified by a human 
-** expert as TRUE, FALSE, CROSS or otherwise
-** left as UNKNOWN for the purpose of 
-** generating signature performance plots with the EMBOSS application sigplot.
-**
-**
-** @param [r] hits    [AjPHitlist*] Pointer to Hitlist object with hits
-** @param [r] targets [AjPList]     List of AjOHitlist objects with targets
-** @param [r] thresh  [ajint]       Minimum length (residues) of overlap 
-** required for two hits with the same code to be counted as the same hit.
-**
-** @return [AjBool] True on success, else False
-** @@
-****************************************************************************/
-
-AjBool embHitlistClassify(AjPHitlist *hits, AjPList targets, ajint thresh)
-{  
-    /*
-    ** A list of Hitidx structures is derived from the list of AjOHitlist 
-    ** objects to allow rapid searching for a given protein accession number
-    */
-    AjIList itert   = NULL;	/* List iterator for targets */
-    AjPHitlist ptrt = NULL;	/* Pointer for targets (hitlist structure) */
-    EmbPHitidx ptri  = NULL;	/* Pointer for index (Hitidx structure) */
-
-    EmbPHitidx *idxarr = NULL;	/* Array of Hitidx structures */
-    AjPList idxlist   = NULL;	/* List of Hitidx structures */
-
-    ajint idxsiz = 0;		/* No.target sequences */
-    ajint pos    = 0;		/* Position of a matching code in Hitidx 
-					  structure */
-    ajint tpos = 0;		/* Temp. position counter */
-    ajint x    = 0;		/* Loop counter */
-
-    AjPStr tmpstr = NULL;
-    
-
-    
-    /* Check args */
-    if(!(*hits) || (!targets))
-    {
-	ajWarn("NULL args passed to embHitlistClassify\n");
-	return ajFalse;
-    }
-    
-
-
-    /* Create list & list iterator & other memory */
-    itert   = ajListIter(targets);
-    idxlist = ajListNew();
-    tmpstr  = ajStrNew();
-    
-
-    /* Loop through list of targets filling list of Hitidx structures */
-    while((ptrt=(AjPHitlist)ajListIterNext(itert)))
-    {
-	/* Write Hitidx structure */
-	for(x=0;x<ptrt->N;x++)
-	{
-	    ptri = embHitidxNew();
-	    ptri->hptr=ptrt->hits[x];
-	    ptri->lptr=ptrt;
-	    if(MAJSTRLEN(ptrt->hits[x]->Acc))
-		ajStrAssS(&ptri->Id, ptrt->hits[x]->Acc);
-	    else
-		ajStrAssS(&ptri->Id, ptrt->hits[x]->Spr);
-	    
-	    ajListPush(idxlist,(EmbPHitidx) ptri);
-	}
-    }
-
-    
-    /* Order the list of Hitidx structures by Id and transform 
-       into an array */
-    ajListSort(idxlist, embHitidxMatchId);
-    idxsiz = ajListToArray(idxlist, (void ***) &idxarr);
-        
-
-    /* Loop through list of hits */
-    for(x=0; x<(*hits)->N; x++)
-    {
-	if((MAJSTRLEN((*hits)->hits[x]->Acc)))
-	    pos=embHitidxBinSearch((*hits)->hits[x]->Acc, idxarr, idxsiz);
-	else
-	    pos=embHitidxBinSearch((*hits)->hits[x]->Spr, idxarr, idxsiz);
-	if(pos!=-1)
-	{
-	    /*
-	    ** Id was found
-	    ** The list may contain multiple entries for the same Id, so 
-	    ** search the current position and then up the list for other 
-	    ** matching strings
-	    */
-	    tpos=pos; 
-
-	    if(MAJSTRLEN((*hits)->hits[x]->Acc))
-		ajStrAssS(&tmpstr, (*hits)->hits[x]->Acc);
-	    else
-		ajStrAssS(&tmpstr, (*hits)->hits[x]->Spr);
-
-	    while(ajStrMatchCase(idxarr[tpos]->Id, tmpstr))
-	    {
-		if(embHitsOverlap(idxarr[tpos]->hptr, 
-				    (*hits)->hits[x], thresh))
-		{	
-
-		    if( (idxarr[tpos]->lptr)->Sunid_Family ==
-		       (*hits)->Sunid_Family)
-			/* SCOP family is identical */
-		    {
-			ajStrAssS(&(*hits)->hits[x]->Typeobj, 
-				  (idxarr[tpos]->hptr)->Typeobj);
-
-			ajStrAssC(&(*hits)->hits[x]->Typesbj, 
-				  "TRUE");
-			ajStrAssS(&(*hits)->hits[x]->Group, 
-				  (idxarr[tpos]->hptr)->Group);
-		    }
-		    else if((ajStrMatchCase((idxarr[tpos]->lptr)->Fold, 
-					   (*hits)->Fold)) &&
-			    (ajStrMatchCase((idxarr[tpos]->lptr)->Class, 
-					   (*hits)->Class)))
-			/* SCOP folds are identical */
-		    {
-			ajStrAssC(&(*hits)->hits[x]->Typeobj, "CROSS");
-			ajStrAssC(&(*hits)->hits[x]->Typesbj, "CROSS");
-
-			ajStrAssC(&(*hits)->hits[x]->Group, "NOT_APPLICABLE");
-		    }
-		    else
-			/* SCOP folds are different */
-		    {
-			ajStrAssC(&(*hits)->hits[x]->Typeobj, "FALSE");
-			ajStrAssC(&(*hits)->hits[x]->Typesbj, "FALSE");
-			ajStrAssC(&(*hits)->hits[x]->Group, "NOT_APPLICABLE");
-		    }
-		}
-		else
-		{
-		    /*
-		    ** Id was found but there was no overlap so set 
-		    ** classification to UNKNOWN, but only if it has 
-		    ** not already been set
-		    */
-		    if((!ajStrMatchC((*hits)->hits[x]->Typesbj, "TRUE")) &&
-		       (!ajStrMatchC((*hits)->hits[x]->Typesbj, "CROSS")) &&
-		       (!ajStrMatchC((*hits)->hits[x]->Typesbj, "FALSE")))
-		    {
-			ajStrAssC(&(*hits)->hits[x]->Typeobj, "UNKNOWN");
-			ajStrAssC(&(*hits)->hits[x]->Typesbj, "UNKNOWN");
-			ajStrAssC(&(*hits)->hits[x]->Group, "NOT_APPLICABLE");
-		    }
-		}
-		tpos--;	
-		if(tpos<0) 
-		    break;
-	    }	    
-				    
-	    /* Search down the list */
-	    tpos = pos+1; 
-
-	    if(MAJSTRLEN((*hits)->hits[x]->Acc))
-		ajStrAssS(&tmpstr, (*hits)->hits[x]->Acc);
-	    else
-		ajStrAssS(&tmpstr, (*hits)->hits[x]->Spr);
-
-	    if(tpos<idxsiz) 
-		while(ajStrMatchCase(idxarr[tpos]->Id, tmpstr))
-		{
-
-		    if(embHitsOverlap(idxarr[tpos]->hptr, 
-					(*hits)->hits[x], thresh))
-		    {	
-			if( (idxarr[tpos]->lptr)->Sunid_Family ==
-			   (*hits)->Sunid_Family)
-
-			    /* SCOP family is identical */
-			{
-			    ajStrAssS(&(*hits)->hits[x]->Typeobj, 
-				     (idxarr[tpos]->hptr)->Typeobj);
-			    ajStrAssC(&(*hits)->hits[x]->Typesbj, "TRUE");
-			    ajStrAssS(&(*hits)->hits[x]->Group, 
-				      (idxarr[tpos]->hptr)->Group);
-			}
-			else if((ajStrMatchCase((idxarr[tpos]->lptr)->Fold, 
-					       (*hits)->Fold)) &&
-				(ajStrMatchCase((idxarr[tpos]->lptr)->Class, 
-					   (*hits)->Class)))
-			    /* SCOP fold is identical */
-			{	
-			    ajStrAssC(&(*hits)->hits[x]->Typeobj, "CROSS");
-			    ajStrAssC(&(*hits)->hits[x]->Typesbj, "CROSS");
-			    ajStrAssC(&(*hits)->hits[x]->Group,
-				      "NOT_APPLICABLE");
-			}
-			else
-			    /* SCOP folds are different */
-			{
-			    ajStrAssC(&(*hits)->hits[x]->Typeobj, "FALSE");
-			    ajStrAssC(&(*hits)->hits[x]->Typesbj, "FALSE");
-			    ajStrAssC(&(*hits)->hits[x]->Group,
-				      "NOT_APPLICABLE");
-			}
-		    }
-  		    else
-		    {
-			/*
-			** Id was found but there was no overlap so set 
-			** classification to UNKNOWN, but only if it has 
-			** not already been set
-			*/
-			if((!ajStrMatchC((*hits)->hits[x]->Typesbj, "TRUE")) &&
-		       (!ajStrMatchC((*hits)->hits[x]->Typesbj, "CROSS")) &&
-		       (!ajStrMatchC((*hits)->hits[x]->Typesbj, "FALSE")))
-			{
-			    ajStrAssC(&(*hits)->hits[x]->Typeobj, "UNKNOWN");
-			    ajStrAssC(&(*hits)->hits[x]->Typesbj, "UNKNOWN");
-			    ajStrAssC(&(*hits)->hits[x]->Group,
-				      "NOT_APPLICABLE");
-			}
-		    }
-		    tpos++;	
-		    if(tpos==idxsiz) 
-			break;
-		}
-	}
-	else
-	{
-	    /* Id was NOT found so set classification to UNKNOWN */
-	    ajStrAssC(&(*hits)->hits[x]->Typeobj, "UNKNOWN");
-	    ajStrAssC(&(*hits)->hits[x]->Typesbj, "UNKNOWN");
-	    ajStrAssC(&(*hits)->hits[x]->Group, "NOT_APPLICABLE");
-	}
-    }
-    
-
-    while(ajListPop(idxlist, (void **) &ptri))
-	embHitidxDel(&ptri);	
-    ajListDel(&idxlist);
-    AJFREE(idxarr);
-    ajListIterFree(itert);
-    ajStrDel(&tmpstr);
-
-    return ajTrue;
-}
-
-
-
-
-
-/* @func embHitlistMatchFold ************************************************
-**
-** Function to sort Hitlist object by Fold element. 
-**
-** @param [r] hit1  [const void*] Pointer to Hitlist object 1
-** @param [r] hit2  [const void*] Pointer to Hitlist object 2
-**
-** @return [ajint] -1 if Fold1 should sort before Fold2, +1 if the Fold2 
-** should sort first. 0 if they are identical.
-** @@
-****************************************************************************/
-
-ajint embHitlistMatchFold(const void *hit1, const void *hit2)
-{
-    AjPHitlist p = NULL;
-    AjPHitlist q = NULL;
-
-    p = (*(AjPHitlist*)hit1);
-    q = (*(AjPHitlist*)hit2);
-    
-    return ajStrCmpO(p->Fold, q->Fold);
-}
-
-
-
-
-
-/* @func embHitidxNew *******************************************************
-**
-** Hitidx object constructor. This is normally called by the 
-** embHitlistClassify function.
-**
-** @return [EmbPHitidx] Pointer to a Hitidx object
-** @@
-****************************************************************************/
-
-EmbPHitidx embHitidxNew(void)
-{
-    EmbPHitidx ret  =NULL;
-
-    AJNEW0(ret);
-
-    ret->Id         = ajStrNew();
-    ret->hptr       = NULL;
-    ret->lptr       = NULL;
-    
-    return ret;
-}
-
-
-
-
-
-/* @func embHitidxDel *******************************************************
-**
-** Destructor for Hitidx object.
-**
-** @param [w] pthis [EmbPHitidx*] Hitidx object pointer
-**
-** @return [void]
-** @@
-****************************************************************************/
-
-void embHitidxDel(EmbPHitidx *pthis)
-{
-    ajStrDel(&(*pthis)->Id);
-
-    AJFREE(*pthis);
-    *pthis = NULL;
-    
-    return;
-}
-
-
-
-
-
-/* @func embHitidxBinSearch *************************************************
-**
-** Performs a binary search for an accession number over an array of Hitidx
-** structures (which of course must first have been sorted). This is a 
-** case-insensitive search.
-**
-** @param [r] id  [AjPStr]       Search term
-** @param [r] arr [EmbPHitidx*]  Array of EmbOHitidx objects
-** @param [r] siz [ajint]        Size of array
-**
-** @return [ajint] Index of first Hitidx object found with an Id element 
-** matching id, or -1 if id is not found.
-** @@
-****************************************************************************/
-
-ajint embHitidxBinSearch(AjPStr id, EmbPHitidx *arr, ajint siz)
-{
-    int l;
-    int m;
-    int h;
-    int c;
-
-
-    l = 0;
-    h = siz-1;
-    while(l<=h)
-    {
-        m=(l+h)>>1;
-
-        if((c=ajStrCmpCase(id, arr[m]->Id)) < 0) 
-	    h = m-1;
-        else if(c>0) 
-	    l = m+1;
-        else 
-	    return m;
-    }
-
-    return -1;
-}
-
-
-
-
-
-/* ======================================================================= */
-/* ======================== Miscellaneous =================================*/
-/* ======================================================================= */
-
-/* @section Miscellaneous ***************************************************
-**
-** These functions may have diverse functions that do not fit into the other
-** categories. 
-**
-****************************************************************************/

@@ -2,10 +2,8 @@
 **
 ** @source embdomain.h
 **
-** Algorithms for reading SCOP and CATH parsable files, for reading and 
-** writing dcf (domain classification file) format and for handling protein
-** domain data.
-** For Scop and Cath objects defined in ajdomain.h
+** Algorithms for handling protein domain data.
+** For use with Scop and Cath objects defined in ajdomain.h
 ** 
 ** Copyright (c) 2004 Jon Ison (jison@hgmp.mrc.ac.uk) 
 ** @version 1.0 
@@ -41,27 +39,8 @@ extern "C"
 
 
 /* ======================================================================= */
-/* ========================== Cath object ================================ */
-/* ======================================================================= */
-AjPCath  embCathReadCNew(AjPFile inf, char *entry);
-AjPCath  embCathReadNew(AjPFile inf, AjPStr entry);
-AjPList  embCathReadAllNew(AjPFile inf); 
-AjPList  embCathReadAllRawNew(AjPFile cathf, AjPFile domf, 
-			      AjPFile namesf, AjPFile logf);
-AjBool   embCathWrite(AjPFile outf, AjPCath obj);
-
-
-
-
-
-/* ======================================================================= */
 /* ========================== Scop object ================================ */
 /* ======================================================================= */
-AjPScop  embScopReadCNew(AjPFile inf, char *entry);
-AjPScop  embScopReadNew(AjPFile inf, AjPStr entry);
-AjPList  embScopReadAllNew(AjPFile inf); 
-AjPList  embScopReadAllRawNew(AjPFile claf, AjPFile desf, AjBool outputall);
-AjBool   embScopWrite(AjPFile outf, AjPScop obj);
 AjPStr   embScopToPdbid(AjPStr scop, AjPStr *pdb);
 AjBool   embScopToSp(AjPStr scop, AjPStr *spr, AjPList list);
 AjBool   embScopToAcc(AjPStr scop, AjPStr *acc, AjPList list);

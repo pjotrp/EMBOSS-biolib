@@ -2,10 +2,10 @@
 **
 ** @source embpdb.h
 ** 
-** @source Algorithms for reading and writing ccf (clean coordinate file)
-** format and for handling protein structural data.   
-** For Atom, Chain and Pdb objects defined in ajpdb.h
-** For Hetent, Het, Vdwres, Vdwall, Cmap and Pdbtosp objects (also in ajpdb.h)
+** Algorithms for handling protein structural data.   
+** For use with Atom, Chain and Pdb objects defined in ajpdb.h
+** Also for use with Hetent, Het, Vdwres, Vdwall, Cmap and Pdbtosp objects 
+** (also in ajpdb.h)
 ** 
 ** @author: Copyright (C) 2004 Jon Ison (jison@hgmp.mrc.ac.uk) 
 ** @version 1.0 
@@ -75,15 +75,6 @@ extern "C"
 /* ======================================================================= */
 /* =========================== Pdb object ================================ */
 /* ======================================================================= */
-AjPPdb       embPdbReadNew(AjPFile inf);
-AjPPdb       embPdbReadFirstModelNew(AjPFile inf);
-AjBool       embPdbWriteAll(AjPFile out, AjPPdb obj);
-AjBool       embPdbWriteDomain(AjPFile outf, AjPPdb pdb,
-			       AjPScop scop, AjPFile errf);
-AjBool       embPdbWriteSegment(AjPFile outf, AjPPdb pdb, 
-				AjPStr seq, char chn, AjPStr domain, 
-				AjPFile errf);
-
 AjBool       embAtomInContact(AjPAtom atm1, AjPAtom atm2, float thresh,
 			       AjPVdwall vdw);
 float        embAtomDistance(AjPAtom atm1, AjPAtom atm2, AjPVdwall vdw);
@@ -102,50 +93,6 @@ AjBool       embPdbidToAcc(AjPStr pdb, AjPStr *acc, AjPList list);
 AjBool       embPdbidToScop(AjPPdb pdb, AjPList list_allscop, 
 			    AjPList *list_pdbscopids);
 float        embVdwRad(AjPAtom atm, AjPVdwall vdw);
-
-
-
-
-
-/* ======================================================================= */
-/* ====================== Het & Hetent objects =========================== */
-/* ======================================================================= */
-AjPHet       embHetReadRawNew(AjPFile inf);
-AjPHet       embHetReadNew(AjPFile inf);
-AjBool       embHetWrite(AjPFile outf, AjPHet ptr, AjBool dogrep);
-
-
-
-
-
-/* ======================================================================= */
-/* ================ Vdwall, Vdwres object ================================ */
-/* ======================================================================= */
-AjPVdwall    embVdwallReadNew(AjPFile inf);
-
-
-
-
-
-/* ======================================================================= */
-/* =========================== Cmap object =============================== */
-/* ======================================================================= */
-AjPCmap      embCmapReadCNew(AjPFile inf, char chn, ajint mod);
-AjPCmap      embCmapReadINew(AjPFile inf, ajint chn, ajint mod);
-AjPCmap      embCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod);
-
-
-
-
-
-/* ======================================================================= */
-/* ======================== Pdbtosp object =============================== */
-/* ======================================================================= */
-AjPList      embPdbtospReadAllRawNew(AjPFile inf);
-AjPPdbtosp   embPdbtospReadNew(AjPFile inf, AjPStr entry);
-AjPPdbtosp   embPdbtospReadCNew(AjPFile inf, char *entry);
-AjPList      embPdbtospReadAllNew(AjPFile inf);
-AjBool       embPdbtospWrite(AjPFile outf, AjPList list);
 
 
 
