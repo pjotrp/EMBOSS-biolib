@@ -79,7 +79,7 @@
 #       If the application is not found, qatest can assume "make
 #       check" was not run.
 # CC Comment
-#	Used in commenting on failed tests, e.g. "Requires SRS"
+#	Used in commenting on failed tests
 #       This comment will appear in the test output on failure as a guide
 #       to an acceptable failure condition (check the error message too!)
 #       See ## lines for general comments within the definition
@@ -152,6 +152,9 @@
 #	Not used at present. Most likely application is to list the
 #       contents of a directory to another file, which can then be
 #       tested for size and patterns.
+# RQ required
+#       Required external programs. For example, srs for tests that
+#       use getz, or clustalw for emma
 # TI seconds
 #       Timeout for test. The default is 60 seconds. Some examples
 #       can take longer on a heavily loaded system.
@@ -5542,6 +5545,7 @@ FP /1  : 100K_RAT\s+1\.277e\+06 100368\.6   0\.750/
 //
 
 ID emma-ex
+RQ clustalw
 AP emma
 IN ../../data/globins.fasta
 IN
@@ -6115,6 +6119,7 @@ FP /^%%Title: PLplot Graph\n/
 //
 
 ID eprimer3-ex
+RQ primer3
 AP eprimer3
 CL tembl:hsfau1 hsfau.eprimer3 -explain
 FI stderr
@@ -8462,7 +8467,6 @@ FP /     24      24     0.0   \-89\.18   \-40\.94\n/
 //
 
 ID rebaseextract-keep
-CC needs local copy of REBASE withrefm and proto file
 AP rebaseextract
 DL keep
 PP mkdir ./REBASE
@@ -15133,6 +15137,7 @@ FP /^3 pairs found\n/
 //
 
 ID primers-check
+RQ primer3
 AQ primers
 CC No documentation, no example
 IN tembl:hsfos
@@ -15700,6 +15705,7 @@ FZ > 0
 ID scopalign-ex
 AB domainatrix
 AA scopalign
+RQ stamp
 CC requires a modified stamp to be installed
 IN ../../data/structure/all.scop2
 IN
@@ -15828,6 +15834,7 @@ FP 2 /^\/\/\n/
 ID seqalign-ex
 AB domainatrix
 AA seqalign
+RQ clustalw
 CC Apparently requires clustalw 1.83 for long filenames
 CC clustalw 1.82 failed with 'unable to read .aln file'
 CC this was a clustalw error message
@@ -15887,6 +15894,7 @@ FP 140 /^SQ   /
 //
 
 ID seqsearch-ex
+RQ blastpgp
 CC Uses blastpgp to search
 AB domainatrix
 AA seqsearch
@@ -15986,6 +15994,7 @@ FP 32 /^IN   /
 //
 
 ID sigplot-ex
+RQ gnuplot
 CC requires gnuplot
 CC fails - no true hits in input
 CC and the Usage case says so too
