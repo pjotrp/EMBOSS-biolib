@@ -174,6 +174,38 @@ static char* acdValNames[] =
     NULL
 };
 
+/* @datastatic AcdPAttrAlias **************************************************
+**
+** ACD attribute old names and their new equivalents
+**
+** Commonly used abbreviations of the old names are also included.
+**
+** @alias AcdSAttrAlias
+** @alias AcdOAttrAlias
+**
+** @attr OldName [char*] Attribute name in a previous EMBOSS/AJAX release
+** @attr NewName [char*] Current attribute name
+** @@
+******************************************************************************/
+
+typedef struct AcdSAttrAlias
+{
+    char* OldName;
+    char* NewName;
+} AcdOAttrAlias;
+
+#define AcdPAttrAlias AcdOAttrAlias*
+
+static AcdOAttrAlias acdAttrAlias[] = {
+    {"required", "standard"},
+    {"req", "standard"},
+    {"optional", "additional"},
+    {"option", "additional"},
+    {"opt", "additional"},
+    {"standardtype", "knowntype"},
+    {NULL, NULL}
+};
+
 /* @datastatic AcdPAttr *******************************************************
 **
 ** ACD attribute definition structure
@@ -1695,7 +1727,6 @@ AcdOQual acdQualAppl[] =	  /* careful: index numbers used in */
 AcdOQual acdQualAlign[] =
 {
     {"aformat",    "",  "string",  "Alignment format"},
-    {"aopenfile",  "",  "string",  "Alignment file name"},
     {"aextension", "",  "string",  "File name extension"},
     {"adirectory", "",  "string",  "Output directory"},
     {"aname",      "",  "string",  "Base file name"},
@@ -1783,7 +1814,7 @@ AcdOQual acdQualSeq[] =
     {"slower",     "N", "boolean", "Make lower case"},
     {"supper",     "N", "boolean", "Make upper case"},
     {"sformat",    "", "string",   "Input sequence format"},
-    {"sopenfile",  "", "string",   "Input filename"},
+/*    {"sopenfile",  "", "string",   "Input filename"},*/ /* obsolete */
     {"sdbname",    "", "string",   "Database name"},
     {"sid",        "", "string",   "Entryname"},
     {"ufo",        "", "string",   "UFO features"},
@@ -1803,7 +1834,7 @@ AcdOQual acdQualSeqset[] =
     {"slower",     "N", "boolean", "Make lower case"},
     {"supper",     "N", "boolean", "Make upper case"},
     {"sformat",    "",  "string",  "Input sequence format"},
-    {"sopenfile",  "",  "string",  "Input filename"},
+/*    {"sopenfile",  "",  "string",  "Input filename"},*/ /* obsolete */
     {"sdbname",    "",  "string",  "Database name"},
     {"sid",        "",  "string",  "Entryname"},
     {"ufo",        "",  "string",  "UFO features"},
@@ -1823,7 +1854,7 @@ AcdOQual acdQualSeqsetall[] =
     {"slower",     "N", "boolean", "Make lower case"},
     {"supper",     "N", "boolean", "Make upper case"},
     {"sformat",    "",  "string",  "Input sequence format"},
-    {"sopenfile",  "",  "string",  "Input filename"},
+/*    {"sopenfile",  "",  "string",  "Input filename"},*/ /* obsolete */
     {"sdbname",    "",  "string",  "Database name"},
     {"sid",        "",  "string",  "Entryname"},
     {"ufo",        "",  "string",  "UFO features"},
@@ -1843,7 +1874,7 @@ AcdOQual acdQualSeqall[] =
     {"slower",     "N", "boolean", "Make lower case"},
     {"supper",     "N", "boolean", "Make upper case"},
     {"sformat",    "",  "string",  "Input sequence format"},
-    {"sopenfile",  "",  "string",  "Input filename"},
+/*    {"sopenfile",  "",  "string",  "Input filename"},*/ /* obsolete */
     {"sdbname",    "",  "string",  "Database name"},
     {"sid",        "",  "string",  "Entryname"},
     {"ufo",        "",  "string",  "UFO features"},
@@ -2417,9 +2448,11 @@ static void acdParse(AjPList listwords, AjPList listcount)
     ajint linecount = 0;
     ajint lineword  = 0;
     ajint *iword    = NULL;
-    ajint acdLineNum = 0;
     AjPTime today = NULL;
     
+    /* initialise the global line number counter to zero */
+    acdLineNum = 0;
+
     while(ajListLength(listcount) && (!lineword))
     {
 	ajListPeek(listcount, (void**) &iword);
@@ -2979,6 +3012,7 @@ static void acdParseAttributes(const AcdPAcd acd, AjPList listwords)
     AjPStr strValue = NULL;
     AjPStr strFixValue = NULL;
     AjBool done=ajFalse;
+    ajint i=0;
 
     if(!acdIsLeftB(listwords)) /* test noleftappl.acd noleftsec.acd */
 	/* noleftq.acd */
@@ -2996,6 +3030,15 @@ static void acdParseAttributes(const AcdPAcd acd, AjPList listwords)
 	if(!acdWordNextName(listwords, &strAttr)) /* test: noattname.acd */
 	    acdErrorAcd(acdNewCurr, "Bad or missing attribute name '%S'",
 			strAttr);
+
+	for (i=0;acdAttrAlias[i].OldName;i++)
+	{
+	    if (ajStrMatchC(strAttr, acdAttrAlias[i].OldName))
+	    {
+		ajStrAssC(&strAttr, acdAttrAlias[i].NewName);
+		break;
+	    }
+	}
 
 	ajStrAssS(&strValue, acdParseValue(listwords));
 	done = acdIsRightB(&strValue, listwords); /* will this be last pair? */
@@ -4482,8 +4525,8 @@ AjPAlign ajAcdGetAlign(const char *token)
 ** The default value (if no other available) is a null string, which
 ** is invalid.
 **
-** Associated qualifiers "-aformat", "-aopenfile"
-** are applied to the EURO before reading the sequence.
+** Associated qualifiers "-aformat"
+** are applied to the UAO before reading the sequence.
 **
 ** @param [u] thys [AcdPAcd] ACD item.
 ** @return [void]
@@ -7663,7 +7706,7 @@ AjPReport ajAcdGetReport(const char *token)
 ** is invalid.
 **
 ** Associated qualifiers "-rformat", "-ropenfile"
-** are applied to the EURO before opening the output file.
+** are applied to the URO before opening the output file.
 **
 ** @param [u] thys [AcdPAcd] ACD item.
 ** @return [void]
@@ -8109,7 +8152,7 @@ static void acdSetSeq(AcdPAcd thys)
 	
 	acdGetValueAssoc(thys, "sformat", &seqin->Formatstr);
 	acdGetValueAssoc(thys, "sdbname", &seqin->Db);
-	acdGetValueAssoc(thys, "sopenfile", &seqin->Filename);
+/*	acdGetValueAssoc(thys, "sopenfile", &seqin->Filename);*/ /* obsolete */
 	acdGetValueAssoc(thys, "sid", &seqin->Entryname);
 	
 	acdGetValueAssoc(thys, "ufo", &seqin->Ufo);
@@ -8384,7 +8427,7 @@ static void acdSetSeqset(AcdPAcd thys)
 	
 	acdGetValueAssoc(thys, "sformat", &seqin->Formatstr);
 	acdGetValueAssoc(thys, "sdbname", &seqin->Db);
-	acdGetValueAssoc(thys, "sopenfile", &seqin->Filename);
+/*	acdGetValueAssoc(thys, "sopenfile", &seqin->Filename);*/ /* obsolete */
 	acdGetValueAssoc(thys, "sid", &seqin->Entryname);
 	
 	acdGetValueAssoc(thys, "ufo", &seqin->Ufo);
@@ -8718,7 +8761,7 @@ static void acdSetSeqsetall(AcdPAcd thys)
 	
 	acdGetValueAssoc(thys, "sformat", &seqin->Formatstr);
 	acdGetValueAssoc(thys, "sdbname", &seqin->Db);
-	acdGetValueAssoc(thys, "sopenfile", &seqin->Filename);
+/*	acdGetValueAssoc(thys, "sopenfile", &seqin->Filename);*/ /* obsolete */
 	acdGetValueAssoc(thys, "sid", &seqin->Entryname);
 	
 	acdGetValueAssoc(thys, "ufo", &seqin->Ufo);
@@ -8986,7 +9029,7 @@ static void acdSetSeqall(AcdPAcd thys)
 	
 	acdGetValueAssoc(thys, "sformat", &seqin->Formatstr);
 	acdGetValueAssoc(thys, "sdbname", &seqin->Db);
-	acdGetValueAssoc(thys, "sopenfile", &seqin->Filename);
+/*	acdGetValueAssoc(thys, "sopenfile", &seqin->Filename);*/ /* obsolete */
 	acdGetValueAssoc(thys, "sid", &seqin->Entryname);
 	
 	acdGetValueAssoc(thys, "ufo", &seqin->Ufo);
