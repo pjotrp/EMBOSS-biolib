@@ -1926,7 +1926,7 @@ static AjBool seqGcgReadSeq (const AjPSeqin seqin)
     }
     else
     {
-	ajStrModL (&seqin->Inseq, gcglen+1);
+	ajStrModL (&seqin->Inseq, gcglen+3);
 	rblock = gcglen;
 	if (ajStrChar(gcgtype, 0) == '2')
 	    rblock = (rblock+3)/4;
@@ -1964,7 +1964,7 @@ static AjBool seqGcgReadSeq (const AjPSeqin seqin)
 		if (!ajFileGets (qryd->libs, &dstr)) /* desc line */
 		    return ajFalse;
 
-		ajStrModL (&contseq, gcglen+1);	    
+		ajStrModL (&contseq, gcglen+3);	    
 
 		rblock = gcglen;
 		if (ajStrChar(gcgtype, 0) == '2')
@@ -2031,6 +2031,11 @@ static void seqGcgBinDecode (AjPStr thys, ajint sqlen)
 
     seqp = start + rdlen;
     cp = start + 4*rdlen;
+
+    ajDebug("seqp:%x start:%x cp:%x sqlen:%d len:%d size:%d (seqp-start):%d\n",
+	    seqp, start, cp, sqlen,
+	    ajStrLen(thys), ajStrSize(thys),
+	    (seqp - start));
 
     while (seqp > start)
     {
@@ -2687,7 +2692,7 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
     {
 	ajDebug ("get '%S' qryid '%S'\n", get, qry->Id);
 	(void) ajFmtPrintS(&urlget, ajStrStr(get), ajStrStr(qry->Id));
-	(void) ajStrAss(&get, urlget);
+	(void) ajStrAssS (&get, urlget);
 	ipos = ajStrFindC(get, "%s");
     }
 
@@ -3341,7 +3346,7 @@ static AjBool seqBlastReadTable (const AjPSeqin seqin, AjPStr* hline,
 	    a_len = 0;
 
 	ajStrFixI (*sline, seq_len);
-	ajStrAss(&seqin->Inseq, *sline);
+	ajStrAssS (&seqin->Inseq, *sline);
 	return ajTrue;
 
 
@@ -3359,7 +3364,7 @@ static AjBool seqBlastReadTable (const AjPSeqin seqin, AjPStr* hline,
 		    break;
 		ajStrApp (sline, rdline);
 	    }
-	    ajStrAss(&seqin->Inseq, *sline);
+	    ajStrAssS (&seqin->Inseq, *sline);
 	    return ajTrue;
 	}
 	else
@@ -3467,7 +3472,7 @@ static AjBool seqBlastReadTable (const AjPSeqin seqin, AjPStr* hline,
 	    }
 
 	    ajStrFixI (*sline, seq_len);
-	    ajStrAss(&seqin->Inseq, *sline);
+	    ajStrAssS (&seqin->Inseq, *sline);
 	    return ajTrue;
 	}
 
@@ -3573,7 +3578,7 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 	return ajFalse;
     
 
-    (void) ajStrAss(&acstr,acname);
+    (void) ajStrAssS (&acstr,acname);
     (void) ajStrToUpper(&acstr);
     (void) ajStrAssC(&actmp,ajStrStr(acstr));
 
