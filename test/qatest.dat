@@ -1,3 +1,89 @@
+ID acdc-0001
+AP acdc
+CL qatest tembl:paamir tembl:paamir x.x -auto
+FI x.x
+FZ = 0
+//
+
+ID acdc-0002
+AP acdc
+CL qatest tembl:paamir tembl:paamir x.x -aint 5 -auto
+FI x.x
+FZ = 0
+//
+
+ID acdc-0003
+AP acdc
+CL qatest tembl:paamir tembl:paamir x.x -ai 5 -auto
+FI x.x
+FZ = 0
+//
+
+ID acdc-0004
+AP acdc
+CL qatest tembl:paamir tembl:paamir x.x -a 5 -auto
+ER 1
+FI stderr
+FP /ambiguous qualifier a /
+FI x.x
+FZ = 0
+//
+
+ID acdc-0005
+AP acdc
+CL qatest tembl:paamir -sbegin 5 -send 1000 tembl:paamir x.x -auto
+FI x.x
+FZ = 0
+//
+
+
+ID acdc-0006
+AP acdc
+CL qatest tembl:paamir tembl:paamir -sbegin 5 -send 1000 x.x -auto
+FI x.x
+FZ = 0
+//
+
+ID acdc-0007
+AP acdc
+CL qatest -sbegin 5 -send 1000 tembl:paamir tembl:paamir x.x -auto
+FI x.x
+FZ = 0
+//
+
+ID acdc-0008
+AP acdc
+CL qatest tembl:paamir tembl:paamir x.x -sbegin 5 -send 1000  -auto
+FI x.x
+FZ = 0
+//
+
+ID acdc-0009
+AP acdc
+CL qatest tembl:paamir tembl:paamir x.x
+CL  -sbegin_asequence 5 -send_asequence 1000 -auto
+FI x.x
+FZ = 0
+//
+
+ID acdc-0010
+AP acdc
+CL qatest tembl:paamir tembl:paamir x.x -sbegin_as 5 -send_as 1000  -auto
+FI x.x
+FZ = 0
+//
+
+ID acdc-0011
+AP acdc
+CL qatest tembl:paamir tembl:paamir x.x -sbegin_a 5 -send_a 1000 
+ER 1
+FI stderr
+FP / ambiguous master qualifier for sbegin_a /
+FP /\nunknown qualifier -sbegin_a\n/
+FI x.x
+FZ = 0
+//
+
 ID antigenic-command
 AP antigenic
 CL tsw:amir_pseae -auto
@@ -8,14 +94,14 @@ FP /ANTIGENIC/
 FP /246/
 FP /1[.]246/
 FP / NS.[^P]GSL/
-FZ >100
-FC >5
+FZ > 100
+FC > 5
 CC
 CC Only kidding - both stdout and stderr should be empty
 FI stdout
-FZ <5
+FZ < 5
 FI stderr
-FC =0
+FC = 0
 //
 
 ID antigenic-ex
@@ -28,12 +114,12 @@ FI act1_fugru.antigenic
 FP /ANTIGENIC/
 FP /1[.]207/
 FP /AA[^AV]VV/
-FZ >100
-FC >5
+FZ > 100
+FC > 5
 CC
 CC stderr should have 1 line of doc, 1 of prompts
 FI stderr
-FC =2
+FC = 2
 //
 
 ID backtranseq-ex
@@ -42,7 +128,7 @@ IN tsw:ach2_drome
 IN
 FI ach2_drome.fasta
 FP /^>ACH2_DROME.*GAGAAGAAGAAC$/
-FZ =1838
+FZ = 1838
 FI stderr
 FC = 2
 //
@@ -52,9 +138,9 @@ AP banana
 CL -graph ps
 IN tembl:rnu68037
 FI banana.profile
-FZ =21906
+FZ = 21906
 FI banana.ps
-FZ =308957
+FZ = 308957
 FI stderr
 FC = 2
 //
@@ -223,7 +309,13 @@ FP /Observed\/Expected ratio > 0\.60/
 FP /Length 406 \(104\.\.509\)/
 FP /Length 329 \(596\.\.924\)/
 FI rnu68037.out2
-FZ = 0
+FZ = 232
+FI cpgplot1.dat
+FZ = 24885
+FI cpgplot2.dat
+FZ = 25999
+FI cpgplot3.dat
+FZ = 24883
 //
 
 ID cpgreport-ex
@@ -238,7 +330,7 @@ FP /CPGREPORT of RNU68037 from 1 to 1218/
 FP /RNU68037                 12     13    17          1 100\.0    -/
 FP /RNU68037               1183   1193    26          2  72\.7   2\.00/
 FI rnu68037.out2
-FZ = 0
+FZ = 605
 //
 
 ID cusp-ex
@@ -311,7 +403,11 @@ IN
 IN
 IN
 FI stderr
-FC = 2
+FC = 3
+FI dan1.dat
+FZ = 46560
+FI paamir.dan
+FZ = 0
 //
 
 ID dbiblast-ex
@@ -324,7 +420,7 @@ IN
 IN
 IN
 FI stderr
-FC = 2
+FC = 8
 FI acnum.hit
 FZ = 320
 FI acnum.trg
@@ -383,6 +479,8 @@ IN ../../embl
 IN rod.dat
 IN
 IN
+FI stderr
+FC = 5
 FI acnum.hit
 FZ = 312
 FI acnum.trg
@@ -402,7 +500,7 @@ IN
 IN
 IN
 FI stderr
-FC = 2
+FC = 5
 FI acnum.hit
 FZ = 320
 FI acnum.trg
@@ -421,3 +519,132 @@ FC = 1
 FI nogaps.seq
 FZ = 138
 //
+
+ID descseq-ex
+AP descseq
+CL -seq ../../data/dna.text -out clone23.seq -name "myclone23"
+FI stderr
+FC = 1
+FI clone23.seq
+FZ = 113
+FP /^>myclone23\n/
+//
+
+ID descseq-ex2
+AP descseq
+CL -seq ../../data/dna.text -out xy24.seq -desc "This is my clone number 244"
+FI stderr
+FC = 1
+FI xy24.seq
+FZ = 142
+FP /EMBOSS_001 This is my clone number 244\n/
+//
+
+ID descseq-ex3
+AP descseq
+CL -seq ../../data/dna.text -out est4.seq -desc " (submitted)" -append
+FI stderr
+FC = 1
+FI est4.seq
+FZ = 127
+FP /EMBOSS_001  \(submitted\)\n/
+//
+
+ID diffseq-ex
+AP diffseq
+CL tembl:ap000504 tembl:af129756
+IN
+IN
+FI stderr
+FC = 2
+FI ap000504.diffseq
+FZ = 13953
+FI AF129756.diffgff
+FZ = 13503
+FI AP000504.diffgff
+FZ = 13454
+//
+
+ID digest-ex
+AP digest
+IN tsw:opsd_human
+IN
+IN
+FI stderr
+FC = 11
+FI opsd_human.digest
+FP /^246     248     346[.]383    \(K\) AEK \(E\)\n/
+FP /yields 14 fragments/
+FC = 18
+//
+
+
+ID distmat-ex
+AP distmat
+##
+## $TODO$ need to get the input file data/pax.align
+##
+CL ../../data/pax.align
+IN 2
+IN
+FI stderr
+FC = 2
+FI outfile.distmat
+FP / Kimura /
+FP /^\s+0[.]00\s+20[.]37\s+PX8A_HUMAN 9$/
+FC = 99999
+//
+
+ID domainer-ex
+AP domainer
+IN ../../scop/testscop.dat
+IN ../../cpdb/
+IN
+IN
+IN
+IN
+IN log.1
+IN log.2
+FI log.1
+FC = 9999
+FI log.2
+FC = 9999
+//
+
+ID dotmatcher-ex
+AP dotmatcher
+CL tsw:hba_human tsw:hbb_human -graph ps
+FI stderr
+FC = 2
+## why is this output file created?
+FI hba_human.dotmatcher
+//
+
+ID dotpath-ex
+AP dotpath
+CL tembl:AF129756 tembl:AP000504 -word 20 -data -out af.path
+FI af.path
+FP /^##Number 118$/
+FC = 133
+FI stderr
+FC = 1
+//
+
+ID dottup-ex
+AP dottup
+CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac" -graph ps
+FI dottup.ps
+FZ = 9999
+//
+
+ID dreg-ex
+AP dreg
+IN tembl:paamir
+IN
+IN ggtacc
+FI paamir.dreg
+FP /PAAMIR +1 +GGTACC/
+FI stderr
+FC = 2
+//
+
