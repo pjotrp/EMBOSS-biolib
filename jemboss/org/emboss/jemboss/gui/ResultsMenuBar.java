@@ -44,8 +44,6 @@ import java.io.*;
 public class ResultsMenuBar
 {
 
-  final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
-  final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
   private String fs = new String(System.getProperty("file.separator"));
   private JMenuItem fileMenuShowres;
   private JMenuBar menuPanel;
@@ -60,7 +58,11 @@ public class ResultsMenuBar
   {
 
     menuPanel = new JMenuBar();
-    menuPanel.setLayout(new FlowLayout(FlowLayout.LEFT,10,5));
+    new BoxLayout(menuPanel,BoxLayout.X_AXIS);
+    menuPanel.add(Box.createRigidArea(new Dimension(5,24)));
+
+//  menuPanel = new JMenuBar();
+//  menuPanel.setLayout(new FlowLayout(FlowLayout.LEFT,10,5));
     JMenu fileMenu = new JMenu("File");
     fileMenu.setMnemonic(KeyEvent.VK_F);
     fileMenuShowres = new JMenuItem("Save...");
@@ -189,7 +191,7 @@ public class ResultsMenuBar
           cwd = (fc.getCurrentDirectory()).getAbsolutePath();
           fileSelected = files.getName();
 
-          frame.setCursor(cbusy);
+          frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 //        save results
           String tabTitle = rtb.getTitleAt(rtb.getSelectedIndex());
           Enumeration enum = hash.keys();
@@ -207,7 +209,7 @@ public class ResultsMenuBar
             }
           }
 
-          frame.setCursor(cdone);
+          frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         }
       }
     });
