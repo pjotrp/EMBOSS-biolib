@@ -99,6 +99,8 @@ static ajint acdErrorCount = 0;
 
 static AjPStr acdStrName = NULL;
 
+static AjPStr acdVarAcdProtein = NULL;
+
 /*
 static ajint acdLineCount = 0;
 static AjPList acdListCount = NULL;
@@ -2619,10 +2621,12 @@ static AcdPAcd acdNewQual (AjPStr name, AjPStr token, AjPStr* type,
 {
     AcdPAcd acd;
     AcdPAcd qacd;
+    AcdPAcd vacd;
     AcdPAcd saveqacd = NULL;
     AcdPQual quals;
     static AjPStr qname = NULL;
     static AjPStr qtype = NULL;
+    AjPStr protName = NULL;
     ajint itype;
     ajint i;
     
@@ -2661,6 +2665,25 @@ static AcdPAcd acdNewQual (AjPStr name, AjPStr token, AjPStr* type,
     (void) ajStrDelReuse (&qname);
     (void) ajStrDelReuse (&qtype);
     
+/* For the first sequence, set the sequence type variable */
+
+    if (!ajStrLen(acdVarAcdProtein))
+    {
+	if ((acdType[itype].Attr == acdAttrSeq) ||
+	    (acdType[itype].Attr == acdAttrSeqall) ||
+	    (acdType[itype].Attr == acdAttrSeqset))
+	{
+
+	    /* automatic $(today) variable */
+	    (void) ajStrAssC (&protName, "acdprotein");
+	    (void) ajFmtPrintS (&acdVarAcdProtein, "$(%S.protein)", name);
+	    vacd = acdNewVar (protName);
+	    (void) acdSetVarDef (vacd, acdVarAcdProtein);
+	    ajDebug("Set acdprotein value '%S'", acdVarAcdProtein);
+	    ajStrDel(&protName);
+	}
+    }
+
     return acd;
 }
 
