@@ -88,14 +88,14 @@ public class BuildProgramMenu
   
     if(withSoap)
     {  
-      splashing = new AuthPopup(mysettings,100);
+      splashing = new AuthPopup(mysettings,400);
       if(mysettings.getUseAuth())
       splashing.setBottomPanel();
       splashing.setSize(380,200);
       splashing.pack();
       splashing.setVisible(true);
 
-      splashThread = new SplashThread(splashing,100-4);
+      splashThread = new SplashThread(splashing,400-4);
       splashThread.start();
     }
 
@@ -168,7 +168,7 @@ public class BuildProgramMenu
           };
           databaseworker.start();
           
-          splashing.doneSomething("Connecting with server");
+          splashing.doneSomething("");
 
           int iloop = 0;
 
@@ -196,7 +196,7 @@ public class BuildProgramMenu
               GetWossname ewoss = new GetWossname(mysettings);
               woss = ewoss.getDBText(); 
             }
-            splashing.doneSomething("Found EMBOSS applications");
+            splashing.doneSomething("");
           } 
           catch(Exception e)
           {
@@ -290,7 +290,7 @@ public class BuildProgramMenu
         ProgList progs = new ProgList(woss,cwd,menuBar);
 
         if(withSoap)
-          splashing.doneSomething("Constructing menus");
+          splashing.doneSomething("");
 
         int npG = progs.getNumPrimaryGroups();
         menuBar.setLayout(new  GridLayout(npG,1));
