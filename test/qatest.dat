@@ -8963,6 +8963,7 @@ FP /binding site/
 //
 
 ID shuffleseq-ex
+UC This makes two randomised copies of the input sequence:
 AP shuffleseq
 CL -shuffle 2
 IN tembl:mmam
@@ -9004,7 +9005,8 @@ CC No example in documentation
 //
 
 ID silent-ex
-CC Needs REBASEXTRACT to reformat REBASE
+PP EMBOSS_DATA=../rebaseextract-keep/
+PP export EMBOSS_DATA
 AP silent
 IN tembl:hsfau
 IN ecori,hindiii
@@ -9018,6 +9020,7 @@ FP /^HindIII     AAGCTT         267       A\.A    268      A->T  \n/
 //
 
 ID skipseq-ex
+UC This does not skip any sequences. It is exactly equivalent to seqret:
 AP skipseq
 CC No documentation
 IN tembl:eclac*
@@ -9031,6 +9034,7 @@ FP 5 /^>/
 //
 
 ID skipseq-ex2
+UC This skips the first input sequence, writing out the others:
 AP skipseq
 CC No documentation
 CL -skip 1
@@ -9044,6 +9048,7 @@ FP 4 /^>/
 //
 
 ID splitter-ex
+UC Split a sequence into sub-sequences of 10,000 bases (the default size) with no overlap between the sub-sequences:
 AP splitter
 CL tembl:AP000504 ap000504.split
 FI stderr
@@ -9058,6 +9063,7 @@ FP 10 /^>/
 //
 
 ID splitter-ex2
+UC Split a sequence into sub-sequences of 50,000 bases with an overlap of 3,000 bases on each sub-sequence:
 AP splitter
 CL tembl:AP000504 ap000504.split -size=50000 -over=3000
 FI stderr
