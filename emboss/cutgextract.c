@@ -28,7 +28,7 @@
 
 
 static char *cutgextract_next(AjPFile inf, AjPInt *array);
-static void cutgextract_readcocons(AjPFile inf, AjPInt *count);
+static void cutgextract_readcodons(AjPFile inf, AjPInt *count);
 
 
 
@@ -103,7 +103,7 @@ int main(int argc, char **argv)
 
 	while((entryname = cutgextract_next(inf,&count)))
 	{
-	    cutgextract_readcocons(inf,&count);
+	    cutgextract_readcodons(inf,&count);
 
 	    ajStrAssC(&tmpkey,entryname);
 	    /* See if organism already in the table */
@@ -224,7 +224,7 @@ static char *cutgextract_next(AjPFile inf, AjPInt *array)
 }
 
 
-static void cutgextract_readcocons(AjPFile inf, AjPInt *count)
+static void cutgextract_readcodons(AjPFile inf, AjPInt *count)
 {
     static int cutidx[] = 
     {

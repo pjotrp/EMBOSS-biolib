@@ -32,10 +32,12 @@
 #include <stdlib.h>
 
 
-void cpgsearch(AjPFile *outf, ajint s, ajint len, char *seq, char *name,
-	       ajint begin, ajint *score,AjPFeattabOut featout,
-	       AjPFeattable *feattable);
-void calcgc(ajint from, ajint to, char *p, ajint *dcg, ajint *dgc, ajint *gc);
+static void cpgreport_cpgsearch(AjPFile *outf, ajint s, ajint len, char *seq,
+				char *name, ajint begin, ajint *score,
+				AjPFeattabOut featout,
+				AjPFeattable *feattable);
+static void cpgreport_calcgc(ajint from, ajint to, char *p, ajint *dcg,
+			     ajint *dgc, ajint *gc);
 
 
 
@@ -88,7 +90,8 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outf,"Sequence              Begin    End Score");
 	ajFmtPrintF(outf,"        CpG   %%CG  CG/GC\n");
 
-	cpgsearch(&outf,0,len,ajStrStr(substr),ajSeqName(seq),begin,&score,featout,&feattable);
+	cpgreport_cpgsearch(&outf,0,len,ajStrStr(substr),ajSeqName(seq),
+			    begin,&score,featout,&feattable);
 	ajStrDel(&strand);
     }
     
@@ -111,7 +114,7 @@ int main(int argc, char **argv)
 
 
 
-/* @func cpgsearch ************************************************************
+/* @funcstatic cpgreport_cpgsearch *******************************************
 **
 ** Undocumented.
 **
@@ -129,9 +132,10 @@ int main(int argc, char **argv)
 
 
 
-void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
-	       ajint begin, ajint *score,AjPFeattabOut featout,
-	       AjPFeattable *feattable)
+static void cpgreport_cpgsearch(AjPFile *outf, ajint from, ajint to, char *p,
+				char *name, ajint begin, ajint *score,
+				AjPFeattabOut featout,
+				AjPFeattable *feattable)
 {
     ajint i;
     ajint c;
@@ -153,7 +157,8 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
     AjPFeature feature;
     float score2 = 0.0;
     
-    if(!name2){
+    if(!name2)
+    {
       ajStrAssC(&name2,name);
       
       *feattable = ajFeattableNewDna(name2);
@@ -170,7 +175,7 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
 	if(sum<0) sum=0;
 	if(!sum && ssum)
 	{
-	    calcgc(lsum+1,t+2,p,&dcg,&dgc,&gc);
+	    cpgreport_calcgc(lsum+1,t+2,p,&dcg,&dgc,&gc);
 	    if(dgc)
 	    {	      
 	        score2 = (float) top;
@@ -198,7 +203,8 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
 		ajFmtPrintF(*outf,"     %5d %5.1f    -\n",
 			    dcg,(float)gc*100.0/(float)(t+1-lsum));
 	    }
-	    cpgsearch(outf,t+2,i,p,name,begin,score,featout,feattable);
+	    cpgreport_cpgsearch(outf,t+2,i,p,name,begin,score,featout,
+				feattable);
 	    sum=ssum=lsum=t=top=0;
 	}
 	if(sum>top)
@@ -212,7 +218,7 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
   
     if(sum)
     {
-	calcgc(lsum+1,t+2,p,&dcg,&dgc,&gc);
+	cpgreport_calcgc(lsum+1,t+2,p,&dcg,&dgc,&gc);
 	if(dgc)
 	{
 	    ajFmtPrintF(*outf,"%-20s %6d %6d %5d ",name,lsum+2+z,t+2+z,
@@ -237,7 +243,7 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
 				   lsum+2+z,t+2+z, score2, strand, frame,
 				   desc , 0, 0) ;    
 	}
-	cpgsearch(outf,t+2,to,p,name,begin,score,featout,feattable);
+	cpgreport_cpgsearch(outf,t+2,to,p,name,begin,score,featout,feattable);
     }
 
     ajStrDel(&desc);
@@ -249,7 +255,7 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
 
 
 
-/* @func calcgc ***************************************************************
+/* @funcstatic cpgreport_calcgc ***********************************************
 **
 ** Undocumented.
 **
@@ -262,9 +268,8 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
 ** @@
 ******************************************************************************/
 
-
-
-void calcgc(ajint from, ajint to, char *p, ajint *dcg, ajint *dgc, ajint *gc)
+static void cpgreport_calcgc(ajint from, ajint to, char *p, ajint *dcg,
+			     ajint *dgc, ajint *gc)
 {
 
     ajint i;
@@ -278,4 +283,6 @@ void calcgc(ajint from, ajint to, char *p, ajint *dcg, ajint *dgc, ajint *gc)
 	if(p[i]=='C' && p[i+1]=='G' && c-i) ++*dcg ; 
 	if(p[i]=='G' && p[i+1]=='C' && c-i ) ++*dgc ; 
     }
+
+    return;
 }
