@@ -1,6 +1,6 @@
 application: contactalign [
     documentation: "EMBOSS implementation of Damian Counsell's 2.5-D alignment algorithm"
-    groups: "protein: sequence alignment"
+    groups: "alignment: global"
 ]
 
 section: input [
@@ -11,27 +11,29 @@ section: input [
   sequence: down [
     param: "Y"
     type: "protein"
-    information: "first polypeptide sequence to be aligned"
+    information: "first (query) polypeptide sequence to be aligned"
   ]
 
   sequence: across [
     param: "Y"
     type: protein
-    information: "second polypeptide sequence to be aligned"
-  ]
-
-  matrixf: contactscoringfile [
-    optional: "Y"	
-    info: "Matrix file"
-    protein: $(down.protein)
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/contactscore.dat"	
+    information: "second (template) polypeptide sequence to be aligned"
   ]
 
   matrixf: substitutionscoringfile [
     optional: "Y"	
-    info: "Matrix file"
+    info: "matrix of scores for specific amino acid residue type substitution within
+    one-dimensional sequence strings"
     protein: $(down.protein)
     default: "/users/damian/EMBOSS/emboss/emboss/emboss/data/EBLOSUM62"	
+  ]
+
+  matrixf: contactscoringfile [
+    optional: "Y"	
+    info: "matrix of scores for frequency of contacts between specific
+    amino acid residue types"
+    protein: $(down.protein)
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/contactscore.dat"	
   ]
 
 endsection: input
