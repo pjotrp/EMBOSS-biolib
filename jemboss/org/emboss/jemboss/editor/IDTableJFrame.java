@@ -36,6 +36,8 @@ import java.awt.*;
 public class IDTableJFrame extends JFrame
 {
 
+  private PrintableJTable idTable = new PrintableJTable();
+
   /**
   *
   * @param vseq	collection of sequences to get the percentage 
@@ -47,7 +49,6 @@ public class IDTableJFrame extends JFrame
     super("Percentatge ID");
 
     int nseq = vseq.size();
-    JTable idTable = new JTable();
 
     Font font = idTable.getFont();
     FontMetrics fm = idTable.getFontMetrics(font);
@@ -64,7 +65,7 @@ public class IDTableJFrame extends JFrame
       int len1 = s1.getLength();
       String s1Name = s1.getName();
 
-      int w = fm.stringWidth(s1Name);
+      int w = fm.stringWidth(s1Name+"  ");
       if(w > max_width)
         max_width = w;
  
@@ -95,7 +96,7 @@ public class IDTableJFrame extends JFrame
       }
     }
 
-    idTable = new JTable(rowData,columnNames);
+    idTable = new PrintableJTable(rowData,columnNames);
     TableColumn column = null;
 
     column = idTable.getColumnModel().getColumn(0);
@@ -104,15 +105,32 @@ public class IDTableJFrame extends JFrame
     {
       column = idTable.getColumnModel().getColumn(i+1);
       String name = idTable.getColumnName(i+1);
-      int wid = fm.stringWidth(name);
+      int wid = fm.stringWidth(name+"  ");
       column.setPreferredWidth(wid);
+        
     }
+    idTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
 // set up a menu bar
     JMenuBar menuBar = new JMenuBar();
 
 // File menu
     JMenu fileMenu = new JMenu("File");
     fileMenu.setMnemonic(KeyEvent.VK_F);
+
+// print
+    JMenuItem printMenu = new JMenuItem("Print");
+    printMenu.setAccelerator(KeyStroke.getKeyStroke(
+              KeyEvent.VK_P, ActionEvent.CTRL_MASK));
+
+    printMenu.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        idTable.doPrintActions();
+      }
+    });
+    fileMenu.add(printMenu);
 
 // exit
     fileMenu.add(new JSeparator());
