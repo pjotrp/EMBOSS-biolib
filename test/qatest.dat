@@ -4355,11 +4355,6 @@ FZ = 354
 FP /^<tr><td>tembl-id:PAAMIR</td><td>PAAMIR</td><td>X13776</td><td>N</td><td>2167</td><td>66.54 </td><td>Pseudomonas .* regulation</td></tr>\n/
 //
 
-ID interface-ex
-AP interface
-CC No example in the documentation
-//
-
 ID isochore-ex
 CC Change to reading tembl:AF129756 - much faster
 AP isochore
@@ -4381,6 +4376,7 @@ FP /^Created isochore.ps\n/
 //
 
 ID jembossctl-ex
+CC for jemboss installations
 AP jembossctl
 CL jctl.file
 IN
@@ -4789,10 +4785,10 @@ FP /^  1183   1193    26          2  72\.7   2\.00\n/
 ID newseq-ex
 UC Type in a short sequence to the file 'mycc.pep' in SWISSPROT format:
 AP newseq
-IN swiss::mycc.pep
 IN cytoc
 IN fragment of cytochrome c
 IN p
+IN swiss::mycc.pep
 IN KKKEERADLIAY
 FI stderr
 FC = 5
@@ -10702,41 +10698,82 @@ FP 42 /^>/
 ID corbatest-check
 AQ corbatest
 CC No documentation, no example
+CL paamir test.out
+FI stderr
+FC < 2
+FP 0 /^CORBA support has not been compiled\n/
 //
 
 ID demoalign-check
 AQ demoalign
 CC No documentation, no example
+CL ../../data/dna.msf
+IN
+FI stderr
+FC = 2
+FI dna.demoalign
+FZ = 1213
+FP 9 /^MSFM[1-3] +/
 //
 
 ID demofeatures-check
 AQ demofeatures
 CC No documentation, no example
+IN test.out
+FI stderr
+FC = 2
+FI test.out
+FZ = 652
+FP /\A##gff-version 2\.0\n/
+FP 10 /^seq1\tdemofeature\t/
 //
 
 ID demolist-check
 AQ demolist
 CC No documentation, no example
+CL ../../data/paamir.gff
+FI stderr
+FZ = 1083
+FP 30 /^PAAMIR\tEMBL\t[^ \t]/
 //
 
 ID demoreport-check
 AQ demoreport
 CC No documentation, no example
+CL tembl:paamir test.out -rformat gff
+FI stderr
+FC = 1
+FI test.out
+FZ = 2043
+FP 10 /^PAAMIR\tEMBL\t/
 //
 
 ID demosequence-check
 AQ demosequence
-CC No documentation, no example
+CC No documentation, no example, and no code
+CC Just checking it does nothing
+FI stderr
+FC = 1
 //
 
 ID demostring-check
 AQ demostring
 CC No documentation, no example
+IN How long is a piece of string?
+FI stderr
+FZ = 383
+FP /^first token 'How'\n/
+FP /^second token 'long is a piece of string[?]'\n/
 //
 
 ID demotable-check
 AQ demotable
 CC No documentation, no example
+IN ../../data/paamir.gff
+FI stderr
+FC = 9
+FP 7 /^type [a-zA-Z_']+ found/
+FP /^type 'CDS' found 2 times\n/
 //
 
 ID entrails-check
@@ -10744,7 +10781,7 @@ AQ entrails
 CL -full
 IN
 FI outfile.entrails
-FZ > 21000
+FZ > 26000
 FP /^ +taglist +string +"Extra tags to report"\n/
 FP /^ +ausashow +boolean +"N" +"Show the full USA in the alignment"\n/
 FI stderr
@@ -10783,6 +10820,11 @@ FZ = 107
 ID patmattest-check
 AQ patmattest
 CC No documentation, no example
+IN tembl:paamir
+IN ACA
+FI stderr
+FC = 94
+FP /^ACA\n15 matches found\n/
 //
 
 ID prima-check
@@ -10804,11 +10846,29 @@ FP /^3 pairs found\n/
 ID primers-check
 AQ primers
 CC No documentation, no example
+IN tembl:hsfos
+IN
+FI stderr
+FC = 2
+FI hsfos.primers
+FZ = 910
+FP /\A\n# PRIMER3 RESULTS FOR HSFOS\n/
+FP /^   1 PRODUCT SIZE: 264\n/
+FP /^     FORWARD PRIMER    2492   20  60.01  45.00  AGAATCCGAAGGGAAAGGAA\n/
+FP /^     REVERSE PRIMER    2755   20  59.98  55.00  CTTCTCCTTCAGCAGGTTGG\n/
 //
 
 ID seqinfo-check
 AQ seqinfo
 CC No documentation, no example
+IN tembl:paamir
+IN
+FI stderr
+FC = 2
+FI stdout
+FZ = 163
+FP /^Length:[ \t]+2167 basepairs\n/
+FP /^GC Content:[ \t]+66[.]5436 %\n/
 //
 
 ID seqretall-check
@@ -10859,11 +10919,33 @@ FP 1 /^>/
 ID testplot-check
 AQ testplot
 CC No documentation, no example
+CL -graph ps
+IN
+IN
+FI stderr
+FC = 2
+FI stdout
+FC = 1
+FP /^Created testplot.ps\n/
+FI testplot.ps
+FZ > 18600
+FP /^%%Title: PLplot Graph\n/
+FP /^%%Pages: 1\n/
 //
 
 ID treetypedisplay-check
 AQ treetypedisplay
 CC No documentation, no example
+CL -graph ps
+FI stderr
+FC = 1
+FI stdout
+FC = 1
+FP /^Created treetypedisplay.ps\n/
+FI treetypedisplay.ps
+FZ > 9220
+FP /^%%Title: PLplot Graph\n/
+FP /^%%Pages: 1\n/
 //
 
 ID acd-calc-feat
@@ -10979,26 +11061,63 @@ FP 1 /Length \[7\]: /
 ID contacts-ex
 AB domainatrix
 AA contacts
-CC No example in the documentation
+IN ../../data/structure
+IN
+IN
+IN
+IN
+IN
+IN
+FI stderr
+FC = 3
+FI stdout
+FC = 3
+FP /^1cs4\n/
+FI 1cs4.con
+FZ = 3542
+FP /^SM   ASP 2 ; ASP 46\n/
+FI 1ii7.con
+FZ = 3332
+FP /^SM   ILE 9 ; LEU 50\n/
+FI 2hhb.con
+FZ = 10475
+FP /^SM   LEU 2 ; ALA 12\n/
+FI contacts.log
+FC = 3
+FP /^1cs4\n/
 //
 
 ID domainer-ex
-CC Example file missing test/scop/testscop.dat
-CC Example files missing test/cpdb/*
 AB domainatrix
 AA domainer
-IN ../../scop/testscop.dat
-IN ../../cpdb/
+IN ../../data/structure/all.scop
+IN ../../data/structure
+IN
 IN
 IN
 IN
 IN
 IN log.1
 IN log.2
+FI stderr
+FC = 2
+FI stdout
+FC = 2
+FP /^D1CS4A_\n/
+FP /^D1II7A_\n/
 FI log.1
-FC = 9999
+FC = 0
 FI log.2
-FC = 9999
+FC = 0
+FI d1cs4a_.ent
+FZ = 29889
+FP /^ATOM\s+31\s+CA\s+PHE\s+A   6\s+60.914 -11.143  59.200  1.00 58.07\s+C\s+\n/
+FI d1cs4a_.pxyz
+FZ = 82217
+FI d1ii7a_.ent
+FZ = 29727
+FI d1ii7a_.pxyz
+FZ = 81546
 //
 
 ID fraggle-ex
