@@ -9041,19 +9041,21 @@ FP /^HindIII     AAGCTT         267       A\.A    268      A->T  \n/
 
 ID sirna-ex
 AP sirna
-CC No documentation
 IN tembl:hsfau
+IN 
 IN 
 FI stderr
 FC = 2
 FI hsfau.sirna
-FZ = 2641
+FZ = 7238
 FP /GAAGAAGACAGGUCGGGCUdTdT AGCCCGACCUGUCUUCUUCdTdT/
+FI hsfau.fasta
+FZ = 6035
+FP /aaaagtgagaggtcagactccta/
 //
 
 ID sixpack-ex
 AP sixpack
-CC No documentation
 IN tembl:hsfau
 IN 
 IN 
@@ -9070,7 +9072,6 @@ FP /FLFLDSIFAVAGTAVQSPICSSLSAPRSYTPSR/
 ID skipseq-ex
 UC This does not skip any sequences. It is exactly equivalent to seqret:
 AP skipseq
-CC No documentation
 IN tembl:eclac*
 IN
 IN
@@ -9084,7 +9085,6 @@ FP 5 /^>/
 ID skipseq-ex2
 UC This skips the first input sequence, writing out the others:
 AP skipseq
-CC No documentation
 CL -skip 1
 IN tembl:eclac*
 IN
