@@ -122,62 +122,6 @@
 
 #include "emboss.h"
 
-
-
-
-
-
-
-
-
-/* @data AjPDichetent ***********************************************************
-**
-** Ajax Dichetent object.
-**
-** Holds a single entry from a dictionary of heterogen groups.
-**
-** AjPDichetent is implemented as a pointer to a C data structure.
-**
-** @alias AjSDichetent
-** @alias AjODichetent
-**
-** @@
-******************************************************************************/
-typedef struct AjSDichetent
-{
-    AjPStr   abv;   /* 3-letter abbreviation of heterogen */
-    AjPStr   syn;   /* Synonym */
-    AjPStr   ful;   /* Full name */
-    ajint    cnt;   /* No. of occurences (files) of this heterogen in a directory */
-} AjODichetent, *AjPDichetent;
-
-
-
-
-/* @data AjPDichet ***********************************************************
-**
-** Ajax Dichet object.
-**
-** Holds a dictionary of heterogen groups.
-**
-** AjPDichet is implemented as a pointer to a C data structure.
-**
-** @alias AjSDichet
-** @alias AjODichet
-**
-** @@
-******************************************************************************/
-typedef struct AjSDichet
-{
-    ajint         n;        /* Number of entries */
-    AjPDichetent *entries;  /* Array of entries */
-} AjODichet, *AjPDichet;
-
-
-
-
-
-
 AjPDichetent  ajXyzDichetentNew(void);
 void          ajXyzDichetentDel(AjPDichetent *ptr);
 AjPDichet     ajXyzDichetNew(ajint n);
@@ -186,15 +130,6 @@ AjBool        ajXyzDichetRawRead(AjPFile fptr, AjPDichet *ptr);
 AjBool        ajXyzDichetRead(AjPFile fptr, AjPDichet *ptr);
 AjBool        ajXyzDichetWrite(AjPFile fptr, AjPDichet ptr, AjBool dogrep);
 AjBool        ajXyzDichetScan(AjPStr path, AjPStr extn, AjPDichet ptr);
-
-
-
-
-
-
-
-
-
 
 
 
