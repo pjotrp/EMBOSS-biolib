@@ -252,6 +252,8 @@ See also
    prosextract Builds the PROSITE motif database for patmatmotifs to
    search
    pscan Scans proteins using PRINTS
+   recode Find and remove restriction sites but maintain the same
+   translation
    redata Search REBASE for enzyme name, references, suppliers etc
    restrict Finds restriction enzyme cleavage sites
    showseq Display a sequence with features, translation etc

@@ -121,6 +121,10 @@ Command line arguments
    13 (Ascidian Mitochondrial)
    14 (Flatworm Mitochondrial)
    15 (Blepharisma Macronuclear)
+   16 (Chlorophycean Mitochondrial)
+   21 (Trematode Mitochondrial)
+   22 (Scenedesmus obliquus)
+   23 (Thraustochytrium Mitochondrial)
    0
    -regions Regions to translate. If this is left blank, then the
    complete sequence is translated. A set of regions is specified by a
