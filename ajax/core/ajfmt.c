@@ -4,11 +4,13 @@
 ** String formatting routines. Similar to printf, fprintf, vprintf 
 ** etc but the set of conversion specifiers is not fixed, and cannot
 ** store more characters than it can hold.
+** There is also ajFmtScanS which is an extended sscanf.
 **
 ** Special formatting provided here:
 **   %B : AJAX boolean
 **   %D : AJAX date
 **   %S : AJAX string
+**   %z : Dynamic char* allocation in ajFmtScanS
 **
 ** Other differences are:
 **   %s : accepts null strings and prints null in angle brackets
@@ -17,7 +19,7 @@
 ** @author Copyright (C) 1998 Peter Rice
 ** @author Copyright (C) 1999 Alan Bleasby
 ** @version 1.0
-**
+** @modified Copyright (C) 2001 Alan Bleasby. Added ajFmtScanS functs
 ** @@
 ** 
 ** This library is free software; you can redistribute it and/or
@@ -86,6 +88,8 @@ static void scvt_B(char *fmt, char **pos, VALIST ap, ajint width,
 static void scvt_c(char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
 static void scvt_b(char *fmt, char **pos, VALIST ap, ajint width,
+		   AjBool convert, AjBool *ok);
+static void scvt_z(char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
 
 
@@ -758,7 +762,7 @@ static Fmt_S scvt[256] =
  /*  96-103 */      0,     0,scvt_b,scvt_c,scvt_d,scvt_f,scvt_f,scvt_f,
  /* 104-111 */      0,     0,     0,     0,     0,     0,scvt_d,scvt_o,
  /* 112-119 */ scvt_p,     0,     0,scvt_s,     0,scvt_u,     0,     0,
- /* 120-127 */ scvt_x,     0,     0,     0,     0,     0,     0,     0
+ /* 120-127 */ scvt_x,     0,scvt_z,     0,     0,     0,     0,     0
 };
 
 /* ****************************************************************************
@@ -2571,5 +2575,58 @@ static void scvt_b(char *fmt, char **pos, VALIST ap, ajint width,
 	*ok = ajTrue;
     }
     
+    return;
+}
+
+
+/* @funcstatic scvt_z ********************************************************
+**
+** Conversion for %z to load a char **
+**
+** @param [r] fmt [char*] Format string at conv char posn
+** @param [w] pos [char**] Input string current position
+** @param [r] ap [va_list] Original arguments at current position
+** @param [r] width [ajint] Width
+** @param [r] convert [AjBool] ajFalse if %* was specified
+** @param [w] ok [AjBool*] set for a successful conversion
+** @return [void]
+** @@
+******************************************************************************/
+
+static void scvt_z(char *fmt, char **pos, VALIST ap, ajint width,
+		   AjBool convert, AjBool *ok)
+{
+    char *p = *pos;
+    char *q;
+    char **val = NULL;
+    static char *wspace=" \n\t";
+    ajint c=0;
+    static AjPStr t=NULL;
+
+    if(!t)
+	t = ajStrNew();
+
+    *ok = ajFalse;
+    
+    if(width!=INT_MIN)
+	for(q=p;*q && c_notin((int)*q,wspace) && c<width;++q,++c);
+    else
+	for(q=p;*q && c_notin((int)*q,wspace);++q);
+
+    if(q-p)
+    {
+	if(convert)
+	{
+	    val = (char **) va_arg(VA_V(ap), char **);
+	    ajStrAssSubC(&t,p,0,q-p-1);
+	    if(!*val)
+		*val = ajCharNewL(ajStrLen(t)+1);
+	    strcpy(*val,ajStrStr(t));
+	}
+	
+	*pos = q;
+	*ok = ajTrue;
+    }
+
     return;
 }
