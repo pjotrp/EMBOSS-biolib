@@ -37,8 +37,11 @@ import org.emboss.jemboss.gui.sequenceChooser.SequenceFilter;
 public class SequenceReader
 {
 
+  /** sequence file */
   private File seqFile;
+  /** sequence store */
   private Vector seqs;
+  /** true if read ok */
   private boolean reading = false;
 
   public SequenceReader()
@@ -59,6 +62,11 @@ public class SequenceReader
     }
   } 
 
+  /**
+  *
+  * @param seqFile	sequence file
+  *
+  */
   public SequenceReader(File seqFile)
   {
     this.seqFile = seqFile;
@@ -66,21 +74,32 @@ public class SequenceReader
     reading = true;
   }
 
+  /**
+  *
+  * @param seqString	sequence
+  *
+  */
   public SequenceReader(String seqString)
   {
     readSequenceString(seqString);
     reading = true;
   }
 
-/**
-*
-*
-*/
+  /**
+  *
+  *
+  */
   public boolean isReading()
   {
     return reading;
   }
 
+  /**
+  *
+  * Read a sequence file and create a vector of sequences
+  * @return 	vector of Sequence objects
+  *
+  */
   public Vector readSequenceFile()
   {
     BufferedReader in = null;
@@ -111,6 +130,13 @@ public class SequenceReader
     return null;
   }
 
+  /**
+  *
+  * Read a formatted sequence string (e.g. msf) and create a vector
+  * of sequences
+  * @return     vector of Sequence objects
+  *
+  */
   public Vector readSequenceString(String seqString)
   {
     BufferedReader in = null;
@@ -141,12 +167,13 @@ public class SequenceReader
     return null;
   }
 
-/**
-*
-* Reads in the FASTA sequence file and creates a Vector 
-* containing the sequence(s).
-*
-*/
+  /**
+  *
+  * Reads in the FASTA sequence file and creates a Vector 
+  * containing the sequence(s).
+  * @param in	buffered reader 
+  *
+  */
   public Vector readFastaFile(BufferedReader in)
   {
     seqs = new Vector();
@@ -188,12 +215,12 @@ public class SequenceReader
     return seqs;
   }
 
-/**
-*
-* Reads in the MSF sequence file and creates a Vector
-* containing the sequence(s).
-*
-*/
+  /**
+  *
+  * Reads in the MSF sequence file and creates a Vector
+  * containing the sequence(s).
+  * @param in	buffered reader
+  */
   public Vector readMSFFile(BufferedReader in)
   {
     seqs = new Vector();
@@ -280,37 +307,46 @@ public class SequenceReader
   }
 
 
-/**
-*
-* Returns the number of sequences.
-*
-*/
+  /**
+  *
+  * Returns the number of sequences.
+  * @return number of sequences
+  *
+  */
   public int getNumberOfSequences()
   {
     return seqs.size();
   }
 
-/**
-*
-* Returns the sequence at a given position in
-* the Sequence Vector store.
-*
-*/
+  /**
+  *
+  * Returns the sequence at a given position in
+  * the Sequence Vector store.
+  * @return	sequence object
+  *
+  */
   public Sequence getSequence(int index)
   {
     return (Sequence)seqs.get(index);
   }
 
-/**
-*
-* Returns the Sequence Vector store
-*
-*/
+  /**
+  *
+  * Returns the Sequence Vector store
+  * @return	collection of Sequence objects
+  *
+  */
   public Vector getSequenceVector()
   {
     return seqs;
   }
 
+  /**
+  *
+  * Get the sequence file
+  * @return	sequence file
+  *
+  */
   public File getSequenceFile()
   {
     return seqFile;
