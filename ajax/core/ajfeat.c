@@ -790,7 +790,7 @@ AjPFeattable ajFeatRead  ( AjPFeattabIn  ftin )
 
    if(result) {
      ajFeattableTrace (features);
-      return features ;
+     return features ;
    } else {
       ajFeattableDel(&(features)) ;
    }
@@ -2218,7 +2218,10 @@ static AjBool featReadSwiss    ( AjPFeattable thys, AjPFileBuff file) {
     }
   }
 
-  featSwissFromLine(thys, NULL, &savefeat, &savefrom, &saveto, &saveline);
+  if (featSwissFromLine(thys, NULL, &savefeat, &savefrom, &saveto, &saveline))
+    found = ajTrue;
+
+  ajDebug("featReadSwiss returns %B\n", found);
 
   return found ;
 }
