@@ -6,8 +6,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.22 $
-** @modified $Date: 2004/06/23 13:19:04 $
+** @version $Revision: 1.23 $
+** @modified $Date: 2004/07/13 16:50:50 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -25,6 +25,9 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
+#include "emboss.h"
+#include <math.h>
+
 enum constant
     {
 	enumDebugLevel        =  0,
@@ -34,8 +37,6 @@ enum constant
 	enumMaxCmapLineLen    = 80
     };
 
-#include "emboss.h"
-#include <math.h>
 
 /* @prog contactalign ********************************************************
 ** 
@@ -82,7 +83,7 @@ int main(int argc , char **argv)
     float **floatArrayContactScores = NULL;
 
     /* array for recursively summed scores in alignment backtrace */
-    AjPGotohCell const **ajpGotohCellGotohScores;
+    AjPGotohCell **ajpGotohCellGotohScores;
     /* stack of backtraced cells */
     AjPList ajpListGotohCellsMaxScoringTrace = NULL;
 
@@ -144,14 +145,14 @@ int main(int argc , char **argv)
     ajpSeqDownCopy = ajSeqNewS(ajpSeqDown);
     ajpSeqAcrossCopy = ajSeqNewS(ajpSeqAcross);
 
-    /* pile up the backtraced elements onto the stack */
+    /* pile up the backtraced elements onto a list */
     ajpListGotohCellsMaxScoringTrace = ajListNew();
     ajIntAlignmentLen = embGotohCellBacktrace(ajpGotohCellGotohScores,
 					      ajpSeqDownCopy,
 					      ajpSeqAcrossCopy,
 					      ajpListGotohCellsMaxScoringTrace);
     
-    /* read the backtraced elements off the stack */
+    /* read the backtraced elements off the list */
     embGotohReadOffBacktrace(ajpListGotohCellsMaxScoringTrace,
 			     ajpSeqDownCopy,
 			     ajpSeqAcrossCopy);
@@ -285,6 +286,9 @@ int main(int argc , char **argv)
     /* write out "aligned" sequences  */
     ajSeqWrite(ajpSeqoutAligned, ajpSeqDownCopy);
     ajSeqWrite(ajpSeqoutAligned, ajpSeqAcrossCopy);
+
+    /* delete output sequence */
+    ajSeqoutDel(&ajpSeqoutAligned);
 
     /* tidy up everything else */
     ajExit();
