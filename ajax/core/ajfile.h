@@ -42,6 +42,7 @@ typedef struct AjSFile {
   AjPList List;			/* List of file names (first is open) */
   AjBool End;			/* True if EOF has been reached */
   AjPStr Buff;			/* Buffer for latest line read */
+  pid_t Pid;		        /* Process PID is any */
 } AjOFile;
 
 #define AjPFile AjOFile*

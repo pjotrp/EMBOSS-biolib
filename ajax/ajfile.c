@@ -279,13 +279,10 @@ AjPFile ajFileNewInPipe(const AjPStr name)
 {
     AjPFile thys;
     
-    int pid;
     ajint pipefds[2];		     /* file descriptors for a pipe */
     static AjPStr tmpname = NULL;
     char** arglist        = NULL;
     char* pgm;
-    int status;
-    pid_t retval;
 
     AJNEW0(thys);
     ajStrAssS(&tmpname, name);
@@ -297,13 +294,13 @@ AjPFile ajFileNewInPipe(const AjPStr name)
 	ajFatal("pipe create failed");
 
     /* negative return indicates failure */
-    pid = fork();
-    if(pid < 0)
+    thys->Pid = fork();
+    if(thys->Pid < 0)
 	ajFatal("fork create failed");
 
     /* pid is zero in the child, but is the child PID in the parent */
     
-    if(!pid)
+    if(!thys->Pid)
     {
 	/* this is the child process */
 	close(pipefds[0]);
@@ -318,7 +315,7 @@ AjPFile ajFileNewInPipe(const AjPStr name)
     }
     
     ajDebug("pid %d, pipe '%d', '%d'\n",
-	    pid, pipefds[0], pipefds[1]);
+	    thys->Pid, pipefds[0], pipefds[1]);
 
     /* fp is what we read from the pipe */
     thys->fp = ajSysFdopen(pipefds[0], "r");
@@ -339,14 +336,7 @@ AjPFile ajFileNewInPipe(const AjPStr name)
     if(fileOpenCnt > fileOpenMax)
 	fileOpenMax = fileOpenCnt;
     
-    while((retval=waitpid(pid,&status,WNOHANG))!=pid)
-	{
-	    if(retval == -1)
-		if(errno != EINTR)
-		    break;
-	}
-    
-    return thys;
+   return thys;
 }
 
 
@@ -921,6 +911,8 @@ AjPFile ajFileNewF(FILE* file)
 void ajFileClose(AjPFile* pthis)
 {
     AjPFile thys;
+    int status = 0;
+    pid_t retval;
 
     thys = pthis ? *pthis : 0;
 
@@ -929,6 +921,19 @@ void ajFileClose(AjPFile* pthis)
     if(!*pthis)
 	return;
 
+    if (thys->Pid)
+    {
+	ajDebug("waiting for waitpid for pid  %d\n", thys->Pid);
+	while((retval=waitpid(thys->Pid,&status,WNOHANG))!= thys->Pid)
+	{
+	    ajDebug("waitpid returns %d status %d\n", retval, status);
+	    if(retval == -1)
+		if(errno != EINTR)
+		    break;
+	    status = 0;
+	}
+    }
+    
     fileClose(thys);
     AJFREE(*pthis);
 
