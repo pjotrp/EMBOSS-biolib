@@ -150,7 +150,7 @@ int main(int argc, char **argv)
 	    ajGraphDataxySetTypeC(fgraph,"2D Plot");
 	    
 	    ajGraphxyAddDataPtrPtr(fgraph,x,y);
-	    ajGraphxyAddGraph(graph,fgraph);
+	    ajGraphxyReplaceGraph(graph,fgraph);
 	    ajGraphxyDisplay(graph,ajFalse);
 	}
 	
