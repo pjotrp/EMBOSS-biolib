@@ -72,7 +72,7 @@ public class AcdVarResolve
       {
         String var = regvarexp.getParen(2);    // variable name
         String res = "";
-        if(var.endsWith(".protein"))
+        if(var.endsWith("acdprotein"))
           res = (new Boolean(SectionPanel.ajaxProtein)).toString();
         else if (var.endsWith(".length") || var.endsWith(".end"))
           res = (new Integer(SectionPanel.ajaxLength)).toString();
