@@ -1173,6 +1173,17 @@ public class BuildJembossForm implements ActionListener
     {
       try
       {
+        JFrame fsend = new JFrame("Batch");
+        JLabel label = new JLabel("Sending batch process now!");
+        label.setOpaque(true);
+        label.setBackground(Color.white);
+        fsend.getContentPane().add(label);
+        fsend.pack();
+        Dimension d = f.getToolkit().getScreenSize();
+        fsend.setLocation( (int)(d.getWidth()-fsend.getWidth())/2,
+                           (int)(d.getHeight()-fsend.getHeight())/2 );
+        fsend.setVisible(true);
+
         JembossRun thisrun = new JembossRun(embossCommand,"",
                                    filesToMove,mysettings);
         JembossProcess er = new JembossProcess((String)thisrun.get("jobid"));
@@ -1185,6 +1196,9 @@ public class BuildJembossForm implements ActionListener
           int ind = freq.indexOf(" ");
           new BatchUpdateTimer(Integer.parseInt(freq.substring(0,ind)));
         }
+
+        fsend.setVisible(false);
+        fsend.dispose();
       }
       catch (JembossSoapException eae)
       {
