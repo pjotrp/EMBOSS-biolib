@@ -859,7 +859,7 @@ AjBool ajRangeSeqMask(const AjPRange thys, const AjPStr maskchar, AjPSeq seq)
     ajint j;
     ajint st;
     ajint en;
-    AjBool result = ajFalse;;
+    AjBool result = ajFalse;
     AjPStr str = NULL;
 
     nr = ajRangeNumber(thys);
@@ -1135,7 +1135,7 @@ AjBool ajRangeStrMask(const AjPRange thys, const AjPStr maskchar, AjPStr *str)
     ajint j;
     ajint st;
     ajint en;
-    AjBool result = ajFalse;;
+    AjBool result = ajFalse;
 
     nr = ajRangeNumber(thys);
 
