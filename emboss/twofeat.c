@@ -678,7 +678,7 @@ static AjBool twofeat_check_match(AjPFeature gfA, AjPFeature gfB,
 	PHit *detail, ajint overlapi, ajint minrange, ajint maxrange, ajint
 	rangetypei, ajint sensei, ajint orderi)
 {
-    ajint distance;
+    ajint distance=0;
     ajint sA, eA, sB, eB;	/* start and end positions */
     ajint ss, ee, se, es;	/* distances from start and end positions */
     ajint tmp1, tmp2;
