@@ -6,14 +6,26 @@ extern "C"
 #ifndef ajxyz_h
 #define ajxyz_h
 
-#define XRAY  0    /* Structure was determined by X-ray crystallography */
-#define NMR   1    /* Structure was determined by NMR or is a model     */
-#define OUT_BLK       75
+#define ajXRAY  0    /* Structure was determined by X-ray crystallography */
+#define ajNMR   1    /* Structure was determined by NMR or is a model     */
 
 
+#define ESCOP "Escop.dat" /* Scop data file */
 
 
-
+/* @data AjPAtom *******************************************************
+**
+** Ajax atom object.
+**
+** Holds protein atom data
+**
+** AjPAtom is implemented as a pointer to a C data structure.
+**
+** @alias AjSAtom
+** @alias AjOAtom
+**
+** @@
+******************************************************************************/
 
 typedef struct AjSAtom
 {
@@ -33,7 +45,19 @@ typedef struct AjSAtom
 } AjSAtom, *AjPAtom;
 
 
-
+/* @data AjPChain *******************************************************
+**
+** Ajax chain object.
+**
+** Holds protein chain data
+**
+** AjPChain is implemented as a pointer to a C data structure.
+**
+** @alias AjSChain
+** @alias AjOChain
+**
+** @@
+******************************************************************************/
 
 typedef struct AjSChain
 {
@@ -78,17 +102,52 @@ typedef struct AjSPdb
   AjPChain  *Chains;     /*Array of pointers to AjSChain structures*/
 }AjOPdb, *AjPPdb;
 
+/* @data AjPScop *******************************************************
+**
+** Ajax scop object.
+**
+** Holds scop database data
+**
+** AjPScop is implemented as a pointer to a C data structure.
+**
+** @alias AjSScop
+** @alias AjOScop
+**
+** @@
+******************************************************************************/
+
+typedef struct AjSScop
+{
+    AjPStr Entry;
+    AjPStr Pdb;
+    AjPStr Db;
+    AjPStr Class;
+    AjPStr Fold;
+    AjPStr Superfamily;
+    AjPStr Family;
+    AjPStr Domain;
+    AjPStr Source;
+    int    N;
+    AjPStr *Chain;
+    int    *Start;
+    int    *End;
+    AjPFile Fp;
+} AjOScop,*AjPScop;
+
+
 
 
 AjPAtom  ajAtomNew(void);
 void     ajAtomDel(AjPAtom *thys);
 AjPChain ajChainNew(int models);
 void     ajChainDel(AjPChain *thys);
-AjPPdb   ajPdbNew(int chains, int models);
-void     ajPdbDel(AjPPdb *thys);
-
 AjBool   ajCpdbRead(AjPStr name, AjPPdb *thys);
 AjBool   ajCpdbWriteAll(AjPFile out, AjPPdb thys);
+AjPPdb   ajPdbNew(int chains, int models);
+void     ajPdbDel(AjPPdb *thys);
+void     ajScopDel(AjPScop *pthis);
+AjPScop  ajScopNew(int n);
+void     ajScopWrite(AjPFile outf, AjPScop thys);
 
 
 #endif

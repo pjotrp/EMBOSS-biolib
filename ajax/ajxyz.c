@@ -35,6 +35,8 @@
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
+#define OUT_BLK       75
+
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
@@ -134,6 +136,51 @@ AjPAtom ajAtomNew(void)
     return ret;
 }
 
+/* @func ajScopNew ***********************************************************
+**
+** Scop object constructor. Fore-knowledge of the number of chains is 
+** required.
+**
+** @param [r] chains [int] Number of chains
+**
+** @return [AjPScop] Pointer to a scop object
+** @@
+******************************************************************************/
+
+AjPScop ajScopNew(int chains)
+{
+
+    AjPScop ret = NULL;
+    int i;
+
+    AJNEW0(ret);
+
+    ret->Entry       = ajStrNew();
+    ret->Pdb         = ajStrNew();
+    ret->Db          = ajStrNew();
+    ret->Class       = ajStrNew();
+    ret->Fold        = ajStrNew();
+    ret->Superfamily = ajStrNew();
+    ret->Family      = ajStrNew();
+    ret->Domain      = ajStrNew();
+    ret->Source      = ajStrNew();
+
+
+    if(chains)
+    {
+	AJCNEW0(ret->Chain,chains);
+	AJCNEW0(ret->Start,chains);
+	AJCNEW0(ret->End,chains);
+	for(i=0; i<chains; i++)
+	    ret->Chain[i]=ajStrNew();
+    }
+
+    ret->N = chains;
+
+    return ret;
+}
+
+
 /* ==================================================================== */
 /* ========================= Destructors ============================== */
 /* ==================================================================== */
@@ -224,6 +271,50 @@ void ajAtomDel(AjPAtom *thys)
     ajStrDel(&pthis->Id3);
     ajStrDel(&pthis->Atm);
 
+    AJFREE(pthis);
+
+    return;
+}
+
+/* @func ajScopDel ***********************************************************
+**
+** Destructor for scop object.
+**
+** @param [w] thys [AjPScop*] Atom object pointer
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajScopDel(AjPScop *thys)
+{
+    AjPScop pthis = *thys;
+    
+    int i;
+
+    if(!pthis || !thys)
+	return;
+
+    ajStrDel(&pthis->Entry);
+    ajStrDel(&pthis->Pdb);
+    ajStrDel(&pthis->Db);
+    ajStrDel(&pthis->Class);
+    ajStrDel(&pthis->Fold);
+    ajStrDel(&pthis->Superfamily);
+    ajStrDel(&pthis->Family);
+    ajStrDel(&pthis->Domain);
+    ajStrDel(&pthis->Source);
+
+
+    if(pthis->N)
+    {
+	AJFREE(pthis->Start);
+	AJFREE(pthis->End);
+	for(i=0; i<pthis->N; i++)
+	    ajStrDel(&pthis->Chain[i]);
+	AJFREE(pthis->Chain);
+    }
+    
     AJFREE(pthis);
 
     return;
@@ -382,9 +473,9 @@ AjBool ajCpdbRead(AjPStr name, AjPPdb *thys)
 	    ajStrAssS(&(*thys)->Compnd,destr);
 	    ajStrAssS(&(*thys)->Source,osstr);
 	    if(ajStrMatchC(xstr,"xray"))
-		(*thys)->Method = XRAY;
+		(*thys)->Method = ajXRAY;
 	    else
-		(*thys)->Method = NMR;
+		(*thys)->Method = ajNMR;
 
 	    (*thys)->Reso = reso;
 	    (*thys)->Nmod = nmod;
@@ -549,7 +640,7 @@ AjBool ajCpdbWriteAll(AjPFile outf, AjPPdb thys)
     ajFmtPrintF(outf, "XX\n");
 
     ajFmtPrintF(outf, "%-5sMETHOD ", "EX");
-    if(thys->Method == XRAY)
+    if(thys->Method == ajXRAY)
 	ajFmtPrintF(outf, "xray; ");	
     else
 	ajFmtPrintF(outf, "nmr_or_model; ");		
@@ -617,4 +708,43 @@ AjBool ajCpdbWriteAll(AjPFile outf, AjPPdb thys)
     ajFmtPrintF(outf, "//\n");    
 
     return ajTrue;
+}
+
+/* @func ajScopWrite ******************************************************
+**
+** Write contents of a Scop object to an output file
+**
+** @param [w] outf [AjPFile] Output file stream
+** @param [r] thys [AjPScop] Pdb object
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajScopWrite(AjPFile outf, AjPScop thys)
+{
+    int i;
+
+    ajFmtPrintF(outf,"ID   %S\nXX\n",thys->Entry);
+    ajFmtPrintF(outf,"EN   %S\nXX\n",thys->Pdb);
+    ajFmtPrintF(outf,"OS   %S\nXX\n",thys->Source);
+    ajFmtPrintF(outf,"DB   %S\nXX\n",thys->Db);
+    ajFmtPrintF(outf,"CL   %S",thys->Class);
+
+    ajFmtPrintSplit(outf,thys->Fold,"\nXX\nFO   ",75," \t\n\r");
+    ajFmtPrintSplit(outf,thys->Superfamily,"XX\nSF   ",75," \t\n\r");
+    ajFmtPrintSplit(outf,thys->Family,"XX\nFA   ",75," \t\n\r");
+    ajFmtPrintSplit(outf,thys->Domain,"XX\nDO   ",75," \t\n\r");;
+    
+    ajFmtPrintF(outf,"XX\nNC   %d\n",thys->N);
+
+    for(i=0;i<thys->N;++i)
+    {
+	ajFmtPrintF(outf,"XX\nCN   [%d]\n",i+1);
+	ajFmtPrintF(outf,"XX\nCH   %S CHAIN; %d START; %d END;\n",
+		    thys->Chain[i],thys->Start[i],thys->End[i]);
+    }
+    ajFmtPrintF(outf,"//\n");
+    
+    return;
 }
