@@ -111,7 +111,7 @@ public class BuildJembossForm implements ActionListener
     this.applName = applName;
 
     JPanel pC = new JPanel();
-    pC.setBackground(Color.white);
+//  pC.setBackground(Color.white);
 
     p2.add(pC, applName);
     pC.setLayout(new BorderLayout());
@@ -123,9 +123,9 @@ public class BuildJembossForm implements ActionListener
 
     attach(pC, fieldPane, appDescription);
 
-    JScrollPane scroll = new JScrollPane(fieldPane);
-//  scroll.getViewport().setBackground(Color.lightGray);
-    pC.add(scroll, BorderLayout.CENTER);
+//  JScrollPane scroll = new JScrollPane(fieldPane);
+//  pC.add(scroll, BorderLayout.CENTER);
+    pC.add(fieldPane,BorderLayout.CENTER);
 
 // get help for current application
     if(!withSoap) 
@@ -391,18 +391,9 @@ public class BuildJembossForm implements ActionListener
     if( ae.getActionCommand().startsWith("Advanced Option"))
     {
       if(advSectionBox.isVisible())
-      {
         advSectionBox.setVisible(false);
-// this does weird stuff to the scroll bar with java1.4.1 on linux 
-//      p2.setVisible(false);
-//      p2.setVisible(true);
-      }
       else
-      {
         advSectionBox.setVisible(true);
-        p2.setVisible(false);
-        p2.setVisible(true);
-      }
     }
     else if ( ae.getActionCommand().startsWith("GO"))
     {
