@@ -123,7 +123,7 @@ another file:
 <p>
 
 <pre>
-% notseq -junkseq excluded.seq
+% notseq -notout excluded.seq
 Input sequence(s): mydata.seq
 Output sequence [clone001.fasta]: mydata2.seq
 Sequence names to exclude: clone99*
@@ -147,7 +147,7 @@ Sequence names to exclude: clone99*
   [-exclude]           string     Enter a list of sequence names or accession
                                   numbers to exclude from the sequences read
                                   in. The excluded sequences will be written
-                                  to the file specified in the 'junkseq'
+                                  to the file specified in the 'notout'
                                   parameter. The remainder will be written out
                                   to the file specified in the 'outseq'
                                   parameter.
@@ -160,7 +160,7 @@ Sequence names to exclude: clone99*
                                   myseq, hs*, one two three
 
    Optional qualifiers:
-   -junkseq            seqoutall  This file collects the sequences which you
+   -notout             seqoutall  This file collects the sequences which you
                                   have excluded from the main output file of
                                   sequences.
 
@@ -192,7 +192,7 @@ Sequence names to exclude: clone99*
 
 <tr>
 <td>[-exclude]<br>(Parameter 3)</td>
-<td>Enter a list of sequence names or accession numbers to exclude from the sequences read in. The excluded sequences will be written to the file specified in the 'junkseq' parameter. The remainder will be written out to the file specified in the 'outseq' parameter.
+<td>Enter a list of sequence names or accession numbers to exclude from the sequences read in. The excluded sequences will be written to the file specified in the 'notout' parameter. The remainder will be written out to the file specified in the 'outseq' parameter.
 The list of sequence names can be separated by either spaces or commas.
 The sequence names can be wildcarded.
 The sequence names are case independent.
@@ -209,7 +209,7 @@ myseq, hs*, one two three</td>
 </tr>
 
 <tr>
-<td>-junkseq</td>
+<td>-notout</td>
 <td>This file collects the sequences which you have excluded from the main output file of sequences.</td>
 <td>Writeable sequence(s)</td>
 <td>/dev/null</td>

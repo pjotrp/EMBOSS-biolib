@@ -45,7 +45,7 @@ Sequence names to exclude: clone186, clone876
    Here is an example where the sequences to be excluded are saved to
    another file:
    
-% notseq -junkseq excluded.seq
+% notseq -notout excluded.seq
 Input sequence(s): mydata.seq
 Output sequence [clone001.fasta]: mydata2.seq
 Sequence names to exclude: clone99*
@@ -58,7 +58,7 @@ Command line arguments
   [-exclude]           string     Enter a list of sequence names or accession
                                   numbers to exclude from the sequences read
                                   in. The excluded sequences will be written
-                                  to the file specified in the 'junkseq'
+                                  to the file specified in the 'notout'
                                   parameter. The remainder will be written out
                                   to the file specified in the 'outseq'
                                   parameter.
@@ -71,7 +71,7 @@ Command line arguments
                                   myseq, hs*, one two three
 
    Optional qualifiers:
-   -junkseq            seqoutall  This file collects the sequences which you
+   -notout             seqoutall  This file collects the sequences which you
                                   have excluded from the main output file of
                                   sequences.
 
@@ -86,15 +86,15 @@ Command line arguments
    [-exclude]
    (Parameter 3) Enter a list of sequence names or accession numbers to
    exclude from the sequences read in. The excluded sequences will be
-   written to the file specified in the 'junkseq' parameter. The
-   remainder will be written out to the file specified in the 'outseq'
-   parameter. The list of sequence names can be separated by either
-   spaces or commas. The sequence names can be wildcarded. The sequence
-   names are case independent. An example of a list of sequences to be
-   excluded is: myseq, hs*, one two three Any string is accepted An empty
-   string is accepted
+   written to the file specified in the 'notout' parameter. The remainder
+   will be written out to the file specified in the 'outseq' parameter.
+   The list of sequence names can be separated by either spaces or
+   commas. The sequence names can be wildcarded. The sequence names are
+   case independent. An example of a list of sequences to be excluded is:
+   myseq, hs*, one two three Any string is accepted An empty string is
+   accepted
    Optional qualifiers Allowed values Default
-   -junkseq This file collects the sequences which you have excluded from
+   -notout This file collects the sequences which you have excluded from
    the main output file of sequences. Writeable sequence(s) /dev/null
    Advanced qualifiers Allowed values Default
    (none)
