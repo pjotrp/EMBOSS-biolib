@@ -22,6 +22,11 @@
 
 #include "emboss.h"
 
+/* @prog seqnr ****************************************************************
+**
+** Converts redundant database results to a non-redundant set of hits
+**
+******************************************************************************/
 
 int main(int argc, char **argv)
 {

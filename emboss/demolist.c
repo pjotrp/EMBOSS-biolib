@@ -223,10 +223,16 @@ static void  demolist_freegff (void **x, void *cl)
 
 
 
-/*
- *  Not important to understand for demo but this function
-    merely passes back a gff struct
-*/
+/* @funcstatic  demolist_creategff ********************************************
+**
+** Not important to understand for demo but this function
+** merely passes back a gff struct
+**
+** @param [?] line [AjPStr] Undocumented
+** @return [gffptr] Undocumented
+** @@
+******************************************************************************/
+
 static gffptr demolist_creategff(AjPStr line)
 {
     static AjPRegexp gffexp=NULL;

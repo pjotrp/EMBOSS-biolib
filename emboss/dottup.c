@@ -335,6 +335,21 @@ static void dottup_plotMatches(AjPList list)
 
 
 
+/* @func dottup_stretchplot ***************************************************
+**
+** Undocumented.
+**
+** @param [?] graph [AjPGraph] Undocumented
+** @param [?] matchlist [AjPList] Undocumented
+** @param [?] seq1 [AjPSeq] Undocumented
+** @param [?] seq2 [AjPSeq] Undocumented
+** @param [?] begin1 [ajint] Undocumented
+** @param [?] begin2 [ajint] Undocumented
+** @param [?] end1 [ajint] Undocumented
+** @param [?] end2 [ajint] Undocumented
+** @@
+******************************************************************************/
+
 void dottup_stretchplot(AjPGraph graph, AjPList matchlist, AjPSeq seq1,
 			AjPSeq seq2, ajint begin1, ajint begin2, ajint end1,
 			ajint end2)

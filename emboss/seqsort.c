@@ -40,6 +40,11 @@ AjBool       ajXyzIdentifyMembers(AjPList* list, ajint node, ajint sig_overlap);
 AjPList      ajXyzFileMerge(AjPFile* file1, AjPFile* file2);
 AjBool       seqsort_WriteOutputFile(AjPFile fptr, AjPList famlist, AjPList supfamlist, AjPList foldlist);
 
+/* @prog seqsort *******************************************************
+**
+** Removes ambiguities from a set of hits resulting from a database search
+**
+******************************************************************************/
 
 int main(int argc, char **argv)
 {
@@ -1146,6 +1151,18 @@ AjBool  ajXyzMergeHitSort(AjPList* famlist,AjPList* supfamlist,AjPList* foldlist
 
 
 
+
+/* @func seqsort_WriteOutputFile **********************************************
+**
+** Undocumented.
+**
+** @param [?] fptr [AjPFile] Undocumented
+** @param [?] famlist [AjPList] Undocumented
+** @param [?] supfamlist [AjPList] Undocumented
+** @param [?] foldlist [AjPList] Undocumented
+** @return [AjBool] Undocumented
+** @@
+******************************************************************************/
 
 AjBool seqsort_WriteOutputFile(AjPFile fptr, AjPList famlist, AjPList supfamlist, AjPList foldlist)
 {

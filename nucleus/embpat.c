@@ -45,6 +45,7 @@ static AjBool patOUBrute(char *seq, char *pat, ajint spos, ajint ppos, ajint mm,
 **
 ** @param [D] x [void**] pattern
 ** @param [R] cl [void*] Function
+** @return [void]
 ** @@
 ******************************************************************************/
 

@@ -152,7 +152,7 @@
 **  WHEN RUNNING ALIGNWRAP AT THE HGMP IT IS ESSENTIAL THAT THE COMMAND 
 **  'use clustal' (which runs the script /packages/menu/USE/clustal) IS GIVEN 
 **  BEFORE IT IS RUN. 
-** 
+**
 **  If run elsewhere, alignwrap requires a working version of clustalw
 **/
 
@@ -161,6 +161,12 @@
 
 AjBool alignwrap_WriteScopout(AjPFile in, AjPFile out, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class);
 
+
+/* @prog alignwrap ************************************************************
+**
+** Aligns a set of sequences to a seed alignment
+**
+******************************************************************************/
 
 int main(int argc, char **argv)
 {
@@ -399,7 +405,7 @@ int main(int argc, char **argv)
 
 
 
-/* @func alignwrap_WriteScopout ************************************************
+/* @func alignwrap_WriteScopout ***********************************************
 **
 ** Reads a scop families file, classifies those hits with the specified 
 ** classification as SEED proteins (the Typeobj of the hit is written), and 
@@ -413,7 +419,7 @@ int main(int argc, char **argv)
 ** 
 ** @return [AjBool] True on success (a file has been written)
 ** @@
-********************************************************************************/
+******************************************************************************/
 AjBool alignwrap_WriteScopout(AjPFile in, AjPFile out, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class)
 {
     AjPHitlist hitlist = NULL; 

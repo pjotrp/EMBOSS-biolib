@@ -44,7 +44,11 @@ static void infoalign_Compare(AjPSeq ref, AjPSeq seq, ajint **sub,
 #define NOLIMIT -1
 
 
-
+/* @prog infoalign *******************************************************
+**
+** Information on a multiple sequence alignment
+**
+******************************************************************************/
 
 int main(int argc, char **argv)
 {

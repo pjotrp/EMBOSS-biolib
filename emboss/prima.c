@@ -1038,6 +1038,14 @@ static ajint prima_PosCompare(const void *a, const void *b)
 }
 
 
+/* @funcstatic  prima_PosEndCompare *******************************************
+**
+** Undocumented.
+**
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 static ajint prima_PosEndCompare(const void *a, const void *b)
 {
 
