@@ -35,12 +35,12 @@ Command line arguments
 
    Mandatory qualifiers:
   [-sequence]          seqall     Sequence database USA
+   -skip               integer    Number of sequences to skip at start
   [-outseq]            seqoutall  Output sequence(s) USA
 
    Optional qualifiers: (none)
    Advanced qualifiers:
    -feature            boolean    Use feature information
-   -skip               integer    Number of sequences to skip at start
 
    General qualifiers:
   -help                boolean    Report command line options. More
@@ -51,6 +51,7 @@ Command line arguments
    Mandatory qualifiers Allowed values Default
    [-sequence]
    (Parameter 1) Sequence database USA Readable sequence(s) Required
+   -skip Number of sequences to skip at start Any integer value 0
    [-outseq]
    (Parameter 2) Output sequence(s) USA Writeable sequence(s)
    <sequence>.format
@@ -58,7 +59,6 @@ Command line arguments
    (none)
    Advanced qualifiers Allowed values Default
    -feature Use feature information Yes/No No
-   -skip Number of sequences to skip at start Any integer value 0
    
 Input file format
 

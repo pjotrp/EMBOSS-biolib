@@ -126,12 +126,12 @@ Output sequence [eclac.fasta]:
 <pre>
    Mandatory qualifiers:
   [-sequence]          seqall     Sequence database USA
+   -skip               integer    Number of sequences to skip at start
   [-outseq]            seqoutall  Output sequence(s) USA
 
    Optional qualifiers: (none)
    Advanced qualifiers:
    -feature            boolean    Use feature information
-   -skip               integer    Number of sequences to skip at start
 
    General qualifiers:
   -help                boolean    Report command line options. More
@@ -154,6 +154,13 @@ Output sequence [eclac.fasta]:
 <td>Sequence database USA</td>
 <td>Readable sequence(s)</td>
 <td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-skip</td>
+<td>Number of sequences to skip at start</td>
+<td>Any integer value</td>
+<td>0</td>
 </tr>
 
 <tr>
@@ -184,13 +191,6 @@ Output sequence [eclac.fasta]:
 <td>Use feature information</td>
 <td>Yes/No</td>
 <td>No</td>
-</tr>
-
-<tr>
-<td>-skip</td>
-<td>Number of sequences to skip at start</td>
-<td>Any integer value</td>
-<td>0</td>
 </tr>
 
 </table>
