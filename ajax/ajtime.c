@@ -343,7 +343,11 @@ AjBool ajTimeLocal(const time_t timer, AjPTime thys)
     if(ajNamGetValueC("timetoday", &timestr))
     {
 	if(ajTimeSetS(thys, ajStrStr(timestr)))
+	{
+	    ajStrDel(&timestr);
 	    return ajTrue;
+	}
+	ajStrDel(&timestr);
     }
 
 #ifdef __ppc__
