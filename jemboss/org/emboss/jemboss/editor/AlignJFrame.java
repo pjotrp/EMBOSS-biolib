@@ -54,7 +54,12 @@ public class AlignJFrame extends JFrame
   private Hashtable currentColour;
   private boolean useExitMenu = false;  // whether to use 'Exit' or 'Close'
 
-  
+ 
+  /**
+  *
+  * @param vseqs	vector containing Sequence objects
+  *
+  */ 
   public AlignJFrame(Vector vseqs)
   {
     this();
@@ -62,6 +67,11 @@ public class AlignJFrame extends JFrame
       openMethod(vseqs);
   }
 
+  /**
+  *
+  * @param seqFile	sequence file
+  *
+  */
   public AlignJFrame(File seqFile)
   {
     this();
@@ -73,6 +83,12 @@ public class AlignJFrame extends JFrame
               sequenceFile.getName());
   }
 
+  /**
+  *
+  * @param seqString	formatted sequence string
+  * @param name 	name of sequence set
+  *
+  */
   public AlignJFrame(String seqString, String name)
   {
     this();
@@ -88,6 +104,12 @@ public class AlignJFrame extends JFrame
     this(false);
   }
 
+  /**
+  *
+  * @param useExitMenu	true if an exit menu is to be displayed
+  *			otherwise a close menu is used
+  *
+  */
   public AlignJFrame(boolean useExitMenu)
   {
     super("Jemboss Alignment Editor");
@@ -469,17 +491,36 @@ public class AlignJFrame extends JFrame
     setVisible(true);
   }
 
+  /**
+  *
+  * Set the scoring matrix
+  * @param mat 	scoring matrix to use
+  *
+  */
   public void setMatrix(Matrix mat)
   {
     this.mat = mat;
   }
 
+  /**
+  *
+  * Force a re-display of the sequences with a new colour
+  * scheme.
+  * @param hash		hash of the colour scheme
+  *
+  */
   public void repaintSequences(Hashtable hash)
   {
     gsc.setColorScheme(hash);
     gsc.repaint();
   }
 
+  /**
+  *
+  * Given a Vector of Sequence display them in the editor
+  * @param seqVector	vector containing Sequence objects
+  *
+  */
   protected void openMethod(Vector seqVector)
   {
     gsc = new GraphicSequenceCollection(seqVector,
@@ -495,12 +536,13 @@ public class AlignJFrame extends JFrame
   }
 
 
-/**
-*
-* Update the status bar with the selected colour scheme
-* being used.
-*
-*/
+  /**
+  *
+  * Update the status bar with the selected colour scheme
+  * being used.
+  * @param colScheme 	name of colour scheme
+  *
+  */
   private void colourScheme(String colScheme)
   {
     String status = statusField.getText();
@@ -513,6 +555,11 @@ public class AlignJFrame extends JFrame
                           "Colour Scheme: "+colScheme);
   }
 
+  /**
+  *
+  * Constructs the colour menus
+  *
+  */
   private void colourMenus(JMenu viewMenu)
   {
     ButtonGroup group = new ButtonGroup();
@@ -686,16 +733,16 @@ public class AlignJFrame extends JFrame
 
   }
   
-/**
-*
-* Extends WindowAdapter to close window
-*
-*/
+  /**
+  *
+  * Extends WindowAdapter to close window
+  *
+  */
   class winExit extends WindowAdapter
   {
      public void windowClosing(WindowEvent we)
      {
-        System.exit(0);
+        dispose();
      }
   }
 
