@@ -39,6 +39,8 @@ public class RemoteFileNode extends DefaultMutableTreeNode
     private boolean isDir = false;
     private String[] childrenNames;
     private String fullname;
+    private String serverPathToFile;
+
     private Vector children;
     private String rootdir;   
     private transient EmbreoFileList parentList;  // make transient for
@@ -60,6 +62,7 @@ public class RemoteFileNode extends DefaultMutableTreeNode
       this.froots = froots;
       this.parentList = parentList;
       rootdir = froots.getCurrentRoot();
+      serverPathToFile = (String)froots.getRoots().get(rootdir);
 
       if(file.equals(" "))
         isDir = true;
@@ -84,6 +87,7 @@ public class RemoteFileNode extends DefaultMutableTreeNode
     public String getFile() { return (String)getUserObject(); }
     public String getRootDir() { return rootdir; }
     public String getFullName() { return fullname; }
+    public String getPathName() { return serverPathToFile; }
     public boolean isExplored() { return explored; }
     public String getServerName() 
     { 
