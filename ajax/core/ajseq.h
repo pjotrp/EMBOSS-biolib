@@ -108,6 +108,7 @@ AjPStr       ajSeqGetEntry (AjPSeq thys);
 AjPFeattable ajSeqGetFeat (AjPSeq thys);
 AjPStr       ajSeqGetName (AjPSeq thys);
 ajint        ajSeqGetRange (AjPSeq thys, ajint* begin, ajint* end);
+AjBool       ajSeqGetReverse (AjPSeq thys);
 AjPStr       ajSeqGetUsa (AjPSeq thys);
 void         ajSeqinTrace (AjPSeqin thys);
 AjBool       ajSeqIsNuc (AjPSeq thys);

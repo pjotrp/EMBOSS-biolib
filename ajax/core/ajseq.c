@@ -2104,6 +2104,8 @@ void ajSeqSetRange (AjPSeq seq, ajint ibegin, ajint iend)
 
 void ajSeqMakeUsa (AjPSeq thys, AjPSeqin seqin)
 {
+    AjPStr tmpstr = NULL;
+
     ajDebug ("ajSeqMakeUsa (Name <%S> Formatstr <%S> Db <%S> "
 	     "Entryname <%S> Filename <%S>)\n",
 	     thys->Name, thys->Formatstr, thys->Db,
@@ -2129,6 +2131,37 @@ void ajSeqMakeUsa (AjPSeq thys, AjPSeqin seqin)
     
     }
 
+    ajFmtPrintS (&tmpstr, "[");
+
+    if (thys->Rev)
+    {
+      if (thys->End)
+	ajFmtPrintAppS (&tmpstr, "%d", -thys->End);
+
+      ajFmtPrintAppS (&tmpstr, ":");
+
+      if (thys->Begin)
+	ajFmtPrintAppS (&tmpstr, "%d", -thys->Begin);
+
+      ajFmtPrintAppS (&tmpstr, ":r");
+    }
+    else
+    {
+      if (thys->Begin)
+	ajFmtPrintAppS (&tmpstr, "%d", thys->Begin);
+
+      ajFmtPrintAppS (&tmpstr, ":");
+
+      if (thys->End)
+	ajFmtPrintAppS (&tmpstr, "%d", thys->End);
+    }
+
+    ajFmtPrintAppS (&tmpstr, "]");
+
+    if (ajStrLen(tmpstr) > 3)
+      ajStrApp (&thys->Usa, tmpstr);
+
+    ajStrDelReuse(&tmpstr);
     ajDebug ("      result: <%S>\n",
 	     thys->Usa);
 
@@ -2768,6 +2801,20 @@ ajint ajSeqOffend (AjPSeq seq)
 ajint ajSeqLen (AjPSeq seq)
 {
     return ajStrLen(seq->Seq);
+}
+
+/* @func ajSeqGetReverse *************************************************************
+**
+** Returns the sequence direction.
+**
+** @param [P] seq [AjPSeq] Sequence object
+** @return [AjBool] Sequence Direction.
+** @@
+******************************************************************************/
+
+AjBool ajSeqGetReverse (AjPSeq seq)
+{
+    return seq->Rev;
 }
 
 /* @func ajSeqCharCopy ********************************************************
