@@ -733,7 +733,7 @@ public class BuildJembossForm implements ActionListener
           fn = new String(inSeq[h].getFileChosen());
           
           fn = fn.trim();
-          if(fn.indexOf(":")>-1)  // remove unwanted spaces from db entries
+          if((fn.indexOf(":")>-1) && (fn.indexOf(":\\") < 0))  // remove unwanted spaces from db entries
           {
             int n;
             while((n = fn.indexOf(" ")) > -1)
