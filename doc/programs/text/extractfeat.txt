@@ -25,6 +25,9 @@ Description
    If you are interested in extracting the sequence of the region around
    the start or end of the feature, then this can also be specified.
    
+   'joined' features can either be extracted as individual sequences, or
+   as a single concatenated sequence if the '-join' qualifier is used.
+   
    Please remember that the output feature sequence is only as good as
    the annotation. If you rely upon other people's, or other program's
    annotation of features, then some of these will be incorrect.
@@ -302,7 +305,12 @@ Data files
    
 Notes
 
-   None.
+   If a feature is specified as being a part of a different sequence
+   entry in a database, then this feature is ignored.
+   
+   If you are extracting 'joined' features and one of more of the
+   component features is in a different sequence entry, then the whole
+   joined feature is ignored.
    
 References
 
@@ -365,6 +373,8 @@ Author(s)
 History
 
    Written (Dec 12 2001) - Gary Williams
+   
+   Added '-join' parameter (June 2002) - Gary Williams
    
 Target users
 
