@@ -1,4 +1,23 @@
 Version 2.8.0
+	The definition of AjPStr and other "pointers to structs" is
+	causing strange problems in specifying "const" for structs that
+	are unchanged by function calls. In summary, it appears (for all
+	compilers we tried) that "const" only knows it is for a pointer if
+	it can see the "*" in the type. This means, for example, that
+	"const AjPStr" failed but "const AjOStr*" worked. With "const" if
+	it knows it is a pointer, it maked the data structure
+	constant. Otherwise it makes the pointer itself constant, the
+	equivalent of "AjOStr* const". We fixed this by changing AjPStr to
+	be a #define of AjOStr*. This has the advantages that most code is
+	unaffected and that const now works as expected. The only code
+	changes we needed are lines with multiple AjPStr definitions
+	(which is anyway deprecated), for example "AjPStr astr, bstr"
+	which clearly fail when you think about the #define (atr is an
+	AjPStr, but btr is now an AjOStr and will give strange compiler
+	errors). We may change this again to define a separate const data
+	type for each strucyt, but probably the #define is a good solution
+	and we expect to stay with it.
+	
 	PCRE is now the library of choice for regular expressions. This
 	allows the full Perl regular expression syntax, and was very easy
 	to integrate. Regular expressions are used internally for parsing
