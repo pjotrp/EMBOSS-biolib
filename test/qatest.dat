@@ -102,7 +102,8 @@ FI amir_pseae.out2
 FZ = 564
 FP /^AMIR_PSEAE\tantigenic\tmisc_feature\t4\t60\t1\.222.*; note "max score at 53"\n/
 FI amir_pseae.antigenic
-FP /ANTIGENIC/
+FP /^# Program: antigenic\n/
+FP /Sequence: AMIR_PSEAE/
 FP /246/
 FP /1[.]246/
 FP / NS.[^P]GSL/
@@ -119,7 +120,7 @@ FI act1_fugru.out2
 FZ = 1877
 FP /^ACT1_FUGRU\tantigenic\tmisc_feature\t214\t222\t1\.207\t\+\t\.\tSequence "ACT1_FUGRU\.1" ; note "max score at 217"\n/
 FI act1_fugru.antigenic
-FP /ANTIGENIC/
+FP /^# Program: antigenic\n/
 FP /1[.]207/
 FP /AA[^AV]VV/
 FZ > 100
@@ -972,9 +973,9 @@ IN
 FI stderr
 FC = 2
 FI ap000504.diffseq
-FZ = 13839
-FP /^AP000504 overlap starts at 1\n/
-FP /^AF129756 overlap starts at 6036\n/
+FZ = 14312
+FP /^# AP000504 overlap starts at 1\n/
+FP /^# AF129756 overlap starts at 6036\n/
 FP /^AP000504 2655-2658 Length: 4\nSequence: tgtg\n/
 FI AF129756.diffgff
 FZ = 11823
@@ -1510,8 +1511,9 @@ IN
 FI stderr
 FC = 2
 FI laci_ecoli.hth
-FZ = 240
-FP /^Score 2160 \(\+6\.54 SD\) in LACI_ECOLI at residue 4\n/
+FZ = 525
+FP /^[(]1[)] Score 2160[.]000 length 22 at residues 4->25\n/
+FP /^ Standard_deviations: 6.54\n/
 //
 
 ID hmoment-ex
@@ -2297,6 +2299,7 @@ IN
 IN
 IN
 IN
+TI 120
 FI stderr
 FC = 2
 FI eclaci.prima 
@@ -2440,6 +2443,7 @@ FP /^HBA_HUMAN +1 +VLSPADKTNVKAAWG\.GKVGAHAGEYGAEALERMFLSFPTTKTYF 44 +\n/
 # example needs modifying - what is prosite.lines
 ID prosextract-ex
 CC needs local copy of prosite
+TI 120
 AP prosextract
 IN /srsdata/flatfiles/prosite
 FI stderr
@@ -2526,7 +2530,7 @@ IN
 FI stderr
 FC = 2
 FI eclac.remap
-FZ = 7573
+FZ = 7503
 FP /^\s+AspLEI\s+2\s+BstHHI,CfoI,HhaI\n/
 //
 
@@ -4572,10 +4576,10 @@ IN
 FI stderr
 FC = 2
 FI ach2_drome.sig
-FZ = 1690
-FP /^Maximum score 13\.7 at residue 42\n/
-FP /^ Sequence:  LLVLLLLCETVQA-NPD/
-FP 9 /^ Sequence:  /
+FZ = 2084
+FP /^[(]1[)] Score 13\.739 length 13 at residues 29->41\n/
+FP /^ Sequence: LLVLLLLCETVQA\n/
+FP 9 /^ Sequence: /
 //
 
 ID silent-ex
