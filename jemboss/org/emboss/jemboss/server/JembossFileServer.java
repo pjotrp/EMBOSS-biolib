@@ -1,5 +1,5 @@
 /****************************************************************
-*
+* 
 *  This program is free software; you can redistribute it and/or
 *  modify it under the terms of the GNU General Public License
 *  as published by the Free Software Foundation; either version 2
@@ -30,6 +30,8 @@ import java.util.*;
 public class JembossFileServer
 {
 
+
+//SITE SPECIFIC CHANGE USER DIRECTORIES HERE
   public Vector embreo_roots()
   {
     Vector vans = new Vector();
@@ -37,21 +39,52 @@ public class JembossFileServer
     vans.add("0");
     vans.add("msg");
     vans.add("");
+
     vans.add("default-root");
     vans.add("HOME");
+
     vans.add("HOME");
     vans.add("/m3/users/tim");
-
+ 
+    vans.add("SCRATCH");
+    vans.add("/m3/users/tim/soap");
+  
     return vans;
+  }
+
+
+/**
+*
+* Given the alias a user root alias e.g. "HOME" return
+* the directory this represents
+*
+* @param root alias (e.g "HOME")
+* @return directory path
+*
+*/
+  private String getRoot(String s)
+  {
+    String rt = null;
+
+    Vector userRoots = embreo_roots();
+
+    for(int i=0; i<userRoots.size();i+=2)
+    {
+      String root = (String)userRoots.get(i);
+      if(root.equalsIgnoreCase(s))
+        return (String)userRoots.get(i+1);
+    }
+
+    return rt;
   }
 
 
   public Vector directory_shortls(String options, String dirname)
   {
     Vector vans = new Vector();
-//  File dir = new File("/m3/users/tim/");
-    File dir = new File("/m3/users/tim/" + dirname);
-    System.out.println("directory_shortls " + dirname);
+    int split = options.indexOf("=")+1;
+
+    File dir = new File(getRoot(options.substring(split)) + "/" + dirname);
 
 // filter out dot files
     File files[] = dir.listFiles(new FilenameFilter()
@@ -87,7 +120,10 @@ public class JembossFileServer
   public Vector get_file(String options, String filename)
   {
     Vector vans = new Vector();
-    File dir = new File("/m3/users/tim/"+filename);
+//  File dir = new File("/m3/users/tim/"+filename);
+    
+    int split = options.indexOf("=")+1;    
+    File dir = new File(getRoot(options.substring(split)) + "/" + filename);
 
     String line = new String("");
     String fc = new String("");
@@ -107,6 +143,43 @@ public class JembossFileServer
 
     return vans;
   } 
+
+
+/**
+*
+* @param option determines the root directory to put the file
+* @param filename name of the file to put
+* @param filedata file contents
+*
+*/
+  public Vector put_file(String options, String filename, byte[] filedata)
+  {
+    Vector vans = new Vector();
+
+    int split = options.indexOf("=")+1;
+    File f = new File(getRoot(options.substring(split)) + "/" + filename);
+
+    try
+    {
+      FileOutputStream out = new FileOutputStream(f);
+      out.write(filedata);
+      out.close();
+      vans.add("status");
+      vans.add("0");
+//    System.out.println("WRITTEN TO " + getRoot(options.substring(split)) +
+//                       "/" + filename);
+    }
+    catch(IOException ioe)
+    {
+      vans.add("status");
+      vans.add("1");
+    }
+
+    vans.add("msg");
+    vans.add("");
+   
+    return vans;
+  }
  
 }
 
