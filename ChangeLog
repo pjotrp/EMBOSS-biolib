@@ -1,4 +1,6 @@
 Version 2.7.0
+	TCODE application added. Calculates the TESTCODE statistic.
+
 	Eprimer3 now reports the primer positions using the coordinates
 	of the original sequence when -sbegin and -send are used to
 	specify a sub-sequence to consider.  The input ranges, such as
