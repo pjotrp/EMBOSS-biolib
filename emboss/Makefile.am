@@ -30,7 +30,7 @@ degapseq descseq diffseq digest distmat domainer \
 dotmatcher dotpath dottup dreg \
 einverted embossdata embossversion emma emowse entret \
 eprimer3 equicktandem est2genome etandem extractfeat extractseq \
-findkm freak funky fuzznuc fuzzpro fuzztran \
+findkm fraggle freak funky fuzznuc fuzzpro fuzztran \
 garnier geecee getorf hetparse helixturnhelix hmmgen hmoment \
 iep infoalign infoseq interface isochore jembossctl lindna listor \
 marscan maskfeat maskseq matcher megamerger merger msbar \
@@ -111,6 +111,7 @@ embossversion_SOURCES = embossversion.c
 extractfeat_SOURCES = extractfeat.c
 extractseq_SOURCES = extractseq.c
 findkm_SOURCES = findkm.c
+fraggle_SOURCES = fraggle.c
 freak_SOURCES = freak.c
 funky_SOURCES = funky.c
 fuzznuc_SOURCES = fuzznuc.c
