@@ -14490,9 +14490,9 @@ static void acdSetAll(void)
     if (acdDoTrace)
     {
 	iendsec = acdFindKeyC("endsection");
-	ajUser("");
-	ajUser("Line Std        ACD_Type  Name and 'value'");
-	ajUser("---- --- ---------------  ----------------");
+	ajUser("Trace:");
+	ajUser("Trace: Line Std        ACD_Type  Name and 'value'");
+	ajUser("Trace: ---- --- ---------------  ----------------");
     }
 
     for(acdSetCurr=acdList; acdSetCurr; acdSetCurr = acdSetCurr->Next)
@@ -14522,21 +14522,21 @@ static void acdSetAll(void)
 		if (pa->Assoc)
 		    continue;
 		else
-		    ajUser("%4d %s %15s: %S '%S'",
+		    ajUser("Trace: %4d %s %15s: %S '%S'",
 			   pa->LineNum, level, acdType[pa->Type].Name,
 			   pa->Name, pa->ValStr);
 	    }
 	    else if(acdIsStype(pa))
 	    {
-		ajUser("%4d %s %15s: %S",
+		ajUser("Trace: %4d %s %15s: %S",
 		       pa->LineNum, level, acdKeywords[pa->Type].Name,
 		       pa->Name);
 		if (pa->Type == iendsec)
-		    ajUser("");
+		    ajUser("Trace:");
 	    }
 	    else
 	    {
-		ajUser("%4d %s %15s: %S '%S'",
+		ajUser("Trace: %4d %s %15s: %S '%S'",
 		       pa->LineNum, nostring, acdKeywords[pa->Type].Name,
 		       pa->Name, pa->ValStr);
 	    }
@@ -15324,7 +15324,7 @@ static AjBool acdVarResolve(AjPStr* var)
     if (acdDoTrace)
     {
 	if (ifun || ivar)
-	    ajUser("                          resolved '%S' => '%S'",
+	    ajUser("Trace:                           resolved '%S' => '%S'",
 		   savein, *var);
     }
     ajStrDelReuse(&savein);
@@ -21005,6 +21005,17 @@ static void acdValidAppl(const AcdPAcd thys)
     if(!ajStrLen(thys->AttrStr[i]))
 	acdErrorValid("Application has no documentation defined");
 
+    else
+    {
+	if(!isupper((int)ajStrChar(thys->AttrStr[i], 0)))
+	{
+	    if (islower((int)ajStrChar(thys->AttrStr[i], 0)))
+		acdWarn("Documentation string starts in lower case");
+	    else
+		acdWarn("Documentation string starts non-alphabetic");
+	}
+    }
+
     /* must have a group attribute */
 
     i = acdFindAttrC(acdAttrAppl, "groups");
@@ -21671,7 +21682,7 @@ static void acdValidQual(const AcdPAcd thys)
 	qualCountOutfile++;
 	if(ajStrMatchCC(acdType[thys->Type].Name, "outdir") &&
 	   !ajStrSuffixC(thys->Token, "outdir"))
-	    acdWarn("Outfile qualifier '%S' is not 'outdir' or '*outdir'",
+	    acdWarn("Outdir qualifier '%S' is not 'outdir' or '*outdir'",
 		    thys->Token);
 	else
 	{
@@ -21679,9 +21690,10 @@ static void acdValidQual(const AcdPAcd thys)
 	       !ajStrMatchC(thys->Token, "outdir"))
 		outMulti = ajTrue;
 	    if((qualCountOutfile == 1) &&
-	       !ajStrMatchC(thys->Token, "outdir"))
+	       !ajStrMatchC(thys->Token, "outdir") &&
+	       !ajStrSuffixC(thys->Token, "outdir"))
 		acdWarn("First output directory qualifier '%S' "
-			"is not 'outdir'",
+			"is not 'outdir' or '*outdir'",
 			thys->Token);
 	}
 	
@@ -21778,7 +21790,7 @@ static void acdValidQual(const AcdPAcd thys)
 	if(!ajStrSuffixC(thys->Token, "outseq") &&
 	   !ajStrSuffixC(thys->Token, "outfile"))
 	    acdWarn("Sequence output qualifier '%S' is not 'outseq' "
-		    "or '*outseq' or 'outfile'",
+		    "or '*outseq' or '*outfile'",
 		    thys->Token);
 
 	else
