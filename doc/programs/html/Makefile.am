@@ -74,7 +74,8 @@ pkgdata2_DATA = isochore.html kitsch.html lindna.html listor.html \
                stretcher.html stssearch.html supermatcher.html \
                swissparse.html syco.html test_group.html textsearch.html \
                tfextract.html tfm.html tfscan.html tmap.html topo.html \
-               transeq.html trimseq.html utils_database_creation_group.html \
+               transeq.html trimest.html trimseq.html \
+               utils_database_creation_group.html \
                utils_database_indexing_group.html utils_misc_group.html \
                vectorstrip.html water.html wobble.html wordcount.html \
                wordmatch.html wossname.html
