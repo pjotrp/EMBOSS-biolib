@@ -109,7 +109,14 @@ public class BuildProgramMenu
         if(withSoap) 
         {
           if(mysettings.getPublicSoapURL().startsWith("https"))
-            System.setProperty("http.proxyHost", "");
+          {
+            System.setProperty("https.proxyHost", "");
+//          System.setProperty("http.proxyHost", "");
+//          System.setProperty("proxyHost", "");  
+            String settings[] = new String[1];
+            settings[0] = new String("proxy.override=true");
+            mysettings.updateJembossPropStrings(settings);
+          }
 
           SwingWorker databaseworker = new SwingWorker()
           {
@@ -122,7 +129,25 @@ public class BuildProgramMenu
               }
               catch (Exception ex)
               {
-                ex.printStackTrace();
+                splashing.doneSomething("Cannot connect!");
+                ServerSetup ss = new ServerSetup(mysettings);
+                int sso = JOptionPane.showConfirmDialog(f,ss,
+                           "Check Settings",
+                           JOptionPane.OK_CANCEL_OPTION,
+                           JOptionPane.ERROR_MESSAGE,null);
+                if(sso == JOptionPane.OK_OPTION)
+                  ss.setNewSettings();
+                else
+                  System.exit(0);
+
+                try
+                {
+                  showdb  = new ShowDB(mysettings);
+                }
+                catch (Exception exp)
+                {
+                  exp.printStackTrace();
+                }
               }
               String showdbOut = showdb.getDBText();
               Database d = new Database(showdbOut);
