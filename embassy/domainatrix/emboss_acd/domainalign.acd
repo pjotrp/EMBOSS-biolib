@@ -1,5 +1,5 @@
 application: domainalign [
-  documentation: "Generates DAF files for nodes in a DCF file"
+  documentation: "Generate alignments (DAF file) for nodes in a DCF file."
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

@@ -1,5 +1,5 @@
 application: pdbtosp [
-  documentation: "Convert equivalence file to EMBL-like format"
+  documentation: "Convert swissprot:PDB codes file to EMBL-like format."
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"

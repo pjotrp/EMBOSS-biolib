@@ -1,5 +1,5 @@
 application: sites [
-  documentation: "Generate ligand CON files from CCF and DCF files"
+  documentation: "Generate residue-ligand CON files from CCF files."
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"

@@ -1,5 +1,5 @@
 application: seqwords [
-  documentation: "Generates DHF files for DCF nodes using UniProt"
+  documentation: "Generates DHF files from keyword search of UniProt."
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

@@ -1,5 +1,5 @@
 application: seqsearch [
-  documentation: "Generate database hits for DCF using PSI-BLAST"
+  documentation: "Generate PSI-BLAST hits (DHF file) from a DAF file."
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

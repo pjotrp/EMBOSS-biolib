@@ -1,5 +1,5 @@
 application: domainsse [
-  documentation: "Add secondary structure records to a DCF file"
+  documentation: "Add secondary structure records to a DCF file."
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"

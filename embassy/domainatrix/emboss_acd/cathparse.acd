@@ -1,5 +1,5 @@
 application: cathparse [
-  documentation: "Produce DCF file from CATH"
+  documentation: "Generates DCF file from raw CATH files."
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"

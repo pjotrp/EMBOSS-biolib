@@ -1,5 +1,5 @@
 application: scopparse [
-  documentation: "Generate DCF file from raw SCOP files"
+  documentation: "Generate DCF file from raw SCOP files."
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"

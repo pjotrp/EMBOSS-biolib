@@ -1,5 +1,5 @@
 application: hetparse [
-  documentation: "Converts raw dictionary of heterogen groups to EMBL"
+  documentation: "Converts heterogen group dictionary to EMBL-like format."
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"

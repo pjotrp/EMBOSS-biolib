@@ -1,5 +1,5 @@
 application: seqalign [
-  documentation: "Add DHF information to DAF file"
+  documentation: "Extend alignments (DAF file) with sequences (DHF file)."
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

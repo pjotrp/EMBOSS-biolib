@@ -1,5 +1,5 @@
 application: pdbparse [
-  documentation: "Parses PDB files and writes CCF files"
+  documentation: "Parses PDB files and writes protein CCF files."
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"

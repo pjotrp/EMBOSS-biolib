@@ -1,5 +1,5 @@
 application: seqfraggle [
-  documentation: "Removes fragments from DHF files"
+  documentation: "Removes fragment sequences from DHF files."
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

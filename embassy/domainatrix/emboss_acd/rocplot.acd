@@ -1,5 +1,5 @@
 application: rocplot [
-  documentation: "ROC analysis for discriminators"
+  documentation: "Performs ROC analysis on hits files."
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

@@ -1,5 +1,5 @@
 application: matgen3d [
- documentation: "Generate 3D-1D scoring matrix from CCF files"
+ documentation: "Generate a 3D-1D scoring matrix from CCF files."
  groups: "Protein:3D Structure"
 ]
 

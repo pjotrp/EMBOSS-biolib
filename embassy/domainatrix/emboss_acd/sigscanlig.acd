@@ -1,5 +1,5 @@
 application: sigscanlig [
-  documentation: "Generates LHF files using library scanning"
+  documentation: "Search ligand-signature library & write hits (LHF file)."
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

@@ -1,5 +1,5 @@
 application: ssematch [
-  documentation: "Search a DCF file for secondary structure matches"
+  documentation: "Search a DCF file for secondary structure matches."
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"
@@ -94,12 +94,7 @@ section: additional [
            the standard gap penalty for each base or residue in the gap. This
            is how long gaps are penalized. Usually you will expect a few
            long gaps rather than many short gaps, so the gap extension
-           penalty should be lower than the gap penalty. An exception is
-           where one or both sequences are single reads with possible
-           sequencing errors in which case you would expect many single base
-           gaps. You can get this result by setting the gap open penalty to
-           zero (or very low) and using the gap extension penalty to control
-           gap scoring."
+           penalty should be lower than the gap penalty."
   ]
 
   float: gapopene [
@@ -133,12 +128,7 @@ section: additional [
            penalty is added to the standard gap penalty for each base or
            residue in the gap. This is how long gaps are penalized. Usually
            you will expect a few long gaps rather than many short gaps, so
-           the gap extension penalty should be lower than the gap penalty. An
-           exception is where one or both sequences are single reads with
-           possible sequencing errors in which case you would expect many
-           single base gaps. You can get this result by setting the gap open
-           penalty to zero (or very low) and using the gap extension penalty
-           to control gap scoring."
+           the gap extension penalty should be lower than the gap penalty."
   ]
 
 endsection: additional

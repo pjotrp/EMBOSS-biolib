@@ -1,5 +1,5 @@
 application: allversusall [
-  documentation: "Produce sequence similarity values"
+  documentation: "Sequence similarity data from all-versus-all comparison."
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"
