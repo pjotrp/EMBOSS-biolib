@@ -150,6 +150,29 @@ public class SetUpMenuBar
     menuPanel.add(Box.createHorizontalStrut(5));
     menuPanel.add(prefsMenu);
 
+
+//  JMenu toolMenu = new JMenu("Tools");
+//  toolMenu.setMnemonic(KeyEvent.VK_T);
+
+//  JMenuItem toolJalview  = new JMenuItem("Jalview");
+//  toolJalview.addActionListener(new ActionListener()
+//  {
+//    public void actionPerformed(ActionEvent e)
+//    {
+//      Runtime jalviewRun = Runtime.getRuntime();
+//      try
+//      {
+//        Process p = jalviewRun.exec("java jalview.AlignFrame /home/tim/pax.msf File MSF");
+//      }
+//      catch(IOException ioe)
+//      {
+//      }
+//    }
+//  });
+//  toolMenu.add(toolJalview);
+//  menuPanel.add(Box.createHorizontalStrut(5));
+//  menuPanel.add(toolMenu); 
+
     JMenu helpMenu = new JMenu("Help");
     helpMenu.setMnemonic(KeyEvent.VK_H);
 
