@@ -555,6 +555,7 @@ AjPScophit  ajXyzScophitNew(void);
 void     ajXyzScophitDel(AjPScophit *pthis);
 AjBool ajXyzHitlistToScophits(AjPList in, AjPList *out);
 AjBool        ajXyzHitsOverlap(AjPHit h1, AjPHit h2, ajint n);
+AjBool        ajXyzScophitsOverlap(AjPScophit h1, AjPScophit h2, ajint n);
 AjBool ajXyzScophitCopy(AjPScophit *to, AjPScophit from);
 
 

@@ -1842,6 +1842,29 @@ AjBool        ajXyzSignatureAlignSeq(AjPSignature S, AjPSeq seq, AjPHit *hit,
 
 
 
+/* @func ajXyzScophitsOverlap ****************************************************
+**
+** Checks for overlap between two hits.
+**
+** @param [r] h1  [AjPHit]     Pointer to hit object 1
+** @param [r] h2  [AjPHit]     Pointer to hit object 2
+** @param [r] n   [ajint]      Threshold number of residues for overlap
+**
+** @return [AjBool] True if the overlap between the sequences is at least as 
+** long as the threshold. False otherwise.
+** @@
+******************************************************************************/
+AjBool        ajXyzScophitsOverlap(AjPScophit h1, AjPScophit h2, ajint n)
+{
+    if( (((h1->End - h2->Start + 1)>=n) && (h2->Start >= h1->Start)) ||
+       (((h2->End - h1->Start + 1)>=n) && (h1->Start >= h2->Start)))
+	return ajTrue;
+    else 
+	return ajFalse;
+}
+
+
+
 
 /* @func ajXyzHitsOverlap ****************************************************
 **
@@ -2083,12 +2106,16 @@ AjBool ajXyzSignatureAlignSeqall(AjPSignature sig, AjPSeqall db, ajint n,
 	return ajFalse;
     }
     
-
+    printf("1\n");
+    fflush(stdout);
+    
 
     /* Memory allocation*/
     listhits = ajListNew();
     seq=ajSeqNew();    
 
+printf("2\n");
+    fflush(stdout);
 
     /*Initialise Hitlist object with SCOP records from Signature*/
     ajStrAss(&(*hits)->Class, sig->Class);
@@ -2097,12 +2124,22 @@ AjBool ajXyzSignatureAlignSeqall(AjPSignature sig, AjPSeqall db, ajint n,
     ajStrAss(&(*hits)->Family, sig->Family);
 
         
+printf("3\n");
+    fflush(stdout);
+
     /*Search the database*/
     while(ajSeqallNext(db,&seq))
     {
+
+printf("4\n");
+    fflush(stdout);
+
 	/* Allocate memory for hit */
 	hit=ajXyzHitNew();
 	
+
+printf("5\n");
+    fflush(stdout);
 
 	if(!ajXyzSignatureAlignSeq(sig, seq, &hit, nterm))
 	{	
@@ -2113,30 +2150,56 @@ AjBool ajXyzSignatureAlignSeqall(AjPSignature sig, AjPSeqall db, ajint n,
 	    nhits++;
 	
 
+printf("6\n");
+    fflush(stdout);
+
 	/* Push hit onto list */
 	ajListPush(listhits,(AjPHit) hit);
 	
+
+printf("7\n");
+    fflush(stdout);
+
 	if(nhits>n)
 	{	
+
+printf("8\n");
+    fflush(stdout);
+
 	    /* Sort list according to score, highest first*/
 	    ajListSort(listhits, ajXyzCompScore);
-	    
+	 
+printf("9\n");
+    fflush(stdout);   
 
 	    /* Pop the hit (lowest scoring) from the bottom of the list */
 	    ajListPopEnd(listhits, (void *) &ptr);
 	    ajXyzHitDel(&ptr);
+
+printf("10\n");
+    fflush(stdout);
+
 	}
     }
     
+
+printf("11 nhits: %d\n", nhits);
+    fflush(stdout);
     
     /* Sort list according to score, highest first*/
     ajListSort(listhits, ajXyzCompScore);
 
 
+printf("12\n");
+    fflush(stdout);
+
     /* Convert list to array within Hitlist object */
     ajListToArray(listhits, (void ***)  &(*hits)->hits);
     (*hits)->N = nhits;
     
+
+printf("13\n");
+    fflush(stdout);
 
     /*Tidy up and return */
     ajListDel(&listhits);
