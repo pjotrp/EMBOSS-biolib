@@ -112,7 +112,7 @@ int main(int argc, char **argv)
     squares     = ajAcdGetString("squares");
     diamonds    = ajAcdGetString("diamonds");
     wheel       = ajAcdGetBool("wheel");
-    amphipathic = ajAcdGetBool("amphipathic");
+    amphipathic = ajAcdGetToggle("amphipathic");
 
     ajStrToUpper(&octags);
     ajStrToUpper(&squares);

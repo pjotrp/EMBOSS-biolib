@@ -90,7 +90,7 @@ int main(int argc, char **argv)
     octags      = ajAcdGetString("octags");
     squares     = ajAcdGetString("squares");
     diamonds    = ajAcdGetString("diamonds");
-    amphipathic = ajAcdGetBool("amphipathic");
+    amphipathic = ajAcdGetToggle("amphipathic");
 
     ajStrToUpper(&octags);
     ajStrToUpper(&squares);
