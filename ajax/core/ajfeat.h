@@ -38,6 +38,7 @@ extern "C"
   /* Feature Table Creation */
 
 AjPFeattabIn         ajFeattabInNew (void);
+AjPFeattabIn         ajFeattabInNewSS (AjPStr fmt, AjPStr name, char* type);
 AjPFeattabIn         ajFeattabInNewSSF (AjPStr fmt, AjPStr name, char* type,
 				       AjPFileBuff buff);
 AjPFeattabOut        ajFeattabOutNew (void);

@@ -148,7 +148,7 @@ static AjBool featRegInitEmbl();
 static AjBool featRegInitGff();
 static AjBool featRegInitSwiss();
 
-static void featClear ( AjPFeature thys );
+static void   featClear ( AjPFeature thys );
 static AjBool featDelRegAcedb();
 static AjBool featDelRegEmbl();
 static AjBool featDelRegGff();
@@ -170,12 +170,12 @@ static AjPFeature featFeatureNew(AjPFeattable thys,
 				 AjPStr       entryid, AjPStr label,
 				 ajint        flags );
 
-static ajint featGetPos(AjPStr *pos,ajint *ipos);
-static ajint featCompByStart(const void *a, const void *b);
-static ajint featCompByEnd(const void *a, const void *b);
-static ajint featCompByGroup(const void *a, const void *b);
-static ajint featCompByType(const void *a, const void *b);
-static void featGroupSet (AjPFeature gf, AjPFeattable table,
+static ajint  featGetPos(AjPStr *pos,ajint *ipos);
+static ajint  featCompByStart(const void *a, const void *b);
+static ajint  featCompByEnd(const void *a, const void *b);
+static ajint  featCompByGroup(const void *a, const void *b);
+static ajint  featCompByType(const void *a, const void *b);
+static void   featGroupSet (AjPFeature gf, AjPFeattable table,
 			  AjPStr grouptag);
 static void featFlagSet (AjPFeature gf, AjPStr flags);
 
@@ -364,12 +364,46 @@ AjPFeattabIn ajFeattabInNew (void) {
   AjPFeattabIn pthis;
   AJNEW0(pthis);
 
+  ajDebug("ajFeatTabInNew %x\n", pthis);
+
+  return pthis;
+}
+
+/* @func ajFeattabInNewSS *****************************************************
+**
+** Constructor for an empty feature table input object. The format and
+** name are read.
+**
+** @param [r] fmt [AjPStr] feature format
+** @param [r] name [AjPStr] sequence name
+** @param [r] type [char*] feature type
+** @return [AjPFeattabIn] Feature table input object
+** @@
+******************************************************************************/
+
+AjPFeattabIn ajFeattabInNewSS (AjPStr fmt, AjPStr name, char* type) {
+  AjPFeattabIn pthis;
+  ajint iformat = 0;
+
+  if (!featFindInFormat(fmt, &iformat)) return NULL;
+
+  pthis = ajFeattabInNew ();
+  ajStrAssC (&pthis->Formatstr, featInFormat[pthis->Format].Name);
+  pthis->Format = iformat;
+  ajStrAssC (&pthis->Type, type);
+  ajStrAssS (&pthis->Seqname, name);
+  pthis->Handle = ajFileBuffNew();
+
+  ajDebug("ajFeatTabInNewSSF %x Handle %x\n", pthis, pthis->Handle);
+
   return pthis;
 }
 
 /* @func ajFeattabInNewSSF ****************************************************
 **
-** Constructor for an empty feature table input object
+** Constructor for an empty feature table input object. The format and
+** name are read. The file buffer is moved to the feature table input
+** object and should not be deleted by the calling program.
 **
 ** @param [r] fmt [AjPStr] feature format
 ** @param [r] name [AjPStr] sequence name
@@ -393,6 +427,8 @@ AjPFeattabIn ajFeattabInNewSSF (AjPStr fmt, AjPStr name, char* type,
   ajStrAssS (&pthis->Seqname, name);
   pthis->Handle = buff;
 
+  ajDebug("ajFeatTabInNewSSF %x Handle %x\n", pthis, buff);
+
   return pthis;
 }
 
@@ -407,6 +443,9 @@ AjPFeattabIn ajFeattabInNewSSF (AjPStr fmt, AjPStr name, char* type,
 AjPFeattabOut ajFeattabOutNew (void) {
   AjPFeattabOut pthis;
   AJNEW0(pthis);
+
+  ajDebug("ajFeatTabOutNew %x\n", pthis);
+
   return pthis;
 }
 
@@ -435,6 +474,8 @@ AjPFeattabOut ajFeattabOutNewSSF (AjPStr fmt, AjPStr name, char* type,
   ajStrAssC (&pthis->Type, type);
   ajStrAssS (&pthis->Seqname, name);
   pthis->Handle = file;
+
+  ajDebug("ajFeatTabOutNewSSF %x\n", pthis);
 
   return pthis;
 }
@@ -472,8 +513,8 @@ AjPFeattable ajFeaturesRead  ( AjPFeattabIn  ftin )
    if (!format)
      return NULL;
 
-   ajDebug ("ajFeaturesRead format %d '%s'\n",
-	    format, featInFormat[format].Name);
+   ajDebug ("ajFeaturesRead format %d '%s' file %x\n",
+	    format, featInFormat[format].Name, file);
 
    if(!featInFormat[format].Used) {
      if(!featInFormat[format].InitReg()) {
@@ -781,7 +822,7 @@ static AjPFeature featFeatureNew (AjPFeattable thys,
 
   ret->Flags = flags;
   
-  ajStrAssS (&ret->desc, desc);
+  ajStrAssS (&ret->Desc, desc);
 
   ret->Tags = ajListNew() ;        /* Assume empty until otherwise needed */
 
@@ -832,6 +873,8 @@ void ajFeattabInDel (AjPFeattabIn* pthis) {
 
   if (!thys) return;
 
+  ajDebug ("ajFeattabInDel %x Handle %x\n", thys, thys->Handle);
+
   ajFileBuffDel(&thys->Handle);
   ajStrDel(&thys->Ufo);
   ajStrDel(&thys->Formatstr);
@@ -858,9 +901,12 @@ void ajFeattabDel(AjPFeattable *pthis)
 {
   AjPFeattable thys;
   if (!pthis) return ;
-  if (!*pthis) return ;
 
   thys = *pthis;
+
+  ajDebug ("ajFeattabDel %x\n", thys);
+
+  if (!thys) return ;
 
   FeattabClear(thys) ;
 
@@ -929,6 +975,13 @@ static void featClear ( AjPFeature thys ) {
   ajListFree(&(thys->Tags));
   ajListDel(&(thys->Tags)) ;
   
+  ajStrDel(&thys->Source);
+  ajStrDel(&thys->Type);
+  ajStrDel(&thys->Comment);
+  ajStrDel(&thys->Desc);
+  ajStrDel(&thys->Remote);
+  ajStrDel(&thys->Label);
+
 }
 
 /* ==================================================================== */
@@ -1825,7 +1878,7 @@ static AjPFeature featSwissFromLine ( AjPFeattable thys, AjPStr line)
     ajStrAssSub(&desc,line,34,74);
     ajStrChomp(&desc); 
     if(ajStrLen(desc)){
-      ajStrApp(&(gf->desc),desc);
+      ajStrApp(&(gf->Desc),desc);
       ajStrDel(&desc);
       return NULL; /* entry added already */
     }
@@ -3174,8 +3227,7 @@ void ajFeattabInClear (AjPFeattabIn thys)
   (void) ajStrClear(&thys->Filename);
   (void) ajStrClear(&thys->Entryname);
   (void) ajStrClear(&thys->Type);
-  if (thys->Handle)
-    ajFileBuffDel(&thys->Handle);
+  ajFileBuffDel(&thys->Handle);
   if (thys->Handle)
     ajFatal("ajFeattabInClear did not delete Handle");
 
@@ -4257,6 +4309,8 @@ AjPFeattable ajFeattableNewDna( AjPStr name )
   FeattabInit(thys, name) ;
   ajStrAssC (&thys->Type, "N");
 
+  ajDebug("ajFeattableNewDna %x\n", thys);
+
   return thys ;
 }
 
@@ -4307,6 +4361,8 @@ AjPFeattable ajFeattableNewProt ( AjPStr name )
 
   FeattabInit(thys, name) ;
   ajStrAssC (&thys->Type, "P");
+
+  ajDebug("ajFeattableNewProt %x\n", thys);
 
   return thys ;
 }

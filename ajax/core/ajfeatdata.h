@@ -30,14 +30,14 @@ extern "C"
 ******************************************************************************/
 
 typedef struct AjSFeattabIn {
-   AjPStr        Ufo;
-   AjPStr        Formatstr;
-   ajint         Format;
-   AjPStr        Filename;
-   AjPStr        Entryname;
-   AjPStr        Type;
-   AjPFileBuff   Handle ;
-   AjPStr        Seqname ;  /* name of AjPSeq assoc. with feature table */
+  AjPStr        Ufo;		/* Original UFO */
+  AjPStr        Formatstr;	/* Input format name */
+  ajint         Format;		/* Input format enum */
+  AjPStr        Filename;	/* Original filename */
+  AjPStr        Entryname;	/* Sequence entryname */
+  AjPStr        Type;		/* Type N or P */
+  AjPFileBuff   Handle ;	/* Input buffered file */
+  AjPStr        Seqname ;	/* name of AjPSeq assoc. with feature table */
 }  AjOFeattabIn, *AjPFeattabIn ;  
 
 /* @data AjPFeattabOut *******************************************************
@@ -53,14 +53,14 @@ typedef struct AjSFeattabIn {
 ******************************************************************************/
 
 typedef struct AjSFeattabOut {
-   AjPStr        Ufo;
-   AjPStr        Formatstr;
-   ajint         Format;
-   AjPStr        Filename;
-   AjPStr        Entryname;
-   AjPStr        Type;
-   AjPFile       Handle ;
-   AjPStr        Seqname ;  /* name of AjPSeq assoc. with feature table */
+  AjPStr        Ufo;		/* Original output UFO */
+  AjPStr        Formatstr;	/* Output format name */
+  ajint         Format;		/* Output format enum */
+  AjPStr        Filename;	/* Output filename */
+  AjPStr        Entryname;	/* Output entryname */
+  AjPStr        Type;		/* Type N or P */
+  AjPFile       Handle ;	/* Output file */
+  AjPStr        Seqname ;	/* name of AjPSeq assoc. with feature table */
 }  AjOFeattabOut, *AjPFeattabOut ;  
 
 
@@ -82,15 +82,12 @@ typedef struct AjSFeattabOut {
 typedef struct AjSFeattable {
   AjPStr            Name ;	/* Sequence name */
   AjPStr            Type ;	/* Sequence type: P or N */ 
-  /*float             Version ;*/	/* GFF version */
-  /*AjPTime           Date ;*/
   ajint             DefFormat ; /* Original input or 'source' format
 				   of the feature table */
-  /* AjPStr            DefSource ;*/
   AjPList           Features ;	/* List of AjPFeatures... */
   ajint             Start;      /* First and last position used */
   ajint             End;        /* Rather like begin and end for sequences */
-  ajint             Groups;
+  ajint             Groups;	/* Number of current group being added */
 }  AjOFeattable, *AjPFeattable ;  
 
 
@@ -161,23 +158,23 @@ typedef struct AjSFeattable {
 ******************************************************************************/
 
 typedef struct AjSFeature {
-  AjPStr            Source ;
-  AjPStr            Type ;
-  ajint               Start ;
-  ajint               End;
-  ajint               Start2;
-  ajint               End2;
-  float             Score ;
-  AjPList           Tags ; /* a.k.a. the [group] field tag-values of GFF2 */
-  AjPStr            Comment ;
-  char              Strand ;
-  ajint               Frame ;
-  AjPStr            desc ;
-  ajint               Flags;
-  ajint               Group;
-  ajint               Exon;
-  AjPStr            Remote ;
-  AjPStr            Label ;
+  AjPStr            Source ;	/* Source sequence name */
+  AjPStr            Type ;	/* Type N or P */
+  ajint             Start ;	/* Start position */
+  ajint             End;	/* End position */
+  ajint             Start2;	/* Second start position - EMBL (a.b)*/
+  ajint             End2;	/* Second end position - EMBL ..(a.b) */
+  float             Score ;	/* Score or 0.0 if none */
+  AjPList           Tags ;	/* Tag-value list */
+  AjPStr            Comment ;	/* Comment - obsolete */
+  char              Strand ;	/* Strand +/- or NULL */
+  ajint             Frame ;	/* Frame 1..3, -1..-3 or 0 */
+  AjPStr            Desc ;	/* One-line description obsolete */
+  ajint             Flags;	/* Flag bit mask for EMBL location */
+  ajint             Group;	/* Group for join/order/one-of */
+  ajint             Exon;	/* Exon number */
+  AjPStr            Remote ;	/* Remote ID - EMBL Remote:a.b */
+  AjPStr            Label ;	/* Label name for location - EMBL legacy */
 } AjOFeature, *AjPFeature ;
 
 

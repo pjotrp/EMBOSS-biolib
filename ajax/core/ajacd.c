@@ -5598,7 +5598,8 @@ static void acdSetSeq (AcdPAcd thys) {
   
   val = ajSeqNew();		/* set the default value */
   seqin = ajSeqinNew();		/* set the default value */
-  seqin->multi = ajFalse;
+
+  /* seqin->multi = ajFalse; */ /* pmr: moved to ajSeqinNew */
   
   (void) acdQualToBool (thys, "snucleotide", ajFalse, &snuc, &defreply);
   (void) acdQualToBool (thys, "sprotein", ajFalse, &sprot, &defreply);
@@ -5624,12 +5625,14 @@ static void acdSetSeq (AcdPAcd thys) {
      (void) acdUserGet (thys, &reply);
 
     ajSeqinUsa (&seqin, reply);
+
     (void) acdGetValueAssoc (thys, "sformat", &seqin->Formatstr);
     (void) acdGetValueAssoc (thys, "sdbname", &seqin->Db);
     (void) acdGetValueAssoc (thys, "sopenfile", &seqin->Filename);
     (void) acdGetValueAssoc (thys, "sid", &seqin->Entryname);
 
     (void) acdGetValueAssoc (thys, "ufo", &seqin->Ufo);
+
     (void) acdGetValueAssoc (thys, "fformat", &seqin->Ftquery->Formatstr);
     (void) acdGetValueAssoc (thys, "fopenfile", &seqin->Ftquery->Filename);
 
@@ -5834,8 +5837,9 @@ static void acdSetSeqset (AcdPAcd thys) {
 
   val = ajSeqsetNew();		/* set the default value */
   seqin = ajSeqinNew();		/* set the default value */
-  seqin->multi = ajTrue;
-  
+
+  /* seqin->multi = ajFalse; */ /* pmr: moved to ajSeqinNew */
+
   (void) acdQualToBool (thys, "snucleotide", ajFalse, &snuc, &defreply);
   (void) acdQualToBool (thys, "sprotein", ajFalse, &sprot, &defreply);
 
@@ -5865,10 +5869,10 @@ static void acdSetSeqset (AcdPAcd thys) {
     (void) acdGetValueAssoc (thys, "sopenfile", &seqin->Filename);
     (void) acdGetValueAssoc (thys, "sid", &seqin->Entryname);
     (void) acdGetValueAssoc (thys, "ufo", &seqin->Ufo);
-    /*
+
     (void) acdGetValueAssoc (thys, "fformat", &seqin->Ftquery->Formatstr);
     (void) acdGetValueAssoc (thys, "fopenfile", &seqin->Ftquery->Filename);
-    */
+
     (void) acdAttrToStr(thys, "type", "", &seqin->Inputtype);
     (void) acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
     if (ajStrLen(seqin->Ufo))
@@ -6098,10 +6102,10 @@ static void acdSetSeqall (AcdPAcd thys) {
     (void) acdGetValueAssoc (thys, "sopenfile", &seqin->Filename);
     (void) acdGetValueAssoc (thys, "sid", &seqin->Entryname);
     (void) acdGetValueAssoc (thys, "ufo", &seqin->Ufo);
-    /*
+
     (void) acdGetValueAssoc (thys, "fformat", &seqin->Ftquery->Formatstr);
     (void) acdGetValueAssoc (thys, "fopenfile", &seqin->Ftquery->Filename);
-    */
+
     (void) acdAttrToStr(thys, "type", "", &seqin->Inputtype);
     (void) acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
     (void) acdAttrToBool(thys, "entry", ajFalse, &seqin->Text);
