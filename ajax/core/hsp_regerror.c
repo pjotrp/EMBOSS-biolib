@@ -59,11 +59,17 @@ static struct rerr {
     {-1,		"",		"*** unknown regexp error code ***"},
 };
 
-/*
-   - regerror - the interface to error numbers
-   = extern size_t regerror(ajint, const regex_t *, char *, size_t);
-   */
-/* ARGSUSED */
+/* @func hsp_regerror *******************************************************
+**
+** the interface to error numbers
+**
+** @param [r] errcode [ajint] Undocumented
+** @param [r] preg [const regex_t *] Undocumented
+** @param [r] errbuf [char *] Undocumented
+** @param [r] errbuf_size [size_t] Undocumented
+** @return [size_t] Undocumented
+******************************************************************************/
+
 size_t hsp_regerror(ajint errcode,const regex_t *preg,char *errbuf,
 		    size_t errbuf_size)
 {
@@ -109,10 +115,15 @@ size_t hsp_regerror(ajint errcode,const regex_t *preg,char *errbuf,
     return(len);
 }
 
-/*
-   - regatoi - internal routine to implement REG_ATOI
-   == static char *regatoi(const regex_t *preg, char *localbuf);
-   */
+/* @func regatoi *******************************************************
+**
+** internal routine to implement REG_ATOI
+**
+** @param [r] preg [const regex_t *] Undocumented
+** @param [r] localbuf [char *] Undocumented
+** @return [char*] Undocumented
+******************************************************************************/
+
 static char * regatoi(const regex_t *preg,char *localbuf)
 {
     register struct rerr *r;

@@ -11,6 +11,18 @@ char *fields[];			 list is not NULL-terminated
 ajint nfields;			 number of entries available in fields[] 
 char *sep;			 "" white, "c" single char, "ab" [ab]+ */
 
+/* @func dosplit **************************************************************
+**
+** Undocumented.
+**
+** @param [?] string [char*] Undocumented
+** @param [?] fields [char**] Undocumented
+** @param [?] nfields [ajint] Undocumented
+** @param [?] seps [char*] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 ajint split(char *string, char *fields[], ajint nfields, char *sep)
 {
     register char *p = string;
@@ -157,13 +169,20 @@ ajint split(char *string, char *fields[], ajint nfields, char *sep)
 
 
 
-/*
- * test program
- * pgm		runs regression
- * pgm sep	splits stdin lines by sep
- * pgm str sep	splits str by sep
- * pgm str sep n	splits str by sep n times
- */
+/* @prog hsp_split ************************************************************
+**
+** test program
+**
+** pgm		runs regression<br>
+** pgm sep	splits stdin lines by sep<br>
+** pgm str sep	splits str by sep<br>
+** pgm str sep n	splits str by sep n times
+**
+** @param [?] argc [ajint] Undocumented
+** @param [?] argv [char**] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 ajint main(ajint argc, char **argv)
 {
@@ -201,6 +220,16 @@ ajint main(ajint argc, char **argv)
 
 
 
+/* @func dosplit **************************************************************
+**
+** Undocumented.
+**
+** @param [?] string [char*] Undocumented
+** @param [?] seps [char*] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 ajint dosplit(char *string, char *seps)
 {
 #	define	NF	5
@@ -215,7 +244,15 @@ ajint dosplit(char *string, char *seps)
 
 
 
-
+/* @func print *******************************************************
+**
+** Undocumented
+** 
+** [r] nf [nf] Undocumented
+** [r] nfp [ajint] Undocumented
+** [r] fields [char**] Undocumented
+** @return [ajint] Undocumented
+******************************************************************************/
 
 ajint print(ajint nf, ajint nfp, char *fields[])
 {
@@ -304,6 +341,14 @@ struct {
 
 
 
+
+/* @func regress **************************************************************
+**
+** Undocumented.
+**
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 ajint regress()
 {
