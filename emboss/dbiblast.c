@@ -217,7 +217,8 @@ static ajint loadtable (ajuint* table, ajint isize, PBlastDb db,
 static ajint ncblreadhdr (AjPStr* hline, PBlastDb db,
 			ajint start, ajint end);
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
 
   AjBool staden;
   AjPStr directory;

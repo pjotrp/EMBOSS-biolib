@@ -40,7 +40,7 @@ void scan_profile(AjPStr substr, AjPStr pname, AjPStr name, AjPStr mname,
 
 
 
-ajint main( ajint argc, char **argv, char **env)
+int main(int argc, char **argv)
 {
     AjPSeqall seqall;
     AjPSeq    seq=NULL;

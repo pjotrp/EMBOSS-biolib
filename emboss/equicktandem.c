@@ -24,7 +24,7 @@ char *back, *front, *maxback=NULL, *maxfront=NULL;
 char* sq;
 ajint gap, max, score ;
 
-ajint main (ajint argc, char **argv)
+int main(int argc, char **argv)
 {
   ajint thresh;
   ajint maxrepeat;

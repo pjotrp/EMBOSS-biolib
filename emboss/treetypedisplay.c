@@ -1,6 +1,6 @@
 #include "emboss.h"
 
-ajint main(ajint argc, char *argv[])
+int main(int argc, char **argv)
 {
   PLFLT x1[9]={2,1,2,1,1,2,3,3}; /* x1,y1  x2,y2  are lines */
   PLFLT y1[9]={4,2,3,1,1,3,2,2};

@@ -34,7 +34,8 @@ comp reg exp.
 search regcomp with string.
 */
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
   EmbPPatMatch results = NULL;
   AjPSeq seq = NULL;
   AjPStr str = NULL;

@@ -27,7 +27,7 @@ void put_seq(AjPSeq seq, AjPStr strseq, ajint n, char *name, ajint type,
 
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPSeqall seqall=NULL;
     AjPSeq seq=NULL;

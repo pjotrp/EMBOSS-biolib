@@ -98,7 +98,7 @@ float VerTextSeqLength(float postext, ajint NumNames);
 
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPGraph graph;
     ajint i;

@@ -976,7 +976,8 @@ ajint isTheReverse(struct record *match, struct tableTop *cluster1){
 
 
 
-ajint main(ajint argc, char * argv[]){
+int main(int argc, char **argv)
+{
   AjPFile matchfile;
 
   AjPStr line = NULL;

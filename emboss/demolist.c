@@ -80,7 +80,8 @@ static void  freegff (void **x, void *cl){
 }
 
 
-ajint main (ajint argc, char **argv) {
+int main(int argc, char **argv)
+{
   AjPList list=NULL;
   AjPFile gfffile;
   AjPStr  line=NULL;

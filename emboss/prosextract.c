@@ -23,7 +23,7 @@
 
 #define DATANAME "PROSITE/prosite.lines" 
 
-ajint main (ajint argc, char *argv[] )
+int main(int argc, char **argv)
 {
     AjPFile infdat 	=NULL;
     AjPFile infdoc 	=NULL;

@@ -23,7 +23,7 @@
 
 
 
-ajint main (ajint argc, char * argv[])
+int main(int argc, char **argv)
 {
 
     ajint shuffles=1;

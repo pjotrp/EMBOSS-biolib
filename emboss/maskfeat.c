@@ -24,7 +24,8 @@
 #include "emboss.h"
 static void FeatSeqMask (AjPSeq seq, AjPStr type, AjPStr maskchar);
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
 
   AjPSeqall seqall;
   AjPSeq seq;

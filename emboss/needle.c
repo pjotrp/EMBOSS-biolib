@@ -21,7 +21,7 @@
 
 #include "emboss.h"
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPSeqall seqall;
     AjPSeq a;

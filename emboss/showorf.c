@@ -47,7 +47,7 @@ static void showTransb(ajint **ppos, ajint *npos, AjPStr *pseqs, AjPStr substr,
 
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPSeq       a;
     AjPFile      outf;

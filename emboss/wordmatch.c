@@ -12,7 +12,8 @@ wordmatch -sequencea /nfs/adnah/il/wordtest/eclac.seq -sequenceb /nfs/adnah/il/w
 #include "ajax.h"
 #include "emboss.h"
 
-ajint main(ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
 
   AjPSeq seq1,seq2;
   ajint wordlen;

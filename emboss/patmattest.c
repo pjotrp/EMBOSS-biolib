@@ -21,7 +21,8 @@
 
 char *testset[] = { "GAN","GAATTC","CCSGG","GANTC","GABNNNNNVTC","GA","GANN","TC"};
   
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
   AjPStr cut = NULL;
   AjPStr new = NULL;
   AjPStr test = NULL;

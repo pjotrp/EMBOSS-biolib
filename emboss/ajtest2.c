@@ -6,7 +6,7 @@ void print_hits(AjPList *l, ajint hits, AjPFile outf);
 
 
 
-ajint main (ajint argc, char * argv[])
+int main(int argc, char **argv)
 {
     AjPSeqall seqall;
     AjPSeq seq;

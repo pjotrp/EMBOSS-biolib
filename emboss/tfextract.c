@@ -24,7 +24,7 @@
 #include "emboss.h"
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPFile inf  = NULL;
     AjPFile fout = NULL;

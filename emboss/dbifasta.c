@@ -109,7 +109,8 @@ static void rmfileI (const char* ext, ajint ifile);
 AjPRegexp getExpr(AjPStr idformat, ajint *type);
 
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
 
   AjBool staden;
   AjPStr directory;

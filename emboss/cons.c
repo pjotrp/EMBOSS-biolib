@@ -42,7 +42,7 @@ void calc_consensus(AjPSeqset seqset,AjPMatrix cmpmatrix,
                     ajint identity, AjPStr *cons);
 
 
-ajint main (ajint argc, char * argv[])
+int main(int argc, char **argv)
 {
     ajint   nseqs;
     ajint   mlen;

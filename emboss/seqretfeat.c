@@ -53,7 +53,8 @@ AjPList buildListFromString(AjPStr string, AjPSeq seq, AjBool feat){
   return newlist;
 }
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
 
   AjPSeq seq;
   AjPSeqout seqout;

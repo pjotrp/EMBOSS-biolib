@@ -33,7 +33,7 @@
 
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     ajint       nfam      = 0;	/* Counter for the families */
     ajint       ncluster  = 0;	/* Counter for the number of clusters*/    

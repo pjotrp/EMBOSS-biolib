@@ -38,7 +38,7 @@ ajint readSig(AjPFloat2d *matrix,AjBool prokaryote);
 
 
 
-ajint main( ajint argc, char **argv, char **env)
+int main(int argc, char **argv)
 {
     AjPSeqall seqall;
     AjPSeq    seq=NULL;

@@ -74,7 +74,7 @@ void print_hits(AjPFile outf, AjPList hlist, ajint dno, EmbPMdata* data);
 
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPSeq       seq;
     AjPSeqall    seqall;

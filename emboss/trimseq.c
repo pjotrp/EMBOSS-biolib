@@ -27,7 +27,8 @@ ajint trim (AjPSeq seq, ajint sense, AjBool isnuc, ajint window, float percent, 
 void parole(AjBool *gang, char *good_guys);
 void arrest(AjBool *gang, char *bad_guys);
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
 
   AjPSeqall seqall;
   AjPSeqout seqout;

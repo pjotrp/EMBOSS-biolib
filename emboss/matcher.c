@@ -145,7 +145,8 @@ AjPFile outf;
 AjPMatrix matrix=NULL;
 AjPSeqCvt cvt = NULL;
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
   AjPStr aa0str=0,aa1str=0;
   char *s1,*s2;
   ajint gdelval,ggapval;

@@ -28,7 +28,8 @@ static void merge (AjPList matchlist, AjPSeq seq1, AjPSeq seq2,
 	AjPSeqout seqout, AjPFile outfile);
 
 
-ajint main(ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
   
   AjPSeq seq1,seq2;
   AjPSeqout seqout;

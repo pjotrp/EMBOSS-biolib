@@ -27,7 +27,7 @@
 static void GetRegions(AjPRange regions, AjPSeq seq);
 static void Trim (AjPSeq seq);
 
-ajint main (ajint argc, char * argv[])
+int main(int argc, char **argv)
 {
     AjPSeqall seqall;
     AjPSeqout seqout;

@@ -141,7 +141,7 @@ static ajint findstartpoints(AjPTable *seq1MatchTable,AjPSeq b,AjPSeq a,
 
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPSeqall seq1;
     AjPSeqset seq2;

@@ -35,7 +35,7 @@ static void drawocta(float x, float y, float size, AjBool text,
 
 
 
-ajint main( ajint argc, char **argv, char **env)
+int main(int argc, char **argv)
 {
     AjPSeq    seq=NULL;
     AjPStr    strand=NULL;

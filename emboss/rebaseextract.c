@@ -44,7 +44,7 @@ void printSuppHeader(AjPFile outf);
 
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
   AjPFile inf   = NULL;
   AjPFile outf  = NULL;

@@ -40,7 +40,8 @@ static void printIntResults( AjPFile outfile, AjPSeq seq, ajint * results,
 
 static ajint seq_start, seq_end, win_mid, seq_begin;
 
-ajint main( ajint argc, char **argv, char ** env) {
+int main(int argc, char **argv)
+{
 
   AjPSeq inseq;
   AjPFile outfile;

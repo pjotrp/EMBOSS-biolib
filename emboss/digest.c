@@ -27,7 +27,7 @@ void print_hits(AjPList l, AjPFile outf, ajint be, char *s);
 
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
 
     AjPSeq   a;

@@ -138,7 +138,8 @@ AjBool getnakaidata(AjPFile file, float matrix[]){
   return ajTrue;
 }
   
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
   AjPFile datafile;
   AjPStr aa0str=0;
   char *s1;

@@ -2,7 +2,8 @@
 
 static AjBool MatchPattern (AjPStr str, AjPStr pattern);
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
 
   AjPSeqall seqall;
   AjPSeqout seqout;

@@ -55,7 +55,7 @@ void print_hits(AjPList *ajb, ajint n, float minsd, ajint lastcol,
 
 
 
-ajint main( ajint argc, char **argv, char **env)
+int main(int argc, char **argv)
 {
     AjPSeqall seqall;
     AjPSeq    seq=NULL;

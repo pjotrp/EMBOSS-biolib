@@ -54,7 +54,8 @@ ajint getword(FILE *fp, char *buf, ajint size,
 
 
 
-ajint main(ajint argc, char *argv[]) {
+int main(int argc, char **argv)
+{
         ajint i;
 	ajNamInit("emboss");
         for (i = 1; i < argc; i++) {

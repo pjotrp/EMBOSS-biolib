@@ -40,7 +40,7 @@ static void drawocta(float x, float y, float size, AjBool text, AjPFile outf);
 #define AJB_PURPLE 10
 
 
-ajint main( ajint argc, char **argv, char **env)
+int main(int argc, char **argv)
 {
     AjPSeq    seq=NULL;
     AjPStr    strand=NULL;

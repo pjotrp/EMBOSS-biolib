@@ -37,7 +37,7 @@ void cpgsearch(AjPFile *outf, ajint s, ajint len, char *seq, char *name,
 	       ajint begin, ajint *score);
 void calcgc(ajint from, ajint to, char *p, ajint *dcg, ajint *dgc, ajint *gc);
 
-ajint main( ajint argc, char **argv, char **env)
+int main(int argc, char **argv)
 {
     AjPSeqall seqall;
     AjPSeq    seq=NULL;

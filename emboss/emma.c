@@ -30,7 +30,7 @@ AjPStr getUniqueFileName();
 
 
 
-ajint main( ajint argc, char ** argv, char ** env)
+int main(int argc, char **argv, char **env)
 {
 
     AjPSeqall seqall;

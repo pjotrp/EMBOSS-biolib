@@ -53,7 +53,7 @@ ajint getType(AjPFile inf);
 
 
 
-ajint main( ajint argc, char **argv, char **env)
+int main(int argc, char **argv)
 {
     AjPSeqall seqall;
     AjPSeq    seq=NULL;

@@ -40,7 +40,7 @@ static void showTransb(ajint *ppos, ajint *npos, AjPStr pro, AjPStr substr,
 static void prettyTranslate(AjPFile outf,int beg,int end,AjPStr s,AjPCod codon,
 		       AjPRange range, ajint width, AjPStr pro);
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPSeq       a;
     AjPFile      outf;

@@ -21,7 +21,7 @@ static void listPrint(AjPFile outfile, AjPList list){
   ajListMap(list,matchListPrint, outfile);
 }
 
-ajint main (ajint argc, char * argv[])
+int main(int argc, char **argv)
 {
   AjPTable seq1MatchTable =0 ;
   AjPList matchlist ;

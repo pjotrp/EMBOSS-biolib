@@ -41,7 +41,7 @@ static ajint getResColour(char B);
 
 
 
-ajint main (ajint argc, char * argv[])
+int main(int argc, char **argv)
 {
     AjPStr  fname;
     AjPFile fp;

@@ -1,6 +1,7 @@
 #include "emboss.h"
 
-ajint main (ajint argc, char **argv) {
+int main(int argc, char **argv)
+{
   AjPFeatLexicon dict=NULL;
   AjPFeatTable feattable;
   AjPStr name=NULL,score=NULL,desc=NULL,source=NULL,type=NULL;

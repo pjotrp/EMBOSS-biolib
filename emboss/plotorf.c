@@ -28,7 +28,7 @@ void norfs(char *seq, char *rev, ajint n, float **x, float **y, AjPInt *cnt,
 	   ajint beg);
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPSeq     seq;
     AjPStr     str;

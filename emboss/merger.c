@@ -32,7 +32,7 @@ float quality (char * seq, ajint pos, ajint window);
 
 AjBool bestquality (char * a, char *b, ajint apos, ajint bpos);
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPSeq a;
     AjPSeq b;

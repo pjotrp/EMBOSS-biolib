@@ -139,7 +139,7 @@
 
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPStr   cpdb_path     =NULL;	/* Path of cpdb files */
     AjPStr   cpdb_extn     =NULL;	/* Extn. of cpdb files */

@@ -17,7 +17,8 @@ ajint ntests = 0;
 
 static void primTest (void **x,void *cl);
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
 
   AjPSeqall seqall;
   AjPFile primfile;

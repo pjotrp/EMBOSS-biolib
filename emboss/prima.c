@@ -82,7 +82,7 @@ void testtarget(AjPStr seqstr, AjPStr revstr, ajint targetstart, ajint targetend
 		float saltconc, float dnaconc,
 		AjPList *pairlist, ajint *npair);
 
-ajint main (ajint argc, char *argv[] )
+int main(int argc, char **argv)
 {
     AjPFile outf=NULL;
 

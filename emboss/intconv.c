@@ -28,7 +28,7 @@ void modLineLong(AjPStr *line, ajint pos);
 
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPFile inf  = NULL;
     AjPFile outf = NULL;
@@ -48,101 +48,15 @@ ajint main(ajint argc, char **argv)
 
     while(ajFileReadLine(inf, &line))
     {
-	if(ajStrFindC(line,"int") == -1 && ajStrFindC(line,"long") == -1)
+	if(ajStrPrefixC(line,"ajint main"))
 	{
+	    ajFmtPrintF(outf,"int main(int argc, char **argv)\n");
+	    p=ajStrStr(line);
+	    if(p[strlen(p)-1]=='{')
+		ajFmtPrintF(outf,"{\n");
+	}
+	else
 	    ajFmtPrintF(outf,"%S\n",line);
-	    continue;
-	}
-
-	pos = 0;
-	p   = ajStrStr(line);
-
-	while(strstr(p+pos,"int"))
-	{
-	    if((q=strstr(p+pos,"[int]")))
-	    {
-		pos = q-p;
-		modLineInt(&line,pos+1);		
-		p = ajStrStr(line);
-		pos += 5;
-	    }
-	    else if((q=strstr(p+pos,"(int)")))
-	    {
-		pos = q-p;
-		modLineInt(&line,pos+1);		
-		p = ajStrStr(line);
-		pos += 5;
-	    }
-	    else if((q=strstr(p+pos,"int")))
-	    {
-		pos = q-p;
-		c = *(q+3);
-		if(!pos && (c==' ' || c=='\t' || c=='\n' || c=='\r' || c=='*'))
-		{
-		    modLineInt(&line,pos);
-		    p = ajStrStr(line);
-		}
-
-		if(pos)
-		    d = *(q-1);
-		
-		if(pos && (d==' ' || d=='\t' || d=='\r' || d=='(') &&
-		   (c==' ' || c=='\t' || c=='\n' || c=='\r' || c=='*'))
-		{
-		    modLineInt(&line,pos);
-		    p = ajStrStr(line);
-		}
-
-		pos += 3;
-	    }
-	}
-	
-
-
-	pos = 0;
-	p   = ajStrStr(line);
-
-	while(strstr(p+pos,"long"))
-	{
-	    if((q=strstr(p+pos,"[long]")))
-	    {
-		pos = q-p;
-		modLineLong(&line,pos+1);		
-		p = ajStrStr(line);
-		pos += 6;
-	    }
-	    else if((q=strstr(p+pos,"(long)")))
-	    {
-		pos = q-p;
-		modLineLong(&line,pos+1);		
-		p = ajStrStr(line);
-		pos += 6;
-	    }
-	    else if((q=strstr(p+pos,"long")))
-	    {
-		pos = q-p;
-		c = *(q+4);
-		if(!pos && (c==' ' || c=='\t' || c=='\n' || c=='\r' || c=='*'))
-		{
-		    modLineLong(&line,pos);
-		    p = ajStrStr(line);
-		}
-
-		if(pos)
-		    d = *(q-1);
-		
-		if(pos && (d==' ' || d=='\t' || d=='\r' || d=='(') &&
-		   (c==' ' || c=='\t' || c=='\n' || c=='\r' || c=='*'))
-		{
-		    modLineLong(&line,pos);
-		    p = ajStrStr(line);
-		}
-
-		pos += 4;
-	    }
-	}
-
-	ajFmtPrintF(outf,"%S\n",line);
     }
     
     ajStrDel(&line);

@@ -38,7 +38,8 @@ typedef struct SValue {
 } OValue, *PValue;
 
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
 
   ajint begin, end;
   AjPSeqall seqall;

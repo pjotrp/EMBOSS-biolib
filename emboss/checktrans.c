@@ -37,7 +37,7 @@ void ajbseq(AjPSeqout *outseq, char *seq, ajint begin, int
 void dumptofeat(AjPFeatTabOut featout,int from, ajint to,
 	char *p, char *seqname, ajint begin, ajint min_orflength);
 
-ajint main( ajint argc, char **argv, char **env)
+int main(int argc, char **argv)
 {
     AjPSeqall seqall;
     AjPSeq    seq=NULL;

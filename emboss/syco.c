@@ -25,7 +25,7 @@
 #include <float.h>
 #include <math.h>
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPSeq       a;
     AjPFile      outf;

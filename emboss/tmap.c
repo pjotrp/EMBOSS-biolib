@@ -248,7 +248,7 @@ void plot2(AjPGraph mult){
 
 /* Start of main program */
 
-ajint main(ajint argc, char *argv[])
+int main(int argc, char **argv)
 {
   AjPSeqset seqset;
   AjPGraph mult;

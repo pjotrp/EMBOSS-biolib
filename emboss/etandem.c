@@ -172,7 +172,8 @@ static void finalReport (void) {
 
 /**************************/
 
-ajint main (ajint argc, char *argv[]) {
+int main(int argc, char **argv)
+{
 
   ajint ibase, base;
   char *cp ;

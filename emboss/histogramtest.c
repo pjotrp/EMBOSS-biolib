@@ -5,7 +5,7 @@
 void ajGraphHistogram
 (ajint numofdatapoints, ajint numofsets, PLFLT *data,int sidebyside, ajint xmin, ajint xmax,int bins);
 
-ajint main(ajint argc, char *argv[])
+int main(int argc, char **argv)
 {
   AjPHist hist=NULL;
   AjPGraph graph=NULL;

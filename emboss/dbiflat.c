@@ -110,7 +110,8 @@ static void sortfile (const char* ext1, const char* ext2, ajint nfiles);
 static void rmfile (const char* ext, ajint nfiles);
 static void rmfileI (const char* ext, ajint ifile);
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
 
   AjBool staden;
   AjPStr directory;

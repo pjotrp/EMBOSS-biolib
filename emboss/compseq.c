@@ -29,7 +29,8 @@ ajint makebigarray(ajulong no_elements, ajulong **bigarray);
 
 
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
 
   AjPSeqall seqall;
   AjPSeq seq;

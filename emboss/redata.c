@@ -36,7 +36,7 @@ AjPTable supply_table(AjPFile inf);
 
 
 
-ajint main( ajint argc, char **argv, char **env)
+int main(int argc, char **argv)
 {
     AjPStr    enzyme=NULL;
     

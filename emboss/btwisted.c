@@ -24,7 +24,7 @@
 
 AjPTable getdinucdata(AjPFile anglesfile);
 
-ajint main (ajint argc, char **argv)
+int main(int argc, char **argv)
 {
 
     AjPSeq   seq = NULL;

@@ -30,7 +30,8 @@ static void Insert(AjPStr *str, AjBool isnuc, ajint start, ajint end);
 static void Move(AjPStr *str, ajint start, ajint end, ajint destination);
 static void Duplicate(AjPStr *str, ajint start, ajint end);
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
 
   AjPSeqall seqall;
   AjPSeqout seqout;

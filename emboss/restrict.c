@@ -42,7 +42,7 @@ void printHits(AjPFile *outf, AjPList *l, AjPStr *name, ajint hits, ajint begin,
 void read_equiv(AjPFile *equfile, AjPTable *table);
 static void read_file_of_enzyme_names(AjPStr *enzymes);
 
-ajint main( ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPSeqall seqall;
     AjPSeq    seq=NULL;

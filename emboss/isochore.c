@@ -38,7 +38,8 @@ static AjPFltarr ajFltarrNew0(size_t size);
 **
 ******************************************************************************/
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
 
   AjPSeq seq;
   AjPFile out;

@@ -27,7 +27,7 @@
 #define GSTEP 0.1
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPSeqall all;
     AjPSeq   a;

@@ -20,7 +20,8 @@
 ******************************************************************************/
 #include "emboss.h"
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
 
   ajint i,j,top,penalty=-8,nogap;
   AjPSeq seq,seq2;

@@ -30,7 +30,8 @@ static void WordMatchListConvDiffToFeat(AjPList list, AjPFeatTable *tab1,
                 AjPFeatTable *tab2, AjPStr seq1name, AjPStr seq2name, AjPSeq
                 seq1, AjPSeq seq2);
                                 
-ajint main(ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
   
   AjPSeq seq1,seq2;
   ajint wordlen;

@@ -93,7 +93,7 @@
 
 
 
-ajint main(ajint argc, char**argv)
+int main(int argc, char **argv)
 {
     AjPRegexp rexp    = NULL;
     AjPRegexp exp2    = NULL;

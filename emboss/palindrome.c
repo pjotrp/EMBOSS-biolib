@@ -110,7 +110,8 @@ static void printPalindrome( AjPFile outfile, AjPStr seq, Palindrome pal) {
 
 }
 
-ajint main( ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
 
    AjPSeq sequence;
    AjPFile outfile;

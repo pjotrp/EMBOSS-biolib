@@ -45,7 +45,7 @@ void plotit(char *seq, ajint begin, ajint len, ajint shift, float *obsexp,
 void dumpfeatout(AjPFeatTabOut featout, AjBool *thresh, char *seqname,int begin,int len);
 
 
-ajint main( ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPSeqall seqall;
     AjPSeq    seq=NULL;

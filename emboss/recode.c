@@ -79,7 +79,7 @@ static void fmt_muts(AjPList muts, AjPFile outf);
  
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPSeq seq=NULL;     
     AjPFile outf=NULL;

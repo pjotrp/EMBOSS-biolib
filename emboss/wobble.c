@@ -31,7 +31,7 @@ void calcpc(char *seq, char *rev, ajint n, float **x, float **y, ajint *count,
 float get_mean(char *bases, char *s);
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPFile    outf;
     AjPSeq     seq;

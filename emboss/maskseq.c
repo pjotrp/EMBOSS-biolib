@@ -24,7 +24,8 @@
 #include "emboss.h"
 void MaskRegions(AjPStr regions, AjPSeq *seq, AjPStr maskchar);
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
 
   AjPSeq seq;
   AjPSeqout seqout;

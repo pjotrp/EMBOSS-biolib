@@ -503,7 +503,7 @@ ajint fillinboxes(float ystart,int length,int numseq,int resbreak,
 
 
 
-ajint main (ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     ajint i,numseq,j=0,numres,count,k;
     float defheight,currentheight;

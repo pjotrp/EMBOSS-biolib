@@ -32,7 +32,7 @@ void print_hits(AjPFile *outf, AjPList *l, ajint nmotifs, AjPStr *name,
 
 
 
-ajint main( ajint argc, char **argv, char **env)
+int main(int argc, char **argv)
 {
     AjPSeqall seqall;
     AjPSeq    seq=NULL;

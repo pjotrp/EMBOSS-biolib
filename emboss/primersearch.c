@@ -90,7 +90,7 @@ static void store_hits(Primer primdata, AjPList fhits_list, AjPList rhits_list, 
 static void print_hits(AjPList primerList, AjPFile outf);
 
 
-ajint main (ajint argc, char * argv[])
+int main(int argc, char **argv)
 {
     AjPSeqall seqall;
     AjPSeq seq = NULL;

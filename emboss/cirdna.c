@@ -99,7 +99,7 @@ float HorTextPileLengthMax(AjPStr Name2, ajint NumNames);
 float ComputeAngle(float RealLength, float Length, float OriginAngle);
 AjPStr Style[MAXLABELS][MAXLABELS],Name[MAXLABELS][MAXLABELS];
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPGraph graph;
     ajint i;

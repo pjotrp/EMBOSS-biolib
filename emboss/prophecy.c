@@ -38,7 +38,7 @@ void henikoff_profile(AjPSeqset seqset, AjPMatrixf imtx, float **sub,
 		      float gapopen, float gapextend, AjPStr *cons);
 
 
-ajint main (ajint argc, char * argv[])
+int main(int argc, char **argv)
 {
 
     AjPSeqset seqset=NULL;

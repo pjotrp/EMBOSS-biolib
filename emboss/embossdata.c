@@ -32,7 +32,7 @@ static AjPStr data_dir(void);
 
 
 
-ajint main (ajint argc, char * argv[])
+int main(int argc, char **argv)
 {
     AjPList rlist=NULL;
     AjPList flocs=NULL;

@@ -58,7 +58,7 @@ static void plotMatches(AjPList list, AjBool text)
 
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
   
     AjPSeqset seqset;

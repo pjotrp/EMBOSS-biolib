@@ -39,7 +39,7 @@ ajint matrix[MAXSAVE][MAXSAVE] ;
 
 void report (ajint max, ajint imax) ;
 
-ajint main (ajint argc, char **argv)
+int main(int argc, char **argv)
 {
   ajint i, j, irel, imax, jmax=0, *ip, *t1Base ;
   ajint lastReported = -1 ;

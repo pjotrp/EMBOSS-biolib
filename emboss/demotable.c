@@ -48,7 +48,8 @@ static void freetype (const void* key, void** value, void* cl){
   AJFREE(valptr);
 }
  
-ajint main (ajint argc, char **argv) {
+int main(int argc, char **argv)
+{
   AjPStr temp;
   AjPFile gfffile;
   AjPStr  line=NULL;

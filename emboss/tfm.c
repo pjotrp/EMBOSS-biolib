@@ -83,7 +83,8 @@ static AjBool FindAppDoc (AjPStr program, AjBool html, AjPStr* path) {
 }
 
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
 
   AjPFile outfile = NULL;
   AjPStr program = NULL;

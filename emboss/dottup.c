@@ -58,7 +58,7 @@ static void plotMatches(AjPList list)
 
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
   
     AjPSeq seq1,seq2;

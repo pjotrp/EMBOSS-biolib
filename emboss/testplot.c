@@ -26,7 +26,8 @@
 
 ajint ipoints;
 
-ajint main(ajint argc, char *argv[]){
+int main(int argc, char **argv)
+{
   AjPGraphData graphdata;
   ajint i;
   AjPGraph mult;
@@ -135,7 +136,8 @@ ajint main(ajint argc, char *argv[]){
   return 0;
 }
 #else
-ajint main(ajint argc, char *argv[]){
+int main(int argc, char **argv)
+{
   ajFatal("Sorry no PLplot was found on compilation hence NO graph\n");
 }
 #endif

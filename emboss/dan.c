@@ -45,7 +45,7 @@ void unfmall(float *xa, float *ta, float *tpa, float *cga);
 
 
 
-ajint main( ajint argc, char ** argv, char ** env)
+int main(int argc, char **argv)
 {
     AjPSeqall seqall;
     AjPFile    outf=NULL;

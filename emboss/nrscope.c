@@ -88,7 +88,7 @@
 
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     ajint        x         = 0;
     ajint        nset      = 0;	 /*No. proteins in our  set*/

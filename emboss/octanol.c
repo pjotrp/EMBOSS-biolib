@@ -84,7 +84,8 @@ ajint getwhitewimbleydata(AjPFile file, float matrix[], float err[],
   return 1;
 }
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
   AjPFile datafile;
   float matrix[AZ],err[AZ];      /* interface values */       
   float matrix2[AZ],err2[AZ];    /* octanol values   */

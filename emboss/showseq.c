@@ -37,7 +37,8 @@ static void read_file_of_enzyme_names(AjPStr *enzymes);
 
 
 
-ajint main (ajint argc, char * argv[]) {
+int main(int argc, char **argv)
+{
 
   ajint begin, end;
   AjPSeqall seqall;

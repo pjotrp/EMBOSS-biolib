@@ -20,7 +20,8 @@
 #include "ajax.h"
 #include "ajgraph.h"
 
-ajint main(ajint argc, char *argv[]){
+int main(int argc, char **argv)
+{
   ajint i;
   ajint numcols = 32; /* only 16 actually just testing!!! */
   char buffer[20];
@@ -62,7 +63,8 @@ ajint main(ajint argc, char *argv[]){
 
 
 #else
-ajint main(ajint argc, char *argv[]){
+int main(int argc, char **argv)
+{
   ajFatal("Sorry no PLplot was found on compilation hence NO graph");
 }
 #endif

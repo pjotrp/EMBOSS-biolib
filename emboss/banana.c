@@ -36,7 +36,7 @@
 
 
 
-ajint main (ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPSeq seq;
     AjPGraph graph = 0;

@@ -46,7 +46,7 @@ static void FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable, ajint minsize,
 #define AROUND_INIT_STOP 5
 #define AROUND_END_STOP 6
 
-ajint main (ajint argc, char * argv[])
+int main(int argc, char **argv)
 {
 
     AjPSeqall seqall;

@@ -24,7 +24,8 @@
 #include "emboss.h"
 #include "ajax.h"
 
-ajint main (ajint argc, char *argv[]) {
+int main(int argc, char **argv)
+{
   AjPSeq sequence = NULL ;
   AjPGraph graph = NULL;
   float x=0.5,y=0.5,x2;

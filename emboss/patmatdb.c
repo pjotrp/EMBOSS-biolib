@@ -26,7 +26,7 @@ void spaces(AjPFile *outf, ajint length);
 
 
 
-ajint main (ajint argc, char *argv[] )
+int main(int argc, char **argv)
 {
     AjPFile outf 		=NULL;	
 

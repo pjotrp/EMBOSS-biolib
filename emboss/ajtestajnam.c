@@ -5,7 +5,7 @@
 */
 #include "emboss.h"
 
-ajint main()
+int main(int argc, char **argv)
 { 
   AjPStr value = 0;
   char *name[] = {"end","acdroot","dataroot","embldir","configdir", NULL};

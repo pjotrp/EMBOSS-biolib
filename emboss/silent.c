@@ -70,7 +70,7 @@ static ajint basecompare(const void *a, const void *b);
 
 
 
-ajint main(ajint argc, char **argv)
+int main(int argc, char **argv)
 {
     AjPSeq seq=NULL;		     /*3 things we need from ACD/embInit*/
     AjPFile outf=NULL;

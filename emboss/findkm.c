@@ -32,7 +32,7 @@ float findmin(float *arr1, ajint number);
 
 /*Func declarations */
 
-ajint main (ajint argc, char *argv[])
+int main(int argc, char **argv)
 {
     AjPFile infile = NULL;
     AjPFile outfile = NULL;
