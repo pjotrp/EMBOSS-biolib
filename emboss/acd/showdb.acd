@@ -62,6 +62,13 @@ bool: all  [
   prompt: "Display 'all' column"
 ]
 
+bool: fields  [
+  optional: "Y"
+  default: "N"
+  prompt: "Display 'fields' column"
+  help: "This displays the search fields that can be used on this database, other than the standard 'id' or 'acc' fields."
+]
+
 bool: comment  [
   default: "@(!$(only))"
   prompt: "Display 'comment' column"
