@@ -91,6 +91,28 @@ section: additional [
            the reverse complement of a nucleic sequence."
   ]
 
+  boolean: calcfreq [
+#    additional: "@($(infile)==NULL)"
+    additional: "Y"
+    default: "N"
+    information: "Calculate expected frequency from sequence"
+    help: "If this is set true then the expected frequencies of words
+           are calculated from the observed frequency of single
+           bases or residues in the sequences. \
+           If you are reporting a word size of 1 (single
+           bases or residues) then there is no point in using this
+           option because the calculated expected frequency will be
+           equal to the observed frequency.  \
+           Calculating the expected frequencies like this will give
+           an approximation of the expected frequencies
+           that you might get by using an input file of frequencies
+           produced by a previous run of this program.
+           If an input file of expected word frequencies has been specified
+           then the values from that file will be used instead of this
+           calculation of expected frequency from the sequence, even if
+           'calcfreq' is set to be true."
+  ]
+
 endsection: additional
 
 section: output [
