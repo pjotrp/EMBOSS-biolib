@@ -2122,7 +2122,7 @@ static void seqWriteEmbl(AjPSeqout outseq)
     }
     
     ajFmtPrintF(outseq->File,
-		"ID   %-10.10S standard; DNA; UNC; %d BP.\n",
+		"ID   %-10S standard; DNA; UNC; %d BP.\n",
 		outseq->Name, ajStrLen(outseq->Seq));
     
     if(ajListLength(outseq->Acclist))
@@ -2288,7 +2288,7 @@ static void seqWriteSwiss(AjPSeqout outseq)
     }
     
     ajFmtPrintF(outseq->File,
-		"ID   %-10.10S     STANDARD;      PRT; %5d AA.\n",
+		"ID   %-10S     STANDARD;      PRT; %5d AA.\n",
 		outseq->Name, ajStrLen(outseq->Seq));
     
     if(ajListLength(outseq->Acclist))
