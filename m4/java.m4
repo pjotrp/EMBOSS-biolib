@@ -105,10 +105,10 @@ AC_ARG_WITH(auth,
 		ALT_AUTHTYPE="-DPAM"
 	  fi
 	  if test "$withval" = "shadow" ; then
-		ALT_AUTHTYPE="-DSHADOW"
+		ALT_AUTHTYPE="-DN_SHADOW"
 	  fi
 	  if test "$withval" = "rshadow" ; then
-		ALT_AUTHTYPE="-DRSHADOW"
+		ALT_AUTHTYPE="-DR_SHADOW"
 	  fi
 	  if test "$withval" = "noshadow" ; then
 		ALT_AUTHTYPE="-DNO_SHADOW"
