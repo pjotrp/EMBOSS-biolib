@@ -193,7 +193,7 @@ AC_ARG_WITH(thread,
 		LIBS="$LIBS -lpthread"
 	  fi
 	  if test "$withval" = "hpux" ; then
-	        CFLAGS="$CFLAGS -D_POSIX_C_SOURCE=199506L" 
+	        CFLAGS="$CFLAGS -Ae +z -DNATIVE -D_POSIX_C_SOURCE=199506L" 
 		LDFLAGS="$LDFLAGS -lpthread"
 		LIBS="$LIBS -lpthread"
 	  fi
