@@ -650,7 +650,7 @@ AjBool embDmxScopToScophit(const AjPScop source, AjPScophit* target)
 ** @@
 ****************************************************************************/
 
-AjBool embDmxScopalgToScop(const AjPScopalg align, AjPScop const *scop_arr, 
+AjBool embDmxScopalgToScop(const AjPScopalg align, const AjPScop *scop_arr, 
 			   ajint scop_dim, AjPList* list)
 {
     AjPStr entry_up = NULL;  /* Current entry, upper case */
@@ -692,7 +692,7 @@ AjBool embDmxScopalgToScop(const AjPScopalg align, AjPScop const *scop_arr,
 	    ajFmtPrint("Pushing %d (%S)\n", scop_arr[idx]->Sunid_Family, 
 		       scop_arr[idx]->Acc); */
 	    
-            ajListPushApp(*list,scop_arr[idx]);
+            ajListPushApp(*list,(void*)scop_arr[idx]);
 	}
 	
     }
@@ -758,7 +758,7 @@ AjBool embDmxScophitsOverlapAcc(const AjPScophit h1, const AjPScophit h2,
 ** @param [r] n   [ajint]          Threshold number of residues for overlap
 **
 ** @return [AjBool] True if the overlap between the sequences is at least as 
-** long as the threshold. False otherwise.
+**                  long as the threshold. False otherwise.
 ** @@
 ****************************************************************************/
 

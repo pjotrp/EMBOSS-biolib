@@ -63,7 +63,7 @@ AjBool        embDmxScopToScophit(const AjPScop source,
 				  AjPScophit* target);
 
 AjBool        embDmxScopalgToScop(const AjPScopalg align,
-				  AjPScop const *scop_arr, 
+				  const AjPScop *scop_arr, 
 				  ajint dim, 
 				  AjPList* list);
 
