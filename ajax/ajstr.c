@@ -4141,6 +4141,9 @@ AjPStr ajStrTokC (const AjPStr thys, const char* delim) {
 **
 ** Simple test for a string having a valid Boolean value.
 **
+** Must be a single character boolean value, or one of "yes, "no",
+** "true" or "false".
+**
 ** @param [rE] thys [const AjPStr] String
 ** @return [AjBool] ajTrue if the string is acceptable as a boolean.
 ** @cre an empty string always returns false.
@@ -4156,6 +4159,11 @@ AjBool ajStrIsBool (const AjPStr thys) {
   if (!thys->Len) return ajFalse;
 
   if (!strchr("YyTt1NnFf0", *cp)) return ajFalse;
+  if (!ajStrChar(thys, 1)) return ajTrue;
+  if (ajStrMatchCaseC(thys, "yes")) return ajTrue;
+  if (ajStrMatchCaseC(thys, "no")) return ajTrue;
+  if (ajStrMatchCaseC(thys, "true")) return ajTrue;
+  if (ajStrMatchCaseC(thys, "false")) return ajTrue;
 
   return ajTrue;
 }
@@ -4318,33 +4326,44 @@ AjBool ajStrIsDouble (const AjPStr thys) {
 
 AjBool ajStrToBool (const AjPStr thys, AjBool* result) {
 
-  AjBool ret=ajFalse;
   char* cp = ajStrStr(thys);
   ajint i;
 
   *result = ajFalse;
 
-  if (!thys) return ret;
-  if (thys->Len < 1) return ret;
+  if (!thys) return ajFalse;
+  if (thys->Len < 1) return ajFalse;
 
   if (strchr("YyTt1", *cp)) {
     *result = ajTrue;
-    ret = ajTrue;
+    if (!ajStrChar(thys, 1)) return ajTrue;
+    if (ajStrMatchCaseC(thys, "yes")) return ajTrue;
+    if (ajStrMatchCaseC(thys, "true")) return ajTrue;
+    return ajFalse;
   }
   else if (strchr("NnFf", *cp)) {
     *result = ajFalse;
-    ret = ajTrue;
+    if (!ajStrChar(thys, 1)) return ajTrue;
+    if (ajStrMatchCaseC(thys, "no")) return ajTrue;
+    if (ajStrMatchCaseC(thys, "false")) return ajTrue;
+    return ajFalse;
   }
-  else if (strchr("0+", *cp)) {
+  else if (strchr("123456789", *cp)) {
+    *result = ajTrue;
+    if (ajStrIsFloat(thys)) return ajTrue;
+    return ajFalse;
+  }
+  else if (strchr("0+-", *cp)) {
     i = strcspn(cp, "123456789"); /* e.g. 0.1, 0007 */
     if (cp[i])
       *result = ajTrue;
     else
       *result = ajFalse;
-    ret = ajTrue;
+    if (ajStrIsFloat(thys)) return ajTrue;
+    return ajFalse;
   }
 
-  return ret;
+  return ajFalse;
 }
 
 /* @func ajStrToHex ***********************************************************
@@ -5633,6 +5652,52 @@ AjBool ajStrIsSpace (const AjPStr thys) {
 
   while (*cp) {
     if (!isspace((ajint)*cp++)) return ajFalse;
+  }
+
+  return ajTrue;
+}
+
+/* @func ajStrIsLower *********************************************************
+**
+** Simple test for a string having no alphabetic upper case
+** as defined by isupper in the C RTL..
+**
+** @param [rE] thys [const AjPStr] String
+** @return [AjBool] ajTrue if the string is entirely alphabetic
+** @cre an empty string returns ajTrue
+** @@
+******************************************************************************/
+
+AjBool ajStrIsLower (const AjPStr thys) {
+  char* cp = ajStrStr(thys);
+
+  if (!thys->Len) return ajTrue;
+
+  while (*cp) {
+    if (isupper((ajint)*cp++)) return ajFalse;
+  }
+
+  return ajTrue;
+}
+
+/* @func ajStrIsUpper *********************************************************
+**
+** Simple test for a string having no alphabetic lower case
+** as defined by islower in the C RTL.
+**
+** @param [rE] thys [const AjPStr] String
+** @return [AjBool] ajTrue if the string has no lower case characters.
+** @cre an empty string returns ajTrue
+** @@
+******************************************************************************/
+
+AjBool ajStrIsUpper (const AjPStr thys) {
+  char* cp = ajStrStr(thys);
+
+  if (!thys->Len) return ajFalse;
+
+  while (*cp) {
+    if (islower((ajint)*cp++)) return ajFalse;
   }
 
   return ajTrue;
