@@ -498,7 +498,8 @@ public class JembossAuthServer
     }
 
 //  appendToLogFile("putFile "+name+" STDERR "+aj.getErrStd(),errorLog);  //DEBUG
- 
+    appendToLogFile(options+" "+dat+" "+embossCommand,logFile);
+
     result.add("cmd");
     result.add(appl + " " + rest);
     result.add("status");
