@@ -177,6 +177,13 @@ static void psearch_initialise_pguts(PGuts* primer)
     (*primer)->carboxyl=0;
     (*primer)->tidy=NULL;
 
+    (*primer)->mm=0;
+    (*primer)->buf=NULL;
+    (*primer)->sotable=NULL;
+    (*primer)->solimit=0;
+    (*primer)->re=NULL;
+    (*primer)->skipm=NULL;
+
     return;
 }
 
