@@ -12,5 +12,11 @@ infile: inf  [
   prompt: "Full pathname of WITHREFM"
 ]
 
+boolean: equivalences [
+  optional: "Y"
+  default: "Y"
+  prompt: "Create prototype equivalence file"
+]
+
 endsection: input
 

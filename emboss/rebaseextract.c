@@ -32,7 +32,8 @@
 #define DATANAME  "REBASE/embossre.enz"
 #define DATANAME2 "REBASE/embossre.ref"
 #define DATANAME3 "REBASE/embossre.sup"
-
+#define DATANAME4 "embossre.equ"
+#define EQUGUESS  5000
 
 
 static void rebex_process_pattern(AjPStr *pattern, AjPStr *code, AjPFile outf,
@@ -40,9 +41,7 @@ static void rebex_process_pattern(AjPStr *pattern, AjPStr *code, AjPFile outf,
 static void rebex_printEnzHeader(AjPFile outf);
 static void rebex_printRefHeader(AjPFile outf);
 static void rebex_printSuppHeader(AjPFile outf);
-
-
-
+static void rebex_write_equ(AjPTable ptable, AjPFile oute);
 
 
 /* @prog rebaseextract ********************************************************
@@ -69,16 +68,26 @@ int main(int argc, char **argv)
     AjPStr  pfname;
     AjBool  isrefm = ajFalse;
     AjBool  isref  = ajFalse;
-    AjBool hassup;
+    AjBool  hassup;
 
     ajint     count;
     ajlong    pos;
     ajint     i;
 
+    AjBool    doequ;
+    AjPFile   oute      = NULL;
+    AjPStr    isostr    = NULL;
+    AjPTable  ptable    = NULL;
+    AjPStr    key       = NULL;
+    AjPStr    value     = NULL;
+    AjPStrTok handle    = NULL;
 
     embInit("rebaseextract",argc,argv);
 
-    inf = ajAcdGetInfile("inf");
+    inf   = ajAcdGetInfile("inf");
+    doequ = ajAcdGetBool("equivalences");
+    
+
     pfname = ajStrNewC(DATANAME);
     ajFileDataNewWrite(pfname,&outf);
     rebex_printEnzHeader(outf);
@@ -90,6 +99,14 @@ int main(int argc, char **argv)
     ajStrAssC(&pfname,DATANAME3);
     ajFileDataNewWrite(pfname,&outf3);
     rebex_printSuppHeader(outf3);
+
+    if(doequ)
+    {
+	ajStrAssC(&pfname,DATANAME4);
+	ajFileDataNewWrite(pfname,&oute);
+	ptable = ajStrTableNew(EQUGUESS);
+	isostr = ajStrNew();
+    }
     ajStrDel(&pfname);
 
     line     = ajStrNew();
@@ -153,9 +170,27 @@ int main(int argc, char **argv)
 	    ajFatal("Unexpected EOF");
 
 	if(ajStrLen(line)>3)
+	{
 	    ajStrAssC(&isoschiz,ajStrStr(line)+3);
+	    if(doequ)
+	    {
+		key   = ajStrNew();
+		value = ajStrNew();
+		ajStrAssS(&key, code);
+		ajStrAssS(&isostr,isoschiz);
+		handle = ajStrTokenInit(isostr,"\t\n>,");
+	        ajStrToken (&value, &handle, NULL);
+	        ajTablePut(ptable,(const void *)key, (void *)value);
+		ajStrTokenClear(&handle);
+	    }
+	}
 	else
 	    ajStrAssC(&isoschiz,"");
+
+
+
+
+
 
 	/* Get recognition sequence */
 	if(!ajFileReadLine(inf,&line))
@@ -247,6 +282,13 @@ int main(int argc, char **argv)
     }
 
 
+    if(doequ)
+    {
+	rebex_write_equ(ptable,oute);
+	ajStrDel(&isostr);
+	ajFileClose(&oute);
+	ajStrTableFree(&ptable);
+    }
 
     ajFileClose(&inf);
     ajFileClose(&outf);
@@ -558,6 +600,41 @@ static void rebex_printSuppHeader(AjPFile outf)
     ajFmtPrintF(outf,"# Format:\n");
     ajFmtPrintF(outf,"# Code of Supplier<ws>Supplier name\n");
     ajFmtPrintF(outf,"#\n");
+
+    return;
+}
+
+
+
+static void rebex_write_equ(AjPTable ptable, AjPFile oute)
+{
+    AjPStr *array  = NULL;
+    ajint  i;
+    AjPStr tmpstr  = NULL;
+    AjPTable proto = NULL;
+    
+    array = (AjPStr *) ajTableToarray(ptable,NULL);
+
+    i=0;
+    proto = ajStrTableNew(EQUGUESS);
+    while(array[i])
+    {
+	ajTablePut(proto,(const void *)array[i+1],(void *)array[i]);
+	i+=2;
+    }
+
+    i = 0;
+    while(array[i])
+    {
+	tmpstr = ajTableGet(proto,(const void *)array[i]);
+	if(!tmpstr)
+	    ajFmtPrintF(oute,"%S %S\n",array[i],array[i+1]);
+	i+=2;
+    }
+
+    ajStrTableFree(&proto);
+    AJFREE(array);
+
 
     return;
 }
