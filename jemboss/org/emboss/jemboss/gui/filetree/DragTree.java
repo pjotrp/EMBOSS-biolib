@@ -46,7 +46,7 @@ public class DragTree extends JTree implements DragGestureListener,
                            DragSourceListener, DropTargetListener, ActionListener 
 {
 
-  public static DefaultTreeModel model;
+  public DefaultTreeModel model;
   private JembossParams mysettings;
 
   private File root;
