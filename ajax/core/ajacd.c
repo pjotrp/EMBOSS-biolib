@@ -1443,7 +1443,7 @@ static void acdParse (AjPStr text)
 	    (void) ajStrToLower (&acdVar);
 	    acdVarCurr = acdNewVar (acdVar);
 	    ajStrAssS(&acdvalue, acdParseValue(&tokenhandle, white));
-	    acdPretty ("variable:  %S \"%S\"\n", acdVar, acdvalue);
+	    acdPretty ("\nvariable:  %S \"%S\"\n", acdVar, acdvalue);
 	    (void) acdSetVarDef (acdVarCurr, acdvalue);
 	    break;
 
