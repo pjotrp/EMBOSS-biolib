@@ -53,7 +53,7 @@ list: sort  [
   values: "source:Sort by Source, start:Sort by Start position, type:Sort by Type, nosort:No sorting done"
   delimiter: ","
   codedelimiter: ":"
-  information: "Sort features by Type, Start or Source, or don't sort"
+  information: "Sort features by Type, Start or Source, or Nosort (don't sort - use input order)"
 ]
 
 bool: html  [
