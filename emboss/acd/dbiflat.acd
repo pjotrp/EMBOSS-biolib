@@ -1,6 +1,9 @@
 appl: dbiflat [
   groups: "Utils:Database indexing"
   documentation: "Index a flat file database"
+  gui: yes
+  batch: yes
+  cpu: medium
 ]
 
 section: input [ info: "input Section" type: page ]

@@ -1,6 +1,9 @@
 appl: contacts [
   documentation: "Reads coordinate files and writes contact files"
   groups: "Protein:3D Structure"
+  gui: yes
+  batch: yes
+  cpu: high
 ]
 
 section: input [ info: "input Section" type: page ]

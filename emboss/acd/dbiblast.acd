@@ -1,6 +1,9 @@
 appl: dbiblast [
   groups: "Utils:Database indexing"
   documentation: "Index a BLAST database"
+  gui: yes
+  batch: yes
+  cpu: medium
 ]
 
 section: input [ info: "input Section" type: page ]
