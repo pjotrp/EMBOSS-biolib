@@ -203,6 +203,7 @@ static AjBool     seqReadGff(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadHennig86(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadIg(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadJackknifer(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadMase(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadMega(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadMsf(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadNbrf(AjPSeq thys, AjPSeqin seqin);
@@ -337,6 +338,8 @@ static SeqOInFormat seqInFormatDef[] = {
        AJFALSE, AJTRUE,  AJFALSE, seqReadStockholm},
   {"fitch",       AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  AJFALSE, seqReadFitch},
+  {"mase",        AJTRUE,  AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE,  AJFALSE, seqReadMase},
   {"raw",         AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJFALSE, AJFALSE, seqReadRaw}, /* OK - only sequence chars
 						allowed - but off by default*/
@@ -4853,6 +4856,8 @@ static AjBool seqReadAcedb(AjPSeq thys, AjPSeqin seqin)
 
     return ajTrue;
 }
+
+
 /* @funcstatic seqReadFitch *************************************************
 **
 ** Given data in a sequence structure, tries to read everything needed
@@ -4903,6 +4908,78 @@ static AjBool seqReadFitch(AjPSeq thys, AjPSeqin seqin)
 
     ajStrDel(&token);
     ajFileBuffClear(buff, 0);
+    return ajTrue;
+}
+
+/* @funcstatic seqReadMase ****************************************************
+**
+** Given data in a sequence structure, tries to read everything needed
+** using mase format.
+**
+** @param [w] thys [AjPSeq] Sequence object
+** @param [u] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+static AjBool seqReadMase(AjPSeq thys, AjPSeqin seqin)
+{
+    static AjPStr rdline    = NULL;
+    AjPStr token     = NULL;
+    AjPStr des     = NULL;
+    AjPFileBuff buff;
+    AjBool ok = ajTrue;
+    static AjPRegexp headexp = NULL;
+    ajint ilen = 0;
+
+    if (!headexp)
+	headexp = ajRegCompC("^(;+)");
+
+    buff = seqin->Filebuff;
+
+    ok = ajFileBuffGetStore(buff, &rdline,
+			    seqin->Text, &thys->TextPtr);
+    if (!ajRegExec(headexp, rdline))
+    {
+	ajFileBuffReset(buff);
+	return ajFalse;
+    }
+
+    while (ok && ajRegExec(headexp, rdline))
+    {
+	if (ajRegLenI(headexp, 1) == 1)
+	{
+	    ajRegPost(headexp, &token);
+	    if (des)
+		ajStrAppK(&des, ' ');
+	    ajStrApp(&des, token);
+	}
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+    }
+
+    ajStrClean(&rdline);
+    seqSetName(&thys->Name, rdline);
+    ajStrClean(&des);
+    ajSeqAssDesc(thys, des);
+
+    ok = ajFileBuffGetStore(buff, &rdline,
+			    seqin->Text, &thys->TextPtr);
+    while (ok && !ajRegExec(headexp, rdline))
+    {
+	seqAppend(&thys->Seq, rdline);
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+    }
+
+    ajStrDel(&token);
+    ajStrDel(&des);
+    if (ok)
+	ajFileBuffClearStore(buff, 1,
+			     rdline, seqin->Text, &thys->TextPtr);
+    else
+	ajFileBuffClear(buff, 0);
+
     return ajTrue;
 }
 
@@ -6114,13 +6191,15 @@ void ajSeqPrintInFormat(const AjPFile outf, AjBool full)
     ajFmtPrintF(outf, "# Nuc   Can read nucleotide input\n");
     ajFmtPrintF(outf, "# Feat  Can read feature annotation\n");
     ajFmtPrintF(outf, "# Gap   Can read gap characters\n");
+    ajFmtPrintF(outf, "# Mset  Can read seqsetall (multiple seqsets)\n");
     ajFmtPrintF(outf, "# Name         Try  Pro  Nuc Feat  Gap MSet\n");
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "InFormat {\n");
     for(i=0; seqInFormatDef[i].Name; i++)
 	if(full || seqInFormatDef[i].Try)
-	    ajFmtPrintF(outf, "  %-12s %3B  %3B  %3B  %3B  %3B\n",
+	    ajFmtPrintF(outf, "  %-12s %3B  %3B  %3B  %3B  %3B  %3B\n",
 			seqInFormatDef[i].Name,
+			seqInFormatDef[i].Try,
 			seqInFormatDef[i].Protein,
 			seqInFormatDef[i].Nucleotide,
 			seqInFormatDef[i].Feature,
