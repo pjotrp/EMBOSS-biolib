@@ -881,7 +881,8 @@ static ajint seqReadFmt (AjPSeq thys, AjPSeqin seqin, SeqPInFormat inform,
 	    if (seqin->Features && !thys->Fttable)
 	    {
 		(void) ajStrSet (&seqin->Ftquery->Seqname, thys->Name);
-		if (!ajFeatRead (&seqin->Fttable, seqin->Ftquery, seqin->Ufo))
+		if (!ajFeatUfoRead (&seqin->Fttable, seqin->Ftquery,
+				    seqin->Ufo))
 		{
 		    ajDebug ("seqReadFmt features input failed UFO: '%S'\n",
 		       seqin->Ufo);
@@ -1269,19 +1270,23 @@ static AjBool seqReadNbrf (AjPSeq thys, AjPSeqin seqin)
     static AjPStr token = NULL;
     static AjPStr rdline = NULL;
     AjPFileBuff buff = seqin->Filebuff;
+    AjPFileBuff ftfile = NULL;
+    static AjPStr ftfmt = NULL;
+    AjBool dofeat = ajFalse;
 
-    ajint bufflines = 0;
     AjBool ok;
 
     static AjPRegexp idexp = NULL;
     ajDebug ("seqReadNbrf\n");
+
+    if (!ftfmt)
+	ajStrAssC (&ftfmt, "pir");
 
     if (!idexp)
 	idexp = ajRegCompC("^>(..)[>;]([^ \t\n]+)");
 
     if (!ajFileBuffGet (buff, &rdline))
 	return ajFalse;
-    bufflines++;
 
     ajDebug ("nbrf first line:\n%S", rdline);
 
@@ -1316,15 +1321,19 @@ static AjBool seqReadNbrf (AjPSeq thys, AjPSeqin seqin)
 	ajWarn ("Unknown NBRF sequence type '%S'", token);
     }
 
+    /* next line is the description, with no prefix */
+
     if (!ajFileBuffGet (buff, &rdline))
     {
 	ajFileBuffReset (buff);
 	return ajFalse;
     }
-    bufflines++;
+
     (void) ajStrAss (&thys->Desc, rdline);
     if (ajStrChar(thys->Desc, -1) == '\n')
 	(void) ajStrTrim (&thys->Desc, -1);
+
+    /* read on, looking for feature and sequence lines */
 
     ok = ajFileBuffGet (buff, &rdline);
     while (ok && !ajStrPrefixC(rdline, ">"))
@@ -1332,20 +1341,31 @@ static AjBool seqReadNbrf (AjPSeq thys, AjPSeqin seqin)
 	if (ajStrChar(rdline, 1) != ';')
 	{
 	    (void) seqAppend (&thys->Seq, rdline);
-	    bufflines++;
 	}
 	else
 	{
 	    if (ajStrChar(rdline,0) == 'R')
-	    {
+	    {			/* skip reference lines with no prefix */
 		while((ok=ajFileBuffGet(buff,&rdline)))
 		{
-		    ++bufflines;
 		    if(ajStrChar(rdline,1)==';' || ajStrChar(rdline,0)=='>')
-			break;
+			break;	/* X; line or next sequence */
 		}
 		if(ok)
 		    continue;
+	    }
+	    else if (ajStrChar(rdline,0) == 'F')
+	    {			/* feature lines */
+	      if (seqinUfoLocal(seqin))
+	      {
+		if (!dofeat)
+		{
+		  dofeat = ajTrue;
+		  ftfile = ajFileBuffNew();
+		}
+		ajFileBuffLoadS (ftfile, rdline);
+		/* ajDebug ("EMBL FEAT saved line:\n%S", rdline); */
+	      }
 	    }
 	}
 	if (ok)
@@ -1359,7 +1379,21 @@ static AjBool seqReadNbrf (AjPSeq thys, AjPSeqin seqin)
     else
 	ajFileBuffClear (buff, 0);
 
-    return ajTrue;
+    if (dofeat)
+    {
+        ajFeattabInDel(&seqin->Ftquery);
+	seqin->Ftquery = ajFeattabInNewSSF (ftfmt, thys->Name, "P", ftfile);
+	ajDebug ("PIR FEAT TabIn %x\n", seqin->Ftquery);
+	ftfile = NULL;			/* now copied to seqin->FeattabIn */
+	ajFeattabDel(&seqin->Fttable);
+	seqin->Fttable = ajFeatRead (seqin->Ftquery);
+	ajFeattableTrace(seqin->Fttable);
+	ajFeattabDel(&thys->Fttable);
+	thys->Fttable = seqin->Fttable;
+	seqin->Fttable = NULL;
+    }
+
+     return ajTrue;
 }
 
 /* @funcstatic seqReadGcg *****************************************************
@@ -2922,7 +2956,7 @@ static AjBool seqReadSwiss (AjPSeq thys, AjPSeqin seqin)
 	ajDebug ("SWISS FEAT TabIn %x\n", seqin->Ftquery);
 	ftfile = NULL;			/* now copied to seqin->FeattabIn */
 	ajFeattabDel(&seqin->Fttable);
-	seqin->Fttable = ajFeaturesRead (seqin->Ftquery);
+	seqin->Fttable = ajFeatRead (seqin->Ftquery);
 	ajFeattableTrace(seqin->Fttable);
 	ajFeattabDel(&thys->Fttable);
 	thys->Fttable = seqin->Fttable;
@@ -3058,7 +3092,7 @@ static AjBool seqReadEmbl (AjPSeq thys, AjPSeqin seqin)
     {
 	ajDebug ("EMBL FEAT TabIn %x\n", seqin->Ftquery);
 	ajFeattabDel(&thys->Fttable);
-	thys->Fttable = ajFeaturesRead (seqin->Ftquery);
+	thys->Fttable = ajFeatRead (seqin->Ftquery);
 	ajFeattableTrace(thys->Fttable);
     }
     
@@ -3219,7 +3253,7 @@ static AjBool seqReadGenbank (AjPSeq thys, AjPSeqin seqin)
 	ajDebug ("GENBANK FEAT TabIn %x\n", seqin->Ftquery);
 	ftfile = NULL;			/* now copied to seqin->FeattabIn */
 	ajFeattabDel(&seqin->Fttable);
-	seqin->Fttable = ajFeaturesRead (seqin->Ftquery);
+	seqin->Fttable = ajFeatRead (seqin->Ftquery);
 	ajFeattableTrace(seqin->Fttable);
 	ajFeattabDel(&thys->Fttable);
 	thys->Fttable = seqin->Fttable;
@@ -3368,7 +3402,7 @@ static AjBool seqReadGff (AjPSeq thys, AjPSeqin seqin)
     ajDebug ("GFF FEAT TabIn %x\n", seqin->Ftquery);
     ftfile = NULL;			/* now copied to seqin->FeattabIn */
     ajFeattabDel(&seqin->Fttable);
-    seqin->Fttable = ajFeaturesRead (seqin->Ftquery);
+    seqin->Fttable = ajFeatRead (seqin->Ftquery);
     ajFeattableTrace(seqin->Fttable);
     ajFeattabDel(&thys->Fttable);
     thys->Fttable = seqin->Fttable;

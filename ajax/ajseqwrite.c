@@ -191,8 +191,9 @@ void ajSeqAllWrite (AjPSeqout outseq, AjPSeq seq) {
       /* ajWarn ("ajSeqAllWrite features cloned from ajSeqWrite\n"); */
 
     (void) ajStrSet (&outseq->Ftquery->Seqname, seq->Name);
+    (void) ajStrSet (&outseq->Ftquery->Type, seq->Type);
     ajFeattableTrace(outseq->Fttable);
-    if (!ajFeatWrite (outseq->Fttable, outseq->Ftquery, outseq->Ufo)) {
+    if (!ajFeatUfoWrite (outseq->Fttable, outseq->Ftquery, outseq->Ufo)) {
       ajWarn ("seqAllWrite features output failed UFO: '%S'",
 	      outseq->Ufo);
       return;
@@ -372,8 +373,9 @@ void ajSeqWrite (AjPSeqout outseq, AjPSeq seq) {
 
   if (outseq->Features) {
     (void) ajStrSet (&outseq->Ftquery->Seqname, seq->Name);
+    (void) ajStrSet (&outseq->Ftquery->Type, seq->Type);
     ajFeattableTrace(outseq->Fttable);
-    if (!ajFeatWrite (outseq->Fttable, outseq->Ftquery, outseq->Ufo)) {
+    if (!ajFeatUfoWrite (outseq->Fttable, outseq->Ftquery, outseq->Ufo)) {
       ajWarn ("seqWrite features output failed UFO: '%S'",
 	      outseq->Ufo);
       return;
@@ -1342,6 +1344,10 @@ static void seqWriteCodata (AjPSeqout outseq) {
 static void seqWriteNbrf (AjPSeqout outseq) {
 
   static SeqPSeqFormat sf=NULL;
+  static AjPStr ftfmt = NULL;
+
+  if (!ftfmt)
+    ajStrAssC (&ftfmt, "pir");
 
   if (!outseq->Type)
     (void) ajFmtPrintF (outseq->File, ">D1;%S\n", outseq->Name);
@@ -1353,6 +1359,17 @@ static void seqWriteNbrf (AjPSeqout outseq) {
 
   (void) ajFmtPrintF (outseq->File, "%S, %d bases\n",
 	   outseq->Desc, ajStrLen(outseq->Seq));
+
+  if (seqoutUfoLocal(outseq)) {
+    
+    outseq->Ftquery = ajFeattabOutNewSSF (ftfmt, outseq->Name,
+					  ajStrStr(outseq->Type),
+					  outseq->File);
+    if (!ajFeatWrite (outseq->Ftquery, outseq->Fttable)) {
+      ajWarn ("seqWriteNbrf features output failed UFO: '%S'",
+	      outseq->Ufo);
+    }
+  }
 
   seqSeqFormat(ajStrLen(outseq->Seq), &sf);
   sf->spacer = 11;
@@ -1393,25 +1410,16 @@ static void seqWriteEmbl (AjPSeqout outseq) {
   if (ajStrLen(outseq->Desc))
     (void) ajFmtPrintF (outseq->File, "DE   %S\n", outseq->Desc);
 
-  /*
-  if (outseq->Features && !ajStrLen(outseq->Ufo)) {
-    if (!ajFeatWrite (outseq->Fttable, outseq->Ftquery, outseq->Ufo)) {
-      ajWarn ("seqAllWrite features output failed UFO: '%S'",
-	      outseq->Ufo);
-    }
-  }
-  */
-
   if (seqoutUfoLocal(outseq)) {
-    
-    outseq->Ftquery = ajFeattabOutNewSSF (ftfmt, outseq->Name, "N",
+        outseq->Ftquery = ajFeattabOutNewSSF (ftfmt, outseq->Name,
+					  ajStrStr(outseq->Type),
 					  outseq->File);
-    if (!ajFeaturesWrite (outseq->Ftquery, outseq->Fttable)) {
-      ajWarn ("seqAllWrite features output failed UFO: '%S'",
+    if (!ajFeatWrite (outseq->Ftquery, outseq->Fttable)) {
+      ajWarn ("seqWriteEmbl features output failed UFO: '%S'",
 	      outseq->Ufo);
     }
   }
-    
+
   ajSeqCount (outseq->Seq, b);
   (void) ajFmtPrintF (outseq->File,
 	       "SQ   Sequence %d BP; %d A; %d C; %d G; %d T; %d other;\n",
@@ -1445,6 +1453,10 @@ static void seqWriteSwiss (AjPSeqout outseq) {
   static SeqPSeqFormat sf=NULL;
   ajint mw;
   ajuint crc;
+  static AjPStr ftfmt = NULL;
+
+  if (!ftfmt)
+    ajStrAssC (&ftfmt, "swiss");
 
   if (ajStrMatchC(outseq->Type, "N")) {
       seqWriteEmbl (outseq);
@@ -1458,6 +1470,19 @@ static void seqWriteSwiss (AjPSeqout outseq) {
     (void) ajFmtPrintF (outseq->File, "AC   %S;\n", outseq->Acc);
   if (ajStrLen(outseq->Desc))
     (void) ajFmtPrintF (outseq->File, "DE   %S\n", outseq->Desc);
+
+  if (seqoutUfoLocal(outseq)) {
+    
+    outseq->Ftquery = ajFeattabOutNewSSF (ftfmt, outseq->Name,
+					  ajStrStr(outseq->Type),
+					  outseq->File);
+    if (!ajFeatWrite (outseq->Ftquery, outseq->Fttable)) {
+      ajWarn ("seqWriteSwiss features output failed UFO: '%S'",
+	      outseq->Ufo);
+    }
+  }
+
+
   crc = ajSeqCrc (outseq->Seq);
   mw = (ajint) (0.5+ajSeqMW (outseq->Seq));
   (void) ajFmtPrintF (outseq->File,
@@ -1531,6 +1556,10 @@ static void seqWriteGff (AjPSeqout outseq) {
 
   static SeqPSeqFormat sf = NULL;
   static AjPStr version = NULL;
+  static AjPStr ftfmt = NULL;
+
+  if (!ftfmt)
+    ajStrAssC (&ftfmt, "gff");
 
   if (!version) ajNamRootVersion(&version);
 
@@ -1570,6 +1599,16 @@ static void seqWriteGff (AjPSeqout outseq) {
   else {
     (void) ajFmtPrintF (outseq->File,
 			"##end-DNA\n");
+  }
+
+  if (seqoutUfoLocal(outseq)) {
+    outseq->Ftquery = ajFeattabOutNewSSF (ftfmt, outseq->Name,
+					  ajStrStr(outseq->Type),
+					  outseq->File);
+    if (!ajFeatWrite (outseq->Ftquery, outseq->Fttable)) {
+      ajWarn ("seqWriteGff features output failed UFO: '%S'",
+	      outseq->Ufo);
+    }
   }
 
   return;

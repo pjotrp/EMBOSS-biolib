@@ -158,23 +158,26 @@ typedef struct AjSFeattable {
 ******************************************************************************/
 
 typedef struct AjSFeature {
+  AjBool            Protein ;	/* true for a protein feature */
   AjPStr            Source ;	/* Source sequence name */
-  AjPStr            Type ;	/* Type N or P */
+  AjPStr            Type ;	/* Feature type (feature key) */
   ajint             Start ;	/* Start position */
   ajint             End;	/* End position */
   ajint             Start2;	/* Second start position - EMBL (a.b)*/
   ajint             End2;	/* Second end position - EMBL ..(a.b) */
   float             Score ;	/* Score or 0.0 if none */
-  AjPList           Tags ;	/* Tag-value list */
-  AjPStr            Comment ;	/* Comment - obsolete */
+  AjPList           Tags ;	/* Tag-value list (qualifier list) */
   char              Strand ;	/* Strand +/- or NULL */
   ajint             Frame ;	/* Frame 1..3, -1..-3 or 0 */
-  AjPStr            Desc ;	/* One-line description obsolete */
   ajint             Flags;	/* Flag bit mask for EMBL location */
   ajint             Group;	/* Group for join/order/one-of */
   ajint             Exon;	/* Exon number */
   AjPStr            Remote ;	/* Remote ID - EMBL Remote:a.b */
   AjPStr            Label ;	/* Label name for location - EMBL legacy */
+
+  /*AjPStr            Desc ;*/	/* One-line description obsolete */
+  /*AjPStr            Comment ;*/	/* Comment - obsolete */
+
 } AjOFeature, *AjPFeature ;
 
 
