@@ -13,6 +13,12 @@ Description
    silent does a scan of a nucleic acid sequence for silent mutation
    restriction enzyme sites.
    
+   silent finds positions in a sequence where a point mutation could be
+   made to introduce a specified restriction enzyme recognition site
+   without changing the translation.
+   
+   Several restriction enzyme can be specified.
+   
 Usage
 
    Here is a sample session with silent:
@@ -134,6 +140,7 @@ See also
    remap         Display a sequence with restriction cut sites, translation etc
    restrict      Finds restriction enzyme cleavage sites
    showseq       Display a sequence with features, translation etc
+   tfmult        Finds transcription factors common to several sequences
    tfscan        Scans DNA sequences for transcription factors
    
 Author(s)
