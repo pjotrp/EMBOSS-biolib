@@ -73,14 +73,11 @@ int main (int argc, char * argv[])
     int window;
     int i;
     int base;
-    int order[4];
-    long int indexO;
     long int baseO;
     long int numBases;
     long int numPoints;
     long int dataOffset[4];
 
-    char res;
     char res1;
     char res2;
     char res3;
@@ -249,8 +246,6 @@ static AjPGraphData graphDisplay(AjPGraph graphs, AjPInt2d trace,
              int* nt)
 {
     int i;
-    int *x;
-    int *y;
     short bP;
     short lastbP;
     int bstart;
@@ -283,7 +278,7 @@ static AjPGraphData graphDisplay(AjPGraph graphs, AjPInt2d trace,
  
     ajGraphxySetColour(gdata,colour);
     ajGraphDataxySetMaxMin(gdata,(float)nstart+1.,
-                           (float)nstop,0.,tmax+80.); 
+                           (float)nstop,0.,tmax+80.);  
 
     /* add graph to list in a multiple graph */
     ajGraphxyAddGraph(graphs,gdata);
@@ -376,7 +371,7 @@ static void graphObjDel(AjPGraph graphs , int nstart, int nstop)
 
    AjPGraphObj ObjCurr;
    AjPGraphObj ObjNext;
-   AjPGraphObj ObjPrev;
+   AjPGraphObj ObjPrev=NULL;
 
 
    ObjCurr = graphs->Obj;

@@ -473,7 +473,6 @@ static AjPList checkTrans(AjPStr seq,AjPFile outf,EmbPMatMatch match,
 {
     char *pseq;
     char *pseqm;
-    char *pres;
     char *prs;
     char *s;
 
@@ -588,10 +587,10 @@ static int changebase(char pbase, char* tbase)
 
     ajBaseInit();
 
-    len = ajStrLen(aj_base_iubS[pbase].list)-1;
+    len = ajStrLen(aj_base_iubS[(int)pbase].list)-1; 
 
     bt = ajStrNew();
-    ajStrAssI(&bt,aj_base_iubS[pbase].list,len);
+    ajStrAssI(&bt,aj_base_iubS[(int)pbase].list,len);
     splits = ajStrIter(bt);
 
     while(!ajStrIterDone(splits)) 
