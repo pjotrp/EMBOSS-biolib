@@ -33,14 +33,10 @@ section: output [
   type: "page"
 ]
 
-  boolean: data  [
-    information: "Output as data"
-    default: "N"
-  ]
-
   graph: graph  [
-    required: "@(!$(data))"
+    required: "Y"
     gtitle: "Bending and curvature plot of $(sequence.name)"
+    nullok: "Y"
   ]
 
   integer: residuesperline  [
@@ -54,6 +50,7 @@ section: output [
     optional: "Y"
     default: "banana.profile"
     standardtype: "banana output"
+    nullok: "Y"
   ]
 
 endsection: output

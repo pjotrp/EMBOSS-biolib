@@ -158,8 +158,13 @@ int main(int argc, char **argv)
 		       doobsexp, docg, dopc, mult);
 
 	ajStrDel(&strand);
-   }
+    }
 
+    if (mult)
+    {
+	ajGraphCloseWin();
+	ajGraphxyDel(mult);
+    }
 
     ajSeqDel(&seq);
     ajStrDel(&substr);

@@ -42,20 +42,9 @@ section: output [
     type: "frame"
   ]
 
-    boolean: data  [
-      default: "N"
-      information: "Display as data"
-      help: "Output the match data to a file instead of plotting it"
-    ]
-
     graph: graph  [
-      required: "@(!$(data))"
+      required: "Y"
       gtitle: "Polydot:"
-    ]
-
-    outfile: outfile  [
-      required: "$(data)"
-      nullok: "Y"
     ]
 
   endsection: datasection

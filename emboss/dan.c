@@ -190,6 +190,12 @@ int main(int argc, char **argv)
 	ajFeattableDel(&TabRpt);
     }
 
+    if (mult)
+    {
+	ajGraphCloseWin();
+	ajGraphxyDel(mult);
+    }
+
     ajSeqDel(&seq);
     if (outf)
       ajFileClose(&outf);

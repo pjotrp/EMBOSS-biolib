@@ -63,15 +63,8 @@ section: output [
     help: "Display a non-proportional graph"
   ]
 
-  boolean: data  [
-    required: "@(!$(stretch))"
-    default: "N"
-    information: "Display as data"
-    help: "Output the match data to a file instead of plotting it"
-  ]
-
   graph: graph  [
-    required: "@(@(!$(data)) & @(!$(stretch)))"
+    required: "@(!$(stretch))"
     gtitle: "Dotmatcher: $(asequence.name) vs $(bsequence.name)"
     gxtitle: "$(asequence.name)"
     gytitle: "$(bsequence.name)"
@@ -82,13 +75,6 @@ section: output [
     gtitle: "Dotmatcher: $(asequence.name) vs $(bsequence.name)"
     gxtitle: "$(asequence.name)"
     gytitle: "$(bsequence.name)"
-  ]
-
-  outfile: outfile  [
-    required: "@($(data) & @(!$(stretch)))"
-    nullok: "Y"
-    information: "Display as data"
-    standardtype: "dotplot graph data"
   ]
 
 endsection: output

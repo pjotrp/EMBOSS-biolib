@@ -27,12 +27,7 @@
 
 
 static void dotmatcher_pushpoint(AjPList *l, float x1, float y1, float x2,
-				 float y2, AjBool text, AjBool stretch);
-static void dotmatcher_datapoints(AjPList *l, AjPFile outf, ajint b1,
-				  ajint b2);
-
-
-
+				 float y2, AjBool stretch);
 
 typedef struct SPoint
 {
@@ -95,8 +90,6 @@ int main(int argc, char **argv)
     AjPMatrix matrix = NULL;
     ajint** sub;
     AjPSeqCvt cvt;
-    AjBool text;
-    AjPFile outf=NULL;
     AjPStr  subt=NULL;
 
     ajint b1;
@@ -135,8 +128,6 @@ int main(int argc, char **argv)
     windowsize = ajAcdGetInt("windowsize");
     ithresh = ajAcdGetInt("threshold");
     matrix  = ajAcdGetMatrix("matrixfile");
-    text = ajAcdGetBool("data");
-    outf = ajAcdGetOutfile("outfile");
 
     sub = ajMatrixArray(matrix);
     cvt = ajMatrixCvt(matrix);
@@ -183,12 +174,12 @@ int main(int argc, char **argv)
 			      windowsize,thresh,&ajtime)));
 
 
-    if(!text && !stretch)
+    if(!stretch)
 	if( ajStrLen(graph->subtitle) <=1)
 	    ajStrApp(&graph->subtitle,subt);
 
 
-    if(!text && !stretch)
+    if(!stretch)
     {
 	ajGraphOpenWin(graph, 0.0-ymargin,(max*1.35)+ymargin,
 		       0.0-xmargin,(float)max+xmargin);
@@ -239,7 +230,7 @@ int main(int argc, char **argv)
 		    abovethresh = 0;
 		    /* draw the line */
 		    dotmatcher_pushpoint(&list,(float)starti,(float)startj,
-					 (float)i-1,(float)k-1,text,stretch);
+					 (float)i-1,(float)k-1,stretch);
 		}
 	    }
 	    else if (total >= thresh)
@@ -255,7 +246,7 @@ int main(int argc, char **argv)
 	    /* draw the line */
 	    dotmatcher_pushpoint(&list,(float)starti,(float)startj,
 				 (float)i-1,(float)k-1,
-		      text,stretch);
+				 stretch);
 	}
     }
 
@@ -287,7 +278,7 @@ int main(int argc, char **argv)
 		    abovethresh = 0;
 		    /* draw the line */
 		    dotmatcher_pushpoint(&list,(float)starti,(float)startj,
-					 (float)k-1,(float)j-1,text,stretch);
+					 (float)k-1,(float)j-1,stretch);
 		}
 	    }
 	    else if (total >= thresh)
@@ -304,11 +295,11 @@ int main(int argc, char **argv)
 	    /*      printf("line (%d,%d) (%d,%d)\n",starti,startj,i-1,k-1);*/
 	    dotmatcher_pushpoint(&list,(float)starti,(float)startj,
 				 (float)k-1,(float)j-1,
-		      text,stretch);
+				 stretch);
 	}
     }
 
-    if(!text && boxit && !stretch)
+    if(boxit && !stretch)
     {
 	ajGraphRect( 0.0,0.0,(float)ajSeqLen(seq),(float)ajSeqLen(seq2));
 
@@ -375,31 +366,8 @@ int main(int argc, char **argv)
     }
 
 
-    if(!text && !stretch)
+    if(!stretch)
 	ajGraphClose();
-    else if(text && !stretch)
-    {
-	ajFmtPrintF(outf,"##2D Plot\n##Title dotmatcher: %s vs %s\n",
-		    ajSeqName(seq),ajSeqName(seq2));
-	ajFmtPrintF(outf,"##Graphs 1\n##Number 1\n##Points 0\n");
-	ajFmtPrintF(outf,"##XminA %f XmaxA %f YminA %f YmaxA %f\n",0.,
-		    (float)ajSeqLen(seq),0.,(float)ajSeqLen(seq2));
-	ajFmtPrintF(outf,"##Xmin %f Xmax %f Ymin %f Ymax %f\n",0.,
-		    (float)ajSeqLen(seq),0.,(float)ajSeqLen(seq2));
-	ajFmtPrintF(outf,"##ScaleXmin %f ScaleXmax %f "
-		    "ScaleYmin %f ScaleYmax %f\n",(float)b1,(float)e1,
-		    (float)b2,(float)e2);
-	ajFmtPrintF(outf,"##Maintitle %S\n",subt);
-	ajFmtPrintF(outf,"##Xtitle %s\n##Ytitle %s\n",ajSeqName(seq),
-		    ajSeqName(seq2));
-	ajFmtPrintF(outf,"##DataObjects\n##Number %d\n",
-		    ajListLength(list));
-
-	dotmatcher_datapoints(&list,outf,b1,b2);
-
-	ajFmtPrintF(outf,"##GraphObjects\n##Number 0\n");
-
-    }
     else			/* the xy graph for -stretch */
     {
 	tit = ajStrNew();
@@ -416,6 +384,7 @@ int main(int argc, char **argv)
 	ajGraphxyYtitleC(xygraph,ajSeqName(seq2));
 
 	ajGraphDataxySetTypeC(gdata,"2D Plot Float");
+	ajGraphxyDataSetTitle(gdata,subt);
 	ajGraphDataxySetMaxMin(gdata,(float)b1,(float)e1,(float)b2,
 			       (float)e2);
 	ajGraphDataxySetMaxima(gdata,(float)b1,(float)e1,(float)b2,
@@ -479,7 +448,6 @@ int main(int argc, char **argv)
 ** @param [?] y1 [float] Undocumented
 ** @param [?] x2 [float] Undocumented
 ** @param [?] y2 [float] Undocumented
-** @param [?] text [AjBool] Undocumented
 ** @param [r] stretch [AjBool] Do a stretch plot
 ** @return [void]
 ** @@
@@ -487,11 +455,11 @@ int main(int argc, char **argv)
 
 
 static void dotmatcher_pushpoint(AjPList *l, float x1, float y1, float x2,
-				 float y2, AjBool text, AjBool stretch)
+				 float y2, AjBool stretch)
 {
     PPoint p;
 
-    if(!text && !stretch)
+    if(!stretch)
     {
 	ajGraphLine(x1+1,y1+1,x2+1,y2+1);
 	return;
@@ -503,32 +471,6 @@ static void dotmatcher_pushpoint(AjPList *l, float x1, float y1, float x2,
     p->x2=x2+1;
     p->y2=y2+1;
     ajListPush(*l,(void *)p);
-
-    return;
-}
-
-/* @funcstatic dotmatcher_datapoints ******************************************
-**
-** Undocumented.
-**
-** @param [?] l [AjPList*] Undocumented
-** @param [?] outf [AjPFile] Undocumented
-** @param [?] b1 [ajint] Undocumented
-** @param [?] b2 [ajint] Undocumented
-** @@
-******************************************************************************/
-
-
-static void dotmatcher_datapoints(AjPList *l,AjPFile outf, ajint b1, ajint b2)
-{
-    PPoint p;
-
-    while(ajListPop(*l,(void **)&p))
-    {
-	ajFmtPrintF(outf,"Line x1 %f y1 %f x2 %f y2 %f colour 0\n",
-		    p->x1+b1-1,p->y1+b2-1,p->x2+b1-1,p->y2+b2-1);
-	AJFREE(p);
-    }
 
     return;
 }

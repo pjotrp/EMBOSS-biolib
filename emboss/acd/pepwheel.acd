@@ -88,19 +88,8 @@ section: output [
     type: "frame"
   ]
 
-    boolean: data  [
-      default: "N"
-      information: "Display as data"
-      help: "Output the match data to a file instead of plotting it"
-    ]
-
-    outfile: outfile  [
-      required: "$(data)"
-      nullok: "Y"
-    ]
-
     graph: graph  [
-      required: "@(!$(data))"
+      required: "Y"
       gxtitle: "$(sequence.name)"
     ]
 

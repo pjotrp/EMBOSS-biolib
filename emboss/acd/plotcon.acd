@@ -55,22 +55,9 @@ section: output [
   type: "page"
 ]
 
-  boolean: data  [
-    default: "N"
-    information: "Display as data"
-    help: "Output the match data to a file instead of plotting it"
-  ]
-
   xygraph: graph  [
-    required: "@(!$(data))"
+    required: "Y"
     gxtitle: "Relative Residue Position"
-  ]
-
-  outfile: outfile  [
-    required: "$(data)"
-    nullok: "Y"
-    information: "Display as data"
-    standardtype: "dotplot graph data"
   ]
 
 endsection: output

@@ -23,8 +23,6 @@
 
 #include "emboss.h"
 
-
-static void dottup_objtofile(void **x,void *cl);
 static void dottup_drawPlotlines(void **x, void *cl);
 static void dottup_plotMatches(AjPList list);
 static void dottup_stretchplot(AjPGraph graph, AjPList matchlist, AjPSeq seq1,
@@ -42,16 +40,13 @@ static void dottup_stretchplot(AjPGraph graph, AjPList matchlist, AjPSeq seq1,
 
 int main(int argc, char **argv)
 {
-    EmbPWordMatch wmp=NULL;
-    ajint wplen;
     AjPSeq seq1,seq2;
     ajint wordlen;
     AjPTable seq1MatchTable=0;
     AjPList matchlist=NULL;
     AjPGraph graph = NULL;
     AjPGraph xygraph = NULL;
-    AjPFile outfile;
-    AjBool boxit,text;
+    AjBool boxit;
     /* Different ticks as they need to be different for x and y due to
        length of string being important on x */
     ajint acceptableticksx[]=
@@ -83,9 +78,7 @@ int main(int argc, char **argv)
     seq1 = ajAcdGetSeq ("asequence");
     seq2 = ajAcdGetSeq ("bsequence");
     graph = ajAcdGetGraph ("graph");
-    text = ajAcdGetBool("data");
     boxit = ajAcdGetBool("boxit");
-    outfile = ajAcdGetOutfile ("outfile");
     stretch = ajAcdGetBool("stretch");
     xygraph = ajAcdGetGraphxy ("xygraph");
 
@@ -120,169 +113,92 @@ int main(int argc, char **argv)
 
     xmargin = ymargin = max *0.15;
 
-    if(!text)
+    ajGraphOpenWin(graph, 0.0-ymargin,(max*1.35)+ymargin,
+		   0.0-xmargin,(float)max+xmargin);
+
+    ajGraphTextMid (max*0.5,(ajSeqLen(seq2))+(xmargin*0.5),
+		    ajStrStr(graph->title));
+    ajGraphSetCharSize(0.5);
+
+    if(matchlist)
+	dottup_plotMatches(matchlist);
+    if(boxit)
     {
-	ajGraphOpenWin(graph, 0.0-ymargin,(max*1.35)+ymargin,
-		       0.0-xmargin,(float)max+xmargin);
+	ajGraphRect( 0.0,0.0,(float)ajSeqLen(seq1),(float)ajSeqLen(seq2));
+	i=0;
+	while(acceptableticksx[i]*numbofticks < ajSeqLen(seq1))
+	    i++;
 
-	ajGraphTextMid (max*0.5,(ajSeqLen(seq2))+(xmargin*0.5),
-			ajStrStr(graph->title));
-	ajGraphSetCharSize(0.5);
+	if(i<=13)
+	    tickgap = acceptableticksx[i];
+	else
+	    /*	tickgap = acceptableticksx[13];  bugfixed AJB 26/7/00 */
+	    tickgap = acceptableticksx[10];
+	ticklen = xmargin*0.1;
+	onefifth  = xmargin*0.2;
+	ajGraphTextMid ((ajSeqLen(seq1))*0.5,0.0-(onefifth*3),
+			ajStrStr(graph->yaxis));
+	if(ajSeqLen(seq2)/ajSeqLen(seq1) > 10 )
+	{		     /* a lot smaller then just label start and end */
+	    ajGraphLine(0.0,0.0,0.0,0.0-ticklen);
+	    sprintf(ptr,"%d",ajSeqOffset(seq1));
+	    ajGraphTextMid ( 0.0,0.0-(onefifth),ptr);
 
-	if(matchlist)
-	    dottup_plotMatches(matchlist);
-	if(boxit)
-	{
-	    ajGraphRect( 0.0,0.0,(float)ajSeqLen(seq1),(float)ajSeqLen(seq2));
-	    i=0;
-	    while(acceptableticksx[i]*numbofticks < ajSeqLen(seq1))
-		i++;
-
-	    if(i<=13)
-		tickgap = acceptableticksx[i];
-	    else
-	/*	tickgap = acceptableticksx[13];  bugfixed AJB 26/7/00 */
-		tickgap = acceptableticksx[10];
-	    ticklen = xmargin*0.1;
-	    onefifth  = xmargin*0.2;
-	    ajGraphTextMid ((ajSeqLen(seq1))*0.5,0.0-(onefifth*3),
-			    ajStrStr(graph->yaxis));
-	    if(ajSeqLen(seq2)/ajSeqLen(seq1) > 10 )
-	    {		     /* a lot smaller then just label start and end */
-		ajGraphLine(0.0,0.0,0.0,0.0-ticklen);
-		sprintf(ptr,"%d",ajSeqOffset(seq1));
-		ajGraphTextMid ( 0.0,0.0-(onefifth),ptr);
-
-		ajGraphLine((float)(ajSeqLen(seq1)),0.0,
-			    (float)ajSeqLen(seq1),0.0-ticklen);
-		sprintf(ptr,"%d",ajSeqLen(seq1)+ajSeqOffset(seq1));
-		ajGraphTextMid ( (float)ajSeqLen(seq1),0.0-(onefifth),ptr);
-
-	    }
-	    else
-	    {
-		for(k=0.0;k<ajSeqLen(seq1);k+=tickgap)
-		{
-		    ajGraphLine(k,0.0,k,0.0-ticklen);
-		    sprintf(ptr,"%d",(ajint)k+ajSeqOffset(seq1));
-		    ajGraphTextMid ( k,0.0-(onefifth),ptr);
-		}
-	    }
-
-
-	    i=0;
-	    while(acceptableticks[i]*numbofticks < ajSeqLen(seq2))
-		i++;
-
-	    tickgap = acceptableticks[i];
-	    ticklen = ymargin*0.1;
-	    onefifth  = ymargin*0.2;
-	    ajGraphTextLine(0.0-(onefifth*4),(ajSeqLen(seq2))*0.5,
-			    0.0-(onefifth*4),(float)ajSeqLen(seq2),
-			    ajStrStr(graph->xaxis),0.5);
-	    if(ajSeqLen(seq1)/ajSeqLen(seq2) > 10 )
-	    {		    /* a lot smaller then just label start and end */
-		ajGraphLine(0.0,0.0,0.0-ticklen,0.0);
-		sprintf(ptr,"%d",ajSeqOffset(seq2));
-		ajGraphTextEnd ( 0.0-(onefifth),0.0,ptr);
-
-		ajGraphLine(0.0,(float)ajSeqLen(seq2),0.0-ticklen,
-			    (float)ajSeqLen(seq2));
-		sprintf(ptr,"%d",ajSeqLen(seq2)+ajSeqOffset(seq2));
-		ajGraphTextEnd ( 0.0-(onefifth),(float)ajSeqLen(seq2),ptr);
-	    }
-	    else
-	    {
-		for(k=0.0;k<ajSeqLen(seq2);k+=tickgap)
-		{
-		    ajGraphLine(0.0,k,0.0-ticklen,k);
-		    sprintf(ptr,"%d",(ajint)k+ajSeqOffset(seq2));
-		    ajGraphTextEnd ( 0.0-(onefifth),k,ptr);
-		}
-	    }
+	    ajGraphLine((float)(ajSeqLen(seq1)),0.0,
+			(float)ajSeqLen(seq1),0.0-ticklen);
+	    sprintf(ptr,"%d",ajSeqLen(seq1)+ajSeqOffset(seq1));
+	    ajGraphTextMid ( (float)ajSeqLen(seq1),0.0-(onefifth),ptr);
+	    
 	}
-	ajGraphClose();
-
-    }
-    else
-    {
-/*	if(matchlist)
-	    ajFmtPrintF (outfile, "%d matches found\n\n",
-			 ajListLength(matchlist)+1);
-*/
-	embWordFreeTable(seq1MatchTable); /* free table of words */
-
-
-	ajFmtPrintF(outfile,"##2D Plot\n##Title dottup (%D)\n",ajTimeToday());
-	ajFmtPrintF(outfile,"##Graphs 1\n##Number 1\n##Points 0\n");
-	ajFmtPrintF(outfile,"##XminA %f XmaxA %f YminA %f YmaxA %f\n",0.,
-		    (float)ajSeqLen(seq1),0.,(float)ajSeqLen(seq2));
-	ajFmtPrintF(outfile,"##Xmin %f Xmax %f Ymin %f Ymax %f\n",0.,
-		    (float)ajSeqLen(seq1),0.,(float)ajSeqLen(seq2));
-	ajFmtPrintF(outfile,"##ScaleXmin %f ScaleXmax %f "
-		    "ScaleYmin %f ScaleYmax %f\n",(float)begin1,(float)end1,
-		    (float)begin2,(float)end2);
-	ajFmtPrintF(outfile,"##Maintitle\n");
-	ajFmtPrintF(outfile,"##Xtitle %s\n##Ytitle %s\n",ajSeqName(seq1),
-		    ajSeqName(seq2));
-	ajFmtPrintF(outfile,"##DataObjects\n##Number %d\n",
-		    ajListLength(matchlist));
-
-	if(matchlist)
+	else
 	{
-	    wplen = ajListLength(matchlist);
-	    for(i=0;i<wplen;++i)
+	    for(k=0.0;k<ajSeqLen(seq1);k+=tickgap)
 	    {
-		ajListPop(matchlist,(void **)&wmp);
-		wmp->seq1start += begin1;
-		wmp->seq2start += begin2;
-		ajListPushApp(matchlist,(void *)wmp);
+		ajGraphLine(k,0.0,k,0.0-ticklen);
+		sprintf(ptr,"%d",(ajint)k+ajSeqOffset(seq1));
+		ajGraphTextMid ( k,0.0-(onefifth),ptr);
 	    }
 	}
 
 
-	if(matchlist)
-	    ajListMap(matchlist,dottup_objtofile, outfile);
-	ajFmtPrintF(outfile,"##GraphObjects\n##Number 0\n");
+	i=0;
+	while(acceptableticks[i]*numbofticks < ajSeqLen(seq2))
+	    i++;
 
+	tickgap = acceptableticks[i];
+	ticklen = ymargin*0.1;
+	onefifth  = ymargin*0.2;
+	ajGraphTextLine(0.0-(onefifth*4),(ajSeqLen(seq2))*0.5,
+			0.0-(onefifth*4),(float)ajSeqLen(seq2),
+			ajStrStr(graph->xaxis),0.5);
+	if(ajSeqLen(seq1)/ajSeqLen(seq2) > 10 )
+	{		    /* a lot smaller then just label start and end */
+	    ajGraphLine(0.0,0.0,0.0-ticklen,0.0);
+	    sprintf(ptr,"%d",ajSeqOffset(seq2));
+	    ajGraphTextEnd ( 0.0-(onefifth),0.0,ptr);
+
+	    ajGraphLine(0.0,(float)ajSeqLen(seq2),0.0-ticklen,
+			(float)ajSeqLen(seq2));
+	    sprintf(ptr,"%d",ajSeqLen(seq2)+ajSeqOffset(seq2));
+	    ajGraphTextEnd ( 0.0-(onefifth),(float)ajSeqLen(seq2),ptr);
+	}
+	else
+	{
+	    for(k=0.0;k<ajSeqLen(seq2);k+=tickgap)
+	    {
+		ajGraphLine(0.0,k,0.0-ticklen,k);
+		sprintf(ptr,"%d",(ajint)k+ajSeqOffset(seq2));
+		ajGraphTextEnd ( 0.0-(onefifth),k,ptr);
+	    }
+	}
     }
+    ajGraphClose();
 
     if(matchlist)
 	embWordMatchListDelete(&matchlist); /* free the match structures */
 
     ajExit();
     return 0;
-}
-
-
-/* @funcstatic dottup_objtofile ***********************************************
-**
-** Undocumented.
-**
-** @param [r] x [void**] Undocumented
-** @param [r] cl [void*] Undocumented
-** @return [void]
-** @@
-******************************************************************************/
-
-
-static void dottup_objtofile(void **x,void *cl)
-{
-    EmbPWordMatch p = (EmbPWordMatch)*x;
-    AjPFile file = (AjPFile) cl;
-    ajint x1;
-    ajint x2;
-    ajint y1;
-    ajint y2;
-
-    x1 = (*p).seq1start;
-    y1 = (*p).seq2start;
-    x2 = x1 + (*p).length;
-    y2 = y1 + (*p).length;
-
-    (void) ajFmtPrintF(file, "Line x1 %f y1 %f x2 %f y2 %f colour 0\n",
-		       (float)x1,(float)y1,(float)x2,(float)y2);
-    return;
 }
 
 #ifndef NO_PLOT

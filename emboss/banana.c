@@ -95,11 +95,6 @@ int main(int argc, char **argv)
     ajint iend;
     ajint ilen;
     AjPStr  sstr  = NULL;
-    AjPFile goutf = NULL;
-    AjPStr  fname = NULL;
-    ajint     fno=1;
-    AjBool  data;
-
 
 
     ajGraphInit ("banana", argc, argv);
@@ -108,10 +103,6 @@ int main(int argc, char **argv)
     outf   = ajAcdGetOutfile("outfile");
     graph  = ajAcdGetGraph("graph");
     numres = ajAcdGetInt("residuesperline");
-    data   = ajAcdGetBool("data");
-
-
-
 
     ibeg = ajSeqBegin(seq);
     iend = ajSeqEnd(seq);
@@ -146,7 +137,7 @@ int main(int argc, char **argv)
 
 
     if(!file)
-	ajErr("EMBOSS_DATA undefined");
+	ajErr("Banana failed to open angle file");
 
     ajFileGets(file,&buffer);		/* 3 junk lines */
     ajFileGets(file,&buffer);
@@ -260,186 +251,139 @@ int main(int argc, char **argv)
     }
 
 
-    ajFmtPrintF(outf,"Base   Bend      Curve\n");
-    ptr= ajStrStr(sstr);
-    for(i=1;i<=ajStrLen(sstr);i++)
+    if (outf)
     {
-	ajFmtPrintF(outf,"%c    %6.1f   %6.1f\n",*ptr, bend[i], curve[i]);
-	ptr++;
-    }
-    ajFileClose(&outf);
-
-    maxbend = minbend = 0.0;
-    maxcurve = mincurve = 0.0;
-    for(i=1;i<=ajStrLen(sstr);i++)
-    {
-	if(bend[i] > maxbend)
-	    maxbend = bend[i];
-	if(bend[i] < minbend)
-	    minbend = bend[i];
-	if(curve[i] > maxcurve)
-	    maxcurve = curve[i];
-	if(curve[i] < mincurve)
-	    mincurve = curve[i];
+	ajFmtPrintF(outf,"Base   Bend      Curve\n");
+	ptr= ajStrStr(sstr);
+	for(i=1;i<=ajStrLen(sstr);i++)
+	{
+	    ajFmtPrintF(outf,"%c    %6.1f   %6.1f\n",*ptr, bend[i], curve[i]);
+	    ptr++;
+	}
+	ajFileClose(&outf);
     }
 
-    ystart = 75.0;
+    if (graph)
+    {
+	maxbend = minbend = 0.0;
+	maxcurve = mincurve = 0.0;
+	for(i=1;i<=ajStrLen(sstr);i++)
+	{
+	    if(bend[i] > maxbend)
+		maxbend = bend[i];
+	    if(bend[i] < minbend)
+		minbend = bend[i];
+	    if(curve[i] > maxcurve)
+		maxcurve = curve[i];
+	    if(curve[i] < mincurve)
+		mincurve = curve[i];
+	}
 
-    if(!data)
+	ystart = 75.0;
+
 	ajGraphOpenWin(graph,-1.0, (float)numres+10.0, 0.0, ystart+5.0);
-    else
-    {
+/*    
 	ajFmtPrintS(&fname,"banana%d.dat",fno++);
 	if(!(goutf=ajFileNewOut(fname)))
 	    ajFatal("Cannot open file %S",fname);
 	ajUser("Writing to file %S",fname);
 	ajFmtPrintF(goutf,"##Graphic\n##Screen x1 %f y1 %f x2 %f y2 %f\n",
 		    -1.0,0.0,(float)numres+10.0,ystart+5.0);
-    }
+ */
 
-
-    if(!data)
 	ajGraphTextMid ((numres+10.0)/2.0, ystart+2.5,ajStrStr(graph->title));
-    else
-	ajFmtPrintF(goutf,"Text2 x1 %f y1 %f colour 0 size 1.0 %s\n",
-		    (numres+10.0)/2.0,ystart+2.5,ajSeqName(seq));
 
-    if(!data)
 	ajGraphGetOut(&fxp,&fyp,&ixlen,&iylen,&ixoff,&iyoff);
-    else
-    {
-	fxp=fyp=0.;
-	ixlen=600;
-	iylen=450;
-	ixoff=iyoff=0;
-    }
+	/*ajUser("%f\n%f\n%d\n%d\n%d\n%d",fxp,fyp,ixlen,iylen,ixoff,iyoff);*/
 
-    /*ajUser("%f\n%f\n%d\n%d\n%d\n%d",fxp,fyp,ixlen,iylen,ixoff,iyoff);*/
-
-    if(ixlen == 0.0)
-    {	/* for postscript these are 0.0 ????? */
-	if(portrait)
-	{
-	    ixlen = 768;
-	    iylen = 960;
+	if(ixlen == 0)
+	{	/* for postscript these are 0.0 ????? */
+	    if(portrait)
+	    {
+		ixlen = 768;
+		iylen = 960;
+	    }
+	    else{
+		ixlen = 960;
+		iylen = 768;
+	    }
 	}
-	else{
-	    ixlen = 960;
-	    iylen = 768;
-	}
-    }
 
-    if(!data)
-    {
 	ajGraphGetCharSize(&defheight,&currentheight);
+	if (!currentheight) {
+	    defheight = currentheight = 4.440072;
+	    currentheight = defheight *
+		((float)ixlen/ ((float)(numres)*(currentheight+1.0)))
+		    /currentheight;
+	}
 	ajGraphSetCharSize(((float)ixlen/((float)(numres)*
 					  (currentheight+1.0)))/currentheight);
 	ajGraphGetCharSize(&defheight,&currentheight);
-    }
-    else
-    {
-	defheight = currentheight = 4.440072;
-	currentheight = defheight * ((float)ixlen/
-				     ((float)(numres)*(currentheight+1.0)))
-	    /currentheight;
-    }
 
+	yincr = (currentheight +3.0)*0.3;
 
-    yincr = (currentheight +3.0)*0.3;
-
-    if(!title)
-	y1=ystart;
-    else
-    {
-	y1=ystart-5.0;
-    }
-    count = 1;
-
-    residue[1]='\0';
-
-    bendfactor = (3*yincr)/maxbend;
-    curvefactor = (3*yincr)/maxcurve;
-
-    ptr= ajStrStr(sstr);
-
-    y1=y1-(yincr*(5.0));
-    for(i=1;i<=ajStrLen(sstr);i++)
-    {
-	if(count > numres)
+	if(!title)
+	    y1=ystart;
+	else
 	{
-	    y1=y1-(yincr*(5.0));
-	    if(y1<1.0)
+	    y1=ystart-5.0;
+	}
+
+	count = 1;
+
+	residue[1]='\0';
+
+	bendfactor = (3*yincr)/maxbend;
+	curvefactor = (3*yincr)/maxcurve;
+
+	ptr= ajStrStr(sstr);
+
+	y1=y1-(yincr*(5.0));
+	for(i=1;i<=ajStrLen(sstr);i++)
+	{
+	    if(count > numres)
 	    {
-		if(!title)
-		    y1=ystart;
-		else
-		{
-		    y1=ystart-5.0;
-		}
 		y1=y1-(yincr*(5.0));
-		if(!data)
-		    ajGraphNewPage(AJFALSE);
-		else
+		if(y1<1.0)
 		{
-		    ajFileClose(&goutf);
-		    ajFmtPrintS(&fname,"banana%d.dat",fno++);
-		    if(!(goutf=ajFileNewOut(fname)))
-			ajFatal("Cannot open file %S",fname);
-		    ajUser("Writing to file %S",fname);
-		    ajFmtPrintF(goutf,"##Graphic\n##Screen x1 %f y1 %f x2"
-				" %f y2 %f\n",
-				-1.0,0.0,(float)numres+10.0,ystart+5.0);
+		    if(!title)
+			y1=ystart;
+		    else
+		    {
+			y1=ystart-5.0;
+		    }
+		    y1=y1-(yincr*(5.0));
+		    ajGraphNewPage(AJFALSE);
 		}
+		count=1;
 	    }
-	    count=1;
-	}
-	residue[0] = *ptr;
+	    residue[0] = *ptr;
 
-	if(!data)
 	    ajGraphTextEnd ((float)(count)+2.0,y1,residue);
-	else
-	    ajFmtPrintF(goutf,"Text3 x1 %f y1 %f colour 0 size %f %s\n",
-			(float)(count)+2.0,y1,currentheight,residue);
 
-	if(i>1 && i < ajStrLen(sstr))
-	{
-	    float yp1,yp2;
-	    yp1=y1+yincr + (bend[i]*bendfactor);
-	    yp2=y1+yincr + (bend[i+1]*bendfactor);
-	    if(!data)
+	    if(i>1 && i < ajStrLen(sstr))
+	    {
+		float yp1,yp2;
+		yp1=y1+yincr + (bend[i]*bendfactor);
+		yp2=y1+yincr + (bend[i+1]*bendfactor);
 		ajGraphLine((float)count+1.5,yp1,(float)(count)+2.5,yp2);
-	    else
-		ajFmtPrintF(goutf,"Line x1 %f y1 %f x2 %f y2 %f colour 0\n",
-			    (float)count+1.5,yp1,(float)(count)+2.5,yp2);
-
-	}
-	if(i>(ajint)rcurve+5 && i< ajStrLen(sstr)-(ajint)rcurve-7)
-	{
-	    float yp1,yp2;
-	    yp1=y1+yincr + (curve[i]*curvefactor);
-	    yp2=y1+yincr + (curve[i+1]*curvefactor);
-	    if(!data)
+	    }
+	    if(i>(ajint)rcurve+5 && i< ajStrLen(sstr)-(ajint)rcurve-7)
+	    {
+		float yp1,yp2;
+		yp1=y1+yincr + (curve[i]*curvefactor);
+		yp2=y1+yincr + (curve[i+1]*curvefactor);
 		ajGraphLine((float)count+1.7,yp1,(float)(count)+2.3,yp2);
-	    else
-		ajFmtPrintF(goutf,"Line x1 %f y1 %f x2 %f y2 %f colour 0\n",
-			    (float)count+1.7,yp1,(float)(count)+2.3,yp2);
+	    }
 
-	}
-	if(!data)
 	    ajGraphLine((float)count+1.5,y1+yincr,(float)(count)+2.5,y1+yincr);
-	else
-	    ajFmtPrintF(goutf,"Line x1 %f y1 %f x2 %f y2 %f colour 0\n",
-			(float)count+1.5,y1+yincr,(float)(count)+2.5,y1+yincr);
 
-	count++;
-	ptr++;
-    }
+	    count++;
+	    ptr++;
+	}
 
-    if(!data)
 	ajGraphCloseWin();
-    else
-	ajFileClose(&goutf);
-
+    }
 
     AJFREE(iseq);
     AJFREE(x);
