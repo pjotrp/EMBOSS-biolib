@@ -8446,10 +8446,12 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI opsd_human.pscan 
-FZ = 794
+FZ = 871
 FP /^Fingerprint GPCRRHODOPSN Elements 7\n    Accession number PR00237\n/
 FP /^  Element 2 Threshold 49% Score 75%\n/
 FP /^             Start position 72 Length 22\n/
+FP /^  Element 1 Threshold 54% Score 64%\n/
+FP /^             Start position 39 Length 25\n/
 //
 
 ID psiphi-ex
@@ -9287,7 +9289,7 @@ ID seqret-inauto-abi
 AP seqret
 CL -auto ../../data/abiview.abi test.out -osf embl
 FI test.out
-FZ = 1241
+FZ = 1246
 FP /^ID   .* 838 BP\.\n/
 FP /^SQ   Sequence 838 BP; 274 A; 140 C; 182 G; 211 T; 31 other;/
 //
@@ -9296,7 +9298,7 @@ ID seqret-inusa-abi
 AP seqret
 CL -auto abi::../../data/abiview.abi test.out -osf embl
 FI test.out
-FZ = 1241
+FZ = 1246
 FP /^ID   .* 838 BP\.\n/
 FP /^SQ   Sequence 838 BP; 274 A; 140 C; 182 G; 211 T; 31 other;/
 //
@@ -9305,7 +9307,7 @@ ID seqret-in-abi
 AP seqret
 CL -auto ../../data/abiview.abi -sf abi test.out -osf embl
 FI test.out
-FZ = 1241
+FZ = 1246
 FP /^ID   .* 838 BP\.\n/
 FP /^SQ   Sequence 838 BP; 274 A; 140 C; 182 G; 211 T; 31 other;/
 //
