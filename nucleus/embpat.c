@@ -4005,10 +4005,12 @@ void embPatFuzzSearch(ajint type, ajint begin, const AjPStr pattern,
 		--count;
 		continue;
 	    }
-	    if(!right || (right && start==ajStrLen(text)-
-			     (end-start+1)))
-		embPatPushHit(l,name,start,end-start+1,
-			      begin,0);
+	    if(right && start!=ajStrLen(text)-(end-start+1))
+	    {
+		--count;
+		continue;
+	    }
+	    embPatPushHit(l,name,start,end-start+1,begin,0);
 
 	}
 	embPatMatchDel(&ppm);
