@@ -33,6 +33,11 @@ import org.emboss.jemboss.gui.form.TextFieldInt;
 import org.emboss.jemboss.gui.form.TextFieldFloat;
 import org.emboss.jemboss.gui.ScrollPanel;
  
+/**
+*
+* Use java 2D to draw data points from EMBOSS applications.
+*
+*/
 public class Graph2DPlot extends ScrollPanel
 {
 
@@ -79,6 +84,11 @@ public class Graph2DPlot extends ScrollPanel
   private String xtitle = "";
   private String ytitle = "";
 
+  /**
+  *
+  * Contructor for graph object.
+  *
+  */
   public Graph2DPlot()
   {
     setPreferredSize(new Dimension(width,height));
@@ -447,6 +457,11 @@ public class Graph2DPlot extends ScrollPanel
     return menubar;
   }
   
+  /**
+  *
+  * Calculate minima and maxima
+  *
+  */
   private void calcMinMax()
   {
     int xnum = emboss_data[0].length;
@@ -512,6 +527,11 @@ public class Graph2DPlot extends ScrollPanel
     return height;
   }
 
+  /**
+  *
+  * Override paintComponent to draw graph.
+  *
+  */
   public void paintComponent(Graphics g)
   {
     super.paintComponent(g);
@@ -543,6 +563,11 @@ public class Graph2DPlot extends ScrollPanel
     g.drawImage(offscreen, 0, 0, null);
   }
 
+  /**
+  *
+  * Use to print the graph.
+  *
+  */
   public void printComponent(Graphics g)
   {
     super.paintComponent(g);
@@ -567,6 +592,11 @@ public class Graph2DPlot extends ScrollPanel
       drawGraphics(g);
   }
 
+  /**
+  *
+  * Draw the x and y axes.
+  *
+  */
   private void drawAxes(Graphics g, int tick_height)
   {
     Graphics2D g2d = (Graphics2D)g;
@@ -634,8 +664,6 @@ public class Graph2DPlot extends ScrollPanel
     else
       myformat = new DecimalFormat((String)x_formatList.getSelectedItem());
 
-    System.out.println(xstart.getValue());
-
     for(int i = 0; i<=n_xticks; i++)
     {
       float xpos = (float)((i*xinterval)+xstart.getValue());
@@ -688,7 +716,6 @@ public class Graph2DPlot extends ScrollPanel
     for(int i = 0; i <= n_yticks; i++) 
     {
       float ypos = (float)(i*yinterval);
-      System.out.println(ypos+" "+i+" "+yinterval+" "+n_yticks);
       int ypos_major = -(int)(ypos*yfactor);
 
       g2d.drawLine(0,ypos_major,-tick_height,ypos_major);
@@ -724,6 +751,11 @@ public class Graph2DPlot extends ScrollPanel
 
   }
 
+  /**
+  *
+  *  Find the width of the Y axis numbers.
+  *
+  */
   private int getYLabelWidth(FontMetrics fm)
   {
     DecimalFormat myformat = null;
@@ -782,6 +814,11 @@ public class Graph2DPlot extends ScrollPanel
   }
 
 
+  /**
+  *
+  * Use to define a format for numbers. 
+  *
+  */
   private DecimalFormat getFormat(float max)
   {
     DecimalFormat myformat = null;
@@ -795,7 +832,11 @@ public class Graph2DPlot extends ScrollPanel
     return myformat;
   }
 
-
+  /**
+  *
+  * Draw an EMBOSS graphics set of data.
+  *
+  */
   private void drawGraphics(Graphics g)
   {
     Graphics2D g2d = (Graphics2D)g;
@@ -825,7 +866,11 @@ public class Graph2DPlot extends ScrollPanel
     g2d.translate(-xborder, -getHeight()+yborder);
   }
 
-
+  /**
+  *
+  * Draw XY graph points.
+  *
+  */
   private void drawPoints(Graphics g)
   {
     Graphics2D g2d = (Graphics2D)g;
@@ -834,7 +879,7 @@ public class Graph2DPlot extends ScrollPanel
     float yfactor = (getHeight()-(2*yborder))/(ymax-ymin);
 
     float x1 = (emboss_data[0][0] - xmin)*xfactor;
-    float y1 = (emboss_data[1][0] - ymin)*yfactor;
+    float y1 = -(emboss_data[1][0] - ymin)*yfactor;
     float x2;
     float y2;
 
@@ -842,8 +887,6 @@ public class Graph2DPlot extends ScrollPanel
 
     for(int i=1; i<xnum; i++)
     {
-      if(y1 < 0.f && x1 < 10)
-        System.out.println(emboss_data[0][i-1]+" "+emboss_data[1][i-1]);
       x2 = (emboss_data[0][i] - xmin)*xfactor;
       y2 = -(emboss_data[1][i] - ymin)*yfactor;
 
@@ -856,6 +899,11 @@ public class Graph2DPlot extends ScrollPanel
     g2d.translate(-xborder, -getHeight()+yborder);
   }
 
+  /**
+  *
+  * Read graph data.
+  *
+  */
   public float[][] readGraph(Reader read) throws IOException
   {
     BufferedReader in = new BufferedReader(read);
@@ -966,6 +1014,11 @@ public class Graph2DPlot extends ScrollPanel
     emboss_data[5][i] = Float.parseFloat(tok.nextToken());
   }
 
+  /**
+  *
+  * Determine if this looks like a tick line.
+  *
+  */
   private boolean isTick(String line)
   {
     StringTokenizer tok = new StringTokenizer(line," ");
