@@ -177,7 +177,7 @@ public class SetUpMenuBar
       public void actionPerformed(ActionEvent e)
       {
         if(ss == null)
-          ss = new ServerSetup(mysettings);
+          ss = new ServerSetup(mysettings,withSoap);
         int sso = JOptionPane.showConfirmDialog(f,ss,"Jemboss Settings",
                              JOptionPane.OK_CANCEL_OPTION,
                              JOptionPane.PLAIN_MESSAGE,null);
