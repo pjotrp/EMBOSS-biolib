@@ -20,6 +20,7 @@
 
 package org.emboss.jemboss.server;
 
+import org.emboss.jemboss.*;
 import org.emboss.jemboss.programs.*;
 import org.emboss.jemboss.parser.*;
 import org.apache.soap.rpc.Parameter;
@@ -39,19 +40,15 @@ public class JembossServer
   private String fs = new String(System.getProperty("file.separator"));
   private String ps = new String(System.getProperty("path.separator"));
 
-  /* THESE NEED TO BE SET BEFORE COMPILING THE SERVER */
-
-//private String embossBin = "/packages/emboss/STABLE/bin/";
-//private String embossData = new String("/packages/emboss/STABLE/share/EMBOSS/");
-//private String plplot = new String("/packages/emboss/STABLE/share/EMBOSS/");
-//private static String acdDirToParse = new String("/packages/emboss_dev/tcarver/emboss/emboss/emboss/acd/");
+//get paths to EMBOSS
+  JembossParams jp = new JembossParams();
+  String plplot = jp.getPlplot();
+  String embossData = jp.getEmbossData();
+  String embossBin = jp.getEmbossBin();
+  String embossPath = jp.getEmbossPath();
+  String acdDirToParse = jp.getAcdDirToParse();
 
   private String homeDirectory = new String(System.getProperty("user.home") + fs);
-  private String embossPath = new String("PATH" + ps +  
-                                       "/bin" + ps + "/usr/bin" + ps + 
-                                       embossBin + ps +
-                                       "/packages/clustal/" + ps ); 
-
   
   private String username = new String(System.getProperty("user.name") + fs);
   private String tmproot = new String("/tmp/SOAP/emboss/" + username );
