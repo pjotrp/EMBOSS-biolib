@@ -31,6 +31,21 @@ section: input [
 
 endsection: input
 
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+boolean: outputall [
+  required: "Y"
+  information: "Write multi-chain domains"
+  default: "N"
+]
+
+endsection: required
+
+
 section: output [
   information: "Output section"
   type: "page"
