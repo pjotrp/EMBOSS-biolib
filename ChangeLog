@@ -1,4 +1,9 @@
 Version 2.9.0
+	Eprimer3 has been changed so that it runs a separate child process
+	of primer3_core for every sequence. This is to cure a problem
+	seen when more than about 23 sequences were input, in which there
+	was some blocking contention between the input and output streams.
+
 	Major cleanup of ACD files to match acdvalid standards. Featout
 	qualifiers are now -outfeat, which means all output start with
 	-out but it does clash with -outfile so -outf is not always usable
