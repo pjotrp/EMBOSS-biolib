@@ -47,6 +47,9 @@
 #include "emboss.h"
 #include "ajtime.h"
 
+
+
+
 /* @datastatic PPoint *********************************************************
 **
 ** Plotcon internals
@@ -85,28 +88,28 @@ int main(int argc, char **argv)
     ajint i;
     ajint numseq;
     ajint lenseq;
-    ajint j=0;
+    ajint j = 0;
     ajint k;
-    AjPMatrix cmpmatrix=0;
-    AjPSeqCvt cvt=0;
+    AjPMatrix cmpmatrix = 0;
+    AjPSeqCvt cvt = 0;
     AjOTime ajtime;
-    const time_t tim = time(0);
+    time_t tim;
 
     char **seqcharptr;
 
     float *x;
     float *y;
-    AjPFloat2d score=NULL;
-    float *sumscore=0;
-    float scoremax=0;
+    AjPFloat2d score = NULL;
+    float *sumscore  = 0;
+    float scoremax   = 0;
     float ymin;
     float ymax;
-    float contri=0;
-    float contrj=0;
+    float contri = 0;
+    float contrj = 0;
     ajint **matrix;
-    ajint m1=0;
-    ajint m2=0;
-    ajint highindex=0;
+    ajint m1 = 0;
+    ajint m2 = 0;
+    ajint highindex = 0;
     ajint winsize;	/* window size */
     ajint numbins;	/* total no. of bins making up the seq length */
     ajint binup;
@@ -116,14 +119,15 @@ int main(int argc, char **argv)
     ajint bin2;
     AjPGraph graphs = NULL;
     AjPGraphData gdata;
-    AjPList list=NULL;
+    AjPList list = NULL;
 
 
+    tim = time(0);
 
     ajtime.time = localtime(&tim);
     ajtime.format = 0;
 
-    (void) ajGraphInit ("plotcon", argc, argv);
+    ajGraphInit ("plotcon", argc, argv);
 
     seqset = ajAcdGetSeqset("msf");
 
@@ -131,7 +135,7 @@ int main(int argc, char **argv)
     numseq = ajSeqsetSize (seqset);
     lenseq = ajSeqsetLen(seqset);
 
-    winsize = ajAcdGetInt("winsize");
+    winsize   = ajAcdGetInt("winsize");
     cmpmatrix = ajAcdGetMatrix("scorefile");
 
     graphs = ajAcdGetGraphxy( "graph");
@@ -155,8 +159,10 @@ int main(int argc, char **argv)
     for(i=0;i<numseq;i++)
     {
 	ajSeqsetToUpper(seqset);
+
 	/* get sequence as a string */
 	seqcharptr[i] =  ajSeqsetSeq (seqset, i);
+
 	for(j=0;j<ajSeqsetLen(seqset);j++)
 	    ajFloat2dPut(&score,i,j,0.);
     }
@@ -249,5 +255,6 @@ int main(int argc, char **argv)
     ajFloat2dDel(&score);
 
     ajExit ();
+
     return 0;
 }
