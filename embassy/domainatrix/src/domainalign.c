@@ -1018,7 +1018,6 @@ static void domainalign_stamp(AjPDomain prevdomain,
     ajint     ncluster  = 0;	/* Counter for the number of clusters.     */    
     AjPStr    line      = NULL;	/* Holds a line from the log file.         */
     AjPRegexp rexp      = NULL;	/* For parsing no. of clusters in log file */
-    ajint     x         = 0;    /* Counter.                                */
     AjPStr    temp      = NULL;	/* A temporary string.                     */
      
 
