@@ -27,6 +27,7 @@ extern boolean interleaved, printdata, outgropt, treeprint, dotdiff;
 extern steptr weight, category, alias, location, ally;
 extern sequence y, convtab;
 
+
 #ifndef OLDC
 /*function prototypes*/
 void   discrete_inputdata(AjPSeqset, long);
@@ -137,5 +138,9 @@ void   freetree(long, pointarray);
 void   freegarbage(gbases **);
 void   freegrbg(node **);
 void treeout3(node *p, long nextree, long *col, node *root);
+
+void   collapsetree(node *, node *, node **, pointarray, long *, unsigned char *);
+void   collapsebestrees(node **, node **, pointarray, bestelm *, long *, 
+                        long *, unsigned char *, long, boolean, boolean);
 /*function prototypes*/
 #endif

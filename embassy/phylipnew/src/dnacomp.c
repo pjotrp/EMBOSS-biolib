@@ -474,7 +474,7 @@ void doinput()
 
   if (justwts) {
     if (firstset)
-      emboss_inputdata(seqsets[ith-1], chars);
+      seq_inputdata(seqsets[ith-1], chars);
     for (i = 0; i < chars; i++)
       weight[i] = 1;
     inputweightsstr(phyloweights->Str[0], chars, weight, &weights);
@@ -491,7 +491,7 @@ void doinput()
       reallocchars();
     }
     if (firstset)
-	emboss_inputdata(seqsets[ith-1], chars);
+	seq_inputdata(seqsets[ith-1], chars);
     for (i = 0; i < chars; i++)
       weight[i] = 1;
     if (weights) {
@@ -858,7 +858,6 @@ void standev3(long chars, long numtrees, long maxwhich, double maxsteps,
   double **covar, *P, *f;
 
 #define SAMPLES 1000
-#define MAXSHIMOTREES 1000
 /* ????? if numtrees too big for Shimo, truncate */
   if (numtrees == 2) {
     fprintf(outfile, "Kishino-Hasegawa-Templeton test\n\n");

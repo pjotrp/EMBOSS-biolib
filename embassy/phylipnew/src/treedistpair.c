@@ -983,9 +983,9 @@ int main(int argc, Char *argv[])
 {  
   /* Local variables added by Dan F. */
   pattern_elm  ***pattern_array ;
-  double *timesseen_changes ;
+  double *timesseen_changes = NULL;
   long trees_in_1 = 0, trees_in_2 = 0 ;
-  long *diff_array ;
+  long *diff_array = NULL;
 
 #ifdef MAC
   argc = 1;                /* macsetup("Treedist", "");        */
@@ -1016,8 +1016,8 @@ int main(int argc, Char *argv[])
 
   /* Read the (first) tree file and put together grouping, order, and
      timesseen */
-  read_groups (&pattern_array, timesseen_changes, &trees_in_1,
-                 phylotrees);
+  read_groups (&pattern_array, timesseen_changes, trees_in_1,
+                 trees_in_1 + trees_in_2, phylotrees);
 
   if ((tree_pairing == ADJACENT_PAIRS) ||
       (tree_pairing == ALL_IN_FIRST)) {

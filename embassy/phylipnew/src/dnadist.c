@@ -958,7 +958,7 @@ void getinput()
     }
   }
   if (!justwts || firstset)
-    emboss_inputdata(seqsets[ith-1], sites);
+    seq_inputdata(seqsets[ith-1], sites);
   makeweights();
   dnadist_makevalues();
   if (freqsfrom) {
@@ -1019,7 +1019,7 @@ void makev(long m, long n, double *v)
   long i, j, k, l, it, num1, num2, idx;
   long numerator = 0, denominator = 0;
   double sum, sum1, sum2, sumyr, lz, aa, bb, cc, vv=0,
-         p1, p2, p3, q1, q2, q3, tt, delta, slope,
+         p1, p2, p3, q1, q2, q3, tt, delta=0.0, slope,
          xx1freqa, xx1freqc, xx1freqg, xx1freqt;
   double *prod, *prod2, *prod3;
   boolean quick, jukesquick, kimquick, logdetquick;

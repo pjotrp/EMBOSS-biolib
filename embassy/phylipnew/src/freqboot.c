@@ -344,7 +344,7 @@ void seqboot_inputnumbersfreq(AjPPhyloFreq freq)
 void seqboot_inputfactors(AjPPhyloProp fact)
 {
   long i, j;
-  Char ch, prevch;
+  Char ch, prevch='\0';
   AjPStr str = fact->Str[0];
 
   j = 0;

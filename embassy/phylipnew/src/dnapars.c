@@ -430,7 +430,7 @@ void doinput()
 
   if (justwts) {
     if (firstset)
-      emboss_inputdata(seqsets[0], chars);
+      seq_inputdata(seqsets[0], chars);
     for (i = 0; i < chars; i++)
       weight[i] = 1;
     inputweightsstr(phyloweights->Str[0], chars, weight, &weights);
@@ -446,7 +446,7 @@ void doinput()
       samenumspseq(seqsets[ith-1], &chars, ith);
       reallocchars();
     }
-    emboss_inputdata(seqsets[ith-1], chars);
+    seq_inputdata(seqsets[ith-1], chars);
     for (i = 0; i < chars; i++)
       weight[i] = 1;
     if (weights) {
@@ -1343,7 +1343,7 @@ void maketree()
   /* constructs a binary tree from the pointers in treenode.
      adds each node at location which yields highest "likelihood"
   then rearranges the tree for greatest "likelihood" */
-  long i, j, numtrees, nextnode;
+  long i, j, numtrees=0, nextnode;
   boolean done, firsttree, goteof, haslengths;
   node *item, *nufork, *dummy;
   pointarray nodep;

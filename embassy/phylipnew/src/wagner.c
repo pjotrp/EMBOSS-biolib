@@ -7,54 +7,7 @@
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
-/*
-//void inputmixture(bitptr wagner0)
-//{
-//  /# input mixture of methods #/
-//  /# used in mix, move, & penny #/
-//  /# Obsolete in 3.6 - see inputmixturenew #/
-//  long i, j, k;
-//  Char ch;
-//  boolean wag;
-//
-//  for (i = 1; i < nmlngth; i++) {
-//    ch = gettc(infile);
-//    if (ch == '\n')
-//      ch = ' ';
-//  }
-//  for (i = 0; i < (words); i++)
-//    wagner0[i] = 0;
-//  j = 0;
-//  k = 1;
-//  for (i = 1; i <= (chars); i++) {
-//    do {
-//      if (eoln(infile))
-//        scan_eoln(infile);
-//      ch = gettc(infile);
-//      if (ch == '\n')
-//        ch = ' ';
-//    } while (ch == ' ');
-//    uppercase(&ch);
-//    wag = false;
-//    if (ch == 'W' || ch == '?')
-//      wag = true;
-//    else if (ch == 'S' || ch == 'C')
-//      wag = false;
-//    else {
-//      printf("BAD METHOD: %c\n", ch);
-//      exxit(-1);
-//    }
-//    j++;
-//    if (j > bits) {
-//      j = 1;
-//      k++;
-//    }
-//    if (wag)
-//      wagner0[k - 1] = (long)wagner0[k - 1] | (1L << j);
-//  }
-//  scan_eoln(infile);
-//}  /# inputmixture #/
-*/
+
 
 void inputmixturestr(AjPStr str, bitptr wagner0)
 {
@@ -273,7 +226,7 @@ void hyprint(struct htrav_vars2 *htrav, boolean unknown, boolean noroot,
     a0 = (((1L << l) & htrav->zerobelow->bits_[k - 1]) != 0);
     a1 = (((1L << l) & htrav->onebelow->bits_[k - 1]) != 0);
     dot = (dot || ((!htrav->bottom || !noroot || didreroot) && a1 == s1 &&
-                   a0 == s0 && s0 != s1));
+                   a0 == s0));
     if (dot)
       putc('.', outfile);
     else {

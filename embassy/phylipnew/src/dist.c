@@ -29,6 +29,25 @@ void alloctree(pointptr *treenode, long nonodes)
 } /* alloctree */
 
 
+void freetree(pointptr *treenode, long nonodes)
+{
+  long i, j;
+  node *p, *q;
+
+  for (i = 0; i < spp; i++)
+    free((*treenode)[i]);
+  for (i = spp; i < nonodes; i++) {
+    p = (*treenode)[i];
+    for (j = 1; j <= 3; j++) {
+      q = p;
+      p = p->next;
+      free(q);
+    }
+  }
+  free(*treenode);
+} /* freetree */
+
+
 void allocd(long nonodes, pointptr treenode)
 {
   /* used in fitch & kitsch */
@@ -48,6 +67,25 @@ void allocd(long nonodes, pointptr treenode)
 }
 
 
+void freed(long nonodes, pointptr treenode)
+{
+  /* used in fitch */
+  long i, j;
+  node *p;
+
+  for (i = 0; i < (spp); i++) {
+    free(treenode[i]->d);
+  }
+  for (i = spp; i < nonodes; i++) {
+    p = treenode[i];
+    for (j = 1; j <= 3; j++) {
+      free(p->d);
+      p = p->next;
+    }
+  }
+}
+
+
 void allocw(long nonodes, pointptr treenode)
 {
   /* used in fitch & kitsch */
@@ -61,6 +99,25 @@ void allocw(long nonodes, pointptr treenode)
     p = treenode[i];
     for (j = 1; j <= 3; j++) {
       p->w = (vector)Malloc(nonodes*sizeof(double));
+      p = p->next;
+    }
+  }
+}
+
+
+void freew(long nonodes, pointptr treenode)
+{
+  /* used in fitch */
+  long i, j;
+  node *p;
+
+  for (i = 0; i < (spp); i++) {
+    free(treenode[i]->w);
+  }
+  for (i = spp; i < nonodes; i++) {
+    p = treenode[i];
+    for (j = 1; j <= 3; j++) {
+      free(p->w);
       p = p->next;
     }
   }
@@ -126,7 +183,7 @@ void dist_inputdata(AjPPhyloDist dist,
   ipos = 0;
   for (i = 0; i < spp; i++) {
     x[i][i] = 0.0;
-    initnamedist(dist, i);
+    initnamedist(dist,i);
     for (j = 0; j < spp; j++) {
       x[i][j] = dist->Data[ipos];
       reps[i][j] = dist->Data[ipos++];
@@ -232,7 +289,7 @@ void drawline(long i, double scale, node *start, boolean rooted)
   do {
     if (!p->tip) { /* internal nodes */
       r = p->next;
-      done = false; /* r->back here is going to the same node. */
+      /* r->back here is going to the same node. */
       do {
         if (!r->back) {
           r = r->next;

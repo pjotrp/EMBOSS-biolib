@@ -2056,7 +2056,7 @@ void rectrav(node *p, long m, long n)
 void summarize()
 {
   /* print out branch length information and node numbers */
-  long i, j, mm, num_sibs;
+  long i, j, mm=0, num_sibs;
   double mode, sum;
   double like[maxcategs],nulike[maxcategs];
   double **marginal;

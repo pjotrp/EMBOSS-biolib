@@ -908,10 +908,9 @@ void maketree()
   /* constructs a binary tree from the pointers in treenode.
     adds each node at location which yields highest "likelihood"
     then rearranges the tree for greatest "likelihood" */
-  long i, j, numtrees;
+  long i, j, numtrees=0;
   double gotlike;
   node2 *item, *nufork, *dummy;
-  char* treestr;
 
   fullset = (1L << (bits + 1)) - (1L << 1);
   for (i=0 ; i<words ; ++i){

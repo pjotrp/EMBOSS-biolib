@@ -127,7 +127,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     treeprint = ajAcdGetBool("drawtree");
     stepbox = ajAcdGetBool("stepbox");
     ancseq= ajAcdGetBool("ancseq");
-    trout = ajAcdGetBool("trout");
+    trout = ajAcdGetToggle("trout");
     usertree = !ajAcdGetBool("besttree");
 
    /* init functions for standard ajAcdGet */

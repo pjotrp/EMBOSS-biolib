@@ -16,7 +16,6 @@ steptr weight, extras;
 boolean printdata;
 
 
-
 void disc_inputdata(AjPPhyloState state,
 		    pointptr treenode,boolean dollo,boolean printdata,
 		    FILE *outfile)
@@ -88,7 +87,6 @@ void disc_inputdata(AjPPhyloState state,
 }  /* inputdata */
 
 
-
 void disc_inputdata2(AjPPhyloState state, pointptr2 treenode)
 {
   /* input the names and character state data for species */
@@ -97,7 +95,6 @@ void disc_inputdata2(AjPPhyloState state, pointptr2 treenode)
   char k;
   Char charstate;
   AjPStr str = state->Str[0];
-
   /* possible states are '0', '1', 'P', 'B', and '?' */
 
   if (printdata)
@@ -105,7 +102,7 @@ void disc_inputdata2(AjPPhyloState state, pointptr2 treenode)
   for (i = 0; i < (chars); i++)
     extras[i] = 0;
   for (i = 1; i <= spp; i++) {
-    initnamestate(state, i-1);
+    initnamestate(state,i-1);
     if (printdata) {
       for (j = 0; j < nmlngth; j++)
         putc(nayme[i - 1][j], outfile);
@@ -154,81 +151,7 @@ void disc_inputdata2(AjPPhyloState state, pointptr2 treenode)
       putc('\n', outfile);
   }
   fprintf(outfile, "\n\n");
-}
-
-/*
-//void inputdata2(pointptr2 treenode)
-//{
-//  /# input the names and character state data for species #/
-//  /# used in Mix & Penny #/
-//  long i, j, l;
-//  char k;
-//  Char charstate;
-//  /# possible states are '0', '1', 'P', 'B', and '?' #/
-//
-//  if (printdata)
-//    headings(chars, "Characters", "----------");
-//  for (i = 0; i < (chars); i++)
-//    extras[i] = 0;
-//  for (i = 1; i <= spp; i++) {
-//    initname(i-1);
-//    if (printdata) {
-//      for (j = 0; j < nmlngth; j++)
-//        putc(nayme[i - 1][j], outfile);
-//    }
-//    fprintf(outfile, "   ");
-//    for (j = 0; j < (words); j++) {
-//      treenode[i - 1]->fulstte1[j] = 0;
-//      treenode[i - 1]->fulstte0[j] = 0;
-//      treenode[i - 1]->empstte1[j] = 0;
-//      treenode[i - 1]->empstte0[j] = 0;
-//    }
-//    for (j = 1; j <= (chars); j++) {
-//      k = (j - 1) % bits + 1;
-//      l = (j - 1) / bits + 1;
-//      do {
-//        if (eoln(infile)) 
-//          scan_eoln(infile);
-//        charstate = gettc(infile);
-//        if (charstate == '\n')
-//          charstate = ' ';
-//      } while (charstate == ' ');
-//      if (charstate == 'b')          charstate = 'B';
-//      if (charstate == 'p')          charstate = 'P';
-//      if (charstate != '0' && charstate != '1' && charstate != '?' &&
-//          charstate != 'P' && charstate != 'B') {
-//        printf("\n\nERROR: Bad character state: %c ",charstate);
-//        printf("at character %ld of species %ld\n\n", j, i);
-//        exxit(-1);
-//      }
-//      if (printdata) {
-//        newline(outfile, j, 55, nmlngth + 3);
-//        putc(charstate, outfile);
-//        if (j % 5 == 0)
-//          putc(' ', outfile);
-//      }
-//      if (charstate == '1') {
-//        treenode[i-1]->fulstte1[l-1] =
-//          ((long)treenode[i-1]->fulstte1[l-1]) | (1L << k);
-//        treenode[i-1]->empstte1[l-1] =
-//          treenode[i-1]->fulstte1[l-1];
-//      }
-//      if (charstate == '0') {
-//        treenode[i-1]->fulstte0[l-1] =
-//          ((long)treenode[i-1]->fulstte0[l-1]) | (1L << k);
-//        treenode[i-1]->empstte0[l-1] =
-//          treenode[i-1]->fulstte0[l-1];
-//      }
-//      if (charstate == 'P' || charstate == 'B')
-//        extras[j-1] += weight[j-1];
-//    }
-//    scan_eoln(infile);
-//    if (printdata)
-//      putc('\n', outfile);
-  }
-////  fprintf(outfile, "\n\n");
-//}  /# inputdata2 #/
-*/
+}  /* inputdata2 */
 
 
 void alloctree(pointptr *treenode)
@@ -343,41 +266,7 @@ void setuptree2(pointptr2 treenode)
 } /* setuptree2 */
 
 
-/*
-//void inputancestors(boolean *anczero0, boolean *ancone0)
-//{
-//  /# reads the ancestral states for each character #/
-//  /# used in dollop, dolmove, dolpenny, mix, move, & penny #/
-//  long i;
-//  Char ch;
-//
-//  for (i = 1; i < nmlngth; i++)
-//    gettc(infile);
-//  for (i = 0; i < (chars); i++) {
-//    anczero0[i] = true;
-//    ancone0[i] = true;
-//    do {
-//      if (eoln(infile))
-//        scan_eoln(infile);
-//      ch = gettc(infile);
-//      if (ch == '\n')
-//        ch = ' ';
-//    } while (ch == ' ');
-//    if (ch == 'p')
-//      ch = 'P';
-//    if (ch == 'b')
-//      ch = 'B';
-//    if (strchr("10PB?",ch) != NULL){
-//      anczero0[i] = (ch == '1') ? false : anczero0[i];
-//      ancone0[i] = (ch == '0') ? false : ancone0[i];
-//    } else {
-//      printf("BAD ANCESTOR STATE: %cAT CHARACTER %4ld\n", ch, i + 1);
-//      exxit(-1);
-//    }
-//  }
-//  scan_eoln(infile);
-//}  /# inputancestors #/
-*/
+
 
 void inputancestorsstr(AjPStr propstr, boolean *anczero0, boolean *ancone0)
 {
@@ -398,7 +287,7 @@ void inputancestorsstr(AjPStr propstr, boolean *anczero0, boolean *ancone0)
         anczero0[i] = (ch == '1') ? false : anczero0[i];
         ancone0[i] = (ch == '0') ? false : ancone0[i];
     } else {
-        printf("BAD ANCESTOR STATE: %cAT CHARACTER %4ld\n", ch, i + 1);
+        ajErr("bad ancestor state: %c at character %4ld\n", ch, i + 1);
         exxit(-1);
     }
   }
@@ -798,7 +687,6 @@ void standev(long numtrees, long minwhich, double minsteps,
   double **covar, *P, *f;
 
 #define SAMPLES 1000
-#define MAXSHIMOTREES 1000
 /* ????? if numtrees too big for Shimo, truncate */
   if (numtrees > maxuser) {
     printf("TOO MANY USER-DEFINED TREES");
@@ -839,7 +727,13 @@ void standev(long numtrees, long minwhich, double minsteps,
     }
     fprintf(outfile, "\n\n");
   } else {           /* Shimodaira-Hasegawa test using normal approximation */
-    fprintf(outfile, "Shimodaira-Hasegawa test\n\n");
+    if(numtrees > MAXSHIMOTREES){
+      fprintf(outfile, "Shimodaira-Hasegawa test on first %d of %ld trees\n\n"
+              , MAXSHIMOTREES, numtrees);
+      numtrees = MAXSHIMOTREES;
+    } else {
+      fprintf(outfile, "Shimodaira-Hasegawa test\n\n");
+    }
     covar = (double **)Malloc(numtrees*sizeof(double *));  
     for (i = 0; i < numtrees; i++)
       covar[i] = (double *)Malloc(numtrees*sizeof(double));  

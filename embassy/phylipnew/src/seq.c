@@ -12,6 +12,7 @@ boolean interleaved, printdata, outgropt, treeprint, dotdiff, transvp;
 steptr weight, category, alias, location, ally;
 sequence y;
 
+
 void free_all_x_in_array (long nonodes, pointarray treenode)
 {
   /* used in dnaml & dnamlk */
@@ -29,12 +30,12 @@ void free_all_x_in_array (long nonodes, pointarray treenode)
   for (i = spp; i < nonodes; i++) {
     if (treenode[i] != NULL) {
       p = treenode[i];
-      for (j = 1; j <= 3; j++) {
+      do {
         for (k = 0; k < endsite; k++)
           free(p->x[k]);
         free(p->x);
         p = p->next;
-      }
+      } while(p != treenode[i]);
     }
   }
 }  /* free_all_x_in_array        */
@@ -59,6 +60,7 @@ void free_all_x2_in_array (long nonodes, pointarray treenode)
     }
   }
 }  /* free_all_x2_in_array        */
+
 
 void alloctemp(node **temp, long *zeros, long endsite)
 {
@@ -109,21 +111,28 @@ void freetree2 (pointarray treenode, long nonodes)
 }  /* freetree2 */
 
 
-void emboss_inputdata(AjPSeqset seqset, long chars){
-  int i, j, k, l;
+void seq_inputdata(AjPSeqset seqset, long chars)
+{
+  /* input the names and sequences for each species */
+  /* used by dnacomp, dnadist, dnainvar, dnaml, dnamlk, dnapars, & dnapenny */
+  long i, j, k, l;
   Char charstate;
+  ajint ilen;
 
   if (printdata)
     headings(chars, "Sequences", "---------");
 
   for(i=0;i<spp;i++){
+    ilen = ajStrLen(ajSeqsetName(seqset, i));
     strncpy(&nayme[i][0],ajStrStr(ajSeqsetName(seqset, i)),nmlngth);
+    for (j=ilen;j<nmlngth;j++)
+	nayme[i][j] = ' ';
     /*    ajUser("%s/n",ajSeqsetName(seqset, i));*/
     strncpy(&y[i][0],ajSeqsetSeq(seqset, i),chars);
     y[i][chars] = '\0';
   }
-    if(!printdata)
-	return;
+  if (!printdata)
+    return;
   for (i = 1; i <= ((chars - 1) / 60 + 1); i++) {
     for (j = 1; j <= spp; j++) {
       for (k = 0; k < nmlngth; k++)
@@ -146,105 +155,8 @@ void emboss_inputdata(AjPSeqset seqset, long chars){
     putc('\n', outfile);
   }
   putc('\n', outfile);
-}
+}  /* inputdata */
 
-/*
-//void inputdata(long chars)
-//{
-//  /# input the names and sequences for each species #/
-//  /# used by dnacomp, dnadist, dnainvar, dnaml, dnamlk, dnapars, & dnapenny #/
-//  long i, j, k, l, basesread, basesnew=0;
-//  Char charstate;
-//  boolean allread, done;
-//
-//  if (printdata)
-//    headings(chars, "Sequences", "---------");
-//  basesread = 0;
-//  allread = false;
-//  while (!(allread)) {
-//    if (eoln(infile))
-//      scan_eoln(infile);
-//    i = 1;
-//    while (i <= spp) {
-//      if ((interleaved && basesread == 0) || !interleaved)
-//        initname(i-1);
-//      j = (interleaved) ? basesread : 0;
-//      done = false;
-//      while (!done && !eoff(infile)) {
-//        if (interleaved)
-//          done = true;
-//        while (j < chars && !(eoln(infile) || eoff(infile))) {
-//          charstate = gettc(infile);
-//          if (charstate == '\n')
-//            charstate = ' ';
-//          if (charstate == ' ' || (charstate >= '0' && charstate <= '9'))
-//            continue;
-//          uppercase(&charstate);
-//          if ((strchr("ABCDGHKMNRSTUVWXY?O-",charstate)) == NULL){
-//            printf("ERROR: bad base: %c at site %5ld of species %3ld\n",
-//                   charstate, j+1, i);
-//            if (charstate == '.') {
-//              printf("       Periods (.) may not be used as gap characters.\n");
-//              printf("       The correct gap character is (-)\n");
-//            }
-//            exxit(-1);
-//          }
-//          j++;
-//          y[i - 1][j - 1] = charstate;
-//        }
-//        if (interleaved)
-//          continue;
-//        if (j < chars) 
-//          scan_eoln(infile);
-//        else if (j == chars)
-//          done = true;
-//      }
-//      if (interleaved && i == 1)
-//        basesnew = j;
-//
-//      scan_eoln(infile);
-//    
-//      if ((interleaved && j != basesnew) ||
-//          (!interleaved && j != chars)) {
-//        printf("\nERROR: sequences out of alignment at position %ld", j+1);
-//        printf(" of species %ld\n\n", i);
-//        exxit(-1);
-//      }
-//      i++;
-//    }
-//    
-//    if (interleaved) {
-//      basesread = basesnew;
-//      allread = (basesread == chars);
-//    } else
-//      allread = (i > spp);
-//  }
-//  if (!printdata)
-//    return;
-//  for (i = 1; i <= ((chars - 1) / 60 + 1); i++) {
-//    for (j = 1; j <= spp; j++) {
-//      for (k = 0; k < nmlngth; k++)
-//        putc(nayme[j - 1][k], outfile);
-//      fprintf(outfile, "   ");
-//      l = i * 60;
-//      if (l > chars)
-//        l = chars;
-//      for (k = (i - 1) * 60 + 1; k <= l; k++) {
-//        if (dotdiff && (j > 1 && y[j - 1][k - 1] == y[0][k - 1]))
-//          charstate = '.';
-//        else
-//          charstate = y[j - 1][k - 1];
-//        putc(charstate, outfile);
-//        if (k % 10 == 0 && k % 60 != 0)
-//          putc(' ', outfile);
-//      }
-//      putc('\n', outfile);
-//    }
-//    putc('\n', outfile);
-//  }
-//  putc('\n', outfile);
-//}  /# inputdata #/
-*/
 
 void alloctree(pointarray *treenode, long nonodes, boolean usertree)
 {
@@ -311,7 +223,7 @@ void prot_allocx(long nonodes, long rcategs, pointarray treenode,
                         boolean usertree)
 {
   /* allocate x dynamically */
-  /* used in proml            */
+  /* used in proml          */
   long i, j, k;
   node *p;
 
@@ -418,6 +330,19 @@ void alloctip(node *p, long *zeros)
   memcpy(p->oldbase, zeros, endsite*sizeof(long));
   memcpy(p->oldnumsteps, zeros, endsite*sizeof(long));
 }  /* alloctip */
+
+
+void freetrans(transptr *trans, long nonodes,long sitelength)
+{
+  long i ,j;
+  for ( i = 0 ; i < nonodes ; i++ ) {
+    for ( j = 0 ; j < sitelength + 1; j++) {
+      free ((*trans)[i][j]);
+    }
+    free ((*trans)[i]);
+  }
+  free(*trans);
+}
 
 
 void alloctrans(transptr *trans, long nonodes, long sitelength)
@@ -1341,6 +1266,7 @@ void preorder(node *p, node *r, node *root, node *removing, node *adding,
     } while (p->next != q);
   }
 } /* preorder */
+
 
 void updatenumdesc(node *p, node *root, long n)
 {
@@ -3102,7 +3028,7 @@ void printree(node *root, double f)
 }  /* printree */
 
 
-void writesteps(long chars,boolean weights,steptr oldweight,node *root)
+void writesteps(long chars, boolean weights, steptr oldweight, node *root)
 {
   /* used in dnacomp, dnapars, & dnapenny */
   long i, j, k, l;
@@ -3588,7 +3514,6 @@ void standev(long chars, long numtrees, long minwhich, double minsteps,
   double **covar, *P, *f;
 
 #define SAMPLES 1000
-#define MAXSHIMOTREES 1000
 /* ????? if numtrees too big for Shimo, truncate */
   if (numtrees == 2) {
     fprintf(outfile, "Kishino-Hasegawa-Templeton test\n\n");
@@ -3625,7 +3550,13 @@ void standev(long chars, long numtrees, long minwhich, double minsteps,
     }
     fprintf(outfile, "\n\n");
   } else {           /* Shimodaira-Hasegawa test using normal approximation */
-    fprintf(outfile, "Shimodaira-Hasegawa test\n\n");
+    if(numtrees > MAXSHIMOTREES){
+      fprintf(outfile, "Shimodaira-Hasegawa test on first %d of %ld trees\n\n"
+              , MAXSHIMOTREES, numtrees);
+      numtrees = MAXSHIMOTREES;
+    } else {
+      fprintf(outfile, "Shimodaira-Hasegawa test\n\n");
+    }
     covar = (double **)Malloc(numtrees*sizeof(double *));  
     sumw = 0.0;
     for (i = 0; i < chars; i++)
@@ -3723,7 +3654,6 @@ void standev2(long numtrees, long maxwhich, long a, long b, double maxlogl,
   double temp;
 
 #define SAMPLES 1000
-#define MAXSHIMOTREES 1000
 /* ????? if numtrees too big for Shimo, truncate */
   if (numtrees == 2) {
     fprintf(outfile, "Kishino-Hasegawa-Templeton test\n\n");
@@ -3759,7 +3689,13 @@ void standev2(long numtrees, long maxwhich, long a, long b, double maxlogl,
     }
     fprintf(outfile, "\n\n");
   } else {           /* Shimodaira-Hasegawa test using normal approximation */
-    fprintf(outfile, "Shimodaira-Hasegawa test\n\n");
+    if(numtrees > MAXSHIMOTREES){
+      fprintf(outfile, "Shimodaira-Hasegawa test on first %d of %ld trees\n\n"
+              , MAXSHIMOTREES, numtrees);
+      numtrees = MAXSHIMOTREES;
+    } else {
+      fprintf(outfile, "Shimodaira-Hasegawa test\n\n");
+    }
     covar = (double **)Malloc(numtrees*sizeof(double *));  
     sumw = 0.0;
     for (i = a; i <= b; i++)
@@ -3919,6 +3855,68 @@ void freetree(long nonodes, pointarray treenode)
 }  /* freetree */
 
 
+void prot_freex_notip(long nonodes, pointarray treenode)
+{
+  /* used in proml */
+  long i, j;
+  node *p;
+
+  for (i = spp; i < nonodes; i++) {
+    p = treenode[i];
+    do {
+      for (j = 0; j < endsite; j++){
+        free(p->protx[j]);
+        p->protx[j] = NULL;
+      }
+      free(p->protx);
+      p->protx = NULL;
+      p = p->next;
+    } while (p != treenode[i]);
+  }
+}  /* prot_freex_notip */
+
+
+void prot_freex(long nonodes, pointarray treenode)
+{
+  /* used in proml */
+  long i, j;
+  node *p;
+
+  for (i = 0; i < spp; i++) {
+    for (j = 0; j < endsite; j++)
+      free(treenode[i]->protx[j]);
+    free(treenode[i]->protx);
+  }
+  for (i = spp; i < nonodes; i++) {
+    p = treenode[i];
+    do {
+      for (j = 0; j < endsite; j++)
+        free(p->protx[j]);
+      free(p->protx);
+      p = p->next;
+    } while (p != treenode[i]);
+  }
+}  /* prot_freex */
+
+
+void freex_notip(long nonodes, pointarray treenode)
+{
+  /* used in dnaml & dnamlk */
+  long i, j;
+  node *p;
+
+  for (i = spp; i < nonodes; i++) {
+    p = treenode[i];
+    do {
+      for (j = 0; j < endsite; j++)
+        free(p->x[j]);
+      free(p->x);
+      p = p->next;
+    } while (p != treenode[i]);
+  }
+}  /* freex_notip */
+
+
 void freex(long nonodes, pointarray treenode)
 {
   /* used in dnaml & dnamlk */
@@ -3931,13 +3929,15 @@ void freex(long nonodes, pointarray treenode)
     free(treenode[i]->x);
   }
   for (i = spp; i < nonodes; i++) {
-    p = treenode[i];
-    do {
-      for (j = 0; j < endsite; j++)
-        free(p->x[j]);
-      free(p->x);
-      p = p->next;
-    } while (p != treenode[i]);
+    if(treenode[i]){
+      p = treenode[i];
+      do {
+        for (j = 0; j < endsite; j++)
+          free(p->x[j]);
+        free(p->x);
+        p = p->next;
+      } while (p != treenode[i]);
+    }
   }
 }  /* freex */
 
@@ -3986,3 +3986,153 @@ void freegrbg(node **grbg)
     free(p);
   }
 } /*freegrbg */
+
+
+void collapsetree(node *p, node *root, node **grbg, pointarray treenode, 
+                  long *zeros)
+{
+  /*  Recurse through tree searching for zero length brances between */
+  /*  nodes (not to tips).  If one exists, collapse the nodes together, */
+  /*  removing the branch. */
+  node *q, *x1, *y1, *x2, *y2;
+  long i, j, index, index2, numd;
+  if (p->tip)
+    return;
+  q = p->next;
+  do {
+    if (!q->back->tip && q->v == 0.000000) {
+      /* merge the two nodes. */
+      x1 = y2 = q->next;
+      x2 = y1 = q->back->next;
+      while(x1->next != q)
+        x1 = x1-> next;
+      while(y1->next != q->back)
+        y1 = y1-> next;
+      x1->next = x2;
+      y1->next = y2;
+
+      index = q->index;
+      index2 = q->back->index;
+      numd = treenode[index-1]->numdesc + q->back->numdesc -1;
+      chucktreenode(grbg, q->back);
+      chucktreenode(grbg, q);
+      q = x2;
+
+      /* update the indicies around the node circle */
+      do{
+        if(q->index != index){
+          q->index = index;
+        }
+        q = q-> next;
+      }while(x2 != q);
+      updatenumdesc(treenode[index-1], root, numd);
+       
+      /* Alter treenode to point to real nodes, and update indicies */
+      /* acordingly. */
+       j = 0; i=0;
+      for(i = (index2-1); i < nonodes-1 && treenode[i+1]; i++){ 
+        treenode[i]=treenode[i+1];
+        treenode[i+1] = NULL;
+        x1=x2=treenode[i]; 
+        do{ 
+          x1->index = i+1; 
+          x1 = x1 -> next; 
+        } while(x1 != x2); 
+      }
+
+      /* Create a new empty fork in the blank spot of treenode */
+      x1=NULL;
+      for(i=1; i <=3 ; i++){
+        gnutreenode(grbg, &x2, index2, endsite, zeros);
+        x2->next = x1;
+        x1 = x2;
+      }
+      x2->next->next->next = x2;
+      treenode[nonodes-1]=x2;
+      if (q->back)
+        collapsetree(q->back, root, grbg, treenode, zeros);
+    } else {
+      if (q->back)
+        collapsetree(q->back, root, grbg, treenode, zeros);
+      q = q->next;
+    }
+  } while (q != p);
+} /* collapsetree */
+
+
+void collapsebestrees(node **root, node **grbg, pointarray treenode, 
+                      bestelm *bestrees, long *place, long *zeros,
+                      long chars, boolean recompute, boolean progress)
+     
+{
+  /* Goes through all best trees, collapsing trees where possible, and  */
+  /* deleting trees that are not unique.    */
+  long i,j, k, pos, nextnode, oldnextree;
+  boolean found;
+  node *dummy;
+
+  oldnextree = nextree;
+  for(i = 0 ; i < (oldnextree - 1) ; i++){
+    bestrees[i].collapse = true;
+  }
+
+  if(progress)
+    printf("Collapsing best trees\n   ");
+  k = 0;
+  for(i = 0 ; i < (oldnextree - 1) ; i++){
+    if(progress){
+      if(i % (((oldnextree-1) / 72) + 1) == 0)
+        putchar('.');
+      fflush(stdout);
+    }
+    while(!bestrees[k].collapse)
+      k++;
+    /* Reconstruct tree. */
+    *root = treenode[0];
+    add(treenode[0], treenode[1], treenode[spp], root, recompute,
+        treenode, grbg, zeros);
+    nextnode = spp + 2;
+    for (j = 3; j <= spp; j++) {
+      if (bestrees[k].btree[j - 1] > 0)
+        add(treenode[bestrees[k].btree[j - 1] - 1], treenode[j - 1],
+            treenode[nextnode++ - 1], root, recompute, treenode, grbg,
+            zeros);
+      else
+          add(treenode[treenode[-bestrees[k].btree[j - 1]-1]->back->index-1],
+              treenode[j - 1], NULL, root, recompute, treenode, grbg, zeros);
+    }
+    reroot(treenode[outgrno - 1], *root);
+
+    treelength(*root, chars, treenode);
+    collapsetree(*root, *root, grbg, treenode, zeros);
+    savetree(*root, place, treenode, grbg, zeros);
+    /* move everything down in the bestree list */
+    for(j = k ; j < (nextree - 2) ; j++){
+      memcpy(bestrees[j].btree, bestrees[j + 1].btree, spp * sizeof(long));
+      bestrees[j].gloreange = bestrees[j + 1].gloreange;
+      bestrees[j + 1].gloreange = false;
+      bestrees[j].locreange = bestrees[j + 1].locreange;
+      bestrees[j + 1].locreange = false;
+      bestrees[j].collapse = bestrees[j + 1].collapse;
+    }
+    pos=0;
+    findtree(&found, &pos, nextree-1, place, bestrees);    
+
+    /* put the new tree at the end of the list if it wasn't found */
+    nextree--;
+    if(!found)
+      addtree(pos, &nextree, false, place, bestrees);
+
+    /* Deconstruct the tree */
+    for (j = 1; j < spp; j++){
+      re_move(treenode[j], &dummy, root, recompute, treenode,
+              grbg, zeros);
+    }
+  }
+  if (progress) {
+    putchar('\n');
+#ifdef WIN32
+    phyFillScreenColor();
+#endif
+  }
+}

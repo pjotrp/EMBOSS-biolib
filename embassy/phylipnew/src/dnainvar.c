@@ -351,7 +351,7 @@ void doinput()
 
   if (justwts) {
     if (firstset)
-      emboss_inputdata(seqsets[ith-1], sites);
+      seq_inputdata(seqsets[ith-1], sites);
     for (i = 0; i < sites; i++)
       weight[i] = 1;
     inputweightsstr(phyloweights->Str[0], sites, weight, &weights);
@@ -367,7 +367,7 @@ void doinput()
       samenumspseq(seqsets[ith-1], &sites, ith);
       reallocsites();
     }
-    emboss_inputdata(seqsets[ith-1], sites);
+    seq_inputdata(seqsets[ith-1], sites);
     for (i = 0; i < sites; i++)
       weight[i] = 1;
     if (weights) {

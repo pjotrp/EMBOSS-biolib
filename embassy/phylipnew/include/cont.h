@@ -11,6 +11,7 @@
 #ifndef OLDC
 /*function prototypes*/
 void alloctree(pointarray *, long);
+void freetree(pointarray *, long);
 void setuptree(tree *, long);
 void allocview(tree *, long, long);
 void freeview(tree *, long);

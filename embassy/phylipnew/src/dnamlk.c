@@ -650,7 +650,7 @@ void getinput()
                    &freqgr, &freqty, &ttratio, &xi, &xv, &fracchange,
                    freqsfrom, true);
   if (!justwts || firstset)
-    emboss_inputdata(seqsets[ith-1], sites);
+    seq_inputdata(seqsets[ith-1], sites);
   makeweights();
   setuptree2(curtree);
   if (!usertree) {
@@ -1924,7 +1924,7 @@ void rectrav(node *p, long m, long n)
 
 void summarize()
 {
-  long i, j, mm;
+  long i, j, mm=0;
   double mode, sum;
   double like[maxcategs], nulike[maxcategs];
   double **marginal;
@@ -2283,7 +2283,7 @@ void maketree()
      adds each node at location which yields highest likelihood
      then rearranges the tree for greatest likelihood */
 
-  long i, j, numtrees;
+  long i, j, numtrees=0;
   double x;
   node *item, *nufork, *dummy, *q, *root=NULL;
   boolean dummy_haslengths, dummy_first, goteof;

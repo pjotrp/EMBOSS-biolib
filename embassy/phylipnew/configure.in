@@ -6,7 +6,7 @@ dnl Process this file with autoconf to produce a configure script.
 #CC=cc
 
 AC_INIT(src/dnadist.c)
-AM_INIT_AUTOMAKE(PHYLIP, 3.6a3)
+AM_INIT_AUTOMAKE(PHYLIP, 3.6b)
 
 
 AC_PROG_AWK

@@ -11,7 +11,6 @@ boolean interleaved, printdata, outgropt, treeprint, dotdiff;
 steptr weight, category, alias, location, ally;
 sequence y, convtab;
 
-
 void discrete_inputdata(AjPSeqset seqset, long chars)
 {
   /* input the names and sequences for each species */
@@ -23,6 +22,7 @@ void discrete_inputdata(AjPSeqset seqset, long chars)
 
   if (printdata)
     headings(chars, "Sequences", "---------");
+  
   for(i=0;i<spp;i++){
     strncpy(&nayme[i][0],ajStrStr(ajSeqsetName(seqset, i)),nmlngth);
     /*    ajUser("%s/n",ajSeqsetName(seqset, i));*/
@@ -257,7 +257,6 @@ void sitescrunch(long chars)
       if (j <= i)
         j = i + 1;
       if (j <= chars) {
-        found = false;
         do {
           found = (ally[alias[j - 1] - 1] == alias[j - 1]);
           j++;
@@ -523,7 +522,6 @@ void multisumnsteps(node *p, node *q, long a, long b, long *threshwt)
 
   if (a == 0) p->sumsteps = 0.0;
   for (i = a; i < b; i++) {
-    largest = getlargest(p->discnumnuc[i]);
     descsteps = 0;
     for (j = (long)zero; j <= (long)seven; j++) {
       if ((descsteps == 0) && (p->discbase[i] & (1 << j))) 
@@ -1175,11 +1173,10 @@ void savetree(node *root, long *place, pointarray treenode,
      added to reconstruct this tree */
   /* used by pars */
   long i, j, nextnode, nvisited;
-  node *p, *q, *r = NULL, *rute, *root2, *lastdesc, 
+  node *p, *q, *r = NULL, *root2, *lastdesc, 
                 *outgrnode, *binroot, *flipback;
-  boolean done, newfork, newnode;
+  boolean done, newfork;
 
-  rute = root->next->back;
   binroot = NULL;
   lastdesc = NULL;
   root2 = NULL;
@@ -1220,7 +1217,6 @@ void savetree(node *root, long *place, pointarray treenode,
     if (i > 1) {
       q = treenode[i - 1]; 
       newfork = true;
-      newnode = true;
       nvisited = sibsvisited(q, place);
       if (nvisited == 0) {
         if (parentinmulti(r)) {
@@ -1356,7 +1352,6 @@ void collabranch(node *collapfrom, node *tempfrom, node *tempto)
   unsigned char b;
 
   for (i = 0; i < endsite; i++) {
-    largest = getlargest(collapfrom->discnumnuc[i]);
     descsteps = 0;
     for (j = (long)zero; j <= (long)seven; j++) {
       b = 1 << j;
@@ -1365,7 +1360,6 @@ void collabranch(node *collapfrom, node *tempfrom, node *tempto)
                      - (collapfrom->numdesc - collapfrom->discnumnuc[i][j])
                        * weight[i];
     }
-    largest = getlargest(tempto->discnumnuc[i]);
     done = false;
     for (j = (long)zero; j <= (long)seven; j++) {
       b = 1 << j;
@@ -2543,7 +2537,6 @@ void treeout3(node *p, long nextree, long *col, node *root)
     w = 0;
   if (p != root) {
     fprintf(outtree, ":%*.2f", (int)(w + 4), x);
-    col += w + 8;
   }
   if (p != root)
     return;
@@ -2652,7 +2645,6 @@ void standev(long chars, long numtrees, long minwhich, double minsteps,
   double **covar, *P, *f;
 
 #define SAMPLES 1000
-#define MAXSHIMOTREES 1000
 /* ????? if numtrees too big for Shimo, truncate */
   if (numtrees == 2) {
     fprintf(outfile, "Kishino-Hasegawa-Templeton test\n\n");
@@ -2689,7 +2681,13 @@ void standev(long chars, long numtrees, long minwhich, double minsteps,
     }
     fprintf(outfile, "\n\n");
   } else {           /* Shimodaira-Hasegawa test using normal approximation */
-    fprintf(outfile, "Shimodaira-Hasegawa test\n\n");
+    if(numtrees > MAXSHIMOTREES){
+      fprintf(outfile, "Shimodaira-Hasegawa test on first %d of %ld trees\n\n"
+              , MAXSHIMOTREES, numtrees);
+      numtrees = MAXSHIMOTREES;
+    } else {
+      fprintf(outfile, "Shimodaira-Hasegawa test\n\n");
+    }
     covar = (double **)Malloc(numtrees*sizeof(double *));  
     for (i = 0; i < numtrees; i++)
       covar[i] = (double *)Malloc(numtrees*sizeof(double));  
@@ -2881,3 +2879,153 @@ void freegrbg(node **grbg)
     free(p);
   }
 } /*freegrbg */
+
+
+void collapsetree(node *p, node *root, node **grbg, pointarray treenode, 
+                  long *zeros, unsigned char *zeros2)
+{
+  /*  Recurse through tree searching for zero length brances between */
+  /*  nodes (not to tips).  If one exists, collapse the nodes together, */
+  /*  removing the branch. */
+  node *q, *x1, *y1, *x2, *y2;
+  long i, j, index, index2, numd;
+  if (p->tip)
+    return;
+  q = p->next;
+  do {
+    if (!q->back->tip && q->v == 0.000000) {
+      /* merge the two nodes. */
+      x1 = y2 = q->next;
+      x2 = y1 = q->back->next;
+      while(x1->next != q)
+        x1 = x1-> next;
+      while(y1->next != q->back)
+        y1 = y1-> next;
+      x1->next = x2;
+      y1->next = y2;
+
+      index = q->index;
+      index2 = q->back->index;
+      numd = treenode[index-1]->numdesc + q->back->numdesc -1;
+      chucktreenode(grbg, q->back);
+      chucktreenode(grbg, q);
+      q = x2;
+
+      /* update the indicies around the node circle */
+      do{
+        if(q->index != index){
+          q->index = index;
+        }
+        q = q-> next;
+      }while(x2 != q);
+      updatenumdesc(treenode[index-1], root, numd);
+       
+      /* Alter treenode to point to real nodes, and update indicies */
+      /* acordingly. */
+       j = 0; i=0;
+      for(i = (index2-1); i < nonodes-1 && treenode[i+1]; i++){ 
+        treenode[i]=treenode[i+1];
+        treenode[i+1] = NULL;
+        x1=x2=treenode[i]; 
+        do{ 
+          x1->index = i+1; 
+          x1 = x1 -> next; 
+        } while(x1 != x2); 
+      }
+
+      /* Create a new empty fork in the blank spot of treenode */
+      x1=NULL;
+      for(i=1; i <=3 ; i++){
+        gnudisctreenode(grbg, &x2, index2, endsite, zeros, zeros2);
+        x2->next = x1;
+        x1 = x2;
+      }
+      x2->next->next->next = x2;
+      treenode[nonodes-1]=x2;
+      if (q->back)
+        collapsetree(q->back, root, grbg, treenode, zeros, zeros2);
+    } else {
+      if (q->back)
+        collapsetree(q->back, root, grbg, treenode, zeros, zeros2);
+      q = q->next;
+    }
+  } while (q != p);
+} /* collapsetree */
+
+
+void collapsebestrees(node **root, node **grbg, pointarray treenode, 
+                      bestelm *bestrees, long *place, long *zeros, 
+                      unsigned char *zeros2, long chars, boolean recompute, 
+                      boolean progress)
+{
+  /* Goes through all best trees, collapsing trees where possible, and  */
+  /* deleting trees that are not unique.    */
+  long i,j, k, pos, nextnode, oldnextree;
+  boolean found;
+  node *dummy;
+
+  oldnextree = nextree;
+  for(i = 0 ; i < (oldnextree - 1) ; i++){
+    bestrees[i].collapse = true;
+  }
+
+  if(progress)
+    printf("Collapsing best trees\n   ");
+  k = 0;
+  for(i = 0 ; i < (oldnextree - 1) ; i++){
+    if(progress){
+      if(i % (((oldnextree-1) / 72) + 1) == 0)
+        putchar('.');
+      fflush(stdout);
+    }
+    while(!bestrees[k].collapse)
+      k++;
+    /* Reconstruct tree. */
+    *root = treenode[0];
+    add(treenode[0], treenode[1], treenode[spp], root, recompute,
+        treenode, grbg, zeros, zeros2);
+    nextnode = spp + 2;
+    for (j = 3; j <= spp; j++) {
+      if (bestrees[k].btree[j - 1] > 0)
+        add(treenode[bestrees[k].btree[j - 1] - 1], treenode[j - 1],
+            treenode[nextnode++ - 1], root, recompute, treenode, grbg,
+            zeros, zeros2);
+      else
+          add(treenode[treenode[-bestrees[k].btree[j - 1]-1]->back->index-1],
+              treenode[j - 1], NULL, root, recompute, treenode, grbg, zeros, zeros2);
+    }
+    reroot(treenode[outgrno - 1], *root);
+
+    treelength(*root, chars, treenode);
+    collapsetree(*root, *root, grbg, treenode, zeros, zeros2);
+    savetree(*root, place, treenode, grbg, zeros, zeros2);
+    /* move everything down in the bestree list */
+    for(j = k ; j < (nextree - 2) ; j++){
+      memcpy(bestrees[j].btree, bestrees[j + 1].btree, spp * sizeof(long));
+      bestrees[j].gloreange = bestrees[j + 1].gloreange;
+      bestrees[j + 1].gloreange = false;
+      bestrees[j].locreange = bestrees[j + 1].locreange;
+      bestrees[j + 1].locreange = false;
+      bestrees[j].collapse = bestrees[j + 1].collapse;
+    }
+    pos=0;
+    findtree(&found, &pos, nextree-1, place, bestrees);    
+
+    /* put the new tree at the end of the list if it wasn't found */
+    nextree--;
+    if(!found)
+      addtree(pos, &nextree, false, place, bestrees);
+
+    /* Deconstruct the tree */
+    for (j = 1; j < spp; j++){
+      re_move(treenode[j], &dummy, root, recompute, treenode,
+              grbg, zeros, zeros2);
+    }
+  }
+  if (progress) {
+    putchar('\n');
+#ifdef WIN32
+    phyFillScreenColor();
+#endif
+  }
+}

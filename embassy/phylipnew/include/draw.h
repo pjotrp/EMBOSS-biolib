@@ -23,17 +23,14 @@
 #include "interface.h"
 #endif
 
-/* Added by Dan F. for bmp code */
 #include "math.h"  
 #define  DEFAULT_STRIPE_HEIGHT 20
 
-#define maxnodes        1200
 #define minus           '-'
 #define stripewidth     3000L
 #define maxstripedepth  3500
 #define fontsize        3800
 #define pi              3.1415926535897932384626433
-#define epsilond        0.00001
 #define ebcdic          EBCDIC
 #define segments        40
 #define xstart          10

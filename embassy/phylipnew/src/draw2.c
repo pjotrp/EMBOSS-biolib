@@ -9,6 +9,7 @@ extern long winwidth;
 #include <windows.h>
 HDC hdc;
 
+
 /******* Menu Defines *******/
 
 #define IDM_ABOUT      1000
@@ -25,7 +26,14 @@ HDC hdc;
 extern struct videoconfig myscreen;
 #endif
 
+#ifdef OSX_CARBON
+#include <Carbon/Carbon.h>
+#endif
+
 #include "draw.h"
+#include "phylip.h"
+
+
 
 static long eb[]={
   0 , 1 ,2 ,3 ,55,45,46,47,22,5,37,11,12,13,14,15,16,17,18,19,60,61,50,38,
@@ -41,7 +49,7 @@ boolean didenter, didexit, curvetrue;
 extern long vrmlplotcolor;
 
 extern double oldx, oldy ;
-/*xx only here for debugging */ extern node *root;
+extern node *root;
 extern long    nmoves, oldpictint ;
 extern long    rootmatrix[51][51];
 extern long    strpbottom,strptop,strpwide,strpdeep;
@@ -1381,8 +1389,6 @@ void translate_stripe_to_bmp(striptype *stripe, byte *full_pic,
     last_stripe_offset = 0 ; 
   }
 
-  /* just for debugging... */
-  
   total_stripes        = (int) ceil (ysize / (double) DEFAULT_STRIPE_HEIGHT);
 
   /* width, padded to be a multiple of 32 bits, or 4 bytes */

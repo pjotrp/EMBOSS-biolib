@@ -824,7 +824,7 @@ void inputoptions()
 void protdist_inputdata(AjPSeqset seqset)
 {
   /* input the names and sequences for each species */
-  long i, j, k, l, aasread=0;
+  long i=0, j, k, l, aasread=0;
   Char charstate;
   aas aa=0;   /* temporary amino acid for input */
   boolean allread, done;

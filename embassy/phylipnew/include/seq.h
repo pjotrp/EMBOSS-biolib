@@ -1,4 +1,3 @@
-
 /* version 3.6. (c) Copyright 1993-2000 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
@@ -63,8 +62,10 @@ struct LOC_hyptrav {
 
 
 extern long nonodes, endsite, outgrno, nextree, which;
+
 extern boolean interleaved, printdata, outgropt, treeprint, dotdiff, transvp;
 extern steptr weight, category, alias, location, ally;
+extern sequence y;
 
 #ifndef OLDC
 /* function prototypes */
@@ -73,8 +74,6 @@ void   free_all_x2_in_array (long, pointarray);
 void   alloctemp(node **, long *, long);
 void   freetemp(node **);
 void   freetree2 (pointarray, long);
-void   emboss_inputdata(AjPSeqset, long);
-void   inputdata(long);
 void   alloctree(pointarray *, long, boolean);
 void   allocx(long, long, pointarray, boolean);
 
@@ -84,6 +83,7 @@ void   setuptree(pointarray, long, boolean);
 void   setuptree2(tree);
 void   alloctip(node *, long *);
 void   alloctrans(transptr *, long, long);
+void   freetrans(transptr *, long ,long );
 void   getbasefreqs(double, double, double, double, double *, double *,
                         double *, double *, double *, double *, double *,
             double *xi, double *, double *, boolean, boolean);
@@ -201,9 +201,22 @@ void   freenode(node **);
 void   freetree(long, pointarray);
 
 void   freex(long, pointarray);
+void   freex_notip(long, pointarray);
 void   freex2(long, pointarray);
+void   prot_freex_notip(long nonodes, pointarray treenode);
+void   prot_freex(long nonodes, pointarray treenode);
 void   freegarbage(gbases **);
 void   freegrbg(node **);
+
+/* new functions for EMBOSS */
+
+void   seq_inputdata(AjPSeqset, long);
+void   inputdata(long);
+
+
+void   collapsetree(node *, node *, node **, pointarray, long *);
+void   collapsebestrees(node **, node **, pointarray, bestelm *, long *,
+                      long *, long, boolean, boolean);
 /*function prototypes*/
 #endif
 

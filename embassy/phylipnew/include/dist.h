@@ -18,11 +18,14 @@ typedef node **pointptr;
 #ifndef OLDC
 /*function prototypes*/
 void alloctree(pointptr *, long);
+void freetree(pointptr *, long);
 void allocd(long, pointptr);
+void freed(long, pointptr);
 void allocw(long, pointptr);
+void freew(long, pointptr);
 void setuptree(tree *, long);
 void dist_inputdata(AjPPhyloDist,
-		    boolean, boolean, boolean, boolean, vector *, intvector *);
+                  boolean, boolean, boolean, boolean, vector *, intvector *);
 void coordinates(node *, double, long *, double *, node *, boolean);
 void drawline(long, double, node *, boolean);
 void printree(node *, boolean, boolean, boolean);

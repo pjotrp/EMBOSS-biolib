@@ -12,8 +12,6 @@
 #define VERBOSE           22
 #define SPARSE            33
 
-#define maxtrees 1000
-
 /* Number of columns per block in a matrix output */
 #define COLUMNS_PER_BLOCK 10
 
@@ -21,6 +19,7 @@
 typedef struct pattern_elm {
   group_type *apattern;
   long *patternsize;
+  double *length;
 } pattern_elm;
 
 #ifndef OLDC
@@ -40,11 +39,11 @@ void   drawline(long i);
 void   printree(void);
 void   consensus(pattern_elm ***, long);
 void   rehash(void);
-void   enternodeset(node *);
-void   enterset(group_type *);
+void   enternodeset(node *r);
 void   accumulate(node *);
 void   dupname2(Char *, node *, node *);
 void   dupname(node *);
+void   missingname(node *);
 void   gdispose(node *);
 void   initreenode(node *);
 void   reroot(node *, long *);
@@ -52,6 +51,8 @@ void   reroot(node *, long *);
 void   store_pattern (pattern_elm ***, double *, int);
 boolean samename(naym, plotstring);
 void   reordertips(void);
-void   read_groups (pattern_elm ****, double *, long *, AjPPhyloTree *);
+void   read_groups (pattern_elm ****, double *, long , long, AjPPhyloTree *);
 /* function prototypes */
 #endif
+
+extern long setsz;

@@ -1223,18 +1223,10 @@ void togglelengths()
 
 void arbitree()
 {
-  long i, maxinput;
+  long i;
   node *newtip, *newfork;
 
-  maxinput = 1;
-  do {
-    spp = readlong("How many species?\n");
-    maxinput++;
-    if (maxinput == 100) {
-      printf("ERROR: too many tries at choosing species\n");
-      exxit(-1);
-    }
-  } while (spp <= 0);
+  spp = ajAcdGetInt("numspecies");
   nonodes = spp * 2 - 1;
   maketip(&root, 1);
   maketip(&newtip, 2);
@@ -1252,7 +1244,7 @@ void yourtree()
 {
   long uniquearray[maxsz];
   long uniqueindex = 0;
-  long i, j, k, k_max, maxinput;
+  long i, j, k, k_max=0, maxinput;
   boolean ok, done;
   node *newtip, *newfork;
   Char ch;

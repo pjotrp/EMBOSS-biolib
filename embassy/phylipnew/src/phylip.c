@@ -5,12 +5,14 @@
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
 
+#ifdef OSX_CARBON
+#include <Carbon/Carbon.h>
+#endif
+
 #include <stdio.h>
 #include <signal.h>
-#include "ajax.h"
 #ifdef WIN32
 #include <windows.h>
-
 /* for console code (clear screen, text color settings) */
 CONSOLE_SCREEN_BUFFER_INFO savecsbi;
 HANDLE hConsoleOutput;
@@ -24,165 +26,34 @@ void phyFillScreenColor();
 
 #include "phylip.h"
 
-#ifndef OLDC
-static void crash_handler(int signum);
-
+#if defined(OSX_CARBON) && defined(__MWERKS__)
+boolean fixedpath = false;
 #endif
-
 FILE *infile, *outfile, *intree, *intree2, *outtree, *weightfile, *catfile, *ancfile, *mixfile, *factfile;
 long spp, words, bits;
 boolean ibmpc, ansi, tranvsp;
 naym *nayme;                     /* names of species */
 
-static void crash_handler(int sig_num)
-{ /* when we crash, lets print out something usefull */
-  printf("ERROR:  ");
-  switch(sig_num) {
-#ifdef SIGSEGV
-    case SIGSEGV:
-      puts("This program has caused a Segmentation fault.");
-      break;
-#endif /* SIGSEGV */
-#ifdef SIGFPE
-    case SIGFPE:
-      puts("This program has caused a Floating Point Exception");
-      break;
-#endif  /* SIGFPE */
-#ifdef SIGILL
-    case SIGILL:
-      puts("This program has attempted an illegal instruction");
-      break;
-#endif  /* SIGILL */
-#ifdef SIGPIPE 
-    case SIGPIPE:
-      puts("This program tried to write to a broken pipe");
-      break;
-#endif  /* SIGPIPE */
-#ifdef SIGBUS
-    case SIGBUS:
-      puts("This program had a bus error");
-      break;
-#endif /* SIGBUS */
-  }   
-  if (sig_num == SIGSEGV) {
-    puts("       This may have been caused by an incorrectly formatted");
-    puts("       input tree file or input file.  You should check those");
-    puts("       files carefully.");
-    puts("       If this seems to be a bug, please mail emboss-bug@embnet.org");
-    puts("       as this is the EMBOSS_adapted version, rather than the");
-    puts("       original author joe@gs.washington.edu");
-  }
-  else {
-    puts("       Most likely, you have encountered a bug in the program.");
-    puts("       Since this seems to be a bug, please mail emboss-bug@embnet.org");
-    puts("       as this is the EMBOSS_adapted version, rather than the");
-    puts("       original author joe@gs.washington.edu");
-  }
-  puts("       with the name of the program, your computer system type,");
-  puts("       a full description of the problem, and with the input data file.");
-  puts("       (which should be in the body of the message, not as an Attachment).");
-
-#ifdef WIN32
-  puts ("Hit Enter or Return to close program.");
-  puts("  You may have to hit Enter or Return twice.");
-  getchar ();
-  getchar ();
-  phyRestoreConsoleAttributes();
-#endif
-  abort();
-}
-
-
 void init(int argc, char** argv) 
 { /* initialization routine for all programs 
-   * anything done at the beginning for every program should be done here */ 
+   * anything done at the beginig for every program should be done here */ 
  
   /* set up signal handler for 
-   * segfault,floating point exception, illegal instruction, bad pipe, bus error
+   * segfault,floating point exception, illeagal instruction, bad pipe, bus error
    * there are more signals that can cause a crash, but these are the most common
    * even these aren't found on all machines.  */
-#ifdef SIGSEGV
-  signal(SIGSEGV, crash_handler);
-#endif /* SIGSEGV */
-#ifdef SIGFPE
-  signal(SIGFPE, crash_handler);
-#endif /* SIGFPE */
-#ifdef SIGILL
-  signal(SIGILL, crash_handler);
-#endif /* SIGILL */
-#ifdef SIGPIPE
-  signal(SIGPIPE, crash_handler);
-#endif /* SIGPIPE */
-#ifdef SIGBUS
-  signal(SIGBUS, crash_handler);
-#endif /* SIGBUS */
-
-#ifdef WIN32
-  phySetConsoleAttributes();
-  phyClearScreen();
-#endif
-
 }
 
-/*
-//void scan_eoln(FILE *f) 
-//{ /# eat everything to the end of line or eof#/
-//  char ch;
-//
-//  while (!eoff(f) && !eoln(f)) 
-//    gettc(f);
-//  if (!eoff(f)) 
-//    ch = gettc(f);
-//  if (ch == '\r' && !eoff(f) && eoln(f))
-//    gettc(f);
-//}
-*/
-
-
-/*
-//boolean eoff(FILE *f)
-//{ /# check for end of file #/
-//    int ch;
-//
-//    if (feof(f)) 
-//      return true;
-//    ch = getc(f);
-//    if (ch == EOF) {
-//      ungetc(ch, f);
-//      return true;
-//    }
-//    ungetc(ch, f);
-//    return false;
-//}  /#eoff#/
-*/
-
-
-/*
-//boolean eoln(FILE *f)
-//{ /# check for end of line or eof#/
-//    register int ch;
-//
-//    ch = getc(f);
-//    if (ch == EOF)
-//      return true;
-//    ungetc(ch, f);
-//    return ((ch == '\n') || (ch == '\r'));
-//}  /#eoln#/
-*/
-
-
-/*
-//int filexists(char *filename)
-//{ /# check whether file already exists #/
-//  FILE *fp;
-//  fp =fopen(filename,"r");
-//  if (fp) {
-//    fclose(fp);
-//    return 1;
-//  } else
-//    return 0;
-//}  /#filexists#/
-*/
+int filexists(char *filename)
+{ /* check whether file already exists */
+  FILE *fp;
+  fp =fopen(filename,"r");
+  if (fp) {
+    fclose(fp);
+    return 1;
+  } else
+    return 0;
+}  /*filexists*/
 
 
 const char* get_command_name (const char *vektor)
@@ -217,7 +88,7 @@ void countup(long *loopcount, long maxcount)
 
   (*loopcount)++;
   if ((*loopcount) >= maxcount) {
-    ajErr("ERROR: Made %ld attempts to read input in loop. Aborting run.",
+    ajErr("Made %ld attempts to read input in loop. Aborting run.",
             *loopcount);
     exxit(-1);
   }
@@ -227,27 +98,9 @@ void countup(long *loopcount, long maxcount)
 void openfile(FILE **fp,const char *filename,const char *filedesc,
               const char *mode,const char *application, const char **perm)
 { /* open a file, testing whether it exists etc. */
-  /*AjPFile infile;*/
   AjPFile outfile;
-  /*
-//  FILE *of;
-//  char file[FNMLNGTH];
-//  char filemode[2];
-//  char input[FNMLNGTH];
-//  char ch;
-//  const char *progname_without_path;
-//  long loopcount, loopcount2;
-*/
 
   switch (mode[0]){
-/*
-//  case 'r':
-//      infile = ajAcdGetInfile(filename);
-//      *fp = ajFileFp(infile);
-//      ajDebug("phylip openfile in '%s' '%s' => '%F'\n",
-//	      mode, filename, infile);
-//      break;
-*/
   case 'w':
       outfile = ajAcdGetOutfile(filename);
       if (outfile)
@@ -263,95 +116,20 @@ void openfile(FILE **fp,const char *filename,const char *filedesc,
       break;
   }
 
-/*
-//
-//  progname_without_path = get_command_name(application);
-//
-//  strcpy(file,filename);
-//  strcpy(filemode,mode);
-//  loopcount = 0;
-//  while (1){
-//    if (filemode[0] == 'w' && filexists(file)){
-//      printf("\n%s: the file \"%s\" that you wanted to\n",
-//          progname_without_path, file);
-//      printf("     use as %s already exists.\n", filedesc);
-//      printf("     Do you want to Replace it, Append to it,\n");
-//      printf("     write to a new File, or Quit?\n");
-//      loopcount2 = 0;
-//      do {
-//        printf("     (please type R, A, F, or Q) \n");
-//#ifdef WIN32
-//        phyFillScreenColor();
-//#endif
-//        fgets(input, sizeof(input), stdin);
-//        ch  = input[0];
-//        uppercase(&ch);
-//        countup(&loopcount2, 10);
-//      } while (ch != 'A' && ch != 'R' && ch != 'F' && ch != 'Q');
-//      if (ch == 'Q')
-//        exxit(-1);
-//      if (ch == 'A') {
-//        strcpy(filemode,"a");
-//        continue;
-//      }
-//      else if (ch == 'F') {
-//        file[0] = '\0';
-//        loopcount2 = 0;
-//        while (file[0] =='\0') {
-//          printf("Please enter a new file name> ");
-//          getstryng(file);
-//          countup(&loopcount2, 10);
-//        }
-//        strcpy(filemode,"w");
-//        continue;
-//      }
-//    }
-//    of = fopen(file,filemode);
-//    if (of)
-//      break;
-//    else {
-//      switch (filemode[0]){
-//
-//      case 'r':
-//        printf("%s: can't find %s \"%s\"\n", progname_without_path,
-//            filedesc, file);
-//        file[0] = '\0';
-//        loopcount2 = 0;
-//        while (file[0] =='\0'){
-//          printf("Please enter a new file name> ");
-//          countup(&loopcount2, 10);
-//          getstryng(file);}
-//        break;
-//
-//      case 'w':
-//      case 'a':
-//        printf("%s: can't write %s file %s\n", progname_without_path,
-//            filedesc, file);
-//        file[0] = '\0';
-//        loopcount2 = 0;
-//        while (file[0] =='\0'){
-//          printf("Please enter a new file name> ");
-//          countup(&loopcount2, 10);
-//          getstryng(file);}
-//        continue;
-//      default:
-//     printf("There is some error in the call of openfile. Unknown mode.\n");
-//        exxit(-1);
-//      }
-//    }
-//    countup(&loopcount, 20);
-//  }
-//  *fp = of;
-//  if (perm != NULL)
-//    strcpy(perm,file);
-*/
-
 } /* openfile */
 
 
 void cleerhome()
 { /* home cursor and clear screen, if possible */
+#ifdef WIN32
+  if(ibmpc || ansi){
+    phyClearScreen();
+  } else {
+    printf("\n\n");
+  }
+#else
   printf("%s", ((ibmpc || ansi) ? ("\033[2J\033[H") : "\n\n"));
+#endif
 } /* cleerhome */
 
 
@@ -359,7 +137,9 @@ double randum(longer seed)
 { /* random number generator -- slow but machine independent
   This is a multiplicative congruential 32-bit generator
   x(t+1) = 1664525 * x(t) mod 2^32, one that passes the
-  Coveyou-Macpherson and Lehmer tests, see Knuth ACP vol. 2   */
+  Coveyou-Macpherson and Lehmer tests, see Knuth ACP vol. 2
+  We here implement it representing each integer in base-64
+  notation -- i.e. as an array of 6 six-bit chunks   */
   long i, j, k, sum;
   longer mult, newseed;
   double x;
@@ -417,47 +197,20 @@ double normrand(longer seed)
 } /* normrand */ 
 
 
-long readlong(const char *prompt)
-{ /* read a long */
-  long res, loopcount;
-  char string[100];
-
-  loopcount = 0;
-  do {
-    printf("%s",prompt);
-    getstryng(string);
-    if (sscanf(string,"%ld",&res) == 1)
-      break;
-    countup(&loopcount, 10);
-   } while (1);
-  return res;
-}  /* readlong */
-
-
 void uppercase(Char *ch)
 { /* convert ch to upper case */
-  *ch = (islower ((int) *ch) ? toupper((int) *ch) : ((int) *ch));
+  *ch = (islower (*ch) ? toupper(*ch) : (*ch));
 }  /* uppercase */
 
 
 void initseed(long *inseed, long *inseed0, longer seed)
 { /* input random number seed */
   long i;
-  /*long loopcount; */
 
     *inseed = ajAcdGetInt("seed");
     while ((*inseed & 3)!=1)		/* must be an 4n+1 - see main.html */
 	*inseed++;
 
-/*
-//  loopcount = 0;
-//  do {
-//    printf("Random number seed (must be odd)?\n");
-//    scanf("%ld%*[^\n]", inseed);
-//    getchar();
-//    countup(&loopcount, 10);
-//  } while (((*inseed) < 0) || ((*inseed) & 1) == 0);
-*/
   *inseed0 = *inseed;
   for (i = 0; i <= 5; i++)
     seed[i] = 0;
@@ -467,35 +220,21 @@ void initseed(long *inseed, long *inseed0, longer seed)
     *inseed /= 64;
     i++;
   } while (*inseed != 0);
+
 }  /*initseed*/
 
 
 void initjumble(long *inseed, long *inseed0, longer seed, long *njumble)
 { /* input number of jumblings for jumble option */
-  /* long loopcount;*/
 
   initseed(inseed, inseed0, seed);
 
   *njumble = ajAcdGetInt("jumble");
-/*
-//  loopcount = 0;
-//  do {
-//    printf("Number of times to jumble?\n");
-//    scanf("%ld%*[^\n]", njumble);
-//    getchar();
-//    countup(&loopcount, 10);
-//  } while ((*njumble) < 1);
-*/
-
 }  /*initjumble*/
 
 
 void initoutgroup(long *outgrno, long spp)
 { /* input outgroup number */
-/*
-//  long loopcount;
-//  boolean done;
-*/
 
     if (spp < 1)
     {
@@ -511,47 +250,13 @@ void initoutgroup(long *outgrno, long spp)
     }
 
     ajDebug("initoutgroup spp: %ld => outgrno %ld\n", spp, *outgrno);
-/*
-//  loopcount = 0;
-//  do {
-//    printf("Type number of the outgroup:\n");
-//    scanf("%ld%*[^\n]", outgrno);
-//    getchar();
-//    done = (*outgrno >= 1 && *outgrno <= spp);
-//    if (!done) {
-//      printf("BAD OUTGROUP NUMBER: %ld\n", *outgrno);
-//      printf("  Must be in range 1 - %ld\n", spp);
-//    }
-//    countup(&loopcount, 10);
-//  } while (done != true);
-*/
-
 }  /*initoutgroup*/
 
 
 void initthreshold(double *threshold)
 { /* input threshold for threshold parsimony option */
-/*
-//  long loopcount;
-//  boolean done;
-*/
 
   *threshold = ajAcdGetFloat("threshold");
-
-/*
-//  loopcount = 0;
-//  do {
-//    printf("What will be the threshold value?\n");
-//    scanf("%lf%*[^\n]", threshold);
-//    getchar();
-//    done = (*threshold >= 1.0);
-//    if (!done)
-//      printf("BAD THRESHOLD VALUE:  it must be greater than 1\n");
-//    else
-//      *threshold = (long)(*threshold * 10.0 + 0.5) / 10.0;
-//    countup(&loopcount, 10);
-//  } while (done != true);
-*/
 
 }  /*initthreshold*/
 
@@ -562,25 +267,16 @@ void initrcatn(long *categs)
     *categs = ajAcdGetInt("nhmmcategories");
     if (*categs > maxcategs)
 	*categs = maxcategs;
+
 }
 
 void initcatn(long *categs)
 { /* initialize category number for rate categories */
-  /*long loopcount;*/
 
     *categs = ajAcdGetInt("ncategories");
     if (*categs > maxcategs)
 	*categs = maxcategs;
 
-/*
-//  loopcount = 0;
-//  do {
-//    printf("Number of categories (1-%d)?\n", maxcategs);
-//    scanf("%ld%*[^\n]", categs);
-//    getchar();
-//    countup(&loopcount, 10);
-//  } while (*categs > maxcategs || *categs < 1);
-*/
 }  /*initcatn*/
 
 
@@ -589,11 +285,6 @@ void initrcategs(long categs, double *rate)
   long i;
   AjPFloat vals;
   long maxi;
-  /*
-//  long loopcount, scanned;
-//  char line[100], rest[100];
-//  boolean done;
-*/
 
   vals = ajAcdGetArray("hmmrates");
   if (!rate) return;
@@ -617,11 +308,6 @@ void initcategs(long categs, double *rate)
   long i;
   AjPFloat vals;
   long maxi;
-  /*
-//  long loopcount, scanned;
-//  char line[100], rest[100];
-//  boolean done;
-*/
 
   vals = ajAcdGetArray("rates");
   if (!rate) return;
@@ -639,41 +325,14 @@ void initcategs(long categs, double *rate)
 	  rate[i] = ajFloatGet(vals, i);
   }
 
-/*
-//  loopcount = 0;
-//  for (;;){
-//    printf("Rate for each category? (use a space to separate)\n");
-//    getstryng(line);
-//    done = true;
-//    for (i = 0; i < categs; i++){
-//      scanned = sscanf(line,"%lf %[^\n]", &rate[i],rest);
-//      if ((scanned < 2 && i < (categs - 1)) ||
-//       (scanned < 1 && i == (categs - 1))){
-//     printf("Please enter exactly %ld values.\n",categs);
-//     done = false;
-//     break;
-//      }
-//      strcpy(line,rest);
-//    }
-//    if (done)
-//      break;
-//    countup(&loopcount, 100);
-//  }
-*/
 }  /*initcategs*/
 
 
 void initprobcat(long categs, double *probsum, double *probcat)
-{ /* input probabilities of rate categories for HMM rates */
+{ /* input probabilities of rate categores for HMM rates */
   long i;
   AjPFloat vals;
   long maxi;
-
-/*
-//  long loopcount, scanned;
-//  boolean done;
-//  char line[100], rest[100];
-*/
 
   *probsum = 0.0;
   vals = ajAcdGetArray("hmmprobabilities");
@@ -694,35 +353,6 @@ void initprobcat(long categs, double *probsum, double *probcat)
       *probsum += probcat[i];
   }
 
-/*
-//  loopcount = 0;
-//  do {
-//    printf("Probability for each category?");
-//    printf(" (use a space to separate)\n");
-//    getstryng(line);
-//    done = true;
-//    for (i = 0; i < categs; i++){
-//      scanned = sscanf(line,"%lf %[^\n]",&probcat[i],rest);
-//      if ((scanned < 2 && i < (categs - 1)) ||
-//       (scanned < 1 && i == (categs - 1))){
-//     done = false;
-//     printf("Please enter exactly %ld values.\n",categs);
-//     break;}
-//      strcpy(line,rest);
-//    }
-//    if (!done)
-//      continue;
-//    *probsum = 0.0;
-//    for (i = 0; i < categs; i++)
-//      *probsum += probcat[i];
-//    if (fabs(1.0 - (*probsum)) > 0.001) {
-//      done = false;
-//      printf("Probabilities must add up to");
-//      printf(" 1.0, plus or minus 0.001.\n");
-//    }
-//    countup(&loopcount, 100);
-//  } while (!done);
-*/
 }  /*initprobcat*/
 
 
@@ -918,12 +548,12 @@ double halfroot(double (*func)(long m, double x), long n, double startx,
      (*func) is a function with two arguments  */
   double xl;
   double xu;
-  double xm;
+  double xm = 0.0;
   double fu;
   double fl;
   double fm = 100000.;
   double gradient;
-  boolean dwn;
+  boolean dwn = 0;
 
   /* decide if we search above or below startx and escapes to trace back
      to the starting point that most often will be
@@ -976,7 +606,7 @@ double halfroot(double (*func)(long m, double x), long n, double startx,
 void hermite_weight(long n, double * hroot, double * weights)
 {
   /* calculate the weights for the hermite polynomial at the roots
-     using formula Abramowitz and Stegun chapter 25.4.46 p.890 */
+     using formula from Abramowitz and Stegun chapter 25.4.46 p.890 */
   long i;
   double hr2;
   double numerator;
@@ -1022,148 +652,125 @@ void initgammacat (long categs, double alpha, double *rate, double *probcat)
 
 void inithowmany(long *howmany, long howoften)
 {/* input how many cycles */
-  /*long loopcount;*/
+  long loopcount;
 
-    *howmany = ajAcdGetInt("howmany");
-
-/*
-//  loopcount = 0;
-//  do { 
-//    printf("How many cycles of %4ld trees?\n", howoften);
-//    scanf("%ld%*[^\n]", howmany);
-//    getchar();
-//    countup(&loopcount, 10);
-//  } while (*howmany <= 0);
-*/
-
+  loopcount = 0;
+  do { 
+    printf("How many cycles of %4ld trees?\n", howoften);
+    scanf("%ld%*[^\n]", howmany);
+    getchar();
+    countup(&loopcount, 10);
+  } while (*howmany <= 0);
 }  /*inithowmany*/
 
 
 
 void inithowoften(long *howoften)
 { /* input how many trees per cycle */
-  /*long loopcount;*/
+  long loopcount;
 
-    *howoften = ajAcdGetInt("howoften");
-
-/*
-//  loopcount = 0;
-//  do {
-//    printf("How many trees per cycle?\n");
-//    scanf("%ld%*[^\n]", howoften);
-//    getchar();
-//    countup(&loopcount, 10);
-//  } while (*howoften <= 0);
-*/
-
+  loopcount = 0;
+  do {
+    printf("How many trees per cycle?\n");
+    scanf("%ld%*[^\n]", howoften);
+    getchar();
+    countup(&loopcount, 10);
+  } while (*howoften <= 0);
 }  /*inithowoften*/
 
 
 void initlambda(double *lambda)
 { /* input patch length parameter for autocorrelated HMM rates */
-  /*long loopcount;*/
+  long loopcount;
 
-
-/*
-//  loopcount = 0;
-//  do {
-//    printf("Mean block length of sites having the same rate (greater than 1)?\n");
-//    scanf("%lf%*[^\n]", lambda);
-//    getchar();
-//    countup(&loopcount, 10);
-//  } while (*lambda <= 1.0);
-*/
-    *lambda = ajAcdGetFloat("lambda");
-    *lambda = 1.0 / *lambda;
-
+  loopcount = 0;
+  do {
+    printf("Mean block length of sites having the same rate (greater than 1)?\n");
+    scanf("%lf%*[^\n]", lambda);
+    getchar();
+    countup(&loopcount, 10);
+  } while (*lambda <= 1.0);
+  *lambda = 1.0 / *lambda;
 }  /*initlambda*/
 
 
 void initfreqs(double *freqa, double *freqc, double *freqg, double *freqt)
 { /* input frequencies of the four bases */
-/*
-//  char input[100];
-//  long scanned, loopcount;
-*/
+  char input[100];
+  long scanned, loopcount;
 
-    AjPFloat vals;
-
-    vals = ajAcdGetArray("basefreqs");
-    *freqa = ajFloatGet(vals, 0);
-    *freqc = ajFloatGet(vals, 1);
-    *freqg = ajFloatGet(vals, 2);
-    *freqt = ajFloatGet(vals, 3);
-
-/*
-//  printf("Base frequencies for A, C, G, T/U (use blanks to separate)?\n");
-//  loopcount = 0;
-//  do {
-//    getstryng(input);
-//    scanned = sscanf(input,"%lf%lf%lf%lf%*[^\n]", freqa, freqc, freqg, freqt);
-//    if (scanned == 4)
-//      break;
-//    else
-//      printf("Please enter exactly 4 values.\n");
-//    countup(&loopcount, 100);
-//  } while (1);
-*/
+  printf("Base frequencies for A, C, G, T/U (use blanks to separate)?\n");
+  loopcount = 0;
+  do {
+    getstryng(input);
+    scanned = sscanf(input,"%lf%lf%lf%lf%*[^\n]", freqa, freqc, freqg, freqt);
+    if (scanned == 4)
+      break;
+    else
+      printf("Please enter exactly 4 values.\n");
+    countup(&loopcount, 100);
+  } while (1);
 }  /* initfreqs */
 
 
 void initratio(double *ttratio)
 { /* input transition/transversion ratio */
-  /*long loopcount;*/
+  long loopcount;
 
-    *ttratio = ajAcdGetFloat("ttratio");
-
-/*
-//  loopcount = 0;
-//  do {
-//    printf("Transition/transversion ratio?\n");
-//    scanf("%lf%*[^\n]", ttratio);
-//    getchar();
-//    countup(&loopcount, 10);
-//  } while (*ttratio < 0.0);
-*/
+  loopcount = 0;
+  do {
+    printf("Transition/transversion ratio?\n");
+    scanf("%lf%*[^\n]", ttratio);
+    getchar();
+    countup(&loopcount, 10);
+  } while (*ttratio < 0.0);
 }  /* initratio */
 
 
 void initpower(double *power)
 {
-
-  *power = ajAcdGetFloat("power");
-
-/*
-//  printf("New power?\n");
-//  scanf("%lf%*[^\n]", power);
-//  getchar();
-*/
-
+  printf("New power?\n");
+  scanf("%lf%*[^\n]", power);
+  getchar();
 }  /*initpower*/
 
 
-/*
-//void initdatasets(long *datasets)
-//{
-//  /# handle multi-data set option #/
-//
-//  long loopcount;
-//  boolean done;
-//
-//  *datasets = ajAcdGetInt("datasets");
-//
-//  loopcount = 0;
-//  do {
-//    printf("How many data sets?\n");
-//    scanf("%ld%*[^\n]", datasets);
-//    getchar();
-//    done = (*datasets > 1);
-//      if (!done)
-//     printf("Bad data sets number:  it must be greater than 1\n");
-//    countup(&loopcount, 10);
-//  } while (!done);
-//} /# initdatasets #/
-*/
+void initdatasets(long *datasets)
+{
+  /* handle multi-data set option */
+  long loopcount;
+  boolean done;
+
+  loopcount = 0;
+  do {
+    printf("How many data sets?\n");
+    scanf("%ld%*[^\n]", datasets);
+    getchar();
+    done = (*datasets > 1);
+      if (!done)
+     printf("Bad data sets number:  it must be greater than 1\n");
+    countup(&loopcount, 10);
+  } while (!done);
+} /* initdatasets */
+
+
+void justweights(long *datasets)
+{
+  /* handle multi-data set option by weights */
+  long loopcount;
+  boolean done;
+
+  loopcount = 0;
+  do {
+    printf("How many sets of weights?\n");
+    scanf("%ld%*[^\n]", datasets);
+    getchar();
+    done = (*datasets >= 1);
+      if (!done)
+     printf("BAD NUMBER:  it must be greater than 1\n");
+    countup(&loopcount, 10);
+  } while (!done);
+} /* justweights */
 
 
 void initterminal(boolean *ibmpc, boolean *ansi)
@@ -1177,18 +784,6 @@ void initterminal(boolean *ibmpc, boolean *ansi)
     else
       *ibmpc = true;
 }  /*initterminal*/
-
-
-void initnumlines(long *screenlines)
-{
-  long loopcount;
-
-  loopcount = 0;
-  do {
-    *screenlines = readlong("Number of lines on screen?\n");
-    countup(&loopcount, 10);
-  } while (*screenlines <= 12);
-}  /*initnumlines*/
 
 
 void initbestrees(bestelm *bestrees, long maxtrees, boolean glob)
@@ -1216,21 +811,6 @@ void newline(FILE *filename, long i, long j, long k)
   for (m = 1; m <= k; m++)
     putc(' ', filename);
 }  /* newline */
-
-/*
-//void inputnumbersold(long *spp, long *chars, long *nonodes, long n)
-//{
-//  /# input the numbers of species and of characters #/
-//
-//  if (fscanf(infile, "%ld%ld", spp, chars) != 2 || *spp <= 0 || *chars <= 0) {
-//    printf(
-//    "ERROR: Unable to read the number of species or characters in data set\n");
-//    printf(
-//      "The input file is incorrect (perhaps it was not saved text only).\n");
-//  }
-//  *nonodes = *spp * 2 - n;
-//}  /# inputnumbersold #/
-*/
 
 
 void inputnumbersseq(AjPSeqset seqset,
@@ -1270,22 +850,6 @@ void inputnumbersstate(AjPPhyloState state,
     *nonodes = *spp * 2 - n;
 }
 
-/*
-//void inputnumbers(long *spp, long *chars, long *nonodes, long n)
-//{
-//  /# input the numbers of species and of characters #/
-//
-//  if (fscanf(infile, "%ld%ld", spp, chars) != 2 || *spp <= 0 || *chars <= 0) {
-//    printf(
-//    "ERROR: Unable to read the number of species or characters in data set\n");
-//    printf(
-//      "The input file is incorrect (perhaps it was not saved text only).\n");
-//  }
-//  fscanf(infile, "%*[^\n]");
-//  *nonodes = *spp * 2 - n;
-//}  /# inputnumbers #/
-*/
-
 void inputnumbers2seq(AjPSeqset seqset, long *spp, long *nonodes, long n)
 {
   *spp = ajSeqsetSize(seqset);
@@ -1293,37 +857,6 @@ void inputnumbers2seq(AjPSeqset seqset, long *spp, long *nonodes, long n)
   *nonodes = *spp * 2 - n;
 }  /* inputnumbers2seq */
 
-
-/*
-//void inputnumbers2(long *spp, long *nonodes, long n)
-//{
-//  /# read species number #/
-//
-//  if (fscanf(infile, "%ld", spp) != 1 || *spp <= 0) {
-//    printf("ERROR: Unable to read the number of species in data set\n");
-//    printf(
-//      "The input file is incorrect (perhaps it was not saved text only).\n");
-//  }
-//  fscanf(infile, "%*[^\n]");
-//  fprintf(outfile, "\n%4ld Populations\n", *spp);
-//  *nonodes = *spp * 2 - n;
-//}  /# inputnumbers2 #/
-*/
-
-/*
-//void inputnumbers3(long *spp, long *chars)
-//{
-//  /# input the numbers of species and of characters #/
-//
-//  if (fscanf(infile, "%ld%ld", spp, chars) != 2 || *spp <= 0 || *chars <= 0) {
-//    ajErr(
-//    "ERROR: Unable to read the number of species or characters in data set");
-//    ajErr(
-//       "The input file is incorrect (perhaps it was not saved text only).");
-//    exxit(-1);
-//  }
-//}  /# inputnumbers3 #/
-*/
 
 void samenumspfreq(AjPPhyloFreq freq, long *chars, long ith)
 {
@@ -1370,77 +903,6 @@ void samenumspseq2(AjPSeqset set, long ith)
 } /* samenumspstate */
 
 
-/*
-//void samenumsp(long *chars, long ith)
-//{
-//  /# check if spp is same as the first set in other data sets #/
-//  long cursp, curchs;
-//
-//  if (eoln(infile)) 
-//    scan_eoln(infile);
-//  fscanf(infile, "%ld%ld", &cursp, &curchs);
-//  if (cursp != spp) {
-//    ajErr("\ERROR: Inconsistent number of species in data set %ld", ith);
-//    exxit(-1);
-//  }
-//  *chars = curchs;
-//} /# samenumsp #/
-*/
-
-/*
-//void samenumsp2(long ith)
-//{
-//  /# check if spp is same as the first set in other data sets #/
-//  long cursp;
-//
-//  if (eoln(infile)) 
-//    scan_eoln(infile);
-//  if (fscanf(infile, "%ld", &cursp) != 1) {
-//      ajErr("ERROR: Unable to read number of species in data set %ld",
-//	    ith);
-//    ajErr("The input file is incorrect (perhaps it was not saved text only).");
-//    exxit(-1);
-//  }
-//  if (cursp != spp) {
-//    ajErr("ERROR: Inconsistent number of species in data set %ld", ith);
-//    exxit(-1);
-//  }
-//} /# samenumsp2 #/
-*/
-
-/*
-//void readoptions(long *extranum, const char *options)
-//{ /# read option characters from input file #/
-//  Char ch;
-//
-//  while (!(eoln(infile))) {
-//    ch = gettc(infile);
-//    uppercase(&ch);
-//    if (strchr(options, ch) != NULL)
-//     (* extranum)++;
-//    else if (!(ch == ' ' || ch == '\t')) {
-//      ajErr("BAD OPTION CHARACTER: %c", ch);
-//      exxit(-1);
-//    }
-//  }
-//  scan_eoln(infile);
-//}  /# readoptions #/
-*/
-
-/*
-//void matchoptions(Char *ch, const char *options)
-//{  /# match option characters to those in auxiliary options line #/
-//
-//  *ch = gettc(infile);
-//  uppercase(ch);
-//  if (strchr(options, *ch) == NULL) {
-//    ajErr("ERROR: Incorrect auxiliary options line"
-//	  " which starts with %c\n", *ch);
-//    exxit(-1);
-//  }
-//}  /# matchoptions #/
-*/
-
 void inputweightsstr(AjPStr wtstr,
 		     long chars, steptr weight, boolean *weights)
 {
@@ -1467,75 +929,11 @@ void inputweightsstr(AjPStr wtstr,
     *weights = true;
 } /*inputweightsstr*/
 
-/*
-//void inputweightsold(long chars, steptr weight, boolean *weights)
-//{
-//  Char ch;
-//  int i;
-//
-//  for (i = 1; i < nmlngth ; i++)
-//    getc(infile);
-// 
-//  for (i = 0; i < chars; i++) {
-//    do {
-//      if (eoln(infile)) 
-//        scan_eoln(infile);
-//      ch = gettc(infile);
-//      if (ch == '\n')
-//        ch = ' ';
-//    } while (ch == ' ');
-//    weight[i] = 1;
-//    if (isdigit((int) ch))
-//      weight[i] = ch - '0';
-//    else if (isalpha((int) ch)) {
-//      uppercase(&ch);
-//      weight[i] = ch - 'A' + 10;
-//    } else {
-//      ajErr("ERROR: Bad weight character: %c", ch);
-//      exxit(-1);
-//    }
-//  }
-//  scan_eoln(infile);
-//  *weights = true;
-//} /#inputweightsold#/
-*/
-
-/*
-//void inputweights(long chars, steptr weight, boolean *weights)
-//{
-//  /# input the character weights, 0-9 and A-Z for weights 0 - 35 #/
-//  Char ch;
-//  long i;
-//
-//  for (i = 0; i < chars; i++) {
-//    do {
-//      if (eoln(weightfile)) 
-//        scan_eoln(weightfile);
-//      ch = gettc(weightfile);
-//      if (ch == '\n')
-//        ch = ' ';
-//    } while (ch == ' ');
-//    weight[i] = 1;
-//    if (isdigit((int) ch))
-//      weight[i] = ch - '0';
-//    else if (isalpha((int) ch)) {
-//      uppercase(&ch);
-//      weight[i] = ch - 'A' + 10;
-//    } else {
-//      ajErr("ERROR: Bad weight character: %c", ch);
-//      exxit(-1);
-//    }
-//  }
-//  scan_eoln(weightfile);
-//  *weights = true;
-//}  /# inputweights #/
-*/
-
 void inputweightsstr2(AjPStr str, long a, long b, long *weightsum,
         steptr weight, boolean *weights, const char *prog)
 {
   /* input the character weights, 0 or 1 */
-  Char ch;
+  Char ch = '\0';
   long i;
 
   *weightsum = 0;
@@ -1553,36 +951,6 @@ void inputweightsstr2(AjPStr str, long a, long b, long *weightsum,
   }
   *weights = true;
 }
-
-/*
-//void inputweights2(long a, long b, long *weightsum,
-//        steptr weight, boolean *weights, const char *prog)
-//{
-//  /# input the character weights, 0 or 1 #/
-//  Char ch;
-//  long i;
-//
-//  *weightsum = 0;
-//  for (i = a; i < b; i++) {
-//    do {
-//      if (eoln(weightfile))
-//        scan_eoln(weightfile);
-//      ch = gettc(weightfile);
-//    } while (ch == ' ');
-//    weight[i] = 1;
-//    if (ch == '0' || ch == '1')
-//      weight[i] = ch - '0';
-//    else {
-//      ajErr("ERROR: Bad weight character: %c -- "
-//	    "weights in %s must be 0 or 1\n", ch, prog);
-//      exxit(-1);
-//    }
-//    *weightsum += weight[i];
-//  }
-//  *weights = true;
-//  scan_eoln(weightfile);
-//}  /# inputweights2 #/
-*/
 
 void printweights(FILE *filename, long inc, long chars,
         steptr weight, const char *letters)
@@ -1625,28 +993,11 @@ void inputcategsstr(AjPStr str, long a, long b,
   long i;
 
   for (i = a; i < b; i++) {
-/*
-//    do {
-//      if (eoln(catfile)) 
-//        scan_eoln(catfile);
-//      ch = gettc(catfile);
-//    } while (ch == ' ');
-*/
     ch = ajStrChar(str, i);
     if ((ch >= '1') && (ch <= ('0'+categs)))
       category[i] = ch - '0';
-/*
-//    else {
-//      ajErr("\n\nERROR: Bad category character: %c"
-//	    " -- categories in %s are currently 1-%ld\n", ch, prog, categs);
-//      exxit(-1);
-//    }
-*/
   }
-
-  /*scan_eoln(catfile);*/
-}  /* inputcategs */
-
+}
 
 void printcategs(FILE *filename, long chars, steptr category,
                  const char *letters)
@@ -1669,25 +1020,6 @@ void printcategs(FILE *filename, long chars, steptr category,
 }  /* printcategs */
 
 
-/*
-//void inputfactors(long chars, Char *factor, boolean *factors)
-//{
-//  /# reads the factor symbols #/
-//  long i;
-//
-//  for (i = 1; i < nmlngth; i++)
-//    gettc(infile);
-//  for (i = 0; i < (chars); i++) {
-//    if (eoln(infile)) 
-//      scan_eoln(infile);
-//    factor[i] = gettc(infile);
-//    if (factor[i] == '\n')
-//      factor[i] = ' ';
-//  }
-//  scan_eoln(infile);
-//  *factors = true;
-//}  /# inputfactors #/
-*/
 
 
 void inputfactorsstr(AjPStr str, long chars, Char *factor, boolean *factors)
@@ -1833,32 +1165,6 @@ void initnamefreq(AjPPhyloFreq freq, long i)
     }
   }
 } /* initnamefreq */
-
-/*
-//void initname(long i)
-//{
-//  /# read in species name #/
-//  long j;
-//
-//  for (j = 0; j < nmlngth; j++) {
-//    if (eoff(infile) | eoln(infile)){
-//      ajErr("\n\nERROR: end-of-line or end-of-file"
-//	    " in the middle of species name for species %ld\n\n", i+1);
-//      exxit(-1);
-//    }
-//    nayme[i][j] = gettc(infile);
-//    if ((nayme[i][j] == '(') || (nayme[i][j] == ')') || (nayme[i][j] == ':')
-//        || (nayme[i][j] == ',') || (nayme[i][j] == ';') || (nayme[i][j] == '[')
-//        || (nayme[i][j] == ']')) {
-//      ajErr("\nERROR: Species name may not contain characters ( ) : ; , [ ] \n"
-//	    "       In name of species number %ld there is character %c\n\n",
-//	    i+1, nayme[i][j]);
-//      exxit(-1);
-//    }
-//  }
-//} /# initname #/
-*/
-
 
 void findtree(boolean *found,long *pos,long nextree,long *place,bestelm *bestrees)
 {
@@ -2009,130 +1315,12 @@ void sgetch(Char *c, long *parens, char **treestr)
     (*parens)++;
   if ((*c) == ')')
     (*parens)--;
-}  /* getch */
+}  /* sgetch */
 
-
-/*
-//void getch(Char *c, long *parens, FILE *treefile)
-//{ /# get next nonblank character #/
-//
-//  do {
-//    if (eoln(treefile)) 
-//      scan_eoln(treefile);
-//    (*c) = gettc(treefile);
-//
-//    if ((*c) == '\n' || (*c) == '\t')
-//      (*c) = ' ';
-//  } while ( *c == ' ' && !eoff(treefile) );
-//  if ((*c) == '(')
-//    (*parens)++;
-//  if ((*c) == ')')
-//    (*parens)--;
-//}  /# getch #/
-*/
-
-/*
-//void getch2(Char *c, long *parens)
-//{ /# get next nonblank character #/
-//  do {
-//    if (eoln(intree)) 
-//      scan_eoln(intree);
-//    *c = gettc(intree);
-//    if (*c == '\n' || *c == '\t')
-//      *c = ' ';
-//  } while (!(*c != ' ' || eoff(intree)));
-//  if (*c == '(')
-//   (*parens)++;
-//  if (*c == ')')
-//    (*parens)--;
-//}  /# getch2 #/
-*/
-
-/*
-//void findch(Char c, Char *ch, long which)
-//{ /# scan forward until find character c #/
-//  boolean done;
-//  long dummy_parens;
-//  done = false;
-//  while (!done) {
-//    if (c == ',') {
-//      if (*ch == '(' || *ch == ')' || *ch == ';') {
-//        ajErr("ERROR in user tree %ld: unmatched parenthesis or missing comma",
-//          which);
-//        exxit(-1);
-//      } else if (*ch == ',')
-//        done = true;
-//    } else if (c == ')') {
-//      if (*ch == '(' || *ch == ',' || *ch == ';') {
-//        ajErr("ERROR in user tree %ld: "
-//	      "unmatched parenthesis or non-bifurcated node", which);
-//        exxit(-1);
-//      } else {
-//        if (*ch == ')')
-//          done = true;
-//      }
-//    } else if (c == ';') {
-//      if (*ch != ';') {
-//        ajErr("ERROR in user tree %ld: "
-//	      "unmatched parenthesis or missing semicolon", which);
-//        exxit(-1);
-//      } else
-//        done = true;
-//    }
-//    if (*ch != ')' && done)
-//      continue;
-//   getch(ch, &dummy_parens, intree);
-//  }
-//}  /# findch #/
-*/
-
-
-/*
-//void findch2(Char c, long *lparens, long *rparens, Char *ch)
-//{ /# skip forward in user tree until find character c #/
-//  boolean done;
-//  long dummy_parens;
-//  done = false;
-//  while (!done) {
-//    if (c == ',') {
-//      if (*ch == '(' || *ch == ')' || *ch == ':' || *ch == ';') {
-//	  ajErr("ERROR in user tree: "
-//		"unmatched parenthesis, missing comma"
-//		" or non-trifurcated base\n\n");
-//     exxit(-1);
-//      } else if (*ch == ',')
-//        done = true;
-//    } else if (c == ')') {
-//      if (*ch == '(' || *ch == ',' || *ch == ':' || *ch == ';') {
-//        ajErr("ERROR in user tree: "
-//	      "unmatched parenthesis or non-bifurcated node");
-//        exxit(-1);
-//      } else if (*ch == ')') {
-//        (*rparens)++;
-//        if ((*lparens) > 0 && (*lparens) == (*rparens)) {
-//          if ((*lparens) == spp - 2) {
-//           getch(ch, &dummy_parens, intree);
-//            if (*ch != ';') {
-//              ajErr( "ERROR in user tree: "
-//		    "unmatched parenthesis or missing semicolon\n\n");
-//              exxit(-1);
-//            }
-//          }
-//        }
-//     done = true;
-//      }
-//    }
-//    if (*ch != ')' && done)
-//      continue;
-//    if (*ch == ')')
-//     getch(ch, &dummy_parens, intree);
-//  }
-//}  /# findch2 #/
-*/
 
 void processlength(double *valyew, double *divisor, Char *ch, 
         boolean *minusread, char **treestr, long *parens)
-{ /* read a branch length from a treefile */
+{ /* read a branch length from a treestr */
   long digit, ordzero;
   boolean pointread;
 
@@ -2166,42 +1354,37 @@ void writename(long start, long n, long *enterorder)
   long i, j;
 
   for (i = start; i < start+n; i++) {
-    fprintf(stderr, " %3ld. ", i+1);
+    printf(" %3ld. ", i+1);
     for (j = 0; j < nmlngth; j++)
-      fprintf (stderr, "%c", nayme[enterorder[i] - 1][j]);
-    fprintf(stderr, "\n");
-    /*fflush(stdout);*/
+      putchar(nayme[enterorder[i] - 1][j]);
+    putchar('\n');
+    fflush(stdout);
   }
 }  /* writename */
 
 
 void memerror()
 {
-  ajErr("Error allocating memory");
+  printf("Error allocating memory\n");
   exxit(-1);
 }  /* memerror */
 
 
 void odd_malloc(long x)
 { /* error message if attempt to malloc too little or too much memory */
-    ajErr ("ERROR: a function asked for an inappropriate amount of memory:"
-	   "  %ld bytes\n"
-	   "       This can mean one of two things:\n"
-	   "       1.  The input file is incorrect"
-	   " (perhaps it was not saved as Text Only),\n"
-	   "       2.  There is a bug in the program.\n"
-	   "       Please check your input file carefully.\n"
-	   "       If it seems to be a bug, please mail emboss-bug@embnet.org"
-	   "       as this is the EMBOSS_adapted version, rather than the"
-	   "       original author joe@gs.washington.edu\n"
-	   "       with the name of the program, your computer system type,\n"
-	   "       a full description of the problem, "
-	   "and with the input data file.\n"
-	   "       (in the body of the message, not as an Attachment).\n",
-	   x);
+  printf ("ERROR: a function asked for an inappropriate amount of memory:");
+  printf ("  %ld bytes\n", x);
+  printf ("       This can mean one of two things:\n");
+  printf ("       1.  The input file is incorrect");
+  printf (" (perhaps it was not saved as Text Only),\n");
+  printf ("       2.  There is a bug in the program.\n");
+  printf ("       Please check your input file carefully.\n");
+  printf ("       If it seems to be a bug, please mail joe@gs.washington.edu\n");
+  printf ("       with the name of the program, your computer system type,\n");
+  printf ("       a full description of the problem, and with the input data file.\n");
+  printf ("       (which should be in the body of the message, not as an Attachment).\n");
 
-  /* abort() can be used to crash
-   * for debugging */
+  /* abort() can be used to crash */
   
   exxit(-1);
 }
@@ -2403,14 +1586,14 @@ long count_sibs (node *p)
   long return_int = 0;
 
   if (p->tip) {
-    ajErr ("Error: the function count_sibs called on a tip.  This is a bug.");
+   printf ("Error: the function count_sibs called on a tip.  This is a bug.\n");
     exxit (-1);
   }
 
   q = p->next;
   while (q != p) {
     if (q == NULL) {
-      ajErr ("Error: a loop of nodes was not closed.");
+      printf ("Error: a loop of nodes was not closed.\n");
       exxit (-1);
     } else {
       return_int++;
@@ -2444,12 +1627,12 @@ void inittrav (node *p)
 void commentskipper(char **treestr, long *bracket)
 { /* skip over comment bracket contents in reading tree */
   char c;
-
+  
   c = *(*treestr)++;
   
   while (c != ']') {
     
-    if(!**treestr) {
+    if(!(**treestr)) {
       ajErr("ERROR: Unmatched comment brackets");
       exxit(-1);
     }
@@ -2468,15 +1651,12 @@ long countcomma(char *treestr, long *comma)
 {
   /* Modified by Dan F. 11/10/96 */ 
 
-  /* The next line inserted so this function leaves the file pointing
-     to where it found it, not just re-winding it. */
-  /*long orig_position = ftell (*treefile);*/
-
   Char c;
   long  lparen = 0;
   long bracket = 0;
   char *treeptr = treestr;
   (*comma) = 0;
+
 
   for (;;){
     c = *treeptr++;
@@ -2494,12 +1674,6 @@ long countcomma(char *treestr, long *comma)
     }
   }
 
-  /* Don't just rewind, */
-  /* rewind (*treefile); */
-  /* Re-set to where it pointed when the function was called */
-
-  /*fseek (*treefile, orig_position, SEEK_SET); */
-
   return lparen + (*comma);
 }  /*countcomma*/
 /* countcomma rewritten so it passes back both lparen+comma to allocate nodep
@@ -2507,7 +1681,7 @@ long countcomma(char *treestr, long *comma)
    species exist, and the tips to be placed in the front of the nodep array */
 
 
-long obs_countsemic(char *treestr)
+long countsemic(char *treestr)
 { /* Used to determine the number of user trees.  Return
      either a: the number of semicolons in the file outside comments
      or b: the first integer in the file */
@@ -2535,18 +1709,17 @@ long obs_countsemic(char *treestr)
     for (;;){
       c = *treeptr++;
       if (!c)
-     break;
+        break;
       if (c == ';')
-     semic++;
+        semic++;
       if (c == '[') {
-     bracket++;
-     commentskipper(&treeptr, &bracket);
+        bracket++;
+        commentskipper(&treeptr, &bracket);
       }
     }
     return_val = semic;
   }
 
-  /*rewind (*treefile);*/
   return return_val;
 }  /* countsemic */
 
@@ -2620,8 +1793,6 @@ long take_name_from_tree (Char *ch, Char *str, char **treestr)
     if ((*ch) == '_')
       (*ch) = ' ';
     str[name_length++] = (*ch);
-    /*if (eoln(treefile)) 
-      scan_eoln(treefile);*/
     (*ch) = *(*treestr)++;
     if (*ch == '\n')
       *ch = ' ';
@@ -2633,12 +1804,12 @@ long take_name_from_tree (Char *ch, Char *str, char **treestr)
 
 void match_names_to_data (Char *str, pointarray treenode, node **p, long spp)
 {
-  /* This loop matches names taken from treefile to indexed names in
+  /* This loop matches names taken from treestr to indexed names in
      the data file */
 
   boolean found;
   long i, n;
-  AjPStr tmpstr = NULL;
+
   n = 1;  
   do {
     found = true;
@@ -2656,11 +1827,10 @@ void match_names_to_data (Char *str, pointarray treenode, node **p, long spp)
   } while (!(n > spp || found));
   
   if (n > spp) {
-    ajStrAssCL(&tmpstr, "", 20);
+    printf("\n\nERROR: Cannot find species: ");
     for (i = 0; (str[i] != '\0') && (i < MAXNCH); i++)
-	ajStrAppK(&tmpstr,str[i]);
-    ajErr("ERROR: Cannot find species: %S in data file", tmpstr);
-    ajStrDel(&tmpstr);
+      putchar(str[i]);
+    printf(" in data file\n\n");
     exxit(-1);
   }
 }  /* match_names_to_data */
@@ -2734,6 +1904,7 @@ void addelement(node **p, node *q, Char *ch, long *parens, char **treestr,
     hookup(q, (*p));                    /* now hook up */
   (*initnode)(p, grbg, q, len, nodei, ntips, 
                 parens, iter, treenode, nodep, str, ch, treestr);
+                              /* do what needs to be done to variable iter */
   if ((*ch) == ':')
     (*initnode)(p, grbg, q, len, nodei, ntips, 
                   parens, length, treenode, nodep, str, ch, treestr);
@@ -2764,10 +1935,6 @@ void treeread (char** treestr, node **root, pointarray treenode,
   (*goteof) = false;
   (*nextnode) = spp;
 
-  /* eat blank lines */
-/*  while (eoln(treefile) && !eoff(treefile)) 
-    scan_eoln(treefile);*/
-
   if (!**treestr) {
     (*goteof) = true;
     return;
@@ -2785,17 +1952,9 @@ void treeread (char** treestr, node **root, pointarray treenode,
          treenode, goteof, first, nodep, nextnode, &ntips,
          haslengths, grbg, initnode);
   
-  /* Eat blank lines and end of current line*/
-/*
-//  do {
-//    scan_eoln(treefile);
-//  }
-//  while (eoln(treefile) && !eoff(treefile));
-*/
-  
   (*first) = false;
   if (parens != 0) {
-    ajErr("ERROR in tree file: unmatched parentheses");
+    printf("\n\nERROR in tree file: unmatched parentheses\n\n");
     exxit(-1);
   }
 }  /* treeread */
@@ -2875,8 +2034,7 @@ void addelement2(node *q, Char *ch, long *parens, char **treestr,
   }
   else if ((*ch) == ';') {
     (*trweight) = 1.0 ;
-    /*if (!eoln(treefile)) */
-      ajWarn("WARNING: tree weight set to 1.0");
+    ajWarn("WARNING: tree weight set to 1.0");
   }
   else
     (*haslengths) = ((*haslengths) && q == NULL);
@@ -2925,10 +2083,6 @@ void treeread2 (char **treestr, node **root, pointarray treenode,
   (*goteof) = false;
   nextnode = 0;
 
-  /* Eats all blank lines at start of file */
-  /*while (eoln(treefile) && !eoff(treefile)) 
-    scan_eoln(treefile);*/
-
   if (!**treestr) {
     (*goteof) = true;
     return;
@@ -2946,10 +2100,6 @@ void treeread2 (char **treestr, node **root, pointarray treenode,
           goteof, &nextnode, &ntips, (*no_species), haslengths);
   (*root) = treenode[*no_species];
 
-  /*eat blank lines */
-  /*while (eoln(treefile) && !eoff(treefile)) 
-    scan_eoln(treefile);*/
-
   (*root)->oldlen = 0.0;
 
   if (parens != 0) {
@@ -2957,6 +2107,7 @@ void treeread2 (char **treestr, node **root, pointarray treenode,
     exxit(-1);
   }
 }  /* treeread2 */
+
 
 void exxit(int exitcode)
 {
@@ -2979,22 +2130,6 @@ void exxit(int exitcode)
 #endif
 } /* exxit */
 
-
-/*
-//char gettc(FILE* file) 
-//{ /# catch eof's so that other functions not expecting an eof
-//   # won't have to worry about it #/
-//  int ch;
-//
-//  ch=getc(file);
-//
-//  if (ch == EOF )   {
-//    ajErr("Unexpected End of File");
-//    exxit(-1);
-//  }
-//  return ch;
-//} /# gettc #/
-*/
 
 #ifdef WIN32
 void phySaveConsoleAttributes()

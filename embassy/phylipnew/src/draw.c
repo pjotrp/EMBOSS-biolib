@@ -2,7 +2,14 @@
 #include <windows.h>
 #endif
 
+#ifdef OSX_CARBON
+#include <Carbon/Carbon.h>
+#include "interface.h"
+#endif
+
+#include "phylip.h"
 #include "draw.h"
+
 #ifdef QUICKC
 struct videoconfig myscreen;
 void   setupgraphics();
@@ -297,7 +304,11 @@ void clearit()
   if (previewer == tek)
     printf("%c\f", escape);
   else if (ansi || ibmpc)
+#ifdef WIN32
+    phyClearScreen();
+#else
     printf("\033[2J\033[H");
+#endif
   else {
     for (i = 1; i <= 24; i++)
       putchar('\n');
@@ -522,7 +533,7 @@ void initplotter(long ntips, char *fontname)
 #ifdef X
   unsigned int dummy1, dummy2;
 #endif
-
+  
   treeline = 0.18 * labelheight * yscale * expand;
   labelline = 0.06 * labelheight * yscale * expand;
   linewidth = treeline;
@@ -537,8 +548,8 @@ void initplotter(long ntips, char *fontname)
 
   case xpreview:
 #ifdef X
-                XGetGeometry(display,mainwin,
-        &DefaultRootWindow(display),&x,&y,&width,&height,&dummy1,&dummy2);
+    XGetGeometry(display,mainwin,
+    &DefaultRootWindow(display),&x,&y,&width,&height,&dummy1,&dummy2);
     XClearWindow(display,mainwin);
 #endif
     break;
@@ -725,9 +736,6 @@ void initplotter(long ntips, char *fontname)
 
   case pcl:
     plotfile = freopen(pltfilename,"wb",plotfile);
-/* debug  omit next statement for Deskjet?   Push current cursor
-    fprintf(plotfile, "\033&f0S");
- debug */
     if (hpresolution == 150 || hpresolution == 300)
       fprintf(plotfile, "\033*t%3ldR", hpresolution);
     else if (hpresolution == 75)
@@ -891,9 +899,6 @@ void finishplotter()
     break;
 
   case pcl:
-/* debug  omit next statement for Deskjet?    pop cursor 
-    fprintf(plotfile, "\033&f1S");  
- debug */
     fprintf(plotfile, "\033*rB");    /* Exit graphics mode */
     putc('\f', plotfile);            /* just to make sure? */
     break;
@@ -1306,9 +1311,9 @@ void loadfont(short *font, char *application)
 
   long i, charstart = 0, dummy;
   Char ch = 'A';
-  AjPFile fontfile;
-  AjPStr rdline = NULL;
   AjPRegexp intexp = NULL;
+  AjPStr rdline = NULL;
+  AjPFile fontfile;
   ajint inum;
   AjPStr token = NULL;
 
@@ -2529,7 +2534,9 @@ if (!fp)
   return 0;
 inmetrics = 0;
 
-for (i=0;i<256;metric[i++]=(short)0);
+for (i=0;i<256;i++){
+  metric[i] = (short)0;
+}
 
 for (;;){
   scanned = fscanf(fp,"%[^\n]\n",line);
@@ -3253,7 +3260,8 @@ boolean plotpreview(char *fn, double *xo, double *yo, double *scale,
 #endif
 #ifdef MAC 
   if (previewer == mac ){
-        macpreviewparms.fn    = fn;
+
+    macpreviewparms.fn    = fn;
         macpreviewparms.xo    = xo;
         macpreviewparms.yo    = yo;
         macpreviewparms.scale = scale;

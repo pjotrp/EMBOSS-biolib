@@ -6,6 +6,8 @@
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
 
+
+
 void alloctree(pointarray *treenode, long nonodes)
 {
   /* allocate treenode dynamically */
@@ -28,6 +30,23 @@ void alloctree(pointarray *treenode, long nonodes)
   }
 } /* alloctree */
 
+void freetree(pointarray *treenode, long nonodes)
+{
+  long i, j;
+  node *p, *q;
+
+  for (i = 0; i < spp; i++)
+    free((*treenode)[i]);
+  for (i = spp; i < nonodes; i++) {
+    p = (*treenode)[i];
+    for (j = 1; j <= 3; j++) {
+      q = p;
+      p = p->next;
+      free(q);
+    }
+  }
+  free(*treenode);
+}
 
 void setuptree(tree *a, long nonodes)
 {
@@ -105,7 +124,6 @@ void standev2(long numtrees, long maxwhich, long a, long b, double maxlogl,
   double temp;
 
 #define SAMPLES 1000
-#define MAXSHIMOTREES 1000
 /* ????? if numtrees too big for Shimo, truncate */
   if (numtrees == 2) {
     fprintf(outfile, "Kishino-Hasegawa-Templeton test\n\n");
@@ -138,7 +156,13 @@ void standev2(long numtrees, long maxwhich, long a, long b, double maxlogl,
     }
     fprintf(outfile, "\n\n");
   } else {           /* Shimodaira-Hasegawa test using normal approximation */
-    fprintf(outfile, "Shimodaira-Hasegawa test\n\n");
+    if(numtrees > MAXSHIMOTREES){
+      fprintf(outfile, "Shimodaira-Hasegawa test on first %d of %ld trees\n\n"
+              , MAXSHIMOTREES, numtrees);
+      numtrees = MAXSHIMOTREES;
+    } else {
+      fprintf(outfile, "Shimodaira-Hasegawa test\n\n");
+    }
     covar = (double **)Malloc(numtrees*sizeof(double *));  
     sumw = b-a+1;
     for (i = 0; i < numtrees; i++)

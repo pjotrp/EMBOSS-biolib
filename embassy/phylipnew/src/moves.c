@@ -122,22 +122,6 @@ void treeoptions(boolean waswritten, Char *ch, FILE **outtree,
       uppercase(ch);
     } while (*ch != 'A' && *ch != 'R' && *ch != 'N' && *ch != 'F');
   }
-/*
-  if (*ch == 'F'){
-    outtreename[0] = '\0';
-    while (outtreename[0] =='\0'){
-      printf("Please enter a tree file name>");
-#ifdef MAC
-      fixmacfile(outtreename);
-#endif
-#ifdef WIN32
-      phyFillScreenColor();
-#endif
-      getstryng(outtreename);
-    }
-    FClose(*outtree);
-  }
-*/
   if (*ch == 'R' || *ch == 'A' || *ch == 'F' || !waswritten){
     openfile(outtree,outtreename,"output tree file",
                        (*ch == 'A' && waswritten) ? "a" : "w",

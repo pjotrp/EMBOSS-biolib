@@ -820,7 +820,7 @@ void getinput()
                  &freqgr, &freqty, &ttratio, &xi, &xv, &fracchange,
                  freqsfrom, true);
   if (!justwts || firstset)
-    emboss_inputdata(seqsets[ith-1], sites);
+    seq_inputdata(seqsets[ith-1], sites);
   makeweights();
   setuptree2(curtree);
   if (!usertree || reconsider) {
@@ -1950,7 +1950,7 @@ void rectrav(node *p, long m, long n)
 void summarize()
 {
   /* print out branch length information and node numbers */
-  long i, j, mm, num_sibs;
+  long i, j, mm=0, num_sibs;
   double mode, sum;
   double like[maxcategs], nulike[maxcategs];
   double **marginal;

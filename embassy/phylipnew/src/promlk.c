@@ -2244,7 +2244,7 @@ void rectrav(node *p, long m, long n)
 
 void summarize()
 {
-  long i, j, mm;
+  long i, j, mm=0;
   double mode, sum;
   double like[maxcategs], nulike[maxcategs];
   double **marginal;

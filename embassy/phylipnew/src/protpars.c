@@ -659,7 +659,7 @@ void protinputdata(AjPSeqset seqset)
   long i, j, k, l, aasread;
   Char charstate;
   boolean allread, done;
-  aas aa;   /* temporary amino acid for input */
+  aas aa = unk;   /* temporary amino acid for input */
   AjPStr str;
 
   if (printdata)
@@ -1724,7 +1724,7 @@ void maketree()
   /* constructs a binary tree from the pointers in treenode.
      adds each node at location which yields highest "likelihood"
      then rearranges the tree for greatest "likelihood" */
-  long i, j, numtrees;
+  long i, j, numtrees=0;
   double gotlike;
   node *item, *nufork, *dummy;
   char* treestr;

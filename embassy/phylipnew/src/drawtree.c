@@ -19,10 +19,7 @@
 #endif
 #define INFINITY        (double) 9999999999.0
 
-#ifdef MAC
-#undef maxnodes
 #define maxnodes 500     /* debug should this be 250? for 68k Macs? */
-#endif
 
 AjPPhyloTree* phylotrees;
 

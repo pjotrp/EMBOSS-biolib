@@ -1,13 +1,13 @@
 #ifndef _PHYLIP_H_
 #define _PHYLIP_H_
 
-/* version 3.6a3. (c) Copyright 1993-2002 by the University of Washington.
+/* version 3.6b. (c) Copyright 1993-2002 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, Andrew Keeffe,
    Mike Palczewski, Doug Buxton and Dan Fineman.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
 
-#define VERSION "3.6a3"
+#define VERSION "3.6b"
 
 /* machine-specific stuff:
    based on a number of factors in the library stdlib.h, we will try
@@ -55,25 +55,6 @@ void phyFillScreenColor(void);
 ** definitions here
 */
 
-/*
-//#ifdef __CMS_OPEN
-//#define CMS
-//#define EBCDIC true
-//#define INFILE "infile data"
-//#define OUTFILE "outfile data"
-//#define FONTFILE "fontfile data"
-//#define PLOTFILE "plotfile data"
-//#define INTREE "intree data"
-//#define INTREE2 "intree data 2"
-//#define OUTTREE "outtree data"
-//#define CATFILE "categories data"
-//#define WEIGHTFILE "weights data"
-//#define ANCFILE "ancestors data"
-//#define MIXFILE "mixture data"
-//#define FACTFILE "factors data"
-//#else
-*/
-
 #define EBCDIC false
 
 /*
@@ -88,16 +69,13 @@ void phyFillScreenColor(void);
 #define FONTFILE "fontfile" /* on unix this might be /usr/local/lib/fontfile */
 #define PLOTFILE "plotfile"
 #define INTREE "intreefile"
-#define INTREE2 "bintreefile"		/* treedist only */
+#define INTREE2 "bintreefile"         /* treedist only */
 #define OUTTREE "outtreefile"
 #define CATFILE "categoriesfile"
 #define WEIGHTFILE "weightsfile"
 #define ANCFILE "ancestorsfile"
 #define MIXFILE "mixturefile"
 #define FACTFILE "factorsfile"
-/*
-//#endif
-*/
 
 #ifdef L_ctermid            /* try and detect for sysV or V7. */
 #define SYSTEM_FIVE
@@ -183,7 +161,7 @@ void phyFillScreenColor(void);
 #endif
 /*  if on a Windows system cannot use screen controls */
 #ifdef WIN32
-#define IBMCRT false 
+#define IBMCRT true 
 #define ANSICRT false
 #endif
 /* otherwise, let's assume we are on a Linux or Unix system
@@ -214,7 +192,6 @@ void phyFillScreenColor(void);
 #include <ctype.h>
 
 #ifdef MAC
-/* debug beerli */
 #ifdef DRAW
 #include "interface.h"
 #else
@@ -262,6 +239,7 @@ MALLOCRETURN    *mymalloc(long);
 #define point           "."
 #define pointe          '.'
 #define down            2
+#define MAXSHIMOTREES 100
 
 #define smoothings      4    /* number of passes through smoothing algorithm */
 #define iterations      4    /* number of iterates for each branch           */
@@ -483,13 +461,10 @@ typedef struct tree {
 
 typedef void (*initptr)(node **, node **, node *, long, long,
                          long *, long *, initops, pointarray,
-                         pointarray, Char *, Char *, char**);
+                         pointarray, Char *, Char *, char **);
 
 #ifndef OLDC
 /* function prototypes */
-void   scan_eoln(FILE *);
-boolean    eoff(FILE *);
-boolean    eoln(FILE *);
 int    filexists(char *);
 const char*  get_command_name (const char *);
 void   getstryng(char *);
@@ -500,17 +475,13 @@ void   loopcount(long *, long);
 double randum(longer);
 void   randumize(longer, long *);
 double normrand(longer);
-long   readlong(const char *);
 
 void   uppercase(Char *);
 void   initseed(long *, long *, longer);
-void   initmultisets(long *datasets, long *wtsets);
 void   initjumble(long *, long *, longer, long *);
 void   initoutgroup(long *, long);
 void   initthreshold(double *);
-void   initrcatn(long *);
 void   initcatn(long *);
-void   initrcategs(long, double *);
 void   initcategs(long, double *);
 void   initprobcat(long, double *, double *);
 double logfac (long);
@@ -537,30 +508,18 @@ void   initnumlines(long *);
 void   initbestrees(bestelm *, long, boolean);
 void   newline(FILE *, long, long, long);
 
-void   inputnumbersseq(AjPSeqset seqset,
-		       long *spp, long *chars, long *nonodes, long n);
-void   inputnumbersseq2(AjPSeqset seqset,
-			long *, long *, long n);
-void   inputnumbersfreq(AjPPhyloFreq, long *, long *, long *, long);
-void   inputnumbersstate(AjPPhyloState, long *, long *, long *, long);
 void   inputnumbers(long *, long *, long *, long);
 void   inputnumbersold(long *, long *, long *, long);
 void   inputnumbers2(long *, long *, long n);
-void   inputnumbers2seq(AjPSeqset, long *, long *, long n);
 void   inputnumbers3(long *, long *);
-void   samenumspfreq(AjPPhyloFreq, long *, long);
-void   samenumspstate(AjPPhyloState, long *, long);
-void   samenumspseq(AjPSeqset, long *, long);
-void   samenumspseq2(AjPSeqset, long);
 void   samenumsp(long *, long);
 void   samenumsp2(long);
 void   readoptions(long *, const char *);
 void   matchoptions(Char *, const char *);
-void   inputweights(long, steptr, boolean *);
 void   inputweightsstr(AjPStr, long, steptr, boolean *);
-void   inputweightsold(long, steptr, boolean *);
+void   inputweightsstrold(AjPStr, long, steptr, boolean *);
 void   inputweightsstr2(AjPStr, long, long,
-			long *, steptr, boolean *, const char *);
+                      long *, steptr, boolean *, const char *);
 void   printweights(FILE *, long, long, steptr, const char *);
 
 void   inputcategsstr(AjPStr, long, long, steptr, long, const char *);
@@ -569,10 +528,6 @@ void   inputfactors(long, Char *, boolean *);
 void   inputfactorsstr(AjPStr, long, Char *, boolean *);
 void   printfactors(FILE *, long, Char *, const char *);
 void   headings(long, const char *, const char *);
-void   initnameseq(AjPSeqset, long);
-void   initnamedist(AjPPhyloDist, long);
-void   initnamestate(AjPPhyloState, long);
-void   initnamefreq(AjPPhyloFreq, long);
 void   initname(long);
 void   findtree(boolean *,long *,long,long *,bestelm *);
 void   addtree(long,long *,boolean,long *,bestelm *);
@@ -581,9 +536,6 @@ boolean torearrange(bestelm *, long);
 
 void   reducebestrees(bestelm *, long *);
 void   shellsort(double *, long *, long);
-void   sgetch(Char *, long *, char **);
-void   getch(Char *, long *, FILE *);
-void   getch2(Char *, long *);
 void   findch(Char, Char *, long);
 void   findch2(Char, long *, long *, Char *);
 void   findch3(Char, Char *, long, long);
@@ -611,21 +563,20 @@ long   count_sibs (node *);
 void   inittrav (node *);
 void   commentskipper(char **, long *);
 long   countcomma(char *, long *);
-/*long   countsemic(char *);*/
 void   hookup(node *, node *);
 void   link_trees(long, long , long, pointarray);
 void   allocate_nodep(pointarray *, char *, long  *);
   
 void   malloc_pheno(node *, long, long);
 void   malloc_ppheno(node *, long, long);
-long   take_name_from_tree (Char *, Char *, char**);
+long   take_name_from_tree (Char *, Char *, char **);
 void   match_names_to_data (Char *, pointarray, node **, long);
-void   addelement(node **, node *, Char *, long *, char**, pointarray,
+void   addelement(node **, node *, Char *, long *, char **, pointarray,
                 boolean *, boolean *, pointarray, long *, long *, boolean *,
                 node **, initptr);
 void   treeread (char **, node **, pointarray, boolean *, boolean *,
                 pointarray, long *, boolean *, node **, initptr);
-void   addelement2(node *, Char *, long *, char**, pointarray, boolean,
+void   addelement2(node *, Char *, long *, char **, pointarray, boolean,
                 double *, boolean *, long *, long *, long, boolean *);
 void   treeread2 (char **, node **, pointarray, boolean, double *,
                 boolean *, boolean *, long *);
@@ -633,5 +584,29 @@ void   exxit (int);
 void countup(long *loopcount, long maxcount);
 char gettc(FILE* file);
 void init(int argc, char** argv);
+
+/* new functions for EMBOSS */
+
+void   initrcatn(long *);
+void   initrcategs(long, double *);
+void   inputnumbersseq(AjPSeqset seqset,
+                     long *spp, long *chars, long *nonodes, long n);
+void   inputnumbersseq2(AjPSeqset seqset,
+                      long *, long *, long n);
+void   inputnumbersfreq(AjPPhyloFreq, long *, long *, long *, long);
+void   inputnumbersstate(AjPPhyloState, long *, long *, long *, long);
+void   inputnumbers2seq(AjPSeqset, long *, long *, long n);
+void   samenumspfreq(AjPPhyloFreq, long *, long);
+void   samenumspstate(AjPPhyloState, long *, long);
+void   samenumspseq(AjPSeqset, long *, long);
+void   samenumspseq2(AjPSeqset, long);
+void   initnameseq(AjPSeqset, long);
+void   initnamedist(AjPPhyloDist, long);
+void   initnamestate(AjPPhyloState, long);
+void   initnamefreq(AjPPhyloFreq, long);
+void   sgetch(Char *, long *, char **);
+void   getch(Char *, long *, FILE *);
+void   getch2(Char *, long *);
+
 #endif /* OLDC */
 #endif /* _PHYLIP_H_ */

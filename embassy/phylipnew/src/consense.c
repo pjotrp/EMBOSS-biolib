@@ -101,10 +101,10 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
     treeprint = ajAcdGetBool("drawtree");
 
-    trout = ajAcdGetBool("trout");
+    trout = ajAcdGetToggle("trout");
     outtree = NULL;
   
-    noroot = !ajAcdGetBool("root");
+    noroot = !ajAcdGetToggle("root");
     outgrno = ajAcdGetInt("outgnum");
     if (noroot)
 	outgrno = 1;
@@ -440,7 +440,7 @@ int main(int argc, Char *argv[])
     fprintf(outfile, "Species in order: \n\n");
 
   /* Read the tree file and put together grouping, order, and timesseen */
-  read_groups (&pattern_array, timesseen_changes, &trees_in, phylotrees);
+  read_groups (&pattern_array, timesseen_changes, trees_in, trees_in, phylotrees);
   /* Compute the consensus tree. */
   putc('\n', outfile);
   nodep      = (pointarray)Malloc(2*(1+spp)*sizeof(node *));

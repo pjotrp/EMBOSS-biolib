@@ -15,6 +15,7 @@ boolean trout, firsttree, noroot, outgropt, didreroot, prntsets,
 pointarray nodep;
 pointarray treenode;
 group_type **grouping, **grping2, **group2;/* to store groups found  */
+double *lengths;
 long **order, **order2, lasti;
 group_type *fullset;
 node *grbg;
@@ -30,6 +31,136 @@ void elimboth(long);
 void enternohash(group_type*, long*);
 void enterpartition (group_type*, long*);
 
+/* begin hash table code */
+
+#define NUM_BUCKETS 100
+
+typedef struct namenode {
+  struct namenode *next;
+  plotstring naym;
+  int hitCount;
+} namenode;
+
+typedef namenode **hashtype;
+
+hashtype hashp;
+
+long namesGetBucket(plotstring);
+void namesAdd(plotstring);
+boolean namesSearch(plotstring);
+void namesDelete(plotstring);
+void namesClearTable(void);
+void namesCheckTable(void);
+void missingnameRecurs(node *p);
+
+/**
+ * namesGetBucket - return the bucket for a given name
+ */
+long namesGetBucket(plotstring searchname) {
+  long i;
+  long sum = 0;
+
+  for (i = 0; (i < MAXNCH) && (searchname[i] != '\0'); i++) {
+    sum += searchname[i];
+  }
+  return (sum % NUM_BUCKETS);
+}
+
+
+/**
+ * namesAdd - add a name to the hash table
+ *
+ * The argument is added at the head of the appropriate linked list.  No 
+ * checking is done for duplicates.  The caller can call 
+ * namesSearch to check for an existing name prior to calling
+ * namesAdd.
+ */
+void namesAdd(plotstring addname) {
+  long bucket = namesGetBucket(addname);
+  namenode *hp, *temp;
+
+  temp = hashp[bucket];
+  hashp[bucket] = (namenode *)Malloc(sizeof(namenode));
+  hp = hashp[bucket];
+  strcpy(hp->naym, addname);
+  hp->next = temp;
+  hp->hitCount = 0;
+}
+
+/**
+ * namesSearch - search for a name in the hash table
+ *
+ * Return true if the name is found, else false.
+ */
+boolean namesSearch(plotstring searchname) {
+  long i = namesGetBucket(searchname);
+  namenode *p;
+
+  p = hashp[i];
+  if (p == NULL) {
+    return false;
+  }
+  do {
+    if (strcmp(searchname,p->naym) == 0) {
+      p->hitCount++;
+      return true;
+    }
+    p = p->next;
+  } while (p != NULL);
+
+  return false;  
+}
+
+/**
+ * Go through hash table and check that the hit count on all entries is one.
+ * If it is zero, then a species was missed, if it is two, then there is a
+ * duplicate species.
+ */
+
+void namesCheckTable(void) {
+  namenode *p;  
+  long i;
+
+  for (i=0; i< NUM_BUCKETS; i++) {
+    p = hashp[i];
+    while (p != NULL){
+      if(p->hitCount >1){
+        printf("\n\nERROR in user tree: duplicate name found: ");
+        puts(p->naym);
+        printf("\n\n");
+        exxit(-1);
+      } else if(p->hitCount == 0){
+        printf("\n\nERROR in user tree: name %s not found\n\n\n",
+               p->naym);
+        exxit(-1);
+      }
+      p->hitCount = 0;
+      p = p->next;
+    } 
+  }  
+}
+
+/**
+ * namesClearTable - empty names out of the table and 
+ *                   return allocated memory
+ */
+void namesClearTable(void) {
+  long i;
+  namenode *p, *temp;
+
+  for (i=0; i< NUM_BUCKETS; i++) {
+    p = hashp[i];
+    if (p != NULL) {
+      do {
+        temp = p;
+        p = p->next;
+        free(temp);
+      } while (p != NULL);
+    hashp[i] = NULL;
+    }
+  }
+}
+/* end hash table code */
 
 void initconsnode(node **p, node **grbg, node *q, long len, long nodei,
                         long *ntips, long *parens, initops whichinit,
@@ -38,7 +169,6 @@ void initconsnode(node **p, node **grbg, node *q, long len, long nodei,
 {
   /* initializes a node */
   long i;
-  /*char c;*/
   boolean minusread;
   double valyew, divisor, fracchange;
 
@@ -50,10 +180,12 @@ void initconsnode(node **p, node **grbg, node *q, long len, long nodei,
     for (i=0; i<MAXNCH; i++)
       (*p)->nayme[i] = '\0';
     nodep[(*p)->index - 1] = (*p);
+    (*p)->v = 0;
     break;
   case nonbottom:
     gnu(grbg, p);
     (*p)->index = nodei;
+    (*p)->v = 0;
     break;
   case tip:
     (*ntips)++;
@@ -70,6 +202,7 @@ void initconsnode(node **p, node **grbg, node *q, long len, long nodei,
       if ((*ntips > 0) && (((*ntips) % 10) == 0))
         putc('\n', outfile);
     }
+    (*p)->v = 0;
     break;
   case length:
     processlength(&valyew, &divisor, ch, &minusread, treestr, parens);
@@ -80,10 +213,6 @@ void initconsnode(node **p, node **grbg, node *q, long len, long nodei,
     if (**treestr) {
       trweight = strtod(*treestr, treestr);
       sgetch(ch, parens, treestr);
-/*
-//      fscanf(intree, "%lf", &trweight);
-//      getch(ch, parens, intree);
-*/
       if (*ch != ']') {
         ajErr("ERROR: Missing right square bracket");
         exxit(-1);
@@ -100,25 +229,11 @@ void initconsnode(node **p, node **grbg, node *q, long len, long nodei,
     /* This comes not only when setting trweight but also at the end of
      * any tree. The following code saves the current position in a 
      * file and reads to a new line. If there is a new line then we're 
-     * at the end of tree, otherwise warn the user. This function should
-     * really leave the file alone, so once we're done with 'intree' 
-     * we seek the position back so that it doesn't look like we did 
-     * anything */
+     * at the end of tree, otherwise warn the user. */
     trweight = 1.0 ;
-/*
-//    i = ftell (intree);
-//    c = ' ';
-//    while (c == ' ')  {
-//        if (eoff(intree)) {
-//                fseek(intree,i,SEEK_SET);
-//                return;
-//        }
-//        c = gettc(intree);
-//    }
-//    fseek(intree,i,SEEK_SET);
-//    if ( c != '\n')
-//      ajWarn("WARNING: Tree weight set to 1.0");
-*/
+    break;
+  case hsnolength:
+    (*p)->v = -1;         /* signal value that a length is missing */
     break;
   default:                /* cases hslength, iter, hsnolength      */ 
     break;                /* should there be an error message here?*/
@@ -831,25 +946,15 @@ void rehash()
   free(s);
 }  /* rehash */
 
-
-void enternodeset(node *r)
-{ /* enter a the set of species from a node into the hash table */
-  group_type *s;
-
-  s = (group_type *)Malloc(setsz * sizeof(group_type));
-  memcpy(s, r->nodeset, setsz * sizeof(group_type));
-  enterset(s);
-  free(s);
-} /* enternodeset */
-
-
-void enterset(group_type *s)
+void enternodeset(node* r)
 { /* enter a set of species into the hash table */
   long i, j, start;
   double ss, n;
   boolean done, same;
   double times ;
+  group_type *s;
 
+  s = r->nodeset;
   same = true;
   for (i = 0; i < setsz; i++)
     if (s[i] != fullset[i])
@@ -877,6 +982,7 @@ void enterset(group_type *s)
     }
     if (grouping[i - 1] && same) {  /* if it is there, increment timesseen */
       *timesseen[i - 1] += times;
+      lengths[i - 1] = nodep[r->index - 1]->v;
       done = true;
     } else if (!grouping[i - 1]) {  /* if not there and slot empty ... */
       grouping[i - 1] = (group_type *)Malloc(setsz * sizeof(group_type));
@@ -887,6 +993,7 @@ void enterset(group_type *s)
       *timesseen[i - 1] = times;
       *order[lasti] = i - 1;
       done = true;
+      lengths[i - 1] = nodep[r->index -1]->v;
     } else {  /* otherwise look to put it in next slot ... */
       i++;
       if (i > maxgrp) i -= maxgrp;
@@ -911,19 +1018,17 @@ void enterset(group_type *s)
       order = order2;
       done = true;
       lasti = maxgrp/2 - 1;
-      enterset(s);
+      enternodeset(r);
     }
   }
-}  /* enterset */
+}  /* enternodeset */
 
 
-void accumulate(node *r_)
+void accumulate(node *r)
 {
-  node *r;
   node *q;
   long i;
 
-  r = r_;
   if (r->tip) {
     if (!r->nodeset)
       r->nodeset = (group_type *)Malloc(setsz * sizeof(group_type));
@@ -949,7 +1054,7 @@ void accumulate(node *r_)
       q = q->next;
     }
   }
-  if ((!r->tip && (r->next->next != r)) || r->tip)
+  if ((!r->tip && (r->next->next != r)) || r->tip) 
     enternodeset(r);
 }  /* accumulate */
 
@@ -961,10 +1066,13 @@ void dupname2(Char *name, node *p, node *this)
 
   if (p->tip) {
     if (p != this) {
-      
-      if (strcmp(name,p->nayme) == 0) {
-        ajErr("ERROR in user tree: duplicate name found: %s", p->nayme);
+      if (namesSearch(p->nayme)) {
+        printf("\n\nERROR in user tree: duplicate name found: ");
+        puts(p->nayme);
+        printf("\n\n");
         exxit(-1);
+      } else {
+        namesAdd(p->nayme);
       }
     }
   } else {
@@ -982,9 +1090,16 @@ void dupname(node *p)
   /* search for a duplicate name in tree */
   node *q;
 
-  if (p->tip)
-    dupname2(p->nayme, root, p);
-  else {
+  if (p->tip) {
+    if (namesSearch(p->nayme)) {
+      printf("\n\nERROR in user tree: duplicate name found: ");
+      puts(p->nayme);
+      printf("\n\n");
+      exxit(-1);
+    } else {
+      namesAdd(p->nayme);
+    }
+  } else {
     q = p;
     while (p->next != q) {
       dupname(p->next->back);
@@ -993,6 +1108,34 @@ void dupname(node *p)
   }
 }  /* dupname */
 
+
+void missingnameRecurs(node *p)
+{
+  /* search for missing names in first tree */
+  node *q;
+
+  if (p->tip) {
+    if (!namesSearch(p->nayme)) {
+      printf("\n\nERROR in user tree: name %s not found in first tree\n\n\n",
+             p->nayme);
+      exxit(-1);
+    }
+  } else {
+    q = p;
+    while (p->next != q) {
+      missingnameRecurs(p->next->back);
+      p = p->next;
+    }
+  }
+}  /* missingnameRecurs */
+
+/**
+ * wrapper for recursive missingname function 
+ */
+void missingname(node *p){
+  missingnameRecurs(p);
+  namesCheckTable();
+} /* missingname */
 
 void gdispose(node *p)
 {
@@ -1102,18 +1245,26 @@ void store_pattern (pattern_elm ***pattern_array,
       = (pattern_elm *) Malloc(sizeof(pattern_elm)) ;
     pattern_array[i][trees_in_file]->apattern = 
       (group_type *) Malloc (total_groups * sizeof (group_type)) ;
+    pattern_array[i][trees_in_file]->length = 
+      (double *) Malloc (maxgrp * sizeof (double)) ;
+      for ( j = 0 ; j < maxgrp ; j++ ) {
+        pattern_array[i][trees_in_file]->length[j] = -1;
+      }
     pattern_array[i][trees_in_file]->patternsize = (long *)Malloc(sizeof(long));
   }
+  j = 0;
   /* Then go through groupings again, and copy in each element
      appropriately. */
   for (i = 0 ; i < maxgrp ; i++)
-    if (grouping[i] != NULL)
+    if (grouping[i] != NULL) {
       if (*timesseen[i] > timesseen_changes[i]) {
         for (k = 0 ; k < setsz ; k++)
           pattern_array[k][trees_in_file]->apattern[j] = grouping[i][k] ;  
+        pattern_array[0][trees_in_file]->length[j] = lengths[i];
         j++ ;
         timesseen_changes[i] = *timesseen[i] ;
       }
+    }
   *pattern_array[0][trees_in_file]->patternsize = total_groups;
 }  /* store_pattern */
 
@@ -1155,16 +1306,18 @@ void reordertips()
 
 
 void read_groups (pattern_elm ****pattern_array,double *timesseen_changes,
-                        long *trees_in_1, AjPPhyloTree* treesource)
+                        long trees_in_1, long total_trees, AjPPhyloTree* treesource)
 {
   /* read the trees.  Accumulate sets. */
   int i, j, k;
   boolean haslengths, initial;
-  long nextnode;
+  long nextnode, trees_read = 0;
   int itree=0;
   char *treestr;
+
   /* set up the groupings array and the timesseen array */
   grouping  = (group_type **)  Malloc(maxgrp*sizeof(group_type *));
+  lengths  = (double *)  Malloc(maxgrp*sizeof(double));
   for (i = 0; i < maxgrp; i++)
     grouping[i] = NULL;
   order     = (long **) Malloc(maxgrp*sizeof(long *));
@@ -1177,13 +1330,14 @@ void read_groups (pattern_elm ****pattern_array,double *timesseen_changes,
   firsttree = true;
   grbg = NULL;
   initial = true;
-  while (treesource[itree]) {          /* go till end of input trees */
+  while (treesource[itree]) {          /* go till end of input tree file */
+    for (i = 0; i < maxgrp; i++) {
+      lengths[i] = -1;
+    }
     goteof = false;
     nextnode = 0;
-    haslengths = false;
+    haslengths = true;
     treestr = ajStrStr(treesource[itree++]->Tree);
-    ajDebug("read_group tree %d %x '%s'\n",
-	    itree, treesource[itree-1], treestr);
     allocate_nodep(&nodep, treestr, &spp);
     if (firsttree)
       nayme = (naym *)Malloc(spp*sizeof(naym));
@@ -1191,8 +1345,13 @@ void read_groups (pattern_elm ****pattern_array,double *timesseen_changes,
               &nextnode, &haslengths, &grbg, initconsnode);
     if (!initial) { 
       reordertips();
+      missingname(root);
     } else {
       initial = false;
+      hashp = (hashtype)Malloc(sizeof(namenode) * NUM_BUCKETS);
+      for (i=0;i<NUM_BUCKETS;i++) {
+        hashp[i] = NULL;
+      }
       dupname(root);
       initreenode(root);
       setsz = (long)ceil((double)spp/(double)SETBITS);
@@ -1206,8 +1365,8 @@ void read_groups (pattern_elm ****pattern_array,double *timesseen_changes,
           /* For this assignment, let's assume that there will be no
              more than maxtrees. */
           for (j = 0 ; j < setsz ; j++)
-            (*pattern_array)[j] = 
-              (pattern_elm **)Malloc(maxtrees * sizeof(pattern_elm *)) ;
+              (*pattern_array)[j] = 
+                (pattern_elm **)Malloc(total_trees * sizeof(pattern_elm *));
         }
 
       fullset = (group_type *)Malloc(setsz * sizeof(group_type));
@@ -1222,7 +1381,6 @@ void read_groups (pattern_elm ****pattern_array,double *timesseen_changes,
     if (goteof)
       continue;
     ntrees += trweight;
-      ajDebug("trweight %.3f ntrees %.3f\n", trweight, ntrees);
     if (noroot) {
       reroot(nodep[outgrno - 1], &nextnode);
       didreroot = outgropt;
@@ -1236,8 +1394,8 @@ void read_groups (pattern_elm ****pattern_array,double *timesseen_changes,
     if (tree_pairing != NO_PAIRING) {
         /* If we're computing pairing or need separate tree sets, store the
            current pattern as an element of it's trees array. */
-        store_pattern ((*pattern_array), timesseen_changes, (*trees_in_1)) ;
-        (*trees_in_1)++ ;
+      store_pattern ((*pattern_array), timesseen_changes, trees_read) ;
+      trees_read++ ;
     }
   }
 } /* read_groups */
