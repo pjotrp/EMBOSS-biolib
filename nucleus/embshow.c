@@ -320,7 +320,7 @@ void embShowDel (EmbPShow* pthis)
 	    break;
 
 	default:
-	    (void) ajFatal("Unknown descriptor type found in embShowDel(): %d",
+	    (void) ajFatal("Unknown descriptor type found in embShowDel: %d",
 			   type);
 	}
 
@@ -463,7 +463,7 @@ static void showDelRE (EmbPShowRE info) {
 
 static void showDelFT (EmbPShowFT info) {
 
-  (void) ajFeattabDel(&(info->feat));
+  /*(void) ajFeattabDel(&(info->feat));*/ /* cloned pointer in showeseq etc.*/
   AJFREE(info);
 
 }
@@ -889,7 +889,7 @@ static void showFillLines(AjPList lines, EmbPShow thys, ajint pos)
 
 	default:
 	    (void) ajFatal("Unknown descriptor type found in "
-			   "showFillLines(): %d",type);
+			   "showFillLines: %d",type);
 	}
     }
     (void) ajListIterFree(diter);
@@ -2605,23 +2605,23 @@ static AjBool showLineIsClear(AjPStr *line, ajint start, ajint end) {
   ajint i;
   ajint len = ajStrLen(*line)-1;
 /*
-ajDebug("In showLineIsClear(): Looking for clear line at positions:");
+ajDebug("In showLineIsClear: Looking for clear line at positions:");
 ajDebug("target len=%d", len+1);
 ajDebug("start=%d, end=%d", start, end);
 ajDebug("target=>%S<", *line);
 */
   if (len < end) {
-/*ajDebug("In showLineIsClear(): ajStrAppKI of %d chars", end-len);*/
+/*ajDebug("In showLineIsClear: ajStrAppKI of %d chars", end-len);*/
     (void) ajStrAppKI(line, ' ', end-len);
   }
   
   for (i=start; i<=end; i++) {
-/*ajDebug("In showLineIsClear(): Line at pos %d is >%c<",
+/*ajDebug("In showLineIsClear: Line at pos %d is >%c<",
 	i, *(ajStrStr(*line)+i));*/
     if (*(ajStrStr(*line)+i) != ' ') return ajFalse;
   }
 
-/*ajDebug("In showLineIsClear(): Line is clear **** :-)");*/
+/*ajDebug("In showLineIsClear: Line is clear **** :-)");*/
   return ajTrue;
 
 }
