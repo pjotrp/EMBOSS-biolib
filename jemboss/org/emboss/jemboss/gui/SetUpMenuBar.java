@@ -125,6 +125,23 @@ public class SetUpMenuBar
     });
     prefsMenu.add(showAdvOpt);
     prefsMenu.addSeparator();
+
+    JMenuItem serverSettings = new JMenuItem("Server Settings");
+    serverSettings.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        ServerSetup ss = new ServerSetup(mysettings);
+
+        int sso = JOptionPane.showConfirmDialog(f,ss,"Server Settings",
+                             JOptionPane.OK_CANCEL_OPTION,
+                             JOptionPane.PLAIN_MESSAGE,null);
+        if(sso == JOptionPane.OK_OPTION)
+          ss.setNewSettings();
+      }
+    });
+    prefsMenu.add(serverSettings);
+
     
     JMenuItem showEnvironment = new JMenuItem("Show Environment");
     showEnvironment.addActionListener(new ActionListener()
