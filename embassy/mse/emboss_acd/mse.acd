@@ -23,9 +23,16 @@ section: advanced [
   type: "page"
 ]
 
-directory: tmpdir  [
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outdir: tmpdir  [
   default: "/tmp"
   information: "Temp directory"
 ]
 
-endsection: advanced
+endsection: output
