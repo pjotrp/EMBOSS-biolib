@@ -44,6 +44,9 @@ cat *.srs >> ../efunc.dat
 foreach x ($edir/ajax/*.h)
   embossdatadoc.pl $x >> ../edata.out
 end
+foreach x ($edir/nucleus/*.h)
+  embossdatadoc.pl $x >> ../edata.out
+end
 cat *.srsdata >! ../edata.dat
 \cp *html $wdir/Data/
 
