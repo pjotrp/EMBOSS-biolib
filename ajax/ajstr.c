@@ -4014,19 +4014,34 @@ int ajCharPos (const char* thys, int ipos) {
 ** @@
 ******************************************************************************/
 
-AjIStr ajStrIter (const AjPStr thys) {
-
+AjIStr ajStrIter (const AjPStr thys)
+{
   AjIStr iter;
-  AjPStr tmp;
   
   AJNEW0(iter);
-  iter->Begin = 0;
-  iter->End = thys->Len;
-  iter->Curr = 0;
-  tmp = ajStrNewC(ajStrStr(thys));
+  iter->Start = iter->Ptr = ajStrStr(thys);
+  iter->End = iter->Start + ajStrLen(thys) - 1;
   
-  iter->Obj = tmp;
-  iter->Loc = tmp->Ptr;
+  return iter;
+
+}
+
+/* @func ajStrIterBack *******************************************************
+**
+** Creates an iterator over the characters in a string set to end of string.
+**
+** @param [wP] thys [const AjPStr] Original string
+** @return [AjIStr] String Iterator
+** @@
+******************************************************************************/
+
+AjIStr ajStrIterBack (const AjPStr thys)
+{
+  AjIStr iter;
+  
+  AJNEW0(iter);
+  iter->Start = ajStrStr(thys);
+  iter->End = iter->Ptr = iter->Start + ajStrLen(thys) - 1;
   
   return iter;
 
@@ -4050,15 +4065,35 @@ AjIStr ajStrIter (const AjPStr thys) {
 ** @@
 ******************************************************************************/
 
-AjIStr ajStrIterNext (AjIStr iter) {
+AjIStr ajStrIterNext (AjIStr iter)
+{
 
-  if (iter->Curr < iter->End) {
-    iter->Curr++;
-    iter->Obj->Ptr++;
-    iter->Obj->Len--;
-    iter->Obj->Res--;
-  }
-  return iter;
+    if(iter->Ptr == iter->End)
+	return NULL;
+    
+    iter->Ptr++;
+
+    return iter;
+}
+
+/* @func ajStrIterBackNext ****************************************************
+**
+** Step to previous character in string iterator.
+**
+** @param [P] iter [AjIStr] String iterator.
+** @return [AjIStr] Updated iterator duplicated as return value.
+** @@
+******************************************************************************/
+
+AjIStr ajStrIterBackNext (AjIStr iter)
+{
+
+    if(iter->Ptr == iter->Start)
+	return NULL;
+    
+    iter->Ptr--;
+
+    return iter;
 }
 
 /* @macro ajStrIterEnd ******************************************************
@@ -4097,14 +4132,12 @@ AjIStr ajStrIterNext (AjIStr iter) {
 ** @@
 ******************************************************************************/
 
-void ajStrIterFree (AjIStr* iter) {
+void ajStrIterFree (AjIStr* iter)
+{
 
-    (*iter)->Obj->Ptr = (*iter)->Loc;
-    
-    ajStrDel(&(*iter)->Obj);
     AJFREE(*iter);
 
-  return;
+    return;
 }
 
 /* ==================================================================== */
