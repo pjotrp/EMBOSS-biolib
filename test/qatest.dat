@@ -6174,7 +6174,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hs989235.est2genome
-FZ = 3051
+FZ = 3050
 FP /Note .* forward est and forward genome, .* imply REVERSED GENE/
 FP /^Exon       163  91\.8 25685 25874 HSNFG9           1   193 HS989235/
 //
@@ -6191,7 +6191,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI pax6.est2genome
-FZ = 2104
+FZ = 2103
 FP /Note .* forward est and forward genome, .* imply forward gene/
 FP /^Exon       129  99.2  1380  1510 HSA1280        428   558 pax6/
 //
@@ -6209,7 +6209,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI pax6.est2genome
-FZ = 8087
+FZ = 8086
 FP /Note .* forward est and forward genome, .* imply forward gene/
 FP /^Exon       129  99.2  1380  1510 HSA1280        428   558 pax6/
 FP /^HSA1280   9567 ttgaggccctggagaaaggtgat.....ttcagagtttgagagaacccat  10116\n/
@@ -6230,7 +6230,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI pax6.est2genome
-FZ = 8087
+FZ = 8086
 FP /Note .* forward est and forward genome, .* imply forward gene/
 FP /^Exon       129  99.2  1380  1510 HSA1280        428   558 pax6/
 FP /^HSA1280   9567 ttgaggccctggagaaaggtgat.....ttcagagtttgagagaacccat  10116\n/
@@ -6251,7 +6251,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI pax6.est2genome
-FZ = 8087
+FZ = 8086
 FP /Note .* forward est and forward genome, .* imply forward gene/
 FP /^Exon       129  99.2  1380  1510 HSA1280        428   558 pax6/
 //
@@ -6269,7 +6269,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI pax6.est2genome
-FZ = 2104
+FZ = 2103
 FP /Note .* forward est and forward genome, .* imply forward gene/
 FP /^Exon       129  99.2  1380  1510 HSA1280        428   558 pax6/
 //
@@ -6831,8 +6831,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI globins.infoalign
-FZ = 691
-FP /^msf::.*HBA_HORSE\s+HBA_HORSE\s+141\s+144\s+2\s+3\s+48\s+4\s+89\s+66\.666664\s+\n/
+FZ = 761
+FP /^msf::.*HBA_HORSE\s+HBA_HORSE\s+141\s+144\s+2\s+3\s+48\s+4\s+89\s+66\.666664\s+0\.190000\s+\n/
 //
 
 ID infoalign-ex2
@@ -6846,8 +6846,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI globins.infoalign
-FZ = 407
-FP /^HBA_HORSE\s+141\s+144\s+2\s+3\s+48\s+4\s+89\s+66\.666664\s+\n/
+FZ = 477
+FP /^HBA_HORSE\s+141\s+144\s+2\s+3\s+48\s+4\s+89\s+66\.666664\s+0\.190000\s+\n/
 //
 
 ID infoalign-ex3
@@ -6906,7 +6906,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI globins.infoalign
-FZ = 1590
+FZ = 1731
 FP /^<tr><td>msf::\.\./\.\./data/globins\.msf:HBA_HORSE<\/td>\n/
 FP /^<td>HBA_HORSE<\/td>\n/
 //
@@ -6922,25 +6922,25 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI globins.infoalign
-FZ = 691
-FP /^msf::\S+\s+HBA_HORSE\s+141\s+144\s+2\s+3\s+51\s+18\s+72\s+64.583336\s+\n/
+FZ = 761
+FP /^msf::\S+\s+HBA_HORSE\s+141\s+144\s+2\s+3\s+51\s+18\s+72\s+64.583336\s+0\.190000\s+\n/
 //
 
 ID infoalign-ex8
 AP infoalign
 CL -auto tembl:eclac* -out test.out
 FI test.out
-FZ = 712
-FP /tembl-id:ECLAC\s+ECLAC\s+7477\s+7477\s+0\s+0\s+65\s+0\s+7412\s+99[.]130[0-9]+\s+E.*/
-FP /tembl-id:ECLACZ\s+ECLACZ\s+3078\s+3078\s+0\s+0\s+72\s+0\s+3006\s+97[.]660[0-9]+\s+E.*/
+FZ = 764
+FP /tembl-id:ECLAC\s+ECLAC\s+7477\s+7477\s+0\s+0\s+65\s+0\s+7412\s+99[.]130[0-9]+\s+1[.]0+\s+E.*/
+FP /tembl-id:ECLACZ\s+ECLACZ\s+3078\s+3078\s+0\s+0\s+72\s+0\s+3006\s+97[.]660[0-9]+\s+1[.]0+\s+E.*/
 //
 
 ID infoalign-ex9
 AP infoalign
 CL -auto tembl:eclacz -out test.out
 FI test.out
-FZ = 229
-FP /tembl-id:ECLACZ\s+ECLACZ\s+3078\s+3078\s+0\s+0\s+0\s+0\s+3078\s+100[.]0+\s+E.*/
+FZ = 245
+FP /tembl-id:ECLACZ\s+ECLACZ\s+3078\s+3078\s+0\s+0\s+0\s+0\s+3078\s+100[.]0+\s+1[.]0+\s+E.*/
 //
 
 ID infoseq-ex
@@ -7273,7 +7273,7 @@ FI hba_human.matcher
 FP /^# Identity: +63\/145 \(43\.4%\)/
 FP /^# Score: +264\n/
 FP /^HBA_HU -----GSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDP\n/
-FC = 45
+FC = 46
 //
 
 ID matcher-ex2
@@ -7290,7 +7290,7 @@ FI hba_human.matcher
 FP /^# Identity: +63\/145 \(43\.4%\)/
 FP /^# Score: +264\n/
 FP /^HBA_HU -----GSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDP\n/
-FC = 261
+FC = 271
 //
 
 ID megamerger-ex
@@ -8798,13 +8798,13 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI eclac.seqmatchall
-FZ = 210
-FP /^1832  5646 7477 ECLAC 1 1832 ECLACA\n/
-FP /^1113  49 1161 ECLAC 1 1113 ECLACI\n/
-FP /^1500  4305 5804 ECLAC 1 1500 ECLACY\n/
-FP /^3078  1287 4364 ECLAC 1 3078 ECLACZ\n/
-FP /^159  1 159 ECLACA 1342 1500 ECLACY\n/
-FP /^60  1 60 ECLACY 3019 3078 ECLACZ\n/
+FZ = 1513
+FP /^  1832 ECLAC +5646..7477     ECLACA +1..1832\n/
+FP /^  1113 ECLAC +49..1161     ECLACI +1..1113\n/
+FP /^  1500 ECLAC +4305..5804     ECLACY +1..1500\n/
+FP /^  3078 ECLAC +1287..4364     ECLACZ +1..3078\n/
+FP /^   159 ECLACA +1..159      ECLACY +1342..1500\n/
+FP /^    60 ECLACY +1..60       ECLACZ +3019..3078\n/
 //
 
 ###########################################################################
@@ -14111,7 +14111,7 @@ FP 1 /^                 10  \n/
 FP 1 /^             20      \n/
 FP 1 /^ AFULL AAACCCGGG--TTT\n/
 FP 1 /^ BFULL AAAC--GGGCCTTT\n/
-FC = 33
+FC = 34
 //
 
 
@@ -14133,7 +14133,7 @@ FP 1 /^ AFULL CCGGTT\n/
 FP 1 /^ APART CCGGTT\n/
 FP 1 /^           10        20        30        40        50    \n/
 FP 1 /^               10        20        30        40        50\n/
-FC = 39
+FC = 40
 //
 
 ID align-matcher-begin
@@ -14154,7 +14154,7 @@ FP 1 /^             20      \n/
 FP 1 /^ AFULL AAACCCGGG--TTT\n/
 FP 1 /^ BFULL AAAC--GGGCCTTT\n/
 FP 1 /^                 10  \n/
-FC = 33
+FC = 34
 //
 
 ID align-matcher-end
@@ -14175,7 +14175,7 @@ FP 1 /^           10    \n/
 FP 1 /^ AFULL AACCGG--TT\n/
 FP 1 /^ BFULL AACGGGCCTT\n/
 FP 1 /^              10 \n/
-FC = 33
+FC = 34
 //
 
 ID align-matcher-begin2
@@ -14196,7 +14196,7 @@ FP 1 /^       20      \n/
 FP 1 /^ AFULL GGG--TTT\n/
 FP 1 /^ BFULL GGGCCTTT\n/
 FP 1 /^           10  \n/
-FC = 33
+FC = 34
 //
 
 ID align-matcher-end2
@@ -14217,7 +14217,7 @@ FP 1 /^               50      \n/
 FP 1 /^ AFULL AAACCCGGGTTTAACC\n/
 FP 1 /^ BFULL AAAC--GGG-----CC\n/
 FP 1 /^                       \n/
-FC = 33
+FC = 34
 //
 
 ID align-matcher-begendall
@@ -14238,7 +14238,7 @@ FP 1 /^           10\n/
 FP 1 /^ AFULL AACCGG\n/
 FP 1 /^ BFULL AACGGG\n/
 FP 1 /^             \n/
-FC = 33
+FC = 34
 //
 
 ID align-matcher-pair
@@ -14258,7 +14258,7 @@ FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
 FP 1 /^AFULL +5 AACCGG +10\n/
 FP 1 /^BFULL +2 AACGGG +7\n/
-FC = 31
+FC = 32
 //
 
 ID align-matcher-srspair
@@ -14278,7 +14278,7 @@ FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
 FP 1 /^AFULL +5 AACCGG +10\n/
 FP 1 /^BFULL +2 AACGGG +7\n/
-FC = 31
+FC = 32
 //
 
 ID align-matcher-markx0
@@ -14301,7 +14301,7 @@ FP 1 /^ AFULL AACCGG\n/
 FP 1 /^       ::: ::\n/
 FP 1 /^ BFULL AACGGG\n/
 FP 1 /^             \n/
-FC = 33
+FC = 34
 //
 
 ID align-matcher-markx1
@@ -14324,7 +14324,7 @@ FP 1 /^ AFULL AACCGG\n/
 FP 1 /^          X  \n/
 FP 1 /^ BFULL AACGGG\n/
 FP 1 /^             \n/
-FC = 33
+FC = 34
 //
 
 ID align-matcher-markx2
@@ -14345,7 +14345,7 @@ FP /^# Score: +21\n/
 FP 1 /^           10\n/
 FP 1 /^ AFULL AACCGG\n/
 FP 1 /^BFULL  \.\.\.G\.\.\n/
-FC = 31
+FC = 32
 //
 
 ID align-matcher-markx3
@@ -14367,7 +14367,7 @@ FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
 FP 1 /^>AFULL \.\.\nAACCGG\n/
 FP 1 /^>BFULL \.\.\nAACGGG\n/
-FC = 31
+FC = 32
 //
 
 ID align-matcher-markx10
@@ -14385,7 +14385,7 @@ FP 0 /Died: /
 FI stdout
 FP 1 /^>AFULL \.\.\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\nAACCGG\n/
 FP 1 /^>BFULL \.\.\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\nAACGGG\n/
-FC = 39
+FC = 40
 //
 
 ID align-matcher-fasta
@@ -14478,7 +14478,7 @@ FP /^# Identity: +10\/14 \(71\.4%\)/
 FP /^# Score: +38\.0\n/
 FP 1 /^AFULL             13 aaacccggg--ttt     24\n/
 FP 1 /^BFULL              1 aaa--cgggccttt     12\n/
-FC = 31
+FC = 32
 //
 
 
@@ -14498,7 +14498,7 @@ FP /^# Identity: +56\/56 \(100\.0%\)/
 FP /^# Score: +280\.0\n/
 FP 1 /^AFULL             55 ccggtt     60\n/
 FP 1 /^APART             51 ccggtt     56\n/
-FC = 35
+FC = 36
 //
 
 ID align-water-begin
@@ -14517,7 +14517,7 @@ FP /^# Identity: +10\/14 \(71\.4%\)/
 FP /^# Score: +38\.0\n/
 FP 1 /^AFULL             13 aaacccggg--ttt     24\n/
 FP 1 /^BFULL              1 aaa--cgggccttt     12\n/
-FC = 31
+FC = 32
 //
 
 ID align-water-end
@@ -14536,7 +14536,7 @@ FP /^# Identity: +7\/10 \(70\.0%\)/
 FP /^# Score: +25\.0\n/
 FP 1 /^AFULL              5 aaccgg--tt     12\n/
 FP 1 /^BFULL              2 aacgggcctt     11\n/
-FC = 31
+FC = 32
 //
 
 ID align-water-begin2
@@ -14555,7 +14555,7 @@ FP /^# Identity: +6\/8 \(75\.0%\)/
 FP /^# Score: +24\.0\n/
 FP 1 /^AFULL             19 ggg--ttt     24\n/
 FP 1 /^BFULL              5 gggccttt     12\n/
-FC = 31
+FC = 32
 //
 
 ID align-water-end2
@@ -14574,7 +14574,7 @@ FP /^# Identity: +9\/16 \(56\.2%\)/
 FP /^# Score: +30\.0\n/
 FP 1 /^AFULL             41 aaacccgggtttaacc     56\n/
 FP 1 /^BFULL              1 aaa--cggg-----cc      9\n/
-FC = 31
+FC = 32
 //
 
 ID align-water-begendall
@@ -14593,7 +14593,7 @@ FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\.0\n/
 FP 1 /^AFULL              5 aaccgg     10\n/
 FP 1 /^BFULL              2 aacggg      7\n/
-FC = 31
+FC = 32
 //
 
 ID align-stretcher-full
@@ -14614,7 +14614,7 @@ FP 1 /^               10        20        30        40        50\n/
 FP 1 /^ AFULL ACGTAACCGGTTAAACCCGGGTTTAAAACCCCGGGGTTTTAAACCCGGGT\n/
 FP 1 /^ BFULL A------------AAC----------------GGGCCTTT----------\n/
 FP 1 /^                                           10            \n/
-FC = 39
+FC = 40
 //
 
 ID align-stretcher-part
@@ -14635,7 +14635,7 @@ FP 1 /^               60    \n/
 FP 1 /^ AFULL TTAACCGGTTACGT\n/
 FP 1 /^ APART TTAACCGGTT----\n/
 FP 1 /^         50          \n/
-FC = 39
+FC = 40
 //
 
 ID align-stretcher-begin
@@ -14656,7 +14656,7 @@ FP 1 /^           10        20        30        40        50    \n/
 FP 1 /^ AFULL AACCGGTTAAACCCGGGTTTAAAACCCCGGGGTTTTAAACCCGGGTTTAA\n/
 FP 1 /^ BFULL AAACG-------------------------GGCCTT--------------\n/
 FP 1 /^                                        10               \n/
-FC = 39
+FC = 40
 //
 
 ID align-stretcher-end
@@ -14677,7 +14677,7 @@ FP 1 /^               10     \n/
 FP 1 /^ AFULL ACGTAACCGGTTAAA\n/
 FP 1 /^ BFULL A---AACGGGCCTTT\n/
 FP 1 /^                  10  \n/
-FC = 33
+FC = 34
 //
 
 ID align-stretcher-begin2
@@ -14698,7 +14698,7 @@ FP 1 /^               10        20        30        40        50\n/
 FP 1 /^ AFULL ACGTAACCGGTTAAACCCGGGTTTAAAACCCCGGGGTTTTAAACCCGGGT\n/
 FP 1 /^ BFULL --------------------------------GGGCCTTT----------\n/
 FP 1 /^                                           10            \n/
-FC = 39
+FC = 40
 //
 
 ID align-stretcher-end2
@@ -14719,7 +14719,7 @@ FP 1 /^               60    \n/
 FP 1 /^ AFULL TTAACCGGTTACGT\n/
 FP 1 /^ BFULL -----------CCT\n/
 FP 1 /^                   10\n/
-FC = 39
+FC = 40
 //
 
 ID align-stretcher-begendall
@@ -14740,7 +14740,7 @@ FP 1 /^           10     \n/
 FP 1 /^ AFULL AACCGGTTAAA\n/
 FP 1 /^ BFULL AACGGG-----\n/
 FP 1 /^                  \n/
-FC = 33
+FC = 34
 //
 
 ID align-needle-full
@@ -14759,7 +14759,7 @@ FP /^# Identity: +8\/64 \(12\.5%\)/
 FP /^# Score: +24\.0\n/
 FP 1 /^AFULL +1 acgtaaccggttaaacccgggtttaaaaccccggggttttaaacccgggt     50\n/
 FP 1 /^BFULL +1             aaacgggccttt                               12\n/
-FC = 35
+FC = 36
 //
 
 ID align-needle-part
@@ -14778,7 +14778,7 @@ FP /^# Identity: +56\/64 \(87\.5%\)/
 FP /^# Score: +280\.0\n/
 FP 1 /^AFULL             51 ttaaccggttacgt     64\n/
 FP 1 /^APART             47 ttaaccggtt         56\n/
-FC = 35
+FC = 36
 //
 
 ID align-needle-begin
@@ -14797,7 +14797,7 @@ FP /^# Identity: +8\/60 \(13\.3%\)/
 FP /^# Score: +24\.0\n/
 FP 1 /^AFULL +5 aaccggttaaacccgggtttaaaaccccggggttttaaacccgggtttaa     54\n/
 FP 1 /^BFULL +1         aaacgggccttt                                   12\n/
-FC = 35
+FC = 36
 //
 
 ID align-needle-end
@@ -14816,7 +14816,7 @@ FP /^# Identity: +3\/24 \(12\.5%\)/
 FP /^# Score: +15\.0\n/
 FP 1 /^AFULL +1 acgtaaccggttaaa              15\n/
 FP 1 /^BFULL +1             aaacgggccttt     12\n/
-FC = 31
+FC = 32
 //
 
 ID align-needle-begin2
@@ -14835,7 +14835,7 @@ FP /^# Identity: +6\/64 \( 9\.4%\)/
 FP /^# Score: +22\.0\n/
 FP 1 /^AFULL +1 acgtaaccggttaaacccgggtttaaaaccccggggttttaaacccgggt     50\n/
 FP 1 /^BFULL +5                                 gggccttt               12\n/
-FC = 35
+FC = 36
 //
 
 ID align-needle-end2
@@ -14854,7 +14854,7 @@ FP /^# Identity: +6\/64 \( 9\.4%\)/
 FP /^# Score: +14\.0\n/
 FP 1 /^AFULL +1 acgtaaccggttaaacccgggtttaaaaccccggggttttaaacccgggt     50\n/
 FP 1 /^BFULL +1             aaacgggcct                                 10\n/
-FC = 35
+FC = 36
 //
 
 ID align-needle-begendall
@@ -14873,7 +14873,7 @@ FP /^# Identity: +5\/11 \(45\.5%\)/
 FP /^# Score: +21\.0\n/
 FP 1 /^AFULL +5 aaccggttaaa     15\n/
 FP 1 /^BFULL +2 aacggg           7\n/
-FC = 31
+FC = 32
 //
 
 #######################################
@@ -14973,7 +14973,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI dna.demoalign
-FZ = 1213
+FZ = 1214
 FP 9 /^MSFM[1-3] +/
 //
 
