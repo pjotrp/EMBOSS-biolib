@@ -36,12 +36,12 @@ extern "C"
 ******************************************************************************/
 
 typedef struct AjSFile {
-  FILE *fp;
-  ajint Handle;
-  AjPStr Name;
-  AjPList List;
-  AjBool End;
-  AjPStr Buff;
+  FILE *fp;			/* C file pointer */
+  ajint Handle;			/* AJAX file number 0 if unused */
+  AjPStr Name;			/* File name */
+  AjPList List;			/* List of file names (first is open) */
+  AjBool End;			/* True if EOF has been reached */
+  AjPStr Buff;			/* Buffer for latest line read */
 } AjOFile, *AjPFile;
 
 /* @data AjPFileBuffList ***************************************************
@@ -54,9 +54,9 @@ typedef struct AjSFile {
 ******************************************************************************/
 
 typedef struct AjSFileBuffList {
-  AjPStr Line;
-  struct AjSFileBuffList* Next;
-  ajlong Fpos;
+  AjPStr Line;			/* String : this line*/
+  struct AjSFileBuffList* Next;	/* Next line in the list, NULL for last */
+  ajlong Fpos;			/* File offset for start of this line */
 } AjOFileBuffList, *AjPFileBuffList;
 
 /* @data AjPFileBuff *******************************************************
@@ -92,16 +92,18 @@ typedef struct AjSFileBuffList {
 ******************************************************************************/
 
 typedef struct AjSFileBuff {
-  AjPFile File;
-  AjPFileBuffList Lines;
-  AjPFileBuffList Curr;
-  AjPFileBuffList Last;
-  AjPFileBuffList Free;
-  AjPFileBuffList Freelast;
-  AjBool Nobuff;
-  ajint Pos;
-  ajint Size;
-  ajlong Fpos;
+  AjPFile File;			/* The input file - data to be buffered */
+  AjPFileBuffList Lines;	/* All lines ... where the data really is */ 
+  AjPFileBuffList Curr;		/* Current line in Lines list */
+  AjPFileBuffList Prev;		/* Previous line (points to Curr for delete) */
+  AjPFileBuffList Last;		/* Last line for quick appending */
+  AjPFileBuffList Free;		/* Free list of lines for reuse */
+  AjPFileBuffList Freelast;	/* Last free line for quick append*/
+  AjBool Nobuff;		/* if true, do not buffer the file */
+  ajint Pos;			/* Position in list */
+  ajint Size;			/* Size of list */
+  ajint FreeSize;		/* Size of free list */
+  ajlong Fpos;			/* File pointer in File */
 } AjOFileBuff, *AjPFileBuff;
 
 /* ============= prototypes =========================*/
@@ -112,6 +114,7 @@ AjBool      ajFileBuffEmpty (const AjPFileBuff thys);
 AjBool      ajFileBuffEnd (const AjPFileBuff thys);
 AjBool      ajFileBuffEof (const AjPFileBuff thys);
 AjPFile     ajFileBuffFile (const AjPFileBuff thys);
+void        ajFileBuffFix (const AjPFileBuff thys);
 FILE*       ajFileBuffFp (const AjPFileBuff thys);
 void        ajFileBuffFreeClear (const AjPFileBuff thys);
 AjBool      ajFileBuffGet  (const AjPFileBuff thys, AjPStr *pdest);
