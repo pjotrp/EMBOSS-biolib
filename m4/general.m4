@@ -21,6 +21,7 @@ AC_ARG_WITH(gccprofile,
 [if test "$withval" != no ; then
   AC_MSG_RESULT(yes)
   CFLAGS="$CFLAGS -g -pg"
+  LDFLAGS="$LDFLAGS -pg"
 fi], [
 AC_MSG_RESULT(no)
 ])
