@@ -825,7 +825,8 @@ check_escape(const uschar **ptrptr, const char **errorptr, int bracount,
 	    c = 0;
 	    while (i++ < 2 && (digitab[ptr[1]] & ctype_xdigit) != 0)
 	    {
-		int cc = *(++ptr);
+		int cc;
+		cc = *(++ptr);
 		if (cc >= 'a') cc -= 32; /* Convert to upper case */
 		c = c * 16 + cc - ((cc < 'A')? '0' : ('A' - 10));
 	    }
