@@ -1506,9 +1506,10 @@ AjBool ajDmxScopalgWrite(const AjPScopalg scop, AjPFile outf)
 	    ajStrRemoveCharsC(&nogap, " -");
 	    len_nogap = MAJSTRLEN(nogap);
 	    	    
+	    pos = ajIntGet(idx, y), 
 	    ajFmtPrintF(outf, "%*S%7d %-50S%7d\n", 
-			code_wid, 
-			(pos = ajIntGet(idx, y)), 
+			code_wid,
+			pos,
 			scop->Codes[y], 
 			tmp_seq, 
 			pos+len_nogap-1);
@@ -1669,7 +1670,7 @@ AjBool ajDmxScopalgWriteFasta(const AjPScopalg align, AjPFile outf)
 
 AjBool ajDmxScopSeqFromSunid(ajint id, AjPStr *seq, const AjPList list)
 {
-    AjPScop *arr = NULL;  /* Array derived from list */
+    const AjPScop *arr = NULL;  /* Array derived from list */
     ajint dim =0;         /* Size of array */
     ajint idx =0;         /* Index into array for the Pdb code */
 

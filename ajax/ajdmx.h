@@ -150,7 +150,8 @@ typedef struct AjSScophit
     AjBool    Target;
     AjBool    Target2;
     AjBool    Priority;
-} AjOScophit, *AjPScophit;
+} AjOScophit;
+#define AjPScophit AjOScophit*
 
 
 
@@ -227,7 +228,8 @@ typedef struct AjSScopalg
     AjPStr  *Seqs;
     AjPStr   Post_similar;
     AjPStr   Positions;
-} AjOScopalg, *AjPScopalg;
+} AjOScopalg;
+#define AjPScopalg AjOScopalg*
 
 
 
