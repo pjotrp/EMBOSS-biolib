@@ -285,7 +285,7 @@ See also
    eclique Largest clique program
    edollop Dollo and polymorphism parsimony algorithm
    edolpenny Penny algorithm Dollo or polymorphism
-   efactor multistate to binary recoding program
+   efactor Multistate to binary recoding program
    emix Mixed parsimony algorithm
    epenny Penny algorithm, branch-and-bound to find all most parsimonious
    trees

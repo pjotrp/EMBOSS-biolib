@@ -1,5 +1,7 @@
 
-SIGGEN documentation
+                            SIGGEN documentation
+                                      
+   
 
 CONTENTS
 
@@ -540,6 +542,10 @@ BLOSUM62 -conoption 5  -filterpsim Y -wsiz 0
 14.0 REFERENCES
 
    Please cite the authors and EMBOSS.
+   Rice P, Longden I and Bleasby A (2000) "EMBOSS - The European
+   Molecular Biology Open Software Suite" Trends in Genetics, 15:276-278.
+   
+   See also http://emboss.sourceforge.net/
    Automatic generation and evaluation of sparse protein signatures for
    families of protein structural domains. MJ Blades, JC Ison, R
    Ranasinghe, and JBC Findlay. Protein Science. 2005 (accepted)
@@ -550,9 +556,7 @@ BLOSUM62 -conoption 5  -filterpsim Y -wsiz 0
    Alignment of a sparse protein signature with protein sequences:
    application to fold prediction for three small globulins. SC Daniel,
    JH Parish, JC Ison, MJ Blades & JBC Findlay. FEBS Letters. 1999,
-   459:349-352. Rice P, Bleasby A.J. 2000. EMBOSS - The European
-   Molecular Biology Open Software Suite. Trends in Genetics, 15:276-278.
-   See also http://www.uk.embnet.org/Software/EMBOSS
+   459:349-352.
 
   14.1 Other useful references
 

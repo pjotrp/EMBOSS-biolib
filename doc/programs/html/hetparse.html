@@ -1,3 +1,9 @@
+<html>
+<head>
+<title>EMBASSY domainatrix: hetparse</title>
+<base href="http://emboss.sourceforge.net/embassy/domainatrix/">
+</head>
+<body>
 <!--START OF HEADER - DON'T ALTER -->
 
 <HTML>
@@ -12,7 +18,7 @@
 
 <table align=center border=0 cellspacing=0 cellpadding=0>
 <tr><td valign=top>
-<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="/images/emboss_icon.jpg" alt="" width=150 height=48></a>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
@@ -36,7 +42,7 @@ hetparse
 <H2>
     Function
 </H2>
-Converts raw dictionary of heterogen groups to a file in embl-like format
+Converts raw dictionary of heterogen groups to a file in EMBL-like format
 
 <!--
 DON'T WRITE ANYTHING HERE.
@@ -141,38 +147,42 @@ Contact the author
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-infile]            infile     Parse the dictionary of heterogen groups
-                                  available at
+  [-infile]            infile     This option specifies the name of input file
+                                  (raw dictionary of heterogen groups) to
+                                  parse, which should be of the format
+                                  specified at
                                   http://pdb.rutgers.edu/het_dictionary.txt
-   -dogrep             toggle     Optionally, hetparse will search a directory
-                                  of pdb files and will count the number of
+   -dogrep             toggle     This option specifies whether to search a
+                                  directory of files (typically PDB files)
+                                  with keywords. If set, HETPARSE will search
+                                  the directory and will count the number of
                                   files that each heterogen appears in.
-*  -path               string     Directory to search with keywords
-*  -extn               string     Extension of files to search in above
-                                  directory
-  [-outfile]           outfile    Output file name
+*  -dirlist            dirlist    This option specifies the directory to
+                                  search with keywords.
+  [-outfile]           outfile    This option specifies the name of EMBL-like
+                                  format dictionary of heterogen groups.
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
    "-outfile" associated qualifiers
-   -odirectory2         string     Output directory
+   -odirectory2        string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
 
 </pre>
@@ -187,35 +197,28 @@ Contact the author
 
 <tr>
 <td>[-infile]<br>(Parameter 1)</td>
-<td>Parse the dictionary of heterogen groups available at http://pdb.rutgers.edu/het_dictionary.txt</td>
+<td>This option specifies the name of input file (raw dictionary of heterogen groups) to parse, which should be of the format specified at http://pdb.rutgers.edu/het_dictionary.txt</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>-dogrep</td>
-<td>Optionally, hetparse will search a directory of pdb files and will count the number of files that each heterogen appears in.</td>
+<td>This option specifies whether to search a directory of files (typically PDB files) with keywords. If set, HETPARSE will search the directory and will count the number of files that each heterogen appears in.</td>
 <td>Toggle value Yes/No</td>
 <td>No</td>
 </tr>
 
 <tr>
-<td>-path</td>
-<td>Directory to search with keywords</td>
-<td>Any string is accepted</td>
+<td>-dirlist</td>
+<td>This option specifies the directory to search with keywords.</td>
+<td>Directory with files</td>
 <td>./</td>
 </tr>
 
 <tr>
-<td>-extn</td>
-<td>Extension of files to search in above directory</td>
-<td>Any string is accepted</td>
-<td>.ent</td>
-</tr>
-
-<tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>This option specifies the name of EMBL-like format dictionary of heterogen groups.</td>
 <td>Output file</td>
 <td>Ehet.dat</td>
 </tr>
@@ -530,20 +533,23 @@ None.
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
 <tr><td><a href="../../apps/aaindexextract.html">aaindexextract</a></td><td>Extract data from AAINDEX</td></tr>
+<tr><td><a href="allversusall.html">allversusall</a></td><td>Does an all-versus-all global alignment for each set of sequences in an input directory and writes files of sequence similarity values</td></tr>
+<tr><td><a href="../../apps/cathparse.html">cathparse</a></td><td>Reads raw CATH classification files and writes DCF file (domain classification file)</td></tr>
 <tr><td><a href="../../apps/cutgextract.html">cutgextract</a></td><td>Extract data from CUTG</td></tr>
-<tr><td><a href="../../apps/domainer.html">domainer</a></td><td>Reads CCF files (clean coordinate files) for proteins and writes CCF files for domains, taken from a DCF file (domain classification file)</td></tr>
-<tr><td><a href="../../apps/domainnr.html">domainnr</a></td><td>Removes redundant domains from a DCF file (domain classification file). The file must contain domain sequence information, which can be added by using DOMAINSEQS</td></tr>
-<tr><td><a href="../../apps/domainseqs.html">domainseqs</a></td><td>Adds sequence records to a DCF file (domain classification file)</td></tr>
-<tr><td><a href="../../apps/pdbparse.html">pdbparse</a></td><td>Parses PDB files and writes CCF files (clean coordinate files) for proteins</td></tr>
-<tr><td><a href="pdbplus.html">pdbplus</a></td><td>Add records for secondary structure and residue accessibility to a coordinate file</td></tr>
-<tr><td><a href="pdbtosp.html">pdbtosp</a></td><td>Convert raw swissprot:pdb equivalence file to embl-like format</td></tr>
+<tr><td><a href="domainer.html">domainer</a></td><td>Reads CCF files (clean coordinate files) for proteins and writes CCF files for domains, taken from a DCF file (domain classification file)</td></tr>
+<tr><td><a href="domainnr.html">domainnr</a></td><td>Removes redundant domains from a DCF file (domain classification file). The file must contain domain sequence information, which can be added by using DOMAINSEQS</td></tr>
+<tr><td><a href="domainseqs.html">domainseqs</a></td><td>Adds sequence records to a DCF file (domain classification file)</td></tr>
+<tr><td><a href="../../apps/domainsse.html">domainsse</a></td><td>Adds secondary structure records to a DCF file (domain classification file)</td></tr>
+<tr><td><a href="pdbparse.html">pdbparse</a></td><td>Parses PDB files and writes CCF files (clean coordinate files) for proteins</td></tr>
+<tr><td><a href="pdbplus.html">pdbplus</a></td><td>Add residue solvent accessibility and secondary structure data to a CCF file (clean coordinate file) for a protein or domain</td></tr>
+<tr><td><a href="pdbtosp.html">pdbtosp</a></td><td>Convert raw swissprot:PDB equivalence file to EMBL-like format</td></tr>
 <tr><td><a href="../../apps/printsextract.html">printsextract</a></td><td>Extract data from PRINTS</td></tr>
 <tr><td><a href="../../apps/prosextract.html">prosextract</a></td><td>Builds the PROSITE motif database for patmatmotifs to search</td></tr>
 <tr><td><a href="../../apps/rebaseextract.html">rebaseextract</a></td><td>Extract data from REBASE</td></tr>
-<tr><td><a href="scopnr.html">scopnr</a></td><td>Removes redundant domains from a scop classification file</td></tr>
-<tr><td><a href="../../apps/scopparse.html">scopparse</a></td><td>Reads raw SCOP classification files and writes a DCF file (domain classification file)</td></tr>
-<tr><td><a href="scopseqs.html">scopseqs</a></td><td>Adds pdb and swissprot sequence records to a scop classification file</td></tr>
-<tr><td><a href="../../apps/seqnr.html">seqnr</a></td><td>Removes redundancy from DHF files (domain hits files) or other files of sequences</td></tr>
+<tr><td><a href="scopparse.html">scopparse</a></td><td>Reads raw SCOP classification files and writes a DCF file (domain classification file)</td></tr>
+<tr><td><a href="seqnr.html">seqnr</a></td><td>Removes redundancy from DHF files (domain hits files) or other files of sequences</td></tr>
+<tr><td><a href="sites.html">sites</a></td><td>Reads CCF files (clean coordinate files) and writes CON files (contact files) of residue-ligand contact data for domains in a DCF file (domain classification file)</td></tr>
+<tr><td><a href="../../apps/ssematch.html">ssematch</a></td><td>Searches a DCF file (domain classification file) for secondary structure matches</td></tr>
 <tr><td><a href="../../apps/tfextract.html">tfextract</a></td><td>Extract data from TRANSFAC</td></tr>
 </table>
 
@@ -668,3 +674,6 @@ This program is intended to be used by everyone and everything, from naive users
 </BODY>
 </HTML>
 
+
+</body>
+</html>

@@ -5,7 +5,7 @@
 
 Function
 
-   Convert raw swissprot:pdb equivalence file to embl-like format
+   Convert raw swissprot:PDB equivalence file to EMBL-like format
 
 Description
 
@@ -46,43 +46,49 @@ Usage
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     Parses the swissprot:pdb equivalence table
+  [-infile]            infile     This option specifies the name of raw
+                                  swissprot:PDB equivalence file (input).
+                                  HETPARSE parses this file, which is
                                   available at URL
                                   http://www.expasy.ch/cgi-bin/lists?pdbtosp.tx
 t
-  [-outfile]           outfile    Name of swissprot:pdb equivalence file (embl
-                                  format output)
+  [-outfile]           outfile    This option specifies the name of
+                                  swissprot:PDB equivalence file (EMBL-like
+                                  format). This is the PDBTOSP output file.
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
    "-outfile" associated qualifiers
-   -odirectory2         string     Output directory
+   -odirectory2        string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-infile]
-   (Parameter 1) Parses the swissprot:pdb equivalence table available at
-   URL http://www.expasy.ch/cgi-bin/lists?pdbtosp.txt Input file Required
+   (Parameter 1) This option specifies the name of raw swissprot:PDB
+   equivalence file (input). HETPARSE parses this file, which is
+   available at URL http://www.expasy.ch/cgi-bin/lists?pdbtosp.txt Input
+   file Required
    [-outfile]
-   (Parameter 2) Name of swissprot:pdb equivalence file (embl format
-   output) Output file Epdbtosp.dat
+   (Parameter 2) This option specifies the name of swissprot:PDB
+   equivalence file (EMBL-like format). This is the PDBTOSP output file.
+   Output file Epdbtosp.dat
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default
@@ -157,6 +163,11 @@ See also
 
    Program name Description
    aaindexextract Extract data from AAINDEX
+   allversusall Does an all-versus-all global alignment for each set of
+   sequences in an input directory and writes files of sequence
+   similarity values
+   cathparse Reads raw CATH classification files and writes DCF file
+   (domain classification file)
    cutgextract Extract data from CUTG
    domainer Reads CCF files (clean coordinate files) for proteins and
    writes CCF files for domains, taken from a DCF file (domain
@@ -166,23 +177,27 @@ See also
    information, which can be added by using DOMAINSEQS
    domainseqs Adds sequence records to a DCF file (domain classification
    file)
+   domainsse Adds secondary structure records to a DCF file (domain
+   classification file)
    hetparse Converts raw dictionary of heterogen groups to a file in
-   embl-like format
+   EMBL-like format
    pdbparse Parses PDB files and writes CCF files (clean coordinate
    files) for proteins
-   pdbplus Add records for secondary structure and residue accessibility
-   to a coordinate file
+   pdbplus Add residue solvent accessibility and secondary structure data
+   to a CCF file (clean coordinate file) for a protein or domain
    printsextract Extract data from PRINTS
    prosextract Builds the PROSITE motif database for patmatmotifs to
    search
    rebaseextract Extract data from REBASE
-   scopnr Removes redundant domains from a scop classification file
    scopparse Reads raw SCOP classification files and writes a DCF file
    (domain classification file)
-   scopseqs Adds pdb and swissprot sequence records to a scop
-   classification file
    seqnr Removes redundancy from DHF files (domain hits files) or other
    files of sequences
+   sites Reads CCF files (clean coordinate files) and writes CON files
+   (contact files) of residue-ligand contact data for domains in a DCF
+   file (domain classification file)
+   ssematch Searches a DCF file (domain classification file) for
+   secondary structure matches
    tfextract Extract data from TRANSFAC
 
    scopseqs uses the pdbtosp output file as input.

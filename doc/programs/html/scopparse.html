@@ -9,10 +9,21 @@
 <TITLE> EMBOSS: SCOPPARSE documentation. </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
-<!-- #include file="header1.inc" -->
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="../index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="../../emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+
 <H2> SCOPPARSE documentation </H2>
-<!-- #include file="header2.inc" -->
-<!-- END OF HEADER -->
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+
 
 
 
@@ -46,7 +57,7 @@
 -->
 <a name="1.0"></a>
 <H2> 1.0   SUMMARY  </H2>
-<!-- #include file="inc/scopparse.ione" -->
+Reads raw SCOP classification files and writes a DCF file (domain classification file)
 
 Reads raw SCOP classification files and writes a DCF file (domain classification file).
 
@@ -125,7 +136,7 @@ d1ii7a_	1ii7	A:	d.159.1.4	62415	cl=53931,cf=56299,sf=56300,fa=64427,dm=64428,sp=
 62415	px	d.159.1.4	d1ii7a_	1ii7 A:
 </pre>
 </table>
-<!-- #include file="inc/scopparse.input" -->
+
 
 
 
@@ -271,7 +282,7 @@ CH   B CHAIN; . START; . END;
 
 
 
-<!-- #include file="inc/scopparse.output" -->
+
 
 
 
@@ -395,7 +406,7 @@ contain domains that comprise segments one or more segments or segments from mor
 <br>
 <br>The following command line would achieve the same result.
 <br>
-<!-- #include file="inc/scopparse.usage" -->
+
 <table><td bgcolor="#FFCCFF">
 <pre>scopparse /test_data/scop.cla.raw /test_data/scop.des.raw 
 -nomultichain Y  -nosegments Y /test_data/scopparse/all.scop
@@ -437,7 +448,7 @@ SCOP includes several minor classes which are not appropriate for some
 anaylses.  Accordingly, SCOPPARSE gives the option to omit domains from 
 minor classes.  This is defined as anything not in class 'All alpha 
 proteins', 'All beta proteins', 'Alpha and beta proteins (a/b)' or 'Alpha 
-and beta proteins (a+b)'" 
+and beta proteins (a+b)' 
 
 <H3> 8.1   GLOSSARY OF FILE TYPES    </H2>
 <table BORDER CELLSPACING=5 CELLPADDING=5 BGCOLOR="#f5f5ff" >
@@ -590,7 +601,30 @@ which can be added by using DOMAINSEQS. -->
 
 
 
-<!-- #include file="inc/scopparse.isee" -->
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th><th>Description</th></tr>
+<tr><td><a href="../../apps/aaindexextract.html">aaindexextract</a></td><td>Extract data from AAINDEX</td></tr>
+<tr><td><a href="allversusall.html">allversusall</a></td><td>Does an all-versus-all global alignment for each set of sequences in an input directory and writes files of sequence similarity values</td></tr>
+<tr><td><a href="../../apps/cathparse.html">cathparse</a></td><td>Reads raw CATH classification files and writes DCF file (domain classification file)</td></tr>
+<tr><td><a href="../../apps/cutgextract.html">cutgextract</a></td><td>Extract data from CUTG</td></tr>
+<tr><td><a href="domainer.html">domainer</a></td><td>Reads CCF files (clean coordinate files) for proteins and writes CCF files for domains, taken from a DCF file (domain classification file)</td></tr>
+<tr><td><a href="domainnr.html">domainnr</a></td><td>Removes redundant domains from a DCF file (domain classification file). The file must contain domain sequence information, which can be added by using DOMAINSEQS</td></tr>
+<tr><td><a href="domainseqs.html">domainseqs</a></td><td>Adds sequence records to a DCF file (domain classification file)</td></tr>
+<tr><td><a href="../../apps/domainsse.html">domainsse</a></td><td>Adds secondary structure records to a DCF file (domain classification file)</td></tr>
+<tr><td><a href="hetparse.html">hetparse</a></td><td>Converts raw dictionary of heterogen groups to a file in EMBL-like format</td></tr>
+<tr><td><a href="pdbparse.html">pdbparse</a></td><td>Parses PDB files and writes CCF files (clean coordinate files) for proteins</td></tr>
+<tr><td><a href="pdbplus.html">pdbplus</a></td><td>Add residue solvent accessibility and secondary structure data to a CCF file (clean coordinate file) for a protein or domain</td></tr>
+<tr><td><a href="pdbtosp.html">pdbtosp</a></td><td>Convert raw swissprot:PDB equivalence file to EMBL-like format</td></tr>
+<tr><td><a href="../../apps/printsextract.html">printsextract</a></td><td>Extract data from PRINTS</td></tr>
+<tr><td><a href="../../apps/prosextract.html">prosextract</a></td><td>Builds the PROSITE motif database for patmatmotifs to search</td></tr>
+<tr><td><a href="../../apps/rebaseextract.html">rebaseextract</a></td><td>Extract data from REBASE</td></tr>
+<tr><td><a href="seqnr.html">seqnr</a></td><td>Removes redundancy from DHF files (domain hits files) or other files of sequences</td></tr>
+<tr><td><a href="sites.html">sites</a></td><td>Reads CCF files (clean coordinate files) and writes CON files (contact files) of residue-ligand contact data for domains in a DCF file (domain classification file)</td></tr>
+<tr><td><a href="../../apps/ssematch.html">ssematch</a></td><td>Searches a DCF file (domain classification file) for secondary structure matches</td></tr>
+<tr><td><a href="../../apps/tfextract.html">tfextract</a></td><td>Extract data from TRANSFAC</td></tr>
+</table>
+
 
 
 
@@ -615,7 +649,10 @@ None.
 -->
 <a name="13.0"></a>
 <H2> 13.0  AUTHORS                   </H2>
-<!-- #include file="inc/jison.address" -->
+Jon Ison (jison&nbsp;&copy;&nbsp;hgmp.mrc.ac.uk)
+<br>
+HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
+
 Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
 <br><br>Jon Ison <a href="mailto:jison@rfcgr.mrc.ac.uk">(jison@rfcgr.mrc.ac.uk)</a>
 <br>
@@ -629,9 +666,17 @@ Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 -->
 <a name="14.0"></a>
 <H2> 14.0  REFERENCES                </H2>
+
 Please cite the authors and EMBOSS.
 <br><br>
-<i>Rice P, Bleasby A.J.  2000.  EMBOSS - The European Molecular Biology Open Software Suite.  Trends in Genetics, 15:276-278.  See also http://www.uk.embnet.org/Software/EMBOSS</i>
+<i>Rice P, Longden I and Bleasby A (2000) "EMBOSS - The European
+Molecular Biology Open Software Suite"  Trends in Genetics,
+15:276-278.
+
+<p>
+See also <a href="http://emboss.sourceforge.net/">http://emboss.sourceforge.net/</a></i>
+
+
 
 <H3>14.1 Other useful references  </H3>
 1. Conte, L.L., Ailey, B., Hubbard, T.J. Brenner, S.E., Murzin, A.G. and Chothia, C. (2000) SCOP: a structural classification of proteins database. Nucleic Acids Res. 28, 257-259.

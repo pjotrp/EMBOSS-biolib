@@ -1,5 +1,7 @@
 
-DOMAINER documentation
+                           DOMAINER documentation
+                                      
+   
 
 CONTENTS
 
@@ -20,6 +22,8 @@ CONTENTS
 
 1.0 SUMMARY
 
+   Reads CCF files (clean coordinate files) for proteins and writes CCF
+   files for domains, taken from a DCF file (domain classification file)
    Reads CCF files (clean coordinate files) for proteins and writes CCF
    files for domains, taken from a DCF file (domain classification file).
 
@@ -400,8 +404,9 @@ ERROR Domain end not found in ajXyzCpdbWriteDomain
 14.0 REFERENCES
 
    Please cite the authors and EMBOSS.
-   Rice P, Bleasby A.J. 2000. EMBOSS - The European Molecular Biology
-   Open Software Suite. Trends in Genetics, 15:276-278. See also
-   http://www.uk.embnet.org/Software/EMBOSS
+   Rice P, Longden I and Bleasby A (2000) "EMBOSS - The European
+   Molecular Biology Open Software Suite" Trends in Genetics, 15:276-278.
+   
+   See also http://emboss.sourceforge.net/
 
   14.1 Other useful references

@@ -602,7 +602,7 @@ See also
     Program name                         Description
    antigenic      Finds antigenic sites in proteins
    digest         Protein proteolytic enzyme or reagent cleavage digest
-   dreg           regular expression search of a nucleotide sequence
+   dreg           Regular expression search of a nucleotide sequence
    epestfind      Finds PEST motifs as potential proteolytic cleavage sites
    fuzznuc        Nucleic acid pattern search
    fuzzpro        Protein pattern search

@@ -5,7 +5,7 @@
 
 Function
 
-   Converts raw dictionary of heterogen groups to a file in embl-like
+   Converts raw dictionary of heterogen groups to a file in EMBL-like
    format
 
 Description
@@ -45,52 +45,59 @@ Usage
 Command line arguments
 
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-infile]            infile     Parse the dictionary of heterogen groups
-                                  available at
+  [-infile]            infile     This option specifies the name of input file
+                                  (raw dictionary of heterogen groups) to
+                                  parse, which should be of the format
+                                  specified at
                                   http://pdb.rutgers.edu/het_dictionary.txt
-   -dogrep             toggle     Optionally, hetparse will search a directory
-                                  of pdb files and will count the number of
+   -dogrep             toggle     This option specifies whether to search a
+                                  directory of files (typically PDB files)
+                                  with keywords. If set, HETPARSE will search
+                                  the directory and will count the number of
                                   files that each heterogen appears in.
-*  -path               string     Directory to search with keywords
-*  -extn               string     Extension of files to search in above
-                                  directory
-  [-outfile]           outfile    Output file name
+*  -dirlist            dirlist    This option specifies the directory to
+                                  search with keywords.
+  [-outfile]           outfile    This option specifies the name of EMBL-like
+                                  format dictionary of heterogen groups.
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
    "-outfile" associated qualifiers
-   -odirectory2         string     Output directory
+   -odirectory2        string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-infile]
-   (Parameter 1) Parse the dictionary of heterogen groups available at
-   http://pdb.rutgers.edu/het_dictionary.txt Input file Required
-   -dogrep Optionally, hetparse will search a directory of pdb files and
-   will count the number of files that each heterogen appears in. Toggle
-   value Yes/No No
-   -path Directory to search with keywords Any string is accepted ./
-   -extn Extension of files to search in above directory Any string is
-   accepted .ent
+   (Parameter 1) This option specifies the name of input file (raw
+   dictionary of heterogen groups) to parse, which should be of the
+   format specified at http://pdb.rutgers.edu/het_dictionary.txt Input
+   file Required
+   -dogrep This option specifies whether to search a directory of files
+   (typically PDB files) with keywords. If set, HETPARSE will search the
+   directory and will count the number of files that each heterogen
+   appears in. Toggle value Yes/No No
+   -dirlist This option specifies the directory to search with keywords.
+   Directory with files ./
    [-outfile]
-   (Parameter 2) Output file name Output file Ehet.dat
+   (Parameter 2) This option specifies the name of EMBL-like format
+   dictionary of heterogen groups. Output file Ehet.dat
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default
@@ -209,6 +216,11 @@ See also
 
    Program name Description
    aaindexextract Extract data from AAINDEX
+   allversusall Does an all-versus-all global alignment for each set of
+   sequences in an input directory and writes files of sequence
+   similarity values
+   cathparse Reads raw CATH classification files and writes DCF file
+   (domain classification file)
    cutgextract Extract data from CUTG
    domainer Reads CCF files (clean coordinate files) for proteins and
    writes CCF files for domains, taken from a DCF file (domain
@@ -218,22 +230,26 @@ See also
    information, which can be added by using DOMAINSEQS
    domainseqs Adds sequence records to a DCF file (domain classification
    file)
+   domainsse Adds secondary structure records to a DCF file (domain
+   classification file)
    pdbparse Parses PDB files and writes CCF files (clean coordinate
    files) for proteins
-   pdbplus Add records for secondary structure and residue accessibility
-   to a coordinate file
-   pdbtosp Convert raw swissprot:pdb equivalence file to embl-like format
+   pdbplus Add residue solvent accessibility and secondary structure data
+   to a CCF file (clean coordinate file) for a protein or domain
+   pdbtosp Convert raw swissprot:PDB equivalence file to EMBL-like format
    printsextract Extract data from PRINTS
    prosextract Builds the PROSITE motif database for patmatmotifs to
    search
    rebaseextract Extract data from REBASE
-   scopnr Removes redundant domains from a scop classification file
    scopparse Reads raw SCOP classification files and writes a DCF file
    (domain classification file)
-   scopseqs Adds pdb and swissprot sequence records to a scop
-   classification file
    seqnr Removes redundancy from DHF files (domain hits files) or other
    files of sequences
+   sites Reads CCF files (clean coordinate files) and writes CON files
+   (contact files) of residue-ligand contact data for domains in a DCF
+   file (domain classification file)
+   ssematch Searches a DCF file (domain classification file) for
+   secondary structure matches
    tfextract Extract data from TRANSFAC
 
    funky uses the hetparse output file as input.

@@ -135,10 +135,16 @@ See also
 
    Program name Description
    aaindexextract Extract data from AAINDEX
+   cathparse Reads raw CATH classification files and writes DCF file
+   (domain classification file)
+   domainsse Adds secondary structure records to a DCF file (domain
+   classification file)
    printsextract Extract data from PRINTS
    prosextract Builds the PROSITE motif database for patmatmotifs to
    search
    rebaseextract Extract data from REBASE
+   ssematch Searches a DCF file (domain classification file) for
+   secondary structure matches
    tfextract Extract data from TRANSFAC
 
 Author(s)

@@ -115,10 +115,19 @@ dottup           Displays a wordmatch dotplot of two sequences
 polydot          Displays all-against-all dotplots of a set of sequences
 
 ALIGNMENT GLOBAL
+alignrunner      Runs alignment program on all sequence pairs in a directory
+contactalign     EMBOSS implementation of Damian Counsell's 2.5-D alignment algorithm
 esim4            Align an mRNA to a genomic DNA sequence
 est2genome       Align EST and genomic DNA sequences
+nawalign         Damian Counsell's implementation for protein sequences of the Needleman and Wunsch alignment algorithm
+nawalignrunner   Runs nawalign alignment program on all sequence pairs in a directory
 needle           Needleman-Wunsch global alignment
+needlerunner     Runs needle alignment program on all sequence pairs in a directory
+scorer           Scores accuracy of protein-protein sequence alignment against gold standard structure-structure alignment
+scorerrunner     Runs scorer to compare ordered pairs of substituted seqs in two directories and write the scores to a third
 stretcher        Finds the best global alignment between two sequences
+substitute       Substitutes matches from first (query) sequence of two aligned sequences in a trace into second (template sequence)
+substituterunner Runs substitute on directory of traces and writes substituted sequences to another
 
 ALIGNMENT LOCAL
 matcher          Finds the best local alignments between two sequences
@@ -157,6 +166,7 @@ EDIT
 biosed           Replace or delete sequence sections
 cutseq           Removes a specified section from a sequence
 degapseq         Removes gap characters from sequences
+degapseqrunner   Runs degapseq program on all sequence pairs in a directory
 descseq          Alter the name or description of a sequence
 entret           Reads and writes (returns) flatfile entries
 extractfeat      Extract features from a sequence
@@ -254,7 +264,7 @@ tcode            Fickett TESTCODE statistic to identify protein-coding DNA
 wobble           Wobble base plot
 
 NUCLEIC MOTIFS
-dreg             regular expression search of a nucleotide sequence
+dreg             Regular expression search of a nucleotide sequence
 fuzznuc          Nucleic acid pattern search
 fuzztran         Protein pattern search after translation
 marscan          Finds MAR/SAR sites in nucleic sequences
@@ -317,7 +327,7 @@ PHYLOGENY DISCRETE CHARACTERS
 eclique          Largest clique program
 edollop          Dollo and polymorphism parsimony algorithm
 edolpenny        Penny algorithm Dollo or polymorphism
-efactor          multistate to binary recoding program
+efactor          Multistate to binary recoding program
 emix             Mixed parsimony algorithm
 epenny           Penny algorithm, branch-and-bound to find all most parsimonious trees
 fclique          Largest clique program
@@ -392,16 +402,23 @@ tmap             Displays membrane spanning regions
 topo             Draws an image of a transmembrane protein
 
 PROTEIN 3D STRUCTURE
-domainalign      Generates structure-based sequence alignments for nodes in a DCF file (domain classification file)
+contactcount     Counts specific versus non-specific contacts in a directory of cleaned protein chain contact files
+contacts         Reads CCF files (clean coordinate files) and writes CON files (contact files) of intra-chain residue-residue contact data
+domainalign      Generates DAF files (domain alignment files) of structure-based sequence alignments for nodes in a DCF file (domain classification file)
 domainrep        Reorder DCF file (domain classification file) so that the representative structure of each user-specified node is given first
 domainreso       Removes low resolution domains from a DCF file (domain classification file)
+interface        Reads CCF files (clean coordinate files) and writes CON files (contact files) of inter-chain residue-residue contact data
 libgen           Generates various types of discriminating elements for each alignment in a directory
+psiphi           Calculates phi and psi torsion angles from cleaned EMBOSS-style protein co-ordinate file
 rocon            Reads a DHF file (domain hits file) of hits (sequences of unknown structural classification) and a DHF file of validation sequences (known classification) and writes a 'hits file' for the hits, which are classified and rank-ordered on the basis of score
 rocplot          Provides interpretation and graphical display of the performance of discriminating elements (e.g. profiles for protein families). rocplot reads file(s) of hits from discriminator-database search(es), performs ROC analysis on the hits, and writes graphs illustrating the diagnostic performance of the discriminating elements
-seqalign         Reads a DAF file (domain alignment file) and a DHF (domain hits file) and writes a DAF file extended with the hits
+seqalign         Reads a DAF file (domain alignment file) and a DHF file (domain hits file) and writes a DAF file extended with the hits
 seqfraggle       Removes fragments from DHF files (domain hits files) or other files of sequences
 seqsearch        Generate database hits (sequences) for nodes in a DCF file (domain classification file) by using PSI-BLAST
 seqsort          Reads DHF files (domain hits files) of database hits (sequences) and removes hits of ambiguous classification
+seqwords         Generates DHF files (domain hits files) of database hits (sequences) for nodes in a DCF file (domain classification file) by keyword search of UniProt
+siggen           Generates a sparse protein signature from an alignment and residue contact data
+sigscan          Generates a DHF file (domain hits file) of hits (sequences) from scanning a signature against a sequence database
 
 PROTEIN COMPOSITION
 backtranseq      Back translate a protein sequence
@@ -450,16 +467,24 @@ myseq            Demonstration of sequence reading
 
 UTILS DATABASE CREATION
 aaindexextract   Extract data from AAINDEX
+allversusall     Does an all-versus-all global alignment for each set of sequences in an input directory and writes files of sequence similarity values
+cathparse        Reads raw CATH classification files and writes DCF file (domain classification file)
 cutgextract      Extract data from CUTG
 domainer         Reads CCF files (clean coordinate files) for proteins and writes CCF files for domains, taken from a DCF file (domain classification file)
 domainnr         Removes redundant domains from a DCF file (domain classification file). The file must contain domain sequence information, which can be added by using DOMAINSEQS
 domainseqs       Adds sequence records to a DCF file (domain classification file)
+domainsse        Adds secondary structure records to a DCF file (domain classification file)
+hetparse         Converts raw dictionary of heterogen groups to a file in EMBL-like format
 pdbparse         Parses PDB files and writes CCF files (clean coordinate files) for proteins
+pdbplus          Add residue solvent accessibility and secondary structure data to a CCF file (clean coordinate file) for a protein or domain
+pdbtosp          Convert raw swissprot:PDB equivalence file to EMBL-like format
 printsextract    Extract data from PRINTS
 prosextract      Builds the PROSITE motif database for patmatmotifs to search
 rebaseextract    Extract data from REBASE
 scopparse        Reads raw SCOP classification files and writes a DCF file (domain classification file)
 seqnr            Removes redundancy from DHF files (domain hits files) or other files of sequences
+sites            Reads CCF files (clean coordinate files) and writes CON files (contact files) of residue-ligand contact data for domains in a DCF file (domain classification file)
+ssematch         Searches a DCF file (domain classification file) for secondary structure matches
 tfextract        Extract data from TRANSFAC
 
 UTILS DATABASE INDEXING
@@ -496,12 +521,15 @@ acdpretty        ACD pretty printing utility
 acdtable         Creates an HTML table from an ACD file
 acdtrace         ACD compiler on-screen trace
 acdvalid         ACD file validation
+alignrunner      Runs alignment program on all sequence pairs in a directory
+allversusall     Does an all-versus-all global alignment for each set of sequences in an input directory and writes files of sequence similarity values
 antigenic        Finds antigenic sites in proteins
 backtranseq      Back translate a protein sequence
 banana           Bending and curvature plot in B-DNA
 biosed           Replace or delete sequence sections
 btwisted         Calculates the twisting in a B-DNA sequence
 cai              CAI codon adaptation index
+cathparse        Reads raw CATH classification files and writes DCF file (domain classification file)
 chaos            Create a chaos game representation plot for a sequence
 charge           Protein charge plot
 checktrans       Reports STOP codons and ORF statistics of a protein
@@ -511,6 +539,9 @@ codcmp           Codon usage table comparison
 coderet          Extract CDS, mRNA and translations from feature tables
 compseq          Counts the composition of dimer/trimer/etc words in a sequence
 cons             Creates a consensus from multiple alignments
+contactalign     EMBOSS implementation of Damian Counsell's 2.5-D alignment algorithm
+contactcount     Counts specific versus non-specific contacts in a directory of cleaned protein chain contact files
+contacts         Reads CCF files (clean coordinate files) and writes CON files (contact files) of intra-chain residue-residue contact data
 cpgplot          Plot CpG rich areas
 cpgreport        Reports all CpG rich regions
 crystalball      Answers every drug discovery question you have about this sequence
@@ -523,20 +554,22 @@ dbifasta         Index a fasta database
 dbiflat          Index a flat file database
 dbigcg           Index a GCG formatted database
 degapseq         Removes gap characters from sequences
+degapseqrunner   Runs degapseq program on all sequence pairs in a directory
 descseq          Alter the name or description of a sequence
 diffseq          Find differences between nearly identical sequences
 digest           Protein proteolytic enzyme or reagent cleavage digest
 distmat          Creates a distance matrix from multiple alignments
-domainalign      Generates structure-based sequence alignments for nodes in a DCF file (domain classification file)
+domainalign      Generates DAF files (domain alignment files) of structure-based sequence alignments for nodes in a DCF file (domain classification file)
 domainer         Reads CCF files (clean coordinate files) for proteins and writes CCF files for domains, taken from a DCF file (domain classification file)
 domainnr         Removes redundant domains from a DCF file (domain classification file). The file must contain domain sequence information, which can be added by using DOMAINSEQS
 domainrep        Reorder DCF file (domain classification file) so that the representative structure of each user-specified node is given first
 domainreso       Removes low resolution domains from a DCF file (domain classification file)
 domainseqs       Adds sequence records to a DCF file (domain classification file)
+domainsse        Adds secondary structure records to a DCF file (domain classification file)
 dotmatcher       Displays a thresholded dotplot of two sequences
 dotpath          Displays a non-overlapping wordmatch dotplot of two sequences
 dottup           Displays a wordmatch dotplot of two sequences
-dreg             regular expression search of a nucleotide sequence
+dreg             Regular expression search of a nucleotide sequence
 ealistat         Statistics for multiple alignment files
 eclique          Largest clique program
 econsense        Majority-rule and strict consensus tree
@@ -551,7 +584,7 @@ ednapars         DNA parsimony algorithm
 ednapenny        Penny algorithm for DNA
 edollop          Dollo and polymorphism parsimony algorithm
 edolpenny        Penny algorithm Dollo or polymorphism
-efactor          multistate to binary recoding program
+efactor          Multistate to binary recoding program
 efitch           Fitch-Margoliash and Least-Squares Distance Methods
 egendist         Genetic Distance Matrix program
 ehmmalign        Align sequences with an HMM
@@ -635,10 +668,12 @@ garnier          Predicts protein secondary structure
 geecee           Calculates the fractional GC content of nucleic acid sequences
 getorf           Finds and extracts open reading frames (ORFs)
 helixturnhelix   Report nucleic acid binding motifs
+hetparse         Converts raw dictionary of heterogen groups to a file in EMBL-like format
 hmoment          Hydrophobic moment calculation
 iep              Calculates the isoelectric point of a protein
 infoalign        Information on a multiple sequence alignment
 infoseq          Displays some simple information about sequences
+interface        Reads CCF files (clean coordinate files) and writes CON files (contact files) of inter-chain residue-residue contact data
 isochore         Plots isochores in large DNA sequences
 libgen           Generates various types of discriminating elements for each alignment in a directory
 lindna           Draws linear maps of DNA constructs
@@ -655,7 +690,10 @@ mse              Multiple Sequence Editor
 mwcontam         Shows molwts that match across a set of files
 mwfilter         Filter noisy molwts from mass spec output
 myseq            Demonstration of sequence reading
+nawalign         Damian Counsell's implementation for protein sequences of the Needleman and Wunsch alignment algorithm
+nawalignrunner   Runs nawalign alignment program on all sequence pairs in a directory
 needle           Needleman-Wunsch global alignment
+needlerunner     Runs needle alignment program on all sequence pairs in a directory
 newcpgreport     Report CpG rich areas
 newcpgseek       Reports CpG rich regions
 newseq           Type in a short new sequence
@@ -669,6 +707,8 @@ pasteseq         Insert one sequence into another
 patmatdb         Search a protein sequence with a motif
 patmatmotifs     Search a PROSITE motif database with a protein sequence
 pdbparse         Parses PDB files and writes CCF files (clean coordinate files) for proteins
+pdbplus          Add residue solvent accessibility and secondary structure data to a CCF file (clean coordinate file) for a protein or domain
+pdbtosp          Convert raw swissprot:PDB equivalence file to EMBL-like format
 pepcoil          Predicts coiled coil regions
 pepinfo          Plots simple amino acid properties in parallel
 pepnet           Displays proteins as a helical net
@@ -689,6 +729,7 @@ prophecy         Creates matrices/profiles from multiple alignments
 prophet          Gapped alignment for profiles
 prosextract      Builds the PROSITE motif database for patmatmotifs to search
 pscan            Scans proteins using PRINTS
+psiphi           Calculates phi and psi torsion angles from cleaned EMBOSS-style protein co-ordinate file
 rebaseextract    Extract data from REBASE
 recoder          Remove restriction sites but maintain the same translation
 redata           Search REBASE for enzyme name, references, suppliers etc
@@ -699,8 +740,10 @@ revseq           Reverse and complement a sequence
 rocon            Reads a DHF file (domain hits file) of hits (sequences of unknown structural classification) and a DHF file of validation sequences (known classification) and writes a 'hits file' for the hits, which are classified and rank-ordered on the basis of score
 rocplot          Provides interpretation and graphical display of the performance of discriminating elements (e.g. profiles for protein families). rocplot reads file(s) of hits from discriminator-database search(es), performs ROC analysis on the hits, and writes graphs illustrating the diagnostic performance of the discriminating elements
 scopparse        Reads raw SCOP classification files and writes a DCF file (domain classification file)
+scorer           Scores accuracy of protein-protein sequence alignment against gold standard structure-structure alignment
+scorerrunner     Runs scorer to compare ordered pairs of substituted seqs in two directories and write the scores to a third
 seealso          Finds programs sharing group names
-seqalign         Reads a DAF file (domain alignment file) and a DHF (domain hits file) and writes a DAF file extended with the hits
+seqalign         Reads a DAF file (domain alignment file) and a DHF file (domain hits file) and writes a DAF file extended with the hits
 seqfraggle       Removes fragments from DHF files (domain hits files) or other files of sequences
 seqmatchall      Does an all-against-all comparison of a set of sequences
 seqnr            Removes redundancy from DHF files (domain hits files) or other files of sequences
@@ -708,6 +751,7 @@ seqret           Reads and writes (returns) sequences
 seqretsplit      Reads and writes (returns) sequences in individual files
 seqsearch        Generate database hits (sequences) for nodes in a DCF file (domain classification file) by using PSI-BLAST
 seqsort          Reads DHF files (domain hits files) of database hits (sequences) and removes hits of ambiguous classification
+seqwords         Generates DHF files (domain hits files) of database hits (sequences) for nodes in a DCF file (domain classification file) by keyword search of UniProt
 showalign        Displays a multiple sequence alignment
 showdb           Displays information on the currently available databases
 showfeat         Show features of a sequence
@@ -715,13 +759,19 @@ showorf          Pretty output of DNA translations
 showseq          Display a sequence with features, translation etc
 shuffleseq       Shuffles a set of sequences maintaining composition
 sigcleave        Reports protein signal cleavage sites
+siggen           Generates a sparse protein signature from an alignment and residue contact data
+sigscan          Generates a DHF file (domain hits file) of hits (sequences) from scanning a signature against a sequence database
 silent           Silent mutation restriction enzyme scan
 sirna            Finds siRNA duplexes in mRNA
+sites            Reads CCF files (clean coordinate files) and writes CON files (contact files) of residue-ligand contact data for domains in a DCF file (domain classification file)
 sixpack          Display a DNA sequence with 6-frame translation and ORFs
 skipseq          Reads and writes (returns) sequences, skipping the first few
 splitter         Split a sequence into (overlapping) smaller sequences
+ssematch         Searches a DCF file (domain classification file) for secondary structure matches
 stretcher        Finds the best global alignment between two sequences
 stssearch        Searches a DNA database for matches with a set of STS primers
+substitute       Substitutes matches from first (query) sequence of two aligned sequences in a trace into second (template sequence)
+substituterunner Runs substitute on directory of traces and writes substituted sequences to another
 supermatcher     Finds a match of a large sequence against one or more sequences
 syco             Synonymous codon usage Gribskov statistic plot
 tcode            Fickett TESTCODE statistic to identify protein-coding DNA
@@ -882,7 +932,7 @@ Output html tags around the list of programs:
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>wossname '' -html -prelink 'http://www.uk.embnet.org/Software/EMBOSS/Apps/' -postlink '.html' -out wossname.html </b>
+% <b>wossname '' -html -prelink 'http://emboss.sf.net/apps/' -postlink '.html' -out wossname.html </b>
 Finds programs by keywords in their one-line documentation
 
 </pre></td></tr></table><p>
@@ -1178,107 +1228,107 @@ that the programs belong to or the word that is being searched for.
 <h2><a name="ACD">ACD</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/acdc.html">acdc</a></td><td>ACD compiler</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/acdpretty.html">acdpretty</a></td><td>ACD pretty printing utility</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/acdtable.html">acdtable</a></td><td>Creates an HTML table from an ACD file</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/acdtrace.html">acdtrace</a></td><td>ACD compiler on-screen trace</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/acdvalid.html">acdvalid</a></td><td>ACD file validation</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/acdc.html">acdc</a></td><td>ACD compiler</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/acdpretty.html">acdpretty</a></td><td>ACD pretty printing utility</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/acdtable.html">acdtable</a></td><td>Creates an HTML table from an ACD file</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/acdtrace.html">acdtrace</a></td><td>ACD compiler on-screen trace</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/acdvalid.html">acdvalid</a></td><td>ACD file validation</td></tr>
 </table>
 <h2><a name="ALIGNMENT CONSENSUS">ALIGNMENT CONSENSUS</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/cons.html">cons</a></td><td>Creates a consensus from multiple alignments</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/megamerger.html">megamerger</a></td><td>Merge two large overlapping nucleic acid sequences</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/merger.html">merger</a></td><td>Merge two overlapping nucleic acid sequences</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/cons.html">cons</a></td><td>Creates a consensus from multiple alignments</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/megamerger.html">megamerger</a></td><td>Merge two large overlapping nucleic acid sequences</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/merger.html">merger</a></td><td>Merge two overlapping nucleic acid sequences</td></tr>
 </table>
 <h2><a name="ALIGNMENT DIFFERENCES">ALIGNMENT DIFFERENCES</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/diffseq.html">diffseq</a></td><td>Find differences between nearly identical sequences</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/diffseq.html">diffseq</a></td><td>Find differences between nearly identical sequences</td></tr>
 </table>
 <h2><a name="ALIGNMENT DOT PLOTS">ALIGNMENT DOT PLOTS</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/dotmatcher.html">dotmatcher</a></td><td>Displays a thresholded dotplot of two sequences</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/dotpath.html">dotpath</a></td><td>Displays a non-overlapping wordmatch dotplot of two sequences</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/dottup.html">dottup</a></td><td>Displays a wordmatch dotplot of two sequences</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/polydot.html">polydot</a></td><td>Displays all-against-all dotplots of a set of sequences</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/dotmatcher.html">dotmatcher</a></td><td>Displays a thresholded dotplot of two sequences</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/dotpath.html">dotpath</a></td><td>Displays a non-overlapping wordmatch dotplot of two sequences</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/dottup.html">dottup</a></td><td>Displays a wordmatch dotplot of two sequences</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/polydot.html">polydot</a></td><td>Displays all-against-all dotplots of a set of sequences</td></tr>
 </table>
 <h2><a name="ALIGNMENT GLOBAL">ALIGNMENT GLOBAL</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/esim4.html">esim4</a></td><td>Align an mRNA to a genomic DNA sequence</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/est2genome.html">est2genome</a></td><td>Align EST and genomic DNA sequences</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/needle.html">needle</a></td><td>Needleman-Wunsch global alignment</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/stretcher.html">stretcher</a></td><td>Finds the best global alignment between two sequences</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/alignrunner.html">alignrunner</a></td><td>Runs alignment program on all sequence pairs in a directory</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/contactalign.html">contactalign</a></td><td>EMBOSS implementation of Damian Counsell's 2.5-D alignment algorithm</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/esim4.html">esim4</a></td><td>Align an mRNA to a genomic DNA sequence</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/est2genome.html">est2genome</a></td><td>Align EST and genomic DNA sequences</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/nawalign.html">nawalign</a></td><td>Damian Counsell's implementation for protein sequences of the Needleman and Wunsch alignment algorithm</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/nawalignrunner.html">nawalignrunner</a></td><td>Runs nawalign alignment program on all sequence pairs in a directory</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/needle.html">needle</a></td><td>Needleman-Wunsch global alignment</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/needlerunner.html">needlerunner</a></td><td>Runs needle alignment program on all sequence pairs in a directory</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/scorer.html">scorer</a></td><td>Scores accuracy of protein-protein sequence alignment against gold standard structure-structure alignment</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/scorerrunner.html">scorerrunner</a></td><td>Runs scorer to compare ordered pairs of substituted seqs in two directories and write the scores to a third</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/stretcher.html">stretcher</a></td><td>Finds the best global alignment between two sequences</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/substitute.html">substitute</a></td><td>Substitutes matches from first (query) sequence of two aligned sequences in a trace into second (template sequence)</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/substituterunner.html">substituterunner</a></td><td>Runs substitute on directory of traces and writes substituted sequences to another</td></tr>
 </table>
 <h2><a name="ALIGNMENT LOCAL">ALIGNMENT LOCAL</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/matcher.html">matcher</a></td><td>Finds the best local alignments between two sequences</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/seqmatchall.html">seqmatchall</a></td><td>Does an all-against-all comparison of a set of sequences</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/supermatcher.html">supermatcher</a></td><td>Finds a match of a large sequence against one or more sequences</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/water.html">water</a></td><td>Smith-Waterman local alignment</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/wordmatch.html">wordmatch</a></td><td>Finds all exact matches of a given size between 2 sequences</td></tr>
-</table>
-<h2><a name="ALIGNMENT MULTIPLE">ALIGNMENT MULTIPLE</a></h2>
-<table border cellpadding=4 bgcolor="#FFFFF0">
-<tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/emma.html">emma</a></td><td>Multiple alignment program - interface to ClustalW program</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/matcher.html">matcher</a></td><td>Finds the best local alignments between two sequences</td></tr>
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/sigcleave.html">sigcleave</a></td><td>Reports protein signal cleavage sites</td></tr>
-</table>
-<h2><a name="PROTEIN MUTATION">PROTEIN MUTATION</a></h2>
-<table border cellpadding=4 bgcolor="#FFFFF0">
-<tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/msbar.html">msbar</a></td><td>Mutate sequence beyond all recognition</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/shuffleseq.html">shuffleseq</a></td><td>Shuffles a set of sequences maintaining composition</td></tr>
-</table>
 <h2><a name="PROTEIN PROFILES">PROTEIN PROFILES</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/profit.html">profit</a></td><td>Scan a sequence or database with a matrix or profile</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/prophecy.html">prophecy</a></td><td>Creates matrices/profiles from multiple alignments</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/prophet.html">prophet</a></td><td>Gapped alignment for profiles</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/profit.html">profit</a></td><td>Scan a sequence or database with a matrix or profile</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/prophecy.html">prophecy</a></td><td>Creates matrices/profiles from multiple alignments</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/prophet.html">prophet</a></td><td>Gapped alignment for profiles</td></tr>
 </table>
 <h2><a name="TEST">TEST</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/crystalball.html">crystalball</a></td><td>Answers every drug discovery question you have about this sequence</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/myseq.html">myseq</a></td><td>Demonstration of sequence reading</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/crystalball.html">crystalball</a></td><td>Answers every drug discovery question you have about this sequence</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/myseq.html">myseq</a></td><td>Demonstration of sequence reading</td></tr>
 </table>
 <h2><a name="UTILS DATABASE CREATION">UTILS DATABASE CREATION</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/aaindexextract.html">aaindexextract</a></td><td>Extract data from AAINDEX</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/cutgextract.html">cutgextract</a></td><td>Extract data from CUTG</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/domainer.html">domainer</a></td><td>Reads CCF files (clean coordinate files) for proteins and writes CCF files for domains, taken from a DCF file (domain classification file)</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/domainnr.html">domainnr</a></td><td>Removes redundant domains from a DCF file (domain classification file). The file must contain domain sequence information, which can be added by using DOMAINSEQS</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/domainseqs.html">domainseqs</a></td><td>Adds sequence records to a DCF file (domain classification file)</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/pdbparse.html">pdbparse</a></td><td>Parses PDB files and writes CCF files (clean coordinate files) for proteins</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/printsextract.html">printsextract</a></td><td>Extract data from PRINTS</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/prosextract.html">prosextract</a></td><td>Builds the PROSITE motif database for patmatmotifs to search</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/rebaseextract.html">rebaseextract</a></td><td>Extract data from REBASE</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/scopparse.html">scopparse</a></td><td>Reads raw SCOP classification files and writes a DCF file (domain classification file)</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/seqnr.html">seqnr</a></td><td>Removes redundancy from DHF files (domain hits files) or other files of sequences</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/tfextract.html">tfextract</a></td><td>Extract data from TRANSFAC</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/aaindexextract.html">aaindexextract</a></td><td>Extract data from AAINDEX</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/allversusall.html">allversusall</a></td><td>Does an all-versus-all global alignment for each set of sequences in an input directory and writes files of sequence similarity values</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/cathparse.html">cathparse</a></td><td>Reads raw CATH classification files and writes DCF file (domain classification file)</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/cutgextract.html">cutgextract</a></td><td>Extract data from CUTG</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/domainer.html">domainer</a></td><td>Reads CCF files (clean coordinate files) for proteins and writes CCF files for domains, taken from a DCF file (domain classification file)</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/domainnr.html">domainnr</a></td><td>Removes redundant domains from a DCF file (domain classification file). The file must contain domain sequence information, which can be added by using DOMAINSEQS</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/domainseqs.html">domainseqs</a></td><td>Adds sequence records to a DCF file (domain classification file)</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/domainsse.html">domainsse</a></td><td>Adds secondary structure records to a DCF file (domain classification file)</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/hetparse.html">hetparse</a></td><td>Converts raw dictionary of heterogen groups to a file in EMBL-like format</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/pdbparse.html">pdbparse</a></td><td>Parses PDB files and writes CCF files (clean coordinate files) for proteins</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/pdbplus.html">pdbplus</a></td><td>Add residue solvent accessibility and secondary structure data to a CCF file (clean coordinate file) for a protein or domain</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/pdbtosp.html">pdbtosp</a></td><td>Convert raw swissprot:PDB equivalence file to EMBL-like format</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/printsextract.html">printsextract</a></td><td>Extract data from PRINTS</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/prosextract.html">prosextract</a></td><td>Builds the PROSITE motif database for patmatmotifs to search</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/rebaseextract.html">rebaseextract</a></td><td>Extract data from REBASE</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/scopparse.html">scopparse</a></td><td>Reads raw SCOP classification files and writes a DCF file (domain classification file)</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/seqnr.html">seqnr</a></td><td>Removes redundancy from DHF files (domain hits files) or other files of sequences</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/sites.html">sites</a></td><td>Reads CCF files (clean coordinate files) and writes CON files (contact files) of residue-ligand contact data for domains in a DCF file (domain classification file)</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/ssematch.html">ssematch</a></td><td>Searches a DCF file (domain classification file) for secondary structure matches</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/tfextract.html">tfextract</a></td><td>Extract data from TRANSFAC</td></tr>
 </table>
 <h2><a name="UTILS DATABASE INDEXING">UTILS DATABASE INDEXING</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/dbiblast.html">dbiblast</a></td><td>Index a BLAST database</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/dbifasta.html">dbifasta</a></td><td>Index a fasta database</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/dbiflat.html">dbiflat</a></td><td>Index a flat file database</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/dbigcg.html">dbigcg</a></td><td>Index a GCG formatted database</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/dbiblast.html">dbiblast</a></td><td>Index a BLAST database</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/dbifasta.html">dbifasta</a></td><td>Index a fasta database</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/dbiflat.html">dbiflat</a></td><td>Index a flat file database</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/dbigcg.html">dbigcg</a></td><td>Index a GCG formatted database</td></tr>
 </table>
 <h2><a name="UTILS MISC">UTILS MISC</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/embossdata.html">embossdata</a></td><td>Finds or fetches the data files read in by the EMBOSS programs</td></tr>
-<tr><td><a href="http://www.uk.embnet.org/Software/EMBOSS/Apps/embossversion.html">embossversion</a></td><td>Writes the current EMBOSS version number</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/embossdata.html">embossdata</a></td><td>Finds or fetches the data files read in by the EMBOSS programs</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/embossversion.html">embossversion</a></td><td>Writes the current EMBOSS version number</td></tr>
 </table>
 </td></tr></table><p>
 

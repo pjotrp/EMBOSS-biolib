@@ -5,7 +5,7 @@
 
 Function
 
-   regular expression search of a nucleotide sequence
+   Regular expression search of a nucleotide sequence
 
 Description
 
@@ -654,7 +654,7 @@ Usage
 
 
 % dreg 
-regular expression search of a nucleotide sequence
+Regular expression search of a nucleotide sequence
 Input sequence(s): tembl:paamir
 Regular expression pattern: ggtacc
 Output report [paamir.dreg]: 

@@ -166,6 +166,18 @@ Usage
    Here is a sample session with banana
 
 
+% banana -nooutfile -graph ps 
+Bending and curvature plot in B-DNA
+Input sequence: tembl:rnu68037
+
+Created banana.ps
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+   Example 2
+
+
 % banana -graph data 
 Bending and curvature plot in B-DNA
 Input sequence: tembl:rnu68037
@@ -180,7 +192,6 @@ Created banana7.dat
 Created banana8.dat
 Created banana9.dat
 
-   Go to the input files for this example
    Go to the output files for this example
 
 Command line arguments
@@ -384,6 +395,12 @@ Output file format
    bending (solid line) and macroscopic curvature (dotted line).
 
   Output files for usage example
+
+  Graphics File: banana.ps
+
+   [banana results]
+
+  Output files for usage example 2
 
   File: banana.profile
 

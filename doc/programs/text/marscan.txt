@@ -404,7 +404,7 @@ Known bugs
 See also
 
    Program name                        Description
-   dreg         regular expression search of a nucleotide sequence
+   dreg         Regular expression search of a nucleotide sequence
    fuzznuc      Nucleic acid pattern search
    fuzztran     Protein pattern search after translation
    getorf       Finds and extracts open reading frames (ORFs)

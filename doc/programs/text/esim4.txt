@@ -597,10 +597,28 @@ Known bugs
 
 See also
 
-   Program name                      Description
-   est2genome   Align EST and genomic DNA sequences
-   needle       Needleman-Wunsch global alignment
-   stretcher    Finds the best global alignment between two sequences
+   Program name Description
+   alignrunner Runs alignment program on all sequence pairs in a
+   directory
+   contactalign EMBOSS implementation of Damian Counsell's 2.5-D
+   alignment algorithm
+   est2genome Align EST and genomic DNA sequences
+   nawalign Damian Counsell's implementation for protein sequences of the
+   Needleman and Wunsch alignment algorithm
+   nawalignrunner Runs nawalign alignment program on all sequence pairs
+   in a directory
+   needle Needleman-Wunsch global alignment
+   needlerunner Runs needle alignment program on all sequence pairs in a
+   directory
+   scorer Scores accuracy of protein-protein sequence alignment against
+   gold standard structure-structure alignment
+   scorerrunner Runs scorer to compare ordered pairs of substituted seqs
+   in two directories and write the scores to a third
+   stretcher Finds the best global alignment between two sequences
+   substitute Substitutes matches from first (query) sequence of two
+   aligned sequences in a trace into second (template sequence)
+   substituterunner Runs substitute on directory of traces and writes
+   substituted sequences to another
 
 Author(s)
 

@@ -73,7 +73,6 @@ Command line arguments
    Advanced (Unprompted) qualifiers:
    -fields             menu       Index fields
    -exclude            string     Wildcard filename(s) to exclude
-   -indexdirectory     directory  Index directory
    -maxindex           integer    Maximum index length
    -sortoptions        string     Sort options, typically '-T .' to use
                                   current directory for work files and '-k
@@ -81,27 +80,28 @@ Command line arguments
                                   field
    -[no]systemsort     boolean    Use system sort utility
    -[no]cleanup        boolean    Clean up temporary files
+   -indexdirectory     outdir     Index directory
 
    Associated qualifiers: (none)
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-dbname]
-   (Parameter 1) Database name A string from 1 to 19 characters, matching
+   (Parameter 1) Database name A string from 2 to 19 characters, matching
    regular expression /[A-z][A-z0-9_]+/ Required
    -idformat Entry format
    EMBL   (EMBL)
@@ -125,13 +125,13 @@ Command line arguments
    acnum
    -exclude Wildcard filename(s) to exclude Any string is accepted An
    empty string is accepted
-   -indexdirectory Index directory Directory .
    -maxindex Maximum index length Integer 0 or more 0
    -sortoptions Sort options, typically '-T .' to use current directory
    for work files and '-k 1,1' to force GNU sort to use the first field
    Any string is accepted -T . -k 1,1
    -[no]systemsort Use system sort utility Boolean value Yes/No Yes
    -[no]cleanup Clean up temporary files Boolean value Yes/No Yes
+   -indexdirectory Index directory Output directory .
 
 Input file format
 

@@ -367,7 +367,7 @@ Known bugs
 See also
 
    Program name                    Description
-   dreg         regular expression search of a nucleotide sequence
+   dreg         Regular expression search of a nucleotide sequence
    fuzztran     Protein pattern search after translation
    marscan      Finds MAR/SAR sites in nucleic sequences
 

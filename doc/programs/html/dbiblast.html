@@ -159,7 +159,6 @@ Blast index version [unknown]: <b></b>
    Advanced (Unprompted) qualifiers:
    -fields             menu       Index fields
    -exclude            string     Wildcard filename(s) to exclude
-   -indexdirectory     directory  Index directory
    -sortoptions        string     Sort options, typically '-T .' to use
                                   current directory for work files and '-k
                                   1,1' to force GNU sort to use the first
@@ -168,22 +167,23 @@ Blast index version [unknown]: <b></b>
    -[no]systemsort     boolean    Use system sort utility
    -[no]cleanup        boolean    Clean up temporary files
    -sourcefile         boolean    Use FASTA source file
+   -indexdirectory     outdir     Index directory
 
    Associated qualifiers: (none)
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
 
 </pre>
@@ -199,7 +199,7 @@ Blast index version [unknown]: <b></b>
 <tr>
 <td>[-dbname]<br>(Parameter 1)</td>
 <td>Database name</td>
-<td>A string from 1 to 19 characters, matching regular expression /[A-z][A-z0-9_]+/</td>
+<td>A string from 2 to 19 characters, matching regular expression /[A-z][A-z0-9_]+/</td>
 <td><b>Required</b></td>
 </tr>
 
@@ -276,13 +276,6 @@ Blast index version [unknown]: <b></b>
 </tr>
 
 <tr>
-<td>-indexdirectory</td>
-<td>Index directory</td>
-<td>Directory</td>
-<td>.</td>
-</tr>
-
-<tr>
 <td>-sortoptions</td>
 <td>Sort options, typically '-T .' to use current directory for work files and '-k 1,1' to force GNU sort to use the first field</td>
 <td>Any string is accepted</td>
@@ -315,6 +308,13 @@ Blast index version [unknown]: <b></b>
 <td>Use FASTA source file</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
+</tr>
+
+<tr>
+<td>-indexdirectory</td>
+<td>Index directory</td>
+<td>Output directory</td>
+<td>.</td>
 </tr>
 
 </table>

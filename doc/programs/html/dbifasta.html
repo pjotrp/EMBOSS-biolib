@@ -113,7 +113,6 @@ Index date [00/00/00]: <b></b>
    Advanced (Unprompted) qualifiers:
    -fields             menu       Index fields
    -exclude            string     Wildcard filename(s) to exclude
-   -indexdirectory     directory  Index directory
    -maxindex           integer    Maximum index length
    -sortoptions        string     Sort options, typically '-T .' to use
                                   current directory for work files and '-k
@@ -121,22 +120,23 @@ Index date [00/00/00]: <b></b>
                                   field
    -[no]systemsort     boolean    Use system sort utility
    -[no]cleanup        boolean    Clean up temporary files
+   -indexdirectory     outdir     Index directory
 
    Associated qualifiers: (none)
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
 
 </pre>
@@ -152,7 +152,7 @@ Index date [00/00/00]: <b></b>
 <tr>
 <td>[-dbname]<br>(Parameter 1)</td>
 <td>Database name</td>
-<td>A string from 1 to 19 characters, matching regular expression /[A-z][A-z0-9_]+/</td>
+<td>A string from 2 to 19 characters, matching regular expression /[A-z][A-z0-9_]+/</td>
 <td><b>Required</b></td>
 </tr>
 
@@ -222,13 +222,6 @@ Index date [00/00/00]: <b></b>
 </tr>
 
 <tr>
-<td>-indexdirectory</td>
-<td>Index directory</td>
-<td>Directory</td>
-<td>.</td>
-</tr>
-
-<tr>
 <td>-maxindex</td>
 <td>Maximum index length</td>
 <td>Integer 0 or more</td>
@@ -254,6 +247,13 @@ Index date [00/00/00]: <b></b>
 <td>Clean up temporary files</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
+</tr>
+
+<tr>
+<td>-indexdirectory</td>
+<td>Index directory</td>
+<td>Output directory</td>
+<td>.</td>
 </tr>
 
 </table>
