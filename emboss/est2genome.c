@@ -184,8 +184,8 @@ main( ajint argc, char *argv[])
       if ( megabytes < ajSeqLen(genome)*1.5e-6 ) 
 	{
 	  ajWarn ("increasing space from %.3f to %.3f Mb\n",
-		  megabytes, 1.5e-6*ajSeqLen(genome)* );
-	  megabytes = 1.5e-6*ajSeqLen(genome)*;
+		  megabytes, 1.5e-6*ajSeqLen(genome) );
+	  megabytes = 1.5e-6*ajSeqLen(genome);
 	}
 
       /* find the GT/AG splice sites */
