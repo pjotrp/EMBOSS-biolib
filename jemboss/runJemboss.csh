@@ -5,7 +5,7 @@
 setenv JEMBOSS_HOME .
 setenv LIB $JEMBOSS_HOME/lib
 
-setenv CLASSPATH ${JEMBOSS_HOME}:$LIB/JembossPrintAlignment.jar:$LIB/axis/axis.jar:$LIB/axis/jaxrpc.jar:$LIB/axis/saaj.jar:$LIB/jakarta-regexp-1.2.jar:$LIB/jalview.jar:$LIB/jnet.jar:$LIB/jcert.jar:$LIB/jsse.jar:$LIB/xerces.jar:$LIB/axis/commons-logging.jar:$LIB/axis/commons-discovery.jar
+setenv CLASSPATH ${JEMBOSS_HOME}:$LIB/JembossPrintAlignment.jar:$LIB/axis/axis.jar:$LIB/axis/jaxrpc.jar:$LIB/axis/saaj.jar:$LIB/jakarta-regexp-1.2.jar:$LIB/jalview.jar:$LIB/jnet.jar:$LIB/jcert.jar:$LIB/jsse.jar:$LIB/xerces.jar:$LIB/axis/commons-logging.jar:$LIB/axis/commons-discovery.jar:$LIB/grout.jar
 
 #$LIB/axis/servlet.jar
 
