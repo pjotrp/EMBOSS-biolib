@@ -64,7 +64,7 @@ AjBool        embDmxScopToScophit(const AjPScop source,
 
 AjBool        embDmxScopalgToScop(const AjPScopalg align,
 				  const AjPScop *scop_arr, 
-				  ajint dim, 
+				  ajint scop_dim, 
 				  AjPList* list);
 
 AjBool        embDmxScophitsOverlap(const AjPScophit h1,
