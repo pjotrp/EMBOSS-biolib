@@ -48,6 +48,9 @@ AjBool 	ajXmlAddYTitle(AjPXmlFile file, AjPStr title);
 void 	ajXmlAddText(AjPXmlFile file, double x, double y,
 		     double size, double angle, AjPStr fontFamily,
 		     AjPStr fontStyle, AjPStr text);
+void 	ajXmlAddTextC(AjPXmlFile file, double x, double y,
+		      double size, double angle, char *fontFamily,
+		      char *fontStyle, char *text);
 void 	ajXmlAddTextCentred(AjPXmlFile file, double x, double y,
 			    double size, double angle,
 			    AjPStr fontFamily, AjPStr fontStyle,
@@ -60,6 +63,14 @@ void 	ajXmlAddTextWithJustify(AjPXmlFile file, double x, double y,
 				AjBool topToBottom,
 				AjPStr justifyMajor,
 				AjPStr justifyMinor);
+void 	ajXmlAddTextWithCJustify(AjPXmlFile file, double x, double y,
+				 double size, double angle,
+				 AjPStr fontFamily, AjPStr fontStyle,
+				 AjPStr text, AjBool horizontal,
+				 AjBool leftToRight,
+				 AjBool topToBottom,
+				 char *justifyMajor,
+				 char *justifyMinor);
 void 	ajXmlAddTextOnArc(AjPXmlFile file, double xCentre,
 			  double yCentre, double startAngle,
 			  double endAngle, double radius,

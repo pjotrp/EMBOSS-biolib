@@ -30,26 +30,30 @@
 
 #define ONE_METER_FONT 1.784
 #define RESIDUE_SQUARE_SIZE 1.7
-#define QUOTE_CHARACTERS "\""
+#define SQUARESIZE 0.03
 
 
 static AjPXmlNode	xml_MakeNewNode(AjPXmlFile file,AjPStr name,
 					AjPXmlNode parent);
+static AjPXmlNode	xml_MakeNewNodeC(AjPXmlFile file, char *name, 
+					 AjPXmlNode parent);
+
 static AjPXmlNode 	xml_MakeNewShapeNode(AjPXmlFile file,
 					     AjPXmlNode parentNode,
 					     AjPStr nameReqd);
+static AjPXmlNode 	xml_MakeNewShapeNodeC(AjPXmlFile file,
+					      AjPXmlNode parentNode,
+					      char *nameReqd);
 static AjPXmlNode 	xml_GetNodeTypeMakeIfNot(AjPXmlFile file,
 						 AjPStr nameReqd);
+static AjPXmlNode 	xml_GetNodeTypeMakeIfNotC(AjPXmlFile file,
+						  char *nameReqd);
 static AjPXmlFile 	xml_CreateNewOutputFile();
 static AjPXmlNode 	xml_GetCurrentGraphic(AjPXmlFile file);
 static AjPXmlNode 	xml_GetCurrentScene(AjPXmlFile file);
 static AjPXmlNode 	xml_SetNode(GdomeNode *node);
 static GdomeNode* 	xml_GetNode(AjPXmlNode node);
 static GdomeElement* 	xml_GetNodeElement(AjPXmlNode node);
-/* Never used
-static AjPXmlNode 	xml_NewNode(AjPXmlFile file, AjPStr name,
-				    AjPXmlNode parent);
-*/
 static AjPXmlNode 	xml_GetParent(AjPXmlNode node);
 
 static void 	xml_AddGroutOption(AjPXmlFile file, AjPStr name, AjPStr value);
@@ -59,10 +63,14 @@ static void 	xml_AddCylinder(AjPXmlFile file, double xCentre,
 static AjPStr 	xml_StrFromBool(AjBool boole);
 static AjBool 	xml_StrFromDouble(AjPStr *result, double val);
 static AjBool 	xml_AngleIsInSecondHalfOfCircle(double angle);
-static AjBool 	xml_PressentGraphicTypeIs(AjPXmlFile file, AjPStr name);
+static AjBool 	xml_PresentGraphicTypeIs(AjPXmlFile file, AjPStr name);
+static AjBool 	xml_PresentGraphicTypeIsC(AjPXmlFile file, char *name);
 static AjPStr 	xml_GetAttribute(AjPXmlNode node, AjPStr atName);
+static AjPStr 	xml_GetAttributeC(AjPXmlNode node, char *atName);
 static void 	xml_SetAttribute(AjPXmlNode node, AjPStr atName,
 				 AjPStr atValue);
+static void 	xml_SetAttributeC(AjPXmlNode node, char *atName,
+				  char *atValue);
 static AjPStr 	xml_GetIndex(AjPXmlNode node);
 static void 	xml_SetIndex(AjPXmlNode node, AjPStr index);
 static AjPStr 	xml_GetPoints(AjPXmlNode node);
@@ -70,6 +78,7 @@ static AjBool 	xml_SetPoints(AjPXmlNode node, AjPStr points);
 
 static AjPStr 	xml_PresentColourAsString(AjPXmlFile file);
 static AjBool 	xml_FileNeedsProtoDeclare(AjPXmlFile file, AjPStr protoName);
+static AjBool 	xml_FileNeedsProtoDeclareC(AjPXmlFile file, char *protoName);
 static AjBool 	xml_IsShapeThisColour(AjPXmlFile file, AjPXmlNode shape);
 
 static void 	xml_AddArc(AjPXmlFile file, double xCentre, double yCentre,
@@ -80,7 +89,6 @@ static void 	xml_AddACoord(double x, double y, AjBool joined, AjPStr* coord,
 static int 	xml_GetLastInt(AjPStr str);
 static double 	xml_GetetLastDouble(AjPStr str);
 static double 	xml_GetDoubleNo(AjPStr str, int index);
-static void 	xml_AddQuotes(AjPStr *title);
 
 static void 	xml_AddGraphProto(AjPXmlFile file);
 static void 	xml_AddDNAPlotProto(AjPXmlFile file);
@@ -169,7 +177,8 @@ void ajXmlFileDel(AjPXmlFile *thys)
 	return;
 
     AJFREE(*thys);
-
+    *thys = NULL;
+    
     return;
 }
 
@@ -195,49 +204,51 @@ AjBool ajXmlSetMaxMin (AjPXmlFile file, double xMin, double yMin,
     AjPXmlNode minMaxNode;
     AjPStr doub=NULL;
     AjPStr value=NULL;
-    AjPStr nameString=NULL;
-    AjPStr nameString2=NULL;
     
     value = ajStrNewC("[");
+    doub  = ajStrNew();
     
-    nameString = ajStrNewC("Graph");
-    if(!xml_PressentGraphicTypeIs(file, nameString))
+
+    if(!xml_PresentGraphicTypeIsC(file, "Graph"))
+    {
+	ajStrDel(&doub);
+	ajStrDel(&value);
 	return ajFalse;
+    }
     
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("fieldValue");
-    minMaxNode = xml_MakeNewNode(file, nameString, 
+
+    minMaxNode = xml_MakeNewNodeC(file, "fieldValue", 
 				 xml_GetCurrentGraphic(file));
+
     xml_StrFromDouble(&doub, xMin);
     ajStrAppC(&value, ajStrStr(doub));  
     ajStrAppC(&value, ", ");  
-    ajStrDel(&doub);
+
+
     xml_StrFromDouble(&doub, yMin);
     ajStrAppC(&value, ajStrStr(doub));  
     ajStrAppC(&value, ", ");  
-    ajStrDel(&doub);
+
+
     xml_StrFromDouble(&doub, xMax);
     ajStrAppC(&value, ajStrStr(doub));  
     ajStrAppC(&value, ", ");  
-    ajStrDel(&doub);
+
+
     xml_StrFromDouble(&doub, yMax);
     ajStrAppC(&value, ajStrStr(doub));  
     ajStrAppC(&value, "]");  
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("fieldName");
-    nameString2 = ajStrNewC("MaxMin");
-    xml_SetAttribute(minMaxNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("value");
-    xml_SetAttribute(minMaxNode, nameString, value);
+
+
+    xml_SetAttributeC(minMaxNode, "fieldName", "MaxMin");
+    xml_SetAttributeC(minMaxNode, "value", ajStrStr(value));
     
     xml_UnrefNode(minMaxNode);
     
+
     ajStrDel(&doub);
     ajStrDel(&value);
-    ajStrDel(&nameString);
-    ajStrDel(&nameString2);
-    
+
     return ajTrue;
 }
 
@@ -309,28 +320,16 @@ void ajXmlClearFile(AjPXmlFile file)
 AjBool ajXmlSetSource(AjPXmlFile file, AjPStr title)
 {
     AjPXmlNode titleNode;
-    AjPStr nameString=NULL;
-    AjPStr nameString2=NULL;
 
-    nameString = ajStrNewC("Graph");
-    if(!xml_PressentGraphicTypeIs(file, nameString))
+    if(!xml_PresentGraphicTypeIsC(file,"Graph"))
 	return ajFalse;
 
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("fieldValue");
-    titleNode = xml_MakeNewNode(file, nameString, 
+    titleNode = xml_MakeNewNodeC(file, "fieldValue", 
 				xml_GetCurrentGraphic(file));
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("fieldName");
-    nameString2 = ajStrNewC("Source");
-    xml_SetAttribute(titleNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("value");
-    xml_SetAttribute(titleNode, nameString, title);
+    xml_SetAttributeC(titleNode, "fieldName", "Source");
+    xml_SetAttributeC(titleNode, "value", ajStrStr(title));
 
     xml_UnrefNode(titleNode);
-    ajStrDel(&nameString);
-    ajStrDel(&nameString2);
 
     return ajTrue;
 }
@@ -338,7 +337,118 @@ AjBool ajXmlSetSource(AjPXmlFile file, AjPStr title)
 
 
 
-/* @func ajXmlAddMainTitle  ******************************************
+/* @func ajXmlAddMainTitleC  ******************************************
+**
+** Adds a title to a graph object
+**
+** @param [w] file [AjPXmlFile] the file to add the title to
+** @param [r] title [char *] the title
+**
+** @return [AjBool] ajTrue if the current Graphics object is valid to 
+** add Source, eg. a graph
+** @@
+*********************************************************************/
+AjBool ajXmlAddMainTitleC(AjPXmlFile file, char *title)
+{
+    AjPXmlNode graphNode;
+    AjPStr titleAltered=NULL;
+
+    /* Not sure about this hugh */
+    titleAltered = ajStrNew();
+    ajFmtPrintS(&titleAltered,"\"%s\"",title);
+
+    graphNode = xml_MakeNewNodeC(file, "fieldValue", 
+				xml_GetCurrentGraphic(file));
+
+    xml_SetAttributeC(graphNode, "name", "Graph.mainTitle");
+    xml_SetAttributeC(graphNode, "value", ajStrStr(titleAltered));
+
+    xml_UnrefNode(graphNode);
+
+    ajStrDel(&titleAltered);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ajXmlAddXTitleC  *********************************************
+**
+** Adds a title to a graph object
+**
+** @param [w] file [oXX3DFile] the file to add the title to
+** @param [r] title [char *] the title
+**
+** @return [AjBool] ajTrue if the current Graphics object is valid to 
+** add XTitle, eg. a graph
+** @@
+*********************************************************************/
+AjBool ajXmlAddXTitleC (AjPXmlFile file, char *title)
+{
+    AjPXmlNode titleNode;
+    AjPStr titleAltered=NULL;
+
+
+    /* Not sure about this hugh */
+    titleAltered = ajStrNew();
+    ajFmtPrintS(&titleAltered,"\"%s\"",title);
+
+    if(!xml_PresentGraphicTypeIsC(file,"Graph"))
+	return ajFalse;
+
+    titleNode = xml_MakeNewNodeC(file, "fieldValue", 
+				xml_GetCurrentGraphic(file));
+    xml_SetAttributeC(titleNode, "name", "Graph.xTitle");
+    xml_SetAttributeC(titleNode, "value", ajStrStr(titleAltered));
+
+    xml_UnrefNode(titleNode);
+    ajStrDel(&titleAltered);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ajXmlAddYTitleC  *********************************************
+**
+** Adds a title to a graph object
+**
+** @param [w] file [oXX3DFile] the file to add the title to
+** @param [r] title [char *] the title
+**
+** @return [AjBool] ajTrue if the current Graphics object is valid to
+** add YTitle, eg. a graph
+** @@
+*********************************************************************/
+AjBool ajXmlAddYTitleC(AjPXmlFile file, char *title)
+{
+    AjPXmlNode titleNode;
+    AjPStr titleAltered=NULL;
+
+    /* Not sure about this hugh */
+    titleAltered = ajStrNew();
+    ajFmtPrintS(&titleAltered,"\"%s\"",title);
+
+    if(!xml_PresentGraphicTypeIsC(file,"Graph"))
+	return ajFalse;
+
+    titleNode = xml_MakeNewNodeC(file, "fieldValue", 
+				xml_GetCurrentGraphic(file));
+    xml_SetAttributeC(titleNode, "name", "Graph.yTitle");
+    xml_SetAttributeC(titleNode, "value", ajStrStr(titleAltered));
+
+    xml_UnrefNode(titleNode);
+    ajStrDel(&titleAltered);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ajXmlAddMainTitle  *****************************************
 **
 ** Adds a title to a graph object
 **
@@ -351,64 +461,13 @@ AjBool ajXmlSetSource(AjPXmlFile file, AjPStr title)
 *********************************************************************/
 AjBool ajXmlAddMainTitle(AjPXmlFile file, AjPStr title)
 {
-    AjPXmlNode graphNode;
-    AjPStr nameString=NULL;
-    AjPStr nameString2=NULL;
-    AjPStr titleAltered=NULL;
-
-    /*
-       nameString = ajStrNewC("Graph");
-       if(!xml_PressentGraphicTypeIs(file, nameString))
-       return ajFalse;
-       
-       ajStrDel(&nameString);
-       */
-
-    titleAltered = ajStrNewS(title);
-
-    /* Not sure about this hugh */
-    xml_AddQuotes(&titleAltered);
-
-    printf("title w st = %p st s = %s\n", title, ajStrStr(title));
-    fflush(stdout);
-
-
-    nameString = ajStrNewC("fieldValue");
-    graphNode = xml_MakeNewNode(file, nameString, 
-				xml_GetCurrentGraphic(file));
-
-
-    printf("title e st = %p st s = %s\n", title, ajStrStr(title));
-    fflush(stdout);
-
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("name");
-    nameString2 = ajStrNewC("Graph.mainTitle");
-    xml_SetAttribute(graphNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("value");
-    xml_SetAttribute(graphNode, nameString, titleAltered);
-
-    printf("title r st = %p st s = %s\n", title, ajStrStr(title));
-    fflush(stdout);
-
-
-    xml_UnrefNode(graphNode);
-    ajStrDel(&nameString);
-    ajStrDel(&nameString2);
-    ajStrDel(&titleAltered);
-
-    printf("title t st = %p st s = %s\n", title, ajStrStr(title));
-    fflush(stdout);
-
-
-    return ajTrue;
+    return ajXmlAddMainTitleC(file, ajStrStr(title));
 }
 
 
 
 
-/* @func ajXmlAddXTitle  *********************************************
+/* @func ajXmlAddXTitle  ********************************************
 **
 ** Adds a title to a graph object
 **
@@ -421,44 +480,14 @@ AjBool ajXmlAddMainTitle(AjPXmlFile file, AjPStr title)
 *********************************************************************/
 AjBool ajXmlAddXTitle (AjPXmlFile file, AjPStr title)
 {
-    AjPXmlNode titleNode;
-    AjPStr nameString=NULL;
-    AjPStr nameString2=NULL;
-    AjPStr titleAltered=NULL;
 
-    titleAltered = ajStrNewS(title);
-
-    /* Not sure about this hugh */
-    xml_AddQuotes(&titleAltered);
-
-    nameString = ajStrNewC("Graph");
-    if(!xml_PressentGraphicTypeIs(file, nameString))
-	return ajFalse;
-
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("fieldValue");
-    titleNode = xml_MakeNewNode(file, nameString, 
-				xml_GetCurrentGraphic(file));
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("name");
-    nameString2 = ajStrNewC("Graph.xTitle");
-    xml_SetAttribute(titleNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("value");
-    xml_SetAttribute(titleNode, nameString, titleAltered);
-
-    xml_UnrefNode(titleNode);
-    ajStrDel(&nameString);
-    ajStrDel(&nameString2);
-    ajStrDel(&titleAltered);
-
-    return ajTrue;
+    return ajXmlAddXTitleC(file, ajStrStr(title));
 }
 
 
 
 
-/* @func ajXmlAddYTitle  *********************************************
+/* @func ajXmlAddYTitle  ********************************************
 **
 ** Adds a title to a graph object
 **
@@ -469,118 +498,10 @@ AjBool ajXmlAddXTitle (AjPXmlFile file, AjPStr title)
 ** add YTitle, eg. a graph
 ** @@
 *********************************************************************/
-AjBool ajXmlAddYTitle (AjPXmlFile file, AjPStr title)
+AjBool ajXmlAddYTitle(AjPXmlFile file, AjPStr title)
 {
-    AjPXmlNode titleNode;
-    AjPStr nameString=NULL;
-    AjPStr nameString2=NULL;
-    AjPStr titleAltered=NULL;
 
-    titleAltered = ajStrNewS(title);
-
-    /* Not sure about this hugh */
-    xml_AddQuotes(&titleAltered);
-
-    nameString = ajStrNewC("Graph");
-    if(!xml_PressentGraphicTypeIs(file, nameString))
-	return ajFalse;
-
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("fieldValue");
-    titleNode = xml_MakeNewNode(file, nameString, 
-				xml_GetCurrentGraphic(file));
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("name");
-    nameString2 = ajStrNewC("Graph.yTitle");
-    xml_SetAttribute(titleNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("value");
-    xml_SetAttribute(titleNode, nameString, titleAltered);
-
-    xml_UnrefNode(titleNode);
-    ajStrDel(&nameString);
-    ajStrDel(&nameString2);
-    ajStrDel(&titleAltered);
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ajXmlAddMainTitleC  *****************************************
-**
-** Adds a title to a graph object from *char
-**
-** @param [w] file [AjPXmlFile] the file to add the title to
-** @param [r] title [*char] the title
-**
-** @return [AjBool] ajTrue if the current Graphics object is valid to 
-** add Source, eg. a graph
-** @@
-*********************************************************************/
-AjBool ajXmlAddMainTitleC(AjPXmlFile file, char *title)
-{
-    AjPStr nameString=NULL;
-    AjBool returnValue;
-  
-    nameString = ajStrNewC(title);
-    returnValue = ajXmlAddMainTitle(file, nameString);
-    ajStrDel(&nameString);
-
-    return returnValue;
-}
-
-
-
-
-/* @func ajXmlAddXTitleC  ********************************************
-**
-** Adds a title to a graph object from *char
-**
-** @param [w] file [oXX3DFile] the file to add the title to
-** @param [r] title [*char] the title
-**
-** @return [AjBool] ajTrue if the current Graphics object is valid to 
-** add XTitle, eg. a graph
-** @@
-*********************************************************************/
-AjBool ajXmlAddXTitleC (AjPXmlFile file, char *title)
-{
-    AjPStr nameString=NULL;
-    AjBool returnValue;
-  
-    nameString = ajStrNewC(title);
-    returnValue = ajXmlAddXTitle(file, nameString);
-    ajStrDel(&nameString);
-
-    return returnValue;
-}
-
-
-
-
-/* @func ajXmlAddYTitleC  ********************************************
-**
-** Adds a title to a graph object from *char
-**
-** @param [w] file [oXX3DFile] the file to add the title to
-** @param [r] title [*char] the title
-**
-** @return [AjBool] ajTrue if the current Graphics object is valid to
-** add YTitle, eg. a graph
-** @@
-*********************************************************************/
-AjBool ajXmlAddYTitleC (AjPXmlFile file, char *title)
-{
-    AjPStr nameString=NULL;
-    AjBool returnValue;
-  
-    nameString = ajStrNewC(title);
-    returnValue = ajXmlAddYTitle(file, nameString);
-    ajStrDel(&nameString);
-
-    return returnValue;
+    return ajXmlAddYTitleC(file, ajStrStr(title));
 }
 
 
@@ -618,6 +539,131 @@ void ajXmlAddTextCentred(AjPXmlFile file, double x, double y,
 
 
 
+/* @func ajXmlAddTextC ***********************************************
+**
+** Adds some text
+**
+** @param [w] file [oXX3DFile] the file to add the line to
+** @param [r] x [double] the x coordinate
+** @param [r] y [double] the y coordinate
+** @param [r] size [double] font size
+** @param [r] angle [double] font angle
+** @param [r] fontFamily [char *] the name of the font family
+** @param [r] fontStyle [char *] the style or the font
+** @param [r] text [char *] the text to be written
+**
+** @return [void]
+** @@
+*********************************************************************/
+void ajXmlAddTextC(AjPXmlFile file, double x, double y, double size, 
+		  double angle, char *fontFamily, char *fontStyle, 
+		  char *text)
+{
+    AjPXmlNode transformNode = NULL;
+    AjPXmlNode elText = NULL;
+    AjPXmlNode elFont = NULL;
+    AjPXmlNode tranformParent = NULL;
+    AjPXmlNode tempNode = NULL;
+    AjPStr attributeValue=NULL;
+    AjPStr temp=NULL;
+    AjPStr name=NULL;
+    AjPStr attributeVal=NULL;
+    ajint i;
+    ajint limit = 0;
+    
+    GdomeNodeList *listAppearance = NULL;
+    GdomeException exc;
+    GdomeDOMString *nodeName = NULL;
+
+    temp = ajStrNew();
+    attributeVal = ajStrNew();
+
+    if(xml_PresentGraphicTypeIsC(file,"Graph"))
+    {
+
+	nodeName = gdome_str_mkref("fieldValue");
+	listAppearance = gdome_el_getElementsByTagName
+	    (xml_GetNodeElement(xml_GetCurrentGraphic(file)), nodeName, 
+	     &exc);
+
+	limit = gdome_nl_length(listAppearance, &exc);
+	for(i=0; (i<limit && tranformParent == NULL) ; ++i)
+	{
+	    tempNode = xml_SetNode(gdome_nl_item(listAppearance, i, 
+						 &exc));
+	    attributeValue = xml_GetAttributeC(tempNode, "name");
+	    if(ajStrMatchC(attributeValue, "children"))
+		tranformParent = xml_SetNode(gdome_nl_item(listAppearance, 
+							   i, &exc));
+
+	    ajXmlNodeDel(&tempNode);
+	    ajStrDel(&attributeValue);
+	}	    
+
+	if(!tranformParent)
+	{
+	    tranformParent = xml_MakeNewNodeC(file, "fieldValue", 
+					     xml_GetCurrentGraphic(file));
+		
+	    xml_SetAttributeC(tranformParent, "name", "children");
+	}
+    }
+    else
+	tranformParent = xml_GetCurrentGraphic(file);
+
+    transformNode = xml_MakeNewNodeC(file, "Transform", tranformParent);
+
+    xml_AddACoord(x, y, ajFalse, &attributeVal, &temp);
+    xml_SetAttributeC(transformNode, "translation", ajStrStr(attributeVal));
+    ajStrAssC(&attributeVal,"0 0 1 ");
+    ajStrAssC(&temp,"");
+
+    xml_StrFromDouble(&temp, angle);
+    ajStrApp(&attributeVal, temp);
+  
+    xml_SetAttributeC(transformNode, "rotation", ajStrStr(attributeVal));
+
+    elText = xml_MakeNewShapeNodeC(file, transformNode, "Text");
+
+    xml_SetAttributeC(elText, "string", text);
+
+    /* I have had to remove this for now, as the parser cannot handle 
+       this type of node */
+    /*
+       if(fontFamily != NULL || fontStyle != NULL || size >= 0)
+       {
+       elFont = xml_MakeNewNodeC(file, "FontStyle", elText);
+       if(fontFamily != NULL)
+       {
+       xml_SetAttributeC(elFont, "family", fontFamily);
+       }
+       if(fontStyle != NULL)
+       {
+       xml_SetAttributeC(elFont, "style", fontStyle);
+       }
+       if(size >= 0)
+       {
+       ajStrFromDouble(&temp, size, 2);
+       xml_SetAttributeC(elFont, "size", ajStrStr(temp));
+       }
+       }
+       */
+
+    ajStrDel(&attributeVal);
+    ajStrDel(&temp);
+    ajStrDel(&name);
+
+    xml_UnrefNode(transformNode);
+    xml_UnrefNode(elText);
+    if(elFont != NULL)
+	xml_UnrefNode(elFont);
+
+    return;
+}
+
+
+
+
 /* @func ajXmlAddText ***********************************************
 **
 ** Adds some text
@@ -638,144 +684,110 @@ void ajXmlAddText(AjPXmlFile file, double x, double y, double size,
 		  double angle, AjPStr fontFamily, AjPStr fontStyle, 
 		  AjPStr text)
 {
-    AjPXmlNode transformNode = NULL;
-    AjPXmlNode elText = NULL;
-    AjPXmlNode elFont = NULL;
-    AjPXmlNode tranformParent = NULL;
-    AjPXmlNode tempNode = NULL;
-    AjPStr ajAttributeValue=NULL;
+    ajXmlAddTextC(file,x,y,size,angle,
+                  (fontFamily) ? ajStrStr(fontFamily) : NULL,
+		  (fontStyle)  ? ajStrStr(fontStyle)  : NULL,
+		  (text) ? ajStrStr(text) : NULL);
+    return;
+}
+
+
+
+
+
+/* @func ajXmlAddTextWithCJustify *************************************
+**
+** Adds some text with the justification set
+**
+** @param [w] file [oXX3DFile] the file to add the line to
+** @param [r] x [double] the x coordinate
+** @param [r] y [double] the y coordinate
+** @param [r] size [double] font size
+** @param [r] angle [double] font angle
+** @param [r] fontFamily [AjPStr] the name of the font family
+** @param [r] fontStyle [AjPStr] the style or the font
+** @param [r] text [AjPStr] the text to be written
+** @param [r] horizontal [AjBool] whether the text advances 
+** horizontally in its major direction (horizontal = ajTrue) or 
+** vertically in its major direction (horizontal = ajFalse).
+** @param [r] leftToRight [AjBool] direction of text advance in the 
+** major or minor direction
+** @param [r] topToBottom [AjBool] direction of text advance in the 
+** major or minor direction
+** @param [r] justifyMajor [char *] alignment of the text in the 
+** Major direction
+** @param [r] justifyMinor [char *] alignment of the text in the 
+** Minor direction
+**
+** @return [void]
+** @@
+*********************************************************************/
+void ajXmlAddTextWithCJustify(AjPXmlFile file, double x, double y, 
+			      double size, double angle, 
+			      AjPStr fontFamily, AjPStr fontStyle, 
+			      AjPStr text, AjBool horizontal, 
+			      AjBool leftToRight, AjBool topToBottom, 
+			      char *justifyMajor, char *justifyMinor)
+{
+    AjPXmlNode transformNode;
+    AjPXmlNode elText;
+    AjPXmlNode elFont;
+    AjPStr attributeVal=NULL;
     AjPStr temp=NULL;
-    AjPStr name=NULL;
-    AjPStr nameString=NULL;
-    AjPStr attributeName=NULL;
-    AjPStr attributeValue=NULL;
-    ajint i;
 
-    GdomeNodeList *listAppearance = NULL;
-    GdomeException exc;
-    GdomeDOMString *nodeName = NULL;
+    temp         = ajStrNew();
+    attributeVal = ajStrNew();
 
-    temp = ajStrNew();
-    ajAttributeValue = ajStrNew();
+    transformNode = xml_MakeNewNodeC(file, "Transform", 
+				    xml_GetCurrentGraphic(file));
 
-    nameString = ajStrNewC("Graph");
+    xml_AddACoord(x, y, ajFalse, &attributeVal, &temp);
+    xml_SetAttributeC(transformNode, "translation", ajStrStr(attributeVal));
+  
+    ajStrClear(&attributeVal);
+    xml_AddACoord(angle, 0, ajFalse, &attributeVal, &temp);
+    xml_SetAttributeC(transformNode, "rotation", ajStrStr(attributeVal));
 
-    if(xml_PressentGraphicTypeIs(file, nameString))
+    elFont = elText = xml_MakeNewShapeNodeC(file, transformNode, 
+					    "Text");
+
+    xml_SetAttributeC(elText, "string", ajStrStr(text));
+
+    elFont = xml_MakeNewNodeC(file, "Font", elText);
+    if(fontFamily != NULL)
+	xml_SetAttributeC(elFont, "family", ajStrStr(fontFamily));
+
+    if(fontStyle != NULL)
+	xml_SetAttributeC(elFont, "style", ajStrStr(fontStyle));
+
+    if(size >= 0)
     {
-
-	printf("PressentGraphicTypeIs graph\n");
-	fflush(stdout);
-      
-
-	nodeName = gdome_str_mkref("fieldValue");
-	listAppearance = gdome_el_getElementsByTagName
-	    (xml_GetNodeElement(xml_GetCurrentGraphic(file)), nodeName, 
-	     &exc);
-	for(i=0; (i<gdome_nl_length(listAppearance, &exc)
-		  && tranformParent == NULL) ; ++i)
-	{
-	    tempNode = xml_SetNode(gdome_nl_item(listAppearance, i, 
-						 &exc));
-	    attributeName = ajStrNewC("name");
-	    attributeValue = xml_GetAttribute(tempNode, attributeName);
-	    if(ajStrMatchC(attributeValue, "children"))
-	    {
-		tranformParent = xml_SetNode(gdome_nl_item(listAppearance, 
-							   i, &exc));
-	    }
-	    ajXmlNodeDel(&tempNode);
-	    ajStrDel(&attributeName);
-	    ajStrDel(&attributeValue);
-	}	    
-	if(tranformParent == NULL)
-	{
-	    nameString = ajStrNewC("fieldValue");
-	    tranformParent = xml_MakeNewNode(file, nameString, 
-					     xml_GetCurrentGraphic(file));
-		
-	    ajStrDel(&attributeName);
-	    attributeName = ajStrNewC("name");
-	    ajStrDel(&attributeValue);
-	    attributeValue = ajStrNewC("children");
-	    xml_SetAttribute(tranformParent, attributeName, 
-			     attributeValue);
-	}
-    }
-    else
-    {
-
-	printf("PressentGraphicTypeIs NULL\n");
-	/*    ajXmlWriteStdout(file); */
-	fflush(stdout);
-      
-	tranformParent = xml_GetCurrentGraphic(file);
+	ajStrFromInt(&temp, size);
+	xml_SetAttributeC(elFont, "size", ajStrStr(temp));
     }
 
-    nameString = ajStrNewC("Transform");
-    transformNode = xml_MakeNewNode(file, nameString, tranformParent);
+    xml_SetAttributeC(elFont, "horizontal", 
+		      ajStrStr(xml_StrFromBool(horizontal)));
+    xml_SetAttributeC(elFont, "leftToRight", 
+		      ajStrStr(xml_StrFromBool(leftToRight)));
+    xml_SetAttributeC(elFont, "topToBottom", 
+		      ajStrStr(xml_StrFromBool(topToBottom)));
 
-    xml_AddACoord(x, y, ajFalse, &ajAttributeValue, &temp);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("translation");
-    xml_SetAttribute(transformNode, nameString, ajAttributeValue);
-  
-    ajStrDel(&ajAttributeValue);
-    ajAttributeValue = ajStrNewC("0 0 1 ");
+    ajStrAssC(&attributeVal,"\"");
+
+    ajStrAppC(&attributeVal, justifyMajor);
+    ajStrAppC(&attributeVal, "\",\"");
+    ajStrAppC(&attributeVal, justifyMinor);
+    ajStrAppC(&attributeVal, "\"");
+
+    xml_SetAttributeC(elFont, "justify", ajStrStr(attributeVal));
+
+    ajStrDel(&attributeVal);
     ajStrDel(&temp);
-    xml_StrFromDouble(&temp, angle);
-    ajStrApp(&ajAttributeValue, temp);
-  
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("rotation");
-    xml_SetAttribute(transformNode, nameString, ajAttributeValue);
-
-    /* I create a new element, the Text node  */
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("Text");
-    elText = xml_MakeNewShapeNode(file, transformNode, nameString);
-
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("string");
-    xml_SetAttribute(elText, nameString, text);
-
-    /* I have had to remove this for now, as the parser cannot handle 
-       this type of node */
-    /*
-       if(fontFamily != NULL || fontStyle != NULL || size >= 0)
-       {
-       name =ajStrNewC("FontStyle");
-       elFont = xml_MakeNewNode(file, name, elText);
-       if(fontFamily != NULL)
-       {
-       ajStrDel(&nameString);
-       nameString = ajStrNewC("family");
-       xml_SetAttribute(elFont, nameString, fontFamily);
-       }
-       if(fontStyle != NULL)
-       {
-       ajStrDel(&nameString);
-       nameString = ajStrNewC("style");
-       xml_SetAttribute(elFont, nameString, fontStyle);
-       }
-       if(size >= 0)
-       {
-       ajStrFromDouble(&temp, size, 2);
-       ajStrDel(&nameString);
-       nameString = ajStrNewC("size");
-       xml_SetAttribute(elFont, nameString, temp);
-       }
-       }
-       */
-
-    ajStrDel(&ajAttributeValue);
-    ajStrDel(&temp);
-    ajStrDel(&name);
-    ajStrDel(&nameString);
 
     xml_UnrefNode(transformNode);
     xml_UnrefNode(elText);
-    if(elFont != NULL)
-	xml_UnrefNode(elFont);
+    xml_UnrefNode(elFont);
 
     return;
 }
@@ -817,93 +829,9 @@ void ajXmlAddTextWithJustify(AjPXmlFile file, double x, double y,
 			     AjBool leftToRight, AjBool topToBottom, 
 			     AjPStr justifyMajor, AjPStr justifyMinor)
 {
-    AjPXmlNode transformNode;
-    AjPXmlNode elText;
-    AjPXmlNode elFont;
-    AjPStr ajAttributeValue=NULL;
-    AjPStr temp=NULL;
-    AjPStr name=NULL;
-    AjPStr nameString=NULL;
-
-    temp = ajStrNew();
-    ajAttributeValue = ajStrNew();
-
-    nameString = ajStrNewC("Transform");
-    transformNode = xml_MakeNewNode(file, nameString, 
-				    xml_GetCurrentGraphic(file));
-
-    xml_AddACoord(x, y, ajFalse, &ajAttributeValue, &temp);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("translation");
-    xml_SetAttribute(transformNode, nameString, ajAttributeValue);
-  
-    ajStrClear(&ajAttributeValue);
-    xml_AddACoord(angle, 0, ajFalse, &ajAttributeValue, &temp);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("rotation");
-    xml_SetAttribute(transformNode, nameString, ajAttributeValue);
-
-    /* I create a new element, the Text node  */
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("Text");
-    elFont = elText = xml_MakeNewShapeNode(file, transformNode, 
-					   nameString);
-
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("string");
-    xml_SetAttribute(elText, nameString, text);
-
-    name =ajStrNewC("Font");
-    elFont = xml_MakeNewNode(file, name, elText);
-    if(fontFamily != NULL)
-    {
-	ajStrDel(&nameString);
-	ajStrDel(&nameString);
-	nameString = ajStrNewC("family");
-	xml_SetAttribute(elFont, nameString, fontFamily);
-    }
-    if(fontStyle != NULL)
-    {
-	ajStrDel(&nameString);
-	nameString = ajStrNewC("style");
-	xml_SetAttribute(elFont, nameString, fontStyle);
-    }
-    if(size >= 0)
-    {
-	ajStrFromInt(&temp, size);
-	ajStrDel(&nameString);
-	nameString = ajStrNewC("size");
-	xml_SetAttribute(elFont, nameString, temp);
-    }
-
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("horizontal");
-    xml_SetAttribute(elFont, nameString, xml_StrFromBool(horizontal));
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("leftToRight");
-    xml_SetAttribute(elFont, nameString, xml_StrFromBool(leftToRight));
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("topToBottom");
-    xml_SetAttribute(elFont, nameString, xml_StrFromBool(topToBottom));
-    ajAttributeValue = ajStrNewC("\"");
-    ajStrAppC(&ajAttributeValue, ajStrStr(justifyMajor));
-    ajStrAppC(&ajAttributeValue, "\",\"");
-    ajStrAppC(&ajAttributeValue, ajStrStr(justifyMinor));
-    ajStrAppC(&ajAttributeValue, "\"");
-
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("justify");
-    xml_SetAttribute(elFont, nameString, ajAttributeValue);
-
-    ajStrDel(&ajAttributeValue);
-    ajStrDel(&temp);
-    ajStrDel(&name);
-    ajStrDel(&nameString);
-
-    xml_UnrefNode(transformNode);
-    xml_UnrefNode(elText);
-    xml_UnrefNode(elFont);
-
+    ajXmlAddTextWithCJustify(file,x,y,size,angle,fontFamily,fontStyle, 
+			     text,horizontal,leftToRight,topToBottom, 
+			     ajStrStr(justifyMajor),ajStrStr(justifyMinor));
     return;
 }
 
@@ -945,7 +873,8 @@ void ajXmlAddTextOnArc(AjPXmlFile file, double xCentre, double yCentre,
     double textLength;
     double arcLength;
     double lettersInFront;
-
+    ajint  limit;
+    
     int i;
 
     AjPStr letter = NULL;
@@ -968,13 +897,14 @@ void ajXmlAddTextOnArc(AjPXmlFile file, double xCentre, double yCentre,
     
     anglularExtentPerLetter = size / (radius * ONE_METER_FONT);
     
-    /* why does this run one more time than it should? */
+    /* why does this run one more time than it should? hugh */
     /* 
        for(i=lettersInFront; i<(((double) ajStrLen(text)) + 
        lettersInFront); ++i) 
        */
 
-    for(i=0; i<ajStrLen(text); ++i)
+    limit = ajStrLen(text);
+    for(i=0; i<limit; ++i)
     {
 	ajStrAssSubC(&letter, ajStrStr(text), i, i);
 	if(!ajStrMatchC(letter, " "))
@@ -1050,21 +980,10 @@ void ajXmlAddJoinedLineSetEqualGapsF(AjPXmlFile file, float *y,
 void ajXmlAddJoinedLineSetF(AjPXmlFile file, float *x, float *y, 
 			    int numberOfPoints)
 {
-    /*
-       double xn[numberOfPoints];
-       double yn[numberOfPoints];
-       */
     double *xn;
     double *yn;
     int i;
     
-    printf("About to print table before\n");
-    fflush(stdout);
-    /*    ajStrTablePrint(file->nodeTypes); */
-    fflush(stdout);
-    printf("Printed table before\n");
-    fflush(stdout);
-
     AJCNEW(xn, numberOfPoints);
     AJCNEW(yn, numberOfPoints);
 
@@ -1076,17 +995,8 @@ void ajXmlAddJoinedLineSetF(AjPXmlFile file, float *x, float *y,
 
     ajXmlAddJoinedLineSet(file, xn, yn, numberOfPoints);
 
-    /* clear array? hugh */
     AJFREE(xn);
     AJFREE(yn);
-    
-    printf("About to print table after\n");
-    fflush(stdout);
-    /*    ajStrTablePrint(file->nodeTypes); */
-    fflush(stdout);
-    printf("Printed table after\n");
-    fflush(stdout);
-
     
     return;
 }
@@ -1113,19 +1023,9 @@ void ajXmlAddJoinedLineSet(AjPXmlFile file, double *x, double *y,
     int count;
     AjPStr index=NULL;
     AjPStr coord=NULL;
-    AjPStr nameString=NULL;
-
-    
-    printf("About to print table q\n");
-    fflush(stdout);
-    /*    ajStrTablePrint(file->nodeTypes); */
-    fflush(stdout);
-    printf("Printed table q\n");
-    fflush(stdout);
 
     /* I try and find preexisting IndexedLineSet's  */
-    nameString = ajStrNewC("IndexedLineSet");
-    el = xml_GetNodeTypeMakeIfNot(file, nameString); 
+    el = xml_GetNodeTypeMakeIfNotC(file, "IndexedLineSet"); 
 
     coord = xml_GetPoints(el);
     index = xml_GetIndex(el);
@@ -1139,7 +1039,6 @@ void ajXmlAddJoinedLineSet(AjPXmlFile file, double *x, double *y,
     /* tidy up */
     ajStrDel(&coord);
     ajStrDel(&index);
-    ajStrDel(&nameString);
 
     if(el != xml_GetCurrentGraphic(file))
 	xml_UnrefNode(el);
@@ -1169,27 +1068,22 @@ void ajXmlAddLine(AjPXmlFile file, double x1, double y1, double x2,
     AjPXmlNode el;
     AjPStr coord=NULL;
     AjPStr index=NULL;
-    AjPStr nameString=NULL;
 
-    nameString = ajStrNewC("IndexedLineSet");
-    el = xml_GetNodeTypeMakeIfNot(file, nameString);
+    el = xml_GetNodeTypeMakeIfNotC(file, "IndexedLineSet");
 
     /* setting up the coords to add */
-    /* coord = xml_GetAttribute(el, nameString); old line */
     coord = xml_GetPoints(el);
     index = xml_GetIndex(el);
 
     xml_AddACoord(x1, y1, ajFalse, &coord, &index);
     xml_AddACoord(x2, y2, ajTrue, &coord, &index);
 
-    /* xml_SetAttribute(el, nameString, coord); old line */
     xml_SetPoints(el, coord);
     xml_SetIndex(el, index);
 
     /* tidy up */
     ajStrDel(&coord);
     ajStrDel(&index);
-    ajStrDel(&nameString);
 
     if(el != xml_GetCurrentGraphic(file))
 	xml_UnrefNode(el);
@@ -1241,10 +1135,8 @@ void ajXmlAddPoint(AjPXmlFile file, double x1, double y1)
     AjPXmlNode el;
     AjPStr coord=NULL;
     AjPStr index=NULL;
-    AjPStr nameString=NULL;
 
-    nameString = ajStrNewC("IndexedLineSet");
-    el = xml_GetNodeTypeMakeIfNot(file, nameString);
+    el = xml_GetNodeTypeMakeIfNotC(file, "IndexedLineSet");
   
     /* setting up the coords to add */
     coord = xml_GetPoints(el);
@@ -1259,7 +1151,6 @@ void ajXmlAddPoint(AjPXmlFile file, double x1, double y1)
     /* tidy up */
     ajStrDel(&coord);
     ajStrDel(&index);
-    ajStrDel(&nameString);
 
     if(el != xml_GetCurrentGraphic(file))
 	xml_UnrefNode(el);
@@ -1352,20 +1243,13 @@ void ajXmlAddRectangle(AjPXmlFile file, double x1, double y1,
     AjPXmlNode el;
     AjPStr coord=NULL;
     AjPStr index=NULL;
-    AjPStr nameString=NULL;
 
     if(fill)
     {  
-	nameString = ajStrNewC("IndexedFaceSet");
-	el = xml_GetNodeTypeMakeIfNot(file, nameString);
+	el = xml_GetNodeTypeMakeIfNotC(file, "IndexedFaceSet");
 
 	/* setting up the coords to add */
 	coord = xml_GetPoints(el);
-	/*
-	   ajStrDel(&nameString);
-	   nameString = ajStrNewC("coordIndex");
-	   index = xml_GetAttribute(el, nameString);
-	   */
 	index = xml_GetIndex(el);
 
 	if(!(((x1 > x2) && (y1 > y2)) || ((x1 < x2) && (y1 < y2))) )
@@ -1383,14 +1267,9 @@ void ajXmlAddRectangle(AjPXmlFile file, double x1, double y1,
 	    xml_AddACoord(x1, y1, ajTrue, &coord, &index);
 	}
 	    
-	/* xml_SetAttribute(el, nameString, coord); old line */
 	xml_SetPoints(el, coord);
 	xml_SetIndex(el, index);
-	/*
-	   ajStrDel(&nameString);
-	   nameString = ajStrNewC("coordIndex");
-	   xml_SetAttribute(el, nameString, index);
-	   */
+
 	/* tidy up */
 	xml_UnrefNode(el);
 	ajStrDel(&coord);
@@ -1433,8 +1312,6 @@ void ajXmlAddRectangle(AjPXmlFile file, double x1, double y1,
 	ajXmlAddJoinedLineSet(file, x, y, 5);      
     }
       
-    ajStrDel(&nameString);
-
     return;
 }
 
@@ -1512,12 +1389,11 @@ AjBool ajXmlAddPointLabelCircle(AjPXmlFile file, double angle,
     double textYStart;
 
     AjPStr textPrinted = NULL;
-    AjPStr nameString=NULL;
-    AjPStr nameString2=NULL;
     
-    nameString = ajStrNewC("DNAPlot");
-    if(!xml_PressentGraphicTypeIs(file, nameString))
+    if(!xml_PresentGraphicTypeIsC(file, "DNAPlot"))
 	return ajFalse;
+
+    textPrinted = ajStrNewS(text);
 
     xStart = (sin(angle) * radius) + xCentre;
     yStart = (cos(angle) * radius) + yCentre;
@@ -1525,29 +1401,19 @@ AjBool ajXmlAddPointLabelCircle(AjPXmlFile file, double angle,
     yEnd = (cos(angle) * (radius + length)) + yCentre;
     
     if(xml_AngleIsInSecondHalfOfCircle(angle))
-    {
-	textPrinted = ajStrNewS(text);
 	ajStrRev(&textPrinted);
-    }
-    else
-	textPrinted = ajStrNewS(text);
 
     textXStart = (cos(angle) * (radius + (length * 2))) + xCentre;
     textYStart = (sin(angle) * (radius + (length * 2))) + yCentre;
 
     ajXmlAddLine(file, xStart, yStart, xEnd, yEnd);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("BEGIN");
-    nameString2 = ajStrNewC("MIDDLE");
-    ajXmlAddTextWithJustify(file, textXStart, textYStart, size, 
-			    (angle - acos(0)), fontFamily, fontStyle, 
-			    textPrinted, ajTrue, ajTrue, ajTrue, nameString,
-			    nameString2);
+
+    ajXmlAddTextWithCJustify(file, textXStart, textYStart, size, 
+			     (angle - acos(0)), fontFamily, fontStyle, 
+			     textPrinted, ajTrue, ajTrue, ajTrue, "BEGIN",
+			     "MIDDLE");
 
     ajStrDel(&textPrinted);
-    ajStrDel(&nameString);
-    ajStrDel(&nameString);
-    ajStrDel(&nameString2);
 
     return ajTrue;
 }
@@ -1612,11 +1478,7 @@ AjBool ajXmlAddSectionLabelCircle(AjPXmlFile file, double startAngle,
     double xEndOuterLabel;
     double yEndOuterLabel;
 
-    AjPStr textPrinted = NULL;
-    AjPStr nameString=NULL;
-    
-    nameString = ajStrNewC("DNAPlot");
-    if(!xml_PressentGraphicTypeIs(file, nameString))
+    if(!xml_PresentGraphicTypeIsC(file, "DNAPlot"))
 	return ajFalse;
 
 
@@ -1644,7 +1506,7 @@ AjBool ajXmlAddSectionLabelCircle(AjPXmlFile file, double startAngle,
 	textYStart = (cos(startAngle) * (radius + textPosition) + 
 		      yCentre);
 
-	/* should realy make this a long nurbs, perhaps later */
+	/* should realy make this a long nurbs, perhaps later hugh */
 
 	ajXmlAddArc(file, xCentre, yCentre, startAngle, endAngle, 
 		    (radius - (width / 2)));
@@ -1716,6 +1578,7 @@ AjBool ajXmlAddSectionLabelCircle(AjPXmlFile file, double startAngle,
 	    ajXmlAddLine(file, xEndOuter, xEndOuter, xEndOuterLabel,
 			 yEndOuterLabel );
 	}
+
 	if(ajStrMatchC(labelStyle, "Arrowed"))
 	{
 	    xStartInner = (sin(startAngle) * radius + xCentre);
@@ -1750,9 +1613,6 @@ AjBool ajXmlAddSectionLabelCircle(AjPXmlFile file, double startAngle,
 			 yEndInnerLabel);
 	}	
     }
-
-    ajStrDel(&textPrinted);
-    ajStrDel(&nameString);
 
     return ajTrue;
 }
@@ -1794,12 +1654,11 @@ AjBool ajXmlAddPointLabelLinear(AjPXmlFile file, double angle,
     double textAngle;
 
     AjPStr textPrinted = NULL;
-    AjPStr nameString=NULL;
-    AjPStr nameString2=NULL;
     
-    nameString = ajStrNewC("DNAPlot");
-    if(!xml_PressentGraphicTypeIs(file, nameString))
+    if(!xml_PresentGraphicTypeIsC(file, "DNAPlot"))
 	return ajFalse;
+
+    textPrinted = ajStrNewS(text);
 
     xEnd = (sin(angle) * length) + xPoint;
     yEnd = (cos(angle) * length) + yPoint;
@@ -1812,36 +1671,21 @@ AjBool ajXmlAddPointLabelLinear(AjPXmlFile file, double angle,
 	textAngle = angle + (acos(0) / 2);
 
     if(xml_AngleIsInSecondHalfOfCircle(textAngle))
-    {
-	textPrinted = ajStrNewS(text);
 	ajStrRev(&textPrinted);
-    }
-    else
-	textPrinted = ajStrNewS(text);
-
 
     ajXmlAddLine(file, xPoint, yPoint, xEnd, yEnd);
     if(textParallelToLine)
-    {
-	nameString = ajStrNewC("BEGIN");
-	nameString2 = ajStrNewC("MIDDLE");
-	ajXmlAddTextWithJustify(file, textXStart, textYStart, size, 
-				(textAngle - acos(0)), fontFamily, 
-				fontStyle, textPrinted, ajTrue, ajTrue, 
-				ajTrue, nameString, nameString2);
-    }
+	ajXmlAddTextWithCJustify(file, textXStart, textYStart, size, 
+				 (textAngle - acos(0)), fontFamily, 
+				 fontStyle, textPrinted, ajTrue, ajTrue, 
+				 ajTrue, "BEGIN", "MIDDLE");
     else
-    {
-	nameString = ajStrNewC("MIDDLE");
-	ajXmlAddTextWithJustify(file, textXStart, textYStart, size, 
+	ajXmlAddTextWithCJustify(file, textXStart, textYStart, size, 
 				(textAngle - acos(0)), fontFamily, 
 				fontStyle, textPrinted, ajTrue, ajTrue, 
-				ajTrue, nameString, nameString);
-    }
+				ajTrue, "MIDDLE", "MIDDLE");
     
     ajStrDel(&textPrinted);
-    ajStrDel(&nameString);
-    ajStrDel(&nameString2);
 
     return ajTrue;
 }
@@ -1902,14 +1746,13 @@ AjBool ajXmlAddSectionLabelLinear(AjPXmlFile file, double xStart,
     double yOuter;
     double yInner;
 
-    AjPStr textPrinted = NULL;
+    /* I think I should have some error checking here, 
+       but not sure what hugh */
     /*    
-       if(!xml_PressentGraphicTypeIs(file, ajStrNewC("DNAPlot")))
-       {
-       printf"Not DNA plot");
-       return ajFalse;
-       } 
-       */
+       if(!xml_PresentGraphicTypeIsC(file, "DNAPlot"))
+           return ajFalse;
+    */
+
     xChange = xEnd - xStart;
     yChange = yEnd - yStart;
     angle = atan(width / labelArmLength);
@@ -1930,11 +1773,8 @@ AjBool ajXmlAddSectionLabelLinear(AjPXmlFile file, double xStart,
     yEndOuter = yEnd + (cos(angle) *(width / 2));
 
     if(text != NULL)
-    {
 	ajXmlAddTextCentred(file, textXStart, textYStart, size, angle,
 			    fontFamily, fontStyle, text);
-    }
-    
     
 
     if(ajStrMatchC(labelStyle, "Cylinder"))
@@ -1969,7 +1809,7 @@ AjBool ajXmlAddSectionLabelLinear(AjPXmlFile file, double xStart,
 	    ajXmlAddLine(file, xStart, yOuter, xStartLabel,yOuter);
 	    ajXmlAddLine(file, xEnd, yInner, xEnd, yOuter);
 	    ajXmlAddLine(file, xEnd, yInner, xEndLabel, yInner);
-	    ajXmlAddLine(file, xEnd, yOuter, xEndLabel,yOuter);
+	    ajXmlAddLine(file, xEnd, yOuter, xEndLabel, yOuter);
 	}
 	if(ajStrMatchC(labelStyle, "Arrowed"))
 	{
@@ -2003,6 +1843,7 @@ AjBool ajXmlAddSectionLabelLinear(AjPXmlFile file, double xStart,
 	    ajXmlAddLine(file, xEnd, yInner, xEndLabel, yInner);
 	    ajXmlAddLine(file, xEnd, yOuter, xEndLabel,yOuter);
 	}
+
 	if(ajStrMatchC(labelStyle, "ReverseArrowed"))
 	{
 	    ajXmlAddLine(file, xStart, yStart, xStartLabel, yOuter);
@@ -2012,7 +1853,6 @@ AjBool ajXmlAddSectionLabelLinear(AjPXmlFile file, double xStart,
 	}
     }
 
-    ajStrDel(&textPrinted);
 
     return ajTrue;
 }
@@ -2178,20 +2018,13 @@ AjBool ajXmlAddNakedResidueLinear(AjPXmlFile file, char residue,
 				  float x, float y)
 {    
     static char residueString[2];
-    AjPStr nameString=NULL;
-    AjPStr nameString2=NULL;
 
     residueString[1]='\0';
     *residueString=residue;
 
-    nameString = ajStrNewC("TYPEWRITER");
-    nameString2 = ajStrNewC(residueString);
-    ajXmlAddText(file, (x - 1.2), (y - 1.2), 4.0, 0, nameString,
-		 NULL, nameString2);
+    ajXmlAddTextC(file, (x - 1.2), (y - 1.2), 4.0, 0, "TYPEWRITER",
+		 NULL, residueString);
     
-    ajStrDel(&nameString);
-    ajStrDel(&nameString2);
-
     return ajTrue;
 }
 
@@ -2212,7 +2045,7 @@ AjBool ajXmlAddNakedResidueLinear(AjPXmlFile file, char residue,
 AjBool ajXmlAddSquareResidue(AjPXmlFile file, char residue, 
 			     double radius, double angle)
 { 
-    static float squareSize;
+    float squareSize;
     
     float  x;
     float  y;
@@ -2220,7 +2053,7 @@ AjBool ajXmlAddSquareResidue(AjPXmlFile file, char residue,
     float *xCoords;
     float *yCoords;
 
-    squareSize = 0.03;
+    squareSize = SQUARESIZE;
      
     ajPolToRec(radius, angle, &x, &y);
 
@@ -2239,7 +2072,7 @@ AjBool ajXmlAddSquareResidue(AjPXmlFile file, char residue,
     yCoords[3] = y + squareSize;
     yCoords[4] = y - squareSize;
     
-    /*    ajXmlAddJoinedLineSetF(file, xCoords, yCoords, 5); */
+    ajXmlAddJoinedLineSetF(file, xCoords, yCoords, 5);
 
     ajXmlAddNakedResidue(file, residue, radius, angle);
     
@@ -2274,7 +2107,7 @@ AjBool ajXmlAddOctagonalResidue(AjPXmlFile file, char residue,
     float *xCoords;
     float *yCoords;
 
-    squareSize = 0.03;
+    squareSize = SQUARESIZE;
     
     ajPolToRec(radius, angle, &x, &y);
 
@@ -2336,7 +2169,7 @@ AjBool ajXmlAddDiamondResidue(AjPXmlFile file, char residue,
     float *xCoords;
     float *yCoords;
 
-    squareSize = 0.03;
+    squareSize = SQUARESIZE;
 
     ajPolToRec(radius, angle, &x, &y);
 
@@ -2385,22 +2218,15 @@ AjBool ajXmlAddNakedResidue(AjPXmlFile file, char residue,
     float  x;
     float  y;
     static char residueString[2];
-    AjPStr nameString=NULL;
-    AjPStr nameString2=NULL;
 
     residueString[1]='\0';
     *residueString=residue;
 
     ajPolToRec(radius, angle, &x, &y);
 
-    nameString = ajStrNewC("TYPEWRITER");
-    nameString2 = ajStrNewC(residueString);
-    ajXmlAddText(file, (x - 0.018), (y - 0.018), 0.07, 0, nameString,
-		 NULL, nameString2);
+    ajXmlAddTextC(file, (x - 0.018), (y - 0.018), 0.07, 0, "TYPEWRITER",
+		  NULL, residueString);
     
-    ajStrDel(&nameString);
-    ajStrDel(&nameString2);
-
     return ajTrue;
 }
 
@@ -2436,7 +2262,7 @@ float ajXmlFitTextOnLine(float x1, float y1, float x2, float y2,
 }
 
 
-
+/* AJB  Hugh, this function doesn't return anything anywhere! */
 
 /* @func ajXmlGetColour **********************************************
 **
@@ -2591,23 +2417,19 @@ AjPXmlFile ajXmlCreateNewOutputFile()
 
 
 
-/* @func ajXmlAddGraphicC ********************************************
+/* @func ajXmlAddGraphic ********************************************
 **
-** adds a general graphics group from char*
+** adds a general graphics group
 **
 ** @param [w] file [AjPXmlFile] the file to add the object to
-** @param [r] type [char*] the type of graphic to add
+** @param [r] type [AjPStr] the type of graphic to add
 **
 ** @return [void]
 ** @@
 *********************************************************************/
-void ajXmlAddGraphicC(AjPXmlFile file, char *type)
+void ajXmlAddGraphic(AjPXmlFile file, AjPStr type)
 {
-    AjPStr nameString=NULL;
-  
-    nameString = ajStrNewC(type);
-    ajXmlAddGraphic(file, nameString);
-    ajStrDel(&nameString);
+    ajXmlAddGraphicC(file, ajStrStr(type));
 
     return;
 }
@@ -2615,76 +2437,53 @@ void ajXmlAddGraphicC(AjPXmlFile file, char *type)
 
 
 
-/* @func ajXmlAddGraphic *********************************************
+/* @func ajXmlAddGraphicC *********************************************
 **
 ** adds a general graphics group
 **
 ** @param [w] file [AjPXmlFile] the file to add the object to
-** @param [r] type [ajPStr] the type of graphic to add
+** @param [r] type [char *] the type of graphic to add
 **
 ** @return [void]
 ** @@
 *********************************************************************/
-void ajXmlAddGraphic(AjPXmlFile file, AjPStr type)
+void ajXmlAddGraphicC(AjPXmlFile file, char *type)
 {
     AjPXmlNode el = NULL;
-    /*  AjPXmlNode elChildren = NULL; */
-    /*  AjPStr name = NULL; */
-    AjPStr nameString=NULL;
 
     if(type == NULL)
     {
 	/* I create a new element, the group */
-	nameString = ajStrNewC("Group");
-	el = xml_MakeNewNode(file, nameString, xml_GetCurrentScene(file));
-
-	/* I create a new element, the children */
-	/* No I do not.  This is no longer nessasery */
-	/*
-	   ajStrDel(&nameString);
-	   nameString =ajStrNewC("children");
-	   elChildren = xml_MakeNewNode(file, nameString, el);
-	   */
+	el = xml_MakeNewNodeC(file, "Group", xml_GetCurrentScene(file));
 
 	/* I move file->currentGraphic to the children */
-	/* note - cos you do this you cannot unref elChildren */
 	xml_SetCurrentGraphic(file, el);
-	/*
-	   xml_UnrefNode(el);
-	   */
     } 
     else 
     {
-	if(ajStrMatchC(type, "Graph")) 
+	if(!strcmp(type, "Graph")) 
 	{
-	    nameString = ajStrNewC("Graph");
-	    if(xml_FileNeedsProtoDeclare(file, nameString))
+	    if(xml_FileNeedsProtoDeclareC(file, "Graph"))
 		xml_AddGraphProto(file);
-	    ajStrDel(&nameString);
-	    nameString = ajStrNewC("ProtoInstance");
-	    el = xml_MakeNewNode(file, nameString, file->currentScene);
-	    ajStrDel(&nameString);
-	    nameString = ajStrNewC("name");
-	    xml_SetAttribute(el, nameString, type);
+	    el = xml_MakeNewNodeC(file, "ProtoInstance", file->currentScene);
+	    xml_SetAttributeC(el, "name", type);
 	    xml_SetCurrentGraphic(file, el);   
 	}
 	else 
-	    if(ajStrMatchC(type, "Histogram")) 
+	    if(!strcmp(type, "Histogram")) 
 	    {
-		nameString = ajStrNewC("Graph");
-		if(xml_FileNeedsProtoDeclare(file, nameString))
+		if(xml_FileNeedsProtoDeclareC(file, "Graph"))
 		    xml_AddGraphProto(file);
-		el = xml_MakeNewNode(file, type, file->currentScene);
+		el = xml_MakeNewNodeC(file, type, file->currentScene);
 		xml_SetCurrentGraphic(file, el);   
 	    }
 	    else 
 	    {
-		if(ajStrMatchC(type, "DNAPlot")) 
+		if(!strcmp(type, "DNAPlot")) 
 		{
-		    nameString = ajStrNewC("DNAPlot");
-		    if(xml_FileNeedsProtoDeclare(file, nameString))
+		    if(xml_FileNeedsProtoDeclareC(file, "DNAPlot"))
 			xml_AddDNAPlotProto(file);
-		    el = xml_MakeNewNode(file, type, file->currentScene);
+		    el = xml_MakeNewNodeC(file, type, file->currentScene);
 		    xml_SetCurrentGraphic(file, el);   
 		}
 	    }
@@ -2694,8 +2493,7 @@ void ajXmlAddGraphic(AjPXmlFile file, AjPStr type)
     file->nodeTypes = ajStrTableNew(1);
 
     /*  el unrefed above if type == NULL */
-    ajStrDel(&nameString);
-    /*  gdome_n_unref(elChildren, &exc); */
+    /* look to see if I need some checking here hugh */
 
     return;
 }
@@ -2747,16 +2545,16 @@ void ajXmlAddArc(AjPXmlFile file, double xCentre, double yCentre,
 
 
 
-/* @func ajXmlAddCircle  *********************************************
+/* @func ajXmlAddCircleF  *********************************************
 **
 ** adds a circle
 **
 ** @param [w] file [AjPXmlFile] the file to add the max min values to
-** @param [r] xCentre [double] the x value of the centre of the 
+** @param [r] xCentre [float] the x value of the centre of the 
 ** circle
-** @param [r] yCentre [double] the y value of the centre of the 
+** @param [r] yCentre [float] the y value of the centre of the 
 ** circle
-** @param [r] radius [double] the radius of the circle
+** @param [r] radius [float] the radius of the circle
 **
 ** @return [void]
 ** @@
@@ -2790,9 +2588,8 @@ void ajXmlAddCircleF(AjPXmlFile file, float xCentre, float yCentre,
 void ajXmlAddCircle(AjPXmlFile file, double xCentre, double yCentre, 
 		    double radius)
 {
-    AjPStr temp = NULL;
+    AjPStr temp          = NULL;
     AjPStr controlPoints = NULL;
-    AjPStr weights = NULL;
     AjPXmlNode circleNode;
 
     double controlPointsDbs[14] = 
@@ -2806,12 +2603,9 @@ void ajXmlAddCircle(AjPXmlFile file, double xCentre, double yCentre,
 	0, 1, 
     };
     int i;
-    AjPStr nameString=NULL;
-    AjPStr nameString2=NULL;
 
     temp = ajStrNew();
     controlPoints = ajStrNew();
-    weights = ajStrNew();
 
     for(i=0; i<14; ++i)
 	controlPointsDbs[i] *= radius;
@@ -2825,30 +2619,17 @@ void ajXmlAddCircle(AjPXmlFile file, double xCentre, double yCentre,
 	xml_AddACoord(controlPointsDbs[i], controlPointsDbs[i+1], 
 		      ajFalse, &controlPoints, &temp);
     
-    nameString = ajStrNewC("NurbsCurve2D");
-    circleNode = xml_MakeNewShapeNode(file, 
-				      xml_GetCurrentGraphic(file), 
-				      nameString);
-    nameString = nameString;
-    nameString2 = ajStrNewC("0 0 0 1 1 2 2 3 3 3");
-    xml_SetAttribute(circleNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("order");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("3");
-    xml_SetAttribute(circleNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("controlPoint");
-    xml_SetAttribute(circleNode, nameString, controlPoints);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("weight");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("1 0.5 1 0.5 1 0.5 1");
-    xml_SetAttribute(circleNode, nameString, nameString2);
+    circleNode = xml_MakeNewShapeNodeC(file, 
+				       xml_GetCurrentGraphic(file), 
+				       "NurbsCurve2D");
+    xml_SetAttributeC(circleNode, "knots", "0 0 0 1 1 2 2 3 3 3");
+    xml_SetAttributeC(circleNode, "order", "3");
+    xml_SetAttributeC(circleNode, "controlPoint", ajStrStr(controlPoints));
+    xml_SetAttributeC(circleNode, "weight", "1 0.5 1 0.5 1 0.5 1");
 
-    ajStrDel(&nameString);
-    ajStrDel(&nameString2);
-
+    ajStrDel(&controlPoints);
+    ajStrDel(&temp);
+    
     return;
 }
 
@@ -2888,43 +2669,34 @@ void ajXmlAddGroutOption(AjPXmlFile file, AjPStr name, AjPStr value)
 *********************************************************************/
 void xml_AddGroutOption(AjPXmlFile file, AjPStr name, AjPStr value)
 {
-    AjPStr temp = NULL;
     AjPXmlNode headNode = NULL;
     AjPXmlNode otherNode = NULL;
     GdomeException exc;
     int i;
     GdomeNodeList *listShapes = NULL;
     GdomeDOMString *nodeName;
-
+    ajint limit;
+    
     otherNode = xml_SetNode((GdomeNode *) gdome_doc_documentElement 
 			    (file->doc, &exc));
     nodeName = gdome_str_mkref("head");
     listShapes = gdome_el_getElementsByTagName
 	((xml_GetNodeElement(otherNode)), 
 	 nodeName, &exc);
-    for(i=0; (i<gdome_nl_length(listShapes, &exc) 
-	      && headNode == NULL) ; ++i)
+
+    limit = gdome_nl_length(listShapes, &exc);
+    for(i=0; i<limit && headNode == NULL; ++i)
 	headNode = xml_SetNode(gdome_nl_item(listShapes, i, &exc));
 
 
     if(headNode == NULL)
-    {
-	temp = ajStrNewC("head");
-	headNode  = xml_MakeNewNode(file, temp, otherNode);
-	ajStrDel(&temp);
-    }
+	headNode = xml_MakeNewNodeC(file, "head", otherNode);
     
-    temp = ajStrNewC("meta");
     xml_UnrefNode(otherNode);
-    otherNode = xml_MakeNewNode(file, temp, headNode);
-    ajStrDel(&temp);
-    temp = ajStrNewC("name");
-    xml_SetAttribute(otherNode, temp, name);
-    ajStrDel(&temp);
-    temp = ajStrNewC("content");
-    xml_SetAttribute(otherNode, temp, value);
+    otherNode = xml_MakeNewNodeC(file, "meta", headNode);
+    xml_SetAttributeC(otherNode, "name", ajStrStr(name));
+    xml_SetAttributeC(otherNode, "content", ajStrStr(value));
 
-    ajStrDel(&temp);
     xml_UnrefNode(otherNode);
     xml_UnrefNode(headNode);
     gdome_str_unref(nodeName);
@@ -2953,50 +2725,42 @@ void xml_AddGroutOption(AjPXmlFile file, AjPStr name, AjPStr value)
 static void xml_AddCylinder(AjPXmlFile file, double xCentre, double yCentre, 
 			    double angle, double height, double width)
 {
-    AjPStr translation;
-    AjPStr rotation;
-    AjPStr temp;
+    AjPStr translation  = NULL;
+    AjPStr rotation     = NULL;
+    AjPStr temp         = NULL;
     AjPXmlNode transformNode;
     AjPXmlNode elCylinder;
-    AjPStr nameString=NULL;
-    
+
+    temp        = ajStrNew();
+    translation = ajStrNew();
+    rotation    = ajStrNewC("0 0 1 ");    
+
     xml_StrFromDouble(&translation, xCentre);
     ajStrAppC(&translation, " ");
     xml_StrFromDouble(&temp, yCentre);
     ajStrApp(&translation, temp);
     ajStrAppC(&translation, " 0");
 
-    rotation = ajStrNewC("0 0 1 ");
-    ajStrDel(&temp);
+    ajStrAssC(&temp,"");
     xml_StrFromDouble(&temp, angle);
     ajStrApp(&rotation, temp);
     
-    nameString = ajStrNewC("Transform");
-    transformNode = xml_MakeNewNode(file,nameString, 
+    transformNode = xml_MakeNewNodeC(file, "Transform", 
 				    xml_GetCurrentGraphic(file));
 
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("translation");
-    xml_SetAttribute(transformNode, nameString, translation);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("rotation");
-    xml_SetAttribute(transformNode, nameString, rotation);
+    xml_SetAttributeC(transformNode, "translation", ajStrStr(translation));
+    xml_SetAttributeC(transformNode, "rotation", ajStrStr(rotation));
   
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("Cylinder");
-    elCylinder = xml_MakeNewShapeNode(file, transformNode, 
-				      nameString);
 
-    ajStrDel(&temp);
+    elCylinder = xml_MakeNewShapeNodeC(file, transformNode, 
+				      "Cylinder");
+
+    ajStrAssC(&temp,"");
     xml_StrFromDouble(&temp, height);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("height");
-    xml_SetAttribute(elCylinder, nameString, temp);
-    ajStrDel(&temp);
+    xml_SetAttributeC(elCylinder, "height", ajStrStr(temp));
+    ajStrAssC(&temp,"");
     xml_StrFromDouble(&temp, width);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("width");
-    xml_SetAttribute(elCylinder, nameString, temp);
+    xml_SetAttributeC(elCylinder, "width", ajStrStr(temp));
 
     ajStrDel(&temp);
     ajStrDel(&rotation);
@@ -3004,7 +2768,6 @@ static void xml_AddCylinder(AjPXmlFile file, double xCentre, double yCentre,
 
     xml_UnrefNode(elCylinder);
     xml_UnrefNode(transformNode);
-    ajStrDel(&nameString);
 
     return;
 }
@@ -3018,7 +2781,7 @@ static void xml_AddCylinder(AjPXmlFile file, double xCentre, double yCentre,
 **
 ** @param [r] boole [AjBool] the AjBool
 **
-** @return [AjPStr] "ajTrue" or "FALSE" depending on the AjBool
+** @return [AjPStr] "TRUE" or "FALSE" depending on the AjBool
 ** @@
 *********************************************************************/
 static AjPStr xml_StrFromBool(AjBool boole)
@@ -3039,7 +2802,7 @@ static AjPStr xml_StrFromBool(AjBool boole)
 /* @funcstatic xml_StrFromDouble  ************************************
 **
 ** Local Method
-** retuns a string with the correct number of decimal places 
+** returns a string with the correct number of decimal places 
 **
 ** @param [r] val [double] the double to change to string
 ** @param [w] result [AjPStr*] the string to change to double
@@ -3111,7 +2874,7 @@ static AjBool xml_AngleIsInSecondHalfOfCircle(double angle)
     double halfHalfCount;
     double doubleIntHalfHalfCount;
     
-    /* there must be a better way to do it */
+    /* there must be a better way to do it hugh */
     halfCount = (int) angle / (acos(0) * 2);
     halfHalfCount = ((double) halfCount) / 2.0;
     intHalfHalfCount = ((int) halfHalfCount);  
@@ -3126,7 +2889,7 @@ static AjBool xml_AngleIsInSecondHalfOfCircle(double angle)
 
 
 
-/* @funcstatic xml_PressentGraphicTypeIs  ****************************
+/* @funcstatic xml_PresentGraphicTypeIs  ****************************
 **
 ** Local Method
 ** 
@@ -3137,34 +2900,85 @@ static AjBool xml_AngleIsInSecondHalfOfCircle(double angle)
 ** @return [AjBool] True if graphic type is name
 ** @@
 *********************************************************************/
-static AjBool xml_PressentGraphicTypeIs(AjPXmlFile file, AjPStr name)
+static AjBool xml_PresentGraphicTypeIs(AjPXmlFile file, AjPStr name)
 {
-    AjBool returnValue;
-    AjPStr attributeName = NULL;
+    AjBool returnValue    = ajFalse;
     AjPStr attributeValue = NULL;
 
-    attributeName = ajStrNewC("name");
-    attributeValue = xml_GetAttribute(xml_GetCurrentGraphic(file), 
-				      attributeName);
+    attributeValue = xml_GetAttributeC(xml_GetCurrentGraphic(file), 
+				       "name");
 
     returnValue = ajStrMatch(attributeValue, name);
   
     if(ajStrMatchC(attributeValue, "") && (name == NULL))
 	returnValue = ajTrue;
 
-    printf("pointers attributeValue = %p name = %p\n",
-	   (attributeValue), (name));
-    fflush(stdout);
-    printf("attributeValue = %s name = %s returnValue = %d\n",
-	   ajStrStr(attributeValue), ajStrStr(name), returnValue);
-    fflush(stdout);
-
     ajStrDel(&attributeValue);
-    ajStrDel(&attributeName);
-
-  
 
     return returnValue;
+}
+
+
+
+/* @funcstatic xml_PresentGraphicTypeIsC  ****************************
+**
+** Local Method
+** 
+**
+** @param [w] file [AjPXmlFile] the file to add the node to
+** @param [r] name [char *] name graphic should be
+**
+** @return [AjBool] True if graphic type is name
+** @@
+*********************************************************************/
+static AjBool xml_PresentGraphicTypeIsC(AjPXmlFile file, char *name)
+{
+    AjBool returnValue    = ajFalse;
+    AjPStr attributeValue = NULL;
+
+    attributeValue = xml_GetAttributeC(xml_GetCurrentGraphic(file), 
+				       "name");
+
+    returnValue = ajStrMatchC(attributeValue, name);
+  
+    if(ajStrMatchC(attributeValue, "") && (name == NULL))
+	returnValue = ajTrue;
+
+    ajStrDel(&attributeValue);
+
+    return returnValue;
+}
+
+
+
+
+/* @funcstatic xml_GetAttributeC  *************************************
+**
+** Local Method
+** Gets an attribute
+**
+** @param [w] node [GdomeNode*] node to set attribute of
+** @param [r] atName [char *] name of attribute
+**
+** @return [AjPStr] value of attribute
+** @@
+*********************************************************************/
+static AjPStr xml_GetAttributeC(AjPXmlNode node, char *atName)
+{
+    GdomeDOMString *attributeValue;
+    GdomeException exc;
+    AjPStr temp = NULL;
+    GdomeDOMString *nodeName = NULL;
+    
+    nodeName = gdome_str_mkref_dup(atName);
+    attributeValue = gdome_el_getAttribute (xml_GetNodeElement(node),
+					    nodeName, &exc);
+    
+    temp = ajStrNewC(attributeValue->str);
+    gdome_str_unref(attributeValue);
+    gdome_str_unref (nodeName);
+    
+    return temp;
 }
 
 
@@ -3173,7 +2987,7 @@ static AjBool xml_PressentGraphicTypeIs(AjPXmlFile file, AjPStr name)
 /* @funcstatic xml_GetAttribute  *************************************
 **
 ** Local Method
-** Sets an attribute
+** Gets an attribute
 **
 ** @param [w] node [GdomeNode*] node to set attribute of
 ** @param [r] atName [AjPStr] name of attribute
@@ -3183,25 +2997,38 @@ static AjBool xml_PressentGraphicTypeIs(AjPXmlFile file, AjPStr name)
 *********************************************************************/
 static AjPStr xml_GetAttribute(AjPXmlNode node, AjPStr atName)
 {
-    GdomeDOMString *attributeValue;
+
+    return xml_GetAttributeC(node,ajStrStr(atName));
+}
+
+
+
+
+/* @funcstatic xml_SetAttributeC  ************************************
+**
+** Local Method
+** Sets an attribute from a char*
+**
+** @param [w] node [GdomeNode*] node to set attribute of
+** @param [r] atName [*char] name of attribute
+** @param [r] atValue [*char] value of attribute
+**
+** @@
+*********************************************************************/
+static void xml_SetAttributeC(AjPXmlNode node, char *atName, char *atValue)
+{
     GdomeException exc;
-    AjPStr temp = NULL;
     GdomeDOMString *nodeName = NULL;
+    GdomeDOMString *nodeName2 = NULL;
     
-    nodeName = gdome_str_mkref_dup(ajStrStr(atName));
-    attributeValue = gdome_el_getAttribute (xml_GetNodeElement(node),
-					    nodeName, &exc);
-    
-    /* Do I need to unref the attributeValue? I guess yes so I do not 
-       use the line below */
-    /*
-       return ajStrNewC(attributeValue->str); 
-       */
-    temp = ajStrNewC(attributeValue->str);
-    gdome_str_unref(attributeValue);
-    gdome_str_unref (nodeName);
-    
-    return temp;
+    nodeName = gdome_str_mkref_dup(atName);
+    nodeName2 = gdome_str_mkref_dup(atValue);
+    gdome_el_setAttribute (xml_GetNodeElement(node), nodeName, 
+			   nodeName2, &exc);
+    gdome_str_unref(nodeName);
+    gdome_str_unref(nodeName2);
+
+    return;
 }
 
 
@@ -3220,17 +3047,8 @@ static AjPStr xml_GetAttribute(AjPXmlNode node, AjPStr atName)
 *********************************************************************/
 static void xml_SetAttribute(AjPXmlNode node, AjPStr atName, AjPStr atValue)
 {
-    GdomeException exc;
-    GdomeDOMString *nodeName = NULL;
-    GdomeDOMString *nodeName2 = NULL;
+    xml_SetAttributeC(node, ajStrStr(atName), ajStrStr(atValue));
     
-    nodeName = gdome_str_mkref_dup(ajStrStr(atName));
-    nodeName2 = gdome_str_mkref_dup(ajStrStr(atValue));
-    gdome_el_setAttribute (xml_GetNodeElement(node), nodeName, 
-			   nodeName2, &exc);
-    gdome_str_unref(nodeName);
-    gdome_str_unref(nodeName2);
-
     return;
 }
 
@@ -3252,108 +3070,77 @@ static AjPStr xml_GetIndex(AjPXmlNode passedNode)
     GdomeException exc;
     GdomeDOMString *nodeName = NULL;
     AjBool proto;
-    AjPStr attributeName = NULL;
     AjPStr ajAttributeValue = NULL;
     AjPXmlNode tempNode = NULL;
     AjPXmlNode returnNode = NULL;
     AjPXmlNode node = NULL;
     AjPStr temp = NULL;
-    AjPStr nameString = NULL;
     GdomeNodeList *listShapes = NULL;
     int i;
-
+    ajint limit;
 
     proto = ajFalse;
     
     nodeName = gdome_el_tagName(xml_GetNodeElement(passedNode), &exc);
-    printf("gdome_el_tagName xml_GetIndex = %s\n", 
-	   gdome_el_tagName(xml_GetNodeElement(passedNode), &exc)->str);
-    fflush(stdout);
     
     if(ajStrMatchCC("Shape", nodeName->str))
     {
-	printf("ajStrMatchCC Shape xml_GetIndex node = %p\n", node);
-	fflush(stdout);
 	gdome_str_unref(nodeName);
 	nodeName = gdome_str_mkref("IndexedLineSet");
 	listShapes = gdome_el_getElementsByTagName
 	    (xml_GetNodeElement(passedNode), nodeName, &exc);
-	for(i=0; (i<gdome_nl_length(listShapes, &exc) 
-		  && node == NULL) ; ++i)
-	{
+	limit = gdome_nl_length(listShapes, &exc);
+	for(i=0; i<limit && node == NULL; ++i)
 	    node = xml_SetNode(gdome_nl_item(listShapes, i, &exc));
-	}
+
 	gdome_nl_unref(listShapes, &exc);
-	printf("listShapes Line xml_GetIndex node = %p\n", node);
 	if(node == NULL)
 	{
-	    printf("ajStrMatchCC IndexedFaceSet xml_GetIndex\n");
-	    fflush(stdout);
 	    gdome_str_unref(nodeName);
 	    nodeName = gdome_str_mkref("IndexedFaceSet");
 	    listShapes = gdome_el_getElementsByTagName
 		(xml_GetNodeElement(passedNode), nodeName, &exc);
-	    for(i=0; (i<gdome_nl_length(listShapes, &exc) 
-		      && node == NULL) ; ++i)
-	    {
+	    limit = gdome_nl_length(listShapes, &exc);
+	    for(i=0; i<limit && node == NULL; ++i)
 		node = xml_SetNode(gdome_nl_item(listShapes, i, &exc));
-	    }
 	    gdome_nl_unref(listShapes, &exc);
-	    printf("listShapes Face xml_GetIndex node = %p\n", node);
 	}
     }
     else
-    {
-	printf("no match\n");
 	node = passedNode;
-    }
 
-    nameString = ajStrNewC("ProtoInstance");
     gdome_str_unref(nodeName);
     nodeName = gdome_el_tagName(xml_GetNodeElement(passedNode), &exc);
 
-    if(ajStrMatchC(nameString, nodeName->str))
+    if(ajStrMatchCC("ProtoInstance", nodeName->str))
     {
-	attributeName = ajStrNewC("name");
-	ajAttributeValue = xml_GetAttribute(node, attributeName);
+	ajAttributeValue = xml_GetAttributeC(node, "name");
 	if(ajStrMatchC(ajAttributeValue, "Graph"))
-	{
 	    proto = ajTrue;
-	}
-	ajStrDel(&attributeName);
 	ajStrDel(&ajAttributeValue);
     }
 
-    ajStrDel(&nameString);
     gdome_str_unref(nodeName);
 
     if(proto)
     {
 	gdome_str_unref(nodeName);
 	nodeName = gdome_el_tagName(xml_GetNodeElement(node), &exc);
-	printf("gdome_el_tagName if(proto) = %s\n", nodeName->str);
-	fflush(stdout);
 
 	gdome_str_unref(nodeName);
 	nodeName = gdome_str_mkref("fieldValue");
 	listShapes = gdome_el_getElementsByTagName
 	    (xml_GetNodeElement(node), nodeName, &exc);
-	for(i=0; (i<gdome_nl_length(listShapes, &exc) 
-		  && returnNode == NULL) ; ++i)
+	limit = gdome_nl_length(listShapes, &exc);
+	for(i=0; i<limit && returnNode == NULL; ++i)
 	{
 	    tempNode = xml_SetNode(gdome_nl_item(listShapes, i, &exc));
-	    attributeName = ajStrNewC("name");
-	    ajAttributeValue = xml_GetAttribute(tempNode, 
-						attributeName);
+	    ajAttributeValue = xml_GetAttributeC(tempNode, 
+						 "name");
 
 	    if(ajStrMatchC(ajAttributeValue, "Graph.index"))
-	    {
-		ajStrDel(&attributeName);
-		attributeName = ajStrNewC("value");
-		temp = xml_GetAttribute(tempNode, attributeName);
-	    }
-
-	    ajStrDel(&attributeName);
+		temp = xml_GetAttributeC(tempNode, "value");
+	    
 	    ajStrDel(&ajAttributeValue);
 	    xml_UnrefNode(tempNode);
 	}
@@ -3363,9 +3150,7 @@ static AjPStr xml_GetIndex(AjPXmlNode passedNode)
     else
     {
 	nodeName = gdome_el_tagName(xml_GetNodeElement(node), &exc);
-	printf("gdome_el_tagName else = %s\n", nodeName->str);
-	fflush(stdout);
-	
+
 	/*
 	   if(ajStrMatchCC("Shape", nodeName->str))
 	   {
@@ -3379,17 +3164,13 @@ static AjPStr xml_GetIndex(AjPXmlNode passedNode)
 	   tempNode = xml_SetNode(gdome_nl_item(listShapes, i, &exc));
 	   }
 	   gdome_nl_unref(listShapes, &exc);
-	   nameString = ajStrNewC("coordIndex");
-	   temp = xml_GetAttribute(tempNode, nameString);
-	   ajStrDel(&nameString);
+	   temp = xml_GetAttribute(tempNode, "coordIndex");
 	   xml_UnrefNode(tempNode);	    
 	   }
 	   else
 	   */
 	{
-	    nameString = ajStrNewC("coordIndex");
-	    temp = xml_GetAttribute(node, nameString);
-	    ajStrDel(&nameString);
+	    temp = xml_GetAttributeC(node, "coordIndex");
 	}
 	
     }
@@ -3416,75 +3197,57 @@ static void xml_SetIndex(AjPXmlNode passedNode, AjPStr index)
     GdomeException exc;
     GdomeDOMString *nodeName = NULL;
     AjBool proto;
-    AjPStr attributeName = NULL;
     AjPStr ajAttributeValue = NULL;
     AjPXmlNode tempNode = NULL;
     AjPXmlNode returnNode = NULL;
     AjPXmlNode node = NULL;
-    AjPStr nameString = NULL;
     GdomeNodeList *listShapes = NULL;
     int i;
-
-    printf("gdome_el_tagName xml_SetIndex = %s\n", 
-	   gdome_el_tagName(xml_GetNodeElement(passedNode), &exc)->str);
-    fflush(stdout);
-
+    ajint limit;
+    
     proto = ajFalse;
     
     nodeName = gdome_el_tagName(xml_GetNodeElement(passedNode), &exc);
 
     if(ajStrMatchCC("Shape", nodeName->str))
     {
-	printf("ajStrMatchCC Shape\n");
 	nodeName = gdome_str_mkref("IndexedLineSet");
 	gdome_str_unref(nodeName);
 	listShapes = gdome_el_getElementsByTagName
 	    (xml_GetNodeElement(passedNode), nodeName, &exc);
-	for(i=0; (i<gdome_nl_length(listShapes, &exc) 
-		  && node == NULL) ; ++i)
-	{
+	limit = gdome_nl_length(listShapes, &exc);
+	for(i=0; i<limit && node == NULL; ++i)
 	    node = xml_SetNode(gdome_nl_item(listShapes, i, &exc));
-	}
+
 	gdome_nl_unref(listShapes, &exc);
 	if(node == NULL)
 	{
-	    printf("ajStrMatchCC IndexedFaceSet xml_SetIndex\n");
-	    fflush(stdout);
 	    gdome_str_unref(nodeName);
 	    nodeName = gdome_str_mkref("IndexedFaceSet");
 	    listShapes = gdome_el_getElementsByTagName
 		(xml_GetNodeElement(passedNode), nodeName, &exc);
-	    for(i=0; (i<gdome_nl_length(listShapes, &exc) 
-		      && node == NULL) ; ++i)
-	    {
+	    limit = gdome_nl_length(listShapes, &exc);
+	    for(i=0; i<limit && node == NULL; ++i)
 		node = xml_SetNode(gdome_nl_item(listShapes, i, &exc));
-	    }
+
 	    gdome_nl_unref(listShapes, &exc);
 	}
     }
     else
-    {
-	printf("no match\n");
 	node = passedNode;
-    }
 
-    nameString = ajStrNewC("ProtoInstance");
     gdome_str_unref(nodeName);
     nodeName = gdome_el_tagName(xml_GetNodeElement(passedNode), &exc);
 
-    if(ajStrMatchC(nameString, nodeName->str))
+    if(ajStrMatchCC("ProtoInstance", nodeName->str))
     {
-	attributeName = ajStrNewC("name");
-	ajAttributeValue = xml_GetAttribute(node, attributeName);
+	ajAttributeValue = xml_GetAttributeC(node, "name");
 	if(ajStrMatchC(ajAttributeValue, "Graph"))
-	{
 	    proto = ajTrue;
-	}
-	ajStrDel(&attributeName);
+
 	ajStrDel(&ajAttributeValue);
     }
 
-    ajStrDel(&nameString);
     gdome_str_unref(nodeName);
     
     if(proto)
@@ -3492,22 +3255,19 @@ static void xml_SetIndex(AjPXmlNode passedNode, AjPStr index)
 	nodeName = gdome_str_mkref("fieldValue");
 	listShapes = gdome_el_getElementsByTagName
 	    (xml_GetNodeElement(node), nodeName, &exc);
-	for(i=0; (i<gdome_nl_length(listShapes, &exc) 
-		  && returnNode == NULL) ; ++i)
+	limit = gdome_nl_length(listShapes, &exc);
+	for(i=0; i<limit && returnNode == NULL; ++i)
 	{
 	    tempNode = xml_SetNode(gdome_nl_item(listShapes, i, &exc));
-	    attributeName = ajStrNewC("name");
-	    ajAttributeValue = xml_GetAttribute(tempNode, 
-						attributeName);
+
+	    ajAttributeValue = xml_GetAttributeC(tempNode, 
+						 "name");
 
 	    if(ajStrMatchC(ajAttributeValue, "Graph.index"))
 	    {
-		ajStrDel(&attributeName);
-		attributeName = ajStrNewC("value");
-		xml_SetAttribute(tempNode, attributeName, index);
+		xml_SetAttributeC(tempNode, "value", ajStrStr(index));
 	    }
 
-	    ajStrDel(&attributeName);
 	    ajStrDel(&ajAttributeValue);
 	    xml_UnrefNode(tempNode);
 	}
@@ -3522,23 +3282,16 @@ static void xml_SetIndex(AjPXmlNode passedNode, AjPStr index)
 	    nodeName = gdome_str_mkref("IndexedFaceSet");
 	    listShapes = gdome_el_getElementsByTagName
 		(xml_GetNodeElement(passedNode), nodeName, &exc);
-	    for(i=0; (i<gdome_nl_length(listShapes, &exc) 
-		      && node == NULL) ; ++i)
-	    {
+	    limit = gdome_nl_length(listShapes, &exc);
+	    for(i=0; i<limit && node == NULL; ++i)
 		tempNode = xml_SetNode(gdome_nl_item(listShapes, i, &exc));
-	    }
+
 	    gdome_nl_unref(listShapes, &exc);
-	    nameString = ajStrNewC("coordIndex");
-	    xml_SetAttribute(tempNode, nameString, index);
-	    ajStrDel(&nameString);
+	    xml_SetAttributeC(tempNode, "coordIndex", ajStrStr(index));
 	    xml_UnrefNode(tempNode);	    
 	}
 	else
-	{
-	    nameString = ajStrNewC("coordIndex");
-	    xml_SetAttribute(node, nameString, index);
-	    ajStrDel(&nameString);
-	}
+	    xml_SetAttributeC(node, "coordIndex", ajStrStr(index));
     }
     
     return;
@@ -3562,197 +3315,105 @@ static AjPStr xml_GetPoints(AjPXmlNode passedNode)
     GdomeDOMString *attributeValue;
     GdomeException exc;
     AjPStr temp = NULL;
-    AjPStr nameString = NULL;
     GdomeNodeList *listCoordinate = NULL;
     GdomeNodeList *listShapes = NULL;
     AjPXmlNode coordinateNode = NULL;
     int i;
     GdomeDOMString *nodeName = NULL;
     AjBool proto;
-    AjPStr attributeName = NULL;
     AjPStr ajAttributeValue = NULL;
     AjPXmlNode tempNode = NULL;
     AjPXmlNode node = NULL;
-
+    ajint limit;
+    
     proto = ajFalse;
 
-    printf("gdome_el_tagName xml_GetPoints = %s\n", 
-	   gdome_el_tagName(xml_GetNodeElement(passedNode), &exc)->str);
-    fflush(stdout);
-
-    nameString = ajStrNewC("ProtoInstance");
     nodeName = gdome_el_tagName(xml_GetNodeElement(passedNode), &exc);
-
-    printf("xml_GetPoints passedNode = %p name = %s\n", passedNode, nodeName->str);
-    fflush(stdout);
 
     if(ajStrMatchCC("Shape", nodeName->str))
     {
-	printf("ajStrMatchCC Shape\n");
-	fflush(stdout);
 	gdome_str_unref(nodeName);
 	nodeName = gdome_str_mkref("IndexedLineSet");
 	listShapes = gdome_el_getElementsByTagName
 	    (xml_GetNodeElement(passedNode), nodeName, &exc);
-	for(i=0; (i<gdome_nl_length(listShapes, &exc) 
-		  && node == NULL) ; ++i)
-	{
+	limit = gdome_nl_length(listShapes, &exc);
+	for(i=0; i<limit && node == NULL; ++i)
 	    node = xml_SetNode(gdome_nl_item(listShapes, i, &exc));
-	}
+
 	gdome_nl_unref(listShapes, &exc);
 	if(node == NULL)
 	{
-	    printf("ajStrMatchCC IndexedFaceSet xml_GetPoints\n");
-	    fflush(stdout);
 	    gdome_str_unref(nodeName);
 	    nodeName = gdome_str_mkref("IndexedFaceSet");
 	    listShapes = gdome_el_getElementsByTagName
 		(xml_GetNodeElement(passedNode), nodeName, &exc);
-	    for(i=0; (i<gdome_nl_length(listShapes, &exc) 
-		      && node == NULL) ; ++i)
-	    {
+	    limit = gdome_nl_length(listShapes, &exc);
+	    for(i=0; i<limit && node == NULL; ++i)
 		node = xml_SetNode(gdome_nl_item(listShapes, i, &exc));
-	    }
+
 	    gdome_nl_unref(listShapes, &exc);
 	}
     }
     else
-    {
-	printf("no match\n");
 	node = passedNode;
-    }
-    
-    printf("here getP node = %p\n", node);
-    fflush(stdout);
-    printf("here getP proto = %d\n", proto);
-    fflush(stdout);
-    printf("here getP node node = %p\n", xml_GetNodeElement(node));
-    fflush(stdout);
-    printf("here getP node name p = %p\n", gdome_el_tagName(xml_GetNodeElement(node), &exc)); 
-    fflush(stdout);
-    printf("here getP1 node name s = %s\n", gdome_el_tagName(xml_GetNodeElement(node), &exc)->str); 
-    fflush(stdout);
     
     gdome_str_unref(nodeName);
     nodeName = gdome_el_tagName(xml_GetNodeElement(passedNode), &exc);
     
-    if(ajStrMatchC(nameString, nodeName->str))
+    if(ajStrMatchCC("ProtoInstance", nodeName->str))
     {
-	attributeName = ajStrNewC("name");
-	ajAttributeValue = xml_GetAttribute(node, attributeName);
+	ajAttributeValue = xml_GetAttributeC(node, "name");
 	if(ajStrMatchC(ajAttributeValue, "Graph"))
-	{
 	    proto = ajTrue;
-	}
-	ajStrDel(&attributeName);
 	ajStrDel(&ajAttributeValue);
     }
 
     gdome_str_unref(nodeName);
-    printf("here getP2 node = %p\n", node);
-    fflush(stdout);
-    printf("here getP node el = %p\n", xml_GetNodeElement(node));
-    fflush(stdout);
-    printf("here getP node name p = %p\n", gdome_el_tagName(xml_GetNodeElement(node), &exc)); 
-    fflush(stdout);
-    printf("here getP node name s = %s\n", gdome_el_tagName(xml_GetNodeElement(node), &exc)->str); 
-    fflush(stdout);
-
-    printf("here getP2 proto = %d\n", proto);
-    fflush(stdout);
 
     if(proto)
     {
 	nodeName = gdome_str_mkref("fieldValue");
 	listShapes = gdome_el_getElementsByTagName
 	    (xml_GetNodeElement(node), nodeName, &exc);
-	for(i=0; (i<gdome_nl_length(listShapes, &exc) 
-		  && temp == NULL) ; ++i)
+	limit = gdome_nl_length(listShapes, &exc);
+	for(i=0; i<limit && temp == NULL; ++i)
 	{
 	    tempNode = xml_SetNode(gdome_nl_item(listShapes, i, &exc));
-	    attributeName = ajStrNewC("name");
-	    ajAttributeValue = xml_GetAttribute(tempNode, 
-						attributeName);
+	    ajAttributeValue = xml_GetAttributeC(tempNode, 
+						 "name");
 
 	    if(ajStrMatchC(ajAttributeValue, "Graph.points"))
-	    {
-		ajStrDel(&attributeName);
-		attributeName = ajStrNewC("value");
-		temp = xml_GetAttribute(tempNode, attributeName);
-	    }
+		temp = xml_GetAttributeC(tempNode, "value");
 
-	    ajStrDel(&attributeName);
 	    ajStrDel(&ajAttributeValue);
 	    xml_UnrefNode(tempNode);
 	}
 	gdome_str_unref(nodeName);
 	gdome_nl_unref(listShapes, &exc);
-	printf("here getP3 node = %p\n", node);
-	fflush(stdout);
-	printf("here getP node el = %p\n", xml_GetNodeElement(node));
-	fflush(stdout);
-	printf("here getP node name p = %p\n", gdome_el_tagName(xml_GetNodeElement(node), &exc)); 
-	fflush(stdout);
-	printf("here getP node name s = %s\n", gdome_el_tagName(xml_GetNodeElement(node), &exc)->str); 
-	fflush(stdout);
     }
     else
     {
-
 	nodeName = gdome_n_nodeName(xml_GetNode(node), &exc);
-	printf("here getP4 node = %p\n", node);
-	fflush(stdout);
-	printf("here getP node el = %p\n", xml_GetNodeElement(node));
-	fflush(stdout);
-	printf("here getP node name p = %p\n", gdome_el_tagName(xml_GetNodeElement(node), &exc)); 
-	fflush(stdout);
-	printf("here getP node name s = %s\n", gdome_el_tagName(xml_GetNodeElement(node), &exc)->str); 
-	fflush(stdout);
-	printf("here getP nodeName = %s\n", nodeName->str); 
-	fflush(stdout);
     
 	if(!(ajStrMatchCC(nodeName->str, "IndexedLineSet")
 	     || ajStrMatchCC(nodeName->str, "IndexedFaceSet")
 	     || ajStrMatchCC(nodeName->str, "IndexedPointSet")))
 	{
-	    printf("Here is an exception, cannot get points from a node that is not an IndexedSet, this is a %s", nodeName->str);
-	    fflush(stdout);
-	    return ajFalse;
+	    ajDebug("Exception: cannot get points from a node "
+		    "that is not an IndexedSet, this is a %s", nodeName->str);
+	    return ajStrNewC("");
 	}
-	printf("here getP0 nodeName = %s\n", nodeName->str); 
-	fflush(stdout);
  	gdome_str_unref(nodeName);
 	nodeName = gdome_str_mkref("Coordinate");
-	printf("here getPe node name p = %p\n", gdome_el_tagName(xml_GetNodeElement(node), &exc)); 
-	fflush(stdout);
 	listCoordinate = gdome_el_getElementsByTagName
 	    (xml_GetNodeElement(node), nodeName, &exc);
-	printf("here getPr node name p = %p\n", gdome_el_tagName(xml_GetNodeElement(node), &exc)); 
-	fflush(stdout);
 	if(gdome_nl_length(listCoordinate, &exc)!=0)
-	{
 	    coordinateNode = xml_SetNode( gdome_nl_item 
 					 (listCoordinate, 0, &exc));
-	}
-	printf("here getP5 node = %p\n", node);
-	fflush(stdout);
-	printf("here getP node el = %p\n", xml_GetNodeElement(node));
-	fflush(stdout);
-	printf("here getP node name p = %p\n", gdome_el_tagName(xml_GetNodeElement(node), &exc)); 
-	fflush(stdout);
-	printf("here getP node name s = %s\n", gdome_el_tagName(xml_GetNodeElement(node), &exc)->str); 
-	fflush(stdout);
+
 	if(xml_GetNode(coordinateNode) == NULL)
 	{
-	    printf("Here is an exception, IndexedLineSet does not have points");
-	    printf("here getP6 node = %p\n", node);
-	    fflush(stdout);
-	    printf("here getP node el = %p\n", xml_GetNodeElement(node));
-	    fflush(stdout);
-	    printf("here getP node name p = %p\n", gdome_el_tagName(xml_GetNodeElement(node), &exc)); 
-	    fflush(stdout);
-	    printf("here getP node name s = %s\n", gdome_el_tagName(xml_GetNodeElement(node), &exc)->str); 
-	    fflush(stdout);
+	    ajDebug("Exception: IndexedLineSet does not have points");
 	    return ajStrNewC("");
 	}	
     
@@ -3774,18 +3435,6 @@ static AjPStr xml_GetPoints(AjPXmlNode passedNode)
 	gdome_str_unref(nodeName);
 	gdome_str_unref(attributeValue);
     }
-    printf("here getP7 node = %p\n", node);
-    fflush(stdout);
-    printf("here getP node el = %p\n", xml_GetNodeElement(node));
-    fflush(stdout);
-    printf("here getP node name p = %p\n",
-	   gdome_el_tagName(xml_GetNodeElement(node), &exc)); 
-    fflush(stdout);
-    printf("here getP node name s = %s\n",
-	   gdome_el_tagName(xml_GetNodeElement(node), &exc)->str); 
-    fflush(stdout);
-    
-    ajStrDel(&nameString);
     
     return temp;
 }
@@ -3813,70 +3462,53 @@ static AjBool xml_SetPoints(AjPXmlNode passedNode, AjPStr points)
     GdomeDOMString *nodeName2 = NULL;
     GdomeDOMString *nodeName = NULL;
     
-    AjPStr nameString = NULL;
     GdomeNodeList *listShapes = NULL;
     AjBool proto;
-    AjPStr attributeName = NULL;
     AjPStr ajAttributeValue = NULL;
     AjPXmlNode tempNode = NULL;
     AjPXmlNode returnNode = NULL;
     AjPXmlNode node = NULL;
-
+    ajint limit;
+    
     proto = ajFalse;
     
-    printf("gdome_el_tagName xml_SetPoints = %s\n", 
-	   gdome_el_tagName(xml_GetNodeElement(passedNode), &exc)->str);
-    fflush(stdout);
-
-    nameString = ajStrNewC("ProtoInstance");
     nodeName = gdome_el_tagName(xml_GetNodeElement(passedNode), &exc);
 
     if(ajStrMatchCC("Shape", nodeName->str))
     {
-	printf("ajStrMatchCC Shape\n");
 	nodeName = gdome_str_mkref("IndexedLineSet");
 	listShapes = gdome_el_getElementsByTagName
 	    (xml_GetNodeElement(passedNode), nodeName, &exc);
-	for(i=0; (i<gdome_nl_length(listShapes, &exc) 
-		  && node == NULL) ; ++i)
-	{
+	limit = gdome_nl_length(listShapes, &exc);
+	for(i=0; i<limit && node == NULL; ++i)
 	    node = xml_SetNode(gdome_nl_item(listShapes, i, &exc));
-	}
+
 	gdome_nl_unref(listShapes, &exc);
 	if(node == NULL)
 	{
-	    printf("ajStrMatchCC IndexedFaceSet xml_SetPoints\n");
-	    fflush(stdout);
 	    gdome_str_unref(nodeName);
 	    nodeName = gdome_str_mkref("IndexedFaceSet");
 	    listShapes = gdome_el_getElementsByTagName
 		(xml_GetNodeElement(passedNode), nodeName, &exc);
-	    for(i=0; (i<gdome_nl_length(listShapes, &exc) 
-		      && node == NULL) ; ++i)
-	    {
+	    limit = gdome_nl_length(listShapes, &exc);
+	    for(i=0; i<limit && node == NULL; ++i)
 		node = xml_SetNode(gdome_nl_item(listShapes, i, &exc));
-	    }
+
 	    gdome_nl_unref(listShapes, &exc);
 	}
     }
     else
-    {
-	printf("no match\n");
 	node = passedNode;
-    }
     
     gdome_str_unref(nodeName);
     nodeName = gdome_el_tagName(xml_GetNodeElement(passedNode), &exc);
 
-    if(ajStrMatchC(nameString, nodeName->str))
+    if(ajStrMatchCC("ProtoInstance", nodeName->str))
     {
-	attributeName = ajStrNewC("name");
-	ajAttributeValue = xml_GetAttribute(node, attributeName);
+	ajAttributeValue = xml_GetAttributeC(node, "name");
 	if(ajStrMatchC(ajAttributeValue, "Graph"))
-	{
 	    proto = ajTrue;
-	}
-	ajStrDel(&attributeName);
+
 	ajStrDel(&ajAttributeValue);
     }
         
@@ -3887,22 +3519,16 @@ static AjBool xml_SetPoints(AjPXmlNode passedNode, AjPStr points)
 	nodeName = gdome_str_mkref("fieldValue");
 	listShapes = gdome_el_getElementsByTagName
 	    (xml_GetNodeElement(node), nodeName, &exc);
-	for(i=0; (i<gdome_nl_length(listShapes, &exc) 
-		  && returnNode == NULL) ; ++i)
+	limit = gdome_nl_length(listShapes, &exc);
+	for(i=0; i<limit && returnNode == NULL; ++i)
 	{
 	    tempNode = xml_SetNode(gdome_nl_item(listShapes, i, &exc));
-	    attributeName = ajStrNewC("name");
-	    ajAttributeValue = xml_GetAttribute(tempNode, 
-						attributeName);
+	    ajAttributeValue = xml_GetAttributeC(tempNode, 
+						 "name");
 
 	    if(ajStrMatchC(ajAttributeValue, "Graph.points"))
-	    {
-		ajStrDel(&attributeName);
-		attributeName = ajStrNewC("value");
-		xml_SetAttribute(tempNode, attributeName, points);
-	    }
+		xml_SetAttributeC(tempNode, "value", ajStrStr(points));
 
-	    ajStrDel(&attributeName);
 	    ajStrDel(&ajAttributeValue);
 	    xml_UnrefNode(tempNode);
 	}
@@ -3917,7 +3543,7 @@ static AjBool xml_SetPoints(AjPXmlNode passedNode, AjPStr points)
 	     || ajStrMatchCC(nodeName->str, "IndexedFaceSet")
 	     || ajStrMatchCC(nodeName->str, "IndexedPointSet")))
 	{
-	    printf("Here is an exception, cannot set points from a node "
+	    ajDebug("Exception: cannot set points from a node "
 		   "that is not an IndexedSet, this is a %s", nodeName->str);
 	    return ajFalse;
 	}
@@ -3926,14 +3552,13 @@ static AjBool xml_SetPoints(AjPXmlNode passedNode, AjPStr points)
 	listCoordinate = gdome_el_getElementsByTagName
 	    ((xml_GetNodeElement(node)), nodeName, &exc);
 	if(gdome_nl_length(listCoordinate, &exc)!=0)
-	{
 	    coordinateNode = xml_SetNode( gdome_nl_item 
 					 (listCoordinate, 0, &exc));
-	}
+
 	gdome_nl_unref(listCoordinate, &exc);
 	if(xml_GetNode(coordinateNode) == NULL)
 	{
-	    printf("Here is an exception, "
+	    ajDebug("Exception: "
 		   "IndexedLineSet does not have points");
 	    return ajFalse;
 	}	
@@ -3949,8 +3574,6 @@ static AjBool xml_SetPoints(AjPXmlNode passedNode, AjPStr points)
 	gdome_str_unref(nodeName2);
 
     }
-    
-    ajStrDel(&nameString);
     
     return ajTrue;
 }
@@ -3973,6 +3596,27 @@ static AjBool xml_SetPoints(AjPXmlNode passedNode, AjPStr points)
 static AjPXmlNode xml_MakeNewNode(AjPXmlFile file, AjPStr name, 
 				  AjPXmlNode parent)
 {
+    return xml_MakeNewNodeC(file, ajStrStr(name), parent);
+}
+
+
+
+
+/* @funcstatic xml_MakeNewNodeC  **************************************
+**
+** Local Method
+** Makes a new DOM node and appends it to the parent node, from char*
+**
+** @param [w] file [AjPXmlFile] the file to add the node to
+** @param [r] name [char*] name of node
+** @param [r] parentNode [AjPXmlNode] parent node to add to
+**
+** @return [AjPXmlNode] new node
+** @@
+*********************************************************************/
+static AjPXmlNode xml_MakeNewNodeC(AjPXmlFile file, char *name, 
+				  AjPXmlNode parent)
+{
     GdomeException exc;
     GdomeNode *parentNode ; 
     GdomeNode *elNode ; 
@@ -3981,7 +3625,7 @@ static AjPXmlNode xml_MakeNewNode(AjPXmlFile file, AjPStr name,
 
     GdomeDOMString *nodeName = NULL;
 
-    nodeName = gdome_str_mkref_dup(ajStrStr(name));
+    nodeName = gdome_str_mkref_dup(name);
     elNode = (GdomeNode *) gdome_doc_createElement (file->doc, nodeName,
 						    &exc);
     el = xml_SetNode(elNode);
@@ -4003,7 +3647,7 @@ static AjPXmlNode xml_MakeNewNode(AjPXmlFile file, AjPStr name,
 **
 ** Local Method
 ** returns present Colour As String
-** @param [r] file [AjPXmlFile] the file with the pressent colour
+** @param [r] file [AjPXmlFile] the file with the present colour
 **
 ** @return [AjPStr] the colour
 ** @@
@@ -4015,23 +3659,88 @@ static  AjPStr xml_PresentColourAsString(AjPXmlFile file)
     int i;
 
     colour = ajStrNew();
-
+    temp   = ajStrNew();
+    
     for(i=0; i<3; ++i)
     {
+	ajStrAssC(&temp,"");
 	xml_StrFromDouble(&temp, file->colour[i]);
 	ajStrApp(&colour, temp);
-	ajStrDel(&temp);
 	if(i<2)
 	    ajStrAppC(&colour, " ");
     }
 
+    ajStrDel(&temp);
+    
     return colour;
 }
 
 
 
 
-/* @funcstatic xml_FileNeedsProtoDeclare  **********************************
+/* @funcstatic xml_FileNeedsProtoDeclareC  **********************************
+**
+** Local Method
+** returns whether this file needs this type of proto Declaration
+**
+** @param [r] file [AjPXmlFile] the file to check
+** @param [r] protoName [char *] the proto name
+**
+** @return [AjBool] true if this file needs this type of proto Declaration
+** @@
+*********************************************************************/
+static AjBool xml_FileNeedsProtoDeclareC(AjPXmlFile file, char *protoName)
+{
+    GdomeException exc;
+    AjPXmlNode presentNode;
+    GdomeNodeList* listProtos;
+    int i;
+    ajint limit;
+    
+    AjPStr presentProtoName = NULL; 
+    GdomeDOMString *nodeName = NULL;
+
+    presentNode = xml_GetCurrentGraphic(file);
+
+    nodeName = gdome_str_mkref("ProtoDeclare");
+    listProtos = gdome_el_getElementsByTagName
+	((xml_GetNodeElement(xml_GetCurrentScene(file))), nodeName, 
+	 &exc);
+    limit = gdome_nl_length(listProtos, &exc);
+    for(i=0; i<limit; ++i)
+    {
+	presentNode = xml_SetNode( gdome_nl_item (listProtos, i, 
+						   &exc));
+	presentProtoName = xml_GetAttributeC(presentNode, 
+					     "name");
+	if(ajStrMatchC(presentProtoName, protoName))
+	{
+	    gdome_nl_unref(listProtos, &exc);
+	    gdome_str_unref(nodeName);
+	    ajStrDel(&presentProtoName);
+	    xml_UnrefNode(presentNode);
+	    return ajFalse;
+	}
+	xml_UnrefNode(presentNode);
+	ajStrDel(&presentProtoName);
+    }
+
+    /*  Both of these cause a crash. hugh */
+    /*
+       xml_UnrefNode(presentNode);
+       gdome_n_unref(presentNode, &exc); 
+       */
+    gdome_nl_unref(listProtos, &exc);
+    gdome_str_unref(nodeName);
+    /* presentNode and presentProtoName unrefed above  */
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic xml_FileNeedsProtoDeclare **********************************
 **
 ** Local Method
 ** returns whether this file needs this type of proto Declaration
@@ -4044,51 +3753,8 @@ static  AjPStr xml_PresentColourAsString(AjPXmlFile file)
 *********************************************************************/
 static AjBool xml_FileNeedsProtoDeclare(AjPXmlFile file, AjPStr protoName)
 {
-    GdomeException exc;
-    AjPXmlNode pressentNode;
-    GdomeNodeList* listProtos;
-    int i;
-    AjPStr pressentProtoName = NULL; 
-    AjPStr nameString = NULL;
-    GdomeDOMString *nodeName = NULL;
 
-    pressentNode = xml_GetCurrentGraphic(file);
-
-    nodeName = gdome_str_mkref("ProtoDeclare");
-    listProtos = gdome_el_getElementsByTagName
-	((xml_GetNodeElement(xml_GetCurrentScene(file))), nodeName, 
-	 &exc);
-    for(i=0; i<gdome_nl_length(listProtos, &exc); ++i)
-    {
-	pressentNode = xml_SetNode( gdome_nl_item (listProtos, i, 
-						   &exc));
-	nameString = ajStrNewC("name");
-	pressentProtoName = xml_GetAttribute(pressentNode, 
-					     nameString);
-	if(ajStrMatch(pressentProtoName, protoName))
-	{
-	    gdome_nl_unref(listProtos, &exc);
-	    ajStrDel(&nameString);
-	    gdome_str_unref(nodeName);
-	    ajStrDel(&pressentProtoName);
-	    xml_UnrefNode(pressentNode);
-	    return ajFalse;
-	}
-	xml_UnrefNode(pressentNode);
-	ajStrDel(&pressentProtoName);
-    }
-
-    /*  Both of these cause a crash. hugh */
-    /*
-       xml_UnrefNode(pressentNode);
-       gdome_n_unref(pressentNode, &exc); 
-       */
-    gdome_nl_unref(listProtos, &exc);
-    ajStrDel(&nameString);
-    gdome_str_unref(nodeName);
-    /* pressentNode and pressentProtoName unrefed above  */
-
-    return ajTrue;
+    return xml_FileNeedsProtoDeclareC(file,ajStrStr(protoName));
 }
 
 
@@ -4097,7 +3763,7 @@ static AjBool xml_FileNeedsProtoDeclare(AjPXmlFile file, AjPStr protoName)
 /* @funcstatic xml_IsShapeThisColour  *************************************
 **
 ** Local Method
-** returns whether this shape is the pressent colour
+** returns whether this shape is the present colour
 **
 ** @param [r] file [AjPXmlFile] the file to check
 ** @param [r] shape [AjPXmlNode] the shape to check
@@ -4113,98 +3779,50 @@ static AjBool xml_IsShapeThisColour(AjPXmlFile file, AjPXmlNode shape)
     AjPXmlNode elMaterial = NULL;
     AjPXmlNode tempNode = NULL;
     AjPStr colour = NULL;
-    AjPStr nameString = NULL;
     AjPStr presentColour = NULL;
-    AjPStr attributeName = NULL;
     AjPStr attributeValue = NULL;
     AjBool returnValue = ajFalse;
     GdomeDOMString *nodeName = NULL;
     ajint i;
-
-    nameString = ajStrNewC("Graph");
-
-    printf("IsShapeThisColour xml_PressentGraphicTypeIs(file, nameString) = %d shape == xml_GetCurrentGraphic(file) = %d\n", xml_PressentGraphicTypeIs(file, nameString), (xml_GetNode(shape) == xml_GetNode(xml_GetCurrentGraphic(file))));
-    fflush(stdout);
-    printf("IsShapeThisColour here getP node = %p\n", shape);
-    fflush(stdout);
-    printf("IsShapeThisColour here getPGetCurrentGraphic  = %p\n", xml_GetCurrentGraphic(file));
-    fflush(stdout);
-    printf("IsShapeThisColour here getP node node = %p\n", xml_GetNode(shape));
-    fflush(stdout);
-    printf("IsShapeThisColour here getP node name p = %p\n", gdome_el_tagName(xml_GetNodeElement(shape), &exc)); 
-    fflush(stdout);
-    printf("IsShapeThisColour here getP node name s = %s\n", gdome_el_tagName(xml_GetNodeElement(shape), &exc)->str); 
-    fflush(stdout);
-    printf("IsShapeThisColour here getP GetCurrentGraphic node = %p\n", xml_GetNode(xml_GetCurrentGraphic(file)));
-    fflush(stdout);
-    printf("IsShapeThisColour here getP GetCurrentGraphic name p = %p\n", gdome_el_tagName(xml_GetNodeElement(xml_GetCurrentGraphic(file)), &exc)); 
-    fflush(stdout);
-    printf("IsShapeThisColour here getP GetCurrentGraphic name s = %s\n", gdome_el_tagName(xml_GetNodeElement(xml_GetCurrentGraphic(file)), &exc)->str); 
-    fflush(stdout);
-
-    printf("xml_PressentGraphicTypeIs(file, nameString) = %dxml_GetNode(shape) == xml_GetNode(xml_GetCurrentGraphic(file))  = %d ajTrue = %d\n", xml_PressentGraphicTypeIs(file, nameString), xml_GetNode(shape) == 
-	   xml_GetNode(xml_GetCurrentGraphic(file)), ajTrue); 
-    fflush(stdout);
-  
-    if(xml_PressentGraphicTypeIs(file, nameString) 
+    ajint limit;
+ 
+    if(xml_PresentGraphicTypeIsC(file, "Graph") 
        && xml_GetNode(shape) == 
        xml_GetNode(xml_GetCurrentGraphic(file)))
     {
-
-	printf("IsShapeThisColour Graph");
-	fflush(stdout);
-
 	nodeName = gdome_str_mkref("fieldValue");
 	listAppearance = gdome_el_getElementsByTagName
 	    ((xml_GetNodeElement(shape)), 
 	     nodeName, &exc);
-	for(i=0; (i<gdome_nl_length(listAppearance, &exc) 
-		  && presentColour == NULL) ; ++i)
+	limit = gdome_nl_length(listAppearance, &exc);
+	for(i=0; i<limit && presentColour == NULL; ++i)
 	{
 	    tempNode = xml_SetNode(gdome_nl_item(listAppearance, i, 
 						 &exc));
-	    attributeName = ajStrNewC("name");
-	    attributeValue = xml_GetAttribute(tempNode, attributeName);
+	    attributeValue = xml_GetAttributeC(tempNode, "name");
 	    if(ajStrMatchC(attributeValue, "Graph.colour"))
-	    {
-		ajStrDel(&attributeName);
-		attributeName = ajStrNewC("value");
-		colour = xml_GetAttribute(tempNode, 
-					  attributeName);
-	    }	    
+		colour = xml_GetAttributeC(tempNode, 
+					   "value");
+
 	    ajXmlNodeDel(&tempNode);
-	    ajStrDel(&attributeName);
 	    ajStrDel(&attributeValue);
 	}
 	gdome_nl_unref(listAppearance, &exc);
 	gdome_str_unref(nodeName);
-	ajStrDel(&nameString);
+
 	if(colour == NULL)
 	{
-	    nameString = ajStrNewC("fieldValue");
-	    tempNode = xml_MakeNewNode(file, nameString, shape);
+	    tempNode = xml_MakeNewNodeC(file, "fieldValue", shape);
 		
-	    ajStrDel(&attributeName);
-	    attributeName = ajStrNewC("name");
-	    ajStrDel(&attributeValue);
-	    attributeValue = ajStrNewC("Graph.colour");
-	    xml_SetAttribute(tempNode, attributeName, 
-			     attributeValue);
+	    xml_SetAttributeC(tempNode, "name", "Graph.colour");
 
-	    ajStrDel(&attributeName);
-	    attributeName = ajStrNewC("value");
 	    ajStrDel(&attributeValue);
 	    attributeValue = xml_PresentColourAsString(file);
-	    xml_SetAttribute(tempNode, attributeName, 
-			     attributeValue);
+	    xml_SetAttributeC(tempNode, "value", 
+			     ajStrStr(attributeValue));
 
-	    ajStrDel(&nameString);
-	    ajStrDel(&attributeName);
 	    ajStrDel(&attributeValue);
 	    ajXmlNodeDel(&tempNode);
-
-	    printf("IsShapeThisColour made new returnValue = %d\n", returnValue);
-	    fflush(stdout);
 
 	    return ajTrue;
 	}
@@ -4212,57 +3830,23 @@ static AjBool xml_IsShapeThisColour(AjPXmlFile file, AjPXmlNode shape)
     }
     else
     {
-
-	printf("IsShapeThisColour not Graph");
-	fflush(stdout);
-	/*    ajXmlWriteStdout(file);  */
-	fflush(stdout);
-
 	/* needs error checking */
 	nodeName = gdome_str_mkref("Appearance");
 	/*	listAppearance = gdome_el_getElementsByTagName
 		(((GdomeElement *) gdome_nl_item(listAppearance, 0, &exc)), 
 		nodeName, &exc);*/
-	printf("IsShapeThisColour here getP node name s = %s\n", gdome_el_tagName(xml_GetNodeElement(shape), &exc)->str); 
 	listAppearance = gdome_el_getElementsByTagName
 	    (xml_GetNodeElement(shape), nodeName, &exc);
 	gdome_str_unref(nodeName);
 
-	printf("IsShapeThisColour listAppearance 0 = %p\n", listAppearance);
-	fflush(stdout);
 	nodeName = gdome_str_mkref("Material");
 	listMaterial = gdome_el_getElementsByTagName
 	    (((GdomeElement *) gdome_nl_item(listAppearance, 0, &exc)), 
 	     nodeName, &exc);
-	printf("IsShapeThisColour listMaterial 0 = %p\n", listMaterial);
-	fflush(stdout);
-
-	printf("IsShapeThisColour gdome_nl_item(listMaterial 0 = %p\n", gdome_nl_item(listMaterial, 0, &exc));
-	fflush(stdout);
-
-	printf("IsShapeThisColour listMaterial\n");
-	fflush(stdout);
-
 
 	elMaterial = xml_SetNode( gdome_nl_item(listMaterial, 0, &exc));
-	nameString = ajStrNewC("diffuseColor");
 
-	printf("IsShapeThisColour elMaterial = %p\n", elMaterial);
-	fflush(stdout);
-	printf("IsElMaterialThisColour here getP node = %p\n", elMaterial);
-       	fflush(stdout);
-	printf("IsElMaterialThisColour here getP node node = %p\n", xml_GetNode(elMaterial));
-	fflush(stdout);
-	printf("IsElMaterialThisColour here getP node name p = %p\n", gdome_el_tagName(xml_GetNodeElement(elMaterial), &exc)); 
-	fflush(stdout);
-	printf("IsElMaterialThisColour here getP node name s = %s\n", gdome_el_tagName(xml_GetNodeElement(elMaterial), &exc)->str); 
-	fflush(stdout);
-
-	colour = xml_GetAttribute(elMaterial, nameString);
-
-	printf("IsShapeThisColour colour\n");
-	fflush(stdout);
-
+	colour = xml_GetAttributeC(elMaterial, "diffuseColor");
 
 	presentColour = xml_PresentColourAsString(file);
 
@@ -4276,20 +3860,54 @@ static AjBool xml_IsShapeThisColour(AjPXmlFile file, AjPXmlNode shape)
 
 	gdome_str_unref(nodeName);
     }
-
-    printf("IsShapeThisColour colour = %s presentColour  = %s \n", ajStrStr(colour), ajStrStr(presentColour));
-    fflush(stdout);
-
     
     returnValue = ajStrMatch(colour, presentColour);
 
-    ajStrDel(&nameString);
-
-    printf("IsShapeThisColour returnValue = %d\n", returnValue);
-    fflush(stdout);
-
 
     return returnValue;
+}
+
+
+
+
+/* @funcstatic xml_MakeNewShapeNodeC  *********************************
+**
+** Local Method
+** returns makes a New Shape Node
+**
+** @param [r] file [AjPXmlFile] the file to find the node in
+** @param [r] parentNode [AjPXmlNode] parent node to add to
+** @param [r] nameReqd [char *] name of node
+**
+** @return [AjPXmlNode] new node
+** @@
+*********************************************************************/
+static AjPXmlNode xml_MakeNewShapeNodeC(AjPXmlFile file, 
+					AjPXmlNode parentNode, 
+					char *nameReqd)
+{
+    AjPXmlNode returnNode;
+    AjPXmlNode shape;
+    AjPXmlNode Appearance;
+    AjPXmlNode Material;
+    AjPStr     colour=NULL;
+
+    shape = xml_MakeNewNodeC(file, "Shape", parentNode); 
+
+    returnNode = xml_MakeNewNodeC(file, nameReqd, shape);
+
+    Appearance = xml_MakeNewNodeC(file, "Appearance", shape);
+    Material = xml_MakeNewNodeC(file, "Material", Appearance);
+
+    colour = xml_PresentColourAsString(file);
+    xml_SetAttributeC(Material, "diffuseColor", ajStrStr(colour));
+
+    xml_UnrefNode(shape);
+    xml_UnrefNode(Appearance);
+    xml_UnrefNode(Material);
+    ajStrDel(&colour);
+        
+    return returnNode;
 }
 
 
@@ -4308,44 +3926,11 @@ static AjBool xml_IsShapeThisColour(AjPXmlFile file, AjPXmlNode shape)
 ** @@
 *********************************************************************/
 static AjPXmlNode xml_MakeNewShapeNode(AjPXmlFile file, 
-				AjPXmlNode parentNode, 
-				AjPStr nameReqd)
+				       AjPXmlNode parentNode, 
+				       AjPStr nameReqd)
 {
-    AjPXmlNode returnNode;
-    AjPXmlNode shape;
-    AjPXmlNode Appearance;
-    AjPXmlNode Material;
-    AjPStr nameString=NULL;
-    AjPStr colour=NULL;
 
-    nameString = ajStrNewC("Shape");
-    shape = xml_MakeNewNode(file, nameString, parentNode); 
-
-    returnNode = xml_MakeNewNode(file, nameReqd, shape);
-
-    printf("xml_MakeNewNode name = %s\n", ajStrStr(nameReqd));
-    fflush(stdout);
-  
-
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("Appearance");
-    Appearance = xml_MakeNewNode(file,nameString, shape);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("Material");
-    Material = xml_MakeNewNode(file,nameString, Appearance);
-
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("diffuseColor");
-    colour = xml_PresentColourAsString(file);
-    xml_SetAttribute(Material, nameString, colour);
-
-    xml_UnrefNode(shape);
-    xml_UnrefNode(Appearance);
-    xml_UnrefNode(Material);
-    ajStrDel(&nameString);
-    ajStrDel(&colour);
-        
-    return returnNode;
+    return xml_MakeNewShapeNodeC(file,parentNode,ajStrStr(nameReqd));
 }
 
 
@@ -4390,8 +3975,6 @@ static void xml_AddArc(AjPXmlFile file, double xCentre, double yCentre,
     AjPStr controlPoints = NULL;
     AjPStr weights = NULL;
     AjPXmlNode nurbsNode;
-    AjPStr nameString=NULL;
-    AjPStr nameString2=NULL;
 
     temp = ajStrNew();
     controlPoints = ajStrNew();
@@ -4423,34 +4006,19 @@ static void xml_AddArc(AjPXmlFile file, double xCentre, double yCentre,
     xml_AddACoord(xEnd, yEnd, ajFalse, &controlPoints, &temp);
 
     ajStrAppC(&weights, "1 ");
-    ajStrDel(&temp);
+    ajStrAssC(&temp,"");
     xml_StrFromDouble(&temp, middleWeight);
     ajStrAppC(&weights, ajStrStr(temp));
     ajStrAppC(&weights, " 1");
     
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("NurbsCurve");
-    nurbsNode = xml_MakeNewShapeNode(file, 
-				     xml_GetCurrentGraphic(file), 
-				     nameString);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("knot");
-    nameString2 = ajStrNewC("0,0,0,1,1,1");
-    xml_SetAttribute(nurbsNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("order");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("3");
-    xml_SetAttribute(nurbsNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("controlPoint");
-    xml_SetAttribute(nurbsNode, nameString, controlPoints);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("weight");
-    xml_SetAttribute(nurbsNode, nameString, weights);
+    nurbsNode = xml_MakeNewShapeNodeC(file, 
+				      xml_GetCurrentGraphic(file), 
+				      "NurbsCurve");
+    xml_SetAttributeC(nurbsNode, "knot", "0,0,0,1,1,1");
+    xml_SetAttributeC(nurbsNode, "order", "3");
+    xml_SetAttributeC(nurbsNode, "controlPoint", ajStrStr(controlPoints));
+    xml_SetAttributeC(nurbsNode, "weight", ajStrStr(weights));
     
-    ajStrDel(&nameString);
-    ajStrDel(&nameString2);
     ajStrDel(&temp);
     ajStrDel(&controlPoints);
     ajStrDel(&weights);
@@ -4485,66 +4053,33 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
     GdomeNodeList *listIndexLineSets = NULL;
     int i;
     int j;
-    AjPStr nameString=NULL;
-    AjPStr nameString2=NULL;
-    AjPStr attributeName = NULL;
     AjPStr attributeValue = NULL;
     GdomeDOMString *nodeName = NULL;
     AjBool hasCoord;
     AjBool hasCoordIndex;
     AjPTable colourTable;
-
-    printf("here file->nodeTypes = %p name = %s colour = %s\n", file->nodeTypes, ajStrStr(nameReqd), ajStrStr(xml_PresentColourAsString(file)));
-    fflush(stdout);
-    printf("here ajTableToarray %p\n", ajTableToarray(file->nodeTypes, NULL));
-    fflush(stdout);
-    printf("here ajTableLength %d\n", ajTableLength(file->nodeTypes));
-    fflush(stdout);
-    printf("here ajTableGet %p\n", ajTableGet(file->nodeTypes, nameReqd));
-    fflush(stdout);
-    /*    ajStrTablePrint(file->nodeTypes); */
+    ajint limit;
+    ajint limit2;
     
-    fflush(stdout);
-
-    printf("Printed file->nodeTypes = %p nameReqd = %s colour = %s\n", file->nodeTypes, ajStrStr(nameReqd), ajStrStr(xml_PresentColourAsString(file)));
-    fflush(stdout);
     /*    returnNode = (AjPXmlNode) ajTableGet(file->nodeTypes, nameReqd); */
     colourTable = (AjPTable) ajTableGet(file->nodeTypes, nameReqd);
-    printf("done ajTableGet 1 colourTable = %p\n", colourTable);
-    fflush(stdout);
     if(colourTable != NULL)
-    {
-	/*	ajStrTablePrint(colourTable); */
-	printf("Printed colourTable\n");
-	fflush(stdout);
 	returnNode = (AjPXmlNode) ajTableGet(colourTable, 
 					     xml_PresentColourAsString(file));
-    }
-    
-    printf("here nd returnNode = %p\n", returnNode);
-    fflush(stdout);
+
 
     /*   if(returnNode != NULL && xml_IsShapeThisColour(file, returnNode)) */
     if(returnNode != NULL)
     {
-	printf("here vb returnNode node = %p\n", returnNode);
-	fflush(stdout);
-	printf("here vb returnNode node el = %p\n", xml_GetNodeElement(returnNode));
-	fflush(stdout);
 	GdomeException exc;
-	printf("here vb returnNode node name p = %p\n", gdome_el_tagName(xml_GetNodeElement(returnNode), &exc)); 
-	fflush(stdout);
-	printf("here vb returnNode node name s = %s\n", gdome_el_tagName(xml_GetNodeElement(returnNode), &exc)->str); 
-	fflush(stdout);
 
 	/*	if(xml_IsShapeThisColour(file, returnNode)) */
 	{
-	    printf("returning from list\n");
-	    fflush(stdout);
 	    returnNode2 = xml_SetNode(xml_GetNode(returnNode));
 	    gdome_n_ref(xml_GetNode(returnNode), &exc);
 
-	    /*	    colourTable = (AjPTable) ajTableGet(file->nodeTypes, nameReqd);
+	    /*	    colourTable = (AjPTable) ajTableGet(file->nodeTypes,
+		    nameReqd);
 		    if(colourTable == NULL)
 		    {
 		    colourTable = ajStrTableNew(1);
@@ -4552,8 +4087,6 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
 		    ajTablePut(colourTable, 
 		    (const void *) xml_PresentColourAsString(file),
 		    (void *)returnNode2); */
-	    /*	ajXmlWriteStdout(file); */
-	    fflush(stdout);
 	    return returnNode2;
 	}
     }
@@ -4561,84 +4094,53 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
     hasCoord = ajFalse;
     hasCoordIndex = ajFalse;
 
-    nameString = ajStrNewC("Graph");
-  
 
-    printf("here nothing = p\n");
-    fflush(stdout);
-
-    if(xml_PressentGraphicTypeIs(file, nameString) 
+    if(xml_PresentGraphicTypeIsC(file, "Graph") 
        && ajStrMatchC(nameReqd, "IndexedLineSet")
        && xml_IsShapeThisColour(file, xml_GetCurrentGraphic(file)))
     {
-
-	printf("Doing the graph bit\n");
-	fflush(stdout);
-
 	nodeName = gdome_str_mkref("fieldValue");
 	listShapes = gdome_el_getElementsByTagName
 	    ((xml_GetNodeElement(xml_GetCurrentGraphic(file))), 
 	     nodeName, &exc);
-	for(i=0; (i<gdome_nl_length(listShapes, &exc) 
-		  && returnNode == NULL) ; ++i)
+	limit = gdome_nl_length(listShapes, &exc);
+	for(i=0; i<limit && returnNode == NULL; ++i)
 	{
 	    tempNode = xml_SetNode(gdome_nl_item(listShapes, i, &exc));
 	  
-	    attributeName = ajStrNewC("fieldName");
-	    attributeValue = xml_GetAttribute(tempNode, attributeName);
+	    attributeValue = xml_GetAttributeC(tempNode, "fieldName");
 
 	    if(ajStrMatchC(attributeValue, "Graph.points"))
 		hasCoord = ajTrue;
 	    if(ajStrMatchC(attributeValue, "Graph.index"))
 		hasCoordIndex = ajTrue;
 
-	    ajStrDel(&attributeName);
 	    ajStrDel(&attributeValue);
 	    xml_UnrefNode(tempNode);
 	}
 
 	if(!hasCoord)
 	{
-	    ajStrDel(&nameString);
-	    nameString = ajStrNewC("fieldValue");
-	    tempNode = xml_MakeNewNode(file, nameString, 
+	    tempNode = xml_MakeNewNodeC(file, "fieldValue", 
 				       xml_GetCurrentGraphic(file));
-	    ajStrDel(&nameString);
-	    nameString = ajStrNewC("name");
-	    nameString2 = ajStrNewC("Graph.points");
-	    xml_SetAttribute(tempNode, nameString, nameString2);
-	    ajStrDel(&nameString);
-	    ajStrDel(&nameString2);
-	    nameString = ajStrNewC("value");
-	    nameString2 = ajStrNewC("");
-	    xml_SetAttribute(tempNode, nameString, nameString2);
+	    xml_SetAttributeC(tempNode, "name", "Graph.points");
+	    xml_SetAttributeC(tempNode, "value", "");
 
 	    xml_UnrefNode(tempNode);
-	    ajStrDel(&nameString2);
 	}
+
 	if(!hasCoordIndex)
 	{
-	    ajStrDel(&nameString);
-	    nameString = ajStrNewC("fieldValue");
-	    tempNode = xml_MakeNewNode(file, nameString, 
+	    tempNode = xml_MakeNewNodeC(file, "fieldValue", 
 				       xml_GetCurrentGraphic(file));
-	    ajStrDel(&nameString);
-	    nameString = ajStrNewC("name");
-	    nameString2 = ajStrNewC("Graph.index");
-	    xml_SetAttribute(tempNode, nameString, nameString2);
-	    ajStrDel(&nameString);
-	    ajStrDel(&nameString2);
-	    nameString = ajStrNewC("value");
-	    nameString2 = ajStrNewC("");
-	    xml_SetAttribute(tempNode, nameString, nameString2);
+	    xml_SetAttributeC(tempNode, "name", "Graph.index");
+	    xml_SetAttributeC(tempNode, "value", "");
 
 	    xml_UnrefNode(tempNode);
-	    ajStrDel(&nameString2);
 	}
 
 	gdome_str_unref(nodeName);
 	gdome_nl_unref(listShapes, &exc);
-	ajStrDel(&nameString);
 
 	returnNode2 = xml_SetNode
 	    (xml_GetNode(xml_GetCurrentGraphic(file)));
@@ -4649,13 +4151,6 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
 	{
 	    colourTable = ajStrTableNew(1);
     
-	    printf("About to print table e\n");
-	    fflush(stdout);
-	    /*	    ajStrTablePrint(file->nodeTypes); */
-	    fflush(stdout);
-	    printf("Printed table e file->nodeTypes = %p nameReqd = %p colourTable = %p nameReqd s = %s\n", file->nodeTypes, nameReqd, colourTable, ajStrStr(nameReqd));
-	    fflush(stdout);
-
 	    /*
 	       ajTablePut(file->nodeTypes, (const void *) nameReqd,
 	       (void *)colourTable); 
@@ -4663,84 +4158,55 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
 	    ajTablePut(file->nodeTypes, (const void *) ajStrNewS(nameReqd),
 		       (void *)colourTable);
     
-	    printf("About to print table r\n");
-	    fflush(stdout);
-	    /*	    ajStrTablePrint(file->nodeTypes); */
-	    fflush(stdout);
-	    printf("Printed table r\n");
-	    fflush(stdout);
-
 	}
 	ajTablePut(colourTable, 
 		   (const void *) xml_PresentColourAsString(file),
 		   (void *)returnNode2);
 	/*	ajXmlWriteStdout(file); */
-	fflush(stdout);
 	return(xml_GetCurrentGraphic(file));
       
-    } else 
+    }
+    else 
     {
-
-	printf("Doing the Shape bit\n");
-	fflush(stdout);
-
 	returnNode = NULL;
 
-	nameString = ajStrNewC("Graph");
-  
-	if(xml_PressentGraphicTypeIs(file, nameString))
+	if(xml_PresentGraphicTypeIsC(file, "Graph"))
 	{
-	    printf("doing Shape, PressentGraphicTypeIs Graph\n");
-	    fflush(stdout);
 	    shapeNodeParent = NULL;
 	    nodeName = gdome_str_mkref("fieldValue");
 	    listShapes = gdome_el_getElementsByTagName
 		((xml_GetNodeElement(xml_GetCurrentGraphic(file))), 
 		 nodeName, &exc);
-	    for(i=0; (i<gdome_nl_length(listShapes, &exc) 
-		      && returnNode == NULL) ; ++i)      
-
+	    limit = gdome_nl_length(listShapes, &exc);
+	    for(i=0; i<limit && returnNode == NULL; ++i)      
 	    {
 		nodeName = gdome_str_mkref("name");
 		attributeValue = ajStrNewC(gdome_el_getAttribute
-					   (((GdomeElement*)gdome_nl_item(listShapes, i, &exc)),
+		   (((GdomeElement*)gdome_nl_item(listShapes, i, &exc)),
 					    nodeName, 
 					    &exc)->str);
 
 		if(ajStrMatchC(attributeValue, "children"))
-		{
 		    shapeNodeParent = xml_SetNode(gdome_nl_item
 						  (listShapes, i, &exc));
-		}
 	    }
-	    printf("doing Shape, shapeNodeParent == %p\n", shapeNodeParent);
-	    fflush(stdout);
+
 	    if(shapeNodeParent == NULL)
 	    {
-		nameString = ajStrNewC("fieldValue");
-		shapeNodeParent = xml_MakeNewNode(file, nameString, 
+		shapeNodeParent = xml_MakeNewNodeC(file, "fieldValue", 
 						  xml_GetCurrentGraphic(file));
-		attributeName = ajStrNewC("name");
-		attributeValue = ajStrNewC("children");
-		xml_SetAttribute(shapeNodeParent, attributeName, 
-				 attributeValue);
+		xml_SetAttributeC(shapeNodeParent, "name", "children");
 		 
 	    }
 	}
 	else
-	{
 	    shapeNodeParent = xml_GetCurrentGraphic(file);
-	}
-
-	printf("Doing the adding return node = %p\n\n", returnNode);
-	fflush(stdout);
-
      
 	nodeName = gdome_str_mkref("Shape");
 	listShapes = gdome_el_getElementsByTagName
 	    ((xml_GetNodeElement(shapeNodeParent)), nodeName, &exc);
-	for(i=0; (i<gdome_nl_length(listShapes, &exc) 
-		  && returnNode == NULL) ; ++i)
+	limit = gdome_nl_length(listShapes, &exc);
+	for(i=0; i<limit && returnNode == NULL; ++i)
 	{
 	    tempNode = xml_SetNode(gdome_nl_item(listShapes, i, &exc));
 	    if(xml_IsShapeThisColour(file, tempNode))
@@ -4750,8 +4216,8 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
 		listGeometrys = gdome_el_getElementsByTagName
 		    ((GdomeElement *)gdome_nl_item(listShapes, i, &exc), 
 		     nodeName, &exc);
-		for(j=0; (j<gdome_nl_length(listGeometrys, &exc) 
-			  && returnNode == NULL); ++j)
+		limit2 = gdome_nl_length(listGeometrys, &exc);
+		for(j=0; j<limit2 && returnNode == NULL; ++j)
 		{
 		    gdome_str_unref(nodeName);
 		    nodeName = gdome_str_mkref(ajStrStr(nameReqd));
@@ -4759,11 +4225,9 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
 			((GdomeElement *)gdome_nl_item(listGeometrys, j, 
 						       &exc), nodeName, &exc);
 		    if(gdome_nl_length(listIndexLineSets, &exc)!=0)
-		    {
 			returnNode = xml_SetNode( gdome_nl_item 
 						 (listIndexLineSets, 0, 
 						  &exc));
-		    }
 		    gdome_nl_unref(listIndexLineSets, &exc);
 		}
 		gdome_nl_unref(listGeometrys, &exc);
@@ -4779,13 +4243,10 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
 	       || ajStrMatchC(nameReqd, "IndexedFaceSet")
 	       || ajStrMatchC(nameReqd, "IndexedPointSet"))
 	    {
-		ajStrDel(&nameString);
-		nameString = ajStrNewC("Coordinate");
-		coordinateNode = xml_MakeNewNode(file, nameString, 
+		coordinateNode = xml_MakeNewNodeC(file, "Coordinate", 
 						 returnNode);
 
 		xml_UnrefNode(coordinateNode);
-		ajStrDel(&nameString);
 	    }
 	}
 	 
@@ -4796,7 +4257,8 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
 		xml_UnrefNode(shapeNodeParent);
 		} */
 
-	/* really not sure about this hugh should be returning a shape not an indexed line set */
+	/* really not sure about this hugh should be returning a shape not
+           an indexed line set */
 	/*	ajXmlNodeDel(&returnNode);
 		returnNode = shapeNodeParent; */
 	
@@ -4815,37 +4277,14 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
 		   (const void *) xml_PresentColourAsString(file),
 		   (void *)returnNode2);
 
-	printf("here vbd returnNode node = %p\n", returnNode2);
-	fflush(stdout);
-	printf("here vbd returnNode node el = %p\n", xml_GetNodeElement(returnNode2));
-	fflush(stdout);
-	printf("here vbd returnNode node name p = %p\n", gdome_el_tagName(xml_GetNodeElement(returnNode2), &exc)); 
-	fflush(stdout);
-	printf("here vbd returnNode node name s = %s\n", gdome_el_tagName(xml_GetNodeElement(returnNode2), &exc)->str); 
-	fflush(stdout);
-
 	/* listShapes and nodeName unrefed just above */
-	/* tempNode, nameString and nameString2 unrefed as required */
-	ajStrDel(&nameString);
+	/* tempNode, unrefed as required */
 
-	/*	ajXmlWriteStdout(file); */
-	fflush(stdout);
 	return returnNode;
 
     }
       
       
-    printf("here vbc returnNode node = %p\n", returnNode);
-    fflush(stdout);
-    printf("here vbc returnNode node el = %p\n", xml_GetNodeElement(returnNode));
-    fflush(stdout);
-    printf("here vbc returnNode node name p = %p\n", gdome_el_tagName(xml_GetNodeElement(returnNode), &exc)); 
-    fflush(stdout);
-    printf("here vbc returnNode node name s = %s\n", gdome_el_tagName(xml_GetNodeElement(returnNode), &exc)->str); 
-    fflush(stdout);
-      
-      
-  
     returnNode2 = xml_SetNode(xml_GetNode(returnNode));
     gdome_n_ref(xml_GetNode(returnNode), &exc);
 
@@ -4864,12 +4303,35 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
 	  (void *) returnNode2); */
 
     /* listShapes and nodeName unrefed just above */
-    /* tempNode, nameString and nameString2 unrefed as required */
-    ajStrDel(&nameString);
+    /* tempNode, unrefed as required */
 
     /*	ajXmlWriteStdout(file); */
-    fflush(stdout);
+
     return returnNode;
+}
+
+
+/* @funcstatic xml_GetNodeTypeMakeIfNotC  *****************************
+**
+** Local Method
+** returns first? node of this type, Makes a new one If Not
+**
+** @param [r] file [AjPXmlFile] the file to find the node in
+** @param [r] nameReqd [char *] name of node
+**
+** @return [AjPXmlNode] found or new node
+** @@
+*********************************************************************/
+static AjPXmlNode xml_GetNodeTypeMakeIfNotC(AjPXmlFile file, char *nameReqd)
+{
+    AjPStr str     = NULL;
+    AjPXmlNode ret = NULL;
+
+    str = ajStrNewC(nameReqd);
+    ret =  xml_GetNodeTypeMakeIfNot(file, str);
+    ajStrDel(&str);
+
+    return ret;
 }
 
 
@@ -4893,18 +4355,21 @@ static void xml_AddACoord(double x, double y, AjBool joined, AjPStr* coord,
     AjPStr temp = NULL;
     int lastIndex;
 
+    temp = ajStrNew();
+
     if(ajStrCmpC((*coord), "") != 0)
-    {
 	ajStrAppC(coord,  ", ");
-    }
+
     xml_StrFromDouble(&temp, x);
     ajStrAppC(coord, ajStrStr(temp));
     ajStrAppC(coord, " ");
-    ajStrDel(&temp);
+
+    ajStrAssC(&temp,"");
     xml_StrFromDouble(&temp, y);
     ajStrAppC(coord, ajStrStr(temp));
     ajStrAppC(coord, " ");
-    ajStrDel(&temp);
+
+    ajStrAssC(&temp,"");
     ajStrFromInt(&temp, 0);
     ajStrAppC(coord, ajStrStr(temp));
     
@@ -4913,14 +4378,12 @@ static void xml_AddACoord(double x, double y, AjBool joined, AjPStr* coord,
 	lastIndex = xml_GetLastInt(*index);
 	ajStrAppC(index,  " ");
 	if(!joined)
-	{
 	    ajStrAppC(index, "-1 ");
-	}
-    } else
-    {
-	lastIndex = -1;
     }
-    ajStrDel(&temp);
+    else
+	lastIndex = -1;
+
+    ajStrAssC(&temp,"");
     ajStrFromInt(&temp, (lastIndex+1));
     ajStrAppC(index, ajStrStr(temp));
       
@@ -4953,28 +4416,19 @@ static int xml_GetLastInt(AjPStr str)
     token = ajStrTok(str);
 
     for(i = count - 1; i >= 1; --i)
-    {
 	token = ajStrTok(NULL);
-    }
+
 
     if(token != NULL)
     {    
 	if(ajStrIsInt (token))
-	{
 	    ajStrToInt(token, &value);
-	} else
-	{
-	    printf("Here is an exception.\n Last token not Int\n");
-	}
+	else
+	    ajDebug("Exception: Last token not Int\n");
     }
     else
-    {
-	printf("Here is an exception.\n string passed empty\n");
-    }
+	ajDebug("Exception: string passed empty\n");
 
-    /*
-       ajStrDel(&token);
-       */
 
     return value;
 }
@@ -5003,32 +4457,20 @@ static double xml_GetetLastDouble(AjPStr str)
     token = ajStrTok(str);
 
     for(i = count - 1; i >= 1; --i)
-    {
 	token = ajStrTok(NULL);
-    }
+
     if(token != NULL)
     {    
 	if(ajStrIsDouble (token))
-	{
 	    ajStrToDouble(token, &value);
-	}
 	else
-	{
-	    printf("Here is an exception.\n Last token not Double\n");
-	}
+	    ajDebug("Exception: Last token not Double\n");
     }
     else
-    {
-	printf("Here is an exception.\n string passed empty\n");
-    }
-
-    /*  
-       ajStrDel(&token);
-       */
+	ajDebug("Exception: string passed empty\n");
 
     return value;
 }
-
 
 
 
@@ -5053,53 +4495,24 @@ static double xml_GetDoubleNo(AjPStr str, int index)
     token = ajStrTok(str);
 
     if(index>count)
-    {
-	printf("Here is an exception.\n index higher than no. of tokens\n");
-    }
+	ajDebug("Exception: index higher than no. of tokens\n");
+
 
     for(i = 1; i <= index; ++i)
-    {
 	token = ajStrTok(NULL);
-    }
+
     if(token != NULL)
     {    
 	if(ajStrIsDouble (token))
-	{
 	    ajStrToDouble(token, &value);
-	}
 	else
-	{
-	    printf("Here is an exception.\n %d token not Double\n", 
+	    ajDebug("Exception: %d token not Double\n", 
 		   index);
-	}
     }
     else
-    {
-	printf("Here is an exception.\n string passed empty\n");
-    }
-
-    /*  
-       ajStrDel(&token);
-       */
+	ajDebug("Exception: string passed empty\n");
 
     return value;
-}
-
-
-
-
-/* @funcstatic xml_AddQuotes  **************************************
-**
-** Adds some dodgy quotes to a string
-**
-** @param [r] str [AjPStr] String to add quotes to
-**
-** @@
-*********************************************************************/
-static void xml_AddQuotes(AjPStr *title)
-{
-    ajStrInsertC (title, 0, QUOTE_CHARACTERS);
-    ajStrAppC(title, QUOTE_CHARACTERS);
 }
 
 
@@ -5120,8 +4533,6 @@ static AjPXmlFile xml_CreateNewOutputFile()
     GdomeDOMString *systemId;
     AjPXmlFile file = NULL;
     AjPXmlNode rootElement;
-    AjPStr nameString = NULL;
-    AjPStr nameString2 = NULL;  
     GdomeDocumentType *docType;
   
     file = ajXmlFileNew();
@@ -5144,20 +4555,14 @@ static AjPXmlFile xml_CreateNewOutputFile()
     rootElement = xml_SetNode((GdomeNode *) gdome_doc_documentElement 
 			      (file->doc, &exc));
 
-    nameString = ajStrNewC("profile");
-    nameString2 = ajStrNewC("Immersive");
-    xml_SetAttribute(rootElement, nameString, nameString2);
+    xml_SetAttributeC(rootElement, "profile", "Immersive");
 
     xml_SetCurrentScene(file, rootElement);   
     xml_SetCurrentGraphic(file, rootElement);
   
     if (xml_GetNode(file->currentGraphic) == NULL) 
-    {
-	printf ("Document.documentElement: NULL\n\tException #%d\n", exc);
-	/*
-	   return NULL;
-	   */
-    }
+	ajDebug("Document.documentElement: NULL\n\tException #%d\n", exc);
+
 
     xml_AddCommonBit(file);
 
@@ -5167,8 +4572,6 @@ static AjPXmlFile xml_CreateNewOutputFile()
     gdome_str_unref (publicId);
     gdome_str_unref (systemId);
     gdome_dt_unref (docType, &exc);
-    ajStrDel(&nameString);
-    ajStrDel(&nameString2);
 
     return file;
 }
@@ -5195,324 +4598,128 @@ static void xml_AddGraphProto(AjPXmlFile file)
     AjPXmlNode groupNode;
     AjPXmlNode parentNode;
     AjPXmlNode grandParentNode;
-    AjPStr nameString=NULL;
-    AjPStr nameString2=NULL;
 
-    /*    
-       printf("here a\n");
-       fflush(stdout);
-       
-       grandParentNode = xml_GetParent(xml_GetCurrentGraphic(file));
-       
-       printf("here s\n");
-       fflush(stdout);
-       
-       parentNode = xml_GetParent(grandParentNode);
-       protoNode = xml_MakeNewNode(file, nameString, parentNode);
-       */
+    protoNode = xml_MakeNewNodeC(file, "ProtoDeclare",
+				 xml_GetCurrentScene(file));
 
-    nameString = ajStrNewC("ProtoDeclare");
-    protoNode = xml_MakeNewNode(file, nameString, xml_GetCurrentScene(file));
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("name");
-    nameString2 = ajStrNewC("Graph");
-    xml_SetAttribute(protoNode, nameString, nameString2);
-    /*  ajStrDel(&nameString);
-	nameString = ajStrNewC("EXPORT");
-	nameString2 = ajStrNewC("Graphic_Children");
-	xml_SetAttribute(protoNode, nameString, nameString2); */
 
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("ProtoInterface");
-    parentNode = xml_MakeNewNode(file, nameString, protoNode);
+    xml_SetAttributeC(protoNode, "name", "Graph");
+    /*  xml_SetAttributeC(protoNode, "EXPORT", "Graphic_Children"); */
+
+    parentNode = xml_MakeNewNodeC(file, "ProtoInterface", protoNode);
     
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("field");
-    fieldNode = xml_MakeNewNode(file,nameString, parentNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("name");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("Graph.mainTitle");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("type");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("SFString");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("accessType");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("initializeOnly");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
 
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("field");
+    fieldNode = xml_MakeNewNodeC(file, "field", parentNode);
+    xml_SetAttributeC(fieldNode, "name", "Graph.mainTitle");
+    xml_SetAttributeC(fieldNode, "type", "SFString");
+    xml_SetAttributeC(fieldNode, "accessType", "initializeOnly");
+
     xml_UnrefNode(fieldNode);
-    fieldNode = xml_MakeNewNode(file,nameString, parentNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("name");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("Graph.xTitle");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("type");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("SFString");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("accessType");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("initializeOnly");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
+    fieldNode = xml_MakeNewNodeC(file, "field", parentNode);
+    xml_SetAttributeC(fieldNode, "name", "Graph.xTitle");
+    xml_SetAttributeC(fieldNode, "type", "SFString");
+    xml_SetAttributeC(fieldNode, "accessType", "initializeOnly");
 
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("field");
     xml_UnrefNode(fieldNode);
-    fieldNode = xml_MakeNewNode(file,nameString, parentNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("name");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("Graph.yTitle");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("type");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("SFString");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("accessType");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("initializeOnly");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
+    fieldNode = xml_MakeNewNodeC(file, "field", parentNode);
+    xml_SetAttributeC(fieldNode, "name", "Graph.yTitle");
+    xml_SetAttributeC(fieldNode, "type", "SFString");
+    xml_SetAttributeC(fieldNode, "accessType", "initializeOnly");
 
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("field");
     xml_UnrefNode(fieldNode);
-    fieldNode = xml_MakeNewNode(file,nameString, parentNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("name");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("Graph.colour");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("type");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("SFColor");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("accessType");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("initializeOnly");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
+    fieldNode = xml_MakeNewNodeC(file, "field", parentNode);
+    xml_SetAttributeC(fieldNode, "name", "Graph.colour");
+    xml_SetAttributeC(fieldNode, "type", "SFColor");
+    xml_SetAttributeC(fieldNode, "accessType", "initializeOnly");
 
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("field");
     xml_UnrefNode(fieldNode);
-    fieldNode = xml_MakeNewNode(file,nameString, parentNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("name");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("Graph.index");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("type");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("MFInt32");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("accessType");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("initializeOnly");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("value");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("0 1");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
+    fieldNode = xml_MakeNewNodeC(file, "field", parentNode);
+    xml_SetAttributeC(fieldNode, "name", "Graph.index");
+    xml_SetAttributeC(fieldNode, "type", "MFInt32");
+    xml_SetAttributeC(fieldNode, "accessType", "initializeOnly");
+    xml_SetAttributeC(fieldNode, "value", "0 1");
 
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("field");
     xml_UnrefNode(fieldNode);
-    fieldNode = xml_MakeNewNode(file,nameString, parentNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("name");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("Graph.points");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("type");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("MFVec3f");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("accessType");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("initializeOnly");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("value");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("0 0 0, 0 0 0");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
+    fieldNode = xml_MakeNewNodeC(file, "field", parentNode);
+    xml_SetAttributeC(fieldNode, "name", "Graph.points");
+    xml_SetAttributeC(fieldNode, "type", "MFVec3f");
+    xml_SetAttributeC(fieldNode, "accessType", "initializeOnly");
+    xml_SetAttributeC(fieldNode, "value", "0 0 0, 0 0 0");
 
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("field");
     xml_UnrefNode(fieldNode);
-    fieldNode = xml_MakeNewNode(file,nameString, parentNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("name");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("children");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("type");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("MFNode");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("accessType");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("initializeOnly");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
+    fieldNode = xml_MakeNewNodeC(file, "field", parentNode);
+    xml_SetAttributeC(fieldNode, "name", "children");
+    xml_SetAttributeC(fieldNode, "type", "MFNode");
+    xml_SetAttributeC(fieldNode, "accessType", "initializeOnly");
 
-    nameString = ajStrNewC("ProtoBody");
+
     xml_UnrefNode(parentNode);
-    parentNode = xml_MakeNewNode(file, nameString, protoNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("Group");
-    groupNode = xml_MakeNewNode(file, nameString, parentNode);
+    parentNode = xml_MakeNewNodeC(file, "ProtoBody", protoNode);
+    groupNode = xml_MakeNewNodeC(file, "Group", parentNode);
     xml_UnrefNode(protoNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("Shape");
-    protoNode = xml_MakeNewNode(file, nameString, groupNode);
+    protoNode = xml_MakeNewNodeC(file, "Shape", groupNode);
     xml_UnrefNode(parentNode);
-    ajStrDel(&nameString);
   
     /* This is the bit 'cos the appearance node is FKD */
     /*
-       nameString = ajStrNewC("Appearance");
-       parentNode = xml_MakeNewNode(file, nameString,  protoNode);
-       ajStrDel(&nameString);
-       nameString = ajStrNewC("Material");
-       grandParentNode = xml_MakeNewNode(file, nameString, parentNode);
+       parentNode = xml_MakeNewNodeC(file, "Appearance",  protoNode);
+       grandParentNode = xml_MakeNewNodeC(file, "Material", parentNode);
        xml_UnrefNode(parentNode);
-       ajStrDel(&nameString);
-       nameString = ajStrNewC("IS");
-       parentNode = xml_MakeNewNode(file, nameString, grandParentNode);
+       parentNode = xml_MakeNewNodeC(file, "IS", grandParentNode);
        xml_UnrefNode(grandParentNode);
-       ajStrDel(&nameString);
-       nameString = ajStrNewC("connect");
-       grandParentNode = xml_MakeNewNode(file, nameString, parentNode);
+       grandParentNode = xml_MakeNewNodeC(file, "connect", parentNode);
        
        
-       ajStrDel(&nameString);
-       nameString = ajStrNewC("protoField");
-       ajStrDel(&nameString2);
-       nameString2 = ajStrNewC("Graph.colour");
-       xml_SetAttribute(grandParentNode, nameString, nameString2);
-       ajStrDel(&nameString);
-       nameString = ajStrNewC("nodeField");
-       ajStrDel(&nameString2);
-       nameString2 = ajStrNewC("emissiveColor");
-       xml_SetAttribute(grandParentNode, nameString, nameString2);
+       xml_SetAttributeC(grandParentNode, "protoField", "Graph.colour");
+       xml_SetAttributeC(grandParentNode, "nodeField", "emissiveColor");
        */
 
     xml_UnrefNode(fieldNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("IndexedLineSet");
-    fieldNode = xml_MakeNewNode(file, nameString, protoNode);
+    fieldNode = xml_MakeNewNodeC(file, "IndexedLineSet", protoNode);
     /* put this line back when you sort out the above hugh */
     /*
        xml_UnrefNode(parentNode);
        */
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("IS");
-    parentNode = xml_MakeNewNode(file, nameString, fieldNode);
+    parentNode = xml_MakeNewNodeC(file, "IS", fieldNode);
     /* put this line back when you sort out the above hugh */
     /*
        xml_UnrefNode(grandParentNode);
        */
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("connect");
-    grandParentNode = xml_MakeNewNode(file, nameString, parentNode);
+    grandParentNode = xml_MakeNewNodeC(file, "connect", parentNode);
 
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("protoField");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("Graph.index");
-    xml_SetAttribute(grandParentNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("nodeField");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("coordIndex");
-    xml_SetAttribute(grandParentNode, nameString, nameString2);
+    xml_SetAttributeC(grandParentNode, "protoField", "Graph.index");
+    xml_SetAttributeC(grandParentNode, "nodeField", "coordIndex");
 
     xml_UnrefNode(parentNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("Coordinate");
-    parentNode = xml_MakeNewNode(file, nameString, fieldNode);
+    parentNode = xml_MakeNewNodeC(file, "Coordinate", fieldNode);
     xml_UnrefNode(grandParentNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("IS");
-    grandParentNode = xml_MakeNewNode(file, nameString, parentNode);
+    grandParentNode = xml_MakeNewNodeC(file, "IS", parentNode);
     xml_UnrefNode(parentNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("connect");
-    parentNode = xml_MakeNewNode(file, nameString, grandParentNode);
+    parentNode = xml_MakeNewNodeC(file, "connect", grandParentNode);
 
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("protoField");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("Graph.points");
-    xml_SetAttribute(parentNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("nodeField");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("point");
-    xml_SetAttribute(parentNode, nameString, nameString2);
+    xml_SetAttributeC(parentNode, "protoField", "Graph.points");
+    xml_SetAttributeC(parentNode, "nodeField", "point");
 
     /* This is the replacement temp hugh see above as well */
-    nameString = ajStrNewC("Color");
     xml_UnrefNode(parentNode);
-    parentNode = xml_MakeNewNode(file, nameString, fieldNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("color");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("0 0 0");
-    xml_SetAttribute(parentNode, nameString, nameString2);
+    parentNode = xml_MakeNewNodeC(file, "Color", fieldNode);
+    xml_SetAttributeC(parentNode, "color", "0 0 0");
   
     xml_UnrefNode(protoNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("Group");
-    protoNode = xml_MakeNewNode(file, nameString, groupNode);
+    protoNode = xml_MakeNewNodeC(file, "Group", groupNode);
     xml_UnrefNode(grandParentNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("IS");
-    grandParentNode = xml_MakeNewNode(file, nameString, protoNode);
+    grandParentNode = xml_MakeNewNodeC(file, "IS", protoNode);
     xml_UnrefNode(parentNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("connect");
-    parentNode = xml_MakeNewNode(file, nameString, grandParentNode);
+    parentNode = xml_MakeNewNodeC(file, "connect", grandParentNode);
 
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("protoField");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("children");
-    xml_SetAttribute(parentNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("nodeField");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("children");
-    xml_SetAttribute(parentNode, nameString, nameString2);
+    xml_SetAttributeC(parentNode, "protoField", "children");
+    xml_SetAttributeC(parentNode, "nodeField", "children");
 
     xml_UnrefNode(protoNode);
     xml_UnrefNode(fieldNode);
     xml_UnrefNode(groupNode);
     xml_UnrefNode(grandParentNode);
     xml_UnrefNode(parentNode);
-    ajStrDel(&nameString);
-    ajStrDel(&nameString2);
 
     return;
 }
@@ -5535,83 +4742,34 @@ static void xml_AddDNAPlotProto(AjPXmlFile file)
     AjPXmlNode fieldNode;
     AjPXmlNode parentNode;
     AjPXmlNode grandParentNode;
-    AjPStr nameString=NULL;
-    AjPStr nameString2=NULL;
 
-    nameString = ajStrNewC("ProtoDeclare");
     parentNode = xml_GetParent(xml_GetCurrentScene(file));
     grandParentNode = xml_GetParent(parentNode);
-    protoNode = xml_MakeNewNode(file, nameString, grandParentNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("name");
-    nameString2 = ajStrNewC("DNAPlot");
-    xml_SetAttribute(protoNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("EXPORT");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("Graphic_Children");
-    xml_SetAttribute(protoNode, nameString, nameString2);
+    protoNode = xml_MakeNewNodeC(file, "ProtoDeclare", grandParentNode);
+    xml_SetAttributeC(protoNode, "name", "DNAPlot");
+    xml_SetAttributeC(protoNode, "EXPORT", "Graphic_Children");
 
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("field");
-    fieldNode = xml_MakeNewNode(file,nameString, protoNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("name");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("Source");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("type");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("SFString");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("value");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
 
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("field");
+    fieldNode = xml_MakeNewNodeC(file, "field", protoNode);
+    xml_SetAttributeC(fieldNode, "name", "Source");
+    xml_SetAttributeC(fieldNode, "type", "SFString");
+    xml_SetAttributeC(fieldNode, "value", "");
+
     xml_UnrefNode(fieldNode);
-    fieldNode = xml_MakeNewNode(file,nameString, protoNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("IS");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("Graphic_Children.Shape");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("name");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("Shape");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("type");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("Node");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("value");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("NULL");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
+    fieldNode = xml_MakeNewNodeC(file, "field", protoNode);
+    xml_SetAttributeC(fieldNode, "IS", "Graphic_Children.Shape");
+    xml_SetAttributeC(fieldNode, "name", "Shape");
+    xml_SetAttributeC(fieldNode, "type", "Node");
+    xml_SetAttributeC(fieldNode, "value", "NULL");
 
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("children");
     xml_UnrefNode(fieldNode);
-    fieldNode = xml_MakeNewNode(file,nameString, protoNode);
-    ajStrDel(&nameString);
-    nameString = ajStrNewC("DEF");
-    ajStrDel(&nameString2);
-    nameString2 = ajStrNewC("Graphic_Children");
-    xml_SetAttribute(fieldNode, nameString, nameString2);
+    fieldNode = xml_MakeNewNodeC(file, "children", protoNode);
+    xml_SetAttributeC(fieldNode, "DEF", "Graphic_Children");
 
     xml_UnrefNode(protoNode);
     xml_UnrefNode(fieldNode);
     xml_UnrefNode(grandParentNode);
     xml_UnrefNode(parentNode);
-    ajStrDel(&nameString);
-    ajStrDel(&nameString2);
 
     return;
 }
@@ -5641,29 +4799,20 @@ static void xml_AddCommonBit(AjPXmlFile file)
        AjPXmlNode elChildren;
        */
     AjPXmlNode el;
-    AjPStr nameString=NULL;
+
 
     /* Xj3D does not like this at the moment, sort it out */
     /*
-       nameString = ajStrNewC("head");
-       el = xml_MakeNewNode(file, nameString, xml_GetCurrentGraphic(file));
-       ajStrDel(&nameString);
-       nameString = ajStrNewC("meta");
-       el2 = xml_MakeNewNode(file, nameString, el);
-       ajStrDel(&nameString);
+       el = xml_MakeNewNodeC(file, "head", xml_GetCurrentGraphic(file));
+       el2 = xml_MakeNewNodeC(file, "meta", el);
        */
-    nameString = ajStrNewC("Scene");
     /*
        xml_UnrefNode(el);
        */
-    el = xml_MakeNewNode(file, nameString, xml_GetCurrentGraphic(file));
+    el = xml_MakeNewNodeC(file, "Scene", xml_GetCurrentGraphic(file));
     /*
-       ajStrDel(&nameString);
-       nameString = ajStrNewC("Group");
-       el3 = xml_MakeNewNode(file, nameString, el);
-       ajStrDel(&nameString);
-       nameString = ajStrNewC("children");
-       elChildren = xml_MakeNewNode(file, nameString, el3); 
+       el3 = xml_MakeNewNodeC(file, "Group", el);
+       elChildren = xml_MakeNewNodeC(file, "children", el3); 
        */
 
     /* I move file->currentScene and file->currentGraphic to the Scene*/
@@ -5685,7 +4834,6 @@ static void xml_AddCommonBit(AjPXmlFile file)
     /*
        xml_UnrefNode(el3);
        */
-    ajStrDel(&nameString);
 
     return;
 }
@@ -5710,7 +4858,7 @@ static AjBool xml_WriteFile(AjPXmlFile file, AjPStr filename)
 				 ajStrStr(filename),
 				 GDOME_SAVE_LIBXML_INDENT, &exc)) 
     {
-	printf ("DOMImplementation.saveDocToFile: failed\n\tException #%d\n",
+	ajDebug("DOMImplementation.saveDocToFile: failed\n\tException #%d\n",
 		exc);
 	return ajFalse;
     }
@@ -5740,15 +4888,14 @@ static AjBool xml_WriteStdout(AjPXmlFile file)
 				      "UTF-8", GDOME_SAVE_LIBXML_INDENT,
 				      &exc)) 
     {
-	printf ("DOMImplementation.saveDocToMemory: failed\n\tException #%d\n",
+	ajDebug("DOMImplementation.saveDocToMemory: failed\n\tException #%d\n",
 		exc);
 	return ajFalse;
     }
     outputLength = strlen(output);
     for(i = 0; i < outputLength; ++i)
-    {
-	printf("%c", output[i]);
-    }
+	fprintf(stdout,"%c", output[i]);
+
     free(output);
   
     return ajTrue;
@@ -5806,14 +4953,11 @@ static AjPXmlNode xml_GetCurrentScene(AjPXmlFile file)
 *********************************************************************/
 static void xml_SetCurrentGraphic(AjPXmlFile file, AjPXmlNode node)
 {
+
     if(file->currentGraphic && 
        !(file->currentScene == file->currentGraphic))
-    {
 	if(xml_GetNode(file->currentGraphic) != 0)
-	{
 	    xml_UnrefNode(file->currentGraphic);
-	} 
-    } 
     
     file->currentGraphic = node;
 
@@ -5843,13 +4987,8 @@ static void xml_SetCurrentScene(AjPXmlFile file, AjPXmlNode node)
     
     if(file->currentScene &&
        !(file->currentScene == file->currentGraphic))
-    {
 	if(xml_GetNode(file->currentScene) != 0)
-	{
 	    xml_UnrefNode(file->currentScene);
-	} 
-    } 
-
 
     file->currentScene = node;
 
@@ -5998,10 +5137,18 @@ void xml_Unused()
 {
     AjPStr str = NULL;
     double ret;
+    AjPXmlFile file = NULL;
+    AjPXmlNode node = NULL;
     
     ret = xml_GetetLastDouble(str);
     ret = xml_GetDoubleNo(str,0);
-    
+
+    xml_MakeNewNode(file,str,node);
+    xml_PresentGraphicTypeIs(file,str);
+    xml_GetAttribute(node,str);    
+    xml_SetAttribute(node,str,str);
+    xml_FileNeedsProtoDeclare(file,str);
+
     return;
 }
 
