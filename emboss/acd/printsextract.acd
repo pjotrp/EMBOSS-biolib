@@ -3,8 +3,12 @@ appl: printsextract [
   groups: "Utils:Database creation"
 ]
 
+section: input [ input: "required Section" type: page ]
 infile: inf  [
   parameter: "Y"
   required: "Y"
   information: "Full pathname of prints.dat"
 ]
+
+endsection: input
+

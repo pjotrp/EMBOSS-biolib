@@ -3,6 +3,7 @@ appl: seqnr [
   groups: "Utils:Database creation"
 ]
 
+section: input [ info: "input Section" type: page ]
 string: path  [
   parameter: "Y"
   prompt: "Directory of redundant database search results"
@@ -15,6 +16,9 @@ string: extn  [
   default: ".psiblasts"
 ]
 
+endsection: input
+
+section: output [ info: "output Section" type: page ]
 string: outpath  [
   parameter: "Y"
   prompt: "Directory for proccessed results"
@@ -27,12 +31,15 @@ string: outextn  [
   default: ".clean"
 ]
 
+endsection: output
+
 matrixf: datafile  [
   parameter: "Y"
   prompt: "Residue substitution matrix"
   default: "EBLOSUM62"
 ]
 
+section: required [ info: "required Section" type: page ]
 float: gapopen  [
   parameter: "Y"
   information: "Gap insertion penalty"
@@ -60,3 +67,5 @@ float: thresh  [
   prompt: "The % sequence identity redundancy threshold"
   default: "95.0"
 ]
+endsection: required
+

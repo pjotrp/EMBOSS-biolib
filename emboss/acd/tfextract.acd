@@ -3,7 +3,10 @@ appl: tfextract [
   groups: "Utils:Database creation"
 ]
 
+section: input [ info: "input Section" type: page ]
 infile: inf  [
   parameter: "Y"
   prompt: "Full pathname of transfac SITE.DAT"
 ]
+endsection: input
+

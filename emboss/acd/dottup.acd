@@ -3,6 +3,7 @@ appl: dottup [
   groups: "Alignment:Dot plots"
 ]
 
+section: input [ info: "input Section" type: page ]
 sequence: sequencea  [
   parameter: "y"
   type: "any"
@@ -13,6 +14,9 @@ sequence: sequenceb  [
   type: "@($(sequencea.protein) ? protein : nucleotide)"
 ]
 
+endsection: input
+
+section: required [ info: "required Section" type: page ]
 integer: wordsize  [
   required: "Y"
   default: "4"
@@ -20,6 +24,9 @@ integer: wordsize  [
   information: "Word size"
 ]
 
+endsection: required
+
+section: output [ info: "output Section" type: page ]
 bool: stretch  [
   required: "N"
   default: "N"
@@ -54,4 +61,6 @@ outfile: outfile  [
   required: "@($(data) & @(!$(stretch)))"
   nullok: "Y"
 ]
+
+endsection: output
 

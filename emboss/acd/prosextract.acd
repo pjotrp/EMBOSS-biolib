@@ -3,7 +3,10 @@ appl: prosextract [
   groups: "Utils:Database creation"
 ]
 
+section: input [ info: "input Section" type: page ]
 string: infdat  [
   parameter: "Y"
   prompt: "Enter name of prosite directory"
 ]
+endsection: input
+

@@ -1,8 +1,9 @@
 appl: seqsort [
-  documentation: "Removes ambiguities from database search results"
-  groups: "PROTEIN: 3D STRUCTURE"
+  documentation: "Removes ambiguities from a set of hits resulting from a database search"
+  groups: "PROTEIN: structure"
 ]
 
+section: required [ info: "required Section" type: page ]
 list: mode  [
   parameter: "Y"
   default: "1"
@@ -21,6 +22,10 @@ integer: overlap  [
   default: "10"
 ]
 
+endsection: required
+
+section: advanced [ info: "advanced Section" type: page ]
+section: modesection [ info: "modesection Section" type: page ]
 string: psipath  [
   required: "@($(mode)==1)"
   prompt: "Location of psiblasts hits files"
@@ -55,7 +60,14 @@ string: swissfile  [
   information: "Name of file containing sorted swissparse results"
 ]
 
-outfile: outfile  [
+endsection: modesection
+
+endsection: advanced
+
+section: output [ info: "output Section" type: page ]
+string: outfile  [
   parameter: "Y"
   prompt: "Name of output file"
 ]
+
+endsection: output

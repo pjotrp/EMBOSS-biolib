@@ -3,6 +3,7 @@ appl: diffseq [
   groups: "Alignment:Differences"
 ]
 
+section: input [ info: "input Section" type: page ]
 sequence: asequence  [
   parameter: "Y"
   type: "any"
@@ -15,6 +16,9 @@ sequence: bsequence  [
   features: "Y"
 ]
 
+endsection: input
+
+section: required [ info: "required Section" type: page ]
 integer: wordsize  [
   required: "Y"
   default: "10"
@@ -22,6 +26,9 @@ integer: wordsize  [
   information: "Word size"
 ]
 
+endsection: required
+
+section: output [ info: "output Section" type: page ]
 report: outfile  [
   required: "Y"
   rformat: "diffseq"
@@ -49,3 +56,6 @@ bool: columns  [
   information: "Output in columns format"
   help: "The default format for the output report file is to have several lines per difference giving the sequence positions, sequences and features. \ If this option is set true then the output report file's format is changed to a set of columns and no feature information is given."
 ]
+
+endsection: output
+
