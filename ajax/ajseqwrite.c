@@ -436,15 +436,20 @@ static void seqWriteNcbi (AjPSeqout outseq) {
   static AjPStr seq = NULL;
   ajint linelen = 60;
 
-  (void) ajFmtPrintF (outseq->File, ">gnl|0|");
+  (void) ajFmtPrintF (outseq->File, ">gnl|");
   if (ajStrLen(outseq->Db))
-    (void) ajFmtPrintF (outseq->File, "%S", outseq->Db);
+    (void) ajFmtPrintF (outseq->File, "%S|", outseq->Db);
   else
-    (void) ajFmtPrintF (outseq->File, "unk");
-  (void) ajFmtPrintF (outseq->File, "|%S", outseq->Acc);
-  (void) ajFmtPrintF (outseq->File, "|%S", outseq->Name);
+    (void) ajFmtPrintF (outseq->File, "unk|");
+
+  (void) ajFmtPrintF (outseq->File, "%S", outseq->Name);
+
+  if (ajStrLen(outseq->Acc))
+    (void) ajFmtPrintF (outseq->File, " (%S)", outseq->Acc);
+
   if (ajStrLen(outseq->Desc))
     (void) ajFmtPrintF (outseq->File, " %S", outseq->Desc);
+
   (void) ajFmtPrintF (outseq->File, "\n");
 
   ilen = ajStrLen(outseq->Seq);
@@ -1528,10 +1533,6 @@ static void seqWriteGff (AjPSeqout outseq) {
   static AjPStr version = NULL;
 
   if (!version) ajNamRootVersion(&version);
-  if (ajStrMatchC(outseq->Type, "P")) {
-      seqWriteSwiss (outseq);
-      return;
-  }
 
   (void) ajFmtPrintF (outseq->File,
 		      "##gff-version 2\n");
