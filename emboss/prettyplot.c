@@ -249,7 +249,9 @@ int main(int argc, char **argv)
     }
     else
 	ystart = 75.0;
-  
+
+    /* pair is a formatted string. Needs a pattern in the ACD file */
+
     if(pair)
     {
 	if(sscanf(ajStrStr(pair),"%f,%f,%f",&identthresh,&simthresh,
@@ -263,6 +265,8 @@ int main(int argc, char **argv)
 	}
     }
   
+    /* shade is a formatted string. Needs a pattern in the ACD file */
+
     if(shade->Len)
     {
 	if(shade->Len == 4)
@@ -1443,7 +1447,8 @@ static ajint prettyplot_fillinboxes(float ystart, ajint length, ajint numseq,
     }
     /* now display again but once for each colour */
   
-    for(w=0;w<15;w++)
+    /*    for(w=0;w<15;w++)*/
+    for(w=0;w<16;w++)
     {	/* not 16 as we can ignore white on plotters*/
 	if(table[w] > 0)
 	{
