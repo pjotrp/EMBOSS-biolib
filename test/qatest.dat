@@ -2603,8 +2603,8 @@ IN
 FI stderr
 FC = 2
 FI hshbb.marscan 
-FZ = 1181
-FP /\t2242\t2458\t.* 8bp.*=2451\.\.2458.* 16bp.*= 2242\.\.2257"\n/
+FZ = 1524
+FP /\t2242\t2458\t.*start8bp 2451".*end8bp 2458".*start16bp 2242".*end16bp 2257"\n/
 //
 
 ID maskfeat-ex
