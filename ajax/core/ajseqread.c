@@ -44,6 +44,7 @@ typedef struct SeqSMsfItem
   AjPStr Seq;
 } SeqOMsfItem, *SeqPMsfItem;
 
+enum fmtcode {FMT_OK, FMT_NOMATCH, FMT_BADTYPE, FMT_FAIL};
 
 static AjBool     seqReadAbi (AjPSeq thys, AjPSeqin seqin);
 
@@ -847,6 +848,7 @@ AjBool ajSeqsetRead (AjPSeqset thys, AjPSeqin seqin)
 ** @return [ajint] 0 if successful.
 **                 1 if the query match failed.
 **                 2 if the sequence type failed
+**                 3 if it failed to read a sequence
 ** @@
 ** This is the only function that calls the appropriate Read function
 ** seqReadXxxxxx where Xxxxxxx is the supported sequence format.
@@ -864,7 +866,8 @@ static ajint seqReadFmt (AjPSeq thys, AjPSeqin seqin, SeqPInFormat inform,
 {
     if (inform[format].Read (thys, seqin))
     {
-	ajDebug ("seqReadFmtsuccess with format %d (%s)\n", format, inform[format].Name);
+	ajDebug ("seqReadFmt success with format %d (%s)\n",
+		 format, inform[format].Name);
 	seqin->Format = format;
 	(void) ajStrAssC(&seqin->Formatstr, inform[format].Name);
 	(void) ajStrAssC(&thys->Formatstr, inform[format].Name);
@@ -887,7 +890,7 @@ static ajint seqReadFmt (AjPSeq thys, AjPSeqin seqin, SeqPInFormat inform,
 		     */
 		    /* ajWarn ("seqReadFmt features input failed UFO: '%S'",
 		       seqin->Ufo); */
-		    /*	   return ajFalse;*/
+		    /*	   return FMT_FAIL;*/
 		}
 		else
 		{
@@ -905,13 +908,14 @@ static ajint seqReadFmt (AjPSeq thys, AjPSeqin seqin, SeqPInFormat inform,
 		    ajSeqToUpper(thys);
 		if(seqin->Lower)
 		    ajSeqToLower(thys);
-		return 0;
+		return FMT_OK;
 	    }
 	    else
-		return 2;
+		return FMT_BADTYPE;
 	}
 	ajDebug ("query match failed, continuing ...\n");
 	ajSeqClear (thys);
+	return FMT_NOMATCH;
     }
     else
     {
@@ -920,7 +924,7 @@ static ajint seqReadFmt (AjPSeq thys, AjPSeqin seqin, SeqPInFormat inform,
 	      format, inform[format].Name);
       ajFileBuffTraceFull(seqin->Filebuff, 10, 10);
     }
-    return 1;
+    return FMT_FAIL;
 }
 
 /* @funcstatic seqRead ********************************************************
@@ -980,16 +984,27 @@ static AjBool seqRead (AjPSeq thys, AjPSeqin seqin)
 		continue;
 
 	    ajDebug ("seqRead:try format %d (%s)\n", i, inform[i].Name);
+
 	    stat = seqReadFmt (thys, seqin, inform, i);
-	    if (!stat)
-		return ajTrue;
-	    if (stat == 2)
-	    {
-		ajDebug ("seqRead: (a) test seqReadFmt stat == 2 *failed*\n");
-		return ajFalse;
+	    switch (stat) {
+	    case FMT_OK:
+	      return ajTrue;
+	    case FMT_BADTYPE:
+	      ajDebug ("seqRead: (a1) seqReadFmt stat == BADTYPE *failed*\n");
+	      return ajFalse;
+	    case FMT_FAIL:
+	      ajDebug ("seqRead: (b1) seqReadFmt stat == FAIL *failed*\n");
+	      break;		/* we can try next format */
+	    case FMT_NOMATCH:
+	      ajDebug ("seqRead: (c1) seqReadFmt stat == NOMATCH *try again*\n");
+	      break;
+	    default:
+	      ajDebug("unknown code %d from seqReadFmt\n", stat);
 	    }
+
 	    if (seqin->Format) break;	/* we read something */
 	}
+
 	if (!seqin->Format)
 	{   /* all default formats failed, give up */
 	    ajDebug ("seqRead:all default formats failed, give up\n");
@@ -999,33 +1014,52 @@ static AjBool seqRead (AjPSeq thys, AjPSeqin seqin)
     else
     {	/* one format specified */
 	ajFileBuffNobuff (seqin->Filebuff);
+
 	stat = seqReadFmt (thys, seqin, inform, seqin->Format);
-	if (!stat)
-	    return ajTrue;
-	if (stat == 2)
-	{
-	    ajDebug ("seqRead: (b) fixed seqReadFmt stat == 2 *failed*\n");
-	    return ajFalse;
+	switch (stat) {
+	case FMT_OK:
+	  return ajTrue;
+	case FMT_BADTYPE:
+	  ajDebug ("seqRead: (a2) seqReadFmt stat == BADTYPE *failed*\n");
+	  return ajFalse;
+	case FMT_FAIL:
+	  ajDebug ("seqRead: (b2) seqReadFmt stat == FAIL *failed*\n");
+	  break;		/* could be simply end-of-file */
+	case FMT_NOMATCH:
+	  ajDebug ("seqRead: (c2) seqReadFmt stat == NOMATCH *try again*\n");
+	  break;
+	default:
+	  ajDebug("unknown code %d from seqReadFmt\n", stat);
 	}
-	ajSeqClear (thys);
+
+	ajSeqClear (thys);	/* 1 : read, failed to match id/acc/query */
     }
 
     /* failed - probably entry/accession query failed. Can we try again? */
 
-    ajDebug("failed - try again with format %d '%s'\n",
+    ajDebug("seqRead failed - try again with format %d '%s'\n",
 	    seqin->Format, inform[seqin->Format].Name);
 
-    while (seqin->Search && !ajFileBuffEmpty (buff))
+    /*while (seqin->Search && !ajFileBuffEmpty (buff))*/
+    while (seqin->Search)
     {
 	stat = seqReadFmt (thys, seqin, inform, seqin->Format);
-	if (!stat)
-	    return ajTrue;
-	if (stat == 2)
-	{
-	    ajDebug ("seqRead: (c) search seqReadFmt stat == 2 *failed*\n");
-	    return ajFalse;
+	switch (stat) {
+	case FMT_OK:
+	  return ajTrue;
+	case FMT_BADTYPE:
+	  ajDebug ("seqRead: (a3) seqReadFmt stat == BADTYPE *failed*\n");
+	  return ajFalse;
+	case FMT_FAIL:
+	  ajDebug ("seqRead: (b3) seqReadFmt stat == FAIL *failed*\n");
+	  return ajFalse;
+	case FMT_NOMATCH:
+	  ajDebug ("seqRead: (c3) seqReadFmt stat == NOMATCH *try again*\n");
+	  break;
+	default:
+	  ajDebug("unknown code %d from seqReadFmt\n", stat);
 	}
-	ajSeqClear (thys);
+	ajSeqClear (thys);	/* 1 : read, failed to match id/acc/query */
     }
 
     if (seqin->Format)
@@ -3803,12 +3837,12 @@ static AjBool seqGcgMsfHeader (AjPStr line, SeqPMsfItem* pmsfitem)
 	return ajFalse;
 
     ajRegSubI (namexp, 1, &name);
-    ajDebug ("Name found\n");
+    /*ajDebug ("Name found\n");*/
 
     if (!ajRegExec(chkexp, line))
 	return ajFalse;
 
-    ajDebug ("Check found\n");
+    /*ajDebug ("Check found\n");*/
 
     *pmsfitem = AJNEW0(msfitem);
     msfitem->Name = name;
