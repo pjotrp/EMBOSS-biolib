@@ -1074,6 +1074,8 @@ static AjBool dbigcg_ParseEmbl (AjPFile libr,
     if (rpos)
         ajFileSeek(libr, rpos, 0);
 
+    ajStrDel(&tmpacnum);
+
     return ajFalse;
 }
 
