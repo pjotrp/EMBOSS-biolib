@@ -146,7 +146,7 @@ cp lib/axis/*jar jnlp
 cp images/Jemboss_logo_large.gif jnlp
 cp utils/template.html jnlp/index.html
 cd jnlp
-rm mail.jar activation.jar wsdl4j.jar servlet.jar log4j-1.2.8.jar axis-ant.jar
+rm mail.jar activation.jar servlet.jar log4j-1.2.8.jar axis-ant.jar
 
 echo
 echo
@@ -171,12 +171,22 @@ read KEYPASS
 echo "Give a store password (at least 6 characters):"
 read STOREPASS
 
+echo
+echo "Provide the validity period for the signed jars, i.e. the"
+echo "number of days before they expire and new ones need to be made [90]:"
+read VALID
+echo
+                                                                                                      
+if [ "$VALID" = "" ]; then
+  VALID=90
+fi
+                                                                                                      
 #
 # create a keystore file
 
 keytool -genkey -alias signFiles -dname "CN=$NAME, \
         OU=$ORGU, O=$ORG, L=$LOC, S=$STATE, C=$CODE" \
-        -keypass $KEYPASS -storepass $STOREPASS -keystore jembossstore 
+        -keypass $KEYPASS -storepass $STOREPASS -keystore jembossstore  -validity $VALID
 
 #
 # sign each of the jar files
