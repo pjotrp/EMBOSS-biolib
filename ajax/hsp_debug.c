@@ -34,10 +34,10 @@ void hsp_regprint(regex_t *r, FILE *d)
 	register ajint last;
 	ajint nincat[NC];
 
-	(void) fprintf(d, "%ld states, %d categories", (ajlong)g->nstates,
+	(void) fprintf(d, "%ld states, %d categories", (long)g->nstates,
 							g->ncategories);
-	(void) fprintf(d, ", first %ld last %ld", (ajlong)g->firststate,
-						(ajlong)g->laststate);
+	(void) fprintf(d, ", first %ld last %ld", (long)g->firststate,
+						(long)g->laststate);
 	if (g->iflags&USEBOL)
 		(void) fprintf(d, ", USEBOL");
 	if (g->iflags&USEEOL)
@@ -45,14 +45,14 @@ void hsp_regprint(regex_t *r, FILE *d)
 	if (g->iflags&BAD)
 		(void) fprintf(d, ", BAD");
 	if (g->nsub > 0)
-		(void) fprintf(d, ", nsub=%ld", (ajlong)g->nsub);
+		(void) fprintf(d, ", nsub=%ld", (long)g->nsub);
 	if (g->must != NULL)
-		(void) fprintf(d, ", must(%ld) `%*s'", (ajlong)g->mlen, (ajint)g->mlen,
+		(void) fprintf(d, ", must(%ld) `%*s'", (long)g->mlen, (ajint)g->mlen,
 			       g->must);
 	if (g->backrefs)
 	    (void) fprintf(d, ", backrefs");
 	if (g->nplus > 0)
-	    (void) fprintf(d, ", nplus %ld", (ajlong)g->nplus);
+	    (void) fprintf(d, ", nplus %ld", (long)g->nplus);
 	(void) fprintf(d, "\n");
 	s_print(g, d);
 	for (i = 0; i < g->ncategories; i++)
@@ -157,7 +157,7 @@ static void s_print(register REGUTSSTRUCT *g, FILE *d)
 	    (void) fprintf(d, ".");
 	    break;
 	case AJ_OANYOF:
-	    (void) fprintf(d, "[(%ld)", (ajlong)opnd);
+	    (void) fprintf(d, "[(%ld)", (long)opnd);
 	    cs = &g->sets[opnd];
 	    last = -1;
 	    for (i = 0; i < g->csetsize+1; i++)	/* +1 flushes */
@@ -182,55 +182,55 @@ static void s_print(register REGUTSSTRUCT *g, FILE *d)
 	    (void) fprintf(d, "]");
 	    break;
 	case AJ_OBACK_:
-	    (void) fprintf(d, "(\\<%ld>", (ajlong)opnd);
+	    (void) fprintf(d, "(\\<%ld>", (long)opnd);
 	    break;
 	case AJ_O_BACK:
-	    (void) fprintf(d, "<%ld>\\)", (ajlong)opnd);
+	    (void) fprintf(d, "<%ld>\\)", (long)opnd);
 	    break;
 	case AJ_OPLUS_:
 	    (void) fprintf(d, "(+");
 	    if (OP(*(s+opnd)) != O_PLUS)
-		(void) fprintf(d, "<%ld>", (ajlong)opnd);
+		(void) fprintf(d, "<%ld>", (long)opnd);
 	    break;
 	case AJ_O_PLUS:
 	    if (OP(*(s-opnd)) != OPLUS_)
-		(void) fprintf(d, "<%ld>", (ajlong)opnd);
+		(void) fprintf(d, "<%ld>", (long)opnd);
 	    (void) fprintf(d, "+)");
 	    break;
 	case AJ_OQUEST_:
 	    (void) fprintf(d, "(?");
 	    if (OP(*(s+opnd)) != O_QUEST)
-		(void) fprintf(d, "<%ld>", (ajlong)opnd);
+		(void) fprintf(d, "<%ld>", (long)opnd);
 	    break;
 	case AJ_O_QUEST:
 	    if (OP(*(s-opnd)) != OQUEST_)
-		(void) fprintf(d, "<%ld>", (ajlong)opnd);
+		(void) fprintf(d, "<%ld>", (long)opnd);
 	    (void) fprintf(d, "?)");
 	    break;
 	case AJ_OLPAREN:
-	    (void) fprintf(d, "((<%ld>", (ajlong)opnd);
+	    (void) fprintf(d, "((<%ld>", (long)opnd);
 	    break;
 	case AJ_ORPAREN:
-	    (void) fprintf(d, "<%ld>))", (ajlong)opnd);
+	    (void) fprintf(d, "<%ld>))", (long)opnd);
 	    break;
 	case AJ_OCH_:
 	    (void) fprintf(d, "<");
 	    if (OP(*(s+opnd)) != OOR2)
-		(void) fprintf(d, "<%ld>", (ajlong)opnd);
+		(void) fprintf(d, "<%ld>", (long)opnd);
 	    break;
 	case AJ_OOR1:
 	    if (OP(*(s-opnd)) != OOR1 && OP(*(s-opnd)) != OCH_)
-		(void) fprintf(d, "<%ld>", (ajlong)opnd);
+		(void) fprintf(d, "<%ld>", (long)opnd);
 	    (void) fprintf(d, "|");
 	    break;
 	case AJ_OOR2:
 	    (void) fprintf(d, "|");
 	    if (OP(*(s+opnd)) != OOR2 && OP(*(s+opnd)) != O_CH)
-		(void) fprintf(d, "<%ld>", (ajlong)opnd);
+		(void) fprintf(d, "<%ld>", (long)opnd);
 	    break;
 	case AJ_O_CH:
 	    if (OP(*(s-opnd)) != OOR1)
-		(void) fprintf(d, "<%ld>", (ajlong)opnd);
+		(void) fprintf(d, "<%ld>", (long)opnd);
 	    (void) fprintf(d, ">");
 	    break;
 	default:

@@ -992,7 +992,7 @@ AjBool ajStrFromLong (AjPStr* pthis, ajlong val) {
   ret = ajStrModL(pthis, i);
   thys = *pthis;
 
-  thys->Len = sprintf (thys->Ptr, "%ld", val);
+  thys->Len = sprintf (thys->Ptr, "%ld", (long)val);
 
   return ret;
 }

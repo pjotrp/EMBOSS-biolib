@@ -507,7 +507,7 @@ ajint discons(seqc0, seqc1, nc)
 
       qqoff = ajSeqBegin(seq) - 1 + (ajlong)(ioff0-del0);
       if (cl0 && qqoff%10 == 9)  {
-	sprintf(&cline[0][i],"%8ld",qqoff+1l);
+	sprintf(&cline[0][i],"%8ld",(long)qqoff+1l);
 	cline[0][i+8]=' ';
 	rl0 = NO;
       }
@@ -517,13 +517,13 @@ ajint discons(seqc0, seqc1, nc)
 	rl0 = NO;
       }
       else if (rl0 && (qqoff+1)%10 == 0) {
-	sprintf(&cline[0][i],"%8ld",qqoff+1);
+	sprintf(&cline[0][i],"%8ld",(long)qqoff+1);
 	cline[0][i+8]=' ';
       }
       
       lloff = ajSeqBegin(seq2)-1 + /*loffset +*/ (ajlong)(ioff1-del1);
       if (cl1 && lloff%10 == 9)  {
-	sprintf(&cline[1][i],"%8ld",lloff+1l);
+	sprintf(&cline[1][i],"%8ld",(long)lloff+1l);
 	cline[1][i+8]=' ';
 	rl1 = NO;
       }
@@ -533,7 +533,7 @@ ajint discons(seqc0, seqc1, nc)
 	rl1 = NO;
       }
       else if (rl1 && (lloff+1)%10 == 0) {
-	sprintf(&cline[1][i],"%8ld",lloff+1);
+	sprintf(&cline[1][i],"%8ld",(long)lloff+1);
 	cline[1][i+8]=' ';
       }
       
