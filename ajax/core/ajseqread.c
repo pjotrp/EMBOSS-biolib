@@ -4084,15 +4084,18 @@ static AjBool seqReadSwiss (AjPSeq thys, AjPSeqin seqin)
 	}
 	if (ajStrPrefixC(rdline, "FT   "))
 	{
-	    if (seqinUfoLocal(seqin))
+	  if (seqinUfoLocal(seqin))
+	  {
+	    if (!dofeat)
 	    {
-		if (!dofeat)
-		{
-		    dofeat = ajTrue;
-		    ftfile = ajFileBuffNew();
-		}
-		ajFileBuffLoadS (ftfile, rdline);
-		/* ajDebug ("EMBL FEAT saved line:\n%S", rdline); */
+	      dofeat = ajTrue;
+	      ajFeattabInDel(&seqin->Ftquery);
+	      seqin->Ftquery = ajFeattabInNewSS (ftfmt, thys->Name, "N");
+	      ajDebug("seqin->Ftquery ftfile %x\n",
+		      seqin->Ftquery->Handle);
+	    }
+	    ajFileBuffLoadS (seqin->Ftquery->Handle, rdline);
+		/* ajDebug ("SWISS FEAT saved line:\n%S", rdline); */
 	    }
 	}
 	ok = ajFileBuffGetStore (buff, &rdline, seqin->Text, &thys->TextPtr);
@@ -4275,7 +4278,8 @@ static AjBool seqReadEmbl (AjPSeq thys, AjPSeqin seqin)
 		  dofeat = ajTrue;
 		  ajFeattabInDel(&seqin->Ftquery);
 		  seqin->Ftquery = ajFeattabInNewSS (ftfmt, thys->Name, "N");
-		  ajDebug("seqin->Ftquery ftfile %x\n", seqin->Ftquery->Handle);
+		  ajDebug("seqin->Ftquery ftfile %x\n",
+			  seqin->Ftquery->Handle);
 		}
 		ajFileBuffLoadS (seqin->Ftquery->Handle, rdline);
 		/* ajDebug ("EMBL FEAT saved line:\n%S", rdline); */
@@ -4449,16 +4453,19 @@ static AjBool seqReadGenbank (AjPSeq thys, AjPSeqin seqin)
 		if (!dofeat)
 		{
 		    dofeat = ajTrue;
-		    ftfile = ajFileBuffNew();
+		    ajFeattabInDel(&seqin->Ftquery);
+		    seqin->Ftquery = ajFeattabInNewSS (ftfmt, thys->Name, "N");
+		    ajDebug("seqin->Ftquery ftfile %x\n",
+			    seqin->Ftquery->Handle);
 		    /* ajDebug ("GENBANK FEAT first line:\n%S", rdline); */
 		}
-		ajFileBuffLoadS (ftfile, rdline);
+		ajFileBuffLoadS (seqin->Ftquery->Handle, rdline);
 		ok = ajFileBuffGet (buff, &rdline);
 		done = ajTrue;
 		while (ok && ajStrPrefixC(rdline, " "))
 		{
 		    bufflines++;
-		    ajFileBuffLoadS (ftfile, rdline);
+		    ajFileBuffLoadS (seqin->Ftquery->Handle, rdline);
 		    /* ajDebug ("GENBANK FEAT saved line:\n%S", rdline); */
 		    ok = ajFileBuffGetStore (buff, &rdline, seqin->Text,
 					     &thys->TextPtr);
