@@ -6207,6 +6207,10 @@ static AjBool featTagSpecialAllConssplice (AjPStr* pval) {
 ** Tests a string as a valid internal (EMBL) feature /rpt_unit tag
 **
 ** The format is 123..789
+** Labels are also allowed which should be feature tags in the entry.
+** Genbank (NCBI) appear to be putting the sequence consensus in. Usually
+** this is a valid "label" - except of course that the label does not exist.
+** One horror (July 2002) was: /rpt_unit=TCCTCACGTAG(T/C)
 **
 ** @param  [r] pval [AjPStr*] parameter value
 ** @return [AjBool] ajTrue for a valid value, possibly corrected
@@ -6217,19 +6221,28 @@ static AjBool featTagSpecialAllConssplice (AjPStr* pval) {
 static AjBool featTagSpecialAllRptunit (AjPStr* pval) {
 
   static AjPRegexp exp = NULL;
+  static AjPRegexp labexp = NULL;
 
   static AjPStr begstr = NULL;
   static AjPStr endstr = NULL;
+  static AjPStr labstr = NULL;
   AjBool ret = ajFalse;
 
   if (!exp)
     exp = ajRegCompC("^([0-9]+)[.][.]([0-9]+)$");
+  if (!labexp)
+    labexp = ajRegCompC("^([acgtACGT]+)$");
 
   if (ajRegExec(exp, *pval)) {
     ret = ajTrue;
     ajRegSubI (exp, 1, &begstr);
     ajRegSubI (exp, 2, &endstr);
- }
+  }
+
+  if (ajRegExec(labexp, *pval)) {
+    ajRegSubI (exp, 1, &labstr);
+    ret = ajTrue;
+  }
 
   if (!ret) {
     ajDebug("bad /rpt_unit value '%S'\n", *pval);
