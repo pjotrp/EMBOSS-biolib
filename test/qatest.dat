@@ -3288,7 +3288,7 @@ FC = 9999
 
 ID dotmatcher-ex
 AP dotmatcher
-CL tsw:hba_human tsw:hbb_human -graph ps
+CL tsw:hba_human tsw:hbb_human -graph cps
 IN
 FI stderr
 FC = 2
@@ -3322,22 +3322,7 @@ AP dotpath
 ## timeout 60 seconds on original test system
 ##
 TI 400
-CL tembl:AF129756 tembl:AP000504 -word 20 -data -out af.path
-FI af.path
-FP /^##Number 118\n/
-FC = 133
-FI stderr
-FC = 1
-FP 0 /Warning:/
-//
-
-ID dotpath-graph
-AP dotpath
-##
-## timeout 60 seconds on original test system
-##
-TI 400
-CL tembl:AF129756 tembl:AP000504 -word 20 -graph ps
+CL tembl:AF129756 tembl:AP000504 -word 20 -graph cps -overlaps
 FI stderr
 FC = 1
 FP 0 /Warning:/
@@ -3350,9 +3335,24 @@ FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
 
+ID dotpath-data
+AP dotpath
+##
+## timeout 60 seconds on original test system
+##
+TI 400
+CL tembl:AF129756 tembl:AP000504 -word 20 -data -out af.path
+FI af.path
+FP /^##Number 118\n/
+FC = 133
+FI stderr
+FC = 1
+FP 0 /Warning:/
+//
+
 ID dottup-ex
 AP dottup
-CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac" -graph ps
+CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac" -graph cps
 IN
 FI stdout
 FZ = 18
@@ -3416,6 +3416,17 @@ FP /Score 236: 108/130 \( 83%\) matches, 0 gaps/
 //
 
 ID embossdata-ex
+UC Display the directories searched for EMBOSS data files:
+AP embossdata
+FI stderr
+FC = 1
+FP 0 /Warning:/
+FI stdout
+FP /Exists\n/
+//
+
+ID embossdata-ex2
+UC Display the names of data file in all of the possible data directories:
 AP embossdata
 CL -showall
 FI stderr
@@ -3429,6 +3440,7 @@ FP /^\s*Eyeast.cut\s*\n/
 //
 
 ID embossdata-exfile
+UC Display the directories which contain a particular EMBOSS data file:
 AP embossdata
 CL -filename EPAM60
 FI stderr
@@ -3440,6 +3452,7 @@ FP /^File \.embossdata\/EPAM60/
 //
 
 ID embossdata-exfetch
+UC Make a copy of an EMBOSS data file in the current directory:
 AP embossdata
 CL -fetch -filename Epepcoil.dat
 FI stderr
@@ -3542,9 +3555,9 @@ FP 5 /PRODUCT SIZE: +[0-9]+/
 //
 
 ID equicktandem-ex
+UC The input sequence is the human herpesvirus tandem repeat.
 AP equicktandem
 IN tembl:hhtetra
-IN
 IN
 IN
 IN
@@ -3705,6 +3718,7 @@ FP 0 /^Exon/
 //
 
 ID etandem-ex
+UC The input sequence is the human herpesvirus tandem repeat. 
 AP etandem
 IN tembl:hhtetra
 IN 6
@@ -3725,6 +3739,7 @@ FP /^    568     597      24      6      5    100.0 aaccct   \n/
 //
 
 ID extractfeat-ex
+UC To write out the exons of a sequence: 
 AP extractfeat
 CL tembl:hsfau1 -type exon stdout
 FI stderr
@@ -3737,6 +3752,7 @@ FP /^gtaaagtccatggttccctggcccgtgctggaaaagtgagaggtcagactcctaag\n/
 //
 
 ID extractfeat-ex2
+UC To write out the exons with 10 extra bases at the start and end so that you can inspect the splice sites:
 AP extractfeat
 CL tembl:hsfau1 -type exon -before 10 -after 10 stdout
 FI stderr
@@ -3750,6 +3766,7 @@ FP /^cctaaggtgagtgaga\n/
 //
 
 ID extractfeat-ex3
+UC To write out the 10 bases around the start of all 'exon' features in the tembl database: 
 AP extractfeat
 CL tembl:*  -type exon -before 5 -after -5 stdout
 FI stderr
@@ -3764,6 +3781,7 @@ FP /^>HSFAU1_951_1095 \[exon\] H\.sapiens fau 1 gene\n/
 # The example has phosphorylation, we only have features that say
 # PHOSPHORYLATION (BY RK) (BY SIMILARITY).
 ID extractfeat-ex4
+UC To write out the 7 residues around all phosphorylated residues in the tsw database: 
 AP extractfeat
 CL tsw:*  -type mod_res -value phosphorylation* -before 3 -after -4 stdout
 FI stderr
@@ -3780,6 +3798,7 @@ FP /^EHVYSFP\n/
 
 # use database entry in example
 ID extractseq-ex
+UC Extract the region from position 10 to 20:
 AP extractseq
 CL tembl:hsfau result.seq -regions '10-20'
 FI stderr
@@ -3792,6 +3811,7 @@ FP /^ctcgactccat\n/
 
 # use database entry in example
 ID extractseq-ex2
+UC Extract the regions 10 to 20, 30 to 45, 533 to 537:
 AP extractseq
 CL tembl:hsfau1 result2.seq -regions '10-20 30-45 533-537'
 FI stderr
@@ -3804,6 +3824,7 @@ FP /^tccctctcgatacactcgggacaagttagggc\n/
 
 # use database entry in example
 ID extractseq-ex3
+UC Extract the regions 782-856, 951-1095, 1557-1612 and 1787-1912:
 AP extractseq
 CL tembl:hsfau1 -reg "782..856,951..1095,1557..1612,1787..1912" stdout
 FI stderr
@@ -3817,6 +3838,7 @@ FP /^cccacctttggcaagaagaagggccccaatgccaactcttaa\n/
 //
 
 ID extractseq-ex4
+UC Extract the regions 782-856, 951-1095, 1557-1612 and 1787-1912 all to separate output sequences:
 AP extractseq
 CL tembl:hsfau1 -reg "782..856,951..1095,1557..1612,1787..1912" stdout -separate
 FI stderr
@@ -3833,7 +3855,7 @@ FP /^tcttaa\n/
 
 ID findkm-ex
 AP findkm
-CL -graph ps
+CL -graph cps
 IN ../../data/enztest.dat
 IN
 FI stdout
@@ -4158,6 +4180,7 @@ FP /^msf::.*HBA_HORSE\s+HBA_HORSE\s+144\s+147\s+2\s+3\s+48\s+4\s+92\s+66\.666664
 //
 
 ID infoalign-ex2
+UC This example doesn't display the USA of the sequence:
 AP infoalign
 CL ../../data/globins.msf -nousa
 IN
@@ -4170,6 +4193,7 @@ FP /^HBA_HORSE\s+144\s+147\s+2\s+3\s+48\s+4\s+92\s+66\.666664\s+\n/
 //
 
 ID infoalign-ex3
+UC Display only the name and sequence length of a sequence:
 AP infoalign
 CL ../../data/globins.msf -only -name -seqlength
 IN
@@ -4182,6 +4206,7 @@ FP /^HBA_HORSE\s+144\n/
 //
 
 ID infoalign-ex4
+UC Display only the name, number of gap characters and differences to the consensus sequence:
 AP infoalign
 CL ../../data/globins.msf -only -name -gapcount -diffcount
 IN
@@ -4194,6 +4219,7 @@ FP /^HBA_HORSE\s+3\s+92\n/
 //
 
 ID infoalign-ex5
+UC Display the name and number of gaps within a sequence:
 AP infoalign
 CL ../../data/globins.msf -only -name -gaps
 IN
@@ -4206,6 +4232,7 @@ FP /^HBA_HORSE\s+2\n/
 //
 
 ID infoalign-ex6
+UC Display information formatted with HTML:
 AP infoalign
 CL ../../data/globins.msf -html
 IN
@@ -4219,6 +4246,7 @@ FP /^<td>HBA_HORSE<\/td>\n/
 //
 
 ID infoalign-ex7
+UC Use the first sequence as the reference sequence to compare to:
 AP infoalign
 CL ../../data/globins.msf -refseq 1
 IN
@@ -4231,6 +4259,7 @@ FP /^msf::\S+\s+HBA_HORSE\s+144\s+147\s+2\s+3\s+54\s+18\s+72\s+62.500000\s+\n/
 //
 
 ID infoseq-ex
+UC Display information on a sequence:
 AP infoseq
 CL tembl:paamir
 FI stderr
@@ -4242,6 +4271,7 @@ FP /^tembl-id:PAAMIR\s+PAAMIR\s+X13776\s+N\s+2167\s+66\.54\s+Pseudomonas/
 //
 
 ID infoseq-ex2
+UC Don't display the USA of a sequence:
 AP infoseq
 CL tembl:paamir -nousa
 FI stderr
@@ -4253,6 +4283,7 @@ FP /^PAAMIR\s+X13776\s+N\s+2167\s+66\.54\s+Pseudomonas/
 //
 
 ID infoseq-ex3
+UC Display only the name and length of a sequence:
 AP infoseq
 CL tembl:paamir -only -name -length
 FI stderr
@@ -4264,6 +4295,7 @@ FP /^PAAMIR\s+2167\n/
 //
 
 ID infoseq-ex4
+UC Display only the description of a sequence:
 AP infoseq
 CL tembl:paamir -only -desc
 FI stderr
@@ -4275,6 +4307,7 @@ FP /^Pseudomonas aeruginosa .* regulation\n/
 //
 
 ID infoseq-ex5
+UC Display the type of a sequence:
 AP infoseq
 CL tembl:paamir -only -type
 FI stderr
@@ -4286,6 +4319,7 @@ FP /^N\n/
 //
 
 ID infoseq-ex6
+UC Display information formatted with HTML:
 AP infoseq
 CL tembl:paamir -html
 FI stderr
@@ -4302,9 +4336,10 @@ CC No example in the documentation
 //
 
 ID isochore-ex
+UC This reads yeast chromosome 3 from a remote web server so the sequence reading may take a little time.
 CC Reads Genbank entry SCCHRIII from remote server
 AP isochore
-CL tgb:scchriii -graph ps
+CL tgb:scchriii -graph cps
 IN
 FI stderr
 FC = 2
