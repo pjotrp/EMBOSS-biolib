@@ -63,6 +63,11 @@ Command line arguments
    Advanced qualifiers:
    -min                integer    Minimum cuts per RE
    -max                integer    Maximum cuts per RE
+   -individual         boolean    This gives the fragment lengths produced by
+                                  restriction assuming only each named RE of
+                                  the set that can cut the sequence is used.
+                                  Results are added to the tail section of the
+                                  report.
    -single             boolean    Force single site only cuts
    -[no]blunt          boolean    Allow blunt end cutters
    -[no]sticky         boolean    Allow sticky end cutters
@@ -144,6 +149,10 @@ Command line arguments
    Advanced qualifiers Allowed values Default
    -min Minimum cuts per RE Integer from 1 to 1000 1
    -max Maximum cuts per RE Integer up to 2000000000 2000000000
+   -individual This gives the fragment lengths produced by restriction
+   assuming only each named RE of the set that can cut the sequence is
+   used. Results are added to the tail section of the report. Boolean
+   value Yes/No No
    -single Force single site only cuts Boolean value Yes/No No
    -[no]blunt Allow blunt end cutters Boolean value Yes/No Yes
    -[no]sticky Allow sticky end cutters Boolean value Yes/No Yes

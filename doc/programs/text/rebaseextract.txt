@@ -26,6 +26,13 @@ Description
    in the EMBOSS data subdirectory REBASE. A pattern file, a reference
    file and a supplier file.
    
+   It will also (by default) produce an 'embossre.equ' file. This can be
+   turned off by setting the -equivalences option to be false. This
+   option calculates an 'embossre.equ' file using restriction enzyme
+   prototypes in the "withrefm" file. The 'embossre.equ' file is a file
+   of preferred isoschizomers. You may edit it to contain your available
+   restriction enzymes.
+   
    The EMBOSS programs that find restriction cutting sites use the data
    files produced by this program and will not work without them.
    
@@ -48,7 +55,11 @@ Command line arguments
    Mandatory qualifiers:
   [-inf]               infile     Full pathname of WITHREFM
 
-   Optional qualifiers: (none)
+   Optional qualifiers:
+   -[no]equivalences   boolean    This option calculates an embossre.equ file
+                                  using restriction enzyme prototypes in the
+                                  withrefm file.
+
    Advanced qualifiers: (none)
    Associated qualifiers: (none)
    General qualifiers:
@@ -74,7 +85,9 @@ Command line arguments
    [-inf]
    (Parameter 1) Full pathname of WITHREFM Input file Required
    Optional qualifiers Allowed values Default
-   (none)
+   -[no]equivalences This option calculates an embossre.equ file using
+   restriction enzyme prototypes in the withrefm file. Boolean value
+   Yes/No Yes
    Advanced qualifiers Allowed values Default
    (none)
    
@@ -220,6 +233,14 @@ Output file format
      * embossre.ref Enzyme references
      * embossre.sup Enzyme suppliers
        
+   rebaseextract will also (by default) produce an 'embossre.equ' file in
+   the EMBOSS data directory. This can be turned off by setting the
+   -equivalences option to be false. This option calculates an
+   'embossre.equ' file using restriction enzyme prototypes in the
+   "withrefm" file. The 'embossre.equ' file is a file of preferred
+   isoschizomers. You may edit it to contain your available restriction
+   enzymes.
+   
 Data files
 
    The "withrefm" file of an REBASE distribution is the input file for

@@ -123,6 +123,11 @@ IT IS DONE FOR YOU.
    Advanced qualifiers:
    -min                integer    Minimum cuts per RE
    -max                integer    Maximum cuts per RE
+   -individual         boolean    This gives the fragment lengths produced by
+                                  restriction assuming only each named RE of
+                                  the set that can cut the sequence is used.
+                                  Results are added to the tail section of the
+                                  report.
    -single             boolean    Force single site only cuts
    -[no]blunt          boolean    Allow blunt end cutters
    -[no]sticky         boolean    Allow sticky end cutters
@@ -258,6 +263,13 @@ PpiI</td>
 <td>Maximum cuts per RE</td>
 <td>Integer up to 2000000000</td>
 <td>2000000000</td>
+</tr>
+
+<tr>
+<td>-individual</td>
+<td>This gives the fragment lengths produced by restriction assuming only each named RE of the set that can cut the sequence is used. Results are added to the tail section of the report.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
 </tr>
 
 <tr>

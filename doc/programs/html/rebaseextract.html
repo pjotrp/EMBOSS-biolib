@@ -60,20 +60,33 @@ restriction enzymes, as predicted from analysis of genomic sequences,
 are also listed. 
 
 <p>
+
 The home page of REBASE is:
 <A HREF="http://rebase.neb.com/">http://rebase.neb.com/</A>
 
 <p>
+
 This program derives recognition site and cleavage information from the
 "withrefm" file of an REBASE distribution.  It creates three files in
 the EMBOSS data subdirectory REBASE.  A pattern file, a reference file
 and a supplier file.  
 
 <p>
+
+It will also (by default) produce an 'embossre.equ' file.  This can be
+turned off by setting the -equivalences option to be false.  This option
+calculates an 'embossre.equ' file using restriction enzyme prototypes in
+the "withrefm" file.  The 'embossre.equ' file is a file of preferred
+isoschizomers.  You may edit it to contain your available restriction
+enzymes. 
+
+<p>
+
 The EMBOSS programs that find restriction cutting sites use the data
 files produced by this program and will not work without them. 
 
 <p>
+
 Running this program may be the job of your system manager. 
 
 <H2>
@@ -113,7 +126,11 @@ IT IS DONE FOR YOU.
    Mandatory qualifiers:
   [-inf]               infile     Full pathname of WITHREFM
 
-   Optional qualifiers: (none)
+   Optional qualifiers:
+   -[no]equivalences   boolean    This option calculates an embossre.equ file
+                                  using restriction enzyme prototypes in the
+                                  withrefm file.
+
    Advanced qualifiers: (none)
    Associated qualifiers: (none)
    General qualifiers:
@@ -160,7 +177,10 @@ IT IS DONE FOR YOU.
 </tr>
 
 <tr>
-<td colspan=4>(none)</td>
+<td>-[no]equivalences</td>
+<td>This option calculates an embossre.equ file using restriction enzyme prototypes in the withrefm file.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -331,6 +351,19 @@ directory. There are three:
 	<li> embossre.ref		Enzyme references
 	<li> embossre.sup		Enzyme suppliers
 </ul>
+
+<p>
+
+<b>rebaseextract</b> will also (by default) produce an 'embossre.equ'
+file in the EMBOSS data directory.  This can be turned off by setting
+the -equivalences option to be false.  This option calculates an
+'embossre.equ' file using restriction enzyme prototypes in the
+"withrefm" file.  The 'embossre.equ' file is a file of preferred
+isoschizomers.  You may edit it to contain your available restriction
+enzymes. 
+
+<p>
+
 
 
 <H2>
