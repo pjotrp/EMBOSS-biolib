@@ -293,6 +293,7 @@ sub runtest ($) {
 
   if ($testa) {	# for "embassy" apps (AA lines) we can skip
     if ($testappname && !defined($acdname{$testapp})) { # embassy make not run
+	print STDERR "Embassy application $testapp ($packa) not installed - skip\n";
       $skipembassy++;
       return 0;
     }
