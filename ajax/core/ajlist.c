@@ -1236,6 +1236,66 @@ void ajListstrMap(AjPList thys, void apply(AjPStr* x, void* cl), void* cl)
 
 
 
+/* @func ajListMapRead ********************************************************
+**
+** For each node in the list call function apply.
+** The apply function must not modify the list elements.
+**
+** @param [r] thys [const AjPList] List.
+** @param [f] apply [void function] Function to call for each list item.
+** @param [u] cl [void*] Standard, usually NULL.
+** @return [void]
+** @category modify [AjPList] Call a function for each node in a list.
+** @@
+******************************************************************************/
+
+void ajListMapRead(const AjPList thys,
+		   void apply(void** x, void* cl), void* cl)
+{
+    AjPListNode rest;
+
+    assert(apply);
+
+    for(rest = thys->First; rest->Next; rest = rest->Next)
+	apply((void**) &rest->Item, cl);
+
+    return;
+}
+
+
+
+
+/* @func ajListstrMapRead *****************************************************
+**
+** For each node in the list call function apply,
+** with the address of the string and a client pointer.
+** The apply function must not modify the list elements.
+**
+** @param [r] thys [const AjPList] List.
+** @param [f] apply [void function] Function to call for each list item.
+** @param [u] cl [void*] Standard, usually NULL.
+** @return [void]
+** @category modify [AjPList] Call a function for each node in a list.
+** @@
+******************************************************************************/
+
+void ajListstrMapRead(const AjPList thys,
+		  void apply(AjPStr* x, void* cl), void* cl)
+{
+    AjPListNode rest;
+
+    assert(apply);
+
+    for(rest=thys->First; rest->Next; rest = rest->Next)
+	apply((AjPStr*) &rest->Item, cl);
+
+
+    return;
+}
+
+
+
+
 /* @func ajListToArray ********************************************************
 **
 ** Create an array of the pointers to the data.
