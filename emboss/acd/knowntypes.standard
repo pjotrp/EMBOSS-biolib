@@ -9,6 +9,7 @@ file ajint_ajlong_data Standard format info on ajint and ajlong
 file alistat_input Phylip alistat program input file
 file alistat_output Phylip alistat program output file
 datafile amino_acid_properties Amino acids properties and molecular weight data file
+datafile amino_acid_frequencies Amino acid frequencies
 datafile amino_acid_classification Datafile with amino acid chemical classes
 # replace this with aaindex_database perhaps?
 datafile amino_acid_hydropathy Datafile with amino acid hydropathy values
@@ -54,8 +55,8 @@ string emboss_keyword EMBOSS program keyword
 string emboss_program EMBOSS program name
 file entry_full_text Full text of a sequence database entry
 file enzyme_data enzyme kinetics data (application-specific)
-file enzyme_name Restriction enzyme name
-file enzyme_list Restriction enzyme name list
+string enzyme_name Restriction enzyme name
+string enzyme_list Restriction enzyme name list
 datafile restriction_enzyme_data Restriction enzyme datafile
 file factboot_input Phylip factboot program input file
 file factboot_output Phylip factboot program output file
@@ -128,6 +129,7 @@ file penny_output Phylip penny program output file
 string phylip_category_values Sapce-separated phylip category values
 string phylip_probability_values Sapce-separated phylip probability values
 file pars_output Phylip pars program output file
+file profile_or_matrix Profile or weight matrix file
 file primer3_output Output from the Whitehead primer3_core program
 file profile_or_matrix_file Profile or weight matrix file
 string prosite_nucleotide_pattern PROSITE nucleotide pattern
@@ -153,6 +155,7 @@ string sequence_id_list Sequence identifier list or @filename for input sequence
 string sequence_id_output Sequence identifier for an output sequence
 string sequence_type EMBOSS sequence type
 string sequence_range Sequence range in the format nn..nn
+string sequence_mask_character Sequence code or space (lowercase) for sequence masking
 file sim4_output Sim4 program output file
 string sort_utility_options Command line options for the system sort utility
 string string Any string value
