@@ -1508,8 +1508,8 @@ void ajReportWriteHeader (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
 
   if (!thys->Count) {
     ajFmtPrintF (outf, "########################################\n");
-    ajFmtPrintF (outf, "# Program:  %s\n", ajAcdProgram());
-    ajFmtPrintF (outf, "# Rundate:  %D\n", ajTimeTodayF("log"));
+    ajFmtPrintF (outf, "# Program: %s\n", ajAcdProgram());
+    ajFmtPrintF (outf, "# Rundate: %D\n", ajTimeTodayF("log"));
     if (thys->Multi) {
       ajFmtPrintF (outf, "########################################\n\n");
     }
@@ -1565,7 +1565,7 @@ void ajReportWriteTail (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
   AjPStr tmpstr=NULL;
 
   if (thys->Multi) {
-    ajFmtPrintF (outf, "\n--------------------------------------\n\n");
+    ajFmtPrintF (outf, "\n#-------------------------------------\n\n");
   }
   else {
     ajFmtPrintF (outf, "\n######################################\n");
