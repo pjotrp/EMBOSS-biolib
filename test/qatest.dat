@@ -22,7 +22,7 @@
 # To run the script and retain the files created during the test, use
 # ../../scripts/qatest.pl -kk
 # 
-# The results of the QA tests willl be stored in the file
+# The results of the QA tests will be stored in the file
 # test/qa/qatest.log
 # 
 # Typical example entry for an EMBOSS package program (AP line)
@@ -150,7 +150,7 @@
 #       Command executed (by /bin/sh) after the test.
 #       Each QQ line is a separate command. Long lines are not concatenated.
 #	Not used at present. Most likely application is to list the
-#       contents of a directory to anotehr file, which canthe be
+#       contents of a directory to another file, which can then be
 #       tested for size and patterns.
 # TI seconds
 #       Timeout for test. The default is 60 seconds. Some examples
