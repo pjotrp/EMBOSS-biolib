@@ -1,6 +1,7 @@
 /* @source domainer application
 **
-** Reads protein coordinate files and writes domain coordinate files.
+** Reads CCF files (clean coordinate files) for proteins and writes CCF 
+** files for domains, taken from a DCF file (domain classification file).
 ** 
 ** @author: Copyright (C) Jon Ison (jison@hgmp.mrc.ac.uk)
 ** @@
@@ -48,7 +49,8 @@
 
 /* @prog domainer *************************************************************
 **
-** Reads protein coordinate files and writes domain coordinate files.
+** Reads CCF files (clean coordinate files) for proteins and writes CCF files 
+** for domains, taken from a DCF file (domain classification file).
 **
 ******************************************************************************/
 
@@ -89,15 +91,10 @@ int main(int argc, char **argv)
     /* Read data from acd */
     ajNamInit("emboss");
     ajAcdInitP("domainer",argc,argv,"DOMAINATRIX"); 
-    cpdb_dir     = ajAcdGetDirectory("cpdb");
-/*
-    cpdb_extn     = ajAcdGetString("cpdbextn");
-    cpdbscop_extn = ajAcdGetString("cpdbscopextn");
-    pdb_extn      = ajAcdGetString("pdbextn");
-*/
+    cpdb_dir     = ajAcdGetDirectory("ccfp");
     mode          = ajAcdGetList("mode");
-    cpdbscop_dir = ajAcdGetOutdir("cpdboutdir");
-    pdbscop_dir  = ajAcdGetOutdir("pdboutdir");
+    cpdbscop_dir = ajAcdGetOutdir("ccfd");
+    pdbscop_dir  = ajAcdGetOutdir("pdb");
     scop_inf      = ajAcdGetInfile("scopfile");
     errf1         = ajAcdGetOutfile("pdberrfile");
     errf2         = ajAcdGetOutfile("cpdberrfile");
