@@ -153,7 +153,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
     while (phylostates[numseqs])
 	numseqs++;
 
-    printf("numseqs: %ld\n", numseqs);
+    printf("numseqs: %d\n", numseqs);
 
     if (numseqs > 1) {
 	mulsets = true;

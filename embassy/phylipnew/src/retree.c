@@ -1203,7 +1203,7 @@ void yourtree()
         getchar();
         if (ch == '\n')
           ch = ' ';
-        ch = isupper(ch) ? ch : toupper(ch);
+        ch = isupper((int)ch) ? ch : toupper((int)ch);
         maxinput++;
         if (maxinput == 100) {
           printf("ERROR: too many tries at choosing option\n");
@@ -1478,7 +1478,7 @@ void rearrange()
           getchar();
           if (ch == '\n')
             ch = ' ';
-          ch = isupper(ch) ? ch : toupper(ch);
+          ch = isupper((int)ch) ? ch : toupper((int)ch);
           maxinput++;
           if (maxinput == 100) {
             printf("ERROR: too many tries at choosing option\n");
@@ -1950,7 +1950,7 @@ void del_or_restore()
       getchar();
       if (ch == '\n')
         ch = ' ';
-      ch = (isupper(ch)) ? ch : toupper(ch);
+      ch = (isupper((int)ch)) ? ch : toupper((int)ch);
       maxinput++;
       if (maxinput == 100) {
         printf("ERROR: too many tries at choosing option\n");
@@ -2641,7 +2641,7 @@ void treewrite(boolean *done)
     getchar();
     if (ch == '\n')
       ch = ' ';
-    ch = (isupper(ch)) ? ch : toupper(ch);
+    ch = (isupper((int)ch)) ? ch : toupper((int)ch);
     maxinput++;
     if (maxinput == 100) {
       printf("ERROR: too many tries at choosing option\n");
@@ -2957,7 +2957,7 @@ void redisplay()
     getchar();
     if (ch == '\n')
       ch = ' ';
-    ch = isupper(ch) ? ch : toupper(ch);
+    ch = isupper((int)ch) ? ch : toupper((int)ch);
     if (ch == 'C' || ch == 'F' || ch == 'O' || ch == 'R' ||
       ch == 'U' || ch == 'X' || ch == 'Q' || ch == '.' ||
       ch == 'W' || ch == 'B' || ch == 'N' || ch == '?' ||

@@ -2182,7 +2182,6 @@ void plotrparms(long ntips)
 
 void getplotter(Char ch)
 {
-
   switch (ch) {
 
   case 'L':
@@ -2216,11 +2215,10 @@ void getplotter(Char ch)
     break;
 
   case 'J':
+  case 'S':
+  case 'Y':
     plotter = pcl;
     strcpy(fontname, "Hershey");
-    ch = ajAcdGetListI("plotterpcl", 1);
-
-    hpresolution = 75*(1<<(ch-1));
     /* following pcl init code copied here from plotrparms                  */
     xunitspercm = 118.11023622;   /* 300 DPI = 118.1 DPC                    */
     yunitspercm = 118.11023622;
@@ -2228,24 +2226,25 @@ void getplotter(Char ch)
     strpdeep = DEFAULT_STRIPE_HEIGHT;     /* height of the strip            */
     strpdiv = DEFAULT_STRIPE_HEIGHT;      /* in this case == strpdeep       */
                        /* this is information for 300 DPI resolution        */
-    switch (hpresolution) {
-
-    case 75:
-      strpwide    /= 4;
-      xunitspercm /= 4.0;
-      yunitspercm /= 4.0;
-      break;
-
-    case 150:
-      strpwide     /= 2;
-      xunitspercm /= 2.0;
-      yunitspercm /= 2.0;
-      break;
-
-    case 300:
-      break;
+    switch (ch) {
+    case 'J':
+	hpresolution = 75;
+	strpwide    /= 4;
+	xunitspercm /= 4.0;
+	yunitspercm /= 4.0;
+	break;
+    case 'S':
+	hpresolution = 150;
+	strpwide     /= 2;
+	xunitspercm /= 2.0;
+	yunitspercm /= 2.0;
+	break;
+    case 'Y':
+	hpresolution = 300;
+	break;
+    default:
+	break;
     }
-
     break;
 
   case 'K':
@@ -2293,27 +2292,27 @@ void getplotter(Char ch)
     strcpy(fontname, "Hershey");
     break;
 
+  case 'N':
   case 'P':
+  case 'Q':
     plotter = pcx;
     strcpy(fontname, "Hershey");
 
-    ch = ajAcdGetListI("plotterpcx", 1);
-
     switch (ch) {
       
-    case 1:
+    case 'N':
       strpwide = 640;
       yunitspercm = 350 / ysize;
       resopts = 1;
       break;
       
-    case 2:
+    case 'P':
       strpwide = 800;
       yunitspercm = 600 / ysize;
       resopts = 2;
       break;
       
-    case 3:
+    case 'Q':
       strpwide = 1024;
       yunitspercm = 768 / ysize;
       resopts = 3;

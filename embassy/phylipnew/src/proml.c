@@ -2121,7 +2121,7 @@ void prot_reconstr(node *p, long n)
       if (xx[first] > 0.95)
         putc(aachar[first], outfile);
       else
-        putc(tolower(aachar[first]), outfile);
+        putc(tolower((int)aachar[first]), outfile);
       if (rctgry && rcategs > 1)
         mx = mp[n][mx - 1];
       else

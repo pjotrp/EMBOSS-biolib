@@ -141,21 +141,21 @@ void readtree()
  
    
     /*
-    if (!(*cp) || (ch != factchar)) {
-      printf("\n\nERROR: Character %d:  bad character state tree format1\n\n",
-             (int)(cp - ajStrStr(rdline)));
-      printf("\n\nch: %c\n", ch);
-      exxit(-1);
-    } *?
-
-    pair[npairs - 1][1] = *cp++;
-
-    /*
-    if (pair[npairs - 1][1] == ' '){
-      printf("\n\nERROR: Character %d:  bad character state tree format2\n\n",
-             (int)(cp - ajStrStr(rdline)));
-      exxit(-1);
-    } 
+//    if (!(*cp) || (ch != factchar)) {
+//     printf("\n\nERROR: Character %d:  bad character state tree format1\n\n",
+//             (int)(cp - ajStrStr(rdline)));
+//      printf("\n\nch: %c\n", ch);
+//      exxit(-1);
+//    } *?
+//
+//    pair[npairs - 1][1] = *cp++;
+//
+//    ?*
+//    if (pair[npairs - 1][1] == ' '){
+//    printf("\n\nERROR: Character %d:  bad character state tree format2\n\n",
+//             (int)(cp - ajStrStr(rdline)));
+//      exxit(-1);
+//    } 
     */
   }
 }  /* readtree */
@@ -368,7 +368,7 @@ void dotrees()
     chstart[charindex - 1] = offset;
     numstates[charindex - 1] = nstates;
     offset += nstates * nstates;
-    fscanf(inputfile, "%ld", &charnumber);
+    ajFmtScanF(inputfile, "%ld", &charnumber);
   }
   /*    each multistate character */
   /*    symbol  */

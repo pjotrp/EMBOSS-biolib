@@ -1368,7 +1368,7 @@ void yourtree()
         getchar();
         if (ch == '\n')
           ch = ' ';
-        ch = isupper(ch) ? ch : toupper(ch);
+        ch = isupper((int)ch) ? ch : toupper((int)ch);
       } while (ch != 'A' && ch != 'B');
     }
     else ch = 'B';   /* if user has chosen a tip, set Before */
@@ -1637,7 +1637,7 @@ void rearrange()
           getchar();
           if (ch == '\n')
             ch = ' ';
-          ch = isupper(ch) ? ch : toupper(ch);
+          ch = isupper((int)ch) ? ch : toupper((int)ch);
           maxinput++;
           if (maxinput == 100) {
             printf("ERROR: too many tries at choosing option\n");

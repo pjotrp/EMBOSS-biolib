@@ -188,7 +188,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
 
     printf("justweights: %s\n", (justwts ?  "true" : "false"));
-    printf("numwts: %ld\n", numwts); 
+    printf("numwts: %d\n", numwts); 
 } /* emboss_getoptions */
 
 void allocrest()

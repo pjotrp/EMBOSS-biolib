@@ -532,7 +532,7 @@ void protinputdata(AjPSeqset seqset)
     while (j < chars) {
         charstate = ajStrChar(str, j);
         uppercase(&charstate);
-        if ((!isalpha(charstate) && charstate != '?' &&
+        if ((!isalpha((int)charstate) && charstate != '?' &&
              charstate != '-' && charstate != '*') || charstate == 'J' ||
             charstate == 'O' || charstate == 'U') {
           printf("WARNING -- BAD AMINO ACID:%c",charstate);

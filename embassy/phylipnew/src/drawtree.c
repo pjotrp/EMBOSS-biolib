@@ -801,7 +801,7 @@ void getparms(char numtochange)
       phyFillScreenColor();
 #endif
       getstryng(input);
-      input[0] = toupper(input[0]);
+      input[0] = toupper((int)input[0]);
       countup(&loopcount2, 10);
     } while (input[0] != 'Y' && input[0] != 'N');
     pictitalic = (input[0] == 'Y');
@@ -812,7 +812,7 @@ void getparms(char numtochange)
       phyFillScreenColor();
 #endif
       getstryng(input);
-      input[0] = toupper(input[0]);
+      input[0] = toupper((int)input[0]);
       countup(&loopcount2, 10);
     } while (input[0] != 'Y' && input[0] != 'N');
     pictbold = (input[0] == 'Y');
@@ -823,7 +823,7 @@ void getparms(char numtochange)
       phyFillScreenColor();
 #endif
       getstryng(input);
-      input[0] = toupper(input[0]);
+      input[0] = toupper((int)input[0]);
       countup(&loopcount2, 10);
     } while (input[0] != 'Y' && input[0] != 'N');
     pictshadow = (input[0] == 'Y');
@@ -834,7 +834,7 @@ void getparms(char numtochange)
       phyFillScreenColor();
 #endif
       getstryng(input);
-      input[0] = toupper(input[0]);
+      input[0] = toupper((int)input[0]);
       countup(&loopcount2, 10);
     } while (input[0] != 'Y' && input[0] != 'N');
     pictoutline = (input[0] == 'Y');
@@ -2447,13 +2447,13 @@ void setup_environment(int argc, Char *argv[])
     pChar = argv[1];
     for (i = 0; i < strlen(pChar); i++)
     {
-      if ( ! isdigit(*pChar) ) 
+      if ( ! isdigit((int)*pChar) ) 
       {
             /* set to default if the 2nd. parameter is not a number */
             maxNumOfIter = 50;
             return;
       }
-      else if ( isspace(*pChar) )
+      else if ( isspace((int)*pChar) )
       {
             printf("ERROR: Number of iteration should not contain space!\n");
             exxit(1);

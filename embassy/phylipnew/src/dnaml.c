@@ -1711,7 +1711,7 @@ void reconstr(node *p, long n)
     if (xx[first] < 0.4999995)
       m = m + (1 << second);
     if (xx[first] > 0.95)
-      putc(toupper(basechar[m - 1]), outfile);
+      putc(toupper((int)basechar[m - 1]), outfile);
     else
       putc(basechar[m - 1], outfile);
     if (rctgry && rcategs > 1)
