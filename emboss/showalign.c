@@ -375,7 +375,7 @@ static void MakeAll (AjPSeq ref, AjPSeq seq, ajint **sub, AjPSeqCvt cvt,
   if (lenseq > lenref) {
     for (; i<lenseq; i++) {
       if (s[i] != '-') {
-        s[i] = s[i] = tolower(s[i]);	/* dissimilar to lowercase */;
+        s[i] = tolower(s[i]);	/* dissimilar to lowercase */;
       }
     }	
   }
