@@ -33,12 +33,11 @@ ajint main(ajint argc, char **argv)
     AjPFile inf  = NULL;
     AjPFile outf = NULL;
     AjPStr  line = NULL;
-    AjBool  done = ajFalse;
     ajint     pos;
     char    *p;
     char    *q;
     char    c;
-    char    d;
+    char    d='\0';
     
     (void) embInit("intconv", argc, argv);
 
