@@ -41,7 +41,7 @@ public class SequenceJPanel extends JPanel
   /** sequence to display */
   private Sequence seq;
   /** font size */
-  private int fontSize = 14;
+  private int fontSize = 12;
   /** font */
   private Font font = new Font("Monospaced", 
                       Font.PLAIN, fontSize);

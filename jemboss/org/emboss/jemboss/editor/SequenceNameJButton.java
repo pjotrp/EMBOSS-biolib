@@ -35,7 +35,7 @@ public class SequenceNameJButton extends JToggleButton
   /** boundary width */
   private int boundWidth = 6;
   /** font size */
-  private int fontSize = 14;
+  private int fontSize = 12;
   /** name label */
   private String nameLabel;
   /** height pad */

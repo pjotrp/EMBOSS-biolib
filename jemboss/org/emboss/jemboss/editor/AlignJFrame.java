@@ -413,7 +413,7 @@ public class AlignJFrame extends JFrame
 // font menu
     String sizes[] = {"10", "12", "14", "16", "18"};
     final JComboBox fntSize = new JComboBox(sizes);
-    fntSize.setSelectedItem("14");
+    fntSize.setSelectedItem("12");
     menuBar.add(fntSize);
     fntSize.setEditable(true);
     Dimension dfont = new Dimension(50,20);
