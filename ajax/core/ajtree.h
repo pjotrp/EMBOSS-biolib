@@ -27,8 +27,10 @@ enum AjETreeType {ajETreeAny, ajETreeStr};
 ** @new ajTreeNew Creates a new general tree.
 ** @new ajTreestrNew Creates a new AjPStr tree.
 **
-** @attr Nodes [AjPList] List of tree nodes, each of which is a valid subtree
-** @attr Top [AjPTreeNode] Top node in the tree
+** @attr Right [const struct AjSTree*] Next tree node
+** @attr Left  [const struct AjSTree*] Previous tree node
+** @attr Up    [const struct AjSTree*] Parent tree node
+** @attr Down  [const struct AjSTree*] First child tree node
 ** @attr Type [AjEnum] Tree type (any, string, etc.)
 ** @attr Data [void*] Data value
 ** @@
@@ -51,15 +53,15 @@ AjPTree ajTreeAddSubNode(AjPTree thys);
 AjPTree ajTreeCopy(const AjPTree thys);
 
 void    ajTreeDel(AjPTree* pthis);
-AjPTree ajTreeDown(AjPTree thys);
+const AjPTree ajTreeDown(AjPTree thys);
 void    ajTreeExit(void);
 void    ajTreeFree(AjPTree* pthis);
 AjBool  ajTreeGetData(AjPTree thys, void** data);
 ajint   ajTreeLength(const AjPTree thys);
 void    ajTreeMap(AjPTree thys, void apply(void** x, void* cl), void* cl);
 AjPTree ajTreeNew(void);
-AjPTree ajTreeNext(AjPTree thys);
-AjPTree ajTreePrev(AjPTree thys);
+const AjPTree ajTreeNext(AjPTree thys);
+const AjPTree ajTreePrev(AjPTree thys);
 AjPTree ajTreestrCopy(const AjPTree thys);
 void    ajTreestrDel(AjPTree* pthis);
 void    ajTreestrFree(AjPTree* pthis);
@@ -68,7 +70,7 @@ AjPTree ajTreestrNew(void);
 ajint   ajTreestrToArray(const AjPTree thys, AjPStr** array);
 ajint   ajTreeToArray(const AjPTree thys, void*** array);
 void    ajTreeTrace(const AjPTree thys);
-AjPTree ajTreeUp(AjPTree thys);
+const AjPTree ajTreeUp(AjPTree thys);
 
 void    ajTreeDummyFunction();
 

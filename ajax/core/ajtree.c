@@ -400,7 +400,6 @@ void ajTreestrMap(AjPTree thys, void apply(AjPStr* x, void* cl), void* cl)
 
 ajint ajTreeToArray(const AjPTree thys, void*** array)
 {
-    ajint i = 0;
     ajint n = 0;
  
     return n;
@@ -423,7 +422,6 @@ ajint ajTreeToArray(const AjPTree thys, void*** array)
 
 ajint ajTreestrToArray(const AjPTree thys, AjPStr** array)
 {
-    ajint i = 0;
     ajint n = 0;
 
     return n;
@@ -455,7 +453,8 @@ void ajTreeDummyFunction()
 **
 ** Sets the data value in a terminal tree node.
 **
-** @param [u] thys [AjPTree] Terinal tree node. Must have no descendants
+** @param [u] thys [AjPTree] Terminal tree node. Must have no descendants
+** @param [r] data [void*] Data value
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
@@ -525,7 +524,7 @@ AjPTree ajTreeAddSubNode(AjPTree thys)
 **                  define data or further nodes.
 ******************************************************************************/
 
-AjPTree ajTreeNext(AjPTree thys)
+const AjPTree ajTreeNext(AjPTree thys)
 {
     return thys->Right;
 }
@@ -541,7 +540,7 @@ AjPTree ajTreeNext(AjPTree thys)
 **                  define data or further nodes.
 ******************************************************************************/
 
-AjPTree ajTreePrev(AjPTree thys)
+const AjPTree ajTreePrev(AjPTree thys)
 {
     return thys->Left;
 }
@@ -557,7 +556,7 @@ AjPTree ajTreePrev(AjPTree thys)
 **                  define data or further nodes.
 ******************************************************************************/
 
-AjPTree ajTreeDown(AjPTree thys)
+const AjPTree ajTreeDown(AjPTree thys)
 {
     return thys->Down;
 }
@@ -573,7 +572,7 @@ AjPTree ajTreeDown(AjPTree thys)
 **                  define data or further nodes.
 ******************************************************************************/
 
-AjPTree ajTreeUp(AjPTree thys)
+const AjPTree ajTreeUp(AjPTree thys)
 {
     return thys->Up;
 }
@@ -590,8 +589,6 @@ AjPTree ajTreeUp(AjPTree thys)
 
 void ajTreeTrace(const AjPTree thys)
 {
-    ajint margin = 0;
-
     treeTraceNode(thys, 0);
 
     return;
