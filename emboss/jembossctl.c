@@ -50,7 +50,7 @@
 #endif
 
 #ifndef TOMCAT_UID
-#define TOMCAT_UID 6055	  /* Set this to be the UID of the tomcat process */
+#define TOMCAT_UID 506	  /* Set this to be the UID of the tomcat process */
 #endif
 
 #define UIDLIMIT 0
