@@ -26,10 +26,22 @@ void phyFillScreenColor();
 
 #include "phylip.h"
 
+static void emboss_printtreenode(node *p, node* root);
+
 #if defined(OSX_CARBON) && defined(__MWERKS__)
 boolean fixedpath = false;
 #endif
 FILE *infile, *outfile, *intree, *intree2, *outtree, *weightfile, *catfile, *ancfile, *mixfile, *factfile;
+AjPFile embossinfile;
+AjPFile embossoutfile;
+AjPFile embossintree;
+AjPFile embossintree2;
+AjPFile embossouttree;
+AjPFile embossweightfile;
+AjPFile embosscatfile;
+AjPFile embossancfile;
+AjPFile embossmixfile;
+AjPFile embossfactfile;
 long spp, words, bits;
 boolean ibmpc, ansi, tranvsp;
 naym *nayme;                     /* names of species */
@@ -95,29 +107,17 @@ void countup(long *loopcount, long maxcount)
 } /* countup */
 
 
-void openfile(FILE **fp,const char *filename,const char *filedesc,
-              const char *mode,const char *application, const char **perm)
-{ /* open a file, testing whether it exists etc. */
-  AjPFile outfile;
-
-  switch (mode[0]){
-  case 'w':
-      outfile = ajAcdGetOutfile(filename);
-      if (outfile)
-	  *fp = ajFileFp(outfile);
-      else
-	  *fp = NULL;
-      ajDebug("phylip openfile out '%s' '%s' => '%F'\n",
-	      mode, filename, outfile);
-      *perm = ajFileName(outfile);
-      break;
-  default:
-      ajDie("Phylip openfile given bad mode '%s'", mode);
-      break;
-  }
-
-} /* openfile */
-
+void emboss_openfile(AjPFile outfile, FILE **fp, const char **perm)
+{
+    if (outfile)
+	*fp = ajFileFp(outfile);
+    else
+	*fp = NULL;
+    ajDebug("phylip emboss_openfile '%F'\n",
+	    outfile);
+    *perm = ajFileName(outfile);
+    return;
+}
 
 void cleerhome()
 { /* home cursor and clear screen, if possible */
@@ -203,45 +203,46 @@ void uppercase(Char *ch)
 }  /* uppercase */
 
 
-void initseed(long *inseed, long *inseed0, longer seed)
+/* @func emboss_initseed ******************************************************
+**
+** Given a random numebr seed (inseed)
+**
+** Increments it until it gives a remainder of 1 when divided by 4
+** and returns the reulting corrected sees as *inseed0
+**
+** Also returns an array of 6 seed values in seed array
+**
+******************************************************************************/
+
+void emboss_initseed(long inseed, long *inseed0, longer seed)
 { /* input random number seed */
   long i;
+  long myinseed = inseed;
 
-    *inseed = ajAcdGetInt("seed");
-    while ((*inseed & 3)!=1)		/* must be an 4n+1 - see main.html */
-	*inseed++;
+  while ((myinseed & 3)!=1)		/* must be an 4n+1 - see main.html */
+	myinseed++;
 
-  *inseed0 = *inseed;
+  *inseed0 = myinseed;
   for (i = 0; i <= 5; i++)
     seed[i] = 0;
   i = 0;
   do {
-    seed[i] = *inseed & 63;
-    *inseed /= 64;
+    seed[i] = myinseed & 63;
+    myinseed /= 64;
     i++;
-  } while (*inseed != 0);
+  } while (myinseed != 0);
 
-}  /*initseed*/
-
-
-void initjumble(long *inseed, long *inseed0, longer seed, long *njumble)
-{ /* input number of jumblings for jumble option */
-
-  initseed(inseed, inseed0, seed);
-
-  *njumble = ajAcdGetInt("jumble");
-}  /*initjumble*/
+}  /*emboss_initseed*/
 
 
-void initoutgroup(long *outgrno, long spp)
-{ /* input outgroup number */
+void emboss_initoutgroup(long *outgrno, long spp)
+{ /* validate outgroup number against number of species */
 
     if (spp < 1)
     {
-	ajDie("Cannot set outgroup number: spp value %ld less than 1",
+	ajDie("Cannot set outgroup number: species count spp %ld less than 1",
 	      spp);
     }
-    *outgrno = ajAcdGetInt("outgroup");
     if (*outgrno > spp)
     {
 	ajWarn("Bad outgroup number: %ld, set to maximum group %ld",
@@ -249,47 +250,27 @@ void initoutgroup(long *outgrno, long spp)
 	*outgrno = spp;
     }
 
-    ajDebug("initoutgroup spp: %ld => outgrno %ld\n", spp, *outgrno);
+    ajDebug("emboss_initoutgroup spp: %ld => outgrno %ld\n", spp, *outgrno);
 }  /*initoutgroup*/
 
 
-void initthreshold(double *threshold)
-{ /* input threshold for threshold parsimony option */
-
-  *threshold = ajAcdGetFloat("threshold");
-
-}  /*initthreshold*/
-
-
-void initrcatn(long *categs)
-{ /* initialize category number for HMM rate categories */
-
-    *categs = ajAcdGetInt("nhmmcategories");
-    if (*categs > maxcategs)
-	*categs = maxcategs;
-
-}
-
-void initcatn(long *categs)
+void emboss_initcatn(long *categs)
 { /* initialize category number for rate categories */
 
-    *categs = ajAcdGetInt("ncategories");
     if (*categs > maxcategs)
 	*categs = maxcategs;
 
 }  /*initcatn*/
 
 
-void initrcategs(long categs, double *rate)
-{ /* initialize category rates for HMM rates */
+void emboss_initcategs(AjPFloat arrayvals, long categs, double *rate)
+{ /* initialize category rates */
   long i;
-  AjPFloat vals;
   long maxi;
 
-  vals = ajAcdGetArray("hmmrates");
   if (!rate) return;
 
-  maxi = ajFloatLen(vals);
+  maxi = ajFloatLen(arrayvals);
   if (maxi != categs)
       ajWarn("HMM category rates read %d values, expected %d values",
 	     maxi, categs);
@@ -299,47 +280,21 @@ void initrcategs(long categs, double *rate)
       if (i > maxi)
 	  rate[i] = 0.0;
       else
-	  rate[i] = ajFloatGet(vals, i);
+	  rate[i] = ajFloatGet(arrayvals, i);
   }
 }  /*initrcategs*/
 
-void initcategs(long categs, double *rate)
-{ /* initialize category rates for HMM rates */
+
+double emboss_initprobcat(AjPFloat arrayvals, long categs, double *probcat)
+{ /* input probabilities of rate categories for HMM rates */
   long i;
-  AjPFloat vals;
   long maxi;
+  double probsum = 0.0;
 
-  vals = ajAcdGetArray("rates");
-  if (!rate) return;
-
-  maxi = ajFloatLen(vals);
-  if (maxi != categs)
-      ajWarn("Category rates read %d values, expected %d values",
-	     maxi, categs);
-
-  for (i=0; i < categs; i++)
-  {
-      if (i > maxi)
-	  rate[i] = 0.0;
-      else
-	  rate[i] = ajFloatGet(vals, i);
-  }
-
-}  /*initcategs*/
-
-
-void initprobcat(long categs, double *probsum, double *probcat)
-{ /* input probabilities of rate categores for HMM rates */
-  long i;
-  AjPFloat vals;
-  long maxi;
-
-  *probsum = 0.0;
-  vals = ajAcdGetArray("hmmprobabilities");
   if (!categs)
-      return;
+      return probsum;
 
-  maxi = ajFloatLen(vals);
+  maxi = ajFloatLen(arrayvals);
   if (maxi != categs)
       ajWarn("Category probabilities read %d values, expected %d values",
 	     maxi, categs);
@@ -349,9 +304,10 @@ void initprobcat(long categs, double *probsum, double *probcat)
       if (i > maxi)
 	  probcat[i] = 0.0;
       else
-	  probcat[i] = ajFloatGet(vals, i);
-      *probsum += probcat[i];
+	  probcat[i] = ajFloatGet(arrayvals, i);
+      probsum += probcat[i];
   }
+  return probsum;
 
 }  /*initprobcat*/
 
@@ -2214,3 +2170,120 @@ void phyClearScreen()
 } /* PhyClearScreen */
 #endif
 
+void emboss_printtree(node *p, char* title)
+{
+    int i;
+    int ilen;
+    node* root = p;
+
+    printf("\n%s\n", title);
+
+    ilen = strlen(title);
+    for (i=0;i < ilen; i++)
+	printf("=");
+    printf("\n");
+
+    emboss_printtreenode(p, root);
+
+    return;
+}
+
+static void emboss_printtreenode(node *p, node* root)
+{
+    int i;
+    node* q;
+    static int margin=0;
+    char name[256];
+    int ended = false;
+    double x;
+    char spaces[256];
+
+    for(i=0;i<margin;i++)
+	spaces[i] = ' ';
+    spaces[margin] = '\0';
+
+    printf("%s", spaces);
+    if (p->tip)				/* named node */
+    {
+	strncpy(name, nayme[p->index - 1], nmlngth);
+	for (i=nmlngth;i;i--)
+	{
+	    if (name[i-1] == ' ')
+	    {
+		name[i-1] = '_';
+	    }
+	    else
+	    {
+		if (!ended)
+		{
+		    name[i] = '\0';
+		    ended = true;
+		}
+	    }
+	}
+	printf("'%s'\n", name);
+	if (p->index)
+	    printf("%s  : index:%ld\n",spaces, p->index);
+	if (p->tip)
+	    printf("%s  : tip:%s\n", spaces, (p->tip ? "true" : "false"));
+	if (p->initialized)
+	    printf("%s  : initialized:%s\n",
+		   spaces, (p->initialized ? "true" : "false"));
+	if (p->visited)
+	    printf("%s  : visited:%s\n",
+		   spaces, (p->visited ? "true" : "false"));
+	if (p->numdesc)
+	    printf("%s  : numdesc:%ld\n",spaces, p->numdesc);
+	if (p->times_in_tree)
+	    printf("%s  : times_in_tree:%f\n",spaces, p->times_in_tree);
+	if (p->sumsteps)
+	    printf("%s  : sumsteps:%f\n",spaces, p->sumsteps);
+	printf("\n");
+
+    }
+    else	/* link to next nodes - loop until we get back here */
+    {
+	printf("(\n");
+	/* numdesc: number of immediate descendants */
+	if (p->index)
+	    printf("%s  : index:%ld\n",spaces, p->index);
+	if (p->tip)
+	    printf("%s  : tip:%s\n", spaces, (p->tip ? "true" : "false"));
+	if (p->initialized)
+	    printf("%s  : initialized:%s\n",
+		   spaces, (p->initialized ? "true" : "false"));
+	if (p->visited)
+	    printf("%s  : visited:%s\n",
+		   spaces, (p->visited ? "true" : "false"));
+	if (p->numdesc)
+	    printf("%s  : numdesc:%ld\n",spaces, p->numdesc);
+	if (p->times_in_tree)
+	    printf("%s  : times_in_tree:%f\n",spaces, p->times_in_tree);
+	if (p->sumsteps)
+	    printf("%s  : sumsteps:%f\n",spaces, p->sumsteps);
+	printf("\n");
+
+	margin += 2;
+	q=p->next;
+	while (q != p) {
+	    emboss_printtreenode(q->back, root);
+	    q = q->next;
+	    if (q == p)
+		break;
+	    printf("%s  ,\n\n",spaces);
+	}
+	margin -= 2;
+	printf("%s)\n", spaces);
+    }
+
+    if (p != root)
+    {
+	x = p->v;
+	printf("%s+ len:%.5f\n\n", spaces, x);
+	return;
+    }
+
+    printf(";\n\n");
+    margin = 0;
+    
+}
