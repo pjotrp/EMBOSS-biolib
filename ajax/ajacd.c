@@ -6081,7 +6081,7 @@ static void acdSetSeqset (AcdPAcd thys) {
   }
 
   for (itry=acdPromptTry; itry && !okbeg; itry--) {
-    (void) ajStrAssS (&promptreply, defreply);
+    (void) ajStrAssC (&promptreply, "start");
     if (sprompt)
       (void) acdUserGetPrompt (" Begin at position", &promptreply);
     if (ajStrMatchCaseC(promptreply, "start"))
@@ -6106,7 +6106,7 @@ static void acdSetSeqset (AcdPAcd thys) {
   }
 
   for (itry=acdPromptTry; itry && !okend; itry--) {
-    (void) ajStrAssS (&promptreply, defreply);
+    (void) ajStrAssC (&promptreply, "end");
     if (sprompt)
       (void) acdUserGetPrompt ("   End at position", &promptreply);
     if (ajStrMatchCaseC(promptreply, "end"))
@@ -6131,7 +6131,7 @@ static void acdSetSeqset (AcdPAcd thys) {
       val->Rev = seqin->Rev;
     }
     for (itry=acdPromptTry; itry && !okrev; itry--) {
-      (void) ajStrAssS (&promptreply, defreply);
+      (void) ajStrAssC (&promptreply, "N");
       if (sprompt)
 	(void) acdUserGetPrompt ("    Reverse strand", &promptreply);
       okrev = ajStrToBool(promptreply, &sreverse);
