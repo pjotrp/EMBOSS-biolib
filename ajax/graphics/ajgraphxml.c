@@ -46,8 +46,10 @@ static AjPXmlNode 	xml_GetCurrentScene(AjPXmlFile file);
 static AjPXmlNode 	xml_SetNode(GdomeNode *node);
 static GdomeNode* 	xml_GetNode(AjPXmlNode node);
 static GdomeElement* 	xml_GetNodeElement(AjPXmlNode node);
+/* Never used
 static AjPXmlNode 	xml_NewNode(AjPXmlFile file, AjPStr name,
 				    AjPXmlNode parent);
+*/
 static AjPXmlNode 	xml_GetParent(AjPXmlNode node);
 
 static void 	xml_AddGroutOption(AjPXmlFile file, AjPStr name, AjPStr value);
@@ -4115,7 +4117,7 @@ static AjBool xml_IsShapeThisColour(AjPXmlFile file, AjPXmlNode shape)
     AjPStr presentColour = NULL;
     AjPStr attributeName = NULL;
     AjPStr attributeValue = NULL;
-    AjBool returnValue;
+    AjBool returnValue = ajFalse;
     GdomeDOMString *nodeName = NULL;
     ajint i;
 
@@ -5981,6 +5983,25 @@ static void xml_UnrefNode(AjPXmlNode node)
     gdome_n_unref (xml_GetNode(node), &exc);
     ajXmlNodeDel(&node);
 
+    return;
+}
+
+
+/* @func  xml_Unused ***********************************************
+**
+** Catch functions that are defined but never used to stop compile warnings
+**
+** @return [void]
+** @@
+*********************************************************************/
+void xml_Unused()
+{
+    AjPStr str = NULL;
+    double ret;
+    
+    ret = xml_GetetLastDouble(str);
+    ret = xml_GetDoubleNo(str,0);
+    
     return;
 }
 
