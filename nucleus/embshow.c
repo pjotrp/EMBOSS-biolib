@@ -2653,27 +2653,36 @@ ajDebug("target=>%S<", *line);
 ** @@
 ******************************************************************************/
 
-static void showAddTags (AjPStr *tagsout, AjPFeature feat, AjBool values) {
+static void showAddTags (AjPStr *tagsout, AjPFeature feat, AjBool values)
+{
 
-  AjPStr tagnam = NULL;
-  AjPStr tagval = NULL;
-  AjIList titer;
+    AjPStr tagnam = NULL;
+    AjPStr tagval = NULL;
+    AjIList titer;
 
-/* iterate through the tags and test for match to patterns */
-/* debug - there is something wrong with the list */
+    /* iterate through the tags and test for match to patterns */
+    /* debug - there is something wrong with the list */
 
-  titer = ajFeatTagIter (feat);
+    tagval = ajStrNew();
+    tagnam = ajStrNew();
+    
+    titer = ajFeatTagIter (feat);
 
-  while (ajFeatTagval(titer, &tagnam, &tagval)) {
-/* don't display the translation tag - it is far too long :-) */
-    if (ajStrCmpC(tagnam, "translation")) {
-      if (ajStrLen(tagval)) {
-        (void) ajFmtPrintAppS(tagsout, " %S=\"%S\"", tagnam, tagval);
-      } else {
-        (void) ajFmtPrintAppS(tagsout, " %S", tagnam);
-      }
-    }
-  }
-  (void) ajListIterFree(titer);
+    while (ajFeatTagval(titer, &tagnam, &tagval))
+	/* don't display the translation tag - it is far too long :-) */
+	if (ajStrCmpC(tagnam, "translation"))
+	{
+	    if (ajStrLen(tagval))
+		(void) ajFmtPrintAppS(tagsout, " %S=\"%S\"", tagnam, tagval);
+	    else
+		(void) ajFmtPrintAppS(tagsout, " %S", tagnam);
+	}
+
+    (void) ajListIterFree(titer);
+
+    ajStrDel(&tagval);
+    ajStrDel(&tagnam);
+    
+    return;
 }
 
