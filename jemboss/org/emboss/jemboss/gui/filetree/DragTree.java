@@ -367,7 +367,7 @@ public class DragTree extends JTree implements DragGestureListener,
 * @param the file name
 *
 */
-  public void showFilePane(String filename)
+  public static void showFilePane(String filename)
   {
     JFrame ffile = new JFrame(filename);
     JPanel pfile = (JPanel)ffile.getContentPane();
