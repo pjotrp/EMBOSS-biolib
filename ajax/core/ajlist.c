@@ -1758,42 +1758,35 @@ void ajListUnique (AjPList thys,
 		   int (*compar) (const void* x, const void* cl),
 		   void nodedelete (void** x, void* cl))
 {
-    void** array = NULL;
-    ajint i = 0;
-    ajint j = 0;
-    AjPListNode node = thys->First;
-    AjPListNode p;
+    void* item;
+    void* previtem=NULL;
+    AjIList iter;
 
-    /*ajDebug ("ajListUnique %d items\n", thys->Count);*/
-    /*ajListTrace(thys);*/
+    ajDebug ("ajListUnique %d items\n", thys->Count);
 
-    if (thys->Count <= 1)
+    if (thys->Count <= 1)	/* no duplicates */
 	return;
 
-    (void) ajListToArray(thys, &array);
-    /* listArrayTrace(array);*/
+   (void) ajListSort(thys, compar);
+   ajListTrace(thys);
 
-    qsort (array, thys->Count, sizeof(void*), compar);
+   iter = ajListIter(thys);
+   while (ajListIterMore(iter))
+   {
+       item = ajListIterNext(iter);
+       if (previtem && !compar(&item, &previtem))
+       {
+	   nodedelete (&item, NULL);
+	   ajListRemove(iter);
+       }
+       else
+	 previtem=item;
+   }
 
-    while (node->Next)
-    {
-        node->Item = array[i];
-	p = node;
-	node = node->Next;
-        if (i && !compar((const void*) &array[j], (const void*) &array[i]))
-	{
-	    nodedelete((void**)&p->Prev->Prev->Next->Item, NULL);
-	    listNodeDel(&p->Prev->Prev->Next);
-	    thys->Count--;
-	}
-	j = i;
-	i++;
-    }
+   ajListIterFree (iter);
 
-    AJFREE (array);
-
-    /*ajDebug ("ajListUnique result %d items\n", thys->Count);*/
-    /*ajListTrace(thys);*/
+    ajDebug ("ajListUnique result %d items\n", thys->Count);
+    ajListTrace(thys);
 
     return;
 }
