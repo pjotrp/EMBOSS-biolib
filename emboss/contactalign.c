@@ -112,6 +112,9 @@ static AjBool print_contact (AjPContact ajpContactToPrint);
 static AjBool write_cmap_header (AjPFile ajpFileUpdatedCmap,
 				 AjPCmapHeader ajpHeaderToWrite);
 
+static AjBool write_cmap_line (AjPFile ajpFileUpdatedCmap,
+			       AjPStr *pAjpStrLineToWrite);
+
 static AjBool write_contact (AjPFile ajpFileUpdatedCmap,
 			     AjPContact ajpContactToWrite);
 
@@ -311,6 +314,7 @@ int main(int argc , char **argv)
 						&ajpInt2dCmapPositions);
     
 
+    ajFileClose(&ajpFileOriginalCmap);
 
     /* DDDDEBUGGING DID WE READ THE CMAP FILE? */
     if( enumDebugLevel > 1 )
@@ -845,11 +849,13 @@ static AjBool write_cmap_file (AjPFile ajpFileUpdatedCmap,
     AjPContact ajpContactTemp = NULL;
     /* structure to hold header text */
     AjPCmapHeader ajpCmapHeader = NULL;
+
     /* arrays to hold contacts */
     AjPInt2d ajpInt2dCmapSummary = NULL;
     AjPInt2d ajpInt2dCmapResTypes = NULL;
     AjPInt2d ajpInt2dCmapPositions = NULL;
-    /* dereference pointers to same */
+
+    /* dereference pointers to original pointers */
     ajpCmapHeader = *pAjpCmapHeader;
     ajpInt2dCmapSummary = *pAjpInt2dCmapSummary;
     ajpInt2dCmapResTypes = *pAjpInt2dCmapResTypes;
@@ -905,11 +911,11 @@ static AjBool write_cmap_file (AjPFile ajpFileUpdatedCmap,
 	    ajpContactTemp->ajIntSecondPosition = ajIntTempSecondPosition;
 
 	    /* DDDDEBUG: AND CHECK THAT'S WORKED */
-	    if(enumDebugLevel > 1)
-		print_contact(ajpContactTemp);
+/* 	    if(enumDebugLevel > 1) */
+/* 		print_contact(ajpContactTemp); */
 
-	    write_contact(ajpFileUpdatedCmap,
-			  ajpContactTemp);
+/* 	    write_contact(ajpFileUpdatedCmap, */
+/* 			  ajpContactTemp); */
 
 	}
     }
@@ -1099,6 +1105,128 @@ static AjPInt2d get_int_map (ajint ajIntAcrossSeqLen)
 }
 
 
+/* @funcstatic write_contact *************************************************
+**
+** writes contact object to open contact map file
+**
+** @param [r] ajpFileUpdatedCmap [AjPFile] file to write contact map to
+** @param [r] ajpContactToWrite [AjPContact] contact to be written
+** @return [AjBool] did it work? ajTrue for success
+** @@
+******************************************************************************/
+
+static AjBool write_contact (AjPFile ajpFileUpdatedCmap,
+			     AjPContact ajpContactToWrite)
+{
+    AjBool ajBoolSuccess;
+    AjPStr ajpStrContactToWrite;
+
+    ajBoolSuccess = ajFalse;
+
+    /* write contact object attributes in EMBL-like format */
+    ajpStrContactToWrite = ajFmtStr("SM   %S %d ; %S %d\n",
+				    ajpContactToWrite->ajpStrFirstResType,
+				    ajpContactToWrite->ajIntFirstPosition,
+				    ajpContactToWrite->ajpStrSecondResType,
+				    ajpContactToWrite->ajIntSecondPosition);
+
+    ajBoolSuccess = ajFileWriteStr(ajpFileUpdatedCmap,
+				   ajpStrContactToWrite,
+				   enumMaxCmapLineLen);
+    
+    
+    return ajBoolSuccess;
+}
+
+
+/* @funcstatic write_cmap_header *************************************************
+**
+** writes header object to open contact map file
+**
+** @param [r] ajpFileUpdatedCmap [AjPFile] file to write contact map to
+** @param [r] ajpHeaderToWrite [AjPCmapHeader] contact to be written
+** @return [AjBool] did it work? ajTrue for success
+** @@
+******************************************************************************/
+
+static AjBool write_cmap_header (AjPFile ajpFileUpdatedCmap,
+				 AjPCmapHeader ajpHeaderToWrite)
+{
+    AjBool ajBoolSuccess;
+    AjPStr ajpStrBlankLine = NULL;
+    AjPStr *pAjpStrBlankLine = NULL;
+    AjPStr ajpStrTemp = NULL;
+
+    ajBoolSuccess = ajFalse;
+
+    pAjpStrBlankLine = &ajpStrBlankLine;
+    ajpStrBlankLine = ajStrNewC("XX");
+    
+    ajBoolSuccess = write_cmap_line(ajpFileUpdatedCmap,
+				    &(ajpHeaderToWrite->ajpStrCmapId));
+
+    ajBoolSuccess = write_cmap_line(ajpFileUpdatedCmap,
+				    pAjpStrBlankLine);
+
+    ajBoolSuccess = write_cmap_line(ajpFileUpdatedCmap,
+				    &(ajpHeaderToWrite->ajpStrCmapDe));
+
+    ajBoolSuccess = write_cmap_line(ajpFileUpdatedCmap,
+				    pAjpStrBlankLine);
+
+    ajBoolSuccess = write_cmap_line(ajpFileUpdatedCmap,
+				    &(ajpHeaderToWrite->ajpStrCmapMo));
+
+    ajBoolSuccess = write_cmap_line(ajpFileUpdatedCmap,
+				    pAjpStrBlankLine);
+
+    ajStrDel(&ajpStrTemp);
+    ajStrDel(&ajpStrBlankLine);
+    
+
+    return ajBoolSuccess;
+
+}
+
+
+
+/* @funcstatic write_cmap_line ****************************************
+**
+** writes single AjPStr to open contact map file
+**
+** @param [r] ajpFileUpdatedCmap [AjPFile] file to write AjPStr to
+** @param [r] ajpStrLineToWrite [AjPStr *] pointer to line to be written
+** @return [AjBool] did it work? ajTrue for success
+** @@
+******************************************************************************/
+
+static AjBool write_cmap_line (AjPFile ajpFileUpdatedCmap,
+			       AjPStr *pAjpStrLineToWrite)
+{
+    AjBool ajBoolSuccess;
+    AjPStr ajpStrTemp = NULL;
+    ajint ajIntStrTempLen;
+    AjPStr ajpStrLineToWrite;
+
+    ajBoolSuccess = ajFalse;
+    ajpStrLineToWrite = *pAjpStrLineToWrite;
+
+    ajStrCopy(&ajpStrTemp, ajpStrLineToWrite);
+    ajStrAppK(&ajpStrTemp, '\n');
+    ajStrAppK(&ajpStrTemp, '\0');
+
+    ajIntStrTempLen = ajStrLen(ajpStrTemp);
+
+    ajBoolSuccess = ajFileWriteStr(ajpFileUpdatedCmap,
+				   ajpStrTemp,
+				   ajIntStrTempLen-1);
+    ajStrDel(&ajpStrTemp);
+
+    return ajBoolSuccess;
+
+}
+
+
 
 
 /*   EVERYTHING IS DDDDEBUGGING CODE FROM HERE ONWARDS */
@@ -1201,77 +1329,8 @@ static AjBool print_contact (AjPContact ajpContactToPrint)
 
 
 
-
-/* @funcstatic write_contact *************************************************
-**
-** writes contact object to open contact map file
-**
-** @param [r] ajpFileUpdatedCmap [AjPFile] file to write contact map to
-** @param [r] ajpContactToWrite [AjPContact] contact to be written
-** @return [AjBool] did it work? ajTrue for success
-** @@
-******************************************************************************/
-
-static AjBool write_contact (AjPFile ajpFileUpdatedCmap,
-			     AjPContact ajpContactToWrite)
-{
-    AjBool ajBoolSuccess;
-    AjPStr ajpStrContactToWrite;
-
-    ajBoolSuccess = ajFalse;
-
-    /* write contact object attributes in EMBL-like format */
-    ajpStrContactToWrite = ajFmtStr("SM   %S %d ; %S %d\n",
-				    ajpContactToWrite->ajpStrFirstResType,
-				    ajpContactToWrite->ajIntFirstPosition,
-				    ajpContactToWrite->ajpStrSecondResType,
-				    ajpContactToWrite->ajIntSecondPosition);
-
-    ajBoolSuccess = ajFileWriteStr(ajpFileUpdatedCmap,
-				   ajpStrContactToWrite,
-				   enumMaxCmapLineLen);
-    
-    
-    return ajBoolSuccess;
-}
-
-
-/* @funcstatic write_cmap_header **********************************************
-**
-** writes header object to open contact map file
-**
-** @param [r] ajpFileUpdatedCmap [AjPFile] file to write contact map to
-** @param [r] ajpHeaderToWrite [AjPCmapHeader] contact to be written
-** @return [AjBool] did it work? ajTrue for success
-** @@
-******************************************************************************/
-
-static AjBool write_cmap_header (AjPFile ajpFileUpdatedCmap,
-				 AjPCmapHeader ajpHeaderToWrite)
-{
-    AjBool write_line();
-
-    AjBool ajBoolSuccess;
-    AjPStr ajpStrTemp = NULL;
-
-    ajBoolSuccess = ajFalse;
-
-    ajpStrTemp = ajpHeaderToWrite->ajpStrCmapId;
-    ajBoolSuccess = ajFileWriteStr(ajpFileUpdatedCmap,
-				   ajpStrTemp,
-				   enumMaxCmapLineLen);
-
-    ajpStrTemp = ajStrNewC("XX\n");
-    ajBoolSuccess = ajFileWriteStr(ajpFileUpdatedCmap,
-				   ajpStrTemp,
-				   enumMaxCmapLineLen);
-    
-    return ajBoolSuccess;
-
-}
-
-
 /* @funcstatic debug_cmap_header **********************************************
+>>>>>>> 1.13
 **
 ** prints out a contact map header
 **
@@ -1282,14 +1341,13 @@ static AjBool write_cmap_header (AjPFile ajpFileUpdatedCmap,
 
 static AjBool debug_cmap_header (AjPCmapHeader *pAjpCmapHeaderToPrint)
 {
-    void empty_line();
-
     AjPCmapHeader ajpCmapHeaderToPrint = NULL;
 
-    AjBool ajBoolSuccess;
-    ajBoolSuccess= ajFalse;
+    AjBool ajBoolSuccess; /* did we print it? */
 
     ajpCmapHeaderToPrint = *pAjpCmapHeaderToPrint;
+
+    ajBoolSuccess = ajFalse;
 
     /* print out each line in contact map header in order */
     ajFmtPrint("ID   %S\n", ajpCmapHeaderToPrint->ajpStrCmapId);
@@ -1307,9 +1365,9 @@ static AjBool debug_cmap_header (AjPCmapHeader *pAjpCmapHeaderToPrint)
 	
     ajBoolSuccess = ajTrue;
     
-    return ajBoolSuccess;
-    
+    return ajBoolSuccess; 
 }
+
 
 
 /* 17Mar04              debug_int_map()                  Damian Counsell  */
