@@ -1,12 +1,6 @@
-                            Jemboss (v. ALPHA1.0)
 
-About Jemboss
 
-    Jemboss is currently being developed at the HGMP. It is an interface to
-EMBOSS, which can be run in one of two modes. The interface can be run with
-a local installation, this is the standalone mode. Alternatively, it may be
-run using a remote server, i.e. in a client-server mode.
-
+                            Jemboss (v. alpha1.0)
 
 Using the Interface
 
@@ -23,11 +17,14 @@ any default parameters. To obtain more information and help for an
 application there is a "HELP" button at the bottom of each program form.
 Next to this is a "GO" button which will set the application running.
 
-     Jemboss contains two separate file managers, a local one, located in
-the right hand pane of the interface, and a remote (or server) file manager,
-displayed in a separate window on demand. Both these can be used to transfer
-files to the input field of an application, using the drag & drop method.
-Data may be displayed and edited by double clicking on the relevant file.
+     Jemboss has two separate file managers, a local one, located in the
+right hand pane of the interface, and a remote (or server) file manager. The
+local file manager can be opened using the arrow in the bottom right hand
+corner of Jemboss. The remote file manager is displayed in a separate window
+when selected from the "File" menu option. Both these can be used to
+transfer files to the input field of an application, by dragging and
+dropping them. Data may be displayed and edited by double clicking on a
+file.
 
      Jemboss incorporates the 100+ applications of both the EMBOSS and
 EMBASSY packages.  On initial program selection, the program form will
@@ -44,14 +41,15 @@ command line  used to construct the analysis is displayed, and the output
 data may be obtained, edited and saved. Unwanted analyses should be deleted
 from this table.
 
+    The job manager is used in the client server mode. It is found at the
+bottom of the the EMBOSS program form. The middle button can be used to look
+at all batch jobs submitted in a session. If a application is designated
+batch then it will be sent to a batch queue. If a job is designated
+interactive then it will be run interactively and the client will wait for
+the results to be returned to the users screen.
 
 
---------------------------------------------------------------------------
+  ------------------------------------------------------------------------
 
-UK MRC HGMP Resource Centre
-Hinxton
-Cambridge
-CB10 1SB
-UK
-
+tcarver@hgmp.mrc.ac.uk
 
