@@ -9573,9 +9573,10 @@ FP /^tembl:hsfau1\n/
 //
 
 ID wobble-ex
+UC Here is a sample session with wobble. The example sequence is from Pseudomonas aeruginosa, which has a high G+C content and a very biased third codon position (if it can be G or C, it usually is).
 AP wobble
 IN tembl:paamir
-IN ps
+IN cps
 IN
 FI stderr
 FC = 2
@@ -9587,7 +9588,7 @@ FI paamir.wobble
 FZ = 46
 FP /^Expected GC content in third position = 66.54\n/
 FI wobble.ps
-FZ = 109862
+FZ = 110240
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -9797,6 +9798,7 @@ FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
 //
 
 ID wossname-ex
+UC Search for programs with 'restrict' in their description:
 AP wossname
 CL restrict
 FI stderr
@@ -9811,6 +9813,7 @@ FP 0 /seqret /
 //
 
 ID wossname-ex2
+UC Display a listing of programs in their groups:
 AP wossname
 CL -search ''
 FI stderr
@@ -9826,6 +9829,7 @@ FP /^INFORMATION/
 //
 
 ID wossname-ex3
+UC Display an alphabetic listing of all programs:
 AP wossname
 CL -search '' -alphabetic
 FI stderr
@@ -9836,6 +9840,7 @@ FP /\AALPHABETIC.*\naaindexextract /
 //
 
 ID wossname-ex4
+UC Display only the groups that the programs can belong to:
 AP wossname
 CL -search '' -groups
 FI stderr
@@ -9847,6 +9852,7 @@ FP 0 /^[^A-Z]/
 //
 
 ID wossname-ex5
+UC Output html tags around the list of program groups:
 AP wossname
 CL -groups -html -prelink '#'
 IN
@@ -9857,30 +9863,29 @@ FI stdout
 FP /^<li><a href="#ALIGNMENT CONSENSUS">ALIGNMENT CONSENSUS</a></li>\n/
 //
 
-# change the URL :-)
 ID wossname-ex6
+UC Output html tags around the list of programs:
 AP wossname
 CL '' -html -prelink
-CL 'http://www.sanger.ac.uk/Software/EMBOSS/Apps/'
-CL -postlink '.shtml'
+CL 'http://www.uk.embnet.org/Software/EMBOSS/Apps/'
+CL -postlink '.html' -out wossname.html
 IN
 FI stderr
 FC = 2
 FP 0 /Warning:/
-FI stdout
-FP /<a href="http:\/\/www\.sanger\.ac\.uk\/Software\/EMBOSS\/Apps\/abiview\.shtml"/
+FI wossname.html
+FP /<a href="http:\/\/www\.uk\.embnet\.org\/Software\/EMBOSS\/Apps\/abiview\.html"/
 //
 
 ID yank-ex
+UC This is an example of adding an entry for the part of tembl:hsfau1 between positions 1913 and 1915 to the existing list file 'cds.list':
 AP yank
 PP cp ../../data/cds.list .
-CL -sask
 IN tembl:hsfau1
 IN 1913
 IN 1915
 IN
 IN cds.list
-IN
 FI stderr
 FC = 2
 FI cds.list
