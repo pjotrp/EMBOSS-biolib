@@ -1,6 +1,7 @@
 application: frestml [
   documentation: "Restriction site maximum Likelihood method"
   groups: "Phylogeny:Molecular sequence"
+  embassy: "phylipnew"
 ]
 
 section: input [

@@ -1,6 +1,7 @@
 application: ednainvar [
   documentation: "Nucleic acid sequence Invariants method"
   groups: "Phylogeny:Molecular sequence"
+  embassy: "phylip"
 ]
 
 section: input [

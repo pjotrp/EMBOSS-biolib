@@ -1,6 +1,7 @@
 application: fprotdist [
   documentation: "Protein distance algorithm"
   groups: "Phylogeny:Molecular sequence"
+  embassy: "phylipnew"
 ]
 
 section: input [

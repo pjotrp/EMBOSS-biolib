@@ -1,6 +1,7 @@
 application: egendist [
   documentation: "Genetic Distance Matrix program"
   groups: "Phylogeny:Gene frequencies"
+  embassy: "phylip"
 ]
 
 section: input [

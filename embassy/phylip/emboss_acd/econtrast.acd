@@ -1,6 +1,7 @@
 application: econtrast [
   documentation: "Continuous character Contrasts"
   groups: "Phylogeny:Continuous characters"
+  embassy: "phylip"
 ]
 
 section: input [

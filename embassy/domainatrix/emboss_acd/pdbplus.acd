@@ -4,6 +4,7 @@ application: pdbplus [
   gui:   "yes"
   batch: "yes"
   cpu:   "medium"
+  embassy: "domainatrix"
 ]
 
 section: input [ information: "Input section" type: page ]

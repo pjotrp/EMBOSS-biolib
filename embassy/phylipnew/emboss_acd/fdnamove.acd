@@ -2,5 +2,6 @@ application: fdnamove [
   documentation: "Interactive DNA parsimony"
   groups: "Phylogeny:Molecular sequence"
   batch: "no"
+  embassy: "phylipnew"
 ]
 

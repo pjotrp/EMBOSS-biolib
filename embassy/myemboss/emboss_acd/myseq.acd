@@ -1,6 +1,7 @@
 application: myseq [
   documentation: "Demonstration of sequence reading"
   groups: "Test"
+  embassy: "myemboss"
 ]
 
 section: input [

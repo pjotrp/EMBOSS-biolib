@@ -5,6 +5,7 @@ application: sigscan [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
+  embassy: "domainatrix"
 ]
 
 section: input [

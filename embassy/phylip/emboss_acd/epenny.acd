@@ -2,6 +2,7 @@ application: epenny [
   documentation: "Penny algorithm, branch-and-bound to find
                   all most parsimonious trees"
   groups: "Phylogeny:Discrete characters"
+  embassy: "phylip"
 ]
 
 section: input [

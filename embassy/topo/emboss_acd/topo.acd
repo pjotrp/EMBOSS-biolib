@@ -1,6 +1,7 @@
 application: topo [
   documentation: "Draws an image of a transmembrane protein"
   groups: "PROTEIN:2D STRUCTURE"
+  embassy: "topo"
 ]
 
 section: input [

@@ -1,6 +1,7 @@
 application: ednapenny [
   documentation: "Penny algorithm for DNA"
   groups: "Phylogeny:Molecular sequence"
+  embassy: "phylip"
 ]
 
 section: input [

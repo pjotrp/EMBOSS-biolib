@@ -1,6 +1,7 @@
 application: fprotpars [
   documentation: "Protein parsimony algorithm"
   groups: "Phylogeny:Molecular sequence"
+  embassy: "phylipnew"
 ]
 
 section: input [

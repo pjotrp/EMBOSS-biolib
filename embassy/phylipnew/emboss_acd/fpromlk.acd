@@ -2,5 +2,6 @@ application: fpromlk [
   documentation: "Protein maximum Likelihood program with molecular clock"
   groups: "Phylogeny:Molecular sequence"
   batch: "no"
+  embassy: "phylipnew"
 ]
 

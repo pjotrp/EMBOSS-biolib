@@ -2,5 +2,6 @@ application: fdolmove [
   documentation: "Interactive Dollo and Polymorphism Parsimony"
   groups: "Phylogeny:Molecular sequence"
   batch: "no"
+  embassy: "phylipnew"
 ]
 

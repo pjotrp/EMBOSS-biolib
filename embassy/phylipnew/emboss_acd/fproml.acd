@@ -2,5 +2,6 @@ application: fproml [
   documentation: "Protein maximum Likelihood program"
   groups: "Phylogeny:Molecular sequence"
   batch: "no"
+  embassy: "phylipnew"
 ]
 

@@ -2,5 +2,6 @@ application: fdrawgram [
   documentation: "Plots a cladogram- or phenogram-like rooted tree diagram"
   groups: "Phylogeny:Tree drawing"
   batch: "no"
+  embassy: "phylipnew"
 ]
 

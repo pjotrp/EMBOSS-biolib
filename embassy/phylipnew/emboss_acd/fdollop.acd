@@ -1,6 +1,7 @@
 application: fdollop [
   documentation: "Dollo and polymorphism parsimony algorithm"
   groups: "Phylogeny:Discrete characters"
+  embassy: "phylipnew"
 ]
 
 section: input [

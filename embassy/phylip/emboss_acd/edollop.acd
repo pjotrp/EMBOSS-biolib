@@ -1,6 +1,7 @@
 application: edollop [
   documentation: "Dollo and polymorphism parsimony algorithm"
   groups: "Phylogeny:Discrete characters"
+  embassy: "phylip"
 ]
 
 section: input [

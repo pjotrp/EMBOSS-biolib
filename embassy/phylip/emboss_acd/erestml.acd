@@ -1,6 +1,7 @@
 application: erestml [
   documentation: "Restriction site Maximum Likelihood method"
   groups: "Phylogeny:Molecular sequence"
+  embassy: "phylip"
 ]
 
 section: input [

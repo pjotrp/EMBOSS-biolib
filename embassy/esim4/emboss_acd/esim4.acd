@@ -1,6 +1,7 @@
 application: esim4 [
   documentation: "Align an mRNA to a genomic DNA sequence"
   groups: "Alignment:Global"
+  embassy: "esim4"
 ]
 
 section: input [

@@ -5,6 +5,7 @@ application: ednamlk [
   gui: "yes"
   batch: "yes"
   cpu: "high"
+  embassy: "phylip"
 ]
 
 section: input [

@@ -2,6 +2,7 @@ application: sigplot [
   documentation: "Generates data files of signature
                   performance"
   groups: "PROTEIN:3D STRUCTURE"
+  embassy: "domainatrix"
 ]
 
 section: input [

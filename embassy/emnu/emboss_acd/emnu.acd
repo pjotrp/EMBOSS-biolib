@@ -2,6 +2,7 @@ application: emnu [
   documentation: "Simple menu of EMBOSS applications"
   groups: "Menus"
   gui: "N"
+  embassy: "emnu"
 ]
 
 section: additional [

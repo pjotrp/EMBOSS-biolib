@@ -1,6 +1,7 @@
 application: econsense [
   documentation: "Majority-rule and strict consensus tree"
   groups: "Phylogeny:Consensus"
+  embassy: "phylip"
 ]
 
 section: input [

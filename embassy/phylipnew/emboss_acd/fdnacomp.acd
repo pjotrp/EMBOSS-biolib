@@ -1,6 +1,7 @@
 application: fdnacomp [
   documentation: "DNA compatibility algorithm"
   groups: "Phylogeny:Molecular sequence"
+  embassy: "phylipnew"
 ]
 
 section: input [

@@ -1,6 +1,7 @@
 application: edolpenny [
   documentation: "Penny algorithm Dollo or polymorphism"
   groups: "Phylogeny:Discrete characters"
+  embassy: "phylip"
 ]
 
 section: input [

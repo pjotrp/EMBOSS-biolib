@@ -2,6 +2,7 @@ application: crystalball [
   documentation: "Answers every drug discovery question you
                   have about this sequence."
   groups: "Test"
+  embassy: "appendixd"
 ]
 
 section: input [

@@ -5,6 +5,7 @@ application: seqsort [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
+  embassy: "domainatrix"
 ]
 
 section: required [

@@ -2,6 +2,7 @@ application: libscan [
   documentation: "Scans a database with a set of models that
                   represents a family"
   groups: "Protein:3D Structure"
+  embassy: "domainatrix"
 ]
 
 

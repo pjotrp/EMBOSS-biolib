@@ -1,6 +1,7 @@
 application: eprotdist [
   documentation: "Protein distance algorithm"
   groups: "Phylogeny:Molecular sequence"
+  embassy: "phylip"
 ]
 
 section: input [

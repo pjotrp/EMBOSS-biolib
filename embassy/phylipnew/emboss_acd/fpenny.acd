@@ -2,6 +2,7 @@ application: fpenny [
   documentation: "Penny algorithm, branch-and-bound to find
                   all most parsimonious trees"
   groups: "Phylogeny:Discrete characters"
+  embassy: "phylipnew"
 ]
 
 section: input [

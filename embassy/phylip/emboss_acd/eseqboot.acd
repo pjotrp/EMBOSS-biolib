@@ -1,6 +1,7 @@
 application: eseqboot [
   documentation: "Bootstrapped sequences algorithm"
   groups: "Phylogeny:Molecular sequence"
+  embassy: "phylip"
 ]
 
 section: input [

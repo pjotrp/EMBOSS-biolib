@@ -5,6 +5,7 @@ application: ednaml [
   gui: "yes"
   batch: "yes"
   cpu: "high"
+  embassy: "phylip"
 ]
 
 section: input [

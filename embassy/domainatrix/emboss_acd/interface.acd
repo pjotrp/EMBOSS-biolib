@@ -5,6 +5,7 @@ application: interface [
   gui: "yes"
   batch: "yes"
   cpu: "high"
+  embassy: "domainatrix"
 ]
 
 section: input [

@@ -1,6 +1,7 @@
 application: frestboot [
   documentation: "Bootstrapped sequences algorithm"
   groups: "Phylogeny:Molecular sequence"
+  embassy: "phylipnew"
 ]
 
 section: input [

@@ -1,6 +1,7 @@
 application: ftreedist [
   documentation: "Distances between trees"
   groups: "Phylogeny:Consensus"
+  embassy: "phylipnew"
 ]
 
 section: input [

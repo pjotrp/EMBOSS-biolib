@@ -2,6 +2,7 @@ application: fdrawtree [
   documentation: "Plots an unrooted tree diagram"
   groups: "Phylogeny:Tree drawing"
   batch: "no"
+  embassy: "phylipnew"
 ]
 
 

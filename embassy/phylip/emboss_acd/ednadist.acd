@@ -2,6 +2,7 @@ application: ednadist [
   documentation: "Nucleic acid sequence Distance Matrix
                   program"
   groups: "Phylogeny:Molecular sequence"
+  embassy: "phylip"
 ]
 
 section: input [

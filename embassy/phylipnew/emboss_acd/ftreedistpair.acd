@@ -1,6 +1,7 @@
 application: ftreedistpair [
   documentation: "Distances between two sets of trees"
   groups: "Phylogeny:Consensus"
+  embassy: "phylipnew"
 ]
 
 section: input [

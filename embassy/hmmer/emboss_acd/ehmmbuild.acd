@@ -4,6 +4,7 @@ application: ehmmbuild [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
+  embassy: "hmmer"
 ]
 
 section: input [

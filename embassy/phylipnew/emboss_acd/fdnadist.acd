@@ -2,6 +2,7 @@ application: fdnadist [
   documentation: "Nucleic acid sequence Distance Matrix
                   program"
   groups: "Phylogeny:Molecular sequence"
+  embassy: "phylipnew"
 ]
 
 section: input [

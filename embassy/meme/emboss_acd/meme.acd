@@ -1,6 +1,7 @@
 application: meme [
   documentation: "Motif detection"
   groups: "Protein:Motifs"
+  embassy: "meme"
 ]
 
 section: input [

@@ -2,6 +2,7 @@ application: mse [
   documentation: "Multiple Sequence Editor"
   groups: "Alignment:multiple"
   gui: "N"
+  embassy: "mse"
 ]
 
 section: input [

@@ -1,6 +1,7 @@
 application: ehmmconvert [
   documentation: "Convert between HMM formats"
   groups: "HMM"
+  embassy: "hmmer"
 ]
 
 section: input [
