@@ -412,10 +412,10 @@ A) If you have SRS installed (so you have local SRS index files) you will
    (Peter Rice 9 Jan 2001)
 
 
-Q: I am not getting full static files even when I configure with
+Q) I am not getting full static files even when I configure with
    --disable-shared
 
-A: This most often happens when using GNU LD. If both shared and
+A) This most often happens when using GNU LD. If both shared and
    static versions of a library exist then GNU LD will take the
    shared library as preferred. The root of this problem is libtool.
    You can, however, force complete static images by adding a
@@ -425,6 +425,86 @@ A: This most often happens when using GNU LD. If both shared and
 
    (Alan Bleasby 14 Feb 2001)
 
+
+
+
+Q) Has anybody compiled and set up the EMBOSS package under Mac OS-X ? 
+
+A) This is how I was able to build EMBOSS on MacOSX.
+   I tested EMBOSS-1.0.1.tar.gz release of last fall 
+
+   STEP 0
+     if not done, install MacOSX developer CD package
+
+   STEP 1
+    -- as root make cc compiler known as gcc (which it is)
+    -- (this will make your life simpler installing gnu-based packages)
+    cd /usr/bin
+    ln cc gcc
+ 
+   STEP 2
+    -- unpack EMBOSS-*.tar.gz somewhere
+    gnutar -zxf EMBOSS-1.0.1.tar.gz
+    cd EMBOSS-1.0.0
+ 
+   STEP 3
+    -- edit configure  file to fix some things
+    -- configure -> ltconfig has problem with passing $host value
+    -- remove -lX11 as constant (so --without-x works)
+
+   # fix ltconfig call so host is specified (some configure bug)
+   << find
+   $libtool_flags --no-verify $ac_aux_dir/ltmain.sh $host \
+   >> change to
+   $libtool_flags --no-verify $ac_aux_dir/ltmain.sh darwin \
+
+   << find
+   if test "$no_x" = yes; then
+     # Not all programs may use this symbol, but it does not hurt to define it.
+     cat >> confdefs.h <<\EOF
+   #define X_DISPLAY_MISSING 1
+   EOF
+
+     X_CFLAGS= X_PRE_LIBS= X_LIBS= X_EXTRA_LIBS=
+   else
+   >> add this X_LIBS=-lX11 line
+     X_LIBS=-lX11 
+     if test -n "$x_includes"; then
+       X_CFLAGS="$X_CFLAGS -I$x_includes"
+     fi
+
+   << find
+      XLIB="$X_LIBS -lX11 $X_EXTRA_LIBS"
+   >> change to
+      XLIB="$X_LIBS $X_EXTRA_LIBS"
+
+
+   STEP 4
+     -- configure and make. after above edits, the make worked
+     ./configure --host=darwin --without-x  
+     make >& log.make &
+  
+   STEP 5
+     -- test some things
+     emboss/getorf test/data/dna.genbank -outseq stdout
+     emboss/pepstats test/data/prot.swiss -outfile stdout
+   
+     -- try a graphic one
+     setenv PLPLOT_LIB `pwd`/plplot/lib
+     emboss/plotorf -graph ps test/embl/rod.dat
+  
+     -- install in default /usr/local/... as root
+     make install
+
+
+   Notes:
+
+   -- you will need to fetch and install some standard data
+     to use several programs (see emboss/data/)
+  
+   -- w/o an X Window server, default graphics won't show up.
+      Tenon(?) sells an Xwindow server for MacOSX
+   (Don Gilbert gilbertd@bio.indiana.edu 14 May 2001)
 
 
 SECTION C - Graphics
