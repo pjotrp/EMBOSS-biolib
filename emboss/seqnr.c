@@ -603,7 +603,7 @@ int main(int argc, char **argv)
 
         /* Remove targeted hits ... i.e. the ones from the alignment*/
         ajListGarbageCollect(famout_hits,ajXyzScophitDelWrap,
-			     (const void*)ajXyzScophitCheckTarget);
+			     (int(*)(const void*))ajXyzScophitCheckTarget);
 
 
 
