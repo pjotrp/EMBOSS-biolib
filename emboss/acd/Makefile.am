@@ -35,7 +35,7 @@ pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd \
 	prophecy.acd prophet.acd prosextract.acd pscan.acd psiblasts.acd \
 	rebaseextract.acd recoder.acd redata.acd remap.acd \
 	restover.acd restrict.acd revseq.acd \
-	scopalign.acd scope.acd seealso.acd \
+	scopalign.acd scope.acd scopparse.acd seealso.acd \
 	seqinfo.acd seqmatchall.acd seqnr.acd seqret.acd seqretall.acd \
 	seqretallfeat.acd seqretset.acd seqretsingle.acd \
 	seqretsplit.acd seqsort.acd showalign.acd\
