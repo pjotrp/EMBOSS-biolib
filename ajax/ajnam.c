@@ -277,7 +277,6 @@ static AjBool namValidDatabase(const NamPEntry entry);
 static AjBool namValidResource(const NamPEntry entry);
 static AjBool namValidVariable(const NamPEntry entry);
 static AjBool namVarResolve(AjPStr* var);
-static void   namWarn(const char* fmt, ...);
 
 
 
@@ -1453,14 +1452,14 @@ AjBool ajNamIsDbname(const AjPStr name)
     if (!*cp)
 	return ajFalse;
 
-    if (!isalpha(*cp++))
+    if (!isalpha((int)*cp++))
 	return ajFalse;
     if (!*cp)
 	return ajFalse;
 
     while (*cp)
     {
-	if(!isalnum(*cp) && (*cp != '_'))
+	if(!isalnum((int)*cp) && (*cp != '_'))
 	    return ajFalse;
 	cp++;
     }
@@ -2496,36 +2495,6 @@ static void namError(const char* fmt, ...)
 
     return;
 }
-
-
-
-/* @funcstatic namWarn ********************************************************
-**
-** Formatted write as a warning message.
-**
-** @param [r] fmt [const char*] Format string
-** @param [v] [...] Format arguments.
-** @return [void]
-** @@
-******************************************************************************/
-
-static void namWarn(const char* fmt, ...)
-{
-    va_list args;
-    AjPStr errstr = NULL;
-  
-    namErrorCount++;
-
-    va_start(args, fmt);
-    ajFmtVPrintS(&errstr, fmt, args);
-    va_end(args);
-
-    ajWarn("File %S line %d: %S", namFileName, namLine, errstr);
-    ajStrDel(&errstr);
-
-    return;
-}
-
 
 
 
