@@ -4022,7 +4022,7 @@ AjIStr ajStrIter (const AjPStr thys) {
   iter->Begin = 0;
   iter->End = thys->Len;
   iter->Curr = 0;
-  iter->Obj = thys;
+  iter->Obj = ajStrDup(thys);
 
   return iter;
 
@@ -4095,7 +4095,8 @@ AjIStr ajStrIterNext (AjIStr iter) {
 
 void ajStrIterFree (AjIStr* iter) {
 
-  AJFREE(*iter);
+    ajStrDel(&(*iter)->Obj);
+    AJFREE(*iter);
 
   return;
 }
