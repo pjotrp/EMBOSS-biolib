@@ -87,7 +87,9 @@ FZ = 0
 ID antigenic-command
 AP antigenic
 CL tsw:amir_pseae -auto
+##
 ## temporary feature output file
+##
 FI amir_pseae.out2
 FI amir_pseae.antigenic
 FP /ANTIGENIC/
@@ -98,6 +100,7 @@ FZ > 100
 FC > 5
 CC
 CC Only kidding - both stdout and stderr should be empty
+CC
 FI stdout
 FZ < 5
 FI stderr
@@ -127,7 +130,8 @@ AP backtranseq
 IN tsw:ach2_drome
 IN
 FI ach2_drome.fasta
-FP /^>ACH2_DROME.*GAGAAGAAGAAC$/
+FP /^>ACH2_DROME/
+FP /GAGAAGAAGAAC\n/
 FZ = 1838
 FI stderr
 FC = 2
@@ -192,7 +196,7 @@ IN
 FI stderr
 FC = 2
 FI paamir_1.checktrans
-FP /Total STOPS:\s+7$/
+FP /Total STOPS:\s+7\n/
 FI paamir_1.fasta
 FI paamir_1.out3
 //
@@ -228,12 +232,12 @@ IN
 FI stderr
 FC = 2
 FI outfile.codcmp
-FP /^Mean Squared Difference = 0[.]037$/
-FP /^Sum Squared Difference = 2[.]337$/
-FP /^Root Mean Squared Difference = 0[.]191$/
-FP /^Sum Difference         = 9[.]840$/
-FP /^Mean Difference         = 0[.]154$/
-FP /^Codons not appearing   = 0$/
+FP /^Mean Squared Difference = 0[.]037\n/
+FP /^Sum Squared Difference = 2[.]337\n/
+FP /^Root Mean Squared Difference = 0[.]191\n/
+FP /^Sum Difference         = 9[.]840\n/
+FP /^Mean Difference         = 0[.]154\n/
+FP /^Codons not appearing   = 0\n/
 //
 
 ID coderet-ex
@@ -244,7 +248,7 @@ FI stderr
 FC = 2
 FI hsferg1.fasta
 FP />x03487_cds_1\natgacgaccgcgt/
-FP /\naatgaaagctaa\n>x03487_mrna_1\ncagacgttcttcgc/
+FP /aatgaaagctaa\n>x03487_mrna_1\ncagacgttcttcgc/
 FP /ctcctacgtttacctgtccatg\n>x03487_pro_1\nMTTASTSQVRQNY/
 //
 
@@ -513,6 +517,27 @@ FI entrynam.idx
 FZ = 410
 //
 
+ID dbigcg-ex
+TI 120
+AP dbigcg
+IN EMBL
+IN EMBL
+IN ../../embl
+IN
+IN
+IN
+FI stderr
+FC = 6
+FI acnum.hit
+FZ = 468
+FI acnum.trg
+FZ = 1140
+FI division.lkp
+FZ = 524
+FI entrynam.idx
+FZ = 1048
+//
+
 ID degapseq-ex
 AP degapseq
 CL ../../data/dnagap.fasta nogaps.seq
@@ -528,7 +553,7 @@ CL -seq ../../data/dna.text -out clone23.seq -name "myclone23"
 FI stderr
 FC = 1
 FI clone23.seq
-FZ = 113
+FZ = 188
 FP /^>myclone23\n/
 //
 
@@ -538,7 +563,7 @@ CL -seq ../../data/dna.text -out xy24.seq -desc "This is my clone number 244"
 FI stderr
 FC = 1
 FI xy24.seq
-FZ = 142
+FZ = 217
 FP /EMBOSS_001 This is my clone number 244\n/
 //
 
@@ -548,12 +573,16 @@ CL -seq ../../data/dna.text -out est4.seq -desc " (submitted)" -append
 FI stderr
 FC = 1
 FI est4.seq
-FZ = 127
+FZ = 202
 FP /EMBOSS_001  \(submitted\)\n/
 //
 
 ID diffseq-ex
 AP diffseq
+## Takes about 3 minutes on original test
+## some systems may need longer.
+## Or we could go for a shorter example ...
+TI 300
 CL tembl:ap000504 tembl:af129756
 IN
 IN
@@ -575,7 +604,7 @@ IN
 FI stderr
 FC = 11
 FI opsd_human.digest
-FP /^246\s+248\s+346[.]383\s+\(K\) AEK \(E\)\n/
+FP /^246\s+248\s+346[.]383\s+\(K\) AEK \(E\)\s*\n/
 FP /yields 14 fragments/
 FC = 18
 //
@@ -593,7 +622,7 @@ FI stderr
 FC = 2
 FI outfile.distmat
 FP / Kimura /
-FP /^\s+0[.]00\s+20[.]37\s+PX8A_HUMAN 9$/
+FP /^\s+0[.]00\s+20[.]37\s+PX8A_HUMAN 9\n/
 FC = 99999
 //
 
@@ -618,14 +647,24 @@ AP dotmatcher
 CL tsw:hba_human tsw:hbb_human -graph ps
 FI stderr
 FC = 2
+##
 ## why is this output file created?
+##
 FI hba_human.dotmatcher
+##
+## file size changes - contains a vector graphic date perhaps?
+##
 FI dotmatcher.ps
-FZ = 15469
+FZ > 15000
+FZ < 15200
 //
 
 ID dotpath-ex
 AP dotpath
+##
+## timeout 60 seconds on original test system
+##
+TI 400
 CL tembl:AF129756 tembl:AP000504 -word 20 -data -out af.path
 FI af.path
 FP /^##Number 118\n/
@@ -634,14 +673,16 @@ FI stderr
 FC = 1
 //
 
-# we do not really want the eclac.dottup file by default
 ID dottup-ex
 AP dottup
 CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac" -graph ps
 FI dottup.ps
-FZ = 9999
+FZ = 66996
 FI stderr
 FC = 2
+##
+##we do not really want the eclac.dottup file by default
+##
 FI eclac.dottup
 FZ = 0
 //
@@ -655,5 +696,1421 @@ FI paamir.dreg
 FP /PAAMIR +1 +GGTACC/
 FI stderr
 FC = 2
+//
+
+ID einverted-ex
+AP einverted
+##
+## timeout more than 60 seconds
+## or we may need a quicker example
+##
+TI 500
+CL tembl:hsts1
+IN
+IN
+IN
+IN
+IN
+FI stderr
+FC = 2
+FI hsts1.inv
+FP /Score 236: 108/130 \( 83%\) matches, 0 gaps/
+//
+
+ID embossdata-ex
+AP embossdata
+CL -showall
+FI stderr
+FC = 1
+FI stdout
+FP /^DIRECTORY: .*data\/\n/
+FP /^DIRECTORY: .*data\/CODONS\n/
+FP /^\s*EBLOSUM62\s*\n/
+FP /^\s*Eyeast.cut\s*\n/
+//
+
+ID embossdata-exfile
+AP embossdata
+CL -filename EPAM60
+FI stderr
+FC = 1
+FI stdout
+FP /^File \.\/EPAM60/
+FP /^File \.embossdata\/EPAM60/
+//
+
+ID embossdata-exfetch
+AP embossdata
+CL -fetch -filename Epepcoil.dat
+FI stderr
+FC = 1
+FI stdout
+FP /^File '.*data\/Epepcoil.dat' has been copied successfully\.\n/
+FI Epepcoil.dat
+FZ = 1445
+//
+
+ID embossversion-ex
+AP embossversion
+FI stderr
+FC = 1
+FI stdout
+FC = 1
+FP /^[12]\.\d+(\.\d+)?\n/
+//
+
+ID emowse-ex
+AP emowse
+IN tsw:*
+IN ../../data/test.mowse
+IN
+IN
+FI stderr
+FC = 2
+FI 100k_rat.emowse
+FZ = 8246
+FP /^1   100K_RAT/
+FP /1  : 100K_RAT\s+1\.277e\+06 100368\.6   0\.750/
+//
+
+ID emma-ex
+AP emma
+IN ../../data/globins.fasta
+IN
+IN
+##
+## stdout is written by clustalw, invoked by emma
+##
+## exact output file contents depend on the clustalw version
+##
+FI stderr
+FC = 3
+FI stdout
+FC > 50
+FI hbb_human.aln
+FZ = 1248
+FI hbb_human.dnd
+FZ = 186
+//
+
+ID entret-ex
+AP entret
+CL tembl:hsfau
+IN
+FI stderr
+FC = 2
+FI hsfau.entret
+FZ = 2806
+//
+
+ID equicktandem-ex
+AP equicktandem
+IN tembl:hhtetra
+IN
+IN
+IN
+FI stderr
+FC = 2
+FI hhtetra.qtan
+FZ = 36
+FP /^   339        191        935  6 124\n/
+//
+
+ID est2genome-ex
+TI 200
+AP est2genome
+IN tembl:hs989235
+IN tembl:hsnfg9
+IN
+FI stderr
+FC = 2
+FI hs989235.est2genome
+FZ = 3051
+FP /Note .* forward est and forward genome, .* imply REVERSED GENE/
+FP /^Exon       163  91\.8 25685 25874 HSNFG9           1   193 HS989235/
+//
+
+ID etandem-ex
+AP etandem
+IN tembl:hhtetra
+IN
+IN 6
+IN
+FI stderr
+FC = 2
+FI hhtetra.tan
+FZ = 245
+FC = 5
+FP /^   120        793        936  6  24  93.8 acccta\n/
+FP /^    90        283        420  6  23  84.8 taaccc\n/
+FP /^    38        432        485  6   9  90.7 ccctaa\n/
+FP /^    26        494        529  6   6  94.4 ccctaa\n/
+FP /^    24        568        597  6   5 100.0 aaccct\n/
+//
+
+ID extractseq-ex
+AP extractseq
+CL tembl:hsfau result.seq -regions '10-20'
+FI stderr
+FC = 1
+FI result.seq
+FZ = 45
+FP /^ctcgactccat\n/
+//
+
+ID extractseq-ex2
+AP extractseq
+CL tembl:hsfau result2.seq -regions '10-20 30-45 533-537'
+FI stderr
+FC = 1
+FI result2.seq
+FZ = 61
+FP /^ctcgactccatagctgggaccgccgtt\n/
+//
+
+ID extractseq-ex3
+AP extractseq
+##
+## hsfau1 not yet in tembl
+##
+CL tembl:hsfau1 -reg "782..856,951..1095,1557..1612,1787..1912" stdout
+FI stderr
+FC = 1
+FI stdout
+FC = 8
+FP /^atgcagctctttg[^\n]+ccaggaaacg/
+FP /^cccacctttggcaagaagaagggccccaatgccaactcttaa\n/
+//
+
+ID extractseq-ex4
+AP extractseq
+##
+## hsfau1 not yet in tembl
+##
+CL tembl:hsfau1 -reg "782..856,951..1095,1557..1612,1787..1912" stdout -separate
+FI stderr
+FC = 1
+FI stdout
+FC = 13
+FP /^>HSFAU1_782_856/
+FP /atgcagctctttgtccgcgcccaggagctacacaccttcgaggtgaccggccaggaaacg\ngtcgcccagatcaag/
+FP /gtaaagtccatggttccctggcccgtgctggaaaagtgagaggtcagactcctaag/
+FP /^tcttaa\n/
+//
+
+ID findkm-ex
+AP findkm
+CL -graph ps
+IN ../../data/enztest.dat
+IN
+FI stderr
+FC = 2
+//
+
+ID freak-ex
+AP freak
+CL tembl:hsfau
+IN
+IN
+FI stderr
+FC = 2
+FI hsfau.freak
+FP /^24         0.733333\n/
+FP /^36         0.600000\Z/
+FZ = 9827
+//
+
+
+ID seqret-inauto-acedb
+AP seqret
+CL -auto ../../data/dna.acedb test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inusa-acedb
+AP seqret
+CL -auto acedb::../../data/dna.acedb test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-in-acedb
+AP seqret
+CL -auto ../../data/dna.acedb -sf acedb test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inauto-codata
+AP seqret
+CL -auto ../../data/dna.codata test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inusa-codata
+AP seqret
+CL -auto codata::../../data/dna.codata test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-in-codata
+AP seqret
+CL -auto ../../data/dna.codata -sf codata test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inauto-embl
+AP seqret
+CL -auto ../../data/dna.embl test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inusa-embl
+AP seqret
+CL -auto embl::../../data/dna.embl test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-in-embl
+AP seqret
+CL -auto ../../data/dna.embl -sf embl test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inauto-fasta
+AP seqret
+CL -auto ../../data/dna.fasta test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inusa-fasta
+AP seqret
+CL -auto fasta::../../data/dna.fasta test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-in-fasta
+AP seqret
+CL -auto ../../data/dna.fasta -sf fasta test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inauto-gcg
+AP seqret
+CL -auto ../../data/dna.gcg test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inusa-gcg
+AP seqret
+CL -auto gcg::../../data/dna.gcg test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-in-gcg
+AP seqret
+CL -auto ../../data/dna.gcg -sf gcg test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inauto-gcg8
+AP seqret
+CL -auto ../../data/dna.gcg8 test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inusa-gcg8
+AP seqret
+CL -auto gcg8::../../data/dna.gcg8 test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-in-gcg8
+AP seqret
+CL -auto ../../data/dna.gcg8 -sf gcg8 test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inauto-genbank
+AP seqret
+CL -auto ../../data/dna.genbank test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inusa-genbank
+AP seqret
+CL -auto genbank::../../data/dna.genbank test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-in-genbank
+AP seqret
+CL -auto ../../data/dna.genbank -sf genbank test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inauto-ig
+##
+## We expect failure - IG is not allowed for automatic detection
+## because it can read almost anything as 'valid'
+##
+ER 1
+AP seqret
+CL -auto ../../data/dna.ig test.out -osf embl
+FI stderr
+FP /Unable to read sequence .*/dna\.ig/
+//
+
+ID seqret-inusa-ig
+AP seqret
+CL -auto ig::../../data/dna.ig test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-in-ig
+AP seqret
+CL -auto ../../data/dna.ig -sf ig test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inauto-ncbi
+AP seqret
+CL -auto ../../data/dna.ncbi test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inusa-ncbi
+AP seqret
+CL -auto ncbi::../../data/dna.ncbi test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-in-ncbi
+AP seqret
+CL -auto ../../data/dna.ncbi -sf ncbi test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inauto-raw
+AP seqret
+CL -auto ../../data/dna.text test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inusa-raw
+AP seqret
+CL -auto raw::../../data/dna.text test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-in-raw
+AP seqret
+CL -auto ../../data/dna.text -sf raw test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inauto-staden
+AP seqret
+CL -auto ../../data/dna.staden test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inusa-staden
+AP seqret
+CL -auto staden::../../data/dna.staden test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-in-staden
+AP seqret
+CL -auto ../../data/dna.staden -sf staden test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inauto-strider
+AP seqret
+CL -auto ../../data/dna.strider test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inusa-strider
+AP seqret
+CL -auto strider::../../data/dna.strider test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-in-strider
+AP seqret
+CL -auto ../../data/dna.strider -sf strider test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inauto-text
+AP seqret
+CL -auto ../../data/dna.text test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inusa-text
+AP seqret
+CL -auto text::../../data/dna.text test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-in-text
+AP seqret
+CL -auto ../../data/dna.text -sf text test.out -osf embl
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inmultiauto-acedb
+AP seqret
+CL -auto ../../data/dna.m-acedb test.out -osf embl
+FI test.out
+FP 1 /^ID   ACEDBM1 .* 120 BP\.\n/
+FP 1 /^ID   ACEDBM2 .* 120 BP\.\n/
+FP 1 /^ID   ACEDBM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmultiusa-acedb
+AP seqret
+CL -auto acedb::../../data/dna.m-acedb test.out -osf embl
+FI test.out
+FP 1 /^ID   ACEDBM1 .* 120 BP\.\n/
+FP 1 /^ID   ACEDBM2 .* 120 BP\.\n/
+FP 1 /^ID   ACEDBM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmulti-acedb
+AP seqret
+CL -auto ../../data/dna.m-acedb -sf acedb test.out -osf embl
+FI test.out
+FP 1 /^ID   ACEDBM1 .* 120 BP\.\n/
+FP 1 /^ID   ACEDBM2 .* 120 BP\.\n/
+FP 1 /^ID   ACEDBM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmultiauto-codata
+AP seqret
+CL -auto ../../data/dna.m-codata test.out -osf embl
+FI test.out
+FP 1 /^ID   CODATAM1 .* 120 BP\.\n/
+FP 1 /^ID   CODATAM2 .* 120 BP\.\n/
+FP 1 /^ID   CODATAM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmultiusa-codata
+AP seqret
+CL -auto codata::../../data/dna.m-codata test.out -osf embl
+FI test.out
+FP 1 /^ID   CODATAM1 .* 120 BP\.\n/
+FP 1 /^ID   CODATAM2 .* 120 BP\.\n/
+FP 1 /^ID   CODATAM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmulti-codata
+AP seqret
+CL -auto ../../data/dna.m-codata -sf codata test.out -osf embl
+FI test.out
+FP 1 /^ID   CODATAM1 .* 120 BP\.\n/
+FP 1 /^ID   CODATAM2 .* 120 BP\.\n/
+FP 1 /^ID   CODATAM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmultiauto-embl
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf embl
+FI test.out
+FP 1 /^ID   FASTAM1 .* 120 BP\.\n/
+FP 1 /^ID   FASTAM2 .* 120 BP\.\n/
+FP 1 /^ID   FASTAM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmultiusa-embl
+AP seqret
+CL -auto embl::../../data/dna.m-embl test.out -osf embl
+FI test.out
+FP 1 /^ID   FASTAM1 .* 120 BP\.\n/
+FP 1 /^ID   FASTAM2 .* 120 BP\.\n/
+FP 1 /^ID   FASTAM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmulti-embl
+AP seqret
+CL -auto ../../data/dna.m-embl -sf embl test.out -osf embl
+FI test.out
+FP 1 /^ID   FASTAM1 .* 120 BP\.\n/
+FP 1 /^ID   FASTAM2 .* 120 BP\.\n/
+FP 1 /^ID   FASTAM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmultiauto-fasta
+AP seqret
+CL -auto ../../data/dna.m-fasta test.out -osf embl
+FI test.out
+FP 1 /^ID   FASTAM1 .* 120 BP\.\n/
+FP 1 /^ID   FASTAM2 .* 120 BP\.\n/
+FP 1 /^ID   FASTAM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmultiusa-fasta
+AP seqret
+CL -auto fasta::../../data/dna.m-fasta test.out -osf embl
+FI test.out
+FP 1 /^ID   FASTAM1 .* 120 BP\.\n/
+FP 1 /^ID   FASTAM2 .* 120 BP\.\n/
+FP 1 /^ID   FASTAM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmulti-fasta
+AP seqret
+CL -auto ../../data/dna.m-fasta -sf fasta test.out -osf embl
+FI test.out
+FP 1 /^ID   FASTAM1 .* 120 BP\.\n/
+FP 1 /^ID   FASTAM2 .* 120 BP\.\n/
+FP 1 /^ID   FASTAM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmultiauto-msf
+AP seqret
+CL -auto ../../data/dna.msf test.out -osf embl
+FI test.out
+FP 1 /^ID   MSFM1 .* 120 BP\.\n/
+FP 1 /^ID   MSFM2 .* 120 BP\.\n/
+FP 1 /^ID   MSFM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmultiusa-msf
+AP seqret
+CL -auto msf::../../data/dna.msf test.out -osf embl
+FI test.out
+FP 1 /^ID   MSFM1 .* 120 BP\.\n/
+FP 1 /^ID   MSFM2 .* 120 BP\.\n/
+FP 1 /^ID   MSFM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmulti-msf
+AP seqret
+CL -auto ../../data/dna.msf -sf msf test.out -osf embl
+FI test.out
+FP 1 /^ID   MSFM1 .* 120 BP\.\n/
+FP 1 /^ID   MSFM2 .* 120 BP\.\n/
+FP 1 /^ID   MSFM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmultiauto-msf8
+AP seqret
+CL -auto ../../data/dna.msf8 test.out -osf embl
+FI test.out
+FP 1 /^ID   fastam1 .* 121\n/
+FP 1 /^ID   fastam2 .* 121\n/
+FP 1 /^ID   fastam3 .* 121\n/
+FP 2 /^SQ   Sequence 121 BP; 30 A; 30 C; 30 G; 30 T; 1 other;/
+FP 1 /^SQ   Sequence 121 BP; 29 A; 29 C; 29 G; 29 T; 5 other;/
+//
+
+ID seqret-inmultiusa-msf8
+AP seqret
+CL -auto msf8::../../data/dna.msf8 test.out -osf embl
+FI test.out
+FP 1 /^ID   fastam1 [^\n]* 121\n/
+FP 1 /^ID   fastam2 [^\n]* 121\n/
+FP 1 /^ID   fastam3 [^\n]* 121\n/
+FP 2 /^SQ   Sequence 121 BP; 30 A; 30 C; 30 G; 30 T; 1 other;/
+FP 1 /^SQ   Sequence 121 BP; 29 A; 29 C; 29 G; 29 T; 5 other;/
+//
+
+ID seqret-inmulti-msf8
+AP seqret
+CL -auto ../../data/dna.msf8 -sf msf8 test.out -osf embl
+FI test.out
+FP 1 /^ID   fastam1 .* 121\n/
+FP 1 /^ID   fastam2 .* 121\n/
+FP 1 /^ID   fastam3 .* 121\n/
+FP 2 /^SQ   Sequence 121 BP; 30 A; 30 C; 30 G; 30 T; 1 other;/
+FP 1 /^SQ   Sequence 121 BP; 29 A; 29 C; 29 G; 29 T; 5 other;/
+//
+
+ID seqret-inmultiauto-ncbi
+AP seqret
+CL -auto ../../data/dna.m-ncbi test.out -osf embl
+FI test.out
+FP 1 /^ID   N30001 .* 144 BP\.\n/
+FP 1 /^ID   N30002 .* 144 BP\.\n/
+FP 1 /^ID   N30003 .* 144 BP\.\n/
+FP 3 /Sequence 144 BP; 36 A; 36 C; 36 G; 36 T; 0 other;/
+//
+
+ID seqret-inmultiusa-ncbi
+AP seqret
+CL -auto ncbi::../../data/dna.m-ncbi test.out -osf embl
+FI test.out
+FP 1 /^ID   N30001 .* 144 BP\.\n/
+FP 1 /^ID   N30002 .* 144 BP\.\n/
+FP 1 /^ID   N30003 .* 144 BP\.\n/
+FP 3 /Sequence 144 BP; 36 A; 36 C; 36 G; 36 T; 0 other;/
+//
+
+ID seqret-inmulti-ncbi
+AP seqret
+CL -auto ../../data/dna.m-ncbi -sf ncbi test.out -osf embl
+FI test.out
+FP 1 /^ID   N30001 .* 144 BP\.\n/
+FP 1 /^ID   N30002 .* 144 BP\.\n/
+FP 1 /^ID   N30003 .* 144 BP\.\n/
+FP 3 /Sequence 144 BP; 36 A; 36 C; 36 G; 36 T; 0 other;/
+//
+
+ID seqret-inmultiauto-phylip
+AP seqret
+CL -auto ../../data/dna.phylip test.out -osf embl
+FI test.out
+FP 1 /^ID   MSFM1 .* 120 BP\.\n/
+FP 1 /^ID   MSFM2 .* 120 BP\.\n/
+FP 1 /^ID   MSFM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmultiusa-phylip
+AP seqret
+CL -auto phylip::../../data/dna.phylip test.out -osf embl
+FI test.out
+FP 1 /^ID   MSFM1 .* 120 BP\.\n/
+FP 1 /^ID   MSFM2 .* 120 BP\.\n/
+FP 1 /^ID   MSFM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmulti-phylip
+AP seqret
+CL -auto ../../data/dna.phylip -sf phylip test.out -osf embl
+FI test.out
+FP 1 /^ID   MSFM1 .* 120 BP\.\n/
+FP 1 /^ID   MSFM2 .* 120 BP\.\n/
+FP 1 /^ID   MSFM3 .* 120 BP\.\n/
+FP 2 /^SQ   Sequence 120 BP; 30 A; 30 C; 30 G; 30 T; 0 other;/
+FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
+//
+
+ID seqret-inmultiauto-strider
+AP seqret
+CL -auto ../../data/dna.m-strider test.out -osf embl
+FI test.out
+FP 1 /^ID   STRIDERM1 .* 144 BP\.\n/
+FP 1 /^ID   STRIDERM2 .* 144 BP\.\n/
+FP 1 /^ID   STRIDERM3 .* 144 BP\.\n/
+FP 3 /Sequence 144 BP; 36 A; 36 C; 36 G; 36 T; 0 other;/
+//
+
+ID seqret-inmultiusa-strider
+AP seqret
+CL -auto strider::../../data/dna.m-strider test.out -osf embl
+FI test.out
+FP 1 /^ID   STRIDERM1 .* 144 BP\.\n/
+FP 1 /^ID   STRIDERM2 .* 144 BP\.\n/
+FP 1 /^ID   STRIDERM3 .* 144 BP\.\n/
+FP 3 /Sequence 144 BP; 36 A; 36 C; 36 G; 36 T; 0 other;/
+//
+
+ID seqret-inmulti-strider
+AP seqret
+CL -auto ../../data/dna.m-strider -sf strider test.out -osf embl
+FI test.out
+FP 1 /^ID   STRIDERM1 .* 144 BP\.\n/
+FP 1 /^ID   STRIDERM2 .* 144 BP\.\n/
+FP 1 /^ID   STRIDERM3 .* 144 BP\.\n/
+FP 3 /Sequence 144 BP; 36 A; 36 C; 36 G; 36 T; 0 other;/
+//
+
+ID seqret-inauto-nonewline
+AP seqret
+CL -auto ../../data/dna.nonewline test.out -osf embl
+FI test.out
+FP /^ID   .* 48\n/
+FP /^SQ   Sequence 48 BP; 10 A; 10 C; 10 G; 10 T; 8 other;/
+//
+
+ID seqret-in-badformat
+##
+## bad format name - but still reads (auto) it if it can
+##
+AP seqret
+CL -auto ../../data/dna.fasta -sf badformat test.out -osf embl
+FI stderr
+FP /Unknown input format 'badformat'/
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-in-badusaformat
+##
+## bad format name - but still reads (auto) it if it can
+##
+AP seqret
+CL -auto badformat::../../data/dna.fasta test.out -osf embl
+FI stderr
+FP /Unknown input format 'badformat'/
+FI test.out
+FP /^ID   .* 100 BP\.\n/
+FP /SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-outusa-acedb
+AP seqret
+CL -auto ../../data/dna.embl acedb::test.out
+FI test.out
+//
+
+ID seqret-out-acedb
+AP seqret
+CL -auto ../../data/dna.embl test.out -osf acedb
+FI test.out
+//
+
+ID seqret-outusa-asn1
+AP seqret
+CL -auto ../../data/dna.embl asn1::test.out
+FI test.out
+//
+
+ID seqret-out-asn1
+AP seqret
+CL -auto ../../data/dna.embl test.out -osf asn1
+FI test.out
+//
+
+ID seqret-outusa-codata
+AP seqret
+CL -auto ../../data/dna.embl codata::test.out
+FI test.out
+//
+
+ID seqret-out-codata
+AP seqret
+CL -auto ../../data/dna.embl test.out -osf codata
+FI test.out
+//
+
+ID seqret-outusa-debug
+AP seqret
+CL -auto ../../data/dna.embl debug::test.out
+FI test.out
+//
+
+ID seqret-out-debug
+AP seqret
+CL -auto ../../data/dna.embl test.out -osf debug
+FI test.out
+//
+
+ID seqret-outusa-embl
+AP seqret
+CL -auto ../../data/dna.embl embl::test.out
+FI test.out
+//
+
+ID seqret-out-embl
+AP seqret
+CL -auto ../../data/dna.embl test.out -osf embl
+FI test.out
+//
+
+ID seqret-outusa-experiment
+AP seqret
+CL -auto ../../data/dna.embl experiment::test.out
+FI test.out
+//
+
+ID seqret-out-experiment
+AP seqret
+CL -auto ../../data/dna.embl test.out -osf experiment
+FI test.out
+//
+
+ID seqret-outusa-fasta
+AP seqret
+CL -auto ../../data/dna.embl fasta::test.out
+FI test.out
+//
+
+ID seqret-out-fasta
+AP seqret
+CL -auto ../../data/dna.embl test.out -osf fasta
+FI test.out
+//
+
+ID seqret-outusa-fitch
+AP seqret
+CL -auto ../../data/dna.embl fitch::test.out
+FI test.out
+//
+
+ID seqret-out-fitch
+AP seqret
+CL -auto ../../data/dna.embl test.out -osf fitch
+FI test.out
+//
+
+ID seqret-outusa-gcg
+AP seqret
+CL -auto ../../data/dna.embl gcg::test.out
+FI test.out
+//
+
+ID seqret-out-gcg
+AP seqret
+CL -auto ../../data/dna.embl test.out -osf gcg
+FI test.out
+//
+
+ID seqret-outusa-genbank
+AP seqret
+CL -auto ../../data/dna.embl genbank::test.out
+FI test.out
+//
+
+ID seqret-out-genbank
+AP seqret
+CL -auto ../../data/dna.embl test.out -osf genbank
+FI test.out
+//
+
+ID seqret-outusa-gff
+AP seqret
+CL -auto ../../data/dna.embl gff::test.out
+FI test.out
+//
+
+ID seqret-out-gff
+AP seqret
+CL -auto ../../data/dna.embl test.out -osf gff
+FI test.out
+//
+
+ID seqret-outusa-ig
+AP seqret
+CL -auto ../../data/dna.embl ig::test.out
+FI test.out
+//
+
+ID seqret-out-ig
+AP seqret
+CL -auto ../../data/dna.embl test.out -osf ig
+FI test.out
+//
+
+ID seqret-outusa-ncbi
+AP seqret
+CL -auto ../../data/dna.embl ncbi::test.out
+FI test.out
+//
+
+ID seqret-out-ncbi
+AP seqret
+CL -auto ../../data/dna.embl test.out -osf ncbi
+FI test.out
+//
+
+ID seqret-outusa-strider
+AP seqret
+CL -auto ../../data/dna.embl strider::test.out
+FI test.out
+//
+
+ID seqret-out-strider
+AP seqret
+CL -auto ../../data/dna.embl test.out -osf strider
+FI test.out
+//
+
+ID seqret-outusa-swiss
+AP seqret
+CL -auto ../../data/dna.embl swiss::test.out
+FI test.out
+//
+
+ID seqret-out-swiss
+AP seqret
+CL -auto ../../data/dna.embl test.out -osf swiss
+FI test.out
+//
+
+ID seqret-outusa-text
+AP seqret
+CL -auto ../../data/dna.embl text::test.out
+FI test.out
+//
+
+ID seqret-out-text
+AP seqret
+CL -auto ../../data/dna.embl test.out -osf text
+FI test.out
+//
+
+ID seqret-outmultiusa-acedb
+AP seqret
+CL -auto ../../data/dna.m-embl acedb::test.out
+FI test.out
+//
+
+ID seqret-outmulti-acedb
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf acedb
+FI test.out
+//
+
+ID seqret-outmultiusa-asn1
+AP seqret
+CL -auto ../../data/dna.m-embl asn1::test.out
+FI test.out
+//
+
+ID seqret-outmulti-asn1
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf asn1
+FI test.out
+//
+
+ID seqret-outmultiusa-clustal
+AP seqret
+CL -auto ../../data/dna.m-embl ::test.out
+FI test.out
+//
+
+ID seqret-outmulti-clustal
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf clustal
+FI test.out
+//
+
+ID seqret-outmultiusa-clustalprot
+AP seqret
+CL -auto ../../data/prot.m-swiss clustal::test.out
+FI test.out
+//
+
+ID seqret-outmulti-clustalprot
+AP seqret
+CL -auto ../../data/prot.m-swiss test.out -osf clustal
+FI test.out
+//
+
+ID seqret-outmultiusa-codata
+AP seqret
+CL -auto ../../data/dna.m-embl codata::test.out
+FI test.out
+//
+
+ID seqret-outmulti-codata
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf codata
+FI test.out
+//
+
+ID seqret-outmultiusa-debug
+AP seqret
+CL -auto ../../data/dna.m-embl debug::test.out
+FI test.out
+//
+
+ID seqret-outmulti-debug
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf debug
+FI test.out
+//
+
+ID seqret-outmultiusa-embl
+AP seqret
+CL -auto ../../data/dna.m-embl embl::test.out
+FI test.out
+//
+
+ID seqret-outmulti-embl
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf embl
+FI test.out
+//
+
+ID seqret-outmultiusa-fasta
+AP seqret
+CL -auto ../../data/dna.m-embl fasta::test.out
+FI test.out
+//
+
+ID seqret-outmulti-fasta
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf fasta
+FI test.out
+//
+
+ID seqret-outmultiusa-fitch
+AP seqret
+CL -auto ../../data/dna.m-embl fitch::test.out
+FI test.out
+//
+
+ID seqret-outmulti-fitch
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf fitch
+FI test.out
+//
+
+ID seqret-outmultiusa-gcg
+AP seqret
+CL -auto ../../data/dna.m-embl gcg::test.out
+FI test.out
+//
+
+ID seqret-outmulti-gcg
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf gcg
+FI test.out
+//
+
+ID seqret-outmultiusa-genbank
+AP seqret
+CL -auto ../../data/dna.m-embl genbank::test.out
+FI test.out
+//
+
+ID seqret-outmulti-genbank
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf genbank
+FI test.out
+//
+
+ID seqret-outmultiusa-gff
+AP seqret
+CL -auto ../../data/dna.m-embl gff::test.out
+FI test.out
+//
+
+ID seqret-outmulti-gff
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf gff
+FI test.out
+//
+
+ID seqret-outmultiusa-gffprot
+AP seqret
+CL -auto ../../data/prot.m-swiss gff::test.out
+FI test.out
+//
+
+ID seqret-outmulti-gffprot
+AP seqret
+CL -auto ../../data/prot.m-swiss test.out -osf gff
+FI test.out
+//
+
+ID seqret-outmultiusa-hennig86
+AP seqret
+CL -auto ../../data/dna.m-embl hennig86::test.out
+FI test.out
+//
+
+ID seqret-outmulti-hennig86
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf hennig86
+FI test.out
+//
+
+ID seqret-outmultiusa-jackknifer
+AP seqret
+CL -auto ../../data/dna.m-embl jackknifer::test.out
+FI test.out
+//
+
+ID seqret-outmulti-jackknifer
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf jackknifer
+FI test.out
+//
+
+ID seqret-outmultiusa-mega
+AP seqret
+CL -auto ../../data/dna.m-embl mega::test.out
+FI test.out
+//
+
+ID seqret-outmulti-mega
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf mega
+FI test.out
+//
+
+ID seqret-outmultiusa-meganon
+AP seqret
+CL -auto ../../data/dna.m-embl meganon::test.out
+FI test.out
+//
+
+ID seqret-outmulti-meganon
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf meganon
+FI test.out
+//
+
+ID seqret-outmultiusa-msf
+AP seqret
+CL -auto ../../data/dna.m-embl msf::test.out
+FI test.out
+//
+
+ID seqret-outmulti-msf
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf msf
+FI test.out
+//
+
+ID seqret-outmultiusa-msfprot
+AP seqret
+CL -auto ../../data/prot.m-swiss msf::test.out
+FI test.out
+//
+
+ID seqret-outmulti-msfprot
+AP seqret
+CL -auto ../../data/prot.m-swiss test.out -osf msf
+FI test.out
+//
+
+ID seqret-outmultiusa-nexus
+AP seqret
+CL -auto ../../data/dna.m-embl nexus::test.out
+FI test.out
+//
+
+ID seqret-outmulti-nexus
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf nexus
+FI test.out
+//
+
+ID seqret-outmultiusa-nexusnon
+AP seqret
+CL -auto ../../data/dna.m-embl nexusnon::test.out
+FI test.out
+//
+
+ID seqret-outmulti-nexusnon
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf nexusnon
+FI test.out
+//
+
+ID seqret-outmultiusa-phylip
+AP seqret
+CL -auto ../../data/dna.m-embl phylip::test.out
+FI test.out
+//
+
+ID seqret-outmulti-phylip
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf phylip
+FI test.out
+//
+
+ID seqret-outmultiusa-phylip3
+AP seqret
+CL -auto ../../data/dna.m-embl phylip3::test.out
+FI test.out
+//
+
+ID seqret-outmulti-phylip3
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf phylip3
+FI test.out
+//
+
+ID seqret-outmultiusa-swiss
+AP seqret
+CL -auto ../../data/prot.m-swiss swiss::test.out
+FI test.out
+//
+
+ID seqret-outmulti-swiss
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf swiss
+FI test.out
+//
+
+ID seqret-outmultiusa-ncbi
+AP seqret
+CL -auto ../../data/dna.m-embl ncbi::test.out
+FI test.out
+//
+
+ID seqret-outmulti-ncbi
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf ncbi
+FI test.out
+//
+
+ID seqret-outmultiusa-nbrf
+AP seqret
+CL -auto ../../data/dna.m-embl nbrf::test.out
+FI test.out
+//
+
+ID seqret-outmulti-nbrf
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf nbrf
+FI test.out
+//
+
+ID seqret-outmultiusa-gffprot
+AP seqret
+CL -auto ../../data/prot.m-swiss gff::test.out
+FI test.out
+//
+
+ID seqret-outmulti-gffprot
+AP seqret
+CL -auto ../../data/prot.m-swiss test.out -osf gff
+FI test.out
+//
+
+ID seqret-outmultiusa-ig
+AP seqret
+CL -auto ../../data/dna.m-embl ig::test.out
+FI test.out
+//
+
+ID seqret-outmulti-ig
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf ig
+FI test.out
+//
+
+ID seqret-outmultiusa-strider
+AP seqret
+CL -auto ../../data/dna.m-embl strider::test.out
+FI test.out
+//
+
+ID seqret-outmulti-strider
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf strider
+FI test.out
+//
+
+ID seqret-outmultiusa-treecon
+AP seqret
+CL -auto ../../data/dna.m-embl treecon::test.out
+FI test.out
+//
+
+ID seqret-outmulti-treecon
+AP seqret
+CL -auto ../../data/dna.m-embl test.out -osf treecon
+FI test.out
 //
 
