@@ -3,6 +3,8 @@
 %tests = (
 	  "feat1" => "seqretallfeat -auto tembl:hsfau",
 	  "featmany" => "seqretallfeat -auto 'tembl:hsf*'",
+	  "set1" => "seqretset -auto tsw:opsd_human",
+	  "setmany" => "seqretset -auto 'tsw:opsd_*'",
 	  "embl1" => "seqret -auto tembl:hsfau",
 	  "emblmany" => "seqret -auto 'tembl:hsf*'",
 	  "" => "",
