@@ -773,7 +773,23 @@ public class SectionPanel
               fc = AjaxUtil.getFileOrDatabaseForAjax(fname,db,f,withSoap);
             }
             else                                     // Cut-n-Paste
+            {
               fc = sifc.getCutNPasteText();
+
+              if(!withSoap)
+              {
+                try
+                {
+                  File tf = File.createTempFile("attr", ".jembosstmp",
+                            new File(System.getProperty("user.dir")));
+                  PrintWriter out = new PrintWriter(new FileWriter(tf));
+                  out.println(fc);
+                  out.close();
+                  fc = tf.getName();
+                }
+                catch(IOException ioe) { ioe.printStackTrace(); }
+              }
+            }
 
             if(!withSoap && fc!=null)    //Ajax without SOAP
             {
