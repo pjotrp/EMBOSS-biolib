@@ -274,11 +274,12 @@ int main( int argc , char **argv )
 **
 ** writes frequency features to a feature table and returns new feature  
 **
-** @param [r] ajpFeattable [AjpFeat] table to write frequency to
-** @param [r] ajIntFeatureResidueType [ajint] residue type that count belongs to
-** @param [r] fPhiTorsionAngle [float] phi torsion angle for residue
-** @param [r] fPhiTorsionAngle [float] psi torsion angle for residue
-** @return [AjPFeature]
+** @param [r] ajpFeattableCounts [AjPFeattable] table to write frequency to
+** @param [r] ajIntFeatureResidueType [ajint] residue type that count
+**                                            belongs to
+** @param [r] ajIntCount1 [ajint] phi torsion angle for residue
+** @param [r] ajIntCount2 [ajint] psi torsion angle for residue
+** @return [AjPFeature] New feature added to feature table
 ** @@
 ******************************************************************************/
 

@@ -20499,12 +20499,12 @@ static void acdValidKnowntype(const AcdPAcd thys)
 }
 
 
-/* @funcstatic acdReadSections ************************************************
+/* @funcstatic acdReadKnowntypes **********************************************
 **
 ** Read standard table of ACD sections and store in AjPTable objects
 **
-** @param [r] typetable [AjPTable*] String table of section names and types
-** @param [r] infotable [AjPTable*] String table of section names and
+** @param [r] desctable [AjPTable*] String table of section names and types
+** @param [r] typetable [AjPTable*] String table of section names and
 **                                 descriptions
 ** @return [void]
 ** @@

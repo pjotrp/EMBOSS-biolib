@@ -29,8 +29,15 @@ extern "C"
 ** @ass ajGotohNull set all components to zero
 **
 ** @use embGotohCellCalculateSumScore fill in alignment array of ajGotohCells
-** @use embGotohCellBacktrace find highest scoring path through array of ajGotohCells
+** @use embGotohCellBacktrace find highest scoring path through array of
+** ajGotohCells
 **
+** @attr ajIntRow [ajint] Row number in backtrace table
+** @attr ajIntColumn [ajint] Column number in backtrace table
+** @attr fSubScore [float] Intermediate cumulative alignment score
+** @attr cDownResidue [char] Residue in template indexed by row
+** @attr cAcrossResidue [char] Residue in query indexed by column
+** @attr ajBoolIsIndel [AjBool] Does cell correspond to an indel
 ** @@
 ******************************************************************************/
 
@@ -41,7 +48,6 @@ typedef struct AjGotohCell
     float fSubScore;
     char cDownResidue;
     char cAcrossResidue;
-    float fsubScore;
     AjBool ajBoolIsIndel;
 } AjOGotohCell;
 #define AjPGotohCell AjOGotohCell*
@@ -53,7 +59,7 @@ typedef struct AjGotohCell
 /* =================== All functions in alphabetical order ================= */
 /* ========================================================================= */
 
-/* ajgotoh.h() $Date: 2004/02/09 17:53:41 $                        DJC Oct03 */
+/* ajgotoh.h() $Date: 2004/02/13 11:08:46 $                        DJC Oct03 */
 
 AjPGotohCell **embGotohCellGetArray(ajint ajIntDownSeqLen,
 				    ajint ajIntCrossSeqLen);

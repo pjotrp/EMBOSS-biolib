@@ -9,8 +9,8 @@
 **  Journal of Molecular Biology 162:705-708
 **
 ** @author Copyright (C) 2003 Damian Counsell
-** @version $Revision: 1.3 $
-** @modified $Date: 2004/02/11 13:22:25 $
+** @version $Revision: 1.4 $
+** @modified $Date: 2004/02/13 11:08:46 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -93,7 +93,7 @@ AjPGotohCell embGotohCellNew(void)
 ** @param [r] fSubScore [float] intermediate cumulative alignment score
 ** @param [r] cDownResidue [char] residue in template indexed by row 
 ** @param [r] cAcrossResidue [char] residue in query indexed by column
-** @param [r] [AjBool] ajBoolIsIndel does cell correspond to an indel?
+** @param [r] ajBoolIsIndel [AjBool] does cell correspond to an indel?
 **
 ** @return [AjPGotohCell] pointer to an initialized Gotoh cell
 ** @@
@@ -178,14 +178,15 @@ void embGotohCellDel(AjPGotohCell* pthis)
 **
 ** reserves memory for an array of Gotoh cells for summing pair score array
 **
-** @param [r] ajp3dVectorToBeSized [AjP3dVector] vector to be sized
-**
-** @return fVectorLength [float] length of vector to be sized
+** @param [r] ajIntDownSeqLen [ajint] size down
+** @param [r] ajIntAcrossSeqLen [ajint] size across
+** @return [AjPGotohCell**] Gotoh cell array address
 ** @@
 ******************************************************************************/
 
 
-AjPGotohCell **embGotohCellGetArray(ajint ajIntDownSeqLen, ajint ajIntAcrossSeqLen)
+AjPGotohCell** embGotohCellGetArray(ajint ajIntDownSeqLen,
+				    ajint ajIntAcrossSeqLen)
 {
   ajint ajIntRow;
   ajint ajIntColumn;
@@ -229,11 +230,15 @@ AjPGotohCell **embGotohCellGetArray(ajint ajIntDownSeqLen, ajint ajIntAcrossSeqL
 
 /* @func embGotohCellCalculateSumScore ***************************************
 **
-** reserves memory for an array of Gotoh cells for summing pair score array
+** Calculates Gotoh cells for summing pair score array
 **
-** @param [r] ajp3dVectorToBeSized [AjP3dVector] vector to be sized
-**
-** @return fVectorLength [float] length of vector to be sized
+** @param [r] ajpFloat2dPairScores [AjPFloat2d] Pair score array
+** @param [r] ajpSeqDown [AjPSeq] Sequence down
+** @param [r] ajpSeqAcross [AjPSeq] Seqeunce across
+** @param [w] ajpGotohCellGotohScores [AjPGotohCell**] Gotoh cell array
+** @param [r] fGapPenalty [float] Gap penalty
+** @param [r] fExtensionPenalty [float] Gap extension penalty
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -409,12 +414,11 @@ void embGotohCellCalculateSumScore(AjPFloat2d ajpFloat2dPairScores,
 **  to the method of Gotoh,  O., "An Improved algorithm for matching
 **  biological sequences." Journal of Molecular Biology 162:705-708
 **
-** @param [r] ajpGotohCellGotohScores [AjP3dVector] backtrace array
-** @param [r] ajpSeqDown [AjP3dVector] first sequence to be aligned
-** @param [r] ajpSeqAcross [AjP3dVector] second sequence to be aligned
-** @param [r] ajpListGotohCellsMaxScoringTrace [AjP3dVector] optimal cells
-**
-** @return ajIntAlignmentLen [ajint] length of alignment
+** @param [r] ajpGotohCellGotohScores [AjPGotohCell**] Gotoh cell array
+** @param [r] ajpSeqDown [AjPSeq] Sequence down
+** @param [r] ajpSeqAcross [AjPSeq] Sequence across
+** @param [r] ajpListGotohCellsMaxScoringTrace [AjPList] Trace
+** @return [ajint] length of alignment
 ** @@
 ******************************************************************************/
 
@@ -546,7 +550,7 @@ ajint embGotohCellBacktrace(AjPGotohCell **ajpGotohCellGotohScores,
 ** @param [r] ajpSeqAcross [AjPSeq] second sequence
 ** @param [r] fExtensionPenalty [float] alignment extension penalty
 **
-** @return ajpFloat2dPairScores [AjPFloat2d] 2D matrix of pair scores
+** @return [AjPFloat2d] 2D matrix of pair scores
 ** @@
 ******************************************************************************/
 
@@ -648,7 +652,7 @@ AjPFloat2d embGotohPairScore(AjPMatrixf ajpMatrixFscoring,
 ** @param [r] ajpSeqDown [AjPSeq] first sequence
 ** @param [r] ajpSeqAcross [AjPSeq] second sequence
 **
-** @return ajint [float] ajIntAlignedSeqLen [ajint] length of alignment trace
+** @return [ajint] length of alignment trace
 ** @@
 ******************************************************************************/
 

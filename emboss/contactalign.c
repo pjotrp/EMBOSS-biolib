@@ -47,9 +47,6 @@ static void debug_Gotoh_score(AjPGotohCell **ajpGotohCellGotohScores,
 ** align two protein sequence of unknown structure to protein sequence of
 **  known structure, given residue contact information
 **
-** @param [r] arrayOfAjpatomsWindow [AjPAtom*] window of nine mainchain atoms
-** @return [float] 
-** @@ 
 ******************************************************************************/
 
 int main( int argc , char **argv)
