@@ -46,8 +46,8 @@
 
 /* @prog seqnr **************************************************************
 **
-** Reads a scop families file and a scop ambiguities file and writes (i) a 
-** non-redundant scop families file and (ii) a scop validation file.
+** Removes redundancy from DHF files (domain hits files) or other files of 
+** sequences.
 **
 ****************************************************************************/
 int main(int argc, char **argv)
