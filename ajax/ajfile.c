@@ -344,6 +344,8 @@ AjPFile ajFileNewInPipe(const AjPStr name)
     AJNEW0(thys);
     ajStrAssS(&tmpname, name);
 
+    ajDebug("ajFileNewInPipe '%S'\n", name);
+
     /* pipe character at end */
     if(ajStrChar(tmpname, -1) == '|')
 	ajStrTrim(&tmpname, -1);
@@ -968,8 +970,6 @@ AjPFile ajFileNewF(FILE* file)
 void ajFileClose(AjPFile* pthis)
 {
     AjPFile thys;
-    int status = 0;
-    pid_t retval;
 
     thys = pthis ? *pthis : 0;
 
@@ -978,19 +978,6 @@ void ajFileClose(AjPFile* pthis)
     if(!*pthis)
 	return;
 
-    if (thys->Pid)
-    {
-	ajDebug("waiting for waitpid for pid  %d\n", thys->Pid);
-	while((retval=waitpid(thys->Pid,&status,WNOHANG))!= thys->Pid)
-	{
-	    ajDebug("waitpid returns %d status %d\n", retval, status);
-	    if(retval == -1)
-		if(errno != EINTR)
-		    break;
-	    status = 0;
-	}
-    }
-    
     fileClose(thys);
     AJFREE(*pthis);
 
@@ -1036,9 +1023,27 @@ void ajFileOutClose(AjPFile* pthis)
 
 static void fileClose(AjPFile thys)
 {
+    int status = 0;
+    pid_t retval;
+
     if(!thys)
 	return;
 
+    if (thys->Pid)
+    {
+	ajDebug("fileClose waiting for waitpid for pid  %d\n",
+		thys->Pid);
+	while((retval=waitpid(thys->Pid,&status,WNOHANG))!= thys->Pid)
+	{
+	    /*ajDebug("fileClose waitpid returns %d status %d\n",
+		    retval, status);*/
+	    if(retval == -1)
+		if(errno != EINTR)
+		    break;
+	    status = 0;
+	}
+    }
+    
     if(thys->Handle)
     {
 	ajDebug("closing file '%F'\n", thys);
