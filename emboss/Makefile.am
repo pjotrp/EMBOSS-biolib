@@ -15,6 +15,7 @@ check_PROGRAMS = ajtest \
 complex corbatest \
 demoalign demofeatures demolist demoreport demosequence demostring demotable \
 entrails histogramtest intconv \
+jembossctl \
 patmattest \
 prima primers \
 seqinfo seqretall seqretallfeat seqretset seqretsingle \
@@ -126,6 +127,7 @@ infoseq_SOURCES = infoseq.c
 intconv_SOURCES = intconv.c
 interface_SOURCES = interface.c
 isochore_SOURCES = isochore.c
+jembossctl_SOURCES = jembossctl.c
 lindna_SOURCE = lindna.c
 listor_SOURCE = listor.c
 marscan_SOURCE = marscan.c

@@ -1,0 +1,10 @@
+appl: jembossctl [
+  documentation: "Jemboss Authentication Control"
+  groups: "Utils:Misc"
+]
+
+string: sock  [
+  required: "N"
+  default: "/tmp/emboss"
+  information: "Socket file"
+]
