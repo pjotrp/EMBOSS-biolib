@@ -21,7 +21,7 @@
 package org.emboss.jemboss.programs;
 
 import java.io.*;
-
+import javax.swing.JTextArea;
 
 /**
 *
@@ -44,6 +44,7 @@ public class RunEmbossApplication2
   private String status;
   private StdoutHandler stdouth;
   private StderrHandler stderrh;
+  private JTextArea textArea;
 
   /**
   *
@@ -80,6 +81,21 @@ public class RunEmbossApplication2
 
   /**
   *
+  * @param embossCommand        emboss command to run
+  * @param envp                 environment
+  * @param project              running directory
+  *
+  */
+  public RunEmbossApplication2(String embossCommand, 
+                        String envp[], File project,
+                        JTextArea textArea)
+  {
+    this(embossCommand,envp,project);
+    this.textArea = textArea;
+  }
+
+  /**
+  *
   * Read in the process stderr.
   *
   */
@@ -96,14 +112,10 @@ public class RunEmbossApplication2
       stderrRead =
          new BufferedReader(new InputStreamReader(stderrStream));
       char c[] = new char[100];
-      int noff = 0;
       int nc = 0;
 
       while((nc = stderrRead.read(c,0,100)) != -1)
-      {
         stderr = stderr.append(new String(c,0,nc));
-        noff += nc;
-      }
     }
     catch (IOException io)
     {
@@ -155,13 +167,18 @@ public class RunEmbossApplication2
  
       
       char c[] = new char[100];
-      int noff = 0;
       int nc = 0;
+      String chunk;
 
       while((nc = stdoutRead.read(c,0,100)) != -1)
       {
-        stdout = stdout.append(new String(c,0,nc));
-        noff += nc;
+        chunk  = new String(c,0,nc);
+        stdout = stdout.append(chunk);
+        if(textArea != null)
+        {
+          textArea.append(chunk);
+          textArea.setCaretPosition(textArea.getDocument().getLength());
+        }
       }
 
     }
