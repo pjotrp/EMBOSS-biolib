@@ -321,13 +321,13 @@ int main(int argc, char **argv)
     AjPStr     	outdir      = NULL;      /* Location of gnuplot data files for output      */
 
 
-    ajint	vali_TN     = NULL;      /* ajint for storing validation information       */
-    ajint	vali_FN     = NULL;      /* ajint for storing validation information       */
-    ajint	vali_true   = NULL;      /* ajint for storing validation information       */
-    ajint	vali_r   = NULL;      /* ajint for storing validation information       */
-    ajint	vali_nr   = NULL;      /* ajint for storing validation information       */
-    ajint	redun       = NULL;      /* ajint for storing no. of redundant hits        */
-    ajint	non_redun   = NULL;      /* ajint for storing no. of non-redundant hits    */
+    ajint	vali_TN     = 0;         /* ajint for storing validation information       */
+    ajint	vali_FN     = 0;         /* ajint for storing validation information       */
+    ajint	vali_true   = 0;         /* ajint for storing validation information       */
+    ajint	vali_r   = 0;            /* ajint for storing validation information       */
+    ajint	vali_nr   = 0;           /* ajint for storing validation information       */
+    ajint	redun       = 0;         /* ajint for storing no. of redundant hits        */
+    ajint	non_redun   = 0;         /* ajint for storing no. of non-redundant hits    */
     ajint	nseqs	    = 0;         /* No. of sequences                               */
     ajint	x	    = 0;         /* Counter                                        */
     ajint	list_num    = 0;         /* Number of nodes on list                        */
