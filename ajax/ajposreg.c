@@ -42,7 +42,13 @@
 #include "ajposreg.h"
 #include "hsp_regex.h"
 
-static AjPPosRegexp posregCompFlagsC (const char* exp, ajint cflags);
+
+
+
+static AjPPosRegexp posregCompFlagsC(const char* exp, ajint cflags);
+
+
+
 
 /* constructors */
 
@@ -55,9 +61,13 @@ static AjPPosRegexp posregCompFlagsC (const char* exp, ajint cflags);
 ** @@
 ******************************************************************************/
 
-AjPPosRegexp ajPosRegComp (AjPStr exp) {
-  return posregCompFlagsC (ajStrStr(exp), 0);
+AjPPosRegexp ajPosRegComp(AjPStr exp)
+{
+    return posregCompFlagsC(ajStrStr(exp), 0);
 }
+
+
+
 
 /* @func ajPosRegCompC ********************************************************
 **
@@ -68,9 +78,13 @@ AjPPosRegexp ajPosRegComp (AjPStr exp) {
 ** @@
 ******************************************************************************/
 
-AjPPosRegexp ajPosRegCompC (const char* exp) {
-  return posregCompFlagsC (exp, 0);
+AjPPosRegexp ajPosRegCompC(const char* exp)
+{
+    return posregCompFlagsC(exp, 0);
 }
+
+
+
 
 /* @funcstatic posregCompFlagsC ***********************************************
 **
@@ -82,34 +96,39 @@ AjPPosRegexp ajPosRegCompC (const char* exp) {
 ** @@
 ******************************************************************************/
 
-static AjPPosRegexp posregCompFlagsC (const char* exp, ajint cflags) {
-  AjPPosRegexp ret = NULL;
-  ajint nsub;
-  ajint rval;
+static AjPPosRegexp posregCompFlagsC(const char* exp, ajint cflags)
+{
+    AjPPosRegexp ret = NULL;
+    ajint nsub;
+    ajint rval;
 
-  AJNEW0(ret);
-  AJNEW0(ret->Regex);
+    AJNEW0(ret);
+    AJNEW0(ret->Regex);
 
-  /* ajDebug ("posregCompFlagsC '%s' %x\n", exp, cflags); */
-  rval = hsp_regcomp (ret->Regex, exp, cflags|HSREG_EXTENDED);
+    /* ajDebug("posregCompFlagsC '%s' %x\n", exp, cflags); */
+    rval = hsp_regcomp(ret->Regex, exp, cflags|HSREG_EXTENDED);
 
-  if (cflags & HSREG_NOSUB)
-    nsub = 1;
-  else
-    nsub = ret->Regex->re_nsub + 1;
+    if(cflags & HSREG_NOSUB)
+	nsub = 1;
+    else
+	nsub = ret->Regex->re_nsub + 1;
 
-  /* ajDebug ("    rval: %d nsub: %d\n", rval, ret->Regex->re_nsub); */
-  switch (rval) {
-  case 0:
-    if (nsub) AJCNEW0(ret->Match, nsub);
-    break;
-  default:
-    ajPosRegErr (ret, rval);
-    return NULL;
-  }
+    /* ajDebug("    rval: %d nsub: %d\n", rval, ret->Regex->re_nsub); */
+    switch(rval)
+    {
+    case 0:
+	if(nsub) AJCNEW0(ret->Match, nsub);
+	break;
+    default:
+	ajPosRegErr(ret, rval);
+	return NULL;
+    }
 
-  return ret;
+    return ret;
 }
+
+
+
 
 /* @func ajPosRegCompCase *****************************************************
 **
@@ -120,9 +139,13 @@ static AjPPosRegexp posregCompFlagsC (const char* exp, ajint cflags) {
 ** @@
 ******************************************************************************/
 
-AjPPosRegexp ajPosRegCompCase (AjPStr exp) {
-  return posregCompFlagsC (ajStrStr(exp), HSREG_ICASE);
+AjPPosRegexp ajPosRegCompCase(AjPStr exp)
+{
+    return posregCompFlagsC(ajStrStr(exp), HSREG_ICASE);
 }
+
+
+
 
 /* @func ajPosRegCompCaseC ****************************************************
 **
@@ -133,9 +156,13 @@ AjPPosRegexp ajPosRegCompCase (AjPStr exp) {
 ** @@
 ******************************************************************************/
 
-AjPPosRegexp ajPosRegCompCaseC (const char* exp) {
-  return posregCompFlagsC (exp, HSREG_ICASE);
+AjPPosRegexp ajPosRegCompCaseC(const char* exp)
+{
+    return posregCompFlagsC(exp, HSREG_ICASE);
 }
+
+
+
 
 /* @func ajPosRegCompNosub ****************************************************
 **
@@ -146,9 +173,13 @@ AjPPosRegexp ajPosRegCompCaseC (const char* exp) {
 ** @@
 ******************************************************************************/
 
-AjPPosRegexp ajPosRegCompNosub (AjPStr exp) {
-  return posregCompFlagsC (ajStrStr(exp), HSREG_NOSUB);
+AjPPosRegexp ajPosRegCompNosub(AjPStr exp)
+{
+    return posregCompFlagsC(ajStrStr(exp), HSREG_NOSUB);
 }
+
+
+
 
 /* @func ajPosRegCompNosubC ***************************************************
 **
@@ -159,9 +190,13 @@ AjPPosRegexp ajPosRegCompNosub (AjPStr exp) {
 ** @@
 ******************************************************************************/
 
-AjPPosRegexp ajPosRegCompNosubC (const char* exp) {
-  return posregCompFlagsC (exp, HSREG_NOSUB);
+AjPPosRegexp ajPosRegCompNosubC(const char* exp)
+{
+    return posregCompFlagsC(exp, HSREG_NOSUB);
 }
+
+
+
 
 /* @func ajPosRegCompNewline **************************************************
 **
@@ -172,9 +207,13 @@ AjPPosRegexp ajPosRegCompNosubC (const char* exp) {
 ** @@
 ******************************************************************************/
 
-AjPPosRegexp ajPosRegCompNewline (AjPStr exp) {
-  return posregCompFlagsC (ajStrStr(exp), HSREG_NEWLINE);
+AjPPosRegexp ajPosRegCompNewline(AjPStr exp)
+{
+    return posregCompFlagsC(ajStrStr(exp), HSREG_NEWLINE);
 }
+
+
+
 
 /* @func ajPosRegCompNewlineC *************************************************
 **
@@ -185,9 +224,13 @@ AjPPosRegexp ajPosRegCompNewline (AjPStr exp) {
 ** @@
 ******************************************************************************/
 
-AjPPosRegexp ajPosRegCompNewlineC (const char* exp) {
-  return posregCompFlagsC (exp, HSREG_NEWLINE);
+AjPPosRegexp ajPosRegCompNewlineC(const char* exp)
+{
+    return posregCompFlagsC(exp, HSREG_NEWLINE);
 }
+
+
+
 
 /* execute expression match */
 
@@ -206,10 +249,13 @@ AjPPosRegexp ajPosRegCompNewlineC (const char* exp) {
 ** @@
 ******************************************************************************/
 
-AjBool ajPosRegExec (AjPPosRegexp prog, AjPStr str) {
-
-  return ajPosRegExecC (prog, ajStrStr(str));
+AjBool ajPosRegExec(AjPPosRegexp prog, AjPStr str)
+{
+    return ajPosRegExecC(prog, ajStrStr(str));
 }
+
+
+
 
 /* @func ajPosRegExecC ********************************************************
 **
@@ -226,31 +272,39 @@ AjBool ajPosRegExec (AjPPosRegexp prog, AjPStr str) {
 ** @@
 ******************************************************************************/
 
-AjBool ajPosRegExecC (AjPPosRegexp prog, const char* str) {
+AjBool ajPosRegExecC(AjPPosRegexp prog, const char* str)
+{
 
-  AjPPosRegmatch match = prog->Match;
-  ajint nsub;
-  ajint ret;
+    AjPPosRegmatch match;
+    ajint nsub;
+    ajint ret;
 
-  /* ajDebug ("ajPosRegExecC '%s'\n", str); */
+    /* ajDebug("ajPosRegExecC '%s'\n", str); */
 
-  nsub = prog->Regex->re_nsub+1;
-  prog->Regex->orig = str;
+    match = prog->Match;
 
-  ret = hsp_regexec (prog->Regex, str, nsub, match, 0);
+    nsub = prog->Regex->re_nsub+1;
+    prog->Regex->orig = str;
 
-  /* ajDebug ("   result %d\n", ret); */
+    ret = hsp_regexec(prog->Regex, str, nsub, match, 0);
 
-  switch (ret) {
-  case HSREG_OKAY:
-     return ajTrue;
-  case HSREG_NOMATCH:
+    /* ajDebug("   result %d\n", ret); */
+
+    switch(ret)
+    {
+    case HSREG_OKAY:
+	return ajTrue;
+    case HSREG_NOMATCH:
+	return ajFalse;
+    default:
+	ajPosRegErr(prog, ret);
+    }
+
     return ajFalse;
-  default:
-    ajPosRegErr (prog, ret);
-  }
-  return ajFalse;
 }
+
+
+
 
 /* @func ajPosRegOffset *******************************************************
 **
@@ -266,12 +320,17 @@ AjBool ajPosRegExecC (AjPPosRegexp prog, const char* str) {
 ** @@
 ******************************************************************************/
 
-ajint ajPosRegOffset (AjPPosRegexp rp) {
+ajint ajPosRegOffset(AjPPosRegexp rp)
+{
+    AjPPosRegmatch rm;
 
-  AjPPosRegmatch rm = rp->Match;
+    rm = rp->Match;
 
-  return (rm[0].rm_so);
+    return (rm[0].rm_so);
 }
+
+
+
 
 /* @func ajPosRegOffsetI ******************************************************
 **
@@ -285,12 +344,17 @@ ajint ajPosRegOffset (AjPPosRegexp rp) {
 ** @@
 ******************************************************************************/
 
-ajint ajPosRegOffsetI (AjPPosRegexp rp, ajint isub) {
+ajint ajPosRegOffsetI(AjPPosRegexp rp, ajint isub)
+{
+    AjPPosRegmatch rm;
 
-  AjPPosRegmatch rm = rp->Match;
+    rm = rp->Match;
 
-  return (rm[isub].rm_so);
+    return (rm[isub].rm_so);
 }
+
+
+
 
 /* @func ajPosRegOffsetC ******************************************************
 **
@@ -303,11 +367,17 @@ ajint ajPosRegOffsetI (AjPPosRegexp rp, ajint isub) {
 ** @@
 ******************************************************************************/
 
-ajint ajPosRegOffsetC (AjPPosRegexp rp) {
+ajint ajPosRegOffsetC(AjPPosRegexp rp)
+{
+    AjPPosRegmatch rm;
 
-  AjPPosRegmatch rm = rp->Match;
-  return (rm[0].rm_so);
+    rm = rp->Match;
+
+    return (rm[0].rm_so);
 }
+
+
+
 
 /* @func ajPosRegOffsetIC *****************************************************
 **
@@ -321,11 +391,17 @@ ajint ajPosRegOffsetC (AjPPosRegexp rp) {
 ** @@
 ******************************************************************************/
 
-ajint ajPosRegOffsetIC (AjPPosRegexp rp, ajint isub) {
+ajint ajPosRegOffsetIC(AjPPosRegexp rp, ajint isub)
+{
+    AjPPosRegmatch rm;
 
-  AjPPosRegmatch rm = rp->Match;
-  return (rm[isub].rm_so);
+    rm = rp->Match;
+
+    return (rm[isub].rm_so);
 }
+
+
+
 
 /* @func ajPosRegLenI *********************************************************
 **
@@ -337,14 +413,19 @@ ajint ajPosRegOffsetIC (AjPPosRegexp rp, ajint isub) {
 ** @@
 ******************************************************************************/
 
-ajint ajPosRegLenI (AjPPosRegexp rp, ajint isub) {
+ajint ajPosRegLenI(AjPPosRegexp rp, ajint isub)
+{
+    AjPPosRegmatch rm;
 
-  AjPPosRegmatch rm = rp->Match;
-  if (rm[isub].rm_so < 0)
-    return 0;
+    rm = rp->Match;
+    if(rm[isub].rm_so < 0)
+	return 0;
 
-  return (rm[isub].rm_eo - rm[isub].rm_so);
+    return (rm[isub].rm_eo - rm[isub].rm_so);
 }
+
+
+
 
 /* @func ajPosRegPost *********************************************************
 **
@@ -356,19 +437,27 @@ ajint ajPosRegLenI (AjPPosRegexp rp, ajint isub) {
 ** @@
 ******************************************************************************/
 
-AjBool ajPosRegPost (AjPPosRegexp rp, AjPStr* post) {
+AjBool ajPosRegPost(AjPPosRegexp rp, AjPStr* post)
+{
+    AjPPosRegmatch rm;
+    const char* orig;
 
-  AjPPosRegmatch rm = rp->Match;
-  const char* orig = rp->Regex->orig;
+    rm   = rp->Match;
+    orig = rp->Regex->orig;
 
-  if (rm[0].rm_eo >= 0) {
-    (void) ajStrAssC (post, &orig[rm[0].rm_eo]);
-    return ajTrue;
-  }
+    if(rm[0].rm_eo >= 0)
+    {
+	ajStrAssC(post, &orig[rm[0].rm_eo]);
+	return ajTrue;
+    }
 
-  ajStrDel(post);
-  return ajFalse;
+    ajStrDel(post);
+
+    return ajFalse;
 }
+
+
+
 
 /* @func ajPosRegPostC ********************************************************
 **
@@ -383,19 +472,27 @@ AjBool ajPosRegPost (AjPPosRegexp rp, AjPStr* post) {
 ** @@
 ******************************************************************************/
 
-AjBool ajPosRegPostC (AjPPosRegexp rp, const char** post) {
+AjBool ajPosRegPostC(AjPPosRegexp rp, const char** post)
+{
+    AjPPosRegmatch rm;
+    const char* orig;
 
-  AjPPosRegmatch rm = rp->Match;
-  const char* orig = rp->Regex->orig;
+    rm   = rp->Match;
+    orig = rp->Regex->orig;
 
-  if (rm[0].rm_eo >= 0) {
-    *post = &orig[rm[0].rm_eo];
-    return ajTrue;
-  }
+    if(rm[0].rm_eo >= 0)
+    {
+	*post = &orig[rm[0].rm_eo];
+	return ajTrue;
+    }
 
-  *post = 0;
-  return ajFalse;
+    *post = 0;
+
+    return ajFalse;
 }
+
+
+
 
 /* @func ajPosRegSubI *********************************************************
 **
@@ -408,27 +505,35 @@ AjBool ajPosRegPostC (AjPPosRegexp rp, const char** post) {
 ** @@
 ******************************************************************************/
 
-void ajPosRegSubI (AjPPosRegexp rp, ajint isub, AjPStr* dest) {
+void ajPosRegSubI(AjPPosRegexp rp, ajint isub, AjPStr* dest)
+{
+    AjPPosRegmatch rm;
+    ajint ilen;
+    const char* orig;
 
-  AjPPosRegmatch rm = rp->Match;
-  ajint ilen;
-  const char* orig;
+    rm   = rp->Match;
+    orig = rp->Regex->orig;
 
-  orig = rp->Regex->orig;
+    if(rm[isub].rm_so < 0)
+    {
+	ajStrDel(dest);
+	return;
+    }
 
-  if (rm[isub].rm_so < 0) {
-    ajStrDel (dest);
+    if(isub > rp->Regex->re_nsub)
+    {
+	ajStrDel(dest);
+	return;
+    }
+
+    ilen = rm[isub].rm_eo - rm[isub].rm_so;
+    ajStrAssCI(dest, &orig[rm[isub].rm_so], ilen);
+
     return;
-  }
-  if (isub > rp->Regex->re_nsub) {
-    ajStrDel (dest);
-    return;
-  }
-  ilen = rm[isub].rm_eo - rm[isub].rm_so;
-  (void) ajStrAssCI (dest, &orig[rm[isub].rm_so], ilen);
-
-  return;
 }
+
+
+
 
 /* substitute substrings */
 
@@ -444,10 +549,15 @@ void ajPosRegSubI (AjPPosRegexp rp, ajint isub, AjPStr* dest) {
 ** @@
 ******************************************************************************/
 
-void ajPosRegSub (AjPPosRegexp rp, AjPStr source, AjPStr* dest) {
-  ajPosRegSubC (rp, ajStrStr(source), dest);
-  return;
+void ajPosRegSub(AjPPosRegexp rp, AjPStr source, AjPStr* dest)
+{
+    ajPosRegSubC(rp, ajStrStr(source), dest);
+
+    return;
 }
+
+
+
 
 /* @func ajPosRegSubC *********************************************************
 **
@@ -463,10 +573,13 @@ void ajPosRegSub (AjPPosRegexp rp, AjPStr source, AjPStr* dest) {
 ** @@
 ******************************************************************************/
 
-void ajPosRegSubC (AjPPosRegexp rp, const char* source, AjPStr* dest) {
-
-  return;
+void ajPosRegSubC(AjPPosRegexp rp, const char* source, AjPStr* dest)
+{
+    return;
 }
+
+
+
 
 /* destructor */
 
@@ -479,16 +592,21 @@ void ajPosRegSubC (AjPPosRegexp rp, const char* source, AjPStr* dest) {
 ** @@
 ******************************************************************************/
 
-void ajPosRegFree (AjPPosRegexp* exp) {
-  hsp_regfree ((*exp)->Regex);
-  AJFREE ((*exp)->Match);	/* safe even if it is NULL still */
-  AJFREE ((*exp)->Regex);
+void ajPosRegFree(AjPPosRegexp* exp)
+{
+    hsp_regfree((*exp)->Regex);
+    AJFREE((*exp)->Match);	   /* safe even if it is NULL still */
+    AJFREE((*exp)->Regex);
 
-  AJFREE(*exp);
+    AJFREE(*exp);
 
-  *exp = NULL;
-  return;
+    *exp = NULL;
+
+    return;
 }
+
+
+
 
 /* @func ajPosRegTrace ********************************************************
 **
@@ -499,33 +617,47 @@ void ajPosRegFree (AjPPosRegexp* exp) {
 ** @@
 ******************************************************************************/
 
-void ajPosRegTrace (AjPPosRegexp exp) {
+void ajPosRegTrace(AjPPosRegexp exp)
+{
+    AjPPosRegmatch rm;
+    ajint isub;
+    ajint ilen;
+    ajint ipos;
+    const char* orig;
+    static AjPStr str = NULL;
 
-  AjPPosRegmatch rm = exp->Match;
-  ajint isub;
-  ajint ilen;
-  ajint ipos;
-  const char* orig = exp->Regex->orig;
-  static AjPStr str = NULL;
+    rm = exp->Match;
+    orig = exp->Regex->orig;
 
-  /* ajDebug ("  REGEXP trace\n"); */
-  for (isub=0; isub <= exp->Regex->re_nsub; isub++) {
-    if (rm[isub].rm_so >= 0) {
-      ilen = rm[isub].rm_eo - rm[isub].rm_so;
-      (void) ajStrAssCI (&str, &orig[rm[isub].rm_so], ilen);
-      if (!isub) {
-	/* ajDebug ("    string match '%S'\n", str); */
-      }
-      else {
-	ipos = rm[isub].rm_so - rm[0].rm_so;
-	/* ajDebug ("    substring %2d '%S' at %d\n", isub, str, ipos); */
-      }
+    /* ajDebug("  REGEXP trace\n"); */
+    for(isub=0; isub <= exp->Regex->re_nsub; isub++)
+    {
+	if(rm[isub].rm_so >= 0)
+	{
+	    ilen = rm[isub].rm_eo - rm[isub].rm_so;
+	    (void) ajStrAssCI(&str, &orig[rm[isub].rm_so], ilen);
+	    if(!isub)
+	    {
+		/* ajDebug("    string match '%S'\n", str); */
+	    }
+	    else
+	    {
+		ipos = rm[isub].rm_so - rm[0].rm_so;
+		/*
+		ajDebug("    substring %2d '%S' at %d\n", isub, str, ipos);
+		*/
+	    }
+	}
     }
-  }
-  /* ajDebug ("\n"); */
-  ajStrDel (&str);
-  return;
+
+    /* ajDebug("\n"); */
+    ajStrDel(&str);
+
+    return;
 }
+
+
+
 
 /* @func ajPosRegErr **********************************************************
 **
@@ -537,12 +669,12 @@ void ajPosRegTrace (AjPPosRegexp exp) {
 ** @@
 ******************************************************************************/
 
-void ajPosRegErr (AjPPosRegexp prog, ajint errcode) {
+void ajPosRegErr(AjPPosRegexp prog, ajint errcode)
+{
+    static char msg[128];
 
-  static char msg[128];
+    hsp_regerror(errcode, prog->Regex, msg, 128);
+    ajErr(msg);
 
-  (void) hsp_regerror (errcode, prog->Regex, msg, 128);
-  ajErr(msg);
-
-  return;
+    return;
 }
