@@ -841,7 +841,9 @@ static void alignWriteSimple (AjPAlign thys) {
 	ajStrAssSub(&mrkcons, cons, istart, iend);
 
 	ajStrSubstituteCC (&tmpstr, ".", "-");
-	icnt = ajStrLen(tmpstr) - ajStrCountK(tmpstr, '-');
+	icnt = ajStrLen(tmpstr)
+	  - ajStrCountK(tmpstr, '-')
+	  - ajStrCountK(tmpstr, ' ');
 
 	if (!iseq)
 	  ajStrAssS(&mrkstr, tmpstr);
@@ -1036,7 +1038,8 @@ static void alignWriteSrsAny (AjPAlign thys, ajint imax, AjBool mark) {
 	ajStrAssSub(&mrkcons, cons, istart, iend);
 
 	ajStrSubstituteCC (&tmpstr, ".", "-");
-	icnt = ajStrLen(tmpstr) - ajStrCountK(tmpstr, '-')
+	icnt = ajStrLen(tmpstr)
+	  - ajStrCountK(tmpstr, '-')
 	  - ajStrCountK(tmpstr, ' ');
 
 	if (!iseq)
