@@ -9,7 +9,7 @@ pkgdata2_DATA = isochore0.gif lindna.gif octanol0.gif pepinfo1.gif \
                alignment_group.html alignment_local_group.html \
                alignment_multiple_group.html antigenic.html \
                assorted_group.html backtranseq.html banana.html \
-               btwisted.html chaos.html checktrans.html chips.html \
+               btwisted.html cai.html chaos.html checktrans.html chips.html \
                cirdna.html clique.html codcmp.html coderet.html \
                coding_regions_group.html comparison_group.html compseq.html \
                cons.html consense.html contml.html contrast.html \

@@ -1,9 +1,9 @@
 pkgdata_DATA =  SITE-DIRECTED.txt abiview.txt antigenic.txt backtranseq.txt \
-               banana.txt btwisted.txt chaos.txt checktrans.txt chips.txt \
-               cirdna.txt clique.txt codcmp.txt coderet.txt complex.txt \
-               compseq.txt cons.txt consense.txt contml.txt contrast.txt \
-               cpgplot.txt cpgreport.txt cusp.txt cutseq.txt dan.txt \
-               dbiblast.txt dbifasta.txt dbiflat.txt dbigcg.txt \
+               banana.txt btwisted.txt cai.txt chaos.txt checktrans.txt \
+               chips.txt cirdna.txt clique.txt codcmp.txt coderet.txt \
+               complex.txt compseq.txt cons.txt consense.txt contml.txt \
+               contrast.txt cpgplot.txt cpgreport.txt cusp.txt cutseq.txt \
+               dan.txt dbiblast.txt dbifasta.txt dbiflat.txt dbigcg.txt \
                degapseq.txt descseq.txt diffseq.txt digest.txt distmat.txt \
                dnacomp.txt dnadist.txt dnainvar.txt dnaml.txt dnamlk.txt \
                dnapars.txt dnapenny.txt dollop.txt dolpenny.txt \
