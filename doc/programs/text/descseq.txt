@@ -20,8 +20,8 @@ Description
    your new one, but by using the qualifier '-append' what you enter is
    appended to the existing name or description.
    
-   Note that is you append to a description, no space is inserted by
-   default bewteen the existing description and your appended text - you
+   Note that if you append to a description, no space is inserted by
+   default bewteen the existing description and your appended text. You
    have to put in a space yourself if you require one.
    
 Usage

@@ -583,6 +583,7 @@ See also
    sixpack Display a DNA sequence with 6-frame translation and ORFs
    textsearch Search sequence documentation text. SRS and Entrez are
    faster!
+   twofeat Finds neighbouring pairs of features in sequences
    
 Author(s)
 

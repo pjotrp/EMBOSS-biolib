@@ -376,6 +376,7 @@ See also
    splitter     Split a sequence into (overlapping) smaller sequences
    trimest      Trim poly-A tails off EST sequences
    trimseq      Trim ambiguous bits off the ends of sequences
+   twofeat      Finds neighbouring pairs of features in sequences
    union        Reads sequence fragments and builds one sequence
    vectorstrip  Strips out DNA between a pair of vector sequences
    yank         Reads a sequence range, appends the full USA to a list file
