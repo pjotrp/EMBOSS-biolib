@@ -24,6 +24,7 @@
 ******************************************************************************/
 
 #define TRACE_BACK_ARRAY_SEQ_OFFSET 1
+/* DDDDEBUG */
 #define DEBUG_LEVEL 0
 
 #include "emboss.h"
