@@ -405,11 +405,29 @@ typedef struct AjSPdb
 			   never be uniquely associated with a chain */
 }AjOPdb, *AjPPdb;
 
+
+
+
 /* @data AjPScop *******************************************************
 **
 ** Ajax scop object.
 **
 ** Holds scop database data
+**
+** The variables have the following meaning:
+**
+**  AjPStr Entry;          Domain identifer code 
+**  AjPStr Pdb;            Corresponding pdb identifier code
+**  AjPStr Class;          SCOP class name as an AjPStr 
+**  AjPStr Fold;           SCOP fold  name as an AjPStr  
+**  AjPStr Superfamily;    SCOP superfamily name as an AjPStr 
+**  AjPStr Family;         SCOP family name as an AjPStr 
+**  AjPStr Domain;         SCOP domain name as an AjPStr 
+**  AjPStr Source;         SCOP source (species) as an AjPStr 
+**  ajint    N;            No. chains from which this domain is comprised 
+**  char   *Chain;         Chain identifiers 
+**  AjPStr *Start;         PDB residue number of first residue in domain 
+**  AjPStr *End;           PDB residue number of last residue in domain 
 **
 ** AjPScop is implemented as a pointer to a C data structure.
 **
@@ -418,31 +436,114 @@ typedef struct AjSPdb
 **
 ** @@
 ******************************************************************************/
-
 typedef struct AjSScop
+{
+    AjPStr Entry;         /* Domain identifer code */
+    AjPStr Pdb;           /* Corresponding pdb identifier code*/
+    AjPStr Class;         /* SCOP class name as an AjPStr */
+    AjPStr Fold;          /* SCOP fold  name as an AjPStr */ 
+    AjPStr Superfamily;   /* SCOP superfamily name as an AjPStr */
+    AjPStr Family;        /* SCOP family name as an AjPStr */
+    AjPStr Domain;        /* SCOP domain name as an AjPStr */
+    AjPStr Source;        /* SCOP source (species) as an AjPStr */
+    ajint    N;           /* No. chains from which this domain is comprised */
+    char   *Chain;        /* Chain identifiers */
+    AjPStr *Start;        /* PDB residue number of first residue in domain */
+    AjPStr *End;          /* PDB residue number of last residue in domain */
+} AjOScop,*AjPScop;
+
+
+
+
+
+
+/* @data AjPScopcla *******************************************************
+**
+** Ajax scopcla object.
+**
+** Holds scop database data from raw file (dir.cla.scop.txt from SCOP authors)
+**
+** The variables have the following meaning:
+**
+**  AjPStr Entry;          Domain identifer code 
+**  AjPStr Pdb;            Corresponding pdb identifier code
+**  AjPStr Sccs;           Scop compact classification string
+**  ajint  Class;          SCOP sunid for class 
+**  ajint  Fold;           SCOP sunid for fold 
+**  ajint  Superfamily;    SCOP sunid for superfamily 
+**  ajint  Family;         SCOP sunid for family 
+**  ajint  Domain;         SCOP sunid for domain   
+**  ajint  Source;         SCOP sunid for species 
+**  ajint  Domdat;         SCOP sunid for domain data
+**  ajint  N;              No. chains from which this domain is comprised 
+**  char   *Chain;         Chain identifiers 
+**  AjPStr *Start;         PDB residue number of first residue in domain 
+**  AjPStr *End;           PDB residue number of last residue in domain 
+**
+** AjPScopcla is implemented as a pointer to a C data structure.
+**
+** @alias AjSScopcla
+** @alias AjOScopcla
+**
+** @@
+******************************************************************************/
+
+typedef struct AjSScopcla
 {
     AjPStr Entry;
     AjPStr Pdb;
-    AjPStr Class;
-    AjPStr Fold;
-    AjPStr Superfamily;
-    AjPStr Family;  
-    AjPStr Domain;
-    AjPStr Source;
+    AjPStr Sccs;
+
+    ajint  Class;
+    ajint  Fold;
+    ajint  Superfamily;
+    ajint  Family;  
+    ajint  Domain;
+    ajint  Source;
+    ajint  Domdat;
+        
     ajint    N;
     char   *Chain;
     AjPStr *Start;
     AjPStr *End;
-} AjOScop,*AjPScop;
+} AjOScopcla,*AjPScopcla;
 
 
-typedef struct AjSScopnode
+
+/* @data AjPScopdes *******************************************************
+**
+** Ajax scopdes object.
+**
+** Holds scop database data from raw file (dir.des.scop.txt from SCOP authors)
+**
+** The variables have the following meaning:
+**
+**  ajint  Sunid;   SCOP sunid for node 
+**  AjPStr Type;    Type of node, either 'px' (domain data), 'cl' (class),
+**  'cf' (fold), 'sf' (superfamily), 'fa' (family), 'dm' (domain) or 
+**  'sp' (species).
+**  AjPStr Sccs;    Scop compact classification string
+**  AjPStr Entry;   Domain identifer code (or '-' if Type!='px')
+**  AjPStr Desc;    Description in english of the node
+**
+** AjPScopdes is implemented as a pointer to a C data structure.
+**
+** @alias AjSScopdes
+** @alias AjOScopdes
+**
+** @@
+******************************************************************************/
+
+typedef struct AjSScopdes
 {
-    AjPStr    Class;
-    AjPStr    Fold;
-    AjPStr    Superfamily;
-    AjPStr    Family;
-} AjOScopnode, *AjPScopnode;
+    ajint  Sunid;
+    AjPStr Type;
+    AjPStr Sccs;
+    AjPStr Entry;
+    AjPStr Desc;
+} AjOScopdes,*AjPScopdes;
+
+
 
 
 
@@ -654,6 +755,19 @@ void          ajXyzScopWrite(AjPFile outf, AjPScop thys);
 void          ajXyzScopToPdb(AjPStr scop, AjPStr *pdb);
 
 
+AjPScopcla    ajXyzScopclaNew(ajint chains);
+void          ajXyzScopclaDel(AjPScopcla *thys);
+AjBool        ajXyzScopclaRead(AjPFile inf, AjPStr entry, AjPScopcla *thys);
+AjBool        ajXyzScopclaReadC(AjPFile inf, char *entry, AjPScopcla *thys);
+
+AjPScopdes    ajXyzScopdesNew(void);
+void          ajXyzScopdesDel(AjPScopdes *ptr);
+AjBool        ajXyzScopdesRead(AjPFile inf, AjPStr entry, AjPScopdes *thys);
+AjBool        ajXyzScopdesReadC(AjPFile inf, char *entry, AjPScopdes *thys);
+
+
+
+
 AjPScophit    ajXyzScophitNew(void);
 void          ajXyzScophitDel(AjPScophit *pthis);
 void          ajXyzScophitDelWrap(const void  **ptr);
@@ -681,15 +795,16 @@ AjPHit        ajXyzHitNew(void);
 void          ajXyzHitDel(AjPHit *pthis);
 AjBool        ajXyzHitsOverlap(AjPHit h1, AjPHit h2, ajint n);
 ajint         ajXyzCompScore(const void *hit1, const void *hit2);
+ajint         ajXyzCompScoreInv(const void *hit1, const void *hit2);
 ajint         ajXyzCompId(const void *hit1, const void *hit2);
 
 AjPHitlist    ajXyzHitlistNew(int n);
 void          ajXyzHitlistDel(AjPHitlist *pthis);
 AjBool        ajXyzHitlistRead(AjPFile inf, char *delim, AjPHitlist *thys);
-AjBool        ajXyzHitlistReadNode(AjPFile *scopf, AjPList *list, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class);
-AjBool        ajXyzHitlistReadFam(AjPFile *scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class, AjPList* list);
-AjBool        ajXyzHitlistReadSfam(AjPFile *scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class,AjPList* list);
-AjBool        ajXyzHitlistReadFold(AjPFile *scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class,AjPList* list);
+AjBool        ajXyzHitlistReadNode(AjPFile scopf, AjPList *list, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class);
+AjBool        ajXyzHitlistReadFam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class, AjPList* list);
+AjBool        ajXyzHitlistReadSfam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class,AjPList* list);
+AjBool        ajXyzHitlistReadFold(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class,AjPList* list);
 AjBool        ajXyzHitlistWrite(AjPFile outf, AjPHitlist thys);
 AjBool        ajXyzHitlistToScophits(AjPList in, AjPList *out);
 AjBool        ajXyzHitlistClassify(AjPHitlist *hits, AjPList targets, 

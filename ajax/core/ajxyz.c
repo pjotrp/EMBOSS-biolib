@@ -749,12 +749,160 @@ AjPScop ajXyzScopNew(ajint chains)
 }
 
 
+
+
+/* @func ajXyzScopclaNew ***********************************************************
+**
+** Scopcla object constructor. Fore-knowledge of the number of chains is 
+** required. This is normally called by the ajXyzScopclaReadC / ajXyzScopclaRead 
+** functions.
+**
+** @param [r] chains [ajint] Number of chains
+**
+** @return [AjPScop] Pointer to a scopcla object
+** @@
+******************************************************************************/
+
+AjPScopcla ajXyzScopclaNew(ajint chains)
+{
+    AjPScopcla ret = NULL;
+    ajint i;
+
+    AJNEW0(ret);
+
+    ret->Entry       = ajStrNew();
+    ret->Pdb         = ajStrNew();
+    ret->Sccs        = ajStrNew();
+
+    if(chains)
+    {
+	ret->Chain=ajCharNewL(chains);
+	AJCNEW0(ret->Start,chains);
+	AJCNEW0(ret->End,chains);
+	for(i=0; i<chains; i++)
+	{
+	    ret->Start[i]=ajStrNew();
+	    ret->End[i]=ajStrNew();
+	}
+    }
+
+    ret->N = chains;
+
+    return ret;
+}
+
+
+
+
+/* @func ajXyzScopdesNew ***********************************************************
+**
+** Scopdes object constructor.
+**
+** This is normally called by the ajXyzScopdesReadC / ajXyzScopdesRead functions.
+**
+** @return [AjPScop] Pointer to a scopdes object
+** @@
+******************************************************************************/
+
+AjPScopdes ajXyzScopdesNew(void)
+{
+    AjPScopdes ret = NULL;
+
+    AJNEW0(ret);
+
+    ret->Type      = ajStrNew();
+    ret->Sccs      = ajStrNew();
+    ret->Entry     = ajStrNew();
+    ret->Desc      = ajStrNew();
+    
+    return ret;
+}
+
+
 /* ==================================================================== */
 /* ========================= Destructors ============================== */
 /* ==================================================================== */
 
 
 
+
+
+/* @func ajXyzScopdesDel *****************************************************
+**
+** Scopdes object destructor.
+**
+** @param [w] thys [AjPScopdes *] Scopdes object pointer
+**
+** @return [AjPScopdes] Pointer to a scopdes object
+** @@
+******************************************************************************/
+
+void ajXyzScopdesDel(AjPScopdes *ptr)
+{
+    /* Check arg's */
+    if(*ptr==NULL)
+	return;
+    
+    if((*ptr)->Type)
+	ajStrDel( &((*ptr)->Type)); 
+    if((*ptr)->Sccs)
+	ajStrDel( &((*ptr)->Sccs)); 
+    if((*ptr)->Entry)
+	ajStrDel( &((*ptr)->Entry)); 
+    if((*ptr)->Desc)
+	ajStrDel( &((*ptr)->Desc)); 
+
+    AJFREE(*ptr);
+    *ptr=NULL;
+    
+    return;
+    
+}
+
+
+
+
+
+/* @func ajXyzScopclaDel ***********************************************************
+**
+** Destructor for scopcla object.
+**
+** @param [w] thys [AjPScopcla *] Scopcla object pointer
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajXyzScopclaDel(AjPScopcla *thys)
+{
+    AjPScopcla pthis = *thys;
+    
+    ajint i;
+
+    if(!pthis || !thys)
+	return;
+
+    ajStrDel(&pthis->Entry);
+    ajStrDel(&pthis->Pdb);
+    ajStrDel(&pthis->Sccs);
+
+    if(pthis->N)
+    {
+	for(i=0; i<pthis->N; i++)
+	{
+	    ajStrDel(&pthis->Start[i]);
+	    ajStrDel(&pthis->End[i]);
+	}
+	AJFREE(pthis->Start);
+	AJFREE(pthis->End);
+	AJFREE(pthis->Chain);
+    }
+
+    AJFREE(pthis);
+    pthis=NULL;
+
+    return;
+}
 
 
 
@@ -2658,7 +2806,7 @@ AjBool ajXyzSignatureAlignSeqall(AjPSignature sig, AjPSeqall db, ajint n,
 	if(hitcnt>n)
 	{	
 	    /* Sort list according to score, highest first*/
-	    ajListSort(listhits, ajXyzCompScore);
+	    ajListSort(listhits, ajXyzCompScoreInv);
 	 
 
 	    /* Pop the hit (lowest scoring) from the bottom of the list */
@@ -2669,7 +2817,7 @@ AjBool ajXyzSignatureAlignSeqall(AjPSignature sig, AjPSeqall db, ajint n,
     
 
     /* Sort list according to score, highest first*/
-    ajListSort(listhits, ajXyzCompScore);
+    ajListSort(listhits, ajXyzCompScoreInv);
 
 
     /* Convert list to array within Hitlist object */
@@ -5182,6 +5330,287 @@ AjBool ajXyzScopRead(AjPFile inf, AjPStr entry, AjPScop *thys)
 }
 
 
+/* @func ajXyzScopclaRead *********************************************************
+**
+** Read a Scopcla object from a file in embl-like format.
+**
+** @param [r] inf [AjPFile] Input file stream
+** @param [r] entry [AjPStr] id
+** @param [w] thys [AjPScopcla*] Scopcla object
+**
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+
+AjBool ajXyzScopclaRead(AjPFile inf, AjPStr entry, AjPScopcla *thys)
+{
+    return ajXyzScopclaReadC(inf,ajStrStr(entry),thys);
+}
+
+
+/* @func ajXyzScopdesRead *********************************************************
+**
+** Read a Scopdes object from a file in embl-like format.
+**
+** @param [r] inf [AjPFile] Input file stream
+** @param [r] entry [AjPStr] id
+** @param [w] thys [AjPScopdes*] Scopdes object
+**
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+
+AjBool ajXyzScopdesRead(AjPFile inf, AjPStr entry, AjPScopdes *thys)
+{
+    return ajXyzScopdesReadC(inf,ajStrStr(entry),thys);
+}
+
+
+
+/* @func ajXyzScopdesReadC ******************************************************
+**
+** Read a Scopdes object from a file in embl-like format.
+**
+** @param [r] inf [AjPFile] Input file stream
+** @param [r] entry [char*] id
+** @param [w] thys [AjPScopdes*] Scopdes object
+**
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+AjBool ajXyzScopdesReadC(AjPFile inf, char *entry, AjPScopdes *thys)
+{
+    static AjPStr line       = NULL;  /* Line from file */
+    static AjPStr sunidstr   =NULL;   /* sunid as string */
+    static AjPStr tentry     = NULL;
+    static AjPStr tmp        = NULL;
+    static AjPRegexp rexp    = NULL;
+
+    AjBool ok = ajFalse;
+    
+    
+    /* Only initialise strings if this is called for the first time*/
+    if(!line)
+    {    
+	line     = ajStrNew();
+	tentry   = ajStrNew();
+	sunidstr = ajStrNew();
+	tmp      = ajStrNew();
+
+	rexp  = ajRegCompC("^([^ \t]+)[ \t]+([^ \t]+)[ \t]+([^ \t]+)[ \t]+([^ \t]+)[ \t]+");
+    }
+    
+
+    /* Read up to the correcty entry (line) */
+    ajStrAssC(&tentry,entry);
+    ajStrToUpper(&tentry);
+    
+    while((ok=ajFileReadLine(inf,&line)))
+    {
+	if((ajFmtScanS(line, "%S", &sunidstr)==0))
+	    return ajFalse;
+
+	/* Ignore comment lines */
+	if(*(line->Ptr) == '#')
+	    continue;
+	
+	if(ajStrMatchWild(sunidstr,tentry))
+	    break;
+    }
+    
+    if(!ok)
+	return ajFalse;
+
+    *thys = ajXyzScopdesNew();
+    
+    if((ajFmtScanS(line, "%d %S %S %S", &(*thys)->Sunid,&(*thys)->Type, &(*thys)->Sccs, &(*thys)->Entry)!=4))
+	return ajFalse;
+
+
+    /* Tokenise the line by ' ' and discard the first 4 strings */
+/*    ajFmtPrint("line: %S\n", line);*/
+    
+    if(!ajRegExec(rexp,line))
+    {
+	ajFmtPrint("-->  %S\n", line);
+	ajFatal("File read error in ajXyzScopdesReadC");
+    }
+
+    
+    ajRegSubI(rexp,1,&tmp);
+    ajRegSubI(rexp,2,&tmp);
+    ajRegSubI(rexp,3,&tmp);
+    ajRegSubI(rexp,4,&tmp);
+    ajRegPost(rexp,&(*thys)->Desc);
+    ajStrClean(&(*thys)->Desc);
+
+    return ajTrue;
+}
+
+
+/* @func ajXyzScopclaReadC ******************************************************
+**
+** Read a Scopcla object from a file in embl-like format.
+**
+** @param [r] inf [AjPFile] Input file stream
+** @param [r] entry [char*] id
+** @param [w] thys [AjPScopcla*] Scopcla object
+**
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+AjBool ajXyzScopclaReadC(AjPFile inf, char *entry, AjPScopcla *thys)
+{
+    static AjPStr line       = NULL;
+    static AjPStr scopid     = NULL;  /* SCOP code */
+    static AjPStr pdbid      = NULL;  /* PDB code */
+    static AjPStr chains     = NULL;  /* Chain data */
+    static AjPStr sccs       = NULL;  /* Scop compact classification string */
+    static AjPStr class      = NULL;  /* Classification containing all SCOP sunid's  */
+    static AjPStr tentry     = NULL;
+    static AjPStr token      = NULL;
+    static AjPStr str        = NULL;
+
+    static AjPRegexp exp     = NULL;
+
+    AjPStrTok handle         = NULL;
+    AjPStrTok bhandle        = NULL;
+    AjBool ok                = ajFalse;    
+
+    char c                   = ' ';
+    char *p                  = NULL;
+    ajint  n                 = 0;
+    ajint  i                 = 0;
+    ajint from;
+    ajint to;
+
+
+    /* Only initialise strings if this is called for the first time*/
+    if(!line)
+    {    
+	line    = ajStrNew();
+	scopid   = ajStrNew();
+	pdbid     = ajStrNew();
+	chains  = ajStrNew();
+	sccs    = ajStrNew();
+	tentry  = ajStrNew();
+	token   = ajStrNew();
+	str     = ajStrNew();
+	
+	exp   = ajRegCompC("^([0-9]+)([A-Za-z]+)[-]([0-9]+)");
+    }
+    
+
+    /* Read up to the correcty entry (line) */
+    ajStrAssC(&tentry,entry);
+    ajStrToUpper(&tentry);
+    
+    while((ok=ajFileReadLine(inf,&line)))
+    {
+	if((ajFmtScanS(line, "%S", &scopid)==0))
+	    return ajFalse;
+
+	/* Ignore comment lines */
+	if(*scopid->Ptr == '#')
+	    continue;
+		
+	if(ajStrMatchWild(scopid,tentry))
+	    break;
+    }
+    
+    if(!ok)
+	return ajFalse;
+
+
+    if((ajFmtScanS(line, "%*S %S %S %S %*d %S", &pdbid,&chains, &sccs, &class)!=4))
+	return ajFalse;
+
+    /* Count chains and allocate Scopcla object */
+    n = ajStrTokenCount(&chains,",");
+    *thys = ajXyzScopclaNew(n);
+
+    ajStrToUpper(&scopid);
+    ajStrAssS(&(*thys)->Entry,scopid);
+
+    ajStrToUpper(&pdbid);
+    ajStrAssS(&(*thys)->Pdb,pdbid);
+
+    ajStrToUpper(&sccs);
+    ajStrAssS(&(*thys)->Sccs,sccs);
+
+    handle = ajStrTokenInit(chains,",");
+    for(i=0;i<n;++i)
+    {
+	ajStrToken(&token,&handle,NULL);
+	    	    
+	p = ajStrStr(token);
+	if(sscanf(p,"%d-%d",&from,&to)==2)
+	{
+	    (*thys)->Chain[i]='.';
+	    ajFmtPrintS(&(*thys)->Start[i],"%d",from);
+	    ajFmtPrintS(&(*thys)->End[i],"%d",to);
+	}
+	else if(sscanf(p,"%c:%d-%d",&c,&from,&to)==3)
+	{
+	    ajFmtPrintS(&(*thys)->Start[i],"%d",from);
+	    ajFmtPrintS(&(*thys)->End[i],"%d",to);
+	    (*thys)->Chain[i]=c;
+	}
+	else if(ajStrChar(token,1)==':')
+	{
+	    ajStrAssC(&(*thys)->Start[i],".");
+	    ajStrAssC(&(*thys)->End[i],".");
+	    (*thys)->Chain[i]=*ajStrStr(token);
+	}
+	else if(ajRegExec(exp,token))
+	{
+	    ajRegSubI(exp,1,&str);
+	    ajStrAss(&(*thys)->Start[i],str);
+	    ajRegSubI(exp,2,&str);
+	    (*thys)->Chain[i] = *ajStrStr(str);
+	    ajRegSubI(exp,3,&str);
+	    ajStrAss(&(*thys)->End[i],str);
+	}
+	else if(ajStrChar(token,0)=='-')
+	{
+	    (*thys)->Chain[i]='.';
+	    ajStrAssC(&(*thys)->Start[i],".");
+	    ajStrAssC(&(*thys)->End[i],".");
+	}
+	else
+	{
+	    ajFatal("Unparseable chain line [%S]\n",chains);
+	}
+    }
+    ajStrTokenClear(&handle);
+	      
+	      
+    /* Read SCOP sunid's from classification string */
+    bhandle = ajStrTokenInit(class,",\n");
+    while(ajStrToken(&token,&bhandle,NULL))
+    {
+	if(ajStrPrefixC(token,"cl"))
+	    ajFmtScanS(token, "cl=%d", &(*thys)->Class);
+	else if(ajStrPrefixC(token,"cf"))
+	    ajFmtScanS(token, "cf=%d", &(*thys)->Fold);
+	else if(ajStrPrefixC(token,"sf"))
+	    ajFmtScanS(token, "sf=%d", &(*thys)->Superfamily);
+	else if(ajStrPrefixC(token,"fa"))
+	    ajFmtScanS(token, "fa=%d", &(*thys)->Family);
+	else if(ajStrPrefixC(token,"dm"))
+	    ajFmtScanS(token, "dm=%d", &(*thys)->Domain);
+	else if(ajStrPrefixC(token,"sp"))
+	    ajFmtScanS(token, "sp=%d", &(*thys)->Source);
+	else if(ajStrPrefixC(token,"px"))
+	    ajFmtScanS(token, "px=%d", &(*thys)->Domdat);
+	
+    }
+    ajStrTokenClear(&bhandle);
+
+
+    return ajTrue;
+}	
+
 
 
 
@@ -5899,7 +6328,7 @@ AjBool   ajXyzHitlistRead(AjPFile inf, char *delim, AjPHitlist *thys)
 ** Reads a scop families file and writes a list of Hitlist objects containing 
 ** all domains matching the scop classification provided.
 **
-** @param [r] scopf     [AjPFile *]      The scop families file.
+** @param [r] scopf     [AjPFile  ]      The scop families file.
 ** @param [r] list      [AjPList *]      List of Hitlist objects.
 ** @param [r] fam       [AjPStr   ]      Family.
 ** @param [r] sfam      [AjPStr   ]      Superfamily.
@@ -5910,7 +6339,7 @@ AjBool   ajXyzHitlistRead(AjPFile inf, char *delim, AjPHitlist *thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajXyzHitlistReadNode(AjPFile *scopf, AjPList *list, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class)
+AjBool ajXyzHitlistReadNode(AjPFile scopf, AjPList *list, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class)
 {
     AjBool donemem=ajFalse;   
 
@@ -5981,7 +6410,7 @@ AjBool ajXyzHitlistReadNode(AjPFile *scopf, AjPList *list, AjPStr fam, AjPStr sf
 ** Reads a scop families file, selects the entries with the specified family, and 
 ** create a list of Hitlist structures.
 **
-** @param [r] scopf     [AjPFile *]       The scop families file.
+** @param [r] scopf     [AjPFile  ]       The scop families file.
 ** @param [r] fam       [AjPStr  *]       Family
 ** @param [r] sfam      [AjPStr  *]       Superfamily
 ** @param [r] fold      [AjPStr  *]       Fold
@@ -5991,7 +6420,7 @@ AjBool ajXyzHitlistReadNode(AjPFile *scopf, AjPList *list, AjPStr fam, AjPStr sf
 ** @@
 ********************************************************************************/
 
-AjBool ajXyzHitlistReadFam(AjPFile *scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class, AjPList* list)
+AjBool ajXyzHitlistReadFam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class, AjPList* list)
 {
     AjPHitlist hitlist = NULL; 
 
@@ -6004,7 +6433,7 @@ AjBool ajXyzHitlistReadFam(AjPFile *scopf, AjPStr fam, AjPStr sfam, AjPStr fold,
     }
     
 
-    while(ajXyzHitlistRead(*scopf,"//",&hitlist))
+    while(ajXyzHitlistRead(scopf,"//",&hitlist))
     {
 	if(ajStrMatch(fam,hitlist->Family) &&
 	   ajStrMatch(sfam,hitlist->Superfamily) &&
@@ -6022,7 +6451,7 @@ AjBool ajXyzHitlistReadFam(AjPFile *scopf, AjPStr fam, AjPStr sfam, AjPStr fold,
 ** Reads a scop families file, selects the entries with the specified 
 ** superfamily, and create a list of Hitlist structures.
 **
-** @param [r] scopf     [AjPFile *]       The scop families file.
+** @param [r] scopf     [AjPFile  ]       The scop families file.
 ** @param [r] fam       [AjPStr  *]       Family
 ** @param [r] sfam      [AjPStr  *]       Superfamily
 ** @param [r] fold      [AjPStr  *]       Fold
@@ -6032,7 +6461,7 @@ AjBool ajXyzHitlistReadFam(AjPFile *scopf, AjPStr fam, AjPStr sfam, AjPStr fold,
 ** @@
 ******************************************************************************/
 
-AjBool ajXyzHitlistReadSfam(AjPFile *scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class, AjPList* list)
+AjBool ajXyzHitlistReadSfam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class, AjPList* list)
 {
     AjPHitlist hitlist = NULL; 
     
@@ -6045,7 +6474,7 @@ AjBool ajXyzHitlistReadSfam(AjPFile *scopf, AjPStr fam, AjPStr sfam, AjPStr fold
     }
     
     
-    while(ajXyzHitlistRead(*scopf,"//",&hitlist))
+    while(ajXyzHitlistRead(scopf,"//",&hitlist))
     {
 	if(ajStrMatch(fam,hitlist->Superfamily) &&
 	   ajStrMatch(fold,hitlist->Fold) &&
@@ -6062,7 +6491,7 @@ AjBool ajXyzHitlistReadSfam(AjPFile *scopf, AjPStr fam, AjPStr sfam, AjPStr fold
 ** Reads a scop families file, selects the entries with the specified 
 ** fold, and create a list of Hitlist structures.
 **
-** @param [r] scopf     [AjPFile *]       The scop families file.
+** @param [r] scopf     [AjPFile  ]       The scop families file.
 ** @param [r] fam       [AjPStr  *]       Family
 ** @param [r] sfam      [AjPStr  *]       Superfamily
 ** @param [r] fold      [AjPStr  *]       Fold
@@ -6071,7 +6500,7 @@ AjBool ajXyzHitlistReadSfam(AjPFile *scopf, AjPStr fam, AjPStr sfam, AjPStr fold
 ** @@
 ******************************************************************************/
 
-AjBool ajXyzHitlistReadFold(AjPFile *scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class,AjPList* list)
+AjBool ajXyzHitlistReadFold(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class,AjPList* list)
 {
     AjPHitlist hitlist = NULL; 
 
@@ -6083,7 +6512,7 @@ AjBool ajXyzHitlistReadFold(AjPFile *scopf, AjPStr fam, AjPStr sfam, AjPStr fold
 	return ajFalse;
     }
     
-    while(ajXyzHitlistRead(*scopf,"//",&hitlist))
+    while(ajXyzHitlistRead(scopf,"//",&hitlist))
     {
 	if(ajStrMatch(fam,hitlist->Fold) &&
 	   ajStrMatch(class,hitlist->Class))
@@ -6596,8 +7025,14 @@ AjBool ajXyzScophitMergeInsertThis(AjPList list, AjPScophit hit1,
 
 /* @func ajXyzScophitMerge *****************************************
 **
-** Creates a new Scophit object which corresponds to a merging of two Scophit
-** objects hit1 and hit2. 
+** Creates a new Scophit object which corresponds to a merging of the two 
+** sequences from the Scophit objects hit1 and hit2. 
+**
+** The Typeobj of the merged hit is set.  The merged hit is classified 
+** as follows :
+** If hit1 or hit2 is a SEED, the merged hit is classified as a SEED.
+** Otherwise, if hit1 or hit2 is HIT, the merged hit is clsasified as a HIT.
+** If hit1 and hit2 are both OTHER, the merged hit remains classified as OTHER.
 ** 
 ** @param [r] hit1     [AjPScophit]  Scophit 1
 ** @param [r] hit2     [AjPScophit]  Scophit 2
@@ -6684,7 +7119,16 @@ AjPScophit  ajXyzScophitMerge(AjPScophit hit1, AjPScophit hit2)
 	ajStrAssSub(&temp, hit1->Seq, end-start+1, -1);
 	ajStrApp(&(ret->Seq),temp);
     }
-    
+
+
+    /* Classify the merged hit */
+    if(ajStrMatchC(hit1->Typeobj, "SEED") || ajStrMatchC(hit1->Typeobj, "SEED"))
+	ajStrAssC(&(ret->Typeobj), "SEED");
+    else if(ajStrMatchC(hit1->Typeobj, "HIT") || ajStrMatchC(hit1->Typeobj, "HIT"))
+	ajStrAssC(&(ret->Typeobj), "HIT");
+    else
+	ajStrAssC(&(ret->Typeobj), "OTHER");
+
 
     /* All other elements of structure are left as NULL / o / ajFalse */
         
@@ -7032,10 +7476,11 @@ AjBool ajXyzHitlistToThreeScophits(AjPList in, AjPList *fam, AjPList *sfam, AjPL
 
 
 
-/* @func ajXyzCompScore ******************************************************
+/* @func ajXyzCompScoreInv ******************************************************
 **
 ** Function to sort AjOHit objects by score record. Usually called by 
-** ajListSort.
+** ajListSort.  The sorting order is inverted - i.e. it returns -1 if score1 
+** > score2 (as opposed to ajXyzCompScore).
 **
 ** @param [r] hit1  [const void*] Pointer to AjOHit object 1
 ** @param [r] hit2  [const void*] Pointer to AjOHit object 2
@@ -7043,7 +7488,7 @@ AjBool ajXyzHitlistToThreeScophits(AjPList in, AjPList *fam, AjPList *sfam, AjPL
 ** @return [ajint] 1 if score1<score2, 0 if score1==score2, else -1.
 ** @@
 ******************************************************************************/
-ajint ajXyzCompScore(const void *hit1, const void *hit2)
+ajint ajXyzCompScoreInv(const void *hit1, const void *hit2)
 {
     AjPHit p  = NULL;
     AjPHit q  = NULL;
@@ -7063,17 +7508,48 @@ ajint ajXyzCompScore(const void *hit1, const void *hit2)
 
 
 
+/* @func ajXyzCompScore ******************************************************
+**
+** Function to sort AjOHit objects by score record. Usually called by 
+** ajListSort.
+**
+** @param [r] hit1  [const void*] Pointer to AjOHit object 1
+** @param [r] hit2  [const void*] Pointer to AjOHit object 2
+**
+** @return [ajint] 1 if score1<score2, 0 if score1==score2, else -1.
+** @@
+******************************************************************************/
+ajint ajXyzCompScore(const void *hit1, const void *hit2)
+{
+    AjPHit p  = NULL;
+    AjPHit q  = NULL;
+
+    p = (*(AjPHit*)hit1);
+    q = (*(AjPHit*)hit2);
+    
+    if(p->Score < q->Score)
+	return -1;
+    else if (p->Score == q->Score)
+	return 0;
+    else
+	return 1;
+
+}
+
+
+
 
 /* @func ajXyzBinSearch ******************************************************
 **
 ** Performs a binary search for an accession number over an array of Hitidx
-** structures. This is a case-insensitive search.
+** structures (which of course must first have been sorted). This is a 
+** case-insensitive search.
 **
 ** @param [r] id  [AjPStr]     Search term
 ** @param [r] arr [AjPHitlist] Array of AjOHitidx objects
 ** @param [r] siz [ajint]      Size of array
 **
-** @return [AjBool] Index of first AjOHitidx object found with an Id element 
+** @return [ajint] Index of first AjOHitidx object found with an Id element 
 ** matching id, or -1 if id is not found.
 ** @@
 ******************************************************************************/
@@ -7112,7 +7588,7 @@ ajint ajXyzBinSearch(AjPStr id, AjPHitidx *arr, ajint siz)
 ** @param [r] hit1  [const void*] Pointer to AjOHitidx object 1
 ** @param [r] hit2  [const void*] Pointer to AjOHitidx object 2
 **
-** @return [ajint] 1 if Id1 should sort before Id2, +1 if the Id2 should sort 
+** @return [ajint] -1 if Id1 should sort before Id2, +1 if the Id2 should sort 
 ** first. 0 if they are identical in length and content. 
 ** @@
 ******************************************************************************/
@@ -7139,7 +7615,7 @@ ajint ajXyzCompId(const void *hit1, const void *hit2)
 ** @param [r] hit1  [const void*] Pointer to AjOScophit object 1
 ** @param [r] hit2  [const void*] Pointer to AjOScophit object 2
 **
-** @return [ajint] 1 if Id1 should sort before Id2, +1 if the Id2 should sort 
+** @return [ajint] -1 if Id1 should sort before Id2, +1 if the Id2 should sort 
 ** first. 0 if they are identical in length and content. 
 ** @@
 ******************************************************************************/
@@ -7197,7 +7673,7 @@ ajint ajXyzScophitCompStart(const void *hit1, const void *hit2)
 ** @param [r] hit1  [const void*] Pointer to AjOScophit object 1
 ** @param [r] hit2  [const void*] Pointer to AjOScophit object 2
 **
-** @return [ajint] 1 if Family1 should sort before Family2, +1 if the Family2 
+** @return [ajint] -1 if Family1 should sort before Family2, +1 if the Family2 
 ** should sort first. 0 if they are identical.
 ** @@
 ******************************************************************************/
@@ -7221,7 +7697,7 @@ ajint ajXyzScophitCompFam(const void *hit1, const void *hit2)
 ** @param [r] hit1  [const void*] Pointer to AjOScophit object 1
 ** @param [r] hit2  [const void*] Pointer to AjOScophit object 2
 **
-** @return [ajint] 1 if Superfamily1 should sort before Superfamily2, +1 if 
+** @return [ajint] -1 if Superfamily1 should sort before Superfamily2, +1 if 
 ** the Superfamily2 should sort first. 0 if they are identical.
 ** @@
 ******************************************************************************/
@@ -7246,7 +7722,7 @@ ajint ajXyzScophitCompSfam(const void *hit1, const void *hit2)
 ** @param [r] hit1  [const void*] Pointer to AjOScophit object 1
 ** @param [r] hit2  [const void*] Pointer to AjOScophit object 2
 **
-** @return [ajint] 1 if Fold1 should sort before Fold2, +1 if the Fold2 
+** @return [ajint] -1 if Fold1 should sort before Fold2, +1 if the Fold2 
 ** should sort first. 0 if they are identical.
 ** @@
 ******************************************************************************/
@@ -7268,9 +7744,43 @@ ajint ajXyzScophitCompFold(const void *hit1, const void *hit2)
 ** Classifies a list of signature-sequence hits (held in a Hitlist object) 
 ** according to list of target sequences (a list of AjOHitlist objects).
 ** 
-** Writes the Group, Typeobj & Typesbj elements depending on how the SCOP 
-** classification records of the Hit object and target sequence in question
-** compare.
+** Writes the Group, Typeobj (primary classification) & Typesbj (secondary
+** classification) elements depending on how the SCOP classification 
+** records of the Hit object and target sequence in question compare.
+** 
+** The following classification of hits is taken from sigscan.c :
+** Definition of classes of hit 
+** The primary classification is an objective definition of the hit and has 
+** one of the following values:
+** SEED - the sequence was included in the original alignment from which the 
+** signature was generated.
+** HIT - A protein which was detected by psiblast  (see psiblasts.c) to 
+** be a homologue to at least one of the proteins in the family from which 
+** the signature was derived. Such proteins are identified by the 'HIT' 
+** record in the scop families file.
+** OTHER - A true member of the family but not a homologue as detected by 
+** psi-blast. Such proteins may have been found from the literature and 
+** manually added to the scop families file or may have been detected by the 
+** EMBOSS program swissparse (see swissparse.c). They are identified in the 
+** SCOP families file by the 'OTHER' record.
+** CROSS - A protein which is homologous to a protein of the same fold,
+** but differnt family, of the proteins from which the signature was
+** derived.
+** FALSE - A homologue to a protein with a different fold to the family
+** of the signature.
+** UNKNOWN - The protein is not known to be CROSS, FALSE or a true hit (a 
+** SEED, HIT or OTHER).
+** The secondary classification is provided for convenience and a value as 
+** follows:
+** Hits of SEED, HIT and OTHER classification are all listed as TRUE.
+** Hits of CROSS, FALSE or UNKNOWN objective classification are listed as CROSS, 
+** FALSE or UNKNOWN respectively.
+** 
+** The subjective column allows for hand-annotation of the hits files so that 
+** proteins of UNKNOWN objective classification can re-classified by a human 
+** expert as TRUE, FALSE, CROSS or otherwise left as UNKNOWN for the purpose of 
+** generating signature performance plots with the EMBOSS application sigplot.
+**
 **
 ** @param [r] hits    [AjPHitist *] Pointer to Hitlist object with hits
 ** @param [r] targets [AjPList]     List of AjOHitlist objects with targets
