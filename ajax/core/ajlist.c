@@ -511,6 +511,38 @@ AjBool ajListLast(AjPList thys, void** x) {
   return ajTrue;
 }
 
+/* @func ajListNth **********************************************
+**
+** Set pointer to last node's nth data item. 0 < n < number of elements. 
+**
+** @param [r] thys [AjPList] List
+** @param [r] n [AjPList] element of the list
+** @param [w] x [void**] pointer to pointer to data
+** @return [AjBool] ajTrue on success.
+** @@
+****************************************************************/
+
+AjBool ajListNth(AjPList thys, int n, void** x)
+{
+  AjPListNode rest;
+  int len;
+  int i;
+  
+  if (!thys || n<1)
+    return ajFalse;
+
+  len = ajListLength(thys);
+  if(n>len)
+      return ajFalse;
+  
+  for (i=0,rest = thys->First; i<n ; rest = rest->Next);
+
+  if (x)
+    *x = listNodeItem(rest);
+
+  return ajTrue;
+}
+
 /* @func ajListPop **********************************************
 **
 ** remove the first node but set pointer to data first.
