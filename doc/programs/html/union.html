@@ -1,5 +1,3 @@
-<!--START OF HEADER - DON'T ALTER -->
-
 <HTML>
 <HEAD>
   <TITLE>
@@ -7,11 +5,6 @@
   </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
-
-
-
-
-
 
 <table align=center border=0 cellspacing=0 cellpadding=0>
 <tr><td valign=top>
@@ -29,33 +22,14 @@ union
 
 
 
-
-
 <H2>
     Function
 </H2>
 Reads sequence fragments and builds one sequence
 
-<!--
-DON'T WRITE ANYTHING HERE.
-IT IS DONE FOR YOU.
--->
-
-
-
-
 <H2>
     Description
 </H2>
-
-<!-- 
-	This is the main part of the document.
-        This is what the user looks at to find out if this program will do what he wants. 
-        Long description.
-        Why it is useful.
-        When it should/shouldn't be used.
-        Algorithms
-  -->
 
 <b>union</b> reads in several sequences, concatenates them and writes
 them out as a single sequence.
@@ -69,30 +43,26 @@ include the spcification of sub-regions of the sequence, eg.
 'em:hsfau[20,55]').  Specifying several such subregions in a sequence or
 sequences allows you to enter disjoint sequences to be joined. 
 
-
-
-
-
-
-
-
-
-
-
 <H2>
     Usage
 </H2>
 
-<!--  
-	Example usage, as run from the command-line.
-        Many examples illustrating different behaviours is good.
- -->
+<b>Here is a sample session with union</b>
+<p>
+the file 'cds.list' contains a list of the regions making up the coding sequence of 'embl:hsfau': 
+<p>
 
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
+% <b>union </b>
+Reads sequence fragments and builds one sequence
+Input sequence(s): <b>@cds.list</b>
+Output sequence [hsfau1.fasta]: <b></b>
 
-
-
-
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
 <H2>
@@ -105,14 +75,8 @@ sequences allows you to enter disjoint sequences to be joined.
   [-sequence]          seqall     Sequence database USA
   [-outseq]            seqout     Output sequence USA
 
-   Additional (Optional) qualifiers:
-   -overlapfile        outfile    Output sequence overlaps to a file
-
-   Advanced (Unprompted) qualifiers:
-   -feature            boolean    Use feature information
-   -source             boolean    Create source features
-   -findoverlap        boolean    Look for overlaps when joining
-
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
    "-sequence" associated qualifiers
@@ -142,9 +106,6 @@ sequences allows you to enter disjoint sequences to be joined.
    -offormat2           string     Features format
    -ofname2             string     Features file name
    -ofdirectory2        string     Output directory
-
-   "-overlapfile" associated qualifiers
-   -odirectory          string     Output directory
 
    General qualifiers:
    -auto                boolean    Turn off prompts
@@ -193,10 +154,7 @@ sequences allows you to enter disjoint sequences to be joined.
 </tr>
 
 <tr>
-<td>-overlapfile</td>
-<td>Output sequence overlaps to a file</td>
-<td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.union</td>
+<td colspan=4>(none)</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -206,51 +164,15 @@ sequences allows you to enter disjoint sequences to be joined.
 </tr>
 
 <tr>
-<td>-feature</td>
-<td>Use feature information</td>
-<td>Boolean value Yes/No</td>
-<td>No</td>
-</tr>
-
-<tr>
-<td>-source</td>
-<td>Create source features</td>
-<td>Boolean value Yes/No</td>
-<td>No</td>
-</tr>
-
-<tr>
-<td>-findoverlap</td>
-<td>Look for overlaps when joining</td>
-<td>Boolean value Yes/No</td>
-<td>No</td>
+<td colspan=4>(none)</td>
 </tr>
 
 </table>
 
 
-<!--
-DON'T WRITE ANYTHING HERE.
-IT IS DONE FOR YOU.
--->
-
-
-
-
-
-
-
-
 <H2>
     Input file format
 </H2>
-
-<!-- 
-        This includes example input file formats.
-        This should be a detailed description and example - assume
-        someone will want to parse this file and will want to know what
-        happens in unusual cases - null input, etc. 
-   -->
 
 The input can be any set of sequences in a file of multiple sequence
 entries or in a <i>List</i> file.  The sequences are concatenated in the
@@ -259,32 +181,44 @@ order in which they appear in the file.
 <p>
 
 
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: cds.list</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+tembl-id:HSFAU1[782:856]
+tembl-id:HSFAU1[951:1095]
+tembl-id:HSFAU1[1557:1612]
+tembl-id:HSFAU1[1787:1912]
+</pre>
+</td></tr></table><p>
+
 
 <p>
 
 You may find the program <b>yank</b> useful for creating List files.
 
 
-
-
-
-
-
-
-
-
-
 <H2>
     Output file format
 </H2>
 
-<!-- 
-        This includes example output file formats.
-        This should be a detailed description and example - assume
-        someone will want to parse this file and will want to know what
-        happens in unusual cases - null output, errors etc. 
-   -->
 
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: hsfau1.fasta</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&gt;HSFAU1 X65921.1 H.sapiens fau 1 gene
+atgcagctctttgtccgcgcccaggagctacacaccttcgaggtgaccggccaggaaacg
+gtcgcccagatcaaggctcatgtagcctcactggagggcattgccccggaagatcaagtc
+gtgctcctggcaggcgcgcccctggaggatgaggccactctgggccagtgcggggtggag
+gccctgactaccctggaagtagcaggccgcatgcttggaggtaaagtccatggttccctg
+gcccgtgctggaaaagtgagaggtcagactcctaaggtggccaaacaggagaagaagaag
+aagaagacaggtcgggctaagcggcggatgcagtacaaccggcgctttgtcaacgttgtg
+cccacctttggcaagaagaagggccccaatgccaactcttaa
+</pre>
+</td></tr></table><p>
 
 
 <p>
@@ -292,219 +226,76 @@ You may find the program <b>yank</b> useful for creating List files.
 The result is a normal sequence file containing a single sequence
 resulting from the concatenation of the input sequences. 
 
-
-
-
-
-
 <H2>
     Data files
 </H2>
 
-<!-- 
-        Any data files used (e.g. translation table file)
-        This includes example data file formats if they are
-        not obvious.
-	If you wish to include the standard description of what data
-	files are and how to use embossdata to inspect and retrieve
-	them, use:
-<p>
-EMBOSS data files are distributed with the application and stored
-in the standard EMBOSS data directory, which is defined
-by the EMBOSS environment variable EMBOSS_DATA.
-
-<p>
-
-To see the available EMBOSS data files, run:
-<p>
-<pre>
-% embossdata -showall
-</pre>
-<p>
-To fetch one of the data files (for example 'Exxx.dat') into your
-current directory for you to inspect or modify, run:
-
-<pre>
-
-% embossdata -fetch -file Exxx.dat
-
-</pre>
-<p>
-
-Users can provide their own data files in their own directories.
-Project specific files can be put in the current directory, or for
-tidier directory listings in a subdirectory called
-".embossdata". Files for all EMBOSS runs can be put in the user's home
-directory, or again in a subdirectory called ".embossdata".
-
-<p>
-The directories are searched in the following order:
-
-<ul>
-   <li> . (your current directory)
-   <li> .embossdata (under your current directory)
-   <li> ~/ (your home directory)
-   <li> ~/.embossdata
-</ul>
-<p>
-
-   -->
-
-
-
-
 None.
-
-
-
-
-
-
-
-
-
 
 <H2>
     Notes
 </H2>
 
-<!-- 
-        Restrictions.
-        Interesting behaviour.
-        Useful things you can do with this program.
-   -->
-
 None.
-
-
-
-
-
-
 
 <H2>
     References
 </H2>
 
-<!-- 
-        Bibliography for methods used.
-   -->
-
 None.
-
-
-
-
-
-
-
 
 <H2>
     Warnings
 </H2>
 
-<!-- 
-        Potentially stupid things the program will let you do.
-   -->
-
 None.
-
-
-
-
-
-
 
 <H2>
     Diagnostic Error Messages
 </H2>
 
-<!-- 
-        Error messages specific to this program, eg:
-        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
-   -->
-
 None.
-
-
-
-
-
-
 
 <H2>
     Exit status
 </H2>
 
-<!-- 
-        Description of the exit status for various error conditions
-   -->
-
 It always exits with status 0.
-
-
-
-
-
-
-
 
 <H2>
     Known bugs
 </H2>
 
-
-<!-- 
-        Bugs noted but not yet fixed.
-   -->
-
 None.
 
-
-
-
-
-
-
-
-<!--
-<H2>
-    See also
-</H2>
--->
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="biosed.shtml">biosed</a></td><td>Replace or delete sequence sections</td></tr>
-<tr><td><a href="cutseq.shtml">cutseq</a></td><td>Removes a specified section from a sequence</td></tr>
-<tr><td><a href="degapseq.shtml">degapseq</a></td><td>Removes gap characters from sequences</td></tr>
-<tr><td><a href="descseq.shtml">descseq</a></td><td>Alter the name or description of a sequence</td></tr>
-<tr><td><a href="entret.shtml">entret</a></td><td>Reads and writes (returns) flatfile entries</td></tr>
-<tr><td><a href="extractfeat.shtml">extractfeat</a></td><td>Extract features from a sequence</td></tr>
-<tr><td><a href="extractseq.shtml">extractseq</a></td><td>Extract regions from a sequence</td></tr>
-<tr><td><a href="listor.shtml">listor</a></td><td>Writes a list file of the logical OR of two sets of sequences</td></tr>
-<tr><td><a href="maskfeat.shtml">maskfeat</a></td><td>Mask off features of a sequence</td></tr>
-<tr><td><a href="maskseq.shtml">maskseq</a></td><td>Mask off regions of a sequence</td></tr>
-<tr><td><a href="newseq.shtml">newseq</a></td><td>Type in a short new sequence</td></tr>
-<tr><td><a href="noreturn.shtml">noreturn</a></td><td>Removes carriage return from ASCII files</td></tr>
-<tr><td><a href="notseq.shtml">notseq</a></td><td>Excludes a set of sequences and writes out the remaining ones</td></tr>
-<tr><td><a href="nthseq.shtml">nthseq</a></td><td>Writes one sequence from a multiple set of sequences</td></tr>
-<tr><td><a href="pasteseq.shtml">pasteseq</a></td><td>Insert one sequence into another</td></tr>
-<tr><td><a href="revseq.shtml">revseq</a></td><td>Reverse and complement a sequence</td></tr>
-<tr><td><a href="seqret.shtml">seqret</a></td><td>Reads and writes (returns) sequences</td></tr>
-<tr><td><a href="seqretsplit.shtml">seqretsplit</a></td><td>Reads and writes (returns) sequences in individual files</td></tr>
-<tr><td><a href="skipseq.shtml">skipseq</a></td><td>Reads and writes (returns) sequences, skipping the first few</td></tr>
-<tr><td><a href="splitter.shtml">splitter</a></td><td>Split a sequence into (overlapping) smaller sequences</td></tr>
-<tr><td><a href="trimest.shtml">trimest</a></td><td>Trim poly-A tails off EST sequences</td></tr>
-<tr><td><a href="trimseq.shtml">trimseq</a></td><td>Trim ambiguous bits off the ends of sequences</td></tr>
-<tr><td><a href="vectorstrip.shtml">vectorstrip</a></td><td>Strips out DNA between a pair of vector sequences</td></tr>
-<tr><td><a href="yank.shtml">yank</a></td><td>Reads a sequence range, appends the full USA to a list file</td></tr>
+<tr><td><a href="biosed.html">biosed</a></td><td>Replace or delete sequence sections</td></tr>
+<tr><td><a href="cutseq.html">cutseq</a></td><td>Removes a specified section from a sequence</td></tr>
+<tr><td><a href="degapseq.html">degapseq</a></td><td>Removes gap characters from sequences</td></tr>
+<tr><td><a href="descseq.html">descseq</a></td><td>Alter the name or description of a sequence</td></tr>
+<tr><td><a href="entret.html">entret</a></td><td>Reads and writes (returns) flatfile entries</td></tr>
+<tr><td><a href="extractfeat.html">extractfeat</a></td><td>Extract features from a sequence</td></tr>
+<tr><td><a href="extractseq.html">extractseq</a></td><td>Extract regions from a sequence</td></tr>
+<tr><td><a href="listor.html">listor</a></td><td>Writes a list file of the logical OR of two sets of sequences</td></tr>
+<tr><td><a href="maskfeat.html">maskfeat</a></td><td>Mask off features of a sequence</td></tr>
+<tr><td><a href="maskseq.html">maskseq</a></td><td>Mask off regions of a sequence</td></tr>
+<tr><td><a href="newseq.html">newseq</a></td><td>Type in a short new sequence</td></tr>
+<tr><td><a href="noreturn.html">noreturn</a></td><td>Removes carriage return from ASCII files</td></tr>
+<tr><td><a href="notseq.html">notseq</a></td><td>Excludes a set of sequences and writes out the remaining ones</td></tr>
+<tr><td><a href="nthseq.html">nthseq</a></td><td>Writes one sequence from a multiple set of sequences</td></tr>
+<tr><td><a href="pasteseq.html">pasteseq</a></td><td>Insert one sequence into another</td></tr>
+<tr><td><a href="revseq.html">revseq</a></td><td>Reverse and complement a sequence</td></tr>
+<tr><td><a href="seqret.html">seqret</a></td><td>Reads and writes (returns) sequences</td></tr>
+<tr><td><a href="seqretsplit.html">seqretsplit</a></td><td>Reads and writes (returns) sequences in individual files</td></tr>
+<tr><td><a href="skipseq.html">skipseq</a></td><td>Reads and writes (returns) sequences, skipping the first few</td></tr>
+<tr><td><a href="splitter.html">splitter</a></td><td>Split a sequence into (overlapping) smaller sequences</td></tr>
+<tr><td><a href="trimest.html">trimest</a></td><td>Trim poly-A tails off EST sequences</td></tr>
+<tr><td><a href="trimseq.html">trimseq</a></td><td>Trim ambiguous bits off the ends of sequences</td></tr>
+<tr><td><a href="vectorstrip.html">vectorstrip</a></td><td>Strips out DNA between a pair of vector sequences</td></tr>
+<tr><td><a href="yank.html">yank</a></td><td>Reads a sequence range, appends the full USA to a list file</td></tr>
 </table>
-
-<!-- 
-        Add any comments about other associated programs (to prepare
-        data files?) that seealso doesn't find. 
-   -->
 
 <p>
 
@@ -512,20 +303,9 @@ You may find the program <b>yank</b> useful for creating List files.
 
 
 
-
-
-
-
-
-
-
 <H2>
     Author(s)
 </H2>
-<!--
-        Who has worked on the program in the past.
-   -->
-
 Peter Rice (pmr&nbsp;&copy;&nbsp;ebi.ac.uk)
 <br>
 Informatics Division, European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
@@ -537,66 +317,19 @@ Informatics Division, European Bioinformatics Institute, Wellcome Trust Genome C
     History
 </H2>
 
-<!--
-        What changes have been made.
-   -->
-
 Written (March 2002) - Peter Rice.
-
-<!--
-<p>
-[an error occurred while processing this directive]
--->
-
-
-
-
-
-
-
-
-
 
 
 <H2>
     Target users
 </H2>
-
-<!--
-        For general users, requested by one user, for EMBOSS site
-        maintainers, for EMBOSS developers etc.
-        eg:
-        "This program is intended to be used by everyone and everything,
-        from naive users to embedded scripts." 
-	Which is easy to include using:
-   -->
-
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
-
-
-
-
-
-
-
-
-
-
 
 
 <H2>
     Comments
 </H2>
-
-<!--
-	Any comments, requests etc. that people have about the program
-   -->
-
-
-
-
-
-
+None
 
 
 </BODY>

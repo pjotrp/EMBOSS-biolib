@@ -7,11 +7,6 @@
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
 
-
-
-
-
-
 <table align=center border=0 cellspacing=0 cellpadding=0>
 <tr><td valign=top>
 <A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
@@ -28,20 +23,10 @@ seqmatchall
 
 
 
-
-
-
-
 <H2>
     Function
 </H2>
 
-
-
-<!--
-DON'T WRITE ANYTHING HERE.
-IT IS DONE FOR YOU.
--->
 Does an all-against-all comparison of a set of sequences
 
 
@@ -65,8 +50,6 @@ within a reasonable time-frame.
 <H2>
     Usage
 </H2>
-
-
 <b>Here is a sample session with seqmatchall</b>
 <p>
 Here is an example using an increased word size to avoid accidental matches: 
@@ -91,14 +74,6 @@ Output alignment [eclac.seqmatchall]: <b></b>
 <H2>
     Command line arguments
 </H2>
-
-
-
-<!--
-DON'T WRITE ANYTHING HERE.
-IT IS DONE FOR YOU.
--->
-
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
@@ -242,8 +217,8 @@ The sequences must be either all protein or all nucleic acid.
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ########################################
-# Program:  seqmatchall
-# Rundate:  Wed Jul 21 11:57:25 2004
+# Program: seqmatchall
+# Rundate: Thu Jan 20 2005 17:40:54
 # Align_format: match
 # Report_file: eclac.seqmatchall
 ########################################
@@ -255,7 +230,7 @@ The sequences must be either all protein or all nucleic acid.
 # 2: ECLACA
 #=======================================
 
-  1832 ECLAC               5646..7477     ECLACA                 1..1832
+  1832 ECLAC           +     5646..7477     ECLACA          +        1..1832
 
 #=======================================
 #
@@ -264,7 +239,7 @@ The sequences must be either all protein or all nucleic acid.
 # 2: ECLACI
 #=======================================
 
-  1113 ECLAC                 49..1161     ECLACI                 1..1113
+  1113 ECLAC           +       49..1161     ECLACI          +        1..1113
 
 #=======================================
 #
@@ -273,7 +248,7 @@ The sequences must be either all protein or all nucleic acid.
 # 2: ECLACY
 #=======================================
 
-  1500 ECLAC               4305..5804     ECLACY                 1..1500
+  1500 ECLAC           +     4305..5804     ECLACY          +        1..1500
 
 #=======================================
 #
@@ -282,7 +257,7 @@ The sequences must be either all protein or all nucleic acid.
 # 2: ECLACZ
 #=======================================
 
-  3078 ECLAC               1287..4364     ECLACZ                 1..3078
+  3078 ECLAC           +     1287..4364     ECLACZ          +        1..3078
 
 #=======================================
 #
@@ -291,7 +266,7 @@ The sequences must be either all protein or all nucleic acid.
 # 2: ECLACY
 #=======================================
 
-   159 ECLACA                 1..159      ECLACY              1342..1500
+   159 ECLACA          +        1..159      ECLACY          +     1342..1500
 
 #=======================================
 #
@@ -300,7 +275,7 @@ The sequences must be either all protein or all nucleic acid.
 # 2: ECLACZ
 #=======================================
 
-    60 ECLACY                 1..60       ECLACZ              3019..3078
+    60 ECLACY          +        1..60       ECLACZ          +     3019..3078
 
 #---------------------------------------
 #---------------------------------------
@@ -386,35 +361,23 @@ It exits with a status of 0.
 
 None.
 
-<!--
-<H2>
-    See also
-</H2>
--->
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="matcher.shtml">matcher</a></td><td>Finds the best local alignments between two sequences</td></tr>
-<tr><td><a href="supermatcher.shtml">supermatcher</a></td><td>Finds a match of a large sequence against one or more sequences</td></tr>
-<tr><td><a href="water.shtml">water</a></td><td>Smith-Waterman local alignment</td></tr>
-<tr><td><a href="wordmatch.shtml">wordmatch</a></td><td>Finds all exact matches of a given size between 2 sequences</td></tr>
+<tr><td><a href="matcher.html">matcher</a></td><td>Finds the best local alignments between two sequences</td></tr>
+<tr><td><a href="supermatcher.html">supermatcher</a></td><td>Finds a match of a large sequence against one or more sequences</td></tr>
+<tr><td><a href="water.html">water</a></td><td>Smith-Waterman local alignment</td></tr>
+<tr><td><a href="wordmatch.html">wordmatch</a></td><td>Finds all exact matches of a given size between 2 sequences</td></tr>
 </table>
-
-<!--
-        Add any comments about other associated programs (to prepare
-        data files?) that seealso doesn't find.
-   -->
-
 
 
 <P>
-<a href="polydot.html">polydot</A> will give a graphical view of the same matches.
+<a href="polydot.html">polydot</A> will give a graphical view of the
+same matches.
 
 <H2>
     Author(s)
 </H2>
-
-
 Ian Longden (il&nbsp;&copy;&nbsp;sanger.ac.uk)
 <br>
 Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
@@ -426,26 +389,20 @@ Cambridge, CB10 1SA, UK.
     History
 </H2>
 
+1999 - written - Ian Longden
 
-1999 - written.
-
-<!--
-<p>
-[an error occurred while processing this directive]
--->
 
 <H2>
     Target users
 </H2>
+This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
 
-This program is intended to be used by everyone and everything,
-from naive users to embedded scripts. 
 
 <H2>
     Comments
 </H2>
-
+None
 
 
 </BODY>

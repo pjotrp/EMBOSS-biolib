@@ -36,121 +36,72 @@ PROTEIN 3D STRUCTURE
 <tr><th>Program name</th><th>Description</th></tr>
 
 <tr>
-<td><a href="contacts.html">contacts</a></td>
+<td><a href="../embassy/domainatrix/domainalign.html">domainalign</a></td>
 <td>
-Reads coordinate files and writes files of intra-chain residue-residue contact data
+Generates structure-based sequence alignments for nodes in a DCF file (domain classification file)
 </td>
 </tr>
 
 <tr>
-<td><a href="fraggle.html">fraggle</a></td>
+<td><a href="../embassy/domainatrix/domainrep.html">domainrep</a></td>
 <td>
-Removes fragment sequences from files of hits for scop families
+Reorder DCF file (domain classification file) so that the representative structure of each user-specified node is given first
 </td>
 </tr>
 
 <tr>
-<td><a href="hmmgen.html">hmmgen</a></td>
+<td><a href="../embassy/domainatrix/domainreso.html">domainreso</a></td>
 <td>
-Generates a hidden Markov model for each alignment in a directory by using the HMMER package
+Removes low resolution domains from a DCF file (domain classification file)
 </td>
 </tr>
 
 <tr>
-<td><a href="interface.html">interface</a></td>
+<td><a href="../embassy/domainatrix/libgen.html">libgen</a></td>
 <td>
-Reads coordinate files and writes files of inter-chain residue-residue contact data
+Generates various types of discriminating elements for each alignment in a directory
 </td>
 </tr>
 
 <tr>
-<td><a href="libscan.html">libscan</a></td>
+<td><a href="../embassy/domainatrix/rocon.html">rocon</a></td>
 <td>
-Scans a database with a set of models that represents a family
+Reads a DHF file (domain hits file) of hits (sequences of unknown structural classification) and a DHF file of validation sequences (known classification) and writes a 'hits file' for the hits, which are classified and rank-ordered on the basis of score
 </td>
 </tr>
 
 <tr>
-<td><a href="profgen.html">profgen</a></td>
-<td>
-Generates various profiles for each alignment in a directory
-</td>
-</tr>
-
-<tr>
-<td><a href="rocplot.html">rocplot</a></td>
+<td><a href="../embassy/domainatrix/rocplot.html">rocplot</a></td>
 <td>
 Provides interpretation and graphical display of the performance of discriminating elements (e.g. profiles for protein families). rocplot reads file(s) of hits from discriminator-database search(es), performs ROC analysis on the hits, and writes graphs illustrating the diagnostic performance of the discriminating elements
 </td>
 </tr>
 
 <tr>
-<td><a href="scopalign.html">scopalign</a></td>
+<td><a href="../embassy/domainatrix/seqalign.html">seqalign</a></td>
 <td>
-Generate alignments for families in a scop classification file by using STAMP
+Reads a DAF file (domain alignment file) and a DHF (domain hits file) and writes a DAF file extended with the hits
 </td>
 </tr>
 
 <tr>
-<td><a href="scoprep.html">scoprep</a></td>
+<td><a href="../embassy/domainatrix/seqfraggle.html">seqfraggle</a></td>
 <td>
-Reorder scop classificaiton file so that the representative structure of each family is given first
+Removes fragments from DHF files (domain hits files) or other files of sequences
 </td>
 </tr>
 
 <tr>
-<td><a href="scopreso.html">scopreso</a></td>
+<td><a href="../embassy/domainatrix/seqsearch.html">seqsearch</a></td>
 <td>
-Removes low resolution domains from a scop classification file
+Generate database hits (sequences) for nodes in a DCF file (domain classification file) by using PSI-BLAST
 </td>
 </tr>
 
 <tr>
-<td><a href="seqalign.html">seqalign</a></td>
+<td><a href="../embassy/domainatrix/seqsort.html">seqsort</a></td>
 <td>
-Generate extended alignments for families in a scop families file by using CLUSTALW with seed alignments
-</td>
-</tr>
-
-<tr>
-<td><a href="seqsearch.html">seqsearch</a></td>
-<td>
-Generate files of hits for families in a scop classification file by using PSI-BLAST with seed alignments
-</td>
-</tr>
-
-<tr>
-<td><a href="seqsort.html">seqsort</a></td>
-<td>
-Reads multiple files of hits and writes (i) a scop families file and (ii) a scop ambiguities file
-</td>
-</tr>
-
-<tr>
-<td><a href="seqwords.html">seqwords</a></td>
-<td>
-Generate file of hits for scop families by searching swissprot with keywords
-</td>
-</tr>
-
-<tr>
-<td><a href="siggen.html">siggen</a></td>
-<td>
-Generates a sparse protein signature from an alignment and residue contact data
-</td>
-</tr>
-
-<tr>
-<td><a href="sigplot.html">sigplot</a></td>
-<td>
-Generates data files of signature performance
-</td>
-</tr>
-
-<tr>
-<td><a href="sigscan.html">sigscan</a></td>
-<td>
-Scans a signature against swissprot and writes a signature hits file
+Reads DHF files (domain hits files) of database hits (sequences) and removes hits of ambiguous classification
 </td>
 </tr>
 

@@ -12,7 +12,7 @@
 
 <table align=center border=0 cellspacing=0 cellpadding=0>
 <tr><td valign=top>
-<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="/images/emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
@@ -36,7 +36,7 @@ libscan
 <H2>
     Function
 </H2>
-[an error occurred while processing this directive]
+Scans a database with a set of models that represents a family
 
 <!--
 DON'T WRITE ANYTHING HERE.
@@ -188,7 +188,7 @@ as two hits overlapping by a user-defined number of residues.
         Many examples illustrating different behaviours is good.
  -->
 
-No qa tests were found for libscan
+
 
 
 
@@ -198,11 +198,417 @@ No qa tests were found for libscan
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
-[an error occurred while processing this directive]
+   Standard (Mandatory) qualifiers (* if not always prompted):
+   -mode               menu       Libscan runs in one of two modes either (i)
+                                  database search mode or (ii) library screen
+                                  mode. In database search mode libscan reads
+                                  one or more directories each containing a
+                                  single type of discriminating element, the
+                                  permitted types are sparse sequence
+                                  signature, Gribskov profile, Henikoff
+                                  profile or hidden Markov model. In library
+                                  screen mode, libscan reads a sequence set,
+                                  screens each sequence against the library
+                                  (directories of discriminating elements) and
+                                  writes a library scan file (of top-scoring
+                                  families) for each one.
+   -db                 seqset     In database search mode libscan scans each
+                                  discriminating element against a sequence
+                                  set. In library screen mode, libscan reads a
+                                  sequence set and screens each sequence
+                                  against the library (directories of
+                                  disciminating elements)
+   -[no]grib           boolean    Use Gribskov profile
+   -[no]henik          boolean    Use Henikoff profile
+   -[no]hmm            boolean    Use HMM profile
+   -[no]sig            boolean    Use signature
+*  -hmmpath            string     Location of HMM profile files (input)
+*  -hmmextn            string     Extension of HMM profile files (input)
+*  -hmmoutpath         string     Location of signature hits/library scan
+                                  files for hmm searches (output)
+*  -hmmoutextn         string     Extension of signature hits/library scan
+                                  files for hmm searches (output)
+*  -gbvpath            string     Location of Gribskov profile files (input)
+*  -gbvextn            string     Extension of Gribskov profile files (input)
+*  -gbvgapo            float      Gap insertion penalty
+*  -gbvgape            float      Gap extension penalty
+*  -gbvoutpath         string     Location of signature hits/library scan
+                                  files for Gribskov profile searches (output)
+*  -gbvoutextn         string     Extension of signature hits/library scan
+                                  files for Gribskov profile searches (output)
+*  -hnfpath            string     Location of Hennikoff profile files (input)
+*  -hnfextn            string     Extension of Hennikoff profile files (input)
+*  -hnfgapo            float      Gap insertion penalty
+*  -hnfgape            float      Gap extension penalty
+*  -hnfoutpath         string     Location of signature hits/library scan
+                                  files for Henikoff profile searches (output)
+*  -hnfoutextn         string     Extension of signature hits/library scan
+                                  files for Henikoff profile searches (output)
+*  -sigpath            string     Location of signature files (input)
+*  -sigextn            string     Extension of signature files (input)
+*  -nterm              menu       Select number
+*  -sub                matrixf    Residue substitution matrix
+*  -siggapo            float      Gap insertion penalty
+*  -siggape            float      Gap extension penalty
+*  -sigoutpath         string     Location of signature hits/library scan
+                                  files for signature searches (output)
+*  -sigoutextn         string     Extension for signature hits/library scan
+                                  files for signature searches (output)
+   -scopf              infile     In either mode, a 'scop classification file'
+                                  is required as a source of family
+                                  classification data. A scop classification
+                                  file contains classification and other data
+                                  for domains from the scop database. The file
+                                  is in embl-like format and is generated by
+                                  scopparse. Domain sequence information can
+                                  be added to the file by using scopseqs.
+*  -targetf            infile     A 'scop validation file' contains sequence
+                                  relatives (hits) for each of a number of
+                                  different scop families, superfamilies and
+                                  folds. The file contains the collated
+                                  results from psiblast searches of a sequence
+                                  database for the indvidual scop families;
+                                  hits of unambiguous family assignment are
+                                  listed under their respective family,
+                                  otherwise a hit is assigned as relatives to
+                                  a scop superfamily or fold instead. The scop
+                                  validation file is generated by seqnr and
+                                  is in embl-like format.
+*  -maxhits            integer    The maximum number of hits to be written to
+                                  the signature hits file.
+*  -overlap            integer    When estimating the statistical significance
+                                  of scored matches of different types of
+                                  discriminating element to a sequence, two
+                                  (or more) p-values are only ever multiplied
+                                  together if corresponding hit is to the same
+                                  region of the protein. 'Same' is defined as
+                                  two hits overlapping by a user-defined
+                                  number of residues.
+   -mrgoutpath         string     Location of signature hits / library scan
+                                  files for merged results (output)
+   -mrgoutextn         string     Extension for signature hits / library scan
+                                  files for merged results (output)
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-db" associated qualifiers
+   -sbegin              integer    Start of each sequence to be used
+   -send                integer    End of each sequence to be used
+   -sreverse            boolean    Reverse (if DNA)
+   -sask                boolean    Ask for begin/end/reverse
+   -snucleotide         boolean    Sequence is nucleotide
+   -sprotein            boolean    Sequence is protein
+   -slower              boolean    Make lower case
+   -supper              boolean    Make upper case
+   -sformat             string     Input sequence format
+   -sdbname             string     Database name
+   -sid                 string     Entryname
+   -ufo                 string     UFO features
+   -fformat             string     Features format
+   -fopenfile           string     Features file name
+
+   General qualifiers:
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
+
+
 </pre>
 </td></tr></table>
 <P>
-[an error occurred while processing this directive]
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-mode</td>
+<td>Libscan runs in one of two modes either (i) database search mode or (ii) library screen mode. In database search mode libscan reads one or more directories each containing a single type of discriminating element, the permitted types are sparse sequence signature, Gribskov profile, Henikoff profile or hidden Markov model. In library screen mode, libscan reads a sequence set, screens each sequence against the library (directories of discriminating elements) and writes a library scan file (of top-scoring families) for each one.</td>
+<td><table><tr><td>1</td> <td><i>(Database search mode)</i></td></tr><tr><td>2</td> <td><i>(Library screen mode)</i></td></tr></table></td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-db</td>
+<td>In database search mode libscan scans each discriminating element against a sequence set. In library screen mode, libscan reads a sequence set and screens each sequence against the library (directories of disciminating elements)</td>
+<td>Readable set of sequences</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-[no]grib</td>
+<td>Use Gribskov profile</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-[no]henik</td>
+<td>Use Henikoff profile</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-[no]hmm</td>
+<td>Use HMM profile</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-[no]sig</td>
+<td>Use signature</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-hmmpath</td>
+<td>Location of HMM profile files (input)</td>
+<td>Any string is accepted</td>
+<td>./</td>
+</tr>
+
+<tr>
+<td>-hmmextn</td>
+<td>Extension of HMM profile files (input)</td>
+<td>Any string is accepted</td>
+<td>.hmm</td>
+</tr>
+
+<tr>
+<td>-hmmoutpath</td>
+<td>Location of signature hits/library scan files for hmm searches (output)</td>
+<td>Any string is accepted</td>
+<td>./</td>
+</tr>
+
+<tr>
+<td>-hmmoutextn</td>
+<td>Extension of signature hits/library scan files for hmm searches (output)</td>
+<td>Any string is accepted</td>
+<td>.hmmout</td>
+</tr>
+
+<tr>
+<td>-gbvpath</td>
+<td>Location of Gribskov profile files (input)</td>
+<td>Any string is accepted</td>
+<td>./</td>
+</tr>
+
+<tr>
+<td>-gbvextn</td>
+<td>Extension of Gribskov profile files (input)</td>
+<td>Any string is accepted</td>
+<td>.gribs</td>
+</tr>
+
+<tr>
+<td>-gbvgapo</td>
+<td>Gap insertion penalty</td>
+<td>Any numeric value</td>
+<td>1.0</td>
+</tr>
+
+<tr>
+<td>-gbvgape</td>
+<td>Gap extension penalty</td>
+<td>Any numeric value</td>
+<td>1.0</td>
+</tr>
+
+<tr>
+<td>-gbvoutpath</td>
+<td>Location of signature hits/library scan files for Gribskov profile searches (output)</td>
+<td>Any string is accepted</td>
+<td>./</td>
+</tr>
+
+<tr>
+<td>-gbvoutextn</td>
+<td>Extension of signature hits/library scan files for Gribskov profile searches (output)</td>
+<td>Any string is accepted</td>
+<td>.gribout</td>
+</tr>
+
+<tr>
+<td>-hnfpath</td>
+<td>Location of Hennikoff profile files (input)</td>
+<td>Any string is accepted</td>
+<td>./</td>
+</tr>
+
+<tr>
+<td>-hnfextn</td>
+<td>Extension of Hennikoff profile files (input)</td>
+<td>Any string is accepted</td>
+<td>.henik</td>
+</tr>
+
+<tr>
+<td>-hnfgapo</td>
+<td>Gap insertion penalty</td>
+<td>Any numeric value</td>
+<td>1.0</td>
+</tr>
+
+<tr>
+<td>-hnfgape</td>
+<td>Gap extension penalty</td>
+<td>Any numeric value</td>
+<td>1.0</td>
+</tr>
+
+<tr>
+<td>-hnfoutpath</td>
+<td>Location of signature hits/library scan files for Henikoff profile searches (output)</td>
+<td>Any string is accepted</td>
+<td>./</td>
+</tr>
+
+<tr>
+<td>-hnfoutextn</td>
+<td>Extension of signature hits/library scan files for Henikoff profile searches (output)</td>
+<td>Any string is accepted</td>
+<td>.henikout</td>
+</tr>
+
+<tr>
+<td>-sigpath</td>
+<td>Location of signature files (input)</td>
+<td>Any string is accepted</td>
+<td>./</td>
+</tr>
+
+<tr>
+<td>-sigextn</td>
+<td>Extension of signature files (input)</td>
+<td>Any string is accepted</td>
+<td>.sig</td>
+</tr>
+
+<tr>
+<td>-nterm</td>
+<td>Select number</td>
+<td><table><tr><td>1</td> <td><i>(Align anywhere and allow only complete signature-sequence fit)</i></td></tr><tr><td>2</td> <td><i>(Align anywhere and allow partial signature-sequence fit)</i></td></tr><tr><td>3</td> <td><i>(Use empirical gaps only)</i></td></tr></table></td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-sub</td>
+<td>Residue substitution matrix</td>
+<td>Comparison matrix file in EMBOSS data path</td>
+<td>EBLOSUM62</td>
+</tr>
+
+<tr>
+<td>-siggapo</td>
+<td>Gap insertion penalty</td>
+<td>Any numeric value</td>
+<td>10.0</td>
+</tr>
+
+<tr>
+<td>-siggape</td>
+<td>Gap extension penalty</td>
+<td>Any numeric value</td>
+<td>0.5</td>
+</tr>
+
+<tr>
+<td>-sigoutpath</td>
+<td>Location of signature hits/library scan files for signature searches (output)</td>
+<td>Any string is accepted</td>
+<td>./</td>
+</tr>
+
+<tr>
+<td>-sigoutextn</td>
+<td>Extension for signature hits/library scan files for signature searches (output)</td>
+<td>Any string is accepted</td>
+<td>.sigout</td>
+</tr>
+
+<tr>
+<td>-scopf</td>
+<td>In either mode, a 'scop classification file' is required as a source of family classification data. A scop classification file contains classification and other data for domains from the scop database. The file is in embl-like format and is generated by scopparse. Domain sequence information can be added to the file by using scopseqs.</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-targetf</td>
+<td>A 'scop validation file' contains sequence relatives (hits) for each of a number of different scop families, superfamilies and folds. The file contains the collated results from psiblast searches of a sequence database for the indvidual scop families; hits of unambiguous family assignment are listed under their respective family, otherwise a hit is assigned as relatives to a scop superfamily or fold instead. The scop validation file is generated by seqnr and is in embl-like format.</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-maxhits</td>
+<td>The maximum number of hits to be written to the signature hits file.</td>
+<td>Any integer value</td>
+<td>50</td>
+</tr>
+
+<tr>
+<td>-overlap</td>
+<td>When estimating the statistical significance of scored matches of different types of discriminating element to a sequence, two (or more) p-values are only ever multiplied together if corresponding hit is to the same region of the protein. 'Same' is defined as two hits overlapping by a user-defined number of residues.</td>
+<td>Any integer value</td>
+<td>10</td>
+</tr>
+
+<tr>
+<td>-mrgoutpath</td>
+<td>Location of signature hits / library scan files for merged results (output)</td>
+<td>Any string is accepted</td>
+<td>./</td>
+</tr>
+
+<tr>
+<td>-mrgoutextn</td>
+<td>Extension for signature hits / library scan files for merged results (output)</td>
+<td>Any string is accepted</td>
+<td>.mrgout</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>
+
 
 <!--
 DON'T WRITE ANYTHING HERE.
@@ -231,7 +637,7 @@ IT IS DONE FOR YOU.
 
 <p>
 
-No qa tests were found for libscan
+
 
 <p>
 
@@ -275,8 +681,8 @@ feattable, motif, regions, seqtable, simple, srs, table, tagseq
 <p>
 
 See:
-<A href="http://www.uk.embnet.org/Software/EMBOSS/Themes/ReportFormats.html">
-http://www.uk.embnet.org/Software/EMBOSS/Themes/ReportFormats.html</A>
+<A href="http://emboss.sf.net/docs/themes/ReportFormats.html">
+http://emboss.sf.net/docs/themes/ReportFormats.html</A>
 for further information on report formats.
 
 <p>
@@ -287,7 +693,7 @@ for further information on report formats.
 
 <p>
 
-No qa tests were found for libscan
+
 
 <p>
 
@@ -477,7 +883,27 @@ None.
     See also
 </H2>
 -->
-[an error occurred while processing this directive]
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th><th>Description</th></tr>
+<tr><td><a href="contacts.html">contacts</a></td><td>Reads coordinate files and writes files of intra-chain residue-residue contact data</td></tr>
+<tr><td><a href="fraggle.html">fraggle</a></td><td>Removes fragment sequences from files of hits for scop families</td></tr>
+<tr><td><a href="hmmgen.html">hmmgen</a></td><td>Generates a hidden Markov model for each alignment in a directory by using the HMMER package</td></tr>
+<tr><td><a href="interface.html">interface</a></td><td>Reads coordinate files and writes files of inter-chain residue-residue contact data</td></tr>
+<tr><td><a href="profgen.html">profgen</a></td><td>Generates various profiles for each alignment in a directory</td></tr>
+<tr><td><a href="rocplot.html">rocplot</a></td><td>Provides interpretation and graphical display of the performance of discriminating elements (e.g. profiles for protein families). rocplot reads file(s) of hits from discriminator-database search(es), performs ROC analysis on the hits, and writes graphs illustrating the diagnostic performance of the discriminating elements</td></tr>
+<tr><td><a href="scopalign.html">scopalign</a></td><td>Generate alignments for families in a scop classification file by using STAMP</td></tr>
+<tr><td><a href="scoprep.html">scoprep</a></td><td>Reorder scop classificaiton file so that the representative structure of each family is given first</td></tr>
+<tr><td><a href="scopreso.html">scopreso</a></td><td>Removes low resolution domains from a scop classification file</td></tr>
+<tr><td><a href="seqalign.html">seqalign</a></td><td>Generate extended alignments for families in a scop families file by using CLUSTALW with seed alignments</td></tr>
+<tr><td><a href="seqsearch.html">seqsearch</a></td><td>Generate files of hits for families in a scop classification file by using PSI-BLAST with seed alignments</td></tr>
+<tr><td><a href="seqsort.html">seqsort</a></td><td>Reads multiple files of hits and writes (i) a scop families file and (ii) a scop ambiguities file</td></tr>
+<tr><td><a href="seqwords.html">seqwords</a></td><td>Generate file of hits for scop families by searching swissprot with keywords</td></tr>
+<tr><td><a href="siggen.html">siggen</a></td><td>Generates a sparse protein signature from an alignment and residue contact data</td></tr>
+<tr><td><a href="sigplot.html">sigplot</a></td><td>Generates data files of signature performance</td></tr>
+<tr><td><a href="sigscan.html">sigscan</a></td><td>Scans a signature against swissprot and writes a signature hits file</td></tr>
+</table>
+
 <!-- 
         Add any comments about other associated programs (to prepare
         data files?) that seealso doesn't find. 
@@ -606,7 +1032,7 @@ Richard Durbin (rd&nbsp;&copy;&nbsp;sanger.ac.uk)
 Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
 Cambridge, CB10 1SA, UK.                      
 
-Richard Bruskiewich (current e-mail address unknown)
+Richard Bruskiewich (r.bruskiewich@cgiar.org)
 <br>
 while he was at:
 <br>
@@ -682,7 +1108,8 @@ Written (2003) - Jon Ison & Ranjeeva Ranasinghe
 
 <!--
 <p>
-[an error occurred while processing this directive]
+
+
 -->
 
 

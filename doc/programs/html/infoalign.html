@@ -1,5 +1,3 @@
-<!--START OF HEADER - DON'T ALTER -->
-
 <HTML>
 <HEAD>
   <TITLE>
@@ -25,35 +23,16 @@ infoalign
 
 
 
-
-<!--END OF HEADER-->
-
-
 <H2>
     Function
 </H2>
 Information on a multiple sequence alignment
-
-<!--
-DON'T WRITE ANYTHING HERE.
-IT IS DONE FOR YOU.
--->
-
 
 
 
 <H2>
     Description
 </H2>
-
-<!-- 
-	This is the main part of the document.
-        This is what the user looks at to find out if this program will do what he wants. 
-        Long description.
-        Why it is useful.
-        When it should/shouldn't be used.
-        Algorithms
-  -->
 
 <b>infoalign</b> is small utility to list some simple properties of
 sequences in an alignment. 
@@ -156,20 +135,13 @@ character:
 <H2>
     Usage
 </H2>
-
-<!--  
-	Example usage, as run from the command-line.
-        Many examples illustrating different behaviours is good.
- -->
-
-
 <b>Here is a sample session with infoalign</b>
 <p>
 
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>infoalign ../../data/globins.msf </b>
+% <b>infoalign globins.msf </b>
 Information on a multiple sequence alignment
 Output file [globins.infoalign]: <b></b>
 
@@ -185,7 +157,7 @@ This example doesn't display the USA of the sequence:
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>infoalign ../../data/globins.msf -nousa </b>
+% <b>infoalign globins.msf -nousa </b>
 Information on a multiple sequence alignment
 Output file [globins.infoalign]: <b></b>
 
@@ -201,7 +173,7 @@ Display only the name and sequence length of a sequence:
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>infoalign ../../data/globins.msf -only -name -seqlength </b>
+% <b>infoalign globins.msf -only -name -seqlength </b>
 Information on a multiple sequence alignment
 Output file [globins.infoalign]: <b></b>
 
@@ -217,7 +189,7 @@ Display only the name, number of gap characters and differences to the consensus
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>infoalign ../../data/globins.msf -only -name -gapcount -diffcount </b>
+% <b>infoalign globins.msf -only -name -gapcount -diffcount </b>
 Information on a multiple sequence alignment
 Output file [globins.infoalign]: <b></b>
 
@@ -233,7 +205,7 @@ Display the name and number of gaps within a sequence:
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>infoalign ../../data/globins.msf -only -name -gaps </b>
+% <b>infoalign globins.msf -only -name -gaps </b>
 Information on a multiple sequence alignment
 Output file [globins.infoalign]: <b></b>
 
@@ -249,7 +221,7 @@ Display information formatted with HTML:
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>infoalign ../../data/globins.msf -html </b>
+% <b>infoalign globins.msf -html </b>
 Information on a multiple sequence alignment
 Output file [globins.infoalign]: <b></b>
 
@@ -265,7 +237,7 @@ Use the first sequence as the reference sequence to compare to:
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>infoalign ../../data/globins.msf -refseq 1 </b>
+% <b>infoalign globins.msf -refseq 1 </b>
 Information on a multiple sequence alignment
 Output file [globins.infoalign]: <b></b>
 
@@ -575,28 +547,11 @@ to get only the sequence length output, you can specify
 </table>
 
 
-<!--
-DON'T WRITE ANYTHING HERE.
-IT IS DONE FOR YOU.
--->
-
-
-
-
-
-
 
 
 <H2>
     Input file format
 </H2>
-
-<!-- 
-        This includes example input file formats.
-        This should be a detailed description and example - assume
-        someone will want to parse this file and will want to know what
-        happens in unusual cases - null input, etc. 
-   -->
 
 <b>infoalign</b> reads a normal multiple sequence alignment file, as
 produced by a alignment program. 
@@ -606,7 +561,7 @@ produced by a alignment program.
 
 <a name="input.1"></a>
 <h3>Input files for usage example </h3>
-<p><h3>File: ../../data/globins.msf</h3>
+<p><h3>File: globins.msf</h3>
 <table width="90%"><tr><td bgcolor="#FFCCFF">
 <pre>
 !!AA_MULTIPLE_ALIGNMENT 1.0
@@ -787,13 +742,6 @@ FT                   SDFHVATRFNDDFSRAVLEAEVQMCGELRDYLRVTVSLWQGETQVASGTAPFGGEIIDE
 <H2>
     Output file format
 </H2>
-
-<!-- 
-        This includes example output file formats.
-        This should be a detailed description and example - assume
-        someone will want to parse this file and will want to know what
-        happens in unusual cases - null output, errors etc. 
-   -->
 
 
 <a name="output.1"></a>
@@ -1016,8 +964,7 @@ tembl-id:ECLACZ   ECLACZ        3078	3078	0	0	0	0	3078	100.000000	1.000000	E. co
 </td></tr></table><p>
 
 
-
-
+<p>
 The first non-blank line is the heading.  This is followed by one line
 per sequence containing the following columns of data separated by one
 of more space or TAB characters:
@@ -1063,15 +1010,6 @@ white-space at the end.
 <H2>
     Data files
 </H2>
-
-<!-- 
-        Any data files used (e.g. translation table file)
-        This includes example data file formats if they are
-        not obvious.
-	If you wish to include the standard description of what data
-	files are and how to use embossdata to inspect and retrieve
-	them, use:
-   -->
 
 <b>infoalign</b> reads in scoring matrices to determine the consensus
 sequence and to determine which matches are similar or not. 
@@ -1127,112 +1065,41 @@ The directories are searched in the following order:
     Notes
 </H2>
 
-<!-- 
-        Restrictions.
-        Interesting behaviour.
-        Useful things you can do with this program.
-   -->
-
 By default, the output file starts each line with the USA of the
 sequence being described, so the output file is a list file that can be
 manually edited and read in by other EMBOSS programs using the list-file
 specification of '@filename'. 
 
-
-
-
-
-
 <H2>
     References
 </H2>
 
-<!-- 
-        Bibliography for methods used.
-   -->
-
 None.
-
-
-
-
-
-
-
 
 <H2>
     Warnings
 </H2>
 
-<!-- 
-        Potentially stupid things the program will let you do.
-   -->
-
 None.
-
-
-
-
-
-
 
 <H2>
     Diagnostic Error Messages
 </H2>
 
-<!-- 
-        Error messages specific to this program, eg:
-        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
-   -->
-
 None.
-
-
-
-
-
-
 
 <H2>
     Exit status
 </H2>
 
-<!-- 
-        Description of the exit status for various error conditions
-   -->
-
 It always exits with status 0.
-
-
-
-
-
-
-
 
 <H2>
     Known bugs
 </H2>
 
-
-<!-- 
-        Bugs noted but not yet fixed.
-   -->
-
 None.
 
-
-
-
-
-
-
-
-<!--
-<H2>
-    See also
-</H2>
--->
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
@@ -1250,26 +1117,11 @@ None.
 <tr><td><a href="wossname.html">wossname</a></td><td>Finds programs by keywords in their one-line documentation</td></tr>
 </table>
 
-<!-- 
-        Add any comments about other associated programs (to prepare
-        data files?) that seealso doesn't find. 
-   -->
-
-
-
-
-
-
-
-
 
 
 <H2>
     Author(s)
 </H2>
-<!--
-        Who has worked on the program in the past.
-   -->
 
 Gary Williams (gwilliam&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
 <br>
@@ -1278,58 +1130,18 @@ Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
 
 
-
-
-
 <H2>
     History
 </H2>
 
-<!--
-        What changes have been made.
-   -->
-
 Written (June 2001) - Gary Williams
-
-<!--
-<p>
-[an error occurred while processing this directive]
--->
-
-
-
-
-
-
-
-
-
 
 
 
 <H2>
     Target users
 </H2>
-
-<!--
-        For general users, requested by one user, for EMBOSS site
-        maintainers, for EMBOSS developers etc.
-        eg:
-        "This program is intended to be used by everyone and everything,
-        from naive users to embedded scripts." 
-	Which is easy to include using:
-   -->
-
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1337,15 +1149,7 @@ This program is intended to be used by everyone and everything, from naive users
     Comments
 </H2>
 
-<!--
-	Any comments, requests etc. that people have about the program
-   -->
-
-
-
-
-
-
+None
 
 
 </BODY>

@@ -7,12 +7,6 @@
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
 
-
-
-
-
-
-
 <table align=center border=0 cellspacing=0 cellpadding=0>
 <tr><td valign=top>
 <A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
@@ -29,19 +23,9 @@ showdb
 
 
 
-
-
-
 <H2>
     Function
 </H2>
-
-
-
-<!--
-DON'T WRITE ANYTHING HERE.
-IT IS DONE FOR YOU.
--->
 Displays information on the currently available databases
 
 
@@ -98,8 +82,6 @@ running this program and having a look.
 <H2>
     Usage
 </H2>
-
-
 <b>Here is a sample session with showdb</b>
 <p>
 Display information on the currently available databases: 
@@ -143,6 +125,9 @@ qasrsfasta    N    OK  OK  -   EMBL in local srs installation, fasta format
 qasrswww      N    OK  -   -   Remote SRS web server
 qawfasta      N    OK  OK  OK  FASTA file wormpep entries
 tembl         N    OK  OK  OK  EMBL in native format with EMBL CD-ROM index
+temblall      N    -   -   OK  EMBL in native format with EMBL CD-ROM index
+temblrest     N    -   -   OK  EMBL in native format with EMBL CD-ROM index
+temblvrt      N    -   -   OK  EMBL in native format with EMBL CD-ROM index
 tgb           N    OK  -   -   Genbank IDs
 tgenbank      N    OK  OK  OK  GenBank in native format with EMBL CD-ROM index
 
@@ -227,6 +212,9 @@ Displays information on the currently available databases
 <tr><td>qasrswww</td><td>N</td><td>OK  </td><td>-   </td><td>-   </td><td>Remote SRS web server</td></tr>
 <tr><td>qawfasta</td><td>N</td><td>OK  </td><td>OK  </td><td>OK  </td><td>FASTA file wormpep entries</td></tr>
 <tr><td>tembl</td><td>N</td><td>OK  </td><td>OK  </td><td>OK  </td><td>EMBL in native format with EMBL CD-ROM index</td></tr>
+<tr><td>temblall</td><td>N</td><td>-   </td><td>-   </td><td>OK  </td><td>EMBL in native format with EMBL CD-ROM index</td></tr>
+<tr><td>temblrest</td><td>N</td><td>-   </td><td>-   </td><td>OK  </td><td>EMBL in native format with EMBL CD-ROM index</td></tr>
+<tr><td>temblvrt</td><td>N</td><td>-   </td><td>-   </td><td>OK  </td><td>EMBL in native format with EMBL CD-ROM index</td></tr>
 <tr><td>tgb</td><td>N</td><td>OK  </td><td>-   </td><td>-   </td><td>Genbank IDs</td></tr>
 <tr><td>tgenbank</td><td>N</td><td>OK  </td><td>OK  </td><td>OK  </td><td>GenBank in native format with EMBL CD-ROM index</td></tr>
 </table>
@@ -311,6 +299,9 @@ qasrsfasta    N    OK  OK  -   EMBL in local srs installation, fasta format
 qasrswww      N    OK  -   -   Remote SRS web server
 qawfasta      N    OK  OK  OK  FASTA file wormpep entries
 tembl         N    OK  OK  OK  EMBL in native format with EMBL CD-ROM index
+temblall      N    -   -   OK  EMBL in native format with EMBL CD-ROM index
+temblrest     N    -   -   OK  EMBL in native format with EMBL CD-ROM index
+temblvrt      N    -   -   OK  EMBL in native format with EMBL CD-ROM index
 tgb           N    OK  -   -   Genbank IDs
 tgenbank      N    OK  OK  OK  GenBank in native format with EMBL CD-ROM index
 
@@ -358,6 +349,9 @@ qasrsfasta
 qasrswww      
 qawfasta      
 tembl         
+temblall      
+temblrest     
+temblvrt      
 tgb           
 tgenbank      
 
@@ -406,6 +400,9 @@ qasrsfasta    N
 qasrswww      N    
 qawfasta      N    
 tembl         N    
+temblall      N    
+temblrest     N    
+temblvrt      N    
 tgb           N    
 tgenbank      N    
 
@@ -418,14 +415,6 @@ tgenbank      N
 <H2>
     Command line arguments
 </H2>
-
-
-
-<!--
-DON'T WRITE ANYTHING HERE.
-IT IS DONE FOR YOU.
--->
-
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers: (none)
@@ -668,6 +657,9 @@ qasrsfasta    N    OK  OK  -   EMBL in local srs installation, fasta format
 qasrswww      N    OK  -   -   Remote SRS web server
 qawfasta      N    OK  OK  OK  FASTA file wormpep entries
 tembl         N    OK  OK  OK  EMBL in native format with EMBL CD-ROM index
+temblall      N    -   -   OK  EMBL in native format with EMBL CD-ROM index
+temblrest     N    -   -   OK  EMBL in native format with EMBL CD-ROM index
+temblvrt      N    -   -   OK  EMBL in native format with EMBL CD-ROM index
 tgb           N    OK  -   -   Genbank IDs
 tgenbank      N    OK  OK  OK  GenBank in native format with EMBL CD-ROM index
 </pre>
@@ -759,19 +751,19 @@ used in the examples shown in the documentation of the programs.
 
 For details of the database definitions, you should first read David's
 Administration Guide:
-<a href="http://www.uk.embnet.org/Software/EMBOSS/Doc/Admin_guide/adminguide/">
-http://www.uk.embnet.org/Software/EMBOSS/Doc/Admin_guide/adminguide/
+<a href="/docs/adminguide/">
+http://emboss.sourceforge.net/docs/adminguide/
 </a>
 especially:
-<a href="http://www.uk.embnet.org/Software/EMBOSS/Doc/Admin_guide/adminguide/node4.html">
-http://www.uk.embnet.org/Software/EMBOSS/Doc/Admin_guide/adminguide/node4.html
+<a href="/docs/adminguide/node4.html">
+http://emboss.sourceforge.net/docs/adminguide/adminguide/node4.html
 </a>
 
 <p>
 
 See also:
-<a href="http://www.uk.embnet.org/Software/EMBOSS/Usa/databases.html">
-http://www.uk.embnet.org/Software/EMBOSS/Usa/databases.html
+<a href="/docs/themes/Databases.html">
+http://emboss.sourceforge.net/docs/themes/Databases.html
 </a>
 for a lot of detail of the syntax of database definition.
 
@@ -787,14 +779,14 @@ using <b>seqret</b>.
 </H2>
 
 
-	None.
+None.
 
 <H2>
     Warnings
 </H2>
 
 
-	None.
+None.
 
 <H2>
     Diagnostic Error Messages
@@ -818,48 +810,36 @@ displayed.
 </H2>
 
 
-        None noted.
+None noted.
 
-<!--
-<H2>
-    See also
-</H2>
--->
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="abiview.shtml">abiview</a></td><td>Reads ABI file and display the trace</td></tr>
-<tr><td><a href="cirdna.shtml">cirdna</a></td><td>Draws circular maps of DNA constructs</td></tr>
-<tr><td><a href="infoalign.shtml">infoalign</a></td><td>Information on a multiple sequence alignment</td></tr>
-<tr><td><a href="infoseq.shtml">infoseq</a></td><td>Displays some simple information about sequences</td></tr>
-<tr><td><a href="lindna.shtml">lindna</a></td><td>Draws linear maps of DNA constructs</td></tr>
-<tr><td><a href="pepnet.shtml">pepnet</a></td><td>Displays proteins as a helical net</td></tr>
-<tr><td><a href="pepwheel.shtml">pepwheel</a></td><td>Shows protein sequences as helices</td></tr>
-<tr><td><a href="prettyplot.shtml">prettyplot</a></td><td>Displays aligned sequences, with colouring and boxing</td></tr>
-<tr><td><a href="prettyseq.shtml">prettyseq</a></td><td>Output sequence with translated ranges</td></tr>
-<tr><td><a href="remap.shtml">remap</a></td><td>Display a sequence with restriction cut sites, translation etc</td></tr>
-<tr><td><a href="seealso.shtml">seealso</a></td><td>Finds programs sharing group names</td></tr>
-<tr><td><a href="showalign.shtml">showalign</a></td><td>Displays a multiple sequence alignment</td></tr>
-<tr><td><a href="showfeat.shtml">showfeat</a></td><td>Show features of a sequence</td></tr>
-<tr><td><a href="showseq.shtml">showseq</a></td><td>Display a sequence with features, translation etc</td></tr>
-<tr><td><a href="sixpack.shtml">sixpack</a></td><td>Display a DNA sequence with 6-frame translation and ORFs</td></tr>
-<tr><td><a href="textsearch.shtml">textsearch</a></td><td>Search sequence documentation text. SRS and Entrez are faster!</td></tr>
-<tr><td><a href="tfm.shtml">tfm</a></td><td>Displays a program's help documentation manual</td></tr>
-<tr><td><a href="whichdb.shtml">whichdb</a></td><td>Search all databases for an entry</td></tr>
-<tr><td><a href="wossname.shtml">wossname</a></td><td>Finds programs by keywords in their one-line documentation</td></tr>
+<tr><td><a href="abiview.html">abiview</a></td><td>Reads ABI file and display the trace</td></tr>
+<tr><td><a href="cirdna.html">cirdna</a></td><td>Draws circular maps of DNA constructs</td></tr>
+<tr><td><a href="infoalign.html">infoalign</a></td><td>Information on a multiple sequence alignment</td></tr>
+<tr><td><a href="infoseq.html">infoseq</a></td><td>Displays some simple information about sequences</td></tr>
+<tr><td><a href="lindna.html">lindna</a></td><td>Draws linear maps of DNA constructs</td></tr>
+<tr><td><a href="pepnet.html">pepnet</a></td><td>Displays proteins as a helical net</td></tr>
+<tr><td><a href="pepwheel.html">pepwheel</a></td><td>Shows protein sequences as helices</td></tr>
+<tr><td><a href="prettyplot.html">prettyplot</a></td><td>Displays aligned sequences, with colouring and boxing</td></tr>
+<tr><td><a href="prettyseq.html">prettyseq</a></td><td>Output sequence with translated ranges</td></tr>
+<tr><td><a href="remap.html">remap</a></td><td>Display a sequence with restriction cut sites, translation etc</td></tr>
+<tr><td><a href="seealso.html">seealso</a></td><td>Finds programs sharing group names</td></tr>
+<tr><td><a href="showalign.html">showalign</a></td><td>Displays a multiple sequence alignment</td></tr>
+<tr><td><a href="showfeat.html">showfeat</a></td><td>Show features of a sequence</td></tr>
+<tr><td><a href="showseq.html">showseq</a></td><td>Display a sequence with features, translation etc</td></tr>
+<tr><td><a href="sixpack.html">sixpack</a></td><td>Display a DNA sequence with 6-frame translation and ORFs</td></tr>
+<tr><td><a href="textsearch.html">textsearch</a></td><td>Search sequence documentation text. SRS and Entrez are faster!</td></tr>
+<tr><td><a href="tfm.html">tfm</a></td><td>Displays a program's help documentation manual</td></tr>
+<tr><td><a href="whichdb.html">whichdb</a></td><td>Search all databases for an entry</td></tr>
+<tr><td><a href="wossname.html">wossname</a></td><td>Finds programs by keywords in their one-line documentation</td></tr>
 </table>
-
-<!--
-        Add any comments about other associated programs (to prepare
-        data files?) that seealso doesn't find.
-   -->
 
 
 <H2>
     Author(s)
 </H2>
-
-
 Gary Williams (gwilliam&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
 <br>
 MRC Rosalind Franklin Centre for Genomics Research
@@ -872,30 +852,19 @@ Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
     History
 </H2>
 
-
 Completed 6th August 1999.
 
-<!--
-<p>
-[an error occurred while processing this directive]
--->
 
 <H2>
     Target users
 </H2>
+This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
-
-This program is intended to be used by everyone and everything,
-from naive users to embedded scripts. 
 
 <H2>
     Comments
 </H2>
-
-
-<pre>
-
-</pre>
+None
 
 
 </BODY>

@@ -7,11 +7,6 @@
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
 
-
-
-
-
-
 <table align=center border=0 cellspacing=0 cellpadding=0>
 <tr><td valign=top>
 <A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
@@ -28,20 +23,9 @@ seealso
 
 
 
-
-
-
-
 <H2>
     Function
 </H2>
-
-
-
-<!--
-DON'T WRITE ANYTHING HERE.
-IT IS DONE FOR YOU.
--->
 Finds programs sharing group names
 
 
@@ -82,8 +66,6 @@ The groups that the program belongs to can be output by using the
 <H2>
     Usage
 </H2>
-
-
 <b>Here is a sample session with seealso</b>
 <p>
 
@@ -110,14 +92,6 @@ wordmatch        Finds all exact matches of a given size between 2 sequences
 <H2>
     Command line arguments
 </H2>
-
-
-
-<!--
-DON'T WRITE ANYTHING HERE.
-IT IS DONE FOR YOU.
--->
-
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
@@ -152,19 +126,19 @@ IT IS DONE FOR YOU.
                                   half of the URL.
                                   For example, if you wish the program name to
                                   be a hyperlink to the URL:
-                                  http://www.uk.embnet.org/Software/EMBOSS/Apps/
+                                  http://emboss.sourceforge.net/apps/
                                   programname.html
                                   then if you enter
-                                  http://www.uk.embnet.org/Software/EMBOSS/Apps/
-                                  here, then the first half of the URL before
-                                  the program name will be set.
+                                  http://emboss.sourceforge.net/apps/ here,
+                                  then the first half of the URL before the
+                                  program name will be set.
 *  -postlink           string     If you are outputting to a file in HTML
                                   format, you can make the program names into
                                   hyper-links by setting this to be the second
                                   half of the URL.
                                   For example, if you wish the program name to
                                   be a hyperlink to the URL:
-                                  http://www.uk.embnet.org/Software/EMBOSS/Apps/
+                                  http://emboss.sourceforge.net/apps/
                                   programname.html
                                   then if you enter '.html' here, the second
                                   half of the URL after the program name will
@@ -215,22 +189,22 @@ IT IS DONE FOR YOU.
    Associated qualifiers:
 
    "-outfile" associated qualifiers
-   -odirectory          string     Output directory
+   -odirectory         string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
 
 </pre>
@@ -276,17 +250,17 @@ Using expanded group names will find many more programs which share at least som
 <td>-html</td>
 <td>If you are sending the output to a file, this will format it for displaying as a table in a WWW document.</td>
 <td>Toggle value Yes/No</td>
-<td>N</td>
+<td>No</td>
 </tr>
 
 <tr>
 <td>-prelink</td>
 <td>If you are outputting to a file in HTML format, you can make the program names into hyper-links by setting this to be the first half of the URL.
 For example, if you wish the program name to be a hyperlink to the URL:
-http://www.uk.embnet.org/Software/EMBOSS/Apps/
+http://emboss.sourceforge.net/apps/
 programname.html
 then if you enter
-http://www.uk.embnet.org/Software/EMBOSS/Apps/ here, then the first half of the URL before the program name will be set.</td>
+http://emboss.sourceforge.net/apps/ here, then the first half of the URL before the program name will be set.</td>
 <td>Any string is accepted</td>
 <td><i>An empty string is accepted</i></td>
 </tr>
@@ -295,7 +269,7 @@ http://www.uk.embnet.org/Software/EMBOSS/Apps/ here, then the first half of the 
 <td>-postlink</td>
 <td>If you are outputting to a file in HTML format, you can make the program names into hyper-links by setting this to be the second half of the URL.
 For example, if you wish the program name to be a hyperlink to the URL:
-http://www.uk.embnet.org/Software/EMBOSS/Apps/
+http://emboss.sourceforge.net/apps/
 programname.html
 then if you enter '.html' here, the second half of the URL after the program name will be set.</td>
 <td>Any string is accepted</td>
@@ -431,40 +405,29 @@ is specified, when the exit status is '1'.
 
 None.
 
-<!--
-<H2>
-    See also
-</H2>
--->
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="abiview.shtml">abiview</a></td><td>Reads ABI file and display the trace</td></tr>
-<tr><td><a href="cirdna.shtml">cirdna</a></td><td>Draws circular maps of DNA constructs</td></tr>
-<tr><td><a href="infoalign.shtml">infoalign</a></td><td>Information on a multiple sequence alignment</td></tr>
-<tr><td><a href="infoseq.shtml">infoseq</a></td><td>Displays some simple information about sequences</td></tr>
-<tr><td><a href="lindna.shtml">lindna</a></td><td>Draws linear maps of DNA constructs</td></tr>
-<tr><td><a href="pepnet.shtml">pepnet</a></td><td>Displays proteins as a helical net</td></tr>
-<tr><td><a href="pepwheel.shtml">pepwheel</a></td><td>Shows protein sequences as helices</td></tr>
-<tr><td><a href="prettyplot.shtml">prettyplot</a></td><td>Displays aligned sequences, with colouring and boxing</td></tr>
-<tr><td><a href="prettyseq.shtml">prettyseq</a></td><td>Output sequence with translated ranges</td></tr>
-<tr><td><a href="remap.shtml">remap</a></td><td>Display a sequence with restriction cut sites, translation etc</td></tr>
-<tr><td><a href="showalign.shtml">showalign</a></td><td>Displays a multiple sequence alignment</td></tr>
-<tr><td><a href="showdb.shtml">showdb</a></td><td>Displays information on the currently available databases</td></tr>
-<tr><td><a href="showfeat.shtml">showfeat</a></td><td>Show features of a sequence</td></tr>
-<tr><td><a href="showseq.shtml">showseq</a></td><td>Display a sequence with features, translation etc</td></tr>
-<tr><td><a href="sixpack.shtml">sixpack</a></td><td>Display a DNA sequence with 6-frame translation and ORFs</td></tr>
-<tr><td><a href="textsearch.shtml">textsearch</a></td><td>Search sequence documentation text. SRS and Entrez are faster!</td></tr>
-<tr><td><a href="tfm.shtml">tfm</a></td><td>Displays a program's help documentation manual</td></tr>
-<tr><td><a href="whichdb.shtml">whichdb</a></td><td>Search all databases for an entry</td></tr>
-<tr><td><a href="wossname.shtml">wossname</a></td><td>Finds programs by keywords in their one-line documentation</td></tr>
+<tr><td><a href="abiview.html">abiview</a></td><td>Reads ABI file and display the trace</td></tr>
+<tr><td><a href="cirdna.html">cirdna</a></td><td>Draws circular maps of DNA constructs</td></tr>
+<tr><td><a href="infoalign.html">infoalign</a></td><td>Information on a multiple sequence alignment</td></tr>
+<tr><td><a href="infoseq.html">infoseq</a></td><td>Displays some simple information about sequences</td></tr>
+<tr><td><a href="lindna.html">lindna</a></td><td>Draws linear maps of DNA constructs</td></tr>
+<tr><td><a href="pepnet.html">pepnet</a></td><td>Displays proteins as a helical net</td></tr>
+<tr><td><a href="pepwheel.html">pepwheel</a></td><td>Shows protein sequences as helices</td></tr>
+<tr><td><a href="prettyplot.html">prettyplot</a></td><td>Displays aligned sequences, with colouring and boxing</td></tr>
+<tr><td><a href="prettyseq.html">prettyseq</a></td><td>Output sequence with translated ranges</td></tr>
+<tr><td><a href="remap.html">remap</a></td><td>Display a sequence with restriction cut sites, translation etc</td></tr>
+<tr><td><a href="showalign.html">showalign</a></td><td>Displays a multiple sequence alignment</td></tr>
+<tr><td><a href="showdb.html">showdb</a></td><td>Displays information on the currently available databases</td></tr>
+<tr><td><a href="showfeat.html">showfeat</a></td><td>Show features of a sequence</td></tr>
+<tr><td><a href="showseq.html">showseq</a></td><td>Display a sequence with features, translation etc</td></tr>
+<tr><td><a href="sixpack.html">sixpack</a></td><td>Display a DNA sequence with 6-frame translation and ORFs</td></tr>
+<tr><td><a href="textsearch.html">textsearch</a></td><td>Search sequence documentation text. SRS and Entrez are faster!</td></tr>
+<tr><td><a href="tfm.html">tfm</a></td><td>Displays a program's help documentation manual</td></tr>
+<tr><td><a href="whichdb.html">whichdb</a></td><td>Search all databases for an entry</td></tr>
+<tr><td><a href="wossname.html">wossname</a></td><td>Finds programs by keywords in their one-line documentation</td></tr>
 </table>
-
-<!--
-        Add any comments about other associated programs (to prepare
-        data files?) that seealso doesn't find.
-   -->
-
 
 
 
@@ -485,27 +448,22 @@ Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
     History
 </H2>
 
-
 Written 16 June 2000 in response to a need to improve the automatic
 construction of EMBOSS documentation web pages. 
-
-<!--
-<p>
-[an error occurred while processing this directive]
--->
 
 <H2>
     Target users
 </H2>
+This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
 
-This program is intended to be used by everyone and everything,
-from naive users to embedded scripts. 
 
 
 <H2>
     Comments
 </H2>
+None
+
 
 
 

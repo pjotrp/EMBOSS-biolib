@@ -1,66 +1,135 @@
-<!--START OF HEADER - DON'T ALTER -->
-
-<HTML>
-<HEAD>
-  <TITLE>
-  EMBOSS: seqsort
-  </TITLE>
+<html>
+<head>
+<title>EMBASSY domainatrix: seqsort</title>
+<base href="http://emboss.sourceforge.net/embassy/domainatrix/">
+</head>
+<body>
+<!-- START OF HEADER -->
+<HTML><HEAD>
+<TITLE> EMBOSS: SEQSORT documentation. </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
+<H2> SEQSORT documentation </H2>
+<!-- END OF HEADER -->
 
 
 
-<table align=center border=0 cellspacing=0 cellpadding=0>
-<tr><td valign=top>
-<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
-</td>
-<td align=left valign=middle>
-<b><font size="+6">
 
-seqsort
-</font></b>
-</td></tr>
+
+<!-- CONTENTS
+     This always includes the sections below.
+     Other subsections can be added for individual applications.
+-->
+<br><H2>CONTENTS </H2>
+<b> <a href="#1.0">1.0     SUMMARY                   </a></b><br>
+<b> <a href="#2.0">2.0     INPUTS & OUTPUTS          </a></b><br>
+<b> <a href="#3.0">3.0     INPUT FILE FORMAT         </a></b><br>
+<b> <a href="#4.0">4.0     OUTPUT FILE FORMAT        </a></b><br>
+<b> <a href="#5.0">5.0     DATA FILES                </a></b><br>
+<b> <a href="#6.0">6.0     USAGE                     </a></b><br>    
+<b> <a href="#7.0">7.0     KNOWN BUGS & WARNINGS     </a></b><br>    
+<b> <a href="#8.0">8.0     NOTES                     </a></b><br>
+<b> <a href="#9.0">9.0     DESCRIPTION               </a></b><br>
+<b> <a href="#10.0">10.0   ALGORITHM                 </a></b><br>
+<b> <a href="#11.0">11.0   RELATED APPLICATIONS      </a></b><br>
+<b> <a href="#12.0">12.0   DIAGNOSTIC ERROR MESSAGES </a></b><br>
+<b> <a href="#13.0">13.0   AUTHORS                   </a></b><br>
+<b> <a href="#14.0">14.0   REFERENCES                </a></b><br>
+
+<!-- SUMMARY
+     Succint description of the application, particularly its inputs, outputs
+     and what it does.  The same text is given at the top of the source (.c)
+     file and in the <documentation> attribute of the <application definition>
+     of the ACD file.
+-->
+<a name="1.0"></a>
+<br><br><br><H2> 1.0   SUMMARY  </H2>
+Reads DHF files (domain hits files) of database hits (sequences) and removes hits of ambiguous classification.
+
+
+
+
+
+<!-- INPUTS & OUTPUTS
+     Short summary of the application inputs and outputs in its different 
+     modes of usage (if appropriate). More detail than the summary.
+-->
+<a name="2.0"></a>
+<br><br><br><H2> 2.0   INPUTS & OUTPUTS          </H2>
+SEQSORT reads a directory of DHF files (domain hits files) where each file contains hits to a single SCOP family, compares, processes and collates the hits and writes a directory of DHF files which contain only those hits that could be uniquely assigned to a SCOP family.  Optionally, two further files of hits are written: (i) a domain families file, of ALL hits from the input files that could be uniquely assigned to a SCOP family and (ii) a domain ambiguities file, of hits from ALL the input files that are of ambiguous family assignment and are assigned as relatives to a SCOP superfamily or fold instead. 
+<br>The path for the domain hits files (input and output) and the names of the output files are specified by the user.  The file extension of the DHF files are set in the ACD file.
+
+
+
+
+
+<!-- INPUT FILE FORMAT 
+     Description and example(s) of input file formats.  Should provide enough
+     information to write and parse the file.  Should describe the format in 
+     unusual cases - null input, etc.
+
+     Cannot use the test data files because they might be empty or need 
+     hand-editing 
+
+     Use "<b>SEQSORT</b> reads any normal sequence USAs." if
+     appropriate.
+-->
+<a name="3.0"></a>
+<br><br><br><H2> 3.0   INPUT FILE FORMAT         </H2>
+The format of the domain hits file is described in <a href="seqsearch.html">SEQSEARCH documentation.</a>
+
+
+
+
+<!-- OUTPUT FILE FORMAT 
+     Description and example(s) of output file formats.  Should provide enough
+     information to write and parse the file.  Should describe the format in 
+     unusual cases - null input, etc.  
+     If the standard description of the avalable report formats is required, 
+     use:   #include file="inc/reportformats.ihtml"
+     Use "Outputs a graph to the specified graphics device."
+     or  "outputs a report format file. The default format is ..."
+     if appropriate.
+-->
+<a name="4.0"></a>
+<br><br><br><H2> 4.0   OUTPUT FILE FORMAT         </H2>
+The format of the domain hits file is described in <a href="seqsearch.html">SEQSEARCH documentation.</a>
+
+<br><br> The domain families file and domain ambiguities file also use the DHF format.  Whereas normally a DHF file contains hits for a single node from SCOP or CATH, the families and ambiguities files may contain domains from multiple different families (domain families file), or superfamilies or folds (ambiguities file).  Domains of the same node (e.g. family) will be grouped together in blocks, i.e. all hits for domain A, then all hits for domain B and so on (see Figure 1).
+
+
+<br><br><b>Figure 1   Excerpt from a domain families file (output)</b>
+<table><td bgcolor="#CFCCFF">
+<pre>
+> P00478^.^8^99^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^191.00^0.000e+00^0.000e+00
+VEAIKRGTVIDHIPAQIGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLSEDQVDQLALYAPQATVNRIDNYEVVGKSRPSLP
+> O58452^.^6^99^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^94.30^0.000e+00^6.000e-20
+VSAIKEGTVIDHIPAGKGLKVIEILGLSKLSNGGSVLLAMNVPSKKLGRKDIVKVEGKFLSEEEVNKIALVAPTATVNIIRNYKVVEKFKVEVP
+> O30129^.^6^98^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^79.60^0.000e+00^2.000e-15
+VSKIKEGTVIDHINAGKALLVLKILKIQPGTDLTVSMAMNVPSSKMGKKDIVKVEGMFIRDEELNKIALISPNATINLIRDYEIERKFKVSPP
+> O26938^.^11^101^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^81.90^0.000e+00^3.000e-16
+VKPIKNGTVIDHITANRSLNVLNILGLPDGRSKVTVAMNMDSSQLGSKDIVKIENRELKPSEVDQIALIAPRATINIVRDYKIVEKAKVRL
+> Q9WVI4^.^513^667^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^113.00^0.000e+00^2.000e-25
+RKFDDVTMLFSDIVGFTAICAQCTPMQVISMLNELYTRFDHQCGFLDIYKVETIGDAYCVASGLHRKSLCHAKPIALMALKMMELSEEVLTPDGRPIQMRIGIHSGSVLAGVVGVRMPRYCLFGNNVTLASKFESGSHPRRINISPTTYQLLKRE
+> Q9ERL9^.^475^626^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^101.00^0.000e+00^9.000e-22
+KKFSEVTMLFSDIVGFTAICSQCSPLQVITMLNALYTRFDQQCGELDVYKVETIGDAYCVAGGLHRESDTHAVQIALMALKMMELSNEVMSPHGEPIKMRIGLHSGSVFAGVVGVKMPRYCLFGNNVTLANKFESCSVPRKINVSPTTYRLL
+</pre>
 </table>
-<br>&nbsp;
-<p>
-
-
-
-<!--END OF HEADER-->
 
 
 
 
-
-
-<H2>
-    Function
-</H2>
-[an error occurred while processing this directive]
-
-<!--
-DON'T WRITE ANYTHING HERE.
-IT IS DONE FOR YOU.
+<!-- DATA FILES         
+     Any data files used (e.g. translation table file, substitution matrix 
+     etc.  This includes example data file formats if they are not obvious.
+     For a standard description of what data files are and how embossdata can
+     be used to inspect and retrieve them, use:
+     #include file="inc/localfiles.ihtml" 
 -->
 
-
-
-
-<H2>
-    Description
-</H2>
-
-<!-- 
-	This is the main part of the document.
-        This is what the user looks at to find out if this program will do what he wants. 
-        Long description.
-        Why it is useful.
-        When it should/shouldn't be used.
-  -->
-
-**************** 
-EDIT HERE
-**************** 
+<a name="5.0"></a>
+<br><br><br><H2> 5.0   DATA FILES                </H2>
+None.
 
 
 
@@ -68,507 +137,285 @@ EDIT HERE
 
 
 
+<!-- USAGE
+     Example usage, as run from the command-line.
+     Many examples illustrating different behaviours is good.
+-->
+<a name="6.0"></a>
+<br><br><br><H2> 6.0   USAGE                     </H2>
+<H3> 6.1   COMMAND LINE ARGUMENTS </H3>
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+ 
+<tr>
+<td>[-dhfin]<br>(Parameter 1)</td>
+<td>This option specifies the location of DHF files (domain hits files) (input). A 'domain hits file' contains database hits (sequences) with domain classification information, in the DHF format (FASTA or EMBL-like). The hits are relatives to a SCOP or CATH family and are found from a search of a sequence database. Files containing hits retrieved by PSIBLAST are generated by using SEQSEARCH.</td>
+<td>Directory</td>
+<td>./</td>
+</tr>
+ 
+<tr>
+<td>-overlap</td>
+<td>This option specifies the number of overlapping residues required for merging of two hits. Each family is also processed so that ovlerapping hits (hits with identical accesssion number that overlap by at least a user-defined number of residues) are replaced by a hit that is produced from merging the two overlapping hits.</td>
+<td>Any integer value</td>
+<td>10</td>
+</tr>
+ 
+<tr>
+<td>-dofamilies</td>
+<td>This option specifies to write a domain families file. If this option is set a domain families file is written.</td>
+<td>Toggle value Yes/No</td>
+<td>N</td>
+</tr>
+ 
+<tr>
+<td>-doambiguities</td>
+<td>This option specifies whether to write a domain ambiguities file. If this option is set a domain ambiguities file is written.</td>
+<td>Toggle value Yes/No</td>
+<td>N</td>
+</tr>
+ 
+<tr>
+<td>[-dhfout]<br>(Parameter 2)</td>
+<td>This option specifies the location of DHF files (domain hits files) (output). A 'domain hits file' contains database hits (sequences) with domain classification information, in the DHF format (FASTA or EMBL-like). The hits are relatives to a SCOP or CATH family and are found from a search of a sequence database. Files containing hits retrieved by PSIBLAST are generated by using SEQSEARCH.</td><td>Directory</td>
+<td>./</td>
+</tr>
+ 
+<tr>
+<td>-hitsf</td>
+<td>This option specifies the name of domain families file (output). A 'domain families file' contains sequence relatives (hits) for each of a number of different SCOP or CATH families found from searching a sequence database, e.g. by using SEQSEARCH (psiblast). The file contains the collated search results for the indvidual families; only those hits of unambiguous family assignment are included. Hits of ambiguous family assignment are assigned as relatives to a SCOP or CATH superfamily or fold instead and are collated into a 'domain ambiguities file'. The domain families and ambiguities files are generated by using SEQSORT and use the same format as a DHF file (domain hits file).</td>
+<td>Output file</td>
+<td>fam.dhf</td>
+</tr>
+ 
+<tr>
+<td>-ambigf</td>
+<td>This option specifies the name of domain ambiguities file (output). A 'domain families file' contains sequence relatives (hits) for each of a number of different SCOP or CATH families found from searching a sequence database, e.g. by using SEQSEARCH (psiblast). The file contains the collated search results for the indvidual families; only those hits of unambiguous family assignment are included. Hits of ambiguous family assignment are assigned as relatives to a SCOP or CATH superfamily or fold instead and are collated into a 'domain ambiguities file'. The domain families and ambiguities files are generated by using SEQSORT and use the same format as a DHF file (domain hits file).</td>
+<td>Output file</td>
+<td>oth.dhf</td>
+</tr>
+ 
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+ 
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+ 
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+ 
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+ 
+</table>
 
 
-
-
-
-
-<H2>
-    Algorithm
-</H2>
-
-<!-- 
-        Algorithms
-	  Pseudocode/Vague description/Handwaving/web links to useful pages
-  -->
-
-**************** 
-EDIT HERE
-**************** 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<H2>
-    Usage
-</H2>
-
-<!--  
-	Example usage, as run from the command-line.
-        Many examples illustrating different behaviours is good.
- -->
-
-[an error occurred while processing this directive]
-
-
-
-<H2>
-    Command line arguments
-</H2>
-
-<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<H3> 6.2 EXAMPLE SESSION </H3>
+An example of interactive use of SEQSORT is shown below.
+<table><td bgcolor="#FFCCFF">
 <pre>
-[an error occurred while processing this directive]
+Unix % seqsort
+Reads files of database hits (sequences) for nodes in a DCF file (domain
+classification file) and removes hits of ambiguous classification.
+Location of DHF files (domain hits files) for input (DHF format) [./]: /test_data
+Number of overlapping residues required for merging of two hits [10]:
+Write domain families file [N]: y
+Write domain ambiguities file [N]: y
+Location of DHF files (domain hits files) for output (DHF format) [./]: /test_data/seqsort
+Name of domain families file (output) [fam.dhf]: /test_data/seqsort/fam.dhf
+Name of domain ambiguities file (output) [oth.dhf]: /test_data/seqsort/oth.dhf
+Warning: Empty list in embDmxScophitsToHitlist
+Warning: Empty list in embDmxScophitsToHitlist
+Warning: Empty list in embDmxScophitsToHitlist
+Unix %
 </pre>
-</td></tr></table>
-<P>
-[an error occurred while processing this directive]
+</table>
 
-<!--
-DON'T WRITE ANYTHING HERE.
-IT IS DONE FOR YOU.
+All DHF files (of the file extension .dhf specicied in ACD) in directory /test_data were 
+processed by SEQSORT.  DHF output files were written to /test_data/seqsort/seqsort_hits.  
+A shared segment of 10 or more identical was required to class two sequences as overlapping.  
+Domain families and ambiguities files called fam.dhf and oth.dhf respectively were written to 
+/test_data/seqsort.
+
+
+<br> 
+<br>The following command line would achieve the same result.
+<br>
+<table><td bgcolor="#FFCCFF">
+<pre> 
+seqsort /test_data /test_data/seqsort -overlap 10 -dofamilies Y -doambiguities Y 
+-hitsf /test_data/seqsort/fam.dhf -ambigf /test_data/seqsort/oth.dhf 
+</pre> 
+</table>
+
+<!-- KNOWN BUGS & WARNINGS
+     Bugs that have not yet been fixed, easily missued features, problems
+     and caveats etc. Potentially stupid things the program will let you do.
 -->
-
-
-
-
-
-
-
-
-<H2>
-    Input file format
-</H2>
-
-<!-- 
-        This includes example input file formats.
-        This should be a detailed description and example - assume
-        someone will want to parse this file and will want to know what
-        happens in unusual cases - null input, etc. 
-   -->
-
-<b>seqsort</b> reads any normal sequence USAs.
-
-<p>
-
-[an error occurred while processing this directive]
-
-
-
-
-
-<H2>
-    Output file format
-</H2>
-
-<!-- 
-        This includes example output file formats.
-        This should be a detailed description and example - assume
-        someone will want to parse this file and will want to know what
-        happens in unusual cases - null output, errors etc. 
-
-        If you wish to include the standard description of the avalable
-	report formats, use:
-<p>
-
-The output is a standard EMBOSS report file. 
-
-<p>
-
-The results can be output in one of several styles by using the
-command-line qualifier <b>-rformat xxx</b>, where 'xxx' is replaced by
-the name of the required format.  The available format names are: embl,
-genbank, gff, pir, swiss, trace, listfile, dbmotif, diffseq, excel,
-feattable, motif, regions, seqtable, simple, srs, table, tagseq
-
-<p>
-
-See:
-<A href="http://www.uk.embnet.org/Software/EMBOSS/Themes/ReportFormats.html">
-http://www.uk.embnet.org/Software/EMBOSS/Themes/ReportFormats.html</A>
-for further information on report formats.
-
-<p>
-
-   -->
-
-<b>seqsort</b> 
-outputs a graph to the specified graphics device. 
-outputs a report format file. The default format is ...
-
-
-<p>
-
-[an error occurred while processing this directive]
-
-
-
-
-
-<H2>
-    Data files
-</H2>
-
-<!-- 
-        Any data files used (e.g. translation table file)
-        This includes example data file formats if they are
-        not obvious.
-
-	If you wish to include the standard description of what data
-	files are and how to use embossdata to inspect and retrieve
-	them, use:
-<p>
-EMBOSS data files are distributed with the application and stored
-in the standard EMBOSS data directory, which is defined
-by the EMBOSS environment variable EMBOSS_DATA.
-
-<p>
-
-To see the available EMBOSS data files, run:
-<p>
-<pre>
-% embossdata -showall
-</pre>
-<p>
-To fetch one of the data files (for example 'Exxx.dat') into your
-current directory for you to inspect or modify, run:
-
-<pre>
-
-% embossdata -fetch -file Exxx.dat
-
-</pre>
-<p>
-
-Users can provide their own data files in their own directories.
-Project specific files can be put in the current directory, or for
-tidier directory listings in a subdirectory called
-".embossdata". Files for all EMBOSS runs can be put in the user's home
-directory, or again in a subdirectory called ".embossdata".
-
-<p>
-The directories are searched in the following order:
-
-<ul>
-   <li> . (your current directory)
-   <li> .embossdata (under your current directory)
-   <li> ~/ (your home directory)
-   <li> ~/.embossdata
-</ul>
-<p>
-
-   -->
-
-**************** 
-EDIT HERE
-**************** 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<H2>
-    Notes
-</H2>
-
-<!-- 
-        Restrictions.
-        Interesting behaviour.
-        Useful things you can do with this program.
-   -->
-
+<a name="7.0"></a>
+<br><br><br><H2> 7.0   KNOWN BUGS & WARNINGS     </H2>
 None.
 
 
 
 
 
-
-
-<H2>
-    References
-</H2>
-
-<!-- 
-        Bibliography for methods used.
-   -->
-
-None.
-
-
-
-
-
-
-
-
-<H2>
-    Warnings
-</H2>
-
-<!-- 
-        Potentially stupid things the program will let you do.
-   -->
-
-None.
-
-
-
-
-
-
-
-<H2>
-    Diagnostic Error Messages
-</H2>
-
-<!-- 
-        Error messages specific to this program, eg:
-        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
-   -->
-
-None.
-
-
-
-
-
-
-
-<H2>
-    Exit status
-</H2>
-
-<!-- 
-        Description of the exit status for various error conditions
-   -->
-
-It always exits with status 0.
-
-
-
-
-
-
-
-
-<H2>
-    Known bugs
-</H2>
-
-
-<!-- 
-        Bugs noted but not yet fixed.
-   -->
-
-None.
-
-
-
-
-
-
-
-
-<!--
-<H2>
-    See also
-</H2>
+<!-- NOTES
+     Important general remarks, including:
+       Restrictions.
+       Interesting behaviour.
+       Useful things you can do with this program.
+       Future plans.
+       etc.
 -->
-[an error occurred while processing this directive]
-<!-- 
-        Add any comments about other associated programs (to prepare
-        data files?) that seealso doesn't find. 
-   -->
+<a name="8.0"></a>
+<br><br><br><H2> 8.0   NOTES                     </H2>
+None.
+
+
+<H3> 8.1   GLOSSARY OF FILE TYPES    </H3>
+<table BORDER CELLSPACING=5 CELLPADDING=5 BGCOLOR="#f5f5ff" >
+<tr>
+<td><b>FILE TYPE</b></td>
+<td><b>FORMAT</b></td>
+<td><b>DESCRIPTION</b></td>
+<td><b>CREATED BY <b></td>
+<td><b>SEE ALSO</b></td>
+</tr>
+<tr>
+<td><b>Domain hits file </b></td>
+<td> DHF format (FASTA-like with domain classification information). </td>
+<td> Database hits (sequences) with domain classification information.  The hits are relatives to a SCOP or CATH family and are found from a search of a sequence database. </td>
+<td> <a href="seqsearch.html">SEQSEARCH</a> (hits retrieved by PSIBLAST)</td>
+<td> N.A. </td>
+</tr>
+<tr>
+<td><b> Domain families & ambiguities file </b></td>
+<td> Contains sequence relatives (hits) for each of a number of different SCOP or CATH families found from PSIBLAST searches of a sequence database.  The file contains the collated search results for the indvidual families; only those hits of unambiguous family assignment are included.  Hits of ambiguous family assignment are assigned as relatives to a SCOP or CATH superfamily or fold instead and are collated into a 'domain ambiguities file'. </td>
+<td>  The domain families and ambiguities files are generated by using SEQSORT and use the same format as a DHF file (domain hits file). </td>
+<td> N.A. </td>
+</tr>
+<tr>
+<td><b>Domain validation file </b></td>
+<td> Contains sequence relatives (hits) for each of a number of different SCOP or CATH families, superfamilies and folds.  The file contains the collated results from PSIBLAST searches of a sequence database for the indvidual families; hits of unambiguous family assignment are listed under their respective family, otherwise a hit is assigned as relatives to a superfamily or fold instead.   </td>
+<td> The domain validation file is generated by using SEQNR and uses the same format as a DHF file (domain hits file). </td>
+<td> N.A. </td>
+</tr>
+</table>
 
 
 
 
 
-
-
-
-
-
-<H2>
-    Author(s)
-</H2>
-<!--
-        Who has worked on the program in the past.
-e.g. one of:
-Alan Bleasby (ableasby&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
-<br>
-MRC Rosalind Franklin Centre for Genomics Research
-Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-
-
-Bernd Jagla (bernd&nbsp;&copy;&nbsp;golgi.ski.mskcc.org)
-<br>
-Cellular Biochemistry and Biophysics Program, Rockefeller
-Research Laboratories, Memorial Sloan-Kettering Cancer Center, 1275 York
-Avenue, Box 251,New York, NY 10021.
-
-David Martin (dmartin&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
-<br>
-
-Gos Micklem (gos&nbsp;&copy;&nbsp;ebi.ac.uk)
-<br>
-Informatics Division, European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
-
-Gary Williams (gwilliam&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
-<br>
-MRC Rosalind Franklin Centre for Genomics Research
-Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-
-
-Ian Longden (il&nbsp;&copy;&nbsp;sanger.ac.uk)
-<br>
-Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
-Cambridge, CB10 1SA, UK.                      
-
-Mark Faller (current e-mail address unknown)
-<br>
-while he was with:
-<br>
-HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
-
-Michael K. Schuster and Martin Grabner (martin.grabner&nbsp;&copy;&nbsp;univie.ac.at)
-<br>
-from the Austrian National EMBnet node.
-
-
-Michael Schmitz (mschmitz&nbsp;&copy;&nbsp;lbl.gov)
-<br>
-Lawrence Berkeley Labs, USA
-
-Nicolas Tourasse (nicolas.tourasse&nbsp;&copy;&nbsp;biotek.uio.no)
-<br>
-Biotechnology Center of Oslo
-
-Peter Rice (pmr&nbsp;&copy;&nbsp;ebi.ac.uk)
-<br>
-Informatics Division, European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
-
-Richard Durbin (rd&nbsp;&copy;&nbsp;sanger.ac.uk)
-<br>
-Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
-Cambridge, CB10 1SA, UK.                      
-
-Richard Bruskiewich (current e-mail address unknown)
-<br>
-while he was at:
-<br>
-Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
-Cambridge, CB10 1SA, UK.                      
-
-Rodrigo Lopez (rls&nbsp;&copy;&nbsp;ebi.ac.uk)
-<br>
-European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
-
-Sinead O'Leary (current e-mail address unknown)
-<br>
-while she was at:
-<br>
-HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
-
-
-Tim Carver (tcarver&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
-<br>
-MRC Rosalind Franklin Centre for Genomics Research
-Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-
-Thomas Laurent (thomas.laurent&nbsp;&copy;&nbsp;uk.lionbioscience.com)
-<br>
-Lion Bioscience Ltd,
-     Compass House,
-     80-82 Newmarket Road,
-     Cambridge,
-     CB5 8DZ,
-     UK
-
-Val Curwen (vac&nbsp;&copy;&nbsp;sanger.ac.uk)
-<br>
-Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
-Cambridge, CB10 1SA, UK. 
-
-
-   -->
-
-**************** 
-EDIT HERE
-**************** 
-
-
-
-
-
-
-
-
-
-
-
-<H2>
-    History
-</H2>
-
-<!--
-        What changes have been made.
-   -->
-
-Written (date) - author.
-
-<!--
-<p>
-[an error occurred while processing this directive]
+<!-- DESCRIPTION
+     A complete, non-technical, user-level description of the application.
 -->
+<a name="9.0"></a>
+<br><br><br><H2> 9.0   DESCRIPTION               </H2>
+The results of multiple searches of a sequence database using an homology search tool such as blast may contain overlapping or identical hits, especially where the query sequences are related, for instance, belong to different families but the same superfamily.  For certain analyses it is desirable to assign a hit with confidence to a unique family, or otherwise assign it as a member of a larger superfamily or fold instead.  SEQSORT reads a directory of DHF files (domain hits files) where each file containing hits to a different SCOP family, compares, processes and collates the hits and writes a directory of DHF files which contain only those hits that could be uniquely assigned to a SCOP family.  Optionally, two further files are written: (i) a domain families file, of hits (from ALL the input files) that could be uniquely assigned to a SCOP family and (ii) a domain ambiguities file, for hits (from ALL the input files) of ambiguous family assignment which are assigned as relatives to a SCOP superfamily or fold instead. 
+
+
+<!-- ALGORITHM
+     A technical description of algorithmic aspects, describing exactly how
+     the key aspects of the application work.
+-->
+<a name="10.0"></a>
+<br><br><br><H2> 10.0  ALGORITHM                 </H2>
+A rough outline of the algorithm follows; a better description will appear in a publication in preparation.  Hits from searches for all domain families are collated into a single list and the list sorted according to family name.  The hits hits within each family are sorted by accession number, then hits within a family and with identical accession number are sorted by the start position of the hit relative to the full length sequence in swissprot.  In each family identical hits (i.e. those with identical accession number and the same start and end points relative to the full-length sequence in swissprot) were removed leaving only a single copy.  Each family is also processed so that ovlerapping hits (hits with identical accesssion number that overlap by at least a user-defined number of residues) are replaced by a hit that is produced from merging the two overlapping hits.  If two hits have the same accession number and overlap but are from searches for different families, the hits are merged and the merged hit placed into a new list for hits to superfamilies (if the two families belonged to the same superfamily) or for hits to folds (if the two families were in different superfamilies but the same fold).  In this way hits that are unique to a particular family are identified, and hits of ambiguous family assignment are assigned as belonging to a superfamily or fold instead.
+
+
+
+
+
+<!-- RELATED APPLICATIONS
+     Other applications that either generate the input, use the output or 
+     are in some other way related to the application are described here. 
+     (Take this from "Sister applications" in the old documentation)
+-->
+<a name="11.0"></a>
+<br><br><br><H2> 11.0  RELATED APPLICATIONS      </H2>
+
+<table BORDER CELLSPACING=5 CELLPADDING=5 BGCOLOR="#f5f5ff" >
+<tr>
+<td><b>APPLICATION</b></td>
+<td><b>DESCRIPTION</b></td>
+</tr>
+<tr>
+<td><b><a href="seqsearch.html">SEQSEARCH</a> </b></td>
+<td> Generate DHF files (domain hits files) of database hits (sequences) from a DAF file (domain alignment file) or other sequences by using PSI-BLAST.</td>
+</tr>
+<tr>
+<td><b><a href="seqwords.html">SEQWORDS</a> </b></td>
+<td>Generates DHF files (domain hits files) of database hits (sequences) for nodes in a DCF file (domain classification file) by keyword search of UniProt.</td>
+</tr>
+<tr>
+<td><b><a href="seqfraggle.html">SEQFRAGGLE</a> </b></td>
+<td> Removes fragments from DHF files (domain hits files) or other files of sequences. </td>
+</tr>
+<tr>
+<td><b><a href="seqsort.html">SEQSORT</a> </b></td>
+<td>  Reads DHF files (domain hits files) of database hits (sequences) and removes hits of ambiguous classification. </td>
+</tr>
+<tr>
+<td><b><a href="seqnr.html">SEQNR</a> </b></td>
+<td>  Removes redundancy from files of database hits (sequences). </td>
+</tr>
+</table>
+
+
+
+
+
+<!-- DIAGNOSTIC ERROR MESSAGES
+     Description of error messages or log file, if one is written.
+-->
+<a name="12.0"></a>
+<br><br><br><H2> 12.0  DIAGNOSTIC ERROR MESSAGES </H2>
+None. 
 
 
 
 
 
 
+<!-- AUTHORS -->
+<a name="13.0"><br><br><br><H2> 13.0  AUTHORS                   </H2></a>
+Ranjeeva Ranasinghe <a href="mailto:rranasin@rfcgr.mrc.ac.uk">(rranasin@rfcgr.mrc.ac.uk)</a>
+
+<br><br>
+Jon Ison <a href="mailto:jison@rfcgr.mrc.ac.uk">(jison@rfcgr.mrc.ac.uk)</a>
+<br>MRC Rosalind Franklin Centre for Genomics Research, Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
 
 
 
+<!-- REFERENCES
+     Quote the paper where the application was first published, described, used etc. 
+-->
+<a name="14.0"></a>
+<br><br><br><H2> 14.0  REFERENCES                </H2>
+Please cite the authors and EMBOSS.
+<br><br>
+<i>Rice P, Bleasby A.J.  2000.  EMBOSS - The European Molecular Biology Open Software Suite.  Trends in Genetics, 15:276-278.  See also http://www.uk.embnet.org/Software/EMBOSS</i>
 
+<H3>14.1 Other useful references  </H3>
 
-<H2>
-    Target users
-</H2>
-
-<!--
-        For general users, requested by one user, for EMBOSS site
-        maintainers, for EMBOSS developers etc.
-        eg:
-        "This program is intended to be used by everyone and everything,
-        from naive users to embedded scripts." 
-	Which is easy to include using:
-   -->
-
-This program is intended to be used by everyone and everything, from naive users to embedded scripts.
-
-
-
-
-
-
-
-
-
-
-
+<br>
 
 </BODY>
 </HTML>
 
+</body>
+</html>

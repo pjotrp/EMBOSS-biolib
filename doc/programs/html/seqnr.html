@@ -1,574 +1,473 @@
-<!--START OF HEADER - DON'T ALTER -->
-
-<HTML>
-<HEAD>
-  <TITLE>
-  EMBOSS: seqnr
-  </TITLE>
+<html>
+<head>
+<title>EMBASSY domainatrix: seqnr</title>
+<base href="http://emboss.sourceforge.net/embassy/domainatrix/">
+</head>
+<body>
+<!-- START OF HEADER -->
+<HTML><HEAD>
+<TITLE> EMBOSS: SEQNR documentation. </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
+<H2> SEQNR documentation </H2>
+<!-- END OF HEADER -->
 
 
 
-<table align=center border=0 cellspacing=0 cellpadding=0>
-<tr><td valign=top>
-<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
-</td>
-<td align=left valign=middle>
-<b><font size="+6">
 
-seqnr
-</font></b>
-</td></tr>
+
+<!-- CONTENTS
+     This always includes the sections below.
+     Other subsections can be added for individual applications.
+-->
+<br><H2>CONTENTS </H2>
+<b> <a href="#1.0">1.0     SUMMARY                   </a></b><br>
+<b> <a href="#2.0">2.0     INPUTS & OUTPUTS          </a></b><br>
+<b> <a href="#3.0">3.0     INPUT FILE FORMAT         </a></b><br>
+<b> <a href="#4.0">4.0     OUTPUT FILE FORMAT        </a></b><br>
+<b> <a href="#5.0">5.0     DATA FILES                </a></b><br>
+<b> <a href="#6.0">6.0     USAGE                     </a></b><br>    
+<b> <a href="#7.0">7.0     KNOWN BUGS & WARNINGS     </a></b><br>    
+<b> <a href="#8.0">8.0     NOTES                     </a></b><br>
+<b> <a href="#9.0">9.0     DESCRIPTION               </a></b><br>
+<b> <a href="#10.0">10.0   ALGORITHM                 </a></b><br>
+<b> <a href="#11.0">11.0   RELATED APPLICATIONS      </a></b><br>
+<b> <a href="#12.0">12.0   DIAGNOSTIC ERROR MESSAGES </a></b><br>
+<b> <a href="#13.0">13.0   AUTHORS                   </a></b><br>
+<b> <a href="#14.0">14.0   REFERENCES                </a></b><br>
+
+<!-- SUMMARY
+     Succint description of the application, particularly its inputs, outputs
+     and what it does.  The same text is given at the top of the source (.c)
+     file and in the <documentation> attribute of the <application definition>
+     of the ACD file.
+-->
+<a name="1.0"></a>
+<br><br><br><H2> 1.0   SUMMARY  </H2>
+Removes redundancy from DHF files (domain hits files) or other files of sequences.
+
+
+
+
+
+<!-- INPUTS & OUTPUTS
+     Short summary of the application inputs and outputs in its different 
+     modes of usage (if appropriate). More detail than the summary.
+-->
+<a name="2.0"></a>
+<br><br><br><H2> 2.0   INPUTS & OUTPUTS          </H2>
+SEQNR removes redundancy from DHF files (domain hits files) or other files of sequences.  A directory of DHF files (all sequences) is read and a directory of new DHF files (non-redundant sequences) plus (optionally) a second directory of DHF files (redundant sequences) is written.  Optionally, up to two further directories of filter sequences may be read: these are considered in the redundancy calculation but never appear in the output files.   Typically, one of the further directories contains DHF files each with a single sequence and the other DAF files (domain alignment files) each containing a sequence alignment, but any sequence(s) may be given.  Each filter directory must contain a file for each file in main input directory and the files must have the same base name.  For example, sequences from "family.dhf" and "family.daf" are considered for the input DHF file "family.hits". 
+<br>Redundancy is removed at either (i) a user-defined threshold of sequence similarity or (ii) a user-defined range of threshold sequence similarity. Files of sequences in any supported format may be read and written (not just DHF or DAF files). A log file is also written.
+<br>The path for all files (input and output) are specified by the user.  The file extensions are set in the ACD file.  The name of the log file is set by the user.
+
+
+
+
+
+<!-- INPUT FILE FORMAT 
+     Description and example(s) of input file formats.  Should provide enough
+     information to write and parse the file.  Should describe the format in 
+     unusual cases - null input, etc.
+
+     Cannot use the test data files because they might be empty or need 
+     hand-editing 
+
+     Use "<b>SEQNR</b> reads any normal sequence USAs." if
+     appropriate.
+-->
+<a name="3.0"></a>
+<br><br><br><H2> 3.0   INPUT FILE FORMAT         </H2>
+The format of the domain hits file is described in <a href="seqsearch.html">SEQSEARCH documentation.</a>
+<br>The format of the domain alignment file is described in <a href="domainalign.html">DOMAINALIGN documentation</a>. 
+<br>If other sequences or sequence sets (aligned or unaligned) are used as input, all of the common file formats are supported.
+
+
+
+<!-- OUTPUT FILE FORMAT 
+     Description and example(s) of output file formats.  Should provide enough
+     information to write and parse the file.  Should describe the format in 
+     unusual cases - null input, etc.  
+     If the standard description of the avalable report formats is required, 
+     use:   #include file="inc/reportformats.ihtml"
+     Use "Outputs a graph to the specified graphics device."
+     or  "outputs a report format file. The default format is ..."
+     if appropriate.
+-->
+<a name="4.0"></a>
+<br><br><br><H2> 4.0   OUTPUT FILE FORMAT         </H2>
+The format of the domain hits file is described in <a href="seqsearch.html">SEQSEARCH documentation.</a>
+
+
+
+<!-- DATA FILES         
+     Any data files used (e.g. translation table file, substitution matrix 
+     etc.  This includes example data file formats if they are not obvious.
+     For a standard description of what data files are and how embossdata can
+     be used to inspect and retrieve them, use:
+     #include file="inc/localfiles.ihtml" 
+-->
+
+<a name="5.0"></a>
+<br><br><br><H2> 5.0   DATA FILES                </H2>
+SEQNR requires a residue substitution matrix.
+
+
+
+<!-- USAGE
+     Example usage, as run from the command-line.
+     Many examples illustrating different behaviours is good.
+-->
+<a name="6.0"></a>
+<br><br><br><H2> 6.0   USAGE                     </H2>
+<H3> 6.1   COMMAND LINE ARGUMENTS </H3>
+ 
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+ 
+<tr>
+<td>[-dhfin]<br>(Parameter 1)</td>
+<td>This option specifies the location of DHF files (domain hits files) (input). A 'domain hits file' contains database hits (sequences) with domain classification information, in the DHF format (FASTA or EMBL-like). The hits are relatives to a SCOP or CATH family and are found from a search of a sequence database. Files containing hits retrieved by PSIBLAST are generated by using SEQSEARCH.</td>
+<td>Directory with files</td>
+<td>./</td>
+</tr>
+ 
+<tr>
+<td>-dosing</td>
+<td>This option specifies whether to use singlet sequences (e.g. DHF files) to filter input. Optionally, up to two further directories of sequences may be read: these are considered in the redundancy calculation but never appear in the output files.</td>
+<td>Toggle value Yes/No</td>
+<td>Y</td>
+</tr>
+ 
+<tr>
+<td>-singlets</td>
+<td>This option specifies the location of singlet filter sequences (e.g. DHF files) (input). A 'domain hits file' contains database hits (sequences) with domain classification information, in the DHF format (FASTA or EMBL-like). The hits are relatives to a SCOP or CATH family and are found from a search of a sequence database. Files containing hits retrieved by PSIBLAST are generated by using SEQSEARCH.</td>
+<td>Directory</td>
+<td>./</td>
+</tr>
+ 
+<tr>
+<td>-dosets</td>
+<td>This option specifies whether to use sets of sequences (e.g. DHF files) to filter input. Optionally, up to two further directories of sequences may be read: these are considered in the redundancy calculation but never appear in the output files.</td>
+<td>Toggle value Yes/No</td>
+<td>Y</td>
+</tr>
+ 
+<tr>
+<td>-insets</td>
+<td>This option specifies location of sets of filter sequences (e.g. DAF files) (input). A 'domain alignment file' contains a sequence alignment of domains belonging to the same SCOP or CATH family. The file is in clustal format annotated with domain family classification information. The files generated by using SCOPALIGN will contain a structure-based sequence alignment of domains of known structure only. Such alignments can be extended with sequence relatives (of unknown structure) by using SEQALIGN.</td>
+<td>Directory</td>
+<td>./</td>
+</tr>
+ 
+<tr>
+<td>-mode</td>
+<td>This option specifies whether to remove redundancy at a single threshold % sequence similarity or remove redundancy outside a range of acceptable threshold % similarity. All permutations of pair-wise sequence alignments are calculated for each set of input sequences in turn using the EMBOSS implementation of the Needleman and Wunsch global alignment algorithm. Redundant sequences are removed in one of two modes as follows: (i) If a pair of proteins achieve greater than a threshold percentage sequence similarity (specified by the user) the shortest sequence is discarded. (ii) If a pair of proteins have a percentage sequence similarity that lies outside an acceptable range (specified by the user) the shortest sequence is discarded.</td>
+<td><table><tr><td>1</td> <td><i>(Remove redundancy at a single threshold % sequence similarity)</i></td></tr><tr><td>2</td> <td><i>(Remove redundancy outside a range of acceptable threshold % similarity)</i></td></tr></table></td>
+<td>1</td>
+</tr>
+ 
+<tr>
+<td>-thresh</td>
+<td>This option specifies the % sequence identity redundancy threshold. The % sequence identity redundancy threshold determines the redundancy calculation. If a pair of proteins achieve greater than this threshold the shortest sequence is discarded.</td>
+<td>Any numeric value</td>
+<td>95.0</td>
+</tr>
+ 
+<tr>
+<td>-threshlow</td>
+<td>This option specifies the % sequence identity redundancy threshold (lower limit). The % sequence identity redundancy threshold determines the redundancy calculation. If a pair of proteins have a percentage sequence similarity that lies outside an acceptable range the shortest sequence is discarded.</td>
+<td>Any numeric value</td>
+<td>30.0</td>
+</tr>
+ 
+<tr>
+<td>-threshup</td>
+<td>This option specifies the % sequence identity redundancy threshold (upper limit). The % sequence identity redundancy threshold determines the redundancy calculation. If a pair of proteins have a percentage sequence similarity that lies outside an acceptable range the shortest sequence is discarded.</td>
+<td>Any numeric value</td>
+<td>90.0</td>
+</tr>
+ 
+<tr>
+<td>[-dhfout]<br>(Parameter 2)</td>
+<td>This option specifies the location of DHF files (domain hits files) of non-redundant sequences (output). A 'domain hits file' contains database hits (sequences) with domain classification information, in the DHF format (FASTA or EMBL-like). The hits are relatives to a SCOP or CATH family and are found from a search of a sequence database. Files containing hits retrieved by PSIBLAST are generated by using SEQSEARCH.</td>
+<td>Directory</td>
+<td>./</td>
+</tr>
+ 
+<tr>
+<td>-dored</td>
+<td>This option specifies whether to retain redundant sequences. If this option is set a DHF (domain hits file) of redundant sequences is written.</td>
+<td>Toggle value Yes/No</td>
+<td>N</td>
+</tr>
+ 
+<tr>
+<td>-outred</td>
+<td>This option specifies the location of DHF files (domain hits files) of redundant sequences (output). A 'domain hits file' contains database hits (sequences) with domain classification information, in the DHF format (FASTA or EMBL-like). The hits are relatives to a SCOP or CATH family and are found from a search of a sequence database. Files containing hits retrieved by PSIBLAST are generated by using SEQSEARCH.</td>
+<td>Directory</td>
+<td>./</td>
+</tr>
+ 
+<tr>
+<td>-logf</td>
+<td>This option specifies the name of SEQNR log file (output). The log file contains messages about any errors arising while SEQNR ran.</td>
+<td>Output file</td>
+<td>seqnr.log</td>
+</tr>
+ 
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+ 
+<tr>
+<td>-matrix</td>
+<td>This option specifies the residue substitution matrix that is used for sequence comparison.</td><td>Comparison matrix file in EMBOSS data path</td>
+<td>EBLOSUM62</td>
+</tr>
+ 
+<tr>
+<td>-gapopen</td>
+<td>This option specifies the gap insertion penalty. The gap insertion penalty is the score taken away when a gap is created. The best value depends on the choice of comparison matrix. The default value assumes you are using the EBLOSUM62 matrix for protein sequences, and the EDNAFULL matrix for nucleotide sequences.</td>
+<td>Floating point number from 1.0 to 100.0</td>
+<td>10.0 for any sequence</td>
+</tr>
+ 
+<tr>
+<td>-gapextend</td>
+<td>This option specifies the gap extension penalty. The gap extension, penalty is added to the standard gap penalty for each base or residue in the gap. This is how long gaps are penalized. Usually you will expect a few long gaps rather than many short gaps, so the gap extension penalty should be lower than the gap penalty. An exception is where one or both sequences are single reads with possible sequencing errors in which case you would expect many single base gaps. You can get this result by setting the gap open penalty to zero (or very low) and using the gap extension penalty to control gap scoring.</td>
+<td>Floating point number from 0.0 to 10.0</td>
+<td>0.5 for any sequence</td>
+</tr>
+ 
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+ 
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+ 
 </table>
-<br>&nbsp;
-<p>
 
 
-
-<!--END OF HEADER-->
-
-
-
-
-
-
-<H2>
-    Function
-</H2>
-[an error occurred while processing this directive]
-
-<!--
-DON'T WRITE ANYTHING HERE.
-IT IS DONE FOR YOU.
--->
-
-
-
-
-<H2>
-    Description
-</H2>
-
-<!-- 
-	This is the main part of the document.
-        This is what the user looks at to find out if this program will do what he wants. 
-        Long description.
-        Why it is useful.
-        When it should/shouldn't be used.
-  -->
-
-**************** 
-EDIT HERE
-**************** 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<H2>
-    Algorithm
-</H2>
-
-<!-- 
-        Algorithms
-	  Pseudocode/Vague description/Handwaving/web links to useful pages
-  -->
-
-**************** 
-EDIT HERE
-**************** 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<H2>
-    Usage
-</H2>
-
-<!--  
-	Example usage, as run from the command-line.
-        Many examples illustrating different behaviours is good.
- -->
-
-[an error occurred while processing this directive]
-
-
-
-<H2>
-    Command line arguments
-</H2>
-
-<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<H3> 6.2 EXAMPLE SESSION </H3>
+An example of interactive use of SEQNR is shown below.
+<table><td bgcolor="#FFCCFF">
 <pre>
-[an error occurred while processing this directive]
+Hello, darling: seqnr
+Removes redundancy from DHF files (domain hits files) or other files of
+sequences.
+Location of DHF files (domain hits files) for input (DHF format) [./]: test_data/seqnr/hitsin
+Use singlet sequences (e.g. DHF files) to filter input [Y]: y
+Location of singlet filter sequences (e.g. DHF files) for input [./]: test_data/seqnr/singlets
+Use sets of sequences (e.g. DHF files) to filter input [Y]: y
+Location of sets of filter sequences (e.g. DAF files) for input [./]: test_data/seqnr/sets
+Redundancy removal options
+         1 : Remove redundancy at a single threshold % sequence similarity
+         2 : Remove redundancy outside a range of acceptable threshold % similarity
+Select number [1]: 1
+The % sequence identity redundancy threshold [95.0]: 70
+Location of DHF files (domain hits files) of non-redundant sequences for output (DHF format) [./]: test_data/seqnr/hitsnr
+Retain redundant sequences [N]: y
+Location of DHF files (domain hits files) of redundant sequences for output (DHF format) [./]: test_data/seqnr/hitsred
+Name seqnr log file (output) [seqnr.log]: test_data/seqnr/seqnr.log
+Processing test_data/seqnr/hitsin/54894.dhf
+Processing test_data/seqnr/hitsin/55074.dhf
 </pre>
-</td></tr></table>
-<P>
-[an error occurred while processing this directive]
+</table>
 
-<!--
-DON'T WRITE ANYTHING HERE.
-IT IS DONE FOR YOU.
+Two domains within the same family are classified as redundant if they share at least 40% sequence similarity;  the default residue substitution matrix EBLOSUM62 and default gap insertion and extension penalties were used for the alignments.  
+
+<br> 
+<br>The following command line would achieve the same result.
+<br>
+<table><td bgcolor="#FFCCFF">
+<pre> 
+seqnr -in test_data/seqnr/hitsin -dosing Y -insing test_data/seqnr/singlets -dosets Y -insets 
+test_data/seqnr/sets -mode 1 -thresh 70 -out test_data/seqnr/hitsnr -dored Y 
+-outred test_data/seqnr/hitsred -logf testdata_new/seqnr/seqnr.log
+</pre> 
+</table>
+
+<!-- KNOWN BUGS & WARNINGS
+     Bugs that have not yet been fixed, easily missued features, problems
+     and caveats etc. Potentially stupid things the program will let you do.
 -->
-
-
-
-
-
-
-
-
-<H2>
-    Input file format
-</H2>
-
-<!-- 
-        This includes example input file formats.
-        This should be a detailed description and example - assume
-        someone will want to parse this file and will want to know what
-        happens in unusual cases - null input, etc. 
-   -->
-
-<b>seqnr</b> reads any normal sequence USAs.
-
-<p>
-
-[an error occurred while processing this directive]
-
-
-
-
-
-<H2>
-    Output file format
-</H2>
-
-<!-- 
-        This includes example output file formats.
-        This should be a detailed description and example - assume
-        someone will want to parse this file and will want to know what
-        happens in unusual cases - null output, errors etc. 
-
-        If you wish to include the standard description of the avalable
-	report formats, use:
-<p>
-
-The output is a standard EMBOSS report file. 
-
-<p>
-
-The results can be output in one of several styles by using the
-command-line qualifier <b>-rformat xxx</b>, where 'xxx' is replaced by
-the name of the required format.  The available format names are: embl,
-genbank, gff, pir, swiss, trace, listfile, dbmotif, diffseq, excel,
-feattable, motif, regions, seqtable, simple, srs, table, tagseq
-
-<p>
-
-See:
-<A href="http://www.uk.embnet.org/Software/EMBOSS/Themes/ReportFormats.html">
-http://www.uk.embnet.org/Software/EMBOSS/Themes/ReportFormats.html</A>
-for further information on report formats.
-
-<p>
-
-   -->
-
-<b>seqnr</b> 
-outputs a graph to the specified graphics device. 
-outputs a report format file. The default format is ...
-
-
-<p>
-
-[an error occurred while processing this directive]
-
-
-
-
-
-<H2>
-    Data files
-</H2>
-
-<!-- 
-        Any data files used (e.g. translation table file)
-        This includes example data file formats if they are
-        not obvious.
-
-	If you wish to include the standard description of what data
-	files are and how to use embossdata to inspect and retrieve
-	them, use:
-<p>
-EMBOSS data files are distributed with the application and stored
-in the standard EMBOSS data directory, which is defined
-by the EMBOSS environment variable EMBOSS_DATA.
-
-<p>
-
-To see the available EMBOSS data files, run:
-<p>
-<pre>
-% embossdata -showall
-</pre>
-<p>
-To fetch one of the data files (for example 'Exxx.dat') into your
-current directory for you to inspect or modify, run:
-
-<pre>
-
-% embossdata -fetch -file Exxx.dat
-
-</pre>
-<p>
-
-Users can provide their own data files in their own directories.
-Project specific files can be put in the current directory, or for
-tidier directory listings in a subdirectory called
-".embossdata". Files for all EMBOSS runs can be put in the user's home
-directory, or again in a subdirectory called ".embossdata".
-
-<p>
-The directories are searched in the following order:
-
-<ul>
-   <li> . (your current directory)
-   <li> .embossdata (under your current directory)
-   <li> ~/ (your home directory)
-   <li> ~/.embossdata
-</ul>
-<p>
-
-   -->
-
-**************** 
-EDIT HERE
-**************** 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<H2>
-    Notes
-</H2>
-
-<!-- 
-        Restrictions.
-        Interesting behaviour.
-        Useful things you can do with this program.
-   -->
-
+<a name="7.0"></a>
+<br><br><br><H2> 7.0   KNOWN BUGS & WARNINGS     </H2>
 None.
 
 
 
 
 
-
-
-<H2>
-    References
-</H2>
-
-<!-- 
-        Bibliography for methods used.
-   -->
-
-None.
-
-
-
-
-
-
-
-
-<H2>
-    Warnings
-</H2>
-
-<!-- 
-        Potentially stupid things the program will let you do.
-   -->
-
-None.
-
-
-
-
-
-
-
-<H2>
-    Diagnostic Error Messages
-</H2>
-
-<!-- 
-        Error messages specific to this program, eg:
-        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
-   -->
-
-None.
-
-
-
-
-
-
-
-<H2>
-    Exit status
-</H2>
-
-<!-- 
-        Description of the exit status for various error conditions
-   -->
-
-It always exits with status 0.
-
-
-
-
-
-
-
-
-<H2>
-    Known bugs
-</H2>
-
-
-<!-- 
-        Bugs noted but not yet fixed.
-   -->
-
-None.
-
-
-
-
-
-
-
-
-<!--
-<H2>
-    See also
-</H2>
+<!-- NOTES
+     Important general remarks, including:
+       Restrictions.
+       Interesting behaviour.
+       Useful things you can do with this program.
+       Future plans.
+       etc.
 -->
-[an error occurred while processing this directive]
-<!-- 
-        Add any comments about other associated programs (to prepare
-        data files?) that seealso doesn't find. 
-   -->
+<a name="8.0"></a>
+<br><br><br><H2> 8.0   NOTES                     </H2>
+None.
+
+
+<H3> 8.1   GLOSSARY OF FILE TYPES    </H3>
+<table BORDER CELLSPACING=5 CELLPADDING=5 BGCOLOR="#f5f5ff" >
+<tr>
+<td><b>FILE TYPE</b></td>
+<td><b>FORMAT</b></td>
+<td><b>DESCRIPTION</b></td>
+<td><b>CREATED BY <b></td>
+<td><b>SEE ALSO</b></td>
+</tr>
+<tr>
+<td><b>Domain hits file </b></td>
+<td> DHF format (FASTA-like format with domain classification information). </td>
+<td> Database hits (sequences) with domain classification information.  The hits are relatives to a SCOP or CATH family and are found from a search of a sequence database. </td>
+<td> <a href="seqsearch.html">SEQSEARCH</a> (hits retrieved by PSIBLAST)</td>
+<td> N.A. </td>
+</tr>
+<tr>
+<td><b>Domain alignment file </b></td>
+<td> DAF format (CLUSTAL-like format with domain classification information). </td>
+<td> Contains a sequence alignment of domains belonging to the same SCOP or CATH family.  The file is annotated with domain family classification information.</td>
+<td> <a href="domainalign.html">DOMAINALIGN</a> (structure-based sequence alignment of domains of known structure). </td>
+<td> DOMAINALIGN alignments can be extended with sequence relatives (of unknown structure) to the family in question by using SEQALIGN. </td>
+</tr>
+</table>
 
 
 
 
 
+<!-- DESCRIPTION
+     A complete, non-technical, user-level description of the application.
+-->
+<a name="9.0"></a>
+<br><br><br><H2> 9.0   DESCRIPTION               </H2>
+Redundancy in a database or other collection of sequences occurs when one or more similar sequences are present. The inclusion of very similar sequences in certain analyses will introduce undesirable bias.  For example, a family may possess 100 sequences in the sequence database, but 90 of these might be essentially the same sequence, e.g. very close relatives or mutations of a single sequence.  Although 100 sequences are known, the family only contains 11 sequences that are essentially unique.  For many applications it is desirable or even essential to remove redundant sequences from a set in order to produce a smaller set that is representative of the whole. SEQNR removes redundancy from an input file of sequences, either at a single threshold of sequence similiarty (e.g. 40%) or within a threshold range of sequence similiarty (e.g. 40% - 70%).
 
 
 
 
 
-<H2>
-    Author(s)
-</H2>
-<!--
-        Who has worked on the program in the past.
-e.g. one of:
-Alan Bleasby (ableasby&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+<!-- ALGORITHM
+     A technical description of algorithmic aspects, describing exactly how
+     the key aspects of the application work.
+-->
+<a name="10.0"></a>
+<br><br><br><H2> 10.0  ALGORITHM                 </H2>
+Redundancy is calculated for each DHF file in the input directory in turn.  The procedure is as follows. 1.  Create a list of sequences from the main input directory.  2. Add sequences from both filter directories (if specified) to list but mark them up (they are considered in the redundancy calculation but never appear in the output files).  3. Identify redundant domains. 4. Write non-redundant domains to main output directory.  5.  If specified, write redundant domains to output directory.
+
+
+
+
+
+<!-- RELATED APPLICATIONS
+     Other applications that either generate the input, use the output or 
+     are in some other way related to the application are described here. 
+     (Take this from "Sister applications" in the old documentation)
+-->
+<a name="11.0"></a>
+<br><br><br><H2> 11.0  RELATED APPLICATIONS      </H2>
+<table BORDER CELLSPACING=5 CELLPADDING=5 BGCOLOR="#f5f5ff" >
+<tr>
+<td><b>APPLICATION</b></td>
+<td><b>DESCRIPTION</b></td>
+</tr>
+</tr>
+<tr>
+<td><b><a href="domainrep.html">DOMAINREP</a> </b></td>
+<td> Reorder DCF file (domain classification file) so that the representative structure of each
+      user-specified node is given first. </td>
+</tr>
+<tr>
+<td><b><a href="domainalign.html">DOMAINALIGN</a> </b></td>
+<td> Generates structure-based sequence alignments for nodes in a DCF
+      file (domain classification file). </td>
+</tr>
+<tr>
+<td><b><a href="seqsearch.html">SEQSEARCH</a> </b></td>
+<td> Generate DHF files (domain hits files) of database hits (sequences) from a DAF file (domain alignment file) or other sequences by using PSI-BLAST.</td>
+</tr>
+<tr>
+<td><b><a href="seqwords.html">SEQWORDS</a> </b></td>
+<td>Generates DHF files (domain hits files) of database hits (sequences) for nodes in a DCF file (domain classification file) by keyword search of UniProt.</td>
+</tr>
+<tr>
+<td><b><a href="seqfraggle.html">SEQFRAGGLE</a> </b></td>
+<td> Removes fragments from DHF files (domain hits files) or other files of sequences. </td>
+</tr>
+<tr>
+<td><b><a href="seqsort.html">SEQSORT</a> </b></td>
+<td>  Reads DHF files (domain hits files) of database hits (sequences) and removes hits of ambiguous classification. </td>
+</tr>
+<tr>
+<td><b><a href="seqnr.html">SEQNR</a> </b></td>
+<td>  Removes redundancy from files of database hits (sequences). </td>
+</tr>
+<tr>
+<td><b><a href="seqalign.html">SEQALIGN</a> </b></td>
+<td> Reads a DAF file (domain alignment file) and a DHF (domain hits file) and writes a DAF file extended with the hits.</td>
+</tr>
+</table>
+
+
+
+
+
+<!-- DIAGNOSTIC ERROR MESSAGES
+     Description of error messages or log file, if one is written.
+-->
+<a name="12.0"></a>
+<br><br><br><H2> 12.0  DIAGNOSTIC ERROR MESSAGES </H2>
+The log file might contain the following messages:
+<br><br><i>embHitlistReadFasta call failed in seqnr</i> (By default SEQNR expects a domain hits file in the main input directory and the first (singlets) filter directory.  This message is given if some other type of sequence file is given.  Its not really an error, just a warning).
+<br><br><i>Empty input file my.file</i> (This is given if the main input file 'my.file' did not contain any sequences.  No output file is generated for this file.)
+<br><br><i>Empty singlets filter file my.file</i> (This is given if the singlets filter file 'my.file' did not contain any sequences.  An output file is still generated for this file.)
+<br><br><i>Empty sets filter file my.file</i> (This is given if the sets filter file 'my.file' did not contain any sequences.  An output file is still generated for this file.)
+<br><br><i>ajDmxScopalgRead call failed in seqnr my.file</i> (By default SEQNR expects a domain alignment file in the second (sets) filter directory.  This message is given if some other type of sequence sets file (called 'my.file') is given.  Its not really an error, just a warning).
+
+
+<!-- AUTHORS -->
+<a name="13.0"><br><br><br><H2> 13.0  AUTHORS                   </H2></a>
+Jon Ison <a href="mailto:jison@rfcgr.mrc.ac.uk">(jison@rfcgr.mrc.ac.uk)</a>
 <br>
 MRC Rosalind Franklin Centre for Genomics Research
 Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-
-
-Bernd Jagla (bernd&nbsp;&copy;&nbsp;golgi.ski.mskcc.org)
-<br>
-Cellular Biochemistry and Biophysics Program, Rockefeller
-Research Laboratories, Memorial Sloan-Kettering Cancer Center, 1275 York
-Avenue, Box 251,New York, NY 10021.
-
-David Martin (dmartin&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
-<br>
-
-Gos Micklem (gos&nbsp;&copy;&nbsp;ebi.ac.uk)
-<br>
-Informatics Division, European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
-
-Gary Williams (gwilliam&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
-<br>
-MRC Rosalind Franklin Centre for Genomics Research
-Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-
-
-Ian Longden (il&nbsp;&copy;&nbsp;sanger.ac.uk)
-<br>
-Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
-Cambridge, CB10 1SA, UK.                      
-
-Mark Faller (current e-mail address unknown)
-<br>
-while he was with:
-<br>
-HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
-
-Michael K. Schuster and Martin Grabner (martin.grabner&nbsp;&copy;&nbsp;univie.ac.at)
-<br>
-from the Austrian National EMBnet node.
-
-
-Michael Schmitz (mschmitz&nbsp;&copy;&nbsp;lbl.gov)
-<br>
-Lawrence Berkeley Labs, USA
-
-Nicolas Tourasse (nicolas.tourasse&nbsp;&copy;&nbsp;biotek.uio.no)
-<br>
-Biotechnology Center of Oslo
-
-Peter Rice (pmr&nbsp;&copy;&nbsp;ebi.ac.uk)
-<br>
-Informatics Division, European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
-
-Richard Durbin (rd&nbsp;&copy;&nbsp;sanger.ac.uk)
-<br>
-Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
-Cambridge, CB10 1SA, UK.                      
-
-Richard Bruskiewich (current e-mail address unknown)
-<br>
-while he was at:
-<br>
-Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
-Cambridge, CB10 1SA, UK.                      
-
-Rodrigo Lopez (rls&nbsp;&copy;&nbsp;ebi.ac.uk)
-<br>
-European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
-
-Sinead O'Leary (current e-mail address unknown)
-<br>
-while she was at:
-<br>
-HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
-
-
-Tim Carver (tcarver&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
-<br>
-MRC Rosalind Franklin Centre for Genomics Research
-Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-
-Thomas Laurent (thomas.laurent&nbsp;&copy;&nbsp;uk.lionbioscience.com)
-<br>
-Lion Bioscience Ltd,
-     Compass House,
-     80-82 Newmarket Road,
-     Cambridge,
-     CB5 8DZ,
-     UK
-
-Val Curwen (vac&nbsp;&copy;&nbsp;sanger.ac.uk)
-<br>
-Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
-Cambridge, CB10 1SA, UK. 
-
-
-   -->
-
-**************** 
-EDIT HERE
-**************** 
+<br><br><i>based on an original program written by</i><br><br>
+Ranjeeva Ranasinghe <a href="mailto:rranasin@rfcgr.mrc.ac.uk">(rranasin@rfcgr.mrc.ac.uk)</a>
 
 
 
 
 
-
-
-
-
-
-
-<H2>
-    History
-</H2>
-
-<!--
-        What changes have been made.
-   -->
-
-Written (date) - author.
-
-<!--
-<p>
-[an error occurred while processing this directive]
+<!-- REFERENCES
+     Quote the paper where the application was first published, described, used etc. 
 -->
+<a name="14.0"></a>
+<br><br><br><H2> 14.0  REFERENCES                </H2>
+Please cite the authors and EMBOSS.
+<br><br>
+<i>Rice P, Bleasby A.J.  2000.  EMBOSS - The European Molecular Biology Open Software Suite.  Trends in Genetics, 15:276-278.  See also http://www.uk.embnet.org/Software/EMBOSS</i>
 
+<H3>14.1 Other useful references  </H3>
 
-
-
-
-
-
-
-
-
-
-
-<H2>
-    Target users
-</H2>
-
-<!--
-        For general users, requested by one user, for EMBOSS site
-        maintainers, for EMBOSS developers etc.
-        eg:
-        "This program is intended to be used by everyone and everything,
-        from naive users to embedded scripts." 
-	Which is easy to include using:
-   -->
-
-This program is intended to be used by everyone and everything, from naive users to embedded scripts.
-
-
-
-
-
-
-
-
-
-
-
+<br>
 
 </BODY>
 </HTML>
 
+</body>
+</html>

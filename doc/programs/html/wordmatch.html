@@ -530,8 +530,8 @@ markx2, markx3, markx10, srspair, score
 <p>
 
 See:
-<A href="http://www.uk.embnet.org/Software/EMBOSS/Themes/AlignFormats.html">
-http://www.uk.embnet.org/Software/EMBOSS/Themes/AlignFormats.html</A>
+<A href="http://emboss.sf.net/docs/themes/AlignFormats.html">
+http://emboss.sf.net/docs/themes/AlignFormats.html</A>
 for further information on alignment formats.
 
 <p>
@@ -542,23 +542,12 @@ for further information on alignment formats.
 
 <a name="output.1"></a>
 <h3>Output files for usage example </h3>
-<p><h3>File: HBA_HUMAN.gff</h3>
-<table width="90%"><tr><td bgcolor="#CCFFCC">
-<pre>
-##gff-version 2.0
-##date 2004-07-21
-##Type Protein HBA_HUMAN
-HBA_HUMAN	wordmatch	misc_feature	58	62	1.000	+	.	Sequence "HBA_HUMAN.1" ; note "HBB_HUMAN"
-HBA_HUMAN	wordmatch	misc_feature	14	17	1.000	+	.	Sequence "HBA_HUMAN.2" ; note "HBB_HUMAN"
-HBA_HUMAN	wordmatch	misc_feature	116	119	1.000	+	.	Sequence "HBA_HUMAN.3" ; note "HBB_HUMAN"
-</pre>
-</td></tr></table><p>
 <p><h3>File: hba_human.wordmatch</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ########################################
-# Program:  wordmatch
-# Rundate:  Wed Jul 21 12:00:37 2004
+# Program: wordmatch
+# Rundate: Thu Jan 20 2005 17:44:43
 # Align_format: match
 # Report_file: hba_human.wordmatch
 ########################################
@@ -570,19 +559,30 @@ HBA_HUMAN	wordmatch	misc_feature	116	119	1.000	+	.	Sequence "HBA_HUMAN.3" ; note
 # 2: HBB_HUMAN
 #=======================================
 
-     5 HBA_HUMAN             58..62       HBB_HUMAN             63..67
-     4 HBA_HUMAN             14..17       HBB_HUMAN             15..18
-     4 HBA_HUMAN            116..119      HBB_HUMAN            121..124
+     5 HBA_HUMAN       +       58..62       HBB_HUMAN       +       63..67
+     4 HBA_HUMAN       +       14..17       HBB_HUMAN       +       15..18
+     4 HBA_HUMAN       +      116..119      HBB_HUMAN       +      121..124
 
 #---------------------------------------
 #---------------------------------------
+</pre>
+</td></tr></table><p>
+<p><h3>File: HBA_HUMAN.gff</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+##gff-version 2.0
+##date 2005-01-20
+##Type Protein HBA_HUMAN
+HBA_HUMAN	wordmatch	misc_feature	58	62	1.000	+	.	Sequence "HBA_HUMAN.1" ; note "HBB_HUMAN"
+HBA_HUMAN	wordmatch	misc_feature	14	17	1.000	+	.	Sequence "HBA_HUMAN.2" ; note "HBB_HUMAN"
+HBA_HUMAN	wordmatch	misc_feature	116	119	1.000	+	.	Sequence "HBA_HUMAN.3" ; note "HBB_HUMAN"
 </pre>
 </td></tr></table><p>
 <p><h3>File: HBB_HUMAN.gff</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ##gff-version 2.0
-##date 2004-07-21
+##date 2005-01-20
 ##Type Protein HBB_HUMAN
 HBB_HUMAN	wordmatch	misc_feature	63	67	1.000	+	.	Sequence "HBB_HUMAN.1" ; note "HBA_HUMAN"
 HBB_HUMAN	wordmatch	misc_feature	15	18	1.000	+	.	Sequence "HBB_HUMAN.2" ; note "HBA_HUMAN"
@@ -661,10 +661,10 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="matcher.shtml">matcher</a></td><td>Finds the best local alignments between two sequences</td></tr>
-<tr><td><a href="seqmatchall.shtml">seqmatchall</a></td><td>Does an all-against-all comparison of a set of sequences</td></tr>
-<tr><td><a href="supermatcher.shtml">supermatcher</a></td><td>Finds a match of a large sequence against one or more sequences</td></tr>
-<tr><td><a href="water.shtml">water</a></td><td>Smith-Waterman local alignment</td></tr>
+<tr><td><a href="matcher.html">matcher</a></td><td>Finds the best local alignments between two sequences</td></tr>
+<tr><td><a href="seqmatchall.html">seqmatchall</a></td><td>Does an all-against-all comparison of a set of sequences</td></tr>
+<tr><td><a href="supermatcher.html">supermatcher</a></td><td>Finds a match of a large sequence against one or more sequences</td></tr>
+<tr><td><a href="water.html">water</a></td><td>Smith-Waterman local alignment</td></tr>
 </table>
 
 <!--
@@ -693,7 +693,8 @@ Completed 27th November 1998.
 
 <!--
 <p>
-[an error occurred while processing this directive]
+
+
 -->
 
 <H2>
@@ -701,8 +702,9 @@ Completed 27th November 1998.
 </H2>
 
 
-This program is intended to be used by everyone and everything,
-from naive users to embedded scripts. 
+This program is intended to be used by everyone and everything, from naive users to embedded scripts.
+
+
 
 <H2>
     Comments

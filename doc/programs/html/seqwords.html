@@ -12,7 +12,7 @@
 
 <table align=center border=0 cellspacing=0 cellpadding=0>
 <tr><td valign=top>
-<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="/images/emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
@@ -36,7 +36,7 @@ seqwords
 <H2>
     Function
 </H2>
-[an error occurred while processing this directive]
+Generate file of hits for scop families by searching swissprot with keywords
 
 <!--
 DON'T WRITE ANYTHING HERE.
@@ -108,7 +108,7 @@ EDIT HERE
         Many examples illustrating different behaviours is good.
  -->
 
-[an error occurred while processing this directive]
+
 
 
 
@@ -118,11 +118,87 @@ EDIT HERE
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
-[an error occurred while processing this directive]
+   Standard (Mandatory) qualifiers:
+  [-keyfile]           infile     Name of keywords file (input)
+   -spfile             infile     Name of swissprot database (input)
+  [-outfile]           outfile    Name of scop hits file (output)
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2         string     Output directory
+
+   General qualifiers:
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
+
+
 </pre>
 </td></tr></table>
 <P>
-[an error occurred while processing this directive]
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-keyfile]<br>(Parameter 1)</td>
+<td>Name of keywords file (input)</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-spfile</td>
+<td>Name of swissprot database (input)</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Name of scop hits file (output)</td>
+<td>Output file</td>
+<td>test.hits</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>
+
 
 <!--
 DON'T WRITE ANYTHING HERE.
@@ -151,7 +227,7 @@ IT IS DONE FOR YOU.
 
 <p>
 
-[an error occurred while processing this directive]
+
 
 
 
@@ -184,8 +260,8 @@ feattable, motif, regions, seqtable, simple, srs, table, tagseq
 <p>
 
 See:
-<A href="http://www.uk.embnet.org/Software/EMBOSS/Themes/ReportFormats.html">
-http://www.uk.embnet.org/Software/EMBOSS/Themes/ReportFormats.html</A>
+<A href="http://emboss.sf.net/docs/themes/ReportFormats.html">
+http://emboss.sf.net/docs/themes/ReportFormats.html</A>
 for further information on report formats.
 
 <p>
@@ -199,7 +275,7 @@ outputs a report format file. The default format is ...
 
 <p>
 
-[an error occurred while processing this directive]
+
 
 
 
@@ -384,7 +460,33 @@ None.
     See also
 </H2>
 -->
-[an error occurred while processing this directive]
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th><th>Description</th></tr>
+<tr><td><a href="contacts.html">contacts</a></td><td>Reads coordinate files and writes files of intra-chain residue-residue contact data</td></tr>
+<tr><td><a href="../../apps/domainalign.html">domainalign</a></td><td>Generates structure-based sequence alignments for nodes in a DCF file (domain classification file)</td></tr>
+<tr><td><a href="../../apps/domainrep.html">domainrep</a></td><td>Reorder DCF file (domain classification file) so that the representative structure of each user-specified node is given first</td></tr>
+<tr><td><a href="../../apps/domainreso.html">domainreso</a></td><td>Removes low resolution domains from a DCF file (domain classification file)</td></tr>
+<tr><td><a href="fraggle.html">fraggle</a></td><td>Removes fragment sequences from files of hits for scop families</td></tr>
+<tr><td><a href="hmmgen.html">hmmgen</a></td><td>Generates a hidden Markov model for each alignment in a directory by using the HMMER package</td></tr>
+<tr><td><a href="interface.html">interface</a></td><td>Reads coordinate files and writes files of inter-chain residue-residue contact data</td></tr>
+<tr><td><a href="../../apps/libgen.html">libgen</a></td><td>Generates various types of discriminating elements for each alignment in a directory</td></tr>
+<tr><td><a href="libscan.html">libscan</a></td><td>Scans a database with a set of models that represents a family</td></tr>
+<tr><td><a href="profgen.html">profgen</a></td><td>Generates various profiles for each alignment in a directory</td></tr>
+<tr><td><a href="../../apps/rocon.html">rocon</a></td><td>Reads a DHF file (domain hits file) of hits (sequences of unknown structural classification) and a DHF file of validation sequences (known classification) and writes a 'hits file' for the hits, which are classified and rank-ordered on the basis of score</td></tr>
+<tr><td><a href="../../apps/rocplot.html">rocplot</a></td><td>Provides interpretation and graphical display of the performance of discriminating elements (e.g. profiles for protein families). rocplot reads file(s) of hits from discriminator-database search(es), performs ROC analysis on the hits, and writes graphs illustrating the diagnostic performance of the discriminating elements</td></tr>
+<tr><td><a href="scopalign.html">scopalign</a></td><td>Generate alignments for families in a scop classification file by using STAMP</td></tr>
+<tr><td><a href="scoprep.html">scoprep</a></td><td>Reorder scop classificaiton file so that the representative structure of each family is given first</td></tr>
+<tr><td><a href="scopreso.html">scopreso</a></td><td>Removes low resolution domains from a scop classification file</td></tr>
+<tr><td><a href="../../apps/seqalign.html">seqalign</a></td><td>Reads a DAF file (domain alignment file) and a DHF (domain hits file) and writes a DAF file extended with the hits</td></tr>
+<tr><td><a href="../../apps/seqfraggle.html">seqfraggle</a></td><td>Removes fragments from DHF files (domain hits files) or other files of sequences</td></tr>
+<tr><td><a href="../../apps/seqsearch.html">seqsearch</a></td><td>Generate database hits (sequences) for nodes in a DCF file (domain classification file) by using PSI-BLAST</td></tr>
+<tr><td><a href="../../apps/seqsort.html">seqsort</a></td><td>Reads DHF files (domain hits files) of database hits (sequences) and removes hits of ambiguous classification</td></tr>
+<tr><td><a href="siggen.html">siggen</a></td><td>Generates a sparse protein signature from an alignment and residue contact data</td></tr>
+<tr><td><a href="sigplot.html">sigplot</a></td><td>Generates data files of signature performance</td></tr>
+<tr><td><a href="sigscan.html">sigscan</a></td><td>Scans a signature against swissprot and writes a signature hits file</td></tr>
+</table>
+
 <!-- 
         Add any comments about other associated programs (to prepare
         data files?) that seealso doesn't find. 
@@ -463,7 +565,7 @@ Richard Durbin (rd&nbsp;&copy;&nbsp;sanger.ac.uk)
 Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
 Cambridge, CB10 1SA, UK.                      
 
-Richard Bruskiewich (current e-mail address unknown)
+Richard Bruskiewich (r.bruskiewich@cgiar.org)
 <br>
 while he was at:
 <br>
@@ -529,7 +631,8 @@ Written (date) - author.
 
 <!--
 <p>
-[an error occurred while processing this directive]
+
+
 -->
 
 
