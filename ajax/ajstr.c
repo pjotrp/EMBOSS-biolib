@@ -316,6 +316,7 @@ char* ajCharNewL (ajint len) {
   static char* cp;
 
   cp = (char*) AJALLOC(len+1);
+  cp[0] = '\0';
 
   return cp;
 }
@@ -3270,6 +3271,10 @@ AjBool ajStrMatchWildCC (const char* str, const char* text) {
   ajint i;
 
   i = ajStrCmpWildCC(str, text);
+
+  ajDebug("ajStrMatchWildCC '%s' '%s' cmp: %d\n",
+	  str, text, i);
+
   if (i)
     return ajFalse;
 
