@@ -796,7 +796,7 @@ public class SectionPanel
               boolean ok = true;
               Ajax aj = null;
               if(mysettings.isCygwin())
-                cygwinSeqAttr(fc,envp,att);
+                ok = cygwinSeqAttr(fc,envp,att);
               else
               {
                 aj = new Ajax();
@@ -827,7 +827,7 @@ public class SectionPanel
               }
               else
                 JOptionPane.showMessageDialog(sectionPane,
-                          "Sequence not found." +
+                          "Sequence not found.\n" +
                           "Check the sequence entered.",
                           "Error Message", JOptionPane.ERROR_MESSAGE);
 
@@ -929,14 +929,19 @@ public class SectionPanel
   * and uses infoalign to get the sequence weight.  
   *
   */
-  private void cygwinSeqAttr(String fc, String[] envp, String att)
+  private boolean cygwinSeqAttr(String fc, String[] envp, String att)
   {
     String command = mysettings.getEmbossBin().concat(
      "infoseq -only -type -length -nohead -auto "+fc);
     RunEmbossApplication2 rea = new RunEmbossApplication2(command,envp,null);
     rea.waitFor();
 
-    StringTokenizer stok = new StringTokenizer(rea.getProcessStdout(),"\n ");
+    String stdout = rea.getProcessStdout();
+    if(stdout.trim().equals(""))
+      return false;
+
+    StringTokenizer stok = new StringTokenizer(stdout,"\n ");
+
     if(stok.nextToken().trim().equalsIgnoreCase("P"))
       ajaxProtein = true;
     else
@@ -956,6 +961,7 @@ public class SectionPanel
         ajaxWeight+= Float.parseFloat(stok.nextToken());
     }
 //  System.out.println(command+"\n"+rea.getProcessStdout());
+    return true;
   }
 
   /**
