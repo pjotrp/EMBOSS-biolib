@@ -297,54 +297,57 @@
 **  Usage 
 **  An example of interactive use of siggen is shown below.
 **  
-**  Unix % siggen
-**  Generates a sparse protein signature from an alignment and residue contact
-**  data.
-**  Location of scop alignment files (input) [./]: /test_data
-**  Extension of alignment files [.salign]: 
-**  Specify mode of signature generation
-**           1 : Use positions specified in alignment file
-**           2 : Use a scoring method
-**           3 : Generate a randomised signature
-**  Select number [1]: 2
-**  % sparsity of signature [10]: 15
-**  Window size [0]: 
-**  Sequence variability scoring method
-**           1 : Substitution matrix
-**           2 : Residue class
-**           3 : None
-**  Select number [3]: 1
-**  Substitution matrix to be used [EBLOSUM62]: 
-**  Residue contacts scoring method
-**           1 : Number
-**           2 : Conservation
-**           3 : Number and conservation
-**           4 : None (structural data available)
-**           5 : None (no structural data available)
-**  Select number [5]: 5
-**  Ignore alignment postitions with post_similar value of 0 [Y]: y
-**  Location of signature files (output) [./]: /test_data
-**  Extension of signature files [.sig]: 
-**  Unix % 
-**  
-**  A sparse protein signature was generated for each scop alignment file with
-**  the file extension .salign in the directory /test_data.  The signatures 
-**  included high scoring positions from the alignments, scored on the basis 
-**  of residue variability calculated by using the EBLOSUM62 residue 
-**  substitution matrix (mode 2).  Signatures of 15% sparsity were generated, 
-**  and the default window size (0) was used. 
-**  Alignment postitions with a post_similar value of 0 were ignored, i.e. not
-**  sampled in the signature.  No structural data were available for the 
-**  domains in the alignments and this was specified as option 5 in the 
-**  "Residue contacts scoring method".  Signature files with the file extenion
-**  .sig were written to the directory /test_data.
-**  
-**  The following command line would achieve the same result.
-**  
-**  siggen /test_data .salign /test_data .sig 
-**  -mode 2 -sparsity 15 -seqoption 1 -datafile EBLOSUM62 -conoption 5 
-**  -filterpsim Y -wsiz 0
-**
+
+
+Unix % 
+Generates a sparse protein signature from an alignment and residue contact
+data.
+Location of DAF files (domain alignment files) (input) [./]: test_data/
+Specify mode of signature generation
+         1 : Use positions specified in alignment file
+         2 : Use a scoring method
+         3 : Generate a randomised signature
+Select number [1]: 2
+The % sparsity of signature [10]: 15
+Window size [0]:
+Sequence variability scoring method
+         1 : Substitution matrix
+         2 : Residue class
+         3 : None
+Select number [3]: 1
+Substitution matrix to be used [EBLOSUM62]:
+Residue contacts scoring method
+         1 : Number
+         2 : Conservation
+         3 : Number and conservation
+         4 : None (structural data available)
+         5 : None (no structural data available)
+Select number [5]: 5
+Ignore alignment postitions with post_similar value of 0 [Y]:
+Location of signature files (output) [./]: test_data/siggen
+Unix % 
+
+
+  
+  A sparse protein signature was generated for each DAF file (with file extension of
+ '.daf' specified in the ACD file)
+in the directory test_data/.  The signatures 
+  included high scoring positions from the alignments, scored on the basis 
+  of residue variability calculated by using the EBLOSUM62 residue 
+  substitution matrix (mode 2).  Signatures of 15% sparsity were generated, 
+  and the default window size (0) was used. 
+  Alignment postitions with a post_similar value of 0 were ignored, i.e. not
+  sampled in the signature.  No structural data were available for the 
+  domains in the alignments and this was specified as option 5 in the 
+  "Residue contacts scoring method".  Signature files (with file extenion
+of  '.sig' specified in the ACD file) were written to test_data/siggen/
+  
+  The following command line would achieve the same result.
+  
+siggen test_data test_data/siggen -mode 2 -sparsity 15 -seqoption 1 -datafile EBLOSUM62 -conoption 5  -filterpsim Y -wsiz 0
+
+siggen 000_testdata_new 000_testdata_new/siggen -mode 2 -sparsity 15 -seqoption 1 -datafile EBLOSUM62 -conoption 5  -filterpsim Y -wsiz 0
+
 **
 **  
 **  Input file format
@@ -566,17 +569,13 @@ AjPSigdat siggen_SigdatNew(ajint nres, ajint ngap);
 int main(ajint argc, char **argv)
 {
     /* Variables for stuff in acd */
-    AjPStr      alg_path      =NULL;    /* Location of alignment files for input */
-    AjPStr      alg_extn      =NULL;    /* Extn. of alignment files */
+    AjPList     alg_path      =NULL;    /* Location of alignment files for input */
     AjPStr      alg_name      =NULL;    /* Name of alignment file */
-    AjPStr      cpdb_path     =NULL;    /* Location of coordinate files for input */
-    AjPStr      cpdb_extn     =NULL;    /* Extn. of coordinate files */
+    AjPDir      cpdb_path     =NULL;    /* Location of coordinate files for input */
     AjPStr      cpdb_name     =NULL;    /* Name of coordinate file */
-    AjPStr      con_path      =NULL;    /* Location of contact files for input */
-    AjPStr      con_extn      =NULL;    /* Extn. of contact files */
+    AjPDir      con_path      =NULL;    /* Location of contact files for input */
     AjPStr      con_name      =NULL;    /* Name of contact file */
-    AjPStr      sig_path      =NULL;    /* Location of signature files for input */
-    AjPStr      sig_extn      =NULL;    /* Extn. of signature files */
+    AjPDir      sig_path      =NULL;    /* Location of signature files for input */
     AjPStr      sig_name      =NULL;    /* Name of signature files */
     AjPStr      sig_name_sp   =NULL;    /* Sparsity extn for signature file */
     AjPStr      pair_mat      =NULL;    /* Residue pair substitution matrix */
@@ -637,25 +636,17 @@ int main(ajint argc, char **argv)
 
     float       spar_check    =0.0;
     
-/*JISON*/    ajint       nres =0;  /* number of structured residues for current sequence in alignment */
+  ajint       nres =0;  /* number of structured residues for current sequence in alignment */
              
     
 
     
 
     /* Allocate strings etc */
-    sig_path      = ajStrNew();
-    sig_extn      = ajStrNew();
     sig_name      = ajStrNew();
     sig_name_sp   = ajStrNew();
-    alg_path      = ajStrNew();
-    alg_extn      = ajStrNew();
     alg_name      = ajStrNew();
-    con_path      = ajStrNew();
-    con_extn      = ajStrNew();
     con_name      = ajStrNew();
-    cpdb_path     = ajStrNew();
-    cpdb_extn     = ajStrNew();
     cpdb_name     = ajStrNew();
     pair_mat      = ajStrNew();
     temp          = ajStrNew();
@@ -669,22 +660,18 @@ int main(ajint argc, char **argv)
     /* Read data from acd */
     ajNamInit("emboss");
     ajAcdInitP("siggen",argc,argv,"DOMAINATRIX"); 
-    sig_path      = ajAcdGetString("sigpath");
-    sig_extn      = ajAcdGetString("sigextn");    
-    alg_path      = ajAcdGetString("algpath");
-    alg_extn      = ajAcdGetString("algextn");    
+    sig_path      = ajAcdGetDirectory("sigpath");
+    alg_path      = ajAcdGetDirlist("algpath");
     sig_sparse    = ajAcdGetInt("sparsity");
     wsiz          = ajAcdGetInt("wsiz");
     mode          = ajAcdGetList("mode");
     seqoption     = ajAcdGetList("seqoption");
     mat           = ajAcdGetMatrixf("datafile");
     conoption     = ajAcdGetList("conoption");
-    filtercon     = ajAcdGetBool("filtercon");
+    filtercon     = ajAcdGetToggle("filtercon");
     conthresh     = ajAcdGetInt("conthresh");
-    con_path      = ajAcdGetString("conpath");    
-    con_extn      = ajAcdGetString("conextn");    
-    cpdb_path     = ajAcdGetString("cpdbpath");    
-    cpdb_extn     = ajAcdGetString("cpdbextn");    
+    con_path      = ajAcdGetDirectory("conpath");    
+    cpdb_path     = ajAcdGetDirectory("cpdbpath");    
     filterpsim    = ajAcdGetBool("filterpsim");
     
 
@@ -696,25 +683,6 @@ int main(ajint argc, char **argv)
     if((ajStrChar(*mode, 0) == '3'))
 	score_seq_var = ajTrue;
     
-
-
-
-    
-    /* Check directories*/
-    if(!ajFileDir(&sig_path))
-        ajFatal("Could not open signatures directory");
-    if(!ajFileDir(&alg_path))
-        ajFatal("Could not open alignments directory");
-
-    /* LATEST MOD */
-    /*  if((ajStrChar(*conoption, 0)) != '4' || filtercon) */
-    if(((ajStrChar(*conoption, 0) != '4') && (ajStrChar(*conoption, 0) != '5')) || filtercon)
-    {
-        if(!ajFileDir(&con_path))
-            ajFatal("Could not open contacts directory");
-        if(!ajFileDir(&cpdb_path))
-            ajFatal("Could not open coordinate file directory");
-    }	
     
     
     /* Assign ajtrue to score_seq_var if seqoption  from acd is == 1 */
@@ -777,24 +745,9 @@ int main(ajint argc, char **argv)
         return(0);
     }   
 
-    /* Create list of files in alignments directory */
-    list = ajListNew();
-    ajStrAssC(&temp, "*");      
-    if((ajStrChar(alg_extn, 0)=='.'))
-        ajStrApp(&temp, alg_extn);    
-    else
-    {
-        ajStrAppC(&temp, ".");    
-        ajStrApp(&temp, alg_extn);    
-    }
-    ajFileScan(alg_path, temp, &list, ajFalse, ajFalse, 
-               NULL, NULL, ajFalse, NULL); 
-    ajStrDel(&temp);
-
-
 
     /*Start of main application loop*/
-    while(ajListPop(list,(void **)&temp))
+    while(ajListPop(alg_path,(void **)&temp))
     {
         /* Open alignment file */
         if((fptr_alg=ajFileNewIn(temp))==NULL)
@@ -809,6 +762,16 @@ int main(ajint argc, char **argv)
         /* Read alignment file, write Scopalg structure, 
            close alignment file */
         ajDmxScopalgRead(fptr_alg, &alg);
+
+
+	/* For non-STAMP alignments there will not be no Post_similar line present, 
+	   however, the siggen algorithms depend on there being one.  Therefore write
+	   one here in which the values are all '1' (i.e. no positions will be included
+	   because of the Post_similar assignment.) */
+	if(!MAJSTRLEN(alg->Post_similar))
+	    for(x=0;x<alg->width;x++)
+		ajStrAppK(&alg->Post_similar, '1');
+	
 
 
 	if(alg->N==0)
@@ -859,21 +822,8 @@ int main(ajint argc, char **argv)
             {
                 idok=ajFalse;
                 
-                /* Get name of contact data file */
-                ajStrAss(&temp1, con_path);
-                ajStrApp(&temp1, alg->Codes[x]);
-                
-                if((ajStrChar(con_extn, 0)=='.'))
-                    ajStrApp(&temp1, con_extn);    
-                else
-                {
-                    ajStrAppC(&temp1, ".");    
-                    ajStrApp(&temp1, con_extn);    
-                }       
-                
-                
                 /* Open contact data file */
-                if((fptr_con=ajFileNewIn(temp1))==NULL)
+                if((fptr_con= ajFileNewDirF(con_path, alg->Codes[x]))==NULL)
                 {
                     ajFatal("Could not open contact file!!");
 /*                    continue;            */
@@ -885,7 +835,7 @@ int main(ajint argc, char **argv)
                 /* A scop identifier is presumed if the id is 7 characters 
                    long and the first character is a 'd' or 'D' */
                 if((ajStrLen(alg->Codes[x])==7)
-                   &&(toupper((int)ajStrChar(alg->Codes[x], 0)) == 'D'))
+                   &&(toupper(ajStrChar(alg->Codes[x], 0)) == 'D'))
 
                 { 
                     /*Read the chain id from the SCOP domain code and convert 
@@ -912,21 +862,9 @@ int main(ajint argc, char **argv)
                 /* Close contact data file */
                 ajFileClose(&fptr_con);
 
-
-
-                /* Get name of coordinate data file */
-                ajStrAss(&temp1, cpdb_path);
-                ajStrApp(&temp1, alg->Codes[x]);
-                if((ajStrChar(cpdb_extn, 0)=='.'))
-                    ajStrApp(&temp1, cpdb_extn);    
-                else
-                {
-                    ajStrAppC(&temp1, ".");    
-                    ajStrApp(&temp1, cpdb_extn);    
-                }
                 
                 /* Open coordinate file */
-                if((fptr_cpdb=ajFileNewIn(temp1))==NULL)
+                if((fptr_cpdb=ajFileNewDirF(cpdb_path, alg->Codes[x]))==NULL)
                 {
                     ajFatal("Could not open coordinate file");
 /*                    continue;            */
@@ -1007,7 +945,7 @@ int main(ajint argc, char **argv)
                     continue;
                 }
                 
-		/*JISON*/		ajIntPut(&atom_idx[x], nres, -1);
+		ajIntPut(&atom_idx[x], nres, -1);
 		
     
 
@@ -1123,18 +1061,24 @@ int main(ajint argc, char **argv)
 	}
 	
 
-	/*JISON*/    ajInt2dDel(&seq_pos);    
+	ajInt2dDel(&seq_pos);    
 
 
         
 
         /* This code block can be used to produce file names 
-	   which uses the Sunid only */
-	ajStrFromInt(&temp3, alg->Sunid_Family);
-	ajStrAssS(&sig_name, temp3);	
-	ajStrInsert(&sig_name, 0, sig_path);	
-	ajStrApp(&sig_name, sig_extn);
+	   which uses the Sunid only. If this is not available 
+	   then the input file name is used by default. */
+	ajStrAssS(&sig_name, temp);	
+	if(alg)
+	    if(alg->Sunid_Family)
+	    {
+		ajStrFromInt(&temp3, alg->Sunid_Family);
+		ajStrAssS(&sig_name, temp3);	
+	    }	
+	ajFileDirExtnTrim(&sig_name);
 
+	       
 
         /* This code block can be used to produce file names which
 	   are the same as the SCOP family but with instances of ' ' 
@@ -1143,8 +1087,6 @@ int main(ajint argc, char **argv)
 	   ajStrAss(&sig_name, alg->Family);       
 	   ajStrSubstituteCC(&sig_name, " ", "_");
 	   ajStrSubstituteCC(&sig_name, "&", "_");
-	   ajStrInsert(&sig_name, 0, sig_path);            
-	   ajStrApp(&sig_name, sig_extn);
 	   */
 
 
@@ -1165,7 +1107,6 @@ int main(ajint argc, char **argv)
 	ajStrFromInt(&sig_name, (int)alg->Sunid_Family);            
 	ajStrSubstituteCC(&sig_name, " ", "_");
         ajStrSubstituteCC(&sig_name, "&", "+");
-        ajStrInsert(&sig_name, 0, sig_path);    
         ajStrAppC(&sig_name, "_");                   
 
         if(filtercon == ajTrue)
@@ -1219,7 +1160,6 @@ int main(ajint argc, char **argv)
             ajStrAppC(&sig_name, "_");             
         }
         ajStrApp(&sig_name, sig_name_sp);             
-        ajStrApp(&sig_name, sig_extn);
 	*/
 
 
@@ -1241,7 +1181,13 @@ int main(ajint argc, char **argv)
         }
         ajStrAss(&sig_name, temp1);     
 	*/
-        if((sig_outf=ajFileNewOut(sig_name))==NULL)
+
+
+/*	ajFmtPrint("sig_path: %S\nsig_name: %S\n", 
+		    sig_path, sig_name); */
+	
+
+	if((sig_outf=ajFileNewOutDir(sig_path, sig_name))==NULL)
         {
             ajFatal("Could not open signature file for output");
 /*            ajStrDel(&temp); */
@@ -1291,26 +1237,20 @@ int main(ajint argc, char **argv)
     ajStrDel(&temp1);
     ajStrDel(&temp2);
     ajStrDel(&temp3);
-    ajStrDel(&sig_path);
-
-    ajStrDel(&sig_extn);
+    ajDirDel(&sig_path);
     ajStrDel(&sig_name);
     ajStrDel(&sig_name_sp);
-    ajStrDel(&alg_path);
-    ajStrDel(&alg_extn);
+    ajListDel(&alg_path);
     ajStrDel(&alg_name);
-    ajStrDel(&con_path);
-    ajStrDel(&con_extn);
+    ajDirDel(&con_path);
     ajStrDel(&con_name);
-    ajStrDel(&cpdb_path);
-    ajStrDel(&cpdb_extn);
+    ajDirDel(&cpdb_path);
     ajStrDel(&cpdb_name);
     ajStrDel(&pair_mat);
     ajStrDel(&tempres);
 
     ajListDel(&list);
     ajMatrixfDel(&mat);
-/*JISON    ajInt2dDel(&seq_pos);     */
 
 
 
@@ -3536,8 +3476,8 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg, AjPScorealg scores,
     for(x=0;x<nseqs;x++)
         ajStrDel(&seq_array[x]);
     AJFREE(seq_array);
-    /*JISON*/ajInt2dDel(&atomres_seq);
-    /*JISON*/ajIntDel(&fullseq_len);
+    ajInt2dDel(&atomres_seq);
+    ajIntDel(&fullseq_len);
     /* Return */
     return sig;
 }
@@ -5410,15 +5350,13 @@ AjPScorealg siggen_ScorealgNew(ajint len)
     /* Create the scoring arrays */
     if(len)
     {
-	/*JCIMATT  ret->seq_score    = ajFloatNewL((ajint)len);
+	/* ret->seq_score    = ajFloatNewL((ajint)len);
 	ajFloatPut(&ret->seq_score, len-1, (float)0.0); */
 
-	/* JCIMATT new stuff */  
 	ret->seqmat_score    = ajFloatNewL((ajint)len);
 	ajFloatPut(&ret->seqmat_score, len-1, (float)0.0);
 	ret->seqvar_score    = ajFloatNewL((ajint)len);
 	ajFloatPut(&ret->seqvar_score, len-1, (float)0.0);
-	/* JCIMATT new stuff */  
 
 
         ret->ncon_thresh = ajIntNewL((ajint)len);
@@ -5439,7 +5377,6 @@ AjPScorealg siggen_ScorealgNew(ajint len)
     }
 
     
-    /* JCIMATT   ret->seq_do    = ajFalse; */
     ret->seqmat_do = ajFalse;
     ret->seqvar_do = ajFalse;
 
@@ -5471,9 +5408,6 @@ AjPScorealg siggen_ScorealgNew(ajint len)
 
 void siggen_ScorealgDel(AjPScorealg *pthis)
 {
-    /* JCIMATT     ajFloatDel(&(*pthis)->seq_score); */
-    /* JCIMATT new stuff */
-    
     ajFloatDel(&(*pthis)->seqmat_score);
     ajFloatDel(&(*pthis)->seqvar_score);
 
