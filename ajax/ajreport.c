@@ -779,10 +779,10 @@ static void reportWriteListFile (AjPReport thys,
     ajFmtPrintAppS (&tmpstr, "]");
 
     if (ajStrLen(tmpstr) > 3)
-      ajFmtPrintF (outf, "%-15.15S%S\n",
+      ajFmtPrintF (outf, "%S%S\n",
 		 ajReportSeqName(thys, seq), tmpstr);
     else
-      ajFmtPrintF (outf, "%-15.15S\n",
+      ajFmtPrintF (outf, "%S\n",
 		   ajReportSeqName(thys, seq));
 
     ajStrDelReuse(&tmpstr);
@@ -1565,7 +1565,7 @@ void ajReportWriteTail (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
   AjPStr tmpstr=NULL;
 
   if (thys->Multi) {
-    ajFmtPrintF (outf, "\n#-------------------------------------\n\n");
+    ajFmtPrintF (outf, "\n#-------------------------------------\n");
   }
   else {
     ajFmtPrintF (outf, "\n######################################\n");
