@@ -184,7 +184,7 @@ int main(int argc, char **argv)
     order     = ajAcdGetListI("order", 1);
     
     /* output */
-    twoout   = ajAcdGetBool("twoout");
+    twoout   = ajAcdGetToggle("twoout");
     typeout  = ajAcdGetString("typeout");
     report   = ajAcdGetReport("outfile");
 
