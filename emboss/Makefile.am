@@ -23,7 +23,7 @@ garnier geecee getorf helixturnhelix \
 iep infoseq isochore lindna \
 maskfeat maskseq matcher megamerger merger msbar \
 needle newcpgreport newcpgseek newseq \
-noreturn nthseq \
+noreturn notseq nthseq \
 octanol oddcomp \
 palindrome pasteseq patmatdb patmatmotifs \
 pepcoil pepinfo pepnet pepstats \
@@ -37,7 +37,7 @@ seealso seqmatchall seqret seqretall seqretset seqretsplit \
 showdb showfeat showorf showseq \
 shuffleseq sigcleave silent splitter stretcher \
 stssearch supermatcher syco \
-textsearch tfextract tfm tfscan \
+textsearch tfextract tfm tfmult tfscan \
 tmap transeq trimseq \
 vectorstrip \
 water wobble wordcount wordmatch \
@@ -113,6 +113,7 @@ newcpgreport_SOURCES = newcpgreport.c
 newcpgseek_SOURCES = newcpgseek.c
 newseq_SOURCES = newseq.c
 noreturn_SOURCES = noreturn.c
+notseq_SOURCES = notseq.c
 nthseq_SOURCES = nthseq.c
 octanol_SOURCES = octanol.c
 oddcomp_SOURCES = oddcomp.c
@@ -170,6 +171,7 @@ syco_SOURCES = syco.c
 textsearch_SOURCES = textsearch.c
 tfextract_SOURCES = tfextract.c
 tfm_SOURCES = tfm.c
+tfmult_SOURCES = tfmult.c
 tfscan_SOURCES = tfscan.c
 tmap_SOURCES = tmap.c
 transeq_SOURCES = transeq.c
