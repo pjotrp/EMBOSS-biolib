@@ -6,7 +6,7 @@
                                        
 Function
 
-   Reads a range from a sequence, appends the full USA to a list file
+   Reads a sequence range, appends the full USA to a list file
    
 Description
 

@@ -204,6 +204,7 @@ See also
    notseq       Excludes a set of sequences and writes out the remaining ones
    nthseq       Writes one sequence from a multiple set of sequences
    pasteseq     Insert one sequence into another
+   plotfeat     Plot features of a sequence
    revseq       Reverse and complement a sequence
    seqret       Reads and writes (returns) sequences
    seqretsplit  Reads and writes (returns) sequences in individual files
@@ -212,7 +213,9 @@ See also
    swissparse   Retrieves sequences from swissprot using keyword search
    trimest      Trim poly-A tails off EST sequences
    trimseq      Trim ambiguous bits off the ends of sequences
+   union        Reads sequence fragments and builds one sequence
    vectorstrip  Strips out DNA between a pair of vector sequences
+   yank         Reads a sequence range, appends the full USA to a list file
    
    maskseq simply masks a user-specified set of regions, without using
    annotated features.

@@ -204,6 +204,7 @@ See also
    Program name Description
    infoalign Information on a multiple sequence alignment
    seealso Finds programs sharing group names
+   seqit Searches SRS for sequences matching keywords
    showdb Displays information on the currently available databases
    textsearch Search sequence documentation text. SRS and Entrez are
    faster!
