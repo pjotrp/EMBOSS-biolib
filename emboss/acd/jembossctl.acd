@@ -4,7 +4,7 @@ appl: jembossctl [
 ]
 
 string: sock  [
-  required: "N"
+  parameter: "Y"
   default: "/tmp/emboss"
-  information: "Socket file"
+  information: "Pipe file"
 ]

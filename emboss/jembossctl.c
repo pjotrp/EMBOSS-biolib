@@ -22,8 +22,6 @@
 ** Boston, MA  02111-1307, USA.
 ********************************************************************/
 
-#ifdef HAVE_JAVA
-
 #include "emboss.h"
 #include <errno.h>
 #include <sys/types.h>
@@ -41,7 +39,6 @@
 
 #define UIDLIMIT 100
 #define GIDLIMIT 100
-
 
 static AjBool jctl_up(char *buf,int *uid,int *gid,AjPStr *home);
 static AjBool jctl_do_fork(char *buf, int uid, int gid);
@@ -71,9 +68,6 @@ static void jctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
 #ifdef SHADOW
 #include <shadow.h>
 #endif
-#ifdef RSHADOW
-#include <shadow.h>
-#endif
 
 #ifdef PAM
 #include <security/pam_appl.h>
@@ -87,8 +81,6 @@ static void jctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
 #include <hpsecurity.h>
 #include <prot.h>
 #endif
-
-#define R_BUFFER 2048		/* Reentrant buffer size */
 
 
 static void jctl_empty_core_dump(void);
@@ -331,7 +323,7 @@ static void jctl_empty_core_dump()
 
 #ifdef SHADOW
 static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
-			 ajint *gid, AjPStr *home)
+			      ajint *gid, AjPStr *home)
 {
     struct spwd *shadow = NULL;
     struct passwd *pwd  = NULL;
@@ -365,68 +357,9 @@ static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 
 
 
-#ifdef RSHADOW
-static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
-			 ajint *gid, AjPStr *home)
-{
-    struct spwd *shadow = NULL;
-    struct spwd sresult;
-    struct passwd *pwd  = NULL;
-    struct passwd *presult;
-    char *p = NULL;
-    char *sbuf = NULL;
-    char *buf  = NULL;
-
-    if(!(buf=(char*)malloc(R_BUFFER)) || !(sbuf=(char*)malloc(R_BUFFER)))
-	return ajFalse;
-
-    shadow = getspnam_r(ajStrStr(username),&sresult,sbuf,R_BUFFER);
-    
-    if(!shadow)                 /* No such username */
-    {
-	AJFREE(buf);
-	AJFREE(sbuf);
-        return ajFalse;
-    }
-    
-    
-
-    pwd = getpwnam_r(ajStrStr(username),&result,buf,R_BUFFER);
-    
-    if(!pwd)
-    {
-	AJFREE(buf);
-	AJFREE(sbuf);
-        return ajFalse;
-    }
-    
-    
-    *uid = pwd->pw_uid;
-    *gid = pwd->pw_gid;
-
-    ajStrAssC(home,pwd->pw_dir);
-    
-    p = crypt(ajStrStr(password),shadow->sp_pwdp);
-
-    if(!strcmp(p,shadow->sp_pwdp))
-    {
-	AJFREE(buf);
-	AJFREE(sbuf);
-        return ajTrue;
-    }
-
-    AJFREE(buf);
-    AJFREE(sbuf);
-
-    return ajFalse;
-}
-#endif
-
-
-
 #ifdef AIX_SHADOW
 static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
-			 ajint *gid, AjPStr *home)
+			      ajint *gid, AjPStr *home)
 {
     struct userpw *shadow = NULL;
     struct passwd *pwd  = NULL;
@@ -458,7 +391,7 @@ static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 
 #ifdef HPUX_SHADOW
 static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
-		      ajint *gid, AjPStr *home)
+			      ajint *gid, AjPStr *home)
 {
     struct pr_passwd *shadow = NULL;
     struct passwd pwd;
@@ -492,7 +425,7 @@ static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 
 #ifdef NO_SHADOW
 static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
-		      ajint *gid, AjPStr *home)
+			      ajint *gid, AjPStr *home)
 {
     struct passwd *pwd  = NULL;
     char *p = NULL;
@@ -517,45 +450,6 @@ static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 
 
 
-#ifdef RNO_SHADOW
-static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
-			 ajint *gid, AjPStr *home)
-{
-    struct passwd *pwd  = NULL;
-    char *p = NULL;
-    struct passwd result;
-    char *buf=NULL;
-
-    if(!(buf=(char *)malloc(R_BUFFER)))
-	return ajFalse;
-    
-    pwd = getpwnam_r(ajStrStr(username),&result,buf,R_BUFFER);
-    if(!pwd)		 /* No such username */
-    {
-	AJFREE(buf);
-	return ajFalse;
-    }
-
-    *uid = pwd->pw_uid;
-    *gid = pwd->pw_gid;
-
-    ajStrAssC(home,pwd->pw_dir);
-
-    p = crypt(ajStrStr(password),pwd->pw_passwd);
-
-    if(!strcmp(p,pwd->pw_passwd))
-    {
-	AJFREE(buf);
-	return ajTrue;
-    }
-
-    AJFREE(buf);
-
-    return ajFalse;
-}
-#endif
-
-
 
 #ifdef PAM
 
@@ -567,7 +461,7 @@ struct ad_user
 
 
 static int jctl_pam_conv(int num_msg, struct pam_message **msg,
-		    struct pam_response **resp, void *appdata_ptr)
+			 struct pam_response **resp, void *appdata_ptr)
 {
     struct ad_user *user=(struct ad_user *)appdata_ptr;
     struct pam_response *response;
@@ -614,20 +508,6 @@ static int jctl_pam_conv(int num_msg, struct pam_message **msg,
     return PAM_SUCCESS;
 }
 
-
-
-/* @funcstatic jctl_check_pass ********************************************
-**
-** Check username/password. Return uid/gid/homedir
-**
-** @param [r] username [AjPStr] username
-** @param [r] password [AjPStr] password
-** @param [w] uid [ajint*] uid
-** @param [w] gid [ajint*] gid
-** @param [w] home [AjPStr*] home
-**
-** @return [AjBool] true if success
-******************************************************************************/
 
 static AjBool jctl_check_pass(AjPStr username,AjPStr password,ajint *uid,
 			      ajint *gid,AjPStr *home)
@@ -726,17 +606,18 @@ static AjBool jctl_up(char *buf, int *uid, int *gid, AjPStr *home)
     ajStrDel(&password);
     ajStrDel(&cstr);
 
-    if(*uid<UIDLIMIT || *gid<GIDLIMIT)
-	ok = ajFalse;
-    if(!*uid || !*gid)
-	ok = ajFalse;
-    
+
+    if((*uid)<UIDLIMIT || (*gid)<GIDLIMIT)
+	return ajFalse;
+    if(!(*uid) || !(*gid))
+	return ajFalse;
+
+
     if(ok)
 	return ajTrue;
 
     return ajFalse;
 }
-
 
 
 /* @funcstatic jctl_do_fork **************************************************
@@ -1057,7 +938,7 @@ static AjBool jctl_do_directory(char *buf, int uid, int gid)
 
 static AjBool jctl_do_deletefile(char *buf, int uid, int gid)
 {
-    AjPStr ufile = NULL;
+    AjPStr ufile    = NULL;
     char *p=NULL;
 
 
@@ -1176,7 +1057,7 @@ static AjBool jctl_do_deletedir(char *buf, int uid, int gid)
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_do_listfiles(char *buf, int uid, int gid, AjPStr *retlist)
+static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
 {
     AjPStr dir     = NULL;
     AjPStr full    = NULL;
@@ -1260,7 +1141,7 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid, AjPStr *retlist)
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_do_listdirs(char *buf, int uid, int gid, AjPStr *retlist)
+static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 {
     AjPStr dir     = NULL;
     AjPStr full    = NULL;
@@ -1347,8 +1228,7 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid, AjPStr *retlist)
 ******************************************************************************/
 
 static AjBool jctl_do_getfile(char *buf, int uid, int gid,
-			      unsigned char **fbuf,
-			      int *size, int sockdes)
+			      unsigned char **fbuf, int *size, int sockdes)
 {
     AjPStr file    = NULL;
     AjPStr message = NULL;
@@ -1400,8 +1280,6 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     ajFmtPrintS(&message,"%d",n);
     if(send(sockdes,ajStrStr(message),ajStrLen(message)+1,0)==-1)
     {
-	ajStrDel(&file);
-	ajStrDel(&message);
 	fprintf(stderr,"get file send error\n");
 	exit(-1);
     }
@@ -1410,8 +1288,8 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     
     if(!n)
     {
-	ajStrDel(&message);
 	ajStrDel(&file);
+	ajStrDel(&message);
 	return ajTrue;
     }
     
@@ -1427,24 +1305,24 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     if((fd=open(ajStrStr(file),O_RDONLY))==-1)
     {
 	fprintf(stderr,"open error (get file)\n");
-	ajStrDel(&file);
 	ajStrDel(&message);
+	ajStrDel(&file);
 	return ajFalse;
     }
 
     if((sofar=read(fd,(void *)*fbuf,n))!=n)
     {
 	fprintf(stderr,"read loop required error (get file)\n");
-	ajStrDel(&file);
 	ajStrDel(&message);
+	ajStrDel(&file);
 	return ajFalse;
     }
 
     if(close(fd)==-1)
     {
 	fprintf(stderr,"close error (get file)\n");
-	ajStrDel(&file);
 	ajStrDel(&message);
+	ajStrDel(&file);
 	return ajFalse;
     }
 
@@ -1461,9 +1339,9 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     ajStrDel(&file);
     ajStrDel(&message);
 
-
     return ajTrue;
 }
+
 
 
 
@@ -1589,20 +1467,21 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid, int sockdes)
 
     if(setgid(gid)==-1)
     {
-	fprintf(stderr,"setgid error (get file)\n");
+	fprintf(stderr,"setgid error (put file)\n");
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
     }
     if(setuid(uid)==-1)
     {
-	fprintf(stderr,"setuid error (get file)\n");
+	fprintf(stderr,"setuid error (put file)\n");
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
     }
 
     
+
 
 
     if((fd=open(ajStrStr(file),O_CREAT|O_WRONLY|O_TRUNC,0600))<0)
@@ -1631,6 +1510,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid, int sockdes)
 
     if(size)
 	AJFREE(fbuf);
+
     ajStrDel(&file);
     ajStrDel(&message);
 
@@ -1638,8 +1518,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid, int sockdes)
 }
 
 
-
-/* @funcstatic jctl_tidy_strings *********************************************
+/* @funcstatic jctl_jctl_tidy_strings ****************************************
 **
 ** Deallocate memory
 **
@@ -1652,7 +1531,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid, int sockdes)
 ******************************************************************************/
 
 static void jctl_tidy_strings(AjPStr *tstr, AjPStr *home, AjPStr *retlist,
-			     char *buf)
+			      char *buf)
 {
     
     ajStrDel(tstr);
@@ -1665,7 +1544,7 @@ static void jctl_tidy_strings(AjPStr *tstr, AjPStr *home, AjPStr *retlist,
 
 
 
-/* @funcstatic jctl_fork_tidy *********************************************
+/* @funcstatic jctl_jctl_fork_tidy *******************************************
 **
 ** Deallocate fork memory
 **
@@ -1680,7 +1559,7 @@ static void jctl_tidy_strings(AjPStr *tstr, AjPStr *home, AjPStr *retlist,
 ******************************************************************************/
 
 static void jctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
-		      AjPStr *dir, AjPStr *outstd, AjPStr *errstd)
+			   AjPStr *dir, AjPStr *outstd, AjPStr *errstd)
 {
     
     ajStrDel(cl);
@@ -1693,10 +1572,3 @@ static void jctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
     return;
 }
 
-#else
-int main()
-{
-    fprintf(stderr,"Error: To be used only by the Jemboss GUI (RTFM)\n");
-    return 0;
-}
-#endif
