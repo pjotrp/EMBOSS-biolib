@@ -559,8 +559,10 @@ void ajMessVError (char *format, va_list args) {
   if (errorRoutine)
     (*errorRoutine)(mesg_buf) ;
   else
-    (void) fprintf (stderr, "%s\n", mesg_buf) ;
-
+  {
+      if(AjErrorLevel.error)
+	(void) fprintf (stderr, "%s\n", mesg_buf) ;
+  }
   ajMessInvokeDebugger () ;
   return;
 }
