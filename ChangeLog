@@ -1,4 +1,29 @@
 Version 2.8.0
+	Nexus format sequence input added, with new functions to parse all
+	standard nexus files. Later releases will accept nexus format for
+	other input data.
+
+	Jackknifer, Mega, Treecon formats parsed, at least in their EMBOSS
+	output forms.
+
+	Underscores are allowed in accession numbers and sequence versions
+	to handle REFSEQ fasta format entries.
+
+	New function ajRegPre returns the original string before the
+	regular expression match.
+
+	New function ajStrArrayDel deletes a string array.
+
+	New functions ajListstrToArrayApp appends strings in a list to the
+	end of a string array.
+
+	Sequence input changes: Allow '?' as a valid character (it has
+	been seen in phylip sequences) for 'unknown' and convert to X for
+	protein (or any) and 'N' for nucleotide. Note that this can give
+	an X or N depending on whether the program accepts nucleotide only
+	or any sequence. We may find a cleaner fix, but it would depend on
+	knowing the sequence type.
+	
 	Added binding factor output to tfscan
 
 	Removed the Henry Spencer regular expression libraries. There were
