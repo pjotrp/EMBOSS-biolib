@@ -154,11 +154,11 @@ int main(int argc, char **argv)
   (void) embShowAddBlank(ss);
   
   
-  (void) embShowAddTran (ss, trnTable, 1, AJFALSE, numberseq,
+  (void) embShowAddTran (ss, trnTable, 1, AJFALSE, AJFALSE,
 			 NULL, orfminsize, AJTRUE, firstorf, addlast, AJTRUE);
-  (void) embShowAddTran (ss, trnTable, 2, AJFALSE, numberseq,
+  (void) embShowAddTran (ss, trnTable, 2, AJFALSE, AJFALSE,
 			 NULL, orfminsize, AJTRUE, firstorf, addlast, AJTRUE);
-  (void) embShowAddTran (ss, trnTable, 3, AJFALSE, numberseq,
+  (void) embShowAddTran (ss, trnTable, 3, AJFALSE, AJFALSE,
 			 NULL, orfminsize, AJTRUE, firstorf, addlast, AJTRUE);
 
   /*	(void) embShowAddBlank(ss);*/
@@ -178,11 +178,11 @@ int main(int argc, char **argv)
       totalframes = 6;
       
       (void) embShowAddTran (ss, trnTable, -3, AJFALSE,
-			     numberseq, NULL, orfminsize, AJTRUE, firstorf, addlast, AJTRUE);
+			     AJFALSE, NULL, orfminsize, AJTRUE, firstorf, addlast, AJTRUE);
       (void) embShowAddTran (ss, trnTable, -2, AJFALSE,
-			     numberseq, NULL, orfminsize, AJTRUE, firstorf, addlast, AJTRUE);
+			     AJFALSE, NULL, orfminsize, AJTRUE, firstorf, addlast, AJTRUE);
       (void) embShowAddTran (ss, trnTable, -1, AJFALSE,
-			     numberseq, NULL, orfminsize, AJTRUE, firstorf, addlast, AJTRUE);
+			     AJFALSE, NULL, orfminsize, AJTRUE, firstorf, addlast, AJTRUE);
     }
   
   (void) embShowPrint(outfile, ss);
