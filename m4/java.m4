@@ -1,6 +1,6 @@
 dnl @synopsis CHECK_JAVA()
 dnl
-dnl Need to specify --with-java and --with-javajni
+dnl Need to specify --with-java and --with-javaos
 dnl @author Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
 dnl
 
