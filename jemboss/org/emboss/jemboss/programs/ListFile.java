@@ -179,26 +179,30 @@ public class ListFile
       {
         String path = line.substring(0,index);
         File pathDir = new File(path);
-        final String prefix = line.substring(index+1,wildIndex);
-        String suff = "";
-        if(wildIndex+1 < line.length())
-          suff = line.substring(wildIndex+1,line.length());
-        final String suffix = suff;
 
-        String listFiles[] = pathDir.list(new FilenameFilter()
+        if(pathDir.exists())   // are these local files
         {
-          public boolean accept(File cwd, String name)
+          final String prefix = line.substring(index+1,wildIndex);
+          String suff = "";
+          if(wildIndex+1 < line.length())
+            suff = line.substring(wildIndex+1,line.length());
+          final String suffix = suff;
+
+          String listFiles[] = pathDir.list(new FilenameFilter()
           {
-            return (name.startsWith(prefix) &&
-                    name.endsWith(suffix));
-          };
-        });
+            public boolean accept(File cwd, String name)
+            {
+              return (name.startsWith(prefix) &&
+                      name.endsWith(suffix));
+            };
+          });
  
-        for(int i=0;i<listFiles.length;i++)
-          listFiles[i] = path.concat(fs+listFiles[i]);
+          for(int i=0;i<listFiles.length;i++)
+            listFiles[i] = path.concat(fs+listFiles[i]);
       
-        if(listFiles.length > 0)
-          return listFiles;
+          if(listFiles.length > 0)
+            return listFiles;
+        }
       }
     }
     return null;
