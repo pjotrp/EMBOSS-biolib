@@ -9,8 +9,8 @@
 **  Journal of Molecular Biology 162:705-708
 **
 ** @author Copyright (C) 2003 Damian Counsell
-** @version $Revision: 1.1 $
-** @modified $Date: 2004/02/09 17:53:41 $
+** @version $Revision: 1.2 $
+** @modified $Date: 2004/02/09 18:11:22 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@
 /* ==================================================================== */
 
 #include "ajax.h"
-#include "ajgotoh.h"
+#include "embgotoh.h"
 
 static const ajint cAjIntOffset = 1;
 static ajint DEBUG_LEVEL = 0;
