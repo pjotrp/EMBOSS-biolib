@@ -1,6 +1,6 @@
 appl: whichdb [
   documentation: "Search all databases for an entry"
-  groups: "Edit"
+  groups: "Information"
 ]
 
 string: entry  [
