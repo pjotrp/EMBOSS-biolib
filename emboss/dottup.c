@@ -32,9 +32,6 @@ static void dottup_plotMatches(AjPList list);
 #include "ajgraph.h"
 
 
-ajint begin1;
-ajint begin2;
-
 
 
 /* @prog dottup ***************************************************************
@@ -45,7 +42,8 @@ ajint begin2;
 
 int main(int argc, char **argv)
 {
-  
+    EmbPWordMatch wmp=NULL;
+    ajint wplen;
     AjPSeq seq1,seq2;
     ajint wordlen;
     AjPTable seq1MatchTable=0;
@@ -72,6 +70,9 @@ int main(int argc, char **argv)
     ajint i;
     float k,max;
     char ptr[10];
+    ajint begin1;
+    ajint begin2;
+
     
     ajGraphInit("dottup", argc, argv);
 
@@ -207,6 +208,20 @@ int main(int argc, char **argv)
 		    ajSeqName(seq2));
 	ajFmtPrintF(outfile,"##DataObjects\n##Number %d\n",
 		    ajListLength(matchlist));
+
+	if(matchlist)
+	{
+	    wplen = ajListLength(matchlist);
+	    for(i=0;i<wplen;++i)
+	    {
+		ajListPop(matchlist,(void **)&wmp);
+		wmp->seq1start += begin1;
+		wmp->seq2start += begin2;
+		ajListPushApp(matchlist,(void *)wmp);
+	    }
+	}
+	
+
 	if(matchlist)
 	    ajListMap(matchlist,dottup_objtofile, outfile);	
 	ajFmtPrintF(outfile,"##GraphObjects\n##Number 0\n");
@@ -238,8 +253,8 @@ static void dottup_objtofile(void **x,void *cl)
     ajint y1;
     ajint y2;
 
-    x1 = (*p).seq1start+begin1;
-    y1 = (*p).seq2start+begin2;
+    x1 = (*p).seq1start;
+    y1 = (*p).seq2start;
     x2 = x1 + (*p).length;
     y2 = y1 + (*p).length;
   
