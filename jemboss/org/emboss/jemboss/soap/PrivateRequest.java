@@ -90,7 +90,7 @@ public class PrivateRequest
 * @throws JembossSoapException If authentication fails
 */
    public PrivateRequest(EmbreoParams mysettings, String service, String method,
-                Vector args) throws JembossSoapException 
+                         Vector args) throws JembossSoapException 
    {
 
      if (mysettings.getDebug()) 
@@ -131,14 +131,16 @@ public class PrivateRequest
        }
      }
 
-
      
      if(JembossParams.isJembossServer())  //JembossServer.java servers
      {
        if(mysettings.getUseAuth() == true)
        {
+         if(args == null)
+           args = new Vector();
          args.addElement(new Parameter("user", String.class,
                     mysettings.getServiceUserName(), null));
+
          args.addElement(new Parameter("p", String.class,
                    mysettings.getServicePasswd(), null));
        }
@@ -163,10 +165,10 @@ public class PrivateRequest
      proglistcall.setMethodName(method);
      proglistcall.setEncodingStyleURI(Constants.NS_URI_SOAP_ENC);
 
+
      if(args != null) 
        proglistcall.setParams(args);
      
-
      Response proglistresp = null;
      try 
      {
@@ -272,6 +274,7 @@ public class PrivateRequest
       System.out.println("  Fault Code   = " + fault.getFaultCode());
       System.out.println("  Fault String = " + fault.getFaultString());
     }
+
 
    }
 
