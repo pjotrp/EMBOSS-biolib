@@ -6,7 +6,7 @@ dnl Process this file with autoconf to produce a configure script.
 #CC=cc
 
 AC_INIT(source/mse.c)
-AM_INIT_AUTOMAKE(MSE, 0.0.4)
+AM_INIT_AUTOMAKE(MSE, 1.0.0)
 
 
 AC_PROG_AWK

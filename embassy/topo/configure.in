@@ -6,7 +6,7 @@ dnl Process this file with autoconf to produce a configure script.
 #CC=cc
 
 AC_INIT(source/topo.c)
-AM_INIT_AUTOMAKE(TOPO, 0.1)
+AM_INIT_AUTOMAKE(TOPO, 1.0.0)
 
 
 AC_PROG_AWK
