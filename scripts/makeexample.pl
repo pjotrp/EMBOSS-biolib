@@ -740,6 +740,8 @@ sub writeUsage {
 
     my $out = "$incdir/$application.usage";
     open (OUT, "> $out") || die "Can't open $out";
+    $usage =~ s/(Guide tree +file created: +)\[[A-Z0-9]+\]/$1\[12345678A]/g;
+    $usage =~ s/(GCG-Alignment file created +)\[[A-Z0-9]+\]/$1\[12345678A]/g;
     print OUT $usage;
     close(OUT);
     chmod 0664, $out;	# rw-rw-r--
