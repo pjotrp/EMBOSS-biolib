@@ -56,9 +56,17 @@ int main(int argc, char **argv)
     ajDebug ("\nTrace of instr:\n");
     ajStrTrace(instr);
 
+    ajUser ("Processing '%S'", instr);
+    handle = ajStrTokenInit (instr, " ");
+    ajStrToken (&token, &handle, " ");
+    ajUser ("first token '%S'", token);
+    ajStrTokenRest (&token, &handle);
+    ajUser ("second token '%S'", token);
+    ajStrTokenClear (&handle);
+
     /*
      *  nustr will be created using the string constructor functions.  We
-     *  can create is using ajStrNew() but this just makes a clone of a null
+     *  can create it using ajStrNew() but this just makes a clone of a null
      *  string and is pointless if we want to put anything in the string.
      *  More useful is to make a string of the right size, for example 32
      *  bytes
@@ -74,11 +82,12 @@ int main(int argc, char **argv)
     ajDebug ("\nAssigned nustr:\n");
     ajStrTrace(nustr);
 
+    ajUser ("Processing '%S'", nustr);
     handle = ajStrTokenInit (nustr, " ");
     ajStrToken (&token, &handle, " ");
-    ajUser ("first token '%S'\n", token);
+    ajUser ("first token '%S'", token);
     ajStrTokenRest (&token, &handle);
-    ajUser ("second token '%S'\n", token);
+    ajUser ("second token '%S'", token);
     ajStrTokenClear (&handle);
 
     today = ajTimeTodayF("yyyy-mm-dd");
