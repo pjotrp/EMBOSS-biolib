@@ -1,4 +1,4 @@
-appl: cathparse [
+application: cathparse [
   documentation: "Reads raw CATH classification files and writes DCF file (domain classification file)."
   groups: "Utils:Database creation"
   gui: "yes"

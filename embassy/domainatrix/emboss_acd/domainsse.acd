@@ -10,7 +10,7 @@ application: domainsse
 
 
 
-section: input [ info: "input Section" type: page ]
+section: input [ information: "Input section" type: page ]
 
 infile: dcfin  
 [
@@ -35,21 +35,21 @@ endsection: input
 
 
 
-section: required [ info: "required Section" type: page ]
+section: required [ information: "Required section" type: page ]
 endsection: required
 
 
 
 
 
-section: advanced [ info: "advanced Section" type: page ]
+section: advanced [ information: "Advanced section" type: page ]
 endsection: advanced
 
 
 
 
 
-section: output  [ info: "output Section" type: page ]
+section: output  [ information: "Output section" type: page ]
 outfile: dcfout  
 [
   parameter: "Y"

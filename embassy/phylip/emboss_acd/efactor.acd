@@ -1,5 +1,5 @@
 application: efactor [
-  documentation: "multistate to binary recoding program"
+  documentation: "Multistate to binary recoding program"
   groups: "Phylogeny:Discrete characters"
   embassy: "phylip"
 ]

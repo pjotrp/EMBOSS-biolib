@@ -1,4 +1,4 @@
-appl: sites
+application: sites
 [
   documentation: "Reads CCF files (clean coordinate files) and writes CON files (contact files) of 
                   residue-ligand contact data for domains in a DCF file (domain classification file)."
@@ -11,7 +11,7 @@ appl: sites
 
 section: input 
 [ 
-info: "input Section" 
+information: "Input section" 
 type: page 
 ]
 
@@ -69,7 +69,7 @@ endsection: input
 
 section: required 
 [ 
-info: "required Section" 
+information: "Required section" 
 type: page 
 ]
 
@@ -85,7 +85,7 @@ endsection: required
 
 section: output 
 [ 
-info: "output Section" 
+information: "Output section" 
 type: page 
 ]
 
