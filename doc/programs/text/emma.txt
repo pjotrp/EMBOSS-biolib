@@ -942,6 +942,125 @@ Input file format
 
    The input is two or more sequences.
    
+   EMBOSS programs do not allow you to simply type the names of two or
+   more files or database entries - they try to interpret this as all one
+   file-name and complain that a file of that name does not exist.
+   
+   In order to enter the sequences that you wish to align, you must group
+   them in one of three ways: either make a 'list file' or place several
+   sequences in a single sequence file or specify the sequences using
+   wildcards.
+   
+  Making a List file
+  
+   A list file is a text file that holds the names of database entries
+   and/or sequence files.
+   
+   You should use a text editor such as pico or nedit to edit a file to
+   contain the names of the sequence files or database entries. There
+   must be one sequence per line.
+   
+   An example is the file 'fred' which contains:
+     _________________________________________________________________
+   
+   opsd_abyko.fasta sw:opsd_xenla sw:opsd_c* @another_list
+     _________________________________________________________________
+   
+   This List files contains:
+   
+     * opsd_abyko.fasta - this is the name of a sequence file. The file
+       is read in from the current directory.
+     * sw:opsd_xenla - this is a reference to a specific sequence in the
+       SwissProt database
+     * sw:opsd_c* - this represents all the sequences in SwissProt whose
+       identifiers start with ``opsd_c''
+     * another_list - this is the name of a second list file. List files
+       can be nested!
+       
+   Notice the @ in front of the last entry. This is the way you tell
+   EMBOSS that this file is a List file, not a regular sequence file.
+   That last line was put there both as an indication of the way you tell
+   EMBOSS that a file is a List file and to emphasise that List files can
+   contain other List files.
+   
+   When emma asks for the sequences to align, you should type '@fred'.
+   The '@' character tells EMBOSS that this is the name of a List file.
+   
+   An alternative to editing a file and laboriously typing in all of the
+   names you require is to make a list of a directory containing the
+   sequence files and then to edit the list file to remove the names of
+   the sequences files than you do not require.
+   
+   To make a list of all the files in the current directory that end in
+   '.pep', type:
+   
+   ls *.pep > listfile
+   
+  Several sequences in one files
+  
+   EMBOSS can read in a single file which contains many sequences.
+   
+   Each of the sequences in the file must be in the same format - if the
+   first sequence is in EMBL format, then all the others must be in EMBL
+   format.
+   
+   There are some sequence formats that cannot be used when placing many
+   sequences in the same file. These are sequence formats that have no
+   clear indication of where the sequence ends and the annotation of the
+   next sequence starts. These formats include: plain or text format (no
+   real format, just the sequence), staden, gcg.
+   
+   If your sequences are not already in a single file, you can place them
+   in one using seqret. The following example takes all the files ending
+   in '.pep' and places them in the file 'mystuff' in Fasta format.
+   
+   seqret "*.pep" mystuff
+   
+   When emma asks for the sequences to align, you should type 'mystuff'.
+   
+  Using wildcards
+  
+   'Wildcard' characters are characters that are expanded to match all
+   possible matching files or entries in a database.
+   
+   By far the most commonly used wildcard character is '*' which matches
+   any number (or zero) of possible characters at that position in the
+   name.
+   
+   A less commonly used wildcard character is '?' which matches any one
+   character at that position.
+   
+   For example, when emma asks for sequences to align, you could answer:
+   abc*.pep This would select any files whose name starts with 'abc' and
+   then ends in '.pep'; the centre of the name where there is a '*' can
+   be anything.
+   
+   Both file names and database entry names can be wildcarded.
+   
+   There is a slightly irritating problem that occurs when wildcards are
+   used one the Unix command line (This is the line that you type against
+   the 'Unix' prompt together with the program name.)
+   
+   In this case the Unix session gets the command line first, runs the
+   program, expands the wildcards and passes the program parameters to
+   the program. When Unix expands the wildcards, two things go wrong. You
+   may have specified wildcarded database entries - the Unix system tries
+   to file files that match that specification, it fails and refuses to
+   run the program. Alternatively, you may have specified wildcarded
+   files - Unix fileds them and gives the name of each of them to the
+   program as a separate parameter - emma gets the wrong number of
+   parameters and refuses to run.
+   
+   You get round this by quoting the wildcard. You can either put the
+   whole wildcarded name in quotes:
+   "abc*.pep"
+   or you can quote just the '*' using a '\' as:
+   abc\*.pep
+   
+   This problem does not occur when you reply to the prompt from the
+   program for the input sequences, or when you are typing the wildcard
+   files name in a web browser of GUI (such as Jemboss or SPIN) field
+   
 Output file format
 
   Sequences
