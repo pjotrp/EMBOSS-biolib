@@ -481,6 +481,7 @@ AjBool     ajStrTokenRest (AjPStr* pthis, AjPStrTok* ptoken);
 void       ajStrTokenTrace (AjPStrTok tok);
 AjBool     ajStrToLong (const AjPStr thys, ajlong* result);
 AjBool     ajStrToLower (AjPStr* pthis);
+AjBool     ajStrToTitle (AjPStr* pthis);
 AjBool     ajStrToUpper (AjPStr* pthis);
 void       ajStrTrace (const AjPStr thys);
 void       ajStrTraceChars (const AjPStr thys);

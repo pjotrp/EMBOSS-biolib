@@ -2893,6 +2893,33 @@ void ajCharToUpper(char* txt)
 
 
 
+/* @func ajStrToTitle *********************************************************
+**
+** Converts the first character of a string to upper case.
+**
+** @param [u] pthis [AjPStr*] String
+** @return [AjBool] ajTrue if string was reallocated
+** @@
+******************************************************************************/
+
+AjBool ajStrToTitle(AjPStr* pthis)
+{
+    AjBool ret = ajFalse;
+    AjPStr thys;
+    char* cp;
+
+    ret  = ajStrMod(pthis);
+    thys = *pthis;
+    cp = thys->Ptr;
+
+    *cp = toupper(*cp);
+
+    return ret;
+}
+
+
+
+
 /* @func ajStrClean ***********************************************************
 **
 ** Remove excess whitespace from a string
