@@ -12,8 +12,8 @@
 **  i, j, and k unit vectors in the x y and z directions respectively
 **
 ** @author Copyright (C) 2003 Damian Counsell
-** @version 1.0
-** @modified $ Date: $
+** @version $Revision: 1.4 $
+** @modified $Date: 2003/10/16 18:11:00 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -122,7 +122,7 @@ AjP3dVector aj3dVectorCreate(float fX, float fY, float fZ)
 **
 ******************************************************************************/
 
-/* @func Aj3dVectorDel *******************************************************
+/* @func aj3dVectorDel *******************************************************
 **
 ** Default destructor for Ajax 3-D Vectors.
 **
@@ -158,7 +158,7 @@ void aj3dVectorDel(AjP3dVector* pthis)
 
 
 
-/* @func Aj3dVectorCrossProduct **********************************************
+/* @func aj3dVectorCrossProduct **********************************************
 **
 ** calculates the cross product of two 3D vectors, that is their "torque"
 **
