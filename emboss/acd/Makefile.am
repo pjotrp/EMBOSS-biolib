@@ -47,7 +47,7 @@ pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd \
 	sigcleave.acd silent.acd sirna.acd sixpack.acd \
 	skipseq.acd splitter.acd \
 	stretcher.acd stssearch.acd supermatcher.acd syco.acd \
-	testplot.acd textsearch.acd tfextract.acd tfm.acd \
+	tcode.acd testplot.acd textsearch.acd tfextract.acd tfm.acd \
 	tfscan.acd tmap.acd tranalign.acd transeq.acd treetypedisplay.acd \
 	trimest.acd trimseq.acd twofeat.acd union.acd vectorstrip.acd \
 	water.acd whichdb.acd wobble.acd wordcount.acd wordmatch.acd wossname.acd \

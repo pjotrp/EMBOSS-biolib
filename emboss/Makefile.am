@@ -19,7 +19,7 @@ entrails histogramtest intconv \
 patmattest \
 prima primers \
 seqinfo seqretall seqretallfeat seqretset seqretsingle \
-testplot treetypedisplay
+tcode testplot treetypedisplay
 
 bin_PROGRAMS = aaindexextract abiview acdc acdpretty acdtable \
 antigenic \
@@ -197,6 +197,7 @@ stretcher_SOURCES = stretcher.c
 stssearch_SOURCES = stssearch.c
 supermatcher_SOURCES = supermatcher.c
 syco_SOURCES = syco.c
+tcode_SOURCES = tcode.c
 textsearch_SOURCES = textsearch.c
 tfextract_SOURCES = tfextract.c
 tfm_SOURCES = tfm.c
