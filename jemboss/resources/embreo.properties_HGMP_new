@@ -1,5 +1,0 @@
-user.auth=true
-server.public=http://pubsoap1.hgmp.mrc.ac.uk/soap/servlet/rpcrouter
-server.private=http://privsoap2.hgmp.mrc.ac.uk/cgi-bin/soap.cgi
-service.public=JembossServer
-service.private=EmbossSoap
