@@ -3141,6 +3141,128 @@ AjBool        ajXyzSignatureAlignWriteBlock(AjPFile outf, AjPSignature sig,
 }
 
 
+/* @func ajXyzSignatureHitsRead ***********************************************
+**
+** Allocates and writes a Hitlist with hits from a signature hits file. This 
+** is intended for reading the results from scans of a signature against a 
+** protein sequence database.  
+**
+** @param [w] inf  [AjPFile]      Input file stream
+**
+** @return [AjPHitlist] Hitlist object that was allocated.
+** @@
+******************************************************************************/
+AjPHitlist ajXyzSignatureHitsRead(AjPFile inf)
+{
+    AjPList list   =NULL;
+    AjPHitlist ret =NULL;
+    ajint  Sunid_Family=0;
+    AjBool   ok    =ajFalse;
+    AjPHit tmphit  =NULL;
+    
+
+    AjPStr class   =NULL;
+    AjPStr fold    =NULL;
+    AjPStr super   =NULL;
+    AjPStr family  =NULL;
+    AjPStr line    =NULL;
+    
+    if(!inf)
+    {
+	ajWarn("NULL file pointer passed to ajXyzSignatureHitsRead");
+	return NULL;
+    }
+    
+
+    list    = ajListNew();
+    class   = ajStrNew();
+    fold    = ajStrNew();
+    super   = ajStrNew();
+    family  = ajStrNew();
+    line    = ajStrNew();
+
+    
+    
+    while(ok && ajFileReadLine(inf,&line))
+    {
+	if(ajStrPrefixC(line,"SI"))
+	{
+	    ajFmtScanS(line, "%*s %d", &Sunid_Family);
+	}
+	else if(ajStrPrefixC(line,"CL"))
+	{
+	    ajStrAssC(&class,ajStrStr(line)+3);
+	    ajStrClean(&class);
+	}
+	else if(ajStrPrefixC(line,"FO"))
+	{
+	    ajStrAssC(&fold,ajStrStr(line)+3);
+	    while((ok=ajFileReadLine(inf,&line)))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&fold,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&fold);
+	}
+	else if(ajStrPrefixC(line,"SF"))
+	{
+	    ajStrAssC(&super,ajStrStr(line)+3);
+	    while((ok = ajFileReadLine(inf,&line)))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&super,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&super);
+	}
+	else if(ajStrPrefixC(line,"FA"))
+	{
+	    ajStrAssC(&family,ajStrStr(line)+3);
+	    while((ok = ajFileReadLine(inf,&line)))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&family,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&family);
+	}
+	else if(ajStrPrefixC(line,"HI"))
+	{
+	    tmphit=ajXyzHitNew();
+	    ajFmtScanS(line, "%*s %*d %S %d %d %S %S %S %f %f %f", 
+		       &tmphit->Acc, 
+		       &tmphit->Start, 
+		       &tmphit->End, 
+		       &tmphit->Group, 
+		       &tmphit->Typeobj, 
+		       &tmphit->Typesbj, 
+		       &tmphit->Score, 
+		       &tmphit->Pval, 
+		       &tmphit->Eval);
+	    ajListPush(list, (void *)tmphit);
+	}
+    }
+    ret = ajXyzHitlistNew(ajListLength(list));
+    ajStrAssS(&ret->Class, class);
+    ajStrAssS(&ret->Fold, fold);
+    ajStrAssS(&ret->Superfamily, super);
+    ajStrAssS(&ret->Family, family);
+    ret->Sunid_Family = Sunid_Family;
+    
+    ret->N=ajListToArray(list, (void ***)&(ret->hits));
+    
+
+    ajListDel(&list);
+    ajStrDel(&class);
+    ajStrDel(&fold);
+    ajStrDel(&super);
+    ajStrDel(&family);
+    ajStrDel(&line);
+    
+    return ret;
+}
+
 
 /* @func ajXyzSignatureHitsWrite *********************************************
 **
@@ -3222,6 +3344,80 @@ AjBool        ajXyzSignatureHitsWrite(AjPFile outf, AjPSignature sig,
 }
 
 
+/* @func ajXyzSignatureHitsWriteHitlist ***************************************
+**
+** Identical to ajXyzSignatureHitsWrite except that the signature itself is
+** not used as a source of data for printing.
+**
+** @param [w] outf [AjPFile]      Output file stream
+** @param [r] hits [AjPHitlist]   Hitlist objects with hits from scan
+** @param [r] n    [ajint]        Max. no. false hits to output
+**
+** @return [AjBool] True if file was written
+** @@
+******************************************************************************/
+AjBool        ajXyzSignatureHitsWriteHitlist(AjPFile outf, 
+				      AjPHitlist hits, ajint n)
+{
+    ajint  x=0;
+    ajint  nf=0;
+    
+    
+    /*Check args*/
+    if(!outf || !hits)
+	return ajFalse;
+
+    
+    /*Print header info*/
+    ajFmtPrintF(outf, "DE   Results of signature search\nXX\n");
+
+
+    /*Print SCOP classification records of signature */
+    ajFmtPrintF(outf,"CL   %S",hits->Class);
+    ajFmtPrintSplit(outf,hits->Fold,"\nXX\nFO   ",75," \t\n\r");
+    ajFmtPrintSplit(outf,hits->Superfamily,"XX\nSF   ",75," \t\n\r");
+    ajFmtPrintSplit(outf,hits->Family,"XX\nFA   ",75," \t\n\r");
+    ajFmtPrintF(outf,"XX\nSI   %d\n", hits->Sunid_Family);
+    ajFmtPrintF(outf,"XX\n");
+    
+    
+    /*Loop through list and print out data*/
+    for(x=0;x<hits->N; x++)
+    {
+	if(ajStrMatchC(hits->hits[x]->Typeobj, "FALSE"))
+	    nf++;
+	if(nf==n)
+	    break;
+	if(MAJSTRLEN(hits->hits[x]->Acc))
+	{
+	    
+	ajFmtPrintF(outf, "HI  %-6d%-10S%-5d%-5d%-15S%-10S%-10S%-7.1f%-7.3f%-7.3f\n", 
+		    x+1, hits->hits[x]->Acc, 
+		    hits->hits[x]->Start+1, hits->hits[x]->End+1,
+		    hits->hits[x]->Group, 
+		    hits->hits[x]->Typeobj, hits->hits[x]->Typesbj, 
+		    hits->hits[x]->Score, hits->hits[x]->Pval, hits->hits[x]->Eval);
+    }
+	else
+	{
+	ajFmtPrintF(outf, "HI  %-6d%-10S%-5d%-5d%-15S%-10S%-10S%-7.1f%-7.3f%-7.3f\n", 
+		    x+1, hits->hits[x]->Spr, 
+		    hits->hits[x]->Start+1, hits->hits[x]->End+1,
+		    hits->hits[x]->Group, 
+		    hits->hits[x]->Typeobj, hits->hits[x]->Typesbj, 
+		    hits->hits[x]->Score, hits->hits[x]->Pval, hits->hits[x]->Eval);
+	}
+	
+	
+    }
+    
+    /*Print tail info*/
+    ajFmtPrintF(outf, "XX\n//\n");
+    
+    
+    /*Clean up and return*/ 
+    return ajTrue;
+}
 
 
 
@@ -10611,7 +10807,7 @@ ajint ajXyzHitlistCompFold(const void *hit1, const void *hit2)
 
 /* @func ajXyzHitlistClassify *************************************************
 **
-** Classifies a list of signature-sequence hits (held in a Hitlist object) 
+** Classifies a list of signatur -sequence hits (held in a Hitlist object) 
 ** according to list of target sequences (a list of AjOHitlist objects).
 ** 
 ** Writes the Group, Typeobj (primary classification) & Typesbj (secondary
@@ -11056,12 +11252,19 @@ AjBool        ajXyzHitlistClassifyLigand(AjPHitlist *hits, AjPList targets,
 		       }
 		       */
 		    else
-			/*SCOP folds are different*/
+			/*SCOP families are different*/
 		    {
-			ajStrAssC(&(*hits)->hits[x]->Typeobj, "FALSE");
-			ajStrAssC(&(*hits)->hits[x]->Typesbj, "FALSE");
-
-			ajStrAssC(&(*hits)->hits[x]->Group, "NOT_APPLICABLE");
+			/* The same stretch of sequence might contain two or more ligand
+			   binding sites for diferent ligands, and so belong to two or 
+			   more different "Family" (ligand types). So only assign the 
+			   hit as FALSE if we have not already assigned it as TRUE. */
+			   
+			if(!ajStrMatchCaseC((*hits)->hits[x]->Typesbj, "TRUE"))
+			{
+			    ajStrAssC(&(*hits)->hits[x]->Typeobj, "FALSE");
+			    ajStrAssC(&(*hits)->hits[x]->Typesbj, "FALSE");
+			    ajStrAssC(&(*hits)->hits[x]->Group, "NOT_APPLICABLE");
+			}	
 		    }
 		}
 		else
@@ -11126,12 +11329,20 @@ AjBool        ajXyzHitlistClassifyLigand(AjPHitlist *hits, AjPList targets,
 			    ajStrAssC(&(*hits)->hits[x]->Group, "NOT_APPLICABLE");
 			} */
 			else
-			    /*SCOP folds are different*/
+			    /*SCOP families are different*/
 			{
-			    ajStrAssC(&(*hits)->hits[x]->Typeobj, "FALSE");
-			    ajStrAssC(&(*hits)->hits[x]->Typesbj, "FALSE");
+			    /* The same stretch of sequence might contain two or more ligand
+			       binding sites for diferent ligands, and so belong to two or 
+			       more different "Family" (ligand types). So only assign the 
+			       hit as FALSE if we have not already assigned it as TRUE. */
+			   
+			    if(!ajStrMatchCaseC((*hits)->hits[x]->Typesbj, "TRUE"))
+			    {
+				ajStrAssC(&(*hits)->hits[x]->Typeobj, "FALSE");
+				ajStrAssC(&(*hits)->hits[x]->Typesbj, "FALSE");
 
-			    ajStrAssC(&(*hits)->hits[x]->Group, "NOT_APPLICABLE");
+				ajStrAssC(&(*hits)->hits[x]->Group, "NOT_APPLICABLE");
+			    }
 			}
 		    }
   		    else
@@ -11140,8 +11351,8 @@ AjBool        ajXyzHitlistClassifyLigand(AjPHitlist *hits, AjPList targets,
 			   classification to UNKNOWN, but only if it has 
 			   not already been set */
 			if((!ajStrMatchC((*hits)->hits[x]->Typesbj, "TRUE")) &&
-		       (!ajStrMatchC((*hits)->hits[x]->Typesbj, "CROSS")) &&
-		       (!ajStrMatchC((*hits)->hits[x]->Typesbj, "FALSE")))
+			   (!ajStrMatchC((*hits)->hits[x]->Typesbj, "CROSS")) &&
+			   (!ajStrMatchC((*hits)->hits[x]->Typesbj, "FALSE")))
 			{
 			    ajStrAssC(&(*hits)->hits[x]->Typeobj, "UNKNOWN");
 			    ajStrAssC(&(*hits)->hits[x]->Typesbj, "UNKNOWN");

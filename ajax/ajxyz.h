@@ -398,9 +398,9 @@ typedef struct AjSHit
 {
   AjPStr    Seq;	/* Sequence as string */
   ajint     Start;      /* Start of sequence or signature alignment relative to full length 
-			    swissprot sequence */
+			    swissprot sequence, this is an index so starts at 0 */
   ajint     End;        /* End of sequence or signature alignment relative to full length 
-			    swissprot sequence */
+			    swissprot sequence, this is an index so starts at 0 */
   AjPStr Acc;           /* Accession number of sequence entry  */
   AjPStr    Spr;        /* Swissprot code of sequence entry */
   AjPStr    Typeobj;    /* Primary classification of hit - objective*/
@@ -1259,6 +1259,10 @@ AjBool        ajXyzSignatureAlignSeqall(AjPSignature sig, AjPSeqall db, ajint n,
 					AjPHitlist *hits, ajint nterm);
 AjBool        ajXyzSignatureHitsWrite(AjPFile outf, AjPSignature sig, 
 				      AjPHitlist hits, ajint n);
+AjBool        ajXyzSignatureHitsWriteHitlist(AjPFile outf, 
+					     AjPHitlist hits, ajint n);
+
+AjPHitlist   ajXyzSignatureHitsRead(AjPFile inf);
 AjBool        ajXyzSignatureAlignWrite(AjPFile outf, AjPSignature sig, 
 				       AjPHitlist hits);
 AjBool        ajXyzSignatureAlignWriteBlock(AjPFile outf, AjPSignature sig, 
