@@ -6,9 +6,9 @@ pkgdata_DATA =  aaindexextract.html abiview.html acdc.html acd_group.html \
 	alignment_multiple_group.html alignrunner.html allversusall.html \
 	antigenic.html backtranseq.html banana.html biosed.html \
 	btwisted.html cai.html cathparse.html chaos.html charge.html \
-	checktrans.html chips.html cirdna.html clique.html codcmp.html \
+	checktrans.html chips.html cirdna.html codcmp.html \
 	coderet.html compseq.html cons.html contactalign.html \
-	contactcount.html contacts.html contrast.html \
+	contactcount.html contacts.html \
 	cpgplot.html cpgreport.html crystalball.html cusp.html \
 	cutgextract.html cutseq.html dan.html dbiblast.html dbifasta.html \
 	dbiflat.html dbigcg.html degapseq.html degapseqrunner.html \
@@ -27,7 +27,7 @@ pkgdata_DATA =  aaindexextract.html abiview.html acdc.html acd_group.html \
 	enzyme_kinetics_group.html epenny.html epestfind.html eprimer3.html \
 	eprotdist.html eprotpars.html equicktandem.html erestml.html \
 	eseqboot.html esim4.html est2genome.html etandem.html \
-	extractfeat.html extractseq.html factor.html fclique.html \
+	extractfeat.html extractseq.html fclique.html \
 	fconsense.html fcontml.html fcontrast.html fdiscboot.html \
 	fdnacomp.html fdnadist.html fdnainvar.html fdnaml.html fdnamlk.html \
 	fdnamove.html fdnapars.html fdnapenny.html fdollop.html \
@@ -49,7 +49,7 @@ pkgdata_DATA =  aaindexextract.html abiview.html acdc.html acd_group.html \
 	mwcontam.html mwfilter.html myseq.html
 
 pkgdata2_DATA = nawalign.html nawalignrunner.html needle.html \
-	needlerunner.html neighbor.html newcpgreport.html \
+	needlerunner.html newcpgreport.html \
 	newcpgseek.html newseq.html noreturn.html notseq.html \
 	nthseq.html nucleic_2d_structure_group.html \
 	nucleic_codon_usage_group.html \
@@ -61,7 +61,7 @@ pkgdata2_DATA = nawalign.html nawalignrunner.html needle.html \
 	nucleic_restriction_group.html nucleic_transcription_group.html \
 	nucleic_translation_group.html octanol.html oddcomp.html \
 	palindrome.html pasteseq.html patmatdb.html patmatmotifs.html \
-	pdbparse.html pdbplus.html pdbtosp.html penny.html pepcoil.html \
+	pdbparse.html pdbplus.html pdbtosp.html pepcoil.html \
 	pepinfo.html pepnet.html pepstats.html pepwheel.html \
 	pepwindowall.html pepwindow.html pestfind.html \
 	phylogeny_consensus_group.html \
