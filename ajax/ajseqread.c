@@ -6195,7 +6195,8 @@ static AjBool seqQueryMatch (AjPSeq thys, AjPSeqQuery query)
 
 /* @func ajSeqQueryWild *******************************************************
 **
-** Tests whether a query includes wild cards in any element.
+** Tests whether a query includes wild cards in any element,
+** of can return more than one entry.
 **
 ** @param [r] qry [AjPSeqQuery] Query object.
 ** @return [AjBool] ajTrue if query had wild cards.
@@ -6219,29 +6220,37 @@ AjBool ajSeqQueryWild (AjPSeqQuery qry)
 	ajDebug("wild query Id '%S'\n", qry->Id);
 	return ajTrue;
     }
-    if (ajRegExec(qrywildexp, qry->Acc))
+    if (ajStrLen(qry->Acc))
     {
-	ajDebug("wild query Acc '%S'\n", qry->Acc);
-	return ajTrue;
+        if (!ajStrLen(qry->Id))
+	{
+	    ajDebug("wild (has, but no Id) query Acc '%S'\n", qry->Acc);
+	    return ajTrue;
+	}
+	else if (ajRegExec(qrywildexp, qry->Id))
+        {
+	    ajDebug ("wild query Acc '%S'\n", qry->Acc);
+	    return ajTrue;
+	}
     }
-    if (ajRegExec(qrywildexp, qry->Sv))
+    if (ajStrLen(qry->Sv))
     {
 	ajDebug("wild query Sv '%S'\n", qry->Sv);
 	return ajTrue;
     }
-    if (ajRegExec(qrywildexp, qry->Des))
+    if (ajStrLen(qry->Des))
     {
-	ajDebug("wild query Des '%S'\n", qry->Des);
+	ajDebug("wild (has) query Des '%S'\n", qry->Des);
 	return ajTrue;
     }
-    if (ajRegExec(qrywildexp, qry->Org))
+    if (ajStrLen(qry->Org))
     {
-	ajDebug("wild query Org '%S'\n", qry->Org);
+	ajDebug("wild (has) query Org '%S'\n", qry->Org);
 	return ajTrue;
     }
-    if (ajRegExec(qrywildexp, qry->Key))
+    if (ajStrLen(qry->Key))
     {
-	ajDebug("wild query Key '%S'\n", qry->Key);
+	ajDebug("wild (has) query Key '%S'\n", qry->Key);
 	return ajTrue;
     }
 
