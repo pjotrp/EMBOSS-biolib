@@ -197,6 +197,14 @@ if test "$CC" = "cc"; then
 fi
 AM_CONDITIONAL(PURIFY, test "${enable_purify}" = "yes")
 
+dnl Tests for AIX
+dnl If shared needs -Wl,-G in plplot,ajax,nucleus + -lX11 in plplot. Also
+dnl needs -Wl,-bdynamic -Wl,-brtl in emboss
+dnl A test for SHARED is also needed
+AM_CONDITIONAL(ISAIXIA64, test "`uname`" = "AIX")
+AM_CONDITIONAL(ISSHARED, test "${enable_shared}" = "yes")
+
+
 AC_OUTPUT(plplot/Makefile plplot/lib/Makefile nucleus/Makefile ajax/Makefile
 emboss/Makefile emboss/acd/Makefile test/Makefile test/data/Makefile 
 test/embl/Makefile test/pir/Makefile test/swiss/Makefile

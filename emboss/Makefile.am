@@ -3,6 +3,14 @@ SUBDIRS = acd data
 
 EXTRA_DIST = emboss.default.template
 
+if ISSHARED
+if ISAIXIA64
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl
+else
+AM_CFLAGS =
+endif
+endif
+
 check_PROGRAMS = alignwrap ajtest \
 complex corbatest \
 demoalign demofeatures demolist demoreport demosequence demostring demotable dichet \

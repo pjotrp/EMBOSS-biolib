@@ -2,6 +2,14 @@
 
 lib_LTLIBRARIES = libajax.la libajaxg.la
 
+if ISSHARED
+if ISAIXIA64
+AM_CFLAGS = -Wl,-G -L../plplot/.libs -lplplot
+else
+AM_CFLAGS =
+endif
+endif
+
 INCLUDES = -DAJAX_FIXED_ROOT=$(AJAX_FIXED_ROOT) -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/plplot
 #LDFLAGS = -no-undefined
 LIBS =

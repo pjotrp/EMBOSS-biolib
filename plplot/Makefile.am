@@ -4,6 +4,14 @@ SUBDIRS = lib
 
 lib_LTLIBRARIES = libplplot.la
 
+if ISSHARED
+if ISAIXIA64
+AM_CFLAGS = -Wl,-G -lX11
+else
+AM_CFLAGS =
+endif
+endif
+
 INCLUDES = $(X_CFLAGS) -I$(srcdir)/ -I/usr/include/gd
 LIBS =
 
