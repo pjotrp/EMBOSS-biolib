@@ -70,7 +70,7 @@ int main(int argc, char **argv)
 	ajFatal("No program name specified.");
     
     if(!tfm_FindAppDoc(program, html, &path))
-	ajFatal("The documentation for program '%S' was not found.", program);
+	ajDie("No documentation found for program '%S'.", program);
     
     /* outputing to STDOUT and piping through 'more'? */
     if(ajFileStdout(outfile) && more)
