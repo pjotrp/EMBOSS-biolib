@@ -866,10 +866,12 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
 	chdir(ajStrStr(dir));
 	dup2(outpipe[1],1);
 	dup2(errpipe[1],2);
-	setgid(gid);
-	setuid(uid);
+	if(setgid(gid)==-1)
+	    exit(-1);
+	if(setuid(uid)==-1)
+	    exit(-1);
 	if(execve(ajStrStr(prog),argp,envp) == -1)
-	    return (unsigned char)ajFalse;
+	    exit(-1);
     }
 
 
