@@ -254,7 +254,7 @@ sub runtest ($) {
     }
   }
 
-# We have a sucessful run, no timeouts.
+# We have a successful run, no timeouts.
 # Check it did what we wanted it to
 
 # Note the run time
@@ -521,6 +521,11 @@ sub testnum ($$) {
 # For each test in qatest.dat, call runtest
 #########################################################################
 
+$numtests = $#ARGV;
+%dotest = ();
+foreach $test (@ARGV) {
+  $dotest{$test} = 1;
+}
 $id = "";
 $lastid = "";
 $testdef = "";
@@ -583,8 +588,10 @@ while (<IN>) {
 # end of definition - fire up the test
 
   if (/^\/\//) {
-    $tcount++;
+    if (($numtests >= 0) && !$dotest{$id}) {next}
+
     $result = runtest ($testdef);
+    $tcount++;
 
 # check the results
 
