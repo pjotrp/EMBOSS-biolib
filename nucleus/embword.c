@@ -1361,10 +1361,13 @@ static void listInsertNodeOld(AjPListNode* pnode, void* x)
 }
 
 
-/*********************************************************/
-/* Unused functions. Here to keep compiler warnings away */
-/*********************************************************/
-void wordUnused(void)
+/* @func embWordUnused *******************************************************
+**
+** Unused functions. Here to keep compiler warnings away
+**
+******************************************************************************/
+
+void embWordUnused(void)
 {
     EmbOWordMatch match;
     AjPTable ajptable=NULL;
