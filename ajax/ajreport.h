@@ -29,7 +29,6 @@ typedef struct AjSReport {
   AjEnum Format;		/* Report format (index number) */
   AjPFeattable Fttable;		/* Feature table to use (obsolete?) */
   AjPFeattabOut Ftquery;	/* Output definition for features*/
-  AjPStr Filename;		/* Output file name */
   AjPStr Extension;		/* Output file extension */
   AjPFile File;			/* Output file object */
   AjPList Tagnames;		/* List of extra tag names (from ACD) */

@@ -1,8 +1,16 @@
 Version 2.5.0
 
-	aaindexextract (new) reads AAINDEX database and writes each entry
-	to data/AAINDEX directory. New function ajFileDataDirNew to read
-	data files from a named directory. Ned ACd datafile attribute
+	ACD attributes now have descriptions in the ajacd.c code which are
+	reported by 'entrails'. All ACD attributes have been checked by
+	inspection of the code to note those which are used/unused by ACD.
+	The ACD "type" attribute for files is renamed "standardtype" to
+	reflect its intended use to note standard file types for linking
+	applications. Sequences and alignments still have a "type"
+	attribute for protein or dna sequence types.
+	
+	aaindexextract (new) reads the AAINDEX database and writes each
+	entry to data/AAINDEX directory. New function ajFileDataDirNew to
+	read data files from a named directory. New ACD datafile attribute
 	'directory' passed to ajFileDataDirNew. AAINDEX directory defined
 	for pepwindow and pepwindowall.
 	

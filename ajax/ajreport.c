@@ -1642,7 +1642,6 @@ void ajReportDel (AjPReport* pthys) {
   ajStrDel (&thys->Name);
   ajStrDel (&thys->Type);
   ajStrDel (&thys->Formatstr);
-  ajStrDel (&thys->Filename);
   ajStrDel (&thys->Extension);
 
   while(ajListPop(thys->FileTypes,(void **)&str))
@@ -1868,7 +1867,6 @@ AjPReport ajReportNew (void) {
   pthis->Format = 0;
   pthis->Fttable = NULL;
   pthis->Ftquery = ajFeattabOutNew();
-  pthis->Filename = ajStrNew();
   pthis->Extension = ajStrNew();
   pthis->Precision = 3;
   pthis->File = NULL;
