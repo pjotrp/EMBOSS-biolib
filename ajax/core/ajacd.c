@@ -117,25 +117,62 @@ static char* acdValNames[] = {"application", "string", "word",
 			      "boolean", "integer", "float",
 			      NULL};
 
-/* attribute structure */
+/* @datastatic AcdPAttr *******************************************************
+**
+** ACD attribute definition structure
+**
+** @alias AcdPAttr
+** @alias AcdOAttr
+**
+** @attr Name [char*] Attribute name
+** @attr Type [enum AcdEValtype] Type code
+** @attr Help [char*] Descriptive short text for documentation
+** @@
+******************************************************************************/
 
 typedef struct AcdSAttr
 {
-  char *Name;
+  char* Name;
   enum AcdEValtype Type;
-  char *Help;
+  char* Help;
 } AcdOAttr, *AcdPAttr;
 
 
-/* qualifier structure */
+/* @datastatic AcdPQual *******************************************************
+**
+** ACD qualifier definition structure
+**
+** @alias AcdSQual
+** @alias AcdOQual
+**
+** @attr Name [char*] Qualifier name
+** @attr Default [char*] Default value as a string
+** @attr Type [char*] Type boolean, integer, float or string
+** @attr Help [char*] Help text for documentation and for -help output
+** @@
+******************************************************************************/
 
 typedef struct AcdSQual
 {
-  char *Name;
-  char *Default;
-  char *Type;
-  char *Help;
+  char* Name;
+  char* Default;
+  char* Type;
+  char* Help;
 } AcdOQual, *AcdPQual;
+
+/* @datastatic AcdPTableItem **************************************************
+**
+** Help table structure
+**
+** @alias AcdSTableItem
+** @alias AcdOTableItem
+**
+** @attr Qual [AjPStr] Qualifier name
+** @attr Help [AjPStr] Help text
+** @attr Valid [AjPStr] Valid input
+** @attr Expect [AjPStr] Expected value(s)
+** @@
+******************************************************************************/
 
 typedef struct AcdSTableItem
 {
@@ -145,7 +182,7 @@ typedef struct AcdSTableItem
   AjPStr Expect;
 } AcdOTableItem, *AcdPTableItem;
 
-/* @data AcdPAcd **************************************************************
+/* @datastatic AcdPAcd ********************************************************
 **
 ** AJAX Command Definition component
 **
@@ -189,7 +226,18 @@ typedef struct AcdSAcd
 } AcdOAcd, *AcdPAcd;
 
 
-/* general type structure */
+/* @datastatic AcdPSection ****************************************************
+**
+** ACD section definition
+**
+** @alias AcdSSection
+** @alias AcdOSection
+**
+** @attr Name [char*] Section name
+** @attr Description [char*] Section description
+** @attr Type [char*] Section type "page"
+** @@
+******************************************************************************/
 
 typedef struct AcdSSection
 {
@@ -206,6 +254,24 @@ AcdOSection acdSecRequired[] = {{"required", "required Section", "page"},
 			     {NULL, NULL, NULL}};
 AcdOSection acdSecAdvanced[] = {{"advanced", "advanced Section", "page"},
 			     {NULL, NULL, NULL}};
+
+/* @datastatic AcdPType *******************************************************
+**
+** ACD data type structure
+**
+** @alias AcdSType
+** @alias AcdOType
+**
+** @attr Name [char*] Attribute type
+** @attr Group [char*] Attribute group
+** @attr Section [AcdPSection] Expected section name
+** @attr Attr [AcdPAttr] Type-specific attributes
+** @attr TypeSet [(void*)] function to set value and prompt user
+** @attr Quals [AcdPQual] Type-specific qualifiers
+** @attr Valid [char*] Valid data help message and description for
+**                     documentation
+** @@
+******************************************************************************/
 
 typedef struct AcdSType
 {
@@ -421,10 +487,22 @@ static AjBool acdExpCase (AjPStr* result, AjPStr str);
 static AjBool acdExpFilename (AjPStr* result, AjPStr str);
 static AjBool acdExpExists (AjPStr* result, AjPStr str);
 
+/* @datastatic AcdPExpList ****************************************************
+**
+** Exression list structure for named expressions @plus etc.
+**
+** @alias AcdSExpList
+** @alias AcdOExpList
+**
+** @attr Name [char*] Expression name
+** @attr Func [(AjBool*)] Function to evaluate expression
+** @@
+******************************************************************************/
+
 typedef struct AcdSExpList {
   char* Name;
   AjBool (*Func) (AjPStr *result, AjPStr str);
-} AcdOExpList;
+} AcdOExpList, *AcdPExpList;
 
 /* @funclist acdExpList *******************************************************
 **
@@ -600,7 +678,8 @@ AcdOAttr acdAttrDef[] = {
 */
 
 AcdOAttr acdAttrXxxx[] = {
-			 {NULL, VT_NULL} };
+			 {NULL, VT_NULL}
+};
 
 AcdOAttr acdAttrAppl[] = {
   {"documentation", VT_STR, "Short overview of the application function"},
@@ -925,9 +1004,24 @@ static AcdOAttr acdCalcString[] = {
   {NULL, VT_NULL, NULL}
 };
 
+/* @datastatic AcdPKey ********************************************************
+**
+** Keywords data structure for non-ACD types (application, variable, section,
+** endsection) data
+**
+** @alias AcdSKey
+** @alias AcdOKey
+**
+** @attr Name [char*] Keyword name
+** @attr Stage [AcdEStage] Enumerated stage 
+** @attr Attr [AcdPAttr] Type-specifric attributes 
+** @attr KetSet [(void*)] function to set value and prompt user
+** @@
+******************************************************************************/
+
 typedef struct AcdSKey
 {
-  char *Name;
+  char* Name;
   AcdEStage Stage;
   AcdPAttr Attr;		/* type-specific attributes */
   void (*KeySet)(AcdPAcd thys);	/* function to set value and prompt user */
@@ -946,7 +1040,8 @@ AcdOKey acdKeywords[] =
   {"variable",    VAR_STAGE,    acdAttrVar,    acdSetVar},
   {"section",     SEC_STAGE,    acdAttrSec,    acdSetSec},
   {"endsection",  ENDSEC_STAGE, acdAttrEndsec, acdSetEndsec},
-  {NULL, BAD_STAGE} };
+  {NULL, BAD_STAGE}
+};
 
 
 /* Type-specific associated qualifiers which can be used positionally
@@ -974,7 +1069,8 @@ AcdOQual acdQualAppl[] =	/* careful: index numbers used in*/
   {"error",      "Y", "boolean", "Report errors"},
   {"fatal",      "Y", "boolean", "Report fatal errors"},
   {"die",        "N", "boolean", "Report deaths"},
-  {NULL, NULL, NULL, NULL} };
+  {NULL, NULL, NULL, NULL}
+};
 
 AcdOQual acdQualAlign[] =
 {
@@ -987,7 +1083,8 @@ AcdOQual acdQualAlign[] =
   {"adesshow",   "N", "boolean", "Show description in the header"},
   {"ausashow",   "N", "boolean", "Show the full USA in the alignment"},
   {"aglobal",    "N", "boolean", "Show the full sequence in alignment"},
-  {NULL, NULL, NULL, NULL} };
+  {NULL, NULL, NULL, NULL}
+};
 
 AcdOQual acdQualFeat[] =
 {
@@ -997,7 +1094,8 @@ AcdOQual acdQualFeat[] =
   {"fbegin",     "0", "integer", "First base used"},
   {"fend",       "0", "integer", "Last base used, def=max length"},
   {"freverse",   "N", "boolean", "Reverse (if DNA)"},
-  {NULL, NULL, NULL, NULL} };
+  {NULL, NULL, NULL, NULL}
+};
 
 AcdOQual acdQualFeatout[] =
 {
@@ -1006,7 +1104,8 @@ AcdOQual acdQualFeatout[] =
   {"ofextension","",  "string",  "File name extension"},
   {"ofname",     "",  "string",  "Base file name"},
   {"ofsingle",   "N", "boolean", "Separate file for each entry"},
-  {NULL, NULL, NULL, NULL} };
+  {NULL, NULL, NULL, NULL}
+};
 
 AcdOQual acdQualReport[] =
 {
@@ -1016,7 +1115,8 @@ AcdOQual acdQualReport[] =
   {"raccshow",   "N", "boolean", "Show accession number in the report"},
   {"rdesshow",   "N", "boolean", "Show description in the report"},
   {"rusashow",   "N", "boolean", "Show the full USA in the report"},
-  {NULL, NULL, NULL, NULL} };
+  {NULL, NULL, NULL, NULL}
+};
 
 AcdOQual acdQualSeq[] =
 {
@@ -1035,7 +1135,8 @@ AcdOQual acdQualSeq[] =
   {"ufo",        "", "string",   "UFO features"},
   {"fformat",    "", "string",   "Features format"},
   {"fopenfile",  "", "string",   "Features file name"},
-  {NULL, NULL, NULL, NULL} };
+  {NULL, NULL, NULL, NULL}
+};
 
 AcdOQual acdQualSeqset[] =
 {
@@ -1054,7 +1155,8 @@ AcdOQual acdQualSeqset[] =
   {"ufo",        "",  "string",  "UFO features"},
   {"fformat",    "",  "string",  "Features format"},
   {"fopenfile",  "",  "string",  "Features file name"},
-  {NULL, NULL, NULL, NULL} };
+  {NULL, NULL, NULL, NULL}
+};
 
 AcdOQual acdQualSeqall[] =
 {
@@ -1073,7 +1175,8 @@ AcdOQual acdQualSeqall[] =
   {"ufo",        "",  "string",  "UFO features"},
   {"fformat",    "",  "string",  "Features format"},
   {"fopenfile",  "",  "string",  "Features file name"},
-  {NULL, NULL, NULL, NULL} };
+  {NULL, NULL, NULL, NULL}
+};
 
 AcdOQual acdQualSeqout[] =
 {
@@ -1085,7 +1188,8 @@ AcdOQual acdQualSeqout[] =
   {"oufo",       "",  "string",  "UFO features"},
   {"offormat",   "",  "string",  "Features format"},
   {"ofname",     "",  "string",  "Features file name"},
-  {NULL, NULL, NULL, NULL} };
+  {NULL, NULL, NULL, NULL}
+};
 
 AcdOQual acdQualSeqoutset[] =
 {
@@ -1097,7 +1201,8 @@ AcdOQual acdQualSeqoutset[] =
   {"oufo",       "",  "string",  "UFO features"},
   {"offormat",   "",  "string",  "Features format"},
   {"ofname",     "",  "string",  "Features file name"},
-  {NULL, NULL, NULL, NULL} };
+  {NULL, NULL, NULL, NULL}
+};
 
 AcdOQual acdQualSeqoutall[] =
 {
@@ -1109,7 +1214,8 @@ AcdOQual acdQualSeqoutall[] =
   {"oufo",       "",  "string",  "UFO features"},
   {"offormat",   "",  "string",  "Features format"},
   {"ofname",     "",  "string",  "Features file name"},
-  {NULL, NULL, NULL, NULL} };
+  {NULL, NULL, NULL, NULL}
+};
 
 AcdOQual acdQualGraph[] =
 {
@@ -1123,7 +1229,8 @@ AcdOQual acdQualGraph[] =
   {"grtitle",   "",  "string",  "Graph right axis title"},
   */
   {"goutfile",  "",  "string",  "Output file for non interactive displays"},
-  {NULL, NULL, NULL, NULL} };
+  {NULL, NULL, NULL, NULL}
+};
 
 AcdOQual acdQualGraphxy[] =
 {
@@ -1138,7 +1245,8 @@ AcdOQual acdQualGraphxy[] =
   {"gsets",     "0", "integer", "Number of sets"},
   */
   {"goutfile",  "",  "string",  "Output file for non interactive displays"},
-  {NULL, NULL, NULL, NULL} };
+  {NULL, NULL, NULL, NULL}
+};
 
 /* Type definitions - must be after attributes and functions are defined
 ** Add new types here as needed
@@ -1256,6 +1364,21 @@ AcdOType acdType[] =
    "Graph device for a 2D graph" },
   {NULL, NULL, NULL, NULL, NULL, NULL, NULL}
 };
+
+/* @datastatic AcdPValid ******************************************************
+**
+** ACD valid input structure. For each ACD type, stores functions
+** that reports on valid input and expected values
+**
+** @alias AcdSValid
+** @alias AcdOValid
+**
+** @attr Name [char*] ACD type name
+** @attr Valid [(void*)] Function to report valid values in general
+** @attr Expect [(void*)] Function to report expected values
+**                        for this definition
+** @@
+******************************************************************************/
 
 typedef struct AcdSValid
 {
@@ -5449,7 +5572,7 @@ static void acdSetOutfile (AcdPAcd thys)
 
     for (itry=acdPromptTry; itry && !ok; itry--)
     {
-	ok = ajTrue;			/* accept the default if nothing changes */
+	ok = ajTrue;	   /* accept the default if nothing changes */
 
 	(void) ajStrAssS (&reply, defreply);
 
@@ -11299,7 +11422,7 @@ static void acdArgsParse (ajint argc, char *argv[]) {
 /* @funcstatic acdIsParamValue ************************************************
 **
 ** Tests whether a parameter value is 'missing', in which case
-** it wil be ignored for now.
+** it will be ignored for now.
 **
 ** @param [r] pval [AjPStr] Parameter value
 **
