@@ -100,7 +100,7 @@ int main(int argc, char **argv)
 	    embMatProtDelInt(&s);
 	}
 
-	ajListPop(l,(void **)&mm);
+/*	ajListPop(l,(void **)&mm); */
 
 	pscan_print_hits(&outf, &l, nmotifs, &name, begin, end);
 	ajListDel(&l);
