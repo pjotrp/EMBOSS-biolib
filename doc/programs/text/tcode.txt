@@ -347,7 +347,6 @@ Output file format
    
    The graphical display is output with the default file name tcode.1.
    and then the name of the selected graphical display (e.g. png; ps).
-   The standard output format for using tcode on the command line is X11.
    
    The graph indicates the threshold for probably being coding with a
    green horizontal line and the threshold for probably not being coding
@@ -584,8 +583,8 @@ Data files
    
 Notes
 
-   The current TESTCODE application's apparent interpretation of the
-   algorithm is:
+   In the GCG package, the current (version 10.3) TESTCODE application's
+   apparent interpretation of the algorithm is:
    
         MAX(A1,A2,A3) / MIN(A1,A2,A3)
 
@@ -593,8 +592,8 @@ Notes
    
         MAX(A1,A2,A3) / MIN(A1,A2,A3) + 1
 
-   thus any plot using TESTCODE will be slightly higher than the tcode
-   equivalent.
+   thus any plot using the GCG TESTCODE aplication will be slightly
+   higher than the tcode equivalent.
    
 References
 
@@ -613,10 +612,6 @@ Exit status
 
    It always exits with status 0.
    
-Known bugs
-
-   None.
-   
 See also
 
    Program name                       Description
@@ -627,10 +622,7 @@ See also
    sixpack      Display a DNA sequence with 6-frame translation and ORFs
    wobble       Wobble base plot
    
-   syco tries to recognise protein coding sequences by virtue of the
-   similarity of their codon usage to a codon frequency table.
-   
-  See Also Elsewhere
+  See Elsewhere
   
    TESTCODE - GCG package, Accelrys Inc. Uses a different interpretation
    of the same algorithm. Source code unavailable.
@@ -645,8 +637,3 @@ Author(s)
 History
 
    Date of original completion: 2nd March 2003
-   
-Target users
-
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
