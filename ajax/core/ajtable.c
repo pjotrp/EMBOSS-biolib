@@ -29,12 +29,22 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include <math.h>
 
 #include "ajmem.h"
 #include "ajassert.h"
 #include "ajtable.h"
 #include "ajstr.h"
 #include "ajmess.h"
+
+static ajint tableNewCnt = 0;
+static ajint tableDelCnt = 0;
+static ajint tableMaxNum = 0;
+static ajint tableMaxMem = 0;
+
+static void tableStrPrint (const void* key, void** value, void* cl);
+static void tableStrPrintC (const void* key, void** value, void* cl);
+static void tableStrDel (const void* key, void** value, void* cl);
 
 /* @funcstatic tableCmpAtom ***************************************************
 **
@@ -47,8 +57,9 @@
 ******************************************************************************/
 
 
-static ajint tableCmpAtom(const void *x, const void *y) {
-	return x != y;
+static ajint tableCmpAtom(const void *x, const void *y)
+{
+    return x != y;
 }
 
 /* @funcstatic tableHashAtom **************************************************
@@ -61,21 +72,48 @@ static ajint tableCmpAtom(const void *x, const void *y) {
 ** @@
 ******************************************************************************/
 
-static ajuint tableHashAtom(const void *key, ajuint hashsize) {
-	return ((unsigned long)key>>2) % hashsize;
+static ajuint tableHashAtom(const void *key, ajuint hashsize)
+{
+    return ((unsigned long)key>>2) % hashsize;
 }
 
-static void tableStrPrint (const void* key, void** value, void* cl);
-static void tableStrPrintC (const void* key, void** value, void* cl);
-static void tableStrDel (const void* key, void** value, void* cl);
+/* @func  ajTableNewI *********************************************************
+**
+** creates, initialises, and returns a new, empty table that expects
+** a specified number of key-value pairs.
+**
+** Current method defines the table size as the number of entries divided by 4
+** to avoid a huge table.
+**
+** @param [r] size [ajint] number of key-value pairs
+** @param [fN] cmp  [ajint function] function for comparing
+** @param [fN] hash [ajuint function] function for hashing keys
+**
+** @return [AjPTable] new table.
+**
+** @@
+**
+******************************************************************************/
+
+AjPTable ajTableNewL(ajint size,
+		     ajint cmp(const void *x, const void *y),
+		     ajuint hash(const void *key, ajuint hashsize))
+{
+    ajint hint;
+
+    /* hint = (int) sqrt ((float) size); */
+    hint = size/4;
+
+    return ajTableNew(hint, cmp, hash);
+}
 
 /* @func  ajTableNew **********************************************************
 **
 ** creates, initialises, and returns a new, empty table that can hold an
 ** arbitrary number of key-value pairs. NOTE if cmp=null or hash = null
-** ajTableNew uses a function suitable for ajAtom Keys.
+** ajTableNew uses a function suitable for void keys.
 **
-** @param [r] hint [ajint] estimate of number of base pairs
+** @param [r] hint [ajint] estimate of number of unique keys
 ** @param [fN] cmp  [ajint function] function for comparing
 ** @param [fN] hash [ajuint function] function for hashing keys
 **
@@ -86,26 +124,54 @@ static void tableStrDel (const void* key, void** value, void* cl);
 ******************************************************************************/
 
 AjPTable ajTableNew(ajint hint,
-	ajint cmp(const void *x, const void *y),
-	ajuint hash(const void *key, ajuint hashsize)) {
-	AjPTable table;
-	ajint i;
-	static ajint primes[] = { 509, 509, 1021, 2053, 4093,
-		8191, 16381, 32771, 65521, INT_MAX };
-	assert(hint >= 0);
-	for (i = 1; primes[i] < hint; i++)
-		;
-	table = AJALLOC(sizeof (*table) +
-		primes[i-1]*sizeof (table->buckets[0]));
-	table->size = primes[i-1];
-	table->cmp  = cmp  ?  cmp : tableCmpAtom;
-	table->hash = hash ? hash : tableHashAtom;
-	table->buckets = (struct binding **)(table + 1);
-	for (i = 0; i < table->size; i++)
-		table->buckets[i] = NULL;
-	table->length = 0;
-	table->timestamp = 0;
-	return table;
+		    ajint cmp(const void *x, const void *y),
+		    ajuint hash(const void *key, ajuint hashsize))
+{
+    AjPTable table;
+    ajint iprime;
+    ajint i;
+
+    /* largest primes just under 2**8 to 2**31 */
+
+    static ajint primes[] =
+    {
+	251, 509,
+	1021, 2039, 4093, 8191,
+	16381, 32749, 65521,
+	131071, 262139, 524287,
+	1048573, 2097143, 4194301, 8388593,
+	16777213, 33554393, 67108859,
+	134217689, 268435399, 536870909,
+	1073741789, 2147483647,
+	INT_MAX
+    };
+
+    assert(hint >= 0);
+
+    for (i = 1; primes[i] < hint; i++)
+	;
+
+    iprime = primes[i-1];
+    ajDebug("ajTableNew hint %d size %d\n", hint, iprime);
+
+    table = AJALLOC(sizeof (*table) +
+		    iprime*sizeof (table->buckets[0]));
+    table->size = iprime;
+    table->cmp  = cmp  ?  cmp : tableCmpAtom;
+    table->hash = hash ? hash : tableHashAtom;
+    table->buckets = (struct binding **)(table + 1);
+    for (i = 0; i < table->size; i++)
+	table->buckets[i] = NULL;
+    table->length = 0;
+    table->timestamp = 0;
+
+    tableNewCnt++;
+    if (iprime > tableMaxNum)
+	tableMaxNum = iprime;
+    if (sizeof(*table) > tableMaxMem)
+	tableMaxMem = sizeof(*table);
+
+    return table;
 }
 
 /* @func ajTableGet ***********************************************************
@@ -120,21 +186,22 @@ AjPTable ajTableNew(ajint hint,
 ** @@
 ******************************************************************************/
 
-void * ajTableGet(AjPTable table, const void *key) {
+void * ajTableGet(AjPTable table, const void *key)
+{
+    ajint i;
+    struct binding *p;
 
-  ajint i;
-  struct binding *p;
+    assert(table);
+    assert(key);
 
-  assert(table);
-  assert(key);
+    i = (*table->hash)(key, table->size);
+    for (p = table->buckets[i]; p; p = p->link)
+    {
+	if ((*table->cmp)(key, p->key) == 0)
+	    break;
+    }
 
-  i = (*table->hash)(key, table->size);
-  for (p = table->buckets[i]; p; p = p->link) {
-    if ((*table->cmp)(key, p->key) == 0)
-      break;
-  }
-
-  return p ? p->value : NULL;
+    return p ? p->value : NULL;
 }
 
 /* @func ajTableKey ***********************************************************
@@ -151,21 +218,22 @@ void * ajTableGet(AjPTable table, const void *key) {
 ** @@
 ******************************************************************************/
 
-void * ajTableKey(AjPTable table, const void *key) {
+void * ajTableKey(AjPTable table, const void *key)
+{
+    ajint i;
+    struct binding *p;
 
-  ajint i;
-  struct binding *p;
+    assert(table);
+    assert(key);
 
-  assert(table);
-  assert(key);
+    i = (*table->hash)(key, table->size);
+    for (p = table->buckets[i]; p; p = p->link)
+    {
+	if ((*table->cmp)(key, p->key) == 0)
+	    break;
+    }
 
-  i = (*table->hash)(key, table->size);
-  for (p = table->buckets[i]; p; p = p->link) {
-    if ((*table->cmp)(key, p->key) == 0)
-      break;
-  }
-
-  return p ? (void*)p->key : NULL;
+    return p ? (void*)p->key : NULL;
 }
 
 /* @func ajTableTrace *********************************************************
@@ -177,32 +245,35 @@ void * ajTableKey(AjPTable table, const void *key) {
 ** @@
 ******************************************************************************/
 
-void ajTableTrace (AjPTable table) {
+void ajTableTrace (AjPTable table)
+{
+    ajint i;
+    ajint j;
+    ajint k=0;
+    struct binding *p;
 
-  ajint i;
-  ajint j;
-  ajint k=0;
-  struct binding *p;
+    assert(table);
 
-  assert(table);
+    ajDebug ("table trace: ");
+    ajDebug (" length: %d", table->length);
+    ajDebug (" size: %d", table->size);
+    ajDebug (" timestamp: %u", table->timestamp);
 
-  ajDebug ("table trace: ");
-  ajDebug (" length: %d", table->length);
-  ajDebug (" size: %d", table->size);
-  ajDebug (" timestamp: %u", table->timestamp);
-
-  for (i = 0; i < table->size; i++) {
-    if (table->buckets[i]) {
-      j = 0;
-      for (p = table->buckets[i]; p; p = p->link) {
-	j++;
-      }
-      k += j;
+    for (i = 0; i < table->size; i++)
+    {
+	if (table->buckets[i])
+	{
+	    j = 0;
+	    for (p = table->buckets[i]; p; p = p->link)
+	    {
+		j++;
+	    }
+	    k += j;
+	}
     }
-  }
-  ajDebug(" links: %d\n", k);
+    ajDebug(" links: %d\n", k);
 
-  return;
+    return;
 }
 
 /* @func ajStrTableTrace ******************************************************
@@ -215,34 +286,38 @@ void ajTableTrace (AjPTable table) {
 ** @@
 ******************************************************************************/
 
-void ajStrTableTrace (AjPTable table) {
+void ajStrTableTrace (AjPTable table)
+{
+    ajint i;
+    ajint j;
+    ajint k=0;
+    struct binding *p;
 
-  ajint i;
-  ajint j;
-  ajint k=0;
-  struct binding *p;
+    assert(table);
 
-  assert(table);
+    ajDebug ("(string) table trace: ");
+    ajDebug (" length: %d", table->length);
+    ajDebug (" size: %d", table->size);
+    ajDebug (" timestamp: %u", table->timestamp);
 
-  ajDebug ("(string) table trace: ");
-  ajDebug (" length: %d", table->length);
-  ajDebug (" size: %d", table->size);
-  ajDebug (" timestamp: %u", table->timestamp);
-
-  for (i = 0; i < table->size; i++) {
-    if (table->buckets[i]) {
-      j = 0;
-      ajDebug("buckets[%d]\n", i);
-      for (p = table->buckets[i]; p; p = p->link) {
-	ajDebug("   '%S' => '%S'\n", (AjPStr) p->key, (AjPStr) p->value);
-	j++;
-      }
-      k += j;
+    for (i = 0; i < table->size; i++)
+    {
+	if (table->buckets[i])
+	{
+	    j = 0;
+	    ajDebug("buckets[%d]\n", i);
+	    for (p = table->buckets[i]; p; p = p->link)
+	    {
+		ajDebug("   '%S' => '%S'\n",
+			(AjPStr) p->key, (AjPStr) p->value);
+		j++;
+	    }
+	    k += j;
+	}
     }
-  }
-  ajDebug(" links: %d\n", k);
+    ajDebug(" links: %d\n", k);
 
-  return;
+    return;
 }
 
 /* @func ajTablePut ***********************************************************
@@ -258,36 +333,39 @@ void ajStrTableTrace (AjPTable table) {
 ** @@
 ******************************************************************************/
 
-void * ajTablePut(AjPTable table, const void *key, void *value) {
+void * ajTablePut(AjPTable table, const void *key, void *value)
+{
+    ajint i;
+    struct binding *p;
+    void *prev;
 
-  ajint i;
-  struct binding *p;
-  void *prev;
+    assert(table);
+    assert(key);
 
-  assert(table);
-  assert(key);
+    i = (*table->hash)(key, table->size);
+    for (p = table->buckets[i]; p; p = p->link)
+    {
+	if ((*table->cmp)(key, p->key) == 0)
+	    break;
+    }
+    if (p == NULL)
+    {
+	AJNEW0(p);
+	p->key = key;
+	p->link = table->buckets[i];
+	table->buckets[i] = p;
+	table->length++;
+	prev = NULL;
+    }
+    else
+    {
+	prev = p->value;
+    }
 
-  i = (*table->hash)(key, table->size);
-  for (p = table->buckets[i]; p; p = p->link) {
-    if ((*table->cmp)(key, p->key) == 0)
-      break;
-  }
-  if (p == NULL) {
-    AJNEW0(p);
-    p->key = key;
-    p->link = table->buckets[i];
-    table->buckets[i] = p;
-    table->length++;
-    prev = NULL;
-  }
-  else {
-    prev = p->value;
-  }
+    p->value = value;
+    table->timestamp++;
 
-  p->value = value;
-  table->timestamp++;
-
-  return prev;
+    return prev;
 }
 
 /* @func  ajTableLength *******************************************************
@@ -299,11 +377,11 @@ void * ajTablePut(AjPTable table, const void *key, void *value) {
 ** @@
 ******************************************************************************/
 
-ajint ajTableLength(AjPTable table) {
+ajint ajTableLength(AjPTable table)
+{
+    assert(table);
 
-  assert(table);
-
-  return table->length;
+    return table->length;
 }
 
 /* @func  ajTableMap **********************************************************
@@ -319,25 +397,27 @@ ajint ajTableLength(AjPTable table) {
 ******************************************************************************/
 
 void ajTableMap(AjPTable table,
-	void apply(const void *key, void **value, void *cl),
-	void *cl) {
+		void apply(const void *key, void **value, void *cl),
+		void *cl)
+{
+    ajint i;
+    ajuint stamp;
+    struct binding *p;
 
-  ajint i;
-  ajuint stamp;
-  struct binding *p;
+    assert(table);
+    assert(apply);
 
-  assert(table);
-  assert(apply);
-
-  stamp = table->timestamp;
-  for (i = 0; i < table->size; i++) {
-    for (p = table->buckets[i]; p; p = p->link) {
-      apply(p->key, &p->value, cl);
-      assert(table->timestamp == stamp);
+    stamp = table->timestamp;
+    for (i = 0; i < table->size; i++)
+    {
+	for (p = table->buckets[i]; p; p = p->link)
+	{
+	    apply(p->key, &p->value, cl);
+	    assert(table->timestamp == stamp);
+	}
     }
-  }
 
-  return;
+    return;
 }
 
 /* @func ajTableRemove ********************************************************
@@ -353,28 +433,30 @@ void ajTableMap(AjPTable table,
 ** @@
 ******************************************************************************/
 
-void * ajTableRemove(AjPTable table, const void *key) {
+void * ajTableRemove(AjPTable table, const void *key)
+{
+    ajint i;
+    struct binding **pp;
 
-  ajint i;
-  struct binding **pp;
+    assert(table);
+    assert(key);
 
-  assert(table);
-  assert(key);
-
-  table->timestamp++;
-  i = (*table->hash)(key, table->size);
-  for (pp = &table->buckets[i]; *pp; pp = &(*pp)->link) {
-    if ((*table->cmp)(key, (*pp)->key) == 0) {
-      struct binding *p = *pp;
-      void *value = p->value;
-      *pp = p->link;
-      AJFREE(p);
-      table->length--;
-      return value;
+    table->timestamp++;
+    i = (*table->hash)(key, table->size);
+    for (pp = &table->buckets[i]; *pp; pp = &(*pp)->link)
+    {
+	if ((*table->cmp)(key, (*pp)->key) == 0)
+	{
+	    struct binding *p = *pp;
+	    void *value = p->value;
+	    *pp = p->link;
+	    AJFREE(p);
+	    table->length--;
+	    return value;
+	}
     }
-  }
 
-  return NULL;
+    return NULL;
 }
 
 /* @func ajTableToarray *******************************************************
@@ -391,23 +473,27 @@ void * ajTableRemove(AjPTable table, const void *key) {
 ** @@
 ******************************************************************************/
 
-void ** ajTableToarray(AjPTable table, void *end) {
-  ajint i, j = 0;
-  void **array;
-  struct binding *p;
+void ** ajTableToarray(AjPTable table, void *end)
+{
+    ajint i, j = 0;
+    void **array;
+    struct binding *p;
 
-  assert(table);
+    assert(table);
 
-  array = AJALLOC((2*table->length + 1)*sizeof (*array));
+    array = AJALLOC((2*table->length + 1)*sizeof (*array));
 
-  for (i = 0; i < table->size; i++)
-    for (p = table->buckets[i]; p; p = p->link) {
-      array[j++] = (void *)p->key;
-      array[j++] = p->value;
+    for (i = 0; i < table->size; i++)
+    {
+	for (p = table->buckets[i]; p; p = p->link)
+	{
+	    array[j++] = (void *)p->key;
+	    array[j++] = p->value;
+	}
     }
-  array[j] = end;
+    array[j] = end;
 
-  return array;
+    return array;
 }
 
 /* @func ajTableFree **********************************************************
@@ -419,24 +505,27 @@ void ** ajTableToarray(AjPTable table, void *end) {
 ** @@
 ******************************************************************************/
 
-void ajTableFree(AjPTable* table) {
+void ajTableFree(AjPTable* table)
+{
+    assert(table && *table);
 
-  assert(table && *table);
-
-  if ((*table)->length > 0) {
-    ajint i;
-    struct binding *p, *q;
-    for (i = 0; i < (*table)->size; i++) {
-      for (p = (*table)->buckets[i]; p; p = q) {
-	q = p->link;
-	AJFREE(p);
-      }
+    if ((*table)->length > 0)
+    {
+	ajint i;
+	struct binding *p, *q;
+	for (i = 0; i < (*table)->size; i++)
+	{
+	    for (p = (*table)->buckets[i]; p; p = q)
+	    {
+		q = p->link;
+		AJFREE(p);
+	    }
+	}
     }
-  }
 
-  AJFREE(*table);
+    AJFREE(*table);
 
-  return;
+    return;
 }
 
 /* @section String Table Functions ********************************************
@@ -455,8 +544,9 @@ void ajTableFree(AjPTable* table) {
 ** @@
 ******************************************************************************/
 
-AjPTable ajStrTableNewCaseC (ajint hint) {
-  return ajTableNew (hint, ajStrTableCmpCaseC, ajStrTableHashCaseC);
+AjPTable ajStrTableNewCaseC (ajint hint)
+{
+    return ajTableNew (hint, ajStrTableCmpCaseC, ajStrTableHashCaseC);
 }
 
 /* @func ajStrTableNewCase ****************************************************
@@ -468,8 +558,9 @@ AjPTable ajStrTableNewCaseC (ajint hint) {
 ** @@
 ******************************************************************************/
 
-AjPTable ajStrTableNewCase (ajint hint) {
-  return ajTableNew (hint, ajStrTableCmpCase, ajStrTableHashCase);
+AjPTable ajStrTableNewCase (ajint hint)
+{
+    return ajTableNew (hint, ajStrTableCmpCase, ajStrTableHashCase);
 }
 
 /* @func ajStrTableNewC *******************************************************
@@ -481,8 +572,9 @@ AjPTable ajStrTableNewCase (ajint hint) {
 ** @@
 ******************************************************************************/
 
-AjPTable ajStrTableNewC (ajint hint) {
-  return ajTableNew (hint, ajStrTableCmpC, ajStrTableHashC);
+AjPTable ajStrTableNewC (ajint hint)
+{
+    return ajTableNew (hint, ajStrTableCmpC, ajStrTableHashC);
 }
 
 /* @func ajStrTableNew ********************************************************
@@ -494,8 +586,9 @@ AjPTable ajStrTableNewC (ajint hint) {
 ** @@
 ******************************************************************************/
 
-AjPTable ajStrTableNew (ajint hint) {
-  return ajTableNew (hint, ajStrTableCmp, ajStrTableHash);
+AjPTable ajStrTableNew (ajint hint)
+{
+    return ajTableNew (hint, ajStrTableCmp, ajStrTableHash);
 }
 
 /* @func ajStrTableHashCaseC **************************************************
@@ -509,15 +602,17 @@ AjPTable ajStrTableNew (ajint hint) {
 ** @@
 ******************************************************************************/
 
-ajuint ajStrTableHashCaseC (const void* key, ajuint hashsize) {
-  ajuint hash;
-  char* s = (char*) key;
+ajuint ajStrTableHashCaseC (const void* key, ajuint hashsize)
+{
+    ajuint hash;
+    char* s = (char*) key;
 
-  for (hash = 0; *s; s++) {
-    hash = (hash * 127 + toupper((ajint)*s)) % hashsize;
-  }
+    for (hash = 0; *s; s++)
+    {
+	hash = (hash * 127 + toupper((ajint)*s)) % hashsize;
+    }
 
-  return hash;
+    return hash;
 }
 
 /* @func ajStrTableHashCase ***************************************************
@@ -531,17 +626,19 @@ ajuint ajStrTableHashCaseC (const void* key, ajuint hashsize) {
 ** @@
 ******************************************************************************/
 
-ajuint ajStrTableHashCase (const void* key, ajuint hashsize) {
-  AjPStr str = (AjPStr) key;
-  char* s = ajStrStr(str);
+ajuint ajStrTableHashCase (const void* key, ajuint hashsize)
+{
+    AjPStr str = (AjPStr) key;
+    char* s = ajStrStr(str);
 
-  ajuint hash;
+    ajuint hash;
 
-  for (hash = 0; *s; s++) {
-    hash = (hash * 127 + toupper((ajint)*s)) % hashsize;
-  }
+    for (hash = 0; *s; s++)
+    {
+	hash = (hash * 127 + toupper((ajint)*s)) % hashsize;
+    }
 
-  return hash;
+    return hash;
 }
 
 /* @func ajStrTableHashC ******************************************************
@@ -554,15 +651,17 @@ ajuint ajStrTableHashCase (const void* key, ajuint hashsize) {
 ** @@
 ******************************************************************************/
 
-ajuint ajStrTableHashC (const void* key, ajuint hashsize) {
-  ajuint hash;
-  char* s = (char*) key;
+ajuint ajStrTableHashC (const void* key, ajuint hashsize)
+{
+    ajuint hash;
+    char* s = (char*) key;
 
-  for (hash = 0; *s; s++) {
-    hash = (hash * 127 + *s) % hashsize;
-  }
+    for (hash = 0; *s; s++)
+    {
+	hash = (hash * 127 + *s) % hashsize;
+    }
 
-  return hash;
+    return hash;
 }
 
 /* @func ajStrTableHash *******************************************************
@@ -575,17 +674,19 @@ ajuint ajStrTableHashC (const void* key, ajuint hashsize) {
 ** @@
 ******************************************************************************/
 
-ajuint ajStrTableHash (const void* key, ajuint hashsize) {
-  AjPStr str = (AjPStr) key;
-  char* s = ajStrStr(str);
+ajuint ajStrTableHash (const void* key, ajuint hashsize)
+{
+    AjPStr str = (AjPStr) key;
+    char* s = ajStrStr(str);
 
-  ajuint hash;
+    ajuint hash;
 
-  for (hash = 0; *s; s++) {
-    hash = (hash * 127 + *s) % hashsize;
-  }
+    for (hash = 0; *s; s++)
+    {
+	hash = (hash * 127 + *s) % hashsize;
+    }
 
-  return hash;
+    return hash;
 }
 
 /* @func ajStrTableCmpCaseC ***************************************************
@@ -600,11 +701,12 @@ ajuint ajStrTableHash (const void* key, ajuint hashsize) {
 ** @@
 ******************************************************************************/
 
-ajint ajStrTableCmpCaseC (const void* x, const void* y) {
-  char* sx = (char*) x;
-  char* sy = (char*) y;
+ajint ajStrTableCmpCaseC (const void* x, const void* y)
+{
+    char* sx = (char*) x;
+    char* sy = (char*) y;
 
-  return (ajint)ajStrCmpCaseCC (sx, sy);
+    return (ajint)ajStrCmpCaseCC (sx, sy);
 }
 
 /* @func ajStrTableCmpCase ****************************************************
@@ -619,11 +721,12 @@ ajint ajStrTableCmpCaseC (const void* x, const void* y) {
 ** @@
 ******************************************************************************/
 
-ajint ajStrTableCmpCase (const void* x, const void* y) {
-  AjPStr sx = (AjPStr) x;
-  AjPStr sy = (AjPStr) y;
+ajint ajStrTableCmpCase (const void* x, const void* y)
+{
+    AjPStr sx = (AjPStr) x;
+    AjPStr sy = (AjPStr) y;
 
-  return (ajint)ajStrCmpCase (sx, sy);
+    return (ajint)ajStrCmpCase (sx, sy);
 }
 
 /* @func ajStrTableCmpC *******************************************************
@@ -637,11 +740,12 @@ ajint ajStrTableCmpCase (const void* x, const void* y) {
 ** @@
 ******************************************************************************/
 
-ajint ajStrTableCmpC (const void* x, const void* y) {
-  char* sx = (char*) x;
-  char* sy = (char*) y;
+ajint ajStrTableCmpC (const void* x, const void* y)
+{
+    char* sx = (char*) x;
+    char* sy = (char*) y;
 
-  return (ajint)strcmp (sx, sy);
+    return (ajint)strcmp (sx, sy);
 }
 
 /* @func ajStrTableCmp ********************************************************
@@ -655,11 +759,12 @@ ajint ajStrTableCmpC (const void* x, const void* y) {
 ** @@
 ******************************************************************************/
 
-ajint ajStrTableCmp (const void* x, const void* y) {
-  AjPStr sx = (AjPStr) x;
-  AjPStr sy = (AjPStr) y;
+ajint ajStrTableCmp (const void* x, const void* y)
+{
+    AjPStr sx = (AjPStr) x;
+    AjPStr sy = (AjPStr) y;
 
-  return (ajint)ajStrCmpO (sx, sy);
+    return (ajint)ajStrCmpO (sx, sy);
 }
 
 /* @func ajStrTablePrint ******************************************************
@@ -671,8 +776,9 @@ ajint ajStrTableCmp (const void* x, const void* y) {
 ** @@
 ******************************************************************************/
 
-void ajStrTablePrint (AjPTable table) {
-  ajTableMap (table, tableStrPrint, NULL);
+void ajStrTablePrint (AjPTable table)
+{
+    ajTableMap (table, tableStrPrint, NULL);
 }
 
 /* @funcstatic tableStrPrint **************************************************
@@ -686,11 +792,12 @@ void ajStrTablePrint (AjPTable table) {
 ** @@
 ******************************************************************************/
 
-static void tableStrPrint (const void* key, void** value, void* cl) {
-  AjPStr keystr = (AjPStr) key;
-  AjPStr valstr = (AjPStr) *value;
+static void tableStrPrint (const void* key, void** value, void* cl)
+{
+    AjPStr keystr = (AjPStr) key;
+    AjPStr valstr = (AjPStr) *value;
 
-  ajUser("key '%S' value '%S'", keystr, valstr);
+    ajUser("key '%S' value '%S'", keystr, valstr);
 }
 
 /* @func ajStrTablePrintC *****************************************************
@@ -702,8 +809,9 @@ static void tableStrPrint (const void* key, void** value, void* cl) {
 ** @@
 ******************************************************************************/
 
-void ajStrTablePrintC (AjPTable table) {
-  ajTableMap (table, tableStrPrintC, NULL);
+void ajStrTablePrintC (AjPTable table)
+{
+    ajTableMap (table, tableStrPrintC, NULL);
 }
 
 /* @funcstatic tableStrPrintC *************************************************
@@ -717,11 +825,12 @@ void ajStrTablePrintC (AjPTable table) {
 ** @@
 ******************************************************************************/
 
-static void tableStrPrintC (const void* key, void** value, void* cl) {
-  char* keystr = (char*) key;
-  char* valstr = (char*) *value;
+static void tableStrPrintC (const void* key, void** value, void* cl)
+{
+    char* keystr = (char*) key;
+    char* valstr = (char*) *value;
 
-  ajUser("key '%s' value '%s'", keystr, valstr);
+    ajUser("key '%s' value '%s'", keystr, valstr);
 }
 
 /* @func ajStrTableFree *******************************************************
@@ -735,15 +844,15 @@ static void tableStrPrintC (const void* key, void** value, void* cl) {
 ** @@
 ******************************************************************************/
 
-void ajStrTableFree (AjPTable* ptable) {
+void ajStrTableFree (AjPTable* ptable)
+{
+    if (!*ptable) return;
 
-  if (!*ptable) return;
+    ajTableMap (*ptable, tableStrDel, NULL);
 
-  ajTableMap (*ptable, tableStrDel, NULL);
+    ajTableFree (ptable);
 
-  ajTableFree (ptable);
-
-  return;
+    return;
 }
 
 /* @funcstatic tableStrDel ****************************************************
@@ -757,14 +866,30 @@ void ajStrTableFree (AjPTable* ptable) {
 ** @@
 ******************************************************************************/
 
-static void tableStrDel (const void* key, void** value, void* cl) {
-  AjPStr* p = (AjPStr*) value;
-  AjPStr  q = (AjPStr) key;
+static void tableStrDel (const void* key, void** value, void* cl)
+{
+    AjPStr* p = (AjPStr*) value;
+    AjPStr  q = (AjPStr) key;
 
-  ajStrDel(p);
-  ajStrDel(&q);
+    ajStrDel(p);
+    ajStrDel(&q);
 
-  return;
+    return;
 }
 
+/* @func ajTableExit **********************************************************
+**
+** Prints a summary of table usage with debug calls
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajTableExit (void)
+{
+    ajDebug ("Table usage : %d opened, %d closed, %d maxsize, %d maxmem\n",
+	     tableNewCnt, tableDelCnt, tableMaxNum, tableMaxMem);
+
+    return;
+}
 

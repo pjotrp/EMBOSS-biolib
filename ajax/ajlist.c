@@ -56,6 +56,13 @@
 #define ajLASTFWD  0	/* For iteration shows direction of last walk */
 #define ajLASTBACK 1
 
+static ajint listNewCnt = 0;
+static ajint listDelCnt = 0;
+static ajint listMaxNum = 0;
+static ajint listNodeCnt = 0;
+static ajint listIterNewCnt = 0;
+static ajint listIterDelCnt = 0;
+
 static AjPList listNew(AjEnum type);
 static void listInsertNode (AjPListNode* pnode, void* x);
 static AjPListNode listDummyNode (AjPListNode* pnode);
@@ -107,6 +114,9 @@ static AjPList listNew(AjEnum type)
     list->Type = type;
 
     list->Last = listDummyNode (&list->First);
+
+    listNodeCnt--;			/* dummy */
+    listNewCnt++;
 
     return list;
 }
@@ -171,7 +181,8 @@ void ajListTrace (AjPList thys)
 	     thys, thys->Type, thys->Count);
     ajDebug("first-> %x last-> %x\n", thys->First, thys->Last);
 
-    for (node=thys->First; node->Next; node=node->Next) {
+    for (node=thys->First; node->Next; node=node->Next)
+    {
 	i++;
 	ajDebug ("Item[%d] item %x (data %x) rest -> %x prev -> %x\n",
 		 i, node, node->Item, node->Next, node->Prev);
@@ -207,7 +218,6 @@ void ajListTrace (AjPList thys)
 
 void ajListstrTrace (AjPList thys)
 {
-
     ajint i = 0;
     AjPListNode node;
 
@@ -558,7 +568,6 @@ ajint ajListstrClone(AjPList thys, AjPList newlist)
 
 AjBool ajListFirst(AjPList thys, void** x)
 {
-
     if (!thys)
 	return ajFalse;
 
@@ -639,7 +648,6 @@ AjBool ajListNth(AjPList thys, ajint n, void** x)
 
 AjBool ajListPop (AjPList thys, void** x)
 {
-
     if (!thys)
 	return ajFalse;
 
@@ -667,7 +675,6 @@ AjBool ajListPop (AjPList thys, void** x)
 
 AjBool ajListPeek (AjPList thys, void** x)
 {
-
     if (!thys)
 	return ajFalse;
 
@@ -717,7 +724,6 @@ static AjBool listNodeDel (AjPListNode* pnode)
 
 static void* listNodeItem (AjPListNode node)
 {
-
     if (!node || !node->Next)
 	return NULL;
 
@@ -737,7 +743,6 @@ static void* listNodeItem (AjPListNode node)
 
 AjBool ajListstrPop (AjPList thys, AjPStr* x)
 {
-
     if (!thys)
 	return ajFalse;
 
@@ -765,7 +770,6 @@ AjBool ajListstrPop (AjPList thys, AjPStr* x)
 
 AjBool ajListstrPeek (AjPList thys, AjPStr* x)
 {
-
     if (!thys)
 	return ajFalse;
 
@@ -885,6 +889,8 @@ void ajListFree(AjPList* pthis)
     if (!*pthis)
 	return;
 
+    listDelCnt++;
+
     thys = *pthis;
     rest = &thys->First;
 
@@ -933,6 +939,8 @@ void ajListstrFree(AjPList* pthis)
     if (!*pthis)
 	return;
 
+    listDelCnt++;
+
     thys = *pthis;
     rest = &thys->First;
 
@@ -975,6 +983,8 @@ void ajListDel(AjPList* pthis)
 	return;
     if (!*pthis)
 	return;
+
+    listDelCnt++;
 
     list = *pthis;
 
@@ -1201,6 +1211,8 @@ AjIList ajListIter (AjPList thys)
     iter->Here = thys->First;
     iter->Orig = thys->First;
 
+    listIterNewCnt++;
+
     return iter;
 }
 
@@ -1233,6 +1245,8 @@ AjIList ajListIterBack (AjPList thys)
     iter->Head = thys;
     iter->Dir = ajLASTBACK;
     iter->Here = tmp->Next;
+
+    listIterNewCnt++;
 
     return iter;
 }
@@ -1283,6 +1297,8 @@ AjBool ajListIterBackDone (AjIList iter)
 void ajListIterFree (AjIList iter)
 {
     AJFREE(iter);
+
+    listIterDelCnt++;
 
     return;
 }
@@ -1621,6 +1637,8 @@ static void listInsertNode (AjPListNode* pnode, void* x)
     p->Next->Prev = p;
     *pnode = p;
 
+    listNodeCnt++;
+
     return;
 }
 
@@ -1635,8 +1653,9 @@ static void listInsertNode (AjPListNode* pnode, void* x)
 
 static AjPListNode listDummyNode (AjPListNode* pnode)
 {
-
     AJNEW0(*pnode);
+
+    listNodeCnt++;
 
     return *pnode;
 }
@@ -2103,5 +2122,23 @@ void ajListSort3(AjPList thys, int (*sort1) (const void*, const void*),
     }
 
     AJFREE(ptrs);
+    return;
+}
+
+/* @func ajListExit ***********************************************************
+**
+** Prints a summary of list usage with debug calls
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajListExit (void)
+{
+    ajDebug ("List usage : %d opened, %d closed, %d maxsize %d nodes\n",
+	     listNewCnt, listDelCnt, listMaxNum, listNodeCnt);
+    ajDebug ("List iterator usage : %d opened, %d closed, %d maxsize\n",
+	     listIterNewCnt, listIterDelCnt);
+
     return;
 }

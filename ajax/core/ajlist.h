@@ -112,6 +112,7 @@ typedef struct AjSIList {
 void        ajListAppend (AjPList list, AjPListNode tail);
 AjPList     ajListCopy   (AjPList list);      /* new list returned */
 void        ajListDel   (AjPList *list);
+void        ajListExit (void);
 AjBool      ajListFirst (AjPList thys, void** x);
 void        ajListFree   (AjPList *list);
 void        ajListGarbageCollect (AjPList list,
