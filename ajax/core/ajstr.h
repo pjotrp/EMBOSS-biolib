@@ -411,6 +411,7 @@ AjPStr     ajStrNewCL (const char *txt, size_t size);
 AjPStr     ajStrNewL (size_t size);
 AjPStr     ajStrNewS (const AjPStr str);
 
+AjBool     ajStrParentheses(const AjPStr s);
 ajint      ajStrPos  (const AjPStr thys, ajint ipos);
 ajint      ajStrPosI (const AjPStr thys, ajint imin, ajint ipos);
 ajint      ajStrPosII (ajint ilen, ajint imin, ajint ipos);

@@ -245,7 +245,7 @@ AjPStr ajStrNewCIL(const char* txt, ajint len, size_t size)
     thys = strNewNew(minlen);
     thys->Len = len;
     if(txt)
-	strncpy(thys->Ptr, txt, len+1);
+	memmove(thys->Ptr, txt, len+1);
     thys->Ptr[len] = '\0';
 
     return thys;
@@ -317,7 +317,7 @@ char* ajCharNew(const AjPStr thys)
     static char* cp;
 
     cp = (char*) AJALLOC(thys->Len+1);
-    strncpy(cp, thys->Ptr, thys->Len+1);
+    memmove(cp, thys->Ptr, thys->Len+1);
 
     return cp;
 }
@@ -343,7 +343,7 @@ char* ajCharNewC(ajint len, const char* txt)
     static char* cp;
 
     cp = (char*) AJALLOC(len+1);
-    strncpy(cp, txt, len+1);
+    memmove(cp, txt, len+1);
 
     return cp;
 }
@@ -397,7 +397,7 @@ char* ajCharNewLS(size_t size, const AjPStr thys)
 	isize = thys->Len + 1;
 
     cp = (char*) AJALLOC(isize);
-    strncpy(cp, thys->Ptr, thys->Len+1);
+    memmove(cp, thys->Ptr, thys->Len+1);
 
     return cp;
 }
@@ -853,7 +853,7 @@ AjBool ajStrAssC(AjPStr* pthis, const char* text)
     ret  = ajStrModL(pthis, i+1);
     thys = *pthis;
     thys->Len = i;
-    strncpy(thys->Ptr, text, i+1);
+    memmove(thys->Ptr, text, i+1);
 
     return ret;
 }
@@ -899,7 +899,7 @@ AjBool ajStrAssS(AjPStr* pthis, const AjPStr str)
 
     thys = *pthis;
     thys->Len = str->Len;
-    strncpy(thys->Ptr, str->Ptr, str->Len+1);
+    memmove(thys->Ptr, str->Ptr, str->Len+1);
 
     return ret;
 }
@@ -931,7 +931,7 @@ AjBool ajStrAssI(AjPStr* pthis, const AjPStr str, size_t i)
     ret = ajStrModL(pthis, i+1);
     thys = *pthis;
     thys->Len = i;
-    strncpy(thys->Ptr, str->Ptr, i);
+    memmove(thys->Ptr, str->Ptr, i);
     thys->Ptr[i] = '\0';
 
     return ret;
@@ -967,7 +967,7 @@ AjBool ajStrAssL(AjPStr* pthis, const AjPStr str, size_t i)
 
     thys = *pthis;
     thys->Len = str->Len;
-    strncpy(thys->Ptr, str->Ptr, str->Len);
+    memmove(thys->Ptr, str->Ptr, str->Len);
     thys->Ptr[str->Len] = '\0';
 
     return ret;
@@ -997,7 +997,7 @@ AjBool ajStrAssCI(AjPStr* pthis, const char* txt, size_t ilen)
     ret = ajStrModL(pthis, ilen+1);
     thys = *pthis;
     thys->Len = ilen;
-    strncpy(thys->Ptr, txt, ilen);
+    memmove(thys->Ptr, txt, ilen);
     thys->Ptr[ilen] = '\0';
 
     return ret;
@@ -1036,7 +1036,7 @@ AjBool ajStrAssCL(AjPStr* pthis, const char* txt, size_t i)
     thys->Len = ilen;
 
     if(ilen)
-	strncpy(thys->Ptr, txt, ilen);
+	memmove(thys->Ptr, txt, ilen);
 
     thys->Ptr[ilen] = '\0';
 
@@ -1446,7 +1446,7 @@ AjBool ajStrApp(AjPStr* pthis, const AjPStr src)
     ret = ajStrModL(pthis, ajRound(j, STRSIZE));
     thys = *pthis;			/* possible new location */
 
-    strncpy(thys->Ptr+thys->Len, t->Ptr, src->Len+1);
+    memmove(thys->Ptr+thys->Len, t->Ptr, src->Len+1);
     thys->Len += src->Len;
 
     ajStrDel(&t);
@@ -1491,7 +1491,7 @@ AjBool ajStrAppC(AjPStr* pthis, const char* txt)
     ret = ajStrModL(pthis, ajRound(j, STRSIZE));
     thys = *pthis;			/* possible new location */
 
-    strncpy(thys->Ptr+thys->Len, t->Ptr, i+1);
+    memmove(thys->Ptr+thys->Len, t->Ptr, i+1);
     thys->Len += i;
 
     ajStrDel(&t);
@@ -1632,7 +1632,7 @@ AjBool ajStrAppSub(AjPStr* pthis, const AjPStr src, ajint begin, ajint end)
     ret = ajStrModL(pthis, ajRound(j, STRSIZE));
     thys = *pthis;			/* possible new location */
 
-    strncpy(thys->Ptr+thys->Len, &t->Ptr[ibegin], ilen);
+    memmove(thys->Ptr+thys->Len, &t->Ptr[ibegin], ilen);
     thys->Len += ilen;
 
     thys->Ptr[thys->Len] = '\0';
@@ -2939,11 +2939,13 @@ AjBool ajStrClean(AjPStr* s)
 	if(p[i]!=' ')
 	    break;
 	++i;
+	--len;
     }
     
     if(i)
     {
-	strcpy(p,&p[i]);
+	len++;
+	memmove(p,&p[i], len);
 	len=strlen(p);
 	if(!len)
 	{			    /* if that emptied it, so be it */
@@ -3312,6 +3314,47 @@ AjBool ajStrUncommentStart(AjPStr* text)
 
 
 
+
+/* @func ajStrParentheses *****************************************************
+**
+** Tests whether a string contains (possibly nested) pairs of parentheses.
+** For some reason, this is nasty to test for with regular expressions.
+**
+** @param [u] s [const AjPStr] String to test
+** @return [AjBool] ajTrue if string has () pairs with possibly other text
+** @@
+******************************************************************************/
+
+AjBool ajStrParentheses(const AjPStr s)
+{
+    AjBool ret      = ajFalse;
+    ajint left = 0;
+    char *p;
+    
+    p = s->Ptr;
+    
+    /* if string was already empty, no need to do anything */
+    
+    while (*p)
+    {
+	switch (*p++)
+	{
+	case '(':
+	    left++;
+	    break;
+	case ')':
+	    if (!left) return ajFalse;
+	    left--;
+	    break;
+	default:
+	    break;
+	}
+    }
+    if (left)
+	return ajFalse;
+
+    return ajTrue;
+}
 
 /* ==================================================================== */
 /* ======================== Operators ==================================*/
