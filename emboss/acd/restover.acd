@@ -99,12 +99,6 @@ bool: limit  [
   information: "Limits reports to one isoschizomer"
 ]
 
-bool: preferred  [
-  optional: "N"
-  default: "N"
-  information: "Report preferred isoschizomers"
-]
-
 bool: alphabetic  [
   optional: "N"
   default: "N"
