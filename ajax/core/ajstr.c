@@ -65,7 +65,7 @@ static void* memmove(void *dst, const void* src, size_t len)
 
 #define STRSIZE  32
 #define LONGSTR  512
-#define NULL_USE 5
+#define NULL_USE 1
 char charNULL[1] = "";
 
 AjOStr strONULL = { 1, 0, NULL_USE, charNULL}; /* use set to avoid changes */
@@ -2472,11 +2472,12 @@ AjBool ajStrTrimC(AjPStr* pthis, const char* chars)
 
     cp = &thys->Ptr[thys->Len-1];
     i = 0;
-    while(strchr(chars, *cp) && thys->Len)
+    while(thys->Len && strchr(chars, *cp))
     {
-	thys->Len--;
-	cp--;
 	i++;
+	thys->Len--;
+	if(thys->Len)
+	    cp--;
     }
 
     if(i)
@@ -2520,11 +2521,12 @@ AjBool ajStrTrimEndC(AjPStr* pthis, const char* chars)
 
     cp = &thys->Ptr[thys->Len-1];
     i = 0;
-    while(strchr(chars, *cp) && thys->Len)
+    while(thys->Len && strchr(chars, *cp))
     {
-	thys->Len--;
-	cp--;
 	i++;
+	thys->Len--;
+	if(thys->Len)
+	    cp--;
     }
 
     if(i)
@@ -7652,7 +7654,7 @@ ajint ajStrListToArray(const AjPStr thys, AjPStr **array)
 
     for(i=0;i<c;++i)
     {
-	while(*q!='\n')
+	while(*q!='\n')	/* safe - we already counted c as # of newlines */
 	    ++q;
 	(*array)[n] = ajStrNew();
 	ajStrAssSubC(&(*array)[n++],p,0,q-p);
