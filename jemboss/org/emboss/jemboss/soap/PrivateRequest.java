@@ -25,6 +25,7 @@ package org.emboss.jemboss.soap;
 import java.io.*;
 import java.util.*;
 
+import org.emboss.jemboss.JembossParams;
 import uk.ac.mrc.hgmp.embreo.EmbreoParams;
 
 import java.net.*;
@@ -131,23 +132,30 @@ public class PrivateRequest
      }
 
 
-     // add authentication headers if required
-     if(mysettings.getUseAuth() == true) 
+     
+     if(JembossParams.isJembossServer())  //JembossServer.java servers
      {
-       if(mysettings.getServiceUserName() != null) 
-	 if (mysettings.getServicePasswd() != null) 
-         {
-	   proglistconn.setUserName(mysettings.getServiceUserName());
-	   proglistconn.setPassword(mysettings.getServicePasswd());
-	 }
-     }
-     else          //No authorization required, so use user name here 
-     {             //to create own sand box on server
-                  
-        String userName = System.getProperty("user.name");
-        args.addElement(new Parameter("USERNAME", String.class,
+       if(mysettings.getUseAuth() == true)
+       {
+         args.addElement(new Parameter("user", String.class,
+                    mysettings.getServiceUserName(), null));
+         args.addElement(new Parameter("p", String.class,
+                   mysettings.getServicePasswd(), null));
+       }
+       else       //No authorization reqd, so use user name here
+       {          //to create own sand box on server
+
+          String userName = System.getProperty("user.name");
+          args.addElement(new Parameter("USERNAME", String.class,
                                       userName, null));
+       }
      }
+     else         //cgi server at HGMP, add authentication headers
+     {
+       proglistconn.setUserName(mysettings.getServiceUserName());
+       proglistconn.setPassword(mysettings.getServicePasswd());
+     }
+
 
      Call proglistcall = new Call();
      proglistcall.setSOAPTransport(proglistconn);
