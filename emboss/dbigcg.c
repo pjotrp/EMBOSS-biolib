@@ -97,6 +97,7 @@ static AjBool dbigcg_ParseGenbank (AjPFile libr,
 typedef struct SParser
 {
   char* Name;
+  AjBool GcgFormat;
   AjBool (*Parser) (AjPFile libr,
 		    AjPFile* alistfile,
 		    AjBool systemsort, AjPStr* fields,
@@ -106,11 +107,11 @@ typedef struct SParser
 
 static OParser parser[] =
 {
-  { "EMBL", dbigcg_ParseEmbl },
-  { "SWISS", dbigcg_ParseEmbl },
-  { "GENBANK", dbigcg_ParseGenbank },
-  { "PIR", dbigcg_ParsePir },
-  { NULL, NULL }
+  { "EMBL", AJTRUE, dbigcg_ParseEmbl },
+  { "SWISS", AJTRUE, dbigcg_ParseEmbl },
+  { "GENBANK", AJTRUE, dbigcg_ParseGenbank },
+  { "PIR", AJFALSE, dbigcg_ParsePir },
+  { NULL, 0, NULL }
 };
 
 
@@ -528,10 +529,13 @@ static ajint dbigcg_gcggetent(AjPStr idformat,
 	called = 1;
     }
 
+    if (!parser[iparser].GcgFormat)
+      return 0;
+
     if (!rexp)
-	rexp = ajRegCompC ("^....([^ \t\n]+)");
+	rexp = ajRegCompC ("^>>>>([^ \t\n]+)");
     if (!sexp)
-	sexp = ajRegCompC("^....([^ \t]+)[ \t]+([^ \t]+)[ \t]+([^ \t]+)"
+	sexp = ajRegCompC("^>>>>([^ \t]+)[ \t]+([^ \t]+)[ \t]+([^ \t]+)"
 			  "[ \t]+([^ \t]+)[ \t]+([0-9]+)");
 
     ajStrAssC(&sline, "");
@@ -552,7 +556,10 @@ static ajint dbigcg_gcggetent(AjPStr idformat,
     /* get the encoding/sequence length info */
 
     if (!ajRegExec(sexp, sline))
+    {
+        ajDebug("dbigcg_gcggetent sequence expression FAILED\n");
 	return 0;
+    }
 
     ajRegSubI(sexp, 1, libstr);	/* Entry ID returned */
 
@@ -685,6 +692,9 @@ static ajint dbigcg_pirgetent(AjPStr idformat,
 	called = 1;
     }
 
+    if (parser[iparser].GcgFormat)
+      return 0;
+
     if (!pirexp)
 	pirexp = ajRegCompC ("^>..;([^ \t\n]+)");
 
@@ -700,9 +710,8 @@ static ajint dbigcg_pirgetent(AjPStr idformat,
 	}
     }
 
-    /* get the encoding/sequence length info */
-
-    ajDebug ("pirgetent line '%S' \n", sline);
+    ajDebug ("dbigcg_pirgetent .seq (%S) %d '%S' \n",
+	     idformat, ajFileTell(libs), sline);
 
     ajRegExec(pirexp, sline);
 
@@ -722,8 +731,10 @@ static ajint dbigcg_pirgetent(AjPStr idformat,
     ajRegSubI(pirexp, 1, &reflibstr);
     ajRegSubI(pirexp, 1, libstr);
 
-    ajDebug ("pirgetent seqid '%S' spos: %ld\n", *libstr, ajFileTell(libs));
-    ajDebug ("pirgetent refid '%S' spos: %ld\n", *libstr, ajFileTell(libr));
+    ajDebug ("dbigcg_pirgetent seqid '%S' spos: %ld\n",
+	     *libstr, ajFileTell(libs));
+    ajDebug ("dbigcg_pirgetent refid '%S' spos: %ld\n",
+	     *libstr, ajFileTell(libr));
 
     /*
      *  if (!ajStrMatch(*libstr, reflibstr))
@@ -759,7 +770,7 @@ static ajint dbigcg_pirgetent(AjPStr idformat,
     if (spos)
       ajFileSeek(libs, spos, 0);
 
-    ajDebug ("pirgetent end spos %ld line '%S'\n", spos, sline);
+    ajDebug ("dbigcg_pirgetent end spos %ld line '%S'\n", spos, sline);
 
     return gcglen;
 }
