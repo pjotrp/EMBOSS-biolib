@@ -15,6 +15,18 @@ section: input [
 
 endsection: input
 
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  string: release  [
+    default: ""
+    information: "CUTG release"
+  ]
+
+endsection: required
+
 section: advanced [
   information: "Advanced section"
   type: "page"
@@ -25,4 +37,29 @@ section: advanced [
     information: "Type of codon file"
   ]
 
+  string: species  [
+    default: "*"
+    information: "Species wildcard"
+  ]
+
 endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile  [
+    parameter: "Y"
+  ]
+
+  string: filename  [
+    default: ""
+    information: "Single output filename"
+    help: "Single output filename to override automatic one file
+           for each species. Leave blank to generate the filenames.
+	   Specify a filename to combine several species into one file."
+
+  ]
+
+endsection: output
