@@ -155,7 +155,6 @@ typedef struct NamSValid
 
 NamOAttr namDbAttrs[] =
 {
-    {"name", "", "database name (required)"},
     {"format", "", "database entry format (required, at some level)"},
     {"method", "", "access method (required, at some level)"},
     {"type", "", "database type 'Nucleotide', 'Protein', etc (required)"},
@@ -195,7 +194,6 @@ NamOAttr namDbAttrs[] =
 
 NamOAttr namRsAttrs[] =
 {
-    {"name", "", "resource name (required)"},
     {"type", "", "resource type (required)"},
 
     {"identifier", "", "standard identifier (defaults to name)"},
@@ -206,6 +204,7 @@ NamOAttr namRsAttrs[] =
     {"secorder", "", "order of a secondary B+tree"},
     {"secfill", "", "max number of entries in a secondary B+tree bucket"},
     {"kwlimit", "", "cut-off length for a secondary B+tree key"},
+    {"value", "", "value appropriate to the resource type"},
     {NULL, NULL, NULL}
 };
 
@@ -222,7 +221,8 @@ NamOValid namDbTypes[] =
 NamOValid namRsTypes[] =
 {
     {"Blast", "Blast database file"},
-    {"Index", "Blast database file"},
+    {"Index", "EMBOSS database B+tree index"},
+    {"List", "List of possible values"},
     {NULL, NULL}
 };
 
@@ -237,9 +237,7 @@ NamOValid namRsTypes[] =
 ** @alias NamOEntry
 **
 ** @attr name [AjPStr] token name
-** @attr value [AjPStr] token value
-** @attr type [ajint] token type enumerated TYPE_ENV
-**                    TYPE_DB TYPE_RESOURCE TYPE_IFILE
+** @attr value [AjPStr] token value for variables
 ** @attr data [void*] Attribute names and values for databases
 ** @@
 ******************************************************************************/
@@ -311,7 +309,7 @@ static void namEntryDelete(NamPEntry* pentry, ajint which)
 
     if(which == TYPE_DB)
     {
-	attrs = entry->data;
+	attrs = (AjPStr *) entry->data;
 	for(j=0; namDbAttrs[j].Name; j++)
 	    ajStrDel(&attrs[j]);
 	AJFREE(entry->data);
@@ -319,7 +317,7 @@ static void namEntryDelete(NamPEntry* pentry, ajint which)
 
     else if(which == TYPE_RESOURCE)
     {
-	attrs = entry->data;
+	attrs = (AjPStr *) entry->data;
 	for(j=0; namRsAttrs[j].Name; j++)
 	    ajStrDel(&attrs[j]);
 	AJFREE(entry->data);
@@ -659,7 +657,7 @@ AjBool ajNamDbDetails(const AjPStr name, AjPStr* type, AjBool* id,
     {
 	/* ajDebug("  '%S' found\n", name); */
 	
-	dbattr = fnew->data;
+	dbattr = (AjPStr *) fnew->data;
 	for(i=0; namDbAttrs[i].Name; i++)
 	{
 	    /* ajDebug("Attribute name = %s, value = %S\n",
@@ -1376,22 +1374,22 @@ static void namListParse(AjPList listwords, AjPList listcount,
 
 	    if(namParseType == TYPE_DB)
 	    {
-		fnew->data = dbattr;
+		fnew->data = (AjPStr *) dbattr;
 		saveTable = namDbMasterTable;
 	    }
 	    else if(namParseType == TYPE_RESOURCE)
 	    {
-		fnew->data = rsattr;
+		fnew->data = (AjPStr *) rsattr;
 		saveTable = namResMasterTable;
 	    }
 	    else if(namParseType == TYPE_ENV)
 	    {
-		fnew->data = 0;
+		fnew->data = NULL;
 		saveTable = namVarMasterTable;
 	    }
 	    else
 	    {
-		fnew->data = 0;
+		fnew->data = NULL;
 	    }
 
 	    /* Validate the master table entry */
@@ -2191,7 +2189,7 @@ AjBool ajNamDbGetUrl(const AjPStr dbname, AjPStr* url)
     if(!data)
 	ajFatal("%S is not a known database\n", dbname);
 
-    dbattr = data->data;
+    dbattr = (AjPStr *) data->data;
 
     if(ajStrLen(dbattr[iurl]))
     {
@@ -2233,7 +2231,7 @@ AjBool ajNamDbGetDbalias(const AjPStr dbname, AjPStr* dbalias)
     if(!data)
 	ajFatal("%S is not a known database\n", dbname);
 
-    dbattr = data->data;
+    dbattr = (AjPStr *) data->data;
 
     if(ajStrLen(dbattr[idba]))
     {
@@ -2276,7 +2274,7 @@ AjBool ajNamDbData(AjPSeqQuery qry)
     if(!data)
 	ajFatal("database %S unknown\n", qry->DbName);
 
-    dbattr = data->data;
+    dbattr = (const AjPStr *) data->data;
 
     /* general defaults */
 
@@ -2335,7 +2333,7 @@ AjBool ajNamDbQuery(AjPSeqQuery qry)
     if(!data)
 	ajFatal("database %S unknown\n", qry->DbName);
 
-    dbattr = data->data;
+    dbattr = (const AjPStr *) data->data;
 
     if(!ajStrLen(qry->DbType))
 	ajNamDbData(qry);
@@ -2402,7 +2400,7 @@ static AjBool namDbSetAttr(const AjPStr* dbattr, const char* attrib,
 
     i = namDbAttrC(attrib);
 
-    if(!i)
+    if(i < 0)
 	ajFatal("unknown attribute '%s' requested",  attrib);
 
     if(!ajStrLen(dbattr[i]))
@@ -2715,7 +2713,7 @@ static AjBool namValidDatabase(const NamPEntry entry)
     AjBool hasmethod = ajFalse;
     AjBool hastype   = ajFalse;
     
-    attrs = entry->data;
+    attrs = (AjPStr *) entry->data;
     if(!attrs)
     {			 /* fatal - should be set for all databases */
 	namError("Database '%S' has no list of valid attributes",
@@ -2809,7 +2807,7 @@ static AjBool namValidResource(const NamPEntry entry)
     AjBool hastype = ajFalse;
     AjBool ok;
 
-    attrs = entry->data;
+    attrs = (AjPStr *) entry->data;
     if(!attrs)
     {			 /* fatal - should be set for all databases */
 	namError("Resource '%S' has no list of valid attributes",
@@ -2889,6 +2887,41 @@ AjBool ajNamSetControl(const char* optionName)
 
 
 
+/* @func ajNamRsAttrValue **************************************************
+**
+** Return the value for a resource attribute
+**
+** @param [r] name [const AjPStr] resource name
+** @param [r] attribute [const AjPStr] resource attribute
+** @param [w] value [AjPStr *] resource value
+
+**
+** @return [AjBool] true if found
+** @@
+******************************************************************************/
+
+AjBool ajNamRsAttrValue(const AjPStr name, const AjPStr attribute,
+			 AjPStr *value)
+{
+    ajint j;
+    NamPEntry fnew = NULL;
+    AjPStr *rsattr = NULL;
+
+    fnew = ajTableGet(namResMasterTable, ajStrStr(name));
+
+    rsattr = (AjPStr *) fnew->data;
+    j = namRsAttr(attribute);
+
+    if(ajStrLen(rsattr[j]))
+    {
+	ajStrAssS(value,rsattr[j]);
+	return ajTrue;
+    }
+
+    return ajFalse;
+}
+
+
 /* @func ajNamRsAttrValueC **************************************************
 **
 ** Return the value for a resource attribute
@@ -2905,36 +2938,57 @@ AjBool ajNamSetControl(const char* optionName)
 AjBool ajNamRsAttrValueC(const char *name, const char *attribute,
 			 AjPStr *value)
 {
-    ajint i;
     ajint j;
     NamPEntry fnew = NULL;
-    void **array   = NULL;
-    AjPStr *rsattr = NULL;
-    AjBool found   = ajFalse;
-    
-    array = ajTableToarray(namResMasterTable, NULL);
+    const AjPStr* rsattr;
 
-    for(i = 0; array[i] && !found; i += 2)
+    fnew = ajTableGet(namResMasterTable, name);
+
+    rsattr = (const AjPStr *) fnew->data;
+    j = namRsAttrC(attribute);
+
+    if(ajStrLen(rsattr[j]))
     {
-	fnew =(NamPEntry) array[i+1];
-	if(!ajStrCmpC(fnew->name,name))
-	{
-	    rsattr = (AjPStr *) fnew->data;
-	    for(j=0; namRsAttrs[j].Name; ++j)
-	    {
-		if(!strcmp(namRsAttrs[j].Name,attribute))
-		{
-		    if(ajStrLen(rsattr[j]))
-		    {
-			ajStrAssS(value,rsattr[j]);
-			found = ajTrue;
-			break;
-		    }
-		}
-	    }
-	}
+	ajStrAssS(value,rsattr[j]);
+	return ajTrue;
     }
-    AJFREE(array);
 
-    return found;
+    return ajFalse;
 }
+
+
+/* @func ajNamRsListValue **************************************************
+**
+** Return the value for a resource attribute of type 'list'
+**
+** @param [r] name [const AjPStr] resource name
+** @param [w] value [AjPStr *] resource value
+**
+** @return [AjBool] true if found
+** @@
+******************************************************************************/
+
+AjBool ajNamRsListValue(const AjPStr name, AjPStr *value)
+{
+    ajint j;
+    NamPEntry fnew = NULL;
+    const AjPStr *rsattr = NULL;
+
+    fnew = ajTableGet(namResMasterTable, ajStrStr(name));
+
+    rsattr = (const AjPStr *) fnew->data;
+    j = namRsAttrC("type");
+    if(!ajStrMatchCaseC(rsattr[j], "list"))
+	return ajFalse;
+
+    j = namRsAttrC("value");
+    if(ajStrLen(rsattr[j]))
+    {
+	ajStrAssS(value,rsattr[j]);
+	return ajTrue;
+    }
+
+    return ajFalse;
+}
+
+
