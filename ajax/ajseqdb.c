@@ -3147,11 +3147,25 @@ static AjBool seqEmbossQryOpen(AjPSeqQuery qry)
 	seqEmbossOpenSecCache(qry,TX_EXTENSION,&qryd->txcache);
     }
 
+
+    ajStrDel(&baseindex);
+    
     return ajTrue;
 }
 
 
 
+
+/* @funcstatic seqEmbossOpenCache ********************************************
+**
+** Create primary B+tree index cache
+**
+** @param [u] qry [AjPSeqQuery] Query data
+** @param [r] ext [const char *] Index file extension
+** @param [w] cache [AjPBtcache *] cache
+** @return [void]
+** @@
+******************************************************************************/
 
 static void seqEmbossOpenCache(AjPSeqQuery qry, const char *ext,
 			       AjPBtcache *cache)
@@ -3196,6 +3210,17 @@ static void seqEmbossOpenCache(AjPSeqQuery qry, const char *ext,
 
 
 
+
+/* @funcstatic seqEmbossOpenSecCache *****************************************
+**
+** Create double (secondary) B+tree index cache
+**
+** @param [u] qry [AjPSeqQuery] Query data
+** @param [r] ext [const char *] Index file extension
+** @param [w] cache [AjPBtcache *] cache
+** @return [void]
+** @@
+******************************************************************************/
 
 static void seqEmbossOpenSecCache(AjPSeqQuery qry, const char *ext,
 				  AjPBtcache *cache)
