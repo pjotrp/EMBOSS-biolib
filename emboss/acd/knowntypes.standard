@@ -93,6 +93,7 @@ file freqboot_input Phylip freqboot program input file
 file freqboot_output Phylip freqboot program output file
 file gendist_input Phylip gendist program input file
 file gendist_output Phylip gendist program output file
+list genetic_code Standard genetic code
 file gff feature file in GFF format
 file hmm_database HMMER hmm database filename
 string hmm_database_name HMMER hmm database name
