@@ -2370,7 +2370,7 @@ FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI outfile.codcmp
+FI eeco.codcmp
 FP /^Mean Squared Difference = 0[.]037\n/
 FP /^Sum Squared Difference = 2[.]337\n/
 FP /^Root Mean Squared Difference = 0[.]191\n/
@@ -2580,24 +2580,69 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI paamir.cusp
-FP /GCA\tA\t\t0\.077\t7\.772\t3/
-FP /GCC\tA\t\t0\.462\t46\.632\t18/
-FP /GCG\tA\t\t0\.462\t46\.632\t18/
-FP /GCT\tA\t\t0\.000\t0\.000\t0/
+FP /GCA +A +0\.077 +7\.772 +3/
+FP /GCC +A +0\.462 +46\.632 +18/
+FP /GCG +A +0\.462 +46\.632 +18/
+FP /GCT +A +0\.000 +0\.000 +0/
 //
 
 ID cutgextract-keep
 AP cutgextract
+DL keep
 PP mkdir CODONS
 PP EMBOSS_DATA=./
-PP export EMBOSSDATA
+PP export EMBOSS_DATA
 IN ../../data
+IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-DI CODONS 
+DI CODONS
+FI outfile.cutgextract
+FC = 13
+FP 13 /^Writing .*[.]cut$/
+//
+
+ID cutgextract-species
+AP cutgextract
+DL keep
+PP mkdir CODONS
+PP EMBOSS_DATA=./
+PP export EMBOSS_DATA
+CL -species "Aedes *"
+IN ../../data
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+DI CODONS
+FI outfile.cutgextract
+FC = 3
+FP 3 /^Writing .*[.]cut$/
+//
+
+ID cutgextract-outfile
+AP cutgextract
+DL keep
+PP mkdir CODONS
+PP EMBOSS_DATA=./
+PP export EMBOSS_DATA
+CL -species "Aedes *" -filename EAedes
+IN ../../data
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+DI CODONS
+FI outfile.cutgextract
+FC = 1
+FP 1 /^Writing EAedes[.]cut$/
 //
 
 ID cutseq-ex

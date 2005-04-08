@@ -1,4 +1,43 @@
 Version 3.0.0
+	Programs chips and cusp used a codon usage table as input only to
+	define the genetic code (amino acids for each codon) for the table
+	they produce. This is no longer needed as a new AjPCod constructor
+	can be given a genetic code (default 0 to use the standard code)
+	and will set the amino acid data. The ajCodClear function now
+	clears all data, including the amino acid assignments, for use in
+	reading multiple codon usage formats. A new function
+	ajCodClearData clears only the data and other values, and leaves
+	the amino acid assignments in case other applications may make the
+	same assumptions.
+	
+	Codon usage input filenames can now be used to set the output
+	filename. The codcmp program for example will no longer default to
+	"outfile.codcmp" for output. However, this can cause unexpected
+	results when a codon usage table and a sequence are read in, so
+	codon usage filenames are only used if no other input file (or
+	sequence, or feature table, or other input type) has been
+	read. This is done by passing a "reset" boolean when setting the
+	staved first input file name so that other inputs can overwrite a
+	name defined by a codon usage input. A remaining side effect is
+	that if the first input is stdin (for example with -filter on)
+	then a second input file can now set the default for output. The
+	recommendation for anyone developing wrappers is to always
+	explicitly set the output filenames if there is a need to know the
+	name for a specific output.
+
+	Codon usage tables support multiple formats. All can be read
+	automatically. EMBOSS will now, for example, accept native GCG
+	codon usage tables including those used by the codonusage and
+	transterm databases. The format can be specified for "codon" input
+	by a -format quialifier. Outcodon is now used as an ACD datatype
+	for writing codon usage tables, and has a -oformat qualifier. A
+	new application codcopy can interconvert the codon usage table
+	formats. The default codon usage table format is called "emboss"
+	and includes structured comments to identify the species, database
+	release, database division, number of CDSs and codons, and GC
+	content. These values are calculated of searched for in the text
+	within a file for other formats.
+
 	In the emboss.default and .embossrc files the same name can be
 	used for variables, databases, and resources. In previous versions
 	a single table was used and name clashes could occur. This becomes
