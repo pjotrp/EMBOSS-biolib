@@ -2726,6 +2726,7 @@ void ajBtreeWriteParams(const AjPBtcache cache, const char *fn,
     ajFmtPrintF(outf,"Order2    %d\n",cache->sorder);
     ajFmtPrintF(outf,"Fill2     %d\n",cache->snperbucket);
     ajFmtPrintF(outf,"Count     %d\n",cache->count);
+    ajFmtPrintF(outf,"Kwlimit   %d\n",cache->kwlimit);
 
     ajFileClose(&outf);
     ajStrDel(&fname);
@@ -2750,7 +2751,8 @@ void ajBtreeWriteParams(const AjPBtcache cache, const char *fn,
 ** @param [w] cachesize [ajint*] cachesize
 ** @param [w] sorder [ajint*] secondary tree order
 ** @param [w] snperbucket [ajint*] secondary bucket fill
-** @param [w] count [ajint*] number of primary keywords in the index
+** @param [w] count [ajlong*] number of primary keywords in the index
+** @param [w] kwlimit [ajint*] maximum length of a keyword
 **
 ** @return [void]
 ** @@
@@ -2760,7 +2762,7 @@ void ajBtreeReadParams(const char *fn, const char *ext,
 		       const char *idir, ajint *order,
 		       ajint *nperbucket, ajint *pagesize, ajint *level,
 		       ajint *cachesize, ajint *sorder,
-		       ajint *snperbucket, ajint *count)
+		       ajint *snperbucket, ajlong *count, ajint *kwlimit)
 {
     AjPStr fname = NULL;
     AjPStr line  = NULL;
@@ -2770,16 +2772,22 @@ void ajBtreeReadParams(const char *fn, const char *ext,
 
     fname = ajStrNew();
     ajFmtPrintS(&fname,"%s/%s.p%s",idir,fn,ext);
-
+    
     if(!(inf = ajFileNewIn(fname)))
 	ajFatal("Cannot open param file %S\n",fname);
 
     while(ajFileReadLine(inf,&line))
     {
 	if(ajStrPrefixC(line,"Order2"))
+	{
 	    ajFmtScanS(line,"%*s%d",sorder);
+	    continue;
+	}
 	if(ajStrPrefixC(line,"Fill2"))
+	{
 	    ajFmtScanS(line,"%*s%d",snperbucket);
+	    continue;
+	}
 	if(ajStrPrefixC(line,"Order"))
 	    ajFmtScanS(line,"%*s%d",order);
 	if(ajStrPrefixC(line,"Fill"))
@@ -2791,7 +2799,9 @@ void ajBtreeReadParams(const char *fn, const char *ext,
 	if(ajStrPrefixC(line,"Cachesize"))
 	    ajFmtScanS(line,"%*s%d",cachesize);
 	if(ajStrPrefixC(line,"Count"))
-	    ajFmtScanS(line,"%*s%d",count);
+	    ajFmtScanS(line,"%*s%Ld",count);
+	if(ajStrPrefixC(line,"Kwlimit"))
+	    ajFmtScanS(line,"%*s%d",kwlimit);
     }
 
     ajFileClose(&inf);
@@ -7759,7 +7769,7 @@ static void btreeWriteSecBucket(AjPBtcache cache, const AjPSecBucket bucket,
 ** @param [r] sorder [ajint] order of secondary tree
 ** @param [r] slevel [ajint] level of secondary tree
 ** @param [r] sfill [ajint] Number of entries per secondary bucket
-** @param [r] count [ajint] Number of entries in the index
+** @param [r] count [ajlong] Number of entries in the index
 ** @param [r] kwlimit [ajint] Max key size
 **
 ** @return [AjPBtcache] initialised disc block cache structure
@@ -7771,7 +7781,7 @@ AjPBtcache ajBtreeSecCacheNewC(const char *file, const char *ext,
 			       ajint pagesize, ajint order, ajint fill,
 			       ajint level, ajint cachesize,
 			       ajint sorder, ajint slevel, ajint sfill,
-			       ajint count, ajint kwlimit)
+			       ajlong count, ajint kwlimit)
 {
     FILE *fp;
     AjPBtcache cache = NULL;

@@ -783,19 +783,19 @@ ajint embBtreeSetFields(EmbPBtreeEntry entry, AjPStr *fields)
 	if(ajStrMatchCaseC(fields[nfields], "id"))
 	    entry->do_id = ajTrue;
 
-	else if(ajStrMatchCaseC(fields[nfields], "acnum"))
+	else if(ajStrMatchCaseC(fields[nfields], "ac"))
 	    entry->do_accession = ajTrue;
 
-	else if(ajStrMatchCaseC(fields[nfields], "seqvn"))
+	else if(ajStrMatchCaseC(fields[nfields], "sv"))
 	    entry->do_sv = ajTrue;
 
-	else if(ajStrMatchCaseC(fields[nfields], "des"))
+	else if(ajStrMatchCaseC(fields[nfields], "de"))
 	    entry->do_description = ajTrue;
 
-	else if(ajStrMatchCaseC(fields[nfields], "keyword"))
+	else if(ajStrMatchCaseC(fields[nfields], "kw"))
 	    entry->do_keyword = ajTrue;
 
-	else if(ajStrMatchCaseC(fields[nfields], "taxon"))
+	else if(ajStrMatchCaseC(fields[nfields], "tx"))
 	    entry->do_taxonomy = ajTrue;
 
 	else

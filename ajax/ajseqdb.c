@@ -321,13 +321,81 @@ typedef struct SeqSCdQry
 
 
 
+/* @datastatic SeqPEmbossQry *************************************************
+**
+** Btree 'emboss' query structure
+**
+** @alias SeqSEmbossQry
+** @alias SeqOEmbossQry
+**
+** @attr divfile [AjPStr] division.lkp
+** @attr idxfile [AjPStr] entryname.idx
+** @attr datfile [AjPStr] main data reference
+** @attr seqfile [AjPStr] sequence
+** @attr tblfile [AjPStr] BLAST table
+** @attr srcfile [AjPStr] BLAST FASTA source data
+** @attr dfp [SeqPCdFile] division.lkp
+** @attr ifp [SeqPCdFile] entryname.idx
+** @attr trgfp [SeqPCdFile] acnum.trg
+** @attr hitfp [SeqPCdFile] acnum.hit
+** @attr trgLine [SeqPCdTrg]acnum input line
+** @attr name [char*] filename from division.lkp
+** @attr nameSize [ajint] division.lkp filename length
+** @attr div [ajint] current division number
+** @attr maxdiv [ajint] max division number
+** @attr type [ajint] BLAST type
+** @attr idnum [ajint] current BLAST entry offset
+** @attr libr [AjPFile] main data reference or BLAST header
+** @attr libs [AjPFile] sequence or BLAST compressed sequence
+** @attr libt [AjPFile] blast table
+** @attr libf [AjPFile] blast FASTA source data
+** @attr TopHdr [ajint] BLAST table headers offset
+** @attr TopCmp [ajint] BLAST table sequence offset
+** @attr TopAmb [ajint] BLAST table ambiguities offset
+** @attr TopSrc [ajint] BLAST table FASTA source offset
+** @attr Size [ajint] BLAST database size
+** @attr List [AjPList] list of entries
+** @attr Skip [AjBool*] skip file(s) in division.lkp
+** @attr idxLine [SeqPCdIdx] entryname.idx input line
+** @@
+******************************************************************************/
+
+typedef struct SeqSEmbossQry
+{
+    AjBool do_id;
+    AjBool do_ac;
+    AjBool do_kw;
+    AjBool do_de;
+    AjBool do_sv;
+    AjBool do_tx;
+
+    AjPBtcache idcache;
+    AjPBtcache accache;
+    AjPBtcache svcache;
+    AjPBtcache kwcache;
+    AjPBtcache txcache;
+    AjPBtcache decache;
+
+    AjPStr *files;
+    AjPFile prifile;
+    
+    AjPList List;
+} SeqOEmbossQry;
+
+#define SeqPEmbossQry SeqOEmbossQry*
+
+
+
+
 static AjBool     seqAccessApp(AjPSeqin seqin);
 static AjBool     seqAccessBlast(AjPSeqin seqin);
 /* static AjBool     seqAccessCmd(AjPSeqin seqin);*/ /* not implemented */
 static AjBool     seqAccessDirect(AjPSeqin seqin);
 static AjBool     seqAccessEmblcd(AjPSeqin seqin);
+static AjBool     seqAccessEmboss(AjPSeqin seqin);
 static AjBool     seqAccessEntrez(AjPSeqin seqin);
 static AjBool     seqAccessFreeEmblcd(void* qryd);
+static AjBool     seqAccessFreeEmboss(void* qryd);
 static AjBool     seqAccessGcg(AjPSeqin seqin);
 /* static AjBool     seqAccessNbrf(AjPSeqin seqin); */ /* obsolete */
 static AjBool     seqAccessSeqhound(AjPSeqin seqin);
@@ -386,6 +454,16 @@ static AjBool     seqCdTrgQuery(AjPSeqQuery qry);
 static ajint      seqCdTrgSearch(SeqPCdTrg trgLine, const AjPStr name,
 				SeqPCdFile fp);
 
+static void	  seqEmbossOpenCache(AjPSeqQuery qry, const char *ext,
+				     AjPBtcache *cache);
+static void       seqEmbossOpenSecCache(AjPSeqQuery qry, const char *ext,
+					AjPBtcache *cache);
+static AjBool     seqEmbossQryOpen(AjPSeqQuery qry);
+static AjBool     seqEmbossQryClose(AjPSeqQuery qry);
+static AjBool     seqEmbossQryEntry(AjPSeqQuery qry);
+static AjBool     seqEmbossQryNext(AjPSeqQuery qry);
+static AjBool     seqEmbossQryReuse(AjPSeqQuery qry);
+
 static AjBool     seqEntrezQryNext(AjPSeqQuery qry, AjPSeqin seqin);
 static AjBool     seqGcgAll(AjPSeqin seqin);
 static void       seqGcgBinDecode(AjPStr *pthis, ajint rdlen);
@@ -421,6 +499,7 @@ static void       seqSocketTimeout(int sig);
 
 static SeqOAccess seqAccess[] =
 {
+    {"emboss", seqAccessEmboss, seqAccessFreeEmboss},
     {"emblcd", seqAccessEmblcd, seqAccessFreeEmblcd},
     {"entrez",seqAccessEntrez, NULL},
     {"seqhound",seqAccessSeqhound, NULL},
@@ -674,6 +753,112 @@ static AjBool seqAccessFreeEmblcd(void* qrydata)
 
     qryd->libr=0;
     qryd->libs=0;
+
+    return retval;
+}
+
+
+
+
+/* @funcstatic seqAccessEmboss ************************************************
+**
+** Reads a sequence using EMBOSS B+tree index files.
+**
+** @param [u] seqin [AjPSeqin] Sequence input, including query data.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+static AjBool seqAccessEmboss(AjPSeqin seqin)
+{
+    AjBool retval = ajFalse;
+
+    AjPSeqQuery qry;
+    SeqPEmbossQry qryd = NULL;
+
+    
+    qry = seqin->Query;
+    ajDebug("seqAccessEmboss type %d\n", qry->Type);
+
+    if(qry->Type != QRY_ENTRY)
+	return ajFalse;
+
+
+    if(!qry->QryData)
+    {
+	seqEmbossQryOpen(qry);
+
+	qryd = qry->QryData;
+	seqin->Single = ajTrue;
+	
+	if(qry->Type == QRY_ENTRY)
+	{
+	    if(!seqEmbossQryEntry(qry))
+	    {
+		ajDebug("B+tree Entry failed\n");
+		if(qryd->do_id)
+		    ajDebug("Database entry id-'%S' not found\n",qry->Id);
+		else if(qryd->do_sv)
+		    ajDebug("Database entry gi-'%S' not found\n",qry->Gi);
+		else
+		    ajDebug("Database entry acc-'%S' not found\n",qry->Acc);
+	    }
+	}
+    }
+    else if(!seqEmbossQryReuse(qry))
+	return ajFalse;
+
+    if(ajListLength(qryd->List))
+    {
+	retval = seqEmbossQryNext(qry);
+	if(retval)
+	    ajFileBuffSetFile(&seqin->Filebuff, qryd->prifile);
+    }
+
+    if(!ajListLength(qryd->List)) /* could have been emptied by code above */
+    {
+	seqEmbossQryClose(qry);
+	/* AJB addition */
+        /*
+	 * This was for the old code where seqsets had different
+         * memory handling ... and the reason for the multi
+         * flag in the first place. So far this seems
+         * unnecessary for the revised code but is left here
+         * for a while as a reminder and 'just in case'
+	 */
+	if((qry->Type == QRY_ENTRY) && !seqin->multi)
+	{
+	    AJFREE(qry->QryData);
+	    qryd = NULL;
+	}
+    }
+
+
+    ajStrAssS(&seqin->Db, qry->DbName);
+
+    return retval;
+}
+
+
+
+
+/* @funcstatic seqAccessFreeEmboss ********************************************
+**
+** Frees data specific to reading EMBOSS B+tree index files.
+**
+** @param [r] qrydata [void*] query data specific to EMBLCD
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+static AjBool seqAccessFreeEmboss(void* qrydata)
+{
+    SeqPEmbossQry qryd;
+    AjBool retval = ajTrue;
+
+    ajDebug("seqAccessFreeEmboss\n");
+
+    qryd = (SeqPEmbossQry) qrydata;
 
     return retval;
 }
@@ -2745,6 +2930,47 @@ static AjBool seqCdQryReuse(AjPSeqQuery qry)
 
 
 
+/* @funcstatic seqEmbossQryReuse *********************************************
+**
+** Tests whether the B+tree index query data can be reused or it's finished.
+**
+** Clears qryData structure when finished.
+**
+** @param [u] qry [AjPSeqQuery] Query data
+** @return [AjBool] ajTrue if reusable,
+**                  ajFalse if finished.
+** @@
+******************************************************************************/
+
+static AjBool seqEmbossQryReuse(AjPSeqQuery qry)
+{
+    SeqPEmbossQry qryd;
+
+    qryd = qry->QryData;
+
+    if(!qry || !qryd)
+	return ajFalse;
+
+
+    if(!qryd->List)
+    {
+	ajDebug("query data all finished\n");
+	AJFREE(qry->QryData);
+	qryd = NULL;
+	return ajFalse;
+    }
+    else
+    {
+	ajDebug("reusing data from previous call %x\n", qry->QryData);
+	/*ajListTrace(qryd->List);*/
+    }
+
+    return ajTrue;
+}
+
+
+
+
 /* @funcstatic seqCdQryOpen ***************************************************
 **
 ** Opens everything for a new CD query
@@ -2818,6 +3044,198 @@ static AjBool seqCdQryOpen(AjPSeqQuery qry)
     ajCharFree(&name);
 
     return ajTrue;
+}
+
+
+
+
+/* @funcstatic seqEmbossQryOpen **********************************************
+**
+** Open caches (etc) for B+tree search
+**
+** @param [u] qry [AjPSeqQuery] Query data
+** @return [AjBool] ajTrue if we can continue,
+**                  ajFalse if all is done.
+** @@
+******************************************************************************/
+
+static AjBool seqEmbossQryOpen(AjPSeqQuery qry)
+{
+    SeqPEmbossQry qryd;
+    AjPStr baseindex = NULL;
+    
+
+    baseindex = ajStrNew();
+
+    qry->QryData = AJNEW0(qryd);
+    qryd = qry->QryData;
+
+    qryd->List = ajListNew();
+
+
+    if(ajStrLen(qry->Id))
+    {
+	ajStrToLower(&qry->Id);
+	qryd->do_id = ajTrue;
+    }
+    
+    if(ajStrLen(qry->Acc))
+    {
+	qryd->do_ac = ajTrue;
+    }
+    
+    if(ajStrLen(qry->Des))
+    {
+	qryd->do_id = ajTrue;
+	qryd->do_de = ajTrue;
+    }
+
+    if(ajStrLen(qry->Key))
+    {
+	qryd->do_id = ajTrue;
+	qryd->do_kw = ajTrue;
+    }
+
+    if(ajStrLen(qry->Org))
+    {
+	qryd->do_id = ajTrue;
+	qryd->do_tx = ajTrue;
+    }
+
+    if(ajStrLen(qry->Sv) || ajStrLen(qry->Gi))
+    {
+	qryd->do_sv = ajTrue;
+    }
+    
+
+
+    if(!ajStrLen(qry->IndexDir))
+    {
+	ajDebug("no indexdir defined for database '%S'\n", qry->DbName);
+	ajErr("no indexdir defined for database '%S'", qry->DbName);
+	return ajFalse;
+    }
+
+    ajDebug("directory '%S' entry '%S' acc '%S'\n",
+	    qry->IndexDir, qry->Id, qry->Acc);
+
+
+    if(qryd->do_id)
+	seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);
+
+    if(qryd->do_ac)
+	seqEmbossOpenCache(qry,AC_EXTENSION,&qryd->accache);
+
+    if(qryd->do_sv)
+	seqEmbossOpenCache(qry,SV_EXTENSION,&qryd->svcache);
+
+    if(qryd->do_kw)
+    {
+	seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);	
+	seqEmbossOpenSecCache(qry,KW_EXTENSION,&qryd->kwcache);
+    }
+
+    if(qryd->do_de)
+    {
+	seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);	
+	seqEmbossOpenSecCache(qry,DE_EXTENSION,&qryd->decache);
+    }
+
+    if(qryd->do_tx)
+    {
+	seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);	
+	seqEmbossOpenSecCache(qry,TX_EXTENSION,&qryd->txcache);
+    }
+
+    return ajTrue;
+}
+
+
+
+
+static void seqEmbossOpenCache(AjPSeqQuery qry, const char *ext,
+			       AjPBtcache *cache)
+{
+    SeqPEmbossQry qryd;
+    ajint order     = 0;
+    ajint fill      = 0;
+    ajint pagesize  = 0;
+    ajint cachesize = 0;
+    ajint level     = 0;
+    ajint sorder    = 0;
+    ajint sfill     = 0;
+    ajlong count    = 0L;
+    ajint kwlimit   = 0;
+    
+    AjPBtpage page   = NULL;
+
+    qryd = qry->QryData;
+
+    ajBtreeReadParams(qry->DbName->Ptr,ext,qry->IndexDir->Ptr,
+		      &order, &fill,
+		      &pagesize, &level,
+		      &cachesize, &sorder,
+		      &sfill, &count, &kwlimit);
+    
+    qryd->files = ajBtreeReadEntries(qry->DbName->Ptr, qry->IndexDir->Ptr);
+    
+    
+    *cache = ajBtreeCacheNewC(qry->DbName->Ptr,ext,
+			      qry->IndexDir->Ptr,"r",
+			      pagesize,order,fill,level,
+			      cachesize);
+
+    if(!*cache)
+	return;
+    
+    page = ajBtreeCacheRead(*cache,0L);
+    page->dirty = BT_LOCK;
+    
+    return;
+}
+
+
+
+
+static void seqEmbossOpenSecCache(AjPSeqQuery qry, const char *ext,
+				  AjPBtcache *cache)
+{
+    SeqPEmbossQry qryd;
+    ajint order     = 0;
+    ajint fill      = 0;
+    ajint pagesize  = 0;
+    ajint cachesize = 0;
+    ajint level     = 0;
+    ajint sorder    = 0;
+    ajint sfill     = 0;
+    ajlong count    = 0L;
+    ajint kwlimit   = 0;
+    
+    AjPBtpage page   = NULL;
+
+    qryd = qry->QryData;
+
+    ajBtreeReadParams(qry->DbName->Ptr,ext,qry->IndexDir->Ptr,
+		      &order, &fill,
+		      &pagesize, &level,
+		      &cachesize, &sorder,
+		      &sfill, &count, &kwlimit);
+    
+    qryd->files = ajBtreeReadEntries(qry->DbName->Ptr, qry->IndexDir->Ptr);
+    
+    
+    *cache = ajBtreeSecCacheNewC(qry->DbName->Ptr,ext,
+				 qry->IndexDir->Ptr,"r",
+				 pagesize,order,fill,level,
+				 cachesize,sorder,0,sfill,count,kwlimit);
+
+    if(!*cache)
+	return;
+    
+    page = ajBtreeCacheRead(*cache,0L);
+    page->dirty = BT_LOCK;
+    
+    return;
 }
 
 
@@ -3124,6 +3542,56 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 
 
 
+/* @funcstatic seqEmbossQryEntry *********************************************
+**
+** Queries for a single entry in a B+tree index
+**
+** @param [u] qry [AjPSeqQuery] Query data
+** @return [AjBool] ajTrue if can continue,
+**                  ajFalse if all is done.
+** @@
+******************************************************************************/
+
+static AjBool seqEmbossQryEntry(AjPSeqQuery qry)
+{
+    AjPBtId entry = NULL;
+    SeqPEmbossQry qryd;
+
+    ajDebug("entry id: '%S' acc: '%S'\n", qry->Id, qry->Acc);
+
+    qryd = qry->QryData;
+
+
+    if(qryd->do_id && qryd->idcache)
+    {
+	    entry = ajBtreeIdFromKey(qryd->idcache,qry->Id->Ptr);
+	    if(entry)
+		ajListPushApp(qryd->List,(void *)entry);
+    }
+    
+
+    if((qryd->do_id && !entry) && (qryd->do_ac && qryd->accache))
+    {
+	    entry = ajBtreeIdFromKey(qryd->accache,qry->Acc->Ptr);
+	    if(entry)
+		ajListPushApp(qryd->List,(void *)entry);
+    }
+
+
+
+
+
+    if(!ajListLength(qryd->List))
+	return ajFalse;
+
+    qry->QryDone = ajTrue;
+
+    return ajTrue;
+}
+
+
+
+
 /* @funcstatic seqCdQryQuery **************************************************
 **
 ** Queries for one or more entries in an EMBLCD index
@@ -3277,6 +3745,45 @@ static AjBool seqCdQryNext(AjPSeqQuery qry)
 
 
 
+/* @funcstatic seqEmbossQryNext **********************************************
+**
+** Processes the next query for a B+tree index
+**
+** @param [u] qry [AjPSeqQuery] Query data
+** @return [AjBool] ajTrue if successful
+** @@
+******************************************************************************/
+
+static AjBool seqEmbossQryNext(AjPSeqQuery qry)
+{
+    AjPBtId entry;
+    SeqPEmbossQry qryd;
+    void* item;
+
+    qryd = qry->QryData;
+
+    if(!ajListLength(qryd->List))
+	return ajFalse;
+
+    ajDebug("qryd->List (b) length %d\n", ajListLength(qryd->List));
+    ajListTrace(qryd->List);
+    ajListPop(qryd->List, &item);
+    entry = (AjPBtId) item;
+
+    qryd->prifile = ajFileNewIn(qryd->files[entry->dbno]);
+
+    ajFileSeek(qryd->prifile, entry->offset,0);
+
+    ajBtreeIdDel(&entry);
+
+    qry->QryDone = ajTrue;
+
+    return ajTrue;
+}
+
+
+
+
 /* @funcstatic seqBlastQryNext ************************************************
 **
 ** Processes the next query for an EMBLCD index for a Blast index
@@ -3369,6 +3876,61 @@ static AjBool seqCdQryClose(AjPSeqQuery qry)
     AJFREE(qryd->trgLine);
     AJFREE(qryd->idxLine);
     AJFREE(qryd->Skip);
+
+    /* keep QryData for use at top of loop */
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic seqEmbossQryClose *********************************************
+**
+** Closes query data for a B+tree index
+**
+** @param [u] qry [AjPSeqQuery] Query data
+** @return [AjBool] ajTrue if we can continue,
+**                  ajFalse if all is done.
+** @@
+******************************************************************************/
+
+static AjBool seqEmbossQryClose(AjPSeqQuery qry)
+{
+    SeqPEmbossQry qryd;
+
+    ajDebug("seqEmbossQryClose clean up qryd\n");
+
+    qryd = qry->QryData;
+
+    if(qryd->do_id && qryd->idcache)
+	ajBtreeCacheDel(&qryd->idcache);
+
+    if(qryd->do_ac && qryd->accache)
+	ajBtreeCacheDel(&qryd->accache);
+
+    if(qryd->do_sv && qryd->svcache)
+	ajBtreeCacheDel(&qryd->svcache);
+
+    if(qryd->do_kw && qryd->kwcache)
+	ajBtreeCacheDel(&qryd->kwcache);
+
+    if(qryd->do_de && qryd->decache)
+	ajBtreeCacheDel(&qryd->decache);
+
+    if(qryd->do_tx && qryd->txcache)
+	ajBtreeCacheDel(&qryd->txcache);
+	
+    qryd->do_id = ajFalse;
+    qryd->do_ac = ajFalse;
+    qryd->do_sv = ajFalse;
+    qryd->do_kw = ajFalse;
+    qryd->do_de = ajFalse;
+    qryd->do_tx = ajFalse;
+
+    qryd->prifile = NULL;
+
+    ajListFree(&qryd->List);
 
     /* keep QryData for use at top of loop */
 

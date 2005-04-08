@@ -14,13 +14,6 @@ extern "C"
 #define BTREE_DEF_CACHESIZE 100
 #define BTREE_DEF_PAGESIZE  0
 
-#define ID_EXTENSION "xid"
-#define AC_EXTENSION "xac"
-#define SV_EXTENSION "xsv"
-#define DE_EXTENSION "xde"
-#define KW_EXTENSION "xkw"
-#define TX_EXTENSION "xtx"
-
 typedef struct EmbSBtreeEntry
 {
     AjBool do_id;

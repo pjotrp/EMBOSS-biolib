@@ -30,8 +30,12 @@ extern "C"
 #define BTNO_NODE    100L
 
 
-
-
+#define ID_EXTENSION "xid"
+#define AC_EXTENSION "xac"
+#define SV_EXTENSION "xsv"
+#define DE_EXTENSION "xde"
+#define KW_EXTENSION "xkw"
+#define TX_EXTENSION "xtx"
 
 
 
@@ -492,7 +496,7 @@ void     ajBtreeReadParams(const char *fn, const char *ext,
 			   const char *idir, ajint *order,
 			   ajint *nperbucket, ajint *pagesize, ajint *level,
 			   ajint *cachesize, ajint *sorder,
-			   ajint *snperbucket, ajint *count);
+			   ajint *snperbucket, ajlong *count, ajint *kwlimit);
 void     ajBtreeCacheSync(AjPBtcache cache, ajlong rootpage);
 
 AjBool   ajBtreeDeleteId(AjPBtcache cache, const AjPBtId id);
@@ -519,7 +523,7 @@ AjPBtcache ajBtreeSecCacheNewC(const char *file, const char *ext,
 			       ajint pagesize, ajint order, ajint fill,
 			       ajint level, ajint cachesize,
 			       ajint sorder, ajint slevel, ajint sfill,
-			       ajint count, ajint kwlimit);
+			       ajlong count, ajint kwlimit);
 AjPBtpage  ajBtreeSecFindInsert(AjPBtcache cache, const char *key);
 void       ajBtreeInsertSecId(AjPBtcache cache, const AjPStr id);
 AjBool     ajBtreeSecFromId(AjPBtcache cache, const char *key);
