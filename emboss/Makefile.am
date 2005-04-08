@@ -31,7 +31,7 @@ acdc acdpretty acdtable acdtrace acdvalid \
 antigenic \
 backtranseq banana biosed btwisted \
 cai chaos charge checktrans chips \
-cirdna codcmp coderet \
+cirdna codcmp codcopy coderet \
 compseq cons cpgplot cpgreport \
 cusp cutgextract cutseq \
 dan dbiblast dbifasta dbiflat dbigcg \
