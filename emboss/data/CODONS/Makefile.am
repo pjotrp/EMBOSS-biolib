@@ -1,4 +1,5 @@
-pkgdata_DATA = Eacica.cut Eagrtu.cut Eanasp.cut Earath.cut Eazovi.cut \
+pkgdata_DATA = Cut.index \
+               Eacica.cut Eagrtu.cut Eanasp.cut Earath.cut Eazovi.cut \
                Ebacme.cut Ebacst.cut Ebacsu.cut Ebacsu_high.cut Ebommo.cut \
                Ebovin.cut Ebpphx.cut Ebraja.cut Ebrana.cut Ebrare.cut \
                Ecaeel.cut Ecanal.cut Ecanfa.cut Ecaucr.cut Echick.cut \
