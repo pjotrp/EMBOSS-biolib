@@ -2103,7 +2103,7 @@ FP 0 /Died: /
 ID backtranseq-ex2
 UC This uses a drosophila sequence and codon table.
 AP backtranseq
-CL -cfile Edrosophila.cut
+CL -cfile Edrome.cut
 IN tsw:ach2_drome
 IN
 FI ach2_drome.fasta
@@ -2362,20 +2362,20 @@ FP /^Created cirdna.ps\n/
 ID codcmp-ex
 UC This compares the codon usage tables for Escherichia coli and Haemophilus influenzae.
 AP codcmp
-IN Eeco.cut
-IN Ehin.cut
+IN Eecoli.cut
+IN Ehaein.cut
 IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI eeco.codcmp
-FP /^Mean Squared Difference = 0[.]037\n/
-FP /^Sum Squared Difference = 2[.]337\n/
-FP /^Root Mean Squared Difference = 0[.]191\n/
-FP /^Sum Difference         = 9[.]840\n/
-FP /^Mean Difference         = 0[.]154\n/
+FI eecoli.codcmp
+FP /^Mean Squared Difference = 0[.]034\n/
+FP /^Sum Squared Difference = 2[.]178\n/
+FP /^Root Mean Squared Difference = 0[.]184\n/
+FP /^Sum Difference         = 9[.]504\n/
+FP /^Mean Difference         = 0[.]149\n/
 FP /^Codons not appearing   = 0\n/
 //
 
@@ -2601,8 +2601,8 @@ FP 0 /Error: /
 FP 0 /Died: /
 DI CODONS
 FI outfile.cutgextract
-FC = 13
-FP 13 /^Writing .*[.]cut$/
+FC = 9
+FP 9 /^Writing .*[.]cut/
 //
 
 ID cutgextract-species
@@ -2622,7 +2622,7 @@ FP 0 /Died: /
 DI CODONS
 FI outfile.cutgextract
 FC = 3
-FP 3 /^Writing .*[.]cut$/
+FP 3 /^Writing .*[.]cut/
 //
 
 ID cutgextract-outfile
@@ -2642,7 +2642,7 @@ FP 0 /Died: /
 DI CODONS
 FI outfile.cutgextract
 FC = 1
-FP 1 /^Writing EAedes[.]cut$/
+FP 1 /^Writing EAedes[.]cut/
 //
 
 ID cutseq-ex
@@ -13204,7 +13204,7 @@ FP /^ECLACA +1701 [acgt]+ +1732\n/
 
 ID syco-ex
 AP syco
-CL -plot -cfile Epae.cut
+CL -plot -cfile Epseae.cut
 IN tembl:paamir
 IN ps
 FI stderr
@@ -13218,7 +13218,7 @@ FP /^Created syco.ps\n/
 FI paamir.syco
 FZ = 0
 FI syco.ps
-FZ = 59910
+FZ = 62558
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
