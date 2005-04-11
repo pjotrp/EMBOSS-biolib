@@ -1,12 +1,13 @@
 /******************************************************************************
-** @source AJAX SEQ (sequence) functions
+** @source AJAX SEQDB (database) functions
 **
-** These functions control all aspects of AJAX sequence
-** reading and writing and include simple utilities.
+** These functions control all aspects of AJAX sequence database access
 **
 ** @author Copyright (C) 1998 Peter Rice
-** @version 1.0
+** @author Copyright (C) 2005 Alan Bleasby
+** @version 2.0
 ** @modified Jun 25 pmr First version
+** @modified Apr 2005 ajb B+tree code addition
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -3399,7 +3400,7 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
     if(qryd->do_id && qryd->idcache)
     {
 	wild = ajBtreeWildNew(qryd->idcache, qry->Id);
-	while(id = ajBtreeIdFromKeyW(qryd->idcache, wild))
+	while((id = ajBtreeIdFromKeyW(qryd->idcache, wild)))
 	    ajListPushApp(qryd->List, (void *)id);
 	ajBtreeWildDel(&wild);
 	return ajTrue;
@@ -3408,7 +3409,7 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
     if(qryd->do_ac && qryd->accache)
     {
 	wild = ajBtreeWildNew(qryd->accache, qry->Acc);
-	while(id = ajBtreeIdFromKeyW(qryd->accache, wild))
+	while((id = ajBtreeIdFromKeyW(qryd->accache, wild)))
 	    ajListPushApp(qryd->List, (void *)id);
 	ajBtreeWildDel(&wild);
 	return ajTrue;
@@ -3417,7 +3418,7 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
     if(qryd->do_sv && qryd->svcache)
     {
 	wild = ajBtreeWildNew(qryd->svcache, qry->Gi);
-	while(id = ajBtreeIdFromKeyW(qryd->svcache, wild))
+	while((id = ajBtreeIdFromKeyW(qryd->svcache, wild)))
 	    ajListPushApp(qryd->List, (void *)id);
 	ajBtreeWildDel(&wild);
 	return ajTrue;
