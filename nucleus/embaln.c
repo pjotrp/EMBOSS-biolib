@@ -3200,8 +3200,10 @@ void embAlignReportGlobal(AjPAlign align,
 {
     AjPSeq res1 = NULL;
     AjPSeq res2 = NULL;
+/*
     ajint end1;
     ajint end2;
+*/
     AjPStr fa = NULL;
     AjPStr fb = NULL;
     ajint maxlen;
@@ -3325,8 +3327,10 @@ void embAlignReportGlobal(AjPAlign align,
     ajAlignSetGapR(align, gapopen, gapextend);
     ajAlignSetScoreR(align, score);
     ajAlignSetMatrixFloat(align, matrix);
+/*
     end1 = start1 - ajStrCountK(m, '-') + ajStrLen(m);
     end2 = start2 - ajStrCountK(n, '-') + ajStrLen(n);
+*/
     /* ajAlignSetRange(align, start1+1, end1+1, start2+1, end2);*/
     /*
     ajAlignSetRange(align,
@@ -3382,11 +3386,13 @@ void embAlignReportLocal(AjPAlign align,
 {
     AjPSeq res1 = NULL;
     AjPSeq res2 = NULL;
+/*
     ajint end1;
     ajint end2;
+*/
 
     ajDebug("embAlignReportLocal %d %d\n", start1, start2);
-
+/*
     res1   = ajSeqNew();
     res2   = ajSeqNew();
 
@@ -3398,10 +3404,28 @@ void embAlignReportLocal(AjPAlign align,
     ajSeqAssSeq(res2, n);
 
     ajAlignDefineSS(align, res1, res2);
+*/
+    res1   = ajSeqNewRangeCI(ajStrStr(m), ajStrLen(m),
+			     start1+ajSeqOffset(seqa), ajSeqOffend(seqa),
+			     ajSeqRev(seqa));
+    ajSeqAssName(res1, ajSeqGetName(seqa));
+    ajSeqAssUsa(res1, ajSeqGetUsa(seqa));
+
+    res2   = ajSeqNewRangeCI(ajStrStr(n), ajStrLen(n),
+			     start2+ajSeqOffset(seqb), ajSeqOffend(seqb),
+			     ajSeqRev(seqb));
+    ajSeqAssName(res2, ajSeqGetName(seqb));
+    ajSeqAssUsa(res2, ajSeqGetUsa(seqb));
+
+    ajSeqGapStandard(res1, '-');
+    ajSeqGapStandard(res2, '-');
+
+    ajAlignDefineSS(align, res1, res2);
 
     ajAlignSetGapR(align, gapopen, gapextend);
     ajAlignSetScoreR(align, score);
     ajAlignSetMatrixFloat(align, matrix);
+/*
     end1 = start1 - ajStrCountK(m, '-') + ajStrLen(m);
     end2 = start2 - ajStrCountK(n, '-') + ajStrLen(n);
     ajAlignSetRange(align,
@@ -3411,6 +3435,7 @@ void embAlignReportLocal(AjPAlign align,
 		    start2, end2+1,
                     ajSeqLen(seqb)-ajSeqGapCount(seqb),
                     offset2);
+*/
 
     ajSeqDel(&res1);
     ajSeqDel(&res2);
