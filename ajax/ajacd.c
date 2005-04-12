@@ -397,14 +397,14 @@ AcdOSection acdSecInput[] =
     {"input", "Input section", "page"},
     {NULL, NULL, NULL}
 };
-AcdOSection acdSecOutput[] =
-{
-    {"output", "Output section", "page"},
-    {NULL, NULL, NULL}
-};
 AcdOSection acdSecRequired[] = 
 {
     {"required", "Required section", "page"},
+    {NULL, NULL, NULL}
+};
+AcdOSection acdSecAdditional[] = 
+{
+    {"additional", "Additional section", "page"},
     {NULL, NULL, NULL}
 };
 AcdOSection acdSecAdvanced[] = 
@@ -412,9 +412,20 @@ AcdOSection acdSecAdvanced[] =
     {"advanced", "Advanced section", "page"},
     {NULL, NULL, NULL}
 };
+AcdOSection acdSecOutput[] =
+{
+    {"output", "Output section", "page"},
+    {NULL, NULL, NULL}
+};
 
-
-
+AcdPSection acdSections[] = {
+    acdSecInput,
+    acdSecRequired,
+    acdSecAdditional,
+    acdSecAdvanced,
+    acdSecOutput,
+    NULL
+};
 
 /* @datastatic AcdPType *******************************************************
 **
@@ -976,7 +987,7 @@ AcdOAttr acdAttrDef[] =
 	     "used to hide options if they are unclear in GUIs"},
     {"knowntype", VT_STR, "",
 	 "Known standard type, "
-	     "used to define inputs and output types for workflows"},
+	     "used to define input and output types for workflows"},
     {"relations", VT_STR, "",
 	 "Relationships between this ACD item and others, "
 	     "defined as specially formatted text"},
@@ -1547,8 +1558,6 @@ AcdOAttr acdAttrReport[] =
 	 "[P]rotein or [N]ucleotide"},
     {"taglist", VT_STR, "",
 	 "Extra tag names to report"},
-    {"mintags", VT_INT, "0",
-	 "Minimum number of extra tags"},
     {"multiple", VT_BOOL, "N",
 	 "Multiple sequences in one report"},
     {"precision", VT_INT, "3",
@@ -3763,7 +3772,7 @@ static AcdPAcd acdNewSec(const AjPStr name)
     AjPStr secname=NULL;
     AjPStr secfull=NULL;
     AjPStr secfullvalue=NULL;
-
+    
     if(firstcall)
     {
 	ikey = acdFindKeyC("section");
@@ -6103,6 +6112,8 @@ static void acdSetDirlist(AcdPAcd thys)
     
     n = ajListLength(val);
 
+    ajDebug("acdSetDirlist '%S' listlength %d\n",
+	    reply, n);
     for(i=0;i<n;++i)
     {
 	ajFmtPrintS(&t,"");
@@ -9519,7 +9530,6 @@ static void acdSetReport(AcdPAcd thys)
     static AjPStr outfname  = NULL;
     static AjPStr fullfname = NULL;
     static AjPStr taglist   = NULL;
-    ajint mintags = 0;
     
     val = NULL;
 
@@ -9561,7 +9571,6 @@ static void acdSetReport(AcdPAcd thys)
 	    val = ajReportNew();
 	    ajStrSet(&val->Formatstr, fmt);
 	    acdAttrToStr(thys, "type", "", &val->Type);
-	    acdAttrToInt(thys, "mintags", 0, &val->Mintags);
 	    acdAttrToStr(thys, "taglist", "", &taglist);
 	    acdAttrToBool(thys, "multiple", ajFalse, &val->Multi);
 	    acdAttrToInt(thys, "precision", 3, &val->Precision);
@@ -9575,7 +9584,7 @@ static void acdSetReport(AcdPAcd thys)
 			  &val->Showusa, &defreply);
     
 	    /* test acdc-reportbadtaglist */
-	    if(!ajReportSetTags(val, taglist, mintags))
+	    if(!ajReportSetTags(val, taglist))
 		acdErrorAcd(thys, "Bad tag list for report");
 
 	    /* test acdc-reportbadtags */
@@ -21045,7 +21054,7 @@ void ajAcdExit(AjBool silent)
 static void acdValidAppl(const AcdPAcd thys)
 {
     ajint i;
-    ajint idocmax = 55;			/* maximum length of
+    ajint idocmax = 60;			/* maximum length of
 					   documentation string */
 
     if(!acdDoValid)
@@ -21125,11 +21134,13 @@ static void acdValidSection(const AcdPAcd thys)
     static AjPTable infoTable = NULL;
 
     static ajint sectLevel = 0;
+    static ajint sectNumber= -1;
 
     AjPStr sectType = NULL;		/* string from table - no delete */
     AjPStr sectInfo = NULL;		/* string from table - no delete */
     AjPStr tmpstr   = NULL;
     static AjPStr sectNameTop;
+    ajint i;
 
 
     if(!acdDoValid)
@@ -21149,8 +21160,24 @@ static void acdValidSection(const AcdPAcd thys)
     ++sectLevel;
 
     if(sectLevel == 1)
+    {
 	ajStrAssS(&sectNameTop, thys->Name);
-
+	for(i=0; acdSections[i]; i++)
+	{
+	    if(ajStrMatchC(thys->Name, acdSections[i]->Name))
+	    {
+		if(i < sectNumber)
+		    acdWarn("Section '%S' follows section '%s'",
+				 thys->Name, acdSections[sectNumber]->Name);
+		else
+		    sectNumber = i;
+		break;
+	    }
+	}
+	if(!acdSections[i])
+	    acdWarn("No defined order for primary section '%S'",
+		    thys->Name);
+    }
     /* should have a known name */
 
     sectType = ajTableGet(typeTable, thys->Name);
@@ -21671,8 +21698,10 @@ static void acdValidQual(const AcdPAcd thys)
 		   !ajStrMatchC(thys->Token, "infile"))
 		    inMulti = ajTrue;
 		if((qualCountInfile == 1) &&
-		   !ajStrMatchC(thys->Token, "infile"))
-		    acdWarn("First input file qualifier '%S' is not 'infile'",
+		   !ajStrMatchC(thys->Token, "infile") &&
+		   !ajStrSuffixC(thys->Token, "file"))
+		    acdWarn("First input file qualifier '%S' is not "
+			    "'infile' or '*file'",
 			    thys->Token);
 	    }
 	}
@@ -22423,7 +22452,7 @@ static AjBool acdValidSectionMatch(const char* secname)
 
 /* @funcstatic acdValidSectionFull *******************************************
 **
-** Returns the full section name with the top level and any fame
+** Returns the full section name with the top level and any frame
 ** sub-sections
 **
 ** @param [w] secname [AjPStr*] Section name
@@ -22727,7 +22756,7 @@ static ajint acdOutFormatTree(const AjPStr name)
 **
 ** Finds a list value associated with a known type
 **
-** @param [r] thys [AcdPAcd] ACD object
+** @param [r] thys [const AcdPAcd] ACD object
 ** @param [w] value [AjPStr*] Standard value
 ** @return [AjBool] ajTrue if a value was set
 ** @@
@@ -22767,7 +22796,7 @@ static AjBool acdKnownValueList(const AcdPAcd thys, AjPStr* value)
 **
 ** Finds a selection value associated with a known type
 **
-** @param [r] thys [AcdPAcd] ACD object
+** @param [r] thys [const AcdPAcd] ACD object
 ** @param [w] value [AjPStr*] Standard value
 ** @return [AjBool] ajTrue if a value was set
 ** @@
