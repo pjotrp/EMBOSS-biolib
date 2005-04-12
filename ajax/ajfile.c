@@ -5097,17 +5097,19 @@ ajint ajFileScan(const AjPStr path, const AjPStr filename, AjPList *result,
 #endif
     
     tpath = ajStrNew();
-    ajStrAssC(&tpath,ajStrStr(path));
+    ajStrAssS(&tpath,path);
     
     
     if(dolist)
     {
-	t=ajStrNewC(ajStrStr(path));
+	t=ajStrNewS(path);
 	ajListPushApp(*list,(void *)t);
     }
     
     if(show)
-	ajFmtPrintF(outf,"\n\nDIRECTORY: %s\n\n",ajStrStr(path));
+	ajFmtPrintF(outf,"\n\nDIRECTORY: %S\n\n",path);
+
+    ajDebug("ajFileScan directory: '%S'\n",path);
     
     if(!ajFileDir(&tpath))
     {
@@ -5152,7 +5154,7 @@ ajint ajFileScan(const AjPStr path, const AjPStr filename, AjPList *result,
 	   !strcmp(dp->d_name,".") ||
 	   !strcmp(dp->d_name,".."))
 	    continue;
-	ajStrAssC(&s,ajStrStr(tpath));
+	ajStrAssS(&s,tpath);
 	/*	ajStrAppC(&s,"/");*/
 	ajStrAppC(&s,dp->d_name);
 
@@ -5191,18 +5193,19 @@ ajint ajFileScan(const AjPStr path, const AjPStr filename, AjPList *result,
 	    if(filename)
 		if(ajStrMatchWildCC(dp->d_name,ajStrStr(filename)))
 		{
-		    t = ajStrNewC(ajStrStr(s));
+		    t = ajStrNewS(s);
 		    ajListPushApp(*result,(void *)t);
 		}
 	    
 	    if(dolist)
 	    {
-		t = ajStrNewC(ajStrStr(s));
+		t = ajStrNewS(s);
 		ajListPushApp(*list,(void *)t);
 	    }
 	    
 	    if(show)
 		ajFmtPrintF(outf,"  %s\n",dp->d_name);
+	    ajDebug("  %s\n",dp->d_name);
 	}
     }
     closedir(indir);
