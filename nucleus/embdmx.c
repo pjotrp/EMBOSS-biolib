@@ -1954,7 +1954,7 @@ AjBool embDmxSeqCompall(const AjPList input, AjPFloat2d *scores,
 ** Reads a DHF file and returns a list of Scophit objects. 
 ** Parsing routine is identical to embHitlistReadFasta.
 ** 
-** @param [r] in      [AjPFile]  DHF file.
+** @param [u] inf      [AjPFile]  DHF file.
 **
 ** @return [AjPList] List of Scophit object pointers, or NULL (error).
 ** @@
@@ -1963,7 +1963,7 @@ AjBool embDmxSeqCompall(const AjPList input, AjPFloat2d *scores,
 AjPList  embDmxScophitReadAllFasta(AjPFile inf)
 {
     AjPScophit hit       = NULL;    /* Current hit.                     */
-    AjPList    tmplist   = NULL;    /* Temp. list of hits               */       
+    AjPList    tmplist   = NULL;    /* Temp. list of hits               */
     AjBool     donefirst = ajFalse; /* Read first code line.            */
     ajint     ntok       = 0;       /* No. tokens in a line.            */
     AjPStr    token      = NULL;
