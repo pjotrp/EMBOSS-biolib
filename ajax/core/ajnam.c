@@ -261,12 +261,12 @@ static AjBool namDbSetAttr(const AjPStr* dbattr, const char* attrib,
 static void   namDebugDatabase(const AjPStr* dbattr);
 static void   namDebugResource(const AjPStr* dbattr);
 static void   namDebugVariables(void);
-static void   namDebugMaster(AjPTable table, ajint which);
+static void   namDebugMaster(const AjPTable table, ajint which);
 static void   namEntryDelete(NamPEntry* pentry, ajint which);
 static void   namError(const char* fmt, ...);
 static void   namListParse(AjPList listwords, AjPList listcount,
 			   AjPFile file);
-static void   namListMaster(AjPTable table, ajint which);
+static void   namListMaster(const AjPTable table, ajint which);
 static void   namListMasterDelete(AjPTable table, ajint which);
 static ajint  namMethod2Scope(const AjPStr method);
 static void   namNoColon(AjPStr *thys);
@@ -523,6 +523,7 @@ static void namDebugResource(const AjPStr* rsattr)
 **
 ** Lists databases or variables defined in the internal table.
 **
+** @param [r] table [const AjPTable] internal table
 ** @param [r] which [ajint] Variable type, either TYPE_ENV for environment
 **                        variables or TYPE_DB for databases or
 **                        TYPE_RESOURCE for resources.
@@ -530,7 +531,7 @@ static void namDebugResource(const AjPStr* rsattr)
 ** @@
 ******************************************************************************/
 
-static void namListMaster(AjPTable table, ajint which)
+static void namListMaster(const AjPTable table, ajint which)
 {
     ajint i;
     NamPEntry fnew;
@@ -572,7 +573,7 @@ static void namListMaster(AjPTable table, ajint which)
 **
 ** Lists databases or variables defined in the internal table.
 **
-** @param [r] table [AjPTable] Table object
+** @param [r] table [const AjPTable] Table object
 ** @param [r] which [ajint] Variable type, either TYPE_ENV for environment
 **                        variables or TYPE_DB for databases or
 **                        TYPE_RESOURCE for resources.
@@ -580,7 +581,7 @@ static void namListMaster(AjPTable table, ajint which)
 ** @@
 ******************************************************************************/
 
-static void namDebugMaster(AjPTable table, ajint which)
+static void namDebugMaster(const AjPTable table, ajint which)
 {
     ajint i;
     NamPEntry fnew;

@@ -486,9 +486,7 @@ AjPCmap ajCmapReadCNew(AjPFile inf, char chn, ajint mod)
 ** @param [u] inf     [AjPFile]  Input file stream
 **
 ** @return [AjPList]   List of Cmap objects.
-** @category new [AjPCmap] Cmap constructor from reading file in CON
-**              format (see documentation for the EMBASSY DOMAINATRIX package).
-** @@
+*** @@
 ****************************************************************************/
 
 AjPList ajCmapReadAllNew(AjPFile inf)
@@ -2719,24 +2717,31 @@ AjBool ajPdbCopy(AjPPdb *to, const AjPPdb from)
 
 
 /* @func ajAtomSSEnv **********************************************************
+**
 ** Assigns secondary structure environment of a residue
-** @param  [r] atom [AjPAtom]    Atom object
-** @param  [w] SEnv [char] Character for the Secondary structure environment
-** @return [AjBool]
+**
+** @param  [r] atom [const AjPAtom]    Atom object
+** @param  [w] SEnv [char*] Character for the Secondary structure environment
+** @param  [w] logf [AjPFile] Log file
+** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
-/*Function to assign environment class*/
-AjBool   ajAtomSSEnv(AjPAtom atom, char *SEnv, AjPFile logf)
+AjBool   ajAtomSSEnv(const AjPAtom atom, char *SEnv, AjPFile logf)
 {
     *SEnv='\0';
     ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f\n", atom->Id1, atom->Idx, 
 		atom->eStrideType, atom->side_rel);
   
-    if(atom->eStrideType == 'H' || atom->eStrideType == 'G')
+    if(atom->eStrideType == 'H' ||
+       atom->eStrideType == 'G')
 	*SEnv='H';
-    else if(atom->eStrideType == 'E' || atom->eStrideType == 'B' || atom->eStrideType == 'b')
+    else if(atom->eStrideType == 'E' ||
+	    atom->eStrideType == 'B' ||
+	    atom->eStrideType == 'b')
 	*SEnv='S';
-    else if(atom->eStrideType == 'T' || atom->eStrideType == 'C' || atom->eStrideType == 'I')
+    else if(atom->eStrideType == 'T' ||
+	    atom->eStrideType == 'C' ||
+	    atom->eStrideType == 'I')
 	*SEnv='C';
     else if(atom->eStrideType == '.')	/*If no stride assignment, get pdb assignment*/
     {
@@ -2744,7 +2749,8 @@ AjBool   ajAtomSSEnv(AjPAtom atom, char *SEnv, AjPFile logf)
 	    *SEnv='H';
 	else if(atom->eType == 'E')
 	    *SEnv='S';
-	else if(atom->eType == 'C' || atom->eType == 'T')
+	else if(atom->eType == 'C' ||
+		atom->eType == 'T')
 	    *SEnv='C';
 	else if(atom->eType == '.')
 	{
@@ -2765,14 +2771,18 @@ AjBool   ajAtomSSEnv(AjPAtom atom, char *SEnv, AjPFile logf)
 
 
 /* @func ajAtomEnv1 ***********************************************************
+**
 ** Assigns environment based only of side chain accessibility and secondary
 ** structure.  Assigns environment of "*" as default.
-** @param [r] atom [AjPAtom]         AtomStride object
-** @param [w] OEnv [char]            Character for the overall environment class 
-** @return [ajint]                   Number of environments
+**
+** @param [r] atom [const AjPAtom] AtomStride object
+** @param [r] SEnv [char]          Secondary structure environment code
+** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
+** @param  [w] logf [AjPFile] Log file
+** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajAtomEnv1(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint   ajAtomEnv1(const AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
     if(SEnv=='\0')
     {
@@ -2840,20 +2850,29 @@ ajint   ajAtomEnv1(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 
 /* @func ajAtomEnv2 ***********************************************************
+**
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
-** @param [r] atom [AjPAtom]         AtomStride object
-** @param [w] OEnv [char]            Character for the overall environment class 
-** @return [ajint]
+**
+** @param [r] atom [const AjPAtom] AtomStride object
+** @param [r] SEnv [char]          Secondary structure environment code
+** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
+** @param  [w] logf [AjPFile] Log file
+** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajAtomEnv2(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint   ajAtomEnv2(const AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
-    float BLimit=40;			/*Upper limit for the relative solvent accessible area for a buried residue*/
-    float PBLimit=114;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+    float BLimit=40; /* Upper limit for the relative solvent
+			accessible area for a buried residue */
+    float PBLimit=114; /* Upper limit for the relative solvent
+  			  accessible area for a Parially buried
+  			  residue */
   
-    float HLimit=45;			/*Upper limit for the fraction polar measure of a Hydrophobic residue*/
-    float MPLimit=67;			/*Upper limit for the fraction polar measure of a Moderately oplar residue*/
+    float HLimit=45; /* Upper limit for the fraction polar measure of
+			a Hydrophobic residue */
+    float MPLimit=67; /* Upper limit for the fraction polar measure of
+  			 a Moderately oplar residue */
   
     AjPStr   BEnv=NULL;
 
@@ -2866,24 +2885,34 @@ ajint   ajAtomEnv2(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     ajStrClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+		atom->Id1, atom->Idx, atom->eType,
+		atom->side_rel, atom->pol_rel);
   
     /*Assign the basic classes*/
 
     /*Buried, Hydrophobic*/
-    if((atom->side_rel <= BLimit) && (atom->pol_rel <= HLimit))
+    if((atom->side_rel <= BLimit) &&
+       (atom->pol_rel <= HLimit))
 	ajStrAssC(&BEnv, "B1");  
     /*buried, moderately polar*/
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > HLimit) && (atom->pol_rel <= MPLimit)) 
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > HLimit) &&
+	    (atom->pol_rel <= MPLimit)) 
 	ajStrAssC(&BEnv, "B2");
     /*buried, polar*/
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > MPLimit))
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > MPLimit))
 	ajStrAssC(&BEnv, "B3");
     /*Partially buried, moderately Polar*/
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) &&  (atom->pol_rel <= MPLimit))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel <= MPLimit))
 	ajStrAssC(&BEnv, "P1");
     /*Partially buried, Polar*/
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > MPLimit))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > MPLimit))
 	ajStrAssC(&BEnv, "P2");
     /*Exposed*/
     else if(atom->side_rel > PBLimit)
@@ -2954,17 +2983,23 @@ ajint   ajAtomEnv2(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 
 /* @func ajAtomEnv3 ***********************************************************
+**
 ** Assigns environment based on side chain accessibility and secondary
 ** structure.  Assigns environment of "*" as default.
-** @param [r] atom [AjPAtom]         AtomStride object
-** @param [w] OEnv [char]            Character for the overall environment class 
-** @return [ajint]
+**
+** @param [r] atom [const AjPAtom] AtomStride object
+** @param [r] SEnv [char]          Secondary structure environment code
+** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
+** @param  [w] logf [AjPFile] Log file
+** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajAtomEnv3(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint   ajAtomEnv3(const AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
-    float BLimit=5;			/*Upper limit for the relative solvent accessible area for a buried residue*/
-    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+    float BLimit=5; /* Upper limit for the relative solvent accessible
+		       area for a buried residue */
+    float PBLimit=25; /* Upper limit for the relative solvent
+  			 accessible area for a Parially buried residue */
   
     float PolLimit1=10;
     float PolLimit2=30;
@@ -2983,27 +3018,41 @@ ajint   ajAtomEnv3(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     ajStrClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+		atom->Id1, atom->Idx, atom->eType,
+		atom->side_rel, atom->pol_rel);
   
     /*Assign the basic classes*/
 
     /*Buried, Hydrophobic*/
-    if((atom->side_rel <= BLimit) && (atom->pol_rel <= PolLimit1))
+    if((atom->side_rel <= BLimit) &&
+       (atom->pol_rel <= PolLimit1))
 	ajStrAssC(&BEnv, "B1");  
     /*buried, moderately polar*/
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2)) 
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > PolLimit1) &&
+	    (atom->pol_rel <= PolLimit2)) 
 	ajStrAssC(&BEnv, "B2");
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3)) 
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > PolLimit2) &&
+	    (atom->pol_rel <= PolLimit3)) 
 	ajStrAssC(&BEnv, "B3");
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit3) && (atom->pol_rel <= PolLimit4)) 
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > PolLimit3) &&
+	    (atom->pol_rel <= PolLimit4)) 
 	ajStrAssC(&BEnv, "B4");
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit4)) 
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > PolLimit4)) 
 	ajStrAssC(&BEnv, "B5");
     /*Partially buried, moderately Polar*/
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) &&  (atom->pol_rel <= PolLimit3))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel <= PolLimit3))
 	ajStrAssC(&BEnv, "P1");
     /*Partially buried, Polar*/
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit3))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit3))
 	ajStrAssC(&BEnv, "P2");
     /*Exposed*/
     else if(atom->side_rel > PBLimit)
@@ -3082,14 +3131,18 @@ ajint   ajAtomEnv3(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 }
 
 /* @func ajAtomEnv4 ***********************************************************
+**
 ** Assigns environment based only of side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
-** @param [r] atom [AjPAtom]         AtomStride object
-** @param [w] OEnv [char]            Character for the overall environment class 
-** @return [ajint]
+**
+** @param [r] atom [const AjPAtom] AtomStride object
+** @param [r] SEnv [char]          Secondary structure environment code
+** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
+** @param  [w] logf [AjPFile] Log file
+** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajAtomEnv4(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint   ajAtomEnv4(const AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
     ajStrClear(OEnv);
     if(SEnv=='\0')
@@ -3137,15 +3190,19 @@ ajint   ajAtomEnv4(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 /* @func ajAtomEnv5 ***********************************************************
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
-** @param [r] atom [AjPAtom]         AtomStride object
-** @param [w] OEnv [char]            Character for the overall environment class 
-** @return [ajint]
+** @param [r] atom [const AjPAtom] AtomStride object
+** @param [r] SEnv [char]          Secondary structure environment code
+** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
+** @param  [w] logf [AjPFile] Log file
+** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajAtomEnv5(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint   ajAtomEnv5(const AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
-    float BLimit=5;			/*Upper limit for the relative solvent accessible area for a buried residue*/
-    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+    float BLimit=5; /* Upper limit for the relative solvent accessible
+		       area for a buried residue */ /* */
+    float PBLimit=25; /* Upper limit for the relative solvent
+  			 accessible area for a Parially buried residue */
   
     float PolLimit1=10;
     float PolLimit2=30;
@@ -3164,7 +3221,9 @@ ajint   ajAtomEnv5(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     ajStrClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+		atom->Id1, atom->Idx, atom->eType,
+		atom->side_rel, atom->pol_rel);
   
     /*Assign the basic classes*/
 
@@ -3172,23 +3231,38 @@ ajint   ajAtomEnv5(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     if(atom->side_rel <= BLimit)
 	ajStrAssC(&BEnv, "B");  
     /*partially buried, hydrophobic*/
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel <= PolLimit1))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel <= PolLimit1))
 	ajStrAssC(&BEnv, "P1");  
     /*partially buried, moderately polar*/
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2)) 
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit1) &&
+	    (atom->pol_rel <= PolLimit2)) 
 	ajStrAssC(&BEnv, "P2");
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3)) 
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit2) &&
+	    (atom->pol_rel <= PolLimit3)) 
 	ajStrAssC(&BEnv, "P3");
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit3) && (atom->pol_rel <= PolLimit4)) 
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit3) &&
+	    (atom->pol_rel <= PolLimit4)) 
 	ajStrAssC(&BEnv, "P4");
     /*partially buried, polar*/
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit4)) 
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit4)) 
 	ajStrAssC(&BEnv, "P5");
     /*Exposed, moderately Polar*/
-    else if((atom->side_rel > PBLimit) &&  (atom->pol_rel <= PolLimit3))
+    else if((atom->side_rel > PBLimit) &&
+	    (atom->pol_rel <= PolLimit3))
 	ajStrAssC(&BEnv, "E1");
     /*Exposed, Polar*/
-    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit3))
+    else if((atom->side_rel > PBLimit) &&
+	    (atom->pol_rel > PolLimit3))
 	ajStrAssC(&BEnv, "E2");
     else
     {
@@ -3271,17 +3345,23 @@ ajint   ajAtomEnv5(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 
 /* @func ajAtomEnv6 ***********************************************************
+**
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
-** @param [r] atom [AjPAtom]         AtomStride object
-** @param [w] OEnv [char]            Character for the overall environment class 
-** @return [ajint]
+**
+** @param [r] atom [const AjPAtom] AtomStride object
+** @param [r] SEnv [char]          Secondary structure environment code
+** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
+** @param  [w] logf [AjPFile] Log file
+** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajAtomEnv6(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint   ajAtomEnv6(const AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
-    float BLimit=5;			/*Upper limit for the relative solvent accessible area for a buried residue*/
-    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+    float BLimit=5; /* Upper limit for the relative solvent accessible
+		       area for a buried residue */
+    float PBLimit=25; /* Upper limit for the relative solvent
+  			 accessible area for a Parially buried residue */
   
     float PolLimit1=10;
     float PolLimit2=30;
@@ -3300,7 +3380,9 @@ ajint   ajAtomEnv6(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     ajStrClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+		atom->Id1, atom->Idx, atom->eType,
+		atom->side_rel, atom->pol_rel);
   
     /*Assign the basic classes*/
 
@@ -3308,23 +3390,35 @@ ajint   ajAtomEnv6(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     if(atom->side_rel <= BLimit)
 	ajStrAssC(&BEnv, "B");  
     /*Partially buried, hydrophobic*/
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) &&  (atom->pol_rel <= PolLimit3))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel <= PolLimit3))
 	ajStrAssC(&BEnv, "P1");
     /*Partially buried, Polar*/
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit3))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit3))
 	ajStrAssC(&BEnv, "P2");
     /*partially buried, hydrophobic*/
-    else if((atom->side_rel > PBLimit) && (atom->pol_rel <= PolLimit1))
+    else if((atom->side_rel > PBLimit) &&
+	    (atom->pol_rel <= PolLimit1))
 	ajStrAssC(&BEnv, "E1");  
     /*partially buried, moderately polar*/
-    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2)) 
+    else if((atom->side_rel > PBLimit) &&
+	    (atom->pol_rel > PolLimit1) &&
+	    (atom->pol_rel <= PolLimit2)) 
 	ajStrAssC(&BEnv, "E2");
-    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3)) 
+    else if((atom->side_rel > PBLimit) &&
+	    (atom->pol_rel > PolLimit2) &&
+	    (atom->pol_rel <= PolLimit3)) 
 	ajStrAssC(&BEnv, "E3");
-    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit3) && (atom->pol_rel <= PolLimit4)) 
+    else if((atom->side_rel > PBLimit) &&
+	    (atom->pol_rel > PolLimit3) &&
+	    (atom->pol_rel <= PolLimit4)) 
 	ajStrAssC(&BEnv, "E4");
     /*partially buried, polar*/
-    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit4)) 
+    else if((atom->side_rel > PBLimit) &&
+	    (atom->pol_rel > PolLimit4)) 
 	ajStrAssC(&BEnv, "E5");
     else
     {
@@ -3408,17 +3502,23 @@ ajint   ajAtomEnv6(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 
 /* @func ajAtomEnv7 ***********************************************************
+**
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
-** @param [r] atom [AjPAtom]         AtomStride object
-** @param [w] OEnv [char]            Character for the overall environment class 
-** @return [AjBool]
+**
+** @param [r] atom [const AjPAtom] AtomStride object
+** @param [r] SEnv [char]          Secondary structure environment code
+** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
+** @param  [w] logf [AjPFile] Log file
+** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajAtomEnv7(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint   ajAtomEnv7(const AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
-    float BLimit=5;			/*Upper limit for the relative solvent accessible area for a buried residue*/
-    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+    float BLimit=5; /* Upper limit for the relative solvent accessible
+		       area for a buried residue */
+    float PBLimit=25; /* Upper limit for the relative solvent
+  			 accessible area for a Parially buried residue */
   
     float PolLimit1=10;
     float PolLimit2=50;
@@ -3436,24 +3536,36 @@ ajint   ajAtomEnv7(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     ajStrClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+		atom->Id1, atom->Idx, atom->eType,
+		atom->side_rel, atom->pol_rel);
   
     /*Assign the basic classes*/
 
     /*Buried*/
-    if((atom->side_rel <= BLimit) && (atom->pol_rel <=PolLimit1))
+    if((atom->side_rel <= BLimit) &&
+       (atom->pol_rel <=PolLimit1))
 	ajStrAssC(&BEnv, "B1");  
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit3))
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > PolLimit1) &&
+	    (atom->pol_rel <= PolLimit3))
 	ajStrAssC(&BEnv, "B2"); 
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit3))
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > PolLimit3))
 	ajStrAssC(&BEnv, "B3");
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit))
 	ajStrAssC(&BEnv, "P");
-    else if((atom->side_rel > PBLimit) && (atom->pol_rel <= PolLimit1))
+    else if((atom->side_rel > PBLimit) &&
+	    (atom->pol_rel <= PolLimit1))
 	ajStrAssC(&BEnv, "E1");
-    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2))
+    else if((atom->side_rel > PBLimit) &&
+	    (atom->pol_rel > PolLimit1) &&
+	    (atom->pol_rel <= PolLimit2))
 	ajStrAssC(&BEnv, "E2");
-    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3))
+    else if((atom->side_rel > PBLimit) &&
+	    (atom->pol_rel > PolLimit2) &&
+	    (atom->pol_rel <= PolLimit3))
 	ajStrAssC(&BEnv, "E3");
     else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit3))
 	ajStrAssC(&BEnv, "E4");
@@ -3536,14 +3648,18 @@ ajint   ajAtomEnv7(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 
 /* @func ajAtomEnv8 ***********************************************************
+**
 ** Assigns environment based only of side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
-** @param [r] atom [AjPAtom]         AtomStride object
-** @param [w] OEnv [char]            Character for the overall environment class 
-** @return [ajint]
+**
+** @param [r] atom [const AjPAtom] AtomStride object
+** @param [r] SEnv [char]          Secondary structure environment code
+** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
+** @param  [w] logf [AjPFile] Log file
+** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajAtomEnv8(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint   ajAtomEnv8(const AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
     ajStrClear(OEnv);
     if(SEnv=='\0')
@@ -3612,14 +3728,18 @@ ajint   ajAtomEnv8(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 
 /* @func ajAtomEnv9 ***********************************************************
+**
 ** Assigns environment based only of side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
-** @param [r] atom [AjPAtom]         AtomStride object
-** @param [w] OEnv [char]            Character for the overall environment class 
-** @return [ajint]
+**
+** @param [r] atom [const AjPAtom] AtomStride object
+** @param [r] SEnv [char]          Secondary structure environment code
+** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
+** @param  [w] logf [AjPFile] Log file
+** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajAtomEnv9(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint   ajAtomEnv9(const AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
     ajStrClear(OEnv);
     if(SEnv=='\0')
@@ -3664,20 +3784,28 @@ ajint   ajAtomEnv9(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 
 /* @func ajAtomEnv10 **********************************************************
+**
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
-** @param [r] atom [AjPAtom]         AtomStride object
-** @param [w] OEnv [char]            Character for the overall environment class 
-** @return [ajint]
+**
+** @param [r] atom [const AjPAtom] AtomStride object
+** @param [r] SEnv [char]          Secondary structure environment code
+** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
+** @param  [w] logf [AjPFile] Log file
+** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajAtomEnv10(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint   ajAtomEnv10(const AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
-    float BLimit=5;			/*Upper limit for the relative solvent accessible area for a buried residue*/
-    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+    float BLimit=5; /* Upper limit for the relative solvent accessible
+		       area for a buried residue */
+    float PBLimit=25; /* Upper limit for the relative solvent
+  			 accessible area for a Parially buried residue */
   
-    float HLimit=5;			/*Upper limit for the fraction polar measure of a Hydrophobic residue*/
-    float MPLimit=25;			/*Upper limit for the fraction polar measure of a Moderately oplar residue*/
+    float HLimit=5; /* Upper limit for the fraction polar measure of a
+		       Hydrophobic residue */
+    float MPLimit=25; /* Upper limit for the fraction polar measure of
+  			 a Moderately oplar residue */
   
     AjPStr   BEnv=NULL;
 
@@ -3690,33 +3818,47 @@ ajint   ajAtomEnv10(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     ajStrClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+		atom->Id1, atom->Idx, atom->eType,
+		atom->side_rel, atom->pol_rel);
   
     /*Assign the basic classes*/
   
     /*Buried, Hydrophobic*/
-    if((atom->side_rel <= BLimit) && (atom->pol_rel <= HLimit))
+    if((atom->side_rel <= BLimit) &&
+       (atom->pol_rel <= HLimit))
 	ajStrAssC(&BEnv, "B1");  
     /*buried, moderately polar*/
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > HLimit) && (atom->pol_rel <= MPLimit)) 
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > HLimit) &&
+	    (atom->pol_rel <= MPLimit)) 
 	ajStrAssC(&BEnv, "B2");
     /*buried, polar*/
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > MPLimit))
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > MPLimit))
 	ajStrAssC(&BEnv, "B3");
     /*Partially buried, moderately hydrophobic*/
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel <= HLimit))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel <= HLimit))
 	ajStrAssC(&BEnv, "P1");
     /*Partially buried, moderately polar*/
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > HLimit) &&(atom->pol_rel <= MPLimit))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > HLimit) &&
+	    (atom->pol_rel <= MPLimit))
 	ajStrAssC(&BEnv, "P2");
     /*Partially buried, polar*/
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > MPLimit))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) && (atom->pol_rel > MPLimit))
 	ajStrAssC(&BEnv, "P3");
     /*Exposed, moderately polar*/
-    else if((atom->side_rel > PBLimit) && (atom->pol_rel <= MPLimit))
+    else if((atom->side_rel > PBLimit) &&
+	    (atom->pol_rel <= MPLimit))
 	ajStrAssC(&BEnv, "E1");
     /*Exposed, polar*/
-    else if((atom->side_rel > PBLimit) && (atom->pol_rel > MPLimit))
+    else if((atom->side_rel > PBLimit) &&
+	    (atom->pol_rel > MPLimit))
 	ajStrAssC(&BEnv, "E2");
     else
     {
@@ -3801,18 +3943,25 @@ ajint   ajAtomEnv10(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 
 /* @func ajAtomEnv11 **********************************************************
+**
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
-** @param [r] atom [AjPAtom]         AtomStride object
-** @param [w] OEnv [char]            Character for the overall environment class 
-** @return [ajing]
+**
+** @param [r] atom [const AjPAtom] AtomStride object
+** @param [r] SEnv [char]          Secondary structure environment code
+** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
+** @param  [w] logf [AjPFile] Log file
+** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajAtomEnv11(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint   ajAtomEnv11(const AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
-    float BLimit=5;			/*Upper limit for the relative solvent accessible area for a buried residue*/
-    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
-  
+    float BLimit=5; /*Upper limit for the relative solvent accessible
+		      area for a buried residue*/
+    float PBLimit=25; /*Upper limit for the relative solvent
+			accessible area for a Parially buried
+			residue*/
+
     float PolLimit1=10;
     float PolLimit2=30;
     float PolLimit3=50;
@@ -3831,23 +3980,36 @@ ajint   ajAtomEnv11(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     ajStrClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+		atom->Id1, atom->Idx, atom->eType,
+		atom->side_rel, atom->pol_rel);
   
     /*Assign the basic classes*/
   
-    if((atom->side_rel <= BLimit) && (atom->pol_rel <= PolLimit1))
+    if((atom->side_rel <= BLimit) &&
+       (atom->pol_rel <= PolLimit1))
 	ajStrAssC(&BEnv, "B1");    
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2)) 
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > PolLimit1) &&
+	    (atom->pol_rel <= PolLimit2)) 
 	ajStrAssC(&BEnv, "B2");
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3)) 
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > PolLimit2) &&
+	    (atom->pol_rel <= PolLimit3)) 
 	ajStrAssC(&BEnv, "B3");
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit3) && (atom->pol_rel <= PolLimit4)) 
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > PolLimit3) &&
+	    (atom->pol_rel <= PolLimit4)) 
 	ajStrAssC(&BEnv, "B4");
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit4) && (atom->pol_rel <= PolLimit5)) 
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > PolLimit4) &&
+	    (atom->pol_rel <= PolLimit5)) 
 	ajStrAssC(&BEnv, "B5");
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit5)) 
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > PolLimit5)) 
 	ajStrAssC(&BEnv, "B6");
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit))
 	ajStrAssC(&BEnv, "P");
     else if(atom->side_rel > PBLimit)
 	ajStrAssC(&BEnv, "E");
@@ -3931,17 +4093,23 @@ ajint   ajAtomEnv11(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 
 /* @func ajAtomEnv12 **********************************************************
+**
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
-** @param [r] atom [AjPAtom]         AtomStride object
-** @param [w] OEnv [char]            Character for the overall environment class 
-** @return [ajint]
+**
+** @param [r] atom [const AjPAtom] AtomStride object
+** @param [r] SEnv [char]          Secondary structure environment code
+** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
+** @param  [w] logf [AjPFile] Log file
+** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajAtomEnv12(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint   ajAtomEnv12(const AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
-    float BLimit=5;			/*Upper limit for the relative solvent accessible area for a buried residue*/
-    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+    float BLimit=5; /* Upper limit for the relative solvent accessible
+		       area for a buried residue */
+    float PBLimit=25; /* Upper limit for the relative solvent
+  			 accessible area for a Parially buried residue */
   
     float PolLimit1=10;
     float PolLimit2=30;
@@ -3967,17 +4135,33 @@ ajint   ajAtomEnv12(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
   
     if((atom->side_rel <= BLimit))
 	ajStrAssC(&BEnv, "B");    
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel <= PolLimit1))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel <= PolLimit1))
 	ajStrAssC(&BEnv, "P1");
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit1) &&
+	    (atom->pol_rel <= PolLimit2))
 	ajStrAssC(&BEnv, "P2");
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit2) &&
+	    (atom->pol_rel <= PolLimit3))
 	ajStrAssC(&BEnv, "P3");
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit3) && (atom->pol_rel <= PolLimit4))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit3) &&
+	    (atom->pol_rel <= PolLimit4))
 	ajStrAssC(&BEnv, "P4");
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit4) && (atom->pol_rel <= PolLimit5))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit4) &&
+	    (atom->pol_rel <= PolLimit5))
 	ajStrAssC(&BEnv, "P5");
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit5))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit5))
 	ajStrAssC(&BEnv, "P6");
     else if(atom->side_rel > PBLimit)
 	ajStrAssC(&BEnv, "E"); 
@@ -4062,17 +4246,23 @@ ajint   ajAtomEnv12(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 
 /* @func ajAtomEnv13 **********************************************************
+**
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
-** @param [r] atom [AjPAtom]         AtomStride object
-** @param [w] OEnv [char]            Character for the overall environment class 
-** @return [ajint]
+**
+** @param [r] atom [const AjPAtom] AtomStride object
+** @param [r] SEnv [char]          Secondary structure environment code
+** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
+** @param  [w] logf [AjPFile] Log file
+** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajAtomEnv13(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint   ajAtomEnv13(const AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
-    float BLimit=5;			/*Upper limit for the relative solvent accessible area for a buried residue*/
-    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+    float BLimit=5; /* Upper limit for the relative solvent accessible
+		       area for a buried residue */
+    float PBLimit=25; /* Upper limit for the relative solvent
+  			 accessible area for a Parially buried residue */
   
     float PolLimit1=10;
     float PolLimit2=30;
@@ -4091,24 +4281,37 @@ ajint   ajAtomEnv13(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     ajStrClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+		atom->Id1, atom->Idx, atom->eType,
+		atom->side_rel, atom->pol_rel);
   
     /*Assign the basic classes*/
     if((atom->side_rel <= BLimit))
 	ajStrAssC(&BEnv, "B");    
-    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit))
+    else if((atom->side_rel > BLimit) &&
+	    (atom->side_rel <= PBLimit))
 	ajStrAssC(&BEnv, "P");
-    else if((atom->side_rel > PBLimit) && (atom->pol_rel <= PolLimit1))
+    else if((atom->side_rel > PBLimit) &&
+	    (atom->pol_rel <= PolLimit1))
 	ajStrAssC(&BEnv, "E1");
-    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2))
+    else if((atom->side_rel > PBLimit) &&
+	    (atom->pol_rel > PolLimit1) &&
+	    (atom->pol_rel <= PolLimit2))
 	ajStrAssC(&BEnv, "E2");
-    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3))
+    else if((atom->side_rel > PBLimit) &&
+	    (atom->pol_rel > PolLimit2) &&
+	    (atom->pol_rel <= PolLimit3))
 	ajStrAssC(&BEnv, "E3");
-    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit3) && (atom->pol_rel <= PolLimit4))
+    else if((atom->side_rel > PBLimit) &&
+	    (atom->pol_rel > PolLimit3) &&
+	    (atom->pol_rel <= PolLimit4))
 	ajStrAssC(&BEnv, "E4"); 
-    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit4) && (atom->pol_rel <= PolLimit5))
+    else if((atom->side_rel > PBLimit) &&
+	    (atom->pol_rel > PolLimit4) &&
+	    (atom->pol_rel <= PolLimit5))
 	ajStrAssC(&BEnv, "E5"); 
-    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit5))
+    else if((atom->side_rel > PBLimit) &&
+	    (atom->pol_rel > PolLimit5))
 	ajStrAssC(&BEnv, "E6");
     else
     {
@@ -4191,16 +4394,21 @@ ajint   ajAtomEnv13(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 
 /* @func ajAtomEnv14 **********************************************************
+**
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
-** @param [r] atom [AjPAtom]         AtomStride object
-** @param [w] OEnv [char]            Character for the overall environment class 
-** @return [AjBool]
+**
+** @param [r] atom [const AjPAtom] AtomStride object
+** @param [r] SEnv [char]          Secondary structure environment code
+** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
+** @param  [w] logf [AjPFile] Log file
+** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajAtomEnv14(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint   ajAtomEnv14(const AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
-    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+    float PBLimit=25; /* Upper limit for the relative solvent
+  			accessible area for a Parially buried residue */
   
     float PolLimit1=5;
     float PolLimit2=15;
@@ -4221,21 +4429,35 @@ ajint   ajAtomEnv14(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     ajStrClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+		atom->Id1, atom->Idx, atom->eType,
+		atom->side_rel, atom->pol_rel);
 
-    if((atom->side_rel <= PBLimit) && (atom->pol_rel <= PolLimit1))
+    if((atom->side_rel <= PBLimit) &&
+       (atom->pol_rel <= PolLimit1))
 	ajStrAssC(&BEnv, "B1");
-    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2))
+    else if((atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit1) &&
+	    (atom->pol_rel <= PolLimit2))
 	ajStrAssC(&BEnv, "B2");
-    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3))
+    else if((atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit2) &&
+	    (atom->pol_rel <= PolLimit3))
 	ajStrAssC(&BEnv, "B3");
-    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit3) && (atom->pol_rel <= PolLimit4))
+    else if((atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit3) &&
+	    (atom->pol_rel <= PolLimit4))
 	ajStrAssC(&BEnv, "B4");
-    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit4) && (atom->pol_rel <= PolLimit5))
+    else if((atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit4) &&
+	    (atom->pol_rel <= PolLimit5))
 	ajStrAssC(&BEnv, "B5");
-    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit5) && (atom->pol_rel <= PolLimit6))
+    else if((atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit5) &&
+	    (atom->pol_rel <= PolLimit6))
 	ajStrAssC(&BEnv, "B6");
-    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit6))
+    else if((atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit6))
 	ajStrAssC(&BEnv, "B7");
     else if((atom->side_rel > PBLimit))
 	ajStrAssC(&BEnv, "E");
@@ -4318,16 +4540,23 @@ ajint   ajAtomEnv14(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 
 /* @func ajAtomEnv15 **********************************************************
+**
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.   Assigns environment of "*" as default.
-** @param [r] atom [AjPAtom]      AtomStride object
-** @param [w] OEnv [char]         Character for the overall environment class 
-** @return [ajint]
+**
+** @param [r] atom [const AjPAtom] AtomStride object
+** @param [r] SEnv [char]          Secondary structure environment code
+** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
+** @param  [w] logf [AjPFile] Log file
+** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajAtomEnv15(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint   ajAtomEnv15(const AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
-    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+    float PBLimit=25;			/* Upper limit for the
+  					   relative solvent accessible
+  					   area for a Parially buried
+  					   residue */
   
     float PolLimit1=5;
     float PolLimit2=15;
@@ -4348,21 +4577,34 @@ ajint   ajAtomEnv15(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     ajStrClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+		atom->Id1, atom->Idx, atom->eType,
+		atom->side_rel, atom->pol_rel);
 
     if((atom->side_rel <= PBLimit) && (atom->pol_rel <= PolLimit1))
 	ajStrAssC(&BEnv, "B1");
-    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2))
+    else if((atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit1) &&
+	    (atom->pol_rel <= PolLimit2))
 	ajStrAssC(&BEnv, "B2");
-    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3))
+    else if((atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit2) &&
+	    (atom->pol_rel <= PolLimit3))
 	ajStrAssC(&BEnv, "B3");
-    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit3) && (atom->pol_rel <= PolLimit4))
+    else if((atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit3) &&
+	    (atom->pol_rel <= PolLimit4))
 	ajStrAssC(&BEnv, "B4");
-    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit4) && (atom->pol_rel <= PolLimit5))
+    else if((atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit4) &&
+	    (atom->pol_rel <= PolLimit5))
 	ajStrAssC(&BEnv, "B5");
-    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit5) && (atom->pol_rel <= PolLimit6))
+    else if((atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit5) &&
+	    (atom->pol_rel <= PolLimit6))
 	ajStrAssC(&BEnv, "B6");
-    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit6))
+    else if((atom->side_rel <= PBLimit) &&
+	    (atom->pol_rel > PolLimit6))
 	ajStrAssC(&BEnv, "B7");
     else if((atom->side_rel > PBLimit))
 	ajStrAssC(&BEnv, "E");
@@ -4446,16 +4688,21 @@ ajint   ajAtomEnv15(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 
 /* @func ajAtomEnv16 **********************************************************
+**
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
-** @param [r] atom [AjPAtom]    AtomStride object
-** @param [w] OEnv [char]       Character for the overall environment class 
-** @return [ajint]
+**
+** @param [r] atom [const AjPAtom] AtomStride object
+** @param [r] SEnv [char]          Secondary structure environment code
+** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
+** @param  [w] logf [AjPFile] Log file
+** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajAtomEnv16(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint   ajAtomEnv16(const AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
-    float BLimit=5;			/*Upper limit for the relative solvent accessible area for a buried residue*/
+    float BLimit=5; /* Upper limit for the relative solvent accessible
+		       area for a buried residue */
   
     float PolLimit1=5;
     float PolLimit2=15;
@@ -4476,22 +4723,35 @@ ajint   ajAtomEnv16(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     ajStrClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, 
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+		atom->Id1, atom->Idx, 
 		atom->eType, atom->side_rel, atom->pol_rel);
 
-    if((atom->side_rel <= BLimit) && (atom->pol_rel <= PolLimit1))
+    if((atom->side_rel <= BLimit) &&
+       (atom->pol_rel <= PolLimit1))
 	ajStrAssC(&BEnv, "B1");
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2))
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > PolLimit1) &&
+	    (atom->pol_rel <= PolLimit2))
 	ajStrAssC(&BEnv, "B2");
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3))
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > PolLimit2) &&
+	    (atom->pol_rel <= PolLimit3))
 	ajStrAssC(&BEnv, "B3");
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit3) && (atom->pol_rel <= PolLimit4))
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > PolLimit3) &&
+	    (atom->pol_rel <= PolLimit4))
 	ajStrAssC(&BEnv, "B4");
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit4) && (atom->pol_rel <= PolLimit5))
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > PolLimit4) &&
+	    (atom->pol_rel <= PolLimit5))
 	ajStrAssC(&BEnv, "B5");
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit5) && (atom->pol_rel <= PolLimit6))
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > PolLimit5) &&
+	    (atom->pol_rel <= PolLimit6))
 	ajStrAssC(&BEnv, "B6");
-    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit6))
+    else if((atom->side_rel <= BLimit) &&
+	    (atom->pol_rel > PolLimit6))
 	ajStrAssC(&BEnv, "B7");
     else if((atom->side_rel > BLimit))
 	ajStrAssC(&BEnv, "E");

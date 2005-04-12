@@ -552,8 +552,8 @@ typedef struct AjSVdwall
 ** @attr  Mat   [AjPInt2d] Contact map. 
 ** @attr  Dim   [ajint]    Dimension of contact map. 
 ** @attr  Ncon  [ajint]    No. of contacts (1's in contact map). 
-** @attr  sn    [ajint]    Site number (ajLIGAND only)
 ** @attr  ns    [ajint]    No. of sites (ajLIGAND only)
+** @attr  sn    [ajint]    Site number (ajLIGAND only)
 ** @attr  Desc  [AjPStr]   Description of ligand (ajLIGAND only)
 ** 
 ** 
@@ -705,23 +705,39 @@ AjPAtom      ajAtomNew(void);
 void         ajAtomDel(AjPAtom *ptr);
 ajint       ajAtomCopy(AjPAtom *to, const AjPAtom from);
 ajint       ajAtomListCopy(AjPList *to, const AjPList from);
-ajint       ajAtomSSEnv(AjPAtom atom, char *SEnv,AjPFile logf);
-ajint       ajAtomEnv1(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
-ajint       ajAtomEnv2(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
-ajint       ajAtomEnv3(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
-ajint       ajAtomEnv4(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
-ajint       ajAtomEnv5(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
-ajint       ajAtomEnv6(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
-ajint       ajAtomEnv7(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
-ajint       ajAtomEnv8(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
-ajint       ajAtomEnv9(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
-ajint       ajAtomEnv10(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
-ajint       ajAtomEnv11(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
-ajint       ajAtomEnv12(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
-ajint       ajAtomEnv13(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
-ajint       ajAtomEnv14(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
-ajint       ajAtomEnv15(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
-ajint       ajAtomEnv16(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomSSEnv(const AjPAtom atom, char *SEnv,AjPFile logf);
+ajint       ajAtomEnv1(const AjPAtom atom, char SEnv,
+		       AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv2(const AjPAtom atom, char SEnv,
+		       AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv3(const AjPAtom atom, char SEnv,
+		       AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv4(const AjPAtom atom, char SEnv,
+		       AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv5(const AjPAtom atom, char SEnv,
+		       AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv6(const AjPAtom atom, char SEnv,
+		       AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv7(const AjPAtom atom, char SEnv,
+		       AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv8(const AjPAtom atom, char SEnv,
+		       AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv9(const AjPAtom atom, char SEnv,
+		       AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv10(const AjPAtom atom, char SEnv,
+			AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv11(const AjPAtom atom, char SEnv,
+			AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv12(const AjPAtom atom, char SEnv,
+			AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv13(const AjPAtom atom, char SEnv,
+			AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv14(const AjPAtom atom, char SEnv,
+			AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv15(const AjPAtom atom, char SEnv,
+			AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv16(const AjPAtom atom, char SEnv,
+			AjPStr *OEnv, AjPFile logf);
 
 
 

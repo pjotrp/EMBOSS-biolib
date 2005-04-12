@@ -329,35 +329,21 @@ typedef struct SeqSCdQry
 ** @alias SeqSEmbossQry
 ** @alias SeqOEmbossQry
 **
-** @attr divfile [AjPStr] division.lkp
-** @attr idxfile [AjPStr] entryname.idx
-** @attr datfile [AjPStr] main data reference
-** @attr seqfile [AjPStr] sequence
-** @attr tblfile [AjPStr] BLAST table
-** @attr srcfile [AjPStr] BLAST FASTA source data
-** @attr dfp [SeqPCdFile] division.lkp
-** @attr ifp [SeqPCdFile] entryname.idx
-** @attr trgfp [SeqPCdFile] acnum.trg
-** @attr hitfp [SeqPCdFile] acnum.hit
-** @attr trgLine [SeqPCdTrg]acnum input line
-** @attr name [char*] filename from division.lkp
-** @attr nameSize [ajint] division.lkp filename length
-** @attr div [ajint] current division number
-** @attr maxdiv [ajint] max division number
-** @attr type [ajint] BLAST type
-** @attr idnum [ajint] current BLAST entry offset
-** @attr libr [AjPFile] main data reference or BLAST header
-** @attr libs [AjPFile] sequence or BLAST compressed sequence
-** @attr libt [AjPFile] blast table
-** @attr libf [AjPFile] blast FASTA source data
-** @attr TopHdr [ajint] BLAST table headers offset
-** @attr TopCmp [ajint] BLAST table sequence offset
-** @attr TopAmb [ajint] BLAST table ambiguities offset
-** @attr TopSrc [ajint] BLAST table FASTA source offset
-** @attr Size [ajint] BLAST database size
-** @attr List [AjPList] list of entries
-** @attr Skip [AjBool*] skip file(s) in division.lkp
-** @attr idxLine [SeqPCdIdx] entryname.idx input line
+** @attr do_id  [AjBool] If true, test ID
+** @attr do_ac  [AjBool] If true, test accession
+** @attr do_kw  [AjBool] If true, test keyword
+** @attr do_de  [AjBool] If true, test description
+** @attr do_sv  [AjBool] If true, test seqversion
+** @attr do_tx  [AjBool] If true, test text
+** @attr idcache [AjPBtcache] ID cache
+** @attr accache [AjPBtcache] accession cache
+** @attr svcache [AjPBtcache] seqversion cache
+** @attr kwcache [AjPBtcache] keyword cache
+** @attr txcache [AjPBtcache] text cache
+** @attr decache [AjPBtcache] description cache
+** @attr files [AjPStr*] database filenames
+** @attr prifile [AjPFile] Primary (database source) file
+** @attr List [AjPList] List of files
 ** @@
 ******************************************************************************/
 

@@ -36,9 +36,9 @@ static AjPFile btreeCreateFile(const AjPStr idirectory, const AjPStr dbname,
 **
 ** Extract keywords from an EMBL KW line 
 **
-** @param [r] kwline[const AjPStr] keyword line
+** @param [r] kwline [const AjPStr] keyword line
 ** @param [w] kwlist [AjPList] list of keywords
-** @param [w] maxlen [ajint] max keyword length
+** @param [r] maxlen [ajint] max keyword length
 **
 ** @return [void]
 ** @@
@@ -181,7 +181,7 @@ void embBtreeEmblAC(const AjPStr acline, AjPList aclist)
 **
 ** @param [r] deline[const AjPStr] description line
 ** @param [w] delist [AjPList] list of descriptions
-** @param [w] maxlen [ajint] max keyword length
+** @param [r] maxlen [ajint] max keyword length
 **
 ** @return [void]
 ** @@
@@ -324,7 +324,7 @@ void embBtreeGenBankAC(const AjPStr acline, AjPList aclist)
 **
 ** @param [r] kwline[const AjPStr] keyword line
 ** @param [w] kwlist [AjPList] list of keywords
-** @param [w] maxlen [ajint] max keyword length
+** @param [r] maxlen [ajint] max keyword length
 **
 ** @return [void]
 ** @@
@@ -382,7 +382,7 @@ void embBtreeGenBankKW(const AjPStr kwline, AjPList kwlist, ajint maxlen)
 **
 ** @param [r] kwline[const AjPStr] keyword line
 ** @param [w] kwlist [AjPList] list of keywords
-** @param [w] maxlen [ajint] max keyword length
+** @param [r] maxlen [ajint] max keyword length
 **
 ** @return [void]
 ** @@
@@ -440,7 +440,7 @@ void embBtreeGenBankDE(const AjPStr kwline, AjPList kwlist, ajint maxlen)
 **
 ** @param [r] kwline[const AjPStr] keyword line
 ** @param [w] kwlist [AjPList] list of keywords
-** @param [w] maxlen [ajint] max keyword length
+** @param [r] maxlen [ajint] max keyword length
 **
 ** @return [void]
 ** @@
@@ -498,7 +498,7 @@ void embBtreeGenBankTX(const AjPStr kwline, AjPList kwlist, ajint maxlen)
 **
 ** @param [r] kwline[const AjPStr] keyword line
 ** @param [w] kwlist [AjPList] list of keywords
-** @param [w] maxlen [ajint] max keyword length
+** @param [r] maxlen [ajint] max keyword length
 **
 ** @return [void]
 ** @@
@@ -720,11 +720,12 @@ EmbPBtreeEntry embBtreeEntryNew()
 **
 ** Delete a database entry object
 **
+** @param [d] thys [EmbPBtreeEntry*] db entry object pointer
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void embBtreeEntryDel(EmbPBtreeEntry *thys)
+void embBtreeEntryDel(EmbPBtreeEntry* thys)
 {
     EmbPBtreeEntry pthis;
     AjPStr tmpstr = NULL;
@@ -765,14 +766,14 @@ void embBtreeEntryDel(EmbPBtreeEntry *thys)
 **
 ** Set database fields to index
 **
-** @param [w] entry [EmbPDbEntry] Database entry information
-** @param [r] fields [const AjPStr *] user specified fields
+** @param [w] entry [EmbPBtreeEntry] Database entry information
+** @param [r] fields [AjPStr const *] user specified fields
 **
 ** @return [ajint] number of fields set
 ** @@
 ******************************************************************************/
 
-ajint embBtreeSetFields(EmbPBtreeEntry entry, AjPStr *fields)
+ajint embBtreeSetFields(EmbPBtreeEntry entry, AjPStr const *fields)
 {
     ajint nfields;
 
@@ -814,8 +815,14 @@ ajint embBtreeSetFields(EmbPBtreeEntry entry, AjPStr *fields)
 **
 ** Set general database information
 **
-** @param [w] entry [EmbPDbEntry] Database entry information
-** @param [r] fields [const AjPStr] user specified fields
+** @param [w] entry [EmbPBtreeEntry] Database entry information
+** @param [r] name [const AjPStr] user specified name
+** @param [r] dbrs [const AjPStr] user specified resource
+** @param [r] date [const AjPStr] user specified date
+** @param [r] release [const AjPStr] user specified release
+** @param [r] type [const AjPStr] user specified type
+** @param [r] directory [const AjPStr] user specified directory
+** @param [r] idirectory [const AjPStr] user specified index directory
 **
 ** @return [void]
 ** @@
@@ -942,8 +949,7 @@ AjBool embBtreeWriteEntryFile(const EmbPBtreeEntry entry)
 **
 ** Get resource information for selected database
 **
-** @param [u] entry [const EmbPBtreeEntry] database data
-** @param [r] database [const char *] database name
+** @param [u] entry [EmbPBtreeEntry] database data
 **
 ** @return [void]
 ** @@

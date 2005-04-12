@@ -30,7 +30,8 @@
 **
 ** Sequence output formats
 **
-** @attr Name [char*] format name
+** @attr Name [char*] Format name
+** @attr Desc [char*] Format description
 ** @attr Single [AjBool] Write each sequence to a new file if true (e.g. GCG)
 ** @attr Save [AjBool] Save in memory and write at end (e.g. MSF alignments)
 ** @attr Protein [AjBool] True if protein data is supported
@@ -684,6 +685,9 @@ void ajSeqWrite(AjPSeqout outseq, const AjPSeq seq)
 	    outseq->Features,
 	    seqOutFormat[outseq->Format].Save);
     
+    ajDebug(" outseq '%S' seq '%S' '%S'\n",
+	    outseq->Name, seq->Name, seq->Entryname);
+
     if(seqOutFormat[outseq->Format].Save)
     {
 	seqWriteListAppend(outseq, seq);

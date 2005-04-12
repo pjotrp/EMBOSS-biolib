@@ -80,7 +80,7 @@ AjBool embBtreeWriteFileList(const AjPStr *filelist, ajint nfiles,
 			     const AjPStr fdirectory, const AjPStr idirectory,
 			     const AjPStr dbname);
 EmbPBtreeEntry embBtreeEntryNew(void);
-ajint          embBtreeSetFields(EmbPBtreeEntry entry, AjPStr* fields);
+ajint          embBtreeSetFields(EmbPBtreeEntry entry, AjPStr const * fields);
 void           embBtreeEntryDel(EmbPBtreeEntry *thys);
 void           embBtreeSetDbInfo(EmbPBtreeEntry entry, const AjPStr name,
 				 const AjPStr dbrs,

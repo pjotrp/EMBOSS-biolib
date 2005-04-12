@@ -156,11 +156,11 @@ typedef struct AJSSigdat
 ** @attr  Id    [AjPStr]   Protein id code. 
 ** @attr  Domid [AjPStr]   Domain id code. 
 ** @attr  Ligid [AjPStr]   Ligand id code. 
-** @attr  sn    [ajint]    Site number (ajLIGAND only)
-** @attr  ns    [ajint]    No. of sites (ajLIGAND only)
-** @attr  pn    [ajint]    Patch number (ajLIGAND only)
-** @attr  np    [ajint]    No. of patches (ajLIGAND only)
 ** @attr  Desc  [AjPStr]   Description of ligand (ajLIGAND only)
+** @attr  ns    [ajint]    No. of sites (ajLIGAND only)
+** @attr  sn    [ajint]    Site number (ajLIGAND only)
+** @attr  np    [ajint]    No. of patches (ajLIGAND only)
+** @attr  pn    [ajint]    Patch number (ajLIGAND only)
 ** @attr  minpatch  [ajint]   Max. patch size (residues) (ajLIGAND only)
 ** @attr  maxgap   [ajint]    Min. gap distance (residues) (ajLIGAND only)
 ** @new    embSignatureNew Default Signature constructor
@@ -263,7 +263,7 @@ typedef struct AjSSignature
 ** @attr  Target   [AjBool]  Used for garbage collection.
 ** @attr  Target2  [AjBool]  Also used for garbage collection.
 ** @attr  Priority [AjBool]  Also used for garbage collection.
-** @attr  Signature [AjPSignature] Pointer to signature object for which hit
+** @attr  Sig      [AjPSignature] Pointer to signature object for which hit
 ** was generated. Used as a pointer only - memory is never freed or allocated
 ** to it.
 **
