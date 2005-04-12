@@ -61,6 +61,7 @@ my %missingdoc;     # hash of missing program documentation.
 
 # where the URL for the html pages is
 my $url = "http://emboss.sourceforge.net/apps";
+my $urlembassy = "http://emboss.sourceforge.net/embassy";
 
 # where the original distribution lives
 my $distribtop = "./";
@@ -294,7 +295,7 @@ sub indexheader (*) {
 <table align=center border=0 cellspacing=0 cellpadding=0>
 <tr><td valign=top>
 <A HREF=\"http://emboss.sourceforge.net/\" ONMOUSEOVER=\"self.status='Go to the EMBOSS home page';return true\">
-<img border=0 src=\"/images/emboss_icon.jpg\" alt=\"\" width=150 height=48></a>
+<img border=0 src=\"emboss_icon.jpg\" alt=\"\" width=150 height=48></a>
 </td>
 <td align=left valign=middle>
 <b><font size=\"+6\"> 
@@ -887,9 +888,11 @@ foreach $docdir (@doclist) {
 
 # create the '.usage', '.input' and '.output' include files
 	if ($embassy eq "") {
+	    $docurl = $url;
 	    $mkstatus = system "$scripts/makeexample.pl $thisprogram";
 	}
 	else {
+	    $docurl = "$urlembassy/$embassy";
 	    $mkstatus = system "$scripts/makeexample.pl $thisprogram $embassy";
 	}
 	if ($mkstatus) {
@@ -899,10 +902,10 @@ foreach $docdir (@doclist) {
 # check to see if the CVS tree copy of the text documentation needs updating
 	if (-e "$cvsdoc/text/$thisprogram.txt") {
 # check to see if the text has changed
-	    $status = system "lynx -dump -nolist $url/$thisprogram.html > x.x";
+	    $status = system "lynx -dump -nolist $docurl/$thisprogram.html > x.x";
 	    if ($status) {
 		$badlynx++;
-		print "lynx error $status $url/$thisprogram.html";
+		print "lynx error $status $docurl/$thisprogram.html";
 	    }
 	    elsif (filediff (2, "$cvsdoc/text/$thisprogram.txt", "x.x")) {
 		system "cp x.x $cvsdoc/text/$thisprogram.txt";
@@ -915,10 +918,10 @@ foreach $docdir (@doclist) {
 	}
 	else {
 # it doesn't exist, so create the new text output
-	    $status = system "lynx -dump -nolist $url/$thisprogram.html > $cvsdoc/text/$thisprogram.txt";
+	    $status = system "lynx -dump -nolist $docurl/$thisprogram.html > $cvsdoc/text/$thisprogram.txt";
 	    if ($status) {
 		$badlynx++;
-		print "lynx error $status $url/$thisprogram.html";
+		print "lynx error $status $docurl/$thisprogram.html";
 	    }
 	    else {
 		chmod 0664, "$cvsdoc/text/$thisprogram.txt";
@@ -932,10 +935,10 @@ foreach $docdir (@doclist) {
 # check to see if the CVS tree copy of the html documentation needs updating
 	if (-e "$cvsdoc/html/$thisprogram.html") {
 # check to see if the html file has changed
-	    $status = system "lynx -source $url/$thisprogram.html > x.x";
+	    $status = system "lynx -source $docurl/$thisprogram.html > x.x";
 	    if ($status) {
 		$badlynx++;
-		print "lynx error $status $url/$thisprogram.html";
+		print "lynx error $status $docurl/$thisprogram.html";
 	    }
 	    else {
 # change ../emboss_icon.jpg and ../index.html to current directory
@@ -953,10 +956,10 @@ foreach $docdir (@doclist) {
 	}
 	else {
 # it doesn't exist, so create the new html output
-	    $status = system "lynx -source $url/$thisprogram.html > $cvsdoc/html/$thisprogram.html";
+	    $status = system "lynx -source $docurl/$thisprogram.html > $cvsdoc/html/$thisprogram.html";
 	    if ($status) {
 		$badlynx++;
-		print "lynx error $status $url/$thisprogram.html";
+		print "lynx error $status $docurl/$thisprogram.html";
 	    }
 	    else {
 # change ../emboss_icon.jpg and ../index.html to current directory
@@ -1005,6 +1008,7 @@ while (<GRPSTD>) {
     if (/^\#/) {next}
     if (/^([^ ]+) (.*)/) {
 	$gname = $1;
+	$gdesc = ucfirst(lc($2));
 	$gname =~ s/:/ /g;
 	$gname =~ s/_/ /g;
 	$gname = ucfirst(lc($gname));
@@ -1012,7 +1016,6 @@ while (<GRPSTD>) {
 	$gname =~ s/[Rr]na/RNA/;
 	$gname =~ s/[Cc]pg/CpG/;
 	$gname =~ s/Hmm/HMM/i;
-	$gdesc = ucfirst(lc($2));
 	$gdesc =~ s/[Dd]na/DNA/;
 	$gdesc =~ s/[Rr]na/RNA/;
 	$gdesc =~ s/[Cc]pg/CpG/;
@@ -1058,7 +1061,7 @@ foreach $g (sort (keys %groups)) {
     $filename =~ s/restriction_enzymes/re/;
 
 
-    print SUM "<tr><td><A HREF=\"$filename\_group.html\">$name<A></td><td>$desc</td></tr>\n";
+    print SUM "<tr><td><A HREF=\"$filename\_group.html\">$name</A></td><td>$desc</td></tr>\n";
 # print "$filename '$groups{$g}' '$grpnames{$g}'\n";
 
     open ( GRP, ">y.y") || die "cannot open temporary group file";
@@ -1068,6 +1071,9 @@ foreach $g (sort (keys %groups)) {
     header2 (GRP);
 
     print GRP "
+$desc
+<p>
+
 <table border cellpadding=4 bgcolor=\"#FFFFF0\">
 
 <tr><th>Program name</th><th>Description</th></tr>
