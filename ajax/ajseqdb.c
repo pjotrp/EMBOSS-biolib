@@ -2789,6 +2789,7 @@ static AjBool seqAccessEmboss(AjPSeqin seqin)
 
     
     qry = seqin->Query;
+    qryd = qry->QryData;
     ajDebug("seqAccessEmboss type %d\n", qry->Type);
 
     if(qry->Type == QRY_ALL)
@@ -2842,6 +2843,7 @@ static AjBool seqAccessEmboss(AjPSeqin seqin)
     }
     else if(!seqEmbossQryReuse(qry))
 	return ajFalse;
+    
 
     if(ajListLength(qryd->List))
     {
@@ -2925,14 +2927,15 @@ static AjBool seqEmbossQryReuse(AjPSeqQuery qry)
 
     if(!qryd->List)
     {
-	ajDebug("query data all finished\n");
+	ajDebug("seqEmbossQryReuse: query data all finished\n");
 	AJFREE(qry->QryData);
 	qryd = NULL;
 	return ajFalse;
     }
     else
     {
-	ajDebug("reusing data from previous call %x\n", qry->QryData);
+	ajDebug("seqEmbossQryReuse: reusing data from previous call %x\n",
+		qry->QryData);
 	/*ajListTrace(qryd->List);*/
     }
 
@@ -3172,9 +3175,6 @@ static void seqEmbossOpenSecCache(AjPSeqQuery qry, const char *ext,
 static AjBool seqEmbossQryEntry(AjPSeqQuery qry)
 {
     AjPBtId entry  = NULL;
-    AjPBtPri pri   = NULL;
-    AjPList  tlist = NULL;
-    AjPStr   kwid  = NULL;
     SeqPEmbossQry qryd;
     
     ajDebug("entry id: '%S' acc: '%S'\n", qry->Id, qry->Acc);
@@ -3202,60 +3202,6 @@ static AjBool seqEmbossQryEntry(AjPSeqQuery qry)
 	    entry = ajBtreeIdFromKey(qryd->svcache,qry->Gi->Ptr);
 	    if(entry)
 		ajListPushApp(qryd->List,(void *)entry);
-    }
-
-    if((qryd->do_kw && !entry) && (qryd->do_kw && qryd->kwcache))
-    {
-	pri = ajBtreePriFromKeyword(qryd->kwcache, qry->Key->Ptr);
-	if(pri)
-	{
-	    tlist = ajBtreeSecLeafList(qryd->kwcache, pri->treeblock);
-	    while(ajListPop(tlist,(void **)&kwid))
-	    {
-		ajStrToLower(&kwid);
-		entry = ajBtreeIdFromKey(qryd->idcache,kwid->Ptr);
-		if(entry)
-		    ajListPushApp(qryd->List,(void *)entry);
-	    }
-	    ajListDel(&tlist);
-	    ajBtreePriDel(&pri);
-	}
-    }
-
-    if((qryd->do_de && !entry) && (qryd->do_de && qryd->decache))
-    {
-	pri = ajBtreePriFromKeyword(qryd->decache, qry->Des->Ptr);
-	if(pri)
-	{
-	    tlist = ajBtreeSecLeafList(qryd->decache, pri->treeblock);
-	    while(ajListPop(tlist,(void **)&kwid))
-	    {
-		ajStrToLower(&kwid);
-		entry = ajBtreeIdFromKey(qryd->idcache,kwid->Ptr);
-		if(entry)
-		    ajListPushApp(qryd->List,(void *)entry);
-	    }
-	    ajListDel(&tlist);
-	    ajBtreePriDel(&pri);
-	}
-    }
-
-    if((qryd->do_tx && !entry) && (qryd->do_tx && qryd->txcache))
-    {
-	pri = ajBtreePriFromKeyword(qryd->txcache, qry->Org->Ptr);
-	if(pri)
-	{
-	    tlist = ajBtreeSecLeafList(qryd->txcache, pri->treeblock);
-	    while(ajListPop(tlist,(void **)&kwid))
-	    {
-		ajStrToLower(&kwid);
-		entry = ajBtreeIdFromKey(qryd->idcache,kwid->Ptr);
-		if(entry)
-		    ajListPushApp(qryd->List,(void *)entry);
-	    }
-	    ajListDel(&tlist);
-	    ajBtreePriDel(&pri);
-	}
     }
 
     if(!ajListLength(qryd->List))
@@ -3378,16 +3324,100 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
     SeqPEmbossQry qryd;
     AjPBtWild wild = NULL;
     AjPBtId   id   = NULL;
-    
+
+    AjPBtPri pri   = NULL;
+    AjPList  tlist = NULL;
+    AjPStr   kwid  = NULL;
+
     qry->QryDone = ajTrue;
 
     qryd = qry->QryData;
+
+
+    if(qryd->do_kw && qryd->kwcache)
+    {
+	if(!qry->Wild)
+	{
+	    pri = ajBtreePriFromKeyword(qryd->kwcache, qry->Key->Ptr);
+	    if(pri)
+	    {
+		tlist = ajBtreeSecLeafList(qryd->kwcache, pri->treeblock);
+		while(ajListPop(tlist,(void **)&kwid))
+		{
+		    ajStrToLower(&kwid);
+		    id = ajBtreeIdFromKey(qryd->idcache,kwid->Ptr);
+		    if(id)
+			ajListPushApp(qryd->List,(void *)id);
+		}
+		ajListDel(&tlist);
+		ajBtreePriDel(&pri);
+	    }
+	    return ajTrue;
+	}
+	else
+	{
+	}
+    }
+
+
+    if(qryd->do_de && qryd->decache)
+    {
+	if(!qry->Wild)
+	{
+	    pri = ajBtreePriFromKeyword(qryd->decache, qry->Des->Ptr);
+	    if(pri)
+	    {
+		tlist = ajBtreeSecLeafList(qryd->decache, pri->treeblock);
+		while(ajListPop(tlist,(void **)&kwid))
+		{
+		    ajStrToLower(&kwid);
+		    id = ajBtreeIdFromKey(qryd->idcache,kwid->Ptr);
+		    if(id)
+			ajListPushApp(qryd->List,(void *)id);
+		}
+		ajListDel(&tlist);
+		ajBtreePriDel(&pri);
+	    }
+	    return ajTrue;
+	}
+	else
+	{
+	}
+    }
+    
+
+    if(qryd->do_tx && qryd->txcache)
+    {
+	if(!qry->Wild)
+	{
+	    pri = ajBtreePriFromKeyword(qryd->txcache, qry->Org->Ptr);
+	    if(pri)
+	    {
+		tlist = ajBtreeSecLeafList(qryd->txcache, pri->treeblock);
+		while(ajListPop(tlist,(void **)&kwid))
+		{
+		    ajStrToLower(&kwid);
+		    id = ajBtreeIdFromKey(qryd->idcache,kwid->Ptr);
+		    if(id)
+			ajListPushApp(qryd->List,(void *)id);
+		}
+		ajListDel(&tlist);
+		ajBtreePriDel(&pri);
+	    }
+	    return ajTrue;
+	}
+	else
+	{
+	}
+    }
+
 
     if(qryd->do_id && qryd->idcache)
     {
 	wild = ajBtreeWildNew(qryd->idcache, qry->Id);
 	while((id = ajBtreeIdFromKeyW(qryd->idcache, wild)))
 	    ajListPushApp(qryd->List, (void *)id);
+
 	ajBtreeWildDel(&wild);
 	return ajTrue;
     }
@@ -3409,6 +3439,11 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 	ajBtreeWildDel(&wild);
 	return ajTrue;
     }
+
+
+
+    
+
     
     return ajFalse;
 }

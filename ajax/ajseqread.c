@@ -8363,7 +8363,10 @@ AjPSeqQuery ajSeqQueryNew(void)
     pthis->Des    = ajStrNew();
     pthis->Org    = ajStrNew();
     pthis->Key    = ajStrNew();
-    pthis->Method = ajStrNew();
+
+    pthis->Wild   = ajFalse;
+
+    pthis->Method      = ajStrNew();
     pthis->Formatstr   = ajStrNew();
     pthis->IndexDir    = ajStrNew();
     pthis->Directory   = ajStrNew();
@@ -8712,13 +8715,13 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
 ** or can return more than one entry (keyword and some other search terms
 ** will find multiple entries)
 **
-** @param [r] qry [const AjPSeqQuery] Query object.
+** @param [r] qry [AjPSeqQuery] Query object.
 ** @return [AjBool] ajTrue if query had wild cards.
 ** @category use [AjPSeqQuery] Tests whether a query includes wildcards
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqQueryWild(const AjPSeqQuery qry)
+AjBool ajSeqQueryWild(AjPSeqQuery qry)
 {
 
     if(!qrywildexp)
@@ -8731,11 +8734,15 @@ AjBool ajSeqQueryWild(const AjPSeqQuery qry)
     if(ajRegExec(qrywildexp, qry->Id))
     {
 	ajDebug("wild query Id '%S'\n", qry->Id);
+	qry->Wild = ajTrue;
 	return ajTrue;
     }
 
     if(ajStrLen(qry->Acc))
     {
+	if(strpbrk(qry->Acc->Ptr,"*?"))
+	    qry->Wild = ajTrue;
+	
         if(!ajStrLen(qry->Id))
 	{
 	    ajDebug("wild (has, but no Id) query Acc '%S'\n", qry->Acc);
@@ -8750,12 +8757,18 @@ AjBool ajSeqQueryWild(const AjPSeqQuery qry)
 
     if(ajStrLen(qry->Sv))
     {
+	if(strpbrk(qry->Sv->Ptr,"*?"))
+	    qry->Wild = ajTrue;
+
 	ajDebug("wild (has) query Sv '%S'\n", qry->Sv);
 	return ajTrue;
     }
 
     if(ajStrLen(qry->Gi))
     {
+	if(strpbrk(qry->Gi->Ptr,"*?"))
+	    qry->Wild = ajTrue;
+
 	if(!ajStrIsNum(qry->Gi))
 	{
 	    ajDebug("wild (has) query Gi '%S'\n", qry->Gi);
@@ -8765,18 +8778,27 @@ AjBool ajSeqQueryWild(const AjPSeqQuery qry)
 
     if(ajStrLen(qry->Des))
     {
+	if(strpbrk(qry->Des->Ptr,"*?"))
+	    qry->Wild = ajTrue;
+
 	ajDebug("wild (has) query Des '%S'\n", qry->Des);
 	return ajTrue;
     }
 
     if(ajStrLen(qry->Org))
     {
+	if(strpbrk(qry->Org->Ptr,"*?"))
+	    qry->Wild = ajTrue;
+
 	ajDebug("wild (has) query Org '%S'\n", qry->Org);
 	return ajTrue;
     }
 
     if(ajStrLen(qry->Key))
     {
+	if(strpbrk(qry->Key->Ptr,"*?"))
+	    qry->Wild = ajTrue;
+
 	ajDebug("wild (has) query Key '%S'\n", qry->Key);
 	return ajTrue;
     }

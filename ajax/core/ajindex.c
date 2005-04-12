@@ -5371,6 +5371,7 @@ AjPBtWild ajBtreeWildNew(AjPBtcache cache, const AjPStr wild)
     AJNEW0(thys);
 
     thys->id   = ajStrNewC(wild->Ptr);
+    ajStrTrimC(&thys->id,"*");
     thys->list = ajListNew();
 
     thys->first = ajTrue;
