@@ -26,40 +26,40 @@
 
 
 
-static AjBool bflat_ParseEmbl(EmbPBtreeEntry entry, AjPFile inf);
-static AjBool bflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf);
+static AjBool dbxflat_ParseEmbl(EmbPBtreeEntry entry, AjPFile inf);
+static AjBool dbxflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf);
 
-static AjBool bflat_NextEntry(EmbPBtreeEntry entry, AjPFile inf);
+static AjBool dbxflat_NextEntry(EmbPBtreeEntry entry, AjPFile inf);
 
 
-/* @datastatic BflatPParser *************************************************
+/* @datastatic DbxflatPParser *************************************************
 **
 ** Parser definition structure
 **
-** @alias BflatSParser
-** @alias BflatOParser
+** @alias DbxflatSParser
+** @alias DbxflatOParser
 **
 ** @attr Name [char*] Parser name
 ** @attr Parser [(AjBool*)] Parser function
 ** @@
 ******************************************************************************/
 
-typedef struct BflatSParser
+typedef struct DbxflatSParser
 {
     char* Name;
     AjBool (*Parser) (EmbPBtreeEntry entry, AjPFile inf);
-} BflatOParser;
-#define BflatPParser BflatOParser*
+} DbxflatOParser;
+#define DbxflatPParser DbxflatOParser*
 
 
 
 
-static BflatOParser parser[] =
+static DbxflatOParser parser[] =
 {
-    {"EMBL",   bflat_ParseEmbl},
-    {"SWISS",  bflat_ParseEmbl},
-    {"GB",     bflat_ParseGenbank},
-    {"REFSEQ", bflat_ParseGenbank},
+    {"EMBL",   dbxflat_ParseEmbl},
+    {"SWISS",  dbxflat_ParseEmbl},
+    {"GB",     dbxflat_ParseGenbank},
+    {"REFSEQ", dbxflat_ParseGenbank},
     {NULL,     NULL}
 };
 
@@ -67,7 +67,7 @@ static BflatOParser parser[] =
 
 
 
-/* @prog bflat **************************************************************
+/* @prog dbxflat **************************************************************
 **
 ** Index a flat file database
 **
@@ -110,7 +110,7 @@ int main(int argc, char **argv)
     dbtype     = ajAcdGetListI("idformat",1);
     fieldarray = ajAcdGetList("fields");
     directory  = ajAcdGetDirectoryName("directory");
-    indexdir   = ajAcdGetDirectoryName("indexdirectory");
+    indexdir   = ajAcdGetOutdirName("indexdirectory");
     filename   = ajAcdGetString("filenames");
     exclude    = ajAcdGetString("exclude");
     dbname     = ajAcdGetString("dbname");
@@ -148,7 +148,7 @@ int main(int argc, char **argv)
 	    ajFatal("Cannot open input file %S\n",tmpstr);
 	
 
-	while(bflat_NextEntry(entry,inf))
+	while(dbxflat_NextEntry(entry,inf))
 	{
 	    if(entry->do_id)
 	    {
@@ -274,19 +274,20 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic bflat_ParseEmbl **********************************************
+/* @funcstatic dbxflat_ParseEmbl **********************************************
 **
 ** Parse the ID, accession from an EMBL entry.
 **
 ** Reads to the end of the entry and then returns.
 **
-** @param [w] fields [AjPStr*] Fields required
+** @param [w] entry [EmbPBtreeEntry] entry
+** @param [u] inf [AjPFile] Input file
 **
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-static AjBool bflat_ParseEmbl(EmbPBtreeEntry entry, AjPFile inf)
+static AjBool dbxflat_ParseEmbl(EmbPBtreeEntry entry, AjPFile inf)
 {
     AjPStr line = NULL;
     ajlong pos  = 0L;
@@ -339,17 +340,18 @@ static AjBool bflat_ParseEmbl(EmbPBtreeEntry entry, AjPFile inf)
 
 
 
-/* @funcstatic bflat_ParseGenbank *******************************************
+/* @funcstatic dbxflat_ParseGenbank *******************************************
 **
 ** Parse the ID, accession from a Genbank entry
 **
-** @param [w] fields [AjPStr*] Fields required
+** @param [w] entry [EmbPBtreeEntry] entry
+** @param [u] inf [AjPFile] Input file
 **
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-static AjBool bflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
+static AjBool dbxflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
 {
     AjPStr line = NULL;
     ajlong pos  = 0L;
@@ -439,7 +441,7 @@ static AjBool bflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
 
 
 
-/* @funcstatic bflat_NextEntry ********************************************
+/* @funcstatic dbxflat_NextEntry ********************************************
 **
 ** Parse the next entry from a flatfile
 **
@@ -450,7 +452,7 @@ static AjBool bflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
 ** @@
 ******************************************************************************/
 
-static AjBool bflat_NextEntry(EmbPBtreeEntry entry, AjPFile inf)
+static AjBool dbxflat_NextEntry(EmbPBtreeEntry entry, AjPFile inf)
 {
     static AjBool init = ajFalse;
     static ajint  nparser = -1;
