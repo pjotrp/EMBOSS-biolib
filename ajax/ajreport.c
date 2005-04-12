@@ -152,7 +152,7 @@ static ReportOFormat reportFormat[] =
 /*    cirdna/lindna input format - looks horrible in those programs */
 /*    {"draw",      "",
 	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteDraw},*/
-    {"excel",     "Tab-delimited file for import to Miscrosoft Excel",
+    {"excel",     "Tab-delimited file for import to Microsoft Excel",
 	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteExcel},
     {"feattable", "EMBL format feature table with internal tags",
 	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteFeatTable},
@@ -2162,13 +2162,11 @@ AjBool ajReportFindFormat(const AjPStr format, ajint* iformat)
 **
 ** @param [u] thys [AjPReport] Report object
 ** @param [r] taglist [const AjPStr] Tag names list
-** @param [r] mintags [ajint] Minimum number of tags to use in report
-**                            (used to check there are enough tags listed)
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool ajReportSetTags(AjPReport thys, const AjPStr taglist, ajint mintags)
+AjBool ajReportSetTags(AjPReport thys, const AjPStr taglist)
 {
     static AjPRegexp tagexp = NULL;
     static AjPStr tmplist   = NULL;
@@ -2249,14 +2247,6 @@ AjBool ajReportValid(AjPReport thys)
 	    ajErr("Unknown report format '%S'", thys->Formatstr);
 	    return ajFalse;
 	}
-
-    /* test acdc-reportbadtags */
-    if(thys->Mintags > ajListLength(thys->Tagnames))
-    {
-	ajErr("Report specifies %d tags, has only %d",
-	      thys->Mintags, ajListLength(thys->Tagnames));
-	return ajFalse;
-    }
 
     /* so far, no format has mintags non-zero */
     if( reportFormat[thys->Format].Mintags > ajListLength(thys->Tagnames))
