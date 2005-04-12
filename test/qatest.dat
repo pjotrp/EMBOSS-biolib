@@ -318,7 +318,7 @@ IN
 FI act1_fugru.antigenic
 FZ = 0
 FI antigenic.acdlog
-FC = 4890
+FC = 4887
 FP 47 /^acdProcess/
 FI stderr
 FC = 2
@@ -1466,22 +1466,6 @@ FP 0 /Warning: /
 FP 1 /Error: /
 FP 1 /Died: /
 FP /Error: Unknown report format 'fred'\n/
-FP /Died: Report option -test: Validation failed\n/
-//
-
-ID acdc-reportbadtagnum
-AP acdc
-ER 1
-PP EMBOSS_ACDROOT=../../acd
-PP export EMBOSS_ACDROOT
-CL testreport
-IN 
-FI stderr
-FZ > 0
-FP 0 /Warning: /
-FP 1 /Error: /
-FP 1 /Died: /
-FP /Error: Report specifies 4 tags, has only 3\n/
 FP /Died: Report option -test: Validation failed\n/
 //
 
@@ -5338,8 +5322,9 @@ FP /Score 236: 108/130 \( 83%\) matches, 0 gaps/
 ID embossdata-ex
 UC Display the directories searched for EMBOSS data files:
 AP embossdata
+IN
 FI stderr
-FC = 1
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -5352,8 +5337,9 @@ UC Display the names of data files in all of the possible data directories:
 UC This is run on a small test system and so the results will probably be different when you run this.
 AP embossdata
 CL -showall
+IN
 FI stderr
-FC = 1
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -5367,7 +5353,7 @@ FP /^\s*Eyeast.cut\s*\n/
 ID embossdata-exfile
 UC Display the directories which contain a particular EMBOSS data file:
 AP embossdata
-CL -filename EPAM60
+CL EPAM60
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -5381,7 +5367,7 @@ FP /^File \.embossdata\/EPAM60/
 ID embossdata-exfetch
 UC Make a copy of an EMBOSS data file in the current directory:
 AP embossdata
-CL -fetch -filename Epepcoil.dat
+CL -fetch Epepcoil.dat
 FI stderr
 FC = 1
 FP 0 /Warning: /
