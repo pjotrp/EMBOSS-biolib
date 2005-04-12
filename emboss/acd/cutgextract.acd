@@ -11,6 +11,7 @@ section: input [
   dirlist: directory  [
     parameter: "Y"
     information: "CUTG directory"
+    knowntype: "codon usage"
   ]
 
 endsection: input
@@ -20,11 +21,6 @@ section: required [
   type: "page"
 ]
 
-  string: release  [
-    default: ""
-    information: "CUTG release"
-  ]
-
 endsection: required
 
 section: advanced [
@@ -32,14 +28,27 @@ section: advanced [
   type: "page"
 ]
 
+  string: release  [
+    default: ""
+    information: "CUTG release"
+    knowntype: "database release"
+  ]
+
   string: wildspec  [
     default: "*.codon"
     information: "Type of codon file"
+    knowntype: "filename wildcard"
   ]
 
   string: species  [
     default: "*"
     information: "Species wildcard"
+    knowntype: "wildcard string"
+  ]
+
+  boolean: allrecords  [
+    default: "N"
+    information: "Include all records, including those with warnings"
   ]
 
 endsection: advanced
@@ -51,6 +60,7 @@ section: output [
 
   outfile: outfile  [
     parameter: "Y"
+    knowntype: "log file"
   ]
 
   string: filename  [
@@ -58,8 +68,9 @@ section: output [
     information: "Single output filename"
     help: "Single output filename to override automatic one file
            for each species. Leave blank to generate the filenames.
-	   Specify a filename to combine several species into one file."
-
+	   Specify a filename to combine several species into one
+           file."
+    knowntype: "output filename"
   ]
 
 endsection: output
