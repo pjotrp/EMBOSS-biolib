@@ -1,6 +1,8 @@
 #!/usr/bin/perl -w
 
 %knownmsg = (
+   "^Section \\S+ follows section" => "Section out of order",
+   "^Documentation string \\d+ exceeds" => "Documentation string length",
    "^Calculated standard value for \\S+" => "Calculated standard value",
    "^Calculated additional value for \\S+" => "Calculated additional value",
    "^Standard qualifier '\\S+' in section '\\S+'" => "Standard badsection",
@@ -27,6 +29,8 @@
 	     );
 
 %knownexp = ();
+$applcnt = 0;
+$embassycnt = 0;
 
 foreach $x (sort (keys (%knownmsg))) {
     $xname = $knownmsg{$x};
@@ -34,10 +38,6 @@ foreach $x (sort (keys (%knownmsg))) {
 }
 
 while (<>) {
-#    if (/^(\S+)$/) {
-#	$applname = $1;
-#    }
-
     if (/^(Error|Warning): File ([^.]+)[.]acd line \d+: (.*)/) {
 	$type = $1;
 	$file = $2;
@@ -58,8 +58,18 @@ while (<>) {
 	    print "$file: Message '++other++' $countmsg{$message}: $message\n";
 	}
     }
+    elsif (/^[+](\S+)\s+[\(][a-z]+[\)]$/) {
+	$embassycnt++;
+    }
+
+    elsif (/^(\S+)$/) {
+	$applcnt++;
+    }
+
 }
 
 foreach $x (sort (keys ( %countknown ) ) ) {
     printf "%4d %s\n", $countknown{$x}, $x;
 }
+
+print "\n$applcnt EMBOSS and $embassycnt EMBASSY applications\n";
