@@ -11,7 +11,7 @@ section: input [
   information: "Input section"
   type: "page"
 ]
-  infile: conf [
+  infile: confile [
     parameter: "Y"
     information: "Name of CON file (contact files) (input)"
     help: "This option specifies the name of the CON file (contact
@@ -162,7 +162,7 @@ section: output [
   type: "page"
 ]
 
-  directory: sigdir [
+  outdir: sigoutdir [
     parameter: "Y"
     information: "Name of directory of signature files (output)"
     help: "This option specifies the location of signature files
@@ -176,9 +176,9 @@ section: output [
   ]
 
 
-outfile: logf [
+outfile: logfile [
  parameter: "Y"
- prompt: "Name of siggenlig logfile"
+ information: "Name of siggenlig logfile"
  default: "siggenlig.log"
     knowntype: "domainatrix log file"
 ]

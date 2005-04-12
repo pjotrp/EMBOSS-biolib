@@ -120,7 +120,7 @@ int main(ajint argc, char **argv)
     /*************************/
     ajNamInit("emboss");
     ajAcdInitP("siggenlig",argc,argv,"DOMAINATRIX"); 
-    conf        = ajAcdGetInfile("conf");
+    conf        = ajAcdGetInfile("confile");
     ccfd        = ajAcdGetDirectory("ccfddir");
     ccfp        = ajAcdGetDirectory("ccfpdir");
     mode        = ajAcdGetList("mode");
@@ -129,8 +129,8 @@ int main(ajint argc, char **argv)
     patchsize   = ajAcdGetInt("patchsize");
     gapdistance = ajAcdGetInt("gapdistance");
     wsiz        = ajAcdGetInt("wsiz");
-    sigdir      = ajAcdGetDirectory("sigdir");
-    logf      = ajAcdGetOutfile("logf");
+    sigdir      = ajAcdGetOutdir("sigoutdir");
+    logf      = ajAcdGetOutfile("logfile");
     
     
     

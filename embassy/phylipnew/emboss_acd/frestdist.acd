@@ -1,5 +1,5 @@
 application: frestdist [
-  documentation: "Computes distance matrix from restriction sites or fragments"
+  documentation: "Distance matrix from restriction sites or fragments"
   groups: "Phylogeny:Molecular sequence"
   embassy: "phylipnew"
 ]

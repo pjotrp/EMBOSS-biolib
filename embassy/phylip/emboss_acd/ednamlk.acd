@@ -1,6 +1,6 @@
 application: ednamlk [
-  documentation: "Estimates phylogenies from nucleic acid
-                  sequence Maximum Likelihood with molecular clock"
+  documentation: "Phylogenies from nucleic acid
+                  Maximum Likelihood with clock"
   groups: "Phylogeny:Molecular sequence"
   gui: "yes"
   batch: "yes"

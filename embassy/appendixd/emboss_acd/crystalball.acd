@@ -1,6 +1,5 @@
 application: crystalball [
-  documentation: "Answers every drug discovery question you
-                  have about this sequence."
+  documentation: "Answers every drug discovery question about a sequence."
   groups: "Test"
   embassy: "appendixd"
 ]

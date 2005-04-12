@@ -1,6 +1,6 @@
 application: ednaml [
-  documentation: "Estimates phylogenies from nucleic acid
-                  sequence Maximum Likelihood"
+  documentation: "Phylogenies from nucleic acid
+                  Maximum Likelihood"
   groups: "Phylogeny:Molecular sequence"
   gui: "yes"
   batch: "yes"
@@ -15,7 +15,7 @@ section: input [
 
 seqset: sequence  [
   parameter: "Y"
-  type: "gapany"
+  type: "gapnucleotide"
   help: "File containing a sequence alignment"
 ]
 

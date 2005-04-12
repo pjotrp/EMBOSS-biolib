@@ -118,9 +118,9 @@ int main(ajint argc, char **argv)
     
     ccfdir      = ajAcdGetDirectory("ccfdir");
     ClassFptr   = ajAcdGetInfile("dcfinfile");
-    logf        = ajAcdGetOutfile("logf");
-    SCMatrixOut = ajAcdGetOutfile("scmatrix");
-    Calclogf    = ajAcdGetOutfile("calclogf");
+    logf        = ajAcdGetOutfile("logfile");
+    SCMatrixOut = ajAcdGetOutfile("scmatrixfile");
+    Calclogf    = ajAcdGetOutfile("calclogfile");
     mode        = ajAcdGetList("mode");
     
     /*Assigns the 1d/3d option*/
