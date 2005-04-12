@@ -1,6 +1,6 @@
 application: supermatcher [
-  documentation: "Finds a match of a large sequence against
-                  one or more sequences"
+  documentation: "Match large sequences against
+                  one or more other sequences"
   groups: "Alignment:Local"
   gui: "yes"
   batch: "yes"

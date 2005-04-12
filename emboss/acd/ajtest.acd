@@ -18,17 +18,18 @@ seqset: bsequence  [
   type: "any"
 ]
 
-directory: directory [
-  information: "Temporary directory"
-  default: "/tmp"
-]
-
 endsection: input
 
 section: output [
   information: "Output section"
   type: "page"
 ]
+
+  outdir: outdir [
+    information: "Temporary directory"
+    default: "/tmp"
+    knowntype: "temporary file"
+  ]
 
   outfile: outfile [
   standard: "Y"

@@ -40,18 +40,18 @@ section: input [
     default: "SWISS"
   ]
 
-  directory: directory  [
-    standard: "Y"
-    default: "."
-    information: "Database directory"
-    knowntype: "emboss database directory"
-  ]
-
   string: filenames  [
     standard: "Y"
     default: "*.dat"
     information: "Wildcard database filename"
     knowntype: "emboss database wildcard filename"
+  ]
+
+  directory: directory  [
+    standard: "Y"
+    default: "."
+    information: "Database directory"
+    knowntype: "emboss database directory"
   ]
 
 endsection: input
@@ -98,10 +98,17 @@ section: advanced [
     knowntype: "filename wildcard"
   ]
 
-  directory: indexdirectory  [
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outdir: indexdirectory  [
     default: "."
     information: "Index directory"
     knowntype: "output directory"
   ]
 
-endsection: advanced
+endsection: output

@@ -1,6 +1,5 @@
 application: remap [
-  documentation: "Display a sequence with restriction cut
-                  sites, translation etc.."
+  documentation: "Display sequence with restriction sites, translation etc."
   groups: "Display, Nucleic:Restriction, Nucleic:Translation"
 ]
 
