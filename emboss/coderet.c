@@ -72,7 +72,7 @@ int main(int argc, char **argv)
     dotran = ajAcdGetBool("translation");
 
     seqout = ajAcdGetSeqout("outseq");
-    logf = ajAcdGetOutfile("logfile");
+    logf = ajAcdGetOutfile("outfile");
 
     cds  = ajStrNew();
     mrna = ajStrNew();

@@ -49,7 +49,7 @@ section: output [
     type: "any"
   ]
 
-  outfile: logfile [
+  outfile: outfile [
     parameter: "Y"
     extension: "coderet"
     knowntype: "coderet output"
