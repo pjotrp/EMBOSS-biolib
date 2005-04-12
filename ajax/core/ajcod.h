@@ -55,14 +55,17 @@ typedef struct AjSCod
 #define AjPCod AjOCod*
 
 
+void         ajCodAssCode(AjPCod thys, ajint geneticcode);
 void         ajCodAssDesc(AjPCod thys, const AjPStr desc);
 void         ajCodAssDescC(AjPCod thys, const char* desc);
-void         ajCodAssSpecies(AjPCod thys, const AjPStr species);
-void         ajCodAssSpeciesC(AjPCod thys, const char* species);
-void         ajCodAssRelease(AjPCod thys, const AjPStr release);
-void         ajCodAssReleaseC(AjPCod thys, const char* release);
 void         ajCodAssDivision(AjPCod thys, const AjPStr division);
 void         ajCodAssDivisionC(AjPCod thys, const char* division);
+void         ajCodAssNumcds(AjPCod thys, ajint numcds);
+void         ajCodAssNumcodon(AjPCod thys, ajint numcodon);
+void         ajCodAssRelease(AjPCod thys, const AjPStr release);
+void         ajCodAssReleaseC(AjPCod thys, const char* release);
+void         ajCodAssSpecies(AjPCod thys, const AjPStr species);
+void         ajCodAssSpeciesC(AjPCod thys, const char* species);
 void         ajCodAssName(AjPCod thys, const AjPStr name);
 void         ajCodAssNameC(AjPCod thys, const char* name);
 void         ajCodAss(AjPCod thys);
@@ -82,10 +85,19 @@ void         ajCodComp(ajint *NA, ajint *NC, ajint *NG, ajint *NT,
 void         ajCodCountTriplets(AjPCod thys, const AjPStr s, ajint *c);
 void         ajCodDel (AjPCod *thys);
 AjPCod       ajCodDup (const AjPCod thys);
+ajint        ajCodGetCode(const AjPCod thys);
 const AjPStr ajCodGetDesc(const AjPCod thys);
 const char*  ajCodGetDescC(const AjPCod thys);
+const AjPStr ajCodGetDivision(const AjPCod thys);
+const char*  ajCodGetDivisionC(const AjPCod thys);
 const AjPStr ajCodGetName(const AjPCod thys);
 const char*  ajCodGetNameC(const AjPCod thys);
+ajint        ajCodGetNumcds(const AjPCod thys);
+ajint        ajCodGetNumcodon(const AjPCod thys);
+const AjPStr ajCodGetRelease(const AjPCod thys);
+const char*  ajCodGetReleaseC(const AjPCod thys);
+const AjPStr ajCodGetSpecies(const AjPCod thys);
+const char*  ajCodGetSpeciesC(const AjPCod thys);
 ajint        ajCodIndex(const AjPStr s);
 ajint        ajCodIndexC(const char *codon);
 AjPCod	     ajCodNew(void);
@@ -93,7 +105,7 @@ AjPCod	     ajCodNewCode(ajint code);
 AjBool       ajCodRead(AjPCod thys, const AjPStr fn, const AjPStr format);
 void         ajCodSetBacktranslate(AjPCod *thys);
 char*        ajCodTriplet(ajint idx);
-void 	     ajCodWrite( const AjPCod thys, AjPFile outf);
+void 	     ajCodWrite(AjPCod thys, AjPFile outf);
 void 	     ajCodWriteOut( const AjPCod thys, AjPOutfile outf);
 ajint        ajCodOutFormat(const AjPStr name);
 #endif
