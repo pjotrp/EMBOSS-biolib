@@ -16106,6 +16106,7 @@ FP 0 /Died: /
 ID alignrunner-ex
 AB construct
 AA alignrunner
+CC Error messages to be resolved
 IN ../../data/construct/
 IN
 IN
@@ -16419,7 +16420,7 @@ FI domainseqs.log
 FC = 6
 FZ = 78
 FP 2 /^NO_ACCESSION_NUMBER\n/
-FP 2 /\/\/an/
+FP 2 /\/\/\n/
 FP /^D1CS4A_ +\n/
 FP /^D1II7A_ +\n/
 //
@@ -17719,11 +17720,17 @@ FP 9 /^MSFM/
 ID myseq-ex
 AB myemboss
 AA myseq
+IN tembl:paamir
+IN
 FI stderr
-FC = 0
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
+FI paamir.myseq
+FC = 5
+FP /^Usa: tembl-id:PAAMIR\n/
+FP /^Length: 2167\n/
 //
 
 #######################################
@@ -17904,7 +17911,7 @@ ID ednaml-ex
 AB phylip
 AA ednaml
 ## may need to play with the input file format for this one
-CL -ncategories 2 -categories "1111112222222" -rate "1.0 2.0"
+CL -catum 2 -categories "1111112222222" -rate "1.0 2.0"
 CL -gamma h
 CL -nhmmcategories 5 -hmmrates "0.264 1.413 3.596 7.086 12.641"
 CL -hmmprobabilities "0.522 0.399 0.076 0.0036 0.000023"
@@ -17955,7 +17962,7 @@ IN
 IN
 IN
 FI stderr
-FC = 3
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -18482,10 +18489,12 @@ FP 3 /^./
 ID fdiscboot-ex
 AB phylipnew
 AA fdiscboot
+CL -seed 3
 IN ../../data/evolution/discboot.dat
 IN
-FI discboot.fdiscboot
-FC = 9999
+IN
+IN
+IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -18494,6 +18503,16 @@ FP 0 /Died: /
 FI stdout
 FC = 23
 FP 18 /^./
+FI discboot.ancfile
+FZ = 0
+FI discboot.factfile
+FZ = 0
+FI discboot.mixfile
+FZ = 0
+FI discboot.fdiscboot
+FC = 600
+FP 100 /^Alpha/
+FP 10 /^Alpha     111100\n/
 //
 
 ID fdnacomp-ex
@@ -18529,7 +18548,6 @@ FP 11 /^./
 ID fdnacomp-ex2
 AB phylipnew
 AA fdnacomp
-CL 
 IN ../../data/evolution/dnacomp.dat
 IN ../../data/evolution/dnacomptree.dat
 IN
@@ -18607,7 +18625,7 @@ FP 2 /^./
 ID fdnaml-ex
 AB phylipnew
 AA fdnaml
-CL -printdata 
+CL -printdata
 CL -ncategories 2 -categories "1111112222222" -rate "1.0 2.0"
 CL -gamma h
 CL -nhmmcategories 5 -hmmrates "0.264 1.413 3.596 7.086 12.641"
@@ -18656,10 +18674,7 @@ FI dnaml.fdnaml
 FC = 56
 FP /^   A       0.24615\n/
 FP /^Ln Likelihood =   -72.25088\n/
-FP /^     3          Epsilon           0.00006     (     zero,     0.34299)\n/
-FI dnaml2.treefile
-FC = 1
-FP /^\(Gamma:1.01651,\(Beta:0.00006,\(Delta:0.28135,Epsilon:0.00006\):1.51302\):0.09401,Alpha:0.20756\);\n/
+FP /^     1          Epsilon           0\.00006     \(     zero,     0\.34299\)\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -18668,12 +18683,15 @@ FP 0 /Died: /
 FI stdout
 FC = 68
 FP 57 /^./
+FI dnaml.treefile
+FC = 2
+FP /^Gamma:1.01654,Alpha:0.20753\);\n/
 //
 
 ID fdnamlk-ex
 AB phylipnew
 AA fdnamlk
-CL -printdata 
+CL -printdata
 CL -ncategories 2 -categories "1111112222222" -rate "1.0 2.0"
 CL -gamma h
 CL -nhmmcategories 5 -hmmrates "0.264 1.413 3.596 7.086 12.641"
@@ -18693,13 +18711,13 @@ FI dnaml.fdnamlk
 FC = 89
 FP /^        1           0.264            0.522\n/
 FP /^        2           2.000\n/
-FP /^Ln Likelihood =   -60.82656\n/
-FP /^ +2 +Gamma +4.54360 +0.90684\n/
+FP /^Ln Likelihood =   -60.787[0-9][0-9]\n/
+FP /^ +2 +Gamma +4.52951 +0.90802\n/
 FP /^             1121121111 111\n/
 FI dnaml.treefile
 FC = 2
-FP /^\(\(Epsilon:0.61427,Delta:0.61427\):3.92933,\(Gamma:0.90684,\n/
-FP /^\(Beta:0.65105,Alpha:0.65105\):0.25578\):3.63676\);\n/
+FP /^\(\(Epsilon:0.58158,Delta:0.58158\):3.94793,\(Gamma:0.90802,\n/
+FP /^\(Beta:0.67882,Alpha:0.67882\):0.22921\):3.62149\);\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -18849,8 +18867,8 @@ FP 9 /^./
 ID fdrawgram-ex
 AB phylipnew
 AA fdrawgram
+CC Need a way to handle input and to stop crash
 IN ../../data/evolution/drawgram.tree
-IN ../../data/evolution/font1
 IN
 IN Q
 FI stderr
@@ -18863,6 +18881,7 @@ FP 0 /Died: /
 ID fdrawtree-ex
 AB phylipnew
 AA fdrawtree
+CC No test defined - try interactively first
 FI stderr
 FC = 0
 FP 0 /Warning: /
@@ -18873,6 +18892,7 @@ FP 0 /Died: /
 ID ffactor-ex
 AB phylipnew
 AA ffactor
+CC output fails to match documentation, also reports failure
 IN ../../data/evolution/factor.dat
 IN
 FI factor.ffactor
@@ -18924,10 +18944,13 @@ FP 52 /^./
 ID ffreqboot-ex
 AB phylipnew
 AA ffreqboot
+CL -seed 3
 IN ../../data/evolution/freqboot.dat
 IN
 FI freqboot.ffreqboot
-FC = 9999
+FC = 1700
+FP 100 /^European/
+FP 57 /^European   0.28680 /
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -19145,7 +19168,7 @@ IN ../../data/evolution/proml.dat
 IN
 IN
 FI proml.fproml
-FC = 36
+FC = 33
 FP /^Ln Likelihood =  -131.58633\n/
 FP /^  1------2                             \+------------Delta     \n/
 FP /^     1 +Alpha +0.30915 +\( +zero, +0.66607\) \*\*\n/
@@ -19159,8 +19182,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 17
-FP 10 /^./
+FC = 15
+FP 9 /^./
 //
 
 ID fpromlk-ex
@@ -19315,8 +19338,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 139
-FP 102 /^./
+FC = 126
+FP 90 /^./
 //
 
 ID fprotpars-ex4
@@ -19371,17 +19394,20 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 51
-FP 36 /^./
+FC = 38
+FP 24 /^./
 //
 
 ID frestboot-ex
 AB phylipnew
 AA frestboot
+CL -seed 3
 IN ../../data/evolution/restboot.dat
 IN
 FI restboot.frestboot
-FC = 9999
+FC = 600
+FP 100 /^Gamma/
+FP 3 /^Gamma     \-\+\-\-\-\+\+\+\+\+\ \+\+\+/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -19461,13 +19487,14 @@ FP 26 /^./
 ID fseqboot-ex
 AB phylipnew
 AA fseqboot
+CL -seed 3
 IN ../../data/evolution/seqboot.dat
 IN
 FI seqboot.fseqboot
 FC = 600
-FP 13 /^Alpha     AAAAAA\n/
-FP 22 /^Beta      AAACCC\n/
-FP 32 /^\S+ +AAACCC\n/
+FP 7 /^Alpha     AAAAAA\n/
+FP 14 /^Beta      AAACCC\n/
+FP 21 /^\S+ +AAACCC\n/
 FP 100 /^Alpha/
 FI stderr
 FC = 2
@@ -19481,14 +19508,15 @@ FP 18 /^./
 
 ID fseqbootall-ex
 AB phylipnew
-AA fseqboot
+AA fseqbootall
+CL -seed 3
 IN ../../data/evolution/seqboot.dat
 IN
 FI seqboot.fseqbootall
 FC = 600
-FP 13 /^Alpha     AAAAAA\n/
-FP 22 /^Beta      AAACCC\n/
-FP 32 /^\S+ +AAACCC\n/
+FP 7 /^Alpha     AAAAAA\n/
+FP 14 /^Beta      AAACCC\n/
+FP 21 /^\S+ +AAACCC\n/
 FP 100 /^Alpha/
 FI stderr
 FC = 2
@@ -19565,14 +19593,13 @@ FP 2 /^./
 ID ftreedist-listall
 AB phylipnew
 AA ftreedist
-CL -pairingtwo l -dtype s
+CL -dtype s
 IN ../../data/evolution/treedist.dat
-IN ../../data/evolution/treedist2.dat
 IN
 FI treedist.ftreedist
-FC = 294
-FP /Trees 24 and 12:    0\n/
-FP 288 /Trees \d+ and \d+:\s+\d+/
+FC = 11
+FP /Trees 11 and 12:    10\n/
+FP 6 /Trees \d+ and \d+:\s+\d+/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -19586,9 +19613,10 @@ FP 2 /^./
 ID ftreedistpair-ex
 AB phylipnew
 AA ftreedistpair
-CL -pairingtwo l -dtype s
+Cl -style sparse
 IN ../../data/evolution/treedist.dat
 IN ../../data/evolution/treedist2.dat
+IN
 IN
 FI treedist.ftreedistpair
 FC = 9999
