@@ -2363,6 +2363,20 @@ FP /^Mean Difference         = 0[.]149\n/
 FP /^Codons not appearing   = 0\n/
 //
 
+ID codcopy-ex
+AP codcopy
+IN Eecoli.cut
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.cut
+FC = 75
+FP 64 /^[ACGT][ACGT][ACGT]/
+//
+
 ID coderet-ex
 UC To extract all of the CDS, mRNA and the protein translations:
 AP coderet
@@ -3751,6 +3765,22 @@ FI test.out
 FZ = 154591
 FP 5 />HSF/
 FP 16 />/
+//
+
+ID dbxflat-check-keep
+DL keep
+AQ dbxflat
+IN EMBL
+IN EMBL
+IN EMBL
+IN rod.dat
+IN ../../embl
+IN
+FI stderr
+FC = 6
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 #############################################
@@ -16649,6 +16679,17 @@ FP /Length\s+257\n/
 FP /^Consensus\s+GVEAIKN.+NFAALRLDREXFD\n/
 //
 
+ID matgen3d-ex
+AB domainatrix
+AA matgen3d
+CC Test not yet written
+FI stderr
+FC = 2
+FP 0 /^Warning:/
+FP 0 /^Error:/
+FP 0 /^Died:/
+//
+
 ID pdbparse-ex
 AB domainatrix
 AA pdbparse
@@ -17075,10 +17116,69 @@ FZ = 2784
 FP 30 /^IN   /
 //
 
+ID siggenlig-ex
+AB domainatrix
+AA siggenlig
+CC Test not yet written
+IN ../../data/structure/
+IN 2
+IN 5
+IN 1
+IN EBLOSUM62
+IN 15
+IN 0
+IN Y
+IN
+FI stderr
+FC = 16
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI 54894.sig
+FC = 132
+FZ = 1338
+FP 14 /^IN   /
+FI 55074.sig
+FC = 287
+FZ = 2784
+FP 30 /^IN   /
+//
+
 ID sigscan-ex
 AB domainatrix
 AA sigscan
 CC Signature type mismatch warnings in Write and Compile
+IN ../../data/structure/54894.sig
+IN ../../data/structure/swsmall
+IN
+IN
+IN
+IN
+IN
+IN
+IN
+FI stderr
+FC = 7
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 5
+FP 5 / ok\n/
+FI SIGSCAN.dhf
+FC = 200
+FP /^> P57451\^\.\^6\^91\^SCOP\^\.\^54894\^Alpha and beta proteins/
+FP /^> Q9KP65\^\.\^6\^91\^SCOP\^\.\^54894\^Alpha and beta proteins/
+FI SIGSCAN.aln
+FC = 1113
+FP /^Q9YBD5    1      VRKIRSGVVIDHIPPGRAFTMLKALGLLPPRGYRWRIAVVINAESSKLGRKDI 53\n/
+FP /^SIGNATURE -      ------\*---\*\*-\*---------------------------\*------\*--\*-\n/
+//
+
+ID sigscanlig-ex
+AB domainatrix
+AA sigscanlig
+CC Test not yet written
 IN ../../data/structure/54894.sig
 IN ../../data/structure/swsmall
 IN
@@ -19613,7 +19713,7 @@ FP 2 /^./
 ID ftreedistpair-ex
 AB phylipnew
 AA ftreedistpair
-Cl -style sparse
+CL -style sparse
 IN ../../data/evolution/treedist.dat
 IN ../../data/evolution/treedist2.dat
 IN
