@@ -8715,9 +8715,9 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
 ** or can return more than one entry (keyword and some other search terms
 ** will find multiple entries)
 **
-** @param [r] qry [AjPSeqQuery] Query object.
+** @param [u] qry [AjPSeqQuery] Query object.
 ** @return [AjBool] ajTrue if query had wild cards.
-** @category use [AjPSeqQuery] Tests whether a query includes wildcards
+** @category modify [AjPSeqQuery] Tests whether a query includes wildcards
 ** @@
 ******************************************************************************/
 
