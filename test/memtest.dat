@@ -14,7 +14,7 @@ charge = charge tsw:opsd_human -auto
 checktrans = checktrans ../data/paamir.pep -auto
 chips = chips tembl:hsfau -auto
 cirdna = cirdna -infile ../data/data.cirp -graph ps -auto
-codcmp = codcmp -auto
+codcmp = codcmp -first Eecoli.cut -second Ehaein.cut -auto
 coderet = coderet tembl:hsfau -auto
 compseq = compseq tsw:opsd_human -auto
 cons = cons ../data/globins.msf -auto
@@ -88,7 +88,7 @@ noreturn = noreturn ../data/oddcomp.comp -auto
 notseq = notseq 'tsw:*' -exclude='ops*' -auto
 nthseq = nthseq ../swiss/seq.dat -num 5 -auto
 octanol = octanol tsw:opsd_human -graph ps -auto
-oddcomp = oddcomp 'tsw:*' -comp ../data/oddcomp.comp -auto
+oddcomp = oddcomp 'tsw:*' -infile ../data/oddcomp.comp -auto
 palindrome = palindrome tembl:hsfau1 -min 4 -auto
 pasteseq = pasteseq tembl:hsfau tembl:hsfau1 -pos 200 -auto
 patmatdb = patmatdb 'tsw:*' -motif kat -auto
