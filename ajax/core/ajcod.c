@@ -282,7 +282,7 @@ AjPCod ajCodNewCode(ajint code)
     }
 
     ajTrnDel(&trn);
-
+    ajStrDel(&aa);
     return thys;
 }
 
@@ -808,6 +808,8 @@ void ajCodClearData(AjPCod thys)
 ** Load the num array of a codon structure
 ** Used for creating a codon usage table
 **
+** Skips triplets with ambiguity codes and any incomplete triplet at the end.
+**
 ** @param [w] thys [AjPCod] Codon object
 ** @param [r] s [const AjPStr] dna sequence
 ** @param [w] c [ajint *] triplet count
@@ -818,16 +820,23 @@ void ajCodClearData(AjPCod thys)
 void ajCodCountTriplets(AjPCod thys, const AjPStr s, ajint *c)
 {
     const char *p;
-    ajint  len;
+    ajint  last;
     ajint  i;
     ajint  idx;
 
     p = ajStrStr(s);
-    len = ajStrLen(s);
+    last = ajStrLen(s)-2;
 
-    for(i=0;i<len;i+=3,p+=3,++(*c))
+    for(i=0;i<last;i+=3,p+=3,++(*c))
+    {
 	if((idx=ajCodIndexC(p))!=-1)
 	    ++thys->num[idx];
+	else
+	{
+	    ajDebug("ajCodCountTripletsSkipping triplet %3.3s\n", p);
+	    --(*c);
+	}
+    }
 
     return;
 }
@@ -928,16 +937,16 @@ AjBool ajCodRead(AjPCod thys, const AjPStr fn, const AjPStr format)
     else
     {
 	ajStrAssSub(&formatstr, fn, 0, i-1);
-	ajStrAssSub(&filename, fn, i+1, -1);
+	ajStrAssSub(&fname, fn, i+1, -1);
     }
 
-    fname = ajStrNewS(fn);
+    fname = ajStrNewS(filename);
 
     ajFileDataNew(fname,&inf);
     if(!inf)
     {
 	ajStrAssC(&fname,"CODONS/");
-	ajStrAppC(&fname,ajStrStr(fn));
+	ajStrApp(&fname,filename);
 	ajFileDataNew(fname,&inf);
 	if(!inf)
 	{
@@ -962,16 +971,22 @@ AjBool ajCodRead(AjPCod thys, const AjPStr fn, const AjPStr format)
 	ret = codInFormatDef[i].Read(thys, inbuff);
 	if(ret)
 	{
-	    ajStrAssS(&thys->Name, fn);
+	    ajStrAssS(&thys->Name, filename);
 	    codFix(thys);
 	    ajDebug("ajCodRead Format '%s' success\n", codInFormatDef[i].Name);
 	    ajFileBuffDel(&inbuff);
+	    ajStrDel(&filename);
+	    ajStrDel(&formatstr);
 	    return ajTrue;
 	}
 	ajDebug("ajCodRead Format '%s' failed\n", codInFormatDef[i].Name);
 	ajCodClear(thys);
 	ajFileBuffReset(inbuff);
     }
+
+    ajFileBuffDel(&inbuff);
+    ajStrDel(&filename);
+    ajStrDel(&formatstr);
 
     return ret;
 }
@@ -1067,7 +1082,12 @@ static AjBool codReadEmboss(AjPCod thys, AjPFileBuff inbuff)
 
     ajStrDel(&t);
     ajStrDel(&line);
-
+    ajStrTokenClear(&handle);
+    ajStrDel(&tok1);
+    ajStrDel(&tok2);
+    ajStrDel(&tok3);
+    ajStrDel(&tok4);
+    ajStrDel(&tok5);
     return ajTrue;
 }
 

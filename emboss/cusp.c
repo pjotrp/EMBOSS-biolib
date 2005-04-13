@@ -51,6 +51,7 @@ int main(int argc, char **argv)
     ccnt   = 0;
     substr = ajStrNew();
     codon  = ajCodNewCode(0);
+    ajCodAssName(codon, ajFileGetName(outf));
 
     while(ajSeqallNext(seqall, &seq))
     {

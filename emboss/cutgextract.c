@@ -254,6 +254,9 @@ int main(int argc, char **argv)
 
 
 	ajStrDel(&key);
+	ajStrDel(&value->Division);
+	ajStrDel(&value->Doc);
+	ajStrDel(&value->Species);
 	AJFREE(value);
 	ajCodDel(&codon);
     }
