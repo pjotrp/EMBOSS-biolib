@@ -10,8 +10,7 @@ section: input [
 	type: "page"
 ]
 
-infile: fontfile [
-	parameter: Y
+string: fontfile [
 	information: "Fontfile"
 	knowntype: "fontfile"
 ]
@@ -152,7 +151,7 @@ float: stemlength [
 	additional: "Y"
 	default: "0.05"
 	information: "Stem length as fraction of tree depth"
-	minimum: "0.1"
+	minimum: "0.01"
 	maximum: "100.0"
 ]
 

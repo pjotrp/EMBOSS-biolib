@@ -1,6 +1,6 @@
 #
 
-SUBDIRS = src emboss_acd
+SUBDIRS = src emboss_acd data
 
 EXTRA_DIST = depcomp ltmain.sh install-sh config.sub config.guess
 

@@ -1041,7 +1041,7 @@ int main(int argc, Char *argv[])
 #endif
   
   init(argc, argv);
-  emboss_getoptions("drawgram",argc,argv);
+  emboss_getoptions("fdrawgram",argc,argv);
 
   setup_environment(argv, &canbeplotted);
 

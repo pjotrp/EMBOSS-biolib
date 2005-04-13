@@ -151,7 +151,7 @@ outfile: outmixfile  [
   knowntype: "outmixfile"
   extension: "mixfile"
   information: "Out mix file name"
-  nullok: @(!$(mixfile.isdefined))
+  nullok: "@(!$(mixfile.isdefined))"
 ]
 
 outfile: outfactfile  [
@@ -159,7 +159,7 @@ outfile: outfactfile  [
   extension: "factfile"
   knowntype: "outfactfile"
   information: "Out fact file name"
-  nullok: @(!$(factorfile.isdefined))
+  nullok: "@(!$(factorfile.isdefined))"
 ]
 
 boolean: printdata  [

@@ -14,13 +14,6 @@ tree: intreefile [
   knowntype: "newick"
 ]
 
-tree: secondintreefile [
-  parameter: "Y"
-  knowntype: "newick"
-  information: "Second input tree file"
-  nullok: "Y"
-]
-
 endsection: input
 
 section: additional [

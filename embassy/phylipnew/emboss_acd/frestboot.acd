@@ -10,7 +10,9 @@ section: input [
 ]
 
 discretestates: infile  [
+  characters: "01+-?"
   parameter: "Y"
+  help: "File containing one or more sets of restriction data"
 ]
 
 properties: weights [

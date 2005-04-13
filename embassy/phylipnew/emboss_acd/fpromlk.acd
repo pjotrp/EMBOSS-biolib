@@ -185,7 +185,7 @@ integer: seed [
 	additional: "$(njumble)"
 	information: "Random number seed between 1 and 32767 (must be odd)"
 	minimum: "1"
-	maximum: "3276"7
+	maximum: "32767"
 	default: "1"
 ]
 

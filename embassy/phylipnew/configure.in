@@ -425,4 +425,4 @@ dnl check and set compilation flags for Jemboss auth server code
 CHECK_THREADS
 
 
-AC_OUTPUT(Makefile src/Makefile emboss_acd/Makefile)
+AC_OUTPUT(Makefile src/Makefile emboss_acd/Makefile data/Makefile)

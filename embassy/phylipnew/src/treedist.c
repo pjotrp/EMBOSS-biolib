@@ -42,7 +42,6 @@ extern double **timesseen, **tmseen2, **times2;
 extern double trweight, ntrees;
 
 AjPPhyloTree* phylotrees = NULL;
-AjPPhyloTree* phylotrees2 = NULL;
 
 #ifndef OLDC
 /* function prototpes */
@@ -55,7 +54,6 @@ void   produce_full_matrix(long, long, long *);
 void   output_submenu(void);
 void   pairing_submenu(void);
 
-void   read_second_file(pattern_elm ***, double *, long, long );
 //void   getoptions(void);
 void emboss_getoptions(char *pgm, int argc, char *argv[]);
 void   assign_lengths(double **lengths, pattern_elm ***pattern_array, 
@@ -888,48 +886,6 @@ void pairing_submenu()
 }  /* pairing_submenu */
 
 
-void read_second_file(pattern_elm ***pattern_array,
-                double *timesseen_changes, long trees_in_1, long trees_in_2)
-{
-  boolean firsttree2, haslengths;
-  long nextnode, trees_read=0;
-  long j;
-  ajint i;
-  char* treestr;
-
-  firsttree2 = false;
-  grbg = NULL;
-  for (i=0; i < trees_in_2 ; i++) {
-    treestr = ajStrStrMod(&phylotrees2[i]->Tree);
-    goteof = false;
-    nextnode = 0;
-    haslengths = false;
-    allocate_nodep(&nodep, treestr, &spp);
-    treeread(&treestr, &root, treenode, &goteof, &firsttree2,
-               nodep, &nextnode, &haslengths,
-               &grbg, initconsnode);
-    reordertips();
-    missingname(root);
-    if (goteof)
-      continue;
-    ntrees += trweight;
-    if (noroot) {
-      reroot(nodep[outgrno - 1], &nextnode);
-      didreroot = outgropt;
-    }
-    accumulate(root);
-    gdispose(root);
-    for (j = 0; j < 2*(1 + spp); j++)
-      nodep[j] = NULL;
-    free(nodep);
-
-    store_pattern (pattern_array, 
-                   timesseen_changes,
-                   trees_in_1 + trees_read);
-    trees_read++;
-  }
-}  /* read_second_file */
-
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
 
@@ -974,14 +930,6 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     trees_in_1 = 0;
     while (phylotrees[trees_in_1])  trees_in_1++;
 
-    phylotrees2 = ajAcdGetTree("secondintreefile");
-
-    if(phylotrees2) {
-      trees_in_2 = 0;
-      while (phylotrees2[trees_in_2]) trees_in_2++;
-    }
-
- 
     progress = ajAcdGetBool("progress");
 
     outgrno = ajAcdGetInt("outgrno");
@@ -995,14 +943,10 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
     noroot = !ajAcdGetBool("noroot");
 
-    
-    if(phylotrees2) tree_p = ajAcdGetListI("pairingtwo", 1); 
-    else tree_p = ajAcdGetListI("pairing", 1);
+    tree_p = ajAcdGetListI("pairing", 1);
 
     if(ajStrMatchC(tree_p, "a")) tree_pairing = ADJACENT_PAIRS;
-    else if(ajStrMatchC(tree_p, "c")) tree_pairing = CORR_IN_1_AND_2;
     else if(ajStrMatchC(tree_p, "p")) tree_pairing = ALL_IN_FIRST;
-    else if(ajStrMatchC(tree_p, "l")) tree_pairing = ALL_IN_1_AND_2; 
 
     style = ajAcdGetListI("style", 1); 
     if(ajStrMatchC(style, "f")) output_scheme = FULL_MATRIX;
@@ -1068,23 +1012,6 @@ int main(int argc, Char *argv[])
     /* Patterns need to be freed in a more complex fashion. */
     /* This removed 'cause it was causing problems */
     /* free_patterns (pattern_array, trees_in_1 + trees_in_2);*/
-
-  } else if ((tree_pairing == CORR_IN_1_AND_2) ||
-             (tree_pairing == ALL_IN_1_AND_2)) {
-    /* Here, open the other tree file, parse it, and then put
-         together the difference array */
-    read_second_file (pattern_array, timesseen_changes, 
-                      trees_in_1, trees_in_2);
-
-    compute_distances (pattern_array, trees_in_1, trees_in_2);
-
-    /* Free all the buffers needed to compute the differences. */
-    free (timesseen_changes);
-    /* Patterns need to be freed in a more complex fashion. */
-    /* This removed 'cause it was causing problems */
-    /* free_patterns (pattern_array, trees_in_1 + trees_in_2); */
-
-  
 
   } else if (tree_pairing == NO_PAIRING) {
     /* Compute the consensus tree. */

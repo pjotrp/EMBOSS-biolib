@@ -687,11 +687,7 @@ void pairing_submenu()
 
     pairing = ajAcdGetListI("pairing", 1);
 
-    if (ajStrMatchC(pairing, "Adjacent"))
-	tree_pairing = ADJACENT_PAIRS;
-    else if (ajStrMatchC(pairing, "Pairs"))
-	tree_pairing = ALL_IN_FIRST;
-    else if (ajStrMatchC(pairing, "Correspond"))
+    if (ajStrMatchC(pairing, "Correspond"))
 	tree_pairing = CORR_IN_1_AND_2;
     else if (ajStrMatchC(pairing, "ListAll"))
 	tree_pairing = ALL_IN_1_AND_2;
@@ -992,7 +988,7 @@ int main(int argc, Char *argv[])
   argv[0] = "Treedist";
 #endif
   init(argc, argv);
-  emboss_getoptions("ftreedist",argc,argv);
+  emboss_getoptions("ftreedistpair",argc,argv);
   /*openfile(&intree, INTREE, "input tree file", "r", argv[0], intreename);*/
   embossoutfile = ajAcdGetOutfile("outfile");
   emboss_openfile(embossoutfile,&outfile,&outfilename);

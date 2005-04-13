@@ -1314,13 +1314,24 @@ void loadfont(short *font, char *application)
   AjPRegexp intexp = NULL;
   AjPStr rdline = NULL;
   AjPFile fontfile;
+  AjPStr fontfilename;
+  AjPStr installdir = NULL;
   ajint inum;
   AjPStr token = NULL;
 
   if (!intexp)
       intexp = ajRegCompC("[-0-9]+");
   i=0;
-  fontfile = ajAcdGetInfile("fontfile");
+  fontfilename = ajAcdGetString("fontfile");
+  if(ajNamRootInstall(&installdir))
+  {
+      ajStrAppC(&installdir, "share/EMBOSS/data/");
+      ajFileSetDir(&fontfilename, installdir);
+  }
+
+  fontfile = ajFileNewIn(fontfilename);
+  if(!fontfile)
+      return;
 
   while (!(ajFileEof(fontfile) || ch == ' ')) {
     charstart = i + 1;

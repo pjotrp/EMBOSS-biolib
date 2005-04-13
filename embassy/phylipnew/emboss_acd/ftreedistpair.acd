@@ -32,13 +32,11 @@ section: required [
 list: pairing [
   standard: "Y"
   information: "Tree pairing method"
-  values: "Adjacent:Distances between adjacent pairs in tree file;
-           Pairs:Distances between all possible pairs in tree file;
-           Correspond:Distances between corresponding pairs in one
+  values: "Correspond:Distances between corresponding pairs in one
   tree file and another;
            ListAll:Distances between all pairs in one tree file and
   another"
-  default: "Adjacent"
+  default: "ListAll"
 ]
 
 list: style [
