@@ -480,6 +480,34 @@ typedef struct AjSSecBucket
 
 
 
+/* @data AjPBtKeyWild ***************************************************
+**
+** Btree keyword wildcard object
+**
+** @attr keyword [AjPStr] Wildcard keyword
+** @attr pageno [ajlong] Page number of primary tree leaf
+** @attr first [AjBool] true for first search
+** @attr list [AjPList] list of AjPBtPris
+** @attr cache [AjPBtcache] cache for secondary tree
+** @attr idlist [AjPList] list of AjPStr IDs
+** @attr secpageno [ajlong] Page number of secondary tree leaf
+******************************************************************************/
+
+typedef struct AjSBtKeyWild
+{
+    AjPStr keyword;
+    ajlong pageno;
+    AjBool first;
+    AjPList list;
+    AjPBtcache cache;
+    AjPList idlist;
+    ajlong secpageno;
+} AjOBtKeyWild;
+#define AjPBtKeyWild AjOBtKeyWild*
+
+
+
+
 AjPBtcache ajBtreeCacheNewC(const char *file, const char *ext,
 			    const char *idir, const char *mode,
 			    ajint pagesize, ajint order, ajint fill,
@@ -505,10 +533,15 @@ void     ajBtreeCacheSync(AjPBtcache cache, ajlong rootpage);
 
 AjBool   ajBtreeDeleteId(AjPBtcache cache, const AjPBtId id);
 
-AjPBtWild  ajBtreeWildNew(AjPBtcache cache, const AjPStr wild);
-void       ajBtreeWildDel(AjPBtWild *thys);
+AjPBtWild    ajBtreeWildNew(AjPBtcache cache, const AjPStr wild);
+AjPBtKeyWild ajBtreeKeyWildNew(AjPBtcache cache, const AjPStr wild);
+void         ajBtreeWildDel(AjPBtWild *thys);
+void         ajBtreeKeyWildDel(AjPBtKeyWild *thys);
+
 AjPBtpage  ajBtreeFindInsertW(AjPBtcache cache, const char *key);
 AjPBtId    ajBtreeIdFromKeyW(AjPBtcache cache, AjPBtWild wild);
+AjPBtId    ajBtreeIdFromKeywordW(AjPBtcache cache, AjPBtKeyWild wild,
+				 AjPBtcache idcache);
 AjBool     ajBtreeReplaceId(AjPBtcache cache, const AjPBtId rid);
 
 AjPStr*    ajBtreeReadEntries(const char *filename, const char *indexdir);

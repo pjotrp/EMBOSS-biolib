@@ -101,6 +101,8 @@ static AjPBtpage  btreePageFromKeyW(AjPBtcache cache, unsigned char *buf,
 				    const char *key);
 static void       btreeReadLeaf(AjPBtcache cache, AjPBtpage page,
 				AjPList list);
+static void       btreeReadPriLeaf(AjPBtcache cache, AjPBtpage page,
+				   AjPList list);
 static AjPBtpage  btreeSplitLeaf(AjPBtcache cache, AjPBtpage spage);
 static AjPBtpage  btreeSplitPriLeaf(AjPBtcache cache, AjPBtpage spage);
 
@@ -132,6 +134,9 @@ static AjPBtpage     btreeSplitSecLeaf(AjPBtcache cache, AjPBtpage spage);
 
 static AjPSecBucket  btreeSecBucketNew(ajint n);
 static void          btreeSecBucketDel(AjPSecBucket *thys);
+static void          btreeSecLeftLeaf(AjPBtcache cache, AjPBtKeyWild wild);
+static AjBool        btreeSecNextLeafList(AjPBtcache cache, AjPBtKeyWild wild);
+
 static void          btreeAddToSecBucket(AjPBtcache cache, ajlong pageno,
 					 const AjPStr id);
 static AjBool        btreeReorderSecBuckets(AjPBtcache cache, AjPBtpage leaf);
@@ -5371,7 +5376,7 @@ AjPBtWild ajBtreeWildNew(AjPBtcache cache, const AjPStr wild)
     AJNEW0(thys);
 
     thys->id   = ajStrNewC(wild->Ptr);
-    ajStrTrimC(&thys->id,"*");
+    ajStrTrimC(&thys->id,"*"); /* Need to revisit this */
     thys->list = ajListNew();
 
     thys->first = ajTrue;
@@ -5405,6 +5410,76 @@ void ajBtreeWildDel(AjPBtWild *thys)
 
     while(ajListPop(pthis->list,(void **)&id))
 	ajBtreeIdDel(&id);
+
+    ajListDel(&pthis->list);
+
+    *thys = NULL;
+    AJFREE(pthis);
+
+    return;
+}
+
+
+
+
+/* @func ajBtreeKeyWildNew *********************************************
+**
+** Construct a wildcard keyword search object
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] wild [const AjPStr] wildcard keyword prefix (without asterisk)
+**
+** @return [AjPBKeyWild] b+ tree wildcard object
+** @@
+******************************************************************************/
+
+AjPBtKeyWild ajBtreeKeyWildNew(AjPBtcache cache, const AjPStr wild)
+{
+    AjPBtKeyWild thys = NULL;
+    
+    AJNEW0(thys);
+
+    thys->keyword = ajStrNewC(wild->Ptr);
+    ajStrTrimC(&thys->keyword,"*"); /* Need to revisit this */
+
+    thys->list   = ajListNew();
+    thys->idlist = ajListNew();
+
+    thys->first = ajTrue;
+
+    return thys;
+}
+
+
+
+
+/* @func ajBtreeKeyWildDel *********************************************
+**
+** Destroy a wildcard keyword search object
+**
+** @param [u] thys [AjPBtKeyWild*] b+ tree wildcard keyword structure
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajBtreeKeyWildDel(AjPBtKeyWild *thys)
+{
+    AjPBtKeyWild pthis = NULL;
+    AjPStr id = NULL;
+    AjPBtPri pri = NULL;
+    
+    pthis = *thys;
+    if(!thys || !pthis)
+	return;
+
+    ajStrDel(&pthis->keyword);
+
+    while(ajListPop(pthis->idlist,(void **)&id))
+	ajStrDel(&id);
+
+    while(ajListPop(pthis->list,(void **)&pri))
+	ajBtreePriDel(&pri);
 
     ajListDel(&pthis->list);
 
@@ -10265,4 +10340,446 @@ AjBool ajBtreeVerifyId(AjPBtcache cache, ajlong rootblock, const char *id)
     AJFREE(parray);
 
     return found;
+}
+
+
+
+
+/* @func ajBtreeIdFromKeywordW ********************************************
+**
+** Wildcard retrieval of keyword index entries
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [u] wild [AjPBtKeyWild] Wildcard
+** @param [u] idcache [AjPBtcache] id cache
+**
+** @return [AjPBtId] next matching Id or NULL
+** @@
+******************************************************************************/
+
+AjPBtId ajBtreeIdFromKeywordW(AjPBtcache cache, AjPBtKeyWild wild,
+			      AjPBtcache idcache)
+{
+
+    AjPBtPri pri   = NULL;
+    AjPBtpage page = NULL;
+    char *key      = NULL;
+    AjPList list   = NULL;
+    AjBool found   = ajFalse;
+    AjPBtId btid   = NULL;
+    AjPStr  id     = NULL;
+    
+    ajlong pageno = 0L;
+    ajint keylen  = 0;
+
+    unsigned char *buf = NULL;    
+
+    key  = wild->keyword->Ptr;
+    list = wild->list;
+
+    keylen = strlen(key);
+
+    found = ajFalse;
+    
+    if(wild->first)
+    {
+	page = ajBtreeFindInsertW(cache,key);
+	page->dirty = BT_LOCK;
+	wild->pageno = page->pageno;
+	
+	btreeReadPriLeaf(cache,page,list);
+
+	page->dirty = BT_CLEAN;
+	
+	if(!ajListLength(list))
+	    return NULL;
+
+	while(ajListPop(list,(void **)&pri))
+	{
+	    if(!strncmp(pri->keyword->Ptr,key,keylen))
+	    {
+		found = ajTrue;
+		break;
+	    }
+	    ajBtreePriDel(&pri);
+	}
+
+	wild->first = ajFalse;
+
+	if(found)
+	{
+	    cache->secrootblock = pri->treeblock;
+	    btreeSecLeftLeaf(cache, wild);
+	}
+	else /* Check the next leaf just in case key==internal */
+	{
+	    buf = page->buf;
+	    GBT_RIGHT(buf,&pageno);
+	    if(!pageno)
+		return NULL;
+	    page = ajBtreeCacheRead(cache,pageno);
+	    wild->pageno = pageno;
+	    page->dirty = BT_LOCK;
+	    
+	    btreeReadPriLeaf(cache,page,list);	
+	    
+	    page->dirty = BT_CLEAN;
+	    
+	    if(!ajListLength(list))
+		return NULL;
+	    
+	    found = ajFalse;
+	    while(ajListPop(list,(void **)&pri))
+	    {
+		if(!strncmp(pri->keyword->Ptr,key,keylen))
+		{
+		    found = ajTrue;
+		    break;
+		}
+		ajBtreePriDel(&pri);
+	    }
+	}
+
+
+	if(!found)
+	    return NULL;
+
+	cache->secrootblock = pri->treeblock;
+	btreeSecLeftLeaf(cache, wild);
+    }
+
+
+    if(ajListLength(wild->idlist))
+    {
+	ajListPop(wild->idlist,(void **)&id);
+	btid = ajBtreeIdFromKey(idcache,id->Ptr);
+	ajStrDel(&id);
+	return btid;
+    }
+    else if((btreeSecNextLeafList(cache,wild)))
+    {
+	if(ajListLength(wild->idlist))
+	{
+	    ajListPop(wild->idlist,(void **)&id);
+	    btid = ajBtreeIdFromKey(idcache,id->Ptr);
+	    ajStrDel(&id);
+	    return btid;
+	}
+    }
+    
+
+    /* Done for the current keyword so get the next one */
+
+    if(!ajListLength(list))
+    {
+	page = ajBtreeCacheRead(cache,wild->pageno); 
+	buf = page->buf;
+	GBT_RIGHT(buf,&pageno);
+	if(!pageno)
+	    return NULL;
+	page = ajBtreeCacheRead(cache,pageno);
+	wild->pageno = pageno;
+	page->dirty = BT_LOCK;
+
+	btreeReadPriLeaf(cache,page,list);	
+
+	page->dirty = BT_CLEAN;
+	
+	if(!ajListLength(list))
+	    return NULL;
+    }
+    
+
+
+    while(ajListPop(list,(void **)&pri))
+    {
+	if(!strncmp(pri->keyword->Ptr,key,keylen))
+	{
+	    found = ajTrue;
+	    break;
+	}
+	ajBtreePriDel(&pri);
+    }
+    
+    
+    if(!found)
+	return NULL;
+
+
+    cache->secrootblock = pri->treeblock;
+    btreeSecLeftLeaf(cache, wild);
+    
+    if(ajListLength(wild->idlist))
+    {
+	ajListPop(wild->idlist,(void **)&id);
+	btid = ajBtreeIdFromKey(idcache,id->Ptr);
+	ajStrDel(&id);
+    }
+    else
+	return NULL;
+    
+    return btid;
+}
+
+
+
+
+/* @funcstatic btreeReadPriLeaf ***********************************************
+**
+** Read all primary index leaf KWs into a list
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [u] page [AjPBtpage] page
+** @param [w] list [AjPList] list of AjPBtPri objects
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void btreeReadPriLeaf(AjPBtcache cache, AjPBtpage page, AjPList list)
+{
+    unsigned char *buf = NULL;
+    AjPStr *karray     = NULL;
+    ajlong *parray     = NULL;
+
+    ajint keylimit = 0;
+    ajint order    = 0;
+    ajint nkeys    = 0;
+    ajint bentries = 0;
+    
+    ajint i;
+    ajint j;
+    
+    AjPPriBucket *buckets = NULL;
+
+    /* ajDebug("In ReadPriLeaf\n"); */
+    
+    buf = page->buf;
+    order = cache->order;
+
+    AJCNEW0(parray,order);
+    AJCNEW0(karray,order);
+    for(i=0;i<order;++i)
+	karray[i] = ajStrNew();
+
+    btreeGetKeys(cache,buf,&karray,&parray);
+
+    GBT_NKEYS(buf,&nkeys);
+    
+    keylimit = nkeys+1;
+    AJCNEW0(buckets,keylimit);
+
+    for(i=0;i<keylimit;++i)
+	buckets[i] = btreeReadPriBucket(cache,parray[i]);
+    
+    for(i=0;i<keylimit;++i)
+    {
+	bentries = buckets[i]->Nentries;
+	for(j=0;j<bentries;++j)
+	    ajListPush(list,(void *)buckets[i]->codes[j]);
+	AJFREE(buckets[i]->keylen);
+	AJFREE(buckets[i]->codes);
+	AJFREE(buckets[i]);
+    }
+    ajListSort(list,btreeKeywordCompare);
+    AJFREE(buckets);
+
+    for(i=0;i<order;++i)
+	ajStrDel(&karray[i]);
+    AJFREE(karray);
+    AJFREE(parray);
+
+    return;
+}
+
+
+
+
+/* @funcstatic btreeSecLeftLeaf ***********************************************
+**
+** Read all secondary index leaf IDs into a list from the lefthandmost
+** leaf or the root node if the level is 0.
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [u] wild [AjPBtKeyWild] wildcard keyword object
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void btreeSecLeftLeaf(AjPBtcache cache, AjPBtKeyWild wild)
+{
+    AjPBtpage root = NULL;
+    AjPBtpage page = NULL;
+    ajlong right = 0L;
+    ajint order;
+    ajint nodetype = 0;
+    ajint nkeys = 0;
+    ajint keylimit = 0;
+    ajint bentries = 0;
+    
+    ajint i;
+    ajint j;
+    
+    AjPStr *karray = NULL;
+    ajlong *parray = NULL;
+    
+    unsigned char *buf;
+    
+    AjPSecBucket *buckets = NULL;
+
+
+    root = ajBtreeCacheRead(cache, cache->secrootblock);
+    root->dirty = BT_LOCK;
+    
+    buf = root->buf;
+    GBT_RIGHT(buf,&right);
+    cache->slevel = (ajint) right;
+    GBT_NODETYPE(buf,&nodetype);
+    
+    order = cache->sorder;
+
+    AJCNEW0(parray,order);
+    AJCNEW0(karray,order);
+    for(i=0;i<order;++i)
+	karray[i] = ajStrNew();
+
+    btreeGetKeys(cache,buf,&karray,&parray);
+
+
+    GBT_NODETYPE(buf,&nodetype);
+
+    if(cache->slevel)
+    {
+	while(nodetype != BT_LEAF)
+	{
+	    btreeGetKeys(cache,buf,&karray,&parray);
+	    page =ajBtreeCacheRead(cache, parray[0]);
+	    buf = page->buf;
+	    GBT_NODETYPE(buf,&nodetype);
+	    page->dirty = BT_CLEAN;
+	}
+	wild->secpageno = parray[0];
+	btreeGetKeys(cache,buf,&karray,&parray);
+    }
+    else
+	wild->secpageno = cache->secrootblock;
+    
+
+
+    GBT_NKEYS(buf,&nkeys);
+	
+
+    keylimit = nkeys+1;
+    AJCNEW0(buckets,keylimit);
+
+    for(i=0;i<keylimit;++i)
+	buckets[i] = btreeReadSecBucket(cache,parray[i]);
+
+    for(i=0;i<keylimit;++i)
+    {
+	bentries = buckets[i]->Nentries;
+	for(j=0;j<bentries;++j)
+	    ajListPush(wild->idlist,(void *)buckets[i]->ids[j]);
+	AJFREE(buckets[i]->keylen);
+	AJFREE(buckets[i]->ids);
+	AJFREE(buckets[i]);
+    }
+    ajListSort(wild->idlist,ajStrCmp);
+    AJFREE(buckets);
+
+    root->dirty = BT_CLEAN;
+    
+    for(i=0;i<order;++i)
+	ajStrDel(&karray[i]);
+    AJFREE(karray);
+    AJFREE(parray);
+
+    return;
+}
+
+
+
+
+/* @funcstatic btreeSecNextLeafList ******************************************
+**
+** Get next wadge of secondary index leaf IDs into a list after a successful
+** wildcard keyword search
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [u] wild [AjPBtKeyWild] wildcard keyword object
+**
+** @return [AjBool] true if a wadge was successfully read
+** @@
+******************************************************************************/
+
+static AjBool btreeSecNextLeafList(AjPBtcache cache, AjPBtKeyWild wild)
+{
+    AjPBtpage page = NULL;
+    unsigned char *buf;
+    ajlong right = 0L;
+    ajint order;
+    ajint nkeys = 0;
+    ajint keylimit = 0;
+    ajint bentries = 0;
+    ajint i;
+    ajint j;
+    
+    AjPStr *karray = NULL;
+    ajlong *parray = NULL;
+
+    AjPSecBucket *buckets = NULL;
+    
+
+    if(cache->secrootblock == wild->secpageno)
+	return ajFalse;
+
+    
+    page = ajBtreeCacheRead(cache,wild->secpageno);
+    buf = page->buf;
+    GBT_RIGHT(buf,&right);
+    page->dirty = BT_CLEAN;
+
+    if(!right)
+	return ajFalse;
+
+    page = ajBtreeCacheRead(cache,right);
+    wild->secpageno = right;
+
+    order = cache->sorder;
+
+    AJCNEW0(parray,order);
+    AJCNEW0(karray,order);
+    for(i=0;i<order;++i)
+	karray[i] = ajStrNew();
+
+    btreeGetKeys(cache,buf,&karray,&parray);
+    GBT_NKEYS(buf,&nkeys);
+
+    keylimit = nkeys + 1;
+    
+    AJCNEW0(buckets,keylimit);
+    
+    for(i=0;i<keylimit;++i)
+	buckets[i] = btreeReadSecBucket(cache,parray[i]);
+    
+    for(i=0;i<keylimit;++i)
+    {
+	bentries = buckets[i]->Nentries;
+	for(j=0;j<bentries;++j)
+	    ajListPush(wild->idlist,(void *)buckets[i]->ids[j]);
+	AJFREE(buckets[i]->keylen);
+	AJFREE(buckets[i]->ids);
+	AJFREE(buckets[i]);
+    }
+    ajListSort(wild->idlist,ajStrCmp);
+    AJFREE(buckets);
+    
+    for(i=0;i<order;++i)
+	ajStrDel(&karray[i]);
+    AJFREE(karray);
+    AJFREE(parray);
+
+    
+    return ajTrue;
 }
