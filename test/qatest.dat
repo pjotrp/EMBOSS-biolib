@@ -3767,20 +3767,128 @@ FP 5 />HSF/
 FP 16 />/
 //
 
+#############################################
+# The qanxflat database
+#############################################
+
 ID dbxflat-check-keep
 DL keep
 AQ dbxflat
-IN EMBL
-IN EMBL
-IN EMBL
+IN embl
+IN embl
+IN embl
 IN rod.dat
 IN ../../embl
 IN
 FI stderr
-FC = 6
+FC = 12
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
+FI stdout
+FC = 1
+FP /^Processing file .*\/test\/embl\/rod\.dat\n/
+FI embl.ent
+FZ = 66
+FP /^#Number of files\t1\n/
+FP /.*\/test\/embl\/rod\.dat\n/
+FI embl.pxac
+FZ = 115
+FP /^Order     20\n/
+FP /^Fill      15\n/
+FP /^Pagesize  8192\n/
+FP /^Level     0\n/
+FP /^Cachesize 100\n/
+FP /^Order2    0\n/
+FP /^Fill2     0\n/
+FP /^Count     2\n/
+FP /^Kwlimit   0\n/
+FI embl.pxid
+FZ = 115
+FP /^Order     20\n/
+FP /^Fill      15\n/
+FP /^Pagesize  8192\n/
+FP /^Level     0\n/
+FP /^Cachesize 100\n/
+FP /^Order2    0\n/
+FP /^Fill2     0\n/
+FP /^Count     2\n/
+FP /^Kwlimit   0\n/
+FI embl.xac
+FZ = 24576
+FP /l48662/
+FP /l48662/
+FP /z46957/
+FP /u68037/
+FI embl.xid
+FZ = 24576
+FP /mmam/
+FP /rnops/
+FP /rnu68037/
+//
+
+ID dbxflat-id
+AP seqret
+CL qanxflat-id:rnops test.out -auto
+FI test.out
+FZ = 1567
+FP /\A>RNOPS /
+FP 1 />/
+//
+
+ID dbxflat-idfirst
+AP seqret
+CL qanxflat-id:MMAM test.out -auto
+FI test.out
+FZ = 473
+FP 1 />MMAM /
+FP 1 />/
+//
+
+ID dbxflat-idsecond
+AP seqret
+CL qanxflat-id:RNOPS test.out -auto
+FI test.out
+FZ = 1567
+FP 1 />RNOPS /
+FP 1 />/
+//
+
+ID dbxflat-last
+AP seqret
+CL qanxflat-id:RNU68037 test.out -auto
+FI test.out
+FZ = 1320
+FP 1 />RNU68037 /
+FP 1 />/
+//
+
+ID dbxflat-nextlast
+AP seqret
+CL qanxflat-id:RNOPS test.out -auto
+FI test.out
+FZ = 1567
+FP 1 />RNOPS /
+FP 1 />/
+//
+
+ID dbxflat-all
+AP seqret
+CC Fails to fetch all entries in emboss access method
+CL qanxflat:* test.out -auto
+FI test.out
+FZ = 3360
+FP 1 />RNOPS /
+FP 3 />/
+//
+
+ID dbxflat-wild
+AP seqret
+CL qanxflat:r* test.out -auto
+FI test.out
+FZ = 2887
+FP 1 />RNOPS /
+FP 2 />/
 //
 
 #############################################
@@ -4044,6 +4152,163 @@ FP /\A.{300}\001/
 FI acnum.trg
 FZ = 1596
 FP /\A.{308}AB000095\001/
+//
+
+#############################################
+# The qapxflat database
+#############################################
+
+ID dbxflat-swiss-keep
+DL keep
+AQ dbxflat
+IN swnew
+IN swnew
+IN
+IN
+IN ../../swnew
+IN
+IN
+IN
+FI stderr
+FC = 12
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 3
+FP /Processing file .*\/test\/swnew\/[a-z_]+\.dat\n/
+FP 3 /^Processing file /
+FI swnew.ent
+FZ = 175
+FP /#Number of files\t3\n/
+FP /.*\/test\/swnew\/[a-z_]+\.dat\n/
+FI swnew.xid
+FZ = 24576
+FP /co9_fugru\000/
+FI swnew.xac
+FZ = 24576
+FP /p53450/
+FI swnew.pxac
+FZ = 115
+FP /^Order     20\n/
+FP /^Fill      15\n/
+FP /^Pagesize  8192\n/
+FP /^Level     0\n/
+FP /^Cachesize 100\n/
+FP /^Order2    0\n/
+FP /^Fill2     0\n/
+FP /^Count     4\n/
+FP /^Kwlimit   0\n/
+FI swnew.pxid
+FZ = 115
+FP /^Order     20\n/
+FP /^Fill      15\n/
+FP /^Pagesize  8192\n/
+FP /^Level     0\n/
+FP /^Cachesize 100\n/
+FP /^Order2    0\n/
+FP /^Fill2     0\n/
+FP /^Count     4\n/
+FP /^Kwlimit   0\n/
+//
+
+ID dbxflat-swiss-idfirst
+AP seqret
+CL qapxflat-id:CO9_FUGRU test.out -auto
+FI test.out
+FZ = 649
+FP 1 />CO9_FUGRU /
+FP 1 />/
+//
+
+ID dbxflat-swiss-idsecond
+AP seqret
+CL qapxflat-id:E2BB_FUGRU test.out -auto
+FI test.out
+FZ = 473
+FP 1 />E2BB_FUGRU /
+FP 1 />/
+//
+
+ID dbxflat-swiss-last
+AP seqret
+CL qapxflat-id:TM21_FUGRU test.out -auto
+FI test.out
+FZ = 287
+FP 1 />TM21_FUGRU /
+FP 1 />/
+//
+
+ID dbxflat-swiss-nextlast
+AP seqret
+CL qapxflat-id:ODO2_FUGRU test.out -auto
+FI test.out
+FZ = 569
+FP 1 />ODO2_FUGRU /
+FP 1 />/
+//
+
+ID dbxflat-swiss-all
+AP seqret
+CC Fails to fetch all entries in emboss access method
+CL qapxflat:* test.out -auto
+FI test.out
+FZ = 2413
+FP 1 />ODO2_FUGRU /
+FP 5 />/
+//
+
+ID dbxflat-swiss-wild
+AP seqret
+CL qapxflat:o* test.out -auto
+FI test.out
+FZ = 569
+FP 1 />ODO2_FUGRU /
+FP 1 />/
+//
+
+ID dbxflat-swiss-testexc
+AP seqret
+CL qapxflatexc-id:CO9_FUGRU test.out -auto
+FI test.out
+FZ = 649
+FP 1 />CO9_FUGRU /
+FP 1 />/
+//
+
+ID dbxflat-swiss-testexcfail
+ER 1
+AP seqret
+CC exclude not yet implemented for access method emboss
+CL qapxflatexc-id:FOS_FUGRU test.out -auto
+FI stderr
+FZ = 127
+FP /Error: Unable to read sequence 'qapflatexc-id:FOS_FUGRU'/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
+//
+
+ID dbxflat-swiss-testinc
+AP seqret
+CL qapxflatinc-id:FOS_FUGRU test.out -auto
+FI test.out
+FZ = 435
+FP 1 />FOS_FUGRU /
+FP 1 />/
+//
+
+ID dbxflat-swiss-testincfail
+ER 1
+AP seqret
+CC include not yet implemented for access method emboss
+CL qapxflatinc-id:CO9_FUGRU test.out -auto
+FI stderr
+FZ = 127
+FP /Error: Unable to read sequence 'qapflatinc-id:CO9_FUGRU'/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
 //
 
 #############################################
@@ -19567,6 +19832,7 @@ CC First prompt only needed until it can read
 CC the number of species from the input tree
 IN 10
 IN ../../data/evolution/retree.dat
+IN
 IN Q
 IN Y
 IN U
