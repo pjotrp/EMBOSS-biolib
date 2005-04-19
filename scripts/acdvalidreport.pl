@@ -24,6 +24,9 @@
    "^Sub level section '\\S+' should be under" => "Subsection badsection",
    "Parameter defined as false" => "Parameter false",
    "Section '\\S+' not defined in sections[.]standard file" => "Section undefined",
+   "First \\S+ (\\S+ )?'\\S+' is not a parameter" => "Nonparameter first",
+   "Subsequent \\S+ (\\S+ )?'\\S+' is not a parameter" => "Nonparameter later",
+   "Sequence set '\\S+' has no 'aligned'" => "Seqset aligned undefined",
 #   "" => "",
    "Dummy message" => "dummy"
 	     );
