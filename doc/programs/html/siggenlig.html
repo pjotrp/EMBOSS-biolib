@@ -1,0 +1,518 @@
+<!-- START OF HEADER -->
+<HTML><HEAD>
+<TITLE> EMBASSY: DOMAINATRIX: ReplaceWithProgramName documentation</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="../index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="../../emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+
+<H2> siggenlig documentation </H2>
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+
+<!-- END OF HEADER -->
+
+
+
+
+
+<!-- CONTENTS
+     This always includes the sections below.
+     Other subsections can be added for individual applications.
+-->
+<H2>CONTENTS </H2>
+<b> <a href="#1.0">1.0     SUMMARY                   </a></b><br>
+<b> <a href="#2.0">2.0     INPUTS & OUTPUTS          </a></b><br>
+<b> <a href="#3.0">3.0     INPUT FILE FORMAT         </a></b><br>
+<b> <a href="#4.0">4.0     OUTPUT FILE FORMAT        </a></b><br>
+<b> <a href="#5.0">5.0     DATA FILES                </a></b><br>
+<b> <a href="#6.0">6.0     USAGE                     </a></b><br>    
+<b> <a href="#7.0">7.0     COMMAND-LINE ARGUMENTS    </a></b><br>    
+<b> <a href="#8.0">8.0     KNOWN BUGS & WARNINGS     </a></b><br>    
+<b> <a href="#9.0">9.0     NOTES                     </a></b><br>
+<b> <a href="#10.0">10.0     DESCRIPTION               </a></b><br>
+<b> <a href="#11.0">11.0   ALGORITHM                 </a></b><br>
+<b> <a href="#12.0">12.0   RELATED APPLICATIONS      </a></b><br>
+<b> <a href="#13.0">13.0   DIAGNOSTIC ERROR MESSAGES </a></b><br>
+<b> <a href="#14.0">14.0   AUTHORS                   </a></b><br>
+<b> <a href="#15.0">15.0   REFERENCES                </a></b><br>
+
+<!-- SUMMARY
+     Succint description of the application, particularly its inputs, outputs
+     and what it does.  The same text is given at the top of the source (.c)
+     file and in the <documentation> attribute of the <application definition>
+     of the ACD file.
+-->
+<a name="1.0"><H2> 1.0   SUMMARY  </H2></a>
+Generate ligand-binding signatures from a CON file
+
+<p>
+
+ <b>siggenlig</b> is a generic tool for 
+
+
+
+
+<!-- INPUTS & OUTPUTS
+     Short summary of the application inputs and outputs in its different 
+     modes of usage (if appropriate). More detail than the summary.
+-->
+<a name="2.0"><H2> 2.0   INPUTS & OUTPUTS          </H2></a>
+
+<b>siggenlig</b> reads a 
+
+
+ 
+ 
+
+
+
+
+<!-- INPUT FILE FORMAT 
+     Description and example(s) of input file formats.  Should provide enough
+     information to write and parse the file.  Should describe the format in 
+     unusual cases - null input, etc.
+     Use "<b>siggenlig</b> reads any normal sequence USAs." if
+     appropriate.
+-->
+<a name="3.0"><H2> 3.0   INPUT FILE FORMAT         </H2></a>
+
+
+
+<p>
+
+
+
+
+
+
+
+<!-- OUTPUT FILE FORMAT 
+     Description and example(s) of output file formats.  Should provide enough
+     information to write and parse the file.  Should describe the format in 
+     unusual cases - null input, etc.  
+     If the standard description of the avalable report formats is required, 
+     use:   #include file="inc/reportformats.ihtml"
+     Use "Outputs a graph to the specified graphics device."
+     or  "outputs a report format file. The default format is ..."
+     if appropriate.
+-->
+<a name="4.0"><H2> 4.0   OUTPUT FILE FORMAT         </H2></a>
+
+
+
+
+
+
+<p>
+
+
+
+
+
+<!-- DATA FILES         
+     Any data files used (e.g. translation table file, substitution matrix 
+     etc.  This includes example data file formats if they are not obvious.
+     For a standard description of what data files are and how embossdata can
+     be used to inspect and retrieve them, use:
+     #include file="inc/localfiles.ihtml"
+-->
+
+<a name="5.0"><H2> 5.0   DATA FILES                </H2></a>
+<b>siggenlig</b> does not use a data file.
+
+
+
+
+
+
+
+<!-- USAGE
+     Example usage, as run from the command-line.
+     Many examples illustrating different behaviours is good.
+-->
+<a name="6.0"><H2> 6.0   USAGE                     </H2></a>
+
+
+
+<p>
+
+
+
+
+
+
+
+<a name="7.0"><H2>7.0     COMMAND-LINE ARGUMENTS    </H2></a>
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->     
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" >
+<tr><td>
+<pre>
+   Standard (Mandatory) qualifiers (* if not always prompted):
+  [-confile]           infile     This option specifies the name of the CON
+                                  file (contact file) (input). A 'contact
+                                  file' contains contact data for a protein or
+                                  a domain from SCOP or CATH, in the CON
+                                  format (EMBL-like). The contacts may be
+                                  intra-chain residue-residue, inter-chain
+                                  residue-residue or residue-ligand. The files
+                                  are generated by using CONTACTS, INTERFACE
+                                  and SITES.
+   -ccfpdir            directory  This option specifies the location of
+                                  protein CCF file (clean coordinate files)
+                                  (input). A 'clean cordinate file' contains
+                                  protein coordinate and derived data for a
+                                  single PDB file ('protein clean coordinate
+                                  file') or a single domain from SCOP or CATH
+                                  ('domain clean coordinate file'), in CCF
+                                  format (EMBL-like). The files, generated by
+                                  using PDBPARSE (PDB files) or DOMAINER
+                                  (domains), contain 'cleaned-up' data that is
+                                  self-consistent and error-corrected.
+                                  Records for residue solvent accessibility
+                                  and secondary structure are added to the
+                                  file by using PDBPLUS. default: "./
+   -ccfddir            directory  This option specifies the location of
+                                  protein CCF file (clean coordinate files)
+                                  (input). A 'clean cordinate file' contains
+                                  protein coordinate and derived data for a
+                                  single PDB file ('protein clean coordinate
+                                  file') or a single domain from SCOP or CATH
+                                  ('domain clean coordinate file'), in CCF
+                                  format (EMBL-like). The files, generated by
+                                  using PDBPARSE (PDB files) or DOMAINER
+                                  (domains), contain 'cleaned-up' data that is
+                                  self-consistent and error-corrected.
+                                  Records for residue solvent accessibility
+                                  and secondary structure are added to the
+                                  file by using PDBPLUS. default: "./
+   -mode               menu       This option specifies the mode of signature
+                                  generation. In 'Full-length signature mode'
+                                  (mode 1) a single signature incorporating
+                                  all residue positions that contact the
+                                  ligand plus intervening gaps is generated.
+                                  In 'Patch signature mode' (mode 2) one or
+                                  more signatures corresponding to 'patches'
+                                  of residue positions are generated. A patch
+                                  is a set of residues that are
+                                  near-neighbours in sequence and is described
+                                  by two user-defined parameters: minimum
+                                  patch size and maximum gap distance.
+   -type               menu       This option specifies the type of signature
+                                  generated. In '1D (sequence) signature'
+                                  sequence-based signatures are generated. In
+                                  '3D (structural) signature' structure-based
+                                  signatures are generated.
+*  -patchsize          integer    This option specifies the minimum patch
+                                  size. This is the minimum number of contact
+                                  positions that must be incorporated in a
+                                  signature.
+*  -gapdistance        integer    This option specifies the maximum gap
+                                  distance. This is the maximum allowable gap
+                                  (residues) between two residue in a patch.
+                                  If two contact residues are further than
+                                  this distance apart in sequence, they would
+                                  not belong to the same patch.
+*  -environment        menu       This option specifies the environment
+                                  definition. See matgen3d documentation for
+                                  description of definitions.
+   -wsiz               integer    This option specifies the window size. When
+                                  a signature is aligned to a protein
+                                  sequence, the permissible gaps between two
+                                  signature positions is determined by the
+                                  empirical gaps and the window size. The user
+                                  is prompted for a window size that is used
+                                  for every position in the signature. Likely
+                                  this is not optimal. A future implementation
+                                  will provide a range of methods for
+                                  generating values of window size depending
+                                  upon the alignment (window size is
+                                  identified by the WSIZ record in the
+                                  signature output file).
+  [-sigoutdir]         outdir     This option specifies the location of
+                                  signature files (output). A 'signature file'
+                                  contains a sparse sequence signature
+                                  suitable for use with the SIGSCAN and
+                                  SIGSCANLIG programs. The files are generated
+                                  by using SIGGEN and SIGGENLIG". default:
+                                  "./
+  [-logfile]           outfile    Name of siggenlig logfile
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-logfile" associated qualifiers
+   -odirectory3        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+
+</pre>
+</pre>
+</td></tr>
+</table>
+<p> 
+
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-confile]<br>(Parameter 1)</td>
+<td>This option specifies the name of the CON file (contact file) (input). A 'contact file' contains contact data for a protein or a domain from SCOP or CATH, in the CON format (EMBL-like). The contacts may be intra-chain residue-residue, inter-chain residue-residue or residue-ligand. The files are generated by using CONTACTS, INTERFACE and SITES.</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-ccfpdir</td>
+<td>This option specifies the location of protein CCF file (clean coordinate files) (input). A 'clean cordinate file' contains protein coordinate and derived data for a single PDB file ('protein clean coordinate file') or a single domain from SCOP or CATH ('domain clean coordinate file'), in CCF format (EMBL-like). The files, generated by using PDBPARSE (PDB files) or DOMAINER (domains), contain 'cleaned-up' data that is self-consistent and error-corrected. Records for residue solvent accessibility and secondary structure are added to the file by using PDBPLUS. default: "./</td>
+<td>Directory</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>-ccfddir</td>
+<td>This option specifies the location of protein CCF file (clean coordinate files) (input). A 'clean cordinate file' contains protein coordinate and derived data for a single PDB file ('protein clean coordinate file') or a single domain from SCOP or CATH ('domain clean coordinate file'), in CCF format (EMBL-like). The files, generated by using PDBPARSE (PDB files) or DOMAINER (domains), contain 'cleaned-up' data that is self-consistent and error-corrected. Records for residue solvent accessibility and secondary structure are added to the file by using PDBPLUS. default: "./</td>
+<td>Directory</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>-mode</td>
+<td>This option specifies the mode of signature generation. In 'Full-length signature mode' (mode 1) a single signature incorporating all residue positions that contact the ligand plus intervening gaps is generated. In 'Patch signature mode' (mode 2) one or more signatures corresponding to 'patches' of residue positions are generated. A patch is a set of residues that are near-neighbours in sequence and is described by two user-defined parameters: minimum patch size and maximum gap distance.</td>
+<td><table><tr><td>1</td> <td><i>(Full-length signature mode)</i></td></tr><tr><td>2</td> <td><i>(Patch signature mode)</i></td></tr></table></td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-type</td>
+<td>This option specifies the type of signature generated. In '1D (sequence) signature' sequence-based signatures are generated. In '3D (structural) signature' structure-based signatures are generated.</td>
+<td><table><tr><td>1</td> <td><i>(1D (sequence) signature)</i></td></tr><tr><td>2</td> <td><i>(3D (structural) signature)</i></td></tr></table></td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-patchsize</td>
+<td>This option specifies the minimum patch size. This is the minimum number of contact positions that must be incorporated in a signature.</td>
+<td>Integer 3 or more</td>
+<td>5</td>
+</tr>
+
+<tr>
+<td>-gapdistance</td>
+<td>This option specifies the maximum gap distance. This is the maximum allowable gap (residues) between two residue in a patch. If two contact residues are further than this distance apart in sequence, they would not belong to the same patch.</td>
+<td>Integer 0 or more</td>
+<td>2</td>
+</tr>
+
+<tr>
+<td>-environment</td>
+<td>This option specifies the environment definition. See matgen3d documentation for description of definitions.</td>
+<td><table><tr><td>1</td> <td><i>(Env1)</i></td></tr><tr><td>2</td> <td><i>(Env2)</i></td></tr><tr><td>3</td> <td><i>(Env3)</i></td></tr><tr><td>4</td> <td><i>(Env4)</i></td></tr><tr><td>5</td> <td><i>(Env5)</i></td></tr><tr><td>6</td> <td><i>(Env6)</i></td></tr><tr><td>7</td> <td><i>(Env7)</i></td></tr><tr><td>8</td> <td><i>(Env8)</i></td></tr><tr><td>9</td> <td><i>(Env9)</i></td></tr><tr><td>10</td> <td><i>(Env10)</i></td></tr><tr><td>11</td> <td><i>(Env11)</i></td></tr><tr><td>12</td> <td><i>(Env12)</i></td></tr><tr><td>13</td> <td><i>(Env13)</i></td></tr><tr><td>14</td> <td><i>(Env14)</i></td></tr><tr><td>15</td> <td><i>(Env15)</i></td></tr><tr><td>16</td> <td><i>(Env16)</i></td></tr></table></td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-wsiz</td>
+<td>This option specifies the window size. When a signature is aligned to a protein sequence, the permissible gaps between two signature positions is determined by the empirical gaps and the window size. The user is prompted for a window size that is used for every position in the signature. Likely this is not optimal. A future implementation will provide a range of methods for generating values of window size depending upon the alignment (window size is identified by the WSIZ record in the signature output file).</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>[-sigoutdir]<br>(Parameter 2)</td>
+<td>This option specifies the location of signature files (output). A 'signature file' contains a sparse sequence signature suitable for use with the SIGSCAN and SIGSCANLIG programs. The files are generated by using SIGGEN and SIGGENLIG". default: "./</td>
+<td>Output directory</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>[-logfile]<br>(Parameter 3)</td>
+<td>Name of siggenlig logfile</td>
+<td>Output file</td>
+<td>siggenlig.log</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>
+
+
+
+
+
+<!-- KNOWN BUGS & WARNINGS
+     Bugs that have not yet been fixed, easily missued features, problems
+     and caveats etc. Potentially stupid things the program will let you do.
+-->
+<a name="8.0"><H2> 8.0   KNOWN BUGS & WARNINGS     </H2></a>
+
+
+
+
+
+
+<!-- NOTES
+     Important general remarks, including:
+       Restrictions.
+       Interesting behaviour.
+       Useful things you can do with this program.
+       Future plans.
+       etc.
+-->
+<a name="9.0"><H2> 9.0   NOTES                     </H2></a>
+
+None.
+
+
+
+<!-- DESCRIPTION
+     A complete, non-technical, user-level description of the application.
+-->
+<a name="10.0"></a>
+<H2> 10.0   DESCRIPTION               </H2>
+
+
+
+
+
+<!-- ALGORITHM
+     A technical description of algorithmic aspects, describing exactly how
+     the key aspects of the application work.
+-->
+<a name="11.0"><H2> 11.0  ALGORITHM                 </H2></a>
+
+
+
+
+
+
+<!-- RELATED APPLICATIONS
+     Other applications that either generate the input, use the output or 
+     are in some other way related to the application are described here. 
+-->
+<a name="12.0"><H2> 12.0  RELATED APPLICATIONS      </H2></a>
+
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th><th>Description</th></tr>
+<tr><td><a href="../construct/contactcount.html">contactcount</a></td><td>Count specific versus non-specific contacts</td></tr>
+<tr><td><a href="contacts.html">contacts</a></td><td>Generate intra-chain CON files from CCF files</td></tr>
+<tr><td><a href="domainalign.html">domainalign</a></td><td>Generate alignments (DAF file) for nodes in a DCF file</td></tr>
+<tr><td><a href="domainrep.html">domainrep</a></td><td>Reorder DCF file to identify representative structures</td></tr>
+<tr><td><a href="domainreso.html">domainreso</a></td><td>Remove low resolution domains from a DCF file</td></tr>
+<tr><td><a href="interface.html">interface</a></td><td>Generate inter-chain CON files from CCF files</td></tr>
+<tr><td><a href="libgen.html">libgen</a></td><td>Generate discriminating elements from alignments</td></tr>
+<tr><td><a href="matgen3d.html">matgen3d</a></td><td>Generate a 3D-1D scoring matrix from CCF files</td></tr>
+<tr><td><a href="../../apps/psiphi.html">psiphi</a></td><td>Phi and psi torsion angles from protein coordinates</td></tr>
+<tr><td><a href="rocon.html">rocon</a></td><td>Generates a hits file from comparing two DHF files</td></tr>
+<tr><td><a href="rocplot.html">rocplot</a></td><td>Performs ROC analysis on hits files</td></tr>
+<tr><td><a href="seqalign.html">seqalign</a></td><td>Extend alignments (DAF file) with sequences (DHF file)</td></tr>
+<tr><td><a href="seqfraggle.html">seqfraggle</a></td><td>Removes fragment sequences from DHF files</td></tr>
+<tr><td><a href="seqsearch.html">seqsearch</a></td><td>Generate PSI-BLAST hits (DHF file) from a DAF file</td></tr>
+<tr><td><a href="seqsort.html">seqsort</a></td><td>Remove ambiguous classified sequences from DHF files</td></tr>
+<tr><td><a href="seqwords.html">seqwords</a></td><td>Generates DHF files from keyword search of UniProt</td></tr>
+<tr><td><a href="siggen.html">siggen</a></td><td>Generates a sparse protein signature from an alignment</td></tr>
+<tr><td><a href="sigscan.html">sigscan</a></td><td>Generate hits (DHF file) from a signature search</td></tr>
+<tr><td><a href="sigscanlig.html">sigscanlig</a></td><td>Search ligand-signature library & write hits (LHF file)</td></tr>
+</table>
+
+
+
+
+
+
+
+
+<!-- DIAGNOSTIC ERROR MESSAGES
+     Description of error messages or log file, if one is written.
+-->
+<a name="13.0"><H2> 13.0  DIAGNOSTIC ERROR MESSAGES </H2></a>
+
+None.
+
+
+
+
+
+
+
+<!-- AUTHORS
+     The main author first then all others. 
+-->
+<a name="14.0"><H2> 14.0  AUTHORS                   </H2></a>
+
+Jon Ison (jison&nbsp;&copy;&nbsp;hgmp.mrc.ac.uk)
+<br>
+HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
+
+
+
+
+<!-- REFERENCES
+     Quote the paper where the application was first published, described, used etc. 
+-->
+<a name="14.0"><H2> 14.0  REFERENCES                </H2></a>
+
+Please cite the authors and EMBOSS.
+<br><br>
+<i>Rice P, Longden I and Bleasby A (2000) "EMBOSS - The European
+Molecular Biology Open Software Suite"  Trends in Genetics,
+15:276-278.
+
+<p>
+See also <a href="http://emboss.sourceforge.net/">http://emboss.sourceforge.net/</a></i>
+
+
+
+<H3>14.1 Other useful references  </H3>
+ 
+
+</BODY>
+</HTML>

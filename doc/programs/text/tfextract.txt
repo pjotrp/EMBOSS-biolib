@@ -319,13 +319,12 @@ Known bugs
 
 See also
 
-   Program name Description
+    Program name                        Description
    aaindexextract Extract data from AAINDEX
-   cutgextract Extract data from CUTG
-   printsextract Extract data from PRINTS
-   prosextract Builds the PROSITE motif database for patmatmotifs to
-   search
-   rebaseextract Extract data from REBASE
+   cutgextract    Extract data from CUTG
+   printsextract  Extract data from PRINTS
+   prosextract    Build the PROSITE motif database for use by patmatmotifs
+   rebaseextract  Extract data from REBASE
 
 Author(s)
 

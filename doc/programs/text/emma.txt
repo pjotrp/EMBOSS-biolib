@@ -1221,7 +1221,7 @@ Notes
 
 References
 
-   The main reference for ClustalW is Thmopsion et al below.
+   The main reference for ClustalW is Thompson et al below.
     1. Thompson, J.D., Higgins, D.G. and Gibson, T.J. (1994) "CLUSTAL W:
        improving the sensitivity of progressive multiple sequence
        alignment through sequence weighting, positions-specific gap
@@ -1303,7 +1303,12 @@ Diagnostic Error Messages
 
    "cannot find program 'clustalw'" - means that the ClustalW program has
    not been set up on your site or is not in your environment (i.e. is
-   not on your path).
+   not on your path). The solutions are to (1) install clustalw in the
+   path so that emma can find it with the command "clustalw", or (2)
+   define a variable (an environment variable of in emboss.defaults or
+   your .embossrc file) called EMBOSS_CLUSTALW containing the command
+   (program name or full path) to run clustalw if you have it elsewhere
+   on your system.
 
 Exit status
 
@@ -1315,9 +1320,9 @@ Known bugs
 
 See also
 
-   Program name                        Description
+   Program name                       Description
    infoalign    Information on a multiple sequence alignment
-   plotcon      Plots the quality of conservation of a sequence alignment
+   plotcon      Plot quality of conservation of a sequence alignment
    prettyplot   Displays aligned sequences, with colouring and boxing
    showalign    Displays a multiple sequence alignment
    tranalign    Align nucleic coding regions given the aligned proteins

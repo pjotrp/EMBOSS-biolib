@@ -39,7 +39,7 @@
 <a name="1.0"></a>
 <br><br><br><H2> 1.0   SUMMARY  </H2>
 
-Reads CCF files (clean coordinate files) and writes CON files (contact files) of residue-ligand contact data for domains in a DCF file (domain classification file)
+Generate residue-ligand CON files from CCF files
 
 <!-- INPUTS & OUTPUTS
      Short summary of the application inputs and outputs in its different 
@@ -70,7 +70,67 @@ the user (file extensions in the ACD file).  A log file is also written.
 
 The format of the protein CCF file is described in the <a href="pdbparse.html">PDBPARSE documentation.</a>
 
-<i>Under development, no example input file(s) yet</i>
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: sites/sites.dcf</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+//
+ID   D1CS4A_
+XX
+EN   1CS4
+XX
+TY   SCOP
+XX
+SI   53931 CL; 54861 FO; 55073 SF; 55074 FA; 55077 DO; 55078 SO; 39418 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Adenylyl and guanylyl cyclase catalytic domain
+XX
+FA   Adenylyl and guanylyl cyclase catalytic domain
+XX
+DO   Adenylyl cyclase VC1, domain C1a
+XX
+OS   Dog (Canis familiaris)
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+ID   D1II7A_
+XX
+EN   1II7
+XX
+TY   SCOP
+XX
+SI   53931 CL; 56299 FO; 56300 SF; 64427 FA; 64428 DO; 64429 SO; 62415 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Metallo-dependent phosphatases
+XX
+SF   Metallo-dependent phosphatases
+XX
+FA   DNA double-strand break repair nuclease
+XX
+DO   Mre11
+XX
+OS   Archaeon Pyrococcus furiosus
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+</pre>
+</td></tr></table><p>
 
 
 <!-- OUTPUT FILE FORMAT 
@@ -129,7 +189,126 @@ given in the CON file itself (S1 record).
 the last line of the file.
 </UL> 
 
-<i>Under development, no example output file(s) yet</i>
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: SITES.con</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+XX   Residue-ligand contact data (for domains).
+XX
+TY   LIGAND
+XX
+EX   THRESH 1.0; IGNORE .; NMOD .; NCHA .;
+XX
+NE   7
+XX
+EN   [1]
+XX
+ID   PDB 1cs4; DOM d1cs4a_; LIG 101;
+XX
+DE   2'-DEOXY-ADENOSINE 3'-MONOPHOSPHATE
+XX
+CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 225; NRES2 .
+XX
+S1   SEQUENCE   225 AA;  25486 MW;  437C8290 CRC32;
+     MHHHHHHAME MKADINAKQE DMMFHKIYIQ KHDNVSILFA DIEGFTSLAS QCTAQELVMT
+     LNELFARFDK LAAENHCLRI KILGDCYYCV SGLPEARADH AHCCVEMGMD MIEAISLVRE
+     MTGVNVNMRV GIHSGRVHCG VLGLRKWQFD VWSNDVTLAN HMEAGGKAGR IHITKATLSY
+     LNGDYEVEPG CGGERNAYLK EHSIETFLIL RCTQKRKEEK AMIAK
+XX
+NC   SM .; LI 6
+XX
+LI   ASP 41
+LI   PHE 45
+LI   THR 46
+LI   LEU 83
+LI   GLY 84
+LI   ASP 85
+XX
+//
+EN   [2]
+XX
+ID   PDB 1ii7; DOM d1ii7a_; LIG 101;
+XX
+DE   2'-DEOXY-ADENOSINE 3'-MONOPHOSPHATE
+XX
+CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 65; NRES2 .
+XX
+S1   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;
+     MKFAHLADIH LGYEQFHKPQ REEEFAEAFK NALEIAVQEN VDFILIAGDL FHSSRPSPGT
+     LKKAI
+XX
+NC   SM .; LI 2
+XX
+LI   HIS 10
+LI   ASP 49
+XX
+//
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+XX
+LI   ASP 41
+LI   ILE 42
+LI   PHE 45
+LI   ASP 85
+XX
+//
+EN   [6]
+XX
+ID   PDB 1ii7; DOM d1ii7a_; LIG MN;
+XX
+DE   MANGANESE (II) ION
+XX
+CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 65; NRES2 .
+XX
+S1   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;
+     MKFAHLADIH LGYEQFHKPQ REEEFAEAFK NALEIAVQEN VDFILIAGDL FHSSRPSPGT
+     LKKAI
+XX
+NC   SM .; LI 3
+XX
+LI   ASP 8
+LI   HIS 10
+LI   ASP 49
+XX
+//
+EN   [7]
+XX
+ID   PDB 1cs4; DOM d1cs4a_; LIG POP;
+XX
+DE   PYROPHOSPHATE 2-
+XX
+CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 225; NRES2 .
+XX
+S1   SEQUENCE   225 AA;  25486 MW;  437C8290 CRC32;
+     MHHHHHHAME MKADINAKQE DMMFHKIYIQ KHDNVSILFA DIEGFTSLAS QCTAQELVMT
+     LNELFARFDK LAAENHCLRI KILGDCYYCV SGLPEARADH AHCCVEMGMD MIEAISLVRE
+     MTGVNVNMRV GIHSGRVHCG VLGLRKWQFD VWSNDVTLAN HMEAGGKAGR IHITKATLSY
+     LNGDYEVEPG CGGERNAYLK EHSIETFLIL RCTQKRKEEK AMIAK
+XX
+NC   SM .; LI 7
+XX
+LI   ASP 41
+LI   ILE 42
+LI   GLU 43
+LI   GLY 44
+LI   PHE 45
+LI   THR 46
+LI   ARG 129
+XX
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: SITES.log</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+CCF: /ebi/services/idata/pmr/hgmp/test/data/structure/sites/1cs4.ccf	HETS:YES	NHETS:7	SCOP:YES	NDOMS: 1
+CCF: /ebi/services/idata/pmr/hgmp/test/data/structure/sites/1ii7.ccf	HETS:YES	NHETS:5	SCOP:YES	NDOMS: 1
+</pre>
+</td></tr></table><p>
 
 
 
@@ -465,7 +644,31 @@ The file Ehet.dat is such a data file and is part of the EMBOSS distribution.
 <H3> 6.2 EXAMPLE SESSION </H3>
 An example of interactive use of SITES is shown below.
 
-<i>Under development, no final example yet</i>
+<b>Here is a sample session with sites</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>sites </b>
+Reads CCF files (clean coordinate files) and writes CON files (contact
+files) of residue-ligand contact data for domains in a DCF file (domain
+classification file).
+Protein CCF files (clean coordinate files) (input) [./]: <b>sites</b>
+Domain CCF files (clean coordinate files) (input) [./]: <b>structure</b>
+Name of DCF file (domain classification file) (input): <b>sites/sites.dcf</b>
+Threshold contact distance [1.0]: <b>1</b>
+Name of output file [SITES.con]: <b></b>
+Name of log file [SITES.log]: <b></b>
+
+Entries in HetDic 4306
+Entries in Dbase 4306
+CCF FILE: /ebi/services/idata/pmr/hgmp/test/data/structure/sites/1cs4.ccf (1/2)
+CCF FILE: /ebi/services/idata/pmr/hgmp/test/data/structure/sites/1ii7.ccf (2/2)
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
 Protein CCF files were read from /testdata/sites/in and domain CCF
@@ -617,23 +820,23 @@ value of 1 Angstrom.
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
 <tr><td><a href="../../apps/aaindexextract.html">aaindexextract</a></td><td>Extract data from AAINDEX</td></tr>
-<tr><td><a href="allversusall.html">allversusall</a></td><td>Does an all-versus-all global alignment for each set of sequences in an input directory and writes files of sequence similarity values</td></tr>
-<tr><td><a href="cathparse.html">cathparse</a></td><td>Reads raw CATH classification files and writes DCF file (domain classification file)</td></tr>
+<tr><td><a href="allversusall.html">allversusall</a></td><td>Sequence similarity data from all-versus-all comparison</td></tr>
+<tr><td><a href="cathparse.html">cathparse</a></td><td>Generates DCF file from raw CATH files</td></tr>
 <tr><td><a href="../../apps/cutgextract.html">cutgextract</a></td><td>Extract data from CUTG</td></tr>
-<tr><td><a href="domainer.html">domainer</a></td><td>Reads CCF files (clean coordinate files) for proteins and writes CCF files for domains, taken from a DCF file (domain classification file)</td></tr>
-<tr><td><a href="domainnr.html">domainnr</a></td><td>Removes redundant domains from a DCF file (domain classification file). The file must contain domain sequence information, which can be added by using DOMAINSEQS</td></tr>
-<tr><td><a href="domainseqs.html">domainseqs</a></td><td>Adds sequence records to a DCF file (domain classification file)</td></tr>
-<tr><td><a href="domainsse.html">domainsse</a></td><td>Adds secondary structure records to a DCF file (domain classification file)</td></tr>
-<tr><td><a href="hetparse.html">hetparse</a></td><td>Converts raw dictionary of heterogen groups to a file in EMBL-like format</td></tr>
-<tr><td><a href="pdbparse.html">pdbparse</a></td><td>Parses PDB files and writes CCF files (clean coordinate files) for proteins</td></tr>
-<tr><td><a href="pdbplus.html">pdbplus</a></td><td>Add residue solvent accessibility and secondary structure data to a CCF file (clean coordinate file) for a protein or domain</td></tr>
-<tr><td><a href="pdbtosp.html">pdbtosp</a></td><td>Convert raw swissprot:PDB equivalence file to EMBL-like format</td></tr>
+<tr><td><a href="domainer.html">domainer</a></td><td>Generates domain CCF files from protein CCF files</td></tr>
+<tr><td><a href="domainnr.html">domainnr</a></td><td>Removes redundant domains from a DCF file</td></tr>
+<tr><td><a href="domainseqs.html">domainseqs</a></td><td>Adds sequence records to a DCF file</td></tr>
+<tr><td><a href="domainsse.html">domainsse</a></td><td>Add secondary structure records to a DCF file</td></tr>
+<tr><td><a href="hetparse.html">hetparse</a></td><td>Converts heterogen group dictionary to EMBL-like format</td></tr>
+<tr><td><a href="pdbparse.html">pdbparse</a></td><td>Parses PDB files and writes protein CCF files</td></tr>
+<tr><td><a href="pdbplus.html">pdbplus</a></td><td>Add accessibility & secondary structure to a CCF file</td></tr>
+<tr><td><a href="pdbtosp.html">pdbtosp</a></td><td>Convert swissprot:PDB codes file to EMBL-like format</td></tr>
 <tr><td><a href="../../apps/printsextract.html">printsextract</a></td><td>Extract data from PRINTS</td></tr>
-<tr><td><a href="../../apps/prosextract.html">prosextract</a></td><td>Builds the PROSITE motif database for patmatmotifs to search</td></tr>
+<tr><td><a href="../../apps/prosextract.html">prosextract</a></td><td>Build the PROSITE motif database for use by patmatmotifs</td></tr>
 <tr><td><a href="../../apps/rebaseextract.html">rebaseextract</a></td><td>Extract data from REBASE</td></tr>
-<tr><td><a href="scopparse.html">scopparse</a></td><td>Reads raw SCOP classification files and writes a DCF file (domain classification file)</td></tr>
-<tr><td><a href="seqnr.html">seqnr</a></td><td>Removes redundancy from DHF files (domain hits files) or other files of sequences</td></tr>
-<tr><td><a href="ssematch.html">ssematch</a></td><td>Searches a DCF file (domain classification file) for secondary structure matches</td></tr>
+<tr><td><a href="scopparse.html">scopparse</a></td><td>Generate DCF file from raw SCOP files</td></tr>
+<tr><td><a href="seqnr.html">seqnr</a></td><td>Removes redundancy from DHF files</td></tr>
+<tr><td><a href="ssematch.html">ssematch</a></td><td>Search a DCF file for secondary structure matches</td></tr>
 <tr><td><a href="../../apps/tfextract.html">tfextract</a></td><td>Extract data from TRANSFAC</td></tr>
 </table>
 

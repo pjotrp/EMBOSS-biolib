@@ -52,7 +52,7 @@
 <a name="1.0"></a>
 <br><br><br><H2> 1.0   SUMMARY  </H2>
 
-Generate database hits (sequences) for nodes in a DCF file (domain classification file) by using PSI-BLAST
+Generate PSI-BLAST hits (DHF file) from a DAF file
 
 
 <!-- INPUTS & OUTPUTS
@@ -88,135 +88,114 @@ The format of the domain alignment file is described in <a href="domainalign.htm
 
 <a name="input.1"></a>
 <h3>Input files for usage example </h3>
-<p><h3>File: all.scop</h3>
+<p><h3>File: swsmall</h3>
 <table width="90%"><tr><td bgcolor="#FFCCFF">
 <pre>
-ID   D1CS4A_
-XX
-EN   1CS4
-XX
-SI   53931 CL; 54861 FO; 55073 SF; 55074 FA; 55077 DO; 55078 SO; 39418 DD;
-XX
-CL   Alpha and beta proteins (a+b)
-XX
-FO   Ferredoxin-like
-XX
-SF   Adenylyl and guanylyl cyclase catalytic domain
-XX
-FA   Adenylyl and guanylyl cyclase catalytic domain
-XX
-DO   Adenylyl cyclase VC1, domain C1a
-XX
-OS   Dog (Canis familiaris)
-XX
-NC   1
-XX
-CN   [1]
-XX
-CH   A CHAIN; . START; . END;
-//
-ID   D1II7A_
-XX
-EN   1II7
-XX
-SI   53931 CL; 56299 FO; 56300 SF; 64427 FA; 64428 DO; 64429 SO; 62415 DD;
-XX
-CL   Alpha and beta proteins (a+b)
-XX
-FO   Metallo-dependent phosphatases
-XX
-SF   Metallo-dependent phosphatases
-XX
-FA   DNA double-strand break repair nuclease
-XX
-DO   Mre11
-XX
-OS   Archaeon Pyrococcus furiosus
-XX
-NC   1
-XX
-CN   [1]
-XX
-CH   A CHAIN; . START; . END;
-//
-</pre>
-</td></tr></table><p>
-<p><h3>File: swnew</h3>
-<table width="90%"><tr><td bgcolor="#FFCCFF">
-<pre>
-&gt;ODO2_FUGRU Q90512 DIHYDROLIPOAMIDE SUCCINYLTRANSFERASE COMPONENT OF 2-OXOGLUTARATE DEHYDROGENASE COMPLEX PRECURSOR (EC 2.3.1.61) (E2) (E2K) (FRAGMENT).
-SSVCRRLIFRTSRPGERASSQNSFHVRYFRTSVVHRDDLVTVKTPAFAESVTEGDVRWEK
-AVGDSVTEDEVVCEIETDKTSVQVPSPAAGVIEELLVPDGGKVEGGTPLFKLRKGAAAEA
-APSSVTEPVTAAPPPPPPPVSAPTAMPSVPPVPTQALQAKPVPAPTLPEPSTLGGRGESR
-VKMSRMRLRIAQRLKEAQNTCAMLTTFNEVDMSNIQEMRTLHKDAFLKKHSIKLGFMSAF
-VKAAAHALTDQPAVNAVIDGATNEIVYRDYVDISVAVATPKGLVVPVIRNVETMNFADIE
-RTINALGEKARNNELAVEDMDGGTFTISNGGVFGSLFGTPIINPPQSAILGMHGIFQRPV
-AVDGKAEIRPMMYVALTYDHRLVDGREAVTFLRKIKAAVEDPRALLLDM
-&gt;TM21_FUGRU Q90515 TRANSMEMBRANE PROTEIN TMP21 PRECURSOR (S31III125).
-MARLTALLFLPVLIESAFSISFFLPVNTRKCLREEIHKDVLVTGEYEISEQVVTVHTSST
-VVGDGSIFKITDSSSHTLYSKEDATKGKFAFTTEDYDMFEVCFESKCTGRVPDQLVNLDM
-KHGVEAKNYEEIAKVEKLKPLEVELRRLEDLSESIVNDFAYMKKREEEMRDTNESTNTRV
-LYFSIFSMFCLIGLATWQVFYLRRFFKAKKLIE
-&gt;CO9_FUGRU P79755 COMPLEMENT COMPONENT C9 PRECURSOR.
-MRTEAALQLGFCALCVMLALLGEGMGRELPDPPAVNCVWSRWAPWSSCDPCTNTRRRSRG
-VEVFGQFAGIACQGSVGDREYCITNAKCNLPPPRECSDSEFQCESGSCIKLRLKCNGDYD
-CEDGSDEDCEPLRKTCPPTVLDTNEQGRTAGYGINILGADPRMNPFNNDFFNGRCDKVRN
-PNTLQLDRLPWNIGVLNYQTLVEETASREIYEDSYSLLREMLKEMSIKVDAGLSFKFKST
-EPSMSNNSLKLDASLEYEKKTMIKDVSELTNIKNKSFMRVKGRLQLSTYRMRSHQLQVAD
-EFVAHVKSLPLEYEKGIYYAFLEDYGTHYTKNGKSGGEYELVYVLNQDTIKAKNLTERKI
-QECLKIGIEAEFATTSVQDGKAHAKLNKCDDVTTKSQGDVEGKAVVDNVMTSVKGGSLES
-AVTMRAKLNKEGVMDIATYQNWARTIASAPALINSEPEPIYMLIPTDIPGANSRIANLKQ
-ATADYVAEYNVCKCRPCHNGGTLALLDGKCICMCSNLFEGLGCQNFKGDKARVPAARPAV
-TQEGNWSCWSSWSNCQGQKRSRTRYCNTEGVLGAECRGEIRSEEYC
-&gt;E2BB_FUGRU Q90511 TRANSLATION INITIATION FACTOR EIF-2B BETA SUBUNIT (EIF-2B GDP-GTP EXCHANGE FACTOR) (S20I15).
-MPGADKEVDLTERIEAFLSDLKRGGSGTGPLRGSSETARETTALLRRITAQARWSSAGDL
-MEIIRKEGRRLIAAQPSETTVGNMIRRVLKIIREEYARSRGSSEEADQQESLHKLLTSGG
-LSEENFRQHFAALRANVIEAINELLTELEGTTDNIAMQALEHIHSNEVIMTVGRSRTVEA
-FLKDAARKRKFHVIVAECAPFCQGHKMATSLSTAGIETTVIADAAIFAVMSRVNKVIIGT
-QTVLANGGLRAVNGTHTLALAAKHHSTPLIVCAPMFKLSPQFPNEEDTFHKFVSPHEVLP
-FTEGEILSKVNVHCPVFDYVPPELITLFISNIGGHAPSYIYRLMSELYHPEDHEL
-&gt;FOS_FUGRU P53450 P55-C-FOS PROTO-ONCOGENE PROTEIN.
-MMFTSFNAECDSSSRCSASPVGDNLYYPSPAGSYSSMGSPQSQDFTDLTASSASFIPTVT
-AISTSPDLQWMVQPLISSVAPSHRAHPYSPSPSYKRTVMRSAASKAHGKRSRVEQTTPEE
-EEKKRIRRERNKQAAAKCRNRRRELTDTLQAETDQLEDEKSSLQNDIANLLKEKERLEFI
-LAAHQPICKIPSQMDTDFSVVSMSPVHACLSTTVSTQLQTSIPEATTVTSSHSTFTSTSN
-SIFSGSSDSLLSTATVSNSVVKMTDLDSSVLEESLDLLAKTEAETARSVPDVNLSNSLFA
-AQDWEPLHATISSSDFEPLCTPVVTCTPACTTLTSSFVFTFPEAETFPTCGVAHRRRSNS
-NDQSSDSLSSPTLLAL
-&gt;FABP_FUGRU O42494 FATTY ACID BINDING PROTEIN.
-MSFSGKYQQVSQENFEPFMKAIGLPDEVIQQVKELKSTSEIEQNGNDFKITITTGPKVTV
-NKFTIGKETEMDTITGEKIKTVFHLDGNKLKVSLKGIESVTELADPNTITMTLGDVVYKT
-TSKRM
-&gt;KPB2_FUGRU Q9W6R1 PHOSPHORYLASE B KINASE ALPHA REGULATORY CHAIN, LIVER ISOFORM (PHOSPHORYLASE KINASE ALPHA L SUBUNIT).
-MRSRSNSGVRLDGYARLVHETILGFQNPVTGLLPASVQKKDAWVRDNVYSILAVWGLGMA
-YRKNADRDEDKAKAYELEQSVVKLMQGLLHCMMRQVAKVEKFKHTQSTTDCLHAKYDTST
-CATVVGDDQWGHLQVDATSIYLLMLAQMTASGLRIISNLDEVAFVQNLVFYIEAAYKVAD
-YGMWERGDKTNQGLPELNGSSVGMAKAALEAIDELDLFGAHGGPKSVIHVLPDEVEHCQS
-ILCSMLPRASPSKEIDAGLLSVISFPAFAVEDADLVTITKSEIINKLQGRYGCCRFIRDG
-YHCPKEDPTRLHYDPAELKLFENIECEWPVFWTYLILDGIFAEDQVQVQEYREALEGVLI
-RGKNGIKLLPELYTVPFDKVEEEYRNPHSVDREATGQLPHMWEQSLYILGCLLAEGFLAP
-GEIDPLNRRFSTSFKPDVVVQVCVLAESQEIKALLSEQGMVVQTVAEVLPIRVMSARVLS
-QIYVRLGNCKKLSLSGRPYRHIGVLGTSKFYEIRNHTYTFTPQFLDQHHFYLALDNQMIV
-EMLRTELAYLSSCWRMTGRPTLTFPVTRSMLVEDGDAVDPCILSTLRKLQDGYFAGARVQ
-MSDLSTFQTTSFHTRLSFLDEEHDDSLLEDDEEQEEEEEDKFEDDYNNYGPSGNNQVCYV
-SKDKFDQYLTQLLHSTTQKCHLPPIQRGQHHVFSAEHTTRDILSFMAQVQGLNVPKSSMY
-LPVTPLKSKHRRSLNLLDVPHPQHGPHLKQNKVGTFNSVLAADLHLPRDPQGKTDFATLV
-KQLKECPTLQDQADILYILNTSKGADWLVELSGPGQGGVSVHTLLEELYIQAGACKEWGL
-IRYISGILRKRVEVLAEACTDLISHHKQLTVGLPPEPRERVITVPLPPEELNTLIYEASG
-QDISVAVLTQEIMVYLAMYIRSQPALFGDMLRLRIGLIMQVMATELARSLHCSGEEASES
-LMSLSPFDMKNLLHHILSGKEFGVERSMRPIQSTATSPAISIHEIGHTGATKTERTGIRK
-LKSEIKQRCSSPSTPSGILSPVGPGPADGQLHWVERQGQWLRRRRLDGAINRVPVGFYQK
-VWKILQKCHGLSIDGYVLPSSTTREMTAGEIKFAVQVESVLNHVPQPEYRQLLVESVMVL
-GLVADVDVESIGSIIYVDRILHLANDLFLTDQKSYSAGDYFLEKDPETGICNFFYDSAPS
-GIYGTMTYLSKAAVTYIQDFLPSSSCIMQ
-&gt;NEUI_FUGRU O42493 ISOTICIN-NEUROPHYSIN IT 1 PRECURSOR [CONTAINS: ISOTOCIN (IT); NEUROPHYSIN IT 1].
-MTGTAISVCLLFLLSVCSACYISNCPIGGKRSIMDAPQRKCMSCGPGDRGRCFGPGICCG
-ESFGCLMGSPESARCAEENYLLTPCQAGGRPCGSEGGLCASSGLCCDAESCTMDQSCLSE
-EEGDERGSLFDGSDSGDVILKLLRLAGLTSPHQTH
-&gt;NEUV_FUGRU O42499 VASOTOCIN-NEUROPHYSIN VT 1 PRECURSOR [CONTAINS: VASOTOCIN (VT); NEUROPHYSIN VT 1].
-MPQCALLLSLLGLLALSSACYIQNCPRGGKRALPETGIRQCMSCGPRDRGRCFGPNICCG
-EALGCLMGSPETARCAGENYLLTPCQAGGRPCGSEGGRCAVSGLCCNSESCAVDSDCLGE
-TESLEPGDSSADSSPTELLLRLLHMSSRGQSEY
+&gt; Q9WVI4
+DDVTMLFSDIVGFTAICAQCTPMQVISMLNELYTRFDHQCGFLDIYKVETIGDAYCVASG
+LHRKSLCHAKPIALMALKMMELSEEVLTPDGRPIQMRIGIHSGSVLAGVVGVRMPRYCLF
+GNNVTLASKFESGSHPRRINISPTTYQLL
+&gt; Q9ERL9
+VTMLFSDIVGFTAICSQCSPLQVITMLNALYTRFDQQCGELDVYKVETIGDAYCVAGGLH
+RESDTHAVQIALMALKMMELSNEVMSPHGEPIKMRIGLHSGSVFAGVVGVKMPRYCLFGN
+NVTLANKFESCSVPRKINVSPTTYRLLKDCPG
+&gt; Q9DGG6
+EQVSILFADIVGFTKMSANKSAHALVGLLNDLFGRFDRLCEDTKCEKISTLGDCYYCVAG
+CPEPRADHAYCCIEMGLGMIKAIEQFCQEKKEMVNMRVGVHTGTVLCGILGMRRFKFDVW
+SNDVNLANLMEQLGVAGKVHISEATAKYLDDRYEMEDGKVTERVGQSAVADQLKGLKTYL
+I
+&gt; Q99396
+KELADPVTLIFTDIESSTAQWATQPELMPDAVATHHSMVRSLIENYDCYEVKTVGDSFMI
+ACKSPFAAVQLAQELQLRFLRLDWGTTVFDEFYREFEERHAEEGDGKYKPPTARLDPEVY
+RQLWNGLRVRVGIHTGLCDIRYDEVTKGYDYYGQTANTAARTESVGNGGQVLMTCETYHS
+LSTAERSQFDVTPLGGVPLRGVSEPVEVYQLN
+&gt; Q99280
+NDSAPKEPTGPVTLIFTDIESSTALWAAHPDLMPDAVATHHRLIRSLITRYECYEVKTVG
+DSFMIASKSPFAAVQLAQELQLRFLRLDWETNALDESYREFEEQRAEGECEYTPPTAHMD
+PEVYSRLWNGLRVRVGIHTGLCDIRYDEVTKGYDYYGRTSNMAARTESVANGGQVLMTHA
+AYMSLSGEDRNQLDVTTLGATVLRGVPEPVRMYQLN
+&gt; Q99279
+NNNRAPKEPTDPVTLIFTDIESSTALWAAHPDLMPDAVAAHHRMVRSLIGRYKCYEVKTV
+GDSFMIASKSPFAAVQLAQELQLCFLHHDWGTNALDDSYREFEEQRAEGECEYTPPTAHM
+DPEVYSRLWNGLRVRVGIHTGLCDIIRHDEVTKGYDYYGRTPNMAARTESVANGGQVLMT
+HAAYMSLSAEDRKQIDVTALGDVALRGVSDPVKMYQLN
+&gt; Q91WF3
+VCVLFASVPDFKEFYSESNINHEGLECLRLLNEIIADFDELLSKPKFSGVEKIKTIGSTY
+MAATGLNATSGQDTQQDSERSCSHLGTMVEFAVALGSKLGVINKHSFNNFRLRVGLNHGP
+VVAGVIGAQKPQYDIWGNTVNVASRMESTGVLGKIQVTEETARAL
+&gt; Q91WF3
+FHSLYVKRHQGVSVLYADIVGFTRLASECSPKELVLMLNELFGKFDQIAKEHECMRIKIL
+GDCYYCVSGLPLSLPDHAINCVRMGLDMCRAIRKLRVATGVDINMRVGVHSGSVLCGVIG
+LQKWQYDVWSHDVTLANHMEAGGVPGRVHITGATLALL
+&gt; Q8VHH7
+NNFMLRIGMNKGGVLAGVIGARKPHYDIWGNTVNVASRMESTGVMGNIQVVEET
+&gt; Q8VHH7
+FNTMYMYRHENVSILFADIVGFTQLSSACSAQELVKLLNELFARFDKLAAKYHQLRIKIL
+GDCYYCICGLPDYREDHAVCSILMGLAMVEAISYVREKTKTGVDMRVGVHTGTVLGGVLG
+QKRWQYDVWSTDVTVANKMEAGGIPGRVHISQSTMDCLKGEFDVEPGDGGSRCDYLDEKG
+IETYLI
+&gt; Q8NFM4
+VCVLFASVPDFKEFYSESNINHEGLECLRLLNEIIADFDELLSKPKFSGVEKIKTIGSTY
+MAATGLNATSGQDAQQDAERSCSHLGTMVEFAVALGSKLDVINKHSFNNFRLRVGLNHGP
+VVAGVIGAQKPQYDIWGNTVNVASRMESTGVLGKIQVTEET
+&gt; Q8NFM4
+FHSLYVKRHQGVSVLYADIVGFTRLASECSPKELVLMLNELFGKFDQIAKEHECMRIKIL
+GDCYYCVSGLPLSLPDHAINCVRMGLDMCRAIRKLRAATGVDINMRVGVHSGSVLCGVIG
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+&gt; Q83IL8
+VEAIKRGTVIDHIPAQIGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLSE
+EQVDQLALYAPQATVNRIDNYEVVGKSRPSLP
+&gt; Q7P144
+VEALKQGTVIDHIPAGEGVKILRLFKLTETGERVTVGLNLVSRHMGSKDLIKVENVALTE
+EQANELALFAPKATVNVIDNFEVVKKHKLTLP
+&gt; Q7MZ14
+VEAIRCGTVIDHIPAQVGFKLLSLFKLTETDQRITIGLNLPSNRLGKKDLIKIENTFLTE
+QQANQLAMYAPNATVNCIENYEVVKKLPINLP
+&gt; Q7MX57
+VAAIRNGIVIDHIPPTKLFKVATLLQLDDLDKRITIGNNLRSRSHGSKGVIKIEDKTFEE
+EELNRIALIAPNVRLNIIRDYEVVEKRQVEVP
+&gt; Q7MHF0
+VEAIKNGTVIDHIPAQVGIKVLKLFDMHNSSQRVTIGLNLPSSALGNKDLLKIENVFINE
+EQASKLALYAPHATVNQIEDYQVVKKLALELP
+&gt; Q58801
+VKKITNGTVIDHIDAGKALMVFKVLNVPKETSVMIAINVPSKKKGKKDILKIEGIELKKE
+DVDKISLISPDVTINIIRNGKVVEKLKPQIP
+&gt; P96175
+VEAICNGYVIDHIPSGQGVKILRLFSLTDTKQRVTVGFNLPSHDGTTKDLIKVENTEITK
+SQANQLALLAPNATVNIIENFKVTDKHSLALP
+&gt; P96111
+GIKPIENGTVIDHIAKGKTPEEIYSTILKIRKILRLYDVDSADGIFRSSDGSFKGYISLP
+DRYLSKKEIKKLSAISPNTTVNIIKNSTVVEKYRIKLP
+&gt; P77919
+VSAIKEGTVIDHIPAGKGLKVIEILKLGKLTNGGAVLLAMNVPSKKLGRKDIVKVEGRFL
+SEEEVNKIALVAPNATVNIIRDYKVVEKFKVEVP
+&gt; P74766
+VSKIKNGTVIDHIPAGRAFAVLNVLGIKGHEGFRIALVINVDSKKMGKKDIVKIEDKEIS
+DTEANLITLIAPTATINIVREYEVVKKTKLEVP
+&gt; P57451
+VEAIKSGSVIDHIPEYIGFKLLSLFRFTETEKRITIGLNLPSKKLGRKDIIKIENTFLSD
+EQINQLAIYAPHATVNYINEYNLVRKVFPTLP
+&gt; P19936
+VEAIKCGTVIDHIPAQIGFKLLTLFKLTATDQRITIGLNLPSNELGRKDLIKIENTFLTE
+QQANQLAMYAPKATVNRIDNYEVVRKLTLSLP
+&gt; P08421
+VEAIKCGTVIDHIPAQVGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLTE
+EQVNQLALYAPQATVNRIDNYDVVGKSRPSLP
+&gt; P00478
+VEAIKRGTVIDHIPAQIGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLSE
+DQVDQLALYAPQATVNRIDNYEVVGKSRPSLP
+&gt; O58452
+VSAIKEGTVIDHIPAGKGLKVIEILGLSKLSNGGSVLLAMNVPSKKLGRKDIVKVEGKFL
+SEEEVNKIALVAPTATVNIIRNYKVVEKFKVEVP
+&gt; O30129
+VSKIKEGTVIDHINAGKALLVLKILKIQPGTDLTVSMAMNVPSSKMGKKDIVKVEGMFIR
+DEELNKIALISPNATINLIRDYEIERKFKVSPP
+&gt; O26938
+VKPIKNGTVIDHITANRSLNVLNILGLPDGRSKVTVAMNMDSSQLGSKDIVKIENRELKP
+SEVDQIALIAPRATINIVRDYKIVEKAKVRL
 </pre>
 </td></tr></table><p>
 
@@ -256,47 +235,109 @@ SEQSEARCH generates a domain hits file in FASTA-like format.
 
 <a name="output.1"></a>
 <h3>Output files for usage example </h3>
-<p><h3>File: 54894.hits</h3>
+<p><h3>File: 54894.dhf</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-CL   Alpha and beta proteins (a+b)
-XX
-FO   Ferredoxin-like
-XX
-SF   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
-XX
-FA   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
-XX
-SI   54894
-XX
-NS   0
-XX
+&gt; .^.^1^98^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^51.70^0.000e+00^2.000e-10
+GIKPIENGTVIDHIAKGKTPEEIYSTILKIRKILRLYDVDSADGIFRSSDGSFKGYISLPDRYLSKKEIKKLSAISPNTTVNIIKNSTVVEKYRIKLP
+&gt; .^.^1^95^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^124.00^0.000e+00^3.000e-32
+VRKIRSGVVIDHIPPGRAFTMLKALGLLPPRGYRWRIAVVINAESSKLGRKDILKIEGYKPRQRDLEVLGIIAPGATFNVIEDYKVVEKVKLKLP
+&gt; .^.^1^94^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^97.20^0.000e+00^4.000e-24
+VSAIKEGTVIDHIPAGKGLKVIEILGLSKLSNGGSVLLAMNVPSKKLGRKDIVKVEGKFLSEEEVNKIALVAPTATVNIIRNYKVVEKFKVEVP
+&gt; .^.^1^93^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^96.00^0.000e+00^8.000e-24
+VSKIKNGTVIDHIPAGRAFAVLNVLGIKGHEGFRIALVINVDSKKMGKKDIVKIEDKEISDTEANLITLIAPTATINIVREYEVVKKTKLEVP
+&gt; .^.^1^92^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^135.00^0.000e+00^1.000e-35
+VEAIKCGTVIDHIPAQIGFKLLSLFKLTATDQRITIGLNLPSKRSGRKDLIKIENTFLTEQQANQLAMYAPDATVNRIDNYEVVKKLTLSLP
+&gt; .^.^1^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^87.50^0.000e+00^3.000e-21
+VKPIKNGTVIDHITANRSLNVLNILGLPDGRSKVTVAMNMDSSQLGSKDIVKIENRELKPSEVDQIALIAPRATINIVRDYKIVEKAKVRL
+&gt; .^.^1^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^61.00^0.000e+00^3.000e-13
+INSIKNGIVIDHIKAGHGIKIYNYLKLGEAEFPTALIMNAISKKNKAKDIIKIENVMDLDLAVLGFLDPNITVNIIEDEKIRQKIQLKLP
 </pre>
 </td></tr></table><p>
-<p><h3>File: 55074.hits</h3>
+<p><h3>File: 55074.dhf</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-CL   Alpha and beta proteins (a+b)
-XX
-FO   Ferredoxin-like
-XX
-SF   Adenylyl and guanylyl cyclase catalytic domain
-XX
-FA   Adenylyl and guanylyl cyclase catalytic domain
-XX
-SI   55074
-XX
-NS   0
-XX
+&gt; .^.^10^216^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^164.00^0.000e+00^0.000e+00
+DPVTLIFTDIESSTALWAAHPGMMADAVATHHRLIRSLIALYGAYEVKTVGDSFMIACRSAFAAVELARDLQLTLVHHDWGTVAIDESYRKFEEERAVEDSDYAPPTARLDSAVYCKLWNGLRVRAGIHTGLCDIAHDEVTKGYDYYGRTPNLAARTESAANGGQVLVTGATYYSLSVAERARLDATPIGPVPLRGVPEPVEMYQLN
+&gt; .^.^7^168^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^150.00^0.000e+00^0.000e+00
+DSVTIYFSDIVGFTALSAESTPMQVVTLLNDLYTCFDAVIDNFDVYKVETIGDAYMVVSGLPVRNGQLHAREVARMALALLDAVRSFRIRHRPQEQLRLRIGIHTGPVCAGVVGLKMPRYCLFGDTVNTASRMESNGEALKIHLSSETKAVLEEFDGFELEL
+&gt; .^.^7^154^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^140.00^0.000e+00^1.000e-36
+DSVTIYFSDIVGFTSMSAESTPLQVVTLLNDLYTCFDAIIDNFDVYKVETIGDAYMVVSDSQSRNGKLHAREIAGMSLALLEQVKTFKIRHRPNDQLRLRIGIHTGPVCAGVVGLKMPRYCLFGDTVNTASRMESNGEALKIHLSSAT
+&gt; .^.^6^216^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^182.00^0.000e+00^0.000e+00
+KEPTGPVTLIFTDIESSTALWAAHPDLMPDAVATHHRLIRSLITRYECYEVKTVGDSFMIASKSPFAAVQLAQELQLRFLRLDWETNALDESYREFEEQRAEGECEYTPPTAHMDPEVYSRLWNGLRVRVGIHTGLCDIRYDEVTKGYDYYGRTSNMAARTESVANGGQVLMTHAAYMSLSGEDRNQLDVTTLGATVLRGVPEPVRMYQLN
+&gt; .^.^5^212^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^169.00^0.000e+00^0.000e+00
+DPVTLIFTDIESSTAQWATQPELMPDAVATHHSMVRSLIENYDCYEVKTVGDSFMIACKSPFAAVQLAQELQLRFLRLDWGTTVFDEFYREFEERHAEEGDGKYKPPTARLDPEVYRQLWNGLRVRVGIHTGLCDIRYDEVTKGYDYYGQTANTAARTESVGNGGQVLMTCETYHSLSTAERSQFDVTPLGGVPLRGVSEPVEVYQLN
+&gt; .^.^5^149^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^105.00^0.000e+00^4.000e-26
+VFFLDIAGFTRFSSIHSPEQVIQVLIKIFNSMDLLCAKHGIEKIKTIGDAYMATCGIFPKCDDIRHNTYKMLGFAMDVLEFIPKEMSFHLGLQVRVGIHCGPVISGVISGYAKPHFDVWGDTVNVASRMESTGIAGQIHVSDRVY
+&gt; .^.^2^160^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^220.00^0.000e+00^0.000e+00
+QAKKFSNVTMLFSDIVGFTAICSQCSPLQVITMLNALYTRFDQQCGELDVYKVETIGDAYCVAGGLHKESDTHAVQIALMALKMMELSDEVMSPHGEPIKMRIGLHSGSVFAGVVGVKMPRYCLFGNNVTLANKFESCSVPRKINVSPTTYRLLKDCPG
+&gt; .^.^1^218^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^221.00^0.000e+00^0.000e+00
+NNNRAPKEPTDPVTLIFTDIESSTALWAAHPDLMPDAVAAHHRMVRSLIGRYKCYEVKTVGDSFMIASKSPFAAVQLAQELQLCFLHHDWGTNALDDSYREFEEQRAEGECEYTPPTAHMDPEVYSRLWNGLRVRVGIHTGLCDIIRHDEVTKGYDYYGRTPNMAARTESVANGGQVLMTHAAYMSLSAEDRKQIDVTALGDVALRGVSDPVKMYQLN
+&gt; .^.^1^217^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^140.00^0.000e+00^1.000e-36
+NNDAAPKDGDEPVTLLFTDIESSTALWAALPQLMSDAIAAHHRVIRQLVKKYGCYEVKTIGDSFMIACRSAHSAVSLACEIQTKLLKHDWGTEALDRAYREFELARVDTLDDYEPPTARLSEEEYAALWCGLRVRVGIHTGLTDIRYDEVTKGYDYYGDTSNMAARTEAVANGGQVVATEAAWWALSNDERAGIAHTAMGPQGLRGVPFAVEMFQLN
+&gt; .^.^1^216^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^196.00^0.000e+00^0.000e+00
+NNLAPKELTDPVTLIFTDIESSTALWAAHPELMPDAVATHHRLIRSLIGRYGCYEVKTVGDSFMIASKSPFAAVQLAQELQLCFLHHDWGTNAIDESYQQLEQQRAEEDAKYTPPTARLDLKVYSRLWNGLRVRVGIHTGLCDIRRDEVTKGYDYYGRTSNMAARTESVGNGGQVLMTTAAYMSLSAEEREQIDVTALGDVPLRGVAKPVEMYQLN
+&gt; .^.^1^206^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^187.00^0.000e+00^0.000e+00
+PVTLIFTDIESSTALWAAHPEVMPDAVATHHRLIRTLISKYECYEVKTVGDSFMIASKSPFAAVQLAQELQLCFLHHDWGTNAIDESYQQFEQQRAEDDSDYTPPTARLDPKVYSRLWNGLRVRVGIHTGLCDIRRDEVTKGYDYYGRTSNMAARTESVANGGQVLMTHAAYMSLSAEERQQIDVTALGDVPLRGVPKPVEMYRLN
+&gt; .^.^1^189^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^280.00^0.000e+00^0.000e+00
+MMFHKIYIQKHDNVSILFADIEGFTSLASQCTAQELVMTLNELFARFDKLAAENHCLRIKILGDCYYCVSGLPEARADHAHCCVEMGMDMIEAISLVREVTGVNVNMRVGIHSGRVHCGVLGLRKWQFDVWSNDVTLANHMEAGGKAGRIHITKATLSYLNGDYEVEPGCGGERNAYLKEHSIETFLIL
+&gt; .^.^1^188^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^262.00^0.000e+00^0.000e+00
+MMFHKIYIQKHDNVSILFADIEGFTSLASQCTAQELVMTLNELFARFDKLAAENHCLRIKILGDCYYCVSGLPEARADHAHCCVEMGVDMIEAISLVREVTGVNVNMRVGIHSGRVHCGVLGLRKWQFDVWSNDVTLANHMEAARAGRIHITRATLQYLNGDYEVEPGRGGERNAYLKEQHIETFLIL
+&gt; .^.^1^186^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^230.00^0.000e+00^0.000e+00
+FHRIYIQKHENVSILFADIVGFTVLSSQCSAQELVRLLNELFGRFDQLAHDNHCLRIKILGDCYYCVSGLPEPRKDHAKCAVEMGLDMIDAIATVVEATDVILNMRVGIHTGRVLCGVLGLRKWQFDVWSNDVTLANHMESGGEPGRVHVTRATLDSLSGEYEVEAGHGDERSSYLRDHGVDTFFI
+&gt; .^.^1^184^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^194.00^0.000e+00^0.000e+00
+FHNLYVKRHTNVSILYADIVGFTRLASDCSPGELVHMLNELFGKFDQIAKENECMRIKILGDCYYCVSGLPISLPNHAKNCVKMGLDMCEAIKKVRDATGVDINMRVGVHSGNVLCGVIGLQKWQYDVWSHDVTLANHMEAGGVPGRVHISSVTLEHLNGAYKVEEGDGEIRDPYLKQHLVKTY
+&gt; .^.^1^179^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^255.00^0.000e+00^0.000e+00
+EQVSILFADIVGFTKMSANKSAHALVGLLNDLFGRFDRLCEDTKCEKISTLGDCYYCVAGCPEPRADHAYCCIEMGLGMIKAIEQFCQEKKEMVNMRVGVHTGTVLCGILGMRRFKFDVWSNDVNLANLMEQLGVAGKVHISEATAKYLDDRYEMEDGKVTERVGQSAVADQLKGLKTY
+&gt; .^.^1^177^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^249.00^0.000e+00^0.000e+00
+VSILFADIVGFTKMSANKSAHALVGLLNDLFGRFDRLCEETKCEKISTLGDCYYCVAGCPEPRADHAYCCIEMGLGMIKAIEQFCQEKKEMVNMRVGVHTGTVLCGILGMRRFKFDVWSNDVNLANLMEQLGVAGKVHISEATAKYLDDRYEMEDGKVIERLGQSVVADQLKGLKTY
+&gt; .^.^1^167^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^114.00^0.000e+00^7.000e-29
+DCVCVMFASIPDFKEFYTESDVNKEGLECLRLLNEIIADFDDLLSKPKFSGVEKIKTIGSTYMAATGLSAVPSQEHSQEPERQYMHIGTMVEFAFALVGKLDAINKHSFNDFKLRVGINHGPVIAGVIGAQKPQYDIWGNTVNVASRMDSTGVLDKIQVTEETSLVL
+&gt; .^.^1^166^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^116.00^0.000e+00^2.000e-29
+DCVCVMFASVPDFKVFYTECDVNKEGLECLRLLNEIIADFDELLLKPKFSGVEKIKTIGSTYMAAAGLSAPSGHENQDLERKHVHIGVLVEFSMALMSKLDGINRHSFNSFRLRVGINHGPVIAGVIGARKPQYDIWGNTVNVASRMESTGELGKIQVTEETCTIL
+&gt; .^.^1^165^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^142.00^0.000e+00^5.000e-37
+HKRPVPAKRYDNVTILFSGIVGFNAFCSKHASGEGAMKIVNLLNDLYTRFDTLTDSRKNPFVYKVETVGDKYMTVSGLPEPCIHHARSICHLALDMMEIAGQVQVDGESVQITIGIHTGEVVTGVIGQRMPRYCLFGNTVNLTSRTETTGEKGKINVSEYTYRCL
+&gt; .^.^1^163^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^148.00^0.000e+00^0.000e+00
+DQVTIYFSDIVGFTTISALSEPIEVVGFLNDLYTMFDAVLDSHDVYKVETIGDAYMVASGLPRRNGNRHAAEIANMALEILSYAGNFRMRHAPDVPIRVRAGLHSGPCVAGVVGLTMPRYCLFGDTVNTASRMESTGLPYRIHVSRNTVQALLSLDEGYKIDV
+&gt; .^.^1^162^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^130.00^0.000e+00^2.000e-33
+DAVGVMFASIPGFADFYSQTEMNNQGVECLRLLNEIIADFDELLGEDRFQDIEKIKTIGSTYMAVSGLSPEKQQCEDKWGHLCALADFSLALTESIQEINKHSFNNFELRIGISHGSVVAGVIGAKKPQYDIWGKTVNLASRMDSTGVSGRIQVPEETYLIL
+&gt; .^.^1^161^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^137.00^0.000e+00^1.000e-35
+DSVTVFFSDVVKFTILASKCSPFQTVNLLNDLYSNFDTIIEQHGVYKVESIGDGYLCVSGLPTRNGYAHIKQIVDMSLKFMEYCKSFNIPHLPRENVELRIGVNSGPCVAGVVGLSMPRYCLFGDTVNTASRMESNGKPSLIHLTNDAHSLLTTHYPNQYE
+&gt; .^.^1^160^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^145.00^0.000e+00^5.000e-38
+VTLYFSDIVGFTTISAMSEPIEVVDLLNDLYTLFDAIIGAHDVYKVETIGDAYMVASGLPQRNGQRHAAEIANMSLDILSAVGSFRMRHMPEVPVRIRIGLHSGPCVAGVVGLTMPRYCLFGDTVNTASRMESTGLPYRIHVNMSTVRILRSLDQGFQME
+&gt; .^.^1^159^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^122.00^0.000e+00^3.000e-31
+VAVMFASIANFSEFYVELEANNEGVECLRLLNEIIADFDEIISEERFRQLEKIKTIGSTYMAASGLNASTYDQVGRSHITALADYAMRLMEQMKHINEHSFNNFQMKIGLNMGPVVAGVIGARKPQYDIWGNTVNVSSRMDSTGVPDRIQVTTDLYQVL
+&gt; .^.^1^158^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^179.00^0.000e+00^0.000e+00
+FHSLYVKRHQGVSVLYADIVGFTRLASECSPKELVLMLNELFGKFDQIAKEHECMRIKILGDCYYCVSGLPLSLPDHAINCVRMGLDMCRAIRKLRAATGVDINMRVGVHSGSVLCGVIGLQKWQYDVWSHDVTLANHMEAGGVPGRVHITGATLALL
+&gt; .^.^1^154^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^152.00^0.000e+00^0.000e+00
+HFESVTIFFSDIVGFTKLCSLSSPLQVVKLLNDLYSLFDHTIQTHDVYKVETIGDAYMVASGLPIRNGAQHADEIATMSLHLLSVTTNFQIGHMPEERLKLRIGLHTGPVVAGVVGITMPRYCLFGDTVNMASRMESSSLPLRIHVSQSTARAL
+&gt; .^.^1^152^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^145.00^0.000e+00^3.000e-38
+DCVTILFSDIVGFTELCTTSTPFEVVEMLNDWYTCCDSIISNYDVYKVETIGDAYMVVSGLPLQNGSRHAGEIASLALHLLETVGNLKIRHKPTETVQLRIGVHSGPCAAGVVGQKMPRYCLFGDTVNTASRMESTGDSMRIHISEATYQLL
+&gt; .^.^1^151^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^144.00^0.000e+00^1.000e-37
+VTLYFSDIVGFTTISAMSEPIEVVDLLNDLYTLFDAIIGSHDVYKVETIGDAYMVASGLPQRNGHRHAAEIANMALDILSAVGTFRMRHMPEVPVRIRIGLHSGPCVAGVVGLTMPRYCLFGDTVNTASAMESTGLPYRIHVNRSTVQILS
+&gt; .^.^1^150^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^138.00^0.000e+00^4.000e-36
+VTIYFSDIVGFTTICKYSTPMEVVDMLNDIYKSFDHIVDHHDVYKVETIGDAYMVASGLPKRNGNRHAIDIAKMALEILSFMGTFELEHLPGLPIWIRIGVHSGPCAAGVVGIKMPRYCLFGDTVNTASRMESTGLPLRIHVSGSTIAIL
+&gt; .^.^1^149^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^226.00^0.000e+00^0.000e+00
+DDVTMLFSDIVGFTAICAQCTPMQVISMLNELYTRFDHQCGFLDIYKVETIGDAYCVASGLHRKSLCHAKPIALMALKMMELSEEVLTPDGRPIQMRIGIHSGSVLAGVVGVRMPRYCLFGNNVTLASKFESGSHPRRINISPTTYQLL
+&gt; .^.^1^147^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^142.00^0.000e+00^2.000e-37
+TILFSDVVTFTNICTACEPIQIVNVLNSMYSKFDRLTSVHAVYKVETIGDAYMVVGGVPVPIGNHAQRVANFALGMRISAKEVTNPVTGEPIQLRVGIHTGPVLADVVGDKMPRYCLFGDTVNTASRMESHGLPNKVHLSPTAYRAL
+&gt; .^.^1^143^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^142.00^0.000e+00^2.000e-37
+VSIFFSDIVGFTALSAASTPIQVVNLLNDLYTLFDAIISNYDVYKVETIGDAYMLVSGLPLRNGDRHAGQIASTAHHLLESVKGFIVPHKPEVFLKLRIGIHSGSCVAGVVGLTMPRYCLFGDTVNTASRMESNGLALRIHVS
+&gt; .^.^1^58^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^82.40^0.000e+00^4.000e-19
+NSFRLRVGINHGPVIAGVIGARKPQYDIWGNTVNVASRMESTGELGKIQVTEETCTIL
+&gt; .^.^1^54^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^71.20^0.000e+00^1.000e-15
+NNFMLRIGMNKGGVLAGVIGARKPHYDIWGNTVNVASRMESTGVMGNIQVVEET
+&gt; .^.^1^51^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase catalytic domain^PSIBLAST^73.10^0.000e+00^2.000e-16
+NDFVLRVGINVGPVVAGVIGARRPQYDIWGNTVNVASRMDSTGVQGRIQVT
 </pre>
 </td></tr></table><p>
 <p><h3>File: seqsearch.log</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 //
-/ebi/services/idata/pmr/hgmp/test/data/structure/54894.salign
+/ebi/services/idata/pmr/hgmp/test/data/structure/54894.daf
 //
-/ebi/services/idata/pmr/hgmp/test/data/structure/55074.salign
+/ebi/services/idata/pmr/hgmp/test/data/structure/55074.daf
 </pre>
 </td></tr></table><p>
 
@@ -527,18 +568,19 @@ An example of interactive use of SEQSEARCH is shown below.
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>seqsearch </b>
-Generate files of hits for families in a scop classification file by using
-PSI-BLAST with seed alignments.
-Name of scop classification file (embl format input): <b>all.scop</b>
-Location of scop alignment files (input) [./]: <b>structure</b>
-Extension of scop alignment files (input) [.salign]: <b></b>
-Name of BLAST-indexed database to search [swissprot]: <b>swnew</b>
-Number of PSIBLAST iterations [1]: <b>1</b>
-Threshold E-value for inclusion in family [0.001]: <b>0.001</b>
-Maximum number of hits [1000]: <b>100</b>
-Location of scop hits files (output) [./]: <b></b>
-Extension of scop hits files (output) [.hits]: <b></b>
-Name of log file for the build [seqsearch.log]: <b></b>
+Generate database hits (sequences) for nodes in a DCF file (domain
+classification file) by using PSI-BLAST.
+Input mode
+         1 : Single sequences
+         2 : Multiple sequences (e.g. sequence set or alignment)
+Select mode of operation. [1]: <b>2</b>
+Location of sequences, e.g. DAF files (domain alignment files) (input). [./]: <b>structure</b>
+Name of BLAST-indexed database to search. [swissprot]: <b>swsmall</b>
+Number of PSIBLAST iterations. [1]: <b></b>
+Threshold E-value for inclusion in family. [0.001]: <b>0.0001</b>
+Maximum number of hits. [1000]: <b>100</b>
+Location of DHF files (domain hits files) (output). [./]: <b></b>
+Name of log file for the build. [seqsearch.log]: <b></b>
 [blastpgp] WARNING: posFindAlignmentDimensions: Attempting to recover data from multiple alignment file
 
 [blastpgp] WARNING: posProcessAlignment: Alignment recovered successfully
@@ -548,11 +590,11 @@ Name of log file for the build [seqsearch.log]: <b></b>
 [blastpgp] WARNING: posProcessAlignment: Alignment recovered successfully
 
 
-PROCESSING /ebi/services/idata/pmr/hgmp/test/data/structure/54894.salign
-blastpgp -i ./seqsearch-1095239004.25358.seqin -B ./seqsearch-1095239004.25358.seqsin -j 1 -e 0.001000 -b 100 -v 100 -d ../../data/swnew > ./seqsearch-1095239004.25358.psiout
+PROCESSING /ebi/services/idata/pmr/hgmp/test/data/structure/54894.daf
+blastpgp -i ./seqsearch-1112091273.25929.seqin -B ./seqsearch-1112091273.25929.seqsin -j 1 -e 0.000100 -b 100 -v 100 -d ../../data/structure/swsmall > ./seqsearch-1112091273.25929.psiout
 
-PROCESSING /ebi/services/idata/pmr/hgmp/test/data/structure/55074.salign
-blastpgp -i ./seqsearch-1095239004.6149.seqin -B ./seqsearch-1095239004.6149.seqsin -j 1 -e 0.001000 -b 100 -v 100 -d ../../data/swnew > ./seqsearch-1095239004.6149.psiout
+PROCESSING /ebi/services/idata/pmr/hgmp/test/data/structure/55074.daf
+blastpgp -i ./seqsearch-1112091273.12261.seqin -B ./seqsearch-1112091273.12261.seqsin -j 1 -e 0.000100 -b 100 -v 100 -d ../../data/structure/swsmall > ./seqsearch-1112091273.12261.psiout
 
 
 </pre></td></tr></table><p>
@@ -668,22 +710,25 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="../construct/contactcount.html">contactcount</a></td><td>Counts specific versus non-specific contacts in a directory of cleaned protein chain contact files</td></tr>
-<tr><td><a href="contacts.html">contacts</a></td><td>Reads CCF files (clean coordinate files) and writes CON files (contact files) of intra-chain residue-residue contact data</td></tr>
-<tr><td><a href="domainalign.html">domainalign</a></td><td>Generates DAF files (domain alignment files) of structure-based sequence alignments for nodes in a DCF file (domain classification file)</td></tr>
-<tr><td><a href="domainrep.html">domainrep</a></td><td>Reorder DCF file (domain classification file) so that the representative structure of each user-specified node is given first</td></tr>
-<tr><td><a href="domainreso.html">domainreso</a></td><td>Removes low resolution domains from a DCF file (domain classification file)</td></tr>
-<tr><td><a href="interface.html">interface</a></td><td>Reads CCF files (clean coordinate files) and writes CON files (contact files) of inter-chain residue-residue contact data</td></tr>
-<tr><td><a href="libgen.html">libgen</a></td><td>Generates various types of discriminating elements for each alignment in a directory</td></tr>
-<tr><td><a href="../../apps/psiphi.html">psiphi</a></td><td>Calculates phi and psi torsion angles from cleaned EMBOSS-style protein co-ordinate file</td></tr>
-<tr><td><a href="rocon.html">rocon</a></td><td>Reads a DHF file (domain hits file) of hits (sequences of unknown structural classification) and a DHF file of validation sequences (known classification) and writes a 'hits file' for the hits, which are classified and rank-ordered on the basis of score</td></tr>
-<tr><td><a href="rocplot.html">rocplot</a></td><td>Provides interpretation and graphical display of the performance of discriminating elements (e.g. profiles for protein families). rocplot reads file(s) of hits from discriminator-database search(es), performs ROC analysis on the hits, and writes graphs illustrating the diagnostic performance of the discriminating elements</td></tr>
-<tr><td><a href="seqalign.html">seqalign</a></td><td>Reads a DAF file (domain alignment file) and a DHF file (domain hits file) and writes a DAF file extended with the hits</td></tr>
-<tr><td><a href="seqfraggle.html">seqfraggle</a></td><td>Removes fragments from DHF files (domain hits files) or other files of sequences</td></tr>
-<tr><td><a href="seqsort.html">seqsort</a></td><td>Reads DHF files (domain hits files) of database hits (sequences) and removes hits of ambiguous classification</td></tr>
-<tr><td><a href="seqwords.html">seqwords</a></td><td>Generates DHF files (domain hits files) of database hits (sequences) for nodes in a DCF file (domain classification file) by keyword search of UniProt</td></tr>
-<tr><td><a href="siggen.html">siggen</a></td><td>Generates a sparse protein signature from an alignment and residue contact data</td></tr>
-<tr><td><a href="sigscan.html">sigscan</a></td><td>Generates a DHF file (domain hits file) of hits (sequences) from scanning a signature against a sequence database</td></tr>
+<tr><td><a href="../construct/contactcount.html">contactcount</a></td><td>Count specific versus non-specific contacts</td></tr>
+<tr><td><a href="contacts.html">contacts</a></td><td>Generate intra-chain CON files from CCF files</td></tr>
+<tr><td><a href="domainalign.html">domainalign</a></td><td>Generate alignments (DAF file) for nodes in a DCF file</td></tr>
+<tr><td><a href="domainrep.html">domainrep</a></td><td>Reorder DCF file to identify representative structures</td></tr>
+<tr><td><a href="domainreso.html">domainreso</a></td><td>Remove low resolution domains from a DCF file</td></tr>
+<tr><td><a href="interface.html">interface</a></td><td>Generate inter-chain CON files from CCF files</td></tr>
+<tr><td><a href="libgen.html">libgen</a></td><td>Generate discriminating elements from alignments</td></tr>
+<tr><td><a href="matgen3d.html">matgen3d</a></td><td>Generate a 3D-1D scoring matrix from CCF files</td></tr>
+<tr><td><a href="../../apps/psiphi.html">psiphi</a></td><td>Phi and psi torsion angles from protein coordinates</td></tr>
+<tr><td><a href="rocon.html">rocon</a></td><td>Generates a hits file from comparing two DHF files</td></tr>
+<tr><td><a href="rocplot.html">rocplot</a></td><td>Performs ROC analysis on hits files</td></tr>
+<tr><td><a href="seqalign.html">seqalign</a></td><td>Extend alignments (DAF file) with sequences (DHF file)</td></tr>
+<tr><td><a href="seqfraggle.html">seqfraggle</a></td><td>Removes fragment sequences from DHF files</td></tr>
+<tr><td><a href="seqsort.html">seqsort</a></td><td>Remove ambiguous classified sequences from DHF files</td></tr>
+<tr><td><a href="seqwords.html">seqwords</a></td><td>Generates DHF files from keyword search of UniProt</td></tr>
+<tr><td><a href="siggen.html">siggen</a></td><td>Generates a sparse protein signature from an alignment</td></tr>
+<tr><td><a href="siggenlig.html">siggenlig</a></td><td>Generate ligand-binding signatures from a CON file</td></tr>
+<tr><td><a href="sigscan.html">sigscan</a></td><td>Generate hits (DHF file) from a signature search</td></tr>
+<tr><td><a href="sigscanlig.html">sigscanlig</a></td><td>Search ligand-signature library & write hits (LHF file)</td></tr>
 </table>
 
 

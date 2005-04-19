@@ -5,7 +5,7 @@
 
 Function
 
-   Finds a match of a large sequence against one or more sequences
+   Match large sequences against one or more other sequences
 
 Description
 
@@ -24,7 +24,7 @@ Usage
 
 
 % supermatcher tembl:ec* tembl:eclac -word 50  
-Finds a match of a large sequence against one or more sequences
+Match large sequences against one or more other sequences
 Gap opening penalty [10.0]: 
 Gap extension penalty [0.5]: 3.0
 Output alignment [eclac.supermatcher]: 
@@ -529,7 +529,7 @@ See also
 
    Program name                         Description
    matcher      Finds the best local alignments between two sequences
-   seqmatchall  Does an all-against-all comparison of a set of sequences
+   seqmatchall  All-against-all comparison of a set of sequences
    water        Smith-Waterman local alignment
    wordmatch    Finds all exact matches of a given size between 2 sequences
 

@@ -589,12 +589,11 @@ Known bugs
 
 See also
 
-   Program name Description
-   matcher Finds the best local alignments between two sequences
-   seqmatchall Does an all-against-all comparison of a set of sequences
-   supermatcher Finds a match of a large sequence against one or more
-   sequences
-   wordmatch Finds all exact matches of a given size between 2 sequences
+   Program name                         Description
+   matcher      Finds the best local alignments between two sequences
+   seqmatchall  All-against-all comparison of a set of sequences
+   supermatcher Match large sequences against one or more other sequences
+   wordmatch    Finds all exact matches of a given size between 2 sequences
 
    matcher is a local alignment program that gives as good an alignment
    as

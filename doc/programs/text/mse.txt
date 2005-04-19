@@ -21,11 +21,10 @@ Command line arguments
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqset     File containing a sequence alignment
+  [-outseq]            seqoutset  Output sequence set USA
 
    Additional (Optional) qualifiers: (none)
-   Advanced (Unprompted) qualifiers:
-   -tmpdir             outdir     Temp directory
-
+   Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
    "-sequence" associated qualifiers
@@ -43,6 +42,18 @@ Command line arguments
    -ufo1               string     UFO features
    -fformat1           string     Features format
    -fopenfile1         string     Features file name
+
+   "-outseq" associated qualifiers
+   -osformat2          string     Output seq format
+   -osextension2       string     File name extension
+   -osname2            string     Base file name
+   -osdirectory2       string     Output directory
+   -osdbname2          string     Database name to add
+   -ossingle2          boolean    Separate file for each entry
+   -oufo2              string     UFO features
+   -offormat2          string     Features format
+   -ofname2            string     Features file name
+   -ofdirectory2       string     Output directory
 
    General qualifiers:
    -auto               boolean    Turn off prompts
@@ -64,10 +75,13 @@ Command line arguments
    [-sequence]
    (Parameter 1) File containing a sequence alignment Readable set of
    sequences Required
+   [-outseq]
+   (Parameter 2) Output sequence set USA Writeable sequences
+   <sequence>.format
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default
-   -tmpdir Temp directory Output directory /tmp
+   (none)
 
 Input file format
 
@@ -111,7 +125,7 @@ See also
    Program name                        Description
    emma         Multiple alignment program - interface to ClustalW program
    infoalign    Information on a multiple sequence alignment
-   plotcon      Plots the quality of conservation of a sequence alignment
+   plotcon      Plot quality of conservation of a sequence alignment
    prettyplot   Displays aligned sequences, with colouring and boxing
    showalign    Displays a multiple sequence alignment
    tranalign    Align nucleic coding regions given the aligned proteins

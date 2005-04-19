@@ -112,9 +112,8 @@ Known bugs
 
 See also
 
-   Program name Description
-   crystalball Answers every drug discovery question you have about this
-   sequence
+   Program name                      Description
+   crystalball  Answers every drug discovery question about a sequence
 
 Author(s)
 

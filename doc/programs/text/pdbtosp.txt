@@ -5,7 +5,7 @@
 
 Function
 
-   Convert raw swissprot:PDB equivalence file to EMBL-like format
+   Convert swissprot:PDB codes file to EMBL-like format
 
 Description
 
@@ -47,7 +47,7 @@ Usage
 
 
 % pdbtosp 
-Convert raw swissprot:PDB equivalence file to EMBL-like format
+Convert swissprot:PDB codes file to EMBL-like format.
 Name of raw swissprot:PDB equivalence file (input): pdbtosp.txt
 Name of swissprot:PDB equivalence file (EMBL-like format output) [Epdbtosp.dat]
 : 
@@ -287,44 +287,26 @@ Known bugs
 
 See also
 
-   Program name Description
+    Program name                        Description
    aaindexextract Extract data from AAINDEX
-   allversusall Does an all-versus-all global alignment for each set of
-   sequences in an input directory and writes files of sequence
-   similarity values
-   cathparse Reads raw CATH classification files and writes DCF file
-   (domain classification file)
-   cutgextract Extract data from CUTG
-   domainer Reads CCF files (clean coordinate files) for proteins and
-   writes CCF files for domains, taken from a DCF file (domain
-   classification file)
-   domainnr Removes redundant domains from a DCF file (domain
-   classification file). The file must contain domain sequence
-   information, which can be added by using DOMAINSEQS
-   domainseqs Adds sequence records to a DCF file (domain classification
-   file)
-   domainsse Adds secondary structure records to a DCF file (domain
-   classification file)
-   hetparse Converts raw dictionary of heterogen groups to a file in
-   EMBL-like format
-   pdbparse Parses PDB files and writes CCF files (clean coordinate
-   files) for proteins
-   pdbplus Add residue solvent accessibility and secondary structure data
-   to a CCF file (clean coordinate file) for a protein or domain
-   printsextract Extract data from PRINTS
-   prosextract Builds the PROSITE motif database for patmatmotifs to
-   search
-   rebaseextract Extract data from REBASE
-   scopparse Reads raw SCOP classification files and writes a DCF file
-   (domain classification file)
-   seqnr Removes redundancy from DHF files (domain hits files) or other
-   files of sequences
-   sites Reads CCF files (clean coordinate files) and writes CON files
-   (contact files) of residue-ligand contact data for domains in a DCF
-   file (domain classification file)
-   ssematch Searches a DCF file (domain classification file) for
-   secondary structure matches
-   tfextract Extract data from TRANSFAC
+   allversusall   Sequence similarity data from all-versus-all comparison
+   cathparse      Generates DCF file from raw CATH files
+   cutgextract    Extract data from CUTG
+   domainer       Generates domain CCF files from protein CCF files
+   domainnr       Removes redundant domains from a DCF file
+   domainseqs     Adds sequence records to a DCF file
+   domainsse      Add secondary structure records to a DCF file
+   hetparse       Converts heterogen group dictionary to EMBL-like format
+   pdbparse       Parses PDB files and writes protein CCF files
+   pdbplus        Add accessibility & secondary structure to a CCF file
+   printsextract  Extract data from PRINTS
+   prosextract    Build the PROSITE motif database for use by patmatmotifs
+   rebaseextract  Extract data from REBASE
+   scopparse      Generate DCF file from raw SCOP files
+   seqnr          Removes redundancy from DHF files
+   sites          Generate residue-ligand CON files from CCF files
+   ssematch       Search a DCF file for secondary structure matches
+   tfextract      Extract data from TRANSFAC
 
    scopseqs uses the pdbtosp output file as input.
 

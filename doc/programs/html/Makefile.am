@@ -6,7 +6,7 @@ pkgdata_DATA =  aaindexextract.html abiview.html acdc.html acd_group.html \
 	alignment_multiple_group.html alignrunner.html allversusall.html \
 	antigenic.html backtranseq.html banana.html biosed.html \
 	btwisted.html cai.html cathparse.html chaos.html charge.html \
-	checktrans.html chips.html cirdna.html codcmp.html \
+	checktrans.html chips.html cirdna.html codcmp.html codcopy.html \
 	coderet.html compseq.html cons.html contactalign.html \
 	contactcount.html contacts.html \
 	cpgplot.html cpgreport.html crystalball.html cusp.html \
@@ -44,7 +44,7 @@ pkgdata_DATA =  aaindexextract.html abiview.html acdc.html acd_group.html \
 	infoalign.html information_group.html infoseq.html interface.html \
 	isochore.html jembossctl.html libgen.html \
 	libscan.html lindna.html listor.html marscan.html maskfeat.html \
-	maskseq.html matcher.html megamerger.html meme.html \
+	maskseq.html matcher.html matgen3d.html megamerger.html meme.html \
 	menus_group.html merger.html msbar.html mse.html \
 	mwcontam.html mwfilter.html myseq.html
 
@@ -86,7 +86,8 @@ pkgdata2_DATA = nawalign.html nawalignrunner.html needle.html \
 	seqretsplit.html seqsearch.html seqsort.html seqwords.html \
 	showalign.html showdb.html showfeat.html showorf.html \
 	showseq.html shuffleseq.html sigcleave.html siggen.html \
-	sigscan.html silent.html sirna.html sites.html sixpack.html \
+	siggenlig.html sigscan.html sigscanlig.html \
+	silent.html sirna.html sites.html sixpack.html \
 	skipseq.html splitter.html ssematch.html stretcher.html \
 	stssearch.html substitute.html substituterunner.html \
 	supermatcher.html syco.html tcode.html template.html \

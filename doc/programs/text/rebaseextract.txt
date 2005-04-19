@@ -336,13 +336,12 @@ Known bugs
 
 See also
 
-   Program name Description
+    Program name                        Description
    aaindexextract Extract data from AAINDEX
-   cutgextract Extract data from CUTG
-   printsextract Extract data from PRINTS
-   prosextract Builds the PROSITE motif database for patmatmotifs to
-   search
-   tfextract Extract data from TRANSFAC
+   cutgextract    Extract data from CUTG
+   printsextract  Extract data from PRINTS
+   prosextract    Build the PROSITE motif database for use by patmatmotifs
+   tfextract      Extract data from TRANSFAC
 
 Author(s)
 

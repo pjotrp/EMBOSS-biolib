@@ -278,7 +278,7 @@ See also
    garnier        Predicts protein secondary structure
    helixturnhelix Report nucleic acid binding motifs
    hmoment        Hydrophobic moment calculation
-   oddcomp        Finds protein sequence regions with a biased composition
+   oddcomp        Find protein sequence regions with a biased composition
    patmatdb       Search a protein sequence with a motif
    patmatmotifs   Search a PROSITE motif database with a protein sequence
    pepnet         Displays proteins as a helical net

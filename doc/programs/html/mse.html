@@ -120,11 +120,10 @@ EDIT HERE
 <pre>
    Standard (Mandatory) qualifiers:
   [-sequence]          seqset     File containing a sequence alignment
+  [-outseq]            seqoutset  Output sequence set USA
 
    Additional (Optional) qualifiers: (none)
-   Advanced (Unprompted) qualifiers:
-   -tmpdir             outdir     Temp directory
-
+   Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
    "-sequence" associated qualifiers
@@ -142,6 +141,18 @@ EDIT HERE
    -ufo1               string     UFO features
    -fformat1           string     Features format
    -fopenfile1         string     Features file name
+
+   "-outseq" associated qualifiers
+   -osformat2          string     Output seq format
+   -osextension2       string     File name extension
+   -osname2            string     Base file name
+   -osdirectory2       string     Output directory
+   -osdbname2          string     Database name to add
+   -ossingle2          boolean    Separate file for each entry
+   -oufo2              string     UFO features
+   -offormat2          string     Features format
+   -ofname2            string     Features file name
+   -ofdirectory2       string     Output directory
 
    General qualifiers:
    -auto               boolean    Turn off prompts
@@ -176,6 +187,13 @@ EDIT HERE
 <td><b>Required</b></td>
 </tr>
 
+<tr>
+<td>[-outseq]<br>(Parameter 2)</td>
+<td>Output sequence set USA</td>
+<td>Writeable sequences</td>
+<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+</tr>
+
 <tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Additional (Optional) qualifiers</th>
 <th align="left">Allowed values</th>
@@ -193,10 +211,7 @@ EDIT HERE
 </tr>
 
 <tr>
-<td>-tmpdir</td>
-<td>Temp directory</td>
-<td>Output directory</td>
-<td>/tmp</td>
+<td colspan=4>(none)</td>
 </tr>
 
 </table>
@@ -408,7 +423,7 @@ None.
 <tr><th>Program name</th><th>Description</th></tr>
 <tr><td><a href="../../apps/emma.html">emma</a></td><td>Multiple alignment program - interface to ClustalW program</td></tr>
 <tr><td><a href="../../apps/infoalign.html">infoalign</a></td><td>Information on a multiple sequence alignment</td></tr>
-<tr><td><a href="../../apps/plotcon.html">plotcon</a></td><td>Plots the quality of conservation of a sequence alignment</td></tr>
+<tr><td><a href="../../apps/plotcon.html">plotcon</a></td><td>Plot quality of conservation of a sequence alignment</td></tr>
 <tr><td><a href="../../apps/prettyplot.html">prettyplot</a></td><td>Displays aligned sequences, with colouring and boxing</td></tr>
 <tr><td><a href="../../apps/showalign.html">showalign</a></td><td>Displays a multiple sequence alignment</td></tr>
 <tr><td><a href="../../apps/tranalign.html">tranalign</a></td><td>Align nucleic coding regions given the aligned proteins</td></tr>

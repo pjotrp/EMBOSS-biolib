@@ -5,7 +5,7 @@
 
 Function
 
-   Answers every drug discovery question you have about this sequence
+   Answers every drug discovery question about a sequence
 
 Description
 

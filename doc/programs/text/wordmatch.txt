@@ -474,12 +474,11 @@ Known bugs
 
 See also
 
-   Program name Description
-   matcher Finds the best local alignments between two sequences
-   seqmatchall Does an all-against-all comparison of a set of sequences
-   supermatcher Finds a match of a large sequence against one or more
-   sequences
-   water Smith-Waterman local alignment
+   Program name                        Description
+   matcher      Finds the best local alignments between two sequences
+   seqmatchall  All-against-all comparison of a set of sequences
+   supermatcher Match large sequences against one or more other sequences
+   water        Smith-Waterman local alignment
 
 Author(s)
 

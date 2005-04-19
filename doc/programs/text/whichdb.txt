@@ -179,15 +179,14 @@ Known bugs
 
 See also
 
-   Program name Description
-   infoalign Information on a multiple sequence alignment
-   infoseq Displays some simple information about sequences
-   seealso Finds programs sharing group names
-   showdb Displays information on the currently available databases
-   textsearch Search sequence documentation text. SRS and Entrez are
-   faster!
-   tfm Displays a program's help documentation manual
-   wossname Finds programs by keywords in their one-line documentation
+   Program name                        Description
+   infoalign    Information on a multiple sequence alignment
+   infoseq      Displays some simple information about sequences
+   seealso      Finds programs sharing group names
+   showdb       Displays information on the currently available databases
+   textsearch   Search sequence documentation. Slow, use SRS and Entrez!
+   tfm          Displays a program's help documentation manual
+   wossname     Finds programs by keywords in their one-line documentation
 
 Author(s)
 

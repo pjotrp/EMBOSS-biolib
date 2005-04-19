@@ -378,7 +378,7 @@ See also
    fuzztran     Protein pattern search after translation
    garnier      Predicts protein secondary structure
    hmoment      Hydrophobic moment calculation
-   oddcomp      Finds protein sequence regions with a biased composition
+   oddcomp      Find protein sequence regions with a biased composition
    patmatdb     Search a protein sequence with a motif
    patmatmotifs Search a PROSITE motif database with a protein sequence
    pepcoil      Predicts coiled coil regions

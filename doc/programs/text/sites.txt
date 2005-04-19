@@ -20,9 +20,7 @@ CONTENTS
 
 1.0 SUMMARY
 
-   Reads CCF files (clean coordinate files) and writes CON files (contact
-   files) of residue-ligand contact data for domains in a DCF file
-   (domain classification file)
+   Generate residue-ligand CON files from CCF files
 
 2.0 INPUTS & OUTPUTS
 
@@ -37,7 +35,65 @@ CONTENTS
 3.0 INPUT FILE FORMAT
 
    The format of the protein CCF file is described in the PDBPARSE
-   documentation. Under development, no example input file(s) yet
+   documentation.
+
+  Input files for usage example
+
+  File: sites/sites.dcf
+
+//
+ID   D1CS4A_
+XX
+EN   1CS4
+XX
+TY   SCOP
+XX
+SI   53931 CL; 54861 FO; 55073 SF; 55074 FA; 55077 DO; 55078 SO; 39418 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Adenylyl and guanylyl cyclase catalytic domain
+XX
+FA   Adenylyl and guanylyl cyclase catalytic domain
+XX
+DO   Adenylyl cyclase VC1, domain C1a
+XX
+OS   Dog (Canis familiaris)
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+ID   D1II7A_
+XX
+EN   1II7
+XX
+TY   SCOP
+XX
+SI   53931 CL; 56299 FO; 56300 SF; 64427 FA; 64428 DO; 64429 SO; 62415 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Metallo-dependent phosphatases
+XX
+SF   Metallo-dependent phosphatases
+XX
+FA   DNA double-strand break repair nuclease
+XX
+DO   Mre11
+XX
+OS   Archaeon Pyrococcus furiosus
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
 
 4.0 OUTPUT FILE FORMAT
 
@@ -97,7 +153,122 @@ CONTENTS
      * // - delimiter for individual entries in the file and also given
        on the last line of the file.
 
-   Under development, no example output file(s) yet
+  Output files for usage example
+
+  File: SITES.con
+
+XX   Residue-ligand contact data (for domains).
+XX
+TY   LIGAND
+XX
+EX   THRESH 1.0; IGNORE .; NMOD .; NCHA .;
+XX
+NE   7
+XX
+EN   [1]
+XX
+ID   PDB 1cs4; DOM d1cs4a_; LIG 101;
+XX
+DE   2'-DEOXY-ADENOSINE 3'-MONOPHOSPHATE
+XX
+CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 225; NRES2 .
+XX
+S1   SEQUENCE   225 AA;  25486 MW;  437C8290 CRC32;
+     MHHHHHHAME MKADINAKQE DMMFHKIYIQ KHDNVSILFA DIEGFTSLAS QCTAQELVMT
+     LNELFARFDK LAAENHCLRI KILGDCYYCV SGLPEARADH AHCCVEMGMD MIEAISLVRE
+     MTGVNVNMRV GIHSGRVHCG VLGLRKWQFD VWSNDVTLAN HMEAGGKAGR IHITKATLSY
+     LNGDYEVEPG CGGERNAYLK EHSIETFLIL RCTQKRKEEK AMIAK
+XX
+NC   SM .; LI 6
+XX
+LI   ASP 41
+LI   PHE 45
+LI   THR 46
+LI   LEU 83
+LI   GLY 84
+LI   ASP 85
+XX
+//
+EN   [2]
+XX
+ID   PDB 1ii7; DOM d1ii7a_; LIG 101;
+XX
+DE   2'-DEOXY-ADENOSINE 3'-MONOPHOSPHATE
+XX
+CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 65; NRES2 .
+XX
+S1   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;
+     MKFAHLADIH LGYEQFHKPQ REEEFAEAFK NALEIAVQEN VDFILIAGDL FHSSRPSPGT
+     LKKAI
+XX
+NC   SM .; LI 2
+XX
+LI   HIS 10
+LI   ASP 49
+XX
+//
+
+
+  [Part of this file has been deleted for brevity]
+
+XX
+LI   ASP 41
+LI   ILE 42
+LI   PHE 45
+LI   ASP 85
+XX
+//
+EN   [6]
+XX
+ID   PDB 1ii7; DOM d1ii7a_; LIG MN;
+XX
+DE   MANGANESE (II) ION
+XX
+CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 65; NRES2 .
+XX
+S1   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;
+     MKFAHLADIH LGYEQFHKPQ REEEFAEAFK NALEIAVQEN VDFILIAGDL FHSSRPSPGT
+     LKKAI
+XX
+NC   SM .; LI 3
+XX
+LI   ASP 8
+LI   HIS 10
+LI   ASP 49
+XX
+//
+EN   [7]
+XX
+ID   PDB 1cs4; DOM d1cs4a_; LIG POP;
+XX
+DE   PYROPHOSPHATE 2-
+XX
+CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 225; NRES2 .
+XX
+S1   SEQUENCE   225 AA;  25486 MW;  437C8290 CRC32;
+     MHHHHHHAME MKADINAKQE DMMFHKIYIQ KHDNVSILFA DIEGFTSLAS QCTAQELVMT
+     LNELFARFDK LAAENHCLRI KILGDCYYCV SGLPEARADH AHCCVEMGMD MIEAISLVRE
+     MTGVNVNMRV GIHSGRVHCG VLGLRKWQFD VWSNDVTLAN HMEAGGKAGR IHITKATLSY
+     LNGDYEVEPG CGGERNAYLK EHSIETFLIL RCTQKRKEEK AMIAK
+XX
+NC   SM .; LI 7
+XX
+LI   ASP 41
+LI   ILE 42
+LI   GLU 43
+LI   GLY 44
+LI   PHE 45
+LI   THR 46
+LI   ARG 129
+XX
+//
+
+  File: SITES.log
+
+CCF: /ebi/services/idata/pmr/hgmp/test/data/structure/sites/1cs4.ccf    HETS:YE
+S       NHETS:7 SCOP:YES        NDOMS: 1
+CCF: /ebi/services/idata/pmr/hgmp/test/data/structure/sites/1ii7.ccf    HETS:YE
+S       NHETS:5 SCOP:YES        NDOMS: 1
 
 5.0 DATA FILES
 
@@ -239,18 +410,39 @@ CONTENTS
 
   6.2 EXAMPLE SESSION
 
-   An example of interactive use of SITES is shown below. Under
-   development, no final example yet Protein CCF files were read from
-   /testdata/sites/in and domain CCF files from /testdata/sites. Ligand
-   definitions were taken from Ehet.dat and domain definitions were taken
-   from the DCF file testdata/sites/in/sites.dcf. A CON file of
-   ligand-residue contacts for all domains defined in the DCF file and
-   present in the protein CCF files, was written to
-   testdata/sites/out/SITES.con. van der Waals radii were taken from the
-   emboss data file Evdw.dat and the default contact distance of 1
-   Angstrom was used to determine contacts. The log file
-   testdata/sites/out/SITES.log was written. The file extensions of all
-   input and output files were specified in the ACD file.
+   An example of interactive use of SITES is shown below. Here is a
+   sample session with sites
+
+
+% sites 
+Reads CCF files (clean coordinate files) and writes CON files (contact
+files) of residue-ligand contact data for domains in a DCF file (domain
+classification file).
+Protein CCF files (clean coordinate files) (input) [./]: sites
+Domain CCF files (clean coordinate files) (input) [./]: structure
+Name of DCF file (domain classification file) (input): sites/sites.dcf
+Threshold contact distance [1.0]: 1
+Name of output file [SITES.con]: 
+Name of log file [SITES.log]: 
+
+Entries in HetDic 4306
+Entries in Dbase 4306
+CCF FILE: /ebi/services/idata/pmr/hgmp/test/data/structure/sites/1cs4.ccf (1/2)
+CCF FILE: /ebi/services/idata/pmr/hgmp/test/data/structure/sites/1ii7.ccf (2/2)
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+   Protein CCF files were read from /testdata/sites/in and domain CCF
+   files from /testdata/sites. Ligand definitions were taken from
+   Ehet.dat and domain definitions were taken from the DCF file
+   testdata/sites/in/sites.dcf. A CON file of ligand-residue contacts for
+   all domains defined in the DCF file and present in the protein CCF
+   files, was written to testdata/sites/out/SITES.con. van der Waals
+   radii were taken from the emboss data file Evdw.dat and the default
+   contact distance of 1 Angstrom was used to determine contacts. The log
+   file testdata/sites/out/SITES.log was written. The file extensions of
+   all input and output files were specified in the ACD file.
 
 7.0 KNOWN BUGS & WARNINGS
 
@@ -313,42 +505,26 @@ CONTENTS
 
 See also
 
-   Program name Description
+    Program name                        Description
    aaindexextract Extract data from AAINDEX
-   allversusall Does an all-versus-all global alignment for each set of
-   sequences in an input directory and writes files of sequence
-   similarity values
-   cathparse Reads raw CATH classification files and writes DCF file
-   (domain classification file)
-   cutgextract Extract data from CUTG
-   domainer Reads CCF files (clean coordinate files) for proteins and
-   writes CCF files for domains, taken from a DCF file (domain
-   classification file)
-   domainnr Removes redundant domains from a DCF file (domain
-   classification file). The file must contain domain sequence
-   information, which can be added by using DOMAINSEQS
-   domainseqs Adds sequence records to a DCF file (domain classification
-   file)
-   domainsse Adds secondary structure records to a DCF file (domain
-   classification file)
-   hetparse Converts raw dictionary of heterogen groups to a file in
-   EMBL-like format
-   pdbparse Parses PDB files and writes CCF files (clean coordinate
-   files) for proteins
-   pdbplus Add residue solvent accessibility and secondary structure data
-   to a CCF file (clean coordinate file) for a protein or domain
-   pdbtosp Convert raw swissprot:PDB equivalence file to EMBL-like format
-   printsextract Extract data from PRINTS
-   prosextract Builds the PROSITE motif database for patmatmotifs to
-   search
-   rebaseextract Extract data from REBASE
-   scopparse Reads raw SCOP classification files and writes a DCF file
-   (domain classification file)
-   seqnr Removes redundancy from DHF files (domain hits files) or other
-   files of sequences
-   ssematch Searches a DCF file (domain classification file) for
-   secondary structure matches
-   tfextract Extract data from TRANSFAC
+   allversusall   Sequence similarity data from all-versus-all comparison
+   cathparse      Generates DCF file from raw CATH files
+   cutgextract    Extract data from CUTG
+   domainer       Generates domain CCF files from protein CCF files
+   domainnr       Removes redundant domains from a DCF file
+   domainseqs     Adds sequence records to a DCF file
+   domainsse      Add secondary structure records to a DCF file
+   hetparse       Converts heterogen group dictionary to EMBL-like format
+   pdbparse       Parses PDB files and writes protein CCF files
+   pdbplus        Add accessibility & secondary structure to a CCF file
+   pdbtosp        Convert swissprot:PDB codes file to EMBL-like format
+   printsextract  Extract data from PRINTS
+   prosextract    Build the PROSITE motif database for use by patmatmotifs
+   rebaseextract  Extract data from REBASE
+   scopparse      Generate DCF file from raw SCOP files
+   seqnr          Removes redundancy from DHF files
+   ssematch       Search a DCF file for secondary structure matches
+   tfextract      Extract data from TRANSFAC
 
 12.0 DIAGNOSTIC ERROR MESSAGES
 

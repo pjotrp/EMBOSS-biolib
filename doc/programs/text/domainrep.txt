@@ -22,8 +22,7 @@ CONTENTS
 
 1.0 SUMMARY
 
-   Reorder DCF file (domain classification file) so that the
-   representative structure of each user-specified node is given first
+   Reorder DCF file to identify representative structures
 
 2.0 INPUTS & OUTPUTS
 

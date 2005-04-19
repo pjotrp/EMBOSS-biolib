@@ -22,8 +22,7 @@ CONTENTS
 
 1.0 SUMMARY
 
-   Reads raw SCOP classification files and writes a DCF file (domain
-   classification file)
+   Generate DCF file from raw SCOP files
 
 2.0 INPUTS & OUTPUTS
 
@@ -209,7 +208,7 @@ CH   A CHAIN; . START; . END;
                                   file available at
                                   http://scop.mrc-lmb.cam.ac.uk/scop/parse/dir.
 cla.scop.txt_1.57.
-  [-desfile]           infile     This option specifies the name of raw SCOP
+  [-desinfile]         infile     This option specifies the name of raw SCOP
                                   description file dir.des.scop.txt_X.XX
                                   (input). This is the raw SCOP description
                                   file available at
@@ -271,7 +270,7 @@ des.scop.txt_1.57.
    SCOP classification file available at
    http://scop.mrc-lmb.cam.ac.uk/scop/parse/dir.cla.scop.txt_1.57. Input
    file Required
-   [-desfile]
+   [-desinfile]
    (Parameter 2) This option specifies the name of raw SCOP description
    file dir.des.scop.txt_X.XX (input). This is the raw SCOP description
    file available at
@@ -421,43 +420,26 @@ SQ   SEQUENCE   146 AA;  15947 MW;  5868B4E5 CRC32;
 
 See also
 
-   Program name Description
+    Program name                        Description
    aaindexextract Extract data from AAINDEX
-   allversusall Does an all-versus-all global alignment for each set of
-   sequences in an input directory and writes files of sequence
-   similarity values
-   cathparse Reads raw CATH classification files and writes DCF file
-   (domain classification file)
-   cutgextract Extract data from CUTG
-   domainer Reads CCF files (clean coordinate files) for proteins and
-   writes CCF files for domains, taken from a DCF file (domain
-   classification file)
-   domainnr Removes redundant domains from a DCF file (domain
-   classification file). The file must contain domain sequence
-   information, which can be added by using DOMAINSEQS
-   domainseqs Adds sequence records to a DCF file (domain classification
-   file)
-   domainsse Adds secondary structure records to a DCF file (domain
-   classification file)
-   hetparse Converts raw dictionary of heterogen groups to a file in
-   EMBL-like format
-   pdbparse Parses PDB files and writes CCF files (clean coordinate
-   files) for proteins
-   pdbplus Add residue solvent accessibility and secondary structure data
-   to a CCF file (clean coordinate file) for a protein or domain
-   pdbtosp Convert raw swissprot:PDB equivalence file to EMBL-like format
-   printsextract Extract data from PRINTS
-   prosextract Builds the PROSITE motif database for patmatmotifs to
-   search
-   rebaseextract Extract data from REBASE
-   seqnr Removes redundancy from DHF files (domain hits files) or other
-   files of sequences
-   sites Reads CCF files (clean coordinate files) and writes CON files
-   (contact files) of residue-ligand contact data for domains in a DCF
-   file (domain classification file)
-   ssematch Searches a DCF file (domain classification file) for
-   secondary structure matches
-   tfextract Extract data from TRANSFAC
+   allversusall   Sequence similarity data from all-versus-all comparison
+   cathparse      Generates DCF file from raw CATH files
+   cutgextract    Extract data from CUTG
+   domainer       Generates domain CCF files from protein CCF files
+   domainnr       Removes redundant domains from a DCF file
+   domainseqs     Adds sequence records to a DCF file
+   domainsse      Add secondary structure records to a DCF file
+   hetparse       Converts heterogen group dictionary to EMBL-like format
+   pdbparse       Parses PDB files and writes protein CCF files
+   pdbplus        Add accessibility & secondary structure to a CCF file
+   pdbtosp        Convert swissprot:PDB codes file to EMBL-like format
+   printsextract  Extract data from PRINTS
+   prosextract    Build the PROSITE motif database for use by patmatmotifs
+   rebaseextract  Extract data from REBASE
+   seqnr          Removes redundancy from DHF files
+   sites          Generate residue-ligand CON files from CCF files
+   ssematch       Search a DCF file for secondary structure matches
+   tfextract      Extract data from TRANSFAC
 
    SEQNR and SEQALIGN use a domain classification file as input. SEQNR
    and SEQALIGN require the file to contain domain sequence information,

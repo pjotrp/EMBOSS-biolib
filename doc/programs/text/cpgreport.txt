@@ -321,9 +321,9 @@ Known bugs
 
 See also
 
-   Program name                          Description
+   Program name                        Description
    cpgplot      Plot CpG rich areas
-   geecee       Calculates the fractional GC content of nucleic acid sequences
+   geecee       Calculates fractional GC content of nucleic acid sequences
    newcpgreport Report CpG rich areas
    newcpgseek   Reports CpG rich regions
 

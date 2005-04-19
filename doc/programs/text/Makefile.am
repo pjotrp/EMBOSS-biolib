@@ -3,7 +3,7 @@ pkgdata_DATA =  aaindexextract.txt abiview.txt acdc.txt acdlog.txt \
 	alignrunner.txt allversusall.txt antigenic.txt backtranseq.txt \
 	banana.txt biosed.txt btwisted.txt cai.txt cathparse.txt \
 	chaos.txt charge.txt checktrans.txt chips.txt cirdna.txt \
-	codcmp.txt coderet.txt complex.txt compseq.txt \
+	codcmp.txt codcopy.txt coderet.txt complex.txt compseq.txt \
 	cons.txt contactalign.txt contactcount.txt \
 	contacts.txt cpgplot.txt cpgreport.txt \
 	crystalball.txt cusp.txt cutgextract.txt cutseq.txt dan.txt \
@@ -37,7 +37,7 @@ pkgdata_DATA =  aaindexextract.txt abiview.txt acdc.txt acdlog.txt \
 	hmoment.txt iep.txt infoalign.txt infoseq.txt interface.txt \
 	isochore.txt jembossctl.txt libgen.txt libscan.txt \
 	lindna.txt listor.txt marscan.txt maskfeat.txt maskseq.txt \
-	matcher.txt megamerger.txt meme.txt merger.txt \
+	matcher.txt matgen3d.txt megamerger.txt meme.txt merger.txt \
 	msbar.txt mse.txt mwcontam.txt mwfilter.txt myseq.txt
 
 pkgdata2_DATA = nawalignrunner.txt nawalign.txt needlerunner.txt \
@@ -56,7 +56,8 @@ pkgdata2_DATA = nawalignrunner.txt nawalign.txt needlerunner.txt \
 	seqfraggle.txt seqmatchall.txt seqnr.txt \
 	seqretsplit.txt seqret.txt seqsearch.txt seqsort.txt seqwords.txt \
 	showalign.txt showdb.txt showfeat.txt showorf.txt showseq.txt \
-	shuffleseq.txt sigcleave.txt siggen.txt sigscan.txt silent.txt \
+	shuffleseq.txt sigcleave.txt \
+	siggen.txt siggenlig.txt sigscan.txt sigscanlig.txt silent.txt \
 	sirna.txt sites.txt sixpack.txt skipseq.txt splitter.txt \
 	ssematch.txt stretcher.txt stssearch.txt substituterunner.txt \
 	substitute.txt supermatcher.txt syco.txt tcode.txt textsearch.txt \

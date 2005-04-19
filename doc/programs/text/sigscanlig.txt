@@ -1,0 +1,287 @@
+
+                          sigscanlig documentation
+                                      
+   
+
+CONTENTS
+
+   1.0 SUMMARY 
+   2.0 INPUTS & OUTPUTS 
+   3.0 INPUT FILE FORMAT 
+   4.0 OUTPUT FILE FORMAT 
+   5.0 DATA FILES 
+   6.0 USAGE 
+   7.0 COMMAND-LINE ARGUMENTS 
+   8.0 KNOWN BUGS & WARNINGS 
+   9.0 NOTES 
+   10.0 DESCRIPTION 
+   11.0 ALGORITHM 
+   12.0 RELATED APPLICATIONS 
+   13.0 DIAGNOSTIC ERROR MESSAGES 
+   14.0 AUTHORS 
+   15.0 REFERENCES 
+
+1.0 SUMMARY
+
+   Search ligand-signature library & write hits (LHF file)
+
+   sigscanlig is a generic tool for
+
+2.0 INPUTS & OUTPUTS
+
+   sigscanlig reads a
+
+3.0 INPUT FILE FORMAT
+
+4.0 OUTPUT FILE FORMAT
+
+5.0 DATA FILES
+
+   sigscanlig does not use a data file.
+
+6.0 USAGE
+
+7.0 COMMAND-LINE ARGUMENTS
+
+   Standard (Mandatory) qualifiers:
+  [-siginfiles]        dirlist    This option specifies the directory of
+                                  signature files (input). A 'signature file'
+                                  contains a sparse sequence signature
+                                  suitable for use with the SIGSCAN and
+                                  SIGSCANLIG programs. The files are generated
+                                  by using SIGGEN and SIGGENLIG.
+  [-dbsequences]       seqall     This option specifies the name of the
+                                  database of query sequences.
+   -sub                matrixf    This option specifies the scoring matrix to
+                                  use, e.g. residue substitution matrix (1D
+                                  signatures) or matrix of 3D:1D
+                                  (environment:residue) scores (3D).
+   -mode               menu       This option specifies the mode of scoring
+                                  ligands. In 'Patch Score Mode' (mode 1) the
+                                  score for a ligand is the mean of its patch
+                                  scores. In 'Site Score Mode' the score for a
+                                  ligand is the mean of its site scores. A
+                                  site score is the mean of patch score for
+                                  all patches for a given site.
+   -gapo               float      This option specifies the gap insertion
+                                  penalty. The gap insertion penalty is the
+                                  score taken away when a gap is created. The
+                                  best value depends on the choice of
+                                  comparison matrix. The default value assumes
+                                  you are using the EBLOSUM62 matrix for
+                                  protein sequences, and the EDNAMAT matrix
+                                  for nucleotide sequences.
+   -gape               float      This option specifies the gap extension
+                                  penalty. The gap extension penalty is added
+                                  to the standard gap penalty for each base or
+                                  residue in the gap. This is how long gaps
+                                  are penalized. Usually you will expect a few
+                                  long gaps rather than many short gaps, so
+                                  the gap extension penalty should be lower
+                                  than the gap penalty.
+   -nterm              menu       This option specifies the N-terminal
+                                  matching option. This determines how the
+                                  first signature position is aligned to a
+                                  sequence from the database.
+  [-hitsdir]           directory  This option specifies the directory of the
+                                  LHF files (ligand hits files) (output). A
+                                  'ligand hits file' contains database hits
+                                  (sequences) with ligand classification
+                                  information, in the LHF format (FASTA-like).
+                                  The hits are putative ligand-binding
+                                  sequences and are found from a search of a
+                                  sequence database, in this case, by using
+                                  SIGSCANLIG.
+  [-aligndir]          directory  This option specifies the name of the SAF
+                                  (signature alignment file) (output).A
+                                  'signature alignment file' contains one or
+                                  more signnature-sequence alignments. The
+                                  file is in DAF format (CLUSTAL-like) and is
+                                  annotated with bibliographic information,
+                                  either the domain family classification (for
+                                  SIGSCAN output) or ligand classification
+                                  (for SIGSCANLIG output). The files generated
+                                  by SIGSCAN will contain a
+                                  signature-sequence alignment for a single
+                                  signature against a library of one or more
+                                  sequences. The files generated by using
+                                  SIGSCANLIG will contain a signature-sequence
+                                  alignment for a single query sequence
+                                  against a library of one or more signatures.
+  [-resultsdir]        directory  This option specifies the directory for the
+                                  results files. A results file is generated
+                                  for each query sequence and contains a list
+                                  of hits (ligands), rank-ordered on the basis
+                                  of score.
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -nhits              integer    This option specifies the maximum number of
+                                  hits to output.
+   -domax              toggle     This option specifies whether to consider a
+                                  max. number of top-scoring hits only for
+                                  each ligand.
+*  -maxhits            integer    This option specifies the maximum number of
+                                  top-scoring hits to consider for each
+                                  ligand.
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-dbsequences" associated qualifiers
+   -sbegin2            integer    Start of each sequence to be used
+   -send2              integer    End of each sequence to be used
+   -sreverse2          boolean    Reverse (if DNA)
+   -sask2              boolean    Ask for begin/end/reverse
+   -snucleotide2       boolean    Sequence is nucleotide
+   -sprotein2          boolean    Sequence is protein
+   -slower2            boolean    Make lower case
+   -supper2            boolean    Make upper case
+   -sformat2           string     Input sequence format
+   -sdbname2           string     Database name
+   -sid2               string     Entryname
+   -ufo2               string     UFO features
+   -fformat2           string     Features format
+   -fopenfile2         string     Features file name
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+
+   Standard (Mandatory) qualifiers Allowed values Default
+   [-siginfiles]
+   (Parameter 1) This option specifies the directory of signature files
+   (input). A 'signature file' contains a sparse sequence signature
+   suitable for use with the SIGSCAN and SIGSCANLIG programs. The files
+   are generated by using SIGGEN and SIGGENLIG. Directory with files ./
+   [-dbsequences]
+   (Parameter 2) This option specifies the name of the database of query
+   sequences. Readable sequence(s) Required
+   -sub This option specifies the scoring matrix to use, e.g. residue
+   substitution matrix (1D signatures) or matrix of 3D:1D
+   (environment:residue) scores (3D). Comparison matrix file in EMBOSS
+   data path EBLOSUM62
+   -mode This option specifies the mode of scoring ligands. In 'Patch
+   Score Mode' (mode 1) the score for a ligand is the mean of its patch
+   scores. In 'Site Score Mode' the score for a ligand is the mean of its
+   site scores. A site score is the mean of patch score for all patches
+   for a given site.
+   1 (Patch score mode)
+   2 (Site score mode)
+   1
+   -gapo This option specifies the gap insertion penalty. The gap
+   insertion penalty is the score taken away when a gap is created. The
+   best value depends on the choice of comparison matrix. The default
+   value assumes you are using the EBLOSUM62 matrix for protein
+   sequences, and the EDNAMAT matrix for nucleotide sequences. Floating
+   point number from 1.0 to 100.0 10.0 for any sequence
+   -gape This option specifies the gap extension penalty. The gap
+   extension penalty is added to the standard gap penalty for each base
+   or residue in the gap. This is how long gaps are penalized. Usually
+   you will expect a few long gaps rather than many short gaps, so the
+   gap extension penalty should be lower than the gap penalty. Floating
+   point number from 0.0 to 10.0 0.5 for any sequence
+   -nterm This option specifies the N-terminal matching option. This
+   determines how the first signature position is aligned to a sequence
+   from the database.
+   1 (Align anywhere and allow only complete signature-sequence fit)
+   2 (Align anywhere and allow partial signature-sequence fit)
+   3 (Use empirical gaps only)
+   1
+   [-hitsdir]
+   (Parameter 3) This option specifies the directory of the LHF files
+   (ligand hits files) (output). A 'ligand hits file' contains database
+   hits (sequences) with ligand classification information, in the LHF
+   format (FASTA-like). The hits are putative ligand-binding sequences
+   and are found from a search of a sequence database, in this case, by
+   using SIGSCANLIG. Directory ./
+   [-aligndir]
+   (Parameter 4) This option specifies the name of the SAF (signature
+   alignment file) (output).A 'signature alignment file' contains one or
+   more signnature-sequence alignments. The file is in DAF format
+   (CLUSTAL-like) and is annotated with bibliographic information, either
+   the domain family classification (for SIGSCAN output) or ligand
+   classification (for SIGSCANLIG output). The files generated by SIGSCAN
+   will contain a signature-sequence alignment for a single signature
+   against a library of one or more sequences. The files generated by
+   using SIGSCANLIG will contain a signature-sequence alignment for a
+   single query sequence against a library of one or more signatures.
+   Directory ./
+   [-resultsdir]
+   (Parameter 5) This option specifies the directory for the results
+   files. A results file is generated for each query sequence and
+   contains a list of hits (ligands), rank-ordered on the basis of score.
+   Directory ./
+   Additional (Optional) qualifiers Allowed values Default
+   -nhits This option specifies the maximum number of hits to output. Any
+   integer value 100
+   -domax This option specifies whether to consider a max. number of
+   top-scoring hits only for each ligand. Toggle value Yes/No No
+   -maxhits This option specifies the maximum number of top-scoring hits
+   to consider for each ligand. Any integer value 0
+   Advanced (Unprompted) qualifiers Allowed values Default
+   (none)
+
+8.0 KNOWN BUGS & WARNINGS
+
+9.0 NOTES
+
+   None.
+
+10.0 DESCRIPTION
+
+11.0 ALGORITHM
+
+12.0 RELATED APPLICATIONS
+
+See also
+
+   Program name                      Description
+   contactcount Count specific versus non-specific contacts
+   contacts     Generate intra-chain CON files from CCF files
+   domainalign  Generate alignments (DAF file) for nodes in a DCF file
+   domainrep    Reorder DCF file to identify representative structures
+   domainreso   Remove low resolution domains from a DCF file
+   interface    Generate inter-chain CON files from CCF files
+   libgen       Generate discriminating elements from alignments
+   matgen3d     Generate a 3D-1D scoring matrix from CCF files
+   psiphi       Phi and psi torsion angles from protein coordinates
+   rocon        Generates a hits file from comparing two DHF files
+   rocplot      Performs ROC analysis on hits files
+   seqalign     Extend alignments (DAF file) with sequences (DHF file)
+   seqfraggle   Removes fragment sequences from DHF files
+   seqsearch    Generate PSI-BLAST hits (DHF file) from a DAF file
+   seqsort      Remove ambiguous classified sequences from DHF files
+   seqwords     Generates DHF files from keyword search of UniProt
+   siggen       Generates a sparse protein signature from an alignment
+   siggenlig    Generate ligand-binding signatures from a CON file
+   sigscan      Generate hits (DHF file) from a signature search
+
+13.0 DIAGNOSTIC ERROR MESSAGES
+
+   None.
+
+14.0 AUTHORS
+
+   Jon Ison (jison © hgmp.mrc.ac.uk)
+   HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
+
+14.0 REFERENCES
+
+   Please cite the authors and EMBOSS.
+   Rice P, Longden I and Bleasby A (2000) "EMBOSS - The European
+   Molecular Biology Open Software Suite" Trends in Genetics, 15:276-278.
+   
+   See also http://emboss.sourceforge.net/
+
+  14.1 Other useful references

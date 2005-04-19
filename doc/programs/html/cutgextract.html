@@ -106,6 +106,7 @@ These files names will be long (and therefore descriptive).
 % <b>cutgextract </b>
 Extract data from CUTG
 CUTG directory [.]: <b>data</b>
+Output file [outfile.cutgextract]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -120,26 +121,39 @@ CUTG directory [.]: <b>data</b>
 <pre>
    Standard (Mandatory) qualifiers:
   [-directory]         dirlist    CUTG directory
+  [-outfile]           outfile    Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
+   -release            string     CUTG release
    -wildspec           string     Type of codon file
+   -species            string     Species wildcard
+   -allrecords         boolean    Include all records, including those with
+                                  warnings
+   -filename           string     Single output filename to override automatic
+                                  one file for each species. Leave blank to
+                                  generate the filenames. Specify a filename
+                                  to combine several species into one file.
 
-   Associated qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
 
 </pre>
@@ -166,8 +180,23 @@ data/CODONS data directory
 
 <a name="output.1"></a>
 <h3>Output files for usage example </h3>
-<p><h3>File: CODONS </h3>
-<p>This file contains non-printing characters and so cannot be displayed here.
+<p><h3>Directory: CODONS</h3>
+<p>This directory contains output files.
+<p>
+<p><h3>File: outfile.cutgextract</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+Writing EAedes_atropalpus.cut CDS: 1
+Writing EDictyostelium_discoideum.cut CDS: 7
+Writing EAmblyomma_americanum.cut CDS: 2
+Writing EAedes_albopictus.cut CDS: 2
+Writing EAphrodite_aculeata.cut CDS: 1
+Writing EAcanthocheilonema_viteae.cut CDS: 2
+Writing EAstacus_astacus.cut CDS: 3
+Writing EAedes_aegypti.cut CDS: 23
+Writing EAnadara_trapezia.cut CDS: 2
+</pre>
+</td></tr></table><p>
 
 
 
@@ -218,7 +247,7 @@ None.
 <tr><th>Program name</th><th>Description</th></tr>
 <tr><td><a href="aaindexextract.html">aaindexextract</a></td><td>Extract data from AAINDEX</td></tr>
 <tr><td><a href="printsextract.html">printsextract</a></td><td>Extract data from PRINTS</td></tr>
-<tr><td><a href="prosextract.html">prosextract</a></td><td>Builds the PROSITE motif database for patmatmotifs to search</td></tr>
+<tr><td><a href="prosextract.html">prosextract</a></td><td>Build the PROSITE motif database for use by patmatmotifs</td></tr>
 <tr><td><a href="rebaseextract.html">rebaseextract</a></td><td>Extract data from REBASE</td></tr>
 <tr><td><a href="tfextract.html">tfextract</a></td><td>Extract data from TRANSFAC</td></tr>
 </table>
