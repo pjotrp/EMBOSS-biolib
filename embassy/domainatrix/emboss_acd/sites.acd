@@ -13,7 +13,7 @@ section: input [
 ]
 
   dirlist: protpath [
-    parameter: "Y"
+    standard: "Y"
     information: "Protein CCF files (clean coordinate files)
                   (input)"
     default: "./"
@@ -31,7 +31,7 @@ section: input [
   ]
 
   directory: domaindir [
-    parameter: "Y"
+    standard: "Y"
     information: "Domain CCF files (clean coordinate files)
                   (input)"
     help: "This option specifies the location of the domain CCF files
@@ -58,7 +58,7 @@ section: input [
   ]
 
   infile: dcffile [
-    standard: "Y"
+    parameter: "Y"
     information: "Name of DCF file (domain classification file)
                   (input)"
     help: "This option specifies the name of the DCF file (domain

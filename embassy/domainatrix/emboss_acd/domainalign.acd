@@ -101,6 +101,7 @@ section: output [
            written out as a 'domain hits file' - which contains database hits
            (sequences) with domain classification information, in FASTA
            format."
+    default: "./"
     extension: "dhf"
     knowntype: "domain hits file"
   ]

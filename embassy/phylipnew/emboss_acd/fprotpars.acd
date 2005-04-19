@@ -12,6 +12,7 @@ section: input [
 seqsetall: sequence [
 	parameter: "Y"
 	type: "gapproteinphylo"
+	aligned: "Y"
         help: "File containing one or more sequence alignments"
 ]
 

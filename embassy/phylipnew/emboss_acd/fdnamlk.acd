@@ -13,6 +13,7 @@ seqsetall: sequence [
 	parameter: "Y"
 	type: "gapdnaphylo"
         help: "File containing one or more sequence alignments"
+        aligned: "Y"
 ]
 
 tree: intreefile [

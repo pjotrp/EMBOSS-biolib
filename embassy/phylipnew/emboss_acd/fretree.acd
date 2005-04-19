@@ -76,7 +76,8 @@ section: output [
   type: "page"
 ]
 
-outfile: outtreefile  [
+outfile: outtreefile [
+  parameter: "Y"
   extension: "treefile"
   knowntype: "newick tree"
 ]

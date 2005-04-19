@@ -10,11 +10,12 @@ section: input [
   type: "page"
 ]
 
-seqset: sequence  [
-  parameter: "Y"
-  help: "File containing a sequence alignment"
-  type: "gapany"
-]
+  seqset: sequence  [
+    parameter: "Y"
+    help: "File containing a sequence alignment"
+    type: "gapany"
+    aligned: "N"
+  ]
 
 endsection: input
 
@@ -30,8 +31,8 @@ section: output [
   type: "page"
 ]
 
-seqoutset: outseq  [
-  parameter: "Y"
-]
+  seqoutset: outseq  [
+    parameter: "Y"
+  ]
 
 endsection: output

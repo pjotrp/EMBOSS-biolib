@@ -201,7 +201,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
     printdata = ajAcdGetBool("printdata");
     progress = ajAcdGetBool("progress");
     treeprint = ajAcdGetBool("treeprint");
-    trout = ajAcdGetBool("trout");
+    trout = ajAcdGetToggle("trout");
 
      embossoutfile = ajAcdGetOutfile("outfile");   
      emboss_openfile(embossoutfile, &outfile, &outfilename);

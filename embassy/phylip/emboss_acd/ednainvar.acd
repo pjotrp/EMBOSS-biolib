@@ -11,7 +11,8 @@ section: input [
 
 seqset: sequence  [
   parameter: "Y"
- type: "gapdna"
+  type: "gapdna"
+  aligned: "Y"
   help: "File containing sequences"
 ]
 

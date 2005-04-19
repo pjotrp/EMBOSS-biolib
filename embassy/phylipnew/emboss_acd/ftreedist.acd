@@ -1,4 +1,4 @@
- application: ftreedist [
+application: ftreedist [
   documentation: "Distances between trees"
   groups: "Phylogeny:Consensus"
   embassy: "phylipnew"
@@ -30,19 +30,11 @@ list: dtype [
 ]
 
 list: pairing [
-  additional: "@(!$(secondintreefile.isdefined))"
+  additional: "Y"
   information: "Tree pairing method"
   values: "a:Distances between adjacent pairs in tree file;
            p:Distances between all possible pairs in tree file"
   default: "a"
-]
-
-list: pairingtwo [
-  additional: "$(secondintreefile.isdefined)"
-  information: "Tree pairing method"
-  values: "c:Distances between corresponding pairs in one tree file and another;
-           l:Distances between all pairs in one tree file and another"
-  default: "c"
 ]
 
 list: style [

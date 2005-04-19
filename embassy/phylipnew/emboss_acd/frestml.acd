@@ -107,7 +107,14 @@ outfile: outfile  [
   knowntype: "restml output"
 ]
 
-outfile: outtreefile  [
+toggle: trout  [
+  additional: "Y"
+  default: "Y"
+  information: "Write out trees to tree file"
+]
+
+outfile: outtreefile [
+  additional: "$(trout)"
   extension: "treefile"
   information: "Tree file name"
   knowntype: "newick tree"
@@ -129,12 +136,6 @@ boolean: treeprint  [
   additional: "Y"
   default: "Y"
   information: "Print out tree"
-]
-
-boolean: trout  [
-  additional: "Y"
-  default: "Y"
-  information: "Write out trees to tree file"
 ]
 
 endsection: output

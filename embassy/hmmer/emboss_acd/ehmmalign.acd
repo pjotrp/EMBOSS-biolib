@@ -21,6 +21,7 @@ section: input [
   seqset: sequences  [
     parameter: "Y"
     type: "gapany"
+    aligned: "Y"
   ]
 
   infile: mapalifile  [

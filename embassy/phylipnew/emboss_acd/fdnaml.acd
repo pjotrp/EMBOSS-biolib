@@ -13,6 +13,7 @@ section: input [
   seqsetall: sequence [
     parameter: "Y"
     type: "gapdnaphylo"
+    aligned: "Y"
     help: "File containing one or more sequence alignments"
   ]
 

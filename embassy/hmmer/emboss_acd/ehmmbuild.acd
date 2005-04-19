@@ -15,6 +15,7 @@ section: input [
   seqset: sequences  [
     parameter: "Y"
     type: "any"
+    aligned: "Y"
   ]
 
   infile: priorfile  [
