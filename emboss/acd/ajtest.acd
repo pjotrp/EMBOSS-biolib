@@ -16,6 +16,7 @@ seqall: sequence  [
 seqset: bsequence  [
   parameter: "Y"
   type: "any"
+  aligned: "N"
 ]
 
 endsection: input

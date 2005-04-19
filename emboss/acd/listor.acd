@@ -12,11 +12,13 @@ section: input [
   seqset: firstsequences  [
     parameter: "Y"
     type: "gapany"
+    aligned: "N"
   ]
 
   seqset: secondsequences  [
     parameter: "Y"
     type: "gapany"
+    aligned: "N"
   ]
 
 endsection: input

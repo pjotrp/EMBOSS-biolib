@@ -12,6 +12,7 @@ section: input [
   seqset: sequence  [
     parameter: "Y"
     type: "gapany"
+    aligned: "Y"
     help: "The sequence alignment to be displayed."
   ]
 
@@ -95,7 +96,7 @@ section: output [
     help: "This is a way of shortening the command line if you only
            want a few things to be displayed. Instead of specifying: \
            '-nohead -nousa -noname -noalign -nogaps -nogapcount -nosimcount
-           -noidcount -nodiffcount' \
+           -noidcount -nodiffcount -noweight' \
            to get only the sequence length output, you can specify \
            '-only -seqlength'"
   ]
@@ -156,7 +157,7 @@ section: output [
   ]
 
   boolean: weight  [
-    default: "N"
+    default: "@(!$(only))"
     information: "Display 'weight' column"
   ]
 

@@ -20,6 +20,7 @@ section: input [
   seqset: bsequence  [
     parameter: "Y"
     type: "@($(acdprotein) ? stopprotein : nucleotide)"
+    aligned: "N"
   ]
 
   matrixf: datafile  [

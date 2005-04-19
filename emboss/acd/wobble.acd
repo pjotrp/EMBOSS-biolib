@@ -53,7 +53,7 @@ section: output [
   ]
 
   outfile: outfile  [
-    standard: "Y"
+    parameter: "Y"
     knowntype: "wobble output"
   ]
 
