@@ -496,6 +496,7 @@ static AjBool    acdAttrToFloat(const AcdPAcd thys,
 				const char *attr, float defval,
 				float *result);
 static AjBool    acdAttrTest(const AcdPAcd thys, const char *attrib);
+static AjBool    acdAttrTestDefined(const AcdPAcd thys, const char *attrib);
 static AjBool    acdAttrToChar(const AcdPAcd thys,
 			       const char *attr, char defval, char *result);
 static AjBool    acdAttrToInt(const AcdPAcd thys,
@@ -1719,6 +1720,8 @@ AcdOAttr acdAttrSeqset[] =
 	 "Input sequence type (protein, gapprotein, etc.)"},
     {"features", VT_BOOL, "N",
 	 "Read features if any"},
+    {"aligned", VT_BOOL, "N",
+	 "Sequences are aligned"},
     {"minseqs", VT_INT, "1",
 	 "Minimum number of sequences"},
     {"maxseqs", VT_INT, "(INT_MAX)",
@@ -1737,6 +1740,8 @@ AcdOAttr acdAttrSeqsetall[] =
 	 "Input sequence type (protein, gapprotein, etc.)"},
     {"features", VT_BOOL, "N",
 	 "Read features if any"},
+    {"aligned", VT_BOOL, "N",
+	 "Sequences are aligned"},
     {"minseqs", VT_INT, "1",
 	 "Minimum number of sequences"},
     {"maxseqs", VT_INT, "(INT_MAX)",
@@ -10454,6 +10459,7 @@ static void acdSetSeqsetall(AcdPAcd thys)
     AjBool okbeg    = ajFalse;
     AjBool okend    = ajFalse;
     AjBool okrev    = ajFalse;
+    AjBool aligned  = ajFalse;
 
     static AjPStr defreply    = NULL;
     static AjPStr reply       = NULL;
@@ -10485,6 +10491,7 @@ static void acdSetSeqsetall(AcdPAcd thys)
     acdQualToBool(thys, "snucleotide", ajFalse, &snuc, &defreply);
     acdQualToBool(thys, "sprotein", ajFalse, &sprot, &defreply);
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "aligned", ajFalse, &aligned);
     
     acdInFilename(&infname);
     required = acdIsRequired(thys);
@@ -10559,7 +10566,8 @@ static void acdSetSeqsetall(AcdPAcd thys)
     if(seqin->Begin)
     {
 	okbeg = ajTrue;
-	val[iset]->Begin = seqin->Begin;
+	for(iset=0;iset<nsets;iset++)
+	    val[iset]->Begin = seqin->Begin;
     }
     
     for(itry=acdPromptTry; itry && !okbeg; itry--)
@@ -10581,14 +10589,16 @@ static void acdSetSeqsetall(AcdPAcd thys)
     if(sbegin)
     {
 	seqin->Begin = sbegin;
-	val[iset]->Begin = sbegin;
+	for(iset=0;iset<nsets;iset++)
+	    val[iset]->Begin = sbegin;
 	acdSetQualDefInt(thys, "sbegin", sbegin);
     }
     
     if(seqin->End)
     {
 	okend = ajTrue;
-	val[iset]->End = seqin->End;
+	for(iset=0;iset<nsets;iset++)
+	    val[iset]->End = seqin->End;
     }
     
     for(itry=acdPromptTry; itry && !okend; itry--)
@@ -10610,7 +10620,8 @@ static void acdSetSeqsetall(AcdPAcd thys)
     if(send)
     {
 	seqin->End = send;
-	val[iset]->End = send;
+	for(iset=0;iset<nsets;iset++)
+	    val[iset]->End = send;
 	acdSetQualDefInt(thys, "send", send);
     }
 
@@ -10619,7 +10630,8 @@ static void acdSetSeqsetall(AcdPAcd thys)
 	if(seqin->Rev)
 	{
 	    okrev = ajTrue;
-	    val[iset]->Rev = seqin->Rev;
+	    for(iset=0;iset<nsets;iset++)
+		val[iset]->Rev = seqin->Rev;
 	}
 
 	for(itry=acdPromptTry; itry && !okrev; itry--)
@@ -10639,7 +10651,8 @@ static void acdSetSeqsetall(AcdPAcd thys)
 	if(sreverse)
 	{
 	    seqin->Rev = sreverse;
-	    val[iset]->Rev = sreverse;
+	    for(iset=0;iset<nsets;iset++)
+		val[iset]->Rev = sreverse;
 	    acdSetQualDefBool(thys, "sreverse", sreverse);
 	}
     }
@@ -10647,8 +10660,13 @@ static void acdSetSeqsetall(AcdPAcd thys)
     acdLog("sbegin: %d, send: %d, sreverse: %s\n",
 	   sbegin, send, ajStrBool(sreverse));
     
-    if(val[iset]->Rev)
-	ajSeqsetReverse(val[iset]);
+    if(aligned)
+	for(iset=0;iset<nsets;iset++)
+	    ajSeqsetFill(val[iset]);
+
+    for(iset=0;iset<nsets;iset++)
+	if(val[iset]->Rev)
+	    ajSeqsetReverse(val[iset]);
     
     ajSeqinDel(&seqin);
     
@@ -11287,6 +11305,7 @@ static void acdSetSeqset(AcdPAcd thys)
     AjBool okbeg    = ajFalse;
     AjBool okend    = ajFalse;
     AjBool okrev    = ajFalse;
+    AjBool aligned  = ajFalse;
 
     static AjPStr defreply    = NULL;
     static AjPStr reply       = NULL;
@@ -11312,6 +11331,7 @@ static void acdSetSeqset(AcdPAcd thys)
     acdQualToBool(thys, "snucleotide", ajFalse, &snuc, &defreply);
     acdQualToBool(thys, "sprotein", ajFalse, &sprot, &defreply);
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "aligned", ajFalse, &aligned);
     
     acdInFilename(&infname);
     required = acdIsRequired(thys);
@@ -11471,6 +11491,9 @@ static void acdSetSeqset(AcdPAcd thys)
     acdLog("sbegin: %d, send: %d, sreverse: %s\n",
 	   sbegin, send, ajStrBool(sreverse));
     
+    if(aligned)
+	ajSeqsetFill(val);
+
     if(val->Rev)
 	ajSeqsetReverse(val);
     
@@ -16625,6 +16648,61 @@ static AjBool acdAttrTest(const AcdPAcd thys,const  char *attrib)
 
 
 
+/* @funcstatic acdAttrTestDefined *********************************************
+**
+** Tests for the existence of a named attribute with a value
+**
+** @param [r] thys [const AcdPAcd] ACD item
+** @param [r] attrib [const char*] Attribute name
+** @return [AjBool] ajTrue if the named attribute exists
+** @@
+******************************************************************************/
+
+static AjBool acdAttrTestDefined(const AcdPAcd thys,const  char *attrib)
+{
+    AcdPAttr attr;
+    AjPStr  *attrstr;
+    AcdPAttr defattr = acdAttrDef;
+    AjPStr  *defstr;
+    ajint i;
+
+    attrstr = thys->AttrStr;
+    defstr = thys->DefStr;
+
+
+    if(acdIsQtype(thys))
+	attr = acdType[thys->Type].Attr;
+    else
+	attr = acdKeywords[thys->Type].Attr;
+
+    i = acdFindAttrC(attr, attrib);
+    if(i >= 0)
+    {
+	if (ajStrLen(attrstr[i]))
+	    return ajTrue;
+	else
+	    return ajFalse;
+    }
+
+
+    if(thys->DefStr)
+    {
+	i = acdFindAttrC(defattr, attrib);
+	if(i >= 0)
+	{
+	    if (ajStrLen(defstr[i]))
+		return ajTrue;
+	    else
+		return ajFalse;
+	}
+    }
+
+    return ajFalse;
+}
+
+
+
+
 /* @funcstatic acdAttrValue ***************************************************
 **
 ** Returns the string value for a named attribute
@@ -21538,7 +21616,9 @@ static void acdValidQual(const AcdPAcd thys)
        ajStrMatchCC(acdType[thys->Type].Name, "seqsetall") ||
        ajStrMatchCC(acdType[thys->Type].Name, "seqset"))
     {
-	if(!isparam && !acdAttrTest(thys, "nullok"))
+	if(!isparam &&
+	   !acdAttrTestDefined(thys, "default") &&
+	   !acdAttrTestDefined(thys, "nullok"))
 	{
 	    if(*acdType[thys->Type].UseCount == 1)
 		acdErrorValid("First sequence input '%S' is not a parameter",
@@ -21605,11 +21685,20 @@ static void acdValidQual(const AcdPAcd thys)
 	else
 	    if(qualCountSeq == 1)
 		ajStrAssS(&seqTypeIn, tmpstr);
+	if(ajStrMatchCC(acdType[thys->Type].Name, "seqset") ||
+	   ajStrMatchCC(acdType[thys->Type].Name, "seqsetall"))
+	{
+	    if(!acdAttrTestDefined(thys, "aligned"))
+	       acdErrorValid("Sequence set '%S' has no 'aligned' attribute",
+			     thys->Token);
+	}
     }
 
     if(ajStrMatchCC(acdType[thys->Type].Name, "feature"))
     {
-	if(!isparam && !acdAttrTest(thys, "nullok"))
+	if(!isparam && 
+	   !acdAttrTestDefined(thys, "default") &&
+	   !acdAttrTestDefined(thys, "nullok"))
 	{
 	    if(*acdType[thys->Type].UseCount == 1)
 		acdErrorValid("First feature input '%S' is not a parameter",
@@ -21661,7 +21750,9 @@ static void acdValidQual(const AcdPAcd thys)
        ajStrMatchCC(acdType[thys->Type].Name, "directory") ||
        ajStrMatchCC(acdType[thys->Type].Name, "dirlist"))
     {
-	if(!isparam && !acdAttrTest(thys, "nullok"))
+	if(!isparam && 
+	   !acdAttrTestDefined(thys, "default") &&
+	   !acdAttrTestDefined(thys, "nullok"))
 	{
 	    if(ajStrMatchCC(acdType[thys->Type].Name, "directory") ||
 	       ajStrMatchCC(acdType[thys->Type].Name, "dirlist"))
@@ -21758,7 +21849,12 @@ static void acdValidQual(const AcdPAcd thys)
 
     if(ajStrMatchCC(acdType[thys->Type].Name, "outfile"))
     {
-	if(!isparam && !acdAttrTest(thys, "nullok"))
+	/* Skip this test - there is a good default for output files */
+
+	/*
+	if(!isparam && 
+	   !acdAttrTestDefined(thys, "default") &&
+	   !acdAttrTestDefined(thys, "nullok"))
 	{
 	    if(*acdType[thys->Type].UseCount == 1)
 		acdErrorValid("First output file '%S' is not a parameter",
@@ -21767,6 +21863,7 @@ static void acdValidQual(const AcdPAcd thys)
 		acdWarn("Subsequent output file '%S' is not a parameter",
 			thys->Token);
 	}
+	*/
 	
 	qualCountOutfile++;
 	if(ajStrMatchCC(acdType[thys->Type].Name, "outfile") &&
@@ -21796,7 +21893,10 @@ static void acdValidQual(const AcdPAcd thys)
 
     if(ajStrMatchCC(acdType[thys->Type].Name, "outdir"))
     {
-	if(!isparam && !acdAttrTest(thys, "nullok"))
+
+	if(!isparam && 
+	   !acdAttrTestDefined(thys, "default") &&
+	   !acdAttrTestDefined(thys, "nullok"))
 	{
 	    if(*acdType[thys->Type].UseCount == 1)
 		acdErrorValid("First output directory '%S' is not a parameter",
@@ -21835,7 +21935,9 @@ static void acdValidQual(const AcdPAcd thys)
 
     if(ajStrMatchCC(acdType[thys->Type].Name, "align"))
     {
-	if(!isparam && !acdAttrTest(thys, "nullok"))
+	if(!isparam && 
+	   !acdAttrTestDefined(thys, "default") &&
+	   !acdAttrTestDefined(thys, "nullok"))
 	{
 	    if(*acdType[thys->Type].UseCount == 1)
 		acdErrorValid("First alignment file '%S' is not a parameter",
@@ -21865,7 +21967,9 @@ static void acdValidQual(const AcdPAcd thys)
 
     if(ajStrMatchCC(acdType[thys->Type].Name, "report"))
     {
-	if(!isparam && !acdAttrTest(thys, "nullok"))
+	if(!isparam && 
+	   !acdAttrTestDefined(thys, "default") &&
+	   !acdAttrTestDefined(thys, "nullok"))
 	{
 	    if(*acdType[thys->Type].UseCount == 1)
 		acdErrorValid("First report file '%S' is not a parameter",
@@ -21898,7 +22002,12 @@ static void acdValidQual(const AcdPAcd thys)
        ajStrMatchCC(acdType[thys->Type].Name, "seqoutall") ||
        ajStrMatchCC(acdType[thys->Type].Name, "seqoutset"))
     {
-	if(!isparam && !acdAttrTest(thys, "nullok"))
+	/* skip this test - there is a good default for sequence output */
+
+	/*
+	if(!isparam && 
+	   !acdAttrTestDefined(thys, "default") &&
+	   !acdAttrTestDefined(thys, "nullok"))
 	{
 	    if(*acdType[thys->Type].UseCount == 1)
 		acdErrorValid("First sequence output '%S' is not a parameter",
@@ -21907,6 +22016,7 @@ static void acdValidQual(const AcdPAcd thys)
 		acdWarn("Subsequent sequence output '%S' is not a parameter",
 			thys->Token);
 	}
+	*/
 
 	qualCountSeqout++;
 	if(qualCountSeqout == 1)
@@ -21952,7 +22062,9 @@ static void acdValidQual(const AcdPAcd thys)
 
     if(ajStrMatchCC(acdType[thys->Type].Name, "featout"))
     {
-	if(!isparam && !acdAttrTest(thys, "nullok"))
+	if(!isparam && 
+	   !acdAttrTestDefined(thys, "default") &&
+	   !acdAttrTestDefined(thys, "nullok"))
 	{
 	    if(*acdType[thys->Type].UseCount == 1)
 		acdErrorValid("First feature output '%S' is not a parameter",
