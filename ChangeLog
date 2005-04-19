@@ -1,4 +1,12 @@
 Version 3.0.0
+	Sequence sets (seqset and seqsetall) have a new ACD attribute
+	"aligned" which is true or false. If true, the sequences will be
+	extended with gaps and passed to the application as a full
+	alignment. It is assumed that they are already aligned. If false,
+	the application needs all sequences in memory but has no need for
+	aligned input. The aligned attribute is required (to help ACD
+	parsers) so acdvalid will object if it is not found.
+
 	embossdata now requires a filename, or an empty string to search
 	for all files. If no filename is given, it will prompt for one
 	with a default of an empty string.
