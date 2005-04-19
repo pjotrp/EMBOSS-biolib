@@ -2111,7 +2111,6 @@ static AjBool seqAccessSeqhound(AjPSeqin seqin)
     AjPStr httpver   = NULL;		/* HTTP version for GET */
     ajint iport;
     ajint proxyPort;
-    AjPStr searchdb = NULL;
     AjPStr gilist = NULL;
     FILE *fp;
     AjPFile gifile = NULL;
@@ -2131,9 +2130,9 @@ static AjBool seqAccessSeqhound(AjPSeqin seqin)
 	iport     = 80;
 	proxyPort = 0;			/* port for proxy access */
 
-	if(!ajNamDbGetDbalias(qry->DbName, &searchdb))
-	    ajStrAssS(&searchdb, qry->DbName);
-	ajDebug("seqAccessSeqhound %S:%S\n", searchdb, qry->Id);
+	if(!ajNamDbGetDbalias(qry->DbName, &qry->DbAlias))
+	    ajStrAssS(&qry->DbAlias, qry->DbName);
+	ajDebug("seqAccessSeqhound %S:%S\n", qry->DbAlias, qry->Id);
 
 	if(!seqHttpUrl(qry, &iport, &host, &urlget))
 	{
@@ -2198,8 +2197,7 @@ static AjBool seqAccessSeqhound(AjPSeqin seqin)
 	/* whole database = maybe taxid=1 or 0 (root)? */
 	else
 	    ajFmtPrintAppS(&get, "+%S",
-			   searchdb);
-	ajStrDel(&searchdb);
+			   qry->DbAlias);
 
 	if (!ajStrLen(gilist))  /*  could be set directly for GI search */
 	{
@@ -2483,50 +2481,49 @@ static AjBool seqSeqhoundQryNext(AjPSeqQuery qry, AjPSeqin seqin)
 
 static AjBool seqAccessSrs(AjPSeqin seqin)
 {
-    static AjPStr searchdb = NULL;
     AjPSeqQuery qry;
 
     qry = seqin->Query;
 
-    if(!ajNamDbGetDbalias(qry->DbName, &searchdb))
-	ajStrAssS(&searchdb, qry->DbName);
+    if(!ajNamDbGetDbalias(qry->DbName, &qry->DbAlias))
+	ajStrAssS(&qry->DbAlias, qry->DbName);
 
     if(!ajStrLen(qry->Application))
 	ajStrAssC(&qry->Application, "getz");
 
-    ajDebug("seqAccessSrs %S:%S\n", searchdb, qry->Id);
+    ajDebug("seqAccessSrs %S:%S\n", qry->DbAlias, qry->Id);
     if(ajStrLen(qry->Id))
     {
 	ajFmtPrintS(&seqin->Filename, "%S -e '[%S-id:%S]",
-		    qry->Application, searchdb, qry->Id);
+		    qry->Application, qry->DbAlias, qry->Id);
 	if(ajStrMatch(qry->Id, qry->Acc)) /* or accnumber */
 	    ajFmtPrintAppS(&seqin->Filename, "|[%S-acc:%S]'|",
-			   searchdb, qry->Id);
+			   qry->DbAlias, qry->Id);
 	else				/* just the ID query */
 	    ajFmtPrintAppS(&seqin->Filename, "'|",
-			   searchdb, qry->Id);
+			   qry->DbAlias, qry->Id);
     }
     else if(ajStrLen(qry->Acc))
 	ajFmtPrintS(&seqin->Filename, "%S -e '[%S-acc:%S]'|",
-		    qry->Application, searchdb, qry->Acc);
+		    qry->Application, qry->DbAlias, qry->Acc);
     else if(ajStrLen(qry->Gi))	      /* do any SRS servers support GI? How? */
 	ajFmtPrintS(&seqin->Filename,"%S -e '[%S-gi:%S]'|",
-		    qry->Application, searchdb, qry->Gi);
+		    qry->Application, qry->DbAlias, qry->Gi);
     else if(ajStrLen(qry->Sv))
 	ajFmtPrintS(&seqin->Filename,"%S -e '[%S-sv:%S]'|",
-		    qry->Application, searchdb, qry->Sv);
+		    qry->Application, qry->DbAlias, qry->Sv);
     else if(ajStrLen(qry->Des))
 	ajFmtPrintS(&seqin->Filename, "%S -e '[%S-des:%S]'|",
-		    qry->Application, searchdb, qry->Des);
+		    qry->Application, qry->DbAlias, qry->Des);
     else if(ajStrLen(qry->Org))
 	ajFmtPrintS(&seqin->Filename, "%S -e '[%S-org:%S]'|",
-		    qry->Application, searchdb, qry->Org);
+		    qry->Application, qry->DbAlias, qry->Org);
     else if(ajStrLen(qry->Key))
 	ajFmtPrintS(&seqin->Filename, "%S -e '[%S-key:%S]'|",
-		    qry->Application, searchdb, qry->Key);
+		    qry->Application, qry->DbAlias, qry->Key);
     else
 	ajFmtPrintS(&seqin->Filename, "%S -e '%S'|",
-		    qry->Application, searchdb);
+		    qry->Application, qry->DbAlias);
 
     ajFileBuffDel(&seqin->Filebuff);
     seqin->Filebuff = ajFileBuffNewIn(seqin->Filename);
@@ -2536,8 +2533,6 @@ static AjBool seqAccessSrs(AjPSeqin seqin)
 	return ajFalse;
     }
     ajStrAssS(&seqin->Db, qry->DbName);
-
-    ajStrDel(&searchdb);
 
     qry->QryDone = ajTrue;
 
@@ -2560,54 +2555,53 @@ static AjBool seqAccessSrs(AjPSeqin seqin)
 
 static AjBool seqAccessSrsfasta(AjPSeqin seqin)
 {
-    static AjPStr searchdb = NULL;
     AjPSeqQuery qry;
 
     qry = seqin->Query;
 
-    if(!ajNamDbGetDbalias(qry->DbName, &searchdb))
-	ajStrAssS(&searchdb, qry->DbName);
+    if(!ajNamDbGetDbalias(qry->DbName, &qry->DbAlias))
+	ajStrAssS(&qry->DbAlias, qry->DbName);
 
     if(!ajStrLen(qry->Application))
 	ajStrAssC(&qry->Application, "getz");
 
-    ajDebug("seqAccessSrsfasta %S:%S\n", searchdb, qry->Id);
+    ajDebug("seqAccessSrsfasta %S:%S\n", qry->DbAlias, qry->Id);
     if(ajStrLen(qry->Id))
     {
 	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta '[%S-id:%S]",
-		    qry->Application, searchdb, qry->Id);
+		    qry->Application, qry->DbAlias, qry->Id);
 	if(ajStrMatch(qry->Id, qry->Acc))
 	    ajFmtPrintAppS(&seqin->Filename, "|[%S-acc:%S]'|",
-			   searchdb, qry->Id);
+			   qry->DbAlias, qry->Id);
 	else				/* just the ID query */
 	    ajFmtPrintAppS(&seqin->Filename, "'|",
-			   searchdb, qry->Id);
+			   qry->DbAlias, qry->Id);
     }
     else if(ajStrLen(qry->Acc))
 	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta '[%S-acc:%S]'|",
-		    qry->Application, searchdb, qry->Acc);
+		    qry->Application, qry->DbAlias, qry->Acc);
     else if(ajStrLen(qry->Gi))
     {
         ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta '[%S-gi:%S]'|",
-		    qry->Application, searchdb, qry->Gi);
+		    qry->Application, qry->DbAlias, qry->Gi);
     }
     else if(ajStrLen(qry->Sv))
     {
         ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta '[%S-sv:%S]'|",
-		    qry->Application, searchdb, qry->Sv);
+		    qry->Application, qry->DbAlias, qry->Sv);
     }
     else if(ajStrLen(qry->Des))
 	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta '[%S-des:%S]'|",
-		    qry->Application, searchdb, qry->Des);
+		    qry->Application, qry->DbAlias, qry->Des);
     else if(ajStrLen(qry->Org))
 	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta '[%S-org:%S]'|",
-		    qry->Application, searchdb, qry->Org);
+		    qry->Application, qry->DbAlias, qry->Org);
     else if(ajStrLen(qry->Key))
 	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta '[%S-key:%S]'|",
-		    qry->Application, searchdb, qry->Key);
+		    qry->Application, qry->DbAlias, qry->Key);
     else
 	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta '%S'|",
-		    qry->Application, searchdb);
+		    qry->Application, qry->DbAlias);
 
     ajDebug("searching with SRS command '%S'\n", seqin->Filename);
 
@@ -2620,8 +2614,6 @@ static AjBool seqAccessSrsfasta(AjPSeqin seqin)
     }
 
     ajStrAssS(&seqin->Db, qry->DbName);
-
-    ajStrDel(&searchdb);
 
     qry->QryDone = ajTrue;
 
@@ -2651,7 +2643,6 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
     AjPStr httpver   = NULL;		/* HTTP version for GET */
     ajint iport;
     ajint proxyPort;
-    AjPStr searchdb = NULL;
     FILE *fp;
     AjPSeqQuery qry;
 
@@ -2660,9 +2651,9 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
     iport     = 80;
     proxyPort = 0;			/* port for proxy axxess */
 
-    if(!ajNamDbGetDbalias(qry->DbName, &searchdb))
-	ajStrAssS(&searchdb, qry->DbName);
-    ajDebug("seqAccessSrswww %S:%S\n", searchdb, qry->Id);
+    if(!ajNamDbGetDbalias(qry->DbName, &qry->DbAlias))
+	ajStrAssS(&qry->DbAlias, qry->DbName);
+    ajDebug("seqAccessSrswww %S:%S\n", qry->DbAlias, qry->Id);
 
     if(!seqHttpUrl(qry, &iport, &host, &urlget))
     {
@@ -2682,33 +2673,32 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
     if(ajStrLen(qry->Id))
     {
 	ajFmtPrintAppS(&get, "+[%S-id:%S]",
-		       searchdb, qry->Id);
+		       qry->DbAlias, qry->Id);
 	if(ajStrMatch(qry->Id, qry->Acc))
 	    ajFmtPrintAppS(&get, "|[%S-acc:%S]",
-			   searchdb, qry->Id);
+			   qry->DbAlias, qry->Id);
     }
     else if(ajStrLen(qry->Acc))
 	ajFmtPrintAppS(&get, "+[%S-acc:%S]",
-		       searchdb, qry->Acc);
+		       qry->DbAlias, qry->Acc);
     else if(ajStrLen(qry->Gi))
 	ajFmtPrintAppS(&get,"+[%S-gi:%S]",
-		       searchdb, qry->Gi);
+		       qry->DbAlias, qry->Gi);
     else if(ajStrLen(qry->Sv))
 	ajFmtPrintAppS(&get,"+[%S-sv:%S]",
-		       searchdb, qry->Sv);
+		       qry->DbAlias, qry->Sv);
     else if(ajStrLen(qry->Des))
 	ajFmtPrintAppS(&get, "+[%S-des:%S]",
-		       searchdb, qry->Des);
+		       qry->DbAlias, qry->Des);
     else if(ajStrLen(qry->Org))
 	ajFmtPrintAppS(&get, "+[%S-org:%S]",
-		       searchdb, qry->Org);
+		       qry->DbAlias, qry->Org);
     else if(ajStrLen(qry->Key))
 	ajFmtPrintAppS(&get, "+[%S-key:%S]",
-		       searchdb, qry->Key);
+		       qry->DbAlias, qry->Key);
     else
 	ajFmtPrintAppS(&get, "+%S",
-		       searchdb);
-    ajStrDel(&searchdb);
+		       qry->DbAlias);
 
     ajDebug("searching with SRS url '%S'\n", get);
 
@@ -2798,6 +2788,9 @@ static AjBool seqAccessEmboss(AjPSeqin seqin)
 
     if(!qry->QryData)
     {
+	if(!ajNamDbGetDbalias(qry->DbName, &qry->DbAlias))
+	    ajStrAssS(&qry->DbAlias, qry->DbName);
+
 	seqEmbossQryOpen(qry);
 
 	qryd = qry->QryData;
@@ -3081,17 +3074,18 @@ static void seqEmbossOpenCache(AjPSeqQuery qry, const char *ext,
 
     qryd = qry->QryData;
 
-    ajBtreeReadParams(qry->DbName->Ptr,ext,qry->IndexDir->Ptr,
+    ajBtreeReadParams(ajStrStr(qry->DbAlias),ext,ajStrStr(qry->IndexDir),
 		      &order, &fill,
 		      &pagesize, &level,
 		      &cachesize, &sorder,
 		      &sfill, &count, &kwlimit);
     
-    qryd->files = ajBtreeReadEntries(qry->DbName->Ptr, qry->IndexDir->Ptr);
+    qryd->files = ajBtreeReadEntries(ajStrStr(qry->DbAlias),
+				     ajStrStr(qry->IndexDir));
     
     
-    *cache = ajBtreeCacheNewC(qry->DbName->Ptr,ext,
-			      qry->IndexDir->Ptr,"r",
+    *cache = ajBtreeCacheNewC(ajStrStr(qry->DbAlias),ext,
+			      ajStrStr(qry->IndexDir),"r",
 			      pagesize,order,fill,level,
 			      cachesize);
 
@@ -3136,17 +3130,18 @@ static void seqEmbossOpenSecCache(AjPSeqQuery qry, const char *ext,
 
     qryd = qry->QryData;
 
-    ajBtreeReadParams(qry->DbName->Ptr,ext,qry->IndexDir->Ptr,
+    ajBtreeReadParams(ajStrStr(qry->DbAlias),ext,ajStrStr(qry->IndexDir),
 		      &order, &fill,
 		      &pagesize, &level,
 		      &cachesize, &sorder,
 		      &sfill, &count, &kwlimit);
     
-    qryd->files = ajBtreeReadEntries(qry->DbName->Ptr, qry->IndexDir->Ptr);
+    qryd->files = ajBtreeReadEntries(ajStrStr(qry->DbAlias),
+				     ajStrStr(qry->IndexDir));
     
     
-    *cache = ajBtreeSecCacheNewC(qry->DbName->Ptr,ext,
-				 qry->IndexDir->Ptr,"r",
+    *cache = ajBtreeSecCacheNewC(ajStrStr(qry->DbAlias),ext,
+				 ajStrStr(qry->IndexDir),"r",
 				 pagesize,order,fill,level,
 				 cachesize,sorder,0,sfill,count,kwlimit);
 
@@ -3184,7 +3179,7 @@ static AjBool seqEmbossQryEntry(AjPSeqQuery qry)
 
     if(qryd->do_id && qryd->idcache)
     {
-	    entry = ajBtreeIdFromKey(qryd->idcache,qry->Id->Ptr);
+	    entry = ajBtreeIdFromKey(qryd->idcache,ajStrStr(qry->Id));
 	    if(entry)
 		ajListPushApp(qryd->List,(void *)entry);
     }
@@ -3192,14 +3187,14 @@ static AjBool seqEmbossQryEntry(AjPSeqQuery qry)
 
     if((qryd->do_ac && !entry) && (qryd->do_ac && qryd->accache))
     {
-	    entry = ajBtreeIdFromKey(qryd->accache,qry->Acc->Ptr);
+	    entry = ajBtreeIdFromKey(qryd->accache,ajStrStr(qry->Acc));
 	    if(entry)
 		ajListPushApp(qryd->List,(void *)entry);
     }
 
     if((qryd->do_sv && !entry) && (qryd->do_sv && qryd->svcache))
     {
-	    entry = ajBtreeIdFromKey(qryd->svcache,qry->Gi->Ptr);
+	    entry = ajBtreeIdFromKey(qryd->svcache,ajStrStr(qry->Gi));
 	    if(entry)
 		ajListPushApp(qryd->List,(void *)entry);
     }
@@ -3341,14 +3336,14 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
     {
 	if(!qry->Wild)
 	{
-	    pri = ajBtreePriFromKeyword(qryd->kwcache, qry->Key->Ptr);
+	    pri = ajBtreePriFromKeyword(qryd->kwcache, ajStrStr(qry->Key));
 	    if(pri)
 	    {
 		tlist = ajBtreeSecLeafList(qryd->kwcache, pri->treeblock);
 		while(ajListPop(tlist,(void **)&kwid))
 		{
 		    ajStrToLower(&kwid);
-		    id = ajBtreeIdFromKey(qryd->idcache,kwid->Ptr);
+		    id = ajBtreeIdFromKey(qryd->idcache,ajStrStr(kwid));
 		    if(id)
 			ajListPushApp(qryd->List,(void *)id);
 		}
@@ -3374,14 +3369,14 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
     {
 	if(!qry->Wild)
 	{
-	    pri = ajBtreePriFromKeyword(qryd->decache, qry->Des->Ptr);
+	    pri = ajBtreePriFromKeyword(qryd->decache, ajStrStr(qry->Des));
 	    if(pri)
 	    {
 		tlist = ajBtreeSecLeafList(qryd->decache, pri->treeblock);
 		while(ajListPop(tlist,(void **)&kwid))
 		{
 		    ajStrToLower(&kwid);
-		    id = ajBtreeIdFromKey(qryd->idcache,kwid->Ptr);
+		    id = ajBtreeIdFromKey(qryd->idcache,ajStrStr(kwid));
 		    if(id)
 			ajListPushApp(qryd->List,(void *)id);
 		}
@@ -3407,14 +3402,14 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
     {
 	if(!qry->Wild)
 	{
-	    pri = ajBtreePriFromKeyword(qryd->txcache, qry->Org->Ptr);
+	    pri = ajBtreePriFromKeyword(qryd->txcache, ajStrStr(qry->Org));
 	    if(pri)
 	    {
 		tlist = ajBtreeSecLeafList(qryd->txcache, pri->treeblock);
 		while(ajListPop(tlist,(void **)&kwid))
 		{
 		    ajStrToLower(&kwid);
-		    id = ajBtreeIdFromKey(qryd->idcache,kwid->Ptr);
+		    id = ajBtreeIdFromKey(qryd->idcache,ajStrStr(kwid));
 		    if(id)
 			ajListPushApp(qryd->List,(void *)id);
 		}

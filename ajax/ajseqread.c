@@ -8356,6 +8356,7 @@ AjPSeqQuery ajSeqQueryNew(void)
     AJNEW0(pthis);
 
     pthis->DbName = ajStrNew();
+    pthis->DbAlias= ajStrNew();
     pthis->Id     = ajStrNew();
     pthis->Acc    = ajStrNew();
     pthis->Sv     = ajStrNew();
@@ -8419,6 +8420,7 @@ void ajSeqQueryDel(AjPSeqQuery* pthis)
     thys = *pthis;
 
     ajStrDel(&thys->DbName);
+    ajStrDel(&thys->DbAlias);
     ajStrDel(&thys->DbType);
     ajStrDel(&thys->Id);
     ajStrDel(&thys->Acc);
@@ -8498,6 +8500,7 @@ void ajSeqQueryClear(AjPSeqQuery thys)
 {
 
     ajStrClear(&thys->DbName);
+    ajStrClear(&thys->DbAlias);
     ajStrClear(&thys->Id);
     ajStrClear(&thys->Acc);
     ajStrClear(&thys->Sv);
@@ -8944,6 +8947,9 @@ void ajSeqQueryTrace(const AjPSeqQuery thys)
 
     if(ajStrLen(thys->DbName))
 	ajDebug( "    DbName: '%S'\n", thys->DbName);
+
+    if(ajStrLen(thys->DbAlias))
+	ajDebug( "    DbAlias: '%S'\n", thys->DbAlias);
 
     if(ajStrLen(thys->DbType))
 	ajDebug( "    DbType: '%S' (%d)\n", thys->DbType, thys->Type);

@@ -29,7 +29,8 @@ typedef struct SeqSAccess SeqSAccess;
 ** @other AjPSeqset Sequence sets
 ** @other AjPSeqall Sequence streams
 **
-** @attr DbName [AjPStr] Database name
+** @attr DbName [AjPStr] Database name used by EMBOSS
+** @attr DbAlias [AjPStr] Database name used by access method
 ** @attr DbType [AjPStr] Database type
 ** @attr Id [AjPStr] ID Wildcard
 ** @attr Acc [AjPStr] Accession Wildcard
@@ -70,6 +71,7 @@ typedef struct SeqSAccess SeqSAccess;
 
 typedef struct AjSSeqQuery {
   AjPStr DbName;
+  AjPStr DbAlias;
   AjPStr DbType;
   AjPStr Id;
   AjPStr Acc;
