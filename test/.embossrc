@@ -91,6 +91,13 @@ DB qanflat  [ type: N format: embl method: emblcd
   comment: "EMBL flatfiles"
 ]
 
+DB qanxflat  [ type: N format: embl method: emboss
+  dir: $emboss_qadata/embl
+  dbalias: embl
+  indexdir: $emboss_qadata/qa/dbxflat-check-keep
+  comment: "EMBL flatfiles"
+]
+
 # Protein data (3 files)
 # ============
 
@@ -120,6 +127,38 @@ DB qapflatall  [ type: P format: swiss method: emblcd
   indexdir: $emboss_qadata/qa/dbiflat-swiss-allsys-keep
   comment: "Swissnew flatfiles, all fields indexed"
   fields: "sv des org key"
+]
+
+DB qapxflat  [ type: P format: swiss method: emboss
+  dir: $emboss_qadata/swnew
+  dbalias: swnew
+  indexdir: $emboss_qadata/qa/dbxflat-swiss-keep
+  comment: "Swissnew flatfiles"
+]
+
+DB qapxflatexc  [ type: P format: swiss method: emboss
+  dir: $emboss_qadata/swnew
+  exclude: upd_seq.dat
+  dbalias: swnew
+  indexdir: $emboss_qadata/qa/dbxflat-swiss-keep
+  comment: "Swissnew flatfiles, no updated sequence file"
+]
+
+DB qapxflatinc  [ type: P format: swiss method: emboss
+  dir: $emboss_qadata/swnew
+  file: upd_seq.dat
+  exclude: *.dat
+  dbalias: swnew
+  indexdir: $emboss_qadata/qa/dbxflat-swiss-keep
+  comment: "Swissnew flatfiles, only updated sequence file"
+]
+
+DB qapxflatall  [ type: P format: swiss method: emboss
+  dir: $emboss_qadata/swnew
+  dbalias: swnew
+  indexdir: $emboss_qadata/qa/dbxflat-swiss-keep
+  comment: "Swissnew flatfiles, all fields indexed"
+  fields: "des org key"
 ]
 
 ###########################################
@@ -315,3 +354,5 @@ DB temblrest [ type: N dir: "$emboss_tempdata/embl"
    exclude: "hum*.dat rod*.dat vrt*.dat"
 ]
 
+RES embl [ type: "Index" ]
+RES swnew [ type: "Index" ]
