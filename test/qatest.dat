@@ -3789,7 +3789,7 @@ FI stdout
 FC = 1
 FP /^Processing file .*\/test\/embl\/rod\.dat\n/
 FI embl.ent
-FZ = 66
+FC = 2
 FP /^#Number of files\t1\n/
 FP /.*\/test\/embl\/rod\.dat\n/
 FI embl.pxac
@@ -4179,7 +4179,7 @@ FC = 3
 FP /Processing file .*\/test\/swnew\/[a-z_]+\.dat\n/
 FP 3 /^Processing file /
 FI swnew.ent
-FZ = 175
+FC = 4
 FP /#Number of files\t3\n/
 FP /.*\/test\/swnew\/[a-z_]+\.dat\n/
 FI swnew.xid
