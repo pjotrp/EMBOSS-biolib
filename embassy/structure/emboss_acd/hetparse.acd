@@ -1,0 +1,70 @@
+application: hetparse [
+  documentation: "Converts heterogen group dictionary to EMBL-like format."
+  groups: "Utils:Database creation"
+  gui: "yes"
+  batch: "yes"
+  cpu: "low"
+  embassy: "domainatrix"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  infile: infile [
+    parameter: "Y"
+    information: "Name of input file (raw dictionary of
+                  heterogen groups)"
+    help: "This option specifies the name of input file (raw
+           dictionary of heterogen groups) to parse, which should be of the
+           format specified at http://pdb.rutgers.edu/het_dictionary.txt"
+    knowntype: "Raw dictionary of heterogen groups"
+  ]
+
+  toggle: dogrep [
+    standard: "Y"
+    information: "Search a directory of PDB files with
+                  keywords?"
+    help: "This option specifies whether to search a directory of
+           files (typically PDB files) with keywords. If set, HETPARSE will
+           search the directory and will count the number of files that each
+           heterogen appears in."
+    default: "N"
+  ]
+
+  dirlist: dirlistpath [
+    standard: "$(dogrep)"
+    information: "Directory to search with keywords"
+    help: "This option specifies the directory to search with
+           keywords."
+    default: "./"
+    extension: "ent"
+    knowntype: "pdb file"
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+endsection: required
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    default: "Ehet.dat"
+    information: "Name of EMBL-like format dictionary of
+                  heterogen groups."
+    help: "This option specifies the name of EMBL-like format
+           dictionary of heterogen groups."
+    knowntype: "Dictionary of heterogen groups"
+  ]
+
+endsection: output
