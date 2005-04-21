@@ -1,0 +1,111 @@
+application: allversusall [
+  documentation: "Sequence similarity data from all-versus-all comparison."
+  groups: "Utils:Database creation"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+  embassy: "domainatrix"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  dirlist: seqinpath [
+    parameter: "Y"
+    information: "Location of sequence files (input"
+    help: "This option specifies the location of sequence files
+           (input)"
+    default: "./"
+    extension: "fasta"
+    knowntype: "Sequence file"
+  ]
+
+  matrixf: matrix [
+    additional: "Y"
+    information: "Residue substitution matrix"
+    help: "This option specifies the residue substitution matrix that
+           is used for sequence comparison."
+    default: "EBLOSUM62"
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  float: gapopen [
+    additional: "Y"
+    information: "Gap insertion penalty"
+    minimum: "1.0"
+    maximum: "100.0"
+    default: "10"
+    valid: "Floating point number from 1.0 to 100.0"
+    expected: "10.0 for any sequence"
+    help: "This option specifies the gap insertion penalty. The gap
+           insertion penalty is the score taken away when a gap is created.
+           The best value depends on the choice of comparison matrix. The
+           default value assumes you are using the EBLOSUM62 matrix for
+           protein sequences, and the EDNAFULL matrix for nucleotide
+           sequences."
+  ]
+
+  float: gapextend [
+    additional: "Y"
+    information: "Gap extension penalty"
+    minimum: "0.0"
+    maximum: "10.0"
+    default: "0.5"
+    valid: "Floating point number from 0.0 to 10.0"
+    expected: "0.5 for any sequence"
+    help: "This option specifies the gap extension penalty. The gap
+           extension, penalty is added to the standard gap penalty for each
+           base or residue in the gap. This is how long gaps are penalized.
+           Usually you will expect a few long gaps rather than many short
+           gaps, so the gap extension penalty should be lower than the gap
+           penalty. An exception is where one or both sequences are single
+           reads with possible sequencing errors in which case you would
+           expect many single base gaps. You can get this result by setting
+           the gap open penalty to zero (or very low) and using the gap
+           extension penalty to control gap scoring."
+  ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outdir: datoutdir [
+    parameter: "Y"
+    information: "Location of sequence similarity data files
+                  (output)"
+    help: "This option specifies the location of sequence similarity
+           data files (output)."
+    default: "./"
+    extension: "out"
+    knowntype: "allversusall output"
+  ]
+
+  outfile: logfile [
+    standard: "Y"
+    information: "Name allversusall log file (output)"
+    default: "ALLVERSUSALL.log"
+    help: "This option specifies the name of ALLVERSUSALL log file
+           (output). The log file contains messages about any errors arising
+           while ALLVERSUSALL ran."
+    knowntype: "domainatrix log file"
+  ]
+
+endsection: output
