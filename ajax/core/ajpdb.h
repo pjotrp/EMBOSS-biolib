@@ -150,7 +150,6 @@ extern "C"
 **  secondary structure.
 ** @use ajAtomEnv16 Assigns environment based on side chain accessibility and
 **  secondary structure.
-
 ** @@
 ****************************************************************************/
 
@@ -199,6 +198,107 @@ typedef struct AjSAtom
 
 
 
+
+
+/* @data AjPResidue ************************************************************
+**
+** Ajax Residue object.
+** 
+** Holds data for an amino acid residue.
+**
+** AjPResidue is implemented as a pointer to a C data structure.
+**
+** @alias AjSResidue
+** @alias AjOResidue
+**
+**
+** @attr  Mod     [ajint]  Model number.
+** @attr  Chn  [ajint]  Chain number.
+** @attr  Gpn     [ajint]  Group number. 
+** @attr  Idx [ajint]	Residue number. Can be used to index into the 
+**    polypeptide sequence (the Seq element of an AjSChain object). Idx numbers
+**    start at 1 and run sequentially.
+** @attr Pdb [AjPStr]	Residue number string from the original PDB file.
+** @attr Id1 [char] 	Standard 1-letter residue identifier or 'X' for unknown 
+**                      types.
+** @attr Id3 [AjPStr]	3-letter residue identifier code.
+** @attr  Phi     [float]  Phi angle. 
+** @attr  Psi     [float]  Psi angle. 
+** @attr  Area    [float]  Residue solvent accessible area. 
+**  
+** @attr  eNum    [ajint]  Element serial number (for secondary structure 
+**        from the PDB file).
+** @attr  eId     [AjPStr] Element identifier (for secondary structure from 
+**        the PDB file).
+** @attr  eType   [char]   Element type COIL ('C'), HELIX ('H'), SHEET ('E')
+**        or TURN ('T'). Has a default value of COIL (for secondary structure
+**         from the PDB file).
+** @attr  eClass  [ajint]  Class of helix, an int from 1-10,  from 
+**	  http://www.rcsb.org/pdb/docs/format/pdbguide2.2/guide2.2_frame.html 
+          (for secondary structure from the PDB file).
+**
+** @attr  eStrideNum   [ajint]  Number of the element: sequential count from 
+**        N-term (for secondary structure from STRIDE).
+** @attr  eStrideType  [char]   Element type:  ALPHA HELIX ('H'), 3-10 HELIX
+**       ('G'), PI-HELIX ('I'), EXTENDED CONFORMATION ('E'), ISOLATED BRIDGE 
+**       ('B' or 'b'), TURN ('T') or COIL (none of the above) ('C') (for 
+**       secondary structure from STRIDE).
+** @attr  all_abs   [float]  Absolute accessibility, all atoms. 
+** @attr  all_rel   [float]  Relative accessibility, all atoms. 
+** @attr  side_abs  [float]  Absolute accessibility, atoms in sidechain. 
+** @attr  side_rel  [float]  Relative accessibility, atoms in sidechain. 
+** @attr  main_abs  [float]  Absolute accessibility, atoms in mainchain. 
+** @attr  main_rel  [float]  Relative accessibility, atoms in mainchain. 
+** @attr  npol_abs  [float]  Absolute accessibility, nonpolar atoms. 
+** @attr  npol_rel  [float]  Relative accessibility, nonpolar atoms. 
+** @attr  pol_abs   [float]  Absolute accessibility, polar atoms. 
+** @attr  pol_rel   [float]  Relative accessibility, polar atoms. 
+**
+**
+** @new     ajResidueNew Default Residue constructor.
+** @delete  ajResidueDel Default Residue destructor.
+** @@
+******************************************************************************/
+typedef struct AjSResidue
+{
+    ajint    Mod;
+    ajint    Chn;
+    ajint    Gpn;    
+    ajint    Idx;
+    AjPStr   Pdb;
+    char     Id1;
+    AjPStr   Id3;    
+
+    float    Phi;
+    float    Psi;
+    float    Area;
+    ajint    eNum;  
+    AjPStr   eId;   
+    char     eType;    
+    ajint    eClass;   
+    ajint    eStrideNum; 
+    char     eStrideType;
+
+    float    all_abs;  
+    float    all_rel;  
+    float    side_abs;    
+    float    side_rel;    
+    float    main_abs;    
+    float    main_rel;    
+    float    npol_abs;    
+    float    npol_rel;    
+    float    pol_abs;  
+    float    pol_rel;  
+
+} AjOResidue, *AjPResidue;
+
+
+
+
+
+
+
+
 /* @data AjPChain ***********************************************************
 **
 ** Ajax chain object.
@@ -229,12 +329,15 @@ typedef struct AjSAtom
 **                               models) of the polypeptide chain and any 
 **                               groups (ligands) that could be uniquely 
 **                               associated with a chain.
+** @attr  Residues    [AjPList]  List of Residue objects for (potentially multiple
+**                               models) of the polypeptide chain. 
 **
 **
 ** 
 ** @new     ajChainNew Default Chain constructor.
 ** @delete  ajChainDel Default Chain destructor.
-**
+** @assign  ajChainGetResidues Writes the list of Residues from the list of
+** Atoms in a Chain object. 
 ** @@
 ****************************************************************************/
 
@@ -247,6 +350,7 @@ typedef struct AjSChain
     ajint    numStrands;  
     AjPStr   Seq;      
     AjPList  Atoms;    
+    AjPList  Residues;    
 } AjOChain;
 #define AjPChain AjOChain*
 
@@ -742,6 +846,16 @@ ajint       ajAtomEnv16(const AjPAtom atom, char SEnv,
 
 
 
+
+
+/* ======================================================================= */
+/* ========================== Residue object ============================= */
+/* ======================================================================= */
+AjPResidue   ajResidueNew(void);
+void         ajResidueDel(AjPResidue *ptr);
+
+
+
 /* ======================================================================= */
 /* ============================ Pdbtosp object =========================== */
 /* ======================================================================= */
@@ -759,7 +873,7 @@ ajint        ajPdbtospArrFindPdbid(const AjPPdbtosp *arr,
 /* ======================================================================= */
 AjPChain     ajChainNew(void);
 void         ajChainDel(AjPChain *ptr);
-
+void         ajChainGetResidues(AjPChain *ptr);
 
 
 

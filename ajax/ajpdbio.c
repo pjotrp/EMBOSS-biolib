@@ -7174,8 +7174,8 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size,
     AjPPdbfile pdbfile      =NULL; /* Pdbfile structure (for raw data)    */
     AjPPdb     ret          =NULL;  /* Pdb structure (for parsed data)     */
     AjPElements elms=NULL;         /* Elements structure (for parsed data)*/
+    ajint x = 0;
     
-
 
     if(!inf || !logf)
     {
@@ -7297,6 +7297,13 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size,
 	ajPdbDel(&ret);
 	return NULL;	
     }
+
+
+    /* Create list of Residue objects for each chain */
+    for(x=0; x<ret->Nchn; x++)
+	ajChainGetResidues(&ret->Chains[x]);
+    
+
 
     /* Tidy up and return */
     PdbfileDel(&pdbfile);

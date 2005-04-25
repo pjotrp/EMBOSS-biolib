@@ -1814,6 +1814,38 @@ AjPAtom ajAtomNew(void)
 
 
 
+/* @func ajResidueNew *****************************************************
+**
+** Residue object constructor.
+** This is normally called by the ajChainNew function.
+**
+** @param [r] n [void] 
+** 
+** @return [AjPResidue] Pointer to a Residue object
+** @category new [AjPResidue] Default Residue constructor.
+** @@
+****************************************************************************/
+
+AjPResidue ajResidueNew(void)
+{
+    AjPResidue ret = NULL;
+    
+    AJNEW0(ret);
+    
+    ret->Pdb   = ajStrNew();
+    ret->Id3   = ajStrNew();
+    ret->eId   = ajStrNew();
+
+    ret->Id1   = '.';
+    ret->eType = '.';
+    ajStrAssC(&ret->eId, ".");
+    ret->eStrideType = '.';
+    
+    return ret;
+}
+
+
+
 
 /* @func ajChainNew *********************************************************
 **
@@ -1831,8 +1863,9 @@ AjPChain ajChainNew(void)
   
     AJNEW0(ret);
 
-    ret->Seq    = ajStrNewC("");
-    ret->Atoms  = ajListNew();
+    ret->Seq      = ajStrNewC("");
+    ret->Atoms    = ajListNew();
+    ret->Residues = ajListNew();
 
     return ret;
 }
@@ -2156,6 +2189,42 @@ void ajAtomDel(AjPAtom *ptr)
 
 
 
+/* @func ajResidueDel **********************************************************
+**
+** Destructor for residue object.
+**
+** @param [d] ptr [AjPResidue*] Residue object pointer
+**
+** @return [void]
+** @category delete [AjPResidue] Default Residue destructor.
+** @@
+****************************************************************************/
+
+void ajResidueDel(AjPResidue *ptr)
+{
+    AjPResidue pthis;
+
+    pthis = *ptr;
+
+    if(!ptr || !pthis)
+	return;
+
+    ajStrDel(&pthis->Pdb);
+    ajStrDel(&pthis->Id3);
+    ajStrDel(&pthis->eId);
+
+    AJFREE(pthis);
+    (*ptr) = NULL;
+
+    return;
+}
+
+
+
+
+
+
+
 /* @func ajChainDel *********************************************************
 **
 ** Destructor for chain object.
@@ -2170,7 +2239,8 @@ void ajAtomDel(AjPAtom *ptr)
 void ajChainDel(AjPChain *ptr)
 {
     AjPChain pthis;
-    AjPAtom atm = NULL;
+    AjPAtom    atm = NULL;
+    AjPResidue res = NULL;
 
     pthis = *ptr;
 
@@ -2180,8 +2250,12 @@ void ajChainDel(AjPChain *ptr)
     while(ajListPop(pthis->Atoms,(void **)&atm))
 	ajAtomDel(&atm);
 
+    while(ajListPop(pthis->Residues,(void **)&res))
+	ajResidueDel(&res);
+
     ajStrDel(&pthis->Seq);
     ajListDel(&pthis->Atoms);
+    ajListDel(&pthis->Residues);
 
     AJFREE(pthis);
     (*ptr) = NULL;
@@ -2605,7 +2679,84 @@ AjBool ajAtomListCopy(AjPList *to, const AjPList from)
 }
 
 
+/* @func ajChainGetResidues *************************************************
+**
+** Writes the list of Residues from the list of Atoms in a Chain object. 
+** 
+** @param [w] ptr   [AjPChain*] Chain object pointer
+**
+** @return [AjBool] True on success
+** @@
+****************************************************************************/
 
+void ajChainGetResidues(AjPChain *ptr)
+{
+    AjPAtom     atm  = NULL;
+    AjPResidue  res  = NULL;
+    AjIList  iter    = NULL;
+    ajint    rn_last = -100000;
+    ajint    mn_last = -100000;
+
+    /* Initialise the iterator */
+    iter = ajListIterRead((*ptr)->Atoms);
+
+    /* Iterate through the list of atoms */
+    while((atm=(AjPAtom)ajListIterNext(iter)))
+    {
+	if(atm->Type!='P')
+	    continue;
+
+	/* New model */
+	if(atm->Mod != mn_last)
+	{
+	    rn_last = -100000;
+	    mn_last = atm->Mod;
+	}
+	
+
+	/* New residue */
+	if(atm->Idx != rn_last)
+	{
+	    res = ajResidueNew();
+
+	    res->Mod     = atm->Mod;
+	    res->Chn     = atm->Chn;
+	    res->Gpn     = atm->Gpn;    
+	    res->Idx     = atm->Idx;
+	    ajStrAssS(&res->Pdb, atm->Pdb);
+	    res->Id1     = atm->Id1;
+	    ajStrAssS(&res->Id3, atm->Id3);
+
+	    res->Phi     = atm->Phi;
+	    res->Psi     = atm->Psi;
+	    res->Area    = atm->Area;
+	    res->eNum    = atm->eNum;  
+	    ajStrAssS(&res->eId, atm->eId);
+	    res->eType   = atm->eType;    
+	    res->eClass  = atm->eClass;   
+	    res->eStrideNum  =  atm->eStrideNum; 
+	    res->eStrideType = atm->eStrideType;
+
+	    res->all_abs  = atm->all_abs;  
+	    res->all_rel  = atm->all_rel;  
+	    res->side_abs = atm->side_abs;    
+	    res->side_rel = atm->side_rel;    
+	    res->main_abs = atm->main_abs;    
+	    res->main_rel = atm->main_rel;    
+	    res->npol_abs = atm->npol_abs;    
+	    res->npol_rel = atm->npol_rel;    
+	    res->pol_abs  = atm->pol_abs;  
+	    res->pol_rel  = atm->pol_rel;  
+
+	    ajListPushApp((*ptr)->Residues, (void *) res);
+	    rn_last = atm->Idx;
+	}
+    }
+    
+    ajListIterFree(&iter);			
+    
+    return;
+}
 
 
 /* @func ajPdbCopy **********************************************************
