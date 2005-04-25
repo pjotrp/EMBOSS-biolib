@@ -441,6 +441,7 @@ static AjBool     seqCdTrgQuery(AjPSeqQuery qry);
 static ajint      seqCdTrgSearch(SeqPCdTrg trgLine, const AjPStr name,
 				SeqPCdFile fp);
 
+static AjBool     seqEmbossAll(AjPSeqin seqin);
 static void	  seqEmbossOpenCache(AjPSeqQuery qry, const char *ext,
 				     AjPBtcache *cache);
 static void       seqEmbossOpenSecCache(AjPSeqQuery qry, const char *ext,
@@ -2782,15 +2783,15 @@ static AjBool seqAccessEmboss(AjPSeqin seqin)
     qryd = qry->QryData;
     ajDebug("seqAccessEmboss type %d\n", qry->Type);
 
+    if(!ajNamDbGetDbalias(qry->DbName, &qry->DbAlias))
+	ajStrAssS(&qry->DbAlias, qry->DbName);
+    
     if(qry->Type == QRY_ALL)
-	return ajFalse;
+	return seqEmbossAll(seqin);
 
 
     if(!qry->QryData)
     {
-	if(!ajNamDbGetDbalias(qry->DbName, &qry->DbAlias))
-	    ajStrAssS(&qry->DbAlias, qry->DbName);
-
 	seqEmbossQryOpen(qry);
 
 	qryd = qry->QryData;
@@ -3152,6 +3153,66 @@ static void seqEmbossOpenSecCache(AjPSeqQuery qry, const char *ext,
     page->dirty = BT_LOCK;
     
     return;
+}
+
+
+
+
+/* @funcstatic seqEmbossAll **************************************************
+**
+** Reads the B+tree entry file and opens a list of all the
+** database files for plain reading.
+**
+** @param [u] seqin [AjPSeqin] Sequence input.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+static AjBool seqEmbossAll(AjPSeqin seqin)
+{
+    AjPList list;
+    AjPSeqQuery qry;
+
+    ajint i;
+    AjPStr *filestrings = NULL;
+    
+    qry = seqin->Query;
+
+    if(!ajStrLen(qry->IndexDir))
+    {
+	ajDebug("no indexdir defined for database %S\n", qry->DbName);
+	ajErr("no indexdir defined for database %S", qry->DbName);
+	return ajFalse;
+    }
+
+    ajDebug("B+tree All index directory '%S'\n", qry->IndexDir);
+
+
+    filestrings = ajBtreeReadEntries(qry->DbAlias->Ptr,qry->IndexDir->Ptr);
+
+
+    /* Add exclusion stuff here later */
+    list = ajListstrNew();
+
+    i = 0;
+    while(filestrings[i])
+    {
+
+	ajListstrPushApp(list, filestrings[i]);
+	++i;
+    }
+
+
+    ajFileBuffDel(&seqin->Filebuff);
+    seqin->Filebuff = ajFileBuffNewInList(list);
+
+    ajStrAssS(&seqin->Db, qry->DbName);
+
+    qry->QryDone = ajTrue;
+
+    AJFREE(filestrings);
+
+    return ajTrue;
 }
 
 
