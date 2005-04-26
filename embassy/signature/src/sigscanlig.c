@@ -96,11 +96,20 @@ typedef struct AjSLighit
 ** PROTOTYPES  
 **
 ******************************************************************************/
-AjBool sigscanlig_WriteFasta(AjPFile outf, AjPList siglist, AjPList hits);
-AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList siglist, AjPList hits, ajint n, AjBool DOSEQ);
+AjBool sigscanlig_WriteFasta(AjPFile outf, AjPList hits);
+
+/* AjBool sigscanlig_WriteFasta(AjPFile outf, AjPList siglist, AjPList hits); */
+
+/* AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList siglist, AjPList hits, ajint n, AjBool DOSEQ); */
+
+AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList hits, ajint n, AjBool DOSEQ);
+
 static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
-						  AjPList siglist, 
 						  AjPList hits);
+
+/* static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
+						  AjPList siglist, 
+						  AjPList hits); */
 void sigscanlig_LigHitDel(AjPLighit *obj);
 AjPLighit sigscanlig_LighitNew(void);
 AjPList sigscanlig_score_ligands_patch(AjPList hits, AjBool DOMAX, ajint maxhits);
@@ -246,6 +255,17 @@ int main(int argc, char **argv)
 		ajListPushApp(hits, hit);
 		hit=NULL; /* To force reallocation by embSignatureAlignSeq */
 	    }
+	    /* There has to be a hit for each signature for correct generation of the
+	       LHF by sigscanlig_WriteFasta. So push an empty hit if necessary. 
+	       'hit'=NULL forces reallocation by embSignatureAlignSeq. */
+	    /*
+	       else
+	       {
+		hit = embHitNew();
+		ajListPushApp(hits, hit);
+		hit=NULL; 
+		}
+		*/
 	}
 	
 	ajListIterFree(&sigiter);
@@ -262,12 +282,18 @@ int main(int argc, char **argv)
 	
 
 	
-	if((!sigscanlig_WriteFasta(hitsf, siglist, hits)))
+	/* if((!sigscanlig_WriteFasta(hitsf, siglist, hits)))
+	    ajFatal("Bad args to sigscanlig_WriteFasta"); */
+
+	if((!sigscanlig_WriteFasta(hitsf, hits)))
 	    ajFatal("Bad args to sigscanlig_WriteFasta");
 
 
-    	if((!sigscanlig_SignatureAlignWriteBlock(alignf, siglist, hits)))
+    	if((!sigscanlig_SignatureAlignWriteBlock(alignf, hits)))
 	    ajFatal("Bad args to sigscanlig_SignatureAlignWriteBlock");
+
+    	/* if((!sigscanlig_SignatureAlignWriteBlock(alignf, siglist, hits)))
+	    ajFatal("Bad args to sigscanlig_SignatureAlignWriteBlock"); */
 
 
 	/* Sort list of hits by ligand type.  Process list of ligands and print out. */
@@ -333,8 +359,14 @@ int main(int argc, char **argv)
 ******************************************************************************/
 
 static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
+						  AjPList hits)
+
+/*
+static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
 						  AjPList siglist, 
 						  AjPList hits)
+*/
+
 {
     /*
     ** A line of the alignment (including accession number, a space and the 
@@ -375,7 +407,10 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
 
 
     /* Check args */
-    if(!outf || !hits || !siglist)
+/*    if(!outf || !hits || !siglist)
+	return ajFalse; */
+
+    if(!outf || !hits)
 	return ajFalse;
 
 
@@ -425,7 +460,10 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
 	ajFmtPrintF(outf, "# XX\n");
 
 	ajFmtPrintF(outf, "# ");
-	if((!sigscanlig_WriteFastaHit(outf, siglist, hits, hitcnt, ajFalse)))
+	/*	if((!sigscanlig_WriteFastaHit(outf, siglist, hits, hitcnt, ajFalse)))
+		ajFatal("Bad args to sigscanlig_WriteFasta"); */
+
+	if((!sigscanlig_WriteFastaHit(outf, hits, hitcnt, ajFalse)))
 	    ajFatal("Bad args to sigscanlig_WriteFasta");
 	ajFmtPrintF(outf, "\n# XX\n");
 
@@ -487,8 +525,9 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
 ** Write a list of Hit objects to an output file in LHF (ligand hits file) format
 ** (see documentation for the DOMAINATRIX "sigscanlig" application).  The list of 
 ** Hit objects corresponds to a search of signatures against a sequence database.
-** There is one hit per search and the list of correponding signatures must be 
-** provided. 
+** There *must* be one hit per search and the list of correponding signatures must 
+** be provided. For this reason, if a signature search did not generate a hit then 
+** an empty hit should be given in the list. 
 ** 
 ** @param [u] outf [AjPFile] Output file stream
 ** @param [r] hits [const AjPList] List of hit objects.
@@ -498,7 +537,9 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
 ** @@
 ******************************************************************************/
 
-AjBool sigscanlig_WriteFasta(AjPFile outf, AjPList siglist, AjPList hits)
+/* AjBool sigscanlig_WriteFasta(AjPFile outf, AjPList siglist, AjPList hits) */
+
+AjBool sigscanlig_WriteFasta(AjPFile outf, AjPList hits)
 {
     ajint x = 0;
     
@@ -510,20 +551,37 @@ AjBool sigscanlig_WriteFasta(AjPFile outf, AjPList siglist, AjPList hits)
     ajint  sizarr=0;
     
         
+    /* 
     if(!outf || !siglist || !hits)
+	return ajFalse;
+	*/
+
+    if(!outf || !hits)
 	return ajFalse;
 
     
+    /*
     sizarr = ajListToArray(siglist, (void ***) &sigarr);
     if(sizarr != ajListToArray(hits, (void ***) &hitarr))
 	ajFatal("Arrays are different sizes");
-        
+      */  
+
+    sizarr = ajListToArray(hits, (void ***) &hitarr);
+    
 
     for(x=0; x<sizarr; x++)
     {
-	hit = hitarr[x];
-	sig = sigarr[x];
+	/* There has to be a hit for each signature for correct generation of the
+	   LHF by sigscanlig_WriteFasta. Therefore empty hits may have been pushed.
+	   Catch those here. */
+	/* if(!MAJSTRLEN(hit->Model))
+	    continue; */
 	
+	hit = hitarr[x];
+	/* sig = sigarr[x]; */
+	sig = hitarr[x]->Sig;	
+
+
 	ajFmtPrintF(outf, "> ");
 	
 	if(MAJSTRLEN(hit->Acc))
@@ -667,32 +725,39 @@ void sigscanlig_LigHitDel(AjPLighit *obj)
 ** @return [AjBool] True on success
 ** @@
 ******************************************************************************/
-
-AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList siglist, AjPList hits, ajint n, AjBool DOSEQ)
+/* AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList siglist, AjPList hits, ajint n, AjBool DOSEQ) */
+AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList hits, ajint n, AjBool DOSEQ)
 {
     AjPHit hit       = NULL;
     AjPSignature sig = NULL;
     
-    AjPSignature *sigarr = NULL;
+    /* AjPSignature *sigarr = NULL; */
     AjPHit *hitarr = NULL;
     ajint  sizarr=0;
     
         
-    if(!outf || !siglist || !hits)
+/*    if(!outf || !siglist || !hits)
+	return ajFalse; */
+
+    if(!outf || !hits)
 	return ajFalse;
 
     
-    sizarr = ajListToArray(siglist, (void ***) &sigarr);
+    /* sizarr = ajListToArray(siglist, (void ***) &sigarr);
     if(sizarr != ajListToArray(hits, (void ***) &hitarr))
-	ajFatal("Arrays are different sizes");
+       ajFatal("Arrays are different sizes"); */
         
+    sizarr = ajListToArray(hits, (void ***) &hitarr);
+    
+
     if(n>=sizarr)
 	ajFatal("Requested hit out of range in sigscanlig_WriteFastaHit");
     
     
-    
     hit = hitarr[n];
-    sig = sigarr[n];
+    sig = hitarr[n]->Sig;
+        
+    /* sig = sigarr[n]; */
     
     ajFmtPrintF(outf, "> ");
     
@@ -754,7 +819,7 @@ AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList siglist, AjPList hits, aji
 	ajFmtPrintF(outf, "%S\n", hit->Seq);
     }
     
-    AJFREE(sigarr);
+/*    AJFREE(sigarr); */
     AJFREE(hitarr);
     
     
