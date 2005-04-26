@@ -64,8 +64,8 @@ section: required [
   list: fields  [
     standard: "Y"
     information: "Index fields"
-    values: "id:ID;ac:Accession number;sv:Sequence Version and
-             GI;de:Description;kw:Keywords;tx:Taxonomy"
+    values: "id:ID;acc:Accession number;sv:Sequence Version and
+             GI;des:Description;key:Keywords;org:Taxonomy"
     minimum: "1"
     maximum: "6"
     default: "id,ac"
