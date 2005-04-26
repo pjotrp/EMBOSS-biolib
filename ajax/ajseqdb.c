@@ -3448,7 +3448,7 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 	}
 	else
 	{
-	    wildkey = ajBtreeKeyWildNew(qryd->decache, qry->Key);
+	    wildkey = ajBtreeKeyWildNew(qryd->decache, qry->Des);
 	    while((btid = ajBtreeIdFromKeywordW(qryd->decache, wildkey,
 						qryd->idcache)))
 		ajListPushApp(qryd->List,(void*)btid);
@@ -3481,7 +3481,7 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 	}
 	else
 	{
-	    wildkey = ajBtreeKeyWildNew(qryd->txcache, qry->Key);
+	    wildkey = ajBtreeKeyWildNew(qryd->txcache, qry->Org);
 	    while((btid = ajBtreeIdFromKeywordW(qryd->txcache, wildkey,
 						qryd->idcache)))
 		ajListPushApp(qryd->List,(void*)btid);
