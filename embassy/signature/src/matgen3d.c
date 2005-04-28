@@ -50,29 +50,59 @@ char AACODES[]="ARNDCQEGHILKMFPSTWYVBZX*";
 int main(ajint argc, char **argv)
 {
     /*Declare acd stuff*/
-    AjPDir    ccfdir = NULL;		/* CCF file directory.                      */
-    AjPFile   ClassFptr=NULL;		/* Pointer to domain classification file.   */
+    AjPDir    ccfddir = NULL;		/* Domain CCF file directory.               */
+    AjPDir    ccfpdir = NULL;		/* Protein CCF file directory.              */
+    AjPFile   dcfinfile=NULL;		/* Pointer to domain classification file.   */
+    AjPFile   coninfile=NULL;		/* Pointer to CON file.                     */
+    AjPFile   liginfile=NULL;		/* Pointer to ligand list file.             */
     AjPFile   logf=NULL;		/* matgen3d logfile*/
     AjPFile   Calclogf=NULL;		/* log file for sums for the calculation of 
 					   the final matrix.                        */
-    AjPStr   *mode=NULL;		/* Holds environment options from acd.      */
-    ajint     option=0;			/* option as an int.                        */
+
+    AjPStr   *modee=NULL;		/* Holds environment options from acd.      */
+    ajint     modeei=0;			/* modee as an int.                         */
+
+    AjPStr   *mode=NULL;		/* Holds selection option from acd.         */
+    ajint     modei=0;			/* modee as an int.                         */
+
+    AjPStr   *model=NULL;		/* Holds ligand option from acd.            */
+    ajint     modeli=0;			/* model as an int.                         */
+
     AjPFile   SCMatrixOut=NULL;		/* final scoring matrix.                    */
     
     AjPStr    msg=NULL;			/* String for messaging.                    */
     
     AjPList   list_allscop=NULL;	/* List to hold entries in domain 
 					   classification file.                     */
+    AjPList   list_cmap=NULL;	        /* List to hold entries in CON file.        */
+    AjPList   list_lig=NULL;	        /* List to hold strings (ligand ids) from 
+					   ligand list file.                        */
+    AjPStr    lig_tmp=NULL;             /* Temp. string for ligand id.              */
+    AjPStr   *lig_arr=NULL;             /* Array of ligand ids (from list_lig)      */
+    ajint     lig_n=0;                  /* Size of lig_arr.                         */
+    
+    AjPCmap  *cmap_arr=NULL;            /* list_cmap as an array.                   */
+    ajint     cmap_n=0;              /* Size of cmap_arr.                        */
+    
+    AjPInt    sites_arr;                /* Array of residue index numbers of ligand-
+					   contact residues.                        */
+    ajint     nsites;                   /* Size of sites_arr.                       */
+    
+
     AjIList   ScopIter=NULL;		/* Iterator for list_allscop.               */
     AjPScop   ScopPtr=NULL;		/* Pointer to SCOP object.                  */
-    AjPScop   scoptemp=NULL;		/* temporary pointer to SCOP object to free 
+    AjPScop   ScopTmp=NULL;		/* temporary pointer to SCOP object to free 
+					   memory.                                  */
+
+    AjIList   CmapIter=NULL;		/* Iterator for list_allscop.               */
+    AjPCmap   CmapPtr=NULL;		/* Pointer to SCOP object.                  */
+    AjPCmap   CmapTmp=NULL;		/* temporary pointer to SCOP object to free 
 					   memory.                                  */
     
     AjPStr    PrevEntry=NULL;		/* Previous SCOP domain ID.                 */
-    AjPStr    tmpID=NULL;		/* Temporary string to hold SCOP ID.        */
-    AjPList   ListScopIDs=NULL;		/* List of SCOP ID's, one ID from each 
-					   family in the classification file.       */
-    ajint     IDNum=0;			/* Total number of scop ids*/
+    AjPStr    tmpID=NULL;		/* Temporary string to hold SCOP or PDB ID. */
+    AjPList   ListIDs=NULL;		/* List of SCOP or PDB IDs.                 */
+    ajint     IDNum=0;			/* Total number of IDs*/
     AjPFile   DCorFptr=NULL;		/* Pointer to domain coordinate files.      */
     AjPPdb    Pdb=NULL;			/* Pointer to pdb object.                   */
     ajint     opened=0;			/* Number of coordinate files opened.       */
@@ -83,8 +113,6 @@ int main(ajint argc, char **argv)
     AjPAtom   atom=NULL;		/* Pointer to current Atom object in list 
 					   iterator.                                */
     
-    AjPStr    BEnv=NULL;		/* String to hold basic environment class - 
-					   letter and digit.                        */
     char      SEnv='\0';		/* Char to hold 3 state secondary structure 
 					   assignment.                              */
     AjPStr    OEnv=NULL;		/* Char to hold overall environment class - 
@@ -93,7 +121,7 @@ int main(ajint argc, char **argv)
 					   domain numbering of the residue.         */
     
     
-    AjPStr    ScopName=NULL;		/* To temporarily hold SCOP name.           */
+    AjPStr    IdName=NULL;		/* To temporarily hold domain or protein id.*/
     
     AjPInt2d  CountMatrix=NULL;		/* Matrix of counts for each environment 
 					   type.                                    */
@@ -107,99 +135,183 @@ int main(ajint argc, char **argv)
     ajint     Dim=26;			/* Max Dimension of array.                  */
     float     min=0.0;			/* Min. value from scoring matrix.          */
     ajint     x=0;			/* Loop counter.                            */ 
+    ajint     y=0;			/* Loop counter.                            */ 
     AjPStr    label=NULL;               /* Label for matrix.                        */
     ajint     labelcnt1=0;              /* Housekeeping.                            */
     ajint     labelcnt2=0;              /* Housekeeping.                            */
+    AjPStr    line=NULL;                /* Housekeeping.                            */
+    AjBool    done= ajFalse;            /* Housekeeping.                            */
     
+     
     
+
+
+
     /* ACD processing */
     ajNamInit("emboss");
     ajAcdInitP("matgen3d",argc,argv,"SIGNATURE"); 
     
-    ccfdir      = ajAcdGetDirectory("ccfdir");
-    ClassFptr   = ajAcdGetInfile("dcfinfile");
+    ccfddir      = ajAcdGetDirectory("ccfddir");
+    ccfpdir      = ajAcdGetDirectory("ccfpdir");
+    dcfinfile   = ajAcdGetInfile("dcfinfile");
+    coninfile   = ajAcdGetInfile("coninfile");
+    liginfile   = ajAcdGetInfile("liginfile");
     logf        = ajAcdGetOutfile("logfile");
     SCMatrixOut = ajAcdGetOutfile("scmatrixfile");
     Calclogf    = ajAcdGetOutfile("calclogfile");
     mode        = ajAcdGetList("mode");
-    
-    /*Assigns the 1d/3d option*/
-    ajFmtScanS(mode[0], "%d", &option);   
-        
-    msg=ajStrNew();
-    label=ajStrNew();
-
-    
-    /*Read the Scop classification file and create a list of SCOP objects*/
-    if(!(list_allscop = ajScopReadAllNew(ClassFptr)))
-	ajFatal("Error reading SCOP classification file\n");
+    model       = ajAcdGetList("model");
+    modee       = ajAcdGetList("modee");
 
 
-    ajFmtPrintF(SCMatrixOut, "# 3D-1D Scoring matrix created by matgen3d\n");
-    ajFmtPrintF(SCMatrixOut, "# ajAtomEnv%d\n", option);
+    /*Assigns the options as integers */
+    ajFmtScanS(modee[0], "%d", &modeei);   
+    ajFmtScanS(mode[0],  "%d", &modei);   
+    ajFmtScanS(model[0], "%d", &modeli);   
     
-    PrevEntry=ajStrNew();
-    ListScopIDs=ajListstrNew();
     
-    /*Iterate through list of scop objects, pull out first entry in each 
-      family*/
-    ScopIter=(ajListIter(list_allscop));
-    while((ScopPtr=(AjPScop)ajListIterNext(ScopIter)))
+    /* Memory allocation */
+    msg         = ajStrNew();
+    label       = ajStrNew();
+    PrevEntry   = ajStrNew();
+    line        = ajStrNew();
+    ListIDs     = ajListstrNew();
+    OEnv        = ajStrNew();
+    
+    
+
+
+    /* mode == 1: All amino acid positions for domains in a DCF file.
+       Iterate through list of scop objects, pull out first entry in each 
+       family. */
+
+    if(modei == 1)
     {
-	/*Only first member of each family*/
-	if(ajStrMatch(PrevEntry, ScopPtr->Family))
-	    continue;
+	/*Read the Scop classification file and create a list of SCOP objects*/
+	if(!(list_allscop = ajScopReadAllNew(dcfinfile)))
+	    ajFatal("Error reading SCOP classification file\n");
+
+	ScopIter=(ajListIter(list_allscop));
+	while((ScopPtr=(AjPScop)ajListIterNext(ScopIter)))
+	{
+	    /*Only first member of each family*/
+	    if(ajStrMatch(PrevEntry, ScopPtr->Family))
+		continue;
       
-	tmpID=ajStrNew();
-	ajStrAssS(&tmpID, ScopPtr->Entry);
-	ajStrToLower(&tmpID);
-	ajListstrPushApp(ListScopIDs, tmpID);
-	ajStrAssS(&PrevEntry, ScopPtr->Family);
-    }
-    ajListIterFree(&ScopIter);  
-    
-    /*Initialise NUMENVx26 Matrix*/
-
-
-
-    /*Dummy call to function just to get the number of environments. */
-
-    CountMatrix=ajInt2dNew();
-/*    for(i=0; i<26; i++) */		/*Environments*/
-    for(i=0; i<MAXENV; i++)			/* Jon */
-    {
-/*	for(j=0; j<26; j++);	*/	/*Amino acids*/
-	for(j=0; j<Dim; j++);    /* Jon */
-	{
-	    ajInt2dPut(&CountMatrix, i, j, 0);
+	    tmpID=ajStrNew();
+	    ajStrAssS(&tmpID, ScopPtr->Entry);
+	    ajStrToLower(&tmpID);
+	    ajListstrPushApp(ListIDs, tmpID);
+	    ajStrAssS(&PrevEntry, ScopPtr->Family);
 	}
+	ajListIterFree(&ScopIter);  
     }
-    
-    ajFmtPrintF(SCMatrixOut, "# Total SCOP entries: %d\n", 
-		ajListLength(ListScopIDs));
-    IDNum=ajListLength(ListScopIDs);
-    
-    
-    /*Use while(ajListstrPop(ListScopIDs, &ScopName)) only wanting to consider 
-      the first member of each family. */
-    while(ajListstrPop(ListScopIDs, &ScopName))
-    {     
-	if((!(DCorFptr = ajFileNewDirF(ccfdir, ScopName))))
+    /* mode == 2: Ligand-binding positions. */
+    else if(modei == 2)
+    {
+	list_lig = ajListstrNew();
+	
+	/* Read ligand list file */
+	if(modeli == 2)
 	{
-	    notopened++;
-	    ajFmtPrintS(&msg, "Could not open for reading %S", ScopName);
-	    ajFmtPrintF(logf, "WARN\tCould not open for reading %S\n", ScopName);
-/*	    ajWarn(ajStrStr(msg)); */
-	    ajStrDel(&ScopName);
-	    continue;
+	    while(ajFileReadLine(liginfile,&line))
+	    {
+		lig_tmp = ajStrNew();
+		if((ajFmtScanS(line, "%S", lig_tmp) != 1))
+		    ajFatal("Ligand id not read from file");
+		ajStrToUpper(&lig_tmp);
+		ajListPushApp(list_lig, lig_tmp);
+	    }	
+	    lig_n = ajListToArray(list_lig, (void ***) &lig_arr);
 	}	
+	
+
+	list_cmap = ajCmapReadAllNew(coninfile);
+	cmap_n = ajListToArray(list_cmap, (void ***) &cmap_arr);
+		
+	
+	CmapIter=(ajListIter(list_cmap));
+	while((CmapPtr=(AjPCmap)ajListIterNext(CmapIter)))
+	{
+	    for(done=ajFalse, x=0; x<lig_n; x++)
+		if(ajStrMatch(lig_arr[x], CmapPtr->Ligid))
+		{
+		    done = ajTrue;
+		    break;
+		}
+	    if(!done)
+		continue;
+	    
+	    tmpID=ajStrNew();
+	    /* Use domain ID if it is defined (the CON file is for a domain), 
+	       otherwise pdb ID (the CON file is for a protein). */
+	    if(MAJSTRLEN(CmapPtr->Domid))
+		ajStrAssS(&tmpID, CmapPtr->Domid);
+	    else if(MAJSTRLEN(CmapPtr->Id))
+		ajStrAssS(&tmpID, CmapPtr->Id);
+	    else
+		ajFatal("Neither domain or pdb id is defined");
+	    
+	    ajStrToLower(&tmpID);
+	    ajListstrPushApp(ListIDs, tmpID);
+	}
+	
+	ajListIterFree(&CmapIter);  
+    }
+    IDNum=ajListLength(ListIDs);
+    
+    
+
+
+    /*Initialise NUMENVx26 Matrix*/
+    CountMatrix=ajInt2dNew();
+    for(i=0; i<MAXENV; i++)	 /* Environments */
+	for(j=0; j<Dim; j++)    /* Amino acids */
+	    ajInt2dPut(&CountMatrix, i, j, 0);
+    
+
+
+    /* Main loop for calculating environments */
+    for(x=0; ajListstrPop(ListIDs, &IdName); x++)
+    {     	
+	/* PDB code */
+	if(MAJSTRLEN(IdName)==4)
+	{
+	    if((!(DCorFptr = ajFileNewDirF(ccfpdir, IdName))))
+	    {
+		notopened++;
+		ajFmtPrintS(&msg, "Could not open for reading %S", IdName);
+		ajFmtPrintF(logf, "WARN\tCould not open for reading %S\n", IdName);
+		/*	    ajWarn(ajStrStr(msg)); */
+		ajStrDel(&IdName);
+		continue;
+	    }	
+	}
+	/* Domain code */
+	if(MAJSTRLEN(IdName)==7)
+	{
+	    if((!(DCorFptr = ajFileNewDirF(ccfddir, IdName))))
+	    {
+		notopened++;
+		ajFmtPrintS(&msg, "Could not open for reading %S", IdName);
+		ajFmtPrintF(logf, "WARN\tCould not open for reading %S\n", IdName);
+		/*	    ajWarn(ajStrStr(msg)); */
+		ajStrDel(&IdName);
+		continue;
+	    }	
+	}
+	else
+	    ajFatal("Domain or PDB ID code of unrecognised length");
+	
+	
+
 
 	if(!(Pdb = ajPdbReadNew(DCorFptr)))
 	{
 	    ajFmtPrintS(&msg, "Error reading coordinate file");
 	    ajFmtPrintF(logf, "WARN\tError reading coordinate file\n");
 	    ajWarn(ajStrStr(msg));
-	    ajStrDel(&ScopName);
+	    ajStrDel(&IdName);
 	    ajFileClose(&DCorFptr);
 	    continue;
 	}
@@ -209,8 +321,23 @@ int main(ajint argc, char **argv)
 /*	    ajFmtPrint("%d/%d\n", opened, IDNum);*/
 	}
 
-	BEnv=ajStrNew();
 	ajFmtPrintF(logf, "%S\n\n", Pdb->Pdb);
+
+
+	/* Ligand-binding positions only.
+	   Construct array of residue index numbers of ligand-contact residues */
+	if(modei==2)
+	{
+	    sites_arr = ajIntNew();
+	    for(nsites=0, y=0; y<cmap_arr[x]->Dim; y++)
+		if(ajInt2dGet(cmap_arr[x]->Mat, x, 0))
+		{
+		    ajIntPut(&sites_arr, nsites, y+1);
+		    nsites++;
+		}
+	}
+		
+
       
 	/*Initialise iterator for domain atoms*/
 	AtmIter=ajListIter(Pdb->Chains[0]->Atoms);
@@ -219,6 +346,22 @@ int main(ajint argc, char **argv)
 	    /*Skip to next atom if residue number same*/
 	    if(PrevRes == atom->Idx) 
 		continue;
+
+	    /* 2: Select ligands within a CON file */
+	    if(modeli == 2)
+	    {
+		for(done=ajFalse, y=0; y<nsites; y++)
+		    if(atom->Idx == ajIntGet(sites_arr, y))
+		    {
+			done = ajTrue;
+			break;
+		    }
+		if(!done)
+		    continue;
+
+		AJFREE(sites_arr);
+	    }
+	    
 
 	    /*Call to function that assigns the secondary structure environment class*/
 	    if((!ajAtomSSEnv(atom, &SEnv, logf)))
@@ -230,42 +373,40 @@ int main(ajint argc, char **argv)
 	    
 	    
 	    /*Call to function that assigns the overall environment class*/
-	    if(option == 1)
+	    if(modeei == 1)
 		NUMENV = ajAtomEnv1(atom, SEnv, &OEnv, logf);
-	    else if(option == 2)
+	    else if(modeei == 2)
 		NUMENV = ajAtomEnv2(atom, SEnv, &OEnv, logf);
-	    else if(option == 3)
+	    else if(modeei == 3)
 		NUMENV = ajAtomEnv3(atom, SEnv, &OEnv, logf);
-	    else if(option == 4)
+	    else if(modeei == 4)
 		NUMENV = ajAtomEnv4(atom, SEnv, &OEnv, logf);
-	    else if(option == 5)
+	    else if(modeei == 5)
 		NUMENV = ajAtomEnv5(atom, SEnv, &OEnv, logf);
-	    else if(option == 6)
+	    else if(modeei == 6)
 		NUMENV = ajAtomEnv6(atom, SEnv, &OEnv, logf);
-	    else if(option == 7)
+	    else if(modeei == 7)
 		NUMENV = ajAtomEnv7(atom, SEnv, &OEnv, logf);
-	    else if(option == 8)
+	    else if(modeei == 8)
 		NUMENV = ajAtomEnv8(atom, SEnv, &OEnv, logf);
-	    else if(option == 9)
+	    else if(modeei == 9)
 		NUMENV = ajAtomEnv9(atom, SEnv, &OEnv, logf);
-	    else if(option == 10)
+	    else if(modeei == 10)
 		NUMENV = ajAtomEnv10(atom, SEnv, &OEnv, logf);
-	    else if(option == 11)
+	    else if(modeei == 11)
 		NUMENV = ajAtomEnv11(atom, SEnv, &OEnv, logf);
-	    else if(option == 12)
+	    else if(modeei == 12)
 		NUMENV = ajAtomEnv12(atom, SEnv, &OEnv, logf);
-	    else if(option == 13)
+	    else if(modeei == 13)
 		NUMENV = ajAtomEnv13(atom, SEnv, &OEnv, logf);
-	    else if(option == 14)
+	    else if(modeei == 14)
 		NUMENV = ajAtomEnv14(atom, SEnv, &OEnv, logf);
-	    else if(option == 15)
+	    else if(modeei == 15)
 		NUMENV = ajAtomEnv15(atom, SEnv, &OEnv, logf);
-	    else if(option == 16)
+	    else if(modeei == 16)
 		NUMENV = ajAtomEnv16(atom, SEnv, &OEnv, logf);
 
 
-	    /*  ajFmtPrintF(logf, "%S %c %S\n", BEnv, SEnv, OEnv); */
-	  
 	    /*Skip if the overall environment cannot be assigned*/
 	    if( (!MAJSTRLEN(OEnv)))
 	    {
@@ -298,7 +439,7 @@ int main(ajint argc, char **argv)
 	ajListIterFree(&AtmIter);
 	ajPdbDel(&Pdb);
 	ajFileClose(&DCorFptr);
-	ajStrDel(&ScopName);
+	ajStrDel(&IdName);
     }
 	
 	
@@ -306,6 +447,9 @@ int main(ajint argc, char **argv)
 	
   
     /*Print matrix with raw counts*/
+    ajFmtPrintF(SCMatrixOut, "# 3D-1D Scoring matrix created by matgen3d\n");
+    ajFmtPrintF(SCMatrixOut, "# ajAtomEnv%d\n", modeei);
+    ajFmtPrintF(SCMatrixOut, "# Total SCOP entries: %d\n", IDNum);
     ajFmtPrintF(SCMatrixOut, "# No. of files opened: %d\n", opened);
     ajFmtPrintF(SCMatrixOut, "# No. of files not opened: %d\n", notopened);
 
@@ -362,25 +506,52 @@ int main(ajint argc, char **argv)
 
   
     /* free scop classification*/
-    while(ajListPop(list_allscop,(void **)&scoptemp))
-	ajScopDel(&scoptemp);
+    if(modei == 1)
+    {
+        while(ajListPop(list_allscop,(void **)&ScopTmp))
+	    ajScopDel(&ScopTmp);
+	ajListDel(&list_allscop);
+    }
 
+    /* free Cmap objects */
+    if(modei == 2)
+    {
+        while(ajListPop(list_cmap,(void **)&CmapTmp))
+	    ajCmapDel(&CmapTmp);
+	ajListDel(&list_cmap);
+
+	AJFREE(cmap_arr);
+    }
     
-    ajListDel(&list_allscop);
 
     ajStrDel(&msg);
     ajStrDel(&label);
-    ajListstrDel(&ListScopIDs);
-    ajStrDel(&BEnv);
+    ajStrDel(&PrevEntry);
+    ajListstrDel(&ListIDs);
+    ajStrDel(&line);
     ajInt2dDel(&CountMatrix);
     ajFloat2dDel(&SCRMatrix);
 
     /*Free ACD stuff*/
     ajFileClose(&logf);
     ajFileClose(&SCMatrixOut);
-    ajFileClose(&ClassFptr);
+    ajFileClose(&dcfinfile);
+    ajFileClose(&coninfile);
+    ajFileClose(&liginfile);
     ajFileClose(&Calclogf);
 
+
+    ajDirDel(&ccfddir);
+    ajDirDel(&ccfpdir);
+    
+    AJFREE(modee);
+    AJFREE(mode);
+    AJFREE(model);
+    
+
+    ajListstrFree(&list_lig);
+    AJFREE(lig_arr);
+    
 
     ajExit();
     return 0;
