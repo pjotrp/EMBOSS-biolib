@@ -191,6 +191,7 @@ static   AjBool      sites_HeterogenContacts(ajint entype,
 static   AjBool      sites_HeterogenContactsWrite(AjPFile outf, AjPDbase dbase, 
 						  float thresh); 
 
+static AjBool    sites_HeterogenContactsWriteOld(AjPFile funky_out, AjPDbase dbase);
 
 
 
@@ -304,7 +305,6 @@ int main(ajint argc, char **argv)
     
 
 
-
     
     /* READ ACD FILE */
     ajNamInit("emboss");
@@ -318,15 +318,14 @@ int main(ajint argc, char **argv)
     outf        = ajAcdGetOutfile("outfile");
     logf        = ajAcdGetOutfile("logfile");
 
-
     
-
-
-
-    
+   
     /* MEMORY ALLOCATION, READ DATA FILES. */
-    msg     = ajStrNew();
+    msg      = ajStrNew();
     
+   
+    
+
     /* Read domain classification file & store it as list of SCOP objects */
     if(!(list_allscop = ajScopReadAllNew(dcf_fptr)))
     { 
@@ -425,7 +424,10 @@ int main(ajint argc, char **argv)
       
 	/* Close protein coordinate file */
 	ajFileClose(&prot_fptr);
-      
+    
+
+	
+  
 	/* Check for heterogens in pdb object, if no heterogens skip to 
 	   next file */
 	if(!sites_HetTest(pdb))
@@ -699,6 +701,7 @@ int main(ajint argc, char **argv)
     ajHetDel(&hetDic);
     sites_DbaseDel(&dbase);
     ajFileClose(&logf);  
+
     
 
     ajExit();
@@ -1025,6 +1028,108 @@ static AjBool      sites_HeterogenContacts(ajint entype,
 
   return ajTrue;
 }
+
+
+
+
+
+/* @funcstatic  sites_HeterogenContactsWriteOld ******************************
+**
+** Write Dbase object to file i.e. the database of functional residues. The
+** OLD ligand-centric format is used (*NOT* CON format).
+**
+** @param [w] funky_out    [AjPFile]   Pointer to output file
+** @param [r] dbase        [AjPDbase*] Pointer to Dbase object
+** 
+** 
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+
+static AjBool    sites_HeterogenContactsWriteOld(AjPFile funky_out, AjPDbase dbase)
+{
+
+  ajint i=0;       /* loop counter for dbase->entries[i] */
+  ajint j=0;       /* loop counter for dbase->entries[i]->cont_data[j] */
+  ajint k=0;       /* loop counter for dbase->entries[i]->cont_data[j]->aa_code[j] and
+		      dbase->entries[i]->cont_data[j]->res_pos[j] */
+
+  /* Check arguments */
+  if((funky_out==NULL) || (dbase==NULL)) 
+  {
+      ajWarn("Pointer error in funky_HeterogenContactsWrite\n");
+      return ajFalse;
+  }
+  
+
+  for(i=0;i<dbase->n;i++)
+    {
+      if((dbase)->entries[i]->no_sites >0)
+	{
+	  ajFmtPrintF(funky_out, "ID   %S\n", dbase->entries[i]->abv);
+	  ajFmtPrintF(funky_out, "DE   %S\n", dbase->entries[i]->ful);
+	  ajFmtPrintF(funky_out, "NS   %d\n", dbase->entries[i]->no_sites);
+	  ajFmtPrintF(funky_out, "XX\n");
+	  for(j=0;j<(dbase)->entries[i]->no_sites; j++)
+	    {
+	      ajFmtPrintF(funky_out, "SN   %d\n", j+1);
+	      ajFmtPrintF(funky_out, "XX\n");
+	      ajFmtPrintF(funky_out, "EN   %S\n", dbase->entries[i]->cont_data[j]->pdb_name);
+	      ajFmtPrintF(funky_out, "XX\n");
+	      ajFmtPrintF(funky_out, "CH   %c\n", dbase->entries[i]->cont_data[j]->chainid);
+	      ajFmtPrintF(funky_out, "XX\n");
+
+	      ajFmtPrintF(funky_out, "SC   %S\n", 
+			  dbase->entries[i]->cont_data[j]->scop_name);
+	      ajFmtPrintF(funky_out, "XX\n");
+	      if(dbase->entries[i]->cont_data[j]->no_keyres > 0)
+		{
+		  ajFmtPrintF(funky_out, "NR   %d\n", 
+			      dbase->entries[i]->cont_data[j]->no_keyres);
+		  ajFmtPrintF(funky_out, "XX\n");
+		  
+		  for(k=0; k< dbase->entries[i]->cont_data[j]->no_keyres; k++)
+		    {
+		      if((ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "ALA"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "CYS"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "ASP"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "GLU"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "PHE"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "GLY"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "HIS"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "ILE"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "LYS"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "LEU"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "MET"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "ASN"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "PRO"))|| 
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "GLN"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "ARG"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "SER"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "THR"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "VAL"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "TRP"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "TYR"))||
+			 (ajStrMatchC(dbase->entries[i]->cont_data[j]->aa_code[k], "GLX")))
+			{
+			  ajFmtPrintF(funky_out, "RE   %S %d %S\n",  
+				      dbase->entries[i]->cont_data[j]->aa_code[k], 
+				      ajIntGet(dbase->entries[i]->cont_data[j]->res_pos, k), 
+				      dbase->entries[i]->cont_data[j]->res_pos2[k]); 
+			}
+		    }
+		  ajFmtPrintF(funky_out, "XX\n");
+		  ajFmtPrintF(funky_out, "//\n");
+		}
+	    }
+	}
+    }
+
+  return ajTrue;
+}
+
+
+
 
 
 
