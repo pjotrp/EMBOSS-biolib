@@ -656,6 +656,7 @@ typedef struct AjSVdwall
 ** @attr  Mat   [AjPInt2d] Contact map. 
 ** @attr  Dim   [ajint]    Dimension of contact map. 
 ** @attr  Ncon  [ajint]    No. of contacts (1's in contact map). 
+** @attr  en    [ajint]    Entry number. 
 ** @attr  ns    [ajint]    No. of sites (ajLIGAND only)
 ** @attr  sn    [ajint]    Site number (ajLIGAND only)
 ** @attr  Desc  [AjPStr]   Description of ligand (ajLIGAND only)
@@ -673,6 +674,7 @@ typedef struct AjSVdwall
 **          in CON format (see documentation for the EMBASSY 
 **          DOMAINATRIX package).
 ** @delete  ajCmapDel Default Cmap destructor.
+** @output  ajCmapWrite Write Cmap object to file in CON format.
 **
 ** @@
 ****************************************************************************/
@@ -696,6 +698,7 @@ typedef struct AjSCmap
     ajint     Dim;    
     ajint     Ncon;   
 
+    ajint     en;
     ajint     ns;
     ajint     sn;
     AjPStr    Desc;
@@ -928,6 +931,7 @@ AjPCmap      ajCmapReadINew(AjPFile inf, ajint chn, ajint mod);
 AjPCmap      ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod);
 AjPList      ajCmapReadAllNew(AjPFile inf);
 void         ajCmapDel(AjPCmap *ptr);
+AjBool       ajCmapWrite(AjPFile outf, AjPCmap cmap);
 
 
 

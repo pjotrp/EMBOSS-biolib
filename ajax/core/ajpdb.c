@@ -555,6 +555,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
            
     AjBool   idok      = ajFalse; /* If the required chain has been found */
 
+    ajint     en;                /* Entry number. */
     ajint     ns;                /* No. of sites, SITES output only */
     ajint     sn;                /* Site number, SITES output only */
     
@@ -608,7 +609,13 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	  token = ajStrTokC(NULL, ";");
 	  ajFmtScanS(token, "%*s %d", &ns);
         }
-
+	/* EN */
+	else if(ajStrPrefixC(line, "EN"))
+	{
+	    ajFmtScanS(line, "%*s %*c%d", &en);
+	}
+	
+	    
 	/* TY */
 	else if(ajStrPrefixC(line, "TY"))
 	{
@@ -623,7 +630,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	    nres2=0;
 	}
 
-	/* EX, NE and EN records are not parsed */
+	/* EX, NE records are not parsed */
 
 	/* ID */
 	else if(ajStrPrefixC(line, "ID"))
@@ -762,6 +769,8 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 		ret->Chid2 = id2;
 		ret->Nres1 = nres1;
 		ret->Nres2 = nres2;
+		ret->en = en;
+
 		
 		ajStrAssS(&ret->Seq1, seq1);
 		ajStrAssS(&ret->Seq2, seq2);		
@@ -5799,7 +5808,7 @@ AjBool ajHetWrite(AjPFile outf, const AjPHet obj, AjBool dogrep)
 **
 ****************************************************************************/
 
-AjBool       ajPdbtospWrite(AjPFile outf, const AjPList list)
+AjBool   ajPdbtospWrite(AjPFile outf, const AjPList list)
 {
     AjIList    iter = NULL;
     AjPPdbtosp tmp  = NULL;
@@ -5827,6 +5836,202 @@ AjBool       ajPdbtospWrite(AjPFile outf, const AjPList list)
 
     return ajTrue;
 }
+
+
+
+/* @func ajCmapWrite *****************************************************
+**
+** Write a Cmap object to file in CON format (see documentation for 
+** DOMAINATRIX "contacts" application). 
+** 
+** @param [u] outf    [AjPFile]  Output file stream.
+** @param [r] cmap    [AjPCmap]  Cmap object pointer.
+**
+** @return [AjBool] True on success (object was written succesfully)
+** @category output [AjPCmap] Write Cmap object to file in CON format.
+** @@
+****************************************************************************/
+AjBool   ajCmapWrite(AjPFile outf, AjPCmap cmap)
+{
+    ajint x = 0;
+    ajint y = 0;
+    AjPStr Id=NULL;
+    AjPStr Domid=NULL;
+    AjPStr Ligid=NULL;
+    AjPStr res1=NULL;
+    AjPStr res2=NULL;
+
+    Id    = ajStrNew();
+    Domid = ajStrNew();
+    Ligid = ajStrNew();
+    res1 = ajStrNew();
+    res2 = ajStrNew();
+    
+
+    if(!cmap || !outf)
+    {
+	ajStrDel(&Id);
+	ajStrDel(&Domid);
+	ajStrDel(&Ligid);
+	ajStrDel(&res1);
+	ajStrDel(&res2);
+	
+	return ajFalse;
+    }
+    
+    
+    /* EN */
+    ajFmtPrintF(outf, "%-5s[%d]\n", "EN", cmap->en);
+    ajFmtPrintF(outf, "XX\n");  
+
+    /* ID */
+    if(MAJSTRLEN(cmap->Id))
+	ajStrAssS(&Id, cmap->Id);
+    else
+	ajStrAssC(&Id, ".");
+
+    if(MAJSTRLEN(cmap->Domid))
+	ajStrAssS(&Domid, cmap->Domid);
+    else
+	ajStrAssC(&Domid, ".");
+
+    if(MAJSTRLEN(cmap->Ligid))
+	ajStrAssS(&Ligid, cmap->Ligid);
+    else
+	ajStrAssC(&Ligid, ".");
+
+    
+    ajFmtPrintF(outf, "%-5sPDB %S; DOM %S; LIG %S;\n", 
+		"ID", 
+		Id, Domid, Ligid);
+    ajFmtPrintF(outf, "XX\n");  
+
+    
+    /* DE */
+    ajFmtPrintF(outf, "DE   %S\n", cmap->Desc);
+    ajFmtPrintF(outf, "XX\n");
+
+    /* SI */
+    ajFmtPrintF(outf, "%-5sSN %d; NS %d\n", "SI", cmap->sn, cmap->ns);
+    ajFmtPrintF(outf, "XX\n");
+    
+    /* CN */
+    if((cmap->Type ==  ajINTRA)||(cmap->Type ==  ajLIGAND))
+	ajFmtPrintF(outf, "%-5sMO .; CN1 %d; CN2 .; ID1 %c; ID2 .; "
+		    "NRES1 %d; NRES2 .\n",
+		    "CN", 
+		    cmap->Chn1, 
+		    cmap->Chid1, 
+		    cmap->Nres1);
+    else if(cmap->Type ==  ajINTER)
+	ajFmtPrintF(outf, "%-5sMO .; CN1 %d; CN2 %d; ID1 %c; ID2 %c; "
+		    "NRES1 %d; NRES2 %d\n",
+		    "CN", 
+		    cmap->Chn1, 
+		    cmap->Chn2, 
+		    cmap->Chid1, 
+		    cmap->Chid2, 
+		    cmap->Nres1,
+		    cmap->Nres2);
+    else
+	ajFatal("cmap type not known in ajCmapWrite");
+
+    
+    /* S1 */
+    if(MAJSTRLEN(cmap->Seq1))
+    {
+	ajSeqWriteXyz(outf, cmap->Seq1, "S1");
+	ajFmtPrintF(outf, "XX\n");	
+    }
+    
+
+    /* S2 */
+    if(cmap->Type ==  ajINTER)
+    {
+	if(MAJSTRLEN(cmap->Seq2))
+	{
+	    ajSeqWriteXyz(outf, cmap->Seq2, "S2");
+	    ajFmtPrintF(outf, "XX\n");	
+	}
+    }
+    
+    /* NC */
+    if((cmap->Type ==  ajINTRA)||(cmap->Type ==  ajINTER))
+    {
+	ajFmtPrintF(outf, "%-5sSM %d; LI .\n", "NC", cmap->Ncon);
+	ajFmtPrintF(outf, "XX\n");  
+    }
+    else
+    {
+	ajFmtPrintF(outf, "%-5sSM .; LI %d\n", "NC", cmap->Ncon);
+	ajFmtPrintF(outf, "XX\n");  
+    }
+
+    /* SM or LI */
+    if(cmap->Type ==  ajINTRA)    
+    {
+	for(x=0; x<cmap->Nres1; x++)
+	    for(y=x+1; y<cmap->Nres1; y++)
+	    {	
+		if((ajInt2dGet(cmap->Mat, x, y)==1))
+		{
+		    /* Assign residue id. */
+		    if(!ajBaseAa1ToAa3(ajStrChar(cmap->Seq1, x), &res1))
+			ajFatal("Index out of range in ajCmapWrite");
+		
+		    if(!ajBaseAa1ToAa3(ajStrChar(cmap->Seq1, y), &res2))
+			ajFatal("Index out of range in ajCmapWrite");
+
+		    /* Print out the contact. */
+		    ajFmtPrintF(outf, "%-5s%S %d ; %S %d\n", "SM", res1, x+1, 
+				res2, y+1);	
+		}
+	    }
+    }
+    else if(cmap->Type ==  ajINTER)    
+    {
+	for(x=0; x<cmap->Nres1; x++)
+	    for(y=x+1; y<cmap->Nres2; y++)
+	    {	
+		if((ajInt2dGet(cmap->Mat, x, y)==1))
+		{
+		    /* Assign residue id. */
+		    if(!ajBaseAa1ToAa3(ajStrChar(cmap->Seq1, x), &res1))
+			ajFatal("Index out of range in ajCmapWrite");
+		
+		    if(!ajBaseAa1ToAa3(ajStrChar(cmap->Seq2, y), &res2))
+			ajFatal("Index out of range in ajCmapWrite");
+
+		    /* Print out the contact. */
+		    ajFmtPrintF(outf, "%-5s%S %d ; %S %d\n", "SM", res1, x+1, 
+				res2, y+1);	
+		}
+	    }
+    }
+    else if(cmap->Type ==  ajLIGAND)    
+    {
+	for(x=0; x<cmap->Nres1; x++)
+	    if((ajInt2dGet(cmap->Mat, 0, x)==1))
+	    {
+		/* Assign residue id. */
+		if(!ajBaseAa1ToAa3(ajStrChar(cmap->Seq1, x), &res1))
+		    ajFatal("Index out of range in ajCmapWrite");
+		
+		/* Print out the contact. */
+		ajFmtPrintF(outf, "%-5s%S %d\n", "LI", res1, x+1);
+	    }
+    }
+    
+    ajStrDel(&Id);
+    ajStrDel(&Domid);
+    ajStrDel(&Ligid);
+    ajStrDel(&res1);
+    ajStrDel(&res2);
+    return ajTrue;
+}
+
+
+
 
 
 
