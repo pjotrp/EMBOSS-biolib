@@ -6,7 +6,7 @@ dnl Process this file with autoconf to produce a configure script.
 #CC=cc
 
 AC_INIT(source/myseq.c)
-AM_INIT_AUTOMAKE(MYEMBOSS, 2.9.0)
+AM_INIT_AUTOMAKE(MYEMBOSS, 2.10.0)
 
 
 AC_PROG_AWK
@@ -40,6 +40,11 @@ AC_MSG_CHECKING(for 64bit compilation support)
 dnl Test for Linux 64 bit
 if test "`uname`" = "Linux"; then
 CPPFLAGS="-DAJ_Linux64 $CPPFLAGS"
+fi
+
+dnl Test for FreeBSD 64 bit
+if test "`uname`" = "FreeBSD"; then
+CPPFLAGS="-DAJ_FreeBSD64 $CPPFLAGS"
 fi
 
 dnl Test for Solaris 64 bit. This is done in the optimisation section...
@@ -122,6 +127,11 @@ if test "`uname`" = "Linux"; then
 CFLAGS="$CFLAGS -O2"
 fi
 
+dnl Test for FreeBSD optimisation
+if test "`uname`" = "FreeBSD"; then
+CFLAGS="$CFLAGS -O2"
+fi
+
 else
 CFLAGS="$CFLAGS -O2"
 fi
@@ -136,7 +146,7 @@ dnl End of Optimisation tests
 
 
 dnl Use libtool to make a shared library.
-AM_PROG_LIBTOOL
+AC_PROG_LIBTOOL
 
 dnl endian test for indexing system
 AC_C_BIGENDIAN(CPPFLAGS="$CPPFLAGS -DBENDIAN",CPPFLAGS="$CPPFLAGS -DLENDIAN")
@@ -209,6 +219,11 @@ AC_CHECK_LIB(c, gethostbyname, LIBS="$LIBS", LIBS="$LIBS -lnsl")
 AC_CHECK_LIB(c, socket, LIBS="$LIBS" , LIBS="$LIBS -lsocket")
 AC_CHECK_LIB(m, main)
 
+dnl GD for FreeBSD requires libiconv
+if test "`uname`" = "FreeBSD"; then
+AC_CHECK_LIB(iconv, main, LIBS="$LIBS", LIBS="-liconv $LIBS")
+fi
+
 AM_CONDITIONAL(AMPNG, false)
 
 CHECK_GENERAL
@@ -229,6 +244,29 @@ AC_SUBST(PCRE_VERSION)
 AC_SUBST(PCRE_LIB_VERSION)
 AC_SUBST(PCRE_POSIXLIB_VERSION)
 AC_SUBST(POSIX_MALLOC_THRESHOLD)
+
+
+dnl Test if --enable-localforce given
+locallink=no
+embprefix=/usr/local
+AC_ARG_ENABLE(localforce,
+[  --enable-localforce     force compile/link against /usr/local])
+if test "${enable_localforce}" = "yes" ; then
+embprefix=/usr/local
+fi          
+
+if test "${prefix}" = "NONE" ; then
+   if test "${enable_localforce}" != "yes" ; then
+      locallink=yes
+   else
+      locallink=no
+      embprefix=/usr/local
+   fi
+else
+   embprefix=${prefix}
+fi
+AM_CONDITIONAL(LOCALLINK, test "${locallink}" = "yes")
+AC_SUBST(embprefix)
 
 #dnl Test if --enable-corba is given
 #AC_ARG_ENABLE(corba,
@@ -276,6 +314,11 @@ AC_MSG_CHECKING(for large file support)
 dnl Test for Linux large file support
 if test "`uname`" = "Linux"; then
 CPPFLAGS="-DAJ_LinuxLF -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE $CPPFLAGS"
+fi
+
+dnl Test for FreeBSD large file support
+if test "`uname`" = "FreeBSD"; then
+CPPFLAGS="-DAJ_FreeBSDLF $CPPFLAGS"
 fi
 
 dnl Test for Solaris large file support
@@ -348,7 +391,7 @@ dnl Test if --enable-debug given
 AC_ARG_ENABLE(warnings,
 [  --enable-warnings          warnings (-Wall option on compiler)])
 if test "${enable_warnings}" = "yes" ; then
-  CFLAGS="$CFLAGS -Wall"
+  CFLAGS="$CFLAGS -Wall -fno-strict-aliasing"
 fi          
 
 dnl Set extra needed compiler flags
@@ -358,6 +401,16 @@ if test "$CC" = "cc"; then
   esac
 fi
 AM_CONDITIONAL(PURIFY, test "${enable_purify}" = "yes")
+
+dnl test for cygwin to set AM_LDFLAGS in library & apps Makefile.ams
+AJOSNAME=`uname`
+iscyg=no
+if test `expr substr $AJOSNAME 1 6` = "CYGWIN"; then
+   iscyg=yes
+fi
+AM_CONDITIONAL(ISCYGWIN, test "$iscyg" = "yes")
+AC_SUBST(ISCYGWIN)
+
 
 dnl Tests for AIX
 dnl If shared needs -Wl,-G in plplot,ajax,nucleus, -lX11 in plplot,

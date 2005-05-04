@@ -1,3 +1,1 @@
-
-pkgdata_DATA = *.acd
-pkgdatadir=$(prefix)/share/EMBOSS/acd
+EXTRA_DIST = Makefile.am
