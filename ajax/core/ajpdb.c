@@ -1828,8 +1828,6 @@ AjPAtom ajAtomNew(void)
 ** Residue object constructor.
 ** This is normally called by the ajChainNew function.
 **
-** @param [r] n [void] 
-** 
 ** @return [AjPResidue] Pointer to a Residue object
 ** @category new [AjPResidue] Default Residue constructor.
 ** @@
@@ -2694,7 +2692,7 @@ AjBool ajAtomListCopy(AjPList *to, const AjPList from)
 ** 
 ** @param [w] ptr   [AjPChain*] Chain object pointer
 **
-** @return [AjBool] True on success
+** @return [void]
 ** @@
 ****************************************************************************/
 
@@ -5845,13 +5843,13 @@ AjBool   ajPdbtospWrite(AjPFile outf, const AjPList list)
 ** DOMAINATRIX "contacts" application). 
 ** 
 ** @param [u] outf    [AjPFile]  Output file stream.
-** @param [r] cmap    [AjPCmap]  Cmap object pointer.
+** @param [r] cmap    [const AjPCmap]  Cmap object pointer.
 **
 ** @return [AjBool] True on success (object was written succesfully)
 ** @category output [AjPCmap] Write Cmap object to file in CON format.
 ** @@
 ****************************************************************************/
-AjBool   ajCmapWrite(AjPFile outf, AjPCmap cmap)
+AjBool   ajCmapWrite(AjPFile outf, const AjPCmap cmap)
 {
     ajint x = 0;
     ajint y = 0;

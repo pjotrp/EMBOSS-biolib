@@ -5429,7 +5429,7 @@ void ajBtreeWildDel(AjPBtWild *thys)
 ** @param [u] cache [AjPBtcache] cache
 ** @param [r] wild [const AjPStr] wildcard keyword prefix (without asterisk)
 **
-** @return [AjPBKeyWild] b+ tree wildcard object
+** @return [AjPBtKeyWild] b+ tree wildcard object
 ** @@
 ******************************************************************************/
 

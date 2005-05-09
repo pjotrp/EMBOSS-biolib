@@ -931,7 +931,7 @@ AjPCmap      ajCmapReadINew(AjPFile inf, ajint chn, ajint mod);
 AjPCmap      ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod);
 AjPList      ajCmapReadAllNew(AjPFile inf);
 void         ajCmapDel(AjPCmap *ptr);
-AjBool       ajCmapWrite(AjPFile outf, AjPCmap cmap);
+AjBool       ajCmapWrite(AjPFile outf, const AjPCmap cmap);
 
 
 
