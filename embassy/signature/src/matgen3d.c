@@ -86,7 +86,7 @@ int main(ajint argc, char **argv)
     
     AjPInt    sites_arr;                /* Array of residue index numbers of ligand-
 					   contact residues.                        */
-    ajint     nsites;                   /* Size of sites_arr.                       */
+    ajint     nsites = 0;               /* Size of sites_arr.                       */
     
 
     AjIList   ScopIter=NULL;		/* Iterator for list_allscop.               */

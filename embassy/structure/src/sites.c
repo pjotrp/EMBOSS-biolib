@@ -188,10 +188,12 @@ static   AjBool      sites_HeterogenContacts(ajint entype,
 					     AjPInt siz_heterogens, 
 					     AjPVdwall vdw, AjPDbase *dbase);
 
-static   AjBool      sites_HeterogenContactsWrite(AjPFile outf, AjPDbase dbase, 
+static   AjBool      sites_HeterogenContactsWrite(AjPFile outf,
+						  AjPDbase dbase, 
 						  float thresh); 
 
-static AjBool    sites_HeterogenContactsWriteOld(AjPFile funky_out, AjPDbase dbase);
+static AjBool    sites_HeterogenContactsWriteOld(AjPFile funky_out,
+						 AjPDbase dbase);
 
 
 
@@ -1030,10 +1032,24 @@ static AjBool      sites_HeterogenContacts(ajint entype,
 }
 
 
+/* @func sites_Dummy **********************************************************
+**
+** Dummy function to catch all unused functions defined in the sites
+** source file.
+**
+** @return [void]
+** @@
+******************************************************************************/
 
+void sites_Dummy (void)
+{
+    AjPFile outfile = NULL;
+    AjPDbase dbase = NULL;
+    sites_HeterogenContactsWriteOld(outfile, dbase);
+    return;
+}
 
-
-/* @funcstatic  sites_HeterogenContactsWriteOld ******************************
+/* @funcstatic sites_HeterogenContactsWriteOld ******************************
 **
 ** Write Dbase object to file i.e. the database of functional residues. The
 ** OLD ligand-centric format is used (*NOT* CON format).
@@ -1046,18 +1062,19 @@ static AjBool      sites_HeterogenContacts(ajint entype,
 ** @@
 ******************************************************************************/
 
-static AjBool    sites_HeterogenContactsWriteOld(AjPFile funky_out, AjPDbase dbase)
+static AjBool    sites_HeterogenContactsWriteOld(AjPFile funky_out,
+						 AjPDbase dbase)
 {
 
-  ajint i=0;       /* loop counter for dbase->entries[i] */
-  ajint j=0;       /* loop counter for dbase->entries[i]->cont_data[j] */
-  ajint k=0;       /* loop counter for dbase->entries[i]->cont_data[j]->aa_code[j] and
-		      dbase->entries[i]->cont_data[j]->res_pos[j] */
+  ajint i=0;   /* loop counter for dbase->entries[i] */
+  ajint j=0;   /* loop counter for dbase->entries[i]->cont_data[j] */
+  ajint k=0;   /* loop counter for dbase->entries[i]->cont_data[j]->aa_code[j]
+	  	  and dbase->entries[i]->cont_data[j]->res_pos[j] */
 
   /* Check arguments */
   if((funky_out==NULL) || (dbase==NULL)) 
   {
-      ajWarn("Pointer error in funky_HeterogenContactsWrite\n");
+      ajWarn("Pointer error in funky_HeterogenContactsWriteOld\n");
       return ajFalse;
   }
   
@@ -1074,9 +1091,11 @@ static AjBool    sites_HeterogenContactsWriteOld(AjPFile funky_out, AjPDbase dba
 	    {
 	      ajFmtPrintF(funky_out, "SN   %d\n", j+1);
 	      ajFmtPrintF(funky_out, "XX\n");
-	      ajFmtPrintF(funky_out, "EN   %S\n", dbase->entries[i]->cont_data[j]->pdb_name);
+	      ajFmtPrintF(funky_out, "EN   %S\n",
+			  dbase->entries[i]->cont_data[j]->pdb_name);
 	      ajFmtPrintF(funky_out, "XX\n");
-	      ajFmtPrintF(funky_out, "CH   %c\n", dbase->entries[i]->cont_data[j]->chainid);
+	      ajFmtPrintF(funky_out, "CH   %c\n",
+			  dbase->entries[i]->cont_data[j]->chainid);
 	      ajFmtPrintF(funky_out, "XX\n");
 
 	      ajFmtPrintF(funky_out, "SC   %S\n", 
