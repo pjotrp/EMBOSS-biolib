@@ -8,7 +8,7 @@ pkgdata_DATA =  aaindexextract.html abiview.html acdc.html acd_group.html \
 	btwisted.html cai.html cathparse.html chaos.html charge.html \
 	checktrans.html chips.html cirdna.html codcmp.html codcopy.html \
 	coderet.html compseq.html cons.html contactalign.html \
-	contactcount.html contacts.html \
+	contacts.html \
 	cpgplot.html cpgreport.html crystalball.html cusp.html \
 	cutgextract.html cutseq.html dan.html dbiblast.html dbifasta.html \
 	dbiflat.html dbigcg.html degapseq.html degapseqrunner.html \

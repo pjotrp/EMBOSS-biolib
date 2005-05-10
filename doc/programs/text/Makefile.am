@@ -4,7 +4,7 @@ pkgdata_DATA =  aaindexextract.txt abiview.txt acdc.txt acdlog.txt \
 	banana.txt biosed.txt btwisted.txt cai.txt cathparse.txt \
 	chaos.txt charge.txt checktrans.txt chips.txt cirdna.txt \
 	codcmp.txt codcopy.txt coderet.txt complex.txt compseq.txt \
-	cons.txt contactalign.txt contactcount.txt \
+	cons.txt contactalign.txt \
 	contacts.txt cpgplot.txt cpgreport.txt \
 	crystalball.txt cusp.txt cutgextract.txt cutseq.txt dan.txt \
 	dbiblast.txt dbifasta.txt dbiflat.txt dbigcg.txt degapseqrunner.txt \
