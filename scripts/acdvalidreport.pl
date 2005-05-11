@@ -28,6 +28,7 @@
    "Subsequent \\S+ (\\S+ )?'\\S+' is not a parameter" => "Nonparameter later",
    "Sequence set '\\S+' has no 'aligned'" => "Seqset aligned undefined",
 #   "" => "",
+   "^Multiple definition of parameter/standard/additional" => "Multiple definition of parameter/standard/additional",
    "Dummy message" => "dummy"
 	     );
 
