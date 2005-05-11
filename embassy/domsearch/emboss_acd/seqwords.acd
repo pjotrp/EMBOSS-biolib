@@ -4,7 +4,7 @@ application: seqwords [
   gui: "yes"
   batch: "yes"
   cpu: "low"
-  embassy: "domainatrix"
+  embassy: "domsearch"
 ]
 
 section: input [

@@ -4,7 +4,7 @@ application: pdbplus [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
-  embassy: "domainatrix"
+  embassy: "structure"
 ]
 
 section: input [

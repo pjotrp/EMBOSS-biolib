@@ -4,7 +4,7 @@ application: rocon [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
-  embassy: "domainatrix"
+  embassy: "signature"
 ]
 
 section: input [

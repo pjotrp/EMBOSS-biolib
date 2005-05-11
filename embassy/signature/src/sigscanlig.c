@@ -190,9 +190,9 @@ int main(int argc, char **argv)
     gape       = ajAcdGetFloat("gape");
     nhits      = ajAcdGetInt("nhits");
     nterm      = ajAcdGetList("nterm");
-    hitsdir    = ajAcdGetDirectory("hitsdir");
-    aligndir   = ajAcdGetDirectory("aligndir"); 
-    resultsdir = ajAcdGetDirectory("resultsdir"); 
+    hitsdir    = ajAcdGetOutdir("hitsdir");
+    aligndir   = ajAcdGetOutdir("aligndir"); 
+    resultsdir = ajAcdGetOutdir("resultsdir"); 
     domax      = ajAcdGetToggle("domax");
     maxhits    = ajAcdGetInt("maxhits");
     mode        = ajAcdGetList("mode");

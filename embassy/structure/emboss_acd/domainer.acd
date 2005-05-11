@@ -4,7 +4,7 @@ application: domainer [
   gui: "yes"
   batch: "yes"
   cpu: "low"
-  embassy: "domainatrix"
+  embassy: "structure"
 ]
 
 section: input [
@@ -13,7 +13,7 @@ section: input [
 ]
 
   infile: scopfile [
-    standard: "Y"
+    parameter: "Y"
     information: "DCF file (domain classification file)
                   (input)"
     help: "This option specifies the DCF file (domain classification

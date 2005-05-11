@@ -36,27 +36,6 @@ section: input [
 
 endsection: input
 
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-
-  boolean: nominor [
-    additional: "Y"
-    information: "Omit domains from minor classes. This is
-                  defined as anything not in class 'All alpha proteins', 'All
-                  beta proteins', 'Alpha and beta proteins (a/b)' or 'Alpha
-                  and beta proteins (a+b)'."
-    help: "This option specifies whether to omit domains from minor
-           classes (defined as anything not in class 'All alpha proteins',
-           'All beta proteins', 'Alpha and beta proteins (a/b)' or 'Alpha and
-           beta proteins (a+b)'). This is necessary or appropriate for many
-           analyses."
-    default: "N"
-  ]
-
-endsection: additional
-
 section: required [
   information: "Required section"
   type: "page"
@@ -83,6 +62,27 @@ section: required [
   ]
 
 endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  boolean: nominor [
+    additional: "Y"
+    information: "Omit domains from minor classes. This is
+                  defined as anything not in class 'All alpha proteins', 'All
+                  beta proteins', 'Alpha and beta proteins (a/b)' or 'Alpha
+                  and beta proteins (a+b)'."
+    help: "This option specifies whether to omit domains from minor
+           classes (defined as anything not in class 'All alpha proteins',
+           'All beta proteins', 'Alpha and beta proteins (a/b)' or 'Alpha and
+           beta proteins (a+b)'). This is necessary or appropriate for many
+           analyses."
+    default: "N"
+  ]
+
+endsection: additional
 
 section: output [
   information: "Output section"

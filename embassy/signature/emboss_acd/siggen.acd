@@ -4,7 +4,7 @@ application: siggen [
   gui: "yes"
   batch: "yes"
   cpu: "low"
-  embassy: "domainatrix"
+  embassy: "signature"
 ]
 
 section: input [

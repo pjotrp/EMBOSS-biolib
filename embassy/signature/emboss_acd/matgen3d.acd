@@ -1,7 +1,7 @@
 application: matgen3d [
  documentation: "Generate a 3D-1D scoring matrix from CCF files."
  groups: "Protein:3D Structure"
- embassy: "domainatrix"
+ embassy: "signature"
 ]
 
 
@@ -42,7 +42,6 @@ list: model  [
 
 infile: dcfinfile [
  standard: "@($(mode)==1)"
- parameter: "Y"
  information: "Name of DCF file (domain classification file (input)."
  help: "This option specifies the name of DCF file (domain
 	classification file) (input). A 'domain classification file'
@@ -57,7 +56,6 @@ infile: dcfinfile [
 
 infile: coninfile [
  standard: "@($(mode)==2)"
- parameter: "Y"
  information: "Name of CON file (contacts file) (input)."
  help: "This option specifies the location of CON files (contact
            files) (output). A 'contact file' contains contact data for a
@@ -72,7 +70,6 @@ infile: coninfile [
 
 infile: liginfile [
  standard: "@($(model)==2)"
- parameter: "Y"
  information: "Name of ligand list file (input)."
  help: "This option specifies the location of the ligand list file. This file
 	contains a list of ligand ('heterogen') 3-character identifier codes. 

@@ -4,7 +4,7 @@ application: contacts [
   gui: "yes"
   batch: "yes"
   cpu: "high"
-  embassy: "domainatrix"
+  embassy: "structure"
 ]
 
 section: input [

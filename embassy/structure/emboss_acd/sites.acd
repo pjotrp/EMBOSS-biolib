@@ -4,7 +4,7 @@ application: sites [
   gui: "yes"
   batch: "yes"
   cpu: "high"
-  embassy: "domainatrix"
+  embassy: "structure"
 ]
 
 section: input [
@@ -58,7 +58,7 @@ section: input [
   ]
 
   infile: dcffile [
-    standard: "Y"
+    parameter: "Y"
     information: "Name of DCF file (domain classification file)
                   (input)"
     help: "This option specifies the name of the DCF file (domain

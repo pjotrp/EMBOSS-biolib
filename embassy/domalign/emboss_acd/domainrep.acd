@@ -4,7 +4,7 @@ application: domainrep [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
-  embassy: "domainatrix"
+  embassy: "domalign"
 ]
 
 section: input [

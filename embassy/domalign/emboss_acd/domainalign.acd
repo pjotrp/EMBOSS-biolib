@@ -4,7 +4,7 @@ application: domainalign [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
-  embassy: "domainatrix"
+  embassy: "domalign"
 ]
 
 section: input [
@@ -92,19 +92,6 @@ section: output [
   type: "page"
 ]
 
-  outdir: singletsoutdir [
-    standard: "$(keepsinglets)"
-    information: "Location of DHF files (domain hits files) for
-                  singlet sequences (output)."
-    help: "This option specifies the location of DHF files (domain
-           hits files) for singlet sequences (output). The singlets are
-           written out as a 'domain hits file' - which contains database hits
-           (sequences) with domain classification information, in FASTA
-           format."
-    extension: "dhf"
-    knowntype: "domain hits file"
-  ]
-
   outdir: dafoutdir [
     parameter: "Y"
     information: "Location of DAF files (domain alignment
@@ -121,6 +108,20 @@ section: output [
     default: "./"
     extension: "daf"
     knowntype: "domain alignment file"
+  ]
+
+  outdir: singletsoutdir [
+    standard: "$(keepsinglets)"
+    information: "Location of DHF files (domain hits files) for
+                  singlet sequences (output)."
+    help: "This option specifies the location of DHF files (domain
+           hits files) for singlet sequences (output). The singlets are
+           written out as a 'domain hits file' - which contains database hits
+           (sequences) with domain classification information, in FASTA
+           format."
+    default: "./"
+    extension: "dhf"
+    knowntype: "domain hits file"
   ]
 
   outdir: superoutdir [
