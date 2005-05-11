@@ -2006,6 +2006,12 @@ of the given type. By default, any sequence type is accepted.</p>
 <p>We recommend always defining the <i>type:</i> attribute so that the
 accepted input sequence type is always clear.</p>
 
+<p>The <i>aligned:</i> attribute, if true, specifies that all sequences in the
+input are expected to be aligned. If false, then the sequences are
+assumed to be unaligned, and are simply read into memory together for
+processing. We recommend always defining the <i>aligned:</i> attribute
+so that the nature of the sequence set if clearly defined.</p>
+
 <p>If the <i>features:</i> attribute is set, the sequence input will
 include feature information either in the same file (if the sequence
 format supports it) or in a separate file (by default in GFF format).</p>
@@ -2037,6 +2043,12 @@ of the given type. By default, any sequence type is accepted.</p>
 
 <p>We recommend always defining the <i>type:</i> attribute so that the
 accepted input sequence type is always clear.</p>
+
+<p>The <i>aligned:</i> attribute, if true, specifies that all sequences in the
+input are expected to be aligned. If false, then the sequences are
+assumed to be unaligned, and are simply read into memory together for
+processing. We recommend always defining the <i>aligned:</i> attribute
+so that the nature of the sequence set if clearly defined.</p>
 
 <p>If the <i>features:</i> attribute is set, the sequence input will
 include feature information either in the same file (if the sequence
