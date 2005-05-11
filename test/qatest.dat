@@ -34,6 +34,7 @@
 # CL (the command-line arguments to use after the application name)
 # IN (a response to a prompt for input using the default)
 # IN text (a response to a prompt using a non-default input)
+# IK text (input keystrokes, not responses to prompts)
 # FI filename (an expected output filename)
 # FZ integer (the expected size in bytes of the above filename)
 # FC integer (the expected number of lines in the above file)
@@ -344,9 +345,6 @@ FP /^Created qatest.acdpretty\n/
 ID acdtable-ex
 AP acdtable
 CL antigenic
-IN tsw:act1_fugru
-IN
-IN
 FI stderr
 FC = 49
 FP 8 /[<]tr/
@@ -374,9 +372,6 @@ FP 0 /Died: /
 ID acdvalid-ex
 AP acdvalid
 CL antigenic
-IN tsw:act1_fugru
-IN
-IN
 FI stderr
 FC = 0
 FP 0 /Warning: /
@@ -16547,7 +16542,7 @@ FP 0 /Died: /
 #######################################
 
 ID allversusall-ex
-AB domainatrix
+AB domalign
 AA allversusall
 IN ../../data/structure/allversusall/
 IN
@@ -16610,7 +16605,7 @@ FP 4 /^1\.10\.8/
 //
 
 ID contacts-ex
-AB domainatrix
+AB structure
 AA contacts
 IN ../../data/structure
 IN
@@ -16721,7 +16716,7 @@ FP /^D1II7A_ +\n/
 //
 
 ID domainalign-ex
-AB domainatrix
+AB domalign
 AA domainalign
 RQ stamp
 CC requires a modified stamp to be installed
@@ -16765,7 +16760,7 @@ FZ = 574
 //
 
 ID domainrep-ex
-AB domainatrix
+AB domalign
 AA domainrep
 RQ stamp
 CC documentation says stamp is required
@@ -16786,7 +16781,7 @@ FP 2 /^ID/
 //
 
 ID domainer-ex
-AB domainatrix
+AB structure
 AA domainer
 IN ../../data/structure/all.scop
 IN ../../data/structure/
@@ -16874,7 +16869,7 @@ FZ = 0
 //
 
 ID hetparse-ex
-AB domainatrix
+AB structure
 AA hetparse
 IN ../../data/structure/het.txt
 IN Y
@@ -16893,7 +16888,7 @@ FP 9 /^NN/
 //
 
 ID interface-ex
-AB domainatrix
+AB structure
 AA interface
 IN ../../data/structure/interface/2hhb.ccf
 IN 1
@@ -16918,7 +16913,7 @@ FP /^2hhb\n/
 //
 
 ID libgen-ex
-AB domainatrix
+AB signature
 AA libgen
 RQ hmmer
 RQ sam-t2k
@@ -16945,7 +16940,7 @@ FP /^Consensus\s+GVEAIKN.+NFAALRLDREXFD\n/
 //
 
 ID matgen3d-ex
-AB domainatrix
+AB signature
 AA matgen3d
 CC Test not yet written
 FI stderr
@@ -16956,7 +16951,7 @@ FP 0 /^Died:/
 //
 
 ID pdbparse-ex
-AB domainatrix
+AB structure
 AA pdbparse
 IN ../../data/structure
 IN
@@ -16989,7 +16984,7 @@ FP 402 /^CO /
 //
 
 ID pdbplus-ex
-AB domainatrix
+AB structure
 AA pdbplus
 RQ stride
 RQ naccess
@@ -17034,7 +17029,7 @@ FP /^SQ   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;\n/
 //
 
 ID pdbtosp-ex
-AB domainatrix
+AB structure
 AA pdbtosp
 IN ../../data/structure/pdbtosp.txt
 IN
@@ -17051,7 +17046,7 @@ FP /^IN   XYLA_ACTMI ID; P12851 ACC;\n/
 //
 
 ID rocon-ex
-AB domainatrix
+AB signature
 AA rocon
 IN ../../data/structure/rocon/rocon.dhf
 IN ../../data/structure/rocon.valid
@@ -17073,7 +17068,7 @@ FP 1 /^UNKNOWN /
 //
 
 ID rocplot-ex
-AB domainatrix
+AB signature
 AA rocplot
 IN ../../data/structure/rocplot/hitsin
 IN 2
@@ -17155,7 +17150,7 @@ FP 2 /^ID   /
 //
 
 ID seqalign-ex
-AB domainatrix
+AB domalign
 AA seqalign
 RQ clustalw
 ## Apparently requires clustalw 1.83 for long filenames
@@ -17192,7 +17187,7 @@ FP 2 /^\/\/\n/
 //
 
 ID seqfraggle-ex
-AB domainatrix
+AB domsearch
 AA seqfraggle
 IN ../../data/structure
 IN 50
@@ -17217,7 +17212,7 @@ FP 117 /^>/
 //
 
 ID seqnr-ex
-AB domainatrix
+AB domsearch
 AA seqnr
 PP mkdir hitsnr
 PP mkdir hitsred
@@ -17274,7 +17269,7 @@ RQ blastpgp
 ## Uses blastpgp to search
 ## blastpgp generates 4 warning messages
 ## (WARNING so the test pattern misses it) in stderr
-AB domainatrix
+AB domsearch
 AA seqsearch
 IN 2
 IN ../../data/structure
@@ -17306,7 +17301,7 @@ FP 2 /[.]daf\n/
 //
 
 ID seqsort-ex
-AB domainatrix
+AB domsearch
 AA seqsort
 IN ../../data/structure
 IN 10
@@ -17338,7 +17333,7 @@ FP 118 /^> /
 //
 
 ID seqwords-ex
-AB domainatrix
+AB domsearch
 AA seqwords
 IN ../../data/structure/seqwords.terms
 IN ../../data/structure/seqwords.seq
@@ -17355,7 +17350,7 @@ FP /^> Q60150\^.\^1\^312\^SCOP\^.\^0\^Alpha and beta proteins/
 //
 
 ID siggen-ex
-AB domainatrix
+AB signature
 AA siggen
 IN ../../data/structure/
 IN 2
@@ -17382,7 +17377,7 @@ FP 30 /^IN   /
 //
 
 ID siggenlig-ex
-AB domainatrix
+AB signature
 AA siggenlig
 CC Test not yet written
 IN ../../data/structure/
@@ -17410,7 +17405,7 @@ FP 30 /^IN   /
 //
 
 ID sigscan-ex
-AB domainatrix
+AB signature
 AA sigscan
 CC Signature type mismatch warnings in Write and Compile
 IN ../../data/structure/54894.sig
@@ -17441,7 +17436,7 @@ FP /^SIGNATURE -      ------\*---\*\*-\*---------------------------\*------\*--\
 //
 
 ID sigscanlig-ex
-AB domainatrix
+AB signature
 AA sigscanlig
 CC Test not yet written
 IN ../../data/structure/54894.sig
@@ -17472,7 +17467,7 @@ FP /^SIGNATURE -      ------\*---\*\*-\*---------------------------\*------\*--\
 //
 
 ID sites-ex
-AB domainatrix
+AB structure
 AA sites
 IN ../../data/structure/sites
 IN ../../data/structure
@@ -17539,15 +17534,15 @@ ID emnu-ex
 AB emnu
 AA emnu
 CL -explode
-IN [C
-IN
-IN y
+IK [C
+IK
+IK y
 FI stderr
 FC = 1
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
+FK stdout
 FC > 3
 FP /^emnu version: 1.0.5\n/
 FP /^EMBOSS Simple Menu\n/
@@ -18060,16 +18055,16 @@ ID mse-ex
 AB mse
 AA mse
 CL ../../data/dna.msf msf::mse.msf
-IN :21
-IN :1 up
-IN acgt:25 28 delete
-IN ----:exit
+IK :21
+IK :1 up
+IK acgt:25 28 delete
+IK ----:exit
 FI stderr
 FC = 1
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
+FK stdout
 FZ = 2876
 FP /exit/
 FI mse.msf
@@ -18129,7 +18124,6 @@ ID econsense-ex
 AB phylip
 AA econsense
 IN ../../data/evolution/consense.dat
-IN
 IN
 IN
 IN
@@ -18247,10 +18241,6 @@ ID ednainvar-ex
 AB phylip
 AA ednainvar
 IN ../../data/evolution/dnainvar.dat
-IN
-IN
-IN
-IN
 IN
 FI ednainvar.outfile
 FC = 109
@@ -18699,8 +18689,6 @@ AB phylipnew
 AA fclique
 IN ../../data/evolution/clique.dat
 IN
-IN
-IN
 FI clique.fclique
 FC = 31
 FP /^Characters: \(  1  2  3  6\)\n/
@@ -18725,8 +18713,6 @@ CL -ancfile ../../data/evolution/clique.ancestral
 CL -factorfile ../../data/evolution/clique.factors
 CL -weights ../../data/evolution/clique.weights
 IN ../../data/evolution/clique.dat
-IN
-IN
 IN
 FI clique.fclique
 FC = 58
@@ -18753,9 +18739,6 @@ AB phylipnew
 AA fconsense
 IN ../../data/evolution/consense.dat
 IN
-IN
-IN
-IN
 FI consense.fconsense
 FC = 77
 FP /^  10. C\n/
@@ -18781,12 +18764,6 @@ CL -printdata
 IN ../../data/evolution/contml.dat
 IN
 IN
-IN
-IN
-IN
-IN
-IN
-IN
 FI contml.fcontml
 FC = 67
 FP /^Ln Likelihood =    20.7312[0-9]\n/
@@ -18809,7 +18786,6 @@ AB phylipnew
 AA fcontrast
 IN ../../data/evolution/contrast.dat
 IN ../../data/evolution/contrast.tree
-IN
 IN
 FI stderr
 FC = 2
@@ -18888,8 +18864,6 @@ IN ../../data/evolution/dnacomp.dat
 IN
 IN
 IN
-IN
-IN
 FI dnacomp.fdnacomp
 FC = 62
 FP /total number of compatible sites is       11.0\n/
@@ -18917,8 +18891,6 @@ IN ../../data/evolution/dnacomp.dat
 IN ../../data/evolution/dnacomptree.dat
 IN
 IN
-IN
-IN
 FI dnacomp.fdnacomp
 FC = 23
 FP /^User-defined tree:\n/
@@ -18942,8 +18914,6 @@ AA fdnadist
 IN ../../data/evolution/dnadist.dat
 IN
 IN
-IN
-IN
 FI dnadist.fdnadist
 FC = 9
 FP /    5\n/
@@ -18963,9 +18933,6 @@ AB phylipnew
 AA fdnainvar
 CL -printdata
 IN ../../data/evolution/dnainvar.dat
-IN
-IN
-IN
 IN
 IN
 FI dnainvar.fdnainvar
@@ -18998,12 +18965,6 @@ CL -hmmprobabilities "0.522 0.399 0.076 0.0036 0.000023"
 CL -lambda 1.5
 CL -weight "0111111111110"
 IN ../../data/evolution/dnaml.dat
-IN
-IN
-IN
-IN
-IN
-IN
 IN
 IN
 FI dnaml.fdnaml
@@ -19066,12 +19027,6 @@ CL -weight "0111111111110"
 IN ../../data/evolution/dnaml.dat
 IN
 IN
-IN
-IN
-IN
-IN
-IN
-IN
 FI dnaml.fdnamlk
 FC = 89
 FP /^        1           0.264            0.522\n/
@@ -19110,7 +19065,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
 FC = 20
-FP 15 /^./
+FP 14 /^./
 //
 
 ID fdnapars-ex
@@ -19189,7 +19144,6 @@ AB phylipnew
 AA fdolmove
 IN ../../data/evolution/dolmove.dat
 IN
-IN
 IN Q
 IN Y
 FI dolmove.treefile
@@ -19202,7 +19156,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
 FC = 24
-FP 16 /^./
+FP 15 /^./
 //
 
 ID fdolpenny-ex
@@ -19380,7 +19334,6 @@ AA fmix
 IN ../../data/evolution/mix.dat
 IN
 IN
-IN
 FI mix.fmix
 FC = 86
 FP 4 /^requires a total of      9.000\n/
@@ -19444,8 +19397,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 24
-FP 16 /^./
+FC = 23
+FP 15 /^./
 //
 
 ID fneighbor-ex
@@ -19480,7 +19433,6 @@ AA fpars
 IN ../../data/evolution/pars.dat
 IN
 IN
-IN
 FI pars.fpars
 FC = 30
 FP /^One most parsimonious tree found:\n/
@@ -19504,7 +19456,6 @@ ID fpenny-ex
 AB phylipnew
 AA fpenny
 IN ../../data/evolution/penny.dat
-IN
 IN
 FI penny.fpenny
 FC = 70
@@ -19581,7 +19532,6 @@ ID fprotdist-ex
 AB phylipnew
 AA fprotdist
 IN ../../data/evolution/protdist.dat
-IN
 IN
 FI protdist.fprotdist
 FC = 9
@@ -19841,13 +19791,13 @@ FC = 2
 FP /^\(\(\(\(\(\(\(Human,Chimp\),Gorilla\),Orang\),Gibbon\),\(Barbary_Ma,\(Crab-e._Ma,\n/
 FP /^\(Rhesus_Mac,Jpn_Macaq\)\)\)\),Squir._Mon\),\(\(Tarsier,Lemur\),Bovine\),Mouse\);\n/
 FI stderr
-FC = 2
+FC = 4
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 32
-FP 26 /^./
+FC = 27
+FP 23 /^./
 //
 
 ID fseqboot-ex
@@ -19899,7 +19849,6 @@ AB phylipnew
 AA ftreedist
 IN ../../data/evolution/treedist.dat
 IN
-IN
 FI treedist.ftreedist
 FC = 11
 FP /Trees 1 and 2:    4/
@@ -19919,7 +19868,6 @@ AB phylipnew
 AA ftreedist
 CL -dtype s
 IN ../../data/evolution/treedist2.dat
-IN
 IN
 FI treedist2.ftreedist
 FC = 11
