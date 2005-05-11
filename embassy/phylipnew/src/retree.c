@@ -2632,8 +2632,8 @@ void treewrite(boolean *done)
   onfirsttree = false;
   maxinput = 1;
   do {
-    printf("Enter R if the tree is to be rooted\n");
-    printf("OR enter U if the tree is to be unrooted: ");
+    fprintf(stderr, "Enter R if the tree is to be rooted, ");
+    fprintf(stderr, "OR enter U if the tree is to be unrooted: ");
 #ifdef WIN32
     phyFillScreenColor();
 #endif
@@ -2644,7 +2644,7 @@ void treewrite(boolean *done)
     ch = (isupper((int)ch)) ? ch : toupper((int)ch);
     maxinput++;
     if (maxinput == 100) {
-      printf("ERROR: too many tries at choosing option\n");
+      fprintf(stderr, "ERROR: too many tries at choosing option\n");
       exxit(-1);
     }
   } while (ch != 'R' && ch != 'U');
@@ -2652,7 +2652,7 @@ void treewrite(boolean *done)
   rooted = (ch == 'R');
   roottreeout(&rooted);
   treenumber++;
-  printf("\nTree written to file \"%s\"\n\n", outtreename);
+  fprintf(stderr, "\nTree written to file \"%s\"\n\n", outtreename);
   waswritten = true;
   written = true;
   if (!(*done))
@@ -2943,13 +2943,13 @@ void redisplay()
   done = false;
   maxinput = 1;
   do {
-    printf("\nNEXT? (Options: R . ");
+    fprintf(stderr, "NEXT? (R . ");
     if (haslengths)
-      printf("= ");
-    printf("U W O ");
+      fprintf(stderr, "= ");
+    fprintf(stderr, "U W O ");
     if (haslengths)
-      printf("M ");
-    printf("T F D B N H J K L C + ? X Q) (? for Help) ");
+      fprintf(stderr, "M ");
+    fprintf(stderr, "T F D B N H J K L C + ? X Q) (? for Help): ");
 #ifdef WIN32
     phyFillScreenColor();
 #endif
@@ -3058,10 +3058,10 @@ void redisplay()
           break;
       }
     } else {
-      printf("Not a possible option!\n");
+      fprintf(stderr, "Not a possible option!\n");
       maxinput++;
       if (maxinput == 100) {
-        printf("ERROR: too many tries at choosing option\n");
+        fprintf(stderr, "ERROR: too many tries at choosing option\n");
         exxit(-1);
       }
     }
@@ -3069,7 +3069,7 @@ void redisplay()
   if (!written) {
     maxinput = 1;
     do {
-      printf("Do you want to write out the tree to a file? (Y or N) ");
+      fprintf(stderr, "Do you want to write out the tree to a file? (Y or N): ");
 #ifdef WIN32
       phyFillScreenColor();
 #endif
@@ -3081,7 +3081,7 @@ void redisplay()
         treewrite(&done);
       maxinput++;
       if (maxinput == 100) {
-        printf("ERROR: too many tries at choosing option\n");
+        fprintf(stderr, "ERROR: too many tries at choosing option\n");
         exxit(-1);
       }
     } while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n');

@@ -2078,8 +2078,8 @@ void redisplay()
   boolean done = false;
   waswritten = false;
   do {
-    printf("NEXT? (Options: R # + - S . T U W O F H J K L C ? X Q) ");
-    printf("(? for Help) ");
+    fprintf(stderr, "NEXT (R # + - S . T U W O F H J K L C ? X Q) ");
+    fprintf(stderr, "(? for Help): ");
 #ifdef WIN32
     phyFillScreenColor();
 #endif
@@ -2179,7 +2179,7 @@ void redisplay()
   if (written)
     return;
   do {
-    printf("Do you want to write out the tree to a file? (Y or N) ");
+    fprintf(stderr, "Do you want to write out the tree to a file? (Y or N): ");
 #ifdef WIN32
     phyFillScreenColor();
 #endif
