@@ -97,6 +97,9 @@ $outputcolour = "#CCFFCC"; # light green
 $USAGE = "";
 $INPUT = "";
 $OUTPUT = "";
+$hasinput = 0;
+$haskeystrokes = 1;
+$hasoutkeystrokes = "";
 
 @testdbsoutput = ();
 @inputfilesshown = ();
@@ -180,6 +183,31 @@ foreach $dotest (@dirs) {
     close (TESTDEF);
 
 ###################################################################
+# parse 'CL, UC, IC, OC' lines from 'testdef'
+    foreach $line (@testdef) {
+        if ($line =~ /^CL\s+(.+)/) {$commandline .= "$1 ";}
+        if ($line =~ /^UC\s+(.+)/) {$usagecomment .= "$1 ";}
+        if ($line =~ /^IC\s+(.+)/) {$inputcomment .= "$1 ";}
+        if ($line =~ /^FI\s+(.+)/) {push(@outfiles, "$dir/$1");}
+        if ($line =~ /^FK\s+(.+)/) {$hasoutkeystrokes = $1;}
+        if ($line =~ /^DI\s+(.+)/) {push(@outfiles, "$dir/$1");$savedir = $1;}
+        if ($line =~ /^DF\s+(.+)/) {$outdirfiles{$savedir} .= "$1 ";
+				push(@outfiles, "$dir/$savedir/$1");}
+        if ($line =~ /^OC\s+(.+)/) {$outputcomment .= "$1 ";}
+        if ($line =~ /^DL\s+keep/) {$testkeep{$dotest} = 1;}
+        if ($line =~ /^AB\s+(\S+)/) {
+	    $embassypackage = "$1";
+	    $docdir = "$doctop/embassy/$embassypackage";
+	    $incdir = "$docdir/inc";
+	}
+        if ($line =~ /^IN\s+/) {$hasinput = 1;}
+        if ($line =~ /^IK\s+/) {$haskeystrokes = 1;}
+    }
+
+# remove stderr, stdin, stdout, testdef, testlog from this list
+    @outfiles = grep !/stdin|stderr|stdout|testdef|testlog/, @outfiles;
+
+###################################################################
 # read in 'stderr' file of prompts
 # Watch out for acdtrace which has extra lines
 # in all other cases, @prompts = <PROMPTS> would be correct and simpler.
@@ -196,41 +224,30 @@ foreach $dotest (@dirs) {
 
 ###################################################################
 # read in 'stdin' file of responses to prompts
-    $answerfile = "$dir/stdin";
-    open (ANSWERS, "< $answerfile") || errorexit("Couldn't open file $answerfile");
-    @answers = <ANSWERS>;
-    close (ANSWERS);
-
+    if($hasinput) {
+	$answerfile = "$dir/stdin";
+	open (ANSWERS, "< $answerfile") || errorexit("Couldn't open file $answerfile");
+	@answers = <ANSWERS>;
+	close (ANSWERS);
+    }
+    else {
+	@answers = ();
+	# if $haskeystrokes could put comment about input keystrokes here
+    }
     @saveanswers = @answers;
 
 ###################################################################
 # read in 'stdout' file of results written to screen
-    $resultsfile = "$dir/stdout";
-    open (RESULTS, "< $resultsfile") || errorexit("Couldn't open file $resultsfile");
-    @results = <RESULTS>;
-    close (RESULTS);
-
-###################################################################
-# parse 'CL, UC, IC, OC' lines from 'testdef'
-    foreach $line (@testdef) {
-        if ($line =~ /^CL\s+(.+)/) {$commandline .= "$1 ";}
-        if ($line =~ /^UC\s+(.+)/) {$usagecomment .= "$1 ";}
-        if ($line =~ /^IC\s+(.+)/) {$inputcomment .= "$1 ";}
-        if ($line =~ /^FI\s+(.+)/) {push(@outfiles, "$dir/$1");}
-        if ($line =~ /^DI\s+(.+)/) {push(@outfiles, "$dir/$1");$savedir = $1;}
-        if ($line =~ /^DF\s+(.+)/) {$outdirfiles{$savedir} .= "$1 ";
-				push(@outfiles, "$dir/$savedir/$1");}
-        if ($line =~ /^OC\s+(.+)/) {$outputcomment .= "$1 ";}
-        if ($line =~ /^DL\s+keep/) {$testkeep{$dotest} = 1;}
-        if ($line =~ /^AB\s+(\S+)/) {
-	    $embassypackage = "$1";
-	    $docdir = "$doctop/embassy/$embassypackage";
-	    $incdir = "$docdir/inc";
-	}
+    if($hasoutkeystrokes eq "stdout") {
+	@results = ();
+# could put some comment about the output keystrokes here
     }
-
-# remove stderr, stdin, stdout, testdef, testlog from this list
-    @outfiles = grep !/stdin|stderr|stdout|testdef|testlog/, @outfiles;
+    else {
+	$resultsfile = "$dir/stdout";
+	open (RESULTS, "< $resultsfile") || errorexit("Couldn't open file $resultsfile");
+	@results = <RESULTS>;
+	close (RESULTS);
+    }
 
 ###################################################################
 # change any ampersands or angle brackets to HTML codes
@@ -803,7 +820,7 @@ sub displayEntry {
     }
 
 # if the USA has a single ':', use entret, else it is a file and we use seqret
-    if ($usa !~ /\:\:/ && $usa =~ /\:/) {
+    if ($usa !~ /\:\:/ && $usa =~ /\S\:/) {
 	system ("entret $usa z.z -auto");
     }
     elsif ($usa =~ /\:\:/) {

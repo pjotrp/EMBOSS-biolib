@@ -27,6 +27,7 @@
 # DL success or all or keep - whether to delete the files afterways
 # IN Line(s) of standard input
 # FI File name (stdout and stderr assumed to exist and be empty unless stated)
+# FK Keystrokes output File name (non-text)
 # FP File pattern - /regexp/ to be found. Optional count to check exact number.
 # FZ [<=>]number File size test. Implicit test for zero size stdout/stderr
 #                unless stated
@@ -153,6 +154,7 @@ sub runtest ($) {
     elsif ($line =~ /^PP\s*(.*)/) {$ppcmd .= "$1 ; "}
     elsif ($line =~ /^QQ\s*(.*)/) {$qqcmd .= " ; $1"}
     elsif ($line =~ /^IN\s*(.*)/) {$testin .= "$1\n"}
+    elsif ($line =~ /^IK\s*(.*)/) {$testin .= "$1\n"}
     elsif ($line =~ /^AQ\s*(.*)/) {
 	$testq = 1;
 	$testapp = $1;
@@ -211,7 +213,7 @@ sub runtest ($) {
 
 # filename - must be unique
 
-    elsif ($line =~ /^FI\s+(\S+)/) {
+    elsif ($line =~ /^F[IK]\s+(\S+)/) {
       $filename = $1;
       if (defined($outfile{$filename})) {
 	$testerr = "$retcode{16} $testid/$filename\n";
@@ -694,7 +696,7 @@ foreach $test (@ARGV) {
     elsif ($opt eq "ka") {$defdelete="all"}
     elsif ($opt =~ /without=(\S+)/) {$without{$1}=1}
     elsif ($opt =~ /t=([0-9]+)/) {$timeoutdef=int($1)}
-    elsif ($opt =~ /logfile=(\S+)/) {$logfile=$1}
+    elsif ($opt =~ /logfile=(\S+)/) {$logfile=">$1"} # append to logfile
     else {print STDERR "+++ unknown option '$opt'\n"; usage()}
   }
   else {
