@@ -46,7 +46,7 @@ pkgdata2_DATA = nawalignrunner.txt nawalign.txt needlerunner.txt \
 	oddcomp.txt palindrome.txt pasteseq.txt patmatdb.txt \
 	patmatmotifs.txt pdbparse.txt pdbplus.txt pdbtosp.txt \
 	pepcoil.txt pepinfo.txt pepnet.txt pepstats.txt pepwheel.txt \
-	pepwindowall.txt pepwindow.txt pestfind.txt plotcon.txt plotorf.txt \
+	pepwindowall.txt pepwindow.txt plotcon.txt plotorf.txt \
 	polydot.txt preg.txt prettyplot.txt prettyseq.txt primersearch.txt \
 	printsextract.txt profit.txt prophecy.txt prophet.txt \
 	prosextract.txt pscan.txt psiphi.txt rebaseextract.txt \

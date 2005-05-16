@@ -63,7 +63,7 @@ pkgdata2_DATA = nawalign.html nawalignrunner.html needle.html \
 	palindrome.html pasteseq.html patmatdb.html patmatmotifs.html \
 	pdbparse.html pdbplus.html pdbtosp.html pepcoil.html \
 	pepinfo.html pepnet.html pepstats.html pepwheel.html \
-	pepwindowall.html pepwindow.html pestfind.html \
+	pepwindowall.html pepwindow.html \
 	phylogeny_consensus_group.html \
 	phylogeny_continuous_characters_group.html \
 	phylogeny_discrete_characters_group.html \
