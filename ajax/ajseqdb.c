@@ -2971,29 +2971,37 @@ static AjBool seqEmbossQryOpen(AjPSeqQuery qry)
     
     if(ajStrLen(qry->Acc))
     {
+	ajStrToLower(&qry->Acc);
 	qryd->do_ac = ajTrue;
     }
     
     if(ajStrLen(qry->Des))
     {
+	ajStrToLower(&qry->Des);
 	qryd->do_id = ajTrue;
 	qryd->do_de = ajTrue;
     }
 
     if(ajStrLen(qry->Key))
     {
+	ajStrToLower(&qry->Key);
 	qryd->do_id = ajTrue;
 	qryd->do_kw = ajTrue;
     }
 
     if(ajStrLen(qry->Org))
     {
+	ajStrToLower(&qry->Org);
 	qryd->do_id = ajTrue;
 	qryd->do_tx = ajTrue;
     }
 
     if(ajStrLen(qry->Sv) || ajStrLen(qry->Gi))
     {
+	if(ajStrLen(qry->Sv))
+	   ajStrToLower(&qry->Sv);
+	if(ajStrLen(qry->Gi))
+	    ajStrToLower(&qry->Gi);
 	qryd->do_sv = ajTrue;
     }
     
