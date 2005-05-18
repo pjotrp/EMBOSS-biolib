@@ -970,71 +970,85 @@ void embBtreeGetRsInfo(EmbPBtreeEntry entry)
     if(!ajStrMatchC(value,"Index"))
 	ajFatal("Incorrect 'type' field for resource (%S)",entry->dbrs);
 
-    if(!ajNamRsAttrValueC(resource,"order",&value))
-	entry->order = BTREE_DEF_ORDER;
+
+
+    if(!ajNamRsAttrValueC(resource,"idlen",&value))
+	entry->idlen = BTREE_DEF_IDLEN;
     else
     {
 	if(ajStrToInt(value,&n))
-	    entry->order = n;
+	    entry->idlen = n;
 	else
 	{
-	    ajErr("Bad value for index resource 'order'");
-	    entry->order = BTREE_DEF_ORDER;
+	    ajErr("Bad value for index resource 'idlen'");
+	    entry->idlen = BTREE_DEF_IDLEN;
 	}
     }
     
-    if(!ajNamRsAttrValueC(resource,"fill",&value))
-	entry->fill = BTREE_DEF_FILL;
+    if(!ajNamRsAttrValueC(resource,"acclen",&value))
+	entry->aclen = BTREE_DEF_ACLEN;
     else
     {
 	if(ajStrToInt(value,&n))
-	    entry->fill = n;
+	    entry->aclen = n;
 	else
 	{
-	    ajErr("Bad value for index resource 'fill'");
-	    entry->fill = BTREE_DEF_FILL;
+	    ajErr("Bad value for index resource 'acclen'");
+	    entry->aclen = BTREE_DEF_ACLEN;
 	}
     }
 
-    if(!ajNamRsAttrValueC(resource,"secorder",&value))
-	entry->secorder = BTREE_DEF_SECORDER;
+    if(!ajNamRsAttrValueC(resource,"svlen",&value))
+	entry->svlen = BTREE_DEF_SVLEN;
     else
     {
 	if(ajStrToInt(value,&n))
-	    entry->secorder = n;
+	    entry->svlen = n;
 	else
 	{
-	    ajErr("Bad value for index resource 'secorder'");
-	    entry->secorder = BTREE_DEF_SECORDER;
-	}
-    }
-    
-    if(!ajNamRsAttrValueC(resource,"secfill",&value))
-	entry->secfill = BTREE_DEF_SECFILL;
-    else
-    {
-	if(ajStrToInt(value,&n))
-	    entry->secfill = n;
-	else
-	{
-	    ajErr("Bad value for index resource 'secfill'");
-	    entry->secfill = BTREE_DEF_SECFILL;
+	    ajErr("Bad value for index resource 'svlen'");
+	    entry->svlen = BTREE_DEF_SVLEN;
 	}
     }
 
-    if(!ajNamRsAttrValueC(resource,"kwlimit",&value))
-	entry->kwlimit = BTREE_DEF_KWLIMIT;
+    if(!ajNamRsAttrValueC(resource,"keylen",&value))
+	entry->kwlen = BTREE_DEF_KWLEN;
     else
     {
 	if(ajStrToInt(value,&n))
-	    entry->kwlimit = n;
+	    entry->kwlen = n;
 	else
 	{
-	    ajErr("Bad value for index resource 'kwlimit'");
-	    entry->kwlimit = BTREE_DEF_KWLIMIT;
+	    ajErr("Bad value for index resource 'keylen'");
+	    entry->kwlen = BTREE_DEF_KWLEN;
 	}
     }
 
+    if(!ajNamRsAttrValueC(resource,"deslen",&value))
+	entry->delen = BTREE_DEF_DELEN;
+    else
+    {
+	if(ajStrToInt(value,&n))
+	    entry->delen = n;
+	else
+	{
+	    ajErr("Bad value for index resource 'deslen'");
+	    entry->delen = BTREE_DEF_DELEN;
+	}
+    }
+
+    if(!ajNamRsAttrValueC(resource,"orglen",&value))
+	entry->txlen = BTREE_DEF_TXLEN;
+    else
+    {
+	if(ajStrToInt(value,&n))
+	    entry->txlen = n;
+	else
+	{
+	    ajErr("Bad value for index resource 'orglen'");
+	    entry->txlen = BTREE_DEF_TXLEN;
+	}
+    }
 
     if(!ajNamGetValueC("CACHESIZE",&value))
 	entry->cachesize = BTREE_DEF_CACHESIZE;
@@ -1063,10 +1077,33 @@ void embBtreeGetRsInfo(EmbPBtreeEntry entry)
     }
 
     
+    entry->idorder = (entry->pagesize - 60) / ((entry->idlen + 1) + 12);
+    entry->idfill  = (entry->pagesize - 16) / (entry->idlen + 28);
+    entry->acorder = (entry->pagesize - 60) / ((entry->aclen + 1) + 12);
+    entry->acfill  = (entry->pagesize - 16) / (entry->aclen + 28);
+    entry->svorder = (entry->pagesize - 60) / ((entry->svlen + 1) + 12);
+    entry->svfill  = (entry->pagesize - 16) / (entry->svlen + 28);
+
+    entry->kworder = (entry->pagesize - 60) / ((entry->kwlen + 1) + 12);
+    entry->kwfill  = (entry->pagesize - 16) / (entry->kwlen + 28);
+    entry->deorder = (entry->pagesize - 60) / ((entry->delen + 1) + 12);
+    entry->defill  = (entry->pagesize - 16) / (entry->delen + 28);
+    entry->txorder = (entry->pagesize - 60) / ((entry->txlen + 1) + 12);
+    entry->txfill  = (entry->pagesize - 16) / (entry->txlen + 28);
+
+    entry->kwsecorder = (entry->pagesize - 60) / ((entry->idlen + 1) + 12);
+    entry->desecorder = (entry->pagesize - 60) / ((entry->idlen + 1) + 12);
+    entry->txsecorder = (entry->pagesize - 60) / ((entry->idlen + 1) + 12);
+
+    entry->kwsecfill  = (entry->pagesize - 16) / (entry->idlen + 4);
+    entry->desecfill  = (entry->pagesize - 16) / (entry->idlen + 4);
+    entry->txsecfill  = (entry->pagesize - 16) / (entry->idlen + 4);
+
+
     ajStrDel(&value);
 
     return;
-}
+} 
 
 
 
@@ -1096,8 +1133,8 @@ AjBool embBtreeOpenCaches(EmbPBtreeEntry entry)
     if(entry->do_id)
     {
 	entry->idcache = ajBtreeCacheNewC(basenam,ID_EXTENSION,idir,"w+",
-					  entry->pagesize, entry->order,
-					  entry->fill, level,
+					  entry->pagesize, entry->idorder,
+					  entry->idfill, level,
 					  entry->cachesize);
 	ajBtreeCreateRootNode(entry->idcache,0L);
     }
@@ -1105,8 +1142,8 @@ AjBool embBtreeOpenCaches(EmbPBtreeEntry entry)
     if(entry->do_accession)
     {
 	entry->accache = ajBtreeCacheNewC(basenam,AC_EXTENSION,idir,"w+",
-					  entry->pagesize, entry->order,
-					  entry->fill, level,
+					  entry->pagesize, entry->acorder,
+					  entry->acfill, level,
 					  entry->cachesize);
 	ajBtreeCreateRootNode(entry->accache,0L);
     }
@@ -1114,8 +1151,8 @@ AjBool embBtreeOpenCaches(EmbPBtreeEntry entry)
     if(entry->do_sv)
     {
 	entry->svcache = ajBtreeCacheNewC(basenam,SV_EXTENSION,idir,"w+",
-					  entry->pagesize, entry->order,
-					  entry->fill, level,
+					  entry->pagesize, entry->svorder,
+					  entry->svfill, level,
 					  entry->cachesize);
 	ajBtreeCreateRootNode(entry->svcache,0L);
     }
@@ -1125,11 +1162,12 @@ AjBool embBtreeOpenCaches(EmbPBtreeEntry entry)
     {
 	entry->kwcache = ajBtreeSecCacheNewC(basenam,KW_EXTENSION,idir,"w+",
 					     entry->pagesize,
-					     entry->order, entry->fill, level,
+					     entry->kworder, entry->kwfill,
+					     level,
 					     entry->cachesize,
-					     entry->secorder, slevel,
-					     entry->secfill, count,
-					     entry->kwlimit);
+					     entry->kwsecorder, slevel,
+					     entry->kwsecfill, count,
+					     entry->kwlen);
 	ajBtreeCreateRootNode(entry->kwcache,0L);
     }
     
@@ -1137,11 +1175,12 @@ AjBool embBtreeOpenCaches(EmbPBtreeEntry entry)
     {
 	entry->decache = ajBtreeSecCacheNewC(basenam,DE_EXTENSION,idir,"w+",
 					     entry->pagesize,
-					     entry->order, entry->fill, level,
+					     entry->deorder, entry->defill,
+					     level,
 					     entry->cachesize,
-					     entry->secorder, slevel,
-					     entry->secfill, count,
-					     entry->kwlimit);
+					     entry->desecorder, slevel,
+					     entry->desecfill, count,
+					     entry->delen);
 	ajBtreeCreateRootNode(entry->decache,0L);
     }
     
@@ -1149,11 +1188,12 @@ AjBool embBtreeOpenCaches(EmbPBtreeEntry entry)
     {
 	entry->txcache = ajBtreeSecCacheNewC(basenam,TX_EXTENSION,idir,"w+",
 					     entry->pagesize,
-					     entry->order, entry->fill, level,
+					     entry->txorder, entry->txfill,
+					     level,
 					     entry->cachesize,
-					     entry->secorder, slevel,
-					     entry->secfill, count,
-					     entry->kwlimit);
+					     entry->txsecorder, slevel,
+					     entry->txsecfill, count,
+					     entry->txlen);
 	ajBtreeCreateRootNode(entry->txcache,0L);
     }
     

@@ -31,6 +31,9 @@ static AjBool dbxflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf);
 
 static AjBool dbxflat_NextEntry(EmbPBtreeEntry entry, AjPFile inf);
 
+int global = 0;
+
+
 
 /* @datastatic DbxflatPParser *************************************************
 **
@@ -226,13 +229,6 @@ int main(int argc, char **argv)
 		    ajStrDel(&word);
                 }
 	    }
-	    
-
-
-/*	    
-	    while(ajListPop(entry->ac,(void **)&word))
-		ajFmtPrint("%S\n",word);
-*/
 	}
 	
 
@@ -243,11 +239,6 @@ int main(int argc, char **argv)
 	ajFileClose(&inf);
     }
     
-
-/*
-    while(ajListPop(entry->files,(void **)&tmpstr))
-	ajFmtPrint("%S\n",tmpstr);
-*/
 
     embBtreeDumpParameters(entry);
     embBtreeCloseCaches(entry);
@@ -308,6 +299,10 @@ static AjBool dbxflat_ParseEmbl(EmbPBtreeEntry entry, AjPFile inf)
 	{
 	    entry->fpos = pos;
 	    ajFmtScanS(line,"%*S%S",&entry->id);
+/*
+	    ++global;
+	    printf("%d. %s\n",global,ajStrStr(entry->id));
+*/
 	}
 
 	if(entry->do_sv)
@@ -320,15 +315,15 @@ static AjBool dbxflat_ParseEmbl(EmbPBtreeEntry entry, AjPFile inf)
 	
 	if(entry->do_keyword)
 	    if(ajStrPrefixC(line,"KW"))
-		embBtreeEmblKW(line,entry->kw,entry->kwlimit);
+		embBtreeEmblKW(line,entry->kw,entry->kwlen);
 
 	if(entry->do_description)
 	    if(ajStrPrefixC(line,"DE"))
-		embBtreeEmblDE(line,entry->de,entry->kwlimit);
+		embBtreeEmblDE(line,entry->de,entry->delen);
 
 	if(entry->do_taxonomy)
 	    if(ajStrPrefixC(line,"OC") || ajStrPrefixC(line,"OS"))
-		embBtreeEmblKW(line,entry->tx,entry->kwlimit);
+		embBtreeEmblKW(line,entry->tx,entry->txlen);
     }
     
 
@@ -392,7 +387,7 @@ static AjBool dbxflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
 		    ret = ajFileReadLine(inf,&line);
 		}
 		ajStrClean(&sumline);
-		embBtreeGenBankKW(sumline,entry->kw,entry->kwlimit);
+		embBtreeGenBankKW(sumline,entry->kw,entry->kwlen);
 		continue;
 	    }
 
@@ -407,7 +402,7 @@ static AjBool dbxflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
 		    ret = ajFileReadLine(inf,&line);
 		}
 		ajStrClean(&sumline);
-		embBtreeGenBankDE(sumline,entry->de,entry->kwlimit);
+		embBtreeGenBankDE(sumline,entry->de,entry->delen);
 		continue;
 	    }
 	
@@ -423,7 +418,7 @@ static AjBool dbxflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
 		    ret = ajFileReadLine(inf,&line);
 		}
 		ajStrClean(&sumline);
-		embBtreeGenBankTX(sumline,entry->de,entry->kwlimit);
+		embBtreeGenBankTX(sumline,entry->tx,entry->txlen);
 		continue;
 	    }
 	

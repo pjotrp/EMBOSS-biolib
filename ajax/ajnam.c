@@ -199,11 +199,13 @@ NamOAttr namRsAttrs[] =
     {"identifier", "", "standard identifier (defaults to name)"},
     {"release", "", "release of the resource"},
 
-    {"order", "", "order of a primary B+tree"},
-    {"fill", "", "max number of entries in a primary B+tree bucket"},
-    {"secorder", "", "order of a secondary B+tree"},
-    {"secfill", "", "max number of entries in a secondary B+tree bucket"},
-    {"kwlimit", "", "cut-off length for a secondary B+tree key"},
+    {"idlen", "",  "maximum ID length"},
+    {"acclen", "", "maximum AC length"},
+    {"svlen", "",  "maximum SV length"},
+    {"keylen", "", "maximum KW length"},
+    {"deslen", "", "maximum DE length"},
+    {"orglen", "", "maximum TX length"},
+
     {"value", "", "value appropriate to the resource type"},
     {NULL, NULL, NULL}
 };

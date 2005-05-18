@@ -6,13 +6,15 @@ extern "C"
 #ifndef embindex_h
 #define embindex_h
 
-#define BTREE_DEF_ORDER     20
-#define BTREE_DEF_FILL      15
-#define BTREE_DEF_SECORDER  20
-#define BTREE_DEF_SECFILL   20
+#define BTREE_DEF_IDLEN     15
+#define BTREE_DEF_ACLEN     15
+#define BTREE_DEF_SVLEN     15
+#define BTREE_DEF_KWLEN     15
+#define BTREE_DEF_DELEN     15
+#define BTREE_DEF_TXLEN     15
 #define BTREE_DEF_KWLIMIT   15
 #define BTREE_DEF_CACHESIZE 100
-#define BTREE_DEF_PAGESIZE  0
+#define BTREE_DEF_PAGESIZE  2048
 
 typedef struct EmbSBtreeEntry
 {
@@ -33,14 +35,35 @@ typedef struct EmbSBtreeEntry
 
     AjPList files;
     ajint   nfiles;
-
-    ajint order;
-    ajint fill;
-    ajint secorder;
-    ajint secfill;
-    ajint kwlimit;
     ajint cachesize;
     ajint pagesize;
+
+    ajint idlen;
+    ajint aclen;
+    ajint svlen;
+    ajint kwlen;
+    ajint delen;
+    ajint txlen;
+
+    ajint idorder;
+    ajint idfill;
+    ajint acorder;
+    ajint acfill;
+    ajint svorder;
+    ajint svfill;
+
+    ajint kworder;
+    ajint kwfill;
+    ajint kwsecorder;
+    ajint kwsecfill;
+    ajint deorder;
+    ajint defill;
+    ajint desecorder;
+    ajint desecfill;
+    ajint txorder;
+    ajint txfill;
+    ajint txsecorder;
+    ajint txsecfill;
 
     AjPBtcache idcache;
     AjPBtcache accache;
