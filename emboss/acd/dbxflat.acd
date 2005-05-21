@@ -68,7 +68,7 @@ section: required [
              GI;des:Description;key:Keywords;org:Taxonomy"
     minimum: "1"
     maximum: "6"
-    default: "id,ac"
+    default: "id,acc"
   ]
 
 endsection: required
