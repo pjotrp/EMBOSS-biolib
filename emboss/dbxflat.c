@@ -1,4 +1,4 @@
-/* @source bflat application
+/* @source dbxflat application
 **
 ** Index flatfile databases
 **
