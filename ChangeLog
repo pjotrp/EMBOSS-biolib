@@ -1,4 +1,17 @@
 Version 3.0.0
+	Two new variables added for developers using the MYEMBOSS package
+	to write their own EMBOSS programs. EMBOSS_MYEMBOSSROOT (the same
+	will work for other EMBASSY packages) points to the location of
+	the ACD files for an EMBASSY package which is not installed - as
+	would be the case for an ordinary user developing and maintaining
+	their own code using MYEMBOSS. This requires the use of embInitP
+	rather than embInit to pass the package name - something all
+	EMBASSY programs should (and will do). The second variable is
+	EMBOSS_ACDUTILROOT and is required so that utuilities such as
+	acdvalid can also find the ACD files. Utilities acdvalid, acdc,
+	acdhelp, acdtable and acdpretty use embInit as they no nothing
+	about any package name.
+
 	Sequence sets (seqset and seqsetall) have a new ACD attribute
 	"aligned" which is true or false. If true, the sequences will be
 	extended with gaps and passed to the application as a full

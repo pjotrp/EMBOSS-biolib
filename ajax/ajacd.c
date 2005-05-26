@@ -2703,6 +2703,9 @@ AjStatus ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     static AjPStr acdRoot = NULL;
     static AjPStr acdRootInst = NULL;
     static AjPStr acdPack = NULL;
+    static AjPStr acdPackRoot = NULL;
+    static AjPStr acdPackRootName = NULL;
+    static AjPStr acdUtilRoot = NULL;
     static AjPStr tmpstr = NULL;
     AjPStrTok tokenhandle = NULL;
     char white[] = " \t\n\r";
@@ -2763,10 +2766,21 @@ AjStatus ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 	    ajStrAssC(&acdPack, package); /* package name for acdInitP */
 	    ajStrToLower(&acdPack);
 
-	    ajNamRoot(&acdRoot);
-	    ajFileDirUp(&acdRoot);
-	    ajFmtPrintS(&acdFName, "%Sembassy/%S/emboss_acd/%s.acd",
-			acdRoot, acdPack, pgm);
+	    ajStrAssS(&acdPackRootName, acdPack);
+	    ajStrAppC(&acdPackRootName, "acdroot");
+	    if(ajNamGetValue(acdPackRootName, &acdPackRoot))
+	    {
+		ajFileDirFix(&acdPackRoot);
+		ajFmtPrintS(&acdFName, "%S%s.acd", acdPackRoot, pgm);
+	    }
+	    else
+	    {
+		ajStrAssS(&acdPackRoot, acdRoot);
+		ajNamRoot(&acdPackRoot);
+		ajFileDirUp(&acdPackRoot);
+		ajFmtPrintS(&acdFName, "%Sembassy/%S/emboss_acd/%s.acd",
+			    acdRoot, acdPack, pgm);
+	    }
 	    acdFile = ajFileNewIn(acdFName);
 	}
     }
@@ -2778,10 +2792,29 @@ AjStatus ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 	if(!acdFile)
 	{
 	    acdLog("acdfile '%S' not opened\n", acdFName);
+	    ajStrAssC(&acdPack, package); /* package name for acdInitP */
+	    ajStrToLower(&acdPack);
+
+	    if(ajNamGetValueC("acdutilroot", &acdUtilRoot))
+	    {
+		ajFileDirFix(&acdUtilRoot);
+		ajFmtPrintS(&acdFName, "%S%s.acd", acdUtilRoot, pgm);
+		acdFile = ajFileNewIn(acdFName);
+	    }
+	    if(!acdFile)
+	    {
+		acdLog("acdfile '%S' not opened\n", acdFName);
+	    }
+	}
+	else {
 	    ajNamRoot(&acdRoot);
 	    ajFileDirFix(&acdRoot);
 	    ajFmtPrintS(&acdFName, "%Sacd/%s.acd", acdRoot, pgm);
 	    acdFile = ajFileNewIn(acdFName);
+	    if(!acdFile)
+	    {
+		acdLog("acdfile '%S' not opened\n", acdFName);
+	    }
 	}
     }
     

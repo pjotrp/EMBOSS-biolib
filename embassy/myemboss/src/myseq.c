@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     AjPSeq seq = NULL;
     AjPFile outf = NULL;
 
-    embInit("myseq", argc, argv);
+    embInitP("myseq", argc, argv, "myemboss");
 
     seq = ajAcdGetSeq("sequence");
     outf = ajAcdGetOutfile("outfile");
