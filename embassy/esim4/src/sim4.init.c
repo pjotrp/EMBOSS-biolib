@@ -62,7 +62,7 @@
 #ifndef __lint     
 /*@unused@*/       
 static const char rcsid[] =
-"$Id: sim4.init.c,v 1.7 2004/08/05 16:02:32 rice Exp $";
+"$Id: sim4.init.c,v 1.8 2005/05/26 13:12:59 rice Exp $";
 #endif         
            
 
@@ -170,7 +170,7 @@ int main(int argc, char *argv[])
         
 	ajNamInit("emboss");
 	ajAcdInitP("esim4",argc,argv,"ESIM4");
-/*	embInit ("esim4", argc, argv); */
+/*	embInitP ("esim4", argc, argv, "ESIM4"); */
         sim4_argvals(&rs);
 
 
