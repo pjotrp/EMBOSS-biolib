@@ -2801,12 +2801,10 @@ AjStatus ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 		ajFmtPrintS(&acdFName, "%S%s.acd", acdUtilRoot, pgm);
 		acdFile = ajFileNewIn(acdFName);
 	    }
-	    if(!acdFile)
-	    {
-		acdLog("acdfile '%S' not opened\n", acdFName);
-	    }
 	}
-	else {
+	if(!acdFile)
+	{
+	    acdLog("acdfile '%S' not opened\n", acdFName);
 	    ajNamRoot(&acdRoot);
 	    ajFileDirFix(&acdRoot);
 	    ajFmtPrintS(&acdFName, "%Sacd/%s.acd", acdRoot, pgm);
