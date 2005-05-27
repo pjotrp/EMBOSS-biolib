@@ -599,45 +599,6 @@ ajint embBtreeReadDir(AjPStr **filelist, const AjPStr fdirectory,
 
 
 
-/* @func embBtreeWriteFileList ***********************************************
-**
-** Read files to index
-**
-** @param [r] filelist [const AjPStr*] list of files
-** @param [r] nfiles [ajint] number of files
-** @param [r] fdirectory [const AjPStr] flatfile directory
-** @param [r] idirectory [const AjPStr] index directory
-** @param [r] dbname [const AjPStr] name of database
-**
-** @return [AjBool] true if success
-** @@
-******************************************************************************/
-
-AjBool embBtreeWriteFileList(const AjPStr *filelist, ajint nfiles,
-			     const AjPStr fdirectory, const AjPStr idirectory,
-			     const AjPStr dbname)
-{
-    AjPFile entfile = NULL;
-    ajint i;
-    
-    /* ajDebug("In ajBtreeWriteFileList\n"); */
-
-    entfile = btreeCreateFile(idirectory,dbname,BTENTRYFILE);
-    if(!entfile)
-	return ajFalse;
-    
-    ajFmtPrintF(entfile,"#Number of files\t%d\n",nfiles);
-    for(i=0;i<nfiles;++i)
-	ajFmtPrintF(entfile,"%S/%S\n",fdirectory,filelist[i]);
-
-    ajFileClose(&entfile);
-    
-    return ajTrue;
-}
-
-
-
-
 /* @funcstatic btreeCreateFile ************************************************
 **
 ** Open B+tree file for writing
@@ -701,7 +662,8 @@ EmbPBtreeEntry embBtreeEntryNew()
     thys->directory  = ajStrNew();
     thys->idirectory = ajStrNew();
     
-    thys->files = ajListNew();
+    thys->files    = ajListNew();
+    thys->reffiles = ajListNew();
 
     thys->id = ajStrNew();
     thys->ac = ajListNew();
@@ -745,6 +707,10 @@ void embBtreeEntryDel(EmbPBtreeEntry* thys)
     while(ajListPop(pthis->files,(void **)&tmpstr))
 	ajStrDel(&tmpstr);
     ajListDel(&pthis->files);
+
+    while(ajListPop(pthis->reffiles,(void **)&tmpstr))
+	ajStrDel(&tmpstr);
+    ajListDel(&pthis->reffiles);
 
     ajStrDel(&pthis->id);
     ajListDel(&pthis->ac);
@@ -922,6 +888,8 @@ AjBool embBtreeWriteEntryFile(const EmbPBtreeEntry entry)
     AjPFile entfile = NULL;
     ajint i;
     AjPStr tmpstr = NULL;
+    AjPStr refstr = NULL;
+    AjBool do_ref;
     
     /* ajDebug("In embBtreeWriteEntryFile\n"); */
 
@@ -929,12 +897,35 @@ AjBool embBtreeWriteEntryFile(const EmbPBtreeEntry entry)
     if(!entfile)
 	return ajFalse;
     
-    ajFmtPrintF(entfile,"#Number of files\t%d\n",entry->nfiles);
+    ajFmtPrintF(entfile,"# Number of files: %d\n",entry->nfiles);
+    ajFmtPrintF(entfile,"# Release: %S\n",entry->release);
+    ajFmtPrintF(entfile,"# Date:    %S\n",entry->date);
+
+    do_ref = (ajListLength(entry->reffiles)) ? ajTrue : ajFalse;
+    if(!do_ref)
+	ajFmtPrintF(entfile,"Single");
+    else
+	ajFmtPrintF(entfile,"Dual");
+    ajFmtPrintF(entfile," filename database\n");
+    
     for(i=0;i<entry->nfiles;++i)
     {
-	ajListPop(entry->files,(void **)&tmpstr);
-	ajFmtPrintF(entfile,"%S%S\n",entry->directory,tmpstr);
-	ajListPushApp(entry->files,(void *)tmpstr);
+	if(!do_ref)
+	{
+	    ajListPop(entry->files,(void **)&tmpstr);
+	    ajFmtPrintF(entfile,"%S%S\n",entry->directory,tmpstr);
+	    ajListPushApp(entry->files,(void *)tmpstr);
+	}
+	else
+	{
+	    ajListPop(entry->files,(void **)&tmpstr);
+	    ajListPop(entry->reffiles,(void **)&refstr);
+	    ajFmtPrintF(entfile,"%S%S %S%S\n",entry->directory,tmpstr,
+			entry->directory,refstr);
+	    ajListPushApp(entry->files,(void *)tmpstr);
+	    ajListPushApp(entry->reffiles,(void *)refstr);
+	}
+	
     }
 
     ajFileClose(&entfile);

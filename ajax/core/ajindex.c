@@ -935,7 +935,8 @@ AjPBtId ajBtreeIdNew(void)
     Id->dbno = 0;
     Id->dups = 0;
     Id->offset = 0L;
-
+    Id->refoffset = 0L;
+    
     return Id;
 }
 
@@ -1066,6 +1067,8 @@ static AjPBucket btreeReadBucket(AjPBtcache cache, ajlong pageno)
 	BT_GETAJINT(idptr,&id->dups);
 	idptr += sizeof(ajint);	
 	BT_GETAJLONG(idptr,&id->offset);
+	idptr += sizeof(ajlong);
+	BT_GETAJLONG(idptr,&id->refoffset);
 	idptr += sizeof(ajlong);
 
 	kptr += sizeof(ajint);
@@ -1205,6 +1208,9 @@ static void btreeWriteBucket(AjPBtcache cache, const AjPBucket bucket,
         lv = id->offset;
 	BT_SETAJLONG(lptr,lv);
 	lptr += sizeof(ajlong);
+        lv = id->refoffset;
+	BT_SETAJLONG(lptr,lv);
+	lptr += sizeof(ajlong);
 	
 
     }
@@ -1295,9 +1301,10 @@ static void btreeAddToBucket(AjPBtcache cache, ajlong pageno,
     destid = bucket->Ids[nentries];
 
     ajStrAssS(&destid->id,id->id);
-    destid->dbno   = id->dbno;
-    destid->offset = id->offset;
-    destid->dups   = id->dups;
+    destid->dbno      = id->dbno;
+    destid->offset    = id->offset;
+    destid->refoffset = id->refoffset;
+    destid->dups      = id->dups;
     
     ++bucket->Nentries;
 
@@ -1492,7 +1499,8 @@ static AjBool btreeReorderBuckets(AjPBtcache cache, AjPBtpage leaf)
 	    cid->dbno = bid->dbno;
 	    cid->dups = bid->dups;
 	    cid->offset = bid->offset;
-
+	    cid->refoffset = bid->refoffset;
+	    
 	    cbucket->keylen[count] = BT_BUCKIDLEN(bid->id);
 	    ++cbucket->Nentries;
 	    ++count;
@@ -1524,7 +1532,8 @@ static AjBool btreeReorderBuckets(AjPBtcache cache, AjPBtpage leaf)
 	cid->dbno = bid->dbno;
 	cid->dups = bid->dups;
 	cid->offset = bid->offset;
-
+	cid->refoffset = bid->refoffset;
+	
 	++cbucket->Nentries;
 	++count;
 	ajBtreeIdDel(&bid);
@@ -2674,6 +2683,7 @@ AjPBtId ajBtreeIdFromKey(AjPBtcache cache, const char *key)
 	id->dups = tid->dups;
 	id->dbno = tid->dbno;
 	id->offset = tid->offset;
+	id->refoffset = tid->refoffset;
     }
 
     btreeBucketDel(&bucket);
@@ -3004,7 +3014,8 @@ static AjPBtpage btreeSplitLeaf(AjPBtcache cache, AjPBtpage spage)
 	    cid->dbno = bid->dbno;
 	    cid->dups = bid->dups;
 	    cid->offset = bid->offset;
-
+	    cid->refoffset = bid->refoffset;
+	    
 	    cbucket->keylen[j] = BT_BUCKIDLEN(bid->id);
 	    ++count;
 	    ++cbucket->Nentries;
@@ -3034,6 +3045,8 @@ static AjPBtpage btreeSplitLeaf(AjPBtcache cache, AjPBtpage spage)
 	cid->dbno = bid->dbno;
 	cid->dups = bid->dups;
 	cid->offset = bid->offset;
+	cid->refoffset = bid->refoffset;
+	
 	++cbucket->Nentries;
 	ajBtreeIdDel(&bid);
     }
@@ -3077,7 +3090,8 @@ static AjPBtpage btreeSplitLeaf(AjPBtcache cache, AjPBtpage spage)
 	    cid->dbno = bid->dbno;
 	    cid->dups = bid->dups;
 	    cid->offset = bid->offset;
-
+	    cid->refoffset = bid->refoffset;
+	    
 	    cbucket->keylen[j] = BT_BUCKIDLEN(bid->id);
 	    ++cbucket->Nentries;
 	    ajBtreeIdDel(&bid);
@@ -3103,6 +3117,8 @@ static AjPBtpage btreeSplitLeaf(AjPBtcache cache, AjPBtpage spage)
 	cid->dbno = bid->dbno;
 	cid->dups = bid->dups;
 	cid->offset = bid->offset;
+	cid->refoffset = bid->refoffset;
+	
 	++cbucket->Nentries;
 	ajBtreeIdDel(&bid);
     }
@@ -3735,7 +3751,8 @@ static void btreeAdjustBuckets(AjPBtcache cache, AjPBtpage leaf)
 	    cid->dbno = bid->dbno;
 	    cid->dups = bid->dups;
 	    cid->offset = bid->offset;
-
+	    cid->refoffset = bid->refoffset;
+	    
 	    cbucket->keylen[count] = BT_BUCKIDLEN(bid->id);
 	    ++cbucket->Nentries;
 	    ++count;
@@ -3773,7 +3790,8 @@ static void btreeAdjustBuckets(AjPBtcache cache, AjPBtpage leaf)
 		cid->dbno = bid->dbno;
 		cid->dups = bid->dups;
 		cid->offset = bid->offset;
-
+		cid->refoffset = bid->refoffset;
+		
 		cbucket->keylen[count] = BT_BUCKIDLEN(bid->id);
 		++cbucket->Nentries;
 		++count;
@@ -3808,7 +3826,8 @@ static void btreeAdjustBuckets(AjPBtcache cache, AjPBtpage leaf)
 	    cid->dbno = bid->dbno;
 	    cid->dups = bid->dups;
 	    cid->offset = bid->offset;
-
+	    cid->refoffset = bid->refoffset;
+	    
 	    ++cbucket->Nentries;
 	    ++count;
 	    ajBtreeIdDel(&bid);
@@ -5933,6 +5952,7 @@ AjBool ajBtreeReplaceId(AjPBtcache cache, const AjPBtId rid)
 	id->dbno = rid->dbno;
 	id->dups = rid->dups;
 	id->offset = rid->offset;
+	id->refoffset = rid->refoffset;
 	btreeWriteBucket(cache,bucket,blockno);
     }
 
@@ -5957,25 +5977,36 @@ AjBool ajBtreeReplaceId(AjPBtcache cache, const AjPBtId rid)
 **
 ** @param [r] filename [const char*] file name
 ** @param [r] indexdir [const char*] index file directory
+** @param [w] seqfiles [AjPStr**] sequence file names
+** @param [w] reffiles [AjPStr**] reference file names (if any)
+
 **
-** @return [AjPStr*] array of database filenames
+** @return [AjBool] array of database filenames
 ** @@
 ******************************************************************************/
 
-AjPStr* ajBtreeReadEntries(const char *filename, const char *indexdir)
+AjBool ajBtreeReadEntries(const char *filename, const char *indexdir,
+			  AjPStr **seqfiles, AjPStr **reffiles)
 {
     AjPStr line = NULL;
     AjPStr fn   = NULL;
-    AjPStr str  = NULL;
     
-    AjPStr *files = NULL;
     AjPList list;
+    AjPList reflist;
+
+    AjPStr seqname = NULL;
+    AjPStr refname = NULL;
+    
     AjPFile inf   = NULL;
     char p;
 
-    line = ajStrNew();
-    list = ajListNew();
+    AjBool do_ref = ajFalse;
 
+
+    line    = ajStrNew();
+    list    = ajListNew();
+    reflist = ajListNew();
+    
     fn = ajStrNew();
     ajFmtPrintS(&fn,"%s/%s",indexdir,filename);
     
@@ -5990,19 +6021,46 @@ AjPStr* ajBtreeReadEntries(const char *filename, const char *indexdir)
 	p = *(line->Ptr);
 	if(p == '#' || !ajStrLen(line))
 	    continue;
-	str = ajStrNew();
-	ajStrAssS(&str,line);
-	ajListPushApp(list,(void *)str);
+	if(ajStrPrefixC(line,"Dual"))
+	    do_ref = ajTrue;
+	break;
     }
+    
 
-    ajListToArray(list,(void ***)&files);
+    if(!do_ref)
+    {
+	while(ajFileReadLine(inf, &line))
+	{
+	    seqname = ajStrNew();
+	    ajFmtScanS(line,"%S",&seqname);
+	    ajListPushApp(list,(void *)seqname);
+	}
+
+	ajListToArray(list,(void ***)&(*seqfiles));
+    }
+    else
+    {
+	while(ajFileReadLine(inf, &line))
+	{
+	    seqname = ajStrNew();
+	    refname = ajStrNew();
+	    ajFmtScanS(line,"%S%S",&seqname,&refname);
+	    ajListPushApp(list,(void *)seqname);
+	    ajListPushApp(reflist,(void *)refname);
+	}
+
+	ajListToArray(list,(void ***)&(*seqfiles));
+	ajListToArray(reflist,(void ***)&(*reffiles));
+    }
+    
     
     ajListDel(&list);
+    ajListDel(&reflist);
     ajStrDel(&line);
     ajStrDel(&fn);
     ajFileClose(&inf);
 
-    return files;
+    return ajTrue;
 }
 
 

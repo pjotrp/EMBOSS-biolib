@@ -75,6 +75,7 @@ typedef struct AjSBtNode
 ** @attr dbno [ajint] Database file number
 ** @attr dups [ajint] Duplicates
 ** @attr offset [ajlong] Offset within database file (ftello)
+** @attr refoffset [ajlong] Offset within reference database file (ftello)
 ******************************************************************************/
 
 typedef struct AjSBtId
@@ -83,6 +84,7 @@ typedef struct AjSBtId
     ajint  dbno;
     ajint  dups;
     ajlong offset;
+    ajlong refoffset;
 } AjOBtId;
 #define AjPBtId AjOBtId*
 
@@ -162,7 +164,8 @@ typedef struct AjSBucket
 
 
 #define BT_BUCKIDLEN(str) (ajStrLen(str) + 1 + sizeof(ajint) + \
-			   sizeof(ajint) + sizeof(ajlong))
+			   sizeof(ajint) + sizeof(ajlong) + \
+			   sizeof(ajlong))
 
 
 /*
@@ -544,7 +547,8 @@ AjPBtId    ajBtreeIdFromKeywordW(AjPBtcache cache, AjPBtKeyWild wild,
 				 AjPBtcache idcache);
 AjBool     ajBtreeReplaceId(AjPBtcache cache, const AjPBtId rid);
 
-AjPStr*    ajBtreeReadEntries(const char *filename, const char *indexdir);
+AjBool ajBtreeReadEntries(const char *filename, const char *indexdir,
+			  AjPStr **seqfiles, AjPStr **reffiles);
 void       ajBtreeInsertDupId(AjPBtcache cache, AjPBtId id);
 AjPList    ajBtreeDupFromKey(AjPBtcache cache, const char *key);
 

@@ -342,7 +342,9 @@ typedef struct SeqSCdQry
 ** @attr txcache [AjPBtcache] text cache
 ** @attr decache [AjPBtcache] description cache
 ** @attr files [AjPStr*] database filenames
-** @attr prifile [AjPFile] Primary (database source) file
+** @attr reffiles [AjPStr*] database reference filenames
+** @attr libs [AjPFile] Primary (database source) file
+** @attr libr [AjPFile] Secondary (database bibliographic source) file
 ** @attr List [AjPList] List of files
 ** @@
 ******************************************************************************/
@@ -364,7 +366,10 @@ typedef struct SeqSEmbossQry
     AjPBtcache decache;
 
     AjPStr *files;
-    AjPFile prifile;
+    AjPStr *reffiles;
+    
+    AjPFile libs;
+    AjPFile libr;
     
     AjPList List;
 } SeqOEmbossQry;
@@ -380,6 +385,7 @@ static AjBool     seqAccessBlast(AjPSeqin seqin);
 static AjBool     seqAccessDirect(AjPSeqin seqin);
 static AjBool     seqAccessEmblcd(AjPSeqin seqin);
 static AjBool     seqAccessEmboss(AjPSeqin seqin);
+static AjBool     seqAccessEmbossGcg(AjPSeqin seqin);
 static AjBool     seqAccessEntrez(AjPSeqin seqin);
 static AjBool     seqAccessFreeEmblcd(void* qryd);
 static AjBool     seqAccessFreeEmboss(void* qryd);
@@ -442,6 +448,11 @@ static ajint      seqCdTrgSearch(SeqPCdTrg trgLine, const AjPStr name,
 				SeqPCdFile fp);
 
 static AjBool     seqEmbossAll(AjPSeqin seqin);
+static AjBool 	  seqEmbossGcgAll(AjPSeqin seqin);
+static void       seqEmbossGcgLoadBuff(AjPSeqin seqin);
+static AjBool     seqEmbossGcgReadRef(AjPSeqin seqin);
+static AjBool     seqEmbossGcgReadSeq(AjPSeqin seqin);
+
 static void	  seqEmbossOpenCache(AjPSeqQuery qry, const char *ext,
 				     AjPBtcache *cache);
 static void       seqEmbossOpenSecCache(AjPSeqQuery qry, const char *ext,
@@ -503,6 +514,7 @@ static SeqOAccess seqAccess[] =
     /* {"offset",ajSeqAccessOffset, NULL}, */    /* called by seqUsaProcess */
     {"direct",seqAccessDirect, NULL},
     {"gcg",seqAccessGcg, NULL},
+    {"embossgcg",seqAccessEmbossGcg, NULL},
     {"blast",seqAccessBlast, NULL},
     {NULL, NULL, NULL}
 };
@@ -2843,7 +2855,7 @@ static AjBool seqAccessEmboss(AjPSeqin seqin)
     {
 	retval = seqEmbossQryNext(qry);
 	if(retval)
-	    ajFileBuffSetFile(&seqin->Filebuff, qryd->prifile);
+	    ajFileBuffSetFile(&seqin->Filebuff, qryd->libs);
     }
 
     if(!ajListLength(qryd->List)) /* could have been emptied by code above */
@@ -3089,10 +3101,9 @@ static void seqEmbossOpenCache(AjPSeqQuery qry, const char *ext,
 		      &cachesize, &sorder,
 		      &sfill, &count, &kwlimit);
     
-    qryd->files = ajBtreeReadEntries(ajStrStr(qry->DbAlias),
-				     ajStrStr(qry->IndexDir));
-    
-    
+    ajBtreeReadEntries(ajStrStr(qry->DbAlias),ajStrStr(qry->IndexDir),
+		       &qryd->files,&qryd->reffiles);
+
     *cache = ajBtreeCacheNewC(ajStrStr(qry->DbAlias),ext,
 			      ajStrStr(qry->IndexDir),"r",
 			      pagesize,order,fill,level,
@@ -3145,8 +3156,8 @@ static void seqEmbossOpenSecCache(AjPSeqQuery qry, const char *ext,
 		      &cachesize, &sorder,
 		      &sfill, &count, &kwlimit);
     
-    qryd->files = ajBtreeReadEntries(ajStrStr(qry->DbAlias),
-				     ajStrStr(qry->IndexDir));
+    ajBtreeReadEntries(ajStrStr(qry->DbAlias),ajStrStr(qry->IndexDir),
+		       &qryd->files,&qryd->reffiles);
     
     
     *cache = ajBtreeSecCacheNewC(ajStrStr(qry->DbAlias),ext,
@@ -3183,6 +3194,7 @@ static AjBool seqEmbossAll(AjPSeqin seqin)
 
     ajint i;
     AjPStr *filestrings = NULL;
+    AjPStr *reffilestrings = NULL;
     
     qry = seqin->Query;
 
@@ -3196,7 +3208,8 @@ static AjBool seqEmbossAll(AjPSeqin seqin)
     ajDebug("B+tree All index directory '%S'\n", qry->IndexDir);
 
 
-    filestrings = ajBtreeReadEntries(qry->DbAlias->Ptr,qry->IndexDir->Ptr);
+    ajBtreeReadEntries(qry->DbAlias->Ptr,qry->IndexDir->Ptr,
+		       &filestrings,&reffilestrings);
 
 
     /* Add exclusion stuff here later */
@@ -3205,7 +3218,6 @@ static AjBool seqEmbossAll(AjPSeqin seqin)
     i = 0;
     while(filestrings[i])
     {
-
 	ajListstrPushApp(list, filestrings[i]);
 	++i;
     }
@@ -3219,7 +3231,8 @@ static AjBool seqEmbossAll(AjPSeqin seqin)
     qry->QryDone = ajTrue;
 
     AJFREE(filestrings);
-
+    AJFREE(reffilestrings);
+    
     return ajTrue;
 }
 
@@ -3304,9 +3317,15 @@ static AjBool seqEmbossQryNext(AjPSeqQuery qry)
     ajListPop(qryd->List, &item);
     entry = (AjPBtId) item;
 
-    qryd->prifile = ajFileNewIn(qryd->files[entry->dbno]);
+    qryd->libs = ajFileNewIn(qryd->files[entry->dbno]);
 
-    ajFileSeek(qryd->prifile, entry->offset,0);
+    ajFileSeek(qryd->libs, entry->offset, 0);
+
+    if(qryd->reffiles)
+    {
+	qryd->libr = ajFileNewIn(qryd->reffiles[entry->dbno]);
+	ajFileSeek(qryd->libr, entry->refoffset, 0);
+    }
 
     ajBtreeIdDel(&entry);
 
@@ -3361,7 +3380,7 @@ static AjBool seqEmbossQryClose(AjPSeqQuery qry)
     qryd->do_de = ajFalse;
     qryd->do_tx = ajFalse;
 
-    qryd->prifile = NULL;
+    qryd->libs = NULL;
 
     ajListFree(&qryd->List);
 
@@ -3529,6 +3548,538 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
     }
 
     return ajFalse;
+}
+
+
+
+
+/* @section B+tree GCG Database Indexing *************************************
+**
+** These functions manage the EMBOSS B+tree GCG index access methods.
+**
+******************************************************************************/
+
+
+
+
+/* @funcstatic seqAccessEmbossGcg ********************************************
+**
+** Reads sequence(s) from a GCG formatted database, using EMBLCD index
+** files. Returns with the file pointer set to the position in the
+** sequence file.
+**
+** @param [u] seqin [AjPSeqin] Sequence input.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+static AjBool seqAccessEmbossGcg(AjPSeqin seqin)
+{
+    AjBool retval = ajFalse;
+
+    AjPSeqQuery qry;
+    SeqPEmbossQry qryd = NULL;
+
+    
+    qry = seqin->Query;
+    qryd = qry->QryData;
+    ajDebug("seqAccessEmbossGcg type %d\n", qry->Type);
+
+    if(!ajNamDbGetDbalias(qry->DbName, &qry->DbAlias))
+	ajStrAssS(&qry->DbAlias, qry->DbName);
+
+    if(qry->Type == QRY_ALL)
+	return seqEmbossGcgAll(seqin);
+
+
+    if(!qry->QryData)
+    {
+	seqEmbossQryOpen(qry);
+
+	qryd = qry->QryData;
+	seqin->Single = ajTrue;
+	ajFileBuffDel(&seqin->Filebuff);
+	seqin->Filebuff = ajFileBuffNew();
+	
+	if(qry->Type == QRY_ENTRY)
+	{
+	    if(!seqEmbossQryEntry(qry))
+		ajDebug("embossgcg B+tree Entry failed\n");
+	}
+
+	if(qry->Type == QRY_QUERY)
+	{
+	    if(!seqEmbossQryQuery(qry))
+		ajDebug("embossgcg B+tree Query failed\n");
+	}
+    }
+    else if(!seqEmbossQryReuse(qry))
+	return ajFalse;
+    
+
+    if(ajListLength(qryd->List))
+    {
+	retval = seqEmbossQryNext(qry);
+	if(retval)
+	    seqEmbossGcgLoadBuff(seqin);
+    }
+
+    if(!ajListLength(qryd->List)) /* could have been emptied by code above */
+    {
+	seqEmbossQryClose(qry);
+	ajFileClose(&qryd->libs);
+	ajFileClose(&qryd->libr);
+    }
+
+    if(retval)
+	ajStrAssS(&seqin->Db, qry->DbName);
+
+    return retval;
+}
+
+
+
+
+/* @funcstatic seqEmbossGcgAll ***********************************************
+**
+** Opens the first or next GCG file for further reading
+**
+** @param [u] seqin [AjPSeqin] Sequence input.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+static AjBool seqEmbossGcgAll(AjPSeqin seqin)
+{
+    AjPSeqQuery qry;
+    SeqPEmbossQry qryd;
+    static ajint i = 0;
+
+    qry = seqin->Query;
+    qryd = qry->QryData;
+
+    ajDebug("seqEmbossGcgAll\n");
+
+
+    if(!qry->QryData)
+    {
+	ajDebug("seqEmbossGcgAll initialising\n");
+
+	qry->QryData = AJNEW0(qryd);
+	qryd = qry->QryData;
+	i = -1;
+	ajBtreeReadEntries(qry->DbAlias->Ptr,qry->IndexDir->Ptr,
+			   &qryd->files,&qryd->reffiles);
+
+	seqin->Single = ajTrue;
+    }
+
+    qryd = qry->QryData;
+    ajFileBuffDel(&seqin->Filebuff);
+    seqin->Filebuff = ajFileBuffNew();
+
+    if(!qryd->libs)
+    {
+	++i;
+	if(!qryd->files[i])
+	{
+	    ajDebug("seqEmbossGcgAll finished\n");
+	    i=0;
+	    while(qryd->files[i])
+	    {
+		AJFREE(qryd->files[i]);
+		AJFREE(qryd->reffiles[i]);
+		++i;
+	    }
+	    AJFREE(qry->QryData);
+	    qry->QryData = NULL;
+	    return ajFalse;
+	}
+
+	qryd->libs = ajFileNewIn(qryd->files[i]);
+
+	if(!qryd->libs)
+	{
+	    ajDebug("seqEmbossGcgAll: cannot open sequence file\n");
+	    return ajFalse;
+	}
+
+
+	qryd->libr = ajFileNewIn(qryd->reffiles[i]);
+
+	if(!qryd->libr)
+	{
+	    ajDebug("seqEmbossGcgAll: cannot open reference file\n");
+	    return ajFalse;
+	}
+    }
+
+    seqEmbossGcgLoadBuff(seqin);
+
+    qry->QryDone = ajTrue;
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic seqEmbossGcgLoadBuff ******************************************
+**
+** Copies text data to a buffered file, and sequence data for an
+** AjPSeqin internal data structure for reading later
+**
+** @param [u] seqin [AjPSeqin] Sequence input object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void seqEmbossGcgLoadBuff(AjPSeqin seqin)
+{
+    AjPSeqQuery qry;
+    SeqPEmbossQry qryd;
+
+    qry  = seqin->Query;
+    qryd = qry->QryData;
+
+    ajDebug("seqEmbossGcgLoadBuff\n");
+
+    if(!qry->QryData)
+	ajFatal("seqEmbossGcgLoadBuff Query Data not initialised");
+
+    /* copy all the ref data */
+
+    seqEmbossGcgReadRef(seqin);
+
+    /* write the sequence (do we care about the format?) */
+    seqEmbossGcgReadSeq(seqin);
+
+    /* ajFileBuffTraceFull(seqin->Filebuff, 9999, 100); */
+
+    if(!qryd->libr)
+	ajFileClose(&qryd->libs);
+
+    return;
+}
+
+
+
+
+/* @funcstatic seqEmbossGcgReadRef *******************************************
+**
+** Copies text data to a buffered file for reading later
+**
+** @param [u] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+static AjBool seqEmbossGcgReadRef(AjPSeqin seqin)
+{
+    static AjPStr line = NULL;
+    AjPSeqQuery qry;
+    SeqPEmbossQry qryd;
+    ajlong rpos;
+    static AjPStr id       = NULL;
+    static AjPStr idc      = NULL;
+    static AjPRegexp idexp = NULL;
+    AjBool ispir           = ajFalse;
+    AjBool continued       = ajFalse;
+    AjBool testcontinue    = ajFalse;
+    char *p = NULL;
+
+    qry  = seqin->Query;
+    qryd = qry->QryData;
+
+    if(!idexp)
+	idexp =ajRegCompC("^>...([^ \n]+)");
+
+    if(!ajFileGets(qryd->libr, &line))	/* end of file */
+	return ajFalse;
+
+    if(ajStrChar(line, 0) != '>')	/* not start of entry */
+	ajFatal("seqGcgReadRef bad entry start:\n'%S'", line);
+
+    if(ajStrChar(line, 3) == ';')	/* PIR entry */
+	ispir = ajTrue;
+
+    if(ispir)
+	ajFileBuffLoadS(seqin->Filebuff, line);
+
+
+    if(ajRegExec(idexp, line))
+    {
+	continued = ajFalse;
+	ajRegSubI(idexp, 1, &id);
+	if(ajStrSuffixC(id,"_0") || ajStrSuffixC(id,"_00"))
+	{
+	    continued = ajTrue;
+	    p = ajStrStrMod(&id);
+	    p = strrchr(p,(ajint)'_');
+	    *(++p)='\0';
+	    ajStrFix(&id);
+	}
+    }
+    else
+    {
+	ajDebug("seqEmbossGcgReadRef bad ID line\n'%S'\n", line);
+	ajFatal("seqEmbossGcgReadRef bad ID line\n'%S'\n", line);
+    }
+
+
+
+    if(!ajFileGets(qryd->libr, &line))	/* blank desc line */
+	return ajFalse;
+
+    if(ispir)
+	ajFileBuffLoadS(seqin->Filebuff, line);
+
+
+    rpos = ajFileTell(qryd->libr);
+    while(ajFileGets(qryd->libr, &line))
+    {
+					/* end of file */
+	if(ajStrChar(line, 0) == '>')
+	{				/* start of next entry */
+	    /* skip over split entries so it can be used for "all" */
+
+	    if(continued)
+	    {
+		testcontinue=ajTrue;
+		ajRegExec(idexp, line);
+		ajRegSubI(idexp, 1, &idc);
+
+		if(!ajStrPrefix(idc,id))
+		{
+		    ajFileSeek(qryd->libr, rpos, 0);
+		    return ajTrue;
+		}
+	    }
+	    else
+	    {
+		ajFileSeek(qryd->libr, rpos, 0);
+		return ajTrue;
+	    }
+	}
+	rpos = ajFileTell(qryd->libr);
+
+
+	if(!testcontinue)
+	{
+	    ajStrSubstituteCC(&line, ". .", "..");
+	    ajFileBuffLoadS(seqin->Filebuff, line);
+	}
+    }
+
+
+    /* at end of file */
+
+    ajFileClose(&qryd->libr);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic seqEmbossGcgReadSeq *******************************************
+**
+** Copies sequence data with a reformatted sequence to the "Inseq"
+** data structure of the AjPSeqin object for later reuse.
+**
+** @param [u] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+static AjBool seqEmbossGcgReadSeq(AjPSeqin seqin)
+{
+    static AjPStr line = NULL;
+    AjPSeqQuery qry;
+    SeqPEmbossQry qryd;
+    static AjPRegexp idexp   = NULL;
+    static AjPRegexp contexp = NULL;
+    static AjPRegexp idexp2  = NULL;
+    static AjPStr gcgtype    = NULL;
+    static AjPStr tmpstr     = NULL;
+    static AjPStr dstr       = NULL;
+    static AjPStr id         = NULL;
+    static AjPStr idc        = NULL;
+    static AjPStr contseq    = NULL;
+
+    ajint gcglen;
+    ajint pos;
+    ajint rblock;
+    ajlong spos;
+    AjBool ispir     = ajFalse;
+    char *p = NULL;
+    AjBool continued = ajFalse;
+
+
+    qry  = seqin->Query;
+    qryd = qry->QryData;
+
+    if(!idexp)
+    {
+	idexp =ajRegCompC("^>...([^ ]+) +([^ ]+) +([^ ]+) +([^ ]+) +([0-9]+)");
+	idexp2=ajRegCompC("^>[PF]1;([^ ]+)");
+    }
+
+    ajDebug("seqEmbossGcgReadSeq pos: %Ld\n", ajFileTell(qryd->libs));
+
+    if(!ajFileGets(qryd->libs, &line))	/* end of file */
+	return ajFalse;
+
+    ajDebug("test ID line\n'%S'\n", line);
+
+    if(ajRegExec(idexp, line))
+    {
+	continued = ajFalse;
+	ajRegSubI(idexp, 3, &gcgtype);
+	ajRegSubI(idexp, 5, &tmpstr);
+	ajRegSubI(idexp, 1, &id);
+	if(ajStrSuffixC(id,"_0") || ajStrSuffixC(id,"_00"))
+	{
+	    continued = ajTrue;
+	    p = ajStrStrMod(&id);
+	    p = strrchr(p,(ajint)'_');
+	    *(++p)='\0';
+	    ajStrFix(&id);
+	    if(!contseq)
+		contseq = ajStrNew();
+	    if(!dstr)
+		dstr = ajStrNew();
+	}
+
+	ajStrToInt(tmpstr, &gcglen);
+    }
+    else if(ajRegExec(idexp2, line))
+    {
+	ajStrAssC(&gcgtype, "ASCII");
+	ajRegSubI(idexp, 1, &tmpstr);
+	ispir = ajTrue;
+    }
+    else
+    {
+	ajDebug("seqEmbossGcgReadSeq bad ID line\n'%S'\n", line);
+	ajFatal("seqEmbossGcgReadSeq bad ID line\n'%S'\n", line);
+	return ajFalse;
+    }
+
+    if(!ajFileGets(qryd->libs, &line))	/* desc line */
+	return ajFalse;
+
+    /*
+    ** need to pick up the length and type, and read to the end of sequence
+    ** see fasta code to get a real sequence for this
+    ** Also need to handle split entries and go find the rest
+    */
+
+    if(ispir)
+    {
+	spos = ajFileTell(qryd->libs);
+	while(ajFileGets(qryd->libs, &line))
+	{				/* end of file */
+	    if(ajStrChar(line, 0) == '>')
+	    {				/* start of next entry */
+		ajFileSeek(qryd->libs, spos, 0);
+		break;
+	    }
+	    spos = ajFileTell(qryd->libs);
+	    ajFileBuffLoadS(seqin->Filebuff, line);
+	}
+    }
+    else
+    {
+	ajStrModL(&seqin->Inseq, gcglen+3);
+	rblock = gcglen;
+	if(ajStrChar(gcgtype, 0) == '2')
+	    rblock = (rblock+3)/4;
+
+	if(!ajFileRead(ajStrStrMod(&seqin->Inseq), 1, rblock, qryd->libs))
+	    ajFatal("error reading file %F", qryd->libs);
+
+	/* convert 2bit to ascii */
+	if(ajStrChar(gcgtype, 0) == '2')
+	    seqGcgBinDecode(&seqin->Inseq, gcglen);
+	else if(ajStrChar(gcgtype, 0) == 'A')
+	{
+	    /* are seq chars OK? */
+	    ajStrFixI(&seqin->Inseq, gcglen);
+	}
+	else
+	{
+	    ajRegSubI(idexp, 1, &tmpstr);
+	    ajFatal("Unknown GCG entry type '%S', entry name '%S'",
+		    gcgtype, tmpstr);
+	}
+
+	if(!ajFileGets(qryd->libs, &line)) /* newline at end */
+	    ajFatal("error reading file %F", qryd->libs);
+
+	if(continued)
+	{
+	    spos = ajFileTell(qryd->libs);
+	    while(ajFileGets(qryd->libs,&line))
+	    {
+		ajRegExec(idexp, line);
+		ajRegSubI(idexp, 5, &tmpstr);
+		ajRegSubI(idexp, 1, &idc);
+
+		if(!ajStrPrefix(idc,id))
+		{
+		    ajFileSeek(qryd->libs, spos, 0);
+		    break;
+		}
+
+		ajStrToInt(tmpstr, &gcglen);
+		if(!ajFileGets(qryd->libs, &dstr)) /* desc line */
+		    return ajFalse;
+
+		ajStrModL(&contseq, gcglen+3);
+
+		rblock = gcglen;
+		if(ajStrChar(gcgtype, 0) == '2')
+		    rblock = (rblock+3)/4;
+
+		if(!ajFileRead(ajStrStrMod(&contseq), 1, rblock, qryd->libs))
+		    ajFatal("error reading file %F", qryd->libs);
+
+		/* convert 2bit to ascii */
+		if(ajStrChar(gcgtype, 0) == '2')
+		    seqGcgBinDecode(&contseq, gcglen);
+		else if(ajStrChar(gcgtype, 0) == 'A')
+		{
+		    /* are seq chars OK? */
+		    ajStrFixI(&contseq, gcglen);
+		}
+		else
+		{
+		    ajRegSubI(idexp, 1, &tmpstr);
+		    ajFatal("Unknown GCG entry: name '%S'",
+			    tmpstr);
+		}
+
+		if(!ajFileGets(qryd->libs, &line)) /* newline at end */
+		    ajFatal("error reading file %F", qryd->libs);
+
+		if(!contexp)
+		    contexp = ajRegCompC("^([^ ]+) +([^ ]+) +([^ ]+) +"
+					 "([^ ]+) +([^ ]+) +([^ ]+) +([^ ]+) +"
+					 "([^ ]+) +([0-9]+)");
+
+		ajRegExec(contexp, dstr);
+		ajRegSubI(contexp, 9, &tmpstr);
+		ajStrToInt(tmpstr, &pos);
+		seqin->Inseq->Len = pos-1;
+
+		ajStrApp(&seqin->Inseq,contseq);
+		spos = ajFileTell(qryd->libs);
+	    }
+	}
+    }
+
+    return ajTrue;
 }
 
 

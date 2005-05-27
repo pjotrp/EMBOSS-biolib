@@ -34,6 +34,7 @@ typedef struct EmbSBtreeEntry
     AjPStr idirectory;
 
     AjPList files;
+    AjPList reffiles;
     ajint   nfiles;
     ajint cachesize;
     ajint pagesize;
@@ -73,7 +74,8 @@ typedef struct EmbSBtreeEntry
     AjPBtcache txcache;
 
     ajlong fpos;
-
+    ajlong reffpos;
+    
     AjPStr id;
     AjPList ac;
     AjPList sv;
@@ -99,9 +101,6 @@ void   embBtreeFastaDE(const AjPStr kwline, AjPList kwlist, ajint maxlen);
 
 ajint  embBtreeReadDir(AjPStr **filelist, const AjPStr fdirectory,
 		       const AjPStr files, const AjPStr exclude);
-AjBool embBtreeWriteFileList(const AjPStr *filelist, ajint nfiles,
-			     const AjPStr fdirectory, const AjPStr idirectory,
-			     const AjPStr dbname);
 EmbPBtreeEntry embBtreeEntryNew(void);
 ajint          embBtreeSetFields(EmbPBtreeEntry entry, AjPStr const * fields);
 void           embBtreeEntryDel(EmbPBtreeEntry *thys);

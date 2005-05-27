@@ -743,6 +743,8 @@ static ajint namMethod2Scope(const AjPStr method)
 
     if(!ajStrCmpC(method, "emblcd"))
 	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
+    else if(!ajStrCmpC(method, "embossgcg"))
+	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
     else if(!ajStrCmpC(method, "emboss"))
 	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
     else if(!ajStrCmpC(method, "srs"))
