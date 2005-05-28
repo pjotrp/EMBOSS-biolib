@@ -547,8 +547,8 @@ AjPBtId    ajBtreeIdFromKeywordW(AjPBtcache cache, AjPBtKeyWild wild,
 				 AjPBtcache idcache);
 AjBool     ajBtreeReplaceId(AjPBtcache cache, const AjPBtId rid);
 
-AjBool ajBtreeReadEntries(const char *filename, const char *indexdir,
-			  AjPStr **seqfiles, AjPStr **reffiles);
+ajint      ajBtreeReadEntries(const char *filename, const char *indexdir,
+		   	      AjPStr **seqfiles, AjPStr **reffiles);
 void       ajBtreeInsertDupId(AjPBtcache cache, AjPBtId id);
 AjPList    ajBtreeDupFromKey(AjPBtcache cache, const char *key);
 

@@ -5981,12 +5981,12 @@ AjBool ajBtreeReplaceId(AjPBtcache cache, const AjPBtId rid)
 ** @param [w] reffiles [AjPStr**] reference file names (if any)
 
 **
-** @return [AjBool] array of database filenames
+** @return [ajint] number of entries
 ** @@
 ******************************************************************************/
 
-AjBool ajBtreeReadEntries(const char *filename, const char *indexdir,
-			  AjPStr **seqfiles, AjPStr **reffiles)
+ajint ajBtreeReadEntries(const char *filename, const char *indexdir,
+			 AjPStr **seqfiles, AjPStr **reffiles)
 {
     AjPStr line = NULL;
     AjPStr fn   = NULL;
@@ -5999,7 +5999,8 @@ AjBool ajBtreeReadEntries(const char *filename, const char *indexdir,
     
     AjPFile inf   = NULL;
     char p;
-
+    ajint entries = 0;
+    
     AjBool do_ref = ajFalse;
 
 
@@ -6037,6 +6038,7 @@ AjBool ajBtreeReadEntries(const char *filename, const char *indexdir,
 	}
 
 	ajListToArray(list,(void ***)&(*seqfiles));
+	entries = ajListLength(list);
     }
     else
     {
@@ -6051,6 +6053,7 @@ AjBool ajBtreeReadEntries(const char *filename, const char *indexdir,
 
 	ajListToArray(list,(void ***)&(*seqfiles));
 	ajListToArray(reflist,(void ***)&(*reffiles));
+	entries = ajListLength(list);
     }
     
     
@@ -6060,7 +6063,7 @@ AjBool ajBtreeReadEntries(const char *filename, const char *indexdir,
     ajStrDel(&fn);
     ajFileClose(&inf);
 
-    return ajTrue;
+    return entries;
 }
 
 
