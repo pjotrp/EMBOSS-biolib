@@ -449,7 +449,7 @@ static AjBool dbxflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
 
 static AjBool dbxflat_NextEntry(EmbPBtreeEntry entry, AjPFile inf)
 {
-    static AjBool init = ajFalse;
+    static AjBool init = AJFALSE;
     static ajint  nparser = -1;
     ajint i;
     

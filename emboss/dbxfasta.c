@@ -222,7 +222,7 @@ int main(int argc, char **argv)
 static AjBool dbxfasta_NextEntry(EmbPBtreeEntry entry, AjPFile inf,
 				 AjPRegexp typeexp, ajint idtype)
 {
-    static AjBool init = ajFalse;
+    static AjBool init = AJFALSE;
     static AjPStr line = NULL;
     
     if(!init)
