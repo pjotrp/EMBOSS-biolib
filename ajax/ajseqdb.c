@@ -3818,10 +3818,13 @@ static AjBool seqEmbossGcgAll(AjPSeqin seqin)
 	    i=0;
 	    while(qryd->files[i])
 	    {
-		AJFREE(qryd->files[i]);
-		AJFREE(qryd->reffiles[i]);
+		ajStrDel(&qryd->files[i]);
+		ajStrDel(&qryd->reffiles[i]);
 		++i;
 	    }
+	    AJFREE(qryd->files);
+	    AJFREE(qryd->reffiles);
+	    
 	    AJFREE(qry->QryData);
 	    qry->QryData = NULL;
 	    return ajFalse;
