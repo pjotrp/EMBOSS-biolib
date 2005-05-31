@@ -343,6 +343,7 @@ typedef struct SeqSCdQry
 ** @attr decache [AjPBtcache] description cache
 ** @attr files [AjPStr*] database filenames
 ** @attr reffiles [AjPStr*] database reference filenames
+** @attr div [ajint] division number of currently open database file
 ** @attr libs [AjPFile] Primary (database source) file
 ** @attr libr [AjPFile] Secondary (database bibliographic source) file
 ** @attr List [AjPList] List of files
@@ -368,6 +369,8 @@ typedef struct SeqSEmbossQry
 
     AjPStr *files;
     AjPStr *reffiles;
+
+    ajint div;
     
     AjPFile libs;
     AjPFile libr;
@@ -2851,7 +2854,7 @@ static AjBool seqAccessEmboss(AjPSeqin seqin)
     }
     else if(!seqEmbossQryReuse(qry))
 	return ajFalse;
-    
+ 
 
     if(ajListLength(qryd->List))
     {
@@ -2904,6 +2907,9 @@ static AjBool seqAccessFreeEmboss(void* qrydata)
     ajDebug("seqAccessFreeEmboss\n");
 
     qryd = (SeqPEmbossQry) qrydata;
+
+    qryd->libs = NULL;
+    qryd->libr = NULL;
 
     return retval;
 }
@@ -2977,7 +2983,8 @@ static AjBool seqEmbossQryOpen(AjPSeqQuery qry)
 
     qry->QryData = AJNEW0(qryd);
     qryd = qry->QryData;
-
+    qryd->div = -1;
+    
     qryd->List = ajListNew();
 
 
@@ -3371,6 +3378,8 @@ static AjBool seqEmbossQryNext(AjPSeqQuery qry)
     SeqPEmbossQry qryd;
     void* item;
     AjBool ok = ajFalse;
+
+
     qryd = qry->QryData;
 
     if(!ajListLength(qryd->List))
@@ -3404,15 +3413,36 @@ static AjBool seqEmbossQryNext(AjPSeqQuery qry)
     }
 
 
-    qryd->libs = ajFileNewIn(qryd->files[entry->dbno]);
-
-    ajFileSeek(qryd->libs, entry->offset, 0);
-
-    if(qryd->reffiles)
+    if(entry->dbno != qryd->div)
     {
-	qryd->libr = ajFileNewIn(qryd->reffiles[entry->dbno]);
-	ajFileSeek(qryd->libr, entry->refoffset, 0);
+	qryd->div = entry->dbno;
+
+	ajFileClose(&qryd->libs);
+	qryd->libs = ajFileNewIn(qryd->files[entry->dbno]);
+	if(!qryd->libs)
+	{
+	    ajBtreeIdDel(&entry);
+	    return ajFalse;
+	}
+	
+	
+	if(qryd->reffiles)
+	{
+	    ajFileClose(&qryd->libr);
+	    qryd->libr = ajFileNewIn(qryd->reffiles[entry->dbno]);
+	    if(!qryd->libr)
+	    {
+		ajBtreeIdDel(&entry);
+		return ajFalse;
+	    }
+	}
     }
+    
+    
+    ajFileSeek(qryd->libs, entry->offset, 0);
+    if(qryd->reffiles)
+	ajFileSeek(qryd->libr, entry->refoffset, 0);
+
 
     ajBtreeIdDel(&entry);
 
@@ -3437,7 +3467,8 @@ static AjBool seqEmbossQryNext(AjPSeqQuery qry)
 static AjBool seqEmbossQryClose(AjPSeqQuery qry)
 {
     SeqPEmbossQry qryd;
-
+    ajint i;
+    
     ajDebug("seqEmbossQryClose clean up qryd\n");
 
     qryd = qry->QryData;
@@ -3467,8 +3498,6 @@ static AjBool seqEmbossQryClose(AjPSeqQuery qry)
     qryd->do_de = ajFalse;
     qryd->do_tx = ajFalse;
 
-    qryd->libs = NULL;
-
     ajListFree(&qryd->List);
 
     if(qryd->skip)
@@ -3476,6 +3505,22 @@ static AjBool seqEmbossQryClose(AjPSeqQuery qry)
 	AJFREE(qryd->skip);
 	qryd->skip = NULL;
     }
+
+
+    i = 0;
+    while(qryd->files[i])
+    {
+	ajStrDel(&qryd->files[i]);
+	if(qryd->reffiles)
+	    ajStrDel(&qryd->reffiles[i]);
+	++i;
+    }
+    AJFREE(qryd->files);
+    if(qryd->reffiles)
+	AJFREE(qryd->reffiles);
+    qryd->files = NULL;
+    qryd->reffiles = NULL;
+
 
     /* keep QryData for use at top of loop */
 
