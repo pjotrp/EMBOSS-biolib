@@ -40,18 +40,18 @@ section: input [
     default: "SWISS"
   ]
 
-  string: filenames  [
-    standard: "Y"
-    default: "*.dat"
-    information: "Wildcard database filename"
-    knowntype: "emboss database wildcard filename"
-  ]
-
   directory: directory  [
     standard: "Y"
     default: "."
     information: "Database directory"
     knowntype: "emboss database directory"
+  ]
+
+  string: filenames  [
+    standard: "Y"
+    default: "*.seq"
+    information: "Wildcard database filename"
+    knowntype: "emboss database wildcard filename"
   ]
 
 endsection: input
