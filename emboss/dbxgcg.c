@@ -347,7 +347,7 @@ static AjBool dbxgcg_NextEntry(EmbPBtreeEntry entry, AjPFile infs,
     {
 	p  = strrchr(ajStrStr(tmpstr),'_');
 	*p = '\0';
-	ajStrAssS(&entry->id,tmpstr);
+	ajStrAssC(&entry->id,ajStrStr(tmpstr));
     }
 
 
