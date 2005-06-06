@@ -93,8 +93,8 @@ DB qanflat  [ type: N format: embl method: emblcd
 
 DB qanxflat  [ type: N format: embl method: emboss
   dir: $emboss_qadata/embl
-  dbalias: embl
   indexdir: $emboss_qadata/qa/dbxflat-check-keep
+  dbalias: embl
   comment: "EMBL flatfiles"
 ]
 
@@ -131,16 +131,16 @@ DB qapflatall  [ type: P format: swiss method: emblcd
 
 DB qapxflat  [ type: P format: swiss method: emboss
   dir: $emboss_qadata/swnew
-  dbalias: swnew
   indexdir: $emboss_qadata/qa/dbxflat-swiss-keep
+  dbalias: swnew
   comment: "Swissnew flatfiles"
 ]
 
 DB qapxflatexc  [ type: P format: swiss method: emboss
   dir: $emboss_qadata/swnew
   exclude: upd_seq.dat
-  dbalias: swnew
   indexdir: $emboss_qadata/qa/dbxflat-swiss-keep
+  dbalias: swnew
   comment: "Swissnew flatfiles, no updated sequence file"
 ]
 
@@ -148,17 +148,17 @@ DB qapxflatinc  [ type: P format: swiss method: emboss
   dir: $emboss_qadata/swnew
   file: upd_seq.dat
   exclude: *.dat
-  dbalias: swnew
   indexdir: $emboss_qadata/qa/dbxflat-swiss-keep
+  dbalias: swnew
   comment: "Swissnew flatfiles, only updated sequence file"
 ]
 
 DB qapxflatall  [ type: P format: swiss method: emboss
   dir: $emboss_qadata/swnew
-  dbalias: swnew
   indexdir: $emboss_qadata/qa/dbxflat-swiss-keep
-  comment: "Swissnew flatfiles, all fields indexed"
   fields: "des org key"
+  dbalias: swnew
+  comment: "Swissnew flatfiles, all fields indexed"
 ]
 
 ###########################################
@@ -188,6 +188,39 @@ DB qanfastaall  [ type: N format: fasta method: emblcd
   indexdir: $emboss_qadata/qa/dbifasta-allsys-keep
   comment: "FASTA file EMBL rodents, all fields indexed"
   fields: "sv des"
+]
+
+###########################################
+### Access method EMBOSS, FASTA format data
+###########################################
+
+DB qanxfasta  [ type: N format: fasta method: emboss
+  dir: $emboss_qadata/data
+  indexdir: $emboss_qadata/qa/dbxfasta-ex-keep
+  dbalias: emrod
+  comment: "FASTA file EMBL rodents"
+]
+
+DB qapxfasta  [ type: P format: fasta method: emboss
+  dir: $emboss_qadata/data
+  indexdir: $emboss_qadata/qa/dbxfasta-swiss-keep
+  dbalias: swnew
+  comment: "FASTA file swissnew entries"
+]
+
+DB qawxfasta  [ type: N format: fasta method: emboss
+  dir: $emboss_qadata/data
+  indexdir: $emboss_qadata/qa/dbxfasta-worm-keep
+  dbalias: worm
+  comment: "FASTA file wormpep entries"
+]
+
+DB qanxfastaall  [ type: N format: fasta method: emboss
+  dir: $emboss_qadata/data
+  indexdir: $emboss_qadata/qa/dbxfasta-allsys-keep
+  fields: "sv des"
+  comment: "FASTA file EMBL rodents, all fields indexed"
+  dbalias: emrod
 ]
 
 #######################
@@ -286,6 +319,74 @@ DB qapirall  [ type: P format: nbrf method: gcg
   indexdir: $emboss_qadata/qa/dbigcg-pirall-keep
   comment: "PIR"
   fields: "des org key"
+]
+
+###########################
+### access method EMBOSSGCG
+###########################
+
+DB qanxgcg  [ type: N format: embl method: embossgcg
+  dir: $emboss_qadata/embl
+  indexdir: $emboss_qadata/qa/dbxgcg-ex-keep
+  dbalias: embl
+  comment: "GCG format EMBL"
+]
+
+DB qanxgcgexc  [ type: N format: embl method: embossgcg
+  dir: $emboss_qadata/embl
+  exclude: eem_ba1.*
+  indexdir: $emboss_qadata/qa/dbxgcg-ex-keep
+  dbalias: embl
+  comment: "GCG format EMBL without prokaryotes"
+]
+
+DB qanxgcginc  [ type: N format: embl method: embossgcg
+  dir: $emboss_qadata/embl
+  file: eem_ba1.*
+  exclude: *
+  indexdir: $emboss_qadata/qa/dbxgcg-ex-keep
+  dbalias: embl
+  comment: "GCG format EMBL only prokaryotes"
+]
+
+DB qanxgcgall  [ type: N format: embl method: embossgcg
+  dir: $emboss_qadata/embl
+  indexdir: $emboss_qadata/qa/dbxgcg-allsys-keep
+  fields: "sv des org key"
+  dbalias: embl
+  comment: "GCG format EMBL"
+]
+
+DB qaxpir  [ type: P format: nbrf method: embossgcg
+  dir: $emboss_qadata/pir
+  indexdir: $emboss_qadata/qa/dbxgcg-pir-keep
+  dbalias: pir
+  comment: "PIR"
+]
+
+DB qaxpirexc  [ type: N format: nbrf method: embossgcg
+  dir: $emboss_qadata/pir
+  exclude: pir1.*
+  indexdir: $emboss_qadata/qa/dbxgcg-pir-keep
+  dbalias: pir
+  comment: "PIR"
+]
+
+DB qaxpirinc  [ type: P format: nbrf method: embossgcg
+  dir: $emboss_qadata/pir
+  file: pir1.*
+  exclude: *
+  indexdir: $emboss_qadata/qa/dbxgcg-pir-keep
+  dbalias: pir
+  comment: "PIR"
+]
+
+DB qaxpirall  [ type: P format: nbrf method: embossgcg
+  dir: $emboss_qadata/pir
+  indexdir: $emboss_qadata/qa/dbxgcg-pirall-keep
+  fields: "des org key"
+  dbalias: pir
+  comment: "PIR"
 ]
 
 #####################

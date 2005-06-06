@@ -3763,130 +3763,6 @@ FP 16 />/
 //
 
 #############################################
-# The qanxflat database
-#############################################
-
-ID dbxflat-check-keep
-DL keep
-AQ dbxflat
-IN embl
-IN embl
-IN embl
-IN rod.dat
-IN ../../embl
-IN
-FI stderr
-FC = 12
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FC = 1
-FP /^Processing file .*\/test\/embl\/rod\.dat\n/
-FI embl.ent
-FC = 2
-FP /^#Number of files\t1\n/
-FP /.*\/test\/embl\/rod\.dat\n/
-FI embl.pxac
-FZ = 115
-FP /^Order     20\n/
-FP /^Fill      15\n/
-FP /^Pagesize  8192\n/
-FP /^Level     0\n/
-FP /^Cachesize 100\n/
-FP /^Order2    0\n/
-FP /^Fill2     0\n/
-FP /^Count     2\n/
-FP /^Kwlimit   0\n/
-FI embl.pxid
-FZ = 115
-FP /^Order     20\n/
-FP /^Fill      15\n/
-FP /^Pagesize  8192\n/
-FP /^Level     0\n/
-FP /^Cachesize 100\n/
-FP /^Order2    0\n/
-FP /^Fill2     0\n/
-FP /^Count     2\n/
-FP /^Kwlimit   0\n/
-FI embl.xac
-FZ = 24576
-FP /l48662/
-FP /l48662/
-FP /z46957/
-FP /u68037/
-FI embl.xid
-FZ = 24576
-FP /mmam/
-FP /rnops/
-FP /rnu68037/
-//
-
-ID dbxflat-id
-AP seqret
-CL qanxflat-id:rnops test.out -auto
-FI test.out
-FZ = 1567
-FP /\A>RNOPS /
-FP 1 />/
-//
-
-ID dbxflat-idfirst
-AP seqret
-CL qanxflat-id:MMAM test.out -auto
-FI test.out
-FZ = 473
-FP 1 />MMAM /
-FP 1 />/
-//
-
-ID dbxflat-idsecond
-AP seqret
-CL qanxflat-id:RNOPS test.out -auto
-FI test.out
-FZ = 1567
-FP 1 />RNOPS /
-FP 1 />/
-//
-
-ID dbxflat-last
-AP seqret
-CL qanxflat-id:RNU68037 test.out -auto
-FI test.out
-FZ = 1320
-FP 1 />RNU68037 /
-FP 1 />/
-//
-
-ID dbxflat-nextlast
-AP seqret
-CL qanxflat-id:RNOPS test.out -auto
-FI test.out
-FZ = 1567
-FP 1 />RNOPS /
-FP 1 />/
-//
-
-ID dbxflat-all
-AP seqret
-CC Fails to fetch all entries in emboss access method
-CL qanxflat:* test.out -auto
-FI test.out
-FZ = 3360
-FP 1 />RNOPS /
-FP 3 />/
-//
-
-ID dbxflat-wild
-AP seqret
-CL qanxflat:r* test.out -auto
-FI test.out
-FZ = 2887
-FP 1 />RNOPS /
-FP 2 />/
-//
-
-#############################################
 # The qapflat database
 #############################################
 
@@ -4149,162 +4025,6 @@ FZ = 1596
 FP /\A.{308}AB000095\001/
 //
 
-#############################################
-# The qapxflat database
-#############################################
-
-ID dbxflat-swiss-keep
-DL keep
-AQ dbxflat
-IN swnew
-IN swnew
-IN
-IN
-IN ../../swnew
-IN
-IN
-IN
-FI stderr
-FC = 12
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FC = 3
-FP /Processing file .*\/test\/swnew\/[a-z_]+\.dat\n/
-FP 3 /^Processing file /
-FI swnew.ent
-FC = 4
-FP /#Number of files\t3\n/
-FP /.*\/test\/swnew\/[a-z_]+\.dat\n/
-FI swnew.xid
-FZ = 24576
-FP /co9_fugru\000/
-FI swnew.xac
-FZ = 24576
-FP /p53450/
-FI swnew.pxac
-FZ = 115
-FP /^Order     20\n/
-FP /^Fill      15\n/
-FP /^Pagesize  8192\n/
-FP /^Level     0\n/
-FP /^Cachesize 100\n/
-FP /^Order2    0\n/
-FP /^Fill2     0\n/
-FP /^Count     4\n/
-FP /^Kwlimit   0\n/
-FI swnew.pxid
-FZ = 115
-FP /^Order     20\n/
-FP /^Fill      15\n/
-FP /^Pagesize  8192\n/
-FP /^Level     0\n/
-FP /^Cachesize 100\n/
-FP /^Order2    0\n/
-FP /^Fill2     0\n/
-FP /^Count     4\n/
-FP /^Kwlimit   0\n/
-//
-
-ID dbxflat-swiss-idfirst
-AP seqret
-CL qapxflat-id:CO9_FUGRU test.out -auto
-FI test.out
-FZ = 649
-FP 1 />CO9_FUGRU /
-FP 1 />/
-//
-
-ID dbxflat-swiss-idsecond
-AP seqret
-CL qapxflat-id:E2BB_FUGRU test.out -auto
-FI test.out
-FZ = 473
-FP 1 />E2BB_FUGRU /
-FP 1 />/
-//
-
-ID dbxflat-swiss-last
-AP seqret
-CL qapxflat-id:TM21_FUGRU test.out -auto
-FI test.out
-FZ = 287
-FP 1 />TM21_FUGRU /
-FP 1 />/
-//
-
-ID dbxflat-swiss-nextlast
-AP seqret
-CL qapxflat-id:ODO2_FUGRU test.out -auto
-FI test.out
-FZ = 569
-FP 1 />ODO2_FUGRU /
-FP 1 />/
-//
-
-ID dbxflat-swiss-all
-AP seqret
-CC Fails to fetch all entries in emboss access method
-CL qapxflat:* test.out -auto
-FI test.out
-FZ = 2413
-FP 1 />ODO2_FUGRU /
-FP 5 />/
-//
-
-ID dbxflat-swiss-wild
-AP seqret
-CL qapxflat:o* test.out -auto
-FI test.out
-FZ = 569
-FP 1 />ODO2_FUGRU /
-FP 1 />/
-//
-
-ID dbxflat-swiss-testexc
-AP seqret
-CL qapxflatexc-id:CO9_FUGRU test.out -auto
-FI test.out
-FZ = 649
-FP 1 />CO9_FUGRU /
-FP 1 />/
-//
-
-ID dbxflat-swiss-testexcfail
-ER 1
-AP seqret
-CC exclude not yet implemented for access method emboss
-CL qapxflatexc-id:FOS_FUGRU test.out -auto
-FI stderr
-FZ = 127
-FP /Error: Unable to read sequence 'qapflatexc-id:FOS_FUGRU'/
-FP 0 /Warning: /
-FP 1 /Error: /
-FP 1 /Died: /
-//
-
-ID dbxflat-swiss-testinc
-AP seqret
-CL qapxflatinc-id:FOS_FUGRU test.out -auto
-FI test.out
-FZ = 435
-FP 1 />FOS_FUGRU /
-FP 1 />/
-//
-
-ID dbxflat-swiss-testincfail
-ER 1
-AP seqret
-CC include not yet implemented for access method emboss
-CL qapxflatinc-id:CO9_FUGRU test.out -auto
-FI stderr
-FZ = 127
-FP /Error: Unable to read sequence 'qapflatinc-id:CO9_FUGRU'/
-FP 0 /Warning: /
-FP 1 /Error: /
-FP 1 /Died: /
-//
 
 #############################################
 # The qangcg database(s)
@@ -5263,6 +4983,1717 @@ FZ = 1103
 FP 1 />CCPG /
 FP 7 />/
 //
+
+
+ID dbigcg-pirall-orgwild2
+AP seqret
+CL qapirall-org:mus* test.out -auto
+FI test.out
+FZ = 300
+FP 1 />CCMS /
+FP 2 />/
+//
+
+
+#############################################
+# The qanxfasta database
+#############################################
+
+ID dbxfasta-ex-keep
+DL keep
+AQ dbxfasta
+IN emrod
+IN embl
+IN idacc
+IN ../../data
+IN emrod
+IN
+IN
+FI stderr
+FC = 8
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 1
+FP /Processing file \S+/test/data/emrod\n/
+FI emrod.ent
+FZ = 126
+FP 1 /^# Number of files: 1\n/
+FP /.*\/test\/data\/emrod\n/
+FI emrod.pxac
+FZ = 115
+FP 1 /^Order     71\n/
+FP 1 /^Fill      47\n/
+FP 1 /^Pagesize  2048\n/
+FP 1 /^Level     0\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    0\n/
+FP 1 /^Fill2     0\n/
+FP 1 /^Count     2\n/
+FP 1 /^Kwlimit   0\n/
+FI emrod.pxid
+FZ = 115
+FP 1 /^Order     71\n/
+FP 1 /^Fill      47\n/
+FP 1 /^Pagesize  2048\n/
+FP 1 /^Level     0\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    0\n/
+FP 1 /^Fill2     0\n/
+FP 1 /^Count     2\n/
+FP 1 /^Kwlimit   0\n/
+FI emrod.xac
+FZ = 6144
+FP 1 /z46957/
+FP 1 /u68037/
+FI emrod.xid
+FZ = 6144
+FP 1 /rnops/
+FP 1 /rnu68037/
+//
+
+ID dbxfasta-allsys-keep
+DL keep
+AQ dbxfasta
+CL -fields="id,acc,sv,des"
+IN emrod
+IN embl
+IN idacc
+IN ../../data
+IN emrod
+IN
+IN
+FI stderr
+FC = 8
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 1
+FP /Processing file \S+/test/data/emrod\n/
+FI emrod.ent
+FZ = 126
+FP 1 /^# Number of files: 1\n/
+FP /.*\/test\/data\/emrod\n/
+FI emrod.pxac
+FZ = 115
+FP 1 /^Order     71\n/
+FP 1 /^Fill      47\n/
+FP 1 /^Pagesize  2048\n/
+FP 1 /^Level     0\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    0\n/
+FP 1 /^Fill2     0\n/
+FP 1 /^Count     2\n/
+FP 1 /^Kwlimit   0\n/
+FI emrod.pxde
+FZ = 120
+FP 1 /^Order     71\n/
+FP 1 /^Fill      47\n/
+FP 1 /^Pagesize  2048\n/
+FP 1 /^Level     0\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    71\n/
+FP 1 /^Fill2     106\n/
+FP 1 /^Count     28\n/
+FP 1 /^Kwlimit   15\n/
+FI emrod.pxid
+FZ = 115
+FP 1 /^Order     71\n/
+FP 1 /^Fill      47\n/
+FP 1 /^Pagesize  2048\n/
+FP 1 /^Level     0\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    0\n/
+FP 1 /^Fill2     0\n/
+FP 1 /^Count     2\n/
+FP 1 /^Kwlimit   0\n/
+FI emrod.pxsv
+FZ = 115
+FP 1 /^Order     71\n/
+FP 1 /^Fill      47\n/
+FP 1 /^Pagesize  2048\n/
+FP 1 /^Level     0\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    0\n/
+FP 1 /^Fill2     0\n/
+FP 1 /^Count     0\n/
+FP 1 /^Kwlimit   0\n/
+FI emrod.xac
+FZ = 6144
+FP 1 /z46957/
+FP 1 /u68037/
+FI emrod.xde
+FZ = 159744
+FP 1 /\0chromosome\0/
+FP 2 /\0anti/
+FI emrod.xid
+FZ = 6144
+FP 1 /rnops/
+FP 1 /rnu68037/
+FI emrod.xsv
+FZ = 2048
+FP 2047 /\0/
+//
+
+ID dbxfasta-idfirst
+AP seqret
+CL qanxfasta-id:MMAM test.out -auto
+FI test.out
+FZ = 471
+FP 1 />MMAM /
+FP 1 />/
+//
+
+ID dbxfasta-idsecond
+AP seqret
+CL qanxfasta-id:RNOPS test.out -auto
+FI test.out
+FZ = 1565
+FP 1 />RNOPS /
+FP 1 />/
+//
+
+ID dbxfasta-last
+AP seqret
+CL qanxfasta-id:RNU68037 test.out -auto
+FI test.out
+FZ = 1318
+FP 1 />RNU68037 /
+FP 1 />/
+//
+
+ID dbxfasta-nextlast
+AP seqret
+CL qanxfasta-id:RNOPS test.out -auto
+FI test.out
+FZ = 1565
+FP 1 />RNOPS /
+FP 1 />/
+//
+
+ID dbxfasta-all
+AP seqret
+CL qanxfasta:* test.out -auto
+FI test.out
+FZ = 3354
+FP 1 />RNOPS /
+FP 3 />/
+//
+
+ID dbxfasta-wild
+AP seqret
+CL qanxfasta:r* test.out -auto
+FI test.out
+FZ = 2883
+FP 1 />RNOPS /
+FP 2 />R/
+FP 2 />/
+//
+
+#############################################
+# The qapfasta database
+#############################################
+
+ID dbxfasta-swiss-keep
+DL keep
+AQ dbxfasta
+IN swnew
+IN swnew
+IN idacc
+IN ../../data
+IN swnew
+IN
+IN
+FI stderr
+FC = 8
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 1
+FP /Processing file \S+/test/data/swnew\n/
+FI swnew.ent
+FZ = 126
+FP 1 /^# Number of files: 1\n/
+FP /.*\/test\/data\/swnew\n/
+FI swnew.pxac
+FZ = 115
+FP 1 /^Order     71\n/
+FP 1 /^Fill      47\n/
+FP 1 /^Pagesize  2048\n/
+FP 1 /^Level     0\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    0\n/
+FP 1 /^Fill2     0\n/
+FP 1 /^Count     8\n/
+FP 1 /^Kwlimit   0\n/
+FI swnew.pxid
+FZ = 115
+FP 1 /^Order     71\n/
+FP 1 /^Fill      47\n/
+FP 1 /^Pagesize  2048\n/
+FP 1 /^Level     0\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    0\n/
+FP 1 /^Fill2     0\n/
+FP 1 /^Count     8\n/
+FP 1 /^Kwlimit   0\n/
+FI swnew.xac
+FZ = 6144
+FP 2 /\0q90512\0/
+FP 1 /\0q90511\0/
+FI swnew.xid
+FZ = 6144
+FP 1 /\0co9_fugru\0/
+//
+
+ID dbxfasta-swiss-idfirst
+AP seqret
+CL qapxfasta-id:CO9_FUGRU test.out -auto
+FI test.out
+FZ = 649
+FP 1 />CO9_FUGRU /
+FP 1 />/
+//
+
+ID dbxfasta-swiss-idsecond
+AP seqret
+CL qapxfasta-id:E2BB_FUGRU test.out -auto
+FI test.out
+FZ = 473
+FP 1 />E2BB_FUGRU /
+FP 1 />/
+//
+
+ID dbxfasta-swiss-last
+AP seqret
+CL qapxfasta-id:TM21_FUGRU test.out -auto
+FI test.out
+FZ = 287
+FP 1 />TM21_FUGRU /
+FP 1 />/
+//
+
+ID dbxfasta-swiss-nextlast
+AP seqret
+CL qapxfasta-id:ODO2_FUGRU test.out -auto
+FI test.out
+FZ = 569
+FP 1 />ODO2_FUGRU /
+FP 1 />/
+//
+
+ID dbxfasta-swiss-all
+AP seqret
+CL qapxfasta:* test.out -auto
+FI test.out
+FZ = 4474
+FP 1 />E2BB_FUGRU /
+FP 9 />/
+//
+
+ID dbxfasta-swiss-wild
+AP seqret
+CL qapxfasta:n* test.out -auto
+FI test.out
+FZ = 516
+FP 1 />NEUI_FUGRU /
+FP 2 />N/
+FP 2 />/
+//
+
+#############################################
+# The qawfasta database
+#############################################
+
+ID dbxfasta-worm-keep
+DL keep
+AQ dbxfasta
+IN worm
+IN swnew
+IN simple
+IN ../../data
+IN wormpep.clone.*
+IN
+IN
+FI stderr
+FC = 8
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 2
+FP 2 /Processing file \S+\/test\/data\/wormpep.clone[.]/
+FP 1 /Processing file \S+\/test\/data\/wormpep.clone[.]ZK637\n/
+FI worm.ent
+FZ = 196
+FP 1 /# Number of files: 2\n/
+FP 1 /^\S+\/test\/data\/wormpep.clone.AB\n/
+FP 1 /^\S+\/test\/data\/wormpep.clone.ZK637\n/
+FI worm.pxac
+FZ = 116
+FP 1 /^Order     71\n/
+FP 1 /^Fill      47\n/
+FP 1 /^Pagesize  2048\n/
+FP 1 /^Level     0\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    0\n/
+FP 1 /^Fill2     0\n/
+FP 1 /^Count     65\n/
+FP 1 /^Kwlimit   0\n/
+FI worm.pxid
+FZ = 116
+FP 1 /^Order     71\n/
+FP 1 /^Fill      47\n/
+FP 1 /^Pagesize  2048\n/
+FP 1 /^Level     0\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    0\n/
+FP 1 /^Fill2     0\n/
+FP 1 /^Count     65\n/
+FP 1 /^Kwlimit   0\n/
+FI worm.xid
+FZ = 8192
+FP 1 /\0ah10.1\0/
+FI worm.xac
+FZ = 8192
+FP 1 /\0ah10.1\0/
+//
+
+ID dbxfasta-worm-idfirst
+AP seqret
+CL qawxfasta-id:AC3.1 test.out -auto
+FI test.out
+FZ = 426
+FP 1 />AC3[.]1 /
+FP 1 />/
+//
+
+ID dbxfasta-worm-idsecond
+AP seqret
+CL qawxfasta-id:AC3.2 test.out -auto
+FI test.out
+FZ = 1057
+FP 1 />AC3[.]2 /
+FP 1 />/
+//
+
+ID dbxfasta-worm-last
+AP seqret
+CL qawxfasta-id:ZK637.15 test.out -auto
+FI test.out
+FZ = 205
+FP 1 />ZK637[.]15 /
+FP 1 />/
+//
+
+ID dbxfasta-worm-nextlast
+AP seqret
+CL qawxfasta-id:zk637.14 test.out -auto
+FI test.out
+FZ = 260
+FP 1 />ZK637[.]14 /
+FP 1 />/
+//
+
+ID dbxfasta-worm-all
+AP seqret
+CL qawxfasta:* test.out -auto
+FI test.out
+FZ = 33816
+FP 66 />/
+//
+
+ID dbxfasta-worm-wild
+AP seqret
+CL qawxfasta:a* test.out -auto
+FI test.out
+FZ = 19764
+FP 40 /^>A[^\n]+\n[^>]/
+FP 40 /^>/
+//
+
+ID dbxfasta-worm-wildz
+AP seqret
+CL qawxfasta:z* test.out -auto
+FI test.out
+FZ = 7264
+FP 15 /^>Z[^\n]+\n[^>]/
+FP 15 /^>/
+//
+
+#############################################
+# The qanxflat database
+#############################################
+
+ID dbxflat-ex-keep
+DL keep
+AQ dbxflat
+IN embl
+IN embl
+IN embl
+IN rod.dat
+IN ../../embl
+IN
+FI stderr
+FC = 12
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 1
+FP /^Processing file .*\/test\/embl\/rod\.dat\n/
+FI embl.ent
+FC = 2
+FP /^#Number of files\t1\n/
+FP /.*\/test\/embl\/rod\.dat\n/
+FI embl.pxac
+FZ = 115
+FP /^Order     20\n/
+FP /^Fill      15\n/
+FP /^Pagesize  8192\n/
+FP /^Level     0\n/
+FP /^Cachesize 100\n/
+FP /^Order2    0\n/
+FP /^Fill2     0\n/
+FP /^Count     2\n/
+FP /^Kwlimit   0\n/
+FI embl.pxid
+FZ = 115
+FP /^Order     20\n/
+FP /^Fill      15\n/
+FP /^Pagesize  8192\n/
+FP /^Level     0\n/
+FP /^Cachesize 100\n/
+FP /^Order2    0\n/
+FP /^Fill2     0\n/
+FP /^Count     2\n/
+FP /^Kwlimit   0\n/
+FI embl.xac
+FZ = 24576
+FP /l48662/
+FP /l48662/
+FP /z46957/
+FP /u68037/
+FI embl.xid
+FZ = 24576
+FP /mmam/
+FP /rnops/
+FP /rnu68037/
+//
+
+ID dbxflat-id
+AP seqret
+CL qanxflat-id:rnops test.out -auto
+FI test.out
+FZ = 1567
+FP /\A>RNOPS /
+FP 1 />/
+//
+
+ID dbxflat-idfirst
+AP seqret
+CL qanxflat-id:MMAM test.out -auto
+FI test.out
+FZ = 473
+FP 1 />MMAM /
+FP 1 />/
+//
+
+ID dbxflat-idsecond
+AP seqret
+CL qanxflat-id:RNOPS test.out -auto
+FI test.out
+FZ = 1567
+FP 1 />RNOPS /
+FP 1 />/
+//
+
+ID dbxflat-last
+AP seqret
+CL qanxflat-id:RNU68037 test.out -auto
+FI test.out
+FZ = 1320
+FP 1 />RNU68037 /
+FP 1 />/
+//
+
+ID dbxflat-nextlast
+AP seqret
+CL qanxflat-id:RNOPS test.out -auto
+FI test.out
+FZ = 1567
+FP 1 />RNOPS /
+FP 1 />/
+//
+
+ID dbxflat-all
+AP seqret
+CC Fails to fetch all entries in emboss access method
+CL qanxflat:* test.out -auto
+FI test.out
+FZ = 3360
+FP 1 />RNOPS /
+FP 3 />/
+//
+
+ID dbxflat-wild
+AP seqret
+CL qanxflat:r* test.out -auto
+FI test.out
+FZ = 2887
+FP 1 />RNOPS /
+FP 2 />/
+//
+
+#############################################
+# The qapxflat database
+#############################################
+
+ID dbxflat-swiss-keep
+DL keep
+AQ dbxflat
+IN swnew
+IN swnew
+IN
+IN
+IN ../../swnew
+IN
+IN
+IN
+FI stderr
+FC = 12
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 3
+FP /Processing file .*\/test\/swnew\/[a-z_]+\.dat\n/
+FP 3 /^Processing file /
+FI swnew.ent
+FC = 4
+FP /#Number of files\t3\n/
+FP /.*\/test\/swnew\/[a-z_]+\.dat\n/
+FI swnew.xid
+FZ = 24576
+FP /co9_fugru\000/
+FI swnew.xac
+FZ = 24576
+FP /p53450/
+FI swnew.pxac
+FZ = 115
+FP /^Order     20\n/
+FP /^Fill      15\n/
+FP /^Pagesize  8192\n/
+FP /^Level     0\n/
+FP /^Cachesize 100\n/
+FP /^Order2    0\n/
+FP /^Fill2     0\n/
+FP /^Count     4\n/
+FP /^Kwlimit   0\n/
+FI swnew.pxid
+FZ = 115
+FP /^Order     20\n/
+FP /^Fill      15\n/
+FP /^Pagesize  8192\n/
+FP /^Level     0\n/
+FP /^Cachesize 100\n/
+FP /^Order2    0\n/
+FP /^Fill2     0\n/
+FP /^Count     4\n/
+FP /^Kwlimit   0\n/
+//
+ID dbxflat-swiss-idfirst
+AP seqret
+CL qapxflat-id:CO9_FUGRU test.out -auto
+FI test.out
+FZ = 649
+FP 1 />CO9_FUGRU /
+FP 1 />/
+//
+
+ID dbxflat-swiss-idsecond
+AP seqret
+CL qapxflat-id:E2BB_FUGRU test.out -auto
+FI test.out
+FZ = 473
+FP 1 />E2BB_FUGRU /
+FP 1 />/
+//
+
+ID dbxflat-swiss-last
+AP seqret
+CL qapxflat-id:TM21_FUGRU test.out -auto
+FI test.out
+FZ = 287
+FP 1 />TM21_FUGRU /
+FP 1 />/
+//
+
+ID dbxflat-swiss-nextlast
+AP seqret
+CL qapxflat-id:ODO2_FUGRU test.out -auto
+FI test.out
+FZ = 569
+FP 1 />ODO2_FUGRU /
+FP 1 />/
+//
+
+ID dbxflat-swiss-all
+AP seqret
+CC Fails to fetch all entries in emboss access method
+CL qapxflat:* test.out -auto
+FI test.out
+FZ = 2413
+FP 1 />ODO2_FUGRU /
+FP 5 />/
+//
+
+ID dbxflat-swiss-wild
+AP seqret
+CL qapxflat:o* test.out -auto
+FI test.out
+FZ = 569
+FP 1 />ODO2_FUGRU /
+FP 1 />/
+//
+
+ID dbxflat-swiss-testexc
+AP seqret
+CL qapxflatexc-id:CO9_FUGRU test.out -auto
+FI test.out
+FZ = 649
+FP 1 />CO9_FUGRU /
+FP 1 />/
+//
+
+ID dbxflat-swiss-testexcfail
+ER 1
+AP seqret
+CC exclude not yet implemented for access method emboss
+CL qapxflatexc-id:FOS_FUGRU test.out -auto
+FI stderr
+FZ = 127
+FP /Error: Unable to read sequence 'qapflatexc-id:FOS_FUGRU'/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
+//
+
+ID dbxflat-swiss-testinc
+AP seqret
+CL qapxflatinc-id:FOS_FUGRU test.out -auto
+FI test.out
+FZ = 435
+FP 1 />FOS_FUGRU /
+FP 1 />/
+//
+
+ID dbxflat-swiss-testincfail
+ER 1
+AP seqret
+CC include not yet implemented for access method emboss
+CL qapxflatinc-id:CO9_FUGRU test.out -auto
+FI stderr
+FZ = 127
+FP /Error: Unable to read sequence 'qapflatinc-id:CO9_FUGRU'/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
+//
+
+#############################################
+# The qanxgcg database(s)
+#############################################
+
+ID dbxgcg-ex-keep
+DL keep
+TI 120
+AQ dbxgcg
+IN embl
+IN embl
+IN embl
+IN ../../embl
+IN
+IN
+FI stderr
+FC = 12
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 9
+FP 9 /^Processing .*\/test\/embl\/eem_[a-z1-9]+\.seq\n/
+FI embl.ent
+FZ = 999
+FP 1 /^Dual filename database\n/
+FP 1 /^# Number of files: 9\n/
+FP 9 /\/test\/embl\/eem_[a-z1-9]+\.ref\n/
+FI embl.pxac
+FZ = 116
+FP 1 /^Order     71\n/
+FP 1 /^Fill      47\n/
+FP 1 /^Pagesize  2048\n/
+FP 1 /^Level     0\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    0\n/
+FP 1 /^Fill2     0\n/
+FP 1 /^Count     47\n/
+FP 1 /^Kwlimit   0\n/
+FI embl.pxid
+FZ = 116
+FP 1 /^Order     71\n/
+FP 1 /^Fill      47\n/
+FP 1 /^Pagesize  2048\n/
+FP 1 /^Level     0\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    0\n/
+FP 1 /^Fill2     0\n/
+FP 1 /^Count     39\n/
+FP 1 /^Kwlimit   0\n/
+FI embl.xac
+FZ = 6144
+FP 1 /\0ab000095\0/
+FI embl.xid
+FZ = 6144
+FP 1 /\0hsfau\0/
+//
+
+ID dbxgcg-id
+AP seqret
+CL qanxgcg-id:hsfau test.out -auto
+FI test.out
+FZ = 560
+FP 1 /\A>HSFAU /
+FP 1 />/
+//
+
+ID dbxgcg-idfirst
+AP seqret
+CL qanxgcg-id:AB000095 test.out -auto
+FI test.out
+FZ = 2542
+FP 1 />AB000095 /
+FP 1 />/
+//
+
+ID dbxgcg-idsecond
+AP seqret
+CL qanxgcg-id:AB009062 test.out -auto
+FI test.out
+FZ = 594
+FP 1 />AB009062 /
+FP 1 />/
+//
+
+ID dbxgcg-last
+AP seqret
+CL qanxgcg-id:XLRHODOP test.out -auto
+FI test.out
+FZ = 1777
+FP 1 />XLRHODOP /
+FP 1 />/
+//
+
+ID dbxgcg-acc
+AP seqret
+CL qanxgcg:L07770 test.out -auto
+FI test.out
+FZ = 1777
+FP 1 />XLRHODOP /
+FP 1 />/
+//
+
+ID dbxgcg-nextlast
+AP seqret
+CL qanxgcg-id:XL23808 test.out -auto
+FI test.out
+FZ = 4876
+FP 1 />XL23808 /
+FP 1 />/
+//
+
+ID dbxgcg-splitfirst
+AP seqret
+CL qanxgcg-id:CEY39B6 test.out -auto
+FI test.out
+FZ = 362911
+FP 1 />CEY39B6 /
+FP 1 />/
+//
+
+ID dbxgcg-splitmid
+AP seqret
+CL qanxgcg-id:PFMAL4P1 test.out -auto
+FI test.out
+FZ = 399267
+FP 1 />PFMAL4P1 /
+FP 1 />/
+//
+
+ID dbxgcg-splitbefore
+AP seqret
+CL qanxgcg-id:AC017364 test.out -auto
+FI test.out
+FZ = 3801
+FP 1 />AC017364 /
+FP 1 />/
+//
+
+ID dbxgcg-splitafter
+AP seqret
+CL qanxgcg-id:PFMAL4P3 test.out -auto
+FI test.out
+FZ = 326444
+FP 1 />PFMAL4P3 /
+FP 1 />/
+//
+
+ID dbxgcg-splitend
+AP seqret
+CL qanxgcg-id:ECUW67 test.out -auto
+FI test.out
+FZ = 378731
+FP 1 />ECUW67 /
+FP 1 />/
+//
+
+ID dbxgcg-all
+AP seqret
+CL qanxgcg:* test.out -auto
+FI test.out
+FZ = 2145073
+FP 1 />XL23808 /
+FP 40 />/
+//
+
+ID dbxgcg-wild
+AP seqret
+CL qanxgcg:h* test.out -auto
+FI test.out
+FZ = 77403
+FP 13 />H/
+FP 13 />/
+//
+
+ID dbxgcg-testexc
+AP seqret
+CL qanxgcgexc-id:hsfau test.out -auto
+FI test.out
+FZ = 560
+FP 1 /\A>HSFAU /
+FP 1 />/
+//
+
+ID dbxgcg-testexcfail
+ER 1
+AP seqret
+CL qanxgcgexc-id:eclac test.out -auto
+FI stderr
+FZ = 123
+FP /Error: Unable to read sequence 'qanxgcgexc-id:eclac'/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
+//
+
+ID dbxgcg-testinc
+AP seqret
+CL qanxgcginc-id:eclac test.out -auto
+FI test.out
+FZ = 7676
+FP 1 /\A>ECLAC /
+FP 1 />/
+//
+
+ID dbxgcg-testincfail
+ER 1
+AP seqret
+CL qanxgcginc-id:hsfau test.out -auto
+FI stderr
+FZ = 123
+FP /Error: Unable to read sequence 'qanxgcginc-id:hsfau'/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
+//
+
+#############################################
+# The qangcgall database(s)
+#############################################
+
+ID dbxgcg-allsys-keep
+DL keep
+TI 120
+AQ dbxgcg
+CL -fields "id,acc,sv,des,key,org"
+IN embl
+IN embl
+IN embl
+IN ../../embl
+IN
+IN
+FI stderr
+FC = 6
+FP 0 /Warning:/
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 9
+FP 9 /^Processing .*\/test\/embl\/eem_[a-z1-9]+\.seq\n/
+FI embl.ent
+FZ = 999
+FP 1 /^Dual filename database\n/
+FP 1 /^# Number of files: 9\n/
+FP 9 /\/test\/embl\/eem_[a-z1-9]+\.ref\n/
+FI embl.pxac
+FZ = 116
+FP 1 /^Order     71\n/
+FP 1 /^Fill      47\n/
+FP 1 /^Pagesize  2048\n/
+FP 1 /^Level     0\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    0\n/
+FP 1 /^Fill2     0\n/
+FP 1 /^Count     47\n/
+FP 1 /^Kwlimit   0\n/
+FI embl.pxde
+FZ = 121
+FP 1 /^Order     71\n/
+FP 1 /^Fill      47\n/
+FP 1 /^Pagesize  2048\n/
+FP 1 /^Level     0\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    71\n/
+FP 1 /^Fill2     106\n/
+FP 1 /^Count     381\n/
+FP 1 /^Kwlimit   15\n/
+FI embl.pxid
+FZ = 116
+FP 1 /^Order     71\n/
+FP 1 /^Fill      47\n/
+FP 1 /^Pagesize  2048\n/
+FP 1 /^Level     0\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    0\n/
+FP 1 /^Fill2     0\n/
+FP 1 /^Count     39\n/
+FP 1 /^Kwlimit   0\n/
+FI embl.pxkw
+FZ = 120
+FP 1 /^Order     71\n/
+FP 1 /^Fill      47\n/
+FP 1 /^Pagesize  2048\n/
+FP 1 /^Level     0\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    71\n/
+FP 1 /^Fill2     106\n/
+FP 1 /^Count     72\n/
+FP 1 /^Kwlimit   15\n/
+FI embl.pxsv
+FZ = 116
+FP 1 /^Order     71\n/
+FP 1 /^Fill      47\n/
+FP 1 /^Pagesize  2048\n/
+FP 1 /^Level     0\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    0\n/
+FP 1 /^Fill2     0\n/
+FP 1 /^Count     23\n/
+FP 1 /^Kwlimit   0\n/
+FI embl.pxtx
+FZ = 121
+FP 1 /^Order     71\n/
+FP 1 /^Fill      47\n/
+FP 1 /^Pagesize  2048\n/
+FP 1 /^Level     0\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    71\n/
+FP 1 /^Fill2     106\n/
+FP 1 /^Count     434\n/
+FP 1 /^Kwlimit   15\n/
+FI embl.xac
+FZ = 6144
+FP 1 /\0ab000095\0/
+FI embl.xde
+FZ = 1257472
+FP 1 /\0fau\0/
+FI embl.xid
+FZ = 6144
+FP 1 /\0hsfau\0/
+FI embl.xkw
+FZ = 358400
+FP 1 /\0rhodopsin\0/
+FI embl.xsv
+FZ = 6144
+FP 1 /\0ab000095.1\0/
+FI embl.xtx
+FZ = 616448
+FP 1 /\0mus\0/
+//
+
+ID dbxgcg-allsys-id
+AP seqret
+CL qanxgcgall-id:hsfau test.out -auto
+FI test.out
+FZ = 560
+FP 1 /\A>HSFAU /
+FP 1 />/
+//
+
+ID dbxgcg-allsys-idfirst
+AP seqret
+CL qanxgcgall-id:AB000095 test.out -auto
+FI test.out
+FZ = 2542
+FP 1 />AB000095 /
+FP 1 />/
+//
+
+ID dbxgcg-allsys-idsecond
+AP seqret
+CL qanxgcgall-id:AB009062 test.out -auto
+FI test.out
+FZ = 594
+FP 1 />AB009062 /
+FP 1 />/
+//
+
+ID dbxgcg-allsys-last
+AP seqret
+CL qanxgcgall-id:XLRHODOP test.out -auto
+FI test.out
+FZ = 1777
+FP 1 />XLRHODOP /
+FP 1 />/
+//
+
+ID dbxgcg-allsys-acc
+AP seqret
+CL qanxgcgall:L07770 test.out -auto
+FI test.out
+FZ = 1777
+FP 1 />XLRHODOP /
+FP 1 />/
+//
+
+ID dbxgcg-allsys-nextlast
+AP seqret
+CL qanxgcgall-id:XL23808 test.out -auto
+FI test.out
+FZ = 4876
+FP 1 />XL23808 /
+FP 1 />/
+//
+
+ID dbxgcg-allsys-splitfirst
+AP seqret
+CL qanxgcgall-id:CEY39B6 test.out -auto
+FI test.out
+FZ = 362911
+FP 1 />CEY39B6 /
+FP 1 />/
+//
+
+ID dbxgcg-allsys-splitmid
+AP seqret
+CL qanxgcgall-id:PFMAL4P1 test.out -auto
+FI test.out
+FZ = 399267
+FP 1 />PFMAL4P1 /
+FP 1 />/
+//
+
+ID dbxgcg-allsys-splitbefore
+AP seqret
+CL qanxgcgall-id:AC017364 test.out -auto
+FI test.out
+FZ = 3801
+FP 1 />AC017364 /
+FP 1 />/
+//
+
+ID dbxgcg-allsys-splitafter
+AP seqret
+CL qanxgcgall-id:PFMAL4P3 test.out -auto
+FI test.out
+FZ = 326444
+FP 1 />PFMAL4P3 /
+FP 1 />/
+//
+
+ID dbxgcg-allsys-splitend
+AP seqret
+CL qanxgcgall-id:ECUW67 test.out -auto
+FI test.out
+FZ = 378731
+FP 1 />ECUW67 /
+FP 1 />/
+//
+
+ID dbxgcg-allsys-all
+AP seqret
+CL qanxgcgall:* test.out -auto
+FI test.out
+FZ = 2145073
+FP 1 />XL23808 /
+FP 40 />/
+//
+
+ID dbxgcg-allsys-wild
+AP seqret
+CL qanxgcgall:h* test.out -auto
+FI test.out
+FZ = 77403
+FP 13 />H/
+FP 13 />/
+//
+
+ID dbxgcg-allsys-acnum
+AP seqret
+CL qanxgcgall-acc:X65923 test.out -auto
+FI test.out
+FZ = 560
+FP 1 /\A>HSFAU /
+FP 1 />/
+//
+
+ID dbxgcg-allsys-acnumall
+AP seqret
+CL qanxgcgall-acc:* test.out -auto
+FI test.out
+FZ = 2145073
+FP 1 />XL23808 /
+FP 40 />/
+//
+
+ID dbxgcg-allsys-acnumwild
+AP seqret
+CL qanxgcgall-acc:x* test.out -auto
+FI test.out
+FZ = 18986
+FP 11 />[A-Z0-9]+ X/
+FP 11 />/
+//
+
+ID dbxgcg-allsys-sv
+AP seqret
+CL qanxgcgall-sv:D00596.1 test.out -auto
+FI test.out
+FZ = 19007
+FP 1 />HSTS1 /
+FP 1 />/
+//
+
+ID dbxgcg-allsys-svall
+AP seqret
+CL qanxgcgall-sv:* test.out -auto
+FI test.out
+FZ = 2145073
+FP 1 />HSFAU /
+FP 40 />/
+//
+
+ID dbxgcg-allsys-svwild
+AP seqret
+CL qanxgcgall-sv:x* test.out -auto
+FI test.out
+FZ = 5045
+FP 3 />H/
+FP 3 />/
+//
+
+ID dbxgcg-allsys-svwild2
+AP seqret
+CL qanxgcgall-sv:D00596* test.out -auto
+FI test.out
+FZ = 5045
+FP 3 />H/
+FP 3 />/
+//
+
+ID dbxgcg-allsys-des
+AP seqret
+CL qanxgcgall-des:fau test.out -auto
+FI test.out
+FZ = 560
+FP 1 /\A>HSFAU /
+FP 1 />/
+//
+
+ID dbxgcg-allsys-desall
+AP seqret
+CL qanxgcgall-des:* test.out -auto
+FI test.out
+FZ = 2145073
+FP 1 />XL23808 /
+FP 40 />/
+//
+
+ID dbxgcg-allsys-deswild
+AP seqret
+CL qanxgcgall-des:m* test.out -auto
+FI test.out
+FZ = 1543930
+FP 18 />.* [Mm]/
+FP 18 />/
+//
+
+ID dbxgcg-allsys-key
+AP seqret
+CL qanxgcgall-key:rhodopsin test.out -auto
+FI test.out
+FZ = 5087
+FP 1 />XLRHODOP /
+FP 3 />/
+//
+
+ID dbxgcg-allsys-keyall
+AP seqret
+CL qanxgcgall-key:* test.out -auto
+FI test.out
+FZ = 2145073
+FP 1 />XL23808 /
+FP 40 />/
+//
+
+ID dbxgcg-allsys-keywild
+AP seqret
+CL qanxgcgall-key:m* test.out -auto
+FI test.out
+FZ = 9918
+FP 1 />AB009602/
+FP 3 />/
+//
+
+ID dbxgcg-allsys-org
+AP seqret
+CL qanxgcgall-org:Mus test.out -auto
+FI test.out
+FZ = 473
+FP 1 />MMAM /
+FP 1 />/
+//
+
+ID dbxgcg-allsys-orgall
+AP seqret
+CL qanxgcgall-org:* test.out -auto
+FI test.out
+FZ = 2145073
+FP 1 />XL23808 /
+FP 40 />/
+//
+
+ID dbxgcg-allsys-orgwild
+AP seqret
+CL qanxgcgall-org:s* test.out -auto
+FI test.out
+FZ = 45442
+FP 1 />MMAM/
+FP 5 />/
+//
+
+ID dbxgcg-allsys-orgwild2
+AP seqret
+CL qanxgcgall-org:mus* test.out -auto
+FI test.out
+FZ = 4274
+FP 1 />MMAM/
+FP 2 />/
+//
+
+#############################################
+# The qaxpir database(s)
+#############################################
+
+ID dbxgcg-pir-keep
+DL keep
+TI 120
+AQ dbxgcg
+IN pir
+IN pir
+IN pir
+IN ../../pir
+IN
+IN
+FI stderr
+FC = 6
+FP 0 /Warning:/
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID dbxgcg-pir-id
+AP seqret
+CL qaxpir-id:cchu test.out -auto
+FI test.out
+FZ = 141
+FP 1 /\A>CCHU /
+FP 1 />/
+//
+
+ID dbxgcg-pir-idfirst
+AP seqret
+CL qaxpir-id:A31558 test.out -auto
+FI test.out
+FZ = 156
+FP 1 />A31558 /
+FP 1 />/
+//
+
+ID dbxgcg-pir-idsecond
+AP seqret
+CL qaxpir-id:A32902 test.out -auto
+FI test.out
+FZ = 123
+FP 1 />A32902 /
+FP 1 />/
+//
+
+ID dbxgcg-pir-last
+AP seqret
+CL qaxpir-id:S29350 test.out -auto
+FI test.out
+FZ = 186
+FP 1 />S29350 /
+FP 1 />/
+//
+
+ID dbxgcg-pir-acc
+AP seqret
+CL qaxpir:A00001 test.out -auto
+FI test.out
+FZ = 141
+FP 1 />CCHU /
+FP 1 />/
+//
+
+ID dbxxgcg-pir-nextlast
+AP seqret
+CL qaxpir-id:S11172 test.out -auto
+FI test.out
+FZ = 178
+FP 1 />S11172 /
+FP 1 />/
+//
+
+ID dbxgcg-pir-all
+AP seqret
+CL qaxpir:* test.out -auto
+FI test.out
+FZ = 10175
+FP 1 />S11172 /
+FP 60 />/
+//
+
+ID dbxgcg-pir-wild
+AP seqret
+CL qaxpir:c* test.out -auto
+FI test.out
+FZ = 7660
+FP 49 />C/
+FP 49 />/
+//
+
+ID dbxgcg-pir-testexc
+AP seqret
+CL qaxpirexc-id:S11172 test.out -auto
+FI test.out
+FZ = 178
+FP 1 /\A>S11172 /
+FP 1 />/
+//
+
+ID dbxgcg-pir-testexcfail
+ER 1
+AP seqret
+CL qaxpirexc-id:cchu test.out -auto
+FI stderr
+FZ = 120
+FP /Error: Unable to read sequence 'qapirexc-id:cchu'/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
+//
+
+ID dbxgcg-pir-testinc
+AP seqret
+CL qaxpirinc-id:cchu test.out -auto
+FI test.out
+FZ = 141
+FP 1 /\A>CCHU /
+FP 1 />/
+//
+
+ID dbxgcg-pir-testincfail
+ER 1
+AP seqret
+CL qaxpirinc-id:S11172 test.out -auto
+FI stderr
+FZ = 122
+FP /Error: Unable to read sequence 'qapirinc-id:S11172'/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
+//
+
+
+#############################################
+# The qapirall database(s)
+#############################################
+
+# fields seqvn not supported by PIR format data
+ID dbxgcg-pirall-keep
+DL keep
+TI 120
+AQ dbxgcg
+CL -fields "id,acc,des,key,org"
+IN pir
+IN pir
+IN pir
+IN ../../pir
+IN
+IN
+IN
+FI stderr
+FC = 6
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI division.lkp
+FZ = 388
+FP /\A.{300}\001\000pir1\.ref pir1\.seq\000/
+FI entrynam.idx
+FZ = 1260
+FP /\A.{300}A31558/
+FI acnum.hit
+FZ = 672
+FP /\A.{300}\033/
+FI acnum.trg
+FZ = 1392
+FP /\A.{308}A00001/
+FI des.hit
+FZ = 1476
+FP /\A.{300}\066/
+FI des.trg
+FZ = 3314
+FP /\A.{308}0/
+FI keyword.hit
+FZ = 1972
+FP /\A.{300}\005/
+FI keyword.trg
+FZ = 828
+FP /\A.{308}ACETYLATED AMINO END/
+FI taxon.hit
+FZ = 572
+FP /\A.{300}\016/
+FI taxon.trg
+FZ = 4332
+FP /\A.{308}ANAS PLATYRHYNCHOS \(DOMESTIC DUCK\)/
+//
+
+ID dbigcg-pirall-id
+AP seqret
+CL qapirall-id:cchu test.out -auto
+FI test.out
+FZ = 141
+FP 1 /\A>CCHU /
+FP 1 />/
+//
+
+ID dbigcg-pirall-idfirst
+AP seqret
+CL qapirall-id:A31558 test.out -auto
+FI test.out
+FZ = 156
+FP 1 />A31558 /
+FP 1 />/
+//
+
+ID dbigcg-pirall-idsecond
+AP seqret
+CL qapirall-id:A32902 test.out -auto
+FI test.out
+FZ = 123
+FP 1 />A32902 /
+FP 1 />/
+//
+
+ID dbigcg-pirall-last
+AP seqret
+CL qapirall-id:S29350 test.out -auto
+FI test.out
+FZ = 186
+FP 1 />S29350 /
+FP 1 />/
+//
+
+ID dbigcg-pirall-acc
+AP seqret
+CL qapirall:A00001 test.out -auto
+FI test.out
+FZ = 141
+FP 1 />CCHU /
+FP 1 />/
+//
+
+ID dbigcg-pirall-nextlast
+AP seqret
+CL qapirall-id:S11172 test.out -auto
+FI test.out
+FZ = 178
+FP 1 />S11172 /
+FP 1 />/
+//
+
+ID dbigcg-pirall-all
+AP seqret
+CL qapirall:* test.out -auto
+FI test.out
+FZ = 10175
+FP 1 />S11172 /
+FP 60 />/
+//
+
+ID dbigcg-pirall-wild
+AP seqret
+CL qapirall:c* test.out -auto
+FI test.out
+FZ = 7660
+FP 49 />C/
+FP 49 />/
+//
+
+ID dbigcg-pirall-acnum
+AP seqret
+CL qapirall-acc:A04605 test.out -auto
+FI test.out
+FZ = 139
+FP 1 /\A>CCRT /
+FP 1 />/
+//
+
+ID dbigcg-pirall-acnumall
+AP seqret
+CL qapirall-acc:* test.out -auto
+FI test.out
+FZ = 10175
+FP 1 />CCRT /
+FP 60 />/
+//
+
+ID dbigcg-pirall-acnumwild
+AP seqret
+CL qapirall-acc:s* test.out -auto
+FI test.out
+FZ = 829
+## CCHO has an S* secondary accession number, rest are primary
+FP 4 />[A-Z0-9]+ S/
+FP 5 />/
+//
+
+ID dbigcg-pirall-des
+AP seqret
+CL qapirall-des:cytochrome test.out -auto
+FI test.out
+FZ = 8516
+FP 1 /\A>CCHU /
+FP 54 />/
+//
+
+ID dbigcg-pirall-desall
+AP seqret
+CL qapirall-des:* test.out -auto
+FI test.out
+FZ = 10175
+FP 1 />CCHU /
+FP 60 />/
+//
+
+ID dbigcg-pirall-deswild
+AP seqret
+CL qapirall-des:p* test.out -auto
+FI test.out
+FZ = 2380
+FP 11 />.*[ -][Pp]/
+FP 11 />/
+//
+
+ID dbigcg-pirall-key
+AP seqret
+CL qapirall-key:polymorphism test.out -auto
+FI test.out
+FZ = 141
+FP 1 />CCHU /
+FP 1 />/
+//
+
+ID dbigcg-pirall-keyall
+AP seqret
+CL qapirall-key:* test.out -auto
+FI test.out
+FZ = 10175
+FP 1 />CCHU /
+FP 60 />/
+//
+
+# only entries with keywords
+ID dbigcg-pirall-keyall2
+AP seqret
+CL qapirall-key:?* test.out -auto
+FI test.out
+FZ = 8800
+FP 1 />CCHU /
+FP 56 />/
+//
+
+ID dbigcg-pirall-keywild
+AP seqret
+CL qapirall-key:m* test.out -auto
+FI test.out
+FZ = 8180
+FP 1 />CCHU /
+FP 52 />/
+//
+
+ID dbigcg-pirall-org
+AP seqret
+CL qapirall-org:'drosophila melanogaster' test.out -auto
+FI test.out
+FZ = 180
+FP 1 />CCFFDM /
+FP 1 />/
+//
+
+ID dbigcg-pirall-orgall
+AP seqret
+CL qapirall-org:* test.out -auto
+FI test.out
+FZ = 10175
+FP 1 />CCHU /
+FP 60 />/
+//
+
+ID dbigcg-pirall-orgwild
+AP seqret
+CL qapirall-org:s* test.out -auto
+FI test.out
+FZ = 1103
+FP 1 />CCPG /
+FP 7 />/
+//
+
+ID dbxgcg-pirall-orgwild2
+AP seqret
+CL qaxpirall-org:mus* test.out -auto
+FI test.out
+FZ = 300
+FP 1 />CCMS /
+FP 2 />/
+//
+
 
 ##################################################################
 # end of database access tests
@@ -18266,12 +19697,8 @@ ID ednaml-ex
 AB phylip
 AA ednaml
 ## may need to play with the input file format for this one
-CL -catum 2 -categories "1111112222222" -rate "1.0 2.0"
-CL -gamma h
-CL -nhmmcategories 5 -hmmrates "0.264 1.413 3.596 7.086 12.641"
-CL -hmmprobabilities "0.522 0.399 0.076 0.0036 0.000023"
-CL -lambda 1.5
-CL -weight "0111111111110"
+CL -categories -catnum 2 -catvals "1.0 3.2" -catprob "0.4 0.6"
+CL -lambda 1.5 -autog -printdata -progress
 IN ../../data/evolution/dnaml.dat
 IN
 IN
@@ -18281,25 +19708,27 @@ IN
 IN
 IN
 IN
+IN
 FI ednaml.outfile
-FC = 90
-FP /^        1           0.264            0.522\n/
-FP /^        2           2.000\n/
-FP /^Ln Likelihood =   -57.89164\n/
-FP /^ +2 + Alpha +0.26902 +\( +zero, +0.80593\) \*\n/
-FP /^             1132121111 211\n/
-FI dnaml.treefile
+FC = 67
+FP /^   G       0.24615\n/
+FP /^           2        3.200            0.600\n/
+FP /^Ln Likelihood =   -71.831[0-9][0-9]\n/
+FP /^   2 +Beta +0.00003 +\( +zero, +0.41145\)\n/
+FP /^   1 +Gamma +1.35995 +\( +zero, +3.26620\) \*\*\n/
+FP /^             2122121111 212\n/
+FI ednaml.treefile
 FC = 2
-FP /^\(\(Epsilon:0.13647,Delta:0.13781\):7.83947,\(Gamma:0.95525,\n/
-FP /^Beta:0.04509\):0.00006,Alpha:0.26902\);\n/
+FP /^\(\(\(Epsilon:0.00012,Delta:0.30872\):3.33144,Beta:0.00012\):0.08840,\n/
+FP /^Gamma:1.35995,Alpha:0.24900\);\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 54
-FP 45 /^./
+FC = 15
+FP 8 /^./
 //
 
 ID ednamlk-ex
@@ -18830,7 +20259,7 @@ FP 3 /^./
 ID fdiscboot-ex
 AB phylipnew
 AA fdiscboot
-CL -seed 3
+CL -seed
 IN ../../data/evolution/discboot.dat
 IN
 IN
@@ -19186,26 +20615,41 @@ FP 9 /^./
 ID fdrawgram-ex
 AB phylipnew
 AA fdrawgram
-CC Need a way to handle input and to stop crash
+CL -previewer n
 IN ../../data/evolution/drawgram.tree
 IN
-IN Q
+IN Y
 FI stderr
-FC = 0
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
+FI stdout
+FC = 12
+FP 8 /^./
+FI drawgram.fdrawgram
+FC = 76
+FP /\%\!PS-Adobe-2.0\n/
+FP 5 /show\n/
 //
 
 ID fdrawtree-ex
 AB phylipnew
 AA fdrawtree
-CC No test defined - try interactively first
+IN ../../data/evolution/drawgram.tree
+IN
 FI stderr
-FC = 0
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
+FI stdout
+FC = 12
+FP 8 /^./
+FI drawgram.fdrawtree
+FC = 86
+FP /\%\!PS-Adobe-2.0\n/
+FP 5 /show\n/
 //
 
 ID ffactor-ex
@@ -19218,6 +20662,9 @@ FI factor.ffactor
 FC = 5
 FP /^ +4 +8\n/
 FP /^Alpha     11100000\n/
+FP /^Beta      10001001\n/
+FP /^Gamma     00011100\n/
+FP /^Epsilon   11101010\n/
 FI factor.factor
 FC = 0
 FI factor.ancestor
@@ -19927,8 +21374,8 @@ FP 2 /^./
 ID ftreedistpair-ex
 AB phylipnew
 AA ftreedistpair
-CL -style sparse
-IN ../../data/evolution/treedist.dat
+CL -style s
+IN ../../data/evolution/treedist2.dat
 IN ../../data/evolution/treedist2.dat
 IN
 IN
