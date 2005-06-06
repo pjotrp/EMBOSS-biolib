@@ -2780,11 +2780,10 @@ AjStatus ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 	    }
 	    else
 	    {
-		ajStrAssS(&acdPackRoot, acdRoot);
 		ajNamRoot(&acdPackRoot);
 		ajFileDirUp(&acdPackRoot);
 		ajFmtPrintS(&acdFName, "%Sembassy/%S/emboss_acd/%s.acd",
-			    acdRoot, acdPack, pgm);
+			    acdPackRoot, acdPack, pgm);
 		acdLog("Trying acdfile '%S' (package %s source)\n",
 		       acdFName, package);
 	    }
