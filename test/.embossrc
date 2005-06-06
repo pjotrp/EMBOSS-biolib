@@ -457,3 +457,4 @@ DB temblrest [ type: N dir: "$emboss_tempdata/embl"
 
 RES embl [ type: "Index" ]
 RES swnew [ type: "Index" ]
+RES pir [ type: "Index" ]
