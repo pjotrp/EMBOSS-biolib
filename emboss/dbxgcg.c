@@ -68,6 +68,7 @@ static ajlong dbxgcg_gcgappent(AjPFile infr, AjPFile infs,
 ** @alias DbxgcgOParser
 **
 ** @attr Name [char*] Parser name
+** @attr GcgType [AjBool] Gcg type parser if true, PIR type if false
 ** @attr Parser [(AjBool*)] Parser function
 ** @@
 ******************************************************************************/
@@ -142,7 +143,7 @@ int main(int argc, char **argv)
     dbtype     = ajAcdGetListI("idformat",1);
     fieldarray = ajAcdGetList("fields");
     directory  = ajAcdGetDirectoryName("directory");
-    indexdir   = ajAcdGetOutdirName("indexdirectory");
+    indexdir   = ajAcdGetOutdirName("indexoutdir");
     filename   = ajAcdGetString("filenames");
     exclude    = ajAcdGetString("exclude");
     dbname     = ajAcdGetString("dbname");
@@ -903,7 +904,7 @@ static AjBool dbxgcg_ParseEmbl(EmbPBtreeEntry entry, AjPFile infr,
 
 
 
-/* @funcstatic dbigcg_ParseGenbank ********************************************
+/* @funcstatic dbxgcg_ParseGenbank ********************************************
 **
 ** Parse the ID, accession from a Genbank entry
 **
@@ -1112,6 +1113,7 @@ static AjBool dbxgcg_ParsePir(EmbPBtreeEntry entry, AjPFile infr,
     static AjPRegexp ac2exp = NULL;
     static AjPRegexp keyexp = NULL;
     static AjPRegexp taxexp = NULL;
+    static AjPRegexp tax2exp = NULL;
     static AjPRegexp wrdexp = NULL;
     static AjPRegexp phrexp = NULL;
     ajlong rpos;
@@ -1130,6 +1132,9 @@ static AjBool dbxgcg_ParsePir(EmbPBtreeEntry entry, AjPFile infr,
 
     if(!phrexp)				/* allow . for "sp." */
 	phrexp = ajRegCompC(" *([^,;\n\r]+)");
+
+    if(!tax2exp)				/* allow . for "sp." */
+	tax2exp = ajRegCompC(" *([^,;\n\r()]+)");
 
     if(!acexp)
 	acexp = ajRegCompC("^C;Accession:");
@@ -1198,6 +1203,7 @@ static AjBool dbxgcg_ParsePir(EmbPBtreeEntry entry, AjPFile infr,
 		{
 		    ajRegSubI(phrexp, 1, &tmpfd);
 		    ajDebug("++key '%S'\n", tmpfd);
+		    ajStrChompEnd(&tmpfd);
 
 		    str = ajStrNew();
 		    ajStrAssS(&str,tmpfd);
@@ -1213,16 +1219,17 @@ static AjBool dbxgcg_ParsePir(EmbPBtreeEntry entry, AjPFile infr,
 	    if(ajRegExec(taxexp, rline))
 	    {
 		ajRegPost(taxexp, &tmpline);
-		while(ajRegExec(phrexp, tmpline))
+		while(ajRegExec(tax2exp, tmpline))
 		{
-		    ajRegSubI(phrexp, 1, &tmpfd);
+		    ajRegSubI(tax2exp, 1, &tmpfd);
+		    ajStrChompEnd(&tmpfd);
 		    ajDebug("++tax '%S'\n", tmpfd);
 
 		    str = ajStrNew();
 		    ajStrAssS(&str,tmpfd);
 		    ajListPush(entry->tx,(void *)str);
 
-		    ajRegPost(phrexp, &tmpline);
+		    ajRegPost(tax2exp, &tmpline);
 		}
 	    }
 	}
