@@ -101,10 +101,17 @@ section: advanced [
     knowntype: "filename wildcard"
   ]
 
-  directory: indexdirectory  [
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outdir: indexoutdir  [
     default: "."
     information: "Index directory"
     knowntype: "output directory"
   ]
 
-endsection: advanced
+endsection: output

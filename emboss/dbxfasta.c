@@ -37,7 +37,7 @@
 static AjBool dbxfasta_NextEntry(EmbPBtreeEntry entry, AjPFile inf,
 				 AjPRegexp typeexp, ajint idtype);
 static AjBool dbxfasta_ParseFasta(EmbPBtreeEntry entry, AjPRegexp typeexp,
-				  ajint idtype, AjPStr line);
+				  ajint idtype, const AjPStr line);
 static AjPRegexp dbxfasta_getExpr(const AjPStr idformat, ajint *type);
 
 
@@ -89,7 +89,7 @@ int main(int argc, char **argv)
     dbtype     = ajAcdGetListI("idformat",1);
     fieldarray = ajAcdGetList("fields");
     directory  = ajAcdGetDirectoryName("directory");
-    indexdir   = ajAcdGetDirectoryName("indexdirectory");
+    indexdir   = ajAcdGetOutdirName("indexoutdir");
     filename   = ajAcdGetString("filenames");
     exclude    = ajAcdGetString("exclude");
     dbname     = ajAcdGetString("dbname");
@@ -213,7 +213,7 @@ int main(int argc, char **argv)
 ** @param [u] entry [EmbPBtreeEntry] entry object ptr
 ** @param [u] inf [AjPFile] file object ptr
 ** @param [u] typeexp [AjPRegexp] regexp corresponding to idtype
-** @param [u] idtype [ajint] the kind of parsing required
+** @param [r] idtype [ajint] the kind of parsing required
 **
 ** @return [AjBool] ajTrue on success, ajFalse if EOF
 ** @@
@@ -321,13 +321,13 @@ static AjPRegexp dbxfasta_getExpr(const AjPStr idformat, ajint *type)
 ** @param [u] entry [EmbPBtreeEntry] entry object ptr
 ** @param [u] typeexp [AjPRegexp] regular expression
 ** @param [r] idtype [ajint] type of id line
-** @param [r] line [AjPStr] fasta '>' line
+** @param [r] line [const AjPStr] fasta '>' line
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
 static AjBool dbxfasta_ParseFasta(EmbPBtreeEntry entry, AjPRegexp typeexp,
-				  ajint idtype, AjPStr line)
+				  ajint idtype, const AjPStr line)
 {
     static AjPRegexp wrdexp = NULL;
     static AjPStr ac  = NULL;
