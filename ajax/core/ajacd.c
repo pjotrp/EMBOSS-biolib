@@ -2751,6 +2751,7 @@ AjStatus ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     {				       /* _acdroot variable defined */
 	ajFileDirFix(&acdRoot);
 	ajFmtPrintS(&acdFName, "%S%s.acd", acdRoot, pgm);
+	acdLog("Trying acdfile '%S' (acdroot)\n", acdFName);
 	acdFile = ajFileNewIn(acdFName);
     }
     else if(*package)
@@ -2759,6 +2760,8 @@ AjStatus ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 		acdRootInst, acdPack, pgm);*/
 	ajFmtPrintS(&acdFName, "%Sshare/EMBOSS/acd/%s.acd",
 		    acdRootInst, pgm);
+	acdLog("Trying acdfile '%S' (package '%s' installed)\n",
+	       acdFName, package);
 	acdFile = ajFileNewIn(acdFName);
 	if(!acdFile)
 	{
@@ -2772,6 +2775,8 @@ AjStatus ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 	    {
 		ajFileDirFix(&acdPackRoot);
 		ajFmtPrintS(&acdFName, "%S%s.acd", acdPackRoot, pgm);
+		acdLog("Trying acdfile '%S' (package %sacdroot)\n",
+		       acdFName, package);
 	    }
 	    else
 	    {
@@ -2780,6 +2785,8 @@ AjStatus ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 		ajFileDirUp(&acdPackRoot);
 		ajFmtPrintS(&acdFName, "%Sembassy/%S/emboss_acd/%s.acd",
 			    acdRoot, acdPack, pgm);
+		acdLog("Trying acdfile '%S' (package %s source)\n",
+		       acdFName, package);
 	    }
 	    acdFile = ajFileNewIn(acdFName);
 	}
@@ -2788,6 +2795,7 @@ AjStatus ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     {					/* main package */
 	ajFmtPrintS(&acdFName, "%Sshare/%S/acd/%s.acd",
 		    acdRootInst, acdPack, pgm);
+	acdLog("Trying acdfile '%S' (installed)\n", acdFName);
 	acdFile = ajFileNewIn(acdFName);
 	if(!acdFile)
 	{
@@ -2799,6 +2807,7 @@ AjStatus ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 	    {
 		ajFileDirFix(&acdUtilRoot);
 		ajFmtPrintS(&acdFName, "%S%s.acd", acdUtilRoot, pgm);
+		acdLog("Trying acdfile '%S' (acdutilroot)\n", acdFName);
 		acdFile = ajFileNewIn(acdFName);
 	    }
 	}
@@ -2808,6 +2817,7 @@ AjStatus ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 	    ajNamRoot(&acdRoot);
 	    ajFileDirFix(&acdRoot);
 	    ajFmtPrintS(&acdFName, "%Sacd/%s.acd", acdRoot, pgm);
+	    acdLog("Trying acdfile '%S' (original main source)\n", acdFName);
 	    acdFile = ajFileNewIn(acdFName);
 	    if(!acdFile)
 	    {
