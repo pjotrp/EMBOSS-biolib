@@ -184,6 +184,11 @@ node **p;
   *p = (node *)Malloc((long)sizeof(node));
   (*p)->next = NULL;
   (*p)->tip = false;
+  (*p)->maxpos = 0;
+  (*p)->nodeset = 0;
+  (*p)->index = 0;
+  (*p)->ymin = (*p)->ymax = 0;
+  (*p)->xcoord = (*p)->ycoord =0;
 }  /* nunode */
 
 
