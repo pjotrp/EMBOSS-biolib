@@ -119,45 +119,55 @@ void readtree()
   npairs = 0;
   const char* cp;
 
-
-
   cp = ajStrStr(rdline);
-  printf("%c", (*cp));
- 
- 
  
   while (*cp && isspace((int)*cp))
       cp++;
+
   while (*cp && isdigit((int)*cp))
       cp++;
 
   while (*cp) {
-          while (*cp && isspace((int)*cp))
+      while (*cp && isspace((int)*cp))
 	  cp++;
+
       ch = *cp++;
-      printf(" %c ", (ch));
-    npairs++;
-    pair[npairs - 1][0] = ch;
+      npairs++;
+      pair[npairs - 1][0] = ch;
  
-   
-    /*
-//    if (!(*cp) || (ch != factchar)) {
-//     printf("\n\nERROR: Character %d:  bad character state tree format1\n\n",
-//             (int)(cp - ajStrStr(rdline)));
-//      printf("\n\nch: %c\n", ch);
-//      exxit(-1);
-//    } *?
-//
-//    pair[npairs - 1][1] = *cp++;
-//
-//    ?*
-//    if (pair[npairs - 1][1] == ' '){
-//    printf("\n\nERROR: Character %d:  bad character state tree format2\n\n",
-//             (int)(cp - ajStrStr(rdline)));
-//      exxit(-1);
-//    } 
-    */
+      while (*cp && isspace((int)*cp))
+	  cp++;
+
+      ch = *cp++;
+      
+      if (!(*cp) || (ch != factchar)) {
+	  printf("\n\nERROR: Character %d:  bad character state tree format1\n\n",
+		 (int)(cp - ajStrStr(rdline)));
+	  printf("\n\nch: %c\n", ch);
+	  exxit(-1);
+      }
+
+
+      while (*cp && isspace((int)*cp))
+	  cp++;
+
+      ch = *cp++;
+      pair[npairs - 1][1] = ch;
+
+      while (*cp && isspace((int)*cp))
+	  cp++;
+
+      if (pair[npairs - 1][1] == ' ')
+      {
+	  printf("\n\nERROR: Character %d:  bad character state tree format2\n\n",
+		 (int)(cp - ajStrStr(rdline)));
+	  exxit(-1);
+      } 
+
+      while (*cp && isspace((int)*cp))
+	  cp++;
   }
+
 }  /* readtree */
 
 
@@ -368,7 +378,9 @@ void dotrees()
     chstart[charindex - 1] = offset;
     numstates[charindex - 1] = nstates;
     offset += nstates * nstates;
-    ajFmtScanF(inputfile, "%ld", &charnumber);
+    ajFileGetsTrim(inputfile, &rdline);
+    ajFmtScanS(rdline, "%d", &ival);
+    charnumber = ival;
   }
   /*    each multistate character */
   /*    symbol  */
@@ -441,6 +453,7 @@ void doeu(long *chposition, long eu)
   Char *multichar;
   const char* cp;
 
+  ajFileGetsTrim(inputfile, &rdline);
   cp = ajStrStr(rdline);
 
   for (i = 1; i <= nmlngth; i++) {
@@ -459,16 +472,17 @@ void doeu(long *chposition, long eu)
   multichar = (Char *)Malloc(nchars*sizeof(Char));
   *chposition = 11;
   for (i = 0; i < (nchars); i++) {
-    while (isspace((int)ch)) {
       ch = *cp++;
-      if (!*cp)
-      {
-	  ajFileGetsTrim(inputfile, &rdline);
-	  cp = ajStrStr(rdline);
+      while (isspace((int)ch)) {
 	  ch = *cp++;
+	  if (!*cp)
+	  {
+	      ajFileGetsTrim(inputfile, &rdline);
+	      cp = ajStrStr(rdline);
+	      ch = *cp++;
+	  }
       }
-    }
-    multichar[i] = ch;
+      multichar[i] = ch;
   }
  
   for (charindex = 0; charindex < (lastindex); charindex++) {
@@ -478,7 +492,7 @@ void doeu(long *chposition, long eu)
       i = 1;
       while (symbarray[chstart[charindex] + i - 1] !=
              multichar[charnum[charindex] - 1] && i <= numstates[charindex])
-        i++;
+	  i++;
       if (i > numstates[charindex]) {
         if( multichar[charnum[charindex] - 1] == unkchar){
           for (i = 1; i < (numstates[charindex]); i++)

@@ -9,13 +9,13 @@ section: input [
   type: "page"
 ]
 
-infile: intreefile [
+tree: intreefile [
   parameter: "Y"
   knowntype: "newick tree"
   information: "Tree file"
 ]
 
-infile: bintreefile [
+tree: bintreefile [
   parameter: "Y"
   knowntype: "newick tree"
   information: "Second input tree file"
@@ -24,31 +24,50 @@ infile: bintreefile [
 
 endsection: input
 
-section: required [
-  information: "Required section"
+section: additional [
+  information: "Additional section"
   type: "page"
 ]
 
+list: dtype [
+  additional: "Y"
+  information: "Distance type"
+  values: "s:Symmetric difference;
+           b:Branch score distance"
+  default: "b"
+]
+
 list: pairing [
-  standard: "Y"
+  additional: "Y"
   information: "Tree pairing method"
-  values: "Correspond:Distances between corresponding pairs in one
-  tree file and another;
-           ListAll:Distances between all pairs in one tree file and
-  another"
-  default: "ListAll"
+  values: "c:Distances between corresponding pairs each tree file;
+           l:Distances between all possible pairs in each tree file"
+  default: "l"
 ]
 
 list: style [
-  standard: "Y"
+  additional: "Y"
   information: "Distances output option"
-  values: "Full:Full_matrix;
-           Verbose:One pair per line;
-           Sparse:One pair per line"
+  values: "f:Full_matrix;
+           v:One pair per line, verbose;
+           s:One pair per line, sparese"
   default: "Verbose"
+  default: "v"
 ]
 
-endsection: required
+boolean: noroot [
+  additional: "Y"
+  default: "N"
+  information: "Trees to be treated as rooted"
+]
+
+integer: outgrno [
+	additional: "Y"
+	minimum: "0"  
+	default: "0"
+	information: "Species number to use as outgroup"
+]
+endsection: additional
 
 section: output [
   information: "Output section"

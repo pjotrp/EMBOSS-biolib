@@ -3089,7 +3089,10 @@ void makebox(char *fn,double *xo,double *yo,double *scale,long ntips)
   long xpag,ypag,i,j;
   double xpagecorrection, ypagecorrection;
 
-  if (previewer != winpreview && previewer != mac && previewer != xpreview) {
+  if (previewer != winpreview &&
+      previewer != mac &&
+      previewer != xpreview &&
+      previewer != other) {
     printf("\nWe now will preview the tree.  The box that will be\n");
     printf("plotted on the screen represents the boundary of the\n");
     printf("final plotting surface.  To see the preview, press on\n");
@@ -3109,7 +3112,10 @@ void makebox(char *fn,double *xo,double *yo,double *scale,long ntips)
   oldvpmargin    = vpmargin;
   oldplotter     = plotter;
   plotter        = previewer;
-  if (previewer != winpreview && previewer != mac && previewer != xpreview) {
+  if (previewer != winpreview &&
+      previewer != mac &&
+      previewer != xpreview &&
+      previewer != other) {
 #ifdef WIN32
     phyFillScreenColor();
 #endif
@@ -3275,10 +3281,10 @@ boolean plotpreview(char *fn, double *xo, double *yo, double *scale,
   if (previewer == winpreview || previewer == xpreview || previewer == mac) {
     canbeplotted = (winaction == plotnow);
   } else {
-    printf(" Is the tree ready to be plotted? (Answer Y or N)\n");
+    fprintf(stderr, " Is the tree ready to be plotted? ");
     loopcount = 0;
     do {
-      printf("Type Y or N:\n");
+      fprintf(stderr, "Type Y or N: \n");
 #ifdef WIN32
       phyFillScreenColor();
 #endif

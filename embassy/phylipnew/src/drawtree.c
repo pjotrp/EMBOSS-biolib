@@ -28,7 +28,9 @@
 
 typedef enum {fixed, radial, along, middle} labelorient;
 FILE        *plotfile;
-char        pltfilename[FNMLNGTH];
+AjPFile embossplotfile;
+const char *pltfilename;
+
 long        nextnode,  strpwide, strpdeep,
             strptop, strpbottom,  payge, numlines,hpresolution;
 double      xmargin, ymargin, topoflabels, rightoflabels, leftoflabels,
@@ -51,6 +53,9 @@ fonttype font;
 enum {  yes, no } penchange, oldpenchange;
 char ch,resopts;
 char *progname;
+
+AjPPhyloTree* phylotrees = NULL;
+
 long filesize;
 long strpdiv;
 double pagex,pagey,paperx,papery,hpmargin,vpmargin;
@@ -95,6 +100,7 @@ String res[]= {
 
 #ifndef OLDC
 /* function prototypes */
+void   emboss_getoptions(char *pgm, int argc, char *argv[]);
 void   initdrawtreenode(node **, node **, node *, long, long, long *,
         long *, initops, pointarray, pointarray, Char *, Char *, char**);
 void   initialparms(void);
@@ -213,14 +219,93 @@ void initialparms()
   ymargin = 0.08 * ysize;
   labelrotation = 0.0;
   charht = 0.3333;
-  preview = true;  
-  plotter = DEFPLOTTER;
-  previewer = DEFPREV;
+  /* these are set by emboss_getoptions */
+
+/*
+//  preview = true;
+//  plotter = DEFPLOTTER;
+//  previewer = DEFPREV;
+*/
+
   hpmargin = 0.02*pagex;
   vpmargin = 0.02*pagey;
   labelavoid = false;
   uselengths = haslengths;
 }  /* initialparms */
+
+
+void emboss_getoptions(char *pgm, int argc, char *argv[])
+{
+  /* get from user the relevant parameters for the plotter and diagram */
+
+  int m, n;
+  AjPStr plottercode = NULL;
+  AjPStr getpreviewer = NULL;
+  AjPStr labeldirection = NULL;
+  AjStatus retval;    
+
+  ajNamInit("emboss");
+  retval = ajAcdInitP (pgm, argc, argv, "PHYLIPNEW");
+
+  n = (int)((pagex-hpmargin-0.01)/(paperx-hpmargin)+1.0);
+  m = (int)((pagey-vpmargin-0.01)/(papery-vpmargin)+1.0);
+
+    phylotrees = ajAcdGetTree("intreefile");
+ 
+    plottercode = ajAcdGetListI("plotter", 1);
+    
+    getplotter(ajStrChar(plottercode,0));
+
+    labeldirection = ajAcdGetListI("labeldirection", 1);
+
+    getpreviewer = ajAcdGetListI("previewer", 1);
+
+    if(ajStrMatchC(getpreviewer, "n")) {
+      preview = false;
+      previewer = other;   /* Added by Dan F. */
+    }
+    else if(ajStrMatchC(getpreviewer, "i")) previewer = ibm;
+    else if(ajStrMatchC(getpreviewer, "m")) previewer = mac;
+    else if(ajStrMatchC(getpreviewer, "x")) previewer = xpreview;
+    else if(ajStrMatchC(getpreviewer, "w")) previewer = winpreview;
+    else if(ajStrMatchC(getpreviewer, "i")) previewer = tek; 
+    else if(ajStrMatchC(getpreviewer, "i")) previewer = decregis;
+    else if(ajStrMatchC(getpreviewer, "o")) previewer = other;
+
+    uselengths = ajAcdGetBool("lengths"); /* needed */
+
+    labelrotation = ajAcdGetFloat("labelrotation");
+
+    if(plotter==ray) {
+      xmargin = ajAcdGetFloat("xmarginray");
+      ymargin = ajAcdGetFloat("ymarginray");
+    }
+    else {
+      xmargin = ajAcdGetFloat("xmargin");
+      ymargin = ajAcdGetFloat("ymargin");
+    }
+
+
+    rescaled = ajAcdGetToggle("rescaled");
+    if(rescaled) bscale = ajAcdGetFloat("bscale");
+
+    m = ajAcdGetFloat("pagesheight");
+    n = ajAcdGetFloat("pageswidth"); 
+
+    paperx = ajAcdGetFloat("paperx");
+    papery = ajAcdGetFloat("papery");
+
+    hpmargin = ajAcdGetFloat("hpmargin");
+    vpmargin = ajAcdGetFloat("vpmargin");
+
+    pagex = ((double)n * (paperx-hpmargin)+hpmargin);
+    pagey = ((double)m * (papery-vpmargin)+vpmargin);
+ 
+
+  embossplotfile = ajAcdGetOutfile("plotfile");
+  emboss_openfile(embossplotfile, &plotfile, &pltfilename);
+
+}  /* getparms */
 
 
 char showparms()
@@ -2356,18 +2441,20 @@ void user_loop()
 {
   /* loop to make preview window and decide what to do with it */
 
-  long loopcount;
-  char input_char;
+/*  long loopcount;*/
+/*  char input_char;*/
 
   while (!canbeplotted) {
-    loopcount = 0;
-    do {
-      input_char=showparms();
-      firstscreens = false;
-      if ( input_char != 'Y')
-        getparms(input_char);
-      countup(&loopcount, 10);
-    } while (input_char != 'Y');
+/*
+//    loopcount = 0;
+//    do {
+//      input_char=showparms();
+//      firstscreens = false;
+//      if ( input_char != 'Y')
+//        getparms(input_char);
+//      countup(&loopcount, 10);
+//    } while (input_char != 'Y');
+*/
     xscale = xunitspercm;
     yscale = yunitspercm;
     plotrparms(spp);
@@ -2418,6 +2505,7 @@ void setup_environment(int argc, Char *argv[])
 
   printf("Reading tree ... \n");
   firsttree = true;
+  treestr = ajStrStrMod(&phylotrees[0]->Tree); 
   allocate_nodep(&nodep, treestr, &spp);
   treeread (&treestr, &root, treenode, &goteof, &firsttree,
             nodep, &nextnode, &haslengths,
@@ -2492,6 +2580,7 @@ int main(int argc, Char *argv[])
   nargv=argv;
 #endif
   init(argc,argv);
+  emboss_getoptions("fdrawtree",argc,argv);
   
   progname = argv[0];
   grbg =  NULL;

@@ -10,6 +10,11 @@ section: input [
 	type: "page"
 ]
 
+string: fontfile [
+	information: "Fontfile"
+	knowntype: "fontfile"
+]
+
 tree: intreefile [
 	parameter: "Y"
 	knowntype: "newick"
@@ -34,27 +39,6 @@ outfile: plotfile [
 	knowntype: "drawgram outout"
 ]
 
-
-boolean: grows [
-	additional: "Y"          
-        default: "Y"
-        information: "Tree grows horizontally"
-]
-
-list: style  [
-	additional: "Y"
-	minimum: "1"
-	maximum: "1"
-	header: "Tree style"
-	values: "c:cladogram (v-shaped);
-                 p:phenogram (branches are square);
-                 v:curvogram (branches are 1/4 out of an ellipse);
-                 e:eurogram (branches angle outward, then up);
-                 s:swooporam (branches curve outward then reverse);
-                 o:circular tree"
-   	information: "Tree style output"
-  	default: "c"
-]
 
 list: plotter [
 	additional: "Y"
@@ -145,7 +129,7 @@ boolean: lengths [
 	information: "Use branch lengths from user trees"
 ]
 
-list: labeldirec [
+list: labeldirection [
 	additional: "Y"
 	minimum: "1"
 	maximum: "1"
@@ -155,7 +139,7 @@ list: labeldirec [
 		 r:radial;
 		 m:middle"
 	information: "Label direction"
-	default: "e"
+	default: "m"
 ]
 
 float: treeangle [
@@ -201,36 +185,6 @@ float: treedepth [
 	information: "Depth of tree as fraction of its breadth"
 	minimum: "0.1"
 	maximum: "100.0"
-]
-
-float: stemlength [
-	additional: "Y"
-	default: "0.05"
-	information: "Stem length as fraction of tree depth"
-	minimum: "0.1"
-	maximum: "100.0"
-]
-
-float: nodespace [
-	additional: "Y"
-	default: "0.3333"
-	information: "Character height as fraction of tip spacing"
-	minimum: "0.1"
-	maximum: "100.0"
-]
-
-list: nodeposition [
-	additional: "Y"
-	minimum: "1"
-	maximum: "1"
-	header: "Node position"
-	values: "i:Intermediate between their immediate descendants;
-                 w:Weighted average of tip positions;
-                 c:Centered among their ultimate descendants;
-                 n:Innermost of immediate descendants;
-                 v:So tree is v shaped"
-   	information: "Position of interior nodes"
-  	default: "c"
 ]
 
 float: xmargin [

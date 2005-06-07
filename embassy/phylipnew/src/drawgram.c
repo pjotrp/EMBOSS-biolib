@@ -153,8 +153,13 @@ void initdrawgramnode(node **p, node **grbg, node *q, long len,
 void initialparms()
 {
   /* initialize parameters */
-  plotter = DEFPLOTTER;
-  previewer = DEFPREV;
+
+  /* these are set by emboss_getoptions */
+/*
+//     plotter = DEFPLOTTER;
+//     previewer = DEFPREV;
+*/
+
   paperx=20.6375;
   pagex=20.6375;
   papery=26.9875;
@@ -209,7 +214,6 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     
     getplotter(ajStrChar(plottercode,0));
 
-
     getpreviewer = ajAcdGetListI("previewer", 1);
 
     if(ajStrMatchC(getpreviewer, "n")) {
@@ -223,7 +227,6 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     else if(ajStrMatchC(getpreviewer, "i")) previewer = tek; 
     else if(ajStrMatchC(getpreviewer, "i")) previewer = decregis;
     else if(ajStrMatchC(getpreviewer, "o")) previewer = other;
-
 
     getgrows = ajAcdGetBool("grows");
     if(getgrows) grows = horizontal;
@@ -980,12 +983,14 @@ void user_loop(boolean *canbeplotted)
   long stripedepth;
   
   while (!(*canbeplotted)) {
+/*
     // do {
     //  input_char=showparms();
     // firstscreens = false;
       //if (input_char != 'Y')
         //getparms(input_char);
     // } while (input_char != 'Y');
+*/
     if (dotmatrix) {
       stripedepth = allocstripe(stripe,(strpwide/8),
                                 ((long)(yunitspercm * ysize)));

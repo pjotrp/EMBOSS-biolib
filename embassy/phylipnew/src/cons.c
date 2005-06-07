@@ -1306,7 +1306,8 @@ void reordertips()
 
 
 void read_groups (pattern_elm ****pattern_array,double *timesseen_changes,
-                        long trees_in_1, long total_trees, AjPPhyloTree* treesource)
+		  long trees_in_1, long total_trees,
+		  AjPPhyloTree* treesource)
 {
   /* read the trees.  Accumulate sets. */
   int i, j, k;
