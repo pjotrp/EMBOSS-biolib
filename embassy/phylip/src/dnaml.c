@@ -339,7 +339,7 @@ void emboss_getnums(){
   numsp = ajSeqsetSize (seqset);
   sites = ajSeqsetGetRange(seqset,&begin2,&end2);
   if (printdata)
-    fprintf(outfile, "%4hd Species, %4hd Sites\n", numsp, sites);
+    fprintf(outfile, "%4hd Species, %4hd Sites\n\n", numsp, sites);
   numsp1 = numsp + 1;
   numsp2 = numsp * 2 - 2;
 }
