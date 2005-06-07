@@ -3187,6 +3187,15 @@ FP 1 />CO9_FUGRU /
 FP 1 />/
 //
 
+ID dbiblast-split-testexcall
+AP seqret
+CL qapblastsplitexc:* test.out -auto
+FI test.out
+FZ = 3864
+FP 1 />CO9_FUGRU /
+FP 7 />/
+//
+
 ID dbiblast-split-testexcfail
 ER 1
 AP seqret
@@ -3206,6 +3215,15 @@ FI test.out
 FZ = 175
 FP 1 />FABP_FUGRU /
 FP 1 />/
+//
+
+ID dbiblast-split-testincall
+AP seqret
+CL qapblastsplitinc:* test.out -auto
+FI test.out
+FZ = 610
+FP 1 />FABP_FUGRU /
+FP 2 />/
 //
 
 ID dbiblast-split-testincfail
@@ -3963,6 +3981,15 @@ FP 1 />CO9_FUGRU /
 FP 1 />/
 //
 
+ID dbiflat-swiss-testexcall
+AP seqret
+CL qapflatexc-id:* test.out -auto
+FI test.out
+FZ = 1978
+FP 1 />CO9_FUGRU /
+FP 4 />/
+//
+
 ID dbiflat-swiss-testexcfail
 ER 1
 AP seqret
@@ -3978,6 +4005,15 @@ FP 1 /Died: /
 ID dbiflat-swiss-testinc
 AP seqret
 CL qapflatinc-id:FOS_FUGRU test.out -auto
+FI test.out
+FZ = 435
+FP 1 />FOS_FUGRU /
+FP 1 />/
+//
+
+ID dbiflat-swiss-testincall
+AP seqret
+CL qapflatinc-id:* test.out -auto
 FI test.out
 FZ = 435
 FP 1 />FOS_FUGRU /
@@ -4185,6 +4221,15 @@ FP 1 /\A>HSFAU /
 FP 1 />/
 //
 
+ID dbigcg-testexcall
+AP seqret
+CL qangcgexc-id:* test.out -auto
+FI test.out
+FZ = 1744803
+FP 1 />HSFAU /
+FP 30 />/
+//
+
 ID dbigcg-testexcfail
 ER 1
 AP seqret
@@ -4204,6 +4249,15 @@ FI test.out
 FZ = 7676
 FP 1 /\A>ECLAC /
 FP 1 />/
+//
+
+ID dbigcg-testincall
+AP seqret
+CL qangcginc-id:* test.out -auto
+FI test.out
+FZ = 400270
+FP 1 />ECLAC /
+FP 10 />/
 //
 
 ID dbigcg-testincfail
@@ -4706,6 +4760,15 @@ FP 1 /\A>S11172 /
 FP 1 />/
 //
 
+ID dbigcg-pir-testexcall
+AP seqret
+CL qapirexc-id:* test.out -auto
+FI test.out
+FZ = 2515
+FP 1 />S11172 /
+FP 11 />/
+//
+
 ID dbigcg-pir-testexcfail
 ER 1
 AP seqret
@@ -4725,6 +4788,15 @@ FI test.out
 FZ = 141
 FP 1 /\A>CCHU /
 FP 1 />/
+//
+
+ID dbigcg-pir-testincall
+AP seqret
+CL qapirinc-id:* test.out -auto
+FI test.out
+FZ = 7660
+FP 1 />CCHU /
+FP 49 />/
 //
 
 ID dbigcg-pir-testincfail
@@ -5671,6 +5743,15 @@ FP 1 />CO9_FUGRU /
 FP 1 />/
 //
 
+ID dbxflat-swiss-testexcall
+AP seqret
+CL qapxflatexc-id:* test.out -auto
+FI test.out
+FZ = 1978
+FP 1 />CO9_FUGRU /
+FP 4 />/
+//
+
 ID dbxflat-swiss-testexcfail
 ER 1
 AP seqret
@@ -5687,6 +5768,15 @@ FP 1 /Died: /
 ID dbxflat-swiss-testinc
 AP seqret
 CL qapxflatinc-id:FOS_FUGRU test.out -auto
+FI test.out
+FZ = 435
+FP 1 />FOS_FUGRU /
+FP 1 />/
+//
+
+ID dbxflat-swiss-testincall
+AP seqret
+CL qapxflatinc-id:* test.out -auto
 FI test.out
 FZ = 435
 FP 1 />FOS_FUGRU /
@@ -5889,6 +5979,15 @@ FP 1 /\A>HSFAU /
 FP 1 />/
 //
 
+ID dbxgcg-testexcall
+AP seqret
+CL qanxgcgexc-id:* test.out -auto
+FI test.out
+FZ = 1744803
+FP 1 />HSFAU /
+FP 30 />/
+//
+
 ID dbxgcg-testexcfail
 ER 1
 AP seqret
@@ -5908,6 +6007,15 @@ FI test.out
 FZ = 7676
 FP 1 /\A>ECLAC /
 FP 1 />/
+//
+
+ID dbxgcg-testincall
+AP seqret
+CL qanxgcginc-id:* test.out -auto
+FI test.out
+FZ = 400270
+FP 1 />ECLAC /
+FP 10 />/
 //
 
 ID dbxgcg-testincfail

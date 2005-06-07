@@ -347,7 +347,7 @@ typedef struct SeqSCdQry
 ** @attr libs [AjPFile] Primary (database source) file
 ** @attr libr [AjPFile] Secondary (database bibliographic source) file
 ** @attr List [AjPList] List of files
-** @attr skip [AjBool*] files numbers to exclude
+** @attr Skip [AjBool*] files numbers to exclude
 ** @@
 ******************************************************************************/
 
@@ -376,7 +376,7 @@ typedef struct SeqSEmbossQry
     AjPFile libr;
     
     AjPList List;
-    AjBool *skip;
+    AjBool *Skip;
 } SeqOEmbossQry;
 
 #define SeqPEmbossQry SeqOEmbossQry*
@@ -2975,8 +2975,8 @@ static AjBool seqEmbossQryOpen(AjPSeqQuery qry)
     AjPStr baseindex = NULL;
     ajint n = 0;
     ajint i;
-    AjPStrTok handle = NULL;
-    AjPStr wildname = NULL;
+/*    AjPStrTok handle = NULL;
+    AjPStr wildname = NULL;*/
     AjPStr name     = NULL;
     
     baseindex = ajStrNew();
@@ -3075,24 +3075,29 @@ static AjBool seqEmbossQryOpen(AjPSeqQuery qry)
 
     if(ajStrLen(qry->Exclude) && n)
     {
-	AJCNEW0(qryd->skip,n);
+	AJCNEW0(qryd->Skip,n);
 	name     = ajStrNew();
-	wildname = ajStrNew();
+/*	wildname = ajStrNew();*/
 	
 	for(i=0; i < n; ++i)
 	{
 	    ajStrAssS(&name,qryd->files[i]);
+	    if(!ajFileTestSkip(name, qry->Exclude, qry->Filename,
+			       ajTrue, ajTrue))
+		qryd->Skip[i] = ajTrue;
+/*
 	    ajSysBasename(&name);
 	    handle = ajStrTokenInit(qry->Exclude," \n");
 	    while(ajStrToken(&wildname,&handle," \n"))
 		if(ajStrMatchWild(name,wildname))
-		    qryd->skip[i] = ajTrue;
+		    qryd->Skip[i] = ajTrue;
 	    
 	    ajStrTokenClear(&handle);
+*/
 	}
 
 	ajStrDel(&name);
-	ajStrDel(&wildname);
+/*	ajStrDel(&wildname);*/
     }
 
 
@@ -3231,10 +3236,10 @@ static AjBool seqEmbossAll(AjPSeqin seqin)
 {
     AjPList list;
     AjPSeqQuery qry;
-    AjPStrTok handle = NULL;
+/*    AjPStrTok handle = NULL;
+    AjPStr wildname = NULL;*/
     AjPStr name = NULL;
-    AjPStr wildname = NULL;
-    AjBool del = ajFalse;
+/*    AjBool del = ajFalse;*/
     
     ajint i;
     ajint n;
@@ -3259,12 +3264,27 @@ static AjBool seqEmbossAll(AjPSeqin seqin)
 
 
     list = ajListstrNew();
-    wildname = ajStrNew();
+/*    wildname = ajStrNew();*/
     name     = ajStrNew();
     
     i = 0;
     while(filestrings[i])
     {
+
+	ajStrAssS(&name,filestrings[i]);
+	if(ajFileTestSkip(name, qry->Exclude, qry->Filename,
+			  ajTrue, ajTrue))
+	{
+	    ajDebug("qrybufflist add '%S'\n", name);
+	    ajListstrPushApp(list, name);
+	    name = NULL;
+	}
+	else
+	{
+	    ajDebug("qrybufflist *delete* '%S'\n", name);
+	    ajStrDel(&name);
+	}
+/*
 	if(qry->Exclude)
 	{
 	    ajStrAssS(&name,filestrings[i]);
@@ -3287,6 +3307,7 @@ static AjBool seqEmbossAll(AjPSeqin seqin)
 	}
 	else
 	    ajListstrPushApp(list, filestrings[i]);
+*/
 
 	++i;
     }
@@ -3300,7 +3321,7 @@ static AjBool seqEmbossAll(AjPSeqin seqin)
     qry->QryDone = ajTrue;
 
     ajStrDel(&name);
-    ajStrDel(&wildname);
+/*    ajStrDel(&wildname);*/
     AJFREE(filestrings);
     AJFREE(reffilestrings);
     
@@ -3389,7 +3410,7 @@ static AjBool seqEmbossQryNext(AjPSeqQuery qry)
     ajListTrace(qryd->List);
 
 
-    if(!qryd->skip)
+    if(!qryd->Skip)
     {
 	ajListPop(qryd->List, &item);
 	entry = (AjPBtId) item;
@@ -3401,7 +3422,7 @@ static AjBool seqEmbossQryNext(AjPSeqQuery qry)
 	{
 	    ajListPop(qryd->List, &item);
 	    entry = (AjPBtId) item;
-	    if(!qryd->skip[entry->dbno])
+	    if(!qryd->Skip[entry->dbno])
 		ok = ajTrue;
 	    else
 	    {
@@ -3500,10 +3521,10 @@ static AjBool seqEmbossQryClose(AjPSeqQuery qry)
 
     ajListFree(&qryd->List);
 
-    if(qryd->skip)
+    if(qryd->Skip)
     {
-	AJFREE(qryd->skip);
-	qryd->skip = NULL;
+	AJFREE(qryd->Skip);
+	qryd->Skip = NULL;
     }
 
 
@@ -3792,11 +3813,13 @@ static AjBool seqEmbossGcgAll(AjPSeqin seqin)
     AjPSeqQuery qry;
     SeqPEmbossQry qryd;
     static ajint i   = 0;
-    AjPStrTok handle = NULL;
     AjPStr name      = NULL;
-    AjPStr wildname  = NULL;
     AjBool ok        = ajFalse;
+/*
+    AjPStrTok handle = NULL;
+    AjPStr wildname  = NULL;
     AjBool found     = ajFalse;
+*/
     
     qry = seqin->Query;
     qryd = qry->QryData;
@@ -3823,9 +3846,15 @@ static AjBool seqEmbossGcgAll(AjPSeqin seqin)
 
     if(!qryd->libs)
     {
-	++i;
+	while(!ok && qryd->files[++i])
+	{
+	    ajStrAssS(&name,qryd->files[i]);
+	    if(ajFileTestSkip(name, qry->Exclude, qry->Filename,
+			      ajTrue, ajTrue))
+		ok = ajTrue;
+	}
 
-	if(qry->Exclude)
+/*	if(qry->Exclude)
 	{
 	    ok = ajFalse;
 	    wildname = ajStrNew();
@@ -3856,6 +3885,7 @@ static AjBool seqEmbossGcgAll(AjPSeqin seqin)
 	    ajStrDel(&wildname);
 	    ajStrDel(&name);
 	}
+*/
 
 	if(!qryd->files[i])
 	{
