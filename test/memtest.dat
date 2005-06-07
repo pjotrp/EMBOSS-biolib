@@ -24,6 +24,24 @@ cusp = cusp tembl:hsfau -auto
 cutgextract = cutgextract ../data -auto
 cutseq = cutseq tembl:hsfau -from 20 -to 500 -auto
 dan = dan tembl:hsfau -auto
+dbblast-entry = seqret qapblast:CO9_FUGRU -out x.x -auto
+dbblast-acc = seqret qapblast-acc:Q90515 -out x.x -auto
+dbblast-query = seqret qapblast:n* -out x.x -auto
+dbblast-all = seqret qapblast:* -out x.x -auto
+dbfasta-entry = seqret qanfasta:rnops -out x.x -auto
+dbfasta-acc = seqret qanfasta-acc:Z46957 -out x.x -auto
+dbfasta-acc2 = seqret qanfasta-acc:V00451 -out x.x -auto
+dbfasta-query = seqret qanfasta:r* -out x.x -auto
+dbfasta-all = seqret qanfasta:* -out x.x -auto
+dbflat-entry = seqret qanflat:rnops -out x.x -auto
+dbflat-acc = seqret qanflat-acc:Z46957 -out x.x -auto
+dbflat-acc2 = seqret tembl-acc:V00451 -out x.x -auto
+dbflat-query = seqret qanflat:r* -out x.x -auto
+dbflat-all = seqret qanflat:* -out x.x -auto
+dbgcg-entry = seqret qangcg:rnops -out x.x -auto
+dbgcg-acc = seqret qangcg-acc:Z46957 -out x.x -auto
+dbgcg-query = seqret qangcg:r* -out x.x -auto
+dbgcg-all = seqret qangcg:* -out x.x -auto
 dbiblast = dbiblast -dir ../wormpep -file wormpep -index . -db worm -auto
 dbiblastlist = dbiblast -dir ../data -file 'swsplit.00.pin,swsplit.01.pin,swsplit.02.pin,swsplit.03.pin,swsplit.04.pin' -index . -db swsplit -auto
 dbiblastwild = dbiblast -dir ../data -file swsplit.*.pin -index . -db swsplit -auto
@@ -32,6 +50,15 @@ dbifasta = dbifasta -dir ../wormpep -file wormpep -index . -id idacc -db worm -a
 dbiflat = dbiflat -dir ../swiss -file seq.dat -index . -id swiss -db swiss -auto
 dbigcg = dbigcg -dir ../embl -file '*.seq' -index . -id embl -db embl -auto
 dbigcg2 = dbigcg -dir ../pir -file '*.seq' -index . -id pir -db pir -auto
+#dbxblast =test= dbxblast -dir ../wormpep -file wormpep -index .  -id idacc -dbres worm -db worm -auto
+#dbxblastlist =test= dbxblast -dir ../data -file 'swsplit.00.pin,swsplit.01.pin,swsplit.02.pin,swsplit.03.pin,swsplit.04.pin' -index . -dbres swiss -dbname swsplit -auto
+#dbxblastwild =test= dbxblast -dir ../data -file swsplit.*.pin -index . -dbres swiss -dbname swsplit -auto
+#dbxblastwildstar =test= dbxblast -dir ../data -file swsplit.*.* -index . -dbres swiss -dbname swsplit -auto
+dbxfasta =test= dbxfasta -dir ../wormpep -file wormpep -index . -id idacc -dbres worm -dbname worm -auto
+dbxflat =test= dbxflat -dir ../swiss -file seq.dat -index . -id swiss -dbres swiss -dbname swiss -auto
+dbxgcg =test= dbxgcg -dir ../embl -file '*.seq' -index . -id embl -dbres embl -dbname embl -auto
+dbxgcg2 =test= dbxgcg -dir ../pir -file '*.seq' -index . -id pir -dbres pir -dbname pir -auto
+dbxgcg3 =test= dbxgcg -dir ../pir -file '*.seq' -index . -id pir -dbres pir -dbname pir -fields "id,acc,des,key,org" -auto
 degapseq = degapseq ../data/globins.msf -auto
 descseq = descseq -desc 'Test' tsw:opsd_human -auto
 diffseq = diffseq tembl:hsfau tembl:hsfau1 -auto
