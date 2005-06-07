@@ -5020,7 +5020,7 @@ FI stdout
 FC = 1
 FP /Processing file \S+/test/data/emrod\n/
 FI emrod.ent
-FZ = 126
+FC = 5
 FP 1 /^# Number of files: 1\n/
 FP /.*\/test\/data\/emrod\n/
 FI emrod.pxac
@@ -5075,7 +5075,7 @@ FI stdout
 FC = 1
 FP /Processing file \S+/test/data/emrod\n/
 FI emrod.ent
-FZ = 126
+FC = 5
 FP 1 /^# Number of files: 1\n/
 FP /.*\/test\/data\/emrod\n/
 FI emrod.pxac
@@ -5217,7 +5217,7 @@ FI stdout
 FC = 1
 FP /Processing file \S+/test/data/swnew\n/
 FI swnew.ent
-FZ = 126
+FC = 5
 FP 1 /^# Number of files: 1\n/
 FP /.*\/test\/data\/swnew\n/
 FI swnew.pxac
@@ -5330,7 +5330,7 @@ FC = 2
 FP 2 /Processing file \S+\/test\/data\/wormpep.clone[.]/
 FP 1 /Processing file \S+\/test\/data\/wormpep.clone[.]ZK637\n/
 FI worm.ent
-FZ = 196
+FC = 6
 FP 1 /# Number of files: 2\n/
 FP 1 /^\S+\/test\/data\/wormpep.clone.AB\n/
 FP 1 /^\S+\/test\/data\/wormpep.clone.ZK637\n/
@@ -5729,7 +5729,7 @@ FI stdout
 FC = 9
 FP 9 /^Processing .*\/test\/embl\/eem_[a-z1-9]+\.seq\n/
 FI embl.ent
-FZ = 999
+FC = 13
 FP 1 /^Dual filename database\n/
 FP 1 /^# Number of files: 9\n/
 FP 9 /\/test\/embl\/eem_[a-z1-9]+\.ref\n/
@@ -5946,7 +5946,7 @@ FI stdout
 FC = 9
 FP 9 /^Processing .*\/test\/embl\/eem_[a-z1-9]+\.seq\n/
 FI embl.ent
-FZ = 999
+FC = 13
 FP 1 /^Dual filename database\n/
 FP 1 /^# Number of files: 9\n/
 FP 9 /\/test\/embl\/eem_[a-z1-9]+\.ref\n/
@@ -6329,7 +6329,7 @@ FI stdout
 FC = 4
 FP 4 /^Processing file \S+\/test\/pir\/pir[1-4]\.seq\n/
 FI pir.ent
-FZ = 455
+FC = 8
 FP 1 /^# Number of files: 4\n/
 FP 1 /^Dual filename database\n/
 FP 4 /^\S+\/test\/pir\/pir[1-4]\.seq \S+\/test\/pir\/pir[1-4]\.ref\n/
@@ -6506,7 +6506,7 @@ FI stdout
 FC = 4
 FP 4 /^Processing file \S+\/test\/pir\/pir[1-4]\.seq\n/
 FI pir.ent
-FZ = 455
+FC = 8
 FP 1 /^# Number of files: 4\n/
 FP 1 /^Dual filename database\n/
 FP 4 /^\S+\/test\/pir\/pir[1-4]\.seq \S+\/test\/pir\/pir[1-4]\.ref\n/
