@@ -2948,7 +2948,9 @@ AjBool ajNamRsAttrValueC(const char *name, const char *attribute,
     const AjPStr* rsattr;
 
     fnew = ajTableGet(namResMasterTable, name);
-
+    if(!fnew)
+	return ajFalse;
+    
     rsattr = (const AjPStr *) fnew->data;
     j = namRsAttrC(attribute);
 
