@@ -1253,11 +1253,8 @@ static void btreeBucketDel(AjPBucket *thys)
     for(i=0;i<n;++i)
 	ajBtreeIdDel(&pthis->Ids[i]);
     
-    if(n)
-    {
-	AJFREE(pthis->keylen);
-	AJFREE(pthis->Ids);
-    }
+    AJFREE(pthis->keylen);
+    AJFREE(pthis->Ids);
     
     AJFREE(pthis);
 
