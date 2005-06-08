@@ -3079,7 +3079,7 @@ static AjBool seqEmbossQryOpen(AjPSeqQuery qry)
 
 
 
-    if(ajStrLen(qry->Exclude) && qryd->nentries != -1)
+    if(ajStrLen(qry->Exclude) && qryd->nentries >= 0)
     {
 	AJCNEW0(qryd->Skip,qryd->nentries);
 	name     = ajStrNew();
