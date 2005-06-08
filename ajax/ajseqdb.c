@@ -344,6 +344,7 @@ typedef struct SeqSCdQry
 ** @attr files [AjPStr*] database filenames
 ** @attr reffiles [AjPStr*] database reference filenames
 ** @attr div [ajint] division number of currently open database file
+** @attr nentries [ajint] number of entries in the filename array(s)
 ** @attr libs [AjPFile] Primary (database source) file
 ** @attr libr [AjPFile] Secondary (database bibliographic source) file
 ** @attr List [AjPList] List of files
@@ -371,6 +372,7 @@ typedef struct SeqSEmbossQry
     AjPStr *reffiles;
 
     ajint div;
+    ajint nentries;
     
     AjPFile libs;
     AjPFile libr;
@@ -458,7 +460,7 @@ static void       seqEmbossGcgLoadBuff(AjPSeqin seqin);
 static AjBool     seqEmbossGcgReadRef(AjPSeqin seqin);
 static AjBool     seqEmbossGcgReadSeq(AjPSeqin seqin);
 
-static ajint	  seqEmbossOpenCache(AjPSeqQuery qry, const char *ext,
+static void	  seqEmbossOpenCache(AjPSeqQuery qry, const char *ext,
 				     AjPBtcache *cache);
 static void       seqEmbossOpenSecCache(AjPSeqQuery qry, const char *ext,
 					AjPBtcache *cache);
@@ -2911,6 +2913,8 @@ static AjBool seqAccessFreeEmboss(void* qrydata)
     qryd->libs = NULL;
     qryd->libr = NULL;
 
+    qryd->nentries = -1;
+
     return retval;
 }
 
@@ -2953,6 +2957,10 @@ static AjBool seqEmbossQryReuse(AjPSeqQuery qry)
 	/*ajListTrace(qryd->List);*/
     }
 
+
+    qryd->nentries = -1;
+
+
     return ajTrue;
 }
 
@@ -2975,8 +2983,6 @@ static AjBool seqEmbossQryOpen(AjPSeqQuery qry)
     AjPStr baseindex = NULL;
     ajint n = 0;
     ajint i;
-/*    AjPStrTok handle = NULL;
-    AjPStr wildname = NULL;*/
     AjPStr name     = NULL;
     
     baseindex = ajStrNew();
@@ -2984,6 +2990,7 @@ static AjBool seqEmbossQryOpen(AjPSeqQuery qry)
     qry->QryData = AJNEW0(qryd);
     qryd = qry->QryData;
     qryd->div = -1;
+    qryd->nentries = -1;
     
     qryd->List = ajListNew();
 
@@ -3044,62 +3051,50 @@ static AjBool seqEmbossQryOpen(AjPSeqQuery qry)
 
 
     if(qryd->do_id)
-	n = seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);
+        seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);
 
     if(qryd->do_ac)
-	n = seqEmbossOpenCache(qry,AC_EXTENSION,&qryd->accache);
+	seqEmbossOpenCache(qry,AC_EXTENSION,&qryd->accache);
 
     if(qryd->do_sv)
-	n = seqEmbossOpenCache(qry,SV_EXTENSION,&qryd->svcache);
+	seqEmbossOpenCache(qry,SV_EXTENSION,&qryd->svcache);
 
     if(qryd->do_kw)
     {
-	n = seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);	
+	seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);	
 	seqEmbossOpenSecCache(qry,KW_EXTENSION,&qryd->kwcache);
     }
 
     if(qryd->do_de)
     {
-	n = seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);	
+	seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);	
 	seqEmbossOpenSecCache(qry,DE_EXTENSION,&qryd->decache);
     }
 
     if(qryd->do_tx)
     {
-	n = seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);	
+	seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);	
 	seqEmbossOpenSecCache(qry,TX_EXTENSION,&qryd->txcache);
     }
 
 
 
 
-    if(ajStrLen(qry->Exclude) && n)
+    if(ajStrLen(qry->Exclude) && qryd->nentries != -1)
     {
 	AJCNEW0(qryd->Skip,n);
 	name     = ajStrNew();
-/*	wildname = ajStrNew();*/
 	
-	for(i=0; i < n; ++i)
+	for(i=0; i < qryd->nentries; ++i)
 	{
 	    ajStrAssS(&name,qryd->files[i]);
 	    if(!ajFileTestSkip(name, qry->Exclude, qry->Filename,
 			       ajTrue, ajTrue))
 		qryd->Skip[i] = ajTrue;
-/*
-	    ajSysBasename(&name);
-	    handle = ajStrTokenInit(qry->Exclude," \n");
-	    while(ajStrToken(&wildname,&handle," \n"))
-		if(ajStrMatchWild(name,wildname))
-		    qryd->Skip[i] = ajTrue;
-	    
-	    ajStrTokenClear(&handle);
-*/
 	}
 
 	ajStrDel(&name);
-/*	ajStrDel(&wildname);*/
     }
-
 
     ajStrDel(&baseindex);
     
@@ -3116,12 +3111,12 @@ static AjBool seqEmbossQryOpen(AjPSeqQuery qry)
 ** @param [u] qry [AjPSeqQuery] Query data
 ** @param [r] ext [const char *] Index file extension
 ** @param [w] cache [AjPBtcache *] cache
-** @return [ajint] number of database files
+** @return [void]
 ** @@
 ******************************************************************************/
 
-static ajint seqEmbossOpenCache(AjPSeqQuery qry, const char *ext,
-			        AjPBtcache *cache)
+static void seqEmbossOpenCache(AjPSeqQuery qry, const char *ext,
+			       AjPBtcache *cache)
 {
     SeqPEmbossQry qryd;
     ajint order     = 0;
@@ -3133,7 +3128,6 @@ static ajint seqEmbossOpenCache(AjPSeqQuery qry, const char *ext,
     ajint sfill     = 0;
     ajlong count    = 0L;
     ajint kwlimit   = 0;
-    static ajint n  = -1;
     
     AjPBtpage page   = NULL;
 
@@ -3145,9 +3139,10 @@ static ajint seqEmbossOpenCache(AjPSeqQuery qry, const char *ext,
 		      &cachesize, &sorder,
 		      &sfill, &count, &kwlimit);
     
-    if(n == -1)
-	n = ajBtreeReadEntries(ajStrStr(qry->DbAlias),ajStrStr(qry->IndexDir),
-			       &qryd->files,&qryd->reffiles);
+    if(qryd->nentries == -1)
+	qryd->nentries = ajBtreeReadEntries(ajStrStr(qry->DbAlias),
+					    ajStrStr(qry->IndexDir),
+					    &qryd->files,&qryd->reffiles);
 
     *cache = ajBtreeCacheNewC(ajStrStr(qry->DbAlias),ext,
 			      ajStrStr(qry->IndexDir),"r",
@@ -3155,12 +3150,15 @@ static ajint seqEmbossOpenCache(AjPSeqQuery qry, const char *ext,
 			      cachesize);
 
     if(!*cache)
-	return -1;
+    {
+	qryd->nentries = -1;
+	return;
+    }
     
     page = ajBtreeCacheRead(*cache,0L);
     page->dirty = BT_LOCK;
     
-    return n;
+    return;
 }
 
 
