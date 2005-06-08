@@ -2981,7 +2981,6 @@ static AjBool seqEmbossQryOpen(AjPSeqQuery qry)
 {
     SeqPEmbossQry qryd;
     AjPStr baseindex = NULL;
-    ajint n = 0;
     ajint i;
     AjPStr name     = NULL;
     
@@ -3082,7 +3081,7 @@ static AjBool seqEmbossQryOpen(AjPSeqQuery qry)
 
     if(ajStrLen(qry->Exclude) && qryd->nentries != -1)
     {
-	AJCNEW0(qryd->Skip,n);
+	AJCNEW0(qryd->Skip,qryd->nentries);
 	name     = ajStrNew();
 	
 	for(i=0; i < qryd->nentries; ++i)
