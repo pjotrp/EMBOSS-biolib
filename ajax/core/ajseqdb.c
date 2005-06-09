@@ -3685,7 +3685,7 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
     
     if(qryd->do_sv && qryd->svcache)
     {
-	wild = ajBtreeWildNew(qryd->svcache, qry->Gi);
+	wild = ajBtreeWildNew(qryd->svcache, qry->Sv);
 	while((id = ajBtreeIdFromKeyW(qryd->svcache, wild)))
 	    ajListPushApp(qryd->List, (void *)id);
 	ajBtreeWildDel(&wild);
