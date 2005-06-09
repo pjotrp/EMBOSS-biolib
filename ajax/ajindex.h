@@ -545,6 +545,9 @@ AjPBtpage  ajBtreeFindInsertW(AjPBtcache cache, const char *key);
 AjPBtId    ajBtreeIdFromKeyW(AjPBtcache cache, AjPBtWild wild);
 AjPBtId    ajBtreeIdFromKeywordW(AjPBtcache cache, AjPBtKeyWild wild,
 				 AjPBtcache idcache);
+void       ajBtreeListFromKeywordW(AjPBtcache cache, const char *key,
+				   AjPBtcache idcache, AjPList btidlist);
+
 AjBool     ajBtreeReplaceId(AjPBtcache cache, const AjPBtId rid);
 
 ajint      ajBtreeReadEntries(const char *filename, const char *indexdir,

@@ -3568,8 +3568,6 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
     AjPList  tlist = NULL;
     AjPStr   kwid  = NULL;
 
-    AjPBtKeyWild wildkey = NULL;
-    AjPBtId      btid    = NULL;
     
     qry->QryDone = ajTrue;
 
@@ -3598,12 +3596,9 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 	}
 	else
 	{
-	    wildkey = ajBtreeKeyWildNew(qryd->kwcache, qry->Key);
-	    while((btid = ajBtreeIdFromKeywordW(qryd->kwcache, wildkey,
-						qryd->idcache)))
-		ajListPushApp(qryd->List,(void*)btid);
-
-	    ajBtreeKeyWildDel(&wildkey);
+	    ajStrTrimEndC(&qry->Key,"*");
+	    ajBtreeListFromKeywordW(qryd->kwcache,qry->Key->Ptr,
+				    qryd->idcache, qryd->List);
 	    return ajTrue;
 	}
     }
@@ -3631,12 +3626,9 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 	}
 	else
 	{
-	    wildkey = ajBtreeKeyWildNew(qryd->decache, qry->Des);
-	    while((btid = ajBtreeIdFromKeywordW(qryd->decache, wildkey,
-						qryd->idcache)))
-		ajListPushApp(qryd->List,(void*)btid);
-
-	    ajBtreeKeyWildDel(&wildkey);
+	    ajStrTrimEndC(&qry->Des,"*");
+	    ajBtreeListFromKeywordW(qryd->decache,qry->Des->Ptr,
+				    qryd->idcache, qryd->List);
 	    return ajTrue;
 	}
     }
@@ -3664,12 +3656,9 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 	}
 	else
 	{
-	    wildkey = ajBtreeKeyWildNew(qryd->txcache, qry->Org);
-	    while((btid = ajBtreeIdFromKeywordW(qryd->txcache, wildkey,
-						qryd->idcache)))
-		ajListPushApp(qryd->List,(void*)btid);
-
-	    ajBtreeKeyWildDel(&wildkey);
+	    ajStrTrimEndC(&qry->Org,"*");
+	    ajBtreeListFromKeywordW(qryd->txcache,qry->Org->Ptr,
+				    qryd->idcache, qryd->List);
 	    return ajTrue;
 	}
     }
