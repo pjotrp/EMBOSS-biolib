@@ -3403,8 +3403,7 @@ static AjBool seqEmbossQryNext(AjPSeqQuery qry)
     if(!ajListLength(qryd->List))
 	return ajFalse;
 
-    ajDebug("qryd->List (b) length %d\n", ajListLength(qryd->List));
-    ajListTrace(qryd->List);
+    /*ajListTrace(qryd->List);*/
 
 
     if(!qryd->Skip)
@@ -3430,29 +3429,32 @@ static AjBool seqEmbossQryNext(AjPSeqQuery qry)
 	}
     }
 
-
     if(entry->dbno != qryd->div)
     {
 	qryd->div = entry->dbno;
-
 	ajFileClose(&qryd->libs);
+	if(qryd->reffiles)
+	    ajFileClose(&qryd->libr);
+    }
+
+    if(!qryd->libs)
+    {
 	qryd->libs = ajFileNewIn(qryd->files[entry->dbno]);
 	if(!qryd->libs)
 	{
 	    ajBtreeIdDel(&entry);
 	    return ajFalse;
 	}
+    }
 	
-	
-	if(qryd->reffiles)
+    if(qryd->reffiles && !qryd->libr)
+    {
+	ajFileClose(&qryd->libr);
+	qryd->libr = ajFileNewIn(qryd->reffiles[entry->dbno]);
+	if(!qryd->libr)
 	{
-	    ajFileClose(&qryd->libr);
-	    qryd->libr = ajFileNewIn(qryd->reffiles[entry->dbno]);
-	    if(!qryd->libr)
-	    {
-		ajBtreeIdDel(&entry);
-		return ajFalse;
-	    }
+	    ajBtreeIdDel(&entry);
+	    return ajFalse;
 	}
     }
     
@@ -3487,6 +3489,8 @@ static AjBool seqEmbossQryClose(AjPSeqQuery qry)
     SeqPEmbossQry qryd;
     ajint i;
     
+    if(!qry) return ajFalse;
+
     ajDebug("seqEmbossQryClose clean up qryd\n");
 
     qryd = qry->QryData;
@@ -3524,16 +3528,18 @@ static AjBool seqEmbossQryClose(AjPSeqQuery qry)
 	qryd->Skip = NULL;
     }
 
-
-    i = 0;
-    while(qryd->files[i])
+    if(qryd->files)
     {
-	ajStrDel(&qryd->files[i]);
-	if(qryd->reffiles)
-	    ajStrDel(&qryd->reffiles[i]);
-	++i;
+	i = 0;
+	while(qryd->files[i])
+	{
+	    ajStrDel(&qryd->files[i]);
+	    if(qryd->reffiles)
+		ajStrDel(&qryd->reffiles[i]);
+	    ++i;
+	}
+	AJFREE(qryd->files);
     }
-    AJFREE(qryd->files);
     if(qryd->reffiles)
 	AJFREE(qryd->reffiles);
     qryd->files = NULL;
@@ -3671,7 +3677,7 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 	    ajListPushApp(qryd->List, (void *)id);
 
 	ajBtreeWildDel(&wild);
-	return ajTrue;
+	if(ajListLength(qryd->List))return ajTrue;
     }
 
     if(qryd->do_ac && qryd->accache)
@@ -3680,7 +3686,7 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 	while((id = ajBtreeIdFromKeyW(qryd->accache, wild)))
 	    ajListPushApp(qryd->List, (void *)id);
 	ajBtreeWildDel(&wild);
-	return ajTrue;
+	if(ajListLength(qryd->List))return ajTrue;
     }
     
     if(qryd->do_sv && qryd->svcache)
@@ -4828,7 +4834,7 @@ static AjBool seqCdQryNext(AjPSeqQuery qry)
 	return ajFalse;
 
     ajDebug("qryd->List (b) length %d\n", ajListLength(qryd->List));
-    ajListTrace(qryd->List);
+    /*ajListTrace(qryd->List);*/
     ajListPop(qryd->List, &item);
     entry = (SeqPCdEntry) item;
 
