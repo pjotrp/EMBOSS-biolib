@@ -4833,10 +4833,10 @@ ajint ajSeqCvtK(const AjPSeqCvt thys, char ch)
 ajint ajSeqCvtKS (const AjPSeqCvt thys, const AjPStr ch)
 {
     /* Row and column labels will be identical. */
-    ajSeqCvtKSRow(thys, ch);
+    return(ajSeqCvtKSRow(thys, ch));
     
-    ajWarn("Sequence character string not found in ajSeqCvtKS");
-    return 0;
+    /*    ajWarn("Sequence character string not found in ajSeqCvtKS");
+    return 0; */
 }
 
 
