@@ -157,8 +157,13 @@ static void          btreeInsertNonFullSec(AjPBtcache cache, AjPBtpage page,
 				           const AjPStr key, ajlong less,
 				           ajlong greater);
 
-static               void btreeStrDel(void** pentry, void* cl);
-static               void btreeIdDelFromList(void** pentry, void* cl);
+static void          btreeStrDel(void** pentry, void* cl);
+static void          btreeIdDelFromList(void** pentry, void* cl);
+static void          btreeKeyFullSearch(AjPBtcache cache, const char *key,
+					AjPList idlist);
+static void          btreeKeywordFullSearch(AjPBtcache cache, const char *key,
+					    AjPBtcache idcache,
+					    AjPList idlist);
 
 
 
@@ -5918,7 +5923,8 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
     else
     {
 	ajStrDel(&prefix);
-	ajFatal("Queries with initial '?' or '*' not yet implemented\n");
+	btreeKeyFullSearch(cache,key,idlist);
+	return;
     }
     
 	
@@ -6045,6 +6051,104 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
     ajListUnique(idlist,btreeIdCompare,btreeIdDelFromList);
 
     ajStrDel(&prefix);
+
+    return;
+}
+
+
+
+
+/* @funcstatic btreeKeyFullSearch ********************************************
+**
+** Wildcard retrieval of id/acc/sv entries. Whole index scan. Only used for
+** wildcard searches with keys beginning with '?' or '*'
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] key [char *] Wildcard key
+** @param [u] idlist [AjPList] list of matching AjPBtIds
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void btreeKeyFullSearch(AjPBtcache cache, const char *key,
+			       AjPList idlist)
+{
+    AjPBtId id     = NULL;
+    AjPBtpage root = NULL;
+    AjPBtpage page = NULL;
+    ajlong right   = 0L;
+    ajint  order   = 0;
+    ajint nodetype = 0;
+    
+    AjPStr *karray = NULL;
+    ajlong *parray = NULL;
+    ajlong pageno  = 0L;
+    AjPList list   = NULL;
+    ajint i;
+    
+    unsigned char *buf = NULL;    
+
+    list   = ajListNew();
+
+    root = btreeCacheLocate(cache, 0L);
+    page = root;
+    
+    buf = root->buf;
+    GBT_NODETYPE(buf,&nodetype);
+    
+    order = cache->order;
+
+    AJCNEW0(parray,order);
+    AJCNEW0(karray,order);
+    for(i=0;i<order;++i)
+	karray[i] = ajStrNew();
+
+
+    if(cache->level)
+    {
+	while(nodetype != BT_LEAF)
+	{
+	    btreeGetKeys(cache,buf,&karray,&parray);
+	    page = ajBtreeCacheRead(cache, parray[0]);
+	    buf = page->buf;
+	    GBT_NODETYPE(buf,&nodetype);
+	    page->dirty = BT_CLEAN;
+	}
+	pageno = parray[0];
+	btreeGetKeys(cache,buf,&karray,&parray);
+    }
+    else
+	pageno = 0L;
+
+    right = -1L;
+    while(right)
+    {
+	btreeReadLeaf(cache,page,list);
+	while(ajListPop(list,(void **)&id))
+	{
+	    if(ajStrMatchWildC(id->id,key))
+		ajListPushApp(idlist,(void *)id);
+	    else
+		ajBtreeIdDel(&id);
+	}
+
+	GBT_RIGHT(buf,&right);
+	if(right)
+	{
+	    page = ajBtreeCacheRead(cache,right);
+	    buf = page->buf;
+	}
+    }
+    
+
+    ajListUnique(idlist,btreeIdCompare,btreeIdDelFromList);
+
+    ajListDel(&list);
+    for(i=0;i<order;++i)
+	ajStrDel(&karray[i]);
+    AJFREE(karray);
+    AJFREE(parray);
 
     return;
 }
@@ -10841,7 +10945,8 @@ void ajBtreeListFromKeywordW(AjPBtcache cache, const char *key,
     else
     {
 	ajStrDel(&prefix);
-	ajFatal("Queries with initial '?' or '*' not yet implemented\n");
+	btreeKeywordFullSearch(cache,key,idcache,btidlist);
+	return;
     }
 
     prilist  = ajListNew();
@@ -10978,9 +11083,131 @@ void ajBtreeListFromKeywordW(AjPBtcache cache, const char *key,
 	    ajStrDel(&id);
 	}
     }
+
     ajListDel(&strlist);
 
     ajStrDel(&prefix);
+
+    return;
+}
+
+
+
+
+/* @funcstatic btreeKeywordFullSearch ****************************************
+**
+** Wildcard retrieval of key/des/org entries. Whole index scan. Only used for
+** wildcard searches with keys beginning with '?' or '*'
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] key [char *] Wildcard key
+** @param [u] idcache [AjPBtcache] id index cache
+** @param [u] idlist [AjPList] list of matching AjPBtIds
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void btreeKeywordFullSearch(AjPBtcache cache, const char *key,
+				   AjPBtcache idcache, AjPList idlist)
+{
+    AjPBtPri pri   = NULL;
+    AjPBtpage root = NULL;
+    AjPBtpage page = NULL;
+    AjPBtId btid   = NULL;
+    ajlong right   = 0L;
+    ajint  order   = 0;
+    ajint nodetype = 0;
+    
+    AjPStr *karray = NULL;
+    ajlong *parray = NULL;
+    ajlong pageno  = 0L;
+    AjPList list   = NULL;
+    AjPList strlist = NULL;
+    AjPStr id = NULL;
+    
+    ajint i;
+    
+    unsigned char *buf = NULL;    
+
+    list    = ajListNew();
+    strlist = ajListNew();
+    
+    root = btreeCacheLocate(cache, 0L);
+    page = root;
+    
+    buf = root->buf;
+    GBT_NODETYPE(buf,&nodetype);
+    
+    order = cache->order;
+
+    AJCNEW0(parray,order);
+    AJCNEW0(karray,order);
+    for(i=0;i<order;++i)
+	karray[i] = ajStrNew();
+
+
+    if(cache->level)
+    {
+	while(nodetype != BT_LEAF)
+	{
+	    btreeGetKeys(cache,buf,&karray,&parray);
+	    page = ajBtreeCacheRead(cache, parray[0]);
+	    buf = page->buf;
+	    GBT_NODETYPE(buf,&nodetype);
+	    page->dirty = BT_CLEAN;
+	}
+	pageno = parray[0];
+	btreeGetKeys(cache,buf,&karray,&parray);
+    }
+    else
+	pageno = 0L;
+
+    right = -1L;
+    while(right)
+    {
+	btreeReadPriLeaf(cache,page,list);
+	while(ajListPop(list,(void **)&pri))
+	{
+	    if(ajStrMatchWildC(pri->keyword,key))
+	    {
+		cache->secrootblock = pri->treeblock;
+		btreeReadAllSecLeaves(cache,strlist);
+	    }
+
+	    ajBtreePriDel(&pri);
+	}
+
+	GBT_RIGHT(buf,&right);
+	if(right)
+	{
+	    page = ajBtreeCacheRead(cache,right);
+	    buf = page->buf;
+	}
+    }
+
+
+
+    if(ajListLength(strlist))
+    {
+	ajListUnique(strlist,ajStrCmp,btreeStrDel);
+
+	while(ajListPop(strlist,(void **)&id))
+	{
+	    btid = ajBtreeIdFromKey(idcache,id->Ptr);
+	    ajListPushApp(idlist,(void *)btid);
+	    ajStrDel(&id);
+	}
+    }
+
+
+    ajListDel(&strlist);
+
+    ajListDel(&list);
+    for(i=0;i<order;++i)
+	ajStrDel(&karray[i]);
+    AJFREE(karray);
+    AJFREE(parray);
 
     return;
 }
