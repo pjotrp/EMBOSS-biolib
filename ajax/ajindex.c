@@ -158,6 +158,7 @@ static void          btreeInsertNonFullSec(AjPBtcache cache, AjPBtpage page,
 				           ajlong greater);
 
 static               void btreeStrDel(void** pentry, void* cl);
+static               void btreeIdDelFromList(void** pentry, void* cl);
 
 
 
@@ -5874,6 +5875,157 @@ AjPBtId ajBtreeIdFromKeyW(AjPBtcache cache, AjPBtWild wild)
 
 
 
+/* @func ajBtreeListFromKeyW ********************************************
+**
+** Wildcard retrieval of entries
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] key [char *] Wildcard key
+** @param [u] idlist [AjPList] list of matching AjPBtIds
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
+{
+
+    AjPBtId id     = NULL;
+    AjPBtpage page = NULL;
+    AjPList list   = NULL;
+    AjBool found   = ajFalse;
+
+    ajlong pripageno = 0L;
+    ajlong right = 0L;
+    
+    ajint keylen  = 0;
+
+    unsigned char *buf = NULL;    
+    AjBool finished = ajFalse;
+
+    list = ajListNew();
+
+    keylen = strlen(key);
+
+    found = ajFalse;
+    
+    page = ajBtreeFindInsertW(cache,key);
+    page->dirty = BT_LOCK;
+    pripageno = page->pageno;
+    
+    btreeReadLeaf(cache,page,list);
+    
+    page->dirty = BT_CLEAN;
+    
+
+    while(ajListPop(list,(void **)&id))
+    {
+	if(!strncmp(id->id->Ptr,key,keylen))
+	{
+	    found = ajTrue;
+	    break;
+	}
+	else
+	    ajBtreeIdDel(&id);
+    }
+    
+    
+    if(!found)	/* Check the next leaf just in case key==internal */
+    {
+	buf = page->buf;
+	GBT_RIGHT(buf,&right);
+	if(!right)
+	    return;
+	page = ajBtreeCacheRead(cache,right);
+	pripageno = right;
+	page->dirty = BT_LOCK;
+	    
+	btreeReadLeaf(cache,page,list);	
+	    
+	page->dirty = BT_CLEAN;
+	    
+	if(!ajListLength(list))
+	{
+	    ajListDel(&list);
+	    return;
+	}
+	
+	    
+	found = ajFalse;
+	while(ajListPop(list,(void **)&id))
+	{
+	    if(!strncmp(id->id->Ptr,key,keylen))
+	    {
+		found = ajTrue;
+		break;
+	    }
+	    else
+		ajBtreeIdDel(&id);
+	}
+    }
+    
+    
+    if(!found)
+    {
+	ajListDel(&list);
+	return;
+    }
+    
+
+
+    finished = ajFalse;
+
+    
+    while(!finished)
+    {
+	ajListPush(idlist,(void *)id);
+	
+	if(!ajListLength(list))
+	{
+	    page = ajBtreeCacheRead(cache,pripageno);
+	    buf = page->buf;
+	    GBT_RIGHT(buf,&right);
+	    if(!right)
+	    {
+		ajListDel(&list);
+		return;
+	    }
+	    page = ajBtreeCacheRead(cache,right);
+	    page->dirty = BT_LOCK;
+	    buf = page->buf;
+	    pripageno = right;
+	    
+	    btreeReadLeaf(cache,page,list);	
+	    
+	    page->dirty = BT_CLEAN;
+	    
+	    if(!ajListLength(list))
+	    {
+		ajListDel(&list);
+		return;
+	    }
+	}
+
+	ajListPop(list,(void **)&id);
+	if(strncmp(id->id->Ptr,key,keylen))
+	{
+	    finished = ajTrue;
+	    ajBtreeIdDel(&id);
+	}
+    }
+    
+    while(ajListPop(list,(void **)&id))
+	ajBtreeIdDel(&id);
+    ajListDel(&list);
+
+    ajListUnique(idlist,btreeIdCompare,btreeIdDelFromList);
+
+    return;
+}
+
+
+
+
 /* @func ajBtreeReplaceId ************************************************
 **
 ** Replace an ID structure in a leaf node given a key
@@ -11199,7 +11351,7 @@ static void btreeReadAllSecLeaves(AjPBtcache cache, AjPList list)
 **
 ** Deletes an AjPStr entry from a list
 **
-** @param [r] pentry [void**] Address of a SeqPCdEntry object
+** @param [r] pentry [void**] Address of an AjPStr object
 ** @param [r] cl [void*] Standard unused argument, usually NULL.
 ** @return [void]
 ** @@
@@ -11211,6 +11363,29 @@ static void btreeStrDel(void** pentry, void* cl)
 
     str = *((AjPStr *)pentry);
     ajStrDel(&str);
+
+    return;
+}
+
+
+
+
+/* @funcstatic btreeIdDelFromList ********************************************
+**
+** Deletes an AjPBtId entry from a list
+**
+** @param [r] pentry [void**] Address of an AjPBtId object
+** @param [r] cl [void*] Standard unused argument, usually NULL.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void btreeIdDelFromList(void** pentry, void* cl)
+{
+    AjPBtId id = NULL;
+
+    id = *((AjPBtId *)pentry);
+    ajBtreeIdDel(&id);
 
     return;
 }

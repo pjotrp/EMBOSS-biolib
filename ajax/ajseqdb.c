@@ -3567,7 +3567,6 @@ static AjBool seqEmbossQryClose(AjPSeqQuery qry)
 static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 {
     SeqPEmbossQry qryd;
-    AjPBtWild wild = NULL;
     AjPBtId   id   = NULL;
 
     AjPBtPri pri   = NULL;
@@ -3672,29 +3671,24 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 
     if(qryd->do_id && qryd->idcache)
     {
-	wild = ajBtreeWildNew(qryd->idcache, qry->Id);
-	while((id = ajBtreeIdFromKeyW(qryd->idcache, wild)))
-	    ajListPushApp(qryd->List, (void *)id);
-
-	ajBtreeWildDel(&wild);
-	if(ajListLength(qryd->List))return ajTrue;
+	ajStrTrimEndC(&qry->Id,"*");
+	ajBtreeListFromKeyW(qryd->idcache,qry->Id->Ptr,qryd->List);
+	if(ajListLength(qryd->List))
+	    return ajTrue;
     }
 
     if(qryd->do_ac && qryd->accache)
     {
-	wild = ajBtreeWildNew(qryd->accache, qry->Acc);
-	while((id = ajBtreeIdFromKeyW(qryd->accache, wild)))
-	    ajListPushApp(qryd->List, (void *)id);
-	ajBtreeWildDel(&wild);
-	if(ajListLength(qryd->List))return ajTrue;
+	ajStrTrimEndC(&qry->Acc,"*");
+	ajBtreeListFromKeyW(qryd->accache,qry->Acc->Ptr,qryd->List);
+	if(ajListLength(qryd->List))
+	    return ajTrue;
     }
     
     if(qryd->do_sv && qryd->svcache)
     {
-	wild = ajBtreeWildNew(qryd->svcache, qry->Sv);
-	while((id = ajBtreeIdFromKeyW(qryd->svcache, wild)))
-	    ajListPushApp(qryd->List, (void *)id);
-	ajBtreeWildDel(&wild);
+	ajStrTrimEndC(&qry->Sv,"*");
+	ajBtreeListFromKeyW(qryd->svcache,qry->Sv->Ptr,qryd->List);
 	return ajTrue;
     }
 

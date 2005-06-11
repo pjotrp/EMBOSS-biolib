@@ -543,6 +543,8 @@ void         ajBtreeKeyWildDel(AjPBtKeyWild *thys);
 
 AjPBtpage  ajBtreeFindInsertW(AjPBtcache cache, const char *key);
 AjPBtId    ajBtreeIdFromKeyW(AjPBtcache cache, AjPBtWild wild);
+void       ajBtreeListFromKeyW(AjPBtcache cache, const char *key,
+			       AjPList idlist);
 AjPBtId    ajBtreeIdFromKeywordW(AjPBtcache cache, AjPBtKeyWild wild,
 				 AjPBtcache idcache);
 void       ajBtreeListFromKeywordW(AjPBtcache cache, const char *key,
