@@ -5903,13 +5903,30 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
     unsigned char *buf = NULL;    
     AjBool finished = ajFalse;
 
+    AjPStr prefix = NULL;
+    
+    char *p;
+    
+
+    prefix = ajStrNew();
+    
+
+
+    p = strpbrk(key,"*?");
+    if(p-key)
+	ajStrAssSubC(&prefix,key,0,p-key-1);
+    else
+    {
+	ajStrDel(&prefix);
+	ajFatal("Queries with initial '?' or '*' not yet implemented\n");
+    }
+    
+	
     list = ajListNew();
-
-    keylen = strlen(key);
-
+    keylen = ajStrLen(prefix);
     found = ajFalse;
     
-    page = ajBtreeFindInsertW(cache,key);
+    page = ajBtreeFindInsertW(cache,prefix->Ptr);
     page->dirty = BT_LOCK;
     pripageno = page->pageno;
     
@@ -5920,7 +5937,7 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
 
     while(ajListPop(list,(void **)&id))
     {
-	if(!strncmp(id->id->Ptr,key,keylen))
+	if(!strncmp(id->id->Ptr,prefix->Ptr,keylen))
 	{
 	    found = ajTrue;
 	    break;
@@ -5946,6 +5963,7 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
 	    
 	if(!ajListLength(list))
 	{
+	    ajStrDel(&prefix);
 	    ajListDel(&list);
 	    return;
 	}
@@ -5954,7 +5972,7 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
 	found = ajFalse;
 	while(ajListPop(list,(void **)&id))
 	{
-	    if(!strncmp(id->id->Ptr,key,keylen))
+	    if(!strncmp(id->id->Ptr,prefix->Ptr,keylen))
 	    {
 		found = ajTrue;
 		break;
@@ -5967,6 +5985,7 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
     
     if(!found)
     {
+	ajStrDel(&prefix);
 	ajListDel(&list);
 	return;
     }
@@ -5978,7 +5997,10 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
     
     while(!finished)
     {
-	ajListPush(idlist,(void *)id);
+	if(ajStrMatchWildC(id->id,key))
+	    ajListPush(idlist,(void *)id);
+	else
+	    ajBtreeIdDel(&id);
 	
 	if(!ajListLength(list))
 	{
@@ -5987,6 +6009,7 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
 	    GBT_RIGHT(buf,&right);
 	    if(!right)
 	    {
+		ajStrDel(&prefix);
 		ajListDel(&list);
 		return;
 	    }
@@ -6001,13 +6024,14 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
 	    
 	    if(!ajListLength(list))
 	    {
+		ajStrDel(&prefix);
 		ajListDel(&list);
 		return;
 	    }
 	}
 
 	ajListPop(list,(void **)&id);
-	if(strncmp(id->id->Ptr,key,keylen))
+	if(strncmp(id->id->Ptr,prefix->Ptr,keylen))
 	{
 	    finished = ajTrue;
 	    ajBtreeIdDel(&id);
@@ -6019,6 +6043,8 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
     ajListDel(&list);
 
     ajListUnique(idlist,btreeIdCompare,btreeIdDelFromList);
+
+    ajStrDel(&prefix);
 
     return;
 }
@@ -10802,19 +10828,35 @@ void ajBtreeListFromKeywordW(AjPBtcache cache, const char *key,
 
     unsigned char *buf = NULL;    
 
+    AjPStr prefix = NULL;
+    
+    char *p;
+    
+
+    prefix = ajStrNew();
+    
+    p = strpbrk(key,"*?");
+    if(p-key)
+	ajStrAssSubC(&prefix,key,0,p-key-1);
+    else
+    {
+	ajStrDel(&prefix);
+	ajFatal("Queries with initial '?' or '*' not yet implemented\n");
+    }
 
     prilist  = ajListNew();
     
-    keylen  = strlen(key);
+    keylen  = ajStrLen(prefix);
     found   = ajFalse;
     
-    page = ajBtreeFindInsertW(cache,key);
+    page = ajBtreeFindInsertW(cache,prefix->Ptr);
     page->dirty = BT_LOCK;
     pripagenosave = page->pageno;
     btreeReadPriLeaf(cache,page,prilist);
     page->dirty = BT_CLEAN;
     if(!ajListLength(prilist))
     {
+	ajStrDel(&prefix);
 	ajListDel(&prilist);
 	return;
     }
@@ -10822,7 +10864,7 @@ void ajBtreeListFromKeywordW(AjPBtcache cache, const char *key,
 
     while(ajListPop(prilist,(void **)&pri))
     {
-	if(!strncmp(pri->keyword->Ptr,key,keylen))
+	if(!strncmp(pri->keyword->Ptr,prefix->Ptr,keylen))
 	{
 	    found = ajTrue;
 	    break;
@@ -10837,6 +10879,7 @@ void ajBtreeListFromKeywordW(AjPBtcache cache, const char *key,
 	GBT_RIGHT(buf,&pageno);
 	if(!pageno)
 	{
+	    ajStrDel(&prefix);
 	    ajListDel(&prilist);
 	    return;
 	}
@@ -10847,13 +10890,14 @@ void ajBtreeListFromKeywordW(AjPBtcache cache, const char *key,
 	page->dirty = BT_CLEAN;
 	if(!ajListLength(prilist))
 	{
+	    ajStrDel(&prefix);
 	    ajListDel(&prilist);
 	    return;
 	}
 
 	while(ajListPop(prilist,(void **)&pri))
 	{
-	    if(!strncmp(pri->keyword->Ptr,key,keylen))
+	    if(!strncmp(pri->keyword->Ptr,prefix->Ptr,keylen))
 	    {
 		found = ajTrue;
 		break;
@@ -10865,6 +10909,7 @@ void ajBtreeListFromKeywordW(AjPBtcache cache, const char *key,
     
     if(!found)
     {
+	ajStrDel(&prefix);
 	ajListDel(&prilist);
 	return;
     }
@@ -10875,8 +10920,13 @@ void ajBtreeListFromKeywordW(AjPBtcache cache, const char *key,
 
     while(!finished)
     {
-	cache->secrootblock = pri->treeblock;
-	btreeReadAllSecLeaves(cache,strlist);
+	if(ajStrMatchWildC(pri->keyword,key))
+	{
+	    cache->secrootblock = pri->treeblock;
+	    btreeReadAllSecLeaves(cache,strlist);
+	}
+	else
+	    ajBtreePriDel(&pri);
 
 	if(!ajListLength(prilist))
 	{
@@ -10904,7 +10954,7 @@ void ajBtreeListFromKeywordW(AjPBtcache cache, const char *key,
 	
 
 	ajListPop(prilist,(void **)&pri);
-	if(strncmp(pri->keyword->Ptr,key,keylen))
+	if(strncmp(pri->keyword->Ptr,prefix->Ptr,keylen))
 	{
 	    ajBtreePriDel(&pri);
 	    finished = ajTrue;
@@ -10930,6 +10980,7 @@ void ajBtreeListFromKeywordW(AjPBtcache cache, const char *key,
     }
     ajListDel(&strlist);
 
+    ajStrDel(&prefix);
 
     return;
 }

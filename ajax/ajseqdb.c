@@ -3601,7 +3601,6 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 	}
 	else
 	{
-	    ajStrTrimEndC(&qry->Key,"*");
 	    ajBtreeListFromKeywordW(qryd->kwcache,qry->Key->Ptr,
 				    qryd->idcache, qryd->List);
 	    return ajTrue;
@@ -3631,7 +3630,6 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 	}
 	else
 	{
-	    ajStrTrimEndC(&qry->Des,"*");
 	    ajBtreeListFromKeywordW(qryd->decache,qry->Des->Ptr,
 				    qryd->idcache, qryd->List);
 	    return ajTrue;
@@ -3661,7 +3659,6 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 	}
 	else
 	{
-	    ajStrTrimEndC(&qry->Org,"*");
 	    ajBtreeListFromKeywordW(qryd->txcache,qry->Org->Ptr,
 				    qryd->idcache, qryd->List);
 	    return ajTrue;
@@ -3671,7 +3668,6 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 
     if(qryd->do_id && qryd->idcache)
     {
-	ajStrTrimEndC(&qry->Id,"*");
 	ajBtreeListFromKeyW(qryd->idcache,qry->Id->Ptr,qryd->List);
 	if(ajListLength(qryd->List))
 	    return ajTrue;
@@ -3679,7 +3675,6 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 
     if(qryd->do_ac && qryd->accache)
     {
-	ajStrTrimEndC(&qry->Acc,"*");
 	ajBtreeListFromKeyW(qryd->accache,qry->Acc->Ptr,qryd->List);
 	if(ajListLength(qryd->List))
 	    return ajTrue;
@@ -3687,7 +3682,6 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
     
     if(qryd->do_sv && qryd->svcache)
     {
-	ajStrTrimEndC(&qry->Sv,"*");
 	ajBtreeListFromKeyW(qryd->svcache,qry->Sv->Ptr,qryd->List);
 	return ajTrue;
     }
