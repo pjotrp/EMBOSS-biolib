@@ -5911,23 +5911,28 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
     AjPStr prefix = NULL;
     
     char *p;
-    
 
     prefix = ajStrNew();
     
 
 
     p = strpbrk(key,"*?");
-    if(p-key)
-	ajStrAssSubC(&prefix,key,0,p-key-1);
-    else
+
+    if(p)
     {
-	ajStrDel(&prefix);
-	btreeKeyFullSearch(cache,key,idlist);
-	return;
+	if(p-key)
+	    ajStrAssSubC(&prefix,key,0,p-key-1);
+	else
+	{
+	    ajStrDel(&prefix);
+	    btreeKeyFullSearch(cache,key,idlist);
+	    return;
+	}
     }
+    else
+	ajStrAssC(&prefix,key);
     
-	
+
     list = ajListNew();
     keylen = ajStrLen(prefix);
     found = ajFalse;
@@ -5996,7 +6001,6 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
 	return;
     }
     
-
 
     finished = ajFalse;
 
@@ -10940,14 +10944,21 @@ void ajBtreeListFromKeywordW(AjPBtcache cache, const char *key,
     prefix = ajStrNew();
     
     p = strpbrk(key,"*?");
-    if(p-key)
-	ajStrAssSubC(&prefix,key,0,p-key-1);
-    else
+
+    if(p)
     {
-	ajStrDel(&prefix);
-	btreeKeywordFullSearch(cache,key,idcache,btidlist);
-	return;
+	if(p-key)
+	    ajStrAssSubC(&prefix,key,0,p-key-1);
+	else
+	{
+	    ajStrDel(&prefix);
+	    btreeKeywordFullSearch(cache,key,idcache,btidlist);
+	    return;
+	}
     }
+    else
+	ajStrAssC(&prefix,key);
+    
 
     prilist  = ajListNew();
     
