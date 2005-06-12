@@ -3060,19 +3060,22 @@ static AjBool seqEmbossQryOpen(AjPSeqQuery qry)
 
     if(qryd->do_kw)
     {
-	seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);	
+	if(!qryd->idcache)
+	    seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);
 	seqEmbossOpenSecCache(qry,KW_EXTENSION,&qryd->kwcache);
     }
 
     if(qryd->do_de)
     {
-	seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);	
+	if(!qryd->idcache)
+	    seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);	
 	seqEmbossOpenSecCache(qry,DE_EXTENSION,&qryd->decache);
     }
 
     if(qryd->do_tx)
     {
-	seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);	
+	if(!qryd->idcache)
+	    seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);	
 	seqEmbossOpenSecCache(qry,TX_EXTENSION,&qryd->txcache);
     }
 
@@ -3198,8 +3201,10 @@ static void seqEmbossOpenSecCache(AjPSeqQuery qry, const char *ext,
 		      &cachesize, &sorder,
 		      &sfill, &count, &kwlimit);
     
-    ajBtreeReadEntries(ajStrStr(qry->DbAlias),ajStrStr(qry->IndexDir),
-		       &qryd->files,&qryd->reffiles);
+    if(qryd->nentries == -1)
+	qryd->nentries = ajBtreeReadEntries(ajStrStr(qry->DbAlias),
+					    ajStrStr(qry->IndexDir),
+					    &qryd->files,&qryd->reffiles);
     
     
     *cache = ajBtreeSecCacheNewC(ajStrStr(qry->DbAlias),ext,
@@ -3208,7 +3213,10 @@ static void seqEmbossOpenSecCache(AjPSeqQuery qry, const char *ext,
 				 cachesize,sorder,0,sfill,count,kwlimit);
 
     if(!*cache)
+    {
+	qryd->nentries = -1;
 	return;
+    }
     
     page = ajBtreeCacheRead(*cache,0L);
     page->dirty = BT_LOCK;
@@ -3488,8 +3496,9 @@ static AjBool seqEmbossQryClose(AjPSeqQuery qry)
 {
     SeqPEmbossQry qryd;
     ajint i;
-    
-    if(!qry) return ajFalse;
+
+    if(!qry)
+	return ajFalse;
 
     ajDebug("seqEmbossQryClose clean up qryd\n");
 

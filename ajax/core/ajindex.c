@@ -11041,8 +11041,8 @@ void ajBtreeListFromKeywordW(AjPBtcache cache, const char *key,
 	    cache->secrootblock = pri->treeblock;
 	    btreeReadAllSecLeaves(cache,strlist);
 	}
-	else
-	    ajBtreePriDel(&pri);
+
+	ajBtreePriDel(&pri);
 
 	if(!ajListLength(prilist))
 	{
