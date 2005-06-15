@@ -164,6 +164,9 @@ static void          btreeKeyFullSearch(AjPBtcache cache, const char *key,
 static void          btreeKeywordFullSearch(AjPBtcache cache, const char *key,
 					    AjPBtcache idcache,
 					    AjPList idlist);
+static ajint         btreeOffsetCompare(const void *a, const void *b);
+static ajint         btreeDbnoCompare(const void *a, const void *b);
+
 
 
 
@@ -5915,10 +5918,9 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
     AjPStr prefix = NULL;
     
     char *p;
-
+    
     prefix = ajStrNew();
     
-
 
     p = strpbrk(key,"*?");
 
@@ -6022,9 +6024,8 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
 	    GBT_RIGHT(buf,&right);
 	    if(!right)
 	    {
-		ajStrDel(&prefix);
-		ajListDel(&list);
-		return;
+		finished = ajTrue;
+		continue;
 	    }
 	    page = ajBtreeCacheRead(cache,right);
 	    page->dirty = BT_LOCK;
@@ -6037,9 +6038,8 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
 	    
 	    if(!ajListLength(list))
 	    {
-		ajStrDel(&prefix);
-		ajListDel(&list);
-		return;
+		finished = ajTrue;
+		continue;
 	    }
 	}
 
@@ -6055,7 +6055,8 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
 	ajBtreeIdDel(&id);
     ajListDel(&list);
 
-    ajListUnique(idlist,btreeIdCompare,btreeIdDelFromList);
+    ajListUnique2(idlist,btreeDbnoCompare,btreeOffsetCompare,
+		 btreeIdDelFromList);
 
     ajStrDel(&prefix);
 
@@ -6149,7 +6150,8 @@ static void btreeKeyFullSearch(AjPBtcache cache, const char *key,
     }
     
 
-    ajListUnique(idlist,btreeIdCompare,btreeIdDelFromList);
+    ajListUnique2(idlist,btreeDbnoCompare,btreeOffsetCompare,
+		  btreeIdDelFromList);
 
     ajListDel(&list);
     for(i=0;i<order;++i)
@@ -11680,4 +11682,44 @@ static void btreeIdDelFromList(void** pentry, void* cl)
     ajBtreeIdDel(&id);
 
     return;
+}
+
+
+
+
+/* @funcstatic btreeOffsetCompare *******************************************
+**
+** Comparison function for ajListUnique2
+**
+** @param [r] a [const void*] ID 1
+** @param [r] b [const void*] ID 2
+**
+** @return [ajint] 0 = bases match
+** @@
+******************************************************************************/
+
+static ajint btreeOffsetCompare(const void *a, const void *b)
+{
+    return (*(AjPBtId*)a)->offset -
+		  (*(AjPBtId*)b)->offset;
+}
+
+
+
+
+/* @funcstatic btreeDbnoCompare *******************************************
+**
+** Second comparison function for ajListUnique2
+**
+** @param [r] a [const void*] ID 1
+** @param [r] b [const void*] ID 2
+**
+** @return [ajint] 0 = bases match
+** @@
+******************************************************************************/
+
+static ajint btreeDbnoCompare(const void *a, const void *b)
+{
+    return (*(AjPBtId*)a)->dbno -
+		  (*(AjPBtId*)b)->dbno;
 }
