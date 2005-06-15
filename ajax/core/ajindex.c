@@ -5695,7 +5695,7 @@ static void btreeReadLeaf(AjPBtcache cache, AjPBtpage page, AjPList list)
     ajint order    = 0;
     ajint nkeys    = 0;
     ajint bentries = 0;
-    
+
     ajint i;
     ajint j;
     
@@ -5705,6 +5705,10 @@ static void btreeReadLeaf(AjPBtcache cache, AjPBtpage page, AjPList list)
     
     buf = page->buf;
     order = cache->order;
+
+    GBT_NKEYS(buf,&nkeys);
+    if(!nkeys)
+        return;
 
     AJCNEW0(parray,order);
     AJCNEW0(karray,order);
@@ -5942,7 +5946,6 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
     pripageno = page->pageno;
     
     btreeReadLeaf(cache,page,list);
-    
     page->dirty = BT_CLEAN;
     
 
