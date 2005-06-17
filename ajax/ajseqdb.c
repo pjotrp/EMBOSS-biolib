@@ -413,6 +413,7 @@ static ajint      seqCdDivNext(AjPSeqQuery qry);
 static AjBool     seqBlastAll(AjPSeqin seqin);
 static AjPFile    seqBlastFileOpen(const AjPStr dir, const AjPStr name);
 static AjBool     seqBlastLoadBuff(AjPSeqin seqin);
+static AjBool     seqBlastQryClose(AjPSeqQuery qry);
 static AjBool     seqBlastQryNext(AjPSeqQuery qry);
 static AjBool     seqBlastReadTable(AjPSeqin seqin,
 				    AjPStr* hline, AjPStr* seq);
@@ -1613,7 +1614,7 @@ static void seqCdTrgLine(SeqPCdTrg trgLine, ajuint ipos, SeqPCdFile fil)
     seqCdFileReadUInt(&trgLine->FirstHit, fil);
     seqCdFileReadName(name, nameSize, fil);
 
-    trgLine->Target = ajStrNewC(name);
+    ajStrAssC(&trgLine->Target,name);
 
     ajDebug("seqCdTrgLine %d nHits %d firstHit %d target '%S'\n",
 	    ipos, trgLine->NHits, trgLine->FirstHit, trgLine->Target);
@@ -2728,6 +2729,7 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
 
     seqHttpVersion(qry, &httpver);
     ajFmtPrintAppS(&get, " HTTP/%S\n", httpver);
+    ajStrDel(&httpver);
 
     ajStrAssS(&seqin->Db, qry->DbName);
 
@@ -2738,6 +2740,10 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
 	fp = seqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
     else
 	fp = seqHttpGet(qry, host, iport, get);
+    ajStrDel(&proxyName);
+    ajStrDel(&host);
+    ajStrDel(&get);
+
     if(!fp)
 	return ajFalse;
 
@@ -2760,11 +2766,6 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
     ajFileBuffStripHtml(seqin->Filebuff);
 
     ajStrAssS(&seqin->Db, qry->DbName);
-
-    ajStrDel(&host);
-    ajStrDel(&get);
-    ajStrDel(&proxyName);
-    ajStrDel(&httpver);
 
     qry->QryDone = ajTrue;
 
@@ -3317,7 +3318,7 @@ static AjBool seqEmbossAll(AjPSeqin seqin)
 	else
 	    ajListstrPushApp(list, filestrings[i]);
 */
-
+	ajStrDel(&filestrings[i]);
 	++i;
     }
 
@@ -3637,6 +3638,7 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 		    id = ajBtreeIdFromKey(qryd->idcache,ajStrStr(kwid));
 		    if(id)
 			ajListPushApp(qryd->List,(void *)id);
+		    ajStrDel(&kwid);
 		}
 		ajListDel(&tlist);
 		ajBtreePriDel(&pri);
@@ -3848,6 +3850,7 @@ static AjBool seqEmbossGcgAll(AjPSeqin seqin)
 			      ajTrue, ajTrue))
 		ok = ajTrue;
 	}
+	ajStrDel(&name);
 
 /*	if(qry->Exclude)
 	{
@@ -4942,7 +4945,7 @@ static AjBool seqBlastQryNext(AjPSeqQuery qry)
 
 static AjBool seqCdQryClose(AjPSeqQuery qry)
 {
-    SeqPCdQry qryd;
+    SeqPCdQry qryd = NULL;
 
     ajDebug("seqCdQryClose clean up qryd\n");
 
@@ -4953,6 +4956,8 @@ static AjBool seqCdQryClose(AjPSeqQuery qry)
     ajStrDel(&qryd->idxfile);
     ajStrDel(&qryd->datfile);
     ajStrDel(&qryd->seqfile);
+    ajStrDel(&qryd->srcfile);
+    ajStrDel(&qryd->tblfile);
     ajStrDel(&qryd->idxLine->EntryName);
 
     seqCdFileClose(&qryd->ifp);
@@ -4964,6 +4969,55 @@ static AjBool seqCdQryClose(AjPSeqQuery qry)
     */
     qryd->libr=0;
     qryd->libs=0;
+    ajListFree(&qryd->List);
+    AJFREE(qryd->trgLine);
+    AJFREE(qryd->idxLine);
+    AJFREE(qryd->Skip);
+
+    /* keep QryData for use at top of loop */
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic seqBlastQryClose ***********************************************
+**
+** Closes query data for an EMBLCD blastdb index
+**
+** @param [u] qry [AjPSeqQuery] Query data
+** @return [AjBool] ajTrue if we can continue,
+**                  ajFalse if all is done.
+** @@
+******************************************************************************/
+
+static AjBool seqBlastQryClose(AjPSeqQuery qry)
+{
+    SeqPCdQry qryd;
+
+    ajDebug("seqBlastQryClose clean up qryd\n");
+
+    qryd = qry->QryData;
+
+    ajCharFree(&qryd->name);
+    ajStrDel(&qryd->divfile);
+    ajStrDel(&qryd->idxfile);
+    ajStrDel(&qryd->datfile);
+    ajStrDel(&qryd->seqfile);
+    ajStrDel(&qryd->srcfile);
+    ajStrDel(&qryd->tblfile);
+    ajStrDel(&qryd->idxLine->EntryName);
+
+    seqCdFileClose(&qryd->ifp);
+    seqCdFileClose(&qryd->dfp);
+
+    ajFileClose(&qryd->libr);
+    ajFileClose(&qryd->libs);
+
+    ajFileClose(&qryd->libt);
+    ajFileClose(&qryd->libf);
+
     ajListFree(&qryd->List);
     AJFREE(qryd->trgLine);
     AJFREE(qryd->idxLine);
@@ -5524,6 +5578,7 @@ static AjBool seqGcgAll(AjPSeqin seqin)
     {
 	if(!seqCdDivNext(qry))
 	{
+	    seqCdQryClose(qry);
 	    ajDebug("seqGcgAll finished\n");
 	    return ajFalse;
 	}
@@ -5766,6 +5821,11 @@ static AjBool seqBlastOpen(AjPSeqQuery qry, AjBool next)
     ajFmtPrintS(&qryd->datfile, "%S.%s", qryd->srcfile, hdrext[qryd->type]);
     ajFmtPrintS(&qryd->tblfile, "%S.%s", qryd->srcfile, tblext[qryd->type]);
 
+    ajFileClose(&qryd->libs);
+    ajFileClose(&qryd->libr);
+    ajFileClose(&qryd->libt);
+    ajFileClose(&qryd->libf);
+
     qryd->libs = seqBlastFileOpen(qry->Directory, qryd->seqfile);
     qryd->libr = seqBlastFileOpen(qry->Directory, qryd->datfile);
     qryd->libt = seqBlastFileOpen(qry->Directory, qryd->tblfile);
@@ -5990,8 +6050,8 @@ static AjBool seqBlastLoadBuff(AjPSeqin seqin)
 
 /* @funcstatic seqBlastAll ****************************************************
 **
-** Reads the EMBLCD division lookup file and opens a list of all the
-** database files for plain reading.
+** Reads the EMBLCD division lookup file when first called for a new query,
+** and returns each entry until done.
 **
 ** @param [u] seqin [AjPSeqin] Sequence input.
 ** @return [AjBool] ajTrue on success.
@@ -6034,23 +6094,31 @@ static AjBool seqBlastAll(AjPSeqin seqin)
     if(!qryd->libr)
     {
 	ajDebug("seqBlastAll finished\n");
+	seqBlastQryClose(qry);
 	return ajFalse;
     }
 
     if(!seqBlastLoadBuff(seqin))
     {
 	if(!seqBlastOpen(qry, ajTrue))	/* try the next file */
+	{
+	    seqBlastQryClose(qry);
 	    return ajFalse;
+	}
 	qryd = qry->QryData;
 	qryd->idnum = 0;
 	if(!qryd->libr)
 	{
+	    seqBlastQryClose(qry);
 	    ajDebug("seqBlastAll finished\n");
 	    return ajFalse;
         }
 
 	if(!seqBlastLoadBuff(seqin))
+	{
+	    seqBlastQryClose(qry);
 	    return ajFalse;
+	}
     }
 
     qryd->idnum++;
