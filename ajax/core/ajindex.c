@@ -1266,11 +1266,8 @@ static void btreeBucketDel(AjPBucket *thys)
     for(i=0;i<n;++i)
 	ajBtreeIdDel(&pthis->Ids[i]);
     
-    if(n)
-    {
-	AJFREE(pthis->keylen);
-	AJFREE(pthis->Ids);
-    }
+    AJFREE(pthis->keylen);
+    AJFREE(pthis->Ids);
     
     AJFREE(pthis);
 
@@ -5968,7 +5965,11 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
 	buf = page->buf;
 	GBT_RIGHT(buf,&right);
 	if(!right)
+	{
+	    ajStrDel(&prefix);
+	    ajListDel(&list);
 	    return;
+	}
 	page = ajBtreeCacheRead(cache,right);
 	pripageno = right;
 	page->dirty = BT_LOCK;
