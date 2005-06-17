@@ -2873,11 +2873,12 @@ AjPFileBuff ajFileBuffNewFile(AjPFile file)
 **
 ** @param [w] pthys [AjPFileBuff*] Buffered file object.
 ** @param [u] file [AjPFile] File object to be buffered.
+** @param [r] samefile [AjBool] true if the buff currently uses this file
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool ajFileBuffSetFile(AjPFileBuff* pthys, AjPFile file)
+AjBool ajFileBuffSetFile(AjPFileBuff* pthys, AjPFile file, AjBool samefile)
 {
     AjPFileBuff thys;
 
@@ -2897,7 +2898,7 @@ AjBool ajFileBuffSetFile(AjPFileBuff* pthys, AjPFile file)
     thys = *pthys;
 
     /* same file ??? */
-    if(thys->File && (thys->File->Handle ==  file->Handle))
+    if(samefile)
     {
 	ajFileBuffClear(thys, -1);
 	return ajTrue;

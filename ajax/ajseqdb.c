@@ -275,6 +275,7 @@ typedef struct SeqSCdTrg
 ** @attr List [AjPList] list of entries
 ** @attr Skip [AjBool*] skip file(s) in division.lkp
 ** @attr idxLine [SeqPCdIdx] entryname.idx input line
+** @attr Samefile [AjBool] true if the same file is passed to ajFileBuffSetFile
 ** @@
 ******************************************************************************/
 
@@ -315,6 +316,7 @@ typedef struct SeqSCdQry
     AjPList List;
     AjBool* Skip;
     SeqPCdIdx idxLine;
+    AjBool Samefile;
 } SeqOCdQry;
 
 #define SeqPCdQry SeqOCdQry*
@@ -349,6 +351,7 @@ typedef struct SeqSCdQry
 ** @attr libr [AjPFile] Secondary (database bibliographic source) file
 ** @attr List [AjPList] List of files
 ** @attr Skip [AjBool*] files numbers to exclude
+** @attr Samefile [AjBool] true if the same file is passed to ajFileBuffSetFile
 ** @@
 ******************************************************************************/
 
@@ -379,6 +382,7 @@ typedef struct SeqSEmbossQry
     
     AjPList List;
     AjBool *Skip;
+    AjBool Samefile;
 } SeqOEmbossQry;
 
 #define SeqPEmbossQry SeqOEmbossQry*
@@ -712,7 +716,7 @@ static AjBool seqAccessEmblcd(AjPSeqin seqin)
     {
 	retval = seqCdQryNext(qry);
 	if(retval)
-	    ajFileBuffSetFile(&seqin->Filebuff, qryd->libr);
+	    ajFileBuffSetFile(&seqin->Filebuff, qryd->libr, qryd->Samefile);
     }
 
     if(!ajListLength(qryd->List)) /* could have been emptied by code above */
@@ -2862,7 +2866,7 @@ static AjBool seqAccessEmboss(AjPSeqin seqin)
     {
 	retval = seqEmbossQryNext(qry);
 	if(retval)
-	    ajFileBuffSetFile(&seqin->Filebuff, qryd->libs);
+	    ajFileBuffSetFile(&seqin->Filebuff, qryd->libs, qryd->Samefile);
     }
 
     if(!ajListLength(qryd->List)) /* could have been emptied by code above */
@@ -3437,8 +3441,10 @@ static AjBool seqEmbossQryNext(AjPSeqQuery qry)
 	}
     }
 
+    qryd->Samefile = ajTrue;
     if(entry->dbno != qryd->div)
     {
+	qryd->Samefile = ajFalse;
 	qryd->div = entry->dbno;
 	ajFileClose(&qryd->libs);
 	if(qryd->reffiles)
@@ -3688,7 +3694,7 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 	if(ajListLength(qryd->List))
 	    return ajTrue;
     }
-    
+
     if(qryd->do_sv && qryd->svcache)
     {
 	ajBtreeListFromKeyW(qryd->svcache,qry->Sv->Ptr,qryd->List);
@@ -4842,8 +4848,10 @@ static AjBool seqCdQryNext(AjPSeqQuery qry)
 
     ajDebug("idnum: %d\n", qryd->idnum);
 
+    qryd->Samefile = ajTrue;
     if(entry->div != qryd->div)
     {
+	qryd->Samefile = ajFalse;
 	qryd->div = entry->div;
 	ajDebug("div: %d\n", qryd->div);
 	if(!seqCdQryFile(qry))

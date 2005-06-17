@@ -282,7 +282,8 @@ void        ajFileBuffReset (AjPFileBuff thys);
 void        ajFileBuffResetPos (AjPFileBuff thys);
 void        ajFileBuffResetStore (AjPFileBuff thys,
 				  AjBool store, AjPStr *astr);
-AjBool      ajFileBuffSetFile (AjPFileBuff* pthys, AjPFile file);
+AjBool      ajFileBuffSetFile (AjPFileBuff* pthys, AjPFile file,
+			       AjBool samefile);
 ajint       ajFileBuffSize (void);
 void        ajFileBuffStripHtml (AjPFileBuff thys);
 AjBool      ajFileBuffStripHtmlPre (AjPFileBuff thys);
