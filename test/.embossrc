@@ -153,12 +153,12 @@ DB qapxflatinc  [ type: P format: swiss method: emboss
   comment: "Swissnew flatfiles, only updated sequence file"
 ]
 
-DB qapxflatall  [ type: P format: swiss method: emboss
-  dir: $emboss_qadata/swnew
-  indexdir: $emboss_qadata/qa/dbxflat-swiss-keep
+DB qanxflatall  [ type: N format: embl method: emboss
+  dir: $emboss_qadata/embl
+  indexdir: $emboss_qadata/qa/dbxflat-all-keep
   fields: "des org key"
-  dbalias: swnew
-  comment: "Swissnew flatfiles, all fields indexed"
+  dbalias: embl
+  comment: "EMBL flatfiles, all fields indexed"
 ]
 
 ###########################################
