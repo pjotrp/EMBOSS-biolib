@@ -5623,6 +5623,100 @@ FP 2 />/
 //
 
 #############################################
+# The qanxflatall database
+#############################################
+
+ID dbxflat-all-keep
+DL keep
+AQ dbxflat
+CL -fields="id,acc,sv,des,key,org"
+IN embl
+IN embl
+IN embl
+IN 
+IN ../../embl
+IN
+FI stderr
+FC = 6
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID dbxflatall-id
+AP seqret
+CL qanxflatall-id:rnops test.out -auto
+FI test.out
+FZ = 1567
+FP /\A>RNOPS /
+FP 1 />/
+//
+
+ID dbxflatall-idfirst
+AP seqret
+CL qanxflatall-id:MMAM test.out -auto
+FI test.out
+FZ = 473
+FP 1 />MMAM /
+FP 1 />/
+//
+
+ID dbxflatall-idsecond
+AP seqret
+CL qanxflatall-id:RNOPS test.out -auto
+FI test.out
+FZ = 1567
+FP 1 />RNOPS /
+FP 1 />/
+//
+
+ID dbxflatall-last
+AP seqret
+CL qanxflatall-id:RNU68037 test.out -auto
+FI test.out
+FZ = 1320
+FP 1 />RNU68037 /
+FP 1 />/
+//
+
+ID dbxflatall-nextlast
+AP seqret
+CL qanxflatall-id:RNOPS test.out -auto
+FI test.out
+FZ = 1567
+FP 1 />RNOPS /
+FP 1 />/
+//
+
+ID dbxflatall-all
+AP seqret
+CC Fails to fetch all entries in emboss access method
+CL qanxflatall:* test.out -auto
+FI test.out
+FZ = 3360
+FP 1 />RNOPS /
+FP 3 />/
+//
+
+ID dbxflatall-wild
+AP seqret
+CL qanxflatall:r* test.out -auto
+FI test.out
+FZ = 2887
+FP 1 />RNOPS /
+FP 2 />/
+//
+
+ID dbxflatall-keywild
+AP seqret
+CL qanxflatall-key:a* test.out -auto
+FI test.out
+FZ = 2887
+FP 1 />RNOPS /
+FP 2 />/
+//
+
+#############################################
 # The qapxflat database
 #############################################
 
@@ -6800,7 +6894,7 @@ AP seqret
 CL qaxpirall-des:cytochrome test.out -auto
 FI test.out
 FZ = 8516
-FP 1 /\A>CCHU /
+FP 1 />CCHU /
 FP 54 />/
 //
 
@@ -6881,9 +6975,9 @@ ID dbxgcg-pirall-orgwild
 AP seqret
 CL qaxpirall-org:s* test.out -auto
 FI test.out
-FZ = 1103
+FZ = 1929
 FP 1 />CCPG /
-FP 7 />/
+FP 12 />/
 //
 
 ID dbxgcg-pirall-orgwild2
