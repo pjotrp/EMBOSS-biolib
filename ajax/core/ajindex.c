@@ -5889,7 +5889,7 @@ AjPBtId ajBtreeIdFromKeyW(AjPBtcache cache, AjPBtWild wild)
 ** Wildcard retrieval of entries
 **
 ** @param [u] cache [AjPBtcache] cache
-** @param [r] key [char *] Wildcard key
+** @param [r] key [const char *] Wildcard key
 ** @param [u] idlist [AjPList] list of matching AjPBtIds
 **
 ** @return [void]
@@ -6073,7 +6073,7 @@ void ajBtreeListFromKeyW(AjPBtcache cache, const char *key, AjPList idlist)
 ** wildcard searches with keys beginning with '?' or '*'
 **
 ** @param [u] cache [AjPBtcache] cache
-** @param [r] key [char *] Wildcard key
+** @param [r] key [const char *] Wildcard key
 ** @param [u] idlist [AjPList] list of matching AjPBtIds
 **
 ** @return [void]
@@ -10907,7 +10907,7 @@ AjPBtId ajBtreeIdFromKeywordW(AjPBtcache cache, AjPBtKeyWild wild,
 
 
 
-/* @func ajBtreeIdFromKeywordW ********************************************
+/* @func ajBtreeListFromKeywordW ********************************************
 **
 ** Wildcard retrieval of keyword index entries
 **
@@ -11117,7 +11117,7 @@ void ajBtreeListFromKeywordW(AjPBtcache cache, const char *key,
 ** wildcard searches with keys beginning with '?' or '*'
 **
 ** @param [u] cache [AjPBtcache] cache
-** @param [r] key [char *] Wildcard key
+** @param [r] key [const char *] Wildcard key
 ** @param [u] idcache [AjPBtcache] id index cache
 ** @param [u] idlist [AjPList] list of matching AjPBtIds
 **
