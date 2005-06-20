@@ -86,8 +86,9 @@ my $scripts = "$distribtop/scripts";
 my $doctop = "$distribtop/doc/sourceforge";
 
 my @embassylist = ("appendixd",
-		   "construct",
 		   "domainatrix",
+		   "domalign",
+		   "domsearch",
 		   "emnu",
 		   "esim4",
 		   "hmmer",
@@ -96,6 +97,9 @@ my @embassylist = ("appendixd",
 		   "myemboss",
 		   "phylip",
 		   "phylipnew",
+		   "reconstruct",
+		   "signature",
+		   "structure",
 		   "topo",
 		   );
 
