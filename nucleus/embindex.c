@@ -90,6 +90,65 @@ void embBtreeEmblKW(const AjPStr kwline, AjPList kwlist, ajint maxlen)
 
 
 
+/* @func embBtreeEmblTX **************************************************
+**
+** Extract keywords from an EMBL OC or OS line 
+**
+** @param [r] txline [const AjPStr] taxonomy line
+** @param [w] txlist [AjPList] list of taxons
+** @param [r] maxlen [ajint] max taxon length
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void embBtreeEmblTX(const AjPStr txline, AjPList txlist, ajint maxlen)
+{
+    AjPStr line      = NULL;
+    AjPStrTok handle = NULL;
+    AjPStr token     = NULL;
+    AjPStr str       = NULL;
+    
+    line  = ajStrNew();
+    token = ajStrNew();
+    
+    ajStrAssC(&line, &MAJSTRSTR(txline)[5]);
+
+    handle = ajStrTokenInit(line,"\n;()");
+
+    while(ajStrToken(&token,&handle,NULL))
+    {
+	ajStrTrimEndC(&token,".");
+	ajStrTrimEndC(&token," ");
+	ajStrChomp(&token);
+	if(ajStrLen(token))
+	{
+	    str = ajStrNew();
+	    if(maxlen)
+	    {
+		if(ajStrLen(token) > maxlen)
+		    ajStrAssSub(&str,token,0,maxlen-1);
+		else
+		    ajStrAssS(&str,token);
+		
+	    }
+	    else
+		ajStrAssS(&str,token);
+	    ajStrToLower(&str);
+	    ajListPush(txlist,(void *)str);
+	}
+    }
+
+    ajStrDel(&token);
+    ajStrTokenClear(&handle);
+    ajStrDel(&line);
+    
+    return;
+}
+
+
+
+
 /* @func embBtreeEmblAC **************************************************
 **
 ** Extract accession numbers from an EMBL AC line 
@@ -177,7 +236,7 @@ void embBtreeEmblAC(const AjPStr acline, AjPList aclist)
 
 /* @func embBtreeEmblDE **************************************************
 **
-** Extract keywords from an EMBL DE line 
+** Extract words from an EMBL DE line 
 **
 ** @param [r] deline[const AjPStr] description line
 ** @param [w] delist [AjPList] list of descriptions
@@ -199,7 +258,7 @@ void embBtreeEmblDE(const AjPStr deline, AjPList delist, ajint maxlen)
     
     ajStrAssC(&line, &MAJSTRSTR(deline)[5]);
 
-    handle = ajStrTokenInit(line,"\n,");
+    handle = ajStrTokenInit(line,"\n \t()");
 
     while(ajStrToken(&token,&handle,NULL))
     {
@@ -400,7 +459,7 @@ void embBtreeGenBankDE(const AjPStr kwline, AjPList kwlist, ajint maxlen)
     
     ajStrAssC(&line, &MAJSTRSTR(kwline)[10]);
 
-    handle = ajStrTokenInit(line,"\n ");
+    handle = ajStrTokenInit(line,"\n \t()");
 
     while(ajStrToken(&token,&handle,NULL))
     {
@@ -458,11 +517,12 @@ void embBtreeGenBankTX(const AjPStr kwline, AjPList kwlist, ajint maxlen)
     
     ajStrAssC(&line, &MAJSTRSTR(kwline)[9]);
 
-    handle = ajStrTokenInit(line,"\n;");
+    handle = ajStrTokenInit(line,"\n;()");
 
     while(ajStrToken(&token,&handle,NULL))
     {
 	ajStrTrimEndC(&token,".");
+	ajStrTrimEndC(&token," ");
 	ajStrChomp(&token);
 	if(ajStrLen(token))
 	{

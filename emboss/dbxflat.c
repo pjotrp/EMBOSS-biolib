@@ -323,7 +323,7 @@ static AjBool dbxflat_ParseEmbl(EmbPBtreeEntry entry, AjPFile inf)
 
 	if(entry->do_taxonomy)
 	    if(ajStrPrefixC(line,"OC") || ajStrPrefixC(line,"OS"))
-		embBtreeEmblKW(line,entry->tx,entry->txlen);
+		embBtreeEmblTX(line,entry->tx,entry->txlen);
     }
     
 
