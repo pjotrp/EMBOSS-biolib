@@ -598,7 +598,7 @@ float embAlignScoreNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
     float gapcnt;
     float bimble;
     float wscore;
-    float errbounds = gapextend;
+    float errbounds;
 
     ajint ix;
     ajint iy;
@@ -610,6 +610,9 @@ float embAlignScoreNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
     const char *q;
 
     ajDebug("embAlignScoreNWMatrix\n");
+
+    errbounds = gapextend;
+    errbounds = 0.01;
 
     /* Get maximum path axis score and save position */
     pmax = (float) (-1*INT_MAX);
@@ -779,6 +782,7 @@ float embAlignScoreSWMatrix(const float *path, const ajint *compass,
     ajDebug("embAlignScoreSWMatrix\n");
 
     errbounds = gapextend;
+    errbounds = 0.01;
 
     /* Get maximum path score and save position */
     pmax = (float) (-1*INT_MAX);
@@ -967,6 +971,7 @@ void embAlignWalkSWMatrix(const float *path, const ajint *compass,
     ajDebug("embAlignWalkSWMatrix\n");
 
     errbounds = gapextend;
+    errbounds = 0.01;
 
     /* Get maximum path score and save position */
     pmax = (float) (-1*INT_MAX);
@@ -1128,11 +1133,15 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
     const char *q;
 
     float ic;
-    float errbounds=gapextend;
+    float errbounds;
 
     ajDebug("embAlignWalkNWMatrix\n");
 
     ajDebug("seqlen a:%d b:%d\n", ajSeqLen(a), ajSeqLen(b));
+
+    errbounds=gapextend;
+    errbounds=0.01;
+
     /* Get maximum path axis score and save position */
     pmax = (float) (-1*INT_MAX);
     for(i=0;i<lenb;++i)
