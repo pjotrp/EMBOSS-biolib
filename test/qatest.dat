@@ -2384,7 +2384,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hsferg1.fasta
-FP />x03487_cds_1\natgacgaccgcgt/
+FP /^>x03487_cds_1\natgacgaccgcgt/
 FP /aatgaaagctaa\n>x03487_mrna_1\ncagacgttcttcgc/
 FP /ctcctacgtttacctgtccatg\n>x03487_pro_1\nMTTASTSQVRQNY/
 FI hsferg1.coderet
@@ -2405,9 +2405,9 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hsferg1.fasta
-FP 0 />x03487_cds_1/
-FP />x03487_mrna_1\ncagacgttcttcgc/
-FP 0 />x03487_pro_1/
+FP 0 /^>x03487_cds_1/
+FP /^>x03487_mrna_1\ncagacgttcttcgc/
+FP 0 /^>x03487_pro_1/
 FI hsferg1.coderet
 FC = 3
 FP /     1     1 HSFERG1\n/
@@ -2930,8 +2930,8 @@ AP seqret
 CL qapblast-id:CO9_FUGRU test.out -auto
 FI test.out
 FZ = 649
-FP 1 />CO9_FUGRU /
-FP 1 />/
+FP 1 /^>CO9_FUGRU /
+FP 1 /^>/
 //
 
 ID dbiblast-idsecond
@@ -2939,8 +2939,8 @@ AP seqret
 CL qapblast-id:E2BB_FUGRU test.out -auto
 FI test.out
 FZ = 473
-FP 1 />E2BB_FUGRU /
-FP 1 />/
+FP 1 /^>E2BB_FUGRU /
+FP 1 /^>/
 //
 
 ID dbiblast-last
@@ -2948,8 +2948,8 @@ AP seqret
 CL qapblast-id:TM21_FUGRU test.out -auto
 FI test.out
 FZ = 287
-FP 1 />TM21_FUGRU /
-FP 1 />/
+FP 1 /^>TM21_FUGRU /
+FP 1 /^>/
 //
 
 ID dbiblast-nextlast
@@ -2957,8 +2957,8 @@ AP seqret
 CL qapblast-id:ODO2_FUGRU test.out -auto
 FI test.out
 FZ = 569
-FP 1 />ODO2_FUGRU /
-FP 1 />/
+FP 1 /^>ODO2_FUGRU /
+FP 1 /^>/
 //
 
 ID dbiblast-acfirst
@@ -2966,8 +2966,8 @@ AP seqret
 CL qapblast-acc:P53450 test.out -auto
 FI test.out
 FZ = 435
-FP 1 />FOS_FUGRU P53450 /
-FP 1 />/
+FP 1 /^>FOS_FUGRU P53450 /
+FP 1 /^>/
 //
 
 ID dbiblast-acsecond
@@ -2975,8 +2975,8 @@ AP seqret
 CL qapblast-acc:P79755 test.out -auto
 FI test.out
 FZ = 649
-FP 1 />CO9_FUGRU P79755 /
-FP 1 />/
+FP 1 /^>CO9_FUGRU P79755 /
+FP 1 /^>/
 //
 
 ID dbiblast-aclast
@@ -2984,8 +2984,8 @@ AP seqret
 CL qapblast-acc:Q90515 test.out -auto
 FI test.out
 FZ = 287
-FP 1 />TM21_FUGRU Q90515 /
-FP 1 />/
+FP 1 /^>TM21_FUGRU Q90515 /
+FP 1 /^>/
 //
 
 ID dbiblast-all
@@ -2993,8 +2993,8 @@ AP seqret
 CL qapblast:* test.out -auto
 FI test.out
 FZ = 4474
-FP 1 />TM21_FUGRU Q90515 /
-FP 9 />/
+FP 1 /^>TM21_FUGRU Q90515 /
+FP 9 /^>/
 //
 
 ID dbiblast-wild
@@ -3002,8 +3002,8 @@ AP seqret
 CL qapblast:n* test.out -auto
 FI test.out
 FZ = 516
-FP 2 />N/
-FP 2 />/
+FP 2 /^>N/
+FP 2 /^>/
 //
 
 #############################################
@@ -3102,8 +3102,8 @@ AP seqret
 CL qapblastsplit-id:CO9_FUGRU test.out -auto
 FI test.out
 FZ = 649
-FP 1 />CO9_FUGRU /
-FP 1 />/
+FP 1 /^>CO9_FUGRU /
+FP 1 /^>/
 //
 
 ID dbiblast-split-idsecond
@@ -3111,8 +3111,8 @@ AP seqret
 CL qapblastsplit-id:E2BB_FUGRU test.out -auto
 FI test.out
 FZ = 473
-FP 1 />E2BB_FUGRU /
-FP 1 />/
+FP 1 /^>E2BB_FUGRU /
+FP 1 /^>/
 //
 
 ID dbiblast-split-last
@@ -3120,8 +3120,8 @@ AP seqret
 CL qapblastsplit-id:TM21_FUGRU test.out -auto
 FI test.out
 FZ = 287
-FP 1 />TM21_FUGRU /
-FP 1 />/
+FP 1 /^>TM21_FUGRU /
+FP 1 /^>/
 //
 
 ID dbiblast-split-nextlast
@@ -3129,8 +3129,8 @@ AP seqret
 CL qapblastsplit-id:ODO2_FUGRU test.out -auto
 FI test.out
 FZ = 569
-FP 1 />ODO2_FUGRU /
-FP 1 />/
+FP 1 /^>ODO2_FUGRU /
+FP 1 /^>/
 //
 
 ID dbiblast-split-acfirst
@@ -3138,8 +3138,8 @@ AP seqret
 CL qapblastsplit-acc:P53450 test.out -auto
 FI test.out
 FZ = 435
-FP 1 />FOS_FUGRU P53450 /
-FP 1 />/
+FP 1 /^>FOS_FUGRU P53450 /
+FP 1 /^>/
 //
 
 ID dbiblast-split-acsecond
@@ -3147,8 +3147,8 @@ AP seqret
 CL qapblastsplit-acc:P79755 test.out -auto
 FI test.out
 FZ = 649
-FP 1 />CO9_FUGRU P79755 /
-FP 1 />/
+FP 1 /^>CO9_FUGRU P79755 /
+FP 1 /^>/
 //
 
 ID dbiblast-split-aclast
@@ -3156,8 +3156,8 @@ AP seqret
 CL qapblastsplit-acc:Q90515 test.out -auto
 FI test.out
 FZ = 287
-FP 1 />TM21_FUGRU Q90515 /
-FP 1 />/
+FP 1 /^>TM21_FUGRU Q90515 /
+FP 1 /^>/
 //
 
 ID dbiblast-split-all
@@ -3165,8 +3165,8 @@ AP seqret
 CL qapblastsplit:* test.out -auto
 FI test.out
 FZ = 4474
-FP 1 />TM21_FUGRU Q90515 /
-FP 9 />/
+FP 1 /^>TM21_FUGRU Q90515 /
+FP 9 /^>/
 //
 
 ID dbiblast-split-wild
@@ -3174,8 +3174,8 @@ AP seqret
 CL qapblastsplit:n* test.out -auto
 FI test.out
 FZ = 516
-FP 2 />N/
-FP 2 />/
+FP 2 /^>N/
+FP 2 /^>/
 //
 
 ID dbiblast-split-testexc
@@ -3183,8 +3183,8 @@ AP seqret
 CL qapblastsplitexc:CO9_FUGRU test.out -auto
 FI test.out
 FZ = 649
-FP 1 />CO9_FUGRU /
-FP 1 />/
+FP 1 /^>CO9_FUGRU /
+FP 1 /^>/
 //
 
 ID dbiblast-split-testexcall
@@ -3192,8 +3192,8 @@ AP seqret
 CL qapblastsplitexc:* test.out -auto
 FI test.out
 FZ = 3864
-FP 1 />CO9_FUGRU /
-FP 7 />/
+FP 1 /^>CO9_FUGRU /
+FP 7 /^>/
 //
 
 ID dbiblast-split-testexcfail
@@ -3213,8 +3213,8 @@ AP seqret
 CL qapblastsplitinc:FABP_FUGRU test.out -auto
 FI test.out
 FZ = 175
-FP 1 />FABP_FUGRU /
-FP 1 />/
+FP 1 /^>FABP_FUGRU /
+FP 1 /^>/
 //
 
 ID dbiblast-split-testincall
@@ -3222,8 +3222,8 @@ AP seqret
 CL qapblastsplitinc:* test.out -auto
 FI test.out
 FZ = 610
-FP 1 />FABP_FUGRU /
-FP 2 />/
+FP 1 /^>FABP_FUGRU /
+FP 2 /^>/
 //
 
 ID dbiblast-split-testincfail
@@ -3361,8 +3361,8 @@ AP seqret
 CL qanfasta-id:MMAM test.out -auto
 FI test.out
 FZ = 471
-FP 1 />MMAM /
-FP 1 />/
+FP 1 /^>MMAM /
+FP 1 /^>/
 //
 
 ID dbifasta-idsecond
@@ -3370,8 +3370,8 @@ AP seqret
 CL qanfasta-id:RNOPS test.out -auto
 FI test.out
 FZ = 1565
-FP 1 />RNOPS /
-FP 1 />/
+FP 1 /^>RNOPS /
+FP 1 /^>/
 //
 
 ID dbifasta-last
@@ -3379,8 +3379,8 @@ AP seqret
 CL qanfasta-id:RNU68037 test.out -auto
 FI test.out
 FZ = 1318
-FP 1 />RNU68037 /
-FP 1 />/
+FP 1 /^>RNU68037 /
+FP 1 /^>/
 //
 
 ID dbifasta-nextlast
@@ -3388,8 +3388,8 @@ AP seqret
 CL qanfasta-id:RNOPS test.out -auto
 FI test.out
 FZ = 1565
-FP 1 />RNOPS /
-FP 1 />/
+FP 1 /^>RNOPS /
+FP 1 /^>/
 //
 
 ID dbifasta-all
@@ -3397,8 +3397,8 @@ AP seqret
 CL qanfasta:* test.out -auto
 FI test.out
 FZ = 3354
-FP 1 />RNOPS /
-FP 3 />/
+FP 1 /^>RNOPS /
+FP 3 /^>/
 //
 
 ID dbifasta-wild
@@ -3406,9 +3406,9 @@ AP seqret
 CL qanfasta:r* test.out -auto
 FI test.out
 FZ = 2883
-FP 1 />RNOPS /
-FP 2 />R/
-FP 2 />/
+FP 1 /^>RNOPS /
+FP 2 /^>R/
+FP 2 /^>/
 //
 
 #############################################
@@ -3448,8 +3448,8 @@ AP seqret
 CL qapfasta-id:CO9_FUGRU test.out -auto
 FI test.out
 FZ = 649
-FP 1 />CO9_FUGRU /
-FP 1 />/
+FP 1 /^>CO9_FUGRU /
+FP 1 /^>/
 //
 
 ID dbifasta-swiss-idsecond
@@ -3457,8 +3457,8 @@ AP seqret
 CL qapfasta-id:E2BB_FUGRU test.out -auto
 FI test.out
 FZ = 473
-FP 1 />E2BB_FUGRU /
-FP 1 />/
+FP 1 /^>E2BB_FUGRU /
+FP 1 /^>/
 //
 
 ID dbifasta-swiss-last
@@ -3466,8 +3466,8 @@ AP seqret
 CL qapfasta-id:TM21_FUGRU test.out -auto
 FI test.out
 FZ = 287
-FP 1 />TM21_FUGRU /
-FP 1 />/
+FP 1 /^>TM21_FUGRU /
+FP 1 /^>/
 //
 
 ID dbifasta-swiss-nextlast
@@ -3475,8 +3475,8 @@ AP seqret
 CL qapfasta-id:ODO2_FUGRU test.out -auto
 FI test.out
 FZ = 569
-FP 1 />ODO2_FUGRU /
-FP 1 />/
+FP 1 /^>ODO2_FUGRU /
+FP 1 /^>/
 //
 
 ID dbifasta-swiss-all
@@ -3484,8 +3484,8 @@ AP seqret
 CL qapfasta:* test.out -auto
 FI test.out
 FZ = 4474
-FP 1 />E2BB_FUGRU /
-FP 9 />/
+FP 1 /^>E2BB_FUGRU /
+FP 9 /^>/
 //
 
 ID dbifasta-swiss-wild
@@ -3493,9 +3493,9 @@ AP seqret
 CL qapfasta:n* test.out -auto
 FI test.out
 FZ = 516
-FP 1 />NEUI_FUGRU /
-FP 2 />N/
-FP 2 />/
+FP 1 /^>NEUI_FUGRU /
+FP 2 /^>N/
+FP 2 /^>/
 //
 
 #############################################
@@ -3536,8 +3536,8 @@ AP seqret
 CL qawfasta-id:AC3.1 test.out -auto
 FI test.out
 FZ = 426
-FP 1 />AC3[.]1 /
-FP 1 />/
+FP 1 /^>AC3[.]1 /
+FP 1 /^>/
 //
 
 ID dbifasta-worm-idsecond
@@ -3545,8 +3545,8 @@ AP seqret
 CL qawfasta-id:AC3.2 test.out -auto
 FI test.out
 FZ = 1057
-FP 1 />AC3[.]2 /
-FP 1 />/
+FP 1 /^>AC3[.]2 /
+FP 1 /^>/
 //
 
 ID dbifasta-worm-last
@@ -3554,8 +3554,8 @@ AP seqret
 CL qawfasta-id:ZK637.15 test.out -auto
 FI test.out
 FZ = 205
-FP 1 />ZK637[.]15 /
-FP 1 />/
+FP 1 /^>ZK637[.]15 /
+FP 1 /^>/
 //
 
 ID dbifasta-worm-nextlast
@@ -3563,8 +3563,8 @@ AP seqret
 CL qawfasta-id:zk637.14 test.out -auto
 FI test.out
 FZ = 260
-FP 1 />ZK637[.]14 /
-FP 1 />/
+FP 1 /^>ZK637[.]14 /
+FP 1 /^>/
 //
 
 ID dbifasta-worm-all
@@ -3572,7 +3572,7 @@ AP seqret
 CL qawfasta:* test.out -auto
 FI test.out
 FZ = 33816
-FP 66 />/
+FP 66 /^>/
 //
 
 ID dbifasta-worm-wild
@@ -3660,7 +3660,7 @@ CL qanflat-id:rnops test.out -auto
 FI test.out
 FZ = 1567
 FP /\A>RNOPS /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbiflat-idfirst
@@ -3668,8 +3668,8 @@ AP seqret
 CL qanflat-id:MMAM test.out -auto
 FI test.out
 FZ = 473
-FP 1 />MMAM /
-FP 1 />/
+FP 1 /^>MMAM /
+FP 1 /^>/
 //
 
 ID dbiflat-idsecond
@@ -3677,8 +3677,8 @@ AP seqret
 CL qanflat-id:RNOPS test.out -auto
 FI test.out
 FZ = 1567
-FP 1 />RNOPS /
-FP 1 />/
+FP 1 /^>RNOPS /
+FP 1 /^>/
 //
 
 ID dbiflat-last
@@ -3686,8 +3686,8 @@ AP seqret
 CL qanflat-id:RNU68037 test.out -auto
 FI test.out
 FZ = 1320
-FP 1 />RNU68037 /
-FP 1 />/
+FP 1 /^>RNU68037 /
+FP 1 /^>/
 //
 
 ID dbiflat-nextlast
@@ -3695,8 +3695,8 @@ AP seqret
 CL qanflat-id:RNOPS test.out -auto
 FI test.out
 FZ = 1567
-FP 1 />RNOPS /
-FP 1 />/
+FP 1 /^>RNOPS /
+FP 1 /^>/
 //
 
 ID dbiflat-all
@@ -3704,8 +3704,8 @@ AP seqret
 CL qanflat:* test.out -auto
 FI test.out
 FZ = 3360
-FP 1 />RNOPS /
-FP 3 />/
+FP 1 /^>RNOPS /
+FP 3 /^>/
 //
 
 ID dbiflat-wild
@@ -3713,8 +3713,8 @@ AP seqret
 CL qanflat:r* test.out -auto
 FI test.out
 FZ = 2887
-FP 1 />RNOPS /
-FP 2 />/
+FP 1 /^>RNOPS /
+FP 2 /^>/
 //
 
 ID dbiflat-tembl-idfirst
@@ -3722,8 +3722,8 @@ AP seqret
 CL tembl-id:AB000095 test.out -auto
 FI test.out
 FZ = 2542
-FP 1 />AB000095 /
-FP 1 />/
+FP 1 /^>AB000095 /
+FP 1 /^>/
 //
 
 ID dbiflat-tembl-idsecond
@@ -3731,8 +3731,8 @@ AP seqret
 CL tembl-id:AB000360 test.out -auto
 FI test.out
 FZ = 2685
-FP 1 />AB000360 /
-FP 1 />/
+FP 1 /^>AB000360 /
+FP 1 /^>/
 //
 
 ID dbiflat-tembl-last
@@ -3740,8 +3740,8 @@ AP seqret
 CL tembl-id:XLRHODOP test.out -auto
 FI test.out
 FZ = 1777
-FP 1 />XLRHODOP /
-FP 1 />/
+FP 1 /^>XLRHODOP /
+FP 1 /^>/
 //
 
 ID dbiflat-tembl-nextlast
@@ -3749,8 +3749,8 @@ AP seqret
 CL tembl-id:XL23808 test.out -auto
 FI test.out
 FZ = 4876
-FP 1 />XL23808 /
-FP 1 />/
+FP 1 /^>XL23808 /
+FP 1 /^>/
 //
 
 ID dbiflat-tembl-multiacc
@@ -3758,8 +3758,8 @@ AP seqret
 CL tembl-acc:V00451 test.out -auto
 FI test.out
 FZ = 6261
-FP 3 />GM/
-FP 3 />/
+FP 3 /^>GM/
+FP 3 /^>/
 //
 
 ID dbiflat-tembl-all
@@ -3767,8 +3767,8 @@ AP seqret
 CL tembl:* test.out -auto
 FI test.out
 FZ = 540075
-FP 3 />GM/
-FP 44 />/
+FP 3 /^>GM/
+FP 44 /^>/
 //
 
 ID dbiflat-tembl-wild
@@ -3776,8 +3776,8 @@ AP seqret
 CL tembl:h* test.out -auto
 FI test.out
 FZ = 154591
-FP 5 />HSF/
-FP 16 />/
+FP 5 /^>HSF/
+FP 16 /^>/
 //
 
 #############################################
@@ -3923,8 +3923,8 @@ AP seqret
 CL qapflat-id:CO9_FUGRU test.out -auto
 FI test.out
 FZ = 649
-FP 1 />CO9_FUGRU /
-FP 1 />/
+FP 1 /^>CO9_FUGRU /
+FP 1 /^>/
 //
 
 ID dbiflat-swiss-idsecond
@@ -3932,8 +3932,8 @@ AP seqret
 CL qapflat-id:E2BB_FUGRU test.out -auto
 FI test.out
 FZ = 473
-FP 1 />E2BB_FUGRU /
-FP 1 />/
+FP 1 /^>E2BB_FUGRU /
+FP 1 /^>/
 //
 
 ID dbiflat-swiss-last
@@ -3941,8 +3941,8 @@ AP seqret
 CL qapflat-id:TM21_FUGRU test.out -auto
 FI test.out
 FZ = 287
-FP 1 />TM21_FUGRU /
-FP 1 />/
+FP 1 /^>TM21_FUGRU /
+FP 1 /^>/
 //
 
 ID dbiflat-swiss-nextlast
@@ -3950,8 +3950,8 @@ AP seqret
 CL qapflat-id:ODO2_FUGRU test.out -auto
 FI test.out
 FZ = 569
-FP 1 />ODO2_FUGRU /
-FP 1 />/
+FP 1 /^>ODO2_FUGRU /
+FP 1 /^>/
 //
 
 ID dbiflat-swiss-all
@@ -3959,8 +3959,8 @@ AP seqret
 CL qapflat:* test.out -auto
 FI test.out
 FZ = 2413
-FP 1 />ODO2_FUGRU /
-FP 5 />/
+FP 1 /^>ODO2_FUGRU /
+FP 5 /^>/
 //
 
 ID dbiflat-swiss-wild
@@ -3968,8 +3968,8 @@ AP seqret
 CL qapflat:o* test.out -auto
 FI test.out
 FZ = 569
-FP 1 />ODO2_FUGRU /
-FP 1 />/
+FP 1 /^>ODO2_FUGRU /
+FP 1 /^>/
 //
 
 ID dbiflat-swiss-testexc
@@ -3977,8 +3977,8 @@ AP seqret
 CL qapflatexc-id:CO9_FUGRU test.out -auto
 FI test.out
 FZ = 649
-FP 1 />CO9_FUGRU /
-FP 1 />/
+FP 1 /^>CO9_FUGRU /
+FP 1 /^>/
 //
 
 ID dbiflat-swiss-testexcall
@@ -3986,8 +3986,8 @@ AP seqret
 CL qapflatexc-id:* test.out -auto
 FI test.out
 FZ = 1978
-FP 1 />CO9_FUGRU /
-FP 4 />/
+FP 1 /^>CO9_FUGRU /
+FP 4 /^>/
 //
 
 ID dbiflat-swiss-testexcfail
@@ -4007,8 +4007,8 @@ AP seqret
 CL qapflatinc-id:FOS_FUGRU test.out -auto
 FI test.out
 FZ = 435
-FP 1 />FOS_FUGRU /
-FP 1 />/
+FP 1 /^>FOS_FUGRU /
+FP 1 /^>/
 //
 
 ID dbiflat-swiss-testincall
@@ -4016,8 +4016,8 @@ AP seqret
 CL qapflatinc-id:* test.out -auto
 FI test.out
 FZ = 435
-FP 1 />FOS_FUGRU /
-FP 1 />/
+FP 1 /^>FOS_FUGRU /
+FP 1 /^>/
 //
 
 ID dbiflat-swiss-testincfail
@@ -4101,7 +4101,7 @@ CL qangcg-id:hsfau test.out -auto
 FI test.out
 FZ = 560
 FP 1 /\A>HSFAU /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbigcg-idfirst
@@ -4109,8 +4109,8 @@ AP seqret
 CL qangcg-id:AB000095 test.out -auto
 FI test.out
 FZ = 2542
-FP 1 />AB000095 /
-FP 1 />/
+FP 1 /^>AB000095 /
+FP 1 /^>/
 //
 
 ID dbigcg-idsecond
@@ -4118,8 +4118,8 @@ AP seqret
 CL qangcg-id:AB009062 test.out -auto
 FI test.out
 FZ = 594
-FP 1 />AB009062 /
-FP 1 />/
+FP 1 /^>AB009062 /
+FP 1 /^>/
 //
 
 ID dbigcg-last
@@ -4127,8 +4127,8 @@ AP seqret
 CL qangcg-id:XLRHODOP test.out -auto
 FI test.out
 FZ = 1777
-FP 1 />XLRHODOP /
-FP 1 />/
+FP 1 /^>XLRHODOP /
+FP 1 /^>/
 //
 
 ID dbigcg-acc
@@ -4136,8 +4136,8 @@ AP seqret
 CL qangcg:L07770 test.out -auto
 FI test.out
 FZ = 1777
-FP 1 />XLRHODOP /
-FP 1 />/
+FP 1 /^>XLRHODOP /
+FP 1 /^>/
 //
 
 ID dbigcg-nextlast
@@ -4145,8 +4145,8 @@ AP seqret
 CL qangcg-id:XL23808 test.out -auto
 FI test.out
 FZ = 4876
-FP 1 />XL23808 /
-FP 1 />/
+FP 1 /^>XL23808 /
+FP 1 /^>/
 //
 
 ID dbigcg-splitfirst
@@ -4154,8 +4154,8 @@ AP seqret
 CL qangcg-id:CEY39B6 test.out -auto
 FI test.out
 FZ = 362911
-FP 1 />CEY39B6 /
-FP 1 />/
+FP 1 /^>CEY39B6 /
+FP 1 /^>/
 //
 
 ID dbigcg-splitmid
@@ -4163,8 +4163,8 @@ AP seqret
 CL qangcg-id:PFMAL4P1 test.out -auto
 FI test.out
 FZ = 399267
-FP 1 />PFMAL4P1 /
-FP 1 />/
+FP 1 /^>PFMAL4P1 /
+FP 1 /^>/
 //
 
 ID dbigcg-splitbefore
@@ -4172,8 +4172,8 @@ AP seqret
 CL qangcg-id:AC017364 test.out -auto
 FI test.out
 FZ = 3801
-FP 1 />AC017364 /
-FP 1 />/
+FP 1 /^>AC017364 /
+FP 1 /^>/
 //
 
 ID dbigcg-splitafter
@@ -4181,8 +4181,8 @@ AP seqret
 CL qangcg-id:PFMAL4P3 test.out -auto
 FI test.out
 FZ = 326444
-FP 1 />PFMAL4P3 /
-FP 1 />/
+FP 1 /^>PFMAL4P3 /
+FP 1 /^>/
 //
 
 ID dbigcg-splitend
@@ -4190,8 +4190,8 @@ AP seqret
 CL qangcg-id:ECUW67 test.out -auto
 FI test.out
 FZ = 378731
-FP 1 />ECUW67 /
-FP 1 />/
+FP 1 /^>ECUW67 /
+FP 1 /^>/
 //
 
 ID dbigcg-all
@@ -4199,8 +4199,8 @@ AP seqret
 CL qangcg:* test.out -auto
 FI test.out
 FZ = 2145073
-FP 1 />XL23808 /
-FP 40 />/
+FP 1 /^>XL23808 /
+FP 40 /^>/
 //
 
 ID dbigcg-wild
@@ -4208,8 +4208,8 @@ AP seqret
 CL qangcg:h* test.out -auto
 FI test.out
 FZ = 77403
-FP 13 />H/
-FP 13 />/
+FP 13 /^>H/
+FP 13 /^>/
 //
 
 ID dbigcg-testexc
@@ -4218,7 +4218,7 @@ CL qangcgexc-id:hsfau test.out -auto
 FI test.out
 FZ = 560
 FP 1 /\A>HSFAU /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbigcg-testexcall
@@ -4226,8 +4226,8 @@ AP seqret
 CL qangcgexc-id:* test.out -auto
 FI test.out
 FZ = 1744803
-FP 1 />HSFAU /
-FP 30 />/
+FP 1 /^>HSFAU /
+FP 30 /^>/
 //
 
 ID dbigcg-testexcfail
@@ -4248,7 +4248,7 @@ CL qangcginc-id:eclac test.out -auto
 FI test.out
 FZ = 7676
 FP 1 /\A>ECLAC /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbigcg-testincall
@@ -4256,8 +4256,8 @@ AP seqret
 CL qangcginc-id:* test.out -auto
 FI test.out
 FZ = 400270
-FP 1 />ECLAC /
-FP 10 />/
+FP 1 /^>ECLAC /
+FP 10 /^>/
 //
 
 ID dbigcg-testincfail
@@ -4336,7 +4336,7 @@ CL qangcgall-id:hsfau test.out -auto
 FI test.out
 FZ = 560
 FP 1 /\A>HSFAU /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbigcg-allsys-idfirst
@@ -4344,8 +4344,8 @@ AP seqret
 CL qangcgall-id:AB000095 test.out -auto
 FI test.out
 FZ = 2542
-FP 1 />AB000095 /
-FP 1 />/
+FP 1 /^>AB000095 /
+FP 1 /^>/
 //
 
 ID dbigcg-allsys-idsecond
@@ -4353,8 +4353,8 @@ AP seqret
 CL qangcgall-id:AB009062 test.out -auto
 FI test.out
 FZ = 594
-FP 1 />AB009062 /
-FP 1 />/
+FP 1 /^>AB009062 /
+FP 1 /^>/
 //
 
 ID dbigcg-allsys-last
@@ -4362,8 +4362,8 @@ AP seqret
 CL qangcgall-id:XLRHODOP test.out -auto
 FI test.out
 FZ = 1777
-FP 1 />XLRHODOP /
-FP 1 />/
+FP 1 /^>XLRHODOP /
+FP 1 /^>/
 //
 
 ID dbigcg-allsys-acc
@@ -4371,8 +4371,8 @@ AP seqret
 CL qangcgall:L07770 test.out -auto
 FI test.out
 FZ = 1777
-FP 1 />XLRHODOP /
-FP 1 />/
+FP 1 /^>XLRHODOP /
+FP 1 /^>/
 //
 
 ID dbigcg-allsys-nextlast
@@ -4380,8 +4380,8 @@ AP seqret
 CL qangcgall-id:XL23808 test.out -auto
 FI test.out
 FZ = 4876
-FP 1 />XL23808 /
-FP 1 />/
+FP 1 /^>XL23808 /
+FP 1 /^>/
 //
 
 ID dbigcg-allsys-splitfirst
@@ -4389,8 +4389,8 @@ AP seqret
 CL qangcgall-id:CEY39B6 test.out -auto
 FI test.out
 FZ = 362911
-FP 1 />CEY39B6 /
-FP 1 />/
+FP 1 /^>CEY39B6 /
+FP 1 /^>/
 //
 
 ID dbigcg-allsys-splitmid
@@ -4398,8 +4398,8 @@ AP seqret
 CL qangcgall-id:PFMAL4P1 test.out -auto
 FI test.out
 FZ = 399267
-FP 1 />PFMAL4P1 /
-FP 1 />/
+FP 1 /^>PFMAL4P1 /
+FP 1 /^>/
 //
 
 ID dbigcg-allsys-splitbefore
@@ -4407,8 +4407,8 @@ AP seqret
 CL qangcgall-id:AC017364 test.out -auto
 FI test.out
 FZ = 3801
-FP 1 />AC017364 /
-FP 1 />/
+FP 1 /^>AC017364 /
+FP 1 /^>/
 //
 
 ID dbigcg-allsys-splitafter
@@ -4416,8 +4416,8 @@ AP seqret
 CL qangcgall-id:PFMAL4P3 test.out -auto
 FI test.out
 FZ = 326444
-FP 1 />PFMAL4P3 /
-FP 1 />/
+FP 1 /^>PFMAL4P3 /
+FP 1 /^>/
 //
 
 ID dbigcg-allsys-splitend
@@ -4425,8 +4425,8 @@ AP seqret
 CL qangcgall-id:ECUW67 test.out -auto
 FI test.out
 FZ = 378731
-FP 1 />ECUW67 /
-FP 1 />/
+FP 1 /^>ECUW67 /
+FP 1 /^>/
 //
 
 ID dbigcg-allsys-all
@@ -4434,8 +4434,8 @@ AP seqret
 CL qangcgall:* test.out -auto
 FI test.out
 FZ = 2145073
-FP 1 />XL23808 /
-FP 40 />/
+FP 1 /^>XL23808 /
+FP 40 /^>/
 //
 
 ID dbigcg-allsys-wild
@@ -4443,8 +4443,8 @@ AP seqret
 CL qangcgall:h* test.out -auto
 FI test.out
 FZ = 77403
-FP 13 />H/
-FP 13 />/
+FP 13 /^>H/
+FP 13 /^>/
 //
 
 ID dbigcg-allsys-acnum
@@ -4453,7 +4453,7 @@ CL qangcgall-acc:X65923 test.out -auto
 FI test.out
 FZ = 560
 FP 1 /\A>HSFAU /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbigcg-allsys-acnumall
@@ -4461,8 +4461,8 @@ AP seqret
 CL qangcgall-acc:* test.out -auto
 FI test.out
 FZ = 2145073
-FP 1 />XL23808 /
-FP 40 />/
+FP 1 /^>XL23808 /
+FP 40 /^>/
 //
 
 ID dbigcg-allsys-acnumwild
@@ -4470,8 +4470,8 @@ AP seqret
 CL qangcgall-acc:x* test.out -auto
 FI test.out
 FZ = 18986
-FP 11 />[A-Z0-9]+ X/
-FP 11 />/
+FP 11 /^>[A-Z0-9]+ X/
+FP 11 /^>/
 //
 
 ID dbigcg-allsys-sv
@@ -4479,8 +4479,8 @@ AP seqret
 CL qangcgall-sv:D00596.1 test.out -auto
 FI test.out
 FZ = 19007
-FP 1 />HSTS1 /
-FP 1 />/
+FP 1 /^>HSTS1 /
+FP 1 /^>/
 //
 
 ID dbigcg-allsys-svall
@@ -4488,8 +4488,8 @@ AP seqret
 CL qangcgall-sv:* test.out -auto
 FI test.out
 FZ = 2145073
-FP 1 />HSFAU /
-FP 40 />/
+FP 1 /^>HSFAU /
+FP 40 /^>/
 //
 
 ID dbigcg-allsys-svwild
@@ -4497,8 +4497,8 @@ AP seqret
 CL qangcgall-sv:x* test.out -auto
 FI test.out
 FZ = 5045
-FP 3 />H/
-FP 3 />/
+FP 3 /^>H/
+FP 3 /^>/
 //
 
 ID dbigcg-allsys-des
@@ -4507,7 +4507,7 @@ CL qangcgall-des:fau test.out -auto
 FI test.out
 FZ = 560
 FP 1 /\A>HSFAU /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbigcg-allsys-desall
@@ -4515,8 +4515,8 @@ AP seqret
 CL qangcgall-des:* test.out -auto
 FI test.out
 FZ = 2145073
-FP 1 />XL23808 /
-FP 40 />/
+FP 1 /^>XL23808 /
+FP 40 /^>/
 //
 
 ID dbigcg-allsys-deswild
@@ -4524,8 +4524,8 @@ AP seqret
 CL qangcgall-des:m* test.out -auto
 FI test.out
 FZ = 1543930
-FP 18 />.* [Mm]/
-FP 18 />/
+FP 18 /^>.* [Mm]/
+FP 18 /^>/
 //
 
 ID dbigcg-allsys-key
@@ -4533,8 +4533,8 @@ AP seqret
 CL qangcgall-key:rhodopsin test.out -auto
 FI test.out
 FZ = 5087
-FP 1 />XLRHODOP /
-FP 3 />/
+FP 1 /^>XLRHODOP /
+FP 3 /^>/
 //
 
 ID dbigcg-allsys-keyall
@@ -4542,8 +4542,8 @@ AP seqret
 CL qangcgall-key:* test.out -auto
 FI test.out
 FZ = 2145073
-FP 1 />XL23808 /
-FP 40 />/
+FP 1 /^>XL23808 /
+FP 40 /^>/
 //
 
 ID dbigcg-allsys-keywild
@@ -4551,8 +4551,8 @@ AP seqret
 CL qangcgall-key:m* test.out -auto
 FI test.out
 FZ = 9918
-FP 1 />AB009602/
-FP 3 />/
+FP 1 /^>AB009602/
+FP 3 /^>/
 //
 
 ID dbigcg-allsys-org
@@ -4560,8 +4560,8 @@ AP seqret
 CL qangcgall-org:Mus test.out -auto
 FI test.out
 FZ = 473
-FP 1 />MMAM /
-FP 1 />/
+FP 1 /^>MMAM /
+FP 1 /^>/
 //
 
 ID dbigcg-allsys-orgall
@@ -4569,8 +4569,8 @@ AP seqret
 CL qangcgall-org:* test.out -auto
 FI test.out
 FZ = 2145073
-FP 1 />XL23808 /
-FP 40 />/
+FP 1 /^>XL23808 /
+FP 40 /^>/
 //
 
 ID dbigcg-allsys-orgwild
@@ -4578,8 +4578,8 @@ AP seqret
 CL qangcgall-org:s* test.out -auto
 FI test.out
 FZ = 45442
-FP 1 />MMAM/
-FP 5 />/
+FP 1 /^>MMAM/
+FP 5 /^>/
 //
 
 ID dbigcg-allsys-orgwild2
@@ -4587,8 +4587,8 @@ AP seqret
 CL qangcgall-org:mus* test.out -auto
 FI test.out
 FZ = 4274
-FP 1 />MMAM/
-FP 2 />/
+FP 1 /^>MMAM/
+FP 2 /^>/
 //
 
 ID dbigcg-allnosys-keep
@@ -4685,7 +4685,7 @@ CL qapir-id:cchu test.out -auto
 FI test.out
 FZ = 141
 FP 1 /\A>CCHU /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbigcg-pir-idfirst
@@ -4693,8 +4693,8 @@ AP seqret
 CL qapir-id:A31558 test.out -auto
 FI test.out
 FZ = 156
-FP 1 />A31558 /
-FP 1 />/
+FP 1 /^>A31558 /
+FP 1 /^>/
 //
 
 ID dbigcg-pir-idsecond
@@ -4702,8 +4702,8 @@ AP seqret
 CL qapir-id:A32902 test.out -auto
 FI test.out
 FZ = 123
-FP 1 />A32902 /
-FP 1 />/
+FP 1 /^>A32902 /
+FP 1 /^>/
 //
 
 ID dbigcg-pir-last
@@ -4711,8 +4711,8 @@ AP seqret
 CL qapir-id:S29350 test.out -auto
 FI test.out
 FZ = 186
-FP 1 />S29350 /
-FP 1 />/
+FP 1 /^>S29350 /
+FP 1 /^>/
 //
 
 ID dbigcg-pir-acc
@@ -4720,8 +4720,8 @@ AP seqret
 CL qapir:A00001 test.out -auto
 FI test.out
 FZ = 141
-FP 1 />CCHU /
-FP 1 />/
+FP 1 /^>CCHU /
+FP 1 /^>/
 //
 
 ID dbigcg-pir-nextlast
@@ -4729,8 +4729,8 @@ AP seqret
 CL qapir-id:S11172 test.out -auto
 FI test.out
 FZ = 178
-FP 1 />S11172 /
-FP 1 />/
+FP 1 /^>S11172 /
+FP 1 /^>/
 //
 
 ID dbigcg-pir-all
@@ -4738,8 +4738,8 @@ AP seqret
 CL qapir:* test.out -auto
 FI test.out
 FZ = 10175
-FP 1 />S11172 /
-FP 60 />/
+FP 1 /^>S11172 /
+FP 60 /^>/
 //
 
 ID dbigcg-pir-wild
@@ -4747,8 +4747,8 @@ AP seqret
 CL qapir:c* test.out -auto
 FI test.out
 FZ = 7660
-FP 49 />C/
-FP 49 />/
+FP 49 /^>C/
+FP 49 /^>/
 //
 
 ID dbigcg-pir-testexc
@@ -4757,7 +4757,7 @@ CL qapirexc-id:S11172 test.out -auto
 FI test.out
 FZ = 178
 FP 1 /\A>S11172 /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbigcg-pir-testexcall
@@ -4765,8 +4765,8 @@ AP seqret
 CL qapirexc-id:* test.out -auto
 FI test.out
 FZ = 2515
-FP 1 />S11172 /
-FP 11 />/
+FP 1 /^>S11172 /
+FP 11 /^>/
 //
 
 ID dbigcg-pir-testexcfail
@@ -4787,7 +4787,7 @@ CL qapirinc-id:cchu test.out -auto
 FI test.out
 FZ = 141
 FP 1 /\A>CCHU /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbigcg-pir-testincall
@@ -4795,8 +4795,8 @@ AP seqret
 CL qapirinc-id:* test.out -auto
 FI test.out
 FZ = 7660
-FP 1 />CCHU /
-FP 49 />/
+FP 1 /^>CCHU /
+FP 49 /^>/
 //
 
 ID dbigcg-pir-testincfail
@@ -4873,7 +4873,7 @@ CL qapirall-id:cchu test.out -auto
 FI test.out
 FZ = 141
 FP 1 /\A>CCHU /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbigcg-pirall-idfirst
@@ -4881,8 +4881,8 @@ AP seqret
 CL qapirall-id:A31558 test.out -auto
 FI test.out
 FZ = 156
-FP 1 />A31558 /
-FP 1 />/
+FP 1 /^>A31558 /
+FP 1 /^>/
 //
 
 ID dbigcg-pirall-idsecond
@@ -4890,8 +4890,8 @@ AP seqret
 CL qapirall-id:A32902 test.out -auto
 FI test.out
 FZ = 123
-FP 1 />A32902 /
-FP 1 />/
+FP 1 /^>A32902 /
+FP 1 /^>/
 //
 
 ID dbigcg-pirall-last
@@ -4899,8 +4899,8 @@ AP seqret
 CL qapirall-id:S29350 test.out -auto
 FI test.out
 FZ = 186
-FP 1 />S29350 /
-FP 1 />/
+FP 1 /^>S29350 /
+FP 1 /^>/
 //
 
 ID dbigcg-pirall-acc
@@ -4908,8 +4908,8 @@ AP seqret
 CL qapirall:A00001 test.out -auto
 FI test.out
 FZ = 141
-FP 1 />CCHU /
-FP 1 />/
+FP 1 /^>CCHU /
+FP 1 /^>/
 //
 
 ID dbigcg-pirall-nextlast
@@ -4917,8 +4917,8 @@ AP seqret
 CL qapirall-id:S11172 test.out -auto
 FI test.out
 FZ = 178
-FP 1 />S11172 /
-FP 1 />/
+FP 1 /^>S11172 /
+FP 1 /^>/
 //
 
 ID dbigcg-pirall-all
@@ -4926,8 +4926,8 @@ AP seqret
 CL qapirall:* test.out -auto
 FI test.out
 FZ = 10175
-FP 1 />S11172 /
-FP 60 />/
+FP 1 /^>S11172 /
+FP 60 /^>/
 //
 
 ID dbigcg-pirall-wild
@@ -4935,8 +4935,8 @@ AP seqret
 CL qapirall:c* test.out -auto
 FI test.out
 FZ = 7660
-FP 49 />C/
-FP 49 />/
+FP 49 /^>C/
+FP 49 /^>/
 //
 
 ID dbigcg-pirall-acnum
@@ -4945,7 +4945,7 @@ CL qapirall-acc:A04605 test.out -auto
 FI test.out
 FZ = 139
 FP 1 /\A>CCRT /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbigcg-pirall-acnumall
@@ -4953,8 +4953,8 @@ AP seqret
 CL qapirall-acc:* test.out -auto
 FI test.out
 FZ = 10175
-FP 1 />CCRT /
-FP 60 />/
+FP 1 /^>CCRT /
+FP 60 /^>/
 //
 
 ID dbigcg-pirall-acnumwild
@@ -4963,8 +4963,8 @@ CL qapirall-acc:s* test.out -auto
 FI test.out
 FZ = 829
 ## CCHO has an S* secondary accession number, rest are primary
-FP 4 />[A-Z0-9]+ S/
-FP 5 />/
+FP 4 /^>[A-Z0-9]+ S/
+FP 5 /^>/
 //
 
 ID dbigcg-pirall-des
@@ -4973,7 +4973,7 @@ CL qapirall-des:cytochrome test.out -auto
 FI test.out
 FZ = 8516
 FP 1 /\A>CCHU /
-FP 54 />/
+FP 54 /^>/
 //
 
 ID dbigcg-pirall-desall
@@ -4981,8 +4981,8 @@ AP seqret
 CL qapirall-des:* test.out -auto
 FI test.out
 FZ = 10175
-FP 1 />CCHU /
-FP 60 />/
+FP 1 /^>CCHU /
+FP 60 /^>/
 //
 
 ID dbigcg-pirall-deswild
@@ -4990,8 +4990,8 @@ AP seqret
 CL qapirall-des:p* test.out -auto
 FI test.out
 FZ = 2380
-FP 11 />.*[ -][Pp]/
-FP 11 />/
+FP 11 /^>.*[ -][Pp]/
+FP 11 /^>/
 //
 
 ID dbigcg-pirall-key
@@ -4999,8 +4999,8 @@ AP seqret
 CL qapirall-key:polymorphism test.out -auto
 FI test.out
 FZ = 141
-FP 1 />CCHU /
-FP 1 />/
+FP 1 /^>CCHU /
+FP 1 /^>/
 //
 
 ID dbigcg-pirall-keyall
@@ -5008,8 +5008,8 @@ AP seqret
 CL qapirall-key:* test.out -auto
 FI test.out
 FZ = 10175
-FP 1 />CCHU /
-FP 60 />/
+FP 1 /^>CCHU /
+FP 60 /^>/
 //
 
 # only entries with keywords
@@ -5018,8 +5018,8 @@ AP seqret
 CL qapirall-key:?* test.out -auto
 FI test.out
 FZ = 8800
-FP 1 />CCHU /
-FP 56 />/
+FP 1 /^>CCHU /
+FP 56 /^>/
 //
 
 ID dbigcg-pirall-keywild
@@ -5027,8 +5027,8 @@ AP seqret
 CL qapirall-key:m* test.out -auto
 FI test.out
 FZ = 8180
-FP 1 />CCHU /
-FP 52 />/
+FP 1 /^>CCHU /
+FP 52 /^>/
 //
 
 ID dbigcg-pirall-org
@@ -5036,8 +5036,8 @@ AP seqret
 CL qapirall-org:'drosophila melanogaster' test.out -auto
 FI test.out
 FZ = 180
-FP 1 />CCFFDM /
-FP 1 />/
+FP 1 /^>CCFFDM /
+FP 1 /^>/
 //
 
 ID dbigcg-pirall-orgall
@@ -5045,8 +5045,8 @@ AP seqret
 CL qapirall-org:* test.out -auto
 FI test.out
 FZ = 10175
-FP 1 />CCHU /
-FP 60 />/
+FP 1 /^>CCHU /
+FP 60 /^>/
 //
 
 ID dbigcg-pirall-orgwild
@@ -5054,8 +5054,8 @@ AP seqret
 CL qapirall-org:s* test.out -auto
 FI test.out
 FZ = 1929
-FP 1 />CCPG /
-FP 12 />/
+FP 1 /^>CCPG /
+FP 12 /^>/
 //
 
 
@@ -5064,8 +5064,8 @@ AP seqret
 CL qapirall-org:mus* test.out -auto
 FI test.out
 FZ = 300
-FP 1 />CCMS /
-FP 2 />/
+FP 1 /^>CCMS /
+FP 2 /^>/
 //
 
 
@@ -5216,8 +5216,8 @@ AP seqret
 CL qanxfasta-id:MMAM test.out -auto
 FI test.out
 FZ = 471
-FP 1 />MMAM /
-FP 1 />/
+FP 1 /^>MMAM /
+FP 1 /^>/
 //
 
 ID dbxfasta-idsecond
@@ -5225,8 +5225,8 @@ AP seqret
 CL qanxfasta-id:RNOPS test.out -auto
 FI test.out
 FZ = 1565
-FP 1 />RNOPS /
-FP 1 />/
+FP 1 /^>RNOPS /
+FP 1 /^>/
 //
 
 ID dbxfasta-last
@@ -5234,8 +5234,8 @@ AP seqret
 CL qanxfasta-id:RNU68037 test.out -auto
 FI test.out
 FZ = 1318
-FP 1 />RNU68037 /
-FP 1 />/
+FP 1 /^>RNU68037 /
+FP 1 /^>/
 //
 
 ID dbxfasta-nextlast
@@ -5243,8 +5243,8 @@ AP seqret
 CL qanxfasta-id:RNOPS test.out -auto
 FI test.out
 FZ = 1565
-FP 1 />RNOPS /
-FP 1 />/
+FP 1 /^>RNOPS /
+FP 1 /^>/
 //
 
 ID dbxfasta-all
@@ -5252,8 +5252,8 @@ AP seqret
 CL qanxfasta:* test.out -auto
 FI test.out
 FZ = 3354
-FP 1 />RNOPS /
-FP 3 />/
+FP 1 /^>RNOPS /
+FP 3 /^>/
 //
 
 ID dbxfasta-wild
@@ -5261,9 +5261,9 @@ AP seqret
 CL qanxfasta:r* test.out -auto
 FI test.out
 FZ = 2883
-FP 1 />RNOPS /
-FP 2 />R/
-FP 2 />/
+FP 1 /^>RNOPS /
+FP 2 /^>R/
+FP 2 /^>/
 //
 
 #############################################
@@ -5328,8 +5328,8 @@ AP seqret
 CL qapxfasta-id:CO9_FUGRU test.out -auto
 FI test.out
 FZ = 649
-FP 1 />CO9_FUGRU /
-FP 1 />/
+FP 1 /^>CO9_FUGRU /
+FP 1 /^>/
 //
 
 ID dbxfasta-swiss-idsecond
@@ -5337,8 +5337,8 @@ AP seqret
 CL qapxfasta-id:E2BB_FUGRU test.out -auto
 FI test.out
 FZ = 473
-FP 1 />E2BB_FUGRU /
-FP 1 />/
+FP 1 /^>E2BB_FUGRU /
+FP 1 /^>/
 //
 
 ID dbxfasta-swiss-last
@@ -5346,8 +5346,8 @@ AP seqret
 CL qapxfasta-id:TM21_FUGRU test.out -auto
 FI test.out
 FZ = 287
-FP 1 />TM21_FUGRU /
-FP 1 />/
+FP 1 /^>TM21_FUGRU /
+FP 1 /^>/
 //
 
 ID dbxfasta-swiss-nextlast
@@ -5355,8 +5355,8 @@ AP seqret
 CL qapxfasta-id:ODO2_FUGRU test.out -auto
 FI test.out
 FZ = 569
-FP 1 />ODO2_FUGRU /
-FP 1 />/
+FP 1 /^>ODO2_FUGRU /
+FP 1 /^>/
 //
 
 ID dbxfasta-swiss-all
@@ -5364,8 +5364,8 @@ AP seqret
 CL qapxfasta:* test.out -auto
 FI test.out
 FZ = 4474
-FP 1 />E2BB_FUGRU /
-FP 9 />/
+FP 1 /^>E2BB_FUGRU /
+FP 9 /^>/
 //
 
 ID dbxfasta-swiss-wild
@@ -5373,9 +5373,9 @@ AP seqret
 CL qapxfasta:n* test.out -auto
 FI test.out
 FZ = 516
-FP 1 />NEUI_FUGRU /
-FP 2 />N/
-FP 2 />/
+FP 1 /^>NEUI_FUGRU /
+FP 2 /^>N/
+FP 2 /^>/
 //
 
 #############################################
@@ -5441,8 +5441,8 @@ AP seqret
 CL qawxfasta-id:AC3.1 test.out -auto
 FI test.out
 FZ = 426
-FP 1 />AC3[.]1 /
-FP 1 />/
+FP 1 /^>AC3[.]1 /
+FP 1 /^>/
 //
 
 ID dbxfasta-worm-idsecond
@@ -5450,8 +5450,8 @@ AP seqret
 CL qawxfasta-id:AC3.2 test.out -auto
 FI test.out
 FZ = 1057
-FP 1 />AC3[.]2 /
-FP 1 />/
+FP 1 /^>AC3[.]2 /
+FP 1 /^>/
 //
 
 ID dbxfasta-worm-last
@@ -5459,8 +5459,8 @@ AP seqret
 CL qawxfasta-id:ZK637.15 test.out -auto
 FI test.out
 FZ = 205
-FP 1 />ZK637[.]15 /
-FP 1 />/
+FP 1 /^>ZK637[.]15 /
+FP 1 /^>/
 //
 
 ID dbxfasta-worm-nextlast
@@ -5468,8 +5468,8 @@ AP seqret
 CL qawxfasta-id:zk637.14 test.out -auto
 FI test.out
 FZ = 260
-FP 1 />ZK637[.]14 /
-FP 1 />/
+FP 1 /^>ZK637[.]14 /
+FP 1 /^>/
 //
 
 ID dbxfasta-worm-all
@@ -5477,7 +5477,7 @@ AP seqret
 CL qawxfasta:* test.out -auto
 FI test.out
 FZ = 33816
-FP 66 />/
+FP 66 /^>/
 //
 
 ID dbxfasta-worm-wild
@@ -5564,7 +5564,7 @@ CL qanxflat-id:rnops test.out -auto
 FI test.out
 FZ = 1567
 FP /\A>RNOPS /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbxflat-idfirst
@@ -5572,8 +5572,8 @@ AP seqret
 CL qanxflat-id:MMAM test.out -auto
 FI test.out
 FZ = 473
-FP 1 />MMAM /
-FP 1 />/
+FP 1 /^>MMAM /
+FP 1 /^>/
 //
 
 ID dbxflat-idsecond
@@ -5581,8 +5581,8 @@ AP seqret
 CL qanxflat-id:RNOPS test.out -auto
 FI test.out
 FZ = 1567
-FP 1 />RNOPS /
-FP 1 />/
+FP 1 /^>RNOPS /
+FP 1 /^>/
 //
 
 ID dbxflat-last
@@ -5590,8 +5590,8 @@ AP seqret
 CL qanxflat-id:RNU68037 test.out -auto
 FI test.out
 FZ = 1320
-FP 1 />RNU68037 /
-FP 1 />/
+FP 1 /^>RNU68037 /
+FP 1 /^>/
 //
 
 ID dbxflat-nextlast
@@ -5599,8 +5599,8 @@ AP seqret
 CL qanxflat-id:RNOPS test.out -auto
 FI test.out
 FZ = 1567
-FP 1 />RNOPS /
-FP 1 />/
+FP 1 /^>RNOPS /
+FP 1 /^>/
 //
 
 ID dbxflat-all
@@ -5609,8 +5609,8 @@ CC Fails to fetch all entries in emboss access method
 CL qanxflat:* test.out -auto
 FI test.out
 FZ = 3360
-FP 1 />RNOPS /
-FP 3 />/
+FP 1 /^>RNOPS /
+FP 3 /^>/
 //
 
 ID dbxflat-wild
@@ -5618,8 +5618,8 @@ AP seqret
 CL qanxflat:r* test.out -auto
 FI test.out
 FZ = 2887
-FP 1 />RNOPS /
-FP 2 />/
+FP 1 /^>RNOPS /
+FP 2 /^>/
 //
 
 #############################################
@@ -5641,6 +5641,104 @@ FC = 6
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
+FI stdout
+FC = 10
+FP /^Processing file .*\/test\/embl\/rod\.dat\n/
+FP 10 /^Processing file .*\/test\/embl\/[a-z0-9]+\.dat\n/
+FI embl.ent
+FC = 14
+FP /^# Number of files: 10\n/
+FP /.*\/test\/embl\/rod\.dat\n/
+FP 10 /.*\/test\/embl\/[a-z0-9]+\.dat\n/
+FI embl.pxac
+FZ = 116
+FP /^Order     71\n/
+FP /^Fill      47\n/
+FP /^Pagesize  2048\n/
+FP /^Level     0\n/
+FP /^Cachesize 100\n/
+FP /^Order2    0\n/
+FP /^Fill2     0\n/
+FP /^Count     87\n/
+FP /^Kwlimit   0\n/
+FI embl.pxde
+FZ = 121
+FP /^Order     71\n/
+FP /^Fill      47\n/
+FP /^Pagesize  2048\n/
+FP /^Level     0\n/
+FP /^Cachesize 100\n/
+FP /^Order2    71\n/
+FP /^Fill2     106\n/
+FP /^Count     383\n/
+FP /^Kwlimit   15\n/
+FI embl.pxid
+FZ = 116
+FP /^Order     71\n/
+FP /^Fill      47\n/
+FP /^Pagesize  2048\n/
+FP /^Level     0\n/
+FP /^Cachesize 100\n/
+FP /^Order2    0\n/
+FP /^Fill2     0\n/
+FP /^Count     43\n/
+FP /^Kwlimit   0\n/
+FI embl.pxkw
+FZ = 120
+FP /^Order     71\n/
+FP /^Fill      47\n/
+FP /^Pagesize  2048\n/
+FP /^Level     0\n/
+FP /^Cachesize 100\n/
+FP /^Order2    71\n/
+FP /^Fill2     106\n/
+FP /^Count     93\n/
+FP /^Kwlimit   15\n/
+FI embl.pxsv
+FZ = 116
+FP /^Order     71\n/
+FP /^Fill      47\n/
+FP /^Pagesize  2048\n/
+FP /^Level     0\n/
+FP /^Cachesize 100\n/
+FP /^Order2    0\n/
+FP /^Fill2     0\n/
+FP /^Count     43\n/
+FP /^Kwlimit   0\n/
+FI embl.pxtx
+FZ = 121
+FP /^Order     71\n/
+FP /^Fill      47\n/
+FP /^Pagesize  2048\n/
+FP /^Level     0\n/
+FP /^Cachesize 100\n/
+FP /^Order2    71\n/
+FP /^Fill2     106\n/
+FP /^Count     531\n/
+FP /^Kwlimit   15\n/
+FI embl.xac
+FZ = 8192
+FP /\0l48662\0/
+FP /\0l48662\0/
+FP /\0z46957\0/
+FP /\0u68037\0/
+FI embl.xde
+FZ = 1437696
+FP 2 /\0activator\0/
+FI embl.xid
+FZ = 6144
+FP /\0mmam\0/
+FP /\0rnops\0/
+FP /\0rnu68037\0/
+FI embl.xkw
+FZ = 483328
+FP 2 /\0elongation fact\0/
+FI embl.xsv
+FZ = 6144
+FP /\0h45989\.1\0/
+FI embl.xtx
+FZ = 698368
+FP 1 /\0homo sapiens\0/
 //
 
 ID dbxflatall-id
@@ -5693,9 +5791,9 @@ AP seqret
 CC Fails to fetch all entries in emboss access method
 CL qanxflatall:* test.out -auto
 FI test.out
-FZ = 3360
+FZ = 540075
 FP 1 />RNOPS /
-FP 3 />/
+FP 44 />/
 //
 
 ID dbxflatall-wild
@@ -5711,9 +5809,9 @@ ID dbxflatall-keywild
 AP seqret
 CL qanxflatall-key:a* test.out -auto
 FI test.out
-FZ = 2887
-FP 1 />RNOPS /
-FP 2 />/
+FZ = 89088
+FP 1 />HSHBB /
+FP 7 />/
 //
 
 #############################################
@@ -5778,8 +5876,8 @@ AP seqret
 CL qapxflat-id:CO9_FUGRU test.out -auto
 FI test.out
 FZ = 649
-FP 1 />CO9_FUGRU /
-FP 1 />/
+FP 1 /^>CO9_FUGRU /
+FP 1 /^>/
 //
 
 ID dbxflat-swiss-idsecond
@@ -5787,8 +5885,8 @@ AP seqret
 CL qapxflat-id:E2BB_FUGRU test.out -auto
 FI test.out
 FZ = 473
-FP 1 />E2BB_FUGRU /
-FP 1 />/
+FP 1 /^>E2BB_FUGRU /
+FP 1 /^>/
 //
 
 ID dbxflat-swiss-last
@@ -5796,8 +5894,8 @@ AP seqret
 CL qapxflat-id:TM21_FUGRU test.out -auto
 FI test.out
 FZ = 287
-FP 1 />TM21_FUGRU /
-FP 1 />/
+FP 1 /^>TM21_FUGRU /
+FP 1 /^>/
 //
 
 ID dbxflat-swiss-nextlast
@@ -5805,8 +5903,8 @@ AP seqret
 CL qapxflat-id:ODO2_FUGRU test.out -auto
 FI test.out
 FZ = 569
-FP 1 />ODO2_FUGRU /
-FP 1 />/
+FP 1 /^>ODO2_FUGRU /
+FP 1 /^>/
 //
 
 ID dbxflat-swiss-all
@@ -5815,8 +5913,8 @@ CC Fails to fetch all entries in emboss access method
 CL qapxflat:* test.out -auto
 FI test.out
 FZ = 2413
-FP 1 />ODO2_FUGRU /
-FP 5 />/
+FP 1 /^>ODO2_FUGRU /
+FP 5 /^>/
 //
 
 ID dbxflat-swiss-wild
@@ -5824,8 +5922,8 @@ AP seqret
 CL qapxflat:o* test.out -auto
 FI test.out
 FZ = 569
-FP 1 />ODO2_FUGRU /
-FP 1 />/
+FP 1 /^>ODO2_FUGRU /
+FP 1 /^>/
 //
 
 ID dbxflat-swiss-testexc
@@ -5833,8 +5931,8 @@ AP seqret
 CL qapxflatexc-id:CO9_FUGRU test.out -auto
 FI test.out
 FZ = 649
-FP 1 />CO9_FUGRU /
-FP 1 />/
+FP 1 /^>CO9_FUGRU /
+FP 1 /^>/
 //
 
 ID dbxflat-swiss-testexcall
@@ -5842,8 +5940,8 @@ AP seqret
 CL qapxflatexc-id:* test.out -auto
 FI test.out
 FZ = 1978
-FP 1 />CO9_FUGRU /
-FP 4 />/
+FP 1 /^>CO9_FUGRU /
+FP 4 /^>/
 //
 
 ID dbxflat-swiss-testexcfail
@@ -5864,8 +5962,8 @@ AP seqret
 CL qapxflatinc-id:FOS_FUGRU test.out -auto
 FI test.out
 FZ = 435
-FP 1 />FOS_FUGRU /
-FP 1 />/
+FP 1 /^>FOS_FUGRU /
+FP 1 /^>/
 //
 
 ID dbxflat-swiss-testincall
@@ -5873,8 +5971,8 @@ AP seqret
 CL qapxflatinc-id:* test.out -auto
 FI test.out
 FZ = 435
-FP 1 />FOS_FUGRU /
-FP 1 />/
+FP 1 /^>FOS_FUGRU /
+FP 1 /^>/
 //
 
 ID dbxflat-swiss-testincfail
@@ -5953,7 +6051,7 @@ CL qanxgcg-id:hsfau test.out -auto
 FI test.out
 FZ = 560
 FP 1 /\A>HSFAU /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbxgcg-idfirst
@@ -5961,8 +6059,8 @@ AP seqret
 CL qanxgcg-id:AB000095 test.out -auto
 FI test.out
 FZ = 2542
-FP 1 />AB000095 /
-FP 1 />/
+FP 1 /^>AB000095 /
+FP 1 /^>/
 //
 
 ID dbxgcg-idsecond
@@ -5970,8 +6068,8 @@ AP seqret
 CL qanxgcg-id:AB009062 test.out -auto
 FI test.out
 FZ = 594
-FP 1 />AB009062 /
-FP 1 />/
+FP 1 /^>AB009062 /
+FP 1 /^>/
 //
 
 ID dbxgcg-last
@@ -5979,8 +6077,8 @@ AP seqret
 CL qanxgcg-id:XLRHODOP test.out -auto
 FI test.out
 FZ = 1777
-FP 1 />XLRHODOP /
-FP 1 />/
+FP 1 /^>XLRHODOP /
+FP 1 /^>/
 //
 
 ID dbxgcg-acc
@@ -5988,8 +6086,8 @@ AP seqret
 CL qanxgcg:L07770 test.out -auto
 FI test.out
 FZ = 1777
-FP 1 />XLRHODOP /
-FP 1 />/
+FP 1 /^>XLRHODOP /
+FP 1 /^>/
 //
 
 ID dbxgcg-nextlast
@@ -5997,8 +6095,8 @@ AP seqret
 CL qanxgcg-id:XL23808 test.out -auto
 FI test.out
 FZ = 4876
-FP 1 />XL23808 /
-FP 1 />/
+FP 1 /^>XL23808 /
+FP 1 /^>/
 //
 
 ID dbxgcg-splitfirst
@@ -6006,8 +6104,8 @@ AP seqret
 CL qanxgcg-id:CEY39B6 test.out -auto
 FI test.out
 FZ = 362911
-FP 1 />CEY39B6 /
-FP 1 />/
+FP 1 /^>CEY39B6 /
+FP 1 /^>/
 //
 
 ID dbxgcg-splitmid
@@ -6015,8 +6113,8 @@ AP seqret
 CL qanxgcg-id:PFMAL4P1 test.out -auto
 FI test.out
 FZ = 399267
-FP 1 />PFMAL4P1 /
-FP 1 />/
+FP 1 /^>PFMAL4P1 /
+FP 1 /^>/
 //
 
 ID dbxgcg-splitbefore
@@ -6024,8 +6122,8 @@ AP seqret
 CL qanxgcg-id:AC017364 test.out -auto
 FI test.out
 FZ = 3801
-FP 1 />AC017364 /
-FP 1 />/
+FP 1 /^>AC017364 /
+FP 1 /^>/
 //
 
 ID dbxgcg-splitafter
@@ -6033,8 +6131,8 @@ AP seqret
 CL qanxgcg-id:PFMAL4P3 test.out -auto
 FI test.out
 FZ = 326444
-FP 1 />PFMAL4P3 /
-FP 1 />/
+FP 1 /^>PFMAL4P3 /
+FP 1 /^>/
 //
 
 ID dbxgcg-splitend
@@ -6042,8 +6140,8 @@ AP seqret
 CL qanxgcg-id:ECUW67 test.out -auto
 FI test.out
 FZ = 378731
-FP 1 />ECUW67 /
-FP 1 />/
+FP 1 /^>ECUW67 /
+FP 1 /^>/
 //
 
 ID dbxgcg-all
@@ -6051,8 +6149,8 @@ AP seqret
 CL qanxgcg:* test.out -auto
 FI test.out
 FZ = 2145073
-FP 1 />XL23808 /
-FP 40 />/
+FP 1 /^>XL23808 /
+FP 40 /^>/
 //
 
 ID dbxgcg-wild
@@ -6060,8 +6158,8 @@ AP seqret
 CL qanxgcg:h* test.out -auto
 FI test.out
 FZ = 77403
-FP 13 />H/
-FP 13 />/
+FP 13 /^>H/
+FP 13 /^>/
 //
 
 ID dbxgcg-testexc
@@ -6070,7 +6168,7 @@ CL qanxgcgexc-id:hsfau test.out -auto
 FI test.out
 FZ = 560
 FP 1 /\A>HSFAU /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbxgcg-testexcall
@@ -6078,8 +6176,8 @@ AP seqret
 CL qanxgcgexc-id:* test.out -auto
 FI test.out
 FZ = 1744803
-FP 1 />HSFAU /
-FP 30 />/
+FP 1 /^>HSFAU /
+FP 30 /^>/
 //
 
 ID dbxgcg-testexcfail
@@ -6100,7 +6198,7 @@ CL qanxgcginc-id:eclac test.out -auto
 FI test.out
 FZ = 7676
 FP 1 /\A>ECLAC /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbxgcg-testincall
@@ -6108,8 +6206,8 @@ AP seqret
 CL qanxgcginc-id:* test.out -auto
 FI test.out
 FZ = 400270
-FP 1 />ECLAC /
-FP 10 />/
+FP 1 /^>ECLAC /
+FP 10 /^>/
 //
 
 ID dbxgcg-testincfail
@@ -6244,7 +6342,7 @@ CL qanxgcgall-id:hsfau test.out -auto
 FI test.out
 FZ = 560
 FP 1 /\A>HSFAU /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbxgcg-allsys-idfirst
@@ -6252,8 +6350,8 @@ AP seqret
 CL qanxgcgall-id:AB000095 test.out -auto
 FI test.out
 FZ = 2542
-FP 1 />AB000095 /
-FP 1 />/
+FP 1 /^>AB000095 /
+FP 1 /^>/
 //
 
 ID dbxgcg-allsys-idsecond
@@ -6261,8 +6359,8 @@ AP seqret
 CL qanxgcgall-id:AB009062 test.out -auto
 FI test.out
 FZ = 594
-FP 1 />AB009062 /
-FP 1 />/
+FP 1 /^>AB009062 /
+FP 1 /^>/
 //
 
 ID dbxgcg-allsys-last
@@ -6270,8 +6368,8 @@ AP seqret
 CL qanxgcgall-id:XLRHODOP test.out -auto
 FI test.out
 FZ = 1777
-FP 1 />XLRHODOP /
-FP 1 />/
+FP 1 /^>XLRHODOP /
+FP 1 /^>/
 //
 
 ID dbxgcg-allsys-acc
@@ -6279,8 +6377,8 @@ AP seqret
 CL qanxgcgall:L07770 test.out -auto
 FI test.out
 FZ = 1777
-FP 1 />XLRHODOP /
-FP 1 />/
+FP 1 /^>XLRHODOP /
+FP 1 /^>/
 //
 
 ID dbxgcg-allsys-nextlast
@@ -6288,8 +6386,8 @@ AP seqret
 CL qanxgcgall-id:XL23808 test.out -auto
 FI test.out
 FZ = 4876
-FP 1 />XL23808 /
-FP 1 />/
+FP 1 /^>XL23808 /
+FP 1 /^>/
 //
 
 ID dbxgcg-allsys-splitfirst
@@ -6297,8 +6395,8 @@ AP seqret
 CL qanxgcgall-id:CEY39B6 test.out -auto
 FI test.out
 FZ = 362911
-FP 1 />CEY39B6 /
-FP 1 />/
+FP 1 /^>CEY39B6 /
+FP 1 /^>/
 //
 
 ID dbxgcg-allsys-splitmid
@@ -6306,8 +6404,8 @@ AP seqret
 CL qanxgcgall-id:PFMAL4P1 test.out -auto
 FI test.out
 FZ = 399267
-FP 1 />PFMAL4P1 /
-FP 1 />/
+FP 1 /^>PFMAL4P1 /
+FP 1 /^>/
 //
 
 ID dbxgcg-allsys-splitbefore
@@ -6315,8 +6413,8 @@ AP seqret
 CL qanxgcgall-id:AC017364 test.out -auto
 FI test.out
 FZ = 3801
-FP 1 />AC017364 /
-FP 1 />/
+FP 1 /^>AC017364 /
+FP 1 /^>/
 //
 
 ID dbxgcg-allsys-splitafter
@@ -6324,8 +6422,8 @@ AP seqret
 CL qanxgcgall-id:PFMAL4P3 test.out -auto
 FI test.out
 FZ = 326444
-FP 1 />PFMAL4P3 /
-FP 1 />/
+FP 1 /^>PFMAL4P3 /
+FP 1 /^>/
 //
 
 ID dbxgcg-allsys-splitend
@@ -6333,8 +6431,8 @@ AP seqret
 CL qanxgcgall-id:ECUW67 test.out -auto
 FI test.out
 FZ = 378731
-FP 1 />ECUW67 /
-FP 1 />/
+FP 1 /^>ECUW67 /
+FP 1 /^>/
 //
 
 ID dbxgcg-allsys-all
@@ -6342,8 +6440,8 @@ AP seqret
 CL qanxgcgall:* test.out -auto
 FI test.out
 FZ = 2145073
-FP 1 />XL23808 /
-FP 40 />/
+FP 1 /^>XL23808 /
+FP 40 /^>/
 //
 
 ID dbxgcg-allsys-wild
@@ -6351,8 +6449,8 @@ AP seqret
 CL qanxgcgall:h* test.out -auto
 FI test.out
 FZ = 77403
-FP 13 />H/
-FP 13 />/
+FP 13 /^>H/
+FP 13 /^>/
 //
 
 ID dbxgcg-allsys-acnum
@@ -6361,7 +6459,7 @@ CL qanxgcgall-acc:X65923 test.out -auto
 FI test.out
 FZ = 560
 FP 1 /\A>HSFAU /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbxgcg-allsys-acnumall
@@ -6369,8 +6467,8 @@ AP seqret
 CL qanxgcgall-acc:* test.out -auto
 FI test.out
 FZ = 2145073
-FP 1 />XL23808 /
-FP 40 />/
+FP 1 /^>XL23808 /
+FP 40 /^>/
 //
 
 ID dbxgcg-allsys-acnumwild
@@ -6378,8 +6476,8 @@ AP seqret
 CL qanxgcgall-acc:x* test.out -auto
 FI test.out
 FZ = 18986
-FP 11 />[A-Z0-9]+ X/
-FP 11 />/
+FP 11 /^>[A-Z0-9]+ X/
+FP 11 /^>/
 //
 
 ID dbxgcg-allsys-sv
@@ -6387,8 +6485,8 @@ AP seqret
 CL qanxgcgall-sv:D00596.1 test.out -auto
 FI test.out
 FZ = 19007
-FP 1 />HSTS1 /
-FP 1 />/
+FP 1 /^>HSTS1 /
+FP 1 /^>/
 //
 
 ID dbxgcg-allsys-svall
@@ -6396,8 +6494,8 @@ AP seqret
 CL qanxgcgall-sv:* test.out -auto
 FI test.out
 FZ = 2145073
-FP 1 />HSFAU /
-FP 40 />/
+FP 1 /^>HSFAU /
+FP 40 /^>/
 //
 
 ID dbxgcg-allsys-svwild
@@ -6405,17 +6503,17 @@ AP seqret
 CL qanxgcgall-sv:x* test.out -auto
 FI test.out
 FZ = 5045
-FP 3 />H/
-FP 3 />/
+FP 3 /^>H/
+FP 3 /^>/
 //
 
 ID dbxgcg-allsys-svwild2
 AP seqret
 CL qanxgcgall-sv:D00596* test.out -auto
 FI test.out
-FZ = 5045
-FP 3 />H/
-FP 3 />/
+FZ = 19007
+FP 1 /^>H/
+FP 1 /^>/
 //
 
 ID dbxgcg-allsys-des
@@ -6424,7 +6522,7 @@ CL qanxgcgall-des:fau test.out -auto
 FI test.out
 FZ = 560
 FP 1 /\A>HSFAU /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbxgcg-allsys-desall
@@ -6432,8 +6530,8 @@ AP seqret
 CL qanxgcgall-des:* test.out -auto
 FI test.out
 FZ = 2145073
-FP 1 />XL23808 /
-FP 40 />/
+FP 1 /^>XL23808 /
+FP 40 /^>/
 //
 
 ID dbxgcg-allsys-deswild
@@ -6441,8 +6539,8 @@ AP seqret
 CL qanxgcgall-des:m* test.out -auto
 FI test.out
 FZ = 1543930
-FP 18 />.* [Mm]/
-FP 18 />/
+FP 18 /^>.* [Mm]/
+FP 18 /^>/
 //
 
 ID dbxgcg-allsys-key
@@ -6450,8 +6548,8 @@ AP seqret
 CL qanxgcgall-key:rhodopsin test.out -auto
 FI test.out
 FZ = 5087
-FP 1 />XLRHODOP /
-FP 3 />/
+FP 1 /^>XLRHODOP /
+FP 3 /^>/
 //
 
 ID dbxgcg-allsys-keyall
@@ -6459,8 +6557,8 @@ AP seqret
 CL qanxgcgall-key:* test.out -auto
 FI test.out
 FZ = 2145073
-FP 1 />XL23808 /
-FP 40 />/
+FP 1 /^>XL23808 /
+FP 40 /^>/
 //
 
 ID dbxgcg-allsys-keywild
@@ -6468,8 +6566,8 @@ AP seqret
 CL qanxgcgall-key:m* test.out -auto
 FI test.out
 FZ = 9918
-FP 1 />AB009602/
-FP 3 />/
+FP 1 /^>AB009602/
+FP 3 /^>/
 //
 
 ID dbxgcg-allsys-org
@@ -6477,8 +6575,8 @@ AP seqret
 CL qanxgcgall-org:Mus test.out -auto
 FI test.out
 FZ = 473
-FP 1 />MMAM /
-FP 1 />/
+FP 1 /^>MMAM /
+FP 1 /^>/
 //
 
 ID dbxgcg-allsys-orgall
@@ -6486,8 +6584,8 @@ AP seqret
 CL qanxgcgall-org:* test.out -auto
 FI test.out
 FZ = 2145073
-FP 1 />XL23808 /
-FP 40 />/
+FP 1 /^>XL23808 /
+FP 40 /^>/
 //
 
 ID dbxgcg-allsys-orgwild
@@ -6495,8 +6593,8 @@ AP seqret
 CL qanxgcgall-org:s* test.out -auto
 FI test.out
 FZ = 45442
-FP 1 />MMAM/
-FP 5 />/
+FP 1 /^>MMAM/
+FP 5 /^>/
 //
 
 ID dbxgcg-allsys-orgwild2
@@ -6504,8 +6602,8 @@ AP seqret
 CL qanxgcgall-org:mus* test.out -auto
 FI test.out
 FZ = 4274
-FP 1 />MMAM/
-FP 2 />/
+FP 1 /^>MMAM/
+FP 2 /^>/
 //
 
 #############################################
@@ -6573,7 +6671,7 @@ CL qaxpir-id:cchu test.out -auto
 FI test.out
 FZ = 141
 FP 1 /\A>CCHU /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbxgcg-pir-idfirst
@@ -6581,8 +6679,8 @@ AP seqret
 CL qaxpir-id:A31558 test.out -auto
 FI test.out
 FZ = 156
-FP 1 />A31558 /
-FP 1 />/
+FP 1 /^>A31558 /
+FP 1 /^>/
 //
 
 ID dbxgcg-pir-idsecond
@@ -6590,8 +6688,8 @@ AP seqret
 CL qaxpir-id:A32902 test.out -auto
 FI test.out
 FZ = 123
-FP 1 />A32902 /
-FP 1 />/
+FP 1 /^>A32902 /
+FP 1 /^>/
 //
 
 ID dbxgcg-pir-last
@@ -6599,8 +6697,8 @@ AP seqret
 CL qaxpir-id:S29350 test.out -auto
 FI test.out
 FZ = 186
-FP 1 />S29350 /
-FP 1 />/
+FP 1 /^>S29350 /
+FP 1 /^>/
 //
 
 ID dbxgcg-pir-acc
@@ -6608,8 +6706,8 @@ AP seqret
 CL qaxpir:A00001 test.out -auto
 FI test.out
 FZ = 141
-FP 1 />CCHU /
-FP 1 />/
+FP 1 /^>CCHU /
+FP 1 /^>/
 //
 
 ID dbxxgcg-pir-nextlast
@@ -6617,8 +6715,8 @@ AP seqret
 CL qaxpir-id:S11172 test.out -auto
 FI test.out
 FZ = 178
-FP 1 />S11172 /
-FP 1 />/
+FP 1 /^>S11172 /
+FP 1 /^>/
 //
 
 ID dbxgcg-pir-all
@@ -6626,8 +6724,8 @@ AP seqret
 CL qaxpir:* test.out -auto
 FI test.out
 FZ = 10175
-FP 1 />S11172 /
-FP 60 />/
+FP 1 /^>S11172 /
+FP 60 /^>/
 //
 
 ID dbxgcg-pir-wild
@@ -6635,8 +6733,8 @@ AP seqret
 CL qaxpir:c* test.out -auto
 FI test.out
 FZ = 7660
-FP 49 />C/
-FP 49 />/
+FP 49 /^>C/
+FP 49 /^>/
 //
 
 ID dbxgcg-pir-testexc
@@ -6645,7 +6743,7 @@ CL qaxpirexc-id:S11172 test.out -auto
 FI test.out
 FZ = 178
 FP 1 /\A>S11172 /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbxgcg-pir-testexcfail
@@ -6666,7 +6764,7 @@ CL qaxpirinc-id:cchu test.out -auto
 FI test.out
 FZ = 141
 FP 1 /\A>CCHU /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbxgcg-pir-testincfail
@@ -6795,7 +6893,7 @@ CL qaxpirall-id:cchu test.out -auto
 FI test.out
 FZ = 141
 FP 1 /\A>CCHU /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbxgcg-pirall-idfirst
@@ -6803,8 +6901,8 @@ AP seqret
 CL qaxpirall-id:A31558 test.out -auto
 FI test.out
 FZ = 156
-FP 1 />A31558 /
-FP 1 />/
+FP 1 /^>A31558 /
+FP 1 /^>/
 //
 
 ID dbxgcg-pirall-idsecond
@@ -6812,8 +6910,8 @@ AP seqret
 CL qaxpirall-id:A32902 test.out -auto
 FI test.out
 FZ = 123
-FP 1 />A32902 /
-FP 1 />/
+FP 1 /^>A32902 /
+FP 1 /^>/
 //
 
 ID dbxgcg-pirall-last
@@ -6821,8 +6919,8 @@ AP seqret
 CL qaxpirall-id:S29350 test.out -auto
 FI test.out
 FZ = 186
-FP 1 />S29350 /
-FP 1 />/
+FP 1 /^>S29350 /
+FP 1 /^>/
 //
 
 ID dbxgcg-pirall-acc
@@ -6830,8 +6928,8 @@ AP seqret
 CL qaxpirall:A00001 test.out -auto
 FI test.out
 FZ = 141
-FP 1 />CCHU /
-FP 1 />/
+FP 1 /^>CCHU /
+FP 1 /^>/
 //
 
 ID dbxgcg-pirall-nextlast
@@ -6839,8 +6937,8 @@ AP seqret
 CL qaxpirall-id:S11172 test.out -auto
 FI test.out
 FZ = 178
-FP 1 />S11172 /
-FP 1 />/
+FP 1 /^>S11172 /
+FP 1 /^>/
 //
 
 ID dbxgcg-pirall-all
@@ -6848,8 +6946,8 @@ AP seqret
 CL qaxpirall:* test.out -auto
 FI test.out
 FZ = 10175
-FP 1 />S11172 /
-FP 60 />/
+FP 1 /^>S11172 /
+FP 60 /^>/
 //
 
 ID dbxgcg-pirall-wild
@@ -6857,8 +6955,8 @@ AP seqret
 CL qaxpirall:c* test.out -auto
 FI test.out
 FZ = 7660
-FP 49 />C/
-FP 49 />/
+FP 49 /^>C/
+FP 49 /^>/
 //
 
 ID dbxgcg-pirall-acnum
@@ -6867,7 +6965,7 @@ CL qaxpirall-acc:A04605 test.out -auto
 FI test.out
 FZ = 139
 FP 1 /\A>CCRT /
-FP 1 />/
+FP 1 /^>/
 //
 
 ID dbxgcg-pirall-acnumall
@@ -6875,8 +6973,8 @@ AP seqret
 CL qaxpirall-acc:* test.out -auto
 FI test.out
 FZ = 10175
-FP 1 />CCRT /
-FP 60 />/
+FP 1 /^>CCRT /
+FP 60 /^>/
 //
 
 ID dbxgcg-pirall-acnumwild
@@ -6885,8 +6983,8 @@ CL qaxpirall-acc:s* test.out -auto
 FI test.out
 FZ = 829
 ## CCHO has an S* secondary accession number, rest are primary
-FP 4 />[A-Z0-9]+ S/
-FP 5 />/
+FP 4 /^>[A-Z0-9]+ S/
+FP 5 /^>/
 //
 
 ID dbxgcg-pirall-des
@@ -6894,8 +6992,8 @@ AP seqret
 CL qaxpirall-des:cytochrome test.out -auto
 FI test.out
 FZ = 8516
-FP 1 />CCHU /
-FP 54 />/
+FP 1 /^>CCHU /
+FP 54 /^>/
 //
 
 ID dbxgcg-pirall-desall
@@ -6903,8 +7001,8 @@ AP seqret
 CL qaxpirall-des:* test.out -auto
 FI test.out
 FZ = 10175
-FP 1 />CCHU /
-FP 60 />/
+FP 1 /^>CCHU /
+FP 60 /^>/
 //
 
 ID dbxgcg-pirall-deswild
@@ -6912,8 +7010,8 @@ AP seqret
 CL qaxpirall-des:p* test.out -auto
 FI test.out
 FZ = 2380
-FP 11 />.*[ -][Pp]/
-FP 11 />/
+FP 11 /^>.*[ -][Pp]/
+FP 11 /^>/
 //
 
 ID dbxgcg-pirall-key
@@ -6921,8 +7019,8 @@ AP seqret
 CL qaxpirall-key:polymorphism test.out -auto
 FI test.out
 FZ = 141
-FP 1 />CCHU /
-FP 1 />/
+FP 1 /^>CCHU /
+FP 1 /^>/
 //
 
 ID dbxgcg-pirall-keyall
@@ -6930,8 +7028,8 @@ AP seqret
 CL qaxpirall-key:* test.out -auto
 FI test.out
 FZ = 10175
-FP 1 />CCHU /
-FP 60 />/
+FP 1 /^>CCHU /
+FP 60 /^>/
 //
 
 # only entries with keywords
@@ -6940,8 +7038,8 @@ AP seqret
 CL qaxpirall-key:?* test.out -auto
 FI test.out
 FZ = 8800
-FP 1 />CCHU /
-FP 56 />/
+FP 1 /^>CCHU /
+FP 56 /^>/
 //
 
 ID dbxgcg-pirall-keywild
@@ -6949,8 +7047,8 @@ AP seqret
 CL qaxpirall-key:m* test.out -auto
 FI test.out
 FZ = 8180
-FP 1 />CCHU /
-FP 52 />/
+FP 1 /^>CCHU /
+FP 52 /^>/
 //
 
 ID dbxgcg-pirall-org
@@ -6958,8 +7056,8 @@ AP seqret
 CL qaxpirall-org:'drosophila melanogaster' test.out -auto
 FI test.out
 FZ = 180
-FP 1 />CCFFDM /
-FP 1 />/
+FP 1 /^>CCFFDM /
+FP 1 /^>/
 //
 
 ID dbxgcg-pirall-orgall
@@ -6967,8 +7065,8 @@ AP seqret
 CL qaxpirall-org:* test.out -auto
 FI test.out
 FZ = 10175
-FP 1 />CCHU /
-FP 60 />/
+FP 1 /^>CCHU /
+FP 60 /^>/
 //
 
 ID dbxgcg-pirall-orgwild
@@ -6976,8 +7074,8 @@ AP seqret
 CL qaxpirall-org:s* test.out -auto
 FI test.out
 FZ = 1929
-FP 1 />CCPG /
-FP 12 />/
+FP 1 /^>CCPG /
+FP 12 /^>/
 //
 
 ID dbxgcg-pirall-orgwild2
@@ -6985,8 +7083,8 @@ AP seqret
 CL qaxpirall-org:mus* test.out -auto
 FI test.out
 FZ = 300
-FP 1 />CCMS /
-FP 2 />/
+FP 1 /^>CCMS /
+FP 2 /^>/
 //
 
 
@@ -15799,6 +15897,7 @@ AP whichdb
 PP EMBOSS_RCHOME=N
 PP export EMBOSS_RCHOME
 TI 300
+CL -showall
 IN hsfau1
 IN
 FI stderr
@@ -20003,7 +20102,6 @@ IN
 IN
 IN
 IN
-IN
 FI ednaml.outfile
 FC = 67
 FP /^   G       0.24615\n/
@@ -20554,7 +20652,7 @@ FP 3 /^./
 ID fdiscboot-ex
 AB phylipnew
 AA fdiscboot
-CL -seed
+CL -seed 3
 IN ../../data/evolution/discboot.dat
 IN
 IN
@@ -21670,20 +21768,21 @@ ID ftreedistpair-ex
 AB phylipnew
 AA ftreedistpair
 CL -style s
-IN ../../data/evolution/treedist2.dat
-IN ../../data/evolution/treedist2.dat
-IN
+IN ../../data/evolution/treedist.dat
+IN ../../data/evolution/treedist.dat
 IN
 FI treedist.ftreedistpair
-FC = 9999
+FC = 288
+FP /^1 14 4.000000e-02\n/
+FP /^2 13 4.000000e-02\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 5
-FP 2 /^./
+FC = 2
+FP 1 /^./
 //
 
 #######################################
