@@ -1,6 +1,6 @@
 application: dbxflat [
   groups: "Utils:Database indexing"
-  documentation: "Index a flat file database"
+  documentation: "Database b+tree indexing for flat file databases"
   gui: "yes"
   batch: "yes"
   cpu: "medium"

@@ -1,6 +1,6 @@
 application: dbxgcg [
   groups: "Utils:Database indexing"
-  documentation: "Index a flat file database"
+  documentation: "Database b+tree indexing for GCG formatted databases"
   gui: "yes"
   batch: "yes"
   cpu: "medium"
