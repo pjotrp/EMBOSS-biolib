@@ -13427,10 +13427,9 @@ static void acdHelpExpectCodon(const AcdPAcd thys, AjPStr* str)
 
 static void acdHelpExpectDirlist(const AcdPAcd thys, AjPStr* str)
 {
-    acdAttrResolve(thys, "name", str);
+    acdAttrResolve(thys, "default", str);
     if(ajStrLen(*str))
 	return;
-
     ajStrAssC(str, DEFDLIST);
 
     return;
