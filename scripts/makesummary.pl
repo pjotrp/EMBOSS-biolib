@@ -146,6 +146,7 @@ open (AV, "acdvalidreport.txt") || die "Cannot open acdvalidreport.txt";
 $toto = $tote = $totw = 0;
 while (<AV>) {
     if (/^ *(\d+) EMBOSS and (\d+) EMBASSY applications/) {next}
+    elsif (/^\s*$/) {next}
     elsif (/^ *(\d+) [*] /) {$tote += $1}
     elsif (/^ *(\d+) /) {$totw += $1}
     else {$toto++}
