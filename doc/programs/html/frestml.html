@@ -181,14 +181,13 @@ Done.
    -sitelength         integer    Site length
 *  -global             boolean    Global rearrangements
 *  -[no]rough          boolean    Speedier but rougher analysis
+   -[no]trout          toggle     Write out trees to tree file
+*  -outtreefile        outfile    Tree file name
    -printdata          boolean    Print data at start of run
    -[no]progress       boolean    Print indications of progress of run
    -[no]treeprint      boolean    Print out tree
-   -[no]trout          boolean    Write out trees to tree file
 
-   Advanced (Unprompted) qualifiers:
-   -outtreefile        outfile    Tree file name
-
+   Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
    "-outfile" associated qualifiers
@@ -314,6 +313,20 @@ Done.
 </tr>
 
 <tr>
+<td>-[no]trout</td>
+<td>Write out trees to tree file</td>
+<td>Toggle value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-outtreefile</td>
+<td>Tree file name</td>
+<td>Output file</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
 <td>-printdata</td>
 <td>Print data at start of run</td>
 <td>Boolean value Yes/No</td>
@@ -334,13 +347,6 @@ Done.
 <td>Yes</td>
 </tr>
 
-<tr>
-<td>-[no]trout</td>
-<td>Write out trees to tree file</td>
-<td>Boolean value Yes/No</td>
-<td>Yes</td>
-</tr>
-
 <tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
 <th align="left">Allowed values</th>
@@ -348,10 +354,7 @@ Done.
 </tr>
 
 <tr>
-<td>-outtreefile</td>
-<td>Tree file name</td>
-<td>Output file</td>
-<td>&nbsp;</td>
+<td colspan=4>(none)</td>
 </tr>
 
 </table>
@@ -467,7 +470,7 @@ Epsilon   ++++----++---
 
         If you wish to include the standard description of the avalable
 	report formats, use:
-[an error occurred while processing this directive]
+include file="inc/reportformats.ihtml"
    -->
 
 <b>frestml</b> 

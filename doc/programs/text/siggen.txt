@@ -1,7 +1,9 @@
 
-                            SIGGEN documentation
-                                      
-   
+   [an error occurred while processing this directive]
+
+SIGGEN documentation
+
+   [an error occurred while processing this directive]
 
 CONTENTS
 
@@ -76,6 +78,8 @@ CONTENTS
 
 TY   SCOP
 XX
+TS   1D
+XX
 CL   Alpha and beta proteins (a+b)
 XX
 FO   Ferredoxin-like
@@ -122,8 +126,6 @@ XX
 GA   1 ; 5
 XX
 NN   [5]
-XX
-IN   NRES 1 ; NGAP 3 ; WSIZ 0
 
 
   [Part of this file has been deleted for brevity]
@@ -184,6 +186,8 @@ GA   5 ; 5
 
 TY   SCOP
 XX
+TS   1D
+XX
 CL   Alpha and beta proteins (a+b)
 XX
 FO   Ferredoxin-like
@@ -230,8 +234,6 @@ IN   NRES 2 ; NGAP 1 ; WSIZ 0
 XX
 AA   F ; 5
 AA   S ; 1
-XX
-GA   2 ; 6
 
 
   [Part of this file has been deleted for brevity]
@@ -525,8 +527,7 @@ GA   3 ; 6
 
 
 % siggen 
-Generates a sparse protein signature from an alignment and residue contact
-data.
+Generates a sparse protein signature from an alignment.
 Location of DAF files (domain alignment files) (input) [./]: 
 Specify mode of signature generation
          1 : Use positions specified in alignment file
@@ -816,7 +817,6 @@ Location of signature files (output) [./]:
 See also
 
    Program name                       Description
-   contactcount Count specific versus non-specific contacts
    contacts     Generate intra-chain CON files from CCF files
    domainalign  Generate alignments (DAF file) for nodes in a DCF file
    domainrep    Reorder DCF file to identify representative structures

@@ -45,8 +45,7 @@ Usage
 
 
 % interface 
-Reads CCF files (clean coordinate files) and writes CON files (contact
-files) of inter-chain residue-residue contact data.
+Generate inter-chain CON files from CCF files.
 Name of protein CCF file (clean coordinate file) (input): interface/2hhb.ccf
 Threshold contact distance [1.0]: 1
 Name of CON file (contact file) (output) [test.con]: 2hhb.con
@@ -653,7 +652,11 @@ Notes
 
 References
 
-   None.
+   Please cite the authors and EMBOSS.
+   Rice P, Longden I and Bleasby A (2000) "EMBOSS - The European
+   Molecular Biology Open Software Suite" Trends in Genetics, 15:276-278.
+   
+   See also http://emboss.sourceforge.net/
 
 Warnings
 
@@ -689,7 +692,6 @@ Known bugs
 See also
 
    Program name                       Description
-   contactcount Count specific versus non-specific contacts
    contacts     Generate intra-chain CON files from CCF files
    domainalign  Generate alignments (DAF file) for nodes in a DCF file
    domainrep    Reorder DCF file to identify representative structures

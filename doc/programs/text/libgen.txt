@@ -1,7 +1,9 @@
 
-                            LIBGEN documentation
-                                      
-   
+   [an error occurred while processing this directive]
+
+LIBGEN documentation
+
+   [an error occurred while processing this directive]
 
 CONTENTS
 
@@ -595,8 +597,7 @@ LLSAEDGKDYEVEAGCGDERAGAGAVADPIKGFKILLIPSRNFAALRLDREXFD
 
 
 % libgen 
-Generates various types of discriminating elements for each alignment in a
-directory.
+Generate discriminating elements from alignments.
 Location of DAF files (domain alignment files) (input). [./]: structure
 Residue substitution matrix. [EBLOSUM62]: EBLOSUM62
 Discrimininator type
@@ -672,7 +673,6 @@ Location of discriminator files (output). [./]:
 See also
 
    Program name                       Description
-   contactcount Count specific versus non-specific contacts
    contacts     Generate intra-chain CON files from CCF files
    domainalign  Generate alignments (DAF file) for nodes in a DCF file
    domainrep    Reorder DCF file to identify representative structures

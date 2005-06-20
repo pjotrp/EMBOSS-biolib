@@ -1,7 +1,9 @@
 
-                           SEQSORT documentation
-                                      
-   
+   [an error occurred while processing this directive]
+
+SEQSORT documentation
+
+   [an error occurred while processing this directive]
 
 CONTENTS
 
@@ -1078,8 +1080,7 @@ LGEGYEVE
 
 
 % seqsort 
-Reads DHF files (domain hits files) of database hits (sequences) and
-removes hits of ambiguous classification.
+Remove ambiguous classified sequences from DHF files.
 Location of DHF files (domain hits files) (input). [./]: structure
 Number of overlapping residues required for merging of two hits. [10]: 10
 Write domain families file. [N]: Y
@@ -1181,7 +1182,6 @@ Name of domain ambiguities file (output). [oth.dhf]:
 See also
 
    Program name                       Description
-   contactcount Count specific versus non-specific contacts
    contacts     Generate intra-chain CON files from CCF files
    domainalign  Generate alignments (DAF file) for nodes in a DCF file
    domainrep    Reorder DCF file to identify representative structures

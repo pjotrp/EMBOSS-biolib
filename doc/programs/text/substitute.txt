@@ -130,7 +130,7 @@ See also
 
      Program name                        Description
    alignrunner      Align sequence pairs in a directory
-   contactalign     Damian Counsell's 2.5-D alignment algorithm
+   comparator       Compare contact scores of two sequence alignments
    esim4            Align an mRNA to a genomic DNA sequence
    est2genome       Align EST and genomic DNA sequences
    nawalign         Damian Counsell's NW implementation

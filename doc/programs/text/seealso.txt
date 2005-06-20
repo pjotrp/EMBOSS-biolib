@@ -45,9 +45,8 @@ Finds programs sharing group names
 Program to search for: matcher
 
 SEE ALSO
-seqmatchall      Does an all-against-all comparison of a set of sequences
-supermatcher     Finds a match of a large sequence against one or more sequence
-s
+seqmatchall      All-against-all comparison of a set of sequences
+supermatcher     Match large sequences against one or more other sequences
 water            Smith-Waterman local alignment
 wordmatch        Finds all exact matches of a given size between 2 sequences
 

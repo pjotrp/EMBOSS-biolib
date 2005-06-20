@@ -369,7 +369,11 @@ Notes
 
 References
 
-   None.
+   Please cite the authors and EMBOSS.
+   Rice P, Longden I and Bleasby A (2000) "EMBOSS - The European
+   Molecular Biology Open Software Suite" Trends in Genetics, 15:276-278.
+   
+   See also http://emboss.sourceforge.net/
 
 Warnings
 
@@ -427,5 +431,4 @@ History
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+   [an error occurred while processing this directive]

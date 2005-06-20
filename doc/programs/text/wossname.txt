@@ -75,7 +75,7 @@ polydot          Displays all-against-all dotplots of a set of sequences
 
 ALIGNMENT GLOBAL
 alignrunner      Align sequence pairs in a directory
-contactalign     Damian Counsell's 2.5-D alignment algorithm
+comparator       Compare contact scores of two sequence alignments
 esim4            Align an mRNA to a genomic DNA sequence
 est2genome       Align EST and genomic DNA sequences
 nawalign         Damian Counsell's NW implementation
@@ -362,7 +362,6 @@ tmap             Displays membrane spanning regions
 topo             Draws an image of a transmembrane protein
 
 PROTEIN 3D STRUCTURE
-contactcount     Count specific versus non-specific contacts
 contacts         Generate intra-chain CON files from CCF files
 domainalign      Generate alignments (DAF file) for nodes in a DCF file
 domainrep        Reorder DCF file to identify representative structures
@@ -452,9 +451,10 @@ tfextract        Extract data from TRANSFAC
 
 UTILS DATABASE INDEXING
 dbiblast         Index a BLAST database
-dbifasta         Index a fasta database
+dbifasta         Database indexing for fasta file databases
 dbiflat          Index a flat file database
 dbigcg           Index a GCG formatted database
+dbxflat          Database b+tree indexing for flat file databases
 
 UTILS MISC
 embossdata       Finds or fetches data files read by EMBOSS programs
@@ -494,10 +494,9 @@ cirdna           Draws circular maps of DNA constructs
 codcmp           Codon usage table comparison
 codcopy          Reads and writes a codon usage table
 coderet          Extract CDS, mRNA and translations from feature tables
+comparator       Compare contact scores of two sequence alignments
 compseq          Count composition of dimer/trimer/etc words in a sequence
 cons             Creates a consensus from multiple alignments
-contactalign     Damian Counsell's 2.5-D alignment algorithm
-contactcount     Count specific versus non-specific contacts
 contacts         Generate intra-chain CON files from CCF files
 cpgplot          Plot CpG rich areas
 cpgreport        Reports all CpG rich regions
@@ -507,9 +506,10 @@ cutgextract      Extract data from CUTG
 cutseq           Removes a specified section from a sequence
 dan              Calculates DNA RNA/DNA melting temperature
 dbiblast         Index a BLAST database
-dbifasta         Index a fasta database
+dbifasta         Database indexing for fasta file databases
 dbiflat          Index a flat file database
 dbigcg           Index a GCG formatted database
+dbxflat          Database b+tree indexing for flat file databases
 degapseq         Removes gap characters from sequences
 degapseqrunner   Degapseq all sequence pairs in a directory
 descseq          Alter the name or description of a sequence
@@ -1126,7 +1126,7 @@ ALIGNMENT GLOBAL
 
      Program name                        Description
    alignrunner      Align sequence pairs in a directory
-   contactalign     Damian Counsell's 2.5-D alignment algorithm
+   comparator       Compare contact scores of two sequence alignments
    esim4            Align an mRNA to a genomic DNA sequence
    est2genome       Align EST and genomic DNA sequences
    nawalign         Damian Counsell's NW implementation
@@ -1144,9 +1144,6 @@ ALIGNMENT LOCAL
    Program name                      Description
    matcher      Finds the best local alignments between two sequences
    [Part of this file has been deleted for brevity]
-
-PROTEIN PROFILES
-
    Program name                     Description
    profit       Scan a sequence or database with a matrix or profile
    prophecy     Creates matrices/profiles from multiple alignments
@@ -1184,11 +1181,12 @@ UTILS DATABASE CREATION
 
 UTILS DATABASE INDEXING
 
-   Program name          Description
+   Program name                   Description
    dbiblast     Index a BLAST database
-   dbifasta     Index a fasta database
+   dbifasta     Database indexing for fasta file databases
    dbiflat      Index a flat file database
    dbigcg       Index a GCG formatted database
+   dbxflat      Database b+tree indexing for flat file databases
 
 UTILS MISC
 

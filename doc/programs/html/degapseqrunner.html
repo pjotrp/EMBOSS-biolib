@@ -112,10 +112,10 @@ EDIT HERE
    Standard (Mandatory) qualifiers:
   [-gappedseqsdir]     dirlist    Input directory of files containing sequence
                                   pairs for degapping
-  [-pathtocommand]     directory  Directory where degapping executable lives
+  [-commandpath]       directory  Directory where degapping executable lives
   [-commandname]       string     Name of degapping executable
-  [-degappedseqsoutdir] outdir     Name of directory containing degapped
-                                  sequence pairs
+  [-degappedseqsoutdir] outdir     Directory where degapped sequence pairs will
+                                  be written
   [-outfilesuffix]     string     Appended to end of all output file names
 
    Additional (Optional) qualifiers: (none)
@@ -141,8 +141,68 @@ EDIT HERE
 </td></tr></table>
 <P>
 <table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
-Error: File /homes/pmr/local/share/EMBOSS/acd/degapseqrunner.acd line 12: (gappedseqsdir) Unknown attribute 'name'
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
 
+<tr>
+<td>[-gappedseqsdir]<br>(Parameter 1)</td>
+<td>Input directory of files containing sequence pairs for degapping</td>
+<td>Directory with files</td>
+<td>.</td>
+</tr>
+
+<tr>
+<td>[-commandpath]<br>(Parameter 2)</td>
+<td>Directory where degapping executable lives</td>
+<td>Directory</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>[-commandname]<br>(Parameter 3)</td>
+<td>Name of degapping executable</td>
+<td>Any string is accepted</td>
+<td>degapseq</td>
+</tr>
+
+<tr>
+<td>[-degappedseqsoutdir]<br>(Parameter 4)</td>
+<td>Directory where degapped sequence pairs will be written</td>
+<td>Output directory</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>[-outfilesuffix]<br>(Parameter 5)</td>
+<td>Appended to end of all output file names</td>
+<td>Any string is accepted</td>
+<td>.deg</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>
 
 
 <!--
@@ -191,7 +251,7 @@ IT IS DONE FOR YOU.
 
         If you wish to include the standard description of the avalable
 	report formats, use:
-[an error occurred while processing this directive]
+include file="inc/reportformats.ihtml"
    -->
 
 <b>degapseqrunner</b> 
@@ -220,7 +280,7 @@ outputs a report format file. The default format is ...
 	If you wish to include the standard description of what data
 	files are and how to use embossdata to inspect and retrieve
 	them, use:
-[an error occurred while processing this directive]
+include file="inc/localfiles.ihtml"
    -->
 
 **************** 

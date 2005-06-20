@@ -267,8 +267,8 @@ Command line arguments
    -lambda Mean block length of sites having the same rate Number 1.000
    or more 1.0
    -njumble Number of times to randomise Integer 0 or more 0
-   -seed Random number seed between 1 and 32767 (must be odd) Integer 1
-   or more 0
+   -seed Random number seed between 1 and 32767 (must be odd) Integer
+   from 1 to 32767 1
    -global Global rearrangements Boolean value Yes/No No
    -outgrno Species number to use as outgroup Integer 0 or more 0
    -[no]trout Write out trees to tree file Toggle value Yes/No Yes

@@ -47,6 +47,7 @@ Command line arguments
                                   be significantly lower than the gap opening
                                   penalty.
   [-alignedoutfile]    seqout     Output sequence USA
+  [-verticaltrace]     outfile    Output file name
 
    Additional (Optional) qualifiers:
    -substitutionscoringfile matrixf    Matrix of scores for specific amino acid
@@ -102,6 +103,9 @@ Command line arguments
    -offormat3          string     Features format
    -ofname3            string     Features file name
    -ofdirectory3       string     Output directory
+
+   "-verticaltrace" associated qualifiers
+   -odirectory4        string     Output directory
 
    General qualifiers:
    -auto               boolean    Turn off prompts
@@ -196,7 +200,7 @@ See also
 
      Program name                        Description
    alignrunner      Align sequence pairs in a directory
-   contactalign     Damian Counsell's 2.5-D alignment algorithm
+   comparator       Compare contact scores of two sequence alignments
    esim4            Align an mRNA to a genomic DNA sequence
    est2genome       Align EST and genomic DNA sequences
    nawalignrunner   Nawalign all sequence pairs in a directory

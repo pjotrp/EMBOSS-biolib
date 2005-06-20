@@ -37,8 +37,7 @@ Usage
 
 
 % contacts 
-Reads CCF files (clean coordinate files) and writes CON files (contact
-files) of intra-chain residue-residue contact data.
+Generate intra-chain CON files from CCF files.
 Location of CCF files (clean coordinate files) (input) [./]: structure
 Name of data file with van der Waals radii [Evdw.dat]: 
 Threshold contact distance [1.0]: 1
@@ -768,7 +767,11 @@ Notes
 
 References
 
-   None.
+   Please cite the authors and EMBOSS.
+   Rice P, Longden I and Bleasby A (2000) "EMBOSS - The European
+   Molecular Biology Open Software Suite" Trends in Genetics, 15:276-278.
+   
+   See also http://emboss.sourceforge.net/
 
 Warnings
 
@@ -805,7 +808,6 @@ Known bugs
 See also
 
    Program name                       Description
-   contactcount Count specific versus non-specific contacts
    domainalign  Generate alignments (DAF file) for nodes in a DCF file
    domainrep    Reorder DCF file to identify representative structures
    domainreso   Remove low resolution domains from a DCF file

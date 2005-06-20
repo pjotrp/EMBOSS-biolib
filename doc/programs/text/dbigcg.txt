@@ -218,10 +218,11 @@ Known bugs
 
 See also
 
-   Program name        Description
+   Program name                   Description
    dbiblast     Index a BLAST database
-   dbifasta     Index a fasta database
+   dbifasta     Database indexing for fasta file databases
    dbiflat      Index a flat file database
+   dbxflat      Database b+tree indexing for flat file databases
 
 Author(s)
 

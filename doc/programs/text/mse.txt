@@ -17,6 +17,15 @@ Algorithm
 
 Usage
 
+   Here is a sample session with mse
+
+
+% mse dna.msf msf::mse.msf 
+Multiple Sequence Editor
+
+   Go to the input files for this example
+   Go to the output files for this example
+
 Command line arguments
 
    Standard (Mandatory) qualifiers:
@@ -87,10 +96,65 @@ Input file format
 
    mse reads any normal sequence USAs.
 
+  Input files for usage example
+
+  File: dna.msf
+
+!!NA_MULTIPLE_ALIGNMENT
+
+ dna.msf  MSF: 120  Type: N  January 01, 1776  12:00  Check: 3196 ..
+
+ Name: MSFM1          Len:   120  Check:  8587  Weight:  1.00
+ Name: MSFM2          Len:   120  Check:  6178  Weight:  1.00
+ Name: MSFM3          Len:   120  Check:  8431  Weight:  1.00
+
+//
+
+        MSFM1  ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT ACGTACGTAC
+        MSFM2  ACGTACGTAC GTACGTACGT ....ACGTAC GTACGTACGT ACGTACGTAC
+        MSFM3  ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT CGTACGTACG
+
+        MSFM1  GTACGTACGT ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT
+        MSFM2  GTACGTACGT ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT
+        MSFM3  TACGTACGTA CGTACGTACG TACGTACGTA ACGTACGTAC GTACGTACGT
+
+        MSFM1  ACGTACGTAC GTACGTACGT
+        MSFM2  ACGTACGTTG CAACGTACGT
+        MSFM3  ACGTACGTAC GTACGTACGT
+
 Output file format
 
    mse outputs a graph to the specified graphics device. outputs a report
    format file. The default format is ...
+
+  Output files for usage example
+
+  File: mse.msf
+
+!!NA_MULTIPLE_ALIGNMENT 1.0
+
+  mse.msf MSF: 120 Type: N 15/07/04 CompCheck: 2784 ..
+
+  Name: MSFM1      Len: 120  Check: 8587 Weight: 1.00
+  Name: MSFM2      Len: 120  Check: 5766 Weight: 1.00
+  Name: MSFM3      Len: 120  Check: 8431 Weight: 1.00
+
+//
+
+           1                                               50
+MSFM1      ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTAC
+MSFM2      ACGTACGTACGTACGTACGTacgt....ACGTACGTACGTACGTACGTAC
+MSFM3      ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTCGTACGTACG
+
+           51                                             100
+MSFM1      GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT
+MSFM2      GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT
+MSFM3      TACGTACGTACGTACGTACGTACGTACGTAACGTACGTACGTACGTACGT
+
+           101              120
+MSFM1      ACGTACGTACGTACGTACGT
+MSFM2      ACGTACGTTGCAACGTACGT
+MSFM3      ACGTACGTACGTACGTACGT
 
 Data files
 

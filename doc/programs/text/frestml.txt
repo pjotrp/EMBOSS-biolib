@@ -105,14 +105,13 @@ Command line arguments
    -sitelength         integer    Site length
 *  -global             boolean    Global rearrangements
 *  -[no]rough          boolean    Speedier but rougher analysis
+   -[no]trout          toggle     Write out trees to tree file
+*  -outtreefile        outfile    Tree file name
    -printdata          boolean    Print data at start of run
    -[no]progress       boolean    Print indications of progress of run
    -[no]treeprint      boolean    Print out tree
-   -[no]trout          boolean    Write out trees to tree file
 
-   Advanced (Unprompted) qualifiers:
-   -outtreefile        outfile    Tree file name
-
+   Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
    "-outfile" associated qualifiers
@@ -156,13 +155,14 @@ Command line arguments
    -sitelength Site length Integer from 1 to 8 6
    -global Global rearrangements Boolean value Yes/No No
    -[no]rough Speedier but rougher analysis Boolean value Yes/No Yes
+   -[no]trout Write out trees to tree file Toggle value Yes/No Yes
+   -outtreefile Tree file name Output file
    -printdata Print data at start of run Boolean value Yes/No No
    -[no]progress Print indications of progress of run Boolean value
    Yes/No Yes
    -[no]treeprint Print out tree Boolean value Yes/No Yes
-   -[no]trout Write out trees to tree file Boolean value Yes/No Yes
    Advanced (Unprompted) qualifiers Allowed values Default
-   -outtreefile Tree file name Output file
+   (none)
 
 Input file format
 

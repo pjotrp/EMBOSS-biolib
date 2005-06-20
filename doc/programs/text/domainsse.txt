@@ -291,8 +291,7 @@ CH   A CHAIN; . START; . END;
 
 
 % domainsse 
-Adds secondary structure records to a DCF file (domain classification
-file).
+Add secondary structure records to a DCF file.
 Name of DCF file (domain classification file) (input): all.scop
 Location of domain CCF file (clean coordinate file) (input) [./]: 
 Name of DCF file (domain classification file) (output) [all.domainsse]: domains
@@ -397,9 +396,11 @@ See also
 
 14.0 REFERENCES
 
-   Please cite the authors and EMBOSS.
-   Rice P, Bleasby A.J. 2000. EMBOSS - The European Molecular Biology
-   Open Software Suite. Trends in Genetics, 15:276-278. See also
-   http://www.uk.embnet.org/Software/EMBOSS
+   Please cite the authors and EMBOSS. Please cite the authors and
+   EMBOSS.
+   Rice P, Longden I and Bleasby A (2000) "EMBOSS - The European
+   Molecular Biology Open Software Suite" Trends in Genetics, 15:276-278.
+   
+   See also http://emboss.sourceforge.net/
 
   14.1 Other useful references

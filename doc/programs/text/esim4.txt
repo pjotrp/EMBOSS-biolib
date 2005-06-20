@@ -599,7 +599,7 @@ See also
 
      Program name                        Description
    alignrunner      Align sequence pairs in a directory
-   contactalign     Damian Counsell's 2.5-D alignment algorithm
+   comparator       Compare contact scores of two sequence alignments
    est2genome       Align EST and genomic DNA sequences
    nawalign         Damian Counsell's NW implementation
    nawalignrunner   Nawalign all sequence pairs in a directory

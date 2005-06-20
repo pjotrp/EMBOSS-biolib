@@ -406,8 +406,7 @@ C  -4  -4   2  -7
 
 
 % ssematch 
-Searches a DCF file (domain classification file) for secondary structure
-matches.
+Search a DCF file for secondary structure matches.
 Name of file of secondary structure (input).: sse.in
 Name of DCF file (domain classification file) (input).: all_e.scop
 Number of top-scoring matches to report. [5]: 1

@@ -1,7 +1,9 @@
 
-                          SEQSEARCH documentation
-                                      
-   
+   [an error occurred while processing this directive]
+
+SEQSEARCH documentation
+
+   [an error occurred while processing this directive]
 
 CONTENTS
 
@@ -598,8 +600,7 @@ NDFVLRVGINVGPVVAGVIGARRPQYDIWGNTVNVASRMDSTGVQGRIQVT
 
 
 % seqsearch 
-Generate database hits (sequences) for nodes in a DCF file (domain
-classification file) by using PSI-BLAST.
+Generate PSI-BLAST hits (DHF file) from a DAF file.
 Input mode
          1 : Single sequences
          2 : Multiple sequences (e.g. sequence set or alignment)
@@ -624,14 +625,14 @@ Name of log file for the build. [seqsearch.log]:
 
 
 PROCESSING /ebi/services/idata/pmr/hgmp/test/data/structure/54894.daf
-blastpgp -i ./seqsearch-1112091273.25929.seqin -B ./seqsearch-1112091273.25929.
+blastpgp -i ./seqsearch-1119283037.25929.seqin -B ./seqsearch-1119283037.25929.
 seqsin -j 1 -e 0.000100 -b 100 -v 100 -d ../../data/structure/swsmall > ./seqse
-arch-1112091273.25929.psiout
+arch-1119283037.25929.psiout
 
 PROCESSING /ebi/services/idata/pmr/hgmp/test/data/structure/55074.daf
-blastpgp -i ./seqsearch-1112091273.12261.seqin -B ./seqsearch-1112091273.12261.
+blastpgp -i ./seqsearch-1119283037.12261.seqin -B ./seqsearch-1119283037.12261.
 seqsin -j 1 -e 0.000100 -b 100 -v 100 -d ../../data/structure/swsmall > ./seqse
-arch-1112091273.12261.psiout
+arch-1119283037.12261.psiout
 
 
    Go to the input files for this example
@@ -709,7 +710,6 @@ arch-1112091273.12261.psiout
 See also
 
    Program name                       Description
-   contactcount Count specific versus non-specific contacts
    contacts     Generate intra-chain CON files from CCF files
    domainalign  Generate alignments (DAF file) for nodes in a DCF file
    domainrep    Reorder DCF file to identify representative structures

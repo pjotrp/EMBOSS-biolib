@@ -1,7 +1,9 @@
 
-                          SEQFRAGGLE documentation
-                                      
-   
+   [an error occurred while processing this directive]
+
+SEQFRAGGLE documentation
+
+   [an error occurred while processing this directive]
 
 CONTENTS
 
@@ -688,8 +690,7 @@ LGEGYEVE
 
 
 % seqfraggle 
-Removes fragments from DHF files (domain hits files) or other files of
-sequences.
+Removes fragment sequences from DHF files.
 Location of DHF files (domain hits files) or other sequence files (input). [./]
 : structure
 Percentage of median length for definition of fragments. [50]: 50
@@ -746,7 +747,6 @@ Processing /ebi/services/idata/pmr/hgmp/test/data/structure/55074.dhf
 See also
 
    Program name                       Description
-   contactcount Count specific versus non-specific contacts
    contacts     Generate intra-chain CON files from CCF files
    domainalign  Generate alignments (DAF file) for nodes in a DCF file
    domainrep    Reorder DCF file to identify representative structures

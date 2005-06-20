@@ -1,7 +1,9 @@
 
-                           PDBPARSE documentation
-                                      
-   
+   [an error occurred while processing this directive]
+
+PDBPARSE documentation
+
+   [an error occurred while processing this directive]
 
 CONTENTS
 
@@ -157,7 +159,7 @@ CONTENTS
 
   File: pdbparse.log
 
-/ebi/services/idata/pmr/hgmp/test/data/structure/pdb1cs4.ent
+/ebi/services/idata/pmr/hgmp/test/data/structure/1cs4.ent
 SEQRESLENDIF   1 (A)
 ATOMCOL12      429
 BADINDEX       1 (A)
@@ -165,7 +167,7 @@ GAPPEDOK       1 (A)
 SECSTART       1 1 ILE 384
 SECSTART       1 1 ILE 384
 //
-/ebi/services/idata/pmr/hgmp/test/data/structure/pdb1ii7.ent
+/ebi/services/idata/pmr/hgmp/test/data/structure/1ii7.ent
 SEQRESLENDIF   1 (A)
 ATOMCOL12      390
 SECBOTH        1 1 SER 57 GLU 73
@@ -861,8 +863,7 @@ O     20.825   31.690   27.031    1.00   20.90    0.00    0.00    0.00    0.00
 
 
 % pdbparse 
-Parses PDB files and writes CCF files (clean coordinate files) for
-proteins.
+Parses PDB files and writes protein CCF files.
 Location of PDB files (input) [./]: structure
 Mask non-amino acid groups in protein chains that do not contain a C-alpha atom
 . [N]: 
@@ -871,8 +872,8 @@ Mask amino acid residues in protein chains with a single atom only. [N]:
 Location of CCF files (clean coordinate files) (output) [./]: 
 Name of log file for the build. [pdbparse.log]: 
 
-Processing /ebi/services/idata/pmr/hgmp/test/data/structure/pdb1cs4.ent
-Processing /ebi/services/idata/pmr/hgmp/test/data/structure/pdb1ii7.ent
+Processing /ebi/services/idata/pmr/hgmp/test/data/structure/1cs4.ent
+Processing /ebi/services/idata/pmr/hgmp/test/data/structure/1ii7.ent
 
    Go to the output files for this example
 

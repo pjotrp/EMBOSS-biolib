@@ -219,14 +219,17 @@ Known bugs
 
 See also
 
-   Program name          Description
+   Program name                   Description
    dbiblast     Index a BLAST database
-   dbifasta     Index a fasta database
+   dbifasta     Database indexing for fasta file databases
    dbigcg       Index a GCG formatted database
+   dbxflat      Database b+tree indexing for flat file databases
 
 Author(s)
 
-   [an error occurred while processing this directive]
+   Peter Rice (pmr © ebi.ac.uk)
+   Informatics Division, European Bioinformatics Institute, Wellcome
+   Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
 
 History
 

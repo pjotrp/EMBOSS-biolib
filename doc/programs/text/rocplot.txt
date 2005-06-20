@@ -1,7 +1,9 @@
 
-                           ROCPLOT documentation
-                                      
-   
+   [an error occurred while processing this directive]
+
+ROCPLOT documentation
+
+   [an error occurred while processing this directive]
 
 CONTENTS
 
@@ -1097,12 +1099,7 @@ hitcnt[0]: 80
 
 
 % rocplot 
-Provides interpretation and graphical display of the performance of
-discriminating elements (e.g. profiles for protein families). rocplot reads
-file(s) of hits from discriminator-database search(es), performs ROC analysis o
-n
-the hits, and writes graphs illustrating the diagnostic performance of the
-discriminating elements.
+Performs ROC analysis on hits files.
 Directory of hits files (input). [rocplot]: rocplot/hitsin
 Available modes
          1 : Single input file mode
@@ -1591,7 +1588,6 @@ Rank  File1  File2  File3
 See also
 
    Program name                       Description
-   contactcount Count specific versus non-specific contacts
    contacts     Generate intra-chain CON files from CCF files
    domainalign  Generate alignments (DAF file) for nodes in a DCF file
    domainrep    Reorder DCF file to identify representative structures

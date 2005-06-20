@@ -108,6 +108,18 @@ EDIT HERE
         Many examples illustrating different behaviours is good.
  -->
 
+<b>Here is a sample session with mse</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>mse dna.msf msf::mse.msf </b>
+Multiple Sequence Editor
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
 
@@ -245,6 +257,36 @@ IT IS DONE FOR YOU.
 <p>
 
 
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: dna.msf</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+!!NA_MULTIPLE_ALIGNMENT
+
+ dna.msf  MSF: 120  Type: N  January 01, 1776  12:00  Check: 3196 ..
+
+ Name: MSFM1          Len:   120  Check:  8587  Weight:  1.00
+ Name: MSFM2          Len:   120  Check:  6178  Weight:  1.00
+ Name: MSFM3          Len:   120  Check:  8431  Weight:  1.00
+
+//
+
+        MSFM1  ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT ACGTACGTAC
+        MSFM2  ACGTACGTAC GTACGTACGT ....ACGTAC GTACGTACGT ACGTACGTAC
+        MSFM3  ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT CGTACGTACG
+
+        MSFM1  GTACGTACGT ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT
+        MSFM2  GTACGTACGT ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT
+        MSFM3  TACGTACGTA CGTACGTACG TACGTACGTA ACGTACGTAC GTACGTACGT
+
+        MSFM1  ACGTACGTAC GTACGTACGT
+        MSFM2  ACGTACGTTG CAACGTACGT
+        MSFM3  ACGTACGTAC GTACGTACGT
+
+</pre>
+</td></tr></table><p>
+
 
 
 
@@ -254,17 +296,6 @@ IT IS DONE FOR YOU.
     Output file format
 </H2>
 
-<!-- 
-        This includes example output file formats.
-        This should be a detailed description and example - assume
-        someone will want to parse this file and will want to know what
-        happens in unusual cases - null output, errors etc. 
-
-        If you wish to include the standard description of the avalable
-	report formats, use:
-[an error occurred while processing this directive]
-   -->
-
 <b>mse</b> 
 outputs a graph to the specified graphics device. 
 outputs a report format file. The default format is ...
@@ -272,6 +303,39 @@ outputs a report format file. The default format is ...
 
 <p>
 
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: mse.msf</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+!!NA_MULTIPLE_ALIGNMENT 1.0
+
+  mse.msf MSF: 120 Type: N 15/07/04 CompCheck: 2784 ..
+
+  Name: MSFM1      Len: 120  Check: 8587 Weight: 1.00
+  Name: MSFM2      Len: 120  Check: 5766 Weight: 1.00
+  Name: MSFM3      Len: 120  Check: 8431 Weight: 1.00
+
+//
+
+           1                                               50
+MSFM1      ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTAC
+MSFM2      ACGTACGTACGTACGTACGTacgt....ACGTACGTACGTACGTACGTAC
+MSFM3      ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTCGTACGTACG
+
+           51                                             100
+MSFM1      GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT
+MSFM2      GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT
+MSFM3      TACGTACGTACGTACGTACGTACGTACGTAACGTACGTACGTACGTACGT
+
+           101              120
+MSFM1      ACGTACGTACGTACGTACGT
+MSFM2      ACGTACGTTGCAACGTACGT
+MSFM3      ACGTACGTACGTACGTACGT
+
+</pre>
+</td></tr></table><p>
 
 
 
@@ -290,7 +354,7 @@ outputs a report format file. The default format is ...
 	If you wish to include the standard description of what data
 	files are and how to use embossdata to inspect and retrieve
 	them, use:
-[an error occurred while processing this directive]
+include file="inc/localfiles.ihtml"
    -->
 
 **************** 

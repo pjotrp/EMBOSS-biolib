@@ -1,7 +1,9 @@
 
-                            SEQNR documentation
-                                      
-   
+   [an error occurred while processing this directive]
+
+SEQNR documentation
+
+   [an error occurred while processing this directive]
 
 CONTENTS
 
@@ -453,8 +455,7 @@ KGYDYYGQTANTAARTESVGNGGQVLMTCETYHSLSTAERSQFDVTPLGGVPLRGVSEPVEVYQLN
 
 
 % seqnr 
-Removes redundancy from DHF files (domain hits files) or other files of
-sequences.
+Removes redundancy from DHF files.
 Location of DHF files (domain hits files) (input). [./]: seqnr/hitsin
 Use singlet sequences (e.g. DHF files) to filter input. [Y]: Y
 Location of singlet filter sequences (e.g. DHF files) (input). [./]: seqnr/sing

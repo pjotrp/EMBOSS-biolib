@@ -25,8 +25,7 @@ Usage
 
 % psiphi 1hmp_a.ccf -chainnumber=1 -startresiduenumber=5 -finishresiduenumber=8
 5 
-Calculates phi and psi torsion angles from cleaned EMBOSS-style protein
-co-ordinate file
+Phi and psi torsion angles from protein coordinates
 Output report [1hmp_a.psiphi]: 
 
    Go to the input files for this example

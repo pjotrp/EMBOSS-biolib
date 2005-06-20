@@ -183,8 +183,7 @@ CONTENTS
 
 
 % allversusall 
-Does an all-versus-all global alignment for each set of sequences in an
-input directory and writes files of sequence similarity values
+Sequence similarity data from all-versus-all comparison.
 Location of sequence files (input [./]: allversusall/
 Location of sequence similarity data files (output) [./]: 
 Name allversusall log file (output) [ALLVERSUSALL.log]: 
@@ -272,9 +271,11 @@ See also
 
 14.0 REFERENCES
 
-   Please cite the authors and EMBOSS.
-   Rice P, Bleasby A.J. 2000. EMBOSS - The European Molecular Biology
-   Open Software Suite. Trends in Genetics, 15:276-278. See also
-   http://www.uk.embnet.org/Software/EMBOSS
+   Please cite the authors and EMBOSS. Please cite the authors and
+   EMBOSS.
+   Rice P, Longden I and Bleasby A (2000) "EMBOSS - The European
+   Molecular Biology Open Software Suite" Trends in Genetics, 15:276-278.
+   
+   See also http://emboss.sourceforge.net/
 
   14.1 Other useful references

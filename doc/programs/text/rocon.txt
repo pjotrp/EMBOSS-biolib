@@ -1,7 +1,9 @@
 
-                            ROCON documentation
-                                      
-   
+   [an error occurred while processing this directive]
+
+ROCON documentation
+
+   [an error occurred while processing this directive]
 
 CONTENTS
 
@@ -615,10 +617,7 @@ TRUE         Q9YBD5    95    135
 
 
 % rocon 
-Reads a DHF file (domain hits file) of hits (sequences of unknown
-structural classification) and a DHF file of validation sequences (known
-classification) and writes a 'hits file' for the hits, which are classified and
-rank-ordered on the basis of score.
+Generates a hits file from comparing two DHF files.
 Name of DHF file (domain hits file) (input).: rocon/rocon.dhf
 Name of domain families file (input).: rocon.valid
 Overlap threshold for hits. [10]: 10
@@ -766,7 +765,6 @@ LKMMELSEEVLTPDGRPIQMRIGIHSG
 See also
 
    Program name                       Description
-   contactcount Count specific versus non-specific contacts
    contacts     Generate intra-chain CON files from CCF files
    domainalign  Generate alignments (DAF file) for nodes in a DCF file
    domainrep    Reorder DCF file to identify representative structures

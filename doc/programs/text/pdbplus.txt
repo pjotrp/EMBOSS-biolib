@@ -770,8 +770,7 @@ O     20.825   31.690   27.031    1.00   20.90    0.00    0.00    0.00    0.00
 
 
 % pdbplus 
-Add residue solvent accessibility and secondary structure data to a CCF
-file (clean coordinate file) for a protein or domain.
+Add accessibility & secondary structure to a CCF file.
 Location of CCF files (clean coordinate files) (input) [./]: pdbplus
 Location of PDB files (input) [./]: 
 File prefix of PDB files (if any): 
@@ -788,12 +787,12 @@ Name of log file for NACCESS [naccess.log]:
 
 Processing /ebi/services/idata/pmr/hgmp/test/data/structure/pdbplus/1cs4.ccf
 stride /ebi/services/idata/pmr/hgmp/test/data/structure/1cs4.ent -f./pdbplus-11
-12091231.25929 >> stride.log 2>&1
+19283706.25929 >> stride.log 2>&1
 naccess /ebi/services/idata/pmr/hgmp/test/data/structure/1cs4.ent  >> naccess.l
 og 2>&1
 Processing /ebi/services/idata/pmr/hgmp/test/data/structure/pdbplus/1ii7.ccf
 stride /ebi/services/idata/pmr/hgmp/test/data/structure/1ii7.ent -f./pdbplus-11
-12091231.25929 >> stride.log 2>&1
+19283706.25929 >> stride.log 2>&1
 naccess /ebi/services/idata/pmr/hgmp/test/data/structure/1ii7.ent  >> naccess.l
 og 2>&1
 STRIDE  failures: 0
@@ -934,7 +933,12 @@ See also
 
 14.0 REFERENCES
 
-   Please cite the authors and EMBOSS.
+   Please cite the authors and EMBOSS. Please cite the authors and
+   EMBOSS.
+   Rice P, Longden I and Bleasby A (2000) "EMBOSS - The European
+   Molecular Biology Open Software Suite" Trends in Genetics, 15:276-278.
+   
+   See also http://emboss.sourceforge.net/
 
   14.1 Other useful references
 

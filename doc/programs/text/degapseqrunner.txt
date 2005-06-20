@@ -24,10 +24,10 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-gappedseqsdir]     dirlist    Input directory of files containing sequence
                                   pairs for degapping
-  [-pathtocommand]     directory  Directory where degapping executable lives
+  [-commandpath]       directory  Directory where degapping executable lives
   [-commandname]       string     Name of degapping executable
-  [-degappedseqsoutdir] outdir     Name of directory containing degapped
-                                  sequence pairs
+  [-degappedseqsoutdir] outdir     Directory where degapped sequence pairs will
+                                  be written
   [-outfilesuffix]     string     Appended to end of all output file names
 
    Additional (Optional) qualifiers: (none)
@@ -49,8 +49,25 @@ Command line arguments
    -die                boolean    Report deaths
 
 
-   Error: File /homes/pmr/local/share/EMBOSS/acd/degapseqrunner.acd line
-   12: (gappedseqsdir) Unknown attribute 'name'
+   Standard (Mandatory) qualifiers Allowed values Default
+   [-gappedseqsdir]
+   (Parameter 1) Input directory of files containing sequence pairs for
+   degapping Directory with files .
+   [-commandpath]
+   (Parameter 2) Directory where degapping executable lives Directory
+   [-commandname]
+   (Parameter 3) Name of degapping executable Any string is accepted
+   degapseq
+   [-degappedseqsoutdir]
+   (Parameter 4) Directory where degapped sequence pairs will be written
+   Output directory
+   [-outfilesuffix]
+   (Parameter 5) Appended to end of all output file names Any string is
+   accepted .deg
+   Additional (Optional) qualifiers Allowed values Default
+   (none)
+   Advanced (Unprompted) qualifiers Allowed values Default
+   (none)
 
 Input file format
 

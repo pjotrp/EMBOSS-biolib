@@ -279,8 +279,7 @@ CH   0 CHAIN; 159 START; 202 END;
 
 
 % cathparse 
-Reads raw CATH classification files and writes DCF file (domain
-classification file).
+Generates DCF file from raw CATH files.
 Name of raw CATH classification file (caths.list.vX.X) (input). [caths.list.v2.
 4]: caths.list.small
 Name of raw CATH classification file (domlist.vX.X) (input). [domlist.v2.4]: do
@@ -372,10 +371,12 @@ See also
 
 14.0 REFERENCES
 
-   Please cite the authors and EMBOSS.
-   Rice P, Bleasby A.J. 2000. EMBOSS - The European Molecular Biology
-   Open Software Suite. Trends in Genetics, 15:276-278. See also
-   http://www.uk.embnet.org/Software/EMBOSS
+   Please cite the authors and EMBOSS. Please cite the authors and
+   EMBOSS.
+   Rice P, Longden I and Bleasby A (2000) "EMBOSS - The European
+   Molecular Biology Open Software Suite" Trends in Genetics, 15:276-278.
+   
+   See also http://emboss.sourceforge.net/
 
   14.1 Other useful references
 

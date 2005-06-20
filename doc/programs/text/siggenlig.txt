@@ -1,7 +1,9 @@
 
-                          siggenlig documentation
-                                      
-   
+   [an error occurred while processing this directive]
+
+siggenlig documentation
+
+   [an error occurred while processing this directive]
 
 CONTENTS
 
@@ -260,7 +262,6 @@ CONTENTS
 See also
 
    Program name                       Description
-   contactcount Count specific versus non-specific contacts
    contacts     Generate intra-chain CON files from CCF files
    domainalign  Generate alignments (DAF file) for nodes in a DCF file
    domainrep    Reorder DCF file to identify representative structures
