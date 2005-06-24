@@ -70,7 +70,7 @@ int main(int argc, char **argv)
     AjPFile   fout=NULL;    
     AjPHet dic=NULL;
     AjBool    dogrep=ajFalse;
-    AjPList   dirlist = ajFalse;
+    AjPList   dirlist = NULL;
     AjPStr    tmp=NULL;
     
 
@@ -278,8 +278,3 @@ static AjBool        hetparse_HetScan(AjPList listfiles,
 
     return ajTrue;
 }
-
-
-
-
-
