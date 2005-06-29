@@ -3614,7 +3614,8 @@ ajint embPatRestrictMatch(const AjPSeq seq, ajint begin, ajint end,
     AjPStr  binstr;
     AjPStr  binrev;
     AjPStr  *ea;
-
+    AjPStr  tmpstr = NULL;
+    
     EmbPPatRestrict enz;
 
 
@@ -3674,11 +3675,24 @@ ajint embPatRestrictMatch(const AjPSeq seq, ajint begin, ajint end,
     if(plasmid)
     {
 	plen <<= 1;
-	ajStrAppC(&substr,ajStrStr(substr));
-	ajStrAppC(&binstr,ajStrStr(binstr));
+	tmpstr = ajStrNew();
+	ajStrAssS(&tmpstr,substr);
+	ajStrAppC(&tmpstr,ajStrStr(substr));
+	ajStrAssS(&substr,tmpstr);
 
-	ajStrAppC(&revstr,ajStrStr(revstr));
-	ajStrAppC(&binrev,ajStrStr(binrev));
+	ajStrAssS(&tmpstr,binstr);
+	ajStrAppC(&tmpstr,ajStrStr(binstr));
+	ajStrAssS(&binstr,tmpstr);
+	
+	ajStrAssS(&tmpstr,revstr);
+	ajStrAppC(&tmpstr,ajStrStr(revstr));
+	ajStrAssS(&revstr,tmpstr);
+
+	ajStrAssS(&tmpstr,binrev);
+	ajStrAppC(&tmpstr,ajStrStr(binrev));
+	ajStrAssS(&binrev,tmpstr);
+
+	ajStrDel(&tmpstr);
     }
 
     q = ajStrStrMod(&binrev);
