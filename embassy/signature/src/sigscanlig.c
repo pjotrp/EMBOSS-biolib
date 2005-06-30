@@ -841,8 +841,8 @@ AjPList sigscanlig_score_ligands_patch(AjPList hits)
     float  score        = 0.0;
     ajint  nhits      = 0;      /* No. of hits (patches) for current ligand. */
     ajint  nsites     = 0;      /* No. of sites for current ligand. */
-    ajint  x = 0;
-    AjBool ok = ajTrue;
+
+
     ajint  prevsn      = -1;        /* Previous site number */    
 
     
@@ -936,8 +936,8 @@ AjPList sigscanlig_score_ligands_site(AjPList hits)
     AjPHit  hit         = NULL;   
     AjPStr  prev_ligand = NULL;
     AjPLighit lighit    = NULL;
-    ajint  x = 0;
-    AjBool ok = ajTrue;
+
+
     ajint  prevsn      = -1;        /* Previous site number */
 
 
