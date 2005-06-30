@@ -163,15 +163,15 @@ int main(int argc, char **argv)
     ajint     type       = 0;    /* Type of domain (ajSCOP or ajCATH) in the 
 				    DCF file.                                */
 
-    AjPStr   *node       = NULL; /* Node of redundancy removal.              */
+    AjPStr   *node       = NULL; /* Node of alignment         .              */
     ajint     noden      = 0;    /*1: Class (SCOP), 2: Fold (SCOP) etc, see 
 				   ACD file.                                 */
 
     AjPStr   *mode       = NULL; /* Mode of operation from acd*/
     ajint     moden      = 0;    /* Program mode, 1: MODE_STAMP, 2: MODE_TCOFFEE (not
 				    yet implemented). */
-    AjBool    keepsinglets= ajFalse; /*Whether to retain redundant sequences and
-				       write them to an output file.         */
+    AjBool    keepsinglets= ajFalse; /*Whether to retain sequences of singlet families
+				       and write them to an output file.         */
 
     AjPStr    temp      = NULL;	/* A temporary string.                       */
     AjPStr    cmd       = NULL; /* The command line to execute t-coffee.     */
