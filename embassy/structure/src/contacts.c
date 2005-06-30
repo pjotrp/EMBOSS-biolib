@@ -200,7 +200,7 @@ int main(ajint argc, char **argv)
 
 
 	/* Read pdb structure. */
-	if(!(pdb=ajPdbReadNew(cpdb_inf)))
+	if(!(pdb=ajPdbReadAllModelsNew(cpdb_inf)))
 	{
 	    ajFmtPrintS(&msg, "ERROR file read error %S", temp);
 	    ajWarn(ajStrStr(msg));

@@ -80,7 +80,7 @@
 ** @attr res_pos [AjPInt] Array of ints for residue positions in domain 
 **                 clean coordinate file. 
 ** @attr *res_pos2 [AjPStr*] Array of residue positions in PDB file
-**      	    - exist as strings.
+**      	    - exist as strings.  No longer used.
 ** @@
 ******************************************************************************/
 
@@ -188,11 +188,11 @@ static   AjBool      sites_HeterogenContacts(ajint entype,
 					     AjPInt siz_heterogens, 
 					     AjPVdwall vdw, AjPDbase *dbase);
 
-static   AjBool      sites_HeterogenContactsWrite(AjPFile outf,
+static   AjBool      sites_HeterogenContactsWrite(AjPFile outf, 
 						  AjPDbase dbase, 
 						  float thresh); 
 
-static AjBool    sites_HeterogenContactsWriteOld(AjPFile funky_out,
+static AjBool    sites_HeterogenContactsWriteOld(AjPFile funky_out, 
 						 AjPDbase dbase);
 
 
@@ -550,9 +550,9 @@ int main(ajint argc, char **argv)
 		    continue;
 		}
 		/* Write pdb object */
-		if(!(pdbdom = ajPdbReadNew(dom_fptr)))
+		if(!(pdbdom = ajPdbReadFirstModelNew(dom_fptr)))
 		{
-		    ajFmtPrintS(&msg, "ERROR file read error - ajPdbReadNew");
+		    ajFmtPrintS(&msg, "ERROR file read error - ajPdbReadFirstModelNew");
 		    ajWarn(ajStrStr(msg));
 		    ajFileClose(&dom_fptr);
 		    continue;	
@@ -897,7 +897,11 @@ static AjBool      sites_HeterogenContacts(ajint entype,
 
 	  /* (i) loop through domains*/
 	  for(i=0;i<dom_max;++i)
-	    {
+	  {
+	      /* Disregard any non-protein atoms */
+	      if(dom_atm[i]->Type!='P') 
+		  continue; 
+
 	      /*Current residue check*/
 	      if(dom_atm[i]->Idx==idx_tmp) 
 		  continue; 
@@ -981,7 +985,7 @@ static AjBool      sites_HeterogenContacts(ajint entype,
 			  ajStrAssS(&tempaa, dom_atm[i]->Id3);		      
 			  ajListPushApp(aaTempList, (void *) tempaa);
 			  tempres_pos2=ajStrNew();
-			  ajStrAssS(&tempres_pos2, dom_atm[i]->Pdb);
+			  /* ajStrAssS(&tempres_pos2, dom_atm[i]->Pdb); */
 			  ajListPushApp(res_pos2TempList, tempres_pos2);
 			  idx_tmp=dom_atm[i]->Idx;
 			  break; /* heterogen atoms array loop */
@@ -1049,7 +1053,9 @@ void sites_Dummy (void)
     return;
 }
 
-/* @funcstatic sites_HeterogenContactsWriteOld ******************************
+
+
+/* @funcstatic  sites_HeterogenContactsWriteOld ******************************
 **
 ** Write Dbase object to file i.e. the database of functional residues. The
 ** OLD ligand-centric format is used (*NOT* CON format).
@@ -1062,14 +1068,14 @@ void sites_Dummy (void)
 ** @@
 ******************************************************************************/
 
-static AjBool    sites_HeterogenContactsWriteOld(AjPFile funky_out,
+static AjBool    sites_HeterogenContactsWriteOld(AjPFile funky_out, 
 						 AjPDbase dbase)
 {
 
-  ajint i=0;   /* loop counter for dbase->entries[i] */
-  ajint j=0;   /* loop counter for dbase->entries[i]->cont_data[j] */
-  ajint k=0;   /* loop counter for dbase->entries[i]->cont_data[j]->aa_code[j]
-	  	  and dbase->entries[i]->cont_data[j]->res_pos[j] */
+  ajint i=0;  /* loop counter for dbase->entries[i] */
+  ajint j=0;  /* loop counter for dbase->entries[i]->cont_data[j] */
+  ajint k=0;  /* loop counter for dbase->entries[i]->cont_data[j]->aa_code[j]
+		 and dbase->entries[i]->cont_data[j]->res_pos[j] */
 
   /* Check arguments */
   if((funky_out==NULL) || (dbase==NULL)) 
@@ -1091,10 +1097,10 @@ static AjBool    sites_HeterogenContactsWriteOld(AjPFile funky_out,
 	    {
 	      ajFmtPrintF(funky_out, "SN   %d\n", j+1);
 	      ajFmtPrintF(funky_out, "XX\n");
-	      ajFmtPrintF(funky_out, "EN   %S\n",
+	      ajFmtPrintF(funky_out, "EN   %S\n", 
 			  dbase->entries[i]->cont_data[j]->pdb_name);
 	      ajFmtPrintF(funky_out, "XX\n");
-	      ajFmtPrintF(funky_out, "CH   %c\n",
+	      ajFmtPrintF(funky_out, "CH   %c\n", 
 			  dbase->entries[i]->cont_data[j]->chainid);
 	      ajFmtPrintF(funky_out, "XX\n");
 

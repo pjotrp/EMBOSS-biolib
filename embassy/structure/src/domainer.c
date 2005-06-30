@@ -135,7 +135,7 @@ int main(int argc, char **argv)
 	
 	
 	/* Write pdb structure. */
-	if(!(pdb=ajPdbReadNew(cpdb_inf)))
+	if(!(pdb=ajPdbReadFirstModelNew(cpdb_inf)))
 	{
 	    ajFmtPrintS(&msg, "Error reading cpdb file %S", cpdb_name);
 	    ajWarn(ajStrStr(msg));

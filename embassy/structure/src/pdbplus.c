@@ -55,7 +55,7 @@
 static void     pdbplus_writeElement(int start, 
 			      int end,
 			      int eNum,
-			      AjPAtom *arr);
+			      AjPResidue *arr);
 
 static void     pdbplus_sort(AjPPdb pdb,
 		      int tS);
@@ -101,7 +101,7 @@ int main(ajint argc, char **argv)
     AjBool   done_naccess= ajFalse;
     AjBool   done_stride = ajFalse;
     AjBool   found       = ajFalse;
-    AjPAtom  temp_atom   = NULL;  /* Pointer to Atom object.                */
+    AjPResidue temp_res  = NULL;  /* Pointer to Residue object.                */
     AjPPdb   pdb_old     = NULL;  /* Pointer to PDB object - without new
 				     stride elements.                       */
     AjPPdb   pdb         = NULL;  /* Pointer to PDB object.                 */
@@ -207,8 +207,8 @@ int main(ajint argc, char **argv)
 	fflush(stdout);
 
         /* Parse protein coordinate data (from clean format file) into 
-	   AjPPdb object.  ajPdbRead will create the AjPPdb object. */
-      if(!(pdb_old=ajPdbReadNew(ccf_inf)))
+	   AjPPdb object.  ajPdbReadAllModelsNew will create the AjPPdb object. */
+      if(!(pdb_old=ajPdbReadAllModelsNew(ccf_inf)))
         {
 	    ajWarn("ERROR Clean coordinate file read" 
 		   "error: %S\n//\n", ccf_this);
@@ -293,7 +293,7 @@ int main(ajint argc, char **argv)
 		    /* 
 		     **  Populate pdbplus object with the data from this parsed
 		     **  line. This means first identifying the chain, then 
-		     **  finding all the atoms corresponding to the residue. 
+		     **  finding the residue. 
 		     */
                 
 		    /* Determine the chain number. ajDmxPdbplusChain does not 
@@ -321,32 +321,33 @@ int main(ajint argc, char **argv)
 		    chain_num = idn-1; 
                   
 		    /* 
-		     **   Iiterate through the list of atoms in the Pdb object,
-		     **   found switches to true when first atom corresponding 
+		     **   Iiterate through the list of residues in the Pdb object,
+		     **   found switches to true when first residue corresponding 
 		     **   to the line is found. 
 		     */
 
-		    iter = ajListIterRead(pdb->Chains[chain_num]->Atoms);
+		    /* iter = ajListIterRead(pdb->Chains[chain_num]->Atoms); */
+		    iter = ajListIterRead(pdb->Chains[chain_num]->Residues);
 		    found = ajFalse; 
-		    while((temp_atom = (AjPAtom)ajListIterNext(iter)))
+		    while((temp_res = (AjPResidue)ajListIterNext(iter)))
 		    {
-		        /* If we have found the atom we want */
-			if((ajStrMatch(res_num, temp_atom->Pdb) && 
-			    ajStrMatch(res, temp_atom->Id3)))
+		        /* If we have found the residue we want */
+			if((ajStrMatch(res_num, temp_res->Pdb) && 
+			    ajStrMatch(res, temp_res->Id3)))
 			{
                        	    done_stride = ajTrue;
 			    found = ajTrue;
-			    temp_atom->eStrideType = ss;
-			    temp_atom->Phi  = ph;
-			    temp_atom->Psi  = ps;
-			    temp_atom->Area = sa;
+			    temp_res->eStrideType = ss;
+			    temp_res->Phi  = ph;
+			    temp_res->Psi  = ps;
+			    temp_res->Area = sa;
 			}                 
-			/* If the matching atoms have all been processed
+			/* If the matching residue has been processed
 			   move on to next ASG line, next residue. */
 			else if(found == ajTrue) 
 			    break;	
 			else 
-			/* Matching atoms not found yet. */       
+			/* Matching residue not found yet. */       
 			    continue;	
 		    }
 		    ajListIterFree(&iter);
@@ -374,7 +375,7 @@ int main(ajint argc, char **argv)
 	    ajSystem(exec); 
 	    
 	    /* 
-	     **  Calculate element serial numbers (eStrideNum)& ammend atom
+	     **  Calculate element serial numbers (eStrideNum)& ammend residue
 	     **  objects, count no's of elements and ammend chain object 
 	     **  (numHelices, num Strands). 
 	     */
@@ -439,7 +440,7 @@ int main(ajint argc, char **argv)
 				 &res, &res_num, &f1, &f2, &f3, &f4, &f5, 
 				 &f6, &f7, &f8, &f9, &f10);
 
-		    /* Identify the chain, then finding all the atoms 
+		    /* Identify the chain, then finding all the residues 
 		       corresponding to the residue. */
                 
 		    /* Get the chain number from the chain identifier. */
@@ -466,43 +467,43 @@ int main(ajint argc, char **argv)
 
 
 		    /* 
-		     **   Iiterate through the list of atoms in the Pdb object,
-		     **   temp_atom is an AjPAtom used to point to the current
-		     **   atom.
-		     **   ajBool found switches to true when first atom 
+		     **   Iiterate through the list of residues in the Pdb object,
+		     **   temp_res is an AjPResidue used to point to the current
+		     **   residue.
+		     **   ajBool found switches to true when first residue 
 		     **   corresponding to the line is found. 
 		     */
-		    iter = ajListIterRead(pdb->Chains[chain_num]->Atoms);
+		    iter = ajListIterRead(pdb->Chains[chain_num]->Residues);
 
 		    found = ajFalse; 
-		    while((temp_atom = (AjPAtom)ajListIterNext(iter)))
+		    while((temp_res = (AjPResidue)ajListIterNext(iter)))
 		    {
-			/* If we have found the atom we want, write the atom 
+			/* If we have found the residue we want, write the residue 
 			   object. */
-			if((ajStrMatch(res_num, temp_atom->Pdb) && 
-			    ajStrMatch(res, temp_atom->Id3)))
+			if((ajStrMatch(res_num, temp_res->Pdb) && 
+			    ajStrMatch(res, temp_res->Id3)))
                         {
 			    found = ajTrue;
 			    done_naccess = ajTrue;
-			    temp_atom->all_abs  = f1;
-			    temp_atom->all_rel  = f2;
-			    temp_atom->side_abs = f3;
-			    temp_atom->side_rel = f4;
-			    temp_atom->main_abs = f5;
-			    temp_atom->main_rel = f6;
-			    temp_atom->npol_abs = f7;
-			    temp_atom->npol_rel = f8;
-			    temp_atom->pol_abs  = f9;
-			    temp_atom->pol_rel  = f10;
+			    temp_res->all_abs  = f1;
+			    temp_res->all_rel  = f2;
+			    temp_res->side_abs = f3;
+			    temp_res->side_rel = f4;
+			    temp_res->main_abs = f5;
+			    temp_res->main_rel = f6;
+			    temp_res->npol_abs = f7;
+			    temp_res->npol_rel = f8;
+			    temp_res->pol_abs  = f9;
+			    temp_res->pol_rel  = f10;
 
 			}      
-			/* If the matching atoms have all been processed. 
+			/* If the matching residues have all been processed. 
 			   move on to next ASG line, next residue. */
 			else if(found == ajTrue) 
 			    break;	
 			else 
-			    /* Matching atoms not found yet, move on to next 
-			       atom. */
+			    /* Matching residues not found yet, move on to next 
+			       residue. */
 			    continue;	 
 		    }
 		    ajListIterFree(&iter);
@@ -604,7 +605,7 @@ int main(ajint argc, char **argv)
 /* @funcstatic pdbplus_sort ***************************************************
 **
 ** Identifies and indexes secondary structure elements in a Pdb object
-** assigns eNum to Atom objects 
+** assigns eNum to Residue objects 
 ** assigns numHelices & numStrands to ChainStride objects
 **
 ** @param [r] pdb [AjPPdb] Pdb object
@@ -617,17 +618,17 @@ int main(ajint argc, char **argv)
 static void pdbplus_sort(AjPPdb pdb, int tS)
 {
     
-    AjPAtom *arr = NULL;  /* Array of AjPAtom objects from list
-			     of AjPAtom objects in Pdb chain object.        */
-    ajint n      = 0;     /* Current position in array of atoms.            */
+    AjPResidue *arr = NULL;  /* Array of Residue objects from list
+			     of Residue objects in Pdb chain object.        */
+    ajint n      = 0;     /* Current position in array of residues.         */
     ajint x      = 0;     /* Loop counter.                                  */
     ajint z      = 0;     /* Loop counter.                                  */
-    ajint siz    = 0;     /* Size of array of atoms.                        */
+    ajint siz    = 0;     /* Size of array of residues.                     */
     ajint start  = 0;     /* Start position of element.                     */
     ajint end    = 0;     /* End position of element.                       */
     ajint esiz   = 0;     /* Size of current element.                       */
     ajint eNum   = 0;     /* Sequential count of elements.                  */
-    ajint resnum = 0;     /* Residue number of last atom, Idx value.        */
+    ajint resnum = 0;     /* Residue number of last residue, Idx value.     */
     char   etype = ' ';   /* Element type.                                  */
     AjBool foundStart =ajFalse; /* True if we have found the start 
 				   of an element of any size*/
@@ -640,26 +641,26 @@ static void pdbplus_sort(AjPPdb pdb, int tS)
 
     for(z=0; z < pdb->Nchn; z++)
     {
-        /* Use ajListToArray to convert the list of atoms for the current
+        /* Use ajListToArray to convert the list of residues for the current
 	   chain to an array.  Returns size of array of pointers */
 
-        siz = ajListToArray((AjPList)pdb->Chains[z]->Atoms,
+        siz = ajListToArray((AjPList)pdb->Chains[z]->Residues,
 			  (void ***)&arr);
 
 	/* Loop through the array to identify, index  &
-	   then write SSE data to atoms in the array. */
+	   then write SSE data to residues in the array. */
         for(eNum=1, foundStart=ajFalse, n=0; 
 	    n<siz; 
 	    resnum = arr[n]->Idx, n++)
         {
-            /* If atom is def. not in an element. */
+            /* If residue is def. not in an element. */
             if((arr[n]->eStrideType == 'C')  ||
 	       (arr[n]->eStrideType == 'B')  ||
 	       (arr[n]->eStrideType == 'b')  ||
 	       (arr[n]->eStrideType == 'T')  ||
 	       (arr[n]->eStrideType == '.'))
             {
-	        /* If element start already found, this atom defines
+	        /* If element start already found, this residue defines
 		   the end of an element. */
                 if (foundStart)
                 {
@@ -674,11 +675,11 @@ static void pdbplus_sort(AjPPdb pdb, int tS)
                     /* Element written or element < threshold size. */
                     foundStart = ajFalse;
                     esiz = 0;
-                    continue;   /* Next atom in array. */		
+                    continue;   /* Next residue in array. */		
                 }
-		continue;       /* Next atom in array. */
+		continue;       /* Next residue in array. */
             }
-	    /* This atom might be in an element of tS or greater. */
+	    /* This residue might be in an element of tS or greater. */
             else 
             {
                 if(foundStart)
@@ -696,7 +697,7 @@ static void pdbplus_sort(AjPPdb pdb, int tS)
                         }
                         /* foundStart remains ajTrue. */
                         start = n;
-			/*  atom is first residue of next element. */
+			/*  residue is first residue of next element. */
                         esiz = 1;	 
                         etype = arr[n]->eStrideType;
                         continue;	
@@ -706,7 +707,7 @@ static void pdbplus_sort(AjPPdb pdb, int tS)
 		        /* 
 			** Residue type is same as first residue.
                         ** Increase size of element if residue number has
-			** increased by 1 since the last atom but the residue
+			** increased by 1 since the last residue but the residue
 			** identity is the same as that for the first residue.
 			** 'by 1' accounts for 'gaps' in the residue numbering,
                         ** e.g.caused by missing electron density. 
@@ -728,7 +729,7 @@ static void pdbplus_sort(AjPPdb pdb, int tS)
                                 pdbplus_writeElement(start, end, eNum, arr);
                                 eNum++;
                             }
-                            /* Current atom is the start of the next element. */
+                            /* Current residue is the start of the next element. */
                             esiz = 1;
                             /* note-foundStart remains true. 
 			       eType remains the same. */
@@ -759,7 +760,7 @@ static void pdbplus_sort(AjPPdb pdb, int tS)
 	numHelices = 0;
         numStrands = 0;
 
-        /* Loop through array of atoms again. */
+        /* Loop through array of residues again. */
         for(n=0, x=0; n<siz; n++)   
         {
 	  /* eStrideNum starts at 1. */
@@ -798,12 +799,12 @@ static void pdbplus_sort(AjPPdb pdb, int tS)
 
 /* @funcstatic pdbplus_writeElement *******************************************
 **
-** Writes eNum (element number) to Atoms in Pdb object
+** Writes eNum (element number) to Residues in Pdb object
 ** 
 ** @param [start]  [ajint]     Start position of SSE
 ** @param [end]    [ajint]     End position of SSE
 ** @param [eNum]   [ajint]     SSE number
-** @param [arr]    [AjPAtom*]  Pointer to array of AjPAtom objects
+** @param [arr]    [AjPResidue*]  Pointer to array of AjPResidue objects
 **
 ** @return [void]
 ** @@
@@ -812,7 +813,7 @@ static void pdbplus_sort(AjPPdb pdb, int tS)
 static void pdbplus_writeElement(int start, 
 				 int end,
 				 int eNum,
-				 AjPAtom *arr)
+				 AjPResidue *arr)
 {
     int x = 0;
 
