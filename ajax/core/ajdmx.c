@@ -1189,6 +1189,31 @@ ajint ajDmxScophitCompSfam(const void *hit1, const void *hit2)
 
 
 
+/* @func ajDmxScophitCompClass **********************************************
+**
+** Function to sort Scophit object by Class element. 
+**
+** @param [r] hit1  [const void*] Pointer to Scophit object 1
+** @param [r] hit2  [const void*] Pointer to Scophit object 2
+**
+** @return [ajint] -1 if Class1 should sort before Class2, +1 if the Class2 
+** should sort first. 0 if they are identical.
+** @@
+****************************************************************************/
+ajint ajDmxScophitCompClass(const void *hit1, const void *hit2)
+{
+    AjPScophit p = NULL;
+    AjPScophit q = NULL;
+
+    p = (*(AjPScophit*)hit1);
+    q = (*(AjPScophit*)hit2);
+    
+    return ajStrCmpO(p->Class, q->Class);
+}
+
+
+
+
 
 /* @func ajDmxScophitCompFold ***********************************************
 **
