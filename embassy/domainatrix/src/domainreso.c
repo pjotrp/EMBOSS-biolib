@@ -160,7 +160,7 @@ int main(ajint argc, char **argv)
 	
 
         /* Read coordinate data file. */ 
-	pdb = ajPdbReadNew(fptr_cpdb);
+	pdb = ajPdbReadFirstModelNew(fptr_cpdb);
         
 
         /* Check if resolution is above threshold. */

@@ -85,7 +85,7 @@ int main(int argc, char **argv)
     
     AjPScop  scop      = NULL; /* Pointer to scopstride object.               */
     AjPPdb   pdb       = NULL; /* Pointer to pdb object.                      */
-    AjPAtom  temp_atom = NULL; /* Pointer to Atom object.                     */
+    AjPResidue temp_res= NULL; /* Pointer to Residue object.                  */
     AjIList  iter      = NULL;
 
 
@@ -130,7 +130,7 @@ int main(int argc, char **argv)
 	}
 	
 	/* Read the coordinate file for the domain. */
-	if(!(pdb=ajPdbReadNew(dccf_inf)))
+	if(!(pdb=ajPdbReadFirstModelNew(dccf_inf)))
 	{
 	    ajFmtPrintF(errf, "%-15s\n", "FILE_READ"); 
             ajFmtPrintF(errf, "Could not read dccf file %S", dccf_name); 
@@ -148,20 +148,21 @@ int main(int argc, char **argv)
         sse =ajStrNew();
 
         /* Initialise the iterator. */
-        iter=ajListIter(pdb->Chains[0]->Atoms);
+        /* iter=ajListIter(pdb->Chains[0]->Atoms); */
+	iter=ajListIter(pdb->Chains[0]->Residues);
 
-        /* Iiterate through the list of atoms in the Pdb object,
-	   temp_atom is an AjPAtom used to point to the current atom. */
+        /* Iiterate through the list of residues in the Pdb object,
+	   temp_res is an AjPResidue used to point to the current residue. */
         num=0;
-        while((temp_atom=(AjPAtom)ajListIterNext(iter)))
+        while((temp_res=(AjPResidue)ajListIterNext(iter)))
 	{
-	    /* If this atom is part of a new element.
+	    /* If this residue is part of a new element.
 	       eNum is the Serial number of the STRIDE-assigned element. */
-	    if (temp_atom->eNum > num)
+	    if(temp_res->eNum > num)
             {
                 /* Append one instance of eType for each new element to make 
 		   sse map. */
-	        ajStrAppK(&sse, temp_atom->eType);
+	        ajStrAppK(&sse, temp_res->eType);
                 num++;
             }
 	}
@@ -176,25 +177,20 @@ int main(int argc, char **argv)
         sss =ajStrNew();
 
         /* Initialise the iterator. */
-        iter=ajListIter(pdb->Chains[0]->Atoms);
+/*        iter=ajListIter(pdb->Chains[0]->Atoms); */
+        iter=ajListIter(pdb->Chains[0]->Residues);
 
-        /* Iiterate through the list of atoms in the Pdb object. */
-     	num=0;
-        while((temp_atom=(AjPAtom)ajListIterNext(iter)))
+        /* Iiterate through the list of residues in the Pdb object. */
+        while((temp_res=(AjPResidue)ajListIterNext(iter)))
 	{
-            /* If this atom is part of a new residue.
-	       Idx is the Residue number - index into sequence. */
-	    if (temp_atom->Idx > num)
-            {
-                /* Append one instance of eType for each new residue to make ss
-		   string. */
-                ss = temp_atom->eType;
-                if (ss == '.')
-                    ss = 'L';
-	        ajStrAppK(&sss, ss);
-                num = temp_atom->Idx;
-            }
-	}
+            /* Idx is the Residue number - index into sequence. */
+	    /* Append one instance of eType for each new residue to make ss
+	       string. */
+	    ss = temp_res->eType;
+	    if (ss == '.')
+		ss = 'L';
+	    ajStrAppK(&sss, ss);
+	}	
 	/* Add the completed sss to the scop structure. */
         ajStrAssS(&scop->Sss, sss);
         ajListIterFree(&iter);
