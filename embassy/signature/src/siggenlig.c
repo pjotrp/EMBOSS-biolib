@@ -48,7 +48,7 @@
 ** PROTOTYPES  
 **
 ******************************************************************************/
-AjBool siggenlig_assign_env(AjPAtom atom, AjPStr *OEnv, ajint envdefi, AjPFile logf);
+AjBool siggenlig_assign_env(AjPResidue residue, AjPStr *OEnv, ajint envdefi, AjPFile logf);
 void siggenlig_new_sig_from_cmap(AjPSignature *sig, AjPCmap cmap, ajint patchsize, ajint gapdistance, ajint typei);
 AjPPdb siggenlig_read_ccf(AjPCmap cmap, AjPDir ccfd, AjPDir ccfp);
 
@@ -72,8 +72,8 @@ int main(ajint argc, char **argv)
     AjPDir ccfp          = NULL;  /* CCF file - protein (input).                */
     AjPDir ccfd          = NULL;  /* CCF file - domain (input).                 */
     AjPPdb  pdb          = NULL;  /* PDB object.                                */
-    AjIList iter_atom    = NULL;  /* Iterator for atoms in PDB object.          */
-    AjPAtom atom         = NULL;  /* Temp. object.                              */
+    AjIList iter_residue    = NULL;  /* Iterator for residues in PDB object.          */
+    AjPResidue residue         = NULL;  /* Temp. object.                              */
     
     
     AjPStr *mode         = NULL;  /* Mode, 1: Full-length signatures, 
@@ -108,10 +108,10 @@ int main(ajint argc, char **argv)
     
     AjPStr     sigfname  = NULL;  /* Name of signature file.                    */
     AjPFile    sigoutf   = NULL;  /* Signature output file.                     */
-    AjPStr   OEnv        = NULL;  /* Atom environment.                          */
+    AjPStr   OEnv        = NULL;  /* Residue environment.                          */
     AjBool   firstpos  = ajTrue;  /* Housekeeping.                              */
     AjBool iscontact   = ajFalse; /* Housekeeping.                              */
-    AjBool   foundatom = ajFalse; /* Housekeeping.                              */
+    AjBool   foundresidue = ajFalse; /* Housekeeping.                              */
     
     
     
@@ -194,24 +194,24 @@ int main(ajint argc, char **argv)
 		    /* 3D signature */
 		    else
 		    {
-			foundatom = ajFalse;
-			iter_atom = ajListIter(pdb->Chains[cmap->Chn1-1]->Atoms);
-			while((atom = (AjPAtom) ajListIterNext(iter_atom)))
+			foundresidue = ajFalse;
+			iter_residue = ajListIter(pdb->Chains[cmap->Chn1-1]->Residues);
+			while((residue = (AjPResidue) ajListIterNext(iter_residue)))
 			{
-			    if(atom->Idx == x+1)
+			    if(residue->Idx == x+1)
 			    {
-				if((!siggenlig_assign_env(atom, &OEnv, envdefi, logf)))
+				if((!siggenlig_assign_env(residue, &OEnv, envdefi, logf)))
 				    ajStrAssC(&OEnv, "*");
 				
 				ajStrAssS(&sigdat->eids[0], OEnv);
 				ajIntPut(&sigdat->efrq, 0, 1);
-				foundatom=ajTrue;
+				foundresidue=ajTrue;
 				break;
-			    } /* if(atom->Idx == x+1) */
+			    } /* if(residue->Idx == x+1) */
 			}
-			if(!foundatom)
-			    ajFatal("Atom not found in siggenlig");
-			ajListIterFree(&iter_atom);
+			if(!foundresidue)
+			    ajFatal("Residue not found in siggenlig");
+			ajListIterFree(&iter_residue);
 		    }
 		    if(firstpos)
 			ajIntPut(&sigdat->gsiz, 0, x);
@@ -286,24 +286,24 @@ int main(ajint argc, char **argv)
 		    /* 3D signature */
 		    else
 		    {
-			foundatom = ajFalse;
-			iter_atom = ajListIter(pdb->Chains[cmap->Chn1-1]->Atoms);
-			while((atom = (AjPAtom) ajListIterNext(iter_atom)))
+			foundresidue = ajFalse;
+			iter_residue = ajListIter(pdb->Chains[cmap->Chn1-1]->Residues);
+			while((residue = (AjPResidue) ajListIterNext(iter_residue)))
 			{
-			    if(atom->Idx == x+1)
+			    if(residue->Idx == x+1)
 			    {
-				if((!siggenlig_assign_env(atom, &OEnv, envdefi, logf)))
+				if((!siggenlig_assign_env(residue, &OEnv, envdefi, logf)))
 				    ajStrAssC(&OEnv, "*");
 				ajStrAssS(&sigdat->eids[0], OEnv);
 				ajIntPut(&sigdat->efrq, 0, 1);
 
-				foundatom=ajTrue;
+				foundresidue=ajTrue;
 				break;
 			    } 
 			}
-			if(!foundatom)
-			    ajFatal("Atom not found in siggenlig");
-			ajListIterFree(&iter_atom);
+			if(!foundresidue)
+			    ajFatal("Residue not found in siggenlig");
+			ajListIterFree(&iter_residue);
 		    }
 		    
 		    
@@ -453,7 +453,7 @@ AjPPdb siggenlig_read_ccf(AjPCmap cmap,  AjPDir ccfd,  AjPDir ccfp)
 	return NULL;
     }
     
-    pdb = ajPdbReadNew(ccffptr);
+    pdb = ajPdbReadFirstModelNew(ccffptr);
 
     if(!pdb)
     {
@@ -504,14 +504,14 @@ void siggenlig_new_sig_from_cmap(AjPSignature *sig, AjPCmap cmap, ajint patchsiz
 
 
 
-AjBool siggenlig_assign_env(AjPAtom atom, AjPStr *OEnv, ajint envdefi, AjPFile logf)
+AjBool siggenlig_assign_env(AjPResidue residue, AjPStr *OEnv, ajint envdefi, AjPFile logf)
 {
     char     SEnv = '\0';
     ajint    NUMENV = 0;
 
     /*Call to function that assigns the secondary structure environment class.
       Default to type 'C' (open coil). */
-    if(!ajAtomSSEnv(atom, &SEnv, logf))
+    if(!ajResidueSSEnv(residue, &SEnv, logf))
 	SEnv='C'; 
     
     
@@ -519,52 +519,52 @@ AjBool siggenlig_assign_env(AjPAtom atom, AjPStr *OEnv, ajint envdefi, AjPFile l
     {
     case 1:
 	/*Call to function that assigns the overall environment class*/
-	NUMENV = ajAtomEnv1(atom, SEnv, OEnv, logf);
+	NUMENV = ajResidueEnv1(residue, SEnv, OEnv, logf);
 	break;
     case 2:
-	NUMENV = ajAtomEnv2(atom, SEnv, OEnv, logf);
+	NUMENV = ajResidueEnv2(residue, SEnv, OEnv, logf);
 	break;
     case 3:
-	NUMENV = ajAtomEnv3(atom, SEnv, OEnv, logf);
+	NUMENV = ajResidueEnv3(residue, SEnv, OEnv, logf);
 	break;
     case 4:
-	NUMENV = ajAtomEnv4(atom, SEnv, OEnv, logf);
+	NUMENV = ajResidueEnv4(residue, SEnv, OEnv, logf);
 	break;
     case 5:
-	NUMENV = ajAtomEnv5(atom, SEnv, OEnv, logf);
+	NUMENV = ajResidueEnv5(residue, SEnv, OEnv, logf);
 	break;
     case 6:
-	NUMENV = ajAtomEnv6(atom, SEnv, OEnv, logf);
+	NUMENV = ajResidueEnv6(residue, SEnv, OEnv, logf);
 	break;
     case 7:
-	NUMENV = ajAtomEnv7(atom, SEnv, OEnv, logf);
+	NUMENV = ajResidueEnv7(residue, SEnv, OEnv, logf);
 	break;
     case 8:
-	NUMENV = ajAtomEnv8(atom, SEnv, OEnv, logf);
+	NUMENV = ajResidueEnv8(residue, SEnv, OEnv, logf);
 	break;
     case 9:
-	NUMENV = ajAtomEnv9(atom, SEnv, OEnv, logf);
+	NUMENV = ajResidueEnv9(residue, SEnv, OEnv, logf);
 	break; 
     case 10:
-	NUMENV = ajAtomEnv10(atom, SEnv, OEnv, logf);
+	NUMENV = ajResidueEnv10(residue, SEnv, OEnv, logf);
 	break; 
     case 11:
-	NUMENV = ajAtomEnv11(atom, SEnv, OEnv, logf);
+	NUMENV = ajResidueEnv11(residue, SEnv, OEnv, logf);
 	break; 
     case 12:
-	NUMENV = ajAtomEnv12(atom, SEnv, OEnv, logf);
+	NUMENV = ajResidueEnv12(residue, SEnv, OEnv, logf);
 	break; 
     case 13:
-	NUMENV = ajAtomEnv13(atom, SEnv, OEnv, logf);
+	NUMENV = ajResidueEnv13(residue, SEnv, OEnv, logf);
 	break; 
     case 14:
-	NUMENV = ajAtomEnv14(atom, SEnv, OEnv, logf);
+	NUMENV = ajResidueEnv14(residue, SEnv, OEnv, logf);
 	break; 
     case 15:
-	NUMENV = ajAtomEnv15(atom, SEnv, OEnv, logf);
+	NUMENV = ajResidueEnv15(residue, SEnv, OEnv, logf);
 	break;
     case 16:
-	NUMENV = ajAtomEnv16(atom, SEnv, OEnv, logf);
+	NUMENV = ajResidueEnv16(residue, SEnv, OEnv, logf);
 	break;
     default:
 	ajFatal("Unknown environment definition in siggenlig_assign_env");

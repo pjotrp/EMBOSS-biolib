@@ -481,7 +481,7 @@ int main(ajint argc, char **argv)
                     ajFatal("Could not open coordinate file");
 
                 /* Read coordinate data file. */ 
-                pdb = ajPdbReadNew(fptr_cpdb);
+                pdb = ajPdbReadFirstModelNew(fptr_cpdb);
                 
                 /* Determine the chain number. */
                 if(idok)
@@ -502,9 +502,9 @@ int main(ajint argc, char **argv)
                 noca[x]=ajFalse;
 
 
-                if(!embPdbAtomIndexICA(pdb, idn, &atom_idx[x], &nres))
+                if(!embPdbResidueIndexICA(pdb, idn, &atom_idx[x], &nres))
                 {
-                    ajWarn("Could not find chain in siggen embPdbAtomIndexICA\n");
+                    ajWarn("Could not find chain in siggen embPdbResidueIndexICA\n");
                     ajPdbDel(&pdb);
                     ajFileClose(&fptr_cpdb);
                     continue;

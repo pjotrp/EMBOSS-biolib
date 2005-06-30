@@ -1,4 +1,4 @@
-/* @source sigscan application
+/* @source sigscanlig application
 **
 ** Generates LHF files (ligand hits file) of hits from scanning sequence(s) 
 ** against a library of ligand-binding signatures.
@@ -23,15 +23,11 @@
 **
 *******************************************************************************
 ** 
-**  SIGSCAN documentation
+**  SIGSCANLIG documentation
 **  See http://wwww.emboss.org
 **  
 **  Please cite the authors and EMBOSS.
 **
-**  Automatic generation and evaluation of sparse protein signatures for 
-**  families of protein structural domains. MJ Blades, JC Ison, R Ranasinghe
-**  and JBC Findlay. Protein Science. 2005 (accepted)
-**  
 **  Email Jon Ison (jison@rfcgr.mrc.ac.uk)
 **  
 **  NOTES
@@ -69,8 +65,8 @@
 ** @alias AjOLighit
 **
 ** @attr  ligid [AjPStr]  Ligand id code. 
-** @attr  ns    [ajint]   No. of sites achieving >= threshold score. 
-** @attr  np    [ajint]   No. of patches achieving >= threshold score. 
+** @attr  ns    [ajint]   No. of sites in library for this ligand. 
+** @attr  np    [ajint]   No. of patches in library for this ligand.
 ** @attr  score [float]   Score of hit. 
 ** 
 ** @new    embSigposNew Default Sigdat object constructor
@@ -112,8 +108,8 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
 						  AjPList hits); */
 void sigscanlig_LigHitDel(AjPLighit *obj);
 AjPLighit sigscanlig_LighitNew(void);
-AjPList sigscanlig_score_ligands_patch(AjPList hits, AjBool DOMAX, ajint maxhits);
-AjPList sigscanlig_score_ligands_site(AjPList hits, AjBool DOMAX, ajint maxhits);
+AjPList sigscanlig_score_ligands_patch(AjPList hits);
+AjPList sigscanlig_score_ligands_site(AjPList hits);
 ajint sigscanlig_MatchinvScore(const void *hit1, const void *hit2);
 void sigscanlig_WriteResults(AjPList results, AjPFile resultsf);
 
@@ -140,7 +136,6 @@ int main(int argc, char **argv)
     
     AjPHit       hit = NULL;      /* Hit to store signature-sequence match.  */
     AjPList      hits = NULL;     /* List of hits */
-    ajint        nhits=0;         /* Max. no. of hits to write to output files*/    
 
 
     AjPList      ligands = NULL;     /* List of top-scoring ligands. */
@@ -167,15 +162,12 @@ int main(int argc, char **argv)
     AjPDir     resultsdir=NULL;   /* Directory of results files (output).  */
     AjPFile    resultsf =NULL;   /* Results file (output).  */
 
-    AjBool     domax = ajFalse;
-    ajint      maxhits = 0;
-
     AjPStr *mode         = NULL;  /* Mode, 1: Patch score mode, 
 				     2: Site score mode.                       */
     ajint   modei        = 0;     /* Selected mode as integer.                  */
 
 
-
+    AjIList iter        = NULL;   /* Iterator. */
     
 
     ajNamInit("emboss");
@@ -188,13 +180,10 @@ int main(int argc, char **argv)
     sub        = ajAcdGetMatrixf("sub");
     gapo       = ajAcdGetFloat("gapo");
     gape       = ajAcdGetFloat("gape");
-    nhits      = ajAcdGetInt("nhits");
     nterm      = ajAcdGetList("nterm");
-    hitsdir    = ajAcdGetOutdir("hitsdir");
-    aligndir   = ajAcdGetOutdir("aligndir"); 
-    resultsdir = ajAcdGetOutdir("resultsdir"); 
-    domax      = ajAcdGetToggle("domax");
-    maxhits    = ajAcdGetInt("maxhits");
+    hitsdir    = ajAcdGetDirectory("hitsdir");
+    aligndir   = ajAcdGetDirectory("aligndir"); 
+    resultsdir = ajAcdGetDirectory("resultsdir"); 
     mode        = ajAcdGetList("mode");
 
 
@@ -296,13 +285,16 @@ int main(int argc, char **argv)
 	    ajFatal("Bad args to sigscanlig_SignatureAlignWriteBlock"); */
 
 
-	/* Sort list of hits by ligand type.  Process list of ligands and print out. */
+	/* Sort list of hits by ligand type and site number.  Process list of ligands and print out. */
 	ajListSort2(hits, embMatchLigid, embMatchSN);
 
+
+	iter = ajListIter(hits);
+
 	if(modei==1)
-	    ligands = sigscanlig_score_ligands_patch(hits, domax, maxhits);
+	    ligands = sigscanlig_score_ligands_patch(hits);
 	else if(modei==2)
-	    ligands = sigscanlig_score_ligands_site(hits, domax, maxhits);
+	    ligands = sigscanlig_score_ligands_site(hits);
 	else 
 	    ajFatal("Unrecognised mode");
 	
@@ -831,20 +823,15 @@ AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList hits, ajint n, AjBool DOSE
 
 /* @funcstatic sigscanlig_score_ligands_patch *********************************
 **
-** Write a Hit from a Hitlist object to an output file in embl-like format
-** (see documentation for the DOMAINATRIX "seqsearch" application).
-** Text for Class, Fold, Superfamily and Family is only written if the text
-** is available.
+** Writes score data for ligands (Lighit objects) from individual hits to 
+** signatures (Hit objects).  Patch score method is used. 
 ** 
 ** @param [r] hits    [const AjPList] List of hit objects.
-** @param [r] MAXHITS [AjBool] Whether a max. number of top-scoring hits applies.
-** @param [r] maxhits [ajint] Max. number of top-scoring hits that are considered
-** for each ligand.
 ** @return [AjBool] True on success
 ** @@
 ******************************************************************************/
 
-AjPList sigscanlig_score_ligands_patch(AjPList hits, AjBool DOMAX, ajint maxhits)
+AjPList sigscanlig_score_ligands_patch(AjPList hits)
 { 
     AjPList ret         = NULL;
     AjIList iter        = NULL;   /* Iterator. */
@@ -852,93 +839,76 @@ AjPList sigscanlig_score_ligands_patch(AjPList hits, AjBool DOMAX, ajint maxhits
     AjPStr  prev_ligand = NULL;
     AjPLighit lighit    = NULL;
     float  score        = 0.0;
-    ajint  hit_cnt      = 0;      /* No. of hits for the current ligand. */
-    AjPInt snarr        = NULL;
-    ajint  snarr_siz    = 0;
+    ajint  nhits      = 0;      /* No. of hits (patches) for current ligand. */
+    ajint  nsites     = 0;      /* No. of sites for current ligand. */
     ajint  x = 0;
     AjBool ok = ajTrue;
-    
+    ajint  prevsn      = -1;        /* Previous site number */    
 
     
 
     ret = ajListNew();
     prev_ligand = ajStrNew();
-    snarr=ajIntNew();
-  
+
     iter = ajListIter(hits);
 
     while((hit = (AjPHit) ajListIterNext(iter)))
     {
-	if((!ajStrMatch(hit->Sig->Ligid, prev_ligand)) || 
-	   (DOMAX && ((hit_cnt+1) == maxhits)))
+	/* New ligand */
+	if((!ajStrMatch(hit->Sig->Ligid, prev_ligand)))
 	{
-	    if(hit_cnt)
-		score /= hit_cnt;
+	    if(nhits)
+		score /= nhits;
 	    
 	    if(lighit)
 	    {
-		lighit->ns = snarr_siz;
+		lighit->ns = nsites; 
+		lighit->np = nhits; 
 		lighit->score =  score;
 		ajStrAssS(&lighit->ligid, prev_ligand);
 		ajListPushApp(ret, lighit);
 
-		ajIntDel(&snarr);
-		snarr=ajIntNew();
-		snarr_siz = 0;
 	    }
 	    
 	    
-	    /* Disregard remaining hits for this ligand */
-	    if( DOMAX && ((hit_cnt+1) == maxhits))
-		while((hit = (AjPHit) ajListIterNext(iter)))
-		    if((!ajStrMatch(hit->Sig->Ligid, prev_ligand)))
-			break;
-
 	    lighit = sigscanlig_LighitNew();
 
-	    hit_cnt=0;
+	    nsites = 0;
+	    nhits=0;
+	    prevsn = -1;
 	    score = 0;
 	}
 	
-	for(ok=ajTrue, x=0; x<snarr_siz; x++)
-	    if(hit->Sig->sn == ajIntGet(snarr, x))
-	    {
-		ok=ajFalse;
-		break;
-	    }
-	if(ok)
-	{
-	    ajIntPut(&snarr, snarr_siz, hit->Sig->sn);
-	    snarr_siz++;
-	}
 	
-	
-
-	hit_cnt++;
+	/* Increment count of sites and hits/patches (for current ligand) and patches (for current site) */
+	if(hit->Sig->sn != prevsn)
+	    nsites++;
 	score+= hit->Score;
+	
+	nhits++;
+
 	ajStrAssS(&prev_ligand, hit->Sig->Ligid);
+	prevsn = hit->Sig->sn;
     }
     
     /* Process last hit */
-    if(hit_cnt)
-	score /= hit_cnt;
+    if(nhits)
+	score /= nhits;
 	    
     if(lighit)
     {
-	lighit->ns = snarr_siz;
+	lighit->ns = nsites;
+	lighit->np = nhits; 
 	lighit->score = score;
 	ajStrAssS(&lighit->ligid, prev_ligand);
 	ajListPushApp(ret, lighit);
     }
 	
-
     ajListSort(ret, sigscanlig_MatchinvScore);
     
 
     ajListIterFree(&iter);
     ajStrDel(&prev_ligand);
-    ajIntDel(&snarr);
-    
 
     return ret;
 }
@@ -950,122 +920,111 @@ AjPList sigscanlig_score_ligands_patch(AjPList hits, AjBool DOMAX, ajint maxhits
 
 /* @funcstatic sigscanlig_score_ligands_site *********************************
 **
-** Write a Hit from a Hitlist object to an output file in embl-like format
-** (see documentation for the DOMAINATRIX "seqsearch" application).
-** Text for Class, Fold, Superfamily and Family is only written if the text
-** is available.
+** Writes score data for ligands (Lighit objects) from individual hits to 
+** signatures (Hit objects).  Site score method is used. List of hit objects
+** must be sorted by ligand type and site number.
 ** 
 ** @param [r] hits    [const AjPList] List of hit objects.
-** @param [r] MAXHITS [AjBool] Whether a max. number of top-scoring hits applies.
-** @param [r] maxhits [ajint] Max. number of top-scoring hits that are considered
-** for each ligand.
 ** @return [AjBool] True on success
 ** @@
 ******************************************************************************/
+AjPList sigscanlig_score_ligands_site(AjPList hits)
 
-AjPList sigscanlig_score_ligands_site(AjPList hits, AjBool DOMAX, ajint maxhits)
 { 
     AjPList ret         = NULL;
     AjIList iter        = NULL;   /* Iterator. */
     AjPHit  hit         = NULL;   
     AjPStr  prev_ligand = NULL;
     AjPLighit lighit    = NULL;
-    float  score_site   = 0.0;    /* Score for this site. */
-    float  score        = 0.0;    /* Overall score */
-    ajint  hit_cnt      = 0;      /* No. of hits for the current ligand. */
-    ajint  patch_cnt    = 0;
-    
-
-
-    AjPInt snarr        = NULL;
-    ajint  snarr_siz    = 0;
     ajint  x = 0;
     AjBool ok = ajTrue;
-    
     ajint  prevsn      = -1;        /* Previous site number */
-    ajint  site_cnt    = 0;    
+
+
+    float  score        = 0.0;    /* Score for current ligand */
+    ajint  nhits        = 0;      /* No. of hits (patches) for current ligand. */
+    ajint  nsites       = 0;      /* No. of sites for current ligand */
+
+    float  score_site   = 0.0;    /* Score for this site. */
+    ajint  patch_cnt    = 0;      /* No. of patches in current site. */
     
     
 
     ret = ajListNew();
     prev_ligand = ajStrNew();
-    snarr=ajIntNew();
   
     iter = ajListIter(hits);
 
+
+    /* Hits are already sorted by ligid & site number */
     while((hit = (AjPHit) ajListIterNext(iter)))
     {
+	/* ajFmtPrint("Current hit: %S (ligid: %S, sn: %d) score: %f\n", 
+		   hit->Acc, hit->Sig->Ligid, hit->Sig->sn, hit->Score); */
+	
+	/* New site */
 	if(hit->Sig->sn != prevsn)
 	{
 	    if(patch_cnt)
 		score_site /= patch_cnt;
 	    score += score_site;
-	    patch_cnt = 0;
+
+	    patch_cnt  = 0;
 	    score_site = 0;
 	}
 
-	if((!ajStrMatch(hit->Sig->Ligid, prev_ligand)) || 
-	   (DOMAX && ((hit_cnt+1) == maxhits)))
+	/* New ligand */
+	if((!ajStrMatch(hit->Sig->Ligid, prev_ligand)))
 	{
-	    if(site_cnt)
-		score /= site_cnt;
+	    if(nsites)
+		score /= nsites;
 	    
 	    if(lighit)
 	    {
-		lighit->ns = snarr_siz;
+		/* lighit->ns = snarr_siz; */
+		lighit->ns = nsites;
+		lighit->np = nhits; 
 		lighit->score =  score;
+
 		ajStrAssS(&lighit->ligid, prev_ligand);
 		ajListPushApp(ret, lighit);
 
-		ajIntDel(&snarr);
-		snarr=ajIntNew();
-		snarr_siz = 0;
-		site_cnt = 0;
-		prevsn = -1;
 	    }
 	    
-	    
-	    /* Disregard remaining hits for this ligand */
-	    if( DOMAX && ((hit_cnt+1) == maxhits))
-		while((hit = (AjPHit) ajListIterNext(iter)))
-		    if((!ajStrMatch(hit->Sig->Ligid, prev_ligand)))
-			break;
-
 	    lighit = sigscanlig_LighitNew();
 
-	    hit_cnt=0;
+	    nsites = 0;
+	    nhits=0;
+	    prevsn = -1;
 	    score = 0;
 	}
+
 	
-	for(ok=ajTrue, x=0; x<snarr_siz; x++)
-	    if(hit->Sig->sn == ajIntGet(snarr, x))
-	    {
-		ok=ajFalse;
-		break;
-	    }
-	if(ok)
-	{
-	    ajIntPut(&snarr, snarr_siz, hit->Sig->sn);
-	    snarr_siz++;
-	}
-	
+	/* Increment count of sites and hits/patches (for current ligand) and patches (for current site) */
 	if(hit->Sig->sn != prevsn)
-	    site_cnt++;
-	
-	hit_cnt++;
-	patch_cnt++;
+	    nsites++;
 	score_site += hit->Score;
+
+	nhits++;
+	patch_cnt++;
+	
 	ajStrAssS(&prev_ligand, hit->Sig->Ligid);
 	prevsn = hit->Sig->sn;
     }
     
     /* Process last hit */
-    if(hit_cnt)
-	score /= hit_cnt;
+    if(patch_cnt)
+	score_site /= patch_cnt;
+    score += score_site;
+    
+    if(nsites)
+	score /= nsites;
 	    
     if(lighit)
     {
-	lighit->ns = snarr_siz;
+	/* lighit->ns = snarr_siz; */
+	lighit->ns = nsites;
+	lighit->np = nhits; 
 	lighit->score = score;
 	ajStrAssS(&lighit->ligid, prev_ligand);
 	ajListPushApp(ret, lighit);
@@ -1077,8 +1036,6 @@ AjPList sigscanlig_score_ligands_site(AjPList hits, AjBool DOMAX, ajint maxhits)
 
     ajListIterFree(&iter);
     ajStrDel(&prev_ligand);
-    ajIntDel(&snarr);
-    
 
     return ret;
 }

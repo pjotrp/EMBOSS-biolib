@@ -35,7 +35,7 @@ float        CalcScoringMatrix(AjPFile calclogf, AjPInt2d CountMat,
 
 
 #define NUMAA   24   /* Length of AACODES string below */
-#define MAXENV  24   /* Max. number of environment that can be returned by an ajAtomEnvXXX function */  /* Jon */
+#define MAXENV  24   /* Max. number of environment that can be returned by an ajResEnvXXX function */  /* Jon */
 ajint   NUMENV  =0;
 
 char AACODES[]="ARNDCQEGHILKMFPSTWYVBZX*";
@@ -86,7 +86,7 @@ int main(ajint argc, char **argv)
     
     AjPInt    sites_arr;                /* Array of residue index numbers of ligand-
 					   contact residues.                        */
-    ajint     nsites = 0;               /* Size of sites_arr.                       */
+    ajint     nsites;                   /* Size of sites_arr.                       */
     
 
     AjIList   ScopIter=NULL;		/* Iterator for list_allscop.               */
@@ -108,16 +108,16 @@ int main(ajint argc, char **argv)
     ajint     opened=0;			/* Number of coordinate files opened.       */
     ajint     notopened=0;		/* Number of files not opened.              */
     
-    AjIList   AtmIter=NULL;		/* Iterator for atoms in current CpdbStride 
+    AjIList   ResIter=NULL;		/* Iterator for residues in current CpdbStride 
 					   object.                                  */
-    AjPAtom   atom=NULL;		/* Pointer to current Atom object in list 
+    AjPResidue res=NULL;		/* Pointer to current Residue object in list 
 					   iterator.                                */
     
     char      SEnv='\0';		/* Char to hold 3 state secondary structure 
 					   assignment.                              */
     AjPStr    OEnv=NULL;		/* Char to hold overall environment class - 
 					   one of 18 characters.                    */
-    ajint     PrevRes=0;		/* Prev residue Identity - this is the 
+/*    ajint     PrevRes=0; */		/* Prev residue Identity - this is the 
 					   domain numbering of the residue.         */
     
     
@@ -306,7 +306,7 @@ int main(ajint argc, char **argv)
 	
 
 
-	if(!(Pdb = ajPdbReadNew(DCorFptr)))
+	if(!(Pdb = ajPdbReadFirstModelNew(DCorFptr)))
 	{
 	    ajFmtPrintS(&msg, "Error reading coordinate file");
 	    ajFmtPrintF(logf, "WARN\tError reading coordinate file\n");
@@ -339,19 +339,22 @@ int main(ajint argc, char **argv)
 		
 
       
-	/*Initialise iterator for domain atoms*/
-	AtmIter=ajListIter(Pdb->Chains[0]->Atoms);
-	while((atom=(AjPAtom)ajListIterNext(AtmIter)))
+	/*Initialise iterator for domain residues*/
+	ResIter=ajListIter(Pdb->Chains[0]->Residues);
+	while((res=(AjPResidue)ajListIterNext(ResIter)))
 	{
 	    /*Skip to next atom if residue number same*/
+	    /*
 	    if(PrevRes == atom->Idx) 
 		continue;
+		*/
+
 
 	    /* 2: Select ligands within a CON file */
 	    if(modeli == 2)
 	    {
 		for(done=ajFalse, y=0; y<nsites; y++)
-		    if(atom->Idx == ajIntGet(sites_arr, y))
+		    if(res->Idx == ajIntGet(sites_arr, y))
 		    {
 			done = ajTrue;
 			break;
@@ -364,58 +367,58 @@ int main(ajint argc, char **argv)
 	    
 
 	    /*Call to function that assigns the secondary structure environment class*/
-	    if((!ajAtomSSEnv(atom, &SEnv, logf)))
+	    if((!ajResidueSSEnv(res, &SEnv, logf)))
 	    {
-		ajFmtPrintF(logf, "SEnv unassigned for residue %d\n", atom->Idx);
-		PrevRes = atom->Idx;
+		ajFmtPrintF(logf, "SEnv unassigned for residue %d\n", res->Idx);
+		/* PrevRes = res->Idx; */
 		continue;
 	    }
 	    
 	    
 	    /*Call to function that assigns the overall environment class*/
 	    if(modeei == 1)
-		NUMENV = ajAtomEnv1(atom, SEnv, &OEnv, logf);
+		NUMENV = ajResidueEnv1(res, SEnv, &OEnv, logf);
 	    else if(modeei == 2)
-		NUMENV = ajAtomEnv2(atom, SEnv, &OEnv, logf);
+		NUMENV = ajResidueEnv2(res, SEnv, &OEnv, logf);
 	    else if(modeei == 3)
-		NUMENV = ajAtomEnv3(atom, SEnv, &OEnv, logf);
+		NUMENV = ajResidueEnv3(res, SEnv, &OEnv, logf);
 	    else if(modeei == 4)
-		NUMENV = ajAtomEnv4(atom, SEnv, &OEnv, logf);
+		NUMENV = ajResidueEnv4(res, SEnv, &OEnv, logf);
 	    else if(modeei == 5)
-		NUMENV = ajAtomEnv5(atom, SEnv, &OEnv, logf);
+		NUMENV = ajResidueEnv5(res, SEnv, &OEnv, logf);
 	    else if(modeei == 6)
-		NUMENV = ajAtomEnv6(atom, SEnv, &OEnv, logf);
+		NUMENV = ajResidueEnv6(res, SEnv, &OEnv, logf);
 	    else if(modeei == 7)
-		NUMENV = ajAtomEnv7(atom, SEnv, &OEnv, logf);
+		NUMENV = ajResidueEnv7(res, SEnv, &OEnv, logf);
 	    else if(modeei == 8)
-		NUMENV = ajAtomEnv8(atom, SEnv, &OEnv, logf);
+		NUMENV = ajResidueEnv8(res, SEnv, &OEnv, logf);
 	    else if(modeei == 9)
-		NUMENV = ajAtomEnv9(atom, SEnv, &OEnv, logf);
+		NUMENV = ajResidueEnv9(res, SEnv, &OEnv, logf);
 	    else if(modeei == 10)
-		NUMENV = ajAtomEnv10(atom, SEnv, &OEnv, logf);
+		NUMENV = ajResidueEnv10(res, SEnv, &OEnv, logf);
 	    else if(modeei == 11)
-		NUMENV = ajAtomEnv11(atom, SEnv, &OEnv, logf);
+		NUMENV = ajResidueEnv11(res, SEnv, &OEnv, logf);
 	    else if(modeei == 12)
-		NUMENV = ajAtomEnv12(atom, SEnv, &OEnv, logf);
+		NUMENV = ajResidueEnv12(res, SEnv, &OEnv, logf);
 	    else if(modeei == 13)
-		NUMENV = ajAtomEnv13(atom, SEnv, &OEnv, logf);
+		NUMENV = ajResidueEnv13(res, SEnv, &OEnv, logf);
 	    else if(modeei == 14)
-		NUMENV = ajAtomEnv14(atom, SEnv, &OEnv, logf);
+		NUMENV = ajResidueEnv14(res, SEnv, &OEnv, logf);
 	    else if(modeei == 15)
-		NUMENV = ajAtomEnv15(atom, SEnv, &OEnv, logf);
+		NUMENV = ajResidueEnv15(res, SEnv, &OEnv, logf);
 	    else if(modeei == 16)
-		NUMENV = ajAtomEnv16(atom, SEnv, &OEnv, logf);
+		NUMENV = ajResidueEnv16(res, SEnv, &OEnv, logf);
 
 
 	    /*Skip if the overall environment cannot be assigned*/
 	    if( (!MAJSTRLEN(OEnv)))
 	    {
-		ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
-		PrevRes = atom->Idx;
+		ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
+		/* PrevRes = res->Idx; */
 		continue;
 	    }
 
-	    ajFmtPrintF(logf, "\tOEnv %S:%c\n", OEnv, atom->Id1);
+	    ajFmtPrintF(logf, "\tOEnv %S:%c\n", OEnv, res->Id1);
 
 	    /*Get idices into 2d matrix*/
 	    if(MAJSTRLEN(OEnv) == 1)
@@ -427,16 +430,16 @@ int main(ajint argc, char **argv)
 		ajFatal("Matrix label too big in matgen3d");
 	    
 	   /* i=OEnv-'A'; */		/*Index Env*/     
-	    j=atom->Id1 - 'A';		/*Index Residue*/
-	    /* ajFmtPrint( "%c-%d i: %d j: %d\n", atom->Id1, atom->Idx, i, j); */
+	    j=res->Id1 - 'A';		/*Index Residue*/
+	    /* ajFmtPrint( "%c-%d i: %d j: %d\n", res->Id1, res->Idx, i, j); */
 	    /*Increment and load counter in matrix*/
 	    count = ajInt2dGet(CountMatrix, i, j);
 	    ajInt2dPut(&CountMatrix, i, j, ++count);
 	  
-	    PrevRes=atom->Idx;
+	    /* PrevRes=res->Idx; */
 	}
        		   
-	ajListIterFree(&AtmIter);
+	ajListIterFree(&ResIter);
 	ajPdbDel(&Pdb);
 	ajFileClose(&DCorFptr);
 	ajStrDel(&IdName);
@@ -448,7 +451,7 @@ int main(ajint argc, char **argv)
   
     /*Print matrix with raw counts*/
     ajFmtPrintF(SCMatrixOut, "# 3D-1D Scoring matrix created by matgen3d\n");
-    ajFmtPrintF(SCMatrixOut, "# ajAtomEnv%d\n", modeei);
+    ajFmtPrintF(SCMatrixOut, "# ajResidueEnv%d\n", modeei);
     ajFmtPrintF(SCMatrixOut, "# Total SCOP entries: %d\n", IDNum);
     ajFmtPrintF(SCMatrixOut, "# No. of files opened: %d\n", opened);
     ajFmtPrintF(SCMatrixOut, "# No. of files not opened: %d\n", notopened);
