@@ -18360,9 +18360,88 @@ FP 0 /Error: /
 FP 0 /Died: /
 //
 
-#######################################
-# DOMAINATRIX
-#######################################
+#########################################################
+# DOMAINATRIX etc.
+# DOMAINATRIX, DOMALIGN, DOMSEARCH, STRUCTURE, SIGNATURE
+#########################################################
+
+ID pdbparse-keep
+AB structure
+DL keep
+AA pdbparse
+IN ../../data/structure
+IN
+IN Y
+IN
+IN
+IN
+FI stdout
+FC = 2
+FP 2 /^Processing /
+FI stderr
+FC = 2
+FP 0 /^Warning:/
+FP 0 /^Error:/
+FP 0 /^Died:/
+FI pdbparse.log
+FC = 15
+FP 2 /^SEQRESLENDIF/
+FP 2 /^SECSTART       1 1 ILE 384\n/
+FP 3 /^SECBOTH/
+FP /^SECBOTH        1 1 VAL 78 ILE 81\n/
+FI 1cs4.ccf
+FC = 537
+FZ = 51353
+FP 475 /^AT /
+FI 1ii7.ccf
+FC = 462
+FZ = 44215
+FP 402 /^AT /
+//
+
+ID domainer-keep
+AB structure
+DL keep
+AA domainer
+IN ../../data/structure/all.scop
+IN ../pdbparse-keep/
+IN
+IN
+IN 1
+IN domainer_embl.log
+IN domainer_pdb.log
+FI stderr
+FC = 5
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 2
+FP /^D1CS4A_\n/
+FP /^D1II7A_\n/
+FI domainer_embl.log
+FZ = 0
+FI domainer_pdb.log
+FZ = 0
+FI d1cs4a_.ent
+FZ = 29889
+FC = 369
+FP /^ATOM\s+31\s+CA\s+PHE\s+A\s\d+\s+60.914 -11.143  59.200  1.00 58.07\s+C\s+\n/
+FI d1cs4a_.ccf
+FZ = 40509
+FC = 418
+FP /SQ   SEQUENCE    52 AA;   5817 MW;  47362A43 CRC32;\n/
+FP /RE +1 +1 +3 +397 +I +ILE( +[.])+( +[-]?[0-9]+[.][0-9]+)+/
+FI d1ii7a_.ent
+FZ = 29727
+FC = 367
+FP /ATOM      1  N   ASP A   8       7.977  32.254  19.055  1.00 26.65           N  /
+FI d1ii7a_.ccf
+FZ = 39748
+FC = 413
+FP /SQ   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;/
+FP /RE +1 +1 +8 +8 +D +ASP( +[.])+( +[-]?[0-9]+[.][0-9]+)+/
+//
 
 ID allversusall-ex
 AB domalign
@@ -18603,49 +18682,6 @@ FZ = 809
 FP 2 /^ID/
 //
 
-ID domainer-ex
-AB structure
-AA domainer
-IN ../../data/structure/all.scop
-IN ../../data/structure/
-IN
-IN
-IN 1
-IN domainer_embl.log
-IN domainer_pdb.log
-FI stderr
-FC = 5
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FC = 2
-FP /^D1CS4A_\n/
-FP /^D1II7A_\n/
-FI domainer_embl.log
-FZ = 0
-FI domainer_pdb.log
-FZ = 0
-FI d1cs4a_.ent
-FZ = 29889
-FC = 369
-FP /^ATOM\s+31\s+CA\s+PHE\s+A\s\d+\s+60.914 -11.143  59.200  1.00 58.07\s+C\s+\n/
-FI d1cs4a_.ccf
-FZ = 82219
-FC = 372
-FP /SQ   SEQUENCE    52 AA;   5817 MW;  47362A43 CRC32;\n/
-FP /CO +1 +1 +[.] +P +3 +397( +[.])+ +I +ILE +CD1( +[-]?[0-9]+[.][0-9]+)+/
-FI d1ii7a_.ent
-FZ = 29727
-FC = 367
-FP /ATOM      1  N   ASP A   8       7.977  32.254  19.055  1.00 26.65           N  /
-FI d1ii7a_.ccf
-FZ = 81548
-FC = 370
-FP /SQ   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;/
-FP /CO   1    1    .    P    8     8( +[.])+ +D    ASP    OD2( +[-]?[0-9]+[.][0-9]+)+/
-//
-
 ID domainreso-ex
 AB domainatrix
 AA domainreso
@@ -18771,39 +18807,6 @@ FC = 2
 FP 0 /^Warning:/
 FP 0 /^Error:/
 FP 0 /^Died:/
-//
-
-ID pdbparse-ex
-AB structure
-AA pdbparse
-IN ../../data/structure
-IN
-IN Y
-IN
-IN
-IN
-FI stdout
-FC = 2
-FP 2 /^Processing /
-FI stderr
-FC = 2
-FP 0 /^Warning:/
-FP 0 /^Error:/
-FP 0 /^Died:/
-FI pdbparse.log
-FC = 15
-FP 2 /^SEQRESLENDIF/
-FP 2 /^SECSTART       1 1 ILE 384\n/
-FP 3 /^SECBOTH/
-FP /^SECBOTH        1 1 VAL 78 ILE 81\n/
-FI 1cs4.ccf
-FC = 537
-FZ = 51353
-FP 475 /^AT /
-FI 1ii7.ccf
-FC = 462
-FZ = 44215
-FP 402 /^AT /
 //
 
 ID pdbplus-ex
