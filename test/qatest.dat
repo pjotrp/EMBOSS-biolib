@@ -2483,7 +2483,6 @@ IN
 IN
 IN
 IN
-IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -2506,7 +2505,6 @@ FP /^%%Title: PLplot Graph/
 ID cpgplot-old
 AP cpgplot
 CL tembl:rnu68037 -graph data
-IN
 IN
 IN
 IN
@@ -18219,7 +18217,7 @@ FP 0 /Died: /
 #######################################
 
 ID alignrunner-ex
-AB construct
+AB reconstruct
 AA alignrunner
 CC Error messages to be resolved
 IN ../../data/construct/
@@ -18245,7 +18243,7 @@ FP 0 /Died: /
 //
 
 ID contactalign-ex
-AB construct
+AB reconstruct
 AA contactalign
 CC warnings in stderr
 IN ../../data/construct/1hgx_a.fasta
@@ -18264,7 +18262,7 @@ FP 200 /^current position:/
 //
 
 ID contactcount-ex
-AB construct
+AB reconstruct
 AA contactcount
 CC Construct test not yet defined
 FI stderr
@@ -18275,7 +18273,7 @@ FP 0 /Died: /
 //
 
 ID degapseqrunner-ex
-AB construct
+AB reconstruct
 AA degapseqrunner
 CC Construct test not yet defined
 FI stderr
@@ -18286,7 +18284,7 @@ FP 0 /Died: /
 //
 
 ID nawalign-ex
-AB construct
+AB reconstruct
 AA nawalign
 CC Construct test not yet defined
 FI stderr
@@ -18297,7 +18295,7 @@ FP 0 /Died: /
 //
 
 ID nawalignrunner-ex
-AB construct
+AB reconstruct
 AA nawalignrunner
 CC Construct test not yet defined
 FI stderr
@@ -18308,7 +18306,7 @@ FP 0 /Died: /
 //
 
 ID needlerunner-ex
-AB construct
+AB reconstruct
 AA needlerunner
 CC Construct test not yet defined
 FI stderr
@@ -18319,7 +18317,7 @@ FP 0 /Died: /
 //
 
 ID scorer-ex
-AB construct
+AB reconstruct
 AA scorer
 CC Construct test not yet defined
 FI stderr
@@ -18330,7 +18328,7 @@ FP 0 /Died: /
 //
 
 ID scorerrunner-ex
-AB construct
+AB reconstruct
 AA scorerrunner
 CC Construct test not yet defined
 FI stderr
@@ -18341,7 +18339,7 @@ FP 0 /Died: /
 //
 
 ID substitute-ex
-AB construct
+AB reconstruct
 AA substitute
 CC Construct test not yet defined
 FI stderr
@@ -18352,7 +18350,7 @@ FP 0 /Died: /
 //
 
 ID substituterunner-ex
-AB construct
+AB reconstruct
 AA substituterunner
 CC Construct test not yet defined
 FI stderr
@@ -18686,8 +18684,8 @@ FP 0 /^Warning:/
 FP 0 /^Error:/
 FP 0 /^Died:/
 FI domainsse.out
-FC = 65
-FZ = 1229
+FC = 52
+FZ = 809
 FP 2 /^ID   /
 FI DOMAINSSE.log
 FZ = 0
@@ -18799,13 +18797,13 @@ FP 2 /^SECSTART       1 1 ILE 384\n/
 FP 3 /^SECBOTH/
 FP /^SECBOTH        1 1 VAL 78 ILE 81\n/
 FI 1cs4.ccf
-FC = 491
-FZ = 109604
-FP 475 /^CO /
+FC = 537
+FZ = 51353
+FP 475 /^AT /
 FI 1ii7.ccf
-FC = 419
-FZ = 92826
-FP 402 /^CO /
+FC = 462
+FZ = 44215
+FP 402 /^AT /
 //
 
 ID pdbplus-ex
