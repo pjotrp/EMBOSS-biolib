@@ -56,13 +56,13 @@ extern "C"
 ** @attr  Mod     [ajint]  Model number.
 ** @attr  Chn     [ajint]  Chain number. 
 ** @attr  Gpn     [ajint]  Group number. 
-** @attr  Type    [char]   'P' (protein atom), 'H' ("heterogens") or 'W' 
-**        (water).
 ** @attr  Idx     [ajint]  Residue number - index into sequence.
 ** @attr  Pdb     [AjPStr] Residue number string from the original PDB file.
 ** @attr  Id1     [char]   Standard residue identifier or 'X' for unknown 
 **        types or '.' for heterogens and water. 
 ** @attr  Id3     [AjPStr] Residue or group identifier. 
+** @attr  Type    [char]   'P' (protein atom), 'H' ("heterogens") or 'W' 
+**        (water).
 ** @attr  Atm     [AjPStr] Atom identifier. 
 ** @attr  X       [float]  X coordinate. 
 ** @attr  Y       [float]  Y coordinate. 
@@ -103,28 +103,6 @@ typedef struct AjSAtom
     float   Z;     
     float   O;     
     float   B;     
-/*    float   Phi;         */
-/*    float   Psi;         */
-/*    float   Area;        */
-
-/*    ajint   eNum;        */
-/*    AjPStr  eId;         */
-/*    char    eType;       */
-/*    ajint   eClass;      */
- 
-/*    ajint   eStrideNum;  */
-/*    char    eStrideType; */
-
-/*    float   all_abs;     */
-/*    float   all_rel;     */
-/*    float   side_abs;    */
-/*    float   side_rel;    */
-/*    float   main_abs;    */
-/*    float   main_rel;    */
-/*    float   npol_abs;    */
-/*    float   npol_rel;    */
-/*    float   pol_abs;     */
-/*    float   pol_rel;     */
 } AjOAtom;
 #define AjPAtom AjOAtom*
 
@@ -134,7 +112,7 @@ typedef struct AjSAtom
 
 
 
-/* @data AjPResidue ************************************************************
+/* @data AjPResidue ***********************************************************
 **
 ** Ajax Residue object.
 ** 
@@ -152,13 +130,9 @@ typedef struct AjSAtom
 **    polypeptide sequence (the Seq element of an AjSChain object). Idx numbers
 **    start at 1 and run sequentially.
 ** @attr Pdb [AjPStr]	Residue number string from the original PDB file.
-** @attr Id1 [char] 	Standard 1-letter residue identifier or 'X' for unknown 
-**                      types.
+** @attr Id1 [char] 	Standard 1-letter residue identifier or 'X' for
+**                       unknown types.
 ** @attr Id3 [AjPStr]	3-letter residue identifier code.
-** @attr  Phi     [float]  Phi angle. 
-** @attr  Psi     [float]  Psi angle. 
-** @attr  Area    [float]  Residue solvent accessible area. 
-**  
 ** @attr  eNum    [ajint]  Element serial number (for secondary structure 
 **        from the PDB file).
 ** @attr  eId     [AjPStr] Element identifier (for secondary structure from 
@@ -176,6 +150,10 @@ typedef struct AjSAtom
 **       ('G'), PI-HELIX ('I'), EXTENDED CONFORMATION ('E'), ISOLATED BRIDGE 
 **       ('B' or 'b'), TURN ('T') or COIL (none of the above) ('C') (for 
 **       secondary structure from STRIDE).
+** @attr  Phi     [float]  Phi angle. 
+** @attr  Psi     [float]  Psi angle. 
+** @attr  Area    [float]  Residue solvent accessible area. 
+**  
 ** @attr  all_abs   [float]  Absolute accessibility, all atoms. 
 ** @attr  all_rel   [float]  Relative accessibility, all atoms. 
 ** @attr  side_abs  [float]  Absolute accessibility, atoms in sidechain. 
@@ -206,22 +184,22 @@ typedef struct AjSAtom
 **  secondary structure.
 ** @use ajResidueEnv8 Assigns environment based on side chain accessibility and
 **  secondary structure.
-** @use ajResidueEnv9 Assigns environment based on side chain accessibility and
-**  secondary structure.
-** @use ajResidueEnv10 Assigns environment based on side chain accessibility and
-**  secondary structure.
-** @use ajResidueEnv11 Assigns environment based on side chain accessibility and
-**  secondary structure.
-** @use ajResidueEnv12 Assigns environment based on side chain accessibility and
-**  secondary structure.
-** @use ajResidueEnv13 Assigns environment based on side chain accessibility and
-**  secondary structure.
-** @use ajResidueEnv14 Assigns environment based on side chain accessibility and
-**  secondary structure.
-** @use ajResidueEnv15 Assigns environment based on side chain accessibility and
-**  secondary structure.
-** @use ajResidueEnv16 Assigns environment based on side chain accessibility and
-**  secondary structure.
+** @use ajResidueEnv9 Assigns environment based on side chain accessibility
+**  and secondary structure.
+** @use ajResidueEnv10 Assigns environment based on side chain accessibility 
+** and secondary structure.
+** @use ajResidueEnv11 Assigns environment based on side chain accessibility
+**  and secondary structure.
+** @use ajResidueEnv12 Assigns environment based on side chain accessibility
+**  and secondary structure.
+** @use ajResidueEnv13 Assigns environment based on side chain accessibility
+**  and secondary structure.
+** @use ajResidueEnv14 Assigns environment based on side chain accessibility
+**  and secondary structure.
+** @use ajResidueEnv15 Assigns environment based on side chain accessibility
+**  and secondary structure.
+** @use ajResidueEnv16 Assigns environment based on side chain accessibility
+**  and secondary structure.
 ** @use ajResidueSSEnv  Assigns secondary structure environment of a residue.
 ** @@
 ******************************************************************************/
@@ -229,7 +207,6 @@ typedef struct AjSResidue
 {
     ajint    Mod;
     ajint    Chn;
-    /*    ajint    Gpn;    */
     ajint    Idx;
     AjPStr   Pdb;
     char     Id1;

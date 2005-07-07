@@ -1156,9 +1156,9 @@ AjPPdb ajPdbReadAllModelsNew(AjPFile inf)
 ** model only is read in.
 **
 ** @param [u] inf  [AjPFile] Pointer to clean coordinate file
+** @param [r] mode [ajint] Mode. 0==Read first model only. 1==Read all models.
 **
 ** @return [AjPPdb] Pointer to Pdb object.
-** @return [ajint] Mode. 0==Read first model only. 1==Read all models.
 ** @category new [AjPPdb] Pdb constructor from reading ccf format file
 **                         (retrive data for 1st model only).
 ** @@
