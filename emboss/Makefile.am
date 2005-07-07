@@ -14,7 +14,6 @@ endif
 
 check_PROGRAMS = acdlog ajtest \
 complex corbatest \
-dbxfasta dbxflat dbxgcg \
 demoalign demofeatures demolist demoreport \
 demosequence demostring demotable \
 entrails giep histogramtest intconv \
@@ -35,6 +34,7 @@ cirdna codcmp codcopy coderet \
 compseq cons cpgplot cpgreport \
 cusp cutgextract cutseq \
 dan dbiblast dbifasta dbiflat dbigcg \
+dbxfasta dbxflat dbxgcg \
 degapseq descseq diffseq digest distmat \
 dotmatcher dotpath dottup dreg \
 einverted embossdata embossversion emma \
