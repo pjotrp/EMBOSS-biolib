@@ -2,7 +2,7 @@
 
 EXTRA_DIST = Makefile.am
 
-bin_PROGRAMS = myseq
+bin_PROGRAMS = myseq mytest
 
 if LOCALLINK
 INCLUDES = -I../include -I../../../nucleus -I../../../ajax -I../../../plplot
@@ -25,6 +25,7 @@ endif
 
 
 myseq_SOURCES = myseq.c
+mytest_SOURCES = mytest.c
 
 
 

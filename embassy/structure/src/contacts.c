@@ -252,7 +252,6 @@ int main(ajint argc, char **argv)
 	    ajFmtPrintF(logf, "ERROR  file write error %S\n", con_name);
 
 	    ajFmtPrintS(&temp, "rm %S", con_name);
-	    ajFmtPrint("%S", temp);
 	    ajSystem(temp);
 
 	    ajFileClose(&cpdb_inf);

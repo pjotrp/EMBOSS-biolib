@@ -19,7 +19,7 @@ list: mode  [
   values: "1: All amino acid positions for domains in a DCF file,2: Ligand-binding positions."
   delimiter: ","
   codedelimiter: ":"
-  header: "Choose ."
+  header: "DCF file amino acid positions "
   information: "This option specifies the amino acid residue positions to use
                 in calculating the substitution data."
 ]
@@ -33,7 +33,7 @@ list: model  [
   values: "1: All ligands within a CON file,2: Select ligands within a CON file."
   delimiter: ","
   codedelimiter: ":"
-  header: "Choose ."
+  header: "CON file ligands"
   information: "This option specifies whether to use all ligands or a specific set
 	        of ligands present in a CON file when calculating the substitution data."
 ]

@@ -50,97 +50,98 @@ char AACODES[]="ARNDCQEGHILKMFPSTWYVBZX*";
 int main(ajint argc, char **argv)
 {
     /*Declare acd stuff*/
-    AjPDir    ccfddir = NULL;		/* Domain CCF file directory.               */
-    AjPDir    ccfpdir = NULL;		/* Protein CCF file directory.              */
-    AjPFile   dcfinfile=NULL;		/* Pointer to domain classification file.   */
-    AjPFile   coninfile=NULL;		/* Pointer to CON file.                     */
-    AjPFile   liginfile=NULL;		/* Pointer to ligand list file.             */
-    AjPFile   logf=NULL;		/* matgen3d logfile*/
-    AjPFile   Calclogf=NULL;		/* log file for sums for the calculation of 
-					   the final matrix.                        */
+    AjPDir    ccfddir = NULL;    /* Domain CCF file directory.               */
+    AjPDir    ccfpdir = NULL;    /* Protein CCF file directory.              */
+    AjPFile   dcfinfile=NULL;    /* Pointer to domain classification file.   */
+    AjPFile   coninfile=NULL;    /* Pointer to CON file.                     */
+    AjPFile   liginfile=NULL;    /* Pointer to ligand list file.             */
+    AjPFile   logf=NULL;         /* matgen3d logfile*/
+    AjPFile   Calclogf=NULL;     /* log file for sums for the calculation of 
+				    the final matrix.                        */
 
-    AjPStr   *modee=NULL;		/* Holds environment options from acd.      */
-    ajint     modeei=0;			/* modee as an int.                         */
+    AjPStr   *modee=NULL;        /* Holds environment options from acd.      */
+    ajint     modeei=0;	         /* modee as an int.                         */
 
-    AjPStr   *mode=NULL;		/* Holds selection option from acd.         */
-    ajint     modei=0;			/* modee as an int.                         */
+    AjPStr   *mode=NULL;         /* Holds selection option from acd.         */
+    ajint     modei=0;	         /* modee as an int.                         */
 
-    AjPStr   *model=NULL;		/* Holds ligand option from acd.            */
-    ajint     modeli=0;			/* model as an int.                         */
+    AjPStr   *model=NULL;        /* Holds ligand option from acd.            */
+    ajint     modeli=0;	         /* model as an int.                         */
 
-    AjPFile   SCMatrixOut=NULL;		/* final scoring matrix.                    */
+    AjPFile   SCMatrixOut=NULL;	 /* final scoring matrix.                    */
     
-    AjPStr    msg=NULL;			/* String for messaging.                    */
+    AjPStr    msg=NULL;	         /* String for messaging.                    */
     
-    AjPList   list_allscop=NULL;	/* List to hold entries in domain 
-					   classification file.                     */
-    AjPList   list_cmap=NULL;	        /* List to hold entries in CON file.        */
-    AjPList   list_lig=NULL;	        /* List to hold strings (ligand ids) from 
-					   ligand list file.                        */
-    AjPStr    lig_tmp=NULL;             /* Temp. string for ligand id.              */
-    AjPStr   *lig_arr=NULL;             /* Array of ligand ids (from list_lig)      */
-    ajint     lig_n=0;                  /* Size of lig_arr.                         */
+    AjPList   list_allscop=NULL; /* List to hold entries in domain 
+				       classification file.          */
+    AjPList   list_cmap=NULL;    /* List to hold entries in CON file.        */
+    AjPList   list_lig=NULL;     /* List to hold strings (ligand ids) from 
+				    ligand list file.                        */
+    AjPStr    lig_tmp=NULL;      /* Temp. string for ligand id.              */
+    AjPStr   *lig_arr=NULL;      /* Array of ligand ids (from list_lig)      */
+    ajint     lig_n=0;	         /* Size of lig_arr.                         */
     
-    AjPCmap  *cmap_arr=NULL;            /* list_cmap as an array.                   */
-    ajint     cmap_n=0;              /* Size of cmap_arr.                        */
+    AjPCmap  *cmap_arr=NULL;     /* list_cmap as an array.                   */
+    ajint     cmap_n=0;	         /* Size of cmap_arr.                        */
     
-    AjPInt    sites_arr;                /* Array of residue index numbers of ligand-
-					   contact residues.                        */
-    ajint     nsites;                   /* Size of sites_arr.                       */
+    AjPInt    sites_arr;         /* Array of residue index numbers of ligand-
+				    contact residues.  */
+    ajint     nsites = 0;        /* Size of sites_arr.                       */
     
 
-    AjIList   ScopIter=NULL;		/* Iterator for list_allscop.               */
-    AjPScop   ScopPtr=NULL;		/* Pointer to SCOP object.                  */
-    AjPScop   ScopTmp=NULL;		/* temporary pointer to SCOP object to free 
-					   memory.                                  */
+    AjIList   ScopIter=NULL;     /* Iterator for list_allscop.               */
+    AjPScop   ScopPtr=NULL;      /* Pointer to SCOP object.                  */
+    AjPScop   ScopTmp=NULL;      /* temporary pointer to SCOP object to free 
+				    memory.                                  */
 
-    AjIList   CmapIter=NULL;		/* Iterator for list_allscop.               */
-    AjPCmap   CmapPtr=NULL;		/* Pointer to SCOP object.                  */
-    AjPCmap   CmapTmp=NULL;		/* temporary pointer to SCOP object to free 
-					   memory.                                  */
+    AjIList   CmapIter=NULL;     /* Iterator for list_allscop.               */
+    AjPCmap   CmapPtr=NULL;      /* Pointer to SCOP object.                  */
+    AjPCmap   CmapTmp=NULL;      /* temporary pointer to SCOP object to free 
+				    memory.                                  */
     
-    AjPStr    PrevEntry=NULL;		/* Previous SCOP domain ID.                 */
-    AjPStr    tmpID=NULL;		/* Temporary string to hold SCOP or PDB ID. */
-    AjPList   ListIDs=NULL;		/* List of SCOP or PDB IDs.                 */
-    ajint     IDNum=0;			/* Total number of IDs*/
-    AjPFile   DCorFptr=NULL;		/* Pointer to domain coordinate files.      */
-    AjPPdb    Pdb=NULL;			/* Pointer to pdb object.                   */
-    ajint     opened=0;			/* Number of coordinate files opened.       */
-    ajint     notopened=0;		/* Number of files not opened.              */
+    AjPStr    PrevEntry=NULL;    /* Previous SCOP domain ID.                 */
+    AjPStr    tmpID=NULL;        /* Temporary string to hold SCOP or PDB ID. */
+    AjPList   ListIDs=NULL;      /* List of SCOP or PDB IDs.                 */
+    ajint     IDNum=0;		 /* Total number of IDs*/
+    AjPFile   DCorFptr=NULL;     /* Pointer to domain coordinate files.      */
+    AjPPdb    Pdb=NULL;	         /* Pointer to pdb object.                   */
+    ajint     opened=0;	         /* Number of coordinate files opened.       */
+    ajint     notopened=0;       /* Number of files not opened.              */
     
-    AjIList   ResIter=NULL;		/* Iterator for residues in current CpdbStride 
-					   object.                                  */
-    AjPResidue res=NULL;		/* Pointer to current Residue object in list 
-					   iterator.                                */
+    AjIList   ResIter=NULL;      /* Iterator for residues in current 
+				    CpdbStride object.                       */
+    AjPResidue res=NULL;         /* Pointer to current Residue object in list 
+				    iterator.                                */
     
-    char      SEnv='\0';		/* Char to hold 3 state secondary structure 
-					   assignment.                              */
-    AjPStr    OEnv=NULL;		/* Char to hold overall environment class - 
-					   one of 18 characters.                    */
-/*    ajint     PrevRes=0; */		/* Prev residue Identity - this is the 
-					   domain numbering of the residue.         */
+    char      SEnv='\0';         /* Char to hold 3 state secondary structure 
+				    assignment.                              */
+    AjPStr    OEnv=NULL;         /* Char to hold overall environment class - 
+				    one of 18 characters.                    */
+/*    ajint     PrevRes=0; */    /* Prev residue Identity - this is the 
+                                    domain numbering of the residue.         */
     
     
-    AjPStr    IdName=NULL;		/* To temporarily hold domain or protein id.*/
+    AjPStr    IdName=NULL;       /* To temporarily hold domain or protein id.*/
     
-    AjPInt2d  CountMatrix=NULL;		/* Matrix of counts for each environment 
-					   type.                                    */
-    ajint     i=0;			/* Row index for matrix, Env class.         */
-    ajint     j=0;			/* Column index for matrix, amino acids.    */
-    ajint     count=0;			/* Counter to load array.                   */
+    AjPInt2d  CountMatrix=NULL;	 /* Matrix of counts for each environment 
+				    type.                                    */
+    ajint     i=0;	         /* Row index for matrix, Env class.         */
+    ajint     j=0;	         /* Column index for matrix, amino acids.    */
+    ajint     count=0;	         /* Counter to load array.                   */
     
     AjPFloat2d SCRMatrix=NULL;        
-    ajint     RowEnvIdx=0;		/* Row/Environment index.                   */
-    ajint     ColumnResIdx=0;		/* Column/Residue index.                    */
-    ajint     Dim=26;			/* Max Dimension of array.                  */
-    float     min=0.0;			/* Min. value from scoring matrix.          */
-    ajint     x=0;			/* Loop counter.                            */ 
-    ajint     y=0;			/* Loop counter.                            */ 
-    AjPStr    label=NULL;               /* Label for matrix.                        */
-    ajint     labelcnt1=0;              /* Housekeeping.                            */
-    ajint     labelcnt2=0;              /* Housekeeping.                            */
-    AjPStr    line=NULL;                /* Housekeeping.                            */
-    AjBool    done= ajFalse;            /* Housekeeping.                            */
+    ajint     RowEnvIdx=0;       /* Row/Environment index.                   */
+    ajint     ColumnResIdx=0;    /* Column/Residue index.                    */
+    ajint     Dim=26;	         /* Max Dimension of array.                  */
+    float     min=0.0;	         /* Min. value from scoring matrix.          */
+    ajint     x=0;               /* Loop counter.                            */
+
+    ajint     y=0;               /* Loop counter.                            */
+    AjPStr    label=NULL;        /* Label for matrix.                        */
+    ajint     labelcnt1=0;       /* Housekeeping.                            */
+    ajint     labelcnt2=0;       /* Housekeeping.                            */
+    AjPStr    line=NULL;         /* Housekeeping.                            */
+    AjBool    done= ajFalse;     /* Housekeeping.                            */
     
      
     
