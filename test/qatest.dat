@@ -5127,7 +5127,7 @@ FP 1 /rnu68037/
 
 ID dbxfasta-allsys-keep
 DL keep
-A  dbxfasta
+AP dbxfasta
 CL -fields="id,acc,sv,des"
 IN emrod
 IN embl
@@ -8842,7 +8842,7 @@ ID feat-swiss-togff
 AP seqret
 CL -feat tsw:laci_ecoli gff::test.out -auto
 FI test.out
-FZ = 142
+FZ = 1428
 FP /^LACI_ECOLI\tSWISSPROT\tdna_bind\t6\t25\t0\.000\t\+\t\.\tSequence "LACI_ECOLI\.1" ; note "H-T-H MOTIF"\n/
 FP /^LACI_ECOLI\tSWISSPROT\thelix\t32\t44\t0.000\t\+\t\.\tSequence "LACI_ECOLI\.9"\n/
 //
