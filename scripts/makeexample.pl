@@ -757,8 +757,10 @@ sub writeUsage {
 
     my $out = "$incdir/$application.usage";
     open (OUT, "> $out") || die "Can't open $out";
-    $usage =~ s/(Guide tree +file created: +)\[[A-Z0-9]+\]/$1\[12345678A]/g;
-    $usage =~ s/(GCG-Alignment file created +)\[[A-Z0-9]+\]/$1\[12345678A]/g;
+    $usage =~ s/(Guide tree +file created: +)\[[A-Z0-9]+\]/$1\[12345678A]/go;
+    $usage =~ s/(GCG-Alignment file created +)\[[A-Z0-9]+\]/$1\[12345678A]/go;
+    $usage =~ s/seqalign\-[0-9]+[.][0-9]+[.]/seqalign-1234567890.1234./go;
+    $usage =~ s/seqsearch\-[0-9]+[.][0-9]+[.]/seqsearch-1234567890.1234./go;
     print OUT $usage;
     close(OUT);
     chmod 0664, $out;	# rw-rw-r--
@@ -775,6 +777,7 @@ sub writeInput {
 
     my $out = "$incdir/$application.input";
     open (OUT, "> $out") || die "Can't open $out";
+    $input =~ s/DATE  [A-Z][a-z][a-z] [A-Z][a-z][a-z] +[0-9]+ [0-9:]+ 200[5-9]/DATE  Fri Jul 15 12:00:00 2005/go;
     print OUT $input;
     close(OUT);
     chmod 0664, $out;	# rw-rw-r--
@@ -791,10 +794,11 @@ sub writeOutput {
 
     my $out = "$incdir/$application.output";
     open (OUT, "> $out") || die "Can't open $out";
-    $output =~ s/Rundate: ... ... \d\d 2[0-9][0-9][0-9] [0-9:]+$/Rundate: Thu Jul 15 2004 12:00:00/go;
-    $output =~ s/\#\#date 2[0-9][0-9][0-9][-][0-9][0-9][-][0-9][0-9]$/\#\#date 2004-07-15/go;
-    $output =~ s/seqalign\-[0-9]+[.][0-9+][.]/seqalign-1234567890.1234./go;
-    $output =~ s/seqsearch\-[0-9]+[.][0-9+][.]/seqsearch-1234567890.1234./go;
+    $output =~ s/DATE  [A-Z][a-z][a-z] [A-Z][a-z][a-z] +[0-9]+ [0-9:]+ 200[5-9]/DATE  Fri Jul 15 12:00:00 2005/go;
+    $output =~ s/Rundate: ... ... \d\d 2[0-9][0-9][0-9] [0-9:]+$/Rundate: Fri Jul 15 2005 12:00:00/go;
+    $output =~ s/\#\#date 2[0-9][0-9][0-9][-][0-9][0-9][-][0-9][0-9]$/\#\#date 2005-07-15/go;
+    $output =~ s/seqalign\-[0-9]+[.][0-9]+[.]/seqalign-1234567890.1234./go;
+    $output =~ s/seqsearch\-[0-9]+[.][0-9]+[.]/seqsearch-1234567890.1234./go;
     print OUT $output;
     close(OUT);
     chmod 0664, $out;	# rw-rw-r--
