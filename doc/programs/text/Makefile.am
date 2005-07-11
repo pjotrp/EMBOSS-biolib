@@ -3,11 +3,12 @@ pkgdata_DATA =  aaindexextract.txt abiview.txt acdc.txt acdlog.txt \
 	alignrunner.txt allversusall.txt antigenic.txt backtranseq.txt \
 	banana.txt biosed.txt btwisted.txt cai.txt cathparse.txt \
 	chaos.txt charge.txt checktrans.txt chips.txt cirdna.txt \
-	codcmp.txt codcopy.txt coderet.txt complex.txt compseq.txt \
-	cons.txt contactalign.txt \
+	codcmp.txt codcopy.txt coderet.txt complex.txt comparator.txt \
+	compseq.txt cons.txt contactalign.txt \
 	contacts.txt cpgplot.txt cpgreport.txt \
 	crystalball.txt cusp.txt cutgextract.txt cutseq.txt dan.txt \
-	dbiblast.txt dbifasta.txt dbiflat.txt dbigcg.txt degapseqrunner.txt \
+	dbiblast.txt dbifasta.txt dbiflat.txt dbigcg.txt \
+	dbxfasta.txt dbxflat.txt dbxgcg.txt degapseqrunner.txt \
 	degapseq.txt descseq.txt diffseq.txt digest.txt distmat.txt \
 	domainalign.txt \
 	domainer.txt domainnr.txt domainrep.txt domainreso.txt \
@@ -52,7 +53,8 @@ pkgdata2_DATA = nawalignrunner.txt nawalign.txt needlerunner.txt \
 	prosextract.txt pscan.txt psiphi.txt rebaseextract.txt \
 	recoder.txt redata.txt remap.txt restover.txt \
 	restrict.txt revseq.txt rocon.txt rocplot.txt scope.txt \
-	scopparse.txt scorerrunner.txt scorer.txt seealso.txt seqalign.txt \
+	scopparse.txt scorecmapdir.txt scorerrunner.txt scorer.txt \
+	seealso.txt seqalign.txt \
 	seqfraggle.txt seqmatchall.txt seqnr.txt \
 	seqretsplit.txt seqret.txt seqsearch.txt seqsort.txt seqwords.txt \
 	showalign.txt showdb.txt showfeat.txt showorf.txt showseq.txt \

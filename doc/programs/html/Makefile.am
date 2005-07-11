@@ -7,11 +7,12 @@ pkgdata_DATA =  aaindexextract.html abiview.html acdc.html acd_group.html \
 	antigenic.html backtranseq.html banana.html biosed.html \
 	btwisted.html cai.html cathparse.html chaos.html charge.html \
 	checktrans.html chips.html cirdna.html codcmp.html codcopy.html \
-	coderet.html compseq.html cons.html contactalign.html \
+	coderet.html comparator.html compseq.html cons.html contactalign.html \
 	contacts.html \
 	cpgplot.html cpgreport.html crystalball.html cusp.html \
 	cutgextract.html cutseq.html dan.html dbiblast.html dbifasta.html \
-	dbiflat.html dbigcg.html degapseq.html degapseqrunner.html \
+	dbiflat.html dbigcg.html dbxfasta.html dbxflat.html dbxgcg.html \
+	degapseq.html degapseqrunner.html \
 	descseq.html diffseq.html digest.html display_group.html distmat.html \
 	domainalign.html domainer.html domainnr.html domainrep.html \
 	domainreso.html domainseqs.html domainsse.html dotmatcher.html \
@@ -80,7 +81,7 @@ pkgdata2_DATA = nawalign.html nawalignrunner.html needle.html \
 	protein_sequence_alignment_group.html pscan.html psiphi.html \
 	rebaseextract.html recoder.html redata.html remap.html \
 	restover.html restrict.html revseq.html rocon.html \
-	rocplot.html scope.html scopparse.html scorer.html \
+	rocplot.html scope.html scopparse.html scorecmapdir.html scorer.html \
 	scorerrunner.html seealso.html seqalign.html \
 	seqfraggle.html seqmatchall.html seqnr.html seqret.html \
 	seqretsplit.html seqsearch.html seqsort.html seqwords.html \
