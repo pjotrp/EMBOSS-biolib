@@ -3,10 +3,10 @@
 use English;
 
 sub srsref {
-    return "<a href=\"http://srs.rfcgr.mrc.ac.uk/srs7bin/cgi-bin/wgetz?-e+[EFUNC-ID:$_[0]]\">$_[0]</a>";
+    return "<a href=\"http://srs.ebi.ac.uk/srs7bin/cgi-bin/wgetz?-e+[EFUNC-ID:$_[0]]\">$_[0]</a>";
 }
 sub srsdref {
-    return "<a href=\"http://srs.rfcgr.mrc.ac.uk/srs7bin/cgi-bin/wgetz?-e+[EDATA-ID:$_[0]]\">$_[0]</a>";
+    return "<a href=\"http://srs.ebi.ac.uk/srs7bin/cgi-bin/wgetz?-e+[EDATA-ID:$_[0]]\">$_[0]</a>";
 }
 
 sub secttest($$) {
