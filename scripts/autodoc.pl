@@ -790,15 +790,15 @@ foreach $docdir (@doclist) {
 # optionally create the documentation and edit it,
 #	  or abort and do the next program
 ###	  print "$progdocdir/$thisprogram.html missing - EMBOSS\n";
-	    if (!createnewdocumentation($thisprogram, $docdir)) {next;}
+	    if (!createnewdocumentation($thisprogram, $progdocdir)) {next;}
 	}
 	else {
 ###	  print "$progdocdir/$thisprogram.html missing - EMBASSY $embassyprogs{$thisprogram}\n";
-	    print STDERR "Missing embassy documentation $docdir/$thisprogram.html\n";
+	    print STDERR "Missing embassy documentation $progdocdir/$thisprogram.html\n";
 	    print STDERR "docdir: $docdir\n";
 	    print STDERR "progdocdir: $progdocdir\n";
 	    print STDERR "embassyprogs: $embassyprogs{$thisprogram}\n";
-	    if (!createnewdocumentationembassy($thisprogram, $docdir)) {next;}
+	    if (!createnewdocumentationembassy($thisprogram, $progdocdir)) {next;}
 	}
 
 # note whether we now have a documentation file or not
@@ -817,10 +817,10 @@ foreach $docdir (@doclist) {
 	    }
 	    else {
 ###	      print "$docdir/$thisprogram.html missing - EMBASSY $embassyprogs{$thisprogram}\n";
-		print STDERR "Missing embassy link $progdocdir/$thisprogram.html\n";
+		print STDERR "Missing embassy link $docdir/$thisprogram.html\n";
 		print STDERR "docdir: $docdir\n";
 		print STDERR "embassyprogs: $embassyprogs{$thisprogram}\n";
-		if (!createnewdoclinkembassy($thisprogram, $embassyprogs{$thisprogram}, $progdocdir)) {next;}
+		if (!createnewdoclinkembassy($thisprogram, $embassyprogs{$thisprogram}, $docdir)) {next;}
 	    }
 	}
 
