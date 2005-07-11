@@ -390,7 +390,7 @@ Output file format
 
 ########################################
 # Program: dan
-# Rundate: Thu Jul 15 2004 12:00:00
+# Rundate: Fri Jul 15 2005 12:00:00
 # Report_format: seqtable
 # Report_file: paamir.dan
 ########################################
@@ -602,10 +602,9 @@ Author(s)
    European Bioinformatics Institute, Wellcome Trust Genome Campus,
    Hinxton, Cambridge CB10 1SD, UK
 
-   This application was written by Alan Bleasby
-   (ableasby © rfcgr.mrc.ac.uk)
-   MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
-   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+   This application was written by Alan Bleasby (ajb © ebi.ac.uk)
+   European Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton, Cambridge CB10 1SD, UK
 
 History
 

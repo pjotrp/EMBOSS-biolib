@@ -117,6 +117,7 @@ polydot          Displays all-against-all dotplots of a set of sequences
 ALIGNMENT GLOBAL
 alignrunner      Align sequence pairs in a directory
 comparator       Compare contact scores of two sequence alignments
+contactalign     Damian Counsell's experimental 2.5-D alignment algorithm
 esim4            Align an mRNA to a genomic DNA sequence
 est2genome       Align EST and genomic DNA sequences
 nawalign         Damian Counsell's NW implementation
@@ -403,6 +404,7 @@ tmap             Displays membrane spanning regions
 topo             Draws an image of a transmembrane protein
 
 PROTEIN 3D STRUCTURE
+contactcount     Count specific versus non-specific contacts
 contacts         Generate intra-chain CON files from CCF files
 domainalign      Generate alignments (DAF file) for nodes in a DCF file
 domainrep        Reorder DCF file to identify representative structures
@@ -413,6 +415,7 @@ matgen3d         Generate a 3D-1D scoring matrix from CCF files
 psiphi           Phi and psi torsion angles from protein coordinates
 rocon            Generates a hits file from comparing two DHF files
 rocplot          Performs ROC analysis on hits files
+scorecmapdir     Contact scores for cleaned protein chain contact files
 seqalign         Extend alignments (DAF file) with sequences (DHF file)
 seqfraggle       Removes fragment sequences from DHF files
 seqsearch        Generate PSI-BLAST hits (DHF file) from a DAF file
@@ -495,7 +498,9 @@ dbiblast         Index a BLAST database
 dbifasta         Database indexing for fasta file databases
 dbiflat          Index a flat file database
 dbigcg           Index a GCG formatted database
+dbxfasta         Database b+tree indexing for fasta file databases
 dbxflat          Database b+tree indexing for flat file databases
+dbxgcg           Database b+tree indexing for GCG formatted databases
 
 UTILS MISC
 embossdata       Finds or fetches data files read by EMBOSS programs
@@ -545,6 +550,8 @@ coderet          Extract CDS, mRNA and translations from feature tables
 comparator       Compare contact scores of two sequence alignments
 compseq          Count composition of dimer/trimer/etc words in a sequence
 cons             Creates a consensus from multiple alignments
+contactalign     Damian Counsell's experimental 2.5-D alignment algorithm
+contactcount     Count specific versus non-specific contacts
 contacts         Generate intra-chain CON files from CCF files
 cpgplot          Plot CpG rich areas
 cpgreport        Reports all CpG rich regions
@@ -557,7 +564,9 @@ dbiblast         Index a BLAST database
 dbifasta         Database indexing for fasta file databases
 dbiflat          Index a flat file database
 dbigcg           Index a GCG formatted database
+dbxfasta         Database b+tree indexing for fasta file databases
 dbxflat          Database b+tree indexing for flat file databases
+dbxgcg           Database b+tree indexing for GCG formatted databases
 degapseq         Removes gap characters from sequences
 degapseqrunner   Degapseq all sequence pairs in a directory
 descseq          Alter the name or description of a sequence
@@ -746,6 +755,7 @@ revseq           Reverse and complement a sequence
 rocon            Generates a hits file from comparing two DHF files
 rocplot          Performs ROC analysis on hits files
 scopparse        Generate DCF file from raw SCOP files
+scorecmapdir     Contact scores for cleaned protein chain contact files
 scorer           Score alignments using structural alignments
 scorerrunner     SCORER for ordered pairs of substituted seqs
 seealso          Finds programs sharing group names
@@ -1267,6 +1277,7 @@ that the programs belong to or the word that is being searched for.
 <tr><th>Program name</th><th>Description</th></tr>
 <tr><td><a href="http://emboss.sf.net/apps/alignrunner.html">alignrunner</a></td><td>Align sequence pairs in a directory</td></tr>
 <tr><td><a href="http://emboss.sf.net/apps/comparator.html">comparator</a></td><td>Compare contact scores of two sequence alignments</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/contactalign.html">contactalign</a></td><td>Damian Counsell's experimental 2.5-D alignment algorithm</td></tr>
 <tr><td><a href="http://emboss.sf.net/apps/esim4.html">esim4</a></td><td>Align an mRNA to a genomic DNA sequence</td></tr>
 <tr><td><a href="http://emboss.sf.net/apps/est2genome.html">est2genome</a></td><td>Align EST and genomic DNA sequences</td></tr>
 <tr><td><a href="http://emboss.sf.net/apps/nawalign.html">nawalign</a></td><td>Damian Counsell's NW implementation</td></tr>
@@ -1282,13 +1293,10 @@ that the programs belong to or the word that is being searched for.
 <h2><a name="ALIGNMENT LOCAL">ALIGNMENT LOCAL</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://emboss.sf.net/apps/matcher.html">matcher</a></td><td>Finds the best local alignments between two sequences</td></tr>
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-<table border cellpadding=4 bgcolor="#FFFFF0">
-<tr><th>Program name</th><th>Description</th></tr>
 <tr><td><a href="http://emboss.sf.net/apps/profit.html">profit</a></td><td>Scan a sequence or database with a matrix or profile</td></tr>
 <tr><td><a href="http://emboss.sf.net/apps/prophecy.html">prophecy</a></td><td>Creates matrices/profiles from multiple alignments</td></tr>
 <tr><td><a href="http://emboss.sf.net/apps/prophet.html">prophet</a></td><td>Gapped alignment for profiles</td></tr>
@@ -1330,7 +1338,9 @@ that the programs belong to or the word that is being searched for.
 <tr><td><a href="http://emboss.sf.net/apps/dbifasta.html">dbifasta</a></td><td>Database indexing for fasta file databases</td></tr>
 <tr><td><a href="http://emboss.sf.net/apps/dbiflat.html">dbiflat</a></td><td>Index a flat file database</td></tr>
 <tr><td><a href="http://emboss.sf.net/apps/dbigcg.html">dbigcg</a></td><td>Index a GCG formatted database</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/dbxfasta.html">dbxfasta</a></td><td>Database b+tree indexing for fasta file databases</td></tr>
 <tr><td><a href="http://emboss.sf.net/apps/dbxflat.html">dbxflat</a></td><td>Database b+tree indexing for flat file databases</td></tr>
+<tr><td><a href="http://emboss.sf.net/apps/dbxgcg.html">dbxgcg</a></td><td>Database b+tree indexing for GCG formatted databases</td></tr>
 </table>
 <h2><a name="UTILS MISC">UTILS MISC</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">

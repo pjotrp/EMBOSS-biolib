@@ -625,14 +625,14 @@ Name of log file for the build. [seqsearch.log]:
 
 
 PROCESSING /ebi/services/idata/pmr/hgmp/test/data/structure/54894.daf
-blastpgp -i ./seqsearch-1119283037.25929.seqin -B ./seqsearch-1119283037.25929.
-seqsin -j 1 -e 0.000100 -b 100 -v 100 -d ../../data/structure/swsmall > ./seqse
-arch-1119283037.25929.psiout
+blastpgp -i ./seqsearch-1234567890.1234.seqin -B ./seqsearch-1234567890.1234.se
+qsin -j 1 -e 0.000100 -b 100 -v 100 -d ../../data/structure/swsmall > ./seqsear
+ch-1234567890.1234.psiout
 
 PROCESSING /ebi/services/idata/pmr/hgmp/test/data/structure/55074.daf
-blastpgp -i ./seqsearch-1119283037.12261.seqin -B ./seqsearch-1119283037.12261.
-seqsin -j 1 -e 0.000100 -b 100 -v 100 -d ../../data/structure/swsmall > ./seqse
-arch-1119283037.12261.psiout
+blastpgp -i ./seqsearch-1234567890.1234.seqin -B ./seqsearch-1234567890.1234.se
+qsin -j 1 -e 0.000100 -b 100 -v 100 -d ../../data/structure/swsmall > ./seqsear
+ch-1234567890.1234.psiout
 
 
    Go to the input files for this example
@@ -710,6 +710,7 @@ arch-1119283037.12261.psiout
 See also
 
    Program name                       Description
+   contactcount Count specific versus non-specific contacts
    contacts     Generate intra-chain CON files from CCF files
    domainalign  Generate alignments (DAF file) for nodes in a DCF file
    domainrep    Reorder DCF file to identify representative structures
@@ -720,6 +721,7 @@ See also
    psiphi       Phi and psi torsion angles from protein coordinates
    rocon        Generates a hits file from comparing two DHF files
    rocplot      Performs ROC analysis on hits files
+   scorecmapdir Contact scores for cleaned protein chain contact files
    seqalign     Extend alignments (DAF file) with sequences (DHF file)
    seqfraggle   Removes fragment sequences from DHF files
    seqsort      Remove ambiguous classified sequences from DHF files

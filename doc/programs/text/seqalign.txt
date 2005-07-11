@@ -371,7 +371,7 @@ Sequences (1:4) Aligned. Score:  41
 Sequences (2:3) Aligned. Score:  51
 Sequences (2:4) Aligned. Score:  41
 Sequences (3:4) Aligned. Score:  43
-Guide tree        file created:   [./seqalign-1119283021.25929.dnd]
+Guide tree        file created:   [./seqalign-1234567890.1234.dnd]
 Start of Multiple Alignment
 There are 3 groups
 Aligning...
@@ -379,7 +379,7 @@ Group 1: Sequences:   2      Score:1553
 Group 2: Sequences:   3      Score:739
 Group 3: Sequences:   4      Score:655
 Alignment Score 1720
-CLUSTAL-Alignment file created  [./seqalign-1119283021.25929.out]
+CLUSTAL-Alignment file created  [./seqalign-1234567890.1234.out]
 
 
 
@@ -405,7 +405,7 @@ Sequences (2:5) Aligned. Score:  30
 Sequences (3:4) Aligned. Score:  25
 Sequences (3:5) Aligned. Score:  31
 Sequences (4:5) Aligned. Score:  23
-Guide tree        file created:   [./seqalign-1119283021.25929.dnd]
+Guide tree        file created:   [./seqalign-1234567890.1234.dnd]
 Start of Multiple Alignment
 There are 4 groups
 Aligning...
@@ -415,16 +415,16 @@ Group 3: Sequences:   4      Score:1061
 Group 4:                     Delayed
 Sequence:4     Score:926
 Alignment Score 4025
-CLUSTAL-Alignment file created  [./seqalign-1119283021.25929.out]
+CLUSTAL-Alignment file created  [./seqalign-1234567890.1234.out]
 Processing /ebi/services/idata/pmr/hgmp/test/data/structure/54894.dhf
 
-clustalw -infile=./seqalign-1119283021.25929.seqs -align -MATRIX=BLOSUM -GAPOPE
-N=10 -GAPEXT=0.5 -outfile=./seqalign-1119283021.25929.out
+clustalw -infile=./seqalign-1234567890.1234.seqs -align -MATRIX=BLOSUM -GAPOPEN
+=10 -GAPEXT=0.5 -outfile=./seqalign-1234567890.1234.out
 
 Processing /ebi/services/idata/pmr/hgmp/test/data/structure/55074.dhf
 
-clustalw -infile=./seqalign-1119283021.25929.seqs -align -MATRIX=BLOSUM -GAPOPE
-N=10 -GAPEXT=0.5 -outfile=./seqalign-1119283021.25929.out
+clustalw -infile=./seqalign-1234567890.1234.seqs -align -MATRIX=BLOSUM -GAPOPEN
+=10 -GAPEXT=0.5 -outfile=./seqalign-1234567890.1234.out
 
 
    Go to the output files for this example
@@ -488,6 +488,7 @@ N=10 -GAPEXT=0.5 -outfile=./seqalign-1119283021.25929.out
 See also
 
    Program name                       Description
+   contactcount Count specific versus non-specific contacts
    contacts     Generate intra-chain CON files from CCF files
    domainalign  Generate alignments (DAF file) for nodes in a DCF file
    domainrep    Reorder DCF file to identify representative structures
@@ -498,6 +499,7 @@ See also
    psiphi       Phi and psi torsion angles from protein coordinates
    rocon        Generates a hits file from comparing two DHF files
    rocplot      Performs ROC analysis on hits files
+   scorecmapdir Contact scores for cleaned protein chain contact files
    seqfraggle   Removes fragment sequences from DHF files
    seqsearch    Generate PSI-BLAST hits (DHF file) from a DAF file
    seqsort      Remove ambiguous classified sequences from DHF files

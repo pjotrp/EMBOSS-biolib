@@ -128,9 +128,10 @@ Known bugs
 
 See also
 
-     Program name                        Description
+     Program name                         Description
    alignrunner      Align sequence pairs in a directory
    comparator       Compare contact scores of two sequence alignments
+   contactalign     Damian Counsell's experimental 2.5-D alignment algorithm
    esim4            Align an mRNA to a genomic DNA sequence
    est2genome       Align EST and genomic DNA sequences
    nawalign         Damian Counsell's NW implementation

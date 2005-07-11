@@ -787,12 +787,12 @@ Name of log file for NACCESS [naccess.log]:
 
 Processing /ebi/services/idata/pmr/hgmp/test/data/structure/pdbplus/1cs4.ccf
 stride /ebi/services/idata/pmr/hgmp/test/data/structure/1cs4.ent -f./pdbplus-11
-19283706.25929 >> stride.log 2>&1
+19297538.25929 >> stride.log 2>&1
 naccess /ebi/services/idata/pmr/hgmp/test/data/structure/1cs4.ent  >> naccess.l
 og 2>&1
 Processing /ebi/services/idata/pmr/hgmp/test/data/structure/pdbplus/1ii7.ccf
 stride /ebi/services/idata/pmr/hgmp/test/data/structure/1ii7.ent -f./pdbplus-11
-19283706.25929 >> stride.log 2>&1
+19297538.25929 >> stride.log 2>&1
 naccess /ebi/services/idata/pmr/hgmp/test/data/structure/1ii7.ent  >> naccess.l
 og 2>&1
 STRIDE  failures: 0

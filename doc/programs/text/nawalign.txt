@@ -146,6 +146,8 @@ Command line arguments
    point number from 0.0 to 10.0 0.5 for any sequence
    [-alignedoutfile]
    (Parameter 3) Output sequence USA Writeable sequence <sequence>.format
+   [-verticaltrace]
+   (Parameter 4) Output file name Output file <sequence>.nawalign
    Additional (Optional) qualifiers Allowed values Default
    -substitutionscoringfile Matrix of scores for specific amino acid
    residue type substitution within one-dimensional sequence strings
@@ -198,9 +200,10 @@ Known bugs
 
 See also
 
-     Program name                        Description
+     Program name                         Description
    alignrunner      Align sequence pairs in a directory
    comparator       Compare contact scores of two sequence alignments
+   contactalign     Damian Counsell's experimental 2.5-D alignment algorithm
    esim4            Align an mRNA to a genomic DNA sequence
    est2genome       Align EST and genomic DNA sequences
    nawalignrunner   Nawalign all sequence pairs in a directory
