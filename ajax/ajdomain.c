@@ -3706,6 +3706,8 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
     tmpseq = ajStrNew();
     tmpstr = ajStrNew();
     
+
+
     /* Check for unknown or zero-length chains */
     for(z=0;z<scop->N;z++)
 	if(!ajPdbChnidToNum(scop->Chain[z], pdb, &chn))
@@ -3732,7 +3734,7 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
 	    return ajFalse;
 	}
     
-    
+
     /* Write header info. to domain coordinate file */
     ajFmtPrintF(outf, "%-5s%S\n", "ID", scop->Entry);
     ajFmtPrintF(outf, "XX\n");
@@ -3752,7 +3754,8 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
     
     /* The NCHN and NMOD are hard-coded to 1 for domain files */
     
-    
+
+
     /* Start of main application loop */
     /* Print out data up to co-ordinates list */
     for(z=0;
@@ -3768,7 +3771,7 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
 	
 
 	/* Initialise the iterator */
-	iter=ajListIterRead(pdb->Chains[chn-1]->Atoms);
+	iter=ajListIterRead(pdb->Chains[chn-1]->Residues);
 
 
 	/*
@@ -3887,8 +3890,6 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
 	    }
 	}
 	
-	
-
 	/* Diagnostics if start position was not found */
 	if(!found_start)		
 	{
@@ -3927,7 +3928,7 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
     }
     /* End of main application loop */
     
-    
+
     /*
     ** If the domain was composed of more than once chain then a '.' is
     ** given as the chain identifier
@@ -3941,8 +3942,6 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
 	    id = '.';
     }
     
-
-
     /* Write sequence to domain coordinate file */
     ajFmtPrintF(outf, "XX\n");	
     ajFmtPrintF(outf, "%-5s[1]\n", "CN");	
@@ -3968,8 +3967,6 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
     ajFmtPrintF(outf, "XX\n");	
 
     
-
-
     /* Write residue list to domain coordinate file */        
     for(nostart=ajFalse, noend=ajFalse, 
 	z=0; z<scop->N;
@@ -4133,8 +4130,6 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
     
 
 
-
-
     /* Write atom list to domain coordinate file */        
     for(nostart=ajFalse, noend=ajFalse, 
 	z=0; z<scop->N;
@@ -4227,7 +4222,7 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
 		    found_start=ajTrue;	
 	    }	
 
-	    
+
 	    /*
 	    ** The end position was specified, but has not 
 	    ** been found yet
@@ -4289,7 +4284,6 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
 
 	ajListIterFree(&iter);			
     } 	
-
 
 
     /* Write last line in file */
