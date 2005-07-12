@@ -181,9 +181,9 @@ int main(int argc, char **argv)
     gapo       = ajAcdGetFloat("gapo");
     gape       = ajAcdGetFloat("gape");
     nterm      = ajAcdGetList("nterm");
-    hitsdir    = ajAcdGetDirectory("hitsdir");
-    aligndir   = ajAcdGetDirectory("aligndir"); 
-    resultsdir = ajAcdGetDirectory("resultsdir"); 
+    hitsdir    = ajAcdGetOutdir("hitsdir");
+    aligndir   = ajAcdGetOutdir("aligndir"); 
+    resultsdir = ajAcdGetOutdir("resultsdir"); 
     mode        = ajAcdGetList("mode");
 
 
