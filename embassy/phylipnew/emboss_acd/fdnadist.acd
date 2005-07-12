@@ -38,9 +38,9 @@ list: gamma  [
   header: "Gamma distribution"
   values: "g:Gamma distributed rates;
            i:Gamma+invariant sites;
-           n:No distribution parameteres used"
+           n:No distribution parameters used"
   information: "Gamma distribution"
-  default: "No distribution parameteres used"
+  default: "No distribution parameters used"
 ]
 
 integer: ncategories  [
