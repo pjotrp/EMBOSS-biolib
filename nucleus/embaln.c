@@ -658,27 +658,12 @@ float embAlignScoreNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 	    while(1)
 	    {
 		bimble = path[ypos*lenb+ix]-gapopen-(gapcnt*gapextend)+match;
-		if(fabs((double)score-(double)bimble)< errbounds)
+		if(!ix || fabs((double)score-(double)bimble)< errbounds)
 		    break;
 		--ix;
 		if(ix<0)
-		{
-		    gapcnt = 0.0;
-		    ix = xpos-2;
-		    t  = ix+1;
-		    while(ix)
-		    {
-
-			bimble=path[ypos*lenb+ix]-gapopen-(gapcnt*gapextend)+
-			    match;
-			if(fabs((double)score-(double)bimble)< errbounds)
-			    ajDebug("NW:%f: %f %f %f\n",gapcnt,score,bimble);
-			--ix;
-			++gapcnt;
-		    }
-
 		    ajFatal("NW: Error walking left");
-		}
+
 		++gapcnt;
 	    }
 
@@ -702,7 +687,7 @@ float embAlignScoreNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 	    while(1)
 	    {
 		bimble = path[iy*lenb+xpos]-gapopen-(gapcnt*gapextend)+match;
-		if(fabs((double)score-(double)bimble)< errbounds)
+		if(!iy || fabs((double)score-(double)bimble)< errbounds)
 		    break;
 		--iy;
 		if(iy<0)
@@ -826,7 +811,7 @@ float embAlignScoreSWMatrix(const float *path, const ajint *compass,
 	    while(1)
 	    {
 		bimble =path[ypos*lenb+ix]-gapopen-(gapcnt*gapextend)+match;
-		if(fabs((double)score-(double)bimble)<errbounds)
+		if(!ix || fabs((double)score-(double)bimble)<errbounds)
 		{
 		    ajDebug("inner break: ix errbounds at "
 			    "ypos:%d xpos:%d ix:%d t:%d bimble:%.3f\n",
@@ -868,7 +853,7 @@ float embAlignScoreSWMatrix(const float *path, const ajint *compass,
 	    {
 		bimble=path[iy*lenb+xpos]-gapopen-(gapcnt*gapextend)+match;
 
-		if( fabs((double)score-(double)bimble) < errbounds)
+		if(!iy ||  fabs((double)score-(double)bimble) < errbounds)
 		{
 		    ajDebug("inner break: iy errbounds at "
 			    "ypos:%d xpos:%d iy:%d t:%d bimble:%.3f\n",
@@ -1011,7 +996,7 @@ void embAlignWalkSWMatrix(const float *path, const ajint *compass,
 	    while(1)
 	    {
 		bimble = path[ypos*lenb+ix]-gapopen-(gapcnt*gapextend)+match;
-		if(fabs((double)score-(double)bimble)<errbounds)
+		if(!ix || fabs((double)score-(double)bimble)<errbounds)
 		    break;
 		--ix;
 		if(ix<0)
@@ -1048,7 +1033,7 @@ void embAlignWalkSWMatrix(const float *path, const ajint *compass,
 	    while(1)
 	    {
 		bimble=path[iy*lenb+xpos]-gapopen-(gapcnt*gapextend)+match;
-		if(fabs((double)score-(double)bimble)<errbounds)
+		if(!iy || fabs((double)score-(double)bimble)<errbounds)
 		    break;
 		--iy;
 		if(iy<0)
@@ -1169,6 +1154,8 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
     {
 	if(!compass[ypos*lenb+xpos])	/* diagonal */
 	{
+	    ajDebug("match %5d %5d '%c' '%c'\n",
+		    ypos, xpos, p[ypos-1], q[xpos-1]);
 	    ajStrInsertK(m,0,p[--ypos]);
 	    ajStrInsertK(n,0,q[--xpos]);
 	    continue;
@@ -1184,7 +1171,7 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 	    while(1)
 	    {
 		bimble = path[ypos*lenb+ix]-gapopen-(gapcnt*gapextend)+match;
-		if(fabs((double)score-(double)bimble)< errbounds)
+		if(!ix || fabs((double)score-(double)bimble)< errbounds)
 		    break;
 		--ix;
 		if(ix<0)
@@ -1201,6 +1188,8 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 	    ajStrInsertK(m,0,p[ypos]);
 
 	    xpos = ix;
+	    ajDebug("gapx  %5d %5d '%c' '%c' +%d\n",
+		    ypos+1, xpos+1, p[ypos], q[t], 1+(int)gapcnt);
 	    continue;
 	}
 	else if(compass[ypos*lenb+xpos]==2) /* Down, gap(s) in horizontal */
@@ -1215,7 +1204,9 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 	    while(1)
 	    {
 		bimble = path[iy*lenb+xpos]-gapopen-(gapcnt*gapextend)+match;
-		if(fabs((double)score-(double)bimble)< errbounds)
+		ajDebug("Down: iy: %d score:%.3f bimble:%.3f\n",
+			iy, score, bimble);
+		if(!iy || fabs((double)score-(double)bimble)< errbounds)
 		    break;
 		--iy;
 		if(iy<0)
@@ -1231,6 +1222,8 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 	    ajStrInsertK(m,0,p[t]);
 	    ajStrInsertK(n,0,q[xpos]);
 	    ypos = iy;
+	    ajDebug("gapy  %5d %5d '%c' '%c' +%d\n",
+		    ypos+1, xpos+1, p[t], q[xpos], 1+(int)gapcnt);
 	    continue;
 	}
 	else
