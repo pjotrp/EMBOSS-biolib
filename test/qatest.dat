@@ -16123,7 +16123,7 @@ FP /^    60 ECLACY +[+] +1..60       ECLACZ +[+] +3019..3078\n/
 
 ID align-stretcher-msfgap
 AP stretcher
-CL -gappen 5 -gaplen 1 -stdout -sbegin2 4
+CL -gapopen 5 -gapextend 1 -stdout -sbegin2 4
 CL -aformat msf
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
@@ -16141,7 +16141,7 @@ FC = 17
 
 ID align-stretcher-full
 AP stretcher
-CL -gappen 16 -gaplen 1 -stdout
+CL -gapopen 16 -gapextend 1 -stdout
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
 IN
@@ -16162,7 +16162,7 @@ FC = 40
 
 ID align-stretcher-part
 AP stretcher
-CL -gappen 16 -gaplen 4 -stdout
+CL -gapopen 16 -gapextend 4 -stdout
 IN ../../data/aligna.dna
 IN ../../data/alignapart.dna
 IN
@@ -16183,7 +16183,7 @@ FC = 40
 
 ID align-stretcher-begin
 AP stretcher
-CL -gappen 16 -gaplen 4 -stdout -sbegin1 5
+CL -gapopen 16 -gapextend 4 -stdout -sbegin1 5
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
 IN
@@ -16209,7 +16209,7 @@ FC = 40
 
 ID align-stretcher-end
 AP stretcher
-CL -gappen 16 -gaplen 4 -stdout -send1 15
+CL -gapopen 16 -gapextend 4 -stdout -send1 15
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
 IN
@@ -16230,7 +16230,7 @@ FC = 34
 
 ID align-stretcher-begin2
 AP stretcher
-CL -gappen 16 -gaplen 4 -stdout -sbegin2 5
+CL -gapopen 16 -gapextend 4 -stdout -sbegin2 5
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
 IN
@@ -16251,7 +16251,7 @@ FC = 40
 
 ID align-stretcher-end2
 AP stretcher
-CL -gappen 16 -gaplen 4 -stdout -send2 -3
+CL -gapopen 16 -gapextend 4 -stdout -send2 -3
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
 IN
@@ -16272,7 +16272,7 @@ FC = 40
 
 ID align-stretcher-begendall
 AP stretcher
-CL -gappen 16 -gaplen 4 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -gapopen 16 -gapextend 4 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
 IN
@@ -16293,7 +16293,7 @@ FC = 34
 
 ID align-matcher-full
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout
+CL -gapopen 5 -gapextend 1 -stdout
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
 IN
@@ -16315,7 +16315,7 @@ FC = 34
 
 ID align-matcher-long
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout
+CL -gapopen 5 -gapextend 1 -stdout
 IN tembl:eclac
 IN tembl:eclacz
 IN
@@ -16336,7 +16336,7 @@ FC = 400
 
 ID align-matcher-longrev
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout -srev1 -srev2
+CL -gapopen 5 -gapextend 1 -stdout -srev1 -srev2
 IN tembl:eclac
 IN tembl:eclacz
 IN
@@ -16357,7 +16357,7 @@ FC = 400
 
 ID align-matcher-part
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout
+CL -gapopen 5 -gapextend 1 -stdout
 IN ../../data/aligna.dna
 IN ../../data/alignapart.dna
 IN
@@ -16379,7 +16379,7 @@ FC = 40
 
 ID align-matcher-begin
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout -sbegin1 5
+CL -gapopen 5 -gapextend 1 -stdout -sbegin1 5
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
 IN
@@ -16400,7 +16400,7 @@ FC = 34
 
 ID align-matcher-end
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout -send1 15
+CL -gapopen 5 -gapextend 1 -stdout -send1 15
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
 IN
@@ -16421,7 +16421,7 @@ FC = 34
 
 ID align-matcher-begin2
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout -sbegin2 5
+CL -gapopen 5 -gapextend 1 -stdout -sbegin2 5
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
 IN
@@ -16442,7 +16442,7 @@ FC = 34
 
 ID align-matcher-end2
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout -send2 -3
+CL -gapopen 5 -gapextend 1 -stdout -send2 -3
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
 IN
@@ -16463,7 +16463,7 @@ FC = 34
 
 ID align-matcher-begendall
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -gapopen 5 -gapextend 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
 IN
@@ -16484,7 +16484,7 @@ FC = 34
 
 ID align-matcher-pair
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -gapopen 5 -gapextend 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
 CL -aformat pair
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
@@ -16504,7 +16504,7 @@ FC = 32
 
 ID align-matcher-srspair
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -gapopen 5 -gapextend 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
 CL -aformat srspair
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
@@ -16524,7 +16524,7 @@ FC = 32
 
 ID align-matcher-markx0
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -gapopen 5 -gapextend 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
 CL -aformat markx0
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
@@ -16547,7 +16547,7 @@ FC = 34
 
 ID align-matcher-markx1
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -gapopen 5 -gapextend 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
 CL -aformat markx1
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
@@ -16570,7 +16570,7 @@ FC = 34
 
 ID align-matcher-markx2
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -gapopen 5 -gapextend 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
 CL -aformat markx2
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
@@ -16591,7 +16591,7 @@ FC = 32
 
 ID align-matcher-markx3
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -gapopen 5 -gapextend 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
 CL -aformat markx3
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
@@ -16613,7 +16613,7 @@ FC = 32
 
 ID align-matcher-markx10
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -gapopen 5 -gapextend 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
 CL -aformat markx10
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
@@ -16631,7 +16631,7 @@ FC = 53
 
 ID align-matcher-fasta
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -gapopen 5 -gapextend 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
 CL -aformat fasta
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
@@ -16651,7 +16651,7 @@ FC = 4
 
 ID align-matcher-msf
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -gapopen 5 -gapextend 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
 CL -aformat msf
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
@@ -16669,7 +16669,7 @@ FC = 13
 
 ID align-matcher-msfall
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout
+CL -gapopen 5 -gapextend 1 -stdout
 CL -aformat msf
 IN ../../data/aligna.dna
 IN ../../data/alignb.dna
@@ -16710,7 +16710,7 @@ FC = 40
 
 ID align-matcherprot-begin
 AP matcher
-CL -gappen 5 -gaplen 1 -stdout -sbegin1 5
+CL -gapopen 5 -gapextend 1 -stdout -sbegin1 5
 IN ../../data/aligna.prot
 IN ../../data/alignb.prot
 IN
