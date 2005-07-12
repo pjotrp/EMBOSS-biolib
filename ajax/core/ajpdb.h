@@ -168,6 +168,8 @@ typedef struct AjSAtom
 **
 ** @new     ajResidueNew Default Residue constructor.
 ** @delete  ajResidueDel Default Residue destructor.
+** @assign  ajResidueCopy Replicates a Residue object.
+** @assign  ajResidueListCopy Replicates a list of Residue objects.
 ** @use ajResidueEnv1 Assigns environment based on side chain accessibility and
 **  secondary structure.
 ** @use ajResidueEnv2 Assigns environment based on side chain accessibility and
@@ -763,9 +765,10 @@ ajint       ajAtomListCopy(AjPList *to, const AjPList from);
 /* ======================================================================= */
 /* ========================== Residue object ============================= */
 /* ======================================================================= */
-AjPResidue   ajResidueNew(void);
-void         ajResidueDel(AjPResidue *ptr);
+AjPResidue  ajResidueNew(void);
+void        ajResidueDel(AjPResidue *ptr);
 ajint       ajResidueCopy(AjPResidue *to, const AjPResidue from);
+AjBool      ajResidueListCopy(AjPList *to, const AjPList from);
 
 ajint       ajResidueEnv1(const AjPResidue res, char SEnv,
 		       AjPStr *OEnv, AjPFile logf);

@@ -3316,6 +3316,60 @@ AjBool ajAtomListCopy(AjPList *to, const AjPList from)
 
 
 
+
+/* @func ajResidueListCopy **************************************************
+**
+** Read a list of Residue structures and writes a copy of the list.  The 
+** data are copied and the list is created if necessary.
+** 
+** @param [w] to       [AjPList *] List of Residue objects to write
+** @param [r] from     [const AjPList]   List of Residue objects to read
+**
+** @return [AjBool] True if list was copied ok.
+** @@
+****************************************************************************/
+
+AjBool ajResidueListCopy(AjPList *to, const AjPList from)
+{
+/* AjPList ret  = NULL; */
+   AjIList iter = NULL;
+   AjPResidue hit  = NULL;
+   AjPResidue new  = NULL;
+
+   /* Check arg's */
+   if(!from || !to)
+   {
+       ajWarn("Bad arg's passed to ajResidueListCopy\n");
+       return ajFalse;
+   }
+    
+   /* Allocate the new list, if necessary */
+   if(!(*to))
+       *to=ajListNew();
+    
+   /* Initialise the iterator */
+   iter=ajListIterRead(from);
+    
+   /* Iterate through the list of Atom objects */
+   while((hit=(AjPResidue)ajListIterNext(iter)))
+   {
+       new=ajResidueNew();
+	
+       ajResidueCopy(&new, hit);
+
+       /* Push scophit onto list */
+       ajListPushApp(*to, new);
+   }
+
+
+   ajListIterFree(&iter);
+   return ajTrue; 
+}
+
+
+
+
+
 /* @func ajPdbCopy **********************************************************
 **
 ** Copies data from one Pdb object to another; the new object is 
@@ -3387,6 +3441,8 @@ AjBool ajPdbCopy(AjPPdb *to, const AjPPdb from)
 /*	(*to)->Chains[x]->Atoms = ajAtomListCopy(from->Chains[x]->Atoms); */
 	if(!ajAtomListCopy(&(*to)->Chains[x]->Atoms, from->Chains[x]->Atoms))
 	    ajFatal("Error copying Atoms list");	    
+	if(!ajResidueListCopy(&(*to)->Chains[x]->Residues, from->Chains[x]->Residues))
+	    ajFatal("Error copying Residues list");	    
     }
     
 
