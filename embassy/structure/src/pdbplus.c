@@ -221,7 +221,7 @@ int main(ajint argc, char **argv)
         }
 
         ajFileClose(&ccf_inf);
-        ajPdbCopy(&pdb, pdb_old);
+        ajPdbCopy(&pdb, pdb_old); 
         ajPdbDel(&pdb_old); 
 
         /* Construct name of corresponding PDB file.
@@ -261,7 +261,13 @@ int main(ajint argc, char **argv)
 			pdb_name, randomname, ajFileName(serrf));
 	    ajFmtPrint("stride %S -f%S >> %s 2>&1\n",  
 		       pdb_name, randomname,ajFileName(serrf));
-	    system(ajStrStr(syscmd));
+	    system(ajStrStr(syscmd));  
+
+/*	    ajFmtPrintS(&syscmd, "stride %S -f%S >> %s",  
+			pdb_name, randomname, ajFileName(serrf));
+	    ajFmtPrint("stride %S -f%S >> %s\n",  
+		       pdb_name, randomname,ajFileName(serrf));
+	    system(ajStrStr(syscmd));  */
 	    
 	    /* Open the stride output file */
 	    if (((tempf = ajFileNewIn(randomname)) == NULL))
@@ -329,6 +335,7 @@ int main(ajint argc, char **argv)
 		    /* iter = ajListIterRead(pdb->Chains[chain_num]->Atoms); */
 		    iter = ajListIterRead(pdb->Chains[chain_num]->Residues);
 		    found = ajFalse; 
+
 		    while((temp_res = (AjPResidue)ajListIterNext(iter)))
 		    {
 		        /* If we have found the residue we want */
@@ -400,7 +407,16 @@ int main(ajint argc, char **argv)
 	    ajFmtPrint("naccess %S  >> %s 2>&1\n",  
 		       pdb_name, 
 		       ajFileName(nerrf));
-	    system(ajStrStr(syscmd));
+	    system(ajStrStr(syscmd));  
+
+/*	    ajFmtPrintS(&syscmd, "naccess %S  >> %s",  
+			pdb_name, 
+			ajFileName(nerrf));
+	    ajFmtPrint("naccess %S  >> %s\n",  
+		       pdb_name, 
+		       ajFileName(nerrf));
+	    system(ajStrStr(syscmd));  */
+
 	    
 	    ajStrAssS(&naccess_str, pdbprefix);
 	    ajStrApp(&naccess_str, pdb->Pdb);
