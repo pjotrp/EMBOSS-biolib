@@ -18360,11 +18360,13 @@ FP 0 /Error: /
 FP 0 /Died: /
 //
 
-#########################################################
-# DOMAINATRIX etc.
-# DOMAINATRIX, DOMALIGN, DOMSEARCH, STRUCTURE, SIGNATURE
-#########################################################
 
+
+#########################################################
+#
+# EMBASSY (STRUCTURE) + scopparse (DOMAINATRIX)
+#
+#########################################################
 ID pdbparse-keep
 AB structure
 DL keep
@@ -18376,15 +18378,15 @@ IN
 IN
 IN
 FI stdout
-FC = 2
-FP 2 /^Processing /
+FC = 3
+FP 3 /^Processing /
 FI stderr
 FC = 2
 FP 0 /^Warning:/
 FP 0 /^Error:/
 FP 0 /^Died:/
 FI pdbparse.log
-FC = 15
+FC = 18
 FP 2 /^SEQRESLENDIF/
 FP 2 /^SECSTART       1 1 ILE 384\n/
 FP 3 /^SECBOTH/
@@ -18397,14 +18399,132 @@ FI 1ii7.ccf
 FC = 462
 FZ = 44215
 FP 402 /^AT /
+FI 2hhb.ccf
+FC = 5398
+FZ = 533145
+FP 4779 /^AT /
 //
+
+ID pdbparse-keep2
+AB structure
+DL keep
+AA pdbparse
+IN ../../data/structure/pdb
+IN
+IN Y
+IN
+IN
+IN
+FI stdout
+FC = 3
+FP 3 /^Processing /
+FI stderr
+FC = 2
+FP 0 /^Warning:/
+FP 0 /^Error:/
+FP 0 /^Died:/
+FI pdbparse.log
+FC = 18
+FZ = 527
+FP 1 /^DUPATOMRES/
+FP 5 /^BADINDEX/
+FI 1fx2.ccf
+FC = 2399
+FZ = 235421
+FP 2141 /^AT /
+FI 4at1.ccf
+FC = 8134
+FZ = 808387
+FP 7170 /^AT /
+FI 1cs4.ccf
+FC = 6610
+FZ = 654080
+FP 5843 /^AT /
+//
+
+
+ID pdbplus-keep
+AB structure
+DL keep
+AA pdbplus
+RQ stride
+RQ naccess
+CC Requires stride
+CC Requires naccess
+IN ../pdbparse-keep/
+IN ../../data/structure/
+IN  
+IN 3
+IN 4
+IN
+IN
+IN
+IN
+FI stderr
+FC = 6
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 11
+FZ = 979
+FP 3 /[.]ent  \>\> naccess[.]log/
+FP 2 /failures: 0\n/
+FI pdbplus.log
+FC = 28
+FZ = 1164
+FP 3 /stride output for/
+FP 2 /failures: 0\n/
+FI stride.log
+FC = 0
+FZ = 0
+FI naccess.log
+FC = 9
+FZ = 468
+FP 3 /naccess: using defualt vdw.radii\n/
+FP 3 /naccess: using default STD FILE\n/
+FI 1cs4.ccf
+FC = 537
+FZ = 51353
+FP /^SQ   SEQUENCE    52 AA;   5817 MW;  47362A43 CRC32;\n/
+FI 1ii7.ccf
+FC = 462
+FZ = 44215
+FP /^SQ   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;\n/
+FI 2hhb.ccf
+FC = 5398
+FZ = 533145
+FP /^SQ   SEQUENCE   141 AA;  15127 MW;  5EC7DB1E CRC32;\n/
+//
+
+
+ID scopparse-keep
+AB domainatrix
+DL keep
+AA scopparse
+IN ../../data/structure/scop.cla.raw
+IN ../../data/structure/scop.des.raw
+IN Y
+IN N
+IN all.scop
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI all.scop
+FC = 52
+FZ = 809
+FP 2 /^ID   /
+//
+
 
 ID domainer-keep
 AB structure
 DL keep
 AA domainer
-IN ../../data/structure/all.scop
-IN ../pdbparse-keep/
+IN ../scopparse-keep/all.scop
+IN ../pdbplus-keep/
 IN
 IN
 IN 1
@@ -18431,7 +18551,6 @@ FI d1cs4a_.ccf
 FZ = 40509
 FC = 418
 FP /SQ   SEQUENCE    52 AA;   5817 MW;  47362A43 CRC32;\n/
-FP /RE +1 +1 +3 +397 +I +ILE( +[.])+( +[-]?[0-9]+[.][0-9]+)+/
 FI d1ii7a_.ent
 FZ = 29727
 FC = 367
@@ -18440,8 +18559,515 @@ FI d1ii7a_.ccf
 FZ = 39748
 FC = 413
 FP /SQ   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;/
-FP /RE +1 +1 +8 +8 +D +ASP( +[.])+( +[-]?[0-9]+[.][0-9]+)+/
 //
+
+ID domainer-keep2
+AB structure
+DL keep
+AA domainer
+IN ../../data/structure/all.scop2
+IN ../pdbparse-keep2
+IN
+IN
+IN 1
+IN domainer_embl.log
+IN domainer_pdb.log
+FI stderr
+FC = 5
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 4
+FP /^D1CS4A_\n/
+FP /^D1FX2A_\n/
+FP /^D4AT1B1\n/
+FP /^D4AT1D1\n/
+FI domainer_embl.log
+FZ = 0
+FI domainer_pdb.log
+FZ = 0
+FI d1cs4a_.ent
+FZ = 123201
+FC = 1521
+FP 1476 /ATOM/
+FI d1cs4a_.ccf
+FZ = 166802
+FC = 1684
+FP /SQ   SEQUENCE   225 AA;  25486 MW;  437C8290 CRC32;\n/
+FI d1fx2a_.ent
+FZ = 152928
+FC = 1888
+FP 1856 /ATOM/
+FI d1fx2a_.ccf
+FZ = 209167
+FC = 2110
+FP 235 /RE   /
+FI d4at1b1.ent
+FZ = 60183
+FC = 743
+FP 725 /ATOM/
+FI d4at1b1.ccf
+FZ = 82081
+FC = 835
+FP 93 /RE   /
+FI d4at1d1.ent
+FZ = 60183
+FC = 743
+FP 725 /ATOM/
+FI d4at1d1.ccf
+FZ = 82081
+FC = 835
+FP 93 /RE   /
+//
+
+
+
+ID contacts-keep
+AB structure
+DL keep
+AA contacts
+IN ../pdbplus-keep/
+IN
+IN 1
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 3
+FP /^1ii7\n/
+FP /^1cs4\n/
+FP /^2hhb\n/
+FI 1cs4.con
+FC = 183
+FZ = 3736
+FP /CN   MO 1; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 52; NRES2 .\n/
+FP /NC   SM 163; LI .\n/
+FP /SM   ASP 46 ; CYS 47\n/
+FI 1ii7.con
+FC = 172
+FZ = 3545
+FP /CN   MO 1; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 65; NRES2 .\n/
+FP /NC   SM 151; LI .\n/
+FP /SM   ASP 49 ; LEU 50\n/
+FI 2hhb.con
+FC = 2696
+FZ = 58326
+FP /CN   MO 1; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 141; NRES2 .\n/
+FP /NC   SM 643; LI .\n/
+FP /SM   VAL 1 ; LEU 2\n/
+FI contacts.log
+FC = 3
+FZ = 15
+FP /1cs4\n/
+FP /1ii7\n/
+FP /2hhb\n/
+//
+
+ID contacts-keep2
+AB structure
+DL keep
+AA contacts
+IN ../domainer-keep/
+IN
+IN 1
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 2
+FP /^D1II7A_\n/
+FP /^D1CS4A_\n/
+FI d1cs4a_.con
+FC = 183
+FZ = 3742
+FP /CN   MO 1; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 52; NRES2 .\n/
+FP /NC   SM 163; LI .\n/
+FP /SM   ASP 2 ; ILE 3\n/
+FI d1ii7a_.con
+FC = 172
+FZ = 3551
+FP /CN   MO 1; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 65; NRES2 .\n/
+FP /NC   SM 151; LI .\n/
+FP /SM   ASP 49 ; LEU 50\n/
+FI contacts.log
+FC = 2
+FZ = 16
+FP /D1II7A_\n/
+FP /D1CS4A_\n/
+//
+
+ID interface-ex
+AB structure
+AA interface
+IN ../pdbplus-keep/2hhb.ccf
+IN 1
+IN 2hhb.con
+IN
+FI stdout
+FC = 1
+FP /^2hhb\n/
+FI stderr
+FC = 2
+FP 0 /^Warning:/
+FP 0 /^Error:/
+FP 0 /^Died:/
+FI 2hhb.con
+FC = 274
+FZ = 7000
+FP /CN   MO 1; CN1 1; CN2 2; ID1 A; ID2 B; NRES1 141; NRES2 146\n/
+FP 152 /^SM   /
+FI interface.log
+FC = 1
+FP /^2hhb\n/
+//
+
+
+
+ID sites-keep
+AB structure
+DL keep
+AA sites
+IN ../pdbplus-keep
+IN ../domainer-keep
+IN ../scopparse-keep/all.scop
+IN 1
+IN
+IN
+FI stdout
+FC = 5
+FZ = 312
+FP /CCF FILE:.*/1cs4.ccf \(1\/3\)/
+FP /CCF FILE:.*/1ii7.ccf \(2\/3\)/
+FP /CCF FILE:.*/2hhb.ccf \(3\/3\)/
+FI stderr
+FZ = 315
+FP 0 /^Warning:/
+FP 0 /^Error:/
+FP 0 /^Died:/
+FI SITES.con
+FC = 299
+FZ = 5173
+FP 11 /^ID   /
+FP 3 /^LI   ASP 2/
+FP /ID   PDB 1cs4; DOM d1cs4a_; LIG POP;\n/
+FI sites.log
+FC = 3
+FZ = 336
+FP /^CCF:.*1cs4.ccf HETS:YES NHETS:7 SCOP:YES NDOMS: 1\n/
+FP /^CCF:.*1ii7.ccf HETS:YES NHETS:5 SCOP:YES NDOMS: 1\n/
+FP /^CCF:.*2hhb.ccf HETS:YES NHETS:5 SCOP:NO NCHN:4\n/
+//
+
+
+ID hetparse-ex
+AB structure
+AA hetparse
+IN ../../data/structure/het.txt
+IN Y
+IN
+IN Ehet.dat
+FP 2 /^Processing/
+FI stderr
+FC = 2
+FP 0 /^Warning:/
+FP 0 /^Error:/
+FP 0 /^Died:/
+FI Ehet.dat
+FC = 48
+FZ = 949
+FP 9 /^NN/
+//
+
+
+ID pdbtosp-keep
+AB structure
+DL keep
+AA pdbtosp
+IN ../../data/structure/pdbtosp.txt
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI Epdbtosp.dat
+FC = 49
+FZ = 422
+FP 7 /^EN   /
+FP /^IN   XYLA_ACTMI ID; P12851 ACC;\n/
+//
+
+
+#########################################################
+#
+# EMBASSY (DOMAINATRIX)
+#
+#########################################################
+
+ID cathparse-ex
+AB domainatrix
+AA cathparse
+IN ../../data/structure/caths.list.small
+IN ../../data/structure/domlist.small
+IN ../../data/structure/CAT.names.all.small
+IN 
+IN
+FI stderr
+FC = 2
+FP 0 /^Warning:/
+FP 0 /^Error:/
+FP 0 /^Died:/
+FI Ecath.dat
+FC = 48
+FZ = 606
+FP 2 /^ID/
+FP /CH   0 CHAIN; 156 START; 203 END;\n/
+FP /CH   0 CHAIN; 159 START; 202 END;\n/
+FP /NR   48\n/
+FP /NR   44\n/
+FP 2 /SF   DNA helicase RuvA subunit, C-terminal domain\n/
+FI cathparse.log
+FC = 8
+FZ = 64
+FP 4 /^1\.10\.8/
+//
+
+ID domainseqs-keep
+AB domainatrix
+DL keep
+AA domainseqs
+IN ../scopparse-keep/all.scop
+IN ../domainer-keep
+IN Y
+IN ../pdbtosp-keep/Epdbtosp.dat
+IN all_s.scop
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 4
+FZ = 38
+FP 2 /^\/\/\n/
+FI all_s.scop
+FC = 59
+FZ = 1064
+FP 2 /^ID   /
+FI domainseqs.log
+FC = 6
+FZ = 78
+FP 2 /^NO_ACCESSION_NUMBER\n/
+FP 2 /\/\/\n/
+FP /^D1CS4A_ +\n/
+FP /^D1II7A_ +\n/
+//
+
+ID domainnr-ex
+AB domainatrix
+AA domainnr
+IN ../domainseqs-keep/all_s.scop
+IN
+IN 1
+IN 1
+IN 5
+IN all_nr.scop
+IN 
+FI stdout
+FC = 3
+FP 1 /^\/\/ /
+FP 2 /^D1/
+FI stderr
+FC = 15
+FP 0 /Error: /
+FP 0 /Died: /
+FI all_nr.scop
+FC = 30
+FZ = 527
+FP 1 /^ID/
+FI domainnr.log
+FC = 7
+FZ = 117
+FP 1 /^Retained/
+FP 1 /^Rejected/
+FP 1 /^\/\/ /
+//
+
+
+ID domainreso-ex
+AB domainatrix
+AA domainreso
+IN ../domainer-keep/
+IN ../scopparse-keep/all.scop
+IN 2.3
+IN all_2.3.scop
+FI stdout
+FC = 2
+FP 2 /[.]ccf\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI all_2.3.scop
+FC = 26
+FZ = 390
+FP 1 /^ID/
+FP /SI   53931 CL; 56299 FO; 56300 SF; 64427 FA; 64428 DO; 64429 SO; 62415 DD;\n/
+//
+
+
+
+ID domainsse-keep
+AB domainatrix
+DL keep
+AA domainsse
+IN ../scopparse-keep/all.scop
+IN ../domainer-keep
+IN domainsse.out
+IN domainsse.log
+FI stdout
+FC = 6
+FP 2 /^Processing/
+FI stderr
+FZ = 278
+FP 0 /^Warning:/
+FP 0 /^Error:/
+FP 0 /^Died:/
+FI domainsse.out
+FC = 62
+FZ = 1052
+FP 2 /^ID   /
+FI domainsse.log
+FZ = 0
+//
+
+
+
+ID ssematch-ex
+AB domainatrix
+AA ssematch
+IN ../../data/structure/sse.in
+IN ../domainsse-keep/domainsse.out
+IN 1
+IN res.dcf
+IN elm.dcf
+IN
+FI stderr
+FC = 2
+FP 0 /^Warning:/
+FP 0 /^Error:/
+FP 0 /^Died:/
+FI res.dcf
+FC = 33
+FZ = 543
+FP 1 /^ID /
+FI elm.dcf 
+FC = 33
+FZ = 573
+FP 1 /^ID /
+FP /^SE   HH\n/
+FI ssematch.log 
+FC = 0
+FZ = 0
+//
+
+
+
+
+
+
+#########################################################
+#
+# EMBASSY (DOMALIGN) + seqsearch (DOMSEARCH)
+#
+#########################################################
+
+ID domainrep-keep
+AB domalign
+DL keep
+AA domainrep
+RQ stamp
+CC requires a modified stamp to be installed
+IN ../../data/structure/all.scop2
+IN 2
+IN all_rep1st.scop
+FI stderr
+FC = 12
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 12
+FZ = 1008
+FP 6 /stamp/
+FI all_rep1st.scop
+FC = 104
+FZ = 1785
+FP 4 /^ID/
+//
+
+
+
+ID domainalign-keep
+AB domalign
+DL keep
+AA domainalign
+PP mkdir daf
+RQ stamp
+CC requires a modified stamp to be installed
+IN ../../data/structure/all.scop2
+IN ../domainer-keep2
+IN 4
+IN 1
+IN N
+IN daf
+IN
+IN
+FI stderr
+FC = 15
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 108
+FP 4 /^stamp/
+FI 54894.ent
+FC = 1461
+FZ = 117967
+FP 11 /^REMARK/
+DI daf
+DF 54894.daf
+DF 55074.daf
+## FI daf/54894.daf
+## FC = 21
+## FZ = 856
+## FP 6 /^# XX/
+FI 55074.ent
+FC = 3343
+FZ = 270409
+FP 11 /^REMARK/
+## FI daf/55074.daf
+## FC = 36
+## FZ = 1773
+## FP 6 /^# XX/
+FI domainalign.log
+FC = 14
+FZ = 574
+FP 14 /^Replaced/
+//
+
+
 
 ID allversusall-ex
 AB domalign
@@ -18471,312 +19097,404 @@ FZ = 84
 FP /1 O58452 : 2 O30129 : 82.42\n/
 FP /1 O58452 : 3 O26938 : 75.56\n/
 FP /2 O30129 : 3 O26938 : 71.43\n/
-FI ALLVERSUSALL.log
+FI allversusall.log
 FC = 4
 FP 2 /^\/\/\n/
 FP /swtiny1.fasta$/
 FP /swtiny2.fasta$/
 //
 
-ID cathparse-ex
-AB domainatrix
-AA cathparse
-IN ../../data/structure/caths.list.small
-IN ../../data/structure/domlist.small
-IN ../../data/structure/CAT.names.all.small
-IN 
-IN
-FI stderr
-FC = 2
-FP 0 /^Warning:/
-FP 0 /^Error:/
-FP 0 /^Died:/
-FI Ecath.dat
-FC = 48
-FZ = 606
-FP 2 /^ID/
-FP /CH   0 CHAIN; 156 START; 203 END;\n/
-FP /CH   0 CHAIN; 159 START; 202 END;\n/
-FP /NR   48\n/
-FP /NR   44\n/
-FP 2 /SF   DNA helicase RuvA subunit, C-terminal domain\n/
-FI CATHPARSE.log
-FC = 8
-FZ = 64
-FP 4 /^1\.10\.8/
-//
 
-ID contacts-ex
-AB structure
-AA contacts
-IN ../../data/structure
-IN
-IN 1
-IN
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FC = 4
-FP /^1ii7\n/
-FP /^1cs4\n/
-FP /^D1II7A_\n/
-FP /^D1CS4A_\n/
-FI 1cs4.con
-FC = 183
-FZ = 3736
-FP /CN   MO 1; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 52; NRES2 .\n/
-FP /NC   SM 163; LI .\n/
-FP /SM   ASP 46 ; CYS 47\n/
-FI 1ii7.con
-FC = 172
-FZ = 3545
-FP /CN   MO 1; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 65; NRES2 .\n/
-FP /NC   SM 151; LI .\n/
-FP /SM   ASP 49 ; LEU 50\n/
-FI d1cs4a_.con
-FC = 866
-FZ = 19308
-FP /CN   MO 1; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 225; NRES2 .\n/
-FP /NC   SM 843; LI .\n/
-FP /SM   ILE 209 ; LEU 210\n/
-FI d1ii7a_.con
-FC = 172
-FZ = 3551
-FP /CN   MO 1; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 65; NRES2 .\n/
-FP /NC   SM 151; LI .\n/
-FP /SM   ASP 49 ; LEU 50\n/
-FI contacts.log
-FC = 4
-FZ = 26
-FP /1cs4\n/
-FP /D1II7A_\n/
-//
 
-ID domainnr-ex
-AB domainatrix
-AA domainnr
-IN ../../data/structure/all_s.scop
-IN
-IN 4
-IN 1
-IN
-IN all_nr.scop
-IN
-FI stdout
-FC = 4
-FP 2 /^\/\/ /
-FP 2 /^D1/
-FI stderr
-FC = 15
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI all_nr.scop
-FC = 59
-FZ = 1064
-FP 2 /^ID/
-FI domainnr.log
-FC = 10
-FZ = 197
-FP 2 /^Retained/
-FP 2 /^Rejected/
-FP 2 /^\/\/ /
-//
 
-ID domainseqs-ex
-AB domainatrix
-AA domainseqs
-IN ../../data/structure/all.scop
-IN ../../data/structure/
-IN Y
-IN ../../data/structure/Epdbtosp.dat
-IN all_s.scop
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FC = 4
-FP 2 /^\/\/\n/
-FI all_s.scop
-FC = 62
-FZ = 1269
-FP 2 /^ID   /
-FI domainseqs.log
-FC = 6
-FZ = 78
-FP 2 /^NO_ACCESSION_NUMBER\n/
-FP 2 /\/\/\n/
-FP /^D1CS4A_ +\n/
-FP /^D1II7A_ +\n/
-//
 
-ID domainalign-ex
-AB domalign
-AA domainalign
-RQ stamp
-CC requires a modified stamp to be installed
-CC warnings from stamp to be resolved
-IN ../../data/structure/all.scop2
-IN ../../data/structure/
-IN 4
-IN 1
-IN Y
-IN
-IN
-IN
-IN
-FI stderr
-FC = 44
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FC = 54
-FP 4 /^stamp/
-FI 54894.ent
-FC = 1461
-FZ = 117961
-FP 11 /^REMARK/
-FI 54894.daf
-FC = 21
-FZ = 856
-FP 6 /^# XX/
-FI 55074.ent
-FC = 3343
-FZ = 270409
-FP 11 /^REMARK/
-FI 55074.daf
-FC = 36
-FZ = 1773
-FP 6 /^# XX/
-FI domainalign.log
-FC = 14
-FZ = 574
-//
+#########################################################
+#
+# EMBASSY (DOMSEARCH) + seqalign (DOMALIGN)
+#
+#########################################################
 
-ID domainrep-ex
-AB domalign
-AA domainrep
-RQ stamp
-CC documentation says stamp is required
-CC but the test case does not fail without it.
-CC Needs more examples in test data to invoke stamp
-IN ../../data/structure/all.scop
-IN 4
-IN all_rep1st.scop
+ID seqsearch-keep
+RQ blastpgp
+## Uses blastpgp to search
+## blastpgp generates 4 warning messages
+## (WARNING so the test pattern misses it) in stderr
+AB domsearch
+DL keep
+AA seqsearch
+IN 2
+IN ../domainalign-keep/daf
+IN ../../data/structure/swsmall
+IN
+IN 0.0001
+IN 100
+IN
+IN
+IN 2
 FI stderr
 FC = 12
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI all_rep1st.scop
-FC = 52
-FZ = 809
-FP 2 /^ID/
+FI stdout
+FC = 6
+FZ = 562
+FP 2 /^blastpgp/
+FI 54894.dhf
+FC = 80
+FZ = 13751
+FP 40 /^>/
+FI 55074.dhf
+FC = 200
+FZ = 37365
+FP 100 /^>/
+FI seqsearch.log
+FC = 4
+FZ = 170
+FP 2 /[.]daf\n/
 //
 
-ID domainreso-ex
-AB domainatrix
-AA domainreso
-IN ../../data/structure
-IN ../../data/structure/all.scop
-IN 2.3
-IN all_2.3.scop
+
+ID seqfraggle-keep
+AB domsearch
+DL keep
+AA seqfraggle
+IN ../seqsearch-keep
+IN 50
+IN
 FI stdout
+FC = 2
+FP /Processing .*54894.dhf\n/
+FP /Processing .*55074.dhf\n/
+FI stderr
+FC = 2
+FP 0 /^Warning:/
+FP 0 /^Error:/
+FP 0 /^Died:/
+FI 54894.dhf
+FZ = 13471
+FC = 80
+FP 40 /^>/
+FI 55074.dhf
+FZ = 35123
+FC = 188
+FP 94 /^>/
+//
+
+ID seqnr-keep
+AB domsearch
+DL keep
+AA seqnr
+PP mkdir hitsnr
+PP mkdir hitsred
+IN ../seqfraggle-keep
+IN N
+IN Y
+IN ../domainalign-keep/daf
+IN 1
+IN 70
+IN hitsnr
+IN Y
+IN hitsred
+IN
+FI stderr
+FC = 5
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 2
+FZ = 176
+FP 2 /^Processing/
+FI seqnr.log
 FC = 4
-FP 4 /[.]ccf\n/
+FZ = 160
+FP 2 /^\/\/\n/
+FP 2 /[.]dhf\n/
+DI hitsnr
+DF 54894.dhf
+DF 55074.dhf
+## FI hitsnr/54894.dhf
+## FZ = 1351
+## FC = 8
+## FP 4 /^>/
+## hitsnr/55074.dhf
+## FZ = 2512
+## FC = 14
+## FP 7 /^>/
+DI hitsred
+DF 54894.dhf      
+DF 55074.dhf
+## FI hitsred/54894.dhf
+## FZ = 12120
+## FC = 72
+## FP 36 /^>/
+## FI hitsred/55074.dhf
+## FZ = 32611
+## FC = 174
+## FP 87 /^>/
+//
+
+
+ID seqsort-keep
+AB domsearch
+DL keep
+AA seqsort
+IN ../seqnr-keep/hitsnr
+IN 10
+IN Y
+IN Y
+IN
+IN
+IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI all_2.3.scop
-FC = 26
-FZ = 390
-FP 1 /^ID/
-FP /SI   53931 CL; 56299 FO; 56300 SF; 64427 FA; 64428 DO; 64429 SO; 62415 DD;\n/
+FI fam.dhf
+FC = 22
+FZ = 3863
+FP 11 /^> /
+FI oth.dhf
+FC = 0
+FZ = 0 
+FI 54894.dhf
+FC = 8
+FZ = 1351
+FP 4  /^> /
+FI 55074.dhf
+FC = 14
+FZ = 2512
+FP 7 /^> /
 //
 
-ID domainsse-ex
-AB domainatrix
-AA domainsse
-IN ../../data/structure/all.scop
-IN ../../data/structure/
-IN domainsse.out
-IN DOMAINSSE.log
-FI stdout
-FC = 6
-FP 2 /^Processing/
+
+ID seqwords-ex
+AB domsearch
+AA seqwords
+IN ../../data/structure/seqwords.terms
+IN ../../data/structure/seqwords.seq
+IN seqwords.dhf
 FI stderr
-FZ = 285
-FP 0 /^Warning:/
-FP 0 /^Error:/
-FP 0 /^Died:/
-FI domainsse.out
-FC = 52
-FZ = 809
-FP 2 /^ID   /
-FI DOMAINSSE.log
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI seqwords.dhf
+FC = 2
+FZ = 531
+FP /^> Q60150\^.\^1\^312\^SCOP\^.\^0\^Alpha and beta proteins/
+//
+
+ID seqalign-keep
+AB domalign
+AA seqalign
+DL keep
+RQ clustalw
+## Apparently requires clustalw 1.83 for long filenames
+## clustalw 1.82 failed with 'unable to read .aln file'
+## this was a clustalw error message
+## renaming the files and running clustalw worked
+IN 2
+IN ../domainalign-keep/daf
+IN ../seqsearch-keep
+IN 1
+IN
+IN
+FI stderr
+FC = 8
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 6344
+FZ = 238062
+FP 144 /Sequence \d+: .* \d+ aa\n/
+FI 54894.daf
+FC = 98
+FZ = 6987
+FP 2 /d4at1b1_0/
+FP 2 /d4at1d1_1/
+FI 55074.daf
+FC = 527
+FZ = 42660
+FP 5 /d1cs4a__0/
+FP 5 /d1fx2a__1/
+FI seqalign.log
+FC = 4
+FZ = 170
+FP 2 /[.]daf\n/
+FP 2 /^\/\/\n/
+//
+
+
+
+ID seqnr-ex
+AB domsearch
+AA seqnr
+PP mkdir hitsnr
+PP mkdir hitsred
+IN ../../data/structure/seqnr/hitsin
+IN Y
+IN ../../data/structure/seqnr/singlets
+IN Y
+IN ../../data/structure/seqnr/sets
+IN 1
+IN 70
+IN hitsnr
+IN Y
+IN hitsred
+IN
+FI stderr
+FC = 5
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 2
+FP 2 /^Processing/
+FI seqnr.log
+FC = 4
+FP 2 /^\/\/\n/
+FP 2 /[.]dhf\n/
+DI hitsnr
+DF 54894.dhf
+## FZ = 679
+## FC = 4
+## FP 2 /^>/
+## FP /^> Q9YBD5\^/
+## FP /^> Q9KP65\^/
+DF 55074.dhf
+## FZ = 376
+## FC = 2
+## FP 1 /^>/
+## FP /^> Q9DGG6\^/
+DI hitsred
+DF 54894.dhf      
+## FZ = 2356
+## FC = 14
+## FP 7 /^>/
+## FP /^> Q9UX07\^/
+DF 55074.dhf
+## FZ = 1547
+## FC = 8
+## FP 4 /^>/
+## FP /^> Q9WVI4\^/
+//
+
+
+#########################################################
+#
+# EMBASSY (SIGNATURE)
+#
+#########################################################
+
+ID siggen-keep
+AB signature
+DL keep
+AA siggen
+IN ../domainalign-keep/daf
+IN 2
+IN 5
+IN 1
+IN EBLOSUM62
+IN 15
+IN 0
+IN Y
+IN
+FI stderr
+FC = 16
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI 54894.sig
+FC = 136
+FZ = 1367
+FP 15 /^IN   /
+FI 55074.sig
+FC = 330
+FZ = 3140
+FP 38 /^IN   /
+//
+
+
+ID siggenlig-keep
+AB signature
+DL keep
+AA siggenlig
+IN ../sites-keep/SITES.con
+IN ../pdbplus-keep
+IN ../domainer-keep
+IN 1
+IN 1
+IN 
+IN 
+IN 
+FI stderr
+FC = 8
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+FZ = 0
+FI 101.1.F.#.1cs4.d1cs4a_.sig
+FC = 62
+FZ = 610
+FP  /^IN   /
+FI 101.2.F.#.1ii7.d1ii7a_.sig
+FC = 30
+FZ = 318
+FP  /^IN   /
+FI FOK.1.F.#.1cs4.d1cs4a_.sig
+FC = 22
+FZ = 219
+FP  /^IN   /
+FI HEM.1.F.#.2hhb...sig
+FC = 150
+FZ = 1415
+FP  /^IN   /
+FI HEM.2.F.#.2hhb...sig
+FC = 150
+FZ = 1415
+FP  /^IN   /
+FI HEM.3.F.#.2hhb...sig
+FC = 166
+FZ = 1563
+FP  /^IN   /
+FI HEM.4.F.#.2hhb...sig
+FC = 134
+FZ = 1267
+FP  /^IN   /
+FI MG.1.F.#.1cs4.d1cs4a_.sig
+FC = 46
+FZ = 441
+FP  /^IN   /
+FI MN.1.F.#.1ii7.d1ii7a_.sig
+FC = 38
+FZ = 373
+FP  /^IN   /
+FI PO4.1.F.#.2hhb...sig
+FC = 30
+FZ = 290
+FP  /^IN   /
+FI POP.1.F.#.1cs4.d1cs4a_.sig
+FC = 62
+FZ = 590
+FP  /^IN   /
+FI siggenlig.log
+FC = 0
 FZ = 0
 //
 
-ID hetparse-ex
-AB structure
-AA hetparse
-IN ../../data/structure/het.txt
-IN Y
-IN
-IN Ehet.dat
-FP 2 /^Processing/
-FI stderr
-FC = 2
-FP 0 /^Warning:/
-FP 0 /^Error:/
-FP 0 /^Died:/
-FI Ehet.dat
-FC = 48
-FZ = 949
-FP 9 /^NN/
-//
-
-ID interface-ex
-AB structure
-AA interface
-IN ../../data/structure/interface/2hhb.ccf
-IN 1
-IN 2hhb.con
-IN
-FI stdout
-FC = 1
-FP /^2hhb\n/
-FI stderr
-FC = 2
-FP 0 /^Warning:/
-FP 0 /^Error:/
-FP 0 /^Died:/
-FI 2hhb.con
-FC = 274
-FZ = 7000
-FP /CN   MO 1; CN1 1; CN2 2; ID1 A; ID2 B; NRES1 141; NRES2 146\n/
-FP 152 /^SM   /
-FI interface.log
-FC = 1
-FP /^2hhb\n/
-//
 
 ID libgen-ex
 AB signature
 AA libgen
 RQ hmmer
 RQ sam-t2k
-IN ../../data/structure
+IN ../domainalign-keep/daf
 IN EBLOSUM62
 IN 2
 IN
@@ -18786,41 +19504,57 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI 54894.disc
-FC = 110
-FZ = 14885
-FP /Length\s+97\n/
-FP /^Consensus\s+GVEAIKN.+YEVVEKSRLSLP\n/
-FP /^2.40 0.00 0.80 2.40 2.00 -2.40 6.00 -0.80 -1.20 .* -2.40 0.00 3.49 3.49\n/
+FC = 107
+FZ = 14810
+FP /Length\s+94\n/
 FI 55074.disc
-FC = 270
-FZ = 38912
-FP /Length\s+257\n/
-FP /^Consensus\s+GVEAIKN.+NFAALRLDREXFD\n/
+FC = 265
+FZ = 38174
+FP /Length\s+252\n/
 //
 
 ID matgen3d-ex
 AB signature
 AA matgen3d
-CC Test not yet written
+IN 1
+IN ../scopparse-keep/all.scop
+IN ../domainer-keep
+IN 1
+IN 
+IN 
+IN 
 FI stderr
-FC = 2
+FC = 22
 FP 0 /^Warning:/
 FP 0 /^Error:/
 FP 0 /^Died:/
+FI stdout
+FC = 0
+FZ = 0
+FI matgen3d.calc
+FC = 128
+FZ = 3801
+FP /SUMiNijArr/
+FI matgen3d.log
+FC = 182
+FZ = 2686
+FP 1 /D1CS4A/
+FP 1 /D1II7A_/
+FI matgen3d.out
+FC = 28
+FZ = 3563
+FP 1 /AU   -0.01  1.19  0.91  0.50  1.19  0.68 -0.11  2.00  1.19  0.35 -0.11  0.91  2.29  0.35  2.29  1.60  1.19 -2.20  2.29  1.19 -2.20 -2.20 -2.20 -2.64/
 //
 
-ID pdbplus-ex
-AB structure
-AA pdbplus
-RQ stride
-RQ naccess
-CC Requires stride
-CC Requires naccess
-IN ../../data/structure/pdbplus
-IN ../../data/structure/
-IN  
-IN 3
-IN 4
+
+ID sigscan-ex
+AB signature
+AA sigscan
+IN ../siggen-keep/54894.sig
+IN ../../data/structure/swsmall
+IN
+IN
+IN
 IN
 IN
 IN
@@ -18831,45 +19565,60 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 8
-FP 2 /[.]ent  \>\> naccess[.]log/
-FP 2 /failures: 0\n/
-FI pdbplus.log
-FC = 20
-FP 2 /stride output for/
-FP 2 /failures: 0\n/
-FI stride.log
-FC = 0
-FZ = 0
-FI naccess.log
-FC = 4
-FP 2 /naccess: using defualt vdw.radii\n/
-FP 2 /naccess: using default STD FILE\n/
-FI 1cs4.ccf
-FC = 491
-FZ = 109604
-FP /^SQ   SEQUENCE    52 AA;   5817 MW;  47362A43 CRC32;\n/
-FI 1ii7.ccf
-FC = 419
-FP /^SQ   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;\n/
+FC = 5
+FP 5 / ok\n/
+FI SIGSCAN.dhf
+FC = 200
+FZ = 38869
+FP /> P00478/
+FI SIGSCAN.aln
+FC = 1113
+FZ = 73700
+FP /^SIGNATURE -      ----------\*-\*--------------------------\*-------------\n/
 //
 
-ID pdbtosp-ex
-AB structure
-AA pdbtosp
-IN ../../data/structure/pdbtosp.txt
+
+
+ID sigscanlig-ex
+AB signature
+AA sigscanlig
+PP mkdir lhf
+PP mkdir aln
+PP mkdir results
+IN ../siggenlig-keep
+IN ../../data/structure/swtiny
 IN
+IN 1
+IN
+IN
+IN
+IN lhf
+IN aln
+IN results
 FI stderr
-FC = 2
+FC = 9
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI Epdbtosp.dat
-FC = 49
-FZ = 422
-FP 7 /^EN   /
-FP /^IN   XYLA_ACTMI ID; P12851 ACC;\n/
+FI stdout
+FC = 0
+DI lhf
+DF Q99396^.^262^473^.lhf   
+DF Q9DGG6^.^380^560^.lhf   
+DF Q9ERL9^.^480^631^.lhf   
+DF Q9WVI4^.^516^664^.lhf
+DI aln
+DF Q99396^.^262^473^.aln   
+DF Q9DGG6^.^380^560^.aln   
+DF Q9ERL9^.^480^631^.aln   
+DF Q9WVI4^.^516^664^.aln
+DI results
+DF Q99396^.^262^473^.results       
+DF Q9DGG6^.^380^560^.results       
+DF Q9ERL9^.^480^631^.results       
+DF Q9WVI4^.^516^664^.results
 //
+
 
 ID rocon-ex
 AB signature
@@ -18952,404 +19701,10 @@ FP /ROC50     == 0.185 \(combined\)/
 FI  rocplot.errors
 FC = 33
 FZ = 250
-FP /rocn\[0\]: 0.184714\n/
-FP /roc: 50\n/
+FP /rocn/
 //
 
-ID scopparse-ex
-AB domainatrix
-AA scopparse
-IN ../../data/structure/scop.cla.raw
-IN ../../data/structure/scop.des.raw
-IN Y
-IN N
-IN all.scop
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI all.scop
-FC = 52
-FZ = 809
-FP 2 /^ID   /
-//
 
-ID seqalign-ex
-AB domalign
-AA seqalign
-RQ clustalw
-## Apparently requires clustalw 1.83 for long filenames
-## clustalw 1.82 failed with 'unable to read .aln file'
-## this was a clustalw error message
-## renaming the files and running clustalw worked
-IN 1
-IN ../../data/structure
-IN ../../data/structure/seqalign
-IN
-IN
-IN
-FI stderr
-FC = 8
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FC = 73
-FP 9 /Sequence \d+: .* \d+ aa\n/
-FI 54894.daf
-FC = 22
-FZ = 895
-FP /^Q9KP65_9_100\s+0 VEAIKNGTVI[A-Z]+DMHN---SAQRVT[A-Z]+LLKIENVF 0\n/
-FI 55074.daf
-FC = 36
-FZ = 1872
-FP /Q9DGG6_1032_1200\s+0 RIGF[A-Z]+VSEETYRILSK----- 0\n/
-FI seqalign.log
-FC = 4
-FZ = 124
-FP 2 /[.]dhf\n/
-FP 2 /^\/\/\n/
-//
-
-ID seqfraggle-ex
-AB domsearch
-AA seqfraggle
-IN ../../data/structure
-IN 50
-IN
-FI stdout
-FC = 2
-FP /Processing .*/data/structure/54894.dhf\n/
-FP /Processing .*/data/structure/55074.dhf\n/
-FI stderr
-FC = 2
-FP 0 /^Warning:/
-FP 0 /^Error:/
-FP 0 /^Died:/
-FI 54894.dhf
-FZ = 13499
-FC = 80
-FP 40 /^>/
-FI 55074.dhf
-FZ = 44551
-FC = 234
-FP 117 /^>/
-//
-
-ID seqnr-ex
-AB domsearch
-AA seqnr
-PP mkdir hitsnr
-PP mkdir hitsred
-IN ../../data/structure/seqnr/hitsin
-IN Y
-IN ../../data/structure/seqnr/singlets
-IN Y
-IN ../../data/structure/seqnr/sets
-IN 1
-IN 70
-IN hitsnr
-IN Y
-IN hitsred
-IN
-FI stderr
-FC = 5
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FC = 2
-FP 2 /^Processing/
-FI seqnr.log
-FC = 4
-FP 2 /^\/\/\n/
-FP 2 /[.]dhf\n/
-DI hitsnr
-DF 54894.dhf
-## FZ = 679
-## FC = 4
-## FP 2 /^>/
-## FP /^> Q9YBD5\^/
-## FP /^> Q9KP65\^/
-DF 55074.dhf
-## FZ = 376
-## FC = 2
-## FP 1 /^>/
-## FP /^> Q9DGG6\^/
-DI hitsred
-DF 54894.dhf      
-## FZ = 2356
-## FC = 14
-## FP 7 /^>/
-## FP /^> Q9UX07\^/
-DF 55074.dhf
-## FZ = 1547
-## FC = 8
-## FP 4 /^>/
-## FP /^> Q9WVI4\^/
-//
-
-ID seqsearch-ex
-RQ blastpgp
-## Uses blastpgp to search
-## blastpgp generates 4 warning messages
-## (WARNING so the test pattern misses it) in stderr
-AB domsearch
-AA seqsearch
-IN 2
-IN ../../data/structure
-IN ../../data/structure/swsmall
-IN
-IN 0.0001
-IN 100
-IN
-IN
-FI stderr
-FC = 12
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FC = 6
-FP 2 /^blastpgp/
-FI 54894.dhf
-FC = 14
-FP 7 /^>/
-FI 55074.dhf
-FC = 72
-FZ = 13281
-FP 36 /^>/
-FI seqsearch.log
-FC = 4
-FP 2 /[.]daf\n/
-//
-
-ID seqsort-ex
-AB domsearch
-AA seqsort
-IN ../../data/structure
-IN 10
-IN Y
-IN Y
-IN
-IN
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI fam.dhf
-FC = 316
-FZ = 59437
-FP 158 /^> /
-FI oth.dhf
-FC = 0
-FZ = 0 
-FI 54894.dhf
-FC = 80
-FZ = 13779 
-FP 40  /^> /
-FI 55074.dhf
-FC = 236
-FZ = 45658 
-FP 118 /^> /
-//
-
-ID seqwords-ex
-AB domsearch
-AA seqwords
-IN ../../data/structure/seqwords.terms
-IN ../../data/structure/seqwords.seq
-IN seqwords.dhf
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI seqwords.dhf
-FC = 2
-FZ = 531
-FP /^> Q60150\^.\^1\^312\^SCOP\^.\^0\^Alpha and beta proteins/
-//
-
-ID siggen-ex
-AB signature
-AA siggen
-IN ../../data/structure/
-IN 2
-IN 5
-IN 1
-IN EBLOSUM62
-IN 15
-IN 0
-IN Y
-IN
-FI stderr
-FC = 16
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI 54894.sig
-FC = 132
-FZ = 1338
-FP 14 /^IN   /
-FI 55074.sig
-FC = 287
-FZ = 2784
-FP 30 /^IN   /
-//
-
-ID siggenlig-ex
-AB signature
-AA siggenlig
-CC Test not yet written
-IN ../../data/structure/
-IN 2
-IN 5
-IN 1
-IN EBLOSUM62
-IN 15
-IN 0
-IN Y
-IN
-FI stderr
-FC = 16
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI 54894.sig
-FC = 132
-FZ = 1338
-FP 14 /^IN   /
-FI 55074.sig
-FC = 287
-FZ = 2784
-FP 30 /^IN   /
-//
-
-ID sigscan-ex
-AB signature
-AA sigscan
-CC Signature type mismatch warnings in Write and Compile
-IN ../../data/structure/54894.sig
-IN ../../data/structure/swsmall
-IN
-IN
-IN
-IN
-IN
-IN
-IN
-FI stderr
-FC = 7
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FC = 5
-FP 5 / ok\n/
-FI SIGSCAN.dhf
-FC = 200
-FP /^> P57451\^\.\^6\^91\^SCOP\^\.\^54894\^Alpha and beta proteins/
-FP /^> Q9KP65\^\.\^6\^91\^SCOP\^\.\^54894\^Alpha and beta proteins/
-FI SIGSCAN.aln
-FC = 1113
-FP /^Q9YBD5    1      VRKIRSGVVIDHIPPGRAFTMLKALGLLPPRGYRWRIAVVINAESSKLGRKDI 53\n/
-FP /^SIGNATURE -      ------\*---\*\*-\*---------------------------\*------\*--\*-\n/
-//
-
-ID sigscanlig-ex
-AB signature
-AA sigscanlig
-CC Test not yet written
-IN ../../data/structure/54894.sig
-IN ../../data/structure/swsmall
-IN
-IN
-IN
-IN
-IN
-IN
-IN
-FI stderr
-FC = 7
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FC = 5
-FP 5 / ok\n/
-FI SIGSCAN.dhf
-FC = 200
-FP /^> P57451\^\.\^6\^91\^SCOP\^\.\^54894\^Alpha and beta proteins/
-FP /^> Q9KP65\^\.\^6\^91\^SCOP\^\.\^54894\^Alpha and beta proteins/
-FI SIGSCAN.aln
-FC = 1113
-FP /^Q9YBD5    1      VRKIRSGVVIDHIPPGRAFTMLKALGLLPPRGYRWRIAVVINAESSKLGRKDI 53\n/
-FP /^SIGNATURE -      ------\*---\*\*-\*---------------------------\*------\*--\*-\n/
-//
-
-ID sites-ex
-AB structure
-AA sites
-IN ../../data/structure/sites
-IN ../../data/structure
-IN ../../data/structure/sites/sites.dcf
-IN 1
-IN
-IN
-FI stdout
-FC = 4
-FP /CCF FILE: .*/data/structure/sites/1cs4.ccf \(1\/2\)/
-FP /CCF FILE: .*/data/structure/sites/1ii7.ccf \(2\/2\)/
-FI stderr
-FZ = 315
-FP 0 /^Warning:/
-FP 0 /^Error:/
-FP 0 /^Died:/
-FI SITES.con
-FC = 177
-FZ = 3737
-FP 7 /^ID   /
-FP 3 /^LI   ASP 41/
-FP /ID   PDB 1cs4; DOM d1cs4a_; LIG POP;\n/
-FI SITES.log
-FC = 2
-FZ = 208
-FP /^CCF:.*1cs4.ccf\tHETS:YES\tNHETS:7\tSCOP:YES\tNDOMS: 1\n/
-FP /^CCF:.*1ii7.ccf\tHETS:YES\tNHETS:5\tSCOP:YES\tNDOMS: 1\n/
-//
-
-ID ssematch-ex
-AB domainatrix
-AA ssematch
-IN ../../data/structure/sse.in
-IN ../../data/structure/all_e.scop
-IN 1
-IN res.dcf
-IN elm.dcf
-IN
-FI stderr
-FC = 2
-FP 0 /^Warning:/
-FP 0 /^Error:/
-FP 0 /^Died:/
-FI res.dcf
-FC = 33
-FZ = 543
-FP 1 /^ID /
-FP /^SI   53931 CL; 56299 FO; 56300 SF; 64427 FA; 64428 DO; 64429 SO; 62415 DD;\n/
-FI elm.dcf 
-FC = 36
-FZ = 750
-FP 1 /^ID /
-FP /^SE   EEEEEEE\n/
-FI SSEMATCH.log 
-FC = 0
-FZ = 0
-//
 
 ######################################
 # EMNU
