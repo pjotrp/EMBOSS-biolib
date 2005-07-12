@@ -236,7 +236,7 @@ int main(int argc, char **argv)
 	    if((filterf = ajFileNewIn(filtername)) == NULL)
 	    {
 		ajWarn("Could not open DHF file %S", filtername);
-		ajFmtPrint("Could not open singlets input file %S", filtername);
+		ajFmtPrint("Could not open singlets filter file %S", filtername);
 	    }
 	    else
 	    {
@@ -327,7 +327,7 @@ int main(int argc, char **argv)
 	    if((filterf = ajFileNewIn(filtername)) == NULL)
 	    {
 		ajWarn("Could not open DAF file %S", filtername);
-		ajFmtPrint("Could not open singlets input file %S", filtername);
+		ajFmtPrint("Could not open sets filter file %S", filtername);
 	    }
 	    else
 	    {

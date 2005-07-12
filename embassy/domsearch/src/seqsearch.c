@@ -213,7 +213,7 @@ int main(int argc, char **argv)
 
         /* Delete psiblast output file*/
 	ajFmtPrintS(&temp, "rm %S", psiname);
-	system(ajStrStr(temp)); 
+	system(ajStrStr(temp));  
 	
 
 
@@ -761,10 +761,12 @@ static AjPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg,
     {
         /* We've found a line beginning with > i.e. the start of a block of 
 	   hits to a single protein. */
-        if(ajStrPrefixC(line,">SW:"))
+/*        if(ajStrPrefixC(line,">SW:")) */
+	if(ajStrPrefixC(line,">"))
         {
             /* Parse the accession number. */
-            ajFmtScanS(line, "%*s %S", &prevacc);
+            /* ajFmtScanS(line, "%*s %S", &prevacc); */
+            ajFmtScanS(line, "%*c%S", &prevacc);
         }
         /* We've found a line beginning with ' Score = ' i.e. the start of data 
 	   for a hit. */
@@ -781,6 +783,10 @@ static AjPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg,
                 ajStrAssC(&hitlist->hits[hitn-1]->Model, "PSIBLAST");
                 hitlist->hits[hitn-1]->Score = score;
 		hitlist->hits[hitn-1]->Eval  = eval;
+	
+/*		ajFmtPrint("1. Writing ACC: %S\n", acc); */
+		
+
 	    }
 
 	    ajFmtScanS(line, "%*s %*s %f %*s %*s %*s %*s %f", 
@@ -823,6 +829,8 @@ static AjPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg,
 	ajStrAssC(&hitlist->hits[hitn-1]->Model, "PSIBLAST");
 	hitlist->hits[hitn-1]->Score = score;
 	hitlist->hits[hitn-1]->Eval  = eval;
+
+/*		ajFmtPrint("2. Writing ACC: %S\n", acc); */
     }
 
     /*Tidy up and return. */
