@@ -3654,3 +3654,51 @@ static void codFix(AjPCod thys)
 
     return;
 }
+/* @func ajCodPrintFormat **************************************************
+**
+** Reports the internal data structures
+**
+** @param [u] outf [AjPFile] Output file
+** @param [r] full [AjBool] Full report (usually ajFalse)
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajCodPrintFormat(AjPFile outf, AjBool full)
+{
+    ajint i = 0;
+
+    ajFmtPrintF(outf, "\n");
+    ajFmtPrintF(outf, "# codon usage input formats\n");
+    ajFmtPrintF(outf, "# Name  Format name (or alias)\n");
+    ajFmtPrintF(outf, "# Try   Test for unknown input files\n");
+    ajFmtPrintF(outf, "# Desc  Format description\n");
+    ajFmtPrintF(outf, "# Name         Try Description\n");
+    ajFmtPrintF(outf, "\n");
+    ajFmtPrintF(outf, "Format {\n");
+    for(i=0; codInFormatDef[i].Name; i++)
+    {
+	ajFmtPrintF(outf, "  %-12s %3B '%s'\n",
+		     codInFormatDef[i].Name,
+		     codInFormatDef[i].Try,
+		     codInFormatDef[i].Desc);
+    }
+    ajFmtPrintF(outf, "}\n\n");
+
+    ajFmtPrintF(outf, "\n");
+    ajFmtPrintF(outf, "# codon usage output formats\n");
+    ajFmtPrintF(outf, "# Name  Format name (or alias)\n");
+    ajFmtPrintF(outf, "# Desc  Format description\n");
+    ajFmtPrintF(outf, "# Name         Description\n");
+    ajFmtPrintF(outf, "\n");
+    ajFmtPrintF(outf, "OFormat {\n");
+    for(i=0; codOutFormatDef[i].Name; i++)
+    {
+	ajFmtPrintF(outf, "  %-12s '%s'\n",
+		     codOutFormatDef[i].Name,
+		     codOutFormatDef[i].Desc);
+    }
+    ajFmtPrintF(outf, "}\n\n");
+
+    return;
+}

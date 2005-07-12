@@ -2878,7 +2878,13 @@ void ajReportPrintFormat(AjPFile outf, AjBool full)
 
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "# report output formats\n");
-    ajFmtPrintF(outf, "# Name         Mintags Showseq Nuc Pro Description\n");
+    ajFmtPrintF(outf, "# Name    Format name (or alias)\n");
+    ajFmtPrintF(outf, "# Mintags Minimum number of tags to be specified (0 for al)\n");
+    ajFmtPrintF(outf, "# Showseq Includes sequence\n");
+    ajFmtPrintF(outf, "# Nuc     Valid for nucleotide sequences\n");
+    ajFmtPrintF(outf, "# Pro     Valid for protein sequences\n");
+    ajFmtPrintF(outf, "# Desc    Format description\n");
+    ajFmtPrintF(outf, "# Name    Mintags Showseq Nuc Pro Description\n");
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "RFormat {\n");
     for(i=0; reportFormat[i].Name; i++)
@@ -2889,7 +2895,7 @@ void ajReportPrintFormat(AjPFile outf, AjBool full)
 		     reportFormat[i].Showseq,
 		     reportFormat[i].Nuc,
 		     reportFormat[i].Prot,
-		     reportFormat[i].Name);
+		     reportFormat[i].Desc);
     }
     ajFmtPrintF(outf, "}\n\n");
 

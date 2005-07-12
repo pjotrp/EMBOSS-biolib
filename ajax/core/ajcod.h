@@ -108,6 +108,7 @@ char*        ajCodTriplet(ajint idx);
 void 	     ajCodWrite(AjPCod thys, AjPFile outf);
 void 	     ajCodWriteOut( const AjPCod thys, AjPOutfile outf);
 ajint        ajCodOutFormat(const AjPStr name);
+void         ajCodPrintFormat(AjPFile outf, AjBool full);
 #endif
 
 #ifdef __cplusplus

@@ -4340,6 +4340,12 @@ void ajAlignPrintFormat(AjPFile outf, AjBool full)
 
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "# alignment output formats\n");
+    ajFmtPrintF(outf, "# Name    Format name (or alias)\n");
+    ajFmtPrintF(outf, "# Desc    Format description\n");
+    ajFmtPrintF(outf, "# Minseq  Minimum number of sequences\n");
+    ajFmtPrintF(outf, "# Maxseq  Minimum number of sequences\n");
+    ajFmtPrintF(outf, "# Nuc     Valid for nucleotide sequences\n");
+    ajFmtPrintF(outf, "# Pro     Valid for protein sequences\n");
     ajFmtPrintF(outf, "# Name         Minseq Maxseq Nuc Pro Description\n");
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "AFormat {\n");
