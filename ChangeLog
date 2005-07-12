@@ -1,4 +1,14 @@
 Version 3.0.0
+	water, needle and other alignment programs occasionally could
+	report suboptimal alignments (off by the gap extension penalty
+	score). The reported alignments were correct, but rearranging the
+	gaps could give a slightly higher score. Matcher and stretcher use
+	different alignment functions and were unaffected.
+
+	Cpgplot no longer has a -shift option to speed processing on long
+	sequences. The output was broken. We will restore it if there is
+	demand.
+
 	Two new variables added for developers using the MYEMBOSS package
 	to write their own EMBOSS programs. EMBOSS_MYEMBOSSROOT (the same
 	will work for other EMBASSY packages) points to the location of
@@ -7,7 +17,7 @@ Version 3.0.0
 	their own code using MYEMBOSS. This requires the use of embInitP
 	rather than embInit to pass the package name - something all
 	EMBASSY programs should (and will do). The second variable is
-	EMBOSS_ACDUTILROOT and is required so that utuilities such as
+	EMBOSS_ACDUTILROOT and is required so that utilities such as
 	acdvalid can also find the ACD files. Utilities acdvalid, acdc,
 	acdhelp, acdtable and acdpretty use embInit as they no nothing
 	about any package name.
@@ -61,13 +71,13 @@ Version 3.0.0
 	Clustal output format no longer writes in blocks of 10.
 
 	Clustal and other multiple sequence formats were unable to return
-	single named sequenced. Fixed for all such formats.
+	single named sequences. Fixed for all such formats.
 	
 	Phylip3 output renamed phylipnon for compatibility with other
 	formats. The phylip3 name is retained for back compatibility. The
 	header for phylip non-interleaved format is corrected to that
 	accepted by phylip 3.6 (no need for YF on the header line, and
-	correct number of sequences). Docuemntation of these formats (for
+	correct number of sequences). Documentation of these formats (for
 	seqret and general format documentation) has been updated.
 
 	Programs chips, cusp, prettyseq and showtran used a codon usage
@@ -90,7 +100,7 @@ Version 3.0.0
 	codon usage filenames are only used if no other input file (or
 	sequence, or feature table, or other input type) has been
 	read. This is done by passing a "reset" boolean when setting the
-	staved first input file name so that other inputs can overwrite a
+	saved first input file name so that other inputs can overwrite a
 	name defined by a codon usage input. A remaining side effect is
 	that if the first input is stdin (for example with -filter on)
 	then a second input file can now set the default for output. The
