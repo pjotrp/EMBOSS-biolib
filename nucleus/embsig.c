@@ -4196,6 +4196,8 @@ AjBool embSignatureAlignSeq(const AjPSignature S, const AjPSeq seq,
     ajint  nresm1 = 0;	  /*== nres-1 */
     static EmbPSigcell path = NULL;  /*Path matrix as 1D array */
 
+    static ajint savedim = 0;		/* dimension of path */
+    static ajint savenres = 0;		/* dimension of alg and p */
     ajint dim =0;         /*Dimension of 1D path matrix == nres 
 				   * S->npos */
     static char *p = NULL;  /*Protein sequence */
@@ -4248,22 +4250,26 @@ AjBool embSignatureAlignSeq(const AjPSignature S, const AjPSeq seq,
     {
 	/* CREATE PATH MATRIX */
 	AJCNEW(path, dim);
+	savedim = dim;
 
 	/* CREATE ALIGNMENT AND PROTEIN SEQUENCE STRINGS */
 	alg = AJALLOC((nres*sizeof(char))+1);
 	p = AJALLOC((nres*sizeof(char))+1);
+	savenres = nres;
     }	
     else 
     {
 	/* CREATE PATH MATRIX */
-	if(dim > (ajint) sizeof(path)/sizeof(EmbOSigcell))
+	if(dim > savedim)
+	{
 	    AJCRESIZE(path, dim);
-
+	}
 	/* CREATE ALIGNMENT AND PROTEIN SEQUENCE STRINGS */
-	if((nres) > (ajint) sizeof(alg)/sizeof(char))
+	if((nres) > savenres)
 	{
 	    AJCRESIZE(alg, nres+1);
 	    AJCRESIZE(p, nres+1);
+	    savenres = nres;
 	}
     }
 
@@ -4271,7 +4277,7 @@ AjBool embSignatureAlignSeq(const AjPSignature S, const AjPSeq seq,
 
     /*
     ** INITIALISE PATH MATRIX
-    ** Only necessary to initilise <try> element to ajFalse
+    ** Only necessary to initialise <try> element to ajFalse
     */
     for(cnt=0;cnt<dim;cnt++)
 	path[cnt].visited = ajFalse;
