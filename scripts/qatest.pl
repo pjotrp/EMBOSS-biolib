@@ -89,7 +89,7 @@ sub runtest ($) {
   my $testq = 0;
   my $testa = 0;
   my $testpath="";
-  my $packa="unknown";
+  $packa="unknown";
 
 # these are globals, used by the caller
 
@@ -685,7 +685,10 @@ $misssf=0;
 %dotest = ();
 %tfm = ();
 %sf = ();
-
+%packfail=();
+$mainfail=0;
+$packa="unknown";
+  
 $logfile = "qatest.log";
 
 foreach $test (@ARGV) {
@@ -839,7 +842,9 @@ while (<IN>) {
       print STDERR "$id test failed code $result $retcode{$result}\n\n";
       print LOG "$id test failed code $result $retcode{$result}\n";
       $tfail++;
-
+      if($packa eq "unknown") {$mainfail++}
+      else {$packfail{$packa}++}
+      
 # Usually we keep failed tests (unless delete is set to 'all')
 
       if ($globaltestdelete eq "all") {
@@ -862,7 +867,7 @@ while (<IN>) {
 
       print LOG "test $id success\n";
 
-# usually we delete sucessful results (unless delete is set to 'keep')
+# usually we delete successful results (unless delete is set to 'keep')
 
       if ($globaltestdelete ne "keep") {
 	$sysstat = system( "rm -rf $id");
@@ -912,7 +917,14 @@ $tpass = $totall - $tfail;
 $allendtime = time();
 $alltime = $allendtime - $allstarttime;
 
-
+if($mainfail){
+    print STDERR "Failed EMBOSS: $mainfail\n";
+}
+foreach $x (sort(keys(%packfail))) {
+    if(defined($packfail{$x})) {
+	print STDERR "Failed $x $packfail{$x}\n";
+    }
+}
 print STDERR "Tests total: $totall pass: $tpass fail: $tfail\n";
 print STDERR "Skipped: $totskip check: $skipcheck embassy: $skipembassy requirements: $skipreq\n";
 
