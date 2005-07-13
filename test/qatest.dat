@@ -18427,7 +18427,6 @@ FP 0 /^Error:/
 FP 0 /^Died:/
 FI pdbparse.log
 FC = 18
-FZ = 527
 FP 1 /^DUPATOMRES/
 FP 5 /^BADINDEX/
 FI 1fx2.ccf
@@ -19381,11 +19380,11 @@ FP 0 /Died: /
 FI stdout
 FC = 0
 FZ = 0
-FI 101.2.F.#.1cs4.d1cs4a_.sig
+FI 101.1.F.#.1cs4.d1cs4a_.sig
 FC = 62
 FZ = 610
 FP  /^IN   /
-FI 101.1.F.#.1ii7.d1ii7a_.sig
+FI 101.2.F.#.1ii7.d1ii7a_.sig
 FC = 30
 FZ = 318
 FP  /^IN   /
@@ -19641,7 +19640,7 @@ FZ = 333
 FP /ROC50     == 0.185 \(combined\)/
 FI  rocplot.log
 FC = 33
-FP /^rocn\[0\]: -2\.0/
+FP /^rocn\[0\]:/
 FP /^numfiles: 2\n/
 //
 
