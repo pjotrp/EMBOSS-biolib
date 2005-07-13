@@ -93,7 +93,7 @@ DB qanflat  [ type: N format: embl method: emblcd
 
 DB qanxflat  [ type: N format: embl method: emboss
   dir: $emboss_qadata/embl
-  indexdir: $emboss_qadata/qa/dbxflat-check-keep
+  indexdir: $emboss_qadata/qa/dbxflat-ex-keep
   dbalias: embl
   comment: "EMBL flatfiles"
 ]
