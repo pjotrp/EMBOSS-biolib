@@ -133,7 +133,7 @@ int main(int argc, char **argv)
 	    continue;	    
 	}
 	
-	
+
 	/* Write pdb structure. */
 	if(!(pdb=ajPdbReadFirstModelNew(cpdb_inf)))
 	{
@@ -162,6 +162,7 @@ int main(int argc, char **argv)
 	ajStrApp(&pdbscop_name, ajDirExt(pdbscop_dir));
 
 
+
 	if(!(pdbscop_outf=ajFileNewOutDir(pdbscop_dir,scop_name)))
 	{
 	    ajFmtPrintS(&msg, "Could not open for writing pdbscop file %S", 
@@ -174,6 +175,7 @@ int main(int argc, char **argv)
 	    ajPdbDel(&pdb);
 	    continue;
 	}   	
+
 
 
 	/* Open embl-like format file for writing. */
@@ -215,6 +217,7 @@ int main(int argc, char **argv)
 	}
 
 
+
 	/* Write domain coordinate file in embl-like format. */
 	if(!ajPdbWriteDomain(cpdbscop_outf, pdb, scop, errf2))
 	{
@@ -229,16 +232,17 @@ int main(int argc, char **argv)
 	}
 
 
+
 	/* Memory management. */
 	ajFileClose(&cpdb_inf);
 	ajFileClose(&pdbscop_outf);
 	ajFileClose(&cpdbscop_outf);
 	ajScopDel(&scop);
 	ajPdbDel(&pdb);
+
     }
     /* End of main application loop. */    
     
-
 
 
 
@@ -252,6 +256,7 @@ int main(int argc, char **argv)
     ajFileClose(&scop_inf);
     ajFileClose(&errf1);
     ajFileClose(&errf2);
+
 
 
     ajExit();

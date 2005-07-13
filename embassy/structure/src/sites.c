@@ -435,9 +435,9 @@ int main(ajint argc, char **argv)
 	if(!sites_HetTest(pdb))
 	{
 	    ajStrDel(&cp_file);	
-	    ajFmtPrintF(logf, "\tHETS:NO\n");
+	    ajFmtPrintF(logf, " HETS:NO\n");
 	    fflush(stdout);
-	    /* ajFmtPrint("\tNO HETS - SKIPPING FILE...\n"); */
+	    /* ajFmtPrint(" NO HETS - SKIPPING FILE...\n"); */
 	    ajPdbDel(&pdb);
 	    pdb=NULL;
 	    continue;
@@ -454,8 +454,8 @@ int main(ajint argc, char **argv)
 			     &n_heterogens, logf);	
       
 	l=ajListLength(list_heterogens);
-	ajFmtPrintF(logf, "\tHETS:YES", l);
-	ajFmtPrintF(logf, "\tNHETS:%d", l);
+	ajFmtPrintF(logf, " HETS:YES", l);
+	ajFmtPrintF(logf, " NHETS:%d", l);
 	fflush(stdout);
       
 	/* CREATE LIST OF SCOP IDENTIFIERS FOR SCOP DOMAINS OCCURRING 
@@ -471,7 +471,7 @@ int main(ajint argc, char **argv)
 	siz_domains=ajIntNew();
 	pdbdomList=ajListNew();
 
-	ajFmtPrintF(logf, "\tSCOP:");
+	ajFmtPrintF(logf, " SCOP:");
       
 	/* Check for domains in the pdb object, if no domains skip to 
 	   next file */
@@ -500,7 +500,7 @@ int main(ajint argc, char **argv)
 		ndomain++;	
 		fflush(stdout);
 	    }
-	    ajFmtPrintF(logf, "\t\tNCHN:%d\n", pdb->Nchn);
+	    ajFmtPrintF(logf, " NCHN:%d\n", pdb->Nchn);
 	    /* CALCULATE CONTACTS BETWEEN ALL COMBINATIONS OF CHAINS AND 
 	       HETEROGENS IN CURRENT PDB OBJECT */
 	    sites_HeterogenContacts(ajWAPROTEIN, 
@@ -596,7 +596,7 @@ int main(ajint argc, char **argv)
 	    ajListIterFree(&iter_pdbdom);
 	    pdbdom_ptr=NULL;
 	    l=ajListLength(list_domains);
-	    ajFmtPrintF(logf, "\tNDOMS: %d\n", l);
+	    ajFmtPrintF(logf, " NDOMS: %d\n", l);
 	    fflush(stdout);
 	  
 	    /* CALCULATE CONTACTS BETWEEN ALL COMBINATIONS OF DOMAINS AND 
