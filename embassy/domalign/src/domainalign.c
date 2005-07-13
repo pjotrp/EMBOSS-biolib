@@ -450,7 +450,7 @@ int main(int argc, char **argv)
 
 
     /* Remove all temporary files. */
-/*
+
     ajFmtPrintS(&temp, "rm %S", log);
     ajSystem(temp);
     ajFmtPrintS(&temp, "rm %S", dom);
@@ -467,7 +467,7 @@ int main(int argc, char **argv)
     ajStrAppC(&temp, ".mat");
     ajFmtPrintS(&temp1, "rm %S", temp);
     ajSystem(temp1);
-  */    
+    
 
     
 
@@ -1036,7 +1036,8 @@ static void domainalign_stamp(AjPDomain prevdomain,
     AjPStr    line      = NULL;	/* Holds a line from the log file.         */
     AjPRegexp rexp      = NULL;	/* For parsing no. of clusters in log file */
     AjPStr    temp      = NULL;	/* A temporary string.                     */
-     
+    ajint     x         = 0;    /* Loop counter.                           */
+    
 
     exec     = ajStrNew();
     line     = ajStrNew();
@@ -1101,7 +1102,7 @@ static void domainalign_stamp(AjPDomain prevdomain,
     
     
     /* Remove all temporary files. */
-    /*
+    
     for(x=1;x<ncluster+1;x++)
     {
 	ajFmtPrintS(&temp, "rm %S.%d", name, x);
@@ -1110,7 +1111,7 @@ static void domainalign_stamp(AjPDomain prevdomain,
     
     ajFmtPrintS(&temp, "rm %S.%d.post", name, ncluster);
     ajSystem(temp); 
-  */  
+  
 
     ajStrDel(&exec);
     ajStrDel(&line);

@@ -589,7 +589,7 @@ int main(int argc, char **argv)
 	
 	ajSysUnlink(clustin2);
 	ajSysUnlink(clustout);
-	ajSysUnlink(clustdnd);
+	ajSysUnlink(clustdnd);  
 	
 	
 	/* Free memory. */

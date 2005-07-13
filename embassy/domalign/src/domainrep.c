@@ -89,8 +89,10 @@ int main(int argc, char **argv)
     AjPStr     dom        = NULL; /* Name of file containing single domain*/
     AjPStr     set        = NULL; /* Name of file containing set of domains*/
     AjPStr     out        = NULL; /* Name of file containing pairwise rmsd values */
+    AjPStr     scan       = NULL; /* Name of temp. file used by STAMP.        */
     AjPStr     name       = NULL; /* Base name of STAMP temp files */
     AjPStr     temp       = NULL; /* A temporary string */
+
 
     AjPFile    dcfin      = NULL; /* File pointer for Escop.dat file (input)*/
     AjPFile    dcfout     = NULL; /* File pointer for Escop.dat file (output)*/
@@ -128,6 +130,7 @@ int main(int argc, char **argv)
     set      = ajStrNew();
     name     = ajStrNew();
     temp     = ajStrNew();
+    scan     = ajStrNew();
 
     famlist    = ajListNew();
 
@@ -156,7 +159,8 @@ int main(int argc, char **argv)
     ajStrAppC(&set, ".set");
     ajStrAssS(&out, name);	
     ajStrAppC(&out, ".out");
-
+    ajStrAssS(&scan, name);	
+    ajStrAppC(&scan, ".scan");
 
 
     /* Initialise last_node with something that is not in SCOP. */
@@ -209,6 +213,7 @@ int main(int argc, char **argv)
 		    for(x=0; x<famsize-1; x++)
 		    {
 			/* Open, write and close domain file*/
+			
 			if(!(domf=ajFileNewOut(dom)))
 			    ajFatal("Could not open domain file\n");
 			ajStrAssS(&temp, ajDomainGetId(arr[x]));
@@ -220,6 +225,7 @@ int main(int argc, char **argv)
 			for(y=x+1; y<famsize; y++)
 			{
 			    /* Open domain set file. */
+
 			    if(!(setf=ajFileNewOut(set)))
 				ajFatal("Could not open domain set file\n");
 
@@ -245,6 +251,7 @@ int main(int argc, char **argv)
 
 			    
 			    /* Open stamp output file. */
+			
 			    outf = ajFileNewIn(out);
 			    
 
@@ -380,6 +387,7 @@ int main(int argc, char **argv)
 	for(x=0; x<famsize-1; x++)
 	{
 	    /* Open, write and close domain file*/
+
 	    if(!(domf=ajFileNewOut(dom)))
 		ajFatal("Could not open domain file\n");
 	    ajStrAssS(&temp, ajDomainGetId(arr[x]));
@@ -390,6 +398,7 @@ int main(int argc, char **argv)
 
 	    for(y=x+1; y<famsize; y++)
 	    {
+
 		/* Open domain set file. */
 		if(!(setf=ajFileNewOut(set)))
 		    ajFatal("Could not open domain set file\n");
@@ -416,6 +425,7 @@ int main(int argc, char **argv)
 
 			    
 		/* Open stamp output file. */
+
 		outf = ajFileNewIn(out);
 			    
 
@@ -511,7 +521,7 @@ int main(int argc, char **argv)
 
 
     /* Remove all temporary files. */
-    if(domf)
+/*    if(domf)
     {
 	ajFmtPrintS(&temp, "rm %S", dom);
 	ajSystem(temp);
@@ -525,9 +535,21 @@ int main(int argc, char **argv)
     {    
 	ajFmtPrintS(&temp, "rm %S", out);
 	ajSystem(temp);
-    }
-    
-    
+    } */
+
+
+    ajFmtPrintS(&temp, "rm %S", dom);
+    ajSystem(temp);
+
+    ajFmtPrintS(&temp, "rm %S", set);
+    ajSystem(temp);
+
+    ajFmtPrintS(&temp, "rm %S", out);
+    ajSystem(temp);
+
+    ajFmtPrintS(&temp, "rm %S", scan);
+    ajSystem(temp);
+
     
     /* Tidy up*/
     ajStrDel(&node[0]);
