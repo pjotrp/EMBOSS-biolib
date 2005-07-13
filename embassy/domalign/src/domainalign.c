@@ -736,7 +736,7 @@ static void domainalign_ProcessStampFile(AjPStr in,
 	    {
 		/* Print the number line out as it is. */
 		if(ajStrPrefixC(line,"Number"))
-		    ajFmtPrintF(outf,"\n# %7S %S\n"," ", line);
+		    ajFmtPrintF(outf,"\n# %7s %S\n"," ", line);
 		else
 		{
 		    /* Read only the 7 characters
