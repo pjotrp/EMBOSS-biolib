@@ -1,3 +1,23 @@
+MYEMBOSS is a developers package. Installation requires recent
+versions of GNU packages autoconf, automake and libtool.
+
+To install, you must first build the configure and make files with
+these commands:
+
+aclocal -I m4
+
+autoconf
+
+automake -a
+
+When you add your own programs, do so by adding source files in
+myemboss/source and ACD files in myemboss/emboss_acd and add these
+filenames to the Makefile.am files in each directory. There are
+"myseq" and "mytest" examples provided to guide you.
+
+There is no need to modify configure or Makefile files - these will be
+automatically updated.
+
 Copyright (C) 1994, 1995, 1996, 1999, 2000, 2001, 2002 Free Software
 Foundation, Inc.
 
