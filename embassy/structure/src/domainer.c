@@ -96,8 +96,8 @@ int main(int argc, char **argv)
     cpdbscop_dir = ajAcdGetOutdir("ccfoutdir");
     pdbscop_dir  = ajAcdGetOutdir("pdboutdir");
     scop_inf      = ajAcdGetInfile("scopfile");
-    errf1         = ajAcdGetOutfile("pdberrfile");
-    errf2         = ajAcdGetOutfile("cpdberrfile");
+    errf1         = ajAcdGetOutfile("pdblogfile");
+    errf2         = ajAcdGetOutfile("cpdblogfile");
     
     if(ajStrChar(*mode,0)=='1')
 	moden = ajPDB;

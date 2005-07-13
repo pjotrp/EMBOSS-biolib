@@ -374,7 +374,7 @@ int main(int argc, char **argv)
     
 
     /* DIAGNOSTICS */
-    errf          = ajAcdGetOutfile("errfile");    
+    errf          = ajAcdGetOutfile("logfile");    
 
 
 

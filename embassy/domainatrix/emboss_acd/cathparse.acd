@@ -73,7 +73,7 @@ section: output [
     standard: "Y"
     information: "Name of CATHPARSE log file"
     help: "This option specifies the name of the CATHPARSE log file."
-    default: "CATHPARSE.log"
+    default: "cathparse.log"
     knowntype: "domainatrix log file"
   ]
 

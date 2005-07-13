@@ -162,11 +162,11 @@ int main(ajint argc, char **argv)
     pdbprefix    = ajAcdGetString("pdbprefix");
     ccfout       = ajAcdGetOutdir("ccfoutdir");
     mode         = ajAcdGetList("mode");
-    errf         = ajAcdGetOutfile("errfile");
+    errf         = ajAcdGetOutfile("logfile");
     if(ajStrChar(*mode, 0) != '2')
-	serrf    = ajAcdGetOutfile("serrfile");
+	serrf    = ajAcdGetOutfile("slogfile");
     if(ajStrChar(*mode, 0) != '1')
-	nerrf    = ajAcdGetOutfile("nerrfile");
+	nerrf    = ajAcdGetOutfile("nlogfile");
     tS           = ajAcdGetInt("thresholdsize");
  
 

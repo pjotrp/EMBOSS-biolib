@@ -168,7 +168,7 @@ section: output [
     information: "Name ssematch log file (output)"
     help: "This option specifies the name of the ssematch log file
            (output)."
-    default: "SSEMATCH.log"
+    default: "ssematch.log"
     knowntype: "domainatrix log file"
   ]
 

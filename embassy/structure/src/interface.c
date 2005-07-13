@@ -119,7 +119,7 @@ int main(ajint argc, char **argv)
     ajAcdInitP("interface",argc,argv,"STRUCTURE"); 
     cpdb_inf      = ajAcdGetInfile("infile");
     con_outf      = ajAcdGetOutfile("outfile");
-    logf          = ajAcdGetOutfile("conerrfile");
+    logf          = ajAcdGetOutfile("conlogfile");
     thresh        = ajAcdGetFloat("thresh");
     ignore        = ajAcdGetFloat("ignore");
     vdwf       = ajAcdGetDatafile("vdwfile");

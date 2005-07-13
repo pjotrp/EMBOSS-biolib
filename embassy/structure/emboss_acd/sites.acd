@@ -112,7 +112,7 @@ section: output [
     standard: "Y"
     information: "Name of log file"
     help: "This option specifies the name of the log file."
-    default: "SITES.log"
+    default: "sites.log"
     knowntype: "domainatrix log file"
   ]
 

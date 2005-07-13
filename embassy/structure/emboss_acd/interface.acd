@@ -92,7 +92,7 @@ section: output [
     knowntype: "contact file"
   ]
 
-  outfile: conerrfile [
+  outfile: conlogfile [
     standard: "Y"
     information: "Name of log file for the build"
     default: "interface.log"

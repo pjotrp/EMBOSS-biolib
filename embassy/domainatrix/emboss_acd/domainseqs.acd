@@ -132,7 +132,7 @@ section: output [
     knowntype: "domain classification file"
   ]
 
-  outfile: errfile [
+  outfile: logfile [
     standard: "Y"
     information: "Name of log file for the build."
     help: "This option specifies the name of log file for the build.

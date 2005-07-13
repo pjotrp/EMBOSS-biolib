@@ -136,7 +136,7 @@ int main(ajint argc, char **argv)
     ajAcdInitP("pdbparse",argc,argv,"STRUCTURE"); 
     pdb_path     = ajAcdGetDirlist("pdbpath");
     ccf_path    = ajAcdGetOutdir("ccfoutdir");
-    logf         = ajAcdGetOutfile("errfile");
+    logf         = ajAcdGetOutfile("logfile");
     min_chain_size=ajAcdGetInt("chnsiz");
     max_mismatch  =ajAcdGetInt("maxmis");
     max_trim      =ajAcdGetInt("maxtrim");

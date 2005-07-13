@@ -154,7 +154,7 @@ int main(int argc, char **argv)
     }
     domain_outf   = ajAcdGetOutfile("dcfoutfile");
     dpdb_path   = ajAcdGetDirectory("dpdbdir");
-    errf        = ajAcdGetOutfile("errfile");
+    errf        = ajAcdGetOutfile("logfile");
 
 
 

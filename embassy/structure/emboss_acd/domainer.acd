@@ -93,7 +93,7 @@ section: output [
            file."
   ]
 
-  outfile: cpdberrfile [
+  outfile: cpdblogfile [
     standard: "Y"
     help: "This option specifies the log file, which contains messages
            about any errors arising while DOMAINER generated CCF format
@@ -102,7 +102,7 @@ section: output [
     knowntype: "domainatrix log file"
   ]
 
-  outfile: pdberrfile [
+  outfile: pdblogfile [
     standard: "Y"
     help: "This option specifies the the log file, which contains
            messages about any errors arising while DOMAINER generated PDB

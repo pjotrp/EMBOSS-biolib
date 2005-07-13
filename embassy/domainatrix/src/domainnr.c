@@ -152,7 +152,7 @@ int main(int argc, char **argv)
     matrix    = ajAcdGetMatrixf("datafile");
     gapopen   = ajAcdGetFloat("gapopen");
     gapextend = ajAcdGetFloat("gapextend");
-    errf      = ajAcdGetOutfile("errfile");
+    errf      = ajAcdGetOutfile("logfile");
     mode      = ajAcdGetList("mode");
     node      = ajAcdGetList("node");
     retain    = ajAcdGetToggle("retain");

@@ -138,7 +138,7 @@ int main(ajint argc, char **argv)
     ajAcdInitP("contacts",argc,argv,"STRUCTURE"); 
     cpdb_path     = ajAcdGetDirlist("cpdbdir");
     con_path      = ajAcdGetOutdir("conoutdir");
-    logf          = ajAcdGetOutfile("conerrfile");
+    logf          = ajAcdGetOutfile("conlogfile");
     thresh        = ajAcdGetFloat("threshold");
     ccfnaming     = ajAcdGetBool("ccfnaming");
     skip          = ajAcdGetBool("skip");

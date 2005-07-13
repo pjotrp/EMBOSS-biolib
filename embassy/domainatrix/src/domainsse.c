@@ -102,7 +102,7 @@ int main(int argc, char **argv)
     dcf_inf    = ajAcdGetInfile("dcfinfile");
     dcf_outf   = ajAcdGetOutfile("dcfoutfile");
     dccf        = ajAcdGetDirectory("dccfdir");
-    errf        = ajAcdGetOutfile("errfile");
+    errf        = ajAcdGetOutfile("logfile");
 
 
 

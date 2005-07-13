@@ -132,7 +132,7 @@ section: output [
     knowntype: "protein clean coordinates"
   ]
 
-  outfile: errfile [
+  outfile: logfile [
     standard: "Y"
     information: "Name of log file for the build."
     help: "This option specifies tame of the log file for the build.

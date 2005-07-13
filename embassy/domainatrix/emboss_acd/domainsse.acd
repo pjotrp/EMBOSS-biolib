@@ -78,11 +78,11 @@ section: output [
     knowntype: "domain classification file"
   ]
 
-  outfile: errfile [
+  outfile: logfile [
     parameter: "Y"
     information: "Name of DOMAINSSE log file."
     help: "This option specifies the name of the DOMAINSSE log file."
-    default: "DOMAINSSE.log"
+    default: "domainsse.log"
     knowntype: "domainatrix log file"
   ]
 

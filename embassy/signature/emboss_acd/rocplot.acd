@@ -228,9 +228,9 @@ section: output [
     knowntype: "filename prefix"
   ]
 
-  outfile: errfile [
-    information: "Name of error file (output)."
-    default: "rocplot.errors"
+  outfile: logfile [
+    information: "Name of error log file (output)."
+    default: "rocplot.log"
     knowntype: "domainatrix log file"
   ]
 
