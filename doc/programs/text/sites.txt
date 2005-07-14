@@ -1,5 +1,7 @@
 
-SITES documentation
+                            SITES documentation
+                                      
+   
 
 CONTENTS
 
@@ -39,9 +41,8 @@ CONTENTS
 
   Input files for usage example
 
-  File: sites/sites.dcf
+  File: ../scopparse-keep/all.scop
 
-//
 ID   D1CS4A_
 XX
 EN   1CS4
@@ -163,7 +164,7 @@ TY   LIGAND
 XX
 EX   THRESH 1.0; IGNORE .; NMOD .; NCHA .;
 XX
-NE   7
+NE   11
 XX
 EN   [1]
 XX
@@ -173,22 +174,19 @@ DE   2'-DEOXY-ADENOSINE 3'-MONOPHOSPHATE
 XX
 SI   SN 1; NS 2
 XX
-CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 225; NRES2 .
+CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 52; NRES2 .
 XX
-S1   SEQUENCE   225 AA;  25486 MW;  437C8290 CRC32;
-     MHHHHHHAME MKADINAKQE DMMFHKIYIQ KHDNVSILFA DIEGFTSLAS QCTAQELVMT
-     LNELFARFDK LAAENHCLRI KILGDCYYCV SGLPEARADH AHCCVEMGMD MIEAISLVRE
-     MTGVNVNMRV GIHSGRVHCG VLGLRKWQFD VWSNDVTLAN HMEAGGKAGR IHITKATLSY
-     LNGDYEVEPG CGGERNAYLK EHSIETFLIL RCTQKRKEEK AMIAK
+S1   SEQUENCE    52 AA;   5817 MW;  47362A43 CRC32;
+     ADIEGFTSLA SQCTAQELVM TLNELFARFD KLAAENHCLR IKILGDCYYC VS
 XX
 NC   SM .; LI 6
 XX
-LI   ASP 41
-LI   PHE 45
-LI   THR 46
-LI   LEU 83
-LI   GLY 84
-LI   ASP 85
+LI   ASP 2
+LI   PHE 6
+LI   THR 7
+LI   LEU 44
+LI   GLY 45
+LI   ASP 46
 XX
 //
 EN   [2]
@@ -207,27 +205,13 @@ S1   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;
 XX
 NC   SM .; LI 2
 XX
+LI   HIS 10
+LI   ASP 49
+XX
 
 
   [Part of this file has been deleted for brevity]
 
-LI   ASP 85
-XX
-//
-EN   [6]
-XX
-ID   PDB 1ii7; DOM d1ii7a_; LIG MN;
-XX
-DE   MANGANESE (II) ION
-XX
-SI   SN 1; NS 1
-XX
-CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 65; NRES2 .
-XX
-S1   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;
-     MKFAHLADIH LGYEQFHKPQ REEEFAEAFK NALEIAVQEN VDFILIAGDL FHSSRPSPGT
-     LKKAI
-XX
 NC   SM .; LI 3
 XX
 LI   ASP 8
@@ -235,7 +219,28 @@ LI   HIS 10
 LI   ASP 49
 XX
 //
-EN   [7]
+EN   [10]
+XX
+ID   PDB 2hhb; DOM .; LIG PO4;
+XX
+DE   PHOSPHATE ION
+XX
+SI   SN 1; NS 1
+XX
+CN   MO .; CN1 1; CN2 .; ID1 D; ID2 .; NRES1 146; NRES2 .
+XX
+S1   SEQUENCE   146 AA;  15868 MW;  EC9744C9 CRC32;
+     VHLTPEEKSA VTALWGKVNV DEVGGEALGR LLVVYPWTQR FFESFGDLST PDAVMGNPKV
+     KAHGKKVLGA FSDGLAHLDN LKGTFATLSE LHCDKLHVDP ENFRLLGNVL VCVLAHHFGK
+     EFTPPVQAAY QKVVAGVANA LAHKYH
+XX
+NC   SM .; LI 2
+XX
+LI   VAL 1
+LI   LEU 81
+XX
+//
+EN   [11]
 XX
 ID   PDB 1cs4; DOM d1cs4a_; LIG POP;
 XX
@@ -243,32 +248,30 @@ DE   PYROPHOSPHATE 2-
 XX
 SI   SN 1; NS 1
 XX
-CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 225; NRES2 .
+CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 52; NRES2 .
 XX
-S1   SEQUENCE   225 AA;  25486 MW;  437C8290 CRC32;
-     MHHHHHHAME MKADINAKQE DMMFHKIYIQ KHDNVSILFA DIEGFTSLAS QCTAQELVMT
-     LNELFARFDK LAAENHCLRI KILGDCYYCV SGLPEARADH AHCCVEMGMD MIEAISLVRE
-     MTGVNVNMRV GIHSGRVHCG VLGLRKWQFD VWSNDVTLAN HMEAGGKAGR IHITKATLSY
-     LNGDYEVEPG CGGERNAYLK EHSIETFLIL RCTQKRKEEK AMIAK
+S1   SEQUENCE    52 AA;   5817 MW;  47362A43 CRC32;
+     ADIEGFTSLA SQCTAQELVM TLNELFARFD KLAAENHCLR IKILGDCYYC VS
 XX
-NC   SM .; LI 7
+NC   SM .; LI 6
 XX
-LI   ASP 41
-LI   ILE 42
-LI   GLU 43
-LI   GLY 44
-LI   PHE 45
-LI   THR 46
-LI   ARG 129
+LI   ASP 2
+LI   ILE 3
+LI   GLU 4
+LI   GLY 5
+LI   PHE 6
+LI   THR 7
 XX
 //
 
-  File: SITES.log
+  File: sites.log
 
-CCF: /ebi/services/idata/pmr/hgmp/test/data/structure/sites/1cs4.ccf    HETS:YE
-S       NHETS:7 SCOP:YES        NDOMS: 1
-CCF: /ebi/services/idata/pmr/hgmp/test/data/structure/sites/1ii7.ccf    HETS:YE
-S       NHETS:5 SCOP:YES        NDOMS: 1
+CCF: /ebi/services/idata/pmr/hgmp/test/qa/pdbplus-keep/2hhb.ccf HETS:YES NHETS:
+5 SCOP:NO NCHN:4
+CCF: /ebi/services/idata/pmr/hgmp/test/qa/pdbplus-keep/1cs4.ccf HETS:YES NHETS:
+7 SCOP:YES NDOMS: 1
+CCF: /ebi/services/idata/pmr/hgmp/test/qa/pdbplus-keep/1ii7.ccf HETS:YES NHETS:
+5 SCOP:YES NDOMS: 1
 
 5.0 DATA FILES
 
@@ -398,7 +401,7 @@ S       NHETS:5 SCOP:YES        NDOMS: 1
    (Parameter 4) This option specifies the name of the output file.
    Output file SITES.con
    -logfile This option specifies the name of the log file. Output file
-   SITES.log
+   sites.log
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default
@@ -417,31 +420,22 @@ S       NHETS:5 SCOP:YES        NDOMS: 1
 
 % sites 
 Generate residue-ligand CON files from CCF files.
-Protein CCF files (clean coordinate files) (input) [./]: sites
-Domain CCF files (clean coordinate files) (input) [./]: structure
-Name of DCF file (domain classification file) (input): sites/sites.dcf
+Protein CCF files (clean coordinate files) (input) [./]: ../pdbplus-keep
+Domain CCF files (clean coordinate files) (input) [./]: ../domainer-keep
+Name of DCF file (domain classification file) (input): ../scopparse-keep/all.sc
+op
 Threshold contact distance [1.0]: 1
 Name of output file [SITES.con]: 
-Name of log file [SITES.log]: 
+Name of log file [sites.log]: 
 
 Entries in HetDic 4306
 Entries in Dbase 4306
-CCF FILE: /ebi/services/idata/pmr/hgmp/test/data/structure/sites/1cs4.ccf (1/2)
-CCF FILE: /ebi/services/idata/pmr/hgmp/test/data/structure/sites/1ii7.ccf (2/2)
+CCF FILE: /ebi/services/idata/pmr/hgmp/test/qa/pdbplus-keep/2hhb.ccf (1/3)
+CCF FILE: /ebi/services/idata/pmr/hgmp/test/qa/pdbplus-keep/1cs4.ccf (2/3)
+CCF FILE: /ebi/services/idata/pmr/hgmp/test/qa/pdbplus-keep/1ii7.ccf (3/3)
 
    Go to the input files for this example
    Go to the output files for this example
-
-   Protein CCF files were read from /testdata/sites/in and domain CCF
-   files from /testdata/sites. Ligand definitions were taken from
-   Ehet.dat and domain definitions were taken from the DCF file
-   testdata/sites/in/sites.dcf. A CON file of ligand-residue contacts for
-   all domains defined in the DCF file and present in the protein CCF
-   files, was written to testdata/sites/out/SITES.con. van der Waals
-   radii were taken from the emboss data file Evdw.dat and the default
-   contact distance of 1 Angstrom was used to determine contacts. The log
-   file testdata/sites/out/SITES.log was written. The file extensions of
-   all input and output files were specified in the ACD file.
 
 7.0 KNOWN BUGS & WARNINGS
 

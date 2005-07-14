@@ -1,22 +1,25 @@
 <!-- START OF HEADER -->
 <HTML><HEAD>
-<TITLE> EMBOSS: DOMAINRESO documentation. </TITLE>
+<TITLE> EMBASSY: DOMAINRESO documentation. </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
+
 <table align=center border=0 cellspacing=0 cellpadding=0>
 <tr><td valign=top>
-<A HREF="../index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="../../emboss_icon.jpg" alt="" width=150 height=48></a>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
 
-<H2> DOMAINRESO documentation </H2>
+<H2> DOMAINRESO documentation
 </font></b>
 </td></tr>
 </table>
 <br>&nbsp;
 <p>
 
+
+<!-- END OF HEADER -->
 
 
 
@@ -90,7 +93,7 @@ The format of the DCF file is described in the <a href="scopparse.html">SCOPPARS
 
 <a name="input.1"></a>
 <h3>Input files for usage example </h3>
-<p><h3>File: all.scop</h3>
+<p><h3>File: ../scopparse-keep/all.scop</h3>
 <table width="90%"><tr><td bgcolor="#FFCCFF">
 <pre>
 ID   D1CS4A_
@@ -353,10 +356,8 @@ DOMAINRESO does not use any data files.
 <H3> 6.2 EXAMPLE SESSION </H3>
 An example of interactive use of DOMAINRESO is shown below.
 
-The DCF file /test_data/all.scop was read and a DCF
-file called /test_data/domainreso/all_2.3.scop was written containing
-only those domains of 2.3 Angstrom resolution or better.  Resolution data
-were taken from domain coordinte files in the directory /test_data.
+<!--
+The DCF file /test_data/all.scop was read and a DCF file called /test_data/domainreso/all_2.3.scop was written containing only those domains of 2.3 Angstrom resolution or better.  Resolution data were taken from domain coordinte files in the directory /test_data. -->
 
 <b>Here is a sample session with domainreso</b>
 <p>
@@ -366,15 +367,13 @@ were taken from domain coordinte files in the directory /test_data.
 
 % <b>domainreso </b>
 Remove low resolution domains from a DCF file.
-Location of domain CCF file (clean coordinate files) (input). [./]: <b>structure</b>
-Name of DCF file (domain classification file) (input).: <b>all.scop</b>
+Location of domain CCF file (clean coordinate files) (input). [./]: <b>../domainer-keep/</b>
+Name of DCF file (domain classification file) (input).: <b>../scopparse-keep/all.scop</b>
 Threshold for inclusion (Angstroms). [2.8]: <b>2.3</b>
 Name of DCF file (domain classification file) (output). [test.scop]: <b>all_2.3.scop</b>
 
-/ebi/services/idata/pmr/hgmp/test/data/structure/1cs4.ccf
-/ebi/services/idata/pmr/hgmp/test/data/structure/1ii7.ccf
-/ebi/services/idata/pmr/hgmp/test/data/structure/d1cs4a_.ccf
-/ebi/services/idata/pmr/hgmp/test/data/structure/d1ii7a_.ccf
+/ebi/services/idata/pmr/hgmp/test/qa/domainer-keep/d1cs4a_.ccf
+/ebi/services/idata/pmr/hgmp/test/qa/domainer-keep/d1ii7a_.ccf
 
 </pre></td></tr></table><p>
 <p>
@@ -417,8 +416,6 @@ Domains that lack a value for resolution in the CCF file
 (e.g. theoretical models and NMR structures) are included in the output
 file.
 
-
-
 <H3> 8.1   GLOSSARY OF FILE TYPES    </H3>
 <table BORDER CELLSPACING=5 CELLPADDING=5 BGCOLOR="#f5f5ff" >
 <tr>
@@ -450,6 +447,8 @@ file.
 <td> Records for residue solvent accessibility and secondary structure are added to the file by using PDBPLUS.</td>
 </tr>
 </table>
+
+
 
 
 
@@ -494,6 +493,7 @@ None.
 -->
 <a name="11.0"></a>
 <br><br><br><H2> 11.0  RELATED APPLICATIONS      </H2>
+
 
 
 <h2><a name="See also">See also</a></h2>

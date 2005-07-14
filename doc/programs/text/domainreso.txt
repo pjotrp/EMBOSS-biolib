@@ -40,7 +40,7 @@ CONTENTS
 
   Input files for usage example
 
-  File: all.scop
+  File: ../scopparse-keep/all.scop
 
 ID   D1CS4A_
 XX
@@ -232,26 +232,22 @@ CH   A CHAIN; . START; . END;
 
   6.2 EXAMPLE SESSION
 
-   An example of interactive use of DOMAINRESO is shown below. The DCF
-   file /test_data/all.scop was read and a DCF file called
-   /test_data/domainreso/all_2.3.scop was written containing only those
-   domains of 2.3 Angstrom resolution or better. Resolution data were
-   taken from domain coordinte files in the directory /test_data. Here is
-   a sample session with domainreso
+   An example of interactive use of DOMAINRESO is shown below. Here is a
+   sample session with domainreso
 
 
 % domainreso 
 Remove low resolution domains from a DCF file.
-Location of domain CCF file (clean coordinate files) (input). [./]: structure
-Name of DCF file (domain classification file) (input).: all.scop
+Location of domain CCF file (clean coordinate files) (input). [./]: ../domainer
+-keep/
+Name of DCF file (domain classification file) (input).: ../scopparse-keep/all.s
+cop
 Threshold for inclusion (Angstroms). [2.8]: 2.3
 Name of DCF file (domain classification file) (output). [test.scop]: all_2.3.sc
 op
 
-/ebi/services/idata/pmr/hgmp/test/data/structure/1cs4.ccf
-/ebi/services/idata/pmr/hgmp/test/data/structure/1ii7.ccf
-/ebi/services/idata/pmr/hgmp/test/data/structure/d1cs4a_.ccf
-/ebi/services/idata/pmr/hgmp/test/data/structure/d1ii7a_.ccf
+/ebi/services/idata/pmr/hgmp/test/qa/domainer-keep/d1cs4a_.ccf
+/ebi/services/idata/pmr/hgmp/test/qa/domainer-keep/d1ii7a_.ccf
 
    Go to the input files for this example
    Go to the output files for this example

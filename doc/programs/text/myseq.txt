@@ -290,6 +290,7 @@ See also
 
    Program name                      Description
    crystalball  Answers every drug discovery question about a sequence
+   mytest       Demonstration of sequence reading
 
 Author(s)
 

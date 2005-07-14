@@ -1,11 +1,23 @@
 <!-- START OF HEADER -->
 <HTML><HEAD>
-<TITLE> EMBASSY: DOMAINATRIX: matgen3d documentation</TITLE>
+<TITLE> EMBASSY: MATGEN3D documentation</TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
-[an error occurred while processing this directive]
-<H2> matgen3d documentation </H2>
-[an error occurred while processing this directive]
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+
+<H2> MATGEN3D documentation
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+
 <!-- END OF HEADER -->
 
 
@@ -23,15 +35,14 @@
 <b> <a href="#4.0">4.0     OUTPUT FILE FORMAT        </a></b><br>
 <b> <a href="#5.0">5.0     DATA FILES                </a></b><br>
 <b> <a href="#6.0">6.0     USAGE                     </a></b><br>    
-<b> <a href="#7.0">7.0     COMMAND-LINE ARGUMENTS    </a></b><br>    
-<b> <a href="#8.0">8.0     KNOWN BUGS & WARNINGS     </a></b><br>    
-<b> <a href="#9.0">9.0     NOTES                     </a></b><br>
-<b> <a href="#10.0">10.0     DESCRIPTION               </a></b><br>
-<b> <a href="#11.0">11.0   ALGORITHM                 </a></b><br>
-<b> <a href="#12.0">12.0   RELATED APPLICATIONS      </a></b><br>
-<b> <a href="#13.0">13.0   DIAGNOSTIC ERROR MESSAGES </a></b><br>
-<b> <a href="#14.0">14.0   AUTHORS                   </a></b><br>
-<b> <a href="#15.0">15.0   REFERENCES                </a></b><br>
+<b> <a href="#7.0">7.0     KNOWN BUGS & WARNINGS     </a></b><br>    
+<b> <a href="#8.0">8.0     NOTES                     </a></b><br>
+<b> <a href="#9.0">9.0     DESCRIPTION               </a></b><br>
+<b> <a href="#10.0">10.0   ALGORITHM                 </a></b><br>
+<b> <a href="#11.0">11.0   RELATED APPLICATIONS      </a></b><br>
+<b> <a href="#12.0">12.0   DIAGNOSTIC ERROR MESSAGES </a></b><br>
+<b> <a href="#13.0">13.0   AUTHORS                   </a></b><br>
+<b> <a href="#14.0">14.0   REFERENCES                </a></b><br>
 
 <!-- SUMMARY
      Succint description of the application, particularly its inputs, outputs
@@ -39,12 +50,12 @@
      file and in the <documentation> attribute of the <application definition>
      of the ACD file.
 -->
-<a name="1.0"><H2> 1.0   SUMMARY  </H2></a>
+<a name="1.0"></a>
+<br><br><br><H2> 1.0   SUMMARY  </H2>
 Generate a 3D-1D scoring matrix from CCF files
 
 <p>
-
- <b>matgen3d</b> is a generic tool for 
+Generates a 3D-1D scoring matrix from CCF files (clean coordinate files).
 
 
 
@@ -53,16 +64,13 @@ Generate a 3D-1D scoring matrix from CCF files
      Short summary of the application inputs and outputs in its different 
      modes of usage (if appropriate). More detail than the summary.
 -->
-<a name="2.0"><H2> 2.0   INPUTS & OUTPUTS          </H2></a>
-
-<b>matgen3d</b> reads a 
+<a name="2.0"></a>
+<br><br><br><H2> 2.0   INPUTS & OUTPUTS          </H2>
+MATGEN3D reads a DCF file (domain classification file) and a directory of domain CCF files (clean coordinate files) which have been processed by using PDBPLUS so that they contain solvent accessibility and secondary structure information.  The directory must contain a CCF file for the first domain from each family represented in the DCF file.  A matrix of 3D:1D scores (environment:residue scoring matrix), reflecting the probability of the amino acids occuring in different tertiary environments, is calculated from the CCF files of the first domain from each family only. The path of the CCF files is specified by the user and the file extensions is specified in the ACD file. Two log files of informative messages are also written. 
 
 
  
  
-
-
-
 
 <!-- INPUT FILE FORMAT 
      Description and example(s) of input file formats.  Should provide enough
@@ -71,12 +79,77 @@ Generate a 3D-1D scoring matrix from CCF files
      Use "<b>matgen3d</b> reads any normal sequence USAs." if
      appropriate.
 -->
-<a name="3.0"><H2> 3.0   INPUT FILE FORMAT         </H2></a>
+<a name="3.0"></a>
+<br><br><br><H2> 3.0   INPUT FILE FORMAT         </H2>
+The format of domain CCF files is described in the <a href="domainer.html">DOMAINER documentation</a>.
+<br>
+The format of the DCF file (domain classification file) is described in the <a href="scopparse.html">SCOPPARSE documentation</a> and the <a href="cathparse.html">CATHPARSE documentation</a>.
+
 
 
 
 <p>
 
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: ../scopparse-keep/all.scop</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+ID   D1CS4A_
+XX
+EN   1CS4
+XX
+TY   SCOP
+XX
+SI   53931 CL; 54861 FO; 55073 SF; 55074 FA; 55077 DO; 55078 SO; 39418 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Adenylyl and guanylyl cyclase catalytic domain
+XX
+FA   Adenylyl and guanylyl cyclase catalytic domain
+XX
+DO   Adenylyl cyclase VC1, domain C1a
+XX
+OS   Dog (Canis familiaris)
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+ID   D1II7A_
+XX
+EN   1II7
+XX
+TY   SCOP
+XX
+SI   53931 CL; 56299 FO; 56300 SF; 64427 FA; 64428 DO; 64429 SO; 62415 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Metallo-dependent phosphatases
+XX
+SF   Metallo-dependent phosphatases
+XX
+FA   DNA double-strand break repair nuclease
+XX
+DO   Mre11
+XX
+OS   Archaeon Pyrococcus furiosus
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+</pre>
+</td></tr></table><p>
 
 
 
@@ -93,8 +166,9 @@ Generate a 3D-1D scoring matrix from CCF files
      or  "outputs a report format file. The default format is ..."
      if appropriate.
 -->
-<a name="4.0"><H2> 4.0   OUTPUT FILE FORMAT         </H2></a>
-
+<a name="4.0"></a>
+<br><br><br><H2> 4.0   OUTPUT FILE FORMAT         </H2>
+The matrix of 3D:1D scores (environment:residue scoring matrix, Figure 1) follows the standard EMBOSS format.  Single letter amino acid codes are column labels and environments are row labels.  The environment labels are strings of 2 characters, beginning with AA, AB, AC, through to AZ, BA, BB etc.  The final row and column have the label '*' and give default substitution values (the minimum from the entire matrix).  In the example shown (Figure 1), only two environments AA through AX are defined but only AA to AB are given scores owing to the sparse input data for this example (typically, all environments would receive scores).
 
 
 
@@ -102,6 +176,261 @@ Generate a 3D-1D scoring matrix from CCF files
 
 <p>
 
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: matgen3d.calc</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+SUMiNijArr
+A	0
+B	0
+C	0
+D	10
+E	0
+F	4
+G	5
+H	0
+I	5
+J	6
+K	0
+L	6
+M	12
+N	0
+O	6
+P	14
+Q	0
+R	8
+S	4
+T	0
+U	9
+
+NiArr
+A	10
+B	0
+C	3
+D	6
+E	11
+F	7
+G	4
+H	3
+I	7
+J	0
+K	4
+L	11
+M	1
+N	4
+O	0
+P	1
+Q	5
+R	3
+S	2
+T	3
+U	0
+V	3
+W	0
+X	0
+Y	1
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+
+B	0.000
+
+C	0.034
+
+D	0.067
+
+E	0.124
+
+F	0.079
+
+G	0.045
+
+H	0.034
+
+I	0.079
+
+J	0.000
+
+K	0.045
+
+L	0.124
+
+M	0.011
+
+N	0.045
+
+O	0.000
+
+P	0.011
+
+Q	0.056
+
+R	0.034
+
+S	0.022
+
+T	0.034
+
+U	0.000
+
+V	0.034
+
+W	0.000
+
+X	0.000
+
+Y	0.011
+
+Z	0.000
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: matgen3d.log</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+D1CS4A_
+
+R:D-2 S:C A:63.80
+	OEnv AO:D
+R:I-3 S:T A:28.30
+	OEnv AF:I
+R:E-4 S:T A:113.00
+	OEnv AU:E
+R:G-5 S:T A:104.20
+	OEnv AU:G
+R:F-6 S:H A:23.70
+	OEnv AD:F
+R:T-7 S:H A:111.60
+	OEnv AS:T
+R:S-8 S:H A:84.60
+	OEnv AP:S
+R:L-9 S:H A:57.60
+	OEnv AJ:L
+R:A-10 S:H A:24.00
+	OEnv AD:A
+R:S-11 S:T A:78.20
+	OEnv AR:S
+R:Q-12 S:T A:78.00
+	OEnv AR:Q
+R:C-13 S:T A:28.80
+	OEnv AF:C
+R:T-14 S:C A:72.00
+	OEnv AO:T
+R:A-15 S:H A:103.00
+	OEnv AS:A
+R:Q-16 S:H A:88.10
+	OEnv AP:Q
+R:E-17 S:H A:66.30
+	OEnv AM:E
+R:L-18 S:H A:17.70
+	OEnv AD:L
+R:V-19 S:H A:79.50
+	OEnv AP:V
+R:M-20 S:H A:78.40
+	OEnv AP:M
+R:T-21 S:H A:74.90
+	OEnv AM:T
+R:L-22 S:H A:16.50
+	OEnv AD:L
+R:N-23 S:H A:94.00
+	OEnv AS:N
+R:E-24 S:H A:74.00
+	OEnv AM:E
+R:L-25 S:H A:40.60
+	OEnv AG:L
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+	OEnv AD:F
+R:A-26 S:H A:59.60
+	OEnv AJ:A
+R:E-27 S:H A:62.30
+	OEnv AM:E
+R:A-28 S:H A:76.30
+	OEnv AP:A
+R:F-29 S:H A:20.30
+	OEnv AD:F
+R:K-30 S:H A:64.60
+	OEnv AM:K
+R:N-31 S:H A:68.30
+	OEnv AM:N
+R:A-32 S:H A:71.80
+	OEnv AM:A
+R:L-33 S:H A:42.20
+	OEnv AG:L
+R:E-34 S:H A:56.50
+	OEnv AJ:E
+R:I-35 S:H A:70.20
+	OEnv AM:I
+R:A-36 S:H A:27.70
+	OEnv AD:A
+R:V-37 S:H A:89.80
+	OEnv AP:V
+R:Q-38 S:H A:80.20
+	OEnv AP:Q
+R:E-39 S:H A:73.50
+	OEnv AM:E
+R:N-40 S:C A:109.90
+	OEnv AU:N
+R:V-41 S:C A:44.50
+	OEnv AI:V
+R:D-42 S:C A:105.60
+	OEnv AU:D
+R:F-43 S:C A:83.50
+	OEnv AR:F
+R:I-44 S:C A:43.50
+	OEnv AI:I
+R:L-45 S:C A:87.00
+	OEnv AR:L
+R:I-46 S:C A:30.40
+	OEnv AI:I
+R:A-47 S:C A:108.40
+	OEnv AU:A
+R:G-48 S:C A:102.60
+	OEnv AU:G
+R:D-49 S:C A:72.50
+	OEnv AO:D
+R:L-50 S:C A:55.40
+	OEnv AL:L
+</pre>
+</td></tr></table><p>
+<p><h3>File: matgen3d.out</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+# 3D-1D Scoring matrix created by matgen3d
+# ajResidueEnv1
+# Total SCOP entries: 2
+# No. of files opened: 2
+# No. of files not opened: 0
+         A     R     N     D     C     Q     E     G     H     I     L     K     M     F     P     S     T     W     Y     V     B     Z     X     *
+AA    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
+AB    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
+AC    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
+AD    0.98  1.09  0.80  0.39  1.09  0.58 -0.21  0.80  1.09  0.24  0.48  0.80  2.19  1.63  2.19  1.49  1.09 -2.30  2.19  1.09 -2.30 -2.30 -2.30 -2.64
+AE    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
+AF    0.80  2.00  1.72  1.31  2.00  1.49  0.70  1.72  2.00  1.85  0.70  1.72  3.10  1.16  3.10  2.41  2.00 -1.39  3.10  2.00 -1.39 -1.39 -1.39 -2.64
+AG    0.58  1.78  1.49  1.09  1.78  1.27  0.48  1.49  1.78  0.93  1.17  1.49  2.88  0.93  2.88  2.19  1.78 -1.61  2.88  1.78 -1.61 -1.61 -1.61 -2.64
+AH    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
+AI    0.58  1.78  1.49  1.09  1.78  1.27  0.48  1.49  1.78  2.03  0.48  1.49  2.88  0.93  2.88  2.19  1.78 -1.61  2.88  1.78 -1.61 -1.61 -1.61 -2.64
+AJ    1.09  1.60  1.31  0.91  1.60  1.09  0.99  1.31  1.60  0.75  0.30  1.31  2.70  0.75  2.70  2.00  1.60 -1.79  2.70  1.60 -1.79 -1.79 -1.79 -2.64
+AK    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
+AL    0.39  1.60  1.31  0.91  1.60  1.09  0.30  1.31  1.60  0.75  0.30  1.31  2.70  0.75  2.70  2.00  1.60 -1.79  2.70  1.60 -1.79 -1.79 -1.79 -2.64
+AM   -0.30  0.91  0.62  0.21  0.91  0.39  0.99  0.62  0.91  0.06 -0.39  0.62  2.00  0.06  2.00  1.31  0.91 -2.48  2.00  0.91 -2.48 -2.48 -2.48 -2.64
+AN    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
+AO    0.39  1.60  1.31  1.60  1.60  1.09  0.30  1.31  1.60  0.75  0.30  1.31  2.70  0.75  2.70  2.00  1.60 -1.79  2.70  1.60 -1.79 -1.79 -1.79 -2.64
+AP    0.24  0.75  0.46  0.06  0.75  1.34  0.14  0.46  0.75 -0.10 -0.55  0.46  1.85 -0.10  1.85  1.16  0.75 -2.64  1.85  1.44 -2.64 -2.64 -2.64 -2.64
+AQ    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
+AR    0.11  1.31  1.02  0.62  1.31  0.80  0.01  1.02  1.31  0.46  0.01  1.02  2.41  0.46  2.41  1.72  1.31 -2.08  2.41  1.31 -2.08 -2.08 -2.08 -2.64
+AS    0.80  2.00  1.72  1.31  2.00  1.49  0.70  1.72  2.00  1.16  0.70  1.72  3.10  1.16  3.10  2.41  2.00 -1.39  3.10  2.00 -1.39 -1.39 -1.39 -2.64
+AT    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
+AU   -0.01  1.19  0.91  0.50  1.19  0.68 -0.11  2.00  1.19  0.35 -0.11  0.91  2.29  0.35  2.29  1.60  1.19 -2.20  2.29  1.19 -2.20 -2.20 -2.20 -2.64
+*    -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64</pre>
+</td></tr></table><p>
 
 
 
@@ -114,8 +443,9 @@ Generate a 3D-1D scoring matrix from CCF files
      #include file="inc/localfiles.ihtml"
 -->
 
-<a name="5.0"><H2> 5.0   DATA FILES                </H2></a>
-<b>matgen3d</b> does not use a data file.
+<a name="5.0"></a>
+<br><br><br><H2> 5.0   DATA FILES                </H2>
+MATGEN3D does not use any data files.
 
 
 
@@ -127,23 +457,12 @@ Generate a 3D-1D scoring matrix from CCF files
      Example usage, as run from the command-line.
      Many examples illustrating different behaviours is good.
 -->
-<a name="6.0"><H2> 6.0   USAGE                     </H2></a>
+<a name="6.0"></a>
+<br><br><br><H2> 6.0   USAGE                     </H2>
 
 
+<H3> 6.1   COMMAND LINE ARGUMENTS </H3>
 
-<p>
-
-
-
-
-
-
-
-<a name="7.0"><H2>7.0     COMMAND-LINE ARGUMENTS    </H2></a>
-<!--
-DON'T WRITE ANYTHING HERE.
-IT IS DONE FOR YOU.
--->     
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" >
 <tr><td>
 <pre>
@@ -357,14 +676,59 @@ IT IS DONE FOR YOU.
 
 
 
+<H3> 6.2 EXAMPLE SESSION </H3>
+An example of interactive use of MATGEN3D is shown below.
+<b>Here is a sample session with matgen3d</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>matgen3d </b>
+Generate a 3D-1D scoring matrix from CCF files.
+DCF file amino acid positions
+         1 : All amino acid positions for domains in a DCF file
+         2 : Ligand-binding positions.
+This option specifies the amino acid residue positions to use in calculating the substitution data. [1]: <b>1</b>
+Name of DCF file (domain classification file (input).: <b>../scopparse-keep/all.scop</b>
+Location of domain CCF files (clean coordinate files) (input) [./]: <b>../domainer-keep</b>
+Choose environment definition.
+         1 : Env1
+         2 : Env2
+         3 : Env3
+         4 : Env4
+         5 : Env5
+         6 : Env6
+         7 : Env7
+         8 : Env8
+         9 : Env9
+        10 : Env10
+        11 : Env11
+        12 : Env12
+        13 : Env13
+        14 : Env14
+        15 : Env15
+        16 : Env16
+This option specifies the environment definition. See matgen3d documentation for description of definitions. [1]: <b>1</b>
+Name of substitution matrix (output). [matgen3d.out]: <b></b>
+Name of first log file (calculations). [matgen3d.calc]: <b></b>
+Name of second log file (errors). [matgen3d.log]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+
+
+
 
 
 <!-- KNOWN BUGS & WARNINGS
      Bugs that have not yet been fixed, easily missued features, problems
      and caveats etc. Potentially stupid things the program will let you do.
 -->
-<a name="8.0"><H2> 8.0   KNOWN BUGS & WARNINGS     </H2></a>
-
+<a name="7.0"></a>
+<br><br><br><H2> 7.0   KNOWN BUGS & WARNINGS     </H2>
+The CCF files read <B>must</B> contain secondary structure and solvent accessibility data.  These can be added to the file by using <a href="pdbplus.html">PDBPLUS</a> 
 
 
 
@@ -378,17 +742,51 @@ IT IS DONE FOR YOU.
        Future plans.
        etc.
 -->
-<a name="9.0"><H2> 9.0   NOTES                     </H2></a>
+<a name="8.0"></a>
+<br><br><br><H2> 8.0   NOTES                     </H2>
 
-None.
+
+<H3> 8.1   GLOSSARY OF FILE TYPES    </H3>
+<table BORDER CELLSPACING=5 CELLPADDING=5 BGCOLOR="#f5f5ff" >
+<tr>
+<td><b>FILE TYPE</b></td>
+<td><b>FORMAT</b></td>
+<td><b>DESCRIPTION</b></td>
+<td><b>CREATED BY <b></td>
+<td><b>SEE ALSO</b></td>
+</tr>
+<tr>
+<td><b> Domain classification file (for SCOP)</b></td>
+<td> DCF format (EMBL-like). </td>
+<td> Classification and other data for domains from SCOP.  </td>
+<td> <a href="scopparse.html">SCOPPARSE</a> </td>
+<td> Domain sequence information can be added to the file by using DOMAINSEQS.  </td>
+</tr>
+<tr>
+<td><b> Domain classification file (for CATH)</b></td>
+<td> DCF format (EMBL-like). </td>
+<td> Classification and other data for domains from CATH.  </td>
+<td> <a href="cathparse.html">CATHPARSE</a> </td>
+<td> Domain sequence information can be added to the file by using DOMAINSEQS.  </td>
+</tr>
+<tr>
+<td><b> Clean coordinate file (for domain)</b></td>
+<td> CCF format (EMBL-like).</td>
+<td> Protein coordinate and derived data for a single domain from SCOP or CATH. The data are 'cleaned-up': self-consistent and error-corrected. </td>
+<td> <a href="domainer.html">DOMAINER</a></td>
+<td> Records for residue solvent accessibility and secondary structure are added to the file by using PDBPLUS.</td>
+</tr>
+</table>
+
 
 
 
 <!-- DESCRIPTION
      A complete, non-technical, user-level description of the application.
 -->
-<a name="10.0"></a>
-<H2> 10.0   DESCRIPTION               </H2>
+<a name="9.0"></a>
+<br><br><br><H2> 9.0   DESCRIPTION               </H2>
+MATGEN3D generates a matrix of 3D:1D scores which give the probability of finding a certain amino acid residue (1D) in a certain environment in space (3D).  The environments are defined on the basis of secondary structure and solvent accessibility. The 3D:1D scores are calculated from the first domain only from each family represented in the DCF file (input).  This ensures the scores are not biased to any particular family of proteins. 
 
 
 
@@ -398,9 +796,11 @@ None.
      A technical description of algorithmic aspects, describing exactly how
      the key aspects of the application work.
 -->
-<a name="11.0"><H2> 11.0  ALGORITHM                 </H2></a>
+<a name="10.0"></a>
+<br><br><br><H2> 10.0  ALGORITHM                 </H2>
 
-
+<B><Environment definitions. </B>
+<I><b>Environment definitions will be described here. </b></I>
 
 
 
@@ -409,7 +809,8 @@ None.
      Other applications that either generate the input, use the output or 
      are in some other way related to the application are described here. 
 -->
-<a name="12.0"><H2> 12.0  RELATED APPLICATIONS      </H2></a>
+<a name="11.0"></a>
+<br><br><br><H2> 11.0  RELATED APPLICATIONS      </H2>
 
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
@@ -446,7 +847,8 @@ None.
 <!-- DIAGNOSTIC ERROR MESSAGES
      Description of error messages or log file, if one is written.
 -->
-<a name="13.0"><H2> 13.0  DIAGNOSTIC ERROR MESSAGES </H2></a>
+<a name="12.0"></a>
+<br><br><br><H2> 12.0  DIAGNOSTIC ERROR MESSAGES </H2>
 
 None.
 
@@ -459,19 +861,23 @@ None.
 <!-- AUTHORS
      The main author first then all others. 
 -->
-<a name="14.0"><H2> 14.0  AUTHORS                   </H2></a>
-
-Jon Ison (jison&nbsp;&copy;&nbsp;hgmp.mrc.ac.uk)
+<a name="13.0"></a>
+<br><br><br><H2> 13.0  AUTHORS                   </H2>
+Waqas Awan <a href="mailto:wawan@rfcgr.mrc.ac.uk">(wawan@rfcgr.mrc.ac.uk)</a>
 <br>
-HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
 
+Jon Ison <a href="mailto:jison@rfcgr.mrc.ac.uk">(jison@rfcgr.mrc.ac.uk)</a>
+<br>
+MRC Rosalind Franklin Centre for Genomics Research
+Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
 
 
 <!-- REFERENCES
      Quote the paper where the application was first published, described, used etc. 
 -->
-<a name="14.0"><H2> 14.0  REFERENCES                </H2></a>
+<a name="14.0"></a>
+<br><br><br><H2> 14.0  REFERENCES                </H2>
 
 Please cite the authors and EMBOSS.
 <br><br>

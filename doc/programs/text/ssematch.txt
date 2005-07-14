@@ -1,5 +1,7 @@
 
-SSEMATCH documentation
+                           SSEMATCH documentation
+                                      
+   
 
 CONTENTS
 
@@ -69,7 +71,7 @@ SE   HEEE
 SS   SEQUENCE    43 AA;   5411 MW;  61C5458D CRC32;
      LLLLLLHHHH EEEEEEEEEE EEEEEEEEEE EELLLEEEEE LLL
 
-  File: all_e.scop
+  File: ../domainsse-keep/domainsse.out
 
 ID   D1CS4A_
 XX
@@ -91,13 +93,10 @@ DO   Adenylyl cyclase VC1, domain C1a
 XX
 OS   Dog (Canis familiaris)
 XX
-SE   EEEEEEE
+SE   HH
 XX
-SS   SEQUENCE   189 AA;  24290 MW;  D1929097 CRC32;
-     LLLLLLLEEE EEEEEEEEEE ELHHHHHHHL LHHHHHHHHH HHHHHHHHHH HHHHLLEEEE
-     EELLEEEEEE LLLLLLLHHH HHHHHHHHHH HHHHHHHHHH HHLLLLEEEE EEEEEEEEEL
-     LLLLLLLLEE EHHHHHHHHH HHHHLLLLLE EEEHHHHHLL LLLLLEEELH HHHHHHHHHH
-     HLLLEEEEL
+SS   SEQUENCE    46 AA;   6039 MW;  C2EA3A0F CRC32;
+     LLLHHHHHHH LLHHHHHHHH HHHHHHHHHH HHHHHLLEEE EEELLL
 XX
 NC   1
 XX
@@ -206,13 +205,10 @@ DO   Adenylyl cyclase VC1, domain C1a
 XX
 OS   Dog (Canis familiaris)
 XX
-SE   EEEEEEE
+SE   HH
 XX
-SS   SEQUENCE   189 AA;  24290 MW;  D1929097 CRC32;
-     LLLLLLLEEE EEEEEEEEEE ELHHHHHHHL LHHHHHHHHH HHHHHHHHHH HHHHLLEEEE
-     EELLEEEEEE LLLLLLLHHH HHHHHHHHHH HHHHHHHHHH HHLLLLEEEE EEEEEEEEEL
-     LLLLLLLLEE EHHHHHHHHH HHHHLLLLLE EEEHHHHHLL LLLLLEEELH HHHHHHHHHH
-     HLLLEEEEL
+SS   SEQUENCE    46 AA;   6039 MW;  C2EA3A0F CRC32;
+     LLLHHHHHHH LLHHHHHHHH HHHHHHHHHH HHHHHLLEEE EEELLL
 XX
 NC   1
 XX
@@ -221,7 +217,7 @@ XX
 CH   A CHAIN; . START; . END;
 //
 
-  File: SSEMATCH.log
+  File: ssematch.log
 
 5.0 DATA FILES
 
@@ -364,7 +360,7 @@ C  -4  -4   2  -7
    other data for domains from SCOP or CATH, in DCF format (EMBL-like).
    Output file
    -logfile This option specifies the name of the ssematch log file
-   (output). Output file SSEMATCH.log
+   (output). Output file ssematch.log
    Additional (Optional) qualifiers Allowed values Default
    -datafile This option specifies the secondary structure substitution
    matrix. Comparison matrix file in EMBOSS data path SSSUB
@@ -408,22 +404,17 @@ C  -4  -4   2  -7
 % ssematch 
 Search a DCF file for secondary structure matches.
 Name of file of secondary structure (input).: sse.in
-Name of DCF file (domain classification file) (input).: all_e.scop
+Name of DCF file (domain classification file) (input).: ../domainsse-keep/domai
+nsse.out
 Number of top-scoring matches to report. [5]: 1
 Name of DCF file (domain classification file) containing top-scoring domains fo
 r residue-based alinnment (output). [sse.ssematch]: res.dcf
 Name of DCF file (domain classification file) containing top-scoring domains fo
 r secondary structure element-based alinnment (output). [sse.out2]: elm.dcf
-Name ssematch log file (output) [SSEMATCH.log]: 
+Name ssematch log file (output) [ssematch.log]: 
 
    Go to the input files for this example
    Go to the output files for this example
-
-   Two strings (for residues and elements) of secondary structure were
-   read from sse.in and scanned against all_e.scop. The single highest
-   scoring match for each search was written to the output files: res.dcf
-   for residue-based alignment and elm.dcf for element-based alignment. A
-   log file called SSEMATCH.log was written.
 
 7.0 KNOWN BUGS & WARNINGS
 

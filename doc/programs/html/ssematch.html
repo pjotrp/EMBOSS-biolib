@@ -1,10 +1,26 @@
 <!-- START OF HEADER -->
 <HTML><HEAD>
-<TITLE> EMBOSS: SSEMATCH documentation. </TITLE>
+<TITLE> EMBASSY: SSEMATCH documentation. </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
-<H2> SSEMATCH documentation </H2>
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+
+<H2> SSEMATCH documentation
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+
 <!-- END OF HEADER -->
+
 
 
 
@@ -111,7 +127,7 @@ SS   SEQUENCE    43 AA;   5411 MW;  61C5458D CRC32;
      LLLLLLHHHH EEEEEEEEEE EEEEEEEEEE EELLLEEEEE LLL
 </pre>
 </td></tr></table><p>
-<p><h3>File: all_e.scop</h3>
+<p><h3>File: ../domainsse-keep/domainsse.out</h3>
 <table width="90%"><tr><td bgcolor="#FFCCFF">
 <pre>
 ID   D1CS4A_
@@ -134,13 +150,10 @@ DO   Adenylyl cyclase VC1, domain C1a
 XX
 OS   Dog (Canis familiaris)
 XX
-SE   EEEEEEE
+SE   HH
 XX
-SS   SEQUENCE   189 AA;  24290 MW;  D1929097 CRC32;
-     LLLLLLLEEE EEEEEEEEEE ELHHHHHHHL LHHHHHHHHH HHHHHHHHHH HHHHLLEEEE
-     EELLEEEEEE LLLLLLLHHH HHHHHHHHHH HHHHHHHHHH HHLLLLEEEE EEEEEEEEEL
-     LLLLLLLLEE EHHHHHHHHH HHHHLLLLLE EEEHHHHHLL LLLLLEEELH HHHHHHHHHH
-     HLLLEEEEL
+SS   SEQUENCE    46 AA;   6039 MW;  C2EA3A0F CRC32;
+     LLLHHHHHHH LLHHHHHHHH HHHHHHHHHH HHHHHLLEEE EEELLL
 XX
 NC   1
 XX
@@ -279,13 +292,10 @@ DO   Adenylyl cyclase VC1, domain C1a
 XX
 OS   Dog (Canis familiaris)
 XX
-SE   EEEEEEE
+SE   HH
 XX
-SS   SEQUENCE   189 AA;  24290 MW;  D1929097 CRC32;
-     LLLLLLLEEE EEEEEEEEEE ELHHHHHHHL LHHHHHHHHH HHHHHHHHHH HHHHLLEEEE
-     EELLEEEEEE LLLLLLLHHH HHHHHHHHHH HHHHHHHHHH HHLLLLEEEE EEEEEEEEEL
-     LLLLLLLLEE EHHHHHHHHH HHHHLLLLLE EEEHHHHHLL LLLLLEEELH HHHHHHHHHH
-     HLLLEEEEL
+SS   SEQUENCE    46 AA;   6039 MW;  C2EA3A0F CRC32;
+     LLLHHHHHHH LLHHHHHHHH HHHHHHHHHH HHHHHLLEEE EEELLL
 XX
 NC   1
 XX
@@ -295,7 +305,7 @@ CH   A CHAIN; . START; . END;
 //
 </pre>
 </td></tr></table><p>
-<p><h3>File: SSEMATCH.log </h3>
+<p><h3>File: ssematch.log </h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 </pre>
@@ -531,7 +541,7 @@ C  -4  -4   2  -7
 <td>-logfile</td>
 <td>This option specifies the name of the ssematch log file (output).</td>
 <td>Output file</td>
-<td>SSEMATCH.log</td>
+<td>ssematch.log</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -601,24 +611,18 @@ An example of interactive use of SSEMATCH is shown below.
 % <b>ssematch </b>
 Search a DCF file for secondary structure matches.
 Name of file of secondary structure (input).: <b>sse.in</b>
-Name of DCF file (domain classification file) (input).: <b>all_e.scop</b>
+Name of DCF file (domain classification file) (input).: <b>../domainsse-keep/domainsse.out</b>
 Number of top-scoring matches to report. [5]: <b>1</b>
 Name of DCF file (domain classification file) containing top-scoring domains for residue-based alinnment (output). [sse.ssematch]: <b>res.dcf</b>
 Name of DCF file (domain classification file) containing top-scoring domains for secondary structure element-based alinnment (output). [sse.out2]: <b>elm.dcf</b>
-Name ssematch log file (output) [SSEMATCH.log]: <b></b>
+Name ssematch log file (output) [ssematch.log]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
 <a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
-Two strings (for residues and elements) of secondary structure were
-read from sse.in and scanned against
-all_e.scop. The single highest scoring match for each
-search was written to the output files:
-res.dcf for residue-based alignment and
-elm.dcf for element-based alignment. A log
-file called SSEMATCH.log was written.
+<!-- Two strings (for residues and elements) of secondary structure were read from sse.in and scanned against all_e.scop. The single highest scoring match for each search was written to the output files: res.dcf for residue-based alignment and elm.dcf for element-based alignment. A log file called SSEMATCH.log was written. -->
 
 
 <!-- KNOWN BUGS & WARNINGS
@@ -686,6 +690,7 @@ input file:
 
 
 
+
 None
 
 
@@ -697,12 +702,7 @@ None
 <a name="9.0"></a>
 <br><br><br><H2> 9.0   DESCRIPTION               </H2>
 
-Secondary structure element mapping is a coarse but powerful approach
-for identifying similarities between protein sequences.  SSEMATCH
-implements a very basic approach whereby a query sequence of secondary
-structure (of elements or residues) is scanned against a library of
-known secondary structures for domains in SCOP or CATH, as held in a
-DCF file (domain classification file).
+Secondary structure element mapping is a coarse but powerful approach for identifying similarities between protein sequences.  SSEMATCH implements a very basic approach whereby a query sequence of secondary structure (of elements or residues) is scanned against a library of known secondary structures for domains in SCOP or CATH, as held in a DCF file (domain classification file).
 
 
 

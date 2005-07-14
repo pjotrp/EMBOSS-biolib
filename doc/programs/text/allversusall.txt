@@ -1,5 +1,7 @@
 
-ALLVERSUSALL documentation
+                         ALLVERSUSALL documentation
+                                      
+   
 
 CONTENTS
 
@@ -68,7 +70,7 @@ CONTENTS
 1 O58452 : 3 O26938 : 75.56
 2 O30129 : 3 O26938 : 71.43
 
-  File: ALLVERSUSALL.log
+  File: allversusall.log
 
 //
 /ebi/services/idata/pmr/hgmp/test/data/structure/allversusall/swtiny1.fasta
@@ -152,7 +154,7 @@ CONTENTS
    similarity data files (output). Output directory ./
    -logfile This option specifies the name of ALLVERSUSALL log file
    (output). The log file contains messages about any errors arising
-   while ALLVERSUSALL ran. Output file ALLVERSUSALL.log
+   while ALLVERSUSALL ran. Output file allversusall.log
    Additional (Optional) qualifiers Allowed values Default
    -matrix This option specifies the residue substitution matrix that is
    used for sequence comparison. Comparison matrix file in EMBOSS data
@@ -186,7 +188,7 @@ CONTENTS
 Sequence similarity data from all-versus-all comparison.
 Location of sequence files (input [./]: allversusall/
 Location of sequence similarity data files (output) [./]: 
-Name allversusall log file (output) [ALLVERSUSALL.log]: 
+Name allversusall log file (output) [allversusall.log]: 
 
 Processing /ebi/services/idata/pmr/hgmp/test/data/structure/allversusall/swtiny
 1.fasta
@@ -194,14 +196,6 @@ Processing /ebi/services/idata/pmr/hgmp/test/data/structure/allversusall/swtiny
 2.fasta
 
    Go to the output files for this example
-
-   Files of sequence sets were read from test_data/allversusall/in and
-   files of sequence similarity values were written to
-   test_data/allversusall/. The log file
-   test_data/allversusall/ALLVERSUSALL.log was written. The file path and
-   extension of the input and output files was specified in the ACD file.
-   The default gap insertion, extension and residue substitution matrix
-   were used.
 
 7.0 KNOWN BUGS & WARNINGS
 

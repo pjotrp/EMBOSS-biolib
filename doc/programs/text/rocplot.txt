@@ -1,9 +1,7 @@
 
-   [an error occurred while processing this directive]
-
-ROCPLOT documentation
-
-   [an error occurred while processing this directive]
+                           ROCPLOT documentation
+                                      
+   
 
 CONTENTS
 
@@ -24,19 +22,12 @@ CONTENTS
 
 1.0 SUMMARY
 
-   Performs ROC analysis on hits files
-
-  1.1 DESCRIPTION
-
-   ROCPLOT is a generic and flexible tool for interpretation and
-   graphical display of the performance of predictive methods. ROCPLOT
-   reads one or more files of hits, performs Receiver Operator
-   Characteristic (ROC) analysis on the hits, and writes graphs,
-   including ROC plots, illustrating diagnostic performance. For example,
-   a profile or other type of discriminating element can be generated for
-   a protein family and scanned against a sequence database to identify
-   putative new family members. The file(s) of hits would contain the
-   results of the profile-database search(es).
+   Provides interpretation and graphical display of the performance of
+   discriminating elements (e.g. profiles for protein families). rocplot
+   reads file(s) of hits from discriminator-database search(es), performs
+   ROC analysis on the hits, and writes graphs illustrating the
+   diagnostic performance of the discriminating elements. Performs ROC
+   analysis on hits files
 
 2.0 INPUTS & OUTPUTS
 
@@ -765,7 +756,7 @@ data2.hits     140
 
 ROC50     == 0.185 (combined)
 
-  File: rocplot.errors
+  File: rocplot.log
 
 MODE INFO
 modei: 2
@@ -953,14 +944,14 @@ hitcnt[0]: 80
                                   as unique if they have different accession
                                   numbers (no requirement for overlapping
                                   ranges).
-   -errfile            outfile    Name of error file (output).
+   -logfile            outfile    Name of error log file (output).
 
    Associated qualifiers:
 
    "-outfile" associated qualifiers
    -odirectory         string     Output directory
 
-   "-errfile" associated qualifiers
+   "-logfile" associated qualifiers
    -odirectory         string     Output directory
 
    General qualifiers:
@@ -1090,7 +1081,7 @@ hitcnt[0]: 80
    files are disregarded, two hits are classed as unique if they have
    different accession numbers (no requirement for overlapping ranges).
    Boolean value Yes/No No
-   -errfile Name of error file (output). Output file rocplot.errors
+   -logfile Name of error log file (output). Output file rocplot.log
 
   6.2 EXAMPLE SESSION
 
@@ -1145,18 +1136,33 @@ Please wait ... done!
 
 8.0 NOTES
 
-   A future implementation will
+   Future implementation 
    1. Accept a feature file as input.
    2. Split ROCPLOT into separate programs, one for each of the major
    modes.
+   Description of 'sort' mode (additional option in ACD) 
+   This option specifies whether to process the input files in blocks (of
+   the same domain identifier). In this case the analysis mode
+   (mode-multimode-datamode) are set to Multiple input file - combine
+   data - Single list of known true relatives (2-2-1) and the analysis is
+   performed on each block of hits files with the same domain identifier.
+   In the output file, ROC values are given for each combined analysis
+   and the mean and SD of all the combined analyses are given. The domain
+   identifier is defined as the text between the first and second period
+   ('/.') in the input file name.
+   Description of 'norange' mode (additional option in ACD) 
+   This option specifies whether to disregard range data when identifying
+   unique hits. If set, the range data specified in the hits files are
+   disregarded, two hits are classed as unique if they have different
+   accession numbers (no requirement for overlapping ranges).
 
   8.1 GLOSSARY OF FILE TYPES
 
    FILE TYPE FORMAT DESCRIPTION CREATED BY SEE ALSO
    Hits file Text file of classified hits A list of hits (e.g. from a
    prediction method) that are classified and rank-ordered on the basis
-   of score, p-value, E-value etc. SIGSCAN and LIBSCAN (hits from
-   searches of a discriminating element (hidden Markov model, profile or
+   of score, p-value, E-value etc. ROCON and LIBSCAN (hits from searches
+   of a discriminating element (hidden Markov model, profile or
    signature) against a sequence database). ROCPLOT is run on the files
    to perform Receiver Operator Characteristic (ROC) analysis on the
    hits.

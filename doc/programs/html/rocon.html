@@ -3,9 +3,22 @@
 <TITLE> EMBOSS: ROCON documentation. </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
-[an error occurred while processing this directive]
-<H2> ROCON documentation </H2>
-[an error occurred while processing this directive]
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+
+<H2> ROCON documentation
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+
+<!-- END OF HEADER -->
 
 
 
@@ -39,6 +52,10 @@
 -->
 <a name="1.0"></a>
 <br><br><br><H2> 1.0   SUMMARY  </H2>
+Reads a DHF file (domain hits file) of hits (sequences of unknown structural
+classification) and a domain families file (validation sequences of known 
+classification) and writes a "hits file" for the hits, which are classified 
+and rank-ordered on the basis of score.
 
 Generates a hits file from comparing two DHF files
 
@@ -64,7 +81,7 @@ ROCON reads a DHF file (domain hits file) of hits generated for a single node fr
 -->
 <a name="3.0"></a>
 <br><br><br><H2> 3.0   INPUT FILE FORMAT         </H2>
-The format of the DHF is described in <a href="seqsearch.html">SEQSEARCH documentation.</a> See also the example of the DHF file for hit sequences and validation sequences below.
+The format of the DHF is described in <a href="seqsearch.html">SEQSEARCH documentation.</a> See also the example of the DHF file for hit sequences (Figure 1) and validation sequences (Figure 2) below.
 
 
 <a name="input.1"></a>
@@ -300,8 +317,7 @@ VKPIKNGTVIDHITANRSLNVLNILGLPDGRSKVTVAMNMDSSQLGSKDIVKIENRELKPSEVDQIALIAPRATINIVRD
 -->
 <a name="4.0"></a>
 <br><br><br><H2> 4.0   OUTPUT FILE FORMAT         </H2>
-The format of the hits file is described in <a
-     href="rocplot.html">ROCPLOT documentation.</a>
+The format of the hits file is described in <a href="rocplot.html">ROCPLOT documentation.</a> See also Figure 3.
 
 
 <a name="output.1"></a>
@@ -360,8 +376,7 @@ None.
 -->
 <a name="6.0"></a>
 <br><br><br><H2> 6.0   USAGE                     </H2>
-<H3> 6.1   COMMAND LINE ARGUMENTS </H3>
-
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" >
 <pre>
    Standard (Mandatory) qualifiers:
   [-hitsinfile]        infile     This option specifies the location of the
@@ -452,6 +467,9 @@ None.
 </pre>
 </td></tr></table>
 <P>
+
+<H3> 6.1   COMMAND LINE ARGUMENTS </H3>
+
 <table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
 <tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
@@ -637,7 +655,7 @@ The domain families file uses the same format as a DHF file (domain hits file). 
 <br><br>
 <table><td bgcolor="#FFCCFF">
 <pre>
-> Q9WVI4^.^513^667^.^55074^<b>CLASS</b>^<b>ARCHITECTURE</b>^<b>TOPOLOGY</b>^<b>FOLD</b>^<b>SUPERFAMILY</b>^<b>FAMILY</b>^PSIBLAST^113.00^0.000e+00^2.000e-25
+> Q9WVI4^.^513^667^SCOP^.^55074^<b>CLASS</b>^<b>ARCHITECTURE</b>^<b>TOPOLOGY</b>^<b>FOLD</b>^<b>SUPERFAMILY</b>^<b>FAMILY</b>^PSIBLAST^113.00^0.000e+00^2.000e-25
 RKFDDVTMLFSDIVGFTAICAQCTPMQVISMLNELYTRFDHQCGFLDIYKVETIGDAYCVASGLHRKSLCHAKPIALMALKMMELSEEVLTPDGRPIQMRIGIHSG
 </pre>
 </table>
@@ -704,6 +722,7 @@ The value of the tokens (<b>CLASS</b> through to <b>FAMILY</b>, but, in the curr
 
 <br><br>Putting this in context of a real example, imagine an input DHF file containing hits derived from searching a sequence database with a novel type of profile specific to a SCOP family.  In this case, the full SCOP classification (Class, Fold etc) of the hit are putatively assigned. To validate the novel method a validation file of manually curated sequences of known classification are used.  A <b>TRUE</b> hit would be one that overlaps with a validation sequence belonging to the same Family (and by implication Superfamily, Fold and Class) to the hit.  A <b>CROSS</b> hit overlaps with a sequence of the same fold,  but different family, as a validation sequence, and a <b>FALSE</b> hit overlaps with a sequence of a different fold to the hit.
 
+<br><br>The hits are rank-ordered on the basis of score before they are written to the the Hits (output) file.
 
 <!-- RELATED APPLICATIONS
      Other applications that either generate the input, use the output or 

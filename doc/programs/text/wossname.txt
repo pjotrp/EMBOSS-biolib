@@ -429,6 +429,7 @@ prophet          Gapped alignment for profiles
 TEST
 crystalball      Answers every drug discovery question about a sequence
 myseq            Demonstration of sequence reading
+mytest           Demonstration of sequence reading
 
 UTILS DATABASE CREATION
 aaindexextract   Extract data from AAINDEX
@@ -657,6 +658,7 @@ mse              Multiple Sequence Editor
 mwcontam         Shows molwts that match across a set of files
 mwfilter         Filter noisy molwts from mass spec output
 myseq            Demonstration of sequence reading
+mytest           Demonstration of sequence reading
 nawalign         Damian Counsell's NW implementation
 nawalignrunner   Nawalign all sequence pairs in a directory
 needle           Needleman-Wunsch global alignment
@@ -1152,9 +1154,8 @@ ALIGNMENT GLOBAL
 
 ALIGNMENT LOCAL
 
-   Program name                     Description
+   Program name                    Description
    [Part of this file has been deleted for brevity]
-   profit       Scan a sequence or database with a matrix or profile
    prophecy     Creates matrices/profiles from multiple alignments
    prophet      Gapped alignment for profiles
 
@@ -1163,6 +1164,7 @@ TEST
    Program name                      Description
    crystalball  Answers every drug discovery question about a sequence
    myseq        Demonstration of sequence reading
+   mytest       Demonstration of sequence reading
 
 UTILS DATABASE CREATION
 

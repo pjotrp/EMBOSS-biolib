@@ -17,7 +17,7 @@ Algorithm
 
 Usage
 
-   [an error occurred while processing this directive]
+   Under development, no final example yet
 
 Command line arguments
 
@@ -70,14 +70,14 @@ Input file format
 
    scorecmapdir reads any normal sequence USAs.
 
-   [an error occurred while processing this directive]
+   Under development, no example input file(s) yet
 
 Output file format
 
    scorecmapdir outputs a graph to the specified graphics device. outputs
    a report format file. The default format is ...
 
-   [an error occurred while processing this directive]
+   Under development, no example output file(s) yet
 
 Data files
 
@@ -133,16 +133,11 @@ See also
 
 Author(s)
 
-   The original Fortran program was written by Susan Jean Johns, VADMS
-   Center, Biochemistry/Biophysics Department at WSU.
-
-   This application was modified for inclusion in EMBOSS by Ian Longden
-   (il@sanger.ac.uk) Informatics Division, The Sanger Centre, Wellcome
-   Trust Genome Campus, Hinxton, Cambridge, CB10 1SA, UK.
+   Damian Counsell (d.counsell © rfcgr.mrc.ac.uk)
+   MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
+   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
 History
-
-   [an error occurred while processing this directive]
 
 Target users
 
@@ -151,4 +146,4 @@ Target users
 
 Comments
 
-   [an error occurred while processing this directive]
+   None

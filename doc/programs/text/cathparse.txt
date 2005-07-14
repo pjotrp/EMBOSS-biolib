@@ -1,5 +1,7 @@
 
-CATHPARSE documentation
+                          CATHPARSE documentation
+                                      
+   
 
 CONTENTS
 
@@ -165,7 +167,7 @@ XX
 CH   0 CHAIN; 159 START; 202 END;
 //
 
-  File: CATHPARSE.log
+  File: cathparse.log
 
 1.10.8.10
 1.10.8
@@ -266,7 +268,7 @@ CH   0 CHAIN; 159 START; 202 END;
    CATHPARSE. Domain sequence information can be added to the file by
    using DOMAINSEQS. Output file Ecath.dat
    -logfile This option specifies the name of the CATHPARSE log file.
-   Output file CATHPARSE.log
+   Output file cathparse.log
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default
@@ -287,16 +289,10 @@ mlist.small
 Name of raw CATH classification file (CAT.names.all.vX.X) (input). [CAT.names.a
 ll.v2.4]: CAT.names.all.small
 Name of CATH DCF file (domain classification file) (output). [Ecath.dat]: 
-Name of CATHPARSE log file [CATHPARSE.log]: 
+Name of CATHPARSE log file [cathparse.log]: 
 
    Go to the input files for this example
    Go to the output files for this example
-
-   The raw CATH classification files caths.list.small, domlist.small and
-   CAT.names.all.small were read from test_data/ directory and and a
-   domain classification file in DCF format called
-   /test_data/cathparse/all.scop was written. The log file
-   test_data/cathparse/CATHPARSE.log was written.
 
 7.0 KNOWN BUGS & WARNINGS
 

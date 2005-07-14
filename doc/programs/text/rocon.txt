@@ -1,9 +1,7 @@
 
-   [an error occurred while processing this directive]
-
-ROCON documentation
-
-   [an error occurred while processing this directive]
+                            ROCON documentation
+                                      
+   
 
 CONTENTS
 
@@ -24,6 +22,10 @@ CONTENTS
 
 1.0 SUMMARY
 
+   Reads a DHF file (domain hits file) of hits (sequences of unknown
+   structural classification) and a domain families file (validation
+   sequences of known classification) and writes a "hits file" for the
+   hits, which are classified and rank-ordered on the basis of score.
    Generates a hits file from comparing two DHF files
 
 2.0 INPUTS & OUTPUTS
@@ -41,8 +43,8 @@ CONTENTS
 3.0 INPUT FILE FORMAT
 
    The format of the DHF is described in SEQSEARCH documentation. See
-   also the example of the DHF file for hit sequences and validation
-   sequences below.
+   also the example of the DHF file for hit sequences (Figure 1) and
+   validation sequences (Figure 2) below.
 
   Input files for usage example
 
@@ -447,7 +449,8 @@ DYKIVEKAKVRL
 
 4.0 OUTPUT FILE FORMAT
 
-   The format of the hits file is described in ROCPLOT documentation.
+   The format of the hits file is described in ROCPLOT documentation. See
+   also Figure 3.
 
   Output files for usage example
 
@@ -468,8 +471,6 @@ TRUE         Q9YBD5    95    135
    None.
 
 6.0 USAGE
-
-  6.1 COMMAND LINE ARGUMENTS
 
    Standard (Mandatory) qualifiers:
   [-hitsinfile]        infile     This option specifies the location of the
@@ -556,6 +557,8 @@ TRUE         Q9YBD5    95    135
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
+
+  6.1 COMMAND LINE ARGUMENTS
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-hitsinfile]
@@ -717,8 +720,8 @@ Name of hits files (output). [hits.dhf]: rocon.hits
    topology (CATH only), domain fold (SCOP domains only), domain
    superfamily and domain family (SCOP only) - see below.
 
-> Q9WVI4^.^513^667^.^55074^CLASS^ARCHITECTURE^TOPOLOGY^FOLD^SUPERFAMILY^FAMILY^
-PSIBLAST^113.00^0.000e+00^2.000e-25
+> Q9WVI4^.^513^667^SCOP^.^55074^CLASS^ARCHITECTURE^TOPOLOGY^FOLD^SUPERFAMILY^FA
+MILY^PSIBLAST^113.00^0.000e+00^2.000e-25
 RKFDDVTMLFSDIVGFTAICAQCTPMQVISMLNELYTRFDHQCGFLDIYKVETIGDAYCVASGLHRKSLCHAKPIALMA
 LKMMELSEEVLTPDGRPIQMRIGIHSG
 
@@ -759,6 +762,8 @@ LKMMELSEEVLTPDGRPIQMRIGIHSG
    CROSS hit overlaps with a sequence of the same fold, but different
    family, as a validation sequence, and a FALSE hit overlaps with a
    sequence of a different fold to the hit.
+   The hits are rank-ordered on the basis of score before they are
+   written to the the Hits (output) file.
 
 11.0 RELATED APPLICATIONS
 

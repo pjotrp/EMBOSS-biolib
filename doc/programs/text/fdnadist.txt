@@ -297,8 +297,8 @@ Command line arguments
    -gamma Gamma distribution
    g (Gamma distributed rates)
    i (Gamma+invariant sites)
-   n (No distribution parameteres used)
-   No distribution parameteres used
+   n (No distribution parameters used)
+   No distribution parameters used
    -ncategories Number of substitution rate categories Integer from 1 to
    9 1
    -rate Category rates List of floating point numbers 1.0
