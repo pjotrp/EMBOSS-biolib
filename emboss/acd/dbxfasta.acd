@@ -14,7 +14,7 @@ section: input [
   string: dbname  [
     parameter: "Y"
     maxlength: "19"
-    minlength: "1"
+    minlength: "2"
     information: "Basename for index files"
     knowntype: "emboss database name"
     pattern: "[A-z][A-z0-9_]+"
@@ -24,7 +24,7 @@ section: input [
   string: dbresource  [
     parameter: "Y"
     maxlength: "19"
-    minlength: "1"
+    minlength: "2"
     information: "Resource name"
     knowntype: "emboss database name"
     pattern: "[A-z][A-z0-9_]+"
