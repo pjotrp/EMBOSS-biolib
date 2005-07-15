@@ -1018,7 +1018,7 @@ void embBtreeGetRsInfo(EmbPBtreeEntry entry)
     resource = ajStrStr(entry->dbrs);
     if(!ajNamRsAttrValueC(resource,"type",&value))
 	ajFatal("Missing resource entry (%S) for indexing",entry->dbrs);
-    if(!ajStrMatchC(value,"Index"))
+    if(!ajStrMatchCaseC(value,"Index"))
 	ajFatal("Incorrect 'type' field for resource (%S)",entry->dbrs);
 
 
