@@ -79,7 +79,7 @@ Resources
    dbxfasta will ask you for the name of a resource definition in the
    file emboss.defaults. This will be something like:
 RES embl [
-   type: index
+   type: Index
    idlen:  15
    acclen: 15
    svlen:  20
@@ -127,10 +127,10 @@ Command line arguments
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-dbname]
-   (Parameter 1) Basename for index files A string from 1 to 19
+   (Parameter 1) Basename for index files A string from 2 to 19
    characters, matching regular expression /[A-z][A-z0-9_]+/ Required
    [-dbresource]
-   (Parameter 2) Resource name A string from 1 to 19 characters, matching
+   (Parameter 2) Resource name A string from 2 to 19 characters, matching
    regular expression /[A-z][A-z0-9_]+/ Required
    -idformat ID line format
    simple   (>ID)
