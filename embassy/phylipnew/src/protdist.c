@@ -474,6 +474,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   AjPFloat basefreq;
   AjPFloat arrayval;
   AjPStr whichcodestr = NULL;
+  AjBool catmodel = false;
 
   weights = false;
   printdata = false;
@@ -492,7 +493,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   usepmb = false;
   usepam = false;
   kimura = false;
-  AjBool catmodel = false;
+
   gama = false;
   invar = false;
   invarfrac = 0.0;

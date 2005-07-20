@@ -282,6 +282,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   AjStatus retval;
   ajint numseqs=0;
   ajint numwts=0;
+  AjPStr codestr;
 
   jumble = false;
   njumble = 1;
@@ -297,7 +298,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   ancseq = false;
   treeprint = true;
   usertree = false;
-  AjPStr codestr;
+
   mulsets = false;
   justwts = false;
   msets = 1;

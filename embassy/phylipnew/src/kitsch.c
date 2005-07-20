@@ -80,7 +80,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
  
   AjStatus retval;
   AjPStr matrixtype = NULL;
-
+  ajint nummatrices=0;
   long inseed0;
   minev = false;
   jumble = false;
@@ -97,7 +97,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   treeprint = true;
   mulsets = false;
   datasets = 1;
-  ajint nummatrices=0;
+
 
     ajNamInit("emboss");
     retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");

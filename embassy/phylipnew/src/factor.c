@@ -116,7 +116,7 @@ void readtree()
   /* Reads a single character-state tree; puts adjacent symbol
      pairs into array 'pairs' */
 
-  npairs = 0;
+  int npairs = 0;
   const char* cp;
 
   cp = ajStrStr(rdline);
