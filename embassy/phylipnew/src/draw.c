@@ -207,7 +207,7 @@ int    pointinrect(double, double, double, double, double, double);
 int    rectintersects(double, double, double, double,
                 double, double, double, double);
 long   upbyte(long);
-long   lobyte(long);
+long   zlobyte(long);
 
 void   pictoutint(FILE *, long);
 Local long SFactor(void);
@@ -488,7 +488,7 @@ long upbyte(long num)
 }  /* upbyte */
 
 
-long lobyte(long num)
+long zlobyte(long num)
 {
   /* get low order nibble of byte */
   long Result = 0, i, j, bytenum, nibcount;
@@ -511,7 +511,7 @@ long lobyte(long num)
     }
   }
   return Result;
-}  /* lobyte */
+}  /* zlobyte */
 
 
 void pictoutint(FILE *file, long pictint)
@@ -750,14 +750,14 @@ void initplotter(long ntips, char *fontname)
      Version */
     hres = strpwide;
     vres = (long)floor(yunitspercm * ysize + 0.5);
-    fprintf(plotfile, "%c%c", (unsigned char)lobyte(hres - 1),
+    fprintf(plotfile, "%c%c", (unsigned char)zlobyte(hres - 1),
             (unsigned char)upbyte(hres - 1)); /* Xmax */
-    fprintf(plotfile, "%c%c", (unsigned char)lobyte(vres - 1),
+    fprintf(plotfile, "%c%c", (unsigned char)zlobyte(vres - 1),
             (unsigned char)upbyte(vres - 1)); /* Ymax */
-    fprintf(plotfile, "%c%c", (unsigned char)lobyte(hres),
+    fprintf(plotfile, "%c%c", (unsigned char)zlobyte(hres),
             (unsigned char)upbyte(hres));
     /* Horizontal resolution */
-    fprintf(plotfile, "%c%c", (unsigned char)lobyte(vres),
+    fprintf(plotfile, "%c%c", (unsigned char)zlobyte(vres),
             (unsigned char)upbyte(vres));
     /* Vertical resolution */
     for (i = 1; i <= 48; i++)   /* Color Map */
