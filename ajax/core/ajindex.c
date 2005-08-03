@@ -10572,7 +10572,7 @@ AjPList ajBtreeSecLeafList(AjPBtcache cache, ajlong rootblock)
 
     list = ajListNew();
 
-    order = cache->order;
+    order = cache->sorder;
 
     AJCNEW0(karray,order);
     AJCNEW0(parray,order);
