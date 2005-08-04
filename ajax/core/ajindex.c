@@ -35,10 +35,14 @@ static AjPBtpage  btreeCacheControl(AjPBtcache cache, ajlong pageno,
 				    AjBool isread);
 static AjPBtpage  btreeFindINode(AjPBtcache cache, AjPBtpage page,
 				 const char *item);
+static AjPBtpage  btreeSecFindINode(AjPBtcache cache, AjPBtpage page,
+				    const char *item);
 
 
 static AjPBtpage  btreePageFromKey(AjPBtcache cache, unsigned char *buf,
 				   const char *item);
+static AjPBtpage  btreeSecPageFromKey(AjPBtcache cache, unsigned char *buf,
+				      const char *item);
 static ajint      btreeNumInBucket(AjPBtcache cache, ajlong pageno);
 static AjPBucket  btreeReadBucket(AjPBtcache cache, ajlong pageno);
 static void       btreeWriteBucket(AjPBtcache cache, const AjPBucket bucket,
@@ -55,6 +59,7 @@ static void       btreeWriteNode(AjPBtcache cache, AjPBtpage page,
 				 AjPStr const *keys, const ajlong *ptrs,
 				 ajint nkeys);
 static AjBool     btreeNodeIsFull(const AjPBtcache cache, AjPBtpage page);
+static AjBool     btreeNodeIsFullSec(const AjPBtcache cache, AjPBtpage page);
 static void       btreeInsertNonFull(AjPBtcache cache, AjPBtpage page,
 				     const AjPStr key, ajlong less,
 				     ajlong greater);
@@ -808,7 +813,7 @@ AjPBtpage ajBtreeFindInsert(AjPBtcache cache, const char *key)
     root = btreeCacheLocate(cache,0L);
 
     if(!root)
-	ajFatal("Something has unlocked the PRI root cache page\n");
+	ajFatal("The PRI root cache page has been unlocked\n");
     
     if(!cache->level)
 	return root;
@@ -863,6 +868,48 @@ static AjPBtpage btreeFindINode(AjPBtcache cache, AjPBtpage page,
 
 
 
+/* @funcstatic btreeSecFindINode *************************************************
+**
+** Recursive search for insert node in a secondary tree
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [u] page [AjPBtpage] page
+** @param [r] item [const char*] key to search for 
+**
+** @return [AjPBtpage] leaf node where item should be inserted
+** @@
+******************************************************************************/
+
+static AjPBtpage btreeSecFindINode(AjPBtcache cache, AjPBtpage page,
+				 const char *item)
+{
+    AjPBtpage ret = NULL;
+    AjPBtpage pg  = NULL;
+
+    unsigned char *buf = NULL;
+    ajint status       = 0;
+    ajint ival         = 0;
+
+    /* ajDebug("In btreeSecFindINode\n"); */
+    
+    ret = page;
+    buf = page->buf;
+    GBT_NODETYPE(buf,&ival);
+    if(ival != BT_LEAF)
+    {
+	status = ret->dirty;
+	ret->dirty = BT_LOCK;	/* Lock in case of lots of overflow pages */
+	pg = btreeSecPageFromKey(cache,buf,item);
+	ret->dirty = status;
+	ret = btreeSecFindINode(cache,pg,item);
+    }
+    
+    return ret;
+}
+
+
+
+
 /* @funcstatic btreePageFromKey *******************************************
 **
 ** Return next lower index page given a key
@@ -895,6 +942,71 @@ static AjPBtpage btreePageFromKey(AjPBtcache cache, unsigned char *buf,
 
     GBT_NKEYS(rootbuf,&nkeys);
     order = cache->order;
+
+    AJCNEW0(karray,order);
+    AJCNEW0(parray,order);
+    for(i=0;i<order;++i)
+	karray[i] = ajStrNew();
+
+    btreeGetKeys(cache,rootbuf,&karray,&parray);
+    i = 0;
+    while(i!=nkeys && strcmp(key,karray[i]->Ptr)>=0)
+	++i;
+    if(i==nkeys)
+    {
+	if(strcmp(key,karray[i-1]->Ptr)<0)
+	    blockno = parray[i-1];
+	else
+	    blockno = parray[i];
+    }
+    else
+	blockno = parray[i];
+
+    for(i=0;i<order;++i)
+	ajStrDel(&karray[i]);
+    AJFREE(karray);
+    AJFREE(parray);
+
+    page =  ajBtreeCacheRead(cache,blockno);
+
+    return page;
+}
+
+
+
+
+/* @funcstatic btreeSecPageFromKey *******************************************
+**
+** Return next lower index page given a key in a secondary tree
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [u] buf [unsigned char *] page buffer
+** @param [r] key [const char *] key to search for 
+**
+** @return [AjPBtpage] pointer to a page
+** @@
+******************************************************************************/
+
+static AjPBtpage btreeSecPageFromKey(AjPBtcache cache, unsigned char *buf,
+				     const char *key)
+{
+    unsigned char *rootbuf = NULL;
+    ajint nkeys = 0;
+    ajint order = 0;
+    ajint i;
+    
+    ajlong blockno = 0L;
+    AjPStr *karray = NULL;
+    ajlong *parray = NULL;
+    AjPBtpage page = NULL;
+    
+    /* ajDebug("In btreePageFromKey\n"); */
+    
+    rootbuf = buf;
+
+
+    GBT_NKEYS(rootbuf,&nkeys);
+    order = cache->sorder;
 
     AJCNEW0(karray,order);
     AJCNEW0(parray,order);
@@ -1609,6 +1721,36 @@ static AjBool btreeNodeIsFull(const AjPBtcache cache, AjPBtpage page)
     GBT_NKEYS(buf,&nkeys);
 
     if(nkeys == cache->order - 1)
+	return ajTrue;
+
+    return ajFalse;
+}
+
+
+
+
+/* @funcstatic btreeNodeIsFullSec *****************************************
+**
+** Tests whether a secondary node is full of keys
+**
+** @param [r] cache [const AjPBtcache] cache
+** @param [u] page [AjPBtpage] original page
+**
+** @return [AjBool] true if full
+** @@
+******************************************************************************/
+
+static AjBool btreeNodeIsFullSec(const AjPBtcache cache, AjPBtpage page)
+{
+    unsigned char *buf = NULL;
+    ajint nkeys = 0;
+
+    /* ajDebug("In btreeNodeIsFull\n"); */
+
+    buf = page->buf;
+    GBT_NKEYS(buf,&nkeys);
+
+    if(nkeys == cache->sorder - 1)
 	return ajTrue;
 
     return ajFalse;
@@ -6967,7 +7109,7 @@ static void btreeAddToPriBucket(AjPBtcache cache, ajlong pageno,
 	pripage = btreeCacheLocate(cache,0L);
 	pripage->dirty = BT_LOCK;
 
-	ajDebug("Created secondary tree at block %d\n",(ajint)secrootpage);
+	/* ajDebug("Created 2ry tree at block %d\n",(ajint)secrootpage); */
     }
     else
     {
@@ -9070,7 +9212,7 @@ AjPBtpage ajBtreeSecFindInsert(AjPBtcache cache, const char *key)
     if(!cache->slevel)
 	return root;
     
-    ret = btreeFindINode(cache,root,key);
+    ret = btreeSecFindINode(cache,root,key);
 
     return ret;
 }
@@ -9694,7 +9836,7 @@ static void btreeInsertKeySec(AjPBtcache cache, AjPBtpage page,
     
     /* ajDebug("In btreeInsertKeySec\n"); */
 
-    if(!btreeNodeIsFull(cache,page))
+    if(!btreeNodeIsFullSec(cache,page))
     {
 	btreeInsertNonFullSec(cache,page,key,less,greater);
 	return;
