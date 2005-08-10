@@ -20,7 +20,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "ajax.h"
+#include "emboss.h"
 
 typedef struct EmbossSTreeNode {
     AjPStr Name;
