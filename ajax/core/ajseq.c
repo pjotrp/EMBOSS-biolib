@@ -5999,3 +5999,53 @@ ajint ajSeqFill(AjPSeq seq, ajint len)
 
     return ilen;
 }
+/* @func ajSeqDefName ******************************************************
+**
+** Provides a unique (for this program run) name for a sequence.
+**
+** @param [w] thys [AjPSeq] Sequence object
+** @param [r] setname [const AjPStr] Name set by caller
+** @param [r] multi [AjBool] If true, appends a number to the name.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqDefName(AjPSeq thys, const AjPStr setname, AjBool multi)
+{
+    static ajint count = 0;
+
+    if(ajStrLen(thys->Name))
+    {
+	ajDebug("ajSeqoutDefName already has a name '%S'\n", thys->Name);
+	return;
+    }
+
+    if (ajStrLen(setname))
+    {
+	if(multi && count)
+	    ajFmtPrintS(&thys->Name, "%S_%3.3d", setname, ++count);
+	else
+	{
+	    ajStrAssS(&thys->Name, setname);
+	    ++count;
+	}
+    }
+    else
+    {
+	if(multi)
+	    ajFmtPrintS(&thys->Name, "EMBOSS_%3.3d", ++count);
+	else
+	{
+	    ajStrAssC(&thys->Name, "EMBOSS");
+	    ++count;
+	}
+    }
+
+    ajDebug("ajSeqDefName set to  '%S'\n", thys->Name);
+
+    return;
+}
+
+
+
+

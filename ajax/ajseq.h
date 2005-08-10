@@ -132,6 +132,7 @@ AjPSeqCvt    ajSeqCvtNewZeroSS (const AjPPStr bases, int n,
 				const AjPPStr rbases, int rn);
 ajint        ajSeqCvtSize (const AjPSeqCvt cvt);
 void         ajSeqCvtTrace (const AjPSeqCvt cvt);
+void         ajSeqDefName(AjPSeq thys, const AjPStr setname, AjBool multi);
 void         ajSeqDel (AjPSeq* pthis);
 ajint        ajSeqEnd (const AjPSeq seq);
 ajint        ajSeqFill (AjPSeq seq, ajint len);
