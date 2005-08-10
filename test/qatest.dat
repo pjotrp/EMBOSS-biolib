@@ -1803,7 +1803,6 @@ ID qual-ufo
 AP seqret
 CL ../../data/hba.fa -feat -ufo ../../data/hba.gff
 CL -auto -sf fasta
-## Fails to set feature type in output GFF
 FI stderr
 FC = 0
 FP 0 /Warning: /
@@ -1815,42 +1814,29 @@ FI hba_human.fasta
 FC = 4
 FP /^>HBA_HUMAN /
 FI hba_human.gff
-FC = 158
+FC = 159
 FP /^##Type Protein HBA_HUMAN\n/
 //
 
 ID qual-ufo-noid
 AP seqret
-CL ../../data/noid.fa -feat -ufo ../../data/hba.gff
+CL ../../data/noid.fa -feat -ufo ../../data/hba.gff -sid HBA_HUMAN -sprot
 CL -stdout -auto -sf fasta
-## noid.fa has no sequence ID
-## This upsets the feature reading
-## Error GFF Group field for table ''
 FI stderr
+## GFF output truncated to match the length of the input sequence
+## Type DNA because the input sequence is.
 FC = 0
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
 FC = 2
-FP /^>EMBOSS_001/
-//
-
-ID qual-ufo-noid-id
-AP seqret
-CL ../../data/noid.fa -feat -ufo ../../data/hba.gff
-CL -stdout -auto -sf fasta -sid fred
-## noid.fa has no sequence ID
-## This upsets the feature reading
-## Error GFF Group field for table ''
-FI stderr
-FC = 0
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FC = 2
-FP /^>fred /
+FP /^>HBA_HUMAN/
+FI stdout.gff
+FC = 26
+FP /^##Type Protein HBA_HUMAN\n/
+FP 2 /^HBA_HUMAN\tSWISSPROT\tmisc_feature\t19\t19\t/
+FP 0 /^HBA_HUMAN\tSWISSPROT\tmisc_feature\t20\t20\t/
 //
 
 ID qual-sid
@@ -1880,7 +1866,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
 FC = 2
-FP /^>fred/
+FP /^>gnl\|unk\|fred/
 //
 
 ID qual-sdb
@@ -2782,9 +2768,10 @@ FP 19 /^>/
 ID dbiblast-allsys-keep
 DL keep
 AP dbiblast
-CL -fields "acnum,seqvn,des"
+CL -fields "acc,sv,des"
 IN swnew
 IN ../../data
+IN
 IN
 IN
 IN
@@ -2819,14 +2806,25 @@ FP /\A.{300}$/
 FI seqvn.trg
 FZ = 300
 FP /\A.{300}$/
+FI outfile.dbiblast
+FC = 39
+FP 1 /^filename: /
+FP /# Fields: 4\n/
+FP /# Files: 1\n/
+FP /#   File 1: .*/test\/data\/swnew\n/
+FP /Index acc: maxlen 6 items 9\n/
+FP /Index sv: maxlen 0 items 0\n/
+FP /Index des: maxlen 19 items 57\n/
+FP /Total 1 files 9 entries \(0 duplicates\)\n/
 //
 
 ID dbiblast-allnosys-keep
 DL keep
 AP dbiblast
-CL -fields "acnum,seqvn,des" -nosystemsort
+CL -fields "acc,sv,des" -nosystemsort
 IN swnew
 IN ../../data
+IN
 IN
 IN
 IN
@@ -2861,6 +2859,16 @@ FP /\A.{300}$/
 FI seqvn.trg
 FZ = 300
 FP /\A.{300}$/
+FI outfile.dbiblast
+FC = 40
+FP 1 /^filename: /
+FP /# Fields: 4\n/
+FP /# Files: 1\n/
+FP /#   File 1: .*/test\/data\/swnew\n/
+FP /Index acc: maxlen 6 items 9\n/
+FP /Index sv: maxlen 0 items 0\n/
+FP /Index des: maxlen 19 items 57\n/
+FP /Total 1 files 9 entries \(0 duplicates\)\n/
 //
 
 ID dbiblast-nosys-keep
@@ -2874,6 +2882,7 @@ IN
 IN
 IN
 IN
+IN
 FI stderr
 FC = 8
 FP 0 /Warning: /
@@ -2891,6 +2900,14 @@ FP /\A.{300}\006/
 FI acnum.trg
 FZ = 426
 FP /\A.{308}O42493\001/
+FI outfile.dbiblast
+FC = 33
+FP 1 /^filename: /
+FP /# Fields: 2\n/
+FP /# Files: 1\n/
+FP /#   File 1: .*/test\/data\/swnew\n/
+FP /Index acc: maxlen 6 items 9\n/
+FP /Total 1 files 9 entries \(0 duplicates\)\n/
 //
 
 ID dbiblast-ex-keep
@@ -2904,6 +2921,7 @@ IN
 IN
 IN
 IN
+IN
 FI stderr
 FC = 8
 FP 0 /Warning: /
@@ -2921,6 +2939,14 @@ FP /\A.{300}\006/
 FI acnum.trg
 FZ = 426
 FP /\A.{308}O42493\001/
+FI outfile.dbiblast
+FC = 32
+FP 1 /^filename: /
+FP /# Fields: 2\n/
+FP /# Files: 1\n/
+FP /#   File 1: .*/test\/data\/swnew\n/
+FP /Index acc: maxlen 6 items 9\n/
+FP /Total 1 files 9 entries \(0 duplicates\)\n/
 //
 
 ID dbiblast-idfirst
@@ -3018,6 +3044,7 @@ IN
 IN
 IN P
 IN
+IN
 FI stderr
 FC = 8
 FP 0 /Warning: /
@@ -3035,6 +3062,14 @@ FP /\A.{300}\006/
 FI acnum.trg
 FZ = 426
 FP /\A.{308}O42493\001/
+FI outfile.dbiblast
+FC = 50
+FP 5 /^filename: /
+FP /# Fields: 2\n/
+FP /# Files: 5\n/
+FP /#   File 1: .*/test\/data\/swsplit\.00\.pin\n/
+FP /Index acc: maxlen 6 items 9\n/
+FP /Total 5 files 9 entries \(0 duplicates\)\n/
 //
 
 ID dbiblast-split-wild-keep
@@ -3047,6 +3082,7 @@ IN
 IN
 IN P
 IN
+IN
 FI stderr
 FC = 8
 FP 0 /Warning: /
@@ -3064,6 +3100,14 @@ FP /\A.{300}\006/
 FI acnum.trg
 FZ = 426
 FP /\A.{308}O42493\001/
+FI outfile.dbiblast
+FC = 60
+FP 5 /^filename: /
+FP /# Fields: 2\n/
+FP /# Files: 15\n/
+FP /#   File \d+: .*/test\/data\/swsplit\.00\.pin\n/
+FP /Index acc: maxlen 6 items 9\n/
+FP /Total 5 files 9 entries \(0 duplicates\)\n/
 //
 
 ID dbiblast-split-list-keep
@@ -3076,6 +3120,7 @@ IN
 IN
 IN P
 IN
+IN
 FI stderr
 FC = 8
 FP 0 /Warning: /
@@ -3093,6 +3138,14 @@ FP /\A.{300}\006/
 FI acnum.trg
 FZ = 426
 FP /\A.{308}O42493\001/
+FI outfile.dbiblast
+FC = 50
+FP 5 /^filename: /
+FP /# Fields: 2\n/
+FP /# Files: 5\n/
+FP /#   File \d+: .*/test\/data\/swsplit\.00\.pin\n/
+FP /Index acc: maxlen 6 items 9\n/
+FP /Total 5 files 9 entries \(0 duplicates\)\n/
 //
 
 ID dbiblast-split-idfirst
@@ -3249,6 +3302,7 @@ IN ../../data
 IN emrod
 IN
 IN
+IN
 FI stderr
 FC = 8
 FP 0 /Warning: /
@@ -3266,16 +3320,28 @@ FP /\A.{300}\001/
 FI acnum.trg
 FZ = 342
 FP /\A.{308}L48662\001/
+FI outfile.dbifasta
+FC = 34
+FP /^# Fields: 2\n/
+FP /^#   Field 2: acc\n/
+FP /^#   File 1: /.*/test/data/emrod\n/
+FP /^filename: 'emrod'\n/
+FP 1 /^filename: /
+FP /^    id: 3\n/
+FP /^   acc: 3\n/
+FP /^Index acc: maxlen 6 items 3\n/
+FP /^Total 1 files 3 entries \(0 duplicates\)\n/
 //
 
 ID dbifasta-allsys-keep
 DL keep
 AP dbifasta
-CL -fields="acnum,seqvn,des"
+CL -fields "acc,sv,des"
 IN EMROD
 IN idacc
 IN ../../data
 IN emrod
+IN
 IN
 IN
 FI stderr
@@ -3309,16 +3375,32 @@ FI des.trg
 FZ = 750
 FP /\A.{308}11\000/
 FP /\A.{44} +/
+FI outfile.dbifasta
+FC = 41
+FP /^# Fields: 4\n/
+FP /^#   Field 2: acc\n/
+FP /^#   File 1: /.*/test/data/emrod\n/
+FP /^filename: 'emrod'\n/
+FP 1 /^filename: /
+FP /^    id: 3\n/
+FP /^   acc: 3\n/
+FP /^    sv: 0\n/
+FP /^   des: 28\n/
+FP /^Index acc: maxlen 6 items 3\n/
+FP /^Index sv: maxlen 0 items 0\n/
+FP /^Index des: maxlen 10 items 25\n/
+FP /^Total 1 files 3 entries \(0 duplicates\)\n/
 //
 
 ID dbifasta-allnosys-keep
 DL keep
 AP dbifasta
-CL -fields="acnum,seqvn,des" -nosystemsort
+CL -fields "acc,sv,des" -nosystemsort
 IN EMROD
 IN idacc
 IN ../../data
 IN emrod
+IN
 IN
 IN
 FI stderr
@@ -3352,6 +3434,22 @@ FI des.trg
 FZ = 750
 FP /\A.{308}11\000/
 FP /\A.{44} +/
+FI outfile.dbifasta
+FC = 42
+FP /^# Fields: 4\n/
+FP /^#   Field 2: acc\n/
+FP /^#   File 1: /.*/test/data/emrod\n/
+FP /^filename: 'emrod'\n/
+FP 1 /^filename: /
+FP /^    id: 3\n/
+FP /^   acc: 3\n/
+FP /^    sv: 0\n/
+FP /^   des: 28\n/
+FP /^Index acc: maxlen 6 items 3\n/
+FP /^Index sv: maxlen 0 items 0\n/
+FP /^Index des: maxlen 10 items 25\n/
+FP /^Total 1 files 3 entries \(0 duplicates\)\n/
+FP /^#    -nosystemsort\n/
 //
 
 ID dbifasta-idfirst
@@ -3422,6 +3520,7 @@ IN ../../data
 IN swnew
 IN
 IN
+IN
 FI stderr
 FC = 8
 FP 0 /Warning: /
@@ -3439,6 +3538,14 @@ FP /\A.{300}\006/
 FI acnum.trg
 FZ = 426
 FP /\A.{308}O42493\001/
+FI outfile.dbifasta
+FC = 34
+FP /# Fields: 2\n/
+FP /# Files: 1\n/
+FP /#   File 1: /.*/test/data/swnew\n/
+FP 1 /^filename: /
+FP /Index acc: maxlen 6 items 9\n/
+FP /Total 1 files 9 entries \(0 duplicates\)\n/
 //
 
 ID dbifasta-swiss-idfirst
@@ -3509,6 +3616,7 @@ IN ../../data
 IN wormpep.clone.*
 IN
 IN
+IN
 FI stderr
 FC = 8
 FP 0 /Warning: /
@@ -3527,6 +3635,13 @@ FI acnum.trg
 FZ = 1356
 ## Pattern needs 's' modifier ... binary data includes a newline
 FP s /\A.{308}AC3[.]1\000/
+FI outfile.dbifasta
+FC = 38
+FP /# Fields: 2\n/
+FP /# Files: 2\n/
+FP 2 /^filename: /
+FP /Index acc: maxlen 8 items 66\n/
+FP /Total 2 files 66 entries \(0 duplicates\)\n/
 //
 
 ID dbifasta-worm-idfirst
@@ -3604,6 +3719,7 @@ IN ../../embl
 IN rod.dat
 IN
 IN
+IN
 FI stderr
 FC = 6
 FP 0 /Warning: /
@@ -3621,6 +3737,16 @@ FP /\A.{300}\001/
 FI acnum.trg
 FZ = 342
 FP /\A.{308}L48662\001/
+FI outfile.dbiflat
+FC = 34
+FP /# Release: 0.0\n/
+FP /# Date: 15\/07\/05\n/
+FP /# Files: 1\n/
+FP /#   File 1: .*/rod.dat\n/
+FP /# Fields: 2\n/
+FP /# Rundate: Fri Jul 15 2005 12:00:00\n/
+FP 1 /^Index \S+ maxlen \d+ items \d+\n/
+FP 1 /^filename: /
 //
 
 ID dbiflat-nosys-keep
@@ -3633,6 +3759,7 @@ IN ../../embl
 IN rod.dat
 IN
 IN
+IN
 FI stderr
 FC = 6
 FP 0 /Warning: /
@@ -3650,6 +3777,16 @@ FP /\A.{300}\001/
 FI acnum.trg
 FZ = 342
 FP /\A.{308}L48662\001/
+FI outfile.dbiflat
+FC = 35
+FP /# Release: 0.0\n/
+FP /# Date: 15\/07\/05\n/
+FP /# Files: 1\n/
+FP /#   File 1: .*/rod.dat\n/
+FP /# Fields: 2\n/
+FP /# Rundate: Fri Jul 15 2005 12:00:00\n/
+FP 1 /^Index \S+ maxlen \d+ items \d+\n/
+FP 1 /^filename: /
 //
 
 ID dbiflat-id
@@ -3791,6 +3928,7 @@ IN ../../swnew
 IN
 IN
 IN
+IN
 FI stderr
 FC = 6
 FP 0 /Warning: /
@@ -3808,15 +3946,28 @@ FP /\A.{300}\003/
 FI acnum.trg
 FZ = 370
 FP /\A.{308}P53450\001/
+FI outfile.dbiflat
+FC = 40
+FP /# Fields: 2\n/
+FP /# Files: 3\n/
+FP /# Filenames: \*\.dat\n/
+FP /filename: 'new_seq.dat'\n    id: 2\n/
+FP /filename: 'upd_ann.dat'\n    id: 2\n/
+FP /filename: 'upd_seq.dat'\n    id: 1\n/
+FP /Index acc: maxlen 6 items 5\n/
+FP /^Total 3 files 5 entries \(0 duplicates\)\n/
+FP 1 /^Index \S+ maxlen \d+ items \d+\n/
+FP 3 /^filename: /
 //
 
 ID dbiflat-swiss-allsys-keep
 DL keep
 AP dbiflat
-CL -fields="acnum,seqvn,des,keyword,taxon"
+CL -fields "acc,sv,des,key,org"
 IN SWNEW
 IN
 IN ../../swnew
+IN
 IN
 IN
 IN
@@ -3861,15 +4012,29 @@ FZ = 624
 FI taxon.hit
 FZ = 540
 FP /\A.{300}\001/
+FI outfile.dbiflat
+FC = 61
+FP /# Fields: 6\n/
+FP /#   Field 6: org\n/
+FP /# Files: 3\n/
+FP /Index acc: maxlen 6 items 5\n/
+FP /Index sv: maxlen 8 items 5\n/
+FP /Index des: maxlen 19 items 38\n/
+FP /Index key: maxlen 28 items 25\n/
+FP /Index org: maxlen 19 items 12\n/
+FP /Total 3 files 5 entries \(0 duplicates\)\n/
+FP 5 /^Index \S+ maxlen \d+ items \d+\n/
+FP 3 /^filename: /
 //
 
 ID dbiflat-swiss-allnosys-keep
 DL keep
 AP dbiflat
-CL -nosystemsort -fields="acnum,seqvn,des,keyword,taxon"
+CL -nosystemsort -fields "acc,sv,des,key,org"
 IN SWNEW
 IN
 IN ../../swnew
+IN
 IN
 IN
 IN
@@ -3914,6 +4079,19 @@ FP /\A.{308}ACTINOPTERYGII\000/
 FI taxon.hit
 FZ = 540
 FP /\A.{300}\001/
+FI outfile.dbiflat
+FC = 62
+FP /# Fields: 6\n/
+FP /#   Field 6: org\n/
+FP /# Files: 3\n/
+FP /Index acc: maxlen 6 items 5\n/
+FP /Index sv: maxlen 8 items 5\n/
+FP /Index des: maxlen 19 items 38\n/
+FP /Index key: maxlen 28 items 25\n/
+FP /Index org: maxlen 19 items 12\n/
+FP /Total 3 files 5 entries \(0 duplicates\)\n/
+FP 5 /^Index \S+ maxlen \d+ items \d+\n/
+FP 3 /^filename: /
 //
 
 ID dbiflat-swiss-idfirst
@@ -4039,6 +4217,7 @@ IN ../../genbank
 IN *.seq
 IN
 IN
+IN
 FI stderr
 FC = 6
 FP 0 /Warning: /
@@ -4057,8 +4236,25 @@ FP /\A.{300}\001/
 FI acnum.trg
 FZ = 1596
 FP /\A.{308}AB000095\001/
+FI outfile.dbiflat
+FC = 70
+FP /# Fields: 2\n/
+FP /# Files: 10\n/
+FP /filename: 'gbbct1.seq'\n    id: 9\n/
+FP /filename: 'gbest1.seq'\n    id: 1\n/
+FP /filename: 'gbinv1.seq'\n    id: 2\n/
+FP /filename: 'gbpln1.seq'\n    id: 1\n/
+FP /filename: 'gbpln2.seq'\n    id: 1\n/
+FP /filename: 'gbpri1.seq'\n    id: 18\n/
+FP /filename: 'gbrod1.seq'\n    id: 3\n/
+FP /filename: 'gbsts1.seq'\n    id: 1\n/
+FP /filename: 'gbvrl1.seq'\n    id: 1\n/
+FP /filename: 'gbvrt.seq'\n    id: 2\n/
+FP /Index acc: maxlen 8 items 81\n/
+FP /Total 10 files 39 entries \(0 duplicates\)\n/
+FP 1 /^Index \S+ maxlen \d+ items \d+\n/
+FP 10 /^filename: /
 //
-
 
 #############################################
 # The qangcg database(s)
@@ -4071,6 +4267,7 @@ AP dbigcg
 IN EMBL
 IN EMBL
 IN ../../embl
+IN
 IN
 IN
 IN
@@ -4091,6 +4288,14 @@ FP /\A.{300}\001/
 FI acnum.trg
 FZ = 1068
 FP /\A.{308}AB000095/
+FI outfile.dbigcg
+FC = 65
+FP 9 /^filename: /
+FP /# Fields: 2\n/
+FP /# Files: 9\n/
+FP /#   File \d+: .*\/test\/embl\/eem_ba1\.seq\n/
+FP /Index acc: maxlen 8 items 48\n/
+FP /Total 9 files 40 entries \(0 duplicates\)\n/
 //
 
 ID dbigcg-id
@@ -4278,10 +4483,11 @@ ID dbigcg-allsys-keep
 DL keep
 TI 120
 AP dbigcg
-CL -fields "acnum,seqvn,des,keyword,taxon"
+CL -fields "acc,sv,des,key,org"
 IN EMBL
 IN EMBL
 IN ../../embl
+IN
 IN
 IN
 IN
@@ -4326,6 +4532,18 @@ FP /\A.{300}\047/
 FI taxon.trg
 FZ = 3765
 FP /\A.{308}AFRICAN CLAWED FROG\000/
+FI outfile.dbigcg
+FC = 110
+FP 9 /^filename: /
+FP /# Fields: 6\n/
+FP /# Files: 9\n/
+FP /#   File \d+: .*\/test\/embl\/eem_ba1\.seq\n/
+FP /Index acc: maxlen 8 items 48\n/
+FP /Index sv: maxlen 10 items 24\n/
+FP /Index des: maxlen 19 items 202\n/
+FP /Index key: maxlen 44 items 57\n/
+FP /Index org: maxlen 27 items 99\n/
+FP /Total 9 files 40 entries \(0 duplicates\)\n/
 //
 
 ID dbigcg-allsys-id
@@ -4593,10 +4811,11 @@ ID dbigcg-allnosys-keep
 DL keep
 TI 120
 AP dbigcg
-CL -fields "acnum,seqvn,des,keyword,taxon" -nosystem
+CL -fields "acc,sv,des,key,org" -nosystem
 IN EMBL
 IN EMBL
 IN ../../embl
+IN
 IN
 IN
 IN
@@ -4641,6 +4860,18 @@ FP /\A.{300}\047/
 FI taxon.trg
 FZ = 3765
 FP /\A.{308}AFRICAN CLAWED FROG\000/
+FI outfile.dbigcg
+FC = 111
+FP 9 /^filename: /
+FP /# Fields: 6\n/
+FP /# Files: 9\n/
+FP /#   File \d+: .*\/test\/embl\/eem_ba1\.seq\n/
+FP /Index acc: maxlen 8 items 48\n/
+FP /Index sv: maxlen 10 items 24\n/
+FP /Index des: maxlen 19 items 202\n/
+FP /Index key: maxlen 44 items 57\n/
+FP /Index org: maxlen 27 items 99\n/
+FP /Total 9 files 40 entries \(0 duplicates\)\n/
 //
 
 
@@ -4655,6 +4886,7 @@ AP dbigcg
 IN PIR
 IN PIR
 IN ../../pir
+IN
 IN
 IN
 IN
@@ -4675,6 +4907,14 @@ FP /\A.{300}\033/
 FI acnum.trg
 FZ = 1392
 FP /\A.{308}A00001/
+FI outfile.dbigcg
+FC = 45
+FP 4 /^filename: /
+FP /# Fields: 2\n/
+FP /# Files: 4\n/
+FP /#   File \d+: .*\/test\/pir\/pir1\.seq\n/
+FP /Index acc: maxlen 6 items 78\n/
+FP /Total 4 files 60 entries \(0 duplicates\)\n/
 //
 
 ID dbigcg-pir-id
@@ -4814,15 +5054,16 @@ FP 1 /Died: /
 # The qapirall database(s)
 #############################################
 
-# fields seqvn not supported by PIR format data
+# field sv not supported by PIR format data
 ID dbigcg-pirall-keep
 DL keep
 TI 120
 AP dbigcg
-CL -fields "acnum,des,keyword,taxon"
+CL -fields "acc,des,key,org"
 IN PIR
 IN PIR
 IN ../../pir
+IN
 IN
 IN
 IN
@@ -4863,6 +5104,17 @@ FZ = 4944
 FP /\A.{308}AILANTHUS SILKMOTH/
 FP /\0ANAS PLATYRHYNCHOS\0/
 FP /\0DOMESTIC DUCK\0/
+FI outfile.dbigcg
+FC = 64
+FP 4 /^filename: /
+FP /# Fields: 5\n/
+FP /# Files: 4\n/
+FP /#   File \d+: .*\/test\/pir\/pir1\.seq\n/
+FP /Index acc: maxlen 6 items 78\n/
+FP /Index des: maxlen 14 items 137\n/
+FP /Index key: maxlen 25 items 16\n/
+FP /Index org: maxlen 35 items 108\n/
+FP /Total 4 files 60 entries \(0 duplicates\)\n/
 //
 
 ID dbigcg-pirall-id
@@ -5128,7 +5380,7 @@ FP 1 /rnu68037/
 ID dbxfasta-allsys-keep
 DL keep
 AP dbxfasta
-CL -fields="id,acc,sv,des"
+CL -fields "id,acc,sv,des"
 IN emrod
 IN embl
 IN idacc
@@ -5627,7 +5879,7 @@ FP 2 /^>/
 ID dbxflat-all-keep
 DL keep
 AP dbxflat
-CL -fields="id,acc,sv,des,key,org"
+CL -fields "id,acc,sv,des,key,org"
 IN embl
 IN embl
 IN embl
@@ -8983,7 +9235,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI globins.infoalign
 FZ = 761
-FP /^msf::.*HBA_HORSE\s+HBA_HORSE\s+141\s+144\s+2\s+3\s+48\s+4\s+89\s+66\.666664\s+0\.190000\s+\n/
+FP /^msf::.*HBA_HORSE\s+HBA_HORSE\s+141\s+144\s+2\s+3\s+48\s+4\s+89\s+66\.666664\s+0\.830000\s+\n/
 //
 
 ID infoalign-ex2
@@ -8998,7 +9250,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI globins.infoalign
 FZ = 477
-FP /^HBA_HORSE\s+141\s+144\s+2\s+3\s+48\s+4\s+89\s+66\.666664\s+0\.190000\s+\n/
+FP /^HBA_HORSE\s+141\s+144\s+2\s+3\s+48\s+4\s+89\s+66\.666664\s+0\.830000\s+\n/
 //
 
 ID infoalign-ex3
@@ -9074,7 +9326,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI globins.infoalign
 FZ = 761
-FP /^msf::\S+\s+HBA_HORSE\s+141\s+144\s+2\s+3\s+51\s+18\s+72\s+64.583336\s+0\.190000\s+\n/
+FP /^msf::\S+\s+HBA_HORSE\s+141\s+144\s+2\s+3\s+51\s+18\s+72\s+64.583336\s+0\.830000\s+\n/
 //
 
 ID infoalign-ex8
@@ -10147,7 +10399,7 @@ FI stdout
 FZ = 19
 FP /^Created plotcon.ps\n/
 FI plotcon.ps
-FZ = 20936
+FZ = 16475
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -10167,7 +10419,7 @@ FP 0 /Died: /
 FI plotcon1.dat
 FC = 179
 FP /^##Points 164\n/
-FP /^10.000000\s+0.000744\n/
+FP /^135.000000\s+0.305580\n/
 //
 
 ID plotorf-ex
@@ -10299,31 +10551,7 @@ FZ = 22
 FP /^Created prettyplot.ps\n/
 FI prettyplot.ps
 FP /^%%Title: PLplot Graph\n/
-FP /^%%Pages: 3\n/
-//
-
-ID prettyplot-data
-AP prettyplot
-CL -resbreak=10 -boxcol -consensus -plurality=3
-CL -graph data
-IN ../../data/globins.msf
-FI stdout
-FC = 2
-FP /^Created prettyplot2.dat\n/
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI prettyplot1.dat
-FC = 1252
-FP /^Text1 x1 -10.000000 y1 50.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
-FP /^Text1 x1 -10.000000 y1 43.599998 colour 0 size 8.000000 Consensus\n/
-FP /^Text1 x1 59.000000 y1 53.500000 colour 0 size 8.000000 50\n/
-FP /^Text1 x1 4.000000 y1 53.500000 colour 0 size 8.000000 D\n/
-FI prettyplot2.dat
-FC = 130
-FP /^Text1 x1 -10.000000 y1 50.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
+FP /^%%Pages: 2\n/
 //
 
 ID prettyplot-ex2
@@ -10340,7 +10568,41 @@ FZ = 22
 FP /^Created prettyplot.ps\n/
 FI prettyplot.ps
 FP /^%%Title: PLplot Graph\n/
-FP /^%%Pages: 2\n/
+FP /^%%Pages: 1\n/
+//
+
+ID prettyplot-data
+AP prettyplot
+CL -resbreak=10 -boxcol -consensus -plurality=3
+CL -graph data
+IN ../../data/globins.msf
+FI stdout
+FC = 4
+FP /^Created prettyplot2.dat\n/
+FP 4 /^Created prettyplot\d.dat\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI prettyplot1.dat
+FC = 602
+FP /^Text1 x1 -10.000000 y1 50.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
+FP /^Text1 x1 -10.000000 y1 43.599998 colour 0 size 8.000000 Consensus\n/
+FP /^Text1 x1 59.000000 y1 53.500000 colour 0 size 8.000000 50\n/
+FP /^Text1 x1 9.000000 y1 53.500000 colour 0 size 8.000000 A\n/
+FI prettyplot2.dat
+FC = 862
+FP /^Text1 x1 -10.000000 y1 50.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
+FP /^Text1 x1 1.000000 y1 56.799999 colour 0 size 8.000000 K\n/
+FI prettyplot3.dat
+FC = 815
+FP /^Text1 x1 -10.000000 y1 50.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
+FP /^Text1 x1 2.000000 y1 43.599998 colour 0 size 8.000000 H\n/
+FI prettyplot4.dat
+FC = 181
+FP /^Text1 x1 -10.000000 y1 50.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
+FP /^Text1 x1 1.000000 y1 70.000000 colour 0 size 8.000000 N\n/
 //
 
 ID prettyseq-ex
@@ -10490,9 +10752,9 @@ FI globins.prophecy
 ## Do not check file size. AIX reports -0.00 in some positions
 ## so the file can be slightly larger
 ##
-FP /^Max_score\s+645\.45\n/
+FP /^Max_score\s+939.76\n/
 FP /^Consensus\s+PIVDT.*ELGYQG\n/
-FP /^0\.15 0\.00 0\.03 0\.03 0\.03 -0\.18 .* 0\.87 0\.87\n/
+FP /^0\.65 0\.00 0\.13 0\.13 0\.13 -0\.78 .* 0\.87 0\.87\n/
 //
 
 # example - use h* to save time
@@ -21659,8 +21921,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 19
-FP 11 /^./
+FC = 15
+FP 9 /^./
 //
 
 ID fprotdist-ex
