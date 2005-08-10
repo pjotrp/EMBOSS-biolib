@@ -999,3 +999,41 @@ AjBool ajMatrixfSeqNum(const AjPMatrixf thys, const AjPSeq seq, AjPStr* numseq)
 {
     return ajSeqNum(seq, thys->Cvt, numseq);
 }
+
+/* @func ajMatrixGetCodes *****************************************************
+**
+** Returns the character codes for each offset in the matrix
+**
+** @param [r] thys [const AjPMatrix] Matrix object
+** @return [AjPStr] Matrix codes
+******************************************************************************/
+
+AjPStr ajMatrixGetCodes(const AjPMatrix thys)
+{
+    AjPStr ret = NULL;
+    ajint i;
+
+    ret = ajStrNewL(thys->Size + 1);
+    for (i=0;i<thys->Size;i++)
+	ajStrAppK(&ret, ajStrChar(thys->Codes[i], 0));
+    return ret;
+}
+
+/* @func ajMatrixfGetCodes ****************************************************
+**
+** Returns the character codes for each offset in the matrix
+**
+** @param [r] thys [const AjPMatrixf] Matrix object
+** @return [AjPStr] Matrix codes
+******************************************************************************/
+
+AjPStr ajMatrixfGetCodes(const AjPMatrixf thys)
+{
+    AjPStr ret = NULL;
+    ajint i;
+
+    ret = ajStrNewL(thys->Size + 1);
+    for (i=0;i<thys->Size;i++)
+	ajStrAppK(&ret, ajStrChar(thys->Codes[i], 0));
+    return ret;
+}
