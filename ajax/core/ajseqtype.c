@@ -334,14 +334,19 @@ static AjBool seqTypeFix(AjPSeq thys, ajint itype)
     if(!seqType[itype].Gaps)
 	ajStrDegap(&thys->Seq);
 
+    if (ajStrMatchCC(seqType[itype].Name, "pureprotein"))
+	    seqTypeStopTrimS(&thys->Seq);
+
     if(seqType[itype].Ambig)
     {
 	/*
 	 ** list the bad characters, change to 'X' or 'N'
 	 */
-	switch(itype)
+	switch(seqType[itype].Type)
 	{
 	case ISPROT:
+	    if (ajStrMatchCC(seqType[itype].Name, "protein"))
+	    seqTypeStopTrimS(&thys->Seq);
 	    ret = seqTypeFixReg(thys, itype, 'X');
 	    break;
 	case ISNUC:
@@ -393,18 +398,17 @@ static AjBool seqTypeFixReg(AjPSeq thys, ajint itype, char fixchar)
     ajDebug("seqTypeFixReg '%s'\n", seqType[itype].Name);
     /*ajDebug("Seq old '%S'\n", thys->Seq);*/
     badchar = seqType[itype].Badchars();
-
     while(ajRegExec(badchar, thys->Seq))
     {
 	ilen = ajRegLenI(badchar, 0);
 	ioff = ajRegOffset(badchar);
-	lastioff = ioff;
 	if(lastioff >= ioff)
 	    ajFatal("failed to fix sequence type - problem at position %d\n",
 		    lastioff);
+	lastioff = ioff;
 	ajDebug("Fix string at %d len %d\n", ioff, ilen);
 	for(i=0;i<ilen;i++)
-	    ajStrReplaceK(&thys->Seq, ++ioff, fixchar, 1);
+	    ajStrReplaceK(&thys->Seq, ioff++, fixchar, 1);
     }
     /*ajDebug("Seq new '%S'\n", thys->Seq);*/
     ret = ajTrue;
@@ -1063,6 +1067,8 @@ static AjBool seqTypeStopTrimS(AjPStr* pthys)
 void ajSeqSetNuc(AjPSeq thys)
 {
     ajStrAssC(&thys->Type, "N");
+    if(thys->Fttable)
+	ajFeattableSetNuc(thys->Fttable);
 
     return;
 }
@@ -1083,6 +1089,8 @@ void ajSeqSetNuc(AjPSeq thys)
 void ajSeqSetProt(AjPSeq thys)
 {
     ajStrAssC(&thys->Type, "P");
+    if(thys->Fttable)
+	ajFeattableSetProt(thys->Fttable);
 
     return;
 }
