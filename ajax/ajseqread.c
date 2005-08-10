@@ -1572,11 +1572,11 @@ static ajint seqReadFmt(AjPSeq thys, AjPSeqin seqin,
 
 	if(seqQueryMatch(seqin->Query, thys))
 	{
-	    ajStrAssS(&thys->Entryname, thys->Name);
+	    ajStrSet(&thys->Entryname, thys->Name);
 
 	    if(seqin->Features && !thys->Fttable)
 	    {
-		ajStrSet(&seqin->Ftquery->Seqname, thys->Name);
+		ajStrSet(&seqin->Ftquery->Seqname, thys->Entryname);
 		seqin->Fttable = ajFeatUfoRead(seqin->Ftquery,
 				  seqin->Ufo);
 		if (!seqin->Fttable)
