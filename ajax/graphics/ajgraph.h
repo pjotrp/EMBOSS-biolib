@@ -108,6 +108,8 @@ void          ajGraphDiaFill (PLFLT x0, PLFLT y0, PLFLT size);
 void          ajGraphDots (PLFLT *x1,PLFLT *y1, ajint numofdots);
 void          ajGraphDumpDevices (void);
 ajint*        ajGraphGetBaseColour (void);
+ajint*        ajGraphGetBaseColourNuc(const AjPStr codes);
+ajint*        ajGraphGetBaseColourProt(const AjPStr codes);
 void          ajGraphGetCharSize (float *defheight, float *currentheight);
 ajint         ajGraphGetColour(void);
 void          ajGraphGetOut (float *xp,float *yp, ajint *xleng,

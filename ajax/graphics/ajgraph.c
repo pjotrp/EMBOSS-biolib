@@ -642,8 +642,8 @@ static void GraphArrayGaps(ajint numofpoints, float *x, float *y)
 	if(*x2 != FLT_MIN && *x1 != FLT_MIN &&
 	   *y2 != FLT_MIN && *y1 != FLT_MIN)
 	{
-	    ajDebug("=g= pljoin(%.2f, %.2f, %.2f, %.2f) [ xy xy]\n",
-		    *x1, *y1, *x2, *y2);
+	    /*ajDebug("=g= pljoin(%.2f, %.2f, %.2f, %.2f) [ xy xy]\n",
+		    *x1, *y1, *x2, *y2);*/
 	    pljoin(*x1,*y1,*x2,*y2);
 	}
 	x1++; y1++;
@@ -685,9 +685,9 @@ static void GraphArrayGapsI(ajint numofpoints, ajint *x, ajint *y)
 	if(*x2 != INT_MIN && *x1 != INT_MIN &&
 	   *y2 != INT_MIN && *y1 != INT_MIN)
 	{
-	    ajDebug("=g= pljoin(%.2f, %.2f, %.2f, %.2f) "
+	    /*ajDebug("=g= pljoin(%.2f, %.2f, %.2f, %.2f) "
 		    "[ xy xy] [ajint xy xy]\n",
-		    (float)*x1, (float)*x2, (float)*y1, (float)*y2);
+		    (float)*x1, (float)*x2, (float)*y1, (float)*y2);*/
 	    pljoin((float)*x1,(float)*y1,(float)*x2,(float)*y2);
 	}
 	x1++; y1++;
@@ -850,9 +850,9 @@ static void GraphClose(void)
 static void GraphText(float x1, float y1, float x2, float y2,
 		      float just,const char *text)
 {
-    ajDebug("=g= plptex(%.2f, %.2f, %.2f, %.2f, %.2f, '%s') "
+    /*ajDebug("=g= plptex(%.2f, %.2f, %.2f, %.2f, %.2f, '%s') "
 	     "[xy xy just text]\n",
-	     x1, y1, x2, y2, just, text);
+	     x1, y1, x2, y2, just, text);*/
     plptex(x1,y1,x2,y2,just, text);
 
     return;
@@ -2070,8 +2070,9 @@ ajint ajGraphSetFore(ajint colour)
 	    col = 0;
     }
 
-    ajDebug("ajGraphSetFore (%d) currentbgwhite: %B, currentfgcolour: %d\n",
-	     colour, currentbgwhite, currentfgcolour);
+    ajDebug("ajGraphSetFore (%d '%s') currentbgwhite: %B, oldcolour: %d '%s'\n",
+	    colour, colournum[colour], currentbgwhite, oldcolour,
+	    colournum[oldcolour]);
 
     ajGraphColourFore();
 
@@ -2117,7 +2118,7 @@ ajint* ajGraphGetBaseColour(void)
 {
     ajint *ret;
 
-    ret = (ajint *) AJALLOC(sizeof(ajint)*AZ);
+    ret = (ajint *) AJALLOC0(sizeof(ajint)*AZ);
 
     ret[0] = BLACK;			/* A */
     ret[1] = BLACK;			/* B */
@@ -2129,22 +2130,22 @@ ajint* ajGraphGetBaseColour(void)
     ret[7] = BLUE;			/* H */
     ret[8] = BLACK;			/* I */
     ret[9] = BLACK;			/* J */
-    ret[10] = BLUE;			/* K*/
-    ret[11] = BLACK;			/* L*/
-    ret[12] = YELLOW;			/* M*/
-    ret[13] = GREEN;			/* N*/
-    ret[14] = BLACK;			/* O*/
-    ret[15] = BLUEVIOLET;		/* P*/
-    ret[16] = GREEN;			/* Q*/
-    ret[17] = BLUE;			/* R*/
-    ret[18] = CYAN;			/* S*/
-    ret[19] = CYAN;			/* T*/
-    ret[20] = BLACK;			/* U*/
-    ret[21] = BLACK;			/* V*/
-    ret[22] = WHEAT;			/* W*/
-    ret[23] = BLACK;			/* X*/
-    ret[24] = WHEAT;			/* Y*/
-    ret[25] = BLACK;			/* Z*/
+    ret[10] = BLUE;			/* K */
+    ret[11] = BLACK;			/* L */
+    ret[12] = YELLOW;			/* M */
+    ret[13] = GREEN;			/* N */
+    ret[14] = BLACK;			/* O */
+    ret[15] = BLUEVIOLET;		/* P */
+    ret[16] = GREEN;			/* Q */
+    ret[17] = BLUE;			/* R */
+    ret[18] = CYAN;			/* S */
+    ret[19] = CYAN;			/* T */
+    ret[20] = BLACK;			/* U */
+    ret[21] = BLACK;			/* V */
+    ret[22] = WHEAT;			/* W */
+    ret[23] = BLACK;			/* X */
+    ret[24] = WHEAT;			/* Y */
+    ret[25] = BLACK;			/* Z */
     ret[26] = BLACK;			/* ? */
     ret[27] = BLACK;			/* ?*/
 
@@ -2153,6 +2154,103 @@ ajint* ajGraphGetBaseColour(void)
 
 
 
+
+/* @func ajGraphGetBaseColourProt *********************************************
+**
+** Initialize a base colours array for a string of protein sequence characters
+**
+** @param [r] codes [const AjPStr] Residue codes for each numbered position
+** @return [ajint*] Array of colours (see PLPLOT)
+** @@
+******************************************************************************/
+
+ajint* ajGraphGetBaseColourProt(const AjPStr codes)
+{
+    ajint *ret;
+    char* alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    ajint colours[] = {
+	BLACK,BLACK,YELLOW,RED,RED,WHEAT,
+	GREY,BLUE,BLACK,BLACK,BLUE,BLACK,
+	YELLOW,GREEN,BLACK,BLUEVIOLET,GREEN,BLUE,
+	CYAN,CYAN,BLACK,BLACK,WHEAT,BLACK,
+	WHEAT,BLACK,BLACK,BLACK};
+    const char* cp;
+    const char* cq;
+    ajint i;
+    ajint j;
+
+    ret = (ajint *) AJALLOC0(sizeof(ajint)*AZ);	/* BLACK is zero */
+
+    ajDebug("ajGraphGetBaseColourProt '%S'\n", codes);
+
+    cp = ajStrStr(codes);
+    i = 1;
+    while(*cp)
+    {
+	cq = strchr(alphabet, *cp);
+	if(cq)
+	{
+	    j = cq - alphabet;
+	    ret[i] = colours[j];
+	    ajDebug("ColourProt %d: '%c' %d -> %d %s\n",
+		    i, *cp, j, colours[j], colournum[colours[j]]);
+	}
+	i++;
+	cp++;
+    }
+
+    return ret;
+}
+
+
+/* @func ajGraphGetBaseColourNuc *********************************************
+**
+** Initialize a base colours array for a string of nucleotide
+** sequence characters
+**
+** @param [r] codes [const AjPStr] Residue codes for each numbered position
+** @return [ajint*] Array of colours (see PLPLOT)
+** @@
+******************************************************************************/
+
+ajint* ajGraphGetBaseColourNuc(const AjPStr codes)
+{
+    ajint *ret;
+    char* alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    ajint colours[] = {
+	GREEN,YELLOW,BLUE,YELLOW,YELLOW,YELLOW,
+	BLACK,YELLOW,YELLOW,YELLOW,YELLOW,YELLOW,
+	YELLOW,YELLOW,YELLOW,YELLOW,YELLOW,YELLOW,
+	YELLOW,RED,RED,YELLOW,YELLOW,YELLOW,
+	YELLOW,YELLOW,YELLOW
+    };
+    const char* cp;
+    const char* cq;
+    ajint i;
+    ajint j;
+
+    ret = (ajint *) AJALLOC0(sizeof(ajint)*AZ);	/* BLACK is zero */
+
+    ajDebug("ajGraphGetBaseColourProt '%S'\n", codes);
+
+    cp = ajStrStr(codes);
+    i = 1;
+    while(*cp)
+    {
+	cq = strchr(alphabet, *cp);
+	if(cq)
+	{
+	    j = cq - alphabet;
+	    ret[i] = colours[j];
+	    ajDebug("ColourProt %d: '%c' %d -> %d %s\n",
+		    i, *cp, j, colours[j], colournum[colours[j]]);
+	}
+	i++;
+	cp++;
+    }
+
+    return ret;
+}
 
 /* @func ajGraphGetCharSize ***************************************************
 **
@@ -2690,8 +2788,8 @@ void ajGraphLine(PLFLT x1, PLFLT y1, PLFLT x2, PLFLT y2)
     }
     else
     {
-	ajDebug("=g= pljoin(%.2f, %.2f, %.2f, %.2f) [xy xy]\n",
-		 x1, y1, x2, y2);
+	/*ajDebug("=g= pljoin(%.2f, %.2f, %.2f, %.2f) [xy xy]\n",
+		 x1, y1, x2, y2);*/
 	pljoin(x1,y1,x2,y2);
     }
 
