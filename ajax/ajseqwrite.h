@@ -116,6 +116,8 @@ void         ajSeqAllWrite (AjPSeqout outseq, const AjPSeq seq);
 AjBool       ajSeqFileNewOut (AjPSeqout seqout, const AjPStr name);
 ajint        ajSeqoutCheckGcg (const AjPSeqout outseq);
 void         ajSeqoutClear (AjPSeqout thys);
+void         ajSeqoutDefName(AjPSeqout thys,
+			     const AjPStr setname, AjBool multi);
 void         ajSeqoutDel (AjPSeqout* thys);
 AjBool       ajSeqOutFormatDefault (AjPStr* pformat);
 AjBool       ajSeqOutFormatSingle (AjPStr format);

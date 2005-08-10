@@ -138,7 +138,6 @@ static void       seqAllClone(AjPSeqout outseq, const AjPSeq seq);
 static void       seqClone(AjPSeqout outseq, const AjPSeq seq);
 static void       seqDbName(AjPStr* name, const AjPStr db);
 static void       seqDeclone(AjPSeqout outseq);
-static void       seqDefName(AjPStr* name, AjPStr setname, AjBool multi);
 static AjBool     seqFileReopen(AjPSeqout outseq);
 static AjBool     seqoutUfoLocal(const AjPSeqout thys);
 static AjBool     seqoutUsaProcess(AjPSeqout thys);
@@ -393,8 +392,10 @@ void ajSeqAllWrite(AjPSeqout outseq, const AjPSeq seq)
     
     seqAllClone(outseq, seq);
     
-    seqDefName(&outseq->Name, outseq->Entryname, !outseq->Single);
-    
+    ajSeqoutDefName(outseq, outseq->Entryname, !outseq->Single);
+    if(outseq->Fttable)
+	ajFeatDefName(outseq->Fttable, outseq->Name);
+
     if(outseq->Single)
 	seqFileReopen(outseq);
     
@@ -496,7 +497,9 @@ void ajSeqsetWrite(AjPSeqout outseq, const AjPSeqset seq)
 	}
 
 	seqsetClone(outseq, seq, i);
-	seqDefName(&outseq->Name, outseq->Entryname, !outseq->Single);
+	ajSeqoutDefName(outseq, outseq->Entryname, !outseq->Single);
+	if(outseq->Fttable)
+	    ajFeatDefName(outseq->Fttable, outseq->Name);
 
 	if(outseq->Single)
 	    seqFileReopen(outseq);
@@ -576,14 +579,18 @@ static void seqWriteListAppend(AjPSeqout outseq, const AjPSeq seq)
     /* if(listseq->Rev)
        ajSeqReverse(listseq); */ /* already done */
 
-    seqDefName(&listseq->Name, outseq->Entryname, !outseq->Single);
+    ajSeqDefName(listseq, outseq->Entryname, !outseq->Single);
+    if(listseq->Fttable)
+	ajFeatDefName(listseq->Fttable, listseq->Name);
 
     ajListPushApp(outseq->Savelist, listseq);
 
     if(outseq->Single)
     {
 	ajDebug("single sequence mode: write immediately\n");
-	seqDefName(&outseq->Name, outseq->Entryname, !outseq->Single);
+	ajSeqoutDefName(outseq, outseq->Entryname, !outseq->Single);
+	if(outseq->Fttable)
+	    ajFeatDefName(outseq->Fttable, outseq->Name);
 	/* Calling funclist seqOutFormat() */
 	seqOutFormat[outseq->Format].Write(outseq);
     }
@@ -697,7 +704,9 @@ void ajSeqWrite(AjPSeqout outseq, const AjPSeq seq)
     
     seqClone(outseq, seq);
     
-    seqDefName(&outseq->Name, outseq->Entryname, !outseq->Single);
+    ajSeqoutDefName(outseq, outseq->Entryname, !outseq->Single);
+    if(outseq->Fttable)
+	ajFeatDefName(outseq->Fttable, outseq->Name);
     
     if(outseq->Single)
 	seqFileReopen(outseq);
@@ -2923,7 +2932,7 @@ static void seqWriteGff(AjPSeqout outseq)
 	if(ajStrMatchC(outseq->Type, "P"))
 	    ajFeattableSetProt(outseq->Fttable);
 	else
-	    ajFeattableSetDna(outseq->Fttable);
+	    ajFeattableSetNuc(outseq->Fttable);
 	
 	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
 	    ajWarn("seqWriteGff features output failed UFO: '%S'",
@@ -4611,49 +4620,49 @@ static void seqDbName(AjPStr* name, const AjPStr db)
 
 
 
-/* @funcstatic seqDefName *****************************************************
+/* @func ajSeqoutDefName ******************************************************
 **
 ** Provides a unique (for this program run) name for a sequence.
 **
-** @param [w] name [AjPStr*] Derived name.
-** @param [w] setname [AjPStr] Name set by caller
+** @param [w] thys [AjPSeqout] Sequence output object
+** @param [r] setname [const AjPStr] Name set by caller
 ** @param [r] multi [AjBool] If true, appends a number to the name.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void seqDefName(AjPStr* name, AjPStr setname, AjBool multi)
+void ajSeqoutDefName(AjPSeqout thys, const AjPStr setname, AjBool multi)
 {
     static ajint count = 0;
 
-    if(ajStrLen(*name))
+    if(ajStrLen(thys->Name))
     {
-	ajDebug("seqDefName already has a name '%S'\n", *name);
+	ajDebug("ajSeqoutDefName already has a name '%S'\n", thys->Name);
 	return;
     }
 
     if (ajStrLen(setname))
     {
 	if(multi && count)
-	    ajFmtPrintS(name, "%S_%3.3d", setname, ++count);
+	    ajFmtPrintS(&thys->Name, "%S_%3.3d", setname, ++count);
 	else
 	{
-	    ajStrAssS(name, setname);
+	    ajStrAssS(&thys->Name, setname);
 	    ++count;
 	}
     }
     else
     {
 	if(multi)
-	    ajFmtPrintS(name, "EMBOSS_%3.3d", ++count);
+	    ajFmtPrintS(&thys->Name, "EMBOSS_%3.3d", ++count);
 	else
 	{
-	    ajStrAssC(name, "EMBOSS");
+	    ajStrAssC(&thys->Name, "EMBOSS");
 	    ++count;
 	}
     }
 
-    ajDebug("seqDefName set to  '%S'\n", *name);
+    ajDebug("ajSeqoutDefName set to  '%S'\n", thys->Name);
 
     return;
 }
