@@ -75,8 +75,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   writecont = false;
   reg = true;
 
-    ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+    retval =  embInitP (pgm, argc, argv,"PHYLIPNEW");
 
     phylofreq = ajAcdGetFrequencies("infile");
     phylotrees = ajAcdGetTree("intreefile");
@@ -84,7 +83,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     while (phylotrees[numtrees])
         numtrees++;
 
-    varywithin = ajAcdGetBool("varywithin");
+  varywithin = ajAcdGetBool("varywithin");
     if(varywithin) nophylo = ajAcdGetBool("nophylo");
     else {
       reg = ajAcdGetBool("reg");

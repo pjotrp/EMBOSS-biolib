@@ -113,11 +113,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   dotdiff = true;
   msets = 1;
 
-
-
-
-    ajNamInit("emboss");
-    retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
+    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
 
     phylostates = ajAcdGetDiscretestates("infile");
 

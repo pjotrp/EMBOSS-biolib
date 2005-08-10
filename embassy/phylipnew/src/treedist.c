@@ -918,12 +918,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   trout = false;
   prntsets = false;
 
-
-
-    ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIPNEW");
-
-
+    retval =  embInitP (pgm, argc, argv, "PHYLIPNEW");
 
     phylotrees = ajAcdGetTree("intreefile");
 

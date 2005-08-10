@@ -125,8 +125,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   factors = false;
   enzymes = false;
 
-    ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
+    retval =  embInitP (pgm, argc, argv, "PHYLIPNEW");
 
     phylofreqs = ajAcdGetFrequencies("infile");
 

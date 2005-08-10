@@ -563,12 +563,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   datasets = 1;
   mulsets = false;
 
-    printf("\nAmino acid sequence\n");
-    printf("Maximum Likelihood method with molecular clock, version %s\n\n",VERSION);
-
-    ajNamInit("emboss");
-    retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
-
+    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
 
     seqsets = ajAcdGetSeqsetall("sequence");
 

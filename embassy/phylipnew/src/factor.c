@@ -85,9 +85,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   factorrequest = false;
   ancstrrequest = false;
 
-
-  ajNamInit("emboss");
-  retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
+  retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
 
   inputfile = ajAcdGetInfile("infile");
 

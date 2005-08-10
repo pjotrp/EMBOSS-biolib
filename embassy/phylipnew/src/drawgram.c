@@ -202,8 +202,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   AjPStr getnodeposition = NULL;
   AjStatus retval;    
 
-  ajNamInit("emboss");
-  retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
+  retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
 
   n = (int)((pagex-hpmargin-0.01)/(paperx-hpmargin)+1.0);
   m = (int)((pagey-vpmargin-0.01)/(papery-vpmargin)+1.0);

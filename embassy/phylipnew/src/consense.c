@@ -80,8 +80,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   progress = true;
   treeprint = true;
 
-  ajNamInit("emboss");
-  retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+  retval =  embInitP (pgm, argc, argv,"PHYLIPNEW");
 
     phylotrees = ajAcdGetTree("intreefile");
     trees_in = 0;
