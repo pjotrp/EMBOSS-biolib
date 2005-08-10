@@ -45,7 +45,8 @@ int main(int argc, char **argv)
 
     AjPStr line  = NULL;
     AjPStr text  = NULL;
-    AjPStr temp  = NULL;
+    AjPStr dirname  = NULL;
+    AjPStr filename = NULL;
     AjPStr id    = NULL;
     AjPStr ac    = NULL;
     AjPStr de    = NULL;
@@ -63,7 +64,7 @@ int main(int argc, char **argv)
 
     embInit("prosextract", argc, argv);
 
-    temp = ajAcdGetDirectoryName("prositedir");
+    dirname = ajAcdGetDirectoryName("prositedir");
 
     line = ajStrNew();
     text = ajStrNew();
@@ -77,10 +78,10 @@ int main(int argc, char **argv)
 
 
     fn=ajStrNew();
-    ajStrAssC(&fn,ajStrStr(temp));
-    ajStrAppC(&fn,"/prosite.dat");
+    ajStrAssS(&fn,dirname);
+    ajStrAppC(&fn,"prosite.dat");
     if(!(infdat=ajFileNewIn(fn)))
-	ajFatal("Cannot open file %s",ajStrStr(fn));
+	ajFatal("Cannot open file %S",fn);
     ajStrDel(&fn);
 
 
@@ -105,7 +106,7 @@ int main(int argc, char **argv)
 		p = ajSysStrtok(p," \t;");
 		p = ajSysStrtok(NULL," \t;");
 		ajStrAssC(&id,p);
-		ajFmtPrintF(outf, "%s ", ajStrStr(id));
+		ajFmtPrintF(outf, "%S ", id);
 		continue;
 	    }
 	    else
@@ -125,7 +126,7 @@ int main(int argc, char **argv)
 	    p = ajSysStrtok(p, " \t;");
 	    p = ajSysStrtok(NULL, " \t;");
 	    ajStrAssC(&ac,p);
-	    ajFmtPrintF(outf, "%s\n ", ajStrStr(ac));
+	    ajFmtPrintF(outf, "%S\n ", ac);
 	    continue;
 	}
 
@@ -135,7 +136,7 @@ int main(int argc, char **argv)
 	    p = ajSysStrtok(p, " \t.");
 	    p = ajSysStrtok(NULL, " \t.");
 	    ajStrAssC(&de,p);
-	    ajFmtPrintF(outf, "%s\n ", ajStrStr(de));
+	    ajFmtPrintF(outf, "%S\n ", de);
 	    continue;
 	}
 
@@ -153,9 +154,9 @@ int main(int argc, char **argv)
 		ajFileReadLine(infdat, &line);
 	    }
 
-	    ajFmtPrintF(outf, "%s\n", ajStrStr(pa));
+	    ajFmtPrintF(outf, "%S\n", pa);
 	    re = embPatPrositeToRegExp(pa);
-	    ajFmtPrintF(outf, "^%s\n\n", ajStrStr(re));
+	    ajFmtPrintF(outf, "^%S\n\n", re);
 	    ajStrDel(&re);
 	    continue;
 	}
@@ -166,10 +167,10 @@ int main(int argc, char **argv)
 
 
     fn = ajStrNew();
-    ajStrAssC(&fn,ajStrStr(temp));
-    ajStrAppC(&fn,"/prosite.doc");
+    ajStrAssS(&fn,dirname);
+    ajStrAppC(&fn,"prosite.doc");
     if(!(infdoc=ajFileNewIn(fn)))
-	ajFatal("Cannot open file %s",ajStrStr(fn));
+	ajFatal("Cannot open file %S",fn);
     ajStrDel(&fn);
 
 
@@ -191,10 +192,10 @@ int main(int argc, char **argv)
 	    /* save out the documentation text to acc numbered outfiles . */
 	    p = ajStrStr(text)+1;
 	    p = ajSysStrtok(p, ";");
-	    ajStrAssC(&temp, ajStrStr(fname));
-	    ajStrAppC(&temp, p);
+	    ajStrAssS(&filename, fname);
+	    ajStrAppC(&filename, p);
 
-	    ajFileDataNewWrite(temp, &outs);
+	    ajFileDataNewWrite(filename, &outs);
 	    flag   = ajTrue;
 	    isopen = ajTrue;
 	    continue;
@@ -208,7 +209,7 @@ int main(int argc, char **argv)
 		if(ajStrPrefixC(text,"{END}"))
 		    break;
 
-		ajFmtPrintF(outs, "%s\n", ajStrStr(text));
+		ajFmtPrintF(outs, "%S\n", text);
 	    }
 	    ajFileClose(&outs);
 	    isopen = ajFalse;
@@ -224,7 +225,9 @@ int main(int argc, char **argv)
 
     ajStrDel(&line);
     ajStrDel(&text);
-    ajStrDel(&temp);
+    ajStrDel(&dirname);
+    ajStrDel(&filename);
+
     ajStrDel(&id);
     ajStrDel(&ac);
     ajStrDel(&de);
