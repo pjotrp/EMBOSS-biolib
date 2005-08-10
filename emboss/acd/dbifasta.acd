@@ -66,7 +66,7 @@ section: required [
     default: "00/00/00"
     valid: "Date string dd/mm/yy"
     information: "Index date"
-    pattern: "^([0-9]+.[0-9]+.[0-9]+)?$"
+    pattern: "^[0-9][0-9]/[0-9][0-9]/[0-9][0-9]$"
     knowntype: "date"
   ]
 
@@ -79,11 +79,11 @@ section: advanced [
 
   list: fields  [
     information: "Index fields"
-    values: "acnum:Accession number;seqvn:Sequence Version and
-             GI;des:Description;"
+    values: "acc:acnum accession number index;sv:seqvn sequence version and
+             gi number index;des:des description index;"
     minimum: "0"
     maximum: "3"
-    default: "acnum"
+    default: "acc"
   ]
 
   string: exclude  [
@@ -126,6 +126,11 @@ section: output [
     default: "."
     information: "Index directory"
     knowntype: "output directory"
+  ]
+
+  outfile: outfile [
+    standard: "Y"
+    knowntype: "log file"
   ]
 
 endsection: output

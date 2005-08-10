@@ -71,6 +71,25 @@ void      embDbiHeader (AjPFile file, ajint filesize,
 			const AjPStr dbname, const AjPStr release,
 			const char date[4]);
 void      embDbiHeaderSize (AjPFile file, ajint filesize, ajint recordcnt);
+void      embDbiLogCmdline(AjPFile logfile);
+void      embDbiLogFields(AjPFile logfile, AjPStr const * fields,
+			  ajint nfields);
+void      embDbiLogFile(AjPFile logfile, const AjPStr curfilename,
+			ajint idCountFile, AjPStr const * fields,
+			const ajint* countField,
+			ajint nfields);
+void      embDbiLogFinal(AjPFile logfile, ajint maxlen,
+			 const ajint* maxFieldLen,
+			 AjPStr const * fields, const ajint* fieldTot,
+			 ajint nfields, ajint nfiles,
+			 ajint idDone, ajint idCount);
+void      embDbiLogHeader(AjPFile logfile, const AjPStr dbname,
+			  const AjPStr release, const AjPStr datestr,
+			  const AjPStr indexdir,
+			  ajint maxindex);
+void      embDbiLogSource(AjPFile logfile, const AjPStr directory,
+			  const AjPStr filename, const AjPStr exclude,
+			  AjPStr const * inputFiles, ajint nfiles);
 void      embDbiMaxlen (AjPStr* token, ajint* maxlen);
 void      embDbiMemEntry (AjPList idlist,
 			  AjPList* fieldList, ajint nfields,
