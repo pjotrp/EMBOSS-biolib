@@ -93,12 +93,13 @@ section: additional [
     additional: "Y"
     information: "Shading"
     help: "Set to BPLW for normal shading \
+           (black, pale, light, white) \
            so for pair = 1.5,1.0,0.5 and shade = BPLW \
            Residues score Colour \
-           1.5 or over....... BLACK (B) \
-           1.0 to 1.5 ....... BROWN (P) \
-           0.5 to 1.0 ....... WHEAT (L) \
-           under 0.5 ....... WHITE (W) \
+           1.5 or over... BLACK (B) \
+           1.0 to 1.5 ... BROWN (P) \
+           0.5 to 1.0 ... WHEAT (L) \
+           under 0.5 .... WHITE (W) \
            The only four letters allowed are BPLW, in any order."
     default: ""
     maxlength: "4"
@@ -107,11 +108,14 @@ section: additional [
     pattern: "^([BPLW]{4})?$"
   ]
 
-  string: pair  [
+  array: pair  [
     additional: "Y"
     information: "Values to represent identical similar
                   related"
     default: "1.5,1.0,0.5"
+    minimum: "0.0"
+    size: "3"
+    sumtest: "N"
     knowntype: "threshold identity similar related"
   ]
 
@@ -190,22 +194,31 @@ section: additional [
       default: "Y"
     ]
 
-    integer: alternative  [
+    selection: alternative  [
       additional: "Y"
       information: "Use alternative collisions routine"
-      help: "Use alternative collisions routine \
-             0) Normal collision check. (default) \
-             1) checks identical scores with the max score found. So if any
+      values: "0:Normal collision check. (default);
+             1:Compares identical scores with the max score found. So if any
+             other residue matches the identical score then a collision has
+             occurred.;
+             2:If another residue has a greater than or equal to matching
+             score and these do not match then a collision has occurred.;
+             3:Checks all those not in the current consensus.If any of these
+             give a top score for matching or identical scores then a
+             collision has occured."
+      help: "0:Normal collision check. (default) \
+             1:Compares identical scores with the max score found. So if any
              other residue matches the identical score then a collision has
              occurred. \
-             2) If another residue has a greater than or equal to matching
-             score and these do not match then a collision has occurred. \
-             3) Checks all those not in the current consensus.If any of these
+             2:If another residue has a greater than or equal to matching
+             score and these do not match then a collision has
+      occurred. \
+             3:Checks all those not in the current consensus.If any of these
              give a top score for matching or identical scores then a
              collision has occured."
       default: "0"
-      minimum: "0"
-      maximum: "3"
+      minimum: "1"
+      maximum: "1"
     ]
 
   endsection: consensussection
