@@ -81,6 +81,10 @@ static ajint acdInFileSet = AJFALSE;
 static ajint acdOutFile = 0;
 static ajint acdPromptTry = 2;
 
+static AjPStr acdArgSave = NULL;
+static AjPStr acdInputSave = NULL;
+static AjPStr acdInputName = NULL;
+static ajint acdInputLen = 0;
 static AjPStr acdInFName = NULL;
 static AjPStr acdInTypeFeatName = NULL;
 static AjPStr acdInTypeSeqName = NULL;
@@ -727,7 +731,10 @@ static void      acdTestUnknown(const AjPStr name, const AjPStr alias,
 static AjBool    acdTextFormat(AjPStr* text);
 static void      acdTokenToLower(char *token, ajint* number);
 static AjBool    acdUserGet(const AcdPAcd thys, AjPStr* reply);
-static AjBool    acdUserGetPrompt(const char* prompt, AjPStr* reply);
+static AjBool    acdUserGetPrompt(const AcdPAcd thys, const char* assocqual,
+				  const char* prompt, AjPStr* reply);
+static void      acdUserSavereply(const AcdPAcd thys, const char* assocqual,
+				  AjBool userset, const AjPStr reply);
 static void      acdValidAppl(const AcdPAcd thys);
 static void      acdValidApplGroup(const AjPStr groups);
 static void      acdValidKnowntype(const AcdPAcd thys);
@@ -4819,6 +4826,7 @@ static AjBool acdUserGet(const AcdPAcd thys, AjPStr* reply)
 	    ret = ajUserGet(reply, "%S: ", msg);
 	if(!ret)
 	    ajStrAssS(reply, defreply);
+	acdUserSavereply(thys, NULL, ret, *reply);
     }
     
     if(ajStrLen(*reply))
@@ -4844,6 +4852,8 @@ static AjBool acdUserGet(const AcdPAcd thys, AjPStr* reply)
 **
 ** If -auto is in effect, fails if there is no value.
 **
+** @param [r] thys [const AcdPAcd] ACD object for current item
+** @param [r] assocqual [const char*] Associated qualifier
 ** @param [r] prompt [const char*] prompt string
 ** @param [w] reply [AjPStr*] The user response, or
 **        the default value if accepted.
@@ -4851,7 +4861,8 @@ static AjBool acdUserGet(const AcdPAcd thys, AjPStr* reply)
 ** @@
 ******************************************************************************/
 
-static AjBool acdUserGetPrompt(const char* prompt, AjPStr* reply)
+static AjBool acdUserGetPrompt(const AcdPAcd thys, const char* assocqual,
+			       const char* prompt, AjPStr* reply)
 {
     AjBool ret = ajFalse;
 
@@ -4866,10 +4877,12 @@ static AjBool acdUserGetPrompt(const char* prompt, AjPStr* reply)
 	    ret = ajUserGet(reply, "    %s: ", prompt);
 	if(!ret)
 	    ajStrAssS(reply, defreply);
+	acdUserSavereply(thys, assocqual, ret, *reply);
     }
 
     if(ajStrLen(*reply))
 	ret = ajTrue;
+
 
     ajStrDelReuse(&defreply);
 
@@ -4877,7 +4890,53 @@ static AjBool acdUserGetPrompt(const char* prompt, AjPStr* reply)
 }
 
 
+/* @funcstatic acdUserSavereply ***********************************************
+**
+** Save the reply from a prompt to the user
+**
+** @param [r] thys [const AcdPAcd] ACD object for current item.
+** @param [r] assocqual [const char*] Associated qualifier
+** @param [r] userset [AjBool] Reply set by user
+** @param [r] reply [const AjPStr] Reply string
+** @return [void]
+******************************************************************************/
 
+static void acdUserSavereply(const AcdPAcd thys, const char* assocqual,
+			     AjBool userset, const AjPStr reply)
+{
+    AjPStr qualname = NULL;
+    if(assocqual)
+    {
+	ajStrAssS(&qualname, thys->Name);
+	ajStrAppK(&qualname, '_');
+	ajStrAppC(&qualname, assocqual);
+    }
+    else
+	ajStrAssS(&qualname, thys->Name);
+
+    if(ajStrMatch(acdInputName, qualname))
+	ajStrTruncate(&acdInputSave, acdInputLen);
+    else
+    {
+	ajStrAssS(&acdInputName, qualname);
+	acdInputLen = ajStrLen(acdInputSave);
+    }
+
+    if(userset)
+    {
+	if(acdInputLen)
+	    ajStrAppK(&acdInputSave, '\n');
+
+	ajStrAppK(&acdInputSave, '-');
+	ajStrApp(&acdInputSave, qualname);
+	ajStrAppK(&acdInputSave, ' ');
+	ajStrApp(&acdInputSave, reply);
+    }
+
+    ajStrDel(&qualname);
+
+    return;
+}
 
 /* @funcstatic acdBadRetry ****************************************************
 **
@@ -6599,7 +6658,7 @@ static void acdSetFeat(AcdPAcd thys)
     {
 	ajStrAssS(&reply, defreply);
 	if(fprompt)
-	    acdUserGetPrompt(" Begin at position", &reply);
+	    acdUserGetPrompt(thys, "fbegin", " Begin at position", &reply);
 	ok = ajStrToInt(reply, &fbegin);
 	if(!ok)
 	    acdBadVal(thys, ajTrue,
@@ -6614,7 +6673,7 @@ static void acdSetFeat(AcdPAcd thys)
     {
 	ajStrAssS(&reply, defreply);
 	if(fprompt)
-	    acdUserGetPrompt("   End at position", &reply);
+	    acdUserGetPrompt(thys, "fend", "   End at position", &reply);
 	ok = ajStrToInt(reply, &fend);
 	if(!ok)
 	    acdBadVal(thys, ajTrue,
@@ -6629,7 +6688,7 @@ static void acdSetFeat(AcdPAcd thys)
     {
 	ajStrAssS(&reply, defreply);
 	if(fprompt)
-	    acdUserGetPrompt("    Reverse strand", &reply);
+	    acdUserGetPrompt(thys, "freverse", "    Reverse strand", &reply);
 	ok = ajStrToBool(reply, &freverse);
 
 	if(!ok)
@@ -10075,7 +10134,8 @@ static void acdSetSeq(AcdPAcd thys)
     {
 	ajStrAssC(&promptreply, "start");
 	if(sprompt)
-	    acdUserGetPrompt(" Begin at position", &promptreply);
+	    acdUserGetPrompt(thys, "sbegin",
+			     " Begin at position", &promptreply);
 	if(ajStrMatchCaseC(promptreply, "start"))
 	    ajStrAssC(&promptreply, "0");
 	okbeg = ajStrToInt(promptreply, &sbegin);
@@ -10101,7 +10161,8 @@ static void acdSetSeq(AcdPAcd thys)
     {
 	ajStrAssC(&promptreply, "end");
 	if(sprompt)
-	    acdUserGetPrompt("   End at position", &promptreply);
+	    acdUserGetPrompt(thys, "send",
+			     "   End at position", &promptreply);
 	if(ajStrMatchCaseC(promptreply, "end"))
 	    ajStrAssC(&promptreply, "0");
 	okend = ajStrToInt(promptreply, &send);
@@ -10131,7 +10192,8 @@ static void acdSetSeq(AcdPAcd thys)
 	{
 	    ajStrAssC(&promptreply, "N");
 	    if(sprompt)
-		acdUserGetPrompt("    Reverse strand", &promptreply);
+		acdUserGetPrompt(thys, "sreverse",
+				 "    Reverse strand", &promptreply);
 	    okrev = ajStrToBool(promptreply, &sreverse);
 	    if(!okrev)
 		acdBadVal(thys, sprompt,
@@ -10348,7 +10410,8 @@ static void acdSetSeqall(AcdPAcd thys)
     {
 	ajStrAssC(&promptreply, "start");
 	if(sprompt)
-	    acdUserGetPrompt(" Begin at position", &promptreply);
+	    acdUserGetPrompt(thys, "sbegin",
+			     " Begin at position", &promptreply);
 	if(ajStrMatchCaseC(promptreply, "start"))
 	    ajStrAssC(&promptreply, "0");
 	okbeg = ajStrToInt(promptreply, &sbegin);
@@ -10378,7 +10441,8 @@ static void acdSetSeqall(AcdPAcd thys)
     {
 	ajStrAssC(&promptreply, "end");
 	if(sprompt)
-	    acdUserGetPrompt("   End at position", &promptreply);
+	    acdUserGetPrompt(thys, "send",
+			     "   End at position", &promptreply);
 	if(ajStrMatchCaseC(promptreply, "end"))
 	    ajStrAssC(&promptreply, "0");
 	okend = ajStrToInt(promptreply, &send);
@@ -10410,7 +10474,8 @@ static void acdSetSeqall(AcdPAcd thys)
 	{
 	    ajStrAssC(&promptreply, "N");
 	    if(sprompt)
-		acdUserGetPrompt("    Reverse strand", &promptreply);
+		acdUserGetPrompt(thys, "sreverse",
+				 "    Reverse strand", &promptreply);
 	    okrev = ajStrToBool(promptreply, &sreverse);
 	    if(!okrev)
 		acdBadVal(thys, sprompt,
@@ -10614,7 +10679,8 @@ static void acdSetSeqsetall(AcdPAcd thys)
     {
 	ajStrAssC(&promptreply, "start");
 	if(sprompt)
-	    acdUserGetPrompt(" Begin at position", &promptreply);
+	    acdUserGetPrompt(thys, "sbegin",
+			     " Begin at position", &promptreply);
 	if(ajStrMatchCaseC(promptreply, "start"))
 	    ajStrAssC(&promptreply, "0");
 	okbeg = ajStrToInt(promptreply, &sbegin);
@@ -10645,7 +10711,8 @@ static void acdSetSeqsetall(AcdPAcd thys)
     {
 	ajStrAssC(&promptreply, "end");
 	if(sprompt)
-	    acdUserGetPrompt("   End at position", &promptreply);
+	    acdUserGetPrompt(thys, "send",
+			     "   End at position", &promptreply);
 	if(ajStrMatchCaseC(promptreply, "end"))
 	    ajStrAssC(&promptreply, "0");
 	okend = ajStrToInt(promptreply, &send);
@@ -10678,7 +10745,8 @@ static void acdSetSeqsetall(AcdPAcd thys)
 	{
 	    ajStrAssC(&promptreply, "N");
 	    if(sprompt)
-		acdUserGetPrompt("    Reverse strand", &promptreply);
+		acdUserGetPrompt(thys, "sreverse",
+				 "    Reverse strand", &promptreply);
 	    okrev = ajStrToBool(promptreply, &sreverse);
 	    if(!okrev)
 		acdBadVal(thys, sprompt,
@@ -11450,7 +11518,8 @@ static void acdSetSeqset(AcdPAcd thys)
     {
 	ajStrAssC(&promptreply, "start");
 	if(sprompt)
-	    acdUserGetPrompt(" Begin at position", &promptreply);
+	    acdUserGetPrompt(thys, "sbegin",
+			     " Begin at position", &promptreply);
 	if(ajStrMatchCaseC(promptreply, "start"))
 	    ajStrAssC(&promptreply, "0");
 	okbeg = ajStrToInt(promptreply, &sbegin);
@@ -11479,7 +11548,8 @@ static void acdSetSeqset(AcdPAcd thys)
     {
 	ajStrAssC(&promptreply, "end");
 	if(sprompt)
-	    acdUserGetPrompt("   End at position", &promptreply);
+	    acdUserGetPrompt(thys, "send",
+			     "   End at position", &promptreply);
 	if(ajStrMatchCaseC(promptreply, "end"))
 	    ajStrAssC(&promptreply, "0");
 	okend = ajStrToInt(promptreply, &send);
@@ -11510,7 +11580,8 @@ static void acdSetSeqset(AcdPAcd thys)
 	{
 	    ajStrAssC(&promptreply, "N");
 	    if(sprompt)
-		acdUserGetPrompt("    Reverse strand", &promptreply);
+		acdUserGetPrompt(thys, "sreverse",
+				 "    Reverse strand", &promptreply);
 	    okrev = ajStrToBool(promptreply, &sreverse);
 	    if(!okrev)
 		acdBadVal(thys, sprompt,
@@ -14597,6 +14668,8 @@ static void acdSetAll(void)
     for(acdSetCurr=acdList; acdSetCurr; acdSetCurr = acdSetCurr->Next)
     {
 	pa = acdSetCurr;
+	if(!pa->Assoc)
+	    acdMasterQual = pa;
 
 	if(acdIsStype(pa))
 	    ;
@@ -17136,6 +17209,14 @@ static void acdArgsParse(ajint argc, char * const argv[])
 	    }
 	}
 	i++;
+	if(acdArgSave)
+	    ajStrAppK(&acdArgSave, '\n');
+	ajStrAppC(&acdArgSave, cp);
+	if(j==2)
+	{
+	    ajStrAppK(&acdArgSave, ' ');
+	    ajStrAppC(&acdArgSave, cq);
+	}
     }
     
     ajStrDelReuse(&qual);
@@ -17147,7 +17228,32 @@ static void acdArgsParse(ajint argc, char * const argv[])
 }
 
 
+/* @func ajAcdGetCmdline ******************************************************
+**
+** Returns the original command line as qualifiers and values with newline
+** delimiters
+**
+** @return [const AjPStr] Commandline with newlines between qualifiers
+** and parameters
+******************************************************************************/
 
+const AjPStr ajAcdGetCmdline (void)
+{
+    return acdArgSave;
+}
+
+/* @func ajAcdGetInputs *******************************************************
+**
+** Returns the user non-default inputs in commandline form
+**
+** @return [const AjPStr] Commandline with newlines between qualifiers
+** and parameters
+******************************************************************************/
+
+const AjPStr ajAcdGetInputs (void)
+{
+    return acdInputSave;
+}
 
 /* @funcstatic acdIsParamValue ************************************************
 **
