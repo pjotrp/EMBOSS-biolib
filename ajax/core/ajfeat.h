@@ -41,6 +41,7 @@ AjBool        ajFeatIsChild (const AjPFeature gf);
 void *        ajFeatClearTag(AjPFeature thys, const AjPFeattable table,
 			     const AjPStr tag) ;
 AjPFeature    ajFeatCopy (const AjPFeature orig);
+void          ajFeatDefName(AjPFeattable thys, const AjPStr setname);
 void          ajFeatDel(AjPFeature *pthis) ;
 void          ajFeatExit (void);
 ajint         ajFeatGetEnd (const AjPFeature thys);
@@ -100,7 +101,7 @@ ajint         ajFeattablePosI (const AjPFeattable thys,
 			       ajint imin, ajint ipos);
 ajint         ajFeattablePosII (ajint ilen, ajint imin, ajint ipos);
 void          ajFeattableReverse  (AjPFeattable  thys) ;
-void          ajFeattableSetDna (AjPFeattable thys);
+void          ajFeattableSetNuc (AjPFeattable thys);
 void          ajFeattableSetProt (AjPFeattable thys);
 void          ajFeattableSetRange  (AjPFeattable thys,
 				     ajint fbegin, ajint fend) ;

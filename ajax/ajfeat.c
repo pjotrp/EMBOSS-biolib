@@ -2311,7 +2311,7 @@ static AjBool featReadEmbl (AjPFeattable thys, AjPFileBuff file)
     if(!line)
 	line = ajStrNewL(100);
 
-    ajFeattableSetDna(thys);
+    ajFeattableSetNuc(thys);
 
     while(ajFileBuffGet(file, &line))
     {
@@ -2693,8 +2693,8 @@ static void featGroupSet(AjPFeature gf, AjPFeattable table,
 	{
 	    if(!ajStrMatchCase(namstr, table->Seqid))
 	    {
-		/*ajDebug("GFF group field '%S' table '%S'\n",
-			 grouptag, table->Seqid);*/
+		ajDebug("GFF group field '%S' table '%S'\n",
+			 grouptag, table->Seqid);
 		featWarn("GFF group field '%S' for table '%S'",
 		       grouptag, table->Seqid);
 	    }
@@ -7183,9 +7183,9 @@ AjPFeattable ajFeatUfoRead(AjPFeattabIn featin,
 
 
 
-/* @func ajFeattableSetDna ****************************************************
+/* @func ajFeattableSetNuc ****************************************************
 **
-** Sets the type of a feature table as DNA
+** Sets the type of a feature table as nucleotide
 **
 ** @param [u] thys [AjPFeattable] Feature table object
 ** @return [void]
@@ -7193,7 +7193,7 @@ AjPFeattable ajFeatUfoRead(AjPFeattabIn featin,
 **
 ******************************************************************************/
 
-void ajFeattableSetDna(AjPFeattable thys)
+void ajFeattableSetNuc(AjPFeattable thys)
 {
     ajStrSetC(&thys->Type, "N");
 
@@ -10742,3 +10742,27 @@ static void featWarn(const char* fmt, ...)
 
 
 
+/* @func ajFeatDefName ********************************************************
+**
+** Provides a unique (for this program run) name for a feature table.
+**
+** @param [w] thys [AjPFeattable] Feature table
+** @param [r] setname [const AjPStr] Name set by caller
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajFeatDefName(AjPFeattable thys, const AjPStr setname)
+{
+    if(ajStrLen(thys->Seqid))
+    {
+	ajDebug("ajFeatDefName already has a name '%S'\n", thys->Seqid);
+	return;
+    }
+
+    if (ajStrLen(setname))
+	ajStrAssS(&thys->Seqid, setname);
+    ajDebug("ajFeatDefName set to  '%S'\n", setname);
+
+    return;
+}
