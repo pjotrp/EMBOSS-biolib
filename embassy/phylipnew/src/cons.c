@@ -262,7 +262,7 @@ void censor(void)
 } /* censor */
 
 
-void compress(long *n)
+void phylipcompress(long *n)
 {
   /* push all the nonempty subsets to the front end of their array */
   long i, j;
@@ -288,7 +288,7 @@ void compress(long *n)
     }
   } while (j != maxgrp);
   (*n) = i - 1;
-}  /* compress */
+}  /* phylipcompress */
 
 
 void sort(long n)
@@ -852,11 +852,11 @@ void consensus(pattern_elm ***pattern_array, long trees_in)
     times2[i] = NULL;
   n2 = 0;
   censor();                /* drop groups that are too rare */
-  compress(&n);            /* push everybody to front of array */
+  phylipcompress(&n);            /* push everybody to front of array */
   if (!strict) {           /* drop those incompatible, if any */
     sort(n);
     eliminate(&n, &n2);
-    compress(&n);
+    phylipcompress(&n);
     }
   reconstruct(n);
   tipy = 1;
