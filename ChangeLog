@@ -1,3 +1,29 @@
+Version 3.1.0
+	Prettyplot has been revised. A debugging commandline option has
+	been removed. String commandline options have been changes to
+	array and select types for better validation with the same user
+	responses. Colours are now corrected for proteins - in version
+	3.0.0 and earlier the colours depended on the column order in the
+	matrix. Nucleotide colours follow the ABI base colours used in
+	abiview. The examples in the documentation showed no boxes because
+	of low sequence weights in the MSF format input data. The weights
+	have been updated to give the 'expected' results.
+
+	All programs now store the command line needed to recreate the
+	run. The result is logged by the database indexing programs, and
+	will be added to other program outputs in a future release. The
+	command line includes all non-default responses to prompts by the
+	user.
+
+	dbiflat, dbifasta, dbigcg and dbiblast set the system sort to use
+	normal "C" sort order. On systems where the locale is set to a
+	language other than english, sort can have strange behaviour. In
+	particular, the underscore character fails to sort in the correct
+	place so that indexing SwissProt/UniProt or RefSeq entries fails
+	to put certain entries in the correct sort position for
+	retrieval. There is now no need to set LC_ALL=C locally, although
+	this is good practice whenever sort is used.
+
 Version 3.0.0
 	water, needle and other alignment programs occasionally could
 	report suboptimal alignments (off by the gap extension penalty
