@@ -226,7 +226,7 @@ static void splitter_ProcessChunk (AjPSeqout seqout, const AjPSeq seq,
 
   new_feattable = ajFeattableNew(name);
   subseq->Fttable = new_feattable;
-  ajFeattableSetDna (new_feattable);
+  ajFeattableSetNuc(new_feattable);
 
   ajStrAssSubC(&str,ajSeqChar(seq),start,end);
   ajSeqReplace(subseq,str);
