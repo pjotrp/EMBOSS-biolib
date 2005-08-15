@@ -236,6 +236,12 @@ Version 2.10.0
 	assumed to be PIR format. These can now be read as FASTA, assuming
 	that PIR format has already beed tested for.
 
+	Sequences with zerolength were accepted. Sequences must now have a
+	length of at least 1. Some user scripts could create FASTA format
+	files with no sequence, or with the sequence on the ID line. These
+	can crash many programs, including a core dump from clustalw
+	(through emma).
+
 	Added a calculated attribute "haslengths" to (phylogenetic) tree
 	input in ACD for use in phylipnew interfaces
 
