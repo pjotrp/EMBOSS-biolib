@@ -2930,7 +2930,7 @@ void ajSeqSetOffsets(AjPSeq seq, ajint ioff, ajint ioriglen)
 
     if(seq->Trimmed)
     {
-	ajWarn("Sequence '%S already trimmed in ajSeqSetOffsets",
+	ajWarn("Sequence '%s already trimmed in ajSeqSetOffsets",
 	       ajSeqName(seq));
     }
 
@@ -2992,7 +2992,7 @@ void ajSeqSetRange(AjPSeq seq, ajint ibegin, ajint iend)
 
     if(seq->Trimmed)
     {
-	ajWarn("Sequence '%S already trimmed in ajSeqSetRange",
+	ajWarn("Sequence '%s already trimmed in ajSeqSetRange",
 	       ajSeqName(seq));
     }
 
@@ -3038,7 +3038,7 @@ void ajSeqSetRangeDir(AjPSeq seq, ajint ibegin, ajint iend, AjBool rev)
 
     if(seq->Trimmed)
     {
-	ajWarn("Sequence '%S already trimmed in ajSeqSetRangeDir",
+	ajWarn("Sequence '%s already trimmed in ajSeqSetRangeDir",
 	       ajSeqName(seq));
     }
 
@@ -5821,7 +5821,7 @@ AjBool ajSeqTrim(AjPSeq thys)
 
     if(thys->Trimmed)
     {
-	ajWarn("Sequence '%S' already trimmed", ajSeqName(thys));
+	ajWarn("Sequence '%s' already trimmed", ajSeqName(thys));
 	return okay;
     }
 
