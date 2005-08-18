@@ -239,7 +239,8 @@ static void tfscan_print_hits(const AjPStr name, AjPList *l,
 
 
 
-	if((ajStrCmpO(m->seqname,lastnam)) && ajStrLen(lastnam))
+	if((ajStrCmpO(m->seqname,lastnam)) && ajStrLen(lastnam)
+	   && ajStrLen(s) >= minlength)
 	{
 	    bf  = ajTableGet(btable,(const void *)lastnam);
 	    if(ajStrLen(bf))
