@@ -378,6 +378,8 @@ int main(ajint argc, char **argv)
     /*Start of main application loop*/
     while(ajListPop(alg_path,(void **)&temp))
     {
+      /*      ajFmtPrint("1\n");fflush(stdout); */
+
         /* Open alignment file. */
         if((fptr_alg=ajFileNewIn(temp))==NULL)
         {
@@ -385,6 +387,8 @@ int main(ajint argc, char **argv)
             ajFatal("Could not open alignment file");
         }
 
+
+	/*      ajFmtPrint("2\n");fflush(stdout); */
 
         /* Read alignment file, write Scopalg structure, close alignment file.*/
         ajDmxScopalgRead(fptr_alg, &alg);
@@ -399,6 +403,7 @@ int main(ajint argc, char **argv)
 		ajStrAppK(&alg->Post_similar, '1');
 	
 
+	/*      ajFmtPrint("3\n");fflush(stdout); */
 
 	if(alg->N==0)
 	{
@@ -409,6 +414,7 @@ int main(ajint argc, char **argv)
 	    continue;       
 	}
 	
+	/*      ajFmtPrint("4\n");fflush(stdout); */
 
         ajFileClose(&fptr_alg);
         
@@ -417,11 +423,16 @@ int main(ajint argc, char **argv)
 	if(ajStrChar(*conoption, 0) != '5')
 	    AJCNEW0(cmaps, alg->N);
         
+	/*      ajFmtPrint("5\n");fflush(stdout); */
+
 
         /* Allocate array of bool's for noca array. */
 	if(ajStrChar(*conoption, 0) != '5')
 	    AJCNEW0(noca, alg->N);
         
+
+	/*      ajFmtPrint("6\n");fflush(stdout); */
+
         /* Allocate array of AjPInt for indeces into sequences. */
 	if(ajStrChar(*conoption, 0) != '5')
 	{
@@ -431,6 +442,8 @@ int main(ajint argc, char **argv)
 		atom_idx[x] = ajIntNew();
         }
 	
+
+	/*      ajFmtPrint("7\n");fflush(stdout); */
 
         /* Start of loop for reading contact data and coordinate files. 
            Only entered if contact data is to be used. */
@@ -471,6 +484,8 @@ int main(ajint argc, char **argv)
                     cmaps[x] = ajCmapReadINew(fptr_con, 1,1);
                 }
                 
+		/*      ajFmtPrint("8\n");fflush(stdout); */
+
                 
                 /* Close contact data file. */
                 ajFileClose(&fptr_con);
@@ -483,6 +498,9 @@ int main(ajint argc, char **argv)
                 /* Read coordinate data file. */ 
                 pdb = ajPdbReadFirstModelNew(fptr_cpdb);
                 
+
+		/*      ajFmtPrint("9\n");fflush(stdout);*/
+
                 /* Determine the chain number. */
                 if(idok)
                 {
@@ -497,6 +515,8 @@ int main(ajint argc, char **argv)
                     /* Not sure of a chain identifier so read the first chain. */
                     idn=1;
 
+
+		/*      ajFmtPrint("10\n");fflush(stdout); */
 
                 /* To keep following condition tests happy. */
                 noca[x]=ajFalse;
@@ -515,11 +535,13 @@ int main(ajint argc, char **argv)
     
                 ajPdbDel(&pdb);
                 ajFileClose(&fptr_cpdb);
+
+		/*      ajFmtPrint("11\n");fflush(stdout); */
             }
 	}
 	
 
-
+	/*      ajFmtPrint("12\n");fflush(stdout); */
 
         /* Allocate Scorealg structure and write values from acd. */
         scores = siggen_ScorealgNew((ajint)alg->width);
@@ -537,6 +559,8 @@ int main(ajint argc, char **argv)
 
 
 
+	/*      ajFmtPrint("13\n");fflush(stdout); */
+
         /* Calculate index for use by scoring functions. */
         siggen_CalcSeqpos(alg, &seq_pos);
 
@@ -551,6 +575,8 @@ int main(ajint argc, char **argv)
 			      seq_pos, 
 			      atom_idx);        
 
+
+	/*      ajFmtPrint("14\n");fflush(stdout); */
 
         /* Score alignement - write Scorealg structure and generate signature. */
 	if(ajStrChar(*mode, 0) == '1')
@@ -573,6 +599,9 @@ int main(ajint argc, char **argv)
 				      noca,
 				      seq_pos,
 				      atom_idx);
+
+
+	    /*      ajFmtPrint("15\n");fflush(stdout); */
 
 	    spar_check = 0.0;
 
@@ -629,6 +658,8 @@ int main(ajint argc, char **argv)
 	}
 	
 
+	/*      ajFmtPrint("15\n");fflush(stdout); */
+
 	ajInt2dDel(&seq_pos);    
 
 
@@ -646,6 +677,8 @@ int main(ajint argc, char **argv)
 	    }	
 	ajFileDirExtnTrim(&sig_name);
 
+
+	/*      ajFmtPrint("16\n");fflush(stdout); */
 	       
 
         /* This code block can be used to produce file names which are the 
@@ -672,6 +705,8 @@ int main(ajint argc, char **argv)
         }
         
         
+
+
 	ajStrFromInt(&sig_name, (int)alg->Sunid_Family);            
 	ajStrSubstituteCC(&sig_name, " ", "_");
         ajStrSubstituteCC(&sig_name, "&", "+");
@@ -733,6 +768,8 @@ int main(ajint argc, char **argv)
 	*/
 
 
+	  /*      ajFmtPrint("18\n");fflush(stdout); */
+
 
         /* If a file of that name exists, then append _1 or _2 etc 
            as necessary until a unique name is found. */
@@ -759,6 +796,9 @@ int main(ajint argc, char **argv)
             continue;       
         }
 
+
+	/*      ajFmtPrint("19\n");fflush(stdout); */
+
         /* Write and close signature file. */
 	sig->Typesig = aj1D;
         if(!embSignatureWrite(sig_outf, sig))
@@ -781,6 +821,8 @@ int main(ajint argc, char **argv)
 	    AJFREE(cmaps);
 	}
 	
+	/*      ajFmtPrint("20\n");fflush(stdout);*/
+
         siggen_ScorealgDel(&scores); 
         ajDmxScopalgDel(&alg);
         ajStrDel(&temp);
@@ -788,6 +830,8 @@ int main(ajint argc, char **argv)
     
     
     
+    /*      ajFmtPrint("21\n");fflush(stdout);*/
+
 
     /* Memory management. */
     ajStrDel(&conoption[0]);
@@ -814,6 +858,8 @@ int main(ajint argc, char **argv)
     ajListDel(&list);
     ajMatrixfDel(&mat);
 
+
+    /*      ajFmtPrint("22\n");fflush(stdout);*/
 
     ajExit();
     return 0;
@@ -887,7 +933,7 @@ static AjBool  siggen_ScoreSeqMat(AjPScopalg alg,
             /* Iterate through member of family. */
             for(memb_cnt = 0; memb_cnt < alg->N; memb_cnt++)
             {   
-                if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='-')
+	      if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='X') /* Andy */
                     continue;
 
 
@@ -896,7 +942,7 @@ static AjBool  siggen_ScoreSeqMat(AjPScopalg alg,
 		   current position. */
                 for(res_cnt = (memb_cnt+1); res_cnt < alg->N; res_cnt++)
                     {
-                        if(ajStrChar(alg->Seqs[res_cnt], post_cnt)=='-')
+		      if(ajStrChar(alg->Seqs[res_cnt], post_cnt)=='X') /* Andy */
                             continue;
 
 
@@ -1026,7 +1072,7 @@ static AjBool  siggen_ScoreSeqVar(AjPScopalg alg, AjPScorealg *scores,
 
             for(memb_cnt = 0; memb_cnt < alg->N; memb_cnt++)
             {   
-                if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='-')
+	      if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='X') /* Andy */
                     continue;
                     
                 /* Check if residues are in group 1  */
@@ -1255,6 +1301,8 @@ static AjBool  siggen_ScoreNcon(AjPScopalg alg,
             /* Counter for y-axis of contact map. */
             for(ymat_cnt = 0; ymat_cnt < cmaps[memb_cnt]->Dim; ymat_cnt++)
             {
+	      /*	      ajFmtPrint(">");fflush(stdout); */
+
                 /* Check if position in contact map is 1 (i.e. contact). */
                 if(ajInt2dGet(cmaps[memb_cnt]->Mat, xmat_cnt, ymat_cnt) == 1)
                     nconcount++;
@@ -1293,26 +1341,38 @@ static AjBool  siggen_ScoreNcon(AjPScopalg alg,
             {
                 /* Check to see if alignment position is a gap.    */
                 /* Assign position of seq_pos array to idx_seqpos. */
+
+	      /*	      ajFmtPrint("post_cnt:%d", post_cnt);
+	      ajFmtPrint(".");
+	      fflush(stdout); */
+
                 if((idx_seqpos = ajInt2dGet(seq_pos, memb_cnt, post_cnt))==-1)
                     continue;
                 
                 /* Assign position of atom_idx array to idx_atomidx. */
                 else
-                    idx_atomidx = ajIntGet(atom_idx[memb_cnt], idx_seqpos);
-                
+		  {
+                    if((idx_atomidx = ajIntGet(atom_idx[memb_cnt], idx_seqpos))==-1)
+		      ajFatal("Oh no! Gap not detectd in seq_pos but -1 found in idx_atomidx");
+		  }
 
+		/*		ajFmtPrint("memb_cnt:%d idx_seqpos:%d", 
+				memb_cnt, idx_seqpos);
+				fflush(stdout); */
 
 
                 /* If noca is true, increment counter into align_ncon array by 1 */
                 /* to take into account extra 'residue' not present in alignment. */
                 if(noca[memb_cnt] == ajTrue)
                 {
+		  /*		  ajFmtPrint("!");		fflush(stdout); */
                     nconpos_cnt += ajInt2dGet(align_ncon, memb_cnt, idx_atomidx);
                 }
                 
                 /* Else continue as normal. */
                 else
                 {
+		  /*		  ajFmtPrint("*");		fflush(stdout); */
                     nconpos_cnt += ajInt2dGet(align_ncon, memb_cnt, (idx_atomidx - 1));
                 }
             }
@@ -1521,7 +1581,7 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
                                         /* Check if seq_pos element contains the
 					   (atomidx_cnt)th structured residue. */
                                         if((idx_seqpos == atomidx_cnt) 
-					   && (idx_seqpos != '-'))
+					   && (idx_seqpos != '-'))  /* Matt */
                                         {
                                             /* Assign current value of seqpos_cnt
 					       to temp, i.e. the element of 
@@ -1584,7 +1644,7 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
                                         /* Check if seq_pos element contains the 
 					   (atomidx_cnt)th structured residue. */
                                         if((idx_seqpos == atomidx_cnt)
-					   && (idx_seqpos != '-'))
+					   && (idx_seqpos != '-')) /* Matt */
                                         {
                                             /* Assign current value of seqpos_cnt
 					       to temp, i.e. the element of seq_pos
@@ -2168,7 +2228,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
     {
         single_rescount = 0;
         for(i=0; i<alg->width; i++)
-            if(ajStrChar(alg->Seqs[memb_cnt], i) != '-')
+	  if(ajStrChar(alg->Seqs[memb_cnt], i) != 'X')  /* Andy */
             {
                 single_rescount++;
             }
@@ -2658,7 +2718,7 @@ static AjBool siggen_CalcSeqpos(AjPScopalg alg,
         for(wid_cnt = 0; wid_cnt < alg->width; wid_cnt++)
         {
             /* Check if sequence line is not '-'. */     
-            if(ajStrIterGetK(iter) != '-')
+	  if(ajStrIterGetK(iter) != 'X')   /* Andy */
             {
                 /* For every position in alignment assign position of residue 
 		   from its respective sequence. */
@@ -3196,7 +3256,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
     {
         single_rescount = 0;
         for(i=0; i<alg->width; i++)
-            if(ajStrChar(alg->Seqs[memb_cnt], i) != '-')
+	  if(ajStrChar(alg->Seqs[memb_cnt], i) != '-')  /* Andy */
             {
                 single_rescount++;
             }
@@ -3890,7 +3950,7 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
     {
         single_rescount = 0;
         for(i=0; i<alg->width; i++)
-            if(ajStrChar(alg->Seqs[memb_cnt], i) != '-')
+	  if(ajStrChar(alg->Seqs[memb_cnt], i) != 'X')  /* Andy */
                 single_rescount++;
 
         ajIntPut(&seq_len, memb_cnt, single_rescount);
