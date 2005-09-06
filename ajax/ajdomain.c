@@ -3701,11 +3701,18 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
     AjPResidue  res2        = NULL;
 /*    AjPResidue *resarr      = NULL; */
 
+
+
+    if(!errf || !scop || !pdb || !outf)
+      ajFatal("Bad args passed to ajPdbWriteDomain");
+
+
     /* Intitialise strings */
     seq    = ajStrNew();
     tmpseq = ajStrNew();
     tmpstr = ajStrNew();
     
+
 
 
     /* Check for unknown or zero-length chains */
@@ -3734,6 +3741,7 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
 	    return ajFalse;
 	}
     
+
 
     /* Write header info. to domain coordinate file */
     ajFmtPrintF(outf, "%-5s%S\n", "ID", scop->Entry);
@@ -3785,7 +3793,6 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
 	    found_start = ajTrue;	
 	}
 		
-
 
 	/*
 	** If end of domain is unspecified 
@@ -3856,6 +3863,8 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
 		    }
 
 
+
+
 		    /*
 		    ** The end position was specified, but has not 
 		    ** been found yet
@@ -3889,6 +3898,7 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
 		}
 	    }
 	}
+
 	
 	/* Diagnostics if start position was not found */
 	if(!found_start)		
@@ -3923,6 +3933,7 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
 	ajStrApp(&seq, tmpseq);
 
 
+
 	/* Free the iterator */
 	ajListIterFree(&iter);	
     }
@@ -3941,6 +3952,7 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
 	if(id == ' ')
 	    id = '.';
     }
+
     
     /* Write sequence to domain coordinate file */
     ajFmtPrintF(outf, "XX\n");	
@@ -3965,6 +3977,7 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
     ajFmtPrintF(outf, "XX\n");	
     ajSeqWriteXyz(outf, seq, "SQ");
     ajFmtPrintF(outf, "XX\n");	
+
 
     
     /* Write residue list to domain coordinate file */        
@@ -4127,7 +4140,6 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
 
 	ajListIterFree(&iter);			
     } 	
-    
 
 
     /* Write atom list to domain coordinate file */        
@@ -4184,7 +4196,8 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
 
 	    /*	if(atm->Mod!=1 || atm->Type!='P')
 		break; */
-	    
+
+
 	    
 	    /* The start position has not been found yet */
 	    if(!found_start)
@@ -4259,6 +4272,7 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
 		break;
 	    
 
+
 	    /* Print out coordinate line */
 	    ajFmtPrintF(outf, "%-5s%-5d%-5d%-5c%-5d%-6S%-2c%-6S%-2c%-6S"
 			"%9.3f%9.3f%9.3f%8.2f%8.2f\n", 
@@ -4286,6 +4300,7 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
     } 	
 
 
+
     /* Write last line in file */
     ajFmtPrintF(outf, "//\n");    
     
@@ -4296,6 +4311,8 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
     ajStrDel(&seq);
     ajStrDel(&tmpseq);
     ajStrDel(&tmpstr);    
+
+
 
     return ajTrue;
 }

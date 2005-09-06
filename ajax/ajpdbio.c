@@ -1095,6 +1095,11 @@ static AjBool WriteAtomDomain(AjPFile errf, AjPFile outf, const AjPPdb pdb,
     AjPStr   tmpstr      = NULL;
 /*    AjPResidue *resarr      = NULL; */
 
+
+
+    if(!errf || !outf || !pdb || !scop)
+      ajFatal("Bad args. passed to WriteAtomDomain");
+
     
     /* Allocate strings etc */
     tmpstr = ajStrNew();
@@ -1121,14 +1126,21 @@ static AjBool WriteAtomDomain(AjPFile errf, AjPFile outf, const AjPPdb pdb,
 /*	ajListToArray(pdb->Chains[chn-1]->Residues, (void ***) &resarr);  */
 
 
+
+
 	/* Iteratre up to the correct model */
 	iter=ajListIterRead(pdb->Chains[chn-1]->Atoms);	
 	
 	while((atm = (AjPAtom)ajListIterNext(iter)))
+	  {
 	    if(atm->Mod==mod)
 		break;
+	  }
+
+	if(!atm)
+	  ajFatal("Unexpected error (atm == NULL) in WriteAtomDomain\n");
 	
-	
+
 	/* Increment res. counter from last chain if appropriate */
 	if(noend)
 	    rn_mod += atm2->Idx;
@@ -1142,6 +1154,7 @@ static AjBool WriteAtomDomain(AjPFile errf, AjPFile outf, const AjPPdb pdb,
 	else 
 	    nostart = ajFalse;
 	
+
 			    
 	/* End of chain was not specified */
 	if(!ajStrCmpC(scop->End[z], "."))
@@ -1156,6 +1169,7 @@ static AjBool WriteAtomDomain(AjPFile errf, AjPFile outf, const AjPPdb pdb,
 	    id = '.';
 	else 
 	    id = pdb->Chains[chn-1]->Id;
+
 
 	
 	for(; atm; atm=(AjPAtom)ajListIterNext(iter)) 	
@@ -1231,7 +1245,7 @@ static AjBool WriteAtomDomain(AjPFile errf, AjPFile outf, const AjPPdb pdb,
 	    else if(atm->Idx != finalrn && !noend)
 		break;
 
-	    
+
 	    /* Write out ATOM line to pdb file */
 	    if(mode == ajIDX)
 		ajFmtPrintF(outf, "%-6s%5d  %-4S%-4S%c%4d%12.3f%8.3f"
@@ -1271,7 +1285,7 @@ static AjBool WriteAtomDomain(AjPFile errf, AjPFile outf, const AjPPdb pdb,
 	    atm2=atm;
 	}
 
-	
+
 	/* Diagnostic if start was specified but not found */
 	if(!found_start && !nostart)
 	    {
@@ -1295,11 +1309,12 @@ static AjBool WriteAtomDomain(AjPFile errf, AjPFile outf, const AjPPdb pdb,
 		return ajFalse;
 	    }
 	
-	
+
 	ajListIterFree(&iter);	
     }
     
-
+    if(!atm2)
+      ajFatal("Unexpected error (atm2 == NULL) in WriteAtomDomain\n"); 
 
     /* Write the TER record to the pdb file */
     ajFmtPrintF(outf, "%-6s%5d      %-4S%c%4d%54s\n", 
@@ -7787,6 +7802,10 @@ AjBool ajPdbWriteDomainRaw(ajint mode, const AjPPdb pdb, const AjPScop scop,
     ajint chn;   /* No. of the chain in the pdb structure */
 
 
+    if(!pdb || !scop || !outf || !errf)
+      ajFatal("Bad args passed to ajPdbWriteDomainRaw");
+
+
     /* Check for errors in chain identifier and length */
     for(z=0;z<scop->N;z++)
 	if(!ajPdbChnidToNum(scop->Chain[z], pdb, &chn))
@@ -7809,6 +7828,7 @@ AjBool ajPdbWriteDomainRaw(ajint mode, const AjPPdb pdb, const AjPScop scop,
 	    return ajFalse;
 	}
     
+
 
     /* Write bibliographic info. */
     ajPdbWriteDomainRecordRaw(ajHEADER_DOMAIN, NULL, 0, scop, outf, NULL);
