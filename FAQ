@@ -360,7 +360,7 @@ A)  a) from the anonymous cvs code.
 
     If you have done a full installation of EMBOSS using a 'prefix'
     e.g. you configured with ./configure --prefix=/usr/local/emboss
-    and followed this with a 'make install' then:
+    and followed this with a 'make install' (highly recommended) then:
 
        1) gunzip and untar the file anywhere
        gunzip MSE-1.0.0.tar.gz
@@ -381,7 +381,8 @@ A)  a) from the anonymous cvs code.
             ./configure --prefix=/usr/local --enable-localforce
 
 
-    If, on the other hand, you did not do a 'make install' then:
+    If, on the other hand, you did not do a 'make install' of EMBOSS
+    then:
 
        1) Go to the emboss directory 
        cd EMBOSS-2.10.0
@@ -402,8 +403,9 @@ A)  a) from the anonymous cvs code.
        6) configure and compile
        ./configure (use same options as you used to compile emboss)
        make
-       make install
    
+       7) Set your PATH to include the full path of the 'src'
+          directory
 
  
 Q) Installing associated software PHYLIP
@@ -428,6 +430,32 @@ A)  a) from the anonymous cvs code.
     available from our FTP server ftp://emboss.open-bio.org/pub/EMBOSS/
     in file PHYLIP-3.6b.tar.gz 
 
+
+    If you have done a full installation of EMBOSS using a 'prefix'
+    e.g. you configured with ./configure --prefix=/usr/local/emboss
+    and followed this with a 'make install' (highly recommended) then:
+
+       1) gunzip and untar the file anywhere
+       gunzip PHYLIP-3.6b.tar.gz
+       tar xf PHYLIP-3.6b.tar
+
+       2) go into the phylip directory
+       cd PHYLIP-3.6b
+
+       3) configure and compile
+       ./configure (use same options as you used to compile emboss)
+       make
+       make install
+
+       N.B. If you configured without using a prefix but did do
+            a 'make install' (or specified a prefix of /usr/local,
+            which amounts to the same thing) then you must configure
+            using:
+            ./configure --prefix=/usr/local --enable-localforce
+
+    If, on the other hand, you did not do a 'make install' of EMBOSS
+    then:
+
        1) Go to the emboss directory 
        cd EMBOSS-3.0.0
 
@@ -437,7 +465,7 @@ A)  a) from the anonymous cvs code.
        3) Go into that directory
        cd embassy
 
-       4) unzip and untar the file
+       4) gunzip and untar the file
        gunzip PHYLIP-3.6b.tar.gz
        tar xvf PHYLIP-3.6b.tar
 
@@ -447,7 +475,9 @@ A)  a) from the anonymous cvs code.
        6) configure and compile
        ./configure (use same options as you used to compile emboss)
        make
-       make install
+
+       7) Set your PATH to include the full path of the 'src'
+          directory
 
 
 
