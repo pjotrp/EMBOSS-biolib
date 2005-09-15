@@ -201,11 +201,14 @@ AjPBtcache ajBtreeCacheNewC(const char *file, const char *ext,
 {
     FILE *fp;
     AjPBtcache cache = NULL;
+#if 0
 #if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !defined(__ppc__) && !defined(__FreeBSD__)
     struct stat64 buf;
 #else
     struct stat buf;
 #endif
+#endif
+
     ajlong filelen = 0L;
 
     AjPStr fn = NULL;
@@ -218,12 +221,18 @@ AjPBtcache ajBtreeCacheNewC(const char *file, const char *ext,
 	return NULL;
 
 
+    /* Commented out pending database updating */
+#if 0
+    if(strcmp(mode,"r"))
+    {
 #if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !defined(__ppc__) && !defined(__FreeBSD__)
-    if(!stat64(file, &buf))
+	if(!stat64(fn->Ptr, &buf))
 #else
-    if(!stat(file, &buf))
+	    if(!stat(fn->Ptr, &buf))
 #endif
-	filelen = buf.st_size;
+		filelen = buf.st_size;
+    }
+#endif    
 
     AJNEW0(cache);
 
@@ -8372,10 +8381,12 @@ AjPBtcache ajBtreeSecCacheNewC(const char *file, const char *ext,
 {
     FILE *fp;
     AjPBtcache cache = NULL;
+#if 0
 #if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !defined(__ppc__) && !defined(__FreeBSD__)
     struct stat64 buf;
 #else
     struct stat buf;
+#endif
 #endif
     ajlong filelen = 0L;
 
@@ -8388,13 +8399,18 @@ AjPBtcache ajBtreeSecCacheNewC(const char *file, const char *ext,
     if(!fp)
 	return NULL;
 
-
+    /* Commented out pending database updating */
+#if 0
+    if(strcmp(mode,"r"))
+    {
 #if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !defined(__ppc__) && !defined(__FreeBSD__)
-    if(!stat64(file, &buf))
+	if(!stat64(fn->Ptr, &buf))
 #else
-    if(!stat(file, &buf))
+	    if(!stat(fn->Ptr, &buf))
 #endif
-	filelen = buf.st_size;
+		filelen = buf.st_size;
+    }
+#endif
 
     AJNEW0(cache);
 
