@@ -552,6 +552,9 @@ static void java_core_dump()
 
 
 #ifdef N_SHADOW
+/* @header java_pass **********************************************************
+**
+******************************************************************************/
 static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
 			ajint *gid, AjPStr *home)
 {
@@ -589,6 +592,9 @@ static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
 
 
 #ifdef R_SHADOW
+/* @header java_pass **********************************************************
+**
+******************************************************************************/
 static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
 			ajint *gid, AjPStr *home)
 {
@@ -661,6 +667,9 @@ static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
 
 
 #ifdef AIX_SHADOW
+/* @header java_pass **********************************************************
+**
+******************************************************************************/
 static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
 			ajint *gid, AjPStr *home)
 {
@@ -694,6 +703,9 @@ static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
 
 
 #ifdef HPUX_SHADOW
+/* @header java_pass **********************************************************
+**
+******************************************************************************/
 static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
 			ajint *gid, AjPStr *home)
 {
@@ -761,6 +773,9 @@ static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
 
 
 #ifdef NO_SHADOW
+/* @header java_pass **********************************************************
+**
+******************************************************************************/
 static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
 			ajint *gid, AjPStr *home)
 {
@@ -789,6 +804,9 @@ static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
 
 
 #ifdef RNO_SHADOW
+/* @header java_pass **********************************************************
+**
+******************************************************************************/
 static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
 			ajint *gid, AjPStr *home)
 {
@@ -850,6 +868,9 @@ struct ad_user
 };
 
 
+/* @header PAM_conv **********************************************************
+**
+******************************************************************************/
 static int PAM_conv(int num_msg, struct pam_message **msg,
 		    struct pam_response **resp, void *appdata_ptr)
 {
@@ -903,6 +924,9 @@ static int PAM_conv(int num_msg, struct pam_message **msg,
 
 
 
+/* @header java_pass **********************************************************
+**
+******************************************************************************/
 static AjBool java_pass(AjPStr username,AjPStr password,ajint *uid,
 			ajint *gid,AjPStr *home)
 {
