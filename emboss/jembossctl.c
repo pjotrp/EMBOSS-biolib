@@ -422,6 +422,9 @@ static void jctl_empty_core_dump()
 
 
 #ifdef N_SHADOW
+/* @header jctl_check_pass ****************************************************
+**
+******************************************************************************/
 static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 			      ajint *gid, AjPStr *home)
 {
@@ -459,6 +462,9 @@ static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 
 
 #ifdef AIX_SHADOW
+/* @header jctl_check_pass ****************************************************
+**
+******************************************************************************/
 static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 			      ajint *gid, AjPStr *home)
 {
@@ -492,6 +498,9 @@ static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 
 
 #ifdef HPUX_SHADOW
+/* @header jctl_check_pass ****************************************************
+**
+******************************************************************************/
 static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 			ajint *gid, AjPStr *home)
 {
@@ -560,6 +569,9 @@ static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 
 
 #ifdef NO_SHADOW
+/* @header jctl_check_pass ****************************************************
+**
+******************************************************************************/
 static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 			      ajint *gid, AjPStr *home)
 {
@@ -588,6 +600,9 @@ static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 
 
 #ifdef R_SHADOW
+/* @header jctl_check_pass ****************************************************
+**
+******************************************************************************/
 static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 			      ajint *gid, AjPStr *home)
 {
@@ -660,6 +675,9 @@ static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 
 
 #ifdef RNO_SHADOW
+/* @header jctl_check_pass ****************************************************
+**
+******************************************************************************/
 static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 			      ajint *gid, AjPStr *home)
 {
@@ -721,6 +739,9 @@ struct ad_user
 };
 
 
+/* @header jctl_pam_conv ******************************************************
+**
+******************************************************************************/
 static int jctl_pam_conv(int num_msg, struct pam_message **msg,
 			 struct pam_response **resp, void *appdata_ptr)
 {
@@ -775,6 +796,9 @@ static int jctl_pam_conv(int num_msg, struct pam_message **msg,
 
 
 
+/* @header jctl_check_pass ****************************************************
+**
+******************************************************************************/
 static AjBool jctl_check_pass(AjPStr username,AjPStr password,ajint *uid,
 			      ajint *gid,AjPStr *home)
 {
@@ -3927,6 +3951,9 @@ static AjBool jctl_GetSeqsetFromUsa(const AjPStr thys, AjPSeqset *seq)
 #else
 #include <stdio.h>
 
+/* @header main ***************************************************************
+**
+******************************************************************************/
 int main()
 {
     return 0;
