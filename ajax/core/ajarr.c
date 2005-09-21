@@ -32,6 +32,9 @@
 #include <string.h>
 
 #ifndef HAVE_MEMMOVE
+/* @header memmove ************************************************************
+**
+******************************************************************************/
 static void* memmove (void *dst, const void* src, size_t len)
 {
     return (void *)bcopy (src, dst, len);
