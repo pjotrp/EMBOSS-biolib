@@ -164,8 +164,16 @@ int main(int argc, char **argv)
     return 0;
 }
 
-/* FIXME - replace with an EMBOSS library call
-** returns the number of bases by which two sequences overlap */
+/* @func union_GetOverlap *****************************************************
+**
+** returns the number of bases by which two sequences overlap
+**
+** @param [r] first_seq [AjPSeq] Undocumented
+** @param [r] second_seq [AjPSeq] Undocumented
+** @return [ajulong] Undocumented
+** @@
+** FIXME - replace with an EMBOSS library call
+******************************************************************************/
 
 static ajulong union_GetOverlap (AjPSeq first_seq, AjPSeq second_seq)
 {
