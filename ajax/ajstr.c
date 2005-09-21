@@ -37,6 +37,9 @@
 
 #ifndef HAVE_MEMMOVE
 #include <sys/types.h>
+/* @header memmove ************************************************************
+**
+******************************************************************************/
 static void* memmove(void *dst, const void* src, size_t len)
 {
     return (void *)bcopy(src, dst, len);
@@ -111,7 +114,7 @@ static ajlong strTotal     = 0;
 ** the {String Assignments} and {String Modifiers} functions.
 **
 ** All string constructors eventually use an internal call to
-** static function {strNewNew}.
+** static function strNewNew.
 **
 ** The range of constructors is provided to allow flexibility in how
 ** applications can define new strings.
@@ -625,7 +628,7 @@ void ajCharFree(char** txt)
 /* @section String Assignments ************************************************
 **
 ** These functions overwrite the string provided as the first argument
-** by calling one of the {String destructors} first. A NULL value
+** by calling one of the {String Destructors} first. A NULL value
 ** is always acceptable so these functions are often used to
 ** create new strings by assignment.
 **
@@ -1062,31 +1065,44 @@ AjBool ajStrCopyC(AjPStr* pthis, const char* str)
 
 /* @func ajStrAssSub **********************************************************
 **
-** Copies a substring to a string object.
+** Copies a substring of source, defined from character positions
+** beginpos to endpos, to the string target.
+**
+** ajTrue is returned if target was
+** (re)allocated, ajFalse is returned otherwise. 
+**
+** @short Copies a substring from one string to another.
 **
 ** @param [w] pthis [AjPStr*] Target string
-** @param [r] str [const AjPStr] Source string
-** @param [r] begin [ajint] start position for substring
-** @param [r] end [ajint] end position for substring
-** @return [AjBool] ajTrue if string was reallocated
-** @category assign [AjPStr] Assignment with a substring of a string object
+**          {memory will be automatically allocated if required}
+** @param [r] src [const AjPStr] Source string
+** @param [r] beginpos [ajint] Start position in src of substring
+**              {negative values count from the end of the string
+**               with -1 as the last position}
+** @param [r] endpos [ajint] End position in src of substring
+**              {negative values count from the end of the string
+**               with -1 as the last position}
+** @return [AjBool] ajTrue if pthis was (re)allocated, ajFalse otherwise
+** @category assign [AjPStr] Copies a substring from one string to another
+** @release 1.0.0 
 ** @@
 ******************************************************************************/
 
-AjBool ajStrAssSub(AjPStr* pthis, const AjPStr str, ajint begin, ajint end)
+AjBool ajStrAssSub(AjPStr* pthis, const AjPStr src,
+		   ajint beginpos, ajint endpos)
 {
     ajint ilen;
     ajint ibegin;
     ajint iend;
 
-    ibegin = strPos(str, begin);
-    iend = strPosI(str, ibegin, end);
-    if(iend == str->Len)
+    ibegin = strPos(src, beginpos);
+    iend = strPosI(src, ibegin, endpos);
+    if(iend == src->Len)
 	iend--;
 
     ilen = iend - ibegin + 1;
 
-    return ajStrAssCI(pthis, &str->Ptr[ibegin], ilen);
+    return ajStrAssCI(pthis, &src->Ptr[ibegin], ilen);
 }
 
 
