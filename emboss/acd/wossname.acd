@@ -142,9 +142,9 @@ section: output [
              the first half of the URL. \
              For example, if you wish the program name to be a hyperlink to
              the URL: \
-             http://www.uk.embnet.org/Software/EMBOSS/Apps/programname.html \
+             http://emboss.sourceforge.net/apps/programname.html \
              then if you enter \
-             http://www.uk.embnet.org/Software/EMBOSS/Apps/ here, then the
+             http://emboss.sourceforge.net/apps/ here, then the
              first half of the URL before the programname will be set."
       knowntype: "url prefix"
     ]
