@@ -5963,7 +5963,8 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 	    return ajFalse;;
 	}
 
-	if(ajStrPrefixC(rdline, "AC   "))
+	if(ajStrPrefixC(rdline, "AC   ") ||
+	   ajStrPrefixC(rdline, "PA   ") ) /* emblcds database format */
 	{
 	    ajStrTokenAss(&handle, rdline, " ;\n\r");
 	    ajStrToken(&token, &handle, NULL); /* 'AC' */
@@ -5971,7 +5972,8 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 		seqAccSave(thys, token);
 	}
 
-	if(ajStrPrefixC(rdline, "SV   "))
+	if(ajStrPrefixC(rdline, "SV   ") ||
+	   ajStrPrefixC(rdline, "IV   ") ) /* emblcds database format */
 	{
 	    ajStrTokenAss(&handle, rdline, " \n\r");
 	    ajStrToken(&token, &handle, NULL); /* 'SV' */

@@ -306,11 +306,13 @@ static AjBool dbxflat_ParseEmbl(EmbPBtreeEntry entry, AjPFile inf)
 	}
 
 	if(entry->do_sv)
-	    if(ajStrPrefixC(line,"SV"))
+	    if(ajStrPrefixC(line,"SV") ||
+	       ajStrPrefixC(line,"IV"))	/* emblcds database format */
 		embBtreeEmblAC(line,entry->sv);
 
 	if(entry->do_accession)
-	    if(ajStrPrefixC(line,"AC"))
+	    if(ajStrPrefixC(line,"AC") ||
+	       ajStrPrefixC(line,"PA"))	/* emblcds database format */
 		embBtreeEmblAC(line,entry->ac);
 	
 	if(entry->do_keyword)
