@@ -87,7 +87,7 @@ typedef struct AjSHistData {
 ** @attr yaxisleft [AjPStr] y axis title
 ** @attr yaxisright [AjPStr] second y axis title for right side
 ** @attr graph [AjPGraph] Graph
-** @attr hists [AjPHistData*] Hiostogram bin data
+** @attr hists [AjPHistData*] Histogram bin data
 ** @@
 ******************************************************************************/
 
