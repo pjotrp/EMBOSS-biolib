@@ -2744,14 +2744,14 @@ ID direct-all
 AP seqret
 CL temblall:* test.out -auto
 FI test.out
-FP 44 /^>/
+FP 45 /^>/
 //
 
 ID direct-filename
 AP seqret
 CL temblvrt:* test.out -auto
 FI test.out
-FP 25 /^>/
+FP 26 /^>/
 //
 
 ID direct-exclude
@@ -3901,9 +3901,9 @@ ID dbiflat-tembl-all
 AP seqret
 CL tembl:* test.out -auto
 FI test.out
-FZ = 540075
+FZ = 658123
 FP 3 /^>GM/
-FP 44 /^>/
+FP 45 /^>/
 //
 
 ID dbiflat-tembl-wild
@@ -4025,6 +4025,144 @@ FP /Index org: maxlen 19 items 12\n/
 FP /Total 3 files 5 entries \(0 duplicates\)\n/
 FP 5 /^Index \S+ maxlen \d+ items \d+\n/
 FP 3 /^filename: /
+//
+
+ID dbiflat-embl-allsys-keep
+DL keep
+AP dbiflat
+CL -fields "acc,sv,des,key,org"
+IN EMBL
+IN
+IN ../../embl
+IN
+IN
+IN
+IN
+FI stderr
+FC = 6
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI division.lkp
+FZ = 520
+## We need the s modifier
+## because there is a linefeed in the header binary stuff
+FP s /\A.{300}\001\000est\.dat\000/
+FI entrynam.idx
+FZ = 1155
+FP /\A.{300}AAHSP70B\000/
+FI acnum.hit
+FZ = 756
+FP /\A.{300}\002/
+FI acnum.trg
+FZ = 2060
+FP /\A.{308}AB000095\001/
+FI des.trg
+FZ = 6213
+FP /\A.{308}1\000/
+FI des.hit
+FZ = 1976
+FP /\A.{300}\007/
+FI keyword.trg
+FZ = 4512
+FP /\A.{308}16P13\000/
+FI keyword.hit
+FZ = 688
+FP /\A.{300}\042/
+FI seqvn.trg
+FZ = 1110
+FP /\A.{308}AB000095[.]1\001/
+FI seqvn.hit
+FZ = 480
+FP /\A.{300}\002/
+FI taxon.trg
+FP /\A.{308}AFRICAN CLAWED FROG\000/
+FZ = 4395
+FI taxon.hit
+FZ = 2500
+FP /\A.{300}\054/
+FI outfile.dbiflat
+FC = 117
+FP /# Fields: 6\n/
+FP /#   Field 6: org\n/
+FP /# Files: 10\n/
+FP /Index acc: maxlen 8 items 110\n/
+FP /Index sv: maxlen 10 items 45\n/
+FP /Index des: maxlen 19 items 219\n/
+FP /Index key: maxlen 44 items 81\n/
+FP /Index org: maxlen 27 items 117\n/
+FP /Total 10 files 45 entries \(0 duplicates\)\n/
+FP 5 /^Index \S+ maxlen \d+ items \d+\n/
+FP 10 /^filename: /
+//
+
+ID dbiflat-embl-allnosys-keep
+DL keep
+AP dbiflat
+CL -nosystemsort -fields "acc,sv,des,key,org"
+IN EMBL
+IN
+IN ../../embl
+IN
+IN
+IN
+IN
+FI stderr
+FC = 6
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI division.lkp
+FZ = 520
+## We need the s modifier
+## because there is a linefeed in the header binary stuff
+FP s /\A.{300}\001\000est\.dat\000/
+FI entrynam.idx
+FZ = 1155
+FP /\A.{300}AAHSP70B\000/
+FI acnum.hit
+FZ = 756
+FP /\A.{300}\002/
+FI acnum.trg
+FZ = 2060
+FP /\A.{308}AB000095\001/
+FI des.trg
+FZ = 6213
+FP /\A.{308}1\000/
+FI des.hit
+FZ = 1976
+FP /\A.{300}\007/
+FI keyword.trg
+FZ = 4512
+FP /\A.{308}16P13\000/
+FI keyword.hit
+FZ = 688
+FP /\A.{300}\042/
+FI seqvn.trg
+FZ = 1110
+FP /\A.{308}AB000095[.]1\001/
+FI seqvn.hit
+FZ = 480
+FP /\A.{300}\002/
+FI taxon.trg
+FP /\A.{308}AFRICAN CLAWED FROG\000/
+FZ = 4395
+FI taxon.hit
+FZ = 2500
+FP /\A.{300}\054/
+FI outfile.dbiflat
+FC = 118
+FP /# Fields: 6\n/
+FP /#   Field 6: org\n/
+FP /# Files: 10\n/
+FP /Index acc: maxlen 8 items 110\n/
+FP /Index sv: maxlen 10 items 45\n/
+FP /Index des: maxlen 19 items 219\n/
+FP /Index key: maxlen 44 items 81\n/
+FP /Index org: maxlen 27 items 117\n/
+FP /Total 10 files 45 entries \(0 duplicates\)\n/
+FP 5 /^Index \S+ maxlen \d+ items \d+\n/
+FP 10 /^filename: /
 //
 
 ID dbiflat-swiss-allnosys-keep
@@ -6043,7 +6181,7 @@ CL qanxflatall:* test.out -auto
 FI test.out
 FZ = 540075
 FP 1 />RNOPS /
-FP 44 />/
+FP 45 />/
 //
 
 ID dbxflatall-wild
@@ -16295,20 +16433,6 @@ FP /^[A-Z]/
 FP 0 /^[^A-Z]/
 //
 
-ID wossname-ex5
-UC Output html tags around the list of program groups:
-AP wossname
-CL -groups -html -prelink '#'
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FP /^<li><a href="#ALIGNMENT CONSENSUS">ALIGNMENT CONSENSUS</a></li>\n/
-//
-
 ID wossname-ex6
 UC Output html tags around the list of programs:
 AP wossname
@@ -18017,7 +18141,7 @@ FZ = 3806
 FP /^ +10 +HSHT +1658 +0[.]7314 +\n/
 FI hs989235.fasta
 FZ = 540075
-FP 44 /^>/
+FP 45 /^>/
 //
 
 ID corbatest-check
