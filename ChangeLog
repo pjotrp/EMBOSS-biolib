@@ -1,4 +1,7 @@
 Version 3.1.0
+	Functions that process directories now skip the '.' and '..'
+	directories so that '*' wildcards will work correctly.
+
 	Prettyplot has been revised. A debugging commandline option has
 	been removed. String commandline options have been changes to
 	array and select types for better validation with the same user
