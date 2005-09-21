@@ -1863,12 +1863,13 @@ static AjPPdbfile ReadLines(AjPFile inf)
     for(i=0;i<ptr->nlines;i++)
 	ptr->oddnum[i]=ajFalse;
     
-    /*DIAGNOSTIC 
-      for(i=0;i<ptr->nlines;i++)
-      {
-      ajFmtPrintF(tempfile, "%S\n", ptr->lines[i]);
-      fflush(tempfile->fp);
-      }*/
+/*DIAGNOSTIC 
+//      for(i=0;i<ptr->nlines;i++)
+//      {
+//      ajFmtPrintF(tempfile, "%S\n", ptr->lines[i]);
+//      fflush(tempfile->fp);
+//      }
+*/
     
 
     /* Tidy up and return */
@@ -6498,81 +6499,82 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 ** ##
 ****************************************************************************/
 /*THIS_DIAGNOSTIC 
-static void diagnostic(AjPPdbfile *pdbfile, ajint n)
-{
-    ajint i;
-    i=0;
-    
-    
-
-         
-       
-       if(n==0)
-       {
-       ajFmtPrintF(tempfile, "nchains: %d\n", (*pdbfile)->nchains);
-       for(i=0;i<(*pdbfile)->nchains; i++)
-       ajFmtPrintF(tempfile, "chid: %c\n", 
-		   ajChararrGet((*pdbfile)->chid, i));
-       for(i=0;i<(*pdbfile)->nchains; i++)
-       {
-       ajFmtPrintF(tempfile, "seqres %d: %S\n", i, (*pdbfile)->seqres[i]);
-       }
-       
-       
-       ajFmtPrintF(tempfile, "tercnt: %d\n", (*pdbfile)->tercnt);
-       ajFmtPrintF(tempfile, "COMPND: %S\n", (*pdbfile)->compnd);
-       ajFmtPrintF(tempfile, "SOURCE: %S\n", (*pdbfile)->source);
-       ajFmtPrintF(tempfile, "reso: %f\n", (*pdbfile)->reso);
-       if((*pdbfile)->method == ajXRAY)
-       ajFmtPrintF(tempfile, "method: ajXRAY\n");
-       else
-       ajFmtPrintF(tempfile, "method: ajNMR\n");
-       }
-       else if(n==1)
-       {
-       for(i=0;i<(*pdbfile)->nlines;i++)
-       {
-       ajFmtPrintF(tempfile, "%-5S",  (*pdbfile)->pdbid);
-       
-       if((*pdbfile)->linetype[i]==PDBPARSE_IGNORE)
-       ajFmtPrintF(tempfile, "%-10s",  "IGNORE");
-       else if((*pdbfile)->linetype[i]==PDBPARSE_COORD)
-       ajFmtPrintF(tempfile, "%-10s",  "COORD");
-       else if((*pdbfile)->linetype[i]==PDBPARSE_COORDHET)
-       ajFmtPrintF(tempfile, "%-10s",  "COORDHET");
-       else if((*pdbfile)->linetype[i]==PDBPARSE_COORDGP)
-       ajFmtPrintF(tempfile, "%-10s",  "COORDGP");
-       else if((*pdbfile)->linetype[i]==PDBPARSE_COORDWAT)
-       ajFmtPrintF(tempfile, "%-10s",  "COORDWAT");
-       else if((*pdbfile)->linetype[i]==PDBPARSE_TER)
-       ajFmtPrintF(tempfile, "%-10s",  "TER");
-       else if((*pdbfile)->linetype[i]==PDBPARSE_MODEL)
-       ajFmtPrintF(tempfile, "%-10s",  "MODEL");
-       
-       
-       
-       ajFmtPrintF(tempfile, 
-		   "M%-2dC%-2d%-6S%-5d%-5d%-4B%-4S%-4S%-7.3f%-7.3f"
-       "%-7.3f%-6.3f%-6.3f\n", 
-       (*pdbfile)->modn[i],
-       (*pdbfile)->chnn[i],
-       (*pdbfile)->pdbn[i], 
-       (*pdbfile)->resn1[i],
-       (*pdbfile)->resn2[i],
-       (*pdbfile)->oddnum[i], 
-       (*pdbfile)->atype[i], 
-       (*pdbfile)->rtype[i], 
-       (*pdbfile)->x[i], 
-       (*pdbfile)->y[i], 
-       (*pdbfile)->z[i], 
-       (*pdbfile)->o[i], 
-       (*pdbfile)->b[i]);
-       
-       }	
-       }
-       
-
-}*/
+//static void diagnostic(AjPPdbfile *pdbfile, ajint n)
+//{
+//    ajint i;
+//    i=0;
+//    
+//    
+//
+//         
+//       
+//       if(n==0)
+//       {
+//       ajFmtPrintF(tempfile, "nchains: %d\n", (*pdbfile)->nchains);
+//       for(i=0;i<(*pdbfile)->nchains; i++)
+//       ajFmtPrintF(tempfile, "chid: %c\n", 
+//		   ajChararrGet((*pdbfile)->chid, i));
+//       for(i=0;i<(*pdbfile)->nchains; i++)
+//       {
+//       ajFmtPrintF(tempfile, "seqres %d: %S\n", i, (*pdbfile)->seqres[i]);
+//       }
+//       
+//       
+//       ajFmtPrintF(tempfile, "tercnt: %d\n", (*pdbfile)->tercnt);
+//       ajFmtPrintF(tempfile, "COMPND: %S\n", (*pdbfile)->compnd);
+//       ajFmtPrintF(tempfile, "SOURCE: %S\n", (*pdbfile)->source);
+//       ajFmtPrintF(tempfile, "reso: %f\n", (*pdbfile)->reso);
+//       if((*pdbfile)->method == ajXRAY)
+//       ajFmtPrintF(tempfile, "method: ajXRAY\n");
+//       else
+//       ajFmtPrintF(tempfile, "method: ajNMR\n");
+//       }
+//       else if(n==1)
+//       {
+//       for(i=0;i<(*pdbfile)->nlines;i++)
+//       {
+//       ajFmtPrintF(tempfile, "%-5S",  (*pdbfile)->pdbid);
+//       
+//       if((*pdbfile)->linetype[i]==PDBPARSE_IGNORE)
+//       ajFmtPrintF(tempfile, "%-10s",  "IGNORE");
+//       else if((*pdbfile)->linetype[i]==PDBPARSE_COORD)
+//       ajFmtPrintF(tempfile, "%-10s",  "COORD");
+//       else if((*pdbfile)->linetype[i]==PDBPARSE_COORDHET)
+//       ajFmtPrintF(tempfile, "%-10s",  "COORDHET");
+//       else if((*pdbfile)->linetype[i]==PDBPARSE_COORDGP)
+//       ajFmtPrintF(tempfile, "%-10s",  "COORDGP");
+//       else if((*pdbfile)->linetype[i]==PDBPARSE_COORDWAT)
+//       ajFmtPrintF(tempfile, "%-10s",  "COORDWAT");
+//       else if((*pdbfile)->linetype[i]==PDBPARSE_TER)
+//       ajFmtPrintF(tempfile, "%-10s",  "TER");
+//       else if((*pdbfile)->linetype[i]==PDBPARSE_MODEL)
+//       ajFmtPrintF(tempfile, "%-10s",  "MODEL");
+//       
+//       
+//       
+//       ajFmtPrintF(tempfile, 
+//		   "M%-2dC%-2d%-6S%-5d%-5d%-4B%-4S%-4S%-7.3f%-7.3f"
+//       "%-7.3f%-6.3f%-6.3f\n", 
+//       (*pdbfile)->modn[i],
+//       (*pdbfile)->chnn[i],
+//       (*pdbfile)->pdbn[i], 
+//       (*pdbfile)->resn1[i],
+//       (*pdbfile)->resn2[i],
+//       (*pdbfile)->oddnum[i], 
+//       (*pdbfile)->atype[i], 
+//       (*pdbfile)->rtype[i], 
+//       (*pdbfile)->x[i], 
+//       (*pdbfile)->y[i], 
+//       (*pdbfile)->z[i], 
+//       (*pdbfile)->o[i], 
+//       (*pdbfile)->b[i]);
+//       
+//       }	
+//       }
+//       
+//
+//}
+*/
 
 
 
