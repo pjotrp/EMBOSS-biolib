@@ -141,7 +141,7 @@ typedef struct AjSScopdes
 
 
 
-/*@datastatic AjPCathDom*******************************************************
+/* @datastatic AjPCathDom *****************************************************
 **
 ** Nucleus CathDom object
 **
@@ -177,7 +177,7 @@ typedef struct AjSCathDom
 
 
 
-/*@datastatic AjPCathName******************************************************
+/* @datastatic AjPCathName ****************************************************
 **
 ** Nucleus CathName object
 **
