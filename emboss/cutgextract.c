@@ -25,6 +25,23 @@
 #define CODONS 64
 #define TABLE_ESTIMATE 1000
 
+/* @datastatic CutgPValues ****************************************************
+**
+** Codon usage table data values
+**
+** @alias CutgSValues
+** @alias CutgOValues
+**
+** @attr Count [ajint[CODONS]] Number of occurrences for each codon
+**                             in standard order
+** @attr CdsCount [ajint] Number of CDSs counted
+** @attr Division [AjPStr] EMBL/GenBank division
+** @attr Doc [AjPStr] Documentation string
+** @attr Species [AjPStr] Species
+** @attr Warn [ajint] Number of warnings issued
+** @attr Skip [ajint] Number of CDSs skipped
+******************************************************************************/
+
 typedef struct CutgSValues
 {
     ajint Count[CODONS];
