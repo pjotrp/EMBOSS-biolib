@@ -36,8 +36,8 @@ int main(int argc, char **argv)
     AjPSeqall seqall;
     AjPFile outf;
     AjPSeq seq = NULL;
-    AjPStr seqstr;
-    AjPStr seqdesc;
+    const AjPStr seqstr;
+    const AjPStr seqdesc;
     ajint len;
     float pgc;
 
