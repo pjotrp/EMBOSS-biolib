@@ -25,6 +25,9 @@
 
 
 #ifndef HAVE_ORB_ORBIT_H
+/* @header main ************************************************************
+**
+******************************************************************************/
 int main(int argc, char **argv)
 {
     fprintf(stderr,"CORBA support has not been compiled\n");
