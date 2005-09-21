@@ -3066,6 +3066,10 @@ AjPFileBuff ajFileBuffNewDW(const AjPStr dir, const AjPStr wildfile)
 	/* skip deleted files with inode zero */
 	if(!de->d_ino)
 	    continue;
+	if(ajStrMatchCC(de->d_name, "."))
+	    continue;
+	if(ajStrMatchCC(de->d_name, ".."))
+	    continue;
 	if(!ajStrMatchWildCO(de->d_name, wildfile))
 	    continue;
 	dirsize++;
@@ -3156,6 +3160,10 @@ AjPFileBuff ajFileBuffNewDWE(const AjPStr dir, const AjPStr wildfile,
 #endif
 	/* skip deleted files with inode zero */
 	if(!de->d_ino)
+	    continue;
+	if(ajStrMatchCC(de->d_name, "."))
+	    continue;
+	if(ajStrMatchCC(de->d_name, ".."))
 	    continue;
 	ajStrAssC(&tmpname, de->d_name);
 	ajDebug("testing '%s'\n", de->d_name);
@@ -3309,6 +3317,10 @@ AjPFile ajFileNewDW(const AjPStr dir, const AjPStr wildfile)
 	/* skip deleted files with inode zero */
 	if(!de->d_ino)
 	    continue;
+	if(ajStrMatchCC(de->d_name, "."))
+	    continue;
+	if(ajStrMatchCC(de->d_name, ".."))
+	    continue;
 	if(!ajStrMatchWildCO(de->d_name, wildfile))
 	    continue;
 	dirsize++;
@@ -3397,6 +3409,10 @@ AjPFile ajFileNewDWE(const AjPStr dir, const AjPStr wildfile,
 #endif
 	/* skip deleted files with inode zero */
 	if(!de->d_ino)
+	    continue;
+	if(ajStrMatchCC(de->d_name, "."))
+	    continue;
+	if(ajStrMatchCC(de->d_name, ".."))
 	    continue;
 	ajStrAssC(&tmpname, de->d_name);
 	if(!ajFileTestSkip(tmpname, exclude, wildfile, ajFalse, ajFalse))
