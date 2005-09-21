@@ -21,8 +21,6 @@ if ($ARGV[1]) {$lib = $ARGV[1];}
 $source = "";
 $lasttoken = "";
 $intable = 0;
-$countglobal=0;
-$countstatic=0;
 
 if ($infile) {
     ($file) = ($infile =~ /([^\/]+)$/);
@@ -47,6 +45,8 @@ open (SRS, ">$pubout.srsdata");
 
 $title = "$infile";
 $OFILE = HTML;
+$countglobal=0;
+$countstatic=0;
 
 print HTML  "<html><head><title>$title</title></head><body bgcolor=\"#ffffff\">\n";
 print HTMLB  "<html><head><title>$title</title></head><body bgcolor=\"#ffffff\">\n";
@@ -631,6 +631,18 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 
 	elsif ($token eq "@")  {
 	    last;
+	}
+
+	elsif ($token eq "header")  {
+	    ;
+	}
+
+	elsif ($token eq "short")  {
+	    ;
+	}
+
+	elsif ($token eq "release")  {
+	    ;
 	}
 
 	elsif ($token =~ /[^a-z]/)  {# acd function
