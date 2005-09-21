@@ -202,6 +202,9 @@ $lib = "unknown";
 $countglobal=0;
 $countstatic=0;
 
+$dosecttest = 0;
+$dosorttest = 0;
+
 ### cppreserved is a list of C++ reserved words not to be used as param names.
 ### test is whether to test the return etc.
 ### body is whether to print the body code
@@ -251,6 +254,11 @@ else {
     while (<>) {$source .= $_}
 }
 
+if($pubout eq "ajstr") {
+    $dosecttest = 1;
+    $dosorttest = 1;
+}
+
 open (HTML, ">$pubout.html");
 open (HTMLB, ">$local\_static.html");
 open (SRS, ">$pubout.srs");
@@ -297,6 +305,19 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
     @savecode = ();
     @savevar = ();
     @savecast = ();
+    $inputargs = "";
+    $outputargs = "";
+    $modifyargs = "";
+    $returnargs = "";
+    $longdesc = "";
+    $shortdesc = "";
+    $usetext = "See source code";
+    $exampletext = "In preparation";
+    $errtext = "See source code";
+    $dependtext = "See source code";
+    $othertext = "See other functions in this section";
+    $availtext = "In release 3.0.0";
+
     while ($cc =~ m/@((\S+)([^@]+))/gos) {
 	$data = $1;
 	$token = $2;
@@ -341,7 +362,9 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    $frest =~ s/>/\&gt;/gos;
 	    $frest =~ s/</\&lt;/gos;
 	    $frest =~ s/\n\n/\n<p>\n/gos;
-	    print $OFILE "$frest\n";
+	    #print $OFILE "$frest\n";
+	    $shortdesc = $frest;
+	    $longdesc = $frest;
 
 	    print SRS "ID $name\n";
 	    print SRS "TY public\n";
@@ -415,7 +438,9 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    $frest =~ s/>/\&gt;/gos;
 	    $frest =~ s/</\&lt;/gos;
 	    $frest =~ s/\n\n/\n<p>\n/gos;
-	    print $OFILE "$frest\n";
+	    #print $OFILE "$frest\n";
+	    $shortdesc = $frest;
+	    $longdesc = $frest;
 
 	    print SRS "ID $name\n";
 	    print SRS "TY static\n";
@@ -438,6 +463,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    chomp $srest;
 	    print SRS "DE $srest\n";
 	    print SRS "XX\n";
+
 
 	    $fargs =~ s/\s+/ /gos;    # all whitespace is one space
 	    $fargs =~ s/ ,/,/gos;   # no space before comma
@@ -474,7 +500,9 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    $mrest =~ s/>/\&gt;/gos;
 	    $mrest =~ s/</\&lt;/gos;
 	    $mrest =~ s/\n\n/\n<p>\n/gos;
-	    print $OFILE "$mrest\n";
+	    #print $OFILE "$mrest\n";
+	    $shortdesc = $mrest;
+	    $longdesc = $mrest;
 
 	    print SRS "ID $name\n";
 	    print SRS "TY macro\n";
@@ -520,7 +548,9 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    $mrest =~ s/>/\&gt;/gos;
 	    $mrest =~ s/</\&lt;/gos;
 	    $mrest =~ s/\n\n/\n<p>\n/gos;
-	    print $OFILE "$mrest\n";
+	    #print $OFILE "$mrest\n";
+	    $shortdesc = $mrest;
+	    $longdesc = $mrest;
 
 	    print SRS "ID $name\n";
 	    print SRS "TY list\n";
@@ -541,14 +571,21 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 
 	elsif ($token eq "param")  {
 	    if (!$intable) {
-		print $OFILE "<p><table border=3>\n";
-		print $OFILE "<tr><th>RW</th><th>Name</th><th>Type</th><th>Description</th></tr>\n";
+		#print $OFILE "<p><table border=3>\n";
+		#print $OFILE "<tr><th>Type</th><th>Name</th><th>Read/Write</th><th>Description</th></tr>\n";
 		$intable = 1;
 	    }
 	    ($code,$var,$cast, $prest) = ($data =~ m/[\[]([^\]]+)[\]]\s*(\S*)\s*[\[]([^\]]+[\]]?)[\]]\s*(.*)/gos);
 	    if (!defined($code)) {
 		print STDERR "bad \@param syntax:\n$data";
 		next;
+	    }
+
+	    if($prest =~ /([^\{]+)[\{]([^\}]+)[\}]/) {
+		if($usetext eq "See source code") {$usetext = ""}
+		else {$usetext .= "<p>\n"}
+		$usetext .= "<b>$var:</b> $2\n";
+		$prest = $1;
 	    }
 
 #           print "code: <$code> var: <$var> cast: <$cast>\n";
@@ -560,6 +597,23 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    if ($code !~ /^[rwufdv?][CENP]*$/) { # deleted OSU (all unused)
 		print "bad code <$code> var: <$var>\n";
 	    }
+
+	    if($code =~ /^[rfv]/) {
+		if($code =~ /^r/) {$codename = "Input"}
+		elsif($code =~ /^f/) {$codename = "Function"}
+		elsif($code =~ /^v/) {$codename = "Vararg"}
+		$inputargs .= "<tr><td><b>$var:</b></td><td>($codename)</td><td>$prest</td></tr>";
+	    }
+	    elsif($code =~ /[wd]/) {
+		if($code =~ /^w/) {$codename = "Output"}
+		elsif($code =~ /^d/) {$codename = "Delete"}
+		$outputargs .= "<tr><td><b>$var:</b></td><td>($codename)</td><td>$prest</td></tr>";
+	    }
+	    elsif($code =~ /[u]/) {
+		if($code =~ /^u/) {$codename = "Modify"}
+		$modifyargs .= "<tr><td><b>$var:</b></td><td>($codename)</td><td>$prest</td></tr>";
+	    }
+	    else {$codename = "Unknown"}
 
 	    testvar($var);
 	    if ($ismacro) {               # No code to test for macros
@@ -620,7 +674,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    print SRS "PX\n";
 
 	    if (!$prest) {print "bad \@param '$var', no description\n"}
-	    print $OFILE "<tr><td>$code</td><td>$var</td><td>$cast</td><td>$prest</td></tr>\n";
+	    #print $OFILE "<tr><td>$cast</td><td>$var</td><td>$codename</td><td>$prest</td></tr>\n";
 
 	    if ($simpletype{$cast}) {
 # Simple C types (not structs)
@@ -757,8 +811,8 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 
 	elsif ($token eq "return")  {
 	    if (!$intable) {
-		print $OFILE "<p><table border=3>\n";
-		print $OFILE "<tr><th>RW</th><th>Name</th><th>Type</th><th>Description</th></tr>\n";
+		#print $OFILE "<p><table border=3>\n";
+		#print $OFILE "<tr><th>Type</th><th>Name</th><th>Read/Write</th><th>Description</th></tr>\n";
 		$intable = 1;
 	    }
 	    ($rtype, $rrest) = ($data =~ /\S+\s+\[([^\]]+)\]\s*(.*)/gos);
@@ -768,10 +822,17 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    if (!$rrest && $rtype ne "void") {
 		print "bad \@return [$rtype], no description\n";
 	    }
+
+	    if($rtype eq "void") {
+		$returnargs = "<tr><td><b>$rtype:</b></td><td>No return value</td></tr>";
+	    }
+	    else {
+		$returnargs = "<tr><td><b>$rtype:</b></td><td>$rrest</td></tr>";
+	    }
 	    $rrest =~ s/>/\&gt;/gos;
 	    $rrest =~ s/</\&lt;/gos;
-	    print $OFILE "<tr><td>\&nbsp;</td><td>RETURN</td><td>$rtype</td><td>$rrest</td></tr>\n";
-	    print $OFILE "</table><p>\n";
+	    #print $OFILE "<tr><td>$rtype</td><td>\&nbsp;</td><td>RETURN</td><td>$rrest</td></tr>\n";
+	    #print $OFILE "</table><p>\n";
 	    $intable = 0;
 
 	    $drest = $rrest;
@@ -790,8 +851,8 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 
 	elsif ($token eq "category")  {
 	    if (!$intable) {
-		print $OFILE "<p><table border=3>\n";
-		print $OFILE "<tr><th>Datatype</th><th>Category</th><th>Description</th></tr>\n";
+		#print $OFILE "<p><table border=3>\n";
+		#print $OFILE "<tr><th>Datatype</th><th>Category</th><th>Description</th></tr>\n";
 		$intable = 1;
 	    }
 	    ($ctype, $cdata, $crest) = ($data =~ /\S+\s+(\S+)\s+\[([^\]]+)\]\s*(.*)/gos);
@@ -804,8 +865,8 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    $crest =~ s/ $//gos;
 	    $crest =~ s/>/\&gt;/gos;
 	    $crest =~ s/</\&lt;/gos;
-	    print $OFILE "<tr><td>$cdata</td><td>$ctype</td><td>$crest</td></tr>\n";
-	    print $OFILE "</table><p>\n";
+	    #print $OFILE "<tr><td>$cdata</td><td>$ctype</td><td>$crest</td></tr>\n";
+	    #print $OFILE "</table><p>\n";
 	    $intable = 0;
 
 	    $drest = $crest;
@@ -861,6 +922,28 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    }
 	}
 
+	elsif ($token eq "header")  {
+	    next;
+	}
+
+	elsif ($token eq "short")  {
+	    ($shortdesc) = ($data =~ /\S+\s+(.*)/);
+	    $shortdesc =~ s/>/\&gt;/gos;
+	    $shortdesc =~ s/</\&lt;/gos;
+	    $shortdesc =~ s/\n\n/\n<p>\n/gos;
+	}
+
+	elsif ($token eq "release")  {
+	    ($availtext) = ($data =~ /\S+\s+(.*)/);
+	    $availtext =~ s/\s+$//gos;
+	    if($availtext =~ /^(\d+[.][.\d]+)$/) {
+		$availtext = "EMBOSS $1";
+	    }
+	    $availtext =~ s/>/\&gt;/gos;
+	    $availtext =~ s/</\&lt;/gos;
+	    $availtext =~ s/\n\n/\n<p>\n/gos;
+	}
+
 	elsif ($token eq "cc")  {
 	    next;
 	}
@@ -887,6 +970,10 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	}
 	print SRS "//\n";
 
+	if($shortdesc) {
+	    print $OFILE "$shortdesc\n";
+	}
+
 ##############################################################
 ## do we want to save what follows the comment?
 ## Yes, for functions (and static functions) and main programs
@@ -899,6 +986,28 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 
 	    ($body) = ($rest =~ /(.*?\n\}[^\n]*\n)/os);
 	    print SRS $body;
+
+	    if(defined($fname)) {
+		print $OFILE "<h3>Synopsis</h3>";
+		print $OFILE "<h4>Prototype</h4><pre>";
+		print $OFILE "\n$ftype $fname (";
+		$firstarg = 1;
+		foreach $a (@largs) {
+		    if($firstarg) {
+			print $OFILE "\n      $a";
+		    }
+		    else {
+			print $OFILE ",\n      $a";
+		    }
+		    $firstarg = 0;
+		}
+		if($firstarg) {
+		    print $OFILE "void);\n</pre>\n";
+		}
+		else {
+		    print $OFILE "\n);\n</pre>\n";
+		}
+	    }
 	}
 
 	if (defined($test{$type}) && $test{$type} == 2) {
@@ -908,6 +1017,50 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    ($body) = ($rest =~ /\s*(\n\#define\s+[^(\n]+\s*[(][^)\n]*[)].*?[^\\])$/os);
 	    print SRS "==FUNCLIST\n$body\n==ENDLIST\n";
 	    print SRS "==REST\n$rest\n==ENDREST\n";
+	}
+	if($inputargs) {
+	    print $OFILE "<h4>Input</h4>\n";
+	    print $OFILE "<table>$inputargs</table>\n";
+	}
+	if($outputargs) {
+	    print $OFILE "<h4>Output</h4>\n";
+	    print $OFILE "<table>$outputargs</table>\n";
+	}
+	if($modifyargs) {
+	    print $OFILE "<h4>Input \&amp; Output</h4>\n";
+	    print $OFILE "<table>$modifyargs</table>\n";
+	}
+	if($returnargs) {
+	    print $OFILE "<h4>Returns</h4>\n";
+	    print $OFILE "<table>$returnargs</table>\n";
+	}
+	if($longdesc) {
+	    print $OFILE "<h3>Description</h3>\n";
+	    print $OFILE "$longdesc\n";
+	}
+	if($usetext) {
+	    print $OFILE "<h3>Usage</h3>\n";
+	    print $OFILE "$usetext\n";
+	}
+	if($exampletext) {
+	    print $OFILE "<h3>Example</h3>\n";
+	    print $OFILE "$exampletext\n";
+	}
+	if($errtext) {
+	    print $OFILE "<h3>Errors</h3>\n";
+	    print $OFILE "$errtext\n";
+	}
+	if($dependtext) {
+	    print $OFILE "<h3>Dependencies</h3>\n";
+	    print $OFILE "$dependtext\n";
+	}
+	if($othertext) {
+	    print $OFILE "<h3>See Also</h3>\n";
+	    print $OFILE "$othertext\n";
+	}
+	if($availtext) {
+	    print $OFILE "<h3>Availability</h3>\n";
+	    print $OFILE "$availtext\n";
 	}
     }
 }
