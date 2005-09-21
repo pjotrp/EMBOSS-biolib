@@ -2158,6 +2158,20 @@ ajint* ajGraphGetBaseColour(void)
 /* @func ajGraphGetBaseColourProt *********************************************
 **
 ** Initialize a base colours array for a string of protein sequence characters
+** according to the following colour scheme designed by Toby Giibson (EMBL
+** Heidelberg) to show the chemical propoerties important in sequence
+** and structure alignment and to be clear to those with common forms
+** of colour blindness.
+**
+** DE: Red (Acidic)
+** HKR: Blue (Basic)
+** NQ: Green (Amide)
+** AILV: Black (Hydrophobic Small)
+** FWY: Wheat (Hydrophobic Large)
+** ST: Cyan (Hydroxyl group)
+** CM: Yellow (Sulphur chemistry)
+** G: Grey (helix breaker I)
+** P: Violet (helix breaker II)
 **
 ** @param [r] codes [const AjPStr] Residue codes for each numbered position
 ** @return [ajint*] Array of colours (see PLPLOT)
@@ -2169,11 +2183,11 @@ ajint* ajGraphGetBaseColourProt(const AjPStr codes)
     ajint *ret;
     char* alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     ajint colours[] = {
-	BLACK,BLACK,YELLOW,RED,RED,WHEAT,
-	GREY,BLUE,BLACK,BLACK,BLUE,BLACK,
-	YELLOW,GREEN,BLACK,BLUEVIOLET,GREEN,BLUE,
-	CYAN,CYAN,BLACK,BLACK,WHEAT,BLACK,
-	WHEAT,BLACK,BLACK,BLACK};
+	BLACK,BLACK,YELLOW,RED,RED,WHEAT, /* A-F */
+	GREY,BLUE,BLACK,BLACK,BLUE,BLACK, /* G-L */
+	YELLOW,GREEN,BLACK,BLUEVIOLET,GREEN,BLUE, /* M-R */
+	CYAN,CYAN,BLACK,BLACK,WHEAT,BLACK, /* S-X */
+	WHEAT,BLACK,BLACK,BLACK};	/* Y-Z plus 2 more */
     const char* cp;
     const char* cq;
     ajint i;
@@ -5615,29 +5629,29 @@ void ajGraphPlpDataDel(AjPGraphPlpData *thys)
 ******************************************************************************/
 
 /*
-void ajGraphPlpDataDel(AjPGraphPlpData *thys)
-{
-    AjPGraphPlpData this;
-
-    this = *thys;
-
-    if (!thys)
-	return;
-
-    AJFREE(this->x);
-    AJFREE(this->y);
-    ajStrDel(&this->title);
-    ajStrDel(&this->subtitle);
-    ajStrDel(&this->xaxis);
-    ajStrDel(&this->yaxis);
-    ajStrDel(&this->gtype);
-
-    ajGraphPlpDataDel(thys);
-
-    AJFREE(*thys);
-
-    return;
-}
+//void ajGraphPlpDataDel(AjPGraphPlpData *thys)
+//{
+//    AjPGraphPlpData this;
+//
+//    this = *thys;
+//
+//    if (!thys)
+//	return;
+//
+//    AJFREE(this->x);
+//    AJFREE(this->y);
+//    ajStrDel(&this->title);
+//    ajStrDel(&this->subtitle);
+//    ajStrDel(&this->xaxis);
+//    ajStrDel(&this->yaxis);
+//    ajStrDel(&this->gtype);
+//
+//    ajGraphPlpDataDel(thys);
+//
+//    AJFREE(*thys);
+//
+//    return;
+//}
 */
 
 
