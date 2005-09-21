@@ -51,14 +51,21 @@ static struct hept_pref *read_matrix(AjPFile inf);
 
 
 
-static void pred_coils(AjPFile outf, char *seq, char *ident, AjPStr str,
-		       struct hept_pref *h, ajint win, ajint which,
+static void pred_coils(AjPFile outf, const char *seq,
+		       const char *ident, const AjPStr str,
+		       const struct hept_pref *h, ajint win, ajint which,
 		       ajint weighted, ajint fasta, float min_P, ajint *t,
 		       ajint *tc, ajint min_segs);
 
 
 
-
+/* @funcstatic read_matrix ****************************************************
+**
+** Reads the matrix and stores in a hept_pref structure
+**
+** @param [u] inf [AjPFile] matrix input file
+** @return [struct hept_pref *] Matrix data for heptad preference
+******************************************************************************/
 static struct hept_pref *read_matrix(AjPFile inf)
 {
     ajint i;
@@ -75,7 +82,7 @@ static struct hept_pref *read_matrix(AjPFile inf)
     float hept[NCHEPTAD];
 
     AjPStr buff;
-    char   *pbuff;
+    const char   *pbuff;
     
     struct hept_pref *h;
 
@@ -171,7 +178,11 @@ static struct hept_pref *read_matrix(AjPFile inf)
 }
 
 
-
+/* @prog newcoils *************************************************************
+**
+** Predicts coils protein secondary structure
+**
+******************************************************************************/
 
 int main(ajint argc, char **argv)
 {
@@ -190,7 +201,7 @@ int main(ajint argc, char **argv)
     ajint tc = 0;
     ajint mode;
     ajint min_seg;
-    AjPStr seqdes;
+    const AjPStr seqdes;
 
     float min_P;
 
@@ -265,8 +276,28 @@ int main(ajint argc, char **argv)
 
 
 
-static void pred_coils(AjPFile outf, char *seq, char *ident, AjPStr str,
-		       struct hept_pref *h,ajint win, ajint which,
+/* @funcstatic pred_coils ****************************************************
+**
+** Undocumented
+**
+** @param [u] outf [AjPFile] Undocumented
+** @param [r] seq [const char*] Undocumented
+** @param [r] ident [const char*] Undocumented
+** @param [r] str [const AjPStr] Undocumented
+** @param [r] h [const struct hept_pref *] Undocumented
+** @param [r] win [ajint] Undocumented
+** @param [r] which [ajint] Undocumented
+** @param [r] weighted [ajint] Undocumented
+** @param [r] mode [ajint] Undocumented
+** @param [r] min_P [float] Undocumented
+** @param [w] t [ajint*] Undocumented
+** @param [w] tc [ajint*] Undocumented
+** @param [r] min_seg [ajint] Undocumented
+** @return [void]
+******************************************************************************/
+static void pred_coils(AjPFile outf, const char *seq,
+		       const char *ident, const AjPStr str,
+		       const struct hept_pref *h,ajint win, ajint which,
 		       ajint weighted,ajint mode, float min_P, ajint *t,
 		       ajint *tc, ajint min_seg)
 {
