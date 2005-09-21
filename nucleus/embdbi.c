@@ -25,7 +25,7 @@
 #include <errno.h>
 
 
-/* @datastatic ReportPFormat **************************************************
+/* @datastatic DbiOField ******************************************************
 **
 ** Database index field names and index filenames
 **
@@ -238,6 +238,10 @@ AjPList embDbiFileList(const AjPStr dir, const AjPStr wildfile, AjBool trim)
     {
 	if(!de->d_ino)
 	    continue; 		/* skip deleted files with inode zero */
+	if(ajStrMatchCC(de->d_name, "."))
+	    continue;
+	if(ajStrMatchCC(de->d_name, ".."))
+	    continue;
 	if(!ajStrMatchWildCO(de->d_name, wwildfile))
 	    continue;
 
@@ -345,6 +349,10 @@ AjPList embDbiFileListExc(const AjPStr dir, const AjPStr wildfile,
     {
 	/* skip deleted files with inode zero */	
 	if(!de->d_ino)
+	    continue;
+	if(ajStrMatchCC(de->d_name, "."))
+	    continue;
+	if(ajStrMatchCC(de->d_name, ".."))
 	    continue;
 
 	ajStrAssC(&fname, de->d_name);
