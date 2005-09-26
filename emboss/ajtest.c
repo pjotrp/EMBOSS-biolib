@@ -35,6 +35,7 @@ int main(int argc, char **argv)
 	ajtest_kim (kimout, seq);
     }
 
+    ajSeqWriteClose(kimout);
     ajExit();
 
     return 0;

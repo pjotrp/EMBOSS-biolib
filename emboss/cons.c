@@ -105,6 +105,7 @@ int main(int argc, char **argv)
 	ajSeqAssName(seqo,name);
 
     ajSeqWrite(seqout,seqo);
+    ajSeqWriteClose(seqout);
 
     ajStrDel(&cons);
     ajSeqDel(&seqo);
