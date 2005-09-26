@@ -1,8 +1,24 @@
-	Version 3.1.0 Programs that write sequences need to call
-	ajSeqWriteClose before they exit. This forces output from sequence
-	formats that save up sequences in memory and write at the end. An
-	example is MSF, which has to wait for all sequences in order to
-	calculate the file checksum.
+	Version 3.1.0
+
+	Prettyplot and cons were producing different consensus
+	sequences. Comparison of the results showed two problems. Cons was
+	missing consensus characters because of an error in calculating
+	the plurality (since fixed in prettyplot, but the library function
+	used by cons had not been corrected). Prettyplot was missing
+	consensus characters for a different reason - prettyplot has a
+	"collision detection" feature to skip consensus characters for
+	posisions where more than one amino acid or base is valid as a
+	consensus character. This was turned on by default, when the ACD
+	file clearly states it should be turned off. In fixing both bugs
+	the two programs will give the same consensus, except for cases
+	where collisions occur - in these cases prettplot may not select
+	the same character as cons, where both are equally valid.
+
+	Programs that write sequences need to call ajSeqWriteClose before
+	they exit. This forces output from sequence formats that save up
+	sequences in memory and write at the end. An example is MSF, which
+	has to wait for all sequences in order to calculate the file
+	checksum.
 	
 	Functions that process directories now skip the '.' and '..'
 	directories so that '*' wildcards will work correctly.

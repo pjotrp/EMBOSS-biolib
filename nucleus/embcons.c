@@ -141,12 +141,19 @@ void embConsCalc(const AjPSeqset seqset,const AjPMatrix cmpmatrix,
 	    m1 = ajSeqCvtK (cvt, seqcharptr[i][k]);
 	    if(!matching[m1])
 		for(j=0;j<nseqs;j++)
-		    if( i != j)
-		    {
-			m2 = ajSeqCvtK (cvt, seqcharptr[j][k]);
-			if(m1 && m2 && matrix[m1][m2] > 0)
-			    matching[m1] += ajSeqsetWeight(seqset, j);
-		    }
+		{
+/*
+//		    if( i != j)
+//		    {
+//			m2 = ajSeqCvtK (cvt, seqcharptr[j][k]);
+//			if(m1 && m2 && matrix[m1][m2] > 0)
+//			    matching[m1] += ajSeqsetWeight(seqset, j);
+//		    }
+*/
+		    m2 = ajSeqCvtK (cvt, seqcharptr[j][k]);
+		    if(m1 && m2 && matrix[m1][m2] > 0)
+		      matching[m1] += ajSeqsetWeight(seqset, j);
+		}
 	}
 
 
