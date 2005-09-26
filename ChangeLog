@@ -1,4 +1,9 @@
-Version 3.1.0
+	Version 3.1.0 Programs that write sequences need to call
+	ajSeqWriteClose before they exit. This forces output from sequence
+	formats that save up sequences in memory and write at the end. An
+	example is MSF, which has to wait for all sequences in order to
+	calculate the file checksum.
+	
 	Functions that process directories now skip the '.' and '..'
 	directories so that '*' wildcards will work correctly.
 

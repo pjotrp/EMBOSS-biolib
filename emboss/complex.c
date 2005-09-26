@@ -92,6 +92,7 @@ int main(int argc, char **argv)
 		embComWriteValueOfSeq(outfile,Num_seq,name,len,MedValue);
 	    }
 	}
+	ajSeqWriteClose(seqout);
     }
     else
     {

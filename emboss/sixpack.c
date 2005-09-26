@@ -403,6 +403,7 @@ static void sixpack_ajprintseq(AjPSeqout outseq,
     ajSeqAssName(sq,nm);
 
     ajSeqWrite(outseq, sq);
+    ajSeqWriteClose(outseq);
 
     ajStrDel(&nm);
     ajStrDel(&str);

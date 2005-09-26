@@ -308,6 +308,7 @@ int main(int argc, char **argv)
     ajSeqAssSeq(seqo,nseq);
     ajSeqSetRange(seqo,base_start,ajSeqEnd(seqo));
     ajSeqWrite(seqout,seqo);
+    ajSeqWriteClose(seqout);
     ajStrDel(&nseq);
     ajSeqDel(&seqo);
 

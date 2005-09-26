@@ -382,7 +382,8 @@ void ajSeqAllWrite(AjPSeqout outseq, const AjPSeq seq)
 	    outseq->Features,
 	    seqOutFormat[outseq->Format].Save);
     
-    
+    seqAllClone(outseq, seq);
+   
     if(seqOutFormat[outseq->Format].Save)
     {
 	seqWriteListAppend(outseq, seq);
@@ -390,7 +391,6 @@ void ajSeqAllWrite(AjPSeqout outseq, const AjPSeq seq)
 	return;
     }
     
-    seqAllClone(outseq, seq);
     
     ajSeqoutDefName(outseq, outseq->Entryname, !outseq->Single);
     if(outseq->Fttable)
@@ -489,6 +489,7 @@ void ajSeqsetWrite(AjPSeqout outseq, const AjPSeqset seq)
 
     for(i=0; i < seq->Size; i++)
     {
+	seqsetClone(outseq, seq, i);
 	if(seqOutFormat[outseq->Format].Save)
 	{
 	    seqWriteListAppend(outseq, seq->Seq[i]);
@@ -496,7 +497,6 @@ void ajSeqsetWrite(AjPSeqout outseq, const AjPSeqset seq)
 	    continue;
 	}
 
-	seqsetClone(outseq, seq, i);
 	ajSeqoutDefName(outseq, outseq->Entryname, !outseq->Single);
 	if(outseq->Fttable)
 	    ajFeatDefName(outseq->Fttable, outseq->Name);
@@ -695,14 +695,14 @@ void ajSeqWrite(AjPSeqout outseq, const AjPSeq seq)
     ajDebug(" outseq '%S' seq '%S' '%S'\n",
 	    outseq->Name, seq->Name, seq->Entryname);
 
+    seqClone(outseq, seq);
+    
     if(seqOutFormat[outseq->Format].Save)
     {
 	seqWriteListAppend(outseq, seq);
 	outseq->Count++;
 	return;
     }
-    
-    seqClone(outseq, seq);
     
     ajSeqoutDefName(outseq, outseq->Entryname, !outseq->Single);
     if(outseq->Fttable)
@@ -1242,6 +1242,7 @@ static void seqWriteNexus(AjPSeqout outseq)
 		"begin data;\n");
     ajFmtPrintF(outseq->File,		/* count, length */
 		"dimensions ntax=%d nchar=%d;\n", isize, ilen);
+    ajDebug("seqWriteNexus outseq->Type '%S'\n", outseq->Type);
     if(ajStrMatchC(outseq->Type, "P"))
 	ajFmtPrintF(outseq->File,
 		    "format interleave datatype=protein missing=X gap=-;\n");
@@ -4441,7 +4442,8 @@ static void seqAllClone(AjPSeqout outseq, const AjPSeq seq)
 	iend = ajSeqEnd(seq);
 	ajDebug("seqAllClone end: %d\n", iend);
     }
-
+    ajDebug("ajSeqAllClone outseq->Type '%S' seq->Type '%S'\n",
+	    outseq->Type, seq->Type);
     ajStrAssS(&outseq->Db, seq->Db);
     ajStrAssS(&outseq->Name, seq->Name);
     ajStrAssS(&outseq->Acc, seq->Acc);
