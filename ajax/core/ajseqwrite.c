@@ -383,15 +383,13 @@ void ajSeqAllWrite(AjPSeqout outseq, const AjPSeq seq)
 	    seqOutFormat[outseq->Format].Save);
     
     seqAllClone(outseq, seq);
-   
     if(seqOutFormat[outseq->Format].Save)
     {
 	seqWriteListAppend(outseq, seq);
 	outseq->Count++;
 	return;
     }
-    
-    
+           
     ajSeqoutDefName(outseq, outseq->Entryname, !outseq->Single);
     if(outseq->Fttable)
 	ajFeatDefName(outseq->Fttable, outseq->Name);
@@ -595,10 +593,16 @@ static void seqWriteListAppend(AjPSeqout outseq, const AjPSeq seq)
 	seqOutFormat[outseq->Format].Write(outseq);
     }
 
+    ajDebug("seqWriteListAppend Features: %B IsLocal: %B Count: %d\n",
+	    outseq->Features, ajFeattabOutIsLocal(outseq->Ftquery),
+	    ajFeattableSize(outseq->Fttable));
+
     if(outseq->Features &&
        !ajFeattabOutIsLocal(outseq->Ftquery))
     {
-	seqClone(outseq, seq);	    /* need to clone feature table) */
+/*	seqClone(outseq, seq);	*/    /* already cloned feature table */
+	ajDebug("seqWriteListAppend after seqClone Count: %d\n",
+		ajFeattableSize(outseq->Fttable));
 	if(!ajFeattabOutIsOpen(outseq->Ftquery))
 	{
 	    ajDebug("seqWriteListAppend features output needed table\n");
@@ -615,7 +619,9 @@ static void seqWriteListAppend(AjPSeqout outseq, const AjPSeq seq)
 	    ajStrSet(&outseq->Ftquery->Type, seq->Type);
 	}
 
-	/* ajFeattableTrace(outseq->Fttable); */
+	ajDebug("seqWriteListAppend after ajFeattabOutOpen Count: %d\n",
+		ajFeattableSize(outseq->Fttable));
+	ajFeattableTrace(outseq->Fttable);
 
 	if(!ajFeatUfoWrite(outseq->Fttable, outseq->Ftquery, outseq->Ufo))
 	{
@@ -4356,7 +4362,7 @@ static void seqClone(AjPSeqout outseq, const AjPSeq seq)
     if(seq->End)
     {
 	iend = ajSeqEnd(seq);
-	ajDebug("seqClone begin: %d\n", ibegin);
+	ajDebug("seqClone end: %d\n", iend);
     }
 
     ajStrSet(&outseq->Name, seq->Name);
