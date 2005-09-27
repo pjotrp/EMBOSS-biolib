@@ -2456,8 +2456,7 @@ FC = 2
 FI aligned.cons
 FZ = 134
 FP /\A>EMBOSS_001\n/
-FP /^ACGTACGTACGTACGTACGTnnnnACGTACGTACGTACGTnnnnnnnnnnnnnnnnnnnn\n/
-FP /^nnnnnnnnnnnnnnnnnnnnACGTACGTACGTACGTACGTACGTACGTnnnnACGTACGT\n/
+FP 2 /^ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT\n/
 //
 
 ID cpgplot-ex
@@ -6039,7 +6038,7 @@ FP /^# Number of files: 10\n/
 FP /.*\/test\/embl\/rod\.dat\n/
 FP 10 /.*\/test\/embl\/[a-z0-9]+\.dat\n/
 FI embl.pxac
-FZ = 116
+FZ = 117
 FP /^Order     71\n/
 FP /^Fill      47\n/
 FP /^Pagesize  2048\n/
@@ -6047,7 +6046,7 @@ FP /^Level     0\n/
 FP /^Cachesize 100\n/
 FP /^Order2    0\n/
 FP /^Fill2     0\n/
-FP /^Count     87\n/
+FP /^Count     113\n/
 FP /^Kwlimit   0\n/
 FI embl.pxde
 FZ = 121
@@ -6058,7 +6057,7 @@ FP /^Level     0\n/
 FP /^Cachesize 100\n/
 FP /^Order2    71\n/
 FP /^Fill2     106\n/
-FP /^Count     383\n/
+FP /^Count     395\n/
 FP /^Kwlimit   15\n/
 FI embl.pxid
 FZ = 116
@@ -6069,7 +6068,7 @@ FP /^Level     0\n/
 FP /^Cachesize 100\n/
 FP /^Order2    0\n/
 FP /^Fill2     0\n/
-FP /^Count     43\n/
+FP /^Count     44\n/
 FP /^Kwlimit   0\n/
 FI embl.pxkw
 FZ = 120
@@ -6080,7 +6079,7 @@ FP /^Level     0\n/
 FP /^Cachesize 100\n/
 FP /^Order2    71\n/
 FP /^Fill2     106\n/
-FP /^Count     93\n/
+FP /^Count     94\n/
 FP /^Kwlimit   15\n/
 FI embl.pxsv
 FZ = 116
@@ -6091,7 +6090,7 @@ FP /^Level     0\n/
 FP /^Cachesize 100\n/
 FP /^Order2    0\n/
 FP /^Fill2     0\n/
-FP /^Count     43\n/
+FP /^Count     44\n/
 FP /^Kwlimit   0\n/
 FI embl.pxtx
 FZ = 121
@@ -6102,16 +6101,16 @@ FP /^Level     0\n/
 FP /^Cachesize 100\n/
 FP /^Order2    71\n/
 FP /^Fill2     106\n/
-FP /^Count     531\n/
+FP /^Count     546\n/
 FP /^Kwlimit   15\n/
 FI embl.xac
-FZ = 8192
+FZ = 10240
 FP /\0l48662\0/
 FP /\0l48662\0/
 FP /\0z46957\0/
 FP /\0u68037\0/
 FI embl.xde
-FZ = 1437696
+FZ = 1462272
 FP 2 /\0activator\0/
 FI embl.xid
 FZ = 6144
@@ -6125,7 +6124,7 @@ FI embl.xsv
 FZ = 6144
 FP /\0h45989\.1\0/
 FI embl.xtx
-FZ = 698368
+FZ = 704512
 FP 1 /\0homo sapiens\0/
 //
 
@@ -6179,7 +6178,7 @@ AP seqret
 CC Fails to fetch all entries in emboss access method
 CL qanxflatall:* test.out -auto
 FI test.out
-FZ = 540075
+FZ = 658123
 FP 1 />RNOPS /
 FP 45 />/
 //
@@ -9373,7 +9372,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI globins.infoalign
 FZ = 761
-FP /^msf::.*HBA_HORSE\s+HBA_HORSE\s+141\s+144\s+2\s+3\s+48\s+4\s+89\s+66\.666664\s+0\.830000\s+\n/
+FP /^msf::.*HBA_HORSE\s+HBA_HORSE\s+141\s+144\s+2\s+3\s+63\s+6\s+72\s+56\.250000\s+0\.830000\s+\n/
 //
 
 ID infoalign-ex2
@@ -9388,7 +9387,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI globins.infoalign
 FZ = 477
-FP /^HBA_HORSE\s+141\s+144\s+2\s+3\s+48\s+4\s+89\s+66\.666664\s+0\.830000\s+\n/
+FP /^HBA_HORSE\s+141\s+144\s+2\s+3\s+63\s+6\s+72\s+56\.250000\s+0\.830000\s+\n/
 //
 
 ID infoalign-ex3
@@ -9418,7 +9417,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI globins.infoalign
 FZ = 136
-FP /^HBA_HORSE\s+3\s+89\n/
+FP /^HBA_HORSE\s+3\s+72\n/
 //
 
 ID infoalign-ex5
@@ -9471,17 +9470,17 @@ ID infoalign-ex8
 AP infoalign
 CL -auto tembl:eclac* -out test.out
 FI test.out
-FZ = 764
-FP /tembl-id:ECLAC\s+ECLAC\s+7477\s+7477\s+0\s+0\s+65\s+0\s+7412\s+99[.]130[0-9]+\s+1[.]0+\s+E.*/
-FP /tembl-id:ECLACZ\s+ECLACZ\s+3078\s+3078\s+0\s+0\s+72\s+0\s+3006\s+97[.]660[0-9]+\s+1[.]0+\s+E.*/
+FZ = 768
+FP /tembl-id:ECLAC\s+ECLAC\s+7477\s+7477\s+0\s+0\s+374\s+0\s+7103\s+94[.]997[0-9]+\s+1[.]0+\s+E.*/
+FP /tembl-id:ECLACZ\s+ECLACZ\s+3078\s+3078\s+0\s+0\s+373\s+0\s+2705\s+87[.]881[0-9]+\s+1[.]0+\s+E.*/
 //
 
 ID infoalign-ex9
 AP infoalign
 CL -auto tembl:eclacz -out test.out
 FI test.out
-FZ = 245
-FP /tembl-id:ECLACZ\s+ECLACZ\s+3078\s+3078\s+0\s+0\s+0\s+0\s+3078\s+100[.]0+\s+1[.]0+\s+E.*/
+FZ = 243
+FP /tembl-id:ECLACZ\s+ECLACZ\s+3078\s+3078\s+0\s+0\s+3078\s+0\s+0\s+0[.]0+\s+1[.]0+\s+E.*/
 //
 
 ID infoseq-ex
@@ -14866,8 +14865,8 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI globins.showalign
 FZ = 2235
-FP /^HBB_HUMAN  --------VHLTPE\.K\.AVTALWG\.VN-VD\.V\.GEA\.GR-LLVvY\.WTQR\.\.ES\.GD\.ST\n/
-FP /^Consensus  xxxxxxxxxxxxxxExSxxxxxxxKxxxxxExGxxxLxxxxxxIxPxxxxFFxxFxxLxx\n/
+FP /^HBB_HUMAN  --------VH\.tPE\.K\.A\.TaL\.G\.V\.-VD\.\.\.\.E\.\.GR-\.LVvY\.WT\.R\.\.Es\.GD\.\.T\n/
+FP /^Consensus  xxxxxxxxxxLSxxExSxVxSxWxKxNxxxEVGGxALxxxLxxIxPxxQxFFxTFxxLSx\n/
 //
 
 ID showalign-ex2
@@ -18137,10 +18136,10 @@ FP 0 /Died: /
 FI complex.ujtable
 FZ = 0
 FI hs989235.complex
-FZ = 3806
+FZ = 3880
 FP /^ +10 +HSHT +1658 +0[.]7314 +\n/
 FI hs989235.fasta
-FZ = 540075
+FZ = 658123
 FP 45 /^>/
 //
 
