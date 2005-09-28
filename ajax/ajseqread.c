@@ -2562,6 +2562,8 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
     AjPStr      word  = NULL;
     AjPStr      token = NULL;
     AjPStr      post  = NULL;
+    AjPStr      namstr = NULL;
+    AjPStr      seqstr = NULL;
     AjBool      ok    = ajFalse;
     AjBool      bmf   = ajTrue;
     AjBool      dcf   = ajTrue;
@@ -2626,6 +2628,8 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 	ok=ajFileBuffGetStore(buff,&line,
 			       seqin->Text, &thys->TextPtr);
 	stock = ajStockholmNew(n);
+
+	ajDebug("Created stockholm data object size: %d\n", n);
 
 	word  = ajStrNew();
 	token = ajStrNew();
@@ -2738,11 +2742,22 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 		}
 
 	    }
-	    else
+	    else if (!ajStrMatchC(line, "\n"))
 	    {
-		ajFmtScanS(line,"%S%S",&stock->name[scnt],&stock->str[scnt]);
-		ajStrRemoveNewline(&stock->str[scnt]);
+		ajFmtScanS(line,"%S%S", &namstr,&seqstr);
+		if(!ajStrLen(stock->name[scnt]))
+		    ajStrApp(&stock->name[scnt], namstr);
+		else
+		{
+		    if(!ajStrMatch(namstr, stock->name[scnt]))
+			ajWarn("Bad stockholm format found '%S' expect '%S'",
+			       namstr, stock->name[scnt]);
+		}
+		ajStrRemoveNewline(&seqstr);
+		ajStrApp(&stock->str[scnt], seqstr);
 		++scnt;
+		if(scnt >= n)
+		    scnt = 0;
 	    }
 
 	    ok = ajFileBuffGetStore(buff,&line,
@@ -2752,6 +2767,8 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 	ajStrDel(&word);
 	ajStrDel(&token);
 	ajStrDel(&post);
+	ajStrDel(&namstr);
+	ajStrDel(&seqstr);
 	ajRegFree(&sexp);
 	seqin->Stockholm = stock;
     }
