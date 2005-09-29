@@ -23,7 +23,7 @@ it and that this copyright notice is not removed.
      The source code and documentation of the package  consists  of  87  files,
 plus  4  more  for the programs in the Unsupported Division.  In the electronic
 mail version some of these files may be split into parts, so there may be more.
-The  package  is  organized  into  three  major  parts,  the  source  code, the
+The  package  is  organised  into  three  major  parts,  the  source  code, the
 documentation, and the unsupported programs.  The  documentation  is  organized
 hierarchically,  with groups of documentation files for different kinds of data
 each preceded by a documentation file for the group as well.  The  "unsupported
