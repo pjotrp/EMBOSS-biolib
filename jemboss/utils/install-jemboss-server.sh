@@ -444,6 +444,7 @@ deploy_axis_services()
 #  CLASSPATH=${CLASSPATH}:$JEMBOSS_LIB/jnet.jar:$JEMBOSS_LIB/jsse.jar:$JEMBOSS_LIB/jcert.jar
   CLASSPATH=${CLASSPATH}:$JEMBOSS_LIB/xerces.jar
 
+  PROXY_OFF="-DproxySet=false -DproxyHost= -DproxyPort= -Dhttp.proxyHost= -Dhttp.proxyPort= -Dhttps.proxyHost= -Dhttps.proxyPort= "
   SERVICE=$2
   URL=$3
   URL2=$4
@@ -456,15 +457,15 @@ deploy_axis_services()
 # echo " org.apache.axis.client.AdminClient -l$URL/axis/services JembossServer.wsdd"
   echo
 
-  $JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 \
+  $JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 $PROXY_OFF \
         org.apache.axis.client.AdminClient \
         -l$URL/axis/services JembossServer.wsdd
 
   echo "#!/bin/csh " > deploy.csh
-  echo "$JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 org.apache.axis.client.AdminClient -l$URL/axis/services JembossServer.wsdd" >> deploy.csh
+  echo "$JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 $PROXY_OFF org.apache.axis.client.AdminClient -l$URL/axis/services JembossServer.wsdd" >> deploy.csh
   echo "" >> deploy.csh
   echo 'if ($status != 0) then' >> deploy.csh
-  echo "  $JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 org.apache.axis.client.AdminClient -l$URL2/axis/services JembossServer.wsdd" >> deploy.csh
+  echo "  $JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 $PROXY_OFF org.apache.axis.client.AdminClient -l$URL2/axis/services JembossServer.wsdd" >> deploy.csh
   echo "endif" >> deploy.csh
   chmod u+x deploy.csh
 }
