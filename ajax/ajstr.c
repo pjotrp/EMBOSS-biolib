@@ -7328,6 +7328,9 @@ AjBool ajStrPrefixCC(const char* str, const char* pref)
 
 AjBool ajStrPrefixCO(const char* str, const AjPStr thys)
 {
+    if(!thys)
+	return ajFalse;
+
     if(thys->Len > strlen(str))	/* pref longer */
 	return ajFalse;
 
