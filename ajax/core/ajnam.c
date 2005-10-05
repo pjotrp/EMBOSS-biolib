@@ -354,6 +354,7 @@ static void namListMasterDelete(AjPTable table, ajint which)
     NamPEntry fnew = 0;
     void **array;
 
+    if(!table) return;
 
     array = ajTableToarray(table, NULL);
 
