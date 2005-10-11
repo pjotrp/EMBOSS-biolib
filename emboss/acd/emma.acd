@@ -201,8 +201,7 @@ section: additional [
     toggle: slow [
       additional: "Y"
       default: "Y"
-      information: "Do you want to carry out slow or fast pairwise
-                    alignment"
+      information: "Do you want to carry out slow pairwise alignment"
       help: "A distance is calculated between every pair of sequences
              and these are used to construct the dendrogram which guides the
              final multiple alignment. The scores are calculated from
