@@ -2902,6 +2902,20 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
 
 	}
 
+
+    /* Temporary fix to allow ajjava to finish receiving file before term */
+    gettimeofday(&tv,NULL);
+    then = tv.tv_usec;
+    now = then;
+    
+    while(now-then < 100000)
+    {
+	gettimeofday(&tv,NULL);
+	now = tv.tv_usec;
+    }
+
+
+
     ajStrDel(&file);
     ajStrDel(&message);
 
