@@ -1,0 +1,71 @@
+application: vrnaplot [
+  documentation: "Plot ernafold output"
+  groups: "RNA"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+  embassy: "vienna"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  infile: structure  [
+    parameter: "Y"
+    information: "Sequence/structure file"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  list: layout  [
+    default: "naview"
+    minimum: "1"
+    maximum: "1"
+    header: "Energy parameters"
+    values: "radial:Simple radial, naview:naview"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Layout"
+  ]
+
+  list: optype  [
+    default: "ps"
+    minimum: "1"
+    maximum: "1"
+    header: "Output type"
+    values: "ps:postscript, gml:graph meta language, svg:scaleable vector graphics, xrna:XRNA save file"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Type"
+  ]
+
+  string: pre  [
+    information: "Pre-annotation"
+    default: ""
+  ]
+
+  string: post  [
+    information: "Post-annotation"
+    default: ""
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile  [
+    parameter: "Y"
+    knowntype: "rnafold output"
+  ]
+
+endsection: output

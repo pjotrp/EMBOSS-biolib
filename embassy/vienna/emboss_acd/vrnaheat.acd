@@ -1,0 +1,134 @@
+application: vrnaheat [
+  documentation: "RNA melting"
+  groups: "RNA"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+  embassy: "vienna"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: sequence  [
+    parameter: "Y"
+    type: "dna"
+  ]
+
+  infile: paramfile [
+    nullok: "Y"
+    default: ""
+    information: "Parameter file"
+    knowntype: "rna parameter file"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  float: mintemp [
+    default: "0.0"
+    information: "Temperature"
+  ]
+
+  float: maxtemp [
+    default: "100.0"
+    information: "Temperature"
+  ]
+
+  boolean: gu [
+    default: "Y"
+    information: "Allow GU pairs"
+  ]
+
+  boolean: closegu [
+    default: "Y"
+    information: "Allow GU pairs at end of helices"
+  ]
+
+  boolean: lp [
+    default: "Y"
+    information: "Allow lonely pairs"
+  ]
+
+  boolean: convert [
+    default: "Y"
+    information: "Convert T to U"
+  ]
+
+  string: nsbases [
+    default: ""
+    information: "Non-standard bases"
+  ]
+
+  boolean: tetraloop [
+    default: "Y"
+    information: "Stabilizing energies for tetra-loops"
+  ]
+
+  list: energy  [
+    default: "0"
+    minimum: "1"
+    maximum: "1"
+    header: "Energy parameters"
+    values: "0:BP, 1:Any with GC, 2:Any with AU parameters"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Method"
+    help: "Rarely used option to fold sequences from the ABCD... alphabet"
+  ]
+
+  int: smoothing  [
+    default: "2"
+    information: "Parabola fitting value"
+  ]
+
+  int: step  [
+    default: "1"
+    information: "Step size in degrees C"
+    minimum: "1"
+    maximum: "100"
+  ]
+
+  list: dangles  [
+    default: "2"
+    minimum: "1"
+    maximum: "1"
+    header: "How to treat dangling end energies"
+    values: "0:Ignore,
+             2:Always use dangling energies"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Method"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile  [
+    parameter: "Y"
+    knowntype: "rnafold output"
+  ]
+
+#  outfile: psoutfile  [
+#    name: "$(sequence.name)"
+#    extension: "ps"
+#    knowntype: "postscript"
+#  ]
+
+  outfile: ssoutfile  [
+    name: "$(sequence.name)"
+    extension: "ssps"
+    knowntype: "postscript"
+  ]
+
+endsection: output

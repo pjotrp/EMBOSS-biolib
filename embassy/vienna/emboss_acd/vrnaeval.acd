@@ -1,0 +1,99 @@
+application: vrnaeval [
+  documentation: "RNA eval"
+  groups: "RNA"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+  embassy: "vienna"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: sequence  [
+    parameter: "Y"
+    type: "dna"
+  ]
+
+  infile: constraintfile  [
+    parameter: "Y"
+    information: "Constraint file"
+    knowntype: "rna constraint file"
+  ]
+
+  infile: paramfile [
+    nullok: "Y"
+    default: ""
+    information: "Parameter file"
+    knowntype: "rna parameter file"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  float: temperature [
+    default: "37.0"
+    information: "Temperature"
+  ]
+
+  boolean: convert [
+    default: "Y"
+    information: "Convert T to U"
+  ]
+
+  boolean: tetraloop [
+    default: "Y"
+    information: "Stabilising energies for tetra-loops"
+  ]
+
+  list: energy  [
+    default: "0"
+    minimum: "1"
+    maximum: "1"
+    header: "Energy parameters"
+    values: "0:BP, 1:Any with GC, 2:Any with AU parameters"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Method"
+    help: "Rarely used option to fold sequences from the ABCD... alphabet"
+  ]
+
+
+  list: dangles  [
+    default: "1"
+    minimum: "1"
+    maximum: "1"
+    header: "How to treat dangling end energies"
+    values: "0:No stabilising energies for dangling ends,
+             1:Use stabilising energies for dangling ends,
+             2:Dangling energies as in a partition function
+             3:Allow coaxial stacking of adjacent helices"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Method"
+  ]
+
+  boolean: logml [
+    default: "N"
+    information: "Use log scale for multiloop energies"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile  [
+    parameter: "Y"
+    knowntype: "rnaevalpair output"
+  ]
+
+endsection: output

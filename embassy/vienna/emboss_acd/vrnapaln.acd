@@ -1,0 +1,129 @@
+application: vrnapaln [
+  documentation: "RNA alignment"
+  groups: "RNA"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+  embassy: "vienna"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: sequence  [
+    parameter: "Y"
+    type: "dna"
+  ]
+
+  infile: paramfile [
+    nullok: "Y"
+    default: ""
+    information: "Parameter file"
+    knowntype: "rna parameter file"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  float: temperature [
+    default: "37.0"
+    information: "Temperature"
+  ]
+
+  boolean: gu [
+    default: "Y"
+    information: "Allow GU pairs"
+  ]
+
+  boolean: closegu [
+    default: "Y"
+    information: "Allow GU pairs at end of helices"
+  ]
+
+  boolean: lp [
+    default: "Y"
+    information: "Allow lonely pairs"
+  ]
+
+  string: nsbases [
+    default: ""
+    information: "Non-standard bases"
+  ]
+
+  boolean: tetraloop [
+    default: "Y"
+    information: "Stabilizing energies for tetra-loops"
+  ]
+
+  list: energy  [
+    default: "0"
+    minimum: "1"
+    maximum: "1"
+    header: "Energy parameters"
+    values: "0:BP, 1:Any with GC, 2:Any with AU parameters"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Method"
+    help: "Rarely used option to fold sequences from the ABCD... alphabet"
+  ]
+
+  list: dangles  [
+    default: "1"
+    minimum: "1"
+    maximum: "1"
+    header: "How to treat dangling end energies"
+    values: "0:Ignore,
+             1:Only unpaired bases for just one dangling end"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Method"
+  ]
+
+  list: compare  [
+    default: "p"
+    minimum: "1"
+    maximum: "1"
+    header: "Comparison type"
+#    values: "p:Pairwise,m:Distance matrix between all structures,f:Compare all structures to the first one,c:Compare continuously"
+    values: "p:Pairwise,f:Compare all structures to the first one,c:Compare continuously"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Comparison method"
+    help: "Distance types to calculate"
+  ]
+
+  float: gapopen  [
+    default: "1.5"
+    information: "Gap opening penalty"
+  ]
+
+  float: gapextend  [
+    default: "0.66"
+    information: "Gap extension penalty"
+  ]
+
+  float: weight  [
+    default: "0.5"
+    information: "Sequence weight"
+  ]
+
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile  [
+    parameter: "Y"
+    knowntype: "rnafold output"
+  ]
+
+endsection: output

@@ -1,0 +1,122 @@
+application: vrnasubopt [
+  documentation: "Calculate RNA suboptimals"
+  groups: "RNA"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+  embassy: "vienna"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: sequence  [
+    parameter: "Y"
+    type: "dna"
+  ]
+
+  infile: constraintfile  [
+    nullok: "Y"
+    default: ""
+    information: "Constraint file"
+    knowntype: "rna constraint file"
+  ]
+
+  infile: paramfile [
+    nullok: "Y"
+    default: ""
+    information: "Parameter file"
+    knowntype: "rna parameter file"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  float: temperature [
+    default: "37.0"
+    information: "Temperature"
+  ]
+
+  boolean: gu [
+    default: "Y"
+    information: "Allow GU pairs"
+  ]
+
+  boolean: closegu [
+    default: "Y"
+    information: "Allow GU pairs at end of helices"
+  ]
+
+  boolean: lp [
+    default: "Y"
+    information: "Allow lonely pairs"
+  ]
+
+  string: nsbases [
+    default: ""
+    information: "Non-standard bases"
+  ]
+
+  boolean: tetraloop [
+    default: "Y"
+    information: "Stabilizing energies for tetra-loops"
+  ]
+
+  float: erange  [
+    default: "1.0"
+    information: "Calculate suboptimal structures within erange of the mfe"
+  ]
+
+  float: prange  [
+    default: "0.0"
+    information: "Only print structures with energy within prange of the mfe"
+  ]
+
+  bool: sort [
+    default: "N"
+    information: "Sort structures by energy"
+  ]
+
+  bool: logml [
+    default: "N"
+    information: "logarithmic energy function for multi-loops"
+  ]
+
+  list: dangles  [
+    default: "2"
+    minimum: "1"
+    maximum: "1"
+    header: "How to treat dangling end energies"
+    values: "0:Ignore,
+             1:Only unpaired bases for just one dangling end,
+             2:Always use dangling energies
+             3:Allow coaxial stacking of adjacent helices"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Method"
+  ]
+
+  integer: nrandom  [
+    default: "0"
+    information: "number of random suboptimal structures"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile  [
+    parameter: "Y"
+    knowntype: "rnafold output"
+  ]
+
+endsection: output

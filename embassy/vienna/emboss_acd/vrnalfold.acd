@@ -1,0 +1,125 @@
+application: vrnalfold [
+  documentation: "Calculate locally stable 2ry structures of RNAs"
+  groups: "RNA"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+  embassy: "vienna"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: sequence  [
+    parameter: "Y"
+    type: "dna"
+  ]
+
+  infile: constraintfile  [
+    nullok: "Y"
+    default: ""
+    information: "Constraint file"
+    knowntype: "rna constraint file"
+  ]
+
+  infile: paramfile  [
+    nullok: "Y"
+    default: ""
+    information: "Parameter file"
+    knowntype: "rna parameter file"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  integer: separation [
+    default: "150"
+    information: "Maximum allowed separation"
+  ]
+
+  float: temperature [
+    default: "37.0"
+    information: "Temperature"
+  ]
+
+  boolean: gu [
+    default: "Y"
+    information: "Allow GU pairs"
+  ]
+
+  boolean: closegu [
+    default: "Y"
+    information: "Allow GU pairs at end of helices"
+  ]
+
+  boolean: lp [
+    default: "Y"
+    information: "Allow lonely pairs"
+  ]
+
+  boolean: convert [
+    default: "Y"
+    information: "Convert T to U"
+  ]
+
+  string: nsbases [
+    default: ""
+    information: "Non-standard bases"
+  ]
+
+  boolean: tetraloop [
+    default: "Y"
+    information: "Stabilizing energies for tetra-loops"
+  ]
+
+  list: energy  [
+    default: "0"
+    minimum: "1"
+    maximum: "1"
+    header: "Energy parameters"
+    values: "0:BP, 1:Any with GC, 2:Any with AU parameters"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Method"
+    help: "Rarely used option to fold sequences from the ABCD... alphabet"
+  ]
+
+
+  float: scale [
+    default: "1.07"
+    information: "Estimate of ensemble free energy"
+  ]
+
+  list: dangles  [
+    default: "1"
+    minimum: "1"
+    maximum: "1"
+    header: "How to treat dangling end energies"
+    values: "0:Ignore,
+             1:Only unpaired bases for just one dangling end,
+             2:Always use dangling energies
+             3:Allow coaxial stacking of adjacent helices"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Method"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile  [
+    parameter: "Y"
+    knowntype: "rnalfold output"
+  ]
+
+endsection: output

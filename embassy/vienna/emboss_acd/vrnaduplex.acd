@@ -1,0 +1,122 @@
+application: vrnaduplex [
+  documentation: "RNA duplex calculation"
+  groups: "RNA"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+  embassy: "vienna"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: asequence  [
+    parameter: "Y"
+    type: "dna"
+  ]
+
+  sequence: bsequence  [
+    parameter: "Y"
+    type: "dna"
+  ]
+
+  infile: paramfile [
+    nullok: "Y"
+    default: ""
+    information: "Parameter file"
+    knowntype: "rna parameter file"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  float: temperature [
+    default: "37.0"
+    information: "Temperature"
+  ]
+
+  boolean: gu [
+    default: "Y"
+    information: "Allow GU pairs"
+  ]
+
+  boolean: closegu [
+    default: "Y"
+    information: "Allow GU pairs at end of helices"
+  ]
+
+  boolean: lp [
+    default: "Y"
+    information: "Allow lonely pairs"
+  ]
+
+  boolean: convert [
+    default: "Y"
+    information: "Convert T to U"
+  ]
+
+  string: nsbases [
+    default: ""
+    information: "Non-standard bases"
+  ]
+
+  boolean: tetraloop [
+    default: "Y"
+    information: "Stabilizing energies for tetra-loops"
+  ]
+
+  float: delta  [
+    default: "-1.0"
+    information: "Energy range for suboptimal structures"
+  ]
+
+  bool: sort  [
+    default: "N"
+    information: "Sort suboptimal structures"
+  ]
+
+  list: dangles  [
+    default: "1"
+    minimum: "1"
+    maximum: "1"
+    header: "How to treat dangling end energies"
+    values: "0:Ignore,
+             1:Only unpaired bases for just one dangling end,
+             2:Always use dangling energies
+             3:Allow coaxial stacking of adjacent helices"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Method"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile  [
+    parameter: "Y"
+    knowntype: "rnafold output"
+  ]
+
+#  outfile: dotoutfile  [
+#    name: "$(sequence.name)"
+#    extension: "ps"
+#    knowntype: "postscript"
+#  ]
+#
+#  outfile: ssoutfile  [
+#    name: "$(sequence.name)"
+#    extension: "ssps"
+#    knowntype: "postscript"
+#  ]
+
+endsection: output

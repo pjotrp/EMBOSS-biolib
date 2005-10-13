@@ -1,0 +1,139 @@
+application: vrnainverse [
+  documentation: "RNA sequences matching a structure"
+  groups: "RNA"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+  embassy: "vienna"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  infile: structure  [
+    parameter: "Y"
+    information: "Structure/sequence file"
+  ]
+
+  infile: paramfile [
+    nullok: "Y"
+    default: ""
+    information: "Parameter file"
+    knowntype: "rna parameter file"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  float: temperature [
+    default: "37.0"
+    information: "Temperature"
+  ]
+
+  boolean: gu [
+    default: "Y"
+    information: "Allow GU pairs"
+  ]
+
+  boolean: closegu [
+    default: "Y"
+    information: "Allow GU pairs at end of helices"
+  ]
+
+  boolean: lp [
+    default: "Y"
+    information: "Allow lonely pairs"
+  ]
+
+  boolean: convert [
+    default: "Y"
+    information: "Convert T to U"
+  ]
+
+  string: nsbases [
+    default: ""
+    information: "Non-standard bases"
+  ]
+
+  boolean: tetraloop [
+    default: "Y"
+    information: "Stabilizing energies for tetra-loops"
+  ]
+
+  list: energy  [
+    default: "0"
+    minimum: "1"
+    maximum: "1"
+    header: "Energy parameters"
+    values: "0:BP, 1:Any with GC, 2:Any with AU parameters"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Method"
+    help: "Rarely used option to fold sequences from the ABCD... alphabet"
+  ]
+
+
+  list: dangles  [
+    default: "1"
+    minimum: "1"
+    maximum: "1"
+    header: "How to treat dangling end energies"
+    values: "0:Ignore,
+             1:Only unpaired bases for just one dangling end,
+             2:Always use dangling energies
+             3:Allow coaxial stacking of adjacent helices"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Method"
+  ]
+
+  list: folding  [
+    default: "m"
+    minimum: "1"
+    maximum: "1"
+    header: "Folding method"
+    values: "m:Use minimum energy, p:Use partition function, mp:Use both"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Method"
+  ]
+
+  string: alphabet  [
+    information: "Find sequences using only these bases"
+    default: "AUGC"
+  ]
+
+  float: final  [
+    information: "Stopping value"
+    default: "0.0"
+  ]
+
+  integer: repeats  [
+    information: "No. of times to search for the same structure"
+    default: "0"
+  ]
+
+  bool: showfails  [
+    information: "Show information for unsuccessful searches"
+    default: "N"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile  [
+    parameter: "Y"
+    knowntype: "rnafold output"
+  ]
+
+endsection: output
