@@ -328,7 +328,7 @@ void ajSystem(const AjPStr cl)
 
     if(pid)
     {
-	while((retval=waitpid(pid,&status,WNOHANG))!=pid)
+	while((retval=waitpid(pid,&status,0))!=pid)
 	{
 	    if(retval == -1)
 		if(errno != EINTR)
@@ -409,7 +409,7 @@ void ajSystemEnv(const AjPStr cl, char * const env[])
 
     if(pid)
     {
-	while((retval=waitpid(pid,&status,WNOHANG))!=pid)
+	while((retval=waitpid(pid,&status,0))!=pid)
 	{
 	    if(retval == -1)
 		if(errno != EINTR)
