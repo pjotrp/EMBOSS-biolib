@@ -86,6 +86,7 @@ int main(int argc, char **argv)
     full     = ajAcdGetBool("full");
     prune    = ajAcdGetBool("prune");
 
+    ajSeqToUpper(sequence);		/* prosite regexs are all upper case */
     tab = ajFeattableNewSeq(sequence);
     ajStrAssC(&tailstr, "");
 
