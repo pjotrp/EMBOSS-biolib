@@ -795,8 +795,10 @@ public class JembossParams
 */
   public String getResultsHome()
   {
-    if(!resultsHome.endsWith("/"))
-      resultsHome = resultsHome + "/";
+    String fs = System.getProperty("file.separator");
+
+    if(!resultsHome.endsWith(fs))
+      resultsHome = resultsHome + fs;
     return resultsHome;
   }
 
