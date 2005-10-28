@@ -1124,7 +1124,7 @@ public class BuildJembossForm implements ActionListener
     private String embossCommand;
     private Hashtable filesToMove;
     private JembossParams mysettings;
-    private boolean withSoap;
+    private boolean withSoap = true;
 
     public BatchSoapProcess(String embossCommand, Hashtable filesToMove,
                             JembossParams mysettings)
