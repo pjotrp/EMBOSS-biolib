@@ -451,32 +451,6 @@ public class BuildJembossForm implements ActionListener
                                         filesToMove);
             new ShowResultSet(convert(result,false),filesToMove,mysettings);
           }
-/*
-          RunEmbossApplication2 rea = new RunEmbossApplication2(
-                                           embossCommand,envp,null);
-
-          if(mysettings.getCurrentMode().equals("batch"))
-          {
-            BatchProcess bp = new BatchProcess(rea);
-            bp.start();
-            Jemboss.resultsManager.addRunningJob();
-          }
-          else
-          {
-            rea.waitFor();
-
-            String msg = rea.getProcessStderr().trim();
-            if(msg != null && !msg.equals(""))
-              JOptionPane.showMessageDialog(null, msg, "alert",
-                                   JOptionPane.ERROR_MESSAGE);
-
-            f.setCursor(cdone);
-            showStandaloneResults(rea.getProcessStdout());
-
-            if(applName.equals("emma"))
-              balign.setVisible(true);
-          }
-*/
         }
       }
       else
@@ -1210,7 +1184,7 @@ public class BuildJembossForm implements ActionListener
         }
         else
         {
-          JembossServer js = new JembossServer();
+          JembossServer js = new JembossServer(mysettings.getResultsHome());
           Vector result = js.run_prog(embossCommand,mysettings.getCurrentMode(),
                                         filesToMove);
           Hashtable resultHash = convert(result, false);
