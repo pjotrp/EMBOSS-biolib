@@ -131,8 +131,10 @@ static AjBool   GraphYTitlearg(const char *name, va_list args);
 **
 ** @attr Name [char*] Name used by Ajax
 ** @attr Device [char*] Name used by plplot library
-** @attr ext [char*] File extension for output file if any
-** @attr plplot [AjBool] true if using PlPlot data and library calls
+** @attr Ext [char*] File extension for output file if any
+** @attr Plplot [AjBool] true if using PlPlot data and library calls
+** @attr Alias [AjBool] ajTrue if this name is a user alias for another
+**                      entry with the same Device name.
 ** @attr XYDisplay [(void*)] Function to display an XY graph
 ** @attr GOpen [(void*)] Function to display a general graph
 ** @@
@@ -142,8 +144,9 @@ typedef struct GraphSType
 {
     char* Name;
     char* Device;
-    char* ext;
-    AjBool plplot;
+    char* Ext;
+    AjBool Plplot;
+    AjBool Alias;
     void (*XYDisplay) (AjPGraph thys, AjBool closeit, const char *ext);
     void (*GOpen) (AjPGraph thys, const char *ext);
 } GraphOType;
@@ -160,64 +163,72 @@ typedef struct GraphSType
 ******************************************************************************/
 
 static GraphOType graphType[] = {
-  {"postscript", "ps",      ".ps",
-       AJTRUE,  GraphxyDisplayToFile, GraphOpenFile},
   {"ps",         "ps",      ".ps",
-       AJTRUE,  GraphxyDisplayToFile, GraphOpenFile},
+       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile},
+  {"postscript", "ps",      ".ps",
+       AJTRUE,  AJTRUE,  GraphxyDisplayToFile, GraphOpenFile},
+
   {"hpgl",       "lj_hpgl", ".hpgl",
-       AJTRUE,  GraphxyDisplayToFile, GraphOpenFile},
+       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile},
+
   {"hp7470",     "hp7470",  ".hpgl",
-       AJTRUE,  GraphxyDisplayToFile, GraphOpenFile},
+       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile},
+
   {"hp7580",     "hp7580",  ".hpgl",
-       AJTRUE,  GraphxyDisplayToFile, GraphOpenFile},
+       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile},
+
   {"meta",       "plmeta",  ".meta",
-       AJTRUE,  GraphxyDisplayToFile, GraphOpenFile},
-  {"colourps",   "psc",     ".ps",
-       AJTRUE,  GraphxyDisplayToFile, GraphOpenFile},
+       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile},
+
   {"cps",        "psc",     ".ps",
-       AJTRUE,  GraphxyDisplayToFile, GraphOpenFile},
+       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile},
+  {"colourps",   "psc",     ".ps",
+       AJTRUE,  AJTRUE,  GraphxyDisplayToFile, GraphOpenFile},
 
 #ifndef X_DISPLAY_MISSING /* X11 is  available */
-  {"xwindows",   "xwin",    "null",
-       AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
   {"x11",        "xwin",    "null",
-       AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
+       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin},
+  {"xwindows",   "xwin",    "null",
+       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
 #endif
 
-  {"tektronics", "tekt",    "null",
-       AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
   {"tekt",       "tekt",    "null",
-       AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
-  {"tek4107t",   "tek4107t","null",
-       AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
-  {"tek",        "tek4107t","null",
-       AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
-  {"none",       "null",    "null",
-       AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
-  {"null",       "null",    "null",
-       AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
-  {"text",       "null",    "null",
-       AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
+       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin},
+  {"tektronics", "tekt",    "null",
+       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
 
-  {"data",       "null",    ".dat",
-       AJTRUE,  GraphxyDisplayToData, GraphOpenData},
+  {"tek",        "tek4107t","null",
+       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin},
+  {"tek4107t",   "tek4107t","null",
+       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
+
+  {"none",       "null",    "null",
+       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin},
+  {"null",       "null",    "null",
+       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
+  {"text",       "null",    "null",
+       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
+
+  {"data",       "data",    ".dat",
+       AJTRUE,  AJFALSE, GraphxyDisplayToData, GraphOpenData},
 
 #ifndef X_DISPLAY_MISSING /* X11 is available */
   {"xterm",      "xterm",   "null",
-       AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
+       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin},
 #endif
 
 #ifdef PLD_png          /* if png/gd/zlib libraries available for png driver */
   {"png",        "png",     ".png",
-       AJTRUE,  GraphxyDisplayToFile, GraphOpenFile},
+       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile},
 #endif
 
 #ifdef GROUT          /* if gdome2/libxml2/glib libraries available for xml */
   {"xml",        "xml",     ".xml",
-       AJFALSE, GraphxyDisplayToFile, GraphOpenXml},
+       AJFALSE, AJFALSE, GraphxyDisplayToFile, GraphOpenXml},
 #endif
+
   {NULL, NULL, NULL,
-       AJFALSE, NULL, NULL}
+       AJFALSE, AJFALSE, NULL, NULL}
 };
 
 
@@ -352,9 +363,9 @@ void ajGraphSetName(const AjPGraph thys)
 {
     if (thys->plplot)
     {
-	if(!ajStrMatchCaseCC(graphType[thys->plplot->displaytype].ext, "null"))
+	if(!ajStrMatchCaseCC(graphType[thys->plplot->displaytype].Ext, "null"))
 	    GraphSetName(thys, thys->plplot->outputfile,
-			 graphType[thys->plplot->displaytype].ext);
+			 graphType[thys->plplot->displaytype].Ext);
     }
     return;
 }
@@ -1056,7 +1067,7 @@ void ajGraphOpenWin(AjPGraph thys, float xmin, float xmax,
     {
 	/* Calling funclist graphType() */
 	graphType[thys->plplot->displaytype].GOpen(thys,
-			     graphType[thys->plplot->displaytype].ext);
+			     graphType[thys->plplot->displaytype].Ext);
 
 	if( ajStrLen(thys->plplot->title) <=1)
 	{
@@ -1168,7 +1179,7 @@ void ajGraphOpen(AjPGraph thys, PLFLT xmin, PLFLT xmax,
     {
 	/* Calling funclist graphType() */
 	graphType[thys->plplot->displaytype].GOpen(thys,
-				    graphType[thys->plplot->displaytype].ext);
+				    graphType[thys->plplot->displaytype].Ext);
 
 	if( ajStrLen(thys->plplot->title) <=1)
 	{
@@ -1179,7 +1190,7 @@ void ajGraphOpen(AjPGraph thys, PLFLT xmin, PLFLT xmax,
 	}
 
 	GraphSetName(thys, thys->plplot->outputfile,
-		     graphType[thys->plplot->displaytype].ext);
+		     graphType[thys->plplot->displaytype].Ext);
     }
     ajGraphColourBack();
     GraphInit(thys);
@@ -1243,39 +1254,70 @@ void ajGraphClose(void)
 AjBool ajGraphSet(AjPGraph thys, const AjPStr type)
 {
     ajint i;
+    ajint j=-1;
+    ajint k;
+    AjPStr aliases = NULL;
 
+    ajDebug("ajGraphxet '%S'\n", type);
     for(i=0;graphType[i].Name;i++)
     {
+	if(ajStrMatchCaseC(type, graphType[i].Name))
+	{
+	    j = i;
+	    break;
+	}
 	if(ajStrPrefixCaseCO(graphType[i].Name, type))
 	{
-	    /* Calling funclist graphType() */
-	    if (graphType[i].plplot)
+	    if(j < 0)
+		j = i;
+	    else
 	    {
-		GraphNewPlplot(thys);
-	    }
-	    else {
-		GraphNewGrout(thys);
-	    }
-
-	    if(!graphType[i].GOpen)
-	    {
-		ajDebug("ajGraphSet type '%S' displaytype %d '%s' "
-			"no GOpen function\n",
-			type, i, graphType[i].Name);
+		for(k=0;graphType[k].Name;k++)
+		{
+		    if(ajStrPrefixCaseCO(graphType[k].Name, type))
+		    {
+			if(ajStrLen(aliases))
+			    ajStrAppC(&aliases, ", ");
+			ajStrAppC(&aliases, graphType[k].Name);
+		    }
+		}
+		    
+		ajErr("Ambiguous graph device name '%S' (%S)",
+		       type, aliases);
+		ajStrDel(&aliases);
 		return ajFalse;
 	    }
-	    if (thys->plplot)
-		thys->plplot->displaytype = i;
-	    ajDebug("ajGraphSet plplot type '%S' displaytype %d '%s'\n",
-		    type, i, graphType[i].Name);
-	    return ajTrue;
 	}
+    }
+    if(j<0)
+	return ajFalse;
+
+    if (graphType[j].Plplot)
+    {
+	GraphNewPlplot(thys);
+    }
+    else {
+	GraphNewGrout(thys);
+    }
+
+    if(!graphType[j].GOpen)
+    {
+	ajDebug("ajGraphSet type '%S' displaytype %d '%s' "
+		"no GOpen function\n",
+		type, j, graphType[j].Name);
+	return ajFalse;
     }
 
     if (thys->plplot)
-	thys->plplot->displaytype = i;
+	thys->plplot->displaytype = j;
+    ajDebug("ajGraphSet plplot type '%S' displaytype %d '%s'\n",
+	    type, j, graphType[j].Name);
+    return ajTrue;
+
+    if (thys->plplot)
+	thys->plplot->displaytype = j;
     ajDebug("ajGraphSet type '%S' displaytype not found, set to %d '%s'\n",
-	    type, i, graphType[i].Name);
+	    type, j, graphType[j].Name);
 
     return ajFalse;
 }
@@ -1296,37 +1338,67 @@ AjBool ajGraphSet(AjPGraph thys, const AjPStr type)
 AjBool ajGraphxySet(AjPGraph thys, const AjPStr type)
 {
     ajint i;
+    ajint j=-1;
+    ajint k;
+    AjPStr aliases = NULL;
 
     ajDebug("ajGraphxySet '%S'\n", type);
     for(i=0;graphType[i].Name;i++)
     {
+	if(ajStrMatchCaseC(type, graphType[i].Name))
+	{
+	    j = i;
+	    break;
+	}
 	if(ajStrPrefixCaseCO(graphType[i].Name, type))
 	{
-	    if (graphType[i].plplot)
+	    if(j < 0)
+		j = i;
+	    else
 	    {
-		GraphxyNewPlplot(thys);
-	    }
-	    else {
-		GraphxyNewGrout(thys);
-	    }
-
-	    /* Calling funclist graphType() */
-	    if(!graphType[i].XYDisplay)
-	    {
-		ajDebug("ajGraphxySet type '%S' displaytype %d '%s' "
-			"no XYDisplay function\n",
-			type, i, graphType[i].Name);
+		for(k=0;graphType[k].Name;k++)
+		{
+		    if(ajStrPrefixCaseCO(graphType[k].Name, type))
+		    {
+			if(ajStrLen(aliases))
+			    ajStrAppC(&aliases, ", ");
+			ajStrAppC(&aliases, graphType[k].Name);
+		    }
+		}
+		    
+		ajErr("Ambiguous graph device name '%S' (%S)",
+		       type, aliases);
+		ajStrDel(&aliases);
 		return ajFalse;
 	    }
-
-	    if (thys->plplot)
-		thys->plplot->displaytype = i;
-
-	    ajDebug("ajGraphxySet type '%S' displaytype %d '%s'\n",
-		    type, i, graphType[i].Name);
-	    return ajTrue;
 	}
     }
+    if(j<0)
+	return ajFalse;
+
+    if (graphType[j].Plplot)
+    {
+	GraphxyNewPlplot(thys);
+    }
+    else {
+	GraphxyNewGrout(thys);
+    }
+
+    /* Calling funclist graphType() */
+    if(!graphType[j].XYDisplay)
+    {
+	ajDebug("ajGraphxySet type '%S' displaytype %d '%s' "
+		"no XYDisplay function\n",
+		type, j, graphType[j].Name);
+	return ajFalse;
+    }
+
+    if (thys->plplot)
+	thys->plplot->displaytype = j;
+
+    ajDebug("ajGraphxySet type '%S' displaytype %d '%s'\n",
+	    type, j, graphType[j].Name);
+    return ajTrue;
 
     ajDebug("ajGraphxySet type '%S' displaytype not found\n",
 	    type);
@@ -1347,13 +1419,33 @@ AjBool ajGraphxySet(AjPGraph thys, const AjPStr type)
 void ajGraphDumpDevices(void)
 {
     ajint i;
+    ajint j;
+    AjPStr aliases = NULL;
 
-    ajUser("Devices allowed are:-");
+    ajUser("Devices allowed (with alternative names) are:-");
     for(i=0;graphType[i].Name;i++)
     {
-	ajUser("%s",graphType[i].Name);
+	if(!graphType[i].Alias)
+	{
+	    ajStrAssC(&aliases, "");
+	    for(j=0;graphType[j].Name;j++)
+	    {
+		if(graphType[j].Alias &&
+		   ajStrMatchCC(graphType[i].Device, graphType[j].Device))
+		{
+		    if(ajStrLen(aliases))
+			ajStrAppC(&aliases, ", ");
+		    ajStrAppC(&aliases, graphType[j].Name);
+		}
+	    }
+	    if(ajStrLen(aliases))
+		ajUser("%s (%S)",graphType[i].Name, aliases);
+	    else
+		ajUser("%s",graphType[i].Name);
+	}
     }
 
+    ajStrDel(&aliases);
     return;
 }
 
@@ -5396,7 +5488,7 @@ void ajGraphxyDisplay(AjPGraph thys, AjBool closeit)
 	return;
     /* Calling funclist graphType() */
     (graphType[thys->plplot->displaytype].XYDisplay)
-	(thys, closeit, graphType[thys->plplot->displaytype].ext);
+	(thys, closeit, graphType[thys->plplot->displaytype].Ext);
 
     return;
 }
@@ -6562,7 +6654,7 @@ void ajGraphPrintType(AjPFile outf, AjBool full)
 	gt = &graphType[i];
 	ajFmtPrintF(outf, "  %-12s", gt->Name);
 	ajFmtPrintF(outf, " %-12s", gt->Device);
-	ajFmtPrintF(outf, " %s", gt->ext);
+	ajFmtPrintF(outf, " %s", gt->Ext);
 	ajFmtPrintF(outf, "\n");
     }
     ajFmtPrintF(outf, "}\n");
