@@ -3913,11 +3913,15 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	seqin->multidone = ajFalse;
 	ok = ajFileBuffGetStore(buff, &rdline,
 				seqin->Text, &thys->TextPtr);
+	while (ok && ajStrIsWhite(rdline))
+	    ok = ajFileBuffGetStore(buff, &rdline,
+				    seqin->Text, &thys->TextPtr);
+
 	if(!ok)
 	    return ajFalse;
 	bufflines++;
 
-	ajDebug("first line:\n'%-20.20S'\n", rdline);
+	/* ajDebug("first line:\n'%-20.20S'\n", rdline);*/
 
 	if(!ajRegExec(topexp, rdline))
 	{				/* first line test */
@@ -3929,8 +3933,8 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	ajStrToInt(tmpstr, &iseq);
 	ajRegSubI(topexp, 2, &tmpstr);
 	ajStrToInt(tmpstr, &len);
-	ajDebug("first line OK: '%S' iseq: %d len: %d\n",
-		rdline, iseq, len);
+	/*ajDebug("first line OK: '%S' iseq: %d len: %d\n",
+		rdline, iseq, len);*/
 
 	seqin->Data = AJNEW0(phydata);
 	phydata->Table = phytable = ajTableNew(0, ajStrTableCmp,
@@ -3952,11 +3956,11 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 		AJFREE(seqin->Data);
 		return ajFalse;
 	    }
-	    ajDebug("line: '%S'\n", rdline);
+	    /* ajDebug("line: '%S'\n", rdline); */
 	    AJNEW0(phyitem);
 	    ajRegSubI(headexp, 1, &tmpstr);
 	    seqSetName(&phyitem->Name, tmpstr);
-	    ajDebug("name: '%S' => '%S'\n", tmpstr, phyitem->Name);
+	    /* ajDebug("name: '%S' => '%S'\n", tmpstr, phyitem->Name); */
 	    phyitem->Weight = 1.0;
 	    ajRegPost(headexp, &seqstr);
 	    seqAppend(&phyitem->Seq, seqstr);
@@ -3965,8 +3969,8 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 		done = ajTrue;
 	    else if(ilen > len)
 	    {
-		ajDebug("Phylip format: sequence %S header size %d exceeded\n",
-			phyitem->Name, len);
+		/* ajDebug("Phylip format: sequence %S header size %d exceeded\n",
+			phyitem->Name, len); */
 		ajFileBuffResetStore(buff, seqin->Text, &thys->TextPtr);
 		AJFREE(seqin->Data);
 		return ajFalse;
@@ -3979,9 +3983,9 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	    {
 		if(ilen != maxlen)
 		{
-		    ajDebug("phylip format length mismatch in header "
+		    /* ajDebug("phylip format length mismatch in header "
 			    "iseq: %d jseq: %d ilen: %d maxlen: %d",
-			    iseq, jseq, ilen, maxlen);
+			    iseq, jseq, ilen, maxlen);*/
 		    ajFileBuffResetStore(buff, seqin->Text, &thys->TextPtr);
 		    AJFREE(seqin->Data);
 		    ajTableMapDel(phytable, seqMsfTabDel, NULL);
@@ -3995,7 +3999,8 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 		}
 	    }
 	    jseq++;
-	    ajDebug("first set %d: (%d) '%-20.20S'\n", jseq, ilen, rdline);
+	    /* ajDebug("first set %d: (%d) '%-20.20S'\n",
+	       jseq, ilen, rdline); */
 
 	    if(jseq < iseq)
 	    {
@@ -4005,7 +4010,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	    }
 	}
 
-	ajDebug("Header has %d sequences\n", jseq);
+	/* ajDebug("Header has %d sequences\n", jseq);*/
 	ajListstrTrace(phylist);
 	ajTableTrace(phytable);
 	ajTableMap(phytable, seqMsfTabList, NULL);
@@ -4014,7 +4019,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	for(i=0; i < iseq; i++)
 	{
 	    ajListstrPop(phylist, &phydata->Names[i]);
-	    ajDebug("list [%d] '%S'\n", i, phydata->Names[i]);
+	    /* ajDebug("list [%d] '%S'\n", i, phydata->Names[i]); */
 	}
 	ajListstrFree(&phylist);
 
@@ -4024,7 +4029,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	    while(ajFileBuffGetStore(buff, &rdline,
 				     seqin->Text, &thys->TextPtr))
 	    {				/* now read the rest */
-		ajDebug("seqReadPhylip line '%S\n", rdline);
+		/* ajDebug("seqReadPhylip line '%S\n", rdline); */
 		bufflines++;
 		if(seqPhylipReadseq(rdline, phytable, phydata->Names[jseq],
 				    len, &ilen, &done))
@@ -4035,16 +4040,16 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 		    {
 			if(ilen != maxlen)
 			{
-			    ajDebug("phylip format length mismatch at %d "
+			   /*  ajDebug("phylip format length mismatch at %d "
 				    "(length %d)\n",
-				    maxlen, ilen);
+				    maxlen, ilen); */
 			    ajFileBuffResetStore(buff,
 						 seqin->Text, &thys->TextPtr);
 			    ajTableMapDel(phytable, seqMsfTabDel, NULL);
 			    ajTableFree(&phytable);
 			    AJFREE(phydata->Names);
 			    AJFREE(seqin->Data);
-			    ajDebug("File reset, try seqReadPhylipnon\n");
+			    /* ajDebug("File reset, try seqReadPhylipnon\n"); */
 			    return seqReadPhylipnon(thys, seqin);
 			}
 		    }
@@ -4053,7 +4058,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 		    if(jseq == iseq) jseq = 0;
 		    if(!jseq && done)
 		    {
-			ajDebug("seqReadPhylip set done\n");
+			/* ajDebug("seqReadPhylip set done\n"); */
 			break;
 		    }
 		    done = ajTrue;	/* for end-of-file */
@@ -4071,8 +4076,8 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 
 	    if(jseq)
 	    {
-		ajDebug("Phylip format %d sequences partly read at end\n",
-			iseq-jseq);
+		/* ajDebug("Phylip format %d sequences partly read at end\n",
+			iseq-jseq); */
 		ajFileBuffResetStore(buff, seqin->Text, &thys->TextPtr);
 		ajTableMapDel(phytable, seqMsfTabDel, NULL);
 		ajTableFree(&phytable);
@@ -4086,14 +4091,14 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	phydata->Nseq = iseq;
 	phydata->Count = 0;
 	phydata->Bufflines = bufflines;
-	ajDebug("PHYLIP format read %d lines\n", bufflines);
+	/* ajDebug("PHYLIP format read %d lines\n", bufflines);*/
     }
 
     phydata = seqin->Data;
     phytable = phydata->Table;
 
     i = phydata->Count;
-    ajDebug("returning [%d] '%S'\n", i, phydata->Names[i]);
+    /* ajDebug("returning [%d] '%S'\n", i, phydata->Names[i]); */
     phyitem = ajTableGet(phytable, phydata->Names[i]);
     ajStrAssS(&thys->Name, phydata->Names[i]);
     ajStrDel(&phydata->Names[i]);
@@ -4103,10 +4108,10 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
     ajStrDel(&phyitem->Seq);
 
     phydata->Count++;
-    if(phydata->Count >=phydata->Nseq)
+    if(phydata->Count >= phydata->Nseq)
     {
 	seqin->multidone = ajTrue;
-	ajDebug("seqReadPhylip multidone\n");
+	/* ajDebug("seqReadPhylip multidone\n"); */
 	ajFileBuffClear(seqin->Filebuff, 0);
 	ajTableMapDel(phytable, seqMsfTabDel, NULL);
 	ajTableFree(&phytable);
