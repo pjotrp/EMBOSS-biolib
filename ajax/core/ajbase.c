@@ -31,7 +31,7 @@ AjIUB aj_base_iubS[256];	/* Base letters and their alternatives */
 ajint aj_base_table[256];	/* Base letter numerical codes         */
 float aj_base_prob[32][32];     /* Assym base probability matches      */
 
-
+char iubbases[] = "XACMGRSVTWYHKDBN";
 
 AjBool aj_base_I = 0;
 
@@ -71,7 +71,37 @@ ajint ajAZToInt(ajint c)
 
 ajint ajIntToAZ(ajint n)
 {
+    if(n>25)
+	return (ajint) '*';
+    if(n<0)
+	return (ajint) '*';
+
     return(n+(ajint)'A');
+}
+
+
+
+
+/* @func ajBinToAZ ************************************************************
+**
+** Converts a binary OR'd representation of an IUB base where A=1, C=2,
+** G=4 and T=8 into an ambiguous DNA base code (uses T rather than U).
+**
+** Uses the base table set up by ajBaseInit
+**
+** @param  [r] c [ajint] character to convert
+**
+** @return [char] Ambiguous DNA base code
+******************************************************************************/
+
+char ajBinToAZ(ajint c)
+{
+    if(c<0)
+	return 'N';
+    if(c>15)
+	return 'N';
+
+    return (iubbases[c]);
 }
 
 

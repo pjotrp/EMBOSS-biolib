@@ -26,7 +26,8 @@ AjBool  ajBaseAa1ToAa3(char aa1, AjPStr *aa3);
 
 extern ajint  ajAZToInt(ajint c);
 extern ajint  ajAZToBin(ajint c);
-extern char ajAZToBinC(char c);
+extern char   ajAZToBinC(char c);
+extern char   ajBinToAZ(ajint c);
 extern ajint  ajIntToAZ(ajint n);
 
 #endif
