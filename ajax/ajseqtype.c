@@ -95,6 +95,7 @@ static AjPRegexp  seqTypeCharProtGap(void);
 static AjPRegexp  seqTypeCharProtGapPhylo(void);
 static AjPRegexp  seqTypeCharProtPure(void);
 static AjPRegexp  seqTypeCharProtStop(void);
+static AjPRegexp  seqTypeCharProtStopGap(void);
 static AjPRegexp  seqTypeCharRnaGap(void);
 
 static AjPRegexp seqtypeRegAny      = NULL;
@@ -208,10 +209,13 @@ static SeqOType seqType[] =
 	 "protein sequence without BZ U X or *"},
     {"stopprotein",    AJFALSE, AJTRUE,  ISPROT, "?",   "X",
 	 seqTypeCharProtStop,
-	 "protein sequence with a possible stop"},
+	 "protein sequence with possible stops"},
     {"gapprotein",     AJTRUE,  AJTRUE,  ISPROT, "?*",  "XX",
 	 seqTypeCharProtGap,
 	 "protein sequence with gaps"},
+    {"gapstopprotein",     AJTRUE,  AJTRUE,  ISPROT, "?",  "X",
+	 seqTypeCharProtStopGap,
+	 "protein sequence with gaps and possible stops"},
     {"gapproteinphylo",     AJTRUE,  AJTRUE,  ISPROT, "",  "",
 	 seqTypeCharProtGapPhylo,
 	 "protein sequence with gaps, stops and queries"},
@@ -1644,6 +1648,36 @@ static AjPRegexp seqTypeCharProtStop(void)
 		    seqCharProtPure,
 		    seqCharProtAmbig,
 		    seqCharProtStop);
+	seqtypeRegProtStop = ajRegComp(regstr);
+	ajStrDel(&regstr);
+    }
+
+    return seqtypeRegProtStop;
+}
+
+
+
+
+/* @funcstatic seqTypeCharProtStopGap *****************************************
+**
+** Returns regular expression to test for protein residues or stop codons
+** or gap characters
+**
+** @return [AjPRegexp] valid characters
+******************************************************************************/
+
+static AjPRegexp seqTypeCharProtStopGap(void)
+{
+    AjPStr regstr = NULL;
+
+    if(!seqtypeRegProtStop)
+    {
+	regstr = ajStrNewL(256);
+	ajFmtPrintS(&regstr, "([^%s%s%s]+)",
+		    seqCharProtPure,
+		    seqCharProtAmbig,
+		    seqCharProtStop,
+		    seqCharGap);
 	seqtypeRegProtStop = ajRegComp(regstr);
 	ajStrDel(&regstr);
     }
