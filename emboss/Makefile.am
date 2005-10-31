@@ -28,7 +28,7 @@ testplot treetypedisplay
 bin_PROGRAMS = aaindexextract abiview \
 acdc acdpretty acdtable acdtrace acdvalid \
 antigenic \
-backtranseq banana biosed btwisted \
+backtranambig backtranseq banana biosed btwisted \
 cai chaos charge checktrans chips \
 cirdna codcmp codcopy coderet \
 compseq cons cpgplot cpgreport \
