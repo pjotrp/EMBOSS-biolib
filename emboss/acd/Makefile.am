@@ -1,7 +1,8 @@
 
 pkgdata_DATA = aaindexextract.acd abiview.acd acdc.acd acdlog.acd \
 	acdpretty.acd acdtable.acd acdtrace.acd acdvalid.acd ajbad.acd \
-	ajfeatest.acd ajtest.acd antigenic.acd backtranseq.acd banana.acd \
+	ajfeatest.acd ajtest.acd antigenic.acd \
+	backtranambig.acd backtranseq.acd banana.acd \
 	biosed.acd btwisted.acd cai.acd chaos.acd charge.acd checktrans.acd \
 	chips.acd cirdna.acd codcmp.acd codcopy.acd coderet.acd complex.acd \
 	compseq.acd cons.acd corbatest.acd cpgplot.acd cpgreport.acd \
