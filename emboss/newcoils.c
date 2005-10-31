@@ -64,9 +64,9 @@ static void pred_coils(AjPFile outf, const char *seq,
 ** Reads the matrix and stores in a hept_pref structure
 **
 ** @param [u] inf [AjPFile] matrix input file
-** @return [struct hept_pref *] Matrix data for heptad preference
+** @return [struct hept_pref*] Matrix data for heptad preference
 ******************************************************************************/
-static struct hept_pref *read_matrix(AjPFile inf)
+static struct hept_pref* read_matrix(AjPFile inf)
 {
     ajint i;
     ajint j;

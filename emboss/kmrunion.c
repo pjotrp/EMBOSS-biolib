@@ -22,8 +22,8 @@
 
 #include "emboss.h"
 
-static ajulong union_GetOverlap (AjPSeq first,
-                                 AjPSeq second);
+static ajulong union_GetOverlap (const AjPSeq first,
+                                 const AjPSeq second);
 
 static void union_CopyFeatures (const AjPFeattable old_feattable,
                                 AjPFeattable new_feattable,
@@ -164,18 +164,19 @@ int main(int argc, char **argv)
     return 0;
 }
 
-/* @func union_GetOverlap *****************************************************
+/* @funcstatic union_GetOverlap ***********************************************
 **
 ** returns the number of bases by which two sequences overlap
 **
-** @param [r] first_seq [AjPSeq] Undocumented
-** @param [r] second_seq [AjPSeq] Undocumented
+** @param [r] first_seq [const AjPSeq] Undocumented
+** @param [r] second_seq [const AjPSeq] Undocumented
 ** @return [ajulong] Undocumented
 ** @@
 ** FIXME - replace with an EMBOSS library call
 ******************************************************************************/
 
-static ajulong union_GetOverlap (AjPSeq first_seq, AjPSeq second_seq)
+static ajulong union_GetOverlap (const AjPSeq first_seq,
+				 const AjPSeq second_seq)
 {
   const AjPStr first_seq_str = ajSeqStr(first_seq);
   const AjPStr second_seq_str = ajSeqStr(second_seq);
