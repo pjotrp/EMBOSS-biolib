@@ -53,6 +53,9 @@ static AjBool codReadGcg(AjPCod thys, AjPFileBuff inbuff);
 static AjBool codReadNumstaden(AjPCod thys, AjPFileBuff inbuff);
 static AjBool codReadSpsum(AjPCod thys, AjPFileBuff inbuff);
 static AjBool codReadStaden(AjPCod thys, AjPFileBuff inbuff);
+static AjBool codTripletAdd (const AjPCod thys, const char residue,
+			     char triplet[4]);
+static void   codTripletBases(char* triplet);
 static void   codWriteCherry(const AjPCod thys, AjPFile outf);
 static void   codWriteCodehop(const AjPCod thys, AjPFile outf);
 static void   codWriteCutg(const AjPCod thys, AjPFile outf);
@@ -375,7 +378,7 @@ void ajCodDel(AjPCod *pthys)
 
 /* @section Codon Functions ************************************************
 **
-** Desctuctor(s) for AjPCod objects
+** Function(s) for AjPCod objects
 **
 ******************************************************************************/
 
@@ -396,6 +399,8 @@ void ajCodBacktranslate(AjPStr *b, const AjPStr a, const AjPCod thys)
     const char *p;
     char q;
     ajint idx;
+
+    ajStrAssC(b, "");
 
     p = ajStrStr(a);
     while(*p)
@@ -435,6 +440,137 @@ void ajCodBacktranslate(AjPStr *b, const AjPStr a, const AjPCod thys)
 
 
 
+
+/* @func ajCodBacktranslateAmbig **********************************************
+**
+** Backtranslate a string to a fully ambiguous nucleotide sequence as a string
+**
+** @param [w] b [AjPStr *] backtranslated sequence
+** @param [r] a [const AjPStr] sequence
+** @param [r] thys [const AjPCod] codon usage object
+**
+** @return [void]
+** @@
+******************************************************************************/
+void ajCodBacktranslateAmbig(AjPStr *b, const AjPStr a, const AjPCod thys)
+{
+    const char *p;
+    char q;
+    char codon[4] = "NNN";
+
+    ajStrAssC(b, "");
+
+    p = ajStrStr(a);
+    while(*p)
+    {
+	codon[0] = codon[1] = codon[2] = '\0';
+
+	q = *p;
+
+	if(toupper((int)q)==(int)'-')
+	{
+	    strcpy(codon, "---");
+	}
+	else if(toupper((int)q)==(int)'X')
+	{
+	    strcpy(codon,"NNN");
+	}
+	else if(toupper((int)q)==(int)'B')
+	{
+	    codTripletAdd(thys, 'D', codon);
+	    codTripletAdd(thys, 'N', codon);
+	    codTripletBases(codon);
+	}
+	else if(toupper((int)q)==(int)'Z')
+	{
+	    codTripletAdd(thys, 'E', codon);
+	    codTripletAdd(thys, 'Q', codon);
+	    codTripletBases(codon);
+	}
+	else if(toupper((int)q)==(int)'J') /* Unlikely - NMR code */
+	{
+	    codTripletAdd(thys, 'I', codon);
+	    codTripletAdd(thys, 'L', codon);
+	    codTripletBases(codon);
+	}
+	else if(toupper((int)q)==(int)'U') /* selenocysteine if found */
+	{
+	    strcpy(codon,"TGA");
+	}
+	else
+	{
+	    codTripletAdd(thys, q, codon);
+	    codTripletBases(codon);
+	}
+
+	ajStrAppC(b,codon);
+	++p;
+    }
+
+    return;
+}
+
+
+/* @funcstatic codTripletAdd **************************************************
+**
+** Add all possible bases at each position to a codon for one amino acid
+**
+** @param [r] thys [const AjPCod] Codon usage table
+** @param [r] residue [const char] Amino acid code
+** @param [u] triplet [char[4]] Codon triplet
+** @return [AjBool] ajTrue on success, ajFalse if the amino acid is not found..
+******************************************************************************/
+
+static AjBool codTripletAdd (const AjPCod thys,
+			     const char residue, char triplet[4])
+{
+    AjBool ret = ajFalse;
+    ajint i;
+    char  aa;
+    char* codon;
+
+    aa = (char) toupper((ajint) residue);
+
+    for (i=0;i<AJCODSTART;++i)
+    {
+	ajDebug("testing '%c' %d '%c' %2x%2x%2x\n",
+		residue, i, ajIntToAZ(thys->aa[i]),
+		triplet[0], triplet[1], triplet[2]);
+	if(ajIntToAZ(thys->aa[i]) == aa)
+	{
+	    codon = ajCodTriplet(i);
+	    ajDebug("codTripletAdd '%c' %d '%c' %2x%2x%2x '%s'\n",
+		    residue, i, ajIntToAZ(thys->aa[i]),
+		    triplet[0], triplet[1], triplet[2], codon);
+	    triplet[0] |= ajAZToBin(codon[0]);
+	    triplet[1] |= ajAZToBin(codon[1]);
+	    triplet[2] |= ajAZToBin(codon[2]);
+	    ajDebug("codTripletAdd now %2x%2x%2x\n",
+		    triplet[0], triplet[1], triplet[2]);
+	    ret = ajTrue;
+	}
+    }
+
+    return ret;
+}
+
+
+/* @funcstatic codTripletBases ************************************************
+**
+** Converts a triplet of binary codes to base codes
+**
+** @param [u] triplet [char*] Triplet in binary a=1 C=2 G=4 T=8
+** return [void]
+******************************************************************************/
+
+static void codTripletBases(char* triplet)
+{
+    ajint j;
+    for(j=0;j<3;j++)
+	triplet[j] = ajBinToAZ(triplet[j]);
+
+    return;
+}
 
 /* @func ajCodBase ************************************************************
 **

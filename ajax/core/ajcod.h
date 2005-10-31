@@ -71,6 +71,8 @@ void         ajCodAssNameC(AjPCod thys, const char* name);
 void         ajCodAss(AjPCod thys);
 void         ajCodAssC(AjPCod thys);
 void         ajCodBacktranslate(AjPStr *b, const AjPStr a, const AjPCod thys);
+void         ajCodBacktranslateAmbig(AjPStr *b, const AjPStr a,
+				     const AjPCod thys);
 ajint        ajCodBase(ajint c);
 double       ajCodCai(const AjPCod cod, const AjPStr str);
 double*      ajCodCaiW(const AjPCod cod);
