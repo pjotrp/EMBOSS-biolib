@@ -3150,8 +3150,7 @@ static AjPBtpage btreeSplitLeaf(AjPBtcache cache, AjPBtpage spage)
     rno = totalkeys - lno;
 
     maxnperbucket = nperbucket >> 1;
-    if(!maxnperbucket)
-	++maxnperbucket;
+    ++maxnperbucket;
 
     cbucket = btreeBucketNew(maxnperbucket);
 
@@ -7927,8 +7926,7 @@ static AjPBtpage btreeSplitPriLeaf(AjPBtcache cache, AjPBtpage spage)
     rno = totalkeys - lno;
 
     maxnperbucket = nperbucket >> 1;
-    if(!maxnperbucket)
-	++maxnperbucket;
+    ++maxnperbucket;
 
     cbucket = btreePriBucketNew(maxnperbucket);
 
@@ -8614,8 +8612,7 @@ static AjPBtpage btreeSplitSecLeaf(AjPBtcache cache, AjPBtpage spage)
     rno = totalkeys - lno;
 
     maxnperbucket = nperbucket >> 1;
-    if(!maxnperbucket)
-	++maxnperbucket;
+    ++maxnperbucket;
 
     cbucket = btreeSecBucketNew(maxnperbucket);
 
