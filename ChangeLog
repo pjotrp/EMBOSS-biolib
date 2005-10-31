@@ -1,4 +1,22 @@
 	Version 3.1.0
+	New sequence type gapstopprotein for proteins with gaps and
+	internal stops.
+
+	Translation functions in ajax/ajtranslate.c have been cleaned up.
+
+	New program backtranambig to backtranaslate as most ambiguous
+	codons.
+	
+	Phylip sequence format can now read sets of alignemnts with blank
+	lines in between. Such formats were produced by the new fseqboot
+	program and used by the new phylip programs and seqsetall in ACD.
+
+	The list of graph devices produced when an invalid device (or '?')
+	is given now lists only the unique devices (those defined
+	differently in the plplot library code) with alternative names
+	(xwindows for x11, for example) added in brackets. Specifying an
+	ambuguous device used to accept the first match found, now an
+	error message is given.
 
 	Prettyplot and cons were producing different consensus
 	sequences. Comparison of the results showed two problems. Cons was
@@ -49,6 +67,8 @@
 	this is good practice whenever sort is used.
 
 Version 3.0.0
+	Gap penalty qualifiers were standardised for all programs.
+
 	water, needle and other alignment programs occasionally could
 	report suboptimal alignments (off by the gap extension penalty
 	score). The reported alignments were correct, but rearranging the
