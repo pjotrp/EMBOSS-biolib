@@ -2053,7 +2053,7 @@ void ajFmtPrintSplit(AjPFile outf, const AjPStr str,
 
 
 
-/* @func ajFmtScanS  **********************************************************
+/* @func ajFmtScanS ***********************************************************
 **
 ** Scan a string according to fmt and load the ... variable pointers
 ** Like C function sscanf.
