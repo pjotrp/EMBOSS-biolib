@@ -5488,7 +5488,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    0\n/
 FP 1 /^Fill2     0\n/
 FP 1 /^Count     2\n/
@@ -5499,7 +5499,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    0\n/
 FP 1 /^Fill2     0\n/
 FP 1 /^Count     2\n/
@@ -5543,7 +5543,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    0\n/
 FP 1 /^Fill2     0\n/
 FP 1 /^Count     2\n/
@@ -5554,7 +5554,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    71\n/
 FP 1 /^Fill2     106\n/
 FP 1 /^Count     28\n/
@@ -5565,7 +5565,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    0\n/
 FP 1 /^Fill2     0\n/
 FP 1 /^Count     2\n/
@@ -5576,7 +5576,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    0\n/
 FP 1 /^Fill2     0\n/
 FP 1 /^Count     0\n/
@@ -5685,7 +5685,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    0\n/
 FP 1 /^Fill2     0\n/
 FP 1 /^Count     8\n/
@@ -5696,7 +5696,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    0\n/
 FP 1 /^Fill2     0\n/
 FP 1 /^Count     8\n/
@@ -5799,7 +5799,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    0\n/
 FP 1 /^Fill2     0\n/
 FP 1 /^Count     65\n/
@@ -5810,7 +5810,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    0\n/
 FP 1 /^Fill2     0\n/
 FP 1 /^Count     65\n/
@@ -5916,7 +5916,7 @@ FP /^Order     71\n/
 FP /^Fill      47\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize 100\n/
+FP /^Cachesize [12]00\n/
 FP /^Order2    0\n/
 FP /^Fill2     0\n/
 FP /^Count     2\n/
@@ -5927,7 +5927,7 @@ FP /^Order     71\n/
 FP /^Fill      47\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize 100\n/
+FP /^Cachesize [12]00\n/
 FP /^Order2    0\n/
 FP /^Fill2     0\n/
 FP /^Count     2\n/
@@ -6043,7 +6043,7 @@ FP /^Order     71\n/
 FP /^Fill      47\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize 100\n/
+FP /^Cachesize [12]00\n/
 FP /^Order2    0\n/
 FP /^Fill2     0\n/
 FP /^Count     113\n/
@@ -6054,7 +6054,7 @@ FP /^Order     71\n/
 FP /^Fill      47\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize 100\n/
+FP /^Cachesize [12]00\n/
 FP /^Order2    71\n/
 FP /^Fill2     106\n/
 FP /^Count     395\n/
@@ -6065,7 +6065,7 @@ FP /^Order     71\n/
 FP /^Fill      47\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize 100\n/
+FP /^Cachesize [12]00\n/
 FP /^Order2    0\n/
 FP /^Fill2     0\n/
 FP /^Count     44\n/
@@ -6076,7 +6076,7 @@ FP /^Order     71\n/
 FP /^Fill      47\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize 100\n/
+FP /^Cachesize [12]00\n/
 FP /^Order2    71\n/
 FP /^Fill2     106\n/
 FP /^Count     94\n/
@@ -6087,7 +6087,7 @@ FP /^Order     71\n/
 FP /^Fill      47\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize 100\n/
+FP /^Cachesize [12]00\n/
 FP /^Order2    0\n/
 FP /^Fill2     0\n/
 FP /^Count     44\n/
@@ -6098,7 +6098,7 @@ FP /^Order     71\n/
 FP /^Fill      47\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize 100\n/
+FP /^Cachesize [12]00\n/
 FP /^Order2    71\n/
 FP /^Fill2     106\n/
 FP /^Count     546\n/
@@ -6241,7 +6241,7 @@ FP /^Order     71\n/
 FP /^Fill      47\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize 100\n/
+FP /^Cachesize [12]00\n/
 FP /^Order2    0\n/
 FP /^Fill2     0\n/
 FP /^Count     4\n/
@@ -6252,7 +6252,7 @@ FP /^Order     71\n/
 FP /^Fill      47\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize 100\n/
+FP /^Cachesize [12]00\n/
 FP /^Order2    0\n/
 FP /^Fill2     0\n/
 FP /^Count     4\n/
@@ -6408,7 +6408,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    0\n/
 FP 1 /^Fill2     0\n/
 FP 1 /^Count     47\n/
@@ -6419,7 +6419,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    0\n/
 FP 1 /^Fill2     0\n/
 FP 1 /^Count     39\n/
@@ -6643,7 +6643,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    0\n/
 FP 1 /^Fill2     0\n/
 FP 1 /^Count     47\n/
@@ -6654,7 +6654,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    71\n/
 FP 1 /^Fill2     106\n/
 FP 1 /^Count     381\n/
@@ -6665,7 +6665,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    0\n/
 FP 1 /^Fill2     0\n/
 FP 1 /^Count     39\n/
@@ -6676,7 +6676,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    71\n/
 FP 1 /^Fill2     106\n/
 FP 1 /^Count     72\n/
@@ -6687,7 +6687,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    0\n/
 FP 1 /^Fill2     0\n/
 FP 1 /^Count     23\n/
@@ -6698,7 +6698,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    71\n/
 FP 1 /^Fill2     106\n/
 FP 1 /^Count     434\n/
@@ -7026,7 +7026,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    0\n/
 FP 1 /^Fill2     0\n/
 FP 1 /^Count     92\n/
@@ -7037,7 +7037,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    0\n/
 FP 1 /^Fill2     0\n/
 FP 1 /^Count     59\n/
@@ -7203,7 +7203,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    0\n/
 FP 1 /^Fill2     0\n/
 FP 1 /^Count     92\n/
@@ -7214,7 +7214,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    71\n/
 FP 1 /^Fill2     106\n/
 FP 1 /^Count     294\n/
@@ -7225,7 +7225,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    0\n/
 FP 1 /^Fill2     0\n/
 FP 1 /^Count     59\n/
@@ -7236,7 +7236,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    71\n/
 FP 1 /^Fill2     106\n/
 FP 1 /^Count     418\n/
@@ -7247,7 +7247,7 @@ FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize 100\n/
+FP 1 /^Cachesize [12]00\n/
 FP 1 /^Order2    71\n/
 FP 1 /^Fill2     106\n/
 FP 1 /^Count     117\n/
@@ -18597,156 +18597,6 @@ FP 0 /Error: /
 FP 0 /Died: /
 //
 
-#######################################
-# CONSTRUCT
-#######################################
-
-ID alignrunner-ex
-AB reconstruct
-AA alignrunner
-CC Error messages to be resolved
-IN ../../data/construct/
-IN
-IN
-IN
-IN
-IN
-IN
-IN 10.0
-IN 0.5
-IN Y
-IN
-IN
-IN
-IN
-IN
-FI stderr
-FC = 0
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-//
-
-ID contactalign-ex
-AB reconstruct
-AA contactalign
-CC warnings in stderr
-IN ../../data/construct/1hgx_a.fasta
-IN ../../data/construct/1hmp_a.fasta
-IN 10.0
-IN 0.5
-IN 1hgx_a_vs_1hmp_a.contactalign
-FI stderr
-FC = 6
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FC = 612
-FP 200 /^current position:/
-//
-
-ID contactcount-ex
-AB reconstruct
-AA contactcount
-CC Construct test not yet defined
-FI stderr
-FC = 0
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-//
-
-ID degapseqrunner-ex
-AB reconstruct
-AA degapseqrunner
-CC Construct test not yet defined
-FI stderr
-FC = 0
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-//
-
-ID nawalign-ex
-AB reconstruct
-AA nawalign
-CC Construct test not yet defined
-FI stderr
-FC = 0
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-//
-
-ID nawalignrunner-ex
-AB reconstruct
-AA nawalignrunner
-CC Construct test not yet defined
-FI stderr
-FC = 0
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-//
-
-ID needlerunner-ex
-AB reconstruct
-AA needlerunner
-CC Construct test not yet defined
-FI stderr
-FC = 0
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-//
-
-ID scorer-ex
-AB reconstruct
-AA scorer
-CC Construct test not yet defined
-FI stderr
-FC = 0
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-//
-
-ID scorerrunner-ex
-AB reconstruct
-AA scorerrunner
-CC Construct test not yet defined
-FI stderr
-FC = 0
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-//
-
-ID substitute-ex
-AB reconstruct
-AA substitute
-CC Construct test not yet defined
-FI stderr
-FC = 0
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-//
-
-ID substituterunner-ex
-AB reconstruct
-AA substituterunner
-CC Construct test not yet defined
-FI stderr
-FC = 0
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-//
-
-
-
 #########################################################
 #
 # EMBASSY (STRUCTURE) + scopparse (DOMAINATRIX)
@@ -19739,8 +19589,8 @@ FC = 136
 FZ = 1367
 FP 15 /^IN   /
 FI 55074.sig
-FC = 330
-FZ = 3140
+FC = 364
+FZ = 3520
 FP 38 /^IN   /
 //
 
@@ -20264,17 +20114,17 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 31
-FP /^Number of sequences:               70\n/
+FC = 32
+FP /^Number of sequences:               90\n/
 FI myhmms
-FC = 236
-FP /^LENG  72\n/
+FC = 231
+FP /^LENG  71\n/
 FI rrm.out2
-FC = 216
-FP /^#=SQ CABA_MOUSE\/77-148  0.8349 CABA_MOUSE\/77-148 - 0..0::0 -\n/
+FC = 276
+FP /^#=SQ CABA_MOUSE\/77-147  0.8083 - - 0..0::0 -\n/
 FI rrm.out3
-FC = 214
-FP /^M 2.09 0.84 [0. ]+ 20.78 0.00 30.46 0.83 [0. ]+ 13.00 [0. ]+ \n/
+FC = 211
+FP /^M 3.15 2.06 [0. ]+ 26.86 0.00 34.70 0.81 [0. ]+ 20.42 [0. ]+ \n/
 //
 
 ID ehmm-own2-keep2
@@ -20331,15 +20181,15 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI myhmms
-FC = 826
-FP /^LENG  268\n/
+FC = 233
+FP /^LENG  71\n/
 FI myhmms.ehmmcalibrate
 FC = 13
 FP /^\n/
 FI myhmms.out2
-FC = 34
-FP /^HMM: 7LES_DROME/2209-2481\n/
-FP /^chi-sq statistic =    48.8891\n/
+FC = 33
+FP /^HMM: rrm\n/
+FP /^chi-sq statistic =    32.6731\n/
 //
 
 ID ehmmpfam-ex
@@ -20570,7 +20420,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FK stdout
-FZ = 2876
+FZ > 2875
 FP /exit/
 FI mse.msf
 FC = 25
@@ -20826,7 +20676,7 @@ FP 0 /Died: /
 FI ednamlk.outfile
 FC = 57
 FP /Transition/transversion parameter =   1.5230/
-FP /^  \!\s+\+-------------Gamma     \n/
+FP /^  \!\s+\+-------------?Gamma     \n/
 FP /^Ln Likelihood =   -72.40499\n/
 FP /^   3             4         3.40036     3.40036\n/
 FI ednamlk.treefile
@@ -21146,7 +20996,7 @@ IN
 IN
 FI erestml.outfile
 FC = 42
-FP /^Ln Likelihood =   -40.35857\n/
+FP /^Ln Likelihood =   -40.3585[78]\n/
 FP /^   1          Gamma           0.11430     \(  0.11177,     0.11683\) \*\*\n/
 FI erestml.treefile
 FC = 2
@@ -21529,6 +21379,7 @@ CL -weight "0111111111110"
 IN ../../data/evolution/dnaml.dat
 IN
 IN
+CC likelihood value differs on Linux.
 FI dnaml.fdnamlk
 FC = 89
 FP /^        1           0.264            0.522\n/
