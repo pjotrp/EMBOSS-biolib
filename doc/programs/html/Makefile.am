@@ -16,16 +16,16 @@ pkgdata_DATA =  abiview.1.abiview.gif chaos.1.chaos.gif cirdna.1.cirdna.gif \
 	alignment_differences_group.html \
 	alignment_dot_plots_group.html alignment_global_group.html \
 	alignment_local_group.html alignment_multiple_group.html \
-	alignrunner.html allversusall.html antigenic.html \
+	allversusall.html antigenic.html \
 	backtranseq.html banana.html biosed.html btwisted.html \
 	cai.html cathparse.html chaos.html charge.html \
 	checktrans.html chips.html cirdna.html codcmp.html \
-	codcopy.html coderet.html comparator.html compseq.html \
-	cons.html contactalign.html contacts.html cpgplot.html \
+	codcopy.html coderet.html compseq.html \
+	cons.html contacts.html cpgplot.html \
 	cpgreport.html crystalball.html cusp.html cutgextract.html \
 	cutseq.html dan.html dbiblast.html dbifasta.html \
 	dbiflat.html dbigcg.html dbxfasta.html dbxflat.html \
-	dbxgcg.html degapseq.html degapseqrunner.html descseq.html \
+	dbxgcg.html degapseq.html descseq.html \
 	diffseq.html digest.html display_group.html distmat.html \
 	domainalign.html domainer.html domainnr.html domainrep.html \
 	domainreso.html domainseqs.html domainsse.html \
@@ -63,8 +63,8 @@ pkgdata_DATA =  abiview.1.abiview.gif chaos.1.chaos.gif cirdna.1.cirdna.gif \
 pkgdata2_DATA = lindna.html listor.html marscan.html maskfeat.html \
 	maskseq.html matcher.html matgen3d.html megamerger.html \
 	meme.html menus_group.html merger.html msbar.html mse.html \
-	mwcontam.html mwfilter.html myseq.html nawalign.html \
-	nawalignrunner.html needle.html needlerunner.html \
+	mwcontam.html mwfilter.html myseq.html \
+	needle.html \
 	newcpgreport.html newcpgseek.html newseq.html noreturn.html \
 	notseq.html nthseq.html nucleic_2d_structure_group.html \
 	nucleic_codon_usage_group.html \
