@@ -33,7 +33,7 @@
 
 #include "energy_const.h"
 /*@unused@*/
-static char rcsid[] = "$Id: energy_par.c,v 1.1 2005/10/13 13:00:44 ajb Exp $";
+static const char rcsid[] = "$Id: energy_par.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
 
 #define NST 0     /* Energy for nonstandard stacked pairs */
 #define DEF -50   /* Default terminal mismatch, used for I */

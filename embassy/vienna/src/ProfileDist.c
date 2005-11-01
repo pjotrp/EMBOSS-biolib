@@ -15,7 +15,7 @@
 #include  "part_func.h"
 #include  "utils.h"
 /*@unused@*/
-static char rcsid[] = "$Id: ProfileDist.c,v 1.1 2005/10/13 13:00:44 ajb Exp $";
+static const char rcsid[] = "$Id: ProfileDist.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
 
 #define PUBLIC
 #define PRIVATE        static
@@ -41,7 +41,7 @@ PUBLIC float profile_edit_distance(const float *T1, const float *T2)
      we should really use affine gap-costs ala Gotoh */
 
   float    **distance;
-  short    **i_point, **j_point;
+  short    **i_point=NULL, **j_point=NULL;
   
   int           i, j, i1, j1, pos, length1,length2;
   float         minus, plus, change, temp;
@@ -144,7 +144,7 @@ PUBLIC float profile_edit_distance(const float *T1, const float *T2)
 
 PRIVATE double PrfEditCost(int i, int j, const float *T1, const float *T2)
 {
-  double  dist;
+  double  dist=0.0;
   int    k, kmax;
 
   kmax = (int) T1[1];

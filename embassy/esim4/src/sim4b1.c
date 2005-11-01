@@ -6,7 +6,7 @@
 #ifndef __lint
 /*@unused@*/
 static const char rcsid[] = 
-"$Id: sim4b1.c,v 1.4 2004/08/05 16:02:32 rice Exp $";
+"$Id: sim4b1.c,v 1.5 2005/11/01 15:39:49 rice Exp $";
 #endif
 
 #include <stdio.h>
@@ -1305,7 +1305,7 @@ void print_pipmaker_exons(Exon *exons, edit_script_list *aligns, char *gene,
                           int match_ori)
 {
    Exon  *tmp_block, *left, *right;
-   int From, To, cov, ori;
+   int From=0, To=0, cov, ori;
  
    /* print the first line in the record */
    if ((exons==NULL) || 

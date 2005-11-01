@@ -14,7 +14,7 @@
  * Score an HMM against random sequence data sets;
  * set histogram fitting parameters.
  * 
- * RCS $Id: ehmmcalibrate.c,v 1.3 2004/06/14 14:43:30 rice Exp $
+ * RCS $Id: ehmmcalibrate.c,v 1.4 2005/11/01 15:39:41 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -110,10 +110,10 @@ int main(int argc, char **argv)
     struct plan7_s     *hmm;		/* the hidden Markov model         */
     int     idx;			/* counter over sequences          */
     sigset_t blocksigs;			/* list of signals to protect from */
-    int     nhmm;			/* number of HMMs calibrated       */
+    int     nhmm=0;			/* number of HMMs calibrated       */
 
-    float  *mu;				/* array of EVD mu's for HMMs      */
-    float  *lambda;			/* array of EVD lambda's for HMMs  */
+    float  *mu=NULL;			/* array of EVD mu's for HMMs      */
+    float  *lambda=NULL;		/* array of EVD lambda's for HMMs  */
 
     int     nsample;			/* number of random seqs to sample */
     int     seed;			/* random number seed              */

@@ -22,7 +22,7 @@
 #include "params.h"
 
 /*@unused@*/
-static char rcsid[] UNUSED = "$Id: alifold.c,v 1.1 2005/10/13 13:00:44 ajb Exp $";
+static char rcsid[] UNUSED = "$Id: alifold.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
 
 #define PAREN
 
@@ -134,7 +134,7 @@ float alifold(char **strings, char *structure)
 
   int   i, j, k, p, q, length, energy, new_c;
   int   decomp, MLenergy, new_fML;
-  int   s, b, mm, max_separation;
+  int   s, b, mm;
   int   n_seq, *type, type_2, tt;
   short **S;
   int cov_en = 0;
@@ -152,7 +152,7 @@ float alifold(char **strings, char *structure)
     if (strlen(strings[s]) != length) nrerror("uneqal seqence lengths");
     S[s] = encode_seq(strings[s]);
   }
-  make_pscores((const short **) S, strings, n_seq, structure);
+  make_pscores((const short **) S, (const char *const*)strings, n_seq, structure);
 
   for (j=1; j<=length; j++) {
     Fmi[j]=DMLi[j]=DMLi1[j]=DMLi2[j]=INF;

@@ -2,6 +2,8 @@
 #define NBASES 8
 /*@notnull@*/
 static const char Law_and_Order[] = "_ACGUTXKI";
+
+#ifndef ALNNOPAIRMATRIX
 static int BP_pair[NBASES][NBASES]=
 /* _  A  C  G  U  X  K  I */
 {{ 0, 0, 0, 0, 0, 0, 0, 0},
@@ -12,13 +14,14 @@ static int BP_pair[NBASES][NBASES]=
  { 0, 0, 0, 0, 0, 0, 2, 0},
  { 0, 0, 0, 0, 0, 1, 0, 0},
  { 0, 6, 0, 0, 5, 0, 0, 0}};
-
 #define MAXALPHA 20       /* maximal length of alphabet */
 
 static short alias[MAXALPHA+1];
 static int pair[MAXALPHA+1][MAXALPHA+1];
 /* rtype[pair[i][j]]:=pair[j][i] */
 static int rtype[8] = {0, 2, 1, 4, 3, 6, 5, 7}; 
+#endif
+
 
 /* for backward compatibility */
 #define ENCODE(C) encode_char(c)
@@ -41,6 +44,8 @@ static int encode_char(char c) {
 /*@null@*/
 extern char *nonstandards;
 extern void   nrerror(const char message[]);
+
+#ifndef ALNNOPAIRMATRIX
 static void make_pair_matrix(void) 
 {
    int i,j;
@@ -115,3 +120,4 @@ static void make_pair_matrix(void)
       }
    }
 }
+#endif

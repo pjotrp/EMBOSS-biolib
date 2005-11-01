@@ -15,7 +15,7 @@
  * Conditionally includes PVM parallelization when HMMER_PVM is defined
  *    at compile time; hmmsearch --pvm runs the PVM version.
  *
- * RCS $Id: ehmmsearch.c,v 1.4 2004/06/14 14:43:30 rice Exp $
+ * RCS $Id: ehmmsearch.c,v 1.5 2005/11/01 15:39:41 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -127,7 +127,7 @@ int main(int argc, char **argv)
     int     hmmfrom, hmmto;	/* coordinate in HMM                       */
     char   *name, *desc;	/* hit sequence name and description       */
     int     sqlen;		/* length of seq that was hit              */
-    int     nseq;		/* number of sequences searched            */
+    int     nseq=0;		/* number of sequences searched            */
     int     Z;			/* # of seqs for purposes of E-val calc    */
     int     domidx;		/* number of this domain                   */
     int     ndom;		/* total # of domains in this seq          */

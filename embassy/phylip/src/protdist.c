@@ -546,14 +546,16 @@ char *perm;
         file[0]='\0';
         while (file[0] =='\0'){
           printf("Please enter a new filename>");
-          gets(file);}
+          fgets(file, 99, stdin);
+          file[99] = '\0';}
         break;
       case 'w':
         printf("%s: can't write %s\n",application,file);
         file[0] = '\0';
         while (file[0] =='\0'){
           printf("Please enter a new filename>");
-          gets(file);}
+          fgets(file, 99, stdin);
+          file[99] = '\0';}
         break;
       }
     }
@@ -667,7 +669,8 @@ void getoptions()
 	   progress ? "Yes" : "No");
     printf("\nAre these settings correct? (type Y or the letter for one to change)\n");
     in[0] = '\0';
-    gets(in);
+    fgets(in, 99, stdin);
+    in[99] = '\0';
     ch=in[0];
     if (ch == '\n')
       ch = ' ';

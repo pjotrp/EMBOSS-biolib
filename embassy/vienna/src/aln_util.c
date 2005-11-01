@@ -1,8 +1,10 @@
 /*
 			       aln_util.c
-	       Helper functions frelated to alignments
+	       Helper functions related to alignments
 */
 /* Last changed Time-stamp: <2005-03-09 18:45:16 ivo> */
+
+#define ALNNOPAIRMATRIX 1
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,7 +17,7 @@
 #include "fold_vars.h"
 #include "pair_mat.h"
 /*@unused@*/
-static char rcsid[] = "$Id: aln_util.c,v 1.1 2005/10/13 13:00:44 ajb Exp $";
+static const char rcsid[] = "$Id: aln_util.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
 
 #define MAX_NUM_NAMES    500
 int read_clustal(FILE *clust, char *AlignedSeqs[], char *names[]) {

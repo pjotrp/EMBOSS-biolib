@@ -157,14 +157,16 @@ char *perm;
 	file[0] = '\0';
         while (file[0] =='\0'){
           printf("Please enter a new filename>");
-          gets(file);}
+          fgets(file, 99, stdin);
+          file[99] = '\0';}
         break;
       case 'w':
         printf("%s: can't write %s\n",application,file);
 	file[0] = '\0';
         while (file[0] =='\0'){
           printf("Please enter a new filename>");
-          gets(file);}
+          fgets(file, 99, stdin);
+          file[99] = '\0';}
         break;
       }
     }

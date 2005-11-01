@@ -223,14 +223,16 @@ char *perm;
 	file[0] = '\0';
         while (file[0] =='\0'){
           printf("Please enter a new filename>");
-          gets(file);}
+          fgets(file, 99, stdin);
+	  file[99] = '\0';}
         break;
       case 'w':
         printf("%s: can't write %s\n",application,file);
 	file[0] = '\0';
         while (file[0] =='\0'){
           printf("Please enter a new filename>");
-          gets(file);}
+          fgets(file, 99, stdin);
+	  file[99] = '\0';}
         break;
       }
     }
@@ -357,12 +359,14 @@ void getoptions()
        if (ctgry) {
 	 do {
 	   printf("Number of categories?\n");
-	   gets(line);
+	   fgets(line, 255, stdin);
+	   line[255] = '\0';
 	   categs = (short)atoi(line);
 	 } while (categs < 1 || categs > maxcategs);
 	 for (;;){
 	   printf("Rate for each category? (use a space to separate)\n");
-	   gets(line);
+	   fgets(line, 255, stdin);
+	   line[255] = '\0';
 	   done1 = true;
 	   for (i = 0; i < categs; i++){
 	     scanned = sscanf(line,"%lf %[^\n]", &rate[i],rest);

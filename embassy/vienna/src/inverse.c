@@ -8,7 +8,7 @@
 /* Last changed Time-stamp: <2002-11-06 17:09:27 ivo> */
 
 #define TDIST 0     /* use tree distance */
-#define PF    1     /* include support for partiton function */
+#define PF    1     /* include support for partition function */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,7 +28,7 @@
 #include "fold_vars.h"
 #include "pair_mat.h"
 /*@unused@*/
-static char rcsid[] = "$Id: inverse.c,v 1.1 2005/10/13 13:00:44 ajb Exp $";
+static const char rcsid[] = "$Id: inverse.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
 #define PUBLIC
 #define PRIVATE static
 PRIVATE double  adaptive_walk(char *start, const char *target);

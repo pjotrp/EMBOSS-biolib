@@ -8,6 +8,9 @@
 */
 /*
   $Log: epart_func_co.c,v $
+  Revision 1.2  2005/11/01 15:39:10  rice
+  compiler warnings
+
   Revision 1.1  2005/10/13 13:00:44  ajb
   First draft
 
@@ -42,7 +45,7 @@
 #include "ePS_dot.h"
 #include "eco_part_func.h"
 /*@unused@*/
-static char rcsid[] UNUSED = "$Id: epart_func_co.c,v 1.1 2005/10/13 13:00:44 ajb Exp $";
+static char rcsid[] UNUSED = "$Id: epart_func_co.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
 
 #define eMAX(x,y) (((x)>(y)) ? (x) : (y))
 #define eMIN(x,y) (((x)<(y)) ? (x) : (y))
@@ -1300,7 +1303,7 @@ PUBLIC struct ConcEnt *get_concentrations(double FEAB, double FEAA,
 {
   /*takes an array of start concentrations, computes equilibrium concentrations of dimers, monomers, returns array of concentrations in strucutre ConcEnt*/
   double *ConcVec;
-  int i,j;
+  int i;
   struct ConcEnt *Concentration;
   double KAA, KAB, KBB, kT;
   
@@ -1388,7 +1391,7 @@ PUBLIC float *get_monomerefreeenergies() {
 PUBLIC int make_probsum(int length, char *name, AjPFile outf) {
   /*compute probability of any base to be paired (preliminary)*/
   double *Spprob;
-  double *Pprob;
+  double *Pprob=NULL;
   int i,j;
 
   Spprob=(double *)space((length+1)*sizeof(double));

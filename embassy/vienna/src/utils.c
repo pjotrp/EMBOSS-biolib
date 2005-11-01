@@ -16,7 +16,7 @@
 #include "dmalloc.h"
 #endif
 /*@unused@*/
-static char rcsid[] = "$Id: utils.c,v 1.1 2005/10/13 13:00:44 ajb Exp $";
+static const char rcsid[] = "$Id: utils.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
 
 #define PRIVATE  static
 #define PUBLIC

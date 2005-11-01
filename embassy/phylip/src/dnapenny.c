@@ -272,7 +272,8 @@ char *perm;
         file[0] = '\0';
         while (file[0] =='\0'){
           printf("Please enter a new filename>");
-          gets(file);}
+          fgets(file, 99, stdin);
+          file[99] = '\0';}
         break;
       case 'w':
       case 'a':
@@ -280,7 +281,8 @@ char *perm;
         file[0] = '\0';
         while (file[0] =='\0'){
           printf("Please enter a new filename>");
-          gets(file);}
+          fgets(file, 99, stdin);
+          file[99] = '\0';}
         break;
       }
     }

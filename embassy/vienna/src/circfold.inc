@@ -12,8 +12,10 @@ float circfold(const char *string, char *structure) {
      fM_d5 = multiloop region with >= 2 stems, extending to pos n-1
              (a pair (1,k) will form a 5' dangle with pos n)
   */
-  int *fM2, Fc, FcH, FcI, FcM, Hi, Hj, Ii, Ij, Ip, Iq, Mi;
-  int *fM_d3, *fM_d5, Md3i, Md5i, FcMd3, FcMd5;
+  int *fM2;
+  int Fc=0, FcH=0, FcI=0, FcM=0, Hi=0, Hj=0, Ii=0, Ij=0, Ip=0, Iq=0, Mi=0;
+  int *fM_d3, *fM_d5;
+  int Md3i=0, Md5i=0, FcMd3=0, FcMd5=0;
   int i,j, p,q,length, energy, bonus=0, bonus_cnt=0;
   int s=0;
   /* if (!uniq_ML) {uniq_ML=1; init_length=-1;} */
@@ -76,7 +78,7 @@ float circfold(const char *string, char *structure) {
 	if (qmin<p+TURN+1) qmin = p+TURN+1;
 	for (q = qmin; q <=length; q++) {
 	  int u2, si1, sq1, type_2;
-	  type_2 = rtype[ptype[indx[q]+p]];
+	  type_2 = rtype[(int)ptype[indx[q]+p]];
 	  if (type_2==0) continue;
 	  u2 = i-1 + length-q;
 	  if (u1+u2>MAXLOOP) continue;

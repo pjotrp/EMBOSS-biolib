@@ -367,7 +367,8 @@ char *perm;
 	file[0] = '\0';
         while (file[0] =='\0'){
           printf("Please enter a new filename>");
-          gets(file);
+          fgets(file, 99, stdin);
+          file[99] = '\0';
           }
         break;
       case 'w':
@@ -375,7 +376,8 @@ char *perm;
 	file[0] = '\0';
         while (file[0] =='\0'){
           printf("Please enter a new filename>");
-          gets(file);
+          fgets(file, 99, stdin);
+          file[99] = '\0';
           }
         break;
       }
@@ -519,7 +521,8 @@ void getoptions()
 	if (ctgry) {
 	  do {
 	    printf("Number of categories (1 - %ld)?\n",(long)maxcategs);
-	    gets(line);
+	    fgets(line, 255, stdin);
+	    line[255] = '\0';
 	    categs = (short)atoi(line);
 	  } while (categs < 1 || categs > maxcategs);
           if (probcat){
@@ -531,7 +534,8 @@ void getoptions()
           didchangecat = true;
 	  for (;;){
             printf("Rate for each category? (use a space to separate)\n");
-            gets(line);
+            fgets(line, 255, stdin);
+	    line[255] = '\0';
             done1 = true;
             for (i = 0; i < categs; i++){
               scanned = sscanf(line,"%lf %[^\n]", &rate[i],rest);
@@ -549,7 +553,8 @@ void getoptions()
         probsum = 0.0;
         for (;;){
           printf("Probability for each category? (use a space to separate)\n");
-          gets(line);
+          fgets(line, 255, stdin);
+	  line[255] = '\0';
           done1 = true;
           probsum = 0.0;
           for (i = 0; i < categs; i++){

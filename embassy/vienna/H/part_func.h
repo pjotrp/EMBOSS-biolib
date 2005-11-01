@@ -1,5 +1,5 @@
 /* functions from part_func.c */
-extern float  pf_fold(char *sequence, char *structure);
+extern float  pf_fold(const char *sequence, char *structure);
 /* calculate partition function and base pair probabilities */
 extern void   init_pf_fold(int length);    /* allocate space for pf_fold() */
 extern void   free_pf_arrays(void);        /* free arrays from pf_fold() */

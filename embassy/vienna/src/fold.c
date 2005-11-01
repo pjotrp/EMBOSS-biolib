@@ -23,7 +23,7 @@
 #include "params.h"
 
 /*@unused@*/
-static char rcsid[] UNUSED = "$Id: fold.c,v 1.1 2005/10/13 13:00:44 ajb Exp $";
+static char rcsid[] UNUSED = "$Id: fold.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
 
 #define PAREN
 
@@ -31,7 +31,7 @@ static char rcsid[] UNUSED = "$Id: fold.c,v 1.1 2005/10/13 13:00:44 ajb Exp $";
 #define PRIVATE static
 
 #define STACK_BULGE1  1   /* stacking energies for bulges of size 1 */
-#define NEW_NINIO     1   /* new asymetry penalty */
+#define NEW_NINIO     1   /* new asymmetry penalty */
 
 PUBLIC float  fold(const char *string, char *structure);
 PUBLIC float  energy_of_struct(const char *string, const char *structure);
@@ -88,7 +88,7 @@ PRIVATE int   init_length=-1;
 PRIVATE char  alpha[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 /* needed by cofold/eval */
 PRIVATE int cut_in_loop(int i);
-PRIVATE int min_hairpin = TURN;
+/*PRIVATE int min_hairpin = TURN;*/
 PUBLIC  int cut_point = -1; /* set to first pos of second seq for cofolding */
 PUBLIC int   eos_debug=0;  /* verbose info from energy_of_struct */
 

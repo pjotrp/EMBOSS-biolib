@@ -16,7 +16,7 @@
 #include "energy_const.h"
 #include "energy_par.h"
 
-static char rcsid[] = "$Id: eread_epars.c,v 1.1 2005/10/13 13:00:44 ajb Exp $";
+static const char rcsid[] = "$Id: eread_epars.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
 
 #define PUBLIC
 #define PRIVATE   static
@@ -437,6 +437,7 @@ PRIVATE void ignore_comment(char * line)
 /*------------------------------------------------------------*/  
 
 /*@unused@*/
+/*
 PRIVATE char *settype(enum parset s)
 {
   switch(s)
@@ -471,6 +472,8 @@ PRIVATE char *settype(enum parset s)
     }
   return "";
 }
+*/
+
 /*------------------------------------------------------------*/ 
 
 PRIVATE enum parset gettype(char ident[])

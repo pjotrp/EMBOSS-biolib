@@ -19,7 +19,7 @@
 #include "pair_mat.h"
 #include "alifold.h"
 /*@unused@*/
-static char rcsid[] = "$Id: alipfold.c,v 1.1 2005/10/13 13:00:44 ajb Exp $";
+static const char rcsid[] = "$Id: alipfold.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
 
 #define MAX(x,y) (((x)>(y)) ? (x) : (y))
 #define MIN(x,y) (((x)<(y)) ? (x) : (y))
@@ -95,7 +95,8 @@ PUBLIC float alipf_fold(char **sequences, char *structure, pair_info **pi)
     if (strlen(sequences[s]) != n) nrerror("uneqal seqence lengths");
     S[s] = encode_seq(sequences[s]);
   }
-  make_pscores((const short *const*)S, sequences, n_seq, structure);
+  make_pscores((const short *const*)S, (const char *const*)sequences,
+	       n_seq, structure);
    
   /* array initialization ; qb,qm,q
      qb,qm,q (i,j) are stored as ((n+1-i)*(n-i) div 2 + n+1-j */

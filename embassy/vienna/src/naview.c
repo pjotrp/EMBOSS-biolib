@@ -444,7 +444,7 @@ static void traverse_loop(struct loop *lp, struct connection *anchor_connection)
   int icstart1,icup,icdown,icnext,direction;
   double dan,dx,dy,rr;
   double cpx,cpy,cpnextx,cpnexty,cnx,cny,rcn,rc,lnx,lny,rl,ac,acn,sx,sy,dcp;
-  int imaxloop;
+  int imaxloop=0;
     
   angleinc = 2 * pi / (nbase+1);
   acp = NULL;
@@ -831,7 +831,7 @@ static void determine_radius(struct loop *lp,double lencut)
 
 {
   double mindit,ci,dt,sumn,sumd,radius,dit;
-  int i,j,end,start,imindit;
+  int i,j,end,start,imindit=0;
   struct connection *cp,*cpnext;
   static double rt2_2 = 0.7071068;
 

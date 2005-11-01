@@ -7,6 +7,9 @@
 */
 /*
   $Log: part_func.c,v $
+  Revision 1.2  2005/11/01 15:39:10  rice
+  compiler warnings
+
   Revision 1.1  2005/10/13 13:00:44  ajb
   First draft
 
@@ -47,14 +50,14 @@
 #include "pair_mat.h"
 
 /*@unused@*/
-static char rcsid[] UNUSED = "$Id: part_func.c,v 1.1 2005/10/13 13:00:44 ajb Exp $";
+static const char rcsid[] UNUSED = "$Id: part_func.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
 
 #define MAX(x,y) (((x)>(y)) ? (x) : (y))
 #define MIN(x,y) (((x)<(y)) ? (x) : (y))
 #define PUBLIC
 #define PRIVATE static
 
-PUBLIC  float pf_fold(char *sequence, char *structure);
+PUBLIC  float pf_fold(const char *sequence, char *structure);
 PUBLIC  void  init_pf_fold(int length);
 PUBLIC  void  free_pf_arrays(void);
 PUBLIC  void  update_pf_params(int length);
@@ -94,7 +97,7 @@ PRIVATE double init_temp; /* temperature in last call to scale_pf_params */
 
 /*-----------------------------------------------------------------*/
 static  short *S, *S1;
-PUBLIC float pf_fold(char *sequence, char *structure)
+PUBLIC float pf_fold(const char *sequence, char *structure)
 {
 
   int n, i,j,k,l, ij, kl, u,u1,d,ii,ll, type, type_2, tt, ov=0;
@@ -849,7 +852,7 @@ static void backtrack_qm1(int i,int j) {
 static void backtrack(int i, int j) {
   do {
     double r, qbt1;
-    int k, l, type, u, u1;
+    int k, l=0, type, u, u1;
 
     pstruc[i-1] = '('; pstruc[j-1] = ')';
     
@@ -887,7 +890,7 @@ static void backtrack(int i, int j) {
   /* backtrack in multi-loop */
   {
     double r, qt;
-    int k, l, ii, jj, type;
+    int k, ii, jj;
 
     i++; j--;
     /* find the first split index */

@@ -1,5 +1,8 @@
 /*
   $Log: list.c,v $
+  Revision 1.2  2005/11/01 15:39:10  rice
+  compiler warnings
+
   Revision 1.1  2005/10/13 13:00:44  ajb
   First draft
 
@@ -32,7 +35,7 @@
 #include "list.h"
 
 /*@unused@*/
-static char rcsid[] = "$Id: list.c,v 1.1 2005/10/13 13:00:44 ajb Exp $";
+static const char rcsid[] = "$Id: list.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
 
 #define PUBLIC
 PUBLIC void *

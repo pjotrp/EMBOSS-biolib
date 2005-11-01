@@ -18,7 +18,7 @@
  * Thanks, Henry!
  *  
  * SRE, Fri Aug 28 11:10:17 1998
- * RCS $Id: hsregex.c,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: hsregex.c,v 1.2 2005/11/01 15:39:41 rice Exp $
  *****************************************************************/    
 
 /* Copyright (c) 1986, 1993, 1995 by University of Toronto.
@@ -370,7 +370,7 @@ int *flagp;
 	register char *ret;
 	register char *chain;
 	register char *latest;
-	int flags;
+	int flags=0;
 	register int c;
 
 	*flagp = WORST;				/* Tentatively. */

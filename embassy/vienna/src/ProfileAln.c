@@ -27,7 +27,7 @@
 #include "part_func.h"
 #include "utils.h"
 /*@unused@*/
-static char rcsid[] UNUSED = "$Id: ProfileAln.c,v 1.1 2005/10/13 13:00:44 ajb Exp $";
+static char rcsid[] UNUSED = "$Id: ProfileAln.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
 
 #define PUBLIC
 #define PRIVATE        static
@@ -72,7 +72,7 @@ PUBLIC float profile_aln(const float *T1, const char *seq1,
   /* This is like a Needleman-Wunsch alignment, with affine gap-costs 
      ala Gotoh. The score looks at both seq and pair profile */
 
-  float  **S, **E, **F, tot_score;
+  float  **S, **E, **F, tot_score=0.0;
   int    i, j, length1, length2;
   
   length1 = strlen(seq1);

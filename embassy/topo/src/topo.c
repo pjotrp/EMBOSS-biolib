@@ -7615,7 +7615,7 @@ void  conup(float *hold,const int i,const int is,int *ie,
 	    char *strand,int *syms)  {
  
   char   stran ;
-  int     j,length,hole,hol2,hold3,ibridge,ibrid2 ;
+  int     j,length,hole,hol2,hold3=0,ibridge,ibrid2 ;
   int     ihole,sym ;
   float        x = 0.0,y,x2 ;
   float        spacer = 0.0,rhol2,diff,rhole ;
@@ -8176,7 +8176,7 @@ void  condown(float *hold1,const int i,const int is,int *ie,
 /*#include "common.inc" */ 
  
 	char   stran ;
-	int     j,length,hole,hol2,hold3,ibridge,ibrid2 ;
+	int     j,length,hole,hol2,hold3=0,ibridge,ibrid2 ;
 	int     ihole,sym ;
 	float        x = 0.0,y,x2 ;
         float        spacer = 0.0,rhol2,diff,rhole ;

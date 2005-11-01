@@ -107,12 +107,14 @@ char *perm;
       case 'r':
         printf("%s:  can't read %s\n", application, file);
         printf("Please enter a new filename>");
-        gets(file);
+        fgets(file, 99, stdin);
+	file[99] = '\0';
         break;
       case 'w':
         printf("%s: can't write %s\n", application, file);
         printf("Please enter a new filename>");
-        gets(file);
+        fgets(file, 99, stdin);
+	file[99] = '\0';
         break;
       }
     }
