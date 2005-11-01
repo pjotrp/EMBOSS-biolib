@@ -2,7 +2,7 @@
 
 # Directory should be empty before running
 
-cd ~/cvsembossdbi/doc/
+cd ~/sfemboss/doc/
 rm -rf currentsourceforge
 mkdir currentsourceforge
 
