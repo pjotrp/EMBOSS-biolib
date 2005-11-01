@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl -w
+#!/usr/bin/perl -w
 
 open (DAT, "../memtest.dat") || die "Cannot open file memtest.dat";
 %cmd = ();
