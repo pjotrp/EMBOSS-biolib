@@ -1,6 +1,6 @@
 # some simple testing stuff
 
-SET emboss_qadata /homes/pmr/hgmp/test
+SET emboss_qadata /homes/pmr/cvsemboss/test
 
 SET emboss_timetoday "2005-07-15 12:00:00"
 
