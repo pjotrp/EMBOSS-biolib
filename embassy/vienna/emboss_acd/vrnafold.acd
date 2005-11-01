@@ -1,6 +1,6 @@
 application: vrnafold [
   documentation: "Calculate 2ry structures of RNAs"
-  groups: "RNA"
+  groups: "Nucleic:RNA folding"
   gui: "yes"
   batch: "yes"
   cpu: "medium"

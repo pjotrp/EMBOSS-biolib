@@ -1,6 +1,6 @@
 application: vrnafoldpf [
-  documentation: "2ry structures of RNAs with partition"
-  groups: "RNA"
+  documentation: "Secondary structures of RNAs with partition"
+  groups: "Nucleic:RNA foldings"
   gui: "yes"
   batch: "yes"
   cpu: "medium"

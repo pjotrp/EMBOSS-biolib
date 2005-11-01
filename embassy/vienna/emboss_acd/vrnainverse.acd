@@ -1,6 +1,6 @@
 application: vrnainverse [
   documentation: "RNA sequences matching a structure"
-  groups: "RNA"
+  groups: "Nucleic:RNA folding"
   gui: "yes"
   batch: "yes"
   cpu: "medium"
@@ -119,7 +119,7 @@ section: advanced [
     default: "0"
   ]
 
-  bool: showfails  [
+  boolean: showfails  [
     information: "Show information for unsuccessful searches"
     default: "N"
   ]

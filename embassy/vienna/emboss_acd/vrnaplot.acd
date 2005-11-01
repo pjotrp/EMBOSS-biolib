@@ -1,6 +1,6 @@
 application: vrnaplot [
   documentation: "Plot ernafold output"
-  groups: "RNA"
+  groups: "Nucleic:RNA folding"
   gui: "yes"
   batch: "yes"
   cpu: "medium"

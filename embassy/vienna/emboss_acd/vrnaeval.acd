@@ -1,6 +1,6 @@
 application: vrnaeval [
   documentation: "RNA eval"
-  groups: "RNA"
+  groups: "Nucleic:RNA folding"
   gui: "yes"
   batch: "yes"
   cpu: "medium"

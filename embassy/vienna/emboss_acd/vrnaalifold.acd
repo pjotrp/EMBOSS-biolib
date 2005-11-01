@@ -1,6 +1,6 @@
 application: vrnaalifold [
   documentation: "RNA alignment folding"
-  groups: "RNA"
+  groups: "Nucleic:RNA folding"
   gui: "yes"
   batch: "yes"
   cpu: "medium"

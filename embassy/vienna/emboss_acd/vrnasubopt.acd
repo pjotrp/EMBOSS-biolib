@@ -1,6 +1,6 @@
 application: vrnasubopt [
   documentation: "Calculate RNA suboptimals"
-  groups: "RNA"
+  groups: "Nucleic:RNA folding"
   gui: "yes"
   batch: "yes"
   cpu: "medium"
@@ -78,12 +78,12 @@ section: advanced [
     information: "Only print structures with energy within prange of the mfe"
   ]
 
-  bool: sort [
+  boolean: sort [
     default: "N"
     information: "Sort structures by energy"
   ]
 
-  bool: logml [
+  boolean: logml [
     default: "N"
     information: "logarithmic energy function for multi-loops"
   ]

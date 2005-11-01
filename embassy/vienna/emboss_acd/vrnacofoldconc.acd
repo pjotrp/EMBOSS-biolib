@@ -1,6 +1,6 @@
 application: vrnacofoldconc [
   documentation: "RNA cofolding with concentrations"
-  groups: "RNA"
+  groups: "Nucleic:RNA folding"
   gui: "yes"
   batch: "yes"
   cpu: "medium"

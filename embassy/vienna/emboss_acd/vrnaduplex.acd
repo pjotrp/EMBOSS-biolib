@@ -1,6 +1,6 @@
 application: vrnaduplex [
   documentation: "RNA duplex calculation"
-  groups: "RNA"
+  groups: "Nucleic:RNA folding"
   gui: "yes"
   batch: "yes"
   cpu: "medium"
@@ -76,7 +76,7 @@ section: advanced [
     information: "Energy range for suboptimal structures"
   ]
 
-  bool: sort  [
+  boolean: sort  [
     default: "N"
     information: "Sort suboptimal structures"
   ]

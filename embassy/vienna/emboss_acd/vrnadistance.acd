@@ -1,6 +1,6 @@
 application: vrnadistance [
   documentation: "RNA distances"
-  groups: "RNA"
+  groups: "Nucleic:RNA folding"
   gui: "yes"
   batch: "yes"
   cpu: "medium"
@@ -49,12 +49,12 @@ section: advanced [
     help: "Distance types to calculate"
   ]
 
-  bool: schapiro  [
+  boolean: schapiro  [
     default: "N"
     information: "Use cost matrix for comparing coarse structures"
   ]
 
-  bool: doalignment  [
+  boolean: doalignment  [
     default: "N"
     information: "Alignment showing matching substructures"
   ]

@@ -1,6 +1,6 @@
 application: vrnapaln [
   documentation: "RNA alignment"
-  groups: "RNA"
+  groups: "Nucleic:RNA folding"
   gui: "yes"
   batch: "yes"
   cpu: "medium"

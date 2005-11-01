@@ -1,6 +1,6 @@
 application: vrnaheat [
   documentation: "RNA melting"
-  groups: "RNA"
+  groups: "Nucleic:RNA folding"
   gui: "yes"
   batch: "yes"
   cpu: "medium"
@@ -83,12 +83,12 @@ section: advanced [
     help: "Rarely used option to fold sequences from the ABCD... alphabet"
   ]
 
-  int: smoothing  [
+  integer: smoothing  [
     default: "2"
     information: "Parabola fitting value"
   ]
 
-  int: step  [
+  integer: step  [
     default: "1"
     information: "Step size in degrees C"
     minimum: "1"
