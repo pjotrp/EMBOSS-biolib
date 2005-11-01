@@ -15,6 +15,7 @@ section: input [
   seqset: sequence  [
     parameter: "Y"
     type: "dna"
+    aligned: "Y"
   ]
 
   infile: paramfile [
