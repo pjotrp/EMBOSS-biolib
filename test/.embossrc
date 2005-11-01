@@ -393,21 +393,21 @@ DB qaxpirall  [ type: P format: nbrf method: embossgcg
 ### access method SRS
 #####################
 
-DB qasrs [ type: N format: embl method: srs
-  dbalias: embl
-  fields: "sv des org"     # key omitted to test error messages
-  comment: "EMBL in local srs installation"
-]
+#DB qasrs [ type: N format: embl method: srs
+#  dbalias: embl
+#  fields: "sv des org"     # key omitted to test error messages
+#  comment: "EMBL in local srs installation"
+#]
 
 ##########################
 ### access method SRSFASTA
 ##########################
 
-DB qasrsfasta [ type: N format: fasta method: srsfasta
-  dbalias: embl
-  fields: "sv des org key"
-  comment: "EMBL in local srs installation, fasta format"
-]
+#DB qasrsfasta [ type: N format: fasta method: srsfasta
+#  dbalias: embl
+#  fields: "sv des org key"
+#  comment: "EMBL in local srs installation, fasta format"
+#]
 
 ########################
 ### access method SRSWWW
