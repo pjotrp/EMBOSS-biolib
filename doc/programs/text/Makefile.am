@@ -1,14 +1,14 @@
 pkgdata_DATA =  aaindexextract.txt abiview.txt acdc.txt acdlog.txt \
 	acdpretty.txt acdtable.txt acdtrace.txt acdvalid.txt \
-	alignrunner.txt allversusall.txt antigenic.txt \
+	allversusall.txt antigenic.txt \
 	backtranseq.txt banana.txt biosed.txt btwisted.txt cai.txt \
 	cathparse.txt chaos.txt charge.txt checktrans.txt chips.txt \
-	cirdna.txt codcmp.txt codcopy.txt coderet.txt comparator.txt \
-	complex.txt compseq.txt cons.txt contactalign.txt \
+	cirdna.txt codcmp.txt codcopy.txt coderet.txt \
+	complex.txt compseq.txt cons.txt \
 	contacts.txt cpgplot.txt cpgreport.txt crystalball.txt \
 	cusp.txt cutgextract.txt cutseq.txt dan.txt dbiblast.txt \
 	dbifasta.txt dbiflat.txt dbigcg.txt dbxfasta.txt dbxflat.txt \
-	dbxgcg.txt degapseq.txt degapseqrunner.txt descseq.txt \
+	dbxgcg.txt degapseq.txt descseq.txt \
 	diffseq.txt digest.txt distmat.txt domainalign.txt \
 	domainer.txt domainnr.txt domainrep.txt domainreso.txt \
 	domainseqs.txt domainsse.txt dotmatcher.txt dotpath.txt \
@@ -40,8 +40,8 @@ pkgdata_DATA =  aaindexextract.txt abiview.txt acdc.txt acdlog.txt \
 pkgdata2_DATA = jembossctl.txt libgen.txt libscan.txt lindna.txt listor.txt \
 	marscan.txt maskfeat.txt maskseq.txt matcher.txt \
 	matgen3d.txt megamerger.txt meme.txt merger.txt msbar.txt \
-	mse.txt mwcontam.txt mwfilter.txt myseq.txt nawalign.txt \
-	nawalignrunner.txt needle.txt needlerunner.txt \
+	mse.txt mwcontam.txt mwfilter.txt myseq.txt \
+	needle.txt \
 	newcpgreport.txt newcpgseek.txt newseq.txt noreturn.txt \
 	notseq.txt nthseq.txt octanol.txt oddcomp.txt palindrome.txt \
 	pasteseq.txt patmatdb.txt patmatmotifs.txt pdbparse.txt \
@@ -52,8 +52,8 @@ pkgdata2_DATA = jembossctl.txt libgen.txt libscan.txt lindna.txt listor.txt \
 	prophecy.txt prophet.txt prosextract.txt pscan.txt \
 	psiphi.txt rebaseextract.txt recoder.txt redata.txt \
 	remap.txt restover.txt restrict.txt revseq.txt rocon.txt \
-	rocplot.txt scope.txt scopparse.txt scorecmapdir.txt \
-	scorer.txt scorerrunner.txt seealso.txt seqalign.txt \
+	rocplot.txt scope.txt scopparse.txt \
+	seealso.txt seqalign.txt \
 	seqfraggle.txt seqmatchall.txt seqnr.txt seqret.txt \
 	seqretsplit.txt seqsearch.txt seqsort.txt seqwords.txt \
 	showalign.txt showdb.txt showfeat.txt showorf.txt \
@@ -61,7 +61,7 @@ pkgdata2_DATA = jembossctl.txt libgen.txt libscan.txt lindna.txt listor.txt \
 	siggenlig.txt sigscan.txt sigscanlig.txt silent.txt \
 	sirna.txt SITE-DIRECTED.txt sites.txt sixpack.txt \
 	skipseq.txt splitter.txt ssematch.txt stretcher.txt \
-	stssearch.txt substitute.txt substituterunner.txt \
+	stssearch.txt \
 	supermatcher.txt syco.txt tcode.txt textsearch.txt \
 	tfextract.txt tfm.txt tfscan.txt tmap.txt topo.txt \
 	tranalign.txt transeq.txt trimest.txt trimseq.txt \

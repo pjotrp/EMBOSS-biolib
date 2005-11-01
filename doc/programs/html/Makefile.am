@@ -98,8 +98,8 @@ pkgdata2_DATA = lindna.html listor.html marscan.html maskfeat.html \
 	protein_sequence_alignment_group.html pscan.html psiphi.html \
 	rebaseextract.html recoder.html redata.html remap.html \
 	restover.html restrict.html revseq.html rocon.html \
-	rocplot.html scope.html scopparse.html scorecmapdir.html \
-	scorer.html scorerrunner.html seealso.html seqalign.html \
+	rocplot.html scope.html scopparse.html \
+	seealso.html seqalign.html \
 	seqfraggle.html seqmatchall.html seqnr.html seqret.html \
 	seqretsplit.html seqsearch.html seqsort.html seqwords.html \
 	showalign.html showdb.html showfeat.html showorf.html \
@@ -107,7 +107,7 @@ pkgdata2_DATA = lindna.html listor.html marscan.html maskfeat.html \
 	siggenlig.html sigscan.html sigscanlig.html silent.html \
 	sirna.html sites.html sixpack.html skipseq.html \
 	splitter.html ssematch.html stretcher.html stssearch.html \
-	substitute.html substituterunner.html supermatcher.html \
+	supermatcher.html \
 	syco.html tcode.html template.html test_group.html \
 	textsearch.html tfextract.html tfm.html tfscan.html \
 	tmap.html topo.html tranalign.html transeq.html trimest.html \
