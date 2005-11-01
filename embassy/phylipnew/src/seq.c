@@ -129,7 +129,7 @@ void seq_inputdata(AjPSeqset seqset, long chars)
 	nayme[i][j] = ' ';
     /*    ajUser("%s/n",ajSeqsetName(seqset, i));*/
     strncpy(&y[i][0],ajSeqsetSeq(seqset, i),chars);
-    y[i][chars] = '\0';
+    /*y[i][chars] = '\0';*/  /* phylip does not make space for a final NULL */
   }
   if (!printdata)
     return;
