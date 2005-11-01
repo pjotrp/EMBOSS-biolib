@@ -33,17 +33,20 @@ if ($infile) {
     print "set pubout '$pubout' lib '$lib' type '$exttype'\n";
     open (INFILE, "$infile") || die "Cannot open $infile";
     while (<INFILE>) {$source .= $_}
+    $dirfile = "$dir/$pubout$ext";
+    $title = "$dirfile";
 }
 else {
     $file = "xxx.c";
     while (<>) {$source .= $_}
+    $infile = $file;
+    $title = "unknown";
 }
 
 open (HTML, ">$pubout.html");
 open (HTMLB, ">$local\_static.html");
 open (SRS, ">$pubout.srsdata");
 
-$title = "$infile";
 $OFILE = HTML;
 $countglobal=0;
 $countstatic=0;
@@ -697,12 +700,12 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 if (!$countglobal) {
     open (EMPTY, ">$pubout.empty") || die "Cannot open  $pubout.empty";
     close EMPTY;
-    print HTML "<p>No public datatype definitions in source file $infile</p>"
+    print HTML "<p>No public datatype definitions in source file $dirfile</p>"
 }
 if (!$countstatic) {
     open (EMPTY, ">$local\_static.empty") || die "Cannot open $local\_static.empty";
     close EMPTY;
-    print HTMLB "<p>No static datatype definitions in source file $infile</p>"
+    print HTMLB "<p>No static datatype definitions in source file $dirfile</p>"
 }
 print HTML "</body></html>\n";
 print HTMLB "</body></html>\n";
