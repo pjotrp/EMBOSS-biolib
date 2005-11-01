@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl -w
+#!/usr/bin/perl -w
 
 $name = shift @ARGV;
 open(ACD, "/homes/pmr/local/share/EMBOSS/acd/$name.acd") || die "Cannot open $name.acd";
