@@ -591,7 +591,7 @@ test $dotest hasn't used ", $#answers+1, " answers\n";
 		$giffile = $file;
 		$giffile =~ s/\.ps/.gif/;
 # add -delay to see the first page of an animated gif for 10 mins
-		system("2>&1 /sw/arch/bin/convert -delay 65535 -rotate '-90<' $path $giffile >/dev/null");
+		system("2>&1 convert -delay 65535 -rotate '-90<' $path $giffile >/dev/null");
 		$file = $giffile;
 		$path = $giffile;
 	    }
