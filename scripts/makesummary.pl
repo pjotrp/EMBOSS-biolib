@@ -5,8 +5,8 @@ print "========================\n\n";
 
 printf "%15s %6s %6s\n\n", "Package", "Errors", "Warn";
 
-$myerr = int(`grep -c error: /homes/pmr/out/osf-emboss.out`);
-$mywarn = int(`grep -c warning: /homes/pmr/out/osf-emboss.out`);
+$myerr = int(`grep -c error: /homes/pmr/out/emboss10-emboss.out`);
+$mywarn = int(`grep -c warning: /homes/pmr/out/emboss10-emboss.out`);
 $tote = $myerr;
 $totw = $mywarn;
 
@@ -28,8 +28,8 @@ $embassylist = `ls -1 embassy/*/Makefile.am`;
 foreach $x (@embassy) {
     $x =~ /^embassy\/([^\/]+)\/Makefile.am/;
     $name = $1;
-    $myerr = int(`grep -c error: /homes/pmr/out/osf-$name.out`);
-    $mywarn =  int(`grep -c warning: /homes/pmr/out/osf-$name.out`);
+    $myerr = int(`grep -c error: /homes/pmr/out/emboss10-$name.out`);
+    $mywarn =  int(`grep -c warning: /homes/pmr/out/emboss10-$name.out`);
     $tote += $myerr;
     $totw += $mywarn;
     if ($myerr || $mywarn) {
