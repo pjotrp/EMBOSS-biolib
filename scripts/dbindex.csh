@@ -1,6 +1,6 @@
 #!/bin/csh
 
-set top = /homes/pmr/hgmp/test
+set top = /homes/pmr/cvsemboss/test
 
 echo "$top"
 

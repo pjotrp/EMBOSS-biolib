@@ -2,7 +2,7 @@
 
 # Directory should be empty before running
 
-cd ~/hgmp/doc/
+cd ~/cvsembossdbi/doc/
 rm -rf currentsourceforge
 mkdir currentsourceforge
 
