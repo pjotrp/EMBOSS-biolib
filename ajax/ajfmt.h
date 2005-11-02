@@ -10,6 +10,10 @@ extern "C"
 #include <stdio.h>
 #include "ajexcept.h"
 
+#if defined(__x86_64__) && !defined(__amd64__)
+#define __amd64__
+#endif
+
 #if defined(__amd64__) || defined(__EM64T__) || \
     defined(__PPC__) && defined(_CALL_SYSV)
 #define VALIST va_list
