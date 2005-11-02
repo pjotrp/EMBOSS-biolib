@@ -94,13 +94,13 @@ my @embassylist = ("appendixd",
 		   "hmmer",
 		   "meme",
 		   "mse",
-		   "myemboss",
+#		   "myemboss", # we avoid documenting these examples
 		   "phylip",
 		   "phylipnew",
-		   "reconstruct",
 		   "signature",
 		   "structure",
 		   "topo",
+		   "vienna",
 		   );
 
 # the directories containing web pages - EMBOSS and EMBASSY
