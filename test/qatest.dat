@@ -2049,6 +2049,24 @@ FP 0 /Error: /
 FP 0 /Died: /
 //
 
+ID backtranambig-ex
+AP backtranambig
+IN tsw:opsd_human
+IN
+FI opsd_human.fasta
+FP /^>OPSD_HUMAN/
+FP /^ATGAAYGGNACNGARGGNCCNAAYTTYTAYGTNCCNTTYWSNAAYGCNACNGGNGTNGTN\n/
+FP /^MGNWSNCCNTTYGARTAYCCNCARTAYTAYYTNGCNGARCCNTGGCARTTYWSNATGYTN\n/
+FP /^TGGGTNATGGCNYTNGCNTGYGCNGCNCCNCCNYTNGCNGGNTGGWSNMGNTAYATHCCN\n/
+FP /^GARACNWSNCARGTNGCNCCNGCN\n/
+FZ = 1092
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
 ID backtranseq-ex
 UC Note that this is a human protein and so the default human codon frequency file is used ie. is not specified
 AP backtranseq
@@ -13670,31 +13688,27 @@ FP 1 /Error: /
 FP 1 /Died: /
 //
 
-ID seqret-query-srs-badfield
+ID seqret-query-wp-badfield
 ER 1
-CC No need for a local SRS installation - fails at USA processing
-CC Reports bad filename because 'bad' is an unknown field
 AP seqret
-CL -auto -out test.out -osf embl qasrs-bad:AB000095
+CL -auto -out test.out -osf embl twp-bad:AB000095
 FI stderr
-FZ = 205
-FP /^Error: USA 'qasrs-bad:AB000095' query field 'bad' not defined for database 'qasrs'/
-FP /^Error: Unable to read sequence 'qasrs-bad:AB000095'/
+FZ = 199
+FP /^Error: USA 'twp-bad:AB000095' query field 'bad' not defined for database 'twp'/
+FP /^Error: Unable to read sequence 'twp-bad:AB000095'/
 FP 0 /Warning: /
 FP 2 /Error: /
 FP 1 /Died: /
 //
 
-ID seqret-query-srs-badfield2
+ID seqret-query-wp-badfield2
 ER 1
-CC No need for a local SRS installation - fails at USA processing
-CC Reports bad filename because 'key' is not defined in 'fields' for qasrs
 AP seqret
-CL -auto -out test.out -osf embl qasrs-key:AB000095
+CL -auto -out test.out -osf embl twp-key:protein
 FI stderr
-FZ = 205
-FP /^Error: USA 'qasrs-key:AB000095' query field 'key' not defined for database 'qasrs'/
-FP /^Error: Unable to read sequence 'qasrs-key:AB000095'/
+FZ = 197
+FP /^Error: USA 'twp-key:protein' query field 'key' not defined for database 'twp'/
+FP /^Error: Unable to read sequence 'twp-key:protein'/
 FP 0 /Warning: /
 FP 2 /Error: /
 FP 1 /Died: /
