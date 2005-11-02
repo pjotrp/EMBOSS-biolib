@@ -83,6 +83,7 @@ acdtable_SOURCES = acdtable.c
 acdtrace_SOURCES = acdtrace.c
 acdvalid_SOURCES = acdvalid.c
 antigenic_SOURCES = antigenic.c
+backtranambig_SOURCES = backtranambig.c
 backtranseq_SOURCES = backtranseq.c
 banana_SOURCES = banana.c
 biosed_SOURCES = biosed.c
