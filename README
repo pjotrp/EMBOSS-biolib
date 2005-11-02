@@ -33,7 +33,7 @@ shared libraries can be turned off by specifying the
 PLplot graphics
 ---------------
 
-EMBOSS now comes with a stripped down version of PLplot which
+EMBOSS now comes with a stripped down version of PLPlot which
 is now compiled under the same system as EMBOSS.
 
 The full PLplot can be obtained from http://www.plplot.org/
