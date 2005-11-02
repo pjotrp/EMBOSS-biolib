@@ -757,6 +757,7 @@ sub writeUsage {
 
     my $out = "$incdir/$application.usage";
     open (OUT, "> $out") || die "Can't open $out";
+    $usage =~ s/\/homes\/pmr\/cvsemboss/\/homes\/user/go;
     $usage =~ s/(Guide tree +file created: +)\[[A-Z0-9]+\]/$1\[12345678A]/go;
     $usage =~ s/(GCG-Alignment file created +)\[[A-Z0-9]+\]/$1\[12345678A]/go;
     $usage =~ s/domainalign\-[0-9]+[.][0-9]+[.]/domainalign-1234567890.1234./go;
@@ -797,6 +798,7 @@ sub writeOutput {
 
     my $out = "$incdir/$application.output";
     open (OUT, "> $out") || die "Can't open $out";
+    $output =~ s/\/homes\/pmr\/cvsemboss/\/homes\/user/go;
     $output =~ s/DATE  [A-Z][a-z][a-z] [A-Z][a-z][a-z] +[0-9]+ [0-9:]+ 200[5-9]/DATE  Fri Jul 15 12:00:00 2005/go;
     $output =~ s/Rundate: ... ... \d\d 2[0-9][0-9][0-9] [0-9:]+$/Rundate: Fri Jul 15 2005 12:00:00/go;
     $output =~ s/\#\#date 2[0-9][0-9][0-9][-][0-9][0-9][-][0-9][0-9]$/\#\#date 2005-07-15/go;
