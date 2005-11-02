@@ -62,7 +62,7 @@ Database directory [.]: embl
        org : Taxonomy
 Index fields [id,acc]: 
 
-Processing file /ebi/services/idata/pmr/hgmp/test/embl/rod.dat
+Processing file /homes/user/test/embl/rod.dat
 
    Go to the output files for this example
 

@@ -175,10 +175,9 @@ Command line arguments
    50.
    -mintemp Enter a minimum value for the temperature scale (y-axis) of
    the plot. Number from 0.000 to 150.000 55.
-   -graph Graph type EMBOSS has a list of known devices, including
-   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
-   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
-   png, xml EMBOSS_GRAPHICS value, or x11
+   -graph Graph type EMBOSS has a list of known devices, including ps,
+   hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data, xterm,
+   png EMBOSS_GRAPHICS value, or x11
    -outfile If a plot is not being produced then data on the melting
    point etc. in each window along the sequence is output to the file.
    Report output file

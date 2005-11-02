@@ -59,7 +59,7 @@ Wildcard database filename [*.dat]: emrod
 Release number [0.0]: 
 Index date [00/00/00]: 
 
-Processing file /ebi/services/idata/pmr/hgmp/test/data/emrod
+Processing file /homes/user/test/data/emrod
 
    Go to the output files for this example
 

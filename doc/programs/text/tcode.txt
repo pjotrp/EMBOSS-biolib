@@ -194,10 +194,9 @@ Command line arguments
    along the sequence, covering the same number of bases each time.
    Integer 200 or more 200
    -outfile Output report file name Report output file
-   -graph Graph type EMBOSS has a list of known devices, including
-   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
-   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
-   png, xml EMBOSS_GRAPHICS value, or x11
+   -graph Graph type EMBOSS has a list of known devices, including ps,
+   hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data, xterm,
+   png EMBOSS_GRAPHICS value, or x11
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default
@@ -482,7 +481,7 @@ Output file format
    1744    1943   0.876 No opinion
    1747    1946   0.836 No opinion
    1750    1949   0.883 No opinion
-   1753    1952   0.934 No opinion
+   1753    1952   0.935 No opinion
    1756    1955   0.965 Coding
    1759    1958   1.012 Coding
    1762    1961   1.025 Coding

@@ -99,6 +99,7 @@ Database directory [.]: <b>embl</b>
 Wildcard database filename [*.seq]: <b></b>
 Release number [0.0]: <b></b>
 Index date [00/00/00]: <b></b>
+Output file [outfile.dbigcg]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -119,6 +120,7 @@ Index date [00/00/00]: <b></b>
    -filenames          string     Wildcard database filename
    -release            string     Release number
    -date               string     Index date
+   -outfile            outfile    Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
@@ -133,7 +135,11 @@ Index date [00/00/00]: <b></b>
    -[no]cleanup        boolean    Clean up temporary files
    -indexoutdir        outdir     Index directory
 
-   Associated qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory         string     Output directory
+
    General qualifiers:
    -auto               boolean    Turn off prompts
    -stdout             boolean    Write standard output
@@ -202,6 +208,13 @@ Index date [00/00/00]: <b></b>
 <td>00/00/00</td>
 </tr>
 
+<tr>
+<td>-outfile</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.dbigcg</td>
+</tr>
+
 <tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Additional (Optional) qualifiers</th>
 <th align="left">Allowed values</th>
@@ -221,8 +234,8 @@ Index date [00/00/00]: <b></b>
 <tr>
 <td>-fields</td>
 <td>Index fields</td>
-<td><table><tr><td>acnum</td> <td><i>(Accession number)</i></td></tr><tr><td>seqvn</td> <td><i>(Sequence Version and GI)</i></td></tr><tr><td>des</td> <td><i>(Description)</i></td></tr><tr><td>keyword</td> <td><i>(Keywords)</i></td></tr><tr><td>taxon</td> <td><i>(Taxonomy)</i></td></tr></table></td>
-<td>acnum</td>
+<td><table><tr><td>acc</td> <td><i>(acnum accession number index)</i></td></tr><tr><td>sv</td> <td><i>(seqvn sequence version and gi number index)</i></td></tr><tr><td>des</td> <td><i>(des description index)</i></td></tr><tr><td>key</td> <td><i>(keyword keywords index)</i></td></tr><tr><td>org</td> <td><i>(taxon taxonomy and organism index)</i></td></tr></table></td>
+<td>acc</td>
 </tr>
 
 <tr>
@@ -295,6 +308,76 @@ files are used.  The data in these is often compressed.
 <p>This file contains non-printing characters and so cannot be displayed here.
 <p><h3>File: acnum.trg</h3>
 <p>This file contains non-printing characters and so cannot be displayed here.
+<p><h3>File: outfile.dbigcg</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+########################################
+# Program: dbigcg
+# Rundate: Fri Jul 15 2005 12:00:00
+# Dbname: EMBL
+# Release: 0.0
+# Date: 15/07/05
+# CurrentDirectory: /homes/user/test/qa/dbigcg-ex-keep/
+# IndexDirectory: ./
+# IndexDirectoryPath: /homes/user/test/qa/dbigcg-ex-keep/
+# Maxindex: 0
+# Fields: 2
+#   Field 1: id
+#   Field 2: acc
+# Directory: /homes/user/test/embl/
+# DirectoryPath: /homes/user/test/embl/
+# Filenames: *.seq
+# Exclude: 
+# Files: 9
+#   File 1: /homes/user/test/embl/eem_ba1.seq
+#   File 2: /homes/user/test/embl/eem_est.seq
+#   File 3: /homes/user/test/embl/eem_fun.seq
+#   File 4: /homes/user/test/embl/eem_htginv1.seq
+#   File 5: /homes/user/test/embl/eem_hum1.seq
+#   File 6: /homes/user/test/embl/eem_in.seq
+#   File 7: /homes/user/test/embl/eem_ov.seq
+#   File 8: /homes/user/test/embl/eem_ro.seq
+#   File 9: /homes/user/test/embl/eem_vi.seq
+########################################
+# Commandline: dbigcg
+#    -dbname EMBL
+#    -idformat EMBL
+#    -directory ../../embl
+########################################
+
+filename: '/homes/user/test/embl/eem_ba1.seq'
+    id: 10
+   acc: 14
+filename: '/homes/user/test/embl/eem_est.seq'
+    id: 1
+   acc: 1
+filename: '/homes/user/test/embl/eem_fun.seq'
+    id: 1
+   acc: 1
+filename: '/homes/user/test/embl/eem_htginv1.seq'
+    id: 5
+   acc: 5
+filename: '/homes/user/test/embl/eem_hum1.seq'
+    id: 15
+   acc: 18
+filename: '/homes/user/test/embl/eem_in.seq'
+    id: 2
+   acc: 2
+filename: '/homes/user/test/embl/eem_ov.seq'
+    id: 2
+   acc: 2
+filename: '/homes/user/test/embl/eem_ro.seq'
+    id: 3
+   acc: 3
+filename: '/homes/user/test/embl/eem_vi.seq'
+    id: 1
+   acc: 2
+
+Index acc: maxlen 8 items 48
+
+Total 9 files 40 entries (0 duplicates)
+</pre>
+</td></tr></table><p>
 
 <p>
 

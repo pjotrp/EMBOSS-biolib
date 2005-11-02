@@ -89,6 +89,7 @@ Database directory [.]: <b>data</b>
 Wildcard database filename [*.dat]: <b>emrod</b>
 Release number [0.0]: <b></b>
 Index date [00/00/00]: <b></b>
+Output file [outfile.dbifasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -108,6 +109,7 @@ Index date [00/00/00]: <b></b>
    -filenames          string     Wildcard database filename
    -release            string     Release number
    -date               string     Index date
+   -outfile            outfile    Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
@@ -122,7 +124,11 @@ Index date [00/00/00]: <b></b>
    -[no]cleanup        boolean    Clean up temporary files
    -indexoutdir        outdir     Index directory
 
-   Associated qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory         string     Output directory
+
    General qualifiers:
    -auto               boolean    Turn off prompts
    -stdout             boolean    Write standard output
@@ -191,6 +197,13 @@ Index date [00/00/00]: <b></b>
 <td>00/00/00</td>
 </tr>
 
+<tr>
+<td>-outfile</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.dbifasta</td>
+</tr>
+
 <tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Additional (Optional) qualifiers</th>
 <th align="left">Allowed values</th>
@@ -210,8 +223,8 @@ Index date [00/00/00]: <b></b>
 <tr>
 <td>-fields</td>
 <td>Index fields</td>
-<td><table><tr><td>acnum</td> <td><i>(Accession number)</i></td></tr><tr><td>seqvn</td> <td><i>(Sequence Version and GI)</i></td></tr><tr><td>des</td> <td><i>(Description)</i></td></tr></table></td>
-<td>acnum</td>
+<td><table><tr><td>acc</td> <td><i>(acnum accession number index)</i></td></tr><tr><td>sv</td> <td><i>(seqvn sequence version and gi number index)</i></td></tr><tr><td>des</td> <td><i>(des description index)</i></td></tr></table></td>
+<td>acc</td>
 </tr>
 
 <tr>
@@ -279,6 +292,45 @@ Index date [00/00/00]: <b></b>
 <p>This file contains non-printing characters and so cannot be displayed here.
 <p><h3>File: acnum.trg</h3>
 <p>This file contains non-printing characters and so cannot be displayed here.
+<p><h3>File: outfile.dbifasta</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+########################################
+# Program: dbifasta
+# Rundate: Fri Jul 15 2005 12:00:00
+# Dbname: EMROD
+# Release: 0.0
+# Date: 15/07/05
+# CurrentDirectory: /homes/user/test/qa/dbifasta-ex-keep/
+# IndexDirectory: ./
+# IndexDirectoryPath: /homes/user/test/qa/dbifasta-ex-keep/
+# Maxindex: 0
+# Fields: 2
+#   Field 1: id
+#   Field 2: acc
+# Directory: /homes/user/test/data/
+# DirectoryPath: /homes/user/test/data/
+# Filenames: emrod
+# Exclude: 
+# Files: 1
+#   File 1: /homes/user/test/data/emrod
+########################################
+# Commandline: dbifasta
+#    -dbname EMROD
+#    -idformat idacc
+#    -directory ../../data
+#    -filenames emrod
+########################################
+
+filename: 'emrod'
+    id: 3
+   acc: 3
+
+Index acc: maxlen 6 items 3
+
+Total 1 files 3 entries (0 duplicates)
+</pre>
+</td></tr></table><p>
 
 <p>
 

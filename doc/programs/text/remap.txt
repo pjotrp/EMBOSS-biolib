@@ -785,12 +785,12 @@ HaeIII    Hin4I     HindII    HindIII   KpnI      MaeII     NotI
 ECLAC
 E.coli lactose operon with lacI, lacZ, lacY and lacA genes.
 
-                                                      Hin6I
-                 TaqI                                 HspAI
+                                                      HspAI
+                 TaqI                                 Hin6I
                  |  Bsc4I                             HinP1I
                  |  |   HspAI                         | HhaI
-                 |  |   Hin6I                         | BssKI
-                 |  |   HinP1I                        | Bsu6I
+                 |  |   Hin6I                         | Bsu6I
+                 |  |   HinP1I                        | BssKI
                  |  |   | HhaI        AciI            | | BsiSI
                  \  \   \ \           \               \ \ \
           gacaccatcgaatggcgcaaaacctttcgcggtatggcatgatagcgcccggaagagagt
@@ -799,8 +799,8 @@ E.coli lactose operon with lacI, lacZ, lacY and lacA genes.
           ctgtggtagcttaccgcgttttggaaagcgccataccgtactatcgcgggccttctctca
                  / /    / /             /             / /  ///
                  | TaqI | HinP1I        AciI          | |  ||BssKI
-                 Bsc4I  | HspAI                       | |  |BsiSI
-                        | Hin6I                       | |  Bsu6I
+                 Bsc4I  | Hin6I                       | |  |BsiSI
+                        | HspAI                       | |  Bsu6I
                         HhaI                          | HinP1I
                                                       | Hin6I
                                                       | HspAI
@@ -854,22 +854,22 @@ E.coli lactose operon with lacI, lacZ, lacY and lacA genes.
                                                         >.........====
                                                           HpaII
                                                           >===
-                        Hin6I                            BssKI
-                        >===                            >=====
-                 TaqI   HhaI                          Hin6I
-                 >===   ==>=                          >===
-              BsiYI                      AciI         HhaI
-              ======>====             >..====         ==>=
+                        HhaI                             BssKI
+                        ==>=                            >=====
+                 TaqI   Hin6I                         HhaI
+                 >===   >===                          ==>=
+              BsiYI                      AciI         Hin6I
+              ======>====             >..====         >===
           gacaccatcgaatggcgcaaaacctttcgcggtatggcatgatagcgcccggaagagagt
                    10        20        30        40        50        60
           ----:----|----:----|----:----|----:----|----:----|----:----|
           ctgtggtagcttaccgcgttttggaaagcgccataccgtactatcgcgggccttctctca
-              ====<======                <===         =<==  <.....====
-              BsiYI                      AciI         HhaI        Ksp632I
-                 ===<   =<==                          ===<
-                 TaqI   HhaI                          Hin6I
-                        ===<                             =====<
-                        Hin6I                            BssKI
+              ====<======                <===         ===<
+              BsiYI                      AciI         Hin6I
+                 ===<   ===<                          =<==  <.....====
+                 TaqI   Hin6I                         HhaI        Ksp632I
+                        =<==                             =====<
+                        HhaI                             BssKI
                                                           ===<
                                                           HpaII
 
@@ -1031,31 +1031,32 @@ Known bugs
 
 See also
 
-   Program name                        Description
-   abiview      Reads ABI file and display the trace
-   backtranseq  Back translate a protein sequence
-   cirdna       Draws circular maps of DNA constructs
-   coderet      Extract CDS, mRNA and translations from feature tables
-   lindna       Draws linear maps of DNA constructs
-   pepnet       Displays proteins as a helical net
-   pepwheel     Shows protein sequences as helices
-   plotorf      Plot potential open reading frames
-   prettyplot   Displays aligned sequences, with colouring and boxing
-   prettyseq    Output sequence with translated ranges
-   recoder      Remove restriction sites but maintain same translation
-   redata       Search REBASE for enzyme name, references, suppliers etc
-   restover     Find restriction enzymes producing specific overhang
-   restrict     Finds restriction enzyme cleavage sites
-   seealso      Finds programs sharing group names
-   showalign    Displays a multiple sequence alignment
-   showdb       Displays information on the currently available databases
-   showfeat     Show features of a sequence
-   showorf      Pretty output of DNA translations
-   showseq      Display a sequence with features, translation etc
-   silent       Silent mutation restriction enzyme scan
-   sixpack      Display a DNA sequence with 6-frame translation and ORFs
-   textsearch   Search sequence documentation. Slow, use SRS and Entrez!
-   transeq      Translate nucleic acid sequences
+   Program name                         Description
+   abiview       Reads ABI file and display the trace
+   backtranambig Back translate a protein sequence to ambiguous codons
+   backtranseq   Back translate a protein sequence
+   cirdna        Draws circular maps of DNA constructs
+   coderet       Extract CDS, mRNA and translations from feature tables
+   lindna        Draws linear maps of DNA constructs
+   pepnet        Displays proteins as a helical net
+   pepwheel      Shows protein sequences as helices
+   plotorf       Plot potential open reading frames
+   prettyplot    Displays aligned sequences, with colouring and boxing
+   prettyseq     Output sequence with translated ranges
+   recoder       Remove restriction sites but maintain same translation
+   redata        Search REBASE for enzyme name, references, suppliers etc
+   restover      Find restriction enzymes producing specific overhang
+   restrict      Finds restriction enzyme cleavage sites
+   seealso       Finds programs sharing group names
+   showalign     Displays a multiple sequence alignment
+   showdb        Displays information on the currently available databases
+   showfeat      Show features of a sequence
+   showorf       Pretty output of DNA translations
+   showseq       Display a sequence with features, translation etc
+   silent        Silent mutation restriction enzyme scan
+   sixpack       Display a DNA sequence with 6-frame translation and ORFs
+   textsearch    Search sequence documentation. Slow, use SRS and Entrez!
+   transeq       Translate nucleic acid sequences
 
 Author(s)
 

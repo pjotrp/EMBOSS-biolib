@@ -234,14 +234,14 @@ Output file format
 #=======================================
 
   Start     End Dir    EnzymeName RS-Pattern Base-Posn    AAs Mutation
-     77      81 .      EcoRII     CCWGG             78    P.P     C->T
      77      81 .      EcoRII     CCWGG             78    P.P     C->G
      77      81 .      EcoRII     CCWGG             78    P.P     C->A
+     77      81 .      EcoRII     CCWGG             78    P.P     C->T
      77      81 .      EcoRII     CCWGG             79    R.R     A->C
      77      81 .      EcoRII     CCWGG             81    R.R     G->A
-    107     111 .      EcoRII     CCWGG            108    A.A     C->T
     107     111 .      EcoRII     CCWGG            108    A.A     C->G
     107     111 .      EcoRII     CCWGG            108    A.A     C->A
+    107     111 .      EcoRII     CCWGG            108    A.A     C->T
     107     111 .      EcoRII     CCWGG            109    R.R     A->C
     107     111 .      EcoRII     CCWGG            111    R.R     G->A
     182     186 .      EcoRII     CCWGG            183    S.S     C->G
@@ -256,18 +256,18 @@ Output file format
     293     297 .      EcoRII     CCWGG            294    P.P     C->G
     293     297 .      EcoRII     CCWGG            294    P.P     C->A
     293     297 .      EcoRII     CCWGG            294    P.P     C->T
-     81      77 Rev    EcoRII     CCWGG             79    P.P     T->C
      81      77 Rev    EcoRII     CCWGG             79    P.P     T->G
-    111     107 Rev    EcoRII     CCWGG            109    P.P     T->C
+     81      77 Rev    EcoRII     CCWGG             79    P.P     T->C
     111     107 Rev    EcoRII     CCWGG            109    P.P     T->G
+    111     107 Rev    EcoRII     CCWGG            109    P.P     T->C
     186     182 Rev    EcoRII     CCWGG            184    P.P     A->G
     186     182 Rev    EcoRII     CCWGG            184    P.P     A->C
-    201     197 Rev    EcoRII     CCWGG            199    P.P     A->C
     201     197 Rev    EcoRII     CCWGG            199    P.P     A->G
-    252     248 Rev    EcoRII     CCWGG            250    P.P     A->C
+    201     197 Rev    EcoRII     CCWGG            199    P.P     A->C
     252     248 Rev    EcoRII     CCWGG            250    P.P     A->G
-    297     293 Rev    EcoRII     CCWGG            295    P.P     A->C
+    252     248 Rev    EcoRII     CCWGG            250    P.P     A->C
     297     293 Rev    EcoRII     CCWGG            295    P.P     A->G
+    297     293 Rev    EcoRII     CCWGG            295    P.P     A->C
 
 #---------------------------------------
 #---------------------------------------

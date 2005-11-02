@@ -17,7 +17,8 @@ pkgdata_DATA =  abiview.1.abiview.gif chaos.1.chaos.gif cirdna.1.cirdna.gif \
 	alignment_dot_plots_group.html alignment_global_group.html \
 	alignment_local_group.html alignment_multiple_group.html \
 	allversusall.html antigenic.html \
-	backtranseq.html banana.html biosed.html btwisted.html \
+	backtranambig.html backtranseq.html \
+	banana.html biosed.html btwisted.html \
 	cai.html cathparse.html chaos.html charge.html \
 	checktrans.html chips.html cirdna.html codcmp.html \
 	codcopy.html coderet.html compseq.html \
@@ -114,9 +115,15 @@ pkgdata2_DATA = lindna.html listor.html marscan.html maskfeat.html \
 	trimseq.html twofeat.html union.html \
 	utils_database_creation_group.html \
 	utils_database_indexing_group.html utils_misc_group.html \
-	vectorstrip.html water.html whichdb.html wobble.html \
+	vectorstrip.html \
+	vrnaalifold.html vrnaalifoldpf.html \
+	vrnacofold.html vrnacofoldconc.html vrnacofoldpf.html \
+	vrnadistance.html vrnaduplex.html vrnaeval.html vrnaevalpair.html \
+	vrnafold.html vrnafoldpf.html vrnaheat.html vrnainverse.html \
+	vrnalfold.html vrnaplot.html vrnasubopt.html \
+	water.html whichdb.html wobble.html \
 	wordcount.html wordmatch.html wossname.html yank.html \
-               emboss_icon.jpg
+	emboss_icon.jpg
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/programs/html
 pkgdata2dir=$(prefix)/share/$(PACKAGE)/doc/programs/html

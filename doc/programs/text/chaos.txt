@@ -100,10 +100,9 @@ Command line arguments
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
    (Parameter 1) Sequence USA Readable sequence Required
-   -graph Graph type EMBOSS has a list of known devices, including
-   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
-   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
-   png, xml EMBOSS_GRAPHICS value, or x11
+   -graph Graph type EMBOSS has a list of known devices, including ps,
+   hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data, xterm,
+   png EMBOSS_GRAPHICS value, or x11
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default

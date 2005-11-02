@@ -84,6 +84,7 @@ Sequence type [unknown]:
          2 : formatdb
          0 : unknown
 Blast index version [unknown]: 
+Output file [outfile.dbiblast]: 
 
    Go to the output files for this example
 
@@ -97,6 +98,7 @@ Command line arguments
    -date               string     Index date
    -seqtype            menu       Sequence type
    -blastversion       menu       Blast index version
+   -outfile            outfile    Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
@@ -112,7 +114,11 @@ Command line arguments
    -sourcefile         boolean    Use FASTA source file
    -indexoutdir        outdir     Index directory
 
-   Associated qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory         string     Output directory
+
    General qualifiers:
    -auto               boolean    Turn off prompts
    -stdout             boolean    Write standard output
@@ -148,14 +154,15 @@ Command line arguments
    2 (formatdb)
    0 (unknown)
    unknown
+   -outfile Output file name Output file <sequence>.dbiblast
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default
    -fields Index fields
-   acnum (Accession number)
-   seqvn (Sequence Version and GI)
-   des   (Description)
-   acnum
+   acc (acnum accession number index)
+   sv  (seqvn sequence version and gi number index)
+   des (des description index)
+   acc
    -exclude Wildcard filename(s) to exclude Any string is accepted An
    empty string is accepted
    -sortoptions Sort options, typically '-T .' to use current directory
@@ -194,6 +201,41 @@ Output file format
 
    This file contains non-printing characters and so cannot be displayed
    here.
+
+  File: outfile.dbiblast
+
+########################################
+# Program: dbiblast
+# Rundate: Fri Jul 15 2005 12:00:00
+# Dbname: swnew
+# Release: 0.0
+# Date: 15/07/05
+# CurrentDirectory: /homes/user/test/qa/dbiblast-ex-keep/
+# IndexDirectory: ./
+# IndexDirectoryPath: /homes/user/test/qa/dbiblast-ex-keep/
+# Maxindex: 0
+# Fields: 2
+#   Field 1: id
+#   Field 2: acc
+# Directory: /homes/user/test/data/
+# DirectoryPath: /homes/user/test/data/
+# Filenames: swnew
+# Exclude:
+# Files: 1
+#   File 1: /homes/user/test/data/swnew
+########################################
+# Commandline: dbiblast
+#    -dbname swnew
+#    -directory ../../data
+########################################
+
+filename: '/homes/user/test/data/swnew'
+    id: 9
+   acc: 9
+
+Index acc: maxlen 6 items 9
+
+Total 1 files 9 entries (0 duplicates)
 
    dbiblast creates four index files. All are binary but with a simple
    format.

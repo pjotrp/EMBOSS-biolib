@@ -99,10 +99,9 @@ Command line arguments
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
    (Parameter 1) Sequence database USA Readable sequence(s) Required
-   -graph Graph type EMBOSS has a list of known devices, including
-   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
-   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
-   png, xml EMBOSS_GRAPHICS value, or x11
+   -graph Graph type EMBOSS has a list of known devices, including ps,
+   hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data, xterm,
+   png EMBOSS_GRAPHICS value, or x11
    -outfile Output file name Output file <sequence>.iep
    Additional (Optional) qualifiers Allowed values Default
    (none)
@@ -345,20 +344,21 @@ Known bugs
 
 See also
 
-   Program name                        Description
-   backtranseq  Back translate a protein sequence
-   charge       Protein charge plot
-   checktrans   Reports STOP codons and ORF statistics of a protein
-   compseq      Count composition of dimer/trimer/etc words in a sequence
-   emowse       Protein identification by mass spectrometry
-   freak        Residue/base frequency table or plot
-   mwcontam     Shows molwts that match across a set of files
-   mwfilter     Filter noisy molwts from mass spec output
-   octanol      Displays protein hydropathy
-   pepinfo      Plots simple amino acid properties in parallel
-   pepstats     Protein statistics
-   pepwindow    Displays protein hydropathy
-   pepwindowall Displays protein hydropathy of a set of sequences
+   Program name                         Description
+   backtranambig Back translate a protein sequence to ambiguous codons
+   backtranseq   Back translate a protein sequence
+   charge        Protein charge plot
+   checktrans    Reports STOP codons and ORF statistics of a protein
+   compseq       Count composition of dimer/trimer/etc words in a sequence
+   emowse        Protein identification by mass spectrometry
+   freak         Residue/base frequency table or plot
+   mwcontam      Shows molwts that match across a set of files
+   mwfilter      Filter noisy molwts from mass spec output
+   octanol       Displays protein hydropathy
+   pepinfo       Plots simple amino acid properties in parallel
+   pepstats      Protein statistics
+   pepwindow     Displays protein hydropathy
+   pepwindowall  Displays protein hydropathy of a set of sequences
 
 Author(s)
 

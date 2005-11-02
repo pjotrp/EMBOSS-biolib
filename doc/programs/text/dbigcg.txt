@@ -56,6 +56,7 @@ Database directory [.]: embl
 Wildcard database filename [*.seq]: 
 Release number [0.0]: 
 Index date [00/00/00]: 
+Output file [outfile.dbigcg]: 
 
    Go to the output files for this example
 
@@ -68,6 +69,7 @@ Command line arguments
    -filenames          string     Wildcard database filename
    -release            string     Release number
    -date               string     Index date
+   -outfile            outfile    Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
@@ -82,7 +84,11 @@ Command line arguments
    -[no]cleanup        boolean    Clean up temporary files
    -indexoutdir        outdir     Index directory
 
-   Associated qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory         string     Output directory
+
    General qualifiers:
    -auto               boolean    Turn off prompts
    -stdout             boolean    Write standard output
@@ -113,16 +119,17 @@ Command line arguments
    -filenames Wildcard database filename Any string is accepted *.seq
    -release Release number A string up to 9 characters 0.0
    -date Index date Date string dd/mm/yy 00/00/00
+   -outfile Output file name Output file <sequence>.dbigcg
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default
    -fields Index fields
-   acnum   (Accession number)
-   seqvn   (Sequence Version and GI)
-   des     (Description)
-   keyword (Keywords)
-   taxon   (Taxonomy)
-   acnum
+   acc (acnum accession number index)
+   sv  (seqvn sequence version and gi number index)
+   des (des description index)
+   key (keyword keywords index)
+   org (taxon taxonomy and organism index)
+   acc
    -exclude Wildcard filename(s) to exclude Any string is accepted An
    empty string is accepted
    -maxindex Maximum index length Integer 0 or more 0
@@ -162,6 +169,74 @@ Output file format
 
    This file contains non-printing characters and so cannot be displayed
    here.
+
+  File: outfile.dbigcg
+
+########################################
+# Program: dbigcg
+# Rundate: Fri Jul 15 2005 12:00:00
+# Dbname: EMBL
+# Release: 0.0
+# Date: 15/07/05
+# CurrentDirectory: /homes/user/test/qa/dbigcg-ex-keep/
+# IndexDirectory: ./
+# IndexDirectoryPath: /homes/user/test/qa/dbigcg-ex-keep/
+# Maxindex: 0
+# Fields: 2
+#   Field 1: id
+#   Field 2: acc
+# Directory: /homes/user/test/embl/
+# DirectoryPath: /homes/user/test/embl/
+# Filenames: *.seq
+# Exclude:
+# Files: 9
+#   File 1: /homes/user/test/embl/eem_ba1.seq
+#   File 2: /homes/user/test/embl/eem_est.seq
+#   File 3: /homes/user/test/embl/eem_fun.seq
+#   File 4: /homes/user/test/embl/eem_htginv1.seq
+#   File 5: /homes/user/test/embl/eem_hum1.seq
+#   File 6: /homes/user/test/embl/eem_in.seq
+#   File 7: /homes/user/test/embl/eem_ov.seq
+#   File 8: /homes/user/test/embl/eem_ro.seq
+#   File 9: /homes/user/test/embl/eem_vi.seq
+########################################
+# Commandline: dbigcg
+#    -dbname EMBL
+#    -idformat EMBL
+#    -directory ../../embl
+########################################
+
+filename: '/homes/user/test/embl/eem_ba1.seq'
+    id: 10
+   acc: 14
+filename: '/homes/user/test/embl/eem_est.seq'
+    id: 1
+   acc: 1
+filename: '/homes/user/test/embl/eem_fun.seq'
+    id: 1
+   acc: 1
+filename: '/homes/user/test/embl/eem_htginv1.seq'
+    id: 5
+   acc: 5
+filename: '/homes/user/test/embl/eem_hum1.seq'
+    id: 15
+   acc: 18
+filename: '/homes/user/test/embl/eem_in.seq'
+    id: 2
+   acc: 2
+filename: '/homes/user/test/embl/eem_ov.seq'
+    id: 2
+   acc: 2
+filename: '/homes/user/test/embl/eem_ro.seq'
+    id: 3
+   acc: 3
+filename: '/homes/user/test/embl/eem_vi.seq'
+    id: 1
+   acc: 2
+
+Index acc: maxlen 8 items 48
+
+Total 9 files 40 entries (0 duplicates)
 
    dbigcg creates four index files. All are binary but with a simple
    format.

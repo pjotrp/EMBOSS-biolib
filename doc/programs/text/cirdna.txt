@@ -135,10 +135,9 @@ Command line arguments
    list of values Out
    -posblocks Text inside or outside the blocks Choose from selection
    list of values In
-   -graphout Graph type EMBOSS has a list of known devices, including
-   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
-   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
-   png, xml EMBOSS_GRAPHICS value, or x11
+   -graphout Graph type EMBOSS has a list of known devices, including ps,
+   hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data, xterm,
+   png EMBOSS_GRAPHICS value, or x11
    Additional (Optional) qualifiers Allowed values Default
    -maxgroups Maximum number of groups Integer 1 or more 20
    -maxlabels Maximum number of labels Integer 1 or more 10000

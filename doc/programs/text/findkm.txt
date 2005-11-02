@@ -74,10 +74,9 @@ Command line arguments
    (Parameter 1) Enter name of file containing data Input file Required
    [-outfile]
    (Parameter 2) Output file name Output file <sequence>.findkm
-   -graphlb Graph type EMBOSS has a list of known devices, including
-   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
-   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
-   png, xml EMBOSS_GRAPHICS value, or x11
+   -graphlb Graph type EMBOSS has a list of known devices, including ps,
+   hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data, xterm,
+   png EMBOSS_GRAPHICS value, or x11
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default
@@ -116,7 +115,7 @@ Where line cuts x axis = (-0.20, 0)
 Where line cuts y axis = (0, 0.05)
 Limit-point of graph for plot = (103.00, 1.08)
 
-Vmax = 99.70, Km = 4.894612
+Vmax = 99.70, Km = 4.894611
 
   Graphics File: findkm.ps
 

@@ -1,7 +1,8 @@
 pkgdata_DATA =  aaindexextract.txt abiview.txt acdc.txt acdlog.txt \
 	acdpretty.txt acdtable.txt acdtrace.txt acdvalid.txt \
 	allversusall.txt antigenic.txt \
-	backtranseq.txt banana.txt biosed.txt btwisted.txt cai.txt \
+	backtranambig.txt backtranseq.txt \
+	banana.txt biosed.txt btwisted.txt cai.txt \
 	cathparse.txt chaos.txt charge.txt checktrans.txt chips.txt \
 	cirdna.txt codcmp.txt codcopy.txt coderet.txt \
 	complex.txt compseq.txt cons.txt \
@@ -65,8 +66,14 @@ pkgdata2_DATA = jembossctl.txt libgen.txt libscan.txt lindna.txt listor.txt \
 	supermatcher.txt syco.txt tcode.txt textsearch.txt \
 	tfextract.txt tfm.txt tfscan.txt tmap.txt topo.txt \
 	tranalign.txt transeq.txt trimest.txt trimseq.txt \
-	twofeat.txt union.txt vectorstrip.txt water.txt whichdb.txt \
-               wobble.txt wordcount.txt wordmatch.txt wossname.txt yank.txt
+	twofeat.txt union.txt vectorstrip.txt \
+	vrnaalifold.txt vrnaalifoldpf.txt \
+	vrnacofold.txt vrnacofoldconc.txt vrnacofoldpf.txt \
+	vrnadistance.txt vrnaduplex.txt vrnaeval.txt vrnaevalpair.txt \
+	vrnafold.txt vrnafoldpf.txt vrnaheat.txt vrnainverse.txt \
+	vrnalfold.txt vrnaplot.txt vrnasubopt.txt \
+	water.txt whichdb.txt wobble.txt \
+	wordcount.txt wordmatch.txt wossname.txt yank.txt
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/programs/text
 pkgdata2dir=$(prefix)/share/$(PACKAGE)/doc/programs/text

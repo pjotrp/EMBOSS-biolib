@@ -100,8 +100,6 @@ qanxgcgall    N    OK  OK  OK  GCG format EMBL
 qanxgcgexc    N    OK  OK  OK  GCG format EMBL without prokaryotes
 qanxgcginc    N    OK  OK  OK  GCG format EMBL only prokaryotes
 qapirexc      N    OK  OK  OK  PIR
-qasrs         N    OK  OK  -   EMBL in local srs installation
-qasrsfasta    N    OK  OK  -   EMBL in local srs installation, fasta format
 qasrswww      N    OK  -   -   Remote SRS web server
 qawfasta      N    OK  OK  OK  FASTA file wormpep entries
 qawxfasta     N    OK  OK  OK  FASTA file wormpep entries
@@ -230,10 +228,6 @@ index
 
  qapirexc N OK   OK   OK   PIR
 
- qasrs N OK   OK   -    EMBL in local srs installation
-
- qasrsfasta N OK   OK   -    EMBL in local srs installation, fasta format
-
  qasrswww N OK   -    -    Remote SRS web server
 
  qawfasta N OK   OK   OK   FASTA file wormpep entries
@@ -341,8 +335,6 @@ qanxgcgall    N    OK  OK  OK  GCG format EMBL
 qanxgcgexc    N    OK  OK  OK  GCG format EMBL without prokaryotes
 qanxgcginc    N    OK  OK  OK  GCG format EMBL only prokaryotes
 qapirexc      N    OK  OK  OK  PIR
-qasrs         N    OK  OK  -   EMBL in local srs installation
-qasrsfasta    N    OK  OK  -   EMBL in local srs installation, fasta format
 qasrswww      N    OK  -   -   Remote SRS web server
 qawfasta      N    OK  OK  OK  FASTA file wormpep entries
 qawxfasta     N    OK  OK  OK  FASTA file wormpep entries
@@ -401,8 +393,6 @@ qanxgcgall
 qanxgcgexc
 qanxgcginc
 qapirexc
-qasrs
-qasrsfasta
 qasrswww
 qawfasta
 qawxfasta
@@ -462,8 +452,6 @@ qanxgcgall    N
 qanxgcgexc    N
 qanxgcginc    N
 qapirexc      N
-qasrs         N
-qasrsfasta    N
 qasrswww      N
 qawfasta      N
 qawxfasta     N
@@ -608,8 +596,6 @@ qanxgcgall    N    OK  OK  OK  GCG format EMBL
 qanxgcgexc    N    OK  OK  OK  GCG format EMBL without prokaryotes
 qanxgcginc    N    OK  OK  OK  GCG format EMBL only prokaryotes
 qapirexc      N    OK  OK  OK  PIR
-qasrs         N    OK  OK  -   EMBL in local srs installation
-qasrsfasta    N    OK  OK  -   EMBL in local srs installation, fasta format
 qasrswww      N    OK  -   -   Remote SRS web server
 qawfasta      N    OK  OK  OK  FASTA file wormpep entries
 qawxfasta     N    OK  OK  OK  FASTA file wormpep entries

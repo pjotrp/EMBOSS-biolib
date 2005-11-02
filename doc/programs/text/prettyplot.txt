@@ -62,15 +62,16 @@ Command line arguments
    -docolour           boolean    Colour residues by table oily, amide etc.
    -[no]title          boolean    Do not display the title
    -shade              string     Set to BPLW for normal shading
+                                  (black, pale, light, white)
                                   so for pair = 1.5,1.0,0.5 and shade = BPLW
                                   Residues score Colour
-                                  1.5 or over....... BLACK (B)
-                                  1.0 to 1.5 ....... BROWN (P)
-                                  0.5 to 1.0 ....... WHEAT (L)
-                                  under 0.5 ....... WHITE (W)
+                                  1.5 or over... BLACK (B)
+                                  1.0 to 1.5 ... BROWN (P)
+                                  0.5 to 1.0 ... WHEAT (L)
+                                  under 0.5 .... WHITE (W)
                                   The only four letters allowed are BPLW, in
                                   any order.
-   -pair               string     Values to represent identical similar
+   -pair               array      Values to represent identical similar
                                   related
    -identity           integer    Only match those which are identical in all
                                   sequences.
@@ -84,16 +85,15 @@ Command line arguments
    -plurality          float      Plurality check value (totweight/2)
    -consensus          boolean    Display the consensus
    -[no]collision      boolean    Allow collisions in calculating consensus
-   -alternative        integer    Use alternative collisions routine
-                                  0) Normal collision check. (default)
-                                  1) checks identical scores with the max
+   -alternative        selection  0:Normal collision check. (default)
+                                  1:Compares identical scores with the max
                                   score found. So if any other residue matches
                                   the identical score then a collision has
                                   occurred.
-                                  2) If another residue has a greater than or
+                                  2:If another residue has a greater than or
                                   equal to matching score and these do not
                                   match then a collision has occurred.
-                                  3) Checks all those not in the current
+                                  3:Checks all those not in the current
                                   consensus.If any of these give a top score
                                   for matching or identical scores then a
                                   collision has occured.
@@ -104,54 +104,53 @@ Command line arguments
    Associated qualifiers:
 
    "-sequences" associated qualifiers
-   -sbegin1             integer    Start of each sequence to be used
-   -send1               integer    End of each sequence to be used
-   -sreverse1           boolean    Reverse (if DNA)
-   -sask1               boolean    Ask for begin/end/reverse
-   -snucleotide1        boolean    Sequence is nucleotide
-   -sprotein1           boolean    Sequence is protein
-   -slower1             boolean    Make lower case
-   -supper1             boolean    Make upper case
-   -sformat1            string     Input sequence format
-   -sdbname1            string     Database name
-   -sid1                string     Entryname
-   -ufo1                string     UFO features
-   -fformat1            string     Features format
-   -fopenfile1          string     Features file name
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
 
    "-graph" associated qualifiers
-   -gprompt             boolean    Graph prompting
-   -gtitle              string     Graph title
-   -gsubtitle           string     Graph subtitle
-   -gxtitle             string     Graph x axis title
-   -gytitle             string     Graph y axis title
-   -goutfile            string     Output file for non interactive displays
-   -gdirectory          string     Output directory
+   -gprompt            boolean    Graph prompting
+   -gtitle             string     Graph title
+   -gsubtitle          string     Graph subtitle
+   -gxtitle            string     Graph x axis title
+   -gytitle            string     Graph y axis title
+   -goutfile           string     Output file for non interactive displays
+   -gdirectory         string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequences]
    (Parameter 1) File containing a sequence alignment Readable set of
    sequences Required
-   -graph Graph type EMBOSS has a list of known devices, including
-   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
-   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
-   png, xml EMBOSS_GRAPHICS value, or x11
+   -graph Graph type EMBOSS has a list of known devices, including ps,
+   hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data, xterm,
+   png EMBOSS_GRAPHICS value, or x11
    Additional (Optional) qualifiers Allowed values Default
    -matrixfile This is the scoring matrix file used when comparing
    sequences. By default it is the file 'EBLOSUM62' (for proteins) or the
@@ -174,14 +173,14 @@ Command line arguments
    -docolour Colour residues by table oily, amide etc. Boolean value
    Yes/No No
    -[no]title Do not display the title Boolean value Yes/No Yes
-   -shade Set to BPLW for normal shading so for pair = 1.5,1.0,0.5 and
-   shade = BPLW Residues score Colour 1.5 or over....... BLACK (B) 1.0 to
-   1.5 ....... BROWN (P) 0.5 to 1.0 ....... WHEAT (L) under 0.5 .......
-   WHITE (W) The only four letters allowed are BPLW, in any order. A
-   string up to 4 characters, matching regular expression
+   -shade Set to BPLW for normal shading (black, pale, light, white) so
+   for pair = 1.5,1.0,0.5 and shade = BPLW Residues score Colour 1.5 or
+   over... BLACK (B) 1.0 to 1.5 ... BROWN (P) 0.5 to 1.0 ... WHEAT (L)
+   under 0.5 .... WHITE (W) The only four letters allowed are BPLW, in
+   any order. A string up to 4 characters, matching regular expression
    /^([BPLW]{4})?$/ An empty string is accepted
-   -pair Values to represent identical similar related Any string is
-   accepted 1.5,1.0,0.5
+   -pair Values to represent identical similar related List of floating
+   point numbers 1.5,1.0,0.5
    -identity Only match those which are identical in all sequences.
    Integer 0 or more 0
    -[no]box Display prettyboxes Boolean value Yes/No Yes
@@ -198,14 +197,14 @@ Command line arguments
    -consensus Display the consensus Boolean value Yes/No No
    -[no]collision Allow collisions in calculating consensus Boolean value
    Yes/No Yes
-   -alternative Use alternative collisions routine 0) Normal collision
-   check. (default) 1) checks identical scores with the max score found.
-   So if any other residue matches the identical score then a collision
-   has occurred. 2) If another residue has a greater than or equal to
-   matching score and these do not match then a collision has occurred.
-   3) Checks all those not in the current consensus.If any of these give
-   a top score for matching or identical scores then a collision has
-   occured. Integer from 0 to 3 0
+   -alternative 0:Normal collision check. (default) 1:Compares identical
+   scores with the max score found. So if any other residue matches the
+   identical score then a collision has occurred. 2:If another residue
+   has a greater than or equal to matching score and these do not match
+   then a collision has occurred. 3:Checks all those not in the current
+   consensus.If any of these give a top score for matching or identical
+   scores then a collision has occured. Choose from selection list of
+   values 0
    -showscore Print residue scores Any integer value -1
    -portrait Set page to Portrait Boolean value Yes/No No
    Advanced (Unprompted) qualifiers Allowed values Default
@@ -223,13 +222,13 @@ Input file format
 
   ../data/globins.msf MSF:  164 Type: P 25/06/01 CompCheck: 4278 ..
 
-  Name: HBB_HUMAN Len: 164  Check: 6914 Weight: 0.14
-  Name: HBB_HORSE Len: 164  Check: 6007 Weight: 0.15
-  Name: HBA_HUMAN Len: 164  Check: 3921 Weight: 0.15
-  Name: HBA_HORSE Len: 164  Check: 4770 Weight: 0.19
-  Name: MYG_PHYCA Len: 164  Check: 7930 Weight: 0.23
-  Name: GLB5_PETMA Len: 164  Check: 1857 Weight: 0.21
-  Name: LGB2_LUPLU Len: 164  Check: 2879 Weight: 0.10
+  Name: HBB_HUMAN Len: 164  Check: 6914 Weight: 0.61
+  Name: HBB_HORSE Len: 164  Check: 6007 Weight: 0.65
+  Name: HBA_HUMAN Len: 164  Check: 3921 Weight: 0.65
+  Name: HBA_HORSE Len: 164  Check: 4770 Weight: 0.83
+  Name: MYG_PHYCA Len: 164  Check: 7930 Weight: 1.00
+  Name: GLB5_PETMA Len: 164  Check: 1857 Weight: 0.91
+  Name: LGB2_LUPLU Len: 164  Check: 2879 Weight: 0.43
 
 //
 

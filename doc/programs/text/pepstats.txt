@@ -344,20 +344,21 @@ Known bugs
 
 See also
 
-   Program name                        Description
-   backtranseq  Back translate a protein sequence
-   charge       Protein charge plot
-   checktrans   Reports STOP codons and ORF statistics of a protein
-   compseq      Count composition of dimer/trimer/etc words in a sequence
-   emowse       Protein identification by mass spectrometry
-   freak        Residue/base frequency table or plot
-   iep          Calculates the isoelectric point of a protein
-   mwcontam     Shows molwts that match across a set of files
-   mwfilter     Filter noisy molwts from mass spec output
-   octanol      Displays protein hydropathy
-   pepinfo      Plots simple amino acid properties in parallel
-   pepwindow    Displays protein hydropathy
-   pepwindowall Displays protein hydropathy of a set of sequences
+   Program name                         Description
+   backtranambig Back translate a protein sequence to ambiguous codons
+   backtranseq   Back translate a protein sequence
+   charge        Protein charge plot
+   checktrans    Reports STOP codons and ORF statistics of a protein
+   compseq       Count composition of dimer/trimer/etc words in a sequence
+   emowse        Protein identification by mass spectrometry
+   freak         Residue/base frequency table or plot
+   iep           Calculates the isoelectric point of a protein
+   mwcontam      Shows molwts that match across a set of files
+   mwfilter      Filter noisy molwts from mass spec output
+   octanol       Displays protein hydropathy
+   pepinfo       Plots simple amino acid properties in parallel
+   pepwindow     Displays protein hydropathy
+   pepwindowall  Displays protein hydropathy of a set of sequences
 
 Author(s)
 

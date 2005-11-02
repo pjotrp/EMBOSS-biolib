@@ -74,20 +74,10 @@ dottup           Displays a wordmatch dotplot of two sequences
 polydot          Displays all-against-all dotplots of a set of sequences
 
 ALIGNMENT GLOBAL
-alignrunner      Align sequence pairs in a directory
-comparator       Compare contact scores of two sequence alignments
-contactalign     Damian Counsell's experimental 2.5-D alignment algorithm
 esim4            Align an mRNA to a genomic DNA sequence
 est2genome       Align EST and genomic DNA sequences
-nawalign         Damian Counsell's NW implementation
-nawalignrunner   Nawalign all sequence pairs in a directory
 needle           Needleman-Wunsch global alignment
-needlerunner     Needle all sequence pairs in a directory
-scorer           Score alignments using structural alignments
-scorerrunner     SCORER for ordered pairs of substituted seqs
 stretcher        Finds the best global alignment between two sequences
-substitute       Substitute matches into a template
-substituterunner Run SUBSTITUTE on a directory of traces
 
 ALIGNMENT LOCAL
 matcher          Finds the best local alignments between two sequences
@@ -127,7 +117,6 @@ biosed           Replace or delete sequence sections
 codcopy          Reads and writes a codon usage table
 cutseq           Removes a specified section from a sequence
 degapseq         Removes gap characters from sequences
-degapseqrunner   Degapseq all sequence pairs in a directory
 descseq          Alter the name or description of a sequence
 entret           Reads and writes (returns) flatfile entries
 extractfeat      Extract features from a sequence
@@ -259,10 +248,29 @@ restrict         Finds restriction enzyme cleavage sites
 showseq          Display a sequence with features, translation etc
 silent           Silent mutation restriction enzyme scan
 
+NUCLEIC RNA FOLDING
+vrnaalifold      RNA alignment folding
+vrnaalifoldpf    RNA alignment folding with partition
+vrnacofold       RNA cofolding
+vrnacofoldconc   RNA cofolding with concentrations
+vrnacofoldpf     RNA cofolding with partitioning
+vrnadistance     RNA distances
+vrnaduplex       RNA duplex calculation
+vrnaeval         RNA eval
+vrnaevalpair     RNA eval with cofold
+vrnafold         Calculate 2ry structures of RNAs
+vrnafoldpf       Secondary structures of RNAs with partition
+vrnaheat         RNA melting
+vrnainverse      RNA sequences matching a structure
+vrnalfold        Calculate locally stable 2ry structures of RNAs
+vrnaplot         Plot ernafold output
+vrnasubopt       Calculate RNA suboptimals
+
 NUCLEIC TRANSCRIPTION
 tfscan           Scans DNA sequences for transcription factors
 
 NUCLEIC TRANSLATION
+backtranambig    Back translate a protein sequence to ambiguous codons
 backtranseq      Back translate a protein sequence
 coderet          Extract CDS, mRNA and translations from feature tables
 plotorf          Plot potential open reading frames
@@ -363,7 +371,6 @@ tmap             Displays membrane spanning regions
 topo             Draws an image of a transmembrane protein
 
 PROTEIN 3D STRUCTURE
-contactcount     Count specific versus non-specific contacts
 contacts         Generate intra-chain CON files from CCF files
 domainalign      Generate alignments (DAF file) for nodes in a DCF file
 domainrep        Reorder DCF file to identify representative structures
@@ -374,7 +381,6 @@ matgen3d         Generate a 3D-1D scoring matrix from CCF files
 psiphi           Phi and psi torsion angles from protein coordinates
 rocon            Generates a hits file from comparing two DHF files
 rocplot          Performs ROC analysis on hits files
-scorecmapdir     Contact scores for cleaned protein chain contact files
 seqalign         Extend alignments (DAF file) with sequences (DHF file)
 seqfraggle       Removes fragment sequences from DHF files
 seqsearch        Generate PSI-BLAST hits (DHF file) from a DAF file
@@ -386,6 +392,7 @@ sigscan          Generate hits (DHF file) from a signature search
 sigscanlig       Search ligand-signature library & write hits (LHF file)
 
 PROTEIN COMPOSITION
+backtranambig    Back translate a protein sequence to ambiguous codons
 backtranseq      Back translate a protein sequence
 charge           Protein charge plot
 checktrans       Reports STOP codons and ORF statistics of a protein
@@ -483,9 +490,9 @@ acdpretty        ACD pretty printing utility
 acdtable         Creates an HTML table from an ACD file
 acdtrace         ACD compiler on-screen trace
 acdvalid         ACD file validation
-alignrunner      Align sequence pairs in a directory
 allversusall     Sequence similarity data from all-versus-all comparison
 antigenic        Finds antigenic sites in proteins
+backtranambig    Back translate a protein sequence to ambiguous codons
 backtranseq      Back translate a protein sequence
 banana           Bending and curvature plot in B-DNA
 biosed           Replace or delete sequence sections
@@ -500,11 +507,8 @@ cirdna           Draws circular maps of DNA constructs
 codcmp           Codon usage table comparison
 codcopy          Reads and writes a codon usage table
 coderet          Extract CDS, mRNA and translations from feature tables
-comparator       Compare contact scores of two sequence alignments
 compseq          Count composition of dimer/trimer/etc words in a sequence
 cons             Creates a consensus from multiple alignments
-contactalign     Damian Counsell's experimental 2.5-D alignment algorithm
-contactcount     Count specific versus non-specific contacts
 contacts         Generate intra-chain CON files from CCF files
 cpgplot          Plot CpG rich areas
 cpgreport        Reports all CpG rich regions
@@ -521,7 +525,6 @@ dbxfasta         Database b+tree indexing for fasta file databases
 dbxflat          Database b+tree indexing for flat file databases
 dbxgcg           Database b+tree indexing for GCG formatted databases
 degapseq         Removes gap characters from sequences
-degapseqrunner   Degapseq all sequence pairs in a directory
 descseq          Alter the name or description of a sequence
 diffseq          Find differences between nearly identical sequences
 digest           Protein proteolytic enzyme or reagent cleavage digest
@@ -659,10 +662,7 @@ mwcontam         Shows molwts that match across a set of files
 mwfilter         Filter noisy molwts from mass spec output
 myseq            Demonstration of sequence reading
 mytest           Demonstration of sequence reading
-nawalign         Damian Counsell's NW implementation
-nawalignrunner   Nawalign all sequence pairs in a directory
 needle           Needleman-Wunsch global alignment
-needlerunner     Needle all sequence pairs in a directory
 newcpgreport     Report CpG rich areas
 newcpgseek       Reports CpG rich regions
 newseq           Type in a short new sequence
@@ -709,9 +709,6 @@ revseq           Reverse and complement a sequence
 rocon            Generates a hits file from comparing two DHF files
 rocplot          Performs ROC analysis on hits files
 scopparse        Generate DCF file from raw SCOP files
-scorecmapdir     Contact scores for cleaned protein chain contact files
-scorer           Score alignments using structural alignments
-scorerrunner     SCORER for ordered pairs of substituted seqs
 seealso          Finds programs sharing group names
 seqalign         Extend alignments (DAF file) with sequences (DHF file)
 seqfraggle       Removes fragment sequences from DHF files
@@ -742,8 +739,6 @@ splitter         Split a sequence into (overlapping) smaller sequences
 ssematch         Search a DCF file for secondary structure matches
 stretcher        Finds the best global alignment between two sequences
 stssearch        Search a DNA database for matches with a set of STS primers
-substitute       Substitute matches into a template
-substituterunner Run SUBSTITUTE on a directory of traces
 supermatcher     Match large sequences against one or more other sequences
 syco             Synonymous codon usage Gribskov statistic plot
 tcode            Fickett TESTCODE statistic to identify protein-coding DNA
@@ -760,6 +755,22 @@ trimseq          Trim ambiguous bits off the ends of sequences
 twofeat          Finds neighbouring pairs of features in sequences
 union            Reads sequence fragments and builds one sequence
 vectorstrip      Strips out DNA between a pair of vector sequences
+vrnaalifold      RNA alignment folding
+vrnaalifoldpf    RNA alignment folding with partition
+vrnacofold       RNA cofolding
+vrnacofoldconc   RNA cofolding with concentrations
+vrnacofoldpf     RNA cofolding with partitioning
+vrnadistance     RNA distances
+vrnaduplex       RNA duplex calculation
+vrnaeval         RNA eval
+vrnaevalpair     RNA eval with cofold
+vrnafold         Calculate 2ry structures of RNAs
+vrnafoldpf       Secondary structures of RNAs with partition
+vrnaheat         RNA melting
+vrnainverse      RNA sequences matching a structure
+vrnalfold        Calculate locally stable 2ry structures of RNAs
+vrnaplot         Plot ernafold output
+vrnasubopt       Calculate RNA suboptimals
 water            Smith-Waterman local alignment
 whichdb          Search all databases for an entry
 wobble           Wobble base plot
@@ -802,6 +813,7 @@ NUCLEIC PRIMERS
 NUCLEIC PROFILES
 NUCLEIC REPEATS
 NUCLEIC RESTRICTION
+NUCLEIC RNA FOLDING
 NUCLEIC TRANSCRIPTION
 NUCLEIC TRANSLATION
 PHYLOGENY CONSENSUS
@@ -823,60 +835,6 @@ UTILS DATABASE INDEXING
 UTILS MISC
 
    Example 5
-
-   Output html tags around the list of program groups:
-
-
-% wossname -groups -html -prelink '#' 
-Finds programs by keywords in their one-line documentation
-Keyword to search for, or blank to list all programs: 
-
-     * ACD
-     * ALIGNMENT CONSENSUS
-     * ALIGNMENT DIFFERENCES
-     * ALIGNMENT DOT PLOTS
-     * ALIGNMENT GLOBAL
-     * ALIGNMENT LOCAL
-     * ALIGNMENT MULTIPLE
-     * DISPLAY
-     * EDIT
-     * ENZYME KINETICS
-     * FEATURE TABLES
-     * HMM
-     * INFORMATION
-     * MENUS
-     * NUCLEIC 2D STRUCTURE
-     * NUCLEIC CODON USAGE
-     * NUCLEIC COMPOSITION
-     * NUCLEIC CPG ISLANDS
-     * NUCLEIC GENE FINDING
-     * NUCLEIC MOTIFS
-     * NUCLEIC MUTATION
-     * NUCLEIC PRIMERS
-     * NUCLEIC PROFILES
-     * NUCLEIC REPEATS
-     * NUCLEIC RESTRICTION
-     * NUCLEIC TRANSCRIPTION
-     * NUCLEIC TRANSLATION
-     * PHYLOGENY CONSENSUS
-     * PHYLOGENY CONTINUOUS CHARACTERS
-     * PHYLOGENY DISCRETE CHARACTERS
-     * PHYLOGENY DISTANCE MATRIX
-     * PHYLOGENY GENE FREQUENCIES
-     * PHYLOGENY MOLECULAR SEQUENCE
-     * PHYLOGENY TREE DRAWING
-     * PROTEIN 2D STRUCTURE
-     * PROTEIN 3D STRUCTURE
-     * PROTEIN COMPOSITION
-     * PROTEIN MOTIFS
-     * PROTEIN MUTATION
-     * PROTEIN PROFILES
-     * TEST
-     * UTILS DATABASE CREATION
-     * UTILS DATABASE INDEXING
-     * UTILS MISC
-
-   Example 6
 
    Output html tags around the list of programs:
 
@@ -918,13 +876,12 @@ Command line arguments
                                   half of the URL.
                                   For example, if you wish the program name to
                                   be a hyperlink to the URL:
-                                  http://www.uk.embnet.org/Software/EMBOSS/Apps
-/programname.html
+                                  http://emboss.sourceforge.net/apps/programnam
+e.html
                                   then if you enter
-                                  http://www.uk.embnet.org/Software/EMBOSS/Apps
-/
-                                  here, then the first half of the URL before
-                                  the programname will be set.
+                                  http://emboss.sourceforge.net/apps/ here,
+                                  then the first half of the URL before the
+                                  programname will be set.
 *  -postlink           string     If you are outputting to a file in HTML
                                   format, you can make the program names into
                                   hyper-links by setting this to be the second
@@ -996,22 +953,22 @@ Command line arguments
    Associated qualifiers:
 
    "-outfile" associated qualifiers
-   -odirectory          string     Output directory
+   -odirectory         string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
 
    Standard (Mandatory) qualifiers Allowed values Default
@@ -1036,10 +993,10 @@ Command line arguments
    the program names into hyper-links by setting this to be the first
    half of the URL. For example, if you wish the program name to be a
    hyperlink to the URL:
-   http://www.uk.embnet.org/Software/EMBOSS/Apps/programname.html then if
-   you enter http://www.uk.embnet.org/Software/EMBOSS/Apps/ here, then
-   the first half of the URL before the programname will be set. Any
-   string is accepted An empty string is accepted
+   http://emboss.sourceforge.net/apps/programname.html then if you enter
+   http://emboss.sourceforge.net/apps/ here, then the first half of the
+   URL before the programname will be set. Any string is accepted An
+   empty string is accepted
    -postlink If you are outputting to a file in HTML format, you can make
    the program names into hyper-links by setting this to be the second
    half of the URL. For example, if you wish the program name to be a
@@ -1101,7 +1058,7 @@ Output file format
    The results are written out as a simple list preceded by the group
    that the programs belong to or the word that is being searched for.
 
-  Output files for usage example 6
+  Output files for usage example 5
 
   File: wossname.html
 
@@ -1136,25 +1093,25 @@ ALIGNMENT DOT PLOTS
 
 ALIGNMENT GLOBAL
 
-     Program name                         Description
-   alignrunner      Align sequence pairs in a directory
-   comparator       Compare contact scores of two sequence alignments
-   contactalign     Damian Counsell's experimental 2.5-D alignment algorithm
-   esim4            Align an mRNA to a genomic DNA sequence
-   est2genome       Align EST and genomic DNA sequences
-   nawalign         Damian Counsell's NW implementation
-   nawalignrunner   Nawalign all sequence pairs in a directory
-   needle           Needleman-Wunsch global alignment
-   needlerunner     Needle all sequence pairs in a directory
-   scorer           Score alignments using structural alignments
-   scorerrunner     SCORER for ordered pairs of substituted seqs
-   stretcher        Finds the best global alignment between two sequences
-   substitute       Substitute matches into a template
-   substituterunner Run SUBSTITUTE on a directory of traces
+   Program name                      Description
+   esim4        Align an mRNA to a genomic DNA sequence
+   est2genome   Align EST and genomic DNA sequences
+   needle       Needleman-Wunsch global alignment
+   stretcher    Finds the best global alignment between two sequences
 
 ALIGNMENT LOCAL
 
-   Program name                    Description
+   Program name                         Description
+   matcher      Finds the best local alignments between two sequences
+   seqmatchall  All-against-all comparison of a set of sequences
+   supermatcher Match large sequences against one or more other sequences
+   water        Smith-Waterman local alignment
+   wordmatch    Finds all exact matches of a given size between 2 sequences
+
+ALIGNMENT MULTIPLE
+
+   Program name                        Description
+   emma         Multiple alignment program - interface to ClustalW program
    [Part of this file has been deleted for brevity]
    prophecy     Creates matrices/profiles from multiple alignments
    prophet      Gapped alignment for profiles

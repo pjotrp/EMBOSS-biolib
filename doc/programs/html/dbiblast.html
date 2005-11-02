@@ -133,6 +133,7 @@ Sequence type [unknown]: <b></b>
          2 : formatdb
          0 : unknown
 Blast index version [unknown]: <b></b>
+Output file [outfile.dbiblast]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -154,6 +155,7 @@ Blast index version [unknown]: <b></b>
    -date               string     Index date
    -seqtype            menu       Sequence type
    -blastversion       menu       Blast index version
+   -outfile            outfile    Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
@@ -169,7 +171,11 @@ Blast index version [unknown]: <b></b>
    -sourcefile         boolean    Use FASTA source file
    -indexoutdir        outdir     Index directory
 
-   Associated qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory         string     Output directory
+
    General qualifiers:
    -auto               boolean    Turn off prompts
    -stdout             boolean    Write standard output
@@ -245,6 +251,13 @@ Blast index version [unknown]: <b></b>
 <td>unknown</td>
 </tr>
 
+<tr>
+<td>-outfile</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.dbiblast</td>
+</tr>
+
 <tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Additional (Optional) qualifiers</th>
 <th align="left">Allowed values</th>
@@ -264,8 +277,8 @@ Blast index version [unknown]: <b></b>
 <tr>
 <td>-fields</td>
 <td>Index fields</td>
-<td><table><tr><td>acnum</td> <td><i>(Accession number)</i></td></tr><tr><td>seqvn</td> <td><i>(Sequence Version and GI)</i></td></tr><tr><td>des</td> <td><i>(Description)</i></td></tr></table></td>
-<td>acnum</td>
+<td><table><tr><td>acc</td> <td><i>(acnum accession number index)</i></td></tr><tr><td>sv</td> <td><i>(seqvn sequence version and gi number index)</i></td></tr><tr><td>des</td> <td><i>(des description index)</i></td></tr></table></td>
+<td>acc</td>
 </tr>
 
 <tr>
@@ -344,6 +357,43 @@ Any BLAST1 or BLAST2 database index files.
 <p>This file contains non-printing characters and so cannot be displayed here.
 <p><h3>File: acnum.trg</h3>
 <p>This file contains non-printing characters and so cannot be displayed here.
+<p><h3>File: outfile.dbiblast</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+########################################
+# Program: dbiblast
+# Rundate: Fri Jul 15 2005 12:00:00
+# Dbname: swnew
+# Release: 0.0
+# Date: 15/07/05
+# CurrentDirectory: /homes/user/test/qa/dbiblast-ex-keep/
+# IndexDirectory: ./
+# IndexDirectoryPath: /homes/user/test/qa/dbiblast-ex-keep/
+# Maxindex: 0
+# Fields: 2
+#   Field 1: id
+#   Field 2: acc
+# Directory: /homes/user/test/data/
+# DirectoryPath: /homes/user/test/data/
+# Filenames: swnew
+# Exclude: 
+# Files: 1
+#   File 1: /homes/user/test/data/swnew
+########################################
+# Commandline: dbiblast
+#    -dbname swnew
+#    -directory ../../data
+########################################
+
+filename: '/homes/user/test/data/swnew'
+    id: 9
+   acc: 9
+
+Index acc: maxlen 6 items 9
+
+Total 1 files 9 entries (0 duplicates)
+</pre>
+</td></tr></table><p>
 
 <p>
 
