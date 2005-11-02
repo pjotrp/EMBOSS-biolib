@@ -1,5 +1,5 @@
 application: vrnalfold [
-  documentation: "Calculate locally stable 2ry structures of RNAs"
+  documentation: "Calculate locally stable secondary structures of RNAs"
   groups: "Nucleic:RNA folding"
   gui: "yes"
   batch: "yes"

@@ -1,5 +1,5 @@
 application: vrnafold [
-  documentation: "Calculate 2ry structures of RNAs"
+  documentation: "Calculate secondary structures of RNAs"
   groups: "Nucleic:RNA folding"
   gui: "yes"
   batch: "yes"

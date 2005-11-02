@@ -1,5 +1,5 @@
 application: vrnaplot [
-  documentation: "Plot ernafold output"
+  documentation: "Plot vrnafold output"
   groups: "Nucleic:RNA folding"
   gui: "yes"
   batch: "yes"
