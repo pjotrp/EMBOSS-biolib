@@ -1474,8 +1474,11 @@ static void GraphListDevicesarg (const char* name, va_list args)
 
     for(i=0;graphType[i].Name;i++)
     {
-	devname = ajStrNewC(graphType[i].Name);
-	ajListstrPushApp(list, devname);
+	if(!graphType[i].Alias)
+	{
+	    devname = ajStrNewC(graphType[i].Name);
+	    ajListstrPushApp(list, devname);
+	}
     }
 
     return;
