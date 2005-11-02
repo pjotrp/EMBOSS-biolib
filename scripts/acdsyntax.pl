@@ -1166,7 +1166,7 @@ while (<TEMPLATE>) {
 
 	if (/^<a name=([^>]+)>/)  {
 	    $contentname = $1;
-	    $contactname =~ s/\"//gos;
+	    $contentname =~ s/\"//gos;
 	}
 	if (/^<h([1-3])>([^<]+)<\/h/) {
 	    $level=$1;
