@@ -71,7 +71,7 @@ pkgdata2_DATA = jembossctl.txt libgen.txt libscan.txt lindna.txt listor.txt \
 	vrnacofold.txt vrnacofoldconc.txt vrnacofoldpf.txt \
 	vrnadistance.txt vrnaduplex.txt vrnaeval.txt vrnaevalpair.txt \
 	vrnafold.txt vrnafoldpf.txt vrnaheat.txt vrnainverse.txt \
-	vrnalfold.txt vrnaplot.txt vrnasubopt.txt \
+	vrnalfold.txt vrnasubopt.txt \
 	water.txt whichdb.txt wobble.txt \
 	wordcount.txt wordmatch.txt wossname.txt yank.txt
 

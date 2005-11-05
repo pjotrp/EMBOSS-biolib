@@ -120,7 +120,7 @@ pkgdata2_DATA = lindna.html listor.html marscan.html maskfeat.html \
 	vrnacofold.html vrnacofoldconc.html vrnacofoldpf.html \
 	vrnadistance.html vrnaduplex.html vrnaeval.html vrnaevalpair.html \
 	vrnafold.html vrnafoldpf.html vrnaheat.html vrnainverse.html \
-	vrnalfold.html vrnaplot.html vrnasubopt.html \
+	vrnalfold.html vrnasubopt.html \
 	water.html whichdb.html wobble.html \
 	wordcount.html wordmatch.html wossname.html yank.html \
 	emboss_icon.jpg
