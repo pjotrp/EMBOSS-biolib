@@ -1122,7 +1122,7 @@ References
 
 Warnings
 
-   When translation using non-standard genetic code table, always check
+   When translating using non-standard genetic code table, always check
    the table carefully for deviations from your particular organism's
    code.
 
