@@ -164,8 +164,17 @@ public class BuildJembossForm implements ActionListener
         String url = null;
         if(!withSoap)
           text = helptext;
-        else
-          url = mysettings.getembURL()+applName+".html";
+        else 
+        {
+          String urlEmbassyPrefix = parseAcd.getUrlPrefix();
+          url = mysettings.getembURL();
+          if(urlEmbassyPrefix != null)
+            url = url + "embassy/" + urlEmbassyPrefix + "/" ;
+          else
+            url = url + "apps/";
+
+          url = url+applName+".html";
+        }
 
         JEditorPane htmlPane = null;
         if(url == null)

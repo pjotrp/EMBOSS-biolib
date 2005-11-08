@@ -999,14 +999,14 @@ echo "$EMBOSS_INSTALL" >> $RECORD
 
 if [ $INSTALL_TYPE = "1" ]; then
   echo "Enter URL for emboss documentation for application "
-  echo "[http://emboss.sourceforge.net/apps/]:"
+  echo "[http://emboss.sourceforge.net/]:"
   read EMBOSS_URL
 
   echo "$EMBOSS_URL" >> $RECORD
 fi
 
 if [ "$EMBOSS_URL" = "" ]; then
-  EMBOSS_URL="http://emboss.sourceforge.net/apps/"
+  EMBOSS_URL="http://emboss.sourceforge.net/"
 fi
 echo
 
