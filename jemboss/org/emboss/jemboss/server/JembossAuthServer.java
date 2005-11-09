@@ -208,8 +208,10 @@ public class JembossAuthServer
       if(!ok)
         return returnError(aj,"listFiles error in call_ajax");
 
-      if(aj.getOutStd().indexOf(ffile+"\n") > -1)
+      if(aj.getOutStd().indexOf(fs+ffile+"\n") > -1)
         fexists = true;
+      else 
+        return returnError(aj,"listFiles error in call_ajax");
     }
 
     // create temporary file
