@@ -856,7 +856,7 @@ public class SectionPanel
               try
               {
                 CallAjax ca = new CallAjax(fc,att,mysettings);  
-                if(ca.getStatus().equals("0"))
+                if(ca.getStatus().equals("0") && ca.getLength() > 0)
                 {
                   ajaxLength  = ca.getLength();
                   ajaxWeight  = ca.getWeight();
@@ -879,7 +879,7 @@ public class SectionPanel
                           "\nCheck the sequence entered.",
                           "Error Message", JOptionPane.ERROR_MESSAGE);
                 }
-//              System.out.println("PROPERTIES::: "+ajaxLength+" "+ajaxWeight);
+//              System.out.println("PROPERTIES::: "+ca.getStatus()+"  "+ajaxLength+" "+ajaxWeight);
               }
               catch (JembossSoapException eae)
               {
