@@ -233,7 +233,11 @@ public class JembossAuthServer
       }
       catch (Exception ioe) 
       {
-        appendToLogFile(userName+":: Exception: call_ajax creating "+fn,
+        String dat = new Date().toString();
+        dat = dat.replace(':','_');
+
+        appendToLogFile(userName+":: "+dat+
+                        " Exception: call_ajax creating "+fn,
                          errorLog);
         vans.add("status");
         vans.add("1");
@@ -263,7 +267,11 @@ public class JembossAuthServer
       }
       catch (Exception e)
       {
-        appendToLogFile(userName+":: Exception: call_ajax status not ok",
+        String dat = new Date().toString();
+        dat = dat.replace(':','_');
+
+        appendToLogFile(userName+":: "+dat+
+                        " Exception: call_ajax status not ok",
                          errorLog);
         vans.add("status");
         vans.add("1");
@@ -476,10 +484,14 @@ public class JembossAuthServer
     if(!verifyUser(aj,userName,passwd,result))
       return result;
 
+    String dat = new Date().toString();
+    dat = dat.replace(':','_');
+
     //disallow multiple command constructions
     if(embossCommand.indexOf(";") > -1) 
     {
-      String warn = new String(userName+":: ERROR: Disallowed command syntax "+
+      String warn = new String(userName+":: "+dat+
+                               " ERROR: Disallowed command syntax "+
                                embossCommand);
       appendToLogFile(warn,errorLog);
       result.add("msg");
@@ -523,10 +535,10 @@ public class JembossAuthServer
 //    if(ok && aj.getErrStd().equals(""))
 //    Linux fix - ignore stderr here
       if(ok)
-        appendToLogFile(userName+":: Created directory "+tmproot,errorLog);
+        appendToLogFile(userName+":: "+dat+" Created directory "+tmproot,errorLog);
       else
       {
-        String warnmsg = new String(userName+":: Failed to create dir "+tmproot+
+        String warnmsg = new String(userName+":: "+dat+" Failed to create dir "+tmproot+
                                     "\nSTDERR :"+ aj.getErrStd());
         appendToLogFile(warnmsg,errorLog);
         result.add("msg");
@@ -541,8 +553,6 @@ public class JembossAuthServer
 //get a unique project name
     String appl = embossCommand.substring(0,embossCommand.indexOf(" "));
     Random rnd = new Random();
-    String dat = new Date().toString();
-    dat = dat.replace(':','_');
     String project = new String(tmproot + appl + "_" +
          dat.replace(' ','_') + "_" + rnd.nextInt(99999));
 
@@ -615,7 +625,7 @@ public class JembossAuthServer
       return returnError(aj,"Failed to make file "+
                          project+fs+".desc");
 
-    new AppendToLogFileThread(userName+":: "+options+" "+dat+
+    new AppendToLogFileThread(userName+":: "+dat+" "+options+
                               " "+embossCommand,logFile,true).start();
 
     result.add("cmd");
@@ -743,9 +753,15 @@ public class JembossAuthServer
     catch(Exception exp){}
 
     if(!ok)
-      appendToLogFile(userName+":: Failed to make file "+project+fs+".scriptfile\n"+
+    {
+      String dat = new Date().toString();
+      dat = dat.replace(':','_');
+
+      appendToLogFile(userName+":: "+dat+
+                      " Failed to make file "+project+fs+".scriptfile\n"+
                       "STDERR "+aj.getErrStd()+"\n"+
                       "STDOUT "+aj.getOutStd(),errorLog);
+    }
 
     boolean lfork=true;
     try
@@ -758,7 +774,14 @@ public class JembossAuthServer
     catch(Exception exp){}
 
     if(!lfork || !aj.getErrStd().equals(""))
-      appendToLogFile(userName+":: Fork batch process failed "+embossCommand,errorLog);
+    {
+      String dat = new Date().toString();
+      dat = dat.replace(':','_');
+
+      appendToLogFile(userName+":: "+dat+
+                      " Fork batch process failed "+embossCommand,errorLog);
+    }
+
     return;
   }
 
@@ -797,9 +820,12 @@ public class JembossAuthServer
 
     if(!ok)
     {
-      appendToLogFile(userName+":: Failed to make file "+project+fs+".scriptfile",errorLog);
-      appendToLogFile(userName+":: STDERR "+aj.getErrStd(),errorLog);
-      appendToLogFile(userName+":: STDOUT "+aj.getOutStd(),errorLog);
+      String dat = new Date().toString();
+      dat = dat.replace(':','_');
+
+      appendToLogFile(userName+":: "+dat+" Failed to make file "+project+fs+".scriptfile",errorLog);
+      appendToLogFile(userName+":: "+dat+" STDERR "+aj.getErrStd(),errorLog);
+      appendToLogFile(userName+":: "+dat+" STDOUT "+aj.getOutStd(),errorLog);
     }
 
     boolean lfork=true;
@@ -813,7 +839,14 @@ public class JembossAuthServer
     catch(Exception exp){}
 
     if(!lfork || !aj.getErrStd().equals(""))
-      appendToLogFile(userName+":: Fork batch process failed "+embossCommand,errorLog);
+    {
+      String dat = new Date().toString();
+      dat = dat.replace(':','_');
+
+      appendToLogFile(userName+":: "+dat+
+                      " Fork batch process failed "+embossCommand,errorLog);
+    }
+    
     return;
   }
 
@@ -849,9 +882,12 @@ public class JembossAuthServer
 
     if(!ok)
     {
-      appendToLogFile(userName+":: Failed to make file "+project+fs+".scriptfile",errorLog);
-      appendToLogFile(userName+":: STDERR "+aj.getErrStd(),errorLog);
-      appendToLogFile(userName+":: STDOUT "+aj.getOutStd(),errorLog);
+      String dat = new Date().toString();
+      dat = dat.replace(':','_');
+    
+      appendToLogFile(userName+":: "+dat+" Failed to make file "+project+fs+".scriptfile",errorLog);
+      appendToLogFile(userName+":: "+dat+" STDERR "+aj.getErrStd(),errorLog);
+      appendToLogFile(userName+":: "+dat+" STDOUT "+aj.getOutStd(),errorLog);
     }
   
     boolean lfork=true;
@@ -867,8 +903,13 @@ public class JembossAuthServer
     catch(Exception exp){}
 
     if(!lfork || !aj.getErrStd().equals(""))
-      appendToLogFile(userName+":: Fork batch process failed "+embossCommand,errorLog);
+    {
+      String dat = new Date().toString();
+      dat = dat.replace(':','_');
 
+      appendToLogFile(userName+":: "+dat+
+                      " Fork batch process failed "+embossCommand,errorLog);
+    }
     return;
   }
 
@@ -1049,10 +1090,15 @@ public class JembossAuthServer
       lsr.add(new String(fbuf));
 
       if(aj.getFileok()!=1)
-        appendToLogFile(userName+":: Calling getFile : "+tmproot + 
+      {
+        String dat = new Date().toString();
+        dat = dat.replace(':','_');
+
+        appendToLogFile(userName+":: "+dat+" Calling getFile : "+tmproot +
                         dirname + fs + ".desc\n"+
                         "STDERR "+aj.getErrStd()+"\n"+
                         "STDOUT "+aj.getOutStd(),errorLog);
+      }
     }
     
     lsr.add("list");
