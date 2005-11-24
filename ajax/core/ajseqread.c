@@ -1724,6 +1724,8 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 		ajDebug("seqRead: (d1) seqReadFmt stat == EOF *failed*\n");
 		return ajFalse;			/* EOF and unbuffered */
 	    case FMT_EMPTY:
+		ajWarn("Sequence '%S' has zero length, ignored",
+		       ajSeqGetUsa(thys));
 		ajDebug("seqRead: (e1) seqReadFmt stat==EMPTY try again\n");
 		break;
 	    default:
@@ -1765,6 +1767,8 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 	    ajDebug("seqRead: (d2) seqReadFmt stat == EOF *try again*\n");
 	    break;		     /* simply end-of-file */
 	case FMT_EMPTY:
+	    ajWarn("Sequence '%S' has zero length, ignored",
+		   ajSeqGetUsa(thys));
 	    ajDebug("seqRead: (e2) seqReadFmt stat == EMPTY *try again*\n");
 	    break;
 	default:
@@ -1800,6 +1804,8 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 	    ajDebug("seqRead: (d3) seqReadFmt stat == EOF *failed*\n");
 	    return ajFalse;			/* we already tried again */
 	case FMT_EMPTY:
+	    ajWarn("Sequence '%S' has zero length, ignored",
+		   ajSeqGetUsa(thys));
 	    ajDebug("seqRead: (e3) seqReadFmt stat == EMPTY *try again*\n");
 	    break;
 	default:
