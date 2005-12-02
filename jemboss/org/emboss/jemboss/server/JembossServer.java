@@ -69,7 +69,10 @@ public class JembossServer
     "PATH=" + embossPath + System.getProperty("path.separator")
             + embossBin,
     "PLPLOT_LIB=" + plplot,
-    "EMBOSS_DATA=" + embossData,
+// cygwin: embossdata application does not like 
+//         EMBOSS_DATA specified - it fails to 
+//         fetch files
+//  "EMBOSS_DATA=" + embossData,
     "HOME=" + homeDirectory,
     "EMBOSSCYGROOT=" + JembossParams.getCygwinRoot()
 //  ,"LD_LIBRARY_PATH=/usr/local/lib"
