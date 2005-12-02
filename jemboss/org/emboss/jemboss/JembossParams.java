@@ -746,7 +746,7 @@ public class JembossParams
 *  @return      cygwin root
 *
 */
-  public String getCygwinRoot()
+  public static String getCygwinRoot()
   {
     return cygwin;
   }
