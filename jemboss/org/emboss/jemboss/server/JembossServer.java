@@ -70,7 +70,8 @@ public class JembossServer
             + embossBin,
     "PLPLOT_LIB=" + plplot,
     "EMBOSS_DATA=" + embossData,
-    "HOME=" + homeDirectory
+    "HOME=" + homeDirectory,
+    "EMBOSSCYGROOT=" + JembossParams.getCygwinRoot()
 //  ,"LD_LIBRARY_PATH=/usr/local/lib"
 // FIX FOR SOME SUNOS OR USE embossEnvironment
 
