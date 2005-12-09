@@ -140,7 +140,7 @@ int main(int argc, char **argv)
 
 	    for(pH=1.0;pH<=14.0;pH+=step)
 	    {
-		H=embIepPhToHConc(pH);
+		H=embIepPhToHconc(pH);
 		if(!termini)
 		    c[EMBIEPAMINO]=c[EMBIEPCARBOXYL]=0;
 		embIepGetProto(K,c,op,H,pro);
@@ -160,7 +160,7 @@ int main(int argc, char **argv)
 	    for(pH=1.0,k=0;pH<=14.0;pH+=GSTEP,++k)
 	    {
 		xa[k]=(float)pH;
-		H=embIepPhToHConc(pH);
+		H=embIepPhToHconc(pH);
 		if(!termini)
 		    c[EMBIEPAMINO]=c[EMBIEPCARBOXYL]=0;
 		embIepGetProto(K,c,op,H,pro);
