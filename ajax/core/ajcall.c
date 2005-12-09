@@ -1,6 +1,4 @@
-#include "ajcall.h"
-#include "ajgraph.h"
-#include "ajstr.h"
+#include "ajax.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>

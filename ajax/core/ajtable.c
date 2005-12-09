@@ -31,11 +31,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "ajmem.h"
-#include "ajassert.h"
-#include "ajtable.h"
-#include "ajstr.h"
-#include "ajmess.h"
+#include "ajax.h"
 
 
 

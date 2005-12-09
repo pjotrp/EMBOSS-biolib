@@ -21,7 +21,8 @@
 ** Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
-#include "ajsys.h"
+#include "ajax.h"
+
 #ifndef __VMS
 #include <termios.h>
 #endif

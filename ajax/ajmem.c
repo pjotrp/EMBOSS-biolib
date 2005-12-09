@@ -24,12 +24,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "ajdefine.h"
-#include "ajassert.h"
-#include "ajexcept.h"
-#include "ajmem.h"
-
-extern void ajDebug(char *fmt, ...);
+#include "ajax.h"
 
 static const Except_T Mem_Failed =
 {
