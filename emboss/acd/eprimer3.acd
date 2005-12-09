@@ -237,7 +237,7 @@ section: additional [
     integer: osize  [
       additional: "$(primer)"
       default: "20"
-      minimum: "1"
+      minimum: "0"
       information: "Primer optimum size"
       help: "Optimum length (in bases) of a primer oligo. EPrimer3
              will attempt to pick primers close to this length."
