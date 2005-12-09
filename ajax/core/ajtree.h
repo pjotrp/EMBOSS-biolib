@@ -62,13 +62,14 @@ AjPTree ajTreeNew(void);
 AjPTree ajTreestrCopy(const AjPTree thys);
 void    ajTreestrDel(AjPTree* pthis);
 void    ajTreestrFree(AjPTree* pthis);
+ajint   ajTreestrLength(const AjPTree thys);
 void    ajTreestrMap(AjPTree thys, void apply(AjPStr* x, void* cl), void* cl);
 AjPTree ajTreestrNew(void);
 ajint   ajTreestrToArray(const AjPTree thys, AjPStr** array);
 ajint   ajTreeToArray(const AjPTree thys, void*** array);
 void    ajTreeTrace(const AjPTree thys);
 
-void    ajTreeDummyFunction();
+void    ajTreeDummyFunction(void);
 
 #endif
 
