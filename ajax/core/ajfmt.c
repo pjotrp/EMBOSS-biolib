@@ -48,11 +48,6 @@
 #include <ctype.h>
 #include <math.h>
 #include "ajax.h"
-#include "ajfmt.h"
-#include "ajtime.h"
-#include "ajexcept.h"
-#include "ajstr.h"
-#include "ajfile.h"
 
 
 
