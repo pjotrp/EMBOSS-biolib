@@ -4837,8 +4837,6 @@ void ajSeqWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix)
 
     seqWriteSeq(outseq, sf);
 
-    ajSeqoutDel(&outseq);
-
     return;
 }
 
@@ -4883,8 +4881,6 @@ void ajSssWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix)
     sf->width  = 60;
 
     seqWriteSeq(outseq, sf);
-
-    ajSeqoutDel(&outseq);
 
     return;
 }
