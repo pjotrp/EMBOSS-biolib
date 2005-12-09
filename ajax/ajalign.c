@@ -2809,6 +2809,34 @@ void ajAlignSetScoreI(AjPAlign thys, ajint score)
 
 
 
+/* @func ajAlignSetScoreL *****************************************************
+**
+** Defines alignment score
+**
+** @param [u] thys [AjPAlign] Alignment object
+** @param [r] score [ajlong] score
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajAlignSetScoreL(AjPAlign thys, ajlong score)
+{
+    static AjPStr tmpstr = NULL;
+    AlignPData data = NULL;
+
+    ajListLast(thys->Data, (void**) &data);
+    ajFmtPrintS(&tmpstr, "%Ld", score);
+    ajStrAssS(&data->Score, tmpstr);
+
+    ajDebug("ajAlignSetScoreI: %Ld '%S' %d\n",
+	    score, data->Score, data->LenAli);
+
+    return;
+}
+
+
+
+
 /* @func ajAlignSetScoreR *****************************************************
 **
 ** Defines alignment score
