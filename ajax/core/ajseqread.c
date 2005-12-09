@@ -540,7 +540,8 @@ void ajSeqinDel(AjPSeqin* pthis)
     ajStockholmDel(&thys->Stockholm);
     ajSeqQueryDel(&thys->Query);
 
-    ajFileBuffDel(&thys->Filebuff);
+    if(thys->Filebuff)
+	ajFileBuffDel(&thys->Filebuff);
 
     if(thys->Fttable)
 	ajFeattableDel(&thys->Fttable);
@@ -779,7 +780,7 @@ AjBool ajSeqAllRead(AjPSeq thys, AjPSeqin seqin)
     {
 	/* Failed, but we have a list still - keep trying it */
 
-        ajErr("Unable to read sequence '%S'", seqin->Usa);
+        ajErr("Failed to read sequence '%S'", seqin->Usa);
 
 	ajListPop(seqin->List, (void**) &node);
 	ajDebug("++try again: pop from list '%S'\n", node->Usa);
@@ -804,7 +805,7 @@ AjBool ajSeqAllRead(AjPSeq thys, AjPSeqin seqin)
     if(!ret)
     {
       if(listdata)
-	ajErr("Unable to read sequence '%S'", seqin->Usa);
+	ajErr("Failed to read sequence '%S'", seqin->Usa);
       return ajFalse;
     }
 
@@ -965,6 +966,7 @@ void ajSeqinClear(AjPSeqin thys)
 
     if(thys->Filebuff)
 	ajFileBuffDel(&thys->Filebuff);
+
     if(thys->Filebuff)
 	ajFatal("ajSeqinClear did not delete Filebuff");
 
@@ -1131,7 +1133,7 @@ AjBool ajSeqRead(AjPSeq thys, AjPSeqin seqin)
     {
 	/* Failed, but we have a list still - keep trying it */
         if(listdata)
-	    ajErr("Unable to read sequence '%S'", seqin->Usa);
+	    ajErr("Failed to read sequence '%S'", seqin->Usa);
 
 	listdata = ajTrue;
 	ajListPop(seqin->List,(void**) &node);
@@ -1157,7 +1159,7 @@ AjBool ajSeqRead(AjPSeq thys, AjPSeqin seqin)
     if(!ret)
     {
 	if(listdata)
-	    ajErr("Unable to read sequence '%S'", seqin->Usa);
+	    ajErr("Failed to read sequence '%S'", seqin->Usa);
 
 	return ajFalse;
     }
@@ -6864,7 +6866,7 @@ static AjBool seqReadAbi(AjPSeq thys, AjPSeqin seqin)
     }
 
     if(seqin->Text)
-	ajWarn("Unable to read text from binary ABI file %F", fp);
+	ajWarn("Failed to read text from binary ABI file %F", fp);
 
     filestat = ajFileSeek(fp,0L,0);
     ajDebug("filestat %d\n", filestat);
@@ -7845,7 +7847,7 @@ static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
 		if(accstat)
 		    return ajTrue;
 	    }
-	    ajErr("failed to open filename '%S'", qry->Filename);
+	    ajErr("Failed to open filename '%S'", qry->Filename);
 	    return ajFalse;
 	}
 	else			  /* dbstat and regstat both failed */
@@ -8046,7 +8048,7 @@ static AjBool seqListProcess(AjPSeq seq, AjPSeqin seqin, const AjPStr listfile)
     file = ajFileNewIn(listfile);
     if(!file)
     {
-	ajErr("unable to open list file '%S'", listfile);
+	ajErr("Failed to open list file '%S'", listfile);
 	depth--;
 	return ret;
     }
@@ -9101,7 +9103,7 @@ AjBool ajSeqParseFasta(const AjPStr instr, AjPStr* id, AjPStr* acc,
         ajStrAssC(sv, "");
 	ajStrToken(desc, &handle, "\n\r");
     }
-    else
+    else if(ok)
     {
         ajStrAssC(acc, "");
         ajStrAssC(sv, "");
