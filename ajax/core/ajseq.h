@@ -89,6 +89,7 @@ void         ajSeqAssDescC (AjPSeq thys, const char* text);
 void         ajSeqAssEntry (AjPSeq thys, const AjPStr str);
 void         ajSeqAssEntryC (AjPSeq thys, const char* text);
 void         ajSeqAssFile (AjPSeq thys, const AjPStr str);
+void         ajSeqAssFileC(AjPSeq thys, const char* text);
 void         ajSeqAssFull (AjPSeq thys, const AjPStr str);
 void         ajSeqAssFullC (AjPSeq thys, const char* text);
 void         ajSeqAssGi (AjPSeq thys, const AjPStr str);

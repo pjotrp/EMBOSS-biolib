@@ -115,6 +115,7 @@ void              ajVErr (const char *format, va_list args) ; /* error message
 								 and
 								 write to log
 								 file */
+void              ajVUser(const char *format, va_list args);
 void              ajVWarn (const char *format, va_list args) ; /* warning
 								  message */
 void              ajWarn (const char *format, ...); /* warning message */
@@ -139,9 +140,11 @@ ajint             ajMessErrorCount (void);
 
 #include <setjmp.h>
 
-const jmp_buf*          ajMessCatchCrash (const jmp_buf* ) ;
-const jmp_buf*          ajMessCatchError (const jmp_buf* ) ;
+const jmp_buf*    ajMessCatchCrash (const jmp_buf* ) ;
+const jmp_buf*    ajMessCatchError (const jmp_buf* ) ;
 char*             ajMessCaughtMessage (void) ;
+
+void              ajMessInvokeDebugger(void);
 
   /* if a setjmp() stack context is set using ajMessCatch*() then rather than
      exiting or giving an error message, ajMessCrash() and messError() will
