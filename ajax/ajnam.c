@@ -667,7 +667,7 @@ AjBool ajNamDbDetails(const AjPStr name, AjPStr* type, AjBool* id,
     {
 	/* ajDebug("  '%S' found\n", name); */
 
-	ajStrAss(defined, fnew->file);
+	ajStrAssS(defined, fnew->file);
 
 	dbattr = (AjPStr *) fnew->data;
 	for(i=0; namDbAttrs[i].Name; i++)
@@ -1920,7 +1920,7 @@ void ajNamInit(const char* prefix)
     ajFmtPrintS(&namRootStr, "%s/share/%S/%s.default",
 		 namInstallRoot, prefixCap, prefix);
     prefixRootFile = ajFileNewIn(namRootStr);
-    ajFmtPrintS(&basename, "%s.default", prefix);
+    ajStrAssC(&basename, "global");
     
     /* look for $(PREFIX)_ROOT/../emboss.default */
     
@@ -1929,7 +1929,7 @@ void ajNamInit(const char* prefix)
 	/* try original directory */
 	ajFmtPrintS(&namRootStr, "%s/%s.default", prefixRoot, prefix);
 	prefixRootFile = ajFileNewIn(namRootStr);
-	ajFmtPrintS(&basename, "%s/%s.default", prefix, prefix);
+	ajStrAssC(&basename, "source");
     }
     
     if(namFileOrig)
@@ -1964,7 +1964,7 @@ void ajNamInit(const char* prefix)
 	prefixRootFile = ajFileNewIn(namRootStr);
 	if(prefixRootFile)
 	{
-	    ajFmtPrintS(&basename, "EMBOSSRC/.%src", prefix);
+	    ajStrAssC(&basename, "special");
 	    ajStrAppC(&namFileOrig, "(OK)");
 	    namProcessFile(prefixRootFile, basename);
 	    ajFileClose(&prefixRootFile);
@@ -1997,7 +1997,7 @@ void ajNamInit(const char* prefix)
 	    ajStrAppC(&namFileOrig, ", ");
 	ajStrApp(&namFileOrig, namRootStr);
 
-	ajFmtPrintS(&basename, ".%src", prefix);
+	ajStrAssC(&basename, "user");
 	prefixRootFile = ajFileNewIn(namRootStr);
 	if(prefixRootFile)
 	{
