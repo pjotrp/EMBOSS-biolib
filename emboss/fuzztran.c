@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 
     AjPStr *lframe;
     AjPStr *lgcode;
-    AjPTrn ttable;
+    AjPTrn trantable;
     AjPStr frame;
     ajint  table;
     AjPStr pro = NULL;
@@ -109,8 +109,8 @@ int main(int argc, char **argv)
 
     frame = lframe[0];
     ajStrToInt(lgcode[0],&table);
-    ttable = ajTrnNewI(table);
 
+    trantable = ajTrnNewI(table);
 
     plen = ajStrLen(pattern);
     ajStrAssC(&opattern,ajStrStr(pattern));
@@ -136,7 +136,7 @@ int main(int argc, char **argv)
 
 	if(!ajStrCmpC(frame,"F"))
 	{
-	    ajTrnStrFrame(ttable,text,1,&pro);
+	    ajTrnStrFrame(trantable,text,1,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
 			     plen,mismatch,amino,carboxyl,buf,off,sotable,
 			     solimit,regexp,skipm,&hits,m,&tidy);
@@ -145,7 +145,7 @@ int main(int argc, char **argv)
 
 	    ajStrAssC(&pro,"");
 
-	    ajTrnStrFrame(ttable,text,2,&pro);
+	    ajTrnStrFrame(trantable,text,2,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
 			     plen,mismatch,amino,carboxyl,buf,off,sotable,
 			     solimit,regexp,skipm,&hits,m,&tidy);
@@ -154,7 +154,7 @@ int main(int argc, char **argv)
 
 	    ajStrAssC(&pro,"");
 
-	    ajTrnStrFrame(ttable,text,3,&pro);
+	    ajTrnStrFrame(trantable,text,3,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
 			     plen,mismatch,amino,carboxyl,buf,off,sotable,
 			     solimit,regexp,skipm,&hits,m,&tidy);
@@ -165,7 +165,7 @@ int main(int argc, char **argv)
 	}
 	else if(!ajStrCmpC(frame,"R"))
 	{
-	    ajTrnStrFrame(ttable,text,-1,&pro);
+	    ajTrnStrFrame(trantable,text,-1,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
 			     plen,mismatch,amino,carboxyl,buf,off,sotable,
 			     solimit,regexp,skipm,&hits,m,&tidy);
@@ -174,7 +174,7 @@ int main(int argc, char **argv)
 
 	    ajStrAssC(&pro,"");
 
-	    ajTrnStrFrame(ttable,text,-2,&pro);
+	    ajTrnStrFrame(trantable,text,-2,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
 			     plen,mismatch,amino,carboxyl,buf,off,sotable,
 			     solimit,regexp,skipm,&hits,m,&tidy);
@@ -183,7 +183,7 @@ int main(int argc, char **argv)
 
 	    ajStrAssC(&pro,"");
 
-	    ajTrnStrFrame(ttable,text,-3,&pro);
+	    ajTrnStrFrame(trantable,text,-3,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
 			     plen,mismatch,amino,carboxyl,buf,off,sotable,
 			     solimit,regexp,skipm,&hits,m,&tidy);
@@ -194,7 +194,7 @@ int main(int argc, char **argv)
 	}
 	else if(!ajStrCmpC(frame,"6"))
 	{
-	    ajTrnStrFrame(ttable,text,1,&pro);
+	    ajTrnStrFrame(trantable,text,1,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
 			     plen,mismatch,amino,carboxyl,buf,off,sotable,
 			     solimit,regexp,skipm,&hits,m,&tidy);
@@ -203,7 +203,7 @@ int main(int argc, char **argv)
 
 	    ajStrAssC(&pro,"");
 
-	    ajTrnStrFrame(ttable,text,2,&pro);
+	    ajTrnStrFrame(trantable,text,2,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
 			     plen,mismatch,amino,carboxyl,buf,off,sotable,
 			     solimit,regexp,skipm,&hits,m,&tidy);
@@ -212,7 +212,7 @@ int main(int argc, char **argv)
 
 	    ajStrAssC(&pro,"");
 
-	    ajTrnStrFrame(ttable,text,3,&pro);
+	    ajTrnStrFrame(trantable,text,3,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
 			     plen,mismatch,amino,carboxyl,buf,off,sotable,
 			     solimit,regexp,skipm,&hits,m,&tidy);
@@ -221,7 +221,7 @@ int main(int argc, char **argv)
 
 	    ajStrAssC(&pro,"");
 
-	    ajTrnStrFrame(ttable,text,-1,&pro);
+	    ajTrnStrFrame(trantable,text,-1,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
 			     plen,mismatch,amino,carboxyl,buf,off,sotable,
 			     solimit,regexp,skipm,&hits,m,&tidy);
@@ -230,7 +230,7 @@ int main(int argc, char **argv)
 
 	    ajStrAssC(&pro,"");
 
-	    ajTrnStrFrame(ttable,text,-2,&pro);
+	    ajTrnStrFrame(trantable,text,-2,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
 			     plen,mismatch,amino,carboxyl,buf,off,sotable,
 			     solimit,regexp,skipm,&hits,m,&tidy);
@@ -239,7 +239,7 @@ int main(int argc, char **argv)
 
 	    ajStrAssC(&pro,"");
 
-	    ajTrnStrFrame(ttable,text,-3,&pro);
+	    ajTrnStrFrame(trantable,text,-3,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
 			     plen,mismatch,amino,carboxyl,buf,off,sotable,
 			     solimit,regexp,skipm,&hits,m,&tidy);
@@ -251,7 +251,7 @@ int main(int argc, char **argv)
 	else
 	{
 	    ajStrToInt(frame,&frameno);
-	    ajTrnStrFrame(ttable,text,frameno,&pro);
+	    ajTrnStrFrame(trantable,text,frameno,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
 			     plen,mismatch,amino,carboxyl,buf,off,sotable,
 			     solimit,regexp,skipm,&hits,m,&tidy);
@@ -287,6 +287,8 @@ int main(int argc, char **argv)
 
     ajReportClose(report);
     ajReportDel(&report);
+
+    ajTrnDel(&trantable);
     ajExit();
 
     return 0;
