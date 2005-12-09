@@ -89,7 +89,8 @@ static const char* nexusDistancesTriangle[] = {
     NULL
 };
 
-static AjBool               nexusBlockSave(AjPNexus thys, AjPList list,
+static void                nexusArrayDel(AjPStr** pthis);
+static AjBool              nexusBlockSave(AjPNexus thys, AjPList list,
 					  const AjPStr blockname);
 static AjBool              nexusCommand(AjPList list, AjPStr* command,
 					AjPStr* cmdstr);
@@ -2289,7 +2290,7 @@ static AjBool nexusSetSequences(AjPNexus thys)
 	    if (!seqstr)
 	    {
 		ajErr("Unknown taxon '%S' in nexus data", taxlabel);
-		ajStrArrayDel(&thys->Characters->Sequences);
+		nexusArrayDel(&thys->Characters->Sequences);
 		ajTableFree(&seqtab);
 		return ajFalse;
 	    }
@@ -2325,7 +2326,7 @@ static AjBool nexusSetSequences(AjPNexus thys)
 		    thys->Taxa->TaxLabels[i],
 		    ajStrLen(thys->Characters->Sequences[i]),
 		    thys->Characters->Nchar);
-		ajStrArrayDel(&thys->Characters->Sequences);
+		nexusArrayDel(&thys->Characters->Sequences);
 		ajTableFree(&seqtab);
 	    return ajFalse;
 	}
@@ -2335,3 +2336,40 @@ static AjBool nexusSetSequences(AjPNexus thys)
 
     return ajTrue;
 }
+
+
+/* @funcstatic nexusArrayDel **************************************************
+**
+** Default destructor for AJAX string arrays.
+** Called for each element in the array, which must end with a NULL.
+**
+** If the given string is NULL, or a NULL pointer, simply returns.
+**
+** @param  [d] pthis [AjPStr**] Pointer to the string array to be deleted.
+**         The pointer is always deleted.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void nexusArrayDel(AjPStr** pthis)
+{
+    AjPStr* thys;
+    ajint i;
+
+    thys = pthis ? *pthis : 0;
+
+    if(!pthis)
+	return;
+
+    if(!*pthis)
+	return;
+
+    for (i=0; (*pthis)[i];i++)
+    {
+	ajStrDel(&(*pthis)[i]);
+    }
+
+    AJFREE(*pthis);
+    return;
+}
+
