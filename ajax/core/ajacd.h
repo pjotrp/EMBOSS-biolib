@@ -84,6 +84,7 @@ void          ajAcdProgramS (AjPStr* pgm);
 AjBool        ajAcdSetControl (const char* optionName);
 AjBool        ajAcdStdout (void);
 AjPStr        ajAcdValue (const char* token);
+void ajAcdDummyFunction(void);
 
 #endif
 
