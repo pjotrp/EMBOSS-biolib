@@ -598,10 +598,16 @@ void ajMatrixfChar(const AjPMatrixf thys, ajint i, AjPStr *label)
 
 const AjPStr ajMatrixName(const AjPMatrix thys)
 {
-    if(thys)
-	return thys->Name;
-    else
-	return ajStrNull();
+    static AjPStr emptystr = NULL;
+
+    if(!thys)
+    {
+	if (!emptystr)
+	    emptystr = ajStrNewC("");
+	return emptystr;
+    }
+
+    return thys->Name;
 }
 
 
@@ -619,13 +625,16 @@ const AjPStr ajMatrixName(const AjPMatrix thys)
 
 const AjPStr ajMatrixfName(const AjPMatrixf thys)
 {
-    if(thys)
-	return thys->Name;
-    else
-	return ajStrNull();
+    static AjPStr emptystr = NULL;
+
+    if(!thys)
+    {
+	emptystr = ajStrNewC("");
+	return emptystr;
+    }
+
+    return thys->Name;
 }
-
-
 
 
 /* @func ajMatrixRead *********************************************************
