@@ -8273,7 +8273,7 @@ CL -auto ../../data/abiview.abi test.out
 FI test.out
 FZ = 0
 FI stderr
-FP /Warning: Unable to read text from binary ABI file ..\/..\/data\/abiview.abi/
+FP /Warning: Failed to read text from binary ABI file ..\/..\/data\/abiview.abi/
 FP 1 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -11405,8 +11405,8 @@ FZ = 112
 FP 0 /Warning: /
 FP 2 /Error: /
 FP 0 /Died: /
-FP /^Error: failed to open filename '\.\.\/\.\.\/data\/alignc\.prot'\n/
-FP /^Error: Unable to read sequence '\.\.\/\.\.\/data\/alignc\.prot'\n/
+FP /^Error: Failed to open filename '\.\.\/\.\.\/data\/alignc\.prot'\n/
+FP /^Error: Failed to read sequence '\.\.\/\.\.\/data\/alignc\.prot'\n/
 FI test.out
 FP 3 /^ID   .* AA\.\n/
 FP /^SQ   SEQUENCE    56 AA;   6466 MW;  48CB2E252357CBF6 CRC64;/
@@ -11417,7 +11417,7 @@ AP seqret
 CL -auto @../../data/ugly.list test.out -osf embl
 FI stderr
 FZ = 46
-FP /^Error: Unable to read sequence 'tembl:eclacj'\n/
+FP /^Error: Failed to read sequence 'tembl:eclacj'\n/
 FP 0 /Warning: /
 FP 1 /Error: /
 FP 0 /Died: /
@@ -11431,7 +11431,7 @@ AP seqret
 CL -auto @../../data/uglyfirst.list test.out -osf embl
 FI stderr
 FZ = 46
-FP /^Error: Unable to read sequence 'tembl:eclacj'\n/
+FP /^Error: Failed to read sequence 'tembl:eclacj'\n/
 FP 0 /Warning: /
 FP 1 /Error: /
 FP 0 /Died: /
@@ -11445,7 +11445,7 @@ AP seqret
 CL -auto @../../data/uglylast.list test.out -osf embl
 FI stderr
 FZ = 46
-FP /^Error: Unable to read sequence 'tembl:eclacj'\n/
+FP /^Error: Failed to read sequence 'tembl:eclacj'\n/
 FP 0 /Warning: /
 FP 1 /Error: /
 FP 0 /Died: /
@@ -11459,9 +11459,9 @@ AP seqret
 CL -auto @../../data/uglyall.list test.out -osf embl
 FI stderr
 FZ = 138
-FP /^Error: Unable to read sequence 'tembl:eclacj'\n/
-FP /^Error: Unable to read sequence 'tembl:eclack'\n/
-FP /^Error: Unable to read sequence 'tembl:eclacl'\n/
+FP /^Error: Failed to read sequence 'tembl:eclacj'\n/
+FP /^Error: Failed to read sequence 'tembl:eclack'\n/
+FP /^Error: Failed to read sequence 'tembl:eclacl'\n/
 FP 0 /Warning: /
 FP 3 /Error: /
 FP 0 /Died: /
