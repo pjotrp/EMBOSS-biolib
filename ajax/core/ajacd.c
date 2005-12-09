@@ -5647,7 +5647,7 @@ static void acdSetBool(AcdPAcd thys)
 	acdBadRetry(thys);
 
     thys->Value = val;
-    ajStrAssC(&thys->ValStr, ajStrBool(*val));
+    ajFmtPrintS(&thys->ValStr, "%B", *val);
 
     acdSetQualAppl(thys, *val);		/* check special application
 					   booleans */
@@ -10211,8 +10211,8 @@ static void acdSetSeq(AcdPAcd thys)
 	}
     }
     
-    acdLog("sbegin: %d, send: %d, sreverse: %s\n",
-	   sbegin, send, ajStrBool(sreverse));
+    acdLog("sbegin: %d, send: %d, sreverse: %B\n",
+	   sbegin, send, sreverse);
     
     if(val->Rev)
 	ajSeqReverse(val);
@@ -10497,8 +10497,8 @@ static void acdSetSeqall(AcdPAcd thys)
     if(val->Rev)
 	ajSeqallReverse(val);
     
-    acdLog("sbegin: %d, send: %d, sreverse: %s\n",
-	   sbegin, send, ajStrBool(sreverse));
+    acdLog("sbegin: %d, send: %d, sreverse: %B\n",
+	   sbegin, send, sreverse);
     
     /* sequences have special set attributes */
     
@@ -10765,8 +10765,8 @@ static void acdSetSeqsetall(AcdPAcd thys)
 	}
     }
     
-    acdLog("sbegin: %d, send: %d, sreverse: %s\n",
-	   sbegin, send, ajStrBool(sreverse));
+    acdLog("sbegin: %d, send: %d, sreverse: Bs\n",
+	   sbegin, send, sreverse);
     
     if(aligned)
 	for(iset=0;iset<nsets;iset++)
@@ -11599,8 +11599,8 @@ static void acdSetSeqset(AcdPAcd thys)
 	}
     }
     
-    acdLog("sbegin: %d, send: %d, sreverse: %s\n",
-	   sbegin, send, ajStrBool(sreverse));
+    acdLog("sbegin: %d, send: %d, sreverse: %B\n",
+	   sbegin, send, sreverse);
     
     if(aligned)
 	ajSeqsetFill(val);
@@ -11909,7 +11909,7 @@ static void acdSetToggle(AcdPAcd thys)
 	acdBadRetry(thys);
 
     thys->Value = val;
-    ajStrAssC(&thys->ValStr, ajStrBool(*val));
+    ajFmtPrintS(&thys->ValStr, "%B", *val);
 
     acdLog("acdSetToggle -%S val: %B\n", thys->Name, *val);
 
@@ -14070,13 +14070,13 @@ static void acdListReport(const char* title)
 	    acdLog("   Key Type: %d   (%s)\n", pa->Type,
 		   acdKeywords[pa->Type].Name);
 	acdLog("      NAttr: %d\n", pa->NAttr);
-	acdLog("      Assoc: %s\n", ajStrBool(pa->Assoc));
+	acdLog("      Assoc: %B\n", pa->Assoc);
 
 	if(pa->AssocQuals)
 	    acdLog(" AssocQuals: %S\n", pa->AssocQuals->Name);
 	else
 	    acdLog(" AssocQuals: <undefined>\n");
-	acdLog("    Defined: %s\n", ajStrBool(pa->Defined));
+	acdLog("    Defined: %B\n", pa->Defined);
 	acdLog("Orig. Value: '%S'\n", pa->OrigStr);
 
 	if(pa->ValStr)
