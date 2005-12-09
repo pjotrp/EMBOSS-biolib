@@ -1395,6 +1395,8 @@ ajint embDbiSortWriteFields(const AjPStr dbname, const AjPStr release,
     ajFileClose(&trgFile);
     ajFileClose(&hitFile);
 
+    ajStrDel(&field);
+
     return itoken;
 }
 
@@ -1542,6 +1544,8 @@ ajint embDbiMemWriteFields(const AjPStr dbname,const  AjPStr release,
 
     ajFileClose(&trgFile);
     ajFileClose(&hitFile);
+
+    ajStrDel(&field);
 
     return itoken;
 }
