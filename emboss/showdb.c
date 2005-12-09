@@ -24,16 +24,34 @@
 
 
 
+static void showdb_DBWidth (const AjPStr dbname, const AjPStr type,
+			    const AjPStr methods, 
+			    const AjPStr defined, const AjPStr release,
+			    ajint *maxname, ajint *maxtype, ajint *maxmethod,
+			    ajint *maxfield, ajint* maxdefined,
+			    ajint *maxrelease);
+static void showdb_DBHead (AjPFile outfile, AjBool html, AjBool dotype,
+			   AjBool doid, AjBool doqry, AjBool doall,
+			   AjBool domethod, AjBool dofields, AjBool dodefined,
+			   AjBool docomment, AjBool dorelease,
+			   ajint maxname, ajint maxtype, ajint maxmethod, 
+			   ajint maxfield, ajint maxdefined, ajint maxrelease);
 
 static void showdb_DBOut(AjPFile outfile,
 			 const AjPStr dbname, const AjPStr type,
 			 AjBool id, AjBool qry, AjBool all,
-			 const AjPStr comment,
-			 const AjPStr release, AjBool html, AjBool dotype,
+			 const AjPStr methods, const AjPStr defined,
+			 const AjPStr comment, const AjPStr release,
+			 AjBool html, AjBool dotype,
 			 AjBool doid, AjBool doqry, AjBool doall,
-			 AjBool dofields, AjBool docomment, AjBool dorelease);
+			 AjBool domethod, AjBool dofields, AjBool dodefined,
+			 AjBool docomment, AjBool dorelease,
+			 ajint maxname, ajint maxtype, ajint maxmethod,
+			 ajint maxfield, ajint maxdefined,
+			 ajint maxrelease);
 
 static AjPStr showdb_GetFields(const AjPStr dbname);
+int showdb_DBSortDefined(const void* str1, const void* str2);
 
 
 
@@ -54,9 +72,11 @@ int main(int argc, char **argv)
     AjBool doid;
     AjBool doqry;
     AjBool doall;
+    AjBool domethod;
     AjBool dofields;
-    AjBool docomment;
+    AjBool dodefined;
     AjBool dorelease;
+    AjBool docomment;
     AjBool only;
 
     AjPFile outfile = NULL;
@@ -65,11 +85,20 @@ int main(int argc, char **argv)
     AjBool id;
     AjBool qry;
     AjBool all;
-    AjPStr comment = NULL;
+    AjPStr methods = NULL;
+    AjPStr defined = NULL;
     AjPStr release = NULL;
+    AjPStr comment = NULL;
 
     AjPList dbnames;
     AjIList iter = NULL;
+
+    ajint maxname = 14;
+    ajint maxmethod = 6;
+    ajint maxfield = 6;
+    ajint maxtype = 4;
+    ajint maxdefined = 7;
+    ajint maxrelease = 7;
 
     ajNamSetControl("namvalid");	/* validate database/resource defs */
 
@@ -88,6 +117,8 @@ int main(int argc, char **argv)
     doqry     = ajAcdGetBool("query");
     doall     = ajAcdGetBool("all");
     dofields  = ajAcdGetBool("fields");
+    dodefined = ajAcdGetBool("defined");
+    domethod  = ajAcdGetBool("methods");
     docomment = ajAcdGetBool("comment");
     dorelease = ajAcdGetBool("release");
     only      = ajAcdGetBool("only");
@@ -101,113 +132,33 @@ int main(int argc, char **argv)
 		    "\"#FFFFF0\">\n");
     
     
-    /* print the header information */
-    if(doheader)
-    {
-	if(html)
-	    /* start the HTML table title line and output the Name header */
-	    ajFmtPrintF(outfile, "<tr><th>Name</th>");
-	else
-	    ajFmtPrintF(outfile, "%-14.13s", "# Name");
-
-	if(dotype)
-	{
-	    if(html)
-		ajFmtPrintF(outfile, "<th>Type</th>");
-	    else
-		ajFmtPrintF(outfile, "Type ");
-	}
-
-	if(doid)
-	{
-	    if(html)
-		ajFmtPrintF(outfile, "<th>ID</th>");
-	    else
-		ajFmtPrintF(outfile, "ID  ");
-	}
-
-	if(doqry)
-	{
-	    if(html)
-		ajFmtPrintF(outfile, "<th>Qry</th>");
-	    else
-		ajFmtPrintF(outfile, "Qry ");
-	}
-
-	if(doall)
-	{
-	    if(html)
-		ajFmtPrintF(outfile, "<th>All</th>");
-	    else
-		ajFmtPrintF(outfile, "All ");
-	}
-
-	if(dofields)
-	{
-	    if(html)
-		ajFmtPrintF(outfile, "<th>Fields</th>");
-	    else
-		ajFmtPrintF(outfile, "Fields ");
-	}
-
-	if(dorelease)
-	{
-	    if(html)
-		ajFmtPrintF(outfile, "<th>Release</th>");
-	    else
-		ajFmtPrintF(outfile, "Release\t");
-	}
-
-	if(docomment)
-	{
-	    if(html)
-		ajFmtPrintF(outfile, "<th>Comment</th>");
-	    else
-		ajFmtPrintF(outfile, "Comment");
-	}
-
-	if(html)
-	    /* end the HTML table title line */
-	    ajFmtPrintF(outfile, "</tr>\n");
-	else
-	{
-	    ajFmtPrintF(outfile, "\n");
-
-	    ajFmtPrintF(outfile, "%-14.13s", "# ====");
-	    if(dotype)
-		ajFmtPrintF(outfile, "==== ");
-
-	    if(doid)
-		ajFmtPrintF(outfile, "==  ");
-
-	    if(doqry)
-		ajFmtPrintF(outfile, "=== ");
-
-	    if(doall)
-		ajFmtPrintF(outfile, "=== ");
-
-	    if(dofields)
-		ajFmtPrintF(outfile, "====== ");
-
-	    if(dorelease)
-		ajFmtPrintF(outfile, "=======\t");
-
-	    if(docomment)
-		ajFmtPrintF(outfile, "=======");
-
-	    ajFmtPrintF(outfile, "\n");
-	}
-    }
-    
-    
     /* Just one specified name to get details on? */
     if(ajStrLen(dbname))
     {
 	if(ajNamDbDetails(dbname, &type, &id, &qry, &all, &comment,
-			  &release))
-	    showdb_DBOut(outfile, dbname, type, id, qry, all, comment,
-			 release, html, dotype, doid, doqry, doall, 
-			 dofields, docomment, dorelease);
+			  &release, &methods, &defined))
+	    showdb_DBWidth(dbname, type, methods, defined, release,
+			   &maxname, &maxtype, &maxmethod,
+			   &maxfield, &maxdefined, &maxrelease);
+
+	/* print the header information */
+	if(doheader)
+	{
+	    showdb_DBHead(outfile, html, dotype, doid, doqry,
+			  doall, domethod, dofields, dodefined,
+			  docomment, dorelease,
+			  maxname, maxtype, maxmethod, maxfield,
+			  maxdefined, maxrelease);
+    
+    	    showdb_DBOut(outfile, dbname, type, id, qry, all,
+			 methods, defined,
+			 comment, release, html,
+			 dotype, doid, doqry, doall, 
+			 domethod, dofields, dodefined,
+			 docomment, dorelease,
+			 maxname, maxtype,
+			 maxmethod, maxfield, maxdefined, maxrelease);
+	}
 	else
 	    ajFatal("The database '%S' does not exist", dbname);
     }
@@ -217,21 +168,53 @@ int main(int argc, char **argv)
 	ajNamListListDatabases(dbnames);
 
 	/* sort it */
-	ajListSort(dbnames, ajStrCmp);
+	/*ajListSort(dbnames, ajStrCmp);*/
+	ajListSort(dbnames, showdb_DBSortDefined);
 
+	/* iterate through the dbnames list */
+	iter = ajListIterRead(dbnames);
+
+	maxname = 14;
+	maxmethod = 6;
+	maxfield = 6;
+	maxtype = 4;
+	maxrelease = 7;
+
+	/* find the field widths */
+	while((dbname = ajListIterNext(iter)) != NULL)
+	{
+	    if(ajNamDbDetails(dbname, &type, &id, &qry, &all, &comment,
+			      &release, &methods, &defined))
+	    showdb_DBWidth(dbname, type, methods, defined, release,
+			   &maxname, &maxtype, &maxmethod,
+			   &maxfield, &maxdefined, &maxrelease);
+	}
+
+	/* print the header information */
+	if(doheader)
+	    showdb_DBHead(outfile, html, dotype, doid, doqry,
+			  doall, domethod, dofields, dodefined,
+			  docomment, dorelease,
+			  maxname, maxtype, maxmethod, maxfield,
+			  maxdefined, maxrelease);
+    
 	/* iterate through the dbnames list */
 	iter = ajListIterRead(dbnames);
 
 	/* write out protein databases */
 	while((dbname = ajListIterNext(iter)) != NULL)
 	    if(ajNamDbDetails(dbname, &type, &id, &qry, &all, &comment,
-			      &release))
+			      &release, &methods, &defined))
 	    {
-		if(!ajStrCmpC(type, "P") && protein)
-		    showdb_DBOut(outfile, dbname, type, id, qry, all,
+		if(protein &&
+		   (ajStrMatchC(type, "P") || ajStrMatchC(type, "Protein")))
+		   showdb_DBOut(outfile, dbname, type, id, qry, all,
+				 methods, defined,
 				 comment, release, html, dotype, doid,
-				 doqry, doall, dofields, docomment, 
-				 dorelease);
+				 doqry, doall, domethod, dofields, dodefined,
+				 docomment, 
+				 dorelease, maxname,maxtype,  maxmethod,
+				 maxfield, maxdefined, maxrelease);
 	    }
 	    else
 		ajFatal("The database '%S' does not exist", dbname);
@@ -245,13 +228,18 @@ int main(int argc, char **argv)
 	while((dbname = ajListIterNext(iter)) != NULL)
 	{
 	    if(ajNamDbDetails(dbname, &type, &id, &qry, &all, &comment,
-			      &release))
+			      &release, &methods, &defined))
 	    {
-		if(!ajStrCmpC(type, "N") && nucleic)
+		if( nucleic &&
+		   (ajStrMatchC(type, "N") || ajStrMatchC(type, "Nucleotide")))
 		    showdb_DBOut(outfile, dbname, type, id, qry, all,
-				 comment, release, html, dotype, doid,
-				 doqry, doall, dofields, docomment, 
-				 dorelease);
+				 methods, defined,
+				 comment, release, html,
+				 dotype, doid,
+				 doqry, doall, domethod, dofields, dodefined,
+				 docomment, dorelease,
+				 maxname, maxtype, maxmethod,
+				 maxfield, maxdefined, maxrelease);
 	    }
 	    else
 		ajFatal("The database '%S' does not exist", dbname);
@@ -273,7 +261,209 @@ int main(int argc, char **argv)
 }
 
 
+/* @funcstatic showdb_DBWidth *************************************************
+**
+** Update maximum width for variable length text
+**
+** @param [r] dbname [const AjPStr] database name
+** @param [r] type [const AjPStr] database type
+** @param [r] methods [const AjPStr] database access method(s)
+** @param [r] defined [const AjPStr] database definition file short name
+** @param [r] release [const AjPStr] database release number
+** @param [u] maxname [ajint*] Maximum width for name
+** @param [u] maxtype [ajint*] Maximum width for type
+** @param [u] maxmethod [ajint*] Maximum width for list of access methods
+** @param [u] maxfield [ajint*] Maximum width for list of fields
+** @param [u] maxdefined [ajint*] Maximum width for definition file
+** @param [u] maxrelease [ajint*] Maximum width for release number
+******************************************************************************/
 
+static void showdb_DBWidth (const AjPStr dbname,
+			    const AjPStr type, const AjPStr methods,
+			    const AjPStr defined, const AjPStr release,
+			    ajint *maxname, ajint* maxtype, ajint *maxmethod,
+			    ajint *maxfield, ajint* maxdefined,
+			    ajint *maxrelease)
+{
+    ajint i;
+
+    if (ajStrLen(dbname) > *maxname)
+	*maxname = ajStrLen(dbname);
+
+    if (ajStrLen(type) > *maxtype)
+	*maxtype = ajStrLen(type);
+
+    if (ajStrLen(methods) > *maxmethod)
+	*maxmethod = ajStrLen(methods);
+
+    if (ajStrLen(defined) > *maxdefined)
+	*maxdefined = ajStrLen(defined);
+
+    if (ajStrLen(release) > *maxrelease)
+	*maxrelease = ajStrLen(release);
+
+    i = ajStrLen(showdb_GetFields(dbname));
+    if (i > *maxfield)
+	*maxfield = i;
+    return;
+
+    return;
+}
+
+/* @funcstatic showdb_DBHead **************************************************
+**
+** Output header for db information
+**
+** @param [w] outfile [AjPFile] outfile
+** @param [r] html [AjBool] do html
+** @param [r] dotype [AjBool] show type
+** @param [r] doid [AjBool] show id
+** @param [r] doqry [AjBool] show query status
+** @param [r] doall [AjBool] show everything
+** @param [r] domethod [AjBool] show access method(s)
+** @param [r] dofields [AjBool] show query fields
+** @param [r] dodefined [AjBool] show definition file
+** @param [r] docomment [AjBool] show comment
+** @param [r] dorelease [AjBool] show release
+** @param [r] maxname [ajint] Maximum width for name
+** @param [r] maxtype [ajint] Maximum width for type
+** @param [r] maxmethod [ajint] Maximum width for access method
+** @param [r] maxfield [ajint] Maximum width for list of fields
+** @param [r] maxdefined [ajint] Maximum width for definition file
+** @param [r] maxrelease [ajint] Maximum width for release number
+******************************************************************************/
+
+static void showdb_DBHead (AjPFile outfile, AjBool html, AjBool dotype,
+			   AjBool doid, AjBool doqry, AjBool doall,
+			   AjBool domethod, AjBool dofields, AjBool dodefined,
+			   AjBool docomment, AjBool dorelease,
+			   ajint maxname, ajint maxtype, ajint maxmethod,
+			   ajint maxfield, ajint maxdefined, ajint maxrelease)
+{
+
+    if(html)
+	/* start the HTML table title line and output the Name header */
+	ajFmtPrintF(outfile, "<tr><th>Name</th>");
+    else
+	ajFmtPrintF(outfile, "# Name%*s ", maxname-6, maxname-6, " ");
+
+    if(dotype)
+    {
+	if(html)
+	    ajFmtPrintF(outfile, "<th>Type</th>");
+	else
+	    ajFmtPrintF(outfile, "Type%*s ", maxtype-4, " ");
+    }
+
+    if(doid)
+    {
+	if(html)
+	    ajFmtPrintF(outfile, "<th>ID</th>");
+	else
+	    ajFmtPrintF(outfile, "ID  ");
+    }
+
+    if(doqry)
+    {
+	if(html)
+	    ajFmtPrintF(outfile, "<th>Qry</th>");
+	else
+	    ajFmtPrintF(outfile, "Qry ");
+    }
+
+    if(doall)
+    {
+	if(html)
+	    ajFmtPrintF(outfile, "<th>All</th>");
+	else
+	    ajFmtPrintF(outfile, "All ");
+    }
+
+    if(domethod)
+    {
+	if(html)
+	    ajFmtPrintF(outfile, "<th>Method</th>");
+	else
+	    ajFmtPrintF(outfile, "Method%*s ", maxmethod-6, " ");
+    }
+
+    if(dofields)
+    {
+	if(html)
+	    ajFmtPrintF(outfile, "<th>Fields</th>");
+	else
+	    ajFmtPrintF(outfile, "Fields%*s ", maxfield-6, " ");
+    }
+
+    if(dodefined)
+    {
+	if(html)
+	    ajFmtPrintF(outfile, "<th>Defined</th>");
+	else
+	    ajFmtPrintF(outfile, "Defined%*s ", maxdefined-7, " ");
+    }
+
+    if(dorelease)
+    {
+	if(html)
+	    ajFmtPrintF(outfile, "<th>Release</th>");
+	else
+	    ajFmtPrintF(outfile, "Release%*s ", maxrelease-7, " ");
+    }
+
+    if(docomment)
+    {
+	if(html)
+	    ajFmtPrintF(outfile, "<th>Comment</th>");
+	else
+	    ajFmtPrintF(outfile, "Comment");
+    }
+
+    if(html)
+	/* end the HTML table title line */
+	ajFmtPrintF(outfile, "</tr>\n");
+    else
+    {
+	ajFmtPrintF(outfile, "\n");
+	
+	ajFmtPrintF(outfile, "# %.*s ", maxname-2,
+		    "=====================================================");
+	if(dotype)
+	    ajFmtPrintF(outfile, "%.*s ", maxtype,
+			"==================================================");
+
+	if(doid)
+	    ajFmtPrintF(outfile, "==  ");
+
+	if(doqry)
+	    ajFmtPrintF(outfile, "=== ");
+
+	if(doall)
+	    ajFmtPrintF(outfile, "=== ");
+
+	if(domethod)
+	    ajFmtPrintF(outfile, "%.*s ", maxmethod,
+			"==================================================");
+
+	if(dofields)
+	    ajFmtPrintF(outfile, "%.*s ", maxfield,
+			"==================================================");
+
+	if(dodefined)
+	    ajFmtPrintF(outfile, "%.*s ", maxdefined,
+			"==================================================");
+
+	if(dorelease)
+	    ajFmtPrintF(outfile, "%.*s ", maxrelease,
+			"==================================================");
+
+	if(docomment)
+	    ajFmtPrintF(outfile, "=======");
+
+	ajFmtPrintF(outfile, "\n");
+    }
+    return;
+}
 
 /* @funcstatic showdb_DBOut ***************************************************
 **
@@ -285,6 +475,8 @@ int main(int argc, char **argv)
 ** @param [r] id [AjBool] id
 ** @param [r] qry [AjBool] queryable
 ** @param [r] all [AjBool] all info
+** @param [r] methods [const AjPStr] db access method(s)
+** @param [r] defined [const AjPStr] db definition file short name
 ** @param [r] comment [const AjPStr] db comment
 ** @param [r] release [const AjPStr] db release
 ** @param [r] html [AjBool] do html
@@ -292,19 +484,31 @@ int main(int argc, char **argv)
 ** @param [r] doid [AjBool] show id
 ** @param [r] doqry [AjBool] show query status
 ** @param [r] doall [AjBool] show everything
+** @param [r] domethod [AjBool] show access method(s)
 ** @param [r] dofields [AjBool] show query fields
+** @param [r] dodefined [AjBool] show access method(s)
 ** @param [r] docomment [AjBool] show comment
 ** @param [r] dorelease [AjBool] show release
+** @param [r] maxname [ajint] Maximum width for name
+** @param [r] maxtype [ajint] Maximum width for type
+** @param [r] maxmethod [ajint] Maximum width for list of access methods
+** @param [r] maxfield [ajint] Maximum width for list of fields
+** @param [r] maxdefined [ajint] Maximum width for definition file
+** @param [r] maxrelease [ajint] Maximum width for release number
 ** @@
 ******************************************************************************/
 
 static void showdb_DBOut(AjPFile outfile,
 			 const AjPStr dbname, const AjPStr type,
 			 AjBool id, AjBool qry, AjBool all,
-			 const AjPStr comment,
-			 const AjPStr release, AjBool html, AjBool dotype,
+			 const AjPStr methods, const AjPStr defined,
+			 const AjPStr comment, const AjPStr release,
+			 AjBool html, AjBool dotype,
 			 AjBool doid, AjBool doqry, AjBool doall,
-			 AjBool dofields, AjBool docomment, AjBool dorelease)
+			 AjBool domethod, AjBool dofields, AjBool dodefined,
+			 AjBool docomment, AjBool dorelease,
+			 ajint maxname, ajint maxtype, ajint maxmethod,
+			 ajint maxfield, ajint maxdefined, ajint maxrelease)
 {
 
     if(html)
@@ -312,12 +516,7 @@ static void showdb_DBOut(AjPFile outfile,
 	ajFmtPrintF(outfile, "<tr><td>%S</td>", dbname);
     else
     {
-	/* if the name is shorter than 14 characters make a nice formatted
-	   output, otherwise, just output it and a space */
-	if(ajStrLen(dbname) < 14)
-	    ajFmtPrintF(outfile, "%-14.13S", dbname);
-	else
-	    ajFmtPrintF(outfile, "%S ", dbname);
+	ajFmtPrintF(outfile, "%-*S ", maxname, dbname);
     }
 
     if(dotype)
@@ -325,7 +524,7 @@ static void showdb_DBOut(AjPFile outfile,
 	if(html)
 	    ajFmtPrintF(outfile, "<td>%S</td>", type);
 	else
-	    ajFmtPrintF(outfile, "%S    ", type);
+	    ajFmtPrintF(outfile, "%-*S ", maxtype, type);
     }
 
     if(doid)
@@ -370,12 +569,34 @@ static void showdb_DBOut(AjPFile outfile,
 	    ajFmtPrintF(outfile, "</td>");
     }
 
+    if(domethod)
+    {
+	if(html)
+	    ajFmtPrintF(outfile, "<td>");
+
+        ajFmtPrintF(outfile, "%-*S ", maxmethod, methods);
+
+	if(html)
+	    ajFmtPrintF(outfile, "</td>");
+    }
+
     if(dofields)
     {
 	if(html)
 	    ajFmtPrintF(outfile, "<td>");
 
-        ajFmtPrintF(outfile, "%S ", showdb_GetFields(dbname));
+        ajFmtPrintF(outfile, "%-*S ", maxfield, showdb_GetFields(dbname));
+
+	if(html)
+	    ajFmtPrintF(outfile, "</td>");
+    }
+
+    if(dodefined)
+    {
+	if(html)
+	    ajFmtPrintF(outfile, "<td>");
+
+        ajFmtPrintF(outfile, "%-*S ", maxdefined, defined);
 
 	if(html)
 	    ajFmtPrintF(outfile, "</td>");
@@ -387,9 +608,9 @@ static void showdb_DBOut(AjPFile outfile,
 	    ajFmtPrintF(outfile, "<td>");
 
 	if(release != NULL)
-	    ajFmtPrintF(outfile, "%S\t", release);
+	    ajFmtPrintF(outfile, "%-*S ", maxrelease, release);
 	else
-	    ajFmtPrintF(outfile, "-\t");
+	    ajFmtPrintF(outfile, "%-*s ", maxrelease, "");
 
 	if(html)
 	    ajFmtPrintF(outfile, "</td>");
@@ -443,7 +664,7 @@ static AjPStr showdb_GetFields(const AjPStr dbname)
     ajStrAssS(&str, query->DbFields);
 
     /* if there are no query fields, then change to a '_' */
-    if(str == NULL || ajStrMatchC(str, ""))
+    if(!ajStrLen(str))
   	ajStrAssC(&str, "-     ");
     else
 	/* change spaces to commas to make the result one word */
@@ -451,3 +672,51 @@ static AjPStr showdb_GetFields(const AjPStr dbname)
 
     return str;
 }
+
+
+/* @funcstatic showdb_DBSortDefined *******************************************
+**
+** Compares the value of two strings for use in sorting (e.g. ajListSort)
+**
+** @param [r] str1 [const void*] First string
+** @param [r] str2 [const void*] Second string
+** @return [int] -1 if first string should sort before second, +1 if the
+**         second string should sort first. 0 if they are identical
+**         in length and content.
+** @category use [AjPStr] String compare
+** @@
+******************************************************************************/
+
+int showdb_DBSortDefined(const void* str1, const void* str2)
+{
+    AjPStr db1 = *(AjPStr*) str1;
+    AjPStr db2 = *(AjPStr*) str2;
+
+    AjPStr methods = NULL;
+    AjPStr release = NULL;
+    AjPStr comment = NULL;
+    AjPStr type    = NULL;
+    AjBool id;
+    AjBool qry;
+    AjBool all;
+    AjPStr defined1 = NULL;
+    AjPStr defined2 = NULL;
+
+    int ret;
+
+    if(ajNamDbDetails(db1, &type, &id, &qry, &all, &comment,
+		      &release, &methods, &defined1) &&
+       ajNamDbDetails(db2, &type, &id, &qry, &all, &comment,
+		      &release, &methods, &defined2))
+    {
+	ret = ajStrCmpO(defined1, defined2);
+	ajDebug("Sorting1 %S:%S %S:%S %d\n", db1, db2, defined1, defined2, ret);
+	if (ret) return ret;
+    }
+
+    ret = ajStrCmpO(db1, db2);
+    ajDebug("Sorting2 %S:%S %d\n", db1, db2, ret);
+    return ret;
+}
+
+

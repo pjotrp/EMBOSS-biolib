@@ -41,17 +41,39 @@ section: additional [
     information: "Display nucleic acid databases"
   ]
 
-  boolean: fields  [
+  boolean: full  [
     additional: "Y"
     default: "N"
+    information: "Display all columns"
+  ]
+
+  boolean: methods  [
+    additional: "Y"
+    default: "$(full)"
+    information: "Display 'methods' column"
+    help: "This displays the access methods that can be used on this
+           database, for all, query or ID access"
+  ]
+
+  boolean: fields  [
+    additional: "Y"
+    default: "$(full)"
     information: "Display 'fields' column"
     help: "This displays the search fields that can be used on this
            database, other than the standard 'id' or 'acc' fields."
   ]
 
+  boolean: defined  [
+    additional: "Y"
+    default: "$(full)"
+    information: "Display 'defined' column"
+    help: "This displays a short name for the file
+           containing the database definition"
+  ]
+
   boolean: release  [
     additional: "Y"
-    default: "N"
+    default: "$(full)"
     information: "Display 'release' column"
   ]
 
@@ -66,7 +88,8 @@ section: advanced [
     default: "N"
     information: "Display the specified columns"
     help: "This is a way of shortening the command line if you only
-           want a few things to be displayed. Instead of specifying: \
+           want a few standard columns to be displayed.
+           Instead of specifying: \
            '-nohead -notype -noid -noquery -noall' \
            to get only the comment output, you can specify \
            '-only -comment'"

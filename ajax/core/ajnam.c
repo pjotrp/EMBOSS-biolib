@@ -248,6 +248,7 @@ typedef struct NamSEntry
 {
     AjPStr name;
     AjPStr value;
+    AjPStr file;
     void* data;
 } NamOEntry;
 
@@ -267,14 +268,14 @@ static void   namDebugMaster(const AjPTable table, ajint which);
 static void   namEntryDelete(NamPEntry* pentry, ajint which);
 static void   namError(const char* fmt, ...);
 static void   namListParse(AjPList listwords, AjPList listcount,
-			   AjPFile file);
+			   AjPFile file, const AjPStr shortname);
 static void   namListMaster(const AjPTable table, ajint which);
 static void   namListMasterDelete(AjPTable table, ajint which);
 static ajint  namMethod2Scope(const AjPStr method);
 static void   namNoColon(AjPStr *thys);
 static void   namPrintDatabase(const AjPStr* dbattr);
 static void   namPrintResource(const AjPStr* rsattr);
-static AjBool namProcessFile(AjPFile file);
+static AjBool namProcessFile(AjPFile file, const AjPStr shortname);
 static ajint  namRsAttr(const AjPStr thys);
 static ajint  namRsAttrC(const char* str);
 static void   namUser(const char *fmt, ...);
@@ -637,13 +638,16 @@ static void namDebugMaster(const AjPTable table, ajint which)
 ** @param [w] all [AjBool*] ajTrue = can access all entries
 ** @param [w] comment [AjPStr*] comment about database
 ** @param [w] release [AjPStr*] database release date
+** @param [w] methods [AjPStr*] database access methods formatted
+** @param [w] defined [AjPStr*] database definition file short name
 ** @return [AjBool] ajTrue if database details were found
 ** @@
 ******************************************************************************/
 
 AjBool ajNamDbDetails(const AjPStr name, AjPStr* type, AjBool* id,
 		      AjBool* qry, AjBool* all,
-		      AjPStr* comment, AjPStr* release)
+		      AjPStr* comment, AjPStr* release,
+		      AjPStr* methods, AjPStr* defined)
 {
     NamPEntry fnew = 0;
     AjPStr* dbattr = NULL;
@@ -655,12 +659,16 @@ AjBool ajNamDbDetails(const AjPStr name, AjPStr* type, AjBool* id,
     ajStrDelReuse(type);
     ajStrDelReuse(comment);
     ajStrDelReuse(release);
+    ajStrDelReuse(methods);
+    ajStrDelReuse(defined);
     
     fnew = ajTableGet(namDbMasterTable, ajStrStr(name));
     if(fnew)
     {
 	/* ajDebug("  '%S' found\n", name); */
-	
+
+	ajStrAss(defined, fnew->file);
+
 	dbattr = (AjPStr *) fnew->data;
 	for(i=0; namDbAttrs[i].Name; i++)
 	{
@@ -677,12 +685,17 @@ AjBool ajNamDbDetails(const AjPStr name, AjPStr* type, AjBool* id,
 		    if(scope & METHOD_ENTRY) *id = ajTrue;
 		    if(scope & METHOD_QUERY) *qry = ajTrue;
 		    if(scope & METHOD_ALL) *all = ajTrue;
+		    ajStrApp(methods, dbattr[i]);
 		}
 
 		if(!strcmp("methodentry", namDbAttrs[i].Name))
 		{
 		    scope = namMethod2Scope(dbattr[i]);
 		    if(scope & METHOD_ENTRY) *id = ajTrue;
+		    if(ajStrLen(*methods))
+			ajStrAppC(methods, ",");
+		    ajStrApp(methods, dbattr[i]);
+		    ajStrAppC(methods, "(id)");
 		}
 
 		if(!strcmp("methodquery", namDbAttrs[i].Name))
@@ -690,12 +703,20 @@ AjBool ajNamDbDetails(const AjPStr name, AjPStr* type, AjBool* id,
 		    scope = namMethod2Scope(dbattr[i]);
 		    if(scope & METHOD_ENTRY) *id = ajTrue;
 		    if(scope & METHOD_QUERY) *qry = ajTrue;
+		    if(ajStrLen(*methods))
+			ajStrAppC(methods, ",");
+		    ajStrApp(methods, dbattr[i]);
+		    ajStrAppC(methods, "(qry)");
 		}
 
 		if(!strcmp("methodall", namDbAttrs[i].Name))
 		{
 		    scope = namMethod2Scope(dbattr[i]);
 		    if(scope & METHOD_ALL) *all = ajTrue;
+		    if(ajStrLen(*methods))
+			ajStrAppC(methods, ",");
+		    ajStrApp(methods, dbattr[i]);
+		    ajStrAppC(methods, "(all)");
 		}
 
 		if(!strcmp("comment", namDbAttrs[i].Name))
@@ -1021,12 +1042,13 @@ static void namDebugVariables(void)
 ** @param [u] listcount [AjPList] List of word counts per line for
 **                                generating error messages
 ** @param [u] file [AjPFile] Input file only for name in messages
+** @param [r] shortname [const AjPStr] Definition file short name
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void namListParse(AjPList listwords, AjPList listcount,
-			 AjPFile file)
+			 AjPFile file, const AjPStr shortname)
 {
     static char* tabname   = 0;
     static AjPStr name     = 0;
@@ -1061,7 +1083,8 @@ static void namListParse(AjPList listwords, AjPList listcount,
     ajint lineword  = 0;
     ajint *iword    = NULL;
     AjBool namstatus;
-    
+    AjPStr saveshortname = NULL;
+
     /* ndbattr = count database attributes */
     if(!ndbattr)
 	for(ndbattr=0; namDbAttrs[ndbattr].Name; ndbattr++);
@@ -1070,14 +1093,15 @@ static void namListParse(AjPList listwords, AjPList listcount,
     if(!nrsattr)
 	for(nrsattr=0; namRsAttrs[nrsattr].Name; nrsattr++);
     
+    ajStrAssS(&saveshortname, shortname);
     ajStrDel(&name);
     ajStrDel(&value);
     quoteopen  = 0;
     quoteclose = 0;
     
     namLine = 1;
-    namUser("namListParse of %F words: %d lines: %d\n", 
-	    file, ajListLength(listwords), ajListLength(listcount));
+    namUser("namListParse of %F '%S' words: %d lines: %d\n", 
+	    file, name, ajListLength(listwords), ajListLength(listcount));
     
     while(ajListstrPop(listwords, &curword))
     {
@@ -1332,7 +1356,7 @@ static void namListParse(AjPList listwords, AjPList listcount,
 		else
 		{
 		    ajStrAppC(&namFileOrig,"(OK)");
-		    namstatus = namProcessFile(iinf); /* replaces namFile */
+		    namstatus = namProcessFile(iinf, name); /* replaces namFile */
 		    ajFmtPrintS(&namFileName, "%F",file);/* reset saved name */
 		    namLine = linecount-1;
 		    if(!namstatus)	/* test: badsummary.rc */
@@ -1377,6 +1401,7 @@ static void namListParse(AjPList listwords, AjPList listcount,
 	    name = 0;
 	    fnew->value = value;
 	    value = 0;
+	    fnew->file = ajStrDup(saveshortname);
 
 	    if(namParseType == TYPE_DB)
 	    {
@@ -1412,11 +1437,15 @@ static void namListParse(AjPList listwords, AjPList listcount,
 	    entry = ajTablePut(saveTable, tabname, fnew);
 	    if(entry)
 	    {
-		/* it existed so over wrote previous table entry */
-		namUser("%S: replaced previous %s definition of '%S'\n",
-			namRootStr,
+		/* it existed so over wrote previous table entry
+		** Only a namUser message - redefining EMBOSSRC in
+		** QA testing can give too many warnings
+		*/
+		namUser("%S: replaced %s %S definition from %S\n",
+			shortname,
 			namTypes[namParseType],
-			entry->name);
+			entry->name,
+			entry->file);
 		namEntryDelete(&entry, namParseType); /* previous entry */
 		AJFREE(tabname);        /* ajTablePut reused the old key */
 	    }
@@ -1451,7 +1480,9 @@ static void namListParse(AjPList listwords, AjPList listcount,
     {
 	ajUser("++ namListParse value %x '%S'", value, value);
     }
-    
+
+    ajStrDel(&saveshortname);
+
     return;
 }
 
@@ -1519,7 +1550,7 @@ AjBool ajNamGetenv(const AjPStr name,
 /* @func ajNamGetenvC *********************************************************
 **
 ** Looks for name as an environment variable.
-** the AjPStr for this in "value". If not found returns NULL;
+** the AjPStr for this in "value". If not found returns value as NULL;
 **
 ** @param [r] name [const char*] character string to find in getenv list
 ** @param [w] value [AjPStr*] String for the value.
@@ -1673,11 +1704,12 @@ AjBool ajNamDatabase(const AjPStr name)
 ** Read the definitions file and append each token to the list.
 **
 ** @param [u] file [AjPFile] Input file object
+** @param [r] shortname [const AjPStr] Definitions file short name
 ** @return [AjBool] ajTrue if no error were found
 ** @@
 ******************************************************************************/
 
-static AjBool namProcessFile(AjPFile file)
+static AjBool namProcessFile(AjPFile file, const AjPStr shortname)
 {
     AjPStr rdline = NULL;
     AjPStr word   = NULL;
@@ -1776,7 +1808,7 @@ static AjBool namProcessFile(AjPFile file)
     namListParseOK = ajTrue;
     
     namUser("ready to parse\n");
-    namListParse(listwords, listcount, file);
+    namListParse(listwords, listcount, file, shortname);
     
     if(!namListParseOK)
 	namUser("Unexpected end of file in %S at line %d\n",
@@ -1821,7 +1853,8 @@ void ajNamInit(const char* prefix)
     AjPStr prefixCap     = NULL;
     AjPStr debugStr      = NULL;
     AjPStr debugVal      = NULL;
-    AjPStr homercVal      = NULL;
+    AjPStr homercVal     = NULL;
+    AjPStr basename      = NULL;
     
     /* create new tables to hold the values */
     
@@ -1887,6 +1920,7 @@ void ajNamInit(const char* prefix)
     ajFmtPrintS(&namRootStr, "%s/share/%S/%s.default",
 		 namInstallRoot, prefixCap, prefix);
     prefixRootFile = ajFileNewIn(namRootStr);
+    ajFmtPrintS(&basename, "%s.default", prefix);
     
     /* look for $(PREFIX)_ROOT/../emboss.default */
     
@@ -1895,6 +1929,7 @@ void ajNamInit(const char* prefix)
 	/* try original directory */
 	ajFmtPrintS(&namRootStr, "%s/%s.default", prefixRoot, prefix);
 	prefixRootFile = ajFileNewIn(namRootStr);
+	ajFmtPrintS(&basename, "%s/%s.default", prefix, prefix);
     }
     
     if(namFileOrig)
@@ -1904,7 +1939,7 @@ void ajNamInit(const char* prefix)
     if(prefixRootFile)
     {
 	ajStrAppC(&namFileOrig, "(OK)");
-	namProcessFile(prefixRootFile);
+	namProcessFile(prefixRootFile, basename);
 	ajFileClose(&prefixRootFile);
     }
     else
@@ -1929,8 +1964,9 @@ void ajNamInit(const char* prefix)
 	prefixRootFile = ajFileNewIn(namRootStr);
 	if(prefixRootFile)
 	{
+	    ajFmtPrintS(&basename, "EMBOSSRC/.%src", prefix);
 	    ajStrAppC(&namFileOrig, "(OK)");
-	    namProcessFile(prefixRootFile);
+	    namProcessFile(prefixRootFile, basename);
 	    ajFileClose(&prefixRootFile);
 	}
 	else
@@ -1961,17 +1997,20 @@ void ajNamInit(const char* prefix)
 	    ajStrAppC(&namFileOrig, ", ");
 	ajStrApp(&namFileOrig, namRootStr);
 
+	ajFmtPrintS(&basename, ".%src", prefix);
 	prefixRootFile = ajFileNewIn(namRootStr);
 	if(prefixRootFile)
 	{
 	    ajStrAppC(&namFileOrig, "(OK)");
-	    namProcessFile(prefixRootFile);
+	    namProcessFile(prefixRootFile, basename);
 	    ajFileClose(&prefixRootFile);
 	}
 	else
 	    ajStrAppC(&namFileOrig, "(failed)");
     }
     
+    namUser("Files processed: %S\n", namFileOrig);
+
     ajStrDel(&prefixRootStr);
     ajStrDel(&prefixStr);
     ajStrDel(&prefixCap);

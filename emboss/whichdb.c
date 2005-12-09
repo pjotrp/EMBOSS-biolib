@@ -51,6 +51,8 @@ int main(int argc, char **argv)
     AjBool showall  = ajFalse;
     AjPStr lnam = NULL;
     AjPStr snam = NULL;
+    AjPStr meth = NULL;
+    AjPStr defnam = NULL;
 
     AjPSeqout seqout = NULL;
 
@@ -74,6 +76,8 @@ int main(int argc, char **argv)
     idqry  = ajStrNew();
     seq    = ajSeqNew();
     snam   = ajStrNew();
+    meth   = ajStrNew();
+    defnam = ajStrNew();
     
     ajNamListListDatabases(dblist);
     
@@ -82,7 +86,8 @@ int main(int argc, char **argv)
 	ajStrAssS(&name,lnam);
 	/* ajStrDel(&lnam); */ /* do not delete - internal ajNam string */
 
-	if(!ajNamDbDetails(name,&type,&id,&qry,&all,&comm,&rel))
+	if(!ajNamDbDetails(name,&type,&id,&qry,&all,&comm,&rel,
+			   &meth, &defnam))
 	    continue;
 
 	if(!id)
