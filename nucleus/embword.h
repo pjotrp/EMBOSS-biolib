@@ -78,6 +78,8 @@ void    embWordMatchListConvToFeat(const AjPList list,
 
 void    embWordMatchMin(AjPList matchlist, ajint seq1length, int
         			seq2length);
+void    embWordUnused(void);
+
 #endif
 
 #ifdef __cplusplus

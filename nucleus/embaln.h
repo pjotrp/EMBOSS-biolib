@@ -136,6 +136,8 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
 			      ajint *start1, ajint *start2,
 			      ajint width);
 
+void embAlignUnused(void);
+
 #endif
 
 #ifdef __cplusplus
