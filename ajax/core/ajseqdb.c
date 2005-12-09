@@ -27,8 +27,7 @@
 ******************************************************************************/
 
 #include "ajax.h"
-#include "ajmem.h"
-#include "ajfile.h"
+
 #include "limits.h"
 #include <stdarg.h>
 #include <sys/types.h>

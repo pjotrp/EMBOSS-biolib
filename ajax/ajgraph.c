@@ -25,9 +25,10 @@
 ******************************************************************************/
 
 #define GRAPHMAIN 1
+
 #include "ajax.h"
 #include "ajgraph.h"
-#include "ajtime.h"
+
 #include <math.h>
 #include <limits.h>
 #include <float.h>
