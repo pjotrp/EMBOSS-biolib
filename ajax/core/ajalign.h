@@ -121,10 +121,6 @@ AjBool       ajAlignSetRange (AjPAlign thys,
 void         ajAlignSetScoreI (AjPAlign thys, ajint score);
 void         ajAlignSetScoreL (AjPAlign thys, ajlong score);
 void         ajAlignSetScoreR (AjPAlign thys, float score);
-void         ajAlignSetSubHeader (AjPAlign thys, const AjPStr subheader);
-void         ajAlignSetSubHeaderApp (AjPAlign thys, const AjPStr subheader);
-void         ajAlignSetSubHeaderC (AjPAlign thys, const char* subheader);
-void         ajAlignSetSubHeaderPre (AjPAlign thys, const AjPStr subheader);
 void         ajAlignSetStats (AjPAlign thys, ajint iali, ajint len,
 				    ajint ident, ajint sim, ajint gaps,
 				    const AjPStr score);
@@ -133,7 +129,14 @@ AjBool       ajAlignSetSubRange (AjPAlign thys,
 				 ajint end1, AjBool rev1, ajint len1,
 				 ajint substart2, ajint start2,
 				 ajint end2, AjBool rev2, ajint len2);
+void         ajAlignSetSubHeader (AjPAlign thys, const AjPStr subheader);
+void         ajAlignSetSubHeaderApp (AjPAlign thys, const AjPStr subheader);
+void         ajAlignSetSubHeaderC (AjPAlign thys, const char* subheader);
+void         ajAlignSetSubHeaderPre (AjPAlign thys, const AjPStr subheader);
 void         ajAlignSetSubStandard (AjPAlign thys, ajint iali);
+void         ajAlignSetSubTail(AjPAlign thys, const AjPStr tail);
+void         ajAlignSetSubTailC(AjPAlign thys, const char* tail);
+void         ajAlignSetSubTailApp(AjPAlign thys, const AjPStr tail);
 void         ajAlignSetTail (AjPAlign thys, const AjPStr tail);
 void         ajAlignSetTailApp (AjPAlign thys, const AjPStr tail);
 void         ajAlignSetTailC (AjPAlign thys, const char* tail);
