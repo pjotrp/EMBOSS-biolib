@@ -119,7 +119,7 @@ typedef struct AjSFileBuffList {
 ** @attr Curr [AjPFileBuffList] Current line in Lines list
 ** @attr Prev [AjPFileBuffList] Previous line (points to Curr for delete)
 ** @attr Last [AjPFileBuffList] Last line for quick appending
-** @attr Free [AjPFileBuffList] Free list of lines for reuse
+** @attr Freelines [AjPFileBuffList] Free list of lines for reuse
 ** @attr Freelast [AjPFileBuffList] Last free line for quick append
 ** @attr Nobuff [AjBool] if true, do not buffer the file
 ** @attr Pos [ajint] Position in list
@@ -132,10 +132,10 @@ typedef struct AjSFileBuffList {
 typedef struct AjSFileBuff {
   AjPFile File;
   AjPFileBuffList Lines;
+  AjPFileBuffList Freelines;
   AjPFileBuffList Curr;
   AjPFileBuffList Prev;
   AjPFileBuffList Last;
-  AjPFileBuffList Free;
   AjPFileBuffList Freelast;
   AjBool Nobuff;
   ajint Pos;
