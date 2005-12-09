@@ -24,6 +24,7 @@
 #include "embdomain.h"
 #include "embsig.h"
 #include "embdmx.h"
+#include "embexit.h"
 #include "embindex.h"
 
 #endif
