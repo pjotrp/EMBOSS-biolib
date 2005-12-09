@@ -21,7 +21,8 @@
 ** Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
-#include "ajmath.h"
+#include "ajax.h"
+
 #include <math.h>
 #include <time.h>
 #include <float.h>
@@ -503,11 +504,77 @@ unsigned long long ajSp64Crc(const AjPStr thys)
     }
 
     crc = 0ULL;
-    p = ajStrStr(thys);
-    len = ajStrLen(thys);
+    p = ajStrGetPtr(thys);
+    len = ajStrGetLen(thys);
     
     for(i=0;i<len;++i)
 	crc = crctab[(crc ^ (unsigned long long)p[i]) & 0xff] ^ (crc>>8);
 
     return crc;
 }
+
+/* @func ajMathPos ************************************************************
+**
+** Converts a string position into a true position. If ipos is negative,
+** it is counted from the end of the string rather than the beginning.
+**
+** @param [r] thys [const AjPStr] Target string.
+** @param [r] ipos [ajint] Position (0 start, negative from the end).
+** @return [ajint] string position between 0 and (length minus 1).
+** @category cast [AjPStr] Converts a string position into a true
+**                position
+** @@
+******************************************************************************/
+
+ajint ajMathPos(ajint len, ajint ipos)
+{
+    return ajMathPosI(len, 0, ipos);
+}
+
+
+
+
+/* @func ajMathPosI ***********************************************************
+**
+** Converts a position into a true position. If ipos is negative,
+** it is counted from the end of the string rather than the beginning.
+**
+** imin is a minimum relative position.
+** Usually this is the start position when the end of a range
+** is being tested.
+**
+** @param [r] len [ajint] maximum length.
+** @param [r] imin [ajint] Start position (0 start, no negative values).
+** @param [r] ipos [ajint] Position (0 start, negative from the end).
+** @return [ajint] string position between 0 and (length minus 1).
+** @@
+******************************************************************************/
+
+ajint ajMathPosI(ajint len, ajint imin, ajint ipos)
+{
+    ajint jpos;
+
+    if(ipos < 0)
+	jpos = len + ipos;
+    else
+	jpos = ipos;
+
+    if(jpos >= len)
+    {
+	ajUtilCatch();
+	/* ajDebug("strPosII ilen: %d imin: %d ipos: %d jpos: %d\n",
+		ilen, imin, ipos, jpos); */
+    }
+
+    if(jpos >= len)
+	jpos = len - 1;
+
+    if(jpos < imin)
+	jpos = imin;
+
+    return jpos;
+}
+
+
+
+
