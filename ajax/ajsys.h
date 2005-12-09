@@ -18,25 +18,27 @@ extern "C"
 #include <sys/stat.h>
 
 
-AjBool ajSysArglist (const AjPStr cmdline, char** pgm, char*** arglist);
-void ajSysArgListFree (char*** arglist);
-void ajSysBasename(AjPStr *filename);
-char ajSysItoC(ajint v);
+AjBool        ajSysArglist (const AjPStr cmdline, char** pgm, char*** arglist);
+void          ajSysArgListFree (char*** arglist);
+void          ajSysBasename(AjPStr *filename);
+void          ajSysCanon(AjBool state);
+char          ajSysItoC(ajint v);
 unsigned char ajSysItoUC(ajint v);
-AjBool ajSysIsDirectory(const char *s);
-AjBool ajSysIsRegular(const char *s);
-FILE *ajSysFdopen(ajint filedes, const char *mode);
-void ajSystem(const AjPStr cl);
-void ajSystemEnv(const AjPStr cl, char * const env[]);
-char *ajSysStrdup(const char *s);
-AjBool ajSysUnlink(const AjPStr s);
-AjBool ajSysWhich(AjPStr *exefile);
-AjBool ajSysWhichEnv(AjPStr *exefile, char * const env[]);
-void ajSysPrintlist(char **a);
-char *ajSysStrtok(const char *s, const char *t);
-char *ajSysStrtokR(const char *s, const char *t, char **ptrptr, AjPStr *buf);
-char *ajSysFgets(char *buf, int size, FILE *fp);
-FILE *ajSysFopen(const char *name, const char *flags);
+AjBool        ajSysIsDirectory(const char *s);
+AjBool        ajSysIsRegular(const char *s);
+FILE         *ajSysFdopen(ajint filedes, const char *mode);
+void          ajSystem(const AjPStr cl);
+void          ajSystemEnv(const AjPStr cl, char * const env[]);
+char         *ajSysStrdup(const char *s);
+AjBool        ajSysUnlink(const AjPStr s);
+AjBool        ajSysWhich(AjPStr *exefile);
+AjBool        ajSysWhichEnv(AjPStr *exefile, char * const env[]);
+void          ajSysPrintlist(char **a);
+char         *ajSysStrtok(const char *s, const char *t);
+char         *ajSysStrtokR(const char *s, const char *t, char **ptrptr,
+			    AjPStr *buf);
+char         *ajSysFgets(char *buf, int size, FILE *fp);
+FILE         *ajSysFopen(const char *name, const char *flags);
 
 /*
  * S_IFREG is non-ANSI therefore define it here
