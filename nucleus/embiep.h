@@ -18,13 +18,13 @@ double embIepGetCharge (const ajint *c, const double *pro, double *total);
 void   embIepGetProto (const double *K, const ajint *c,
 		       ajint *op, double H, double *pro);
 AjBool embIepIEP (const char *s, ajint amino, double *iep, AjBool termini);
-double embIepKToPk (double K);
-double embIepPhConcToPh (double H);
+double embIepPhFromHconc (double H);
+double embIepPhToHconc (double pH);
 double embIepPhConverge (const ajint *c, const double *K,
 			 ajint *op, double *pro);
 void   embIepPkRead (void);
-double embIepPhToHConc (double pH);
 double embIepPkToK (double pK);
+double embIepPkFromK (double K);
 
 #endif
 

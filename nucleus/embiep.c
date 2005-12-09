@@ -35,7 +35,7 @@ static  double AjpK[EMBIEPSIZE];	/* pK values from Epk.dat      */
 
 
 
-/* @func embIepPhToHConc  *****************************************************
+/* @func embIepPhToHconc  *****************************************************
 **
 ** Convert pH to hydrogen ion concontration
 **
@@ -44,7 +44,7 @@ static  double AjpK[EMBIEPSIZE];	/* pK values from Epk.dat      */
 ** @return [double] hydrogen ion concentrration
 ******************************************************************************/
 
-double embIepPhToHConc(double pH)
+double embIepPhToHconc(double pH)
 {
     return pow(10.0,-pH);
 }
@@ -52,7 +52,7 @@ double embIepPhToHConc(double pH)
 
 
 
-/* @func embIepHConcToPh  *****************************************************
+/* @func embIepPhFromHconc ****************************************************
 **
 ** Convert hydrogen ion concontration to pH
 **
@@ -61,7 +61,7 @@ double embIepPhToHConc(double pH)
 ** @return [double] pH
 ******************************************************************************/
 
-double embIepHConcToPh(double H)
+double embIepPhFromHconc(double H)
 {
     return -log10(H);
 }
@@ -86,7 +86,7 @@ double embIepPkToK(double pK)
 
 
 
-/* @func embIePkTopK  *********************************************************
+/* @func embIepPkFromK ********************************************************
 **
 ** Convert dissociation constant to pK
 **
@@ -95,7 +95,7 @@ double embIepPkToK(double pK)
 ** @return [double] pK
 ******************************************************************************/
 
-double embIePkTopK(double K)
+double embIepPkFromK(double K)
 {
     return -log10(K);
 }
@@ -332,10 +332,10 @@ double embIepPhConverge(const ajint *c, const double *K,
     double tph = 1.0;
     double bph = 14.0;
 
-    H = embIepPhToHConc(tph);
+    H = embIepPhToHconc(tph);
     embIepGetProto(K,c,op,H,pro);
     top = embIepGetCharge(c,pro,&sum);
-    H = embIepPhToHConc(bph);
+    H = embIepPhToHconc(bph);
     embIepGetProto(K,c,op,H,pro);
     bot = embIepGetCharge(c,pro,&sum);
     if((top>0.0 && bot>0.0) || (top<0.0 && bot<0.0))
@@ -344,7 +344,7 @@ double embIepPhConverge(const ajint *c, const double *K,
     while(bph-tph>0.0001)
     {
 	mid = ((bph-tph) / 2.0) + tph;
-	H = embIepPhToHConc(mid);
+	H = embIepPhToHconc(mid);
 	embIepGetProto(K,c,op,H,pro);
 	charge = embIepGetCharge(c,pro,&sum);
 	if(charge>0.0)
