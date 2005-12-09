@@ -361,7 +361,7 @@ void      ajCathDel(AjPCath *ptr);
 AjBool   ajCathCopy(AjPCath *to, const AjPCath from);
 
 ajint     ajCathArrFindPdbid(const AjPCath *arr, ajint siz, const AjPStr id);
-ajint     ajCathMatchPdbid(const void *hit1, const void *hit2);
+ajint     ajCathMatchPdbId(const void *hit1, const void *hit2);
 
 AjPCath   ajCathReadCNew(AjPFile inf, const char *entry);
 AjPCath   ajCathReadNew(AjPFile inf, const AjPStr entry);
