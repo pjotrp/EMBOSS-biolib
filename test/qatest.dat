@@ -15187,7 +15187,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /^tsw\s+P\s+OK\s+OK\s+OK\s+emblcd\s+sv,des,org,key\s+Other\s+\S+\s+Swissprot native format with EMBL CD-ROM index\n/
+FP /^tsw\s+P\s+OK\s+OK\s+OK\s+emblcd\s+sv,des,org,key\s+special\s+\S+\s+Swissprot native format with EMBL CD-ROM index\n/
 //
 
 ID showfeat-ex
