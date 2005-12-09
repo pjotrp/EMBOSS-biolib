@@ -345,7 +345,7 @@ static void showdb_DBHead (AjPFile outfile, AjBool html, AjBool dotype,
 	/* start the HTML table title line and output the Name header */
 	ajFmtPrintF(outfile, "<tr><th>Name</th>");
     else
-	ajFmtPrintF(outfile, "# Name%*s ", maxname-6, maxname-6, " ");
+	ajFmtPrintF(outfile, "# Name%*s ", maxname-6, " ");
 
     if(dotype)
     {
