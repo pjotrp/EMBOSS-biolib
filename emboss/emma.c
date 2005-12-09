@@ -24,7 +24,7 @@
 
 
 
-static AjPStr emma_getUniqueFileName();
+static AjPStr emma_getUniqueFileName(void);
 
 
 
