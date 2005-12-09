@@ -47,11 +47,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "ajstr.h"
-#include "ajassert.h"
-#include "ajmem.h"
-#include "ajlist.h"
-#include "ajmess.h"
+#include "ajax.h"
 
 #define ajLASTFWD  0	/* For iteration shows direction of last walk */
 #define ajLASTBACK 1
