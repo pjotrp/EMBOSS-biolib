@@ -126,10 +126,10 @@ static ajint        featCompByEnd(const void *a, const void *b);
 static ajint        featCompByGroup(const void *a, const void *b);
 static ajint        featCompByStart(const void *a, const void *b);
 static ajint        featCompByType(const void *a, const void *b);
-static AjBool       featDelRegEmbl();
-static AjBool       featDelRegGff();
-static AjBool       featDelRegPir();
-static AjBool       featDelRegSwiss();
+static AjBool       featDelRegEmbl(void);
+static AjBool       featDelRegGff(void);
+static AjBool       featDelRegPir(void);
+static AjBool       featDelRegSwiss(void);
 static void         featDumpEmbl(const AjPFeature thys, const AjPStr location,
 				 AjPFile file, const AjPStr Seqid,
 				 AjBool IsEmbl);
@@ -198,14 +198,14 @@ static AjBool       featReadEmbl(AjPFeattable thys, AjPFileBuff file);
 static AjBool       featReadGff(AjPFeattable thys, AjPFileBuff file);
 static AjBool       featReadPir(AjPFeattable thys, AjPFileBuff file);
 static AjBool       featReadSwiss(AjPFeattable thys, AjPFileBuff file);
-static AjBool       featRegInitEmbl();
-static AjBool       featRegInitGff();
-static AjBool       featRegInitPir();
-static AjBool       featRegInitSwiss();
-static AjBool       featVocabInitEmbl();
-static AjBool       featVocabInitGff();
-static AjBool       featVocabInitPir();
-static AjBool       featVocabInitSwiss();
+static AjBool       featRegInitEmbl(void);
+static AjBool       featRegInitGff(void);
+static AjBool       featRegInitPir(void);
+static AjBool       featRegInitSwiss(void);
+static AjBool       featVocabInitEmbl(void);
+static AjBool       featVocabInitGff(void);
+static AjBool       featVocabInitPir(void);
+static AjBool       featVocabInitSwiss(void);
 static char         featStrand(ajint strand);
 static AjPFeature   featSwissFromLine(AjPFeattable thys, const AjPStr line,
 				      AjPStr* savefeat, AjPStr* savefrom,
@@ -308,8 +308,8 @@ typedef struct FeatSInFormat
     AjBool Prot;
     AjBool Used;
     AjBool (*Read)  (AjPFeattable thys, AjPFileBuff file);
-    AjBool (*InitReg)();
-    AjBool (*DelReg)();
+    AjBool (*InitReg)(void);
+    AjBool (*DelReg)(void);
 } FeatOInFormat;
 #define FeatPInFormat FeatOInFormat*
 
@@ -473,7 +473,7 @@ static void        featGffProcessTagval(AjPFeature gf,
 typedef struct FeatSOutFormat
 {
     char* Name;
-    AjBool (*VocInit) ();
+    AjBool (*VocInit) (void);
     AjBool (*Write) (const AjPFeattable thys, AjPFile file);
 } FeatOOutFormat;
 #define FeatPOutFormat FeatOOutFormat*
@@ -3070,10 +3070,10 @@ static AjPFeature featEmblFromLine(AjPFeattable thys,
     
     /* ajDebug("featEmblFromLine '%S'\n", origline); */
     
-    ajStrAssS(&line,origline);        /* As BufferFile cannot be edited */
-    ajStrTrim(&line, 5);	      /* chop first 5 characters */
     if(origline)
     {
+	ajStrAssS(&line,origline);        /* As BufferFile cannot be edited */
+	ajStrTrim(&line, 5);	      /* chop first 5 characters */
 	if (ajStrChar(line, 0) != ' ')	/* look for the feature key */
 	{
 	    newft = ajTrue;
@@ -3083,6 +3083,7 @@ static AjPFeature featEmblFromLine(AjPFeattable thys,
     }
     else
     {
+	ajStrAssC(&line, "");
 	newft = ajFalse;		/* no new data, just process */
 	if(ajStrLen(*saveloc))
 	    doft = ajTrue;
@@ -3725,7 +3726,7 @@ static AjBool featEmblLoc(const AjPStr loc, AjPStr* begstr, AjBool* between,
     if(end)
     {
 	ajStrAssSub(begstr, loc, 0, ibeg-1);
-	ajStrAssSub(endstr, loc, iend+1, ipos);
+	ajStrAssSub(endstr, loc, iend+1, ipos-1);
     }
     else			/* simple location e.g. 43 */
     {

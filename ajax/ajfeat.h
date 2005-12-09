@@ -171,6 +171,7 @@ AjBool        ajFeatUfoWrite (const AjPFeattable thys,
 			      AjPFeattabOut tabout, const AjPStr Ufo);
 AjBool        ajFeatWrite (AjPFeattabOut ftout, const AjPFeattable ft) ;
 
+void          ajFeatUnused(void);
 
 
 /*
