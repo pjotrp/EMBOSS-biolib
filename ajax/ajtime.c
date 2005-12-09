@@ -22,11 +22,10 @@
 ** Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
-#include "ajax.h"
-#include "ajtime.h"
+
 #include <time.h>
 
-
+#include "ajax.h"
 
 
 /* @datastatic TimePFormat ****************************************************
