@@ -10,13 +10,13 @@ section: input [
 
   sequence: asequence  [
     parameter: "Y"
-    type: "any"
+    type: "gapany"
   ]
 
   sequence: bsequence  [
     parameter: "Y"
     information: "Sequence to insert"
-    type: "@($(acdprotein) ? stopprotein : nucleotide)"
+    type: "@($(acdprotein) ? gapstopprotein : gapnucleotide)"
   ]
 
 endsection: input
