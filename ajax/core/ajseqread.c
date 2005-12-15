@@ -9158,7 +9158,7 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
     static AjPStr numtoken    = NULL;
     static AjPStr str         = NULL;
     static AjPStr vacc        = NULL;
-    char *q;
+    const char *q;
     ajint  i;
     ajint  nt;
 
