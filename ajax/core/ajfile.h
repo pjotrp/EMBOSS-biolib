@@ -116,10 +116,10 @@ typedef struct AjSFileBuffList {
 **
 ** @attr File [AjPFile] The input file - data to be buffered
 ** @attr Lines [AjPFileBuffList] All lines ... where the data really is
+** @attr Freelines [AjPFileBuffList] Free list of lines for reuse
 ** @attr Curr [AjPFileBuffList] Current line in Lines list
 ** @attr Prev [AjPFileBuffList] Previous line (points to Curr for delete)
 ** @attr Last [AjPFileBuffList] Last line for quick appending
-** @attr Freelines [AjPFileBuffList] Free list of lines for reuse
 ** @attr Freelast [AjPFileBuffList] Last free line for quick append
 ** @attr Nobuff [AjBool] if true, do not buffer the file
 ** @attr Pos [ajint] Position in list
