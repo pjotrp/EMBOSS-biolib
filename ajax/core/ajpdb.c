@@ -9,7 +9,7 @@
 ** Includes functions for reading and writing ccf (clean coordinate file)
 ** format.
 ** 
-** @author: Copyright (C) 2004 Jon Ison (jison@hgmp.mrc.ac.uk) 
+** @author Copyright (C) 2004 Jon Ison (jison@hgmp.mrc.ac.uk) 
 ** @version 1.0 
 ** @@
 ** 

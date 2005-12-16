@@ -1,7 +1,7 @@
 /* @source demolist application
 **
 ** Demomnstration of how the list functions should be used.
-** @author: Copyright (C) Peter Rice (pmr@sanger.ac.uk)
+** @author Copyright (C) Peter Rice (pmr@sanger.ac.uk)
 ** @@
 ** This program is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU General Public License

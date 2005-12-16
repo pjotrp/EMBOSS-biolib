@@ -2,7 +2,7 @@
 **
 ** Inverted repeats by dynamic programming
 **
-** @author: Copyright (C) J Thierry-Mieg and R Durbin, 1993
+** @author Copyright (C) J Thierry-Mieg and R Durbin, 1993
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

@@ -2,7 +2,7 @@
 **
 ** Brute force inverted repeat finder. Allows mismatches but not gaps
 **
-** @author: Copyright (C) Mark Faller
+** @author Copyright (C) Mark Faller
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

@@ -1,7 +1,7 @@
 /* @source tfscan application
 **
 ** Finds transcription factors
-** @author: Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+** @author Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
 ** @@
 **
 ** 12/03/2000: (AJB) Added accession numbers, end points and matching sequence

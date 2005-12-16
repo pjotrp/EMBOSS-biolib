@@ -3,8 +3,8 @@
 ** Richard Mott's est_genome ported into EMBOSS.
 ** See also nucleus/embest.c
 **
-** @author: Copyright (C) Peter Rice, Sanger Centre
-** @author: Copyright (C) Richard Mott, Sanger Centre
+** @author Copyright (C) Peter Rice, Sanger Centre
+** @author Copyright (C) Richard Mott, Sanger Centre
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

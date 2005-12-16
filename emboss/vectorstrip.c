@@ -2,7 +2,7 @@
 **
 ** Looks for user defined linkers in a sequence and outputs
 ** only the sequence that lies between those linkers.
-** @author: Copyright (C) Val Curwen (vcurwen@hgmp.mrc.ac.uk)
+** @author Copyright (C) Val Curwen (vcurwen@hgmp.mrc.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

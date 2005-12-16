@@ -1,7 +1,7 @@
 /* @source pepwindow application
 **
 ** Displays protein hydropathy.
-** @author: Copyright (C) Ian Longden (il@sanger.ac.uk)
+** @author Copyright (C) Ian Longden (il@sanger.ac.uk)
 ** @@
 ** Original program by Jack Kyte and Russell F. Doolittle.
 **

@@ -2,13 +2,13 @@
 **
 ** @source embdmx.c
 ** 
-** @source Algorithms for some of the DOMAINATRIX EMBASSY applications. 
+** Algorithms for some of the DOMAINATRIX EMBASSY applications. 
 ** For use with the Scophit and Scopalign objects.  
 ** The functionality will eventually be subsumed by other AJAX and NUCLEUS 
 ** libraries. 
 ** 
-** @author: Copyright (C) 2004 Ranjeeva Ranasinghe (rranasin@hgmp.mrc.ac.uk)
-** @author: Copyright (C) 2004 Jon Ison (jison@hgmp.mrc.ac.uk) 
+** @author Copyright (C) 2004 Ranjeeva Ranasinghe (rranasin@hgmp.mrc.ac.uk)
+** @author Copyright (C) 2004 Jon Ison (jison@hgmp.mrc.ac.uk) 
 ** @version 1.0 
 ** @@
 ** 

@@ -1,4 +1,4 @@
-/******************************************************************************
+/* @source ********************************************************************
 **
 ** a genome feature (in AJAX program context) is a description of a
 ** genomic entity which was determined by some 'source' analysis

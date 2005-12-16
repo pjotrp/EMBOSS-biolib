@@ -1,7 +1,7 @@
 /* @source abiview application
 **
 ** Display an ABI trace file and write out the sequence.
-** @author: Copyright (C) Tim Carver (tcarver@hgmp.mrc.ac.uk)
+** @author Copyright (C) Tim Carver (tcarver@hgmp.mrc.ac.uk)
 ** @@
 **
 ** The sequence is taken from a ABI trace file and written to a

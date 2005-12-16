@@ -2,7 +2,7 @@
 **
 ** Get GC content
 **
-** @author: Copyright (C) Richard Bruskievich
+** @author Copyright (C) Richard Bruskievich
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

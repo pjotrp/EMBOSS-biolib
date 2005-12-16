@@ -1,5 +1,5 @@
 /* @source patmatDB.c
-** @author: Copyright (C) Sinead O'Leary (soleary@hgmp.mrc.ac.uk)
+** @author Copyright (C) Sinead O'Leary (soleary@hgmp.mrc.ac.uk)
 ** @@
 **
 ** Application for pattern matching, one Prosite motif against a

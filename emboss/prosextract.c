@@ -1,5 +1,5 @@
 /* @source prosextract.c
-** @author: Copyright (C) Sinead O'Leary (soleary@hgmp.mrc.ac.uk)
+** @author Copyright (C) Sinead O'Leary (soleary@hgmp.mrc.ac.uk)
 **
 ** Application for extracting relevent lines from the Prosite motif database.
 **

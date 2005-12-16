@@ -2,7 +2,7 @@
 **
 ** Merge two large overlapping nucleic acid sequences
 **
-** @author: Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
+** @author Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

@@ -3,7 +3,7 @@
 ** Searches a set of primer pairs against a set of DNA sequences in both
 ** forward and reverse sense.
 ** Modification of fuzznuc.
-** @author: Copyright (C) Val Curwen (vac@sanger.ac.uk)
+** @author Copyright (C) Val Curwen (vac@sanger.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

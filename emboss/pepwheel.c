@@ -1,7 +1,7 @@
 /* @source pepwheel application
 **
 ** Displays peptide sequences in a helical representation
-** @author: Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+** @author Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
 ** @@
 ** Original program "PEPWHEEL" by Rodrigo Lopez (EGCG)
 **

@@ -2,7 +2,7 @@
 **
 ** Displays some simple information about sequences
 **
-** @author: Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
+** @author Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
 ** @modified 04/02/2000 rbsk@sanger - added 'percent GC' computation
 ** @@
 **

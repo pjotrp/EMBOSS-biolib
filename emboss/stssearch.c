@@ -2,7 +2,7 @@
 **
 ** Gribskov statistical plot of synonymous codon usage
 **
-** @author: Unknown
+** @author Unknown
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

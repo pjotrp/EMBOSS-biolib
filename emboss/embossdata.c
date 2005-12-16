@@ -2,7 +2,7 @@
 **
 ** Finds or fetches the data files read in by the EMBOSS programs
 **
-** @author: Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
+** @author Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
 ** @modified Alan Bleasby (ableasby@hgmp.mrc.ac.uk) for recursion
 ** @modified Alan Bleasby (ableasby@hgmp.mrc.ac.uk) to remove HOME dependency
 ** @@

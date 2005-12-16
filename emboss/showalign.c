@@ -2,7 +2,7 @@
 **
 ** Display a multiple sequence alignment with consensus
 **
-** @author: Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
+** @author Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
 ** 8 May 2001 - GWW - written
 ** @@
 **

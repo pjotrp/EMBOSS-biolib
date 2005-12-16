@@ -1,7 +1,7 @@
 /* @source lindna application
 **
 ** Draws linear maps of DNA constructs
-** @author: Copyright (C) Nicolas Tourasse (tourasse@biotek.uio.no),
+** @author Copyright (C) Nicolas Tourasse (tourasse@biotek.uio.no),
 ** Biotechnology Centre of Oslo, Norway.
 ** @@
 **

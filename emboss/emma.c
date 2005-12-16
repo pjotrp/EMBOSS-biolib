@@ -1,7 +1,7 @@
 /* @source emma application
 **
 ** EMBOSS interface to clustal
-** @author: Copyright (C) Mark Faller (mfaller@hgmp.mrc.ac.uk)
+** @author Copyright (C) Mark Faller (mfaller@hgmp.mrc.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

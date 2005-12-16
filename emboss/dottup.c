@@ -2,7 +2,7 @@
 **
 ** Dotplot of two sequences
 **
-** @author: Copyright (C) Ian Longden
+** @author Copyright (C) Ian Longden
 ** @modified: Alan Bleasby. Added non-proportional plot
 ** @@
 **

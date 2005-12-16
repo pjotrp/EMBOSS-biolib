@@ -2,7 +2,7 @@
 **
 ** Quick tandem repeat finder
 **
-** @author: Copyright (C) Richard Durbin, J Thierry-Mieg
+** @author Copyright (C) Richard Durbin, J Thierry-Mieg
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

@@ -1,7 +1,7 @@
 /* @source twofeat application
 **
 ** Finds neighbouring pairs of features in sequences
-** @author: Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
+** @author Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

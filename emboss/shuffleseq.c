@@ -1,7 +1,7 @@
 /* @source shuffleseq application
 **
 ** Randomises sequences maintaining composition
-** @author: Copyright (C) Michael Schmitz (mschmitz@lbl.gov)
+** @author Copyright (C) Michael Schmitz (mschmitz@lbl.gov)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

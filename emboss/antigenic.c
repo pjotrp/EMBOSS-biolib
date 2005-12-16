@@ -1,7 +1,7 @@
 /* @source antigenic application
 **
 ** Displays antigenic sites in proteins
-** @author: Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+** @author Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
 ** @@
 ** Original program "ANTIGENIC" by Peter Rice (EGCG 1991)
 ** Prediction of antigenic regions of protein sequences by method of:

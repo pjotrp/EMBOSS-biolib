@@ -2,7 +2,7 @@
 **
 ** Calculate protein proteolytic (and CNBr) digest fragments
 **
-** @author: Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+** @author Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

@@ -2,7 +2,7 @@
 **
 ** Display a sequence with restriction cut sites
 **
-** @author: Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
+** @author Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
 ** 18 Jan 2000 - GWW - written
 ** @@
 **

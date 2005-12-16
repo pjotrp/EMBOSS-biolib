@@ -1,5 +1,5 @@
 /* @source patmatmotifs.c
-** @author: Copyright (C) Sinead O'Leary (soleary@hgmp.mrc.ac.uk)
+** @author Copyright (C) Sinead O'Leary (soleary@hgmp.mrc.ac.uk)
 ** @@
 ** Application for pattern matching, a sequence against a database of motifs.
 **

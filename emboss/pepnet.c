@@ -1,7 +1,7 @@
 /* @source pepnet application
 **
 ** Displays proteins as a helical net
-** @author: Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+** @author Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
 ** @@
 **
 ** Original program "PEPNET" in EGCG

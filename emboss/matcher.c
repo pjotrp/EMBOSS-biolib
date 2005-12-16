@@ -5,7 +5,7 @@
 ** Please cite:
 ** X. Huang and W. Miller (1991) Adv. Appl. Math. 12:373-381
 **
-** @author: Copyright (C) Ian Longden (il@sanger.ac.uk)
+** @author Copyright (C) Ian Longden (il@sanger.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

@@ -2,7 +2,7 @@
 **
 ** Banana displays Bending and Curvature Calculations.
 **
-** @author: Copyright (C) Ian Longden (il@sanger.ac.uk)
+** @author Copyright (C) Ian Longden (il@sanger.ac.uk)
 ** @@
 ** please reference the following report in any publication resulting from
 ** use of this program.

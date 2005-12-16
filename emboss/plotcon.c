@@ -1,7 +1,7 @@
 /* @source plotcon application
 **
 ** Plots similarity over the length of a multiple sequence alignment
-** @author: Copyright (C) Tim Carver (tcarver@hgmp.mrc.ac.uk)
+** @author Copyright (C) Tim Carver (tcarver@hgmp.mrc.ac.uk)
 ** @@
 **
 **

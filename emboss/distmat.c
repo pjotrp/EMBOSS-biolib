@@ -12,7 +12,7 @@
 **  Nucleic Acid or Protein - Jukes-Cantor method
 **
 **
-** @author: Copyright (C) Tim Carver (tcarver@hgmp.mrc.ac.uk)
+** @author Copyright (C) Tim Carver (tcarver@hgmp.mrc.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

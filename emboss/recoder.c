@@ -8,7 +8,7 @@
 ** "silent". Also, the enzyme reading function was taken
 ** straight out of "silent".
 **
-** @author: Copyright (C) Tim Carver (tcarver@hgmp.mrc.ac.uk)
+** @author Copyright (C) Tim Carver (tcarver@hgmp.mrc.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

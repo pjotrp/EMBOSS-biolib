@@ -2,7 +2,7 @@
 **
 ** Display a sequence with translations, features and other bits
 **
-** @author: Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
+** @author Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
 ** 14 Sept 1999 - GWW - written
 ** @@
 **

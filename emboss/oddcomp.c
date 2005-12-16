@@ -3,7 +3,7 @@
 ** Identifies sequences with a region with a high composition of specific
 ** words
 **
-** @author: Copyright (C) David Martin (david.martin@biotek.uio.no) based on
+** @author Copyright (C) David Martin (david.martin@biotek.uio.no) based on
 ** compseq by Gary Williams
 ** @@
 **

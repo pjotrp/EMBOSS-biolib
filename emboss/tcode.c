@@ -2,7 +2,7 @@
 **
 ** Fickett TESTCODE statistic
 **
-** @author: Copyright (C) Alan Bleasby (ableasby@embnet.org)
+** @author Copyright (C) Alan Bleasby (ableasby@embnet.org)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

@@ -2,7 +2,7 @@
 **
 ** All against all comparison of a set of sequences
 **
-** @author: Copyright (C) Ian Longden (guess by ajb)
+** @author Copyright (C) Ian Longden (guess by ajb)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

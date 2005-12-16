@@ -1,5 +1,5 @@
 /* @source prima.c
-** @author: Copyright (C) Sinead O'Leary (soleary@hgmp.mrc.ac.uk)
+** @author Copyright (C) Sinead O'Leary (soleary@hgmp.mrc.ac.uk)
 ** @@
 ** Application for selecting forward and reverse primers for PCR and
 ** DNA amplification.

@@ -2,7 +2,7 @@
 **
 ** dotmatcher displays a dotplot for two sequences.
 **
-** @author: Copyright (C) Ian Longden (il@sanger.ac.uk)
+** @author Copyright (C) Ian Longden (il@sanger.ac.uk)
 ** @modified: Added non-proportional plot. Copyright (C) Alan Bleasby
 ** @@
 **

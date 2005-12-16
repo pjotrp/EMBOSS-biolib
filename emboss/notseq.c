@@ -2,7 +2,7 @@
 **
 ** Excludes a set of sequences and writes out the remaining ones
 **
-** @author: Copyright (C) Gary Williams
+** @author Copyright (C) Gary Williams
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

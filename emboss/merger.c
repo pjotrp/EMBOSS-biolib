@@ -1,7 +1,7 @@
 /* @source merger application
 **
 ** Merge two sequences after a global alignment
-** @author: Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
+** @author Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
 ** @@
 **
 ** Closely based on work by Alan Bleasby

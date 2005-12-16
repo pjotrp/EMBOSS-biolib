@@ -1,7 +1,7 @@
 /* @source helixturnhelix application
 **
 ** Reports nucleic acid binding domains
-** @author: Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+** @author Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
 ** @@
 **
 ** Original program "HELIXTURNHELIX" by Peter Rice (EGCG 1990)

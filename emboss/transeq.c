@@ -2,7 +2,7 @@
 **
 ** Translate nucleic acid sequences
 **
-** @author: Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
+** @author Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
 ** Mar  4 17:18 1999 (ajb)
 ** Jul 19 19:24 2000 (ajb)
 ** Jun 29 16:50 2001 (gww) use new version of ajTrnSeqOrig

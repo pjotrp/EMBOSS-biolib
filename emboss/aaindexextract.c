@@ -1,7 +1,7 @@
 /* @source aaindexextract application
 **
 ** Extracts amino acid indices from AAINDEX
-** @author: Copyright (C) Peter Rice (peter.rice@uk.lionbioscience.com)
+** @author Copyright (C) Peter Rice (peter.rice@uk.lionbioscience.com)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

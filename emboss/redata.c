@@ -1,7 +1,7 @@
 /* @source redata application
 **
 ** Reports isoschizomers, references and suppliers for restriction enzymes
-** @author: Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+** @author Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

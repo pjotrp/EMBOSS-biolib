@@ -1,7 +1,7 @@
 /* @source polydot application
 **
 ** Create a polydot from a multiple sequence file.
-** @author: Copyright (C) Peter Rice (pmr@ebi.ac.uk)
+** @author Copyright (C) Peter Rice (pmr@ebi.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

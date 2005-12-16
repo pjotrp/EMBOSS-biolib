@@ -1,7 +1,7 @@
 /* @source etandem application
 **
 ** Tandem searches for tandem repeats
-** @author: Copyright (C) Richard Durbin (rd@sanger.ac.uk)
+** @author Copyright (C) Richard Durbin (rd@sanger.ac.uk)
 ** and Jean Thierry-Mieg 1992
 ** @@
 ** The original application is part of the ACEDB genome database

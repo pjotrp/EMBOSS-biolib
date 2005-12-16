@@ -2,7 +2,7 @@
 **
 ** Counts words of a specified size in a DNA sequence
 **
-** @author:
+** @author
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

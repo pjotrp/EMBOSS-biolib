@@ -1,7 +1,7 @@
 /* @source eprimer3 application
 ** Picks PCR primers and hybridization oligos
 **
-** @author: Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
+** @author Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
 ** 5 Nov 2001 - GWW - written
 ** @@
 **

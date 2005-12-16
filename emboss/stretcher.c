@@ -4,7 +4,7 @@
 ** version 2.0u
 ** Please cite: Myers and Miller, CABIOS (1989)
 **
-** @author: Copyright (C) Ian Longden (il@sanger.ac.uk)
+** @author Copyright (C) Ian Longden (il@sanger.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

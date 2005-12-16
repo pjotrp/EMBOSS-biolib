@@ -2,7 +2,7 @@
 **
 ** Finds matching words  words in DNA sequences
 **
-** @author:
+** @author
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

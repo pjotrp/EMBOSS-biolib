@@ -1,5 +1,5 @@
 /******************************************************************************
-** @Source AJAX format functions
+** @source AJAX format functions
 **
 ** String formatting routines. Similar to printf, fprintf, vprintf
 ** etc but the set of conversion specifiers is not fixed, and cannot

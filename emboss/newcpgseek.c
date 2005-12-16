@@ -1,8 +1,8 @@
 /* @source newcpgseek application
 **
 ** Reports ALL cpg rich regions in a sequence
-** @author: Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
-** @author: Modified by Rodrigo Lopez (rls@ebi.ac.uk)
+** @author Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+** @author Modified by Rodrigo Lopez (rls@ebi.ac.uk)
 ** @@
 **
 ** Original program "CPGREPORT" by Rodrigo Lopez (EGCG 1995)

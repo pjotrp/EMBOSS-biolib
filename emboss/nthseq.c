@@ -2,7 +2,7 @@
 **
 ** Get nth sequence in a file of sequences
 **
-** @author: Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
+** @author Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
 ** 14 Sept 1999 - GWW - written
 ** @@
 **

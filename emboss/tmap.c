@@ -2,7 +2,7 @@
 **
 ** Predict transmembrane regions
 **
-** @author: Copyright (C) Bengt Persson
+** @author Copyright (C) Bengt Persson
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

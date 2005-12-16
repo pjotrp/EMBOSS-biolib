@@ -2,7 +2,7 @@
 **
 ** Search all databases for an entry name
 **
-** @author: Copyright (C) Alan Bleasby
+** @author Copyright (C) Alan Bleasby
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

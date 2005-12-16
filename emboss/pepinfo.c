@@ -1,7 +1,7 @@
 /* @source pepinfo application
 **
 ** Displays properties of the amino acid residues in a peptide sequence
-** @author: Copyright (C) Mark Faller (mfaller@hgmp.mrc.ac.uk)
+** @author Copyright (C) Mark Faller (mfaller@hgmp.mrc.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

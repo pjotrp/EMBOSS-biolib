@@ -1,7 +1,7 @@
 /* @source restover application
  **
  ** Reports restriction enzyme that produce specific overhangs
- ** @author: Copyright (C) Bernd Jagla
+ ** @author Copyright (C) Bernd Jagla
  ** @@ modified source from Alan
  **
  ** This program is free software; you can redistribute it and/or

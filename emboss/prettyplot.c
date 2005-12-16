@@ -1,7 +1,7 @@
 /* @source prettyplot application
 **
 ** Displays and plots sequence alignments and consensus for PLOTTERS.
-** @author: Copyright (C) Ian Longden (il@sanger.ac.uk)
+** @author Copyright (C) Ian Longden (il@sanger.ac.uk)
 ** @@
 **
 ** Replaces program "prettyplot" (EGCG)

@@ -1,7 +1,7 @@
 /* @source cpgreport application
 **
 ** Reports ALL cpg rich regions in a sequence
-** @author: Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+** @author Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
 ** @@
 **
 ** Original program "CPGREPORT" by Rodrigo Lopez (EGCG 1995)

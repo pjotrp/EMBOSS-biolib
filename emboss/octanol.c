@@ -1,7 +1,7 @@
 /* @source octanol application
 **
 ** Displays protein hydropathy.
-** @author: Copyright (C) Ian Longden (il@sanger.ac.uk)
+** @author Copyright (C) Ian Longden (il@sanger.ac.uk)
 ** @@
 ** From White and Wimley Annu Rev. Biophys. Biomol. Struct. 1999. 28:319-65
 **

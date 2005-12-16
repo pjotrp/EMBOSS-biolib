@@ -7,7 +7,7 @@
 ** Includes functions for reading SCOP and CATH parsable files and for 
 ** reading and writing dcf (domain classification file) format.
 **
-** @author: Copyright (C) 2004 Jon Ison (jison@hgmp.mrc.ac.uk)
+** @author Copyright (C) 2004 Jon Ison (jison@hgmp.mrc.ac.uk)
 ** @version 1.0 
 ** @@
 ** 

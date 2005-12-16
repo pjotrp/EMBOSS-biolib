@@ -1,7 +1,7 @@
 /* @source garnier application
 **
 ** Secondary structure prediction
-** @author: Copyright (C) Rodrigo Lopez
+** @author Copyright (C) Rodrigo Lopez
 ** @@
 **
 ** The sequence is taken from a ABI trace file and written to a

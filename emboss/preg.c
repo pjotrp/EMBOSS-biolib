@@ -2,7 +2,7 @@
 **
 ** Protein regular expression (perl style)
 **
-** @author: Copyright (C) Peter Rice
+** @author Copyright (C) Peter Rice
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

@@ -2,7 +2,7 @@
 **
 ** Calculate protein statistics
 **
-** @author: Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+** @author Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
 ** @@
 **
 ** Dayhoff statistic by Rodrigo Lopez (rls@ebi.ac.uk)

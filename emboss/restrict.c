@@ -1,7 +1,7 @@
  /* @source restrict application
  **
  ** Reports restriction enzyme cleavage sites
- ** @author: Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+ ** @author Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
  ** @@
  **
  ** The author wishes to thank Helge Horch for important

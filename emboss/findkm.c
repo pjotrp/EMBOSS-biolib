@@ -1,6 +1,6 @@
 /* @source findkm.c
 **
-** @author: Copyright (C) Sinead O'Leary (soleary@hgmp.mrc.ac.uk),
+** @author Copyright (C) Sinead O'Leary (soleary@hgmp.mrc.ac.uk),
 ** David Martin (david.martin@biotek.uio.no)
 **
 ** Application to calculate the Michaelis Menton Constants (Km) of different

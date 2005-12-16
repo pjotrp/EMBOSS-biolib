@@ -2,7 +2,7 @@
 **
 ** Writes a list file of the logical OR of two sets of sequences
 **
-** @author: Copyright (C) Gary Williams
+** @author Copyright (C) Gary Williams
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

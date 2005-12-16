@@ -1,7 +1,7 @@
 /* @source cons application
 **
 ** Calculates a consensus
-** @author: Copyright (C) Tim Carver (tcarver@hgmp.mrc.ac.uk)
+** @author Copyright (C) Tim Carver (tcarver@hgmp.mrc.ac.uk)
 ** @@
 **
 **

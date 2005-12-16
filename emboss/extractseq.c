@@ -2,7 +2,7 @@
 **
 ** Extract regions from a sequence
 **
-** @author: Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
+** @author Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
 ** Fri Apr 16 16:47:32 BST 1999 (ajb)
 ** 7 Sept 1999 - GWW rewrote to use ajRange routines.
 ** 15 March 2000 - GWW added '-separate' option

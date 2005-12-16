@@ -2,7 +2,7 @@
 **
 ** Calculate protein charge within a sliding window
 **
-** @author: Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+** @author Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
 ** @modified: David Martin July 2001 (dmartin@hgmp.mrc.ac.uk)
 ** @modified: Alan Bleasby Oct 2001 (ableasby@hgmp.mrc.ac.uk)
 ** @@

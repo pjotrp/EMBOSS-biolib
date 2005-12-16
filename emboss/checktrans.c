@@ -2,7 +2,7 @@
 **
 ** Check translations made with transeq (document these translations)
 **
-** @author: Copyright (C) Rodrigo Lopez & Alan Bleasby
+** @author Copyright (C) Rodrigo Lopez & Alan Bleasby
 ** @@
 ** Adapted from work done by Alan Bleasy
 ** Modified by Gary Williams 19 April 2000 to remove output to STDOUT and to

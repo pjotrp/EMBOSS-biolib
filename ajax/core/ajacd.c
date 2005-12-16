@@ -1,4 +1,4 @@
-/******************************************************************************
+/* @source ********************************************************************
 **
 ** These functions control all aspects of AJAX command definition
 ** syntax, command line handling and prompting of the user.

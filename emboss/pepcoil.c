@@ -1,7 +1,7 @@
 /* @source pepcoil application
 **
 ** Displays coiled coil sites in proteins
-** @author: Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+** @author Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
 ** @@
 ** Original program "PEPCOIL" by Peter Rice (EGCG 1991)
 **

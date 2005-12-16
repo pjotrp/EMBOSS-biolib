@@ -6,7 +6,7 @@
 **
 ** Outputs 360 degrees if an angle cannot be calculated
 **
-** @author: Copyright (C) Damian Counsell
+** @author Copyright (C) Damian Counsell
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
