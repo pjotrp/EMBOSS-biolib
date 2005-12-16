@@ -240,6 +240,7 @@ NamOValid namRsTypes[] =
 **
 ** @attr name [AjPStr] token name
 ** @attr value [AjPStr] token value for variables
+** @attr file [AjPStr] Short name for definitions file
 ** @attr data [void*] Attribute names and values for databases
 ** @@
 ******************************************************************************/
@@ -309,6 +310,7 @@ static void namEntryDelete(NamPEntry* pentry, ajint which)
 
     ajStrDel(&entry->name);
     ajStrDel(&entry->value);
+    ajStrDel(&entry->file);
 
     if(which == TYPE_DB)
     {
@@ -1092,7 +1094,7 @@ static void namListParse(AjPList listwords, AjPList listcount,
     /* nrsattr = count resource attributes */
     if(!nrsattr)
 	for(nrsattr=0; namRsAttrs[nrsattr].Name; nrsattr++);
-    
+
     ajStrAssS(&saveshortname, shortname);
     ajStrDel(&name);
     ajStrDel(&value);
@@ -2012,6 +2014,7 @@ void ajNamInit(const char* prefix)
     namUser("Files processed: %S\n", namFileOrig);
 
     ajStrDel(&prefixRootStr);
+    ajStrDel(&basename);
     ajStrDel(&prefixStr);
     ajStrDel(&prefixCap);
     
