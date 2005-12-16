@@ -518,11 +518,9 @@ unsigned long long ajSp64Crc(const AjPStr thys)
 ** Converts a string position into a true position. If ipos is negative,
 ** it is counted from the end of the string rather than the beginning.
 **
-** @param [r] thys [const AjPStr] Target string.
+** @param [r] len [ajint] String length.
 ** @param [r] ipos [ajint] Position (0 start, negative from the end).
 ** @return [ajint] string position between 0 and (length minus 1).
-** @category cast [AjPStr] Converts a string position into a true
-**                position
 ** @@
 ******************************************************************************/
 
