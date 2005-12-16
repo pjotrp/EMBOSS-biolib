@@ -2,7 +2,7 @@
 **
 ** Display a DNA sequence in both direction with its translation
 **
-** @author: Copyright (C) Thomas Laurent (thomas.laurent@uk.lionbioscience.com)
+** @author Copyright (C) Thomas Laurent (thomas.laurent@uk.lionbioscience.com)
 ** 30 Sept 2002
 ** @@
 **
@@ -26,17 +26,17 @@
 
 
 
-static int sixpack_findorfs(AjPSeqout outseq, AjPFile outf, ajint s,
-			    ajint len, const char *seq,
-			    const char *name, ajint orfml, 
-			    AjBool addedasterisk, AjBool firstorf,
-			    ajint frame, 
-			    const char *origname, AjBool mstart);
+static int sixpackFindorfs(AjPSeqout outseq, AjPFile outf, ajint s,
+			   ajint len, const char *seq,
+			   const char *name, ajint orfml, 
+			   AjBool addedasterisk, AjBool firstorf,
+			   ajint frame, 
+			   const char *origname, AjBool mstart);
 
-static void sixpack_ajprintseq(AjPSeqout outseq, const char *seq, ajint begin,
-			       int end, ajint orflength, const char *name,
-			       ajint count, ajint frame, const char *origname,
-			       ajint min_orflength);
+static void sixpackPrintseq(AjPSeqout outseq, const char *seq, ajint begin,
+			    int end, ajint orflength, const char *name,
+			    ajint count, ajint frame, const char *origname,
+			    ajint min_orflength);
 
 
 
@@ -236,11 +236,11 @@ int main(int argc, char **argv)
 	  
 	peplen = ajStrLen(substr);
 
-	totalorf += sixpack_findorfs(outseq, outfile, 0, peplen,
-				     ajStrStr(substr),
-				     ajSeqName(pep), orfminsize,
-				     addedasterisk, firstorf,
-				     i+1, ajSeqName(seq), mstart);
+	totalorf += sixpackFindorfs(outseq, outfile, 0, peplen,
+				    ajStrStr(substr),
+				    ajSeqName(pep), orfminsize,
+				    addedasterisk, firstorf,
+				    i+1, ajSeqName(seq), mstart);
 
 	ajSeqDel(&pep);
     }
@@ -258,13 +258,13 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic sixpack_findorfs **********************************************
+/* @funcstatic sixpackFindorfs ************************************************
 **
 ** Finds ORFs and prints report
 **
 ** @param [u] outseq [AjPSeqout] File where to write fasta sequences
 ** @param [u] outf [AjPFile] File where to write the report on ORFs 
-** @param [r] from [ajint] 0
+** @param [r] from [ajint] Zero
 ** @param [r] to [ajint] Length of the sequence
 ** @param [r] p [const char*] Sequence
 ** @param [r] name [const char*] Name of the translated sequence
@@ -279,12 +279,12 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static int sixpack_findorfs(AjPSeqout outseq, AjPFile outf, ajint from,
-			    ajint to, const char *p, const char *name,
-			    ajint min_orflength,
-			    AjBool addedasterisk, AjBool firstorf,
-			    ajint frame, 
-			    const char *origname, AjBool mstart)
+static int sixpackFindorfs(AjPSeqout outseq, AjPFile outf, ajint from,
+			   ajint to, const char *p, const char *name,
+			   ajint min_orflength,
+			   AjBool addedasterisk, AjBool firstorf,
+			   ajint frame, 
+			   const char *origname, AjBool mstart)
 
 {
     ajint i;
@@ -314,9 +314,9 @@ static int sixpack_findorfs(AjPSeqout outseq, AjPFile outf, ajint from,
 
 	    if(orflength >= min_orflength)
 	    {
-		sixpack_ajprintseq(outseq, p,i-orflength,i-1,orflength,
-				   name,orfnb+1,frame,origname,
-				   min_orflength);
+		sixpackPrintseq(outseq, p,i-orflength,i-1,orflength,
+				name,orfnb+1,frame,origname,
+				min_orflength);
 		orfnb++;
 	    }
 	    else if((last_stop == 0) && firstorf && p[0] != '*')
@@ -326,9 +326,9 @@ static int sixpack_findorfs(AjPSeqout outseq, AjPFile outf, ajint from,
 
 		if(orflength > 0)
 		{
-		    sixpack_ajprintseq(outseq, p,i-orflength,i-1,orflength,
-				       name,orfnb+1,frame,origname,
-				       min_orflength);
+		    sixpackPrintseq(outseq, p,i-orflength,i-1,orflength,
+				    name,orfnb+1,frame,origname,
+				    min_orflength);
 		    orfnb++;
 		}
 	    }
@@ -336,9 +336,9 @@ static int sixpack_findorfs(AjPSeqout outseq, AjPFile outf, ajint from,
 	    {
 		if(orflength > 0)
 		{
-		    sixpack_ajprintseq(outseq, p,i-orflength,i-1,orflength,
-				       name,orfnb+1,frame,origname,
-				       min_orflength);
+		    sixpackPrintseq(outseq, p,i-orflength,i-1,orflength,
+				    name,orfnb+1,frame,origname,
+				    min_orflength);
 		    orfnb++;
 		}
 	    }
@@ -360,7 +360,7 @@ static int sixpack_findorfs(AjPSeqout outseq, AjPFile outf, ajint from,
 
 
 
-/* @funcstatic sixpack_ajprintseq *********************************************
+/* @funcstatic sixpackPrintseq ************************************************
 **
 ** Prints ORFs in the sequence file
 **
@@ -379,11 +379,11 @@ static int sixpack_findorfs(AjPSeqout outseq, AjPFile outf, ajint from,
 ** @@
 ******************************************************************************/
 
-static void sixpack_ajprintseq(AjPSeqout outseq,
-			       const char *seq, ajint begin, int
-			       end, ajint orflength, const char *name,
-			       ajint count, ajint frame, 
-			       const char *origname, ajint min_orflength)
+static void sixpackPrintseq(AjPSeqout outseq,
+			    const char *seq, ajint begin, int
+			    end, ajint orflength, const char *name,
+			    ajint count, ajint frame, 
+			    const char *origname, ajint min_orflength)
 {
     AjPSeq sq;
     AjPStr str;

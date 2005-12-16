@@ -2,8 +2,8 @@
 **
 ** Split a sequence into (overlapping) smaller sequences
 **
-** @author: Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
-** @Modified: Rewritten for more intuitive overlaps (ableasby@hgmp.mrc.ac.uk)
+** @author Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
+** @modified: Rewritten for more intuitive overlaps (ableasby@hgmp.mrc.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
