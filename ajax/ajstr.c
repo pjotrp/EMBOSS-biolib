@@ -9399,7 +9399,8 @@ void ajStrTokenDel(AjPStrTok* Ptoken)
 
 void __deprecated ajStrTokenClear(AjPStrTok* token)
 {
-    return ajStrTokenDel(token);
+    ajStrTokenDel(token);
+    return;
 }
 
 
