@@ -106,6 +106,7 @@ int main(int argc, char **argv)
     
     AjPBtId  idobj  = NULL;
     AjPBtPri priobj = NULL;
+    AjPBtHybrid hyb = NULL;
     
 
     embInit("dbxflat", argc, argv);
@@ -126,7 +127,8 @@ int main(int argc, char **argv)
     
     idobj   = ajBtreeIdNew();
     priobj  = ajBtreePriNew();
-
+    hyb     = ajBtreeHybNew();
+    
 
     nfields = embBtreeSetFields(entry,fieldarray);
     embBtreeSetDbInfo(entry,dbname,dbrs,datestr,release,dbtype,directory,
@@ -156,11 +158,11 @@ int main(int argc, char **argv)
 	    if(entry->do_id)
 	    {
 		ajStrToLower(&entry->id);
-		ajStrAssS(&idobj->id,entry->id);
-		idobj->dbno = i;
-		idobj->offset = entry->fpos;
-		idobj->dups = 0;
-		ajBtreeInsertId(entry->idcache,idobj);
+		ajStrAssS(&hyb->key1,entry->id);
+		hyb->dbno = i;
+		hyb->offset = entry->fpos;
+		hyb->dups = 0;
+		ajBtreeHybInsertId(entry->idcache,hyb);
 	    }
 
 	    if(entry->do_accession)
@@ -168,11 +170,11 @@ int main(int argc, char **argv)
                 while(ajListPop(entry->ac,(void **)&word))
                 {
 		    ajStrToLower(&word);
-                    ajStrAssS(&idobj->id,word);
-                    idobj->dbno = i;
-		    idobj->offset = entry->fpos;
-		    idobj->dups = 0;
-		    ajBtreeInsertId(entry->accache,idobj);
+                    ajStrAssS(&hyb->key1,word);
+                    hyb->dbno = i;
+		    hyb->offset = entry->fpos;
+		    hyb->dups = 0;
+		    ajBtreeHybInsertId(entry->accache,hyb);
 		    ajStrDel(&word);
                 }
 	    }
@@ -182,11 +184,11 @@ int main(int argc, char **argv)
                 while(ajListPop(entry->sv,(void **)&word))
                 {
 		    ajStrToLower(&word);
-                    ajStrAssS(&idobj->id,word);
-                    idobj->dbno = i;
-		    idobj->offset = entry->fpos;
-		    idobj->dups = 0;
-		    ajBtreeInsertId(entry->svcache,idobj);
+                    ajStrAssS(&hyb->key1,word);
+                    hyb->dbno = i;
+		    hyb->offset = entry->fpos;
+		    hyb->dups = 0;
+		    ajBtreeHybInsertId(entry->svcache,hyb);
 		    ajStrDel(&word);
                 }
 	    }
@@ -231,14 +233,10 @@ int main(int argc, char **argv)
 	    }
 	}
 	
-
-
-
-
-
 	ajFileClose(&inf);
     }
     
+
 
     embBtreeDumpParameters(entry);
     embBtreeCloseCaches(entry);
@@ -256,7 +254,8 @@ int main(int argc, char **argv)
 
     ajBtreeIdDel(&idobj);
     ajBtreePriDel(&priobj);
-
+    ajBtreeHybDel(&hyb);
+    
     ajExit();
 
     return 0;

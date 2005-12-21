@@ -48,10 +48,16 @@ extern "C"
 ** @attr txlen [ajint] Undocumented
 ** @attr idorder [ajint] Undocumented
 ** @attr idfill [ajint] Undocumented
+** @attr idsecorder [ajint] Undocumented
+** @attr idsecfill [ajint] Undocumented
 ** @attr acorder [ajint] Undocumented
 ** @attr acfill [ajint] Undocumented
+** @attr acsecorder [ajint] Undocumented
+** @attr acsecfill [ajint] Undocumented
 ** @attr svorder [ajint] Undocumented
 ** @attr svfill [ajint] Undocumented
+** @attr svsecorder [ajint] Undocumented
+** @attr svsecfill [ajint] Undocumented
 ** @attr kworder [ajint] Undocumented
 ** @attr kwfill [ajint] Undocumented
 ** @attr kwsecorder [ajint] Undocumented
@@ -112,10 +118,16 @@ typedef struct EmbSBtreeEntry
 
     ajint idorder;
     ajint idfill;
+    ajint idsecorder;
+    ajint idsecfill;
     ajint acorder;
     ajint acfill;
+    ajint acsecorder;
+    ajint acsecfill;
     ajint svorder;
     ajint svfill;
+    ajint svsecorder;
+    ajint svsecfill;
 
     ajint kworder;
     ajint kwfill;
