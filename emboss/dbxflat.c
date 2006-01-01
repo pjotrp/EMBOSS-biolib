@@ -357,12 +357,10 @@ static AjBool dbxflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
     
     line = ajStrNewC("");
     sumline = ajStrNew();
+
     
     while(!ajStrPrefixC(line,"//") && ret)
     {
-	pos = ajFileTell(inf);
-	
-	
 	if(ajStrPrefixC(line,"LOCUS"))
 	{
 	    entry->fpos = pos;
@@ -424,7 +422,7 @@ static AjBool dbxflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
 	    }
 	
 
-
+	pos = ajFileTell(inf);
 
 	if(!ajFileReadLine(inf,&line))
 	    ret = ajFalse;
