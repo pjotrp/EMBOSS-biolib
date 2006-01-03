@@ -323,8 +323,6 @@ AjPBtcache ajBtreeCacheNewC(const char *file, const char *ext,
     cache->tsmem = NULL;
 
 
-    /* Add slevel, sorder and snperbucket ???? */
-
     ajStrDel(&fn);
     
     return cache;
@@ -13992,6 +13990,18 @@ void ajBtreeHybInsertId(AjPBtcache cache, AjPBtHybrid hyb)
 
 
 
+/* @funcstatic btreeHybDupInsert *********************************************
+**
+** Insert a known duplicate ID structure into the tree
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] hyb [const AjPBtHybrid] Hybrid ID object
+** @param [r] btid [const AjPBtId] Id object
+**
+** @return [void]
+** @@
+******************************************************************************/
+
 static void btreeHybDupInsert(AjPBtcache cache, AjPBtHybrid hyb,
 			      AjPBtId btid)
 {
@@ -15893,6 +15903,18 @@ static ajlong btreeNumInsertShift(AjPBtcache cache, AjPBtpage *retpage,
 
 
 
+
+/* @func ajBtreeInsertNum *********************************************
+**
+** Insert a file offset key into a secondary tree
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] num [AjPBtNumId] Id object
+** @param [w] num [AjPBtpage] cache page
+**
+** @return [void] pointer to a page
+** @@
+******************************************************************************/
 
 void ajBtreeInsertNum(AjPBtcache cache, AjPBtNumId num, AjPBtpage page)
 {
