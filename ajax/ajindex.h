@@ -70,6 +70,18 @@ typedef struct AjSBtNode
 
 
 
+/* @data AjPBMem ***********************************************************
+**
+** Dynamic list for btree memory arrays
+**
+** @attr next [AjSBtMem*] next node
+** @attr prev [AjSBtMem*] previous node
+** @attr karray [AjPStr*] key array (primary trees)
+** @attr parray [ajlong*] pointer arrays (primary and secondary trees)
+** @attr overflows [ajlong*] overflows (primary) and keys (secondary)
+** @attr used [AjBool] node in use
+*****************************************************************************/
+
 typedef struct AjSBtMem
 {
     struct AjSBtMem *next;
@@ -104,6 +116,8 @@ typedef struct AjSBtId
     ajlong refoffset;
 } AjOBtId;
 #define AjPBtId AjOBtId*
+
+
 
 
 /* @data AjPBtWild ***************************************************
@@ -158,9 +172,7 @@ typedef struct AjSBucket
 **
 ** Btree ID
 **
-** @attr id [AjPStr] Unique ID
 ** @attr dbno [ajint] Database file number
-** @attr dups [ajint] Duplicates
 ** @attr offset [ajlong] Offset within database file (ftello)
 ** @attr refoffset [ajlong] Offset within reference database file (ftello)
 ******************************************************************************/
@@ -185,9 +197,7 @@ typedef struct AjSBtNumId
 ** @attr NodeType [ajint] Node type
 ** @attr Nentries [ajint] Number of entries
 ** @attr Overflow [ajlong] Offset to overflow block
-** @attr offset [ajlong*] file offsets
-** @attr refoffset [ajlong*] ref file offsets
-** @attr offset [ajint*] database numbers
+** @attr NumId [AjBtNumId*] secondary tree IDs
 ******************************************************************************/
 
 typedef struct AjSNumBucket
@@ -294,6 +304,7 @@ typedef struct AjSNumBucket
 /*
 ** Macros to determine entry positions within an internal/leaf node
 */
+
 #define PBT_NODETYPE(p) p
 #define PBT_BLOCKNUMBER(p) (p + sizeof(ajint))
 #define PBT_NKEYS(p) (p + sizeof(ajint) + sizeof(ajlong))
@@ -314,6 +325,7 @@ typedef struct AjSNumBucket
 /*
 ** Macros to return a page entry value within an internal/leaf node
 */
+
 #if defined(LENDIAN)
 #define GBT_NODETYPE(p,v) (memcpy((void*)v,(void*)PBT_NODETYPE(p), \
 				  sizeof(ajint)))
@@ -363,6 +375,7 @@ typedef struct AjSNumBucket
 /*
 ** Macros to set a page entry value within an internal/leaf node
 */
+
 #if defined(LENDIAN)
 #define SBT_NODETYPE(p,v) (memcpy((void*)PBT_NODETYPE(p),(const void*)&v, \
 				  sizeof(ajint)))
@@ -408,6 +421,8 @@ typedef struct AjSNumBucket
 #endif
 
 
+
+
 /* @data AjPBtpage ***************************************************
 **
 ** Btree page
@@ -434,28 +449,28 @@ typedef struct AjSBtpage
 **
 ** B tree cache
 **
-** @attr fp [FILE*] Undocumented
-** @attr pagesize [ajint] Undocumented
-** @attr totsize [ajlong] Undocumented
-** @attr lru [AjPBtpage] Undocumented
-** @attr mru [AjPBtpage] Undocumented
-** @attr listLength [ajint] Undocumented
-** @attr order [ajint] Undocumented
-** @attr level [ajint] Undocumented
-** @attr cachesize [ajint] Undocumented
-** @attr nperbucket [ajint] Undocumented
-** @attr replace [AjPStr] Undocumented
-** @attr count [ajlong] Undocumented
-** @attr deleted [AjBool] Undocumented
-** @attr slevel [ajint] Undocumented
-** @attr sorder [ajint] Undocumented
-** @attr snperbucket [ajint] Undocumented
-** @attr secrootblock [ajlong] secondary tree root block
+** @attr fp [FILE*] Tree index file pointer
+** @attr pagesize [ajint] Size of cache pages
+** @attr totsize [ajlong] Tree index length
+** @attr lru [AjPBtpage] Least recently used cache page
+** @attr mru [AjPBtpage] Most recently used cache page
+** @attr listLength [ajint] Number of pages in cache
+** @attr order [ajint] Order of primary tree
+** @attr level [ajint] Depth of primary tree
+** @attr cachesize [ajint] Maximum number of pages to cache
+** @attr nperbucket [ajint] Number of entries in a primary bucket
+** @attr replace [AjPStr] Replacement ID
+** @attr count [ajlong] Number of entries indexed
+** @attr deleted [AjBool] Deletion flag
+** @attr slevel [ajint] Depth of secondary tree
+** @attr sorder [ajint] Order of secondary tree
+** @attr snperbucket [ajint] Number of entries in a secondary bucket
+** @attr secrootblock [ajlong] Secondary tree root block
 ** @attr kwlimit [ajint] Max length of secondary key
-** @attr bmem [AjPBtMem] primary memory allocation MRU bottom
-** @attr bsmem [AjPBtMem] secondary memory allocation MRU bottom
-** @attr tmem [AjPBtMem] primary memory allocation MRU top
-** @attr tsmem [AjPBtMem] secondary memory allocation MRU top
+** @attr bmem [AjPBtMem] Primary array allocation MRU bottom
+** @attr bsmem [AjPBtMem] Secondary array allocation MRU bottom
+** @attr tmem [AjPBtMem] Primary array allocation MRU top
+** @attr tsmem [AjPBtMem] Secondary array allocation MRU top
 ******************************************************************************/
 
 typedef struct AjSBtCache
@@ -593,7 +608,8 @@ typedef struct AjSBtKeyWild
 ** @attr key1 [AjPStr] Unique ID
 ** @attr dbno [ajint] Database file number
 ** @attr dups [ajint] Duplicates
-** @attr offset [ajlong] Offset within database file (ftello)** @attr refoffset [ajlong] Offset within reference database file (ftello)
+** @attr offset [ajlong] Offset within database file (ftello)
+** @attr refoffset [ajlong] Offset within reference database file (ftello)
 ** @attr refoffset [ajlong] Offset within reference database file (ftello)
 ** @attr treeblock [ajlong] Secondary tree root page
 ******************************************************************************/
