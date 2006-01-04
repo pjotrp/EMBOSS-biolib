@@ -138,7 +138,7 @@ int main(int argc, char **argv)
 		ajStrToLower(&entry->id);
 		ajStrAssS(&hyb->key1,entry->id);
 		hyb->dbno = i;
-		idobj->offset = entry->fpos;
+		hyb->offset = entry->fpos;
 		hyb->dups = 0;
 		ajBtreeHybInsertId(entry->idcache,hyb);
 	    }
