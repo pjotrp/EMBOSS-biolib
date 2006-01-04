@@ -168,10 +168,12 @@ have to be different again. */
 
 #ifndef VPCOMPAT
 PCRE_DATA_SCOPE void *(*pcre_malloc)(size_t);
+PCRE_DATA_SCOPE void *(*pcre_calloc)(size_t,size_t);
 PCRE_DATA_SCOPE void  (*pcre_free)(void *);
 PCRE_DATA_SCOPE int   (*pcre_callout)(pcre_callout_block *);
 #else   /* VPCOMPAT */
 extern void *pcre_malloc(size_t);
+extern void *pcre_calloc(size_t,size_t);
 extern void  pcre_free(void *);
 extern int   pcre_callout(pcre_callout_block *);
 #endif  /* VPCOMPAT */
