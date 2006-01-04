@@ -1021,9 +1021,11 @@ AjPStr ajMatrixGetCodes(const AjPMatrix thys)
 {
     AjPStr ret = NULL;
     ajint i;
+    ajint maxcode;
 
-    ret = ajStrNewL(thys->Size + 1);
-    for (i=0;i<thys->Size;i++)
+    ret = ajStrNewL(thys->Size);
+    maxcode = thys->Size - 1;
+    for (i=0;i<maxcode;i++)
 	ajStrAppK(&ret, ajStrChar(thys->Codes[i], 0));
     return ret;
 }
@@ -1040,9 +1042,11 @@ AjPStr ajMatrixfGetCodes(const AjPMatrixf thys)
 {
     AjPStr ret = NULL;
     ajint i;
+    ajint maxcode;
 
     ret = ajStrNewL(thys->Size + 1);
-    for (i=0;i<thys->Size;i++)
+    maxcode = thys->Size - 1;
+    for (i=0;i<maxcode;i++)
 	ajStrAppK(&ret, ajStrChar(thys->Codes[i], 0));
     return ret;
 }
