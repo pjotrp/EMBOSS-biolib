@@ -1480,7 +1480,7 @@ static void namListParse(AjPList listwords, AjPList listcount,
 
     if(value)
     {
-	ajUser("++ namListParse value %x '%S'", value, value);
+	namUser("++ namListParse value %x '%S'", value, value);
     }
 
     ajStrDel(&saveshortname);
