@@ -5499,29 +5499,29 @@ FP /Processing file \S+/test/data/emrod\n/
 FI emrod.ent
 FC = 5
 FP 1 /^# Number of files: 1\n/
-FP /.*\/test\/data\/emrod\n/
+FP /^emrod\n/
 FI emrod.pxac
-FZ = 115
+FZ = 118
 FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
 FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    0\n/
-FP 1 /^Fill2     0\n/
+FP 1 /^Order2    82\n/
+FP 1 /^Fill2     99\n/
 FP 1 /^Count     2\n/
-FP 1 /^Kwlimit   0\n/
+FP 1 /^Kwlimit   15\n/
 FI emrod.pxid
-FZ = 115
+FZ = 118
 FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
 FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    0\n/
-FP 1 /^Fill2     0\n/
+FP 1 /^Order2    82\n/
+FP 1 /^Fill2     99\n/
 FP 1 /^Count     2\n/
-FP 1 /^Kwlimit   0\n/
+FP 1 /^Kwlimit   15\n/
 FI emrod.xac
 FZ = 6144
 FP 1 /z46957/
@@ -5927,29 +5927,29 @@ FP /^Processing file .*\/test\/embl\/rod\.dat\n/
 FI embl.ent
 FC = 5
 FP /^# Number of files: 1\n/
-FP /.*\/test\/embl\/rod\.dat\n/
+FP /^rod\.dat\n/
 FI embl.pxac
-FZ = 115
+FZ = 118
 FP /^Order     71\n/
 FP /^Fill      47\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
 FP /^Cachesize [12]00\n/
-FP /^Order2    0\n/
-FP /^Fill2     0\n/
+FP /^Order2    82\n/
+FP /^Fill2     99\n/
 FP /^Count     2\n/
-FP /^Kwlimit   0\n/
+FP /^Kwlimit   15\n/
 FI embl.pxid
-FZ = 115
+FZ = 118
 FP /^Order     71\n/
 FP /^Fill      47\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
 FP /^Cachesize [12]00\n/
-FP /^Order2    0\n/
-FP /^Fill2     0\n/
+FP /^Order2    82\n/
+FP /^Fill2     99\n/
 FP /^Count     2\n/
-FP /^Kwlimit   0\n/
+FP /^Kwlimit   15\n/
 FI embl.xac
 FZ = 6144
 FP /\0l48662\0/
@@ -6053,19 +6053,19 @@ FP 10 /^Processing file .*\/test\/embl\/[a-z0-9]+\.dat\n/
 FI embl.ent
 FC = 14
 FP /^# Number of files: 10\n/
-FP /.*\/test\/embl\/rod\.dat\n/
-FP 10 /.*\/test\/embl\/[a-z0-9]+\.dat\n/
+FP /^rod\.dat\n/
+FP 10 /^[a-z0-9]+\.dat\n/
 FI embl.pxac
-FZ = 117
+FZ = 120
 FP /^Order     71\n/
 FP /^Fill      47\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
 FP /^Cachesize [12]00\n/
-FP /^Order2    0\n/
-FP /^Fill2     0\n/
+FP /^Order2    82\n/
+FP /^Fill2     99\n/
 FP /^Count     113\n/
-FP /^Kwlimit   0\n/
+FP /^Kwlimit   15\n/
 FI embl.pxde
 FZ = 121
 FP /^Order     71\n/
@@ -6078,16 +6078,16 @@ FP /^Fill2     106\n/
 FP /^Count     395\n/
 FP /^Kwlimit   15\n/
 FI embl.pxid
-FZ = 116
+FZ = 119
 FP /^Order     71\n/
 FP /^Fill      47\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
 FP /^Cachesize [12]00\n/
-FP /^Order2    0\n/
-FP /^Fill2     0\n/
+FP /^Order2    82\n/
+FP /^Fill2     99\n/
 FP /^Count     44\n/
-FP /^Kwlimit   0\n/
+FP /^Kwlimit   15\n/
 FI embl.pxkw
 FZ = 120
 FP /^Order     71\n/
@@ -6100,16 +6100,16 @@ FP /^Fill2     106\n/
 FP /^Count     94\n/
 FP /^Kwlimit   15\n/
 FI embl.pxsv
-FZ = 116
+FZ = 119
 FP /^Order     71\n/
 FP /^Fill      47\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
 FP /^Cachesize [12]00\n/
-FP /^Order2    0\n/
-FP /^Fill2     0\n/
+FP /^Order2    82\n/
+FP /^Fill2     99\n/
 FP /^Count     44\n/
-FP /^Kwlimit   0\n/
+FP /^Kwlimit   15\n/
 FI embl.pxtx
 FZ = 121
 FP /^Order     71\n/
@@ -6122,7 +6122,7 @@ FP /^Fill2     106\n/
 FP /^Count     546\n/
 FP /^Kwlimit   15\n/
 FI embl.xac
-FZ = 10240
+FZ = 28672
 FP /\0l48662\0/
 FP /\0l48662\0/
 FP /\0z46957\0/
@@ -6419,29 +6419,29 @@ FI embl.ent
 FC = 13
 FP 1 /^Dual filename database\n/
 FP 1 /^# Number of files: 9\n/
-FP 9 /\/test\/embl\/eem_[a-z1-9]+\.ref\n/
+FP 9 / eem_[a-z1-9]+\.ref\n/
 FI embl.pxac
-FZ = 116
+FZ = 119
 FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
 FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    0\n/
-FP 1 /^Fill2     0\n/
+FP 1 /^Order2    82\n/
+FP 1 /^Fill2     99\n/
 FP 1 /^Count     47\n/
-FP 1 /^Kwlimit   0\n/
+FP 1 /^Kwlimit   15\n/
 FI embl.pxid
-FZ = 116
+FZ = 119
 FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
 FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    0\n/
-FP 1 /^Fill2     0\n/
+FP 1 /^Order2    82\n/
+FP 1 /^Fill2     99\n/
 FP 1 /^Count     39\n/
-FP 1 /^Kwlimit   0\n/
+FP 1 /^Kwlimit   15\n/
 FI embl.xac
 FZ = 6144
 FP 1 /\0ab000095\0/
@@ -6654,18 +6654,18 @@ FI embl.ent
 FC = 13
 FP 1 /^Dual filename database\n/
 FP 1 /^# Number of files: 9\n/
-FP 9 /\/test\/embl\/eem_[a-z1-9]+\.ref\n/
+FP 9 / eem_[a-z1-9]+\.ref\n/
 FI embl.pxac
-FZ = 116
+FZ = 119
 FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
 FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    0\n/
-FP 1 /^Fill2     0\n/
+FP 1 /^Order2    82\n/
+FP 1 /^Fill2     99\n/
 FP 1 /^Count     47\n/
-FP 1 /^Kwlimit   0\n/
+FP 1 /^Kwlimit   15\n/
 FI embl.pxde
 FZ = 121
 FP 1 /^Order     71\n/
@@ -6678,16 +6678,16 @@ FP 1 /^Fill2     106\n/
 FP 1 /^Count     381\n/
 FP 1 /^Kwlimit   15\n/
 FI embl.pxid
-FZ = 116
+FZ = 119
 FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
 FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    0\n/
-FP 1 /^Fill2     0\n/
+FP 1 /^Order2    82\n/
+FP 1 /^Fill2     99\n/
 FP 1 /^Count     39\n/
-FP 1 /^Kwlimit   0\n/
+FP 1 /^Kwlimit   15\n/
 FI embl.pxkw
 FZ = 120
 FP 1 /^Order     71\n/
@@ -6700,16 +6700,16 @@ FP 1 /^Fill2     106\n/
 FP 1 /^Count     72\n/
 FP 1 /^Kwlimit   15\n/
 FI embl.pxsv
-FZ = 116
+FZ = 119
 FP 1 /^Order     71\n/
 FP 1 /^Fill      47\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
 FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    0\n/
-FP 1 /^Fill2     0\n/
+FP 1 /^Order2    82\n/
+FP 1 /^Fill2     99\n/
 FP 1 /^Count     23\n/
-FP 1 /^Kwlimit   0\n/
+FP 1 /^Kwlimit   15\n/
 FI embl.pxtx
 FZ = 121
 FP 1 /^Order     71\n/
