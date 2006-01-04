@@ -174,7 +174,7 @@ sub runtest ($) {
 	    else {print STDERR "No HTML docs for $testapp\n";$misshtml++;}
 	    if (-e "../../doc/programs/text/$testapp.txt") {$tfm{$testapp}++}
 	    else {print STDERR "No tfm text docs for $testapp\n";$misstext++;}
-	    if (-e "../../doc/sourceforge/embassy/$packa/$testapp.html") {$sf{$testapp}++}
+	    if (-e "/homes/pmr/sfdoc/embassy/$packa/$testapp.html") {$sf{$testapp}++}
 	    else {print STDERR "No SourceForge docs for $testapp\n";$misssf++;}
 	}
     }
