@@ -21,7 +21,7 @@ ftreedist ftreedistpair
 
 
 if LOCALLINK
-INCLUDES = -I../include -I../../../ajax
+INCLUDES = -I../include -I../../../ajax -I../../../nucleus -I../../../plplot
 else
 INCLUDES = -I../include -I${embprefix}/include
 endif
