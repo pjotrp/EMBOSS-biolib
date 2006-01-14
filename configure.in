@@ -99,7 +99,7 @@ fi
 dnl test for SGI optimisation
 if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64" ; then
 LD="/usr/bin/ld -IPA"
-CFLAGS="$CFLAGS -Ofast"
+CFLAGS="$CFLAGS -O3"
 fi
 
 dnl Test for HP-UX optimisation
