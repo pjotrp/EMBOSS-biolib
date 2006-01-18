@@ -2074,6 +2074,7 @@ static AjBool seqReadNbrf(AjPSeq thys, AjPSeqin seqin)
     static AjPStr token  = NULL;
     static AjPStr rdline = NULL;
     static AjPStr idline = NULL;
+    static AjPStr tmpline = NULL;
 
     static AjPStr ftfmt = NULL;
     AjBool dofeat       = ajFalse;
@@ -2174,10 +2175,13 @@ static AjBool seqReadNbrf(AjPSeq thys, AjPSeqin seqin)
 
 	    if(ajStrPrefixC(rdline, "C;Species:"))
 	    {
-		ajStrAssC(&rdline2,ajStrStr(rdline)+13);
-		ajStrTokenAss(&handle2,rdline2, " ;\n\r");
+		ajStrAssC(&rdline2,ajStrStr(rdline)+11);
+		ajStrTokenAss(&handle2,rdline2, ";.\n\r");
 		while(ajStrToken(&token2, &handle2, NULL))
+		{
+		    ajUser("token2 '%S'", token2);
 		    seqTaxSave(thys, token2);
+		}
 	    }
 
 	    if(ajStrChar(rdline,0) == 'R')
@@ -2211,13 +2215,29 @@ static AjBool seqReadNbrf(AjPSeq thys, AjPSeqin seqin)
 	if(ok)
 	    ok = ajFileBuffGetStore(buff, &rdline,
 				    seqin->Text, &thys->TextPtr);
-	if(ok && !ajStrLen(thys->Seq) && ajStrMatch(rdline, idline))
-	    ok = ajFileBuffGetStore(buff, &rdline,
-				    seqin->Text, &thys->TextPtr);
+
+	/* SRS 7 and SRS 8.0 put an extra ID line in here */
+
+	/* SRS 8.1 is even worse - it has a peculiar bug that repeats
+	   the ID line but with a few digits in front, and then repeats the
+	   description */
+	if(ok && !ajStrLen(thys->Seq) && (ajStrFindAnyK(rdline, '>') != -1))
+	{
+	    ajStrAssS(&tmpline, rdline);
+	    ajStrTrimStartC(&tmpline,"0123456789");
+	    if(ajStrMatch(tmpline, idline))
+	    {
+		ok = ajFileBuffGetStore(buff, &rdline,
+					seqin->Text, &thys->TextPtr);
+		if(!ajStrIsWhite(rdline)) /* SRS 8.1 description line */
+		    ok = ajFileBuffGetStore(buff, &rdline,
+					    seqin->Text, &thys->TextPtr);
+	    }
+	}
+
     }
 
-    if(ajStrChar(thys->Seq, -1) == '*')
-	ajStrTrim(&thys->Seq, -1);
+    ajStrTrimEndC(&thys->Seq, "*");
 
     if(ok)
 	ajFileBuffClearStore(buff, 1,
