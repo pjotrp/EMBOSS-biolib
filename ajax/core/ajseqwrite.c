@@ -2472,7 +2472,7 @@ static void seqWriteEmbl(AjPSeqout outseq)
     if(ajStrLen(outseq->Tax))
 	ajFmtPrintF(outseq->File, "OS   %S\n", outseq->Tax);
     
-    if(ajListLength(outseq->Taxlist))
+    if(ajListLength(outseq->Taxlist) > 1)
     {
 	ilen=0;
 	it = ajListIterRead(outseq->Taxlist);
@@ -2605,7 +2605,7 @@ static void seqWriteSwiss(AjPSeqout outseq)
     if(ajStrLen(outseq->Tax))
 	ajFmtPrintF(outseq->File, "OS   %S\n", outseq->Tax);
     
-    if(ajListLength(outseq->Taxlist))
+    if(ajListLength(outseq->Taxlist) > 1)
     {
 	ilen = 0;
 	it   = ajListIterRead(outseq->Taxlist);
