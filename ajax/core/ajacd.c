@@ -600,7 +600,7 @@ static AjBool    acdIsParam(const char* arg, AjPStr* param, ajint* iparam,
 			    AcdPAcd* acd);
 static AjBool    acdIsParamValue(const AjPStr pval);
 static ajint     acdIsQual(const char* arg, const char* arg2, ajint *iparam,
-			   AjPStr *pqual, AjPStr *pvalue,
+			   AjPStr *pqual, AjPStr *pnoqual, AjPStr *pvalue,
 			   ajint* number, AcdPAcd* acd);
 static AjBool    acdIsQtype(const AcdPAcd thys);
 static AjBool    acdIsRequired(const AcdPAcd thys);
@@ -17098,6 +17098,7 @@ static void acdArgsParse(ajint argc, char * const argv[])
     const char *cq;
     
     static AjPStr qual  = NULL;
+    static AjPStr noqual  = NULL;
     static AjPStr value = NULL;
     static AjPStr param = NULL;
     static AjPStr token = NULL;
@@ -17125,13 +17126,17 @@ static void acdArgsParse(ajint argc, char * const argv[])
 	if((i+1) < argc) cq = argv[i+1];
 	else cq = NULL;
 	
+	if(acdArgSave)
+	    ajStrAppK(&acdArgSave, '\n');
+
 	acdLog("\n");
 	acdLog("argv[%d] <%s>", i, cp);
 	if(cq)
 	    acdLog(" + argv[%d] <%s>", i+1, cq);
 	acdLog("\n");
 	jparam = 0;
-	if((j = acdIsQual(cp, cq, &jparam, &qual, &value, &number, &acd)))
+	if((j = acdIsQual(cp, cq, &jparam, &qual, &noqual, 
+			  &value, &number, &acd)))
 	{
 	    if(jparam)
 	    {
@@ -17147,7 +17152,7 @@ static void acdArgsParse(ajint argc, char * const argv[])
 	    }
 	    else
 		acdLog("Qualifier ");
-	    acdLog("-%S ", acd->Name);
+	    acdLog("-%S ", noqual);
 	    if(number)
 		acdLog("[%d] ", number);
 	    if(ajStrLen(value))
@@ -17186,18 +17191,29 @@ static void acdArgsParse(ajint argc, char * const argv[])
 		}
 	    }
 	    
-	    if(j == 2) i++;
+	    ajStrAppK(&acdArgSave, '-');
+	    ajStrApp(&acdArgSave, noqual);
+	    if(j==2)
+	    {
+		i++;
+		ajStrAppK(&acdArgSave, ' ');
+		ajStrAppC(&acdArgSave, cq);
+	    }
 	}
 	else		    /* not a qualifier - assume a parameter */
 	{
 	    iparam = acdNextParam(0);	/* first free parameter */
 	    acdIsParam(cp, &param, &iparam, &acd); /* die if too many */
+	    ajStrAppC(&acdArgSave, "[-");
+	    ajStrApp(&acdArgSave, acd->Name);
+	    ajStrAppC(&acdArgSave, "] ");
 	    if(acdIsParamValue(param))
 	    {
 		acdLog("Parameter %d: %S = %S\n",
 		       iparam, acd->Name, param);
 		acdDef(acd, param);
 		acdParamSet[iparam-1] = ajTrue;
+		ajStrAppC(&acdArgSave, cp);
 	    }
 	    else		 /* missing value "." or "" ignored */
 	    {
@@ -17206,17 +17222,10 @@ static void acdArgsParse(ajint argc, char * const argv[])
 		ajStrAssC(&param, "");
 		acdDef(acd, param);
 		acdParamSet[iparam-1] = ajTrue;
+		ajStrAppC(&acdArgSave, "cp");
 	    }
 	}
 	i++;
-	if(acdArgSave)
-	    ajStrAppK(&acdArgSave, '\n');
-	ajStrAppC(&acdArgSave, cp);
-	if(j==2)
-	{
-	    ajStrAppK(&acdArgSave, ' ');
-	    ajStrAppC(&acdArgSave, cq);
-	}
     }
     
     ajStrDelReuse(&qual);
@@ -17385,6 +17394,7 @@ static AjBool acdIsParam(const char* arg, AjPStr* param, ajint* iparam,
 ** @param [r] arg2 [const char*] Next argument
 ** @param [w] iparam [ajint*] Parameter number
 ** @param [w] pqual [AjPStr*] Qualifier name copied on success
+** @param [w] pnoqual [AjPStr*] Qualifier name with possible 'no' prefix
 ** @param [w] pvalue [AjPStr*] Qualifier value copied on success
 ** @param [w] number [ajint*] Qualifier number
 ** @param [w] acd [AcdPAcd*] Qualifier data
@@ -17393,7 +17403,7 @@ static AjBool acdIsParam(const char* arg, AjPStr* param, ajint* iparam,
 ******************************************************************************/
 
 static ajint acdIsQual(const char* arg, const char* arg2,
-		       ajint *iparam, AjPStr *pqual,
+		       ajint *iparam, AjPStr *pqual, AjPStr *pnoqual,
 		       AjPStr *pvalue, ajint* number, AcdPAcd* acd)
 {
     ajint ret=0;
@@ -17421,7 +17431,10 @@ static ajint acdIsQual(const char* arg, const char* arg2,
 	cp++;
 	qstart = ajTrue;
     }
-    
+
+    ajStrAssC(pqual, "");
+    ajStrAssC(pnoqual, "");
+
     if(!*cp)
 	return 0;
     
@@ -17490,6 +17503,9 @@ static ajint acdIsQual(const char* arg, const char* arg2,
     if(!*acd)				/* test acdc-badqual */
 	ajDie("Unknown qualifier %s", arg);
 
+    ajStrAssS(pqual, (*acd)->Name);
+    ajStrAssS(pnoqual, (*acd)->Name);
+
     if((*acd)->AssocQuals)		/* this one is a new master */
     {
 	acdLog("acdMasterQual set to -%S\n", (*acd)->Name);
@@ -17514,6 +17530,8 @@ static ajint acdIsQual(const char* arg, const char* arg2,
 	if(ajStrPrefix((*acd)->Name, noqual))
 	{			       /* we have a -noqual matched */
 	    acdLog("we matched with -no\n");
+	    ajStrAssC(pnoqual, "no");
+	    ajStrApp(pnoqual, (*acd)->Name);
 	    if(!strcmp(acdType[acdListCurr->Type].Name, "boolean") ||
 	       !strcmp(acdType[acdListCurr->Type].Name, "toggle"))
 	    {
