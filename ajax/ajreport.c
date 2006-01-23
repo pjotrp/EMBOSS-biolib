@@ -806,7 +806,7 @@ static void reportWriteDraw(AjPReport thys,
 /* @funcstatic reportWriteExcel ***********************************************
 **
 ** Writes a report in Excel (tab delimited) format. Name, start, end
-** and score are always reported. Other tags in the report definition
+** score and strand are always reported. Other tags in the report definition
 ** are added as extra columns.
 **
 ** All values are (for now) unquoted. Missing values are reported as '.'
@@ -816,7 +816,7 @@ static void reportWriteDraw(AjPReport thys,
 **   [extra tag names added to first line] <br>
 **   Name Start End Score [extra tag values] (tab delimited) <br>
 **
-** Data reported: Name Start End Score
+** Data reported: Name Start End Score Strand
 **
 ** Tags required: None
 **
@@ -844,7 +844,7 @@ static void reportWriteExcel(AjPReport thys,
     AjPStr tmpstr = NULL;
     ajint i = 0;
     ajint j = 0;
-
+    char strand;
     
     ajint ntags;
     static AjPStr* tagtypes = NULL;
@@ -859,9 +859,9 @@ static void reportWriteExcel(AjPReport thys,
     ntags = ajReportLists(thys, &tagtypes, &tagnames, &tagprints, &tagsizes);
     
     if(thys->Showscore)
-	ajFmtPrintF(outf, "SeqName\tStart\tEnd\tScore");
+	ajFmtPrintF(outf, "SeqName\tStart\tEnd\tScore\tStrand");
     else
-	ajFmtPrintF(outf, "SeqName\tStart\tEnd");
+	ajFmtPrintF(outf, "SeqName\tStart\tEnd\tStrand");
     
     /* then extra tags */
     for(j=0; j < ntags; j++)
@@ -875,18 +875,21 @@ static void reportWriteExcel(AjPReport thys,
 	istart  = feature->Start;
 	iend    = feature->End;
 	score   = feature->Score;
+	strand = feature->Strand;
+	if(strand != '-')
+	    strand = '+';
 	ajStrAssSub(&subseq, ajSeqStr(seq), istart-1, iend-1);
 	/* ajStrToUpper(&subseq); */
 	i++;
 	if(thys->Showscore)
-	    ajFmtPrintF(outf, "%S\t%d\t%d\t%.*f",
+	    ajFmtPrintF(outf, "%S\t%d\t%d\t%.*f\t%c",
 			ajReportSeqName(thys, seq),
 			istart, iend, thys->Precision,
-			score);
+			score, strand);
 	else
-	    ajFmtPrintF(outf, "%S\t%d\t%d",
+	    ajFmtPrintF(outf, "%S\t%d\t%d\t%c",
 			ajReportSeqName(thys, seq),
-			istart, iend);
+			istart, iend, strand);
 	
 	for(j=0; j < ntags; j++)
 	{				/* then extra tags */
@@ -2429,6 +2432,21 @@ void ajReportWriteHeader(AjPReport thys,
 	ajFmtPrintF(outf, "########################################\n");
 	ajFmtPrintF(outf, "# Program: %s\n", ajAcdProgram());
 	ajFmtPrintF(outf, "# Rundate: %D\n", today);
+	ajFmtPrintF(outf, "# Commandline: %s\n", ajAcdProgram());
+	ajStrAssS(&tmpstr, ajAcdGetCmdline());
+	if(ajStrLen(tmpstr))
+	{
+	    ajStrSubstituteCC(&tmpstr, "\n", "\1#    ");
+	    ajStrSubstituteCC(&tmpstr, "\1", "\n");
+	    ajFmtPrintF(outf, "#    %S\n", tmpstr);
+	}
+	ajStrAssS(&tmpstr, ajAcdGetInputs());
+	if(ajStrLen(tmpstr))
+	{
+	    ajStrSubstituteCC(&tmpstr, "\n", "\1#    ");
+	    ajStrSubstituteCC(&tmpstr, "\1", "\n");
+	    ajFmtPrintF(outf, "#    %S\n", tmpstr);
+	}
 	ajFmtPrintF(outf, "# Report_format: %S\n", thys->Formatstr);
 	ajFmtPrintF(outf, "# Report_file: %F\n", outf);
 	if(ajListLength(thys->FileNames))
