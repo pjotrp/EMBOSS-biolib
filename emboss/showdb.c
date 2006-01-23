@@ -198,6 +198,8 @@ int main(int argc, char **argv)
 			  maxname, maxtype, maxmethod, maxfield,
 			  maxdefined, maxrelease);
     
+	ajListIterFree(&iter);
+
 	/* iterate through the dbnames list */
 	iter = ajListIterRead(dbnames);
 
@@ -656,7 +658,6 @@ static AjPStr showdbGetFields(const AjPStr dbname)
     static AjPStr str = NULL;
     AjPSeqQuery query;
 
-
     query = ajSeqQueryNew();
 
     ajStrAssS(&query->DbName, dbname);
@@ -670,6 +671,7 @@ static AjPStr showdbGetFields(const AjPStr dbname)
 	/* change spaces to commas to make the result one word */
 	ajStrConvertCC(&str, " ", ",");
 
+    ajSeqQueryDel(&query);
     return str;
 }
 
@@ -701,22 +703,35 @@ static int showdbDBSortDefined(const void* str1, const void* str2)
     AjBool all;
     AjPStr defined1 = NULL;
     AjPStr defined2 = NULL;
+    AjBool ok;
 
     int ret;
 
-    if(ajNamDbDetails(db1, &type, &id, &qry, &all, &comment,
-		      &release, &methods, &defined1) &&
-       ajNamDbDetails(db2, &type, &id, &qry, &all, &comment,
-		      &release, &methods, &defined2))
+    ok = ajNamDbDetails(db1, &type, &id, &qry, &all, &comment,
+			&release, &methods, &defined1);
+    if(ok)
+	ok = ajNamDbDetails(db2, &type, &id, &qry, &all, &comment,
+			    &release, &methods, &defined2);
+    ajStrDel(&type);
+    ajStrDel(&comment);
+    ajStrDel(&release);
+    ajStrDel(&methods);
+
+    if(ok)
     {
 	ret = ajStrCmpO(defined1, defined2);
 	ajDebug("Sorting1 %S:%S %S:%S %d\n", db1, db2, defined1, defined2, ret);
+	ajStrDel(&defined1);
+	ajStrDel(&defined2);
 	if (ret) return ret;
     }
 
+    ajStrDel(&defined1);
+    ajStrDel(&defined2);
+
     ret = ajStrCmpO(db1, db2);
     ajDebug("Sorting2 %S:%S %d\n", db1, db2, ret);
+
     return ret;
 }
-
 
