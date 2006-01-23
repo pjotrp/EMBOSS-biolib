@@ -2175,6 +2175,21 @@ void ajAlignWriteHeader(AjPAlign thys)
 	ajFmtPrintF(outf, "########################################\n");
 	ajFmtPrintF(outf, "# Program: %s\n", ajAcdProgram());
 	ajFmtPrintF(outf, "# Rundate: %D\n", ajTimeTodayRefF("report"));
+	ajFmtPrintF(outf, "# Commandline: %s\n", ajAcdProgram());
+	ajStrAssS(&tmpstr, ajAcdGetCmdline());
+	if(ajStrLen(tmpstr))
+	{
+	    ajStrSubstituteCC(&tmpstr, "\n", "\1#    ");
+	    ajStrSubstituteCC(&tmpstr, "\1", "\n");
+	    ajFmtPrintF(outf, "#    %S\n", tmpstr);
+	}
+	ajStrAssS(&tmpstr, ajAcdGetInputs());
+	if(ajStrLen(tmpstr))
+	{
+	    ajStrSubstituteCC(&tmpstr, "\n", "\1#    ");
+	    ajStrSubstituteCC(&tmpstr, "\1", "\n");
+	    ajFmtPrintF(outf, "#    %S\n", tmpstr);
+	}
 	ajFmtPrintF(outf, "# Align_format: %S\n", thys->Formatstr);
 	ajFmtPrintF(outf, "# Report_file: %F\n", outf);
 	if(!doSingle || thys->Multi)
