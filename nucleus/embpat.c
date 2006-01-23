@@ -890,16 +890,16 @@ static void patRestrictPushHit(const EmbPPatRestrict enz,
 
 	if(enz->ncuts == 4)
 	{
-	    ajDebug("so far, len:%d pos:%d begin:%d\n",
-		    len, pos, begin);
-	    ajDebug("before, cut3:%d 4:%d circ34:%b\n",
-		    hit->cut3, hit->cut4, hit->circ34);
+	    /* ajDebug("so far, len:%d pos:%d begin:%d\n",
+		    len, pos, begin); */
+	    /* ajDebug("before, cut3:%d 4:%d circ34:%b\n",
+		    hit->cut3, hit->cut4, hit->circ34); */
 
 	    hit->cut3 = len+begin-pos-enz->cut3-1;
 	    hit->cut4 = len+begin-pos-enz->cut4-1;
 
-	    ajDebug("middle, cut3:%d 4:%d\n",
-		    hit->cut3, hit->cut4);
+	    /* ajDebug("middle, cut3:%d 4:%d\n",
+		    hit->cut3, hit->cut4); */
 
 	    if(hit->cut3<0)
 	    {
@@ -912,8 +912,8 @@ static void patRestrictPushHit(const EmbPPatRestrict enz,
 		hit->cut4+=len;
 		hit->circ34 = ajTrue;
 	    }
-	    ajDebug("after, cut3:%d 4:%d circ34: %b\n",
-		    hit->cut3, hit->cut4, hit->circ34);
+	    /* ajDebug("after, cut3:%d 4:%d circ34: %b\n",
+		    hit->cut3, hit->cut4, hit->circ34); */
 	}
 	else
 	    hit->cut3 = hit->cut4 = 0;
@@ -927,9 +927,9 @@ static void patRestrictPushHit(const EmbPPatRestrict enz,
 	hit->cut4 = v;
     }
 
-    ajDebug("embPatRestrictPushHit forward:%b\n", forward);
-    ajDebug("cut1:%d 2:%d 3:%d 4:%d\n",
-	    hit->cut1, hit->cut2, hit->cut3, hit->cut4);
+    /* ajDebug("embPatRestrictPushHit forward:%b\n", forward); */
+    /* ajDebug("cut1:%d 2:%d 3:%d 4:%d\n",
+	    hit->cut1, hit->cut2, hit->cut3, hit->cut4); */
     ajListPush(l,(void *) hit);
 
     return;
@@ -1002,8 +1002,8 @@ ajint embPatRestrictScan(const EmbPPatRestrict enz,
 
     ajDebug("embPatRestrictScan '%S' '%S' ncuts:%d blunt:%b\n",
 	    enz->cod, enz->pat, enz->ncuts, enz->blunt);
-    ajDebug("cut1:%d 2:%d 3:%d 4:%d\n",
-	    enz->cut1, enz->cut2, enz->cut3, enz->cut4 );
+    /* ajDebug("cut1:%d 2:%d 3:%d 4:%d\n",
+	    enz->cut1, enz->cut2, enz->cut3, enz->cut4 ); */
 
     tx = ajListNew();
     ty = ajListNew();
@@ -2284,8 +2284,8 @@ ajint embPatBYGSearch(const AjPStr str, const AjPStr name,
 	do
 	{
 	    state = (state<<AJBPS) | table[(ajint)*p];
-	    ajDebug("..pat table: %lx state %lx p:%c\n",
-		    table[(ajint)*p], state, *p);
+	    /* ajDebug("..pat table: %lx state %lx p:%c\n",
+		    table[(ajint)*p], state, *p); */
 	    if(state < limit)
 	    {
 		pos=(p-q)-plen+1;
@@ -2296,8 +2296,8 @@ ajint embPatBYGSearch(const AjPStr str, const AjPStr name,
 		{
 		    ++matches;
 		    embPatPushHit(l,name,pos,plen,begin,0);
-		    ajDebug("..pat hit matches:%d list:%d name:'%S' pos:%d\n",
-			    matches, ajListLength(l), name, pos);
+		    /* ajDebug("..pat hit matches:%d list:%d name:'%S' pos:%d\n",
+			    matches, ajListLength(l), name, pos); */
 		}
 	    }
 	    ++p;
@@ -4088,5 +4088,6 @@ void embPatFuzzSearch(ajint type, ajint begin, const AjPStr pattern,
 	break;
     }
 
+    ajDebug("embPatFuzzSearch hits: %d\n", *hits);
     return;
 }
