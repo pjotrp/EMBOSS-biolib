@@ -19,7 +19,7 @@ AC_PROG_CPP
 dnl Test whether --with-sgiabi given for IRIX (n32m3 n32m4 64m3 64m4)
 if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64" ; then
 if test "$CC" != "gcc"; then
-  CFLAGS="$CFLAGS -woff 1048"
+  CFLAGS="$CFLAGS"
   CHECK_SGI
 fi
 fi
@@ -369,9 +369,11 @@ fi
 
 dnl Test if --enable-debug given
 AC_ARG_ENABLE(warnings,
-[  --enable-warnings          warnings (-Wall option on compiler)])
+[  --enable-warnings          warnings (-Wall option on gcc compiler)])
 if test "${enable_warnings}" = "yes" ; then
+if test "$CC" = "gcc"; then
   CFLAGS="$CFLAGS -Wall -fno-strict-aliasing"
+fi
 fi          
 
 dnl Set extra needed compiler flags
