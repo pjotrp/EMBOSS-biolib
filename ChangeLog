@@ -1,4 +1,12 @@
 	Version 3.1.0
+	Report and alignment output now includes the full commandline used
+	to run the program, with any replies to prompts included.
+
+	Excel report format includes a column for Strand to indicate
+	sequences on ther reverse strand. The strand column is + for a
+	forward feature (all protein features are forward) or - for a
+	reverse direction feature.
+
 	New sequence type gapstopprotein for proteins with gaps and
 	internal stops.
 
