@@ -2364,6 +2364,7 @@ FP /^Codons not appearing   = 0\n/
 
 ID codcopy-ex
 AP codcopy
+DL keep
 IN Eecoli.cut
 IN
 FI stderr
@@ -2374,7 +2375,616 @@ FP 0 /Died: /
 FI eecoli.cut
 FC = 75
 FP 64 /^[ACGT][ACGT][ACGT]/
+FP /^#Species: Escherichia coli K12\n/
+FP /^#Division: gbbct\n/
+FP /^#Release: CUTG146\n/
+FP /^#CdsCount: 5045\n/
+FP /^#Coding GC 51.81%\n/
+FP /^#1st letter GC 58.93%\n/
+FP /^#2nd letter GC 40.69%\n/
+FP /^#3rd letter GC 55.80%\n/
+FP /^GAC    D     0.372    19.047  30454\n/
+FP /^GAT    D     0.628    32.219  51514\n/
+FP /^ATC    I     0.419    24.999  39971\n/
+FP /^CTG    L     0.496    52.821  84455\n/
+FP /^ATG    M     1.000    27.778  44414\n/
+FP /^TAG    \*     0.072     0.228    365\n/
 //
+
+ID codcopy-outemboss
+AP codcopy
+DL keep
+CL -oformat emboss
+IN Eecoli.cut
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.emboss
+FC = 75
+FP 64 /^[ACGT][ACGT][ACGT]/
+FP /^#Species: Escherichia coli K12\n/
+FP /^#Division: gbbct\n/
+FP /^#Release: CUTG146\n/
+FP /^#CdsCount: 5045\n/
+FP /^#Coding GC 51.81%\n/
+FP /^#1st letter GC 58.93%\n/
+FP /^#2nd letter GC 40.69%\n/
+FP /^#3rd letter GC 55.80%\n/
+FP /^GAC    D     0.372    19.047  30454\n/
+FP /^GAT    D     0.628    32.219  51514\n/
+FP /^ATC    I     0.419    24.999  39971\n/
+FP /^CTG    L     0.496    52.821  84455\n/
+FP /^ATG    M     1.000    27.778  44414\n/
+FP /^TAG    \*     0.072     0.228    365\n/
+//
+
+ID codcopy-outcut
+AP codcopy
+DL keep
+CL -oformat cut
+IN Eecoli.cut
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.cut
+FC = 75
+FP 64 /^[ACGT][ACGT][ACGT]/
+FP /^#Species: Escherichia coli K12\n/
+FP /^#Division: gbbct\n/
+FP /^#Release: CUTG146\n/
+FP /^#CdsCount: 5045\n/
+FP /^#Coding GC 51.81%\n/
+FP /^#1st letter GC 58.93%\n/
+FP /^#2nd letter GC 40.69%\n/
+FP /^#3rd letter GC 55.80%\n/
+FP /^GAC    D     0.372    19.047  30454\n/
+FP /^GAT    D     0.628    32.219  51514\n/
+FP /^ATC    I     0.419    24.999  39971\n/
+FP /^CTG    L     0.496    52.821  84455\n/
+FP /^ATG    M     1.000    27.778  44414\n/
+FP /^TAG    \*     0.072     0.228    365\n/
+//
+
+ID codcopy-outgcg
+AP codcopy
+DL keep
+CL -oformat gcg
+IN Eecoli.cut
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.gcg
+FC = 83
+FP 64 /^[A-Z][a-z][a-z] +[ACGT][ACGT][ACGT]/
+FP /^Asp     GAC   30454.00      19.05      0.37\n/
+FP /^Asp     GAT   51514.00      32.22      0.63\n/
+FP /^Ile     ATC   39971.00      25.00      0.42\n/
+FP /^Leu     CTG   84455.00      52.82      0.50\n/
+FP /^Met     ATG   44414.00      27.78      1.00\n/
+FP /^End     TAG     365.00       0.23      0.07\n/
+//
+
+ID codcopy-outcutg
+AP codcopy
+DL keep
+CL -oformat cutg
+IN Eecoli.cut
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.cutg
+FC = 28
+FP 16 /^[ACGU][ACGU][ACGU]/
+FP /^Escherichia coli K12 \[gbbct\]: 5045 CDS's \(1598893 codons\)\n/
+FP /^UUG 13.7\( 21948\)  UCG  8.9\( 14256\)  UAG  0.2\(   365\)  UGG 15.3\( 24468\)\n/
+FP /^CUG 52.8\( 84455\)  CCG 23.2\( 37150\)  CAG 28.8\( 46100\)  CGG  5.4\(  8619\)\n/
+FP /^AUC 25.0\( 39971\)  ACC 23.4\( 37354\)  AAC 21.6\( 34554\)  AGC 16.0\( 25632\)\n/
+FP /^AUG 27.8\( 44414\)  ACG 14.4\( 22977\)  AAG 10.2\( 16305\)  AGG  1.2\(  1944\)\n/
+FP /^GUU 18.4\( 29410\)  GCU 15.4\( 24549\)  GAU 32.2\( 51514\)  GGU 24.8\( 39714\)\n/
+FP /^GUC 15.2\( 24336\)  GCC 25.5\( 40761\)  GAC 19.0\( 30454\)  GGC 29.4\( 47013\)\n/
+FP /^Coding GC 51.81% 1st letter GC 58.93% 2nd letter GC 40.69% 3rd letter GC 55.80%\n/
+//
+
+ID codcopy-outcutgaa
+AP codcopy
+DL keep
+CL -oformat cutgaa
+IN Eecoli.cut
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.cutgaa
+FC = 29
+FP 16 /^[ACGU][ACGU][ACGU]/
+FP /^Escherichia coli K12 \[gbbct\]: 5045 CDS's \(1598893 codons\)\n/
+FP /^UUG L 0.13 13.7 \( 21948\)  UCG S 0.15  8.9 \( 14256\)  UAG \* 0.07  0.2 \(   365\)  UGG W 1.00 15.3 \( 24468\)\n/
+FP /^CUG L 0.50 52.8 \( 84455\)  CCG P 0.52 23.2 \( 37150\)  CAG Q 0.65 28.8 \( 46100\)  CGG R 0.10  5.4 \(  8619\)\n/
+FP /^AUC I 0.42 25.0 \( 39971\)  ACC T 0.43 23.4 \( 37354\)  AAC N 0.55 21.6 \( 34554\)  AGC S 0.28 16.0 \( 25632\)\n/
+FP /^AUG M 1.00 27.8 \( 44414\)  ACG T 0.27 14.4 \( 22977\)  AAG K 0.23 10.2 \( 16305\)  AGG R 0.02  1.2 \(  1944\)\n/
+FP /^GUU V 0.26 18.4 \( 29410\)  GCU A 0.16 15.4 \( 24549\)  GAU D 0.63 32.2 \( 51514\)  GGU G 0.34 24.8 \( 39714\)\n/
+FP /^GUC V 0.21 15.2 \( 24336\)  GCC A 0.27 25.5 \( 40761\)  GAC D 0.37 19.0 \( 30454\)  GGC G 0.40 29.4 \( 47013\)\n/
+FP /^Coding GC 51.81% 1st letter GC 58.93% 2nd letter GC 40.69% 3rd letter GC 55.80%\n/
+//
+
+ID codcopy-outspsum
+AP codcopy
+DL keep
+CL -oformat spsum
+IN Eecoli.cut
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.spsum
+FC = 2
+FP 1 /^(\d+\s+){63}\d+\n/
+FP /^Escherichia coli K12: 5045\n/
+FP /^.* 84455 .* 30454 51514 .* 39971 .* 44414 .* 365 .*\n/
+//
+
+ID codcopy-outcherry
+AP codcopy
+DL keep
+CL -oformat cherry
+IN Eecoli.cut
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.cherry
+FC = 86
+FP 64 /^[A-Z][a-z][a-z]\s+[ACGT][ACGT][ACGT]/
+FP /^Escherichia coli K12\n/
+FP /^5045 genes found in CUTG146\n/
+FP /^Asp     GAT    51514.00     32.22      0.63\n/
+FP /^Asp     GAC    30454.00     19.05      0.37\n/
+FP /^Ile     ATC    39971.00     25.00      0.42\n/
+FP /^Leu     CTG    84455.00     52.82      0.50\n/
+FP /^Met     ATG    44414.00     27.78      1.00\n/
+FP /^End     TAG      365.00      0.23      0.07\n/
+//
+
+ID codcopy-outtransterm
+AP codcopy
+DL keep
+CL -oformat transterm
+IN Eecoli.cut
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.transterm
+FC = 83
+FP 64 /^[A-Z][a-z][a-z]\s+[ACGT][ACGT][ACGT]/
+FP /^Asp     GAT    51514.00     32.22      0.63\n/
+FP /^Asp     GAC    30454.00     19.05      0.37\n/
+FP /^Met     ATG    44414.00     27.78      1.00\n/
+FP /^Ile     ATC    39971.00     25.00      0.42\n/
+FP /^End     TAG      365.00      0.23      0.07\n/
+FP /^Leu     CTG    84455.00     52.82      0.50\n/
+//
+
+ID codcopy-outcodehop
+AP codcopy
+DL keep
+CL -oformat codehop
+IN Eecoli.cut
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.codehop
+FC = 68
+FP 64 /^0[.][0-9]+\t-- \[[ 0-9][0-9]\] [ACGU][ACGU][ACGU]\n/
+FP /^0.024999\t-- \[13\] AUC\n/
+FP /^0.027778\t-- \[14\] AUG\n/
+FP /^0.052821\t-- \[30\] CUG\n/
+FP /^0.019047\t-- \[33\] GAC\n/
+FP /^0.032219\t-- \[35\] GAU\n/
+FP /^0.000228\t-- \[50\] UAG\n/
+FP /^Eecoli.cut\n/
+FP /^Codon usage for Escherichia coli K12: 5045\n/
+FP /^ from CUTG146\/gbbct: 1598893 codons\n/
+//
+
+ID codcopy-outstaden
+AP codcopy
+DL keep
+CL -oformat staden
+IN Eecoli.cut
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.staden
+FC = 21
+FP 16 /^\s+[A-Z] [ACGT][ACGT][ACGT]/
+FP /^      L TTG 21948 S TCG 14256 \* TAG  365 W TGG 24468\n/
+FP /^      L CTG 84455 P CCG 37150 Q CAG 46100 R CGG 8619\n/
+FP /^      I ATC 39971 T ACC 37354 N AAC 34554 S AGC 25632\n/
+FP /^      M ATG 44414 T ACG 22977 K AAG 16305 R AGG 1944\n/
+FP /^      V GTT 29410 A GCT 24549 D GAT 51514 G GGT 39714\n/
+FP /^      V GTC 24336 A GCC 40761 D GAC 30454 G GGC 47013\n/
+//
+
+
+ID codcopy-outnumstaden
+AP codcopy
+DL keep
+CL -oformat numstaden
+IN Eecoli.cut
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.numstaden
+FC = 21
+FP 16 /^\s+[A-Z] [ACGT][ACGT][ACGT]/
+FP /^      L TTG 21948 S TCG 14256 \* TAG  365 W TGG 24468\n/
+FP /^      L CTG 84455 P CCG 37150 Q CAG 46100 R CGG 8619\n/
+FP /^      I ATC 39971 T ACC 37354 N AAC 34554 S AGC 25632\n/
+FP /^      M ATG 44414 T ACG 22977 K AAG 16305 R AGG 1944\n/
+FP /^      V GTT 29410 A GCT 24549 D GAT 51514 G GGT 39714\n/
+FP /^      V GTC 24336 A GCC 40761 D GAC 30454 G GGC 47013\n/
+//
+
+
+ID codcopy-emboss
+AP codcopy
+CL -format emboss
+IN ../codcopy-outemboss/eecoli.emboss
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.cut
+FC = 75
+FP 64 /^[ACGT][ACGT][ACGT]/
+FP /^#Species: Escherichia coli K12\n/
+FP /^#Division: gbbct\n/
+FP /^#Release: CUTG146\n/
+FP /^#CdsCount: 5045\n/
+FP /^#Coding GC 51.81%\n/
+FP /^#1st letter GC 58.93%\n/
+FP /^#2nd letter GC 40.69%\n/
+FP /^#3rd letter GC 55.80%\n/
+FP /^GAC    D     0.372    19.047  30454\n/
+FP /^GAT    D     0.628    32.219  51514\n/
+FP /^ATC    I     0.419    24.999  39971\n/
+FP /^CTG    L     0.496    52.821  84455\n/
+FP /^ATG    M     1.000    27.778  44414\n/
+FP /^TAG    \*     0.072     0.228    365\n/
+//
+
+
+ID codcopy-cut
+AP codcopy
+CL -format cut
+IN ../codcopy-outcut/eecoli.cut
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.cut
+FC = 75
+FP 64 /^[ACGT][ACGT][ACGT]/
+FP /^#Species: Escherichia coli K12\n/
+FP /^#Division: gbbct\n/
+FP /^#Release: CUTG146\n/
+FP /^#CdsCount: 5045\n/
+FP /^#Coding GC 51.81%\n/
+FP /^#1st letter GC 58.93%\n/
+FP /^#2nd letter GC 40.69%\n/
+FP /^#3rd letter GC 55.80%\n/
+FP /^GAC    D     0.372    19.047  30454\n/
+FP /^GAT    D     0.628    32.219  51514\n/
+FP /^ATC    I     0.419    24.999  39971\n/
+FP /^CTG    L     0.496    52.821  84455\n/
+FP /^ATG    M     1.000    27.778  44414\n/
+FP /^TAG    \*     0.072     0.228    365\n/
+//
+
+
+ID codcopy-gcg
+AP codcopy
+CL -format gcg
+IN ../codcopy-outgcg/eecoli.gcg
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.cut
+FC = 72
+FP 64 /^[ACGT][ACGT][ACGT]/
+FP 0 /Escherichia/
+FP 0 /gbbct/
+FP 0 /CUTG146/
+FP /^#CdsCount: 5045\n/
+FP /^#Coding GC 51.81%\n/
+FP /^#1st letter GC 58.93%\n/
+FP /^#2nd letter GC 40.69%\n/
+FP /^#3rd letter GC 55.80%\n/
+FP /^GAC    D     0.370    19.050  30454\n/
+FP /^GAT    D     0.630    32.220  51514\n/
+FP /^ATC    I     0.420    25.000  39971\n/
+FP /^CTG    L     0.500    52.820  84455\n/
+FP /^ATG    M     1.000    27.780  44414\n/
+FP /^TAG    \*     0.070     0.230    365\n/
+//
+
+
+ID codcopy-cutg
+AP codcopy
+CL -format cutg
+IN ../codcopy-outcutg/eecoli.cutg
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.cut
+FC = 74
+FP 64 /^[ACGT][ACGT][ACGT]/
+FP /^#Species: Escherichia coli K12\n/
+FP /^#Division: gbbct\n/
+FP 0 /CUTG146/
+FP /^#CdsCount: 5045\n/
+FP /^#Coding GC 51.81%\n/
+FP /^#1st letter GC 58.93%\n/
+FP /^#2nd letter GC 40.69%\n/
+FP /^#3rd letter GC 55.80%\n/
+FP /^GAC    D     0.372    19.000  30454\n/
+FP /^GAT    D     0.628    32.200  51514\n/
+FP /^ATC    I     0.419    25.000  39971\n/
+FP /^CTG    L     0.496    52.800  84455\n/
+FP /^ATG    M     1.000    27.800  44414\n/
+FP /^TAG    \*     0.072     0.200    365\n/
+//
+
+
+ID codcopy-cutgaa
+AP codcopy
+CL -format cutgaa
+IN ../codcopy-outcutgaa/eecoli.cutgaa
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.cut
+FC = 74
+FP 64 /^[ACGT][ACGT][ACGT]/
+FP /^#Species: Escherichia coli K12\n/
+FP /^#Division: gbbct\n/
+FP 0 /CUTG146/
+FP /^#CdsCount: 5045\n/
+FP /^#Coding GC 51.81%\n/
+FP /^#1st letter GC 58.93%\n/
+FP /^#2nd letter GC 40.69%\n/
+FP /^#3rd letter GC 55.80%\n/
+FP /^GAC    D     0.370    19.000  30454\n/
+FP /^GAT    D     0.630    32.200  51514\n/
+FP /^ATC    I     0.420    25.000  39971\n/
+FP /^CTG    L     0.500    52.800  84455\n/
+FP /^ATG    M     1.000    27.800  44414\n/
+FP /^TAG    \*     0.070     0.200    365\n/
+//
+
+
+ID codcopy-spsum
+AP codcopy
+CL -format spsum
+IN ../codcopy-outspsum/eecoli.spsum
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.cut
+FC = 73
+FP 64 /^[ACGT][ACGT][ACGT]/
+FP /^#Species: Escherichia coli K12\n/
+FP 0 /gbbct/
+FP 0 /CUTG146/
+FP /^#CdsCount: 5045\n/
+FP /^#Coding GC 51.81%\n/
+FP /^#1st letter GC 58.93%\n/
+FP /^#2nd letter GC 40.69%\n/
+FP /^#3rd letter GC 55.80%\n/
+FP /^GAC    D     0.372    19.047  30454\n/
+FP /^GAT    D     0.628    32.219  51514\n/
+FP /^ATC    I     0.419    24.999  39971\n/
+FP /^CTG    L     0.496    52.821  84455\n/
+FP /^ATG    M     1.000    27.778  44414\n/
+FP /^TAG    \*     0.072     0.228    365\n/
+//
+
+
+ID codcopy-cherry
+AP codcopy
+CL -format cherry
+IN ../codcopy-outcherry/eecoli.cherry
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.cut
+FC = 74
+FP 64 /^[ACGT][ACGT][ACGT]/
+FP /^#Species: Escherichia coli K12\n/
+FP 0 /gbbct/
+FP /^#Release: CUTG146\n/
+FP /^#CdsCount: 5045\n/
+FP /^#Coding GC 51.81%\n/
+FP /^#1st letter GC 58.93%\n/
+FP /^#2nd letter GC 40.69%\n/
+FP /^#3rd letter GC 55.80%\n/
+FP /^GAC    D     0.370    19.050  30454\n/
+FP /^GAT    D     0.630    32.220  51514\n/
+FP /^ATC    I     0.420    25.000  39971\n/
+FP /^CTG    L     0.500    52.820  84455\n/
+FP /^ATG    M     1.000    27.780  44414\n/
+FP /^TAG    \*     0.070     0.230    365\n/
+//
+
+
+ID codcopy-transterm
+AP codcopy
+CL -format transterm
+IN ../codcopy-outtransterm/eecoli.transterm
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.cut
+FC = 72
+FP 64 /^[ACGT][ACGT][ACGT]/
+FP 0 /Escherichia/
+FP 0 /gbbct/
+FP 0 /CUTG146/
+FP /^#CdsCount: 5045\n/
+FP /^#Coding GC 51.81%\n/
+FP /^#1st letter GC 58.93%\n/
+FP /^#2nd letter GC 40.69%\n/
+FP /^#3rd letter GC 55.80%\n/
+FP /^GAC    D     0.370    19.050  30454\n/
+FP /^GAT    D     0.630    32.220  51514\n/
+FP /^ATC    I     0.420    25.000  39971\n/
+FP /^CTG    L     0.500    52.820  84455\n/
+FP /^ATG    M     1.000    27.780  44414\n/
+FP /^TAG    \*     0.070     0.230    365\n/
+//
+
+
+ID codcopy-codehop
+AP codcopy
+CL -format codehop
+IN ../codcopy-outcodehop/eecoli.codehop
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.cut
+FC = 75
+FP 64 /^[ACGT][ACGT][ACGT]/
+FP /^#Species: Escherichia coli K12\n/
+FP /^#Division: gbbct\n/
+FP /^#Release: CUTG146\n/
+FP /^#CdsCount: 5045\n/
+FP /^#Coding GC 51.81%\n/
+FP /^#1st letter GC 58.93%\n/
+FP /^#2nd letter GC 40.69%\n/
+FP /^#3rd letter GC 55.80%\n/
+FP /^GAC    D     0.372    19.047  30454\n/
+FP /^GAT    D     0.628    32.219  51514\n/
+FP /^ATC    I     0.419    24.999  39970\n/
+FP /^CTG    L     0.496    52.821  84455\n/
+FP /^ATG    M     1.000    27.778  44414\n/
+FP /^TAG    \*     0.072     0.228    364\n/
+//
+
+
+ID codcopy-staden
+AP codcopy
+CL -format staden
+IN ../codcopy-outstaden/eecoli.staden
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.cut
+FC = 72
+FP 64 /^[ACGT][ACGT][ACGT]/
+FP 0 /Escherichia/
+FP 0 /gbbct/
+FP 0 /CUTG146/
+FP /^#CdsCount: 5045\n/
+FP /^#Coding GC 51.81%\n/
+FP /^#1st letter GC 58.93%\n/
+FP /^#2nd letter GC 40.69%\n/
+FP /^#3rd letter GC 55.80%\n/
+FP /^GAC    D     0.372    19.047  30454\n/
+FP /^GAT    D     0.628    32.219  51514\n/
+FP /^ATC    I     0.419    24.999  39971\n/
+FP /^CTG    L     0.496    52.821  84455\n/
+FP /^ATG    M     1.000    27.778  44414\n/
+FP /^TAG    \*     0.072     0.228    365\n/
+//
+
+
+ID codcopy-numstaden
+AP codcopy
+CL -format numstaden
+IN ../codcopy-outnumstaden/eecoli.numstaden
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eecoli.cut
+FC = 72
+FP 64 /^[ACGT][ACGT][ACGT]/
+FP 0 /Escherichia/
+FP 0 /gbbct/
+FP 0 /CUTG146/
+FP /^#CdsCount: 5045\n/
+FP /^#Coding GC 51.81%\n/
+FP /^#1st letter GC 58.93%\n/
+FP /^#2nd letter GC 40.69%\n/
+FP /^#3rd letter GC 55.80%\n/
+FP /^GAC    D     0.372    19.047  30454\n/
+FP /^GAT    D     0.628    32.219  51514\n/
+FP /^ATC    I     0.419    24.999  39971\n/
+FP /^CTG    L     0.496    52.821  84455\n/
+FP /^ATG    M     1.000    27.778  44414\n/
+FP /^TAG    \*     0.072     0.228    365\n/
+//
+
 
 ID coderet-ex
 UC To extract all of the CDS, mRNA and the protein translations:
