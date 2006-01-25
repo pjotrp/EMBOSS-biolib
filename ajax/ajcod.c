@@ -50,7 +50,6 @@ static AjBool codReadCodehop(AjPCod thys, AjPFileBuff inbuff);
 static AjBool codReadCutg(AjPCod thys, AjPFileBuff inbuff);
 static AjBool codReadEmboss(AjPCod thys, AjPFileBuff inbuff);
 static AjBool codReadGcg(AjPCod thys, AjPFileBuff inbuff);
-static AjBool codReadNumstaden(AjPCod thys, AjPFileBuff inbuff);
 static AjBool codReadSpsum(AjPCod thys, AjPFileBuff inbuff);
 static AjBool codReadStaden(AjPCod thys, AjPFileBuff inbuff);
 static AjBool codTripletAdd (const AjPCod thys, const char residue,
@@ -62,9 +61,8 @@ static void   codWriteCutg(const AjPCod thys, AjPFile outf);
 static void   codWriteCutgaa(const AjPCod thys, AjPFile outf);
 static void   codWriteEmboss(const AjPCod thys, AjPFile outf);
 static void   codWriteGcg(const AjPCod thys, AjPFile outf);
-static void   codWriteNumstaden(const AjPCod thys, AjPFile outf);
-static void   codWriteSpsum(const AjPCod thys, AjPFile outf);
 static void   codWriteStaden(const AjPCod thys, AjPFile outf);
+static void   codWriteSpsum(const AjPCod thys, AjPFile outf);
 static void   codWriteTransterm(const AjPCod thys, AjPFile outf);
 
 #define AJCODSIZE 66
@@ -136,10 +134,10 @@ static CodOInFormat codInFormatDef[] = {
        codReadGcg, "GCG format with no extras"},
   {"codehop",   AJTRUE,  "FHCRC codehop program codon usage file",
        codReadCodehop,   "Freq only, extras at end"},
-  {"staden",    AJTRUE,  "Staden package codon usage file with percentages",
-       codReadStaden,    "Freq or number only, no extras"},
+  {"staden",    AJTRUE,  "Staden package codon usage file with numbers",
+      codReadStaden,     "Number only, no extras."},
   {"numstaden", AJFALSE, "Staden package codon usage file with numbers",
-      codReadNumstaden,  "Number only, no extras. Can be read as 'staden'"},
+      codReadStaden,     "Number only, no extras. Obsolete name for 'staden'"},
   {NULL, 0, NULL, NULL, NULL}
 };
 
@@ -187,10 +185,10 @@ static CodOOutFormat codOutFormatDef[] = {
        codWriteTransterm},
   {"codehop",   "FHCRC codehop program codon usage file",
        codWriteCodehop},
-  {"staden",    "Staden package codon usage file with percentages",
+  {"staden",    "Staden package codon usage file with numbers",
        codWriteStaden},
   {"numstaden", "Staden package codon usage file with numbers",
-       codWriteNumstaden},
+       codWriteStaden},
   {NULL, NULL, NULL}
 };
 
@@ -649,7 +647,7 @@ void ajCodCalcGribskov(AjPCod thys, const AjPStr s)
 	x=0.0;
 	aa = thys->aa[i];
 	for(j=0;j<AJCODSTART;++j)
-	    if(thys->aa[j]==aa) x+=thys->tcount[j];
+	    if(thys->aa[j]==aa) x += thys->tcount[j];
 	fam[i] = x;
     }
 
@@ -817,7 +815,7 @@ void ajCodCalculateUsage(AjPCod thys, ajint c)
     /* Calculate thousands */
     for(i=0;i<AJCODSTART;++i)
 	if(!c)
-	    thys->tcount[i]=0.0;
+	    thys->tcount[i] = 0.0;
 	else
 	    thys->tcount[i] = ((double)thys->num[i] / (double)c) * 1000.0;
 
@@ -1043,8 +1041,8 @@ ajint ajCodIndexC(const char *codon)
 **
 ** Read a codon index from a filename using a specified format.
 **
-** The format can be in the fomrat argument, as a prefix format:: to the
-** fielname, or empty to allow all known formats to be tried.
+** The format can be in the format argument, as a prefix format:: to the
+** flelname, or empty to allow all known formats to be tried.
 **
 ** @param [w] thys [AjPCod] Codon object
 ** @param [r] fn [const AjPStr] filename
@@ -1097,12 +1095,15 @@ AjBool ajCodRead(AjPCod thys, const AjPStr fn, const AjPStr format)
     for(i=0;codInFormatDef[i].Name; i++)
     {
 	if(ajStrLen(formatstr))
+	{
 	    if(!ajStrMatchC(formatstr, codInFormatDef[i].Name))
 		continue;
-
-	if(!codInFormatDef[i].Try)
-	    continue;
-
+	}
+	else
+	{
+	    if(!codInFormatDef[i].Try)
+		continue;
+	}
 	ajDebug("ajCodRead Try format '%s'\n", codInFormatDef[i].Name);
 	ret = codInFormatDef[i].Read(thys, inbuff);
 	if(ret)
@@ -1229,14 +1230,18 @@ static AjBool codReadEmboss(AjPCod thys, AjPFileBuff inbuff)
 
 
 
-/* @funcstatic codReadNumstaden ***********************************************
+/* @funcstatic codReadStaden **********************************************
 **
-** Read a codon index from a filename in Staden format with numbers
+** Read a codon index from a filename in Staden format with counts.
 **
 ** The first lines have the format:
 **
 **      ===========================================<br>
-**      F TTT  17. S TCT  16. Y TAT  10. C TGT   2.<br>
+**      F TTT  170 S TCT  160 Y TAT  10 C TGT   20<br>
+**
+** Note that in this format the Staden package allows two codon usage tables
+** in the same file. The first is the one we want as it is for the protein
+** coding regions. The second is for the regions between CDSs.
 **
 ** @param [w] thys [AjPCod] Codon object
 ** @param [u] inbuff [AjPFileBuff] Input file buffer
@@ -1245,7 +1250,7 @@ static AjBool codReadEmboss(AjPCod thys, AjPFileBuff inbuff)
 ** @category input [AjPCod] Read codon index from a file
 ** @@
 ******************************************************************************/
-static AjBool codReadNumstaden(AjPCod thys, AjPFileBuff inbuff)
+static AjBool codReadStaden(AjPCod thys, AjPFileBuff inbuff)
 {
     AjPStr  line = NULL;
     AjPStr tok1 = NULL;
@@ -1257,7 +1262,6 @@ static AjBool codReadNumstaden(AjPCod thys, AjPFileBuff inbuff)
     ajint idx;
     ajint num;
     double tcount;
-    AjBool numbers = ajTrue;
     ajint cdscount = 0;
     ajint icod = 0;
 
@@ -1301,20 +1305,14 @@ static AjBool codReadNumstaden(AjPCod thys, AjPFileBuff inbuff)
 	    if(c>25)
 		c=27;			/* stop */
 	    ajStrToDouble(tok3,&tcount);
-	    if(numbers)
-		ajStrToInt(tok3, &num);
+	    ajStrToInt(tok3, &num);
 
 	    idx = ajCodIndex(tok2);
 
 	    thys->aa[idx]       = c;
-	    if(numbers)
-	    {
-		cdscount += num;
-		thys->num[idx]  = num;
-	    }
-	    else
-		thys->num[idx]  = (int) (10.0*tcount); /* unknown number */
-	    thys->tcount[idx]   = 10.0 * tcount; /* percent to per 1000 */
+	    cdscount += num;
+	    thys->num[idx]  = num;
+	    thys->tcount[idx]   = 0.0;  /* unknown - can calculate */
 	    thys->fraction[idx] = 0.0;	/* unknown fraction - can calculate */
 
 	    icod++;
@@ -1323,124 +1321,6 @@ static AjBool codReadNumstaden(AjPCod thys, AjPFileBuff inbuff)
     }
 
     codCalcFraction(thys);
-
-    ajStrDel(&line);
-    return ajTrue;
-}
-
-
-/* @funcstatic codReadStaden **************************************************
-**
-** Read a codon index from a filename in Staden format
-**
-** The first lines have the format:
-**
-**      ===========================================<br>
-**      F TTT  17. S TCT  16. Y TAT  10. C TGT   2.<br>
-**
-** @param [w] thys [AjPCod] Codon object
-** @param [u] inbuff [AjPFileBuff] Input file buffer
-**
-** @return [AjBool] ajTrue on success
-** @category input [AjPCod] Read codon index from a file
-** @@
-******************************************************************************/
-static AjBool codReadStaden(AjPCod thys, AjPFileBuff inbuff)
-{
-    AjPStr  line = NULL;
-    AjPStr tok1 = NULL;
-    AjPStr tok2 = NULL;
-    AjPStr tok3 = NULL;
-    AjPStrTok handle = NULL;
-    ajint i;
-    ajint c;
-    ajint idx;
-    ajint num;
-    double tcount;
-    AjBool numbers = ajTrue;
-    ajint cdscount = 0;
-    ajint icod = 0;
-
-    while(ajFileBuffGet(inbuff,&line))
-    {
-	ajStrClean(&line);
-	if(!ajStrLen(line))
-	    continue;
-	if(ajStrChar(line, 0) == '#')
-	{
-	    codCommentProcess(thys, line);
-	    continue;
-	}
-	if(ajStrChar(line, 0) == '!')
-	    continue;
-	if(ajStrLen(line) == strspn(ajStrStr(line), "="))
-	    continue;
-
-
-	if(icod > 63)			/* ignore second noncoding set */
-	    continue;
-
-	/* check record format */
-
-	if(ajStrTokenCount(line, " \t\r\n") != 12)
-	    return ajFalse;
-
-	ajStrTokenAss(&handle, line, " \t\r\n");
-	for(i=0;i<4;i++)
-	{
-	    ajStrToken(&tok1, &handle, NULL);
-	    ajStrToken(&tok2, &handle, NULL);
-	    ajStrToken(&tok3, &handle, NULL);
-	    if(!codIsAa(&tok1))
-		return ajFalse;
-	    if(!codIsCodon(&tok2))
-		return ajFalse;
-	    if(!codIsFreq(tok3))
-		return ajFalse;
-
-	    if(!codIsNumberF(&tok3))
-		numbers =  ajFalse;
-
-	    c = ajAZToInt((ajint)ajStrChar(tok1, 0));
-	    if(c>25)
-		c=27;			/* stop */
-	    ajStrToDouble(tok3,&tcount);
-	    if(numbers)
-		ajStrToInt(tok3, &num);
-
-	    idx = ajCodIndex(tok2);
-
-	    thys->aa[idx]       = c;
-	    if(numbers)
-	    {
-		cdscount += num;
-		thys->num[idx]  = num;
-	    }
-	    else
-		thys->num[idx]  = (int) (10.0*tcount); /* unknown number */
-	    thys->tcount[idx]   = 10.0 * tcount; /* percent to per 1000 */
-	    thys->fraction[idx] = 0.0;	/* unknown fraction - can calculate */
-
-	    icod++;
-	}
-    }
-
-    /* numbers can be codon count - even with a trailing decimal point */
-    if(numbers)
-    {
-	for(i=0;i<64;i++)
-	{
-	    thys->tcount[i] = 1000.0 * (double)thys->num[i]/(double)cdscount + 0.1;
-	}
-    }
-    else
-    {
-	for(i=0;i<64;i++)
-	{
-	    thys->num[i] = (ajint)(1000.0 * thys->tcount[i] + 0.1);
-	}
-    }
-
 
     ajStrDel(&line);
     return ajTrue;
@@ -2487,58 +2367,6 @@ static void codWriteEmboss(const AjPCod thys, AjPFile outf)
 }
 
 
-/* @funcstatic codWriteStaden *************************************************
-**
-** Write codon structure to output file inStaden  format
-**
-** @param [r] thys  [const AjPCod]  codon usage
-** @param [u] outf [AjPFile] output file
-**
-** @return [void]
-** @category output [AjPCod] Write codon structure to output file
-** @@
-******************************************************************************/
-static void codWriteStaden(const AjPCod thys, AjPFile outf)
-{
-    const char* c0;
-    const char* c1;
-    const char* c2;
-    const char* bases = "TCAG";
-    char codon[4]="TTT";
-    const char* aa = "ABCDEFGHIJKLMNOPQRSTUVWXYZ.*";
-    ajint i;
-
-    c0 = bases;
-    while(*c0)
-    {
-	codon[0]=*c0;
-	ajFmtPrintF(outf,
-		    "      ===========================================\n");
-	c2 = bases;
-	while(*c2)
-	{
-	    codon[2]=*c2;
-	    ajFmtPrintF(outf, "     ");
-	    c1 = bases;
-	    while(*c1)
-	    {
-		codon[1]=*c1;
-		i = ajCodIndexC(codon);
-		ajFmtPrintF(outf, " %c %s %3.0f.",
-			    aa[thys->aa[i]], codon, thys->tcount[i]/10.0);
-		c1++;
-	    }
-	    ajFmtPrintF(outf, "\n");
-	    c2++;
-	}
-	c0++;
-    }
-    ajFmtPrintF(outf,
-		"      ===========================================\n");
-
-    return;
-}
-
 /* @funcstatic codWriteSpsum *************************************************
 **
 ** Write codon structure to output file inSpsum  format
@@ -2564,7 +2392,10 @@ static void codWriteSpsum(const AjPCod thys, AjPFile outf)
     for(i=0;i<64;i++)
     {
 	j = ajCodIndexC(spsumcodons[i]);
-	ajFmtPrintF(outf, "%d ", thys->num[j]);
+	if(i)
+	    ajFmtPrintF(outf, " %d", thys->num[j]);
+	else
+	    ajFmtPrintF(outf, "%d", thys->num[j]);
     }
     ajFmtPrintF(outf, "\n");
 
@@ -2604,13 +2435,13 @@ static void codWriteCutg(const AjPCod thys, AjPFile outf)
     ajStrAssS(&division, thys->Division);
     ajStrSetC(&division, "unknown.division");
 
-    ajFmtPrintF(outf, "%S [%S]: %d CDS's (%d codons) \n",
+    ajFmtPrintF(outf, "%S [%S]: %d CDS's (%d codons)\n",
 		species, division, thys->CdsCount, thys->CodonCount);
 
     ajStrAppKI(&minusline, '-', 80);
     ajFmtPrintF(outf, "%S\n", minusline);
     ajFmtPrintF(outf,
-		"fields: [triplet] [frequency: per thousand] ([number]) \n");
+		"fields: [triplet] [frequency: per thousand] ([number])\n");
     ajFmtPrintF(outf, "%S\n\n", minusline);
 
     c0 = bases;
@@ -2696,13 +2527,13 @@ static void codWriteCutgaa(const AjPCod thys, AjPFile outf)
     ajStrAssS(&division, thys->Division);
     ajStrSetC(&division, "unknown.division");
 
-    ajFmtPrintF(outf, "%S [%S]: %d CDS's (%d codons) \n",
+    ajFmtPrintF(outf, "%S [%S]: %d CDS's (%d codons)\n",
 		species, division, thys->CdsCount, thys->CodonCount);
 
     ajStrAppKI(&minusline, '-', 80);
     ajFmtPrintF(outf, "%S\n", minusline);
     ajFmtPrintF(outf,
-		"fields: [triplet] [frequency: per thousand] ([number]) \n");
+		"fields: [triplet] [frequency: per thousand] ([number])\n");
     ajFmtPrintF(outf, "%S\n\n", minusline);
 
     c0 = bases;
@@ -3029,10 +2860,11 @@ static void codWriteCodehop(const AjPCod thys, AjPFile outf)
     return;
 }
 
-/* @funcstatic codWriteNumstaden **********************************************
+/* @funcstatic codWriteStaden *************************************************
 **
 ** Write codon structure to output file in Staden format with numbers
-** instead of percentages
+** (as generated by nip4) instead of percentages as used by the original
+** nip program.
 **
 ** @param [r] thys  [const AjPCod]  codon usage
 ** @param [u] outf [AjPFile] output file
@@ -3041,7 +2873,7 @@ static void codWriteCodehop(const AjPCod thys, AjPFile outf)
 ** @category output [AjPCod] Write codon structure to output file
 ** @@
 ******************************************************************************/
-static void codWriteNumstaden(const AjPCod thys, AjPFile outf)
+static void codWriteStaden(const AjPCod thys, AjPFile outf)
 {
     const char* c0;
     const char* c1;
@@ -3739,7 +3571,7 @@ static void codFix(AjPCod thys)
     if(thys->CdsCount)
     {
 	if(totcds > thys->CdsCount)	/* can be less if stops ignored */
-	    ajWarn("Codon usage file '%S' has %d stop codons, CDS count %d",
+	    ajDebug("Codon usage file '%S' has %d stop codons, CDS count %d\n",
 		  thys->Name, totcds,  thys->CdsCount);
     }
     else
@@ -3748,7 +3580,7 @@ static void codFix(AjPCod thys)
     if(thys->CodonCount)
     {
 	if(totnum != thys->CodonCount)
-	    ajWarn("Codon usage file '%S' has %d codons, Codon count %d",
+	    ajDebug("Codon usage file '%S' has %d codons, Codon count %d\n",
 		  thys->Name, totnum,  thys->CodonCount);
     }
     else
@@ -3764,7 +3596,7 @@ static void codFix(AjPCod thys)
     }
 
     if(abs(totfreq - 1000.0) > 0.1)
-	ajWarn("Codon usage file '%S' has total frequency/1000 of %.2f",
+	ajDebug("Codon usage file '%S' has total frequency/1000 of %.2f\n",
 	       thys->Name, totfreq);
 
     if(!totfrac)
@@ -3785,11 +3617,14 @@ static void codFix(AjPCod thys)
     }
 
     if(abs(totfrac - (double)totaa) > 0.1)
-	ajWarn("Codon usage file '%S' has total fraction of %.2f for %d amino acids",
+	ajDebug("Codon usage file '%S' has total fraction of %.2f for %d amino acids\n",
 	       thys->Name, totfrac, totaa);
 
     return;
 }
+
+
+
 /* @func ajCodPrintFormat **************************************************
 **
 ** Reports the internal data structures
