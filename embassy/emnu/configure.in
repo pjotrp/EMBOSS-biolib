@@ -394,7 +394,7 @@ AC_ARG_WITH(curses,
 [ --with-curses	   curses (or ncurses)])
 if test "${with_curses}" ; then
 AC_MSG_CHECKING(for with_curses)
-CPPFLAGS="$CPPFLAGS -I${with_curses}/include"
+CPPFLAGS="$CPPFLAGS -I${with_curses}/include -I${with_curses}/include/ncurses"
 LDFLAGS="$LDFLAGS -L${with_curses}/lib"
 fi
 AC_CHECK_LIB(ncurses, main, LIBS="$LIBS -lncurses", LIBS="$LIBS -lcurses")
