@@ -4599,7 +4599,6 @@ AjBool ajScopWrite(AjPFile outf, const AjPScop obj)
 
 ajint ajDomainDCFType(AjPFile inf)
 {
-    AjBool  ok          = ajFalse;
     ajlong  offset      = 0.0;
     static  AjPStr line = NULL;
     static  AjPStr tmp  = NULL;	
@@ -4614,7 +4613,7 @@ ajint ajDomainDCFType(AjPFile inf)
     
     offset = ajFileTell(inf);
     
-    while((ok=ajFileReadLine(inf,&line)))
+    while((ajFileReadLine(inf,&line)))
     {
 	if(!ajStrPrefixC(line,"TY   "))
 	    continue;

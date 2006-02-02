@@ -253,7 +253,6 @@ static void alignWriteTrace(AjPAlign thys)
     ajint iali;
     ajint iseq;
     ajint nseq;
-    ajint ilen;
 
     ajint identity   = 0;
     ajint similarity = 0;
@@ -319,7 +318,6 @@ static void alignWriteTrace(AjPAlign thys)
     for(iali=0; iali<nali; iali++)
     {
 	data = pdata[iali];
-	ilen = data->LenAli;
 	ajFmtPrintF(thys->File,
 		    "\nalign%d: Nseqs:%d  LenAli:%d  "
 		    "NumId:%d  NumSim:%d  NumGap:%d  Score:'%S'\n",
@@ -439,7 +437,6 @@ static void alignWriteSeqformat(AjPAlign thys, ajint iali, const char* sqfmt)
 {
     AlignPData* pdata = NULL;
     AlignPData data = NULL;
-    ajint nali;
 
     AjPSeq seq = NULL;
     AjPSeqout seqout;
@@ -459,7 +456,7 @@ static void alignWriteSeqformat(AjPAlign thys, ajint iali, const char* sqfmt)
 
     ajSeqoutOpen(seqout);
 
-    nali = ajListToArray(thys->Data, (void***) &pdata);
+    ajListToArray(thys->Data, (void***) &pdata);
     data = pdata[0];
     ilen = data->LenAli;
 
@@ -3027,9 +3024,8 @@ static AjPSeq* alignSeqs(const AjPAlign thys, ajint iali)
 {
     AlignPData* pdata = NULL;
     AlignPData data = NULL;
-    ajint nali;
 
-    nali = ajListToArray(thys->Data, (void***) &pdata);
+    ajListToArray(thys->Data, (void***) &pdata);
     data = pdata[iali];
 
     AJFREE(pdata);
@@ -3054,9 +3050,8 @@ static const AjPSeq alignSeq(const AjPAlign thys, ajint iseq, ajint iali)
 {
     AlignPData* pdata = NULL;
     AlignPData data = NULL;
-    ajint nali;
 
-    nali = ajListToArray(thys->Data, (void***) &pdata);
+    ajListToArray(thys->Data, (void***) &pdata);
     data = pdata[iali];
 
     AJFREE(pdata);
@@ -3287,9 +3282,8 @@ static AlignPData alignData(const AjPAlign thys, ajint iali)
 {
     AlignPData* pdata = NULL;
     AlignPData data = NULL;
-    ajint nali;
 
-    nali = ajListToArray(thys->Data, (void***) &pdata);
+    ajListToArray(thys->Data, (void***) &pdata);
     data = pdata[iali];
 
     AJFREE(pdata);
@@ -3313,9 +3307,8 @@ static ajint alignLen(const AjPAlign thys, ajint iali)
 {
     AlignPData* pdata = NULL;
     AlignPData data = NULL;
-    ajint nali;
 
-    nali = ajListToArray(thys->Data, (void***) &pdata);
+    ajListToArray(thys->Data, (void***) &pdata);
     data = pdata[iali];
 
     AJFREE(pdata);
@@ -3813,7 +3806,6 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     char gapch;
     float fplural;
     float fplurality = 51.0;
-    float setcase    = 0.0;
     float ident;
     AjBool isident;
     AjBool issim;
@@ -3848,12 +3840,11 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     mlen    = alignLen(thys, iali);
     fplural = alignTotweight(thys, 0) * fplurality / 100.;
     ident   = alignTotweight(thys, 0);
-    setcase = ident;
     
     ajDebug("alignConsStats ali:%d mlen:%d\n", iali, mlen);
 
-    /* ajDebug("fplural:%.1f ident:%.1f setcase:%.1f mlen: %d\n",
-	    fplural, ident, setcase, mlen); */
+    /* ajDebug("fplural:%.1f ident:%.1f mlen: %d\n",
+	    fplural, ident, mlen); */
     
     if(thys->IMatrix)
     {
@@ -4129,11 +4120,6 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 	    if(seqcharptr[highindex][khpos] != '-')
 		res = toupper((int)seqcharptr[highindex][khpos]);
 
-
-	/*
-	   if(himatch < setcase)
-	   res = tolower(res);
-	   */
 
 	if(himatch == seqs[highindex]->Weight)
 	{
@@ -4463,7 +4449,6 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     char gapch;
     float fplural;
     float fplurality = 51.0;
-    float setcase    = 0.0;
     float ident;
     AjBool isident;
     AjBool issim;
@@ -4498,10 +4483,9 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     mlen    = thys->Len;
     fplural = ajSeqsetTotweight(thys) * fplurality / 100.;
     ident   = ajSeqsetTotweight(thys);
-    setcase = ident;
     
-    /* ajDebug("fplural:%.2f ident:%.1f setcase:%.1f mlen: %d\n",
-	    fplural, ident, setcase, mlen); */
+    /* ajDebug("fplural:%.2f ident:%.1f mlen: %d\n",
+	    fplural, ident, mlen); */
     
     matrix  = ajMatrixArray(imatrix);
     cvt     = ajMatrixCvt(imatrix);	/* return conversion table */

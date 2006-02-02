@@ -1553,7 +1553,6 @@ AjPScophit ajDmxScophitReadFasta(AjPFile inf)
     AjPStr    token     = NULL;
     AjPStr    line      = NULL;    /* Line of text */
     AjPStr    subline   = NULL;
-    AjBool    ok        = ajFalse; /* Line was not NULL */
     AjPStr    type     = NULL;
 
 
@@ -1562,7 +1561,7 @@ AjPScophit ajDmxScophitReadFasta(AjPFile inf)
     subline  = ajStrNew();
     type     = ajStrNew();
 
-    while((ok = ajFileReadLine(inf,&line)))
+    while((ajFileReadLine(inf,&line)))
     {
 	if(ajStrPrefixC(line,">"))
 	{
