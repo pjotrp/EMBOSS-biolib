@@ -645,6 +645,7 @@ typedef struct AjSSeq {
 ** @cast ajSeqsetSeq Returns the char* pointer to a sequence in a set
 ** @cast ajSeqsetIsNuc Tests whether the sequence set is nucleotide
 ** @cast ajSeqsetIsProt Tests whether the sequence set is protein
+** @cast ajSeqsetGetFilename Returns the filename of a sequence set
 ** @output ajSeqsetWrite Writes out all sequences in a set
 ** @@
 ******************************************************************************/
@@ -684,6 +685,7 @@ typedef struct AjSSeqset {
 ** @delete ajSeqallDel Default destructor
 ** @modify ajSeqallNext Master sequence stream input, reads next sequence
 **                   from an open input stream.
+** @cast ajSeqallGetFilename Returns the filename of a seqall object.
 ** @other AjPSeq Sequences
 ** @other AjPSeqin Sequence input
 ** @other AjPSeqset Sequence sets

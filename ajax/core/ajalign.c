@@ -1961,6 +1961,30 @@ AjBool ajAlignFormatDefault(AjPStr* pformat)
 
 
 
+
+
+/* @func ajAlignGetFormat ****************************************************
+**
+** Returns the sequence format for an alignment.
+**
+** @param [r] thys [const AjPAlign] Alignment object.
+** @return [const AjPStr] Alignment format
+** @@
+******************************************************************************/
+
+const AjPStr ajAlignGetFormat(const AjPAlign thys)
+{
+    if(!thys)
+	return NULL;
+    
+    return thys->Formatstr;
+}
+
+
+
+
+
+
 /* @func ajAlignFindFormat ****************************************************
 **
 ** Looks for the specified align format in the internal definitions and

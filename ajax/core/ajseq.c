@@ -587,6 +587,37 @@ const AjPStr ajSeqsetGetUsa(const AjPSeqset thys)
 
 
 
+
+/* @func ajSeqsetGetFilename **************************************************
+**
+** Returns the filename of a sequence set.
+** Because this is a pointer to the real internal string
+** the caller must take care not to change the character string in any way.
+** If the string is to be changed (case for example) then it must first
+** be copied.
+**
+** @param [r] thys [const AjPSeqset] Sequence set object.
+** @return [const AjPStr] Name as a string.
+** @@
+******************************************************************************/
+
+const AjPStr ajSeqsetGetFilename(const AjPSeqset thys)
+{
+    ajDebug("ajSeqsetGetFilename '%S' usa: '%S'\n", thys->Name, thys->Usa);
+
+    if(!thys)
+	return NULL;
+
+    if(ajStrLen(thys->Filename))
+	return thys->Filename;
+
+    return NULL;
+}
+
+
+
+
+
 /* @func ajSeqGetUsa **********************************************************
 **
 ** Returns the sequence name of a sequence stream.
@@ -634,6 +665,41 @@ const AjPStr ajSeqallGetUsa(const AjPSeqall thys)
 
     return thys->Seqin->Usa;
 }
+
+
+
+
+/* @func ajSeqallGetFilename **************************************************
+**
+** Returns the filename of a seqall object.
+** Because this is a pointer to the real internal string
+** the caller must take care not to change the character string in any way.
+** If the string is to be changed (case for example) then it must first
+** be copied.
+**
+** @param [r] thys [const AjPSeqall] Seqall object pointer.
+** @return [const AjPStr] Name as a string.
+** @@
+******************************************************************************/
+
+const AjPStr ajSeqallGetFilename(const AjPSeqall thys)
+{
+    if(!thys)
+	return NULL;
+    if(!thys->Seqin)
+	return NULL;
+
+    ajDebug("ajSeqallGetFilename '%S' usa: '%S'\n", thys->Seqin->Name, thys->Seqin->Usa);
+
+
+
+    if(ajStrLen(thys->Seqin->Filename))
+	return thys->Seqin->Filename;
+
+    return NULL;
+}
+
+
 
 
 

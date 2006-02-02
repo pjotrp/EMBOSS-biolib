@@ -18,6 +18,7 @@ extern "C"
 ** @output ajAlignWrite Master alignment output routine
 ** @output ajAlignWriteHeader Master header output routine
 ** @output ajAlignWriteTail Master footer output routine
+** @cast ajAlignGetFormat Returns the format of an alignment
 **
 ** @other AjPSeqout Sequence output
 ** @other AjPFeatout Feature output
@@ -100,6 +101,7 @@ void         ajAlignDel (AjPAlign* pthys);
 AjBool       ajAlignOpen (AjPAlign thys, const AjPStr name);
 AjBool       ajAlignFindFormat (const AjPStr format, ajint* iformat);
 AjBool       ajAlignFormatDefault (AjPStr* pformat);
+const AjPStr ajAlignGetFormat(const AjPAlign thys);
 AjPAlign     ajAlignNew (void);
 void         ajAlignPrintFormat (AjPFile outf, AjBool full);
 void         ajAlignReset (AjPAlign thys);
