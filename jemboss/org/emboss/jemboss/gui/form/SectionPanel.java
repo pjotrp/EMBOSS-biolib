@@ -796,16 +796,40 @@ public class SectionPanel
 
               if(!withSoap)
               {
+                String cwd = System.getProperty("user.dir");
+                String tmp = null;
                 try
                 {
-                  File tf = File.createTempFile("attr", ".jembosstmp",
-                            new File(System.getProperty("user.dir")));
+                  File tf;
+                  try
+                  {
+                    if(mysettings.isCygwin())
+                      tmp = mysettings.getCygwinRoot()+System.getProperty("file.separator")+"tmp";
+                    else
+                      tmp = System.getProperty("java.io.tmpdir");
+
+                    tf = File.createTempFile("attr", ".jembosstmp", new File(tmp));
+                  }
+                  catch(IOException ioe)
+                  {
+                    tf = File.createTempFile("attr", ".jembosstmp",
+                                                new File(cwd));
+                  }
+
                   PrintWriter out = new PrintWriter(new FileWriter(tf));
                   out.println(fc);
                   out.close();
-                  fc = tf.getName();
+                  fc = tf.getCanonicalPath();
                 }
-                catch(IOException ioe) { ioe.printStackTrace(); }
+                catch (IOException ioe)
+                {
+                  JOptionPane.showMessageDialog(null,
+                       "Cannot write to\n"+
+                       tmp+"\n"+
+                       "or\n"+
+                       cwd,
+                       "Problem creating a temporary file!", JOptionPane.ERROR_MESSAGE);
+                }
               }
             }
 

@@ -963,18 +963,39 @@ public class BuildJembossForm implements ActionListener
           }
           else
           {
+            String tmp = null;
             try
             {
-              File tf = File.createTempFile(fn, ".jembosstmp",
+              File tf;
+              try
+              {
+                if(mysettings.isCygwin())
+                  tmp = mysettings.getCygwinRoot()+System.getProperty("file.separator")+"tmp";
+                else
+                  tmp = System.getProperty("java.io.tmpdir");
+
+                tf = File.createTempFile(fn, ".jembosstmp", new File(tmp));
+              }
+              catch(IOException ioe)
+              {
+                tf = File.createTempFile(fn, ".jembosstmp",
                                             new File(cwd));
+              }
+
               PrintWriter out = new PrintWriter(new FileWriter(tf));
               out.println(cp);
               out.close();
-              if(mysettings.isCygwin())
-                fn = new String(tf.getName());
-              else
-                fn = new String(tf.getCanonicalPath());
-            } catch (IOException ioe) {}
+              fn = tf.getCanonicalPath();
+            }
+            catch (IOException ioe) 
+            {
+              JOptionPane.showMessageDialog(null,
+                       "Cannot write to\n"+
+                       tmp+"\n"+
+                       "or\n"+
+                       cwd,
+                       "Problem creating a temporary file!", JOptionPane.ERROR_MESSAGE);
+            }
             options = options.concat(" -" + val + " " + fn );
           }
         }
