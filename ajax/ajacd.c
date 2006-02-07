@@ -1777,6 +1777,8 @@ AcdOAttr acdAttrString[] =
 	 "Convert to upper case"},
     {"lower", VT_BOOL, "N",
 	 "Convert to lower case"},
+    {"word", VT_BOOL, "N",
+	 "Disallow whitespace in strings"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -11743,6 +11745,7 @@ static void acdSetString(AcdPAcd thys)
     static AjPStr pattern  = NULL;
     AjBool upper;
     AjBool lower;
+    AjBool word;
     ajint itry;
     
     AjPRegexp patexp = NULL;
@@ -11758,6 +11761,7 @@ static void acdSetString(AcdPAcd thys)
     acdAttrToStr(thys, "pattern", "", &pattern);
     acdAttrToBool(thys, "upper", ajFalse, &upper);
     acdAttrToBool(thys, "lower", ajFalse, &lower);
+    acdAttrToBool(thys, "word",  ajFalse, &word);
     
     if(ajStrLen(pattern))
 	patexp = ajRegComp(pattern);
@@ -11799,6 +11803,13 @@ static void acdSetString(AcdPAcd thys)
 		      pattern);
 	    ok = ajFalse;
 	}
+
+	if(word && !(ajStrIsWord(reply)))
+	{
+	    acdBadVal(thys, required,
+		      "String contains disallowed whitespace characters");
+	    ok = ajFalse;
+	}	
     }
 
     if(!ok)
@@ -13065,8 +13076,10 @@ static void acdHelpValidString(const AcdPAcd thys, AjPStr* str)
 {
     ajint minlen;
     ajint maxlen;
+    AjBool  word;
     static AjPStr patstr = NULL;
     static AjPStr tmpstr = NULL;
+
 
     acdAttrValueStr(thys, "min", "0", &tmpstr);
     if(!ajStrToInt(tmpstr, &minlen))
@@ -13074,22 +13087,31 @@ static void acdHelpValidString(const AcdPAcd thys, AjPStr* str)
     acdAttrValueStr(thys, "max", "0", &tmpstr);
     if(!ajStrToInt(tmpstr, &maxlen))
 	maxlen = 0;
+    acdAttrValueStr(thys, "word", "0", &tmpstr);
+    if(!ajStrToBool(tmpstr, &word))
+	ajFatal("Bad boolean value");
+    
 
+    if(word)
+	ajFmtPrintS(str, "Any string without whitespace ");
+    else
+    	ajFmtPrintS(str, "Any string ");
     if(maxlen > 0)
     {
 	if(minlen > 0)
-	    ajFmtPrintS(str, "A string from %d to %d characters",
-			minlen, maxlen);
+	    ajFmtPrintAppS(str, "from %d to %d characters",
+			   minlen, maxlen);
 	else
-	    ajFmtPrintS(str, "A string up to %d characters", maxlen);
+	    ajFmtPrintAppS(str, "up to %d characters", maxlen);
     }
     else
     {
 	if(minlen > 0)
-	    ajFmtPrintS(str, "A string of at least %d characters", minlen);
+	    ajFmtPrintAppS(str, "of at least %d characters", minlen);
 	else
-	    ajStrAssC(str, "Any string is accepted");
+	    ajFmtPrintAppS(str, "is accepted");
     }
+    
 
     acdAttrValueStr(thys, "pattern", "", &patstr);
 
