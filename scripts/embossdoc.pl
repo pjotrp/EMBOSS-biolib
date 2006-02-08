@@ -324,6 +324,9 @@ sub testmodify($$\@\@) {
     }
     $tc = ${$tcast}[0];
     $tx = ${$tcode}[0];
+    if(!defined($tc)) {
+    print STDERR "testmodify tc undefined for $fname $pubout\n";
+    }
     if ($tc ne "$tdata" && $tc ne "$tdata\*") {
 	print "bad category modify - parameter1 '$tc' not '$tdata\*'\n";
     }
@@ -523,6 +526,14 @@ foreach $x ("CallFunc", "AjMessVoidRoutine", "AjMessOutRoutine") {
     $functype{$x} = 1;
 }
 
+foreach $x ("datastatic", "alias", "attr") {
+    $datatoken{$x} = 1;
+}
+
+foreach $x("plus") {
+    $ignore{$x} = 1;
+}
+
 $source = "";
 
 if ($infile) {
@@ -582,6 +593,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
     ($cc) = ($ccfull =~ /^..\s*(.*\S)*\s*..$/gos);
     if (defined($cc)) {
 	$cc =~ s/[* ]*\n[* ]*/\n/gos;
+	$cc = " ".$cc;
     }
     else {
 	$cc = "";
@@ -608,8 +620,10 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
     $dependtext = "See source code";
     $othertext = "See other functions in this section";
     $availtext = "In release 3.0.0";
+    $fdata = "";
+    $ctype = "";
 
-    while ($cc =~ m/@((\S+)([^@]+))/gos) {
+    while ($cc =~ m/\s@((\S+)([^@]*[^@\s]))/gos) {
 	$data = $1;
 	$token = $2;
 	#print "<$token>\n";
@@ -804,13 +818,16 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    ($name, $frest) = ($data =~ /\S+\s+(\S+)\s*(.*)/gos);
 	    ($ftype,$fname, $fargs) =
 		$rest =~ /^\s*([^\(\)]*\S)\s+(\S+)\s*[\(]\s*([^{]*)[)]\s*[\{]/os;
-	    if(!defined($fargs)) {
-		print "bad function prototype: not parsed\n";
-	    }
-	    if ($isprog && $fname eq "main") {$fname = $pubout}
 	    print "Function $name\n";
 	    print $OFILE "<hr><h3><a name=\"$name\">\n";
 	    print $OFILE "Function</a> ".srsref($name)."</h3>\n";
+	    if(!defined($fargs)) {
+		print "bad function prototype: not parsed\n";
+		$ftype = "unknown";
+		$fname = "unknown";
+		next;
+	    }
+	    if ($isprog && $fname eq "main") {$fname = $pubout}
 	    $srest = $frest;
 	    $frest =~ s/>/\&gt;/gos;
 	    $frest =~ s/</\&lt;/gos;
@@ -890,6 +907,10 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    print "Static function $name\n";
 	    print $OFILE "<h3><a name=\"$name\">\n";
 	    print $OFILE "Static function</a> ".srsref($name)."</h3>\n";
+	    if(!defined($ftype)){
+		print "bad static function prototype: not parsed\n";
+		next;
+	    }
 	    $srest = $frest;
 	    $frest =~ s/>/\&gt;/gos;
 	    $frest =~ s/</\&lt;/gos;
@@ -904,11 +925,11 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    print SRS "LB $lib\n";
 	    print SRS "XX\n";
 
-	    $ftype =~ s/\s+/ /gos;
-	    $ftype =~ s/ \*/\*/gos;
-	    if (!$ftype) {print "bad static function definition\n"}
 	    if ($fname ne $name) {print "bad function name <$name> <$fname>\n"}
 	    if (!$frest) {print "bad function '$name', no description\n"}
+
+	    $ftype =~ s/\s+/ /gos;
+	    $ftype =~ s/ \*/\*/gos;
 
 	    $srest =~ s/\n\n+$/\n/gos;
 	    $srest =~ s/\n\n\n+/\n\n/gos;
@@ -1034,8 +1055,9 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	elsif ($token eq "param")  {
 	    if($mastertoken ne "func" &&
 	       $mastertoken ne "funcstatic" &&
-	       $mastertoken ne "macro") {
-		print "bad syntax \@$token must be in \@func, funcstatic, or macro\n";
+	       $mastertoken ne "macro" &&
+	       $mastertoken ne "funclist") {
+		print "bad syntax \@$token must be in \@func, funcstatic, funclist or macro\n";
 	    }
 	    if (!$intable) {
 		#print $OFILE "<p><table border=3>\n";
@@ -1044,7 +1066,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    }
 	    ($code,$var,$cast, $prest) = ($data =~ m/[\[]([^\]]+)[\]]\s*(\S*)\s*[\[]([^\]]+[\]]?)[\]]\s*(.*)/gos);
 	    if (!defined($code)) {
-		print STDERR "bad \@param syntax:\n$data";
+		print "bad \@param syntax:\n$data";
 		next;
 	    }
 
@@ -1277,8 +1299,9 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	elsif ($token eq "return")  {
 	    if($mastertoken ne "func" &&
 	       $mastertoken ne "funcstatic" &&
-	       $mastertoken ne "macro") {
-		print "bad syntax \@$token must be in \@func, funcstatic, or macro\n";
+	       $mastertoken ne "macro" &&
+	       $mastertoken ne "funclist") {
+		print "bad syntax \@$token must be in \@func, funcstatic, funclist or macro\n";
 	    }
 	    if (!$intable) {
 		#print $OFILE "<p><table border=3>\n";
@@ -1286,6 +1309,11 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 		$intable = 1;
 	    }
 	    ($rtype, $rrest) = ($data =~ /\S+\s+\[([^\]]+)\]\s*(.*)/gos);
+	    if(!defined($rtype)) {
+		print "bad return definition: not parsed\n";
+		next;
+	    }
+	    if(!defined($ftype)) {$ftype = "unknown";}
 	    if (!$ismacro && !$isprog && $rtype ne $ftype) {
 		print "bad return type <$rtype> <$ftype>\n";
 	    }
@@ -1383,6 +1411,9 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    $ctot{$ctype}++;
 	    secttest($sect,$ctype);
 
+	    if ($dosecttest && $fdata ne "") {
+		$cdata = $fdata;
+	    }
 	    if (!defined($categs{$ctype})) {
 		print "bad \@$type [$ctype], unknown type\n";
 	    }
@@ -1507,6 +1538,18 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    }
 	    ($replace, $repargs, $norest) =
 		($data =~ /\S+\s+(\S+)\s+[\(]([^\)]+)[\)]\s*(.*)/gos);
+	    if(!defined($repargs)){
+		print "bad replace value: failed to parse\n";
+		next;
+	    }
+	    if($repargs ne "") {
+		($repold, $repnew) = split('/', $repargs);
+		@repold = split(',', $repold);
+		@repnew = split(',', $repnew);
+		if ($#repold != $#repnew) {
+		    print "warn replace args old $#repold new $#repnew\n";
+		}
+	    }
 	    if($norest) {
 		print "bad replace $oname $replace - extra text\n";
 		next;
@@ -1602,6 +1645,12 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    next;
 	}
 
+	elsif ($datatoken{$token}) {
+	}
+	elsif ($categs{$token}) {
+	}
+	elsif ($ignore{$token}) {
+	}
 	elsif ($token eq "@")  {
 	    if($partnum == 1) {
 		print "bad syntax \@$token cannot be the start\n";
@@ -1616,27 +1665,29 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 # Whole block read.
 # Post-processing
 
-    if($mastertoken eq "obsolete") {
-	if($replaces ne "") {
-	    print OBS "$oname $replaces\n";
+    if($dosecttest) {
+	if($mastertoken eq "obsolete") {
+	    if($replaces ne "") {
+		print OBS "$oname $replaces\n";
+	    }
 	}
-    }
 
-    if($mastertoken eq "filesection") {
-	$namrulesfilecount=$#namrules;
-	$suffixfilecount=$#sufname;
-    }
-    if($mastertoken eq "datasection") {
-	$namrulesdatacount=$#namrules;
-	$suffixdatacount=$#sufname;
-    }
-
-    if($mastertoken eq "section") {
-	if($fdata eq "") {
-	    print "bad section: no fdata $datatype assumed\n";
+	if($mastertoken eq "filesection") {
+	    $namrulesfilecount=$#namrules;
+	    $suffixfilecount=$#sufname;
 	}
-	if($ctype eq "") {
-	    print "bad section: no fcategory\n";
+	if($mastertoken eq "datasection") {
+	    $namrulesdatacount=$#namrules;
+	    $suffixdatacount=$#sufname;
+	}
+
+	if($mastertoken eq "section") {
+	    if($fdata eq "") {
+		print "bad section: no fdata $datatype assumed\n";
+	    }
+	    if($ctype eq "") {
+		print "bad section: no fcategory\n";
+	    }
 	}
     }
 
@@ -1782,6 +1833,9 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 		    print "bad return <$rtype> rule <$genvaltype[0]>\n";
 		}
 	    }
+	    if($dosecttest && $fdata ne "") {
+		$cdata = $fdata;
+	    }
 	    if ($ctype eq "") {
 		# already an error above
 	    }
@@ -1833,6 +1887,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 		$w=$#largs+1;
 		print "bad \@param list $acnt found $w wanted\n";
 	    }
+	    if(!defined($ftype)) {$ftype = "unknown"}
 	    if (!$rtype && $ftype ne "void") {print "bad missing \@return\n"}
 	    print "=============================\n";
 	}

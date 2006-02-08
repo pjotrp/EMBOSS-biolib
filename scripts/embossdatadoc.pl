@@ -21,6 +21,7 @@ if ($ARGV[1]) {$lib = $ARGV[1];}
 $source = "";
 $lasttoken = "";
 $intable = 0;
+$name = "";
 
 if ($infile) {
     ($file) = ($infile =~ /([^\/]+)$/);
@@ -73,7 +74,9 @@ foreach $x ("del", "ass", "set", "mod") {
 foreach $x ("author", "version", "modified", "source", "plus", "funclist",
 	    "prog", "macro", "func", "funcstatic", "param", "return",
 	    "see", "error", "cre", "ure", "exception", "cc",
-	    "category") {
+	    "category", "fcategory", "filesection", "suffix", "datasection",
+	    "fdata", "fnote", "argrule", "valrule", "namrule",
+	    "obsolete", "rename", "replace") {
     $functoken{$x} = 1;
 }
 
@@ -121,6 +124,11 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 	    $countglobal++;
 	    $type = $token;
 	    ($name, $frest) = ($data =~ /\S+\s+(\S+)\s*(.*)/gos);
+	    if(!defined($name)) {
+		print "bad data definition: not parsed\n";
+		$name = "";
+		next;
+	    }
 	    $dtypedefname = "";
 	    ($dtype, $dattrs, $dtypeb, $ddefine) =
 		$rest =~ /^\s*([^\{]*)\{([^\}]+)[\}]([^;]*)[;]\s*([\#]define[^\n]+)?/os;
@@ -175,6 +183,11 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 	    $type = $token;
 	    ($name, $frest) = ($data =~ /\S+\s+(\S+)\s*(.*)/gos);
 	    print "Static data type $name\n";
+	    if(!defined($name)) {
+		print "bad datastatic definition: not parsed\n";
+		$name = "";
+		next;
+	    }
 	    ($dtype, $dattrs, $dtypeb, $ddefine) =
 		$rest =~ /^\s*([^\{]*)\{([^\}]+)[\}]([^;]*)[;]\s*([\#]define[^\n]+)?/os;
 
@@ -226,6 +239,11 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 	    $countstatic++;
 	    $type = $token;
 	    ($name, $frest) = ($data =~ /\S+\s+(\S+)\s*(.*)/gos);
+	    if(!defined($name)) {
+		print "bad datatype definition: not parsed\n";
+		$name = "";
+		next;
+	    }
 	    $dattrs = "";
 	    $dtypeb = "";
 	    $ddefine = "";
@@ -467,7 +485,11 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 		    $intable = 1;
 		}
 		($fname,$prest) = ($data =~ m/\S+\s*(\S*)\s*(.*)/gos);
-
+		if(!defined($fname)) {
+		    print "bad iterate value: not parsed";
+		    $fname = "";
+		    next;
+		}
 		$drest = $prest;
 		$drest =~ s/\n\n+$/\n/gos;
 		$drest =~ s/\n\n\n+/\n\n/gos;
@@ -489,6 +511,12 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 	    $docrest =~ s/^\s+//gos;
 	    $docrest =~ s/\s+$//gos;
 	    print "category $token [$name] $fname $pubout $lib : $docrest\n";
+	    print "category $token";
+	    print "[$name] ";
+	    print "$fname ";
+	    print "$pubout ";
+	    print "$lib : ";
+	    print "$docrest\n";
 	}
 
 	elsif ($token eq "other")  {
@@ -575,6 +603,8 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 
 	    if (!defined($aname)) {
 		print STDERR "bad \@attr syntax:\n$data";
+		$aname = "";
+		$atype = "";
 		next;
 	    }
 	    $drest = $prest;
