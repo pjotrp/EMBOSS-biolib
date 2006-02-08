@@ -22,6 +22,7 @@ AjBool        ajSysArglist (const AjPStr cmdline, char** pgm, char*** arglist);
 void          ajSysArgListFree (char*** arglist);
 void          ajSysBasename(AjPStr *filename);
 void          ajSysCanon(AjBool state);
+void          ajSysExit(void);
 char          ajSysItoC(ajint v);
 unsigned char ajSysItoUC(ajint v);
 AjBool        ajSysIsDirectory(const char *s);
