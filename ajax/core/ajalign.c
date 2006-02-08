@@ -4753,3 +4753,18 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
 
     return ajTrue;    
 }
+
+
+
+/* @func ajAlignExit **********************************************************
+**
+** Cleans up report processing internal memory
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajAlignExit(void)
+{
+    return;
+}

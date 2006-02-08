@@ -98,11 +98,12 @@ AjBool       ajAlignDefineCC (AjPAlign pthys,
 			      const char* seqa, const char* seqb,
 			      const char* namea,const  char* nameb);
 void         ajAlignDel (AjPAlign* pthys);
-AjBool       ajAlignOpen (AjPAlign thys, const AjPStr name);
+void         ajAlignExit(void);
 AjBool       ajAlignFindFormat (const AjPStr format, ajint* iformat);
 AjBool       ajAlignFormatDefault (AjPStr* pformat);
 const AjPStr ajAlignGetFormat(const AjPAlign thys);
 AjPAlign     ajAlignNew (void);
+AjBool       ajAlignOpen (AjPAlign thys, const AjPStr name);
 void         ajAlignPrintFormat (AjPFile outf, AjBool full);
 void         ajAlignReset (AjPAlign thys);
 void         ajAlignSetExternal (AjPAlign thys, AjBool external);
