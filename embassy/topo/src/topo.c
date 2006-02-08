@@ -2001,7 +2001,10 @@ int main(int argc, char * argv[]) {
   (void) wplotend() ;
   /*  (void) closef(fn) ;
   (void) account() ;*/
-  
+
+  AJFREE(istart);
+  AJFREE(iend);
+
   ajExit();
   return 0;
 }	/*end ;*/
