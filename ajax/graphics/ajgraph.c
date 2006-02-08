@@ -6193,13 +6193,13 @@ static void GraphDataDraw(const AjPGraphPlpData graphdata)
 
 
 /******************************************************************************
-Functions needed for callRegister routines.
+Functions needed for ajCallRegister routines.
 ******************************************************************************/
 
 /* @funcstatic GraphSet2 ******************************************************
 **
 ** Calls ajGraphSet and saves the return value in a variable because
-** callRegister loses return values
+** ajCallRegister loses return values
 **
 ** @param [u] thys [AjPGraph] Graph object
 ** @param [r] type [const AjPStr] Graph type
@@ -6223,7 +6223,7 @@ static AjBool GraphSet2(AjPGraph thys, const AjPStr type, AjBool *res)
 /* @funcstatic GraphxySet2 ****************************************************
 **
 ** Calls ajGraphxySet and saves the return value in a variable because
-** callRegister loses return values
+** ajCallRegister loses return values
 **
 ** @param [u] thys [AjPGraph] Graph object
 ** @param [r] type [const AjPStr] Graph type
@@ -6247,10 +6247,10 @@ static AjBool GraphxySet2(AjPGraph thys, const AjPStr type,AjBool *res)
 
 /* @funcstatic GraphSetarg ****************************************************
 **
-** Passes argument list to GraphSet2. Note that the callRegister
+** Passes argument list to GraphSet2. Note that the ajCallRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [const char*] Function name, required by callRegister
+** @param [r] name [const char*] Function name, required by ajCallRegister
 **                               but ignored.
 ** @param [v] args [va_list] Argument list, really must be (AjPGraph,
 **                           AjPStr, AjBool*)
@@ -6279,10 +6279,10 @@ static AjBool GraphSetarg(const char *name, va_list args)
 
 /* @funcstatic GraphxySetarg **************************************************
 **
-** Passes argument list to GraphxySet2. Note that the callRegister
+** Passes argument list to GraphxySet2. Note that the ajCallRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [const char*] Function name, required by callRegister
+** @param [r] name [const char*] Function name, required by ajCallRegister
 **                               but ignored.
 ** @param [v] args [va_list] Argument list, really must be (AjPGraph,
 **                           AjPStr, AjBool*)
@@ -6312,10 +6312,10 @@ static AjBool GraphxySetarg(const char *name, va_list args)
 
 /* @funcstatic GraphTitlearg ************************************************
 **
-** Passes argument list to GraphTitle. Note that the callRegister
+** Passes argument list to GraphTitle. Note that the ajCallRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [const char*] Function name, required by callRegister
+** @param [r] name [const char*] Function name, required by ajCallRegister
 **                               but ignored.
 ** @param [v] args [va_list] Argument list, really must be (AjPGraph, AjPStr)
 ** @return [AjBool] always ajTrue.
@@ -6341,10 +6341,10 @@ static AjBool GraphTitlearg(const char *name, va_list args)
 
 /* @funcstatic GraphSubTitlearg *********************************************
 **
-** Passes argument list to ajGraphSubTitle. Note that the callRegister
+** Passes argument list to ajGraphSubTitle. Note that the ajCallRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [const char*] Function name, required by callRegister
+** @param [r] name [const char*] Function name, required by ajCallRegister
 **                               but ignored.
 ** @param [v] args [va_list] Argument list, really must be (AjPGraph, AjPStr)
 ** @return [AjBool] always ajTrue.
@@ -6370,10 +6370,10 @@ static AjBool GraphSubTitlearg(const char *name, va_list args)
 
 /* @funcstatic GraphXTitlearg ***********************************************
 **
-** Passes argument list to GraphXTitle. Note that the callRegister
+** Passes argument list to GraphXTitle. Note that the ajCallRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [const char*] Function name, required by callRegister
+** @param [r] name [const char*] Function name, required by ajCallRegister
 **                               but ignored.
 ** @param [v] args [va_list] Argument list, really must be (AjPGraph, AjPStr)
 ** @return [AjBool] always ajTrue.
@@ -6399,10 +6399,10 @@ static AjBool GraphXTitlearg(const char *name, va_list args)
 
 /* @funcstatic GraphYTitlearg ***********************************************
 **
-** Passes argument list to ajGraphxyYTitle. Note that the callRegister
+** Passes argument list to ajGraphxyYTitle. Note that the ajCallRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [const char*] Function name, required by callRegister
+** @param [r] name [const char*] Function name, required by ajCallRegister
 **                               but ignored.
 ** @param [v] args [va_list] Argument list, really must be (AjPGraph, AjPStr)
 ** @return [AjBool] always ajTrue.
@@ -6428,10 +6428,10 @@ static AjBool GraphYTitlearg(const char *name, va_list args)
 
 /* @funcstatic GraphSetDirarg ***********************************************
 **
-** Passes argument list to ajGraphxySetDir. Note that the callRegister
+** Passes argument list to ajGraphxySetDir. Note that the ajCallRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [const char*] Function name, required by callRegister
+** @param [r] name [const char*] Function name, required by ajCallRegister
 **                               but ignored.
 ** @param [v] args [va_list] Argument list, really must be (AjPGraph, AjPStr)
 ** @return [AjBool] always ajTrue.
@@ -6457,10 +6457,10 @@ static AjBool GraphSetDirarg(const char *name, va_list args)
 
 /* @funcstatic GraphSetOutarg ***********************************************
 **
-** Passes argument list to ajGraphxySetOut. Note that the callRegister
+** Passes argument list to ajGraphxySetOut. Note that the ajCallRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [const char*] Function name, required by callRegister
+** @param [r] name [const char*] Function name, required by ajCallRegister
 **                               but ignored.
 ** @param [v] args [va_list] Argument list, really must be (AjPGraph, AjPStr)
 ** @return [AjBool] always ajTrue.
@@ -6486,10 +6486,10 @@ static AjBool GraphSetOutarg(const char *name, va_list args)
 
 /* @funcstatic GraphxyNewIarg *************************************************
 **
-** Passes argument list to ajGraphxyNewI. Note that the callRegister
+** Passes argument list to ajGraphxyNewI. Note that the ajCallRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [const char*] Function name, required by callRegister
+** @param [r] name [const char*] Function name, required by ajCallRegister
 **                               but ignored.
 ** @param [v] args [va_list] Argument list, really must be (ajint)
 ** @return [AjPGraph] New graph object
@@ -6512,10 +6512,10 @@ static AjPGraph GraphxyNewIarg(const char *name, va_list args)
 
 /* @funcstatic GraphTracearg **************************************************
 **
-** Passes argument list to ajGraphTrace. Note that the callRegister
+** Passes argument list to ajGraphTrace. Note that the ajCallRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [const char*] Function name, required by callRegister
+** @param [r] name [const char*] Function name, required by ajCallRegister
 **                               but ignored.
 ** @param [v] args [va_list] Argument list, really must be (AjPGraph)
 ** @return [AjBool] always ajTrue.
@@ -6613,21 +6613,21 @@ AjStatus ajGraphInitP(const char *pgm, ajint argc, char *const argv[],
 
 static void GraphRegister(void)
 {
-    callRegister("ajGraphNew",(CallFunc)ajGraphNew);
-    callRegister("ajGraphSet",(CallFunc)GraphSetarg);
+    ajCallRegister("ajGraphNew",(CallFunc)ajGraphNew);
+    ajCallRegister("ajGraphSet",(CallFunc)GraphSetarg);
 
-    callRegister("ajGraphxyNewI",(CallFunc)GraphxyNewIarg);
-    callRegister("ajGraphxySet",(CallFunc)GraphxySetarg);
+    ajCallRegister("ajGraphxyNewI",(CallFunc)GraphxyNewIarg);
+    ajCallRegister("ajGraphxySet",(CallFunc)GraphxySetarg);
 
-    callRegister("ajGraphDumpDevices",(CallFunc)ajGraphDumpDevices);
-    callRegister("ajGraphListDevices",(CallFunc)GraphListDevicesarg);
-    callRegister("ajGraphTitle",(CallFunc)GraphTitlearg);
-    callRegister("ajGraphSubTitle",(CallFunc)GraphSubTitlearg);
-    callRegister("ajGraphXTitle",(CallFunc)GraphXTitlearg);
-    callRegister("ajGraphYTitle",(CallFunc)GraphYTitlearg);
-    callRegister("ajGraphTrace",(CallFunc)GraphTracearg);
-    callRegister("ajGraphSetOutputFile",(CallFunc)GraphSetOutarg);
-    callRegister("ajGraphSetOutputDir",(CallFunc)GraphSetDirarg);
+    ajCallRegister("ajGraphDumpDevices",(CallFunc)ajGraphDumpDevices);
+    ajCallRegister("ajGraphListDevices",(CallFunc)GraphListDevicesarg);
+    ajCallRegister("ajGraphTitle",(CallFunc)GraphTitlearg);
+    ajCallRegister("ajGraphSubTitle",(CallFunc)GraphSubTitlearg);
+    ajCallRegister("ajGraphXTitle",(CallFunc)GraphXTitlearg);
+    ajCallRegister("ajGraphYTitle",(CallFunc)GraphYTitlearg);
+    ajCallRegister("ajGraphTrace",(CallFunc)GraphTracearg);
+    ajCallRegister("ajGraphSetOutputFile",(CallFunc)GraphSetOutarg);
+    ajCallRegister("ajGraphSetOutputDir",(CallFunc)GraphSetDirarg);
 
     return;
 }
