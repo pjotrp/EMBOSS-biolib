@@ -185,7 +185,7 @@ close VERS;
 
 $fileprint = "";
 
-chdir("$distribtop/doc/sourceforge");
+chdir("$ENV{HOME}sfdoc");
 processdir(".","");
 
 print "\n";

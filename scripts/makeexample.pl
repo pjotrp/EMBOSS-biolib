@@ -54,7 +54,7 @@ if (!defined $application || $application eq "") {
 }
 
 # where the web pages and include files live
-$doctop = "$distribtop/doc/sourceforge";
+$doctop = "$ENV{HOME}/sfdoc";
 if ($embassy eq "") {
     $docdir = "$doctop/apps";
     $incdir = "$doctop/apps/inc";
@@ -762,6 +762,7 @@ sub writeUsage {
     $usage =~ s/(GCG-Alignment file created +)\[[A-Z0-9]+\]/$1\[12345678A]/go;
     $usage =~ s/domainalign\-[0-9]+[.][0-9]+/domainalign-1234567890.1234/go;
     $usage =~ s/domainrep\-[0-9]+[.][0-9]+[.]/domainrep-1234567890.1234./go;
+    $usage =~ s/domainrep\-[0-9]+[.][0-9]+ /domainrep-1234567890.1234 /go;
     $usage =~ s/pdbplus\-[0-9]+[.][0-9]+ /pdbplus-1234567890.1234 /go;
     $usage =~ s/seqalign\-[0-9]+[.][0-9]+[.]/seqalign-1234567890.1234./go;
     $usage =~ s/seqsearch\-[0-9]+[.][0-9]+[.]/seqsearch-1234567890.1234./go;

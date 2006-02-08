@@ -4,7 +4,7 @@ use English;
 
 $basefile = $ARGV[0];
 
-open DEP, "/homes/pmr/cvsrename/deprecated.txt" || die "Cannot open deprecated.txt";
+open DEP, "$ENV{HOME}/cvsrename/deprecated.txt" || die "Cannot open deprecated.txt";
 open SRC, "$basefile.c" || die "Cannot open $basefile.c";
 open NEWSRC, ">$basefile.new" || die "Cannot open $basefile.new";
 open DBG, ">fixdeprecated.dbg" || die "Cannot open fixdeprecated.dbg";
