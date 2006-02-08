@@ -577,6 +577,7 @@ static ajint dbigcg_gcggetent(const AjPStr idformat,
     static ajint iparser  = -1;
     static AjPRegexp rexp = NULL;
     static AjPRegexp sexp = NULL;
+    static AjPRegexp splitexp = NULL;
     static AjPStr rline = NULL;
     static AjPStr sline = NULL;
 
@@ -605,6 +606,9 @@ static ajint dbigcg_gcggetent(const AjPStr idformat,
     if(!sexp)
 	sexp = ajRegCompC("^>>>>([^ \t]+)[ \t]+([^ \t]+)[ \t]+([^ \t]+)"
 			  "[ \t]+([^ \t]+)[ \t]+([0-9]+)");
+
+    if(!splitexp)
+	splitexp = ajRegCompC("_0+$");
 
     ajStrAssC(&sline, "");
 
@@ -681,13 +685,10 @@ static ajint dbigcg_gcggetent(const AjPStr idformat,
     **  We can look for the "id_" prefix.
     */
 
-    if(!ajStrSuffixC(*libstr, "_0") &&
-       !ajStrSuffixC(*libstr,"_00") &&
-       !ajStrSuffixC(*libstr,"_000"))
-	return gcglen;
-
-    gcglen += dbigcg_gcgappent(libr, libs, rexp, sexp,
-			       libstr);
+    ajDebug("libstr '%S'\n", *libstr);
+    if(ajRegExec(splitexp, *libstr))
+	gcglen += dbigcg_gcgappent(libr, libs, rexp, sexp,
+				   libstr);
 
     return gcglen;
 }

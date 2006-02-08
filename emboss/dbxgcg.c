@@ -330,8 +330,12 @@ int main(int argc, char **argv)
 static AjBool dbxgcg_NextEntry(EmbPBtreeEntry entry, AjPFile infs,
 			       AjPFile infr, const AjPStr dbtype)
 {
+    static AjPRegexp splitexp = NULL;
     static AjPStr tmpstr = NULL;
     char *p;
+
+    if(!splitexp)
+	splitexp = ajRegCompC("_0+$");
 
     entry->reffpos = ajFileTell(infr);
     entry->fpos    = ajFileTell(infs);
@@ -345,9 +349,7 @@ static AjBool dbxgcg_NextEntry(EmbPBtreeEntry entry, AjPFile infs,
 
     ajStrAssC(&tmpstr,ajStrStr(entry->id));
 
-    if(ajStrSuffixC(entry->id,"_0") ||
-       ajStrSuffixC(entry->id,"_00") ||
-       ajStrSuffixC(entry->id,"_000"))
+    if(ajRegExec(splitexp, entry->id))
     {
 	p  = strrchr(ajStrStr(tmpstr),'_');
 	*p = '\0';
