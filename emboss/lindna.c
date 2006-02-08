@@ -625,7 +625,9 @@ static float lindna_HeightRuler(float Start, float End, ajint GapSize,
 	ajStrFromInt(&string, End);
 	ajStrApp(&totalstring, string);
 	ajStrAppC(&totalstring, ";");
-	RulerHeight += lindna_VerTextSeqHeightMax(totalstring, postext, j+2);
+	RulerHeight += lindna_VerTextSeqHeightMax(totalstring, postext, j);
+	/*RulerHeight += lindna_VerTextSeqHeightMax(totalstring,
+	  postext, j+2);*/
     }
 
     ajStrDel(&string);
