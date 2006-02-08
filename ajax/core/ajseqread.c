@@ -2666,8 +2666,10 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 	ajFileBuffClear(buff,-1);
 	ajFileBuffReset(buff);
 
-        ok=ajFileBuffGetStore(buff,&line,
-			       seqin->Text, &thys->TextPtr);
+	/* Commented out by jison ... was causing incorrect parsing for input file
+	   from HMMER tutorial. */
+        /* ok=ajFileBuffGetStore(buff,&line,
+	                       seqin->Text, &thys->TextPtr); */
 	ok=ajFileBuffGetStore(buff,&line,
 			       seqin->Text, &thys->TextPtr);
 	stock = ajStockholmNew(n);
@@ -2802,6 +2804,10 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 		if(scnt >= n)
 		    scnt = 0;
 	    }
+	    /* jison added to reset scnt each time an empty line
+	       (used to divide blocks of sequence) is found */
+	    else 
+		scnt = 0;
 
 	    ok = ajFileBuffGetStore(buff,&line,
 				     seqin->Text, &thys->TextPtr);
