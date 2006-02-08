@@ -63,6 +63,7 @@ typedef struct ReportSFormat
 
 #define ReportPFormat ReportOFormat*
 
+static AjPRegexp reportTagExp = NULL;
 
 
 
@@ -473,7 +474,12 @@ static void reportWriteDbMotif(AjPReport thys,
     ajListIterFree(&iterft);
     
     ajReportWriteTail(thys, ftable, seq);
-    
+
+    AJFREE(tagtypes);
+    AJFREE(tagnames);
+    AJFREE(tagprints);
+    AJFREE(tagsizes);
+
     return;
 }
 
@@ -797,6 +803,11 @@ static void reportWriteDraw(AjPReport thys,
     
     ajListIterFree(&iterft);
 
+    AJFREE(tagtypes);
+    AJFREE(tagnames);
+    AJFREE(tagprints);
+    AJFREE(tagsizes);
+
     return;
 }
 
@@ -908,6 +919,11 @@ static void reportWriteExcel(AjPReport thys,
     
     ajListIterFree(&iterft);
 
+    AJFREE(tagtypes);
+    AJFREE(tagnames);
+    AJFREE(tagprints);
+    AJFREE(tagsizes);
+
     return;
 }
 
@@ -1001,6 +1017,11 @@ static void reportWriteFeatTable(AjPReport thys,const  AjPFeattable ftable,
     ajStrDel(&tagval);
     
     ajListIterFree(&iterft);
+
+    AJFREE(tagtypes);
+    AJFREE(tagnames);
+    AJFREE(tagprints);
+    AJFREE(tagsizes);
 
     return;
 }
@@ -1229,6 +1250,11 @@ static void reportWriteMotif(AjPReport thys,
     
     ajListIterFree(&iterft);
 
+    AJFREE(tagtypes);
+    AJFREE(tagnames);
+    AJFREE(tagprints);
+    AJFREE(tagsizes);
+
     return;
 }
 
@@ -1346,6 +1372,12 @@ static void reportWriteNameTable(AjPReport thys, const AjPFeattable ftable,
     ajStrDel(&tagval);
     
     ajListIterFree(&iterft);
+
+    AJFREE(tagtypes);
+    AJFREE(tagnames);
+    AJFREE(tagprints);
+    AJFREE(tagsizes);
+
     return;
 }
 
@@ -1442,6 +1474,11 @@ static void reportWriteRegions(AjPReport thys, const AjPFeattable ftable,
     
     ajListIterFree(&iterft);
 
+    AJFREE(tagtypes);
+    AJFREE(tagnames);
+    AJFREE(tagprints);
+    AJFREE(tagsizes);
+
     return;
 }
 
@@ -1495,7 +1532,7 @@ static void reportWriteSeqTable(AjPReport thys, const AjPFeattable ftable,
     AjPStr tagval = NULL;
     ajint jwid = 6;
     ajint jmin = 6;	 /* minimum width for printing special tags */
-    static AjPStr strstr = NULL;
+    AjPStr strstr = NULL;
     
     outf = thys->File;
 
@@ -1553,10 +1590,16 @@ static void reportWriteSeqTable(AjPReport thys, const AjPFeattable ftable,
     
     ajReportWriteTail(thys, ftable, seq);
     
+    ajStrDel(&strstr);
     ajStrDel(&subseq);
     ajStrDel(&tagval);
     
     ajListIterFree(&iterft);
+
+    AJFREE(tagtypes);
+    AJFREE(tagnames);
+    AJFREE(tagprints);
+    AJFREE(tagsizes);
 
     return;
 }
@@ -1747,6 +1790,11 @@ static void reportWriteSrsFlags(AjPReport thys, const AjPFeattable ftable,
     
     ajListIterFree(&iterft);
 
+    AJFREE(tagtypes);
+    AJFREE(tagnames);
+    AJFREE(tagprints);
+    AJFREE(tagsizes);
+
     return;
 }
 
@@ -1871,6 +1919,11 @@ static void reportWriteTable(AjPReport thys,
     ajStrDel(&tagval);
     
     ajListIterFree(&iterft);
+
+    AJFREE(tagtypes);
+    AJFREE(tagnames);
+    AJFREE(tagprints);
+    AJFREE(tagsizes);
 
     return;
 }
@@ -2003,6 +2056,11 @@ static void reportWriteTagseq(AjPReport thys,
     ajStrDel(&substr);
     ajStrDel(&seqnumber);
     ajListIterFree(&iterft);
+
+    AJFREE(tagtypes);
+    AJFREE(tagnames);
+    AJFREE(tagprints);
+    AJFREE(tagsizes);
 
     return;
 }
@@ -2171,9 +2229,8 @@ AjBool ajReportFindFormat(const AjPStr format, ajint* iformat)
 
 AjBool ajReportSetTags(AjPReport thys, const AjPStr taglist)
 {
-    static AjPRegexp tagexp = NULL;
-    static AjPStr tmplist   = NULL;
-    static AjPStr tmpstr    = NULL;
+    AjPStr tmplist   = NULL;
+    AjPStr tmpstr    = NULL;
     AjPStr tagtype  = NULL;
     AjPStr tagname  = NULL;
     AjPStr tagprint = NULL;
@@ -2185,23 +2242,23 @@ AjBool ajReportSetTags(AjPReport thys, const AjPStr taglist)
      ** spaces are not allowed in names (for ease of parsing the results)
      */
 
-    if(!tagexp)
-	tagexp = ajRegCompC("^ *([^:]+):([^= ]+)(=([^ ]+))?");
+    if(!reportTagExp)
+	reportTagExp = ajRegCompC("^ *([^:]+):([^= ]+)(=([^ ]+))?");
 
     ajStrAssS(&tmplist, taglist);
-    while(ajRegExec(tagexp, tmplist))
+    while(ajRegExec(reportTagExp, tmplist))
     {
 	tagtype = NULL;
 	tagname = NULL;
 	tagprint = NULL;
-	ajRegSubI(tagexp, 1, &tagtype);
-	ajRegSubI(tagexp, 2, &tagname);
-	ajRegSubI(tagexp, 4, &tagprint);
+	ajRegSubI(reportTagExp, 1, &tagtype);
+	ajRegSubI(reportTagExp, 2, &tagname);
+	ajRegSubI(reportTagExp, 4, &tagprint);
 	if(!ajStrLen(tagprint))
 	    ajStrAssS(&tagprint, tagname);
 
 	ajDebug("Tag '%S' : '%S' print '%S'\n", tagtype, tagname, tagprint);
-	ajRegPost(tagexp, &tmpstr);
+	ajRegPost(reportTagExp, &tmpstr);
 	ajStrAssS(&tmplist, tmpstr);
 
 	if(!ajListLength(thys->Tagtypes))
@@ -2221,6 +2278,9 @@ AjBool ajReportSetTags(AjPReport thys, const AjPStr taglist)
 	ajErr("Bad report taglist at '%S'", tmplist);
 	return ajFalse;
     }
+
+    ajStrDel(&tmpstr);
+    ajStrDel(&tmplist);
 
     return ajTrue;
 }
@@ -2939,3 +2999,17 @@ void ajReportDummyFunction(void)
 
 
 
+/* @func ajReportExit *********************************************************
+**
+** Cleans up report processing internal memory
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajReportExit(void)
+{
+    ajRegFree(&reportTagExp);
+
+    return;
+}

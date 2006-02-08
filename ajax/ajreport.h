@@ -83,6 +83,7 @@ typedef struct AjSReport {
 void         ajReportClose (AjPReport pthys);
 void         ajReportDel (AjPReport* pthys);
 void         ajReportDummyFunction(void);
+void         ajReportExit(void);
 void         ajReportFileAdd (AjPReport thys,
 			      AjPFile file, const AjPStr type);
 AjBool       ajReportFindFormat (const AjPStr format, ajint* iformat);
