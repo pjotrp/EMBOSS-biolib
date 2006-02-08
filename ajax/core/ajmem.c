@@ -129,6 +129,7 @@ void* ajMemCalloc(ajlong count, ajlong nbytes,
 {
     void *ptr;
 
+    if(count <= 0) ajUtilCatch();
     assert(count > 0);
     assert(nbytes > 0);
 
