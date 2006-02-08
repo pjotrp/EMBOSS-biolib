@@ -51,6 +51,7 @@ static AjBool namDoDebug  = AJFALSE;
 static AjBool namDoValid  = AJFALSE;
 static AjBool namDoHomeRc = AJTRUE;
 static AjPStr namRootStr  = NULL;
+static AjPStr namValNameTmp  = NULL;
 
 static AjBool namListParseOK = AJFALSE;
 
@@ -1617,33 +1618,32 @@ AjBool ajNamGetValue(const AjPStr name, AjPStr* value)
 AjBool ajNamGetValueC(const char* name, AjPStr* value)
 {
     NamPEntry fnew       = 0;
-    static AjPStr namstr = NULL;
     AjBool hadPrefix     = ajFalse;
     AjBool ret           = ajFalse;
     
     if(ajStrPrefixCO(name, namPrefixStr)) /* may already have the prefix */
     {
-	ajStrAssC(&namstr, name);
+	ajStrAssC(&namValNameTmp, name);
 	hadPrefix = ajTrue;
     }
     else
     {
-	ajStrAssS(&namstr, namPrefixStr);
-	ajStrAppC(&namstr, name);
+	ajStrAssS(&namValNameTmp, namPrefixStr);
+	ajStrAppC(&namValNameTmp, name);
     }
 
     /* upper case for ENV, otherwise don't care */
-    ajStrToUpper(&namstr);
+    ajStrToUpper(&namValNameTmp);
     
     /* first test for an ENV variable */
     
-    ret = ajNamGetenv(namstr, value);
+    ret = ajNamGetenv(namValNameTmp, value);
     if(ret)
 	return ajTrue;
 
     /* then test the table definitions - with the prefix */
     
-    fnew = ajTableGet(namVarMasterTable, ajStrStr(namstr));
+    fnew = ajTableGet(namVarMasterTable, ajStrStr(namValNameTmp));
     if(fnew)
     {
 	ajStrAssS(value, fnew->value);
@@ -2173,6 +2173,9 @@ void ajNamExit(void)
     ajStrDel(&namPrefixStr);		/* allocated in ajNamInit */
     ajStrDel(&namFileOrig);		/* allocated in ajNamInit */
     ajStrDel(&namRootStr);		/* allocated in ajNamInit */
+
+    ajStrDel(&namFileName);		/* allocated in ajNamProcessFile */
+    ajStrDel(&namValNameTmp);
 
     ajRegFree(&namNameExp);
     ajRegFree(&namVarExp);
