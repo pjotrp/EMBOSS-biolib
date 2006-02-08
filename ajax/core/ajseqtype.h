@@ -17,6 +17,7 @@ void         ajSeqsetSetProt (AjPSeqset thys);
 
 char         ajSeqTypeAnyprotS (const AjPStr pthys);
 char         ajSeqTypeDnaS (const AjPStr pthys);
+void         ajSeqTypeExit(void);
 char         ajSeqTypeGapanyS (const AjPStr pthys);
 char         ajSeqTypeGapdnaS (const AjPStr pthys);
 char         ajSeqTypeGapnucS (const AjPStr pthys);

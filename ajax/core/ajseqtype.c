@@ -66,6 +66,7 @@ typedef struct SeqSType
 
 enum ProtNuc {ISANY=0, ISNUC=1, ISPROT=2};
 
+static char* seqNewGapChars = NULL;
 
 
 
@@ -976,25 +977,24 @@ void ajSeqGapS(AjPStr* seq, char gapc)
 static void seqGapSL(AjPStr* seq, char gapc, char padc, ajint ilen)
 {
     ajint i;
-    static char* newgap = NULL;
     static ajint igap;
     char* cp;
     char endc = gapc;
     
     igap = strlen(seqCharGapTest);
-    if(!newgap)
+    if(!seqNewGapChars)
     {
-	newgap = ajCharNewL(igap);
-	newgap[0] = '\0';
+	seqNewGapChars = ajCharNewL(igap);
+	seqNewGapChars[0] = '\0';
     }
     
-    /* Set the newgap string to match gapc */
+    /* Set the seqNewGapChars string to match gapc */
     
-    if(*newgap != gapc)
+    if(*seqNewGapChars != gapc)
     {
 	for(i=0; i < igap; i++)
-	    newgap[i] = gapc;
-	newgap[i] = '\0';
+	    seqNewGapChars[i] = gapc;
+	seqNewGapChars[igap] = '\0';
     }
     
     
@@ -1003,7 +1003,7 @@ static void seqGapSL(AjPStr* seq, char gapc, char padc, ajint ilen)
     else
 	ajStrMod(seq);
     
-    ajStrConvertCC(seq, seqCharGapTest, newgap);
+    ajStrConvertCC(seq, seqCharGapTest, seqNewGapChars);
     
     if(padc)
     {				/* start and end characters updated */
@@ -1804,4 +1804,34 @@ AjBool ajSeqTypeIsAny(const AjPStr type_name)
 	}
 
     return ajFalse;
+}
+
+
+
+
+/* @func ajSeqTypeExit ********************************************************
+**
+** Cleans up sequence type processing internal memory
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqTypeExit(void)
+{
+    ajRegFree(&seqtypeRegAny);
+    ajRegFree(&seqtypeRegAnyGap);
+    ajRegFree(&seqtypeRegDnaGap);
+    ajRegFree(&seqtypeRegNuc);
+    ajRegFree(&seqtypeRegNucGap);
+    ajRegFree(&seqtypeRegNucPure);
+    ajRegFree(&seqtypeRegProt);
+    ajRegFree(&seqtypeRegProtAny);
+    ajRegFree(&seqtypeRegProtGap);
+    ajRegFree(&seqtypeRegProtPure);
+    ajRegFree(&seqtypeRegProtStop);
+    ajRegFree(&seqtypeRegRnaGap);
+
+    ajCharFree(&seqNewGapChars);
+    return;
 }
