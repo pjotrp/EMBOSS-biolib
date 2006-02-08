@@ -83,7 +83,7 @@ my $cvsdoc = "$distribtop/doc/programs";
 my $scripts = "$distribtop/scripts";
  
 # where the web pages live
-my $doctop = "$distribtop/doc/sourceforge";
+my $doctop = "$ENV{HOME}/sfdoc";
 
 my @embassylist = ("appendixd",
 		   "domainatrix",
