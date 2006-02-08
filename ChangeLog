@@ -1,4 +1,38 @@
 	Version 3.1.0
+
+	The tmap program had an upper limit of 6000 residues and 300
+	sequences. All fixed size arrays were made dynamic. The length
+	limit was exceeded by one of our users.
+
+	GCG formatted databases were found to have split entries into more
+	than 1000 chunks - for example human chromosome 7 in a TPA (third
+	party annotation) entry in EMBL. A regular expression is now used
+	to check for any number of subsequences in GCG data.
+
+	ajSysStrTok and ajSysStrTokR changed to match the behaviour of the
+	C run time library function strtok. Both now keep their internal
+	pointer at the first delimiter after the matched token. This only
+	changes the result if the delimiter set is changed on the next call.
+
+	Another code cleanup is the addition of Exit functions to all
+	AJAX source files that could still have static memory allocated
+	when a program ends. We aim to clean up memory for all the
+	standadr memory tests in test/memtest.dat. Thsi includes creating
+	a new fnuction acdReset which resets the stats of ACD processing
+	so that a new ACD file could, in theory, be read once a program
+	has completed.
+
+	We are working through all the library code making standard
+	function names. Old function names will be retained at least until
+	release 4.0.0. They are marked with the __deprecated flag, which
+	causes the gcc compiler to report all uses of the old name. Other
+	compilers are not affected.. The first set to be processed is in
+	ajstr.c (string and character functions).
+
+	Sequence reading from website URLs now defaults to HTTP 1.1, with
+	chunked blocks of data. A bug in processing small (single line)
+	chunks was fixed.
+
 	Report and alignment output now includes the full commandline used
 	to run the program, with any replies to prompts included.
 
