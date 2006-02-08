@@ -63,6 +63,7 @@ void         ajSeqQueryTrace (const AjPSeqQuery qry);
 AjBool       ajSeqQueryWild (AjPSeqQuery qry);
 void         ajSeqPrintInFormat (AjPFile outf, AjBool full);
 AjBool       ajSeqRead (AjPSeq thys, AjPSeqin seqin);
+void         ajSeqReadExit(void);
 ajint        ajSeqsetApp (AjPSeqset thys, const AjPSeq seq);
 AjBool       ajSeqsetGetFromUsa(const AjPStr thys, AjPSeqset *seq);
 AjBool       ajSeqsetFromList (AjPSeqset thys, const AjPList list);

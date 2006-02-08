@@ -190,8 +190,8 @@ void ajSeqsetDel(AjPSeqset *thys)
 	return;
 
     pthis = *thys;
-    if(!(n = pthis->Size))
-	return;
+
+    ajDebug("ajSeqsetDel size: %d\n", pthis->Size);
 
     ajStrDel(&pthis->Type);
     ajStrDel(&pthis->Formatstr);
@@ -201,7 +201,7 @@ void ajSeqsetDel(AjPSeqset *thys)
     ajStrDel(&pthis->Usa);
     ajStrDel(&pthis->Ufo);
 
-    for(i=0; i<n; ++i)
+    for(i=0; i<pthis->Size; ++i)
 	ajSeqDel(&pthis->Seq[i]);
 
     AJFREE(pthis->Seq);
@@ -6115,3 +6115,19 @@ void ajSeqDefName(AjPSeq thys, const AjPStr setname, AjBool multi)
 
 
 
+/* @func ajSeqExit ************************************************************
+**
+** Cleans up sequence processing  internal memory
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqExit(void)
+{
+    ajSeqReadExit();
+    ajSeqWriteExit();
+    ajSeqDbExit();
+    ajSeqTypeExit();
+    return;
+}

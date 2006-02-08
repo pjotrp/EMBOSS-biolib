@@ -137,6 +137,7 @@ void         ajSeqCvtTrace (const AjPSeqCvt cvt);
 void         ajSeqDefName(AjPSeq thys, const AjPStr setname, AjBool multi);
 void         ajSeqDel (AjPSeq* pthis);
 ajint        ajSeqEnd (const AjPSeq seq);
+void         ajSeqExit(void);
 ajint        ajSeqFill (AjPSeq seq, ajint len);
 ajint        ajSeqGapCount (const AjPSeq thys);
 ajint        ajSeqGapCountS (const AjPStr str);
