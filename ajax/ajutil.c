@@ -51,15 +51,20 @@ void ajExit(void)
 {
     ajDebug("\nFinal Summary\n=============\n\n");
     ajLogInfo();
-    ajStrExit();
     ajRegExit();
     ajTableExit();
     ajListExit();
     ajFileExit();
     ajFeatExit();
+    ajSeqExit();
+    ajAlignExit();
+    ajReportExit();
     ajAcdExit(ajFalse);
     ajNamExit();
     ajMemExit();
+    ajSysExit();
+    ajCallExit();
+    ajStrExit();
     ajMessExit();     /* clears data for ajDebug - do this last!!!  */
     exit(0);
 
@@ -125,16 +130,16 @@ ajint ajExitAbort(void)
 
 void ajLogInfo(void)
 {
-    static AjPFile logf;
-    static AjPStr logfile = NULL;
-    static AjPStr uids    = NULL;
+    AjPFile logf;
+    AjPStr logfname = NULL;
+    AjPStr uids    = NULL;
     AjPTime today = NULL;
 
     today = ajTimeTodayF("log");
     
-    if(ajNamGetValueC("logfile", &logfile))
+    if(ajNamGetValueC("logfile", &logfname))
     {
-	logf = ajFileNewApp(logfile);
+	logf = ajFileNewApp(logfname);
 	if(!logf)
 	    return;
 
@@ -143,8 +148,11 @@ void ajLogInfo(void)
 		    ajAcdProgram(),
 		    uids,
 		    today);
+	ajStrDel(&uids);
+	ajStrDel(&logfname);
 	ajFileClose(&logf);
     }
+
 
     AJFREE(today);
 
