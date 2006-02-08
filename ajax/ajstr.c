@@ -75,6 +75,7 @@ AjOStr strONULL = { 1, 0, NULL_USE, charNULL}; /* use set to avoid changes */
 AjPStr strPNULL = &strONULL;
 
 
+static char* strParseCp = NULL;
 
 
 /* ==================================================================== */
@@ -89,6 +90,8 @@ static ajlong strFree      = 0;
 static ajlong strFreeCount = 0;
 static ajlong strCount     = 0;
 static ajlong strTotal     = 0;
+
+
 
 
 /* @filesection ajstr ********************************************************
@@ -4198,12 +4201,7 @@ AjBool ajStrTrimStartC(AjPStr* Pstr, const char* txt)
 
 AjBool ajStrTrimWhite(AjPStr* Pstr)
 {
-    static AjPStr spaces = NULL;
-
-    if(!spaces)
-	ajStrAssignC(&spaces,"\t \n\r");
-
-    return ajStrTrimC(Pstr, spaces->Ptr);
+    return ajStrTrimC(Pstr, "\t \n\r");
 }
 
 
@@ -8364,25 +8362,24 @@ ajint __deprecated ajStrRFindC(const AjPStr thys, const char* text)
 
 const AjPStr ajStrParseC(const AjPStr str, const char* txtdelim)
 {
-    static AjPStr strp = 0; /* internal AjPStr - do not try to destroy */
-    static char* cp = NULL;
+    static AjOStr strParseStr = { 1, 0, 0, NULL};
+    static AjPStr strp = &strParseStr;
 
-    if(!strp)
+    if(!strp->Ptr)
     {
 	if(!str)
 	{
 	    ajWarn("Error in ajStrParseC: NULL argument and not initialised");
+	    ajUtilCatch();
 	    return NULL;
 	}
-	strp = ajStrNewRes(str->Res);
-	AJFREE(strp->Ptr);
     }
 
     if(str)
     {
-	if(cp) ajCharDel(&cp);
-	cp = ajCharNewC(str->Ptr);
-	strp->Ptr = ajSysStrtok(cp, txtdelim);
+	if(strParseCp) ajCharDel(&strParseCp);
+	strParseCp = ajCharNewC(str->Ptr);
+	strp->Ptr = ajSysStrtok(strParseCp, txtdelim);
     }
     else
 	strp->Ptr = ajSysStrtok(NULL, txtdelim);
@@ -8393,8 +8390,11 @@ const AjPStr ajStrParseC(const AjPStr str, const char* txtdelim)
 	strp->Res = strp->Len + 1;
 	return strp;
     }
-    else
+    else {
 	strp->Len=0;
+	strp->Res=1;
+	ajCharDel(&strParseCp);
+    }
 
     return NULL;
 }
@@ -8468,6 +8468,9 @@ ajint ajStrParseCountC(const AjPStr str, const char *txtdelim)
 
     while(ajStrTokenNextParse(&t, &tmp))
 	++count;
+
+    ajStrTokenDel(&t);
+    ajStrDel(&tmp);
 
     return count;
 }
@@ -8832,6 +8835,7 @@ void ajStrExit(void)
     ajDebug("String usage (number): %Ld allocated, %Ld freed %Ld in use\n",
 	    strTotal, strFreeCount, strCount);
 
+    ajCharDel(&strParseCp);
     return;
 }
 
