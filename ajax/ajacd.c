@@ -702,8 +702,8 @@ static void      acdPromptOutscop(AcdPAcd thys);
 static void      acdPromptOuttree(AcdPAcd thys);
 static void      acdPromptReport(AcdPAcd thys);
 static void      acdPromptScop(AcdPAcd thys);
-static void      acdPromptSeq(AcdPAcd thys);
-static void      acdPromptSeqout(AcdPAcd thys);
+static void      acdPromptSeq(AcdPAcd thys, const AjPStr type, AjBool aligned);
+static void      acdPromptSeqout(AcdPAcd thys, const AjPStr type);
 static void      acdPromptStandard(AcdPAcd thys, const char* type,
 				   ajint* count);
 static void      acdPromptStandardAlt(AcdPAcd thys, const char* firsttype,
@@ -10106,6 +10106,7 @@ static void acdSetSeq(AcdPAcd thys)
     AjBool snuc     = ajFalse;
     AjBool sprot    = ajFalse;
     AjBool nullok   = ajFalse;
+    AjPStr typestr  = NULL;
     
     
     val   = ajSeqNew();		        /* set the default value */
@@ -10116,11 +10117,12 @@ static void acdSetSeq(AcdPAcd thys)
     acdQualToBool(thys, "snucleotide", ajFalse, &snuc, &acdReplyDef);
     acdQualToBool(thys, "sprotein", ajFalse, &sprot, &acdReplyDef);
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToStr(thys, "type", "", &typestr);
     
     acdInFilename(&infname);
     required = acdIsRequired(thys);
     acdReplyInit(thys, ajStrStr(infname), &acdReplyDef);
-    acdPromptSeq(thys);
+    acdPromptSeq(thys, typestr, ajFalse);
     ajStrDel(&infname);
  
     for(itry=acdPromptTry; itry && !ok; itry--)
@@ -10137,8 +10139,11 @@ static void acdSetSeq(AcdPAcd thys)
 	
 	ajSeqinUsa(&seqin, acdReply);
 	
-	if(acdAttrToStr(thys, "type", "", &seqin->Inputtype))
-	    acdInTypeSeqSave(seqin->Inputtype);
+	if(ajStrLen(typestr))
+	{
+	   ajStrAssS(&seqin->Inputtype, typestr);
+	   acdInTypeSeqSave(seqin->Inputtype);
+       }
 	else
 	    acdInTypeSeqSave(NULL);
 	
@@ -10387,6 +10392,7 @@ static void acdSetSeqall(AcdPAcd thys)
     AjBool sprompt  = ajFalse;
     AjBool snuc     = ajFalse;
     AjBool sprot    = ajFalse;
+    AjPStr typestr  = NULL;
     
     val = ajSeqallNew();		/* set the default value */
     seqin = val->Seqin;
@@ -10396,11 +10402,12 @@ static void acdSetSeqall(AcdPAcd thys)
     acdQualToBool(thys, "snucleotide", ajFalse, &snuc, &acdReplyDef);
     acdQualToBool(thys, "sprotein", ajFalse, &sprot, &acdReplyDef);
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToStr(thys, "type", "", &typestr);
     
     acdInFilename(&infname);
     required = acdIsRequired(thys);
     acdReplyInit(thys, ajStrStr(infname), &acdReplyDef);
-    acdPromptSeq(thys);
+    acdPromptSeq(thys, typestr, ajFalse);
     ajStrDel(&infname);
 
     for(itry=acdPromptTry; itry && !ok; itry--)
@@ -10417,8 +10424,11 @@ static void acdSetSeqall(AcdPAcd thys)
 	
 	ajSeqinUsa(&seqin, acdReply);
 	
-	if(acdAttrToStr(thys, "type", "", &seqin->Inputtype))
+	if(ajStrLen(typestr))
+	{
+	    ajStrAssS(&seqin->Inputtype, typestr);
 	    acdInTypeSeqSave(seqin->Inputtype);
+	}
 	else
 	    acdInTypeSeqSave(NULL);
 	
@@ -10631,7 +10641,6 @@ static void acdSetSeqsetall(AcdPAcd thys)
     AjBool okbeg    = ajFalse;
     AjBool okend    = ajFalse;
     AjBool okrev    = ajFalse;
-    AjBool aligned  = ajFalse;
 
     static AjPStr tmpstr      = NULL;
     ajint itry;
@@ -10646,6 +10655,9 @@ static void acdSetSeqsetall(AcdPAcd thys)
     AjBool snuc     = ajFalse;
     AjBool sprot    = ajFalse;
     AjBool nullok   = ajFalse;
+    AjBool aligned  = ajFalse;
+    AjPStr typestr  = NULL;
+
     void **sets     = NULL;
     AjPList seqlist;
 
@@ -10661,11 +10673,12 @@ static void acdSetSeqsetall(AcdPAcd thys)
     acdQualToBool(thys, "sprotein", ajFalse, &sprot, &acdReplyDef);
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
     acdAttrToBool(thys, "aligned", ajFalse, &aligned);
+    acdAttrToStr(thys, "type", "", &typestr);
     
     acdInFilename(&infname);
     required = acdIsRequired(thys);
     acdReplyInit(thys, ajStrStr(infname), &acdReplyDef);
-    acdPromptSeq(thys);
+    acdPromptSeq(thys, typestr, aligned);
     ajStrDel(&infname);
 
     for(itry=acdPromptTry; itry && !ok; itry--)
@@ -10682,8 +10695,11 @@ static void acdSetSeqsetall(AcdPAcd thys)
 
 	ajSeqinUsa(&seqin, acdReply);
 	
-	if(acdAttrToStr(thys, "type", "", &seqin->Inputtype))
+	if(ajStrLen(typestr))
+	{
+	    ajStrAssS(&seqin->Inputtype, typestr);
 	    acdInTypeSeqSave(seqin->Inputtype);
+	}
 	else
 	    acdInTypeSeqSave(NULL);
 	
@@ -10935,6 +10951,7 @@ static void acdSetSeqout(AcdPAcd thys)
     static AjPStr ext      = NULL;
     static AjPStr fmt      = NULL;
     static AjPStr sing     = NULL;
+    static AjPStr typestr  = NULL;
     static AjPStr outfname = NULL;
     AjBool osfeat;
 
@@ -10955,6 +10972,8 @@ static void acdSetSeqout(AcdPAcd thys)
     
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
     acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
+    if(!acdAttrToStr(thys, "type", "", &typestr))
+	acdInTypeSeq(&typestr);
 
     required = acdIsRequired(thys);
     if(nullok && nulldefault)
@@ -10970,7 +10989,7 @@ static void acdSetSeqout(AcdPAcd thys)
 	acdReplyInit(thys, ajStrStr(outfname), &acdReplyDef);
     }
 
-    acdPromptSeqout(thys);
+    acdPromptSeqout(thys, typestr);
     
     for(itry=acdPromptTry; itry && !ok; itry--)
     {
@@ -11014,9 +11033,15 @@ static void acdSetSeqout(AcdPAcd thys)
 			  ajFalse,
 			  &val->Single, &sing);
 
-	    if(!acdAttrToStr(thys, "type", "", &val->Outputtype))
+	    if(ajStrLen(typestr))
+	    {
+		ajStrAssS(&val->Outputtype, typestr);
+	    }
+	    else
+	    {
 		if(!acdInTypeSeq(&val->Outputtype))
 		    ajWarn("No output type specified for '%S'", thys->Name);
+	    }
 
 	    if(!ajSeqoutOpen(val))
 	    {
@@ -11115,6 +11140,7 @@ static void acdSetSeqoutall(AcdPAcd thys)
     static AjPStr ext      = NULL;
     static AjPStr fmt      = NULL;
     static AjPStr sing     = NULL;
+    static AjPStr typestr  = NULL;
     static AjPStr outfname = NULL;
     AjBool osfeat;
     
@@ -11136,6 +11162,8 @@ static void acdSetSeqoutall(AcdPAcd thys)
     
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
     acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
+    if(!acdAttrToStr(thys, "type", "", &typestr))
+	acdInTypeSeq(&typestr);
 
     required = acdIsRequired(thys);
     if(nullok && nulldefault)
@@ -11150,7 +11178,7 @@ static void acdSetSeqoutall(AcdPAcd thys)
 	acdOutFilename(&outfname, name, ext);
         acdReplyInit(thys, ajStrStr(outfname), &acdReplyDef);
     }
-    acdPromptSeqout(thys);
+    acdPromptSeqout(thys, typestr);
     
     for(itry=acdPromptTry; itry && !ok; itry--)
     {
@@ -11198,9 +11226,15 @@ static void acdSetSeqoutall(AcdPAcd thys)
 	    acdLog("acdSetSeqoutall ossingle value %B '%S'\n",
 		   val->Single, sing);
 
-	    if(!acdAttrToStr(thys, "type", "", &val->Outputtype))
+	    if(ajStrLen(typestr))
+	    {
+		ajStrAssS(&val->Outputtype, typestr);
+	    }
+	    else
+	    {
 		if(!acdInTypeSeq(&val->Outputtype))
 		    ajWarn("No output type specified for '%S'", thys->Name);
+	    }
 
 	    if(!ajSeqoutOpen(val))
 	    {
@@ -11295,6 +11329,7 @@ static void acdSetSeqoutset(AcdPAcd thys)
     static AjPStr ext      = NULL;
     static AjPStr fmt      = NULL;
     static AjPStr sing     = NULL;
+    static AjPStr typestr  = NULL;
     static AjPStr outfname = NULL;
     AjBool osfeat;
     
@@ -11311,14 +11346,14 @@ static void acdSetSeqoutset(AcdPAcd thys)
     if(!ajStrLen(ext))
 	ajSeqOutFormatDefault(&ext);
     
-    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
-    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
-
-    
-    
     acdAttrToBool(thys, "features", ajFalse, &osfeat);
     
     required = acdIsRequired(thys);
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
+    if(!acdAttrToStr(thys, "type", "", &typestr))
+	acdInTypeSeq(&typestr);
+    
     if(nullok && nulldefault)
     {
 	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
@@ -11331,7 +11366,7 @@ static void acdSetSeqoutset(AcdPAcd thys)
 	acdOutFilename(&outfname, name, ext);
 	acdReplyInit(thys, ajStrStr(outfname), &acdReplyDef);
     }
-    acdPromptSeqout(thys);
+    acdPromptSeqout(thys, typestr);
     
     for(itry=acdPromptTry; itry && !ok; itry--)
     {
@@ -11373,9 +11408,15 @@ static void acdSetSeqoutset(AcdPAcd thys)
 			  ajSeqOutFormatSingle(val->Formatstr),
 			  &val->Single, &sing);
 
-	    if(!acdAttrToStr(thys, "type", "", &val->Outputtype))
+	    if(ajStrLen(typestr))
+	    {
+		ajStrAssS(&val->Outputtype, typestr);
+	    }
+	    else
+	    {
 		if(!acdInTypeSeq(&val->Outputtype))
 		    ajWarn("No output type specified for '%S'", thys->Name);
+	    }
 
 	    if(!ajSeqoutOpen(val))
 	    {
@@ -11485,7 +11526,8 @@ static void acdSetSeqset(AcdPAcd thys)
     AjBool sprompt  = ajFalse;
     AjBool snuc     = ajFalse;
     AjBool sprot    = ajFalse;
-    AjBool nullok=ajFalse;
+    AjBool nullok   = ajFalse;
+    AjPStr typestr  = NULL;
     
     val   = ajSeqsetNew();		/* set the default value */
     seqin = ajSeqinNew();		/* set the default value */
@@ -11496,11 +11538,12 @@ static void acdSetSeqset(AcdPAcd thys)
     acdQualToBool(thys, "sprotein", ajFalse, &sprot, &acdReplyDef);
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
     acdAttrToBool(thys, "aligned", ajFalse, &aligned);
+    acdAttrToStr(thys, "type", "", &typestr);
     
     acdInFilename(&infname);
     required = acdIsRequired(thys);
     acdReplyInit(thys, ajStrStr(infname), &acdReplyDef);
-    acdPromptSeq(thys);
+    acdPromptSeq(thys, typestr, aligned);
     ajStrDel(&infname);
 
     for(itry=acdPromptTry; itry && !ok; itry--)
@@ -11518,8 +11561,11 @@ static void acdSetSeqset(AcdPAcd thys)
 
 	ajSeqinUsa(&seqin, acdReply);
 	
-	if(acdAttrToStr(thys, "type", "", &seqin->Inputtype))
+	if(ajStrLen(typestr))
+	{
+	    ajStrAssS(&seqin->Inputtype, typestr);
 	    acdInTypeSeqSave(seqin->Inputtype);
+	}
 	else
 	    acdInTypeSeqSave(NULL);
 	
@@ -11858,7 +11904,7 @@ static void acdSetString(AcdPAcd thys)
 	    ok = ajFalse;
 	}
 
-	if(word && !(ajStrIsWord(reply)))
+	if(word && !(ajStrIsWord(acdReply)))
 	{
 	    acdBadVal(thys, required,
 		      "String contains disallowed whitespace characters");
@@ -18819,13 +18865,16 @@ static void acdPromptScop(AcdPAcd thys)
 ** prompt with "first", "second" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] type [const AjPStr] Sequence type
+** @param [r] aligned [AjBool] Aligned sequence set
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void acdPromptSeq(AcdPAcd thys)
+static void acdPromptSeq(AcdPAcd thys, const AjPStr type, AjBool aligned)
 {
     static ajint count=0;
+
     acdPromptStandardAlt(thys, "Input sequence", "sequence", &count);
 
     if(ajStrMatchCC(acdType[thys->Type].Name, "seqset"))
@@ -18946,11 +18995,12 @@ static void acdPromptReport(AcdPAcd thys)
 ** prompt with "first", "second" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
+** @param [r] type [const AjPStr] Sequence type
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void acdPromptSeqout(AcdPAcd thys)
+static void acdPromptSeqout(AcdPAcd thys, const AjPStr type)
 {
     static ajint count=0;
     acdPromptStandard(thys, "output sequence", &count);
