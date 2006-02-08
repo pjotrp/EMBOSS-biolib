@@ -214,6 +214,13 @@ section: advanced [
            consensus."
   ]
 
+  boolean: gaps  [
+    default: "Y"
+    information: "Use gap characters in consensus"
+    help: "If this option is true then gap characters can appear in
+    the consensus. The alternative is 'N' for nucleotide, or 'X' for protein"
+  ]
+
 endsection: advanced
 
 section: output [

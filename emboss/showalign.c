@@ -168,6 +168,7 @@ int main(int argc, char **argv)
     ajint nseqs;
     ajint begin;
     ajint end;
+    AjBool gaps;
 
     ajint i;
 
@@ -196,6 +197,7 @@ int main(int argc, char **argv)
     fplural   = ajAcdGetFloat("plurality");
     setcase   = ajAcdGetFloat("setcase");
     identity  = ajAcdGetFloat("identity");
+    gaps      = ajAcdGetBool("gaps");
 
     cons      = ajStrNew();
     consensus = ajSeqNew();
@@ -219,7 +221,7 @@ int main(int argc, char **argv)
 
     /* get the consensus sequence */
     embConsCalc(seqset, matrix, ajSeqsetSize(seqset), ajSeqsetLen(seqset),
-		fplural, setcase, ident, &cons);
+		fplural, setcase, ident, gaps, &cons);
     ajSeqAssSeq(consensus, cons);	/* set the sequence string */
 
     /* name the sequence */

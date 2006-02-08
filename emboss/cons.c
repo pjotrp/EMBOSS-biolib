@@ -88,7 +88,7 @@ int main(int argc, char **argv)
 
     cons = ajStrNew();
     embConsCalc (seqset, cmpmatrix, nseqs, mlen,
-		 fplural, setcase, identity, &cons);
+		 fplural, setcase, identity, ajFalse, &cons);
 
     /* write out consensus sequence */
     seqo = ajSeqNew();

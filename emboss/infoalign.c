@@ -159,7 +159,7 @@ int main(int argc, char **argv)
 
     /* get the consensus sequence */
     embConsCalc(seqset, matrix, ajSeqsetSize(seqset), ajSeqsetLen(seqset),
-		 fplural, 0.0, ident, &cons);
+		 fplural, 0.0, ident, ajFalse, &cons);
     ajSeqAssSeq(consensus, cons);
 
     ajSeqAssName(consensus,(xxx=ajStrNewC("Consensus")));
