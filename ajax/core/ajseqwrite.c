@@ -4884,3 +4884,19 @@ void ajSssWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix)
 
     return;
 }
+
+
+
+
+/* @func ajSeqWriteExit *******************************************************
+**
+** Cleans up sequence output processing internal memory
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqWriteExit(void)
+{
+    return;
+}

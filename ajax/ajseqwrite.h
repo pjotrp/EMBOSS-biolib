@@ -132,6 +132,7 @@ void         ajSeqoutUsa (AjPSeqout* pthis, const AjPStr Usa);
 void         ajSeqsetWrite (AjPSeqout seqout, const AjPSeqset seq);
 void         ajSeqWrite (AjPSeqout seqout, const AjPSeq seq);
 void         ajSeqWriteClose (AjPSeqout outseq);
+void         ajSeqWriteExit(void);
 void         ajSeqWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix);
 void         ajSssWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix);
 
