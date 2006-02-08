@@ -8,6 +8,9 @@
 # cysteines are oxidized to cystine, use
 # a value of 60 for C.
 #
+# Value for Selenocysteine calculated from Cysteine by replacing S
+# with Se.
+#
 A 	 71.0786	 1 1 0 0 1 0 0   0 0 0
 B 	114.5960	 0 1 0 0 0 0 -.5 0 1 0
 C 	103.1386	 1 1 0 0 1 0 0   0 0 0
@@ -29,7 +32,7 @@ Q	128.1304	 0 0 0 0 0 1 0   0 0 0
 R 	156.1870	 0 0 0 0 0 1 1   1 0 0
 S	 87.0780	 1 1 0 0 0 1 0   0 0 0
 T	101.1048	 1 1 0 0 0 1 0   0 0 0
-U	  0.0		 0 0 0 0 0 0 0   0 0 0
+U 	150.0326	 1 1 0 0 1 0 0   0 0 0
 V	 99.1322	 0 1 1 0 1 0 0   0 0 0
 W	186.2128	 0 0 0 1 1 0 0   0 0 5690
 X	144.0000	 0 0 0 0 0 0 0   0 0 0
