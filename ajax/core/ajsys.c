@@ -32,6 +32,9 @@
 #include <unistd.h>
 
 
+static AjPStr sysTokRets = NULL;
+static AjPStr sysTokSou  = NULL;
+static const char *sysTokp = NULL;
 
 
 /* @func ajSysBasename ********************************************************
@@ -720,40 +723,41 @@ AjBool ajSysIsDirectory(const char *s)
 ** @param [r] s [const char *] source string
 ** @param [r] t [const char *] delimiter string
 **
-** @return [char*] pointer or NULL
+** @return [char*] pointer or NULL when nothing is found
 ** @@
 ******************************************************************************/
 
 char* ajSysStrtok(const char *s, const char *t)
 {
-    static AjPStr rets = NULL;
-    static AjPStr sou  = NULL;
-    static const char *p = NULL;
     ajint len;
 
     if(s)
     {
-	if(!rets)
+	if(!sysTokRets)
 	{
-	    sou  = ajStrNew();
-	    rets = ajStrNew();
+	    sysTokSou  = ajStrNew();
+	    sysTokRets = ajStrNew();
 	}
-	ajStrAssC(&sou,s);
-	p = ajStrStr(sou);
+	ajStrAssC(&sysTokSou,s);
+	sysTokp = ajStrStr(sysTokSou);
     }
 
-    if(!*p)
+    if(!*sysTokp)
 	return NULL;
 
-    len = strspn(p,t);
-    p += len;
-    len = strcspn(p,t);
-    ajStrAssSubC(&rets,p,0,len-1);
-    p += len;
-    len = strspn(p,t);
-    p += len;
+    len = strspn(sysTokp,t);		/* skip over delimiters */
+    sysTokp += len;
+    if(!*sysTokp)
+	return NULL;
 
-    return ajStrStrMod(&rets);
+    len = strcspn(sysTokp,t);		/* count non-delimiters */
+    ajStrAssSubC(&sysTokRets,sysTokp,0,len-1);
+    sysTokp += len;
+
+    if(*sysTokp)
+	sysTokp += 1;			/* skip over first delimiter only */
+
+    return ajStrStrMod(&sysTokRets);
 }
 
 
@@ -788,13 +792,16 @@ char* ajSysStrtokR(const char *s, const char *t, char **ptrptr, AjPStr *buf)
     if(!*p)
 	return NULL;
 
-    len = strspn(p,t);
+    len = strspn(p,t);			/* skip over delimiters */
     p += len;
-    len = strcspn(p,t);
+    if(!*p)
+	return NULL;
+
+    len = strcspn(p,t);			/* count non-delimiters */
     ajStrAssSubC(buf,p,0,len-1);
     p += len;
-    len = strspn(p,t);
-    p += len;
+
+    p += 1;				/* skip over first delimiter */
 
     *ptrptr = (char *) p;
 
@@ -903,4 +910,25 @@ FILE* ajSysFopen(const char *name, const char *flags)
 #endif
 
 	return ret;
+}
+
+
+
+
+/* @func ajSysExit ************************************************************
+**
+** Cleans up system internals memory
+**
+** @param [r] silent [AjBool] Turn off messages (used when some messages
+**                            are expected but can be ignored).
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSysExit(void)
+{
+    ajStrDel(&sysTokSou);
+    ajStrDel(&sysTokRets);
+
+    return;
 }
