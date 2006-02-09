@@ -7082,9 +7082,16 @@ AjBool ajStrFmtTitle(AjPStr* Pstr)
 
     cp = thys->Ptr;
 
-    *cp = (char) toupper((int)*cp);
+    while(*cp) {
+	if(isalpha(*cp))
+	{
+	    *cp = (char) toupper((int)*cp);
+	    return ajTrue;
+	}
+	cp++;
+    }
 
-    return ajTrue;
+    return ajFalse;
 }
 
 
