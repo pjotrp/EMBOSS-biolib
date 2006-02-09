@@ -1576,6 +1576,7 @@ static ajint seqReadFmt(AjPSeq thys, AjPSeqin seqin,
 	    format, seqInFormatDef[format].Name,
 	    seqin->Usa, seqin->Features);
 
+
     /* Calling funclist seqInFormatDef() */
     if(seqInFormatDef[format].Read(thys, seqin))
     {
@@ -2660,6 +2661,8 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 		ok=ajFileBuffGet(buff,&line);
 		ajDebug("Stockholm: block read: %S", line);
 	    }
+	    /* jison added n-- to give correct count of sequences */
+	    n--;
 	    ajDebug("Stockholm: read block of %d sequences\n", n);
 	}
 	ajFileSeek(buff->File,lpos,0);
@@ -2834,7 +2837,13 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 
     seqStockholmCopy(&thys,seqin,i);
 
+
     ++seqin->Stockholm->Count;
+
+
+
+    
+
 
     ajFileBuffClear(buff,0);
 
