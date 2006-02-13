@@ -1964,6 +1964,28 @@ AjBool ajAlignFormatDefault(AjPStr* pformat)
 
 
 
+/* @func ajAlignGetFilename ***************************************************
+**
+** Returns the filename for an alignment.
+**
+** @param [r] thys [const AjPAlign] Alignment object.
+** @return [const char*] Filename.
+** @@
+******************************************************************************/
+
+const char * ajAlignGetFilename(const AjPAlign thys)
+{
+    if(!thys)
+	return NULL;
+    if(!thys->File)
+	return NULL;
+    
+    return ajFileName(thys->File);
+}
+
+
+
+
 
 /* @func ajAlignGetFormat ****************************************************
 **
