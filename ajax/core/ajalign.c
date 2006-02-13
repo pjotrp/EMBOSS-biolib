@@ -188,6 +188,8 @@ static AlignOFormat alignFormat[] = {
        AJFALSE, AJFALSE, 0, 0, alignWriteSimple},
   {"fasta",     "Fasta format sequence",
        AJTRUE,  AJTRUE,  0, 0, alignWriteFasta},
+  {"a2m",     "A2M (fasta) format sequence",
+       AJTRUE,  AJTRUE,  0, 0, alignWriteFasta}, /* same as clustal */
   {"msf",       "MSF format sequence",
        AJTRUE,  AJTRUE,  0, 0, alignWriteMsf},
   /* trace  for debug */
