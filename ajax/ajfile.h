@@ -33,7 +33,9 @@ extern "C"
 ** @modify ajFileGetsTrim Reads a record from a file and removes
 **                     newline characters
 ** @cast ajFileName Returns the filename as char*
+** @cast ajFileNameS Returns the filename as an AjPStr
 ** @cast ajFileFp Returns the equivalent C file pointer
+** @cast ajFileGetApp Returns the App element.
 ** @other AjPFileBuff Buffered input file.
 **
 ** @attr fp [FILE*] C file pointer
@@ -41,6 +43,7 @@ extern "C"
 ** @attr Name [AjPStr] File name as used when opening
 ** @attr List [AjPList] List of file names (first is open)
 ** @attr End [AjBool] True if EOF has been reached
+** @attr App [AjBool] True if file was opened for append. 
 ** @attr Buff [AjPStr] Buffer for latest line read
 ** @attr Pid [pid_t] Process PID if any
 ** @@
@@ -52,6 +55,7 @@ typedef struct AjSFile {
   AjPStr Name;
   AjPList List;
   AjBool End;
+  AjBool App;
   AjPStr Buff;
   pid_t Pid;
 } AjOFile;
@@ -310,6 +314,7 @@ void        ajFileExit (void);
 AjPList     ajFileFileList(const AjPStr files);
 FILE*       ajFileFp (const AjPFile thys);
 AjBool      ajFileGetwd (AjPStr* dir);
+AjBool      ajFileGetApp (const AjPFile thys);
 AjPStr      ajFileGetName (const AjPFile thys);
 AjBool      ajFileGets (AjPFile thys, AjPStr *pdest);
 AjBool      ajFileGetsL (AjPFile thys, AjPStr *pdest, ajlong* fpos);
@@ -318,6 +323,7 @@ AjBool      ajFileGetsTrimL (AjPFile thys, AjPStr *pdest, ajlong* fpos);
 AjBool      ajFileHasDir (const AjPStr name);
 ajlong      ajFileLength (const AjPStr fname);
 const char* ajFileName (const AjPFile thys);
+const AjPStr ajFileNameS (const AjPFile thys);
 AjBool      ajFileNameDir (AjPStr* filename, const AjPDir dir,
 			   const AjPStr name);
 AjBool      ajFileNameDirSet  (AjPStr* filename, const AjPStr dir);

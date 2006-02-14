@@ -695,7 +695,8 @@ AjPFile ajFileNewApp(const AjPStr name)
     fileOpenTot++;
     if(fileOpenCnt > fileOpenMax)
 	fileOpenMax = fileOpenCnt;
-
+    thys->App = ajTrue;
+    
     return thys;
 }
 
@@ -746,6 +747,7 @@ AjPFile ajFileNewOut(const AjPStr name)
     fileOpenTot++;
     if(fileOpenCnt > fileOpenMax)
 	fileOpenMax = fileOpenCnt;
+    thys->App = ajFalse;
 
     return thys;
 }
@@ -2550,6 +2552,45 @@ const char* ajFileName(const AjPFile thys)
 {
     return ajStrStr(thys->Name);
 }
+
+
+
+/* @func ajFileNameS **********************************************************
+**
+** Returns the file name for a file object. The filename returned is a pointer
+** to the real string internally, so the user must take care not to change
+** it and cannot trust the value if the file object is deleted.
+**
+** @param [r] thys [const AjPFile] File.
+** @return [const AjPStr] Filename.
+** @category cast [AjPFile] Returns the filename as an AjPStr
+** @@
+******************************************************************************/
+
+const AjPStr ajFileNameS(const AjPFile thys)
+{
+    return thys->Name;
+}
+
+
+
+
+/* @func ajFileGetApp *********************************************************
+**
+** Returns the App element for a file object. The App element is True if the 
+** file was opened for appending to, False otherwise. 
+**
+** @param [r] thys [const AjPFile] File.
+** @return [AjBool] App element, True if if file was opened for appending to, 
+** False otherwise. 
+** @@
+******************************************************************************/
+
+AjBool ajFileGetApp(const AjPFile thys)
+{
+    return thys->App;
+}
+
 
 
 
