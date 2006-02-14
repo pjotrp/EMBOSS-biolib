@@ -1,0 +1,314 @@
+1. Installing EMBASSY HMMER
+The EMBASSY HMMER package contains "wrapper" applications providing an 
+EMBOSS-style interface to the applications in the original HMMER package 
+version 2.3.2 developed by Sean Eddy.
+
+Please read the file INSTALL in the EMBASSY HMMER package distribution 
+for installation instructions.
+
+
+
+2. Installing original HMMER
+To use EMBASSY HMMER, you will first need to download and install the 
+original HMMER package:
+WWW home:       http://hmmer.wustl.edu/
+Distribution:   ftp://ftp.genetics.wustl.edu/pub/eddy/hmmer/
+
+Please read the file 00README in the the original HMMER package 
+distribution for installation instructions.
+
+
+
+3. Setting up HMMER
+For the EMBASSY HMMER package to work, the directory containing the 
+original HMMER executables *must* be in your path. For example if you
+executables were installed to "/usr/local/hmmer/bin", then type:
+
+set path=(/usr/local/hmmer/bin/ $path)
+rehash
+
+
+
+4. Documentation
+Please read the Userguide.pdf distributed with the original HMMER 
+and included in the EMBASSY HMMER distribution under the DOCS directory.
+The first 3 chapters (Introduction, Installation and Tutorial) are 
+particularly useful.
+
+Please read the notes below for a description of the differences between the
+original and EMBASSY HMMER, particularly which application command line 
+options are supported. 
+
+Read documentation on-line: http://emboss.sourceforge.net/apps/
+
+
+
+5. EMBASSY HMMER notes
+EMBASSY HMMER is a suite of application wrappers to the original hmmer v2.3.2 
+applications. hmmer v2.3.2 must be installed on the same system as EMBOSS and 
+the location of the hmmer executables must be defined in your path for EMBASSY
+HMMER to work.
+
+Where possible, the same command-line qualifier names and parameter order is 
+used as in the original hmmer.  There are however several unavoidable 
+differences and these are clearly documented in the application documentation.  
+
+More or less all options documented as "expert" in the original hmmer user 
+guide are given in ACD as "advanced" options (-options must be specified on 
+the command-line in order to be prompted for a value for them).  
+
+The original hmmer uses BLAST environment variables (below), if defined, to 
+locate files. The EMBASSY HMMER does not.
+BLASTDB   location of sequence databases to be searched
+BLASMAT   location of substitution matrices
+HMMERDB   location of HMMs
+
+EMBASSY HMMER does not include the "ealistat" application that was included 
+in the previous (v2.1.1) port. 
+
+Input and output of alignments and sequences is limited to the formats that 
+the original hmmer supports. These include stockholm, SELEX, MSF, Clustal, 
+Phylip and A2M /aligned FASTA (alignments) and FASTA, GENBANK, EMBL, GCG, 
+PIR (sequences).  It would be fairly straightforward to adapt the code to 
+support all EMBOSS-supported formats. 
+
+Automatic processing of gzipped files is not supported. 
+
+hmmer v3.2.1 and therefore EMBASSY HMMER is only recommended for use with 
+protein sequences.  If you provide a non-protein sequence you will be 
+reprompted for a protein sequence.  To accept nucleic acid sequences you must 
+replace instances of < type: "protein" > in the application ACD files with 
+<type: "nucleic" >.
+
+
+
+5. EMBASSY HMMER application notes
+5.1 hmmalign
+hmmalign reads an HMM profile <hmmfile> and a set of sequences <seqfile>, 
+aligns the sequences to the profile HMM, and outputs a multiple sequence 
+alignment <outfile>. The set of sequences may be unaligned or aligned. If it 
+is aligned, the existing alignment is ignored and hmmalign will align them 
+the way it wants.
+
+Usage:
+ehmmalign [options] hmmfile seqfile outfile
+
+The outfile parameter is new to EMBASSY HMMER. The multiple sequence alignment 
+is always written to outfile. The name of outfile is specified by the -o 
+option as normal.
+
+The following original HMMER options are not supported:
+-h         : Use -help to get help information instead.
+-informat  : All common sequence file formats are supported automatically.
+-oneline   : Alignment format output is specified via the ACD file and / or 
+             the -aformat command line qualifier.
+-outformat : Alignment format output is specified via the ACD file and / or 
+             the -aformat command line qualifier.
+
+
+5.2 hmmbuild
+hmmbuild reads a multiple sequence alignment file <alignfile>, builds a new 
+profile HMM, and saves the HMM to file <hmmfile>. By default, the model is 
+confgured to find one or more nonoverlapping alignments to the complete model: 
+multiple global alignments with respect to the model, and local with respect 
+to the sequence. This is analogous to the behavior of the hmmls program of 
+HMMER 1. To confgure the model for multiple local alignments with respect to 
+the model and local with respect to the sequence, a la the old program hmmfs, 
+use the -f (fragment) option. More rarely, you may want to confgure the model 
+for a single global alignment (global with respect to both model and sequence), 
+using the -g option; or to confgure the model for a single local/local 
+alignment (a la standard Smith/Waterman, or the old hmmsw program), use the -s 
+option.
+
+Usage:
+ehmmbuild [options] alignfile hmmfile 
+
+Important note: the alignfile (input) and hmmfile (output) parameters are 
+specified in the reverse order in the original HMMER. 
+
+The following original HMMER options are not supported:
+-h         : Use -help to get help information instead.
+-f         : Use -strategy option instead.
+-g         : Use -strategy option instead.
+-s         : Use -strategy option instead.
+-A         : Set append: "N" or append: "Y" for "hmmfile" in the ACD file instead.
+-F         : Always set (an existing hmmfile will be overwritten).
+-amino     : Sequence alignment type is specified via the ACD file.
+-nucleic   : Sequence alignment type is specified via the ACD file.
+-informat  : All common alignment formats are supported automatically.  
+-wblosum   : Use -weighting option to specify the sequence weighting algorithm. 
+-wgsc      : Use -weighting option to specify the sequence weighting algorithm. 
+-wme       : Use -weighting option to specify the sequence weighting algorithm. 
+-wnone     : Use -weighting option to specify the sequence weighting algorithm. 
+-wpb       : Use -weighting option to specify the sequence weighting algorithm. 
+-wvoronoi  : Use -weighting option to specify the sequence weighting algorithm. 
+-verbose   : Use -verbosity instead.
+
+The following additional options are provided:
+-weighting : Sequence weighting algorithm. 
+
+
+5.3 hmmcalibrate
+hmmcalibrate reads an HMM file from <hmmfilein>, scores a large number of 
+synthesized random sequences with it, fts an extreme value distribution (EVD) 
+to the histogram of those scores, and re-saves hmmfile now including the EVD 
+parameters to file <hmmfileout>. hmmcalibrate may take several minutes (or 
+longer) to run. While it is running, a temporary file called hmmfile.xxx is 
+generated in your working directory. If you abort hmmcalibrate prematurely 
+(ctrl-C, for instance), your original hmmfile will be untouched, and you 
+should delete the hmmfile.xxx temporary file.
+
+Usage:
+ehmmcalibrate [options] hmmfilein hmmfileout
+
+The hmmfileout parameter is new to EMBASSY HMMER.
+
+The following original HMMER options are not supported:
+-h         : Use -help to get help information instead.
+
+The following additional options are provided:
+-hmmfileout: Output file with HMM and EVD parameters.
+
+
+5.4 ehmmconvert
+hmmconvert reads an HMM file <oldhmmfile> in any HMMER format, and writes it 
+to a new file <newhmmfile> in a new format. The input and output files must 
+be different files; you can't reliably overwrite the old file. By default, the 
+new HMM file is written in HMMER 2 ASCII format. Available formats are HMMER 2 
+ASCII (default), HMMER 2 binary (-b) GCG profile (-p) , and Compugen XSW 
+extended profile (-P).
+
+Usage:
+ehmmconvert [options] oldhmmfile newhmmfile
+
+The following original HMMER options are not supported:
+-h         : Use -help to get help information instead.
+-a         : Use -format to set HMM output file format. 
+-b         : Use -format to set HMM output file format. 
+-p         : Use -format to set HMM output file format. 
+-P         : Use -format to set HMM output file format. 
+-A         : Set append: "N" or append: "Y" for "newhmmfile" in the ACD file 
+             instead.  Note you cannot append to an empty file or one in GCG 
+             or Compugen (xsw) formats. 
+-F         : Always set (an existing newhmmfile will be overwritten).
+
+
+5.5 ehmmemit
+hmmemit reads an HMM file from a file <hmmfile> containing one or more HMMs, 
+and generates a number of sequences from each HMM; or, if the -c option is 
+selected, generate a single majority-rule consensus. This can be useful for 
+various applications in which one needs a simulation of sequences consistent 
+with a sequence family consensus. By default, hmmemit generates 10 sequences 
+and outputs them in FASTA (unaligned) format file <outfile>.
+
+Usage:
+ehmmemit [options] hmmfile outfile
+
+The outfile parameter is new to EMBASSY HMMER.  The synthetic sequences are 
+always written to outfile. The name of outfile is specified by the -o option 
+as normal.
+
+The following original HMMER options are not supported:
+-h         : Use -help to get help information instead.
+
+
+5.6 ehmmfetch
+hmmfetch is a small utility that retrieves an HMM called of a given name <name> 
+from a HMMER model database <database>, in a new format, and prints that model 
+to file <outfile>. For example, 'hmmfetch Pfam rrm my.file' retrieves the RRM 
+(RNA recognition motif) model from Pfam, if the environment variable HMMERDB is 
+set to the location of the Pfam database. The retrieved HMM file is written in 
+HMMER 2 ASCII format. The database must have an associated GSI index file. To 
+index an HMM database, use the program hmmindex.
+
+Usage:
+ehmmfetch [options] database name outfile
+
+The outfile parameter is new to EMBASSY HMMER.
+
+The following original HMMER options are not supported:
+-h         : Use -help to get help information instead.
+
+The following additional options are provided:
+-outfile   : Output file with HMM.
+
+
+5.7 ehmmindex
+hmmindex is a utility that creates a binary SSI ('squid sequence index' format) 
+index for an HMM database file called <database>. The new index file is named 
+database.ssi. An SSI index file is required for hmmfetch to work, and also for 
+the PVM implementation of hmmpfam.
+
+Usage:
+ehmmindex [options] database
+
+The following original HMMER options are not supported:
+-h         : Use -help to get help information instead.
+
+
+5.8 ehmmpfam
+hmmpfam reads a sequence file <seqfile> and compares each sequence in it, one 
+at a time, against all the HMMs in a file <hmmfile> looking for signifcantly 
+similar sequence matches.  hmmfile will be looked for first in the current 
+working directory, then in a directory named by the environment variable 
+HMMERDB. This lets administrators install HMM library(s) such as Pfam in a 
+common location.  There is a separate output report (written to file <outfile>
+for each sequence in seqfile. This report consists of three sections: a ranked 
+list of the best scoring HMMs, a list of the best scoring domains in order of 
+their occurrence in the sequence, and alignments for all the best scoring 
+domains. A sequence score may be higher than a domain score for the same 
+sequence if there is more than one domain in the sequence; the sequence score 
+takes into account all the domains. All sequences scoring above the -E and -T 
+cutoffs are shown in the first list, then every domain found in this list is 
+shown in the second list of domain hits. If desired, E-value and bit score 
+thresholds may also be applied to the domain list using the -domE and -domT 
+options.
+
+Usage:
+ehmmpfam [options] hmmfile seqfile outfile
+
+The outfile parameter is new to EMBASSY HMMER.
+
+The following original HMMER options are not supported:
+-h         : Use -help to get help information instead.
+-informat  : All common sequence file formats are supported automatically.
+
+The following additional options are provided:
+-outfile   : Output file with HMM.
+
+
+5.9 hmmsearch
+hmmsearch reads an HMM from <hmmfile> and searches <seqfile> for signifcantly 
+similar sequence matches.  seqfile will be looked for first in the current 
+working directory, then in a directory named by the environment variable 
+BLASTDB. This lets users use existing BLAST databases, if BLAST has been 
+confgured for the site. hmmsearch may take minutes or even hours to run, 
+depending on the size of the sequence database. The output is written to a 
+file called <outfile>.  The output consists of four sections: a ranked list 
+of the best scoring sequences, a ranked list of the best scoring domains, 
+alignments for all the best scoring domains, and a histogram of the scores. A 
+sequencescore may be higher than a domain score for the same sequence if there 
+is more than one domain in the sequence; the sequence score takes into account 
+all the domains. All sequences scoring above the -E and -T cutoffs are shown 
+in the frst list, then every domain found in this list is shown in the second 
+list of domain hits. If desired, E-value and bit score thresholds may also be 
+applied to the domain list using the -domE and -domT options.
+
+Usage:
+hmmsearch [options] hmmfile seqfile outfile
+
+The outfile parameter is new to EMBASSY HMMER.
+
+The following original HMMER options are not supported:
+-h         : Use -help to get help information instead.
+-informat  : All common sequence file formats are supported automatically.
+
+The following additional options are provided:
+-outfile   : Multiple sequence alignment output file.
+
+
+
+
+
+
+

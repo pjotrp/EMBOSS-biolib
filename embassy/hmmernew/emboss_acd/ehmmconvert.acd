@@ -1,0 +1,85 @@
+application: ehmmconvert 
+[
+# EMBOSS wrapper to ehmmconvert from Sean Eddy's HMMER package v.2.3.2
+  documentation: "Convert between profile HMM file formats"
+  groups: "HMM"
+  embassy: "hmmer"
+]
+
+
+
+
+
+section: input 
+[
+  information: "Input section"
+  type: "page"
+]
+
+infile: oldhmmfile
+[
+  parameter: "Y"
+  information: "HMM file"
+  knowntype: "hmm file"
+  help: "HMM input file"
+]
+
+endsection: input
+
+
+
+
+
+section: additional
+[
+  information: "Advanced section"
+  type: "page"
+]
+
+list: format  
+[
+  standard: "Y"
+  default: "A"
+  minimum: "1"
+  maximum: "1"
+  values: "A:ascii,B:binary,G:gcg,X:xsw"
+  delimiter: ","
+  codedelimiter: ":"
+  header: "HMM format"
+  information: "Select format"
+  button: "Y"
+]
+
+endsection: additional
+
+
+
+
+
+section: advanced 
+[
+  information: "Advanced section"
+  type: "page"
+]
+
+endsection: advanced
+
+
+
+
+
+section: output 
+[
+  information: "Output section"
+  type: "page"
+]
+
+outfile: newhmmfile  
+[
+  parameter: "Y"
+  knowntype: "hmm file"
+  help: "HMM output file"
+  append: "N"
+]
+
+endsection: output

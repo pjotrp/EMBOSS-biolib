@@ -1,0 +1,30 @@
+application: ehmmindex 
+[
+# EMBOSS wrapper to ehmmindex from Sean Eddy's HMMER package v.2.3.2
+  documentation: "Create a binary SSI index for an HMM database."
+  groups: "HMM"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+  embassy: "hmmer"
+]
+
+
+
+
+
+section: input 
+[
+  information: "Input section"
+  type: "page"
+]
+
+infile: database
+[
+  parameter: "Y"
+  information: "HMM database file"
+  knowntype: "hmm database"
+  help: "HMM database."
+]
+
+endsection: input
