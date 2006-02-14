@@ -118,14 +118,10 @@ int main(int argc, char **argv)
 			 plen,mismatch,amino,carboxyl,buf,off,sotable,
 			 solimit,regexp,skipm,&hits,m,&tidy);
 
-	if(hits)
-	{
-	    tab = ajFeattableNewProt(seqname);
-	    fuzzpro_report_hits(l,hits,report, tab, seq);
-	    ajFeattableDel(&tab);
-	}
-
-
+	tab = ajFeattableNewProt(seqname);
+	fuzzpro_report_hits(l,hits,report, tab, seq);
+	ajFeattableDel(&tab);
+	
 	ajListDel(&l);
     }
 

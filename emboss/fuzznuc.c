@@ -128,16 +128,10 @@ int main(int argc, char **argv)
 	}
 
 
-
-	if(hits || (thits&&sc))
-	{
-	    tab = ajFeattableNewDna(seqname);
-	    fuzznuc_report_hits(&l,hits,sc,thits,
-				report, tab, seq);
-	    ajFeattableDel(&tab);
-	}
-
-
+	tab = ajFeattableNewDna(seqname);
+	fuzznuc_report_hits(&l,hits,sc,thits,
+			    report, tab, seq);
+	ajFeattableDel(&tab);
 
 	ajListDel(&l);
     }
