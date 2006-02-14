@@ -51,7 +51,7 @@ int main(int argc, char **argv)
 
     /* ACD file processing */
     ajNamInit("emboss");
-    ajAcdInitP("ehmmfetch",argc,argv,"HMMER_NEW");
+    ajAcdInitP("ehmmfetch",argc,argv,"HMMERNEW");
 
     database   = ajAcdGetInfile("database");
     name       = ajAcdGetString("name");

@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 
     /* ACD file processing */
     ajNamInit("emboss");
-    ajAcdInitP("ehmmalign",argc,argv,"HMMER_NEW");
+    ajAcdInitP("ehmmalign",argc,argv,"HMMERNEW");
 
     hmmfile = ajAcdGetInfile("hmmfile");
     seqfile = ajAcdGetSeqset("seqfile");

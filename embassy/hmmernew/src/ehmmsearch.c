@@ -64,7 +64,7 @@ int main(int argc, char **argv)
 
     /* ACD file processing */
     ajNamInit("emboss");
-    ajAcdInitP("ehmmsearch",argc,argv,"HMMER_NEW");
+    ajAcdInitP("ehmmsearch",argc,argv,"HMMERNEW");
 
     hmmfile = ajAcdGetInfile("hmmfile");
     seqfile = ajAcdGetSeqall("seqfile");
