@@ -26,15 +26,12 @@
 
 
 
+
 /* @prog ehmmcalibrate *******************************************************
 **
 ** EMBOSS wrapper to hmmcalibrate from Sean Eddy's HMMER package v.2.3.2
 ** Calibrate HMM search statistics.
 **
-
-ehmmcalibrate globin.hmm
-
-** 
 ******************************************************************************/
 
 int main(int argc, char **argv)
@@ -143,10 +140,7 @@ int main(int argc, char **argv)
     ajSystem(cmd);
     
 
-
-
-
-    /* Exit cleanly */
+    /* 7. Exit cleanly */
     ajStrDel(&cmd);
     ajStrDel(&tmp);
     ajStrDel(&rnd);

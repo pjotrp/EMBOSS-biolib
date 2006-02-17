@@ -26,6 +26,7 @@
 
 
 
+
 /* @prog ehmmalign ***********************************************************
 **
 ** EMBOSS wrapper to hmmalign from Sean Eddy's HMMER package v.2.3.2
@@ -160,12 +161,9 @@ int main(int argc, char **argv)
     /* 5. Call hmmalign */
     ajFmtPrint("\n%S\n\n", cmd);
     system(ajStrGetPtr(cmd));
-    
 
 
-
-
-    /* Exit cleanly */
+    /* 6. Exit cleanly */
     ajStrDel(&cmd);
     ajStrDel(&tmp);
     ajStrDel(&fmt);

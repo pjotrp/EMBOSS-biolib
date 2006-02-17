@@ -26,6 +26,7 @@
 
 
 
+
 /* @prog ehmmconvert *********************************************************
 **
 ** EMBOSS wrapper to ehmmconvert from Sean Eddy's HMMER package v.2.3.2
@@ -96,6 +97,7 @@ int main(int argc, char **argv)
     ajStrAppendC(&cmd, " -F ");
     ajFmtPrintAppS(&cmd, " %s %s", ajFileName(oldhmmfile), ajFileName(newhmmfile));
 
+
     /* 2. Close ACD files. */
     ajFileClose(&oldhmmfile);
     ajFileClose(&newhmmfile);
@@ -104,12 +106,9 @@ int main(int argc, char **argv)
     /* 3. Call hmmconvert */
     ajFmtPrint("\n%S\n\n", cmd);
     system(ajStrGetPtr(cmd));
-    
 
 
-
-
-    /* Exit cleanly */
+    /* 4. Exit cleanly */
     ajStrDel(&cmd);
     ajStrDel(&tmp);
 

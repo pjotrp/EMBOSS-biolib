@@ -102,12 +102,9 @@ int main(int argc, char **argv)
     /* 4. Call hmmemit */
     ajFmtPrint("\n%S\n\n", cmd);
     system(ajStrGetPtr(cmd));
-    
-    
-    
 
 
-    /* Exit cleanly */
+    /* 5. Exit cleanly */
     ajStrDel(&cmd);
     ajStrDel(&tmp);
 

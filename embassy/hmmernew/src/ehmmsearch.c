@@ -25,6 +25,8 @@
 
 
 
+
+
 /* @prog ehmmsearch **********************************************************
 **
 ** EMBOSS wrapper to hmmsearch from Sean Eddy's HMMER package v.2.3.2
@@ -128,6 +130,7 @@ int main(int argc, char **argv)
 		   ajSeqallGetFilename(seqfile),
 		   ajFileName(outfile));
 
+
     /* 3. Close ACD files. */
     ajFileClose(&hmmfile);
     ajSeqallDel(&seqfile);
@@ -138,12 +141,9 @@ int main(int argc, char **argv)
        so that redirect in cmd works ok. */
     ajFmtPrint("\n%S\n\n", cmd);
     system(ajStrGetPtr(cmd));
-        
 
 
-
-
-    /* Exit cleanly */
+    /* 5. Exit cleanly */
     ajStrDel(&cmd);
     ajStrDel(&tmp);
     

@@ -26,6 +26,7 @@
 
 
 
+
 /* @prog ehmmfetch ***********************************************************
 **
 ** EMBOSS wrapper to ehmmfetch from Sean Eddy's HMMER package v.2.3.2
@@ -84,6 +85,7 @@ int main(int argc, char **argv)
 		   name,
 		   ajFileName(outfile));
 
+
     /* 3. Close ACD files. */
     ajFileClose(&database);
     ajFileClose(&outfile);
@@ -95,10 +97,7 @@ int main(int argc, char **argv)
     system(ajStrGetPtr(cmd));
     
 
-
-
-
-    /* Exit cleanly */
+    /* 5. Exit cleanly */
     ajStrDel(&name);
     ajStrDel(&cmd);
     ajStrDel(&tmp);

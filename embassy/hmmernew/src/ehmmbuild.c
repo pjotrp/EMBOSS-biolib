@@ -26,23 +26,12 @@
 
 
 
+
 /* @prog ehmmbuild ***********************************************************
 **
 ** EMBOSS wrapper to hmmbuild from Sean Eddy's HMMER package v.2.3.2
 ** Build a profle HMM from an alignment.
 **
-**
-
-ehmmbuild globins50.msf globin.hmm
-Build a profile HMM from an alignment.
-Name for this HMM.: globins50
-Alignment preference
-         D : global-multidomain
-         F : local-multidomain
-         G : global-singledomain
-         S : local-singledomain
-Select preference [D]: D
-
 ******************************************************************************/
 
 int main(int argc, char **argv)
@@ -231,12 +220,8 @@ int main(int argc, char **argv)
     ajFmtPrint("\n%S\n", cmd); 
     system(ajStrGetPtr(cmd));    
 
-    
 
-
-
-
-    /* Exit cleanly */
+    /* 6. Exit cleanly */
     ajStrDel(&n);
     ajStrDel(&cmd);
     ajStrDel(&rnd1);

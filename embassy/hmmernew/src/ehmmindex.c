@@ -26,6 +26,7 @@
 
 
 
+
 /* @prog ehmmindex ***********************************************************
 **
 ** EMBOSS wrapper to ehmmindex from Sean Eddy's HMMER package v.2.3.2
@@ -71,6 +72,7 @@ int main(int argc, char **argv)
        */
     ajFmtPrintS(&cmd, "hmmindex ");
     ajStrAppendC(&cmd, ajFileName(database));
+
     
     /* 3. Close ACD files. */
     ajFileClose(&database);
@@ -79,12 +81,8 @@ int main(int argc, char **argv)
     /* 4. Call hmmindex */
     ajFmtPrint("\n%S\n\n", cmd);
     system(ajStrGetPtr(cmd));
-    
 
-
-
-
-    /* Exit cleanly */
+    /* 5. Exit cleanly */
     ajStrDel(&cmd);
     ajStrDel(&tmp);
     

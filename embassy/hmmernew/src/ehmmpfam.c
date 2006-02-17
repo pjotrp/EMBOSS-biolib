@@ -26,6 +26,7 @@
 
 
 
+
 /* @prog ehmmpfam **********************************************************
 **
 ** EMBOSS wrapper to hmmpfam from Sean Eddy's HMMER package v.2.3.2
@@ -60,6 +61,8 @@ int main(int argc, char **argv)
     /* Housekeeping variables */
     AjPStr        cmd = NULL;
     AjPStr        tmp = NULL;
+
+
 
 
 
@@ -148,12 +151,9 @@ int main(int argc, char **argv)
        so that redirect in cmd works ok. */
     ajFmtPrint("\n%S\n\n", cmd);
     system(ajStrGetPtr(cmd));
-    
 
 
-
-
-    /* Exit cleanly */
+    /* 5. Exit cleanly */
     ajStrDel(&cmd);
     ajStrDel(&tmp);
 
