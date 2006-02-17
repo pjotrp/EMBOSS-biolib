@@ -45,14 +45,14 @@ section: standard
   information: "Standard section"
   type: "page"
 ]
-integer: A
+integer: a
 [
   standard: "Y"
   information: "Limit output to best-scoring domains."
   help: "Limits the alignment output to the <n> best scoring domains. -A0 shuts off the alignment output and can be used to reduce the size of output files."
 ]
 
-float: E
+float: e
 [
   standard: "Y"
   default: "10."
@@ -78,7 +78,7 @@ boolean: n
   help: "Specify that models and sequence are nucleic acid, not protein. Other HMMER programs autodetect this; but because of the order in which hmmpfam accesses data, it can't reliably determine the correct 'alphabet' by itself."
 ]
 
-float: T
+float: t
 [
   additional: "Y"
   default: "-1000000."
@@ -86,7 +86,7 @@ float: T
   help: "Set the bit score cutoff for the per-sequence ranked hit list to <x>, where <x> is a real number. The default is negative infinity; by default, the threshold is controlled by E-value and not by bit score. Hits with bit scores better than (greater than) this threshold will be shown."
 ]
 
-integer: Z
+integer: z
 [
   additional: "Y"
   default: "59021"
