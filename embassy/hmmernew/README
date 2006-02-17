@@ -245,6 +245,10 @@ ehmmindex [options] database
 The following original HMMER options are not supported:
 -h         : Use -help to get help information instead.
 
+The index file is hardcoded to database.ssi (where database is the name of the database that was indexed) and is written to the same directory as the input file.  This behaviour could be changed in the future.
+
+
+
 
 5.8 ehmmpfam
 hmmpfam reads a sequence file <seqfile> and compares each sequence in it, one 
