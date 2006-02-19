@@ -236,8 +236,10 @@ AjPList embDbiFileList(const AjPStr dir, const AjPStr wildfile, AjBool trim)
 
     while((de = readdir(dp)))
     {
+#ifndef __CYGWIN__
 	if(!de->d_ino)
 	    continue; 		/* skip deleted files with inode zero */
+#endif
 	if(ajStrMatchCC(de->d_name, "."))
 	    continue;
 	if(ajStrMatchCC(de->d_name, ".."))
@@ -348,8 +350,10 @@ AjPList embDbiFileListExc(const AjPStr dir, const AjPStr wildfile,
     while((de = readdir(dp)))
     {
 	/* skip deleted files with inode zero */	
+#ifndef __CYGWIN__
 	if(!de->d_ino)
 	    continue;
+#endif
 	if(ajStrMatchCC(de->d_name, "."))
 	    continue;
 	if(ajStrMatchCC(de->d_name, ".."))

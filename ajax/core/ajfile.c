@@ -3086,8 +3086,10 @@ AjPFileBuff ajFileBuffNewDW(const AjPStr dir, const AjPStr wildfile)
 #endif
 #endif
 	/* skip deleted files with inode zero */
+#ifndef __CYGWIN__
 	if(!de->d_ino)
 	    continue;
+#endif
 	if(ajStrMatchCC(de->d_name, "."))
 	    continue;
 	if(ajStrMatchCC(de->d_name, ".."))
@@ -3181,8 +3183,10 @@ AjPFileBuff ajFileBuffNewDWE(const AjPStr dir, const AjPStr wildfile,
 #endif
 #endif
 	/* skip deleted files with inode zero */
+#ifndef __CYGWIN__
 	if(!de->d_ino)
 	    continue;
+#endif
 	if(ajStrMatchCC(de->d_name, "."))
 	    continue;
 	if(ajStrMatchCC(de->d_name, ".."))
@@ -3333,8 +3337,10 @@ AjPFile ajFileNewDW(const AjPStr dir, const AjPStr wildfile)
 #endif
 #endif
 	/* skip deleted files with inode zero */
+#ifndef __CYGWIN__
 	if(!de->d_ino)
 	    continue;
+#endif
 	if(ajStrMatchCC(de->d_name, "."))
 	    continue;
 	if(ajStrMatchCC(de->d_name, ".."))
@@ -3426,8 +3432,10 @@ AjPFile ajFileNewDWE(const AjPStr dir, const AjPStr wildfile,
 #endif
 #endif
 	/* skip deleted files with inode zero */
+#ifndef __CYGWIN__
 	if(!de->d_ino)
 	    continue;
+#endif
 	if(ajStrMatchCC(de->d_name, "."))
 	    continue;
 	if(ajStrMatchCC(de->d_name, ".."))
@@ -5192,9 +5200,14 @@ ajint ajFileScan(const AjPStr path, const AjPStr filename, AjPList *result,
 #endif
 #endif
 
+#ifndef __CYGWIN__
 	if(!dp->d_ino ||
 	   !strcmp(dp->d_name,".") ||
 	   !strcmp(dp->d_name,".."))
+#else
+	if(!strcmp(dp->d_name,".") ||
+	   !strcmp(dp->d_name,".."))
+#endif
 	    continue;
 	ajStrAssS(&s,tpath);
 	/*	ajStrAppC(&s,"/");*/
