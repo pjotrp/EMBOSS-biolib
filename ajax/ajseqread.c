@@ -2003,7 +2003,7 @@ static AjBool seqReadDbId(AjPSeq thys, AjPSeqin seqin)
     AjPFileBuff buff;
 
     const char *cp;
-    AjPStr vacc     = NULL;
+    const AjPStr vacc = NULL;
     ajint bufflines = 0;
     ajlong fpos     = 0;
     ajlong fposb    = 0;
@@ -9148,7 +9148,7 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
     AjPStr token       = NULL;
     AjPStr numtoken    = NULL;
     AjPStr str         = NULL;
-    AjPStr vacc        = NULL;
+    const AjPStr vacc  = NULL;
     const char *q;
     ajint  i;
     ajint  nt;

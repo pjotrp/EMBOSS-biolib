@@ -1754,6 +1754,7 @@ static AjBool seqAccessEntrez(AjPSeqin seqin)
     AjPStr giline=NULL;
     AjPFile gifile=NULL;
     AjPStr tmpstr=NULL;
+    const AjPStr cpystr=NULL;
     ajint numgi=0;
     ajint icount=0;
     static AjPRegexp countexp=NULL;
@@ -1813,13 +1814,13 @@ static AjBool seqAccessEntrez(AjPSeqin seqin)
 	    ajStrAssS(&gilist,qry->Gi);
 	else if(ajStrLen(qry->Sv))
 	{
-	    tmpstr = ajIsSeqversion(qry->Sv);
-	    if (tmpstr)
+	    cpystr = ajIsSeqversion(qry->Sv);
+	    if (cpystr)
 		ajFmtPrintAppS(&get,"&term=%S[accn]",
-			       tmpstr);
+			       cpystr);
 	    else
 		ajWarn("Entrez invalid Seqversion '%S'", qry->Sv);
-	    tmpstr = NULL;
+	    cpystr = NULL;
 	}
 	else if(ajStrLen(qry->Des))
 	{
@@ -2137,6 +2138,7 @@ static AjBool seqAccessSeqhound(AjPSeqin seqin)
     AjPStr giline = NULL;
     AjPSeqQuery qry;
     ajint numgi = 0;
+    const AjPStr cpystr = NULL;
     AjPStr tmpstr = NULL;
     AjBool ret = AJFALSE;
 
@@ -2183,10 +2185,10 @@ static AjBool seqAccessSeqhound(AjPSeqin seqin)
 	/* Sv trim to Acc */
 	else if(ajStrLen(qry->Sv))
 	{
-	    tmpstr = ajIsSeqversion(qry->Sv);
-	    if (tmpstr)
+	    cpystr = ajIsSeqversion(qry->Sv);
+	    if (cpystr)
 		ajFmtPrintAppS(&get,"fnct=SeqHoundFindAccList&pacc=%S",
-			       tmpstr);
+			       cpystr);
 	    else
 		ajWarn("SeqHound invalid Seqversion '%S'", qry->Sv);
 	}

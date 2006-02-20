@@ -24,10 +24,7 @@
 ** Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
-#ifdef HAVE_JAVA
-
 #include "ajax.h"
-#include <jni.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -46,6 +43,9 @@
 #include <fcntl.h>
 #include <ctype.h>
 #include <sys/ioctl.h>
+
+#ifdef HAVE_JAVA
+#include <jni.h>
 
 #ifdef __hpux
 #include <signal.h>

@@ -529,7 +529,7 @@ typedef struct AcdSType
     AcdPQual Quals;
     void (*TypeSet)(AcdPAcd thys);
     void (*HelpSet)(const AcdPAcd thys, AjPStr* msg);
-    void (*TypeDel)(void*);
+    void (*TypeDel)(void**);
     AjBool PassByRef;
     AjBool Stdprompt;
     ajint* UseCount;
@@ -595,7 +595,7 @@ static AjBool    acdDataFilename(AjPStr* datafname,
 				 const AjPStr name, const AjPStr ext,
 				 AjBool nullok);
 static AjBool    acdDef(AcdPAcd thys, const AjPStr value);
-static AcdPAcd   acdDel(AcdPAcd *Pacd);
+static void      acdDel(AcdPAcd *Pacd);
 static AjBool    acdDefinedEmpty (const AcdPAcd thys);
 static void      acdError(const char* fmt, ...);
 static void      acdErrorAcd(const AcdPAcd thys, const char* fmt, ...);
@@ -937,6 +937,33 @@ static AjBool acdResourceList(const AcdPAcd thys,
 
 /* Type-specific routines to prompt user and set the value.  each new
 ** type requires one of these routines */
+
+static void acdDelAlign(void** PPval);
+static void acdDelCod(void** PPval);
+static void acdDelDir(void** PPval);
+static void acdDelFeattabOut(void** PPval);
+static void acdDelFeattable(void** PPval);
+static void acdDelFile(void** PPval);
+static void acdDelFloat(void** PPval);
+static void acdDelList(void** PPval);
+static void acdDelMatrix(void** PPval);
+static void acdDelMatrixf(void** PPval);
+static void acdDelOutfile(void** PPval);
+static void acdDelPhyloDist(void** PPval);
+static void acdDelPhyloFreq(void** PPval);
+static void acdDelPhyloProp(void** PPval);
+static void acdDelPhyloState(void** PPval);
+static void acdDelPhyloTree(void** PPval);
+static void acdDelRange(void** PPval);
+static void acdDelReg(void** PPval);
+static void acdDelReport(void** PPval);
+static void acdDelSeq(void** PPval);
+static void acdDelSeqall(void** PPval);
+static void acdDelSeqout(void** PPval);
+static void acdDelSeqset(void** PPval);
+static void acdDelSeqsetArray(void** PPval);
+static void acdDelStr(void** PPval);
+static void acdDelStrArray(void** PPval);
 
 static void acdSetXxxx(AcdPAcd thys);
 static void acdSetAppl(AcdPAcd thys);
@@ -2543,12 +2570,12 @@ AcdOType acdType[] =
 **       Description of valid string for help */
     {"align",          "output",    acdSecOutput,
 	 acdAttrAlign,          acdQualAlign,
-	 acdSetAlign,           NULL,                  ajAlignDel,
+	 acdSetAlign,           NULL,                  acdDelAlign,
 	 AJTRUE,  AJTRUE,  &acdUseAlign,
 	 "Alignment output file" },
     {"array",          "simple",    NULL,
 	 acdAttrArray,          NULL,
-	 acdSetArray,           NULL,                  ajFloatDel,
+	 acdSetArray,           NULL,                  acdDelFloat,
 	 AJTRUE,  AJFALSE, &acdUseMisc,
 	 "List of floating point numbers" },
     {"boolean",        "simple",    NULL,
@@ -2558,52 +2585,52 @@ AcdOType acdType[] =
 	 "Boolean value Yes/No" },
     {"codon",	       "input",     acdSecInput,
 	 acdAttrCodon,          acdQualCodon,
-	 acdSetCodon,           NULL,                  ajCodDel,
+	 acdSetCodon,           NULL,                  acdDelCod,
 	 AJTRUE,  AJTRUE,  &acdUseData,
 	 "Codon usage file in EMBOSS data path" },
     {"cpdb",           "input",     acdSecInput,
 	 acdAttrCpdb,           acdQualCpdb,
-	 acdSetCpdb,            NULL,                  ajFileClose,
+	 acdSetCpdb,            NULL,                  acdDelFile,
 	 AJTRUE,  AJFALSE, &acdUseInfile,
 	 "Clean PDB file" },
     {"datafile",       "input",     acdSecInput,
 	 acdAttrDatafile,       NULL,
-	 acdSetDatafile,        NULL,                  ajFileClose,
+	 acdSetDatafile,        NULL,                  acdDelFile,
 	 AJTRUE,  AJFALSE, &acdUseData,
 	 "Data file" },
     {"directory",      "input",     acdSecInput,
 	 acdAttrDirectory,      NULL,
-	 acdSetDirectory,       NULL,                  ajDirDel,
+	 acdSetDirectory,       NULL,                  acdDelDir,
 	 AJTRUE,  AJFALSE, &acdUseMisc,
 	 "Directory" },
     {"dirlist",	       "input",     acdSecInput,
 	 acdAttrDirlist,        NULL,
-	 acdSetDirlist,         NULL,                  ajListstrDel,
+	 acdSetDirlist,         NULL,                  acdDelList,
 	 AJTRUE,  AJFALSE, &acdUseMisc,
 	 "Directory with files" },
     {"discretestates", "input",     acdSecInput,
 	 acdAttrDiscretestates, NULL,
-	 acdSetDiscretestates,  NULL,                  ajPhyloStateDel,
+	 acdSetDiscretestates,  NULL,                  acdDelPhyloState,
 	 AJTRUE,  AJTRUE,  &acdUseData,
 	 "Discrete states file" },
     {"distances",      "input",     acdSecInput,
 	 acdAttrDistances,      NULL,
-	 acdSetDistances,       NULL,                  ajPhyloDistDel,
+	 acdSetDistances,       NULL,                  acdDelPhyloDist,
 	 AJTRUE,  AJTRUE,  &acdUseData,
 	 "Distance matrix" },
     {"features",       "input",     acdSecInput,
 	 acdAttrFeat,           acdQualFeat,
-	 acdSetFeat,            NULL,                  ajFeattableDel,
+	 acdSetFeat,            NULL,                  acdDelFeattable,
 	 AJTRUE,  AJTRUE,  &acdUseFeat,
 	 "Readable feature table" },
     {"featout",        "output",    acdSecOutput,
 	 acdAttrFeatout,        acdQualFeatout,
-	 acdSetFeatout,         NULL,                  ajFeattabOutDel,
+	 acdSetFeatout,         NULL,                  acdDelFeattabOut,
 	 AJTRUE,  AJTRUE,  &acdUseFeatout,
 	 "Writeable feature table" },
     {"filelist",       "input",     acdSecInput,
 	 acdAttrFilelist,       NULL,
-	 acdSetFilelist,        NULL,                  ajListstrDel,
+	 acdSetFilelist,        NULL,                  acdDelList,
 	 AJTRUE,  AJFALSE, &acdUseMisc,
 	 "Comma-separated file list" },
     {"float",          "simple",    NULL,
@@ -2613,7 +2640,7 @@ AcdOType acdType[] =
 	 "Floating point number" },
     {"frequencies",    "input",     acdSecInput,
 	 acdAttrFrequencies,    NULL,
-	 acdSetFrequencies,     NULL,                  ajPhyloFreqDel,
+	 acdSetFrequencies,     NULL,                  acdDelPhyloFreq,
 	 AJTRUE,  AJTRUE,  &acdUseData,
 	 "Frequency value(s)" },
     {"graph",          "graph",     acdSecOutput,
@@ -2623,7 +2650,7 @@ AcdOType acdType[] =
 	 "Graph device for a general graph" },
     {"infile",         "input",     acdSecInput,
 	 acdAttrInfile,         NULL,
-	 acdSetInfile,          NULL,                  ajFileClose,
+	 acdSetInfile,          NULL,                  acdDelFile,
 	 AJTRUE,  AJFALSE, &acdUseInfile,
 	 "Input file" },
     {"integer",        "simple",    NULL,
@@ -2633,157 +2660,157 @@ AcdOType acdType[] =
 	 "Integer" },
     {"list",           "selection", NULL,
 	 acdAttrList,           NULL,
-	 acdSetList,            NULL,                  ajStrDelarray,
+	 acdSetList,            NULL,                  acdDelStrArray,
 	 AJTRUE,  AJFALSE, &acdUseMisc,
 	 "Choose from menu list of values" },
     {"matrix",         "input",     acdSecInput,
 	 acdAttrMatrix,         NULL,
-	 acdSetMatrix,          NULL,                  ajMatrixDel,
+	 acdSetMatrix,          NULL,                  acdDelMatrix,
 	 AJTRUE,  AJFALSE, &acdUseData,
 	 "Comparison matrix file in EMBOSS data path" },
     {"matrixf",        "input",     acdSecInput,
 	 acdAttrMatrixf,        NULL,
-	 acdSetMatrixf,         NULL,                  ajMatrixfDel,
+	 acdSetMatrixf,         NULL,                  acdDelMatrixf,
 	 AJTRUE,  AJFALSE, &acdUseData,
 	 "Comparison matrix file in EMBOSS data path" },
     {"outcodon",       "output",    acdSecOutput,
 	 acdAttrOutcodon,       acdQualOutcodon,
-	 acdSetOutcodon,        NULL,                  ajOutfileDel,
+	 acdSetOutcodon,        NULL,                  acdDelOutfile,
 	 AJTRUE,  AJTRUE,  &acdUseOutfile,
 	 "Codon usage file" },
     {"outcpdb",        "output",    acdSecOutput,
 	 acdAttrOutcpdb,        NULL,
-	 acdSetOutcpdb,         NULL,                  ajOutfileDel,
+	 acdSetOutcpdb,         NULL,                  acdDelOutfile,
 	 AJTRUE,  AJTRUE,  &acdUseOutfile,
 	 "Cleaned PDB file" },
     {"outdata",        "output",    acdSecOutput,
 	 acdAttrOutdata,        acdQualOutdata,
-	 acdSetOutdata,         NULL,                  ajOutfileDel,
+	 acdSetOutdata,         NULL,                  acdDelOutfile,
 	 AJTRUE,  AJTRUE,  &acdUseOutfile,
 	 "Formatted output file" },
     {"outdir",         "output",    acdSecOutput,
 	 acdAttrOutdir,         NULL,
-	 acdSetOutdir,          NULL,                  ajDirDel,
+	 acdSetOutdir,          NULL,                  acdDelDir,
 	 AJTRUE,  AJTRUE,  &acdUseMisc,
 	 "Output directory" },
     {"outdiscrete",    "output",    acdSecOutput,
 	 acdAttrOutdiscrete,    acdQualOutdiscrete,
-	 acdSetOutdiscrete,     NULL,                  ajOutfileDel,
+	 acdSetOutdiscrete,     NULL,                  acdDelOutfile,
 	 AJTRUE,  AJTRUE,  &acdUseOutfile,
 	 "Discrete states file" },
     {"outdistance",    "output",    acdSecOutput,
 	 acdAttrOutdistance,    NULL,
-	 acdSetOutdistance,     NULL,                  ajOutfileDel,
+	 acdSetOutdistance,     NULL,                  acdDelOutfile,
 	 AJTRUE,  AJTRUE,  &acdUseOutfile,
 	 "Distance matrix" },
     {"outfile",        "output",     acdSecOutput,
 	 acdAttrOutfile,        acdQualOutfile,
-	 acdSetOutfile,         NULL,                  ajFileClose,
+	 acdSetOutfile,         NULL,                  acdDelFile,
 	 AJTRUE,  AJTRUE,  &acdUseOutfile,
 	 "Output file" },
     {"outfileall",     "output",    acdSecOutput,
 	 acdAttrOutfileall,     acdQualOutfileall,
-	 acdSetOutfileall,      NULL,                  ajFileClose,
+	 acdSetOutfileall,      NULL,                  acdDelFile,
 	 AJTRUE,  AJTRUE,  &acdUseOutfile,
 	 "Multiple output files" },
     {"outfreq",        "output",    acdSecOutput,
 	 acdAttrOutfreq,        acdQualOutfreq,
-	 acdSetOutfreq,         NULL,                  ajOutfileDel,
+	 acdSetOutfreq,         NULL,                  acdDelOutfile,
 	 AJTRUE,  AJTRUE,  &acdUseOutfile,
 	 "Frequency value(s)" },
     {"outmatrix",      "output",    acdSecOutput,
 	 acdAttrOutmatrix,      acdQualOutmatrix,
-	 acdSetOutmatrix,       NULL,                  ajOutfileDel,
+	 acdSetOutmatrix,       NULL,                  acdDelOutfile,
 	 AJTRUE,  AJTRUE,  &acdUseOutfile,
 	 "Comparison matrix file" },
     {"outmatrixf",     "output",    acdSecOutput,
 	 acdAttrOutmatrixf,     acdQualOutmatrixf,
-	 acdSetOutmatrixf,      NULL,                  ajOutfileDel,
+	 acdSetOutmatrixf,      NULL,                  acdDelOutfile,
 	 AJTRUE,  AJTRUE,  &acdUseOutfile,
 	 "Comparison matrix file" },
     {"outproperties",  "output",    acdSecOutput,
 	 acdAttrOutproperties,  acdQualOutproperties,
-	 acdSetOutproperties,   NULL,                  ajOutfileDel,
+	 acdSetOutproperties,   NULL,                  acdDelOutfile,
 	 AJTRUE,  AJTRUE,  &acdUseOutfile,
 	 "Property value(s)" },
     {"outscop",        "output",    acdSecOutput,
 	 acdAttrOutscop,        acdQualOutscop,
-	 acdSetOutscop,         NULL,                  ajOutfileDel,
+	 acdSetOutscop,         NULL,                  acdDelOutfile,
 	 AJTRUE,  AJTRUE,  &acdUseOutfile,
 	 "Scop entry" },
     {"outtree",        "output",    acdSecOutput,
 	 acdAttrOuttree,        acdQualOuttree,
-	 acdSetOuttree,         NULL,                  ajOutfileDel,
+	 acdSetOuttree,         NULL,                  acdDelOutfile,
 	 AJTRUE,  AJTRUE,  &acdUseOutfile,
 	 "Phylogenetic tree" },
     {"properties",     "input",     acdSecInput,
 	 acdAttrProperties,     NULL,
-	 acdSetProperties,      NULL,                  ajPhyloPropDel,
+	 acdSetProperties,      NULL,                  acdDelPhyloProp,
 	 AJTRUE,  AJTRUE,  &acdUseData,
 	 "Property value(s)" },
     {"range",	       "simple",    NULL,
 	 acdAttrRange,          NULL,
-	 acdSetRange,           NULL,                  ajRangeDel,
+	 acdSetRange,           NULL,                  acdDelRange,
 	 AJTRUE,  AJFALSE, &acdUseMisc,
 	 "Sequence range" },
     {"regexp",	       "input",     acdSecInput,
 	 acdAttrRegexp,         NULL,
-	 acdSetRegexp,          NULL,                  ajRegFree,
+	 acdSetRegexp,          NULL,                  acdDelReg,
 	 AJTRUE,  AJFALSE, &acdUseMisc,
 	 "Regular expression pattern" },
     {"report",         "output",    acdSecOutput,
 	 acdAttrReport,         acdQualReport,
-	 acdSetReport,          NULL,                  ajReportDel,
+	 acdSetReport,          NULL,                  acdDelReport,
 	 AJTRUE,  AJTRUE,  &acdUseReport,
 	 "Report output file" },
     {"scop",           "input",     acdSecInput,
 	 acdAttrScop,           acdQualScop,
-	 acdSetScop,            NULL,                  ajFileClose,
+	 acdSetScop,            NULL,                  acdDelFile,
 	 AJTRUE,  AJFALSE, &acdUseInfile,
 	 "Clean PDB file" },
     {"selection",      "selection", NULL,
 	 acdAttrSelect,         NULL,
-	 acdSetSelect,          NULL,                  ajStrDelarray,
+	 acdSetSelect,          NULL,                  acdDelStrArray,
 	 AJTRUE,  AJFALSE, &acdUseMisc,
 	 "Choose from selection list of values" },
     {"sequence",       "input",     acdSecInput,
 	 acdAttrSeq,            acdQualSeq,
-	 acdSetSeq,             acdHelpTextSeq,        ajSeqDel,
+	 acdSetSeq,             acdHelpTextSeq,        acdDelSeq,
 	 AJTRUE,  AJTRUE,  &acdUseSeq,
 	 "Readable sequence" },
     {"seqall",         "input",     acdSecInput,
 	 acdAttrSeqall,         acdQualSeqall,
-	 acdSetSeqall,          acdHelpTextSeq,        ajSeqallDel,
+	 acdSetSeqall,          acdHelpTextSeq,        acdDelSeqall,
 	 AJTRUE,  AJTRUE,  &acdUseSeq,
 	 "Readable sequence(s)" },
     {"seqout",         "output",    acdSecOutput,
 	 acdAttrSeqout,         acdQualSeqout,
-	 acdSetSeqout,          acdHelpTextSeqout,     ajSeqoutDel, 
+	 acdSetSeqout,          acdHelpTextSeqout,     acdDelSeqout, 
 	 AJTRUE,  AJTRUE,  &acdUseSeqout,
 	 "Writeable sequence" },
     {"seqoutall",      "output",    acdSecOutput,
 	 acdAttrSeqoutall,      acdQualSeqoutall,
-	 acdSetSeqoutall,       acdHelpTextSeqout,     ajSeqoutDel,
+	 acdSetSeqoutall,       acdHelpTextSeqout,     acdDelSeqout,
 	 AJTRUE,  AJTRUE,  &acdUseSeqout,
 	 "Writeable sequence(s)" },
     {"seqoutset",      "output",    acdSecOutput,
 	 acdAttrSeqoutset,      acdQualSeqoutset,
-	 acdSetSeqoutset,       acdHelpTextSeqout,     ajSeqoutDel,
+	 acdSetSeqoutset,       acdHelpTextSeqout,     acdDelSeqout,
 	 AJTRUE,  AJTRUE,  &acdUseSeqout,
 	 "Writeable sequences" },
     {"seqset",         "input",     acdSecInput,
 	 acdAttrSeqset,         acdQualSeqset,
-	 acdSetSeqset,          acdHelpTextSeq,        ajSeqsetDel,
+	 acdSetSeqset,          acdHelpTextSeq,        acdDelSeqset,
 	 AJTRUE,  AJTRUE,  &acdUseSeq,
 	 "Readable set of sequences" },
     {"seqsetall",      "input",     acdSecInput,
 	 acdAttrSeqsetall,      acdQualSeqsetall,
-	 acdSetSeqsetall,       acdHelpTextSeq,        ajSeqsetDelarray,
+	 acdSetSeqsetall,       acdHelpTextSeq,        acdDelSeqsetArray,
 	 AJTRUE,  AJTRUE,  &acdUseSeq,
 	 "Readable sets of sequences" },
     {"string",         "simple",    NULL,
 	 acdAttrString,          NULL,
-	 acdSetString,           NULL,                 ajStrDel,
+	 acdSetString,           NULL,                 acdDelStr,
 	 AJTRUE,  AJFALSE, &acdUseMisc, "String value" },
     {"toggle",         "simple",     NULL,
 	 acdAttrToggle,          NULL,
@@ -2792,7 +2819,7 @@ AcdOType acdType[] =
 	 "Toggle value Yes/No" },
     {"tree",           "input",      acdSecInput,
 	 acdAttrTree,            NULL,
-	 acdSetTree,             NULL,                 ajPhyloTreeDel,
+	 acdSetTree,             NULL,                 acdDelPhyloTree,
 	 AJTRUE,  AJTRUE,  &acdUseData,
 	 "Phylogenetic tree" },
     {"xygraph",        "graph",      acdSecOutput,
@@ -2910,7 +2937,7 @@ AjStatus ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     AjPStr tmpword = NULL;	    /* words to add to acdListWords */
     ajint i;
     ajint *k = NULL;
-    
+
     acdProgram = ajStrNewC(pgm);
     acdSecList = ajListstrNew();
     acdSecTable = ajStrTableNewCase(50);
@@ -2935,6 +2962,8 @@ AjStatus ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     
     acdArgsScan(argc, argv);
     
+    ajDebug("ajAcdInitP pgm '%s' package '%s'\n", pgm, package);
+
     /* open the command definition file */
     
     ajNamRootPack(&acdPack);
@@ -4363,7 +4392,7 @@ static AcdPAcd acdNewAcdKey(const AjPStr name, const AjPStr token, ajint ikey)
 ** @@
 ******************************************************************************/
 
-static AcdPAcd acdDel(AcdPAcd *Pacd)
+static void acdDel(AcdPAcd *Pacd)
 {
     AcdPAcd pa = *Pacd;
     ajint i;
@@ -4397,7 +4426,7 @@ static AcdPAcd acdDel(AcdPAcd *Pacd)
 
     if(pa->Assoc && ajStrMatchCC(acdType[pa->Type].Name,"string"))
     {
-	ajStrDel(&pa->Value);
+	ajStrDel((AjPStr*)&pa->Value);
     }
     else if(pa->Level == ACD_QUAL)
     {
@@ -8638,7 +8667,7 @@ AjPOutfile ajAcdGetOutcodon(const char *token)
 
 
 
-/* @funcstatic acdSetOutcodon**************************************************
+/* @funcstatic acdSetOutcodon *************************************************
 **
 ** Using the definition in the ACD file, and any values for the
 ** item or its associated qualifiers provided on the command line,
@@ -8661,9 +8690,7 @@ AjPOutfile ajAcdGetOutcodon(const char *token)
 
 static void acdSetOutcodon(AcdPAcd thys)
 {
-    AjPOutfile val = NULL;
-
-    val = acdSetOutType(thys, "outcodon");
+    acdSetOutType(thys, "outcodon");
     return;
 }
     
@@ -8710,9 +8737,7 @@ AjPOutfile ajAcdGetOutcpdb(const char *token)
 
 static void acdSetOutcpdb(AcdPAcd thys)
 {
-    AjPOutfile val = NULL;
-
-    val = acdSetOutType(thys, "outcpdb");
+    acdSetOutType(thys, "outcpdb");
     return;
 }
 
@@ -8760,9 +8785,7 @@ AjPOutfile ajAcdGetOutdata(const char *token)
 
 static void acdSetOutdata(AcdPAcd thys)
 {
-    AjPOutfile val = NULL;
-
-    val = acdSetOutType(thys, "outdata");
+    acdSetOutType(thys, "outdata");
     return;
 }
 
@@ -8944,9 +8967,7 @@ AjPOutfile ajAcdGetOutdiscrete(const char *token)
 
 static void acdSetOutdiscrete(AcdPAcd thys)
 {
-    AjPOutfile val = NULL;
-
-    val = acdSetOutType(thys, "outdiscrete");
+    acdSetOutType(thys, "outdiscrete");
     return;
 }
 
@@ -8994,9 +9015,7 @@ AjPOutfile ajAcdGetOutdistance(const char *token)
 
 static void acdSetOutdistance(AcdPAcd thys)
 {
-    AjPOutfile val = NULL;
-
-    val = acdSetOutType(thys, "outdistance");
+    acdSetOutType(thys, "outdistance");
     return;
 }
 
@@ -9319,9 +9338,7 @@ AjPOutfile ajAcdGetOutfreq(const char *token)
 
 static void acdSetOutfreq(AcdPAcd thys)
 {
-    AjPOutfile val = NULL;
-
-    val = acdSetOutType(thys, "outfreq");
+    acdSetOutType(thys, "outfreq");
     return;
 }
 
@@ -9369,9 +9386,7 @@ AjPOutfile ajAcdGetOutmatrix(const char *token)
 
 static void acdSetOutmatrix(AcdPAcd thys)
 {
-    AjPOutfile val = NULL;
-
-    val = acdSetOutType(thys, "outmatrix");
+    acdSetOutType(thys, "outmatrix");
     return;
 }
 
@@ -9419,9 +9434,7 @@ AjPOutfile ajAcdGetOutmatrixf(const char *token)
 
 static void acdSetOutmatrixf(AcdPAcd thys)
 {
-    AjPOutfile val = NULL;
-
-    val = acdSetOutType(thys, "outmatrixf");
+    acdSetOutType(thys, "outmatrixf");
     return;
 }
 
@@ -9469,9 +9482,7 @@ AjPOutfile ajAcdGetOutproperties(const char *token)
 
 static void acdSetOutproperties(AcdPAcd thys)
 {
-    AjPOutfile val = NULL;
-
-    val = acdSetOutType(thys, "properties");
+    acdSetOutType(thys, "properties");
     return;
 }
 
@@ -9519,9 +9530,7 @@ AjPOutfile ajAcdGetOutscop(const char *token)
 
 static void acdSetOutscop(AcdPAcd thys)
 {
-    AjPOutfile val = NULL;
-
-    val = acdSetOutType(thys, "outscop");
+    acdSetOutType(thys, "outscop");
     return;
 }
 
@@ -9569,9 +9578,7 @@ AjPOutfile ajAcdGetOuttree(const char *token)
 
 static void acdSetOuttree(AcdPAcd thys)
 {
-    AjPOutfile val = NULL;
-
-    val = acdSetOutType(thys, "outtree");
+    acdSetOutType(thys, "outtree");
     return;
 }
 
@@ -17074,7 +17081,6 @@ static AjBool acdExpCond(AjPStr* result, const AjPStr str)
 
 static AjBool acdExpOneof(AjPStr* result, const AjPStr str)
 {
-    ajint ifound;
     AjBool todo;
     
     AjPStr testvar = NULL;
@@ -17102,7 +17108,6 @@ static AjBool acdExpOneof(AjPStr* result, const AjPStr str)
 
 	ajStrAssC(&elsevar, "");
 	todo = ajTrue;
-	ifound = 0;
 	while(todo && ajRegExec(acdRegExpOneofList, restvar))
 	{
 	    ajRegSubI(acdRegExpOneofList, 1, &acdTmpStr);
@@ -17135,10 +17140,6 @@ static AjBool acdExpOneof(AjPStr* result, const AjPStr str)
 	ajStrDel(&elsevar);
 	ajStrDel(&restvar);
 	return ajTrue;
-/* Unreachable code
-	acdLog("%S != else : '%S'\n", testvar, *result);
-	return ajTrue;
-*/
     }
     
     ajStrDel(&testvar);
@@ -21159,8 +21160,8 @@ static AjBool acdOutFilename(AjPStr* outfname,
 {
     AjBool ret = ajFalse;
 
-    acdLog("acdOutFilename ('%S', '%S', '%S')\n",
-	   *outfname, name, ext);
+    acdLog("acdOutFilename ('%S', '%S', '%S') acdStdout: %B\n",
+	   *outfname, name, ext, acdStdout);
 
     if(!acdOutFile && acdStdout) /* first outfile, running as a filter */
     {
@@ -21170,7 +21171,7 @@ static AjBool acdOutFilename(AjPStr* outfname,
 	return ajTrue;
     }
 
-    ajStrSet(&acdOutFName, name);		/* use name if given */
+    ajStrSetS(&acdOutFName, name);		/* use name if given */
     ajStrSet(&acdOutFName, acdInFName);	/* else use saved name */
     ajStrSetC(&acdOutFName, "outfile"); /* all else fails, use "outfile" */
 
@@ -22479,7 +22480,6 @@ static void acdValidQual(const AcdPAcd thys)
     AjBool isParameter = ajFalse;
     AjBool isStandard = ajFalse;
     AjBool isAdditional = ajFalse;
-    AjBool isCalculated = ajFalse;
     AjBool isToggle = ajFalse;
 
     static AjPStr secname   = NULL;
@@ -22503,8 +22503,6 @@ static void acdValidQual(const AcdPAcd thys)
     static AjPStr qualFeatoutFirst = NULL;
 
     static AjBool seqMulti     = AJFALSE;
-    static AjBool inMulti      = AJFALSE;
-    static AjBool outMulti     = AJFALSE;
     static AjBool seqoutMulti  = AJFALSE;
     static AjBool featMulti    = AJFALSE;
     static AjBool featoutMulti = AJFALSE;
@@ -22544,7 +22542,6 @@ static void acdValidQual(const AcdPAcd thys)
 	if(acdVarTestValid(tmpstr, &toggle))
 	{
 	    isParameter = ajTrue;
-	    isCalculated = ajTrue;
 	    acdErrorValid("Calculated parameter value for '%S'",
 			  thys->Name);
 	}
@@ -22572,7 +22569,6 @@ static void acdValidQual(const AcdPAcd thys)
 	if(acdVarTestValid(tmpstr, &toggle))
 	{
 	    isStandard = ajTrue;
-	    isCalculated = ajTrue;
 	    if (!toggle)
 		acdWarn("Calculated standard value for '%S'",
 			thys->Name);
@@ -22606,7 +22602,6 @@ static void acdValidQual(const AcdPAcd thys)
 	if(acdVarTestValid(tmpstr, &toggle))
 	{
 	    isAdditional = ajTrue;
-	    isCalculated = ajTrue;
 	    if (!toggle)
 		acdWarn("Calculated additional value for '%S'",
 			thys->Name);
@@ -22912,9 +22907,6 @@ static void acdValidQual(const AcdPAcd thys)
 			thys->Token);
 	    else
 	    {
-		if((qualCountInfile > 1) ||
-		   !ajStrMatchC(thys->Token, "infile"))
-		    inMulti = ajTrue;
 		if((qualCountInfile == 1) &&
 		   !ajStrMatchC(thys->Token, "infile") &&
 		   !ajStrSuffixC(thys->Token, "file"))
@@ -22928,12 +22920,7 @@ static void acdValidQual(const AcdPAcd thys)
 	    if(!ajStrSuffixC(thys->Token, "files"))
 		acdWarn("Filelist qualifier '%S' is not '*files'",
 			thys->Token);
-	    else
-	    {
-		if(qualCountInfile > 1)
-		    inMulti = ajTrue;
-		/* no fixed qualifier name for first input filelist */
-	    }
+	    /* no fixed qualifier name for first input filelist */
 	}
 	else if(ajStrMatchCC(acdType[thys->Type].Name, "directory") ||
 		ajStrMatchCC(acdType[thys->Type].Name, "dirlist"))
@@ -22948,12 +22935,7 @@ static void acdValidQual(const AcdPAcd thys)
 		acdWarn("Directory qualifier '%S' is not '*directory or *dir'"
 			" or *path'",
 			thys->Token);
-	    else
-	    {
-		if(qualCountInfile > 1)
-		    inMulti = ajTrue;
-		/* no fixed qualifier name for first input directory */
-	    }
+	    /* no fixed qualifier name for first input directory */
 	}
 
 	tmpstr = acdAttrValue(thys, "knowntype");
@@ -22999,9 +22981,6 @@ static void acdValidQual(const AcdPAcd thys)
 		    thys->Token);
 	else
 	{
-	    if((qualCountOutfile > 1) ||
-	       !ajStrMatchC(thys->Token, "outfile"))
-		outMulti = ajTrue;
 	    if((qualCountOutfile == 1) &&
 	       !ajStrMatchC(thys->Token, "outfile"))
 		acdWarn("First output file qualifier '%S' is not 'outfile'",
@@ -23040,9 +23019,6 @@ static void acdValidQual(const AcdPAcd thys)
 		    thys->Token);
 	else
 	{
-	    if((qualCountOutfile > 1) ||
-	       !ajStrMatchC(thys->Token, "outdir"))
-		outMulti = ajTrue;
 	    if((qualCountOutfile == 1) &&
 	       !ajStrMatchC(thys->Token, "outdir") &&
 	       !ajStrSuffixC(thys->Token, "outdir"))
@@ -23080,9 +23056,6 @@ static void acdValidQual(const AcdPAcd thys)
 		    thys->Token);
 	else
 	{
-	    if((qualCountOutfile > 1) ||
-	       !ajStrMatchC(thys->Token, "outfile"))
-		outMulti = ajTrue;
 	    if((qualCountOutfile == 1) &&
 	       !ajStrMatchC(thys->Token, "outfile"))
 		acdWarn("First alignment file qualifier '%S' is not 'outfile'",
@@ -23112,9 +23085,6 @@ static void acdValidQual(const AcdPAcd thys)
 		    thys->Token);
 	else
 	{
-	    if((qualCountOutfile > 1) ||
-	       !ajStrMatchC(thys->Token, "outfile"))
-		outMulti = ajTrue;
 	    if((qualCountOutfile == 1) &&
 	       !ajStrMatchC(thys->Token, "outfile"))
 		acdWarn("First report file qualifier '%S' is not 'outfile'",
@@ -23209,7 +23179,7 @@ static void acdValidQual(const AcdPAcd thys)
 
 	if(!ajStrMatchC(thys->Token, "outfeat") &&
 	   !ajStrSuffixC(thys->Token, "outfeat"))
-	    acdWarn("Feature output qualifier '%S' is not 'featout' "
+	    acdWarn("Feature output qualifier '%S' is not 'outfeat' "
 		    "or '*outfeat'",
 		    thys->Token);
 
@@ -24142,6 +24112,472 @@ static AjBool acdResourceList(const AcdPAcd thys,
 
 
 
+/* @funcstatic acdDelAlign ****************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelAlign(void** PPval)
+{
+    if(!*PPval) return;
+    ajAlignDel((AjPAlign*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelCod ******************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelCod(void** PPval)
+{
+    if(!*PPval) return;
+    ajCodDel((AjPCod*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelDir ******************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelDir(void** PPval)
+{
+    if(!*PPval) return;
+    ajDirDel((AjPDir*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelFeattable ************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelFeattable(void** PPval)
+{
+    if(!*PPval) return;
+    ajFeattableDel((AjPFeattable*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelFeattabOut ***********************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelFeattabOut(void** PPval)
+{
+    if(!*PPval) return;
+    ajFeattabOutDel((AjPFeattabOut*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelFile *****************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelFile(void** PPval)
+{
+    if(!*PPval) return;
+    ajFileClose((AjPFile*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelFloat ****************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelFloat(void** PPval)
+{
+    if(!*PPval) return;
+    ajFloatDel((AjPFloat*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelList *****************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelList(void** PPval)
+{
+    if(!*PPval) return;
+    ajListstrDel((AjPList*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelMatrix ***************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelMatrix(void** PPval)
+{
+    if(!*PPval) return;
+    ajMatrixDel((AjPMatrix*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelMatrixf **************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelMatrixf(void** PPval)
+{
+    if(!*PPval) return;
+    ajMatrixfDel((AjPMatrixf*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelOutfile **************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelOutfile(void** PPval)
+{
+    if(!*PPval) return;
+    ajOutfileDel((AjPOutfile*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelPhyloDist ************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelPhyloDist(void** PPval)
+{
+    if(!*PPval) return;
+    ajPhyloDistDel((AjPPhyloDist*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelPhyloFreq ************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelPhyloFreq(void** PPval)
+{
+    if(!*PPval) return;
+    ajPhyloFreqDel((AjPPhyloFreq*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelPhyloProp ************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelPhyloProp(void** PPval)
+{
+    if(!*PPval) return;
+    ajPhyloPropDel((AjPPhyloProp*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelPhyloState ***********************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelPhyloState(void** PPval)
+{
+    if(!*PPval) return;
+    ajPhyloStateDel((AjPPhyloState*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelPhyloTree ************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelPhyloTree(void** PPval)
+{
+    if(!*PPval) return;
+    ajPhyloTreeDel((AjPPhyloTree*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelRange ****************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelRange(void** PPval)
+{
+    if(!*PPval) return;
+    ajRangeDel((AjPRange*)PPval);
+    return;
+}
+
+
+
+/* @funcstatic acdDelReg ******************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelReg(void** PPval)
+{
+    if(!*PPval) return;
+    ajRegFree((AjPRegexp*)PPval);
+    return;
+}
+
+
+
+/* @funcstatic acdDelReport ***************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelReport(void** PPval)
+{
+    if(!*PPval) return;
+    ajReportDel((AjPReport*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelSeq ******************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelSeq(void** PPval)
+{
+    if(!*PPval) return;
+    ajSeqDel((AjPSeq*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelSeqall ***************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelSeqall(void** PPval)
+{
+    if(!*PPval) return;
+    ajSeqallDel((AjPSeqall*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelSeqout ***************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelSeqout(void** PPval)
+{
+    if(!*PPval) return;
+    ajSeqoutDel((AjPSeqout*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelSeqset ***************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelSeqset(void** PPval)
+{
+    if(!*PPval) return;
+    ajSeqsetDel((AjPSeqset*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelSeqsetArray **********************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelSeqsetArray(void** PPval)
+{
+    if(!*PPval) return;
+    ajSeqsetDelarray((AjPSeqset**)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelStr ******************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelStr(void** PPval)
+{
+    if(!*PPval) return;
+    ajStrDel((AjPStr*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelStrArray *************************************************
+**
+** Function with void** prototype to delete ACD data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelStrArray(void** PPval)
+{
+    if(!*PPval) return;
+    ajStrDelarray((AjPStr**)PPval);
+    return;
+}
+
+
+
+
 /* @funcstatic acdFree ********************************************************
 **
 ** Function to delete ACD data using the standard free function
@@ -24156,3 +24592,4 @@ static void acdFree(void** PPval)
     AJFREE(*PPval);
     return;
 }
+

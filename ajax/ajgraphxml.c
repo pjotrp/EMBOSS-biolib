@@ -23,14 +23,14 @@
 ** Boston, MA  02111-1307, USA.
 ********************************************************************/
 
-#ifdef GROUT
-
 #include "ajax.h"
 #include <math.h>
 
 #define ONE_METER_FONT 1.784
 #define RESIDUE_SQUARE_SIZE 1.7
 #define SQUARESIZE 0.03
+
+#ifdef GROUT
 
 
 static AjPXmlNode	xml_MakeNewNode(AjPGraphXml file,const AjPStr name,

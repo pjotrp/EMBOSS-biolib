@@ -192,7 +192,7 @@ void ajSeqsetDelarray(AjPSeqset **thys)
 
     while(*thys[i])
     {
-	ajSeqsetDel(&thys[i]);
+	ajSeqsetDel(&(*thys)[i]);
 	i++;
     }
 
@@ -5450,7 +5450,7 @@ void ajSeqoutDel(AjPSeqout* pthis)
     while(ajListPop(thys->Savelist,(void **)&seq))
 	ajSeqDel(&seq);
     ajListDel(&thys->Savelist);
-    ajFeattabInDel(&thys->Ftquery);
+    ajFeattabOutDel(&thys->Ftquery);
 
     AJFREE(thys->Accuracy);
     AJFREE(*pthis);
