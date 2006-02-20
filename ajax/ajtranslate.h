@@ -97,6 +97,7 @@ typedef struct AjSTrn {
 
 
 void   ajTrnDel (AjPTrn* pthis);
+void   ajTrnExit(void);
 AjPTrn ajTrnNew (const AjPStr trnFileName);
 AjPTrn ajTrnNewI (ajint trnFileNameInt);
 AjPTrn ajTrnNewC (const char *trnFileName);
