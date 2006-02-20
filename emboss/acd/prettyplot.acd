@@ -13,7 +13,6 @@ section: input [
     parameter: "Y"
     type: "gapany"
     aligned: "Y"
-    help: "File containing a sequence alignment"
   ]
 
   matrix: matrixfile  [
