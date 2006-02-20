@@ -21171,7 +21171,7 @@ static AjBool acdOutFilename(AjPStr* outfname,
 	return ajTrue;
     }
 
-    ajStrSetS(&acdOutFName, name);		/* use name if given */
+    ajStrSet(&acdOutFName, name);		/* use name if given */
     ajStrSet(&acdOutFName, acdInFName);	/* else use saved name */
     ajStrSetC(&acdOutFName, "outfile"); /* all else fails, use "outfile" */
 
