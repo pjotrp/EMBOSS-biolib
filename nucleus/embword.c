@@ -29,6 +29,7 @@ static ajint wordLength = 0;
 /* list of wordlengths with current one at top of list */
 static AjPList wordLengthList = NULL;
 
+static AjPList wordCurList = NULL;
 
 
 
@@ -176,8 +177,11 @@ void embWordClear(void)
     ** pop the previous word length from the list in case there's
     ** recursive word stuff
     */
-    ajListPop(wordLengthList, (void **)&pint);
-    AJFREE(pint);
+    if(ajListLength(wordLengthList))
+    {
+	ajListPop(wordLengthList, (void **)&pint);
+	AJFREE(pint);
+    }
 
     if(!ajListLength(wordLengthList))
     {
@@ -870,7 +874,6 @@ AjPList embWordBuildMatchTable(AjPTable *seq1MatchTable,  const AjPSeq seq2,
     ajint i = 0;
     ajint ilast;
     AjPList hitlist = NULL;
-    static AjPList curlist = NULL;
     const AjPList newlist = NULL;
     const char *startptr;
     EmbPWord wordmatch;
@@ -892,8 +895,8 @@ AjPList embWordBuildMatchTable(AjPTable *seq1MatchTable,  const AjPSeq seq2,
 
     hitlist = ajListNew();
 
-    if(!curlist)
-	curlist = ajListNew();
+    if(!wordCurList)
+	wordCurList = ajListNew();
 
     if(ajSeqLen(seq2) < wordLength)
     {
@@ -929,10 +932,10 @@ AjPList embWordBuildMatchTable(AjPTable *seq1MatchTable,  const AjPSeq seq2,
 
 	    /* this is the list of matches for the current word and position */
 
-	    if(ajListLength(curlist))
+	    if(ajListLength(wordCurList))
 	    {
-	      /* ajDebug("CurList size %d\n",ajListLength(curlist)); */
-		curiter = ajListIter(curlist);
+	      /* ajDebug("wordCurList size %d\n",ajListLength(wordCurList)); */
+		curiter = ajListIter(wordCurList);
 
 		curmatch = ajListIterNext(curiter);
 		kcur = curmatch->seq1start + curmatch->length - wordLength + 1;
@@ -1001,17 +1004,17 @@ AjPList embWordBuildMatchTable(AjPTable *seq1MatchTable,  const AjPSeq seq2,
 		    /* ajDebug("Pushapp to hitlist\n"); */
 		    ajListPushApp(hitlist, match2); /* add to hitlist */
 		    if(curiter)
-		    {			/* add to curlist */
+		    {			/* add to wordCurList */
 		      /* ajDebug("ajListInsert using curiter\n"); */
 			wordListInsertOld(curiter, match2);
-			/*wordCurListTrace(curlist);*/
+			/*wordCurListTrace(wordCurList);*/
 			/*wordCurIterTrace(curiter);*/
 		    }
 		    else
 		    {
-		      /* ajDebug("ajListPushApp to curlist\n"); */
-			ajListPushApp(curlist, match2);
-			/* wordCurListTrace(curlist); */
+		      /* ajDebug("ajListPushApp to wordCurList\n"); */
+			ajListPushApp(wordCurList, match2);
+			/* wordCurListTrace(wordCurList); */
 		    }
 		}
 		/* ajDebug("k: %d i: %d\n", *k, i); */
@@ -1056,7 +1059,7 @@ AjPList embWordBuildMatchTable(AjPTable *seq1MatchTable,  const AjPSeq seq2,
 
     AJFREE(match);
 
-    while(ajListPop(curlist,(void **)&ptr));
+    while(ajListPop(wordCurList,(void **)&ptr));
 
     return hitlist;
 }
@@ -1548,6 +1551,23 @@ void embWordUnused(void)
     wordCurListTrace(NULL);	/* comment out in embWordBuildMatchTable */
     wordCurIterTrace(NULL);	/* comment out in embWordBuildMatchTable */
     wordNewListTrace(0, NULL);	/* comment out in embWordBuildMatchTable */
+
+    return;
+}
+
+
+
+/* embWordExit ****************************************************************
+**
+** Cleanup word matching indexing internals on exit
+**
+** @return [void]
+******************************************************************************/
+
+void embWordExit(void)
+{
+    embWordClear();
+    ajListFree(&wordCurList);
 
     return;
 }
