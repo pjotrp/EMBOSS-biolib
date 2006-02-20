@@ -752,10 +752,7 @@ char* ajSysStrtok(const char *s, const char *t)
 
     len = strcspn(sysTokp,t);		/* count non-delimiters */
     ajStrAssSubC(&sysTokRets,sysTokp,0,len-1);
-    sysTokp += len;
-
-    if(*sysTokp)
-	sysTokp += 1;			/* skip over first delimiter only */
+    sysTokp += len;		  /* skip over first delimiter only */
 
     return ajStrStrMod(&sysTokRets);
 }
@@ -765,7 +762,8 @@ char* ajSysStrtok(const char *s, const char *t)
 
 /* @func ajSysStrtokR *********************************************************
 **
-** Reentrant strtok that doesn't corrupt the source string
+** Reentrant strtok that doesn't corrupt the source string.
+** This function uses a string buffer provided by the caller.
 **
 ** @param [r] s [const char *] source string
 ** @param [r] t [const char *] delimiter string
@@ -799,9 +797,7 @@ char* ajSysStrtokR(const char *s, const char *t, char **ptrptr, AjPStr *buf)
 
     len = strcspn(p,t);			/* count non-delimiters */
     ajStrAssSubC(buf,p,0,len-1);
-    p += len;
-
-    p += 1;				/* skip over first delimiter */
+    p += len;			       /* skip to first delimiter */
 
     *ptrptr = (char *) p;
 
