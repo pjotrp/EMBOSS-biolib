@@ -24,6 +24,8 @@ char         ajSeqTypeGapnucS (const AjPStr pthys);
 char         ajSeqTypeGaprnaS (const AjPStr pthys);
 char         ajSeqTypeNucS (const AjPStr pthys);
 char         ajSeqTypeProtS (const AjPStr pthys);
+AjBool       ajSeqTypeSummary(const AjPStr type_name,
+			      AjPStr* Ptype, AjBool* gaps);
 char         ajSeqTypeRnaS (const AjPStr pthys);
 
 AjBool       ajSeqTypeIsAny (const AjPStr type_name);

@@ -175,7 +175,7 @@ static SeqOType seqType[] =
     {"gapdna",         AJTRUE,  AJTRUE,  ISNUC,  "?XxUu", "NNNTt",
 	 seqTypeCharNucGap,
 	 "DNA sequence with gaps"},
-    {"gapdnaphylo",     AJTRUE,  AJTRUE,  ISNUC, "Uu",  "Tt",
+    {"gapdnaphylo",    AJTRUE,  AJTRUE,  ISNUC,  "Uu",  "Tt",
 	 seqTypeCharNucGapPhylo,
 	 "DNA sequence with gaps and queries"},
     {"rna",            AJFALSE, AJTRUE,  ISNUC,  "?XxTt", "NNNUu",
@@ -214,10 +214,10 @@ static SeqOType seqType[] =
     {"gapprotein",     AJTRUE,  AJTRUE,  ISPROT, "?*",  "XX",
 	 seqTypeCharProtGap,
 	 "protein sequence with gaps"},
-    {"gapstopprotein",     AJTRUE,  AJTRUE,  ISPROT, "?",  "X",
+    {"gapstopprotein", AJTRUE,  AJTRUE,  ISPROT, "?",  "X",
 	 seqTypeCharProtStopGap,
 	 "protein sequence with gaps and possible stops"},
-    {"gapproteinphylo",     AJTRUE,  AJTRUE,  ISPROT, "",  "",
+    {"gapproteinphylo", AJTRUE,  AJTRUE,  ISPROT, "",  "",
 	 seqTypeCharProtGapPhylo,
 	 "protein sequence with gaps, stops and queries"},
     {"proteinstandard",AJFALSE, AJTRUE,  ISPROT, "?*Uu", "XXXx",
@@ -1196,7 +1196,7 @@ void ajSeqPrintType(AjPFile outf, AjBool full)
     char* typeName[] = {"ANY", "NUC", "PRO"};
 
     ajFmtPrintF(outf, "\n# Sequence Types\n");
-    ajFmtPrintF(outf, "# Name                 Gap Ambig N/P From To Desciption\n");
+    ajFmtPrintF(outf, "# Name                 Gap Ambig N/P From To Description\n");
     ajFmtPrintF(outf, "seqType {\n");
     for(i=0; seqType[i].Name; i++)
     {
@@ -1802,6 +1802,45 @@ AjBool ajSeqTypeIsAny(const AjPStr type_name)
 	default:
 	    return ajTrue;
 	}
+
+    return ajFalse;
+}
+
+
+
+
+/* @func ajSeqTypeSummary *****************************************************
+**
+** Returns ajTrue is sequence type can be a protein or nucleotide
+**
+** @param [r] type_name [const AjPStr] Sequence type
+** @param [w] type [AjPStr*] Sequence type 'protein' 'nucleotide' or 'any'
+** @param [w] gaps [AjBool*] True if gap characters are preserved
+** @return [AjBool] ajTrue if sequence can be protein or nucleotide
+**
+******************************************************************************/
+
+AjBool ajSeqTypeSummary(const AjPStr type_name, AjPStr* Ptype, AjBool* gaps)
+{
+    ajint itype;
+
+    if(seqFindType(type_name, &itype))
+    {
+	*gaps = seqType[itype].Gaps;
+	switch(seqType[itype].Type)
+	{
+	case ISNUC:
+	    ajStrAssC(Ptype, "nucleotide");
+	    break;
+	case ISPROT:
+	    ajStrAssC(Ptype, "protein");
+	    break;
+	default:
+	    ajStrAssC(Ptype, "");
+	    break;
+	}
+	return ajTrue;
+    }
 
     return ajFalse;
 }
