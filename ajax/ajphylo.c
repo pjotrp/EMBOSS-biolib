@@ -134,6 +134,8 @@ void ajPhyloDistDel(AjPPhyloDist* pthis)
     AjPPhyloDist thys = *pthis;
     ajint i;
 
+    if(!thys) return;
+
     if(thys->Names)
 	for(i=0; i < thys->Size; i++)
 	    ajStrDel(&thys->Names[i]);
@@ -163,6 +165,8 @@ void ajPhyloFreqDel(AjPPhyloFreq* pthis)
     ajint i;
 
     thys = *pthis;
+
+    if(!thys) return;
 
     if(thys->Names)
 	for(i=0; i < thys->Size; i++)
@@ -197,6 +201,8 @@ void ajPhyloPropDel(AjPPhyloProp* pthis)
 
     thys = *pthis;
 
+    if(!thys) return;
+
     if(thys->Str)
 	for(i=0; i < thys->Size; i++)
 	    ajStrDel(&thys->Str[i]);
@@ -222,6 +228,8 @@ void ajPhyloStateDel(AjPPhyloState* pthis)
     ajint i;
 
     thys = *pthis;
+
+    if(!thys) return;
 
     if(thys->Names)
 	for(i=0; i < thys->Size; i++)
@@ -253,6 +261,8 @@ void ajPhyloTreeDel(AjPPhyloTree* pthis)
     AjPPhyloTree thys;
 
     thys = *pthis;
+
+    if(!thys) return;
 
     ajStrDel(&thys->Tree);
 

@@ -163,6 +163,8 @@ void ajRangeDel(AjPRange *thys)
 {
     ajint i;
 
+    if(!*thys) return;
+
     if((*thys)->n > 0)
     {
 	AJFREE((*thys)->start);
