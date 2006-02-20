@@ -185,6 +185,7 @@ static ajint trncomp[] =
 };
 
 
+static AjPStr trnResidueStr = NULL;
 
 
 static void trnNoComment(AjPStr* text);
@@ -703,7 +704,6 @@ const AjPStr ajTrnRevCodon(const AjPTrn trnObj, const AjPStr codon)
 
 const AjPStr ajTrnCodonC(const AjPTrn trnObj, const char *codon)
 {
-    static AjPStr trnResidue = NULL;
     char store[2];
 
 
@@ -712,9 +712,9 @@ const AjPStr ajTrnCodonC(const AjPTrn trnObj, const char *codon)
 	                 [trnconv[(ajint)codon[2]]];
     store[1] = '\0';
 
-    ajStrAssC(&trnResidue, store);
+    ajStrAssC(&trnResidueStr, store);
 
-    return trnResidue;
+    return trnResidueStr;
 }
 
 
@@ -1822,4 +1822,23 @@ static AjBool trnComplete(AjPTrn thys)
     }
 
     return ajTrue;
+}
+
+
+
+
+
+/* @func ajTrnExit ************************************************************
+**
+** Cleans up translation processing internal memory
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajTrnExit(void)
+{
+    ajStrDel(&trnResidueStr);
+
+    return;
 }
