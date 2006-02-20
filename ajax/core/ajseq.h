@@ -53,7 +53,7 @@ typedef struct AjSSeqCvt {
 /* ======= prototypes ==================*/
 
 AjBool       ajIsAccession (const AjPStr accnum);
-AjPStr       ajIsSeqversion (const AjPStr sv);
+const AjPStr ajIsSeqversion (const AjPStr sv);
 AjPSelex     ajSelexNew(ajint n);
 void         ajSelexDel(AjPSelex *thys);
 AjPSelexdata ajSelexdataNew(void);
@@ -195,6 +195,7 @@ void         ajSeqReverseStr (AjPStr* thys);
 void         ajSeqRevOnly (AjPSeq thys);
 ajint        ajSeqsetBegin (const AjPSeqset seq);
 void         ajSeqsetDel(AjPSeqset *thys);
+void         ajSeqsetDelarray(AjPSeqset **thys);
 ajint        ajSeqsetEnd (const AjPSeqset seq);
 ajint        ajSeqsetFill (AjPSeqset seq);
 const AjPStr ajSeqsetGetFormat (const AjPSeqset thys);
