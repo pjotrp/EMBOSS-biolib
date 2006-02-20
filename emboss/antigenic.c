@@ -307,6 +307,9 @@ int main(int argc, char **argv)
     ajStrDel(&stmp);
     ajStrDel(&sstr);
     ajSeqDel(&seq);
+    ajSeqallDel(&seqall);
+    ajReportDel(&report);
+
     ajStrDel(&strand);
 
     if(outf)
@@ -320,7 +323,10 @@ int main(int argc, char **argv)
     ajIntDel(&hp);
     ajIntDel(&hlen);
 
-    ajReportClose(report);
+
+    ajStrDel(&fthit);
+    ajStrDel(&substr);
+    ajStrDel(&tmpFeatStr);
 
     ajExit();
 

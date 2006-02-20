@@ -51,8 +51,8 @@ int main(int argc, char **argv)
 
     AjPFloat   chg = NULL;
 
-    AjPFile    outf;
-    AjPFile    cdata;
+    AjPFile    outf = NULL;
+    AjPFile    cdata = NULL;
     AjPStr     str    = NULL;
 
     AjBool     plot;
@@ -170,8 +170,14 @@ int main(int argc, char **argv)
 
     if(plot)
         ajGraphClose();
-    else
-	ajFileClose(&outf);
+
+    ajSeqDel(&seq);
+    ajSeqallDel(&seqall);
+    ajGraphxyDel(&graph);
+    ajFileClose(&outf);
+    ajFileClose(&cdata);
+
+    ajFloatDel(&chg);
 
     ajStrDel(&str);
 

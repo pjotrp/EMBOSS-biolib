@@ -114,10 +114,14 @@ int main(int argc, char **argv)
 			      begin,orfml);
     }
 
-    ajSeqDel(&seq);
-    ajStrDel(&substr);
+    ajSeqallDel(&seqall);
     ajFileClose(&outf);
     ajSeqWriteClose(outseq);
+    ajSeqoutDel(&outseq);
+    ajFeattabOutDel(&featout);
+
+    ajSeqDel(&seq);
+    ajStrDel(&substr);
 
     ajExit();
 

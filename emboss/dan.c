@@ -92,10 +92,10 @@ int main(int argc, char **argv)
     AjPStr strand = NULL;
     ajint len;
 
-    static float *xa;
-    static float *ta;
-    static float *tpa;
-    static float *cga;
+    static float *xa = NULL;
+    static float *ta = NULL;
+    static float *tpa = NULL;
+    static float *cga = NULL;
     static ajint npoints;
     ajint n;
 
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
     if(!doplot)
     {
 	mintemp = 0.0;
-	mult = NULL;
+	ajGraphxyDel(&mult);
     }
 
 
@@ -192,16 +192,19 @@ int main(int argc, char **argv)
     }
 
     if(mult)
-    {
 	ajGraphCloseWin();
-	ajGraphxyDel(&mult);
-    }
 
+    ajGraphxyDel(&mult);
+    ajFileClose(&outf);
+
+    ajSeqallDel(&seqall);
+    ajFileClose(&outf);
+    ajReportDel(&report);
+    ajFeattableDel(&TabRpt);
+    ajGraphxyDel(&mult);
     ajSeqDel(&seq);
-    if(outf)
-	ajFileClose(&outf);
 
-    ajReportClose(report);
+    ajStrDel(&strand);
 
     ajExit();
     return 0;
@@ -382,7 +385,7 @@ static void dan_reportgc(AjPReport report,
 {
 
     AjPFeature gf = NULL;
-    static AjPStr tmpStr = NULL;
+    AjPStr tmpStr = NULL;
     static AjBool initialised = 0;
     AjPStr type   = NULL;
     AjPStr substr = NULL;
@@ -482,6 +485,7 @@ static void dan_reportgc(AjPReport report,
     }
 
     ajStrDel(&substr);
+    ajStrDel(&tmpStr);
 
     return;
 }

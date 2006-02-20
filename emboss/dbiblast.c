@@ -76,7 +76,17 @@
 #define HDRSIZE 1000
 
 
+static AjPStr id    = NULL;
+static AjPStr hline = NULL;
+static AjPStr acc   = NULL;
+static AjPStr t      = NULL;
+static AjPRegexp wrdexp = NULL;
 
+static AjPStr tmpdes = NULL;
+static AjPStr tmpfd  = NULL;
+static AjPStr tmpac  = NULL;
+static AjPStr tmpsv  = NULL;
+static AjPStr tmpgi  = NULL;
 
 /* @datastatic PMemFile *******************************************************
 **
@@ -415,8 +425,8 @@ int main(int argc, char **argv)
     cleanup    = ajAcdGetBool("cleanup");
     sortopt    = ajAcdGetString("sortoptions");
     maxindex   = ajAcdGetInt("maxindex");
-    version    = ajAcdGetListI("blastversion",1);
-    seqtype    = ajAcdGetListI("seqtype",1);
+    version    = ajAcdGetListSingle("blastversion");
+    seqtype    = ajAcdGetListSingle("seqtype");
     usesrc     = ajAcdGetBool("sourcefile");
     logfile    = ajAcdGetOutfile("outfile");
 
@@ -513,11 +523,16 @@ int main(int argc, char **argv)
 	{
 	    idCountFile++;
 	    if(!systemsort)	    /* save the entry data in lists */
+	    {
 		embDbiMemEntry(idlist, fieldList, nfields, entry, jfile);
+	    }
 	}
 	idCount += idCountFile;
 	if(systemsort)
+	{
 	    embDbiSortClose(&elistfile, alistfile, nfields);
+	    /* lost the entry, so can't free it :-) */
+	}
 
 	embDbiLogFile(logfile, curfilename, idCountFile, fields,
 		      countField, nfields);
@@ -590,9 +605,61 @@ int main(int argc, char **argv)
     if(systemsort)
 	embDbiRmEntryFile(dbname, cleanup);
     
+    ajListFree(idlist);
+
+    ajStrDelarray(&fields[i]);
+
+    for(i=0;i<nfields;i++)
+    {
+	if(systemsort)
+	{
+	    ajFileClose(&alistfile[i]);
+	}
+	else
+	{
+	    ajListDel(&fieldList[i]);
+	}
+    }
+    ajStrDel(&version);
+    ajStrDel(&seqtype);
+    ajFileClose(&elistfile);
+    for(i=0;i<nfiles;i++)
+    {
+	ajStrDel(&divfiles[i]);
+    }
+    AJFREE(countField);
+    AJFREE(fieldTot);
+
+    ajStrDel(&dbname);
+    ajStrDel(&release);
+    ajStrDel(&datestr);
+    ajStrDel(&sortopt);
+    ajStrDel(&directory);
+    ajStrDel(&indexdir);
+    ajStrDel(&filename);
+    ajStrDel(&exclude);
+    ajStrDel(&curfilename);
+    ajStrDel(&idformat);
+    ajStrDel(&tmpfname);
+
+    AJFREE(maxFieldLen);
+
+    ajFileClose(&logfile);
+
     ajListDel(&listTestFiles);
-    
-    ajExit();
+
+    ajStrDel(&t);
+    ajStrDel(&id);
+    ajStrDel(&acc);
+    ajStrDel(&hline);
+    ajStrDel(&tmpdes);
+    ajStrDel(&tmpfd);
+    ajStrDel(&tmpgi);
+    ajStrDel(&tmpac);
+    ajStrDel(&tmpsv);
+    ajRegFree(&wrdexp);
+
+    embExit();
 
     return 0;
 }
@@ -636,9 +703,6 @@ static EmbPEntry dbiblast_nextblastentry(PBlastDb db, ajint ifile,
     static ajuint tabhdr[TABLESIZE];
     static ajint iload  = TABLESIZE-1;
     static ajint irest  = 0;
-    static AjPStr id    = NULL;
-    static AjPStr hline = NULL;
-    static AjPStr acc   = NULL;
     static ajint ipos   = 0;
 
     static ajint jpos = 0;
@@ -1000,6 +1064,7 @@ static AjBool dbiblast_blastopenlib(const AjPStr name, AjBool usesrc,
     ajStrDel(&hname);
     ajStrDel(&sname);
     ajStrDel(&tname);
+    ajStrDel(&dbname);
 
     return ajTrue;
 }
@@ -1033,14 +1098,7 @@ static AjBool dbiblast_parseNcbi(const AjPStr line, AjPFile * alistfile,
 				 AjPStr* id,
 				 AjPList* fdlist)
 {
-    static AjPRegexp wrdexp = NULL;
     char* fd;
-    static AjPStr tmpdes = NULL;
-    static AjPStr tmpfd  = NULL;
-    static AjPStr tmpac  = NULL;
-    static AjPStr tmpsv  = NULL;
-    static AjPStr tmpgi  = NULL;
-    static AjPStr t      = NULL;
 
     static ajint numFields;
     static ajint accfield = -1;

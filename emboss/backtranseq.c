@@ -67,6 +67,9 @@ int main(int argc, char **argv)
     ajSeqWriteClose(outf);
     ajCodDel(&codon);
 
+    ajSeqoutDel(&outf);
+    ajSeqDel(&a);
+
     ajExit();
 
     return 0;

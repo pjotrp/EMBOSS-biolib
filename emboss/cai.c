@@ -66,6 +66,9 @@ int main(int argc, char **argv)
     ajFileClose(&outf);
 
     ajCodDel(&codon);
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajStrDel(&substr);
 
     ajExit();
 

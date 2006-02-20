@@ -377,6 +377,13 @@ int main(int argc, char **argv)
     AJFREE(curve);
     AJFREE(bend);
 
+    ajStrDel(&sstr);
+
+    ajSeqDel(&seq);
+    ajFileClose(&file);
+    ajFileClose(&outf);
+    ajGraphxyDel(&graph);
+
     ajExit();
 
     return 0;

@@ -298,7 +298,7 @@ int main(int argc, char **argv)
     if(dseq && !overlay)
 	ajGraphPlpDataDel(&gd5);  /* free seq text mem */
 
-/*    ajGraphxyDel(&graphs);*/
+    ajGraphxyDel(&graphs);
     ajInt2dDel(&trace);
     ajShortDel(&basePositions);
 
