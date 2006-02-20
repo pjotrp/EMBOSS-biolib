@@ -50,6 +50,8 @@ ajint         ajFeatGetFrame (const AjPFeature thys);
 ajint         ajFeatGetLocs(const AjPStr str, AjPStr **cds, const char *type);
 AjBool        ajFeatGetNote (const AjPFeature thys, const AjPStr name,
 			     AjPStr* val);
+AjBool        ajFeatGetNoteCI(const AjPFeature thys, const char* name,
+			      ajint count, AjPStr* val);
 AjBool        ajFeatGetNoteI (const AjPFeature thys, const AjPStr name,
 			      ajint count, AjPStr* val);
 ajint         ajFeatGetStart (const AjPFeature thys);
