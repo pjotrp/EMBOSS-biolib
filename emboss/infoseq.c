@@ -168,7 +168,7 @@ int main(int argc, char **argv)
 		    if(html)
 			ajFmtPrintF(outfile, "<th>Length</th>");
 		    else
-			ajFmtPrintF(outfile, "Length\t");
+			ajFmtPrintF(outfile, "Length ");
 		}
 
 		if(!type && dopgc)

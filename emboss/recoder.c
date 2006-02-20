@@ -31,9 +31,6 @@
 
 #define IUBFILE "Ebases.iub"
 
-AjIUB aj_base_iubS[256];      /* base letters and their alternatives */
-
-
 
 
 /* @datastatic AjPRinfo *******************************************************
@@ -170,8 +167,6 @@ int main(int argc, char **argv)
     begin = ajSeqBegin(seq);              /* seq start posn, or 1     */
     end   = ajSeqEnd(seq);                /* seq end posn, or seq len */
     radj  = begin+end+1;                  /* posn adjustment for compl seq */
-
-    aj_base_I= 1;
 
     /* --begin and --end to convert counting from 0-N, not 1-N */
     ajStrAssSubC(&sstr,ajSeqChar(seq),--begin,--end);
@@ -660,7 +655,7 @@ static AjPList recoder_checkTrans(const AjPStr dna, const EmbPMatMatch match,
 /* @funcstatic recoder_changebase *********************************************
 **
 ** Use IUB code to return alternative nucleotides to that provided
-** same translation.
+** which result in the same translation.
 **
 ** @param [r] pbase [char] Base
 ** @param [w] tbase [char*] C string with alternative bases
@@ -679,14 +674,8 @@ static ajint recoder_changebase(char pbase, char* tbase)
     char bs;
     ajint i;
     ajint nb;
-    ajint len;
 
-    ajBaseInit();
-
-    len = ajStrLen(aj_base_iubS[(ajint)pbase].list)-1;
-
-    bt = ajStrNew();
-    ajStrAssI(&bt,aj_base_iubS[(ajint)pbase].list,len);
+    bt = ajBaseCodes((ajint)pbase);
     splits = ajStrIter(bt);
 
     while(!ajStrIterDone(splits))
@@ -723,8 +712,6 @@ static ajint recoder_changebase(char pbase, char* tbase)
         nb++;
       }
     }
-
-    ajStrDel(&bt);
 
     return nb;
 }
