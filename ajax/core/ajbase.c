@@ -35,6 +35,26 @@ char iubbases[] = "XACMGRSVTWYHKDBN";
 
 AjBool aj_base_I = 0;
 
+AjBool aj_base_I;
+
+
+/* @func ajBaseCodes *******************************************************
+**
+** Returns a string of matching base codes
+**
+** @param [w] ibase [ajint] Original base code
+**
+** @return [const AjPStr] Base codes
+******************************************************************************/
+
+const AjPStr ajBaseCodes(ajint ibase)
+{
+    if(!aj_base_I)
+	ajBaseInit();
+
+    return  aj_base_iubS[ibase].list;
+}
+
 
 
 
@@ -160,10 +180,10 @@ char ajAZToBinC(char c)
 ** Uses the Ebases.iub file
 ** Is initialised if necessary from other AJAX functions.
 **
-** @return [void]
+** @return [AjBool] True on success
 ******************************************************************************/
 
-void ajBaseInit(void)
+AjBool ajBaseInit(void)
 {
     AjPFile bfptr  = NULL;
     AjPStr  bfname = NULL;
@@ -176,6 +196,7 @@ void ajBaseInit(void)
     ajint k;
 
     ajint c;
+    ajint qc;
 
     ajint l1;
     ajint l2;
@@ -188,7 +209,7 @@ void ajBaseInit(void)
     const char *q;
 
     if(aj_base_I)
-	return;
+	return ajTrue;
 
 
     for(i=0;i<256;++i)
@@ -225,14 +246,13 @@ void ajBaseInit(void)
 	    ajFatal("Bad format IUB file");
 	p = ajSysStrtok(NULL," \t\r");
 	ajStrAssC(&list,p);
-	q = ajStrStr(code);
-	p = ajStrStr(list);
-	ajStrAssC(&aj_base_iubS[toupper((ajint) *q)].code,q);
-	ajStrAssC(&aj_base_iubS[toupper((ajint) *q)].list,p);
-	ajStrAssC(&aj_base_iubS[tolower((ajint) *q)].code,q);
-	ajStrAssC(&aj_base_iubS[tolower((ajint) *q)].list,p);
-	aj_base_table[toupper((ajint) *q)] = n;
-	aj_base_table[tolower((ajint) *q)] = n;
+	qc = (ajint) ajStrGetCharFirst(code);
+	ajStrAssS(&aj_base_iubS[toupper(qc)].code,code);
+	ajStrAssS(&aj_base_iubS[toupper(qc)].list,list);
+	ajStrAssS(&aj_base_iubS[tolower(qc)].code,code);
+	ajStrAssS(&aj_base_iubS[tolower(qc)].list,list);
+	aj_base_table[toupper(qc)] = n;
+	aj_base_table[tolower(qc)] = n;
     }
 
     ajStrDel(&code);
@@ -273,7 +293,7 @@ void ajBaseInit(void)
 
     aj_base_I = ajTrue;
 
-    return;
+    return aj_base_I;
 }
 
 
@@ -306,4 +326,56 @@ AjBool  ajBaseAa1ToAa3(char aa1, AjPStr *aa3)
 
     ajStrAssC(aa3, tab[idx]);
     return ajTrue;
+}
+
+
+
+/* @func ajBaseProb **********************************************************
+**
+** Returns an element of the base match probability array
+**
+** @param [r] base1 [ajint] First base offset
+** @param [r] base2 [ajint] Second base offset
+**
+** @return [float] Base probability value
+** @@
+******************************************************************************/
+float  ajBaseProb(ajint base1, ajint base2)
+{
+    ajint b1;
+    ajint b2;
+
+    b1 = base1;
+    b2 = base2;
+
+    if(b1<0)b1=0;
+    if(b1>31)b1=31;
+    if(b2<0)b2=0;
+    if(b2>31)b2=31;
+
+    return aj_base_prob[b1][b2];
+}
+
+
+
+
+/* @func ajBaseExit ***********************************************************
+**
+** Cleans up sequence base processing internal memory
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajBaseExit(void)
+{
+    ajint i;
+
+    for(i=0;i<256;++i)
+    {
+	ajStrDel(&aj_base_iubS[i].code);
+	ajStrDel(&aj_base_iubS[i].list);
+    }
+    
+    return;
 }
