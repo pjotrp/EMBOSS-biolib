@@ -24,7 +24,10 @@
 #include "ajax.h"
 
 
+static AjPRegexp seqoutRegFmt = NULL;
+static AjPRegexp seqoutRegId  = NULL;
 
+static AjPStr seqoutUsaTest = NULL;
 
 /* @datastatic SeqPOutFormat **************************************************
 **
@@ -776,7 +779,7 @@ static void seqWriteFasta(AjPSeqout outseq)
 {
     ajint i;
     ajint ilen;
-    static AjPStr seq = NULL;
+    AjPStr seq = NULL;
     ajint linelen     = 60;
     ajint iend;
 
@@ -803,6 +806,8 @@ static void seqWriteFasta(AjPSeqout outseq)
 	ajFmtPrintF(outseq->File, "%S\n", seq);
     }
 
+    ajStrDel(&seq);
+
     return;
 }
 
@@ -823,7 +828,7 @@ static void seqWriteNcbi(AjPSeqout outseq)
 
     ajint i;
     ajint ilen;
-    static AjPStr seq = NULL;
+    AjPStr seq = NULL;
     ajint linelen     = 60;
     ajint iend;
 
@@ -858,6 +863,8 @@ static void seqWriteNcbi(AjPSeqout outseq)
 	ajStrAssSub(&seq, outseq->Seq, i, iend);
 	ajFmtPrintF(outseq->File, "%S\n", seq);
     }
+
+    ajStrDel(&seq);
 
     return;
 }
@@ -1632,14 +1639,14 @@ static void seqWriteClustal(AjPSeqout outseq)
     }
     
     ajFmtPrintF(outseq->File,
-		"CLUSTAL W(1.4) multiple sequence alignment\n");
+		"CLUSTAL W (1.83) multiple sequence alignment\n");
     
     ajFmtPrintF(outseq->File, "\n\n");
     
-    iwidth = 50;
-    for(ipos=1; ipos <= ilen; ipos += 50)
+    iwidth = 60;
+    for(ipos=1; ipos <= ilen; ipos += 60)
     {
-	iend = ipos + 50 -1;
+	iend = ipos + 60 -1;
 	if(iend > ilen)
 	{
 	    iend = ilen;
@@ -1659,7 +1666,8 @@ static void seqWriteClustal(AjPSeqout outseq)
 	}
 	ajFmtPrintF(outseq->File,	/* *. conserved line */
 		    "%-15.15s %*.*s\n", "", iwidth, iwidth, "");
-	ajFmtPrintF(outseq->File, "\n"); /* blank line */
+	if(iend < ilen)
+	    ajFmtPrintF(outseq->File, "\n");
     }
     
     return;
@@ -3524,52 +3532,48 @@ static AjBool seqoutUfoLocal(const AjPSeqout thys)
 ******************************************************************************/
 
 static AjBool seqoutUsaProcess(AjPSeqout thys)
-{
-    static AjPRegexp fmtexp = NULL;
-    static AjPRegexp idexp  = NULL;
-    
+{    
     AjBool fmtstat;
     AjBool regstat;
     
-    static AjPStr usatest = NULL;
 #ifdef __CYGWIN__
     AjPStr usatmp = NULL;
 #endif
 
     ajDebug("seqoutUsaProcess\n");
-    if(!fmtexp)
-	fmtexp = ajRegCompC("^([A-Za-z0-9]*)::?(.*)$");
+    if(!seqoutRegFmt)
+	seqoutRegFmt = ajRegCompC("^([A-Za-z0-9]*)::?(.*)$");
     /* \1 format */
     /* \2 remainder */
     
-    if(!idexp)			  /* \1 is filename \3 is the qryid */
-	idexp = ajRegCompC("^(.*)$");
+    if(!seqoutRegId)			  /* \1 is filename \3 is the qryid */
+	seqoutRegId = ajRegCompC("^(.*)$");
     
-    ajStrAssS(&usatest, thys->Usa);
+    ajStrAssS(&seqoutUsaTest, thys->Usa);
 
 #ifdef __CYGWIN__
-    if(*(ajStrStr(usatest)+1)==':')
+    if(*(ajStrStr(seqoutUsaTest)+1)==':')
     {
 	usatmp = ajStrNew();
-        ajFmtPrintS(&usatmp,"/cygdrive/%c/%s",*ajStrStr(usatest),
-		    ajStrStr(usatest)+2);
-        ajStrAss(&usatest,usatmp);
+        ajFmtPrintS(&usatmp,"/cygdrive/%c/%s",*ajStrStr(seqoutUsaTest),
+		    ajStrStr(seqoutUsaTest)+2);
+        ajStrAss(&seqoutUsaTest,usatmp);
         ajStrDel(&usatmp);
     }
 #endif
 
-    ajDebug("output USA to test: '%S'\n\n", usatest);
+    ajDebug("output USA to test: '%S'\n\n", seqoutUsaTest);
     
-    fmtstat = ajRegExec(fmtexp, usatest);
+    fmtstat = ajRegExec(seqoutRegFmt, seqoutUsaTest);
     ajDebug("format regexp: %B\n", fmtstat);
     
     if(fmtstat)
     {
-	ajRegSubI(fmtexp, 1, &thys->Formatstr);
+	ajRegSubI(seqoutRegFmt, 1, &thys->Formatstr);
 	ajStrSetC(&thys->Formatstr, seqOutFormat[0].Name);
 	/* default  unknown */
 
-	ajRegSubI(fmtexp, 2, &usatest);
+	ajRegSubI(seqoutRegFmt, 2, &seqoutUsaTest);
 	ajDebug("found format %S\n", thys->Formatstr);
 	if(!ajSeqFindOutFormat(thys->Formatstr, &thys->Format))
 	{
@@ -3582,12 +3586,12 @@ static AjBool seqoutUsaProcess(AjPSeqout thys)
 
     ajDebug("\n");
     
-    regstat = ajRegExec(idexp, usatest);
+    regstat = ajRegExec(seqoutRegId, seqoutUsaTest);
     ajDebug("file:id regexp: %B\n", regstat);
     
     if(regstat)
     {
-	ajRegSubI(idexp, 1, &thys->Filename);
+	ajRegSubI(seqoutRegId, 1, &thys->Filename);
 	ajDebug("found filename %S single: %B dir: '%S'\n",
 		thys->Filename, thys->Single, thys->Directory);
 	if(thys->Single)
@@ -4898,5 +4902,10 @@ void ajSssWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix)
 
 void ajSeqWriteExit(void)
 {
+    ajRegFree(&seqoutRegFmt);
+    ajRegFree(&seqoutRegId);
+
+    ajStrDel(&seqoutUsaTest);
+
     return;
 }
