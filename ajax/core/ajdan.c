@@ -38,7 +38,7 @@ ajint aj_melt_savesize   = 0;
 AjBool aj_melt_saveinit  = 0;
 AjBool aj_melt_saveshift = 1;
 
-
+AjBool danBaseInit = AJFALSE;
 
 
 /* @func ajMeltInit ***********************************************************
@@ -215,8 +215,8 @@ float ajProbScore(const AjPStr seq1, const AjPStr seq2, ajint len)
     if(len > 0)
 	mlen = (mlen < len) ? mlen : len;
 
-    if(!aj_base_I)
-	ajBaseInit();
+    if(!danBaseInit)
+	danBaseInit = ajBaseInit();
 
     score = 0.0;
     if(!mlen)
@@ -230,7 +230,7 @@ float ajProbScore(const AjPStr seq1, const AjPStr seq2, ajint len)
     {
 	x = ajAZToInt(*(p+i));
 	y = ajAZToInt(*(q+i));
-	score *= aj_base_prob[x][y];
+	score *= ajBaseProb(x,y);
     }
 
     return score;
@@ -668,4 +668,26 @@ float ajProdTm(float gc, float saltconc, ajint len)
 float ajAnneal(float tmprimer, float tmproduct)
 {
     return ((float).7*tmproduct)-(float)14.9+((float).3*tmprimer);
+}
+
+
+
+
+
+/* @func ajMeltExit ***********************************************************
+**
+** Cleans up DNA melting processing internal memory
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajMeltExit(void)
+{
+    ajint i;
+
+    for(i=0;i<256;i++)
+	ajStrDel(&aj_m_table[i].pair);
+
+    return;
 }
