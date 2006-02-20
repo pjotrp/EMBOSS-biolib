@@ -1864,6 +1864,41 @@ AjBool __deprecated ajStrDelReuse(AjPStr* pthis)
 }
 
 
+/* @func ajStrDelarray ********************************************************
+**
+** Default string destructor which frees memory for an array of strings.
+** 
+** Decrements the use count. When it reaches zero, the string is removed from
+** memory.  If the given string is NULL, or a NULL pointer, simply returns.
+**
+** @param  [d] PPstr [AjPStr**] Pointer to the string array to be deleted.
+**         The last string is a NULL pointer
+**         The pointer is always deleted.
+** @return [void]
+** @cre    The default null string must not be deleted. Calling this
+**         routine for copied pointers could cause this. An error message
+**         is issued and the null string use count is restored.
+** @@
+******************************************************************************/
+
+void ajStrDelarray(AjPStr** PPstr)
+{
+    ajint i = 0;
+
+    if(!PPstr)
+	return;
+
+    if(!*PPstr)
+	return;
+
+    for(i=0;(*PPstr)[i];i++)
+	ajStrDel(&(*PPstr)[i]);
+    AJFREE(*PPstr);
+
+    return;
+}
+
+
 /* @section assignment
 **
 ** Functions for assigning a string.
@@ -1914,8 +1949,7 @@ AjBool ajStrAssignC(AjPStr* Pstr, const char* txt)
     if (!txt) {
 	ajUtilCatch();
 	ajDebug("ajStrAssignC source text is NULL\n");
-	i = strlen(txt);
-	*Pstr = ajStrNewResLenC(txt, i+1, i);
+	*Pstr = ajStrNewResLenC("", 1, 0);
     }
 
     i = strlen(txt);
@@ -2527,8 +2561,9 @@ AjBool ajStrAppendS(AjPStr* Pstr, const AjPStr str)
     AjPStr thys;
     ajint j;
 
-    if(!str)
-	ajFatal("ajStrAppend source string is NULL");
+    if(!str) {
+("ajStrAppend source string is NULL");
+    }
 
     thys = *Pstr;
 
@@ -4247,12 +4282,7 @@ AjBool __deprecated ajStrChop(AjPStr* pthis)
 
 AjBool ajStrTrimWhiteEnd(AjPStr* Pstr)
 {
-    static AjPStr spaces = NULL;
-
-    if(!spaces)
-	ajStrAssignC(&spaces,"\t \n\r");
-
-    return ajStrTrimEndC(Pstr, spaces->Ptr);
+    return ajStrTrimEndC(Pstr, "\t \n\r");
 }
 
 /* @obsolete ajStrChompEnd
@@ -4264,7 +4294,7 @@ AjBool __deprecated ajStrChompEnd(AjPStr* pthis)
     return ajStrTrimWhiteEnd(pthis);
 }
 
-/* @func ajStrTruncateLen ********************************************************
+/* @func ajStrTruncateLen *****************************************************
 **
 ** Removes the end from a string reducing it to a defined length.
 **
@@ -7250,7 +7280,7 @@ AjBool __deprecated ajStrWrap(AjPStr* Pstr, ajint width )
 
 AjBool ajStrFmtWrapLeft(AjPStr* Pstr, ajint width, ajint margin)
 {
-    static AjPStr newstr = NULL;
+    AjPStr newstr = NULL;
     char* cp;
     ajint len;
     ajint i   = 0;
@@ -7314,6 +7344,8 @@ AjBool ajStrFmtWrapLeft(AjPStr* Pstr, ajint width, ajint margin)
 	}
     }
     
+    ajStrDel(&newstr);
+
     return ajTrue;
 }
 
@@ -7337,8 +7369,8 @@ AjBool __deprecated ajStrWrapLeft(AjPStr* pthis, ajint width, ajint left)
 ** @nam3rule  Match         Compare two complete strings.
 ** @nam4rule  MatchCase   Case-insensitive comparison.
 ** @nam4rule  MatchWild   Comparison using wildcard characters.
-** @nam5rule  MatchWildWord   Case-insensitive wildcard comparison of first words
-**                          within two strings.
+** @nam5rule  MatchWildWord  Case-insensitive wildcard comparison of 
+**                         first words within two strings.
 ** @nam3rule  Prefix        Compare start of string to given prefix.
 ** @nam4rule  PrefixCase  Case-insensitive comparison.
 ** @nam3rule  Suffix        Compare end of string to given suffix.
@@ -8323,14 +8355,12 @@ ajint __deprecated ajStrRFindC(const AjPStr thys, const char* text)
 ** @fdata      [AjPStr]
 ** @fnote     None.
 **
-** @nam3rule Find           Locate first occurence of a string
-**                           within another string. 
-** @nam4rule FindAny        Any in a set of characters (FindSet?)
-** @nam4rule FindCase       Case insensitive
-** @nam3rule Findlast          Locate last occurence of a string
+** @nam3rule Extract        Return token(s) from a string and return
+**                          the remainder
+** @nam4rule ExtractFirst   Remove first word from a string
 ** @nam3rule Parse          Parse tokens using strtok
 ** @nam4rule ParseCount     Count tokens using string token functions
-** @nam5rule ParseCountMulti     Multiple (reentrant) version (obsolete?)
+** @nam5rule ParseCountMulti Multiple (reentrant) version (obsolete?)
 ** @nam4rule ParseSplit     Parse into array of strings
 ** @nam4rule ParseWhite     Count tokens using string token functions
 **
@@ -8349,6 +8379,58 @@ ajint __deprecated ajStrRFindC(const AjPStr thys, const char* text)
 
 
 
+/* @func ajStrExtractFirst ****************************************************
+**
+** Returns a word from the start of a string, and the remainder of the string
+**
+** @param [r] str [const AjPStr] String to be parsed (first call) or
+**        NULL for followup calls using the same string, as for the
+**        C RTL function strtok which is eventually called.
+** @param [w] Prest [AjPStr*] 
+** @param [w] Pword [AjPStr*] 
+** @return [AjBool] True if parsing succeeded
+** @@
+******************************************************************************/
+
+AjBool ajStrExtractFirst(const AjPStr str, AjPStr* Prest, AjPStr* Pword)
+{
+    ajint i=0;
+    ajint j=0;
+    const char* cp;
+
+    if(!str)
+	return ajFalse;
+
+    if(!str->Len)
+	return ajFalse;
+
+    cp = ajStrGetPtr(str);
+    if(isspace(*cp++)) return ajFalse;
+
+    while(*cp && !isspace(*cp))		/* look for end of first word */
+    {
+	cp++;
+	i++;
+    }
+
+    j = i+1;
+    while(*cp && isspace(*cp))
+    {
+	cp++;
+	j++;
+    }
+    if(!*cp) return ajFalse;		/* nothing after whitespace */
+
+    ajStrAssSub(Pword, str, 0, i);
+    ajStrAssSub(Prest, str, j, str->Len);
+
+    ajDebug("ajStrExtractFirst i:%d j:%d len:%d word '%S'\n",
+	    i, j, str->Len, *Pword);
+    return ajTrue;
+}
+
+
+
 /* @func ajStrParseC **********************************************************
 **
 ** Tokenise a string using a specified set of delimiters and return tokens
@@ -8363,7 +8445,7 @@ ajint __deprecated ajStrRFindC(const AjPStr thys, const char* text)
 **        C RTL function strtok which is eventually called.
 ** @param [r] txtdelim [const char*] Delimiter(s) to be used betwen tokens.
 ** @return [const AjPStr] Token returned, when all tokens are parsed
-**                  a NULL is rerutned.
+**                  a NULL is returned.
 ** @@
 ******************************************************************************/
 
@@ -8428,8 +8510,8 @@ AjPStr __deprecated ajStrTokC(const AjPStr thys, const char* delim)
 
 ajint ajStrParseCount(const AjPStr str)
 {
-    static AjPStrTok t = NULL;
-    static AjPStr tmp  = NULL;
+    AjPStrTok t = NULL;
+    AjPStr tmp  = NULL;
 
     ajint count;
 
@@ -8438,6 +8520,9 @@ ajint ajStrParseCount(const AjPStr str)
 
     while(ajStrTokenNextParse(&t, &tmp))
 	++count;
+
+    ajStrTokenDel(&t);
+    ajStrDel(&tmp);
 
     return count;
 }
@@ -8465,8 +8550,8 @@ ajint __deprecated ajStrTokenCount(const AjPStr line, const char *delim)
 
 ajint ajStrParseCountC(const AjPStr str, const char *txtdelim)
 {
-    static AjPStrTok t = NULL;
-    static AjPStr tmp  = NULL;
+    AjPStrTok t = NULL;
+    AjPStr tmp  = NULL;
 
     ajint count;
 
@@ -8496,8 +8581,8 @@ ajint ajStrParseCountC(const AjPStr str, const char *txtdelim)
 
 ajint ajStrParseCountS(const AjPStr str, const AjPStr strdelim)
 {
-    static AjPStrTok t = NULL;
-    static AjPStr tmp  = NULL;
+    AjPStrTok t = NULL;
+    AjPStr tmp  = NULL;
 
     ajint count;
 
@@ -8506,6 +8591,9 @@ ajint ajStrParseCountS(const AjPStr str, const AjPStr strdelim)
 
     while(ajStrTokenNextParse(&t, &tmp))
 	++count;
+
+    ajStrTokenDel(&t);
+    ajStrDel(&tmp);
 
     return count;
 }
@@ -9340,7 +9428,7 @@ AjBool __deprecated ajStrIterMoreBack(AjIStr iter)
 
 AjPStrTok ajStrTokenNewC(const AjPStr str, const char* txtdelim)
 {
-    static AjPStrTok ret;
+    AjPStrTok ret;
 
     AJNEW0(ret);
 
@@ -9376,7 +9464,7 @@ AjPStrTok __deprecated ajStrTokenInit(const AjPStr thys, const char* delim)
 
 AjPStrTok ajStrTokenNewS(const AjPStr str, const AjPStr strdelim)
 {
-    static AjPStrTok ret;
+    AjPStrTok ret;
 
     AJNEW0(ret);
 
