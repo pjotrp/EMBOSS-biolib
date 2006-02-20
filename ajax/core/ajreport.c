@@ -549,26 +549,7 @@ static void reportWriteDiffseq(AjPReport thys,
     AjPStr secondfeat = NULL;
     AjPStr tagval     = NULL;
     
-    static AjPStr tagfirst    = NULL;
-    static AjPStr tagsecond   = NULL;
-    static AjPStr tagstart    = NULL;
-    static AjPStr tagend      = NULL;
-    static AjPStr taglength   = NULL;
-    static AjPStr tagname     = NULL;
-    static AjPStr tagsequence = NULL;
-
     outf = thys->File;
-    
-    if(!tagstart)
-    {
-	tagstart    = ajStrNewC("start");
-	tagend      = ajStrNewC("end");
-	taglength   = ajStrNewC("length");
-	tagname     = ajStrNewC("name");
-	tagsequence = ajStrNewC("sequence");
-	tagfirst    = ajStrNewC("first_feature");
-	tagsecond   = ajStrNewC("second_feature");
-    }
     
     ajReportWriteHeader(thys, ftable, seq);
     
@@ -583,23 +564,23 @@ static void reportWriteDiffseq(AjPReport thys,
 	/* ajStrToUpper(&subseq); */
 	i++;
 	
-	if(!ajFeatGetNote(feature, tagstart, &tagval))
+	if(!ajFeatGetNoteC(feature, "start", &tagval))
 	    jstart = 0;
 	else
 	    ajStrToInt(tagval, &jstart);
 
 	
-	if(!ajFeatGetNote(feature, tagend, &tagval))
+	if(!ajFeatGetNoteC(feature, "end", &tagval))
 	    jend = 0;
 	else
 	    ajStrToInt(tagval, &jend);
 	
-	if(!ajFeatGetNote(feature, taglength, &tagval))
+	if(!ajFeatGetNoteC(feature, "length", &tagval))
 	    jlen = 0;
 	else
 	    ajStrToInt(tagval, &jlen);
 	
-	if(!ajFeatGetNote(feature, tagname, &jname))
+	if(!ajFeatGetNoteC(feature, "name", &jname))
 	    ajStrAssC(&jname, "");
 	
 	if(ilen > 0)
@@ -607,7 +588,8 @@ static void reportWriteDiffseq(AjPReport thys,
 	    ajFmtPrintF(outf, "\n%S %d-%d Length: %d\n",
 			ajReportSeqName(thys, seq), istart, iend, ilen);
 	    ifeat = 1;
-	    while(ajFeatGetNoteI(feature, tagfirst, ifeat++, &firstfeat))
+	    while(ajFeatGetNoteCI(feature, "first_feature",
+				  ifeat++, &firstfeat))
 		ajFmtPrintF(outf, "Feature: %S\n", firstfeat);
 
 	    ajFmtPrintF(outf, "Sequence: %S\n", subseq);
@@ -617,19 +599,21 @@ static void reportWriteDiffseq(AjPReport thys,
 	    ajFmtPrintF(outf, "\n%S %d Length: %d\n",
 			ajReportSeqName(thys, seq), istart, ilen);
 	    ifeat = 1;
-	    while(ajFeatGetNoteI(feature, tagfirst, ifeat++, &firstfeat))
+	    while(ajFeatGetNoteCI(feature, "first_feature",
+				  ifeat++, &firstfeat))
 		ajFmtPrintF(outf, "Feature: %S\n", firstfeat);
 	    ajFmtPrintF(outf, "Sequence: \n");
 	}
 	
-	if(!ajFeatGetNote(feature, tagsequence, &subseq))
+	if(!ajFeatGetNoteC(feature, "sequence", &subseq))
 	    ajStrAssC(&subseq, "");
 	
 	if(jlen > 0)
 	{
 	    ajFmtPrintF(outf, "Sequence: %S\n", subseq);
 	    ifeat = 1;
-	    while(ajFeatGetNoteI(feature, tagsecond, ifeat++, &secondfeat))
+	    while(ajFeatGetNoteCI(feature, "second_feature",
+				  ifeat++, &secondfeat))
 		ajFmtPrintF(outf, "Feature: %S\n", secondfeat);
 
 	    ajFmtPrintF(outf, "%S %d-%d Length: %d\n",
@@ -639,7 +623,8 @@ static void reportWriteDiffseq(AjPReport thys,
 	{
 	    ajFmtPrintF(outf, "Sequence: \n");
 	    ifeat = 1;
-	    while(ajFeatGetNoteI(feature, tagsecond, ifeat++, &secondfeat))
+	    while(ajFeatGetNoteCI(feature, "second_feature",
+				  ifeat++, &secondfeat))
 		ajFmtPrintF(outf, "Feature: %S\n", secondfeat);
 	    ajFmtPrintF(outf, "%S %d Length: %d\n",
 			jname, jstart, jlen);
@@ -2084,6 +2069,8 @@ void ajReportDel(AjPReport* pthys)
     AjPStr str = NULL;
 
     thys = *pthys;
+    if(!thys)
+	return;
 
     ajStrDel(&thys->Name);
     ajStrDel(&thys->Type);

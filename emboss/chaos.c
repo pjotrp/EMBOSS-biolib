@@ -148,6 +148,8 @@ int main(int argc, char **argv)
 
 
     ajGraphCloseWin();
+    ajSeqDel(&sequence);
+    ajGraphxyDel(&graph);
     ajStrDel(&str);
 
     ajExit();
