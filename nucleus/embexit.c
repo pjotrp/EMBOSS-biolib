@@ -33,7 +33,9 @@
 
 void embExit (void)
 {
-  ajExit ();
+    embDbiExit();
+    embWordExit();
 
-  return;
+    ajExit();
+    return;
 }
