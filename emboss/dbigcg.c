@@ -215,7 +215,7 @@ int main(int argc, char **argv)
 
     embInit("dbigcg", argc, argv);
 
-    idformat   = ajAcdGetListI("idformat",1);
+    idformat   = ajAcdGetListSingle("idformat");
     fields     = ajAcdGetList("fields");
     directory  = ajAcdGetDirectoryName("directory");
     indexdir   = ajAcdGetOutdirName("indexoutdir");
@@ -379,7 +379,7 @@ int main(int argc, char **argv)
 
     ajListDel(&listInputFiles);
 
-    ajExit();
+    embExit();
 
     return 0;
 }
@@ -568,7 +568,6 @@ static ajint dbigcg_gcggetent(const AjPStr idformat,
 {
     static AjPStr gcgtype   = NULL;
     static ajint gcglen;
-    static AjPStr gcgdate   = NULL;
     ajint rblock;
     static AjPStr reflibstr = NULL;
     ajint i;
@@ -604,8 +603,7 @@ static ajint dbigcg_gcggetent(const AjPStr idformat,
 	rexp = ajRegCompC("^>>>>([^ \t\n]+)");
 
     if(!sexp)
-	sexp = ajRegCompC("^>>>>([^ \t]+)[ \t]+([^ \t]+)[ \t]+([^ \t]+)"
-			  "[ \t]+([^ \t]+)[ \t]+([0-9]+)");
+	sexp = ajRegCompC("^>>>>(\\S+)\\s+.*\\s+(\\S+)\\s+Len:\\s+(\\d+)");
 
     if(!splitexp)
 	splitexp = ajRegCompC("_0+$");
@@ -634,13 +632,12 @@ static ajint dbigcg_gcggetent(const AjPStr idformat,
 
     ajRegSubI(sexp, 1, libstr);		/* Entry ID returned */
 
-    ajRegSubI(sexp, 2, &gcgdate);
-    ajRegSubI(sexp, 3, &gcgtype);
-    ajRegSubI(sexp, 5, &tmpstr);
+    ajRegSubI(sexp, 2, &gcgtype);
+    ajRegSubI(sexp, 3, &tmpstr);
     ajStrToInt(tmpstr, &gcglen);
 
-    ajDebug("new entry '%S' date:'%S' type:'%S' len:'%S'=%d\n",
-	    *libstr, gcgdate, gcgtype, tmpstr, gcglen);
+    ajDebug("new entry '%S' type:'%S' len:'%S'=%d\n",
+	    *libstr, gcgtype, tmpstr, gcglen);
 
     ajStrAssC(&rline, "");
 

@@ -155,7 +155,7 @@ int main(int argc, char **argv)
 
     embInit("dbifasta", argc, argv);
 
-    idformat   = ajAcdGetListI("idformat",1);
+    idformat   = ajAcdGetListSingle("idformat");
     fields     = ajAcdGetList("fields");
     directory  = ajAcdGetDirectoryName("directory");
     indexdir   = ajAcdGetOutdirName("indexoutdir");
@@ -317,7 +317,7 @@ int main(int argc, char **argv)
 
     ajRegFree(&exp);
 
-    ajExit();
+    embExit();
 
     return 0;
 }
