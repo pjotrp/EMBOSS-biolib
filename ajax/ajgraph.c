@@ -4092,6 +4092,11 @@ void ajGraphxyDel(AjPGraph* pthis)
     AjPGraph thys;
     ajint i;
 
+    if(!pthis)
+	return;
+    if(!*pthis)
+	return;
+
     thys = *pthis;
 
     if (thys->plplot)
