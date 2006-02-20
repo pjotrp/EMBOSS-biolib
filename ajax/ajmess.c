@@ -1217,6 +1217,8 @@ void ajMessSetErr(const char *filename, ajint line_num)
 
     messageG.line_num = line_num;
 
+    ajUtilCatch();
+
     return;
 }
 
