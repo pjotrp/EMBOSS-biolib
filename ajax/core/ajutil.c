@@ -64,6 +64,11 @@ void ajExit(void)
     ajMemExit();
     ajSysExit();
     ajCallExit();
+    ajBaseExit();
+    ajCodExit();
+    ajTrnExit();
+    ajMeltExit();
+    ajTimeExit();
     ajStrExit();
     ajMessExit();     /* clears data for ajDebug - do this last!!!  */
     exit(0);
