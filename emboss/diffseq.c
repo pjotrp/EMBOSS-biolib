@@ -217,10 +217,21 @@ int main(int argc, char **argv)
     ajReportClose(report);
 
     /* tidy up */
-    ajFeattableDel(&TabRpt);
+    ajSeqDel(&seq1);
+    ajSeqDel(&seq2);
+    embWordFreeTable(&seq1MatchTable);
     ajReportDel(&report);
+    ajListFree(&matchlist);
+    ajListFree(&difflist);
+    ajFeattableDel(&Tab1);
+    ajFeattableDel(&Tab2);
+    ajFeattableDel(&TabRpt);
+    ajFeattabOutDel(&seq1out);
+    ajFeattabOutDel(&seq2out);
+    ajStrDel(&tmpstr);
 
-    ajExit();
+
+    embExit();
     return 0;
 }
 
@@ -265,8 +276,8 @@ static void diffseq_Diff(const AjPList difflist,
     AjPStr tmpstr = NULL;
     static AjPStr tmpseq = NULL;
 
-    AjPFeattable feat1;
-    AjPFeattable feat2;
+    AjPFeattable feat1 = NULL;
+    AjPFeattable feat2 = NULL;
     
     AjPFeature gf = NULL;
     
@@ -398,6 +409,7 @@ static void diffseq_Diff(const AjPList difflist,
     ajFeattableDel(&feat2);
     
     ajStrDel(&tmpstr);
+    ajStrDel(&tmpseq);
     
     return;
 }
@@ -632,18 +644,18 @@ static void diffseq_Features(const char* typefeat, AjPFeature rf,
 ******************************************************************************/
 
 static void diffseq_AddTags(AjPStr* strval,
-                               const AjPFeature feat, AjBool values)
+			    const AjPFeature feat, AjBool values)
 {
     AjIList titer;                        /* iterator for taglist */
-    static AjPStr tagnam = NULL;
-    static AjPStr tagval = NULL;
+    AjPStr tagnam = NULL;
+    AjPStr tagval = NULL;
 
     /* iterate through the tags and test for match to patterns */
 
     titer = ajFeatTagIter(feat);
     while(ajFeatTagval(titer, &tagnam, &tagval))
         /* don't display the translation tag - it is far too long :-) */
-        if(ajStrCmpC(tagnam, "translation"))
+        if(!ajStrMatchC(tagnam, "translation"))
         {
             if(values == ajTrue)
                 ajFmtPrintAppS(strval, " %S='%S'", tagnam, tagval);
@@ -652,6 +664,8 @@ static void diffseq_AddTags(AjPStr* strval,
         }
 
     ajListIterFree(&titer);
+    ajStrDel(&tagnam);
+    ajStrDel(&tagval);
 
     return;
 }
@@ -886,8 +900,8 @@ static void diffseq_FeatSetCDSFrame(AjPFeattable ftab)
     ajint prevend = 0;
     AjBool prevparent;                /* flag true if prev CDS was a parent */
     AjBool unsure;                /* true if we are unsure of the phase */
-    static AjPStr tagnam = NULL;/* name and value of tags of the feature */
-    static AjPStr tagval = NULL;
+    AjPStr tagnam = NULL;/* name and value of tags of the feature */
+    AjPStr tagval = NULL;
 
 #define FEATFLAG_START_BEFORE_SEQ 0x0001 /* <start */
 #define FEATFLAG_END_AFTER_SEQ    0x0002 /* >end */
@@ -1046,6 +1060,9 @@ static void diffseq_FeatSetCDSFrame(AjPFeattable ftab)
     }
 
     ajListIterFree(&iter);
+    ajListIterFree(&titer);
+    ajStrDel(&tagnam);
+    ajStrDel(&tagval);
 
     return;
 }
