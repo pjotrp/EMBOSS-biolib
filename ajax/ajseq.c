@@ -31,6 +31,7 @@
 
 static ajulong seqCrcTable[256];
 
+static AjPStr seqVersionAccnum = NULL;
 
 
 
@@ -158,6 +159,8 @@ static AjPSelexdata seqSelexClone(const AjPSelexdata thys)
 
 void ajSeqallDel(AjPSeqall *thys)
 {
+    if(!*thys)
+	return;
 
     ajSeqDel(&(*thys)->Seq);
     ajSeqinDel(&(*thys)->Seqin);
@@ -167,6 +170,38 @@ void ajSeqallDel(AjPSeqall *thys)
     return;
 }
 
+
+
+
+/* @func ajSeqsetDelarray *****************************************************
+**
+** Destructor for array of sequence set objects
+**
+** @param [d] thys [AjPSeqset*] Sequence set object reference
+** @return [void]
+** @category delete [AjPSeqset] Default destructor
+** @@
+******************************************************************************/
+
+void ajSeqsetDelarray(AjPSeqset **thys)
+{
+    ajint i = 0;
+
+    if(!thys || !*thys)
+	return;
+
+    while(*thys[i])
+    {
+	ajSeqsetDel(&thys[i]);
+	i++;
+    }
+
+    ajDebug("ajSeqsetallDel size: %d\n", i);
+
+    AJFREE(*thys);
+
+    return;
+}
 
 
 
@@ -3709,13 +3744,12 @@ AjBool ajIsAccession(const AjPStr accnum)
 ** @@
 ******************************************************************************/
 
-AjPStr ajIsSeqversion(const AjPStr sv)
+const AjPStr ajIsSeqversion(const AjPStr sv)
 {
     ajint i;
     const char *cp;
     AjBool dot = ajFalse;		/* have we found the '.' */
     AjBool v = 0;	   /* number of digits of version after '.' */
-    static AjPStr accnum = NULL;
 
     if(!sv)
 	return NULL;
@@ -3725,25 +3759,25 @@ AjPStr ajIsSeqversion(const AjPStr sv)
 	return NULL;
 
     cp = ajStrStr(sv);
-    ajStrAssCL(&accnum, "", 12);
 
     /* must have an alphabetic start */
 
     if(!isalpha((ajint)*cp))
 	return NULL;
 
-    ajStrAppK(&accnum, *cp++);
+    ajStrAssCL(&seqVersionAccnum, "", 12);
+    ajStrAppK(&seqVersionAccnum, *cp++);
 
     /* two choices for the next character */
 
     if(isalpha((ajint)*cp))
     {					/* EMBL/GenBank AAnnnnnn */
-        ajStrAppK(&accnum, *cp);
+        ajStrAppK(&seqVersionAccnum, *cp);
 	cp++;
 
 	if(*cp == '_')		/* REFSEQ NM_nnnnnn */
 	{
-	    ajStrAppK(&accnum, *cp);
+	    ajStrAppK(&seqVersionAccnum, *cp);
 	    cp++;
 	}
 	while(*cp)		      /* optional trailing .version */
@@ -3761,7 +3795,7 @@ AjPStr ajIsSeqversion(const AjPStr sv)
 		    if(dot)
 			v++;
 		    else
-			ajStrAppK(&accnum, *cp);
+			ajStrAppK(&seqVersionAccnum, *cp);
 		}
 		++cp;
 	    }
@@ -3769,20 +3803,20 @@ AjPStr ajIsSeqversion(const AjPStr sv)
 		return NULL;
 	}
 	if(v)
-	    return accnum;
+	    return seqVersionAccnum;
 	else
 	    return NULL;
     }
     else if(isdigit((ajint)*cp))
     {					/* EMBL/GenBank old Annnnn */
 	/* or SWISS AnXXXn */
-        ajStrAppK(&accnum, *cp);
+        ajStrAppK(&seqVersionAccnum, *cp);
 	cp++;
 
 	for(i=0; i<3; i++)
 	    if(isalpha((ajint)*cp) || isdigit((ajint)*cp))
 	    {
-	        ajStrAppK(&accnum, *cp);
+	        ajStrAppK(&seqVersionAccnum, *cp);
 		cp++;
 	    }
 	    else
@@ -3806,7 +3840,7 @@ AjPStr ajIsSeqversion(const AjPStr sv)
 		    if(dot)
 			v++;
 		    else
-			ajStrAppK(&accnum, *cp);
+			ajStrAppK(&seqVersionAccnum, *cp);
 		}
 		++cp;
 	    }
@@ -3814,7 +3848,7 @@ AjPStr ajIsSeqversion(const AjPStr sv)
 		return NULL;
 	}
 	if(v)
-	    return accnum;
+	    return seqVersionAccnum;
 	else
 	    return NULL;
     }
@@ -5373,8 +5407,11 @@ void ajSeqoutDel(AjPSeqout* pthis)
 
     thys = *pthis;
 
+    if(!thys)
+	return;
+
     ajStrDel(&thys->Name);
-    /* ajStrDel(&thys->Acc); */
+    ajStrDel(&thys->Acc);
     ajStrDel(&thys->Sv);
     ajStrDel(&thys->Gi);
     ajStrDel(&thys->Tax);
@@ -5413,9 +5450,9 @@ void ajSeqoutDel(AjPSeqout* pthis)
     while(ajListPop(thys->Savelist,(void **)&seq))
 	ajSeqDel(&seq);
     ajListDel(&thys->Savelist);
+    ajFeattabInDel(&thys->Ftquery);
 
     AJFREE(thys->Accuracy);
-    AJFREE(thys->Ftquery);
     AJFREE(*pthis);
 
     return;
@@ -6129,5 +6166,9 @@ void ajSeqExit(void)
     ajSeqWriteExit();
     ajSeqDbExit();
     ajSeqTypeExit();
+
+    ajStrDel(&seqVersionAccnum);
+
+
     return;
 }
