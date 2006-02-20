@@ -55,19 +55,19 @@ sub runtest ($) {
 	while (<TEST>) {
 	    if (/definitely lost: +(\d+) bytes in (\d+) blocks/) {
 		$defbytes=$1;
-		#$defblock=$2;
+		$defblocks=$2;
 	    }
 	    if (/possibly lost: +(\d+) bytes in (\d+) blocks/) {
 		$posbytes=$1;
-		#$posblock=$2;
+		$posblocks=$2;
 	    }
 	    if (/still reachable: +(\d+) bytes in (\d+) blocks/) {
 		$rembytes=$1;
-		#$remblock=$2;
+		$remblocks=$2;
 	    }
 	    if (/ERROR SUMMARY: +(\d+) errors from (\d+) contexts/) {
 		$errcount=$1;
-		#$remblock=$2;
+		$errcontexts=$2;
 	    }
 	}
 	if ($status) {
@@ -75,13 +75,13 @@ sub runtest ($) {
 	}
 	else {
 	    if ($errcount){
-		print STDERR "Valgrind test $name errors $errcount\n";
+		print STDERR "Valgrind test $name errors $errcount [$errcontexts]\n";
 	    }
 	    elsif ($defbytes){
-		print STDERR "Valgrind test $name leak $defbytes (possibly $posbytes) bytes, still reachable $rembytes bytes\n";
+		print STDERR "Valgrind test $name leak $defbytes [$defblocks] (possibly $posbytes [$posblocks]) bytes, still reachable $rembytes bytes [$remblocks]\n";
 	    }
-	    elsif (defined($rembytes)) {
-		print STDERR "Valgrind test $name OK (still reachable $rembytes bytes)\n";
+	    elsif ($rembytes) {
+		print STDERR "Valgrind test $name OK (still reachable $rembytes bytes [$remblocks])\n";
 	    }
 	    else {
 		print STDERR "Valgrind test $name OK (all clean)\n";
