@@ -48,6 +48,7 @@ typedef struct TimeSFormat
 #define TimePFormat TimeOFormat*
 
 
+static AjPTime timeTodayData = NULL;
 
 
 static TimeOFormat timeFormat[] =  /* formats for strftime */
@@ -207,20 +208,19 @@ AjPTime ajTimeTodayF(const char* timefmt)
 
 const AjPTime ajTimeTodayRefF(const char* timefmt)
 {
-    static AjPTime thys = NULL;
     time_t tim;
     
     tim = time(0);
 
-    if(!thys)
-	AJNEW0(thys);
+    if(!timeTodayData)
+	AJNEW0(timeTodayData);
 
-    if(!ajTimeLocal(tim,thys))
+    if(!ajTimeLocal(tim,timeTodayData))
         return NULL;
 
-    thys->format = TimeFormat(timefmt);
+    timeTodayData->format = TimeFormat(timefmt);
 
-    return thys;
+    return timeTodayData;
 }
 
 
@@ -413,5 +413,24 @@ void ajTimeDel(AjPTime *thys)
     AJFREE(*thys);
     *thys = NULL;
     
+    return;
+}
+
+
+
+
+
+/* @func ajTimeExit ***********************************************************
+**
+** Cleans up time processing internal memory
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajTimeExit(void)
+{
+    ajTimeDel(&timeTodayData);
+
     return;
 }
