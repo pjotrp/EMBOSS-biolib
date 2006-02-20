@@ -1,5 +1,9 @@
 	Version 3.1.0
 
+	Clustal sequence format output is now version 1.83 with 60
+	bases/residues per line. Previous EMBOSS releases reported it as
+	1.4 and printed 50 bases/residues per line.
+
 	The tmap program had an upper limit of 6000 residues and 300
 	sequences. All fixed size arrays were made dynamic. The length
 	limit was exceeded by one of our users.
