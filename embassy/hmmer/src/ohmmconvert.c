@@ -72,7 +72,7 @@ int main(int argc, char **argv)
      ***********************************************/
 
     ajNamInit("emboss");
-    ajAcdInitP("ehmmconvert",argc,argv,"HMMER");
+    ajAcdInitP("ohmmconvert",argc,argv,"HMMER");
 
     outfmt    = P7ASCII; 
     do_append = FALSE;

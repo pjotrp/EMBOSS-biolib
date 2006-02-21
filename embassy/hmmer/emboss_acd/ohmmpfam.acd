@@ -1,4 +1,4 @@
-application: ehmmpfam [
+application: ohmmpfam [
   documentation: "Align single sequence with an HMM"
   groups: "HMM"
   gui: "yes"

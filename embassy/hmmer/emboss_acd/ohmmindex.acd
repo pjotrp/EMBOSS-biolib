@@ -1,4 +1,4 @@
-application: ehmmindex [
+application: ohmmindex [
   documentation: "Index an HMM database"
   groups: "HMM"
   gui: "yes"

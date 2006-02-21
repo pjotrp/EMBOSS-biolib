@@ -1,4 +1,4 @@
-application: ealistat [
+application: oalistat [
   documentation: "Statistics for multiple alignment files"
   groups: "HMM"
   gui: "yes"

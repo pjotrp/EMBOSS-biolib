@@ -12,7 +12,7 @@
  * SRE, Thu Dec 18 16:05:29 1997 [St. Louis]
  * 
  * main() for aligning a set of sequences to an HMM.
- * RCS $Id: ehmmalign.c,v 1.3 2004/06/14 14:43:30 rice Exp $
+ * RCS $Id: ohmmalign.c,v 1.1 2006/02/21 12:35:43 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */ 
 
@@ -89,7 +89,7 @@ int main(int argc, char **argv)
   mapali    = NULL;
 
   ajNamInit("emboss");
-  ajAcdInitP("ehmmalign",argc,argv,"HMMER");
+  ajAcdInitP("ohmmalign",argc,argv,"HMMER");
 
   ajmatch = ajAcdGetBool("matchonly");
   if(ajmatch)

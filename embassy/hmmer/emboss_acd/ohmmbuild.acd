@@ -1,4 +1,4 @@
-application: ehmmbuild [
+application: ohmmbuild [
   documentation: "Build HMM"
   groups: "HMM"
   gui: "yes"

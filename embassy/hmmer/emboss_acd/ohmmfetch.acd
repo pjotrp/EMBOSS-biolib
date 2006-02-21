@@ -1,4 +1,4 @@
-application: ehmmfetch [
+application: ohmmfetch [
   documentation: "Extract HMM from a database"
   groups: "HMM"
   gui: "yes"

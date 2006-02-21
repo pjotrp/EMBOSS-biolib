@@ -14,7 +14,7 @@
  * Recover a specific HMM file from an HMM database, using
  * a GSI index (created with hmmindex).
  * 
- * RCS $Id: ehmmfetch.c,v 1.2 2004/06/14 14:43:30 rice Exp $
+ * RCS $Id: ohmmfetch.c,v 1.1 2006/02/21 12:35:43 rice Exp $
  *
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
      ***********************************************/
 
     ajNamInit("emboss");
-    ajAcdInitP("ehmmfetch",argc,argv,"HMMER");
+    ajAcdInitP("ohmmfetch",argc,argv,"HMMER");
 
     ajdb   = ajAcdGetString("database");
     ajname = ajAcdGetString("name");

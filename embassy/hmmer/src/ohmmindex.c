@@ -13,7 +13,7 @@
  * 
  * Create a GSI index file for an HMM database.
  * 
- * RCS $Id: ehmmindex.c,v 1.2 2004/06/14 14:43:30 rice Exp $
+ * RCS $Id: ohmmindex.c,v 1.1 2006/02/21 12:35:43 rice Exp $
  *
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
      ***********************************************/
 
     ajNamInit("emboss");
-    ajAcdInitP("ehmmindex",argc,argv,"HMMER");
+    ajAcdInitP("ohmmindex",argc,argv,"HMMER");
 
     inf = ajAcdGetInfile("infile");
 

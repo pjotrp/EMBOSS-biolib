@@ -1,4 +1,4 @@
-application: ehmmcalibrate [
+application: ohmmcalibrate [
   documentation: "Calibrate a hidden Markov model"
   groups: "HMM"
   gui: "yes"

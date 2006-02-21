@@ -1,4 +1,4 @@
-application: ehmmsearch [
+application: ohmmsearch [
   documentation: "Search sequence database with an HMM"
   groups: "HMM"
   gui: "yes"

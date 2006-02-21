@@ -1,4 +1,4 @@
-application: ehmmalign [
+application: ohmmalign [
   documentation: "Align sequences with an HMM"
   groups: "HMM"
   gui: "yes"

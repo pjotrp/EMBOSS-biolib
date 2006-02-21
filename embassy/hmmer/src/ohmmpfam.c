@@ -15,7 +15,7 @@
  * Conditionally includes PVM parallelization when HMMER_PVM is defined
  *    at compile time; hmmpfam --pvm runs the PVM version.
  *    
- * RCS $Id: ehmmpfam.c,v 1.4 2004/06/14 14:43:30 rice Exp $
+ * RCS $Id: ohmmpfam.c,v 1.1 2006/02/21 12:35:43 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -205,7 +205,7 @@ int main(int argc, char **argv)
 #endif 
 
     ajNamInit("emboss");
-    ajAcdInitP("ehmmpfam",argc,argv,"HMMER");
+    ajAcdInitP("ohmmpfam",argc,argv,"HMMER");
 
     ajhmmfile = ajAcdGetInfile("hmmfile");
     if (ajhmmfile)

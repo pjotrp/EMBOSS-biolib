@@ -1,4 +1,4 @@
-application: ehmmemit [
+application: ohmmemit [
   documentation: "Extract HMM sequences"
   groups: "HMM"
   gui: "yes"

@@ -1,4 +1,4 @@
-application: ehmmconvert [
+application: ohmmconvert [
   documentation: "Convert between HMM formats"
   groups: "HMM"
   embassy: "hmmer"

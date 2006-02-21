@@ -2,8 +2,8 @@
 
 lib_LTLIBRARIES = libhmmer.la
 
-bin_PROGRAMS = ehmmcalibrate ehmmconvert ehmmemit ehmmfetch ehmmindex \
-	ehmmbuild ehmmalign ehmmpfam ehmmsearch ealistat
+bin_PROGRAMS = ohmmcalibrate ohmmconvert ohmmemit ohmmfetch ohmmindex \
+	ohmmbuild ohmmalign ohmmpfam ohmmsearch oalistat
 
 if LOCALLINK
 INCLUDES = -IINCLUDE -I../../../ajax
@@ -39,16 +39,16 @@ libhmmer_la_SOURCES = $(HMMERSRC)
 
 libhmmer_la_LDFLAGS = -version-info 2:1:1
 
-ehmmcalibrate_SOURCES = ehmmcalibrate.c
-ehmmconvert_SOURCES   = ehmmconvert.c
-ehmmemit_SOURCES      = ehmmemit.c
-ehmmfetch_SOURCES     = ehmmfetch.c
-ehmmindex_SOURCES     = ehmmindex.c
-ehmmbuild_SOURCES     = ehmmbuild.c
-ehmmalign_SOURCES     = ehmmalign.c
-ehmmpfam_SOURCES      = ehmmpfam.c
-ehmmsearch_SOURCES    = ehmmsearch.c
-ealistat_SOURCES      = ealistat.c
+ohmmcalibrate_SOURCES = ohmmcalibrate.c
+ohmmconvert_SOURCES   = ohmmconvert.c
+ohmmemit_SOURCES      = ohmmemit.c
+ohmmfetch_SOURCES     = ohmmfetch.c
+ohmmindex_SOURCES     = ohmmindex.c
+ohmmbuild_SOURCES     = ohmmbuild.c
+ohmmalign_SOURCES     = ohmmalign.c
+ohmmpfam_SOURCES      = ohmmpfam.c
+ohmmsearch_SOURCES    = ohmmsearch.c
+oalistat_SOURCES      = oalistat.c
 
 if LOCALLINK
 LDADD = libhmmer.la ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
