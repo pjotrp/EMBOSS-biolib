@@ -20839,7 +20839,8 @@ FP 0 /Died: /
 FP /^Search one or more sequences against an HMM database.\n/
 FI stdout
 FC =3
-FP /^hmmpfam -A 10 -E 10.000000 -T -1000000.000000 -Z 59021 --domE 1000000.000000 --domT -1000000.000000  ../ehmmcalibrate-ex2-keep/myhmmso ../../data/hmmnew/7LES_DROME > myhmmso.ehmmpfam\n/
+## This is not the full command-line so as to avoid checking against a (variable) temp. file name.
+FP /^hmmpfam -A 10 -E 10.000000 -T -1000000.000000 -Z 59021 --domE 1000000.000000 --domT -1000000.000000  --informat FASTA ../ehmmcalibrate-ex2-keep/myhmmso/
 FI myhmmso.ehmmpfam
 FC =137
 FP /^HMM file:                 ../ehmmcalibrate-ex2-keep/myhmmso\n/
@@ -20861,7 +20862,8 @@ FP /^Align sequences to an HMM profile\n/
 FP 0 /Died: /
 FI stdout
 FC =13
-FP /^hmmalign  --outformat A2M  -o globins630.ali ../ehmmcalibrate-ex1-keep/globino.hmm ../../data/hmmnew/globins630.fa\n/
+## This is not the full command-line so as to avoid checking against a (variable) temp. file name.
+FP /^hmmalign  --informat FASTA --outformat A2M  -o globins630.ali ../ehmmcalibrate-ex1-keep/globino.hmm/
 FP /^Alignment saved in file globins630.ali\n/
 FI globins630.ali
 FC =3150
@@ -20974,6 +20976,8 @@ FP /^COM   hmmbuild -n pkinase --pbswitch 1000 --archpri 0.850000 --idlevel 0.62
 FP /^COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex4-keep/myhmms\n/
 FP /^CKSUM 4536\n/
 //
+
+
 
 
 #######################################
