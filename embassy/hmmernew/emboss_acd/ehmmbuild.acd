@@ -17,6 +17,8 @@ section: input
 
 seqset: alignfile
 [
+# User must provide the full filename of an alignment, not an indirect
+# reference to a set of sequences, e.g. a USA is NOT acceptable.
     parameter: "Y"
     type: "pureprotein"
     aligned: "Y"
