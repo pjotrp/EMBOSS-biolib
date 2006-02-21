@@ -61,8 +61,9 @@ int main(int argc, char **argv)
     /* Housekeeping variables */
     AjPStr        cmd = NULL;
     AjPStr        tmp = NULL;
-
-
+    AjPStr        rnd = NULL;    
+    AjPSeqout    rndo = NULL;    
+    AjPSeq        seq = NULL;    
 
 
 
@@ -99,6 +100,21 @@ int main(int argc, char **argv)
     /* 1. Housekeeping */
     cmd = ajStrNew();
     tmp = ajStrNew();
+    rnd = ajStrNew();
+
+    /* 2. Re-write seqfile to a temporary file in a format (fasta) HMMER can understand.
+       We cannot just pass the name of seqfile to HMMER as the name provided might be a 
+       USA which HMMER would not understand. */
+    ajStrAssignC(&rnd, ajFileTempName(NULL));
+    rndo = ajSeqoutNew();
+    if(!ajSeqFileNewOut(rndo, rnd))
+	ajFatal("Terminal ajSeqFileNewOut failure. Email EMBOSS helpdesk!\n");
+    ajSeqOutSetFormatC(rndo, "fasta");
+
+    while(ajSeqallNext(seqfile, &seq))
+	ajSeqWrite(rndo, seq);
+    ajSeqWriteClose(rndo);
+    ajSeqoutDel(&rndo);
 
 
     /* 2. Build hmmpfam command line */
@@ -134,10 +150,12 @@ int main(int argc, char **argv)
     if(xnu)
 	ajStrAppendC(&cmd, " --xnu ");
 
-    /* Note output redirected to outfile */
-    ajFmtPrintAppS(&cmd, " %s %S > %s", 
+    /* Note output redirected to outfile.
+       rnd is the name of the rewritten seqfile.  
+       MUST specify FASTA format explicitly. */
+    ajFmtPrintAppS(&cmd, " --informat FASTA %s %S > %s", 
 		   ajFileName(hmmfile),
-		   ajSeqallGetFilename(seqfile),
+		   rnd,
 		   ajFileName(outfile));
     
 
@@ -154,8 +172,12 @@ int main(int argc, char **argv)
 
 
     /* 5. Exit cleanly */
+    ajFmtPrintS(&tmp, "rm %S", rnd);
+    system(ajStrGetPtr(tmp)); 
+
     ajStrDel(&cmd);
     ajStrDel(&tmp);
+    ajStrDel(&rnd);
 
     ajExit();
 

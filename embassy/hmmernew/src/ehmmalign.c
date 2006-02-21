@@ -50,9 +50,9 @@ int main(int argc, char **argv)
     AjPStr        tmp = NULL;
     AjPStr        fmt = NULL;
     AjBool      fmtok = ajFalse;
-
-
-
+    AjPStr        rnd = NULL;      
+    AjPSeqout    rndo = NULL;      
+    
 
 
     /* ACD file processing */
@@ -73,33 +73,26 @@ int main(int argc, char **argv)
 
     /* MAIN APPLICATION CODE */
     /* 1. Housekeeping */
-    cmd = ajStrNew();
-    tmp = ajStrNew();
-    fmt = ajStrNew();
+    cmd  = ajStrNew();
+    tmp  = ajStrNew();
+    fmt  = ajStrNew();
+    rnd  = ajStrNew();
 
 
-    /* 2. Ensure seqfile is in format HMMER can understand.  These include
-       FASTA, GENBANK,EMBL, GCG, PIR, STOCKHOLM, SELEX, MSF,CLUSTAL and PHYLIP.
-       EMBOSS name definitions are taken from seqInFormatDef in ajseqread.c and
-       seqOutFormat in ajseqwrite.c */
-    fmtok=ajFalse;
-    ajStrAssignS(&fmt, ajSeqsetGetFormat(seqfile));
-    if(ajStrMatchC(fmt, "fasta")    ||
-       ajStrMatchC(fmt, "genbank")  ||
-       ajStrMatchC(fmt, "embl")     ||
-       ajStrMatchC(fmt, "gcg")      ||
-       ajStrMatchC(fmt, "pir")      ||
-       ajStrMatchC(fmt, "stockholm")||
-       ajStrMatchC(fmt, "selex")    ||
-       ajStrMatchC(fmt, "msf")      ||
-       ajStrMatchC(fmt, "clustal")  ||
-       ajStrMatchC(fmt, "phylip"))
-	fmtok = ajTrue;
-    /* This could be replaced with code to reformat the file. */
-    if(!fmtok)
-	ajFatal("Input sequence set ('seqfile' ACD option) is not in format "
-		"HMMER understands. Please use a a file in FASTA, GENBANK, "
-		"EMBL, GCG, PIR, STOCKHOLM, SELEX, MSF,CLUSTAL or PHYLIP format.");
+
+    
+    /* 2. Re-write seqfile to a temporary file in a format (fasta) HMMER can understand.
+       We cannot just pass the name of seqfile to HMMER as the name provided might be a 
+       USA which HMMER would not understand. */
+    ajStrAssignC(&rnd, ajFileTempName(NULL));
+    rndo = ajSeqoutNew();
+    if(!ajSeqFileNewOut(rndo, rnd))
+	ajFatal("Terminal ajSeqFileNewOut failure. Email EMBOSS helpdesk!\n");
+    ajSeqOutSetFormatC(rndo, "fasta");
+    ajSeqsetWrite(rndo, seqfile);
+    ajSeqWriteClose(rndo);
+    ajSeqoutDel(&rndo);
+
 
     /* 3. Build hmmalign command line */
     /* Command line is built in this order: 
@@ -144,11 +137,13 @@ int main(int argc, char **argv)
 	ajStrAssignC(&fmt, "Stockholm");
     }
        
-    ajFmtPrintAppS(&cmd, " --outformat %S  -o %s %s %S", 
+
+    /* rnd is the name of the rewritten seqfile.  MUST specify FASTA format explicitly. */
+    ajFmtPrintAppS(&cmd, " --informat FASTA --outformat %S  -o %s %s %S", 
 		   fmt,
 		   ajAlignGetFilename(o),
 		   ajFileName(hmmfile),
-		   ajSeqsetGetFilename(seqfile));
+		   rnd);
             
     /* 4. Close ACD files */
     ajFileClose(&hmmfile);    
@@ -164,9 +159,13 @@ int main(int argc, char **argv)
 
 
     /* 6. Exit cleanly */
+    ajFmtPrintS(&tmp, "rm %S", rnd);
+    system(ajStrGetPtr(tmp)); 
+    
     ajStrDel(&cmd);
     ajStrDel(&tmp);
     ajStrDel(&fmt);
+    ajStrDel(&rnd);
 
     ajExit();
 
