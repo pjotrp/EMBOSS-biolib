@@ -9,7 +9,16 @@
 #
 # To be done
 # ==========
+#
 # programs/html version to have separate embassy directories
+# emboss_doc/master with inc subdirectory for templates (or programs/master)
+# emboss_doc/html and emboss_doc/text for the outputs
+# to be installed as /emboss/apps and /embassy/*/
+# and on sourceforge as /releaseNNN/emboss/apps etc. or /latest/
+#
+# Use these as the master copy to create the ~/sfdoc versions
+#
+# need to update included html for emboss and for embassy packages
 #
 # check emboss.cvs for files that need to be added - do not assume
 # the cvs add will be run
@@ -25,8 +34,6 @@
 #
 # Changes needed for SourceForge version
 # ======================================
-# flag failed test cases so we don't use their results
-# need to update index.html for embassy packages
 # need to be better at identifying and fixing embassy missing documentation
 # Need to check for EFUNC and EDATA HTML file updates with main server
 #     including the index.html pages
@@ -845,7 +852,7 @@ foreach $docdir (@doclist) {
 # if this is not an EMBASSY program, then we don't want to include EMBASSY
 # programs in the SEE ALSO file
 	if (!defined($embassyprogs{$thisprogram})) {
-	    system "seealso $thisprogram -auto -noembassy -html -post '.html' -out x.x";
+	    system "seealso $thisprogram -auto -noembassy -html -out x.x";
 	    open (X, "x.x") || die "Cannot open x.x";
 	    $text = "";
 	    while (<X>) {
@@ -864,7 +871,7 @@ foreach $docdir (@doclist) {
 	    close X;
 	}
 	else {
-	    system "seealso $thisprogram -auto -html -post '.html' -out x.x";
+	    system "seealso $thisprogram -auto -html -out x.x";
 	    open (X, "x.x") || die "Cannot open x.x";
 	    $text = "";
 	    while (<X>) {
