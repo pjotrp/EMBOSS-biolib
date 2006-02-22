@@ -39,8 +39,6 @@ int main(int argc, char **argv, char **env)
     AjPList alpha;    /* alphabetical list of all programs */
     AjPFile outfile = NULL;
     AjPStr search   = NULL;
-    AjPStr link1    = NULL;
-    AjPStr link2    = NULL;
     AjBool html;
     AjBool groups;
     AjBool alphabetic;
@@ -56,8 +54,6 @@ int main(int argc, char **argv, char **env)
     search     = ajAcdGetString("search");
     outfile    = ajAcdGetOutfile("outfile");
     html       = ajAcdGetToggle("html");
-    link1      = ajAcdGetString("prelink");
-    link2      = ajAcdGetString("postlink");
     groups     = ajAcdGetBool("groups");
     alphabetic = ajAcdGetBool("alphabetic");
     emboss     = ajAcdGetBool("emboss");
@@ -77,29 +73,24 @@ int main(int argc, char **argv, char **env)
     
     
     /* is a search string specified */
-    if(ajStrLen(search))
+    if(ajStrGetLen(search))
     {
 	newlist = ajListNew();
 	embGrpKeySearchProgs(newlist, alpha, search);
-	embGrpOutputGroupsList(outfile, newlist, !groups, html, link1,
-			       link2);
+	embGrpOutputGroupsList(outfile, newlist, !groups, html, showembassy);
 	embGrpGroupsListDel(&newlist);
     }
     else if(alphabetic)
 	/* list all programs in alphabetic order */
-	embGrpOutputGroupsList(outfile, alpha, !groups, html, link1,
-			       link2);
+	embGrpOutputGroupsList(outfile, alpha, !groups, html, showembassy);
     else
 	/* just show the grouped sets of programs */
-	embGrpOutputGroupsList(outfile, glist, !groups, html, link1,
-			       link2);
+	embGrpOutputGroupsList(outfile, glist, !groups, html, showembassy);
     
     ajFileClose(&outfile);
     
     embGrpGroupsListDel(&glist);
     embGrpGroupsListDel(&alpha);
-    ajStrDel(&link1);
-    ajStrDel(&link2);
     
     ajExit();
     
