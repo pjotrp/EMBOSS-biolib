@@ -128,10 +128,10 @@ int main(int argc, char *argv[])
     no_closingGU  = (eclose) ? 0 : 1;
     noLonelyPairs = (lonely) ? 0 : 1;
     noconv        = (convert) ? 0 : 1;
-    ns_bases      = (ajStrLen(ensbases)) ? MAJSTRSTR(ensbases) : NULL;
+    ns_bases      = (ajStrGetLen(ensbases)) ? MAJSTRGETPTR(ensbases) : NULL;
     tetra_loop    = !!etloop;
     
-    ewt = *ajStrStr(*eenergy);
+    ewt = *ajStrGetPtr(*eenergy);
     if(ewt == '0')
 	energy_set = 0;
     else if(ewt == '1')
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
     
     sfact = (double) escale;
     
-    edangle = *ajStrStr(*edangles);
+    edangle = *ajStrGetPtr(*edangles);
     if(edangle == '0')
 	dangles = 0;
     else if(edangle == '1')
@@ -208,12 +208,12 @@ int main(int argc, char *argv[])
     string = (char *) space(length+1);
     strcpy(string,ajSeqChar(seq));
 
-    len = ajStrLen(constring);
+    len = ajStrGetLen(constring);
     structure = (char *) space(length+1);
     if(len)
     {
 	fold_constrained = 1;
-	strcpy(structure,ajStrStr(constring));
+	strcpy(structure,ajStrGetPtr(constring));
     }
     
 

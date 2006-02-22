@@ -49,10 +49,10 @@ AjPStr *methodlist;
   all = ajAcdGetBool("all");
 
   methodlist = ajAcdGetList ("method");
-  if(strncmp(ajStrStr(*methodlist),"Nei",3) == 0){
+  if(strncmp(ajStrGetPtr(*methodlist),"Nei",3) == 0){
     nei = true;
   }
-  else if(strncmp(ajStrStr(*methodlist),"Cav",3)== 0)
+  else if(strncmp(ajStrGetPtr(*methodlist),"Cav",3)== 0)
     cavalli = true;
   else
     reynolds = true;

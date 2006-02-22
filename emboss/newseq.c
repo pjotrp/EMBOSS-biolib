@@ -50,7 +50,7 @@ int main(int argc, char **argv)
     type     = ajAcdGetList("type");
 
     /* initialise the sequence */
-    seq = ajSeqNewL(ajStrLen(sequence));
+    seq = ajSeqNewL(ajStrGetLen(sequence));
 
     /* assign some things to the sequence */
     ajSeqAssName(seq, name);

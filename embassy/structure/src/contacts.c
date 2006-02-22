@@ -190,7 +190,7 @@ int main(ajint argc, char **argv)
 	{
 	    ajFmtPrintS(&msg, "Could not open for reading %S", 
 			temp);
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
 	    ajFmtPrintF(logf, "WARN  Could not open for reading %S\n", 
 			temp);
 	    ajFileClose(&cpdb_inf);
@@ -203,7 +203,7 @@ int main(ajint argc, char **argv)
 	if(!(pdb=ajPdbReadAllModelsNew(cpdb_inf)))
 	{
 	    ajFmtPrintS(&msg, "ERROR file read error %S", temp);
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
 	    ajFmtPrintF(logf, "ERROR  file read error %S\n", temp);
 	    ajFileClose(&cpdb_inf);
 	    ajPdbDel(&pdb);
@@ -220,20 +220,20 @@ int main(ajint argc, char **argv)
 
 	/* Open contact file for writing. */
 	if(ccfnaming)
-	    ajStrAssS(&con_name, pdb->Pdb);
+	    ajStrAssignS(&con_name, pdb->Pdb);
 	else
 	{
-	    ajStrAssS(&con_name, temp);	
+	    ajStrAssignS(&con_name, temp);	
 	    ajFileDirExtnTrim(&con_name);
 	}
 		
 	       
-	ajStrToLower(&con_name);
+	ajStrFmtLower(&con_name);
 	if(!(con_outf=ajFileNewOutDir(con_path, con_name)))
 	{
 	    ajFmtPrintS(&msg, "ERROR file open error %S", 
 			con_name);
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
 	    ajFmtPrintF(logf, "ERROR file open error %S\n", con_name);
 	    ajFileClose(&cpdb_inf);
 	    ajFileClose(&con_outf);
@@ -248,7 +248,7 @@ int main(ajint argc, char **argv)
 			       skip))
 	{
 	    ajFmtPrintS(&msg, "ERROR  file write error %S", con_name);
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
 	    ajFmtPrintF(logf, "ERROR  file write error %S\n", con_name);
 
 	    ajFmtPrintS(&temp, "rm %S", con_name);
@@ -373,15 +373,15 @@ static AjBool contacts_WriteFile(AjPFile logf,
 
 
 	    /* ID */
-	    if(MAJSTRLEN(pdb->Pdb) > 4)
+	    if(MAJSTRGETLEN(pdb->Pdb) > 4)
 	    {
-		ajStrAssS(&domid, pdb->Pdb);
+		ajStrAssignS(&domid, pdb->Pdb);
 		embScopToPdbid(pdb->Pdb, &pdbid);
 	    }
 	    else
 	    {
-		ajStrAssC(&domid, ".");
-		ajStrAssS(&pdbid, pdb->Pdb);
+		ajStrAssignC(&domid, ".");
+		ajStrAssignS(&pdbid, pdb->Pdb);
 	    }
 	    ajFmtPrintF(outf, "%-5sPDB %S; DOM %S; LIG .\n", 
 			"ID", pdbid, domid);
@@ -517,7 +517,7 @@ static AjBool contacts_ContactMapWrite(AjPFile outf,
 	    if((ajInt2dGet(mat, x, y)==1))
 	    {
 		/* Assign residue id. */
-		if(!ajBaseAa1ToAa3(ajStrChar(pdb->Chains[chn-1]->Seq, x), 
+		if(!ajBaseAa1ToAa3(ajStrGetCharPos(pdb->Chains[chn-1]->Seq, x), 
 				   &res1))
 		{
 		    ajStrDel(&res1);
@@ -526,7 +526,7 @@ static AjBool contacts_ContactMapWrite(AjPFile outf,
 			   "contacts_PrintPdbSeqresChain");		
 		    return ajFalse;
 		}
-		if(!ajBaseAa1ToAa3(ajStrChar(pdb->Chains[chn-1]->Seq, y), 
+		if(!ajBaseAa1ToAa3(ajStrGetCharPos(pdb->Chains[chn-1]->Seq, y), 
 				   &res2))
 		{
 		    ajStrDel(&res1);

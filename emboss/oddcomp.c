@@ -145,7 +145,7 @@ int main(int argc, char **argv)
 	*/
 	for(count=0; count< no_elements;count++)
 	{
-	    ajStrClear(&dispseq);
+	    ajStrSetClear(&dispseq);
 	    /*
 	    **  need to clear the string as embNmerInt2Prot will prepend
 	    **  to it
@@ -313,14 +313,14 @@ static ajint oddcomp_readexpfreq(AjPTable *exptable, AjPFile compdata,
 	if(!ajStrFindC(line, "#"))
 	    continue;
 
-	if(!ajStrLen(line))
+	if(!ajStrGetLen(line))
 	    continue;
 
 	/* look for the word size */
 	if(!ajStrFindC(line, "Word size"))
 	{
-	    ajStrAssSub(&sizestr, line, 10, ajStrLen(line));
-	    ajStrChomp(&sizestr);
+	    ajStrAssignSubS(&sizestr, line, 10, ajStrGetLen(line));
+	    ajStrTrimWhite(&sizestr);
 	    ajStrToInt(sizestr, &thissize);
 
 	    *size = thissize;
@@ -338,7 +338,7 @@ static ajint oddcomp_readexpfreq(AjPTable *exptable, AjPFile compdata,
 	if(!ajStrFindC(line, "#"))
 	    continue;
 
-	if(!ajStrLen(line))
+	if(!ajStrGetLen(line))
 	    continue;
 
 	/*
@@ -356,23 +356,23 @@ static ajint oddcomp_readexpfreq(AjPTable *exptable, AjPFile compdata,
 	if(!ajStrFindC(line, "#"))
 	    continue;
 
-	if(!ajStrLen(line))
+	if(!ajStrGetLen(line))
 	    continue;
 
-	tokens = ajStrTokenInit(line, whiteSpace);
+	tokens = ajStrTokenNewC(line, whiteSpace);
 
 	/* get the word as the key */
 	key = ajStrNew();
-	ajStrToken( &key, &tokens, NULL);
+	ajStrTokenNextParse( &tokens, &key);
 
 	/*
 	**  get the observed count as the value - use this as the
 	**  expected frequency
 	*/
 	value = ajStrNew();
-	ajStrToken( &value, &tokens, NULL);
+	ajStrTokenNextParse( &tokens, &value);
 	ajTablePut( *exptable, key, value);
-	ajStrTokenClear( &tokens);
+	ajStrTokenDel( &tokens);
     }
 
     /* tidy up */

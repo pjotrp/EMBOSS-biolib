@@ -63,9 +63,9 @@ int main(int argc, char **argv)
     datafile = ajAcdGetDatafile("datafile");
     llen     = ajAcdGetInt("length");
 
-    s1 = ajStrStr(ajSeqStr(seq));
+    s1 = ajStrGetPtr(ajSeqStr(seq));
 
-    aa0str = ajStrNewL(ajSeqLen(seq)+1);
+    aa0str = ajStrNewRes(ajSeqLen(seq)+1);
 
     graphdata = ajGraphPlpDataNewI(ajSeqLen(seq)-llen);
 
@@ -76,13 +76,13 @@ int main(int argc, char **argv)
     ajGraphDataAdd(mult,graphdata);
 
     for(i=0;i<ajSeqLen(seq);i++)
-	ajStrAppK(&aa0str,(char)ajAZToInt(*s1++));
+	ajStrAppendK(&aa0str,(char)ajAZToInt(*s1++));
 
 
     if(!pepwindow_getnakaidata(datafile,&matrix[0]))
 	exit(-1);
 
-    s1 = ajStrStr(aa0str);
+    s1 = ajStrGetPtr(aa0str);
 
     for(i=0;i<ajSeqLen(seq)-llen;i++)
     {
@@ -154,88 +154,88 @@ static AjBool pepwindow_getnakaidata(AjPFile file, float matrix[])
 
     while(ajFileGets(file,&buffer))
     {
-	ptr = ajStrStr(buffer);
+	ptr = ajStrGetPtr(buffer);
 	if(*ptr == 'D')			/* save description */
-	    ajStrAssS(&description, buffer);
+	    ajStrAssignS(&description, buffer);
 	else if(*ptr == 'I')
 	    line = 1;
 	else if(line == 1)
 	{
 	    line++;
-	    ajStrClean(&buffer);
+	    ajStrRemoveWhite(&buffer);
 
-	    token = ajStrTokenInit(buffer,ajStrStr(delim));
+	    token = ajStrTokenNewS(buffer,delim);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[0]);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[17]);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[13]);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[3]);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[2]);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[16]);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[4]);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[6]);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[7]);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[8]);
 
-	    ajStrTokenClear(&token);
+	    ajStrTokenDel(&token);
 	}
 	else if(line == 2)
 	{
 	    line++;
 
-	    ajStrClean(&buffer);
-	    token = ajStrTokenInit(buffer,ajStrStr(delim));
+	    ajStrRemoveWhite(&buffer);
+	    token = ajStrTokenNewS(buffer,delim);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[11]);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[10]);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[12]);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[5]);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[15]);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[18]);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[19]);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[22]);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[24]);
 
-	    ajStrToken(&buf2,&token,ajStrStr(delim));
+	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[21]);
 
-	    ajStrTokenClear(&token);
+	    ajStrTokenDel(&token);
 	}
     }
     ajFileClose(&file);

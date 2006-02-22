@@ -205,7 +205,7 @@ int main (int argc, char * argv[])
 
     /* free allocated memory */
     for(i=0;i<nseqs;i++)
-	ajCharFree(&seqcharptr[i]);
+	ajCharDel(&seqcharptr[i]);
     AJFREE(seqcharptr);
 
     if(method == 0 || method == 1 || method == 4 )
@@ -1317,14 +1317,14 @@ static float distmat_checkambigNuc(char m1, char m2)
 
     ajBaseInit();
 
-    len1 = ajStrLen(aj_base_iubS[(int)m1].list)-1;
-    len2 = ajStrLen(aj_base_iubS[(int)m2].list)-1;
+    len1 = ajStrGetLen(aj_base_iubS[(int)m1].list)-1;
+    len2 = ajStrGetLen(aj_base_iubS[(int)m2].list)-1;
 
     b1 = ajStrNew();
-    ajStrAssI(&b1,aj_base_iubS[(int)m1].list,len1);
+    ajStrAssignS(&b1,aj_base_iubS[(int)m1].list);
 
     b2 = ajStrNew();
-    ajStrAssI(&b2,aj_base_iubS[(int)m2].list,len2);
+    ajStrAssignS(&b2,aj_base_iubS[(int)m2].list);
 
     /*
     ** for each base code in 1 cf. base code
@@ -1333,7 +1333,7 @@ static float distmat_checkambigNuc(char m1, char m2)
     for(i = 0;i < len1;i++)
     {
 	b = ajStrNew();
-	ajStrAssSub(&b,b1,i,i);
+	ajStrAssignSubS(&b,b1,i,i);
 	rexp = ajRegComp(b);
 
 	if(ajRegExec(rexp,b2))
@@ -1403,7 +1403,7 @@ static char** distmat_getSeq(const AjPSeqset seqset, ajint nseqs, ajint mlen,
     for(i=0;i<nseqs;i++)		/* get seq as char* */
     {
 	pseqset =  ajSeqsetSeq(seqset,i);
-	pseq[i] = ajCharNewL(*len);
+	pseq[i] = ajCharNewRes(*len);
 
 	count = 0;
 	for(j=posn;j<mlen;j+=incr)

@@ -191,13 +191,13 @@ static void splitter_MakeSubSeqName (AjPStr * name_ptr,
   AjPStr value = ajStrNew();
 
   /* create a nice name for the subsequence */
-  ajStrAssS(name_ptr, ajSeqGetName(seq));
-  ajStrAppC(name_ptr, "_");
+  ajStrAssignS(name_ptr, ajSeqGetName(seq));
+  ajStrAppendC(name_ptr, "_");
   ajStrFromInt(&value, ajSeqBegin(seq)+start);
-  ajStrApp(name_ptr, value);
-  ajStrAppC(name_ptr, "-");
+  ajStrAppendS(name_ptr, value);
+  ajStrAppendC(name_ptr, "-");
   ajStrFromInt(&value, ajSeqBegin(seq)+end);
-  ajStrApp(name_ptr, value);
+  ajStrAppendS(name_ptr, value);
 
   ajStrDel(&value);
 }
@@ -228,7 +228,7 @@ static void splitter_ProcessChunk (AjPSeqout seqout, const AjPSeq seq,
   subseq->Fttable = new_feattable;
   ajFeattableSetNuc(new_feattable);
 
-  ajStrAssSubC(&str,ajSeqChar(seq),start,end);
+  ajStrAssignSubC(&str,ajSeqChar(seq),start,end);
   ajSeqReplace(subseq,str);
   if (feature)
     splitter_AddSubSeqFeat(subseq->Fttable,start,end,seq);

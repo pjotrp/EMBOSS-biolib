@@ -110,9 +110,9 @@ int main(int argc, char **argv)
 	ymin = (float)0.;
 	ymax = (float)0.;
 
-	ajStrAssSubC(&str,ajSeqChar(seq),--beg,--end);
-	ajStrToUpper(&str);
-	p = ajStrStr(str);
+	ajStrAssignSubC(&str,ajSeqChar(seq),--beg,--end);
+	ajStrFmtUpper(&str);
+	p = ajStrGetPtr(str);
 
 	if(limit>0)
 	{
@@ -232,7 +232,7 @@ static void charge_addgraph(AjPGraph graph, ajint limit, const float *x,
 
     ajFmtPrintS(&st,"CHARGE of %s. Window:%d",sname,window);
     ajGraphPlpDataSetTitle(data,st);
-    ajGraphSetTitleC(graph,ajStrStr(st));
+    ajGraphSetTitleC(graph,ajStrGetPtr(st));
 
     ajGraphPlpDataSetTypeC(data,"2D Plot Float");
     ajFmtPrintS(&st,"Charge");
@@ -276,7 +276,7 @@ static AjPFloat charge_read_amino(AjPFile fp)
 
     while(ajFileReadLine(fp,&line))
     {
-	if(*ajStrStr(line)=='#' || !ajStrLen(line))
+	if(*ajStrGetPtr(line)=='#' || !ajStrGetLen(line))
 	    continue;
 
 	ajFmtScanS(line,"%c%*f%*d%*d%*d%*d%*d%*d%f",&c,&v);

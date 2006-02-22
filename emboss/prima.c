@@ -248,18 +248,18 @@ int main(int argc, char **argv)
     dolist  = ajAcdGetBool("list");
 
     seqstr = ajSeqStrCopy(sequence);
-    ajStrToUpper(&seqstr);
+    ajStrFmtUpper(&seqstr);
 
     begin  = ajSeqBegin(sequence);
     end    = ajSeqEnd(sequence);
     seqlen = end-begin+1;
 
-    ajStrAssSubC(&substr,ajStrStr(seqstr),begin-1,end-1);
-    revstr = ajStrNewC(ajStrStr(substr));
+    ajStrAssignSubC(&substr,ajStrGetPtr(seqstr),begin-1,end-1);
+    revstr = ajStrNewC(ajStrGetPtr(substr));
     ajSeqReverseStr(&revstr);
 
     /* Initialise Tm calculation arrays */
-    ajTm2(ajStrStr(substr),0,seqlen,saltconc,dnaconc,1);
+    ajTm2(ajStrGetPtr(substr),0,seqlen,saltconc,dnaconc,1);
 
 
     ajFmtPrintF(outf, "\n\nINPUT SUMMARY\n");
@@ -314,7 +314,7 @@ int main(int argc, char **argv)
 
     if(targetrange)
     {
-	ajStrAssSubC(&p1,ajStrStr(substr),targetstart-begin,targetend-begin);
+	ajStrAssignSubC(&p1,ajStrGetPtr(substr),targetstart-begin,targetend-begin);
 
 	prodGC = ajMeltGC(substr,seqlen);
 	prodTm = ajProdTm(prodGC,saltconc,seqlen);
@@ -357,7 +357,7 @@ int main(int argc, char **argv)
 		break;
 
 	    v1 = endpos-startpos+1;
-	    ajStrAssSubC(&p1,ajStrStr(substr),startpos,endpos);
+	    ajStrAssignSubC(&p1,ajStrGetPtr(substr),startpos,endpos);
 	    prodGC = ajMeltGC(p1,v1);
 	    prodTm = ajProdTm(prodGC,saltconc,v1);
 
@@ -449,17 +449,17 @@ int main(int argc, char **argv)
 	    v1 = pair->f->start;
 	    v2 = v1 + pair->f->primerlen -1;
 
-	    ajStrAssSub(&p1,substr,v1,v2);
-	    ajFmtPrintF(outf,"%6d %-25.25s %d\t", v1+begin, ajStrStr(p1),
+	    ajStrAssignSubS(&p1,substr,v1,v2);
+	    ajFmtPrintF(outf,"%6d %-25.25s %d\t", v1+begin, ajStrGetPtr(p1),
 			v2+begin);
 
 
 	    v1 = pair->r->start;
 	    v2 = v1 + pair->r->primerlen -1;
-	    ajStrAssSub(&p2,substr,v1,v2);
+	    ajStrAssignSubS(&p2,substr,v1,v2);
 	    ajSeqReverseStr(&p2);
 	    ajFmtPrintF(outf,
-			"%6d %-25.25s %d\n", v1+begin, ajStrStr(p2), v2+begin);
+			"%6d %-25.25s %d\n", v1+begin, ajStrGetPtr(p2), v2+begin);
 
 
 	    ajFmtPrintF(outf,"       Tm  %.2f C  (GC %.2f%%)\t\t       ",
@@ -492,8 +492,8 @@ int main(int argc, char **argv)
 
 	    v1 = pair->f->start;
 	    v2 = v1 + pair->f->primerlen -1;
-	    ajStrAssSub(&p1,substr,v1,v2);
-	    ajFmtPrintF(outf,"    Forward: 5' %s 3'\n",ajStrStr(p1));
+	    ajStrAssignSubS(&p1,substr,v1,v2);
+	    ajFmtPrintF(outf,"    Forward: 5' %s 3'\n",ajStrGetPtr(p1));
 	    ajFmtPrintF(outf,"             Start: %d\n",v1+begin);
 	    ajFmtPrintF(outf,"             End:   %d\n",v2+begin);
 	    ajFmtPrintF(outf,"             Tm:    %.2f C\n",
@@ -507,10 +507,10 @@ int main(int argc, char **argv)
 
 	    v1 = pair->r->start;
 	    v2 = v1 + pair->r->primerlen -1;
-	    ajStrAssSub(&p2,substr,v1,v2);
+	    ajStrAssignSubS(&p2,substr,v1,v2);
 	    ajSeqReverseStr(&p2);
-	    ajStrAssSub(&p1,substr,v1,v2);
-	    ajFmtPrintF(outf,"    Reverse: 5' %s 3'\n",ajStrStr(p1));
+	    ajStrAssignSubS(&p1,substr,v1,v2);
+	    ajFmtPrintF(outf,"    Reverse: 5' %s 3'\n",ajStrGetPtr(p1));
 	    ajFmtPrintF(outf,"             Start: %d\n",v1+begin);
 	    ajFmtPrintF(outf,"             End:   %d\n",v2+begin);
 	    ajFmtPrintF(outf,"             Tm:    %.2f C\n",
@@ -687,7 +687,7 @@ static void prima_testproduct(const AjPStr seqstr,
 	if(forpstart<0)
 	    break;
 
-	ajStrAssSubC(&substr,ajStrStr(seqstr),forpstart,forpend);
+	ajStrAssignSubC(&substr,ajStrGetPtr(seqstr),forpstart,forpend);
 	thisplen = minprimerlen + i;
 
 	primerTm = ajTm2("",forpstart,thisplen, saltconc,
@@ -709,7 +709,7 @@ static void prima_testproduct(const AjPStr seqstr,
         */
 	AJNEW0(*eric);
 
-	(*eric)->substr     = ajStrNewC(ajStrStr(substr));
+	(*eric)->substr     = ajStrNewC(ajStrGetPtr(substr));
 	(*eric)->start      = forpstart+begin;
 	(*eric)->primerlen  = thisplen;
 	(*eric)->primerTm   = primerTm;
@@ -733,7 +733,7 @@ static void prima_testproduct(const AjPStr seqstr,
 	if(revpend>seqlen)
 	    break;
 
-	ajStrAssSubC(&substr,ajStrStr(seqstr),revpstart,revpend);
+	ajStrAssignSubC(&substr,ajStrGetPtr(seqstr),revpstart,revpend);
 	ajSeqReverseStr(&substr);
 
 	thisplen = minprimerlen + i;
@@ -754,7 +754,7 @@ static void prima_testproduct(const AjPStr seqstr,
 	**  so push it to the reverse primer storage list
         */
 	AJNEW0(*fred);
-	(*fred)->substr     = ajStrNewC(ajStrStr(substr));
+	(*fred)->substr     = ajStrNewC(ajStrGetPtr(substr));
 	(*fred)->start      = revpstart+begin;
 	(*fred)->primerlen  = thisplen;
 	(*fred)->primerTm   = primerTm;
@@ -815,9 +815,9 @@ static void prima_reject_self(AjPList forlist,AjPList revlist, ajint *neric,
 	ajListPop(forlist,(void **)&tmp);
 	len = tmp->primerlen;
 	cut = (len/2)-1;
-	ajStrAssSubC(&str1,ajStrStr(tmp->substr),0,cut);
-	ajStrAssSubC(&str2,ajStrStr(tmp->substr),cut+1,len-1);
-	x = prima_primalign(ajStrStr(str1),ajStrStr(str2));
+	ajStrAssignSubC(&str1,ajStrGetPtr(tmp->substr),0,cut);
+	ajStrAssignSubC(&str2,ajStrGetPtr(tmp->substr),cut+1,len-1);
+	x = prima_primalign(ajStrGetPtr(str1),ajStrGetPtr(str2));
 	if(x<SIMLIMIT)
 	    ajListPushApp(forlist,(void *)tmp);
 	else
@@ -849,9 +849,9 @@ static void prima_reject_self(AjPList forlist,AjPList revlist, ajint *neric,
 	ajListPop(revlist,(void **)&tmp);
 	len = tmp ->primerlen;
 	cut = (len/2)-1;
-	ajStrAssSubC(&str1,ajStrStr(tmp->substr),0,cut);
-	ajStrAssSubC(&str2,ajStrStr(tmp->substr),cut+1,len-1);
-	x = prima_primalign(ajStrStr(str1),ajStrStr(str2));
+	ajStrAssignSubC(&str1,ajStrGetPtr(tmp->substr),0,cut);
+	ajStrAssignSubC(&str2,ajStrGetPtr(tmp->substr),cut+1,len-1);
+	x = prima_primalign(ajStrGetPtr(str1),ajStrGetPtr(str2));
 
 	if(x<SIMLIMIT)
 	    ajListPushApp(revlist,(void *)tmp);
@@ -923,8 +923,8 @@ static void prima_best_primer(AjPList forlist, AjPList revlist,
 	{
 	    ajListPop(revlist, (void**)&temp2);
 
-	    x=prima_primalign(ajStrStr(temp->substr),
-			      ajStrStr(temp2->substr));
+	    x=prima_primalign(ajStrGetPtr(temp->substr),
+			      ajStrGetPtr(temp2->substr));
 
 	    if(x<=SIMLIMIT)
 		good = ajTrue;
@@ -1187,9 +1187,9 @@ static void prima_testtarget(const AjPStr seqstr, const AjPStr revstr,
 	    if(forend==targetstart)
 		break;
 
-	    ajStrAssSubC(&fstr, ajStrStr(seqstr), forstart, forend);
+	    ajStrAssignSubC(&fstr, ajStrGetPtr(seqstr), forstart, forend);
 
-	    thisplen = ajStrLen(fstr);
+	    thisplen = ajStrGetLen(fstr);
 	    primerTm =ajTm2("",forstart,thisplen, saltconc, dnaconc, isDNA);
 
 	    if(primerTm <minprimerTm || primerTm>maxprimerTm)
@@ -1203,17 +1203,17 @@ static void prima_testtarget(const AjPStr seqstr, const AjPStr revstr,
 	    /*instead of calling the self-reject function */
 	    cut = (thisplen/2)-1;
 
-	    ajStrAssSubC(&str1, ajStrStr(fstr), 0, cut);
-	    ajStrAssSubC(&str2, ajStrStr(fstr), cut+1, thisplen-1);
+	    ajStrAssignSubC(&str1, ajStrGetPtr(fstr), 0, cut);
+	    ajStrAssignSubC(&str2, ajStrGetPtr(fstr), cut+1, thisplen-1);
 
-	    if((fsc=prima_primalign(ajStrStr(str1), ajStrStr(str2))) >
+	    if((fsc=prima_primalign(ajStrGetPtr(str1), ajStrGetPtr(str2))) >
 	       SIMLIMIT)
 		continue;
 
 	    /* Test for match with rest of sequence */
-	    s  = ajStrStr(seqstr);
-	    s2 = ajStrStr(revstr);
-	    p  = ajStrStr(fstr);
+	    s  = ajStrGetPtr(seqstr);
+	    s2 = ajStrGetPtr(revstr);
+	    p  = ajStrGetPtr(fstr);
 	    pv = thisplen;
 	    pcount = 0;
 	    plimit = seqlen-pv+1;
@@ -1257,10 +1257,10 @@ static void prima_testtarget(const AjPStr seqstr, const AjPStr revstr,
 		if(revend==seqlen)
 		    break;
 
-		ajStrAssSubC(&rstr, ajStrStr(seqstr), revstart, revend);
+		ajStrAssignSubC(&rstr, ajStrGetPtr(seqstr), revstart, revend);
 		ajSeqReverseStr(&rstr);
 
-		thisplen = ajStrLen(rstr);
+		thisplen = ajStrGetLen(rstr);
 		primerTm = ajTm2("", revstart, thisplen, saltconc, dnaconc, 1);
 
 		if(primerTm <minprimerTm || primerTm>maxprimerTm)
@@ -1273,17 +1273,17 @@ static void prima_testtarget(const AjPStr seqstr, const AjPStr revstr,
 		/*instead of calling the self-reject function */
 		cut = (thisplen/2)-1;
 
-		ajStrAssSubC(&str1, ajStrStr(rstr), 0, cut);
-		ajStrAssSubC(&str2, ajStrStr(rstr), cut+1, thisplen-1);
+		ajStrAssignSubC(&str1, ajStrGetPtr(rstr), 0, cut);
+		ajStrAssignSubC(&str2, ajStrGetPtr(rstr), cut+1, thisplen-1);
 
-		if((rsc=prima_primalign(ajStrStr(str1), ajStrStr(str2))) <
+		if((rsc=prima_primalign(ajStrGetPtr(str1), ajStrGetPtr(str2))) <
 		   SIMLIMIT)
 		    continue;
 
 		/* Test for match with rest of sequence */
-		s  = ajStrStr(seqstr);
-		s2 = ajStrStr(revstr);
-		p  = ajStrStr(rstr);
+		s  = ajStrGetPtr(seqstr);
+		s2 = ajStrGetPtr(revstr);
+		p  = ajStrGetPtr(rstr);
 		pv = thisplen;
 		pcount = 0;
 		plimit = seqlen-pv+1;
@@ -1328,13 +1328,13 @@ static void prima_testtarget(const AjPStr seqstr, const AjPStr revstr,
 	return;
     }
 
-    ajStrAssSubC(&str1,ajStrStr(seqstr),forstart+flen,revstart-1);
+    ajStrAssignSubC(&str1,ajStrGetPtr(seqstr),forstart+flen,revstart-1);
     prodgc = ajMeltGC(str1,revstart-(forstart+flen));
 
 
 
     AJNEW0(f);
-    f->substr     = ajStrNewC(ajStrStr(fstr));
+    f->substr     = ajStrNewC(ajStrGetPtr(fstr));
     f->start      = forstart;
     f->primerlen  = flen;
     f->primerTm   = ftm;
@@ -1345,7 +1345,7 @@ static void prima_testtarget(const AjPStr seqstr, const AjPStr revstr,
 
 
     AJNEW0(r);
-    r->substr     = ajStrNewC(ajStrStr(rstr));
+    r->substr     = ajStrNewC(ajStrGetPtr(rstr));
     r->start      = revstart;
     r->primerlen  = rlen;
     r->primerTm   = rtm;
@@ -1400,8 +1400,8 @@ static void prima_test_multi(AjPList forlist, AjPList revlist, ajint *neric,
 
     st = ajStrNew();
 
-    s = ajStrStr(seq);
-    r = ajStrStr(rseq);
+    s = ajStrGetPtr(seq);
+    r = ajStrGetPtr(rseq);
 
     pc = *neric;
 
@@ -1411,7 +1411,7 @@ static void prima_test_multi(AjPList forlist, AjPList revlist, ajint *neric,
 	count = 0;
 	v = tmp->primerlen;
 	limit = len-v+1;
-	p = ajStrStr(tmp->substr);
+	p = ajStrGetPtr(tmp->substr);
 	for(j=0;j<limit && count<2;++j)
 	{
 	    if(prima_seq_align(s+j,p,v)>SIMLIMIT2)
@@ -1449,9 +1449,9 @@ static void prima_test_multi(AjPList forlist, AjPList revlist, ajint *neric,
 	count = 0;
 	v = tmp->primerlen;
 	limit = len-v+1;
-	ajStrAssC(&st,ajStrStr(tmp->substr));
+	ajStrAssignC(&st,ajStrGetPtr(tmp->substr));
 	ajSeqReverseStr(&st);
-	p = ajStrStr(st);
+	p = ajStrGetPtr(st);
 	for(j=0;j<limit && count<2;++j)
 	{
 	    if(prima_seq_align(s+j,p,v)>SIMLIMIT2)

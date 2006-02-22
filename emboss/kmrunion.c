@@ -75,7 +75,7 @@ int main(int argc, char **argv)
     /* file to write overlap base counts to */
     overlap_file_name = ajAcdGetString ("overlapfile");
 
-    if (findoverlap && ajStrLen(overlap_file_name) > 0) {
+    if (findoverlap && ajStrGetLen(overlap_file_name) > 0) {
       overlap_file = ajFileNewOut(overlap_file_name);
     }
     seqout = ajAcdGetSeqout("outseq");
@@ -84,8 +84,8 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall, &seq))
     {
 
-      ajStrAssC(&source_str, "union");
-      ajStrAssC(&type_str, "source");
+      ajStrAssignC(&source_str, "union");
+      ajStrAssignC(&type_str, "source");
 
       if (first) {
 	uniseq = ajSeqNewS(seq);
@@ -114,12 +114,12 @@ int main(int argc, char **argv)
 
         if (source) {
           source_feature = ajFeatNew(new_feattable, source_str, type_str,
-                                     ajStrLen(unistr) -
+                                     ajStrGetLen(unistr) -
                                      overlap_base_count + 1,
-                                     ajStrLen(unistr) + ajSeqLen (seq) -
+                                     ajStrGetLen(unistr) + ajSeqLen (seq) -
                                      overlap_base_count,
                                      score, strand, frame);
-          ajFeatTagAddCC (source_feature, "origid", ajStrStr(seq->Name));
+          ajFeatTagAddCC (source_feature, "origid", ajStrGetPtr(seq->Name));
           /* FIXME */
           source_feature->Group = source_group++;
         }
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
         offset += ajSeqLen (seq) - overlap_base_count;
       }
 
-      ajStrAppSub(&unistr, ajSeqStr(seq), overlap_base_count,
+      ajStrAppendSubS(&unistr, ajSeqStr(seq), overlap_base_count,
                   ajSeqLen (seq) - 1);
 
       if (!first) {
@@ -183,15 +183,15 @@ static ajulong union_GetOverlap (const AjPSeq first_seq,
 
   int i = ajSeqLen(first_seq);
 
-  const char * first_str = ajStrStr(first_seq_str);
-  const char * second_str = ajStrStr(second_seq_str);
+  const char * first_str = ajStrGetPtr(first_seq_str);
+  const char * second_str = ajStrGetPtr(second_seq_str);
 
-  if (i > ajStrLen(second_seq_str)) {
-    i = ajStrLen(second_seq_str);
+  if (i > ajStrGetLen(second_seq_str)) {
+    i = ajStrGetLen(second_seq_str);
   }
 
   for (; i >= 0 ; --i) {
-    if (memcmp(&first_str[ajStrLen(first_seq_str)-i], second_str, i) == 0) {
+    if (memcmp(&first_str[ajStrGetLen(first_seq_str)-i], second_str, i) == 0) {
       return i;
     }
   }
@@ -243,7 +243,7 @@ static void union_CopyFeatures (const AjPFeattable old_feattable,
     if (source_feature != NULL) {
       source_feature_type = ajFeatGetType(source_feature);
 
-      if (ajStrMatch (type, source_feature_type) &&
+      if (ajStrMatchS(type, source_feature_type) &&
           ajFeatGetStart(copy) == ajFeatGetStart (source_feature) &&
           ajFeatGetEnd(copy) == ajFeatGetEnd (source_feature)) {
 

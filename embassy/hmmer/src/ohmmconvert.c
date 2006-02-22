@@ -93,7 +93,7 @@ int main(int argc, char **argv)
     else
 	do_force=FALSE;
 
-    ajc = *ajStrStr(ajfmt[0]);
+    ajc = *ajStrGetPtr(ajfmt[0]);
     if(ajc=='A')
 	outfmt = P7ASCII;
     else if(ajc=='B')
@@ -105,18 +105,18 @@ int main(int argc, char **argv)
 
     instr  = ajStrNewC((char *)ajFileName(inf));
     outstr = ajStrNewC((char *)ajFileName(outf));
-    if(*ajStrStr(outstr)>31)
+    if(*ajStrGetPtr(outstr)>31)
     {
 	ajFileClose(&outf);
 	if(!ajFileLength(outstr))
-	    unlink(ajStrStr(outstr));
+	    unlink(ajStrGetPtr(outstr));
     }
 
     ajFileClose(&inf);
 
 
-    infile  = ajStrStr(instr);
-    outfile = ajStrStr(outstr);
+    infile  = ajStrGetPtr(instr);
+    outfile = ajStrGetPtr(outstr);
 
 
 

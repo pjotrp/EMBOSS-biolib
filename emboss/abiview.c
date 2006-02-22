@@ -127,8 +127,8 @@ int main(int argc, char **argv)
 
     fname = ajStrNewC(ajFileName(fp));
 
-    ajStrToUpper(&baseN);
-    nbases  = ajStrLen(baseN);
+    ajStrFmtUpper(&baseN);
+    nbases  = ajStrGetLen(baseN);
     overlay = !separate;
 
 
@@ -426,7 +426,7 @@ static AjPGraphPlpData abiview_graphTextDisplay(AjPGraph graphs, ajint nstart,
 
     for(i=nstart;i<nstop;i++)
     {
-	*res = ajStrChar(nseq,i);
+	*res = ajStrGetCharPos(nseq,i);
 	colres = abiview_getResColour(*res);
 	ajGraphPlpDataAddText(gdata,(float)i+1.,tmax+75.,colres,res);
     }
@@ -468,7 +468,7 @@ static void abiview_TextDisplay(AjPGraph graphs, ajint nstart, ajint nstop,
     res[1] = '\0';
     for(i=nstart;i<nstop-1;i++)
     {
-	*res = ajStrChar(nseq,i);
+	*res = ajStrGetCharPos(nseq,i);
 	colres = abiview_getResColour(*res);
 	ajGraphAddText(graphs,(float)i+1.,tmax+30.,colres,res);
     }
@@ -500,7 +500,7 @@ static AjBool abiview_drawbase(const char* res, const AjPStr baseN)
 
 
     b = ajStrNew();
-    ajStrAssSubC(&b,res,0,0);
+    ajStrAssignSubC(&b,res,0,0);
 
     for(i=0;i<4;i++)
     {

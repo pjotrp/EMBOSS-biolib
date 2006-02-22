@@ -51,7 +51,6 @@ void ajExit(void)
 {
     ajDebug("\nFinal Summary\n=============\n\n");
     ajLogInfo();
-    ajRegExit();
     ajTableExit();
     ajListExit();
     ajFileExit();
@@ -61,7 +60,6 @@ void ajExit(void)
     ajReportExit();
     ajAcdExit(ajFalse);
     ajNamExit();
-    ajMemExit();
     ajSysExit();
     ajCallExit();
     ajBaseExit();
@@ -69,7 +67,9 @@ void ajExit(void)
     ajTrnExit();
     ajMeltExit();
     ajTimeExit();
+    ajRegExit();
     ajStrExit();
+    ajMemExit();
     ajMessExit();     /* clears data for ajDebug - do this last!!!  */
     exit(0);
 
@@ -186,7 +186,7 @@ AjBool ajUtilUid(AjPStr* dest)
     uid = getuid();
     if(!uid)
     {
-	ajStrAssC(dest, "");
+	ajStrAssignC(dest, "");
 	return ajFalse;
     }
 
@@ -194,13 +194,13 @@ AjBool ajUtilUid(AjPStr* dest)
     pwd = getpwuid(uid);
     if(!pwd)
     {
-	ajStrAssC(dest, "");
+	ajStrAssignC(dest, "");
 	return ajFalse;
     }
 
     ajDebug("  pwd: '%s'\n", pwd->pw_name);
 
-    ajStrAssC(dest, pwd->pw_name);
+    ajStrAssignC(dest, pwd->pw_name);
 
     return ajTrue;
 }

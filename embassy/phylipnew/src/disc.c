@@ -45,7 +45,7 @@ void disc_inputdata(AjPPhyloState state,
     for (j = 1; j <= (chars); j++) {
       k = (j - 1) % bits + 1;
       l = (j - 1) / bits + 1;
-      charstate = ajStrChar(state->Str[i-1], j-1);
+      charstate = ajStrGetCharPos(state->Str[i-1], j-1);
       if (charstate == 'b')
         charstate = 'B';
       if (charstate == 'p')
@@ -120,7 +120,7 @@ void disc_inputdata2(AjPPhyloState state, pointptr2 treenode)
     for (j = 1; j <= (chars); j++) {
       k = (j - 1) % bits + 1;
       l = (j - 1) / bits + 1;
-      charstate = ajStrChar(str, j-1); 
+      charstate = ajStrGetCharPos(str, j-1); 
       if (charstate == 'b')          charstate = 'B';
       if (charstate == 'p')          charstate = 'P';
       if (charstate != '0' && charstate != '1' && charstate != '?' &&
@@ -283,7 +283,7 @@ void inputancestorsstr(AjPStr propstr, boolean *anczero0, boolean *ancone0)
   for (i = 0; i < (chars); i++) {
     anczero0[i] = true;
     ancone0[i] = true;
-    ch = ajStrChar(propstr, i);
+    ch = ajStrGetCharPos(propstr, i);
     if (ch == 'p')
         ch = 'P';
     if (ch == 'b')

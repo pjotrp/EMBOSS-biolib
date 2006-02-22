@@ -108,7 +108,7 @@ static struct hept_pref* read_matrix(AjPFile inf)
 
     while(ajFileReadLine(inf,&buff))
     {
-	pbuff = ajStrStr(buff);
+	pbuff = ajStrGetPtr(buff);
 	if(*pbuff != '%')
 	{
 	    if((strncmp(pbuff,"uw ",3)==0) || (strncmp(pbuff,"w ",2)==0))

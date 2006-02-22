@@ -218,8 +218,8 @@ void emboss_inputdata(){
   }
 
   for(i=0;i<spp;i++){
-    ilen = ajStrLen(ajSeqsetName(seqset, i));
-    strncpy(nayme[i],ajStrStr(ajSeqsetName(seqset, i)),ilen);
+    ilen = ajStrGetLen(ajSeqsetName(seqset, i));
+    strncpy(nayme[i],ajStrGetPtr(ajSeqsetName(seqset, i)),ilen);
     for (j=ilen;j<nmlngth;j++)
 	nayme[i][j] = ' ';
     temp1 = ajSeqsetSeq(seqset, i);

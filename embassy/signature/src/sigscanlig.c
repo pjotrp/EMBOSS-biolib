@@ -190,7 +190,7 @@ int main(int argc, char **argv)
 
     /*Assign N-terminal matching option etc. */
     ajFmtScanS(nterm[0], "%d", &ntermi);
-    modei       = (ajint) ajStrChar(*mode,0)-48;
+    modei       = (ajint) ajStrGetCharFirst(*mode)-48;
 
 
 
@@ -417,9 +417,9 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
     iter = ajListIter(hits);
     while((hit = (AjPHit) ajListIterNext(iter)))
     {
-	if((wid1=MAJSTRLEN(hit->Sig->Ligid))>mwid1)
+	if((wid1=MAJSTRGETLEN(hit->Sig->Ligid))>mwid1)
 	    mwid1 = wid1; 
-	if((len=MAJSTRLEN(hit->Seq))>mlen)
+	if((len=MAJSTRGETLEN(hit->Seq))>mlen)
 	    mlen = len;
     }
     ajListIterFree(&iter);
@@ -445,8 +445,8 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
     while((hit = (AjPHit) ajListIterNext(iter)))
     {
 	/* Get pointer to sequence & alignment string. */
-	ptrp = ajStrStr(hit->Seq);
-	ptrs = ajStrStr(hit->Alg);
+	ptrp = ajStrGetPtr(hit->Seq);
+	ptrs = ajStrGetPtr(hit->Alg);
 
 	/* Print spacer */
 	ajFmtPrintF(outf, "# XX\n");
@@ -469,7 +469,7 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
 	    
 
 	    /* There is some of the sequence left to print. */
-	    if(idx<MAJSTRLEN(hit->Seq))
+	    if(idx<MAJSTRGETLEN(hit->Seq))
 	    {
 		ajFmtPrintF(outf,"%-*S%-*d%-*.*s %d\n", 
 			    mwid1, hit->Acc, fwid2, 
@@ -566,7 +566,7 @@ AjBool sigscanlig_WriteFasta(AjPFile outf, AjPList hits)
 	/* There has to be a hit for each signature for correct generation of the
 	   LHF by sigscanlig_WriteFasta. Therefore empty hits may have been pushed.
 	   Catch those here. */
-	/* if(!MAJSTRLEN(hit->Model))
+	/* if(!MAJSTRGETLEN(hit->Model))
 	    continue; */
 	
 	hit = hitarr[x];
@@ -576,12 +576,12 @@ AjBool sigscanlig_WriteFasta(AjPFile outf, AjPList hits)
 
 	ajFmtPrintF(outf, "> ");
 	
-	if(MAJSTRLEN(hit->Acc))
+	if(MAJSTRGETLEN(hit->Acc))
 	    ajFmtPrintF(outf, "%S^", hit->Acc);
 	else
 	    ajFmtPrintF(outf, ".^");
 
-	if(MAJSTRLEN(hit->Spr))
+	if(MAJSTRGETLEN(hit->Spr))
 	    ajFmtPrintF(outf, "%S^", hit->Spr);
 	else
 	    ajFmtPrintF(outf, ".^");
@@ -590,17 +590,17 @@ AjBool sigscanlig_WriteFasta(AjPFile outf, AjPList hits)
 	
 	ajFmtPrintF(outf, "LIGAND^");
 	
-	if(MAJSTRLEN(sig->Id))
+	if(MAJSTRGETLEN(sig->Id))
 	    ajFmtPrintF(outf, "%S^", sig->Id);
 	else
 	    ajFmtPrintF(outf, ".^");
 
-	if(MAJSTRLEN(sig->Domid))
+	if(MAJSTRGETLEN(sig->Domid))
 	    ajFmtPrintF(outf, "%S^", sig->Domid);
 	else
 	    ajFmtPrintF(outf, ".^");
 
-	if(MAJSTRLEN(sig->Ligid))
+	if(MAJSTRGETLEN(sig->Ligid))
 	    ajFmtPrintF(outf, "%S^", sig->Ligid);
 	else
 	    ajFmtPrintF(outf, ".^");
@@ -753,12 +753,12 @@ AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList hits, ajint n, AjBool DOSE
     
     ajFmtPrintF(outf, "> ");
     
-    if(MAJSTRLEN(hit->Acc))
+    if(MAJSTRGETLEN(hit->Acc))
 	ajFmtPrintF(outf, "%S^", hit->Acc);
     else
 	ajFmtPrintF(outf, ".^");
     
-    if(MAJSTRLEN(hit->Spr))
+    if(MAJSTRGETLEN(hit->Spr))
 	ajFmtPrintF(outf, "%S^", hit->Spr);
     else
 	ajFmtPrintF(outf, ".^");
@@ -767,17 +767,17 @@ AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList hits, ajint n, AjBool DOSE
     
     ajFmtPrintF(outf, "LIGAND^");
     
-    if(MAJSTRLEN(sig->Id))
+    if(MAJSTRGETLEN(sig->Id))
 	ajFmtPrintF(outf, "%S^", sig->Id);
     else
 	ajFmtPrintF(outf, ".^");
     
-    if(MAJSTRLEN(sig->Domid))
+    if(MAJSTRGETLEN(sig->Domid))
 	ajFmtPrintF(outf, "%S^", sig->Domid);
     else
 	ajFmtPrintF(outf, ".^");
     
-    if(MAJSTRLEN(sig->Ligid))
+    if(MAJSTRGETLEN(sig->Ligid))
 	ajFmtPrintF(outf, "%S^", sig->Ligid);
     else
 	ajFmtPrintF(outf, ".^");
@@ -855,7 +855,7 @@ AjPList sigscanlig_score_ligands_patch(AjPList hits)
     while((hit = (AjPHit) ajListIterNext(iter)))
     {
 	/* New ligand */
-	if((!ajStrMatch(hit->Sig->Ligid, prev_ligand)))
+	if((!ajStrMatchS(hit->Sig->Ligid, prev_ligand)))
 	{
 	    if(nhits)
 		score /= nhits;
@@ -865,7 +865,7 @@ AjPList sigscanlig_score_ligands_patch(AjPList hits)
 		lighit->ns = nsites; 
 		lighit->np = nhits; 
 		lighit->score =  score;
-		ajStrAssS(&lighit->ligid, prev_ligand);
+		ajStrAssignS(&lighit->ligid, prev_ligand);
 		ajListPushApp(ret, lighit);
 
 	    }
@@ -887,7 +887,7 @@ AjPList sigscanlig_score_ligands_patch(AjPList hits)
 	
 	nhits++;
 
-	ajStrAssS(&prev_ligand, hit->Sig->Ligid);
+	ajStrAssignS(&prev_ligand, hit->Sig->Ligid);
 	prevsn = hit->Sig->sn;
     }
     
@@ -900,7 +900,7 @@ AjPList sigscanlig_score_ligands_patch(AjPList hits)
 	lighit->ns = nsites;
 	lighit->np = nhits; 
 	lighit->score = score;
-	ajStrAssS(&lighit->ligid, prev_ligand);
+	ajStrAssignS(&lighit->ligid, prev_ligand);
 	ajListPushApp(ret, lighit);
     }
 	
@@ -974,7 +974,7 @@ AjPList sigscanlig_score_ligands_site(AjPList hits)
 	}
 
 	/* New ligand */
-	if((!ajStrMatch(hit->Sig->Ligid, prev_ligand)))
+	if((!ajStrMatchS(hit->Sig->Ligid, prev_ligand)))
 	{
 	    if(nsites)
 		score /= nsites;
@@ -986,7 +986,7 @@ AjPList sigscanlig_score_ligands_site(AjPList hits)
 		lighit->np = nhits; 
 		lighit->score =  score;
 
-		ajStrAssS(&lighit->ligid, prev_ligand);
+		ajStrAssignS(&lighit->ligid, prev_ligand);
 		ajListPushApp(ret, lighit);
 
 	    }
@@ -1008,7 +1008,7 @@ AjPList sigscanlig_score_ligands_site(AjPList hits)
 	nhits++;
 	patch_cnt++;
 	
-	ajStrAssS(&prev_ligand, hit->Sig->Ligid);
+	ajStrAssignS(&prev_ligand, hit->Sig->Ligid);
 	prevsn = hit->Sig->sn;
     }
     
@@ -1026,7 +1026,7 @@ AjPList sigscanlig_score_ligands_site(AjPList hits)
 	lighit->ns = nsites;
 	lighit->np = nhits; 
 	lighit->score = score;
-	ajStrAssS(&lighit->ligid, prev_ligand);
+	ajStrAssignS(&lighit->ligid, prev_ligand);
 	ajListPushApp(ret, lighit);
     }
 	

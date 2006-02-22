@@ -212,7 +212,7 @@ void restdist_inputdata(AjPPhyloState state)
       done = false;
       while (!done) {
         while (j < sites) {
-          ch = ajStrChar(str, j);
+          ch = ajStrGetCharPos(str, j);
           if (ch != '1' && ch != '0' && ch != '+' && ch != '-' && ch != '?') {
             printf(" ERROR -- Bad symbol %c",ch);
             printf(" at position %ld of species %ld\n", j+1, i);

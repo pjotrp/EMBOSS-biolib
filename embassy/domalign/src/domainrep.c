@@ -149,22 +149,22 @@ int main(int argc, char **argv)
 
     /* Initialise random number generator for naming of temp. files*/
     ajRandomSeed();
-    ajStrAssC(&name, ajFileTempName(NULL));
+    ajStrAssignC(&name, ajFileTempName(NULL));
 
 
     /* Create names for temp. files*/
-    ajStrAssS(&dom, name);	
-    ajStrAppC(&dom, ".dom");
-    ajStrAssS(&set, name);	
-    ajStrAppC(&set, ".set");
-    ajStrAssS(&out, name);	
-    ajStrAppC(&out, ".out");
-    ajStrAssS(&scan, name);	
-    ajStrAppC(&scan, ".scan");
+    ajStrAssignS(&dom, name);	
+    ajStrAppendC(&dom, ".dom");
+    ajStrAssignS(&set, name);	
+    ajStrAppendC(&set, ".set");
+    ajStrAssignS(&out, name);	
+    ajStrAppendC(&out, ".out");
+    ajStrAssignS(&scan, name);	
+    ajStrAppendC(&scan, ".scan");
 
 
     /* Initialise last_node with something that is not in SCOP. */
-    ajStrAssC(&last_node,"!!!!!");
+    ajStrAssignC(&last_node,"!!!!!");
     
     
     type = ajDomainDCFType(dcfin);
@@ -216,8 +216,8 @@ int main(int argc, char **argv)
 			
 			if(!(domf=ajFileNewOut(dom)))
 			    ajFatal("Could not open domain file\n");
-			ajStrAssS(&temp, ajDomainGetId(arr[x]));
-			ajStrToLower(&temp);
+			ajStrAssignS(&temp, ajDomainGetId(arr[x]));
+			ajStrFmtLower(&temp);
 			ajFmtPrintF(domf, "%S %S { ALL }\n", temp, temp);
 			ajFileClose(&domf);	
 
@@ -231,11 +231,11 @@ int main(int argc, char **argv)
 
 			    
 			    /* Write to domain set file*/
-			    ajStrAssS(&temp, ajDomainGetId(arr[x]));
-			    ajStrToLower(&temp);
+			    ajStrAssignS(&temp, ajDomainGetId(arr[x]));
+			    ajStrFmtLower(&temp);
 			    ajFmtPrintF(setf, "%S %S { ALL }\n", temp, temp);
-			    ajStrAssS(&temp, ajDomainGetId(arr[y]));
-			    ajStrToLower(&temp);
+			    ajStrAssignS(&temp, ajDomainGetId(arr[y]));
+			    ajStrFmtLower(&temp);
 			    ajFmtPrintF(setf, "%S %S { ALL }\n", temp, temp);
 			    
 
@@ -247,7 +247,7 @@ int main(int argc, char **argv)
 			    ajFmtPrintS(&exec,"stamp -l %S -s -n 2 -slide 5 -prefix "
 					"%S -d %S > %S\n", dom, name, set, out);
 			    ajFmtPrint("%S\n", exec);
-			    system(ajStrStr(exec));  
+			    system(ajStrGetPtr(exec));  
 
 			    
 			    /* Open stamp output file. */
@@ -390,8 +390,8 @@ int main(int argc, char **argv)
 
 	    if(!(domf=ajFileNewOut(dom)))
 		ajFatal("Could not open domain file\n");
-	    ajStrAssS(&temp, ajDomainGetId(arr[x]));
-	    ajStrToLower(&temp);
+	    ajStrAssignS(&temp, ajDomainGetId(arr[x]));
+	    ajStrFmtLower(&temp);
 	    ajFmtPrintF(domf, "%S %S { ALL }\n", temp, temp);
 	    ajFileClose(&domf);	
 
@@ -405,11 +405,11 @@ int main(int argc, char **argv)
 
 			    
 		/* Write to domain set file*/
-		ajStrAssS(&temp, ajDomainGetId(arr[x]));
-		ajStrToLower(&temp);
+		ajStrAssignS(&temp, ajDomainGetId(arr[x]));
+		ajStrFmtLower(&temp);
 		ajFmtPrintF(setf, "%S %S { ALL }\n", temp, temp);
-		ajStrAssS(&temp, ajDomainGetId(arr[y]));
-		ajStrToLower(&temp);
+		ajStrAssignS(&temp, ajDomainGetId(arr[y]));
+		ajStrFmtLower(&temp);
 		ajFmtPrintF(setf, "%S %S { ALL }\n", temp, temp);
 			    
 
@@ -421,7 +421,7 @@ int main(int argc, char **argv)
 		ajFmtPrintS(&exec,"stamp -l %S -s -n 2 -slide 5 -prefix "
 			    "%S -d %S > %S\n", dom, name, set, out);
 		ajFmtPrint("%S\n", exec);
-		system(ajStrStr(exec));  
+		system(ajStrGetPtr(exec));  
 
 			    
 		/* Open stamp output file. */
@@ -626,7 +626,7 @@ static AjBool domainrep_WriteRmsd(ajint x, ajint y, AjPFloat2d *scores,
             
             /* If line does NOT represent domain scanned against itself . */
             /* then process rmsd value                                   */
-            if(!ajStrMatch(scan, dom))
+            if(!ajStrMatchS(scan, dom))
             {
                 /* Check if domain was skipped i.e. no rmsd given. */
                 if(ajStrMatchC(skip, "skipped"))
@@ -699,42 +699,42 @@ static void domainrep_writelast(AjPDomain domain, ajint noden, AjPStr *last_node
 {
     if(noden==1) 
     {
-	ajStrAssS(last_node, domain->Scop->Class);
+	ajStrAssignS(last_node, domain->Scop->Class);
 	*last_nodeid = domain->Scop->Sunid_Class;
     }		       
     else if (noden==2)
     {
-	ajStrAssS(last_node, domain->Scop->Fold);
+	ajStrAssignS(last_node, domain->Scop->Fold);
 	*last_nodeid = domain->Scop->Sunid_Fold;
     }
     else if (noden==3)
     {
-	ajStrAssS(last_node, domain->Scop->Superfamily);
+	ajStrAssignS(last_node, domain->Scop->Superfamily);
 	*last_nodeid = domain->Scop->Sunid_Superfamily;
     }
     else if (noden==4)
     {
-	ajStrAssS(last_node, domain->Scop->Family);
+	ajStrAssignS(last_node, domain->Scop->Family);
 	*last_nodeid = domain->Scop->Sunid_Family;
     } 	
     else if (noden==5)
     {
-	ajStrAssS(last_node, domain->Cath->Class);
+	ajStrAssignS(last_node, domain->Cath->Class);
 	*last_nodeid = domain->Cath->Class_Id ;
     } 
     else if (noden==6)
     {
-	ajStrAssS(last_node, domain->Cath->Architecture);
+	ajStrAssignS(last_node, domain->Cath->Architecture);
 	*last_nodeid = domain->Cath->Arch_Id;
     } 
     else if (noden==7)
     {
-	ajStrAssS(last_node, domain->Cath->Topology);
+	ajStrAssignS(last_node, domain->Cath->Topology);
 	*last_nodeid = domain->Cath->Topology_Id;
     } 
     else if (noden==8)
     {
-	ajStrAssS(last_node, domain->Cath->Superfamily);
+	ajStrAssignS(last_node, domain->Cath->Superfamily);
 	*last_nodeid = domain->Cath->Superfamily_Id;
     } 
     else if (noden==9)

@@ -753,7 +753,7 @@ void maketree()
     }
     nextnode = 0;
     nextnode = 0;
-    treestr = ajStrStrMod(&phylotrees[which-1]->Tree);
+    treestr = ajStrGetuniquePtr(&phylotrees[which-1]->Tree);
     treeread (&treestr, &curtree.start, curtree.nodep, &goteof, &first,
             curtree.nodep, &nextnode, &haslengths, &grbg, initcontrastnode);
     q = curtree.start;

@@ -95,7 +95,7 @@ int main(int argc, char **argv)
     opattern=ajStrNew();
 
     /* Copy original pattern regexps */
-    ajStrAssC(&opattern,ajStrStr(pattern));
+    ajStrAssignC(&opattern,ajStrGetPtr(pattern));
 
     if(!(type=embPatGetType(opattern,&pattern,mismatch,0,&m,&amino,&carboxyl)))
 	ajFatal("Illegal pattern");
@@ -108,11 +108,11 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall,&seq))
     {
 	l = ajListNew();
-	ajStrAssC(&seqname,ajSeqName(seq));
+	ajStrAssignC(&seqname,ajSeqName(seq));
 	begin = ajSeqBegin(seq);
 	end   = ajSeqEnd(seq);
-	ajStrAssSubC(&text,ajSeqChar(seq),begin-1,end-1);
-	ajStrToUpper(&text);
+	ajStrAssignSubC(&text,ajSeqChar(seq),begin-1,end-1);
+	ajStrFmtUpper(&text);
 	adj = begin+end+1;
 
 	embPatFuzzSearch(type,begin,pattern,seqname,text,l,
@@ -192,7 +192,7 @@ static void fuzznuc_report_hits(AjPList *l, ajint hits,
     adj   =  ajSeqBegin(seq) + ajSeqEnd(seq) + 1;
 
     if(!fthit)
-      ajStrAssC(&fthit, "hit");
+      ajStrAssignC(&fthit, "hit");
 
     s = ajStrNew();
 

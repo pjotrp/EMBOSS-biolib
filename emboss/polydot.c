@@ -161,7 +161,7 @@ int main(int argc, char **argv)
 		    }
 		    ajGraphTextMid(xstart+((float)ajSeqLen(seq1)/2.0),
 				   ystart-(3*onefifth),
-				   ajStrStr(ajSeqsetName(seqset, i)));
+				   ajStrGetPtr(ajSeqsetName(seqset, i)));
 		}
 
 		if(i==0)
@@ -177,7 +177,7 @@ int main(int argc, char **argv)
 		    ajGraphTextLine(xstart-(3*onefifth),
 				    ystart+((float)ajSeqLen(seq2)/2.0),
 				    xstart-(3*onefifth),ystart+ajSeqLen(seq2),
-				    ajStrStr(ajSeqsetName(seqset, j)),0.5);
+				    ajStrGetPtr(ajSeqsetName(seqset, j)),0.5);
 		}
 		ystart += (float)ajSeqLen(seq2)+(float)gap;
 	    }
@@ -199,7 +199,7 @@ int main(int argc, char **argv)
 		    pts[i],ajSeqName(seq1));
 
 	ajGraphTextStart(total+onefifth,total-(onefifth*(i+2)),
-			 ajStrStr(sajb));
+			 ajStrGetPtr(sajb));
     }
     
     if(dumpfeat && seq1out)

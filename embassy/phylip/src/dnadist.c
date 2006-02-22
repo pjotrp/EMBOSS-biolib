@@ -81,13 +81,13 @@ AjPFile outf;
   methodlist = ajAcdGetList ("method");
 
   ajUser("%S",*methodlist);
-  if(strncmp(ajStrStr(*methodlist),"Kimura",6) == 0){
+  if(strncmp(ajStrGetPtr(*methodlist),"Kimura",6) == 0){
     kimura = true;
   }
-  else if(strncmp(ajStrStr(*methodlist),"Jinnei",6)== 0){
+  else if(strncmp(ajStrGetPtr(*methodlist),"Jinnei",6)== 0){
     jinnei = true;
   }
-  else if(strncmp(ajStrStr(*methodlist),"Jukes",5)== 0){
+  else if(strncmp(ajStrGetPtr(*methodlist),"Jukes",5)== 0){
     jukes = true;
   }
   else{
@@ -109,7 +109,7 @@ AjPFile outf;
     freqg = ajAcdGetFloat("freqg");
   }
   matrixlist = ajAcdGetList ("matrix");
-  if(!strncmp(ajStrStr(*matrixlist),"S",1)) 
+  if(!strncmp(ajStrGetPtr(*matrixlist),"S",1)) 
     lower = false;
   else
     lower = true;
@@ -182,8 +182,8 @@ void emboss_inputdata(){
     fprintf(outfile, "---------\n\n");
   }
   for(i=0;i<numsp;i++){
-    ilen = ajStrLen(ajSeqsetName(seqset, i));
-    strncpy(nodep[i]->nayme,ajStrStr(ajSeqsetName(seqset, i)),ilen);
+    ilen = ajStrGetLen(ajSeqsetName(seqset, i));
+    strncpy(nodep[i]->nayme,ajStrGetPtr(ajSeqsetName(seqset, i)),ilen);
     for (j=ilen;j<nmlngth;j++)
 	nodep[i]->nayme[j] = ' ';
     /*    ajUser("%s/n",ajSeqsetName(seqset, i));*/

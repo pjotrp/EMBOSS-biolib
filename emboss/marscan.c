@@ -170,10 +170,10 @@ int main(int argc, char **argv)
 
 
     /* Copy original patterns for regexps */
-    ajStrAssC(&opattern16, ajStrStr(pattern16));
-    ajStrAssC(&opattern16rev, ajStrStr(pattern16rev));
-    ajStrAssC(&opattern8, ajStrStr(pattern8));
-    ajStrAssC(&opattern8rev, ajStrStr(pattern8rev));
+    ajStrAssignC(&opattern16, ajStrGetPtr(pattern16));
+    ajStrAssignC(&opattern16rev, ajStrGetPtr(pattern16rev));
+    ajStrAssignC(&opattern8, ajStrGetPtr(pattern8));
+    ajStrAssignC(&opattern8rev, ajStrGetPtr(pattern8rev));
 
     if(!(type16=embPatGetType(opattern16,&pattern16,
 			      mismatch16, 0, &m16, &amino16,
@@ -221,11 +221,11 @@ int main(int argc, char **argv)
 	l8     = ajListNew();
 	l8rev  = ajListNew();
 
-	ajStrAssC(&seqname, ajSeqName(seq));
+	ajStrAssignC(&seqname, ajSeqName(seq));
 	begin = ajSeqallBegin(seqall);
 	end   = ajSeqallEnd(seqall);
-	ajStrAssSubC(&text, ajSeqCharCopy(seq), begin-1, end-1);
-	ajStrToUpper(&text);
+	ajStrAssignSubC(&text, ajSeqCharCopy(seq), begin-1, end-1);
+	ajStrFmtUpper(&text);
 	adj = begin+end+1;
 
 	embPatFuzzSearch(type16, begin, pattern16, seqname,
@@ -653,8 +653,8 @@ static void marscan_output_stored_match(AjBool stored_match, ajint stored_dist,
 
     if(!type)
     {
-      ajStrAssC(&source,"marscan");
-      ajStrAssC(&type,"misc_signal");
+      ajStrAssignC(&source,"marscan");
+      ajStrAssignC(&type,"misc_signal");
     }
 
     /*

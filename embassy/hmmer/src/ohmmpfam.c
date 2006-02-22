@@ -15,7 +15,7 @@
  * Conditionally includes PVM parallelization when HMMER_PVM is defined
  *    at compile time; hmmpfam --pvm runs the PVM version.
  *    
- * RCS $Id: ohmmpfam.c,v 1.1 2006/02/21 12:35:43 rice Exp $
+ * RCS $Id: ohmmpfam.c,v 1.2 2006/02/22 15:02:28 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -212,7 +212,7 @@ int main(int argc, char **argv)
     {
 	infname = ajStrNewC((char *)ajFileName(ajhmmfile));
 	ajFileClose(&ajhmmfile);
-	hmmfile = ajStrStr(infname);
+	hmmfile = ajStrGetPtr(infname);
     }
     else
 	hmmfile = NULL;
@@ -291,27 +291,27 @@ int main(int argc, char **argv)
 
     while (ajSeqallNext(seqall,&ajseq)) 
     {
-	ajStrAssS(&ajstr,ajSeqStr(ajseq));
-	ajStrDegap(&ajstr);
+	ajStrAssignS(&ajstr,ajSeqStr(ajseq));
+	ajStrRemoveGap(&ajstr);
 
 	sqinfo.flags = 0;
-	sqinfo.len = ajStrLen(ajstr);
+	sqinfo.len = ajStrGetLen(ajstr);
 	sqinfo.flags |= SQINFO_LEN;
 
-	strcpy(sqinfo.name,ajStrStr(ajSeqGetName(ajseq)));
+	strcpy(sqinfo.name,ajStrGetPtr(ajSeqGetName(ajseq)));
 	sqinfo.flags |= SQINFO_NAME;
 
-	if(ajStrLen(ajseq->Desc)>63)
+	if(ajStrGetLen(ajseq->Desc)>63)
 	{
-	    strncpy(sqinfo.desc,ajStrStr(ajSeqGetDesc(ajseq)),63);
+	    strncpy(sqinfo.desc,ajStrGetPtr(ajSeqGetDesc(ajseq)),63);
 	    sqinfo.desc[63]='\0';
 	}
 	else
-	    strcpy(sqinfo.desc,ajStrStr(ajSeqGetDesc(ajseq)));
+	    strcpy(sqinfo.desc,ajStrGetPtr(ajSeqGetDesc(ajseq)));
 	sqinfo.flags |= SQINFO_DESC;
 
-	seq = ajCharNewL(sqinfo.len +1);
-	strcpy(seq,ajStrStr(ajstr));
+	seq = ajCharNewRes(sqinfo.len +1);
+	strcpy(seq,ajStrGetPtr(ajstr));
 	
 
 	ghit = AllocTophits(20);	/* keeps full seq scores */

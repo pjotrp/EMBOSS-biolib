@@ -1546,7 +1546,7 @@ AjBool ajFloatParse (const AjPStr str, AjPFloat* array)
     if (!numexp)
 	numexp = ajRegCompC ("[+-]?[0-9.]+");
 
-    ajStrAssS (&tmpstr, str);
+    ajStrAssignS(&tmpstr, str);
 
     while (ajRegExec (numexp, tmpstr))
     {
@@ -1585,7 +1585,7 @@ void ajFloatStr (const AjPFloat array, ajint precision, AjPStr* str)
     for (i=0; i < array->Len; i++)
     {
 	if (i)
-	    ajStrAppK (str, ' ');
+	    ajStrAppendK(str, ' ');
 	ajFmtPrintAppS (str, "%.*f", precision, ajFloatGet(array,i));
     }
     return;
@@ -1639,23 +1639,23 @@ ajint ajArrCommaList(const AjPStr s, AjPStr **a)
     ajint i;
 
 
-    n = ajStrTokenCount(s,",\n");
+    n = ajStrParseCountC(s,",\n");
     if(!n)
 	return 0;
 
     AJCNEW(*a, n);
 
     x = ajStrNew();
-    t = ajStrTokenInit(s,",\n");
+    t = ajStrTokenNewC(s,",\n");
 
     for(i=0;i<n;++i)
     {
-	ajStrToken(&x,&t,",\n");
-	(*a)[i] = ajStrNewC(ajStrStr(x));
+	ajStrTokenNextParseC(&t,",\n", &x);
+	(*a)[i] = ajStrNewS(x);
     }
 
     ajStrDel(&x);
-    ajStrTokenClear(&t);
+    ajStrTokenDel(&t);
 
     return n;
 }
@@ -1686,18 +1686,18 @@ double* ajArrDoubleLine(const AjPStr line, const char *delim, ajint cols,
     ajint i;
 
 
-    t = ajStrTokenInit(line, delim);
+    t = ajStrTokenNewC(line, delim);
     tmp = ajStrNew();
     ncols = (endcol-startcol)+1;
     AJCNEW(ret, ncols);
 
     for(i=0;i<startcol-1;++i)
-	if(!ajStrToken(&tmp,&t,delim))
+	if(!ajStrTokenNextParseC(&t,delim,&tmp))
 	    ajFatal("Token missing");
 
     for(i=0;i<ncols;++i)
     {
-	if(!ajStrToken(&tmp,&t,delim))
+	if(!ajStrTokenNextParseC(&t,delim,&tmp))
 	    ajFatal("Token missing");
 
 	if(!ajStrToDouble(tmp,&ret[i]))
@@ -1705,7 +1705,7 @@ double* ajArrDoubleLine(const AjPStr line, const char *delim, ajint cols,
     }
 
     ajStrDel(&tmp);
-    ajStrTokenClear(&t);
+    ajStrTokenDel(&t);
 
     return ret;
 }
@@ -1736,19 +1736,19 @@ ajint* ajArrIntLine(const AjPStr line, const char *delim, ajint cols,
     ajint i;
 
 
-    t     = ajStrTokenInit(line, delim);
+    t     = ajStrTokenNewC(line, delim);
     tmp   = ajStrNew();
     ncols = (endcol-startcol)+1;
 
     AJCNEW(ret, ncols);
 
     for(i=0;i<startcol-1;++i)
-	if(!ajStrToken(&tmp,&t,delim))
+	if(!ajStrTokenNextParseC(&t,delim,&tmp))
 	    ajFatal("Token missing");
 
     for(i=0;i<ncols;++i)
     {
-	if(!ajStrToken(&tmp,&t,delim))
+	if(!ajStrTokenNextParseC(&t,delim,&tmp))
 	    ajFatal("Token missing");
 
 	if(!ajStrToInt(tmp,&ret[i]))
@@ -1756,7 +1756,7 @@ ajint* ajArrIntLine(const AjPStr line, const char *delim, ajint cols,
     }
 
     ajStrDel(&tmp);
-    ajStrTokenClear(&t);
+    ajStrTokenDel(&t);
 
     return ret;
 }
@@ -1788,23 +1788,23 @@ float* ajArrFloatLine(const AjPStr line, const char *delim, ajint cols,
     AjPStr tmpline = NULL;
 
     tmpline = ajStrNew();
-    ajStrAssS(&tmpline,line);
+    ajStrAssignS(&tmpline,line);
     
-    ajStrClean(&tmpline);
+    ajStrRemoveWhite(&tmpline);
 
-    t     = ajStrTokenInit(tmpline, delim);
+    t     = ajStrTokenNewC(tmpline, delim);
     tmp   = ajStrNew();
     ncols = (endcol-startcol)+1;
 
     AJCNEW(ret, ncols);
 
     for(i=0;i<startcol-1;++i)
-	if(!ajStrToken(&tmp,&t,delim))
+	if(!ajStrTokenNextParseC(&t,delim,&tmp))
 	    ajFatal("Token missing");
 
     for(i=0;i<ncols;++i)
     {
-	if(!ajStrToken(&tmp,&t,delim))
+	if(!ajStrTokenNextParseC(&t,delim,&tmp))
 	    ajFatal("Token missing");
 
 	if(!ajStrToFloat(tmp,&ret[i]))
@@ -1813,7 +1813,7 @@ float* ajArrFloatLine(const AjPStr line, const char *delim, ajint cols,
 
     ajStrDel(&tmp);
     ajStrDel(&tmpline);
-    ajStrTokenClear(&t);
+    ajStrTokenDel(&t);
 
     return ret;
 }

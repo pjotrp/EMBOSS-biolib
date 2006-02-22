@@ -1304,7 +1304,7 @@ static void
 populate_program_menus(AjPList plist, ITEM **ip)
 {
 	
-    GPnode gl;		/* Group/Program list node pointer */
+    EmbPGroupTop gl;    /* Group/Program list node pointer */
     AjIList giter;	/* iterator for groups/programs lists */
     int namelen=0;	/* longest name string */
     char *buffer;
@@ -1312,22 +1312,22 @@ populate_program_menus(AjPList plist, ITEM **ip)
 /* iterate through the programs list to get the longest name */
     giter = ajListIterRead(plist);
     while ((gl = ajListIterNext(giter)) != NULL) {
-        if (ajStrLen(gl->name) > namelen) namelen = ajStrLen(gl->name);
+        if (ajStrGetLen(gl->name) > namelen) namelen = ajStrGetLen(gl->name);
     }
     ajListIterFree(&giter);
 
 /* iterate through the programs list populating the items */
     giter = ajListIterRead(plist);
     while ((gl = ajListIterNext(giter)) != NULL) {
-    	if (ajStrLen(gl->doc) + namelen + 2 > COLS) {
+    	if (ajStrGetLen(gl->doc) + namelen + 2 > COLS) {
 /* doc is longer than max length - copy string to buffer then truncate */
-    	    buffer = (char *) malloc(ajStrLen(gl->doc)+1);
-    	    strcpy(buffer, ajStrStr(gl->doc));
+    	    buffer = (char *) malloc(ajStrGetLen(gl->doc)+1);
+    	    strcpy(buffer, ajStrGetPtr(gl->doc));
     	    buffer[COLS-namelen-2] = '\0';
-            *ip++ = new_item(ajStrStr(gl->name), buffer);
+            *ip++ = new_item(ajStrGetPtr(gl->name), buffer);
         } else {
 /* simply use the char* of the documentation string */
-            *ip++ = new_item(ajStrStr(gl->name), ajStrStr(gl->doc));
+            *ip++ = new_item(ajStrGetPtr(gl->name), ajStrGetPtr(gl->doc));
         }
     }
     ajListIterFree(&giter);
@@ -1353,7 +1353,7 @@ populate_menu(int type, WINDOW *w, ITEM *item)
     ITEM **ip;
     char *name;	/* points to name of program to search for */
     AjIList giter;	/* iterator for groups/programs lists */
-    GPnode gl;		/* Group/Program list node pointer */
+    EmbPGroupTop gl;		/* Group/Program list node pointer */
     AjPList plist;	/* list of programs */
     AjPStr searchstr = NULL;
 
@@ -1381,7 +1381,7 @@ populate_menu(int type, WINDOW *w, ITEM *item)
         giter = ajListIterRead(glist);
         while ((gl = ajListIterNext(giter)) != NULL) {
 	    ajDebug("Next list node: %S\n", gl->name);
-            *ip = new_item(ajStrStr(gl->name), "");
+            *ip = new_item(ajStrGetPtr(gl->name), "");
 /* set item usrptr to the programs list for this group */
             set_item_userptr(*ip, (void *)gl->progs);
             ip++;
@@ -1419,7 +1419,7 @@ we should delete the old list */
 		(void) embGrpGroupsListDel(&searchlist);
 	}
 /* do search */
-	ajStrAssC(&searchstr, name);
+	ajStrAssignC(&searchstr, name);
 	searchlist = ajListNew();
 	(void) embGrpKeySearchProgs (searchlist, alpha, searchstr);
 

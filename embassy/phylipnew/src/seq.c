@@ -123,8 +123,8 @@ void seq_inputdata(AjPSeqset seqset, long chars)
     headings(chars, "Sequences", "---------");
 
   for(i=0;i<spp;i++){
-    ilen = ajStrLen(ajSeqsetName(seqset, i));
-    strncpy(&nayme[i][0],ajStrStr(ajSeqsetName(seqset, i)),nmlngth);
+    ilen = ajStrGetLen(ajSeqsetName(seqset, i));
+    strncpy(&nayme[i][0],ajStrGetPtr(ajSeqsetName(seqset, i)),nmlngth);
     for (j=ilen;j<nmlngth;j++)
 	nayme[i][j] = ' ';
     /*    ajUser("%s/n",ajSeqsetName(seqset, i));*/

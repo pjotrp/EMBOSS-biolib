@@ -422,8 +422,8 @@ void ajSeqAllWrite(AjPSeqout outseq, const AjPSeq seq)
 		       outseq->Ftquery->Directory, outseq->Ftquery->Filename);
 		return;
 	    }
-	    ajStrSet(&outseq->Ftquery->Seqname, seq->Name);
-	    ajStrSet(&outseq->Ftquery->Type, seq->Type);
+	    ajStrAssignEmptyS(&outseq->Ftquery->Seqname, seq->Name);
+	    ajStrAssignEmptyS(&outseq->Ftquery->Type, seq->Type);
 	}
 
 	/* ajFeattableTrace(outseq->Fttable); */
@@ -529,8 +529,8 @@ void ajSeqsetWrite(AjPSeqout outseq, const AjPSeqset seq)
 			   outseq->Ufo);
 		    return;
 		}
-		ajStrSet(&outseq->Ftquery->Seqname, seq->Name);
-		ajStrSet(&outseq->Ftquery->Type, seq->Type);
+		ajStrAssignEmptyS(&outseq->Ftquery->Seqname, seq->Name);
+		ajStrAssignEmptyS(&outseq->Ftquery->Type, seq->Type);
 	    }
 
 	    /* ajFeattableTrace(outseq->Fttable); */
@@ -618,8 +618,8 @@ static void seqWriteListAppend(AjPSeqout outseq, const AjPSeq seq)
 		       outseq->Ufo);
 		return;
 	    }
-	    ajStrSet(&outseq->Ftquery->Seqname, seq->Name);
-	    ajStrSet(&outseq->Ftquery->Type, seq->Type);
+	    ajStrAssignEmptyS(&outseq->Ftquery->Seqname, seq->Name);
+	    ajStrAssignEmptyS(&outseq->Ftquery->Type, seq->Type);
 	}
 
 	ajDebug("seqWriteListAppend after ajFeattabOutOpen Count: %d\n",
@@ -743,8 +743,8 @@ void ajSeqWrite(AjPSeqout outseq, const AjPSeq seq)
 		       outseq->Ufo);
 		return;
 	    }
-	    ajStrSet(&outseq->Ftquery->Seqname, seq->Name);
-	    ajStrSet(&outseq->Ftquery->Type, seq->Type);
+	    ajStrAssignEmptyS(&outseq->Ftquery->Seqname, seq->Name);
+	    ajStrAssignEmptyS(&outseq->Ftquery->Type, seq->Type);
 
 	    /* ajFeattableTrace(outseq->Fttable); */
 
@@ -787,22 +787,22 @@ static void seqWriteFasta(AjPSeqout outseq)
 
     ajFmtPrintF(outseq->File, ">%S", outseq->Name);
 
-    if(ajStrLen(outseq->Sv))
+    if(ajStrGetLen(outseq->Sv))
 	ajFmtPrintF(outseq->File, " %S", outseq->Sv);
-    else if(ajStrLen(outseq->Acc))
+    else if(ajStrGetLen(outseq->Acc))
 	ajFmtPrintF(outseq->File, " %S", outseq->Acc);
 
     /* no need to bother with outseq->Gi because we have Sv anyway */
 
-    if(ajStrLen(outseq->Desc))
+    if(ajStrGetLen(outseq->Desc))
 	ajFmtPrintF(outseq->File, " %S", outseq->Desc);
     ajFmtPrintF(outseq->File, "\n");
 
-    ilen = ajStrLen(outseq->Seq);
+    ilen = ajStrGetLen(outseq->Seq);
     for(i=0; i < ilen; i += linelen)
     {
 	iend = AJMIN(ilen-1, i+linelen-1);
-	ajStrAssSub(&seq, outseq->Seq, i, iend);
+	ajStrAssignSubS(&seq, outseq->Seq, i, iend);
 	ajFmtPrintF(outseq->File, "%S\n", seq);
     }
 
@@ -832,35 +832,35 @@ static void seqWriteNcbi(AjPSeqout outseq)
     ajint linelen     = 60;
     ajint iend;
 
-    if(ajStrLen(outseq->Gi))
+    if(ajStrGetLen(outseq->Gi))
 	ajFmtPrintF(outseq->File, ">gi|%S|gnl|", outseq->Gi);
     else
 	ajFmtPrintF(outseq->File, ">gnl|");
 
-    if(ajStrLen(outseq->Setdb))
+    if(ajStrGetLen(outseq->Setdb))
 	ajFmtPrintF(outseq->File, "%S|", outseq->Setdb);
-    else if(ajStrLen(outseq->Db))
+    else if(ajStrGetLen(outseq->Db))
 	ajFmtPrintF(outseq->File, "%S|", outseq->Db);
     else
 	ajFmtPrintF(outseq->File, "unk|");
 
     ajFmtPrintF(outseq->File, "%S", outseq->Name);
 
-    if(ajStrLen(outseq->Sv))
+    if(ajStrGetLen(outseq->Sv))
 	ajFmtPrintF(outseq->File, " (%S)", outseq->Sv);
-    else if(ajStrLen(outseq->Acc))
+    else if(ajStrGetLen(outseq->Acc))
 	ajFmtPrintF(outseq->File, " (%S)", outseq->Acc);
 
-    if(ajStrLen(outseq->Desc))
+    if(ajStrGetLen(outseq->Desc))
 	ajFmtPrintF(outseq->File, " %S", outseq->Desc);
 
     ajFmtPrintF(outseq->File, "\n");
 
-    ilen = ajStrLen(outseq->Seq);
+    ilen = ajStrGetLen(outseq->Seq);
     for(i=0; i < ilen; i += linelen)
     {
 	iend = AJMIN(ilen-1, i+linelen-1);
-	ajStrAssSub(&seq, outseq->Seq, i, iend);
+	ajStrAssignSubS(&seq, outseq->Seq, i, iend);
 	ajFmtPrintF(outseq->File, "%S\n", seq);
     }
 
@@ -889,7 +889,7 @@ static void seqWriteGcg(AjPSeqout outseq)
     ajint check;
     SeqPSeqFormat sf = NULL;
 
-    ilen = ajStrLen(outseq->Seq);
+    ilen = ajStrGetLen(outseq->Seq);
 
     if(!outseq->Type)
 	ajFmtPrintF(outseq->File, "!!NA_SEQUENCE 1.0\n\n");
@@ -904,7 +904,7 @@ static void seqWriteGcg(AjPSeqout outseq)
     ajSeqGapS(&outseq->Seq, '.');
     check = ajSeqoutCheckGcg(outseq);
 
-    if(ajStrLen(outseq->Desc))
+    if(ajStrGetLen(outseq->Desc))
 	ajFmtPrintF(outseq->File, "%S\n\n", outseq->Desc);
 
     ajFmtPrintF(outseq->File,
@@ -912,10 +912,10 @@ static void seqWriteGcg(AjPSeqout outseq)
 		outseq->Name, ilen, ctype, check);
 
     if(sf)
-	seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+	seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
     else
     {
-	seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+	seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
 	sf->spacer = 11;
 	sf->numleft = ajTrue;
 	sf->skipbefore = ajTrue;
@@ -944,7 +944,7 @@ static void seqWriteStaden(AjPSeqout outseq)
     static SeqPSeqFormat sf = NULL;
 
     ajFmtPrintF(outseq->File, "<%S---->\n", outseq->Name);
-    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
 
     sf->width = 60;
     seqWriteSeq(outseq, sf);
@@ -968,7 +968,7 @@ static void seqWriteText(AjPSeqout outseq)
 {
     static SeqPSeqFormat sf = NULL;
 
-    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
 
     seqWriteSeq(outseq, sf);
 
@@ -1029,9 +1029,9 @@ static void seqWriteHennig86(AjPSeqout outseq)
     {
 	/* loop over sequences */
 	seq = seqarr[i];
-	ajStrAssS(&sseq, seq->Seq);
+	ajStrAssignS(&sseq, seq->Seq);
 	
-	cp = ajStrStrMod(&sseq);
+	cp = ajStrGetuniquePtr(&sseq);
 	while(*cp)
 	{
 	    switch(*cp)
@@ -1131,7 +1131,7 @@ static void seqWriteMega(AjPSeqout outseq)
 	{
 	    /* loop over sequences */
 	    seq = seqarr[i];
-	    ajStrAssSub(&sseq, seq->Seq, ipos-1, iend-1);
+	    ajStrAssignSubS(&sseq, seq->Seq, ipos-1, iend-1);
 	    ajSeqGapS(&sseq, '-');
 	    ajFmtPrintF(outseq->File, "#%-20.20S %S\n", seq->Name, sseq);
 	}
@@ -1189,7 +1189,7 @@ static void seqWriteMeganon(AjPSeqout outseq)
     for(i=0; i < isize; i++)
     {					/* loop over sequences */
 	seq = seqarr[i];
-	ajStrAssS(&sseq, seq->Seq);
+	ajStrAssignS(&sseq, seq->Seq);
 	ajSeqGapS(&sseq, '-');
 	ajFmtPrintF(outseq->File,
 		    "#%-20.20S\n%S\n",
@@ -1279,7 +1279,7 @@ static void seqWriteNexus(AjPSeqout outseq)
 	for(i=0; i < isize; i++)
 	{				/* loop over sequences */
 	    seq = seqarr[i];
-	    ajStrAssSub(&sseq, seq->Seq, ipos-1, iend-1);
+	    ajStrAssignSubS(&sseq, seq->Seq, ipos-1, iend-1);
 	    ajSeqGapS(&sseq, '-');
 	    ajFmtPrintF(outseq->File,
 			"%-20.20S %S\n",
@@ -1364,7 +1364,7 @@ static void seqWriteNexusnon(AjPSeqout outseq)
     {
 	/* loop over sequences */
 	seq = seqarr[i];
-	ajStrAssS(&sseq, seq->Seq);
+	ajStrAssignS(&sseq, seq->Seq);
 	ajSeqGapS(&sseq, '-');
 	ajFmtPrintF(outseq->File,
 		    "%S\n%S\n",
@@ -1440,7 +1440,7 @@ static void seqWriteJackknifer(AjPSeqout outseq)
 	for(i=0; i < isize; i++)
 	{				/* loop over sequences */
 	    seq = seqarr[i];
-	    ajStrAssSub(&sseq, seq->Seq, ipos-1, iend-1);
+	    ajStrAssignSubS(&sseq, seq->Seq, ipos-1, iend-1);
 	    ajSeqGapS(&sseq, '-');
 	    ajFmtPrintS(&tmpid, "(%S)", seq->Name);
 	    ajFmtPrintF(outseq->File,
@@ -1511,7 +1511,7 @@ static void seqWriteJackknifernon(AjPSeqout outseq)
 	    if(iend > ilen)
 		iend = ilen;
 
-	    ajStrAssSub(&sseq, seq->Seq, ipos-1, iend-1);
+	    ajStrAssignSubS(&sseq, seq->Seq, ipos-1, iend-1);
 	    ajSeqGapS(&sseq, '-');
 	    if(ipos == 1)
 	    {
@@ -1578,7 +1578,7 @@ static void seqWriteTreecon(AjPSeqout outseq)
     {
 	/* loop over sequences */
 	seq = seqarr[i];
-	ajStrAssS(&sseq, seq->Seq);
+	ajStrAssignS(&sseq, seq->Seq);
 	ajSeqGapS(&sseq, '-');
 	ajFmtPrintF(outseq->File,
 		    "%S\n%S\n",
@@ -1656,10 +1656,10 @@ static void seqWriteClustal(AjPSeqout outseq)
 	for(i=0; i < isize; i++)
 	{
 	    seq = seqarr[i];
-	    ajStrAssSub(&sseq, seq->Seq, ipos-1, iend-1);
+	    ajStrAssignSubS(&sseq, seq->Seq, ipos-1, iend-1);
 	    ajSeqGapS(&sseq, '-');
 	    /* clustalw no longer uses blocks of 10 - after version 1.4 */
-	    /*ajStrBlock(&sseq, 10);*/ 
+	    /*ajStrFmtBlock(&sseq, 10);*/ 
 	    ajFmtPrintF(outseq->File,
 			"%-15.15S %S\n",
 			seq->Name, sseq);
@@ -1737,19 +1737,19 @@ static void seqWriteSelex(AjPSeqout outseq)
     if(sdata)
     {
 	
-	if(ajStrLen(sdata->id))
+	if(ajStrGetLen(sdata->id))
 	{
 	    sep=ajTrue;
 	    ajFmtPrintF(outseq->File,"#=ID %S\n",sdata->id);
 	}
 
-	if(ajStrLen(sdata->ac))
+	if(ajStrGetLen(sdata->ac))
 	{
 	    sep=ajTrue;
 	    ajFmtPrintF(outseq->File,"#=AC %S\n",sdata->ac);
 	}
 
-	if(ajStrLen(sdata->de))
+	if(ajStrGetLen(sdata->de))
 	{
 	    sep=ajTrue;
 	    ajFmtPrintF(outseq->File,"#=DE %S\n",sdata->de);
@@ -1776,7 +1776,7 @@ static void seqWriteSelex(AjPSeqout outseq)
 			sdata->nc[1]);
 	}
 	
-	if(ajStrLen(sdata->au))
+	if(ajStrGetLen(sdata->au))
 	{
 	    sep=ajTrue;
 	    ajFmtPrintF(outseq->File,"#=AU %S\n",sdata->au);
@@ -1789,19 +1789,19 @@ static void seqWriteSelex(AjPSeqout outseq)
 	v=4;
 	for(i=0;i<n;++i)
 	{
-	    v = ajStrLen(seqs[i]->Selexdata->sq->name);
+	    v = ajStrGetLen(seqs[i]->Selexdata->sq->name);
 	    namelen = (namelen > v) ? namelen : v;
 	}
 
 	for(i=0;i<n;++i)
 	{
-	    v = namelen - ajStrLen(seqs[i]->Selexdata->sq->name);
+	    v = namelen - ajStrGetLen(seqs[i]->Selexdata->sq->name);
 	    for(j=0;j<v;++j)
-		ajStrAppK(&seqs[i]->Selexdata->sq->name,' ');
+		ajStrAppendK(&seqs[i]->Selexdata->sq->name,' ');
 	}
 	
 	
-	if(ajStrLen(sdata->sq->ac))
+	if(ajStrGetLen(sdata->sq->ac))
 	    for(i=0;i<n;++i)
 	    {
 		qdata = seqs[i]->Selexdata->sq;
@@ -1813,33 +1813,33 @@ static void seqWriteSelex(AjPSeqout outseq)
 	
 	
 	
-	if(ajStrLen(seqs[0]->Selexdata->rf))
+	if(ajStrGetLen(seqs[0]->Selexdata->rf))
 	{
 	    v = namelen - 4;
 	    for(k=0;k<v;++k)
-		ajStrAppK(&rfstr,' ');
+		ajStrAppendK(&rfstr,' ');
 	}
 
-	if(ajStrLen(seqs[0]->Selexdata->cs))
+	if(ajStrGetLen(seqs[0]->Selexdata->cs))
 	{
 	    v = namelen - 4;
 	    for(k=0;k<v;++k)
-		ajStrAppK(&csstr,' ');
+		ajStrAppendK(&csstr,' ');
 	}
-	if(ajStrLen(seqs[0]->Selexdata->ss))
+	if(ajStrGetLen(seqs[0]->Selexdata->ss))
 	{
 	    v = namelen - 4;
 	    for(k=0;k<v;++k)
-		ajStrAppK(&ssstr,' ');
+		ajStrAppendK(&ssstr,' ');
 	}
 	
 	
 	
 	for(i=0;i<len;i+=50)
 	{
-	    if(ajStrLen(seqs[0]->Selexdata->rf))
+	    if(ajStrGetLen(seqs[0]->Selexdata->rf))
 	    {
-		p = ajStrStr(seqs[0]->Selexdata->rf);
+		p = ajStrGetPtr(seqs[0]->Selexdata->rf);
 		if(i+50>=len)
 		    ajFmtPrintF(outseq->File,"%S %s\n",rfstr,&p[i]);
 		else
@@ -1847,9 +1847,9 @@ static void seqWriteSelex(AjPSeqout outseq)
 				&p[i]);
 	    }
 
-	    if(ajStrLen(seqs[0]->Selexdata->cs))
+	    if(ajStrGetLen(seqs[0]->Selexdata->cs))
 	    {
-		p = ajStrStr(seqs[0]->Selexdata->cs);
+		p = ajStrGetPtr(seqs[0]->Selexdata->cs);
 		if(i+50>=len)
 		    ajFmtPrintF(outseq->File,"%S %s\n",csstr,&p[i]);
 		else
@@ -1862,16 +1862,16 @@ static void seqWriteSelex(AjPSeqout outseq)
 	    {
 		sdata = seqs[j]->Selexdata;
 
-		p = ajStrStr(sdata->str);
+		p = ajStrGetPtr(sdata->str);
 		if(i+50>=len)
 		    ajFmtPrintF(outseq->File,"%S %s\n",sdata->sq->name,&p[i]);
 		else
 		    ajFmtPrintF(outseq->File,"%S %-50.50s\n",sdata->sq->name,
 				&p[i]);
 
-		if(ajStrLen(seqs[0]->Selexdata->ss))
+		if(ajStrGetLen(seqs[0]->Selexdata->ss))
 		{
-		    p = ajStrStr(seqs[0]->Selexdata->ss);
+		    p = ajStrGetPtr(seqs[0]->Selexdata->ss);
 		    if(i+50>=len)
 			ajFmtPrintF(outseq->File,"%S %s\n",ssstr,&p[i]);
 		    else
@@ -1894,27 +1894,27 @@ static void seqWriteSelex(AjPSeqout outseq)
 	    seq = seqs[i];
 	    aseqs[i] = ajStrNew();
 	    names[i] = ajStrNew();
-	    ajStrAssS(&names[i],seq->Name);
-	    if((len=ajStrLen(names[i])) > nlen)
+	    ajStrAssignS(&names[i],seq->Name);
+	    if((len=ajStrGetLen(names[i])) > nlen)
 		nlen = len;
-	    if((len=ajStrLen(seq->Seq)) > slen)
+	    if((len=ajStrGetLen(seq->Seq)) > slen)
 		slen = len;
-	    ajStrAssS(&aseqs[i],seq->Seq);
+	    ajStrAssignS(&aseqs[i],seq->Seq);
 	}
 
 	for(i=0;i<n;++i)
 	{
 	    seq = seqs[i];
-	    extra = nlen - ajStrLen(names[i]);
+	    extra = nlen - ajStrGetLen(names[i]);
 	    for(j=0;j<extra;++j)
-		ajStrAppK(&names[i],' ');
-	    extra = slen - ajStrLen(seq->Seq);
+		ajStrAppendK(&names[i],' ');
+	    extra = slen - ajStrGetLen(seq->Seq);
 	    for(j=0;j<extra;++j)
-		ajStrAppK(&aseqs[i],' ');
+		ajStrAppendK(&aseqs[i],' ');
 
 	    ajFmtPrintF(outseq->File,"#=SQ %S %.2f - - 0..0:0 ",
 			names[i],seq->Weight);
-	    if(ajStrLen(seq->Desc))
+	    if(ajStrGetLen(seq->Desc))
 		ajFmtPrintF(outseq->File,"%S\n",seq->Desc);
 	    else
 		ajFmtPrintF(outseq->File,"-\n");
@@ -1926,7 +1926,7 @@ static void seqWriteSelex(AjPSeqout outseq)
 	{
 	    for(j=0;j<n;++j)
 	    {
-		p = ajStrStr(aseqs[j]);
+		p = ajStrGetPtr(aseqs[j]);
 		if(i+50>=len)
 		    ajFmtPrintF(outseq->File,"%S %s\n",names[j],&p[i]);
 		else
@@ -2003,8 +2003,8 @@ static void seqWriteMsf(AjPSeqout outseq)
 	seq = seqarr[i];
 	if(ilen < ajSeqLen(seq))
 	    ilen = ajSeqLen(seq);
-	if (ajStrLen(seq->Name) > maxnamelen)
-	    maxnamelen = ajStrLen(seq->Name);
+	if (ajStrGetLen(seq->Name) > maxnamelen)
+	    maxnamelen = ajStrGetLen(seq->Name);
     }
     
     for(i=0; i < isize; i++)
@@ -2021,10 +2021,10 @@ static void seqWriteMsf(AjPSeqout outseq)
     ajDebug("checksum %d\n", checktot);
     ajDebug("outseq->Type '%S'\n", outseq->Type);
     
-    if(!ajStrLen(outseq->Type))
+    if(!ajStrGetLen(outseq->Type))
     {
 	ajSeqType(seqarr[0]);
-	ajStrSet(&outseq->Type, seqarr[0]->Type);
+	ajStrAssignEmptyS(&outseq->Type, seqarr[0]->Type);
     }
     ajDebug("outseq->Type '%S'\n", outseq->Type);
     
@@ -2049,7 +2049,7 @@ static void seqWriteMsf(AjPSeqout outseq)
 	check = ajSeqCheckGcg(seq);
 	ajFmtPrintF(outseq->File,
 		    "  Name: %-*S Len: %d  Check: %4d Weight: %.2f\n",
-		    maxnamelen, seq->Name, ajStrLen(seq->Seq),
+		    maxnamelen, seq->Name, ajStrGetLen(seq->Seq),
 		    check, seq->Weight);
     }
     
@@ -2063,10 +2063,10 @@ static void seqWriteMsf(AjPSeqout outseq)
 	ajFmtPrintS(&sbeg, "%d", ipos);
 	ajFmtPrintS(&send, "%d", iend);
 	if(iend == ilen) {
-	    igap = iend - ipos - ajStrLen(sbeg);
+	    igap = iend - ipos - ajStrGetLen(sbeg);
 	    ajDebug("sbeg: %S send: %S ipos: %d iend: %d igap: %d len: %d\n",
-		    sbeg, send, ipos, iend, igap, ajStrLen(send));
-	    if(igap >= ajStrLen(send))
+		    sbeg, send, ipos, iend, igap, ajStrGetLen(send));
+	    if(igap >= ajStrGetLen(send))
 		ajFmtPrintF(outseq->File,
 			    "%*s %S %*S\n", maxnamelen, " ", sbeg, igap, send);
 	    else
@@ -2079,7 +2079,7 @@ static void seqWriteMsf(AjPSeqout outseq)
 	{
 	    seq = seqarr[i];
 	    check = ajSeqCheckGcg(seq);
-	    ajStrAssSub(&sseq, seq->Seq, ipos-1, iend-1);
+	    ajStrAssignSubS(&sseq, seq->Seq, ipos-1, iend-1);
 	    ajFmtPrintF(outseq->File,
 			"%-*S %S\n",
 			maxnamelen, seq->Name, sseq);
@@ -2118,15 +2118,15 @@ static void seqWriteCodata(AjPSeqout outseq)
     ajint j;
 
     ajFmtPrintF(outseq->File, "ENTRY           %S \n", outseq->Name);
-    if(ajStrLen(outseq->Desc))
+    if(ajStrGetLen(outseq->Desc))
 	ajFmtPrintF(outseq->File, "TITLE           %S, %d bases\n",
-		    outseq->Desc, ajStrLen(outseq->Seq));
-    if(ajStrLen(outseq->Acc))
+		    outseq->Desc, ajStrGetLen(outseq->Seq));
+    if(ajStrGetLen(outseq->Acc))
 	ajFmtPrintF(outseq->File, "ACCESSION       %S\n",
 		    outseq->Acc);
     ajFmtPrintF(outseq->File, "SEQUENCE        \n");
 
-    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
     sf->numwidth = 7;
     sf->width = 30;
     sf->numleft = ajTrue;
@@ -2162,7 +2162,7 @@ static void seqWriteNbrf(AjPSeqout outseq)
     static AjPStr ftfmt     = NULL;
 
     if(!ftfmt)
-	ajStrAssC(&ftfmt, "pir");
+	ajStrAssignC(&ftfmt, "pir");
 
     if(!outseq->Type)
 	ajFmtPrintF(outseq->File, ">D1;%S\n", outseq->Name);
@@ -2172,19 +2172,19 @@ static void seqWriteNbrf(AjPSeqout outseq)
 	ajFmtPrintF(outseq->File, ">D1;%S\n", outseq->Name);
 
     ajFmtPrintF(outseq->File, "%S, %d bases\n",
-		outseq->Desc, ajStrLen(outseq->Seq));
+		outseq->Desc, ajStrGetLen(outseq->Seq));
 
     if(seqoutUfoLocal(outseq))
     {
 	outseq->Ftquery = ajFeattabOutNewSSF(ftfmt, outseq->Name,
-					     ajStrStr(outseq->Type),
+					     ajStrGetPtr(outseq->Type),
 					     outseq->File);
 	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
 	    ajWarn("seqWriteNbrf features output failed UFO: '%S'",
 		   outseq->Ufo);
     }
 
-    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
     sf->spacer = 11;
     strcpy(sf->endstr, "*\n");
     seqWriteSeq(outseq, sf);
@@ -2217,7 +2217,7 @@ static void seqWriteExperiment(AjPSeqout outseq)
     ajint jend;
     
     if(!ftfmt)
-	ajStrAssC(&ftfmt, "embl");
+	ajStrAssignC(&ftfmt, "embl");
     
     if(ajStrMatchC(outseq->Type, "P"))
     {
@@ -2227,7 +2227,7 @@ static void seqWriteExperiment(AjPSeqout outseq)
     
     ajFmtPrintF(outseq->File,
 		"ID   %-10S standard; DNA; UNC; %d BP.\n",
-		outseq->Name, ajStrLen(outseq->Seq));
+		outseq->Name, ajStrGetLen(outseq->Seq));
     
     if(ajListLength(outseq->Acclist))
     {
@@ -2235,7 +2235,7 @@ static void seqWriteExperiment(AjPSeqout outseq)
 	it = ajListIterRead(outseq->Acclist);
 	while((cur = (AjPStr) ajListIterNext(it)))
 	{
-	    if(ilen + ajStrLen(cur) > 77)
+	    if(ilen + ajStrGetLen(cur) > 77)
 	    {
 		ajFmtPrintF(outseq->File, ";\n", cur);
 		ilen = 0;
@@ -2253,19 +2253,19 @@ static void seqWriteExperiment(AjPSeqout outseq)
 	    }
 
 	    ajFmtPrintF(outseq->File, "%S", cur);
-	    ilen += ajStrLen(cur);
+	    ilen += ajStrGetLen(cur);
 
 	}
 	ajListIterFree(&it) ;
 	ajFmtPrintF(outseq->File, ";\n", cur);
     }
     
-    if(ajStrLen(outseq->Sv))
+    if(ajStrGetLen(outseq->Sv))
 	ajFmtPrintF(outseq->File, "SV   %S\n", outseq->Sv);
     
     /* no need to bother with outseq->Gi because Staden doesn't use it */
     
-    if(ajStrLen(outseq->Desc))
+    if(ajStrGetLen(outseq->Desc))
 	ajFmtPrintF(outseq->File, "EX   %S\n", outseq->Desc);
     
     if(ajListLength(outseq->Keylist))
@@ -2274,7 +2274,7 @@ static void seqWriteExperiment(AjPSeqout outseq)
 	it = ajListIterRead(outseq->Keylist);
 	while((cur = (AjPStr) ajListIterNext(it)))
 	{
-	    if(ilen+ajStrLen(cur) >= 77)
+	    if(ilen+ajStrGetLen(cur) >= 77)
 	    {
 		ajFmtPrintF(outseq->File, ";\n", cur);
 		ilen = 0;
@@ -2291,13 +2291,13 @@ static void seqWriteExperiment(AjPSeqout outseq)
 		ilen += 2;
 	    }
 	    ajFmtPrintF(outseq->File, "%S", cur);
-	    ilen += ajStrLen(cur);
+	    ilen += ajStrGetLen(cur);
 	}
 	ajListIterFree(&it) ;
 	ajFmtPrintF(outseq->File, ".\n", cur);
     }
     
-    if(ajStrLen(outseq->Tax))
+    if(ajStrGetLen(outseq->Tax))
 	ajFmtPrintF(outseq->File, "OS   %S\n", outseq->Tax);
     
     if(ajListLength(outseq->Taxlist))
@@ -2307,7 +2307,7 @@ static void seqWriteExperiment(AjPSeqout outseq)
 	cur = (AjPStr) ajListIterNext(it); /* skip first, should be Tax */
 	while((cur = (AjPStr) ajListIterNext(it)))
 	{
-	    if(ilen+ajStrLen(cur) >= 77)
+	    if(ilen+ajStrGetLen(cur) >= 77)
 	    {
 		ajFmtPrintF(outseq->File, ";\n", cur);
 		ilen = 0;
@@ -2324,7 +2324,7 @@ static void seqWriteExperiment(AjPSeqout outseq)
 		ilen += 2;
 	    }
 	    ajFmtPrintF(outseq->File, "%S", cur);
-	    ilen += ajStrLen(cur);
+	    ilen += ajStrGetLen(cur);
 	}
 	ajListIterFree(&it) ;
 	ajFmtPrintF(outseq->File, ".\n", cur);
@@ -2333,7 +2333,7 @@ static void seqWriteExperiment(AjPSeqout outseq)
     if(seqoutUfoLocal(outseq))
     {
         outseq->Ftquery = ajFeattabOutNewSSF(ftfmt, outseq->Name,
-					     ajStrStr(outseq->Type),
+					     ajStrGetPtr(outseq->Type),
 					     outseq->File);
 	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
 	    ajWarn("seqWriteEmbl features output failed UFO: '%S'",
@@ -2343,7 +2343,7 @@ static void seqWriteExperiment(AjPSeqout outseq)
 
     if(outseq->Accuracy)
     {
-	ilen = ajStrLen(outseq->Seq);
+	ilen = ajStrGetLen(outseq->Seq);
 	for(i=0; i<ilen;i+=20)
 	{
 	    ajFmtPrintF(outseq->File, "AV  ");
@@ -2359,9 +2359,9 @@ static void seqWriteExperiment(AjPSeqout outseq)
     ajSeqCount(outseq->Seq, b);
     ajFmtPrintF(outseq->File,
 		"SQ   Sequence %d BP; %d A; %d C; %d G; %d T; %d other;\n",
-		ajStrLen(outseq->Seq), b[0], b[1], b[2], b[3], b[4]);
+		ajStrGetLen(outseq->Seq), b[0], b[1], b[2], b[3], b[4]);
     
-    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
     strcpy(sf->endstr, "\n//");
     sf->tab = 4;
     sf->spacer = 11;
@@ -2397,7 +2397,7 @@ static void seqWriteEmbl(AjPSeqout outseq)
     ajint ilen;
     
     if(!ftfmt)
-	ajStrAssC(&ftfmt, "embl");
+	ajStrAssignC(&ftfmt, "embl");
     
     if(ajStrMatchC(outseq->Type, "P"))
     {
@@ -2407,7 +2407,7 @@ static void seqWriteEmbl(AjPSeqout outseq)
     
     ajFmtPrintF(outseq->File,
 		"ID   %-10S standard; DNA; UNC; %d BP.\n",
-		outseq->Name, ajStrLen(outseq->Seq));
+		outseq->Name, ajStrGetLen(outseq->Seq));
     
     if(ajListLength(outseq->Acclist))
     {
@@ -2415,7 +2415,7 @@ static void seqWriteEmbl(AjPSeqout outseq)
 	it = ajListIterRead(outseq->Acclist);
 	while((cur = (AjPStr) ajListIterNext(it)))
 	{
-	    if(ilen + ajStrLen(cur) > 77)
+	    if(ilen + ajStrGetLen(cur) > 77)
 	    {
 		ajFmtPrintF(outseq->File, ";\n", cur);
 		ilen = 0;
@@ -2433,19 +2433,19 @@ static void seqWriteEmbl(AjPSeqout outseq)
 	    }
 
 	    ajFmtPrintF(outseq->File, "%S", cur);
-	    ilen += ajStrLen(cur);
+	    ilen += ajStrGetLen(cur);
 
 	}
 	ajListIterFree(&it) ;
 	ajFmtPrintF(outseq->File, ";\n", cur);
     }
     
-    if(ajStrLen(outseq->Sv))
+    if(ajStrGetLen(outseq->Sv))
 	ajFmtPrintF(outseq->File, "SV   %S\n", outseq->Sv);
     
     /* no need to bother with outseq->Gi because EMBL doesn't use it */
     
-    if(ajStrLen(outseq->Desc))
+    if(ajStrGetLen(outseq->Desc))
 	ajFmtPrintF(outseq->File, "DE   %S\n", outseq->Desc);
     
     if(ajListLength(outseq->Keylist))
@@ -2454,7 +2454,7 @@ static void seqWriteEmbl(AjPSeqout outseq)
 	it = ajListIterRead(outseq->Keylist);
 	while((cur = (AjPStr) ajListIterNext(it)))
 	{
-	    if(ilen+ajStrLen(cur) >= 77)
+	    if(ilen+ajStrGetLen(cur) >= 77)
 	    {
 		ajFmtPrintF(outseq->File, ";\n", cur);
 		ilen = 0;
@@ -2471,13 +2471,13 @@ static void seqWriteEmbl(AjPSeqout outseq)
 		ilen += 2;
 	    }
 	    ajFmtPrintF(outseq->File, "%S", cur);
-	    ilen += ajStrLen(cur);
+	    ilen += ajStrGetLen(cur);
 	}
 	ajListIterFree(&it) ;
 	ajFmtPrintF(outseq->File, ".\n", cur);
     }
     
-    if(ajStrLen(outseq->Tax))
+    if(ajStrGetLen(outseq->Tax))
 	ajFmtPrintF(outseq->File, "OS   %S\n", outseq->Tax);
     
     if(ajListLength(outseq->Taxlist) > 1)
@@ -2487,7 +2487,7 @@ static void seqWriteEmbl(AjPSeqout outseq)
 	cur = (AjPStr) ajListIterNext(it); /* skip first, should be Tax */
 	while((cur = (AjPStr) ajListIterNext(it)))
 	{
-	    if(ilen+ajStrLen(cur) >= 77)
+	    if(ilen+ajStrGetLen(cur) >= 77)
 	    {
 		ajFmtPrintF(outseq->File, ";\n", cur);
 		ilen = 0;
@@ -2504,7 +2504,7 @@ static void seqWriteEmbl(AjPSeqout outseq)
 		ilen += 2;
 	    }
 	    ajFmtPrintF(outseq->File, "%S", cur);
-	    ilen += ajStrLen(cur);
+	    ilen += ajStrGetLen(cur);
 	}
 	ajListIterFree(&it) ;
 	ajFmtPrintF(outseq->File, ".\n", cur);
@@ -2513,7 +2513,7 @@ static void seqWriteEmbl(AjPSeqout outseq)
     if(seqoutUfoLocal(outseq))
     {
         outseq->Ftquery = ajFeattabOutNewSSF(ftfmt, outseq->Name,
-					     ajStrStr(outseq->Type),
+					     ajStrGetPtr(outseq->Type),
 					     outseq->File);
 	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
 	    ajWarn("seqWriteEmbl features output failed UFO: '%S'",
@@ -2523,9 +2523,9 @@ static void seqWriteEmbl(AjPSeqout outseq)
     ajSeqCount(outseq->Seq, b);
     ajFmtPrintF(outseq->File,
 		"SQ   Sequence %d BP; %d A; %d C; %d G; %d T; %d other;\n",
-		ajStrLen(outseq->Seq), b[0], b[1], b[2], b[3], b[4]);
+		ajStrGetLen(outseq->Seq), b[0], b[1], b[2], b[3], b[4]);
     
-    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
     strcpy(sf->endstr, "\n//");
     sf->tab = 4;
     sf->spacer = 11;
@@ -2563,7 +2563,7 @@ static void seqWriteSwiss(AjPSeqout outseq)
     ajint ilen;
     
     if(!ftfmt)
-	ajStrAssC(&ftfmt, "swiss");
+	ajStrAssignC(&ftfmt, "swiss");
     
     if(ajStrMatchC(outseq->Type, "N"))
     {
@@ -2573,7 +2573,7 @@ static void seqWriteSwiss(AjPSeqout outseq)
     
     ajFmtPrintF(outseq->File,
 		"ID   %-10S     STANDARD;      PRT; %5d AA.\n",
-		outseq->Name, ajStrLen(outseq->Seq));
+		outseq->Name, ajStrGetLen(outseq->Seq));
     
     if(ajListLength(outseq->Acclist))
     {
@@ -2581,7 +2581,7 @@ static void seqWriteSwiss(AjPSeqout outseq)
 	it = ajListIterRead(outseq->Acclist);
 	while((cur = (AjPStr) ajListIterNext(it)))
 	{
-	    if(ilen + ajStrLen(cur) > 77)
+	    if(ilen + ajStrGetLen(cur) > 77)
 	    {
 		ajFmtPrintF(outseq->File, ";\n", cur);
 		ilen = 0;
@@ -2599,7 +2599,7 @@ static void seqWriteSwiss(AjPSeqout outseq)
 	    }
 
 	    ajFmtPrintF(outseq->File, "%S", cur);
-	    ilen += ajStrLen(cur);
+	    ilen += ajStrGetLen(cur);
 
 	}
 	
@@ -2607,10 +2607,10 @@ static void seqWriteSwiss(AjPSeqout outseq)
 	ajFmtPrintF(outseq->File, ";\n", cur);
     }
     
-    if(ajStrLen(outseq->Desc))
+    if(ajStrGetLen(outseq->Desc))
 	ajFmtPrintF(outseq->File, "DE   %S\n", outseq->Desc);
     
-    if(ajStrLen(outseq->Tax))
+    if(ajStrGetLen(outseq->Tax))
 	ajFmtPrintF(outseq->File, "OS   %S\n", outseq->Tax);
     
     if(ajListLength(outseq->Taxlist) > 1)
@@ -2620,7 +2620,7 @@ static void seqWriteSwiss(AjPSeqout outseq)
 	cur  = (AjPStr) ajListIterNext(it); /* skip first, should be Tax */
 	while((cur = (AjPStr) ajListIterNext(it)))
 	{
-	    if(ilen+ajStrLen(cur) >= 77)
+	    if(ilen+ajStrGetLen(cur) >= 77)
 	    {
 		ajFmtPrintF(outseq->File, ";\n", cur);
 		ilen = 0;
@@ -2637,7 +2637,7 @@ static void seqWriteSwiss(AjPSeqout outseq)
 		ilen += 2;
 	    }
 	    ajFmtPrintF(outseq->File, "%S", cur);
-	    ilen += ajStrLen(cur);
+	    ilen += ajStrGetLen(cur);
 	}
 	
 	ajListIterFree(&it) ;
@@ -2650,7 +2650,7 @@ static void seqWriteSwiss(AjPSeqout outseq)
 	it   = ajListIterRead(outseq->Keylist);
 	while((cur = (AjPStr) ajListIterNext(it)))
 	{
-	    if(ilen+ajStrLen(cur) >= 77)
+	    if(ilen+ajStrGetLen(cur) >= 77)
 	    {
 		ajFmtPrintF(outseq->File, ";\n", cur);
 		ilen = 0;
@@ -2667,7 +2667,7 @@ static void seqWriteSwiss(AjPSeqout outseq)
 		ilen += 2;
 	    }
 	    ajFmtPrintF(outseq->File, "%S", cur);
-	    ilen += ajStrLen(cur);
+	    ilen += ajStrGetLen(cur);
 	}
 
 	ajListIterFree(&it) ;
@@ -2677,7 +2677,7 @@ static void seqWriteSwiss(AjPSeqout outseq)
     if(seqoutUfoLocal(outseq))
     {
 	outseq->Ftquery = ajFeattabOutNewSSF(ftfmt, outseq->Name,
-					     ajStrStr(outseq->Type),
+					     ajStrGetPtr(outseq->Type),
 					     outseq->File);
 	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
 	    ajWarn("seqWriteSwiss features output failed UFO: '%S'",
@@ -2691,16 +2691,16 @@ static void seqWriteSwiss(AjPSeqout outseq)
     /* old 32-bit crc
        ajFmtPrintF(outseq->File,
        "SQ   SEQUENCE %5d AA; %6d MW;  %08X CRC32;\n",
-       ajStrLen(outseq->Seq), mw, crc);
+       ajStrGetLen(outseq->Seq), mw, crc);
        */
     
     ajFmtPrintF(outseq->File,
 		"SQ   SEQUENCE %5d AA; %6d MW;  %08X",
-		ajStrLen(outseq->Seq), mw, (crc>>32)&0xffffffff);
+		ajStrGetLen(outseq->Seq), mw, (crc>>32)&0xffffffff);
     ajFmtPrintF(outseq->File,
 		"%08X CRC64;\n",crc&0xffffffff);
     
-    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
     strcpy(sf->endstr, "\n//");
     sf->tab = 4;
     sf->spacer = 11;
@@ -2734,12 +2734,12 @@ static void seqWriteGenbank(AjPSeqout outseq)
     ajint ilen;
     
     if(!ftfmt)
-	ajStrAssC(&ftfmt, "genbank");
+	ajStrAssignC(&ftfmt, "genbank");
     
     ajSeqoutTrace(outseq);
     
     ajFmtPrintF(outseq->File, "LOCUS       %S\n", outseq->Name);
-    if(ajStrLen(outseq->Desc))
+    if(ajStrGetLen(outseq->Desc))
 	ajFmtPrintF(outseq->File, "DEFINITION  %S\n", outseq->Desc);
 
     if(ajListLength(outseq->Acclist))
@@ -2748,7 +2748,7 @@ static void seqWriteGenbank(AjPSeqout outseq)
 	it   = ajListIterRead(outseq->Acclist);
 	while((cur = (AjPStr) ajListIterNext(it)))
 	{
-	    if(ilen + ajStrLen(cur) > 77)
+	    if(ilen + ajStrGetLen(cur) > 77)
 	    {
 		ajFmtPrintF(outseq->File, "\n", cur);
 		ilen = 0;
@@ -2766,7 +2766,7 @@ static void seqWriteGenbank(AjPSeqout outseq)
 	    }
 
 	    ajFmtPrintF(outseq->File, "%S", cur);
-	    ilen += ajStrLen(cur);
+	    ilen += ajStrGetLen(cur);
 
 	}
 
@@ -2775,9 +2775,9 @@ static void seqWriteGenbank(AjPSeqout outseq)
 	    ajFmtPrintF(outseq->File, "\n", cur);
     }
     
-    if(ajStrLen(outseq->Sv))
+    if(ajStrGetLen(outseq->Sv))
     {
-	if(ajStrLen(outseq->Gi))
+	if(ajStrGetLen(outseq->Gi))
 	    ajFmtPrintF(outseq->File, "VERSION     %S  GI:%S\n",
 			outseq->Sv, outseq->Gi);
 	else
@@ -2790,7 +2790,7 @@ static void seqWriteGenbank(AjPSeqout outseq)
 	it = ajListIterRead(outseq->Keylist);
 	while((cur = (AjPStr) ajListIterNext(it)))
 	{
-	    if(ilen+ajStrLen(cur) >= 77)
+	    if(ilen+ajStrGetLen(cur) >= 77)
 	    {
 		ajFmtPrintF(outseq->File, ";\n", cur);
 		ilen = 0;
@@ -2807,14 +2807,14 @@ static void seqWriteGenbank(AjPSeqout outseq)
 		ilen += 2;
 	    }
 	    ajFmtPrintF(outseq->File, "%S", cur);
-	    ilen += ajStrLen(cur);
+	    ilen += ajStrGetLen(cur);
 	}
 
 	ajListIterFree(&it) ;
 	ajFmtPrintF(outseq->File, ".\n", cur);
     }
     
-    if(ajStrLen(outseq->Tax) && ajListLength(outseq->Taxlist))
+    if(ajStrGetLen(outseq->Tax) && ajListLength(outseq->Taxlist))
     {
 	ajFmtPrintF(outseq->File, "SOURCE      %S.\n", outseq->Tax);
 
@@ -2825,7 +2825,7 @@ static void seqWriteGenbank(AjPSeqout outseq)
 	cur  = (AjPStr) ajListIterNext(it); /* skip first, should be Tax */
 	while((cur = (AjPStr) ajListIterNext(it)))
 	{
-	    if(ilen+ajStrLen(cur) >= 77)
+	    if(ilen+ajStrGetLen(cur) >= 77)
 	    {
 		ajFmtPrintF(outseq->File, ";\n", cur);
 		ilen = 0;
@@ -2842,7 +2842,7 @@ static void seqWriteGenbank(AjPSeqout outseq)
 		ilen += 2;
 	    }
 	    ajFmtPrintF(outseq->File, "%S", cur);
-	    ilen += ajStrLen(cur);
+	    ilen += ajStrGetLen(cur);
 	}
 
 	ajListIterFree(&it) ;
@@ -2852,7 +2852,7 @@ static void seqWriteGenbank(AjPSeqout outseq)
     if(seqoutUfoLocal(outseq))
     {
         outseq->Ftquery = ajFeattabOutNewSSF(ftfmt, outseq->Name,
-					     ajStrStr(outseq->Type),
+					     ajStrGetPtr(outseq->Type),
 					     outseq->File);
 	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
 	    ajWarn("seqWriteGenbank features output failed UFO: '%S'",
@@ -2870,7 +2870,7 @@ static void seqWriteGenbank(AjPSeqout outseq)
 		    b[0], b[1], b[2], b[3]);
     ajFmtPrintF(outseq->File, "ORIGIN\n");
     
-    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
     strcpy(sf->endstr, "\n//");
     sf->tab = 1;
     sf->spacer = 11;
@@ -2902,7 +2902,7 @@ static void seqWriteGff(AjPSeqout outseq)
     static AjPStr ftfmt     = NULL;
     
     if(!ftfmt)
-	ajStrAssC(&ftfmt, "gff");
+	ajStrAssignC(&ftfmt, "gff");
     
     if(!version)
 	ajNamRootVersion(&version);
@@ -2920,7 +2920,7 @@ static void seqWriteGff(AjPSeqout outseq)
 	ajFmtPrintF(outseq->File,
 		    "##DNA %S\n", outseq->Name);
     
-    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
     
     strcpy(sf->leftstr, "##");
     sf->width = 60;
@@ -2942,7 +2942,7 @@ static void seqWriteGff(AjPSeqout outseq)
     if(seqoutUfoLocal(outseq))
     {
 	outseq->Ftquery = ajFeattabOutNewSSF(ftfmt, outseq->Name,
-					     ajStrStr(outseq->Type),
+					     ajStrGetPtr(outseq->Type),
 					     outseq->File);
 	if(ajStrMatchC(outseq->Type, "P"))
 	    ajFeattableSetProt(outseq->Fttable);
@@ -2976,9 +2976,9 @@ static void seqWriteStrider(AjPSeqout outseq)
 
     ajFmtPrintF(outseq->File, "; ### from DNA Strider ;-)\n");
     ajFmtPrintF(outseq->File, "; DNA sequence  %S, %d bases\n;\n",
-		outseq->Name, ajStrLen(outseq->Seq));
+		outseq->Name, ajStrGetLen(outseq->Seq));
 
-    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
     strcpy(sf->endstr, "\n//");
 
     seqWriteSeq(outseq, sf);
@@ -3003,9 +3003,9 @@ static void seqWriteFitch(AjPSeqout outseq)
     static SeqPSeqFormat sf = NULL;
 
     ajFmtPrintF(outseq->File, "%S, %d bases\n",
-		outseq->Name, ajStrLen(outseq->Seq));
+		outseq->Name, ajStrGetLen(outseq->Seq));
 
-    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
     sf->spacer = 4;
     sf->width  = 60;
 
@@ -3044,11 +3044,11 @@ static void seqWriteMase(AjPSeqout outseq)
     ajFmtPrintF(outseq->File, "%S\n",
 		outseq->Name);
 
-    ilen = ajStrLen(outseq->Seq);
+    ilen = ajStrGetLen(outseq->Seq);
     for(i=0; i < ilen; i += linelen)
     {
 	iend = AJMIN(ilen-1, i+linelen-1);
-	ajStrAssSub(&seq, outseq->Seq, i, iend);
+	ajStrAssignSubS(&seq, outseq->Seq, i, iend);
 	ajFmtPrintF(outseq->File, "%S\n", seq);
     }
 
@@ -3101,7 +3101,7 @@ static void seqWritePhylip(AjPSeqout outseq)
 	    ilen = ajSeqLen(seq);
     }
     
-    tstr = ajStrNewL(ilen+1);
+    tstr = ajStrNewRes(ilen+1);
     ajFmtPrintF(outseq->File, " %d %d\n", isize, ilen);
     
     for(ipos=1; ipos <= ilen; ipos += 50)
@@ -3114,15 +3114,15 @@ static void seqWritePhylip(AjPSeqout outseq)
 	{
 	    seq = seqarr[i];
 
-	    ajStrAssC(&tstr,ajStrStr(seq->Seq));
-	    p = ajStrStrMod(&tstr);
-	    for(j=ajStrLen(tstr);j<ilen;++j)
+	    ajStrAssignC(&tstr,ajStrGetPtr(seq->Seq));
+	    p = ajStrGetuniquePtr(&tstr);
+	    for(j=ajStrGetLen(tstr);j<ilen;++j)
 		*(p+j)='-';
 	    *(p+j)='\0';
 	    tstr->Len=ilen;
-	    ajStrAssSub(&sseq, tstr, ipos-1, iend-1);
+	    ajStrAssignSubS(&sseq, tstr, ipos-1, iend-1);
 	    ajSeqGapS(&sseq, '-');
-	    ajStrBlock(&sseq, 10);
+	    ajStrFmtBlock(&sseq, 10);
 	    if(ipos == 1)
 		ajFmtPrintF(outseq->File,
 			    "%-10.10S%S\n",
@@ -3187,15 +3187,15 @@ static void seqWritePhylipnon(AjPSeqout outseq)
 	    ilen = ajSeqLen(seq);
     }
     
-    tstr = ajStrNewL(ilen+1);
+    tstr = ajStrNewRes(ilen+1);
     ajFmtPrintF(outseq->File, "%d %d\n", isize, ilen);
     
     for(n=0;n<isize;++n)
     {
 	seq = seqarr[n];
-	ajStrAssC(&tstr,ajStrStr(seq->Seq));
-	p = ajStrStrMod(&tstr);
-	for(j=ajStrLen(tstr);j<ilen;++j)
+	ajStrAssignC(&tstr,ajStrGetPtr(seq->Seq));
+	p = ajStrGetuniquePtr(&tstr);
+	for(j=ajStrGetLen(tstr);j<ilen;++j)
 	    *(p+j)='-';
 	*(p+j)='\0';
 	tstr->Len=ilen;
@@ -3207,9 +3207,9 @@ static void seqWritePhylipnon(AjPSeqout outseq)
 	    if(iend > ilen)
 		iend = ilen;
 
-	    ajStrAssSub(&sseq, tstr, ipos-1, iend-1);
+	    ajStrAssignSubS(&sseq, tstr, ipos-1, iend-1);
 	    ajSeqGapS(&sseq, '-');
-	    ajStrBlock(&sseq, 10);
+	    ajStrFmtBlock(&sseq, 10);
 	    if(ipos == 1)
 		ajFmtPrintF(outseq->File,
 			    "%-10.10S%S\n",
@@ -3256,17 +3256,17 @@ static void seqWriteAsn1(AjPSeqout outseq)
 	ajFmtPrintF(outseq->File,
 		    "      repr raw, mol dna, length %d, "
 		    "topology linear,\n {\n",
-		    ajStrLen(outseq->Seq));
+		    ajStrGetLen(outseq->Seq));
     else if(ajStrMatchC(outseq->Type, "P"))
 	ajFmtPrintF(outseq->File,
 		    "      repr raw, mol aa, length %d, "
 		    "topology linear,\n {\n",
-		    ajStrLen(outseq->Seq));
+		    ajStrGetLen(outseq->Seq));
     else
 	ajFmtPrintF(outseq->File,
 		    "      repr raw, mol dna, length %d, "
 		    "topology linear,\n",
-		    ajStrLen(outseq->Seq));
+		    ajStrGetLen(outseq->Seq));
 
     ajFmtPrintF(outseq->File, "      seq-data\n");
 
@@ -3275,7 +3275,7 @@ static void seqWriteAsn1(AjPSeqout outseq)
     else
 	ajFmtPrintF(outseq->File, "        iupacna \"");
 
-    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
     sf->linepos = 17;
     sf->spacer  = 0;
     sf->width   = 78;
@@ -3304,10 +3304,10 @@ static void seqWriteIg(AjPSeqout outseq)
     static SeqPSeqFormat sf = NULL;
 
     ajFmtPrintF(outseq->File, ";%S, %d bases\n",
-			outseq->Desc, ajStrLen(outseq->Seq));
+			outseq->Desc, ajStrGetLen(outseq->Seq));
     ajFmtPrintF(outseq->File, "%S\n", outseq->Name);
 
-    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
     strcpy(sf->endstr, "1");	/* linear (DNA) */
 
     seqWriteSeq(outseq, sf);
@@ -3336,7 +3336,7 @@ static void seqWriteAcedb(AjPSeqout outseq)
     else
 	ajFmtPrintF(outseq->File, "DNA : \"%S\"\n", outseq->Name);
 
-    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
     strcpy(sf->endstr, "\n");
 
     seqWriteSeq(outseq, sf);
@@ -3429,7 +3429,7 @@ static void seqWriteDebug(AjPSeqout outseq)
     ajFmtPrintF(outseq->File, "  Documentation:...\n%S\n",
 		outseq->Doc);
     
-    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
     sf->numright = ajTrue;
     sf->numleft  = ajTrue;
     sf->numjust  = ajTrue;
@@ -3473,7 +3473,7 @@ AjBool ajSeqFileNewOut(AjPSeqout seqout, const AjPStr name)
 
     if(single)
     {				     /* ok, but nothing to open yet */
-	ajStrSet(&seqout->Extension, seqout->Formatstr);
+	ajStrAssignEmptyS(&seqout->Extension, seqout->Formatstr);
 	return ajTrue;
     }
     else
@@ -3505,9 +3505,9 @@ AjBool ajSeqFileNewOut(AjPSeqout seqout, const AjPStr name)
 static AjBool seqoutUfoLocal(const AjPSeqout thys)
 {
     ajDebug("seqoutUfoLocal Features %B Ufo %d '%S'\n",
-	    thys->Features, ajStrLen(thys->Ufo), thys->Ufo);
+	    thys->Features, ajStrGetLen(thys->Ufo), thys->Ufo);
 
-    if(thys->Features && !ajStrLen(thys->Ufo))
+    if(thys->Features && !ajStrGetLen(thys->Ufo))
 	return ajTrue;
 
     return ajFalse;
@@ -3549,15 +3549,15 @@ static AjBool seqoutUsaProcess(AjPSeqout thys)
     if(!seqoutRegId)			  /* \1 is filename \3 is the qryid */
 	seqoutRegId = ajRegCompC("^(.*)$");
     
-    ajStrAssS(&seqoutUsaTest, thys->Usa);
+    ajStrAssignS(&seqoutUsaTest, thys->Usa);
 
 #ifdef __CYGWIN__
-    if(*(ajStrStr(seqoutUsaTest)+1)==':')
+    if(*(ajStrGetPtr(seqoutUsaTest)+1)==':')
     {
 	usatmp = ajStrNew();
-        ajFmtPrintS(&usatmp,"/cygdrive/%c/%s",*ajStrStr(seqoutUsaTest),
-		    ajStrStr(seqoutUsaTest)+2);
-        ajStrAss(&seqoutUsaTest,usatmp);
+        ajFmtPrintS(&usatmp,"/cygdrive/%c/%s",*ajStrGetPtr(seqoutUsaTest),
+		    ajStrGetPtr(seqoutUsaTest)+2);
+        ajStrAssignRef(&seqoutUsaTest,usatmp);
         ajStrDel(&usatmp);
     }
 #endif
@@ -3570,7 +3570,7 @@ static AjBool seqoutUsaProcess(AjPSeqout thys)
     if(fmtstat)
     {
 	ajRegSubI(seqoutRegFmt, 1, &thys->Formatstr);
-	ajStrSetC(&thys->Formatstr, seqOutFormat[0].Name);
+	ajStrAssignEmptyC(&thys->Formatstr, seqOutFormat[0].Name);
 	/* default  unknown */
 
 	ajRegSubI(seqoutRegFmt, 2, &seqoutUsaTest);
@@ -3605,7 +3605,7 @@ static AjBool seqoutUsaProcess(AjPSeqout thys)
 
 	    if(!thys->File)
 	    {
-		if(ajStrLen(thys->Directory))
+		if(ajStrGetLen(thys->Directory))
 		    ajErr("failed to open filename '%S' in directory '%S'",
 			  thys->Filename, thys->Directory);
 		else
@@ -3673,7 +3673,7 @@ AjBool ajSeqoutOpen(AjPSeqout thys)
     if(!thys->Features)
 	return ret;
 
-    ajStrSet(&thys->Ftquery->Seqname, thys->Name);
+    ajStrAssignEmptyS(&thys->Ftquery->Seqname, thys->Name);
     ajFeattabOutSetBasename(thys->Ftquery, thys->Filename);
     ret = ajFeattabOutSet(thys->Ftquery, thys->Ufo);
 
@@ -3727,10 +3727,10 @@ AjBool ajSeqOutSetFormat(AjPSeqout thys, const AjPStr format)
     static AjPStr fmt = NULL;
 
     ajDebug("ajSeqOutSetFormat '%S'\n", format);
-    ajStrAssS(&fmt, format);
+    ajStrAssignS(&fmt, format);
     ajSeqOutFormatDefault(&fmt);
 
-    ajStrSet(&thys->Formatstr, fmt);
+    ajStrAssignEmptyS(&thys->Formatstr, fmt);
     ajDebug("... output format set to '%S'\n", fmt);
 
     return ajTrue;
@@ -3779,17 +3779,17 @@ AjBool ajSeqOutSetFormatC(AjPSeqout thys, const char* format)
 AjBool ajSeqOutFormatDefault(AjPStr* pformat)
 {
 
-    if(ajStrLen(*pformat))
+    if(ajStrGetLen(*pformat))
 	ajDebug("... output format '%S'\n", *pformat);
     else
     {
-	/* ajStrSetC(pformat, seqOutFormat[0].Name);*/
+	/* ajStrAssignEmptyC(pformat, seqOutFormat[0].Name);*/
 	if (ajNamGetValueC("outformat", pformat))
 	    ajDebug("ajSeqOutFormatDefault '%S' from EMBOSS_OUTFORMAT\n",
 		     *pformat);
 	else
 	{
-	    ajStrSetC(pformat, "fasta"); /* use the real name */
+	    ajStrAssignEmptyC(pformat, "fasta"); /* use the real name */
 	    ajDebug("... output format not set, default to '%S'\n", *pformat);
 	}
     }
@@ -3824,7 +3824,7 @@ void ajSeqoutUsa(AjPSeqout* pthis, const AjPStr Usa)
 	ajSeqoutClear(thys);
     }
 
-    ajStrAssS(&thys->Usa, Usa);
+    ajStrAssignS(&thys->Usa, Usa);
 
     return;
 }
@@ -3849,26 +3849,26 @@ void ajSeqoutClear(AjPSeqout thys)
 
     ajDebug("ajSeqoutClear called\n");
 
-    ajStrClear(&thys->Name);
-    ajStrClear(&thys->Acc);
-    ajStrClear(&thys->Sv);
-    ajStrClear(&thys->Gi);
-    ajStrClear(&thys->Tax);
-    ajStrClear(&thys->Desc);
-    ajStrClear(&thys->Type);
-    ajStrClear(&thys->Outputtype);
-    ajStrClear(&thys->Full);
-    ajStrClear(&thys->Date);
-    ajStrClear(&thys->Doc);
-    ajStrClear(&thys->Usa);
-    ajStrClear(&thys->Ufo);
-    ajStrClear(&thys->Informatstr);
-    ajStrClear(&thys->Formatstr);
-    ajStrClear(&thys->Filename);
-    ajStrClear(&thys->Directory);
-    ajStrClear(&thys->Entryname);
-    ajStrClear(&thys->Extension);
-    ajStrClear(&thys->Seq);
+    ajStrSetClear(&thys->Name);
+    ajStrSetClear(&thys->Acc);
+    ajStrSetClear(&thys->Sv);
+    ajStrSetClear(&thys->Gi);
+    ajStrSetClear(&thys->Tax);
+    ajStrSetClear(&thys->Desc);
+    ajStrSetClear(&thys->Type);
+    ajStrSetClear(&thys->Outputtype);
+    ajStrSetClear(&thys->Full);
+    ajStrSetClear(&thys->Date);
+    ajStrSetClear(&thys->Doc);
+    ajStrSetClear(&thys->Usa);
+    ajStrSetClear(&thys->Ufo);
+    ajStrSetClear(&thys->Informatstr);
+    ajStrSetClear(&thys->Formatstr);
+    ajStrSetClear(&thys->Filename);
+    ajStrSetClear(&thys->Directory);
+    ajStrSetClear(&thys->Entryname);
+    ajStrSetClear(&thys->Extension);
+    ajStrSetClear(&thys->Seq);
     thys->EType  = 0;
     thys->Rev    = ajFalse;
     thys->Format = 0;
@@ -3967,7 +3967,7 @@ AjBool ajSeqFindOutFormat(const AjPStr format, ajint* iformat)
     AjPStr tmpformat = NULL;
     ajint i = 0;
 
-    if(!ajStrLen(format))
+    if(!ajStrGetLen(format))
     {
 	if (ajNamGetValueC("outformat", &tmpformat))
 	    ajDebug("ajSeqFindOutFormat '%S' from EMBOSS_OUTFORMAT\n",
@@ -3977,9 +3977,9 @@ AjBool ajSeqFindOutFormat(const AjPStr format, ajint* iformat)
 
     }
     else
-	ajStrAssS(&tmpformat, format);
+	ajStrAssignS(&tmpformat, format);
 
-    ajStrToLower(&tmpformat);
+    ajStrFmtLower(&tmpformat);
 
     while(seqOutFormat[i].Name)
     {
@@ -4122,8 +4122,8 @@ static void seqWriteSeq(AjPSeqout outseq, const SeqPSeqFormat sf)
     ajDebug("seqWriteSeq\n");
 
 
-    seqlen = ajStrLen(outseq->Seq);
-    seq    = ajStrStr(outseq->Seq);
+    seqlen = ajStrGetLen(outseq->Seq);
+    seq    = ajStrGetPtr(outseq->Seq);
     width  = sf->width;
     l1     = sf->linepos;
     file   = outseq->File;
@@ -4157,7 +4157,7 @@ static void seqWriteSeq(AjPSeqout outseq, const SeqPSeqFormat sf)
     if(sf->numline)
 	idword= "";
     else
-	idword = ajStrStr(outseq->Name);
+	idword = ajStrGetPtr(outseq->Name);
     
     width = AJMIN(width,maxSeqWidth);
     
@@ -4304,8 +4304,8 @@ ajint ajSeqoutCheckGcg(const AjPSeqout outseq)
     const char *cp;
     ajint ilen;
 
-    cp   = ajStrStr(outseq->Seq);
-    ilen = ajStrLen(outseq->Seq);
+    cp   = ajStrGetPtr(outseq->Seq);
+    ilen = ajStrGetLen(outseq->Seq);
 
     for(i = 0; i < ilen; i++)
     {
@@ -4355,7 +4355,7 @@ static void seqClone(AjPSeqout outseq, const AjPSeq seq)
     ajint ilen;
     ajint i;
 
-    iend = ajStrLen(seq->Seq);
+    iend = ajStrGetLen(seq->Seq);
 
     if(seq->Begin)
     {
@@ -4369,24 +4369,24 @@ static void seqClone(AjPSeqout outseq, const AjPSeq seq)
 	ajDebug("seqClone end: %d\n", iend);
     }
 
-    ajStrSet(&outseq->Name, seq->Name);
-    ajStrSet(&outseq->Acc, seq->Acc);
+    ajStrAssignEmptyS(&outseq->Name, seq->Name);
+    ajStrAssignEmptyS(&outseq->Acc, seq->Acc);
     ajListstrClone(seq->Acclist, outseq->Acclist);
-    ajStrSet(&outseq->Sv, seq->Sv);
-    ajStrSet(&outseq->Gi, seq->Gi);
-    ajStrSet(&outseq->Tax, seq->Tax);
+    ajStrAssignEmptyS(&outseq->Sv, seq->Sv);
+    ajStrAssignEmptyS(&outseq->Gi, seq->Gi);
+    ajStrAssignEmptyS(&outseq->Tax, seq->Tax);
     ajListstrClone(seq->Taxlist, outseq->Taxlist);
     ajListstrClone(seq->Keylist, outseq->Keylist);
-    ajStrSet(&outseq->Desc, seq->Desc);
-    ajStrSet(&outseq->Type, seq->Type);
-    ajStrSet(&outseq->Informatstr, seq->Formatstr);
-    ajStrSet(&outseq->Entryname, seq->Entryname);
-    ajStrSet(&outseq->Db, seq->Db);
+    ajStrAssignEmptyS(&outseq->Desc, seq->Desc);
+    ajStrAssignEmptyS(&outseq->Type, seq->Type);
+    ajStrAssignEmptyS(&outseq->Informatstr, seq->Formatstr);
+    ajStrAssignEmptyS(&outseq->Entryname, seq->Entryname);
+    ajStrAssignEmptyS(&outseq->Db, seq->Db);
 
     AJFREE(outseq->Accuracy);
     if(seq->Accuracy)
     {
-	ilen = ajStrLen(seq->Seq);
+	ilen = ajStrGetLen(seq->Seq);
 	AJCNEW(outseq->Accuracy, ilen);
 	for(i=0;i<ilen;i++)
 	    outseq->Accuracy[i] = seq->Accuracy[i];
@@ -4395,19 +4395,19 @@ static void seqClone(AjPSeqout outseq, const AjPSeq seq)
     outseq->Offset = ibegin - 1;
 
     if(iend >= ibegin)
-	ajStrAssSub(&outseq->Seq, seq->Seq, ibegin-1, iend-1);
+	ajStrAssignSubS(&outseq->Seq, seq->Seq, ibegin-1, iend-1);
     else				/* empty sequence */
-	ajStrAssC(&outseq->Seq, "");
+	ajStrAssignC(&outseq->Seq, "");
 
     outseq->Fttable = seq->Fttable;
 
     if(outseq->Fttable)
 	ajFeattableTrimOff(outseq->Fttable,
-			   outseq->Offset, ajStrLen(outseq->Seq));
+			   outseq->Offset, ajStrGetLen(outseq->Seq));
 
     ajDebug("seqClone %d .. %d %d .. %d len: %d type: '%S'\n",
 	    seq->Begin, seq->End, ibegin, iend,
-	    ajStrLen(outseq->Seq), outseq->Type);
+	    ajStrGetLen(outseq->Seq), outseq->Type);
     ajDebug("  Db: '%S' Name: '%S' Entryname: '%S'\n",
 	    outseq->Db, outseq->Name, outseq->Entryname);
 
@@ -4439,7 +4439,7 @@ static void seqAllClone(AjPSeqout outseq, const AjPSeq seq)
     ajint ilen;
     ajint i;
 
-    iend = ajStrLen(seq->Seq);
+    iend = ajStrGetLen(seq->Seq);
 
     if(seq->Begin)
     {
@@ -4454,24 +4454,24 @@ static void seqAllClone(AjPSeqout outseq, const AjPSeq seq)
     }
     ajDebug("ajSeqAllClone outseq->Type '%S' seq->Type '%S'\n",
 	    outseq->Type, seq->Type);
-    ajStrAssS(&outseq->Db, seq->Db);
-    ajStrAssS(&outseq->Name, seq->Name);
-    ajStrAssS(&outseq->Acc, seq->Acc);
+    ajStrAssignS(&outseq->Db, seq->Db);
+    ajStrAssignS(&outseq->Name, seq->Name);
+    ajStrAssignS(&outseq->Acc, seq->Acc);
     ajListstrClone(seq->Acclist, outseq->Acclist);
-    ajStrAssS(&outseq->Sv, seq->Sv);
-    ajStrAssS(&outseq->Gi, seq->Gi);
-    ajStrAssS(&outseq->Tax, seq->Tax);
+    ajStrAssignS(&outseq->Sv, seq->Sv);
+    ajStrAssignS(&outseq->Gi, seq->Gi);
+    ajStrAssignS(&outseq->Tax, seq->Tax);
     ajListstrClone(seq->Taxlist, outseq->Taxlist);
     ajListstrClone(seq->Keylist, outseq->Keylist);
-    ajStrAssS(&outseq->Desc, seq->Desc);
-    ajStrAssS(&outseq->Type, seq->Type);
-    ajStrAssS(&outseq->Informatstr, seq->Formatstr);
-    ajStrAssS(&outseq->Entryname, seq->Entryname);
+    ajStrAssignS(&outseq->Desc, seq->Desc);
+    ajStrAssignS(&outseq->Type, seq->Type);
+    ajStrAssignS(&outseq->Informatstr, seq->Formatstr);
+    ajStrAssignS(&outseq->Entryname, seq->Entryname);
 
     AJFREE(outseq->Accuracy);
     if(seq->Accuracy)
     {
-	ilen = ajStrLen(seq->Seq);
+	ilen = ajStrGetLen(seq->Seq);
 	AJCNEW(outseq->Accuracy, ilen);
 	for(i=0;i<ilen;i++)
 	    outseq->Accuracy[i] = seq->Accuracy[i];
@@ -4480,18 +4480,18 @@ static void seqAllClone(AjPSeqout outseq, const AjPSeq seq)
     outseq->Offset = ibegin - 1;
 
     if(iend >= ibegin)
-	ajStrAssSub(&outseq->Seq, seq->Seq, ibegin-1, iend-1);
+	ajStrAssignSubS(&outseq->Seq, seq->Seq, ibegin-1, iend-1);
     else				/* empty sequence */
-	ajStrAssC(&outseq->Seq, "");
+	ajStrAssignC(&outseq->Seq, "");
 
     outseq->Fttable = seq->Fttable;
     if(outseq->Fttable)
 	ajFeattableTrimOff(outseq->Fttable,
-			    outseq->Offset, ajStrLen(outseq->Seq));
+			    outseq->Offset, ajStrGetLen(outseq->Seq));
 
     ajDebug("seqAllClone %d .. %d %d .. %d len: %d type: '%S'\n",
 	     seq->Begin, seq->End, ibegin, iend,
-	     ajStrLen(outseq->Seq), outseq->Type);
+	     ajStrGetLen(outseq->Seq), outseq->Type);
     ajDebug("  Db: '%S' Name: '%S' Entryname: '%S'\n",
 	     outseq->Db, outseq->Name, outseq->Entryname);
 
@@ -4542,16 +4542,16 @@ static void seqDeclone(AjPSeqout outseq)
 {
     AjPStr ptr = NULL;
 
-    ajStrClear(&outseq->Db);
-    ajStrClear(&outseq->Name);
-    ajStrClear(&outseq->Acc);
-    ajStrClear(&outseq->Sv);
-    ajStrClear(&outseq->Gi);
-    ajStrClear(&outseq->Tax);
-    ajStrClear(&outseq->Desc);
-    ajStrClear(&outseq->Type);
-    ajStrClear(&outseq->Informatstr);
-    ajStrClear(&outseq->Entryname);
+    ajStrSetClear(&outseq->Db);
+    ajStrSetClear(&outseq->Name);
+    ajStrSetClear(&outseq->Acc);
+    ajStrSetClear(&outseq->Sv);
+    ajStrSetClear(&outseq->Gi);
+    ajStrSetClear(&outseq->Tax);
+    ajStrSetClear(&outseq->Desc);
+    ajStrSetClear(&outseq->Type);
+    ajStrSetClear(&outseq->Informatstr);
+    ajStrSetClear(&outseq->Entryname);
 
     while(ajListstrPop(outseq->Acclist,&ptr))
 	ajStrDel(&ptr);
@@ -4562,7 +4562,7 @@ static void seqDeclone(AjPSeqout outseq)
     while(ajListstrPop(outseq->Taxlist,&ptr))
 	ajStrDel(&ptr);
 
-    ajStrClear(&outseq->Seq);
+    ajStrSetClear(&outseq->Seq);
     AJFREE(outseq->Accuracy);
 
     return;
@@ -4592,7 +4592,7 @@ static AjBool seqFileReopen(AjPSeqout outseq)
 	outseq->Knownfile = NULL;
 
     ajFmtPrintS(&name, "%S.%S", outseq->Name, outseq->Extension);
-    ajStrToLower(&name);
+    ajStrFmtLower(&name);
     outseq->File = ajFileNewOutD(outseq->Directory, name);
     ajDebug("seqFileReopen single: %B file '%S'\n", outseq->Single, name);
     ajStrDel(&name);
@@ -4620,10 +4620,10 @@ static void seqDbName(AjPStr* name, const AjPStr db)
 {
     static AjPStr tmpname = 0;
 
-    if(!ajStrLen(db))
+    if(!ajStrGetLen(db))
 	return;
 
-    ajStrAssS(&tmpname, *name);
+    ajStrAssignS(&tmpname, *name);
     ajFmtPrintS(name, "%S:%S", db, tmpname);
 
     return;
@@ -4647,19 +4647,19 @@ void ajSeqoutDefName(AjPSeqout thys, const AjPStr setname, AjBool multi)
 {
     static ajint count = 0;
 
-    if(ajStrLen(thys->Name))
+    if(ajStrGetLen(thys->Name))
     {
 	ajDebug("ajSeqoutDefName already has a name '%S'\n", thys->Name);
 	return;
     }
 
-    if (ajStrLen(setname))
+    if (ajStrGetLen(setname))
     {
 	if(multi && count)
 	    ajFmtPrintS(&thys->Name, "%S_%3.3d", setname, ++count);
 	else
 	{
-	    ajStrAssS(&thys->Name, setname);
+	    ajStrAssignS(&thys->Name, setname);
 	    ++count;
 	}
     }
@@ -4669,7 +4669,7 @@ void ajSeqoutDefName(AjPSeqout thys, const AjPStr setname, AjBool multi)
 	    ajFmtPrintS(&thys->Name, "EMBOSS_%3.3d", ++count);
 	else
 	{
-	    ajStrAssC(&thys->Name, "EMBOSS");
+	    ajStrAssignC(&thys->Name, "EMBOSS");
 	    ++count;
 	}
     }
@@ -4700,7 +4700,7 @@ void ajSeqoutTrace(const AjPSeqout seq)
     ajDebug( "==============\n\n");
     ajDebug( "  Name: '%S'\n", seq->Name);
 
-    if(ajStrLen(seq->Acc))
+    if(ajStrGetLen(seq->Acc))
 	ajDebug( "  Accession: '%S'\n", seq->Acc);
 
     if(ajListLength(seq->Acclist))
@@ -4715,17 +4715,17 @@ void ajSeqoutTrace(const AjPSeqout seq)
 	ajDebug("\n");
     }
 
-    if(ajStrLen(seq->Sv))
+    if(ajStrGetLen(seq->Sv))
 	ajDebug( "  SeqVersion: '%S'\n", seq->Sv);
 
-    if(ajStrLen(seq->Gi))
+    if(ajStrGetLen(seq->Gi))
 	ajDebug( "  GenInfo Id: '%S'\n", seq->Gi);
 
-    if(ajStrLen(seq->Desc))
+    if(ajStrGetLen(seq->Desc))
 	ajDebug( "  Description: '%S'\n", seq->Desc);
 
-    if(ajStrSize(seq->Seq))
-	ajDebug( "  Reserved: %d\n", ajStrSize(seq->Seq));
+    if(ajStrGetRes(seq->Seq))
+	ajDebug( "  Reserved: %d\n", ajStrGetRes(seq->Seq));
 
     if(ajListLength(seq->Keylist))
     {
@@ -4751,40 +4751,40 @@ void ajSeqoutTrace(const AjPSeqout seq)
 	ajListIterFree(&it);
     }
 
-    if(ajStrLen(seq->Type))
+    if(ajStrGetLen(seq->Type))
 	ajDebug( "  Type: '%S'\n", seq->Type);
 
-    if(ajStrLen(seq->Outputtype))
+    if(ajStrGetLen(seq->Outputtype))
 	ajDebug( "  Output type: '%S'\n", seq->Outputtype);
 
-    if(ajStrLen(seq->Db))
+    if(ajStrGetLen(seq->Db))
 	ajDebug( "  Database: '%S'\n", seq->Db);
 
-    if(ajStrLen(seq->Full))
+    if(ajStrGetLen(seq->Full))
 	ajDebug( "  Full name: '%S'\n", seq->Full);
 
-    if(ajStrLen(seq->Date))
+    if(ajStrGetLen(seq->Date))
 	ajDebug( "  Date: '%S'\n", seq->Date);
 
-    if(ajStrLen(seq->Usa))
+    if(ajStrGetLen(seq->Usa))
 	ajDebug( "  Usa: '%S'\n", seq->Usa);
 
-    if(ajStrLen(seq->Ufo))
+    if(ajStrGetLen(seq->Ufo))
 	ajDebug( "  Ufo: '%S'\n", seq->Ufo);
 
-    if(ajStrLen(seq->Formatstr))
+    if(ajStrGetLen(seq->Formatstr))
 	ajDebug( "  Output format: '%S'\n", seq->Formatstr);
 
-    if(ajStrLen(seq->Filename))
+    if(ajStrGetLen(seq->Filename))
 	ajDebug( "  Filename: '%S'\n", seq->Filename);
 
-    if(ajStrLen(seq->Directory))
+    if(ajStrGetLen(seq->Directory))
 	ajDebug( "  Directory: '%S'\n", seq->Directory);
 
-    if(ajStrLen(seq->Entryname))
+    if(ajStrGetLen(seq->Entryname))
 	ajDebug( "  Entryname: '%S'\n", seq->Entryname);
 
-    if(ajStrLen(seq->Doc))
+    if(ajStrGetLen(seq->Doc))
 	ajDebug( "  Documentation:...\n%S\n", seq->Doc);
 
     if(seq->Fttable)
@@ -4825,15 +4825,15 @@ void ajSeqWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix)
     outseq = ajSeqoutNew();
 
     outseq->File = outf;
-    ajStrAssS(&outseq->Seq,seq);
+    ajStrAssignS(&outseq->Seq,seq);
 
     crc = ajSeqCrc(outseq->Seq);
     mw = (ajint) (0.5+ajSeqMW(outseq->Seq));
     ajFmtPrintF(outseq->File,
 		"%-5sSEQUENCE %5d AA; %6d MW;  %08X CRC32;\n",
-		prefix, ajStrLen(outseq->Seq), mw, crc);
+		prefix, ajStrGetLen(outseq->Seq), mw, crc);
 
-    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
     strcpy(sf->endstr, "");
     sf->tab    = 4;
     sf->spacer = 11;
@@ -4870,15 +4870,15 @@ void ajSssWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix)
     outseq = ajSeqoutNew();
 
     outseq->File = outf;
-    ajStrAssS(&outseq->Seq,seq);
+    ajStrAssignS(&outseq->Seq,seq);
 
     crc = ajSeqCrc(outseq->Seq);
     mw = (ajint) (0.5+ajSeqMW(outseq->Seq));
     ajFmtPrintF(outseq->File,
 		"%-5sSEQUENCE %5d AA;\n",
-		prefix, ajStrLen(outseq->Seq));
+		prefix, ajStrGetLen(outseq->Seq));
 
-    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
     strcpy(sf->endstr, "");
     sf->tab    = 4;
     sf->spacer = 11;

@@ -214,6 +214,8 @@ AjBool     ajStrJoinC (AjPStr* Pstr, ajint pos1,
 		       const char* txt, ajint pos2);
 AjBool     ajStrJoinS (AjPStr* Pstr, ajint pos,
 		       const AjPStr str, ajint posb);
+AjBool     ajStrMask(AjPStr* str, ajint begin, ajint end,
+				  char maskchar);
 AjBool     ajStrPasteS( AjPStr* Pstr, ajint pos, const AjPStr str);
 AjBool     ajStrPasteCountK(AjPStr* Pstr, ajint pos, const char chr,
 		      size_t num);
@@ -568,8 +570,6 @@ AjBool     __deprecated ajStrKeepAlphaC (AjPStr* pthis, const char* chars);
 AjBool     __deprecated ajStrKeepC (AjPStr* pthis, const char* chars);
 ajint       __deprecated ajStrLen (const AjPStr thys);
 ajint      __deprecated ajStrListToArray(const AjPStr str, AjPStr **array);
-AjBool     __deprecated ajStrMask(AjPStr* str, ajint begin, ajint end,
-				  char maskchar);
 AjBool     __deprecated ajStrMatchCaseCC (const char* thys, const char* text);
 AjBool     __deprecated ajStrMatchCC     (const char* thys, const char* text);
 AjBool     __deprecated ajStrMatchWildCC (const char* str, const char* text);

@@ -277,8 +277,8 @@ AjPCod ajCodNewCode(ajint code)
     for(i=0;i<64;i++)
     {
 	idx = ajCodIndexC(spsumcodons[i]);
-	ajStrAssS(&aa, ajTrnCodonC(trn, spsumcodons[i]));
-	c = ajAZToInt((ajint)ajStrChar(aa, 0));
+	ajStrAssignS(&aa, ajTrnCodonC(trn, spsumcodons[i]));
+	c = ajAZToInt((ajint)ajStrGetCharFirst(aa));
 	if(c>25)
 	    c=27;
 	thys->aa[idx] = c;
@@ -309,11 +309,11 @@ AjPCod ajCodDup(const AjPCod thys)
 
     dup = ajCodNew();
 
-    ajStrAssS(&dup->Name,thys->Name);
-    ajStrAssS(&dup->Species,thys->Species);
-    ajStrAssS(&dup->Division,thys->Division);
-    ajStrAssS(&dup->Release,thys->Release);
-    ajStrAssS(&dup->Desc,thys->Desc);
+    ajStrAssignS(&dup->Name,thys->Name);
+    ajStrAssignS(&dup->Species,thys->Species);
+    ajStrAssignS(&dup->Division,thys->Division);
+    ajStrAssignS(&dup->Release,thys->Release);
+    ajStrAssignS(&dup->Desc,thys->Desc);
 
     dup->CdsCount = thys->CdsCount;
     dup->CodonCount = thys->CodonCount;
@@ -402,9 +402,9 @@ void ajCodBacktranslate(AjPStr *b, const AjPStr a, const AjPCod thys)
     char q;
     ajint idx;
 
-    ajStrAssC(b, "");
+    ajStrAssignC(b, "");
 
-    p = ajStrStr(a);
+    p = ajStrGetPtr(a);
     while(*p)
     {
 	if(*p=='-')
@@ -415,7 +415,7 @@ void ajCodBacktranslate(AjPStr *b, const AjPStr a, const AjPCod thys)
 
 	if(toupper((int)*p)==(int)'X')
 	{
-	    ajStrAppC(b,"NNN");
+	    ajStrAppendC(b,"NNN");
 	    ++p;
 	    continue;
 	}
@@ -429,11 +429,11 @@ void ajCodBacktranslate(AjPStr *b, const AjPStr a, const AjPCod thys)
 	idx = thys->back[ajAZToInt(q)];
 	if(thys->aa[idx]==27)
 	{
-	    ajStrAppC(b,"End");
+	    ajStrAppendC(b,"End");
 	    ++p;
 	    continue;
 	}
-	ajStrAppC(b,ajCodTriplet(idx));
+	ajStrAppendC(b,ajCodTriplet(idx));
 	++p;
     }
 
@@ -460,9 +460,9 @@ void ajCodBacktranslateAmbig(AjPStr *b, const AjPStr a, const AjPCod thys)
     char q;
     char codon[4] = "NNN";
 
-    ajStrAssC(b, "");
+    ajStrAssignC(b, "");
 
-    p = ajStrStr(a);
+    p = ajStrGetPtr(a);
     while(*p)
     {
 	codon[0] = codon[1] = codon[2] = '\0';
@@ -505,7 +505,7 @@ void ajCodBacktranslateAmbig(AjPStr *b, const AjPStr a, const AjPCod thys)
 	    codTripletBases(codon);
 	}
 
-	ajStrAppC(b,codon);
+	ajStrAppendC(b,codon);
 	++p;
     }
 
@@ -629,13 +629,13 @@ void ajCodCalcGribskov(AjPCod thys, const AjPStr s)
     double x;
     double z;
 
-    len = ajStrLen(s);
+    len = ajStrGetLen(s);
 
     for(i=0;i<AJCODSTART;++i)
 	frct[i] = thys->fraction[i];
 
     NA = NC = NG = NT = 0;
-    ajCodComp(&NA,&NC,&NG,&NT,ajStrStr(s));
+    ajCodComp(&NA,&NC,&NG,&NT,ajStrGetPtr(s));
 
     /* Get expected frequencies */
     for(i=0;i<AJCODSTART;++i)
@@ -875,11 +875,11 @@ void ajCodClear(AjPCod thys)
 {
     ajint i;
 
-    ajStrAssC(&thys->Name,"");
-    ajStrAssC(&thys->Species,"");
-    ajStrAssC(&thys->Division,"");
-    ajStrAssC(&thys->Release,"");
-    ajStrAssC(&thys->Desc,"");
+    ajStrAssignC(&thys->Name,"");
+    ajStrAssignC(&thys->Species,"");
+    ajStrAssignC(&thys->Division,"");
+    ajStrAssignC(&thys->Release,"");
+    ajStrAssignC(&thys->Desc,"");
 
     thys->CdsCount = 0;
     thys->CodonCount = 0;
@@ -915,11 +915,11 @@ void ajCodClearData(AjPCod thys)
 {
     ajint i;
 
-    ajStrAssC(&thys->Name,"");
-    ajStrAssC(&thys->Species,"");
-    ajStrAssC(&thys->Division,"");
-    ajStrAssC(&thys->Release,"");
-    ajStrAssC(&thys->Desc,"");
+    ajStrAssignC(&thys->Name,"");
+    ajStrAssignC(&thys->Species,"");
+    ajStrAssignC(&thys->Division,"");
+    ajStrAssignC(&thys->Release,"");
+    ajStrAssignC(&thys->Desc,"");
 
     thys->CdsCount = 0;
     thys->CodonCount = 0;
@@ -962,8 +962,8 @@ void ajCodCountTriplets(AjPCod thys, const AjPStr s, ajint *c)
     ajint  i;
     ajint  idx;
 
-    p = ajStrStr(s);
-    last = ajStrLen(s)-2;
+    p = ajStrGetPtr(s);
+    last = ajStrGetLen(s)-2;
 
     for(i=0;i<last;i+=3,p+=3,++(*c))
     {
@@ -997,7 +997,7 @@ void ajCodCountTriplets(AjPCod thys, const AjPStr s, ajint *c)
 
 ajint ajCodIndex(const AjPStr s)
 {
-    return ajCodIndexC(ajStrStr(s));
+    return ajCodIndexC(ajStrGetPtr(s));
 }
 
 
@@ -1069,13 +1069,13 @@ AjBool ajCodRead(AjPCod thys, const AjPStr fn, const AjPStr format)
     i = ajStrFindC(fn, "::");
     if(i == -1)
     {
-	ajStrAssS(&filename, fn);
-	ajStrAssS(&formatstr, format);
+	ajStrAssignS(&filename, fn);
+	ajStrAssignS(&formatstr, format);
     }
     else
     {
-	ajStrAssSub(&formatstr, fn, 0, i-1);
-	ajStrAssSub(&fname, fn, i+1, -1);
+	ajStrAssignSubS(&formatstr, fn, 0, i-1);
+	ajStrAssignSubS(&fname, fn, i+1, -1);
     }
 
     fname = ajStrNewS(filename);
@@ -1083,8 +1083,8 @@ AjBool ajCodRead(AjPCod thys, const AjPStr fn, const AjPStr format)
     ajFileDataNew(fname,&inf);
     if(!inf)
     {
-	ajStrAssC(&fname,"CODONS/");
-	ajStrApp(&fname,filename);
+	ajStrAssignC(&fname,"CODONS/");
+	ajStrAppendS(&fname,filename);
 	ajFileDataNew(fname,&inf);
 	if(!inf)
 	{
@@ -1098,7 +1098,7 @@ AjBool ajCodRead(AjPCod thys, const AjPStr fn, const AjPStr format)
 
     for(i=0;codInFormatDef[i].Name; i++)
     {
-	if(ajStrLen(formatstr))
+	if(ajStrGetLen(formatstr))
 	{
 	    if(!ajStrMatchC(formatstr, codInFormatDef[i].Name))
 		continue;
@@ -1112,7 +1112,7 @@ AjBool ajCodRead(AjPCod thys, const AjPStr fn, const AjPStr format)
 	ret = codInFormatDef[i].Read(thys, inbuff);
 	if(ret)
 	{
-	    ajStrAssS(&thys->Name, filename);
+	    ajStrAssignS(&thys->Name, filename);
 	    codFix(thys);
 	    ajDebug("ajCodRead Format '%s' success\n", codInFormatDef[i].Name);
 	    ajFileBuffDel(&inbuff);
@@ -1166,7 +1166,7 @@ static AjBool codReadEmboss(AjPCod thys, AjPFileBuff inbuff)
 
     while(ajFileBuffGet(inbuff,&codReadLine))
     {
-	p=ajStrStr(codReadLine);
+	p=ajStrGetPtr(codReadLine);
 	if(*p=='\n')
 	    continue;
 	else if(*p=='#')
@@ -1179,33 +1179,33 @@ static AjBool codReadEmboss(AjPCod thys, AjPFileBuff inbuff)
 
 	/* check record format */
 
-	if(ajStrTokenCount(codReadLine, " \t\r\n") != 5)
+	if(ajStrParseCountC(codReadLine, " \t\r\n") != 5)
 	    return ajFalse;
 
-	ajStrTokenAss(&handle, codReadLine, " \t\r\n");
-	ajStrToken(&tok, &handle, NULL);
+	ajStrTokenAssignC(&handle, codReadLine, " \t\r\n");
+	ajStrTokenNextParse(&handle, &tok);
 	if(!codIsCodon(&tok))
 	    return ajFalse;
 	idx = ajCodIndex(tok);
 
-	ajStrToken(&tok, &handle, NULL);
+	ajStrTokenNextParse(&handle, &tok);
 	if(!codIsAa(&tok))
 	    return ajFalse;
-	c = ajAZToInt((ajint)ajStrChar(tok, 0));
+	c = ajAZToInt((ajint)ajStrGetCharFirst(tok));
 	if(c>25)
 	    c=27;			/* stop */
 
-	ajStrToken(&tok, &handle, NULL);
+	ajStrTokenNextParse(&handle, &tok);
 	if(!codIsFraction(tok))
 	    return ajFalse;
 	ajStrToDouble(tok,&fraction);
 
-	ajStrToken(&tok, &handle, NULL);
+	ajStrTokenNextParse(&handle, &tok);
 	if(!codIsFreq(tok))
 	    return ajFalse;
 	ajStrToDouble(tok,&tcount);
 
-	ajStrToken(&tok, &handle, NULL);
+	ajStrTokenNextParse(&handle, &tok);
 	if(!codIsNumber(tok))
 	    return ajFalse;
 	ajStrToInt(tok,&num);
@@ -1218,7 +1218,7 @@ static AjBool codReadEmboss(AjPCod thys, AjPFileBuff inbuff)
     }
 
     ajStrDel(&t);
-    ajStrTokenClear(&handle);
+    ajStrTokenDel(&handle);
     ajStrDel(&tok);
     return ajTrue;
 }
@@ -1259,17 +1259,17 @@ static AjBool codReadStaden(AjPCod thys, AjPFileBuff inbuff)
 
     while(ajFileBuffGet(inbuff,&codReadLine))
     {
-	ajStrClean(&codReadLine);
-	if(!ajStrLen(codReadLine))
+	ajStrRemoveWhite(&codReadLine);
+	if(!ajStrGetLen(codReadLine))
 	    continue;
-	if(ajStrChar(codReadLine, 0) == '#')
+	if(ajStrGetCharFirst(codReadLine) == '#')
 	{
 	    codCommentProcess(thys, codReadLine);
 	    continue;
 	}
-	if(ajStrChar(codReadLine, 0) == '!')
+	if(ajStrGetCharFirst(codReadLine) == '!')
 	    continue;
-	if(ajStrLen(codReadLine) == strspn(ajStrStr(codReadLine), "="))
+	if(ajStrGetLen(codReadLine) == strspn(ajStrGetPtr(codReadLine), "="))
 	    continue;
 
 	if(icod > 63)			/* ignore second noncoding set */
@@ -1277,25 +1277,25 @@ static AjBool codReadStaden(AjPCod thys, AjPFileBuff inbuff)
 
 	/* check record format */
 
-	if(ajStrTokenCount(codReadLine, " \t\r\n") != 12)
+	if(ajStrParseCountC(codReadLine, " \t\r\n") != 12)
 	    return ajFalse;
 
-	ajStrTokenAss(&handle, codReadLine, " \t\r\n");
+	ajStrTokenAssignC(&handle, codReadLine, " \t\r\n");
 	for(i=0;i<4;i++)
 	{
-	    ajStrToken(&tok, &handle, NULL);
+	    ajStrTokenNextParse(&handle, &tok);
 	    if(!codIsAa(&tok))
 		return ajFalse;
-	    c = ajAZToInt((ajint)ajStrChar(tok, 0));
+	    c = ajAZToInt((ajint)ajStrGetCharFirst(tok));
 	    if(c>25)
 		c=27;			/* stop */
 
-	    ajStrToken(&tok, &handle, NULL);
+	    ajStrTokenNextParse(&handle, &tok);
 	    if(!codIsCodon(&tok))
 		return ajFalse;
 	    idx = ajCodIndex(tok);
 
-	    ajStrToken(&tok, &handle, NULL);
+	    ajStrTokenNextParse(&handle, &tok);
 	    if(!codIsNumber(tok))
 		return ajFalse;
 	    ajStrToDouble(tok,&tcount);
@@ -1344,28 +1344,28 @@ static AjBool codReadSpsum(AjPCod thys, AjPFileBuff inbuff)
     if(!ajFileBuffGet(inbuff,&codReadLine))
 	return ajFalse;
 
-    if(ajStrTokenCount(codReadLine, ":") != 2)
+    if(ajStrParseCountC(codReadLine, ":") != 2)
 	return ajFalse;
-    ajStrTokenAss(&handle, codReadLine, ":");
-    ajStrToken(&tok, &handle, NULL);
-    ajStrChomp(&tok);
-    ajStrAssS(&thys->Species, tok);
+    ajStrTokenAssignC(&handle, codReadLine, ":");
+    ajStrTokenNextParse(&handle, &tok);
+    ajStrTrimWhite(&tok);
+    ajStrAssignS(&thys->Species, tok);
 
-    ajStrToken(&tok, &handle, NULL);
-    ajStrChomp(&tok);
+    ajStrTokenNextParse(&handle, &tok);
+    ajStrTrimWhite(&tok);
     if(!ajStrToInt(tok, &thys->CdsCount))
 	return ajFalse;
 
     if(!ajFileBuffGet(inbuff,&codReadLine))
 	return ajFalse;
 
-    if(ajStrTokenCount(codReadLine, " \t\n\r") != 64)
+    if(ajStrParseCountC(codReadLine, " \t\n\r") != 64)
 	return ajFalse;
 
-    ajStrTokenAss(&handle, codReadLine, " \t\r\n");
+    ajStrTokenAssignC(&handle, codReadLine, " \t\r\n");
     for(i=0;i<64;i++)
     {
-	ajStrToken(&tok, &handle, NULL);
+	ajStrTokenNextParse(&handle, &tok);
 	if(!ajStrToInt(tok, &num))
 	    return ajFalse;
 	j = ajCodIndexC(spsumcodons[i]);
@@ -1420,25 +1420,25 @@ static AjBool codReadCutg(AjPCod thys, AjPFileBuff inbuff)
     if(-1 == ajStrFindC(codReadLine, "]:"))
 	return ajFalse;
 
-    ajStrTokenAss(&handle, codReadLine, "[");
+    ajStrTokenAssignC(&handle, codReadLine, "[");
 
-    ajStrToken(&tok, &handle, NULL);
-    if(!ajStrLen(tok))
+    ajStrTokenNextParse(&handle, &tok);
+    if(!ajStrGetLen(tok))
 	return ajFalse;
-    ajStrClean(&tok);
-    ajStrAssS(&thys->Species, tok);
+    ajStrRemoveWhite(&tok);
+    ajStrAssignS(&thys->Species, tok);
 
-    ajStrToken(&tok, &handle, "]: ");
-    if(!ajStrLen(tok))
+    ajStrTokenNextParseC(&handle, "]: ", &tok);
+    if(!ajStrGetLen(tok))
 	return ajFalse;
-    ajStrAssS(&thys->Division, tok);
+    ajStrAssignS(&thys->Division, tok);
 
-    ajStrToken(&tok, &handle, "CDS's (");
+    ajStrTokenNextParseC(&handle, "CDS's (", &tok);
     if(!codIsNumber(tok))
 	return ajFalse;
     ajStrToInt(tok, &thys->CdsCount);
 
-    ajStrToken(&tok, &handle, " codons)");
+    ajStrTokenNextParseC(&handle, " codons)", &tok);
     if(!codIsNumber(tok))
 	return ajFalse;
     ajStrToInt(tok, &thys->CodonCount);
@@ -1446,23 +1446,23 @@ static AjBool codReadCutg(AjPCod thys, AjPFileBuff inbuff)
 
     while(ajFileBuffGet(inbuff,&codReadLine))
     {
-	ajStrChomp(&codReadLine);
+	ajStrTrimWhite(&codReadLine);
 	if(ajStrPrefixC(codReadLine, "Coding GC "))
 	{
 	    continue;
 	}
 	else if(ajStrPrefixC(codReadLine, "Genetic code "))
 	{
-	    ajStrTrim(&codReadLine, 13);
-	    ajStrTokenAss(&handle, codReadLine, " :");
-	    ajStrToken(&tok, &handle, NULL);
+	    ajStrCutStart(&codReadLine, 13);
+	    ajStrTokenAssignC(&handle, codReadLine, " :");
+	    ajStrTokenNextParse(&handle, &tok);
 	    if(codIsNumber(tok))
 		ajStrToInt(tok, &thys->GeneticCode);
 	    continue;
 	}
 	else
 	{
-	    i = ajStrTokenCount(codReadLine, " ()");
+	    i = ajStrParseCountC(codReadLine, " ()");
 	    if(i == 20)
 		hasaa = ajTrue;
 	    else if(i == 12)
@@ -1470,22 +1470,22 @@ static AjBool codReadCutg(AjPCod thys, AjPFileBuff inbuff)
 	    else
 		continue;
 
-	    ajStrTokenAss(&handle, codReadLine, " ");
+	    ajStrTokenAssignC(&handle, codReadLine, " ");
 	    for(j=0;j<4;j++)
 	    {
-		ajStrToken(&tok, &handle, NULL);
+		ajStrTokenNextParse(&handle, &tok);
 		if(!codIsCodon(&tok))
 		    return ajFalse;
 		idx = ajCodIndex(tok);
 
 		if(hasaa)
 		{
-		    ajStrToken(&tok, &handle, NULL);
+		    ajStrTokenNextParse(&handle, &tok);
 		    if(!codIsAa(&tok))
 			return ajFalse;
-		    c = ajAZToInt((ajint)ajStrChar(tok, 0));
+		    c = ajAZToInt((ajint)ajStrGetCharFirst(tok));
 
-		    ajStrToken(&tok, &handle, NULL);
+		    ajStrTokenNextParse(&handle, &tok);
 		    if(!codIsFraction(tok))
 			return ajFalse;
 		    ajStrToDouble(tok,&fraction);
@@ -1494,18 +1494,18 @@ static AjBool codReadCutg(AjPCod thys, AjPFileBuff inbuff)
 		{
 		    if(!trn)
 			trn = ajTrnNewI(0);
-		    ajStrAssS(&tok, ajTrnCodon(trn, tok));
-		    c = ajAZToInt((ajint)ajStrChar(tok, 0));
+		    ajStrAssignS(&tok, ajTrnCodon(trn, tok));
+		    c = ajAZToInt((ajint)ajStrGetCharFirst(tok));
 		}
 		if(c>25)
 		    c=27;		/* stop */
 
-		ajStrToken(&tok, &handle, " (");
+		ajStrTokenNextParseC(&handle, " (", &tok);
 		if(!codIsFreq(tok))
 		    return ajFalse;
 		ajStrToDouble(tok,&tcount);
 
-		ajStrToken(&tok, &handle, " )");
+		ajStrTokenNextParseC(&handle, " )", &tok);
 		if(!codIsNumber(tok))
 		    return ajFalse;
 		ajStrToInt(tok,&num);
@@ -1560,16 +1560,16 @@ static AjBool codReadCodehop(AjPCod thys, AjPFileBuff inbuff)
 
     while(ajFileBuffGet(inbuff,&line))
     {
-	if(ajStrChar(line,0) == '-')
+	if(ajStrGetCharFirst(line) == '-')
 	    break;
-	if(ajStrTokenCount(line, " \t\r\n[]") != 4)
+	if(ajStrParseCountC(line, " \t\r\n[]") != 4)
 	    return ajFalse;
 
-	ajStrTokenAss(&handle, line, " \t\r\n[]");
-	ajStrToken(&tok1, &handle, NULL);
-	ajStrToken(&tok2, &handle, NULL);
-	ajStrToken(&tok3, &handle, NULL);
-	ajStrToken(&tok4, &handle, NULL);
+	ajStrTokenAssignC(&handle, line, " \t\r\n[]");
+	ajStrTokenNextParse(&handle, &tok1);
+	ajStrTokenNextParse(&handle, &tok2);
+	ajStrTokenNextParse(&handle, &tok3);
+	ajStrTokenNextParse(&handle, &tok4);
 
 	if(!codIsFreq(tok1))
 	    return ajFalse;
@@ -1579,8 +1579,8 @@ static AjBool codReadCodehop(AjPCod thys, AjPFileBuff inbuff)
 	tcount = fraction * 1000.0;
 	if(!trn)
 	    trn = ajTrnNewI(0);
-	ajStrAssS(&tok2, ajTrnCodon(trn, tok4));
-	c = ajAZToInt((ajint)ajStrChar(tok2, 0));
+	ajStrAssignS(&tok2, ajTrnCodon(trn, tok4));
+	c = ajAZToInt((ajint)ajStrGetCharFirst(tok2));
 	if(c>25)
 	    c=27;			/* stop */
 	idx = ajCodIndex(tok4);
@@ -1590,46 +1590,46 @@ static AjBool codReadCodehop(AjPCod thys, AjPFileBuff inbuff)
 
     ajFileBuffGet(inbuff,&line);
     ajFileBuffGet(inbuff,&line);
-    ajStrClean(&line);
+    ajStrRemoveWhite(&line);
 
     if(ajStrPrefixC(line, "Codon usage for "))
     {
-	ajStrTrim(&line, 16);
-	i = ajStrRFindC(line, ":");
+	ajStrCutStart(&line, 16);
+	i = ajStrFindlastC(line, ":");
 	if(i>0)
 	{
-	    ajStrAssSub(&thys->Species, line, 0, i-1);
-	    ajStrAssSub(&tok1, line, i+1, -1);
-	    ajStrClean(&tok1);
+	    ajStrAssignSubS(&thys->Species, line, 0, i-1);
+	    ajStrAssignSubS(&tok1, line, i+1, -1);
+	    ajStrRemoveWhite(&tok1);
 	    if(codIsNumber(tok1))
 		ajStrToInt(tok1, &thys->CdsCount);
 	}
     }
     ajFileBuffGet(inbuff,&line);
-    ajStrClean(&line);
+    ajStrRemoveWhite(&line);
     if(ajStrPrefixC(line, "from "))
     {
-	ajStrTrim(&line, 5);
-	ajStrClean(&line);
-	i = ajStrRFindC(line, ":");
+	ajStrCutStart(&line, 5);
+	ajStrRemoveWhite(&line);
+	i = ajStrFindlastC(line, ":");
 	if(i>0)
 	{
-	    ajStrAssSub(&tok1, line, 0, i-1);
-	    ajStrAssSub(&tok2, line, i+1, -1);
-	    ajStrClean(&tok1);
-	    ajStrClean(&tok2);
+	    ajStrAssignSubS(&tok1, line, 0, i-1);
+	    ajStrAssignSubS(&tok2, line, i+1, -1);
+	    ajStrRemoveWhite(&tok1);
+	    ajStrRemoveWhite(&tok2);
 	    i = ajStrFindC(tok1, "/");
 	    if(i>0)
 	    {
-		ajStrAssSub(&thys->Release, tok1, 0, i-1);
-		ajStrAssSub(&thys->Division, tok1, i+1, -1);
+		ajStrAssignSubS(&thys->Release, tok1, 0, i-1);
+		ajStrAssignSubS(&thys->Division, tok1, i+1, -1);
 	    }
 	    else
-		ajStrAssS(&thys->Release, tok1);
+		ajStrAssignS(&thys->Release, tok1);
 	    i = ajStrFindC(tok2, " ");
 	    if(i>0)
 	    {
-		ajStrAssSub(&tok3, tok2, 0, i-1);
+		ajStrAssignSubS(&tok3, tok2, 0, i-1);
 		if(codIsNumber(tok3))
 		    ajStrToInt(tok3, &thys->CodonCount);
 	    }
@@ -1678,12 +1678,12 @@ static AjBool codReadGcg(AjPCod thys, AjPFileBuff inbuff)
 	}
 	if(header)
 	{
-	    ajStrClean(&line);
-	    if(!ajStrLen(line))
+	    ajStrRemoveWhite(&line);
+	    if(!ajStrGetLen(line))
 		continue;
-	    if(ajStrChar(line, 0) == '!')
+	    if(ajStrGetCharFirst(line) == '!')
 		continue;
-	    if(ajStrChar(line, 0) == '#')
+	    if(ajStrGetCharFirst(line) == '#')
 	    {
 		codCommentProcess(thys, line);
 		continue;
@@ -1691,17 +1691,17 @@ static AjBool codReadGcg(AjPCod thys, AjPFileBuff inbuff)
 
 	    i = ajStrFindC(line, " genes found in ");
 	    if(i == -1)
-		ajStrAssS(&saveheader, line);
+		ajStrAssignS(&saveheader, line);
 	    else
 	    {
-		ajStrAssSub(&tok1, line, 0, i-1);
+		ajStrAssignSubS(&tok1, line, 0, i-1);
 		if(!codIsNumber(tok1))
 		    continue;
 		ajStrToInt(tok1, &thys->CdsCount);
-		ajStrAssSub(&thys->Release, line, i+16, -1);
+		ajStrAssignSubS(&thys->Release, line, i+16, -1);
 		ajStrTrimEndC(&thys->Release, ".");
-		ajStrSubstituteKK(&thys->Release, ' ', '_');
-		ajStrAssS(&thys->Species, saveheader);
+		ajStrExchangeKK(&thys->Release, ' ', '_');
+		ajStrAssignS(&thys->Species, saveheader);
 	    }
 	    continue;
 	}
@@ -1737,31 +1737,31 @@ static AjBool codGcgProcess(AjPCod thys, const AjPStr line)
     double tcount;
     double fraction;
 
-    if(ajStrTokenCount(line, " \t\n\r") != 5)
+    if(ajStrParseCountC(line, " \t\n\r") != 5)
 	return ajFalse;
 
-    ajStrTokenAss(&handle, line, " \t\r\n");
+    ajStrTokenAssignC(&handle, line, " \t\r\n");
 
-    ajStrToken(&tok, &handle, NULL);
+    ajStrTokenNextParse(&handle, &tok);
     if(!codIsAa3(&tok, &c))
 	return ajFalse;
 
-    ajStrToken(&tok, &handle, NULL);
+    ajStrTokenNextParse(&handle, &tok);
     if(!codIsCodon(&tok))
 	return ajFalse;
     idx = ajCodIndex(tok);
 
-    ajStrToken(&tok, &handle, NULL);
+    ajStrTokenNextParse(&handle, &tok);
     if(!codIsNumberF(&tok))
 	return ajFalse;
     ajStrToInt(tok, &num);
 
-    ajStrToken(&tok, &handle, NULL);
+    ajStrTokenNextParse(&handle, &tok);
     if(!codIsFreq(tok))
 	return ajFalse;
     ajStrToDouble(tok, &tcount);
 
-    ajStrToken(&tok, &handle, NULL);
+    ajStrTokenNextParse(&handle, &tok);
     if(!codIsFraction(tok))
 	return ajFalse;
     ajStrToDouble(tok, &fraction);
@@ -1790,54 +1790,54 @@ static AjBool codGcgProcess(AjPCod thys, const AjPStr line)
 ******************************************************************************/
 static AjBool codCommentProcess(AjPCod thys, const AjPStr ccline)
 {
-    ajStrAssS(&codTmpLine, ccline);
+    ajStrAssignS(&codTmpLine, ccline);
 
     if(ajStrPrefixC(codTmpLine, "#Species:"))
     {
-	ajStrTrim(&codTmpLine, 9);
-	ajStrClean(&codTmpLine);
-	ajStrAssS(&thys->Species, codTmpLine);
+	ajStrCutStart(&codTmpLine, 9);
+	ajStrRemoveWhite(&codTmpLine);
+	ajStrAssignS(&thys->Species, codTmpLine);
 	return ajTrue;
     }
     else if(ajStrPrefixC(codTmpLine, "#Division:"))
     {
-	ajStrTrim(&codTmpLine, 10);
-	ajStrClean(&codTmpLine);
-	ajStrAssS(&thys->Division, codTmpLine);
+	ajStrCutStart(&codTmpLine, 10);
+	ajStrRemoveWhite(&codTmpLine);
+	ajStrAssignS(&thys->Division, codTmpLine);
 	return ajTrue;
     }
     else if(ajStrPrefixC(codTmpLine, "#Release:"))
     {
-	ajStrTrim(&codTmpLine, 9);
-	ajStrClean(&codTmpLine);
-	ajStrAssS(&thys->Release, codTmpLine);
+	ajStrCutStart(&codTmpLine, 9);
+	ajStrRemoveWhite(&codTmpLine);
+	ajStrAssignS(&thys->Release, codTmpLine);
 	return ajTrue;
     }
     else if(ajStrPrefixC(codTmpLine, "#Description:"))
     {
-	ajStrTrim(&codTmpLine, 13);
-	ajStrClean(&codTmpLine);
-	ajStrAssS(&thys->Desc, codTmpLine);
+	ajStrCutStart(&codTmpLine, 13);
+	ajStrRemoveWhite(&codTmpLine);
+	ajStrAssignS(&thys->Desc, codTmpLine);
 	return ajTrue;
     }
     else if(ajStrPrefixC(codTmpLine, "#CdsCount:"))
     {
-	ajStrTrim(&codTmpLine, 10);
-	ajStrClean(&codTmpLine);
+	ajStrCutStart(&codTmpLine, 10);
+	ajStrRemoveWhite(&codTmpLine);
 	ajStrToInt(codTmpLine, &thys->CdsCount);
 	return ajTrue;
     }
     else if(ajStrPrefixC(codTmpLine, "#CodonCount:"))
     {
-	ajStrTrim(&codTmpLine, 12);
-	ajStrClean(&codTmpLine);
+	ajStrCutStart(&codTmpLine, 12);
+	ajStrRemoveWhite(&codTmpLine);
 	ajStrToInt(codTmpLine, &thys->CodonCount);
 	return ajTrue;
     }
     else if(ajStrPrefixC(codTmpLine, "#GeneticCode:"))
     {
-	ajStrTrim(&codTmpLine, 13);
-	ajStrClean(&codTmpLine);
+	ajStrCutStart(&codTmpLine, 13);
+	ajStrRemoveWhite(&codTmpLine);
 	ajStrToInt(codTmpLine, &thys->GeneticCode);
     }
 
@@ -1858,10 +1858,10 @@ static AjBool codIsCodon (AjPStr* token)
 {
     char* cp;
 
-    if(ajStrLen(*token) != 3)
+    if(ajStrGetLen(*token) != 3)
 	return ajFalse;
 
-    for(cp = ajStrStrMod(token); *cp; cp++)
+    for(cp = ajStrGetuniquePtr(token); *cp; cp++)
     {
 	if(islower((ajint) *cp))
 	    *cp = toupper((ajint) *cp);
@@ -1890,10 +1890,10 @@ static AjBool codIsAa(AjPStr* token)
 {
     char* cp;
 
-    if(ajStrLen(*token) != 1)
+    if(ajStrGetLen(*token) != 1)
 	return ajFalse;
 
-    cp = ajStrStrMod(token);
+    cp = ajStrGetuniquePtr(token);
     if(islower((ajint) *cp))
 	*cp = toupper((ajint) *cp);
     if(!strchr("ACDEFGHIKLMNPQRSTUVWY*",*cp)) /* SelenoCysteine is U */
@@ -1928,7 +1928,7 @@ static AjBool codIsAa3(AjPStr* token, ajint* idx)
 	"Tyr",""   ,""   ,"End",NULL
     };
 
-     if(ajStrLen(*token) != 3)
+     if(ajStrGetLen(*token) != 3)
 	return ajFalse;
 
     for(i=0;tab[i]; i++)
@@ -1939,7 +1939,7 @@ static AjBool codIsAa3(AjPStr* token, ajint* idx)
 	if(ajStrMatchCaseC(*token, cp))
 	{
 	    if(!ajStrMatchC(*token, cp))
-		ajStrAssC(token, cp);
+		ajStrAssignC(token, cp);
 	    *idx = i;
 	    return ajTrue;
 	}
@@ -1964,11 +1964,11 @@ static AjBool codIsNumber(const AjPStr token)
     const char* cp;
     ajint ilen;
 
-    ilen = ajStrLen(token);
+    ilen = ajStrGetLen(token);
     if(!ilen)
 	return ajFalse;
 
-    cp = ajStrStr(token);
+    cp = ajStrGetPtr(token);
 
     if(ilen != strspn(cp, "0123456789"))
 	    return ajFalse;
@@ -1994,28 +1994,28 @@ static AjBool codIsNumberF(AjPStr * token)
     ajint ilen;
     AjPStr tmpstr = NULL;
 
-    ilen = ajStrLen(*token);
+    ilen = ajStrGetLen(*token);
     if(!ilen)
 	return ajFalse;
 
-    cp = ajStrStr(*token);
+    cp = ajStrGetPtr(*token);
 
     if(ilen == strspn(cp, "0123456789"))
 	    return ajTrue;
 
-    ajStrAssS(&tmpstr, *token);
+    ajStrAssignS(&tmpstr, *token);
 
-    ilen = ajStrLen(tmpstr);
+    ilen = ajStrGetLen(tmpstr);
     ajStrTrimEndC(&tmpstr, "0");
 
-    if(ajStrLen(tmpstr) < ilen)
-	ilen = ajStrLen(tmpstr);
+    if(ajStrGetLen(tmpstr) < ilen)
+	ilen = ajStrGetLen(tmpstr);
 
     ajStrTrimEndC(&tmpstr,".");
 
-    if(ajStrLen(tmpstr) < ilen)
+    if(ajStrGetLen(tmpstr) < ilen)
     {
-	ajStrAssS(token, tmpstr);
+	ajStrAssignS(token, tmpstr);
 	ajStrDel(&tmpstr);
 	return ajTrue;
     }
@@ -2096,11 +2096,11 @@ static AjBool codIsFraction(const AjPStr token)
     ajint ilen;
     AjBool StartOne = ajFalse;;
 
-    ilen = ajStrLen(token);
+    ilen = ajStrGetLen(token);
     if(!ilen)
 	return ajFalse;
 
-    cp = ajStrStr(token);
+    cp = ajStrGetPtr(token);
     if(*cp == '0')
     {
 	cp++;
@@ -2155,11 +2155,11 @@ static AjBool codIsFreq(const AjPStr token)
     float f;
     ajint ilen;
     
-    ilen = ajStrLen(token);
+    ilen = ajStrGetLen(token);
     if(!ilen)
 	return ajFalse;
 
-    cp = ajStrStr(token);
+    cp = ajStrGetPtr(token);
 
     if(ilen != strspn(cp, "0123456789."))
 	return ajFalse;
@@ -2314,11 +2314,11 @@ static void codWriteEmboss(const AjPCod thys, AjPFile outf)
     ajint gc[3] = {0,0,0};
     float totgc = 0.0;
 
-    if(ajStrLen(thys->Species))
+    if(ajStrGetLen(thys->Species))
 	ajFmtPrintF(outf, "#Species: %S\n", thys->Species);
-    if(ajStrLen(thys->Division))
+    if(ajStrGetLen(thys->Division))
 	ajFmtPrintF(outf, "#Division: %S\n", thys->Division);
-    if(ajStrLen(thys->Release))
+    if(ajStrGetLen(thys->Release))
 	ajFmtPrintF(outf, "#Release: %S\n", thys->Release);
     if(thys->GeneticCode)
 	ajFmtPrintF(outf, "#GeneticCode: %d\n", thys->GeneticCode);
@@ -2378,8 +2378,8 @@ static void codWriteSpsum(const AjPCod thys, AjPFile outf)
     ajint j;
 
 
-    ajStrAssS(&species, thys->Species);
-    ajStrSetC(&species, "unknown species");
+    ajStrAssignS(&species, thys->Species);
+    ajStrAssignEmptyC(&species, "unknown species");
 
     ajFmtPrintF(outf, "%S: %d\n", species, thys->CdsCount);
     for(i=0;i<64;i++)
@@ -2422,16 +2422,16 @@ static void codWriteCutg(const AjPCod thys, AjPFile outf)
     AjPStr division = NULL;
     AjPStr minusline = NULL;
 
-    ajStrAssS(&species, thys->Species);
-    ajStrSetC(&species, "unknown species");
+    ajStrAssignS(&species, thys->Species);
+    ajStrAssignEmptyC(&species, "unknown species");
 
-    ajStrAssS(&division, thys->Division);
-    ajStrSetC(&division, "unknown.division");
+    ajStrAssignS(&division, thys->Division);
+    ajStrAssignEmptyC(&division, "unknown.division");
 
     ajFmtPrintF(outf, "%S [%S]: %d CDS's (%d codons)\n",
 		species, division, thys->CdsCount, thys->CodonCount);
 
-    ajStrAppKI(&minusline, '-', 80);
+    ajStrAppendCountK(&minusline, '-', 80);
     ajFmtPrintF(outf, "%S\n", minusline);
     ajFmtPrintF(outf,
 		"fields: [triplet] [frequency: per thousand] ([number])\n");
@@ -2514,16 +2514,16 @@ static void codWriteCutgaa(const AjPCod thys, AjPFile outf)
     AjPStr minusline = NULL;
     char aa;
 
-    ajStrAssS(&species, thys->Species);
-    ajStrSetC(&species, "unknown species");
+    ajStrAssignS(&species, thys->Species);
+    ajStrAssignEmptyC(&species, "unknown species");
 
-    ajStrAssS(&division, thys->Division);
-    ajStrSetC(&division, "unknown.division");
+    ajStrAssignS(&division, thys->Division);
+    ajStrAssignEmptyC(&division, "unknown.division");
 
     ajFmtPrintF(outf, "%S [%S]: %d CDS's (%d codons)\n",
 		species, division, thys->CdsCount, thys->CodonCount);
 
-    ajStrAppKI(&minusline, '-', 80);
+    ajStrAppendCountK(&minusline, '-', 80);
     ajFmtPrintF(outf, "%S\n", minusline);
     ajFmtPrintF(outf,
 		"fields: [triplet] [frequency: per thousand] ([number])\n");
@@ -2615,14 +2615,14 @@ static void codWriteCherry(const AjPCod thys, AjPFile outf)
     AjPStr species = NULL;
     AjPStr division = NULL;
 
-    ajStrAssS(&release, thys->Release);
-    ajStrSetC(&release, "unknowndb0.0");
+    ajStrAssignS(&release, thys->Release);
+    ajStrAssignEmptyC(&release, "unknowndb0.0");
 
-    ajStrAssS(&species, thys->Species);
-    ajStrSetC(&species, "unknown species");
+    ajStrAssignS(&species, thys->Species);
+    ajStrAssignEmptyC(&species, "unknown species");
 
-    ajStrAssS(&division, thys->Division);
-    ajStrSetC(&division, "unknown.division");
+    ajStrAssignS(&division, thys->Division);
+    ajStrAssignEmptyC(&division, "unknown.division");
 
     ajFmtPrintF(outf, "\n%S\n\n", species);
     ajFmtPrintF(outf, "%d genes found in %S\n\n", thys->CdsCount, release);
@@ -2643,9 +2643,9 @@ static void codWriteCherry(const AjPCod thys, AjPFile outf)
 		codon[2]=*c2;
 		i = ajCodIndexC(codon);
 		if(!ajBaseAa1ToAa3(ajIntToAZ(thys->aa[i]), &ThreeAa))
-		    ajStrAssC(&ThreeAa, "End");
-		ajStrToLower(&ThreeAa);
-		ajStrToTitle(&ThreeAa);
+		    ajStrAssignC(&ThreeAa, "End");
+		ajStrFmtLower(&ThreeAa);
+		ajStrFmtTitle(&ThreeAa);
 		ajFmtPrintF(outf, "%S     %s  %10.2f    %6.2f      %4.2f\n",
 			    ThreeAa, codon, (float) thys->num[i],
 			    thys->tcount[i], thys->fraction[i]);
@@ -2715,9 +2715,9 @@ static void codWriteTransterm(const AjPCod thys, AjPFile outf)
 		codon[2]=*c2;
 		i = ajCodIndexC(codon);
 		if(!ajBaseAa1ToAa3(ajIntToAZ(thys->aa[i]), &ThreeAa))
-		    ajStrAssC(&ThreeAa, "End");
-		ajStrToLower(&ThreeAa);
-		ajStrToTitle(&ThreeAa);
+		    ajStrAssignC(&ThreeAa, "End");
+		ajStrFmtLower(&ThreeAa);
+		ajStrFmtTitle(&ThreeAa);
 		ajFmtPrintF(outf, "%S     %s  %10.2f    %6.2f      %4.2f\n",
 			    ThreeAa, codon, (float) thys->num[i],
 			    thys->tcount[i], thys->fraction[i]);
@@ -2770,9 +2770,9 @@ static void codWriteGcg(const AjPCod thys, AjPFile outf)
 		codon[2]=*c2;
 		i = ajCodIndexC(codon);
 		if(!ajBaseAa1ToAa3(ajIntToAZ(thys->aa[i]), &ThreeAa))
-		    ajStrAssC(&ThreeAa, "End");
-		ajStrToLower(&ThreeAa);
-		ajStrToTitle(&ThreeAa);
+		    ajStrAssignC(&ThreeAa, "End");
+		ajStrFmtLower(&ThreeAa);
+		ajStrFmtTitle(&ThreeAa);
 		ajFmtPrintF(outf, "%S     %s %10.2f   %8.2f      %4.2f\n",
 			    ThreeAa, codon, (double) thys->num[i],
 			    thys->tcount[i], thys->fraction[i]);
@@ -2809,14 +2809,14 @@ static void codWriteCodehop(const AjPCod thys, AjPFile outf)
     AjPStr species = NULL;
     AjPStr division = NULL;
 
-    ajStrAssS(&release, thys->Release);
-    ajStrSetC(&release, "unknowndb0.0");
+    ajStrAssignS(&release, thys->Release);
+    ajStrAssignEmptyC(&release, "unknowndb0.0");
 
-    ajStrAssS(&species, thys->Species);
-    ajStrSetC(&species, "unknown species");
+    ajStrAssignS(&species, thys->Species);
+    ajStrAssignEmptyC(&species, "unknown species");
 
-    ajStrAssS(&division, thys->Division);
-    ajStrSetC(&division, "unknown.division");
+    ajStrAssignS(&division, thys->Division);
+    ajStrAssignEmptyC(&division, "unknown.division");
 
     c0 = bases;
     while(*c0)
@@ -3116,8 +3116,8 @@ double ajCodCai(const AjPCod thys, const AjPStr str)
 
     wk = ajCodCaiW(thys);
 
-    len = ajStrLen(str);
-    p   = ajStrStr(str);
+    len = ajStrGetLen(str);
+    p   = ajStrGetPtr(str);
 
     limit = len / 3;
     total = (double)0.;
@@ -3159,7 +3159,7 @@ const AjPStr ajCodGetName(const AjPCod thys)
 
 const char* ajCodGetNameC(const AjPCod thys)
 {
-    return ajStrStr(thys->Name);
+    return ajStrGetPtr(thys->Name);
 }
 
 /* @func ajCodGetDesc *********************************************************
@@ -3185,7 +3185,7 @@ const AjPStr ajCodGetDesc(const AjPCod thys)
 
 const char* ajCodGetDescC(const AjPCod thys)
 {
-    return ajStrStr(thys->Desc);
+    return ajStrGetPtr(thys->Desc);
 }
 
 /* @func ajCodGetSpecies ******************************************************
@@ -3211,7 +3211,7 @@ const AjPStr ajCodGetSpecies(const AjPCod thys)
 
 const char* ajCodGetSpeciesC(const AjPCod thys)
 {
-    return ajStrStr(thys->Species);
+    return ajStrGetPtr(thys->Species);
 }
 
 /* @func ajCodGetDivision *****************************************************
@@ -3237,7 +3237,7 @@ const AjPStr ajCodGetDivision(const AjPCod thys)
 
 const char* ajCodGetDivisionC(const AjPCod thys)
 {
-    return ajStrStr(thys->Division);
+    return ajStrGetPtr(thys->Division);
 }
 
 /* @func ajCodGetRelease ******************************************************
@@ -3263,7 +3263,7 @@ const AjPStr ajCodGetRelease(const AjPCod thys)
 
 const char* ajCodGetReleaseC(const AjPCod thys)
 {
-    return ajStrStr(thys->Release);
+    return ajStrGetPtr(thys->Release);
 }
 
 /* @func ajCodGetNumcodon *****************************************************
@@ -3316,7 +3316,7 @@ ajint ajCodGetCode(const AjPCod thys)
 
 void ajCodAssName(AjPCod thys, const AjPStr name)
 {
-    ajStrAssS(&thys->Name, name);
+    ajStrAssignS(&thys->Name, name);
     return;
 }
 
@@ -3331,7 +3331,7 @@ void ajCodAssName(AjPCod thys, const AjPStr name)
 
 void ajCodAssNameC(AjPCod thys, const char* name)
 {
-    ajStrAssC(&thys->Name, name);
+    ajStrAssignC(&thys->Name, name);
     return;
 }
 
@@ -3346,7 +3346,7 @@ void ajCodAssNameC(AjPCod thys, const char* name)
 
 void ajCodAssDesc(AjPCod thys, const AjPStr desc)
 {
-    ajStrAssS(&thys->Desc,desc );
+    ajStrAssignS(&thys->Desc,desc );
     return;
 }
 
@@ -3361,7 +3361,7 @@ void ajCodAssDesc(AjPCod thys, const AjPStr desc)
 
 void ajCodAssDescC(AjPCod thys, const char* desc)
 {
-    ajStrAssC(&thys->Desc, desc);
+    ajStrAssignC(&thys->Desc, desc);
     return;
 }
 
@@ -3376,7 +3376,7 @@ void ajCodAssDescC(AjPCod thys, const char* desc)
 
 void ajCodAssSpecies(AjPCod thys, const AjPStr species)
 {
-    ajStrAssS(&thys->Species, species);
+    ajStrAssignS(&thys->Species, species);
     return;
 }
 
@@ -3391,7 +3391,7 @@ void ajCodAssSpecies(AjPCod thys, const AjPStr species)
 
 void ajCodAssSpeciesC(AjPCod thys, const char* species)
 {
-    ajStrAssC(&thys->Species, species);
+    ajStrAssignC(&thys->Species, species);
     return;
 }
 
@@ -3406,7 +3406,7 @@ void ajCodAssSpeciesC(AjPCod thys, const char* species)
 
 void ajCodAssRelease(AjPCod thys, const AjPStr release)
 {
-    ajStrAssS(&thys->Release, release);
+    ajStrAssignS(&thys->Release, release);
     return;
 }
 
@@ -3421,7 +3421,7 @@ void ajCodAssRelease(AjPCod thys, const AjPStr release)
 
 void ajCodAssReleaseC(AjPCod thys, const char* release)
 {
-    ajStrAssC(&thys->Release, release);
+    ajStrAssignC(&thys->Release, release);
     return;
 }
 
@@ -3436,7 +3436,7 @@ void ajCodAssReleaseC(AjPCod thys, const char* release)
 
 void ajCodAssDivision(AjPCod thys, const AjPStr division)
 {
-    ajStrAssS(&thys->Division, division);
+    ajStrAssignS(&thys->Division, division);
     return;
 }
 
@@ -3451,7 +3451,7 @@ void ajCodAssDivision(AjPCod thys, const AjPStr division)
 
 void ajCodAssDivisionC(AjPCod thys, const char* division)
 {
-    ajStrAssC(&thys->Division, division);
+    ajStrAssignC(&thys->Division, division);
     return;
 }
 

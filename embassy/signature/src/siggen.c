@@ -337,24 +337,24 @@ int main(ajint argc, char **argv)
 
     /* If random is chosen then just use one scoring method to go through, 
      but signature *will* be random. */
-    if((ajStrChar(*mode, 0) == '3'))
+    if((ajStrGetCharFirst(*mode) == '3'))
 	score_seq_var = ajTrue;
     
     
     
-    if(ajStrChar(*seqoption, 0) == '1')
+    if(ajStrGetCharFirst(*seqoption) == '1')
         score_seq_mat = ajTrue;
-    else if(ajStrChar(*seqoption, 0) == '2')
+    else if(ajStrGetCharFirst(*seqoption) == '2')
         score_seq_var = ajTrue;
     /* Both methods are left as ajFalse if user selects option 3, 
        i.e. no sequence scoring. */
 
 
-    if(ajStrChar(*conoption, 0) == '1')
+    if(ajStrGetCharFirst(*conoption) == '1')
         score_ncon=ajTrue;
-    else if(ajStrChar(*conoption, 0) == '2')
+    else if(ajStrGetCharFirst(*conoption) == '2')
         score_ccon=ajTrue;
-    else if(ajStrChar(*conoption, 0) == '3')
+    else if(ajStrGetCharFirst(*conoption) == '3')
     {
         score_ccon=ajTrue;
         score_ncon=ajTrue;
@@ -398,9 +398,9 @@ int main(ajint argc, char **argv)
 	   present, however, the siggen algorithms depend on there being one.
 	   Therefore write one here in which the values are all '1' (i.e. no 
 	   positions will be included because of the Post_similar assignment.) */
-	if(!MAJSTRLEN(alg->Post_similar))
+	if(!MAJSTRGETLEN(alg->Post_similar))
 	    for(x=0;x<alg->width;x++)
-		ajStrAppK(&alg->Post_similar, '1');
+		ajStrAppendK(&alg->Post_similar, '1');
 	
 
 	/*      ajFmtPrint("3\n");fflush(stdout); */
@@ -420,21 +420,21 @@ int main(ajint argc, char **argv)
         
 
         /* Allocate array of pointers to Cmap structures for contact maps. */
-	if(ajStrChar(*conoption, 0) != '5')
+	if(ajStrGetCharFirst(*conoption) != '5')
 	    AJCNEW0(cmaps, alg->N);
         
 	/*      ajFmtPrint("5\n");fflush(stdout); */
 
 
         /* Allocate array of bool's for noca array. */
-	if(ajStrChar(*conoption, 0) != '5')
+	if(ajStrGetCharFirst(*conoption) != '5')
 	    AJCNEW0(noca, alg->N);
         
 
 	/*      ajFmtPrint("6\n");fflush(stdout); */
 
         /* Allocate array of AjPInt for indeces into sequences. */
-	if(ajStrChar(*conoption, 0) != '5')
+	if(ajStrGetCharFirst(*conoption) != '5')
 	{
 	    AJCNEW0(atom_idx, alg->N);
 	    
@@ -448,7 +448,7 @@ int main(ajint argc, char **argv)
         /* Start of loop for reading contact data and coordinate files. 
            Only entered if contact data is to be used. */
 
-	if(ajStrChar(*conoption, 0) != '5')
+	if(ajStrGetCharFirst(*conoption) != '5')
 	{
             for(x=0; x<alg->N; ++x)
 
@@ -463,13 +463,13 @@ int main(ajint argc, char **argv)
                 /* Read contact data file; hard-coded to read model 1 from file. */
                 /* A scop identifier is presumed if the id is 7 characters 
                    long and the first character is a 'd' or 'D'. */
-                if((ajStrLen(alg->Codes[x])==7)
-                   &&(toupper((ajint) ajStrChar(alg->Codes[x], 0)) == (ajint) 'D'))
+                if((ajStrGetLen(alg->Codes[x])==7)
+                   &&(toupper((ajint) ajStrGetCharFirst(alg->Codes[x])) == (ajint) 'D'))
 
                 { 
                     /*Read the chain id from the SCOP domain code and convert 
                       cases of '_' identifiers to '.' */
-                    id=ajStrChar(alg->Codes[x], 5);
+                    id=ajStrGetCharPos(alg->Codes[x], 5);
                     if(id=='_') id='.';
                     
                     cmaps[x] = ajCmapReadCNew(fptr_con, id, 1);
@@ -552,9 +552,9 @@ int main(ajint argc, char **argv)
         scores->ncon_do      = score_ncon;
         scores->ccon_do      = score_ccon;
         scores->nccon_do     = score_both;
-	if((ajStrChar(*mode, 0) == '3'))
+	if((ajStrGetCharFirst(*mode) == '3'))
 	    scores->random   = ajTrue;
-	if((ajStrChar(*mode, 0) == '1'))
+	if((ajStrGetCharFirst(*mode) == '1'))
 	    scores->manual   = ajTrue;
 
 
@@ -579,7 +579,7 @@ int main(ajint argc, char **argv)
 	/*      ajFmtPrint("14\n");fflush(stdout); */
 
         /* Score alignement - write Scorealg structure and generate signature. */
-	if(ajStrChar(*mode, 0) == '1')
+	if(ajStrGetCharFirst(*mode) == '1')
 	{
 	    sig = siggen_SigSelectManual(alg, 
 					 &scores, 
@@ -589,7 +589,7 @@ int main(ajint argc, char **argv)
 	}
 	else
 	{
-	    if(ajStrChar(*conoption, 0) == '5')
+	    if(ajStrGetCharFirst(*conoption) == '5')
 		siggen_ScoreAlignmentSeq(&scores, alg, mat, seq_pos);
 	    else
 		siggen_ScoreAlignment(&scores, 
@@ -605,16 +605,16 @@ int main(ajint argc, char **argv)
 
 	    spar_check = 0.0;
 
-	    if(ajStrChar(*conoption, 0) == '5')
+	    if(ajStrGetCharFirst(*conoption) == '5')
 	    {
 		if( (sig = siggen_SigSelectSeq(alg, scores, seq_pos, sig_sparse, 
 					       &spar_check, wsiz))==NULL)
 		{
-		    if(ajStrChar(*conoption, 0) != '5')
+		    if(ajStrGetCharFirst(*conoption) != '5')
 			for(x=0; x<alg->N; ++x)
 			    ajCmapDel(&cmaps[x]);
 		    
-		    if(ajStrChar(*conoption, 0) != '5')
+		    if(ajStrGetCharFirst(*conoption) != '5')
 		    {
 			for(x=0; x<alg->N; ++x)
 			    ajIntDel(&atom_idx[x]);
@@ -636,11 +636,11 @@ int main(ajint argc, char **argv)
 					    cmaps, atom_idx, &spar_check, 
 					    wsiz))==NULL)
 		{
-		    if(ajStrChar(*conoption, 0) != '5')
+		    if(ajStrGetCharFirst(*conoption) != '5')
 			for(x=0; x<alg->N; ++x)
 			    ajCmapDel(&cmaps[x]);
 		    
-		    if(ajStrChar(*conoption, 0) != '5')
+		    if(ajStrGetCharFirst(*conoption) != '5')
 		    {
 			for(x=0; x<alg->N; ++x)
 			    ajIntDel(&atom_idx[x]);
@@ -668,12 +668,12 @@ int main(ajint argc, char **argv)
         /* This code block can be used to produce file names which uses the 
 	   Sunid only. If this is not available then the input file name is
 	   used by default. */
-	ajStrAssS(&sig_name, temp);	
+	ajStrAssignS(&sig_name, temp);	
 	if(alg)
 	    if(alg->Sunid_Family)
 	    {
 		ajStrFromInt(&temp3, alg->Sunid_Family);
-		ajStrAssS(&sig_name, temp3);	
+		ajStrAssignS(&sig_name, temp3);	
 	    }	
 	ajFileDirExtnTrim(&sig_name);
 
@@ -685,9 +685,9 @@ int main(ajint argc, char **argv)
 	   same as the SCOP family but with instances of ' ' and '&' replaced
 	   by '_'. */
 	/*        
-	   ajStrAss(&sig_name, alg->Family);       
-	   ajStrSubstituteCC(&sig_name, " ", "_");
-	   ajStrSubstituteCC(&sig_name, "&", "_");
+	   ajStrAssignRef(&sig_name, alg->Family);       
+	   ajStrExchangeCC(&sig_name, " ", "_");
+	   ajStrExchangeCC(&sig_name, "&", "_");
 	   */
 
 
@@ -699,72 +699,72 @@ int main(ajint argc, char **argv)
         else
         {
             ajStrFromInt(&sig_name_sp, (int)sig_sparse);            
-            ajStrAppC(&sig_name_sp, "_");
+            ajStrAppendC(&sig_name_sp, "_");
             ajStrFromInt(&temp3, (int)spar_check);          
-            ajStrApp(&sig_name_sp, temp3);
+            ajStrAppendS(&sig_name_sp, temp3);
         }
         
         
 
 
 	ajStrFromInt(&sig_name, (int)alg->Sunid_Family);            
-	ajStrSubstituteCC(&sig_name, " ", "_");
-        ajStrSubstituteCC(&sig_name, "&", "+");
-        ajStrAppC(&sig_name, "_");                   
+	ajStrExchangeCC(&sig_name, " ", "_");
+        ajStrExchangeCC(&sig_name, "&", "+");
+        ajStrAppendC(&sig_name, "_");                   
 
         if(filtercon == ajTrue)
         {
-            ajStrAppC(&sig_name, "F");             
-            ajStrAppC(&sig_name, "_");             
+            ajStrAppendC(&sig_name, "F");             
+            ajStrAppendC(&sig_name, "_");             
         }
 
         if(filterpsim == ajTrue)
         {
-            ajStrAppC(&sig_name, "P");             
-            ajStrAppC(&sig_name, "_");             
+            ajStrAppendC(&sig_name, "P");             
+            ajStrAppendC(&sig_name, "_");             
         }
 
 
         if((score_seq_mat == ajTrue) && 
 	(ajStrMatchC(ajMatrixfName(mat), "./EBLOSUM62")))
         {
-            ajStrAppC(&sig_name, "sb");             
-            ajStrAppC(&sig_name, "_");             
+            ajStrAppendC(&sig_name, "sb");             
+            ajStrAppendC(&sig_name, "_");             
         }
 
         if((score_seq_mat == ajTrue) && 
 	(ajStrMatchC(ajMatrixfName(mat), "./EBC0030")))
         {
-            ajStrAppC(&sig_name, "ss");             
-            ajStrAppC(&sig_name, "_");             
+            ajStrAppendC(&sig_name, "ss");             
+            ajStrAppendC(&sig_name, "_");             
         }
 
         if(score_seq_var == ajTrue)
         {
             if(scores->random != ajTrue)
             {
-                ajStrAppC(&sig_name, "v");             
-                ajStrAppC(&sig_name, "_");             
+                ajStrAppendC(&sig_name, "v");             
+                ajStrAppendC(&sig_name, "_");             
             }
 
             else if(scores->random == ajTrue)
-                ajStrAppC(&sig_name, "rand_");
+                ajStrAppendC(&sig_name, "rand_");
         }
 
 
         if(score_ncon == ajTrue)
         {
-            ajStrAppC(&sig_name, "n");             
-            ajStrAppC(&sig_name, "_");             
+            ajStrAppendC(&sig_name, "n");             
+            ajStrAppendC(&sig_name, "_");             
         }
 
         if(score_ccon == ajTrue)
 
         {
-            ajStrAppC(&sig_name, "c");             
-            ajStrAppC(&sig_name, "_");             
+            ajStrAppendC(&sig_name, "c");             
+            ajStrAppendC(&sig_name, "_");             
         }
-        ajStrApp(&sig_name, sig_name_sp);             
+        ajStrAppendS(&sig_name, sig_name_sp);             
 	*/
 
 
@@ -774,19 +774,19 @@ int main(ajint argc, char **argv)
         /* If a file of that name exists, then append _1 or _2 etc 
            as necessary until a unique name is found. */
 	/*
-        ajStrAss(&temp1, sig_name);     
+        ajStrAssignRef(&temp1, sig_name);     
         for(x=1;
             (ajFileStat(&temp1, AJ_FILE_R ) ||
              ajFileStat(&temp1, AJ_FILE_W ) ||
              ajFileStat(&temp1, AJ_FILE_X ));
             x++)
         {
-            ajStrAss(&temp1, sig_name); 
-            ajStrAppC(&temp1, "_");
+            ajStrAssignRef(&temp1, sig_name); 
+            ajStrAppendC(&temp1, "_");
             ajFmtPrintS(&temp2, "%d", x);
-            ajStrApp(&temp1, temp2);
+            ajStrAppendS(&temp1, temp2);
         }
-        ajStrAss(&sig_name, temp1);     
+        ajStrAssignRef(&sig_name, temp1);     
 	*/
 
 
@@ -808,11 +808,11 @@ int main(ajint argc, char **argv)
         /* Free memory. */
         embSignatureDel(&sig);
 
-	if(ajStrChar(*conoption, 0) != '5')
+	if(ajStrGetCharFirst(*conoption) != '5')
             for(x=0; x<alg->N; ++x)
                 ajCmapDel(&cmaps[x]);
 
-	if(ajStrChar(*conoption, 0) != '5')
+	if(ajStrGetCharFirst(*conoption) != '5')
 	{
 	    for(x=0; x<alg->N; ++x)
 		ajIntDel(&atom_idx[x]);
@@ -907,22 +907,22 @@ static AjBool  siggen_ScoreSeqMat(AjPScopalg alg,
     for(post_cnt = 0; post_cnt < alg->width; post_cnt++)
     {
         /* Filter on basis of post_similar line. */
-        if(((ajStrChar(alg->Post_similar, post_cnt) == '1') && 
+        if(((ajStrGetCharPos(alg->Post_similar, post_cnt) == '1') && 
 	    ((*scores)->filterpsim == ajTrue) &&
 	    ((*scores)->filtercon == ajTrue)  && 
 	    (ajIntGet((*scores)->ncon_thresh, post_cnt) == 1))
 	   ||
            (((*scores)->filterpsim == ajTrue) && 
-	    (ajStrChar(alg->Post_similar, post_cnt) == '1') &&
+	    (ajStrGetCharPos(alg->Post_similar, post_cnt) == '1') &&
 	    ((*scores)->filtercon == ajFalse))
            ||
            (((*scores)->filterpsim == ajFalse) && 
-	    (ajStrChar(alg->Post_similar, post_cnt) != '-') && 
+	    (ajStrGetCharPos(alg->Post_similar, post_cnt) != '-') && 
 	    ((*scores)->filtercon == ajTrue) && 
 	    (ajIntGet((*scores)->ncon_thresh, post_cnt) == 1))
            ||
            (((*scores)->filterpsim == ajFalse) && 
-	    (ajStrChar(alg->Post_similar, post_cnt) != '-') && 
+	    (ajStrGetCharPos(alg->Post_similar, post_cnt) != '-') && 
 	    ((*scores)->filtercon == ajFalse)))
         {
             /* Initialise variable to zero. */
@@ -933,7 +933,7 @@ static AjBool  siggen_ScoreSeqMat(AjPScopalg alg,
             /* Iterate through member of family. */
             for(memb_cnt = 0; memb_cnt < alg->N; memb_cnt++)
             {   
-	      if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='X') /* Andy */
+	      if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='X') /* Andy */
                     continue;
 
 
@@ -942,14 +942,14 @@ static AjBool  siggen_ScoreSeqMat(AjPScopalg alg,
 		   current position. */
                 for(res_cnt = (memb_cnt+1); res_cnt < alg->N; res_cnt++)
                     {
-		      if(ajStrChar(alg->Seqs[res_cnt], post_cnt)=='X') /* Andy */
+		      if(ajStrGetCharPos(alg->Seqs[res_cnt], post_cnt)=='X') /* Andy */
                             continue;
 
 
                         /* Assign score form matrix to variable val. */
-                        val = (sub[ajSeqCvtK(cvt, (ajStrChar(alg->Seqs[memb_cnt], 
+                        val = (sub[ajSeqCvtK(cvt, (ajStrGetCharPos(alg->Seqs[memb_cnt], 
                             post_cnt)))][ajSeqCvtK(cvt, 
-                            (ajStrChar(alg->Seqs[res_cnt], post_cnt)))]);
+                            (ajStrGetCharPos(alg->Seqs[res_cnt], post_cnt)))]);
 
 
 
@@ -1022,28 +1022,28 @@ static AjBool  siggen_ScoreSeqVar(AjPScopalg alg, AjPScorealg *scores,
     for(post_cnt = 0; post_cnt < alg->width; post_cnt++)
     {
         /* Filter on basis of post_similar line. */
-	/*if(((ajStrChar(alg->Post_similar, post_cnt) == '1') && 
+	/*if(((ajStrGetCharPos(alg->Post_similar, post_cnt) == '1') && 
 	  ((*scores)->filterpsim == ajTrue)) || 
 	  (((*scores)->filterpsim == ajFalse) && 
-	  ((ajStrChar(alg->Post_similar, post_cnt) == '1')
-	  ||  (ajStrChar(alg->Post_similar, post_cnt) == '0'))))*/
+	  ((ajStrGetCharPos(alg->Post_similar, post_cnt) == '1')
+	  ||  (ajStrGetCharPos(alg->Post_similar, post_cnt) == '0'))))*/
 
-        if(((ajStrChar(alg->Post_similar, post_cnt) == '1') && 
+        if(((ajStrGetCharPos(alg->Post_similar, post_cnt) == '1') && 
 	    ((*scores)->filterpsim == ajTrue) &&
            ((*scores)->filtercon == ajTrue) && 
 	    (ajIntGet((*scores)->ncon_thresh, post_cnt) == 1))
 	   ||
            (((*scores)->filterpsim == ajTrue) && 
-	    (ajStrChar(alg->Post_similar, post_cnt) == '1') &&
+	    (ajStrGetCharPos(alg->Post_similar, post_cnt) == '1') &&
 	    ((*scores)->filtercon == ajFalse))
            ||
            (((*scores)->filterpsim == ajFalse) && 
-	    (ajStrChar(alg->Post_similar, post_cnt) != '-') && 
+	    (ajStrGetCharPos(alg->Post_similar, post_cnt) != '-') && 
            ((*scores)->filtercon == ajTrue) && 
 	    (ajIntGet((*scores)->ncon_thresh, post_cnt) == 1))
            ||
            (((*scores)->filterpsim == ajFalse) && 
-	    (ajStrChar(alg->Post_similar, post_cnt) != '-') && 
+	    (ajStrGetCharPos(alg->Post_similar, post_cnt) != '-') && 
 	    ((*scores)->filtercon == ajFalse)))
 
         {
@@ -1072,67 +1072,67 @@ static AjBool  siggen_ScoreSeqVar(AjPScopalg alg, AjPScorealg *scores,
 
             for(memb_cnt = 0; memb_cnt < alg->N; memb_cnt++)
             {   
-	      if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='X') /* Andy */
+	      if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='X') /* Andy */
                     continue;
                     
                 /* Check if residues are in group 1  */
                 /* Then increment aliphatic counter . */
-                if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='A')
+                if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='A')
                     aliphatic++;
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='V')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='V')
                     aliphatic++;
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='I')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='I')
                     aliphatic++;
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='L')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='L')
                     aliphatic++;
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='M')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='M')
                     aliphatic++;
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='C')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='C')
                     aliphatic++;
                                     
                 /* Check if residues are in group 2  */
                 /* Then increment aromatic counter.  */
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='F')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='F')
                     aromatic++;
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='W')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='W')
                     aromatic++;
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='Y')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='Y')
                     aromatic++;
                 
 
 
                 /* Check if residues are in group 3  */
                 /* Then increment polar counter.     */
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='S')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='S')
                     polar++;
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='T')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='T')
                     polar++;
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='N')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='N')
                     polar++;
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='Q')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='Q')
                     polar++;
                 
                 /* Check if residues are in group 4  */
                 /* Then increment basic counter.     */
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='K')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='K')
                     basic++;
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='R')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='R')
                     basic++;
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='H')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='H')
                     basic++;
 
                 /* Check if residues are in group 5  */
                 /* Then increment acidic counter.    */
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='D')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='D')
                     acidic++;
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='E')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='E')
                     acidic++;
 
                 /* Check if residues are in group 6  */
                 /* Then increment special counter.   */
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='G')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='G')
                     special++;
-                else if(ajStrChar(alg->Seqs[memb_cnt], post_cnt)=='P')
+                else if(ajStrGetCharPos(alg->Seqs[memb_cnt], post_cnt)=='P')
                     special++;
             }
 
@@ -1282,7 +1282,7 @@ static AjBool  siggen_ScoreNcon(AjPScopalg alg,
 
 
     /* Assign iterator for post_similar line. */
-    iter = ajStrIter(alg->Post_similar);
+    iter = ajStrIterNew(alg->Post_similar);
 
 
     /* Create arrays of size width. */
@@ -1318,22 +1318,22 @@ static AjBool  siggen_ScoreNcon(AjPScopalg alg,
     /* Counter for positions in alignment. */
     for(post_cnt = 0; post_cnt < alg->width; post_cnt++)
     {
-        if(((ajStrChar(alg->Post_similar, post_cnt) == '1') && 
+        if(((ajStrGetCharPos(alg->Post_similar, post_cnt) == '1') && 
 	    ((*scores)->filterpsim == ajTrue) &&
             ((*scores)->filtercon == ajTrue) && 
 	    (ajIntGet((*scores)->ncon_thresh, post_cnt) == 1))
            ||   
            (((*scores)->filterpsim == ajTrue) && 
-	    (ajStrChar(alg->Post_similar, post_cnt) == '1') &&
+	    (ajStrGetCharPos(alg->Post_similar, post_cnt) == '1') &&
             ((*scores)->filtercon == ajFalse))
            ||
            (((*scores)->filterpsim == ajFalse) && 
-	    (ajStrChar(alg->Post_similar, post_cnt) != '-') && 
+	    (ajStrGetCharPos(alg->Post_similar, post_cnt) != '-') && 
             ((*scores)->filtercon == ajTrue) && 
 	    (ajIntGet((*scores)->ncon_thresh, post_cnt) == 1))
            ||
            (((*scores)->filterpsim == ajFalse) && 
-	    (ajStrChar(alg->Post_similar, post_cnt) != '-') && 
+	    (ajStrGetCharPos(alg->Post_similar, post_cnt) != '-') && 
             ((*scores)->filtercon == ajFalse)))
         {
             /* Extract ncon for residues in alignment at that position. */
@@ -1394,7 +1394,7 @@ static AjBool  siggen_ScoreNcon(AjPScopalg alg,
 
     /* Free memory for matrix and iterator. */
     ajInt2dDel(&align_ncon);
-    ajStrIterFree(&iter);
+    ajStrIterDel(&iter);
 
 
     /* Return */
@@ -1490,7 +1490,7 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
 
     
     /* Assign iterator for post_similar line. */
-    iter = ajStrIter(alg->Post_similar);
+    iter = ajStrIterNew(alg->Post_similar);
     
 
     
@@ -1508,22 +1508,22 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
     /* Iterate through Post_similar line. */
     for(post_cnt = 0; post_cnt < alg->width; post_cnt++)
     {
-        if(((ajStrChar(alg->Post_similar, post_cnt) == '1') && 
+        if(((ajStrGetCharPos(alg->Post_similar, post_cnt) == '1') && 
 	    ((*scores)->filterpsim == ajTrue) &&
            ((*scores)->filtercon == ajTrue) && 
 	    (ajIntGet((*scores)->ncon_thresh, post_cnt) == 1))
           ||
            (((*scores)->filterpsim == ajTrue) && 
-	    (ajStrChar(alg->Post_similar, post_cnt) == '1') &&
+	    (ajStrGetCharPos(alg->Post_similar, post_cnt) == '1') &&
            ((*scores)->filtercon == ajFalse))
            ||
            (((*scores)->filterpsim == ajFalse) && 
-	    (ajStrChar(alg->Post_similar, post_cnt) != '-') && 
+	    (ajStrGetCharPos(alg->Post_similar, post_cnt) != '-') && 
            ((*scores)->filtercon == ajTrue) && 
 	    (ajIntGet((*scores)->ncon_thresh, post_cnt) == 1))
            ||
            (((*scores)->filterpsim == ajFalse) && 
-	    (ajStrChar(alg->Post_similar, post_cnt) != '-') && 
+	    (ajStrGetCharPos(alg->Post_similar, post_cnt) != '-') && 
            ((*scores)->filtercon == ajFalse)))
         {
             /* Create array of size width. */
@@ -1701,7 +1701,7 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
     ajIntDel(&con_line);
     ajIntDel(&atomidx_size);
     ajInt2dDel(&con_contact);
-    ajStrIterFree(&iter);
+    ajStrIterDel(&iter);
 
 
     /* Return. */
@@ -1989,25 +1989,25 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
             /* Only perform nornalisation on Post_similar. */
             /* positions with value '1' or '0', if filter = ajFalse */
 	    /*  if((((scores)->filterpsim) && 
-		(ajStrChar(alg->Post_similar, cnt) == '1')) ||
+		(ajStrGetCharPos(alg->Post_similar, cnt) == '1')) ||
                ((scores)->filterpsim == ajFalse))*/
 	    
-	    if(((ajStrChar(alg->Post_similar, cnt) == '1') && 
+	    if(((ajStrGetCharPos(alg->Post_similar, cnt) == '1') && 
 		((scores)->filterpsim == ajTrue) &&
 		((scores)->filtercon == ajTrue) && 	
 		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajTrue) && 
-		(ajStrChar(alg->Post_similar, cnt) == '1') &&
+		(ajStrGetCharPos(alg->Post_similar, cnt) == '1') &&
 		((scores)->filtercon == ajFalse))
 	       ||
 	       (((scores)->filterpsim == ajFalse) && 
-		(ajStrChar(alg->Post_similar, cnt) != '-') && 
+		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
 		((scores)->filtercon == ajTrue) && 
 		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajFalse) && 
-		(ajStrChar(alg->Post_similar, cnt) != '-') && 
+		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
 		((scores)->filtercon == ajFalse)))
             {   
                 /* Put normalised score into array at eqiuvalent position. */
@@ -2026,22 +2026,22 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
             /* Only perform nornalisation on Post_similar */
             /* positions with value '1'                  . */
 
-	    if(((ajStrChar(alg->Post_similar, cnt) == '1') && 
+	    if(((ajStrGetCharPos(alg->Post_similar, cnt) == '1') && 
 		((scores)->filterpsim == ajTrue) &&
 		((scores)->filtercon == ajTrue) && 
 		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajTrue) && 
-		(ajStrChar(alg->Post_similar, cnt) == '1') &&
+		(ajStrGetCharPos(alg->Post_similar, cnt) == '1') &&
 		((scores)->filtercon == ajFalse))
 	       ||
 	       (((scores)->filterpsim == ajFalse) && 
-		(ajStrChar(alg->Post_similar, cnt) != '-') && 
+		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
 		((scores)->filtercon == ajTrue) && 
 		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajFalse) && 
-		(ajStrChar(alg->Post_similar, cnt) != '-') && 
+		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
 		((scores)->filtercon == ajFalse)))
             {   
                 /* Put normalised score into array at eqiuvalent position. */
@@ -2065,22 +2065,22 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
             /* Only perform nornalisation on Post_similar */
             /* positions with value '1'                  . */
 
-	    if(((ajStrChar(alg->Post_similar, cnt) == '1') && 
+	    if(((ajStrGetCharPos(alg->Post_similar, cnt) == '1') && 
 		((scores)->filterpsim == ajTrue) &&
 		((scores)->filtercon == ajTrue) && 
 		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajTrue) && 
-		(ajStrChar(alg->Post_similar, cnt) == '1') &&
+		(ajStrGetCharPos(alg->Post_similar, cnt) == '1') &&
 		((scores)->filtercon == ajFalse))
 	       ||
 	       (((scores)->filterpsim == ajFalse) && 
-		(ajStrChar(alg->Post_similar, cnt) != '-') && 
+		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
 		((scores)->filtercon == ajTrue) && 
 		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajFalse) && 
-		(ajStrChar(alg->Post_similar, cnt) != '-') && 
+		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
 		((scores)->filtercon == ajFalse)))
             {
                 /* Put normalised score into array at eqiuvalent position. */
@@ -2101,22 +2101,22 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
             /* Only perform nornalisation on Post_similar */
             /* positions with value '1'                   */
 
-        if(((ajStrChar(alg->Post_similar, cnt) == '1') && 
+        if(((ajStrGetCharPos(alg->Post_similar, cnt) == '1') && 
 	    ((scores)->filterpsim == ajTrue) &&
            ((scores)->filtercon == ajTrue) && 	
 	    (ajIntGet((scores)->ncon_thresh, cnt) == 1))
 	   ||
            (((scores)->filterpsim == ajTrue) && 
-	    (ajStrChar(alg->Post_similar, cnt) == '1') &&
+	    (ajStrGetCharPos(alg->Post_similar, cnt) == '1') &&
            ((scores)->filtercon == ajFalse))
            ||
            (((scores)->filterpsim == ajFalse) && 
-	    (ajStrChar(alg->Post_similar, cnt) != '-') && 
+	    (ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
            ((scores)->filtercon == ajTrue) && 
 	    (ajIntGet((scores)->ncon_thresh, cnt) == 1))
            ||
            (((scores)->filterpsim == ajFalse) && 
-	    (ajStrChar(alg->Post_similar, cnt) != '-') && 
+	    (ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
            ((scores)->filtercon == ajFalse)))
             {
                 /* Put normalised score into array at eqiuvalent position. */
@@ -2164,7 +2164,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
         
         /* Check if filtersim and filtercon are true and that ncon_thresh and 
 	   post_similar = 1, if so incrememnt num_aligned. */
-        if((ajStrChar(alg->Post_similar, x) == '1') && 
+        if((ajStrGetCharPos(alg->Post_similar, x) == '1') && 
 	   ((scores)->filterpsim == ajTrue) &&
            ((scores)->filtercon == ajTrue) && 
 	   (ajIntGet((scores)->ncon_thresh, x) == 1))
@@ -2174,7 +2174,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
 	    }
 	
         else if(((scores)->filterpsim == ajTrue) && 
-		(ajStrChar(alg->Post_similar, x) == '1') &&
+		(ajStrGetCharPos(alg->Post_similar, x) == '1') &&
            ((scores)->filtercon == ajFalse))
 	    {
 		num_aligned++;
@@ -2182,7 +2182,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
 	    }
 	
         else if(((scores)->filterpsim == ajFalse) && 
-		(ajStrChar(alg->Post_similar, x) != '-') && 
+		(ajStrGetCharPos(alg->Post_similar, x) != '-') && 
            ((scores)->filtercon == ajTrue) && 
 		(ajIntGet((scores)->ncon_thresh, x) == 1))
             {
@@ -2191,7 +2191,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
 	    }
 	
         else if(((scores)->filterpsim == ajFalse) && 
-		(ajStrChar(alg->Post_similar, x) != '-') && 
+		(ajStrGetCharPos(alg->Post_similar, x) != '-') && 
 
            ((scores)->filtercon == ajFalse))
 	{
@@ -2228,7 +2228,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
     {
         single_rescount = 0;
         for(i=0; i<alg->width; i++)
-	  if(ajStrChar(alg->Seqs[memb_cnt], i) != 'X')  /* Andy */
+	  if(ajStrGetCharPos(alg->Seqs[memb_cnt], i) != 'X')  /* Andy */
             {
                 single_rescount++;
             }
@@ -2437,12 +2437,12 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
         sig =  embSignatureNew(sig_npos);
 
     sig->Type = alg->Type;
-    ajStrAss(&sig->Class, alg->Class);
-    ajStrAss(&sig->Architecture, alg->Architecture);
-    ajStrAss(&sig->Topology, alg->Topology);
-    ajStrAss(&sig->Fold, alg->Fold);
-    ajStrAss(&sig->Superfamily, alg->Superfamily);
-    ajStrAss(&sig->Family, alg->Family);
+    ajStrAssignRef(&sig->Class, alg->Class);
+    ajStrAssignRef(&sig->Architecture, alg->Architecture);
+    ajStrAssignRef(&sig->Topology, alg->Topology);
+    ajStrAssignRef(&sig->Fold, alg->Fold);
+    ajStrAssignRef(&sig->Superfamily, alg->Superfamily);
+    ajStrAssignRef(&sig->Family, alg->Family);
     sig->Sunid_Family =  alg->Sunid_Family;
 
     /* Allocate sigdat structures, don't know the number of residue or gaps in
@@ -2519,7 +2519,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
                     /*The residue id is NOT new*/
                 {
                     if((ajChararrGet(sig->dat[npos]->rids, x))
-                       ==ajStrChar(seq_array[j], i))
+                       ==ajStrGetCharPos(seq_array[j], i))
                     {
                         ajIntInc(&sig->dat[npos]->rfrq, x);
                         done=ajTrue;
@@ -2533,7 +2533,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
                 {
                     sig->dat[npos]->nres++;
                     ajChararrPut(&sig->dat[npos]->rids, sig->dat[npos]->nres-1,
-                                 ajStrChar(seq_array[j], i));
+                                 ajStrGetCharPos(seq_array[j], i));
 
                     ajIntPut(&sig->dat[npos]->rfrq, sig->dat[npos]->nres-1, 
                             (ajint) 1);
@@ -2708,7 +2708,7 @@ static AjBool siggen_CalcSeqpos(AjPScopalg alg,
     for(memb_cnt = 0; memb_cnt < alg->N; memb_cnt++)
     {
         /* Assign iterator for post_similar line. */
-        iter = ajStrIter((alg->Seqs[memb_cnt]));
+        iter = ajStrIterNew((alg->Seqs[memb_cnt]));
 
         
         /* Counter of sequence, reset for each member. */
@@ -2731,7 +2731,7 @@ static AjBool siggen_CalcSeqpos(AjPScopalg alg,
             
             ajStrIterNext(iter);                                   
         }
-        ajStrIterFree(&iter);
+        ajStrIterDel(&iter);
     }
         
 
@@ -2791,7 +2791,7 @@ static AjBool siggen_Con_Thresh(AjPScopalg alg,
 
 
     /* Assign iterator for post_similar line. */
-    iter = ajStrIter(alg->Post_similar);
+    iter = ajStrIterNew(alg->Post_similar);
 
 
     /* Create arrays of size width. */
@@ -2829,10 +2829,10 @@ static AjBool siggen_Con_Thresh(AjPScopalg alg,
     /* Counter for positions in alignment. */
     for(post_cnt = 0; post_cnt < alg->width; post_cnt++)
     {
-        if(((ajStrChar(alg->Post_similar, post_cnt) == '1') 
+        if(((ajStrGetCharPos(alg->Post_similar, post_cnt) == '1') 
 	    && ((*scores)->filterpsim == ajTrue)) || 
            (((*scores)->filterpsim == ajFalse) 
-	    && ((ajStrChar(alg->Post_similar, post_cnt) != '-'))))
+	    && ((ajStrGetCharPos(alg->Post_similar, post_cnt) != '-'))))
         {
             /* Extract ncon for residues in alignment at that position. */
             for(memb_cnt = 0; memb_cnt < alg->N; memb_cnt++)
@@ -2898,7 +2898,7 @@ static AjBool siggen_Con_Thresh(AjPScopalg alg,
 
     /* Free memory for matrix and iterator. */
     ajInt2dDel(&align_ncon);
-    ajStrIterFree(&iter);
+    ajStrIterDel(&iter);
 
 
     /* Return. */
@@ -3111,22 +3111,22 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
             /* Only perform nornalisation on Post_similar */
             /* positions with value '1' or '0', if filter = ajFalse. */
 
-	    if(((ajStrChar(alg->Post_similar, cnt) == '1') && 
+	    if(((ajStrGetCharPos(alg->Post_similar, cnt) == '1') && 
 		((scores)->filterpsim == ajTrue) &&
 		((scores)->filtercon == ajTrue) && 	
 		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajTrue) && 
-		(ajStrChar(alg->Post_similar, cnt) == '1') &&
+		(ajStrGetCharPos(alg->Post_similar, cnt) == '1') &&
 		((scores)->filtercon == ajFalse))
 	       ||
 	       (((scores)->filterpsim == ajFalse) && 
-		(ajStrChar(alg->Post_similar, cnt) != '-') && 
+		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
 		((scores)->filtercon == ajTrue) && 
 		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajFalse) && 
-		(ajStrChar(alg->Post_similar, cnt) != '-') && 
+		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
 		((scores)->filtercon == ajFalse)))
             {   
                 /* Put normalised score into array at eqiuvalent position. */
@@ -3147,22 +3147,22 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 	       value '1'. */
 
 
-	    if(((ajStrChar(alg->Post_similar, cnt) == '1') && 
+	    if(((ajStrGetCharPos(alg->Post_similar, cnt) == '1') && 
 		((scores)->filterpsim == ajTrue) &&
 		((scores)->filtercon == ajTrue) && 
 		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajTrue) && 
-		(ajStrChar(alg->Post_similar, cnt) == '1') &&
+		(ajStrGetCharPos(alg->Post_similar, cnt) == '1') &&
 		((scores)->filtercon == ajFalse))
 	       ||
 	       (((scores)->filterpsim == ajFalse) && 
-		(ajStrChar(alg->Post_similar, cnt) != '-') && 
+		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
 		((scores)->filtercon == ajTrue) && 
 		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajFalse) && 
-		(ajStrChar(alg->Post_similar, cnt) != '-') && 
+		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
 		((scores)->filtercon == ajFalse)))
             {   
                 /* Put normalised score into array at eqiuvalent position. */
@@ -3215,13 +3215,13 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 	
 
         if(((scores)->filterpsim == ajTrue) && 
-		(ajStrChar(alg->Post_similar, x) == '1') &&
+		(ajStrGetCharPos(alg->Post_similar, x) == '1') &&
            ((scores)->filtercon == ajFalse))
 	    {
 		num_aligned++;
 	    }
         else if(((scores)->filterpsim == ajFalse) && 
-		(ajStrChar(alg->Post_similar, x) != '-') && 
+		(ajStrGetCharPos(alg->Post_similar, x) != '-') && 
 		((scores)->filtercon == ajFalse))
 	{
             num_aligned++;
@@ -3256,7 +3256,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
     {
         single_rescount = 0;
         for(i=0; i<alg->width; i++)
-	  if(ajStrChar(alg->Seqs[memb_cnt], i) != '-')  /* Andy */
+	  if(ajStrGetCharPos(alg->Seqs[memb_cnt], i) != '-')  /* Andy */
             {
                 single_rescount++;
             }
@@ -3475,12 +3475,12 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
         sig =  embSignatureNew(sig_npos);
 
     sig->Type = alg->Type;
-    ajStrAss(&sig->Class, alg->Class);
-    ajStrAss(&sig->Architecture, alg->Architecture);
-    ajStrAss(&sig->Topology, alg->Topology);
-    ajStrAss(&sig->Fold, alg->Fold);
-    ajStrAss(&sig->Superfamily, alg->Superfamily);
-    ajStrAss(&sig->Family, alg->Family);
+    ajStrAssignRef(&sig->Class, alg->Class);
+    ajStrAssignRef(&sig->Architecture, alg->Architecture);
+    ajStrAssignRef(&sig->Topology, alg->Topology);
+    ajStrAssignRef(&sig->Fold, alg->Fold);
+    ajStrAssignRef(&sig->Superfamily, alg->Superfamily);
+    ajStrAssignRef(&sig->Family, alg->Family);
     sig->Sunid_Family =  alg->Sunid_Family;
 
     /* Allocate sigdat structures, don't know the number of residue or gaps in 
@@ -3625,7 +3625,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 			/* The residue id is NOT new. */
 		    {
 			if((ajChararrGet(sig->dat[randpos_cnt-1]->rids, x))
-			   ==ajStrChar(seq_array[j], i))
+			   ==ajStrGetCharPos(seq_array[j], i))
 			{
 			    ajIntInc(&sig->dat[randpos_cnt-1]->rfrq, x);
 			    done=ajTrue;
@@ -3640,7 +3640,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 			sig->dat[randpos_cnt-1]->nres++;
 			ajChararrPut(&sig->dat[randpos_cnt-1]->rids, 
 				     sig->dat[randpos_cnt-1]->nres-1, 	
-				     ajStrChar(seq_array[j], i));
+				     ajStrGetCharPos(seq_array[j], i));
 
 			ajIntPut(&sig->dat[randpos_cnt-1]->rfrq, 
 				 sig->dat[randpos_cnt-1]->nres-1, 
@@ -3660,7 +3660,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 			/*The residue id is NOT new*/
 		    {
 			if((ajChararrGet(sig->dat[rand_total-1]->rids, x))
-			   ==ajStrChar(seq_array[j], i))
+			   ==ajStrGetCharPos(seq_array[j], i))
 			{
 			    ajIntInc(&sig->dat[rand_total-1]->rfrq, x);
 			    done=ajTrue;
@@ -3675,7 +3675,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 			sig->dat[rand_total-1]->nres++;
 			ajChararrPut(&sig->dat[rand_total-1]->rids, 
 				     sig->dat[rand_total-1]->nres-1, 	
-				     ajStrChar(seq_array[j], i));
+				     ajStrGetCharPos(seq_array[j], i));
 
 			ajIntPut(&sig->dat[rand_total-1]->rfrq, 
 				 sig->dat[rand_total-1]->nres-1, 
@@ -3763,7 +3763,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 			/*The residue id is NOT new*/
 		    {
 			if((ajChararrGet(sig->dat[npos]->rids, x))
-			   ==ajStrChar(seq_array[j], i))
+			   ==ajStrGetCharPos(seq_array[j], i))
 			{
 			    ajIntInc(&sig->dat[npos]->rfrq, x);
 			    done=ajTrue;
@@ -3777,7 +3777,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 		    {
 			sig->dat[npos]->nres++;
 			ajChararrPut(&sig->dat[npos]->rids, sig->dat[npos]->nres-1,         
-				     ajStrChar(seq_array[j], i));
+				     ajStrGetCharPos(seq_array[j], i));
 
 			ajIntPut(&sig->dat[npos]->rfrq, sig->dat[npos]->nres-1, 
 				 (ajint) 1);
@@ -3941,7 +3941,7 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
     /* Perform bubble sort of total_score array . */ 
     for(i=0; i<alg->width; i++)
 	/* Check manual position line is 1. */	
-	if(ajStrChar(alg->Positions, i)=='1')
+	if(ajStrGetCharPos(alg->Positions, i)=='1')
 	    ajIntPut(&post_sim, alg->width-i, i);
 
 
@@ -3950,7 +3950,7 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
     {
         single_rescount = 0;
         for(i=0; i<alg->width; i++)
-	  if(ajStrChar(alg->Seqs[memb_cnt], i) != 'X')  /* Andy */
+	  if(ajStrGetCharPos(alg->Seqs[memb_cnt], i) != 'X')  /* Andy */
                 single_rescount++;
 
         ajIntPut(&seq_len, memb_cnt, single_rescount);
@@ -3966,7 +3966,7 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
     /* Calculate the number of positions the signature has. */
     for(sig_npos=0,i=0; i<alg->width; i++)
 	/* Check manual position line is 1. */	
-	if(ajStrChar(alg->Positions, i)=='1')
+	if(ajStrGetCharPos(alg->Positions, i)=='1')
 	    sig_npos++;
  
     for(i=((alg->width)-1); i>((alg->width)-sig_npos); i--)
@@ -4010,12 +4010,12 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
     sig =  embSignatureNew(sig_npos);
 
     sig->Type = alg->Type;
-    ajStrAss(&sig->Class, alg->Class);
-    ajStrAss(&sig->Architecture, alg->Architecture);
-    ajStrAss(&sig->Topology, alg->Topology);
-    ajStrAss(&sig->Fold, alg->Fold);
-    ajStrAss(&sig->Superfamily, alg->Superfamily);
-    ajStrAss(&sig->Family, alg->Family);
+    ajStrAssignRef(&sig->Class, alg->Class);
+    ajStrAssignRef(&sig->Architecture, alg->Architecture);
+    ajStrAssignRef(&sig->Topology, alg->Topology);
+    ajStrAssignRef(&sig->Fold, alg->Fold);
+    ajStrAssignRef(&sig->Superfamily, alg->Superfamily);
+    ajStrAssignRef(&sig->Family, alg->Family);
     sig->Sunid_Family =  alg->Sunid_Family;
 
     /* Allocate sigdat structures, don't know the number of residue or gaps in 
@@ -4092,7 +4092,7 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
                     /*The residue id is NOT new*/
                 {
                     if((ajChararrGet(sig->dat[npos]->rids, x))
-                       ==ajStrChar(seq_array[j], i))
+                       ==ajStrGetCharPos(seq_array[j], i))
                     {
                         ajIntInc(&sig->dat[npos]->rfrq, x);
                         done=ajTrue;
@@ -4106,7 +4106,7 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
                 {
                     sig->dat[npos]->nres++;
                     ajChararrPut(&sig->dat[npos]->rids, sig->dat[npos]->nres-1,         
-                                 ajStrChar(seq_array[j], i));
+                                 ajStrGetCharPos(seq_array[j], i));
 
                     ajIntPut(&sig->dat[npos]->rfrq, sig->dat[npos]->nres-1, 
                             (ajint) 1);

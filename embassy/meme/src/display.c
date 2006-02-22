@@ -822,7 +822,7 @@ void print_dataset_summary (
   /* print name of file and alphabet */
   ajFmtPrintF(outf,
 "DATAFILE= %s (deleted by web version of MEME)\n"
-"ALPHABET= %s\n", ajStrStr(datnam), alphabet
+"ALPHABET= %s\n", ajStrGetPtr(datnam), alphabet
   );
 
   /* print name of negative dataset */
@@ -1358,4 +1358,4 @@ ajFmtPrintF(outf,"%c",(d==1) ? unhash(eseq[j]) : unhash(dna_comp(eseq[j])));
   free(sites);
 } /* print_sites */
 
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/display.c,v 1.2 2004/06/14 14:43:30 rice Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/display.c,v 1.3 2006/02/22 15:02:28 rice Exp $ */

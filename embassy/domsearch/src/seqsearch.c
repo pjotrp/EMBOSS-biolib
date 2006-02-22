@@ -161,7 +161,7 @@ int main(int argc, char **argv)
 
 
     /* Housekeeping. */
-    modei      = (ajint) ajStrChar(*mode,0)-48;
+    modei      = (ajint) ajStrGetCharFirst(*mode)-48;
 
     
     
@@ -179,7 +179,7 @@ int main(int argc, char **argv)
         {
             ajFmtPrintS(&msg, "Could not open for reading %S", 
                         inname);
-            ajWarn(ajStrStr(msg));
+            ajWarn(ajStrGetPtr(msg));
             ajFmtPrintF(logf, "WARN  Could not open for reading %S\n", 
                         inname);
 	    ajListDel(&listin);
@@ -213,12 +213,12 @@ int main(int argc, char **argv)
 
         /* Delete psiblast output file*/
 	ajFmtPrintS(&temp, "rm %S", psiname);
-	system(ajStrStr(temp));  
+	system(ajStrGetPtr(temp));  
 	
 
 
 	/* Create hits output file name - the same name as the input file. */
-	ajStrAssS(&dhfname, inname);
+	ajStrAssignS(&dhfname, inname);
 	ajFileDirExtnTrim(&dhfname);
 
 	
@@ -249,7 +249,7 @@ int main(int argc, char **argv)
 	    {
 		/* Check if the accession numbers are the same and if the
 		   the start and end are identical. */
-		if(ajStrMatch(hit->Acc,nexthit->Acc)
+		if(ajStrMatchS(hit->Acc,nexthit->Acc)
 		   && (hit->Start == nexthit->Start)
 		   && (hit->End == nexthit->End))
 		{
@@ -279,7 +279,7 @@ int main(int argc, char **argv)
 	    {
 		ajFmtPrintS(&msg, "Could not open for writing %S", 
 			    dhfname);
-		ajWarn(ajStrStr(msg));
+		ajWarn(ajStrGetPtr(msg));
 		ajFmtPrintF(logf, "WARN  Could not open for writing %S\n", 
 			    dhfname);
 		embHitlistDel(&hitlist);
@@ -456,13 +456,13 @@ static AjPFile seqsearch_psialigned(AjPStr seqname,
     /* Initialise random number generator for naming of temp. files
        and create  psiblast input files. */
     ajRandomSeed();
-    ajStrAssC(&name, ajFileTempName(NULL));
-    ajStrAss(&seqs_in, name);
-    ajStrAppC(&seqs_in, ".seqsin");
-    ajStrAss(&seq_in, name);
-    ajStrAppC(&seq_in, ".seqin");
-    ajStrAss(psiname, name);
-    ajStrAppC(psiname, ".psiout");
+    ajStrAssignC(&name, ajFileTempName(NULL));
+    ajStrAssignRef(&seqs_in, name);
+    ajStrAppendC(&seqs_in, ".seqsin");
+    ajStrAssignRef(&seq_in, name);
+    ajStrAppendC(&seq_in, ".seqin");
+    ajStrAssignRef(psiname, name);
+    ajStrAppendC(psiname, ".psiout");
 
 
     seqsinf = ajFileNewOut(seqs_in);
@@ -490,15 +490,15 @@ static AjPFile seqsearch_psialigned(AjPStr seqname,
     /* Write psiblast single sequence input file. */    
     if((*scopalg))
     {
-	ajStrAssS(&degap, (*scopalg)->Seqs[0]);
-	ajStrDegap(&degap);
+	ajStrAssignS(&degap, (*scopalg)->Seqs[0]);
+	ajStrRemoveGap(&degap);
 	ajFmtPrintF(seqinf,"> %S\n%S\n", (*scopalg)->Codes[0], degap);
     }
     
     else
     {
-	ajStrAssC(&degap, ajSeqsetSeq(seqset, 0));
-	ajStrDegap(&degap);
+	ajStrAssignC(&degap, ajSeqsetSeq(seqset, 0));
+	ajStrRemoveGap(&degap);
 	ajFmtPrintF(seqinf,"> %S\n%s\n", ajSeqsetName(seqset, 0), degap);
     }
     
@@ -513,14 +513,14 @@ static AjPFile seqsearch_psialigned(AjPStr seqname,
     ajFmtPrintS(&temp,"blastpgp -i %S -B %S -j %d -e %f -b %d -v %d -d %S > %S\n",
                 seq_in, seqs_in, niter,evalue, maxhits, maxhits, database, *psiname);
     ajFmtPrint("%S\n", temp);
-    system(ajStrStr(temp));
+    system(ajStrGetPtr(temp));
     
 
     /* Remove temp. files. */
     ajFmtPrintS(&temp, "rm %S", seq_in);
-    system(ajStrStr(temp));
+    system(ajStrGetPtr(temp));
     ajFmtPrintS(&temp, "rm %S", seqs_in);
-    system(ajStrStr(temp)); 
+    system(ajStrGetPtr(temp)); 
 
 
     /* Tidy up. */
@@ -618,11 +618,11 @@ static AjPFile seqsearch_psisingle(AjPStr seqname,
 
     /* Initialise random number generator for naming of temp. files
        and create  psiblast input files. */
-    ajStrAssC(&name, ajFileTempName(NULL));
-    ajStrAss(&seq_in, name);
-    ajStrAppC(&seq_in, ".seqin");
-    ajStrAss(psiname, name);
-    ajStrAppC(psiname, ".psiout");
+    ajStrAssignC(&name, ajFileTempName(NULL));
+    ajStrAssignRef(&seq_in, name);
+    ajStrAppendC(&seq_in, ".seqin");
+    ajStrAssignRef(psiname, name);
+    ajStrAppendC(psiname, ".psiout");
 
     /* Create output file for psi-blast input file. */
     seqinf = ajFileNewOut(seq_in);
@@ -640,11 +640,11 @@ static AjPFile seqsearch_psisingle(AjPStr seqname,
     ajFmtPrintS(&temp,"blastpgp -i %S -j %d -e %f -b %d -v %d -d %S > %S\n",
                 seq_in, niter,evalue, maxhits, maxhits, database, *psiname);
     ajFmtPrint("%S\n", temp);
-    system(ajStrStr(temp));
+    system(ajStrGetPtr(temp));
 
     /* Remove temp. files. */
     ajFmtPrintS(&temp, "rm %S", seq_in);
-    system(ajStrStr(temp)); 
+    system(ajStrGetPtr(temp)); 
 
     /* Tidy up. */
     ajFileClose(&dhfin);
@@ -733,19 +733,19 @@ static AjPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg,
     if(scopalg)
     {    
 	hitlist->Type = scopalg->Type;
-	ajStrAssS(&hitlist->Class, scopalg->Class);
-	ajStrAssS(&hitlist->Fold, scopalg->Fold);
-	ajStrAssS(&hitlist->Superfamily, scopalg->Superfamily);
-	ajStrAssS(&hitlist->Family, scopalg->Family);
+	ajStrAssignS(&hitlist->Class, scopalg->Class);
+	ajStrAssignS(&hitlist->Fold, scopalg->Fold);
+	ajStrAssignS(&hitlist->Superfamily, scopalg->Superfamily);
+	ajStrAssignS(&hitlist->Family, scopalg->Family);
 	hitlist->Sunid_Family = scopalg->Sunid_Family;
     }
     else if(scophit)
     {    	
 	hitlist->Type = scophit->Type;
-	ajStrAssS(&hitlist->Class, scophit->Class);
-	ajStrAssS(&hitlist->Fold, scophit->Fold);
-	ajStrAssS(&hitlist->Superfamily, scophit->Superfamily);
-	ajStrAssS(&hitlist->Family, scophit->Family);
+	ajStrAssignS(&hitlist->Class, scophit->Class);
+	ajStrAssignS(&hitlist->Fold, scophit->Fold);
+	ajStrAssignS(&hitlist->Superfamily, scophit->Superfamily);
+	ajStrAssignS(&hitlist->Family, scophit->Family);
 	hitlist->Sunid_Family = scophit->Sunid_Family;
     }
     /* 
@@ -777,10 +777,10 @@ static AjPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg,
             {
                 hitlist->hits[hitn-1]->Start   = start;
                 hitlist->hits[hitn-1]->End     = fragend;
-                ajStrAss(&hitlist->hits[hitn-1]->Acc, acc);
-                ajStrAss(&hitlist->hits[hitn-1]->Seq, fullseq);
-                ajStrDegap(&hitlist->hits[hitn-1]->Seq);
-                ajStrAssC(&hitlist->hits[hitn-1]->Model, "PSIBLAST");
+                ajStrAssignRef(&hitlist->hits[hitn-1]->Acc, acc);
+                ajStrAssignRef(&hitlist->hits[hitn-1]->Seq, fullseq);
+                ajStrRemoveGap(&hitlist->hits[hitn-1]->Seq);
+                ajStrAssignC(&hitlist->hits[hitn-1]->Model, "PSIBLAST");
                 hitlist->hits[hitn-1]->Score = score;
 		hitlist->hits[hitn-1]->Eval  = eval;
 	
@@ -794,13 +794,13 @@ static AjPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg,
 	    
 	   
             /* Reset the sequence of the full hit. */
-            ajStrAssC(&fullseq, "");
+            ajStrAssignC(&fullseq, "");
 
             /* Incremenet hit counter. */
             hitn++;
 
             /* Copy accession number. */
-            ajStrAss(&acc, prevacc);
+            ajStrAssignRef(&acc, prevacc);
 
         }
         /* Line containing sequence segment of the hit. */
@@ -814,7 +814,7 @@ static AjPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg,
                 start=fragstart;
    
             /* Add fragment to end of sequence of full hit. */
-            ajStrApp(&fullseq, fragseq);
+            ajStrAppendS(&fullseq, fragseq);
         }
     }
 
@@ -823,10 +823,10 @@ static AjPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg,
     {
         hitlist->hits[hitn-1]->Start = start;
         hitlist->hits[hitn-1]->End = fragend;
-        ajStrAss(&hitlist->hits[hitn-1]->Acc, acc);
-        ajStrAss(&hitlist->hits[hitn-1]->Seq, fullseq);
-        ajStrDegap(&hitlist->hits[hitn-1]->Seq);
-	ajStrAssC(&hitlist->hits[hitn-1]->Model, "PSIBLAST");
+        ajStrAssignRef(&hitlist->hits[hitn-1]->Acc, acc);
+        ajStrAssignRef(&hitlist->hits[hitn-1]->Seq, fullseq);
+        ajStrRemoveGap(&hitlist->hits[hitn-1]->Seq);
+	ajStrAssignC(&hitlist->hits[hitn-1]->Model, "PSIBLAST");
 	hitlist->hits[hitn-1]->Score = score;
 	hitlist->hits[hitn-1]->Eval  = eval;
 

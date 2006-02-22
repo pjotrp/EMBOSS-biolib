@@ -85,8 +85,8 @@ ajint embMolGetFrags(const AjPStr thys, ajint rno, AjPList *l)
 
     --rno;
 
-    len = ajStrLen(thys);
-    p   = ajStrStr(thys);
+    len = ajStrGetLen(thys);
+    p   = ajStrGetPtr(thys);
 
     defcnt=0;
 

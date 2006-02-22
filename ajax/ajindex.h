@@ -70,12 +70,12 @@ typedef struct AjSBtNode
 
 
 
-/* @data AjPBMem ***********************************************************
+/* @data AjPBtMem ***********************************************************
 **
 ** Dynamic list for btree memory arrays
 **
-** @attr next [AjSBtMem*] next node
-** @attr prev [AjSBtMem*] previous node
+** @attr next [struct AjSBtMem*] next node
+** @attr prev [struct AjSBtMem*] previous node
 ** @attr karray [AjPStr*] key array (primary trees)
 ** @attr parray [ajlong*] pointer arrays (primary and secondary trees)
 ** @attr overflows [ajlong*] overflows (primary) and keys (secondary)
@@ -197,7 +197,7 @@ typedef struct AjSBtNumId
 ** @attr NodeType [ajint] Node type
 ** @attr Nentries [ajint] Number of entries
 ** @attr Overflow [ajlong] Offset to overflow block
-** @attr NumId [AjBtNumId*] secondary tree IDs
+** @attr NumId [AjPBtNumId*] secondary tree IDs
 ******************************************************************************/
 
 typedef struct AjSNumBucket
@@ -238,7 +238,7 @@ typedef struct AjSNumBucket
 #endif
 
 
-#define BT_BUCKIDLEN(str) (ajStrLen(str) + 1 + sizeof(ajint) + \
+#define BT_BUCKIDLEN(str) (ajStrGetLen(str) + 1 + sizeof(ajint) + \
 			   sizeof(ajint) + sizeof(ajlong) + \
 			   sizeof(ajlong))
 
@@ -251,8 +251,8 @@ typedef struct AjSNumBucket
 #define PBT_BUCKNENTRIES(p) (p + sizeof(ajint))
 #define PBT_BUCKOVERFLOW(p) (p + sizeof(ajint) + sizeof(ajint))
 #define PBT_BUCKKEYLEN(p) (p + sizeof(ajint) + sizeof(ajint) + sizeof(ajlong))
-#define BT_BUCKPRILEN(str) (ajStrLen(str) + 1 + sizeof(ajlong))
-#define BT_BUCKSECLEN(str) (ajStrLen(str) +1)
+#define BT_BUCKPRILEN(str) (ajStrGetLen(str) + 1 + sizeof(ajlong))
+#define BT_BUCKSECLEN(str) (ajStrGetLen(str) +1)
 
 /*
 ** Macros to return a page entry value within a bucket
@@ -468,8 +468,8 @@ typedef struct AjSBtpage
 ** @attr secrootblock [ajlong] Secondary tree root block
 ** @attr kwlimit [ajint] Max length of secondary key
 ** @attr bmem [AjPBtMem] Primary array allocation MRU bottom
-** @attr bsmem [AjPBtMem] Secondary array allocation MRU bottom
 ** @attr tmem [AjPBtMem] Primary array allocation MRU top
+** @attr bsmem [AjPBtMem] Secondary array allocation MRU bottom
 ** @attr tsmem [AjPBtMem] Secondary array allocation MRU top
 ******************************************************************************/
 
@@ -610,7 +610,6 @@ typedef struct AjSBtKeyWild
 ** @attr dups [ajint] Duplicates
 ** @attr offset [ajlong] Offset within database file (ftello)
 ** @attr refoffset [ajlong] Offset within reference database file (ftello)
-** @attr refoffset [ajlong] Offset within reference database file (ftello)
 ** @attr treeblock [ajlong] Secondary tree root page
 ******************************************************************************/
 
@@ -704,14 +703,15 @@ void       ajBtreeLockTest(AjPBtcache cache);
 AjPBtpage   ajBtreeHybFindInsert(AjPBtcache cache, const char *key);
 AjPBtpage   ajBtreeNumFindInsert(AjPBtcache cache, const ajlong key);
 
-void        ajBtreeInsertNum(AjPBtcache cache, AjPBtNumId num, AjPBtpage page);
-void        ajBtreeHybInsertId(AjPBtcache cache, AjPBtHybrid hyb);
+void        ajBtreeInsertNum(AjPBtcache cache, const AjPBtNumId num,
+			     AjPBtpage page);
+void        ajBtreeHybInsertId(AjPBtcache cache, const AjPBtHybrid hyb);
 AjPBtHybrid ajBtreeHybNew(void);
 void        ajBtreeHybDel(AjPBtHybrid *thys);
 void        ajBtreeFreePriArray(AjPBtcache cache);
 void        ajBtreeFreeSecArray(AjPBtcache cache);
 void 	    ajBtreeHybLeafList(AjPBtcache cache, ajlong rootblock,
-			       AjPStr idname, AjPList list);
+			       const AjPStr idname, AjPList list);
 
 
 #endif

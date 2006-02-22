@@ -98,13 +98,13 @@ int main(int argc, char *argv[])
     noGU          = (eGU) ? 0 : 1;
     no_closingGU  = (eclose) ? 0 : 1;
     noLonelyPairs = (lonely) ? 0 : 1;
-    ns_bases      = (ajStrLen(ensbases)) ? MAJSTRSTR(ensbases) : NULL;
+    ns_bases      = (ajStrGetLen(ensbases)) ? MAJSTRGETPTR(ensbases) : NULL;
     tetra_loop    = !!etloop;
 
     delta = (int) (0.1 + erange * 100);
     deltap = prange;
     
-    edangle = *ajStrStr(*edangles);
+    edangle = *ajStrGetPtr(*edangles);
     if(edangle == '0')
 	dangles = 0;
     else if(edangle == '1')
@@ -161,12 +161,12 @@ int main(int argc, char *argv[])
     sequence = (char *) space(length+1);
     strcpy(sequence,ajSeqChar(seq));
 
-    len = ajStrLen(constring);
+    len = ajStrGetLen(constring);
     structure = (char *) space(length+1);
     if(len)
     {
 	fold_constrained = 1;
-	strcpy(structure,ajStrStr(constring));
+	strcpy(structure,ajStrGetPtr(constring));
     }
     
     istty = 0;

@@ -135,7 +135,7 @@ int main(ajint argc, char **argv)
     if(!(pdb=ajPdbReadAllModelsNew(cpdb_inf)))
     {
 	ajFmtPrintS(&msg, "ERROR file read error");
-	ajWarn(ajStrStr(msg));
+	ajWarn(ajStrGetPtr(msg));
 	ajFmtPrintF(logf, "ERROR  file read error\n");
 	
 	ajFileClose(&cpdb_inf);
@@ -154,7 +154,7 @@ int main(ajint argc, char **argv)
     if(pdb->Nchn <= 1)
     {
 	ajFmtPrintS(&msg, "WARN  PDB file does not contain enough chains");
-	ajWarn(ajStrStr(msg));
+	ajWarn(ajStrGetPtr(msg));
 	ajFmtPrintF(logf, "WARN  PDB file does not contain enough chains");
 		
 	ajFileClose(&cpdb_inf);
@@ -173,7 +173,7 @@ int main(ajint argc, char **argv)
     if(!interface_WriteFile(logf, con_outf, thresh, ignore, pdb, vdw))
     {
 	ajFmtPrintS(&msg, "ERROR  file write error");
-	ajWarn(ajStrStr(msg));
+	ajWarn(ajStrGetPtr(msg));
 	ajFmtPrintF(logf, "ERROR  file write error\n");
 
 	ajFileClose(&cpdb_inf);
@@ -300,15 +300,15 @@ static AjBool interface_WriteFile(AjPFile logf, AjPFile outf, float thresh,
 
 		
 		/* ID */
-		if(MAJSTRLEN(pdb->Pdb) > 4)
+		if(MAJSTRGETLEN(pdb->Pdb) > 4)
 		{
-		    ajStrAssS(&domid, pdb->Pdb);
+		    ajStrAssignS(&domid, pdb->Pdb);
 		    embScopToPdbid(pdb->Pdb, &pdbid);
 		}
 		else	
 		{
-		    ajStrAssC(&domid, ".");
-		    ajStrAssS(&pdbid, pdb->Pdb);
+		    ajStrAssignC(&domid, ".");
+		    ajStrAssignS(&pdbid, pdb->Pdb);
 		}
 		ajFmtPrintF(outf, "%-5sPDB %S; DOM %S; LIG .\n", 
 			    "ID", pdbid, domid);
@@ -457,7 +457,7 @@ static AjBool interface_ContactMapWrite(AjPFile outf, AjPInt2d mat,
 	    if((ajInt2dGet(mat, x, y)==1))
 	    {
 		/* Assign residue id */
-		if(!ajBaseAa1ToAa3(ajStrChar(pdb->Chains[chn1-1]->Seq, x), 
+		if(!ajBaseAa1ToAa3(ajStrGetCharPos(pdb->Chains[chn1-1]->Seq, x), 
 				   &res1))
 		{
 		    ajStrDel(&res1);
@@ -466,7 +466,7 @@ static AjBool interface_ContactMapWrite(AjPFile outf, AjPInt2d mat,
 			   "interface_ContactMapWrite");		
 		    return ajFalse;
 		}
-		if(!ajBaseAa1ToAa3(ajStrChar(pdb->Chains[chn2-1]->Seq, y), 
+		if(!ajBaseAa1ToAa3(ajStrGetCharPos(pdb->Chains[chn2-1]->Seq, y), 
 				   &res2))
 		{
 		    ajStrDel(&res1);

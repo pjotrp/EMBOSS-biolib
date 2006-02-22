@@ -199,27 +199,27 @@ int main(int argc, char **argv)
 
 	/* get the usa ('-' if unknown) */
 	usa = ajSeqGetUsa(seq);
-	if(ajStrLen(usa) == 0)
+	if(ajStrGetLen(usa) == 0)
 	    usa = altusa;
 
 	/* get the name ('-' if unknown) */
 	name = ajSeqGetName(seq);
-	if(ajStrLen(name) == 0)
+	if(ajStrGetLen(name) == 0)
 	    name = altname;
 
 	/* get the accession number ('-' if unknown) */
 	acc = ajSeqGetAcc(seq);
-	if(ajStrLen(acc) == 0)
+	if(ajStrGetLen(acc) == 0)
 	    acc = altacc;
 
 	/* get the GI number ('-' if unknown) */
 	gi = ajSeqGetGi(seq);
-	if(ajStrLen(gi) == 0)
+	if(ajStrGetLen(gi) == 0)
 	    gi = altgi;
 
 	/* get the version number ('-' if unknown) */
 	sv = ajSeqGetSv(seq);
-	if(ajStrLen(sv) == 0)
+	if(ajStrGetLen(sv) == 0)
 	    sv = altsv;
 
 	length = ajSeqLen(seq);
@@ -247,7 +247,7 @@ int main(int argc, char **argv)
 		**  it. Try to fit the name in 18 spaces, else just add a
 		**  TAB after it
 		*/
-		if(ajStrLen(usa) < 18)
+		if(ajStrGetLen(usa) < 18)
 		{
 		    if(doname || doacc || dogi || dosv || dotype || dolength ||
 			(!type && dopgc) || dodesc)
@@ -278,7 +278,7 @@ int main(int argc, char **argv)
 		**  it. Try to fit the name in 14 space, else just add a
 		**  TAB after it
 		*/
-		if(ajStrLen(name) < 14)
+		if(ajStrGetLen(name) < 14)
 		{
 		    if(doacc || dogi || dosv || dotype || dolength ||
 		        (!type && dopgc) || dodesc)

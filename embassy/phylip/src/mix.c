@@ -100,10 +100,10 @@ int i;
   infile = inf->fp;
 
   methodlist = ajAcdGetList ("method");
-  if(strncmp(ajStrStr(*methodlist),"Wag",3) == 0){
+  if(strncmp(ajStrGetPtr(*methodlist),"Wag",3) == 0){
     allwagner = true;
   }
-  else if(strncmp(ajStrStr(*methodlist),"Cam",3)== 0)
+  else if(strncmp(ajStrGetPtr(*methodlist),"Cam",3)== 0)
     allsokal = true;
   else
     mixture = true;

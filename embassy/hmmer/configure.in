@@ -5,7 +5,7 @@ dnl Process this file with autoconf to produce a configure script.
 ## then uncomment the following line.
 #CC=cc
 
-AC_INIT(src/ehmmalign.c)
+AC_INIT(src/ohmmalign.c)
 AM_INIT_AUTOMAKE(HMMER, 2.1.1)
 
 

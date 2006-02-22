@@ -166,7 +166,7 @@ AjBool embPdbidToSp(const AjPStr pdb, AjPStr *spr, const AjPList list)
 	return ajFalse;
     else
     {
-	ajStrAssS(spr, arr[idx]->Spr[0]);
+	ajStrAssignS(spr, arr[idx]->Spr[0]);
 	return ajTrue;
     }
 }
@@ -220,7 +220,7 @@ AjBool embPdbidToAcc(const AjPStr pdb, AjPStr *acc, const AjPList list)
     
     else
     {
-	ajStrAssS(acc, arr[idx]->Acc[0]);
+	ajStrAssignS(acc, arr[idx]->Acc[0]);
 	AJFREE(arr);
 	return ajTrue;
     }
@@ -260,13 +260,13 @@ AjBool embPdbidToScop(const AjPPdb pdb, const AjPList list_allscop,
 
     while((ptr=(AjPScop)ajListIterNext(iter)))
     {
-	ajStrAssS(&tmpPdbId, ptr->Pdb);
-	ajStrToLower(&tmpPdbId);
+	ajStrAssignS(&tmpPdbId, ptr->Pdb);
+	ajStrFmtLower(&tmpPdbId);
 
-	if(ajStrMatch(pdb->Pdb, tmpPdbId))
+	if(ajStrMatchS(pdb->Pdb, tmpPdbId))
 	{
-	    ajStrAssS(&tmpDomId, ptr->Entry);
-	    ajStrToLower(&tmpDomId);
+	    ajStrAssignS(&tmpDomId, ptr->Entry);
+	    ajStrFmtLower(&tmpDomId);
 	    ajListPushApp(*list_pdbscopids, tmpDomId);
 	    tmpDomId = NULL;
 	    found = 1;
@@ -429,7 +429,7 @@ float embVdwRad(const AjPAtom atm, const AjPVdwall vdw)
     
     for(x=0;x<vdw->N;x++)
 	for(y=0;y<vdw->Res[x]->N;y++)
-	    if(ajStrMatch(atm->Atm, vdw->Res[x]->Atm[y]))
+	    if(ajStrMatchS(atm->Atm, vdw->Res[x]->Atm[y]))
 		return(vdw->Res[x]->Rad[y]);	 
     
     return((float)1.2);
@@ -493,7 +493,7 @@ AjBool embPdbToIdx(ajint *idx, const AjPPdb pdb, const AjPStr res, ajint chn)
 	    continue; */
 
 	/* If we have found the residue */
-	if(ajStrMatch(res, residue->Pdb))
+	if(ajStrMatchS(res, residue->Pdb))
 	{
 	    ajListIterFree(&iter);		
 	    *idx = residue->Idx;
@@ -925,13 +925,13 @@ AjBool       embStrideToThree(AjPStr *to, const AjPStr from)
 	return ajFalse;
     }
     else
-	ajStrAssS(to, from);
+	ajStrAssignS(to, from);
 
-    ajStrSubstituteKK(to, 'G', 'H');
-    ajStrSubstituteKK(to, 'I', 'H');
-    ajStrSubstituteKK(to, 'B', 'E');
-    ajStrSubstituteKK(to, 'b', 'E');
-    ajStrSubstituteKK(to, 'T', 'C');
+    ajStrExchangeKK(to, 'G', 'H');
+    ajStrExchangeKK(to, 'I', 'H');
+    ajStrExchangeKK(to, 'B', 'E');
+    ajStrExchangeKK(to, 'b', 'E');
+    ajStrExchangeKK(to, 'T', 'C');
 
     return ajTrue;
 }

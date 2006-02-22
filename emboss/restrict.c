@@ -325,12 +325,12 @@ static void restrict_printHits(AjPFile outf, AjPList l, const AjPStr name,
 	    value = ajTableGet(table,m->cod);
 
 	    if(value)
-		ajStrAssS(&m->cod,value);
+		ajStrAssignS(&m->cod,value);
 	}
 
 
 	ajFmtPrintF(outf,"\t%-d\t%-16s%-16s%d\t%d\t",m->start,
-		    ajStrStr(m->cod),ajStrStr(m->pat),m->cut1,
+		    ajStrGetPtr(m->cod),ajStrGetPtr(m->pat),m->cut1,
 		    m->cut2);
 	if(frags)
 	    fa[fn++] = m->cut1;
@@ -475,7 +475,7 @@ static void restrict_reportHits(AjPReport report, const AjPSeq seq,
     fn = 0;
     len = ajSeqLen(seq);
     
-    ajStrAssC(&fthit, "hit");
+    ajStrAssignC(&fthit, "hit");
 
     ajFmtPrintAppS(&tmpStr,"Minimum cuts per enzyme: %d\n",mincut);
     ajFmtPrintAppS(&tmpStr,"Maximum cuts per enzyme: %d\n",maxcut);
@@ -520,13 +520,13 @@ static void restrict_reportHits(AjPReport report, const AjPSeq seq,
 	{
 	    value = ajTableGet(table,m->cod);
 	    if(value)
-		ajStrAssS(&m->cod,value);
+		ajStrAssignS(&m->cod,value);
 	}
 
 	if(m->forward)
-	    cend = m->start + ajStrLen(m->pat) - 1;
+	    cend = m->start + ajStrGetLen(m->pat) - 1;
 	else
-	    cend = m->start - ajStrLen(m->pat) + 1;
+	    cend = m->start - ajStrGetLen(m->pat) + 1;
 	
 
 	gf = ajFeatNewII (TabRpt,
@@ -558,12 +558,12 @@ static void restrict_reportHits(AjPReport report, const AjPSeq seq,
     }
 
 
-    ajStrAssC (&tmpStr, "");
+    ajStrAssignC(&tmpStr, "");
 
 
     if(frags)
     {
-        ajStrAssC (&tmpStr, "");
+        ajStrAssignC(&tmpStr, "");
 	ajSortIntInc(fa,fn);
 	ajFmtPrintAppS(&tmpStr,"Fragment lengths:\n");
 
@@ -608,7 +608,7 @@ static void restrict_reportHits(AjPReport report, const AjPSeq seq,
 	ajListSort(l,restrict_enzcompare);
 
 	nfrags = 0;
-	ajStrAssC(&fragStr,"");
+	ajStrAssignC(&fragStr,"");
 
 	for(i=0;i<hits;++i)
 	{
@@ -624,18 +624,18 @@ static void restrict_reportHits(AjPReport report, const AjPSeq seq,
 		value = ajTableGet(table,m->cod);
 
 		if(value)
-		    ajStrAssS(&m->cod,value);
+		    ajStrAssignS(&m->cod,value);
 	    }
 
 
-	    if(!ajStrLen(codStr))
+	    if(!ajStrGetLen(codStr))
 	    {
-		ajStrAssS(&patStr,m->pat);
-		ajStrAssS(&codStr,m->cod);
+		ajStrAssignS(&patStr,m->pat);
+		ajStrAssignS(&codStr,m->cod);
 	    }
 
 
-	    if(ajStrMatch(codStr,m->cod))
+	    if(ajStrMatchS(codStr,m->cod))
 	    {
 		if(m->cut3 || m->cut4)
 		    if (plasmid || !m->circ34)
@@ -646,8 +646,8 @@ static void restrict_reportHits(AjPReport report, const AjPSeq seq,
 	    {
 		ajFmtPrintAppS(&fragStr,"\n%S:\n[%S]",
 			       codStr,patStr);
-		ajStrAssS(&codStr,m->cod);
-		ajStrAssS(&patStr,m->pat);
+		ajStrAssignS(&codStr,m->cod);
+		ajStrAssignS(&patStr,m->pat);
 		
 		ajSortIntInc(ajIntInt(farray),nfrags);
 
@@ -698,7 +698,7 @@ static void restrict_reportHits(AjPReport report, const AjPSeq seq,
 	{
 	    ajFmtPrintAppS(&fragStr,"\n%S:\n[%S]",
 			   codStr,m->pat);
-	    ajStrAssS(&codStr,m->cod);
+	    ajStrAssignS(&codStr,m->cod);
 
 	    ajSortIntInc(ajIntInt(farray),nfrags);
 
@@ -740,7 +740,7 @@ static void restrict_reportHits(AjPReport report, const AjPSeq seq,
 
 
     if(ifrag)
-	ajStrApp(&tmpStr,fragStr);
+	ajStrAppendS(&tmpStr,fragStr);
     
     ajReportSetTail (report, tmpStr);
 
@@ -788,7 +788,7 @@ static void restrict_read_equiv(AjPFile equfile, AjPTable table)
 
     while(ajFileReadLine(equfile,&line))
     {
-	p = ajStrStr(line);
+	p = ajStrGetPtr(line);
 
 	if(!*p || *p=='#' || *p=='!')
 	    continue;
@@ -832,17 +832,17 @@ static void restrict_read_file_of_enzyme_names(AjPStr *enzymes)
 	    ajFatal ("Cannot open the file of enzyme names: '%S'", enzymes);
 
 	/* blank off the enzyme file name and replace with the enzyme names */
-	ajStrClear(enzymes);
+	ajStrSetClear(enzymes);
 	line = ajStrNew();
 	while(ajFileReadLine(file, &line))
 	{
-	    p = ajStrStr(line);
+	    p = ajStrGetPtr(line);
 
 	    if(!*p || *p == '#' || *p == '!')
 		continue;
 
-	    ajStrApp(enzymes, line);
-	    ajStrAppC(enzymes, ",");
+	    ajStrAppendS(enzymes, line);
+	    ajStrAppendC(enzymes, ",");
 	}
 	ajStrDel(&line);
 

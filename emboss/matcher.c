@@ -321,25 +321,25 @@ int main(int argc, char **argv)
     ajSeqToUpper(seq);
     ajSeqToUpper(seq2);
 
-    s1 = ajStrStr(ajSeqStr(seq));
-    s2 = ajStrStr(ajSeqStr(seq2));
+    s1 = ajStrGetPtr(ajSeqStr(seq));
+    s2 = ajStrGetPtr(ajSeqStr(seq2));
 
     sub = ajMatrixArray(matrix);
     cvt = ajMatrixCvt(matrix);
 
 
-    aa0str = ajStrNewL(2+ajSeqLen(seq)); /* length + blank + trailing null */
-    aa1str = ajStrNewL(2+ajSeqLen(seq2));
-    ajStrAppK(&aa0str,' ');
-    ajStrAppK(&aa1str,' ');
+    aa0str = ajStrNewRes(2+ajSeqLen(seq)); /* length + blank + trailing null */
+    aa1str = ajStrNewRes(2+ajSeqLen(seq2));
+    ajStrAppendK(&aa0str,' ');
+    ajStrAppendK(&aa1str,' ');
 
     for(i=0;i<ajSeqLen(seq);i++)
-	ajStrAppK(&aa0str,(char)ajSeqCvtK(cvt, *s1++));
+	ajStrAppendK(&aa0str,(char)ajSeqCvtK(cvt, *s1++));
 
     for(i=0;i<ajSeqLen(seq2);i++)
-	ajStrAppK(&aa1str,ajSeqCvtK(cvt, *s2++));
+	ajStrAppendK(&aa1str,ajSeqCvtK(cvt, *s2++));
 
-    matcher_Sim(align, ajStrStr(aa0str),ajStrStr(aa1str),
+    matcher_Sim(align, ajStrGetPtr(aa0str),ajStrGetPtr(aa1str),
 		seq,seq2,
 		K,(gdelval-ggapval),ggapval,
 		ajSeqOffset(seq), ajSeqOffset(seq2), 2);
@@ -1548,8 +1548,8 @@ static ajint matcher_Calcons(const char *aa0,char *seqc0,ajint n0,
     i0 = min0;
     i1 = min1;
 
-    sq1 = ajStrStr(ajSeqStr(seq));
-    sq2 = ajStrStr(ajSeqStr(seq2));
+    sq1 = ajStrGetPtr(ajSeqStr(seq));
+    sq2 = ajStrGetPtr(ajSeqStr(seq2));
 
     while(i0 < max0 || i1 < max1)
     {

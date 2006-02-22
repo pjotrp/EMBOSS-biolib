@@ -867,7 +867,7 @@ void inputweightsstr(AjPStr wtstr,
 
     for (i = 0; i < chars; i++)
     {
-	ch = ajStrChar(wtstr, i);
+	ch = ajStrGetCharPos(wtstr, i);
 	weight[i] = 1;
 	if (isdigit((int) ch))
 	    weight[i] = ch - '0';
@@ -894,7 +894,7 @@ void inputweightsstr2(AjPStr str, long a, long b, long *weightsum,
 
   *weightsum = 0;
   for (i = a; i < b; i++) {
-    ch == ajStrChar(str, i-1);
+    ch == ajStrGetCharPos(str, i-1);
     weight[i] = 1;
     if (ch == '0' || ch == '1')
       weight[i] = ch - '0';
@@ -949,7 +949,7 @@ void inputcategsstr(AjPStr str, long a, long b,
   long i;
 
   for (i = a; i < b; i++) {
-    ch = ajStrChar(str, i);
+    ch = ajStrGetCharPos(str, i);
     if ((ch >= '1') && (ch <= ('0'+categs)))
       category[i] = ch - '0';
   }
@@ -984,7 +984,7 @@ void inputfactorsstr(AjPStr str, long chars, Char *factor, boolean *factors)
   long i;
 
   for (i = 0; i < (chars); i++) {
-    factor[i] = ajStrChar(str, i);
+    factor[i] = ajStrGetCharPos(str, i);
   }
 
   *factors = true;
@@ -1037,8 +1037,8 @@ void initnamestate(AjPPhyloState state, long i)
   AjPStr names = state->Names[i];
 
   for (j = 0; j < nmlngth; j++) {
-    if (j < ajStrLen(names))
-	nayme[i][j] = ajStrChar(names, j);
+    if (j < ajStrGetLen(names))
+	nayme[i][j] = ajStrGetCharPos(names, j);
     else
 	nayme[i][j] = ' ';
 
@@ -1060,8 +1060,8 @@ void initnamedist(AjPPhyloDist dist, long i)
   AjPStr names = dist->Names[i];
 
   for (j = 0; j < nmlngth; j++) {
-    if (j < ajStrLen(names))
-	nayme[i][j] = ajStrChar(names, j);
+    if (j < ajStrGetLen(names))
+	nayme[i][j] = ajStrGetCharPos(names, j);
     else
 	nayme[i][j] = ' ';
 
@@ -1083,8 +1083,8 @@ void initnameseq(AjPSeqset set, long i)
   AjPStr names = ajStrNewS(ajSeqGetName(ajSeqsetGetSeq(set, i)));
 
   for (j = 0; j < nmlngth; j++) {
-    if (j < ajStrLen(names))
-	nayme[i][j] = ajStrChar(names, j);
+    if (j < ajStrGetLen(names))
+	nayme[i][j] = ajStrGetCharPos(names, j);
     else
 	nayme[i][j] = ' ';
 
@@ -1107,8 +1107,8 @@ void initnamefreq(AjPPhyloFreq freq, long i)
   AjPStr names = freq->Names[i];
 
   for (j = 0; j < nmlngth; j++) {
-    if (j < ajStrLen(names))
-	nayme[i][j] = ajStrChar(names, j);
+    if (j < ajStrGetLen(names))
+	nayme[i][j] = ajStrGetCharPos(names, j);
     else
 	nayme[i][j] = ' ';
 

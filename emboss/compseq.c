@@ -303,7 +303,7 @@ int main(int argc, char **argv)
 	if(!zerocount && bigarray[count] == 0)
 	    continue;
 
-	ajStrClear(&dispseq);
+	ajStrSetClear(&dispseq);
 
 	if(seqisnuc)
 	    embNmerInt2nuc(&dispseq, word, count);
@@ -363,7 +363,7 @@ int main(int argc, char **argv)
     /* get the expected Other frequency */
     if(have_exp_freq)
     {
-	ajStrAssC(&strother, "Other");
+	ajStrAssignC(&strother, "Other");
 	ajStrToDouble(ajTableGet(exptable, strother), &exp_freq);
     }
     else 
@@ -470,14 +470,14 @@ static void compseq_readexpfreq(AjPTable *exptable, AjPFile infile,
 	if(!ajStrFindC(line, "#"))
 	    continue;
 
-	if(!ajStrLen(line))
+	if(!ajStrGetLen(line))
 	    continue;
 
 	/* look for the word size */
 	if(!ajStrFindC(line, "Word size"))
 	{
-	    ajStrAssSub(&sizestr, line, 10, ajStrLen(line)-1);
-	    ajStrChomp(&sizestr);
+	    ajStrAssignSubS(&sizestr, line, 10, ajStrGetLen(line)-1);
+	    ajStrTrimWhite(&sizestr);
 	    ajStrToInt(sizestr, &thissize);
 
 	    if(size == thissize)
@@ -500,7 +500,7 @@ static void compseq_readexpfreq(AjPTable *exptable, AjPFile infile,
 	if(!ajStrFindC(line, "#"))
 	    continue;
 
-	if(!ajStrLen(line))
+	if(!ajStrGetLen(line))
 	    continue;
 
 	/*
@@ -518,14 +518,14 @@ static void compseq_readexpfreq(AjPTable *exptable, AjPFile infile,
 	if(!ajStrFindC(line, "#"))
 	    continue;
 
-	if(!ajStrLen(line))
+	if(!ajStrGetLen(line))
 	    continue;
 
-	tokens = ajStrTokenInit(line, whiteSpace);
+	tokens = ajStrTokenNewC(line, whiteSpace);
 
 	/* get the word as the key */
 	key = ajStrNew();
-	ajStrToken( &key, &tokens, NULL);
+	ajStrTokenNextParse( &tokens, &key);
 
 	/*
 	**  get the observed frequency as the value - we'll use this as
@@ -534,8 +534,8 @@ static void compseq_readexpfreq(AjPTable *exptable, AjPFile infile,
 	value = ajStrNew();
 
 	/* skip the observed count column */
-	ajStrToken(&value, &tokens, NULL);
-	ajStrToken(&value, &tokens, NULL);
+	ajStrTokenNextParse(&tokens, &value);
+	ajStrTokenNextParse(&tokens, &value);
 
 	ajTablePut(*exptable, key, value);
 
@@ -543,7 +543,7 @@ static void compseq_readexpfreq(AjPTable *exptable, AjPFile infile,
 
 
     ajStrDel(&line);
-    ajStrTokenClear(&tokens);
+    ajStrTokenDel(&tokens);
 
     return;
 }
@@ -575,7 +575,7 @@ static double compseq_getexpfreqnuc(const AjPStr dispseq, ajint word,
 
     for(i=0; i<word; i++)
     {
-        c = ajStrStr(dispseq)[i];
+        c = ajStrGetPtr(dispseq)[i];
 
         if(c == 'A')
             offset = 0;
@@ -625,7 +625,7 @@ static double compseq_getexpfreqprot(const AjPStr dispseq, ajint word,
     
     result = 1.0;
 
-    s = ajStrStr(dispseq);
+    s = ajStrGetPtr(dispseq);
 
     for(i=0; i<word; i++)
     {

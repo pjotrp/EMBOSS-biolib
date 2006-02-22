@@ -111,8 +111,8 @@ int main(int argc, char **argv)
     while((scop=(ajScopReadCNew(dcf_inf, "*"))))
     {
         /* construct name of domain coordinate file*/
-	ajStrAssS(&dccf_name,scop->Entry);
-	ajStrToLower(&dccf_name);
+	ajStrAssignS(&dccf_name,scop->Entry);
+	ajStrFmtLower(&dccf_name);
 
        	ajFmtPrint("Processing %S\n", scop->Entry);
         fflush(stdout);
@@ -124,7 +124,7 @@ int main(int argc, char **argv)
 	    ajFmtPrintF(errf, "%-15s\n", "FILE_OPEN");
             ajFmtPrintF(errf, "Could not open dccf file %S\n", dccf_name);  
 	    ajFmtPrintS(&msg, "Could not open dccf file %S\n", dccf_name);
-      	    ajWarn(ajStrStr(msg));
+      	    ajWarn(ajStrGetPtr(msg));
 	    ajScopDel(&scop);
 	    continue; /* move on to next item in scopfile*/
 	}
@@ -135,7 +135,7 @@ int main(int argc, char **argv)
 	    ajFmtPrintF(errf, "%-15s\n", "FILE_READ"); 
             ajFmtPrintF(errf, "Could not read dccf file %S", dccf_name); 
 	    ajFmtPrintS(&msg, "Could not read dccf file %S", dccf_name);
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
 	    ajFileClose(&dccf_inf);
 	    ajScopDel(&scop);
 	    ajPdbDel(&pdb);
@@ -162,12 +162,12 @@ int main(int argc, char **argv)
             {
                 /* Append one instance of eType for each new element to make 
 		   sse map. */
-	        ajStrAppK(&sse, temp_res->eType);
+	        ajStrAppendK(&sse, temp_res->eType);
                 num++;
             }
 	}
 	/* Add the completed sse to the scop structure. */
-        ajStrAssS(&scop->Sse, sse);
+        ajStrAssignS(&scop->Sse, sse);
 	
         ajListIterFree(&iter);
 
@@ -189,10 +189,10 @@ int main(int argc, char **argv)
 	    ss = temp_res->eType;
 	    if (ss == '.')
 		ss = 'L';
-	    ajStrAppK(&sss, ss);
+	    ajStrAppendK(&sss, ss);
 	}	
 	/* Add the completed sss to the scop structure. */
-        ajStrAssS(&scop->Sss, sss);
+        ajStrAssignS(&scop->Sss, sss);
         ajListIterFree(&iter);
 
 	/* Write out the scop structure to the scop output file. */
@@ -203,7 +203,7 @@ int main(int argc, char **argv)
 			"output file\n ", dccf_name); 
 	    ajFmtPrintS(&msg, "Could not write scop structure for %S to scop "
 			"output file ", dccf_name);
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
             ajFileClose(&dccf_inf);
 	    ajScopDel(&scop);
 	    ajPdbDel(&pdb);

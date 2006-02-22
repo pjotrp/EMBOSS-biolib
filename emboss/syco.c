@@ -131,13 +131,13 @@ int main(int argc, char **argv)
     
     beg = ajSeqBegin(a);
     end = ajSeqEnd(a);
-    ajStrAssSubC(&substr,ajSeqChar(a),beg-1,end-1);
+    ajStrAssignSubC(&substr,ajSeqChar(a),beg-1,end-1);
     
     
     
-    p   = ajStrStr(substr);
-    len = ajStrLen(substr);
-    ajStrToUpper(&substr);
+    p   = ajStrGetPtr(substr);
+    len = ajStrGetLen(substr);
+    ajStrFmtUpper(&substr);
     
     w = window*3;
     
@@ -172,7 +172,7 @@ int main(int argc, char **argv)
     for(base=0;base<3;++base)
     {
 	q = p+base;
-	ajStrAssC(&tmp,q);
+	ajStrAssignC(&tmp,q);
 
 	ajCodCalcGribskov(cdup, tmp);
 	startp = (w/2)+base;

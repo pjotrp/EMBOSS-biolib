@@ -133,7 +133,7 @@ AjBool embXyzSeqsetNR(const AjPList input, AjPInt *keep, ajint *nset,
 	    
 
 	    /* Process w/o alignment identical sequences */
-	    if(ajStrMatch(inseqs[x]->Seq, inseqs[y]->Seq))
+	    if(ajStrMatchS(inseqs[x]->Seq, inseqs[y]->Seq))
 	    {
 /* DIAGNOSTICS		printf("Score=%f\n", 100.0); */
 		
@@ -155,8 +155,8 @@ AjBool embXyzSeqsetNR(const AjPList input, AjPInt *keep, ajint *nset,
 	    p = ajSeqChar(inseqs[x]);
 	    q = ajSeqChar(inseqs[y]);
 
-	    ajStrAssC(&m,"");
-	    ajStrAssC(&n,"");
+	    ajStrAssignC(&m,"");
+	    ajStrAssignC(&n,"");
 
 
 	    /* Check that no sequence length is 0 */
@@ -366,7 +366,7 @@ AjBool embXyzSeqsetNRRange(const AjPList input, AjPInt *keep, ajint *nset,
 	for(y=x+1; y<nin; y++)
 	{
 	    /* Process w/o alignment identical sequences */
-	    if(ajStrMatch(inseqs[x]->Seq, inseqs[y]->Seq))
+	    if(ajStrMatchS(inseqs[x]->Seq, inseqs[y]->Seq))
 	    {
 		ajFloat2dPut(&scores,x,y,(float)100.0);
 		continue;
@@ -386,8 +386,8 @@ AjBool embXyzSeqsetNRRange(const AjPList input, AjPInt *keep, ajint *nset,
 	    p = ajSeqChar(inseqs[x]);
 	    q = ajSeqChar(inseqs[y]);
 
-	    ajStrAssC(&m,"");
-	    ajStrAssC(&n,"");
+	    ajStrAssignC(&m,"");
+	    ajStrAssignC(&n,"");
 
 
 	    /* Check that no sequence length is 0 */

@@ -114,15 +114,15 @@ int main(int argc, char **argv)
     wheel       = ajAcdGetBool("wheel");
     amphipathic = ajAcdGetToggle("amphipathic");
 
-    ajStrToUpper(&octags);
-    ajStrToUpper(&squares);
-    ajStrToUpper(&diamonds);
+    ajStrFmtUpper(&octags);
+    ajStrFmtUpper(&squares);
+    ajStrFmtUpper(&diamonds);
 
     if(amphipathic)
     {
-	ajStrAssC(&squares,"ACFGILMVWY");
-	ajStrAssC(&diamonds,"");
-	ajStrAssC(&octags,"");
+	ajStrAssignC(&squares,"ACFGILMVWY");
+	ajStrAssignC(&diamonds,"");
+	ajStrAssignC(&octags,"");
     }
 
 
@@ -135,9 +135,9 @@ int main(int argc, char **argv)
     ajDebug("begin: %d end: %d\n", begin, end);
     strand = ajSeqStrCopy(seq);
 
-    ajStrToUpper(&strand);
-    ajStrAssSubC(&substr,ajStrStr(strand),begin-1,end-1);
-    len = ajStrLen(substr);
+    ajStrFmtUpper(&strand);
+    ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
+    len = ajStrGetLen(substr);
 
     ajFmtPrintS(&txt,"PEPWHEEL of %s from %d to %d",ajSeqName(seq),
 		begin,end);
@@ -145,7 +145,7 @@ int main(int argc, char **argv)
     ajGraphOpenWin(graph,xmin,xmax,ymin,ymax);
 
     ajGraphSetFore(AJB_BLACK);
-    ajGraphText(0.0,0.64,ajStrStr(txt),0.5);
+    ajGraphText(0.0,0.64,ajStrGetPtr(txt),0.5);
 
     ajGraphSetFore(AJB_BLACK);
 
@@ -187,9 +187,9 @@ int main(int argc, char **argv)
 			ajGraphLine(x1,y1,x2,y2);
 		    }
 	    }
-	    pepwheel_plotresidue(*(ajStrStr(substr)+lc),radius+resgap,angle,
-				 ajStrStr(squares),ajStrStr(octags),
-				 ajStrStr(diamonds),
+	    pepwheel_plotresidue(*(ajStrGetPtr(substr)+lc),radius+resgap,angle,
+				 ajStrGetPtr(squares),ajStrGetPtr(octags),
+				 ajStrGetPtr(diamonds),
 				 xmin,xmax,ymin,ymax);
 	    ++lc;
 	    if(lc==len)

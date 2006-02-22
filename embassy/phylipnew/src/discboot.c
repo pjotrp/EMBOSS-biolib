@@ -252,7 +252,7 @@ void seqboot_inputfactors(AjPPhyloProp fact)
 
   j = 0;
   for (i = 0; i < (sites); i++) {
-    ch = ajStrChar(str,i);
+    ch = ajStrGetCharPos(str,i);
     if (ch != prevch)
       j++;
     prevch = ch;
@@ -422,7 +422,7 @@ void inputoptions()
       done = false;
       while (!done) {
         while (j < sites) {
-          charstate = ajStrChar(str, j);
+          charstate = ajStrGetCharPos(str, j);
           uppercase(&charstate);
           j++;
           if (charstate == '.')

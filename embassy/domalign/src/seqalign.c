@@ -167,13 +167,13 @@ int main(int argc, char **argv)
     if(!(ajStrToInt(amode[0], &amoden)))
 	ajFatal("Could not parse ACD node option");
 
-    modei      = (ajint) ajStrChar(*mode,0)-48;
+    modei      = (ajint) ajStrGetCharFirst(*mode)-48;
 
 
 
     /* Create name for temp. clustalw input files. */
     ajRandomSeed();
-    ajStrAssC(&tmp_name,ajFileTempName(NULL));
+    ajStrAssignC(&tmp_name,ajFileTempName(NULL));
 
 
     /* Read each domain alignment file */
@@ -203,10 +203,10 @@ int main(int argc, char **argv)
 
 	/* Create file name for clustal .dnd tree file (deleted later) and 
 	   clustal output file. */
-	ajStrAssS(&clustdnd,tmp_name);
-	ajStrAppC(&clustdnd,".dnd");
-	ajStrAssS(&clustout,tmp_name);
-	ajStrAppC(&clustout,".out");
+	ajStrAssignS(&clustdnd,tmp_name);
+	ajStrAppendC(&clustdnd,".dnd");
+	ajStrAssignS(&clustout,tmp_name);
+	ajStrAppendC(&clustout,".out");
 	    
 
 	/* Input sequences are seed alignment. */
@@ -252,8 +252,8 @@ int main(int argc, char **argv)
 	    
 	    
 	    /* Create clustal input alignment in CLUSTAL format. */
-	    ajStrAssS(&clustin1,tmp_name);
-	    ajStrAppC(&clustin1,".aln");
+	    ajStrAssignS(&clustin1,tmp_name);
+	    ajStrAppendC(&clustin1,".aln");
 	    if((clustinf1 = ajFileNewOut(clustin1))==NULL)
 		ajFatal("Could not open %S for writing\n", clustin1);
 	    if(scopalign)
@@ -286,11 +286,11 @@ int main(int argc, char **argv)
 	
 		if(!(ajSeqRead(seq_sing, seqin_sing)))
 		    ajFatal("SeqRead failed in seqsearch_psialigned");
-		if(MAJSTRLEN(ajSeqStr(seq_sing)))
+		if(MAJSTRGETLEN(ajSeqStr(seq_sing)))
 		    ok = ajTrue;
 	    }
 	    else
-		if(MAJSTRLEN(hit_sing->Seq))
+		if(MAJSTRGETLEN(hit_sing->Seq))
 		    ok = ajTrue;
 	    ajFileClose(&inf);
 	    
@@ -314,11 +314,11 @@ int main(int argc, char **argv)
 	    
 	    
 	/* Open domain hits file (input). */
-	ajStrAssS(&hitsname, inname);
+	ajStrAssignS(&hitsname, inname);
 	ajFileDirExtnTrim(&hitsname);
-	ajStrInsert(&hitsname, 0, ajDirName(dhfin));
-	ajStrAppC(&hitsname, ".");
-	ajStrApp(&hitsname, ajDirExt(dhfin));
+	ajStrInsertS(&hitsname, 0, ajDirName(dhfin));
+	ajStrAppendC(&hitsname, ".");
+	ajStrAppendS(&hitsname, ajDirExt(dhfin));
 	
 	if(!(hitsinf = ajFileNewIn(hitsname)))
 	{
@@ -398,8 +398,8 @@ int main(int argc, char **argv)
 	    
 
 	/* Create file of clustal input sequences. */
-	ajStrAssS(&clustin2,tmp_name);
-	ajStrAppC(&clustin2,".seqs");
+	ajStrAssignS(&clustin2,tmp_name);
+	ajStrAppendC(&clustin2,".seqs");
 	clustinf2 = ajFileNewOut(clustin2);
 
 
@@ -415,14 +415,14 @@ int main(int argc, char **argv)
 	    if(hit_sing)
 	    {
 		
-		if((MAJSTRLEN(hit_sing->Dom)))
+		if((MAJSTRGETLEN(hit_sing->Dom)))
 		    /* The start and end may just be zero for domain sequences but 
 		       include them for consistency with the other inputs */
 		    ajFmtPrintF(clustinf2,">%S_%d_%d\n",
 				hit_sing->Dom,
 				hit_sing->Start,
 				hit_sing->End);
-		else if((MAJSTRLEN(hit_sing->Acc)))
+		else if((MAJSTRGETLEN(hit_sing->Acc)))
 		    ajFmtPrintF(clustinf2,">%S_%d_%d\n",
 				hit_sing->Acc,
 				hit_sing->Start,
@@ -448,12 +448,12 @@ int main(int argc, char **argv)
 	{
 	    for(x=0;x<hitlist_h->N;x++)
 	    {
-		if((MAJSTRLEN(hitlist_h->hits[x]->Dom)))
+		if((MAJSTRGETLEN(hitlist_h->hits[x]->Dom)))
 		    ajFmtPrintF(clustinf2,">%S_%d_%d\n",
 				hitlist_h->hits[x]->Dom,
 				hitlist_h->hits[x]->Start,
 				hitlist_h->hits[x]->End);
-		else if((MAJSTRLEN(hitlist_h->hits[x]->Acc)))
+		else if((MAJSTRGETLEN(hitlist_h->hits[x]->Acc)))
 		    ajFmtPrintF(clustinf2,">%S_%d_%d\n",
 				hitlist_h->hits[x]->Acc,
 				hitlist_h->hits[x]->Start,
@@ -500,7 +500,7 @@ int main(int argc, char **argv)
 			clustin2,clustout);
 	}	
 	ajFmtPrint("\n%S\n", cmd);
-	system(ajStrStr(cmd));
+	system(ajStrGetPtr(cmd));
 	    
 	    
 	/* Reformat output file into domain alignment format. */
@@ -510,11 +510,11 @@ int main(int argc, char **argv)
 
     
 	/* Open domain alignment file (output). */
-	ajStrAssS(&outname, inname);
+	ajStrAssignS(&outname, inname);
 	ajFileDirExtnTrim(&outname);
-	ajStrInsert(&outname, 0, ajDirName(dafout));
-	ajStrAppC(&outname, ".");
-	ajStrApp(&outname, ajDirExt(dafout));
+	ajStrInsertS(&outname, 0, ajDirName(dafout));
+	ajStrAppendC(&outname, ".");
+	ajStrAppendS(&outname, ajDirExt(dafout));
 
 	if((alg_out = ajFileNewOut(outname))==NULL)
 	    ajFatal("Could not write clustal output file");
@@ -561,7 +561,7 @@ int main(int argc, char **argv)
 	{
 	    if(ajStrPrefixC(line, "CLUSTAL"))
 		continue;
-	    if(MAJSTRLEN(line)==0)
+	    if(MAJSTRGETLEN(line)==0)
 		continue;
 	    if(line->Ptr[0]==' ')
 		ajFmtPrintF(alg_out, "\n");
@@ -570,7 +570,7 @@ int main(int argc, char **argv)
 		/* Add bogus index numbers (of 0) to conform to EMBOSS simple
 		   / srs format. */
 		ajFmtScanS(line, "%S %S", &tmp1, &tmp2);
-		if(MAJSTRLEN(tmp1)>25)
+		if(MAJSTRGETLEN(tmp1)>25)
 		    ajFatal("Code longer than permissible width in seqalign");
 		ajFmtPrintF(alg_out, "%-25S 0 %S 0\n", tmp1, tmp2);
 	    }

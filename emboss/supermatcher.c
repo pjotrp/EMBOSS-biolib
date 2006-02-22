@@ -175,7 +175,7 @@ int main(int argc, char **argv)
         ajSeqTrim(a);
 	begina = 1 + ajSeqOffset(a);
 
-	m = ajStrNewL(1+ajSeqLen(a));
+	m = ajStrNewRes(1+ajSeqLen(a));
 
 	lena = ajSeqLen(a);
 
@@ -191,14 +191,14 @@ int main(int argc, char **argv)
 	    lenb   = ajSeqLen(b);
 	    beginb = 1 + ajSeqOffset(b);
 
-	    n=ajStrNewL(1+ajSeqLen(b));
+	    n=ajStrNewRes(1+ajSeqLen(b));
 
 	    ajDebug("Processing '%S'\n", ajSeqGetName(b));
 	    p = ajSeqChar(a);
 	    q = ajSeqChar(b);
 
-	    ajStrAssC(&m,"");
-	    ajStrAssC(&n,"");
+	    ajStrAssignC(&m,"");
+	    ajStrAssignC(&n,"");
 
 
 	    if(!supermatcher_findstartpoints(&seq1MatchTable,b,a,

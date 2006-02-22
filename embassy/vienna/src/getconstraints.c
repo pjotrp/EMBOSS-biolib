@@ -28,51 +28,51 @@ AjBool vienna_GetConstraints(AjPFile confile, AjPStr *constring)
     conline  = ajStrNew();
     
 
-    ajStrAssC(constring,"");
+    ajStrAssignC(constring,"");
     
 
     while(ajFileReadLine(confile,&line))
     {
-	if(ajStrPrefixC(line,"#") || ajStrPrefixC(line,"*") || !ajStrLen(line))
+	if(ajStrPrefixC(line,"#") || ajStrPrefixC(line,"*") || !ajStrGetLen(line))
 	    continue;
-	len = ajStrLen(line);
+	len = ajStrGetLen(line);
 
-	ajStrAssC(&constr,"");
-	ajStrAssC(&conline,"");
+	ajStrAssignC(&constr,"");
+	ajStrAssignC(&conline,"");
 
-	cline = MAJSTRSTR(line);
+	cline = MAJSTRGETPTR(line);
 	
 	if(strspn(cline,rna_accept) == len)
 	{
-	    ajStrAssC(&seqstr,"");	    
-	    ajStrAssS(&seqstr,line);
-	    seqlen = ajStrLen(seqstr);
+	    ajStrAssignC(&seqstr,"");	    
+	    ajStrAssignS(&seqstr,line);
+	    seqlen = ajStrGetLen(seqstr);
 
 	    if(!ajFileReadLine(confile,&line))
 		ajFatal("Missing constraint line in file (%F)\n",confile);
 	    if(ajStrPrefixC(line,"#") || ajStrPrefixC(line,"*") ||
-	       !ajStrLen(line))
+	       !ajStrGetLen(line))
 		continue;
 
-	    len = ajStrLen(line);
+	    len = ajStrGetLen(line);
 	}
 	else
 	    seqlen = 0;
 
 
 	if(strspn(cline,con_accept) == len)
-	    ajStrAssS(&conline,line);
+	    ajStrAssignS(&conline,line);
 	else
 	    ajFatal("Invalid line [%S]\n",line);
 
 
 	if((seqlen))
 	{
-	    ajStrAssS(&cleanstr,seqstr);
-	    ajStrCleanWhite(&cleanstr);
+	    ajStrAssignS(&cleanstr,seqstr);
+	    ajStrRemoveWhiteExcess(&cleanstr);
 	}
 
-	conlen = ajStrLen(conline);
+	conlen = ajStrGetLen(conline);
 	if(!conlen)
 	    ajFatal("Missing constraint line\n");
 	
@@ -83,8 +83,8 @@ AjBool vienna_GetConstraints(AjPFile confile, AjPStr *constring)
 	{
 	    for(i=0;i<conlen;++i)
 	    {
-		cs = MAJSTRSTR(seqstr)[i];
-		cc = MAJSTRSTR(conline)[i];
+		cs = MAJSTRGETPTR(seqstr)[i];
+		cc = MAJSTRGETPTR(conline)[i];
 		
 		if(cs == ' ')
 		{
@@ -94,16 +94,16 @@ AjBool vienna_GetConstraints(AjPFile confile, AjPStr *constring)
 		    else
 			continue;
 		}
-		ajStrAppK(&constr,cc);
+		ajStrAppendK(&constr,cc);
 	    }
 
-	    padding = ajStrLen(cleanstr) - ajStrLen(constr);
+	    padding = ajStrGetLen(cleanstr) - ajStrGetLen(constr);
 	    for(i=0; i<padding; ++i)
-		ajStrAppK(&constr,' ');
-	    ajStrApp(constring,constr);
+		ajStrAppendK(&constr,' ');
+	    ajStrAppendS(constring,constr);
 	}
 	else
-	    ajStrApp(constring,conline);
+	    ajStrAppendS(constring,conline);
 
 
     }

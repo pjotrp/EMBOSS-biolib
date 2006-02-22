@@ -124,7 +124,7 @@ int main(int argc, char **argv)
     length = ajSeqLen(sequence);
     cvt    = ajSeqCvtNew("ACGT");
     ajSeqNum(sequence, cvt, &nseq);
-    sq = ajStrStr(nseq);
+    sq = ajStrGetPtr(nseq);
 
     ajDebug("sequence length: %d\n", length);
 
@@ -144,7 +144,7 @@ int main(int argc, char **argv)
 	    *ip++ = rogue;
     }
 
-    cp = ajStrStr(nseq);
+    cp = ajStrGetPtr(nseq);
     for(j = length; j--;)		/* reverse order important here */
 	switch(*cp++)
 	{

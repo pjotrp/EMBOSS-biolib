@@ -185,8 +185,8 @@ int main(int argc, char **argv)
     ajSeqToUpper(seq0);
     ajSeqToUpper(seq1);
 
-    s1 = ajStrStr(ajSeqStr(seq0));
-    s2 = ajStrStr(ajSeqStr(seq1));
+    s1 = ajStrGetPtr(ajSeqStr(seq0));
+    s2 = ajStrGetPtr(ajSeqStr(seq1));
 
     sub = ajMatrixArray(matrix);
     cvt = ajMatrixCvt(matrix);
@@ -196,26 +196,26 @@ int main(int argc, char **argv)
     ** ajMatrixSeqNum(matrix, seq1, &aa1str);
     */
 
-    aa0str = ajStrNewL(2+ajSeqLen(seq0)); /* length + blank + trailing null */
-    aa1str = ajStrNewL(2+ajSeqLen(seq1));
-    ajStrAppK(&aa0str,' ');
-    ajStrAppK(&aa1str,' ');
+    aa0str = ajStrNewRes(2+ajSeqLen(seq0)); /* length + blank + trailing null */
+    aa1str = ajStrNewRes(2+ajSeqLen(seq1));
+    ajStrAppendK(&aa0str,' ');
+    ajStrAppendK(&aa1str,' ');
 
     for(i=0;i<ajSeqLen(seq0);i++)
-	ajStrAppK(&aa0str,(char)ajSeqCvtK(cvt, *s1++));
+	ajStrAppendK(&aa0str,(char)ajSeqCvtK(cvt, *s1++));
 
     for(i=0;i<ajSeqLen(seq1);i++)
-	ajStrAppK(&aa1str,ajSeqCvtK(cvt, *s2++));
+	ajStrAppendK(&aa1str,ajSeqCvtK(cvt, *s2++));
 
     AJCNEW(res,   ajSeqLen(seq0)+ajSeqLen(seq1));
     AJCNEW(seqc0, ajSeqLen(seq0)+ajSeqLen(seq1));
     AJCNEW(seqc1, ajSeqLen(seq0)+ajSeqLen(seq1));
 
-    gscore = stretcher_Ealign(ajStrStr(aa0str),ajStrStr(aa1str),
+    gscore = stretcher_Ealign(ajStrGetPtr(aa0str),ajStrGetPtr(aa1str),
 			      seq0, seq1,
 			      (gdelval-ggapval),ggapval,res,&nres);
 
-    nc = stretcher_Calcons(ajStrStr(aa0str),ajSeqLen(seq0),ajStrStr(aa1str),
+    nc = stretcher_Calcons(ajStrGetPtr(aa0str),ajSeqLen(seq0),ajStrGetPtr(aa1str),
 			   ajSeqLen(seq1),res);
     percent = (double)nd*100.0/(double)nc;
 
@@ -601,8 +601,8 @@ static ajint stretcher_Calcons(const char *aa0,ajint n0,
     nc = nd = i0 = i1 = op = 0;
     min0 = min1 = 0;
 
-    sq1 = ajStrStr(ajSeqStr(seq0));
-    sq2 = ajStrStr(ajSeqStr(seq1));
+    sq1 = ajStrGetPtr(ajSeqStr(seq0));
+    sq2 = ajStrGetPtr(ajSeqStr(seq1));
 
     while(i0 < n0 || i1 < n1)
     {

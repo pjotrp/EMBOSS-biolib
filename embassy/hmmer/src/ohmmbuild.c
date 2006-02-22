@@ -12,7 +12,7 @@
  * SRE, Mon Nov 18 12:41:29 1996
  *
  * main() for HMM construction from an alignment.
- * RCS $Id: ohmmbuild.c,v 1.1 2006/02/21 12:35:43 rice Exp $
+ * RCS $Id: ohmmbuild.c,v 1.2 2006/02/22 15:02:28 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -243,7 +243,7 @@ int main(int argc, char **argv)
     ajAcdInitP("ohmmbuild",argc,argv,"HMMER");
 
     ajstrategy = ajAcdGetList("strategy");
-    ajstrat = *ajStrStr(*ajstrategy);
+    ajstrat = *ajStrGetPtr(*ajstrategy);
     if(ajstrat=='M')
 	cfg_strategy = P7_FS_CONFIG;
     else if(ajstrat=='G')
@@ -253,7 +253,7 @@ int main(int argc, char **argv)
 
     rsname = ajAcdGetOutfile("resavefile");
     if(rsname)
-	align_ofile = ajCharNew(ajFileGetName(rsname));
+	align_ofile = ajCharNewS(ajFileGetName(rsname));
     ajFileClose(&rsname);
 
     ajappend = ajAcdGetBool("append");
@@ -279,11 +279,11 @@ int main(int argc, char **argv)
 
     cfname = ajAcdGetOutfile("cfile");
     if(cfname)
-	cfile = ajCharNew(ajFileGetName(cfname));
+	cfile = ajCharNewS(ajFileGetName(cfname));
     ajFileClose(&cfname);
 
     ajcstrategy = ajAcdGetList("cstrategy");
-    ajcstrat = *ajStrStr(*ajcstrategy);
+    ajcstrat = *ajStrGetPtr(*ajcstrategy);
     if(ajcstrat=='F')
 	c_strategy = P7_FAST_CONSTRUCTION;
     else if(ajcstrat=='H')
@@ -299,17 +299,17 @@ int main(int argc, char **argv)
 
     nuname = ajAcdGetInfile("nullfile");
     if(nuname)
-	rndfile = ajCharNew(ajFileGetName(nuname));
+	rndfile = ajCharNewS(ajFileGetName(nuname));
     ajFileClose(&nuname);
 
     paname = ajAcdGetInfile("pamfile");
     if(paname)
-	pamfile = ajCharNew(ajFileGetName(paname));
+	pamfile = ajCharNewS(ajFileGetName(paname));
     ajFileClose(&paname);
 
     prname = ajAcdGetInfile("priorfile");
     if(prname)
-	prifile = ajCharNew(ajFileGetName(prname));
+	prifile = ajCharNewS(ajFileGetName(prname));
     ajFileClose(&prname);
 
     pamwgt  = ajAcdGetFloat("pamweight");
@@ -322,7 +322,7 @@ int main(int argc, char **argv)
 	verbose=FALSE;
 
     ajwtt = ajAcdGetList("weighting");
-    ajwt = *ajStrStr(*ajwtt);
+    ajwt = *ajStrGetPtr(*ajwtt);
     if(ajwt=='B')
 	w_strategy = WGT_BLOSUM;
     else if(ajwt=='G')
@@ -339,8 +339,8 @@ int main(int argc, char **argv)
 
     ofname = ajStrNewC((char *)ajFileName(outf));
     if(!ajFileLength(ofname))
-	unlink(ajStrStr(ofname));
-    hmmfile = ajStrStr(ofname);
+	unlink(ajStrGetPtr(ofname));
+    hmmfile = ajStrGetPtr(ofname);
 
 
     if (gapmax < 0. || gapmax > 1.) 
@@ -406,9 +406,9 @@ int main(int argc, char **argv)
 
     Banner(stdout, banner);
     printf("Training alignment:                %s\n",
-	   ajStrStr(seqset->Filename));
-    seqfile = ajCharNewL(ajStrLen(seqset->Filename)+1);
-    strcpy(seqfile,ajStrStr(seqset->Filename));
+	   ajStrGetPtr(seqset->Filename));
+    seqfile = ajCharNewRes(ajStrGetLen(seqset->Filename)+1);
+    strcpy(seqfile,ajStrGetPtr(seqset->Filename));
 
     printf("Number of sequences:               %d\n", ainfo.nseq);
 

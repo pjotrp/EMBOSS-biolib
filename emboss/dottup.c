@@ -313,7 +313,7 @@ static void dottup_stretchplot(AjPGraph graph, const AjPList matchlist,
     xa[0] = (float)begin1;
     ya[0] = (float)begin2;
 
-    ajGraphSetTitleC(graph,ajStrStr(tit));
+    ajGraphSetTitleC(graph,ajStrGetPtr(tit));
 
     ajGraphSetXTitleC(graph,ajSeqName(seq1));
     ajGraphSetYTitleC(graph,ajSeqName(seq2));

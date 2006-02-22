@@ -106,13 +106,13 @@ static void maskfeat_FeatSeqMask(AjPSeq seq, const AjPStr type,
     ** want lower-case if 'tolower' or 'maskchar' is null
     ** or it is the SPACE character
     */
-    lower = (tolower || ajStrLen(maskchar) == 0 || ajStrMatchC(maskchar, " "));
+    lower = (tolower || ajStrGetLen(maskchar) == 0 || ajStrMatchC(maskchar, " "));
 
 
     /* get the feature table of the sequence */
     feat = ajSeqGetFeat(seq);
 
-    ajStrAssS(&str, ajSeqStr(seq));
+    ajStrAssignS(&str, ajSeqStr(seq));
 
     /* For all features... */
 
@@ -122,18 +122,18 @@ static void maskfeat_FeatSeqMask(AjPSeq seq, const AjPStr type,
 	while(ajListIterMore(iter))
 	{
 	    gf = ajListIterNext(iter) ;
-	    tokens = ajStrTokenInit(type, whiteSpace);
-	    while(ajStrToken( &key, &tokens, NULL))
-		if(ajStrMatchWild(gf->Type, key))
+	    tokens = ajStrTokenNewC(type, whiteSpace);
+	    while(ajStrTokenNextParse( &tokens, &key))
+		if(ajStrMatchWildS(gf->Type, key))
 		{
 		    if(lower)
 			maskfeat_StrToLower(&str, gf->Start-1, gf->End-1);
 		    else
 		        ajStrMask(&str, gf->Start-1, gf->End-1,
-				  *ajStrStr(maskchar));
+				  *ajStrGetPtr(maskchar));
 		}
 
-	    ajStrTokenClear( &tokens);
+	    ajStrTokenDel( &tokens);
 	    ajStrDel(&key);
 	}
 	ajListIterFree(&iter);
@@ -168,12 +168,12 @@ static void maskfeat_StrToLower(AjPStr *str, ajint begin, ajint end)
     AjPStr substr = ajStrNew();
     
     /* extract the region and lowercase */
-    ajStrAppSub(&substr, *str, begin, end);
-    ajStrToLower(&substr);
+    ajStrAppendSubS(&substr, *str, begin, end);
+    ajStrFmtLower(&substr);
 
     /* remove and replace the lowercased region */
-    ajStrCut(str, begin, end);
-    ajStrInsert(str, begin, substr);
+    ajStrCutRange(str, begin, end);
+    ajStrInsertS(str, begin, substr);
                                                          
     ajStrDel(&substr);
 

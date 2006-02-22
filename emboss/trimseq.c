@@ -92,9 +92,9 @@ int main(int argc, char **argv)
 	    end = ajSeqLen(seq)-1;
 
 	/* get a COPY of the sequence string */
-	ajStrAssS(&str, ajSeqStr(seq));
+	ajStrAssignS(&str, ajSeqStr(seq));
 
-	ajStrSub(&str, start, end);
+	ajStrKeepRange(&str, start, end);
 	ajSeqReplace(seq, str);
 	ajSeqAllWrite(seqout, seq);
     }

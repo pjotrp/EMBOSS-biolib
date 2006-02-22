@@ -156,7 +156,7 @@ static ajint demolist_typecomp(const void *a, const void *b)
     gfa = (DemolistPgff *) a;
     gfb = (DemolistPgff *) b;
 
-    return ajStrCmp(&(*gfa)->type,&(*gfb)->type);
+    return ajStrVcmp(&(*gfa)->type,&(*gfb)->type);
 }
 
 

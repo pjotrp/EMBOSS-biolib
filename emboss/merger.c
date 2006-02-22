@@ -138,8 +138,8 @@ int main(int argc, char **argv)
     p = ajSeqChar(a);
     q = ajSeqChar(b);
 
-    ajStrAssC(&m,"");
-    ajStrAssC(&n,"");
+    ajStrAssignC(&m,"");
+    ajStrAssignC(&n,"");
 
     embAlignPathCalc(p,q,lena,lenb,gapopen,gapextend,path,sub,cvt,
 		     compass, ajFalse);
@@ -237,15 +237,15 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
     mm = ajStrNewS(m);
     nn = ajStrNewS(n);
 
-    p    = ajStrStrMod(&mm);
-    q    = ajStrStrMod(&nn);
-    olen = ajStrLen(mm);
+    p    = ajStrGetuniquePtr(&mm);
+    q    = ajStrGetuniquePtr(&nn);
+    olen = ajStrGetLen(mm);
 
     /* output the left hand side */
     if(start1 > start2)
     {
 	for(i=0; i<start1; i++)
-	    ajStrAppK(ms, a[i]);
+	    ajStrAppendK(ms, a[i]);
 
 	if(start2)
 	{
@@ -262,7 +262,7 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
     else if(start2 > start1)
     {
 	for(i=0; i<start2; i++)
-	    ajStrAppK(ms, b[i]);
+	    ajStrAppendK(ms, b[i]);
 
 	if(start1)
 	{
@@ -290,7 +290,7 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
 	ajStrDel(&tmpstr);
 
 	for(i=0; i<start1; i++)
-	    ajStrAppK(ms, a[i]);
+	    ajStrAppendK(ms, a[i]);
     }
 
     /* header */
@@ -316,7 +316,7 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
 	    {
 		p[i] = toupper((ajint)p[i]);
 		if(p[i] != '.' && p[i] != ' ' && p[i] != '-')
-		    ajStrAppK(ms, p[i]);
+		    ajStrAppendK(ms, p[i]);
 		ajFmtPrintS(&tmpstr,
 			    "             %8d  '%c'   %8d  '%c'   '%c'\n",
 			    apos+1, p[i], bpos+1, q[i], p[i]);
@@ -326,7 +326,7 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
 	    {
 		q[i] = toupper((ajint)q[i]);
 		if(q[i] != '.' && q[i] != ' ' && q[i] != '-')
-		    ajStrAppK(ms, q[i]);
+		    ajStrAppendK(ms, q[i]);
 		ajFmtPrintS(&tmpstr,
 			    "             %8d  '%c'   %8d  '%c'   '%c'\n",
 			    apos+1, p[i], bpos+1, q[i], q[i]);
@@ -337,12 +337,12 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
 	else if(p[i]=='n' || p[i]=='N')
 	{
 	    q[i] = toupper((ajint)q[i]);
-	    ajStrAppK(ms, q[i]);
+	    ajStrAppendK(ms, q[i]);
 	}
 	else if(q[i]=='n' || q[i]=='N')
 	{
 	    p[i] = toupper((ajint)p[i]);
-	    ajStrAppK(ms, p[i]);
+	    ajStrAppendK(ms, p[i]);
 	}
 	else if(p[i] != q[i])
 	{
@@ -353,7 +353,7 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
 	    if(merger_bestquality(a, b, apos, bpos))
 	    {
 		p[i] = toupper((ajint)p[i]);
-		ajStrAppK(ms, p[i]);
+		ajStrAppendK(ms, p[i]);
 		ajFmtPrintS(&tmpstr,
 			    "             %8d  '%c'   %8d  '%c'   '%c'\n",
 			    apos+1, p[i], bpos+1, q[i], p[i]);
@@ -362,7 +362,7 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
 	    else
 	    {
 		q[i] = toupper((ajint)q[i]);
-		ajStrAppK(ms, q[i]);
+		ajStrAppendK(ms, q[i]);
 		ajFmtPrintS(&tmpstr,
 			    "             %8d  '%c'   %8d  '%c'   '%c'\n",
 			    apos+1, p[i], bpos+1, q[i], q[i]);
@@ -371,7 +371,7 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
 
 	}
 	else
-	    ajStrAppK(ms, p[i]);
+	    ajStrAppendK(ms, p[i]);
 
 	/* update the positions in the unaligned complete sequences */
 	if(p[i] != '.' &&  p[i] != ' ' &&  p[i] != '-') apos++;
@@ -384,7 +384,7 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
 
     if(alen > blen)
     {
-	ajStrAppC(ms, &a[apos]);
+	ajStrAppendC(ms, &a[apos]);
 	if(blen)
 	{
 	    ajFmtPrintAppS(&tmpstr, "WARNING: ***************************"
@@ -402,7 +402,7 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
 
     if(blen > alen)
     {
-	ajStrAppC(ms, &b[bpos]);
+	ajStrAppendC(ms, &b[bpos]);
 	if(alen)
 	{
 	    ajFmtPrintAppS(&tmpstr, "WARNING: ***************************"
@@ -425,7 +425,7 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
 		       alen);
 	ajFmtPrintAppS(&tmpstr, "Sequence %s is being arbitrarily chosen "
 		       "for the merged sequence\n\n", namea);
-	ajStrAppC(ms, &a[apos]);
+	ajStrAppendC(ms, &a[apos]);
 	ajAlignSetTailApp(align, tmpstr);
 	ajStrDel(&tmpstr);
     }

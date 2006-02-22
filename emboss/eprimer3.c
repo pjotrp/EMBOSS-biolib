@@ -329,7 +329,7 @@ int main(int argc, char **argv, char **env)
             close(pipefrom[1]);
     
             program = ajStrNew();
-            ajStrAssC(&program, "primer3_core");
+            ajStrAssignC(&program, "primer3_core");
     
             if(ajSysWhich(&program))
             {
@@ -367,27 +367,27 @@ int main(int argc, char **argv, char **env)
             if(do_hybrid)
             {
                 if(!ajStrCmpC(task[0], "1"))
-                ajStrAssC(&taskstr, "pick_pcr_primers_and_hyb_probe");
+                ajStrAssignC(&taskstr, "pick_pcr_primers_and_hyb_probe");
                 else if(!ajStrCmpC(task[0], "2"))
-                ajStrAssC(&taskstr, "pick_left_only");
+                ajStrAssignC(&taskstr, "pick_left_only");
                 else if(!ajStrCmpC(task[0], "3"))
-                ajStrAssC(&taskstr, "pick_right_only");
+                ajStrAssignC(&taskstr, "pick_right_only");
                 else if(!ajStrCmpC(task[0], "4"))
-                ajStrAssC(&taskstr, "pick_hyb_probe_only");
+                ajStrAssignC(&taskstr, "pick_hyb_probe_only");
         
                 if (!do_primer)
-                ajStrAssC(&taskstr, "pick_hyb_probe_only");
+                ajStrAssignC(&taskstr, "pick_hyb_probe_only");
             }
             else
             {
                 if(!ajStrCmpC(task[0], "1"))
-                ajStrAssC(&taskstr, "pick_pcr_primers");
+                ajStrAssignC(&taskstr, "pick_pcr_primers");
                 else if(!ajStrCmpC(task[0], "2"))
-                ajStrAssC(&taskstr, "pick_left_only");
+                ajStrAssignC(&taskstr, "pick_left_only");
                 else if(!ajStrCmpC(task[0], "3"))
-                ajStrAssC(&taskstr, "pick_right_only");
+                ajStrAssignC(&taskstr, "pick_right_only");
                 else if(!ajStrCmpC(task[0], "4"))
-                ajStrAssC(&taskstr, "pick_hyb_probe_only");
+                ajStrAssignC(&taskstr, "pick_hyb_probe_only");
             }
         
             eprimer3_send_string(stream, "PRIMER_TASK", taskstr);
@@ -489,8 +489,8 @@ int main(int argc, char **argv, char **env)
 
             strand = ajSeqStrCopy(seq);
 
-            ajStrToUpper(&strand);
-            ajStrAssSubC(&substr,ajStrStr(strand), begin, end);
+            ajStrFmtUpper(&strand);
+            ajStrAssignSubC(&substr,ajStrGetPtr(strand), begin, end);
 
             /* send flags to turn on using optimal product size */
             eprimer3_send_float(stream, "PRIMER_PAIR_WT_PRODUCT_SIZE_GT",
@@ -535,7 +535,7 @@ int main(int argc, char **argv, char **env)
             
             eprimer3_report(outfile, result, num_return, begin);
     
-            ajStrClear(&result);
+            ajStrSetClear(&result);
 
             close( pipeto[1] );
             close(pipefrom[0]);
@@ -581,7 +581,7 @@ static void eprimer3_read(int fd, AjPStr* result)
         ajFatal("fdopen() read error");
 
     while((ch = getc( stream )) != EOF)
-        ajStrAppK(result, ch);
+        ajStrAppendK(result, ch);
 
     ajDebug("primer3_core output:\n%S\n", *result);
 
@@ -641,7 +641,7 @@ static void eprimer3_send_range(FILE * stream, const char * tag,
     {
         ajFmtPrintS(&str, "%s=", tag);
         eprimer3_write(str, stream);
-        ajStrClear(&str);
+        ajStrSetClear(&str);
 
         for(n=0; n < ajRangeNumber(value); n++)
         {
@@ -650,7 +650,7 @@ static void eprimer3_send_range(FILE * stream, const char * tag,
             end   -= begin;
             ajFmtPrintS(&str, "%d,%d ", start, end-start+1);
             eprimer3_write(str, stream);
-            ajStrClear(&str);
+            ajStrSetClear(&str);
         }
 
         ajFmtPrintS(&str, "\n");
@@ -690,14 +690,14 @@ static void eprimer3_send_range2(FILE * stream, const char * tag,
     {
         ajFmtPrintS(&str, "%s=", tag);
         eprimer3_write(str, stream);
-        ajStrClear(&str);
+        ajStrSetClear(&str);
 
         for(n=0; n < ajRangeNumber(value); n++)
         {
             ajRangeValues(value, n, &start, &end);
             ajFmtPrintS(&str, "%d-%d ", start, end);
             eprimer3_write(str, stream);
-            ajStrClear(&str);
+            ajStrSetClear(&str);
         }
 
         ajFmtPrintS(&str, "\n");
@@ -815,7 +815,7 @@ static void eprimer3_send_string(FILE * stream, const char * tag,
 
     str = ajStrNew();
 
-    if(ajStrLen(value))
+    if(ajStrGetLen(value))
     {
         ajFmtPrintS(&str, "%s=%S\n", tag, value);
         eprimer3_write(str, stream);
@@ -896,7 +896,7 @@ static FILE* eprimer3_start_write(int fd)
 
 static void eprimer3_write(const AjPStr str, FILE *stream)
 {
-    fputs(ajStrStr(str), stream);
+    fputs(ajStrGetPtr(str), stream);
     ajDebug("eprimer3_write '%S'\n", str);
 
     return;
@@ -950,10 +950,10 @@ static void eprimer3_report(AjPFile outfile, const AjPStr output,
     AjBool gotsequenceid = AJFALSE;
     AjPTable table;
 
-    linetokenhandle = ajStrTokenInit(output, eol);
+    linetokenhandle = ajStrTokenNewC(output, eol);
 
     /* get next line of relevant results */
-    while(ajStrToken(&line, &linetokenhandle, eol))
+    while(ajStrTokenNextParseC(&linetokenhandle, eol, &line))
     {
         if(!gotsequenceid)
         {
@@ -962,7 +962,7 @@ static void eprimer3_report(AjPFile outfile, const AjPStr output,
             ** Start storing the results in the table.
             */
 
-            if(ajStrNCmpC(line, "PRIMER_SEQUENCE_ID=", 19) == 0)
+            if(ajStrCmpLenC(line, "PRIMER_SEQUENCE_ID=", 19) == 0)
             {
                 gotsequenceid = AJTRUE;
                 table = ajStrTableNew(TABLEGUESS);
@@ -994,23 +994,23 @@ static void eprimer3_report(AjPFile outfile, const AjPStr output,
         ** resulting primer are interleaved
         */
 
-        keytokenhandle = ajStrTokenInit(line, equals);
+        keytokenhandle = ajStrTokenNewC(line, equals);
 
         key = ajStrNew();
-        ajStrToken(&key, &keytokenhandle,NULL);
+        ajStrTokenNextParse(&keytokenhandle, &key);
 
         value = ajStrNew();
-        ajStrToken(&value, &keytokenhandle,NULL);
+        ajStrTokenNextParse(&keytokenhandle, &value);
 
         ajDebug("key=%S\tvalue=%S\n", key, value);
 
         ajTablePut(table,(const void *)key, (void *)value);
 
-        ajStrTokenClear(&keytokenhandle);
+        ajStrTokenDel(&keytokenhandle);
     }
 
     ajStrDel(&line);
-    ajStrTokenClear(&linetokenhandle);
+    ajStrTokenDel(&linetokenhandle);
     ajStrTableFree(&table);
 
     return;
@@ -1079,60 +1079,60 @@ static void eprimer3_output_report(AjPFile outfile, const AjPTable table,
      */
   
     /* check for errors */
-    ajStrAssC(&key, "PRIMER_ERROR");
+    ajStrAssignC(&key, "PRIMER_ERROR");
     error =(AjPStr)ajTableGet(table,(const void*)key);
     if(error != NULL)
         ajErr("%S", error);
 
-    ajStrAssC(&key, "PRIMER_WARNING");
+    ajStrAssignC(&key, "PRIMER_WARNING");
     error = (AjPStr)ajTableGet(table,(const void*)key);
     if(error != NULL)
         ajWarn("%S", error);
 
   
     /* get the sequence id */
-    ajStrAssC(&key, "PRIMER_SEQUENCE_ID");
+    ajStrAssignC(&key, "PRIMER_SEQUENCE_ID");
     seqid = (AjPStr)ajTableGet(table,(const void*)key);
     ajFmtPrintF(outfile, "\n# EPRIMER3 RESULTS FOR %S\n\n", seqid);
   
     /* get information on the analysis */
-    ajStrAssC(&key, "PRIMER_LEFT_EXPLAIN");
+    ajStrAssignC(&key, "PRIMER_LEFT_EXPLAIN");
     explain = (AjPStr)ajTableGet(table,(const void*)key);
 
     if(explain != NULL)
     {
-        ajStrAssS(&explainstr, explain);
-        ajStrSubstituteCC(&explainstr, ",", "\n#");
+        ajStrAssignS(&explainstr, explain);
+        ajStrExchangeCC(&explainstr, ",", "\n#");
         ajFmtPrintF(outfile, "# FORWARD PRIMER STATISTICS:\n# %S\n\n",
                     explainstr);
     }
-    ajStrAssC(&key, "PRIMER_RIGHT_EXPLAIN");
+    ajStrAssignC(&key, "PRIMER_RIGHT_EXPLAIN");
     explain = (AjPStr)ajTableGet(table,(const void*)key);
 
     if(explain != NULL)
     {
-        ajStrAssS(&explainstr, explain);
-        ajStrSubstituteCC(&explainstr, ",", "\n#");
+        ajStrAssignS(&explainstr, explain);
+        ajStrExchangeCC(&explainstr, ",", "\n#");
         ajFmtPrintF(outfile, "# REVERSE PRIMER STATISTICS:\n# %S\n\n",
                     explainstr);
     }
-    ajStrAssC(&key, "PRIMER_PAIR_EXPLAIN");
+    ajStrAssignC(&key, "PRIMER_PAIR_EXPLAIN");
     explain = (AjPStr)ajTableGet(table,(const void*)key);
 
     if(explain != NULL)
     {
-        ajStrAssS(&explainstr, explain);
-        ajStrSubstituteCC(&explainstr, ",", "\n#");
+        ajStrAssignS(&explainstr, explain);
+        ajStrExchangeCC(&explainstr, ",", "\n#");
         ajFmtPrintF(outfile, "# PRIMER PAIR STATISTICS:\n# %S\n\n",
                     explainstr);
     }
-    ajStrAssC(&key, "PRIMER_INTERNAL_OLIGO_EXPLAIN");
+    ajStrAssignC(&key, "PRIMER_INTERNAL_OLIGO_EXPLAIN");
     explain = (AjPStr)ajTableGet(table,(const void*)key);
 
     if(explain != NULL)
     {
-        ajStrAssS(&explainstr, explain);
-        ajStrSubstituteCC(&explainstr, ",", "\n#");
+        ajStrAssignS(&explainstr, explain);
+        ajStrExchangeCC(&explainstr, ",", "\n#");
         ajFmtPrintF(outfile, "# INTERNAL OLIGO STATISTICS:\n# %S\n\n",
                     explainstr);
     }
@@ -1212,19 +1212,19 @@ static AjPStr eprimer3_tableget(const char *key1, ajint number,
     AjPStr keynum  = NULL;
     AjPStr value   = NULL;
 
-    ajStrAssC(&fullkey, key1);
+    ajStrAssignC(&fullkey, key1);
 
     if(number > 0)
     {
-        ajStrAppC(&fullkey, "_");
+        ajStrAppendC(&fullkey, "_");
         ajStrFromInt(&keynum, number);
-        ajStrApp(&fullkey, keynum);
+        ajStrAppendS(&fullkey, keynum);
     }
 
     if(strcmp(key2, ""))
-        ajStrAppC(&fullkey, "_");
+        ajStrAppendC(&fullkey, "_");
 
-    ajStrAppC(&fullkey, key2);
+    ajStrAppendC(&fullkey, key2);
     ajDebug("Constructed key=%S\n", fullkey);
     value =(AjPStr)ajTableGet(table,(const void*)fullkey);
 
@@ -1268,17 +1268,17 @@ static void eprimer3_write_primer(AjPFile outfile, const char *tag,
     AjPStr lenstr = NULL;
     ajint comma;
 
-    if(ajStrLen(pos))
+    if(ajStrGetLen(pos))
     {
         ajStrToFloat(tm, &tmfloat);
         ajStrToFloat(gc, &gcfloat);
         comma = ajStrFindC(pos, ",");
-        ajStrAssS(&start, pos);
-        ajStrCut(&start, comma, ajStrLen(start)-1);
+        ajStrAssignS(&start, pos);
+        ajStrCutRange(&start, comma, ajStrGetLen(start)-1);
         ajStrToInt(start, &startint);
         startint += begin;
-        ajStrAssS(&lenstr, pos);
-        ajStrCut(&lenstr, 0, comma);
+        ajStrAssignS(&lenstr, pos);
+        ajStrCutRange(&lenstr, 0, comma);
         ajStrToInt(lenstr, &lenint);
         if(rev)
             startint = startint - lenint + 1;

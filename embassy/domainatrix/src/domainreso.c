@@ -168,7 +168,7 @@ int main(ajint argc, char **argv)
 	{
 	    /* assign ID to list. */
 	    temp2=ajStrNew();
-	    ajStrAssS(&temp2, pdb->Pdb);
+	    ajStrAssignS(&temp2, pdb->Pdb);
 	    ajListPush(entry, (AjPStr) temp2);
 	}        
 	
@@ -247,7 +247,7 @@ static ajint domainreso_StrBinSearchDomain(AjPStr id,
     {
         m = (l+h)>>1;
 
-        if((c=ajStrCmpCase(id, arr[m])) < 0)
+        if((c=ajStrCmpCaseS(id, arr[m])) < 0)
 	    h = m-1;
         else if(c>0) 
 	    l = m+1;
@@ -282,7 +282,7 @@ static ajint domainreso_StrComp(const void *str1,
     p = (*(AjPStr*)str1);
     q = (*(AjPStr*)str2);
     
-    return ajStrCmpO(p, q);
+    return ajStrCmpS(p, q);
 }
 
 

@@ -188,7 +188,7 @@ int scanned;
     probcat = (double *)Malloc(categs * sizeof(double));
     rate    = (double *)Malloc(categs * sizeof(double));
     valstr = ajAcdGetString("catvals");
-    strcpy(line,ajStrStr(valstr));
+    strcpy(line,ajStrGetPtr(valstr));
     done1 = true;
     for (i = 0; i < categs; i++){
       scanned = sscanf(line,"%lf %[^\n]", &rate[i],rest);
@@ -207,7 +207,7 @@ int scanned;
 
     probsum = 0.0;
     valstr = ajAcdGetString("catprob");
-    strcpy(line,ajStrStr(valstr));
+    strcpy(line,ajStrGetPtr(valstr));
     done1 = true;
     for (i = 0; i < categs; i++){
       scanned = sscanf(line,"%lf %[^\n]", &probcat[i],rest);
@@ -293,8 +293,8 @@ void emboss_inputdata(){
     fprintf(outfile, "---------\n\n");
   }
   for(i=0;i<numsp;i++){
-    ilen = ajStrLen(ajSeqsetName(seqset, i));
-    strncpy(curtree.nodep[i]->nayme,ajStrStr(ajSeqsetName(seqset, i)),ilen);
+    ilen = ajStrGetLen(ajSeqsetName(seqset, i));
+    strncpy(curtree.nodep[i]->nayme,ajStrGetPtr(ajSeqsetName(seqset, i)),ilen);
     for (j=ilen;j<nmlngth;j++)
 	curtree.nodep[i]->nayme[j] = ' ';
     strncpy(&y[i][0],ajSeqsetSeq(seqset, i),sites);

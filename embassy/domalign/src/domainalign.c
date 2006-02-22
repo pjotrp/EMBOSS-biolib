@@ -223,26 +223,26 @@ int main(int argc, char **argv)
 
     /* Initialise random number generator for naming of temp. files. */
     ajRandomSeed();
-    ajStrAssC(&name, ajFileTempName(NULL));
+    ajStrAssignC(&name, ajFileTempName(NULL));
 
 
     /* Create names for temp. files. */
-    ajStrAssS(&log, name);	
-    ajStrAppC(&log, ".log");
-    ajStrAssS(&dom, name);	
-    ajStrAppC(&dom, ".dom");
-    ajStrAssS(&set, name);	
-    ajStrAppC(&set, ".set");
-    ajStrAssS(&scan, name);	
-    ajStrAppC(&scan, ".scan");
-    ajStrAssS(&sort, name);	
-    ajStrAppC(&sort, ".sort");
-    ajStrAssS(&out, name);	
-    ajStrAppC(&out, ".out");
+    ajStrAssignS(&log, name);	
+    ajStrAppendC(&log, ".log");
+    ajStrAssignS(&dom, name);	
+    ajStrAppendC(&dom, ".dom");
+    ajStrAssignS(&set, name);	
+    ajStrAppendC(&set, ".set");
+    ajStrAssignS(&scan, name);	
+    ajStrAppendC(&scan, ".scan");
+    ajStrAssignS(&sort, name);	
+    ajStrAppendC(&sort, ".sort");
+    ajStrAssignS(&out, name);	
+    ajStrAppendC(&out, ".out");
 
 
     /* Initialise last_node with something that is not in SCOP. */
-    ajStrAssC(&last_node,"!!!!!");
+    ajStrAssignC(&last_node,"!!!!!");
     
     
 
@@ -338,7 +338,7 @@ int main(int argc, char **argv)
 		nset = 0;
 
 		/* Clear TCOFFEE argument. */    
-		ajStrClear(&pdbnames);
+		ajStrSetClear(&pdbnames);
 	    }	
 	    
 	    
@@ -347,8 +347,8 @@ int main(int argc, char **argv)
 	    {
 		if(!(domf=ajFileNewOut(dom)))
 		    ajFatal("Could not open domain file\n");
-		ajStrAssS(&temp, ajDomainGetId(domain));
-		ajStrToLower(&temp);
+		ajStrAssignS(&temp, ajDomainGetId(domain));
+		ajStrFmtLower(&temp);
 		ajFmtPrintF(domf, "%S %S { ALL }\n", temp, temp);
 		ajFileClose(&domf);	
 	    }
@@ -367,8 +367,8 @@ int main(int argc, char **argv)
 	}
 	
 						
-	ajStrAssS(&temp, ajDomainGetId(domain));
-	ajStrToLower(&temp);
+	ajStrAssignS(&temp, ajDomainGetId(domain));
+	ajStrFmtLower(&temp);
 
 	/* Write STAMP domain set file. */
 	if(moden == MODE_STAMP)
@@ -376,11 +376,11 @@ int main(int argc, char **argv)
 	/* Write TCOFFEE argument. */    
 	else
 	{
-	    ajStrApp(&pdbnames, ajDirName(pdb));
-	    ajStrApp(&pdbnames, temp);
-	    ajStrAppC(&pdbnames, ".");
-	    ajStrApp(&pdbnames, ajDirExt(pdb));
-	    ajStrAppC(&pdbnames, " ");
+	    ajStrAppendS(&pdbnames, ajDirName(pdb));
+	    ajStrAppendS(&pdbnames, temp);
+	    ajStrAppendC(&pdbnames, ".");
+	    ajStrAppendS(&pdbnames, ajDirExt(pdb));
+	    ajStrAppendC(&pdbnames, " ");
 	}
 	
 	ajDomainDel(&domain);
@@ -463,8 +463,8 @@ int main(int argc, char **argv)
     ajSystem(temp);
     ajFmtPrintS(&temp, "rm %S", out);
     ajSystem(temp);
-    ajStrAssS(&temp, name);	
-    ajStrAppC(&temp, ".mat");
+    ajStrAssignS(&temp, name);	
+    ajStrAppendC(&temp, ".mat");
     ajFmtPrintS(&temp1, "rm %S", temp);
     ajSystem(temp1);
     
@@ -642,7 +642,7 @@ static void domainalign_ProcessStampFile(AjPStr in,
     while((ajFileReadLine(inf,&line)))
     {
 	/* ajFileReadLine will trim the tailing \n. */
-	if((ajStrChar(line, 1)=='\0'))
+	if((ajStrGetCharPos(line, 1)=='\0'))
 	{
 	    ok = ajTrue;
 	    break;
@@ -720,7 +720,7 @@ static void domainalign_ProcessStampFile(AjPStr in,
 	while((ajFileReadLine(inf,&line)))
 	{
 	    /* Increment counter for block of file. */
-	    if((ajStrChar(line, 1)=='\0'))
+	    if((ajStrGetCharPos(line, 1)=='\0'))
 	    {
 		blk++;
 		if(blk==4)
@@ -743,15 +743,15 @@ static void domainalign_ProcessStampFile(AjPStr in,
 		       of the domain identifier
 		       code in. */
 		    ajFmtScanS(line, "%S", &temp1);
-		    ajStrAssSub(&temp2, temp1, 0, 6);
+		    ajStrAssignSubS(&temp2, temp1, 0, 6);
 
 
 		    /* Read the sequence. */
-		    ajStrAssSub(&temp3, line, 13, 69);
-		    ajStrConvertCC(&temp3, " ", "X");
+		    ajStrAssignSubS(&temp3, line, 13, 69);
+		    ajStrExchangeSetCC(&temp3, " ", "X");
 		    ajFmtPrintF(logf, "Replaced ' ' in STAMP alignment "
 				"with 'X'\n");
-		    ajStrToUpper(&temp3);
+		    ajStrFmtUpper(&temp3);
 		
 
 		    /* Write domain id code and sequence out. */
@@ -770,7 +770,7 @@ static void domainalign_ProcessStampFile(AjPStr in,
 		if(ajStrPrefixC(line,"Post"))
 		{
 		    /* Read the sequence. */
-		    ajStrAssSub(&temp3, line, 13, 69);
+		    ajStrAssignSubS(&temp3, line, 13, 69);
 
 		    /* Write post similar line out. */
 		    ajFmtPrintF(outf,"%-15s%7s %S\n","# Post_similar", " ",
@@ -830,42 +830,42 @@ static void domainalign_writelast(AjPDomain domain,
 {
     if(noden==1) 
     {
-	ajStrAssS(last_node, domain->Scop->Class);
+	ajStrAssignS(last_node, domain->Scop->Class);
 	*last_nodeid = domain->Scop->Sunid_Class;
     }		       
     else if (noden==2)
     {
-	ajStrAssS(last_node, domain->Scop->Fold);
+	ajStrAssignS(last_node, domain->Scop->Fold);
 	*last_nodeid = domain->Scop->Sunid_Fold;
     }
     else if (noden==3)
     {
-	ajStrAssS(last_node, domain->Scop->Superfamily);
+	ajStrAssignS(last_node, domain->Scop->Superfamily);
 	*last_nodeid = domain->Scop->Sunid_Superfamily;
     }
     else if (noden==4)
     {
-	ajStrAssS(last_node, domain->Scop->Family);
+	ajStrAssignS(last_node, domain->Scop->Family);
 	*last_nodeid = domain->Scop->Sunid_Family;
     } 	
     else if (noden==5)
     {
-	ajStrAssS(last_node, domain->Cath->Class);
+	ajStrAssignS(last_node, domain->Cath->Class);
 	*last_nodeid = domain->Cath->Class_Id ;
     } 
     else if (noden==6)
     {
-	ajStrAssS(last_node, domain->Cath->Architecture);
+	ajStrAssignS(last_node, domain->Cath->Architecture);
 	*last_nodeid = domain->Cath->Arch_Id;
     } 
     else if (noden==7)
     {
-	ajStrAssS(last_node, domain->Cath->Topology);
+	ajStrAssignS(last_node, domain->Cath->Topology);
 	*last_nodeid = domain->Cath->Topology_Id;
     } 
     else if (noden==8)
     {
-	ajStrAssS(last_node, domain->Cath->Superfamily);
+	ajStrAssignS(last_node, domain->Cath->Superfamily);
 	*last_nodeid = domain->Cath->Superfamily_Id;
     } 
     else if (noden==9)
@@ -923,15 +923,15 @@ static void domainalign_writeid(AjPDomain domain,
     else if (noden==9)
 	ajStrFromInt(&temp, domain->Cath->Family_Id);
 
-    ajStrAssS(align, temp);	
-    ajStrInsert(align, 0, ajDirName(daf));	
-    ajStrAppC(align, ".");
-    ajStrApp(align, ajDirExt(daf));
+    ajStrAssignS(align, temp);	
+    ajStrInsertS(align, 0, ajDirName(daf));	
+    ajStrAppendC(align, ".");
+    ajStrAppendS(align, ajDirExt(daf));
 
-    ajStrAssS(alignc, temp);	
-    ajStrInsert(alignc, 0, ajDirName(super));	
-    ajStrAppC(alignc, ".");
-    ajStrApp(alignc, ajDirExt(super));
+    ajStrAssignS(alignc, temp);	
+    ajStrInsertS(alignc, 0, ajDirName(super));	
+    ajStrAppendC(alignc, ".");
+    ajStrAppendS(alignc, ajDirExt(super));
 
     ajStrDel(&temp);
     return;
@@ -1052,24 +1052,24 @@ static void domainalign_stamp(AjPDomain prevdomain,
     ajFmtPrintS(&exec,	"\nstamp -l %S -s -n 2 -slide 5 -prefix %S -d %S\n", 
 		dom, name, set);
     ajFmtPrint("%S\n", exec);
-    system(ajStrStr(exec));  
+    system(ajStrGetPtr(exec));  
 
 
     ajFmtPrintS(&exec, "\nsorttrans -f %S -s Sc 2.5 > %S\n", 
 		scan, sort);
     ajFmtPrint("%S\n", exec);
-    system(ajStrStr(exec));  
+    system(ajStrGetPtr(exec));  
 
     ajFmtPrintS(&exec, "\nstamp -l %S -prefix %S > %S\n", 
 		sort, name, log);
     ajFmtPrint("%S\n", exec);
-    system(ajStrStr(exec));  
+    system(ajStrGetPtr(exec));  
 
 	
     ajFmtPrintS(&exec, "\ntransform -f %S -g  -o %S\n", 
 		sort, alignc);
     ajFmtPrint("%S\n", exec);
-    system(ajStrStr(exec));  
+    system(ajStrGetPtr(exec));  
     
     
     /* Count the number of clusters in the log file. */
@@ -1087,14 +1087,14 @@ static void domainalign_stamp(AjPDomain prevdomain,
     ajFmtPrintS(&exec,"poststamp -f %S.%d -min 0.5\n",
 		name, ncluster);
     ajFmtPrint("%S\n", exec);
-    system(ajStrStr(exec));
+    system(ajStrGetPtr(exec));
     
     
     /* Call STAMP ... convert block format alignment into clustal format. */
     ajFmtPrintS(&exec,"ver2hor -f %S.%d.post > %S\n",
 		name, ncluster, out); 
     ajFmtPrint("%S\n", exec);
-    system(ajStrStr(exec));
+    system(ajStrGetPtr(exec));
     
     
     /* Process STAMP alignment file and generate alignment file for output. */
@@ -1159,7 +1159,7 @@ static void domainalign_tcoffee(AjPDomain domain,
 
     ajFmtPrintS(&exec,"t_coffee -in %S sap_pair > %S", pdbnames, in);
     ajFmtPrint("%S\n", exec);
-    system(ajStrStr(exec));  
+    system(ajStrGetPtr(exec));  
 
     /* Process tcofee alignment file and generate alignment file 
        for output. */
@@ -1271,14 +1271,14 @@ static void domainalign_ProcessTcoffeeFile(AjPStr in,
     /*Ignore everything up to first line beginning with 'Number'*/
     while((ajFileReadLine(inf,&line)))
         /* ajFileReadLine will trim the tailing \n. */
-        if((ajStrChar(line, 1)=='\0'))
+        if((ajStrGetCharPos(line, 1)=='\0'))
             break;
 
     
     /* Read rest of input file. */
     while((ajFileReadLine(inf,&line)))
     {
-      if((ajStrChar(line, 1)=='\0'))
+      if((ajStrGetCharPos(line, 1)=='\0'))
         continue; 
         
        /* Print the number line out as it is. */
@@ -1291,13 +1291,13 @@ static void domainalign_ProcessTcoffeeFile(AjPStr in,
         {
                /* Read only the 7 characters of the domain identifier code in. */
                ajFmtScanS(line, "%S %S", &temp1,&temp3);
-                 ajStrAssSub(&temp2, temp1, 0, 6);
+                 ajStrAssignSubS(&temp2, temp1, 0, 6);
   
   
          /* Read the sequence
-                   ajStrAssSub(&temp3, line, 13, 69);
-                   ajStrConvertCC(&temp3, " ", "X");
-                   ajStrToUpper(&temp3);*/
+                   ajStrAssignSubS(&temp3, line, 13, 69);
+                   ajStrExchangeSetCC(&temp3, " ", "X");
+                   ajStrFmtUpper(&temp3);*/
                 
   
                    /* Write domain id code and sequence out. */
@@ -1349,23 +1349,23 @@ static void domainalign_keepsinglets(AjPDomain domain,
 
     domainalign_writesid(domain, noden, &temp2);
     
-    if(MAJSTRLEN(ajDomainGetSeqPdb(domain)))
+    if(MAJSTRGETLEN(ajDomainGetSeqPdb(domain)))
     {
 	/* Write Hit object. */
 	hitlist = embHitlistNew(1);
 	hitlist->Type = domain->Type;
-	ajStrAssS(&hitlist->hits[0]->Seq, ajDomainGetSeqPdb(domain));
-	ajStrAssS(&hitlist->hits[0]->Acc, ajDomainGetAcc(domain));
-	ajStrAssS(&hitlist->hits[0]->Spr, ajDomainGetSpr(domain));
-	ajStrAssS(&hitlist->hits[0]->Dom, ajDomainGetId(domain));
+	ajStrAssignS(&hitlist->hits[0]->Seq, ajDomainGetSeqPdb(domain));
+	ajStrAssignS(&hitlist->hits[0]->Acc, ajDomainGetAcc(domain));
+	ajStrAssignS(&hitlist->hits[0]->Spr, ajDomainGetSpr(domain));
+	ajStrAssignS(&hitlist->hits[0]->Dom, ajDomainGetId(domain));
 	
 
 	if((domain->Type == ajSCOP))
 	{
-	    ajStrAssS(&hitlist->Class, domain->Scop->Class);
-	    ajStrAssS(&hitlist->Fold, domain->Scop->Fold);
-	    ajStrAssS(&hitlist->Superfamily, domain->Scop->Superfamily);
-	    ajStrAssS(&hitlist->Family, domain->Scop->Family);
+	    ajStrAssignS(&hitlist->Class, domain->Scop->Class);
+	    ajStrAssignS(&hitlist->Fold, domain->Scop->Fold);
+	    ajStrAssignS(&hitlist->Superfamily, domain->Scop->Superfamily);
+	    ajStrAssignS(&hitlist->Family, domain->Scop->Family);
 	    if(noden==4)
 		hitlist->Sunid_Family = domain->Scop->Sunid_Family;
 	    else if(noden==3)
@@ -1377,10 +1377,10 @@ static void domainalign_keepsinglets(AjPDomain domain,
 	}
 	else
 	{	
-	    ajStrAssS(&hitlist->Class, domain->Cath->Class);
-	    ajStrAssS(&hitlist->Architecture, domain->Cath->Architecture);
-	    ajStrAssS(&hitlist->Topology, domain->Cath->Topology);
-	    ajStrAssS(&hitlist->Superfamily, domain->Cath->Superfamily);
+	    ajStrAssignS(&hitlist->Class, domain->Cath->Class);
+	    ajStrAssignS(&hitlist->Architecture, domain->Cath->Architecture);
+	    ajStrAssignS(&hitlist->Topology, domain->Cath->Topology);
+	    ajStrAssignS(&hitlist->Superfamily, domain->Cath->Superfamily);
 
 	    if(noden==9)
 		hitlist->Sunid_Family = domain->Cath->Family_Id;

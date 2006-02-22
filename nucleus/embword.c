@@ -69,7 +69,7 @@ static void     wordVFree(const void *key, void **count, void *cl);
 
 static ajint wordCmpStr(const void *x, const void *y)
 {
-    return ajStrNCmpCaseCC((char *)x, (char *)y, wordLength);
+    return ajCharCmpCaseLen((char *)x, (char *)y, wordLength);
 }
 
 
@@ -469,10 +469,10 @@ void embWordMatchListConvToFeat(const AjPList list,
     if(!*tab2)
 	*tab2 = ajFeattableNewSeq(seq2);
     
-    ajStrAssC(&source,"wordmatch");
-    ajStrAssC(&type,"misc_feature");
+    ajStrAssignC(&source,"wordmatch");
+    ajStrAssignC(&type,"misc_feature");
     score = 1.0;
-    ajStrAssC(&tag,"note");
+    ajStrAssignC(&tag,"note");
     
     iter = ajListIterRead(list);
     while(ajListIterMore(iter))
@@ -1557,7 +1557,7 @@ void embWordUnused(void)
 
 
 
-/* embWordExit ****************************************************************
+/* @func embWordExit **********************************************************
 **
 ** Cleanup word matching indexing internals on exit
 **

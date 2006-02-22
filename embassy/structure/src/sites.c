@@ -408,7 +408,7 @@ int main(ajint argc, char **argv)
 	if((prot_fptr=ajFileNewIn(cp_file))==NULL) 
 	{
 	    ajFmtPrintS(&msg, "Could not open for reading %S", cp_file );
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
 	    ajStrDel(&cp_file);	
 	    continue;	    
 	}
@@ -418,7 +418,7 @@ int main(ajint argc, char **argv)
 	{
 	    /* No need to free memory for pdb if CpdbRead fails */
 	    ajFmtPrintS(&msg, "ERROR file read error %S", cp_file);
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
 	    ajStrDel(&cp_file);	
 	    ajFileClose(&prot_fptr);	     
 	    continue;
@@ -489,7 +489,7 @@ int main(ajint argc, char **argv)
 		ajIntPut(&arr_nres, cnt_chains, pdb->Chains[i]->Nres);
 		++cnt_chains;
 		tmpseq = ajStrNew();
-		ajStrAssS(&tmpseq, pdb->Chains[i]->Seq);
+		ajStrAssignS(&tmpseq, pdb->Chains[i]->Seq);
 		ajListPushApp(list_seqs,   tmpseq); 
 
 		siz_atomarr=ajListToArray(pdb->Chains[i]->Atoms, 
@@ -527,10 +527,10 @@ int main(ajint argc, char **argv)
 	    while((pdbscopid=ajListIterNext(iter_scopids))) 
 	    {	  
 		dom_co_fname=ajStrNew();
-		ajStrAssS(&dom_co_fname, ajDirName(dom));
-		ajStrApp(&dom_co_fname, pdbscopid);
-		ajStrAppC(&dom_co_fname, ".");
-		ajStrApp(&dom_co_fname, ajDirExt(dom));
+		ajStrAssignS(&dom_co_fname, ajDirName(dom));
+		ajStrAppendS(&dom_co_fname, pdbscopid);
+		ajStrAppendC(&dom_co_fname, ".");
+		ajStrAppendS(&dom_co_fname, ajDirExt(dom));
 		ajListstrPushApp(list_domfnames, dom_co_fname);
 	    }
 	    ajListIterFree(&iter_scopids);
@@ -546,14 +546,14 @@ int main(ajint argc, char **argv)
 		{
 		    ajFmtPrintS(&msg, "Could not open for reading: %S", 
 				pdbscop_fname);
-		    ajWarn(ajStrStr(msg));
+		    ajWarn(ajStrGetPtr(msg));
 		    continue;
 		}
 		/* Write pdb object */
 		if(!(pdbdom = ajPdbReadFirstModelNew(dom_fptr)))
 		{
 		    ajFmtPrintS(&msg, "ERROR file read error - ajPdbReadFirstModelNew");
-		    ajWarn(ajStrStr(msg));
+		    ajWarn(ajStrGetPtr(msg));
 		    ajFileClose(&dom_fptr);
 		    continue;	
 		}
@@ -584,7 +584,7 @@ int main(ajint argc, char **argv)
 		++cnt_chains;
 		
 		tmpseq = ajStrNew();
-		ajStrAssS(&tmpseq, pdbdom_ptr->Chains[0]->Seq);
+		ajStrAssignS(&tmpseq, pdbdom_ptr->Chains[0]->Seq);
 		ajListPushApp(list_seqs,   tmpseq);  
 
 		atomarr=NULL;
@@ -746,8 +746,8 @@ static AjBool      sites_DichetToDbase(AjPDbase *dbase, AjPHet hetDic)
     }
   for(i=0;i<(hetDic)->n;++i)
     {
-      ajStrAssS(&(*dbase)->entries[i]->abv, hetDic->entries[i]->abv);
-      ajStrAssS(&(*dbase)->entries[i]->ful, hetDic->entries[i]->ful);
+      ajStrAssignS(&(*dbase)->entries[i]->abv, hetDic->entries[i]->abv);
+      ajStrAssignS(&(*dbase)->entries[i]->ful, hetDic->entries[i]->ful);
     }
 
   return ajTrue;
@@ -947,13 +947,13 @@ static AjBool      sites_HeterogenContacts(ajint entype,
 			{
 			  embScopToPdbid(scopidArr[scopctr-1], 
 					 &(cont_dataTemp)->pdb_name);
-			  ajStrAssS(&(cont_dataTemp)->scop_name, 
+			  ajStrAssignS(&(cont_dataTemp)->scop_name, 
 				    scopidArr[scopctr-1]);
 			}
 		      else
 			{
-			  ajStrAssC(&(cont_dataTemp)->scop_name, ".");
-			  ajStrAssS(&(cont_dataTemp)->pdb_name, 
+			  ajStrAssignC(&(cont_dataTemp)->scop_name, ".");
+			  ajStrAssignS(&(cont_dataTemp)->pdb_name, 
 				    scopidArr[scopctr-1]);
 			}
 
@@ -963,7 +963,7 @@ static AjBool      sites_HeterogenContacts(ajint entype,
 
 
 		      (cont_dataTemp)->Nres = ajIntGet(arr_nres, scopctr-1);
-		      ajStrAssS(&(cont_dataTemp)->Seq, 
+		      ajStrAssignS(&(cont_dataTemp)->Seq, 
 				chainseqsArr[scopctr-1]); 
 
 
@@ -971,7 +971,7 @@ static AjBool      sites_HeterogenContacts(ajint entype,
 		      /* Check that the group numbers have been 
 			 assigned correctly here, temp can be used in place 
 			 of het_atm[j]->Id3 for diagnostics */
-		      ajStrAssS(&(cont_dataTemp)->het_name, het_atm[j]->Id3);
+		      ajStrAssignS(&(cont_dataTemp)->het_name, het_atm[j]->Id3);
 
 		      
 		      if(embAtomInContact(dom_atm[i], het_atm[j], dist_thresh,
@@ -982,10 +982,10 @@ static AjBool      sites_HeterogenContacts(ajint entype,
 				   ((cont_dataTemp)->no_keyres)-1, 
 				   dom_atm[i]->Idx);
 			  tempaa=ajStrNew();
-			  ajStrAssS(&tempaa, dom_atm[i]->Id3);		      
+			  ajStrAssignS(&tempaa, dom_atm[i]->Id3);		      
 			  ajListPushApp(aaTempList, (void *) tempaa);
 			  tempres_pos2=ajStrNew();
-			  /* ajStrAssS(&tempres_pos2, dom_atm[i]->Pdb); */
+			  /* ajStrAssignS(&tempres_pos2, dom_atm[i]->Pdb); */
 			  ajListPushApp(res_pos2TempList, tempres_pos2);
 			  idx_tmp=dom_atm[i]->Idx;
 			  break; /* heterogen atoms array loop */
@@ -1023,7 +1023,7 @@ static AjBool      sites_HeterogenContacts(ajint entype,
   
   while(ajListPop(cont_dataList,(void **)&dom_cont))
       for(i=0; i<(*dbase)->n; i++) 
-	  if(ajStrMatch(dom_cont->het_name, (*dbase)->entries[i]->abv))
+	  if(ajStrMatchS(dom_cont->het_name, (*dbase)->entries[i]->abv))
 	      ajListPushApp((*dbase)->entries[i]->tmp, dom_cont);
   
   ajListDel(&cont_dataList);

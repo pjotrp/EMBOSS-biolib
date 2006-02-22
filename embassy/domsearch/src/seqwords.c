@@ -159,12 +159,12 @@ int main(int argc, char **argv)
 
 	/* Copy scop records from terms to hitlist structure. */
 	hitptr->Type = keyptr->Type;
-	ajStrAss(&hitptr->Class, keyptr->Class); 
-	ajStrAss(&hitptr->Architecture, keyptr->Architecture); 
-	ajStrAss(&hitptr->Topology, keyptr->Topology); 
-	ajStrAss(&hitptr->Fold, keyptr->Fold); 
-	ajStrAss(&hitptr->Superfamily, keyptr->Superfamily);
-	ajStrAss(&hitptr->Family, keyptr->Family);
+	ajStrAssignRef(&hitptr->Class, keyptr->Class); 
+	ajStrAssignRef(&hitptr->Architecture, keyptr->Architecture); 
+	ajStrAssignRef(&hitptr->Topology, keyptr->Topology); 
+	ajStrAssignRef(&hitptr->Fold, keyptr->Fold); 
+	ajStrAssignRef(&hitptr->Superfamily, keyptr->Superfamily);
+	ajStrAssignRef(&hitptr->Family, keyptr->Family);
 	
 
 	/* Write output file. */
@@ -304,62 +304,62 @@ static AjBool seqwords_TermsRead(AjPFile inf,
 	}
 	else if(ajStrPrefixC(line,"CL"))
 	{
-	    ajStrAssC(&(*thys)->Class,ajStrStr(line)+3);
-	    ajStrClean(&(*thys)->Class);
+	    ajStrAssignC(&(*thys)->Class,ajStrGetPtr(line)+3);
+	    ajStrRemoveWhite(&(*thys)->Class);
 	}
 	else if(ajStrPrefixC(line,"AR"))
 	{
-	    ajStrAssC(&(*thys)->Architecture,ajStrStr(line)+3);
-	    ajStrClean(&(*thys)->Architecture);
+	    ajStrAssignC(&(*thys)->Architecture,ajStrGetPtr(line)+3);
+	    ajStrRemoveWhite(&(*thys)->Architecture);
 	}
 	else if(ajStrPrefixC(line,"TP"))
 	{
-	    ajStrAssC(&(*thys)->Topology,ajStrStr(line)+3);
-	    ajStrClean(&(*thys)->Topology);
+	    ajStrAssignC(&(*thys)->Topology,ajStrGetPtr(line)+3);
+	    ajStrRemoveWhite(&(*thys)->Topology);
 	}
 	else if(ajStrPrefixC(line,"FO"))
 	{
-	    ajStrAssC(&(*thys)->Fold,ajStrStr(line)+3);
+	    ajStrAssignC(&(*thys)->Fold,ajStrGetPtr(line)+3);
 	    while(ajFileReadLine(inf,&line))
 	    {
 		if(ajStrPrefixC(line,"XX"))
 		    break;
-		ajStrAppC(&(*thys)->Fold,ajStrStr(line)+3);
+		ajStrAppendC(&(*thys)->Fold,ajStrGetPtr(line)+3);
 	    }
-	    ajStrClean(&(*thys)->Fold);
+	    ajStrRemoveWhite(&(*thys)->Fold);
 	}
 	else if(ajStrPrefixC(line,"SF"))
 	{
-	    ajStrAssC(&(*thys)->Superfamily,ajStrStr(line)+3);
+	    ajStrAssignC(&(*thys)->Superfamily,ajStrGetPtr(line)+3);
 	    while(ajFileReadLine(inf,&line))
 	    {
 		if(ajStrPrefixC(line,"XX"))
 		    break;
-		ajStrAppC(&(*thys)->Superfamily,ajStrStr(line)+3);
+		ajStrAppendC(&(*thys)->Superfamily,ajStrGetPtr(line)+3);
 	    }
-	    ajStrClean(&(*thys)->Superfamily);
+	    ajStrRemoveWhite(&(*thys)->Superfamily);
 	}
 	else if(ajStrPrefixC(line,"FA"))
 	{
-	    ajStrAssC(&(*thys)->Family,ajStrStr(line)+3);
+	    ajStrAssignC(&(*thys)->Family,ajStrGetPtr(line)+3);
 	    while(ajFileReadLine(inf,&line))
 	    {
 		if(ajStrPrefixC(line,"XX"))
 		    break;
-		ajStrAppC(&(*thys)->Family,ajStrStr(line)+3);
+		ajStrAppendC(&(*thys)->Family,ajStrGetPtr(line)+3);
 	    }
-	    ajStrClean(&(*thys)->Family);
+	    ajStrRemoveWhite(&(*thys)->Family);
 	}
 	else if(ajStrPrefixC(line,"TE")) 
 	{
 	    /* Copy and clean up term. */
 	    temp    = ajStrNew();
-	    ajStrAssC(&temp,ajStrStr(line)+3);
-	    ajStrClean(&temp);
+	    ajStrAssignC(&temp,ajStrGetPtr(line)+3);
+	    ajStrRemoveWhite(&temp);
 
 	    
 	    /* Append a leading and trailing space to search term*/
-	    ajStrAppK(&temp, ' ');
+	    ajStrAppendK(&temp, ' ');
 	    ajStrInsertC(&temp, 0, " ");
 
 	    
@@ -449,7 +449,7 @@ static AjBool seqwords_keysearch(AjPFile inf,
 	{
 	    /* Copy accesion number and remove the ';' from the end. */
 	    ajFmtScanS(line, "%*s %S", &id);
-	    ajStrSubstituteCC(&id, ";", "\0");
+	    ajStrExchangeCC(&id, ";", "\0");
 	    
 	    
 	    /* Reset flags & no. hits. */
@@ -469,14 +469,14 @@ static AjBool seqwords_keysearch(AjPFile inf,
 	     ** term, we must add a leading and trailing space to line.
 	     ** We must first remove punctation from the line to be parsed.
 	     */
-	    ajStrConvertCC(&line, ".,;:", "    ");
-	    ajStrAppK(&line, ' ');
+	    ajStrExchangeSetCC(&line, ".,;:", "    ");
+	    ajStrAppendK(&line, ' ');
 	    ajStrInsertC(&line, 0, " ");
 
 
 	    for (x = 0; x < terms->N; x++)
 		/* Search term is found. */
-		if((ajStrFindCase(line, terms->Keywords[x])!=-1))
+		if((ajStrFindCaseS(line, terms->Keywords[x])!=-1))
 		{	
 		    foundkw=ajTrue;
 		    break;
@@ -494,12 +494,12 @@ static AjBool seqwords_keysearch(AjPFile inf,
 	     ** term, we must add a  trailing space to line 
 	     ** We must first remove punctation from the line to be parsed.
 	     */
-	    ajStrConvertCC(&line, ".,;:", "    ");
-	    ajStrAppK(&line, ' ');
+	    ajStrExchangeSetCC(&line, ".,;:", "    ");
+	    ajStrAppendK(&line, ' ');
 	    
 
 	    for (x = 0; x < terms->N; x++)
-		if((ajStrFindCase(line, terms->Keywords[x])!=-1))
+		if((ajStrFindCaseS(line, terms->Keywords[x])!=-1))
 		{
 		    /* Search term is found. */
 		    foundft = ajTrue;
@@ -527,11 +527,11 @@ static AjBool seqwords_keysearch(AjPFile inf,
 	    /* Read the sequence into hitlist structure. */
 	    while((ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"//"))
 		/* Read sequence line into temp. */
-		ajStrAppC(&temp,ajStrStr(line)+3);
+		ajStrAppendC(&temp,ajStrGetPtr(line)+3);
  
 
 	    /* Clean up temp. sequence. */
-	    ajStrCleanWhite(&temp);
+	    ajStrRemoveWhiteExcess(&temp);
 
 
 	    /*Priority is given to domain (rather than full length) sequence. */
@@ -546,7 +546,7 @@ static AjBool seqwords_keysearch(AjPFile inf,
 		    /* Reallocate memory for array of hits in hitlist structure. */
 		    AJCRESIZE((*hits)->hits, (*hits)->N);
 		    (*hits)->hits[(*hits)->N-1]=embHitNew();
-		    ajStrAssC(&(*hits)->hits[(*hits)->N-1]->Model, "KEYWORD");
+		    ajStrAssignC(&(*hits)->hits[(*hits)->N-1]->Model, "KEYWORD");
 		    
 
 		    /* Assign start and end of hit. */
@@ -555,13 +555,13 @@ static AjBool seqwords_keysearch(AjPFile inf,
 				
 
 		    /* Extract sequence within specified range */
-		    ajStrAssSub(&(*hits)->hits[(*hits)->N - 1]->Seq, temp, 
+		    ajStrAssignSubS(&(*hits)->hits[(*hits)->N - 1]->Seq, temp, 
 				(*hits)->hits[(*hits)->N - 1]->Start - 1, 
 				(*hits)->hits[(*hits)->N - 1]->End - 1);
 		    
 
 		    /* Put id into structure */
-		    ajStrAss(&(*hits)->hits[(*hits)->N - 1]->Acc, id);
+		    ajStrAssignRef(&(*hits)->hits[(*hits)->N - 1]->Acc, id);
 		}
 	    }
 	    else
@@ -573,17 +573,17 @@ static AjBool seqwords_keysearch(AjPFile inf,
 		/* Reallocate memory for array of hits in hitlist structure */
 		AJCRESIZE((*hits)->hits, (*hits)->N);
 		(*hits)->hits[(*hits)->N-1]=embHitNew();
-		ajStrAssC(&(*hits)->hits[(*hits)->N-1]->Model, "KEYWORD");				    
+		ajStrAssignC(&(*hits)->hits[(*hits)->N-1]->Model, "KEYWORD");				    
 
 		/* Extract whole sequence */
-		ajStrAss(&(*hits)->hits[(*hits)->N - 1]->Seq, temp); 
+		ajStrAssignRef(&(*hits)->hits[(*hits)->N - 1]->Seq, temp); 
 		(*hits)->hits[(*hits)->N - 1]->Start = 1; 
 		(*hits)->hits[(*hits)->N - 1]->End =
-		    ajStrLen((*hits)->hits[(*hits)->N - 1]->Seq); 
+		    ajStrGetLen((*hits)->hits[(*hits)->N - 1]->Seq); 
 
 
 		/* Put id into structure */
-		ajStrAss(&(*hits)->hits[(*hits)->N - 1]->Acc, id);
+		ajStrAssignRef(&(*hits)->hits[(*hits)->N - 1]->Acc, id);
 	    }
 
 	    /* Free temp. sequence */

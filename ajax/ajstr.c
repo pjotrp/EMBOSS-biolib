@@ -288,7 +288,7 @@ char* ajCharNewResS(const AjPStr str, size_t size)
 
 
 /* @obsolete ajCharNewLS
-** @rename ajCharNewResS
+** @replace ajStrNewResS (1,2/2,1)
 */
 
 char __deprecated * ajCharNewLS(size_t size, const AjPStr thys) {
@@ -518,6 +518,9 @@ AjBool ajCharMatchCaseC(const char* txt, const char* txt2)
 
     cp = txt;
     cq = txt2;
+
+    if(!*cp && !*cq)
+	return ajTrue;
 
     if(!*cp || !*cq)
 	return ajFalse;
@@ -1733,11 +1736,13 @@ static AjPStr strNew(size_t size)
 ** @fdata     [AjPStr]
 ** @fnote     Return type could be standardised.
 **
-** @nam3rule  Del    Destroy (free) an existing string.
+** @nam3rule  Del       Destroy (free) an existing string.
+** @nam3rule  Delarray  Destroy (free) an array of strings
 ** @nam4rule  DelStatic Destroy (clear) a string without freeing memory
 **                      to save reallocation of static string variables
 ** 
-** @argrule   * Pstr [AjPStr*]
+** @argrule   Del Pstr [AjPStr*]
+** @argrule   Delarray PPstr [AjPStr**]
 ** 
 ** @valrule   * [void]
 ** @valrule   DelStatic [AjBool] True if the string still exists as empty
@@ -1947,8 +1952,6 @@ AjBool ajStrAssignC(AjPStr* Pstr, const char* txt)
     ajint i;
 
     if (!txt) {
-	ajUtilCatch();
-	ajDebug("ajStrAssignC source text is NULL\n");
 	*Pstr = ajStrNewResLenC("", 1, 0);
     }
 
@@ -2030,8 +2033,6 @@ AjBool ajStrAssignS(AjPStr* Pstr, const AjPStr str)
 
     if(!str)
     {
-	ajUtilCatch();
-	ajDebug("ajStrAssign source string NULL\n");
 	return ajStrAssignC(Pstr, "");
     }
 
@@ -2212,7 +2213,7 @@ AjBool ajStrAssignRef(AjPStr* Pstr, AjPStr refstr)
 }
 
 /* @obsolete ajStrCopy
-** @rename ajStrAssignref
+** @rename ajStrAssignRef
 */
 
 AjBool __deprecated ajStrCopy(AjPStr* pthis, AjPStr str)
@@ -2562,7 +2563,7 @@ AjBool ajStrAppendS(AjPStr* Pstr, const AjPStr str)
     ajint j;
 
     if(!str) {
-("ajStrAppend source string is NULL");
+	ajFatal("ajStrAppend source string is NULL");
     }
 
     thys = *Pstr;
@@ -2880,7 +2881,7 @@ AjBool ajStrInsertS(AjPStr* Pstr, ajint pos, const AjPStr str )
 }
 
 /* @obsolete ajStrInsert
-** @replace ajStrInsertS (1,2,3/1,3,2)
+** @rename ajStrInsertS
 */
 
 AjBool __deprecated ajStrInsert(AjPStr* Pstr, ajint pos, const AjPStr str )
@@ -3347,6 +3348,13 @@ AjBool ajStrCutEnd(AjPStr* Pstr, size_t len)
 
     thys = ajStrGetuniqueStr(Pstr);
 
+    if(!len)
+	return ajTrue;
+
+    if(len < 0)
+	ajFatal("ajStrCutEnd called with negative length '%d' to be cut",
+		len);
+
     if(len > thys->Len)
 	thys->Len = 0;
     else
@@ -3437,6 +3445,13 @@ AjBool ajStrCutStart(AjPStr* Pstr, size_t len)
     AjPStr thys;
 
     thys = ajStrGetuniqueStr(Pstr);
+
+    if(!len)
+	return ajTrue;
+
+    if(len < 0)
+	ajFatal("ajStrCutStart called with negative length '%d' to be cut",
+		len);
 
     if(len > thys->Len)
 	thys->Len = 0;
@@ -5439,12 +5454,12 @@ AjBool ajStrIsWild(const AjPStr str)
 
 /* @func ajStrIsWord **********************************************************
 **
-** Test whether a string contains no no white space characters. 
+** Test whether a string contains no white space characters. 
 **
-** Test if defined by isalnum in the C RTL.
+** Test is defined by isspace in the C RTL.
 **
 ** @param [r] str [const AjPStr] String
-** @return [AjBool] ajTrue if the string has no wite space
+** @return [AjBool] ajTrue if the string has no white space
 ** @cre an empty string returns ajFalse
 ** @@
 ******************************************************************************/
@@ -5981,7 +5996,7 @@ char* ajStrGetuniquePtr(AjPStr *Pstr)
 
 
 /* @obsolete ajStrStrMod
-** @rename ajStrGetUniquePtr
+** @rename ajStrGetuniquePtr
 */
 
 char __deprecated * ajStrStrMod(AjPStr *pthis)
@@ -8369,10 +8384,13 @@ ajint __deprecated ajStrRFindC(const AjPStr thys, const char* text)
 ** @argrule K chr [char] Character
 ** @argrule S strdelim [const AjPStr] Text to find
 ** @argrule Split PPstr [AjPStr**] String array of results
+** @argrule Extract Prest [AjPStr*] Remainder of string
+** @argrule First Pword [AjPStr*] First word of string
 **
 ** @valrule * [const AjPStr] Latest string parsed.
 ** @valrule Count [ajint] Number of string matches.
 ** @valrule Split [ajint] Number of string matches.
+** @valrule Extract [AjBool] True if a match was found
 **
 ** @fcategory use
 */
@@ -8386,8 +8404,8 @@ ajint __deprecated ajStrRFindC(const AjPStr thys, const char* text)
 ** @param [r] str [const AjPStr] String to be parsed (first call) or
 **        NULL for followup calls using the same string, as for the
 **        C RTL function strtok which is eventually called.
-** @param [w] Prest [AjPStr*] 
-** @param [w] Pword [AjPStr*] 
+** @param [w] Prest [AjPStr*] Remainder of string
+** @param [w] Pword [AjPStr*] First word of string
 ** @return [AjBool] True if parsing succeeded
 ** @@
 ******************************************************************************/
@@ -8421,8 +8439,8 @@ AjBool ajStrExtractFirst(const AjPStr str, AjPStr* Prest, AjPStr* Pword)
     }
     if(!*cp) return ajFalse;		/* nothing after whitespace */
 
-    ajStrAssSub(Pword, str, 0, i);
-    ajStrAssSub(Prest, str, j, str->Len);
+    ajStrAssignSubS(Pword, str, 0, i);
+    ajStrAssignSubS(Prest, str, j, str->Len);
 
     ajDebug("ajStrExtractFirst i:%d j:%d len:%d word '%S'\n",
 	    i, j, str->Len, *Pword);

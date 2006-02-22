@@ -195,7 +195,7 @@ static AjBool        hetparse_HetScan(AjPList listfiles,
 	    if(ajStrPrefixC(line,"HETATM"))
 	    {
 		/* Copy heterogen code from pdb file into <het>. */
-		ajStrAssSub(&het, line, 17, 19);
+		ajStrAssignSubS(&het, line, 17, 19);
 		
 
 		/* Initialise iterator to iterate through the list <listhet>. */
@@ -208,7 +208,7 @@ static AjBool        hetparse_HetScan(AjPList listfiles,
 		while((hettemp=(AjPStr)ajListIterNext(iter)))
 		{
 		    /* If <het> matches the current node, break. */
-		    if(ajStrMatch(hettemp, het))
+		    if(ajStrMatchS(hettemp, het))
 		    {
 			foundhet=ajTrue;
 			break;
@@ -219,7 +219,7 @@ static AjBool        hetparse_HetScan(AjPList listfiles,
 		if(!foundhet)
 		{
 		    hetcopy=ajStrNew();
-		    ajStrAss(&hetcopy, het);
+		    ajStrAssignRef(&hetcopy, het);
 		    ajListstrPush(listhet, hetcopy);
 		}
 		
@@ -243,7 +243,7 @@ static AjBool        hetparse_HetScan(AjPList listfiles,
 	       increment the counter if we have a match*/
 	    for(i=0; i< ptr->n; i++)
 	    {
-		if(ajStrMatch(hettemp, ptr->entries[i]->abv))
+		if(ajStrMatchS(hettemp, ptr->entries[i]->abv))
 		{
 		    ptr->entries[i]->cnt++;
 		    break;

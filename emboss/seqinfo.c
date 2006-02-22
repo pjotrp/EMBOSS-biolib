@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 
 	ajFmtPrintF(outf, "Sequence \'%s\'\n",     ajSeqName(seq));
 
-	if(!ajStrIsSpace(seqdesc))
+	if(!ajStrIsWhite(seqdesc))
 	    ajFmtPrintF(outf, "Description:\t%S\n", seqdesc );
 
 	if(ajSeqIsNuc(seq))

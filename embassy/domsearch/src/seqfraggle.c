@@ -211,16 +211,16 @@ int main(int argc, char **argv)
 	/* Create output file. */
 	if(hitlist)
 	{
-	    ajStrAssS(&temp2, temp);
+	    ajStrAssignS(&temp2, temp);
 	    ajFileDirExtnTrim(&temp2);
 	    dhfoutPtr = ajFileNewOutDir(dhfout, temp2);
 	}
 	else
 	{
-	    ajStrAssS(&temp2, temp);
+	    ajStrAssignS(&temp2, temp);
 	    ajFileDirExtnTrim(&temp2);
-	    ajStrInsert(&temp2, 0, ajDirName(dhfout));
-	    ajStrAssS(&temp2, ajDirExt(dhfout));
+	    ajStrInsertS(&temp2, 0, ajDirName(dhfout));
+	    ajStrAssignS(&temp2, ajDirExt(dhfout));
 	    ajSeqoutUsa(&seqout, temp2);
 	}
 

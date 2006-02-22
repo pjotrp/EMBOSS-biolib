@@ -110,7 +110,7 @@ int main(int argc, char **argv)
     outf   = ajAcdGetOutfile("outfile");
     
     ajSeqToUpper(seq);
-    ajStrToUpper(&gc);
+    ajStrFmtUpper(&gc);
     
     beg = ajSeqBegin(seq);
     end = ajSeqEnd(seq);
@@ -118,19 +118,19 @@ int main(int argc, char **argv)
     fwd = ajStrNew();
     rev = ajStrNew();
     
-    ajStrAssSubC(&fwd,ajSeqChar(seq),beg-1,end-1);
-    rev = ajStrNewC(ajStrStr(fwd));
+    ajStrAssignSubC(&fwd,ajSeqChar(seq),beg-1,end-1);
+    rev = ajStrNewC(ajStrGetPtr(fwd));
     ajSeqReverseStr(&rev);
     
     
     wobble_checkstring(&gc);
-    mean = wobble_get_mean(ajStrStr(gc),ajStrStr(fwd));
+    mean = wobble_get_mean(ajStrGetPtr(gc),ajStrGetPtr(fwd));
     ajFmtPrintF(outf,"Expected %s content in third position = %.2f\n",
-		ajStrStr(gc),mean);
+		ajStrGetPtr(gc),mean);
     
     for(i=0;i<6;++i)
     {
-	wobble_calcpc(ajStrStr(fwd),ajStrStr(rev),i,x,y,count,beg,ajStrStr(gc),
+	wobble_calcpc(ajStrGetPtr(fwd),ajStrGetPtr(rev),i,x,y,count,beg,ajStrGetPtr(gc),
 		      window);
 
 	data = ajGraphPlpDataNewI(count[i]);
@@ -157,7 +157,7 @@ int main(int argc, char **argv)
 
 	ajGraphxySetYTick(graph, ajTrue);
 
-	ajGraphPlpDataSetYTitleC(data,ajStrStr(gc));
+	ajGraphPlpDataSetYTitleC(data,ajStrGetPtr(gc));
 	ajGraphPlpDataSetXTitleC(data,"Sequence");
 	ajGraphPlpDataSetTitleC(data,ftit[i]);
 	ajGraphPlpDataAddLine(data,(float)beg,mean,(float)end,mean,4);
@@ -292,14 +292,14 @@ static void wobble_checkstring(AjPStr *str)
     tmp = ajStrNewC("");
 
     for(i=0;i<4;++i)
-	if(strchr(ajStrStr(*str),(ajint)bases[i]))
-	    ajStrAppK(&tmp,bases[i]);
-    ajStrAssC(str,ajStrStr(tmp));
+	if(strchr(ajStrGetPtr(*str),(ajint)bases[i]))
+	    ajStrAppendK(&tmp,bases[i]);
+    ajStrAssignC(str,ajStrGetPtr(tmp));
 
-    if(ajStrLen(tmp) >3)
+    if(ajStrGetLen(tmp) >3)
 	ajFatal("Specifying ACG&T is meaningless");
 
-    if(ajStrLen(tmp)<1)
+    if(ajStrGetLen(tmp)<1)
 	ajFatal("No bases specified");
 
     ajStrDel(&tmp);

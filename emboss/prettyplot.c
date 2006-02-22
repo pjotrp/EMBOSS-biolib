@@ -289,11 +289,11 @@ int main(int argc, char **argv)
     ** controlled by a pattern in ACD.
     */
 
-    if(ajStrLen(shade))
+    if(ajStrGetLen(shade))
     {
 	okay = ajTrue;
 	AJCNEW(shadecolour,4);
-	cptr = ajStrStr(shade);
+	cptr = ajStrGetPtr(shade);
 	for(i=0;i<4;i++){
 	    if(cptr[i]== 'B' || cptr[i]== 'b')
 		shadecolour[i] = BLACK;
@@ -352,39 +352,39 @@ int main(int argc, char **argv)
     /* output the options used as the subtitle for the bottom of the graph */
     if(listoptions)
     {
-	ajStrAssC(&options,"");
+	ajStrAssignC(&options,"");
 	ajFmtPrintAppS(&options,"-plurality %.1f",fplural);
 
 	if(collision)
-	    ajStrAppC(&options," -collision");
+	    ajStrAppendC(&options," -collision");
 	else
-	    ajStrAppC(&options," -nocollision");
+	    ajStrAppendC(&options," -nocollision");
 
 	if(boxit)
-	    ajStrAppC(&options," -box");
+	    ajStrAppendC(&options," -box");
 	else
-	    ajStrAppC(&options," -nobox");
+	    ajStrAppendC(&options," -nobox");
 
 	if(boxcol)
-	    ajStrAppC(&options," -boxcol");
+	    ajStrAppendC(&options," -boxcol");
 	else
-	    ajStrAppC(&options," -noboxcol");
+	    ajStrAppendC(&options," -noboxcol");
 
 	if(colourbyconsensus)
-	    ajStrAppC(&options," -colbyconsensus");
+	    ajStrAppendC(&options," -colbyconsensus");
 	else if(colourbyresidues)
-	    ajStrAppC(&options," -colbyresidues");
+	    ajStrAppendC(&options," -colbyresidues");
 	else if(colourbyshade)
-	    ajStrAppC(&options," -colbyshade");
+	    ajStrAppendC(&options," -colbyshade");
 	else
-	    ajStrAppC(&options," -nocolour");
+	    ajStrAppendC(&options," -nocolour");
 
 	if(alternative==2)
-	    ajStrAppC(&options," -alt 2");
+	    ajStrAppendC(&options," -alt 2");
 	else if(alternative==1)
-	    ajStrAppC(&options," -alt 1");
+	    ajStrAppendC(&options," -alt 1");
 	else if(alternative==3)
-	    ajStrAppC(&options," -alt 3");
+	    ajStrAppendC(&options," -alt 3");
     }
 
 
@@ -403,8 +403,8 @@ int main(int argc, char **argv)
 	ajSeqsetToUpper(seqset);
 	seqcharptr[i] =  ajSeqsetSeq(seqset, i);
 	seqnames[i] = 0;
-	ajStrApp(&seqnames[i],ajSeqsetName(seqset, i));
-	ajStrTruncate(&seqnames[i],charlen);
+	ajStrAppendS(&seqnames[i],ajSeqsetName(seqset, i));
+	ajStrTruncateLen(&seqnames[i],charlen);
 	previous[i] = 0;
 	seqcount[i] = 0;
     }
@@ -461,9 +461,9 @@ int main(int argc, char **argv)
 	y=ystart-5.0;
 	ajFmtPrintS(&titlestr, "%S %D", ajSeqsetGetUsa(seqset), ajtime);
 	ajGraphTextMid(xmid,ystart,
-			ajStrStr(titlestr));
+			ajStrGetPtr(titlestr));
 	ajGraphTextMid(xmid,1.0,
-			ajStrStr(options));
+			ajStrGetPtr(options));
     }
 
 /* if sequences per page not set then calculate it */
@@ -1139,8 +1139,8 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
     ajDebug("fillinboxes xmid: %.3f ystart:%.3f yincr: %.3f\n",
 	    xmid, ystart, yincr);
 */
-    ajStrAppC(&strcon,"Consensus");
-    ajStrTruncate(&strcon,charlen);
+    ajStrAppendC(&strcon,"Consensus");
+    ajStrTruncateLen(&strcon,charlen);
 
     if(boxit && boxcol)
     {
@@ -1199,11 +1199,11 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
     if(shownames)
     {
 	for(i=seqstart,l=0;i<seqend;i++,l++)
-	    ajGraphTextStart(-charlen,y-(yincr*l),ajStrStr(seqnames[i]));
+	    ajGraphTextStart(-charlen,y-(yincr*l),ajStrGetPtr(seqnames[i]));
 
 	if(consensus && (numseq==seqend))
 	    ajGraphTextStart(-charlen,y-(yincr*((seqend-seqstart)+1)),
-			     ajStrStr(strcon));
+			     ajStrGetPtr(strcon));
 
     }
 
@@ -1244,7 +1244,7 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 		{
 		    y = ystart-5.0;
 		    ajGraphTextMid(xmid,ystart,
-				    ajStrStr(seqset->Usa));
+				    ajStrGetPtr(seqset->Usa));
 		}
 	    }
 
@@ -1254,12 +1254,12 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 	    {
 		for(i=seqstart,l=0;i<seqend;i++,l++)
 		    ajGraphTextStart(-charlen,y-(yincr*l),
-				     ajStrStr(seqnames[i]));
+				     ajStrGetPtr(seqnames[i]));
 
 		if(consensus &&(numseq==seqend))
 		    ajGraphTextStart(-charlen,
 				      y-(yincr*((seqend-seqstart)+1)),
-				      ajStrStr(strcon));
+				      ajStrGetPtr(strcon));
 	    }
 	}
 	count++;

@@ -155,8 +155,8 @@ int main(int argc, char **argv)
 	    else
 	    {
 		descriptionline = ajStrNew();
-		ajStrAssS(&descriptionline, ajSeqGetDesc(seq));
-		ajStrWrap(&descriptionline, 80);
+		ajStrAssignS(&descriptionline, ajSeqGetDesc(seq));
+		ajStrFmtWrap(&descriptionline, 80);
 		ajFmtPrintF(outfile, "%S\n", descriptionline);
 		ajStrDel(&descriptionline);
 	    }
@@ -359,8 +359,8 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, const AjPSeq seq, ajint beg,
 	    if((!collapse ||
 		first ||
 		gf->Strand != strandout ||
-		(source && ajStrCmpCase(gf->Source, sourceout)) ||
-		ajStrCmpCase(gf->Type, typeout))
+		(source && ajStrCmpCaseS(gf->Source, sourceout)) ||
+		ajStrCmpCaseS(gf->Type, typeout))
 	       &&
 	       (!join ||
 		! child ||
@@ -372,13 +372,13 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, const AjPSeq seq, ajint beg,
 				     source, type, tags, position);
 
 		/* reset the strings for the new line */
-		ajStrClear(&lineout);
-		ajStrAppKI(&lineout, ' ', width);
-		ajStrAssS(&sourceout, gf->Source);
-		ajStrAssS(&typeout, gf->Type);
+		ajStrSetClear(&lineout);
+		ajStrAppendCountK(&lineout, ' ', width);
+		ajStrAssignS(&sourceout, gf->Source);
+		ajStrAssignS(&typeout, gf->Type);
 		strandout = gf->Strand;
-		ajStrClear(&tagsout);
-		ajStrClear(&posout);
+		ajStrSetClear(&tagsout);
+		ajStrSetClear(&posout);
 
 		/* something to output */
 		gotoutput = ajTrue;
@@ -393,8 +393,8 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, const AjPSeq seq, ajint beg,
 	    }
 
 	    /* append current tags to tagsout */
-	    ajStrApp(&tagsout, tagstmp);
-	    ajStrClear(&tagstmp);
+	    ajStrAppendS(&tagsout, tagstmp);
+	    ajStrSetClear(&tagstmp);
 
 	    /* add positions to posout */
 	    showfeat_AddPos(&posout, gf->Start, gf->End);
@@ -434,7 +434,7 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, const AjPSeq seq, ajint beg,
 
            /* don't start a new line if collapse and previous text is
               the same */
-                if (!collapse || ajStrCmpCase(ann_text, typeout)) {
+                if (!collapse || ajStrCmpCaseS(ann_text, typeout)) {
 		    if(gotoutput)
                         showfeat_FeatOut(outfile, lineout, strandout,
 					 sourceout, posout,
@@ -442,13 +442,13 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, const AjPSeq seq, ajint beg,
 					 source, type, tags, position);
 
 		    /* reset the strings for the new line */
-		    ajStrClear(&lineout);
-		    ajStrAppKI(&lineout, ' ', width);
-		    ajStrAssC(&sourceout, "Annotation");
-                    ajStrAssS(&typeout, ann_text);
+		    ajStrSetClear(&lineout);
+		    ajStrAppendCountK(&lineout, ' ', width);
+		    ajStrAssignC(&sourceout, "Annotation");
+                    ajStrAssignS(&typeout, ann_text);
 		    strandout = '\0';
-		    ajStrClear(&tagsout);
-		    ajStrClear(&posout);
+		    ajStrSetClear(&tagsout);
+		    ajStrSetClear(&posout);
 		    /* something to output */
 		    gotoutput = ajTrue;
 		}
@@ -521,28 +521,28 @@ static void showfeat_WriteFeat(AjPStr line, char strand, ajint fstart,
     for(i=pos1; i<pos2; i++)
 	if(i >= 0 && i < width)
 	    /* don't overwrite any characters except space */
-	    if(ajStrChar(line,i) == ' ')
-		ajStrReplaceK(&line, i, '-', 1);
+	    if(ajStrGetCharPos(line,i) == ' ')
+		ajStrPasteCountK(&line, i, '-', 1);
 
     /* write the end characters */
     if(pos1 >= 0 && pos1 < width)
     {
 	if(strand == '+')
-	    ajStrReplaceK(&line, pos1, '|', 1);
+	    ajStrPasteCountK(&line, pos1, '|', 1);
 	else if(strand == '-')
-	    ajStrReplaceK(&line, pos1, '<', 1);
+	    ajStrPasteCountK(&line, pos1, '<', 1);
 	else
-	    ajStrReplaceK(&line, pos1, '|', 1);
+	    ajStrPasteCountK(&line, pos1, '|', 1);
     }
 
     if(pos2 >= 0 && pos2 < width)
     {
 	if(strand == '+')
-	    ajStrReplaceK(&line, pos2, '>', 1);
+	    ajStrPasteCountK(&line, pos2, '>', 1);
 	else if(strand == '-')
-	    ajStrReplaceK(&line, pos2, '|', 1);
+	    ajStrPasteCountK(&line, pos2, '|', 1);
 	else
-	    ajStrReplaceK(&line, pos2, '|', 1);
+	    ajStrPasteCountK(&line, pos2, '|', 1);
 
     }
 
@@ -669,14 +669,14 @@ static ajint showfeat_CompareFeatSource(const void * a, const void * b)
     if(c->Strand == d->Strand)
     {
 	/* stands are the same, sort by source */
-	val = ajStrCmpCase(c->Source, d->Source);
+	val = ajStrCmpCaseS(c->Source, d->Source);
 
 	if(val != 0)
 	    return val;
 
 
 	/* source is the same, sort by type */
-	val = ajStrCmpCase(c->Type, d->Type);
+	val = ajStrCmpCaseS(c->Type, d->Type);
 	if(val != 0)
 	    return val;
 
@@ -720,12 +720,12 @@ static ajint showfeat_CompareFeatType(const void * a, const void * b)
     if(c->Strand == d->Strand)
     {
 	/* stands are the same, sort by type */
-	val = ajStrCmpCase(c->Type, d->Type);
+	val = ajStrCmpCaseS(c->Type, d->Type);
 	if(val != 0)
 	    return val;
 
 	/* type is the same, sort by source */
-	val = ajStrCmpCase(c->Source, d->Source);
+	val = ajStrCmpCaseS(c->Source, d->Source);
 	if(val != 0)
 	    return val;
 
@@ -773,12 +773,12 @@ static ajint showfeat_CompareFeatPos(const void * a, const void * b)
 	    return val;
 
 	/* starts are the same, sort by type */
-	val = ajStrCmpCase(c->Type, d->Type);
+	val = ajStrCmpCaseS(c->Type, d->Type);
 	if(val != 0)
 	    return val;
 
 	/* type is the same, sort by source */
-	val = ajStrCmpCase(c->Source, d->Source);
+	val = ajStrCmpCaseS(c->Source, d->Source);
 	return val;
     }
     else if(c->Strand == '+')
@@ -844,7 +844,7 @@ static AjBool showfeat_MatchPatternTags(const AjPFeature feat,
 	 ** Else check vpattern
 	 */
 
-        if(!ajStrLen(tagval))
+        if(!ajStrGetLen(tagval))
 	{
             if(!ajStrCmpC(vpattern, "*"))
             	vval = ajTrue;
@@ -861,7 +861,7 @@ static AjBool showfeat_MatchPatternTags(const AjPFeature feat,
 	     ** match of the whole of vpattern
 	     ** without spitting it up into words. 
 	     */
-            vval = (ajStrMatch(tagval, vpattern) ||
+            vval = (ajStrMatchS(tagval, vpattern) ||
 		    embMiscMatchPattern(tagval, vpattern));
 	}
 
@@ -911,7 +911,7 @@ static AjBool showfeat_MatchPatternTags(const AjPFeature feat,
      ** If no match, then clear the tagstmp string
      */
     if(!val)
-        ajStrClear(tagstmp);
+        ajStrSetClear(tagstmp);
 
     return val;
 }
@@ -935,7 +935,7 @@ static void showfeat_AddPos(AjPStr *posout, ajint start, ajint end)
 {
 
     /* if the string already has positions in, separate them with commas */
-    if(ajStrLen(*posout) > 0)
+    if(ajStrGetLen(*posout) > 0)
 	ajFmtPrintAppS(posout, ",");
 
     ajFmtPrintAppS(posout, "%d-%d", start, end);

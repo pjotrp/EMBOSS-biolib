@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 
     idexp = ajRegCompC("^H ([^ \n\r\t]+)$");
     endexp = ajRegCompC("^//$");
-    ajStrAssC(&outdir, "AAINDEX");
+    ajStrAssignC(&outdir, "AAINDEX");
 
     embInit("aaindexextract",argc,argv);
 
@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 	    if(!done)
 		ajFatal("bad aaindex1 format new ID at: %S", line);
 	    ajRegSubI(idexp, 1, &id);
-	    ajStrToLower(&id);
+	    ajStrFmtLower(&id);
 	    ajFmtPrintS(&outfname, "%S/%S", outdir, id);
 	    ajFileDataNewWrite(outfname,&outf);
 	    done = ajFalse;

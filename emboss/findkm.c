@@ -102,7 +102,7 @@ int main(int argc, char **argv)
     /* Determine N by reading infile */
 
     while(ajFileReadLine(infile, &line))
-        if(ajStrLen(line) >0)
+        if(ajStrGetLen(line) >0)
 	    N++;
 
 
@@ -118,9 +118,9 @@ int main(int argc, char **argv)
     N=0;
     while(ajFileReadLine(infile, &line))
     {
-	if(ajStrLen(line) > 0)
+	if(ajStrGetLen(line) > 0)
         {
-            sscanf(ajStrStr(line),"%f %f",&S[N],&V[N]);
+            sscanf(ajStrGetPtr(line),"%f %f",&S[N],&V[N]);
             if(S[N] > 0.0 && V[N] > 0.0)
             {
                 xdata[N] = S[N];

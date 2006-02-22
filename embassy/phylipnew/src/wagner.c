@@ -22,7 +22,7 @@ void inputmixturestr(AjPStr str, bitptr wagner0)
   j = 0;
   k = 1;
   for (i = 1; i <= (chars); i++) {
-    ch = ajStrChar(str, i-1);
+    ch = ajStrGetCharPos(str, i-1);
     uppercase(&ch);
     wag = false;
     if (ch == 'W' || ch == '?')

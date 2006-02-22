@@ -120,10 +120,10 @@ int main(int argc, char **argv)
 	ajListPushApp(validin_l, (void *) validin_tmp);
 
 	if(moden==1)
-	    if(ajStrMatch(validin_tmp->Family, hitsin_l->Family)           &&
-	       ajStrMatch(validin_tmp->Superfamily, hitsin_l->Superfamily) &&
-	       ajStrMatch(validin_tmp->Fold, hitsin_l->Fold)               &&
-	       ajStrMatch(validin_tmp->Class, hitsin_l->Class))
+	    if(ajStrMatchS(validin_tmp->Family, hitsin_l->Family)           &&
+	       ajStrMatchS(validin_tmp->Superfamily, hitsin_l->Superfamily) &&
+	       ajStrMatchS(validin_tmp->Fold, hitsin_l->Fold)               &&
+	       ajStrMatchS(validin_tmp->Class, hitsin_l->Class))
 		nrelated += validin_tmp->N;
     }
 

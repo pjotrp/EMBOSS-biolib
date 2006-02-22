@@ -762,7 +762,7 @@ void protdist_inputdata(AjPSeqset seqset)
       done = false;
       while (!done) {
         while (j < chars) {
-          charstate = ajStrChar(str, j);
+          charstate = ajStrGetCharPos(str, j);
           protdist_uppercase(&charstate);
           if ((!isalpha((int)charstate) && charstate != '.' && charstate != '?' &&
                charstate != '-' && charstate != '*') || charstate == 'J' ||

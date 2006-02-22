@@ -117,7 +117,7 @@ void readtree()
   int npairs = 0;
   const char* cp;
 
-  cp = ajStrStr(rdline);
+  cp = ajStrGetPtr(rdline);
  
   while (*cp && isspace((int)*cp))
       cp++;
@@ -140,7 +140,7 @@ void readtree()
       
       if (!(*cp) || (ch != factchar)) {
 	  printf("\n\nERROR: Character %d:  bad character state tree format1\n\n",
-		 (int)(cp - ajStrStr(rdline)));
+		 (int)(cp - ajStrGetPtr(rdline)));
 	  printf("\n\nch: %c\n", ch);
 	  exxit(-1);
       }
@@ -158,7 +158,7 @@ void readtree()
       if (pair[npairs - 1][1] == ' ')
       {
 	  printf("\n\nERROR: Character %d:  bad character state tree format2\n\n",
-		 (int)(cp - ajStrStr(rdline)));
+		 (int)(cp - ajStrGetPtr(rdline)));
 	  exxit(-1);
       } 
 
@@ -452,7 +452,7 @@ void doeu(long *chposition, long eu)
   const char* cp;
 
   ajFileGetsTrim(inputfile, &rdline);
-  cp = ajStrStr(rdline);
+  cp = ajStrGetPtr(rdline);
 
   for (i = 1; i <= nmlngth; i++) {
     ch = *cp++;
@@ -476,7 +476,7 @@ void doeu(long *chposition, long eu)
 	  if (!*cp)
 	  {
 	      ajFileGetsTrim(inputfile, &rdline);
-	      cp = ajStrStr(rdline);
+	      cp = ajStrGetPtr(rdline);
 	      ch = *cp++;
 	  }
       }
@@ -556,7 +556,7 @@ int main(int argc, Char *argv[])
   emboss_getoptions("ffactor", argc, argv);
 
   ajFileGetsTrim(inputfile, &rdline);
-  sscanf(ajStrStr(rdline), "%ld%ld*[^\n]", &neus, &nchars);
+  sscanf(ajStrGetPtr(rdline), "%ld%ld*[^\n]", &neus, &nchars);
 
   charnum = (long *)Malloc(nchars*sizeof(long));
   chstart = (long *)Malloc(nchars*sizeof(long));

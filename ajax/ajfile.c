@@ -160,7 +160,7 @@ AjPDir ajDirNew(const AjPStr name)
     AjPDir thys;
 
     AJNEW0(thys);
-    ajStrAssS(&thys->Name, name);
+    ajStrAssignS(&thys->Name, name);
     thys->Prefix = NULL;
     thys->Extension = NULL;
     thys->Output = ajFalse;
@@ -186,9 +186,9 @@ AjPDir ajDirNewS(const AjPStr name, const AjPStr ext)
     AjPDir thys;
 
     AJNEW0(thys);
-    ajStrAssS(&thys->Name, name);
-    if (ajStrLen(ext))
-	ajStrAssS(&thys->Extension, ext);
+    ajStrAssignS(&thys->Name, name);
+    if (ajStrGetLen(ext))
+	ajStrAssignS(&thys->Extension, ext);
     thys->Output = ajFalse;
 
     return thys;
@@ -213,11 +213,11 @@ AjPDir ajDirNewSS(const AjPStr name, const AjPStr prefix, const AjPStr ext)
     AjPDir thys;
 
     AJNEW0(thys);
-    ajStrAssS(&thys->Name, name);
-    if (ajStrLen(prefix))
-	ajStrAssS(&thys->Prefix, prefix);
-    if (ajStrLen(ext))
-	ajStrAssS(&thys->Extension, ext);
+    ajStrAssignS(&thys->Name, name);
+    if (ajStrGetLen(prefix))
+	ajStrAssignS(&thys->Prefix, prefix);
+    if (ajStrGetLen(ext))
+	ajStrAssignS(&thys->Extension, ext);
     thys->Output = ajFalse;
 
     return thys;
@@ -240,7 +240,7 @@ AjPDir ajDiroutNew(const AjPStr name)
     AjPDir thys;
 
     AJNEW0(thys);
-    ajStrAssS(&thys->Name, name);
+    ajStrAssignS(&thys->Name, name);
     thys->Extension = NULL;
     thys->Output = ajTrue;
 
@@ -265,9 +265,9 @@ AjPDir ajDiroutNewS(const AjPStr name, const AjPStr ext)
     AjPDir thys;
 
     AJNEW0(thys);
-    ajStrAssS(&thys->Name, name);
-    if (ajStrLen(ext))
-	ajStrAssS(&thys->Extension, ext);
+    ajStrAssignS(&thys->Name, name);
+    if (ajStrGetLen(ext))
+	ajStrAssignS(&thys->Extension, ext);
     thys->Output = ajTrue;
 
     return thys;
@@ -293,11 +293,11 @@ AjPDir ajDiroutNewSS(const AjPStr name, const AjPStr prefix, const AjPStr ext)
     AjPDir thys;
 
     AJNEW0(thys);
-    ajStrAssS(&thys->Name, name);
-    if (ajStrLen(prefix))
-	ajStrAssS(&thys->Prefix, prefix);
-    if (ajStrLen(ext))
-	ajStrAssS(&thys->Extension, ext);
+    ajStrAssignS(&thys->Name, name);
+    if (ajStrGetLen(prefix))
+	ajStrAssignS(&thys->Prefix, prefix);
+    if (ajStrGetLen(ext))
+	ajStrAssignS(&thys->Extension, ext);
     thys->Output = ajTrue;
 
     return thys;
@@ -376,7 +376,7 @@ AjPFile ajFileNew(void)
     thys->fp = NULL;
     thys->Handle = 0;
     thys->Name = ajStrNew();
-    thys->Buff = ajStrNewL(fileBuffSize);
+    thys->Buff = ajStrNewRes(fileBuffSize);
     thys->List = NULL;
     thys->End = ajFalse;
 
@@ -411,13 +411,13 @@ AjPFile ajFileNewInPipe(const AjPStr name)
     char* pgm;
 
     AJNEW0(thys);
-    ajStrAssS(&fileNameTmp, name);
+    ajStrAssignS(&fileNameTmp, name);
 
     ajDebug("ajFileNewInPipe '%S'\n", name);
 
     /* pipe character at end */
-    if(ajStrChar(fileNameTmp, -1) == '|')
-	ajStrTrim(&fileNameTmp, -1);
+    if(ajStrGetCharLast(fileNameTmp) == '|')
+	ajStrCutEnd(&fileNameTmp, 1);
     if(pipe(pipefds) < 0)
 	ajFatal("pipe create failed");
 
@@ -449,7 +449,7 @@ AjPFile ajFileNewInPipe(const AjPStr name)
     /* fp is what we read from the pipe */
     thys->fp = ajSysFdopen(pipefds[0], "r");
     close(pipefds[1]);
-    ajStrDelReuse(&fileNameTmp);
+    ajStrDelStatic(&fileNameTmp);
 
     if(!thys->fp)
     {
@@ -458,7 +458,7 @@ AjPFile ajFileNewInPipe(const AjPStr name)
 	return NULL;
     }
     thys->Handle = ++fileHandle;
-    ajStrAssS(&thys->Name, name);
+    ajStrAssignS(&thys->Name, name);
     thys->End = ajFalse;
     
     fileOpenCnt++;
@@ -502,15 +502,15 @@ AjPFile ajFileNewIn(const AjPStr name)
     if(ajStrMatchC(name, "stdin"))
     {
 	thys = ajFileNewF(stdin);
-	ajStrAssC(&thys->Name, "stdin");
+	ajStrAssignC(&thys->Name, "stdin");
 	return thys;
     }
     
-    if(ajStrChar(name, -1) == '|')	/* pipe character at end */
+    if(ajStrGetCharLast(name) == '|')	/* pipe character at end */
 	return ajFileNewInPipe(name);
 
-    ajStrAssS(&fileNameTmp, name);
-    if(ajStrChar(fileNameTmp, 0) == '~')
+    ajStrAssignS(&fileNameTmp, name);
+    if(ajStrGetCharFirst(fileNameTmp) == '~')
     {
 	ajDebug("starts with '~'\n");
 	if(!fileUserExp) fileUserExp = ajRegCompC("^~([^/]*)");
@@ -519,13 +519,13 @@ AjPFile ajFileNewIn(const AjPStr name)
 	ajRegPost(fileUserExp, &reststr);
 	ajDebug("  user: '%S' rest: '%S'\n", userstr, reststr);
 
-	if(ajStrLen(userstr))
+	if(ajStrGetLen(userstr))
 	{
 	    /* username specified */
-	    pass = getpwnam(ajStrStr(userstr));
+	    pass = getpwnam(ajStrGetPtr(userstr));
 	    if(!pass) {
 		ajStrDel(&userstr);
-		ajStrDelReuse(&fileNameTmp);
+		ajStrDelStatic(&fileNameTmp);
 		ajStrDel(&reststr);
 		return NULL;
 	    }
@@ -555,7 +555,7 @@ AjPFile ajFileNewIn(const AjPStr name)
 	ajRegSubI(fileWildExp, 2, &wildname);
 	ajDebug("wild dir '%S' files '%S'\n", dirname, wildname);
 	ptr = ajFileNewDW(dirname, wildname);
-	ajStrDelReuse(&fileNameTmp);
+	ajStrDelStatic(&fileNameTmp);
 	ajStrDel(&dirname);
 	ajStrDel(&wildname);
 	return ptr;
@@ -564,11 +564,11 @@ AjPFile ajFileNewIn(const AjPStr name)
     
     
     AJNEW0(thys);
-    ajStrAssS(&thys->Name, fileNameTmp);
-    ajStrDelReuse(&fileNameTmp);
+    ajStrAssignS(&thys->Name, fileNameTmp);
+    ajStrDelStatic(&fileNameTmp);
 
     ajNamResolve(&thys->Name);
-    thys->fp = fopen(ajStrStr(thys->Name), "r");
+    thys->fp = fopen(ajStrGetPtr(thys->Name), "r");
     if(!thys->fp)
     {
 	ajStrDel(&thys->Name);
@@ -642,7 +642,7 @@ AjPFile ajFileNewInList(AjPList list)
     ajDebug("ajFileNewInList pop '%S'\n", thys->Name);
     ajListstrTrace(thys->List);
     ajNamResolve(&thys->Name);
-    thys->fp = fopen(ajStrStr(thys->Name), "r");
+    thys->fp = fopen(ajStrGetPtr(thys->Name), "r");
     if(!thys->fp)
     {
 	ajDebug("ajFileNewInList fopen failed\n");
@@ -682,14 +682,14 @@ AjPFile ajFileNewApp(const AjPStr name)
     AjPFile thys;
 
     AJNEW0(thys);
-    thys->fp = fopen(ajStrStr(name), "a");
+    thys->fp = fopen(ajStrGetPtr(name), "a");
     if(!thys->fp)
     {
 	thys->Handle = 0;
 	return NULL;
     }
     thys->Handle = ++fileHandle;
-    ajStrAssS(&thys->Name, name);
+    ajStrAssignS(&thys->Name, name);
     thys->End = ajFalse;
 
     fileOpenCnt++;
@@ -722,26 +722,26 @@ AjPFile ajFileNewOut(const AjPStr name)
     if(ajStrMatchC(name, "stdout"))
     {
 	thys = ajFileNewF(stdout);
-	ajStrAssC(&thys->Name, "stdout");
+	ajStrAssignC(&thys->Name, "stdout");
 	return thys;
     }
 
     if(ajStrMatchC(name, "stderr"))
     {
 	thys = ajFileNewF(stderr);
-	ajStrAssC(&thys->Name, "stderr");
+	ajStrAssignC(&thys->Name, "stderr");
 	return thys;
     }
 
     AJNEW0(thys);
-    thys->fp = fopen(ajStrStr(name), "w");
+    thys->fp = fopen(ajStrGetPtr(name), "w");
     if(!thys->fp)
     {
 	thys->Handle = 0;
 	return NULL;
     }
     thys->Handle = ++fileHandle;
-    ajStrAssS(&thys->Name, name);
+    ajStrAssignS(&thys->Name, name);
     thys->End = ajFalse;
 
     fileOpenCnt++;
@@ -813,23 +813,23 @@ AjPFile ajFileNewOutD(const AjPStr dir, const AjPStr name)
 
     AJNEW0(thys);
 
-    if(!ajStrLen(dir))
+    if(!ajStrGetLen(dir))
     {
-	thys->fp = fopen(ajStrStr(name), "w");
+	thys->fp = fopen(ajStrGetPtr(name), "w");
 	ajDebug("ajFileNewOutD open name '%S'\n", name);
     }
     else
     {
 	if(ajFileHasDir(name))
-	    ajStrAssS(&fileDirfixTmp, name);
+	    ajStrAssignS(&fileDirfixTmp, name);
 	else
 	{
-	    ajStrAssS(&fileDirfixTmp, dir);
-	    if(ajStrChar(dir, -1) != '/')
-		ajStrAppC(&fileDirfixTmp, "/");
-	    ajStrApp(&fileDirfixTmp, name);
+	    ajStrAssignS(&fileDirfixTmp, dir);
+	    if(ajStrGetCharLast(dir) != '/')
+		ajStrAppendC(&fileDirfixTmp, "/");
+	    ajStrAppendS(&fileDirfixTmp, name);
 	}
-	thys->fp = fopen(ajStrStr(fileDirfixTmp), "w");
+	thys->fp = fopen(ajStrGetPtr(fileDirfixTmp), "w");
 	ajDebug("ajFileNewOutD open dirfix '%S'\n", fileDirfixTmp);
     }
 
@@ -840,7 +840,7 @@ AjPFile ajFileNewOutD(const AjPStr dir, const AjPStr name)
     }
 
     thys->Handle = ++fileHandle;
-    ajStrAssS(&thys->Name, name);
+    ajStrAssignS(&thys->Name, name);
     thys->End = ajFalse;
 
     fileOpenCnt++;
@@ -881,23 +881,23 @@ AjPFile ajFileNewOutDir(const AjPDir dir, const AjPStr name)
 
     if(!dir)
     {
-	thys->fp = fopen(ajStrStr(name), "w");
+	thys->fp = fopen(ajStrGetPtr(name), "w");
 	ajDebug("ajFileNewOutDir open name '%S'\n", name);
     }
     else
     {
 	if(ajFileHasDir(name))
-	    ajStrAssS(&fileDirfixTmp, name);
+	    ajStrAssignS(&fileDirfixTmp, name);
 	else
 	{
-	    ajStrAssS(&fileDirfixTmp, dir->Name);
-	    if(ajStrChar(dir->Name, -1) != '/')
-		ajStrAppC(&fileDirfixTmp, "/");
-	    ajStrApp(&fileDirfixTmp, name);
+	    ajStrAssignS(&fileDirfixTmp, dir->Name);
+	    if(ajStrGetCharLast(dir->Name) != '/')
+		ajStrAppendC(&fileDirfixTmp, "/");
+	    ajStrAppendS(&fileDirfixTmp, name);
 	}
 	ajFileNameExt(&fileDirfixTmp, dir->Extension);
 
-	thys->fp = fopen(ajStrStr(fileDirfixTmp), "w");
+	thys->fp = fopen(ajStrGetPtr(fileDirfixTmp), "w");
 	ajDebug("ajFileNewOutDir open dirfix '%S'\n", fileDirfixTmp);
     }
 
@@ -908,7 +908,7 @@ AjPFile ajFileNewOutDir(const AjPDir dir, const AjPStr name)
     }
 
     thys->Handle = ++fileHandle;
-    ajStrAssS(&thys->Name, name);
+    ajStrAssignS(&thys->Name, name);
     thys->End = ajFalse;
 
     fileOpenCnt++;
@@ -951,18 +951,18 @@ AjBool ajFileSetDir(AjPStr *pname, const AjPStr dir)
     if(ajStrMatchC(*pname, "stderr"))
 	return ret;
 
-    if(!ajStrLen(dir))
+    if(!ajStrGetLen(dir))
 	return ret;
 
     if(ajFileHasDir(*pname))
 	return ret;
 
-    ajStrAssS(&fileDirfixTmp, dir);
-    if(ajStrChar(dir, -1) != '/')
-	ajStrAppC(&fileDirfixTmp, "/");
-    ajStrApp(&fileDirfixTmp, *pname);
+    ajStrAssignS(&fileDirfixTmp, dir);
+    if(ajStrGetCharLast(dir) != '/')
+	ajStrAppendC(&fileDirfixTmp, "/");
+    ajStrAppendS(&fileDirfixTmp, *pname);
   
-    ajStrAssS(pname, fileDirfixTmp);
+    ajStrAssignS(pname, fileDirfixTmp);
     ret = ajTrue;
 
     ajDebug("ajFileSetDir changed name '%S'\n", *pname);
@@ -1297,67 +1297,67 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
     if(tfile == NULL)
 	return;
     
-    ajStrAssS(&fileBaseTmp, tfile);
+    ajStrAssignS(&fileBaseTmp, tfile);
     ajDebug("ajFileDataNew trying '%S'\n", fileBaseTmp);
     if(ajFileStat(fileBaseTmp, AJ_FILE_R))
     {
 	*fnew = ajFileNewIn(fileBaseTmp);
-	ajStrDelReuse(&fileBaseTmp);
+	ajStrDelStatic(&fileBaseTmp);
 	return;
     }
     
-    ajStrAssC(&fileNameTmp, ".embossdata/");
-    ajStrApp(&fileNameTmp, fileBaseTmp);
+    ajStrAssignC(&fileNameTmp, ".embossdata/");
+    ajStrAppendS(&fileNameTmp, fileBaseTmp);
     ajDebug("ajFileDataNew trying '%S'\n", fileNameTmp);
     if(ajFileStat(fileNameTmp, AJ_FILE_R))
     {
 	*fnew = ajFileNewIn(fileNameTmp);
-	ajStrDelReuse(&fileBaseTmp);
-	ajStrDelReuse(&fileNameTmp);
+	ajStrDelStatic(&fileBaseTmp);
+	ajStrDelStatic(&fileNameTmp);
 	return;
     }
     
     
     if((p=getenv("HOME")))
     {
-	ajStrAssC(&fileHomeTmp,p);
-	ajStrAppC(&fileHomeTmp,"/");
-	ajStrApp(&fileHomeTmp,fileBaseTmp);
+	ajStrAssignC(&fileHomeTmp,p);
+	ajStrAppendC(&fileHomeTmp,"/");
+	ajStrAppendS(&fileHomeTmp,fileBaseTmp);
 	ajDebug("ajFileDataNew trying '%S'\n", fileHomeTmp);
 	if(ajFileStat(fileHomeTmp, AJ_FILE_R))
 	{
 	    *fnew = ajFileNewIn(fileHomeTmp);
-	    ajStrDelReuse(&fileHomeTmp);
-	    ajStrDelReuse(&fileBaseTmp);
-	    ajStrDelReuse(&fileNameTmp);
+	    ajStrDelStatic(&fileHomeTmp);
+	    ajStrDelStatic(&fileBaseTmp);
+	    ajStrDelStatic(&fileNameTmp);
 	    return;
 	}
 
-	ajStrAssC(&fileHomeTmp,p);
-	ajStrAppC(&fileHomeTmp, ".embossdata/");
-	ajStrApp(&fileHomeTmp,fileBaseTmp);
+	ajStrAssignC(&fileHomeTmp,p);
+	ajStrAppendC(&fileHomeTmp, ".embossdata/");
+	ajStrAppendS(&fileHomeTmp,fileBaseTmp);
 	ajDebug("ajFileDataNew trying '%S'\n", fileHomeTmp);
 	if(ajFileStat(fileHomeTmp, AJ_FILE_R))
 	{
 	    *fnew = ajFileNewIn(fileHomeTmp);
-	    ajStrDelReuse(&fileHomeTmp);
-	    ajStrDelReuse(&fileBaseTmp);
-	    ajStrDelReuse(&fileNameTmp);
+	    ajStrDelStatic(&fileHomeTmp);
+	    ajStrDelStatic(&fileBaseTmp);
+	    ajStrDelStatic(&fileNameTmp);
 	    return;
 	}
-	ajStrDelReuse(&fileHomeTmp);
+	ajStrDelStatic(&fileHomeTmp);
     }
     
     if(ajNamGetValueC("DATA", &fileNameTmp))
     {
         ajFileDirFix(&fileNameTmp);
-	ajStrApp(&fileNameTmp,fileBaseTmp);
+	ajStrAppendS(&fileNameTmp,fileBaseTmp);
 	ajDebug("ajFileDataNew trying '%S'\n", fileNameTmp);
 	if(ajFileStat(fileNameTmp, AJ_FILE_R))
 	{
 	    *fnew = ajFileNewIn(fileNameTmp);
-	    ajStrDelReuse(&fileBaseTmp);
-	    ajStrDelReuse(&fileNameTmp);
+	    ajStrDelStatic(&fileBaseTmp);
+	    ajStrDelStatic(&fileNameTmp);
 	    return;
 	}
     }
@@ -1367,16 +1367,16 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
     {
         ajNamRootPack(&filePackTmp);		/* just EMBOSS */
 	ajFileDirFix(&fileNameTmp);
-	ajStrAppC(&fileNameTmp,"share/");
-	ajStrApp(&fileNameTmp,filePackTmp);
-	ajStrAppC(&fileNameTmp,"/data/");
-	ajStrApp(&fileNameTmp,fileBaseTmp);
+	ajStrAppendC(&fileNameTmp,"share/");
+	ajStrAppendS(&fileNameTmp,filePackTmp);
+	ajStrAppendC(&fileNameTmp,"/data/");
+	ajStrAppendS(&fileNameTmp,fileBaseTmp);
 	ajDebug("ajFileDataNew trying '%S'\n", fileNameTmp);
 	if(ajFileStat(fileNameTmp, AJ_FILE_R))
 	{
 	    *fnew = ajFileNewIn(fileNameTmp);
-	    ajStrDelReuse(&fileBaseTmp);
-	    ajStrDelReuse(&fileNameTmp);
+	    ajStrDelStatic(&fileBaseTmp);
+	    ajStrDelStatic(&fileNameTmp);
 	    return;
 	}
     }
@@ -1384,20 +1384,20 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
     /* just emboss/data under source */
     if(ajNamRoot(&fileNameTmp))
     {
-	ajStrAppC(&fileNameTmp,"/data/");
-	ajStrApp(&fileNameTmp,fileBaseTmp);
+	ajStrAppendC(&fileNameTmp,"/data/");
+	ajStrAppendS(&fileNameTmp,fileBaseTmp);
 	ajDebug("ajFileDataNew trying '%S'\n", fileNameTmp);
 	if(ajFileStat(fileNameTmp, AJ_FILE_R))
 	{
 	    *fnew = ajFileNewIn(fileNameTmp);
-	    ajStrDelReuse(&fileBaseTmp);
-	    ajStrDelReuse(&fileNameTmp);
+	    ajStrDelStatic(&fileBaseTmp);
+	    ajStrDelStatic(&fileNameTmp);
 	    return;
 	}
     }
     
-    ajStrDelReuse(&fileBaseTmp);
-    ajStrDelReuse(&fileNameTmp);
+    ajStrDelStatic(&fileBaseTmp);
+    ajStrDelStatic(&fileNameTmp);
     
     ajDebug("ajFileDataNew failed to find '%S'\n", fileNameTmp);
     *fnew = NULL;
@@ -1451,17 +1451,17 @@ void ajFileDataDirNew(const AjPStr tfile, const AjPStr dir, AjPFile *fnew)
     if(ajNamGetValueC("DATA", &fileNameTmp))
     {
         ajFileDirFix(&fileNameTmp);
-	if(ajStrLen(dir))
+	if(ajStrGetLen(dir))
 	{
-	    ajStrApp(&fileNameTmp,dir);
+	    ajStrAppendS(&fileNameTmp,dir);
 	    ajFileDirFix(&fileNameTmp);
 	}
-	ajStrApp(&fileNameTmp,tfile);
+	ajStrAppendS(&fileNameTmp,tfile);
 	ajDebug("ajFileDataDirNew trying '%S'\n", fileNameTmp);
 	if(ajFileStat(fileNameTmp, AJ_FILE_R))
 	{
 	    *fnew = ajFileNewIn(fileNameTmp);
-	    ajStrDelReuse(&fileNameTmp);
+	    ajStrDelStatic(&fileNameTmp);
 	    return;
 	}
     }
@@ -1472,21 +1472,21 @@ void ajFileDataDirNew(const AjPStr tfile, const AjPStr dir, AjPFile *fnew)
 	/* just EMBOSS */
         ajNamRootPack(&filePackTmp);
 	ajFileDirFix(&fileNameTmp);
-	ajStrAppC(&fileNameTmp,"share/");
-	ajStrApp(&fileNameTmp,filePackTmp);
-	ajStrAppC(&fileNameTmp,"/data/");
-	if(ajStrLen(dir))
+	ajStrAppendC(&fileNameTmp,"share/");
+	ajStrAppendS(&fileNameTmp,filePackTmp);
+	ajStrAppendC(&fileNameTmp,"/data/");
+	if(ajStrGetLen(dir))
 	{
-	    ajStrApp(&fileNameTmp,dir);
+	    ajStrAppendS(&fileNameTmp,dir);
 	    ajFileDirFix(&fileNameTmp);
 	}
-	ajStrApp(&fileNameTmp,tfile);
+	ajStrAppendS(&fileNameTmp,tfile);
 	ajDebug("ajFileDataDirNew trying '%S'\n", fileNameTmp);
 	if(ajFileStat(fileNameTmp, AJ_FILE_R))
 	{
 	    *fnew = ajFileNewIn(fileNameTmp);
-	    ajStrDelReuse(&filePackTmp);
-	    ajStrDelReuse(&fileNameTmp);
+	    ajStrDelStatic(&filePackTmp);
+	    ajStrDelStatic(&fileNameTmp);
 	    return;
 	}
     }
@@ -1494,25 +1494,25 @@ void ajFileDataDirNew(const AjPStr tfile, const AjPStr dir, AjPFile *fnew)
     /* just emboss/data under source */
     if(ajNamRoot(&fileNameTmp))
     {
-	ajStrAppC(&fileNameTmp,"/data/");
-	if(ajStrLen(dir))
+	ajStrAppendC(&fileNameTmp,"/data/");
+	if(ajStrGetLen(dir))
 	{
-	    ajStrApp(&fileNameTmp,dir);
+	    ajStrAppendS(&fileNameTmp,dir);
 	    ajFileDirFix(&fileNameTmp);
 	}
-	ajStrApp(&fileNameTmp,tfile);
+	ajStrAppendS(&fileNameTmp,tfile);
 	ajDebug("ajFileDataDirNew trying '%S'\n", fileNameTmp);
 	if(ajFileStat(fileNameTmp, AJ_FILE_R))
 	{
 	    *fnew = ajFileNewIn(fileNameTmp);
-	    ajStrDelReuse(&filePackTmp);
-	    ajStrDelReuse(&fileNameTmp);
+	    ajStrDelStatic(&filePackTmp);
+	    ajStrDelStatic(&fileNameTmp);
 	    return;
 	}
     }
     
-    ajStrDelReuse(&filePackTmp);
-    ajStrDelReuse(&fileNameTmp);
+    ajStrDelStatic(&filePackTmp);
+    ajStrDelStatic(&fileNameTmp);
     
     *fnew = NULL;
     
@@ -1744,8 +1744,8 @@ AjBool ajFileNext(AjPFile thys)
 
 FILE* ajFileReopen(AjPFile thys, const AjPStr name)
 {
-    ajStrAssS(&thys->Name, name);
-    return freopen(ajStrStr(thys->Name), "r", thys->fp);
+    ajStrAssignS(&thys->Name, name);
+    return freopen(ajStrGetPtr(thys->Name), "r", thys->fp);
 }
 
 
@@ -1874,9 +1874,9 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
     ajint jlen;
     ajint ipos;
     
-    ajStrModL(&thys->Buff, fileBuffSize);
-    buff  = ajStrStrMod(&thys->Buff);
-    isize = ajStrSize(thys->Buff);
+    ajStrSetRes(&thys->Buff, fileBuffSize);
+    buff  = ajStrGetuniquePtr(&thys->Buff);
+    isize = ajStrGetRes(thys->Buff);
     ilen  = 0;
     ipos  = 0;
     
@@ -1904,7 +1904,7 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 	    if(feof(thys->fp))
 	    {
 		thys->End = ajTrue;
-		ajStrAssC(pdest, "");
+		ajStrAssignC(pdest, "");
 		ajDebug("EOF ajFileGetsL file %F\n", thys);
 		return ajFalse;
 	    }
@@ -1921,32 +1921,32 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 	 ** and we don't have a newline at the end
 	 ** (must be careful about that - we may just have read enough)
 	 */
-	ajStrFixI(&thys->Buff, ilen);
+	ajStrSetValidLen(&thys->Buff, ilen);
 	if((jlen == (isize-1)) &&
-	   (ajStrChar(thys->Buff,-1) != '\n'))
+	   (ajStrGetCharLast(thys->Buff) != '\n'))
 	{
-	    ajStrModL(&thys->Buff, ajStrSize(thys->Buff)+fileBuffSize);
+	    ajStrSetRes(&thys->Buff, ajStrGetRes(thys->Buff)+fileBuffSize);
 	    ajDebug("more to do: jlen: %d ipos: %d isize: %d ilen: %d "
 		    "Size: %d\n",
-		    jlen, ipos, isize, ilen, ajStrSize(thys->Buff));
+		    jlen, ipos, isize, ilen, ajStrGetRes(thys->Buff));
 	    ipos += jlen;
-	    buff = ajStrStrMod(&thys->Buff);
-	    isize = ajStrSize(thys->Buff) - ipos;
+	    buff = ajStrGetuniquePtr(&thys->Buff);
+	    isize = ajStrGetRes(thys->Buff) - ipos;
 	    ajDebug("expand to: ipos: %d isize: %d Size: %d\n",
-		    ipos, isize, ajStrSize(thys->Buff));
+		    ipos, isize, ajStrGetRes(thys->Buff));
 
 	}
 	else
 	    buff = NULL;
     }
     
-    ajStrFixI(&thys->Buff, ilen);
-    if (ajStrChar(thys->Buff,-1) != '\n')
+    ajStrSetValidLen(&thys->Buff, ilen);
+    if (ajStrGetCharLast(thys->Buff) != '\n')
     {
 	ajDebug("Appending missing newline to '%S'\n", thys->Buff);
-	ajStrAppK(&thys->Buff, '\n');
+	ajStrAppendK(&thys->Buff, '\n');
     }
-    ajStrAssS(pdest, thys->Buff);
+    ajStrAssignS(pdest, thys->Buff);
  
     return ajTrue;
 }
@@ -1995,7 +1995,7 @@ AjBool ajFileReadAppend(AjPFile thys, AjPStr* pbuff)
     ok = ajFileGets(thys, &locbuff);
 
     if(ok)
-	ajStrApp(pbuff, locbuff);
+	ajStrAppendS(pbuff, locbuff);
 
     return ok;
 }
@@ -2064,7 +2064,7 @@ AjBool ajFileNameShorten(AjPStr* fname)
 	return ajTrue;
     }
 
-    ajStrAssC(fname, "");
+    ajStrAssignC(fname, "");
 
     return ajFalse;
 }
@@ -2086,10 +2086,10 @@ AjBool ajFileNameTrim(AjPStr* fname)
 {
     char *p;
 
-    if((p = strrchr(ajStrStr(*fname),(ajint)'/')))
+    if((p = strrchr(ajStrGetPtr(*fname),(ajint)'/')))
     {
-	ajStrAssC(&fileTmpStr,p+1);
-	ajStrAssS(fname,fileTmpStr);
+	ajStrAssignC(&fileTmpStr,p+1);
+	ajStrAssignS(fname,fileTmpStr);
     }
 
     return ajTrue;
@@ -2122,7 +2122,7 @@ void ajFileDataNewWrite(const AjPStr tfile, AjPFile *fnew)
 	    ajFatal("%S_DATA directory not found: %S\n",
 		    filePackTmp, fileNameTmp);
 	}
-	ajStrApp(&fileNameTmp,tfile);
+	ajStrAppendS(&fileNameTmp,tfile);
 	if(!(*fnew = ajFileNewOut(fileNameTmp)))
 	    ajFatal("Cannot write to file %S\n",fileNameTmp);
 	ajStrDel(&fileNameTmp);
@@ -2136,14 +2136,14 @@ void ajFileDataNewWrite(const AjPStr tfile, AjPFile *fnew)
 	/* just EMBOSS */
         ajNamRootPack(&filePackTmp);
 	ajFileDirFix(&fileNameTmp);
-	ajStrAppC(&fileNameTmp,"share/");
-	ajStrApp(&fileNameTmp,filePackTmp);
-	ajStrAppC(&fileNameTmp,"/data/");
+	ajStrAppendC(&fileNameTmp,"share/");
+	ajStrAppendS(&fileNameTmp,filePackTmp);
+	ajStrAppendC(&fileNameTmp,"/data/");
 
 	/* if we are installed, else see below */
 	if(ajFileDir(&fileNameTmp))
 	{
-	    ajStrApp(&fileNameTmp,tfile);
+	    ajStrAppendS(&fileNameTmp,tfile);
 	    if(!(*fnew = ajFileNewOut(fileNameTmp)))
 		ajFatal("Cannot write to file %S\n",fileNameTmp);
 	    ajStrDel(&fileNameTmp);
@@ -2154,11 +2154,11 @@ void ajFileDataNewWrite(const AjPStr tfile, AjPFile *fnew)
     /* just emboss/data under source */
     if(ajNamRoot(&fileNameTmp))
     {
-	ajStrAppC(&fileNameTmp,"/data/");
+	ajStrAppendC(&fileNameTmp,"/data/");
 	if(!ajFileDir(&fileNameTmp))
 	    ajFatal("Not installed, and source data directory not found: %S\n",
 		    fileNameTmp);
-	ajStrApp(&fileNameTmp,tfile);
+	ajStrAppendS(&fileNameTmp,tfile);
 	if(!(*fnew = ajFileNewOut(fileNameTmp)))
 	    ajFatal("Cannot write to file %S\n",fileNameTmp);
 	ajStrDel(&fileNameTmp);
@@ -2169,7 +2169,7 @@ void ajFileDataNewWrite(const AjPStr tfile, AjPFile *fnew)
     ajNamRootPack(&filePackTmp);
     ajFatal("No install or source data directory, and %S_DATA not defined\n",
 	    filePackTmp);
-    ajStrDelReuse(&fileNameTmp);
+    ajStrDelStatic(&fileNameTmp);
     *fnew = NULL;
     
     return;
@@ -2243,7 +2243,7 @@ AjBool ajFileDirPath(AjPStr* dir)
     ajDebug("So far '%S'\n", *dir);
 
     /* full path already */
-    if(*ajStrStr(*dir) == '/')
+    if(*ajStrGetPtr(*dir) == '/')
 	return ajTrue;
 
     ajFileGetwd(&fileCwd);
@@ -2251,7 +2251,7 @@ AjBool ajFileDirPath(AjPStr* dir)
     /* current directory */
     if(ajStrMatchC(*dir, "./"))
     {
-	ajStrAssS(dir, fileCwd);
+	ajStrAssignS(dir, fileCwd);
 	ajDebug("Current '%S'\n", *dir);
 	return ajTrue;
     }
@@ -2260,11 +2260,11 @@ AjBool ajFileDirPath(AjPStr* dir)
     while(ajStrPrefixC(*dir, "../"))
     {
 	ajFileDirUp(&fileCwd);
-	ajStrSub(dir, 3, -1);
+	ajStrKeepRange(dir, 3, -1);
 	ajDebug("Going up '%S' '%S'\n", *dir, fileCwd);
     }
 
-    ajStrInsert(dir, 0, fileCwd);
+    ajStrInsertS(dir, 0, fileCwd);
 
     ajDebug("Full path '%S'\n", *dir);
 
@@ -2289,12 +2289,12 @@ AjBool ajFileGetwd(AjPStr* dir)
 
     if(!getcwd(cwd,PATH_MAX))
     {
-	ajStrDelReuse(dir);
+	ajStrDelStatic(dir);
 	return ajFalse;
     }
 
-    if(ajStrSuffixCC(cwd, "/"))
-	ajStrAssC(dir, cwd);
+    if(ajCharSuffixC(cwd, "/"))
+	ajStrAssignC(dir, cwd);
     else
 	ajFmtPrintS(dir, "%s/", cwd);
 
@@ -2320,7 +2320,7 @@ AjBool ajFileDirUp(AjPStr* dir)
     if(!fileDirExp)
 	fileDirExp = ajRegCompC("^(.*/)[^/]+/?$");
 
-    ajStrAssS(&tmpdir, *dir);
+    ajStrAssignS(&tmpdir, *dir);
 
     /* no match to pattern */
     if(!ajRegExec(fileDirExp, tmpdir))
@@ -2350,8 +2350,8 @@ static DIR* fileOpenDir(AjPStr* dir)
 {
     AjBool moved = ajFalse;
 
-    if(ajStrChar(*dir, -1) != '/')
-	ajStrAppC(dir, "/");
+    if(ajStrGetCharLast(*dir) != '/')
+	ajStrAppendC(dir, "/");
 
     /*  going up */
     while(ajStrPrefixC(*dir, "../"))
@@ -2360,14 +2360,14 @@ static DIR* fileOpenDir(AjPStr* dir)
 	    ajFileGetwd(&fileCwd);
 	moved = ajTrue;
 	ajFileDirUp(&fileCwd);
-	ajStrSub(dir, 3, -1);
+	ajStrKeepRange(dir, 3, -1);
 	ajDebug("Going up '%S' '%S'\n", *dir, fileCwd);
     }
 
     if(moved)
-	ajStrInsert(dir, 0, fileCwd);
+	ajStrInsertS(dir, 0, fileCwd);
 
-    return opendir(ajStrStr(*dir));
+    return opendir(ajStrGetPtr(*dir));
 }
 
 
@@ -2385,8 +2385,8 @@ static DIR* fileOpenDir(AjPStr* dir)
 
 void ajFileDirFix(AjPStr* dir)
 {
-    if(ajStrChar(*dir, -1) != '/')
-	ajStrAppC(dir, "/");
+    if(ajStrGetCharLast(*dir) != '/')
+	ajStrAppendC(dir, "/");
 
     return;
 }
@@ -2550,7 +2550,7 @@ ajint ajFileBuffSize(void)
 
 const char* ajFileName(const AjPFile thys)
 {
-    return ajStrStr(thys->Name);
+    return ajStrGetPtr(thys->Name);
 }
 
 
@@ -2634,9 +2634,9 @@ AjBool ajFileStat(const AjPStr fname, ajint mode)
 #endif
 
 #if defined(AJ_IRIXLF)
-    if(!stat64(ajStrStr(fname), &buf))
+    if(!stat64(ajStrGetPtr(fname), &buf))
 #else
-	if(!stat(ajStrStr(fname), &buf))
+	if(!stat(ajStrGetPtr(fname), &buf))
 #endif
 	    if((ajuint)buf.st_mode & mode)
 		return ajTrue;
@@ -2665,10 +2665,10 @@ ajlong ajFileLength(const AjPStr fname)
 #endif
 
 #if defined(AJ_IRIXLF)
-    if(!stat64(ajStrStr(fname), &buf))
+    if(!stat64(ajStrGetPtr(fname), &buf))
 	return (ajlong)buf.st_size;
 #else
-    if(!stat(ajStrStr(fname), &buf))
+    if(!stat(ajStrGetPtr(fname), &buf))
 	return (ajlong)buf.st_size;
 #endif
 
@@ -2982,7 +2982,7 @@ AjPFileBuff ajFileBuffNewS(const AjPStr data)
     thys = ajFileBuffNewFile(file);
 
     thys->Lines = AJNEW0(thys->Last);
-    ajStrAssS(&thys->Last->Line,data);
+    ajStrAssignS(&thys->Last->Line,data);
 
     thys->Curr = thys->Lines;
     thys->Pos  = 0;
@@ -3048,13 +3048,13 @@ AjPFileBuff ajFileBuffNewDW(const AjPStr dir, const AjPStr wildfile)
     char buf[sizeof(struct dirent)+MAXNAMLEN];
 #endif
     
-    if(ajStrLen(dir))
-	ajStrAssS(&fileDirfixTmp, dir);
+    if(ajStrGetLen(dir))
+	ajStrAssignS(&fileDirfixTmp, dir);
     else
-	ajStrAssC(&fileDirfixTmp, "./");
+	ajStrAssignC(&fileDirfixTmp, "./");
     
-    if(ajStrChar(dir, -1) != '/')
-	ajStrAppC(&fileDirfixTmp, "/");
+    if(ajStrGetCharLast(dir) != '/')
+	ajStrAppendC(&fileDirfixTmp, "/");
     
     dp = fileOpenDir(&fileDirfixTmp);
     if(!dp)
@@ -3089,11 +3089,11 @@ AjPFileBuff ajFileBuffNewDW(const AjPStr dir, const AjPStr wildfile)
 	if(!de->d_ino)
 	    continue;
 #endif
-	if(ajStrMatchCC(de->d_name, "."))
+	if(ajCharMatchC(de->d_name, "."))
 	    continue;
-	if(ajStrMatchCC(de->d_name, ".."))
+	if(ajCharMatchC(de->d_name, ".."))
 	    continue;
-	if(!ajStrMatchWildCO(de->d_name, wildfile))
+	if(!ajCharMatchWildS(de->d_name, wildfile))
 	    continue;
 	dirsize++;
 	ajDebug("accept '%s'\n", de->d_name);
@@ -3143,13 +3143,13 @@ AjPFileBuff ajFileBuffNewDWE(const AjPStr dir, const AjPStr wildfile,
     char buf[sizeof(struct dirent)+MAXNAMLEN];
 #endif
     
-    if(ajStrLen(dir))
-	ajStrAssS(&fileDirfixTmp, dir);
+    if(ajStrGetLen(dir))
+	ajStrAssignS(&fileDirfixTmp, dir);
     else
-	ajStrAssC(&fileDirfixTmp, "./");
+	ajStrAssignC(&fileDirfixTmp, "./");
     
-    if(ajStrChar(dir, -1) != '/')
-	ajStrAppC(&fileDirfixTmp, "/");
+    if(ajStrGetCharLast(dir) != '/')
+	ajStrAppendC(&fileDirfixTmp, "/");
     
     dp = fileOpenDir(&fileDirfixTmp);
     if(!dp)
@@ -3184,11 +3184,11 @@ AjPFileBuff ajFileBuffNewDWE(const AjPStr dir, const AjPStr wildfile,
 	if(!de->d_ino)
 	    continue;
 #endif
-	if(ajStrMatchCC(de->d_name, "."))
+	if(ajCharMatchC(de->d_name, "."))
 	    continue;
-	if(ajStrMatchCC(de->d_name, ".."))
+	if(ajCharMatchC(de->d_name, ".."))
 	    continue;
-	ajStrAssC(&fileNameTmp, de->d_name);
+	ajStrAssignC(&fileNameTmp, de->d_name);
 	ajDebug("testing '%s'\n", de->d_name);
 	if(!ajFileTestSkip(fileNameTmp, exclude, wildfile, ajFalse, ajFalse))
 	    continue;
@@ -3201,7 +3201,7 @@ AjPFileBuff ajFileBuffNewDWE(const AjPStr dir, const AjPStr wildfile,
     
     closedir(dp);
     ajDebug("%d files for '%S' '%S'\n", dirsize, dir, wildfile);
-    ajStrDelReuse(&fileNameTmp);
+    ajStrDelStatic(&fileNameTmp);
     
     return ajFileBuffNewInList(list);
 }
@@ -3223,15 +3223,15 @@ AjPFileBuff ajFileBuffNewDWE(const AjPStr dir, const AjPStr wildfile,
 
 AjPFileBuff ajFileBuffNewDC(const AjPStr dir, const char* filename)
 {
-    if(ajStrLen(dir))
-	ajStrAssS(&fileNameFix, dir);
+    if(ajStrGetLen(dir))
+	ajStrAssignS(&fileNameFix, dir);
     else
-	ajStrAssC(&fileNameFix, "./");
+	ajStrAssignC(&fileNameFix, "./");
 
-    if(ajStrChar(fileNameFix, -1) != '/')
-	ajStrAppC(&fileNameFix, "/");
+    if(ajStrGetCharLast(fileNameFix) != '/')
+	ajStrAppendC(&fileNameFix, "/");
 
-    ajStrAppC(&fileNameFix, filename);
+    ajStrAppendC(&fileNameFix, filename);
 
     return ajFileBuffNewIn(fileNameFix);
 }
@@ -3253,15 +3253,15 @@ AjPFileBuff ajFileBuffNewDC(const AjPStr dir, const char* filename)
 
 AjPFileBuff ajFileBuffNewDF(const AjPStr dir, const AjPStr filename)
 {
-    if(ajStrLen(dir))
-	ajStrAssS(&fileNameFix, dir);
+    if(ajStrGetLen(dir))
+	ajStrAssignS(&fileNameFix, dir);
     else
-	ajStrAssC(&fileNameFix, "./");
+	ajStrAssignC(&fileNameFix, "./");
 
-    if(ajStrChar(fileNameFix, -1) != '/')
-	ajStrAppC(&fileNameFix, "/");
+    if(ajStrGetCharLast(fileNameFix) != '/')
+	ajStrAppendC(&fileNameFix, "/");
 
-    ajStrApp(&fileNameFix, filename);
+    ajStrAppendS(&fileNameFix, filename);
 
     return ajFileBuffNewIn(fileNameFix);
 }
@@ -3296,13 +3296,13 @@ AjPFile ajFileNewDW(const AjPStr dir, const AjPStr wildfile)
     char buf[sizeof(struct dirent)+MAXNAMLEN];
 #endif
     
-    if(ajStrLen(dir))
-	ajStrAssS(&fileDirfixTmp, dir);
+    if(ajStrGetLen(dir))
+	ajStrAssignS(&fileDirfixTmp, dir);
     else
-	ajStrAssC(&fileDirfixTmp, "./");
+	ajStrAssignC(&fileDirfixTmp, "./");
     
-    if(ajStrChar(dir, -1) != '/')
-	ajStrAppC(&fileDirfixTmp, "/");
+    if(ajStrGetCharLast(dir) != '/')
+	ajStrAppendC(&fileDirfixTmp, "/");
     
     dp = fileOpenDir(&fileDirfixTmp);
     if(!dp)
@@ -3337,11 +3337,11 @@ AjPFile ajFileNewDW(const AjPStr dir, const AjPStr wildfile)
 	if(!de->d_ino)
 	    continue;
 #endif
-	if(ajStrMatchCC(de->d_name, "."))
+	if(ajCharMatchC(de->d_name, "."))
 	    continue;
-	if(ajStrMatchCC(de->d_name, ".."))
+	if(ajCharMatchC(de->d_name, ".."))
 	    continue;
-	if(!ajStrMatchWildCO(de->d_name, wildfile))
+	if(!ajCharMatchWildS(de->d_name, wildfile))
 	    continue;
 	dirsize++;
 	ajDebug("accept '%s'\n", de->d_name);
@@ -3389,13 +3389,13 @@ AjPFile ajFileNewDWE(const AjPStr dir, const AjPStr wildfile,
     char buf[sizeof(struct dirent)+MAXNAMLEN];
 #endif
     
-    if(ajStrLen(dir))
-	ajStrAssS(&fileDirfixTmp, dir);
+    if(ajStrGetLen(dir))
+	ajStrAssignS(&fileDirfixTmp, dir);
     else
-	ajStrAssC(&fileDirfixTmp, "./");
+	ajStrAssignC(&fileDirfixTmp, "./");
     
-    if(ajStrChar(dir, -1) != '/')
-	ajStrAppC(&fileDirfixTmp, "/");
+    if(ajStrGetCharLast(dir) != '/')
+	ajStrAppendC(&fileDirfixTmp, "/");
     
     dp = fileOpenDir(&fileDirfixTmp);
     if(!dp)
@@ -3430,11 +3430,11 @@ AjPFile ajFileNewDWE(const AjPStr dir, const AjPStr wildfile,
 	if(!de->d_ino)
 	    continue;
 #endif
-	if(ajStrMatchCC(de->d_name, "."))
+	if(ajCharMatchC(de->d_name, "."))
 	    continue;
-	if(ajStrMatchCC(de->d_name, ".."))
+	if(ajCharMatchC(de->d_name, ".."))
 	    continue;
-	ajStrAssC(&fileNameTmp, de->d_name);
+	ajStrAssignC(&fileNameTmp, de->d_name);
 	if(!ajFileTestSkip(fileNameTmp, exclude, wildfile, ajFalse, ajFalse))
 	    continue;
 	dirsize++;
@@ -3466,15 +3466,15 @@ AjPFile ajFileNewDWE(const AjPStr dir, const AjPStr wildfile,
 
 AjPFile ajFileNewDF(const AjPStr dir, const AjPStr filename)
 {
-    if(ajStrLen(dir))
-	ajStrAssS(&fileNameFix, dir);
+    if(ajStrGetLen(dir))
+	ajStrAssignS(&fileNameFix, dir);
     else
-	ajStrAssC(&fileNameFix, "./");
+	ajStrAssignC(&fileNameFix, "./");
     
-    if(ajStrChar(fileNameFix, -1) != '/')
-	ajStrAppC(&fileNameFix, "/");
+    if(ajStrGetCharLast(fileNameFix) != '/')
+	ajStrAppendC(&fileNameFix, "/");
     
-    ajStrApp(&fileNameFix, filename);
+    ajStrAppendS(&fileNameFix, filename);
      
     return ajFileNewIn(fileNameFix);
 }
@@ -3495,15 +3495,15 @@ AjPFile ajFileNewDF(const AjPStr dir, const AjPStr filename)
 
 AjPFile ajFileNewDirF(const AjPDir dir, const AjPStr filename)
 {
-    if(ajStrLen(dir->Name))
-	ajStrAssS(&fileNameFix, dir->Name);
+    if(ajStrGetLen(dir->Name))
+	ajStrAssignS(&fileNameFix, dir->Name);
     else
-	ajStrAssC(&fileNameFix, "./");
+	ajStrAssignC(&fileNameFix, "./");
     
-    if(ajStrChar(fileNameFix, -1) != '/')
-	ajStrAppC(&fileNameFix, "/");
+    if(ajStrGetCharLast(fileNameFix) != '/')
+	ajStrAppendC(&fileNameFix, "/");
     
-    ajStrApp(&fileNameFix, filename);
+    ajStrAppendS(&fileNameFix, filename);
     ajFileNameExt(&fileNameFix, dir->Extension);
 
     return ajFileNewIn(fileNameFix);
@@ -3526,15 +3526,15 @@ AjPFile ajFileNewDirF(const AjPDir dir, const AjPStr filename)
 
 AjPFile ajFileNewDC(const AjPStr dir, const char* filename)
 {
-    if(ajStrLen(dir))
-	ajStrAssS(&fileNameFix, dir);
+    if(ajStrGetLen(dir))
+	ajStrAssignS(&fileNameFix, dir);
     else
-	ajStrAssC(&fileNameFix, "./");
+	ajStrAssignC(&fileNameFix, "./");
 
-    if(ajStrChar(fileNameFix, -1) != '/')
-	ajStrAppC(&fileNameFix, "/");
+    if(ajStrGetCharLast(fileNameFix) != '/')
+	ajStrAppendC(&fileNameFix, "/");
 
-    ajStrAppC(&fileNameFix, filename);
+    ajStrAppendC(&fileNameFix, filename);
 
     return ajFileNewIn(fileNameFix);
 }
@@ -3692,7 +3692,7 @@ AjBool ajFileBuffGetStore(AjPFileBuff thys, AjPStr* pdest,
     if(store && ret)
     {
 	ajDebug("ajFileBuffGetStore: '%S'", *pdest);
-	ajStrApp(astr,*pdest);
+	ajStrAppendS(astr,*pdest);
     }
 
     return ret;
@@ -3732,7 +3732,7 @@ AjBool ajFileBuffGetStoreL(AjPFileBuff thys, AjPStr* pdest,
     if(store && ret)
     {
 	ajDebug("ajFileBuffGetStoreL:\n%S", *pdest);
-	ajStrApp(astr,*pdest);
+	ajStrAppendS(astr,*pdest);
     }
 
     return ret;
@@ -3765,7 +3765,7 @@ AjBool ajFileBuffGetL(AjPFileBuff thys, AjPStr* pdest, ajlong* fpos)
     
     if(thys->Pos < thys->Size)
     {
-	ajStrAssS(pdest, thys->Curr->Line);
+	ajStrAssignS(pdest, thys->Curr->Line);
 	*fpos = thys->Curr->Fpos;
 	thys->Prev = thys->Curr;
 	thys->Curr = thys->Curr->Next;
@@ -3889,7 +3889,7 @@ void ajFileBuffStripHtml(AjPFileBuff thys)
     i = 0;
     
     ajDebug("First line [%d] '%S' \n",
-	     ajStrRef(thys->Curr->Line), thys->Curr->Line);
+	     ajStrGetUse(thys->Curr->Line), thys->Curr->Line);
     
     if(ajRegExec(httpexp, thys->Curr->Line))
     {
@@ -3933,18 +3933,18 @@ void ajFileBuffStripHtml(AjPFileBuff thys)
 	    iline++;
 	    /* get the chunk size - zero is the end */
 	    /* process the chunk */
-	    ichunk += ajStrLen(thys->Curr->Line);
+	    ichunk += ajStrGetLen(thys->Curr->Line);
 	    
 	    ajDebug("++input line [%d] ichunk=%d:%d %d:%S",
 		    iline, ichunk, chunkSize,
-		    ajStrLen(thys->Curr->Line), thys->Curr->Line);
+		    ajStrGetLen(thys->Curr->Line), thys->Curr->Line);
 	    if(ichunk >= chunkSize)	/* end of chunk */
 	    {
 		if(ichunk == chunkSize)
 		{
 		    /* end-of-chunk at end-of-line */
 		    fileBuffLineNext(thys);
-		    ajStrAssC(&saveLine, "");
+		    ajStrAssignC(&saveLine, "");
 		    ajDebug("end-of-chunk at end-of-line: '%S'\n", saveLine);
 		}
 		else
@@ -3952,11 +3952,11 @@ void ajFileBuffStripHtml(AjPFileBuff thys)
 		    /* end-of-chunk in mid-line, patch up the input */
 		    ajDebug("end-of-chunk in mid-line, %d:%d have input: %d '%S'\n",
 			    ichunk, chunkSize,
-			    ajStrLen(thys->Curr->Line),
+			    ajStrGetLen(thys->Curr->Line),
 			    thys->Curr->Line);
-		    ajStrAssSub(&saveLine, thys->Curr->Line, 0,
+		    ajStrAssignSubS(&saveLine, thys->Curr->Line, 0,
 				-(ichunk-chunkSize+1));
-		    ajStrSub(&thys->Curr->Line, -(ichunk-chunkSize), -1);
+		    ajStrKeepRange(&thys->Curr->Line, -(ichunk-chunkSize), -1);
 		}
 		
 		/* skip a blank line */
@@ -3986,11 +3986,11 @@ void ajFileBuffStripHtml(AjPFileBuff thys)
 
 	    if(saveLine)
 	    {
-		if(ajStrLen(saveLine))
+		if(ajStrGetLen(saveLine))
 		{
-		    ichunk = ajStrLen(thys->Curr->Line);
+		    ichunk = ajStrGetLen(thys->Curr->Line);
 		    /* preserve the line split by chunksize */
-		    ajStrInsert(&thys->Curr->Line, 0, saveLine);
+		    ajStrInsertS(&thys->Curr->Line, 0, saveLine);
 		    if(ichunk < chunkSize)
 		    {
 			/* process the next line */
@@ -3999,7 +3999,7 @@ void ajFileBuffStripHtml(AjPFileBuff thys)
 		    else
 		    {
 			/* we alrady have the whole chunk! */
-			ichunk -= ajStrLen(thys->Curr->Line);
+			ichunk -= ajStrGetLen(thys->Curr->Line);
 		    }
 		}
 		else
@@ -4041,9 +4041,9 @@ void ajFileBuffStripHtml(AjPFileBuff thys)
     while(thys->Curr)
     {
 	if(ajRegExec(ncbiexp, thys->Curr->Line))
-	    ajStrAssC(&thys->Curr->Line, "\n");
+	    ajStrAssignC(&thys->Curr->Line, "\n");
 	if(ajRegExec(ncbiexp2, thys->Curr->Line))
-	    ajStrAssC(&thys->Curr->Line, "\n");
+	    ajStrAssignC(&thys->Curr->Line, "\n");
 
 	while(ajRegExec(fullexp, thys->Curr->Line))
 	{
@@ -4130,7 +4130,7 @@ void ajFileBuffLoadC(AjPFileBuff thys, const char* line)
     else
 	thys->Last = AJNEW0(thys->Last->Next);
 
-    ajStrAssC(&thys->Last->Line,line);
+    ajStrAssignC(&thys->Last->Line,line);
     thys->Last->Next = NULL;
     thys->Size++;
 
@@ -4161,7 +4161,7 @@ void ajFileBuffLoadS(AjPFileBuff thys, const AjPStr line)
     else
 	thys->Last = AJNEW0(thys->Last->Next);
 
-    ajStrAssS(&thys->Last->Line,line);
+    ajStrAssignS(&thys->Last->Line,line);
     thys->Last->Next = NULL;
     thys->Size++;
 
@@ -4256,7 +4256,7 @@ void ajFileBuffResetStore(AjPFileBuff thys, AjBool store, AjPStr *astr)
 {
     ajFileBuffReset(thys);
     if(store)
-	ajStrAssC(astr, "");
+	ajStrAssignC(astr, "");
 
     return;
 }
@@ -4425,7 +4425,7 @@ void ajFileBuffClear(AjPFileBuff thys, ajint lines)
 	next = list->Next;
 	/* so keep a note of the next one for later */
 	/*ajDebug("Try to reuse %x size: %d use: %d\n",
-	  list->Line, ajStrSize(list->Line), ajStrRef(list->Line));*/
+	  list->Line, ajStrGetRes(list->Line), ajStrGetUse(list->Line));*/
 	
 	if(thys->Nobuff)
 	{
@@ -4434,12 +4434,12 @@ void ajFileBuffClear(AjPFileBuff thys, ajint lines)
 	}
 	else
 	{
-	    if(ajStrDelReuse(&list->Line))
+	    if(ajStrDelStatic(&list->Line))
 	    {
 		/* move free line to the end */
 
 		/*ajDebug("can save to free list %x %d bytes\n",
-		  list->Line, ajStrSize(list->Line));*/
+		  list->Line, ajStrGetRes(list->Line));*/
 
 		ifree++;
 		/* just save the one line */
@@ -4495,7 +4495,7 @@ void ajFileBuffClear(AjPFileBuff thys, ajint lines)
 
 	thys->Lines = AJNEW0(thys->Last);
 
-	ajStrAssS(&thys->Last->Line, thys->File->Buff);
+	ajStrAssignS(&thys->Last->Line, thys->File->Buff);
 	thys->Curr = thys->Last;
 	thys->Curr->Fpos = thys->Fpos;
 	thys->Last->Next = NULL;
@@ -4532,8 +4532,8 @@ void ajFileBuffClearStore(AjPFileBuff thys, ajint lines,
 			   const AjPStr rdline, AjBool store, AjPStr *astr)
 {
     ajFileBuffClear(thys, lines);
-    if(store && ajStrLen(rdline))
-	ajStrTrim(astr, -ajStrLen(rdline));
+    if(store && ajStrGetLen(rdline))
+	ajStrCutEnd(astr, ajStrGetLen(rdline));
 
     return;
 }
@@ -4736,12 +4736,12 @@ void ajFileBuffTraceFull(const AjPFileBuff thys, size_t nlines,
 	if(line == thys->Curr)
 	    ajDebug("*Line %x %d: %5d %5d <%-20S>\n",
 		     line->Line, i,
-		     ajStrLen(line->Line), strlen(ajStrStr(line->Line)),
+		     ajStrGetLen(line->Line), strlen(ajStrGetPtr(line->Line)),
 		     line->Line);
 	else
 	    ajDebug(" Line %x %d: %5d %5d <%-20S>\n",
 		     line->Line, i,
-		     ajStrLen(line->Line), strlen(ajStrStr(line->Line)),
+		     ajStrGetLen(line->Line), strlen(ajStrGetPtr(line->Line)),
 		     line->Line);
 	line = line->Next;
     }
@@ -4751,7 +4751,7 @@ void ajFileBuffTraceFull(const AjPFileBuff thys, size_t nlines,
     {
 	if(line == thys->Freelast) last = ajTrue;
 	ajDebug(" Free %x %d: %d bytes %B\n",
-		 line->Line, i, ajStrSize(line->Line), last);
+		 line->Line, i, ajStrGetRes(line->Line), last);
 	line = line->Next;
     }
 
@@ -4781,8 +4781,8 @@ void ajFileBuffPrint(const AjPFileBuff thys, const char* title)
     line = thys->Lines;
     for(i=1; line; i++)
     {
-	ajStrAssS(&fileTmpStr, line->Line);
-	ajStrRemoveNewline(&fileTmpStr);
+	ajStrAssignS(&fileTmpStr, line->Line);
+	ajStrRemoveLastNewline(&fileTmpStr);
 	if(line == thys->Curr)
 	    ajDebug("* %x %S\n", line->Line, fileTmpStr);
 	else
@@ -4945,7 +4945,7 @@ AjBool ajFileNameDir(AjPStr* filename, const AjPDir dir, const AjPStr name)
     AjBool ret = ajFalse;
     if(!dir)
     {
-	ajStrAssS(filename, name);
+	ajStrAssignS(filename, name);
 	return ajFalse;
     }
 
@@ -4973,10 +4973,10 @@ AjBool ajFileNameDir(AjPStr* filename, const AjPDir dir, const AjPStr name)
 
 AjBool ajFileNameDirSet(AjPStr* filename, const AjPStr dir)
 {
-    if(!ajStrLen(dir))
+    if(!ajStrGetLen(dir))
 	return ajFalse;
 
-    return ajFileNameDirSetC(filename, ajStrStr(dir));
+    return ajFileNameDirSetC(filename, ajStrGetPtr(dir));
 }
 
 
@@ -5007,7 +5007,7 @@ AjBool ajFileNameDirSetC(AjPStr* filename, const char* dir)
     {
 	ajRegSubI(fileFilenameExp, 1, &tmpdir);
 	/* we already have a directory */
-	if(ajStrLen(tmpdir)) {
+	if(ajStrGetLen(tmpdir)) {
 	    ajStrDel(&tmpdir);
 	    return ajFalse;
 	}
@@ -5042,7 +5042,7 @@ AjBool ajFileNameExt(AjPStr* filename, const AjPStr extension)
     if(!extension)
 	return ajFileNameExtC(filename, NULL);
 
-    return ajFileNameExtC(filename, ajStrStr(extension));
+    return ajFileNameExtC(filename, ajStrGetPtr(extension));
 }
 
 
@@ -5069,28 +5069,28 @@ AjBool ajFileNameExtC(AjPStr* filename, const char* extension)
 
 
     ajDebug("ajFileNameExtC '%S' '%s'\n", *filename, extension);
-    ajStrAssC(&fileTmpStr,ajStrStr(*filename));
+    ajStrAssignC(&fileTmpStr,ajStrGetPtr(*filename));
 
     /* Skip any directory path */
-    p = strrchr(ajStrStrMod(&fileTmpStr),'/');
+    p = strrchr(ajStrGetuniquePtr(&fileTmpStr),'/');
     if (!p)
-	p = ajStrStrMod(&fileTmpStr);
+	p = ajStrGetuniquePtr(&fileTmpStr);
 
     p = strrchr(p,'.');
     if(p)
     {
 	*p='\0';
-	fileTmpStr->Len = p - ajStrStr(fileTmpStr);
+	fileTmpStr->Len = p - ajStrGetPtr(fileTmpStr);
     }
 
 
     if(doext)
     {
-	ajStrAppC(&fileTmpStr,".");
-	ajStrAppC(&fileTmpStr,extension);
+	ajStrAppendC(&fileTmpStr,".");
+	ajStrAppendC(&fileTmpStr,extension);
     }
 
-    ajStrAssS(filename,fileTmpStr);
+    ajStrAssignS(filename,fileTmpStr);
 
     ajDebug("result '%S'\n", *filename);
 
@@ -5139,7 +5139,7 @@ ajint ajFileScan(const AjPStr path, const AjPStr filename, AjPList *result,
 #endif
     
     tpath = ajStrNew();
-    ajStrAssS(&tpath,path);
+    ajStrAssignS(&tpath,path);
     
     
     if(dolist)
@@ -5160,7 +5160,7 @@ ajint ajFileScan(const AjPStr path, const AjPStr filename, AjPList *result,
     }
 
 
-    if(!(indir=opendir(ajStrStr(tpath))))
+    if(!(indir=opendir(ajStrGetPtr(tpath))))
     {
 	ajStrDel(&tpath);
 	return 0;
@@ -5201,9 +5201,9 @@ ajint ajFileScan(const AjPStr path, const AjPStr filename, AjPList *result,
 	   !strcmp(dp->d_name,".."))
 #endif
 	    continue;
-	ajStrAssS(&s,tpath);
-	/*	ajStrAppC(&s,"/");*/
-	ajStrAppC(&s,dp->d_name);
+	ajStrAssignS(&s,tpath);
+	/*	ajStrAppendC(&s,"/");*/
+	ajStrAppendC(&s,dp->d_name);
 
 	/* Its a directory */
 	if(ajFileStat(s,AJ_FILE_DIR))
@@ -5219,7 +5219,7 @@ ajint ajFileScan(const AjPStr path, const AjPStr filename, AjPList *result,
 		while(ajListIterMore(iter))
 		{
 		    t = ajListIterNext(iter);
-		    if(!strcmp(ajStrStr(t),dp->d_name))
+		    if(!strcmp(ajStrGetPtr(t),dp->d_name))
 		    {
 			flag = ajTrue;
 			break;
@@ -5232,13 +5232,13 @@ ajint ajFileScan(const AjPStr path, const AjPStr filename, AjPList *result,
 
 	    if(!ajFileStat(s,AJ_FILE_R) || !ajFileStat(s,AJ_FILE_X))
 		continue;
-	    t = ajStrNewC(ajStrStr(s));
+	    t = ajStrNewC(ajStrGetPtr(s));
 	    ajListPushApp(dirs,(void *)t);
 	}
 	else if(ajFileStat(s,AJ_FILE_R))
 	{
 	    if(filename)
-		if(ajStrMatchWildCC(dp->d_name,ajStrStr(filename)))
+		if(ajCharMatchWildC(dp->d_name,ajStrGetPtr(filename)))
 		{
 		    t = ajStrNewS(s);
 		    ajListPushApp(*result,(void *)t);
@@ -5306,18 +5306,18 @@ AjBool ajFileTestSkip(const AjPStr fullname,
     AjPStrTok handle = NULL;
     AjPStr token     = NULL;
     
-    ajStrAssS(&fileNameTmp, fullname);
+    ajStrAssignS(&fileNameTmp, fullname);
     if(ignoredirectory)
 	ajFileDirTrim(&fileNameTmp);
     
     if(keep && ajStrGetLen(exc))
     {
 	/* keep, so test exclude first */
-	ajStrTokenAss(&handle, exc, " \t,;\n");
+	ajStrTokenAssignC(&handle, exc, " \t,;\n");
 
-	while(ajStrToken(&token, &handle, NULL))
-	    if(ajStrMatchWild(fullname, token) ||
-		(ignoredirectory && ajStrMatchWild(fileNameTmp, token)))
+	while(ajStrTokenNextParse(&handle, &token))
+	    if(ajStrMatchWildS(fullname, token) ||
+		(ignoredirectory && ajStrMatchWildS(fileNameTmp, token)))
 		ret = ajFalse;
 
 	ajStrTokenReset(&handle);
@@ -5325,11 +5325,11 @@ AjBool ajFileTestSkip(const AjPStr fullname,
 
     if(ajStrGetLen(inc))
     {
-	ajStrTokenAss(&handle, inc, " \t,;\n");
+	ajStrTokenAssignC(&handle, inc, " \t,;\n");
 
-	while(ajStrToken(&token, &handle, NULL))
-	    if(ajStrMatchWild(fullname, token) ||
-	       (ignoredirectory && ajStrMatchWild(fileNameTmp, token)))
+	while(ajStrTokenNextParse(&handle, &token))
+	    if(ajStrMatchWildS(fullname, token) ||
+	       (ignoredirectory && ajStrMatchWildS(fileNameTmp, token)))
 		ret = ajTrue;
 
 	ajStrTokenReset(&handle);
@@ -5337,11 +5337,11 @@ AjBool ajFileTestSkip(const AjPStr fullname,
 
     if(!keep && ajStrGetLen(exc))
     {				       /* nokeep, test exclude last */
-	ajStrTokenAss(&handle, exc, " \t,;\n");
+	ajStrTokenAssignC(&handle, exc, " \t,;\n");
 
-	while(ajStrToken(&token, &handle, NULL))
-	    if(ajStrMatchWild(fullname, token) ||
-		(ignoredirectory && ajStrMatchWild(fileNameTmp, token)))
+	while(ajStrTokenNextParse(&handle, &token))
+	    if(ajStrMatchWildS(fullname, token) ||
+		(ignoredirectory && ajStrMatchWildS(fileNameTmp, token)))
 		ret = ajFalse;
 
 	ajStrTokenReset(&handle);
@@ -5368,14 +5368,14 @@ AjBool ajFileDirTrim(AjPStr* name)
 {
     ajint i;
 
-    if(!ajStrLen(*name))
+    if(!ajStrGetLen(*name))
 	return ajFalse;
 
-    i = ajStrRFindC(*name, "/");
+    i = ajStrFindlastC(*name, "/");
     if(i < 0)
 	return ajFalse;
 
-    ajStrTrim(name, i+1);
+    ajStrCutStart(name, i+1);
 
     return ajTrue;
 }
@@ -5395,16 +5395,16 @@ AjBool ajFileExtnTrim(AjPStr* name)
     ajint i;
     ajint len;
 
-    if(!ajStrLen(*name))
+    if(!ajStrGetLen(*name))
 	return ajFalse;
 
-    len = ajStrLen(*name);
-    i = ajStrRFindC(*name, ".");
+    len = ajStrGetLen(*name);
+    i = ajStrFindlastC(*name, ".");
 
     if(i < 0)
 	return ajFalse;
 
-    ajStrTrim(name, (len-i)*-1);
+    ajStrCutEnd(name, (len-i));
 
     return ajTrue;
 }
@@ -5426,15 +5426,15 @@ AjBool ajFileDirExtnTrim(AjPStr* name)
     ajint j;
     ajint len;
     
-    if(!ajStrLen(*name))
+    if(!ajStrGetLen(*name))
 	return ajFalse;
 
-    i = ajStrRFindC(*name, "/");
-    ajStrTrim(name, i+1);
+    i = ajStrFindlastC(*name, "/");
+    ajStrCutStart(name, i+1);
 
-    len = ajStrLen(*name);
-    j = ajStrRFindC(*name, ".");
-    ajStrTrim(name, (len-j)*-1);
+    len = ajStrGetLen(*name);
+    j = ajStrFindlastC(*name, ".");
+    ajStrCutEnd(name, (len-j));
 
 
     if((i < 0) && (j < 0))
@@ -5480,10 +5480,10 @@ const char* ajFileTempName(const char *dir)
     direct = ajStrNew();
     
     if(!dir)
-	ajStrAssC(&direct,".");
+	ajStrAssignC(&direct,".");
     else
-	ajStrAssC(&direct,dir);
-    ajStrAppC(&direct,"/");
+	ajStrAssignC(&direct,dir);
+    ajStrAppendC(&direct,"/");
     
     
     
@@ -5494,9 +5494,9 @@ const char* ajFileTempName(const char *dir)
     ok    = ajTrue;
     
 #if defined(AJ_IRIXLF)
-    while(!stat64(ajStrStr(dt),&buf) && retry)
+    while(!stat64(ajStrGetPtr(dt),&buf) && retry)
 #else
-	while(!stat(ajStrStr(dt),&buf) && retry)
+	while(!stat(ajStrGetPtr(dt),&buf) && retry)
 #endif
 	{
 	    ajFmtPrintS(&dt,"%S%s-%d.%d",direct,ajAcdProgram(),time(0),
@@ -5518,7 +5518,7 @@ const char* ajFileTempName(const char *dir)
     else
     {
 	ajFileClose(&outf);
-	unlink(ajStrStr(dt));
+	unlink(ajStrGetPtr(dt));
     }
     
     ajStrDel(&direct);
@@ -5526,7 +5526,7 @@ const char* ajFileTempName(const char *dir)
     if(!ok)
 	return NULL;
     
-    return ajStrStr(dt);
+    return ajStrGetPtr(dt);
 }
 
 
@@ -5668,8 +5668,8 @@ ajint ajFileWriteStr(AjPFile thys, const AjPStr str, ajint len)
     static char buf[256];
     ajint i;
 
-    i = ajStrLen(str);
-    strcpy(buf, ajStrStr(str));
+    i = ajStrGetLen(str);
+    strcpy(buf, ajStrGetPtr(str));
     if(i < len)
 	memset(&buf[i], '\0', len-i);
 
@@ -5800,9 +5800,9 @@ static void fileListRecurs(const AjPStr srcfile, AjPList list, ajint *recurs)
     if(*recurs > FILERECURSLV)
 	ajFatal("Filelist maximum recursion level reached");
 
-    ajStrAssS(&file, srcfile);
-    ajStrChomp(&file);
-    c = *ajStrStr(file);
+    ajStrAssignS(&file, srcfile);
+    ajStrTrimWhite(&file);
+    c = *ajStrGetPtr(file);
     
     dir   = ajStrNew();
     line  = ajStrNew();
@@ -5811,21 +5811,21 @@ static void fileListRecurs(const AjPStr srcfile, AjPList list, ajint *recurs)
     
     if(ajStrIsWild(file))
     {
-	if(!(p=strrchr(ajStrStr(file),(int)'/')))
-	    ajStrAssC(&dir,"./");
+	if(!(p=strrchr(ajStrGetPtr(file),(int)'/')))
+	    ajStrAssignC(&dir,"./");
 	else
-	    ajStrAssSubC(&dir,ajStrStr(file),0,p-ajStrStr(file));
+	    ajStrAssignSubC(&dir,ajStrGetPtr(file),0,p-ajStrGetPtr(file));
 	ajFileScan(dir,file,&dlist,ajFalse,ajFalse,NULL,NULL,ajFalse,NULL);
 	while(ajListPop(dlist,(void **)&ptr))
 	{
 	    if(ajStrPrefixC(ptr,"./"))
-		ajStrTrim(&ptr,2);
+		ajStrCutStart(&ptr,2);
 	    ajListPushApp(list,(void *)ptr);
 	}
     }
     else if(c=='@')
     {
-	if((inf=ajFileNewInC(ajStrStr(file)+1)))
+	if((inf=ajFileNewInC(ajStrGetPtr(file)+1)))
 	    while(ajFileReadLine(inf,&line))
 		fileListRecurs(line,list,recurs);
 	if(inf)
@@ -5833,7 +5833,7 @@ static void fileListRecurs(const AjPStr srcfile, AjPList list, ajint *recurs)
     }
     else if(ajStrPrefixC(file,"list::"))
     {
-	if((inf=ajFileNewInC(ajStrStr(file)+6)))
+	if((inf=ajFileNewInC(ajStrGetPtr(file)+6)))
 	    while(ajFileReadLine(inf,&line))
 		fileListRecurs(line,list,recurs);
 	if(inf)
@@ -5841,7 +5841,7 @@ static void fileListRecurs(const AjPStr srcfile, AjPList list, ajint *recurs)
     }
     else
     {
-	ptr = ajStrNewC(ajStrStr(file));
+	ptr = ajStrNewC(ajStrGetPtr(file));
 	ajListPushApp(list,(void *)ptr);
     }
     
@@ -5940,7 +5940,7 @@ static void fileBuffLineAdd(AjPFileBuff thys, const AjPStr line)
 	    thys->Last = AJNEW0(thys->Last->Next);
     }
     
-    ajStrAssS(&thys->Last->Line, line);
+    ajStrAssignS(&thys->Last->Line, line);
     thys->Prev = thys->Curr;
     thys->Curr = thys->Last;
     thys->Last->Next = NULL;
@@ -5971,7 +5971,7 @@ static void fileBuffLineDel(AjPFileBuff thys)
 
     ajDebug("fileBuffLineDel removing line [%d/%d], '%S' len %d\n",
 	     thys->Pos, thys->Size, thys->Curr->Line,
-	     ajStrLen(thys->Curr->Line));
+	     ajStrGetLen(thys->Curr->Line));
 
     /* first line */
     if(!thys->Prev)

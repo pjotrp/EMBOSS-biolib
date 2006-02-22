@@ -13,7 +13,7 @@
  * 
  * Create a GSI index file for an HMM database.
  * 
- * RCS $Id: ohmmindex.c,v 1.1 2006/02/21 12:35:43 rice Exp $
+ * RCS $Id: ohmmindex.c,v 1.2 2006/02/22 15:02:28 rice Exp $
  *
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
@@ -93,7 +93,7 @@ int main(int argc, char **argv)
     inf = ajAcdGetInfile("infile");
 
     instr   = ajStrNewC((char *)ajFileName(inf));
-    hmmfile = ajStrStr(instr);
+    hmmfile = ajStrGetPtr(instr);
     ajFileClose(&inf);
     
 

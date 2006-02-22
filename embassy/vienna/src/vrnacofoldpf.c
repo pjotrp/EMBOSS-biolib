@@ -191,10 +191,10 @@ int main(int argc, char *argv[])
     no_closingGU  = (eclose) ? 0 : 1;
     noLonelyPairs = (lonely) ? 0 : 1;
     noconv        = (convert) ? 0 : 1;
-    ns_bases      = (ajStrLen(ensbases)) ? MAJSTRSTR(ensbases) : NULL;
+    ns_bases      = (ajStrGetLen(ensbases)) ? MAJSTRGETPTR(ensbases) : NULL;
     tetra_loop    = !!etloop;
     
-    ewt = *ajStrStr(*eenergy);
+    ewt = *ajStrGetPtr(*eenergy);
     if(ewt == '0')
 	energy_set = 0;
     else if(ewt == '1')
@@ -204,7 +204,7 @@ int main(int argc, char *argv[])
     
     sfact = (double) escale;
     
-    edangle = *ajStrStr(*edangles);
+    edangle = *ajStrGetPtr(*edangles);
     if(edangle == '0')
 	dangles = 0;
     else if(edangle == '1')
@@ -253,7 +253,7 @@ int main(int argc, char *argv[])
     }
 
     ajFmtPrintS(&seqstring1,"%s&%s",ajSeqChar(seq1),ajSeqChar(seq2));
-    string = tokenize(MAJSTRSTR(seqstring1));
+    string = tokenize(MAJSTRGETPTR(seqstring1));
     length = (int) strlen(string);
 
 
@@ -262,10 +262,10 @@ int main(int argc, char *argv[])
     {
 	vienna_GetConstraints(confile1,&constring1);
 	vienna_GetConstraints(confile2,&constring2);
-	ajStrAppK(&constring1,'&');
-	ajStrApp(&constring1,constring2);
+	ajStrAppendK(&constring1,'&');
+	ajStrAppendS(&constring1,constring2);
 
-	cstruc = tokenize(MAJSTRSTR(constring1));
+	cstruc = tokenize(MAJSTRGETPTR(constring1));
 	if (cstruc!=NULL)
 	    strncpy(structure, cstruc, length);
 	else

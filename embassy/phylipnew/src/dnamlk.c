@@ -2275,7 +2275,7 @@ void maketree()
       }
     } 
   } else {
-    treestr = ajStrStrMod(&phylotrees[0]->Tree);
+    treestr = ajStrGetuniquePtr(&phylotrees[0]->Tree);
     inittable_for_usertree (treestr);
     if(numtrees > MAXSHIMOTREES)
       shimotrees = MAXSHIMOTREES;
@@ -2304,7 +2304,7 @@ void maketree()
       dummy_first      = true;
       goteof           = false;
 
-      treestr = ajStrStrMod(&phylotrees[which-1]->Tree);
+      treestr = ajStrGetuniquePtr(&phylotrees[which-1]->Tree);
       treeread(&treestr, &root, dummy_treenode, &goteof, &dummy_first,
                curtree.nodep, &nextnode,
                &dummy_haslengths, &grbg, initdnamlnode);

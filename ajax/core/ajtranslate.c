@@ -266,7 +266,7 @@ AjPTrn ajTrnNewI(ajint trnFileNameInt)
     trnFileName = ajStrNewC(TGC);
 
     ajStrFromInt(&value, trnFileNameInt);
-    ajStrApp(&trnFileName, value);
+    ajStrAppendS(&trnFileName, value);
 
     ret = ajTrnNew(trnFileName);
 
@@ -301,7 +301,7 @@ AjPTrn ajTrnNew(const AjPStr trnFileName)
     /* open the translation table file */
 
     /* if the file is not specified, use the standard table file */
-    if(!ajStrLen(trnFileName))
+    if(!ajStrGetLen(trnFileName))
 	trnFileName = ajStrNewC(TGCFILE);
 
 
@@ -323,7 +323,7 @@ AjPTrn ajTrnNew(const AjPStr trnFileName)
 		pthis->Starts[i][j][k] = '-';
 	    }
 
-    ajStrAssS(&(pthis->FileName), trnFileName);
+    ajStrAssignS(&(pthis->FileName), trnFileName);
     ajTrnReadFile(pthis, trnFile);
 
     ajFileClose(&trnFile);
@@ -384,7 +384,7 @@ void ajTrnReadFile(AjPTrn trnObj, AjPFile trnFile)
     {
 	ajDebug("Line: '%S'\n", trnLine);
 	trnNoComment(&trnLine);
-	if(ajStrLen(trnLine))
+	if(ajStrGetLen(trnLine))
 	{
 	    if(ajStrFindC(trnLine, "Genetic Code") == -1)
 		ajFatal("The file '%S' is not a valid Genetic Code file.\n"
@@ -400,9 +400,9 @@ void ajTrnReadFile(AjPTrn trnObj, AjPFile trnFile)
     {
 	ajDebug("Line: '%S'\n", trnLine);
 	trnNoComment(&trnLine);
-	if(ajStrLen(trnLine))
+	if(ajStrGetLen(trnLine))
 	{
-	    ajStrAssS(&(trnObj->Title), trnLine);
+	    ajStrAssignS(&(trnObj->Title), trnLine);
 	    break;
 	}
     }
@@ -412,63 +412,63 @@ void ajTrnReadFile(AjPTrn trnObj, AjPFile trnFile)
     {
 	ajDebug("Line: '%S'\n", trnLine);
 	trnNoComment(&trnLine);
-	if(ajStrLen(trnLine))
+	if(ajStrGetLen(trnLine))
 	{
-	    ajStrApp(&trnText, trnLine);
-	    ajStrAppC(&trnText, " ");
+	    ajStrAppendS(&trnText, trnLine);
+	    ajStrAppendC(&trnText, " ");
 	}
     }
 
     /* data */
-    tokenhandle = ajStrTokenInit(trnText, white);
+    tokenhandle = ajStrTokenNewC(trnText, white);
 
-    ajStrToken(&tmpstr, &tokenhandle, NULL);
+    ajStrTokenNextParse(&tokenhandle, &tmpstr);
     if(ajStrCmpC(tmpstr, "AAs") == -1)
 	ajFatal("The file '%S' is not a valid Genetic Code file.\n"
 		"The 'AAs' line was not found.", trnObj->FileName);
 
-    ajStrToken(&aaline, &tokenhandle, NULL);
-    aa = ajStrStr(aaline);
+    ajStrTokenNextParse(&tokenhandle, &aaline);
+    aa = ajStrGetPtr(aaline);
 
-    ajStrToken(&tmpstr, &tokenhandle, NULL);
+    ajStrTokenNextParse(&tokenhandle, &tmpstr);
     if(ajStrCmpC(tmpstr, "Starts") == -1)
 	ajFatal("The file '%S' is not a valid Genetic Code file.\n"
 		"The 'Starts' line was not found.", trnObj->FileName);
 
-    ajStrToken(&startsline, &tokenhandle, NULL);
-    starts = ajStrStr(startsline);
+    ajStrTokenNextParse(&tokenhandle, &startsline);
+    starts = ajStrGetPtr(startsline);
 
-    ajStrToken(&tmpstr, &tokenhandle, NULL);
+    ajStrTokenNextParse(&tokenhandle, &tmpstr);
     if(ajStrCmpC(tmpstr, "Base1") == -1)
 	ajFatal("The file '%S' is not a valid Genetic Code file.\n"
 		"The 'Base1' line was not found.", trnObj->FileName);
 
-    ajStrToken(&base1line, &tokenhandle, NULL);
-    base1 = ajStrStr(base1line);
+    ajStrTokenNextParse(&tokenhandle, &base1line);
+    base1 = ajStrGetPtr(base1line);
 
-    ajStrToken(&tmpstr, &tokenhandle, NULL);
+    ajStrTokenNextParse(&tokenhandle, &tmpstr);
     if(ajStrCmpC(tmpstr, "Base2") == -1)
 	ajFatal("The file '%S' is not a valid Genetic Code file.\n"
 		"The 'Base2' line was not found.", trnObj->FileName);
 
-    ajStrToken(&base2line, &tokenhandle, NULL);
-    base2 = ajStrStr(base2line);
+    ajStrTokenNextParse(&tokenhandle, &base2line);
+    base2 = ajStrGetPtr(base2line);
 
-    ajStrToken(&tmpstr, &tokenhandle, NULL);
+    ajStrTokenNextParse(&tokenhandle, &tmpstr);
 
     if(ajStrCmpC(tmpstr, "Base3") == -1)
 	ajFatal("The file '%S' is not a valid Genetic Code file.\n"
 		"The 'Base3' line was not found.", trnObj->FileName);
 
-    ajStrToken(&base3line, &tokenhandle, NULL);
-    base3 = ajStrStr(base3line);
+    ajStrTokenNextParse(&tokenhandle, &base3line);
+    base3 = ajStrGetPtr(base3line);
 
 
-    ajStrTokenClear(&tokenhandle);
+    ajStrTokenDel(&tokenhandle);
     ajStrDel(&tmpstr);
 
     /* populate the Starts(Initiation sites) table */
-    dlen = ajStrLen(startsline);
+    dlen = ajStrGetLen(startsline);
 
     for(i=0; i<dlen; i++)
 	trnObj->Starts[trnconv[(ajint)base1[i]]]
@@ -477,7 +477,7 @@ void ajTrnReadFile(AjPTrn trnObj, AjPFile trnFile)
 		    = starts[i];
 
     /* populate the GC (Genetic code) table */
-    dlen = ajStrLen(aaline);
+    dlen = ajStrGetLen(aaline);
 
     /* initialise first use of aa array */
     for(i=0; i<256; i++)
@@ -532,18 +532,18 @@ static void trnNoComment(AjPStr* text)
     ajint i;
     char *cp;
 
-    ajStrChomp(text);
-    i = ajStrLen(*text);
+    ajStrTrimWhite(text);
+    i = ajStrGetLen(*text);
 
     if(!i)
 	return;
 
-    cp = strchr(ajStrStrMod(text), '#');
+    cp = strchr(ajStrGetuniquePtr(text), '#');
     if(cp)
     {
 	/* comment found */
 	*cp = '\0';
-	ajStrFix(text);
+	ajStrSetValid(text);
     }
 
     return;
@@ -596,7 +596,7 @@ AjPSeq ajTrnNewPep(const AjPSeq nucleicSeq, ajint frame)
     value = ajStrNew();
 
     /* name for the subsequence */
-    ajStrAssS(&name, ajSeqGetName(nucleicSeq));
+    ajStrAssignS(&name, ajSeqGetName(nucleicSeq));
 
     /*
     ** if the frame is not 0 then append the frame number to the name to
@@ -606,10 +606,10 @@ AjPSeq ajTrnNewPep(const AjPSeq nucleicSeq, ajint frame)
     {
 	if(frame < -3) frame = frame + 3;
 	if(frame < 0) frame = -frame + 3;
-	ajStrAppC(&name, "_");
+	ajStrAppendC(&name, "_");
 
 	ajStrFromInt(&value, frame);
-	ajStrApp(&name, value);
+	ajStrAppendS(&name, value);
     }
 
     ajSeqAssName(trnPeptide, name);
@@ -644,12 +644,12 @@ const AjPStr ajTrnCodon(const AjPTrn trnObj, const AjPStr codon)
 
     store[1] = '\0';			/* end the char * of store */
 
-    res = ajStrStr(codon);
+    res = ajStrGetPtr(codon);
     store[0] = trnObj->GC[trnconv[(ajint)res[0]]]
 	                 [trnconv[(ajint)res[1]]]
 	                 [trnconv[(ajint)res[2]]];
 
-    ajStrAssC(&trnResidue, store);
+    ajStrAssignC(&trnResidue, store);
 
     return trnResidue;
 }
@@ -677,12 +677,12 @@ const AjPStr ajTrnRevCodon(const AjPTrn trnObj, const AjPStr codon)
 
     store[1] = '\0';			/* end the char * of store */
 
-    res = ajStrStr(codon);
+    res = ajStrGetPtr(codon);
     store[0] = trnObj->GC[trncomp[(ajint)res[2]]]
 	                 [trncomp[(ajint)res[1]]]
 	                 [trncomp[(ajint)res[0]]];
 
-    ajStrAssC(&trnResidue, store);
+    ajStrAssignC(&trnResidue, store);
 
     return trnResidue;
 }
@@ -712,7 +712,7 @@ const AjPStr ajTrnCodonC(const AjPTrn trnObj, const char *codon)
 	                 [trnconv[(ajint)codon[2]]];
     store[1] = '\0';
 
-    ajStrAssC(&trnResidueStr, store);
+    ajStrAssignC(&trnResidueStr, store);
 
     return trnResidueStr;
 }
@@ -743,7 +743,7 @@ const AjPStr ajTrnRevCodonC(const AjPTrn trnObj, const char *codon)
 	                 [trncomp[(ajint)codon[0]]];
     store[1] = '\0';
 
-    ajStrAssC(&trnResidue, store);
+    ajStrAssignC(&trnResidue, store);
 
     return trnResidue;
 }
@@ -826,7 +826,7 @@ void ajTrnC(const AjPTrn trnObj, const char *str, ajint len, AjPStr *pep)
     lenmod3 = len - (len % 3);
 
     for(i=0; i < lenmod3; i+=3)
-	ajStrAppK(pep, trnObj->GC[trnconv[(ajint)str[i]]]
+	ajStrAppendK(pep, trnObj->GC[trnconv[(ajint)str[i]]]
 		                 [trnconv[(ajint)str[i+1]]]
 		                 [trnconv[(ajint)str[i+2]]]);
 
@@ -864,7 +864,7 @@ void ajTrnRevC(const AjPTrn trnObj, const char *str, ajint len, AjPStr *pep)
     end = (len/3)*3-1;
 
     for(i=end; i>1; i-=3)
-	ajStrAppK(pep, trnObj->GC[trncomp[(ajint)str[i]]]
+	ajStrAppendK(pep, trnObj->GC[trncomp[(ajint)str[i]]]
 		                 [trncomp[(ajint)str[i-1]]]
 		                 [trncomp[(ajint)str[i-2]]]);
 
@@ -901,7 +901,7 @@ void ajTrnAltRevC(const AjPTrn trnObj, const char *str, ajint len, AjPStr *pep)
     ajint i;
 
     for(i=len-1; i>1; i-=3)
-	ajStrAppK(pep, trnObj->GC[trncomp[(ajint)str[i]]]
+	ajStrAppendK(pep, trnObj->GC[trncomp[(ajint)str[i]]]
 		                 [trncomp[(ajint)str[i-1]]]
 		                 [trncomp[(ajint)str[i-2]]]);
 
@@ -932,7 +932,7 @@ void ajTrnAltRevC(const AjPTrn trnObj, const char *str, ajint len, AjPStr *pep)
 
 void ajTrnStr(const AjPTrn trnObj, const AjPStr str, AjPStr *pep)
 {
-    ajTrnC(trnObj, ajStrStr(str), ajStrLen(str), pep);
+    ajTrnC(trnObj, ajStrGetPtr(str), ajStrGetLen(str), pep);
 
     return;
 }
@@ -961,7 +961,7 @@ void ajTrnStr(const AjPTrn trnObj, const AjPStr str, AjPStr *pep)
 
 void ajTrnRevStr(const AjPTrn trnObj, const AjPStr str, AjPStr *pep)
 {
-    ajTrnRevC(trnObj, ajStrStr(str), ajStrLen(str), pep);
+    ajTrnRevC(trnObj, ajStrGetPtr(str), ajStrGetLen(str), pep);
 
     return;
 }
@@ -992,7 +992,7 @@ void ajTrnRevStr(const AjPTrn trnObj, const AjPStr str, AjPStr *pep)
 
 void ajTrnAltRevStr(const AjPTrn trnObj, const AjPStr str, AjPStr *pep)
 {
-    ajTrnAltRevC(trnObj, ajStrStr(str), ajStrLen(str), pep);
+    ajTrnAltRevC(trnObj, ajStrGetPtr(str), ajStrGetLen(str), pep);
 
     return;
 }
@@ -1193,7 +1193,7 @@ void ajTrnCFrame(const AjPTrn trnObj, const char *seq, ajint len, ajint frame,
 void ajTrnStrFrame(const AjPTrn trnObj, const AjPStr seq, ajint frame,
 		   AjPStr *pep)
 {
-    ajTrnCFrame(trnObj, ajStrStr(seq), ajStrLen(seq), frame, pep);
+    ajTrnCFrame(trnObj, ajStrGetPtr(seq), ajStrGetLen(seq), frame, pep);
 
     return;
 }
@@ -1352,16 +1352,16 @@ ajint ajTrnCDangle(const AjPTrn trnObj, const char *seq, ajint len,
     if(dangle == 2)
     {
 	if(frame >= 1 && frame <= 3)
-	    ajStrAppK(pep, trnObj->GC[trnconv[(ajint)seq[end]]]
+	    ajStrAppendK(pep, trnObj->GC[trnconv[(ajint)seq[end]]]
 		                     [trnconv[(ajint)seq[end+1]]]
 		                     [trnconv[0]]);
 	else	/* reverse sense */
-	    ajStrAppK(pep, trnObj->GC[trncomp[(ajint)seq[1]]]
+	    ajStrAppendK(pep, trnObj->GC[trncomp[(ajint)seq[1]]]
 		                     [trncomp[(ajint)seq[0]]]
 		                     [trncomp[0]]);
     }
     else if(dangle == 1) /* Make up single base translation */
-	ajStrAppK(pep, 'X');
+	ajStrAppendK(pep, 'X');
 
     return dangle;
 }
@@ -1391,7 +1391,7 @@ ajint ajTrnCDangle(const AjPTrn trnObj, const char *seq, ajint len,
 ajint ajTrnStrDangle(const AjPTrn trnObj, const AjPStr seq, ajint frame,
 		     AjPStr *pep)
 {
-  return ajTrnCDangle(trnObj, ajStrStr(seq), ajStrLen(seq), frame, pep);
+  return ajTrnCDangle(trnObj, ajStrGetPtr(seq), ajStrGetLen(seq), frame, pep);
 }
 
 
@@ -1461,7 +1461,7 @@ AjPSeq ajTrnSeqOrig(const AjPTrn trnObj, const AjPSeq seq, ajint frame)
     ** the original DNA sequence
     */
     if(frame > 3)
-	ajStrRev(&trn);
+	ajStrReverse(&trn);
 
     ajSeqReplace(pep, trn);
 
@@ -1542,7 +1542,7 @@ ajint ajTrnStartStop(const AjPTrn trnObj, const AjPStr codon, char *aa)
     ajint tc2;
     ajint tc3;
 
-    res = ajStrStr(codon);
+    res = ajStrGetPtr(codon);
 
     tc1 = trnconv[(ajint)res[0]];
     tc2 = trnconv[(ajint)res[1]];
@@ -1637,12 +1637,12 @@ AjPStr ajTrnName(ajint trnFileNameInt)
 
 	while(ajFileReadLine(index, &line))
 	{
-	    ajStrChomp(&line);
-	    if(ajStrChar(line, 0) == '#')
+	    ajStrTrimWhite(&line);
+	    if(ajStrGetCharFirst(line) == '#')
 		continue;
-	    ajStrTokenAss(&handle, line, " ");
-	    ajStrToken(&tok1, &handle, NULL);
-	    ajStrTokenRest(&tok2, &handle);
+	    ajStrTokenAssignC(&handle, line, " ");
+	    ajStrTokenNextParse(&handle, &tok1);
+	    ajStrTokenRestParse(&handle, &tok2);
 	    ajTablePut(trnCodes, tok1, tok2);
 	    tok1 = NULL;
 	    tok2 = NULL;
@@ -1655,7 +1655,7 @@ AjPStr ajTrnName(ajint trnFileNameInt)
 
     ajStrDel(&tok1);
     ajStrDel(&tok2);
-    ajStrTokenClear(&handle);
+    ajStrTokenDel(&handle);
 
     if(ret)
 	return ret;

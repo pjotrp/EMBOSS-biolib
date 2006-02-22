@@ -14,7 +14,7 @@
 
 #ifndef __lint
 static const char rcsid[] =
-"$Id: prnt.c,v 1.3 2004/08/05 16:02:32 rice Exp $";
+"$Id: prnt.c,v 1.4 2006/02/22 15:02:27 rice Exp $";
 #endif
 
 /* XXX */
@@ -38,8 +38,8 @@ static const char* revlabel(AjPSeq  s);
 #undef   SEQ_NAME
 #define  SEQ_FROM(s) ((s)->Offset)
 #define  SEQ_TO(s)   ((s)->Offend)
-#define  SEQ_HEAD(s) (MAJSTRSTR((s)->Name))
-#define  SEQ_NAME(s) (MAJSTRSTR(ajSeqGetUsa(s)))
+#define  SEQ_HEAD(s) (MAJSTRGETPTR((s)->Name))
+#define  SEQ_NAME(s) (MAJSTRGETPTR(ajSeqGetUsa(s)))
 
 static void print_align_header_n(AjPSeq seq1, AjPSeq seq2, argv_scores_t *ds, int n)
 {
@@ -149,10 +149,10 @@ static char *subseq_label(char *buf, unsigned int size, int n)
 	buf[0] = 0;
     if (n > 0)
     {
-	if(ajStrLen(buffer)>size)
-	    strncpy(buf,ajStrStr(buffer),size);
+	if(ajStrGetLen(buffer)>size)
+	    strncpy(buf,ajStrGetPtr(buffer),size);
 	else
-	    strcpy(buf,ajStrStr(buffer));
+	    strcpy(buf,ajStrGetPtr(buffer));
     }
     ajStrDel(&buffer);
     

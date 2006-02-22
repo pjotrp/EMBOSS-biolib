@@ -130,7 +130,7 @@ int main(int argc, char **argv)
 
     ajGraphInitSeq(plot, seq);
 
-    sq = ajStrStr(ajSeqStr(seq));
+    sq = ajStrGetPtr(ajSeqStr(seq));
 
     ibeg = ajSeqBegin(seq);
     iend = ajSeqEnd(seq);

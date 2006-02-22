@@ -540,10 +540,10 @@ static float lindna_TextRuler(float Start, float End, ajint GapSize,
     ajStrFromInt(&string, Start);
     if(TextOri=='H')
 	charsize = ajGraphFitTextOnLine(0, 0, TextLength, 0,
-					ajStrStr(string), TextHeight);
+					ajStrGetPtr(string), TextHeight);
     else
 	charsize = ajGraphFitTextOnLine(0, 0, 0, TextLength,
-					ajStrStr(string), TextHeight);
+					ajStrGetPtr(string), TextHeight);
     if(charsize < minsize)
 	minsize = charsize;
 
@@ -554,10 +554,10 @@ static float lindna_TextRuler(float Start, float End, ajint GapSize,
 	    ajStrFromInt(&string, i);
 	    if(TextOri=='H')
 		charsize = ajGraphFitTextOnLine(0, 0, TextLength, 0,
-						ajStrStr(string), TextHeight);
+						ajStrGetPtr(string), TextHeight);
 	    else
 		charsize = ajGraphFitTextOnLine(0, 0, 0, TextLength,
-						ajStrStr(string), TextHeight);
+						ajStrGetPtr(string), TextHeight);
 	    if(charsize < minsize)
 		minsize = charsize;
 	}
@@ -566,10 +566,10 @@ static float lindna_TextRuler(float Start, float End, ajint GapSize,
     ajStrFromInt(&string, End);
     if(TextOri=='H')
 	charsize = ajGraphFitTextOnLine(0, 0, TextLength, 0,
-					ajStrStr(string), TextHeight);
+					ajStrGetPtr(string), TextHeight);
     else
 	charsize = ajGraphFitTextOnLine(0, 0, 0, TextLength,
-					ajStrStr(string), TextHeight);
+					ajStrGetPtr(string), TextHeight);
     if(charsize < minsize)
 	minsize = charsize;
 
@@ -614,17 +614,17 @@ static float lindna_HeightRuler(float Start, float End, ajint GapSize,
     else
     {
 	ajStrFromInt(&string, Start);
-	ajStrApp(&totalstring, string);
-	ajStrAppC(&totalstring, ";");
+	ajStrAppendS(&totalstring, string);
+	ajStrAppendC(&totalstring, ";");
 	for(i=GapSize, j=0; i<End; i+=GapSize, j++) if(i>Start)
 	{
 	    ajStrFromInt(&string, i);
-	    ajStrApp(&totalstring, string);
-	    ajStrAppC(&totalstring, ";");
+	    ajStrAppendS(&totalstring, string);
+	    ajStrAppendC(&totalstring, ";");
 	}
 	ajStrFromInt(&string, End);
-	ajStrApp(&totalstring, string);
-	ajStrAppC(&totalstring, ";");
+	ajStrAppendS(&totalstring, string);
+	ajStrAppendC(&totalstring, ";");
 	RulerHeight += lindna_VerTextSeqHeightMax(totalstring, postext, j);
 	/*RulerHeight += lindna_VerTextSeqHeightMax(totalstring,
 	  postext, j+2);*/
@@ -809,11 +809,11 @@ static void lindna_DrawBlocks(float xDraw, float yDraw, float BlockHeight,
 
     ajGraphSetFore(Colour);
 
-    if(ajStrCmpCaseCC(ajStrStr(BlockType), "Open")==0)
+    if(ajCharCmpCase(ajStrGetPtr(BlockType), "Open")==0)
     {
 	ajGraphRect(x1Blocks, y1Blocks, x2Blocks, y2Blocks);
     }
-    else if(ajStrCmpCaseCC(ajStrStr(BlockType), "Filled")==0)
+    else if(ajCharCmpCase(ajStrGetPtr(BlockType), "Filled")==0)
     {
 	ajGraphRectFill(x1Blocks, y1Blocks, x2Blocks, y2Blocks);
     }
@@ -972,19 +972,19 @@ static void lindna_InterBlocks(float xDraw, float yDraw, float BlockHeight,
 
     ajGraphSetFore(Colour);
 
-    if(ajStrCmpCaseCC(ajStrStr(InterSymbol), "Down")==0)
+    if(ajCharCmpCase(ajStrGetPtr(InterSymbol), "Down")==0)
     {
 	ajGraphDrawLine(x1Inter, y1Inter, (x1Inter+x2Inter)/2, y2Inter);
 	ajGraphDrawLine((x1Inter+x2Inter)/2, y2Inter, x2Inter, y1Inter);
     }
 
-    if(ajStrCmpCaseCC(ajStrStr(InterSymbol), "Up")==0)
+    if(ajCharCmpCase(ajStrGetPtr(InterSymbol), "Up")==0)
     {
 	ajGraphDrawLine(x1Inter, y2Inter, (x1Inter+x2Inter)/2, y1Inter);
 	ajGraphDrawLine((x1Inter+x2Inter)/2, y1Inter, x2Inter, y2Inter);
     }
 
-    if(ajStrCmpCaseCC(ajStrStr(InterSymbol), "Straight")==0)
+    if(ajCharCmpCase(ajStrGetPtr(InterSymbol), "Straight")==0)
 	ajGraphDrawLine(x1Inter, (y1Inter+y2Inter)/2, x2Inter,
 			(y1Inter+y2Inter)/2);
 
@@ -1114,21 +1114,21 @@ static void lindna_HorTextPile(float x, float y, const AjPStr Name,
     float stringLength;
     float stringHeight;
     float totalHeight;
-    static AjPStr token = NULL;
+    const AjPStr token = NULL;
     ajint i;
 
     totalHeight = y+postext;
     for(i=0; i<NumNames; i++)
     {
 	if(i==0)
-	    token = ajStrTokC(Name, ";");
+	    token = ajStrParseC(Name, ";");
 	else
-	    token = ajStrTokC(NULL, ";");
-	stringLength = ajGraphTextLength(0, 0, 1, 0, ajStrStr(token));
+	    token = ajStrParseC(NULL, ";");
+	stringLength = ajGraphTextLength(0, 0, 1, 0, ajStrGetPtr(token));
 	stringHeight = ajGraphTextHeight(0, 0, 1, 0);
 	yupper = totalHeight+stringHeight;
 	ajGraphDrawTextOnLine(x, (totalHeight+yupper)/2, x+stringLength,
-			      (totalHeight+yupper)/2, ajStrStr(token), 0.5);
+			      (totalHeight+yupper)/2, ajStrGetPtr(token), 0.5);
 	totalHeight+=(stringHeight+postext);
     }
 
@@ -1186,19 +1186,19 @@ static void lindna_VerTextPile(float x, float y, const AjPStr Name,
 {
     float stringLength;
     float totalLength;
-    AjPStr token;
+    const AjPStr token;
     ajint i;
 
     totalLength = postext;
     for(i=0; i<NumNames; i++)
     {
 	if(i==0)
-	    token = ajStrTokC(Name, ";");
+	    token = ajStrParseC(Name, ";");
 	else
-	    token = ajStrTokC(NULL, ";");
-	stringLength = ajGraphTextLength(0, 0, 0, 1, ajStrStr(token));
+	    token = ajStrParseC(NULL, ";");
+	stringLength = ajGraphTextLength(0, 0, 0, 1, ajStrGetPtr(token));
 	ajGraphDrawTextOnLine(x, y+totalLength, x,
-			      y+stringLength+totalLength, ajStrStr(token),
+			      y+stringLength+totalLength, ajStrGetPtr(token),
 			      0.0);
 	totalLength+=(stringLength+postext);
     }
@@ -1225,17 +1225,17 @@ static float lindna_VerTextPileHeight(const AjPStr Name, float postext,
 {
     float stringLength;
     float totalLength;
-    AjPStr token;
+    const AjPStr token;
     ajint i;
 
     totalLength = postext;
     for(i=0; i<NumNames; i++)
     {
 	if(i==0)
-	    token = ajStrTokC(Name, ";");
+	    token = ajStrParseC(Name, ";");
 	else
-	    token = ajStrTokC(NULL, ";");
-	stringLength = ajGraphTextLength(0, 0, 0, 1, ajStrStr(token));
+	    token = ajStrParseC(NULL, ";");
+	stringLength = ajGraphTextLength(0, 0, 0, 1, ajStrGetPtr(token));
 	totalLength+=(stringLength+postext);
     }
 
@@ -1262,22 +1262,22 @@ static void lindna_VerTextSeq(float x, float y, const AjPStr Name,
 			      ajint NumNames)
 {
     float stringHeight;
-    AjPStr token;
+    const AjPStr token;
     ajint i;
 
     stringHeight = ajGraphTextHeight(0, 0, 0, 1)+postext;
     for(i=0; i<NumNames; i++)
     {
 	if(i==0)
-	    token = ajStrTokC(Name, ";");
+	    token = ajStrParseC(Name, ";");
 	else
-	    token = ajStrTokC(NULL, ";");
+	    token = ajStrParseC(NULL, ";");
 	ajGraphDrawTextOnLine(x-1.0*NumNames*stringHeight/2+1.0*
 			      stringHeight/2+1.0*i*stringHeight,
 			      y+postext, x-1.0*NumNames*stringHeight/2+1.0*
 			      stringHeight/2+1.0*i*stringHeight,
 			      y+postext+stringHeight,
-			      ajStrStr(token),
+			      ajStrGetPtr(token),
 			      0.0);
     }
 
@@ -1304,17 +1304,17 @@ static float lindna_VerTextSeqHeightMax(const AjPStr Name, float postext,
 {
     float stringLength;
     float maxLength;
-    AjPStr token;
+    const AjPStr token;
     ajint i;
 
     maxLength = 0.0;
     for(i=0; i<NumNames; i++)
     {
 	if(i==0)
-	    token = ajStrTokC(Name, ";");
+	    token = ajStrParseC(Name, ";");
 	else
-	    token = ajStrTokC(NULL, ";");
-	stringLength = ajGraphTextLength(0, 0, 0, 1, ajStrStr(token));
+	    token = ajStrParseC(NULL, ";");
+	stringLength = ajGraphTextLength(0, 0, 0, 1, ajStrGetPtr(token));
 	if(stringLength>maxLength)
 	    maxLength = stringLength;
     }
@@ -1344,9 +1344,9 @@ static void lindna_ReadInput(AjPFile infile, float *Start, float *End)
     {
 	/* read the start and end positions */
 	if(ajStrPrefixC(line, "Start"))
-	    sscanf(ajStrStr(line), "%*s%f", Start);
+	    sscanf(ajStrGetPtr(line), "%*s%f", Start);
 	if(ajStrPrefixC(line, "End"))
-	    sscanf(ajStrStr(line), "%*s%f", End);
+	    sscanf(ajStrGetPtr(line), "%*s%f", End);
     }
 
     ajStrDel(&line);
@@ -1386,7 +1386,7 @@ static AjPStr lindna_ReadGroup(AjPFile infile, ajint maxlabels,
     ajint j;
     AjPStr GroupName;
     AjPStr line;
-    AjPStr token;
+    const AjPStr token;
     char *style;
     ajlong pos;
 
@@ -1398,15 +1398,15 @@ static AjPStr lindna_ReadGroup(AjPFile infile, ajint maxlabels,
     pos = ajFileTell(infile);
     while(ajFileReadLine(infile, &GroupName))
     {
-	token = ajStrTokC(GroupName, " \n\t\r\f");
-	if(ajStrLen(token)!=0)
+	token = ajStrParseC(GroupName, " \n\t\r\f");
+	if(ajStrGetLen(token)!=0)
 	{
 	    if(ajStrMatchCaseC(GroupName, "label") ||
 	       ajStrMatchCaseC(GroupName, "endgroup"))
-		ajStrAssC(&GroupName, " ");
+		ajStrAssignC(&GroupName, " ");
 
-	    if(ajStrLen(GroupName)>20)
-		ajStrCut(&GroupName, 20, ajStrLen(GroupName)-1);
+	    if(ajStrGetLen(GroupName)>20)
+		ajStrCutRange(&GroupName, 20, ajStrGetLen(GroupName)-1);
 	    break;
 	}
     }
@@ -1415,8 +1415,8 @@ static AjPStr lindna_ReadGroup(AjPFile infile, ajint maxlabels,
     ajFileSeek(infile, pos, 0);
     while(ajFileReadLine(infile, &line))
     {
-	token = ajStrTokC(line, " \n\t\r\f");
-	if(ajStrLen(token)!=0)
+	token = ajStrParseC(line, " \n\t\r\f");
+	if(ajStrGetLen(token)!=0)
 	{
 	    if(ajStrPrefixC(line, "endgroup"))
 		break;
@@ -1430,29 +1430,29 @@ static AjPStr lindna_ReadGroup(AjPFile infile, ajint maxlabels,
 			       maxlabels);
 		    while(ajFileReadLine(infile, &line))
 		    {
-			token = ajStrTokC(line, " \n\t\r\f");
-			if(ajStrLen(token)!=0)
+			token = ajStrParseC(line, " \n\t\r\f");
+			if(ajStrGetLen(token)!=0)
 			{
 			    if (i < maxlabels)
 			    {
 				FromSymbol[i] = '<';
 				ToSymbol[i] = '>';
 				TextOri[i] = 'H';
-				sscanf(ajStrStr(line), "%s", style);
-				if(ajStrMatchCaseCC(style, "Tick"))
-				    sscanf(ajStrStr(line), "%*s %f %d %c",
+				sscanf(ajStrGetPtr(line), "%s", style);
+				if(ajCharMatchCaseC(style, "Tick"))
+				    sscanf(ajStrGetPtr(line), "%*s %f %d %c",
 					   &From[i], &Colour[i], &TextOri[i]);
-				if(ajStrMatchCaseCC(style, "Block"))
-				    sscanf(ajStrStr(line), "%*s %f %f %d %c",
+				if(ajCharMatchCaseC(style, "Block"))
+				    sscanf(ajStrGetPtr(line), "%*s %f %f %d %c",
 					   &From[i], &To[i], &Colour[i],
 					   &TextOri[i]);
-				if(ajStrMatchCaseCC(style, "Range"))
-				    sscanf(ajStrStr(line),
+				if(ajCharMatchCaseC(style, "Range"))
+				    sscanf(ajStrGetPtr(line),
 					   "%*s %f %f %c %c %d %c",
 					   &From[i], &To[i], &FromSymbol[i],
 					   &ToSymbol[i], &Colour[i],
 					   &TextOri[i]);
-				ajStrAssC(&Style[i], style);
+				ajStrAssignC(&Style[i], style);
 			    }
 			    break;
 			}
@@ -1462,8 +1462,8 @@ static AjPStr lindna_ReadGroup(AjPFile infile, ajint maxlabels,
 		    /* read the label's name(s) */
 		    while(ajFileReadLine(infile, &line))
 		    {
-			token = ajStrTokC(line, " \n\t\r\f");
-			if(ajStrLen(token)!=0)
+			token = ajStrParseC(line, " \n\t\r\f");
+			if(ajStrGetLen(token)!=0)
 			{
 			    if(ajStrPrefixC(line, "endlabel"))
 				break;
@@ -1471,8 +1471,8 @@ static AjPStr lindna_ReadGroup(AjPFile infile, ajint maxlabels,
 			    {
 				if (i < maxlabels)
 				{
-				    ajStrApp(&Name[i], line);
-				    ajStrAppC(&Name[i], ";");
+				    ajStrAppendS(&Name[i], line);
+				    ajStrAppendC(&Name[i], ";");
 				    j++;
 				}
 			    }
@@ -1526,9 +1526,9 @@ static float lindna_TextGroup(float Margin, float TextHeight, float TextLength,
     ajint j;
     float charsize;
     float minsize = 100.0;
-    AjPStr token;
+    const AjPStr token;
 
-    charsize = ajGraphFitTextOnLine(0, 0, Margin-10, 0, ajStrStr(GroupName),
+    charsize = ajGraphFitTextOnLine(0, 0, Margin-10, 0, ajStrGetPtr(GroupName),
 				    TextHeight);
     if(charsize < minsize)
 	minsize = charsize;
@@ -1538,16 +1538,16 @@ static float lindna_TextGroup(float Margin, float TextHeight, float TextLength,
 	for(j=0; j<NumNames[i]; j++)
 	{
 	    if(j==0)
-		token = ajStrTokC(Name[i], ";");
+		token = ajStrParseC(Name[i], ";");
 	    else
-		token = ajStrTokC(NULL, ";");
+		token = ajStrParseC(NULL, ";");
 
 	    if(TextOri[i]=='H')
 		charsize = ajGraphFitTextOnLine(0, 0, TextLength, 0,
-						ajStrStr(token), TextHeight);
+						ajStrGetPtr(token), TextHeight);
 	    else
 		charsize = ajGraphFitTextOnLine(0, 0, 0, TextLength,
-						ajStrStr(token), TextHeight);
+						ajStrGetPtr(token), TextHeight);
 	    if(charsize < minsize)
 		minsize = charsize;
 	}
@@ -1675,7 +1675,7 @@ static ajint lindna_OverlapTextGroup(AjPStr const *Name, AjPStr const *Style,
     ajint i;
     ajint j;
     ajint AdjustMax;
-    AjPStr token;
+    const AjPStr token;
     static float* FromText=NULL;
     static float* ToText=NULL;
     ajint maxnumlabels=0;
@@ -1697,9 +1697,9 @@ static ajint lindna_OverlapTextGroup(AjPStr const *Name, AjPStr const *Style,
 	{
 	    if(TextOri[i]=='H')
 	    {
-		token = ajStrTokC(Name[i], ";");
+		token = ajStrParseC(Name[i], ";");
 		stringLength = ajGraphTextLength(0, 0, 1, 0,
-						 ajStrStr(token));
+						 ajStrGetPtr(token));
 		FromText[i] = From[i]-stringLength/2;
 		ToText[i]   = From[i]+stringLength/2;
 	    }
@@ -1714,9 +1714,9 @@ static ajint lindna_OverlapTextGroup(AjPStr const *Name, AjPStr const *Style,
 	{
 	    if(TextOri[i]=='H')
 	    {
-		token = ajStrTokC(Name[i], ";");
+		token = ajStrParseC(Name[i], ";");
 		stringLength = ajGraphTextLength(0, 0, 1, 0,
-						 ajStrStr(token));
+						 ajStrGetPtr(token));
 		FromText[i] = (To[i]+From[i])/2-stringLength/2;
 		ToText[i]   = (To[i]+From[i])/2+stringLength/2;
 	    }
@@ -1731,9 +1731,9 @@ static ajint lindna_OverlapTextGroup(AjPStr const *Name, AjPStr const *Style,
 	{
 	    if(TextOri[i]=='H')
 	    {
-		token = ajStrTokC(Name[i], ";");
+		token = ajStrParseC(Name[i], ";");
 		stringLength = ajGraphTextLength(0, 0, 1, 0,
-						 ajStrStr(token));
+						 ajStrGetPtr(token));
 		FromText[i] = (To[i]+From[i])/2-stringLength/2;
 		ToText[i]   = (To[i]+From[i])/2+stringLength/2;
 	    }
@@ -1864,7 +1864,7 @@ static void lindna_DrawGroup(float xDraw, float yDraw, float Border,
     /*ajGraphSetBackgroundWhite();*/
     ajGraphSetFore(1);
     ajGraphDrawTextOnLine(10, yDraw, xDraw-Border, yDraw,
-			  ajStrStr(GroupName), 0.0);
+			  ajStrGetPtr(GroupName), 0.0);
 
     /* draw all labels */
     for(j=0, i=0; i<NumLabels; i++)

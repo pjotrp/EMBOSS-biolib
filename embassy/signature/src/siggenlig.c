@@ -134,9 +134,9 @@ int main(ajint argc, char **argv)
     
     
     
-    modei       = (ajint) ajStrChar(*mode,0)-48;
-    typei       = (ajint) ajStrChar(*type,0)-48;
-    envdefi     = (ajint) ajStrChar(*envdef,0)-48;
+    modei       = (ajint) ajStrGetCharFirst(*mode)-48;
+    typei       = (ajint) ajStrGetCharFirst(*type)-48;
+    envdefi     = (ajint) ajStrGetCharFirst(*envdef)-48;
     
     
     
@@ -188,7 +188,7 @@ int main(ajint argc, char **argv)
 		    /* 1D signature */
 		    if(typei==1)
 		    {
-			ajChararrPut(&sigdat->rids, 0, ajStrChar(cmap->Seq1, x));
+			ajChararrPut(&sigdat->rids, 0, ajStrGetCharPos(cmap->Seq1, x));
 			ajIntPut(&sigdat->rfrq, 0, 1);
 		    }
 		    /* 3D signature */
@@ -201,9 +201,9 @@ int main(ajint argc, char **argv)
 			    if(residue->Idx == x+1)
 			    {
 				if((!siggenlig_assign_env(residue, &OEnv, envdefi, logf)))
-				    ajStrAssC(&OEnv, "*");
+				    ajStrAssignC(&OEnv, "*");
 				
-				ajStrAssS(&sigdat->eids[0], OEnv);
+				ajStrAssignS(&sigdat->eids[0], OEnv);
 				ajIntPut(&sigdat->efrq, 0, 1);
 				foundresidue=ajTrue;
 				break;
@@ -238,11 +238,11 @@ int main(ajint argc, char **argv)
 		
 	    /* WRITE SIGNATURE FILE */
 	    ajFmtPrintS(&sigfname, "%S.%d.F.#.%S.", sig->Ligid, sig->sn, sig->Id);
-	    if(MAJSTRLEN(sig->Domid))
-		ajStrApp(&sigfname, sig->Domid);
+	    if(MAJSTRGETLEN(sig->Domid))
+		ajStrAppendS(&sigfname, sig->Domid);
 	    else
-		ajStrAppK(&sigfname, '#');
-	    ajStrAppC(&sigfname, ".sig");
+		ajStrAppendK(&sigfname, '#');
+	    ajStrAppendC(&sigfname, ".sig");
 	    
 	    sigoutf = ajFileNewOutDir(sigdir, sigfname);
 	    embSignatureWrite(sigoutf, sig);
@@ -280,7 +280,7 @@ int main(ajint argc, char **argv)
 		    /* 1D signature */
 		    if(typei==1)
 		    {
-			ajChararrPut(&sigdat->rids, 0, ajStrChar(cmap->Seq1, x));
+			ajChararrPut(&sigdat->rids, 0, ajStrGetCharPos(cmap->Seq1, x));
 			ajIntPut(&sigdat->rfrq, 0, 1);
 		    }
 		    /* 3D signature */
@@ -293,8 +293,8 @@ int main(ajint argc, char **argv)
 			    if(residue->Idx == x+1)
 			    {
 				if((!siggenlig_assign_env(residue, &OEnv, envdefi, logf)))
-				    ajStrAssC(&OEnv, "*");
-				ajStrAssS(&sigdat->eids[0], OEnv);
+				    ajStrAssignC(&OEnv, "*");
+				ajStrAssignS(&sigdat->eids[0], OEnv);
 				ajIntPut(&sigdat->efrq, 0, 1);
 
 				foundresidue=ajTrue;
@@ -390,11 +390,11 @@ int main(ajint argc, char **argv)
 		sig->np = num_patches;
 
 		ajFmtPrintS(&sigfname, "%S.%d.P.%d-%d.%S.", sig->Ligid, sig->sn, sig->pn, sig->np, sig->Id);
-		if(MAJSTRLEN(sig->Domid))
-		    ajStrApp(&sigfname, sig->Domid);
+		if(MAJSTRGETLEN(sig->Domid))
+		    ajStrAppendS(&sigfname, sig->Domid);
 		else
-		    ajStrAppK(&sigfname, '#');
-		ajStrAppC(&sigfname, ".sig");
+		    ajStrAppendK(&sigfname, '#');
+		ajStrAppendC(&sigfname, ".sig");
 
 		sigoutf = ajFileNewOutDir(sigdir, sigfname);
 
@@ -437,18 +437,18 @@ AjPPdb siggenlig_read_ccf(AjPCmap cmap,  AjPDir ccfd,  AjPDir ccfp)
     AjPPdb  pdb          = NULL;  /* PDB object.                                */
     AjPFile ccffptr      = NULL;  /* CCF file pointer.                          */
 
-    if(MAJSTRLEN(cmap->Domid))
+    if(MAJSTRGETLEN(cmap->Domid))
 	ccffptr = ajFileNewDirF(ccfd, cmap->Domid);
-    else if((!MAJSTRLEN(cmap->Id)))
+    else if((!MAJSTRGETLEN(cmap->Id)))
 	ajFatal("No Id!");
     else
 	ccffptr = ajFileNewDirF(ccfp, cmap->Id);
     
     if(!ccffptr)
     {
-	if(MAJSTRLEN(cmap->Domid))
+	if(MAJSTRGETLEN(cmap->Domid))
 	    ajWarn("Coordinate file %S not found", cmap->Domid);
-	else if((!MAJSTRLEN(cmap->Id)))
+	else if((!MAJSTRGETLEN(cmap->Id)))
 	    ajWarn("Coordinate file %S not found", cmap->Id);
 	return NULL;
     }
@@ -479,10 +479,10 @@ void siggenlig_new_sig_from_cmap(AjPSignature *sig, AjPCmap cmap, ajint patchsiz
     *sig = embSignatureNew(0);
 
     (*sig)->Type = cmap->Type;
-    ajStrAssS(&(*sig)->Id, cmap->Id);
-    ajStrAssS(&(*sig)->Domid, cmap->Domid);
-    ajStrAssS(&(*sig)->Ligid, cmap->Ligid);
-    ajStrAssS(&(*sig)->Desc, cmap->Desc);
+    ajStrAssignS(&(*sig)->Id, cmap->Id);
+    ajStrAssignS(&(*sig)->Domid, cmap->Domid);
+    ajStrAssignS(&(*sig)->Ligid, cmap->Ligid);
+    ajStrAssignS(&(*sig)->Desc, cmap->Desc);
     (*sig)->ns = cmap->ns;
     (*sig)->sn = cmap->sn;
     (*sig)->np = 0;

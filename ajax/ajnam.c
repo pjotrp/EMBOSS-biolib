@@ -390,7 +390,7 @@ static void namPrintDatabase(const AjPStr* dbattr)
     ajint i;
 
     for(i=0; namDbAttrs[i].Name; i++)
-	if(ajStrLen(dbattr[i]))
+	if(ajStrGetLen(dbattr[i]))
 	    ajUser("\t%s: %S", namDbAttrs[i].Name, dbattr[i]);
 
     return;
@@ -413,7 +413,7 @@ static void namPrintResource(const AjPStr* rsattr)
     ajint i;
 
     for(i=0; namRsAttrs[i].Name; i++) 
-	if(ajStrLen(rsattr[i]))
+	if(ajStrGetLen(rsattr[i]))
 	    ajUser("\t%s: %S", namRsAttrs[i].Name, rsattr[i]);
 
     return;
@@ -494,7 +494,7 @@ static void namDebugDatabase(const AjPStr* dbattr)
     ajint i;
 
     for(i=0; namDbAttrs[i].Name; i++)
-	if(ajStrLen(dbattr[i]))
+	if(ajStrGetLen(dbattr[i]))
 	    ajDebug("\t%s: %S\n", namDbAttrs[i].Name, dbattr[i]);
 
     return;
@@ -517,7 +517,7 @@ static void namDebugResource(const AjPStr* rsattr)
     ajint i;
 
     for(i=0; namRsAttrs[i].Name; i++)
-	if(ajStrLen(rsattr[i]))
+	if(ajStrGetLen(rsattr[i]))
 	    ajDebug("\t%s: %S\n", namRsAttrs[i].Name, rsattr[i]);
 
     return;
@@ -659,28 +659,28 @@ AjBool ajNamDbDetails(const AjPStr name, AjPStr* type, AjBool* id,
     
     *id = *qry = *all = ajFalse;
     
-    ajStrDelReuse(type);
-    ajStrDelReuse(comment);
-    ajStrDelReuse(release);
-    ajStrDelReuse(methods);
-    ajStrDelReuse(defined);
+    ajStrDelStatic(type);
+    ajStrDelStatic(comment);
+    ajStrDelStatic(release);
+    ajStrDelStatic(methods);
+    ajStrDelStatic(defined);
     
-    fnew = ajTableGet(namDbMasterTable, ajStrStr(name));
+    fnew = ajTableGet(namDbMasterTable, ajStrGetPtr(name));
     if(fnew)
     {
 	/* ajDebug("  '%S' found\n", name); */
 
-	ajStrAssS(defined, fnew->file);
+	ajStrAssignS(defined, fnew->file);
 
 	dbattr = (AjPStr *) fnew->data;
 	for(i=0; namDbAttrs[i].Name; i++)
 	{
 	    /* ajDebug("Attribute name = %s, value = %S\n",
 	       namDbAttrs[i].Name, dbattr[i]); */
-	    if(ajStrLen(dbattr[i]))
+	    if(ajStrGetLen(dbattr[i]))
 	    {
 		if(!strcmp("type", namDbAttrs[i].Name))
-		    ajStrAssS(type, dbattr[i]);
+		    ajStrAssignS(type, dbattr[i]);
 
 		if(!strcmp("method", namDbAttrs[i].Name))
 		{
@@ -688,17 +688,17 @@ AjBool ajNamDbDetails(const AjPStr name, AjPStr* type, AjBool* id,
 		    if(scope & METHOD_ENTRY) *id = ajTrue;
 		    if(scope & METHOD_QUERY) *qry = ajTrue;
 		    if(scope & METHOD_ALL) *all = ajTrue;
-		    ajStrApp(methods, dbattr[i]);
+		    ajStrAppendS(methods, dbattr[i]);
 		}
 
 		if(!strcmp("methodentry", namDbAttrs[i].Name))
 		{
 		    scope = namMethod2Scope(dbattr[i]);
 		    if(scope & METHOD_ENTRY) *id = ajTrue;
-		    if(ajStrLen(*methods))
-			ajStrAppC(methods, ",");
-		    ajStrApp(methods, dbattr[i]);
-		    ajStrAppC(methods, "(id)");
+		    if(ajStrGetLen(*methods))
+			ajStrAppendC(methods, ",");
+		    ajStrAppendS(methods, dbattr[i]);
+		    ajStrAppendC(methods, "(id)");
 		}
 
 		if(!strcmp("methodquery", namDbAttrs[i].Name))
@@ -706,35 +706,35 @@ AjBool ajNamDbDetails(const AjPStr name, AjPStr* type, AjBool* id,
 		    scope = namMethod2Scope(dbattr[i]);
 		    if(scope & METHOD_ENTRY) *id = ajTrue;
 		    if(scope & METHOD_QUERY) *qry = ajTrue;
-		    if(ajStrLen(*methods))
-			ajStrAppC(methods, ",");
-		    ajStrApp(methods, dbattr[i]);
-		    ajStrAppC(methods, "(qry)");
+		    if(ajStrGetLen(*methods))
+			ajStrAppendC(methods, ",");
+		    ajStrAppendS(methods, dbattr[i]);
+		    ajStrAppendC(methods, "(qry)");
 		}
 
 		if(!strcmp("methodall", namDbAttrs[i].Name))
 		{
 		    scope = namMethod2Scope(dbattr[i]);
 		    if(scope & METHOD_ALL) *all = ajTrue;
-		    if(ajStrLen(*methods))
-			ajStrAppC(methods, ",");
-		    ajStrApp(methods, dbattr[i]);
-		    ajStrAppC(methods, "(all)");
+		    if(ajStrGetLen(*methods))
+			ajStrAppendC(methods, ",");
+		    ajStrAppendS(methods, dbattr[i]);
+		    ajStrAppendC(methods, "(all)");
 		}
 
 		if(!strcmp("comment", namDbAttrs[i].Name))
-		    ajStrAssS(comment, dbattr[i]);
+		    ajStrAssignS(comment, dbattr[i]);
 
 		if(!strcmp("release", namDbAttrs[i].Name))
-		    ajStrAssS(release, dbattr[i]);
+		    ajStrAssignS(release, dbattr[i]);
 	    }
 	}
 	
-	if(!ajStrLen(*type))
+	if(!ajStrGetLen(*type))
 	{
 	    ajWarn("Bad database definition for %S: No type. 'P' assumed",
 		   name);
-	    ajStrAssC(type, "P");
+	    ajStrAssignC(type, "P");
 	}
 
 	if(!*id && !*qry && !*all)
@@ -1096,7 +1096,7 @@ static void namListParse(AjPList listwords, AjPList listcount,
     if(!nrsattr)
 	for(nrsattr=0; namRsAttrs[nrsattr].Name; nrsattr++);
 
-    ajStrAssS(&saveshortname, shortname);
+    ajStrAssignS(&saveshortname, shortname);
     ajStrDel(&name);
     ajStrDel(&value);
     quoteopen  = 0;
@@ -1125,16 +1125,16 @@ static void namListParse(AjPList listwords, AjPList listcount,
 	if(!namParseType)
 	{
 	    namNoColon(&curword);
-	    ajStrToLower(&curword);
-	    if(ajStrPrefixCO("env", curword))
+	    ajStrFmtLower(&curword);
+	    if(ajCharPrefixS("env", curword))
 		namParseType = TYPE_ENV;
-	    if(ajStrPrefixCO("setenv", curword))
+	    if(ajCharPrefixS("setenv", curword))
 		namParseType = TYPE_ENV;
-	    else if(ajStrPrefixCO("dbname",curword))
+	    else if(ajCharPrefixS("dbname",curword))
 		namParseType = TYPE_DB;
-	    else if(ajStrPrefixCO("resource",curword))
+	    else if(ajCharPrefixS("resource",curword))
 		namParseType = TYPE_RESOURCE;
-	    else if(ajStrPrefixCO("include",curword))
+	    else if(ajCharPrefixS("include",curword))
 		namParseType = TYPE_IFILE;
 
 	    if(!namParseType)		/* test: badtype.rc */
@@ -1155,13 +1155,13 @@ static void namListParse(AjPList listwords, AjPList listcount,
 	    ** and set the appropriate save flag
 	    */
 	    namUser("<%c>..<%c> quote processing\n", quoteopen, quoteclose);
-	    ajStrAppC(&value," ");
-	    ajStrApp(&value,curword);
+	    ajStrAppendC(&value," ");
+	    ajStrAppendS(&value,curword);
 	    /* close quote here ?? */
-	    if(ajStrChar(curword,-1) == quoteclose)
+	    if(ajStrGetCharLast(curword) == quoteclose)
 	    {
 		namUser("close quotes\n");
-		ajStrTrim(&value, -1);
+		ajStrCutEnd(&value, 1);
 		quoteopen = quoteclose = 0;
 		if(namParseType == TYPE_ENV) /* set save flag, value found */
 		    saveit = ajTrue;
@@ -1178,36 +1178,36 @@ static void namListParse(AjPList listwords, AjPList listcount,
 	    else if(name)
 	    {
 		/* if name already got then it must be the value */
-		if(ajStrChar(curword,0) == '\'')
+		if(ajStrGetCharFirst(curword) == '\'')
 		    quoteopen = quoteclose = '\'';
-		else if(ajStrChar(curword,0) == '\"')
+		else if(ajStrGetCharFirst(curword) == '\"')
 		    quoteopen = quoteclose = '\"';
 
-		ajStrAssS(&value, curword);
+		ajStrAssignS(&value, curword);
 		if(quoteopen)
 		{
 		    /* trim the opening quote */
-		    ajStrTrim(&value, 1);
-		    if(!ajStrLen(value))
+		    ajStrCutStart(&value, 1);
+		    if(!ajStrGetLen(value))
 			ajErr("Bare quote %c found in namListParse",
 			       quoteopen);
 		}
 		else
 		    saveit = ajTrue;
 
-		if(ajStrChar(curword, -1) == quoteclose)
+		if(ajStrGetCharLast(curword) == quoteclose)
 		{
 		    /* end of quote on same word */
 		    quoteopen = quoteclose = 0;
 		    saveit= ajTrue;
 		    /* remove quote at the end */
-		    ajStrTrim(&value, -1);
+		    ajStrCutEnd(&value, 1);
 		}
 		namUser("save value '%S'\n", value);
 	    }
 	    else
 	    {
-		ajStrAssS(&name, curword);
+		ajStrAssignS(&name, curword);
 		namUser("save name '%S'\n", name);
 	    }
 	}
@@ -1221,10 +1221,10 @@ static void namListParse(AjPList listwords, AjPList listcount,
 		saveit = ajTrue;
 	    else if(name)
 	    {
-		if(ajStrChar(curword, -1) == ':')
+		if(ajStrGetCharLast(curword) == ':')
 		{
 		    /* if last character is : then its a keyword */
-		    ajStrToLower(&curword); /* make it lower case */
+		    ajStrFmtLower(&curword); /* make it lower case */
 		    namNoColon(&curword);
 		    db_input = namDbAttr(curword);
 		    if(db_input < 0)
@@ -1234,30 +1234,30 @@ static void namListParse(AjPList listwords, AjPList listcount,
 		else if(db_input >= 0)
 		{
 		    /* So if keyword type has been set */
-		    if(ajStrChar(curword, 0) == '\'')
+		    if(ajStrGetCharFirst(curword) == '\'')
 		    {
 			/* is there a quote? If so expect the */
 			/* same at the end. No ()[] etc here*/
 			quoteopen = quoteclose = '\'';
 		    }
-		    else if(ajStrChar(curword, 0) == '\"')
+		    else if(ajStrGetCharFirst(curword) == '\"')
 			quoteopen = quoteclose = '\"';
 
-		    ajStrAssS(&value, curword);
+		    ajStrAssignS(&value, curword);
 		    if(quoteopen)
 		    {
-			ajStrTrim(&value, 1); /* trim opening quote */
-			if(!ajStrLen(value))
+			ajStrCutStart(&value, 1); /* trim opening quote */
+			if(!ajStrGetLen(value))
 			    ajErr("Bare quote %c found in namListParse",
 				   quoteopen);
 		    }
 		    else
 			dbsave = ajTrue; /* we are done - simple word */
 
-		    if(ajStrChar(curword, -1) == quoteclose)
+		    if(ajStrGetCharLast(curword) == quoteclose)
 		    {
 			quoteopen = quoteclose = 0;
-			ajStrTrim(&value,-1); /* trim closing quote */
+			ajStrCutEnd(&value,1); /* trim closing quote */
 			dbsave = ajTrue;
 		    }
 		    if(!quoteopen)     /* if we just reset it above */
@@ -1266,7 +1266,7 @@ static void namListParse(AjPList listwords, AjPList listcount,
 	    }
 	    else
 	    {
-		ajStrAssS(&name, curword);
+		ajStrAssignS(&name, curword);
 		if(!ajNamIsDbname(name))
 		    ajErr("Invalid database name '%S'", name);
 		namUser("saving db name '%S'\n", name);
@@ -1282,9 +1282,9 @@ static void namListParse(AjPList listwords, AjPList listcount,
 		saveit = ajTrue;
 	    else if(name)
 	    {
-		if(ajStrChar(curword, -1) == ':') /* if last character is : */
+		if(ajStrGetCharLast(curword) == ':') /* if last character is : */
 		{		     	          /* then it is a keyword */
-		    ajStrToLower(&curword); /* make it lower case */
+		    ajStrFmtLower(&curword); /* make it lower case */
 		    namNoColon(&curword);
 		    rs_input = namRsAttr(curword);
 		    if(rs_input < 0)	/* test: badresattr.rc */
@@ -1293,29 +1293,29 @@ static void namListParse(AjPList listwords, AjPList listcount,
 		}
 		else if(rs_input >= 0)
 		{		 /* So if keyword type has been set */
-		    if(ajStrChar(curword, 0) == '\'')
+		    if(ajStrGetCharFirst(curword) == '\'')
 		    {	      /* is there a quote? If so expect the */
 			/* same at the end. No ()[] etc here */
 			quoteopen = quoteclose = '\'';
 		    }
-		    else if(ajStrChar(curword, 0) == '\"')
+		    else if(ajStrGetCharFirst(curword) == '\"')
 			quoteopen = quoteclose = '\"';
 
-		    ajStrAssS(&value, curword);
+		    ajStrAssignS(&value, curword);
 		    if(quoteopen)
 		    {
-			ajStrTrim(&value, 1); /* trim opening quote */
-			if(!ajStrLen(value))
+			ajStrCutStart(&value, 1); /* trim opening quote */
+			if(!ajStrGetLen(value))
 			    ajErr("Bare quote %c found in namListParse",
 				   quoteopen);
 		    }
 		    else
 			rssave = ajTrue;
 
-		    if(ajStrChar(curword, -1) == quoteclose)
+		    if(ajStrGetCharLast(curword) == quoteclose)
 		    {
 			quoteopen = quoteclose = 0;
-			ajStrTrim(&value,-1); /* ignore quote if */
+			ajStrCutEnd(&value,1); /* ignore quote if */
 					             /* one at end */
 			rssave = ajTrue;
 		    }
@@ -1325,7 +1325,7 @@ static void namListParse(AjPList listwords, AjPList listcount,
 	    }
 	    else
 	    {
-		ajStrAssS(&name, curword);
+		ajStrAssignS(&name, curword);
 		namUser("saving resource name '%S'\n", name);
 	    }
 	}
@@ -1341,24 +1341,24 @@ static void namListParse(AjPList listwords, AjPList listcount,
 	    else
 	    {
 		includefn = ajStrNew();
-		ajStrAssS(&includefn,curword);
+		ajStrAssignS(&includefn,curword);
 
 		if(namFileOrig)
-		    ajStrAppC(&namFileOrig,", ");
-		ajStrApp(&namFileOrig,includefn);
+		    ajStrAppendC(&namFileOrig,", ");
+		ajStrAppendS(&namFileOrig,includefn);
 
-		key = ajStrNewC(ajStrStr(includefn));
-		val = ajStrNewC(ajStrStr(includefn));
+		key = ajStrNewC(ajStrGetPtr(includefn));
+		val = ajStrNewC(ajStrGetPtr(includefn));
 		ajTablePut(Ifiles,key,val);
 
 		if(!(iinf = ajFileNewIn(includefn))) /* test: badinclude.rc */
 		{
 		    namError("Failed to open include file '%S'\n", includefn);
-		    ajStrAppC(&namFileOrig,"(Failed)");
+		    ajStrAppendC(&namFileOrig,"(Failed)");
 		}
 		else
 		{
-		    ajStrAppC(&namFileOrig,"(OK)");
+		    ajStrAppendC(&namFileOrig,"(OK)");
 		    namstatus = namProcessFile(iinf, name); /* replaces namFile */
 		    ajFmtPrintS(&namFileName, "%F",file);/* reset saved name */
 		    namLine = linecount-1;
@@ -1377,7 +1377,7 @@ static void namListParse(AjPList listwords, AjPList listcount,
 	if(dbsave)
 	{
 	    /* Save the keyword value */
-	    ajStrAssS(&dbattr[db_input], value);
+	    ajStrAssignS(&dbattr[db_input], value);
 	    db_input =-1;
 	    ajStrDel(&value);
 	    dbsave = ajFalse;
@@ -1386,7 +1386,7 @@ static void namListParse(AjPList listwords, AjPList listcount,
 	if(rssave)
 	{
 	    /* Save the keyword value */
-	    ajStrAssS(&rsattr[rs_input], value);
+	    ajStrAssignS(&rsattr[rs_input], value);
 	    rs_input =-1;
 	    ajStrDel(&value);
 	    rssave = ajFalse;
@@ -1399,12 +1399,12 @@ static void namListParse(AjPList listwords, AjPList listcount,
 	    namUser("saving type %d name '%S' value '%S' line:%d\n",
 		    namParseType, name, value, namLine);
 	    AJNEW0(fnew);
-	    tabname = ajCharNew(name);
+	    tabname = ajCharNewS(name);
 	    fnew->name = name;
 	    name = 0;
 	    fnew->value = value;
 	    value = 0;
-	    fnew->file = ajStrDup(saveshortname);
+	    fnew->file = ajStrNewRef(saveshortname);
 
 	    if(namParseType == TYPE_DB)
 	    {
@@ -1507,7 +1507,7 @@ static void namListParse(AjPList listwords, AjPList listcount,
 
 AjBool ajNamIsDbname(const AjPStr name)
 {
-    const char* cp = ajStrStr(name);
+    const char* cp = ajStrGetPtr(name);
 
     if (!*cp)
 	return ajFalse;
@@ -1544,7 +1544,7 @@ AjBool ajNamIsDbname(const AjPStr name)
 AjBool ajNamGetenv(const AjPStr name,
 		    AjPStr* value)
 {
-    return ajNamGetenvC(ajStrStr(name), value);
+    return ajNamGetenvC(ajStrGetPtr(name), value);
 }
 
 
@@ -1570,7 +1570,7 @@ AjBool ajNamGetenvC(const char* name,
     envval = getenv(name);
     if(envval)
     {
-	ajStrAssC(value, envval);
+	ajStrAssignC(value, envval);
 	return ajTrue;
     }
 
@@ -1596,7 +1596,7 @@ AjBool ajNamGetenvC(const char* name,
 
 AjBool ajNamGetValue(const AjPStr name, AjPStr* value)
 {
-    return ajNamGetValueC(ajStrStr(name), value);
+    return ajNamGetValueC(ajStrGetPtr(name), value);
 }
 
 
@@ -1621,19 +1621,19 @@ AjBool ajNamGetValueC(const char* name, AjPStr* value)
     AjBool hadPrefix     = ajFalse;
     AjBool ret           = ajFalse;
     
-    if(ajStrPrefixCO(name, namPrefixStr)) /* may already have the prefix */
+    if(ajCharPrefixS(name, namPrefixStr)) /* may already have the prefix */
     {
-	ajStrAssC(&namValNameTmp, name);
+	ajStrAssignC(&namValNameTmp, name);
 	hadPrefix = ajTrue;
     }
     else
     {
-	ajStrAssS(&namValNameTmp, namPrefixStr);
-	ajStrAppC(&namValNameTmp, name);
+	ajStrAssignS(&namValNameTmp, namPrefixStr);
+	ajStrAppendC(&namValNameTmp, name);
     }
 
     /* upper case for ENV, otherwise don't care */
-    ajStrToUpper(&namValNameTmp);
+    ajStrFmtUpper(&namValNameTmp);
     
     /* first test for an ENV variable */
     
@@ -1643,10 +1643,10 @@ AjBool ajNamGetValueC(const char* name, AjPStr* value)
 
     /* then test the table definitions - with the prefix */
     
-    fnew = ajTableGet(namVarMasterTable, ajStrStr(namValNameTmp));
+    fnew = ajTableGet(namVarMasterTable, ajStrGetPtr(namValNameTmp));
     if(fnew)
     {
-	ajStrAssS(value, fnew->value);
+	ajStrAssignS(value, fnew->value);
 	return ajTrue;
     }
     
@@ -1658,7 +1658,7 @@ AjBool ajNamGetValueC(const char* name, AjPStr* value)
 	fnew = ajTableGet(namVarMasterTable, name);
 	if(fnew)
 	{
-	    ajStrAssS(value, fnew->value);
+	    ajStrAssignS(value, fnew->value);
 	    return ajTrue;
 	}
     }
@@ -1687,7 +1687,7 @@ AjBool ajNamDatabase(const AjPStr name)
 
     /* ajDebug("ajNamDatabase '%S'\n", name); */
 
-    fnew = ajTableGet(namDbMasterTable, ajStrStr(name));
+    fnew = ajTableGet(namDbMasterTable, ajStrGetPtr(name));
     if(fnew)
     {
 	/* ajDebug("  '%S' found\n", name); */
@@ -1729,7 +1729,7 @@ static AjBool namProcessFile(AjPFile file, const AjPStr shortname)
     
     listwords = ajListstrNew();
     listcount = ajListNew();
-    word      = ajStrNewL(128);
+    word      = ajStrNewRes(128);
     
     ajFmtPrintS(&namFileName, "%F", file);
     namUser("namProcessFile '%F'\n", file);
@@ -1743,25 +1743,25 @@ static AjBool namProcessFile(AjPFile file, const AjPStr shortname)
 	ajListPushApp(listcount, k);
 	
 	/* namUser("%S\n",rdline); */
-	len = ajStrLen(rdline);
+	len = ajStrGetLen(rdline);
 	
-	if(!ajStrUncommentStart(&rdline)) /* Ignore if the line is a comment */
+	if(!ajStrCutCommentsStart(&rdline)) /* Ignore if the line is a comment */
 	    continue;
 	
 	/* now create a linked list of the "words" */
 	if(len)
 	{
-	    ptr = ajStrStr(rdline);
+	    ptr = ajStrGetPtr(rdline);
 	    i = 0;
 	    while(*ptr && i < len)
 	    {
 		if(*ptr == ' ' || *ptr == '\t')
 		{
-		    if(ajStrLen(word))
+		    if(ajStrGetLen(word))
 		    {
 			wordptr = ajStrNewS(word);
 			ajListstrPushApp(listwords, wordptr);
-			ajStrAssC(&word, "");
+			ajStrAssignC(&word, "");
 		    }
 		    i++;
 		    ptr++;
@@ -1769,7 +1769,7 @@ static AjBool namProcessFile(AjPFile file, const AjPStr shortname)
 		}
 		else if(*ptr == '\'' || *ptr == '\"')
 		{
-		    ajStrAppK(&word,*ptr);
+		    ajStrAppendK(&word,*ptr);
 		    if(quote)
 		    {
 			if(quote == *ptr)
@@ -1778,25 +1778,25 @@ static AjBool namProcessFile(AjPFile file, const AjPStr shortname)
 		    else
 			quote = *ptr;
 		}
-		else if(!quote && ajStrLen(word) && *ptr == ']')
+		else if(!quote && ajStrGetLen(word) && *ptr == ']')
 		{
 		    wordptr = ajStrNewS(word);
 		    ajListstrPushApp(listwords, wordptr);
-		    ajStrAssC(&word, "");
+		    ajStrAssignC(&word, "");
 		    wordptr = ajStrNewC("]");
 		    ajListstrPushApp(listwords, wordptr);
-		    ajStrAssC(&word, "");
+		    ajStrAssignC(&word, "");
 		}
 		else
-		    ajStrAppK(&word,*ptr);
+		    ajStrAppendK(&word,*ptr);
 		i++;ptr++;
 	    }
 
-	    if(ajStrLen(word))
+	    if(ajStrGetLen(word))
 	    {
 		wordptr = ajStrNewS(word);
 		ajListstrPushApp(listwords, wordptr);
-		ajStrAssC(&word, "");
+		ajStrAssignC(&word, "");
 	    }
 	    
 	}
@@ -1870,27 +1870,27 @@ void ajNamInit(const char* prefix)
     ** static namPrefixStr is the prefix for all variable names
     */
     
-    ajStrAssC(&namPrefixStr, prefix);
+    ajStrAssignC(&namPrefixStr, prefix);
     
-    ajStrAppC(&namPrefixStr, "_");
+    ajStrAppendC(&namPrefixStr, "_");
     
     /*
     ** local prefixRoot is the root directory 
     ** it is the value of (PREFIX)_ROOT (if set) or namFixedRoot
     */
     
-    ajStrAssC(&debugStr, prefix);
+    ajStrAssignC(&debugStr, prefix);
     
-    ajStrAppC(&debugStr, "_namdebug");
-    ajStrToUpper(&debugStr);
+    ajStrAppendC(&debugStr, "_namdebug");
+    ajStrFmtUpper(&debugStr);
     
     if(ajNamGetenv(debugStr, &debugVal))
 	ajStrToBool(debugVal, &namDoDebug);
     
-    ajStrAssC(&debugStr, prefix);
+    ajStrAssignC(&debugStr, prefix);
     
-    ajStrAppC(&debugStr, "_namvalid");
-    ajStrToUpper(&debugStr);
+    ajStrAppendC(&debugStr, "_namvalid");
+    ajStrFmtUpper(&debugStr);
     
     if(ajNamGetenv(debugStr, &debugVal))
 	ajStrToBool(debugVal, &namDoValid);
@@ -1898,22 +1898,22 @@ void ajNamInit(const char* prefix)
     ajStrDel(&debugStr);
     ajStrDel(&debugVal);
     
-    ajStrAssC(&prefixStr, prefix);
+    ajStrAssignC(&prefixStr, prefix);
     
-    ajStrAppC(&prefixStr, "_ROOT");
-    ajStrToUpper(&prefixStr);
+    ajStrAppendC(&prefixStr, "_ROOT");
+    ajStrFmtUpper(&prefixStr);
     
-    ajStrAppC(&prefixCap, prefix);
-    ajStrToUpper(&prefixCap);
+    ajStrAppendC(&prefixCap, prefix);
+    ajStrFmtUpper(&prefixCap);
     
     if(ajNamGetenv(prefixStr, &prefixRootStr))
-	prefixRoot = ajStrStr(prefixRootStr);
+	prefixRoot = ajStrGetPtr(prefixRootStr);
     else
 	prefixRoot = namFixedRoot;
     
     /* namFixedRootBaseStr is the directory above the source root */
     
-    ajStrAssC(&namFixedRootBaseStr, prefixRoot);
+    ajStrAssignC(&namFixedRootBaseStr, prefixRoot);
     ajFileDirUp(&namFixedRootBaseStr);
     
     /* look for default file in the install directory as
@@ -1922,7 +1922,7 @@ void ajNamInit(const char* prefix)
     ajFmtPrintS(&namRootStr, "%s/share/%S/%s.default",
 		 namInstallRoot, prefixCap, prefix);
     prefixRootFile = ajFileNewIn(namRootStr);
-    ajStrAssC(&basename, "global");
+    ajStrAssignC(&basename, "global");
     
     /* look for $(PREFIX)_ROOT/../emboss.default */
     
@@ -1931,21 +1931,21 @@ void ajNamInit(const char* prefix)
 	/* try original directory */
 	ajFmtPrintS(&namRootStr, "%s/%s.default", prefixRoot, prefix);
 	prefixRootFile = ajFileNewIn(namRootStr);
-	ajStrAssC(&basename, "source");
+	ajStrAssignC(&basename, "source");
     }
     
     if(namFileOrig)
-	ajStrAppC(&namFileOrig, ", ");
-    ajStrApp(&namFileOrig, namRootStr);
+	ajStrAppendC(&namFileOrig, ", ");
+    ajStrAppendS(&namFileOrig, namRootStr);
     
     if(prefixRootFile)
     {
-	ajStrAppC(&namFileOrig, "(OK)");
+	ajStrAppendC(&namFileOrig, "(OK)");
 	namProcessFile(prefixRootFile, basename);
 	ajFileClose(&prefixRootFile);
     }
     else
-	ajStrAppC(&namFileOrig, "(failed)");
+	ajStrAppendC(&namFileOrig, "(failed)");
     
     
     
@@ -1955,34 +1955,34 @@ void ajNamInit(const char* prefix)
     
     if(prefixRoot)
     {
-	ajStrAssC(&namRootStr, prefixRoot);
-	ajStrAppC(&namRootStr, "/.");
-	ajStrAppC(&namRootStr, prefix);
-	ajStrAppC(&namRootStr, "rc");
+	ajStrAssignC(&namRootStr, prefixRoot);
+	ajStrAppendC(&namRootStr, "/.");
+	ajStrAppendC(&namRootStr, prefix);
+	ajStrAppendC(&namRootStr, "rc");
 	if(namFileOrig)
-	    ajStrAppC(&namFileOrig, ", ");
-	ajStrApp(&namFileOrig, namRootStr);
+	    ajStrAppendC(&namFileOrig, ", ");
+	ajStrAppendS(&namFileOrig, namRootStr);
 
 	prefixRootFile = ajFileNewIn(namRootStr);
 	if(prefixRootFile)
 	{
-	    ajStrAssC(&basename, "special");
-	    ajStrAppC(&namFileOrig, "(OK)");
+	    ajStrAssignC(&basename, "special");
+	    ajStrAppendC(&namFileOrig, "(OK)");
 	    namProcessFile(prefixRootFile, basename);
 	    ajFileClose(&prefixRootFile);
 	}
 	else
-	    ajStrAppC(&namFileOrig, "(failed)");
+	    ajStrAppendC(&namFileOrig, "(failed)");
     }
     
     /* look for $HOME/.embossrc */
     
     prefixRoot= getenv("HOME");
     
-    ajStrAssC(&prefixStr, prefix);
+    ajStrAssignC(&prefixStr, prefix);
     
-    ajStrAppC(&prefixStr, "_RCHOME");
-    ajStrToUpper(&prefixStr);
+    ajStrAppendC(&prefixStr, "_RCHOME");
+    ajStrFmtUpper(&prefixStr);
     
     if(ajNamGetenv(prefixStr, &homercVal))
 	ajStrToBool(debugVal, &namDoHomeRc);
@@ -1991,24 +1991,24 @@ void ajNamInit(const char* prefix)
     
     if(namDoHomeRc && prefixRoot)
     {
-	ajStrAssC(&namRootStr, prefixRoot);
-	ajStrAppC(&namRootStr, "/.");
-	ajStrAppC(&namRootStr, prefix);
-	ajStrAppC(&namRootStr, "rc");
+	ajStrAssignC(&namRootStr, prefixRoot);
+	ajStrAppendC(&namRootStr, "/.");
+	ajStrAppendC(&namRootStr, prefix);
+	ajStrAppendC(&namRootStr, "rc");
 	if(namFileOrig)
-	    ajStrAppC(&namFileOrig, ", ");
-	ajStrApp(&namFileOrig, namRootStr);
+	    ajStrAppendC(&namFileOrig, ", ");
+	ajStrAppendS(&namFileOrig, namRootStr);
 
-	ajStrAssC(&basename, "user");
+	ajStrAssignC(&basename, "user");
 	prefixRootFile = ajFileNewIn(namRootStr);
 	if(prefixRootFile)
 	{
-	    ajStrAppC(&namFileOrig, "(OK)");
+	    ajStrAppendC(&namFileOrig, "(OK)");
 	    namProcessFile(prefixRootFile, basename);
 	    ajFileClose(&prefixRootFile);
 	}
 	else
-	    ajStrAppC(&namFileOrig, "(failed)");
+	    ajStrAppendC(&namFileOrig, "(failed)");
     }
     
     namUser("Files processed: %S\n", namFileOrig);
@@ -2038,8 +2038,8 @@ void ajNamInit(const char* prefix)
 
 static void namNoColon(AjPStr* thys)
 {
-    if(ajStrChar(*thys, -1) == ':')
-	ajStrTrim(thys, -1);
+    if(ajStrGetCharLast(*thys) == ':')
+	ajStrCutEnd(thys, 1);
 
     return;
 }
@@ -2058,7 +2058,7 @@ static void namNoColon(AjPStr* thys)
 
 static ajint namDbAttr(const AjPStr thys)
 {
-    return namDbAttrC(ajStrStr(thys));
+    return namDbAttrC(ajStrGetPtr(thys));
 }
 
 
@@ -2084,7 +2084,7 @@ static ajint namDbAttrC(const char* str)
 	if(!strcmp(str, namDbAttrs[i].Name))
 	    return i;
 
-	if(ajStrPrefixCC(namDbAttrs[i].Name, str))
+	if(ajCharPrefixC(namDbAttrs[i].Name, str))
 	{
 	    ifound++;
 	    j = i;
@@ -2111,7 +2111,7 @@ static ajint namDbAttrC(const char* str)
 
 static ajint namRsAttr(const AjPStr thys)
 {
-    return namRsAttrC(ajStrStr(thys));
+    return namRsAttrC(ajStrGetPtr(thys));
 }
 
 
@@ -2137,7 +2137,7 @@ static ajint namRsAttrC(const char* str)
 	if(!strcmp(str, namRsAttrs[i].Name))
 	    return i;
 
-	if(ajStrPrefixCC(namRsAttrs[i].Name, str))
+	if(ajCharPrefixC(namRsAttrs[i].Name, str))
 	{
 	    ifound++;
 	    j = i;
@@ -2201,7 +2201,7 @@ AjBool ajNamDbTest(const AjPStr dbname)
 {
     NamPEntry data;
 
-    data = ajTableGet(namDbMasterTable, ajStrStr(dbname));
+    data = ajTableGet(namDbMasterTable, ajStrGetPtr(dbname));
 
     if(!data)
 	return ajFalse;
@@ -2235,16 +2235,16 @@ AjBool ajNamDbGetUrl(const AjPStr dbname, AjPStr* url)
 	iurl = namDbAttrC("url");
 	calls = 1;
     }
-    data = ajTableGet(namDbMasterTable, ajStrStr(dbname));
+    data = ajTableGet(namDbMasterTable, ajStrGetPtr(dbname));
 
     if(!data)
 	ajFatal("%S is not a known database\n", dbname);
 
     dbattr = (AjPStr *) data->data;
 
-    if(ajStrLen(dbattr[iurl]))
+    if(ajStrGetLen(dbattr[iurl]))
     {
-	ajStrAssS(url, dbattr[iurl]);
+	ajStrAssignS(url, dbattr[iurl]);
 	return ajTrue;
     }
 
@@ -2277,16 +2277,16 @@ AjBool ajNamDbGetDbalias(const AjPStr dbname, AjPStr* dbalias)
 	idba = namDbAttrC("dbalias");
 	calls = 1;
     }
-    data = ajTableGet(namDbMasterTable, ajStrStr(dbname));
+    data = ajTableGet(namDbMasterTable, ajStrGetPtr(dbname));
 
     if(!data)
 	ajFatal("%S is not a known database\n", dbname);
 
     dbattr = (AjPStr *) data->data;
 
-    if(ajStrLen(dbattr[idba]))
+    if(ajStrGetLen(dbattr[idba]))
     {
-	ajStrAssS(dbalias, dbattr[idba]);
+	ajStrAssignS(dbalias, dbattr[idba]);
 	return ajTrue;
     }
 
@@ -2320,7 +2320,7 @@ AjBool ajNamDbData(AjPSeqQuery qry)
 
     const AjPStr* dbattr;
 
-    data = ajTableGet(namDbMasterTable, ajStrStr(qry->DbName));
+    data = ajTableGet(namDbMasterTable, ajStrGetPtr(qry->DbName));
 
     if(!data)
 	ajFatal("database %S unknown\n", qry->DbName);
@@ -2379,14 +2379,14 @@ AjBool ajNamDbQuery(AjPSeqQuery qry)
 
     const AjPStr* dbattr;
 
-    data = ajTableGet(namDbMasterTable, ajStrStr(qry->DbName));
+    data = ajTableGet(namDbMasterTable, ajStrGetPtr(qry->DbName));
 
     if(!data)
 	ajFatal("database %S unknown\n", qry->DbName);
 
     dbattr = (const AjPStr *) data->data;
 
-    if(!ajStrLen(qry->DbType))
+    if(!ajStrGetLen(qry->DbType))
 	ajNamDbData(qry);
 
     if(!ajSeqQueryIs(qry))   /* must have a method for all entries */
@@ -2415,13 +2415,13 @@ AjBool ajNamDbQuery(AjPSeqQuery qry)
     }
 
 
-    if(!ajStrLen(qry->Formatstr))
+    if(!ajStrGetLen(qry->Formatstr))
     {
 	ajErr("No format defined for database '%S'", qry->DbName);
 	return ajFalse;
     }
 
-    if(!ajStrLen(qry->Method))
+    if(!ajStrGetLen(qry->Method))
     {
 	ajErr("No access method for database '%S'", qry->DbName);
 	return ajFalse;
@@ -2454,10 +2454,10 @@ static AjBool namDbSetAttr(const AjPStr* dbattr, const char* attrib,
     if(i < 0)
 	ajFatal("unknown attribute '%s' requested",  attrib);
 
-    if(!ajStrLen(dbattr[i]))
+    if(!ajStrGetLen(dbattr[i]))
 	return ajFalse;
 
-    ajStrAssS(qrystr, dbattr[i]);
+    ajStrAssignS(qrystr, dbattr[i]);
     /* ajDebug("namDbSetAttr('%S')\n", *qrystr); */
 
     namVarResolve(qrystr);
@@ -2497,8 +2497,8 @@ static AjBool namVarResolve(AjPStr* var)
 	ajDebug("namVarResolve '%S' = '%S'\n", varname, newvar);
 
 	if(ajRegPost(namVarExp, &restvar)) /* any more? */
-	    ajStrApp(&newvar, restvar);
-	ajStrAssS(var, newvar);
+	    ajStrAppendS(&newvar, restvar);
+	ajStrAssignS(var, newvar);
     }
 
     ajStrDel(&varname);
@@ -2578,7 +2578,7 @@ static void namError(const char* fmt, ...)
 
 AjBool ajNamRootInstall(AjPStr* root)
 {
-    ajStrAssC(root, namInstallRoot);
+    ajStrAssignC(root, namInstallRoot);
 
     return ajTrue;
 }
@@ -2597,7 +2597,7 @@ AjBool ajNamRootInstall(AjPStr* root)
 
 AjBool ajNamRootPack(AjPStr* pack)
 {
-    ajStrAssC(pack, namPackage);
+    ajStrAssignC(pack, namPackage);
 
     return ajTrue;
 }
@@ -2616,7 +2616,7 @@ AjBool ajNamRootPack(AjPStr* pack)
 
 AjBool ajNamRootVersion(AjPStr* version)
 {
-    ajStrAssC(version, namVersion);
+    ajStrAssignC(version, namVersion);
 
     return ajTrue;
 }
@@ -2636,7 +2636,7 @@ AjBool ajNamRootVersion(AjPStr* version)
 
 AjBool ajNamRoot(AjPStr* root)
 {
-    ajStrAssC(root, namFixedRoot);
+    ajStrAssignC(root, namFixedRoot);
 
     return ajTrue;
 }
@@ -2656,7 +2656,7 @@ AjBool ajNamRoot(AjPStr* root)
 
 AjBool ajNamRootBase(AjPStr* rootbase)
 {
-    ajStrAssS(rootbase, namFixedRootBaseStr);
+    ajStrAssignS(rootbase, namFixedRootBaseStr);
 
     return ajTrue;
 }
@@ -2694,8 +2694,8 @@ AjBool ajNamResolve(AjPStr* name)
 	ret = ajNamGetValue(varname, &varvalue);
 	if(ret)
 	{
-	    ajStrAssS(name, varvalue);
-	    ajStrApp(name, restname);
+	    ajStrAssignS(name, varvalue);
+	    ajStrAppendS(name, restname);
 	    namUser("converted to '%S'\n", *name);
 	}
 	else
@@ -2777,7 +2777,7 @@ static AjBool namValidDatabase(const NamPEntry entry)
 	if(attrs[j])
 	{
 	    iattr++;
-	    if(ajStrPrefixCC(namDbAttrs[j].Name, "format"))
+	    if(ajCharPrefixC(namDbAttrs[j].Name, "format"))
 	    {
 		hasformat=ajTrue;
 		if(!ajSeqFormatTest(attrs[j]))	/* test: dbunknowns.rc */
@@ -2785,7 +2785,7 @@ static AjBool namValidDatabase(const NamPEntry entry)
 			     entry->name, namDbAttrs[j].Name, attrs[j]);
 	    }
 
-	    if(ajStrPrefixCC(namDbAttrs[j].Name, "method"))
+	    if(ajCharPrefixC(namDbAttrs[j].Name, "method"))
 	    {
 		hasmethod=ajTrue;
 		if(!ajSeqMethodTest(attrs[j]))	/* test: dbunknowns.rc */
@@ -2793,7 +2793,7 @@ static AjBool namValidDatabase(const NamPEntry entry)
 			     entry->name, namDbAttrs[j].Name, attrs[j]);
 	    }
 
-	    if(ajStrPrefixCC(namDbAttrs[j].Name, "type"))
+	    if(ajCharPrefixC(namDbAttrs[j].Name, "type"))
 	    {
 		hastype=ajTrue;
 		oktype = ajFalse;
@@ -2870,7 +2870,7 @@ static AjBool namValidResource(const NamPEntry entry)
 	if(attrs[j])
 	{
 	    iattr++;
-	    if(ajStrPrefixCC(namDbAttrs[j].Name, "type"))
+	    if(ajCharPrefixC(namDbAttrs[j].Name, "type"))
 		hastype=ajTrue;
 	}
 
@@ -2918,13 +2918,13 @@ static AjBool namValidVariable(const NamPEntry entry)
 AjBool ajNamSetControl(const char* optionName)
 {
 
-    if(!ajStrCmpCaseCC(optionName, "namdebug"))
+    if(!ajCharCmpCase(optionName, "namdebug"))
     {
 	namDoDebug = ajTrue;
 	return ajTrue;
     }
 
-    if(!ajStrCmpCaseCC(optionName, "namvalid"))
+    if(!ajCharCmpCase(optionName, "namvalid"))
     {
 	namDoValid = ajTrue;
 	return ajTrue;
@@ -2958,14 +2958,14 @@ AjBool ajNamRsAttrValue(const AjPStr name, const AjPStr attribute,
     NamPEntry fnew = NULL;
     AjPStr *rsattr = NULL;
 
-    fnew = ajTableGet(namResMasterTable, ajStrStr(name));
+    fnew = ajTableGet(namResMasterTable, ajStrGetPtr(name));
 
     rsattr = (AjPStr *) fnew->data;
     j = namRsAttr(attribute);
 
-    if(ajStrLen(rsattr[j]))
+    if(ajStrGetLen(rsattr[j]))
     {
-	ajStrAssS(value,rsattr[j]);
+	ajStrAssignS(value,rsattr[j]);
 	return ajTrue;
     }
 
@@ -3000,9 +3000,9 @@ AjBool ajNamRsAttrValueC(const char *name, const char *attribute,
     rsattr = (const AjPStr *) fnew->data;
     j = namRsAttrC(attribute);
 
-    if(ajStrLen(rsattr[j]))
+    if(ajStrGetLen(rsattr[j]))
     {
-	ajStrAssS(value,rsattr[j]);
+	ajStrAssignS(value,rsattr[j]);
 	return ajTrue;
     }
 
@@ -3027,7 +3027,7 @@ AjBool ajNamRsListValue(const AjPStr name, AjPStr *value)
     NamPEntry fnew = NULL;
     const AjPStr *rsattr = NULL;
 
-    fnew = ajTableGet(namResMasterTable, ajStrStr(name));
+    fnew = ajTableGet(namResMasterTable, ajStrGetPtr(name));
 
     rsattr = (const AjPStr *) fnew->data;
     j = namRsAttrC("type");
@@ -3035,9 +3035,9 @@ AjBool ajNamRsListValue(const AjPStr name, AjPStr *value)
 	return ajFalse;
 
     j = namRsAttrC("value");
-    if(ajStrLen(rsattr[j]))
+    if(ajStrGetLen(rsattr[j]))
     {
-	ajStrAssS(value,rsattr[j]);
+	ajStrAssignS(value,rsattr[j]);
 	return ajTrue;
     }
 

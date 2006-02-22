@@ -54,8 +54,8 @@ int main(int argc, char **argv)
     str = ajStrNew();
 
     /* get a COPY of the sequence string */
-    ajStrAssSub(&str, ajSeqStr(seq), beg, end);
-    ajStrCut(&str, from-beg, to-beg);
+    ajStrAssignSubS(&str, ajSeqStr(seq), beg, end);
+    ajStrCutRange(&str, from-beg, to-beg);
 
     ajSeqReplace(seq, str);
 

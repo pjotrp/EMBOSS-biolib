@@ -112,8 +112,8 @@ int main(int argc, char **argv)
 
     trantable = ajTrnNewI(table);
 
-    plen = ajStrLen(pattern);
-    ajStrAssC(&opattern,ajStrStr(pattern));
+    plen = ajStrGetLen(pattern);
+    ajStrAssignC(&opattern,ajStrGetPtr(pattern));
 
     if(!(type=embPatGetType(opattern,&pattern,mismatch,1,&m,&amino,&carboxyl)))
 	ajFatal("Illegal pattern");
@@ -128,11 +128,11 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall,&seq))
     {
 	l = ajListNew();
-	ajStrAssC(&seqname,ajSeqName(seq));
+	ajStrAssignC(&seqname,ajSeqName(seq));
 	begin = ajSeqallBegin(seqall);
 	end   = ajSeqallEnd(seqall);
-	ajStrAssSubC(&text,ajSeqChar(seq),begin-1,end-1);
-	ajStrToUpper(&text);
+	ajStrAssignSubC(&text,ajSeqChar(seq),begin-1,end-1);
+	ajStrFmtUpper(&text);
 
 	if(!ajStrCmpC(frame,"F"))
 	{
@@ -143,7 +143,7 @@ int main(int argc, char **argv)
 	    if(hits)
 		fuzztran_save_hits(l,hits,1, pro, &tab, seq);
 
-	    ajStrAssC(&pro,"");
+	    ajStrAssignC(&pro,"");
 
 	    ajTrnStrFrame(trantable,text,2,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
@@ -152,7 +152,7 @@ int main(int argc, char **argv)
 	    if(hits)
 		fuzztran_save_hits(l,hits,2, pro, &tab, seq);
 
-	    ajStrAssC(&pro,"");
+	    ajStrAssignC(&pro,"");
 
 	    ajTrnStrFrame(trantable,text,3,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
@@ -161,7 +161,7 @@ int main(int argc, char **argv)
 	    if(hits)
 		fuzztran_save_hits(l,hits,3, pro, &tab, seq);
 
-	    ajStrAssC(&pro,"");
+	    ajStrAssignC(&pro,"");
 	}
 	else if(!ajStrCmpC(frame,"R"))
 	{
@@ -172,7 +172,7 @@ int main(int argc, char **argv)
 	    if(hits)
 		fuzztran_save_hits(l,hits, -1, pro, &tab, seq);
 
-	    ajStrAssC(&pro,"");
+	    ajStrAssignC(&pro,"");
 
 	    ajTrnStrFrame(trantable,text,-2,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
@@ -181,7 +181,7 @@ int main(int argc, char **argv)
 	    if(hits)
 		fuzztran_save_hits(l,hits,-2, pro, &tab, seq);
 
-	    ajStrAssC(&pro,"");
+	    ajStrAssignC(&pro,"");
 
 	    ajTrnStrFrame(trantable,text,-3,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
@@ -190,7 +190,7 @@ int main(int argc, char **argv)
 	    if(hits)
 		fuzztran_save_hits(l,hits,-3, pro, &tab, seq);
 
-	    ajStrAssC(&pro,"");
+	    ajStrAssignC(&pro,"");
 	}
 	else if(!ajStrCmpC(frame,"6"))
 	{
@@ -201,7 +201,7 @@ int main(int argc, char **argv)
 	    if(hits)
 		fuzztran_save_hits(l,hits, 1, pro, &tab, seq);
 
-	    ajStrAssC(&pro,"");
+	    ajStrAssignC(&pro,"");
 
 	    ajTrnStrFrame(trantable,text,2,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
@@ -210,7 +210,7 @@ int main(int argc, char **argv)
 	    if(hits)
 		fuzztran_save_hits(l,hits, 2, pro, &tab, seq);
 
-	    ajStrAssC(&pro,"");
+	    ajStrAssignC(&pro,"");
 
 	    ajTrnStrFrame(trantable,text,3,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
@@ -219,7 +219,7 @@ int main(int argc, char **argv)
 	    if(hits)
 		fuzztran_save_hits(l,hits,3, pro, &tab, seq);
 
-	    ajStrAssC(&pro,"");
+	    ajStrAssignC(&pro,"");
 
 	    ajTrnStrFrame(trantable,text,-1,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
@@ -228,7 +228,7 @@ int main(int argc, char **argv)
 	    if(hits)
 		fuzztran_save_hits(l,hits,-1, pro, &tab, seq);
 
-	    ajStrAssC(&pro,"");
+	    ajStrAssignC(&pro,"");
 
 	    ajTrnStrFrame(trantable,text,-2,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
@@ -237,7 +237,7 @@ int main(int argc, char **argv)
 	    if(hits)
 		fuzztran_save_hits(l,hits, -2, pro, &tab, seq);
 
-	    ajStrAssC(&pro,"");
+	    ajStrAssignC(&pro,"");
 
 	    ajTrnStrFrame(trantable,text,-3,&pro);
 	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
@@ -246,7 +246,7 @@ int main(int argc, char **argv)
 	    if(hits)
 		fuzztran_save_hits(l,hits, -3, pro, &tab, seq);
 
-	    ajStrAssC(&pro,"");
+	    ajStrAssignC(&pro,"");
 	}
 	else
 	{
@@ -258,7 +258,7 @@ int main(int argc, char **argv)
 	    if(hits)
 		fuzztran_save_hits(l,hits,frameno, pro, &tab, seq);
 
-	    ajStrAssC(&pro,"");
+	    ajStrAssignC(&pro,"");
 	}
 
 	if(ajFeattableSize(tab))
@@ -332,7 +332,7 @@ static void fuzztran_save_hits(AjPList l, ajint hits, ajint fnum,
     static AjPStr t = NULL;
 
     if(!fthit)
-	ajStrAssC(&fthit, "hit");
+	ajStrAssignC(&fthit, "hit");
 
     if(!*ptab)
 	*ptab = ajFeattableNewSeq(seq);
@@ -397,7 +397,7 @@ static void fuzztran_save_hits(AjPList l, ajint hits, ajint fnum,
 	ajFmtPrintS(&s, "*end %d", m->start + m->len - 1);
 	ajFeatTagAdd(gf, NULL, s);
 
-	ajStrAssSub(&t,pro,m->start-1,m->start+m->len-2);
+	ajStrAssignSubS(&t,pro,m->start-1,m->start+m->len-2);
 	ajFmtPrintS(&s, "*translation %S", t);
 	ajFeatTagAdd(gf, NULL, s);
 

@@ -82,13 +82,13 @@ int main(int argc, char **argv)
 
     /* outf      = ajAcdGetOutfile("originalfile"); */
 
-    sscanf(ajStrStr(*menu),"%d",&n);
+    sscanf(ajStrGetPtr(*menu),"%d",&n);
     --n;
 
     substr = ajStrNew();
     be     = ajSeqBegin(a);
     en     = ajSeqEnd(a);
-    ajStrAssSubC(&substr,ajSeqChar(a),be-1,en-1);
+    ajStrAssignSubC(&substr,ajSeqChar(a),be-1,en-1);
     len = en-be+1;
     
     l     = ajListNew();
@@ -99,7 +99,7 @@ int main(int argc, char **argv)
     
     embPropAminoRead(mfptr);
     
-    embPropCalcFragments(ajStrStr(substr),n,be,&l,&pa,unfavoured,overlap,
+    embPropCalcFragments(ajStrGetPtr(substr),n,be,&l,&pa,unfavoured,overlap,
 			 allpartials,&ncomp,&npart,&rname);
     
     
@@ -110,7 +110,7 @@ int main(int argc, char **argv)
     {
 	if(outf)
 	    ajFmtPrintF(outf,"Is not proteolytically digested using %s\n",
-			ajStrStr(rname));
+			ajStrGetPtr(rname));
     }
     else
     {
@@ -118,14 +118,14 @@ int main(int argc, char **argv)
 	{
 	    ajFmtPrintF(outf,"Complete digestion with %s "
 			"yields %d fragments:\n",
-			ajStrStr(rname),ncomp);
-	    digest_print_hits(l,outf,be,ajStrStr(substr));
+			ajStrGetPtr(rname),ncomp);
+	    digest_print_hits(l,outf,be,ajStrGetPtr(substr));
 	}
 	ajFmtPrintS(&tmpStr,
 		    "Complete digestion with %S yields %d fragments",
 		    rname,ncomp);
 	ajReportSetHeader(report, tmpStr);
-	digest_report_hits(report, a, TabRpt,l,be, ajStrStr(substr));
+	digest_report_hits(report, a, TabRpt,l,be, ajStrGetPtr(substr));
 	ajReportWrite(report, TabRpt, a);
 	ajFeattableClear(TabRpt);
     }
@@ -135,16 +135,16 @@ int main(int argc, char **argv)
 	if(outf)
 	{
 	    ajFmtPrintF(outf,"\n\nPartial digest with %s yields %d extras.\n",
-			ajStrStr(rname),npart);
+			ajStrGetPtr(rname),npart);
 	    ajFmtPrintF(outf,"Only overlapping partials shown:\n");
-	    digest_print_hits(pa,outf,be,ajStrStr(substr));
+	    digest_print_hits(pa,outf,be,ajStrGetPtr(substr));
 	}
 	ajFmtPrintS(&tmpStr,
 		    "\n\nPartial digest with %S yields %d extras.\n",
 		    rname,npart);
 	ajFmtPrintAppS(&tmpStr,"Only overlapping partials shown:\n");
 	ajReportSetHeader(report, tmpStr);
-	digest_report_hits(report, a, TabRpt, pa,be,ajStrStr(substr));
+	digest_report_hits(report, a, TabRpt, pa,be,ajStrGetPtr(substr));
 	ajReportWrite(report, TabRpt, a);
 	ajFeattableClear(TabRpt);
     }
@@ -154,16 +154,16 @@ int main(int argc, char **argv)
 	if(outf)
 	{
 	    ajFmtPrintF(outf,"\n\nPartial digest with %s yields %d extras.\n",
-			ajStrStr(rname),npart);
+			ajStrGetPtr(rname),npart);
 	    ajFmtPrintF(outf,"All partials shown:\n");
-	    digest_print_hits(pa,outf,be,ajStrStr(substr));
+	    digest_print_hits(pa,outf,be,ajStrGetPtr(substr));
 	}
 	ajFmtPrintS(&tmpStr,
 		    "\n\nPartial digest with %S yields %d extras.\n",
 		    rname,npart);
 	ajFmtPrintAppS(&tmpStr,"All partials shown:\n");
 	ajReportSetHeader(report, tmpStr);
-	digest_report_hits(report, a, TabRpt, pa,be, ajStrStr(substr));
+	digest_report_hits(report, a, TabRpt, pa,be, ajStrGetPtr(substr));
 	ajReportWrite(report, TabRpt, a);
 	ajFeattableClear(TabRpt);
     }
@@ -215,7 +215,7 @@ static void digest_print_hits(AjPList l, AjPFile outf, ajint be, const char *s)
 		"Start   End     Molwt      Sequence (up to 38 residues)\n");
     while(ajListPop(l,(void **)&fr))
     {
-	ajStrAssSubC(&t,s,fr->start,fr->end);
+	ajStrAssignSubC(&t,s,fr->start,fr->end);
 	ajFmtPrintF(outf,"%-8d%-8d%-10.3f ",fr->start+be,fr->end+be,
 		    fr->molwt);
 	if(fr->start>0)
@@ -223,7 +223,7 @@ static void digest_print_hits(AjPList l, AjPFile outf, ajint be, const char *s)
 	else
 	    ajFmtPrintF(outf," () ");
 
-	ajFmtPrintF(outf,"%-.38s ",ajStrStr(t));
+	ajFmtPrintF(outf,"%-.38s ",ajStrGetPtr(t));
 	if(fr->end<len-1)
 	    ajFmtPrintF(outf,"(%c) ",*(s+(fr->end+be)));
 	else
@@ -271,7 +271,7 @@ static void digest_report_hits(AjPReport report, const AjPSeq seq,
 
     while(ajListPop(l,(void **)&fr))
     {
-	ajStrAssSubC(&t,s,fr->start,fr->end);
+	ajStrAssignSubC(&t,s,fr->start,fr->end);
 	gf = ajFeatNewII(TabRpt,fr->start+be,fr->end+be);
 	ajFmtPrintS(&tmpStr, "*molwt %.3f", fr->molwt);
 	ajFeatTagAdd(gf,  NULL, tmpStr);

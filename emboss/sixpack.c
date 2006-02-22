@@ -139,8 +139,8 @@ int main(int argc, char **argv)
 	else
 	{
 	    descriptionline = ajStrNew();
-	    ajStrAssS(&descriptionline, ajSeqGetDesc(seq));
-	    ajStrWrap(&descriptionline, width+margin);
+	    ajStrAssignS(&descriptionline, ajSeqGetDesc(seq));
+	    ajStrFmtWrap(&descriptionline, width+margin);
 	    ajFmtPrintF(outfile, "%S\n", descriptionline);
 	    ajStrDel(&descriptionline);
 	}
@@ -220,24 +220,24 @@ int main(int argc, char **argv)
 	pepend = ajSeqEnd(pep)-1;
 	pepseq = ajSeqStr(pep);
 
-	ajStrAssSub(&substr,pepseq,pepbegin,pepend);
+	ajStrAssignSubS(&substr,pepseq,pepbegin,pepend);
 
 	/* end with a '*' if we want to and there is not one there already */
 	ajDebug("last residue =%c\n", ajSeqChar(pep)[pepend]);
 
 	if(addlast && ajSeqChar(pep)[pepend] != '*')
 	{
-	    ajStrAppK(&substr,'*');
+	    ajStrAppendK(&substr,'*');
 	    addedasterisk = ajTrue;
 	}
 
 	ajDebug("After appending, sequence=%S\n", substr);
-	ajStrToUpper(&substr);
+	ajStrFmtUpper(&substr);
 	  
-	peplen = ajStrLen(substr);
+	peplen = ajStrGetLen(substr);
 
 	totalorf += sixpackFindorfs(outseq, outfile, 0, peplen,
-				    ajStrStr(substr),
+				    ajStrGetPtr(substr),
 				    ajSeqName(pep), orfminsize,
 				    addedasterisk, firstorf,
 				    i+1, ajSeqName(seq), mstart);
@@ -395,7 +395,7 @@ static void sixpackPrintseq(AjPSeqout outseq,
     sq   = ajSeqNew();
     ajSeqSetProt(sq);
 
-    ajStrAssSubC(&str,seq,begin,end);
+    ajStrAssignSubC(&str,seq,begin,end);
     ajSeqReplace(sq,str);
 
     ajFmtPrintS(&nm, "%s_ORF%d  Translation of %s in frame %d, ORF %d, "

@@ -142,7 +142,7 @@ static char* TimeFormat(const char *timefmt)
     char *format = NULL ;
 
     for(i=0; timeFormat[i].Name; i++)
-	if(ajStrMatchCaseCC(timefmt, timeFormat[i].Name))
+	if(ajCharMatchCaseC(timefmt, timeFormat[i].Name))
 	{
 	    ok = ajTrue;
 	    break;
@@ -343,7 +343,7 @@ AjBool ajTimeLocal(const time_t timer, AjPTime thys)
 
     if(ajNamGetValueC("timetoday", &timestr))
     {
-	if(ajTimeSetS(thys, ajStrStr(timestr)))
+	if(ajTimeSetS(thys, ajStrGetPtr(timestr)))
 	{
 	    ajStrDel(&timestr);
 	    return ajTrue;

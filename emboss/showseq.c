@@ -203,31 +203,31 @@ int main(int argc, char **argv)
     if(!ajStrCmpC(formatlist[0], "0"))
 	for(i=0; thinglist[i]; i++)
 	{
-	    ajStrApp(&format, thinglist[i]);
-	    ajStrAppC(&format, " ");
+	    ajStrAppendS(&format, thinglist[i]);
+	    ajStrAppendC(&format, " ");
 	}
     else if(!ajStrCmpC(formatlist[0], "1"))
-	ajStrAssC(&format, "S A ");
+	ajStrAssignC(&format, "S A ");
     else if(!ajStrCmpC(formatlist[0], "2"))
-	ajStrAssC(&format, "B N T S A F ");
+	ajStrAssignC(&format, "B N T S A F ");
     else if(!ajStrCmpC(formatlist[0], "3"))
-	ajStrAssC(&format, "B N T S A ");
+	ajStrAssignC(&format, "B N T S A ");
     else if(!ajStrCmpC(formatlist[0], "4"))
-	ajStrAssC(&format, "B N T S B 1 A F ");
+	ajStrAssignC(&format, "B N T S B 1 A F ");
     else if(!ajStrCmpC(formatlist[0], "5"))
-	ajStrAssC(&format, "B N T S B 1 2 3 A F ");
+	ajStrAssignC(&format, "B N T S B 1 2 3 A F ");
     else if(!ajStrCmpC(formatlist[0], "6"))
-	ajStrAssC(&format, "B N T S B 1 2 3 T -3 -2 -1 A F ");
+	ajStrAssignC(&format, "B N T S B 1 2 3 T -3 -2 -1 A F ");
     else if(!ajStrCmpC(formatlist[0], "7"))
-	ajStrAssC(&format, "B R S N T C -R B 1 2 3 T -3 -2 -1 A ");
+	ajStrAssignC(&format, "B R S N T C -R B 1 2 3 T -3 -2 -1 A ");
     else if(!ajStrCmpC(formatlist[0], "8"))
-	ajStrAssC(&format, "B 1 2 3 N T R S T C -R T -3 -2 -1 A F ");
+	ajStrAssignC(&format, "B 1 2 3 N T R S T C -R T -3 -2 -1 A F ");
     else
 	ajFatal("Invalid format type: %S", formatlist[0]);
     
     
     /* make the format upper case */
-    ajStrToUpper(&format);
+    ajStrFmtUpper(&format);
     
     /* create the translation table */
     trnTable = ajTrnNewI(table);
@@ -261,8 +261,8 @@ int main(int argc, char **argv)
 	    else
 	    {
 		descriptionline = ajStrNew();
-		ajStrAssS(&descriptionline, ajSeqGetDesc(seq));
-		ajStrWrap(&descriptionline, width+margin);
+		ajStrAssignS(&descriptionline, ajSeqGetDesc(seq));
+		ajStrFmtWrap(&descriptionline, width+margin);
 		ajFmtPrintF(outfile, "%S\n", descriptionline);
 		ajStrDel(&descriptionline);
 	    }
@@ -412,10 +412,10 @@ static void showseq_FormatShow(EmbPShow ss,
     AjPStr code = NULL;
 
     /* start token to parse format */
-    tok = ajStrTokenInit(format,  white);
-    while(ajStrToken(&code, &tok, whiteplus))
+    tok = ajStrTokenNewC(format,  white);
+    while(ajStrTokenNextParseC(&tok, whiteplus, &code))
     {
-	ajStrToUpper(&code);
+	ajStrFmtUpper(&code);
 
 	if(!ajStrCmpC(code, "S"))
 	    embShowAddSeq(ss, numberseq, threeletter, uppercase,
@@ -465,7 +465,7 @@ static void showseq_FormatShow(EmbPShow ss,
     }
 
     ajStrDel(&code);
-    ajStrTokenClear(&tok);
+    ajStrTokenDel(&tok);
 
     return;
 }
@@ -495,7 +495,7 @@ static void showseq_read_equiv(AjPFile equfile, AjPTable table)
 
     while(ajFileReadLine(equfile,&line))
     {
-        p = ajStrStr(line);
+        p = ajStrGetPtr(line);
 
         if(!*p || *p=='#' || *p=='!')
             continue;
@@ -538,17 +538,17 @@ static void showseq_read_file_of_enzyme_names(AjPStr *enzymes)
 	    ajFatal("Cannot open the file of enzyme names: '%S'", enzymes);
 
 	/* blank off the enzyme file name and replace with the enzyme names */
-	ajStrClear(enzymes);
+	ajStrSetClear(enzymes);
 	line = ajStrNew();
 	while(ajFileReadLine(file, &line))
 	{
-	    p = ajStrStr(line);
+	    p = ajStrGetPtr(line);
 
 	    if(!*p || *p == '#' || *p == '!')
 		continue;
 
-	    ajStrApp(enzymes, line);
-	    ajStrAppC(enzymes, ",");
+	    ajStrAppendS(enzymes, line);
+	    ajStrAppendC(enzymes, ",");
 	}
 	ajStrDel(&line);
 
@@ -741,7 +741,7 @@ static AjBool showseq_MatchPatternTags(const AjPFeature gf,
         **   If vpattern is '*' the value pattern is a match
         ** Else check vpattern
         */
-        if(!ajStrLen(tagval))
+        if(!ajStrGetLen(tagval))
 	{
             if(!ajStrCmpC(vpattern, "*"))
             	vval = ajTrue;
@@ -755,7 +755,7 @@ static AjBool showseq_MatchPatternTags(const AjPFeature gf,
 	    ** against the value, but also test to see if there is a match
 	    ** of the whole of vpattern without spitting it up into words.
             */
-            vval = (ajStrMatch(tagval, vpattern) ||
+            vval = (ajStrMatchS(tagval, vpattern) ||
 		    embMiscMatchPattern(tagval, vpattern));
 
 
@@ -802,10 +802,10 @@ static AjPFeature showseq_FeatCopy(const AjPFeature orig)
 
     ret->Tags = ajListNew();
 
-    ajStrAssS(&ret->Source, orig->Source);
-    ajStrAssS(&ret->Type, orig->Type);
-    ajStrAssS(&ret->Remote, orig->Remote);
-    ajStrAssS(&ret->Label, orig->Label);
+    ajStrAssignS(&ret->Source, orig->Source);
+    ajStrAssignS(&ret->Type, orig->Type);
+    ajStrAssignS(&ret->Remote, orig->Remote);
+    ajStrAssignS(&ret->Label, orig->Label);
                  
     ret->Protein = orig->Protein;     
     ret->Start   = orig->Start;

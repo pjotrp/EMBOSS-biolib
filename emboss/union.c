@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 	}
 	ajSeqTrim(seq);
 
-	ajStrApp(&unistr, ajSeqStr(seq));
+	ajStrAppendS(&unistr, ajSeqStr(seq));
     }
 
     ajSeqReplace(uniseq, unistr);

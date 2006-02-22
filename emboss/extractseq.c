@@ -75,13 +75,13 @@ int main(int argc, char **argv)
 	    newseq = ajSeqNew();
 
 	    /* create a name for the new sequence */
-	    ajStrAssS(&name, ajSeqGetName(seq));
-	    ajStrAppC(&name, "_");
+	    ajStrAssignS(&name, ajSeqGetName(seq));
+	    ajStrAppendC(&name, "_");
 	    ajStrFromInt(&value, st);
-	    ajStrApp(&name, value);
-	    ajStrAppC(&name, "_");
+	    ajStrAppendS(&name, value);
+	    ajStrAppendC(&name, "_");
 	    ajStrFromInt(&value, en);
-	    ajStrApp(&name, value);
+	    ajStrAppendS(&name, value);
 	    ajSeqAssName(newseq, name);
 
 	    /* set the sequence description */
@@ -116,7 +116,7 @@ int main(int argc, char **argv)
 	*/
 	ajRangeStrExtract(regions, ajSeqStr(seq), &newstr);
 	ajSeqReplace(seq, newstr);
-	ajStrClear(&newstr);
+	ajStrSetClear(&newstr);
 	ajSeqAllWrite(seqout, seq);
     }
 

@@ -107,7 +107,7 @@ static AjPStr seqretsplit_Name(AjPTable table, AjPSeq seq)
 
 	    if(!ajTableGet(table, newname))
 	    {
-		ajStrAssS(&oldname, ajSeqGetName(seq));
+		ajStrAssignS(&oldname, ajSeqGetName(seq));
 		ajSeqAssName(seq, newname);
 		ajWarn("Duplicate name '%S' changed to '%S'",
 		       oldname, newname);
@@ -126,8 +126,8 @@ static AjPStr seqretsplit_Name(AjPTable table, AjPSeq seq)
 	ajDebug("seqretsplit_Name OK name '%S'\n",
 		ajSeqGetName(seq));
 
-    ajStrAssS(&tabname, ajSeqGetName(seq));
-    ajStrAssC(&tabvalue, ""); /* can't be NULL - needed to test Get result */
+    ajStrAssignS(&tabname, ajSeqGetName(seq));
+    ajStrAssignC(&tabvalue, ""); /* can't be NULL - needed to test Get result */
     ajTablePut(table, tabname, tabvalue);
 
     ajDebug("seqretsplit_Name add to table '%S'\n", tabname);

@@ -52,11 +52,11 @@ void ajSysBasename(AjPStr *s)
     const char *t;
     ajint  len;
 
-    len = ajStrLen(*s);
+    len = ajStrGetLen(*s);
     if(!len)
 	return;
 
-    t = ajStrStr(*s);
+    t = ajStrGetPtr(*s);
 
     p = t+(len-1);
     while(p!=t)
@@ -67,7 +67,7 @@ void ajSysBasename(AjPStr *s)
     }
 
     if(p!=t)
-	ajStrAssC(s, p+1);
+	ajStrAssignC(s, p+1);
 
     return;
 }
@@ -137,7 +137,7 @@ AjBool ajSysWhich(AjPStr *s)
     if(!p)
 	return ajFalse;
 
-    ajStrAssS(&tname, *s);
+    ajStrAssignS(&tname, *s);
 
     if(!fname)
 	fname = ajStrNew();
@@ -148,8 +148,8 @@ AjBool ajSysWhich(AjPStr *s)
 
     if(p==NULL)
     {
-	ajStrDelReuse(&fname);
-	ajStrDelReuse(&tname);
+	ajStrDelStatic(&fname);
+	ajStrDelStatic(&tname);
 	return ajFalse;
     }
 
@@ -159,20 +159,20 @@ AjBool ajSysWhich(AjPStr *s)
 
 	if(ajFileStat(fname, AJ_FILE_X))
 	{
-	    ajStrClear(s);
-	    ajStrSet(s,fname);
+	    ajStrSetClear(s);
+	    ajStrAssignEmptyS(s,fname);
 	    break;
 	}
 	if((p = ajSysStrtok(NULL,":"))==NULL)
         {
-	    ajStrDelReuse(&fname);
-	    ajStrDelReuse(&tname);
+	    ajStrDelStatic(&fname);
+	    ajStrDelStatic(&tname);
 	    return ajFalse;
         }
     }
 
-    ajStrDelReuse(&fname);
-    ajStrDelReuse(&tname);
+    ajStrDelStatic(&fname);
+    ajStrDelStatic(&tname);
 
     return ajTrue;
 }
@@ -207,7 +207,7 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
     buf   = ajStrNew();
     tname = ajStrNew();
     tmp   = ajStrNew();
-    ajStrAssS(&tname,*s);
+    ajStrAssignS(&tname,*s);
     
     fname = ajStrNew();
     path  = ajStrNew();
@@ -242,14 +242,14 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 	return ajFalse;
     }
     
-    ajStrAssC(&path, env[count]);
-    cp = ajStrStr(path);
+    ajStrAssignC(&path, env[count]);
+    cp = ajStrGetPtr(path);
     cp += 5;
-    ajStrAssC(&tmp,cp);
+    ajStrAssignC(&tmp,cp);
 
     /*ajDebug("tmp '%S' save '%S' buf '%S'\n", tmp, save, buf);*/
  
-    p = ajSysStrtokR(ajStrStr(tmp),":",&save,&buf);
+    p = ajSysStrtokR(ajStrGetPtr(tmp),":",&save,&buf);
     
     if(p==NULL)
     {
@@ -278,7 +278,7 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
     }
     
     
-    ajStrAssS(s,fname);
+    ajStrAssignS(s,fname);
     ajDebug("ajSysWhichEnv returns '%S'\n", *s);
 
     ajStrDel(&fname);
@@ -320,7 +320,7 @@ void ajSystem(const AjPStr cl)
 
     pname = ajStrNew();
 
-    ajStrAssC(&pname, pgm);
+    ajStrAssignC(&pname, pgm);
 
     if(!ajSysWhich(&pname))
 	ajFatal("cannot find program '%S'", pname);
@@ -341,7 +341,7 @@ void ajSystem(const AjPStr cl)
     }
     else
     {
-	execv(ajStrStr(pname), argptr);
+	execv(ajStrGetPtr(pname), argptr);
 	ajExitAbort();			/* just in case */
     }
 
@@ -397,7 +397,7 @@ void ajSystemEnv(const AjPStr cl, char * const env[])
     pname = ajStrNew();
 
     ajDebug("ajSystemEnv '%s' %S \n", pgm, cl);
-    ajStrAssC(&pname, pgm);
+    ajStrAssignC(&pname, pgm);
     if(!ajSysWhichEnv(&pname, env))
 	ajFatal("cannot find program '%S'", pname);
 
@@ -422,7 +422,7 @@ void ajSystemEnv(const AjPStr cl, char * const env[])
     }
     else
     {
-	execve(ajStrStr(pname), argptr, env);
+	execve(ajStrGetPtr(pname), argptr, env);
 	ajExitAbort();			/* just in case */
     }
 
@@ -456,7 +456,7 @@ void ajSystemEnv(const AjPStr cl, char * const env[])
 
 AjBool ajSysUnlink(const AjPStr s)
 {
-    if(!unlink(ajStrStr(s)))
+    if(!unlink(ajStrGetPtr(s)))
 	return ajTrue;
 
     return ajFalse;
@@ -527,9 +527,9 @@ AjBool ajSysArglist(const AjPStr cmdline, char** pgm, char*** arglist)
     
     ajDebug("ajSysArgList '%S'\n", cmdline);
     
-    ajStrAssS(&tmpline, cmdline);
+    ajStrAssignS(&tmpline, cmdline);
     
-    cp   = ajStrStr(cmdline);
+    cp   = ajStrGetPtr(cmdline);
     ipos = 0;
     while(ajRegExecC(argexp, &cp[ipos]))
     {
@@ -544,7 +544,7 @@ AjBool ajSysArglist(const AjPStr cmdline, char** pgm, char*** arglist)
     while(ajRegExecC(argexp, &cp[ipos]))
     {
 	ilen = ajRegLenI(argexp, 0);
-	ajStrDelReuse(&argstr);
+	ajStrDelStatic(&argstr);
 	for(i=2;i<5;i++)
 	{
 	    if(ajRegLenI(argexp, i))
@@ -557,9 +557,9 @@ AjBool ajSysArglist(const AjPStr cmdline, char** pgm, char*** arglist)
 	ipos += ilen;
 
 	if(!iarg)
-	    *pgm = ajCharNew(argstr);
+	    *pgm = ajCharNewS(argstr);
 
-	al[iarg] = ajCharNew(argstr);
+	al[iarg] = ajCharNewS(argstr);
 	iarg++;
     }
 
@@ -738,8 +738,8 @@ char* ajSysStrtok(const char *s, const char *t)
 	    sysTokSou  = ajStrNew();
 	    sysTokRets = ajStrNew();
 	}
-	ajStrAssC(&sysTokSou,s);
-	sysTokp = ajStrStr(sysTokSou);
+	ajStrAssignC(&sysTokSou,s);
+	sysTokp = ajStrGetPtr(sysTokSou);
     }
 
     if(!*sysTokp)
@@ -751,10 +751,10 @@ char* ajSysStrtok(const char *s, const char *t)
 	return NULL;
 
     len = strcspn(sysTokp,t);		/* count non-delimiters */
-    ajStrAssSubC(&sysTokRets,sysTokp,0,len-1);
+    ajStrAssignSubC(&sysTokRets,sysTokp,0,len-1);
     sysTokp += len;		  /* skip over first delimiter only */
 
-    return ajStrStrMod(&sysTokRets);
+    return ajStrGetuniquePtr(&sysTokRets);
 }
 
 
@@ -796,12 +796,12 @@ char* ajSysStrtokR(const char *s, const char *t, char **ptrptr, AjPStr *buf)
 	return NULL;
 
     len = strcspn(p,t);			/* count non-delimiters */
-    ajStrAssSubC(buf,p,0,len-1);
+    ajStrAssignSubC(buf,p,0,len-1);
     p += len;			       /* skip to first delimiter */
 
     *ptrptr = (char *) p;
 
-    return ajStrStrMod(buf);
+    return ajStrGetuniquePtr(buf);
 }
 
 
@@ -896,7 +896,7 @@ FILE* ajSysFopen(const char *name, const char *flags)
     {
 	fname = ajStrNew();
 	ajFmtPrintS(&fname,"/cygdrive/%c/%s",*name,name+2);
-	ret = fopen(ajStrStr(fname),flags);
+	ret = fopen(ajStrGetPtr(fname),flags);
 	ajStrDel(&fname);
     }
     else
@@ -915,8 +915,6 @@ FILE* ajSysFopen(const char *name, const char *flags)
 **
 ** Cleans up system internals memory
 **
-** @param [r] silent [AjBool] Turn off messages (used when some messages
-**                            are expected but can be ignored).
 ** @return [void]
 ** @@
 ******************************************************************************/

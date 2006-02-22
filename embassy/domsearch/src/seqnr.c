@@ -200,8 +200,8 @@ int main(int argc, char **argv)
 	    for(x=0; x<infhits->N; x++)
 	    {
 		seq_tmp = ajSeqNew();
-		ajStrAssS(&seq_tmp->Acc,infhits->hits[x]->Acc);
-		ajStrAssS(&seq_tmp->Seq,infhits->hits[x]->Seq);
+		ajStrAssignS(&seq_tmp->Acc,infhits->hits[x]->Acc);
+		ajStrAssignS(&seq_tmp->Seq,infhits->hits[x]->Seq);
 		ajListPushApp(seq_list,seq_tmp);		
 	    }
 	} 
@@ -210,8 +210,8 @@ int main(int argc, char **argv)
 	    for(x=0;x<ajSeqsetSize(seqset);x++)
 	    {
 		seq_tmp = ajSeqNew();
-		ajStrAssS(&seq_tmp->Acc, ajSeqsetAcc(seqset, x));
-		ajStrAssC(&seq_tmp->Seq, ajSeqsetSeq(seqset, x));
+		ajStrAssignS(&seq_tmp->Acc, ajSeqsetAcc(seqset, x));
+		ajStrAssignC(&seq_tmp->Seq, ajSeqsetSeq(seqset, x));
 		ajListPushApp(seq_list,seq_tmp);		
 	    }
 	    ajSeqsetDel(&seqset);
@@ -226,11 +226,11 @@ int main(int argc, char **argv)
 	if(dosing)
 	{
 	    /* Open singlets file. */
-	    ajStrAssS(&filtername, inname);
+	    ajStrAssignS(&filtername, inname);
 	    ajFileDirExtnTrim(&filtername);
-	    ajStrInsert(&filtername, 0, ajDirName(singlets));
-	    ajStrAppC(&filtername, ".");
-	    ajStrApp(&filtername, ajDirExt(singlets));
+	    ajStrInsertS(&filtername, 0, ajDirName(singlets));
+	    ajStrAppendC(&filtername, ".");
+	    ajStrAppendS(&filtername, ajDirExt(singlets));
 
 	
 	    if((filterf = ajFileNewIn(filtername)) == NULL)
@@ -286,8 +286,8 @@ int main(int argc, char **argv)
 		    for(x=0; x<hitlist->N; x++)
 		    {
 			seq_tmp = ajSeqNew();
-			ajStrAssS(&seq_tmp->Acc,hitlist->hits[x]->Acc);
-			ajStrAssS(&seq_tmp->Seq,hitlist->hits[x]->Seq);
+			ajStrAssignS(&seq_tmp->Acc,hitlist->hits[x]->Acc);
+			ajStrAssignS(&seq_tmp->Seq,hitlist->hits[x]->Seq);
 			ajSeqGarbageOn(&seq_tmp);
 			ajListPushApp(seq_list,seq_tmp);		
 		    }
@@ -298,8 +298,8 @@ int main(int argc, char **argv)
 		    for(x=0;x<ajSeqsetSize(seqset);x++)
 		    {
 			seq_tmp = ajSeqNew();
-			ajStrAssS(&seq_tmp->Acc, ajSeqsetAcc(seqset, x));
-			ajStrAssC(&seq_tmp->Seq, ajSeqsetSeq(seqset, x));
+			ajStrAssignS(&seq_tmp->Acc, ajSeqsetAcc(seqset, x));
+			ajStrAssignC(&seq_tmp->Seq, ajSeqsetSeq(seqset, x));
 			ajSeqGarbageOn(&seq_tmp);
 			ajListPushApp(seq_list,seq_tmp);		
 		    }
@@ -317,11 +317,11 @@ int main(int argc, char **argv)
 	if(dosets)
 	{
 	    /* Open sets file. */
-	    ajStrAssS(&filtername, inname);
+	    ajStrAssignS(&filtername, inname);
 	    ajFileDirExtnTrim(&filtername);
-	    ajStrInsert(&filtername, 0, ajDirName(insets));
-	    ajStrAppC(&filtername, ".");
-	    ajStrApp(&filtername, ajDirExt(insets));
+	    ajStrInsertS(&filtername, 0, ajDirName(insets));
+	    ajStrAppendC(&filtername, ".");
+	    ajStrAppendS(&filtername, ajDirExt(insets));
 
 	
 	    if((filterf = ajFileNewIn(filtername)) == NULL)
@@ -376,10 +376,10 @@ int main(int argc, char **argv)
 		    for(x=0; x<scopalg->N; x++)
 		    {
 			seq_tmp = ajSeqNew();
-			ajStrAssS(&seq_tmp->Acc,scopalg->Codes[x]);
-			ajStrAssS(&seq_tmp->Seq,scopalg->Seqs[x]);
+			ajStrAssignS(&seq_tmp->Acc,scopalg->Codes[x]);
+			ajStrAssignS(&seq_tmp->Seq,scopalg->Seqs[x]);
 			/* Remove gap char's & whitespace. */
-			ajStrDegap(&seq_tmp->Seq);  
+			ajStrRemoveGap(&seq_tmp->Seq);  
 			ajSeqGarbageOn(&seq_tmp);
 			ajListPushApp(seq_list,seq_tmp);		
 		    }
@@ -390,8 +390,8 @@ int main(int argc, char **argv)
 		    for(x=0;x<ajSeqsetSize(seqset);x++)
 		    {
 			seq_tmp = ajSeqNew();
-			ajStrAssS(&seq_tmp->Acc, ajSeqsetAcc(seqset, x));
-			ajStrAssC(&seq_tmp->Seq, ajSeqsetSeq(seqset, x));
+			ajStrAssignS(&seq_tmp->Acc, ajSeqsetAcc(seqset, x));
+			ajStrAssignC(&seq_tmp->Seq, ajSeqsetSeq(seqset, x));
 			ajSeqGarbageOn(&seq_tmp);
 			ajListPushApp(seq_list,seq_tmp);		
 		    }
@@ -424,7 +424,7 @@ int main(int argc, char **argv)
 	
 
 	/* Create output files. */
-	ajStrAssS(&outname, inname);
+	ajStrAssignS(&outname, inname);
 	ajFileDirExtnTrim(&outname);
 	outf = ajFileNewOutDir(out, outname);
 	if(dored)

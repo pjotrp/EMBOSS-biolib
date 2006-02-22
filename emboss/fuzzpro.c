@@ -35,7 +35,7 @@ static void fuzzpro_report_hits(AjPList l, ajint hits,
 /* @prog fuzzpro **************************************************************
 **
 ** Protein pattern search
-**
+*
 ******************************************************************************/
 
 int main(int argc, char **argv)
@@ -94,9 +94,9 @@ int main(int argc, char **argv)
     seqname  = ajStrNew();
     opattern = ajStrNew();
 
-    plen = ajStrLen(pattern);
+    plen = ajStrGetLen(pattern);
 
-    ajStrAssC(&opattern,ajStrStr(pattern));
+    ajStrAssignC(&opattern,ajStrGetPtr(pattern));
     if(!(type=embPatGetType(opattern,&pattern,mismatch,1,&m,&amino,&carboxyl)))
 	ajFatal("Illegal pattern");
     embPatCompile(type,pattern,&plen,&buf,off,&sotable,&solimit,&m,
@@ -108,11 +108,11 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall,&seq))
     {
 	l = ajListNew();
-	ajStrAssC(&seqname,ajSeqName(seq));
+	ajStrAssignC(&seqname,ajSeqName(seq));
 	begin = ajSeqallBegin(seqall);
 	end   = ajSeqallEnd(seqall);
-	ajStrAssSubC(&text,ajSeqChar(seq),begin-1,end-1);
-	ajStrToUpper(&text);
+	ajStrAssignSubC(&text,ajSeqChar(seq),begin-1,end-1);
+	ajStrFmtUpper(&text);
 
 	embPatFuzzSearch(type,begin,pattern,seqname,text,l,
 			 plen,mismatch,amino,carboxyl,buf,off,sotable,
@@ -174,7 +174,7 @@ static void fuzzpro_report_hits(AjPList l, ajint hits,
     begin = ajSeqBegin(seq) - 1;
 
     if(!fthit)
-	ajStrAssC(&fthit, "hit");
+	ajStrAssignC(&fthit, "hit");
 
     s = ajStrNew();
 

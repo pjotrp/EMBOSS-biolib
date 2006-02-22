@@ -264,10 +264,10 @@ static void extractfeat_FeatSeqExtract(const AjPSeq seq, AjPSeqout seqout,
 				     featinname, describeout);
 
                 /* reset joined feature information */
-                ajStrClear(&featseq);
-                ajStrClear(&tmpseq);
-                ajStrClear(&type);
-		ajStrClear(&describeout);
+                ajStrSetClear(&featseq);
+                ajStrSetClear(&tmpseq);
+                ajStrSetClear(&type);
+		ajStrSetClear(&describeout);
                 remote = ajFalse;
                 compall = ajFalse;
                 sense = ajTrue;
@@ -302,7 +302,7 @@ static void extractfeat_FeatSeqExtract(const AjPSeq seq, AjPSeqout seqout,
 	    
 	    /* get 'type' name of feature */
 	    if(single || parent)
-	    	ajStrAssS(&type, gf->Type);
+	    	ajStrAssignS(&type, gf->Type);
 	    
 	    /*
 	    ** if single or parent, get 'before' + 'after' sequence
@@ -327,7 +327,7 @@ static void extractfeat_FeatSeqExtract(const AjPSeq seq, AjPSeqout seqout,
 	    
 	    /* get feature sequence(complement if required) */
             extractfeat_GetFeatseq(seq, gf, &tmpseq, sense);
-	    ajDebug("extracted feature = %d bases\n", ajStrLen(tmpseq));
+	    ajDebug("extracted feature = %d bases\n", ajStrGetLen(tmpseq));
 	    
 	    /*
 	    ** if child, append to previous sequence, otherwise
@@ -335,12 +335,12 @@ static void extractfeat_FeatSeqExtract(const AjPSeq seq, AjPSeqout seqout,
 	    */
             if(child)
 	    {
-            	ajStrApp(&featseq, tmpseq);
+            	ajStrAppendS(&featseq, tmpseq);
 	        ajDebug("joined feature so far = %d bases\n",
-			ajStrLen(featseq));
+			ajStrGetLen(featseq));
             }
 	    else
-            	ajStrAssS(&featseq, tmpseq);
+            	ajStrAssignS(&featseq, tmpseq);
 	}
 	ajListIterFree(&iter) ;
 	
@@ -389,13 +389,13 @@ static void extractfeat_GetFeatseq(const AjPSeq seq, const AjPFeature gf,
     ajDebug("about to get sequence from %d-%d, len=%d\n",
 	    gf->Start, gf->End, gf->End - gf->Start+1);
 
-    ajStrAssSub(&tmp, str, gf->Start-1, gf->End-1);
+    ajStrAssignSubS(&tmp, str, gf->Start-1, gf->End-1);
 
     /* if feature was in reverse sense, then get reverse complement */
     if(!sense)
     	ajSeqReverseStr(&tmp);
 
-    ajStrAssS(gfstr, tmp);
+    ajStrAssignS(gfstr, tmp);
 
     ajStrDel(&tmp);
 
@@ -441,7 +441,7 @@ static void extractfeat_WriteOut(AjPSeqout seqout, AjPStr *featstr,
     ajint tmp;
 
     /* see if there is a sequence to be written out */
-    if(!ajStrLen(*featstr))
+    if(!ajStrGetLen(*featstr))
     {
         ajDebug("feature not written out because it has length=0 "
 		"(probably first time round)\n");
@@ -463,13 +463,13 @@ static void extractfeat_WriteOut(AjPSeqout seqout, AjPStr *featstr,
         after  = tmp;
     }
 
-    ajDebug("feature = %d bases\n", ajStrLen(*featstr));
+    ajDebug("feature = %d bases\n", ajStrGetLen(*featstr));
 
     /* featstr may be edited, so it is a AjPStr* */
     extractfeat_BeforeAfter (seq, featstr, firstpos, lastpos, before,
 			     after, sense);
 
-    ajDebug("feature+before/after = %d bases\n", ajStrLen(*featstr));
+    ajDebug("feature+before/after = %d bases\n", ajStrGetLen(*featstr));
 
     /*
     ** if join was all in reverse sense, now finally get reverse
@@ -484,33 +484,33 @@ static void extractfeat_WriteOut(AjPSeqout seqout, AjPStr *featstr,
 
      /* create a nice name for the new sequence */
     name = ajStrNew();
-    ajStrApp(&name, ajSeqGetName(seq));
-    ajStrAppC(&name, "_");
+    ajStrAppendS(&name, ajSeqGetName(seq));
+    ajStrAppendC(&name, "_");
     value = ajStrNew();
     ajStrFromInt(&value, firstpos+1);
-    ajStrApp(&name, value);
-    ajStrAppC(&name, "_");
+    ajStrAppendS(&name, value);
+    ajStrAppendC(&name, "_");
     ajStrFromInt(&value, lastpos+1);
-    ajStrApp(&name, value);
+    ajStrAppendS(&name, value);
 
     /* add the type of feature to the name, if required */
     if(featinname)
     {
-    	ajStrAppC(&name, "_");
-    	ajStrApp(&name, type);
+    	ajStrAppendC(&name, "_");
+    	ajStrAppendS(&name, type);
     }
 
     ajSeqAssName(newseq, name);
 
     /* set the sequence description with the 'type' added */
     desc = ajStrNew();
-    ajStrAppC(&desc, "[");
-    ajStrApp(&desc, type);
-    ajStrAppC(&desc, "] ");
-    if(ajStrLen(describestr))
-    	ajStrApp(&desc, describestr);
+    ajStrAppendC(&desc, "[");
+    ajStrAppendS(&desc, type);
+    ajStrAppendC(&desc, "] ");
+    if(ajStrGetLen(describestr))
+    	ajStrAppendS(&desc, describestr);
 
-    ajStrApp(&desc, ajSeqGetDesc(seq));
+    ajStrAppendS(&desc, ajSeqGetDesc(seq));
     ajSeqAssDesc(newseq, desc);
 
     /* set the type */
@@ -582,7 +582,7 @@ static void extractfeat_BeforeAfter(const AjPSeq seq, AjPStr * featstr,
     */
 
     /* do negative values of before/after */
-    featlen = ajStrLen(*featstr)-1;
+    featlen = ajStrGetLen(*featstr)-1;
     start = 0;
     end = featlen;
 
@@ -608,9 +608,9 @@ static void extractfeat_BeforeAfter(const AjPSeq seq, AjPStr * featstr,
     {
         ajDebug("truncating featstr to %d-%d\n",
 		start < 0 ? 0 : start, end>featlen ? featlen : end);
-        ajDebug("featstr len=%d bases\n", ajStrLen(*featstr));
-    	ajStrSub(featstr, start<0 ? 0 : start, end>featlen ? featlen :end);
-        ajDebug("featstr len=%d bases\n", ajStrLen(*featstr));
+        ajDebug("featstr len=%d bases\n", ajStrGetLen(*featstr));
+    	ajStrKeepRange(featstr, start<0 ? 0 : start, end>featlen ? featlen :end);
+        ajDebug("featstr len=%d bases\n", ajStrGetLen(*featstr));
     }
 
 
@@ -722,9 +722,9 @@ static void extractfeat_GetRegionPad(const AjPSeq seq, AjPStr *featstr,
     {
         pad = -start;
         if(ajSeqIsNuc(seq))
-            ajStrAppKI(&result, 'N', pad);
+            ajStrAppendCountK(&result, 'N', pad);
         else
-            ajStrAppKI(&result, 'X', pad);
+            ajStrAppendCountK(&result, 'X', pad);
         start = 0;
     }
 
@@ -736,7 +736,7 @@ static void extractfeat_GetRegionPad(const AjPSeq seq, AjPStr *featstr,
     if(start <= ajSeqLen(seq) && tmp >= 0)
     {
         ajDebug("Get subsequence %d-%d\n", start, tmp);
-        ajStrAppSub(&result, ajSeqStr(seq), start, tmp);
+        ajStrAppendSubS(&result, ajSeqStr(seq), start, tmp);
         ajDebug("result=%S\n", result);
     }
 
@@ -744,9 +744,9 @@ static void extractfeat_GetRegionPad(const AjPSeq seq, AjPStr *featstr,
     {
         pad = end - ajSeqLen(seq)+1;
         if(ajSeqIsNuc(seq))
-            ajStrAppKI(&result, 'N', pad);
+            ajStrAppendCountK(&result, 'N', pad);
         else
-            ajStrAppKI(&result, 'X', pad);
+            ajStrAppendCountK(&result, 'X', pad);
         ajDebug("result=%S\n", result);
     }
 
@@ -762,12 +762,12 @@ static void extractfeat_GetRegionPad(const AjPSeq seq, AjPStr *featstr,
     if(beginning)
     {
 	ajDebug("Prepend to featstr: %S\n", result);
-        ajStrInsert(featstr, 0, result);
+        ajStrInsertS(featstr, 0, result);
     }
     else
     {
 	ajDebug("Append to featstr: %S\n", result);
-    	ajStrApp(featstr, result);
+    	ajStrAppendS(featstr, result);
     }
     ajDebug("featstr=%S\n", *featstr);
 
@@ -954,7 +954,7 @@ static AjBool extractfeat_MatchPatternTags(const AjPFeature feat,
         **   If vpattern is '*' the value pattern is a match
         ** Else check vpattern
         */
-        if(!ajStrLen(tagval))
+        if(!ajStrGetLen(tagval))
 	{
             if(!ajStrCmpC(vpattern, "*"))
             	vval = ajTrue;
@@ -1012,24 +1012,24 @@ static AjBool extractfeat_MatchPatternDescribe(const AjPFeature feat,
 	{
             /* There's a match, so write to strout in a pretty format */
             if(!val)
-            	ajStrAssC(strout, "(");
+            	ajStrAssignC(strout, "(");
             else
-            	ajStrAppC(strout, ", ");
+            	ajStrAppendC(strout, ", ");
             val = ajTrue;
-            ajStrApp(strout, tagnam);
+            ajStrAppendS(strout, tagnam);
 
-            if(ajStrLen(tagval))
+            if(ajStrGetLen(tagval))
 	    {
-            	ajStrAppC(strout, "=\"");
-            	ajStrApp(strout, tagval);
-            	ajStrAppC(strout, "\"");
+            	ajStrAppendC(strout, "=\"");
+            	ajStrAppendS(strout, tagval);
+            	ajStrAppendC(strout, "\"");
             }
         }	
     }
     ajListIterFree(&titer);
 
     if(val)
-        ajStrAppC(strout, ") ");
+        ajStrAppendC(strout, ") ");
 
     return val;
 }

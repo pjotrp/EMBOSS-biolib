@@ -67,7 +67,7 @@ int main(int argc, char **argv)
     entry = ajAcdGetString("entry");
     outf  = ajAcdGetOutfile("outfile");
 
-    if(!(seq = ajSeqCorbaEmbl(ajStrStr(entry),&exerr,&exint,&feat,dofeat)))
+    if(!(seq = ajSeqCorbaEmbl(ajStrGetPtr(entry),&exerr,&exint,&feat,dofeat)))
     {
 	fprintf(stderr,"Error: %s\tCode: %d\n",exerr,exint);
 	return -1;

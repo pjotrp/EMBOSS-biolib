@@ -130,17 +130,17 @@ static void seqmatchall_matchListPrint(void *x,void *cl)
 		(*p).seq1start+1,(*p).seq1start+(*p).length,seq1->Name->Ptr,
 		(*p).seq2start+1,(*p).seq2start+(*p).length,seq2->Name->Ptr);
 */
-    ajStrAssS(&sub1, ajSeqStr(p->sequence));
+    ajStrAssignS(&sub1, ajSeqStr(p->sequence));
 
-    ajStrAssS(&sub2, ajSeqStr(p->sequence));
+    ajStrAssignS(&sub2, ajSeqStr(p->sequence));
 
     ajDebug("suba %d..%d %d (%d/%d)\n", 1,
-		p->length, p->seq1start, ajStrLen(sub1),
+		p->length, p->seq1start, ajStrGetLen(sub1),
 	    ajSeqLen(p->sequence));
     ajDebug("subb %d..%d %d (%d/%d)\n", 1,
-		p->length, p->seq2start, ajStrLen(sub2),
+		p->length, p->seq2start, ajStrGetLen(sub2),
 	    ajSeqLen(p->sequence));
-    ajAlignDefineCC(align, ajStrStr(sub1), ajStrStr(sub2),
+    ajAlignDefineCC(align, ajStrGetPtr(sub1), ajStrGetPtr(sub2),
 		    seq1->Name->Ptr, seq2->Name->Ptr);
     ajAlignSetScoreI(align, p->length);
     /* ungapped so same length for both sequences */

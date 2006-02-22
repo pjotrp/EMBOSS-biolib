@@ -163,9 +163,9 @@ int main(ajint argc, char **argv)
     ccfout       = ajAcdGetOutdir("ccfoutdir");
     mode         = ajAcdGetList("mode");
     errf         = ajAcdGetOutfile("logfile");
-    if(ajStrChar(*mode, 0) != '2')
+    if(ajStrGetCharFirst(*mode) != '2')
 	serrf    = ajAcdGetOutfile("slogfile");
-    if(ajStrChar(*mode, 0) != '1')
+    if(ajStrGetCharFirst(*mode) != '1')
 	nerrf    = ajAcdGetOutfile("nlogfile");
     tS           = ajAcdGetInt("thresholdsize");
  
@@ -175,7 +175,7 @@ int main(ajint argc, char **argv)
 
     
     ajRandomSeed();
-    ajStrAssC(&randomname, ajFileTempName(NULL)); 
+    ajStrAssignC(&randomname, ajFileTempName(NULL)); 
 
 
 
@@ -227,15 +227,15 @@ int main(ajint argc, char **argv)
         /* Construct name of corresponding PDB file.
 	    NACCESS does *not* generate an output file if the path is './' e.g. 
 	    naccess ./1rbp.ent , therefore replace './' with null. */
-	ajStrAssS(&pdb_name, ajDirName(pdbin));
+	ajStrAssignS(&pdb_name, ajDirName(pdbin));
 	if(ajStrMatchC(pdb_name, "./") || ajStrMatchC(pdb_name, "."))
-	    ajStrAssC(&pdb_name, "");
+	    ajStrAssignC(&pdb_name, "");
 	
-        ajStrApp(&pdb_name, pdbprefix);
-	ajStrToLower(&pdb->Pdb);
-        ajStrApp(&pdb_name, pdb->Pdb);
-        ajStrAppC(&pdb_name, ".");
-	ajStrApp(&pdb_name, ajDirExt(pdbin));
+        ajStrAppendS(&pdb_name, pdbprefix);
+	ajStrFmtLower(&pdb->Pdb);
+        ajStrAppendS(&pdb_name, pdb->Pdb);
+        ajStrAppendC(&pdb_name, ".");
+	ajStrAppendS(&pdb_name, ajDirExt(pdbin));
 	
 
         /* Check corresponding PDB file exists for reading using ajFileStat. */
@@ -249,7 +249,7 @@ int main(ajint argc, char **argv)
             continue;
         }
         
-	if(ajStrChar(*mode, 0) != '2')
+	if(ajStrGetCharFirst(*mode) != '2')
         {        
 	    /* 
 	     **  Create a string containing the STRIDE command line (it needs
@@ -261,13 +261,13 @@ int main(ajint argc, char **argv)
 			pdb_name, randomname, ajFileName(serrf));
 	    ajFmtPrint("stride %S -f%S >> %s 2>&1\n",  
 		       pdb_name, randomname,ajFileName(serrf));
-	    system(ajStrStr(syscmd));  
+	    system(ajStrGetPtr(syscmd));  
 
 /*	    ajFmtPrintS(&syscmd, "stride %S -f%S >> %s",  
 			pdb_name, randomname, ajFileName(serrf));
 	    ajFmtPrint("stride %S -f%S >> %s\n",  
 		       pdb_name, randomname,ajFileName(serrf));
-	    system(ajStrStr(syscmd));  */
+	    system(ajStrGetPtr(syscmd));  */
 	    
 	    /* Open the stride output file */
 	    if (((tempf = ajFileNewIn(randomname)) == NULL))
@@ -339,8 +339,8 @@ int main(ajint argc, char **argv)
 		    while((temp_res = (AjPResidue)ajListIterNext(iter)))
 		    {
 		        /* If we have found the residue we want */
-			if((ajStrMatch(res_num, temp_res->Pdb) && 
-			    ajStrMatch(res, temp_res->Id3)))
+			if((ajStrMatchS(res_num, temp_res->Pdb) && 
+			    ajStrMatchS(res, temp_res->Id3)))
 			{
                        	    done_stride = ajTrue;
 			    found = ajTrue;
@@ -390,7 +390,7 @@ int main(ajint argc, char **argv)
 	}
 	
 
-	if(ajStrChar(*mode, 0) != '1')
+	if(ajStrGetCharFirst(*mode) != '1')
         {        
 	    /* 
 	     **   Create a string containing the NACCESS command line (it needs
@@ -407,7 +407,7 @@ int main(ajint argc, char **argv)
 	    ajFmtPrint("naccess %S  >> %s 2>&1\n",  
 		       pdb_name, 
 		       ajFileName(nerrf));
-	    system(ajStrStr(syscmd));  
+	    system(ajStrGetPtr(syscmd));  
 
 /*	    ajFmtPrintS(&syscmd, "naccess %S  >> %s",  
 			pdb_name, 
@@ -415,12 +415,12 @@ int main(ajint argc, char **argv)
 	    ajFmtPrint("naccess %S  >> %s\n",  
 		       pdb_name, 
 		       ajFileName(nerrf));
-	    system(ajStrStr(syscmd));  */
+	    system(ajStrGetPtr(syscmd));  */
 
 	    
-	    ajStrAssS(&naccess_str, pdbprefix);
-	    ajStrApp(&naccess_str, pdb->Pdb);
-	    ajStrAppC(&naccess_str, ".rsa");
+	    ajStrAssignS(&naccess_str, pdbprefix);
+	    ajStrAppendS(&naccess_str, pdb->Pdb);
+	    ajStrAppendC(&naccess_str, ".rsa");
 	    
 	    /* Open the NACCESS output file. */
 	    if (((tempf = ajFileNewIn(naccess_str)) == NULL))
@@ -496,8 +496,8 @@ int main(ajint argc, char **argv)
 		    {
 			/* If we have found the residue we want, write the residue 
 			   object. */
-			if((ajStrMatch(res_num, temp_res->Pdb) && 
-			    ajStrMatch(res, temp_res->Id3)))
+			if((ajStrMatchS(res_num, temp_res->Pdb) && 
+			    ajStrMatchS(res, temp_res->Id3)))
                         {
 			    found = ajTrue;
 			    done_naccess = ajTrue;
@@ -543,15 +543,15 @@ int main(ajint argc, char **argv)
 	    ajFmtPrintS(&exec, "rm %S", naccess_str); 
 	    ajSystem(exec); 
 
-	    ajStrAssS(&naccess_str, pdbprefix);
-	    ajStrApp(&naccess_str, pdb->Pdb);
-	    ajStrAppC(&naccess_str, ".asa");
+	    ajStrAssignS(&naccess_str, pdbprefix);
+	    ajStrAppendS(&naccess_str, pdb->Pdb);
+	    ajStrAppendC(&naccess_str, ".asa");
 	    ajFmtPrintS(&exec, "rm %S", naccess_str);
 	    ajSystem(exec); 
 
-	    ajStrAssS(&naccess_str, pdbprefix);
-	    ajStrApp(&naccess_str, pdb->Pdb);
-	    ajStrAppC(&naccess_str, ".log");
+	    ajStrAssignS(&naccess_str, pdbprefix);
+	    ajStrAppendS(&naccess_str, pdb->Pdb);
+	    ajStrAppendC(&naccess_str, ".log");
 	    ajFmtPrintS(&exec, "rm %S", naccess_str);
 	    ajSystem(exec); 
 	}
@@ -598,9 +598,9 @@ int main(ajint argc, char **argv)
     ajStrDel(&syscmd);
   
     ajFileClose(&errf);
-    if(ajStrChar(*mode, 0) != '2')
+    if(ajStrGetCharFirst(*mode) != '2')
 	ajFileClose(&serrf);
-    if(ajStrChar(*mode, 0) != '1')
+    if(ajStrGetCharFirst(*mode) != '1')
 	ajFileClose(&nerrf);
 
     ajStrDel(&mode[0]);

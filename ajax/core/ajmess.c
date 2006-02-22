@@ -1576,7 +1576,7 @@ void ajDebug(const char* fmt, ...)
 	fileDebug = acdDebug;
 	if(fileDebug)
 	{
-	    ajFmtPrintS(&fileDebugName, "%s.dbg", ajStrStr(acdProgram));
+	    ajFmtPrintS(&fileDebugName, "%s.dbg", ajStrGetPtr(acdProgram));
 	    fileDebugFile = ajFileNewOut(fileDebugName);
 	    if(!fileDebugFile)
 		ajFatal("Cannot open debug file %S",fileDebugName);
@@ -1654,16 +1654,16 @@ ajint ajUserGet(AjPStr* pthis, const char* fmt, ...)
     ajFmtVError(fmt, args);
     va_end(args);
 
-    ajStrModL(pthis, fileBuffSize);
-    buff  = ajStrStrMod(pthis);
+    ajStrSetRes(pthis, fileBuffSize);
+    buff  = ajStrGetuniquePtr(pthis);
     thys = *pthis;
-    isize = ajStrSize(thys);
+    isize = ajStrGetRes(thys);
     ilen  = 0;
     ipos  = 0;
     
 
     ajDebug("ajUserGet buffer len: %d res: %d ptr: %x\n",
-	     ajStrLen(thys), ajStrSize(thys), thys->Ptr);
+	     ajStrGetLen(thys), ajStrGetRes(thys), thys->Ptr);
 
     if(feof(stdin))
 	ajFatal("END-OF-FILE reading from user\n");
@@ -1694,43 +1694,43 @@ ajint ajUserGet(AjPStr* pthis, const char* fmt, ...)
 	 ** and we don't have a newline at the end
 	 ** (must be careful about that - we may just have read enough)
 	 */
-	ajStrFixI(pthis, ilen);
+	ajStrSetValidLen(pthis, ilen);
 	thys = *pthis;
 	if((jlen == (isize-1)) &&
-	   (ajStrChar(thys,-1) != '\n'))
+	   (ajStrGetCharLast(thys) != '\n'))
 	{
-	    ajStrModL(pthis, ajStrSize(thys)+fileBuffSize);
+	    ajStrSetRes(pthis, ajStrGetRes(thys)+fileBuffSize);
 	    thys = *pthis;
 	    ajDebug("more to do: jlen: %d ipos: %d isize: %d ilen: %d "
 		    "Size: %d\n",
-		    jlen, ipos, isize, ilen, ajStrSize(thys));
+		    jlen, ipos, isize, ilen, ajStrGetRes(thys));
 	    ipos += jlen;
-	    buff = ajStrStrMod(pthis);
-	    isize = ajStrSize(thys) - ipos;
+	    buff = ajStrGetuniquePtr(pthis);
+	    isize = ajStrGetRes(thys) - ipos;
 	    ajDebug("expand to: ipos: %d isize: %d Size: %d\n",
-		    ipos, isize, ajStrSize(thys));
+		    ipos, isize, ajStrGetRes(thys));
 
 	}
 	else
 	    buff = NULL;
     }
     
-    ajStrFixI(pthis, ilen);
+    ajStrSetValidLen(pthis, ilen);
 
-    if(ajStrChar(*pthis, -1) == '\n')
-	ajStrTrim(pthis, -1);
+    if(ajStrGetCharLast(*pthis) == '\n')
+	ajStrCutEnd(pthis, 1);
 
     /* PC files have \r\n Macintosh files have just \r : this fixes both */
 
-    if(ajStrChar(*pthis, -1) == '\r')
+    if(ajStrGetCharLast(*pthis) == '\r')
     {
 	/*ajDebug("Remove carriage-return characters from PC-style files\n");*/
-	ajStrTrim(pthis, -1);
+	ajStrCutEnd(pthis, 1);
     }
 
-    ajStrChomp(pthis);
+    ajStrTrimWhite(pthis);
 
-    return ajStrLen(*pthis);
+    return ajStrGetLen(*pthis);
 }
 
 

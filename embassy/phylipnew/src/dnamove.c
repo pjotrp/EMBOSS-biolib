@@ -1449,7 +1449,7 @@ void buildtree()
     for (i = 0; i < endsite; i++)
       zeros[i] = 0;
     treesets[whichtree].nodep = nodep;
-    treestr = ajStrStrMod(&phylotrees[0]->Tree);
+    treestr = ajStrGetuniquePtr(&phylotrees[0]->Tree);
     treeread(&treestr, &root, treenode, &goteof, &firsttree,
                 nodep, &nextnode, &haslengths,
                 &grbg, initdnamovenode); /*debug*/

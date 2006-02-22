@@ -14,7 +14,7 @@
  * Recover a specific HMM file from an HMM database, using
  * a GSI index (created with hmmindex).
  * 
- * RCS $Id: ohmmfetch.c,v 1.1 2006/02/21 12:35:43 rice Exp $
+ * RCS $Id: ohmmfetch.c,v 1.2 2006/02/22 15:02:28 rice Exp $
  *
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
@@ -66,8 +66,8 @@ int main(int argc, char **argv)
     ajname = ajAcdGetString("name");
     outf   = ajAcdGetOutfile("outfile");
     
-    hmmfile = ajStrStr(ajdb);
-    key     = ajStrStr(ajname);
+    hmmfile = ajStrGetPtr(ajdb);
+    key     = ajStrGetPtr(ajname);
   
 
     /***********************************************

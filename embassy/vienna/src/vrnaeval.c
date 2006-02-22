@@ -23,7 +23,7 @@
 #endif
 
 /*@unused@*/
-static char UNUSED rcsid[]="$Id: vrnaeval.c,v 1.1 2005/10/13 13:00:44 ajb Exp $";
+static char UNUSED rcsid[]="$Id: vrnaeval.c,v 1.2 2006/02/22 15:02:29 rice Exp $";
 
 #define  PUBLIC
 #define  PRIVATE   static
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
     noconv        = (convert) ? 0 : 1;
     tetra_loop    = !!etloop;
 
-    ewt = *ajStrStr(*eenergy);
+    ewt = *ajStrGetPtr(*eenergy);
     if(ewt == '0')
 	energy_set = 0;
     else if(ewt == '1')
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
     else if(ewt == '2')
 	energy_set = 2;
   
-    edangle = *ajStrStr(*edangles);
+    edangle = *ajStrGetPtr(*edangles);
     if(edangle == '0')
 	dangles = 0;
     else if(edangle == '1')
@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
 
     update_fold_params();
 
-    ajStrAssC(&seqstring1,ajSeqChar(seq1));
+    ajStrAssignC(&seqstring1,ajSeqChar(seq1));
     
 
     vienna_GetConstraints(confile1,&constring1);
@@ -140,10 +140,10 @@ int main(int argc, char *argv[])
     strcpy(fname,ajSeqName(seq1));
 
 
-    string = tokenize(MAJSTRSTR(seqstring1));
+    string = tokenize(MAJSTRGETPTR(seqstring1));
     length2 = (int) strlen(string);
       
-    structure = tokenize(MAJSTRSTR(constring1));
+    structure = tokenize(MAJSTRGETPTR(constring1));
     length1 = (int) strlen(structure);
       
     if(length1!=length2)

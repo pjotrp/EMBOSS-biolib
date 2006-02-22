@@ -42,7 +42,7 @@ AjBool aj_base_I;
 **
 ** Returns a string of matching base codes
 **
-** @param [w] ibase [ajint] Original base code
+** @param [r] ibase [ajint] Original base code
 **
 ** @return [const AjPStr] Base codes
 ******************************************************************************/
@@ -221,12 +221,12 @@ AjBool ajBaseInit(void)
 
     code = ajStrNew();
     list = ajStrNew();
-    ajStrAssC(&code,"");
-    ajStrAssC(&list,"ACGT");
+    ajStrAssignC(&code,"");
+    ajStrAssignC(&list,"ACGT");
 
 
     bfname = ajStrNew();
-    ajStrAssC(&bfname,IUBFILE);
+    ajStrAssignC(&bfname,IUBFILE);
     ajFileDataNew(bfname, &bfptr);
     if(!bfptr) ajFatal("Ebases.iub file not found\n");
 
@@ -236,21 +236,21 @@ AjBool ajBaseInit(void)
 
     while(ajFileGets(bfptr, &line))
     {
-	p = ajStrStr(line);
+	p = ajStrGetPtr(line);
 	if(*p=='#' || *p=='!' || *p=='\n')
 	    continue;
 	p = ajSysStrtok(p," \t\r");
-	ajStrAssC(&code,p);
+	ajStrAssignC(&code,p);
 	p=ajSysStrtok(NULL," \t\r");
 	if(sscanf(p,"%d",&n)!=1)
 	    ajFatal("Bad format IUB file");
 	p = ajSysStrtok(NULL," \t\r");
-	ajStrAssC(&list,p);
+	ajStrAssignC(&list,p);
 	qc = (ajint) ajStrGetCharFirst(code);
-	ajStrAssS(&aj_base_iubS[toupper(qc)].code,code);
-	ajStrAssS(&aj_base_iubS[toupper(qc)].list,list);
-	ajStrAssS(&aj_base_iubS[tolower(qc)].code,code);
-	ajStrAssS(&aj_base_iubS[tolower(qc)].list,list);
+	ajStrAssignS(&aj_base_iubS[toupper(qc)].code,code);
+	ajStrAssignS(&aj_base_iubS[toupper(qc)].list,list);
+	ajStrAssignS(&aj_base_iubS[tolower(qc)].code,code);
+	ajStrAssignS(&aj_base_iubS[tolower(qc)].list,list);
 	aj_base_table[toupper(qc)] = n;
 	aj_base_table[tolower(qc)] = n;
     }
@@ -269,7 +269,7 @@ AjBool ajBaseInit(void)
 	for(j=0;j<32;++j)
 	{
 	    y = ajIntToAZ(j);
-	    if(!(l1=ajStrLen(aj_base_iubS[x].code)))
+	    if(!(l1=ajStrGetLen(aj_base_iubS[x].code)))
 	    {
 		aj_base_prob[i][j]=0.0;
 		continue;
@@ -278,8 +278,8 @@ AjBool ajBaseInit(void)
 		ajFatal("Bad IUB letter");
 
 
-	    p = ajStrStr(aj_base_iubS[x].list);
-	    q = ajStrStr(aj_base_iubS[y].list);
+	    p = ajStrGetPtr(aj_base_iubS[x].list);
+	    q = ajStrGetPtr(aj_base_iubS[y].list);
 	    l1 = strlen(p);
 	    l2 = strlen(q);
 	    for(k=0,c=0;k<l1;++k)
@@ -324,7 +324,7 @@ AjBool  ajBaseAa1ToAa3(char aa1, AjPStr *aa3)
     if((idx=ajAZToInt(aa1))>25)
 	return ajFalse;
 
-    ajStrAssC(aa3, tab[idx]);
+    ajStrAssignC(aa3, tab[idx]);
     return ajTrue;
 }
 

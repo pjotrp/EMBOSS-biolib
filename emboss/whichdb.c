@@ -63,7 +63,7 @@ int main(int argc, char **argv)
     get     = ajAcdGetToggle("get");
     showall = ajAcdGetBool("showall");
     
-    if(!ajStrLen(entry))
+    if(!ajStrGetLen(entry))
     {
 	ajExit();
 	return 0;
@@ -83,7 +83,7 @@ int main(int argc, char **argv)
     
     while(ajListPop(dblist,(void **)&lnam))
     {
-	ajStrAssS(&name,lnam);
+	ajStrAssignS(&name,lnam);
 	/* ajStrDel(&lnam); */ /* do not delete - internal ajNam string */
 
 	if(!ajNamDbDetails(name,&type,&id,&qry,&all,&comm,&rel,

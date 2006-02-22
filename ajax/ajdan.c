@@ -86,13 +86,13 @@ void ajMeltInit(const AjPStr type, ajint savesize)
 
     if(!ajStrCmpC(type, "rna"))
     {
-	ajStrSetC(&mfname,RNAMELTFILE);
+	ajStrAssignEmptyC(&mfname,RNAMELTFILE);
 	ajFileDataNew(mfname, &mfptr);
     }
 
     if(!ajStrCmpC(type, "dna"))
     {
-	ajStrSetC(&mfname,DNAMELTFILE);
+	ajStrAssignEmptyC(&mfname,DNAMELTFILE);
 	ajFileDataNew(mfname, &mfptr);
     }
 
@@ -105,10 +105,10 @@ void ajMeltInit(const AjPStr type, ajint savesize)
     acgt  = ajStrNew();
     line  = ajStrNew();
 
-    ajStrAssC(&pair,"AA");
-    ajStrAssC(&acgt,"ACGT");
-    p = ajStrStrMod(&pair);
-    q = ajStrStr(acgt);
+    ajStrAssignC(&pair,"AA");
+    ajStrAssignC(&acgt,"ACGT");
+    p = ajStrGetuniquePtr(&pair);
+    q = ajStrGetPtr(acgt);
 
     for(i=0,k=0;i<4;++i)
     {
@@ -123,14 +123,14 @@ void ajMeltInit(const AjPStr type, ajint savesize)
 
     while(ajFileGets(mfptr, &line))
     {
-	p = ajStrStrMod(&line);
+	p = ajStrGetuniquePtr(&line);
 	if(*p=='#' || *p=='!' || !*p)
 	    continue;
 
 	p = ajSysStrtok(p," \t\n\r");
-	ajStrAssC(&pair1,p);
+	ajStrAssignC(&pair1,p);
 	p = ajSysStrtok(NULL," \t\n\r");
-	ajStrAssC(&pair2,p);
+	ajStrAssignC(&pair2,p);
 	p = ajSysStrtok(NULL," \t\n\r");
 	if(sscanf(p,"%f",&enthalpy)!=1)
 	    ajFatal("No enthalpy found");
@@ -144,7 +144,7 @@ void ajMeltInit(const AjPStr type, ajint savesize)
 	got1 = got2 = ajFalse;
 
 	for(k=0;k<16;++k)
-	    if(!ajStrCmpO(aj_m_table[k].pair,pair1))
+	    if(!ajStrCmpS(aj_m_table[k].pair,pair1))
 	    {
 		aj_m_table[k].enthalpy = enthalpy;
 		aj_m_table[k].entropy  = entropy;
@@ -153,7 +153,7 @@ void ajMeltInit(const AjPStr type, ajint savesize)
 	    }
 
 	for(k=0;k<16;++k)
-	    if(!ajStrCmpO(aj_m_table[k].pair,pair2))
+	    if(!ajStrCmpS(aj_m_table[k].pair,pair2))
 	    {
 		aj_m_table[k].enthalpy = enthalpy;
 		aj_m_table[k].entropy  = entropy;
@@ -209,8 +209,8 @@ float ajProbScore(const AjPStr seq1, const AjPStr seq2, ajint len)
     const char *q;
 
 
-    mlen = (ajStrLen(seq1) < ajStrLen(seq2)) ? ajStrLen(seq1) :
-	ajStrLen(seq2);
+    mlen = (ajStrGetLen(seq1) < ajStrGetLen(seq2)) ? ajStrGetLen(seq1) :
+	ajStrGetLen(seq2);
 
     if(len > 0)
 	mlen = (mlen < len) ? mlen : len;
@@ -223,8 +223,8 @@ float ajProbScore(const AjPStr seq1, const AjPStr seq2, ajint len)
 	return score;
 
     score = 1.0;
-    p = ajStrStr(seq1);
-    q = ajStrStr(seq2);
+    p = ajStrGetPtr(seq1);
+    q = ajStrGetPtr(seq2);
 
     for(i=0; i<mlen; ++i)
     {
@@ -333,7 +333,7 @@ float ajMeltEnergy(const AjPStr strand, ajint len, ajint shift, AjBool isDNA,
     }
 
     line = ajStrNew();
-    p = ajStrStr(strand);
+    p = ajStrGetPtr(strand);
 
     while(ipos < len-1)
     {
@@ -346,7 +346,7 @@ float ajMeltEnergy(const AjPStr strand, ajint len, ajint shift, AjBool isDNA,
 
 	for(j=0;j<16;++j)
 	{
-	    ajStrAssSubC(&line,p+ipos,0,1);
+	    ajStrAssignSubC(&line,p+ipos,0,1);
 	    ident = ajProbScore(aj_m_table[j].pair, line, 2);
 
 	    if(ident>0.9)
@@ -457,7 +457,7 @@ float ajMeltGC(const AjPStr strand, ajint len)
     const char *p;
     double count;
 
-    p=ajStrStr(strand);
+    p=ajStrGetPtr(strand);
     count = 0.0;
 
     for(i=0;i<len;++i)
@@ -538,7 +538,7 @@ float ajMeltEnergy2(const char *strand, ajint pos, ajint len, AjBool isDNA,
 	{
 	    for(j=0;j<16;++j)
 	    {
-		ajStrAssSubC(&line,strand+i,0,1);
+		ajStrAssignSubC(&line,strand+i,0,1);
 		ident = ajProbScore(aj_m_table[j].pair,line,2);
 		if(ident>.9)
 		{

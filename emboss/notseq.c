@@ -60,8 +60,8 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	ajStrAssS(&name, ajSeqGetName(seq));
-	ajStrAssS(&acc, ajSeqGetAcc(seq));
+	ajStrAssignS(&name, ajSeqGetName(seq));
+	ajStrAssignS(&acc, ajSeqGetAcc(seq));
 
 	if(embMiscMatchPattern(name, pattern) ||
 	    embMiscMatchPattern(acc, pattern))
@@ -73,8 +73,8 @@ int main(int argc, char **argv)
 	    /* no match, so not excluded */
 	    ajSeqAllWrite(seqout, seq);
 
-	ajStrClear(&name);
-	ajStrClear(&acc);
+	ajStrSetClear(&name);
+	ajStrSetClear(&acc);
     }
 
     ajSeqWriteClose(seqout);
@@ -116,28 +116,28 @@ static void notseq_readfile(const AjPStr exclude, AjPStr *pattern)
 
     if(ajStrFindC(exclude, "@") != 0)
     {
-	ajStrAssS(pattern, exclude);
+	ajStrAssignS(pattern, exclude);
     }
     else
     {
-	ajStrAssS(&filename, exclude);
+	ajStrAssignS(&filename, exclude);
         ajStrTrimC(&filename, "@");       /* remove the @ */
         file = ajFileNewIn(filename);
         if(file == NULL)
             ajFatal("Cannot open the file of sequence names: '%S'", filename);
 
         /* blank off the file name and replace with the sequence names */
-        ajStrClear(pattern);
+        ajStrSetClear(pattern);
         line = ajStrNew();
         while(ajFileReadLine(file, &line))
         {
-            p = ajStrStr(line);
+            p = ajStrGetPtr(line);
 
             if(!*p || *p == '#' || *p == '!')
 		continue;
 
-            ajStrApp(pattern, line);
-            ajStrAppC(pattern, ",");
+            ajStrAppendS(pattern, line);
+            ajStrAppendC(pattern, ",");
         }
         ajStrDel(&line);
         ajStrDel(&filename);

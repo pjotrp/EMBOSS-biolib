@@ -14,7 +14,7 @@
  * Score an HMM against random sequence data sets;
  * set histogram fitting parameters.
  * 
- * RCS $Id: ohmmcalibrate.c,v 1.1 2006/02/21 12:35:43 rice Exp $
+ * RCS $Id: ohmmcalibrate.c,v 1.2 2006/02/22 15:02:28 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -162,7 +162,7 @@ int main(int argc, char **argv)
     fixedlen   = ajAcdGetInt("fixed");
     ajhistfile = ajAcdGetOutfile("histogramfile");
     if(ajhistfile)
-	histfile = ajCharNew(ajFileGetName(ajhistfile));
+	histfile = ajCharNewS(ajFileGetName(ajhistfile));
     ajFileClose(&ajhistfile);
     lenmean    = ajAcdGetFloat("mean");
     nsample    = ajAcdGetInt("num");
@@ -344,7 +344,7 @@ int main(int argc, char **argv)
 #endif
 
 
-    ajCharFree(&hmmfile);
+    ajCharDel(&hmmfile);
   
     ajExit();
     return 0;

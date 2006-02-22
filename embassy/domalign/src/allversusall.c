@@ -141,8 +141,8 @@ int main(int argc, char **argv)
 	for(x=0;x<ajSeqsetSize(seqset);x++)
 	{
 	    seq_tmp = ajSeqNew();
-	    ajStrAssS(&seq_tmp->Acc, ajSeqsetAcc(seqset, x));
-	    ajStrAssC(&seq_tmp->Seq, ajSeqsetSeq(seqset, x));
+	    ajStrAssignS(&seq_tmp->Acc, ajSeqsetAcc(seqset, x));
+	    ajStrAssignC(&seq_tmp->Seq, ajSeqsetSeq(seqset, x));
 	    ajListPushApp(seq_list,seq_tmp);		
 	}
     
@@ -154,7 +154,7 @@ int main(int argc, char **argv)
 
 
 	/* Create output files. */
-	ajStrAssS(&outname, inname);
+	ajStrAssignS(&outname, inname);
 	ajFileDirExtnTrim(&outname);
 	outf = ajFileNewOutDir(out, outname);
 	

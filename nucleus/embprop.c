@@ -85,16 +85,16 @@ void embPropAminoRead(AjPFile mfptr)
 
     while(ajFileGets(mfptr, &line))
     {
-	p = ajStrStr(line);
+	p = ajStrGetPtr(line);
 	if(*p=='#' || *p=='!' || !*p)
 	    continue;
 
 	while(*p && (*p<'A' || *p>'Z'))
 	    ++p;
 
-	cols = ajStrTokenCount(line,ajStrStr(delim));
+	cols = ajStrParseCountC(line,ajStrGetPtr(delim));
 	EmbPropTable[ajAZToInt(toupper((ajint)*p))] =
-	    ajArrDoubleLine(line,ajStrStr(delim),cols,2,cols);
+	    ajArrDoubleLine(line,ajStrGetPtr(delim),cols,2,cols);
     }
 
 
@@ -317,7 +317,7 @@ void embPropCalcFragments(const char *s, ajint n, ajint begin,
     ajint defcnt;
 
 
-    ajStrAssC(rname,PROPENZReagent[n]);
+    ajStrAssignC(rname,PROPENZReagent[n]);
     defcnt = 0;
     len = strlen(s);
 
@@ -509,17 +509,17 @@ AjPStr embPropProtGaps(AjPSeq seq, ajint pad)
     AjPStr temp;
     ajint i;
 
-    temp = ajStrNewL(ajSeqLen(seq)*3 + pad+1);
+    temp = ajStrNewRes(ajSeqLen(seq)*3 + pad+1);
 
     /* put any required padding spaces at the start */
     for(i=0; i<pad; i++)
-	ajStrAppC(&temp, " ");
+	ajStrAppendC(&temp, " ");
 
 
     for(p=ajSeqChar(seq); *p; p++)
     {
-	ajStrAppK(&temp, *p);
-	ajStrAppC(&temp, "  ");
+	ajStrAppendK(&temp, *p);
+	ajStrAppendC(&temp, "  ");
     }
 
     return temp;
@@ -547,29 +547,29 @@ AjPStr embPropProt1to3(AjPSeq seq, ajint pad)
     AjPStr temp;
     ajint i;
 
-    temp = ajStrNewL(ajSeqLen(seq)*3 + pad+1);
+    temp = ajStrNewRes(ajSeqLen(seq)*3 + pad+1);
 
     /* put any required padding spaces at the start */
     for(i=0; i<pad; i++)
-	ajStrAppC(&temp, " ");
+	ajStrAppendC(&temp, " ");
 
 
     for(p=ajSeqChar(seq); *p; p++)
     {
 	if(*p == '*')
-	    ajStrAppC(&temp, "***");
+	    ajStrAppendC(&temp, "***");
 	else if(*p == '.')
-	    ajStrAppC(&temp, "...");
+	    ajStrAppendC(&temp, "...");
 	else if(*p == '-')
-	    ajStrAppC(&temp, "---");
+	    ajStrAppendC(&temp, "---");
 	else if(!isalpha((ajint)*p))
-	    ajStrAppC(&temp, "???");
+	    ajStrAppendC(&temp, "???");
 	else
 	{
 	    p3 = embPropCharToThree(*p);
-	    ajStrAppK(&temp, *p3);
-	    ajStrAppK(&temp, *(p3+1));
-	    ajStrAppK(&temp, *(p3+2));
+	    ajStrAppendK(&temp, *p3);
+	    ajStrAppendK(&temp, *(p3+1));
+	    ajStrAppendK(&temp, *(p3+2));
 	}
     }
 

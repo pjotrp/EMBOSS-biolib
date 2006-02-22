@@ -233,8 +233,8 @@ int ilen;
     fprintf(outfile, "---------\n\n");
   }
   for(i=0;i<spp;i++){
-    ilen = ajStrLen(ajSeqsetName(seqset, i));
-    strncpy(&name[i][0],ajStrStr(ajSeqsetName(seqset, i)),ilen);
+    ilen = ajStrGetLen(ajSeqsetName(seqset, i));
+    strncpy(&name[i][0],ajStrGetPtr(ajSeqsetName(seqset, i)),ilen);
     for (j=ilen;j<nmlngth;j++)
 	name[i][j] = ' ';
     /*    ajUser("%s/n",ajSeqsetName(seqset, i));*/

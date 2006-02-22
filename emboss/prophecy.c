@@ -91,7 +91,7 @@ int main(int argc, char **argv)
     gapopen   = ajRoundF(gapopen, 8);
     gapextend = ajRoundF(gapextend, 8);
 
-    p = ajStrStr(*type);
+    p = ajStrGetPtr(*type);
     cons = ajStrNewC("");
 
 
@@ -189,7 +189,7 @@ static void prophecy_simple_matrix(const AjPSeqset seqset, AjPFile outf,
 		x=matrix[j][i];
 		px=j;
 	    }
-	ajStrAppK(&cons,(char)(px+'A'));
+	ajStrAppendK(&cons,(char)(px+'A'));
     }
 
     /* Find maximum score for matrix */
@@ -205,11 +205,11 @@ static void prophecy_simple_matrix(const AjPSeqset seqset, AjPFile outf,
     ajFmtPrintF(outf,"# Columns are amino acid counts A->Z\n");
     ajFmtPrintF(outf,"# Rows are alignment positions 1->n\n");
     ajFmtPrintF(outf,"Simple\n");
-    ajFmtPrintF(outf,"Name\t\t%s\n",ajStrStr(name));
+    ajFmtPrintF(outf,"Name\t\t%s\n",ajStrGetPtr(name));
     ajFmtPrintF(outf,"Length\t\t%d\n",mlen);
     ajFmtPrintF(outf,"Maximum score\t%d\n",maxscore);
     ajFmtPrintF(outf,"Thresh\t\t%d\n",thresh);
-    ajFmtPrintF(outf,"Consensus\t%s\n",ajStrStr(cons));
+    ajFmtPrintF(outf,"Consensus\t%s\n",ajStrGetPtr(cons));
 
 
     for(i=0;i<mlen;++i)
@@ -369,7 +369,7 @@ static void prophecy_gribskov_profile(const AjPSeqset seqset, float **sub,
 		x=weights[i][j];
 		px=j;
 	    }
-	ajStrAppK(cons,(char)(px+'A'));
+	ajStrAppendK(cons,(char)(px+'A'));
     }
 
 
@@ -422,14 +422,14 @@ static void prophecy_gribskov_profile(const AjPSeqset seqset, float **sub,
     ajFmtPrintF(outf,"# Last column is indel penalty\n");
     ajFmtPrintF(outf,"# Rows are alignment positions 1->n\n");
     ajFmtPrintF(outf,"Gribskov\n");
-    ajFmtPrintF(outf,"Name\t\t%s\n",ajStrStr(name));
+    ajFmtPrintF(outf,"Name\t\t%s\n",ajStrGetPtr(name));
     ajFmtPrintF(outf,"Matrix\t\tpprofile\n");
     ajFmtPrintF(outf,"Length\t\t%d\n",mlen);
     ajFmtPrintF(outf,"Max_score\t%.2f\n",psum);
     ajFmtPrintF(outf,"Threshold\t%d\n",thresh);
     ajFmtPrintF(outf,"Gap_open\t%.2f\n",gapopen);
     ajFmtPrintF(outf,"Gap_extend\t%.2f\n",gapextend);
-    ajFmtPrintF(outf,"Consensus\t%s\n",ajStrStr(*cons));
+    ajFmtPrintF(outf,"Consensus\t%s\n",ajStrGetPtr(*cons));
 
     for(i=0;i<mlen;++i)
     {
@@ -591,7 +591,7 @@ static void prophecy_henikoff_profile(const AjPSeqset seqset,
 		x = weights[i][j];
 		px=j;
 	    }
-	ajStrAppK(cons,(char)(px+'A'));
+	ajStrAppendK(cons,(char)(px+'A'));
     }
 
 
@@ -656,14 +656,14 @@ static void prophecy_henikoff_profile(const AjPSeqset seqset,
     ajFmtPrintF(outf,"# Last column is indel penalty\n");
     ajFmtPrintF(outf,"# Rows are alignment positions 1->n\n");
     ajFmtPrintF(outf,"Henikoff\n");
-    ajFmtPrintF(outf,"Name\t\t%s\n",ajStrStr(name));
-    ajFmtPrintF(outf,"Matrix\t\t%s\n",ajStrStr(ajMatrixfName(imtx)));
+    ajFmtPrintF(outf,"Name\t\t%s\n",ajStrGetPtr(name));
+    ajFmtPrintF(outf,"Matrix\t\t%s\n",ajStrGetPtr(ajMatrixfName(imtx)));
     ajFmtPrintF(outf,"Length\t\t%d\n",mlen);
     ajFmtPrintF(outf,"Max_score\t%.2f\n",psum);
     ajFmtPrintF(outf,"Threshold\t%d\n",thresh);
     ajFmtPrintF(outf,"Gap_open\t%.2f\n",gapopen);
     ajFmtPrintF(outf,"Gap_extend\t%.2f\n",gapextend);
-    ajFmtPrintF(outf,"Consensus\t%s\n",ajStrStr(*cons));
+    ajFmtPrintF(outf,"Consensus\t%s\n",ajStrGetPtr(*cons));
 
     for(i=0;i<mlen;++i)
     {

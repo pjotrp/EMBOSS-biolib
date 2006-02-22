@@ -358,16 +358,16 @@ int main(int argc, char **argv)
     hitsfiles     = ajAcdGetDirlist("hitsfilespath");
     outdir        = ajAcdGetOutdir("outdir");
     mode          = ajAcdGetList("mode");
-    if(ajStrChar(*mode,0)=='2')
+    if(ajStrGetCharFirst(*mode)=='2')
 	multimode = ajAcdGetList("multimode");
-    if((ajStrChar(*mode,0)=='2') && (ajStrChar(*multimode,0)=='2'))
+    if((ajStrGetCharFirst(*mode)=='2') && (ajStrGetCharFirst(*multimode)=='2'))
 	datamode  = ajAcdGetList("datamode");
-    if((ajStrChar(*mode,0)=='2') && (ajStrChar(*multimode,0)=='2') && 
-       (ajStrChar(*datamode,0)=='1'))
+    if((ajStrGetCharFirst(*mode)=='2') && (ajStrGetCharFirst(*multimode)=='2') && 
+       (ajStrGetCharFirst(*datamode)=='1'))
 	thresh    = ajAcdGetInt("thresh");
     rocbasename       = ajAcdGetString("rocbasename");
     outfdata      = ajAcdGetOutfile("outfile");
-    if((ajStrChar(*mode,0)=='2') && (ajStrChar(*multimode,0)=='1'))
+    if((ajStrGetCharFirst(*mode)=='2') && (ajStrGetCharFirst(*multimode)=='1'))
 	barbasename   = ajAcdGetString("barbasename");
     classbasename      = ajAcdGetString("classbasename");
     norange           = ajAcdGetBool("norange");
@@ -386,11 +386,11 @@ int main(int argc, char **argv)
        all modes. This is to improve readability of the code. */
 
     /* Housekeeping */
-    modei      = (ajint) ajStrChar(*mode,0)-48;
+    modei      = (ajint) ajStrGetCharFirst(*mode)-48;
     if(modei==2)
-	multimodei = (ajint) ajStrChar(*multimode,0)-48;
+	multimodei = (ajint) ajStrGetCharFirst(*multimode)-48;
     if((modei==2) && (multimodei==2))
-	datamodei  = (ajint) ajStrChar(*datamode,0)-48;    
+	datamodei  = (ajint) ajStrGetCharFirst(*datamode)-48;    
 
 
     /* DIAGNOSTICS */
@@ -422,9 +422,9 @@ int main(int argc, char **argv)
     /* For ROC plot */
     roctitle     = ajStrNew();
     rocxlabel    = ajStrNew();
-    ajStrAssC(&rocxlabel, "1 - SPEC");
+    ajStrAssignC(&rocxlabel, "1 - SPEC");
     rocylabel    = ajStrNew();
-    ajStrAssC(&rocylabel, "SENS");
+    ajStrAssignC(&rocylabel, "SENS");
     AJCNEW0(roclegend, numfiles);
     for(x=0;x<numfiles;x++)
 	roclegend[x]=ajStrNew();
@@ -435,18 +435,18 @@ int main(int argc, char **argv)
     /* For Classification plot */
     classtitle   = ajStrNew();
     classxlabel  = ajStrNew();
-    ajStrAssC(&classxlabel, "Number of hits detected");
+    ajStrAssignC(&classxlabel, "Number of hits detected");
     classylabel  = ajStrNew();
-    ajStrAssC(&classylabel, "Proportion of hits detected that are of a "
+    ajStrAssignC(&classylabel, "Proportion of hits detected that are of a "
 	      "certain type");    
     AJCNEW0(classlegend, NUMCLASSES);
     for(x=0;x<NUMCLASSES;x++)
 	classlegend[x]=ajStrNew();
-    ajStrAssC(&classlegend[TRUEHIT], "TRUE");
-    ajStrAssC(&classlegend[CROSSHIT], "CROSS");    
-    ajStrAssC(&classlegend[UNCERTAINHIT], "UNCERTAIN");
-    ajStrAssC(&classlegend[UNKNOWNHIT], "UNKNOWN");
-    ajStrAssC(&classlegend[FALSEHIT], "FALSE");
+    ajStrAssignC(&classlegend[TRUEHIT], "TRUE");
+    ajStrAssignC(&classlegend[CROSSHIT], "CROSS");    
+    ajStrAssignC(&classlegend[UNCERTAINHIT], "UNCERTAIN");
+    ajStrAssignC(&classlegend[UNKNOWNHIT], "UNKNOWN");
+    ajStrAssignC(&classlegend[FALSEHIT], "FALSE");
     classx = ajFloat2dNew();
     classy = ajFloat3dNew();    
 
@@ -570,10 +570,10 @@ int main(int argc, char **argv)
 	for(x=0; x<numfiles; x++)
 	{
 	    if( (x==(numfiles-1)) && (numfiles>1) )
-		ajStrAppC(&roctitle, " & ");
+		ajStrAppendC(&roctitle, " & ");
 	    else if(x>=1)
-		ajStrAppC(&roctitle, ", ");
-	    ajStrApp(&roctitle, hitsnames[x]);
+		ajStrAppendC(&roctitle, ", ");
+	    ajStrAppendS(&roctitle, hitsnames[x]);
 	}
 
 
@@ -602,7 +602,7 @@ int main(int argc, char **argv)
 	    
 	    /* Set plot data */
 	    nrocseries = numfiles;
-	    ajStrAppC(&roctitle, " (no combination)");
+	    ajStrAppendC(&roctitle, " (no combination)");
 	    for(x=0; x<numfiles; x++)
 		ajFmtPrintS(&roclegend[x], "%S", hitsnames[x]);
 	    
@@ -611,7 +611,7 @@ int main(int argc, char **argv)
 	    ajFmtPrintS(&bartitle, "Bar chart of distribution of ROC%d "
 			"values", roc);
 	    ajFmtPrintS(&barxlabel, "ROC%d value", roc);
-	    ajStrAssC(&barylabel, "Frequency");
+	    ajStrAssignC(&barylabel, "Frequency");
 	    nbins    = MAXBINS;
 	    binstart = BINSTART;
 	    binsize  = BINSIZE;
@@ -634,10 +634,10 @@ int main(int argc, char **argv)
 	    for(x=0; x<numfiles; x++)
 	    {
 		if( (x==(numfiles-1)) && (numfiles>1) )
-		    ajStrAppC(&classtitle, " & ");
+		    ajStrAppendC(&classtitle, " & ");
 		else if(x>=1)
-		    ajStrAppC(&classtitle, ", ");
-		ajStrApp(&classtitle, hitsnames[x]);
+		    ajStrAppendC(&classtitle, ", ");
+		ajStrAppendS(&classtitle, hitsnames[x]);
 	    }
 	    
 	    /* Write roc plot data */
@@ -649,8 +649,8 @@ int main(int argc, char **argv)
 	    /**********************************************/
 	    if(datamodei==1)
 	    {
-		ajStrAppC(&roctitle, " (combined - single list of targets)");
-		ajStrAppC(&classtitle, 
+		ajStrAppendC(&roctitle, " (combined - single list of targets)");
+		ajStrAppendC(&classtitle, 
 			  " (combined - single list of targets)");
 	    }
 	    
@@ -659,9 +659,9 @@ int main(int argc, char **argv)
 	    /*************************************************/	    
 	    else
 	    {	
-		ajStrAppC(&roctitle, " (combined - multiple lists of "
+		ajStrAppendC(&roctitle, " (combined - multiple lists of "
 			 "targets)");
-		ajStrAppC(&classtitle, " (combined - multiple lists of "
+		ajStrAppendC(&classtitle, " (combined - multiple lists of "
 			 "targets)");
 	    }
 
@@ -892,13 +892,13 @@ static AjBool rocplot_read_hits_files(int mode, int multimode, int datamode,
     {
 	/* Create the list of file names only from full paths */
 	tmpname   = ajStrNew();
-	for(x=MAJSTRLEN(hitsfile)-1; x>=0; x--)
-	    if(ajStrChar(hitsfile, x)=='/')
+	for(x=MAJSTRGETLEN(hitsfile)-1; x>=0; x--)
+	    if(ajStrGetCharPos(hitsfile, x)=='/')
 	    {
-		ajStrAssSub(&tmpname, hitsfile, x+1, -1);
+		ajStrAssignSubS(&tmpname, hitsfile, x+1, -1);
 		break;
 	    }
-	if(!MAJSTRLEN(tmpname))
+	if(!MAJSTRGETLEN(tmpname))
 	    ajFatal("Zero length file name in rocplot_read_hits_files");
 	else
 	    ajListstrPushApp(tmpnames, tmpname);
@@ -916,7 +916,7 @@ static AjBool rocplot_read_hits_files(int mode, int multimode, int datamode,
 	/* Disregard comments lines beginning with '#' */
 	while((ret=ajFileReadLine(inf,&hitsline)))
 	{
-	    if(ajStrChar(hitsline, 0)!='#')
+	    if(ajStrGetCharFirst(hitsline)!='#')
 		break;
 	}
 	if(!ret)
@@ -947,7 +947,7 @@ static AjBool rocplot_read_hits_files(int mode, int multimode, int datamode,
 	ntrue    = 0;
 	while(ajFileReadLine(inf,&hitsline))
 	{
-	    if(ajStrChar(hitsline, 0)=='#')
+	    if(ajStrGetCharFirst(hitsline)=='#')
 		continue;
 
 	    /* Check that all required data are present in hits line */
@@ -984,13 +984,13 @@ static AjBool rocplot_read_hits_files(int mode, int multimode, int datamode,
 	    if((mode==2) && (multimode==2) && 
 	       (datamode==1))
 	    {
-		ajStrAssS(&tmphit->Class, class);
-		ajStrAssS(&tmphit->Acc, accession);	
+		ajStrAssignS(&tmphit->Class, class);
+		ajStrAssignS(&tmphit->Acc, accession);	
 		tmphit->Start = hitstart;
 		tmphit->End = hitend;
 	    }
 	    else
-		ajStrAssS(&tmphit->Class, class);
+		ajStrAssignS(&tmphit->Class, class);
 	    ajListPushApp(hitslists[filecnt], (void *)tmphit);
 	}
 	/* Check there are at least as many FALSE hits as the ROC number */
@@ -1147,7 +1147,7 @@ static AjBool rocplot_hit_is_unique(AjPHitdata  hit, AjPList mrglist,
     {
 	if(norange) 
 	{
-	    if(ajStrMatch(tmphit->Acc, hit->Acc))
+	    if(ajStrMatchS(tmphit->Acc, hit->Acc))
 	    {
 		ajListIterFree(&iter);
 		return ajFalse;
@@ -1186,7 +1186,7 @@ static AjBool rocplot_overlap(AjPHitdata h1, AjPHitdata h2, ajint thresh)
 {
     if( ((((h1->End - h2->Start + 1)>=thresh) && (h2->Start >= h1->Start)) ||
 	 (((h2->End - h1->Start + 1)>=thresh) && (h1->Start >= h2->Start)))&&
-       (ajStrMatch(h1->Acc, h2->Acc)))
+       (ajStrMatchS(h1->Acc, h2->Acc)))
 	return ajTrue;
 
     return ajFalse;
@@ -1684,8 +1684,8 @@ static AjBool   rocplot_write_rocplot(AjPDir outdir,AjPStr fname, AjPStr title,
     }
 
     /* Create gnuplot driver file */
-    ajStrAssS(&outfname, ajDirName(outdir));
-    ajStrApp(&outfname, fname);
+    ajStrAssignS(&outfname, ajDirName(outdir));
+    ajStrAppendS(&outfname, fname);
 
 /*    if(!(outf = ajFileNewOut(fname))) */
     if(!(outf = ajFileNewOut(outfname)))
@@ -1693,7 +1693,7 @@ static AjBool   rocplot_write_rocplot(AjPDir outdir,AjPStr fname, AjPStr title,
 		"rocplot_write_rocplot", fname);
     ajFmtPrintF(outf, "# GNUPLOT driver file for roc plot\n");
     /* The title is truncated to 50 characters */
-    ajStrAssSub(&shorttitle, title, 0, 49);
+    ajStrAssignSubS(&shorttitle, title, 0, 49);
     
     ajFmtPrintF(outf, "set title \"%50S\"\n", shorttitle);
     ajFmtPrintF(outf, "set xlabel \"%S\"\n", xlabel);
@@ -1710,7 +1710,7 @@ static AjBool   rocplot_write_rocplot(AjPDir outdir,AjPStr fname, AjPStr title,
     /* The legend is truncated to 50 characters.  Only necessary to
        do this for legend[0] which in principle could get huge with 
        lots of input files. */
-    ajStrAssSub(&shortlegend, legend[0], 0, 49);
+    ajStrAssignSubS(&shortlegend, legend[0], 0, 49);
 
     for(x=0; x<nseries; x++)
     {	
@@ -1734,7 +1734,7 @@ static AjBool   rocplot_write_rocplot(AjPDir outdir,AjPStr fname, AjPStr title,
     /* For XML output 
     graph  = ajXmlCreateNewOutputFile();
     tmpstr = ajStrNew();
-    ajStrAssC(&tmpstr, "Graph.shortTitle");
+    ajStrAssignC(&tmpstr, "Graph.shortTitle");
     
     
     for(x=0; x<nseries; x++)
@@ -1835,8 +1835,8 @@ static AjBool   rocplot_write_classplot(AjPDir outdir,AjPStr fname,
     }
 
     /* Create gnuplot driver file */
-    ajStrAssS(&outfname, ajDirName(outdir));
-    ajStrApp(&outfname, fname);
+    ajStrAssignS(&outfname, ajDirName(outdir));
+    ajStrAppendS(&outfname, fname);
 
     if(!(outf = ajFileNewOut(outfname)))
 	ajFatal("Could not open gnuplot driver file (%S) for writing in "
@@ -1844,7 +1844,7 @@ static AjBool   rocplot_write_classplot(AjPDir outdir,AjPStr fname,
     ajFmtPrintF(outf, "# GNUPLOT driver file for classification plot\n");
 
     /* The title is truncated to 50 characters */
-    ajStrAssSub(&shorttitle, title, 0, 49);
+    ajStrAssignSubS(&shorttitle, title, 0, 49);
     ajFmtPrintF(outf, "set title \"%S\"\n", shorttitle);
 
     ajFmtPrintF(outf, "set xlabel \"%S\"\n", xlabel);
@@ -1872,7 +1872,7 @@ static AjBool   rocplot_write_classplot(AjPDir outdir,AjPStr fname,
     /* For XML output 
     graph  = ajXmlCreateNewOutputFile();
     tmpstr = ajStrNew();
-    ajStrAssC(&tmpstr, "Graph.shortTitle");
+    ajStrAssignC(&tmpstr, "Graph.shortTitle");
 
     for(x=0; x<nseries; x++)
     {
@@ -2010,8 +2010,8 @@ static AjBool   rocplot_write_barchart(AjPDir outdir,AjPStr fname,
 
     
     /* Create gnuplot driver file */
-    ajStrAssS(&outfname, ajDirName(outdir));
-    ajStrApp(&outfname, fname);
+    ajStrAssignS(&outfname, ajDirName(outdir));
+    ajStrAppendS(&outfname, fname);
         
     if(!(outf = ajFileNewOut(outfname)))
 	ajFatal("Could not open gnuplot driver file (%S) for writing in "
@@ -2128,8 +2128,8 @@ static AjBool rocplot_write_summary(AjPDir outdir, AjPFile outf, ajint mode,
     
     
     for(x=0; x<numfiles; x++)
-	if((MAJSTRLEN(hitsnames[x]) > wid))
-	    wid = MAJSTRLEN(hitsnames[x]);
+	if((MAJSTRGETLEN(hitsnames[x]) > wid))
+	    wid = MAJSTRGETLEN(hitsnames[x]);
     if(wid<10)
 	wid = 10;
     

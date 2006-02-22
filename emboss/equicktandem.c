@@ -108,17 +108,17 @@ int main(int argc, char **argv)
 
     substr = ajStrNew();
     str = ajSeqStrCopy(sequence);
-    ajStrAssSub(&substr,str,begin,end);
+    ajStrAssignSubS(&substr,str,begin,end);
     ajSeqReplace(sequence,substr);
 
     cvt = ajSeqCvtNewText("ACGTN");
     ajSeqNum(sequence, cvt, &tseq);
-    sq = ajStrStrMod(&tseq);
+    sq = ajStrGetuniquePtr(&tseq);
 
     /* careful - sequence can be shorter than the maximum repeat length */
 
-    if((len=ajStrLen(substr)) < maxrepeat)
-      maxrepeat = ajStrLen(substr);
+    if((len=ajStrGetLen(substr)) < maxrepeat)
+      maxrepeat = ajStrGetLen(substr);
 
     for(gap = 1; gap <= maxrepeat; ++gap)
     {
@@ -243,7 +243,7 @@ static void equicktandem_report(AjPFeattable tab, ajint begin)
     static AjPStr s = NULL;
 
     if(!rpthit)
-	ajStrAssC(&rpthit, "repeat_region");
+	ajStrAssignC(&rpthit, "repeat_region");
 
     /*
        ajFmtPrintF(outf, "%6d %10d %10d %2d %3d\n",

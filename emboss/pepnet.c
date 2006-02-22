@@ -92,15 +92,15 @@ int main(int argc, char **argv)
     diamonds    = ajAcdGetString("diamonds");
     amphipathic = ajAcdGetToggle("amphipathic");
 
-    ajStrToUpper(&octags);
-    ajStrToUpper(&squares);
-    ajStrToUpper(&diamonds);
+    ajStrFmtUpper(&octags);
+    ajStrFmtUpper(&squares);
+    ajStrFmtUpper(&diamonds);
 
     if(amphipathic)
     {
-	ajStrAssC(&squares,"ACFGILMVWY");
-	ajStrAssC(&diamonds,"");
-	ajStrAssC(&octags,"");
+	ajStrAssignC(&squares,"ACFGILMVWY");
+	ajStrAssignC(&diamonds,"");
+	ajStrAssignC(&octags,"");
     }
 
 
@@ -117,8 +117,8 @@ int main(int argc, char **argv)
 
     strand = ajSeqStrCopy(seq);
 
-    ajStrToUpper(&strand);
-    ajStrAssSubC(&substr,ajStrStr(strand),begin-1,end-1);
+    ajStrFmtUpper(&strand);
+    ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
 
     ajGraphSetBackWhite();
 
@@ -137,7 +137,7 @@ int main(int argc, char **argv)
 
 
 	ajGraphSetFore(RED);
-	ajGraphText(75.0,110.0,ajStrStr(txt),0.5);
+	ajGraphText(75.0,110.0,ajStrGetPtr(txt),0.5);
 	ajGraphSetCharSize(0.75);
 
 	xstart = 145.0;
@@ -161,16 +161,16 @@ int main(int argc, char **argv)
 	    ajFmtPrintS(&txt,"%d",i+1);
 
 	    ajGraphSetFore(RED);
-	    ajGraphText(x-xinc,y-yinc-1,ajStrStr(txt),0.5);
+	    ajGraphText(x-xinc,y-yinc-1,ajStrGetPtr(txt),0.5);
 
 	    for(j=0;j<4;++j)
 	    {
 		x -= xinc;
 		y += yinc;
 		if(lc <= pstop)
-		    pepnet_plotresidue(*(ajStrStr(substr)+r),x,y,
-				       ajStrStr(squares),ajStrStr(octags),
-				       ajStrStr(diamonds));
+		    pepnet_plotresidue(*(ajStrGetPtr(substr)+r),x,y,
+				       ajStrGetPtr(squares),ajStrGetPtr(octags),
+				       ajStrGetPtr(diamonds));
 		++r;
 		++lc;
 	    }
@@ -181,9 +181,9 @@ int main(int argc, char **argv)
 		x -= xinc;
 		y += yinc;
 		if(lc <= pstop)
-		    pepnet_plotresidue(*(ajStrStr(substr)+r),x,y,
-				       ajStrStr(squares),ajStrStr(octags),
-				       ajStrStr(diamonds));
+		    pepnet_plotresidue(*(ajStrGetPtr(substr)+r),x,y,
+				       ajStrGetPtr(squares),ajStrGetPtr(octags),
+				       ajStrGetPtr(diamonds));
 		++r;
 		++lc;
 	    }

@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 
     while(ajFileReadLine(primfile, &rdline))
     {
-	if(ajStrChar(rdline, 0) == '#')
+	if(ajStrGetCharFirst(rdline) == '#')
 	    continue;
 	if(ajStrSuffixC(rdline, ".."))
 	    continue;
@@ -101,20 +101,20 @@ int main(int argc, char **argv)
 	primdata->Oligoa = NULL;
 	primdata->Oligob = NULL;
 
-	handle = ajStrTokenInit(rdline, " \t");
-	ajStrToken(&primdata->Name, &handle, NULL);
+	handle = ajStrTokenNewC(rdline, " \t");
+	ajStrTokenNextParse(&handle, &primdata->Name);
 
 	if(!(nprimers % 1000))
 	    ajDebug("Name [%d]: '%S'\n", nprimers, primdata->Name);
 
-	ajStrToken(&primdata->Oligoa, &handle, NULL);
-	ajStrToUpper(&primdata->Oligoa);
+	ajStrTokenNextParse(&handle, &primdata->Oligoa);
+	ajStrFmtUpper(&primdata->Oligoa);
 	primdata->Prima = ajRegComp(primdata->Oligoa);
 
-	ajStrToken(&primdata->Oligob, &handle, NULL);
-	ajStrToUpper(&primdata->Oligob);
+	ajStrTokenNextParse(&handle, &primdata->Oligob);
+	ajStrFmtUpper(&primdata->Oligob);
 	primdata->Primb = ajRegComp(primdata->Oligob);
-	ajStrTokenClear(&handle);
+	ajStrTokenDel(&handle);
 
 	if(!nprimers)
 	    primList = ajListNew();
@@ -131,8 +131,8 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall, &seq))
     {
 	ajSeqToUpper(seq);
-	ajStrAssS(&seqstr, ajSeqStr(seq));
-	ajStrAssS(&revstr, ajSeqStr(seq));
+	ajStrAssignS(&seqstr, ajSeqStr(seq));
+	ajStrAssignS(&revstr, ajSeqStr(seq));
 	ajSeqReverseStr(&revstr);
 	ajDebug("Testing: %s\n", ajSeqName(seq));
 	ntests = 0;
@@ -209,7 +209,7 @@ static void stssearch_primTest(void **x,void *cl)
     testc = ajRegExec(primdata->Prima, revstr);
     if(testc)
     {
-	ioff = ajStrLen(seqstr) - ajRegOffset(primdata->Prima);
+	ioff = ajStrGetLen(seqstr) - ajRegOffset(primdata->Prima);
 	ajDebug("%s: (rev) %S PrimerA matched at %d\n",
 		ajSeqName(seq), primdata->Name, ioff);
 	ajFmtPrintF(out, "%s: (rev) %S PrimerA matched at %d\n",
@@ -220,7 +220,7 @@ static void stssearch_primTest(void **x,void *cl)
     testd = ajRegExec(primdata->Primb, revstr);
     if(testd)
     {
-	ioff = ajStrLen(seqstr) - ajRegOffset(primdata->Primb);
+	ioff = ajStrGetLen(seqstr) - ajRegOffset(primdata->Primb);
 	ajDebug("%s: (rev) %S PrimerB matched at %d\n",
 		ajSeqName(seq), primdata->Name, ioff);
 	ajFmtPrintF(out, "%s: (rev) %S PrimerB matched at %d\n",

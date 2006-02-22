@@ -91,10 +91,10 @@ int main(int argc, char *argv[])
     no_closingGU  = (eclose) ? 0 : 1;
     noLonelyPairs = (lonely) ? 0 : 1;
     noconv        = (convert) ? 0 : 1;
-    ns_bases      = (ajStrLen(ensbases)) ? MAJSTRSTR(ensbases) : NULL;
+    ns_bases      = (ajStrGetLen(ensbases)) ? MAJSTRGETPTR(ensbases) : NULL;
     tetra_loop    = !!etloop;
     
-    edangle = *ajStrStr(*edangles);
+    edangle = *ajStrGetPtr(*edangles);
     if(edangle == '0')
 	dangles = 0;
     else if(edangle == '1')

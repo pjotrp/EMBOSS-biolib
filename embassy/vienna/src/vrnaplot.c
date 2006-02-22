@@ -54,13 +54,13 @@ int main(int argc, char *argv[])
     else if (ajStrMatchC(layout[0],"naview"))
 	rna_plot_type = 1;
    
-    strcpy(format,ajStrStr(optype[0]));
+    strcpy(format,ajStrGetPtr(optype[0]));
    
-    if(ajStrLen(epre))
-	pre = MAJSTRSTR(epre);
+    if(ajStrGetLen(epre))
+	pre = MAJSTRGETPTR(epre);
 
-    if(ajStrLen(epost))
-	post = MAJSTRSTR(epost);
+    if(ajStrGetLen(epost))
+	post = MAJSTRGETPTR(epost);
    
     istty = 0;
 
@@ -69,23 +69,23 @@ int main(int argc, char *argv[])
     if(!ajFileReadLine(inf,&eline))
 	ajFatal("Empty input file\n");
 
-    while(!ajStrLen(eline))
+    while(!ajStrGetLen(eline))
     {
 	if(!ajFileReadLine(inf,&eline))
 	    ajFatal("Empty input file\n");
     }
-    if(*ajStrStr(eline) == '>')
+    if(*ajStrGetPtr(eline) == '>')
 	if(!ajFileReadLine(inf,&eline))
 	    ajFatal("Missing sequence line\n");
 
-    string = (char *) space(ajStrLen(eline) + 1);
-    sscanf(ajStrStr(eline),"%s",string);
+    string = (char *) space(ajStrGetLen(eline) + 1);
+    sscanf(ajStrGetPtr(eline),"%s",string);
 
     if(!ajFileReadLine(inf,&eline))
 	ajFatal("Missing structure line\n");
 
-    structure = (char *) space(ajStrLen(eline) + 1);
-    sscanf(ajStrStr(eline),"%s (%f)", structure, &energy);
+    structure = (char *) space(ajStrGetLen(eline) + 1);
+    sscanf(ajStrGetPtr(eline),"%s (%f)", structure, &energy);
 
     if (strlen(string)!=strlen(structure)) 
 	ajFatal("Sequence and structure have unequal length\n");

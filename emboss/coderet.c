@@ -83,7 +83,7 @@ int main(int argc, char **argv)
     **  Must get this so that embedded references in the same database
     **  can be resolved
     */
-    ajStrAssS(&usa,ajSeqallGetUsa(seqall));
+    ajStrAssignS(&usa,ajSeqallGetUsa(seqall));
 
     if(docds)
 	ajFmtPrintF(logf, "   CDS");
@@ -206,9 +206,9 @@ static void coderet_put_seq(const AjPSeq seq, const AjPStr strseq,
 
 
     ajFmtPrintS(&fn,"%S_%s_%d",ajSeqGetAcc(seq),name,n+1);
-    ajStrToLower(&fn);
+    ajStrFmtLower(&fn);
 
-    nseq = ajSeqNewL(ajStrLen(strseq));
+    nseq = ajSeqNewL(ajStrGetLen(strseq));
     ajSeqAssName(nseq, fn);
     ajSeqAssEntry(nseq, fn);
 

@@ -47,9 +47,9 @@ int main(int argc, char **argv)
     {
 	/* get a copy of the sequence string */
 	str = ajStrNew();
-	ajStrAssS(&str, ajSeqStr(seq));
+	ajStrAssignS(&str, ajSeqStr(seq));
 
-	ajStrDegap(&str);
+	ajStrRemoveGap(&str);
 	ajSeqReplace(seq, str);
 	ajStrDel(&str);
 

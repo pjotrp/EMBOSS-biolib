@@ -328,13 +328,13 @@ static void diffseq_Diff(const AjPList difflist,
         if(diff->Len1 > 0)
 	{
 	    gf = ajFeatNewII(ftab, diff->Start1, diff->End1);
-	    ajStrAssSub(&tmp, s1, diff->Start1-1, diff->End1-1);
-            base1 = * ajStrStr(tmp);
+	    ajStrAssignSubS(&tmp, s1, diff->Start1-1, diff->End1-1);
+            base1 = * ajStrGetPtr(tmp);
 	}
         else
         {
             gf = ajFeatNewII(ftab, diff->End1, diff->End1-1);
-            ajStrAssC(&tmp, "");
+            ajStrAssignC(&tmp, "");
         }
         diffseq_Features("first_feature", gf,
                             feat1, diff->Start1, diff->End1);
@@ -354,10 +354,10 @@ static void diffseq_Diff(const AjPList difflist,
             ajFeatTagAdd(gf, NULL, tmp);
             ajFmtPrintS(&tmp, "*end %d", diff->End2);
             ajFeatTagAdd(gf, NULL, tmp);
-            ajStrAssSub(&tmpseq, s2, diff->Start2-1, diff->End2-1);
+            ajStrAssignSubS(&tmpseq, s2, diff->Start2-1, diff->End2-1);
             ajFmtPrintS(&tmp, "*sequence %S", tmpseq);
             ajFeatTagAdd(gf, NULL, tmp);
-            base2 = * ajStrStr(tmpseq);
+            base2 = * ajStrGetPtr(tmpseq);
         }
         else
         {
@@ -460,10 +460,10 @@ static void diffseq_WordMatchListConvDiffToFeat(const AjPList list,
     replacestr = ajStrNew();
     notestr    = ajStrNew();
 
-    ajStrAssC(&source,"diffseq");
-    ajStrAssC(&type,"conflict");
-    ajStrAssC(&note,"note");
-    ajStrAssC(&replace,"replace");
+    ajStrAssignC(&source,"diffseq");
+    ajStrAssignC(&type,"conflict");
+    ajStrAssignC(&note,"note");
+    ajStrAssignC(&replace,"replace");
     score = 1.0;
 
     iter = ajListIterRead(list);
@@ -487,16 +487,16 @@ static void diffseq_WordMatchListConvDiffToFeat(const AjPList list,
             ajFeatTagSet(feature, note, notestr);
 
             if(diff->Len2 > 0)
-                ajStrAssSub(&replacestr, ajSeqStr(seq2), diff->Start2-1,
+                ajStrAssignSubS(&replacestr, ajSeqStr(seq2), diff->Start2-1,
                             diff->End2-1);
             else
-                ajStrAssC(&replacestr, "");
+                ajStrAssignC(&replacestr, "");
 
             if(ajFeattableIsProt(*tab1))
             {
-                if(ajStrLen(replacestr))
+                if(ajStrGetLen(replacestr))
                 {
-                    ajStrAssSub(&sourcestr, ajSeqStr(seq1), diff->Start1-1,
+                    ajStrAssignSubS(&sourcestr, ajSeqStr(seq1), diff->Start1-1,
                                 diff->End1-1);
                     ajFmtPrintS(&conflictstr, "%S -> %S",
                                 sourcestr, replacestr);
@@ -527,16 +527,16 @@ static void diffseq_WordMatchListConvDiffToFeat(const AjPList list,
             ajFeatTagSet(feature, note, notestr);
 
             if(diff->Len1 > 0)
-                ajStrAssSub(&replacestr, ajSeqStr(seq1), diff->Start1-1,
+                ajStrAssignSubS(&replacestr, ajSeqStr(seq1), diff->Start1-1,
                             diff->End1-1);
             else
-                ajStrAssC(&replacestr, "");
+                ajStrAssignC(&replacestr, "");
 
             if(ajFeattableIsProt(*tab2))
             {
-                if(ajStrLen(replacestr))
+                if(ajStrGetLen(replacestr))
                 {
-                    ajStrAssSub(&sourcestr, ajSeqStr(seq2), diff->Start2-1,
+                    ajStrAssignSubS(&sourcestr, ajSeqStr(seq2), diff->Start2-1,
                                 diff->End2-1);
                     ajFmtPrintS(&conflictstr, "%S -> %S",
                                 sourcestr, replacestr);

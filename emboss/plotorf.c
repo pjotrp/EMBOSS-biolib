@@ -101,8 +101,8 @@ int main(int argc, char **argv)
     start     = ajAcdGetString("start");
     stop      = ajAcdGetString("stop");
 
-    ajStrToUpper(&start);
-    ajStrToUpper(&stop);
+    ajStrFmtUpper(&start);
+    ajStrFmtUpper(&stop);
 
     nstarts = ajArrCommaList(start,&starts);
     nstops  = ajArrCommaList(stop,&stops);
@@ -114,14 +114,14 @@ int main(int argc, char **argv)
     cnt = ajIntNew();
 
     ajSeqToUpper(seq);
-    ajStrAssSubC(&str,ajSeqChar(seq),beg-1,end-1);
+    ajStrAssignSubC(&str,ajSeqChar(seq),beg-1,end-1);
 
-    rev = ajStrNewC(ajStrStr(str));
+    rev = ajStrNewC(ajStrGetPtr(str));
     ajSeqReverseStr(&rev);
 
     for(i=0;i<6;++i)
     {
-	plotorf_norfs(ajStrStr(str),ajStrStr(rev),i,x,y,&cnt,beg,starts,
+	plotorf_norfs(ajStrGetPtr(str),ajStrGetPtr(rev),i,x,y,&cnt,beg,starts,
 		      nstarts,stops,nstops);
 	data = ajGraphPlpDataNewI(2);
 	data->numofpoints = 0;
@@ -318,7 +318,7 @@ static AjBool plotorf_isin(const char *p, AjPStr const *str, ajint n)
     ret = ajFalse;
 
     for(i=0;i<n && !ret;++i)
-	if(!strncmp(p,ajStrStr(str[i]),3))
+	if(!strncmp(p,ajStrGetPtr(str[i]),3))
 	    ret = ajTrue;
 
     return ret;

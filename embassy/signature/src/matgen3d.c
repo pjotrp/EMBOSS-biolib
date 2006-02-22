@@ -196,14 +196,14 @@ int main(ajint argc, char **argv)
 	while((ScopPtr=(AjPScop)ajListIterNext(ScopIter)))
 	{
 	    /*Only first member of each family*/
-	    if(ajStrMatch(PrevEntry, ScopPtr->Family))
+	    if(ajStrMatchS(PrevEntry, ScopPtr->Family))
 		continue;
       
 	    tmpID=ajStrNew();
-	    ajStrAssS(&tmpID, ScopPtr->Entry);
-	    ajStrToLower(&tmpID);
+	    ajStrAssignS(&tmpID, ScopPtr->Entry);
+	    ajStrFmtLower(&tmpID);
 	    ajListstrPushApp(ListIDs, tmpID);
-	    ajStrAssS(&PrevEntry, ScopPtr->Family);
+	    ajStrAssignS(&PrevEntry, ScopPtr->Family);
 	}
 	ajListIterFree(&ScopIter);  
     }
@@ -220,7 +220,7 @@ int main(ajint argc, char **argv)
 		lig_tmp = ajStrNew();
 		if((ajFmtScanS(line, "%S", lig_tmp) != 1))
 		    ajFatal("Ligand id not read from file");
-		ajStrToUpper(&lig_tmp);
+		ajStrFmtUpper(&lig_tmp);
 		ajListPushApp(list_lig, lig_tmp);
 	    }	
 	    lig_n = ajListToArray(list_lig, (void ***) &lig_arr);
@@ -235,7 +235,7 @@ int main(ajint argc, char **argv)
 	while((CmapPtr=(AjPCmap)ajListIterNext(CmapIter)))
 	{
 	    for(done=ajFalse, x=0; x<lig_n; x++)
-		if(ajStrMatch(lig_arr[x], CmapPtr->Ligid))
+		if(ajStrMatchS(lig_arr[x], CmapPtr->Ligid))
 		{
 		    done = ajTrue;
 		    break;
@@ -246,14 +246,14 @@ int main(ajint argc, char **argv)
 	    tmpID=ajStrNew();
 	    /* Use domain ID if it is defined (the CON file is for a domain), 
 	       otherwise pdb ID (the CON file is for a protein). */
-	    if(MAJSTRLEN(CmapPtr->Domid))
-		ajStrAssS(&tmpID, CmapPtr->Domid);
-	    else if(MAJSTRLEN(CmapPtr->Id))
-		ajStrAssS(&tmpID, CmapPtr->Id);
+	    if(MAJSTRGETLEN(CmapPtr->Domid))
+		ajStrAssignS(&tmpID, CmapPtr->Domid);
+	    else if(MAJSTRGETLEN(CmapPtr->Id))
+		ajStrAssignS(&tmpID, CmapPtr->Id);
 	    else
 		ajFatal("Neither domain or pdb id is defined");
 	    
-	    ajStrToLower(&tmpID);
+	    ajStrFmtLower(&tmpID);
 	    ajListstrPushApp(ListIDs, tmpID);
 	}
 	
@@ -276,27 +276,27 @@ int main(ajint argc, char **argv)
     for(x=0; ajListstrPop(ListIDs, &IdName); x++)
     {     	
 	/* PDB code */
-	if(MAJSTRLEN(IdName)==4)
+	if(MAJSTRGETLEN(IdName)==4)
 	{
 	    if((!(DCorFptr = ajFileNewDirF(ccfpdir, IdName))))
 	    {
 		notopened++;
 		ajFmtPrintS(&msg, "Could not open for reading %S", IdName);
 		ajFmtPrintF(logf, "WARN\tCould not open for reading %S\n", IdName);
-		/*	    ajWarn(ajStrStr(msg)); */
+		/*	    ajWarn(ajStrGetPtr(msg)); */
 		ajStrDel(&IdName);
 		continue;
 	    }	
 	}
 	/* Domain code */
-	if(MAJSTRLEN(IdName)==7)
+	if(MAJSTRGETLEN(IdName)==7)
 	{
 	    if((!(DCorFptr = ajFileNewDirF(ccfddir, IdName))))
 	    {
 		notopened++;
 		ajFmtPrintS(&msg, "Could not open for reading %S", IdName);
 		ajFmtPrintF(logf, "WARN\tCould not open for reading %S\n", IdName);
-		/*	    ajWarn(ajStrStr(msg)); */
+		/*	    ajWarn(ajStrGetPtr(msg)); */
 		ajStrDel(&IdName);
 		continue;
 	    }	
@@ -311,7 +311,7 @@ int main(ajint argc, char **argv)
 	{
 	    ajFmtPrintS(&msg, "Error reading coordinate file");
 	    ajFmtPrintF(logf, "WARN\tError reading coordinate file\n");
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
 	    ajStrDel(&IdName);
 	    ajFileClose(&DCorFptr);
 	    continue;
@@ -412,7 +412,7 @@ int main(ajint argc, char **argv)
 
 
 	    /*Skip if the overall environment cannot be assigned*/
-	    if( (!MAJSTRLEN(OEnv)))
+	    if( (!MAJSTRGETLEN(OEnv)))
 	    {
 		ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
 		/* PrevRes = res->Idx; */
@@ -422,11 +422,11 @@ int main(ajint argc, char **argv)
 	    ajFmtPrintF(logf, "\tOEnv %S:%c\n", OEnv, res->Id1);
 
 	    /*Get idices into 2d matrix*/
-	    if(MAJSTRLEN(OEnv) == 1)
-		i = ajStrChar(OEnv, 0) - 'A';
-	    else if(MAJSTRLEN(OEnv) == 2)
-		i = ajStrChar(OEnv, 1) - 'A' + 
-		    ((ajStrChar(OEnv, 0) - 'A')*26);
+	    if(MAJSTRGETLEN(OEnv) == 1)
+		i = ajStrGetCharFirst(OEnv) - 'A';
+	    else if(MAJSTRGETLEN(OEnv) == 2)
+		i = ajStrGetCharPos(OEnv, 1) - 'A' + 
+		    ((ajStrGetCharFirst(OEnv) - 'A')*26);
 	    else
 		ajFatal("Matrix label too big in matgen3d");
 	    
@@ -480,8 +480,8 @@ int main(ajint argc, char **argv)
 
     for(labelcnt1=0, labelcnt2=0, RowEnvIdx=0; RowEnvIdx<NUMENV; RowEnvIdx++, labelcnt2++)
     {	
-	ajStrAssK(&label, (char) labelcnt1+'A');
-	ajStrAppK(&label, (char) labelcnt2+'A');
+	ajStrAssignK(&label, (char) labelcnt1+'A');
+	ajStrAppendK(&label, (char) labelcnt2+'A');
 	if(labelcnt2 == 25)
 	{
 	    labelcnt1 +=  1;

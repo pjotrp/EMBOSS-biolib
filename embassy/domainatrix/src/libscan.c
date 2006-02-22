@@ -348,7 +348,7 @@ int main(int argc, char **argv)
       hmmoutpath = ajAcdGetString("hmmoutpath"); 
       hmmoutextn = ajAcdGetString("hmmoutextn");
       
-      if(ajStrChar(*mode,0)=='1')
+      if(ajStrGetCharFirst(*mode)=='1')
       {
 	if((!ajFileDir(&hmmoutpath)))
 	  ajFatal("Could not open directory");    
@@ -365,7 +365,7 @@ int main(int argc, char **argv)
       samoutpath = ajAcdGetString("samoutpath"); 
       samoutextn = ajAcdGetString("samoutextn");
       
-      if(ajStrChar(*mode,0)=='1')
+      if(ajStrGetCharFirst(*mode)=='1')
       {
 	if((!ajFileDir(&samoutpath)))
 	  ajFatal("Could not open directory");    
@@ -385,7 +385,7 @@ int main(int argc, char **argv)
       niter       = ajAcdGetInt("niter");
       thresh      = ajAcdGetFloat("thresh");
       
-      if(ajStrChar(*mode,0)=='1')
+      if(ajStrGetCharFirst(*mode)=='1')
       {
 	if((!ajFileDir(&pssmoutpath)))
 	  ajFatal("Could not open directory");    
@@ -408,7 +408,7 @@ int main(int argc, char **argv)
       gbvoutpath = ajAcdGetString("gbvoutpath");
       gbvoutextn = ajAcdGetString("gbvoutextn");
       
-      if(ajStrChar(*mode,0)=='1')
+      if(ajStrGetCharFirst(*mode)=='1')
       {
 	if((!ajFileDir(&gbvoutpath)))
 	  ajFatal("Could not open directory");    
@@ -429,7 +429,7 @@ int main(int argc, char **argv)
       hnfoutpath = ajAcdGetString("hnfoutpath"); 
       hnfoutextn = ajAcdGetString("hnfoutextn");
       
-      if(ajStrChar(*mode,0)=='1')
+      if(ajStrGetCharFirst(*mode)=='1')
       {
 	if((!ajFileDir(&hnfoutpath)))
 	  ajFatal("Could not open directory");    
@@ -456,7 +456,7 @@ int main(int argc, char **argv)
       /*Assign N-terminal matching option */
       ajFmtScanS(nterm[0], "%d", &ntopt);
       
-      if(ajStrChar(*mode,0)=='1')
+      if(ajStrGetCharFirst(*mode)=='1')
       {
 	if((!ajFileDir(&sigoutpath)))
 	  ajFatal("Could not open directory");    
@@ -465,7 +465,7 @@ int main(int argc, char **argv)
 
     /* initialise other parameters */
     db    = ajAcdGetSeqset("db");
-    ajStrAssS(&dbpath,db->Filename);
+    ajStrAssignS(&dbpath,db->Filename);
     scopf = ajAcdGetInfile("scopf");
     maxhit = db->Size;	
 
@@ -482,12 +482,12 @@ int main(int argc, char **argv)
     /* run hmmer related searches */
     if(do_hmm)
     {
-	ajStrAssC(&model,"HMM");
+	ajStrAssignC(&model,"HMM");
       
 	if(!scoplist)
 	    ajFatal("scoplist not good !\n");
       
-	if(ajStrChar(*mode,0)=='1')
+	if(ajStrGetCharFirst(*mode)=='1')
 	    libscan_RunHmmerInModeOne(db,hmmpath,hmmextn,mode,
 				      model,scoplist,hmmoutpath,hmmoutextn);
 	else
@@ -499,12 +499,12 @@ int main(int argc, char **argv)
     /* run sam-99 related searches */
     if(do_sam)
     {
-	ajStrAssC(&model,"SAM");
+	ajStrAssignC(&model,"SAM");
       
 	if(!scoplist)
 	    ajFatal("scoplist not good !\n");
       
-	if(ajStrChar(*mode,0)=='1')
+	if(ajStrGetCharFirst(*mode)=='1')
 	    libscan_RunSamInModeOne(dbpath,sampath,samextn,mode,model,
 				    scoplist,samoutpath,samoutextn,db->Size);
 	else
@@ -515,19 +515,19 @@ int main(int argc, char **argv)
     /* run psi-blast pssm related searches */
     if(do_pssm)
     {
-	ajStrAssC(&model,"PSSM");
+	ajStrAssignC(&model,"PSSM");
       
 	if(!scoplist)
 	    ajFatal("scoplist not good !\n");
 
-	if(ajStrChar(*mode,0)=='1')
+	if(ajStrGetCharFirst(*mode)=='1')
 	    libscan_RunBlastpgpInModeOne(dbpath,pssmpath,pssmextn,
 					 mode,maxhit,niter,thresh,model,
 					 scoplist,pssmoutpath,pssmoutextn);
 	else
 	{	
 	    /* take this out once the acd options are fixed */
-	    ajStrAssC(&dbpath,"/data/structure/lib/pssm/lib");
+	    ajStrAssignC(&dbpath,"/data/structure/lib/pssm/lib");
 	    
 	    libscan_RunRPSBlast(db,dbpath,mode,scoplist,
 				thresh,model,pssmoutpath,
@@ -539,9 +539,9 @@ int main(int argc, char **argv)
     /* run gribskov related searches */
     if(do_grib)
     {
-	ajStrAssC(&model,"GRIBSKOV");
+	ajStrAssignC(&model,"GRIBSKOV");
 
-	if(ajStrChar(*mode,0)=='1')
+	if(ajStrGetCharFirst(*mode)=='1')
 	    libscan_RunProphetInModeOne(db,gbvpath,gbvextn,gbvgapo,gbvgape,mode,
 					model,scoplist,gbvoutpath,gbvoutextn);
 	else
@@ -552,9 +552,9 @@ int main(int argc, char **argv)
     /* run hennikoff related searches */
     if(do_henik)
     {
-	ajStrAssC(&model,"HENNIKOFF");
+	ajStrAssignC(&model,"HENNIKOFF");
 
-	if(ajStrChar(*mode,0)=='1')
+	if(ajStrGetCharFirst(*mode)=='1')
 	    libscan_RunProphetInModeOne(db,hnfpath,hnfextn,hnfgapo,hnfgape,mode,
 					model,scoplist,hnfoutpath,hnfoutextn);
 	else
@@ -565,9 +565,9 @@ int main(int argc, char **argv)
     /* run signature related searches */
     if(do_sig)
     {
-	ajStrAssC(&model,"SIGNATURE");
+	ajStrAssignC(&model,"SIGNATURE");
 
-	if(ajStrChar(*mode,0)=='1')
+	if(ajStrGetCharFirst(*mode)=='1')
 	    libscan_RunSignatureInModeOne(db,sigpath,sigextn,siggapo,siggape,sub,ntopt,mode,
 					  model, scoplist,sigoutpath,sigoutextn);
 	else
@@ -589,7 +589,7 @@ int main(int argc, char **argv)
     {
 	ajStrDel(&hmmpath);
 	ajStrDel(&hmmextn);
-	if(ajStrChar(*mode,0)=='1')
+	if(ajStrGetCharFirst(*mode)=='1')
 	{
 	    ajStrDel(&hmmoutpath);
 	    ajStrDel(&hmmoutextn);
@@ -601,7 +601,7 @@ int main(int argc, char **argv)
     {
 	ajStrDel(&sampath);
 	ajStrDel(&samextn);
-	if(ajStrChar(*mode,0)=='1')
+	if(ajStrGetCharFirst(*mode)=='1')
 	{
 	    ajStrDel(&samoutpath);
 	    ajStrDel(&samoutextn);
@@ -613,7 +613,7 @@ int main(int argc, char **argv)
     {
 	ajStrDel(&pssmpath);
 	ajStrDel(&pssmextn);
-	if(ajStrChar(*mode,0)=='1')
+	if(ajStrGetCharFirst(*mode)=='1')
 	{
 	    ajStrDel(&pssmoutpath);
 	    ajStrDel(&pssmoutextn);
@@ -625,7 +625,7 @@ int main(int argc, char **argv)
     {
 	ajStrDel(&gbvpath);
 	ajStrDel(&gbvextn);
-	if(ajStrChar(*mode,0)=='1')
+	if(ajStrGetCharFirst(*mode)=='1')
 	{
 	    ajStrDel(&gbvoutpath);
 	    ajStrDel(&gbvoutextn);        
@@ -637,7 +637,7 @@ int main(int argc, char **argv)
     {
 	ajStrDel(&hnfpath);
 	ajStrDel(&hnfextn);    
-	if(ajStrChar(*mode,0)=='1')
+	if(ajStrGetCharFirst(*mode)=='1')
 	{
 	    ajStrDel(&hnfoutpath);
 	    ajStrDel(&hnfoutextn);
@@ -649,7 +649,7 @@ int main(int argc, char **argv)
     {
 	ajStrDel(&sigpath);      
 	ajStrDel(&sigextn);      
-	if(ajStrChar(*mode,0)=='1')
+	if(ajStrGetCharFirst(*mode)=='1')
 	{
 	    ajStrDel(&sigoutpath);
 	    ajStrDel(&sigoutextn);
@@ -657,13 +657,13 @@ int main(int argc, char **argv)
     }
 
     /* clean up other parameters */
-    if(ajStrChar(*mode,0)=='1')
+    if(ajStrGetCharFirst(*mode)=='1')
     {
 	ajStrDel(&mrgoutpath);
 	ajStrDel(&mrgoutextn);
     }
 
-    if(ajStrChar(*mode,0)=='2')
+    if(ajStrGetCharFirst(*mode)=='2')
     {
 	ajStrDel(&outpath);
 	ajStrDel(&outextn);
@@ -785,13 +785,13 @@ static AjBool libscan_HmmSearch(AjPSeqset db, AjPStr hmmfile, AjPStr family,
   /* CREAT TEMPERARY FILE NAMES */
   /* create the filename for the hmmersearch output file */
   ajRandomSeed();
-  ajStrAssC(&tmp, ajFileTempName(NULL));
+  ajStrAssignC(&tmp, ajFileTempName(NULL));
   
-  ajStrAssS(&hmminfname,tmp);
-  ajStrAppC(&hmminfname, ".hmminf");
+  ajStrAssignS(&hmminfname,tmp);
+  ajStrAppendC(&hmminfname, ".hmminf");
   
-  ajStrAssS(&hmmoutfname,tmp);
-  ajStrAppC(&hmmoutfname, ".hmmoutf");
+  ajStrAssignS(&hmmoutfname,tmp);
+  ajStrAppendC(&hmmoutfname, ".hmmoutf");
 
   /* GET SCORES FOR EACH SEQUENCE IN THE DATABASE */
   for(cnt=0;cnt<db->Size;cnt++){      	
@@ -830,10 +830,10 @@ static AjBool libscan_HmmSearch(AjPSeqset db, AjPStr hmmfile, AjPStr family,
 	  }
 	  
 	  /* Get the sequence for the current entry */
-	  else if(((ajStrFind(line,id))>=0)){
+	  else if(((ajStrFindS(line,id))>=0)){
 	    ajFmtScanS(line,"%*s %*d %S %*d",&seqfrag);
-	    ajStrSubstituteCC(&seqfrag,"-","");
-	    ajStrApp(&sequence,seqfrag);
+	    ajStrExchangeCC(&seqfrag,"-","");
+	    ajStrAppendS(&sequence,seqfrag);
 	  }
 	  
 	  /* Print the sequence for the last entry */
@@ -842,15 +842,15 @@ static AjBool libscan_HmmSearch(AjPSeqset db, AjPStr hmmfile, AjPStr family,
 	    hit = embHitNew();
 
 	    /* construct the hit */
-	    ajStrAssS(&hit->Acc,id);
-	    ajStrAssS(&hit->Model,model);
+	    ajStrAssignS(&hit->Acc,id);
+	    ajStrAssignS(&hit->Model,model);
 	    hit->Start = start;
 	    hit->End   = end;
 	    hit->Score = score;
-	    ajStrAssS(&hit->Seq,sequence);
+	    ajStrAssignS(&hit->Seq,sequence);
 	            
 	    ajListPushApp(listhits,hit);
-	    ajStrAssC(&sequence,"");
+	    ajStrAssignC(&sequence,"");
 	
 	    break;
 	  }	  
@@ -877,7 +877,7 @@ static AjBool libscan_HmmSearch(AjPSeqset db, AjPStr hmmfile, AjPStr family,
   
   while((nexthit=(AjPHit)ajListIterNext(iter)))
   {
-      if((ajStrMatch(hit->Acc, nexthit->Acc)))
+      if((ajStrMatchS(hit->Acc, nexthit->Acc)))
       {	
 	  if((hit->Start==nexthit->Start) && 
 	      (hit->End==nexthit->End))
@@ -914,11 +914,11 @@ static AjBool libscan_HmmSearch(AjPSeqset db, AjPStr hmmfile, AjPStr family,
   hitlist = embHitlistNew(0);
   
   /* write hit structure */
-  ajStrAssS(&hitlist->Class,class);
-  ajStrAssS(&hitlist->Fold,fold);
-  ajStrAssS(&hitlist->Superfamily,superfamily);
-  ajStrAssS(&hitlist->Family,family);
-  ajStrAssS(&hitlist->Model,model);
+  ajStrAssignS(&hitlist->Class,class);
+  ajStrAssignS(&hitlist->Fold,fold);
+  ajStrAssignS(&hitlist->Superfamily,superfamily);
+  ajStrAssignS(&hitlist->Family,family);
+  ajStrAssignS(&hitlist->Model,model);
   hitlist->Sunid_Family = sun_id;
   
   /* Convert list to array within Hitlist object */
@@ -1053,16 +1053,16 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
   
   /* CREAT TEMPERARY FILE NAMES */
   ajRandomSeed();
-  ajStrAssC(&tmp, ajFileTempName(NULL));
+  ajStrAssignC(&tmp, ajFileTempName(NULL));
   
-  ajStrAssS(&profoutname,tmp);
-  ajStrAppC(&profoutname, ".profoutname");
+  ajStrAssignS(&profoutname,tmp);
+  ajStrAppendC(&profoutname, ".profoutname");
   
-  ajStrAssS(&profinfname,tmp);
-  ajStrAppC(&profinfname, ".profinf");
+  ajStrAssignS(&profinfname,tmp);
+  ajStrAppendC(&profinfname, ".profinf");
   
-  ajStrAssS(&profoutfname,tmp);
-  ajStrAppC(&profoutfname, ".profoutf");
+  ajStrAssignS(&profoutfname,tmp);
+  ajStrAppendC(&profoutfname, ".profoutf");
 
   /* GET SCORES FOR EACH SEQUENCE IN THE DATABASE */
   ajFmtPrint("profile - %S\n",profile);
@@ -1083,7 +1083,7 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
       if((ajStrPrefixC(line,"Local:"))){
 	/* GET THE ID */
 	ajFmtScanS(line,"%*s %*s %*s %S",&id);
-	ajStrAssC(&sequence,"");
+	ajStrAssignC(&sequence,"");
       }
       
       /* GET THE SCORE */
@@ -1091,15 +1091,15 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
 	ajFmtScanS(line,"%*s %f",&score);
       
       /* GET THE SEQUENCE */
-      else if(ajStrPrefix(line,id)){
+      else if(ajStrPrefixS(line,id)){
 	ajFmtScanS(line,"%*s %d %S %d",&tmpstart,&seqfrag,&end);
 	
 	/* get start position from the first seqfrag only */
 	if(!ajStrCmpC(sequence,""))
 	  start = tmpstart;
 	
-	ajStrSubstituteCC(&seqfrag,".","");
-	ajStrApp(&sequence,seqfrag);
+	ajStrExchangeCC(&seqfrag,".","");
+	ajStrAppendS(&sequence,seqfrag);
       }      
       else
 	continue;
@@ -1113,12 +1113,12 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
     /* create a new hit structure */
     hit = embHitNew();
     
-    ajStrAssS(&hit->Acc,id);
-    ajStrAssS(&hit->Model,model);
+    ajStrAssignS(&hit->Acc,id);
+    ajStrAssignS(&hit->Model,model);
     hit->Start = start;
     hit->End   = end;
     hit->Score = score;
-    ajStrAssS(&hit->Seq,sequence);
+    ajStrAssignS(&hit->Seq,sequence);
 
     ajListPushApp(listhits,hit);
     nhits++;
@@ -1131,7 +1131,7 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
   
   while((nexthit=(AjPHit)ajListIterNext(iter)))
   {
-      if((ajStrMatch(hit->Acc, nexthit->Acc)))
+      if((ajStrMatchS(hit->Acc, nexthit->Acc)))
       {	
 	  if((hit->Start==nexthit->Start) && 
 	      (hit->End==nexthit->End))
@@ -1162,11 +1162,11 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
   hitlist = embHitlistNew(0);
   
   /* write hit structure */
-  ajStrAssS(&hitlist->Class,class);
-  ajStrAssS(&hitlist->Fold,fold);
-  ajStrAssS(&hitlist->Superfamily,superfamily);
-  ajStrAssS(&hitlist->Family,family);
-  ajStrAssS(&hitlist->Model,model);
+  ajStrAssignS(&hitlist->Class,class);
+  ajStrAssignS(&hitlist->Fold,fold);
+  ajStrAssignS(&hitlist->Superfamily,superfamily);
+  ajStrAssignS(&hitlist->Family,family);
+  ajStrAssignS(&hitlist->Model,model);
   hitlist->Sunid_Family = sun_id;
     
   /* Convert list to array within Hitlist object */
@@ -1282,9 +1282,9 @@ AjPHit nexthit  = NULL;         /* hit that gets constructed in the first parse 
    for(cnt = 0; cnt<db->Size;cnt++){
      seq = ajSeqNew();
      
-     ajStrAssS(&seq->Name,db->Seq[cnt]->Name);
-     ajStrAssS(&seq->Acc,db->Seq[cnt]->Name);
-     ajStrAssS(&seq->Seq,db->Seq[cnt]->Seq);
+     ajStrAssignS(&seq->Name,db->Seq[cnt]->Name);
+     ajStrAssignS(&seq->Acc,db->Seq[cnt]->Name);
+     ajStrAssignS(&seq->Seq,db->Seq[cnt]->Seq);
      
      /* Allocate memory for hit */
      hit = embHitNew();
@@ -1297,7 +1297,7 @@ AjPHit nexthit  = NULL;         /* hit that gets constructed in the first parse 
      
      /* CORRECTION */ 
      ajSeqDel(&seq);      
-     ajStrAssS(&hit->Model,model);
+     ajStrAssignS(&hit->Model,model);
 
      ajListPush(listhits,(AjPHit) hit);
    }
@@ -1309,7 +1309,7 @@ AjPHit nexthit  = NULL;         /* hit that gets constructed in the first parse 
   
    while((nexthit=(AjPHit)ajListIterNext(iter)))
    {
-       if((ajStrMatch(hit->Acc, nexthit->Acc)))
+       if((ajStrMatchS(hit->Acc, nexthit->Acc)))
        {	
 	   if((hit->Start==nexthit->Start) && 
 	      (hit->End==nexthit->End))
@@ -1341,11 +1341,11 @@ AjPHit nexthit  = NULL;         /* hit that gets constructed in the first parse 
    hitlist = embHitlistNew(0);
    
    /* write hit structure */
-   ajStrAssS(&hitlist->Class,class);
-   ajStrAssS(&hitlist->Fold,fold);
-   ajStrAssS(&hitlist->Superfamily,superfamily);
-   ajStrAssS(&hitlist->Family,family);
-   ajStrAssS(&hitlist->Model,model);
+   ajStrAssignS(&hitlist->Class,class);
+   ajStrAssignS(&hitlist->Fold,fold);
+   ajStrAssignS(&hitlist->Superfamily,superfamily);
+   ajStrAssignS(&hitlist->Family,family);
+   ajStrAssignS(&hitlist->Model,model);
    hitlist->Sunid_Family = sun_id;
 
    /* Convert list to array within Hitlist object */
@@ -1461,20 +1461,20 @@ static AjBool libscan_SamSearch(AjPStr samdb, AjPStr samfile, AjPStr family,
     /* CREAT TEMPERARY FILE NAMES */
     /* create the filename for the samsearch output file */
     ajRandomSeed();
-    ajStrAssC(&tmp, ajFileTempName(NULL));
+    ajStrAssignC(&tmp, ajFileTempName(NULL));
   
     /* temp base name for sam output file*/
-    ajStrAssS(&sambasename,tmp);
+    ajStrAssignS(&sambasename,tmp);
 
     /* name of the output file created */
-    ajStrAssS(&samoutfname,sambasename);
-    ajStrAppC(&samoutfname, ".mstat");
+    ajStrAssignS(&samoutfname,sambasename);
+    ajStrAppendC(&samoutfname, ".mstat");
     
     /* RUN SAMSEARCH */
     ajFmtPrintS(&cmd,"/usr/local/sam/bin/hmmscore %S -i %S -db %S -nscoreseq dbsize -select_mdalign 8 -sw 3",sambasename,samfile,samdb);
 
     /* execute the command line */
-    system(ajStrStr(cmd));
+    system(ajStrGetPtr(cmd));
         
     inf = ajFileNewIn(samoutfname);
     
@@ -1503,8 +1503,8 @@ static AjBool libscan_SamSearch(AjPStr samdb, AjPStr samfile, AjPStr family,
 	hit = embHitNew();
 	
 	/* construct the hit */
-	ajStrAssS(&hit->Acc,id);
-	ajStrAssS(&hit->Model,model);
+	ajStrAssignS(&hit->Acc,id);
+	ajStrAssignS(&hit->Model,model);
 	hit->Score = score;
 	hit->Start = start;
 	hit->End   = end;
@@ -1527,7 +1527,7 @@ static AjBool libscan_SamSearch(AjPStr samdb, AjPStr samfile, AjPStr family,
     while((nexthit=(AjPHit)ajListIterNext(iter)))
     {
       ajFmtPrint("%S\t%f\n",nexthit->Acc,nexthit->Score);
-	if((ajStrMatch(hit->Acc, nexthit->Acc)))
+	if((ajStrMatchS(hit->Acc, nexthit->Acc)))
 	{	
 	    /*if((hit->Start==nexthit->Start) && 
 	       (hit->End==nexthit->End))*/
@@ -1557,11 +1557,11 @@ static AjBool libscan_SamSearch(AjPStr samdb, AjPStr samfile, AjPStr family,
     hitlist = embHitlistNew(0);
   
     /* write hit structure */
-    ajStrAssS(&hitlist->Class,class);
-    ajStrAssS(&hitlist->Fold,fold);
-    ajStrAssS(&hitlist->Superfamily,superfamily);
-    ajStrAssS(&hitlist->Family,family);
-    ajStrAssS(&hitlist->Model,model);
+    ajStrAssignS(&hitlist->Class,class);
+    ajStrAssignS(&hitlist->Fold,fold);
+    ajStrAssignS(&hitlist->Superfamily,superfamily);
+    ajStrAssignS(&hitlist->Family,family);
+    ajStrAssignS(&hitlist->Model,model);
     hitlist->Sunid_Family = sun_id;
    
     /* Convert list to array within Hitlist object */
@@ -1602,11 +1602,11 @@ static AjBool libscan_SamSearch(AjPStr samdb, AjPStr samfile, AjPStr family,
     
     /* clean up directory */
     ajFmtPrintS(&cmd,"rm %S.dist",sambasename);
-    system(ajStrStr(cmd));
+    system(ajStrGetPtr(cmd));
     ajFmtPrintS(&cmd,"rm %S.mstat",sambasename);
-    system(ajStrStr(cmd));
+    system(ajStrGetPtr(cmd));
     ajFmtPrintS(&cmd,"rm %S.mult",sambasename);
-    system(ajStrStr(cmd));
+    system(ajStrGetPtr(cmd));
 
     ajStrDel(&tmp );
     ajStrDel(&srt_end_str);
@@ -1686,7 +1686,7 @@ static AjBool libscan_RunBlastpgpInModeOne(AjPStr db, AjPStr pssmpath,
 
     listhits    = ajListNew();
     
-    if(ajStrChar(*mode,0)=='1')
+    if(ajStrGetCharFirst(*mode)=='1')
     {   
         pssmlist = libscan_GetLibrary(pssmpath,pssmextn);
 
@@ -1694,8 +1694,8 @@ static AjBool libscan_RunBlastpgpInModeOne(AjPStr db, AjPStr pssmpath,
         while(ajListPop(pssmlist,(void **)&pssmfile))
         {
             /* get the "seed" bit of filenames from the pssmfile */
-            posdash = ajStrRFindC(pssmfile, "/");
-            posdot  = ajStrRFindC(pssmfile, ".");
+            posdash = ajStrFindlastC(pssmfile, "/");
+            posdot  = ajStrFindlastC(pssmfile, ".");
 	    
 	    
             if(posdash >= posdot)
@@ -1704,20 +1704,20 @@ static AjBool libscan_RunBlastpgpInModeOne(AjPStr db, AjPStr pssmpath,
             else
             {
                 /* get the Family_Sunid */
-                ajStrAssSub(&sunid, pssmfile, posdash+1, posdot-1);
+                ajStrAssignSubS(&sunid, pssmfile, posdash+1, posdot-1);
 
 
                 /* CREAT OUTPUT FILE NAMES */
-                ajStrAssS(&pssmsearch,sunid);
-                ajStrApp(&pssmsearch, pssmoutextn);
+                ajStrAssignS(&pssmsearch,sunid);
+                ajStrAppendS(&pssmsearch, pssmoutextn);
 		
                 /* CREAT OUTPUT STREAMS */
                 outf = ajFileNewOutD(pssmoutpath,pssmsearch);
 		
 		/* set mater sequence path and extension */
-		ajStrAssS(&masterseq,pssmpath);
-                ajStrApp(&masterseq,sunid);
-                ajStrAppC(&masterseq,".cms");
+		ajStrAssignS(&masterseq,pssmpath);
+                ajStrAppendS(&masterseq,sunid);
+                ajStrAppendC(&masterseq,".cms");
 
 		
 		/* FIND SCOP INFORMATION */
@@ -1742,7 +1742,7 @@ static AjBool libscan_RunBlastpgpInModeOne(AjPStr db, AjPStr pssmpath,
 
 		/* Delete tmp psiblast output file*/
 		ajFmtPrintS(&temp, "rm %S", psiname);
-		system(ajStrStr(temp));
+		system(ajStrGetPtr(temp));
 
 		/* close outfile and clean up */
                 ajFileClose(&blastoutf);
@@ -1763,7 +1763,7 @@ static AjBool libscan_RunBlastpgpInModeOne(AjPStr db, AjPStr pssmpath,
 	
 	while((nexthit=(AjPHit)ajListIterNext(iter)))
 	{
-	    if((ajStrMatch(hit->Acc, nexthit->Acc)))
+	    if((ajStrMatchS(hit->Acc, nexthit->Acc)))
 	    {	
 		/*if((hit->Start==nexthit->Start) && 
 		   (hit->End==nexthit->End))*/		    	 
@@ -1795,11 +1795,11 @@ static AjBool libscan_RunBlastpgpInModeOne(AjPStr db, AjPStr pssmpath,
 	hitlist = embHitlistNew(0);
   
 	/* write hit structure */
-	ajStrAssS(&hitlist->Class,class);
-	ajStrAssS(&hitlist->Fold,fold);
-	ajStrAssS(&hitlist->Superfamily,superfamily);
-	ajStrAssS(&hitlist->Family,family);
-	ajStrAssS(&hitlist->Model,model);
+	ajStrAssignS(&hitlist->Class,class);
+	ajStrAssignS(&hitlist->Fold,fold);
+	ajStrAssignS(&hitlist->Superfamily,superfamily);
+	ajStrAssignS(&hitlist->Family,family);
+	ajStrAssignS(&hitlist->Model,model);
 	hitlist->Sunid_Family = sun_id;
    
 	/* Convert list to array within Hitlist object */
@@ -1991,18 +1991,18 @@ AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath,
   /* Initialise random number generator for naming of temp. files
      and create hmmer output file */
   ajRandomSeed();
-  ajStrAssC(&tmpname, ajFileTempName(NULL));
+  ajStrAssignC(&tmpname, ajFileTempName(NULL));
 
-  ajStrAssS(&hmminfname, tmpname);
-  ajStrAppC(&hmminfname, ".hmminf");
+  ajStrAssignS(&hmminfname, tmpname);
+  ajStrAppendC(&hmminfname, ".hmminf");
 
   hmminf = ajFileNewOut(hmminfname);
   
   ajFmtPrintF(hmminf,">%S\n%S\n",seq->Name,seq->Seq);
   ajFileClose(&hmminf);
 
-  ajStrAssS(&outfile,seq->Name);
-  ajStrApp(&outfile,hmmoutextn);
+  ajStrAssignS(&outfile,seq->Name);
+  ajStrAppendS(&outfile,hmmoutextn);
 
   iter = ajListIter(modelnames);
 
@@ -2010,21 +2010,21 @@ AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath,
   while((hmmfile = (AjPStr)ajListIterNext(iter))){
 
     /* get the Sunid_Family from the hmmfile. THIS WILL NEED TO BE CHANGED */
-    posdash = ajStrRFindC(hmmfile, "/");
-    posdot  = ajStrRFindC(hmmfile, ".");
+    posdash = ajStrFindlastC(hmmfile, "/");
+    posdot  = ajStrFindlastC(hmmfile, ".");
 
     if(posdash >= posdot)
       ajWarn("Could not create filename. Email rranasin@hgmp.mrc.ac.uk");
     else{
-      ajStrAssSub(&sunidfrag, hmmfile, posdash+1, posdot-1);
+      ajStrAssignSubS(&sunidfrag, hmmfile, posdash+1, posdot-1);
       ajStrToInt(sunidfrag,&sunid);
     }
 
     ajRandomSeed();
-    ajStrAssC(&tmpname, ajFileTempName(NULL));
+    ajStrAssignC(&tmpname, ajFileTempName(NULL));
 
-    ajStrAssS(&hmmoutfname, tmpname);
-    ajStrAppC(&hmmoutfname, ".hmmoutf");
+    ajStrAssignS(&hmmoutfname, tmpname);
+    ajStrAppendC(&hmmoutfname, ".hmmoutf");
 
     libscan_RunHmmsearch(hmmfile, hmminfname, hmmoutfname);
 
@@ -2058,9 +2058,9 @@ AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath,
 	  }
 
 	  /* Get the sequence*/
-	  else if(((ajStrFind(line,id))>=0)){
+	  else if(((ajStrFindS(line,id))>=0)){
 	    ajFmtScanS(line,"%*s %*d %S %*d",&seqfrag);
-	    ajStrApp(&sequence,seqfrag);
+	    ajStrAppendS(&sequence,seqfrag);
 	  }
 
 	  /* Print the sequence for the last entry */
@@ -2072,16 +2072,16 @@ AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath,
 	    if(!(libscan_SunidToScopInfo(sunid,&family,&superfamily,&fold,&class, scoplist)))
 		ajFatal("libscan_SunidToScopInfo failed in libscan_HmmLibScan. email rranasin@hgmp.mrc.ac.uk\n");
 
-	    ajStrAssS(&hit->Acc,sunidfrag);
-	    ajStrAssS(&hit->Spr,family);
-	    ajStrAssS(&hit->Seq,sequence);
+	    ajStrAssignS(&hit->Acc,sunidfrag);
+	    ajStrAssignS(&hit->Spr,family);
+	    ajStrAssignS(&hit->Seq,sequence);
 	    hit->Score = score;
 	    hit->Start = start;
 	    hit->End   = end;
 
 	    /* push the scop hit onto list */
 	    ajListPushApp(listhits,(AjPHit) hit);
-	    ajStrAssC(&sequence,"");	
+	    ajStrAssignC(&sequence,"");	
 
 	    break;
 	  }
@@ -2117,7 +2117,7 @@ AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath,
   hitlist = embHitlistNew(0);
 
   /* write hit structure */
-  ajStrAssS(&hitlist->Model,model);
+  ajStrAssignS(&hitlist->Model,model);
 
   /* convert the original list of hits to an array for convenience */
   nhits = ajListToArray(listhits,(void ***)&hitlist->hits);
@@ -2280,17 +2280,17 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
   /* Initialise random number generator for naming of temp. files
      and create hmmer output file */
   ajRandomSeed();
-  ajStrAssC(&tmpname, ajFileTempName(NULL));
+  ajStrAssignC(&tmpname, ajFileTempName(NULL));
   
-  ajStrAssS(&profileinfname, tmpname);
-  ajStrAppC(&profileinfname, ".profileinf");
+  ajStrAssignS(&profileinfname, tmpname);
+  ajStrAppendC(&profileinfname, ".profileinf");
   
   profileinf = ajFileNewOut(profileinfname);
   ajFmtPrintF(profileinf,">%S\n%S\n",seq->Name,seq->Seq);
   ajFileClose(&profileinf);
   
-  ajStrAssS(&outfile,seq->Name);
-  ajStrApp(&outfile,profoutextn);
+  ajStrAssignS(&outfile,seq->Name);
+  ajStrAppendS(&outfile,profoutextn);
   
   iter = ajListIter(modelnames);
 
@@ -2298,21 +2298,21 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
   while((profile = (AjPStr)ajListIterNext(iter))){
 
     /* get the Sunid_Family from the profile. THIS WILL NEED TO BE CHANGED */
-    posdash = ajStrRFindC(profile, "/");
-    posdot  = ajStrRFindC(profile, ".");
+    posdash = ajStrFindlastC(profile, "/");
+    posdot  = ajStrFindlastC(profile, ".");
     
     if(posdash >= posdot)
       ajWarn("Could not create filename. Email rranasin@hgmp.mrc.ac.uk");
     else{
-      ajStrAssSub(&sunidfrag, profile, posdash+1, posdot-1);
+      ajStrAssignSubS(&sunidfrag, profile, posdash+1, posdot-1);
       ajStrToInt(sunidfrag,&sunid);
     }
     
     ajRandomSeed();
-    ajStrAssC(&tmpname, ajFileTempName(NULL));
+    ajStrAssignC(&tmpname, ajFileTempName(NULL));
     
-    ajStrAssS(&profileoutfname, tmpname);
-    ajStrAppC(&profileoutfname, ".profileoutf");
+    ajStrAssignS(&profileoutfname, tmpname);
+    ajStrAppendC(&profileoutfname, ".profileoutf");
     
     libscan_RunProphet(profile, profileinfname, gapopen, gapextn, profileoutfname);
     
@@ -2324,7 +2324,7 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
       if((ajStrPrefixC(line,"Local:"))){
 	/* GET THE ID */
 	ajFmtScanS(line,"%*s %*s %*s %S",&id);
-	ajStrAssC(&sequence,"");
+	ajStrAssignC(&sequence,"");
       }
       
       /* GET THE SCORE */
@@ -2332,15 +2332,15 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
 	ajFmtScanS(line,"%*s %f",&score);
 
       /* GET THE SEQUENCE */      
-      else if(ajStrPrefix(line,id)){
+      else if(ajStrPrefixS(line,id)){
 	ajFmtScanS(line,"%*s %d %S %d",&tmpstart,&seqfrag,&end);
 	
 	/* get start position from the first seqfrag only */
 	if(!ajStrCmpC(sequence,""))
 	  start = tmpstart;
 	
-	ajStrSubstituteCC(&seqfrag,".","");
-	ajStrApp(&sequence,seqfrag);
+	ajStrExchangeCC(&seqfrag,".","");
+	ajStrAppendS(&sequence,seqfrag);
       }
       
       else
@@ -2354,9 +2354,9 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
     if(!(libscan_SunidToScopInfo(sunid,&family,&superfamily,&fold,&class, scoplist)))
 	ajFatal("libscan_SunidToScopInfo failed in libscan_HmmLibScan. email rranasin@hgmp.mrc.ac.uk\n");
 
-    ajStrAssS(&hit->Acc,sunidfrag);
-    ajStrAssS(&hit->Spr,family);
-    ajStrAssS(&hit->Seq,sequence);
+    ajStrAssignS(&hit->Acc,sunidfrag);
+    ajStrAssignS(&hit->Spr,family);
+    ajStrAssignS(&hit->Seq,sequence);
     hit->Score = score;
     hit->Start = start;
     hit->End   = end;    
@@ -2389,7 +2389,7 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
   hitlist = embHitlistNew(0);
 
   /* write hit structure */
-  ajStrAssS(&hitlist->Model,model);
+  ajStrAssignS(&hitlist->Model,model);
 
   /* convert the original list of hits to an array for convenience */
   nhits = ajListToArray(listhits,(void ***)&hitlist->hits);
@@ -2499,8 +2499,8 @@ static AjBool libscan_SignatureLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
     
     listhits     = ajListNew();
 
-    ajStrAssS(&outfile,seq->Name);
-    ajStrApp(&outfile,sigoutextn);
+    ajStrAssignS(&outfile,seq->Name);
+    ajStrAppendS(&outfile,sigoutextn);
 
 
 
@@ -2552,8 +2552,8 @@ static AjBool libscan_SignatureLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
 
       ajFmtPrintS(&string,"%d",sig->Sunid_Family);
       
-      ajStrAssS(&hit->Acc,string);
-      ajStrAssS(&hit->Spr,sig->Family);
+      ajStrAssignS(&hit->Acc,string);
+      ajStrAssignS(&hit->Spr,sig->Family);
       
       ajListPushApp(listhits,(AjPHit) hit);
 
@@ -2583,7 +2583,7 @@ static AjBool libscan_SignatureLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
     hitlist = embHitlistNew(0);
 
     /* write hit structure */
-    ajStrAssS(&hitlist->Model,model);
+    ajStrAssignS(&hitlist->Model,model);
 
     /* convert the original list of hits to an array for convenience */
     nhits = ajListToArray(listhits,(void ***)&hitlist->hits);
@@ -2732,10 +2732,10 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
   /* Initialise random number generator for naming of temp. files
      and create sam output file */
   ajRandomSeed();
-  ajStrAssC(&tmpname, ajFileTempName(NULL));
+  ajStrAssignC(&tmpname, ajFileTempName(NULL));
 
-  ajStrAssS(&saminfname, tmpname);
-  ajStrAppC(&saminfname, ".saminf");
+  ajStrAssignS(&saminfname, tmpname);
+  ajStrAppendC(&saminfname, ".saminf");
 
   /* the scoring query sequence */
   saminf = ajFileNewOut(saminfname);
@@ -2743,39 +2743,39 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
   ajFileClose(&saminf);
 
   /* construct output file with the input sequence name for convenience */
-  ajStrAssS(&outfile,seq->Name);
-  ajStrApp(&outfile,samoutextn);
+  ajStrAssignS(&outfile,seq->Name);
+  ajStrAppendS(&outfile,samoutextn);
 
   iter = ajListIter(modelnames);
   /* Start of main application loop */
   while((samfile = (AjPStr)ajListIterNext(iter))){
 
     /* get the Sunid_Family from the samfile. */
-    posdash = ajStrRFindC(samfile, "/");
-    posdot  = ajStrRFindC(samfile, ".");
+    posdash = ajStrFindlastC(samfile, "/");
+    posdot  = ajStrFindlastC(samfile, ".");
 
     if(posdash >= posdot)
       ajWarn("Could not create filename. Email rranasin@hgmp.mrc.ac.uk");
     else{
-      ajStrAssSub(&sunidfrag, samfile, posdash+1, posdot-1);
+      ajStrAssignSubS(&sunidfrag, samfile, posdash+1, posdot-1);
       ajStrToInt(sunidfrag,&sunid);
     }
 
     ajRandomSeed();
-    ajStrAssC(&tmp, ajFileTempName(NULL));
+    ajStrAssignC(&tmp, ajFileTempName(NULL));
 
     /* temp base name for sam output file*/
-    ajStrAssS(&sambasename,tmp);
+    ajStrAssignS(&sambasename,tmp);
 
     /* workout the sam output name */
-    ajStrAssS(&samoutfname, sambasename);
-    ajStrAppC(&samoutfname, ".mstat");
+    ajStrAssignS(&samoutfname, sambasename);
+    ajStrAppendC(&samoutfname, ".mstat");
 
     /* RUN SAMSEARCH */
     ajFmtPrintS(&cmd,"/usr/local/sam/bin/hmmscore %S -i %S -db %S -select_mdalign 8 -sw 3",sambasename,samfile,saminfname);
 
     /* execute the command line */
-    system(ajStrStr(cmd));
+    system(ajStrGetPtr(cmd));
 
     /* open samsearch output file */
     if(!(inf = ajFileNewIn(samoutfname)))
@@ -2807,8 +2807,8 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
 	ajFatal("libscan_SunidToScopInfo failed in libscan_HmmLibScan. email rranasin@hgmp.mrc.ac.uk\n");
 
 	    /* construct the hit */
-	    ajStrAssS(&hit->Acc,sunidfrag);
-	    ajStrAssS(&hit->Spr,family);
+	    ajStrAssignS(&hit->Acc,sunidfrag);
+	    ajStrAssignS(&hit->Spr,family);
 	    hit->Score = score;
 	    hit->Start = start;
 	    hit->End   = end;
@@ -2823,11 +2823,11 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
 
     /* clean up directory */
     ajFmtPrintS(&cmd,"rm %S.dist",sambasename);
-    system(ajStrStr(cmd));
+    system(ajStrGetPtr(cmd));
     ajFmtPrintS(&cmd,"rm %S.mstat",sambasename);
-    system(ajStrStr(cmd));
+    system(ajStrGetPtr(cmd));
     ajFmtPrintS(&cmd,"rm %S.mult",sambasename);
-    system(ajStrStr(cmd));
+    system(ajStrGetPtr(cmd));
 
   }
   ajListIterFree(&iter);
@@ -2852,7 +2852,7 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
   hitlist = embHitlistNew(0);
 
   /* write hit structure */
-  ajStrAssS(&hitlist->Model,model);
+  ajStrAssignS(&hitlist->Model,model);
 
   /* convert the original list of hits to an array for convenience */
   nhits = ajListToArray(listhits,(void ***)&hitlist->hits);
@@ -2942,7 +2942,7 @@ AjBool libscan_RunHmmsearch(AjPStr filename, AjPStr db, AjPStr outfname)
     ajFmtPrintS(&cmd,"/usr/local/hmmer211/bin/hmmsearch %S %S > %S",filename,db,outfname);
 
     /* execute the command line */
-    system(ajStrStr(cmd));
+    system(ajStrGetPtr(cmd));
   
     /* clean up */
     ajStrDel(&cmd);
@@ -2984,7 +2984,7 @@ AjBool libscan_RunProphet(AjPStr profile, AjPStr db, float gapopen, float gapext
                 db,profile,gapopen,gapextend,outfname);
 
     /* execute the command line */
-    system(ajStrStr(cmd));
+    system(ajStrGetPtr(cmd));
 
     /* clean up */
     ajStrDel(&cmd);
@@ -3016,17 +3016,17 @@ static AjPList libscan_GetLibrary(AjPStr path, AjPStr extn)
     list = ajListNew();
     
     /* Create list of files in the path */
-    ajStrAssC(&tmp, "*");               /* assign a wildcard to tmp */
+    ajStrAssignC(&tmp, "*");               /* assign a wildcard to tmp */
 
-    if((ajStrChar(extn, 0)=='.')) /* checks if the file extension starts with "." */
-        ajStrApp(&tmp, extn);     /* assign the acd input file extension to tmp */
+    if((ajStrGetCharFirst(extn)=='.')) /* checks if the file extension starts with "." */
+        ajStrAppendS(&tmp, extn);     /* assign the acd input file extension to tmp */
   
     /* this picks up situations where the user has specified an
        extension without a "." */
     else
     {
-        ajStrAppC(&tmp, ".");           /* assign "." to tmp */  
-        ajStrApp(&tmp, extn);           /* append tmp with a user
+        ajStrAppendC(&tmp, ".");           /* assign "." to tmp */  
+        ajStrAppendS(&tmp, extn);           /* append tmp with a user
 					   specified extension */
     }   
 
@@ -3076,7 +3076,7 @@ static AjBool libscan_RunHmmerInModeOne(AjPSeqset db, AjPStr hmmpath,
     fold        = ajStrNew();
     class       = ajStrNew();
 
-    if(ajStrChar(*mode,0)=='1')
+    if(ajStrGetCharFirst(*mode)=='1')
     {   
         hmmlist = libscan_GetLibrary(hmmpath,hmmextn);
         
@@ -3084,8 +3084,8 @@ static AjBool libscan_RunHmmerInModeOne(AjPSeqset db, AjPStr hmmpath,
         while(ajListPop(hmmlist,(void **)&hmmfile))
         {
             /* get the "seed" bit of filenames from the hmmfile */
-            posdash = ajStrRFindC(hmmfile, "/");
-            posdot  = ajStrRFindC(hmmfile, ".");
+            posdash = ajStrFindlastC(hmmfile, "/");
+            posdot  = ajStrFindlastC(hmmfile, ".");
         
 	    
             if(posdash >= posdot)
@@ -3094,11 +3094,11 @@ static AjBool libscan_RunHmmerInModeOne(AjPSeqset db, AjPStr hmmpath,
             else
             {
                 /* get the Family_Sunid */
-                ajStrAssSub(&sunid, hmmfile, posdash+1, posdot-1);
+                ajStrAssignSubS(&sunid, hmmfile, posdash+1, posdot-1);
 		
                 /* CREAT OUTPUT FILE NAMES */
-                ajStrAssS(&hmmsearch,sunid);
-                ajStrApp(&hmmsearch, hmmoutextn);
+                ajStrAssignS(&hmmsearch,sunid);
+                ajStrAppendS(&hmmsearch, hmmoutextn);
 		
 		
                 /* CREAT OUTPUT STREAMS */
@@ -3170,13 +3170,13 @@ static AjBool libscan_RunHmmerInModeTwo(AjPSeqset db, AjPStr hmmpath,
     AjPSeq seq = NULL;
     ajint i;
 						   
-    if(ajStrChar(*mode,0)=='2') 
+    if(ajStrGetCharFirst(*mode)=='2') 
     {
         for(i=0;i<db->Size;i++)
         {
             seq = ajSeqNew();
-            ajStrAssS(&seq->Name,db->Seq[i]->Name);
-            ajStrAssS(&seq->Seq,db->Seq[i]->Seq);
+            ajStrAssignS(&seq->Name,db->Seq[i]->Name);
+            ajStrAssignS(&seq->Seq,db->Seq[i]->Seq);
             
             /* search a library of hidden markov models */
             libscan_HmmLibScan(seq,hmmpath,hmmextn,scoplist,model,
@@ -3235,7 +3235,7 @@ static AjBool libscan_RunProphetInModeOne(AjPSeqset db, AjPStr profpath,
     fold        = ajStrNew();
     class       = ajStrNew();
 
-    if(ajStrChar(*mode,0)=='1')
+    if(ajStrGetCharFirst(*mode)=='1')
     {
         proflist = libscan_GetLibrary(profpath,profextn);
       
@@ -3243,8 +3243,8 @@ static AjBool libscan_RunProphetInModeOne(AjPSeqset db, AjPStr profpath,
         while(ajListPop(proflist,(void **)&profile))
         {
             /* get the "seed" bit of filenames from the gbvfile */
-            posdash = ajStrRFindC(profile, "/");
-            posdot  = ajStrRFindC(profile, ".");
+            posdash = ajStrFindlastC(profile, "/");
+            posdot  = ajStrFindlastC(profile, ".");
             
             if(posdash >= posdot)
                 ajFatal("Could not create filename. Email rranasin@hgmp.mrc.ac.uk");
@@ -3252,15 +3252,15 @@ static AjBool libscan_RunProphetInModeOne(AjPSeqset db, AjPStr profpath,
             else
             {
                 /* Add a '.' to outextn if one does not already exist
-                   if((ajStrChar(outextn, 0)!='.'))       
+                   if((ajStrGetCharFirst(outextn)!='.'))       
                    ajStrInsertC(&outextn, 0, ".");*/
 
                 /* get the Family_Sunid */
-                ajStrAssSub(&sunid, profile, posdash+1, posdot-1);
+                ajStrAssignSubS(&sunid, profile, posdash+1, posdot-1);
          
                 /* CREAT OUTPUT FILE NAMES */
-                ajStrAssS(&profsearch,sunid);
-                ajStrApp(&profsearch, profoutextn);
+                ajStrAssignS(&profsearch,sunid);
+                ajStrAppendS(&profsearch, profoutextn);
                                       
                 /* CREAT OUTPUT STREAMS */
                 profoutf = ajFileNewOutD(profoutpath,profsearch);
@@ -3326,13 +3326,13 @@ static AjBool libscan_RunProphetInModeTwo(AjPSeqset db, AjPStr profpath,
 
     ajint i;
 
-    if(ajStrChar(*mode,0)=='2') 
+    if(ajStrGetCharFirst(*mode)=='2') 
     {
         for(i=0;i<db->Size;i++)
         {
             seq = ajSeqNew();
-            ajStrAssS(&seq->Name,db->Seq[i]->Name);
-            ajStrAssS(&seq->Seq,db->Seq[i]->Seq);
+            ajStrAssignS(&seq->Name,db->Seq[i]->Name);
+            ajStrAssignS(&seq->Seq,db->Seq[i]->Seq);
             
             
             /* search a library of gribskov profiles */
@@ -3391,7 +3391,7 @@ static AjBool libscan_RunSignatureInModeOne(AjPSeqset db, AjPStr sigpath,
     fold        = ajStrNew();
     class       = ajStrNew();
     
-    if(ajStrChar(*mode,0)=='1')
+    if(ajStrGetCharFirst(*mode)=='1')
     {
         siglist = libscan_GetLibrary(sigpath,sigextn);
 
@@ -3403,8 +3403,8 @@ static AjBool libscan_RunSignatureInModeOne(AjPSeqset db, AjPStr sigpath,
 	    
 
             /* get the "seed" bit of filenames from the gbvfile */
-            posdash = ajStrRFindC(sigfile, "/");
-            posdot  = ajStrRFindC(sigfile, ".");
+            posdash = ajStrFindlastC(sigfile, "/");
+            posdot  = ajStrFindlastC(sigfile, ".");
             
             if(posdash >= posdot)
                 ajFatal("Could not create filename. Email rranasin@hgmp.mrc.ac.uk");
@@ -3412,16 +3412,16 @@ static AjBool libscan_RunSignatureInModeOne(AjPSeqset db, AjPStr sigpath,
             else
             {
                 /* Add a '.' to outextn if one does not already exist
-                   if((ajStrChar(outextn, 0)!='.'))       
+                   if((ajStrGetCharFirst(outextn)!='.'))       
                    ajStrInsertC(&outextn, 0, ".");*/
 
                 /* get the Family_Sunid */
-                ajStrAssSub(&sunid, sigfile, posdash+1, posdot-1);
+                ajStrAssignSubS(&sunid, sigfile, posdash+1, posdot-1);
          
                 /* CREAT OUTPUT FILE NAMES */
-                ajStrAssS(&sigsearch,sunid);
+                ajStrAssignS(&sigsearch,sunid);
 
-                ajStrApp(&sigsearch, sigoutextn);
+                ajStrAppendS(&sigsearch, sigoutextn);
                                       
                 /* CREAT OUTPUT STREAMS */
                 sigoutf = ajFileNewOutD(sigoutpath,sigsearch);
@@ -3488,13 +3488,13 @@ static AjBool libscan_RunSignatureInModeTwo(AjPSeqset db, AjPStr sigpath,
     AjPSeq seq   = NULL;
     ajint i;
 
-    if(ajStrChar(*mode,0)=='2') 
+    if(ajStrGetCharFirst(*mode)=='2') 
     {
 	 for(i=0;i<db->Size;i++)
 	 {
 	     seq = ajSeqNew();
-	     ajStrAssS(&seq->Name,db->Seq[i]->Name);
-	     ajStrAssS(&seq->Seq,db->Seq[i]->Seq);            
+	     ajStrAssignS(&seq->Name,db->Seq[i]->Name);
+	     ajStrAssignS(&seq->Seq,db->Seq[i]->Seq);            
             
 	     ajSeqDel(&seq);
 	 }
@@ -3502,8 +3502,8 @@ static AjBool libscan_RunSignatureInModeTwo(AjPSeqset db, AjPStr sigpath,
         for(i=0;i<db->Size;i++)
         {
             seq = ajSeqNew();
-            ajStrAssS(&seq->Name,db->Seq[i]->Name);
-            ajStrAssS(&seq->Seq,db->Seq[i]->Seq);            
+            ajStrAssignS(&seq->Name,db->Seq[i]->Name);
+            ajStrAssignS(&seq->Seq,db->Seq[i]->Seq);            
 
             /* search a library of signature */
             libscan_SignatureLibScan(seq,sigpath,sigextn,gapo,gape,
@@ -3559,7 +3559,7 @@ static AjBool libscan_RunSamInModeOne(AjPStr samdb, AjPStr sampath,
     fold        = ajStrNew();
     class       = ajStrNew();
     
-    if(ajStrChar(*mode,0)=='1')
+    if(ajStrGetCharFirst(*mode)=='1')
     {   
         samlist = libscan_GetLibrary(sampath,samextn);
         
@@ -3567,8 +3567,8 @@ static AjBool libscan_RunSamInModeOne(AjPStr samdb, AjPStr sampath,
         while(ajListPop(samlist,(void **)&samfile))
         {
             /* get the "seed" bit of filenames from the samfile */
-            posdash = ajStrRFindC(samfile, "/");
-            posdot  = ajStrRFindC(samfile, ".");
+            posdash = ajStrFindlastC(samfile, "/");
+            posdot  = ajStrFindlastC(samfile, ".");
 	    
 	    
             if(posdash >= posdot)
@@ -3577,11 +3577,11 @@ static AjBool libscan_RunSamInModeOne(AjPStr samdb, AjPStr sampath,
             else
             {
                 /* get the Family_Sunid */
-                ajStrAssSub(&sunid, samfile, posdash+1, posdot-1);
+                ajStrAssignSubS(&sunid, samfile, posdash+1, posdot-1);
 		
                 /* CREAT OUTPUT FILE NAMES */
-                ajStrAssS(&samsearch,sunid);
-                ajStrApp(&samsearch, samoutextn);
+                ajStrAssignS(&samsearch,sunid);
+                ajStrAppendS(&samsearch, samoutextn);
 		
 		
                 /* CREAT OUTPUT STREAMS */
@@ -3651,13 +3651,13 @@ static AjBool libscan_RunSamInModeTwo(AjPSeqset db, AjPStr sampath,
     AjPSeq seq = NULL;
     ajint i;
 						   
-    if(ajStrChar(*mode,0)=='2') 
+    if(ajStrGetCharFirst(*mode)=='2') 
     {
         for(i=0;i<db->Size;i++)
         {
             seq = ajSeqNew();
-            ajStrAssS(&seq->Name,db->Seq[i]->Name);
-            ajStrAssS(&seq->Seq,db->Seq[i]->Seq);
+            ajStrAssignS(&seq->Name,db->Seq[i]->Name);
+            ajStrAssignS(&seq->Seq,db->Seq[i]->Seq);
             
             /* search a library of hidden markov models */
             /*libscan_SamLibScan(seq,sampath,samextn,scoplist,model,
@@ -3714,9 +3714,9 @@ static AjPFile libscan_RunBlastpgp(AjPStr database, AjPStr masterseq,
     /* Initialise random number generator for naming of temp. files
        and create  psiblast input files */
     ajRandomSeed();
-    ajStrAssC(&name, ajFileTempName(NULL));
-    ajStrAss(psiname, name);
-    ajStrAppC(psiname, ".psiout");
+    ajStrAssignC(&name, ajFileTempName(NULL));
+    ajStrAssignRef(psiname, name);
+    ajStrAppendC(psiname, ".psiout");
 
 
     /* Run PSI-BLAST */
@@ -3724,13 +3724,13 @@ static AjPFile libscan_RunBlastpgp(AjPStr database, AjPStr masterseq,
     /* create an index for the database */
     ajFmtPrintS(&temp,"/usr/local/blast/formatdb -i %S -p T -o T",database);
     ajFmtPrint("%S\n", temp);
-    system(ajStrStr(temp));
+    system(ajStrGetPtr(temp));
     
     /* run psi-blast */
     ajFmtPrintS(&temp,"/usr/local/blast/blastpgp -i %S -R %S -j %d -h %f -b %d -v %d -d %S > %S\n",
                 masterseq, pssmfile, niter,evalue, maxhit, maxhit, database, *psiname);
     ajFmtPrint("%S\n", temp);
-    system(ajStrStr(temp));
+    system(ajStrGetPtr(temp));
     
     /* cleanup directory */
 
@@ -3788,7 +3788,7 @@ static AjBool libscan_RunRPSBlast(AjPSeqset set, AjPStr db, AjPStr *mode,
 
     AjPHit hit       = NULL;
     
-    if(ajStrChar(*mode,0)=='2') 
+    if(ajStrGetCharFirst(*mode)=='2') 
     {
 	/* Allocate strings */
 	name        = ajStrNew();
@@ -3802,18 +3802,18 @@ static AjBool libscan_RunRPSBlast(AjPSeqset set, AjPStr db, AjPStr *mode,
 	/* Initialise random number generator for naming of temp. files
 	   and create  psiblast input files */
 	ajRandomSeed();
-	ajStrAssC(&name, ajFileTempName(NULL));
-	ajStrAss(&psiname, name);
-	ajStrAppC(&psiname, ".psiout");
+	ajStrAssignC(&name, ajFileTempName(NULL));
+	ajStrAssignRef(&psiname, name);
+	ajStrAppendC(&psiname, ".psiout");
 
-	ajStrAssS(&pssminfname, name);
-	ajStrAppC(&pssminfname, ".pssminf");
+	ajStrAssignS(&pssminfname, name);
+	ajStrAppendC(&pssminfname, ".pssminf");
 
         for(i=0;i<set->Size;i++)
         {
             seq = ajSeqNew();
-            ajStrAssS(&seq->Name,set->Seq[i]->Name);
-            ajStrAssS(&seq->Seq,set->Seq[i]->Seq);
+            ajStrAssignS(&seq->Name,set->Seq[i]->Name);
+            ajStrAssignS(&seq->Seq,set->Seq[i]->Seq);
 
 	    /* the scoring query sequence */
 	    pssminf = ajFileNewOut(pssminfname);
@@ -3824,7 +3824,7 @@ static AjBool libscan_RunRPSBlast(AjPSeqset set, AjPStr db, AjPStr *mode,
 	    ajFmtPrintS(&temp,"/usr/local/blast/rpsblast -i %S -e %f -d %S -o %S",
 			pssminfname,evalue, db, psiname);
 	    ajFmtPrint("%S\n", temp);
-	    system(ajStrStr(temp));
+	    system(ajStrGetPtr(temp));
 
 	    /* parse the output from search results */
 	    pssmoutf = ajFileNewIn(psiname);
@@ -3838,11 +3838,11 @@ static AjBool libscan_RunRPSBlast(AjPSeqset set, AjPStr db, AjPStr *mode,
 
 	    /* Delete tmp rpsblast output file*/
 	    ajFmtPrintS(&temp, "rm %S", psiname);
-	    system(ajStrStr(temp));
+	    system(ajStrGetPtr(temp));
 
 	    /* Delete tmp rpsblast input file */
 	    ajFmtPrintS(&temp, "rm %S", pssminfname);
-	    system(ajStrStr(temp));	    
+	    system(ajStrGetPtr(temp));	    
 
 	    /* generate list for ease of use */
 	    for(i=0;i<blastlist->N;i++)
@@ -3865,7 +3865,7 @@ static AjBool libscan_RunRPSBlast(AjPSeqset set, AjPStr db, AjPStr *mode,
 	    hitlist = embHitlistNew(0);
 	    
 	    /* write hit structure */
-	    ajStrAssS(&hitlist->Model,model);
+	    ajStrAssignS(&hitlist->Model,model);
 	    
 	    /* Convert list to array within Hitlist object */
 	    nhits=ajListToArray(listhits,(void ***)&hitlist->hits);
@@ -3881,8 +3881,8 @@ static AjBool libscan_RunRPSBlast(AjPSeqset set, AjPStr db, AjPStr *mode,
 	     **
 	     *******************************************************************/
 	    /* construct output file with the input sequence name for convenience */
-	    ajStrAssS(&outfile,seq->Name);
-	    ajStrApp(&outfile,pssmoutextn);
+	    ajStrAssignS(&outfile,seq->Name);
+	    ajStrAppendS(&outfile,pssmoutextn);
 
 	    outf = ajFileNewOutD(pssmoutpath,outfile);
 
@@ -3985,10 +3985,10 @@ static AjPHitlist libscan_ReadPsiblastOutput(AjPStr class, AjPStr fold,
         
     /* Copy domain classification records*/
     /* Assign domain classification records from hitlist structure */
-    ajStrAssS(&hitlist->Class, class);
-    ajStrAssS(&hitlist->Fold, fold);
-    ajStrAssS(&hitlist->Superfamily, superfamily);
-    ajStrAssS(&hitlist->Family, family);
+    ajStrAssignS(&hitlist->Class, class);
+    ajStrAssignS(&hitlist->Fold, fold);
+    ajStrAssignS(&hitlist->Superfamily, superfamily);
+    ajStrAssignS(&hitlist->Family, family);
     hitlist->Sunid_Family = sunid;
 
     /* Loop for whole of input file*/
@@ -3999,8 +3999,8 @@ static AjPHitlist libscan_ReadPsiblastOutput(AjPStr class, AjPStr fold,
         if(ajStrPrefixC(line,">"))
         {	    
             /* Parse the accession number */
-	    ajStrSubstituteCC(&line,">","");
-            ajStrAssS(&prevacc,line);	    	
+	    ajStrExchangeCC(&line,">","");
+            ajStrAssignS(&prevacc,line);	    	
         }
         /* We've found a line beginning with ' Score = ' i.e. the
            start of data for a hit */
@@ -4022,18 +4022,18 @@ static AjPHitlist libscan_ReadPsiblastOutput(AjPStr class, AjPStr fold,
 			    "libscan_ReadPsiblastOutput"
 			    "email rranasin@hgmp.mrc.ac.uk\n");*/
 
-		    ajStrAssS(&hitlist->hits[hitn-1]->Acc, acc);		    
-		    ajStrAssS(&hitlist->hits[hitn-1]->Spr, acc);
+		    ajStrAssignS(&hitlist->hits[hitn-1]->Acc, acc);		    
+		    ajStrAssignS(&hitlist->hits[hitn-1]->Spr, acc);
             
 		}
 		else
-		    ajStrAss(&hitlist->hits[hitn-1]->Acc, acc);
+		    ajStrAssignRef(&hitlist->hits[hitn-1]->Acc, acc);
 
                 hitlist->hits[hitn-1]->Start   = start;
                 hitlist->hits[hitn-1]->End     = fragend;
-                ajStrAss(&hitlist->hits[hitn-1]->Seq, fullseq);
-                ajStrDegap(&hitlist->hits[hitn-1]->Seq);
-                ajStrAssC(&hitlist->hits[hitn-1]->Model, "PSSM");
+                ajStrAssignRef(&hitlist->hits[hitn-1]->Seq, fullseq);
+                ajStrRemoveGap(&hitlist->hits[hitn-1]->Seq);
+                ajStrAssignC(&hitlist->hits[hitn-1]->Model, "PSSM");
                 hitlist->hits[hitn-1]->Score = score;
 		hitlist->hits[hitn-1]->Eval  = eval;
 	    }
@@ -4043,16 +4043,16 @@ static AjPHitlist libscan_ReadPsiblastOutput(AjPStr class, AjPStr fold,
 	    
 	   
             /* Reset the sequence of the full hit */
-            ajStrAssC(&fullseq, "");
+            ajStrAssignC(&fullseq, "");
 
             /* Incremenet hit counter */
             hitn++;
 
             /* Copy accession number */
-            ajStrAss(&acc, prevacc);
+            ajStrAssignRef(&acc, prevacc);
         }
         /* Line containing sequence segment of the hit */
-        else if(ajStrPrefixC(line,"Sbjct: ") && ajStrChar(*mode,0)=='1')
+        else if(ajStrPrefixC(line,"Sbjct: ") && ajStrGetCharFirst(*mode)=='1')
         {
             /* Parse the start, end and sequence of the fragment */
             ajFmtScanS(line, "%*s %d %S %d", &fragstart, &fragseq, &fragend);
@@ -4062,11 +4062,11 @@ static AjPHitlist libscan_ReadPsiblastOutput(AjPStr class, AjPStr fold,
                 start=fragstart;
    
             /* Add fragment to end of sequence of full hit */
-            ajStrApp(&fullseq, fragseq);
+            ajStrAppendS(&fullseq, fragseq);
         }
 
 	/* Line containing sequence segment of the hit */
-        else if(ajStrPrefixC(line,"Query: ") && ajStrChar(*mode,0)=='2')
+        else if(ajStrPrefixC(line,"Query: ") && ajStrGetCharFirst(*mode)=='2')
         {
             /* Parse the start, end and sequence of the fragment */
             ajFmtScanS(line, "%*s %d %S %d", &fragstart, &fragseq, &fragend);
@@ -4076,7 +4076,7 @@ static AjPHitlist libscan_ReadPsiblastOutput(AjPStr class, AjPStr fold,
                 start=fragstart;
    
             /* Add fragment to end of sequence of full hit */
-            ajStrApp(&fullseq, fragseq);
+            ajStrAppendS(&fullseq, fragseq);
         }
     }
 
@@ -4085,10 +4085,10 @@ static AjPHitlist libscan_ReadPsiblastOutput(AjPStr class, AjPStr fold,
     {
         hitlist->hits[hitn-1]->Start = start;
         hitlist->hits[hitn-1]->End = fragend;
-        ajStrAss(&hitlist->hits[hitn-1]->Acc, acc);
-        ajStrAss(&hitlist->hits[hitn-1]->Seq, fullseq);
-        ajStrDegap(&hitlist->hits[hitn-1]->Seq);
-	ajStrAssC(&hitlist->hits[hitn-1]->Model, "PSSM");
+        ajStrAssignRef(&hitlist->hits[hitn-1]->Acc, acc);
+        ajStrAssignRef(&hitlist->hits[hitn-1]->Seq, fullseq);
+        ajStrRemoveGap(&hitlist->hits[hitn-1]->Seq);
+	ajStrAssignC(&hitlist->hits[hitn-1]->Model, "PSSM");
 	hitlist->hits[hitn-1]->Score = score;
 	hitlist->hits[hitn-1]->Eval  = eval;
     }
@@ -4154,10 +4154,10 @@ static AjBool libscan_SunidToScopInfo (ajint sunid, AjPStr *family,
         return ajFalse;
     }   
     
-    ajStrAssS(family, arr[idx]->Family);
-    ajStrAssS(superfamily, arr[idx]->Superfamily);
-    ajStrAssS(fold, arr[idx]->Fold);
-    ajStrAssS(class, arr[idx]->Class);
+    ajStrAssignS(family, arr[idx]->Family);
+    ajStrAssignS(superfamily, arr[idx]->Superfamily);
+    ajStrAssignS(fold, arr[idx]->Fold);
+    ajStrAssignS(class, arr[idx]->Class);
     
     AJFREE(arr);
 
@@ -4335,23 +4335,23 @@ AjBool libscan_HitlistToScophits(const AjPList in, AjPList *out)
 	    
 
 	    /* Assign scop classification records from hitlist structure */
-	    ajStrAssS(&scophit->Class, hitlist->Class);
-	    ajStrAssS(&scophit->Fold, hitlist->Fold);
-	    ajStrAssS(&scophit->Superfamily, hitlist->Superfamily);
-	    ajStrAssS(&scophit->Family, hitlist->Family);
+	    ajStrAssignS(&scophit->Class, hitlist->Class);
+	    ajStrAssignS(&scophit->Fold, hitlist->Fold);
+	    ajStrAssignS(&scophit->Superfamily, hitlist->Superfamily);
+	    ajStrAssignS(&scophit->Family, hitlist->Family);
 	    scophit->Sunid_Family = hitlist->Sunid_Family;
 	    scophit->Priority = hitlist->Priority;
 	
     
 	    /* Assign records from hit structure */
-	    ajStrAssS(&scophit->Seq, hitlist->hits[x]->Seq);
-	    ajStrAssS(&scophit->Acc, hitlist->hits[x]->Acc);
-	    ajStrAssS(&scophit->Spr, hitlist->hits[x]->Spr);
-	    ajStrAssS(&scophit->Typeobj, hitlist->hits[x]->Typeobj);
-	    ajStrAssS(&scophit->Typesbj, hitlist->hits[x]->Typesbj);
-	    ajStrAssS(&scophit->Model, hitlist->hits[x]->Model);
-	    ajStrAssS(&scophit->Alg, hitlist->hits[x]->Alg);
-	    ajStrAssS(&scophit->Group, hitlist->hits[x]->Group);
+	    ajStrAssignS(&scophit->Seq, hitlist->hits[x]->Seq);
+	    ajStrAssignS(&scophit->Acc, hitlist->hits[x]->Acc);
+	    ajStrAssignS(&scophit->Spr, hitlist->hits[x]->Spr);
+	    ajStrAssignS(&scophit->Typeobj, hitlist->hits[x]->Typeobj);
+	    ajStrAssignS(&scophit->Typesbj, hitlist->hits[x]->Typesbj);
+	    ajStrAssignS(&scophit->Model, hitlist->hits[x]->Model);
+	    ajStrAssignS(&scophit->Alg, hitlist->hits[x]->Alg);
+	    ajStrAssignS(&scophit->Group, hitlist->hits[x]->Group);
 	    scophit->Start = hitlist->hits[x]->Start;
 	    scophit->End = hitlist->hits[x]->End;
 	    scophit->Rank = hitlist->hits[x]->Rank;
@@ -4404,12 +4404,12 @@ AjBool libscan_ScophitsWriteFasta(AjPFile outf, const AjPList list)
 	
 	ajFmtPrintF(outf, "> ");
 
-	if(MAJSTRLEN(thys->Acc))
+	if(MAJSTRGETLEN(thys->Acc))
 	    ajFmtPrintF(outf, "%S^", thys->Acc);
 	else
 	    ajFmtPrintF(outf, ".^");
 
-	if(MAJSTRLEN(thys->Spr))
+	if(MAJSTRGETLEN(thys->Spr))
 	    ajFmtPrintF(outf, "%S^", thys->Spr);
 	else
 	    ajFmtPrintF(outf, ".^");
@@ -4423,44 +4423,44 @@ AjBool libscan_ScophitsWriteFasta(AjPFile outf, const AjPList list)
 	else
 	    ajFmtPrintF(outf, ".^");
 
-	if(MAJSTRLEN(thys->Dom))
+	if(MAJSTRGETLEN(thys->Dom))
 	    ajFmtPrintF(outf, "%S^", thys->Dom);
 	else
 	    ajFmtPrintF(outf, ".^");
 
 	ajFmtPrintF(outf,"%d^", thys->Sunid_Family);
 
-	if(MAJSTRLEN(thys->Class))
+	if(MAJSTRGETLEN(thys->Class))
 	    ajFmtPrintF(outf,"%S^",thys->Class);
 	else
 	    ajFmtPrintF(outf, ".^");
 	
-	if(MAJSTRLEN(thys->Architecture))
+	if(MAJSTRGETLEN(thys->Architecture))
 	    ajFmtPrintF(outf,"%S^",thys->Architecture);
 	else
 	    ajFmtPrintF(outf, ".^");
 
-	if(MAJSTRLEN(thys->Topology))
+	if(MAJSTRGETLEN(thys->Topology))
 	    ajFmtPrintF(outf,"%S^",thys->Topology);
 	else
 	    ajFmtPrintF(outf, ".^");
 
-	if(MAJSTRLEN(thys->Fold))
+	if(MAJSTRGETLEN(thys->Fold))
 	    ajFmtPrintF(outf,"%S^",thys->Fold);
 	else
 	    ajFmtPrintF(outf, ".^");
 
-	if(MAJSTRLEN(thys->Superfamily))
+	if(MAJSTRGETLEN(thys->Superfamily))
 	    ajFmtPrintF(outf,"%S^",thys->Superfamily);
 	else
 	    ajFmtPrintF(outf, ".^");
 
-	if(MAJSTRLEN(thys->Family))
+	if(MAJSTRGETLEN(thys->Family))
 	    ajFmtPrintF(outf,"%S^",thys->Family);
 	else
 	    ajFmtPrintF(outf, ".^");
 	
-	if(MAJSTRLEN(thys->Model))
+	if(MAJSTRGETLEN(thys->Model))
 	    ajFmtPrintF(outf, "%S^", thys->Model);
 	else
 	    ajFmtPrintF(outf, ".^");
@@ -4529,7 +4529,7 @@ ajint libscan_HitCompAcc(const void *hit1, const void *hit2)
     p = (*(AjPHit*)hit1);
     q = (*(AjPHit*)hit2);
     
-    return ajStrCmpO(p->Acc, q->Acc);
+    return ajStrCmpS(p->Acc, q->Acc);
 }
 
 

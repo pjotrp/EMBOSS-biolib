@@ -116,10 +116,10 @@ int main(int argc, char **argv)
 	begin = ajSeqallBegin(seqall);
 	end   = ajSeqallEnd(seqall);
 	strand = ajSeqStrCopy(seq);
-	ajStrToUpper(&strand);
+	ajStrFmtUpper(&strand);
 
-	ajStrAssSubC(&substr,ajStrStr(strand),--begin,--end);
-	len=ajStrLen(substr);
+	ajStrAssignSubC(&substr,ajStrGetPtr(strand),--begin,--end);
+	len=ajStrGetLen(substr);
 
 	if(len > maxarr)
 	{
@@ -136,8 +136,8 @@ int main(int argc, char **argv)
 			       xypc, bases, &obsexpmax, &plstart, &plend);
 
 	newcpgreport_identify(outf, obsexp, xypc, thresh, 0, len, shift,
-			      ajStrStr(bases), ajSeqName(seq), minlen,
-			      minobsexp, minpc, ajStrStr(strand));
+			      ajStrGetPtr(bases), ajSeqName(seq), minlen,
+			      minobsexp, minpc, ajStrGetPtr(strand));
 
 	ajStrDel(&strand);
    }
@@ -201,12 +201,12 @@ static void newcpgreport_findbases(const AjPStr substr, ajint begin, ajint len,
     *obsexpmax = 0.0;
     offset     = window/2;
     *plstart   = offset;
-    q = ajStrStr(bases);
+    q = ajStrGetPtr(bases);
 
     for(i=0; i<(len-window+1);i+=shift)
     {
 	j = i+offset;
-	p = ajStrStr(substr) + i;
+	p = ajStrGetPtr(substr) + i;
 	newcpgreport_countbases(p, q, window, &cx, &cy, &cxpy);
 	obs = (float) cxpy;
 	exp = (float)(cx*cy)/windowf;

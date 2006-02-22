@@ -116,7 +116,7 @@ int main(ajint argc, char **argv)
     
     /*     THIS_DIAGNOSTIC  
 	   tempstr=ajStrNew();    
-	   ajStrAssC(&tempstr,     "diagnostics");
+	   ajStrAssignC(&tempstr,     "diagnostics");
 	   tempfile=ajFileNewOut(tempstr);
 	   ajStrDel(&tempstr);*/
     
@@ -162,7 +162,7 @@ int main(ajint argc, char **argv)
 	{
 	    ajFmtPrintS(&msg, "Could not open for reading %S ", 
 			temp);
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
 	    ajFmtPrintF(logf, "%-15s%S\n//\n", "FILE_OPEN", temp); 
 	    ajStrDel(&temp);	
 	    continue;	    
@@ -171,17 +171,17 @@ int main(ajint argc, char **argv)
 	
 	
 	/* Assign pdb id code from file name */
-	ajStrAssS(&pdbid, temp);
+	ajStrAssignS(&pdbid, temp);
 	ajFileDirExtnTrim(&pdbid);
 
-	if(MAJSTRLEN(pdbid)>4)
+	if(MAJSTRGETLEN(pdbid)>4)
 	{
 	    /* The file name is longer than expected (and probably contains a 
 	       prefix). Take the last four characters to be the pdbid code */
-	    ajStrAssSub(&pdbid_temp, pdbid, pos-4, pos-1);
-	    ajStrAssS(&pdbid, pdbid_temp);
+	    ajStrAssignSubS(&pdbid_temp, pdbid, pos-4, pos-1);
+	    ajStrAssignS(&pdbid, pdbid_temp);
 	}
-	else if(MAJSTRLEN(pdbid)<4)
+	else if(MAJSTRGETLEN(pdbid)<4)
 	    ajFatal("Could not determine pdbid code from file name (%S)", pdbid);
 	
 
@@ -190,7 +190,7 @@ int main(ajint argc, char **argv)
 				 max_trim, camask, camask1, atommask, logf)))
 	{	
 	    ajFmtPrintS(&msg, "Clean coordinate file not generated for %S", temp);
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
 	    ajFmtPrintF(logf, "%-15s%S\n//\n", "NO_OUTPUT", temp); 
 	    
 	    ajFileClose(&pdb_inf);
@@ -201,17 +201,17 @@ int main(ajint argc, char **argv)
 	
 	/* Open clean coordinate file for writing*/
 	if(ccfnaming)
-	    ajStrAssS(&ccf_name, pdb->Pdb);
+	    ajStrAssignS(&ccf_name, pdb->Pdb);
 	else
-	    ajStrAssS(&ccf_name, temp);
-	ajStrToLower(&ccf_name);
+	    ajStrAssignS(&ccf_name, temp);
+	ajStrFmtLower(&ccf_name);
 
 	
 	if(!(ccf_outf=ajFileNewOutDir(ccf_path, ccf_name)))
 	{
 	    ajFmtPrintS(&msg, "Could not open %S for writing", 
 			ccf_name);
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
 	    ajFmtPrintF(logf, "%-15s%S\n//\n", "FILE_OPEN", ccf_name); 
 	    ajFileClose(&pdb_inf);
 	    ajPdbDel(&pdb);
@@ -227,7 +227,7 @@ int main(ajint argc, char **argv)
 	if(!ajPdbWriteAll(ccf_outf, pdb))
 	{
 	    ajFmtPrintS(&msg, "Could not write file %S", ccf_name);
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
 	    ajFmtPrintF(logf, "%-15s%S\n//\n", "FILE_WRITE", ccf_name); 
 	    
 	    ajFmtPrintS(&temp, "rm %S", ccf_name);

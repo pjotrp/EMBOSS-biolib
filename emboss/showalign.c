@@ -286,7 +286,7 @@ static ajint showalign_Getrefseq(const AjPStr refseq, const AjPSeqset seqset)
     {
 	seq = ajSeqsetGetSeq(seqset, i);
 
-	if(!ajStrCmpO(ajSeqGetName(seq), refseq))
+	if(!ajStrCmpS(ajSeqGetName(seq), refseq))
 	    return i;
     }
 
@@ -344,7 +344,7 @@ static void showalign_NiceMargin(const AjPSeqset seqset, ajint *margin,
     for(i=0; i<ajSeqsetSize(seqset); i++)
     {
 	seq = ajSeqsetGetSeq(seqset, i);
-	len = ajStrLen(ajSeqGetName(seq));
+	len = ajStrGetLen(ajSeqGetName(seq));
 	if(len > longest)
 	    longest = len;
     }
@@ -383,7 +383,7 @@ static void showalign_Convert(AjPSeq* seqs, const AjPStr show,
     char showchar;
 
 
-    showchar = ajStrChar(show,0); /* first char of 'show' */
+    showchar = ajStrGetCharFirst(show); /* first char of 'show' */
 
     /* get the reference sequence */
     if(nrefseq == -1)
@@ -455,7 +455,7 @@ static void showalign_MakeAll(const AjPSeq ref,
     sstr = ajSeqStrCopy(seq);
     lenseq = ajSeqLen(seq);
     lenref = ajSeqLen(ref);
-    s = ajStrStrMod(&sstr);
+    s = ajStrGetuniquePtr(&sstr);
     r = ajSeqChar(ref);
 
 
@@ -509,7 +509,7 @@ static void showalign_MakeIdentity(const AjPSeq ref, AjPSeq seq)
     sstr = ajSeqStrCopy(seq);
     lenseq = ajSeqLen(seq);
     lenref = ajSeqLen(ref);
-    s = ajStrStrMod(&sstr);
+    s = ajStrGetuniquePtr(&sstr);
     r = ajSeqChar(ref);
 
 
@@ -561,7 +561,7 @@ static void showalign_MakeNonidentity(const AjPSeq ref,
     sstr = ajSeqStrCopy(seq);
     lenseq = ajSeqLen(seq);
     lenref = ajSeqLen(ref);
-    s = ajStrStrMod(&sstr);
+    s = ajStrGetuniquePtr(&sstr);
     r = ajSeqChar(ref);
 
 
@@ -630,7 +630,7 @@ static void showalign_MakeSimilar(const AjPSeq ref, AjPSeq seq,
     sstr = ajSeqStrCopy(seq);
     lenseq = ajSeqLen(seq);
     lenref = ajSeqLen(ref);
-    s = ajStrStrMod(&sstr);
+    s = ajStrGetuniquePtr(&sstr);
     r = ajSeqChar(ref);
 
 
@@ -692,7 +692,7 @@ static void showalign_MakeDissimilar(const AjPSeq ref, AjPSeq seq,
 
     sstr = ajSeqStrCopy(seq);
     lenref = ajSeqLen(ref);
-    s = ajStrStrMod(&sstr);
+    s = ajStrGetuniquePtr(&sstr);
     r = ajSeqChar(ref);
 
     for(i=0; i<lenref; i++)
@@ -738,7 +738,7 @@ static void showalign_Order(const AjPStr order,
     ajint rlen;
     ajint len;
 
-    orderchar = ajStrChar(order,0); /* first char of 'order' */
+    orderchar = ajStrGetCharFirst(order); /* first char of 'order' */
 
     /* get the reference sequence */
     if(nrefseq == -1)
@@ -963,21 +963,21 @@ static ajint showalign_OutputNums(AjPFile outf, ajint pos, ajint width,
     ajint firstpos;
     AjPStr marginfmt;
 
-    line      = ajStrNewL(81);		/* line of ticks to print */
-    marginfmt = ajStrNewL(10);
+    line      = ajStrNewRes(81);		/* line of ticks to print */
+    marginfmt = ajStrNewRes(10);
 
     /* margin and first number which may be partly in the margin */
     if(pos>0 && (ajint)log10((double)pos)+1 > margin + 10-(pos%10))
     {
 	/* number is too long to fit in the margin, so just write spaces */
-	ajStrAppKI(&line, ' ', margin+(10-(pos)%10));
+	ajStrAppendCountK(&line, ' ', margin+(10-(pos)%10));
 	firstpos = pos + 10-(pos%10);
     }
     else
     {
 	ajFmtPrintS(&marginfmt, "%%%dd", margin+(10-(pos)%10));
 	firstpos = pos + 10-(pos%10);
-	ajFmtPrintF(outf, ajStrStr(marginfmt), firstpos);
+	ajFmtPrintF(outf, ajStrGetPtr(marginfmt), firstpos);
     }
 
     /* make the numbers line */
@@ -1014,21 +1014,21 @@ static ajint showalign_OutputTicks(AjPFile outf, ajint pos, ajint width,
     AjPStr line;
     ajint i;
 
-    line = ajStrNewL(81);		/* line of ticks to print */
+    line = ajStrNewRes(81);		/* line of ticks to print */
 
 
     /* margin */
-    ajStrAppKI(&line, ' ', margin);
+    ajStrAppendCountK(&line, ' ', margin);
 
     /* make the ticks line */
     for(i=pos+1; i<pos+width+1; i++)
     {
 	if(!(i % 10))
-	    ajStrAppC(&line, "|");
+	    ajStrAppendC(&line, "|");
 	else if(!(i % 5))
-	    ajStrAppC(&line, ":");
+	    ajStrAppendC(&line, ":");
 	else
-	    ajStrAppC(&line, "-");
+	    ajStrAppendC(&line, "-");
     }
 
     /* print the ticks */
@@ -1069,19 +1069,19 @@ static ajint showalign_OutputSeq(AjPFile outf, const AjPSeq seq, ajint pos,
     AjPStr marginfmt;
 
     line      = ajStrNew();		/* next line of sequence to print */
-    marginfmt = ajStrNewL(10);
+    marginfmt = ajStrNewRes(10);
 
     /* get end to display up to */
     if(end > pos+width-1)
 	end = pos+width-1;
 
     /* the bit of the sequence to be output */
-    ajStrAssSub(&line, ajSeqStr(seq), pos, end);
+    ajStrAssignSubS(&line, ajSeqStr(seq), pos, end);
 
     /* name of sequence */
     ajFmtPrintS(&marginfmt, "%%-%d.%dS", margin, margin);
     if(margin > 0)
-	ajFmtPrintF(outf, ajStrStr(marginfmt), ajSeqGetName(seq));
+	ajFmtPrintF(outf, ajStrGetPtr(marginfmt), ajSeqGetName(seq));
 
     /* change required ranges to uppercase */
     embShowUpperRange(&line, uppercase, pos);

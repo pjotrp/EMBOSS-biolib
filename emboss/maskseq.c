@@ -55,14 +55,14 @@ int main(int argc, char **argv)
 
 
     /* get the copy of the sequence and the regions */
-    ajStrAssSub(&str, ajSeqStr(seq), beg, end);
+    ajStrAssignSubS(&str, ajSeqStr(seq), beg, end);
     ajRangeBegin(regions, beg+1);
 
     /*
     ** if the mask character is null or space or 'tower' is True, then
     ** ToLower the regions, else replace with maskseq
     */
-    if(tolower || ajStrLen(maskchar) == 0 || ajStrMatchC(maskchar, " "))
+    if(tolower || ajStrGetLen(maskchar) == 0 || ajStrMatchC(maskchar, " "))
     	ajRangeStrToLower(regions, &str);
     else
         ajRangeStrMask(regions, maskchar, &str);

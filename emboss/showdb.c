@@ -133,7 +133,7 @@ int main(int argc, char **argv)
     
     
     /* Just one specified name to get details on? */
-    if(ajStrLen(dbname))
+    if(ajStrGetLen(dbname))
     {
 	if(ajNamDbDetails(dbname, &type, &id, &qry, &all, &comment,
 			  &release, &methods, &defined))
@@ -289,22 +289,22 @@ static void showdbDBWidth (const AjPStr dbname,
 {
     ajint i;
 
-    if (ajStrLen(dbname) > *maxname)
-	*maxname = ajStrLen(dbname);
+    if (ajStrGetLen(dbname) > *maxname)
+	*maxname = ajStrGetLen(dbname);
 
-    if (ajStrLen(type) > *maxtype)
-	*maxtype = ajStrLen(type);
+    if (ajStrGetLen(type) > *maxtype)
+	*maxtype = ajStrGetLen(type);
 
-    if (ajStrLen(methods) > *maxmethod)
-	*maxmethod = ajStrLen(methods);
+    if (ajStrGetLen(methods) > *maxmethod)
+	*maxmethod = ajStrGetLen(methods);
 
-    if (ajStrLen(defined) > *maxdefined)
-	*maxdefined = ajStrLen(defined);
+    if (ajStrGetLen(defined) > *maxdefined)
+	*maxdefined = ajStrGetLen(defined);
 
-    if (ajStrLen(release) > *maxrelease)
-	*maxrelease = ajStrLen(release);
+    if (ajStrGetLen(release) > *maxrelease)
+	*maxrelease = ajStrGetLen(release);
 
-    i = ajStrLen(showdbGetFields(dbname));
+    i = ajStrGetLen(showdbGetFields(dbname));
     if (i > *maxfield)
 	*maxfield = i;
     return;
@@ -660,16 +660,16 @@ static AjPStr showdbGetFields(const AjPStr dbname)
 
     query = ajSeqQueryNew();
 
-    ajStrAssS(&query->DbName, dbname);
+    ajStrAssignS(&query->DbName, dbname);
     ajNamDbData(query);
-    ajStrAssS(&str, query->DbFields);
+    ajStrAssignS(&str, query->DbFields);
 
     /* if there are no query fields, then change to a '_' */
-    if(!ajStrLen(str))
-  	ajStrAssC(&str, "-     ");
+    if(!ajStrGetLen(str))
+  	ajStrAssignC(&str, "-     ");
     else
 	/* change spaces to commas to make the result one word */
-	ajStrConvertCC(&str, " ", ",");
+	ajStrExchangeSetCC(&str, " ", ",");
 
     ajSeqQueryDel(&query);
     return str;
@@ -719,7 +719,7 @@ static int showdbDBSortDefined(const void* str1, const void* str2)
 
     if(ok)
     {
-	ret = ajStrCmpO(defined1, defined2);
+	ret = ajStrCmpS(defined1, defined2);
 	ajDebug("Sorting1 %S:%S %S:%S %d\n", db1, db2, defined1, defined2, ret);
 	ajStrDel(&defined1);
 	ajStrDel(&defined2);
@@ -729,7 +729,7 @@ static int showdbDBSortDefined(const void* str1, const void* str2)
     ajStrDel(&defined1);
     ajStrDel(&defined2);
 
-    ret = ajStrCmpO(db1, db2);
+    ret = ajStrCmpS(db1, db2);
     ajDebug("Sorting2 %S:%S %d\n", db1, db2, ret);
 
     return ret;

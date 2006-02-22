@@ -23,7 +23,7 @@
 #include "aln_util.h"
 extern void  read_parameter_file(AjPFile fname);
 /*@unused@*/
-static const char rcsid[] = "$Id: vrnaalifold.c,v 1.1 2005/10/13 13:00:44 ajb Exp $";
+static const char rcsid[] = "$Id: vrnaalifold.c,v 1.2 2006/02/22 15:02:28 rice Exp $";
 
 #define PRIVATE static
 
@@ -126,10 +126,10 @@ int main(int argc, char *argv[])
     noGU          = (eGU) ? 0 : 1;
     no_closingGU  = (eclose) ? 0 : 1;
     noLonelyPairs = (lonely) ? 0 : 1;
-    ns_bases      = (ajStrLen(ensbases)) ? MAJSTRSTR(ensbases) : NULL;
+    ns_bases      = (ajStrGetLen(ensbases)) ? MAJSTRGETPTR(ensbases) : NULL;
     tetra_loop    = !!etloop;
     
-    ewt = *ajStrStr(*eenergy);
+    ewt = *ajStrGetPtr(*eenergy);
     if(ewt == '0')
 	energy_set = 0;
     else if(ewt == '1')
@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
     
     sfact = (double) escale;
     
-    edangle = *ajStrStr(*edangles);
+    edangle = *ajStrGetPtr(*edangles);
     if(edangle == '0')
 	dangles = 0;
     else if(edangle == '1')
@@ -198,9 +198,9 @@ int main(int argc, char *argv[])
 	tname = (AjPStr) ajSeqsetName(seq,i);
 	len   = ajSeqLen(tseq);
 	AS[i] = (char *) space(len+1);
-	names[i] = (char *) space(ajStrLen(tname)+1);
+	names[i] = (char *) space(ajStrGetLen(tname)+1);
 	strcpy(AS[i],ajSeqChar(tseq));
-	strcpy(names[i],ajStrStr(tname));
+	strcpy(names[i],ajStrGetPtr(tname));
     }
     AS[n_seq] = NULL;
     names[n_seq] = NULL;
@@ -215,7 +215,7 @@ int main(int argc, char *argv[])
     if(confile)
     {
 	fold_constrained = 1;
-	strcpy(structure,ajStrStr(constring));
+	strcpy(structure,ajStrGetPtr(constring));
     }
   
     min_en = alifold(AS, structure);
@@ -270,7 +270,7 @@ int main(int argc, char *argv[])
 	/* init_alipf_fold(length); */
     
 	if(confile)
-	    strncpy(structure, ajStrStr(constring), length+1);
+	    strncpy(structure, ajStrGetPtr(constring), length+1);
 	energy = alipf_fold(AS, structure, &pi);
     
 	if (do_backtrack)

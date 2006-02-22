@@ -267,7 +267,7 @@ void clique_inputancestors(void)
   Char ch = ' ';
 
   for (i = 0; i < (chars); i++) {
-  ch = ajStrChar(phyloanc->Str[0], i);    
+  ch = ajStrGetCharPos(phyloanc->Str[0], i);    
     } while (ch == ' ');
     switch (ch) {
     
@@ -316,7 +316,7 @@ void clique_inputfactors(void)
 
   ActualChars = 1;
   for (i = 1; i <= (chars); i++) {
-    Factor[i - 1] = ajStrChar(phylofact->Str[0], i-1);
+    Factor[i - 1] = ajStrGetCharPos(phylofact->Str[0], i-1);
     if (i > 1) {
       if (Factor[i - 1] != Factor[i - 2])
         ActualChars++;
@@ -403,7 +403,7 @@ void clique_inputdata(void)
     if (printdata)
       fprintf(outfile, "  ");
     for (j = 1; j <= (chars); j++) {
-      ch = ajStrChar(phylostates[ith-1]->Str[i],j-1);     
+      ch = ajStrGetCharPos(phylostates[ith-1]->Str[i],j-1);     
       if (printdata) {
         putc(ch, outfile);
         newline(outfile, j, 55, (long)nmlngth + 1);

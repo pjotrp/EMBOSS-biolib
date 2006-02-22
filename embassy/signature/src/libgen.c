@@ -153,12 +153,12 @@ int main(int argc, char **argv)
 
 
     /* Housekeeping. */
-    modei      = (ajint) ajStrChar(*mode,0)-48;
+    modei      = (ajint) ajStrGetCharFirst(*mode)-48;
     gapopen    = ajRoundF(gapopen,8);
     gapextend  = ajRoundF(gapextend,8);
     seqsfname  = ajStrNew();
     cmd        = ajStrNew();
-    ajStrAssC(&database, "swissprot"); /* Dummy value. */
+    ajStrAssignC(&database, "swissprot"); /* Dummy value. */
 
 
 
@@ -196,7 +196,7 @@ int main(int argc, char **argv)
 	    for(i=0; i<scopalg->N; i++)
             {
 		seq = ajSeqNewStr(scopalg->Seqs[i]);
-		ajStrAssS(&seq->Acc,scopalg->Codes[i]);
+		ajStrAssignS(&seq->Acc,scopalg->Codes[i]);
 		
                 ajSeqsetApp(seqset,seq);
 		ajSeqDel(&seq);
@@ -206,20 +206,20 @@ int main(int argc, char **argv)
 	ajFileClose(&inf);
 
 	/* Create name for output file. */
-	ajStrAssS(&outname, inname);
+	ajStrAssignS(&outname, inname);
 	ajFileDirExtnTrim(&outname);	
-	ajStrInsert(&outname, 0, ajDirName(outdir));
-	ajStrAppC(&outname, ".");
-	ajStrApp(&outname, ajDirExt(outdir));
+	ajStrInsertS(&outname, 0, ajDirName(outdir));
+	ajStrAppendC(&outname, ".");
+	ajStrAppendS(&outname, ajDirExt(outdir));
 
 
 	if((modei==LIBGEN_HMMER) || (modei==LIBGEN_PSSM) || (modei==LIBGEN_SAM))
 	{
 	    /* Write alignment in CLUSTAL format to temp. file. */
 	    ajRandomSeed();
-	    ajStrAssC(&seqsfname, ajFileTempName(NULL));
+	    ajStrAssignC(&seqsfname, ajFileTempName(NULL));
 	    if(modei==LIBGEN_SAM)
-		ajStrAppC(&seqsfname, ".a2m"); 
+		ajStrAppendC(&seqsfname, ".a2m"); 
 	    seqsf = ajFileNewOut(seqsfname);
 
 	    if(scopalg)
@@ -237,7 +237,7 @@ int main(int argc, char **argv)
 
 
 	    /* Write single sequence to temp. file. */
-	    ajStrAssC(&seqfname, ajFileTempName(NULL));
+	    ajStrAssignC(&seqfname, ajFileTempName(NULL));
 	    seqf = ajFileNewOut(seqfname);
 	    
 	    if(scopalg)
@@ -256,25 +256,25 @@ int main(int argc, char **argv)
 			    outname);
 	    else if(modei==LIBGEN_SAM)
 	    {
-		ajStrAssC(&tmpfname, ajFileTempName(NULL));
-		ajStrAppC(&tmpfname, ".mod");
+		ajStrAssignC(&tmpfname, ajFileTempName(NULL));
+		ajStrAppendC(&tmpfname, ".mod");
 
 
 		/* Run modelfromalign. */
 		ajFmtPrintS(&cmd,"modelfromalign %S -alignfile %S",tmpfname,
 			    seqsfname);
 		ajFmtPrint("%S\n", cmd);
-		system(ajStrStr(cmd));
+		system(ajStrGetPtr(cmd));
 
 		/* Could run buildmodel to refine the model 
 		   ajFmtPrintS(&cmd,"buildmodel %S -train %S -alignfile %S",
 		   outname,tmpfname,seqsfname);
 		   ajFmtPrint("%S\n", cmd);
-		   system(ajStrStr(cmd));
+		   system(ajStrGetPtr(cmd));
 		   */
 
 		ajFmtPrintS(&cmd,"rm %S",tmpfname);
-		system(ajStrStr(cmd));
+		system(ajStrGetPtr(cmd));
 	    }
 	    
 	    
@@ -401,7 +401,7 @@ static void libgen_simple_matrix(AjPSeqset seqset,
                 x=matrix[j][i];
                 px=j;
             }
-        ajStrAppK(&cons,(char)(px+'A'));
+        ajStrAppendK(&cons,(char)(px+'A'));
     }
     
     /* Find maximum score for matrix. */
@@ -417,11 +417,11 @@ static void libgen_simple_matrix(AjPSeqset seqset,
     ajFmtPrintF(outf,"# Columns are amino acid counts A->Z\n");
     ajFmtPrintF(outf,"# Rows are alignment positions 1->n\n");
     ajFmtPrintF(outf,"Simple\n");
-    ajFmtPrintF(outf,"Name\t\t%s\n",ajStrStr(name));
+    ajFmtPrintF(outf,"Name\t\t%s\n",ajStrGetPtr(name));
     ajFmtPrintF(outf,"Length\t\t%d\n",mlen);
     ajFmtPrintF(outf,"Maximum score\t%d\n",maxscore);
     ajFmtPrintF(outf,"Thresh\t\t%d\n",threshold);
-    ajFmtPrintF(outf,"Consensus\t%s\n",ajStrStr(cons));
+    ajFmtPrintF(outf,"Consensus\t%s\n",ajStrGetPtr(cons));
 
 
     for(i=0;i<mlen;++i)
@@ -583,7 +583,7 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
                 x=weights[i][j];
                 px=j;
             }
-        ajStrAppK(cons,(char)(px+'A'));
+        ajStrAppendK(cons,(char)(px+'A'));
     }
     
     
@@ -637,14 +637,14 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
     ajFmtPrintF(outf,"# Last column is indel penalty\n");
     ajFmtPrintF(outf,"# Rows are alignment positions 1->n\n");
     ajFmtPrintF(outf,"Gribskov\n");
-    ajFmtPrintF(outf,"Name\t\t%s\n",ajStrStr(name));
+    ajFmtPrintF(outf,"Name\t\t%s\n",ajStrGetPtr(name));
     ajFmtPrintF(outf,"Matrix\t\tpprofile\n");
     ajFmtPrintF(outf,"Length\t\t%d\n",mlen);
     ajFmtPrintF(outf,"Max_score\t%.2f\n",psum);
     ajFmtPrintF(outf,"Threshold\t%d\n",threshold);
     ajFmtPrintF(outf,"Gap_open\t%.2f\n",gapopen);
     ajFmtPrintF(outf,"Gap_extend\t%.2f\n",gapextend);
-    ajFmtPrintF(outf,"Consensus\t%s\n",ajStrStr(*cons));
+    ajFmtPrintF(outf,"Consensus\t%s\n",ajStrGetPtr(*cons));
     
     for(i=0;i<mlen;++i)
     {
@@ -802,7 +802,7 @@ static void libgen_henikoff_profile(AjPSeqset seqset,
                 x = weights[i][j];
                 px=j;
             }
-        ajStrAppK(cons,(char)(px+'A'));
+        ajStrAppendK(cons,(char)(px+'A'));
     }
     
 
@@ -867,14 +867,14 @@ static void libgen_henikoff_profile(AjPSeqset seqset,
     ajFmtPrintF(outf,"# Last column is indel penalty\n");
     ajFmtPrintF(outf,"# Rows are alignment positions 1->n\n");
     ajFmtPrintF(outf,"Henikoff\n");
-    ajFmtPrintF(outf,"Name\t\t%s\n",ajStrStr(name));
-    ajFmtPrintF(outf,"Matrix\t\t%s\n",ajStrStr(ajMatrixfName(matrix)));
+    ajFmtPrintF(outf,"Name\t\t%s\n",ajStrGetPtr(name));
+    ajFmtPrintF(outf,"Matrix\t\t%s\n",ajStrGetPtr(ajMatrixfName(matrix)));
     ajFmtPrintF(outf,"Length\t\t%d\n",mlen);
     ajFmtPrintF(outf,"Max_score\t%.2f\n",psum);
     ajFmtPrintF(outf,"Threshold\t%d\n",threshold);
     ajFmtPrintF(outf,"Gap_open\t%.2f\n",gapopen);
     ajFmtPrintF(outf,"Gap_extend\t%.2f\n",gapextend);
-    ajFmtPrintF(outf,"Consensus\t%s\n",ajStrStr(*cons));
+    ajFmtPrintF(outf,"Consensus\t%s\n",ajStrGetPtr(*cons));
 
     for(i=0;i<mlen;++i)
     {

@@ -742,7 +742,7 @@ void mix_treeread()
   for (i = 0; i < (spp); i++)
     names[i] = false;
   lparens = 0;
-  treestr = ajStrStrMod(&phylotrees[0]->Tree);
+  treestr = ajStrGetuniquePtr(&phylotrees[0]->Tree);
 
   mix_addelement(&root, &nextnode, &lparens, names, &treestr);
   if (ch == '[') {

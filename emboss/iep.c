@@ -102,7 +102,7 @@ int main(int argc, char **argv)
     {
 	be = ajSeqallBegin(all);
 	en = ajSeqallEnd(all);
-	ajStrAssSubC(&substr,ajSeqChar(a),be-1,en-1);
+	ajStrAssignSubC(&substr,ajSeqChar(a),be-1,en-1);
 
 	for(i=0;i<EMBIEPSIZE;++i)
 	{
@@ -110,13 +110,13 @@ int main(int argc, char **argv)
 	    pro[i]=0.;
 	}
 
-	embIepComp(ajStrStr(substr),amino,c); /* Get sequence composition */
+	embIepComp(ajStrGetPtr(substr),amino,c); /* Get sequence composition */
 
 
 	if(dofile)
 	{
 	    ajFmtPrintF(outf,"IEP of %s from %d to %d\n",ajSeqName(a),be,en);
-	    if(!embIepIEP(ajStrStr(substr),amino,&iep,termini))
+	    if(!embIepIEP(ajStrGetPtr(substr),amino,&iep,termini))
 		ajFmtPrintF(outf,"Isoelectric Point = None\n\n");
 	    else
 		ajFmtPrintF(outf,"Isoelectric Point = %-6.4lf\n\n",iep);
@@ -161,11 +161,11 @@ int main(int argc, char **argv)
 	    tmp = ajStrNew();
 	    ajFmtPrintS(&tit,"%s %d-%d IEP=",ajSeqName(a),be,en);
 
-	    if(!embIepIEP(ajStrStr(substr),amino,&iep,termini))
-		ajStrAssC(&tmp,"none");
+	    if(!embIepIEP(ajStrGetPtr(substr),amino,&iep,termini))
+		ajStrAssignC(&tmp,"none");
 	    else
 		ajFmtPrintS(&tmp,"%-8.4f",iep);
-	    ajStrApp(&tit,tmp);
+	    ajStrAppendS(&tit,tmp);
 
 
 	    phGraph = ajGraphPlpDataNewI(npoints);

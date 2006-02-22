@@ -53,18 +53,18 @@ int main(int argc, char **argv)
     if(append)
     {
 	/* is there a name? */
-	if(ajStrLen(name))
+	if(ajStrGetLen(name))
 	{
-	    ajStrAssS(&temp, ajSeqGetName(seq));
-	    ajStrApp(&temp, name);
+	    ajStrAssignS(&temp, ajSeqGetName(seq));
+	    ajStrAppendS(&temp, name);
 	    ajSeqAssName(seq, temp);
 	}
 
 	/* is there a description? */
-	if(ajStrLen(desc))
+	if(ajStrGetLen(desc))
 	{
-	    ajStrAssS(&temp, ajSeqGetDesc(seq));
-	    ajStrApp(&temp, desc);
+	    ajStrAssignS(&temp, ajSeqGetDesc(seq));
+	    ajStrAppendS(&temp, desc);
 	    ajSeqAssDesc(seq, temp);
 	}
 
@@ -73,11 +73,11 @@ int main(int argc, char **argv)
     else
     {
 	/* is there a name? */
-	if(ajStrLen(name))
+	if(ajStrGetLen(name))
 	    ajSeqAssName(seq, name);
 
 	/* is there a description? */
-	if(ajStrLen(desc))
+	if(ajStrGetLen(desc))
 	    ajSeqAssDesc(seq, desc);
     }
 

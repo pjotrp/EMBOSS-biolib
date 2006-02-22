@@ -15,7 +15,7 @@
  * Conditionally includes PVM parallelization when HMMER_PVM is defined
  *    at compile time; hmmsearch --pvm runs the PVM version.
  *
- * RCS $Id: ohmmsearch.c,v 1.1 2006/02/21 12:35:43 rice Exp $
+ * RCS $Id: ohmmsearch.c,v 1.2 2006/02/22 15:02:28 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -183,7 +183,7 @@ int main(int argc, char **argv)
   
     ajhmmfile = ajAcdGetInfile("hmmfile");
     if(ajhmmfile)
-	hmmfile = ajCharNew(ajFileGetName(ajhmmfile));
+	hmmfile = ajCharNewS(ajFileGetName(ajhmmfile));
     else
 	hmmfile = NULL;
     ajFileClose(&ajhmmfile);
@@ -555,27 +555,27 @@ static void main_loop_serial(AjPFile outf, struct plan7_s *hmm,
 
     while (ajSeqallNext(seqall,&ajseq))
     {
-	ajStrAssS(&ajstr,ajSeqStr(ajseq));
-	ajStrDegap(&ajstr);
+	ajStrAssignS(&ajstr,ajSeqStr(ajseq));
+	ajStrRemoveGap(&ajstr);
 
 	sqinfo.flags = 0;
-	sqinfo.len = ajStrLen(ajstr);
+	sqinfo.len = ajStrGetLen(ajstr);
 	sqinfo.flags |= SQINFO_LEN;
 	
-	strcpy(sqinfo.name,ajStrStr(ajSeqGetName(ajseq)));
+	strcpy(sqinfo.name,ajStrGetPtr(ajSeqGetName(ajseq)));
 	sqinfo.flags |= SQINFO_NAME;
 
-	if(ajStrLen(ajseq->Desc)>63)
+	if(ajStrGetLen(ajseq->Desc)>63)
 	{
-	    strncpy(sqinfo.desc,ajStrStr(ajSeqGetDesc(ajseq)),63);
+	    strncpy(sqinfo.desc,ajStrGetPtr(ajSeqGetDesc(ajseq)),63);
 	    sqinfo.desc[63]='\0';
 	}
 	else
-	    strcpy(sqinfo.desc,ajStrStr(ajSeqGetDesc(ajseq)));
+	    strcpy(sqinfo.desc,ajStrGetPtr(ajSeqGetDesc(ajseq)));
 	sqinfo.flags |= SQINFO_DESC;
 
-	seq = ajCharNewL(sqinfo.len +1);
-	strcpy(seq,ajStrStr(ajstr));
+	seq = ajCharNewRes(sqinfo.len +1);
+	strcpy(seq,ajStrGetPtr(ajstr));
 
 
 	/* silently skip len 0 seqs */
@@ -820,29 +820,29 @@ static void main_loop_pvm(AjPFile outf, struct plan7_s *hmm, AjPSeqall seqall,
 	if (! ajSeqallNext(seqall,&ajseq))
 	    break;
 
-	ajStrAssS(&ajstr,ajSeqStr(ajseq));
-	ajStrDegap(&ajstr);
+	ajStrAssignS(&ajstr,ajSeqStr(ajseq));
+	ajStrRemoveGap(&ajstr);
 
 	sqinfo.flags = 0;
-	sqinfo.len = ajStrLen(ajstr);
+	sqinfo.len = ajStrGetLen(ajstr);
 	sqinfo.flags |= SQINFO_LEN;
 
-	strcpy(sqinfo.name,ajStrStr(ajSeqGetName(ajseq)));
+	strcpy(sqinfo.name,ajStrGetPtr(ajSeqGetName(ajseq)));
 	sqinfo.flags |= SQINFO_NAME;
 
-	if(ajStrLen(ajseq->Desc)>63)
+	if(ajStrGetLen(ajseq->Desc)>63)
 	{
-	    strncpy(sqinfo.desc,ajStrStr(ajSeqGetDesc(ajseq)),63);
+	    strncpy(sqinfo.desc,ajStrGetPtr(ajSeqGetDesc(ajseq)),63);
 	    sqinfo.desc[63]='\0';
 	}
 	else
-	    strcpy(sqinfo.desc,ajStrStr(ajSeqGetDesc(ajseq)));
+	    strcpy(sqinfo.desc,ajStrGetPtr(ajSeqGetDesc(ajseq)));
 	sqinfo.flags |= SQINFO_DESC;
 
 
 
-	seq = ajCharNewL(sqinfo.len +1);
-	strcpy(seq,ajStrStr(ajstr));
+	seq = ajCharNewRes(sqinfo.len +1);
+	strcpy(seq,ajStrGetPtr(ajstr));
 
 
 
@@ -877,28 +877,28 @@ static void main_loop_pvm(AjPFile outf, struct plan7_s *hmm, AjPSeqall seqall,
 
     while (ajSeqallNext(seqall,&ajseq)) 
     {
-	ajStrAssS(&ajstr,ajSeqStr(ajseq));
-	ajStrDegap(&ajstr);
+	ajStrAssignS(&ajstr,ajSeqStr(ajseq));
+	ajStrRemoveGap(&ajstr);
 
 	sqinfo.flags = 0;
-	sqinfo.len = ajStrLen(ajstr);
+	sqinfo.len = ajStrGetLen(ajstr);
 	sqinfo.flags |= SQINFO_LEN;
 
-	strcpy(sqinfo.name,ajStrStr(ajSeqGetName(ajseq)));
+	strcpy(sqinfo.name,ajStrGetPtr(ajSeqGetName(ajseq)));
 	sqinfo.flags |= SQINFO_NAME;
 
-	if(ajStrLen(ajseq->Desc)>63)
+	if(ajStrGetLen(ajseq->Desc)>63)
 	{
-	    strncpy(sqinfo.desc,ajStrStr(ajSeqGetDesc(ajseq)),63);
+	    strncpy(sqinfo.desc,ajStrGetPtr(ajSeqGetDesc(ajseq)),63);
 	    sqinfo.desc[63]='\0';
 	}
 	else
-	    strcpy(sqinfo.desc,ajStrStr(ajSeqGetDesc(ajseq)));
+	    strcpy(sqinfo.desc,ajStrGetPtr(ajSeqGetDesc(ajseq)));
 	sqinfo.flags |= SQINFO_DESC;
 
 
-	seq = ajCharNewL(sqinfo.len +1);
-	strcpy(seq,ajStrStr(ajstr));
+	seq = ajCharNewRes(sqinfo.len +1);
+	strcpy(seq,ajStrGetPtr(ajstr));
 
 
 	if (sqinfo.len == 0)
@@ -1205,29 +1205,29 @@ void *worker_thread(void *ptr)
 	    pthread_exit(NULL);
 	}
 
-	ajStrAssS(&ajstr,ajSeqStr(ajseq));
-	ajStrDegap(&ajstr);
+	ajStrAssignS(&ajstr,ajSeqStr(ajseq));
+	ajStrRemoveGap(&ajstr);
 
 	sqinfo.flags = 0;
-	sqinfo.len = ajStrLen(ajstr);
+	sqinfo.len = ajStrGetLen(ajstr);
 	sqinfo.flags |= SQINFO_LEN;
 
-	strcpy(sqinfo.name,ajStrStr(ajSeqGetName(ajseq)));
+	strcpy(sqinfo.name,ajStrGetPtr(ajSeqGetName(ajseq)));
 	sqinfo.flags |= SQINFO_NAME;
 
-	if(ajStrLen(ajseq->Desc)>63)
+	if(ajStrGetLen(ajseq->Desc)>63)
 	{
-	    strncpy(sqinfo.desc,ajStrStr(ajSeqGetDesc(ajseq)),63);
+	    strncpy(sqinfo.desc,ajStrGetPtr(ajSeqGetDesc(ajseq)),63);
 	    sqinfo.desc[63]='\0';
 	}
 	else
-	    strcpy(sqinfo.desc,ajStrStr(ajSeqGetDesc(ajseq)));
+	    strcpy(sqinfo.desc,ajStrGetPtr(ajSeqGetDesc(ajseq)));
 	sqinfo.flags |= SQINFO_DESC;
 
 
 
-	seq = ajCharNewL(sqinfo.len +1);
-	strcpy(seq,ajStrStr(ajstr));
+	seq = ajCharNewRes(sqinfo.len +1);
+	strcpy(seq,ajStrGetPtr(ajstr));
 
 	SQD_DPRINTF1(("a thread is working on %s\n", sqinfo.name));
 	/* release the lock */

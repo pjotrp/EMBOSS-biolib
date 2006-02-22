@@ -51,7 +51,7 @@ int main(int argc, char **argv)
     substr = ajStrNew();
     beg    = ajSeqBegin(a);
     end    = ajSeqEnd(a);
-    ajStrAssSubC(&substr,ajSeqChar(a),beg-1,end-1);
+    ajStrAssignSubC(&substr,ajSeqChar(a),beg-1,end-1);
 
     back = ajStrNew();
     ajCodSetBacktranslate(&codon);

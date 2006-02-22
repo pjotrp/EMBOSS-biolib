@@ -184,8 +184,8 @@ int getValFromStr(AjPStr str){
   int col = 0;
 
   tmpstr = ajStrNewS(str);
-  ajStrToUpper(&tmpstr);
-  colstr = ajStrStr(tmpstr);
+  ajStrFmtUpper(&tmpstr);
+  colstr = ajStrGetPtr(tmpstr);
 
 
   if(strstr(colstr,"N")!=NULL)          /* NONE overrides everything else */

@@ -370,7 +370,7 @@ AjPSeq embEstShuffleSeq( AjPSeq seq, ajint in_place, ajint *seed )
 
     shufflestr = ajSeqStrCopy(shuffled);
 
-    estShuffleSeq(ajStrStrMod(&shufflestr), seed);
+    estShuffleSeq(ajStrGetuniquePtr(&shufflestr), seed);
 
     ajSeqReplace(shuffled, shufflestr);
     return shuffled;

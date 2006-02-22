@@ -64,8 +64,8 @@ int main(int argc, char **argv)
     substr = ajStrNew();
     str    = ajStrNew();
 
-    ajStrToUpper(&target);
-    ajStrToUpper(&replace);
+    ajStrFmtUpper(&target);
+    ajStrFmtUpper(&replace);
 
     while(ajSeqallNext(seqall,&seq))
     {
@@ -73,8 +73,8 @@ int main(int argc, char **argv)
 	end   = ajSeqallEnd(seqall);
 
 	p = ajSeqChar(seq);
-	ajStrAssSubC(&substr,p,begin-1,end-1);
-	ajStrToUpper(&substr);
+	ajStrAssignSubC(&substr,p,begin-1,end-1);
+	ajStrFmtUpper(&substr);
 
 	if(!delete)
 	    biosed_replace(&substr,target,replace);
@@ -124,10 +124,10 @@ static void biosed_replace(AjPStr *substr,
 
     str = ajStrNew();
     tmp = ajStrNew();
-    p   = ajStrStr(*substr);
-    v   = ajStrStr(target);
+    p   = ajStrGetPtr(*substr);
+    v   = ajStrGetPtr(target);
 
-    tlen = ajStrLen(target);
+    tlen = ajStrGetLen(target);
 
     while((q=strstr(p,v)))
     {
@@ -135,15 +135,15 @@ static void biosed_replace(AjPStr *substr,
 
 	if(end > -1)
 	{
-	    ajStrAssSubC(&tmp,p,0,end);
-	    ajStrApp(&str,tmp);
+	    ajStrAssignSubC(&tmp,p,0,end);
+	    ajStrAppendS(&str,tmp);
 	}
 
-	ajStrApp(&str,replace);
+	ajStrAppendS(&str,replace);
 	p = q+tlen;
     }
-    ajStrAppC(&str,p);
-    ajStrAssS(substr,str);
+    ajStrAppendC(&str,p);
+    ajStrAssignS(substr,str);
 
     ajStrDel(&str);
     ajStrDel(&tmp);
@@ -175,10 +175,10 @@ static void biosed_delete(AjPStr *substr, const AjPStr target)
     ajint  tlen = 0;
 
     str = ajStrNew();
-    ajStrAssS(&str,*substr);
-    p = ajStrStrMod(&str);
-    v = ajStrStr(target);
-    tlen = ajStrLen(target);
+    ajStrAssignS(&str,*substr);
+    p = ajStrGetuniquePtr(&str);
+    v = ajStrGetPtr(target);
+    tlen = ajStrGetLen(target);
 
     while((q=strstr(p,v)))
     {
@@ -187,7 +187,7 @@ static void biosed_delete(AjPStr *substr, const AjPStr target)
 	while((*q++=*p++));
 	p = t-1;
     }
-    ajStrAssC(substr,ajStrStr(str));
+    ajStrAssignC(substr,ajStrGetPtr(str));
     ajStrDel(&str);
 
     return;

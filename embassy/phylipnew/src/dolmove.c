@@ -1000,7 +1000,7 @@ void buildtree()
     zeros = (long *)Malloc(chars*sizeof(long));         /**/
     for (i = 0; i < chars; i++)             /**/
       zeros[i] = 0;                         /**/
-    treestr = ajStrStrMod(&phylotrees[0]->Tree);
+    treestr = ajStrGetuniquePtr(&phylotrees[0]->Tree);
     treeread(&treestr, &root, treenode, &goteof, &firsttree,
                 nodep, &nextnode, &haslengths,
                 &grbg, initdolmovenode); /*debug*/

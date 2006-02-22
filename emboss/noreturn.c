@@ -61,8 +61,8 @@ int main(int argc, char **argv)
     while(ajFileReadLine(inf,&line))
     {
 	iline++;
-	p   = MAJSTRSTR(line);
-	len = ajStrLen(line);
+	p   = MAJSTRGETPTR(line);
+	len = ajStrGetLen(line);
 	if(len)
 	{
 	    ajDebug("line %d: Length %d\n", iline, len);

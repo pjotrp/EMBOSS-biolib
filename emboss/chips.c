@@ -62,8 +62,8 @@ int main(int argc, char **argv)
     {
 	beg = ajSeqallBegin(seqall);
 	end = ajSeqallEnd(seqall);
-	ajStrAssSub(&substr,ajSeqStr(seq),beg-1,end-1);
-	ajStrToUpper(&substr);
+	ajStrAssignSubS(&substr,ajSeqStr(seq),beg-1,end-1);
+	ajStrFmtUpper(&substr);
 	ajCodCountTriplets(codon,substr,&ccnt);
 	if(!sum)
 	{

@@ -528,7 +528,7 @@ static void tmap_present3p(ajint antal, const ajint *npos, const ajint *cpos,
     ajAlignConsStats(seqset, NULL, &cons,
 		     &calcid, &calcsim, &calcgap, &calclen);
 
-    ajStrAssC(&hdr, "");
+    ajStrAssignC(&hdr, "");
     ajReportSetHeader(report, hdr);
 
     seq = ajSeqNewL(ajSeqsetSize(seqset));
@@ -553,7 +553,7 @@ static void tmap_present3p(ajint antal, const ajint *npos, const ajint *cpos,
 	cseq = ajSeqsetGetSeq(seqset, j);
 	feat = ajFeattableNewSeq(cseq);
 	tmap_refpos2(j, poss);
-	ajStrAssC(&hdr, "");
+	ajStrAssignC(&hdr, "");
 	ajReportSetHeader(report, hdr);
 	for(i=1; i<=antal; i++)
 	{

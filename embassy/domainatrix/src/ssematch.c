@@ -199,8 +199,8 @@ int main(int argc, char **argv)
 	else if(ajStrPrefixC(line,"SS"))
 	{
             while((ajFileReadLine(ssin,&line)) && !ajStrPrefixC(line,"XX"))
-                ajStrApp(&qss,line);
-            ajStrCleanWhite(&qss);
+                ajStrAppendS(&qss,line);
+            ajStrRemoveWhiteExcess(&qss);
 
             /* Convert this string to 3-letter code & then to AjPSeq object. */
             q3ss = ssematch_convertbases(qss);
@@ -246,7 +246,7 @@ int main(int argc, char **argv)
 			    temp_scop->Entry); 
 	        ajFmtPrintS(&msg, "Could not align sequence in scop domain %S\n ", 
 			    temp_scop->Entry);
-	        ajWarn(ajStrStr(msg));
+	        ajWarn(ajStrGetPtr(msg));
                 continue;
 	    }
 	}
@@ -445,8 +445,8 @@ static AjBool  ssematch_NWScore(AjPScop temp_scop,
     p = ajSeqChar(pseq); 
     q = ajSeqChar(qseq); 
 
-    ajStrAssC(&pstr,"");
-    ajStrAssC(&qstr,"");
+    ajStrAssignC(&pstr,"");
+    ajStrAssignC(&qstr,"");
 
 
     /* Check that no sequence length is 0. */
@@ -527,7 +527,7 @@ static AjPSeq ssematch_convertbases(AjPStr qs)
 
 
 
-    iter    = ajStrIter(qs);
+    iter    = ajStrIterNew(qs);
     tmp_str = ajStrNew();
 
     do
@@ -540,7 +540,7 @@ static AjPSeq ssematch_convertbases(AjPStr qs)
 		|| (base == 'C'))
 	    base = 'L';
 
-	ajStrAppK(&tmp_str, base);
+	ajStrAppendK(&tmp_str, base);
     }
     while(ajStrIterNext(iter));
     
@@ -549,7 +549,7 @@ static AjPSeq ssematch_convertbases(AjPStr qs)
 
 
     /* Tidy up */
-    ajStrIterFree(&iter);
+    ajStrIterDel(&iter);
     ajStrDel(&tmp_str);
     
     return tmp_seq;

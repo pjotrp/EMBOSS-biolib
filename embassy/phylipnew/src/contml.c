@@ -1259,7 +1259,7 @@ void maketree()
       inittip(which, &curtree);
     which = 1;
     while (which <= numtrees) {
-      treestr = ajStrStrMod(&phylotrees[which-1]->Tree);
+      treestr = ajStrGetuniquePtr(&phylotrees[which-1]->Tree);
       treeread2 (&treestr, &curtree.start, curtree.nodep,
         lengths, &trweight, &goteof, &haslengths, &spp);
       curtree.start = curtree.nodep[outgrno - 1]->back;

@@ -133,7 +133,7 @@ int main(int argc, char **argv)
 
     ajSeqToLower(seq);
 
-    s1 = ajStrStr(ajSeqStr(seq));
+    s1 = ajStrGetPtr(ajSeqStr(seq));
 
     for(j=0;j<llen;j++)
     {
@@ -227,34 +227,34 @@ static ajint octanol_getwhitewimbleydata(AjPFile file, float matrix[],
 
     while(ajFileGets(file,&buffer))
     {
-	s1 = ajStrStr(buffer);
+	s1 = ajStrGetPtr(buffer);
 	if(*s1 == '#')			/* ignore lines */
 	    continue;
 
-	token = ajStrTokenInit(buffer,ajStrStr(delim));
-	cols = ajStrTokenCount(buffer,ajStrStr(delim));
+	token = ajStrTokenNewS(buffer,delim);
+	cols = ajStrParseCountS(buffer,delim);
 	ajDebug("number of cols = %d\n",cols);
 
-	ajStrToken(&buf2,&token,ajStrStr(delim)); /* get AA char code */
-	ajStrToLower(&buf2);
+	ajStrTokenNextParseS(&token,delim,&buf2); /* get AA char code */
+	ajStrFmtLower(&buf2);
 
-	s1 = ajStrStr(buf2);		/* convert code to integer */
+	s1 = ajStrGetPtr(buf2);		/* convert code to integer */
 	matpos = (ajint)s1[0];
 	matpos -= 97;
 
-	ajStrToken(&buf2,&token,ajStrStr(delim)); /* get interface value */
+	ajStrTokenNextParseS(&token,delim,&buf2); /* get interface value */
 	ajStrToFloat(buf2,&matrix[matpos]);
 
-	ajStrToken(&buf2,&token,ajStrStr(delim)); /* get +/- error value */
+	ajStrTokenNextParseS(&token,delim,&buf2); /* get +/- error value */
 	ajStrToFloat(buf2,&err[matpos]);
 
-	ajStrToken(&buf2,&token,ajStrStr(delim)); /* get octanol value value */
+	ajStrTokenNextParseS(&token,delim,&buf2); /* get octanol value value */
 	ajStrToFloat(buf2,&matrix2[matpos]);
 
-	ajStrToken(&buf2,&token,ajStrStr(delim)); /* get +/- error value */
+	ajStrTokenNextParseS(&token,delim,&buf2); /* get +/- error value */
 	ajStrToFloat(buf2,&err2[matpos]);
 
-	ajStrTokenClear(&token);
+	ajStrTokenDel(&token);
     }
 
     ajStrDel(&delim);

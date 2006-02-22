@@ -144,8 +144,8 @@ int main(int argc, char **argv)
     psiextn    = ajStrNew();
     
     
-    ajStrAssS(&psipath, ajDirName(dhfin));
-    ajStrAssS(&psiextn, ajDirExt(dhfin));
+    ajStrAssignS(&psipath, ajDirName(dhfin));
+    ajStrAssignS(&psiextn, ajDirExt(dhfin));
 
 
 
@@ -230,18 +230,18 @@ static AjPList seqsort_HitlistListRead(AjPStr path,
     
     
     /* Create list of files in the path. */
-    ajStrAssC(&tmp, "*");  		
+    ajStrAssignC(&tmp, "*");  		
 	
-    if((ajStrChar(extn, 0)=='.')) 	
-	ajStrApp(&tmp, extn);    
+    if((ajStrGetCharFirst(extn)=='.')) 	
+	ajStrAppendS(&tmp, extn);    
 					
  
     /* This picks up situations where the user has specified an extension 
        without a ".". */
     else
     {
-	ajStrAppC(&tmp, ".");       	
-	ajStrApp(&tmp, extn);       	
+	ajStrAppendC(&tmp, ".");       	
+	ajStrAppendS(&tmp, extn);       	
     }	
 
     /* All files containing hits will be in a list. */
@@ -506,8 +506,8 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist,
 
 
 	    /* Are the superfamilies identical? */
-	    if(ajStrMatch(hit->Superfamily,nexthit->Superfamily)&&
-		    !(ajStrMatch(hit->Family,nexthit->Family)))
+	    if(ajStrMatchS(hit->Superfamily,nexthit->Superfamily)&&
+		    !(ajStrMatchS(hit->Family,nexthit->Family)))
 	    {
 		/* DIAGNOSTIC 
 		ajFmtPrint("--> Overlap & superfamilies identical! Merged hit "
@@ -526,9 +526,9 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist,
 		hit = (AjPScophit)ajListIterNext(iter);
 	    }	
 	    /* Are the folds identical? */
-               else if(ajStrMatch(hit->Fold,nexthit->Fold)&&
-		    !(ajStrMatch(hit->Superfamily,nexthit->Superfamily))&&
-		    !(ajStrMatch(hit->Family,nexthit->Family)))
+               else if(ajStrMatchS(hit->Fold,nexthit->Fold)&&
+		    !(ajStrMatchS(hit->Superfamily,nexthit->Superfamily))&&
+		    !(ajStrMatchS(hit->Family,nexthit->Family)))
 	    {
 		/* DIAGNOSTIC 
 		ajFmtPrint("--> Overlap & folds identical! Merged hit goes to "
@@ -654,7 +654,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist,
 	if(embDmxScophitsOverlapAcc(hit,nexthit,sig_overlap))
 	{
 	    /* Are the superfamilies identical? */
-	    if(ajStrMatch(hit->Superfamily,nexthit->Superfamily))
+	    if(ajStrMatchS(hit->Superfamily,nexthit->Superfamily))
 	    {
 		/* DIAGNOSTIC 
 		ajFmtPrint("--> Overlap & superfamilies identical! "
@@ -767,9 +767,9 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist,
 	     */
 
 	    /* Are the folds identical? */
-	    if(ajStrMatch(hit->Fold,nexthit->Fold)&&
-			 !(ajStrMatch(hit->Superfamily,nexthit->Superfamily))&&
-			 !(ajStrMatch(hit->Family,nexthit->Family)))
+	    if(ajStrMatchS(hit->Fold,nexthit->Fold)&&
+			 !(ajStrMatchS(hit->Superfamily,nexthit->Superfamily))&&
+			 !(ajStrMatchS(hit->Family,nexthit->Family)))
 	    {
 		/* DIAGNOSTIC 
 		ajFmtPrint("--> Overlap & folds identical! Merged hit goes to"
@@ -889,8 +889,8 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist,
 	    }
 
 	    /* Are the folds identical - folds must be specified !*/
-	    if( (MAJSTRLEN(hit->Fold)) && (MAJSTRLEN(nexthit->Fold)) 
-	       && (ajStrMatch(hit->Fold,nexthit->Fold)))
+	    if( (MAJSTRGETLEN(hit->Fold)) && (MAJSTRGETLEN(nexthit->Fold)) 
+	       && (ajStrMatchS(hit->Fold,nexthit->Fold)))
 	    {
 		/* Target both hits for removal. Place a hit corresponding 
 		   to the merging of the two hits into the folds (same) list. */
@@ -1177,20 +1177,20 @@ static AjBool seqsort_HitlistToThreeScophits(AjPList in,
 
 	    /* Assign scop classification records from hitlist structure. */
 	    scophit->Type = hitlist->Type;
-	    ajStrAssS(&scophit->Class, hitlist->Class);
-	    ajStrAssS(&scophit->Fold, hitlist->Fold);
-	    ajStrAssS(&scophit->Superfamily, hitlist->Superfamily);
-	    ajStrAssS(&scophit->Family, hitlist->Family);
+	    ajStrAssignS(&scophit->Class, hitlist->Class);
+	    ajStrAssignS(&scophit->Fold, hitlist->Fold);
+	    ajStrAssignS(&scophit->Superfamily, hitlist->Superfamily);
+	    ajStrAssignS(&scophit->Family, hitlist->Family);
 	    scophit->Sunid_Family = hitlist->Sunid_Family;
 	    
 
 	    /* Assign records from hit structure. */
-	    ajStrAssS(&scophit->Seq, hitlist->hits[x]->Seq);
-	    ajStrAssS(&scophit->Acc, hitlist->hits[x]->Acc);
-	    ajStrAssS(&scophit->Spr, hitlist->hits[x]->Spr);
-	    ajStrAssS(&scophit->Model, hitlist->hits[x]->Model);
-	    ajStrAssS(&scophit->Alg, hitlist->hits[x]->Alg);
-	    ajStrAssS(&scophit->Group, hitlist->hits[x]->Group);
+	    ajStrAssignS(&scophit->Seq, hitlist->hits[x]->Seq);
+	    ajStrAssignS(&scophit->Acc, hitlist->hits[x]->Acc);
+	    ajStrAssignS(&scophit->Spr, hitlist->hits[x]->Spr);
+	    ajStrAssignS(&scophit->Model, hitlist->hits[x]->Model);
+	    ajStrAssignS(&scophit->Alg, hitlist->hits[x]->Alg);
+	    ajStrAssignS(&scophit->Group, hitlist->hits[x]->Group);
 	    scophit->Start = hitlist->hits[x]->Start;
 	    scophit->End = hitlist->hits[x]->End;
 	    scophit->Rank = hitlist->hits[x]->Rank;

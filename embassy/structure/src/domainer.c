@@ -99,7 +99,7 @@ int main(int argc, char **argv)
     errf1         = ajAcdGetOutfile("pdblogfile");
     errf2         = ajAcdGetOutfile("cpdblogfile");
     
-    if(ajStrChar(*mode,0)=='1')
+    if(ajStrGetCharFirst(*mode)=='1')
 	moden = ajPDB;
     else
 	moden = ajIDX;
@@ -113,18 +113,18 @@ int main(int argc, char **argv)
 
      
 	/* Read clean coordinate file*/
-	ajStrAss(&scop_name, scop->Pdb);
-	ajStrToLower(&scop_name);
+	ajStrAssignRef(&scop_name, scop->Pdb);
+	ajStrFmtLower(&scop_name);
 	if(!(cpdb_inf=ajFileNewDirF(cpdb_dir, scop_name)))
 	{
-	    ajStrAssS(&cpdb_name, ajDirName(cpdb_dir));
-	    ajStrApp(&cpdb_name, scop_name);
-	    ajStrAppC(&cpdb_name, ".");
-	    ajStrApp(&cpdb_name, ajDirExt(cpdb_dir));
+	    ajStrAssignS(&cpdb_name, ajDirName(cpdb_dir));
+	    ajStrAppendS(&cpdb_name, scop_name);
+	    ajStrAppendC(&cpdb_name, ".");
+	    ajStrAppendS(&cpdb_name, ajDirExt(cpdb_dir));
 
 	    ajFmtPrintS(&msg, "Could not open for reading cpdb file %S", 
 			cpdb_name);
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
 	    ajFmtPrintF(errf1, "//\n%S\nWARN  %S not found\n", 
 			scop->Entry, cpdb_name);
 	    ajFmtPrintF(errf2, "//\n%S\nWARN  %S not found\n", 
@@ -138,7 +138,7 @@ int main(int argc, char **argv)
 	if(!(pdb=ajPdbReadFirstModelNew(cpdb_inf)))
 	{
 	    ajFmtPrintS(&msg, "Error reading cpdb file %S", cpdb_name);
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
 	    ajFmtPrintF(errf1, "//\n%S\nERROR %S file read error\n", 
 			scop->Entry, cpdb_name);
 	    ajFmtPrintF(errf2, "//\n%S\nERROR %S file read error\n", 
@@ -152,14 +152,14 @@ int main(int argc, char **argv)
 
 
 	/* Open pdb format file for writing. */
-	ajStrAss(&scop_name, scop->Entry);
-	ajStrToLower(&scop_name);
+	ajStrAssignRef(&scop_name, scop->Entry);
+	ajStrFmtLower(&scop_name);
 
 
-	ajStrAssS(&pdbscop_name, ajDirName(pdbscop_dir));
-	ajStrApp(&pdbscop_name, scop_name);
-	ajStrAppC(&pdbscop_name, ".");
-	ajStrApp(&pdbscop_name, ajDirExt(pdbscop_dir));
+	ajStrAssignS(&pdbscop_name, ajDirName(pdbscop_dir));
+	ajStrAppendS(&pdbscop_name, scop_name);
+	ajStrAppendC(&pdbscop_name, ".");
+	ajStrAppendS(&pdbscop_name, ajDirExt(pdbscop_dir));
 
 
 
@@ -167,7 +167,7 @@ int main(int argc, char **argv)
 	{
 	    ajFmtPrintS(&msg, "Could not open for writing pdbscop file %S", 
 			pdbscop_name);
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
 	    ajFmtPrintF(errf1, "//\n%S\nERROR %S file write error\n", 
 			scop->Entry, pdbscop_name);
 	    ajFileClose(&cpdb_inf);
@@ -179,20 +179,20 @@ int main(int argc, char **argv)
 
 
 	/* Open embl-like format file for writing. */
-	ajStrAssS(&scop_name, scop->Entry);
-	ajStrToLower(&scop_name);
+	ajStrAssignS(&scop_name, scop->Entry);
+	ajStrFmtLower(&scop_name);
 
-	ajStrAssS(&cpdbscop_name, ajDirName(cpdbscop_dir));
-	ajStrApp(&cpdbscop_name, scop_name);
-	ajStrAppC(&cpdbscop_name, ".");
-	ajStrApp(&cpdbscop_name, ajDirExt(cpdbscop_dir));
+	ajStrAssignS(&cpdbscop_name, ajDirName(cpdbscop_dir));
+	ajStrAppendS(&cpdbscop_name, scop_name);
+	ajStrAppendC(&cpdbscop_name, ".");
+	ajStrAppendS(&cpdbscop_name, ajDirExt(cpdbscop_dir));
 
 
 	if(!(cpdbscop_outf=ajFileNewOutDir(cpdbscop_dir, scop_name)))
 	{
 	    ajFmtPrintS(&msg, "Could not open for writing cpdbscop file %S", 
 			cpdbscop_name);
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
 	    ajFmtPrintF(errf2, "//\n%S\nERROR %S file write error\n", 
 			scop->Entry, cpdbscop_name);
 	    ajFileClose(&pdbscop_outf);
@@ -208,7 +208,7 @@ int main(int argc, char **argv)
 	if(!ajPdbWriteDomainRaw(moden, pdb, scop, pdbscop_outf, errf1))
 	{
 	    ajFmtPrintS(&msg, "Error writing pdbscop file %S", pdbscop_name);
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
 
 	    ajFileClose(&pdbscop_outf);
 	    ajFmtPrintS(&temp, "rm %S", pdbscop_name);
@@ -223,7 +223,7 @@ int main(int argc, char **argv)
 	{
 	    ajFmtPrintS(&msg, "Error writing cpdbscop file %S", 
 			cpdbscop_name);
-	    ajWarn(ajStrStr(msg));
+	    ajWarn(ajStrGetPtr(msg));
 
 	    ajFileClose(&cpdbscop_outf);
 	    ajFmtPrintS(&temp, "rm %S", cpdbscop_name);

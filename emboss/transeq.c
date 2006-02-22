@@ -150,9 +150,9 @@ static void transeq_Trim(AjPSeq seq)
     ajint len;
 
     s = ajSeqStrCopy(seq);
-    p = ajStrStrMod(&s);
+    p = ajStrGetuniquePtr(&s);
     
-    len = ajStrLen(s)-1;
+    len = ajStrGetLen(s)-1;
 
     for(i=len; i>=0; i--)
     {
@@ -163,7 +163,7 @@ static void transeq_Trim(AjPSeq seq)
     }
 
     if(i < len)
-	ajStrTruncate(&s, i+1);
+	ajStrTruncateLen(&s, i+1);
     ajSeqReplace(seq, s);
 
     return;
@@ -188,7 +188,7 @@ static void transeq_Clean(AjPSeq seq)
 
     str = ajSeqStrCopy(seq);
 
-    ajStrConvertCC(&str, "*", "X");
+    ajStrExchangeSetCC(&str, "*", "X");
     ajSeqReplace(seq, str);
 
     return;

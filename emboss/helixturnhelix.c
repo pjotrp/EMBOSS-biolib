@@ -143,18 +143,18 @@ int main(int argc, char **argv)
 
 
 	strand = ajSeqStrCopy(seq);
-	ajStrToUpper(&strand);
+	ajStrFmtUpper(&strand);
 
-	ajStrAssSubC(&substr,ajStrStr(strand),begin-1,end-1);
-	len = ajStrLen(substr);
+	ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
+	len = ajStrGetLen(substr);
 
 	TabRpt = ajFeattableNewSeq(seq);
 
-	q = ajStrStrMod(&substr);
+	q = ajStrGetuniquePtr(&substr);
 	for(i=0;i<len;++i,++q)
 	    *q = (char) ajAZToInt(*q);
 
-	p = ajStrStr(substr);
+	p = ajStrGetPtr(substr);
 
 	se = (len-lastcol)+1;
 	for(i=0;i<se;++i)
@@ -170,7 +170,7 @@ int main(int argc, char **argv)
 		lp->seq  = ajStrNew();
 		sp = begin - 1 + i;
 		lp->pos = sp+1;
-		ajStrAssSubC(&lp->seq,ajStrStr(strand),sp,sp+lastcol-1);
+		ajStrAssignSubC(&lp->seq,ajStrGetPtr(strand),sp,sp+lastcol-1);
 		lp->sd = thissd;
 		lp->wt = weight;
 		ajListPush(ajb,(void *)lp);
@@ -273,7 +273,7 @@ static ajint hth_readNab(AjPInt2d *matrix,AjBool eightyseven)
 
     while(ajFileGets(mfptr, &line))
     {
-	p = ajStrStr(line);
+	p = ajStrGetPtr(line);
 
 	if(*p=='#' || *p=='!' || *p=='\n')
 	    continue;
@@ -288,7 +288,7 @@ static ajint hth_readNab(AjPInt2d *matrix,AjBool eightyseven)
 	while((*p!='\n') && (*p<'A' || *p>'Z'))
 	    ++p;
 
-	cols = ajStrTokenCount(line,ajStrStr(delim));
+	cols = ajStrParseCountC(line,ajStrGetPtr(delim));
 
 	if(pass)
 	{
@@ -301,11 +301,11 @@ static ajint hth_readNab(AjPInt2d *matrix,AjBool eightyseven)
 
 	d1 = ajAZToInt((char)toupper((ajint)*p));
 
-	q = ajStrStr(line);
+	q = ajStrGetPtr(line);
 	c = 0;
-	q = ajSysStrtok(q,ajStrStr(delim));
+	q = ajSysStrtok(q,ajStrGetPtr(delim));
 
-	while((q=ajSysStrtok(NULL,ajStrStr(delim))))
+	while((q=ajSysStrtok(NULL,ajStrGetPtr(delim))))
 	{
 	    sscanf(q,"%d",&v);
 	    ajInt2dPut(matrix,d1,c++,v);
@@ -422,10 +422,10 @@ static void hth_print_hits(AjPList ajb, ajint n, float minsd, ajint lastcol,
     {
 	ajFmtPrintF(outf,"\nScore %d (+%.2f SD) in %s at residue %d\n",
 		   lp[ajIntGet(hp,i)]->wt,lp[ajIntGet(hp,i)]->sd,
-		    ajStrStr(lp[ajIntGet(hp,i)]->name),
+		    ajStrGetPtr(lp[ajIntGet(hp,i)]->name),
 		   lp[ajIntGet(hp,i)]->pos);
 	ajFmtPrintF(outf,"\n Sequence:  %s\n",
-		    ajStrStr(lp[ajIntGet(hp,i)]->seq));
+		    ajStrGetPtr(lp[ajIntGet(hp,i)]->seq));
 
 	if(eightyseven)
 	{
@@ -485,7 +485,7 @@ static void hth_report_hits(AjPList ajb, ajint lastcol, AjPFeattable TabRpt)
     struct DNAB *dnab;
 
     if(!fthit)
-	ajStrAssC(&fthit, "hit");
+	ajStrAssignC(&fthit, "hit");
 
     hp  = ajIntNew();
     hsd = ajFloatNew();

@@ -147,7 +147,7 @@ int main(int argc, char **argv)
     {
 	npoints = 0;
 	strand  = ajSeqStrCopy(seq);
-	len     = ajStrLen(strand);
+	len     = ajStrGetLen(strand);
 	begin   = ajSeqallBegin(seqall);
 	end     = ajSeqallEnd(seqall);
 
@@ -158,7 +158,7 @@ int main(int argc, char **argv)
 		ajFmtPrintF(outf,"DAN of: %s   from: %d  to: %d\n\n",
 			    ajSeqName(seq), begin, end);
 
-	ajStrToUpper(&strand);
+	ajStrFmtUpper(&strand);
 
 
 	n=ajRound(len,shift);
@@ -273,9 +273,9 @@ static void dan_findgc(const AjPStr strand, ajint begin, ajint end,
     {
 	type = ajStrNew();
 	if(isDNA)
-	    ajStrAssC(&type,"dna");
+	    ajStrAssignC(&type,"dna");
 	else
-	    ajStrAssC(&type,"rna");
+	    ajStrAssignC(&type,"rna");
 	ajMeltInit(type, window);
 	ajStrDel(&type);
     }
@@ -289,7 +289,7 @@ static void dan_findgc(const AjPStr strand, ajint begin, ajint end,
     {
 	ibegin = i;
 	iend   = i + window -1;
-	ajStrAssSubC(&substr, ajStrStr(strand), ibegin, iend);
+	ajStrAssignSubC(&substr, ajStrGetPtr(strand), ibegin, iend);
 
 	xa[*np]  = (float)(i+1);
 	ta[*np]  = ajTm(substr, (iend-ibegin)+1, shift, salt, dna, isDNA);
@@ -307,7 +307,7 @@ static void dan_findgc(const AjPStr strand, ajint begin, ajint end,
 
 	if(!doplot)
 	{
-	    ajFmtPrintF(outf,"%4d %s",ibegin+1,ajStrStr(substr));
+	    ajFmtPrintF(outf,"%4d %s",ibegin+1,ajStrGetPtr(substr));
 	    if(iend-ibegin+1 > 40)
 		ajFmtPrintF(outf,"...");
 	    if(dothermo)
@@ -415,9 +415,9 @@ static void dan_reportgc(AjPReport report,
     {
 	type = ajStrNew();
 	if(isDNA)
-	    ajStrAssC(&type,"dna");
+	    ajStrAssignC(&type,"dna");
 	else
-	    ajStrAssC(&type,"rna");
+	    ajStrAssignC(&type,"rna");
 	ajMeltInit(type, window);
 	ajStrDel(&type);
     }
@@ -431,7 +431,7 @@ static void dan_reportgc(AjPReport report,
     {
 	ibegin = i;
 	iend = i + window -1;
-	ajStrAssSub(&substr, ajSeqStr(seq), ibegin, iend);
+	ajStrAssignSubS(&substr, ajSeqStr(seq), ibegin, iend);
 
 	xa[*np]  = (float)(i+1);
 	ta[*np]  = ajTm(substr, (iend-ibegin)+1, shift, salt, dna, isDNA);

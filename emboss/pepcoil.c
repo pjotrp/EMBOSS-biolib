@@ -133,18 +133,18 @@ int main(int argc, char **argv)
 	end   = ajSeqallEnd(seqall);
 
 	strand = ajSeqStrCopy(seq);
-	ajStrToUpper(&strand);
+	ajStrFmtUpper(&strand);
 
-	ajStrAssSubC(&substr,ajStrStr(strand),begin-1,end-1);
-	ajStrAssSubC(&sstr,ajStrStr(strand),begin-1,end-1);
+	ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
+	ajStrAssignSubC(&sstr,ajStrGetPtr(strand),begin-1,end-1);
 
-	len = ajStrLen(substr);
+	len = ajStrGetLen(substr);
 
-	q = ajStrStrMod(&substr);
+	q = ajStrGetuniquePtr(&substr);
 	for(i=0;i<len;++i,++q)
 	    *q = (char) ajAZToInt(*q);
 
-	p = ajStrStr(substr);
+	p = ajStrGetPtr(substr);
 
 	maxmaxscore = -1.0;
 	isub = window -1;
@@ -355,9 +355,9 @@ static void pepcoil_readcoildat(AjPFloat2d *rdat)
 
     while(ajFileGets(mfptr, &line))
     {
-	p=ajStrStrMod(&line);
+	p=ajStrGetuniquePtr(&line);
 	if(*p=='#' || *p=='!' || !*p) continue;
-	ajCharToUpper(p);
+	ajCharFmtUpper(p);
 	q=p;
 	q=ajSysStrtok(q," \t");
 	n=ajAZToInt(*q);

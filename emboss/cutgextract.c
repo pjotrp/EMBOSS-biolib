@@ -146,14 +146,14 @@ int main(int argc, char **argv)
     allrecords = ajAcdGetBool("allrecords");
 
     ajStrInsertC(&release, 0, "CUTG");
-    ajStrCleanWhite(&release);
+    ajStrRemoveWhiteExcess(&release);
 
     while(ajListPop(flist,(void **)&entry))
     {
-	ajStrAssS(&baseentry, entry);
+	ajStrAssignS(&baseentry, entry);
 	ajFileNameTrim(&baseentry);
 	ajDebug("Testing file '%S'\n", entry);
-	if(!ajStrMatchWild(baseentry,wild))
+	if(!ajStrMatchWildS(baseentry,wild))
 	{
 	    ajStrDel(&entry);
 	    continue;
@@ -170,10 +170,10 @@ int main(int argc, char **argv)
 	while((entryname = cutgextract_next(inf, wildspecies,
 					    &species, &docstr)))
 	{
-	    if(ajStrLen(filename))
-		ajStrAssS(&tmpkey,filename);
+	    if(ajStrGetLen(filename))
+		ajStrAssignS(&tmpkey,filename);
 	    else
-		ajStrAssC(&tmpkey,entryname);
+		ajStrAssignC(&tmpkey,entryname);
 
 	    /* See if organism is already in the table */
 	    value = ajTableGet(table,tmpkey);
@@ -181,8 +181,8 @@ int main(int argc, char **argv)
 	    {
 		key = ajStrNewS(tmpkey);
 		AJNEW0(value);
-		ajStrAssS(&value->Species,species);
-		ajStrAssS(&value->Division, division);
+		ajStrAssignS(&value->Species,species);
+		ajStrAssignS(&value->Division, division);
 		ajTablePut(table,(const void *)key,(void *)value);
 	    }
 	    for(k=0;k<3;k++)
@@ -234,7 +234,7 @@ int main(int argc, char **argv)
 	}
 	ajCodCalculateUsage(codon,sum);
 
-	ajStrAppC(&key, ".cut");
+	ajStrAppendC(&key, ".cut");
 	if(allrecords)
 	{
 	    if(value->Warn)
@@ -334,24 +334,24 @@ static char* cutgextract_next(AjPFile inf, const AjPStr wildspecies,
 	org  = ajStrNew();
     }
 
-    ajStrAssC(&line,"");
-    ajStrAssC(pdoc,"");
+    ajStrAssignC(&line,"");
+    ajStrAssignC(pdoc,"");
     while (!done)
     {
 
-	while(*ajStrStr(line) != '>')
+	while(*ajStrGetPtr(line) != '>')
 	    if(!ajFileReadLine(inf,&line))
 		return NULL;
 
-	handle = ajStrTokenInit(line,"\\\n\t\r");
+	handle = ajStrTokenNewC(line,"\\\n\t\r");
 	for(i=0;i<7;++i) {
-	    ajStrToken(&token,&handle,"\\\n\t\r");
+	    ajStrTokenNextParseC(&handle,"\\\n\t\r",&token);
 	    if(i==5)
 	    {
-		ajStrAssC(&org,"E");
-		ajStrApp(&org, token);
-		ajStrAssS(pspecies, token);
-		if(ajStrMatchWild(token,wildspecies))
+		ajStrAssignC(&org,"E");
+		ajStrAppendS(&org, token);
+		ajStrAssignS(pspecies, token);
+		if(ajStrMatchWildS(token,wildspecies))
 		{
 		    done = ajTrue;
 		}
@@ -360,54 +360,54 @@ static char* cutgextract_next(AjPFile inf, const AjPStr wildspecies,
 	    switch(i)
 	    {
 	    case 0:
-		ajStrAppC(pdoc, "#ID ");
-		ajStrApp(pdoc, token);
-		ajStrAppC(pdoc, "\n");
+		ajStrAppendC(pdoc, "#ID ");
+		ajStrAppendS(pdoc, token);
+		ajStrAppendC(pdoc, "\n");
 		break;
 	    case 1:
-		ajStrAppC(pdoc, "#AC ");
-		ajStrApp(pdoc, token);
-		ajStrAppC(pdoc, "\n");
+		ajStrAppendC(pdoc, "#AC ");
+		ajStrAppendS(pdoc, token);
+		ajStrAppendC(pdoc, "\n");
 		break;
 	    case 2:
-		ajStrAppC(pdoc, "#FT ");
-		ajStrApp(pdoc, token);
-		ajStrAppC(pdoc, "\n");
+		ajStrAppendC(pdoc, "#FT ");
+		ajStrAppendS(pdoc, token);
+		ajStrAppendC(pdoc, "\n");
 		break;
 	    case 3:
-		ajStrAppC(pdoc, "#FL ");
-		ajStrApp(pdoc, token);
-		ajStrAppC(pdoc, "\n");
+		ajStrAppendC(pdoc, "#FL ");
+		ajStrAppendS(pdoc, token);
+		ajStrAppendC(pdoc, "\n");
 		break;
 	    case 4:
-		ajStrAppC(pdoc, "#PI ");
-		ajStrApp(pdoc, token);
-		ajStrAppC(pdoc, "\n");
-		ajStrAssS(&savepid, token);
+		ajStrAppendC(pdoc, "#PI ");
+		ajStrAppendS(pdoc, token);
+		ajStrAppendC(pdoc, "\n");
+		ajStrAssignS(&savepid, token);
 		break;
 	    case 5:
-		ajStrAppC(pdoc, "#OS ");
-		ajStrApp(pdoc, token);
-		ajStrAppC(pdoc, "\n");
+		ajStrAppendC(pdoc, "#OS ");
+		ajStrAppendS(pdoc, token);
+		ajStrAppendC(pdoc, "\n");
 		break;
 	    case 6:
-		ajStrAppC(pdoc, "#DE ");
-		ajStrApp(pdoc, token);
-		ajStrAppC(pdoc, "\n");
+		ajStrAppendC(pdoc, "#DE ");
+		ajStrAppendS(pdoc, token);
+		ajStrAppendC(pdoc, "\n");
 		break;
 	    default:
 		break;
 	    }
 	}
 
-	ajStrTokenClear(&handle);
+	ajStrTokenDel(&handle);
 	if(!done)
 	    if(!ajFileReadLine(inf,&line))
 		return NULL;
     }
 
-    len = ajStrLen(org);
-    p   = ajStrStrMod(&org);
+    len = ajStrGetLen(org);
+    p   = ajStrGetuniquePtr(&org);
     for(i=0;i<len;++i)
     {
 	c = p[i];
@@ -478,10 +478,10 @@ static ajint cutgextract_readcodons(AjPFile inf, AjBool allrecords,
 	ajFatal("Premature end of file");
 
 
-    token = ajStrTokenInit(line," \n\t\r");
+    token = ajStrTokenNewC(line," \n\t\r");
     for(i=0;i<CODONS;++i)
     {
-	ajStrToken(&value,&token," \n\t\r");
+	ajStrTokenNextParseC(&token," \n\t\r",&value);
 	ajStrToInt(value,&n);
 	thiscount[cutidx[i]] = n;
 	if(i>60)
@@ -497,7 +497,7 @@ static ajint cutgextract_readcodons(AjPFile inf, AjBool allrecords,
 	count[i] += thiscount[i];
     }	
 
-    ajStrTokenClear(&token);
+    ajStrTokenDel(&token);
 
     return nstops;
 }

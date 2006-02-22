@@ -368,7 +368,7 @@ static void alignWriteTrace(AjPAlign thys)
 			    iali, iseq, ajSeqLen(seq), ajSeqStr(seq));
 	    else
 	    {
-		ajStrAssSub(&tmpstr, ajSeqStr(seq), -20, -1);
+		ajStrAssignSubS(&tmpstr, ajSeqStr(seq), -20, -1);
 		ajFmtPrintF(thys->File,
 			    "Seq%d.%d: %d '%20.20S...%20S'\n",
 			    iali, iseq, ajSeqLen(seq), ajSeqStr(seq), tmpstr);
@@ -453,7 +453,7 @@ static void alignWriteSeqformat(AjPAlign thys, ajint iali, const char* sqfmt)
 
     thys->SeqOnly = ajTrue;
 
-    ajStrAssC(&seqout->Formatstr, sqfmt);
+    ajStrAssignC(&seqout->Formatstr, sqfmt);
     seqout->File = thys->File;
 
     ajSeqoutOpen(seqout);
@@ -467,7 +467,7 @@ static void alignWriteSeqformat(AjPAlign thys, ajint iali, const char* sqfmt)
 	seq = ajSeqNewS(alignSeq(thys, iseq, iali));
 	istart = data->SubOffset[iseq];
 	iend = istart + ilen - 1;
-	ajStrAssSub(&tmpstr, ajSeqStr(seq), istart, iend);
+	ajStrAssignSubS(&tmpstr, ajSeqStr(seq), istart, iend);
 	ajSeqReplace(seq, tmpstr);
 	ajSeqWrite(seqout, seq);
 	ajSeqDel(&seq);
@@ -738,7 +738,7 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
     else if(markx == 2)
     {
 	seq = ajSeqStr(data->Seq[0]);
-	ajStrAssS(&cons, ajSeqStr(data->Seq[1]));
+	ajStrAssignS(&cons, ajSeqStr(data->Seq[1]));
 	alignDiff(&cons, seq, '.');
     }
     else
@@ -807,23 +807,23 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 		    lastline = ajTrue;
 		}
 		increment = incs[iseq];
-		ajStrAssSub(&tmpstr, seq, istart, iend);
-		ajStrAssSub(&mrkcons, cons,
+		ajStrAssignSubS(&tmpstr, seq, istart, iend);
+		ajStrAssignSubS(&mrkcons, cons,
 			    istart - data->SubOffset[iseq],
 			    iend - data->SubOffset[iseq]);
 
-		ajStrSubstituteCC(&tmpstr, ".", "-");
-		icnt = ajStrLen(tmpstr)
-		    - ajStrCountK(tmpstr, '-')
-			- ajStrCountK(tmpstr, ' ');
+		ajStrExchangeCC(&tmpstr, ".", "-");
+		icnt = ajStrGetLen(tmpstr)
+		    - ajStrCalcCountK(tmpstr, '-')
+			- ajStrCalcCountK(tmpstr, ' ');
 
 		/* number the top sequence */
 		if (!iseq)
 		{
 		    jpos = ipos[iseq];
-		    ajStrAssC(&tmpnum, "");
+		    ajStrAssignC(&tmpnum, "");
 		    jj=7;
-		    cp = ajStrStr(tmpstr);
+		    cp = ajStrGetPtr(tmpstr);
 		    while (*cp) {
 			jj ++;
 			if ((*cp != '-') && (*cp != ' '))
@@ -849,7 +849,7 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 		}
 
 		if(!iseq)
-		    ajStrAssS(&mrkstr, tmpstr);
+		    ajStrAssignS(&mrkstr, tmpstr);
 		else
 		    alignSame(&mrkstr, tmpstr, ' ');
 
@@ -866,7 +866,7 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 				    "       %S\n",
 				    mrkcons);
 
-		    if(ajStrLen(tmpstr))
+		    if(ajStrGetLen(tmpstr))
 		    {
 			ajFmtPrintF(outf,
 				    "%6.6S %S\n",
@@ -882,9 +882,9 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 		    if (iseq+1 == nseq)
 		    {
 			jpos = ipos[iseq];
-			ajStrAssC(&tmpnum, "");
+			ajStrAssignC(&tmpnum, "");
 			jj=7;
-			cp = ajStrStr(tmpstr);
+			cp = ajStrGetPtr(tmpstr);
 			while (*cp) {
 			    jj++;
 			    if ((*cp != '-') && (*cp != ' '))
@@ -929,18 +929,18 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 	    seq = ajSeqStr(data->Seq[iseq]);
 	    istart = data->SubOffset[iseq];
 	    iend = istart + ilen - 1;
-	    ajStrAssSub(&tmpstr, seq, istart, iend);
-	    ajStrAssSub(&mrkcons, cons,
+	    ajStrAssignSubS(&tmpstr, seq, istart, iend);
+	    ajStrAssignSubS(&mrkcons, cons,
 			istart - data->SubOffset[iseq],
 			iend - data->SubOffset[iseq]);
 
-	    ajStrSubstituteCC(&tmpstr, ".", "-");
-	    icnt = ajStrLen(tmpstr)
-		- ajStrCountK(tmpstr, '-')
-		    - ajStrCountK(tmpstr, ' ');
+	    ajStrExchangeCC(&tmpstr, ".", "-");
+	    icnt = ajStrGetLen(tmpstr)
+		- ajStrCalcCountK(tmpstr, '-')
+		    - ajStrCalcCountK(tmpstr, ' ');
 
 	    if(!iseq)
-		ajStrAssS(&mrkstr, tmpstr);
+		ajStrAssignS(&mrkstr, tmpstr);
 	    else
 		alignSame(&mrkstr, tmpstr, ' ');
 
@@ -974,8 +974,8 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 	    {	    
 		jstart = j + data->SubOffset[iseq];
 		jend = AJMIN(data->SubOffset[iseq]+ilen-1, jstart+iwidth-1);
-		ajStrAssSub(&tmpstr, seq, jstart, jend);
-		if(ajStrLen(tmpstr))
+		ajStrAssignSubS(&tmpstr, seq, jstart, jend);
+		if(ajStrGetLen(tmpstr))
 		{
 		    ajFmtPrintF(outf,
 				"%S\n",
@@ -1179,18 +1179,18 @@ static void alignWriteSimple(AjPAlign thys)
 		seq = ajSeqStr(data->Seq[iseq]);
 		istart = i + data->SubOffset[iseq];
 		iend = AJMIN(data->SubOffset[iseq]+ilen-1, istart+iwidth-1);
-		ajStrAssSub(&tmpstr, seq, istart, iend);
-		ajStrAssSub(&mrkcons, cons,
+		ajStrAssignSubS(&tmpstr, seq, istart, iend);
+		ajStrAssignSubS(&mrkcons, cons,
 			    istart - data->SubOffset[iseq],
 			    iend - data->SubOffset[iseq]);
 		
-		ajStrSubstituteCC(&tmpstr, ".", "-");
-		icnt = incs[iseq] * (ajStrLen(tmpstr)
-				     - ajStrCountK(tmpstr, '-')
-				     - ajStrCountK(tmpstr, ' '));
+		ajStrExchangeCC(&tmpstr, ".", "-");
+		icnt = incs[iseq] * (ajStrGetLen(tmpstr)
+				     - ajStrCalcCountK(tmpstr, '-')
+				     - ajStrCalcCountK(tmpstr, ' '));
 		
 		if(!iseq)
-		    ajStrAssS(&mrkstr, tmpstr);
+		    ajStrAssignS(&mrkstr, tmpstr);
 		else
 		    alignSame(&mrkstr, tmpstr, ' ');
 
@@ -1200,7 +1200,7 @@ static void alignWriteSimple(AjPAlign thys)
 				"                     %S\n",
 				mrkcons);
 
-		if(ajStrLen(tmpstr))
+		if(ajStrGetLen(tmpstr))
 		{
 		    ajFmtPrintF(outf,
 				"%-13.13S %6d %S %6d\n",
@@ -1265,7 +1265,7 @@ static void alignWriteScore(AjPAlign thys)
     {
 	data = pdata[iali];
 
-	if(ajStrLen(data->Score))
+	if(ajStrGetLen(data->Score))
 	    ajFmtPrintF(outf, "%S %S %d (%S)\n",
 			alignSeqName(thys, 0), alignSeqName(thys, 1),
 			data->LenAli, data->Score);
@@ -1442,18 +1442,18 @@ static void alignWriteSrsAny(AjPAlign thys, ajint imax, AjBool mark)
 		seq = ajSeqStr(data->Seq[iseq]);
 		istart = i + data->SubOffset[iseq];
 		iend = AJMIN(data->SubOffset[iseq]+ilen-1, istart+iwidth-1);
-		ajStrAssSub(&tmpstr, seq, istart, iend);
-		ajStrAssSub(&mrkcons, cons,
+		ajStrAssignSubS(&tmpstr, seq, istart, iend);
+		ajStrAssignSubS(&mrkcons, cons,
 			    istart - data->SubOffset[iseq],
 			    iend - data->SubOffset[iseq]);
 
-		ajStrSubstituteCC(&tmpstr, ".", "-");
-		icnt = incs[iseq] * (ajStrLen(tmpstr)
-				     - ajStrCountK(tmpstr, '-')
-				     - ajStrCountK(tmpstr, ' '));
+		ajStrExchangeCC(&tmpstr, ".", "-");
+		icnt = incs[iseq] * (ajStrGetLen(tmpstr)
+				     - ajStrCalcCountK(tmpstr, '-')
+				     - ajStrCalcCountK(tmpstr, ' '));
 
 		if(!iseq)
-		    ajStrAssS(&mrkstr, tmpstr);
+		    ajStrAssignS(&mrkstr, tmpstr);
 		else
 		    alignSame(&mrkstr, tmpstr, ' ');
 
@@ -1462,7 +1462,7 @@ static void alignWriteSrsAny(AjPAlign thys, ajint imax, AjBool mark)
 				"                     %S\n",
 				mrkcons);
 
-		if(ajStrLen(tmpstr))
+		if(ajStrGetLen(tmpstr))
 		    ajFmtPrintF(outf,
 				"%-13.13S %6d %S %6d\n",
 				alignSeqName(thys, iseq),
@@ -1533,13 +1533,13 @@ static void alignWriteTCoffee (AjPAlign thys)
     /* print header */
     ajFmtPrintF (outf, "%d\n", nseq); /* number of sequences */
     for (iseq=0; iseq < nseq; iseq++) {
-	ajStrAssS(&sseq,ajSeqStr(pdata[0]->Seq[iseq]));
-	ajStrCleanWhite (&sseq);
-	ajStrSubstituteCC (&sseq, "-","");
+	ajStrAssignS(&sseq,ajSeqStr(pdata[0]->Seq[iseq]));
+	ajStrRemoveWhiteExcess(&sseq);
+	ajStrExchangeCC(&sseq, "-","");
 	/* <seqname> <seqlen> <sequence> */
 	ajFmtPrintF(outf, "%S %d %S\n",
 		    alignSeqName(thys, iseq),
-		    ajStrLen(sseq),
+		    ajStrGetLen(sseq),
 		    sseq);
 	ajStrDel(&sseq);
     }
@@ -1568,7 +1568,7 @@ static void alignWriteTCoffee (AjPAlign thys)
 		for (i=0; i<ilen; i++)
 		{
 		    /* check if position is ungapped */
-		    if (ajStrChar(sseq1,i)>='A' && ajStrChar(sseq2,i)>='A')
+		    if (ajStrGetCharPos(sseq1,i)>='A' && ajStrGetCharPos(sseq2,i)>='A')
 		    {
 			/* output aligned pair,
 			   sequence weight,
@@ -1578,11 +1578,11 @@ static void alignWriteTCoffee (AjPAlign thys)
 			ajFmtPrintF (outf, "%d %d %d %d %d\n", 
 				     n1, n2, pidentity, 1, 0);
 		    }
-		    if (ajStrChar(sseq1,i)>='A')
+		    if (ajStrGetCharPos(sseq1,i)>='A')
 		    {
 			n1++;
 		    }
-		    if (ajStrChar(sseq2,i)>='A')
+		    if (ajStrGetCharPos(sseq2,i)>='A')
 		    {
 			n2++;
 		    }
@@ -1799,10 +1799,10 @@ AjBool ajAlignDefineCC(AjPAlign thys, const char* seqa, const char* seqb,
     AJCNEW0(data->Rev, 2);
     AJCNEW0(data->Seq, 2);
 
-    ajStrAssC(&tmpstr, seqa);
+    ajStrAssignC(&tmpstr, seqa);
     data->Start[0] = 1;
-    data->End[0] = ajStrLen(tmpstr);
-    data->Len[0] = ajStrLen(tmpstr) - ajSeqGapCountS(tmpstr);
+    data->End[0] = ajStrGetLen(tmpstr);
+    data->Len[0] = ajStrGetLen(tmpstr) - ajSeqGapCountS(tmpstr);
     data->Offset[0] = 0;
     data->Offend[0] = 0;
     data->SubOffset[0] = 0;
@@ -1813,10 +1813,10 @@ AjBool ajAlignDefineCC(AjPAlign thys, const char* seqa, const char* seqb,
     data->Seq[0] = ajSeqNewC(seqa, namea);
     ajSeqGapStandard(data->Seq[0], '-');
 
-    ajStrAssC(&tmpstr, seqb);
+    ajStrAssignC(&tmpstr, seqb);
     data->Start[1] = 1;
-    data->End[1] = ajStrLen(tmpstr);
-    data->Len[1] = ajStrLen(tmpstr) - ajSeqGapCountS(tmpstr);
+    data->End[1] = ajStrGetLen(tmpstr);
+    data->Len[1] = ajStrGetLen(tmpstr) - ajSeqGapCountS(tmpstr);
     data->Offset[1] = 0;
     data->Offend[1] = 0;
     data->SubOffset[1] = 0;
@@ -1948,12 +1948,12 @@ AjBool ajAlignOpen(AjPAlign thys, const AjPStr name)
 
 AjBool ajAlignFormatDefault(AjPStr* pformat)
 {
-    if(ajStrLen(*pformat))
+    if(ajStrGetLen(*pformat))
 	ajDebug("... output format '%S'\n", *pformat);
     else
     {
-	/* ajStrSetC(pformat, alignFormat[0].Name);*/
-	ajStrSetC(pformat, "gff");	/* use the real name */
+	/* ajStrAssignEmptyC(pformat, alignFormat[0].Name);*/
+	ajStrAssignEmptyC(pformat, "gff");	/* use the real name */
 	ajDebug("... output format not set, default to '%S'\n", *pformat);
     }
 
@@ -2027,11 +2027,11 @@ AjBool ajAlignFindFormat(const AjPStr format, ajint* iformat)
 
     ajDebug("ajAlignFindFormat '%S'\n", format);
 
-    if(!ajStrLen(format))
+    if(!ajStrGetLen(format))
 	return ajFalse;
 
-    ajStrAssS(&tmpformat, format);
-    ajStrToLower(&tmpformat);
+    ajStrAssignS(&tmpformat, format);
+    ajStrFmtLower(&tmpformat);
 
     while(alignFormat[i].Name)
     {
@@ -2221,18 +2221,18 @@ void ajAlignWriteHeader(AjPAlign thys)
 	ajFmtPrintF(outf, "# Program: %s\n", ajAcdProgram());
 	ajFmtPrintF(outf, "# Rundate: %D\n", ajTimeTodayRefF("report"));
 	ajFmtPrintF(outf, "# Commandline: %s\n", ajAcdProgram());
-	ajStrAssS(&tmpstr, ajAcdGetCmdline());
-	if(ajStrLen(tmpstr))
+	ajStrAssignS(&tmpstr, ajAcdGetCmdline());
+	if(ajStrGetLen(tmpstr))
 	{
-	    ajStrSubstituteCC(&tmpstr, "\n", "\1#    ");
-	    ajStrSubstituteCC(&tmpstr, "\1", "\n");
+	    ajStrExchangeCC(&tmpstr, "\n", "\1#    ");
+	    ajStrExchangeCC(&tmpstr, "\1", "\n");
 	    ajFmtPrintF(outf, "#    %S\n", tmpstr);
 	}
-	ajStrAssS(&tmpstr, ajAcdGetInputs());
-	if(ajStrLen(tmpstr))
+	ajStrAssignS(&tmpstr, ajAcdGetInputs());
+	if(ajStrGetLen(tmpstr))
 	{
-	    ajStrSubstituteCC(&tmpstr, "\n", "\1#    ");
-	    ajStrSubstituteCC(&tmpstr, "\1", "\n");
+	    ajStrExchangeCC(&tmpstr, "\n", "\1#    ");
+	    ajStrExchangeCC(&tmpstr, "\1", "\n");
 	    ajFmtPrintF(outf, "#    %S\n", tmpstr);
 	}
 	ajFmtPrintF(outf, "# Align_format: %S\n", thys->Formatstr);
@@ -2249,7 +2249,7 @@ void ajAlignWriteHeader(AjPAlign thys)
     ajFmtPrintF(outf, "# Aligned_sequences: %d\n", thys->Nseqs);
     for(i=0; i < thys->Nseqs; i++)
     {
-	ajStrAssC(&tmpstr, "");
+	ajStrAssignC(&tmpstr, "");
 	if(thys->Showacc)
 	    ajFmtPrintAppS(&tmpstr, " (%S)",
 			   ajSeqGetAcc(alignSeq(thys,i, 0)));
@@ -2260,30 +2260,30 @@ void ajAlignWriteHeader(AjPAlign thys)
 		    i+1, alignSeqName(thys, i), tmpstr);
     }
 
-    if(ajStrLen(thys->Matrix))
+    if(ajStrGetLen(thys->Matrix))
 	ajFmtPrintF(outf, "# Matrix: %S\n", thys->Matrix);
     
-    if(ajStrLen(thys->GapPen))
+    if(ajStrGetLen(thys->GapPen))
 	ajFmtPrintF(outf, "# Gap_penalty: %S\n", thys->GapPen);
     
-    if(ajStrLen(thys->ExtPen))
+    if(ajStrGetLen(thys->ExtPen))
 	ajFmtPrintF(outf, "# Extend_penalty: %S\n", thys->ExtPen);
     
-    if(ajStrLen(thys->Header))
+    if(ajStrGetLen(thys->Header))
     {
-	ajStrAssS(&tmpstr, thys->Header);
-	ajStrSubstituteCC(&tmpstr, "\n", "\1# ");
-	ajStrSubstituteCC(&tmpstr, "\1", "\n");
+	ajStrAssignS(&tmpstr, thys->Header);
+	ajStrExchangeCC(&tmpstr, "\n", "\1# ");
+	ajStrExchangeCC(&tmpstr, "\1", "\n");
 	ajFmtPrintF(outf, "#\n");
 	ajFmtPrintF(outf, "# %S\n", tmpstr);
 	ajFmtPrintF(outf, "#\n");
     }
     
-    if(ajStrLen(thys->SubHeader))
+    if(ajStrGetLen(thys->SubHeader))
     {
-	ajStrAssS(&tmpstr, thys->SubHeader);
-	ajStrSubstituteCC(&tmpstr, "\n", "\1# ");
-	ajStrSubstituteCC(&tmpstr, "\1", "\n");
+	ajStrAssignS(&tmpstr, thys->SubHeader);
+	ajStrExchangeCC(&tmpstr, "\n", "\1# ");
+	ajStrExchangeCC(&tmpstr, "\1", "\n");
 	ajFmtPrintF(outf, "#\n");
 	ajFmtPrintF(outf, "# %S\n", tmpstr);
 	ajFmtPrintF(outf, "#\n");
@@ -2331,22 +2331,22 @@ void ajAlignWriteTail(AjPAlign thys)
     else
 	ajFmtPrintF(outf, "\n########################################\n");
     
-    if(ajStrLen(thys->SubTail))
+    if(ajStrGetLen(thys->SubTail))
     {
-	ajStrAssS(&tmpstr, thys->SubTail);
-	ajStrSubstituteCC(&tmpstr, "\n", "\1# ");
-	ajStrSubstituteCC(&tmpstr, "\1", "\n");
+	ajStrAssignS(&tmpstr, thys->SubTail);
+	ajStrExchangeCC(&tmpstr, "\n", "\1# ");
+	ajStrExchangeCC(&tmpstr, "\1", "\n");
 	ajFmtPrintF(outf, "#\n");
 	ajFmtPrintF(outf, "# %S\n", tmpstr);
 	ajFmtPrintF(outf, "#\n");
 	ajStrDel(&thys->SubTail);
     }
 
-    if(ajStrLen(thys->Tail))
+    if(ajStrGetLen(thys->Tail))
     {
-	ajStrAssS(&tmpstr, thys->Tail);
-	ajStrSubstituteCC(&tmpstr, "\n", "\1# ");
-	ajStrSubstituteCC(&tmpstr, "\1", "\n");
+	ajStrAssignS(&tmpstr, thys->Tail);
+	ajStrExchangeCC(&tmpstr, "\n", "\1# ");
+	ajStrExchangeCC(&tmpstr, "\1", "\n");
 	ajFmtPrintF(outf, "#\n");
 	ajFmtPrintF(outf, "# %S\n", tmpstr);
 	ajFmtPrintF(outf, "#\n");
@@ -2377,10 +2377,10 @@ void ajAlignWriteTail(AjPAlign thys)
 
 void ajAlignSetHeader(AjPAlign thys, const AjPStr header)
 {
-    ajStrAssS(&thys->Header, header);
+    ajStrAssignS(&thys->Header, header);
 
     ajDebug("ajAlignSetHeader len %d '%S'\n",
-	    ajStrLen(thys->Header), header);
+	    ajStrGetLen(thys->Header), header);
 
     return;
 }
@@ -2400,10 +2400,10 @@ void ajAlignSetHeader(AjPAlign thys, const AjPStr header)
 
 void ajAlignSetHeaderC(AjPAlign thys, const char* header)
 {
-    ajStrAssC(&thys->Header, header);
+    ajStrAssignC(&thys->Header, header);
 
     ajDebug("ajAlignSetHeaderC len %d '%S'\n",
-	    ajStrLen(thys->Header), header);
+	    ajStrGetLen(thys->Header), header);
 
     return;
 }
@@ -2423,13 +2423,13 @@ void ajAlignSetHeaderC(AjPAlign thys, const char* header)
 
 void ajAlignSetHeaderApp(AjPAlign thys, const AjPStr header)
 {
-    if(ajStrLen(thys->Header) && ajStrChar(thys->Header, -1) != '\n')
-	ajStrAppC(&thys->Header, "/n");
+    if(ajStrGetLen(thys->Header) && ajStrGetCharLast(thys->Header) != '\n')
+	ajStrAppendC(&thys->Header, "/n");
 
-    ajStrApp(&thys->Header, header);
+    ajStrAppendS(&thys->Header, header);
 
     ajDebug("ajAlignSetHeaderApp len %d '%S'\n",
-	    ajStrLen(thys->Header), header);
+	    ajStrGetLen(thys->Header), header);
 
     return;
 }
@@ -2449,10 +2449,10 @@ void ajAlignSetHeaderApp(AjPAlign thys, const AjPStr header)
 
 void ajAlignSetTail(AjPAlign thys, const AjPStr tail)
 {
-    ajStrAssS(&thys->Tail, tail);
+    ajStrAssignS(&thys->Tail, tail);
 
     ajDebug("ajAlignSetTail len %d '%S'\n",
-	    ajStrLen(thys->Tail), tail);
+	    ajStrGetLen(thys->Tail), tail);
 
     return;
 }
@@ -2472,10 +2472,10 @@ void ajAlignSetTail(AjPAlign thys, const AjPStr tail)
 
 void ajAlignSetTailC(AjPAlign thys, const char* tail)
 {
-    ajStrAssC(&thys->Tail, tail);
+    ajStrAssignC(&thys->Tail, tail);
 
     ajDebug("ajAlignSetTailC len %d '%S'\n",
-	    ajStrLen(thys->Tail), tail);
+	    ajStrGetLen(thys->Tail), tail);
 
     return;
 }
@@ -2495,13 +2495,13 @@ void ajAlignSetTailC(AjPAlign thys, const char* tail)
 
 void ajAlignSetTailApp(AjPAlign thys, const AjPStr tail)
 {
-    if(ajStrLen(thys->Tail) && ajStrChar(thys->Tail, -1) != '\n')
-	ajStrAppC(&thys->Tail, "/n");
+    if(ajStrGetLen(thys->Tail) && ajStrGetCharLast(thys->Tail) != '\n')
+	ajStrAppendC(&thys->Tail, "/n");
 
-    ajStrApp(&thys->Tail, tail);
+    ajStrAppendS(&thys->Tail, tail);
 
     ajDebug("ajAlignSetTailApp len %d '%S'\n",
-	    ajStrLen(thys->Tail), tail);
+	    ajStrGetLen(thys->Tail), tail);
 
     return;
 }
@@ -2518,10 +2518,10 @@ void ajAlignSetTailApp(AjPAlign thys, const AjPStr tail)
 
 void ajAlignSetSubTail(AjPAlign thys, const AjPStr tail)
 {
-    ajStrAssS(&thys->SubTail, tail);
+    ajStrAssignS(&thys->SubTail, tail);
 
     ajDebug("ajAlignSetSubTail len %d '%S'\n",
-	    ajStrLen(thys->SubTail), tail);
+	    ajStrGetLen(thys->SubTail), tail);
 
     return;
 }
@@ -2541,10 +2541,10 @@ void ajAlignSetSubTail(AjPAlign thys, const AjPStr tail)
 
 void ajAlignSetSubTailC(AjPAlign thys, const char* tail)
 {
-    ajStrAssC(&thys->SubTail, tail);
+    ajStrAssignC(&thys->SubTail, tail);
 
     ajDebug("ajAlignSetSubTailC len %d '%S'\n",
-	    ajStrLen(thys->SubTail), tail);
+	    ajStrGetLen(thys->SubTail), tail);
 
     return;
 }
@@ -2564,13 +2564,13 @@ void ajAlignSetSubTailC(AjPAlign thys, const char* tail)
 
 void ajAlignSetSubTailApp(AjPAlign thys, const AjPStr tail)
 {
-    if(ajStrLen(thys->SubTail) && ajStrChar(thys->SubTail, -1) != '\n')
-	ajStrAppC(&thys->SubTail, "/n");
+    if(ajStrGetLen(thys->SubTail) && ajStrGetCharLast(thys->SubTail) != '\n')
+	ajStrAppendC(&thys->SubTail, "/n");
 
-    ajStrApp(&thys->SubTail, tail);
+    ajStrAppendS(&thys->SubTail, tail);
 
     ajDebug("ajAlignSetSubTailApp len %d '%S'\n",
-	    ajStrLen(thys->SubTail), tail);
+	    ajStrGetLen(thys->SubTail), tail);
 
     return;
 }
@@ -2591,10 +2591,10 @@ void ajAlignSetSubTailApp(AjPAlign thys, const AjPStr tail)
 
 void ajAlignSetSubHeader(AjPAlign thys, const AjPStr subheader)
 {
-  ajStrAssS(&thys->SubHeader, subheader);
+  ajStrAssignS(&thys->SubHeader, subheader);
 
   ajDebug("ajAlignSetSubHeader len %d '%S'\n",
-	  ajStrLen(thys->SubHeader), subheader);
+	  ajStrGetLen(thys->SubHeader), subheader);
 
   return;
 }
@@ -2615,10 +2615,10 @@ void ajAlignSetSubHeader(AjPAlign thys, const AjPStr subheader)
 
 void ajAlignSetSubHeaderC(AjPAlign thys, const char* subheader)
 {
-    ajStrAssC(&thys->Header, subheader);
+    ajStrAssignC(&thys->Header, subheader);
 
     ajDebug("ajAlignSetSubHeaderC len %d '%S'\n",
-	    ajStrLen(thys->SubHeader), subheader);
+	    ajStrGetLen(thys->SubHeader), subheader);
 
     return;
 }
@@ -2639,13 +2639,13 @@ void ajAlignSetSubHeaderC(AjPAlign thys, const char* subheader)
 
 void ajAlignSetSubHeaderApp(AjPAlign thys, const AjPStr subheader)
 {
-    if(ajStrLen(thys->SubHeader) && ajStrChar(thys->SubHeader, -1) != '\n')
-	ajStrAppC(&thys->SubHeader, "/n");
+    if(ajStrGetLen(thys->SubHeader) && ajStrGetCharLast(thys->SubHeader) != '\n')
+	ajStrAppendC(&thys->SubHeader, "/n");
 
-    ajStrApp(&thys->SubHeader, subheader);
+    ajStrAppendS(&thys->SubHeader, subheader);
 
     ajDebug("ajAlignSetSubHeaderApp len %d '%S'\n",
-	    ajStrLen(thys->SubHeader), subheader);
+	    ajStrGetLen(thys->SubHeader), subheader);
 
     return;
 }
@@ -2666,13 +2666,13 @@ void ajAlignSetSubHeaderApp(AjPAlign thys, const AjPStr subheader)
 
 void ajAlignSetSubHeaderPre(AjPAlign thys, const AjPStr subheader)
 {
-    if(ajStrLen(thys->SubHeader) && ajStrChar(subheader,-1) != '\n')
+    if(ajStrGetLen(thys->SubHeader) && ajStrGetCharLast(subheader) != '\n')
 	ajStrInsertC(&thys->SubHeader, 0, "/n");
 
-    ajStrInsert(&thys->SubHeader, 0, subheader);
+    ajStrInsertS(&thys->SubHeader, 0, subheader);
 
     ajDebug("ajAlignSetSubHeaderPre len %d '%S'\n",
-	    ajStrLen(thys->SubHeader), subheader);
+	    ajStrGetLen(thys->SubHeader), subheader);
 
     return;
 }
@@ -2692,7 +2692,7 @@ void ajAlignSetSubHeaderPre(AjPAlign thys, const AjPStr subheader)
 
 void ajAlignSetMatrixName(AjPAlign thys, const AjPStr matrix)
 {
-    ajAlignSetMatrixNameC(thys, ajStrStr(matrix));
+    ajAlignSetMatrixNameC(thys, ajStrGetPtr(matrix));
 
     return;
 }
@@ -2712,7 +2712,7 @@ void ajAlignSetMatrixName(AjPAlign thys, const AjPStr matrix)
 
 void ajAlignSetMatrixNameC(AjPAlign thys, const char* matrix)
 {
-    ajStrAssC(&thys->Matrix, matrix);
+    ajStrAssignC(&thys->Matrix, matrix);
 
     return;
 }
@@ -2790,10 +2790,10 @@ void ajAlignSetGapI(AjPAlign thys, ajint gappen, ajint extpen)
     static AjPStr tmpstr = NULL;
 
     ajFmtPrintS(&tmpstr, "%d", gappen);
-    ajStrAssS(&thys->GapPen, tmpstr);
+    ajStrAssignS(&thys->GapPen, tmpstr);
 
     ajFmtPrintS(&tmpstr, "%d", extpen);
-    ajStrAssS(&thys->ExtPen, tmpstr);
+    ajStrAssignS(&thys->ExtPen, tmpstr);
 
     return;
 }
@@ -2822,18 +2822,18 @@ void ajAlignSetGapR(AjPAlign thys, float gappen, float extpen)
     ajFmtPrintS(&tmpstr, "%.*f", precision, gappen);
     for(i=1; i<precision; i++)
     {
-	if(ajStrChar(tmpstr, -1) != '0') break;
-	ajStrTrim(&tmpstr, -1);
+	if(ajStrGetCharLast(tmpstr) != '0') break;
+	ajStrCutEnd(&tmpstr, 1);
     }
-    ajStrAssS(&thys->GapPen, tmpstr);
+    ajStrAssignS(&thys->GapPen, tmpstr);
 
     ajFmtPrintS(&tmpstr, "%.*f", precision, extpen);
     for(i=1; i<precision; i++)
     {
-	if(ajStrChar(tmpstr, -1) != '0') break;
-	ajStrTrim(&tmpstr, -1);
+	if(ajStrGetCharLast(tmpstr) != '0') break;
+	ajStrCutEnd(&tmpstr, 1);
     }
-    ajStrAssS(&thys->ExtPen, tmpstr);
+    ajStrAssignS(&thys->ExtPen, tmpstr);
 
     return;
 }
@@ -2858,7 +2858,7 @@ void ajAlignSetScoreI(AjPAlign thys, ajint score)
 
     ajListLast(thys->Data, (void**) &data);
     ajFmtPrintS(&tmpstr, "%d", score);
-    ajStrAssS(&data->Score, tmpstr);
+    ajStrAssignS(&data->Score, tmpstr);
 
     ajDebug("ajAlignSetScoreI: %d '%S' %d\n",
 	    score, data->Score, data->LenAli);
@@ -2886,7 +2886,7 @@ void ajAlignSetScoreL(AjPAlign thys, ajlong score)
 
     ajListLast(thys->Data, (void**) &data);
     ajFmtPrintS(&tmpstr, "%Ld", score);
-    ajStrAssS(&data->Score, tmpstr);
+    ajStrAssignS(&data->Score, tmpstr);
 
     ajDebug("ajAlignSetScoreI: %Ld '%S' %d\n",
 	    score, data->Score, data->LenAli);
@@ -2919,10 +2919,10 @@ void ajAlignSetScoreR(AjPAlign thys, float score)
     ajFmtPrintS(&tmpstr, "%.*f", precision, score);
     for(i=1; i<precision; i++)
     {
-	if(ajStrChar(tmpstr, -1) != '0') break;
-	ajStrTrim(&tmpstr, -1);
+	if(ajStrGetCharLast(tmpstr) != '0') break;
+	ajStrCutEnd(&tmpstr, 1);
     }
-    ajStrAssS(&data->Score, tmpstr);
+    ajStrAssignS(&data->Score, tmpstr);
 
     return;
 }
@@ -2984,8 +2984,8 @@ void ajAlignSetStats(AjPAlign thys, ajint iali, ajint len,
 	    data->NumGap = -1;
     }
 
-    if(ajStrLen(score))
-	ajStrAssS(&data->Score, score);
+    if(ajStrGetLen(score))
+	ajStrAssignS(&data->Score, score);
     
     AJFREE(pdata);
     
@@ -3045,7 +3045,7 @@ void ajAlignSetSubStandard(AjPAlign thys, ajint iali)
 	}
     }
 
-    if(ajStrLen(data->Score))
+    if(ajStrGetLen(data->Score))
 	ajFmtPrintAppS(&tmphdr, "Score: %S\n", data->Score);
 
     ajAlignSetSubHeaderPre(thys, tmphdr);
@@ -3385,7 +3385,7 @@ void ajAlignSetType(AjPAlign thys)
     ajDebug("ajAlignSetType '%S'\n",
 	    thys->Type);
 
-    if(ajStrLen(thys->Type))
+    if(ajStrGetLen(thys->Type))
 	return;
 
     if(!thys->Nseqs)
@@ -3395,18 +3395,18 @@ void ajAlignSetType(AjPAlign thys)
     {
 	ajDebug("Calling alignSeq d 0\n", i);
 	seq = alignSeq(thys, i, 0);
-	if(ajStrLen(seq->Type))
+	if(ajStrGetLen(seq->Type))
 	{
-	    ajStrAssS(&thys->Type, seq->Type);
+	    ajStrAssignS(&thys->Type, seq->Type);
 	    return;
 	}
     }
 
     ajDebug("testing alignSeq 0 0\n", i);
     if (ajSeqIsNuc(alignSeq(thys, 0, 0)))
-	ajStrAssC(&thys->Type, "N");
+	ajStrAssignC(&thys->Type, "N");
     else
-	ajStrAssC(&thys->Type, "P");
+	ajStrAssignC(&thys->Type, "P");
 
     return;
 }
@@ -3683,23 +3683,23 @@ static void alignDiff(AjPStr* pmark, const AjPStr seq, char idchar)
     char c;
     char d;
 
-    ilen = ajStrLen(seq);
+    ilen = ajStrGetLen(seq);
 
-    ajStrMod(pmark);
+    ajStrGetuniqueStr(pmark);
 
-    if(ajStrLen(*pmark) < ilen)
-	ilen = ajStrLen(*pmark);
+    if(ajStrGetLen(*pmark) < ilen)
+	ilen = ajStrGetLen(*pmark);
 
     for(i=0; i < ilen; i++)
     {
-	c = ajStrChar(*pmark, i);
+	c = ajStrGetCharPos(*pmark, i);
 	if(c == ' ') continue;
 	if(c == '-') continue;
-	d = ajStrChar(seq, i);
+	d = ajStrGetCharPos(seq, i);
 	if(d == ' ') continue;
 	if(d == '-') continue;
 	if(toupper((int)c) == toupper((int)d))
-	    ajStrReplaceK(pmark, i, idchar, 1);
+	    ajStrPasteCountK(pmark, i, idchar, 1);
     }
 
     return;
@@ -3725,20 +3725,20 @@ static void alignSame(AjPStr* pmark, const AjPStr seq, char diffchar)
     char c;
     char d;
 
-    ilen = ajStrLen(seq);
+    ilen = ajStrGetLen(seq);
 
-    ajStrMod(pmark);
+    ajStrGetuniqueStr(pmark);
 
-    if(ajStrLen(*pmark) < ilen)
-	ilen = ajStrLen(*pmark);
+    if(ajStrGetLen(*pmark) < ilen)
+	ilen = ajStrGetLen(*pmark);
 
     for(i=0; i < ilen; i++)
     {
-	c = ajStrChar(*pmark, i);
+	c = ajStrGetCharPos(*pmark, i);
 	if(c == ' ') continue;
-	d = ajStrChar(seq, i);
+	d = ajStrGetCharPos(seq, i);
 	if(toupper((int)c) == toupper((int)d)) continue;
-	ajStrReplaceK(pmark, i, diffchar, 1);
+	ajStrPasteCountK(pmark, i, diffchar, 1);
     }
 
     return;
@@ -3769,21 +3769,21 @@ static void alignSim(AjPStr* pmark, const char idch, const char simch,
 
     ajDebug("alignSim '%S'\n", *pmark);
 
-    ajStrMod(pmark);
+    ajStrGetuniqueStr(pmark);
 
-    ilen = ajStrLen(*pmark);
+    ilen = ajStrGetLen(*pmark);
 
     for(i=0; i < ilen; i++)
     {
-	c = ajStrChar(*pmark, i);
+	c = ajStrGetCharPos(*pmark, i);
 	if(tolower((int)c) == '#')
-	    ajStrReplaceK(pmark, i, misch, 1);
+	    ajStrPasteCountK(pmark, i, misch, 1);
 	else if(isupper((int)c))
-	    ajStrReplaceK(pmark, i, idch, 1);
+	    ajStrPasteCountK(pmark, i, idch, 1);
 	else if(islower((int)c))
-	    ajStrReplaceK(pmark, i, simch, 1);
+	    ajStrPasteCountK(pmark, i, simch, 1);
 	else
-	    ajStrReplaceK(pmark, i,gapch, 1);
+	    ajStrPasteCountK(pmark, i,gapch, 1);
     }
 
     ajDebug("  result '%S'\n", *pmark);
@@ -3873,9 +3873,9 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     if(!thys->IMatrix && !thys->FMatrix)
     {
 	if(ajSeqIsNuc(alignSeq(thys, 0, iali)))
-	    ajStrAssC(&thys->Matrix, "EDNAFULL");
+	    ajStrAssignC(&thys->Matrix, "EDNAFULL");
 	else
-	    ajStrAssC(&thys->Matrix, "EBLOSUM62");
+	    ajStrAssignC(&thys->Matrix, "EBLOSUM62");
 	ajMatrixRead(&thys->IMatrix, thys->Matrix);
     }
     
@@ -4180,7 +4180,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 	if(issim && ! isident)
 	    res = tolower((int)res);
 	
-	ajStrAppK(cons,res);
+	ajStrAppendK(cons,res);
 	if(isident)
 	    ++*retident;
 	if(issim)
@@ -4381,7 +4381,7 @@ static void alignTraceData(const AjPAlign thys)
 	for(i=0; i < nseq; i++)
 	    if(ajSeqLen(data->Seq[i]) > 40)
 	    {
-		ajStrAssSub(&tmpstr, ajSeqStr(data->Seq[i]), -20, -1);
+		ajStrAssignSubS(&tmpstr, ajSeqStr(data->Seq[i]), -20, -1);
 		ajDebug("%6d [%d] '%20.20S...%20S'\n",
 			ajSeqLen(data->Seq[i]), i,
 			ajSeqStr(data->Seq[i]),
@@ -4516,9 +4516,9 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     if(!imatrix)
     {
 	if(ajSeqsetIsNuc(thys))
-	    ajStrAssC(&matname, "EDNAFULL");
+	    ajStrAssignC(&matname, "EDNAFULL");
 	else
-	    ajStrAssC(&matname, "EBLOSUM62");
+	    ajStrAssignC(&matname, "EBLOSUM62");
 	ajMatrixRead(&imatrix, matname);
     }
     ajStrDel(&matname);
@@ -4746,7 +4746,7 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
 	if(issim && ! isident)
 	    res = tolower((int)res);
 	
-	ajStrAppK(cons,res);
+	ajStrAppendK(cons,res);
 	if(isident) ++*retident;
 	if(issim) ++*retsim;
 	if(isgap) ++*retgap;

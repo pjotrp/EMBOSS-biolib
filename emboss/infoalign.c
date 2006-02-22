@@ -296,12 +296,12 @@ int main(int argc, char **argv)
 
 	/* get the usa ('-' if unknown) */
 	usa = ajSeqGetUsa(seq);
-	if(ajStrLen(usa) == 0)
+	if(ajStrGetLen(usa) == 0)
 	    usa = altusa;
 
 	/* get the name ('-' if unknown) */
 	name = ajSeqGetName(seq);
-	if(ajStrLen(name) == 0)
+	if(ajStrGetLen(name) == 0)
 	    name = altname;
 
 	/* get the stats from the comparison to the reference sequence */
@@ -501,7 +501,7 @@ static void infoalign_OutputStr(AjPFile outfile, const AjPStr str, AjBool html,
 {
     AjPStr marginfmt;
 
-    marginfmt = ajStrNewL(10);
+    marginfmt = ajStrNewRes(10);
 
     /* ajFmtPrintF doesn't seem to deal with formats like "%-*S" correctly */
     ajFmtPrintS(&marginfmt, "%%-%dS", minlength);
@@ -518,12 +518,12 @@ static void infoalign_OutputStr(AjPFile outfile, const AjPStr str, AjBool html,
 	**  Try to fit the name in 'minlength' spaces, else just add a
 	**  TAB after it
 	*/
-	ajFmtPrintF(outfile, ajStrStr(marginfmt), str);
+	ajFmtPrintF(outfile, ajStrGetPtr(marginfmt), str);
 
     if(html)
 	ajFmtPrintF(outfile, "</td>\n");
     else
-	if(after &&  ajStrLen(str) >= minlength)
+	if(after &&  ajStrGetLen(str) >= minlength)
 	    ajFmtPrintF(outfile, "\t");
 
     ajStrDel(&marginfmt);
@@ -554,7 +554,7 @@ static int infoalign_Getrefseq(const AjPStr refseq, const AjPSeqset seqset)
     for(i=0; i<ajSeqsetSize(seqset); i++)
     {
 	seq = ajSeqsetGetSeq(seqset, i);
-	if(!ajStrCmpO(ajSeqGetName(seq), refseq))
+	if(!ajStrCmpS(ajSeqGetName(seq), refseq))
 	    return i;
     }
 

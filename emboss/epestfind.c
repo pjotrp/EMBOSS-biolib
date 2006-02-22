@@ -134,7 +134,7 @@ typedef struct PestfindSData
 ********************************************************************/
 
 #define ajStrAssSubItrBeg(substr, str, iter) \
-	ajStrAssSub (&substr, str, 0, (iter->Ptr - iter->Start))
+	ajStrAssignSubS(&substr, str, 0, (iter->Ptr - iter->Start))
 
 
 
@@ -151,7 +151,7 @@ typedef struct PestfindSData
 ********************************************************************/
 
 #define ajStrAssSubItrEnd(substr, str, iter) \
-	ajStrAssSub(&substr,str,(iter->Ptr - iter->Start), \
+	ajStrAssignSubS(&substr,str,(iter->Ptr - iter->Start), \
                     (iter->End - iter->Start))
 
 
@@ -386,11 +386,11 @@ int main(int argc, char **argv)
     
     AJCNEW0(aac, EMBIEPSIZE);
     
-    ajStrAssSubC(&str, ajSeqChar(seq), (begin - 1), (end - 1));
-    ajStrToUpper(&str);
-    seqlen = ajStrLen(str);
-    itrbeg = ajStrIter(str);
-    itrend = ajStrIter(str);
+    ajStrAssignSubC(&str, ajSeqChar(seq), (begin - 1), (end - 1));
+    ajStrFmtUpper(&str);
+    seqlen = ajStrGetLen(str);
+    itrbeg = ajStrIterNew(str);
+    itrend = ajStrIterNew(str);
     while(!ajStrIterDone(itrbeg))
     {
 	symbol = ajStrIterGetK(itrbeg);
@@ -426,20 +426,20 @@ int main(int argc, char **argv)
 		    if(ajStrIterIsBegin(itrbeg))
 #ifndef PESTFIND_NTERM
 		        /* exclude the N-terminal amino acid */
-			ajStrAssSub(&substr, str, (posbeg + 1), (posend - 1));
+			ajStrAssignSubS(&substr, str, (posbeg + 1), (posend - 1));
 #else
 		        /* include the N-terminal amino acid */
-			ajStrAssSub(&substr, str, (posbeg + 0), (posend - 1));
+			ajStrAssignSubS(&substr, str, (posbeg + 0), (posend - 1));
 #endif
 		    else if(ajStrIterIsEnd(itrend))
 		        /* always include the C-terminal amino acid */
-		        ajStrAssSub(&substr, str, (posbeg + 1), (posend - 0));
+		        ajStrAssignSubS(&substr, str, (posbeg + 1), (posend - 0));
 		    else
 		        /* always exclude the positively charged flanks */
-		        ajStrAssSub(&substr, str, (posbeg + 1), (posend - 1));
+		        ajStrAssignSubS(&substr, str, (posbeg + 1), (posend - 1));
 
-		    sublen = ajStrLen(substr);
-		    embIepComp(ajStrStr(substr), 1, aac);
+		    sublen = ajStrGetLen(substr);
+		    embIepComp(ajStrGetPtr(substr), 1, aac);
 		    /* Valid PEST motifs must contain D or E, P and S or T. */
 		    if(
 		       aac[ajAZToInt ('D')] + aac[ajAZToInt ('E')] == 0 ||
@@ -460,7 +460,7 @@ int main(int argc, char **argv)
 			}
 			break;
 		    }
-		    momass  = embPropCalcMolwtMod(ajStrStr (substr), 0,
+		    momass  = embPropCalcMolwtMod(ajStrGetPtr(substr), 0,
 						(sublen - 1), 0, 0);
 		    pstsum  = 0;
 		    pstsum += EmbPropTable[ajAZToInt('D')][EMBPROPMOLWT] *
@@ -583,7 +583,7 @@ int main(int argc, char **argv)
 		    (pstdat->Length), ((pstdat->Begin) + begin),
 		    ((pstdat->End) + begin));
 
-	ajStrAssSub(&substr, str, (pstdat->Begin), (pstdat->End));
+	ajStrAssignSubS(&substr, str, (pstdat->Begin), (pstdat->End));
 	i = 1;				/* line counter */
 	while((i * 60) <= (pstdat->Length))
 	{
@@ -629,22 +629,22 @@ int main(int argc, char **argv)
 		pstdat = (PestfindPData) ajListIterNext(itrlst);
 		while(i <= (pstdat->Begin))
 		{
-		    ajStrAppK(&map, ' ');
+		    ajStrAppendK(&map, ' ');
 		    i++;
 		}
 
 		while(i <= ((pstdat->End) - 1))
 		{
 		    if((pstdat->Type) == PSTPOT)
-			ajStrAppK(&map, '+');
+			ajStrAppendK(&map, '+');
 		    if((pstdat->Type) == PSTWEA)
-			ajStrAppK(&map, 'O');
+			ajStrAppendK(&map, 'O');
 		    if((pstdat->Type) == PSTINV)
-			ajStrAppK(&map, '-');
+			ajStrAppendK(&map, '-');
 		    i++;
 		}
 	    }
-	    ajStrAppK(&map, ' ');
+	    ajStrAppendK(&map, ' ');
 	    i++;
 	}
 
@@ -652,20 +652,20 @@ int main(int argc, char **argv)
 	i = 1;				/* line counter */
 	while((i * 60) <= seqlen)
 	{
-	    ajStrAssSub(&substr, str, ((i - 1) * 60), (i * 60 - 1));
+	    ajStrAssignSubS(&substr, str, ((i - 1) * 60), (i * 60 - 1));
 	    ajFmtPrintF(outf, "%6d %S %d\n", ((i - 1) * 60 + begin), substr,
 			(i * 60 - 1 + begin));
-	    ajStrAssSub(&substr, map, ((i - 1) * 60), (i * 60 - 1));
+	    ajStrAssignSubS(&substr, map, ((i - 1) * 60), (i * 60 - 1));
 	    ajFmtPrintF(outf, "       %S\n\n", substr);
 	    i++;
 	}
 
 	if(((i - 1) * 60) < seqlen)
 	{
-	    ajStrAssSub(&substr, str, ((i - 1) * 60), (seqlen - 1));
+	    ajStrAssignSubS(&substr, str, ((i - 1) * 60), (seqlen - 1));
 	    ajFmtPrintF(outf, "%6d %S %d\n", ((i - 1) * 60 + begin), substr,
 			(seqlen - 1 + begin));
-	    ajStrAssSub(&substr, map, ((i - 1) * 60), (seqlen - 1));
+	    ajStrAssignSubS(&substr, map, ((i - 1) * 60), (seqlen - 1));
 	    ajFmtPrintF(outf, "       %S\n\n", substr);
 	}
 
@@ -699,7 +699,7 @@ int main(int argc, char **argv)
 			  (float) trshld, AQUAMARINE);
     ajFmtPrintS(&map, "threshold %+.2f", trshld);
     ajGraphPlpDataAddText(plot, (float) 0 + 2, (float) trshld + 2,
-			  AQUAMARINE, ajStrStr(map));
+			  AQUAMARINE, ajStrGetPtr(map));
     ajListSort(reslst, pestfind_compare_position);
     itrlst = ajListIterRead(reslst);
     while(ajListIterMore(itrlst))
@@ -714,7 +714,7 @@ int main(int argc, char **argv)
 	    ajFmtPrintS(&map, "%+.2f", (pstdat->Pscore));
 	    ajGraphPlpDataAddText(plot, (float) (pstdat->Begin) + 2,
 				  (float) (pstdat->Pscore) + 2, GREEN,
-				  ajStrStr(map));
+				  ajStrGetPtr(map));
 	}
 
 	if((pstdat->Type) == PSTWEA)
@@ -726,7 +726,7 @@ int main(int argc, char **argv)
 	    ajFmtPrintS(&map, "%+.2f", (pstdat->Pscore));
 	    ajGraphPlpDataAddText(plot, (float) (pstdat->Begin) + 2,
 				  (float) (pstdat->Pscore) + 2, RED,
-				  ajStrStr(map));
+				  ajStrGetPtr(map));
 	}
 
 	if((pstdat->Type) == PSTINV)
@@ -764,8 +764,8 @@ int main(int argc, char **argv)
     ajStrDel(&substr);		/* Delete the sequence sub-string. */
     ajStrDel(&sorder);		/* Delete the sort order string. */
     ajListIterFree(&itrlst);	/* Delete the result list iterator. */
-    ajStrIterFree(&itrbeg); 	/* Delete the iterator of the outer loop. */
-    ajStrIterFree(&itrend); 	/* Delete the iterator of the inner loop. */
+    ajStrIterDel(&itrbeg); 	/* Delete the iterator of the outer loop. */
+    ajStrIterDel(&itrend); 	/* Delete the iterator of the inner loop. */
     
     ajExit();
 

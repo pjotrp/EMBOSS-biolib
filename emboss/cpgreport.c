@@ -84,18 +84,18 @@ int main(int argc, char **argv)
 	end   = ajSeqallEnd(seqall);
 
 	strand = ajSeqStrCopy(seq);
-	ajStrToUpper(&strand);
+	ajStrFmtUpper(&strand);
 
-	ajStrAssSubC(&substr,ajStrStr(strand),begin-1,end-1);
+	ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
 
-	len=ajStrLen(substr);
+	len=ajStrGetLen(substr);
 
 	ajFmtPrintF(outf,"\n\nCPGREPORT of %s from %d to %d\n\n",
 		    ajSeqName(seq),begin,begin+len-1);
 	ajFmtPrintF(outf,"Sequence              Begin    End Score");
 	ajFmtPrintF(outf,"        CpG   %%CG  CG/GC\n");
 
-	cpgreport_cpgsearch(outf,0,len,ajStrStr(substr),ajSeqName(seq),
+	cpgreport_cpgsearch(outf,0,len,ajStrGetPtr(substr),ajSeqName(seq),
 			    begin,score,feattable);
 	ajStrDel(&strand);
     }
@@ -159,8 +159,8 @@ static void cpgreport_cpgsearch(AjPFile outf, ajint from, ajint to,
 
     if(!source)
     {
-      ajStrAssC(&source,"cpgreport");
-      ajStrAssC(&type,"misc_feature");
+      ajStrAssignC(&source,"cpgreport");
+      ajStrAssignC(&type,"misc_feature");
     }
 
 

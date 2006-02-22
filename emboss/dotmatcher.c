@@ -163,27 +163,27 @@ int main(int argc, char **argv)
     e1 = ajSeqEnd(seq);
     e2 = ajSeqEnd(seq2);
     
-    ajStrAssSubC(&se1,ajSeqChar(seq),b1-1,e1-1);
-    ajStrAssSubC(&se2,ajSeqChar(seq2),b2-1,e2-1);
+    ajStrAssignSubC(&se1,ajSeqChar(seq),b1-1,e1-1);
+    ajStrAssignSubC(&se2,ajSeqChar(seq2),b2-1,e2-1);
     ajSeqReplace(seq,se1);
     ajSeqReplace(seq2,se2);
     
     
-    s1 = ajStrStr(ajSeqStr(seq));
-    s2 = ajStrStr(ajSeqStr(seq2));
+    s1 = ajStrGetPtr(ajSeqStr(seq));
+    s2 = ajStrGetPtr(ajSeqStr(seq2));
     
     
-    aa0str = ajStrNewL(1+ajSeqLen(seq)); /* length plus trailing blank */
-    aa1str = ajStrNewL(1+ajSeqLen(seq2));
+    aa0str = ajStrNewRes(1+ajSeqLen(seq)); /* length plus trailing blank */
+    aa1str = ajStrNewRes(1+ajSeqLen(seq2));
     
     list = ajListNew();
     
     
     for(i=0;i<ajSeqLen(seq);i++)
-	ajStrAppK(&aa0str,(char)ajSeqCvtK(cvt, *s1++));
+	ajStrAppendK(&aa0str,(char)ajSeqCvtK(cvt, *s1++));
     
     for(i=0;i<ajSeqLen(seq2);i++)
-	ajStrAppK(&aa1str,(char)ajSeqCvtK(cvt, *s2++));
+	ajStrAppendK(&aa1str,(char)ajSeqCvtK(cvt, *s2++));
     
     max= ajSeqLen(seq);
     if(ajSeqLen(seq2) > max)
@@ -199,7 +199,7 @@ int main(int argc, char **argv)
     
     
     if(!stretch)
-	if( ajStrLen(ajGraphGetSubTitle(graph)) <=1)
+	if( ajStrGetLen(ajGraphGetSubTitle(graph)) <=1)
 	    ajGraphSetSubTitle(graph,subt);
     
     
@@ -223,8 +223,8 @@ int main(int argc, char **argv)
     
     
     
-    s1= ajStrStr(aa0str);
-    s2 = ajStrStr(aa1str);
+    s1= ajStrGetPtr(aa0str);
+    s2 = ajStrGetPtr(aa1str);
     
     for(j=0;j < ajSeqLen(seq2)-windowsize;j++)
     {
@@ -404,7 +404,7 @@ int main(int argc, char **argv)
 	xa[0] = (float)b1;
 	ya[0] = (float)b2;
 
-	ajGraphSetTitleC(xygraph,ajStrStr(tit));
+	ajGraphSetTitleC(xygraph,ajStrGetPtr(tit));
 
 	ajGraphSetXTitleC(xygraph,ajSeqName(seq));
 	ajGraphSetYTitleC(xygraph,ajSeqName(seq2));

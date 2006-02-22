@@ -75,14 +75,14 @@ int main(int argc, char *argv[])
     while(edist[i])
     {
 	
-	ajStrAppK(&etypes,*ajStrStr(edist[i]));
+	ajStrAppendK(&etypes,*ajStrGetPtr(edist[i]));
 	++i;
     }
     types = i;
-    strcpy(ttype,ajStrStr(etypes));
+    strcpy(ttype,ajStrGetPtr(etypes));
     
 
-    ec = *ajStrStr(ecomp[0]);
+    ec = *ajStrGetPtr(ecomp[0]);
     switch(ec)
     {
     case 'p':

@@ -1325,7 +1325,7 @@ void loadfont(short *font, char *application)
   fontfilename = ajAcdGetString("fontfile");
   if(ajNamRootInstall(&installdir))
   {
-      ajStrAppC(&installdir, "share/EMBOSS/data/");
+      ajStrAppendC(&installdir, "share/EMBOSS/data/");
       ajFileSetDir(&fontfilename, installdir);
   }
 

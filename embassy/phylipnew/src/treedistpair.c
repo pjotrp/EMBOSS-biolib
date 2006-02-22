@@ -905,7 +905,7 @@ void read_second_file(pattern_elm ***pattern_array,
     goteof = false;
     nextnode = 0;
     haslengths = false;
-    treestr = ajStrStrMod(&treesource[itree++]->Tree);
+    treestr = ajStrGetuniquePtr(&treesource[itree++]->Tree);
     allocate_nodep(&nodep, treestr, &spp);
     treeread(&treestr, &root, treenode, &goteof, &firsttree2,
                nodep, &nextnode, &haslengths,

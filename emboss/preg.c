@@ -58,13 +58,13 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall, &seq))
     {
 	ipos = 1;
-	ajStrAssS(&str, ajSeqStr(seq));
-	ajStrToUpper(&str);
+	ajStrAssignS(&str, ajSeqStr(seq));
+	ajStrFmtUpper(&str);
 	ajDebug("Testing '%s' len: %d %d\n",
-		ajSeqName(seq), ajSeqLen(seq), ajStrLen(str));
+		ajSeqName(seq), ajSeqLen(seq), ajStrGetLen(str));
         feat = ajFeattableNewProt(ajSeqGetName(seq));
 
-	while(ajStrLen(str) && ajRegExec(patexp, str))
+	while(ajStrGetLen(str) && ajRegExec(patexp, str))
 	{
 	    ioff = ajRegOffset(patexp);
 	    ilen = ajRegLenI(patexp, 0);
@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 	    {
 		ajRegSubI(patexp, 0, &substr);
 		ajRegPost(patexp, &tmpstr);
-		ajStrAssS(&str, tmpstr);
+		ajStrAssignS(&str, tmpstr);
 		ipos += ioff;
 		sf = ajFeatNewII (feat,ipos,ipos+ilen-1);
 		ipos += ilen;
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
 	    else
 	    {
 		ipos++;
-		ajStrTrim(&str, 1);
+		ajStrCutStart(&str, 1);
 	    }
 	}
         (void) ajReportWrite (report,feat,seq);

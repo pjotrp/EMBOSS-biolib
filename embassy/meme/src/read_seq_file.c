@@ -376,7 +376,7 @@ extern BOOLEAN read_sequence(
       strcpy(name,ajSeqName(eseq));
   name[msn]='\0';
 
-  p = ajStrStr(ajSeqGetDesc(eseq));
+  p = ajStrGetPtr(ajSeqGetDesc(eseq));
   
   /* read in description */
   *sample_de = NULL;			/* in case no description found */
@@ -466,4 +466,4 @@ static int read_sequence_de(
 
   return length;
 }
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/read_seq_file.c,v 1.2 2004/06/14 14:43:30 rice Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/read_seq_file.c,v 1.3 2006/02/22 15:02:28 rice Exp $ */

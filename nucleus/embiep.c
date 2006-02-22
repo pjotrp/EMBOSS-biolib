@@ -133,11 +133,11 @@ void embIepPkRead(void)
     line = ajStrNew();
     while(ajFileGets(inf,&line))
     {
-	p = ajStrStr(line);
+	p = ajStrGetPtr(line);
 	if(*p=='#' || *p=='!' || *p=='\n')
 	    continue;
 
-	if(!ajStrNCmpC(line,"Amino",5))
+	if(!ajStrCmpLenC(line,"Amino",5))
 	{
 	    p = ajSysStrtok(p," \t\n");
 	    p = ajSysStrtok(NULL," \t\n");
@@ -145,7 +145,7 @@ void embIepPkRead(void)
 	    continue;
 	}
 
-	if(!ajStrNCmpC(line,"Carboxyl",8))
+	if(!ajStrCmpLenC(line,"Carboxyl",8))
 	{
 	    p = ajSysStrtok(p," \t\n");
 	    p = ajSysStrtok(NULL," \t\n");

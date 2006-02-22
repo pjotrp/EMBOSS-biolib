@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
     noLonelyPairs = (lonely) ? 0 : 1;
     tetra_loop    = !!etloop;
     
-    ewt = *ajStrStr(*eenergy);
+    ewt = *ajStrGetPtr(*eenergy);
     if(ewt == '0')
 	energy_set = 0;
     else if(ewt == '1')
@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
     else if(ewt == '2')
 	energy_set = 2;
     
-    edangle = *ajStrStr(*edangles);
+    edangle = *ajStrGetPtr(*edangles);
     if(edangle == '0')
 	dangles = 0;
     else if(edangle == '1')
@@ -140,9 +140,9 @@ int main(int argc, char *argv[])
 	pf  = 1;
     }
     
-    len = ajStrLen(ealpha);
+    len = ajStrGetLen(ealpha);
     symbolset = (char *) space(len + 1);
-    strcpy(symbolset, ajStrStr(ealpha));
+    strcpy(symbolset, ajStrGetPtr(ealpha));
     for (l = 0; l < len; l++)
 	symbolset[l] = toupper(symbolset[l]);
     

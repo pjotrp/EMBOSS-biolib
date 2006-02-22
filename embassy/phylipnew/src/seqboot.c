@@ -363,7 +363,7 @@ void seqboot_inputdataseq(AjPSeqset seqset)
       done = false;
       while (!done) {
         while (j < sites ) {
-          charstate = ajStrChar(str, j);
+          charstate = ajStrGetCharPos(str, j);
           uppercase(&charstate);
           j++;
           if (charstate == '.')

@@ -78,8 +78,8 @@ int main(int argc, char **argv)
 
 
     fn=ajStrNew();
-    ajStrAssS(&fn,dirname);
-    ajStrAppC(&fn,"prosite.dat");
+    ajStrAssignS(&fn,dirname);
+    ajStrAppendC(&fn,"prosite.dat");
     if(!(infdat=ajFileNewIn(fn)))
 	ajFatal("Cannot open file %S",fn);
     ajStrDel(&fn);
@@ -102,10 +102,10 @@ int main(int argc, char **argv)
 	    {
 		haspattern = ajTrue;
 		/*save id*/
-		p = ajStrStr(line);
+		p = ajStrGetPtr(line);
 		p = ajSysStrtok(p," \t;");
 		p = ajSysStrtok(NULL," \t;");
-		ajStrAssC(&id,p);
+		ajStrAssignC(&id,p);
 		ajFmtPrintF(outf, "%S ", id);
 		continue;
 	    }
@@ -122,20 +122,20 @@ int main(int argc, char **argv)
 
 	if(ajStrPrefixC(line, "AC") )
 	{
-	    p = ajStrStr(line);
+	    p = ajStrGetPtr(line);
 	    p = ajSysStrtok(p, " \t;");
 	    p = ajSysStrtok(NULL, " \t;");
-	    ajStrAssC(&ac,p);
+	    ajStrAssignC(&ac,p);
 	    ajFmtPrintF(outf, "%S\n ", ac);
 	    continue;
 	}
 
     	if(ajStrPrefixC(line, "DE") )
 	{
-	    p = ajStrStr(line);
+	    p = ajStrGetPtr(line);
 	    p = ajSysStrtok(p, " \t.");
 	    p = ajSysStrtok(NULL, " \t.");
-	    ajStrAssC(&de,p);
+	    ajStrAssignC(&de,p);
 	    ajFmtPrintF(outf, "%S\n ", de);
 	    continue;
 	}
@@ -143,14 +143,14 @@ int main(int argc, char **argv)
 
 	if(ajStrPrefixC(line, "PA"))
 	{
-	    ajStrAssC(&pa,"");
+	    ajStrAssignC(&pa,"");
 
 	    while(ajStrPrefixC(line,"PA"))
 	    {
-		p = ajStrStr(line);
+		p = ajStrGetPtr(line);
 		p = ajSysStrtok(p, " \t.");
 		p = ajSysStrtok(NULL, " \t.");
-		ajStrAppC(&pa,p);
+		ajStrAppendC(&pa,p);
 		ajFileReadLine(infdat, &line);
 	    }
 
@@ -167,8 +167,8 @@ int main(int argc, char **argv)
 
 
     fn = ajStrNew();
-    ajStrAssS(&fn,dirname);
-    ajStrAppC(&fn,"prosite.doc");
+    ajStrAssignS(&fn,dirname);
+    ajStrAppendC(&fn,"prosite.doc");
     if(!(infdoc=ajFileNewIn(fn)))
 	ajFatal("Cannot open file %S",fn);
     ajStrDel(&fn);
@@ -190,10 +190,10 @@ int main(int argc, char **argv)
 	{
 	    storepos = ajFileTell(infdoc);
 	    /* save out the documentation text to acc numbered outfiles . */
-	    p = ajStrStr(text)+1;
+	    p = ajStrGetPtr(text)+1;
 	    p = ajSysStrtok(p, ";");
-	    ajStrAssS(&filename, fname);
-	    ajStrAppC(&filename, p);
+	    ajStrAssignS(&filename, fname);
+	    ajStrAppendC(&filename, p);
 
 	    ajFileDataNewWrite(filename, &outs);
 	    flag   = ajTrue;

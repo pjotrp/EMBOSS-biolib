@@ -103,10 +103,10 @@ int main(int argc, char **argv)
     end = ajSeqEnd(a);
 
     substr = ajStrNew();
-    ajStrAssSubC(&substr,ajSeqChar(a),beg-1,end-1);
-    ajStrToUpper(&substr);
+    ajStrAssignSubC(&substr,ajSeqChar(a),beg-1,end-1);
+    ajStrFmtUpper(&substr);
     pro=ajStrNewS(substr);
-    len = ajStrLen(substr);
+    len = ajStrGetLen(substr);
 
     AJCNEW(ruler, len);
     AJCNEW(npos, len);
@@ -172,7 +172,7 @@ static void prettyseq_Translate(AjPFile outf, ajint beg, ajint end,
 
     tri[3]='\0';
 
-    ajStrToUpper(s);
+    ajStrFmtUpper(s);
 
     /* Convert ranges to subsequence values */
     nr = ajRangeNumber(range);
@@ -181,7 +181,7 @@ static void prettyseq_Translate(AjPFile outf, ajint beg, ajint end,
 	range->start[i] -= beg;
 	range->end[i] -= beg;
     }
-    limit = ajStrLen(*s);
+    limit = ajStrGetLen(*s);
 
     /* Test ranges for validity */
     for(i=0;i<nr;++i)
@@ -194,7 +194,7 @@ static void prettyseq_Translate(AjPFile outf, ajint beg, ajint end,
     }
 
     /* Set areas of sequence to translate to lower case */
-    p = ajStrStrMod(s);
+    p = ajStrGetuniquePtr(s);
     for(i=0;i<nr;++i)
     {
 	ajRangeValues(range,i,&st,&en);
@@ -204,7 +204,7 @@ static void prettyseq_Translate(AjPFile outf, ajint beg, ajint end,
 
 
     /* Do the translation */
-    q=ajStrStrMod(pro);
+    q=ajStrGetuniquePtr(pro);
     for(i=0;i<limit;++i)
     {
 	if(isupper((ajint)p[i]))
@@ -304,7 +304,7 @@ static void prettyseq_calcProteinPos(ajint *ppos, const AjPStr pro, ajint len)
     pos = 0;
     v   = 1;
 
-    p = ajStrStr(pro);
+    p = ajStrGetPtr(pro);
     while(p[pos]==' ')
 	ppos[pos++]=0;
 
@@ -435,8 +435,8 @@ static void prettyseq_showTransb(const ajint *ppos, const ajint *npos,
 
     if(isrule)
     {
-	ajStrAssSubC(&s,ruler,start,end);
-	ajFmtPrintF(outf,"           %s\n",ajStrStr(s));
+	ajStrAssignSubC(&s,ruler,start,end);
+	ajFmtPrintF(outf,"           %s\n",ajStrGetPtr(s));
     }
 
     if(isn)
@@ -444,8 +444,8 @@ static void prettyseq_showTransb(const ajint *ppos, const ajint *npos,
     else
 	ajFmtPrintF(outf,"           ");
 
-    ajStrAssSub(&s,substr,start,end);
-    ajFmtPrintF(outf,"%s ",ajStrStr(s));
+    ajStrAssignSubS(&s,substr,start,end);
+    ajFmtPrintF(outf,"%s ",ajStrGetPtr(s));
 
     if(isn)
 	ajFmtPrintF(outf,"%d",npos[end]);
@@ -507,8 +507,8 @@ static void prettyseq_showTransb(const ajint *ppos, const ajint *npos,
     else
 	ajFmtPrintF(outf,"           ");
 
-    ajStrAssSub(&s,pro,start,end);
-    ajFmtPrintF(outf,"%s ",ajStrStr(s));
+    ajStrAssignSubS(&s,pro,start,end);
+    ajFmtPrintF(outf,"%s ",ajStrGetPtr(s));
     if(isp && e)
 	ajFmtPrintF(outf,"%d",e);
     ajFmtPrintF(outf,"\n");

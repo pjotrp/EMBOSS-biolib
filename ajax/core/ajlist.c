@@ -614,7 +614,7 @@ ajint ajListstrClone(const AjPList thys, AjPList newlist)
     for( node=thys->First; node->Next; node=node->Next)
     {
         newstr = NULL;
-	ajStrAssS(&newstr, node->Item);
+	ajStrAssignS(&newstr, node->Item);
 	ajListPushApp(newlist, newstr);
 	ret++;
     }

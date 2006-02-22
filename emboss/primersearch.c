@@ -397,7 +397,7 @@ static void psearch_read_primers(AjPList *primerList, AjPFile primerFile,
     while (ajFileReadLine (primerFile, &rdline))
     {
 	primdata = NULL;
-	if (ajStrChar(rdline, 0) == '#')
+	if (ajStrGetCharFirst(rdline) == '#')
 	    continue;
 	if (ajStrSuffixC(rdline, ".."))
 	    continue;
@@ -410,25 +410,25 @@ static void psearch_read_primers(AjPList *primerList, AjPFile primerFile,
 
 	primdata->hitlist = ajListNew();
 
-	handle = ajStrTokenInit (rdline, " \t");
-	ajStrToken (&primdata->Name, &handle, NULL);
+	handle = ajStrTokenNewC(rdline, " \t");
+	ajStrTokenNextParse(&handle, &primdata->Name);
 
-	ajStrToken (&primdata->forward->patstr, &handle, NULL);
-	ajStrToUpper(&primdata->forward->patstr);
-	ajStrToken (&primdata->reverse->patstr, &handle, NULL);
-	ajStrToUpper(&primdata->reverse->patstr);
-	ajStrTokenClear (&handle);
+	ajStrTokenNextParse(&handle, &primdata->forward->patstr);
+	ajStrFmtUpper(&primdata->forward->patstr);
+	ajStrTokenNextParse(&handle, &primdata->reverse->patstr);
+	ajStrFmtUpper(&primdata->reverse->patstr);
+	ajStrTokenDel(&handle);
 
 	/* copy patterns for Henry Spencer code */
-	ajStrAssC(&primdata->forward->origpat,
-		  ajStrStr(primdata->forward->patstr));
-	ajStrAssC(&primdata->reverse->origpat,
-		  ajStrStr(primdata->reverse->patstr));
+	ajStrAssignC(&primdata->forward->origpat,
+		  ajStrGetPtr(primdata->forward->patstr));
+	ajStrAssignC(&primdata->reverse->origpat,
+		  ajStrGetPtr(primdata->reverse->patstr));
 
 	/* set the mismatch level */
-	primdata->forward->mm = (ajint) (ajStrLen(primdata->forward->patstr)*
+	primdata->forward->mm = (ajint) (ajStrGetLen(primdata->forward->patstr)*
 					 mmp)/100;
-	primdata->reverse->mm = (ajint) (ajStrLen(primdata->reverse->patstr)*
+	primdata->reverse->mm = (ajint) (ajStrGetLen(primdata->reverse->patstr)*
 					 mmp)/100;
 
 	if(psearch_classify_and_compile(&primdata))
@@ -438,7 +438,7 @@ static void psearch_read_primers(AjPList *primerList, AjPFile primerFile,
 	}
 	else	/* there was something funny about the primer sequences */
 	{
-	    ajUser("Cannot use %s\n", ajStrStr(primdata->Name));
+	    ajUser("Cannot use %s\n", ajStrGetPtr(primdata->Name));
 	    psearch_free_pguts(&primdata->forward);
 	    psearch_free_pguts(&primdata->reverse);
 	    ajStrDel(&primdata->Name);
@@ -578,11 +578,11 @@ static void psearch_scan_seq(const Primer primdata,
     AjPList rhits_list = NULL;
 
     /* initialise variables for search */
-    ajStrAssC(&seqname,ajSeqName(seq));
-    ajStrAssS(&seqstr, ajSeqStr(seq));
-    ajStrAssS(&revstr, ajSeqStr(seq));
-    ajStrToUpper(&seqstr);
-    ajStrToUpper(&revstr);
+    ajStrAssignC(&seqname,ajSeqName(seq));
+    ajStrAssignS(&seqstr, ajSeqStr(seq));
+    ajStrAssignS(&revstr, ajSeqStr(seq));
+    ajStrFmtUpper(&seqstr);
+    ajStrFmtUpper(&revstr);
     ajSeqReverseStr(&revstr);
     fhits_list = ajListNew();
     rhits_list = ajListNew();
@@ -744,9 +744,9 @@ static void psearch_store_hits(const Primer primdata,
 		primerhit->acc=NULL;
 		primerhit->forward=NULL;
 		primerhit->reverse=NULL;
-		ajStrAssC(&primerhit->seqname,ajSeqName(seq));
-		ajStrAssS(&primerhit->desc, ajSeqGetDesc(seq));
-		ajStrAssS(&primerhit->acc, ajSeqGetAcc(seq));
+		ajStrAssignC(&primerhit->seqname,ajSeqName(seq));
+		ajStrAssignS(&primerhit->desc, ajSeqGetDesc(seq));
+		ajStrAssignS(&primerhit->acc, ajSeqGetAcc(seq));
 		primerhit->forward_pos = fm->start;
 		primerhit->reverse_pos = rm->start;
 		primerhit->forward_mismatch = fm->mm;
@@ -754,13 +754,13 @@ static void psearch_store_hits(const Primer primdata,
 		primerhit->amplen = amplen;
 		if(!reverse)
 		{
-		    ajStrAssS(&primerhit->forward, primdata->forward->patstr);
-		    ajStrAssS(&primerhit->reverse, primdata->reverse->patstr);
+		    ajStrAssignS(&primerhit->forward, primdata->forward->patstr);
+		    ajStrAssignS(&primerhit->reverse, primdata->reverse->patstr);
 		}
 		else
 		{
-		    ajStrAssS(&primerhit->forward, primdata->reverse->patstr);
-		    ajStrAssS(&primerhit->reverse, primdata->forward->patstr);
+		    ajStrAssignS(&primerhit->forward, primdata->reverse->patstr);
+		    ajStrAssignS(&primerhit->reverse, primdata->forward->patstr);
 		}
 		ajListPushApp(primdata->hitlist, primerhit);
 
@@ -803,22 +803,22 @@ static void psearch_print_hits(const AjPList primerList, AjPFile outf)
 	AjIList hIter = ajListIterRead(primer->hitlist);
 	count = 1;
 
-	ajFmtPrintF(outf, "\nPrimer name %s\n", ajStrStr(primer->Name));
+	ajFmtPrintF(outf, "\nPrimer name %s\n", ajStrGetPtr(primer->Name));
 
 	while(!ajListIterDone(hIter))
 	{
 	    PHit hit = ajListIterNext(hIter);
 	    ajFmtPrintF(outf, "Amplimer %d\n", count);
 	    ajFmtPrintF(outf, "\tSequence: %s %s \n\t%s\n",
-			ajStrStr(hit->seqname),
-			ajStrStr(hit->acc), ajStrStr(hit->desc));
+			ajStrGetPtr(hit->seqname),
+			ajStrGetPtr(hit->acc), ajStrGetPtr(hit->desc));
 	    ajFmtPrintF(outf, "\t%s hits forward strand at %d with %d "
 			"mismatches\n",
-			ajStrStr(hit->forward), hit->forward_pos,
+			ajStrGetPtr(hit->forward), hit->forward_pos,
 			hit->forward_mismatch);
 	    ajFmtPrintF(outf, "\t%s hits reverse strand at [%d] with %d "
 			"mismatches\n",
-			ajStrStr(hit->reverse), (hit->reverse_pos),
+			ajStrGetPtr(hit->reverse), (hit->reverse_pos),
 			(hit->reverse_mismatch));
 	    ajFmtPrintF(outf, "\tAmplimer length: %d bp\n", hit->amplen);
 	    count++;

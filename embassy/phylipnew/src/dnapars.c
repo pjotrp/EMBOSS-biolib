@@ -1346,7 +1346,7 @@ void maketree()
       firsttree = true;
       nextnode = 0;
       haslengths = true;
-     treestr = ajStrStrMod(&phylotrees[which-1]->Tree);
+     treestr = ajStrGetuniquePtr(&phylotrees[which-1]->Tree);
       treeread(&treestr, &root, treenode, &goteof, &firsttree,
                  nodep, &nextnode, &haslengths,
                  &grbg, initdnaparsnode);

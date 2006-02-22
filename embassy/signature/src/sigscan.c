@@ -249,9 +249,9 @@ static AjBool sigscan_SignatureAlignWrite(AjPFile outf,
 	x<hits->N; 
 	x++)
     {
-	if((wid1=MAJSTRLEN(hits->hits[x]->Acc))>mwid1)
+	if((wid1=MAJSTRGETLEN(hits->hits[x]->Acc))>mwid1)
 	    mwid1 = wid1; 
-	if((len=MAJSTRLEN(hits->hits[x]->Seq))>mlen)
+	if((len=MAJSTRGETLEN(hits->hits[x]->Seq))>mlen)
 	    mlen = len;
     }
 
@@ -290,11 +290,11 @@ static AjBool sigscan_SignatureAlignWrite(AjPFile outf,
 	for(x=0;x<hits->N; x++)
 	{
 	    /* Get pointer to sequence & alignment string. */
-	    ptrp = ajStrStr(hits->hits[x]->Seq);
-	    ptrs = ajStrStr(hits->hits[x]->Alg);
+	    ptrp = ajStrGetPtr(hits->hits[x]->Seq);
+	    ptrs = ajStrGetPtr(hits->hits[x]->Alg);
 
 	    /* There is some of the sequence left to print. */
-	    if(idx<MAJSTRLEN(hits->hits[x]->Seq))
+	    if(idx<MAJSTRGETLEN(hits->hits[x]->Seq))
 	    {
 		ajFmtPrintF(outf,"%-*S%-*d%-*.*s %d\n", 
 			    mwid1, hits->hits[x]->Acc, fwid2, 
@@ -385,9 +385,9 @@ static AjBool sigscan_SignatureAlignWriteBlock(AjPFile outf,
 	x<hits->N; 
 	x++)
     {
-	if((wid1=MAJSTRLEN(hits->hits[x]->Acc))>mwid1)
+	if((wid1=MAJSTRGETLEN(hits->hits[x]->Acc))>mwid1)
 	    mwid1 = wid1; 
-	if((len=MAJSTRLEN(hits->hits[x]->Seq))>mlen)
+	if((len=MAJSTRGETLEN(hits->hits[x]->Seq))>mlen)
 	    mlen = len;
     }
 
@@ -417,8 +417,8 @@ static AjBool sigscan_SignatureAlignWriteBlock(AjPFile outf,
     for(x=0;x<hits->N; x++)
     {
 	/* Get pointer to sequence & alignment string. */
-	ptrp = ajStrStr(hits->hits[x]->Seq);
-	ptrs = ajStrStr(hits->hits[x]->Alg);
+	ptrp = ajStrGetPtr(hits->hits[x]->Seq);
+	ptrs = ajStrGetPtr(hits->hits[x]->Alg);
 
 	/* Print spacer */
 	ajFmtPrintF(outf, "# XX\n");
@@ -429,7 +429,7 @@ static AjBool sigscan_SignatureAlignWriteBlock(AjPFile outf,
 	    num+=mwid2;
 
 	    /* There is some of the sequence left to print. */
-	    if(idx<MAJSTRLEN(hits->hits[x]->Seq))
+	    if(idx<MAJSTRGETLEN(hits->hits[x]->Seq))
 	    {
 		ajFmtPrintF(outf,"%-*S%-*d%-*.*s %d\n", 
 			    mwid1, hits->hits[x]->Acc, fwid2, 

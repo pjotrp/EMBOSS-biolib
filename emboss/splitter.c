@@ -74,13 +74,13 @@ int main(int argc, char **argv)
 	{
 	    while(pos+size <= len-1)
 	    {
-		ajStrAssSubC(&str,ajSeqChar(seq),pos,pos+size-1);
+		ajStrAssignSubC(&str,ajSeqChar(seq),pos,pos+size-1);
 		ajSeqReplace(subseq, str);
 		splitter_write(seqout,subseq,pos,pos+size-1,seq);
 		pos += size-overlap;
 	    }
 
-	    ajStrAssSubC(&str,ajSeqChar(seq),pos,len-1);
+	    ajStrAssignSubC(&str,ajSeqChar(seq),pos,len-1);
 	    ajSeqReplace(subseq, str);
 	    splitter_write(seqout,subseq,pos,len-1,seq);
 	}
@@ -88,13 +88,13 @@ int main(int argc, char **argv)
 	{
 	    while(pos+size+overlap < len-1)
 	    {
-		ajStrAssSubC(&str,ajSeqChar(seq),pos,pos+size+overlap-1);
+		ajStrAssignSubC(&str,ajSeqChar(seq),pos,pos+size+overlap-1);
 		ajSeqReplace(subseq,str);
 		splitter_write(seqout,subseq,pos,pos+size+overlap-1,seq);
 		pos += size;
 	    }
 
-	    ajStrAssSubC(&str,ajSeqChar(seq),pos,len-1);
+	    ajStrAssignSubC(&str,ajSeqChar(seq),pos,len-1);
 	    ajSeqReplace(subseq, str);
 	    splitter_write(seqout,subseq,pos,len-1,seq);
 	}
@@ -138,13 +138,13 @@ static void splitter_write(AjPSeqout seqout, AjPSeq subseq, ajint start,
 
 
     /* create a name for the subsequence */
-    ajStrAssS(&name, ajSeqGetName(seq));
-    ajStrAppC(&name, "_");
+    ajStrAssignS(&name, ajSeqGetName(seq));
+    ajStrAppendC(&name, "_");
     ajStrFromInt(&value, ajSeqBegin(seq)+start);
-    ajStrApp(&name, value);
-    ajStrAppC(&name, "-");
+    ajStrAppendS(&name, value);
+    ajStrAppendC(&name, "-");
     ajStrFromInt(&value, ajSeqBegin(seq)+end);
-    ajStrApp(&name, value);
+    ajStrAppendS(&name, value);
     ajSeqAssName(subseq, name);
 
     /* set the description of the subsequence */

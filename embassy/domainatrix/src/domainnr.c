@@ -138,7 +138,7 @@ int main(int argc, char **argv)
     msg       = ajStrNew();
     last_node  = ajStrNew();
     keep = ajIntNew();  	    
-    ajStrAssC(&last_node,"!!!!!");
+    ajStrAssignC(&last_node,"!!!!!");
 
 
 
@@ -157,13 +157,13 @@ int main(int argc, char **argv)
     node      = ajAcdGetList("node");
     retain    = ajAcdGetToggle("retain");
 
-    if(ajStrChar(*mode, 0) == '1')
+    if(ajStrGetCharFirst(*mode) == '1')
 	{
 	    moden=1;
 	    thresh    = ajAcdGetFloat("threshold");
 	}
     
-    else if(ajStrChar(*mode, 0) == '2')
+    else if(ajStrGetCharFirst(*mode) == '2')
 	{
 	    moden=2;
 	    threshlow    = ajAcdGetFloat("threshlow");
@@ -335,12 +335,12 @@ int main(int argc, char **argv)
 	seq=ajSeqNew();
 
 	/* pdb sequence has priority. */
-        if((ajStrLen(ajDomainGetSeqPdb(domain)))==0)
-            ajStrAssS(&seq->Seq, ajDomainGetSeqSpr(domain));
+        if((ajStrGetLen(ajDomainGetSeqPdb(domain)))==0)
+            ajStrAssignS(&seq->Seq, ajDomainGetSeqSpr(domain));
         else
-            ajStrAssS(&seq->Seq, ajDomainGetSeqPdb(domain));
+            ajStrAssignS(&seq->Seq, ajDomainGetSeqPdb(domain));
 
-	ajStrAssS(&seq->Name, ajDomainGetPdb(domain));
+	ajStrAssignS(&seq->Name, ajDomainGetPdb(domain));
 	ajListPushApp(list_seqs,seq);	
 
 
@@ -512,42 +512,42 @@ static void domainnr_writelast(AjPDomain domain, ajint noden, AjPStr *last_node,
 {
     if(noden==1) 
     {
-	ajStrAssS(last_node, domain->Scop->Class);
+	ajStrAssignS(last_node, domain->Scop->Class);
 	*last_nodeid = domain->Scop->Sunid_Class;
     }		       
     else if (noden==2)
     {
-	ajStrAssS(last_node, domain->Scop->Fold);
+	ajStrAssignS(last_node, domain->Scop->Fold);
 	*last_nodeid = domain->Scop->Sunid_Fold;
     }
     else if (noden==3)
     {
-	ajStrAssS(last_node, domain->Scop->Superfamily);
+	ajStrAssignS(last_node, domain->Scop->Superfamily);
 	*last_nodeid = domain->Scop->Sunid_Superfamily;
     }
     else if (noden==4)
     {
-	ajStrAssS(last_node, domain->Scop->Family);
+	ajStrAssignS(last_node, domain->Scop->Family);
 	*last_nodeid = domain->Scop->Sunid_Family;
     } 	
     else if (noden==5)
     {
-	ajStrAssS(last_node, domain->Cath->Class);
+	ajStrAssignS(last_node, domain->Cath->Class);
 	*last_nodeid = domain->Cath->Class_Id ;
     } 
     else if (noden==6)
     {
-	ajStrAssS(last_node, domain->Cath->Architecture);
+	ajStrAssignS(last_node, domain->Cath->Architecture);
 	*last_nodeid = domain->Cath->Arch_Id;
     } 
     else if (noden==7)
     {
-	ajStrAssS(last_node, domain->Cath->Topology);
+	ajStrAssignS(last_node, domain->Cath->Topology);
 	*last_nodeid = domain->Cath->Topology_Id;
     } 
     else if (noden==8)
     {
-	ajStrAssS(last_node, domain->Cath->Superfamily);
+	ajStrAssignS(last_node, domain->Cath->Superfamily);
 	*last_nodeid = domain->Cath->Superfamily_Id;
     } 
     else if (noden==9)

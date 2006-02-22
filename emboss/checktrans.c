@@ -91,26 +91,26 @@ int main(int argc, char **argv)
 
         strand = ajSeqStr(seq);
 
-	ajStrAssSubC(&substr,ajStrStr(strand),begin-1,end-1);
+	ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
 
         /* end with a '*' if needed and there is not one there already */
         if(addlast && ajSeqChar(seq)[end-1] != '*')
 	{
-            ajStrAppK(&substr,'*');
+            ajStrAppendK(&substr,'*');
             addedasterisk = ajTrue;
         }
 	ajDebug("After appending, sequence=%S\n", substr);
-        ajStrToUpper(&substr);
+        ajStrFmtUpper(&substr);
 
-        len=ajStrLen(substr);
+        len=ajStrGetLen(substr);
 
 	ajFmtPrintF(outf,"\n\nCHECKTRANS of %s from %d to %d\n\n",
 		    ajSeqName(seq),begin,begin+len-1);
 
-        checktrans_findorfs(outseq, outf, 0, len, ajStrStr(substr),
+        checktrans_findorfs(outseq, outf, 0, len, ajStrGetPtr(substr),
 			    ajSeqName(seq), begin, orfml, addedasterisk);
 
-	checktrans_dumptofeat(featout,0,len,ajStrStr(substr),ajSeqName(seq),
+	checktrans_dumptofeat(featout,0,len,ajStrGetPtr(substr),ajSeqName(seq),
 			      begin,orfml);
     }
 
@@ -220,7 +220,7 @@ static void checktrans_ajbseq(AjPSeqout outseq, const char *seq,
     str = ajStrNew();
     nm  = ajStrNew();
 
-    ajStrAssSubC(&str,seq,begin,end);
+    ajStrAssignSubC(&str,seq,begin,end);
     ajSeqReplace(sq,str);
 
     ajFmtPrintS(&nm,"%s_%d",name,count);
@@ -275,12 +275,12 @@ static void checktrans_dumptofeat(AjPFeattabOut featout, ajint from, ajint to,
     type   = ajStrNew();
 
 
-    ajStrAssC(&name,seqname);
+    ajStrAssignC(&name,seqname);
 
     feattable = ajFeattableNewProt(name);
 
-    ajStrAssC(&source,"checktrans");
-    ajStrAssC(&type,"misc_feature");
+    ajStrAssignC(&source,"checktrans");
+    ajStrAssignC(&type,"misc_feature");
 
 
     for(i=from;i<to;++i)

@@ -135,8 +135,8 @@ int main(int argc, char **argv)
 	p = ajSeqChar(a);
 	q = ajSeqChar(b);
 
-	ajStrAssC(&m,"");
-	ajStrAssC(&n,"");
+	ajStrAssignC(&m,"");
+	ajStrAssignC(&n,"");
 
 	embAlignPathCalcSW(p,q,lena,lenb,gapopen,gapextend,path,sub,cvt,
 			   compass,show);

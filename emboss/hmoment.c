@@ -102,9 +102,9 @@ int main(int argc, char **argv)
 	limit = len-window+1;
 	sname = ajSeqName(seq);
 
-	ajStrAssSubC(&str,ajSeqChar(seq),--beg,--end);
-	ajStrToUpper(&str);
-	p = ajStrStr(str);
+	ajStrAssignSubC(&str,ajSeqChar(seq),--beg,--end);
+	ajStrFmtUpper(&str);
+	p = ajStrGetPtr(str);
 
 	if(limit>0)
 	{

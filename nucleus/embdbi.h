@@ -53,7 +53,7 @@ ajint     embDbiCmpId (const void* a, const void* b);
 ajint     embDbiCmpFieldId (const void* a, const void* b);
 ajint     embDbiCmpFieldField (const void* a, const void* b);
 void      embDbiDateSet (const AjPStr datestr, char date[4]);
-void      embDbiEntryNDel(EmbPEntry* Pentry);
+void      embDbiEntryDel(EmbPEntry* Pentry);
 EmbPEntry embDbiEntryNew (ajint nfields);
 void      embDbiExit(void);
 EmbPField embDbiFieldNew (void);

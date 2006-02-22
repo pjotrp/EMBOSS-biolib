@@ -12,7 +12,7 @@
  * SRE, Thu Dec 18 16:05:29 1997 [St. Louis]
  * 
  * main() for aligning a set of sequences to an HMM.
- * RCS $Id: ohmmalign.c,v 1.1 2006/02/21 12:35:43 rice Exp $
+ * RCS $Id: ohmmalign.c,v 1.2 2006/02/22 15:02:28 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */ 
 
@@ -101,11 +101,11 @@ int main(int argc, char **argv)
 
   ajmapali = ajAcdGetInfile("mapalifile");
   if (ajmapali)
-      mapali = ajCharNew(ajFileGetName(ajmapali));
+      mapali = ajCharNewS(ajFileGetName(ajmapali));
   ajFileClose(&ajmapali);
   ajwithali = ajAcdGetInfile("withalifile");
   if (ajwithali)
-      withali = ajCharNew(ajFileGetName(ajwithali));
+      withali = ajCharNewS(ajFileGetName(ajwithali));
   ajFileClose(&ajwithali);
 
   be_quiet=TRUE;
@@ -114,19 +114,19 @@ int main(int argc, char **argv)
 
   outf = ajAcdGetOutfile("outfile");
   outfname = ajStrNewC((char *)ajFileName(outf));
-  if(*ajStrStr(outfname)>31)
+  if(*ajStrGetPtr(outfname)>31)
       ajFileClose(&outf);
-  outfile = ajStrStr(outfname);
+  outfile = ajStrGetPtr(outfname);
 
   inf = ajAcdGetInfile("hmmfile");
   infname = ajStrNewC((char *)ajFileName(inf));
   ajFileClose(&inf);
-  hmmfile = ajStrStr(infname);
+  hmmfile = ajStrGetPtr(infname);
 
   
   seqset = ajAcdGetSeqset("sequences");
-  ajseqfile = ajStrNewC(ajStrStr(seqset->Filename));
-  seqfile = ajStrStr(ajseqfile);
+  ajseqfile = ajStrNewC(ajStrGetPtr(seqset->Filename));
+  seqfile = ajStrGetPtr(ajseqfile);
   
 
  /*********************************************** 

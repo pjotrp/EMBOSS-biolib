@@ -102,12 +102,12 @@ int main(int argc, char **argv)
     {
 	be = ajSeqallBegin(a);
 	en = ajSeqallEnd(a);
-	ajStrAssSubC(&substr,ajSeqChar(seq),be-1,en-1);
+	ajStrAssignSubC(&substr,ajSeqChar(seq),be-1,en-1);
 	len = en-be+1;
 
 
 
-	embIepComp(ajStrStr(substr),1,c);
+	embIepComp(ajStrGetPtr(substr),1,c);
 	if(!termini)
 	    c[EMBIEPAMINO]=c[EMBIEPCARBOXYL]=0;
 
@@ -115,7 +115,7 @@ int main(int argc, char **argv)
 		    be,en);
 
 	ajFmtPrintF(outf,"Molecular weight = %-10.2f\t\tResidues = %-6d\n",
-		    (molwt=embPropCalcMolwt(ajStrStr(substr),0,len-1)),len);
+		    (molwt=embPropCalcMolwt(ajStrGetPtr(substr),0,len-1)),len);
 
 
 	for(i=0,charge=0.0;i<26;++i)
@@ -124,12 +124,12 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outf,"Average Residue Weight  = %-7.3f \t"
 		    "Charge   = %-6.1f\n", molwt/(double)len,charge);
 
-	if(!embIepIEP(ajStrStr(substr),1,&iep,termini))
+	if(!embIepIEP(ajStrGetPtr(substr),1,&iep,termini))
 	    ajFmtPrintF(outf,"Isoelectric Point = None\n\n");
 	else
 	    ajFmtPrintF(outf,"Isoelectric Point = %-6.4lf\n",iep);
 
-	molar_ext_coeff = embPropCalcMolextcoeff(ajStrStr(substr),0,len-1);
+	molar_ext_coeff = embPropCalcMolextcoeff(ajStrGetPtr(substr),0,len-1);
 	
 
 	ajFmtPrintF(outf,"A280 Molar Extinction Coefficient  = %-8d\n", 

@@ -222,7 +222,7 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall, &seq))
     {
 
-	ajStrAssC(&seqname, ajSeqName(seq));
+	ajStrAssignC(&seqname, ajSeqName(seq));
 	begin = ajSeqallBegin(seqall);
 	end   = ajSeqallEnd(seqall);
 
@@ -422,8 +422,8 @@ static void twofeat_sort_hits(const AjPList hitlist, AjBool twoout,
     source = ajStrNew();
     type   = ajStrNew();
     	
-    ajStrAssC(&source,"twofeat");
-    ajStrAssS(&type, typeout);
+    ajStrAssignC(&source,"twofeat");
+    ajStrAssignS(&type, typeout);
 
 
     iter = ajListIterRead(hitlist);
@@ -663,7 +663,7 @@ static AjBool twofeat_MatchPatternTags(const AjPFeature feat,
 	 ** Else check vpattern
 	 */
 
-        if(!ajStrLen(tagval))
+        if(!ajStrGetLen(tagval))
 	{
             if(!ajStrCmpC(vpattern, "*"))
             	vval = ajTrue;
@@ -914,7 +914,7 @@ static AjBool twofeat_check_match(AjPFeature gfA, AjPFeature gfB,
     if(ss == 0 &&
        ee == 0 &&
        gfA->Strand == gfB->Strand &&
-       ajStrMatch(gfA->Type, gfB->Type))
+       ajStrMatchS(gfA->Type, gfB->Type))
     {
         ajDebug("Found match of feature to itself\n");
         return ajFalse;    

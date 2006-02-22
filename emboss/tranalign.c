@@ -87,8 +87,8 @@ int main(int argc, char **argv)
 		ajSeqGetName(nseq), ajSeqGetName(pseq));
 
         /* get copy of pseq string with no gaps */
-        ajStrAssS(&degapstr, ajSeqStr(pseq));
-        ajStrDegap(&degapstr);
+        ajStrAssignS(&degapstr, ajSeqStr(pseq));
+        ajStrRemoveGap(&degapstr);
 
         /*
 	** for each translation frame look for subset of pep that
@@ -99,25 +99,25 @@ int main(int argc, char **argv)
 	    ajDebug("trying frame %d\n", frame);
             pep = ajTrnSeqOrig(trnTable, nseq, frame);
             degapstr2 = ajStrNew();
-            ajStrAss(&degapstr2, degapstr);
-            pos = ajStrFindCase(ajSeqStr(pep), degapstr);
+            ajStrAssignRef(&degapstr2, degapstr);
+            pos = ajStrFindCaseS(ajSeqStr(pep), degapstr);
 
             /* 
             ** we might have a START codon that should be translated as 'M'
             ** we need to check if there is a match after a possible START codon 
             */
-            if(pos == -1 && ajStrLen(degapstr) > 1 && 
-               (ajStrStr(degapstr)[0] == 'M' || ajStrStr(degapstr)[0] == 'm')) {
+            if(pos == -1 && ajStrGetLen(degapstr) > 1 && 
+               (ajStrGetPtr(degapstr)[0] == 'M' || ajStrGetPtr(degapstr)[0] == 'm')) {
                 /* see if pep minus the first character is a match */
-                ajStrTrim(&degapstr2, 1);
-                pos = ajStrFindCase(ajSeqStr(pep), degapstr2); 
+                ajStrCutStart(&degapstr2, 1);
+                pos = ajStrFindCaseS(ajSeqStr(pep), degapstr2); 
                 /* pos is >= 1 if we have a match that is after the first residue */
                 if (pos >= 1) {
                     /* point back at the putative START Methionine */
                     pos--;
                     /* test if first codon is a START */
                     codon = ajStrNew();
-                    ajStrAssSub(&codon, ajSeqStr(nseq), 
+                    ajStrAssignSubS(&codon, ajSeqStr(nseq), 
                                 (pos*3)+frame-1, (pos*3)+frame+2);
                     type = ajTrnStartStop(trnTable, codon, &aa);
                     if (type != 1) {
@@ -158,7 +158,7 @@ int main(int argc, char **argv)
             ajSeqDel(&newseq);
         }
 
-        ajStrClean(&degapstr);
+        ajStrRemoveWhite(&degapstr);
     }
 
     ajSeqsetWrite(seqout, outseqset);
@@ -201,10 +201,10 @@ static void tranalign_AddGaps(AjPSeq newseq,
 
     for(; ppos<ajSeqLen(pseq); ppos++)
     	if(ajSeqChar(pseq)[ppos] == '-')
-    	    ajStrAppC(&newstr, "---");
+    	    ajStrAppendC(&newstr, "---");
 	else
 	{
-    	    ajStrAppSub(&newstr, ajSeqStr(nseq), npos, npos+2);
+    	    ajStrAppendSubS(&newstr, ajSeqStr(nseq), npos, npos+2);
     	    npos+=3;
     	}
 

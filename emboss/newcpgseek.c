@@ -79,11 +79,11 @@ int main(int argc, char **argv)
 	end   = ajSeqallEnd(seqall);
 
 	strand = ajSeqStrCopy(seq);
-	ajStrToUpper(&strand);
+	ajStrFmtUpper(&strand);
 
-	ajStrAssSubC(&substr,ajStrStr(strand),begin-1,end-1);
+	ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
 
-	len=ajStrLen(substr);
+	len=ajStrGetLen(substr);
 
 	ajFmtPrintF(outf,"\n\nNEWCPGSEEK of %s from %d to %d\n",
 		    ajSeqName(seq),begin,begin+len-1);
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outf," Begin    End  Score");
 	ajFmtPrintF(outf,"        CpG  %%CG  CG/GC\n");
 
-	newcpgseek_cpgsearch(&outf,0,len,ajStrStr(substr),ajSeqName(seq),
+	newcpgseek_cpgsearch(&outf,0,len,ajStrGetPtr(substr),ajSeqName(seq),
 			     begin,score);
 	ajFmtPrintF(outf,"-------------------------------------------\n");
 

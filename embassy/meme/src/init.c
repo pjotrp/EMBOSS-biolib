@@ -143,15 +143,15 @@ extern void init_meme(
 
   seqall = ajAcdGetSeqall("sequence");
 
-  datnam = ajStrNewC(ajStrStr(seqall->Seqin->Usa));
+  datnam = ajStrNewC(ajStrGetPtr(seqall->Seqin->Usa));
 
 /*  seqalln  = ajAcdGetSeqall("negfile");*/
 
   ajntype = ajAcdGetList("ntype");
-  ntype = ajStrStr(*ajntype);
+  ntype = ajStrGetPtr(*ajntype);
 
   ajmodel = ajAcdGetList("model");
-  mod = ajStrStr(*ajmodel);
+  mod = ajStrGetPtr(*ajmodel);
 
   ajprotein = ajAcdGetBool("protein");
   if(ajprotein)
@@ -188,7 +188,7 @@ extern void init_meme(
 
 
   ajprior = ajAcdGetList("prior");
-  prior = ajStrStr(*ajprior);
+  prior = ajStrGetPtr(*ajprior);
 
   brief = ajAcdGetBool("brief");
   if(brief)
@@ -199,7 +199,7 @@ extern void init_meme(
   beta = (double) ajAcdGetFloat("b");
 
   ajspmap = ajAcdGetList("spmap");
-  MAP = ajStrStr(*ajspmap);
+  MAP = ajStrGetPtr(*ajspmap);
   
   map_scale = (double) ajAcdGetFloat("spfuzz");
   
@@ -208,7 +208,7 @@ extern void init_meme(
   distance = (double)ajAcdGetFloat("distance");
   
   ajcons = ajAcdGetString("cons");
-  spcons[n_spcons++] = ajStrStr(ajcons);
+  spcons[n_spcons++] = ajStrGetPtr(ajcons);
 
   chi_alpha = (double)ajAcdGetFloat("chi");
 
@@ -884,4 +884,4 @@ extern void init_meme(
   *debug_file_p = debug_file;
 }
 
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/init.c,v 1.3 2004/06/14 14:43:30 rice Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/init.c,v 1.4 2006/02/22 15:02:28 rice Exp $ */

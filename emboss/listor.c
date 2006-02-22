@@ -75,7 +75,7 @@ int main(int argc, char **argv)
     operator = ajAcdGetList("operator");
 
     /* get the operator value */
-    switch(ajStrStr(operator[0])[0])
+    switch(ajStrGetPtr(operator[0])[0])
     {
     case 'O':
 	Operator = L_OR;
@@ -150,7 +150,7 @@ int main(int argc, char **argv)
 		for(tmp2=curr2; tmp2<n2 && lengths2[order2[tmp2]] ==
 		    lengths2[order2[curr2]]; tmp2++)
 		    /* check to see if the sequences are identical */
-		    if(!ajStrCmpCase(ajSeqStr(ajSeqsetGetSeq(seq1,
+		    if(!ajStrCmpCaseS(ajSeqStr(ajSeqsetGetSeq(seq1,
 							     order1[tmp1])),
 				      ajSeqStr(ajSeqsetGetSeq(seq2,
 				      order2[tmp2]))))
