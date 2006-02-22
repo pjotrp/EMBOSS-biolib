@@ -76,7 +76,7 @@ foreach $x ("author", "version", "modified", "source", "plus", "funclist",
 	    "see", "error", "cre", "ure", "exception", "cc",
 	    "category", "fcategory", "filesection", "suffix", "datasection",
 	    "fdata", "fnote", "argrule", "valrule", "namrule",
-	    "obsolete", "rename", "replace") {
+	    "obsolete", "rename", "replace", "remove") {
     $functoken{$x} = 1;
 }
 
