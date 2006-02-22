@@ -290,7 +290,7 @@ sub testdelete($$\@\@) {
 	print "bad category delete - only one parameter allowed\n";
 	return 0;
     }
-    if (${$tcast}[0] ne "$tdata\*") {
+    if (${$tcast}[0] !~ /$tdata\*+/) {
 	$tc = ${$tcast}[0];
 	print "bad category delete - only parameter '$tc' must be '$tdata\*'\n";
     }
@@ -1546,9 +1546,11 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 		($repold, $repnew) = split('/', $repargs);
 		@repold = split(',', $repold);
 		@repnew = split(',', $repnew);
-		if ($#repold != $#repnew) {
-		    print "warn replace args old $#repold new $#repnew\n";
-		}
+		print OBS "$oname =$replace $repold $repnew\n";
+	    }
+	    else {
+		print "bad replace $oname $replace - no arguments\n";
+		next;
 	    }
 	    if($norest) {
 		print "bad replace $oname $replace - extra text\n";
@@ -1564,7 +1566,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    next;
 	}
 
-	elsif ($token eq "delete")  {
+	elsif ($token eq "remove")  {
 	    if($mastertoken ne "obsolete") {
 		print "bad syntax \@$token must be in \@obsolete\n";
 	    }
@@ -1574,7 +1576,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    ($delrest) =
 		($data =~ /\S+\s*(.*)/gos);
 	    if(!$delrest) {
-		print "bad delete $oname - no explanation\n";
+		print "bad remove $oname - no explanation\n";
 		next;
 	    }
 	    print OBS "$oname -\n";
