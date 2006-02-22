@@ -584,7 +584,7 @@ static AjBool    acdAttrToInt(const AcdPAcd thys,
 static AjBool    acdAttrToStr(const AcdPAcd thys,
 			      const char *attr, const char* defval,
 			      AjPStr *result);
-static AjPStr    acdAttrValue(const AcdPAcd thys, const char *attrib);
+static const AjPStr acdAttrValue(const AcdPAcd thys, const char *attrib);
 static AjBool    acdAttrValueStr(const AcdPAcd thys,
 				 const char *attrib, const char* def,
 				 AjPStr *str);
@@ -17459,12 +17459,12 @@ static AjBool acdAttrTestDefined(const AcdPAcd thys,const  char *attrib)
 **
 ** @param [r] thys [const AcdPAcd] ACD item
 ** @param [r] attrib [const char*] Attribute name
-** @return [AjPStr] Attribute value.
+** @return [const AjPStr] Attribute value.
 ** @cre Aborts if attribute is not found.
 ** @@
 ******************************************************************************/
 
-static AjPStr acdAttrValue(const AcdPAcd thys, const char *attrib)
+static const AjPStr acdAttrValue(const AcdPAcd thys, const char *attrib)
 {
     AcdPAttr attr;
     AjPStr  *attrstr;
@@ -19385,7 +19385,7 @@ static void acdPromptScop(AcdPAcd thys)
 
 static void acdHelpTextSeq(const AcdPAcd thys, AjPStr* Pstr)
 {
-    AjPStr typestr = NULL;
+    const AjPStr typestr = NULL;
     AjPStr tmptype = NULL;
     AjBool gaps = AJFALSE;
 
@@ -19398,6 +19398,7 @@ static void acdHelpTextSeq(const AcdPAcd thys, AjPStr* Pstr)
     {
 	ajStrAssignS(Pstr, tmptype);
 	ajStrAppendC(Pstr, " ");
+	ajStrDel(&tmptype);
     }
     ajStrAppendC(Pstr, "sequence");
 
@@ -19449,7 +19450,7 @@ static void acdHelpTextSeq(const AcdPAcd thys, AjPStr* Pstr)
 
 static void acdHelpTextSeqout(const AcdPAcd thys, AjPStr* Pstr)
 {
-    AjPStr typestr = NULL;
+    const AjPStr typestr = NULL;
     AjPStr tmptype = NULL;
     AjBool gaps = AJFALSE;
 
@@ -19462,6 +19463,7 @@ static void acdHelpTextSeqout(const AcdPAcd thys, AjPStr* Pstr)
     {
 	ajStrAssignS(Pstr, tmptype);
 	ajStrAppendC(Pstr, " ");
+	ajStrDel(&tmptype);
     }
     ajStrAppendC(Pstr, "sequence");
 
@@ -20434,9 +20436,9 @@ static AjBool acdSetQualAppl(const AcdPAcd thys, AjBool val)
 
 static void acdSelectPrompt(const AcdPAcd thys)
 {
-    AjPStr hdrstr;
+    const AjPStr hdrstr;
     AjPStr delim;
-    AjPStr value;
+    AjPStr value = NULL;
     AjPStrTok handle;
     static AjPStr line = NULL;
     static char* white = " \t\n\r";
@@ -20448,10 +20450,11 @@ static void acdSelectPrompt(const AcdPAcd thys)
     if(ajStrGetLen(hdrstr))
 	ajUser("%S", hdrstr);
     
-    delim = acdAttrValue(thys, "delimiter");
+    ajStrAssignS(&delim,acdAttrValue(thys, "delimiter"));
     if(!ajStrGetLen(delim))
 	ajStrAssignC(&delim, ";");
-    value = acdAttrValue(thys, "value");
+
+    ajStrAssignS(&value, acdAttrValue(thys, "value"));
     if(!ajStrGetLen(value))
 	if(!acdKnownValueSelect(thys, &value))
 	    acdError("No value defined for selection");
@@ -20465,7 +20468,9 @@ static void acdSelectPrompt(const AcdPAcd thys)
     
     ajStrTokenDel(&handle);
     ajStrDelStatic(&line);
-    
+    ajStrDel(&value);
+    ajStrDel(&delim);
+
     return;
 }
 
@@ -20483,11 +20488,11 @@ static void acdSelectPrompt(const AcdPAcd thys)
 
 static void acdListPrompt(const AcdPAcd thys)
 {
-    AjPStr hdrstr;
+    const AjPStr hdrstr;
     AjPStr codedelim = NULL;
     AjPStr delim     = NULL;
 
-    AjPStr value;
+    AjPStr value     = NULL;
     AjPStrTok handle;
     AjPStrTok codehandle;
 
@@ -20496,8 +20501,6 @@ static void acdListPrompt(const AcdPAcd thys)
     static AjPStr desc = NULL;
 
     static char* white = " \t\n\r";
-    AjBool ddelim=ajFalse;
-    AjBool cdelim=ajFalse;
 
     if(acdAuto)
 	return;
@@ -20506,21 +20509,19 @@ static void acdListPrompt(const AcdPAcd thys)
     if(ajStrGetLen(hdrstr))
 	ajUser("%S", hdrstr);
 
-    delim = acdAttrValue(thys, "delimiter");
+    ajStrAssignS(&delim,acdAttrValue(thys, "delimiter"));
     if(!ajStrGetLen(delim))
     {
-	ddelim = ajTrue;
 	ajStrAssignC(&delim, ";");
     }
 
-    codedelim = acdAttrValue(thys, "codedelimiter");
+    ajStrAssignS(&codedelim,acdAttrValue(thys, "codedelimiter"));
     if(!ajStrGetLen(codedelim))
     {
-	cdelim = ajTrue;
 	ajStrAssignC(&codedelim, ":");
     }
 
-    value = acdAttrValue(thys, "value");
+    ajStrAssignS(&value, acdAttrValue(thys, "value"));
     if(!ajStrGetLen(value))
 	if(!acdKnownValueList(thys, &value))
 	    acdError("No value defined for list");
@@ -20542,12 +20543,11 @@ static void acdListPrompt(const AcdPAcd thys)
     ajStrDelStatic(&code);
     ajStrDelStatic(&desc);
 
-    if(ddelim)
-	ajStrDel(&delim);
+    ajStrDel(&delim);
 
-    if(cdelim)
-	ajStrDel(&codedelim);
+    ajStrDel(&codedelim);
 
+    ajStrDel(&value);
     return;
 }
 
@@ -20576,7 +20576,7 @@ static AjPStr* acdListValue(const AcdPAcd thys, ajint min, ajint max,
     
     AjPStr codedelim = NULL;
     AjPStr delim     = NULL;
-    AjPStr value;
+    AjPStr value  = NULL;
     AjBool exactcase;
     AjPStrTok handle;
     AjPStrTok rephandle;
@@ -20616,7 +20616,7 @@ static AjPStr* acdListValue(const AcdPAcd thys, ajint min, ajint max,
 	ajStrAssignC(&repdelim, ",");
     }
     
-    value = acdAttrValue(thys, "value");
+    ajStrAssignS(&value,acdAttrValue(thys, "value"));
     if(!ajStrGetLen(value))
 	if(!acdKnownValueList(thys, &value))
 	    acdError("No value defined for list");
@@ -20798,8 +20798,8 @@ static AjPStr* acdSelectValue(const AcdPAcd thys, ajint min, ajint max,
     AjPStr *val = NULL;
     
     static AjPStr delim=NULL;
-    AjPStr tmpstr;
-    AjPStr value;
+    const AjPStr tmpstr;
+    AjPStr value = NULL;
     AjBool exactcase;
     AjPStrTok handle;
     AjPStrTok rephandle;
@@ -20840,7 +20840,7 @@ static AjPStr* acdSelectValue(const AcdPAcd thys, ajint min, ajint max,
 	ajStrAssignC(&repdelim, ",");
     }
     
-    value = acdAttrValue(thys, "value");
+    ajStrAssignS(&value, acdAttrValue(thys, "value"));
     if(!ajStrGetLen(value))
 	if(!acdKnownValueSelect(thys, &value))
 	    acdError("No value defined for selection");
@@ -20944,6 +20944,7 @@ static AjPStr* acdSelectValue(const AcdPAcd thys, ajint min, ajint max,
     acdLog("Found %d matches\n", ilen);
     
     ajListstrDel(&list);
+    ajStrDel(&value);
     ajStrDelStatic(&line);
     ajStrDelStatic(&code);
     ajStrDelStatic(&desc);
@@ -22312,7 +22313,7 @@ static void acdValidAppl(const AcdPAcd thys)
 
 static void acdValidRelation(const AcdPAcd thys)
 {
-    AjPStr tmpstr   = NULL;
+    const AjPStr tmpstr   = NULL;
 
     if(!acdDoValid)
 	return;
@@ -22341,7 +22342,7 @@ static void acdValidSection(const AcdPAcd thys)
 
     AjPStr sectType = NULL;		/* string from table - no delete */
     AjPStr sectInfo = NULL;		/* string from table - no delete */
-    AjPStr tmpstr   = NULL;
+    const AjPStr tmpstr   = NULL;
     static AjPStr sectNameTop;
     ajint i;
 
@@ -22450,8 +22451,6 @@ static void acdValidSection(const AcdPAcd thys)
 	}
     }
 
-    ajStrDel(&tmpstr);
-
     return;
 }
 
@@ -22480,10 +22479,10 @@ static void acdValidQual(const AcdPAcd thys)
     AjBool isToggle = ajFalse;
 
     static AjPStr secname   = NULL;
-    static AjPStr tmpstr    = NULL;
-    static AjPStr tmpinfo   = NULL;
-    static AjPStr tmpprompt = NULL;
-    static AjPStr tmphelp   = NULL;
+    const AjPStr tmpstr    = NULL;
+    const AjPStr tmpinfo   = NULL;
+    const AjPStr tmpprompt = NULL;
+    const AjPStr tmphelp   = NULL;
 
     static ajint qualCountSeq     = 0;
     static ajint qualCountSeqout  = 0;
@@ -23244,7 +23243,7 @@ static void acdValidKnowntype(const AcdPAcd thys)
 {
     static AjPTable descTable = NULL;
     static AjPTable acdtypeTable = NULL;
-    AjPStr typestr         = NULL;
+    const AjPStr typestr         = NULL;
     AjPStr acdKnownType    = NULL;
     static AjPStr defType = NULL;
 
@@ -23393,7 +23392,15 @@ static void acdReadKnowntypes(AjPTable* desctable, AjPTable* typetable)
 	}
     }
     ajFileClose(&knownFile);
-
+    ajStrDel(&knownFName);
+    ajStrDel(&knownRoot);
+    ajStrDel(&knownRootInst);
+    ajStrDel(&knownPack);
+    ajStrDel(&knownLine);
+    ajStrDel(&knownName);
+    ajStrDel(&knownType);
+    ajStrDel(&knownDesc);
+    ajRegFree(&knownxp);
     return;
 }
 
@@ -23435,6 +23442,10 @@ static void acdValidApplGroup(const AjPStr groups)
 	    acdErrorValid("Unknown group '%S' for application", grpName);
 	ajRegPost(grpexp, &tmpGroups);
     }
+
+    ajStrDel(&grpName);
+    ajStrDel(&tmpGroups);
+    ajRegFree(&grpexp);
 
     return;
 }
@@ -23521,6 +23532,16 @@ static AjPTable acdReadGroups(void)
 	}
     }
     ajFileClose(&grpFile);
+
+    ajStrDel(&grpFName);
+    ajStrDel(&grpRoot);
+    ajStrDel(&grpRootInst);
+    ajStrDel(&grpPack);
+    ajStrDel(&grpLine);
+    ajStrDel(&grpName);
+    ajStrDel(&grpDesc);
+
+    ajRegFree(&grpxp);
 
     return ret;
 }
@@ -23617,6 +23638,16 @@ static void acdReadSections(AjPTable* typetable, AjPTable* infotable)
 	}
     }
     ajFileClose(&sectFile);
+    ajStrDel(&sectFName);
+    ajStrDel(&sectRoot);
+    ajStrDel(&sectRootInst);
+    ajStrDel(&sectPack);
+    ajStrDel(&sectLine);
+    ajStrDel(&sectName);
+    ajStrDel(&sectType);
+    ajStrDel(&sectDesc);
+    ajRegFree(&sectxp);
+
 
     return;
 }
@@ -23970,7 +24001,7 @@ static ajint acdOutFormatTree(const AjPStr name)
 
 static AjBool acdKnownValueList(const AcdPAcd thys, AjPStr* value)
 {
-    AjPStr type = NULL;
+    const AjPStr type = NULL;
     AjPStr resource = NULL;
     AjPStr list = NULL;
     ajint i;
@@ -24010,7 +24041,7 @@ static AjBool acdKnownValueList(const AcdPAcd thys, AjPStr* value)
 
 static AjBool acdKnownValueSelect(const AcdPAcd thys, AjPStr* value)
 {
-    AjPStr type = NULL;
+    const AjPStr type = NULL;
     AjPStr resource = NULL;
     AjPStr list = NULL;
     ajint i;
