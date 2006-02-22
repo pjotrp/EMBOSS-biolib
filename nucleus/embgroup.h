@@ -7,7 +7,32 @@ extern "C"
 #define embgroup_h
 
 
-/* @data GPnode ***************************************************************
+/* @data EmbPGroupProg ********************************************************
+**
+** Hold details of programs (names and documentation) and the package
+** they belong to.
+**
+**
+** @alias EmbOGroupProg
+** @alias EmbSGroupProg
+**
+** @attr name [AjPStr] name of group or of program
+** @attr doc [AjPStr] documentation for this program
+** @attr package [AjPStr] EMBASSY package, empty for main package
+** @attr groups [AjPList] List of group(s) this program belongs to.
+** @@
+******************************************************************************/
+
+typedef struct EmbSGroupProg {
+  AjPStr name;
+  AjPStr doc;
+  AjPStr package;
+  AjPList groups;
+} EmbOGroupProg;
+#define EmbPGroupProg EmbOGroupProg*
+
+/* @data EmbPGroupTop *********************************************************
+**
 ** This serves as both a node in a list of names of groups which each hold
 ** a list of details of programs (names and documentation) and also
 ** it is a node in a list of the details of programs (names and documentation).
@@ -47,7 +72,8 @@ extern "C"
 **                   etc.
 **
 **
-** @alias Gnode
+** @alias EmbOGroup
+** @alias EmbSGroup
 **
 ** @attr name [AjPStr] name of group or of program
 ** @attr doc [AjPStr] documentation for this program (used by list of programs)
@@ -55,36 +81,41 @@ extern "C"
 ** @@
 ******************************************************************************/
 
-typedef struct gnode {
+typedef struct EmbSGroupTop {
   AjPStr name;
   AjPStr doc;
   AjPList progs;
-} Gnode;
-#define GPnode Gnode*
+} EmbOGroupTop;
+#define EmbPGroupTop EmbOGroupTop*
 
 
-ajint    embGrpCompareTwoGnodes(const void * a, const void * b);
-void   embGrpGetProgGroups (AjPList glist, AjPList alpha, char * const env[],
-          AjBool emboss, AjBool embassy, const AjPStr embassyname,
-			    AjBool explode, AjBool colon,
-			    AjBool gui);
-void   embGrpGroupsListDel (AjPList *groupslist);
-void   embGrpKeySearchProgs (AjPList newlist, const AjPList glist,
-			     const AjPStr key);
-void   embGrpKeySearchSeeAlso(AjPList newlist, AjPList *appgroups,
-			      const AjPList alpha, const AjPList glist,
-			      const AjPStr key);
-GPnode embGrpMakeNewGnode (const AjPStr name);
-GPnode embGrpMakeNewPnode (const AjPStr name, const AjPStr doc);
-void   embGrpOutputGroupsList (AjPFile outfile, const AjPList groupslist,
-			       AjBool showprogs, AjBool html,
-			       const AjPStr link1,
-			       const AjPStr link2);
-void   embGrpOutputProgsList (AjPFile outfile,  const AjPList progslist,
-			      AjBool html,
-			      const AjPStr link1, const AjPStr link2);
-void   embGrpSortGroupsList (AjPList groupslist);
-void   embGrpMakeUnique(AjPList list);
+ajint         embGrpCompareTwoGnodes(const void * a, const void * b);
+void          embGrpGetProgGroups(AjPList glist, AjPList alpha,
+				  char * const env[],
+				  AjBool emboss, AjBool embassy,
+				  const AjPStr embassyname,
+				  AjBool explode, AjBool colon,
+				  AjBool gui);
+void          embGrpGroupsListDel(AjPList *groupslist);
+void          embGrpProgsListDel(AjPList *progslist);
+void          embGrpKeySearchProgs(AjPList newlist, const AjPList glist,
+				   const AjPStr key);
+void          embGrpKeySearchSeeAlso(AjPList newlist,
+				     AjPList *appgroups, AjPStr* package,
+				     const AjPList alpha, const AjPList glist,
+				     const AjPStr key);
+EmbPGroupTop  embGrpMakeNewGnode(const AjPStr name);
+EmbPGroupProg embGrpMakeNewPnode(const AjPStr name, const AjPStr doc,
+				 const AjPStr package);
+void          embGrpOutputGroupsList(AjPFile outfile,
+				     const AjPList groupslist,
+				     AjBool showprogs, AjBool html,
+				     const AjPStr package);
+void          embGrpOutputProgsList(AjPFile outfile,  const AjPList progslist,
+				    AjBool html, const AjPStr package);
+void          embGrpSortGroupsList(AjPList groupslist);
+void          embGrpGroupMakeUnique(AjPList list);
+void          embGrpProgsMakeUnique(AjPList list);
 
 #endif
 
