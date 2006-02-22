@@ -23,8 +23,20 @@ while (<>) {
 	}
 	elsif (/^Valgrind test (\S+) leak ([^,]+)/) {
 	    $leak = $2;
+	    $leak =~ s/\(possibly 0 \[0\]\) //;
 	    print "\n";
 	    print "$name leak $leak\n";
+	    print "\% $cmd{$name}\n";
+	}
+	elsif (/^Valgrind test (\S+) errors ([^,]+)\n/) {
+	    $err = $2;
+	    print "\n";
+	    print "$name ** errors ** $err\n";
+	    print "\% $cmd{$name}\n";
+	}
+	elsif (/^Valgrind test (\S+) (.*)\n/) {
+	    $msg = $2;
+	    print "$name ++ '$msg'\n";
 	    print "\% $cmd{$name}\n";
 	}
 	$txt = "";
