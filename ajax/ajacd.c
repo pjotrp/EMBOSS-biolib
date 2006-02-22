@@ -24111,7 +24111,7 @@ static AjBool acdResourceList(const AcdPAcd thys,
 
 /* @funcstatic acdDelAlign ****************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD alignment data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24129,7 +24129,7 @@ static void acdDelAlign(void** PPval)
 
 /* @funcstatic acdDelCod ******************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD codon usage data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24147,7 +24147,7 @@ static void acdDelCod(void** PPval)
 
 /* @funcstatic acdDelDir ******************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD directory data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24165,7 +24165,7 @@ static void acdDelDir(void** PPval)
 
 /* @funcstatic acdDelFeattable ************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD feature table data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24183,7 +24183,7 @@ static void acdDelFeattable(void** PPval)
 
 /* @funcstatic acdDelFeattabOut ***********************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD output feature table data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24201,7 +24201,7 @@ static void acdDelFeattabOut(void** PPval)
 
 /* @funcstatic acdDelFile *****************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD input file data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24219,7 +24219,7 @@ static void acdDelFile(void** PPval)
 
 /* @funcstatic acdDelFloat ****************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD floating point array data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24237,7 +24237,7 @@ static void acdDelFloat(void** PPval)
 
 /* @funcstatic acdDelList *****************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD list/selection data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24255,7 +24255,7 @@ static void acdDelList(void** PPval)
 
 /* @funcstatic acdDelMatrix ***************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD integer comparison matrix data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24273,7 +24273,8 @@ static void acdDelMatrix(void** PPval)
 
 /* @funcstatic acdDelMatrixf **************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD floating point comparison
+** matrix data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24291,7 +24292,7 @@ static void acdDelMatrixf(void** PPval)
 
 /* @funcstatic acdDelOutfile **************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD output file data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24309,7 +24310,7 @@ static void acdDelOutfile(void** PPval)
 
 /* @funcstatic acdDelPhyloDist ************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD phylogenetic distance data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24327,7 +24328,7 @@ static void acdDelPhyloDist(void** PPval)
 
 /* @funcstatic acdDelPhyloFreq ************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD phylogenetic frequency data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24345,7 +24346,7 @@ static void acdDelPhyloFreq(void** PPval)
 
 /* @funcstatic acdDelPhyloProp ************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD phylogenetic properties data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24363,7 +24364,7 @@ static void acdDelPhyloProp(void** PPval)
 
 /* @funcstatic acdDelPhyloState ***********************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD phylogenetic state data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24381,7 +24382,7 @@ static void acdDelPhyloState(void** PPval)
 
 /* @funcstatic acdDelPhyloTree ************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD phylogenetic tree data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24399,7 +24400,7 @@ static void acdDelPhyloTree(void** PPval)
 
 /* @funcstatic acdDelRange ****************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD range data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24416,7 +24417,7 @@ static void acdDelRange(void** PPval)
 
 /* @funcstatic acdDelReg ******************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD regular expression data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24433,7 +24434,7 @@ static void acdDelReg(void** PPval)
 
 /* @funcstatic acdDelReport ***************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD report data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24451,7 +24452,7 @@ static void acdDelReport(void** PPval)
 
 /* @funcstatic acdDelSeq ******************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD sequence data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24469,7 +24470,7 @@ static void acdDelSeq(void** PPval)
 
 /* @funcstatic acdDelSeqall ***************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD sequence stream data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24487,7 +24488,7 @@ static void acdDelSeqall(void** PPval)
 
 /* @funcstatic acdDelSeqout ***************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD sequence output data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24505,7 +24506,7 @@ static void acdDelSeqout(void** PPval)
 
 /* @funcstatic acdDelSeqset ***************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD sequence set data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24523,7 +24524,7 @@ static void acdDelSeqset(void** PPval)
 
 /* @funcstatic acdDelSeqsetArray **********************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD sequence sets data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24541,7 +24542,7 @@ static void acdDelSeqsetArray(void** PPval)
 
 /* @funcstatic acdDelStr ******************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD string data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
@@ -24559,7 +24560,7 @@ static void acdDelStr(void** PPval)
 
 /* @funcstatic acdDelStrArray *************************************************
 **
-** Function with void** prototype to delete ACD data
+** Function with void** prototype to delete ACD string array data
 **
 ** @param [d] PPval [void**] Value to be deleted
 ** @return [void]
