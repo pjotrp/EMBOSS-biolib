@@ -4,7 +4,7 @@ use English;
 
 $basefile = $ARGV[0];
 
-open DEP, "$ENV{HOME}/cvsrename/deprecated.txt" || die "Cannot open deprecated.txt";
+open DEP, "$ENV{HOME}/cvsemboss/deprecated.txt" || die "Cannot open deprecated.txt";
 open SRC, "$basefile.c" || die "Cannot open $basefile.c";
 open NEWSRC, ">$basefile.new" || die "Cannot open $basefile.new";
 open DBG, ">fixdeprecated.dbg" || die "Cannot open fixdeprecated.dbg";
@@ -14,6 +14,7 @@ $notecnt=0;
 $gonecnt=0;
 $subcnt=0;
 $subcntall=0;
+$new=0;
 
 %gone=();
 %note=();
@@ -65,7 +66,6 @@ close DEP;
 
 print "$basefile.c: Using $patcnt patterns, $subcntall edits for $subcnt functions and $gonecnt removals\n";
 
-$new++;
 $savesrc = "";
 $cnt=0;
 while (<SRC>) {
@@ -195,16 +195,26 @@ foreach $n (sort (keys ( %argtest))) {
 #	}
 }
 
+
 foreach $p (sort (keys ( %pat))) {
-    $savesrc =~ s/$p/$pat{$p}/g;
+    $repcnt=0;
+    while($savesrc =~ /$p/g) {$repcnt++}
+    if($repcnt) {
+	$savesrc =~ s/$p/$pat{$p}/g;
+	($pa) = ($p =~ /(^[^\\]+)/);
+	($pb) = ($pat{$p} =~ /(^[^\(]+)/);
+	print "$basefile.c: Rename ($repcnt times) $pa to $pb\n";
+	$new+=$repcnt;
+    }
 }
 
 print NEWSRC $savesrc;
 
 close NEWSRC;
-
 foreach $n (sort (keys ( %subdone))) {
     ($na,$nb) = ($n =~ /([^_]+)_([^_]+)/);
+    $new+=$subdone{$n};
     print "$basefile.c: Replace ($subdone{$n} times) $na with $nb\n";
 }
 print "$new lines replaced\n";
+close DBG;
