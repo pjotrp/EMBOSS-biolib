@@ -170,7 +170,7 @@ cat *.srsdata >> ../edata.dat
 \rm *.srsdata
 \rm *.empty
 
-
+cp deprecated.new ~/cvsemboss/deprecated.txt
 cd ..
 \rm -rf x/
 
