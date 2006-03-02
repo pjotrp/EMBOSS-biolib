@@ -1,3 +1,13 @@
+CONTENTS
+1. Installing EMBASSY HMMER
+2. Installing original HMMER
+3. Setting up HMMER
+4. Documentation
+5. EMBASSY HMMER notes
+6. Rough guide to writing an EMBASSY wrapper to HMMER.
+
+
+
 1. Installing EMBASSY HMMER
 The EMBASSY HMMER package contains "wrapper" applications providing an 
 EMBOSS-style interface to the applications in the original HMMER package 
@@ -105,6 +115,11 @@ The following original HMMER options are not supported:
 -outformat : Alignment format output is specified via the ACD file and / or 
              the -aformat command line qualifier.
 
+Note: ehmmalign makes a temporary local copy of its input sequence data.  You 
+must ensure there is sufficient disk space for this in the directory that 
+ehmmalign is run.
+
+
 
 5.2 hmmbuild
 hmmbuild reads a multiple sequence alignment file <alignfile>, builds a new 
@@ -146,6 +161,13 @@ The following original HMMER options are not supported:
 
 The following additional options are provided:
 -weighting : Sequence weighting algorithm. 
+
+Note: the user must provide the full filename of an alignment for the 
+"alignfile" ACD option, not an indirect reference to a set of sequences, e.g. 
+a USA is NOT acceptable.  This is because hmmbuild (which ehmmbuild wraps) 
+requires an alignment and does not support USAs.
+
+
 
 
 5.3 hmmcalibrate
@@ -280,6 +302,10 @@ The following original HMMER options are not supported:
 The following additional options are provided:
 -outfile   : Output file with HMM.
 
+Note: ehmmpfam makes a temporary local copy of its input sequence data.  You 
+must ensure there is sufficient disk space for this in the directory that 
+ehmmpfam is run.
+
 
 5.9 hmmsearch
 hmmsearch reads an HMM from <hmmfile> and searches <seqfile> for signifcantly 
@@ -310,9 +336,59 @@ The following original HMMER options are not supported:
 The following additional options are provided:
 -outfile   : Multiple sequence alignment output file.
 
+Note: the user must provide the full filename of a sequence database for 
+the sequence input ("seqfile" ACD option), not an indirect reference, e.g. 
+a USA is NOT acceptable.  This is because hmmsearch (which ehmmsearch wraps) 
+does not support USAs, and a full sequence database is too big to write to 
+a temporary file that the original hmmsearch would understand.
 
 
 
-
-
+6. Rough guide to writing an EMBASSY wrapper to HMMER.
+6.1  Download HMMER source code & User's Guide from http://hmmer.wustl.edu/
+6.2  Read Chapters 1 (Introduction) and 2 (Installation) and do the tutorial 
+     (Chapter 3) if you're not already familiar with HMMER.
+6.3  Work through the manual pages (Chapter 7) for each application in turn 
+     (see 6.4 and 6.5 below).
+6.4  Decide which application options will be kept in the EMBOSS version.  
+     Options might not be supported because:
+     (i)  The option is redundant because of in-built EMBOSS functionality, e.g. 
+          the HMMER help option -h is not needed because -help is an in-built 
+          qualifier for all EMBOSS applications. 
+     (ii) The option is subsumed by an EMBOSS qualifier, e.g. -wblosum, -wgsc, 
+          -wme, -wnone, -wpb and -wvoronoi options of hmmbuild are all handled 
+          by the a single -weighting option in ehmmbuild (EMBASSY application).  
+     (iii)The option is always set so need not be defined in the ACD file, e.g.
+          -F option of various applications for force overwrite of files.
+6.5  Decide whether a new parameter (typically for the application output, 
+     which might be written to stdout by default) is required.
+6.6. Implement the ACD file: 
+     (i)  Use the same application names but precede the EMBOSS versions with 
+          an 'e'.  
+     (ii) Paste application short description from the User Guide into the 
+          documentation: "" attribute of the application definition.  
+     (iii)Paste documentation for each option from the User Guide into the 
+          help: "" and information: "" attributes.  (iv) Preserve the option / 
+          qualifier names where possible, even for single characters (on the 
+          arguable grounds that consistency to the original hmmer is more 
+          important than consistency with EMBOSS).  
+6.7. Implement the C source code: 
+     (i)  Add the header documentation.  
+     (ii) Add an empty main() function.  
+     (iii)Add call to ajNamInit & ajAcdInitP.  
+     (iv) Add variables to handle ACD data items.  
+     (v)  Add calls to ajAcdGetXXX to retrieve ACD values.  
+     (vi) Add code to clean-up the ACD variables.  
+     (vii)Add code to construct and call the HMMER command line.  Take care!  
+          There are several subtle implementation issues you should be aware of 
+          that are documented in the source code itself.
+6.8. Modify or write the README file.  This should describe how to download the 
+     original and EMBASSY versions of HMMER, where to get installation 
+     instructions and documentation, requirements, caveats etc.  In particular 
+     it should describe for each application which HMMER options are supported 
+     as ACD qualifiers, any new qualifiers and parameters and if the order of 
+     parameters has changed  See embassy/hmmernew/README.
+6.9. Prepare the QA tests, based on the examples in the tutorial which use files 
+     from the HMMER distribution.
+6.10. Generate the HTML documentation.
 
