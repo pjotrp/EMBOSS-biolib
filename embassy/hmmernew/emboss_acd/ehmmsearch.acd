@@ -32,7 +32,7 @@ seqall: seqfile
 # User must provide the full filename of a database, not an indirect
 # reference, e.g. a USA is NOT acceptable.
   parameter: "Y"
-  type: "protein"
+  type: "gapstopprotein"
   help: "File of input sequences."
 ]
 

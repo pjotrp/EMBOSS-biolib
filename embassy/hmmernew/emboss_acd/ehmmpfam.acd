@@ -30,7 +30,7 @@ infile: hmmfile
 seqall: seqfile
 [
   parameter: "Y"
-  type: "protein"
+  type: "gapstopprotein"
   help: "File of sequences."
 ]
 

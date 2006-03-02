@@ -30,7 +30,7 @@ infile: hmmfile
 seqset: seqfile
 [
     parameter: "Y"
-    type: "gapprotein"
+    type: "gapstopprotein"
     help: "File containing a (set of) sequence(s)"
 ]
 infile: mapali
