@@ -67,7 +67,7 @@ my %missingdoc;     # hash of missing program documentation.
                     # Value is the directory it should be in
 
 # where the URL for the html pages is
-my $url = "http://emboss.sourceforge.net/apps";
+my $url = "http://emboss.sourceforge.net/apps/cvs";
 my $urlembassy = "http://emboss.sourceforge.net/embassy";
 
 # where the original distribution lives
@@ -78,19 +78,26 @@ my $installtop = "./";
 
 open (VERS, "embossversion -full -auto|") || die "Cannot run embossversion";
 while (<VERS>) {
-    if(/InstallDirectory: +(\S+)/) {$installtop = $1}
-    if(/BaseDirectory: +(\S+)/) {$distribtop = $1}
+    if(/InstallDirectory: +(\S+)/) {
+	$installtop = $1;
+	$installtop =~ s/\/$//;
+    }
+    if(/BaseDirectory: +(\S+)/) {
+	$distribtop = $1;
+	$distribtop =~ s/\/$//;
+    }
 }
 close VERS;
 
 # where the CVS tree program doc pages are
 my $cvsdoc = "$distribtop/doc/programs";
+my $cvsedoc = "$distribtop/embassy";
 
 # where the CVS tree scripts are
 my $scripts = "$distribtop/scripts";
  
 # where the web pages live
-my $doctop = "$ENV{HOME}/sfdoc";
+my $doctop = "$cvsdoc/master/emboss/apps";
 
 my @embassylist = ("appendixd",
 		   "domainatrix",
@@ -99,9 +106,10 @@ my @embassylist = ("appendixd",
 		   "emnu",
 		   "esim4",
 		   "hmmer",
+		   "hmmernew",
 		   "meme",
 		   "mse",
-#		   "myemboss", # we avoid documenting these examples
+		   "myemboss", # we avoid documenting these examples
 		   "phylip",
 		   "phylipnew",
 		   "signature",
@@ -112,7 +120,7 @@ my @embassylist = ("appendixd",
 
 # the directories containing web pages - EMBOSS and EMBASSY
 my @doclist = (
-	       "$doctop/apps"
+	       "$doctop"
 	       );
 foreach $x (@embassylist) {
     push @doclist, "$doctop/embassy/$x";
@@ -127,6 +135,7 @@ my $cvsdochtmlcommit = '';
 my $cvsdoctextadd = '';
 my $cvsdoctextcommit = '';
 my $badlynx = 0;
+my $badsrc = 0;
 
 $doccreate = "";
 
@@ -146,6 +155,66 @@ $cvscommit = $doccreate;
 ######################################################################
 
 
+
+######################################################################
+# 
+# Name: htmlsource
+# 
+# Description: 
+#	resolves #include directives from template
+#       to make a simple html file
+# 
+# Args: 
+# 	$tfile - HTML template filename
+# 	$edir  - EMBASSY or emboss application dir for includes
+# 
+# Warning: 
+#	uses temporary filename 'x.x'
+# 
+######################################################################
+sub htmlsource ( $$ ) {
+    my($tfile, $edir) = @_;
+    open (X, ">x.x") || die "Cannot upen temporary file x.x";
+
+    open (H, "$edir/$tfile") ||
+	die "Cannot open HTML template file '$edir/$tfile'";
+
+    while (<H>) {
+	if (/[<][\!][-][-][\#]include file=\"([^\"]+)\" +[-][-][>]/) {
+	    $ifile = $1;
+	    if(-e "$edir/$ifile") {
+		open (I, "$edir/$ifile") ||
+		    die "Cannot open include file '$edir/$ifile'";
+		while (<I>) {print X}
+		close I;
+	    }
+	    else {
+		print STDERR "Cannot open include file '$edir/$ifile'\n";
+		print X "[an error has occurred processing this directive]\n";
+	    }
+	    next;
+	}
+	elsif (/[<][\!][-][-][\#]include virtual=\"\/apps\/([^\"]+)\" +[-][-][>]/) {
+	    $ifile = $1;
+	    if(-e "$cvsdoc/master/emboss/apps/$ifile") {
+		open (I, "$cvsdoc/master/emboss/apps/$ifile") ||
+		    die "Cannot open include file '$cvsdoc/master/emboss/apps/$ifile'";
+		while (<I>) {print X}
+		close I;
+	    }
+	    else {
+		print STDERR "Cannot open virtual file '$cvsdoc/master/emboss/apps/$ifile'\n";
+		print X "[an error has occurred processing this directive]\n";
+	    }
+	    next;
+	}
+	else {print X}
+    }
+    close X;
+    close H;
+    return 1;
+}
+
 ######################################################################
 # 
 # Name: filediff
@@ -154,42 +223,52 @@ $cvscommit = $doccreate;
 #	runs diff on two files and returns 1 if they differ
 # 
 # Args: 
-# 	$silent	- 0: silent, else print the output of diff
-#                 1: to stdout 2: to autodoc.log
 # 	$afile - first filename
 # 	$bfile - second filename
-# 
+#
+# Returns:
+#       "replaced" file differed and was replaced
+#       "created"  file did not exist and was created
+#       "same"     files were identical in size and content
 # Warning: 
 #	uses temporary filename 'z.z'
 # 
 ######################################################################
-sub filediff ( $$$ ) {
-    my ($silent, $afile, $bfile) = @_;
-    if ($silent == 2) {
+sub filediff ( $$ ) {
+    my ($afile, $bfile) = @_;
+    my $s = 0;
+    my $action = "";
+
+    if(-e $afile) {
 	if ((-s $afile) !=  (-s $bfile)) {
-	  print LOG "$afile " . (-s $afile) . ", $bfile " . (-s $bfile) . "\n";
+	    print LOG "$afile " . (-s $afile) . ", $bfile " . (-s $bfile) . "\n";
 	}
-    }
-    system ("diff -b $afile $bfile > z.z");
-    $s = (-s "z.z");
-    if ($s) {
-	if ($silent == 1) {
-	    print "$afile ** differences ** size:$s\n";
-            open (DIF, "z.z") || die "cannot open diff output file";
-	    while (<DIF>) { print "> $_";}
-            close DIF;
-	}
-	elsif ($silent == 2) {
+	system ("diff -b $afile $bfile > z.z");
+	$s = (-s "z.z");
+	if ($s) {
 	    print LOG "$afile ** differences ** size:$s\n";
-            open (DIF, "z.z") || die "cannot open diff output file";
+	    open (DIF, "z.z") || die "cannot open diff output file";
 	    while (<DIF>) { print LOG "> $_";}
-            close DIF;
+	    close DIF;
+	    $action = "replaced";
 	}
-        unlink "z.z";
-	return $s;
+	unlink "z.z";
     }
-    unlink "z.z";
-    return 0;
+    else {
+	$s = (-s $bfile);
+	$action = "created";
+	$cvsdochtmladd .= " $afile";
+    }
+
+    if($s) {
+	system "cp $bfile $afile";
+	chmod 0664, "$afile";
+	unlink "$bfile";
+	print "$afile *$action*\n";
+	print LOG "$afile *$action*\n";
+	$cvsdochtmlcommit .= " $afile";
+    }
+    return;
 }
 
 
@@ -323,12 +402,14 @@ The Applications (programs)
 The programs are listed in alphabetical order, Look at the individual
 applications or go to the 
 <a href=\"groups.html\">GROUPS</a>
-page. 
+page to search by category. 
 <p>
 
+<a href=\"../../embassy/index.html\">EMBASSY applications</a>
+are described in separate documentation for each package.
 
 <h3><A NAME=\"current\">Applications</A> in the <a
-href=\"ftp://ftp.uk.embnet.org/pub/EMBOSS/\">current release</a></h3>
+href=\"ftp://emboss.open-bio.org/pub/EMBOSS/\">current release</a></h3>
 
 <table border cellpadding=4 bgcolor=\"#FFFFF0\">
 
@@ -489,9 +570,11 @@ sub createnewdocumentation ( $$ ) {
 	    open (INDEX2, ">> $indexfile") || die "Cannot open $indexfile\n";
 	    print INDEX2 "
 
-<tr><td><a href=\"$thisprogram.html\">$thisprogram</a></td><td>INSTITUTE</td><td>
+<tr><td><a href=\"$thisprogram.html\">$thisprogram</a></td><td>INSTITUTE</td>
+<td>
 $progs{$thisprogram}
-</td></tr>
+</td>
+</tr>
 ";
 	    close (INDEX2);
 	    print STDERR "Edit $progdocdir/index.html:
@@ -572,94 +655,18 @@ sub createnewdocumentationembassy ( $$ ) {
 	    open (INDEX2, ">> $indexfile") || die "Cannot open $indexfile\n";
 	    print INDEX2 "
 
-<tr><td><a href=\"$thisprogram.html\">$thisprogram</a></td><td>INSTITUTE</td><td>
+<tr>
+<td><a href=\"$thisprogram.html\">$thisprogram</a></td>
+<td>INSTITUTE</td>
+<td>
 $progs{$thisprogram}
-</td></tr>
+</td>
+</tr>
 ";
 	    close (INDEX2);
 	    print STDERR "Edit $progdocdir/index.html:
 	    Look for $thisprogram line (at end)
 	    Replace INSTITUTE for $thisprogram
-";
-	    system("$ENV{'EDITOR'} $progdocdir/index.html");
-	}
-	else {
-	    print "*********************************
-
-YOU DO NOT HAVE AN EDITOR DEFINED
-REMEMBER TO EDIT THESE FILES:
- $progdocdir/$thisprogram.html
- $indexfile\n\n\n";
-	}
-        return 1;
-    }
-    else {
-	$missingdoc{$thisprogram} = $progdocdir;
-	return 0;
-    }
-}
-
-######################################################################
-# 
-# Name: createnewdoclinkembassy
-# 
-# Description: 
-# 	Asks if the user wishes to create and edit new documentation
-#	for an embassy program.
-#	If so, the top level redirect is created, and then 
-#       the embassy template file is copied and the user's favorite
-#	editor is started.
-#
-# Args: 
-# 	$thisprogram - the name of the program
-#	$progdocdir - the location of the web pages
-#	
-#
-# Returns:
-#	1 if the document is created and edited
-#	0 if no document is created
-# 
-######################################################################
-
-sub createnewdoclinkembassy ( $$$ ) {
-
-    my ($thisprogram, $thisembassy, $progdocdir) = @_;
-    my $ans;
-    my $indexfile = "$progdocdir/index.html";
-
-# application's document is missing
-    print LOG "createnewdocumentationembassy missing $progdocdir/$thisprogram.html\n";
-    print "\n$progdocdir/$thisprogram.html =missing=\n";
-    print STDERR "\n$progdocdir/$thisprogram.html =missing=\n";
-    print STDERR "Create a web page for this program? (y/n) ";
-    if ($doccreate) {
-	print STDERR "Create a web page for this program? (y/n) ";
-	$ans = <STDIN>;
-    }
-    else {
-	$ans = "skip";
-	print STDERR "Create later - run with create on commandline\n";
-    }
-    if ($ans =~ /^y/) {
-        system("cp $progdocdir/template-embassy.html.save $progdocdir/$thisprogram.html");
-        system "perl -p -i -e 's/ProgramNameToBeReplaced/$thisprogram/g;' $progdocdir/$thisprogram.html";
-        system "perl -p -i -e 's/EmbassyNameToBeReplaced/$thisembassy/g;' $progdocdir/$thisprogram.html";
-	chmod 0664, "$progdocdir/$thisprogram.html";
-	print STDERR "Generated $thisprogram.html: no need to edit\n";
-	if (defined $ENV{'EDITOR'} && $ENV{'EDITOR'} ne "") {
-	    system("$ENV{'EDITOR'} $progdocdir/$thisprogram.html");
-	    open (INDEX2, ">> $indexfile") || die "Cannot open $indexfile\n";
-	    print INDEX2 "
-
-<tr><td><a href=\"../embassy/$thisembassy/$thisprogram.html\">$thisprogram</a></td><td>INSTITUTE</td><td>
-$progs{$thisprogram}
-</td></tr>
-";
-	    close (INDEX2);
-	    print STDERR "Edit $progdocdir/index.html:
-	    Look for $thisprogram line (at end)
-	    Replace INSTITUTE for $thisprogram
-	    Move $thisprogram line to $thisembassy section
 ";
 	    system("$ENV{'EDITOR'} $progdocdir/index.html");
 	}
@@ -704,23 +711,8 @@ sub checkincludefile ( $$$ ) {
     my ($thisprogram, $docdir, $ext) = @_;
 
 
-    if (-e "$docdir/inc/$thisprogram.$ext") {
-#     print "$thisprogram.$ext found\n";
 # check to see if the include file has changed
-	if (filediff (2, "$docdir/inc/$thisprogram.$ext", "x.x")) {
-	    system "cp x.x $docdir/inc/$thisprogram.$ext";
-	    print "$thisprogram.$ext *replaced*\n";
-	    print LOG "$thisprogram.$ext *replaced*\n";
-	}
-    }
-    else {
-# it doesn't exist, so create the new include file
-	system "cp x.x $docdir/inc/$thisprogram.$ext";
-	print "$thisprogram.$ext *created*\n";
-	print LOG "$thisprogram.$ext *created*\n";
-    }
-    chmod 0664, "$docdir/inc/$thisprogram.$ext";
-    unlink "x.x";
+    filediff ("$docdir/inc/$thisprogram.$ext", "x.x");
 }
 
 
@@ -749,14 +741,31 @@ open (INDEX, "> i.i") || die "Cannot open i.i\n";
 indexheader(INDEX);
 
 
+# main loop
 # look at all directories in our documentation list
 foreach $docdir (@doclist) {
     if ($docdir =~ /embassy\/(.*)/) {
 	$embassy = $1;
 	print LOG "embassy $embassy\n";
+	$eindex =  "$cvsedoc/$embassy/emboss_doc/master/inc/apps.itable";
+	open (EINDEX, ">e.e") || die "Cannot open 'e.e'";
+#	embassyindexheader(EINDEX, $embassy);
+print EINDEX "<h3><A NAME=\"$embassy\">Applications</A> in the <a
+href=\"ftp://emboss.open-bio.org/pub/EMBOSS/\">current $embassy release</a></h3>
+
+<table border cellpadding=4 bgcolor=\"#FFFFF0\">
+
+<tr>
+<th>Program name</th>
+<th>Description</th>
+</tr>
+
+";
+
     }
     else {
 	$embassy = "";
+	$eindex = "";
     }
 
 # look at all applications alphabetically
@@ -776,59 +785,59 @@ foreach $docdir (@doclist) {
 	    $progdocdir = $docdir;
 	    print INDEX
 "<tr>
-<td><a href=\"$thisprogram.html\">$thisprogram</a></td><td>$progs{$thisprogram}</td>
+<td><a href=\"$thisprogram.html\">$thisprogram</a></td>
+<td>
+$progs{$thisprogram}
+</td>
 </tr>\n";
 	}
 	else {
 # update the embassy index here -
 # or just use the %embassyprogs array to make a list?
-	    $progdocdir = "$doctop/embassy/$embassyprogs{$thisprogram}";
+	    $progdocdir = "$cvsedoc/$embassyprogs{$thisprogram}/emboss_doc/master";
+	    print EINDEX
+"<tr>
+<td><a href=\"$thisprogram.html\">$thisprogram</a></td>
+<td>
+$progs{$thisprogram}
+</td>
+</tr>\n";
 	}
 
 # check the documentation for this file exists and is not a symbolic link 
-	if (-e "$progdocdir/$thisprogram.html") {
-###	  print "$progdocdir/$thisprogram.html found\n";
 # if this is an EMBASSY document, note which EMBASSY directory it is in
-	    if ($embassyprogs{$thisprogram}) {
-		$progdir{$thisprogram} = $embassyprogs{$thisprogram};
+	if (!defined($embassyprogs{$thisprogram})) {
+	    if (-e "$progdocdir/$thisprogram.html") {
+###	  print "$progdocdir/$thisprogram.html found\n";
 	    }
-	}
-	elsif (!defined($embassyprogs{$thisprogram})) {
+	    else {
 # optionally create the documentation and edit it,
 #	  or abort and do the next program
 ###	  print "$progdocdir/$thisprogram.html missing - EMBOSS\n";
-	    if (!createnewdocumentation($thisprogram, $progdocdir)) {next;}
-	}
-	else {
-###	  print "$progdocdir/$thisprogram.html missing - EMBASSY $embassyprogs{$thisprogram}\n";
-	    print STDERR "Missing embassy documentation $progdocdir/$thisprogram.html\n";
-	    print STDERR "docdir: $docdir\n";
-	    print STDERR "progdocdir: $progdocdir\n";
-	    print STDERR "embassyprogs: $embassyprogs{$thisprogram}\n";
-	    if (!createnewdocumentationembassy($thisprogram, $progdocdir)) {next;}
-	}
-
-# note whether we now have a documentation file or not
-	if (-e "$progdocdir/$thisprogram.html") {
+		if (!createnewdocumentation($thisprogram, $progdocdir)) {next;}
+	    }
 	    $progdone{$thisprogram} = 1;
 	}
 	else {
-	    print "++ Missing main docs: $thisprogram ++ \n";
-	}
-
-# For embassy, also check the embassy specific directory
-	if (defined($embassyprogs{$thisprogram})) {
-	    if (-e "$docdir/$thisprogram.html") {
-###	  print "$docdir/$thisprogram.html found\n";
-		$progdir{$thisprogram} = $embassyprogs{$thisprogram};
+	    $progdir{$thisprogram} = $embassyprogs{$thisprogram};
+	    $edir = "$cvsedoc/$progdir{$thisprogram}/emboss_doc/master";
+	    if(-e "$edir/$thisprogram.html") {
+###	  print "$edir/$thisprogram.html found\n";
 	    }
 	    else {
-###	      print "$docdir/$thisprogram.html missing - EMBASSY $embassyprogs{$thisprogram}\n";
-		print STDERR "Missing embassy link $docdir/$thisprogram.html\n";
+###	  print "$progdocdir/$thisprogram.html missing - EMBASSY $embassyprogs{$thisprogram}\n";
+		print STDERR "Missing embassy documentation $progdocdir/$thisprogram.html\n";
 		print STDERR "docdir: $docdir\n";
+		print STDERR "progdocdir: $progdocdir\n";
 		print STDERR "embassyprogs: $embassyprogs{$thisprogram}\n";
-		if (!createnewdoclinkembassy($thisprogram, $embassyprogs{$thisprogram}, $docdir)) {next;}
+		if (!createnewdocumentationembassy($thisprogram, $edir)) {next;}
 	    }
+	    $progdone{$thisprogram} = 1;
+	}
+
+# note whether we now have a documentation file or not
+	if (!$progdone{$thisprogram}) {
+	    print "++ Missing main docs: $thisprogram ++ \n";
 	}
 
 # check on the existence of the one-line description include file
@@ -836,16 +845,16 @@ foreach $docdir (@doclist) {
 	open(FH, ">x.x") || die "Can't open file x.x\n";
 	print FH $progs{$thisprogram};
 	close(FH);
-	checkincludefile($thisprogram, $docdir, 'ione');
+	checkincludefile($thisprogram, $progdocdir, 'ione');
 
 # check on the existence of the '-help' include file for this application
 	system "acdc $thisprogram -help -verbose 2> x.x";
-	checkincludefile($thisprogram, $docdir, 'ihelp');
+	checkincludefile($thisprogram, $progdocdir, 'ihelp');
 
 
 # check to see if the command table include file exists
 	system "acdtable $thisprogram 2> x.x";
-	checkincludefile($thisprogram, $docdir, 'itable');
+	checkincludefile($thisprogram, $progdocdir, 'itable');
 
 
 # check on the existence of the 'seealso' include file for this application
@@ -901,104 +910,75 @@ foreach $docdir (@doclist) {
 	if ($embassy eq "") {
 	    $docurl = $url;
 	    $mkstatus = system "$scripts/makeexample.pl $thisprogram";
+	    $docmaster = "$cvsdoc/master/emboss/apps";
+	    $dochtml   = "$cvsdoc/html";
+	    $doctext   = "$cvsdoc/text";
 	}
 	else {
 	    $docurl = "$urlembassy/$embassy";
 	    $mkstatus = system "$scripts/makeexample.pl $thisprogram $embassy";
+	    $docmaster = "$cvsedoc/$embassy/emboss_doc/master";
+	    $dochtml   = "$cvsedoc/$embassy/emboss_doc/html";
+	    $doctext   = "$cvsedoc/$embassy/emboss_doc/text";
 	}
 	if ($mkstatus) {
 	    print STDERR "$thisprogram: makeexample.pl status $mkstatus\n";
 	}
 
-# check to see if the CVS tree copy of the text documentation needs updating
-	if (-e "$cvsdoc/text/$thisprogram.txt") {
-# check to see if the text has changed
-	    $status = system "lynx -dump -nolist $docurl/$thisprogram.html > x.x";
-	    if ($status) {
-		$badlynx++;
-		print "lynx error $status $docurl/$thisprogram.html";
-	    }
-	    elsif (filediff (2, "$cvsdoc/text/$thisprogram.txt", "x.x")) {
-		system "cp x.x $cvsdoc/text/$thisprogram.txt";
-		chmod 0664, "$cvsdoc/text/$thisprogram.txt";
-		$cvsdoctextcommit .= " $thisprogram.txt";
-		print "$thisprogram.txt *replaced*\n";
-		print LOG "$thisprogram.txt *replaced*\n";
-		unlink "x.x";
-	    }
+# check to see if the CVS tree copy of the html documentation needs updating
+# check to see if the html file has changed
+	$status = htmlsource("$thisprogram.html","$docmaster");
+#	    $status = system "lynx -source $docurl/$thisprogram.html > x.x";
+	if (!$status) {
+	    $badsrc++;
+	    print "htmlsource error $status $docmaster/$thisprogram.html";
 	}
 	else {
-# it doesn't exist, so create the new text output
-	    $status = system "lynx -dump -nolist $docurl/$thisprogram.html > $cvsdoc/text/$thisprogram.txt";
-	    if ($status) {
-		$badlynx++;
-		print "lynx error $status $docurl/$thisprogram.html";
-	    }
-	    else {
-		chmod 0664, "$cvsdoc/text/$thisprogram.txt";
-		$cvsdoctextadd .= " $thisprogram.txt";
-		$cvsdoctextcommit .= " $thisprogram.txt";
-		print "$thisprogram.txt *created*\n";
-		print LOG "$thisprogram.txt *created*\n";
-	    }
+# change ../emboss_icon.jpg and ../index.html to current directory
+	    system "perl -p -i -e 's#\.\.\/index.html#index.html#g;' x.x";
+	    system "perl -p -i -e 's#/images/emboss_icon.jpg#emboss_icon.jpg#g;' x.x";
+	    $diff = filediff ("$dochtml/$thisprogram.html", "x.x");
 	}
 
-# check to see if the CVS tree copy of the html documentation needs updating
-	if (-e "$cvsdoc/html/$thisprogram.html") {
-# check to see if the html file has changed
-	    $status = system "lynx -source $docurl/$thisprogram.html > x.x";
-	    if ($status) {
-		$badlynx++;
-		print "lynx error $status $docurl/$thisprogram.html";
-	    }
-	    else {
-# change ../emboss_icon.jpg and ../index.html to current directory
-		system "perl -p -i -e 's#\.\.\/index.html#index.html#g;' x.x";
-		system "perl -p -i -e 's#/images/emboss_icon.jpg#emboss_icon.jpg#g;' x.x";
-		if (filediff (2, "$cvsdoc/html/$thisprogram.html", "x.x")) {
-		    system "cp x.x $cvsdoc/html/$thisprogram.html";
-		    chmod 0664, "$cvsdoc/html/$thisprogram.html";
-		    $cvsdochtmlcommit .= " $thisprogram.html";
-		    print "$thisprogram.html *replaced*\n";
-		    print LOG "$thisprogram.html *replaced*\n";
-		    unlink "x.x";
-		}
-	    }
+# check to see if the CVS tree copy of the text documentation needs updating
+# check to see if the text has changed
+	$status = system "lynx -dump -nolist $dochtml/$thisprogram.html > x.x";
+	if ($status) {
+	    $badlynx++;
+	    print "lynx error $status $dochtml/$thisprogram.html";
 	}
 	else {
-# it doesn't exist, so create the new html output
-	    $status = system "lynx -source $docurl/$thisprogram.html > $cvsdoc/html/$thisprogram.html";
-	    if ($status) {
-		$badlynx++;
-		print "lynx error $status $docurl/$thisprogram.html";
-	    }
-	    else {
+	    filediff ("$doctext/$thisprogram.txt", "x.x");
+	}
+
+    }
+    if($embassy ne "") {
+	print EINDEX "</table>\n";
+	close EINDEX;
+# check to see if the index.html file has changed
+	$diff = filediff ("$eindex", "e.e");
+
+	$status = htmlsource("index.html", "$docmaster");
+	if (!$status) {
+	    $badsrc++;
+	    print "htmlsource error $status $docmaster/index.html";
+	}
+	else {
 # change ../emboss_icon.jpg and ../index.html to current directory
-		system "perl -p -i -e 's#\.\.\/index.html#index.html#g;' $cvsdoc/html/$thisprogram.html";
-		system "perl -p -i -e 's#\/images/emboss_icon.jpg#emboss_icon.jpg#g;' $cvsdoc/html/$thisprogram.html";
-		chmod 0664, "$cvsdoc/html/$thisprogram.html";
-		$cvsdochtmladd .= " $thisprogram.html";
-		$cvsdochtmlcommit .= " $thisprogram.html";
-		print "$thisprogram.html *created*\n";
-		print LOG "$thisprogram.html *created*\n";
-	    }
+	    system "perl -p -i -e 's#\.\.\/index.html#index.html#g;' x.x";
+	    system "perl -p -i -e 's#/images/emboss_icon.jpg#emboss_icon.jpg#g;' x.x";
+	    filediff ("$dochtml/index.html", "x.x");
 	}
     }
 }
+# main loop over all directories completed.
 
 # end the index.html file
 indexfooter(INDEX);
 close(INDEX);
 
 # check to see if the index.html file has changed
-if (filediff (2, "$cvsdoc/html/index.html", "i.i")) {    
-    system "cp i.i $cvsdoc/html/index.html";
-    unlink "i.i";
-    chmod 0664, "$cvsdoc/html/index.html";
-    $cvsdochtmlcommit .= " index.html";
-    print "index.html *replaced*\n";
-}
-
+filediff ("$cvsdoc/html/index.html", "i.i");   
 
 # look at all applications and report the ones with missing documentation
 foreach $thisprogram (sort (keys %progs)) {
@@ -1036,7 +1016,7 @@ while (<GRPSTD>) {
 }
 close GRPSTD;
 
-$docdir = "$doctop/apps";
+$docdir = "$cvsdoc/master/emboss/apps";
 
 open ( SUM, ">g.g") || die "cannot open temporary groups summary file";
 
@@ -1072,7 +1052,10 @@ foreach $g (sort (keys %groups)) {
     $filename =~ s/restriction_enzymes/re/;
 
 
-    print SUM "<tr><td><A HREF=\"$filename\_group.html\">$name</A></td><td>$desc</td></tr>\n";
+    print SUM "<tr>
+<td><A HREF=\"$filename\_group.html\">$name</A></td>
+<td>$desc</td>
+</tr>\n";
 # print "$filename '$groups{$g}' '$grpnames{$g}'\n";
 
     open ( GRP, ">y.y") || die "cannot open temporary group file";
@@ -1125,62 +1108,21 @@ $progs{$p}
 
     close GRP;
 
-    if (-e "$docdir/$filename\_group.html") {
-	if (filediff (2, "$docdir/$filename\_group.html", "y.y")) {
-	    print "$filename\_group.html group file *differences*\n";
-	    system "cp y.y $docdir/$filename\_group.html";
-	    chmod 0664, "$docdir/$filename\_group.html";
-	    print "$filename\_group.html *replaced*\n";
-	    print LOG "$filename\_group.html *created*\n";
-	    unlink "y.y";
-	}
+    filediff ("$docdir/$filename\_group.html", "y.y");
+
+# check to see if the CVS tree copy of the html program group documentation
+# needs updating
+    $status = htmlsource("$filename\_group.html","$cvsdoc/master/emboss/apps");
+#	$status = system "lynx -source $url/$filename\_group.html > x.x";
+    if (!$status) {
+	$badsrc++;
+	print "htmlsource error $status $url/$filename\_group.html";
     }
     else {
-	system "cp y.y $docdir/$filename\_group.html";
-	chmod 0664, "$docdir/$filename\_group.html";
-	print "$filename\_group.html *created*\n";
-	print LOG "$filename\_group.html *created*\n";
-	unlink "y.y";
-    }
-
-
-# check to see if the CVS tree copy of the html groups documentation needs updating
-    if (-e "$cvsdoc/html/$filename\_group.html") {
-# check to see if the html file has changed
-	$status = system "lynx -source $url/$filename\_group.html > x.x";
-	if ($status) {
-	    $badlynx++;
-	    print "lynx error $status $url/$filename\_group.html";
-	}
-	else {
 # change ../emboss_icon.jpg and ../index.html to current directory
-	    system "perl -p -i -e 's#\.\.\/index.html#index.html#g;' x.x";
-	    system "perl -p -i -e 's#\/images/emboss_icon.jpg#emboss_icon.jpg#g;' x.x";
-	    if (filediff (2, "$cvsdoc/html/$filename\_group.html", "x.x")) {
-		system "cp x.x $cvsdoc/html/$filename\_group.html";
-		chmod 0664, "$cvsdoc/html/$filename\_group.html";
-		$cvsdochtmlcommit .= " $filename\_group.html";
-		print "$filename\_group.html *replaced*\n";
-		unlink "x.x";
-	    }
-	}
-    }
-    else {
-# it doesn't exist, so create the new html output
-	$status = system "lynx -source $url/$filename\_group.html > $cvsdoc/html/$filename\_group.html";
-	if ($status) {
-	    $badlynx++;
-	    print "lynx error $status $url/$filename\_group.html";
-	}
-	else {
-# change ../emboss_icon.jpg and ../index.html to current directory
-	    system "perl -p -i -e 's#\.\.\/index.html#index.html#g;' $cvsdoc/html/$filename\_group.html";
-	    system "perl -p -i -e 's#\/images/emboss_icon.jpg#emboss_icon.jpg#g;' $cvsdoc/html/$filename\_group.html";
-	    chmod 0664, "$cvsdoc/html/$filename\_group.html";
-	    $cvsdochtmladd .= " $filename\_group.html";
-	    $cvsdochtmlcommit .= " $filename\_group.html";
-	    print "$filename\_group.html *created*\n";
-	}
+	system "perl -p -i -e 's#\.\.\/index.html#index.html#g;' x.x";
+	system "perl -p -i -e 's#\/images/emboss_icon.jpg#emboss_icon.jpg#g;' x.x";
+	filediff ("$cvsdoc/html/$filename\_group.html", "x.x");
     }
 }
 
@@ -1193,51 +1135,20 @@ footer(SUM);
 
 close SUM;
 
-if (filediff (2, "$docdir/groups.html", "g.g")) {
-    system "cp g.g $docdir/groups.html";
-    chmod 0664, "$docdir/groups.html";
-    print "groups.html *replaced*\n";
-    unlink "g.g";
-}
-
+filediff("$docdir/groups.html", "g.g");
 
 # check to see if the CVS tree copy of the html group documentation needs updating
-if (-e "$cvsdoc/html/groups.html") {
-# check to see if the html file has changed
-    $status = system "lynx -source $url/groups.html > x.x";
-    if ($status) {
-	$badlynx++;
-	print "lynx error $status $url/groups.html";
-    }
-    else {
-# change ../emboss_icon.jpg and ../index.html to current directory
-	system "perl -p -i -e 's#\.\.\/index.html#index.html#g;' x.x";
-	system "perl -p -i -e 's#\/images/emboss_icon.jpg#emboss_icon.jpg#g;' x.x";
-	if (filediff (2, "$cvsdoc/html/groups.html", "x.x")) {
-	    system "cp x.x $cvsdoc/html/groups.html";
-	    chmod 0664, "$cvsdoc/html/groups.html";
-	    $cvsdochtmlcommit .= " groups.html";
-	    print "groups.html *replaced*\n";
-	    unlink "x.x";
-	}
-    }
+$status = htmlsource("groups.html","$cvsdoc/master/emboss/apps");
+#    $status = system "lynx -source $url/groups.html > x.x";
+if (!$status) {
+    $badsrc++;
+    print "htmlsource error $status $url/groups.html";
 }
 else {
-# it doesn't exist, so create the new html output
-    $status = system "lynx -source $url/groups.html > $cvsdoc/html/groups.html";
-    if ($status) {
-	$badlynx++;
-	print "lynx error $status $url/groups.html";
-    }
-    else {
 # change ../emboss_icon.jpg and ../index.html to current directory
-	system "perl -p -i -e 's#\.\.\/index.html#index.html#g;' $cvsdoc/html/groups.html";
-	system "perl -p -i -e 's#\/images/emboss_icon.jpg#emboss_icon.jpg#g;' $cvsdoc/html/groups.html";
-	chmod 0664, "$cvsdoc/html/groups.html";
-	$cvsdochtmladd .= " groups.html";
-	$cvsdochtmlcommit .= " groups.html";
-	print "groups.html *created*\n";
-    }
+    system "perl -p -i -e 's#\.\.\/index.html#index.html#g;' x.x";
+    system "perl -p -i -e 's#\/images/emboss_icon.jpg#emboss_icon.jpg#g;' x.x";
+    filediff ("$cvsdoc/html/groups.html", "x.x");
 }
 
 ######################################################################
@@ -1295,6 +1206,8 @@ print "==================================\n";
 print LOG "==================================\n";
 print "Lynx errors: $badlynx\n";
 print LOG "Lynx errors: $badlynx\n";
+print "HTML source errors: $badsrc\n";
+print LOG "HTML source errors: $badsrc\n";
 foreach $x (sort(keys(%missingdoc))) {
     print "Missing: $missingdoc{$x}/$x.html\n";
     print LOG "Missing: $missingdoc{$x}/$x.html\n";
