@@ -598,10 +598,11 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
 
      emboss_openfile(embossoutfile, &outfile, &outfilename);
 
-    fprintf(outfile, "\nProtein distance algorithm, version %s\n\n",VERSION);
+/*    fprintf(outfile,
+      "\nProtein distance algorithm, version %s\n\n",VERSION);*/
 
 
-
+/*
     printf("\n weights: %s",(weights ? "true" : "false"));
     printf("\n progress: %s",(progress ? "true" : "false"));
     printf("\n similarity: %s",(similarity ? "true" : "false")); 
@@ -622,7 +623,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
     printf("\n mulsets: %s",(mulsets ? "true" : "false"));
     printf("\n datasets: %ld",(datasets));
     printf("\n printdata: %s",(printdata ? "true" : "false")); 
-
+*/
 
 }  /* emboss_getoptions */
 

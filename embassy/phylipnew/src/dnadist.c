@@ -188,8 +188,8 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
      emboss_openfile(embossoutfile, &outfile, &outfilename); 
 
 
-    fprintf(outfile, "\nNucleic acid sequence Distance Matrix program,");
-    fprintf(outfile, " version %s\n\n",VERSION);
+/*    fprintf(outfile, "\nNucleic acid sequence Distance Matrix program,");*/
+/*    fprintf(outfile, " version %s\n\n",VERSION);*/
 }  /* emboss_getoptions */
 
 
