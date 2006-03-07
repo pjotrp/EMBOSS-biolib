@@ -9716,7 +9716,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI 100k_rat.fuzzpro
-FZ = 2475
+FZ = 28954
 FP 6 /^# HitCount: 1\n/
 FP /^     53      63        . YVGDEAQSKRG\n/
 FP 3 /^     53      63        . YVGDEAQSKRG\n/
@@ -20069,7 +20069,6 @@ IN 0.0001
 IN 100
 IN
 IN
-IN 2
 FI stderr
 FC = 12
 FP 0 /Warning: /
@@ -20180,8 +20179,6 @@ IN ../seqnr-keep/hitsnr
 IN 10
 IN Y
 IN Y
-IN
-IN
 IN
 FI stderr
 FC = 2
@@ -20322,13 +20319,13 @@ FP 0 /Died: /
 FI stdout
 FC = 0
 FZ = 0
-FI 101.1.F.#.1cs4.d1cs4a_.sig
-FC = 62
-FZ = 610
-FP  /^IN   /
-FI 101.2.F.#.1ii7.d1ii7a_.sig
+FI 101.1.F.#.1ii7.d1ii7a_.sig
 FC = 30
 FZ = 318
+FP  /^IN   /
+FI 101.2.F.#.1cs4.d1cs4a_.sig
+FC = 62
+FZ = 610
 FP  /^IN   /
 FI FOK.1.F.#.1cs4.d1cs4a_.sig
 FC = 22
@@ -21408,7 +21405,7 @@ FP /^NAME  7LES_DROME/1799-1891\n/
 
 ID oalistat-ex
 AB hmmer
-AA ealistat
+AA oalistat
 CL ../ohmmalign-keep/globins630.ali
 IN
 FI stderr
@@ -21950,14 +21947,13 @@ IN
 FI eneighbor.outfile
 FC = 40
 FP /^   7 Populations\n/
-FP /^  \+--2            \+----------------------Mouse     \n/
 FP /^   1          Mouse             0.76891\n/
 FP /^   2             1              0.42027\n/
 FP /^   2          Gibbon            0.35793\n/
 FI eneighbor.treefile
 FC = 2
-FP /^\(Orang:0.28469,\(Gorilla:0.15393,\(Chimp:0.15167,Human:0.11753\):0.03982\):0.02696,\(\(Bovine:0.91769,\n/
-FP /^Mouse:0.76891\):0.42027,Gibbon:0.35793\):0.04648\);\n/
+FP /\(Gorilla:0.15393,\(Chimp:0.1516[78],Human:0.11753\):0.03982/
+FP /^Mouse:0.76891\):0.42027,Gibbon:0.35793\):0.04648/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -22315,7 +22311,7 @@ IN ../../data/evolution/dnadist.dat
 IN
 IN
 FI dnadist.fdnadist
-FC = 9
+FC = 6
 FP /    5\n/
 FP /^Alpha       0.000000  0.303893  0.857546  1.158921  1.542897\n/
 FI stderr
@@ -22432,13 +22428,13 @@ FI dnaml.fdnamlk
 FC = 89
 FP /^        1           0.264            0.522\n/
 FP /^        2           2.000\n/
-FP /^Ln Likelihood =   -60.787[0-9][0-9]\n/
-FP /^ +2 +Gamma +4.52951 +0.90802\n/
+FP /^Ln Likelihood =   -60.826[0-9][0-9]\n/
+FP /^ +2 +Gamma +4.54360 +0.90684\n/
 FP /^             1121121111 111\n/
 FI dnaml.treefile
 FC = 2
-FP /^\(\(Epsilon:0.58158,Delta:0.58158\):3.94793,\(Gamma:0.90802,\n/
-FP /^\(Beta:0.67882,Alpha:0.67882\):0.22921\):3.62149\);\n/
+FP /^\(\(Epsilon:0.61427,Delta:0.61427\):3.92933,\(Gamma:0.90684,\n/
+FP /^\(Beta:0.65105,Alpha:0.65105\):0.25578\):3.63676\);\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -22953,7 +22949,7 @@ AA fprotdist
 IN ../../data/evolution/protdist.dat
 IN
 FI protdist.fprotdist
-FC = 9
+FC = 6
 FP /^Gamma       0.625670  0.375578  0.000000  0.975798  0.861634\n/
 FI stderr
 FC = 2
@@ -22961,8 +22957,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 30
-FP 27 /^./
+FC = 10
+FP 7 /^./
 //
 
 ID fprotpars-ex
