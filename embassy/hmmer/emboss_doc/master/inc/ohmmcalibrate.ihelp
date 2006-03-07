@@ -1,0 +1,38 @@
+   Standard (Mandatory) qualifiers:
+  [-infile]            infile     HMM file
+  [-outfile]           outfile    Output file name
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -cpu                integer    Number of CPUs
+   -fixed              integer    Length fix for random sequences
+   -mean               float      Mean length of synthetic sequences
+   -num                integer    Number of synthetic sequences
+   -pvm                boolean    Run on parallel virtual machines
+   -sd                 float      Standard deviation of syntheic sequences
+   -seed               integer    Random seed
+   -histogramfile      outfile    Name for histogram file
+
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   "-histogramfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+

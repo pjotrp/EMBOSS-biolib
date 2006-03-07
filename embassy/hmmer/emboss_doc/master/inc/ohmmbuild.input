@@ -1,0 +1,113 @@
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: globins50.msf</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+
+
+   MSF:  171  Type: P    Check:  4694   .. 
+
+ Name: GLB2_MORMR      oo  Len:  171  Check:  6522  Weight: 2.7687
+ Name: GLBZ_CHITH      oo  Len:  171  Check:  6733  Weight: 2.9329
+ Name: HBA2_BOSMU      oo  Len:  171  Check:  5006  Weight: 0.6394
+ Name: HBA2_GALCR      oo  Len:  171  Check:  6652  Weight: 0.5183
+ Name: HBA4_SALIR      oo  Len:  171  Check:  5434  Weight: 1.9511
+ Name: HBAD_CHLME      oo  Len:  171  Check:  6621  Weight: 1.2927
+ Name: HBAD_PASMO      oo  Len:  171  Check:  8118  Weight: 1.2927
+ Name: HBAZ_HORSE      oo  Len:  171  Check:  8382  Weight: 1.6223
+ Name: HBA_AILME       oo  Len:  171  Check:  5402  Weight: 0.4145
+ Name: HBA_ANSSE       oo  Len:  171  Check:  3688  Weight: 0.8315
+ Name: HBA_COLLI       oo  Len:  171  Check:  4420  Weight: 0.8557
+ Name: HBA_ERIEU       oo  Len:  171  Check:  5528  Weight: 0.8390
+ Name: HBA_FRAPO       oo  Len:  171  Check:  4136  Weight: 0.5014
+ Name: HBA_MACFA       oo  Len:  171  Check:  5986  Weight: 0.2233
+ Name: HBA_MACSI       oo  Len:  171  Check:  6064  Weight: 0.2233
+ Name: HBA_MESAU       oo  Len:  171  Check:  5499  Weight: 0.6722
+ Name: HBA_PAGLA       oo  Len:  171  Check:  6189  Weight: 0.5388
+ Name: HBA_PHACO       oo  Len:  171  Check:  5129  Weight: 0.5014
+ Name: HBA_PONPY       oo  Len:  171  Check:  5894  Weight: 0.3907
+ Name: HBA_PROLO       oo  Len:  171  Check:  5810  Weight: 0.4145
+ Name: HBA_TRIOC       oo  Len:  171  Check:  6427  Weight: 0.6883
+ Name: HBB1_VAREX      oo  Len:  171  Check:  7239  Weight: 1.1252
+ Name: HBB2_TRICR      oo  Len:  171  Check:  7790  Weight: 1.9629
+ Name: HBB2_XENTR      oo  Len:  171  Check:  9537  Weight: 1.4685
+ Name: HBBL_RANCA      oo  Len:  171  Check:  7490  Weight: 1.4685
+ Name: HBB_CALAR       oo  Len:  171  Check:  6568  Weight: 0.4226
+ Name: HBB_COLLI       oo  Len:  171  Check:  5043  Weight: 0.7672
+ Name: HBB_EQUHE       oo  Len:  171  Check:  6101  Weight: 0.6734
+ Name: HBB_LARRI       oo  Len:  171  Check:  5673  Weight: 0.7672
+ Name: HBB_MANSP       oo  Len:  171  Check:  7148  Weight: 0.4226
+ Name: HBB_ORNAN       oo  Len:  171  Check:  6249  Weight: 0.6615
+ Name: HBB_RABIT       oo  Len:  171  Check:  7043  Weight: 0.5259
+ Name: HBB_SPECI       oo  Len:  171  Check:  3680  Weight: 0.5422
+ Name: HBB_SPETO       oo  Len:  171  Check:  4246  Weight: 0.5422
+ Name: HBB_SUNMU       oo  Len:  171  Check:  5601  Weight: 0.6734
+ Name: HBB_TACAC       oo  Len:  171  Check:  7133  Weight: 0.6615
+ Name: HBB_TRIIN       oo  Len:  171  Check:  4009  Weight: 0.8445
+ Name: HBB_TUPGL       oo  Len:  171  Check:  7197  Weight: 0.7375
+ Name: HBB_URSMA       oo  Len:  171  Check:  7200  Weight: 0.4695
+ Name: HBE_PONPY       oo  Len:  171  Check:  5902  Weight: 1.0101
+ Name: HBF1_URECA      oo  Len:  171  Check:  6462  Weight: 2.9329
+ Name: LGB1_PEA        oo  Len:  171  Check:  4791  Weight: 2.0005
+ Name: LGB1_VICFA      oo  Len:  171  Check:  7426  Weight: 2.0005
+ Name: MYG_ESCGI       oo  Len:  171  Check:  9170  Weight: 0.7432
+ Name: MYG_HORSE       oo  Len:  171  Check:  1290  Weight: 0.7432
+ Name: MYG_LYCPI       oo  Len:  171  Check:  1107  Weight: 0.8773
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+GLB2_MORMR      KLMSMICILL SSAY...... .
+GLBZ_CHITH      ATFDAFFGAV FAK....... M
+HBA2_BOSMU      KFLANVSTVL TSKYR..... .
+HBA2_GALCR      KFMASVSTVL TSKYR..... .
+HBA4_SALIR      KFLQQLALAL AEKYR..... .
+HBAD_CHLME      KFLSAVAAVL AEKYR..... .
+HBAD_PASMO      KFMSAVASVL AEKYR..... .
+HBAZ_HORSE      KFLSIVSSVL TEKYR..... .
+HBA_AILME       KFFSAVSTVL TSKYR..... .
+HBA_ANSSE       KFLCAVATVL TAKYR..... .
+HBA_COLLI       KFVLAVGTVL TAKYR..... .
+HBA_ERIEU       KFLATVATVL TSKYR..... .
+HBA_FRAPO       KFLCAVGNVL TAKYR..... .
+HBA_MACFA       KFLASVSTVL TSKYR..... .
+HBA_MACSI       KFLASVSTVL TSKYR..... .
+HBA_MESAU       KFFASVSTVL TSKYR..... .
+HBA_PAGLA       KFFSAVSTVL TSKYR..... .
+HBA_PHACO       KFLCAVGTVL TAKYR..... .
+HBA_PONPY       KFLASVSTVL TSKYR..... .
+HBA_PROLO       KFFTSVSTVL TSKYR..... .
+HBA_TRIOC       KFLCAVGNVL SAKYR..... .
+HBB1_VAREX      KLVNVVSHSL ARRYH..... .
+HBB2_TRICR      KLMKGVSHAL GHGY...... .
+HBB2_XENTR      KLNATLVAAL SHGYF..... .
+HBBL_RANCA      KFIAVLVDAL SHSYH..... .
+HBB_CALAR       KVVAGVANAL AHKYH..... .
+HBB_COLLI       KLVRVVAHAL ARKYH..... .
+HBB_EQUHE       KVVAGVANAL AHKYH..... .
+HBB_LARRI       KLVRVVAHAL ARKYH..... .
+HBB_MANSP       KVVAGVANAL AHKYH..... .
+HBB_ORNAN       KLVSGVAHAL GHKYH..... .
+HBB_RABIT       KVVAGVANAL AHKYH..... .
+HBB_SPECI       KVVAGVANAL AHKYH..... .
+HBB_SPETO       KVVAGVANAL SHKYH..... .
+HBB_SUNMU       KVVAGVANAL AHKYH..... .
+HBB_TACAC       KLVSGVSHAL AHKYH..... .
+HBB_TRIIN       KVVAGVANAL AHKYH..... .
+HBB_TUPGL       KVVAGVANAL AHKYH..... .
+HBB_URSMA       KVVAGVANAL AHKYH..... .
+HBE_PONPY       KLVSAVAIAL AHKYH..... .
+HBF1_URECA      DAAGVLVAAM .......... K
+LGB1_PEA        VAYDGLATAI KKAMKT.... A
+LGB1_VICFA      VAYDGLATAI K....A.... A
+MYG_ESCGI       KALELFRKDI AAKYKELGFQ G
+MYG_HORSE       KALELFRNDI AAKYKELGFQ G
+MYG_LYCPI       KALELFRNDI AAKYKELGFQ G
+MYG_MOUSE       KALELFRNDI AAKYKELGFQ G
+MYG_MUSAN       GAFKIICSDI EKEYKAANFQ G
+MYG_PROGU       KALELFRNDI AAKYKELGFQ G
+MYG_SAISC       KALELFRNDM AAKYKELGFQ G
+
+</pre>
+</td></tr></table><p>

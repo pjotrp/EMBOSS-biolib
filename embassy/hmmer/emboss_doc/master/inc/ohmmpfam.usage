@@ -1,0 +1,62 @@
+<b>Here is a sample session with ohmmpfam</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ohmmpfam 7LES_DROME ../ohmm-own-keep/myhmms </b>
+Align single sequence with an HMM
+Output file [7les_drome.ohmmpfam]: <b></b>
+
+                CS    PSPPRNFSVRVLSPRELEVSWLPPEQLRSESVYYTLHWQQELDGENV
+                RF    PSPPRNFSVRVLSPRELEVSWLPPEQLRSESVYYTLHWQQELDGENV
+                   *->PsaPpnlsvtevtstsillsWwppdpggggyivyyvysegggdeeee
+                      Ps+P+n sv   ++  + +sW pp+   ++ ++y +++++++d e++
+  7LES_DROME  1799    PSPPRNFSVRVLSPRELEVSWLPPEQLRSESVYYTLHWQQELDGENV 1845 
+
+                CS QDRREWEAHERRLETAGTHRLTGIKPGSGYSLWVQAH   
+                RF QDRREWEAHERRLETAGTHRLTGIKPGSGYSLWVQAH   
+                   ttpstsnttttllllllltytvyvvvvvsasssggsg<-*
+                    ++++ + ++++l + ++   + +   +++s +  +    
+  7LES_DROME  1846 QDRREWEAHERRLETAGTHRLTGIKPGSGYSLWVQAH    1882 
+
+                CS    LKLLRFLGSGAFGEVYEGQLKTEDSEEPQRVAIKSLRKGASEFAELL
+                RF    LKLLRFLGSGAFGEVYEGQLKTEDSEEPQRVAIKSLRKGASEFAELL
+                   *->yelgekLGeGafGkVykakhkdtgkavaiKvikkekekekeeeteer
+                      ++l++ LG+GafG+Vy++++k ++ +  + v++k+ +k   e +e +
+  7LES_DROME  2209    LKLLRFLGSGAFGEVYEGQLKTEDSEEPQRVAIKSLRKGASEFAELL 2255 
+
+                CS QEAQLMSNFKHENIVRLVGICFDTESISLIMEHMEAGDLLSYLRAARATS
+                RF QEAQLMSNFKHENIVRLVGICFDTESISLIMEHMEAGDLLSYLRAARATS
+                   elrllknllhlniiilsehieytldlllllmellellllllllklrlvls
+                   ++++l+++ ++++i++++ i ++++++ l+me +e ++ll++l++ +++s
+  7LES_DROME  2256 QEAQLMSNFKHENIVRLVGICFDTESISLIMEHMEAGDLLSYLRAARATS 2305 
+
+                CS TQEPQPTAGLSLSELLAMCIDVANGCSYLEDMHFVHRDLACRNCLVTEST
+                RF TQEPQPTAGLSLSELLAMCIDVANGCSYLEDMHFVHRDLACRNCLVTEST
+                   elviaatliallliylllhhhlhidrkdlldlllldnlllikdidladlv
+                    ++   t    l + l +++ +   +  l+d+++++++l++ + +++ + 
+  7LES_DROME  2306 TQEPQPTAGLSLSELLAMCIDVANGCSYLEDMHFVHRDLACRNCLVTEST 2355 
+
+                CS GSTDRRRTVKIGDFGLARDIYKSDYYRKEGEGLLPVRWMSPESLVDGLFT
+                RF GSTDRRRTVKIGDFGLARDIYKSDYYRKEGEGLLPVRWMSPESLVDGLFT
+                   llgsstltkkttstgtyrapevlageyssssslsssevlslevllilllg
+                   +++++ +t k++++g  r +++ +++ +++++l +++++s+e+l + l++
+  7LES_DROME  2356 GSTDRRRTVKIGDFGLARDIYKSDYYRKEGEGLLPVRWMSPESLVDGLFT 2405 
+
+                CS TQSDVWAFGVLCWEILTLGQQPYAARNNFEVLAHVKEGGRLQQPPMCTEK
+                RF TQSDVWAFGVLCWEILTLGQQPYAARNNFEVLAHVKEGGRLQQPPMCTEK
+                   tplgslldekllliildlifdpprpspleelsedlskllplplklrkpll
+                   t  ++++++ l ++il+l+++p+  +++ e+  +++  ++l+++++++++
+  7LES_DROME  2406 TQSDVWAFGVLCWEILTLGQQPYAARNNFEVLAHVKEGGRLQQPPMCTEK 2455 
+
+                CS LYSLLLLCWRTDPWERPSFRR   
+                RF LYSLLLLCWRTDPWERPSFRR   
+                   lllplrlnplskllallsplk<-*
+                   l   l l ++++++ ++s+++   
+  7LES_DROME  2456 LYSLLLLCWRTDPWERPSFRR    2476 
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

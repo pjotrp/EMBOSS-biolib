@@ -1,0 +1,11 @@
+<b>Here is a sample session with ohmmcalibrate</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ohmmcalibrate globin.hmm -seed 1079460101 -auto </b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.1">Go to the output files for this example</a><p><p>

@@ -1,0 +1,71 @@
+<h3><A NAME="hmmer">Applications</A> in the <a
+href="ftp://emboss.open-bio.org/pub/EMBOSS/">current hmmer release</a></h3>
+
+<table border cellpadding=4 bgcolor="#FFFFF0">
+
+<tr>
+<th>Program name</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td><a href="oalistat.html">oalistat</a></td>
+<td>
+Statistics for multiple alignment files
+</td>
+</tr>
+<tr>
+<td><a href="ohmmalign.html">ohmmalign</a></td>
+<td>
+Align sequences with an HMM
+</td>
+</tr>
+<tr>
+<td><a href="ohmmbuild.html">ohmmbuild</a></td>
+<td>
+Build HMM
+</td>
+</tr>
+<tr>
+<td><a href="ohmmcalibrate.html">ohmmcalibrate</a></td>
+<td>
+Calibrate a hidden Markov model
+</td>
+</tr>
+<tr>
+<td><a href="ohmmconvert.html">ohmmconvert</a></td>
+<td>
+Convert between HMM formats
+</td>
+</tr>
+<tr>
+<td><a href="ohmmemit.html">ohmmemit</a></td>
+<td>
+Extract HMM sequences
+</td>
+</tr>
+<tr>
+<td><a href="ohmmfetch.html">ohmmfetch</a></td>
+<td>
+Extract HMM from a database
+</td>
+</tr>
+<tr>
+<td><a href="ohmmindex.html">ohmmindex</a></td>
+<td>
+Index an HMM database
+</td>
+</tr>
+<tr>
+<td><a href="ohmmpfam.html">ohmmpfam</a></td>
+<td>
+Align single sequence with an HMM
+</td>
+</tr>
+<tr>
+<td><a href="ohmmsearch.html">ohmmsearch</a></td>
+<td>
+Search sequence database with an HMM
+</td>
+</tr>
+</table>

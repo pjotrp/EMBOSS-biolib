@@ -1,0 +1,26 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: 7les_drome.ohmmpfam</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+Query:  7LES_DROME  SEVENLESS PROTEIN (EC 2.7.1.112).
+
+Scores for sequence family classification (score includes all domains):
+Model                Description                        Score    E-value  N 
+--------             -----------                        -----    ------- ---
+7LES_DROME/2209-2481                                    115.9    7.6e-31   1
+7LES_DROME/1799-1891                                     32.1    2.5e-06   1
+
+Parsed for domains:
+Model                Domain  seq-f seq-t    hmm-f hmm-t      score  E-value
+--------             ------- ----- -----    ----- -----      -----  -------
+7LES_DROME/1799-1891   1/1    1799  1882 ..     1    84 []    32.1  2.5e-06
+7LES_DROME/2209-2481   1/1    2209  2476 ..     1   268 []   115.9  7.6e-31
+
+Alignments of top-scoring domains:
+7LES_DROME/1799-1891: domain 1 of 1, from 1799 to 1882: score 32.1, E = 2.5e-06
+7LES_DROME/2209-2481: domain 1 of 1, from 2209 to 2476: score 115.9, E = 7.6e-31
+//
+</pre>
+</td></tr></table><p>

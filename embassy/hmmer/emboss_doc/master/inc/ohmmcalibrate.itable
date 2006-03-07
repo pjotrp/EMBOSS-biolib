@@ -1,0 +1,94 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-infile]<br>(Parameter 1)</td>
+<td>HMM file</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.ohmmcalibrate</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-cpu</td>
+<td>Number of CPUs</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-fixed</td>
+<td>Length fix for random sequences</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-mean</td>
+<td>Mean length of synthetic sequences</td>
+<td>Any numeric value</td>
+<td>350.</td>
+</tr>
+
+<tr>
+<td>-num</td>
+<td>Number of synthetic sequences</td>
+<td>Any integer value</td>
+<td>5000</td>
+</tr>
+
+<tr>
+<td>-pvm</td>
+<td>Run on parallel virtual machines</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-sd</td>
+<td>Standard deviation of syntheic sequences</td>
+<td>Any numeric value</td>
+<td>350.</td>
+</tr>
+
+<tr>
+<td>-seed</td>
+<td>Random seed</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-histogramfile</td>
+<td>Name for histogram file</td>
+<td>Output file</td>
+<td>&nbsp;</td>
+</tr>
+
+</table>

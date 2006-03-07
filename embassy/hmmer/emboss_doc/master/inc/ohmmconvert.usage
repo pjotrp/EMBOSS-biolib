@@ -1,0 +1,67 @@
+<b>Here is a sample session with ohmmconvert</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ohmmconvert rrm.hmm rrm.hmm </b>
+Convert between HMM formats
+
+ - converted rrm
+
+1 HMM(s) converted and written to rrm.hmm
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 2</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ohmmconvert rrm.hmm rrm.hmm -format b </b>
+Convert between HMM formats
+
+ - converted rrm
+
+1 HMM(s) converted and written to rrm.hmm
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.2">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 3</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ohmmconvert rrm.hmm rrm.hmm -format g </b>
+Convert between HMM formats
+
+ - converted rrm
+
+1 HMM(s) converted and written to rrm.hmm
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.3">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 4</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ohmmconvert rrm.hmm rrm.hmm -format x </b>
+Convert between HMM formats
+
+ - converted rrm
+
+1 HMM(s) converted and written to rrm.hmm
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.4">Go to the output files for this example</a><p><p>

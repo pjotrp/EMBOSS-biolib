@@ -1,0 +1,44 @@
+<b>Here is a sample session with ohmmbuild</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ohmmbuild globins50.msf globin.hmm -auto </b>
+
+hmmbuild - build a hidden Markov model from an alignment
+HMMER 2.1.1 (Dec 1998)
+Copyright (C) 1992-1998 Washington University School of Medicine
+HMMER is freely distributed under the GNU General Public License (GPL).
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Training alignment:                ../../data/hmm/globins50.msf
+Number of sequences:               50
+Search algorithm configuration:    Local  (hmmsw)
+S/W aggregate entry probability:   0.50
+S/W aggregate exit probability:    0.50
+Model construction strategy:       Fast/ad hoc (gapmax 0.50)
+Null model used:                   (default)
+Prior used:                        (default)
+Prior strategy:                    Dirichlet
+Sequence weighting method:         G/S/C tree weights
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Determining effective sequence number    ... done. [14]
+Weighting sequences heuristically        ... done.
+Constructing model architecture          ... done.
+Saving count vector file                 ... done. [globins50.out3]
+Converting counts to probabilities       ... done.
+Setting model name, etc.                 ... done. [globins50]
+
+Constructed a profile HMM (length 146)
+Average score:      187.26 bits
+Minimum score:       77.42 bits
+Maximum score:      248.11 bits
+Std. deviation:      47.00 bits
+
+Finalizing model configuration           ... done.
+Saving model to file                     ... done. [globin.hmm]
+Saving annotated alignment               ... done. [globins50.out2]
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
