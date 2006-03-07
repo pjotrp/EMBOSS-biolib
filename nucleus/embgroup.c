@@ -1052,12 +1052,45 @@ void embGrpSortGroupsList(AjPList groupslist)
     giter = ajListIterRead(groupslist);
 
     while((gl = ajListIterNext(giter)) != NULL)
-	ajListSort(gl->progs, embGrpCompareTwoGnodes);
+	ajListSort(gl->progs, embGrpCompareTwoPnodes);
+
 
     ajListIterFree(&giter);
 
     /* sort the groups themselves */
     ajListSort(groupslist, embGrpCompareTwoGnodes);
+
+    return;
+}
+
+
+
+
+/* @func embGrpSortProgsList *************************************************
+**
+** Sort a list of Pnodes by their name.
+**
+** @param [u] progslist [AjPList] List to sort
+** @return [void]
+** @@
+******************************************************************************/
+
+void embGrpSortProgsList(AjPList progslist)
+{
+    EmbPGroupProg pl;
+    AjIList piter;
+
+    /* sort the groups for each program */
+    piter = ajListIterRead(progslist);
+
+    while((pl = ajListIterNext(piter)) != NULL)
+	ajListSort(pl->groups, embGrpCompareTwoGnodes);
+
+
+    ajListIterFree(&piter);
+
+    /* sort the groups themselves */
+    ajListSort(progslist, embGrpCompareTwoPnodes);
 
     return;
 }
@@ -1080,6 +1113,26 @@ ajint embGrpCompareTwoGnodes(const void * a, const void * b)
 {
     return ajStrCmpCaseS((*(EmbPGroupTop *)a)->name,
 			 (*(EmbPGroupTop *)b)->name);
+}
+
+
+
+
+/* @func embGrpCompareTwoPnodes ***********************************************
+**
+** Compare two Pnodes as case-insensitive strings.
+**
+** @param [r] a [const void *] First node
+** @param [r] b [const void *] Second node
+**
+** @return [ajint] Compare value (-1, 0, +1)
+** @@
+******************************************************************************/
+
+ajint embGrpCompareTwoPnodes(const void * a, const void * b)
+{
+    return ajStrCmpCaseS((*(EmbPGroupProg *)a)->name,
+			 (*(EmbPGroupProg *)b)->name);
 }
 
 
@@ -1466,7 +1519,7 @@ void embGrpKeySearchSeeAlso(AjPList newlist, AjPList *appgroups,
     ajListIterFree(&giter);
 
     /* sort the results and remove duplicates */
-    embGrpSortGroupsList(base);
+    embGrpSortProgsList(base);
     embGrpProgsMakeUnique(base);
 
     ajStrDel(&tmp);
