@@ -5430,12 +5430,13 @@ AjBool ajFileDirExtnTrim(AjPStr* name)
 	return ajFalse;
 
     i = ajStrFindlastC(*name, "/");
-    ajStrCutStart(name, i+1);
+    if(i >= 0)
+	ajStrCutStart(name, i+1);
 
     len = ajStrGetLen(*name);
     j = ajStrFindlastC(*name, ".");
-    ajStrCutEnd(name, (len-j));
-
+    if(j >= 0)
+	ajStrCutEnd(name, (len-j));
 
     if((i < 0) && (j < 0))
 	return ajFalse;
