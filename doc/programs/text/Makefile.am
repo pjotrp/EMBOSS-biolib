@@ -20,7 +20,7 @@ pkgdata_DATA =  aaindexextract.txt abiview.txt acdc.txt acdlog.txt \
 pkgdata2_DATA = jembossctl.txt lindna.txt listor.txt \
 	marscan.txt maskfeat.txt maskseq.txt matcher.txt \
 	megamerger.txt merger.txt msbar.txt \
-	mwcontam.txt mwfilter.txt myseq.txt \
+	mwcontam.txt mwfilter.txt \
 	needle.txt \
 	newcpgreport.txt newcpgseek.txt newseq.txt noreturn.txt \
 	notseq.txt nthseq.txt octanol.txt oddcomp.txt palindrome.txt \

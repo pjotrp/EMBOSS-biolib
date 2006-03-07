@@ -43,7 +43,7 @@ pkgdata_DATA =  abiview.1.abiview.gif chaos.1.chaos.gif cirdna.1.cirdna.gif \
 pkgdata2_DATA = lindna.html listor.html marscan.html maskfeat.html \
 	maskseq.html matcher.html megamerger.html \
 	menus_group.html merger.html msbar.html \
-	mwcontam.html mwfilter.html myseq.html \
+	mwcontam.html mwfilter.html \
 	needle.html \
 	newcpgreport.html newcpgseek.html newseq.html noreturn.html \
 	notseq.html nthseq.html nucleic_2d_structure_group.html \
