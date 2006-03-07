@@ -1,7 +1,7 @@
 application: distmat [
   documentation: "Creates a distance matrix from multiple
                   alignments"
-  groups: "Phylogeny:Distance matrix"
+  groups: "Phylogeny:Molecular sequence"
 ]
 
 section: input [
