@@ -54,14 +54,14 @@ if (!defined $application || $application eq "") {
 }
 
 # where the web pages and include files live
-$doctop = "$ENV{HOME}/sfdoc";
+$doctop = "$ENV{HOME}/cvsemboss";
 if ($embassy eq "") {
-    $docdir = "$doctop/apps";
-    $incdir = "$doctop/apps/inc";
+    $docdir = "$doctop/doc/programs/master/emboss/apps";
+    $incdir = "$docdir/inc";
 }
 else {
-    $docdir = "$doctop/embassy/$embassy";
-    $incdir = "$doctop/embassy/$embassy/inc";
+    $docdir = "$doctop/embassy/$embassy/emboss_doc/master";
+    $incdir = "$docdir/inc";
 }
 
 
@@ -197,7 +197,7 @@ foreach $dotest (@dirs) {
         if ($line =~ /^DL\s+keep/) {$testkeep{$dotest} = 1;}
         if ($line =~ /^AB\s+(\S+)/) {
 	    $embassypackage = "$1";
-	    $docdir = "$doctop/embassy/$embassypackage";
+	    $docdir = "$doctop/embassy/$embassypackage/emboss_doc/master";
 	    $incdir = "$docdir/inc";
 	}
         if ($line =~ /^IN\s+/) {$hasinput = 1;}
@@ -476,8 +476,9 @@ foreach $dotest (@dirs) {
 
 # have we used all of our answers?
     if ($#answers != -1) {
-	print "WARNING **** 
-application '$application' example $count hasn't used ", $#answers+1, " answers\n";
+	print STDERR "WARNING **** 
+application '$application' example $count test $dotest 
+hasn't used ", $#answers+1, " answers\n";
 	print LOG "WARNING **** 
 test $dotest hasn't used ", $#answers+1, " answers\n";
     }

@@ -7,7 +7,7 @@ $basefile = $ARGV[0];
 open DEP, "$ENV{HOME}/cvsemboss/deprecated.txt" || die "Cannot open deprecated.txt";
 open SRC, "$basefile.c" || die "Cannot open $basefile.c";
 open NEWSRC, ">$basefile.new" || die "Cannot open $basefile.new";
-open DBG, ">fixdeprecated.dbg" || die "Cannot open fixdeprecated.dbg";
+#open DBG, ">fixdeprecated.dbg" || die "Cannot open fixdeprecated.dbg";
 
 $patcnt=0;
 $notecnt=0;
@@ -85,18 +85,18 @@ foreach $n (sort (keys ( %argtest))) {
     pos($savesrc) = $savepos;
     if($savesrc =~ /$n/gs) {
 	$savepos = pos($savesrc);
-	print DBG "a matched $n at '$&'\n";
+#	print DBG "a matched $n at '$&'\n";
 	@subarg = split(/;/, $argtest{$n});
 	foreach $x (@subarg) {
 	    ($oldn, $newn, $olda, $newa) = split(/ /, $x);
-	    print DBG "oldn '$oldn' newn '$newn' olda '$olda' newa '$newa'\n";
+#	    print DBG "oldn '$oldn' newn '$newn' olda '$olda' newa '$newa'\n";
 	    $nkey = "$oldn\_$newn";
 	    @olda = split(/,/, $olda);
 	    @newa = split(/,/, $newa);
 	    $arga = "";
 	    $i = 0;
 	    foreach $a (@olda) {
-		print DBG "Building '$a'\n";
+#		print DBG "Building '$a'\n";
 		if($i) {$arga .= ","}
 		if($a eq "n") {
 		    $arga .= "\\s*NULL\\s*";
@@ -109,19 +109,19 @@ foreach $n (sort (keys ( %argtest))) {
 		else {
 		    $arga .= "[^\\),]*([\\(][^\\)]*[\\)][^\\),]*)*";
 		}
-		print DBG "So far '$arga'\n";
+#		print DBG "So far '$arga'\n";
 		$i++;
 	    }
 
 	    $pata = "($oldn"."\\s*[\\(])(".$arga.")[\\)]";
-	    print DBG "b testing $pata\n";
+#	    print DBG "b testing $pata\n";
 	    pos($savesrc) = 0;	# search from the start
 	    while($savesrc =~ /$pata/gs) {
-		print DBG "b matched $pata at '$&'\n";
+#		print DBG "b matched $pata at '$&'\n";
 		$savepre = $PREMATCH;
 		$savepost = $POSTMATCH;
 		$arglist = $2;
-		print DBG "$oldn '$arglist'\n";
+#		print DBG "$oldn '$arglist'\n";
 		$i = 0;
 		$pat = "[^\\(\\),]*([\\(][^\\)]*[\\)][^,]*)*[^,]*,";
 		while ($arglist =~ /$pat/g) {
@@ -132,7 +132,7 @@ foreach $n (sort (keys ( %argtest))) {
 		    $ai =~ s/([\s]*)$//;
 		    $apost[$i] = $1;
 		    $ai =~ s/,$//;
-		    print DBG "arg[$i] '$ai'\n";
+#		    print DBG "arg[$i] '$ai'\n";
 		    $ao[$i++] = $ai;
 		    $ai = $p;
 		}
@@ -141,13 +141,13 @@ foreach $n (sort (keys ( %argtest))) {
 		$ai =~ s/([,\s]*)$//;
 		$apost[$i] = $1;
 		$ao[$i] = $ai;
-		print DBG "Remaining '$ai'\n";
+#		print DBG "Remaining '$ai'\n";
 		$newtext = "$newn(";
-		for ($i=0; $i <= $#ao; $i++) {
-		    print DBG "saved ai[$i] '$apre[$i]' '$ao[$i]' '$apost[$i]'\n";
-		}
+#		for ($i=0; $i <= $#ao; $i++) {
+#		    print DBG "saved ai[$i] '$apre[$i]' '$ao[$i]' '$apost[$i]'\n";
+#		}
 		$ok = 1;
-		print DBG "Processing newa '$newa' $#newa\n";
+#		print DBG "Processing newa '$newa' $#newa\n";
 		for ($i=0; $i <= $#newa; $i++) {
 		    if($newa[$i] =~ /^\d+$/) {
 			$j = $newa[$i] - 1;
@@ -170,17 +170,17 @@ foreach $n (sort (keys ( %argtest))) {
 			$newtext .= $apost[$i];
 		    }
 		    elsif($newa[$i] =~ /[*]/) {
-			print DBG "** Cannot define arg $i '$newa[$i]': edit by hand";
+#			print DBG "** Cannot define arg $i '$newa[$i]': edit by hand";
 			$ok = 0;
 		    }
 		    else {
-			print DBG "** Cannot understand arg $i '$newa[$i]': edit by hand";
+#			print DBG "** Cannot understand arg $i '$newa[$i]': edit by hand";
 			$ok = 0;
 			next;
 		    }
-		    print DBG "+ newa[$i] '$newa[$i]' '$newtext'\n";
+#		    print DBG "+ newa[$i] '$newa[$i]' '$newtext'\n";
 		}
-		print DBG "ok:$ok newtext '$newtext'\n";
+#		print DBG "ok:$ok newtext '$newtext'\n";
 		if($ok) {
 		    $savesrc = $savepre . $newtext . ")" . $savepost;
 		    pos($savesrc) = length($savepre) + length($newtext);
@@ -217,4 +217,4 @@ foreach $n (sort (keys ( %subdone))) {
     print "$basefile.c: Replace ($subdone{$n} times) $na with $nb\n";
 }
 print "$new lines replaced\n";
-close DBG;
+#close DBG;
