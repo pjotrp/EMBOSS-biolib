@@ -394,7 +394,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   screenwidth = 80;
 
 
-  retval = embInitP(pgm, argc, argv, "PHYLIPNRE");
+  retval = embInitP(pgm, argc, argv, "PHYLIPNEW");
 
     seqsets = ajAcdGetSeqsetall("sequence");
 
