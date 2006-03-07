@@ -86,8 +86,10 @@ Output file [file1.list]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-firstsequences]    seqset     Sequence set USA
-  [-secondsequences]   seqset     Sequence set USA
+  [-firstsequences]    seqset     Sequence set filename and optional format,
+                                  or reference (input USA)
+  [-secondsequences]   seqset     Sequence set filename and optional format,
+                                  or reference (input USA)
   [-outfile]           outfile    The list of sequence names will be written
                                   to this list file
 
@@ -157,12 +159,13 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-firstsequences]
-   (Parameter 1) Sequence set USA Readable set of sequences Required
+   (Parameter 1) Sequence set filename and optional format, or reference
+   (input USA) Readable set of sequences Required
    [-secondsequences]
-   (Parameter 2) Sequence set USA Readable set of sequences Required
+   (Parameter 2) Sequence set filename and optional format, or reference
+   (input USA) Readable set of sequences Required
    [-outfile]
    (Parameter 3) The list of sequence names will be written to this list
    file Output file <sequence>.listor

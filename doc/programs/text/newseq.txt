@@ -66,39 +66,39 @@ Command line arguments
                                   reached this limit and you will not be able
                                   to press the RETURN/ENTER key until you have
                                   deleted a few characters.
-  [-outseq]            seqout     Output sequence USA
+  [-outseq]            seqout     Sequence filename and optional format
+                                  (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
    "-outseq" associated qualifiers
-   -osformat5           string     Output seq format
-   -osextension5        string     File name extension
-   -osname5             string     Base file name
-   -osdirectory5        string     Output directory
-   -osdbname5           string     Database name to add
-   -ossingle5           boolean    Separate file for each entry
-   -oufo5               string     UFO features
-   -offormat5           string     Features format
-   -ofname5             string     Features file name
-   -ofdirectory5        string     Output directory
+   -osformat5          string     Output seq format
+   -osextension5       string     File name extension
+   -osname5            string     Base file name
+   -osdirectory5       string     Output directory
+   -osdbname5          string     Database name to add
+   -ossingle5          boolean    Separate file for each entry
+   -oufo5              string     UFO features
+   -offormat5          string     Features format
+   -ofname5            string     Features file name
+   -ofdirectory5       string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-name]
@@ -122,7 +122,8 @@ Command line arguments
    RETURN/ENTER key until you have deleted a few characters. Any string
    is accepted An empty string is accepted
    [-outseq]
-   (Parameter 5) Output sequence USA Writeable sequence <sequence>.format
+   (Parameter 5) Sequence filename and optional format (output USA)
+   Writeable sequence <sequence>.format
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default

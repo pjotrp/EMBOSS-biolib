@@ -25,7 +25,7 @@ Usage
 
 % cusp -sbeg 135 -send 1292 
 Create a codon usage table
-Input sequence(s): tembl:paamir
+Input nucleotide sequence(s): tembl:paamir
 Output file [paamir.cusp]: 
 
    Go to the input files for this example
@@ -34,7 +34,8 @@ Output file [paamir.cusp]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequence]          seqall     Sequence database USA
+  [-sequence]          seqall     Nucleotide sequence(s) filename and optional
+                                  format, or reference (input USA)
   [-outfile]           outfile    Output file name
 
    Additional (Optional) qualifiers: (none)
@@ -75,16 +76,16 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
-              Standard (Mandatory) qualifiers            Allowed values Default
+   Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-(Parameter 1) Sequence database USA Readable sequence(s) Required
+   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
+   reference (input USA) Readable sequence(s) Required
    [-outfile]
-(Parameter 2) Output file name      Output file          <sequence>.cusp
-              Additional (Optional) qualifiers           Allowed values Default
-              (none)
-              Advanced (Unprompted) qualifiers           Allowed values Default
-              (none)
+   (Parameter 2) Output file name Output file <sequence>.cusp
+   Additional (Optional) qualifiers Allowed values Default
+   (none)
+   Advanced (Unprompted) qualifiers Allowed values Default
+   (none)
 
 Input file format
 

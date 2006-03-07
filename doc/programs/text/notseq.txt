@@ -48,7 +48,7 @@ Usage
 
 % notseq 
 Exclude a set of sequences and write out the remaining ones
-Input sequence(s): globins.fasta
+Input (gapped) sequence(s): globins.fasta
 Sequence names to exclude: myg_phyca,lgb2_luplu
 Output sequence [hbb_human.fasta]: mydata.seq
 
@@ -63,7 +63,7 @@ Output sequence [hbb_human.fasta]: mydata.seq
 
 % notseq -junkout hb.seq 
 Exclude a set of sequences and write out the remaining ones
-Input sequence(s): globins.fasta
+Input (gapped) sequence(s): globins.fasta
 Sequence names to exclude: hb*
 Output sequence [hbb_human.fasta]: mydata.seq
 
@@ -72,7 +72,8 @@ Output sequence [hbb_human.fasta]: mydata.seq
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequence]          seqall     Sequence database USA
+  [-sequence]          seqall     (Gapped) sequence(s) filename and optional
+                                  format, or reference (input USA)
   [-exclude]           string     Enter a list of sequence names or accession
                                   numbers to exclude from the sequences read
                                   in. The excluded sequences will be written
@@ -90,7 +91,8 @@ Command line arguments
                                   a file containing a list of sequence names
                                   can be specified by giving the file name
                                   preceeded by a '@', eg: '@names.dat'
-  [-outseq]            seqoutall  Output sequence(s) USA
+  [-outseq]            seqoutall  Sequence set(s) filename and optional format
+                                  (output USA)
 
    Additional (Optional) qualifiers:
    -junkoutseq         seqoutall  This file collects the sequences which you
@@ -101,64 +103,64 @@ Command line arguments
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1             integer    Start of each sequence to be used
-   -send1               integer    End of each sequence to be used
-   -sreverse1           boolean    Reverse (if DNA)
-   -sask1               boolean    Ask for begin/end/reverse
-   -snucleotide1        boolean    Sequence is nucleotide
-   -sprotein1           boolean    Sequence is protein
-   -slower1             boolean    Make lower case
-   -supper1             boolean    Make upper case
-   -sformat1            string     Input sequence format
-   -sdbname1            string     Database name
-   -sid1                string     Entryname
-   -ufo1                string     UFO features
-   -fformat1            string     Features format
-   -fopenfile1          string     Features file name
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
 
    "-outseq" associated qualifiers
-   -osformat3           string     Output seq format
-   -osextension3        string     File name extension
-   -osname3             string     Base file name
-   -osdirectory3        string     Output directory
-   -osdbname3           string     Database name to add
-   -ossingle3           boolean    Separate file for each entry
-   -oufo3               string     UFO features
-   -offormat3           string     Features format
-   -ofname3             string     Features file name
-   -ofdirectory3        string     Output directory
+   -osformat3          string     Output seq format
+   -osextension3       string     File name extension
+   -osname3            string     Base file name
+   -osdirectory3       string     Output directory
+   -osdbname3          string     Database name to add
+   -ossingle3          boolean    Separate file for each entry
+   -oufo3              string     UFO features
+   -offormat3          string     Features format
+   -ofname3            string     Features file name
+   -ofdirectory3       string     Output directory
 
    "-junkoutseq" associated qualifiers
-   -osformat            string     Output seq format
-   -osextension         string     File name extension
-   -osname              string     Base file name
-   -osdirectory         string     Output directory
-   -osdbname            string     Database name to add
-   -ossingle            boolean    Separate file for each entry
-   -oufo                string     UFO features
-   -offormat            string     Features format
-   -ofname              string     Features file name
-   -ofdirectory         string     Output directory
+   -osformat           string     Output seq format
+   -osextension        string     File name extension
+   -osname             string     Base file name
+   -osdirectory        string     Output directory
+   -osdbname           string     Database name to add
+   -ossingle           boolean    Separate file for each entry
+   -oufo               string     UFO features
+   -offormat           string     Features format
+   -ofname             string     Features file name
+   -ofdirectory        string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   (Parameter 1) (Gapped) sequence(s) filename and optional format, or
+   reference (input USA) Readable sequence(s) Required
    [-exclude]
    (Parameter 2) Enter a list of sequence names or accession numbers to
    exclude from the sequences read in. The excluded sequences will be
@@ -172,8 +174,8 @@ Command line arguments
    '@', eg: '@names.dat' Any string is accepted An empty string is
    accepted
    [-outseq]
-   (Parameter 3) Output sequence(s) USA Writeable sequence(s)
-   <sequence>.format
+   (Parameter 3) Sequence set(s) filename and optional format (output
+   USA) Writeable sequence(s) <sequence>.format
    Additional (Optional) qualifiers Allowed values Default
    -junkoutseq This file collects the sequences which you have excluded
    from the main output file of sequences. Writeable sequence(s)

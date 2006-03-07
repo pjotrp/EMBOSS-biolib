@@ -48,7 +48,7 @@ Usage
 
 % octanol 
 Displays protein hydropathy
-Input sequence: tsw:opsd_human
+Input protein sequence: tsw:opsd_human
 Graph type [x11]: ps
 
 Created octanol.ps
@@ -59,7 +59,8 @@ Created octanol.ps
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequence]          sequence   Sequence USA
+  [-sequence]          sequence   Protein sequence filename and optional
+                                  format, or reference (input USA)
   [-graph]             xygraph    Graph type
 
    Additional (Optional) qualifiers:
@@ -73,49 +74,49 @@ Command line arguments
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1             integer    Start of the sequence to be used
-   -send1               integer    End of the sequence to be used
-   -sreverse1           boolean    Reverse (if DNA)
-   -sask1               boolean    Ask for begin/end/reverse
-   -snucleotide1        boolean    Sequence is nucleotide
-   -sprotein1           boolean    Sequence is protein
-   -slower1             boolean    Make lower case
-   -supper1             boolean    Make upper case
-   -sformat1            string     Input sequence format
-   -sdbname1            string     Database name
-   -sid1                string     Entryname
-   -ufo1                string     UFO features
-   -fformat1            string     Features format
-   -fopenfile1          string     Features file name
+   -sbegin1            integer    Start of the sequence to be used
+   -send1              integer    End of the sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
 
    "-graph" associated qualifiers
-   -gprompt2            boolean    Graph prompting
-   -gtitle2             string     Graph title
-   -gsubtitle2          string     Graph subtitle
-   -gxtitle2            string     Graph x axis title
-   -gytitle2            string     Graph y axis title
-   -goutfile2           string     Output file for non interactive displays
-   -gdirectory2         string     Output directory
+   -gprompt2           boolean    Graph prompting
+   -gtitle2            string     Graph title
+   -gsubtitle2         string     Graph subtitle
+   -gxtitle2           string     Graph x axis title
+   -gytitle2           string     Graph y axis title
+   -goutfile2          string     Output file for non interactive displays
+   -gdirectory2        string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) Sequence USA Readable sequence Required
+   (Parameter 1) Protein sequence filename and optional format, or
+   reference (input USA) Readable sequence Required
    [-graph]
    (Parameter 2) Graph type EMBOSS has a list of known devices, including
    ps, hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data,

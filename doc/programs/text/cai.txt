@@ -39,7 +39,8 @@ Output file [ab009602.cai]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-seqall]            seqall     Sequence database USA
+  [-seqall]            seqall     Nucleotide sequence(s) filename and optional
+                                  format, or reference (input USA)
    -cfile              codon      Codon usage table name
   [-outfile]           outfile    Output file name
 
@@ -84,10 +85,10 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-seqall]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
+   reference (input USA) Readable sequence(s) Required
    -cfile Codon usage table name Codon usage file in EMBOSS data path
    Eyeast_cai.cut
    [-outfile]

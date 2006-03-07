@@ -223,7 +223,7 @@ Usage
 
 % sirna 
 Finds siRNA duplexes in mRNA
-Input sequence(s): tembl:hsfau
+Input nucleotide sequence(s): tembl:hsfau
 Output report [hsfau.sirna]: 
 Output sequence [hsfau.fasta]: 
 
@@ -239,7 +239,7 @@ Output sequence [hsfau.fasta]:
 
 % sirna -context 
 Finds siRNA duplexes in mRNA
-Input sequence(s): tembl:hsfau
+Input nucleotide sequence(s): tembl:hsfau
 Output report [hsfau.sirna]: 
 Output sequence [hsfau.fasta]: 
 
@@ -248,7 +248,8 @@ Output sequence [hsfau.fasta]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequence]          seqall     Sequence database USA
+  [-sequence]          seqall     Nucleotide sequence(s) filename and optional
+                                  format, or reference (input USA)
   [-outfile]           report     The output is a table of the forward and
                                   reverse parts of the 21 base siRNA duplex.
                                   Both the forward and reverse sequences are
@@ -313,62 +314,62 @@ Command line arguments
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1             integer    Start of each sequence to be used
-   -send1               integer    End of each sequence to be used
-   -sreverse1           boolean    Reverse (if DNA)
-   -sask1               boolean    Ask for begin/end/reverse
-   -snucleotide1        boolean    Sequence is nucleotide
-   -sprotein1           boolean    Sequence is protein
-   -slower1             boolean    Make lower case
-   -supper1             boolean    Make upper case
-   -sformat1            string     Input sequence format
-   -sdbname1            string     Database name
-   -sid1                string     Entryname
-   -ufo1                string     UFO features
-   -fformat1            string     Features format
-   -fopenfile1          string     Features file name
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
 
    "-outfile" associated qualifiers
-   -rformat2            string     Report format
-   -rname2              string     Base file name
-   -rextension2         string     File name extension
-   -rdirectory2         string     Output directory
-   -raccshow2           boolean    Show accession number in the report
-   -rdesshow2           boolean    Show description in the report
-   -rscoreshow2         boolean    Show the score in the report
-   -rusashow2           boolean    Show the full USA in the report
+   -rformat2           string     Report format
+   -rname2             string     Base file name
+   -rextension2        string     File name extension
+   -rdirectory2        string     Output directory
+   -raccshow2          boolean    Show accession number in the report
+   -rdesshow2          boolean    Show description in the report
+   -rscoreshow2        boolean    Show the score in the report
+   -rusashow2          boolean    Show the full USA in the report
 
    "-outseq" associated qualifiers
-   -osformat3           string     Output seq format
-   -osextension3        string     File name extension
-   -osname3             string     Base file name
-   -osdirectory3        string     Output directory
-   -osdbname3           string     Database name to add
-   -ossingle3           boolean    Separate file for each entry
-   -oufo3               string     UFO features
-   -offormat3           string     Features format
-   -ofname3             string     Features file name
-   -ofdirectory3        string     Output directory
+   -osformat3          string     Output seq format
+   -osextension3       string     File name extension
+   -osname3            string     Base file name
+   -osdirectory3       string     Output directory
+   -osdbname3          string     Database name to add
+   -ossingle3          boolean    Separate file for each entry
+   -oufo3              string     UFO features
+   -offormat3          string     Features format
+   -ofname3            string     Features file name
+   -ofdirectory3       string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
+   reference (input USA) Readable sequence(s) Required
    [-outfile]
    (Parameter 2) The output is a table of the forward and reverse parts
    of the 21 base siRNA duplex. Both the forward and reverse sequences
@@ -537,6 +538,8 @@ Output file format
 ########################################
 # Program: sirna
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: sirna
+#    -sequence tembl:hsfau
 # Report_format: table
 # Report_file: hsfau.sirna
 ########################################
@@ -582,8 +585,6 @@ Output file format
     321     343   6.000   50.0 GACUCCUAAGGUGGCCAAAdTdT UUUGGCCACCUUAGGAGUCdTdT
     323     345   6.000   50.0 CUCCUAAGGUGGCCAAACAdTdT UGUUUGGCCACCUUAGGAGdTdT
     329     351   6.000   50.0 AGGUGGCCAAACAGGAGAAdTdT UUCUCCUGUUUGGCCACCUdTdT
-    356     378   6.000   50.0 AGAAGACAGGUCGGGCUAAdTdT UUAGCCCGACCUGUCUUCUdTdT
-    419     441   6.000   50.0 CCUUUGGCAAGAAGAAGGGdTdT CCCUUCUUCUUGCCAAAGGdTdT
 
 
   [Part of this file has been deleted for brevity]
@@ -755,6 +756,9 @@ taaaaaagccacttagttcagtc
 ########################################
 # Program: sirna
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: sirna
+#    -context
+#    -sequence tembl:hsfau
 # Report_format: table
 # Report_file: hsfau.sirna
 ########################################
@@ -825,12 +829,6 @@ TdT
     165     187   6.000   50.0 (GA)AGAUCAAGUCGUGCUCCUGdTdT CAGGAGCACGACUUGAUCUd
 TdT
     278     300   6.000   50.0 (UA)AAGUUCAUGGUUCCCUGGCdTdT GCCAGGGAACCAUGAACUUd
-TdT
-    314     336   6.000   50.0 (GA)GAGGUCAGACUCCUAAGGUdTdT ACCUUAGGAGUCUGACCUCd
-TdT
-    321     343   6.000   50.0 (CA)GACUCCUAAGGUGGCCAAAdTdT UUUGGCCACCUUAGGAGUCd
-TdT
-    323     345   6.000   50.0 (GA)CUCCUAAGGUGGCCAAACAdTdT UGUUUGGCCACCUUAGGAGd
 TdT
 
 

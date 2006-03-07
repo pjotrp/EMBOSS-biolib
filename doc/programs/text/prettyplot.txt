@@ -20,7 +20,7 @@ Usage
 
 % prettyplot -resbreak=10 -boxcol -consensus -plurality=3 
 Displays aligned sequences, with colouring and boxing
-Input sequence set: globins.msf
+Input (aligned) sequence set: globins.msf
 Graph type [x11]: cps
 
 Created prettyplot.ps
@@ -42,7 +42,8 @@ Created prettyplot.ps
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequences]         seqset     File containing a sequence alignment
+  [-sequences]         seqset     (Aligned) sequence set filename and optional
+                                  format, or reference (input USA)
    -graph              graph      Graph type
 
    Additional (Optional) qualifiers:
@@ -143,11 +144,10 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequences]
-   (Parameter 1) File containing a sequence alignment Readable set of
-   sequences Required
+   (Parameter 1) (Aligned) sequence set filename and optional format, or
+   reference (input USA) Readable set of sequences Required
    -graph Graph type EMBOSS has a list of known devices, including ps,
    hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data, xterm,
    png EMBOSS_GRAPHICS value, or x11
@@ -177,7 +177,7 @@ Command line arguments
    for pair = 1.5,1.0,0.5 and shade = BPLW Residues score Colour 1.5 or
    over... BLACK (B) 1.0 to 1.5 ... BROWN (P) 0.5 to 1.0 ... WHEAT (L)
    under 0.5 .... WHITE (W) The only four letters allowed are BPLW, in
-   any order. A string up to 4 characters, matching regular expression
+   any order. Any string up to 4 characters, matching regular expression
    /^([BPLW]{4})?$/ An empty string is accepted
    -pair Values to represent identical similar related List of floating
    point numbers 1.5,1.0,0.5

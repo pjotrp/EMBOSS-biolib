@@ -58,8 +58,10 @@ Output alignment [hba_human.matcher]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-asequence]         sequence   Sequence USA
-  [-bsequence]         sequence   Sequence USA
+  [-asequence]         sequence   Sequence filename and optional format, or
+                                  reference (input USA)
+  [-bsequence]         sequence   Sequence filename and optional format, or
+                                  reference (input USA)
   [-outfile]           align      Output alignment file name
 
    Additional (Optional) qualifiers:
@@ -159,12 +161,13 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-asequence]
-   (Parameter 1) Sequence USA Readable sequence Required
+   (Parameter 1) Sequence filename and optional format, or reference
+   (input USA) Readable sequence Required
    [-bsequence]
-   (Parameter 2) Sequence USA Readable sequence Required
+   (Parameter 2) Sequence filename and optional format, or reference
+   (input USA) Readable sequence Required
    [-outfile]
    (Parameter 3) Output alignment file name Alignment output file
    Additional (Optional) qualifiers Allowed values Default
@@ -449,6 +452,9 @@ Output file format
 ########################################
 # Program: matcher
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: matcher
+#    [-asequence] tsw:hba_human
+#    [-bsequence] tsw:hbb_human
 # Align_format: markx0
 # Report_file: hba_human.matcher
 ########################################
@@ -500,6 +506,10 @@ HBB_HU ENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKY
 ########################################
 # Program: matcher
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: matcher
+#    [-asequence] tsw:hba_human
+#    [-bsequence] tsw:hbb_human
+#    -alternatives 10
 # Align_format: markx0
 # Report_file: hba_human.matcher
 ########################################
@@ -543,10 +553,6 @@ HBB_HU ENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKY
 
 #=======================================
 #
-# Aligned_sequences: 2
-# 1: HBA_HUMAN
-# 2: HBB_HUMAN
-# Matrix: EBLOSUM62
 
 
   [Part of this file has been deleted for brevity]

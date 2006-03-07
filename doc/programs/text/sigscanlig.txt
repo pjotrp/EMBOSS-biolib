@@ -178,7 +178,7 @@ LIGID     PATCHES   SITES     SCORE
 
   File: lhf/Q99396^.^262^473^.lhf
 
-> Q99396^.^262^473^.^55074^Alpha^.^99^138^LIGAND^1ii7;^d1ii7a_^101^2^2^0^0^1DF^
+> Q99396^.^262^473^.^55074^Alpha^.^99^138^LIGAND^1ii7;^d1ii7a_^101^1^2^0^0^1DF^
 7.00^0.000e+00^0.000e+00
 KELADPVTLIFTDIESSTAQWATQPELMPDAVATHHSMVRSLIENYDCYEVKTVGDSFMIACKSPFAAVQLAQELQLRF
 LRLDWGTTVFDEFYREFEERHAEEGDGKYKPPTARLDPEVYRQLWNGLRVRVGIHTGLCDIRYDEVTKGYDYYGQTANT
@@ -203,7 +203,7 @@ AARTESVGNGGQVLMTCETYHSLSTAERSQFDVTPLGGVPLRGVSEPVEVYQLN
 KELADPVTLIFTDIESSTAQWATQPELMPDAVATHHSMVRSLIENYDCYEVKTVGDSFMIACKSPFAAVQLAQELQLRF
 LRLDWGTTVFDEFYREFEERHAEEGDGKYKPPTARLDPEVYRQLWNGLRVRVGIHTGLCDIRYDEVTKGYDYYGQTANT
 AARTESVGNGGQVLMTCETYHSLSTAERSQFDVTPLGGVPLRGVSEPVEVYQLN
-> Q99396^.^262^473^.^55074^Alpha^.^11^55^LIGAND^1cs4;^d1cs4a_^101^1^2^0^0^1DF^1
+> Q99396^.^262^473^.^55074^Alpha^.^11^55^LIGAND^1cs4;^d1cs4a_^101^2^2^0^0^1DF^1
 .83^0.000e+00^0.000e+00
 KELADPVTLIFTDIESSTAQWATQPELMPDAVATHHSMVRSLIENYDCYEVKTVGDSFMIACKSPFAAVQLAQELQLRF
 LRLDWGTTVFDEFYREFEERHAEEGDGKYKPPTARLDPEVYRQLWNGLRVRVGIHTGLCDIRYDEVTKGYDYYGQTANT
@@ -236,7 +236,7 @@ AARTESVGNGGQVLMTCETYHSLSTAERSQFDVTPLGGVPLRGVSEPVEVYQLN
 
   File: lhf/Q9DGG6^.^380^560^.lhf
 
-> Q9DGG6^.^380^560^.^55074^Alpha^.^8^52^LIGAND^1cs4;^d1cs4a_^101^1^2^0^0^1DF^5.
+> Q9DGG6^.^380^560^.^55074^Alpha^.^8^52^LIGAND^1cs4;^d1cs4a_^101^2^2^0^0^1DF^5.
 50^0.000e+00^0.000e+00
 EQVSILFADIVGFTKMSANKSAHALVGLLNDLFGRFDRLCEDTKCEKISTLGDCYYCVAGCPEPRADHAYCCIEMGLGM
 IKAIEQFCQEKKEMVNMRVGVHTGTVLCGILGMRRFKFDVWSNDVNLANLMEQLGVAGKVHISEATAKYLDDRYEMEDG
@@ -256,7 +256,7 @@ KVTERVGQSAVADQLKGLKTYLI
 EQVSILFADIVGFTKMSANKSAHALVGLLNDLFGRFDRLCEDTKCEKISTLGDCYYCVAGCPEPRADHAYCCIEMGLGM
 IKAIEQFCQEKKEMVNMRVGVHTGTVLCGILGMRRFKFDVWSNDVNLANLMEQLGVAGKVHISEATAKYLDDRYEMEDG
 KVTERVGQSAVADQLKGLKTYLI
-> Q9DGG6^.^380^560^.^55074^Alpha^.^100^139^LIGAND^1ii7;^d1ii7a_^101^2^2^0^0^1DF
+> Q9DGG6^.^380^560^.^55074^Alpha^.^100^139^LIGAND^1ii7;^d1ii7a_^101^1^2^0^0^1DF
 ^3.50^0.000e+00^0.000e+00
 EQVSILFADIVGFTKMSANKSAHALVGLLNDLFGRFDRLCEDTKCEKISTLGDCYYCVAGCPEPRADHAYCCIEMGLGM
 IKAIEQFCQEKKEMVNMRVGVHTGTVLCGILGMRRFKFDVWSNDVNLANLMEQLGVAGKVHISEATAKYLDDRYEMEDG
@@ -298,11 +298,11 @@ KVTERVGQSAVADQLKGLKTYLI
 0^0.000e+00^0.000e+00
 VTMLFSDIVGFTAICSQCSPLQVITMLNALYTRFDQQCGELDVYKVETIGDAYCVAGGLHRESDTHAVQIALMALKMME
 LSNEVMSPHGEPIKMRIGLHSGSVFAGVVGVKMPRYCLFGNNVTLANKFESCSVPRKINVSPTTYRLLKDCPG
-> Q9ERL9^.^480^631^.^55074^Alpha^.^6^50^LIGAND^1cs4;^d1cs4a_^101^1^2^0^0^1DF^5.
+> Q9ERL9^.^480^631^.^55074^Alpha^.^6^50^LIGAND^1cs4;^d1cs4a_^101^2^2^0^0^1DF^5.
 17^0.000e+00^0.000e+00
 VTMLFSDIVGFTAICSQCSPLQVITMLNALYTRFDQQCGELDVYKVETIGDAYCVAGGLHRESDTHAVQIALMALKMME
 LSNEVMSPHGEPIKMRIGLHSGSVFAGVVGVKMPRYCLFGNNVTLANKFESCSVPRKINVSPTTYRLLKDCPG
-> Q9ERL9^.^480^631^.^55074^Alpha^.^98^137^LIGAND^1ii7;^d1ii7a_^101^2^2^0^0^1DF^
+> Q9ERL9^.^480^631^.^55074^Alpha^.^98^137^LIGAND^1ii7;^d1ii7a_^101^1^2^0^0^1DF^
 4.50^0.000e+00^0.000e+00
 VTMLFSDIVGFTAICSQCSPLQVITMLNALYTRFDQQCGELDVYKVETIGDAYCVAGGLHRESDTHAVQIALMALKMME
 LSNEVMSPHGEPIKMRIGLHSGSVFAGVVGVKMPRYCLFGNNVTLANKFESCSVPRKINVSPTTYRLLKDCPG
@@ -345,11 +345,11 @@ LSNEVMSPHGEPIKMRIGLHSGSVFAGVVGVKMPRYCLFGNNVTLANKFESCSVPRKINVSPTTYRLLKDCPG
 0^0.000e+00^0.000e+00
 DDVTMLFSDIVGFTAICAQCTPMQVISMLNELYTRFDHQCGFLDIYKVETIGDAYCVASGLHRKSLCHAKPIALMALKM
 MELSEEVLTPDGRPIQMRIGIHSGSVLAGVVGVRMPRYCLFGNNVTLASKFESGSHPRRINISPTTYQLL
-> Q9WVI4^.^516^664^.^55074^Alpha^.^8^52^LIGAND^1cs4;^d1cs4a_^101^1^2^0^0^1DF^5.
+> Q9WVI4^.^516^664^.^55074^Alpha^.^8^52^LIGAND^1cs4;^d1cs4a_^101^2^2^0^0^1DF^5.
 17^0.000e+00^0.000e+00
 DDVTMLFSDIVGFTAICAQCTPMQVISMLNELYTRFDHQCGFLDIYKVETIGDAYCVASGLHRKSLCHAKPIALMALKM
 MELSEEVLTPDGRPIQMRIGIHSGSVLAGVVGVRMPRYCLFGNNVTLASKFESGSHPRRINISPTTYQLL
-> Q9WVI4^.^516^664^.^55074^Alpha^.^100^139^LIGAND^1ii7;^d1ii7a_^101^2^2^0^0^1DF
+> Q9WVI4^.^516^664^.^55074^Alpha^.^100^139^LIGAND^1ii7;^d1ii7a_^101^1^2^0^0^1DF
 ^4.50^0.000e+00^0.000e+00
 DDVTMLFSDIVGFTAICAQCTPMQVISMLNELYTRFDHQCGFLDIYKVETIGDAYCVASGLHRKSLCHAKPIALMALKM
 MELSEEVLTPDGRPIQMRIGIHSGSVLAGVVGVRMPRYCLFGNNVTLASKFESGSHPRRINISPTTYQLL
@@ -396,24 +396,24 @@ MELSEEVLTPDGRPIQMRIGIHSGSVLAGVVGVRMPRYCLFGNNVTLASKFESGSHPRRINISPTTYQLL
 
 # DE   Alignment of query sequence against library of signatures
 # XX
-# > Q99396^.^262^473^.^55074^Alpha^.^99^138^LIGAND^1ii7;^d1ii7a_^101^2^2^0^0^1D
+# > Q99396^.^262^473^.^55074^Alpha^.^99^138^LIGAND^1ii7;^d1ii7a_^101^1^2^0^0^1D
 F^7.00^0.000e+00^0.000e+00
 # XX
 Q99396^.^262^473^.^55074^Alpha1      KELADPVTLIFTDIESSTAQWATQPELMPDAVATHHSMVRSL
 IEN 45
-101_2_0           -      ---------------------------------------------
+101_1_0           -      ---------------------------------------------
 Q99396^.^262^473^.^55074^Alpha46     YDCYEVKTVGDSFMIACKSPFAAVQLAQELQLRFLRLDWGTT
 VFD 90
-101_2_0           -      ---------------------------------------------
+101_1_0           -      ---------------------------------------------
 Q99396^.^262^473^.^55074^Alpha91     EFYREFEERHAEEGDGKYKPPTARLDPEVYRQLWNGLRVRVG
 IHT 135
-101_2_0           -      ---------*-----------------------------------
+101_1_0           -      ---------*-----------------------------------
 Q99396^.^262^473^.^55074^Alpha136    GLCDIRYDEVTKGYDYYGQTANTAARTESVGNGGQVLMTCET
 YHS 180
-101_2_0           -      ---*-----------------------------------------
+101_1_0           -      ---*-----------------------------------------
 Q99396^.^262^473^.^55074^Alpha181    LSTAERSQFDVTPLGGVPLRGVSEPVEVYQLN
     225
-101_2_0           -      --------------------------------
+101_1_0           -      --------------------------------
 # XX
 # > Q99396^.^262^473^.^55074^Alpha^.^97^138^LIGAND^1ii7;^d1ii7a_^MN^1^1^0^0^1DF
 ^5.33^0.000e+00^0.000e+00
@@ -551,24 +551,24 @@ FOK_1_0           -      --------------------------------
 
 # DE   Alignment of query sequence against library of signatures
 # XX
-# > Q9DGG6^.^380^560^.^55074^Alpha^.^8^52^LIGAND^1cs4;^d1cs4a_^101^1^2^0^0^1DF^
+# > Q9DGG6^.^380^560^.^55074^Alpha^.^8^52^LIGAND^1cs4;^d1cs4a_^101^2^2^0^0^1DF^
 5.50^0.000e+00^0.000e+00
 # XX
 Q9DGG6^.^380^560^.^55074^Alpha1      EQVSILFADIVGFTKMSANKSAHALVGLLNDLFGRFDRLCED
 TKC 45
-101_1_0           -      --------*---**-------------------------------
+101_2_0           -      --------*---**-------------------------------
 Q9DGG6^.^380^560^.^55074^Alpha46     EKISTLGDCYYCVAGCPEPRADHAYCCIEMGLGMIKAIEQFC
 QEK 90
-101_1_0           -      -----***-------------------------------------
+101_2_0           -      -----***-------------------------------------
 Q9DGG6^.^380^560^.^55074^Alpha91     KEMVNMRVGVHTGTVLCGILGMRRFKFDVWSNDVNLANLMEQ
 LGV 135
-101_1_0           -      ---------------------------------------------
+101_2_0           -      ---------------------------------------------
 Q9DGG6^.^380^560^.^55074^Alpha136    AGKVHISEATAKYLDDRYEMEDGKVTERVGQSAVADQLKGLK
 TYL 180
-101_1_0           -      ---------------------------------------------
+101_2_0           -      ---------------------------------------------
 Q9DGG6^.^380^560^.^55074^Alpha181    I
     225
-101_1_0           -      -
+101_2_0           -      -
 # XX
 # > Q9DGG6^.^380^560^.^55074^Alpha^.^8^52^LIGAND^1cs4;^d1cs4a_^MG^1^1^0^0^1DF^5
 .50^0.000e+00^0.000e+00
@@ -722,37 +722,37 @@ Q9ERL9^.^480^631^.^55074^Alpha136    KINVSPTTYRLLKDCPG
     180
 MG_1_0            -      -----------------
 # XX
-# > Q9ERL9^.^480^631^.^55074^Alpha^.^6^50^LIGAND^1cs4;^d1cs4a_^101^1^2^0^0^1DF^
+# > Q9ERL9^.^480^631^.^55074^Alpha^.^6^50^LIGAND^1cs4;^d1cs4a_^101^2^2^0^0^1DF^
 5.17^0.000e+00^0.000e+00
 # XX
 Q9ERL9^.^480^631^.^55074^Alpha1      VTMLFSDIVGFTAICSQCSPLQVITMLNALYTRFDQQCGELD
 VYK 45
-101_1_0           -      ------*---**---------------------------------
+101_2_0           -      ------*---**---------------------------------
 Q9ERL9^.^480^631^.^55074^Alpha46     VETIGDAYCVAGGLHRESDTHAVQIALMALKMMELSNEVMSP
 HGE 90
-101_1_0           -      ---***---------------------------------------
+101_2_0           -      ---***---------------------------------------
 Q9ERL9^.^480^631^.^55074^Alpha91     PIKMRIGLHSGSVFAGVVGVKMPRYCLFGNNVTLANKFESCS
 VPR 135
-101_1_0           -      ---------------------------------------------
+101_2_0           -      ---------------------------------------------
 Q9ERL9^.^480^631^.^55074^Alpha136    KINVSPTTYRLLKDCPG
     180
-101_1_0           -      -----------------
+101_2_0           -      -----------------
 # XX
-# > Q9ERL9^.^480^631^.^55074^Alpha^.^98^137^LIGAND^1ii7;^d1ii7a_^101^2^2^0^0^1D
+# > Q9ERL9^.^480^631^.^55074^Alpha^.^98^137^LIGAND^1ii7;^d1ii7a_^101^1^2^0^0^1D
 F^4.50^0.000e+00^0.000e+00
 # XX
 Q9ERL9^.^480^631^.^55074^Alpha1      VTMLFSDIVGFTAICSQCSPLQVITMLNALYTRFDQQCGELD
 VYK 45
-101_2_0           -      ---------------------------------------------
+101_1_0           -      ---------------------------------------------
 Q9ERL9^.^480^631^.^55074^Alpha46     VETIGDAYCVAGGLHRESDTHAVQIALMALKMMELSNEVMSP
 HGE 90
-101_2_0           -      ---------------------------------------------
+101_1_0           -      ---------------------------------------------
 Q9ERL9^.^480^631^.^55074^Alpha91     PIKMRIGLHSGSVFAGVVGVKMPRYCLFGNNVTLANKFESCS
 VPR 135
-101_2_0           -      --------*------------------------------------
+101_1_0           -      --------*------------------------------------
 Q9ERL9^.^480^631^.^55074^Alpha136    KINVSPTTYRLLKDCPG
     180
-101_2_0           -      --*--------------
+101_1_0           -      --*--------------
 # XX
 # > Q9ERL9^.^480^631^.^55074^Alpha^.^6^11^LIGAND^1cs4;^d1cs4a_^POP^1^1^0^0^1DF^
 4.17^0.000e+00^0.000e+00
@@ -875,37 +875,37 @@ Q9WVI4^.^516^664^.^55074^Alpha136    PRRINISPTTYQLL
     180
 MG_1_0            -      --------------
 # XX
-# > Q9WVI4^.^516^664^.^55074^Alpha^.^8^52^LIGAND^1cs4;^d1cs4a_^101^1^2^0^0^1DF^
+# > Q9WVI4^.^516^664^.^55074^Alpha^.^8^52^LIGAND^1cs4;^d1cs4a_^101^2^2^0^0^1DF^
 5.17^0.000e+00^0.000e+00
 # XX
 Q9WVI4^.^516^664^.^55074^Alpha1      DDVTMLFSDIVGFTAICAQCTPMQVISMLNELYTRFDHQCGF
 LDI 45
-101_1_0           -      --------*---**-------------------------------
+101_2_0           -      --------*---**-------------------------------
 Q9WVI4^.^516^664^.^55074^Alpha46     YKVETIGDAYCVASGLHRKSLCHAKPIALMALKMMELSEEVL
 TPD 90
-101_1_0           -      -----***-------------------------------------
+101_2_0           -      -----***-------------------------------------
 Q9WVI4^.^516^664^.^55074^Alpha91     GRPIQMRIGIHSGSVLAGVVGVRMPRYCLFGNNVTLASKFES
 GSH 135
-101_1_0           -      ---------------------------------------------
+101_2_0           -      ---------------------------------------------
 Q9WVI4^.^516^664^.^55074^Alpha136    PRRINISPTTYQLL
     180
-101_1_0           -      --------------
+101_2_0           -      --------------
 # XX
-# > Q9WVI4^.^516^664^.^55074^Alpha^.^100^139^LIGAND^1ii7;^d1ii7a_^101^2^2^0^0^1
+# > Q9WVI4^.^516^664^.^55074^Alpha^.^100^139^LIGAND^1ii7;^d1ii7a_^101^1^2^0^0^1
 DF^4.50^0.000e+00^0.000e+00
 # XX
 Q9WVI4^.^516^664^.^55074^Alpha1      DDVTMLFSDIVGFTAICAQCTPMQVISMLNELYTRFDHQCGF
 LDI 45
-101_2_0           -      ---------------------------------------------
+101_1_0           -      ---------------------------------------------
 Q9WVI4^.^516^664^.^55074^Alpha46     YKVETIGDAYCVASGLHRKSLCHAKPIALMALKMMELSEEVL
 TPD 90
-101_2_0           -      ---------------------------------------------
+101_1_0           -      ---------------------------------------------
 Q9WVI4^.^516^664^.^55074^Alpha91     GRPIQMRIGIHSGSVLAGVVGVRMPRYCLFGNNVTLASKFES
 GSH 135
-101_2_0           -      ----------*----------------------------------
+101_1_0           -      ----------*----------------------------------
 Q9WVI4^.^516^664^.^55074^Alpha136    PRRINISPTTYQLL
     180
-101_2_0           -      ----*---------
+101_1_0           -      ----*---------
 # XX
 # > Q9WVI4^.^516^664^.^55074^Alpha^.^8^13^LIGAND^1cs4;^d1cs4a_^POP^1^1^0^0^1DF^
 4.17^0.000e+00^0.000e+00
@@ -1355,7 +1355,6 @@ Directory of results file (output) [./]: results
 See also
 
    Program name                      Description
-   contactcount Count specific versus non-specific contacts
    contacts     Generate intra-chain CON files from CCF files
    domainalign  Generate alignments (DAF file) for nodes in a DCF file
    domainrep    Reorder DCF file to identify representative structures
@@ -1366,7 +1365,6 @@ See also
    psiphi       Phi and psi torsion angles from protein coordinates
    rocon        Generates a hits file from comparing two DHF files
    rocplot      Performs ROC analysis on hits files
-   scorecmapdir Contact scores for cleaned protein chain contact files
    seqalign     Extend alignments (DAF file) with sequences (DHF file)
    seqfraggle   Removes fragment sequences from DHF files
    seqsearch    Generate PSI-BLAST hits (DHF file) from a DAF file

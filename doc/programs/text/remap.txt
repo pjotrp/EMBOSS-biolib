@@ -67,7 +67,7 @@ Usage
 
 % remap -notran -sbeg 1 -send 60 
 Display sequence with restriction sites, translation etc.
-Input sequence(s): tembl:eclac
+Input nucleotide sequence(s): tembl:eclac
 Comma separated enzyme list [all]: taqi,bsu6i,acii,bsski
 Minimum recognition site length [4]: 
 Output file [eclac.remap]: 
@@ -86,7 +86,7 @@ Output file [eclac.remap]:
 
 % remap -notran -sbeg 1 -send 60 
 Display sequence with restriction sites, translation etc.
-Input sequence(s): tembl:eclac
+Input nucleotide sequence(s): tembl:eclac
 Comma separated enzyme list [all]: 
 Minimum recognition site length [4]: 
 Output file [eclac.remap]: 
@@ -104,7 +104,7 @@ Output file [eclac.remap]:
 
 % remap -notran -sbeg 1 -send 60 -nolimit 
 Display sequence with restriction sites, translation etc.
-Input sequence(s): tembl:eclac
+Input nucleotide sequence(s): tembl:eclac
 Comma separated enzyme list [all]: 
 Minimum recognition site length [4]: 
 Output file [eclac.remap]: 
@@ -120,7 +120,7 @@ Output file [eclac.remap]:
 
 % remap -notran -sbeg 1 -send 60 -flat 
 Display sequence with restriction sites, translation etc.
-Input sequence(s): tembl:eclac
+Input nucleotide sequence(s): tembl:eclac
 Comma separated enzyme list [all]: 
 Minimum recognition site length [4]: 
 Output file [eclac.remap]: 
@@ -130,7 +130,8 @@ Output file [eclac.remap]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequence]          seqall     Sequence database USA
+  [-sequence]          seqall     Nucleotide sequence(s) filename and optional
+                                  format, or reference (input USA)
    -enzymes            string     The name 'all' reads in all enzyme names
                                   from the REBASE database. You can specify
                                   enzymes by giving their names with commas
@@ -284,43 +285,43 @@ Command line arguments
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1             integer    Start of each sequence to be used
-   -send1               integer    End of each sequence to be used
-   -sreverse1           boolean    Reverse (if DNA)
-   -sask1               boolean    Ask for begin/end/reverse
-   -snucleotide1        boolean    Sequence is nucleotide
-   -sprotein1           boolean    Sequence is protein
-   -slower1             boolean    Make lower case
-   -supper1             boolean    Make upper case
-   -sformat1            string     Input sequence format
-   -sdbname1            string     Database name
-   -sid1                string     Entryname
-   -ufo1                string     UFO features
-   -fformat1            string     Features format
-   -fopenfile1          string     Features file name
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
 
    "-outfile" associated qualifiers
-   -odirectory2         string     Output directory
+   -odirectory2        string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
+   reference (input USA) Readable sequence(s) Required
    -enzymes The name 'all' reads in all enzyme names from the REBASE
    database. You can specify enzymes by giving their names with commas
    between then, such as: 'HincII,hinfI,ppiI,hindiii'. The case of the

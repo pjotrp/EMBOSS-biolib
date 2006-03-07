@@ -93,7 +93,7 @@ Usage
 
 % coderet 
 Extract CDS, mRNA and translations from feature tables
-Input sequence(s): tembl:X03487
+Input nucleotide sequence(s): tembl:X03487
 Output sequence [hsferg1.fasta]: 
 Output file [hsferg1.coderet]: 
 
@@ -107,7 +107,7 @@ Output file [hsferg1.coderet]:
 
 % coderet -nocds -notranslation 
 Extract CDS, mRNA and translations from feature tables
-Input sequence(s): tembl:X03487
+Input nucleotide sequence(s): tembl:X03487
 Output sequence [hsferg1.fasta]: 
 Output file [hsferg1.coderet]: 
 
@@ -116,8 +116,10 @@ Output file [hsferg1.coderet]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-seqall]            seqall     Sequence database USA
-  [-outseq]            seqout     Output sequence USA
+  [-seqall]            seqall     Nucleotide sequence(s) filename and optional
+                                  format, or reference (input USA)
+  [-outseq]            seqout     Sequence filename and optional format
+                                  (output USA)
   [-outfile]           outfile    Output file name
 
    Additional (Optional) qualifiers: (none)
@@ -174,12 +176,13 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-seqall]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
+   reference (input USA) Readable sequence(s) Required
    [-outseq]
-   (Parameter 2) Output sequence USA Writeable sequence <sequence>.format
+   (Parameter 2) Sequence filename and optional format (output USA)
+   Writeable sequence <sequence>.format
    [-outfile]
    (Parameter 3) Output file name Output file <sequence>.coderet
    Additional (Optional) qualifiers Allowed values Default

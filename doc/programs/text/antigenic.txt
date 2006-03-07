@@ -32,7 +32,7 @@ Usage
 
 % antigenic 
 Finds antigenic sites in proteins
-Input sequence(s): tsw:act1_fugru
+Input protein sequence(s): tsw:act1_fugru
 Minimum length [6]: 
 Output report [act1_fugru.antigenic]: 
 
@@ -47,7 +47,7 @@ Output report [act1_fugru.antigenic]:
 
 % antigenic -rformat gff 
 Finds antigenic sites in proteins
-Input sequence(s): tsw:act1_fugru
+Input protein sequence(s): tsw:act1_fugru
 Minimum length [6]: 
 Output report [act1_fugru.antigenic]: 
 
@@ -56,7 +56,8 @@ Output report [act1_fugru.antigenic]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequence]          seqall     Sequence database USA
+  [-sequence]          seqall     Protein sequence(s) filename and optional
+                                  format, or reference (input USA)
    -minlen             integer    Minimum length
   [-outfile]           report     Output report file name
 
@@ -65,50 +66,50 @@ Command line arguments
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1             integer    Start of each sequence to be used
-   -send1               integer    End of each sequence to be used
-   -sreverse1           boolean    Reverse (if DNA)
-   -sask1               boolean    Ask for begin/end/reverse
-   -snucleotide1        boolean    Sequence is nucleotide
-   -sprotein1           boolean    Sequence is protein
-   -slower1             boolean    Make lower case
-   -supper1             boolean    Make upper case
-   -sformat1            string     Input sequence format
-   -sdbname1            string     Database name
-   -sid1                string     Entryname
-   -ufo1                string     UFO features
-   -fformat1            string     Features format
-   -fopenfile1          string     Features file name
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
 
    "-outfile" associated qualifiers
-   -rformat2            string     Report format
-   -rname2              string     Base file name
-   -rextension2         string     File name extension
-   -rdirectory2         string     Output directory
-   -raccshow2           boolean    Show accession number in the report
-   -rdesshow2           boolean    Show description in the report
-   -rscoreshow2         boolean    Show the score in the report
-   -rusashow2           boolean    Show the full USA in the report
+   -rformat2           string     Report format
+   -rname2             string     Base file name
+   -rextension2        string     File name extension
+   -rdirectory2        string     Output directory
+   -raccshow2          boolean    Show accession number in the report
+   -rdesshow2          boolean    Show description in the report
+   -rscoreshow2        boolean    Show the score in the report
+   -rusashow2          boolean    Show the full USA in the report
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   (Parameter 1) Protein sequence(s) filename and optional format, or
+   reference (input USA) Readable sequence(s) Required
    -minlen Minimum length Integer from 1 to 50 6
    [-outfile]
    (Parameter 2) Output report file name Report output file
@@ -202,6 +203,8 @@ Output file format
 ########################################
 # Program: antigenic
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: antigenic
+#    -sequence tsw:act1_fugru
 # Report_format: motif
 # Report_file: act1_fugru.antigenic
 ########################################
@@ -247,8 +250,6 @@ Max_score_pos at "*"
 (6) Score 1.135 length 6 at residues 367->372
                 *
  Sequence: PSIVHR
-           |    |
-         367    372
 
 
   [Part of this file has been deleted for brevity]

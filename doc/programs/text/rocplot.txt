@@ -782,7 +782,7 @@ roc: 50
 
 
 ROC VALUES
-rocn[0]: 0.184714
+rocn[0]: -2.000000
 
 
 
@@ -1111,8 +1111,8 @@ Base name of ROC plot file(s) (output). [_rocplot]:
 Name of summary file (output). [_summary]: 
 Base name of classification plot file(s) (output). [_classplot]: 
 
-/ebi/services/idata/pmr/hgmp/test/data/structure/rocplot/hitsin/data1.hits
-/ebi/services/idata/pmr/hgmp/test/data/structure/rocplot/hitsin/data2.hits
+/homes/user/test/data/structure/rocplot/hitsin/data1.hits
+/homes/user/test/data/structure/rocplot/hitsin/data2.hits
 Processing data1.hits
 Processing data2.hits
 Please wait ... done!
@@ -1594,7 +1594,6 @@ Rank  File1  File2  File3
 See also
 
    Program name                       Description
-   contactcount Count specific versus non-specific contacts
    contacts     Generate intra-chain CON files from CCF files
    domainalign  Generate alignments (DAF file) for nodes in a DCF file
    domainrep    Reorder DCF file to identify representative structures
@@ -1604,7 +1603,6 @@ See also
    matgen3d     Generate a 3D-1D scoring matrix from CCF files
    psiphi       Phi and psi torsion angles from protein coordinates
    rocon        Generates a hits file from comparing two DHF files
-   scorecmapdir Contact scores for cleaned protein chain contact files
    seqalign     Extend alignments (DAF file) with sequences (DHF file)
    seqfraggle   Removes fragment sequences from DHF files
    seqsearch    Generate PSI-BLAST hits (DHF file) from a DAF file

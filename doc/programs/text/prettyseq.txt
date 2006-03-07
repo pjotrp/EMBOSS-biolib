@@ -28,7 +28,7 @@ Usage
 
 % prettyseq 
 Output sequence with translated ranges
-Input sequence: tembl:paamir
+Input nucleotide sequence: tembl:paamir
 Range(s) to translate [1-2167]: 135-1292
 Output file [paamir.prettyseq]: 
 
@@ -38,7 +38,8 @@ Output file [paamir.prettyseq]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequence]          sequence   Sequence USA
+  [-sequence]          sequence   Nucleotide sequence filename and optional
+                                  format, or reference (input USA)
    -range              range      Range(s) to translate
   [-outfile]           outfile    Output file name
 
@@ -87,10 +88,10 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) Sequence USA Readable sequence Required
+   (Parameter 1) Nucleotide sequence filename and optional format, or
+   reference (input USA) Readable sequence Required
    -range Range(s) to translate Sequence range Whole sequence
    [-outfile]
    (Parameter 2) Output file name Output file <sequence>.prettyseq

@@ -53,7 +53,8 @@ Output file [hsa203yc1.primersearch]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-seqall]            seqall     Sequence database USA
+  [-seqall]            seqall     Nucleotide sequence(s) filename and optional
+                                  format, or reference (input USA)
   [-infile]            infile     Primer file
   [-mismatchpercent]   integer    Allowed percent mismatch
   [-outfile]           outfile    Output file name
@@ -96,10 +97,10 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-seqall]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
+   reference (input USA) Readable sequence(s) Required
    [-infile]
    (Parameter 2) Primer file Input file Required
    [-mismatchpercent]

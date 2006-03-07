@@ -65,8 +65,8 @@ Usage
 
 % merger 
 Merge two overlapping nucleic acid sequences
-Input sequence: tembl:eclacy
-Second sequence: tembl:eclaca
+Input nucleotide sequence: tembl:eclacy
+Second nucleotide sequence: tembl:eclaca
 Output alignment [eclacy.merger]: 
 Output sequence [eclacy.fasta]: 
 
@@ -81,10 +81,13 @@ Output sequence [eclacy.fasta]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-asequence]         sequence   Sequence USA
-  [-bsequence]         sequence   Sequence USA
+  [-asequence]         sequence   Nucleotide sequence filename and optional
+                                  format, or reference (input USA)
+  [-bsequence]         sequence   Nucleotide sequence filename and optional
+                                  format, or reference (input USA)
   [-outfile]           align      Output alignment file name
-  [-outseq]            seqout     Output sequence USA
+  [-outseq]            seqout     Sequence filename and optional format
+                                  (output USA)
 
    Additional (Optional) qualifiers:
    -datafile           matrixf    This is the scoring matrix file used when
@@ -169,16 +172,18 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-asequence]
-   (Parameter 1) Sequence USA Readable sequence Required
+   (Parameter 1) Nucleotide sequence filename and optional format, or
+   reference (input USA) Readable sequence Required
    [-bsequence]
-   (Parameter 2) Sequence USA Readable sequence Required
+   (Parameter 2) Nucleotide sequence filename and optional format, or
+   reference (input USA) Readable sequence Required
    [-outfile]
    (Parameter 3) Output alignment file name Alignment output file
    [-outseq]
-   (Parameter 4) Output sequence USA Writeable sequence <sequence>.format
+   (Parameter 4) Sequence filename and optional format (output USA)
+   Writeable sequence <sequence>.format
    Additional (Optional) qualifiers Allowed values Default
    -datafile This is the scoring matrix file used when comparing
    sequences. By default it is the file 'EBLOSUM62' (for proteins) or the
@@ -483,6 +488,9 @@ Output file format
 ########################################
 # Program: merger
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: merger
+#    -asequence tembl:eclacy
+#    -bsequence tembl:eclaca
 # Align_format: simple
 # Report_file: eclacy.merger
 ########################################
@@ -527,9 +535,6 @@ ECLACA             1 --------------------------------------------------      0
 
 ECLACY           251 ttgccgctatttctctgttctcgctattattccaaccgctgtttggtctg    300
 
-ECLACA             1 --------------------------------------------------      0
-
-ECLACY           301 ctttctgacaaactcgggctgcgcaaatacctgctgtggattattaccgg    350
 
 
   [Part of this file has been deleted for brevity]

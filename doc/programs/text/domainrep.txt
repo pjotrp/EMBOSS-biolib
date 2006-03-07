@@ -383,29 +383,29 @@ Select number. [1]: 2
 Name of DCF file (domain classification file) (output). [test.scop]: all_rep1st
 .scop
 
-stamp -l ./domainrep-1121336717.25929.dom -s -n 2 -slide 5 -prefix ./domainrep-
-1121336717.25929 -d ./domainrep-1121336717.25929.set > ./domainrep-1121336717.2
-5929.out
+stamp -l ./domainrep-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainrep-1
+234567890.1234 -d ./domainrep-1234567890.1234.set > ./domainrep-1234567890.1234
+.out
 
-stamp -l ./domainrep-1121336717.25929.dom -s -n 2 -slide 5 -prefix ./domainrep-
-1121336717.25929 -d ./domainrep-1121336717.25929.set > ./domainrep-1121336717.2
-5929.out
+stamp -l ./domainrep-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainrep-1
+234567890.1234 -d ./domainrep-1234567890.1234.set > ./domainrep-1234567890.1234
+.out
 
-stamp -l ./domainrep-1121336717.25929.dom -s -n 2 -slide 5 -prefix ./domainrep-
-1121336717.25929 -d ./domainrep-1121336717.25929.set > ./domainrep-1121336717.2
-5929.out
+stamp -l ./domainrep-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainrep-1
+234567890.1234 -d ./domainrep-1234567890.1234.set > ./domainrep-1234567890.1234
+.out
 
-stamp -l ./domainrep-1121336717.25929.dom -s -n 2 -slide 5 -prefix ./domainrep-
-1121336717.25929 -d ./domainrep-1121336717.25929.set > ./domainrep-1121336717.2
-5929.out
+stamp -l ./domainrep-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainrep-1
+234567890.1234 -d ./domainrep-1234567890.1234.set > ./domainrep-1234567890.1234
+.out
 
-stamp -l ./domainrep-1121336717.25929.dom -s -n 2 -slide 5 -prefix ./domainrep-
-1121336717.25929 -d ./domainrep-1121336717.25929.set > ./domainrep-1121336717.2
-5929.out
+stamp -l ./domainrep-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainrep-1
+234567890.1234 -d ./domainrep-1234567890.1234.set > ./domainrep-1234567890.1234
+.out
 
-stamp -l ./domainrep-1121336717.25929.dom -s -n 2 -slide 5 -prefix ./domainrep-
-1121336717.25929 -d ./domainrep-1121336717.25929.set > ./domainrep-1121336717.2
-5929.out
+stamp -l ./domainrep-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainrep-1
+234567890.1234 -d ./domainrep-1234567890.1234.set > ./domainrep-1234567890.1234
+.out
 
 
    Go to the input files for this example
@@ -509,7 +509,6 @@ temp=getfile(domain[0].id,dirfile,7,OUTPUT);
 See also
 
    Program name                       Description
-   contactcount Count specific versus non-specific contacts
    contacts     Generate intra-chain CON files from CCF files
    domainalign  Generate alignments (DAF file) for nodes in a DCF file
    domainreso   Remove low resolution domains from a DCF file
@@ -519,7 +518,6 @@ See also
    psiphi       Phi and psi torsion angles from protein coordinates
    rocon        Generates a hits file from comparing two DHF files
    rocplot      Performs ROC analysis on hits files
-   scorecmapdir Contact scores for cleaned protein chain contact files
    seqalign     Extend alignments (DAF file) with sequences (DHF file)
    seqfraggle   Removes fragment sequences from DHF files
    seqsearch    Generate PSI-BLAST hits (DHF file) from a DAF file

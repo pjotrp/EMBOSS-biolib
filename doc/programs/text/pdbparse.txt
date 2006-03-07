@@ -146,10 +146,14 @@ CONTENTS
 
   File: pdbparse.log
 
-/ebi/services/idata/pmr/hgmp/test/data/structure/2hhb.ent
-ATOMCOL12      1277
+/homes/user/test/data/structure/1ii7.ent
+SEQRESLENDIF   1 (A)
+ATOMCOL12      390
+SECBOTH        1 1 SER 57 GLU 73
+SECBOTH        1 1 VAL 78 ILE 81
+SECBOTH        1 1 LYS 2 LEU 6
 //
-/ebi/services/idata/pmr/hgmp/test/data/structure/1cs4.ent
+/homes/user/test/data/structure/1cs4.ent
 SEQRESLENDIF   1 (A)
 ATOMCOL12      429
 BADINDEX       1 (A)
@@ -157,12 +161,8 @@ GAPPEDOK       1 (A)
 SECSTART       1 1 ILE 384
 SECSTART       1 1 ILE 384
 //
-/ebi/services/idata/pmr/hgmp/test/data/structure/1ii7.ent
-SEQRESLENDIF   1 (A)
-ATOMCOL12      390
-SECBOTH        1 1 SER 57 GLU 73
-SECBOTH        1 1 VAL 78 ILE 81
-SECBOTH        1 1 LYS 2 LEU 6
+/homes/user/test/data/structure/2hhb.ent
+ATOMCOL12      1277
 //
 
   File: 1cs4.ccf
@@ -931,9 +931,9 @@ Mask amino acid residues in protein chains with a single atom only. [N]:
 Location of CCF files (clean coordinate files) (output) [./]: 
 Name of log file for the build. [pdbparse.log]: 
 
-Processing /ebi/services/idata/pmr/hgmp/test/data/structure/2hhb.ent
-Processing /ebi/services/idata/pmr/hgmp/test/data/structure/1cs4.ent
-Processing /ebi/services/idata/pmr/hgmp/test/data/structure/1ii7.ent
+Processing /homes/user/test/data/structure/1ii7.ent
+Processing /homes/user/test/data/structure/1cs4.ent
+Processing /homes/user/test/data/structure/2hhb.ent
 
    Go to the output files for this example
 
@@ -1020,8 +1020,8 @@ Processing /ebi/services/idata/pmr/hgmp/test/data/structure/1ii7.ent
    Macromolecular Structure Database (EMSD). Query tools such as the
    web-based PDBbrowse [3], SearchFields
    (http://www.rcsb.org/pdb/queryForm.cgi), MSDLite
-   (http://www.ebi.ac.uk/msd-srv/msdlite/index.html) and MSDPro
-   (http://www.ebi.ac.uk/msd-srv/msdpro/index.html) are useful for the
+   (http://www.ebi.ac.uk/msd-srv/msdliindex.html) and MSDPro
+   (http://www.ebi.ac.uk/msd-srv/msdpindex.html) are useful for the
    analysis of a single or a few protein structures, but are an
    inconvenient source of coordinate data and are inappropriate for
    global, automated analyses. A researcher commonly needs direct access

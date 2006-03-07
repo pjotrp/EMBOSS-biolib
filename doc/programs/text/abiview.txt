@@ -36,7 +36,8 @@ Command line arguments
 
    Standard (Mandatory) qualifiers:
   [-infile]            infile     ABI trace file
-  [-outseq]            seqout     Output sequence USA
+  [-outseq]            seqout     Nucleotide sequence filename and optional
+                                  format (output USA)
    -graph              xygraph    Graph type
 
    Additional (Optional) qualifiers:
@@ -56,47 +57,47 @@ Command line arguments
    Associated qualifiers:
 
    "-outseq" associated qualifiers
-   -osformat2           string     Output seq format
-   -osextension2        string     File name extension
-   -osname2             string     Base file name
-   -osdirectory2        string     Output directory
-   -osdbname2           string     Database name to add
-   -ossingle2           boolean    Separate file for each entry
-   -oufo2               string     UFO features
-   -offormat2           string     Features format
-   -ofname2             string     Features file name
-   -ofdirectory2        string     Output directory
+   -osformat2          string     Output seq format
+   -osextension2       string     File name extension
+   -osname2            string     Base file name
+   -osdirectory2       string     Output directory
+   -osdbname2          string     Database name to add
+   -ossingle2          boolean    Separate file for each entry
+   -oufo2              string     UFO features
+   -offormat2          string     Features format
+   -ofname2            string     Features file name
+   -ofdirectory2       string     Output directory
 
    "-graph" associated qualifiers
-   -gprompt             boolean    Graph prompting
-   -gtitle              string     Graph title
-   -gsubtitle           string     Graph subtitle
-   -gxtitle             string     Graph x axis title
-   -gytitle             string     Graph y axis title
-   -goutfile            string     Output file for non interactive displays
-   -gdirectory          string     Output directory
+   -gprompt            boolean    Graph prompting
+   -gtitle             string     Graph title
+   -gsubtitle          string     Graph subtitle
+   -gxtitle            string     Graph x axis title
+   -gytitle            string     Graph y axis title
+   -goutfile           string     Output file for non interactive displays
+   -gdirectory         string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-infile]
    (Parameter 1) ABI trace file Input file Required
    [-outseq]
-   (Parameter 2) Output sequence USA Writeable sequence <sequence>.format
+   (Parameter 2) Nucleotide sequence filename and optional format (output
+   USA) Writeable sequence <sequence>.format
    -graph Graph type EMBOSS has a list of known devices, including ps,
    hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data, xterm,
    png EMBOSS_GRAPHICS value, or x11

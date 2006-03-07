@@ -31,7 +31,7 @@ Command line arguments
 
    Standard (Mandatory) qualifiers:
   [-infile]            codon      Codon usage table name
-  [-outfile]           outcodon   (no help text) outcodon value
+  [-outfile]           outcodon   Codon usage table name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -59,13 +59,12 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-infile]
    (Parameter 1) Codon usage table name Codon usage file in EMBOSS data
    path
    [-outfile]
-   (Parameter 2) (no help text) outcodon value Codon usage file
+   (Parameter 2) Codon usage table name Codon usage file
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default

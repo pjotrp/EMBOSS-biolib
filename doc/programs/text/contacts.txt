@@ -425,9 +425,9 @@ SM   TYR 145 ; HIS 146
 
   File: contacts.log
 
-2hhb
-1cs4
 1ii7
+1cs4
+2hhb
 
 5.0 DATA FILES
 
@@ -569,9 +569,9 @@ Threshold contact distance [1.0]: 1
 Location of CON files (contact files) (output) [./]: 
 Name of log file for the build [contacts.log]: 
 
-2hhb
-1cs4
 1ii7
+1cs4
+2hhb
 
    Go to the output files for this example
 
@@ -648,7 +648,6 @@ Name of log file for the build [contacts.log]:
 See also
 
    Program name                       Description
-   contactcount Count specific versus non-specific contacts
    domainalign  Generate alignments (DAF file) for nodes in a DCF file
    domainrep    Reorder DCF file to identify representative structures
    domainreso   Remove low resolution domains from a DCF file
@@ -658,7 +657,6 @@ See also
    psiphi       Phi and psi torsion angles from protein coordinates
    rocon        Generates a hits file from comparing two DHF files
    rocplot      Performs ROC analysis on hits files
-   scorecmapdir Contact scores for cleaned protein chain contact files
    seqalign     Extend alignments (DAF file) with sequences (DHF file)
    seqfraggle   Removes fragment sequences from DHF files
    seqsearch    Generate PSI-BLAST hits (DHF file) from a DAF file

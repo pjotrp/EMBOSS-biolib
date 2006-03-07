@@ -24,7 +24,7 @@ Usage
 
 % showorf 
 Pretty output of DNA translations
-Input sequence: tembl:paamir
+Input nucleotide sequence: tembl:paamir
 Select Frames To Translate
          0 : None
          1 : F1
@@ -42,7 +42,8 @@ Output file [paamir.showorf]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequence]          sequence   Sequence USA
+  [-sequence]          sequence   Nucleotide sequence filename and optional
+                                  format, or reference (input USA)
    -frames             menu       Select one or more values
   [-outfile]           outfile    Output file name
 
@@ -91,10 +92,10 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) Sequence USA Readable sequence Required
+   (Parameter 1) Nucleotide sequence filename and optional format, or
+   reference (input USA) Readable sequence Required
    -frames Select one or more values
    0 (None)
    1 (F1)

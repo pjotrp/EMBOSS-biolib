@@ -74,7 +74,8 @@ Created cpgplot.ps
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequence]          seqall     Sequence database USA
+  [-sequence]          seqall     Nucleotide sequence(s) filename and optional
+                                  format, or reference (input USA)
    -window             integer    The percentage CG content and the Observed
                                   frequency of CG is calculated within a
                                   window whose size is set by this parameter.
@@ -162,10 +163,10 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
+   reference (input USA) Readable sequence(s) Required
    -window The percentage CG content and the Observed frequency of CG is
    calculated within a window whose size is set by this parameter. The
    window is moved down the sequence and these statistics are calculated

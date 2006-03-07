@@ -33,7 +33,7 @@ Usage
 
 % backtranseq 
 Back translate a protein sequence
-Input sequence: tsw:opsd_human
+Input (gapped) protein sequence: tsw:opsd_human
 Output sequence [opsd_human.fasta]: 
 
    Go to the input files for this example
@@ -46,7 +46,7 @@ Output sequence [opsd_human.fasta]:
 
 % backtranseq -cfile Edrome.cut 
 Back translate a protein sequence
-Input sequence: tsw:ach2_drome
+Input (gapped) protein sequence: tsw:ach2_drome
 Output sequence [ach2_drome.fasta]: 
 
    Go to the input files for this example
@@ -55,8 +55,10 @@ Output sequence [ach2_drome.fasta]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequence]          sequence   Sequence USA
-  [-outfile]           seqout     Output sequence USA
+  [-sequence]          sequence   (Gapped) protein sequence filename and
+                                  optional format, or reference (input USA)
+  [-outfile]           seqout     (Gapped) nucleotide sequence filename and
+                                  optional format (output USA)
 
    Additional (Optional) qualifiers:
    -cfile              codon      Codon usage table name
@@ -110,12 +112,13 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) Sequence USA Readable sequence Required
+   (Parameter 1) (Gapped) protein sequence filename and optional format,
+   or reference (input USA) Readable sequence Required
    [-outfile]
-   (Parameter 2) Output sequence USA Writeable sequence <sequence>.format
+   (Parameter 2) (Gapped) nucleotide sequence filename and optional
+   format (output USA) Writeable sequence <sequence>.format
    Additional (Optional) qualifiers Allowed values Default
    -cfile Codon usage table name Codon usage file in EMBOSS data path
    Ehuman.cut

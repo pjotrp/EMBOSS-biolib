@@ -637,7 +637,6 @@ t
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
    (Parameter 1) The sequence from which to choose primers. The sequence
@@ -720,7 +719,7 @@ t
    3' end of both the forward and reverse primer. (This parameter has no
    effect on the internal oligo if one is requested.) Integer 0 or more 0
    -osize Optimum length (in bases) of a primer oligo. EPrimer3 will
-   attempt to pick primers close to this length. Integer 1 or more 20
+   attempt to pick primers close to this length. Integer 0 or more 20
    -minsize Minimum acceptable length of a primer. Must be greater than 0
    and less than or equal to MAX-SIZE. Integer 1 or more 18
    -maxsize Maximum acceptable length (in bases) of a primer. Currently

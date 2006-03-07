@@ -103,7 +103,7 @@ Usage
 
 % showalign 
 Displays a multiple sequence alignment
-Input sequence set: globins.msf
+Input (aligned) sequence set: globins.msf
 Output file [globins.showalign]: 
 
    Go to the input files for this example
@@ -116,7 +116,7 @@ Output file [globins.showalign]:
 
 % showalign -order=s 
 Displays a multiple sequence alignment
-Input sequence set: globins.msf
+Input (aligned) sequence set: globins.msf
 Output file [globins.showalign]: 
 
    Go to the output files for this example
@@ -129,7 +129,7 @@ Output file [globins.showalign]:
 
 % showalign -html -high '4-13 green 43-43 red 51-56 blue' 
 Displays a multiple sequence alignment
-Input sequence set: globins.msf
+Input (aligned) sequence set: globins.msf
 Output file [globins.showalign]: 
 
    Go to the output files for this example
@@ -144,7 +144,7 @@ Output file [globins.showalign]:
 
 % showalign -nocon -norule -nonum -nobot -ref=1 -sb=10 -send=30 
 Displays a multiple sequence alignment
-Input sequence set: globins.msf
+Input (aligned) sequence set: globins.msf
 Output file [globins.showalign]: 
 
    Go to the output files for this example
@@ -156,7 +156,7 @@ Output file [globins.showalign]:
 
 % showalign -show=n 
 Displays a multiple sequence alignment
-Input sequence set: globins.msf
+Input (aligned) sequence set: globins.msf
 Output file [globins.showalign]: 
 
    Example 6
@@ -166,7 +166,7 @@ Output file [globins.showalign]:
 
 % showalign -show=a 
 Displays a multiple sequence alignment
-Input sequence set: globins.msf
+Input (aligned) sequence set: globins.msf
 Output file [globins.showalign]: 
 
    Go to the output files for this example
@@ -178,7 +178,7 @@ Output file [globins.showalign]:
 
 % showalign -show=i 
 Displays a multiple sequence alignment
-Input sequence set: globins.msf
+Input (aligned) sequence set: globins.msf
 Output file [globins.showalign]: 
 
    Go to the output files for this example
@@ -190,7 +190,7 @@ Output file [globins.showalign]:
 
 % showalign -show=s 
 Displays a multiple sequence alignment
-Input sequence set: globins.msf
+Input (aligned) sequence set: globins.msf
 Output file [globins.showalign]: 
 
    Go to the output files for this example
@@ -202,7 +202,7 @@ Output file [globins.showalign]:
 
 % showalign -show=d 
 Displays a multiple sequence alignment
-Input sequence set: globins.msf
+Input (aligned) sequence set: globins.msf
 Output file [globins.showalign]: 
 
    Go to the output files for this example
@@ -214,7 +214,7 @@ Output file [globins.showalign]:
 
 % showalign -ref=1 
 Displays a multiple sequence alignment
-Input sequence set: globins.msf
+Input (aligned) sequence set: globins.msf
 Output file [globins.showalign]: 
 
    Go to the output files for this example
@@ -226,7 +226,7 @@ Output file [globins.showalign]:
 
 % showalign -nocon -ref=1 -sl -upper 9-15 -nosimilarcase 
 Displays a multiple sequence alignment
-Input sequence set: globins.msf
+Input (aligned) sequence set: globins.msf
 Output file [globins.showalign]: 
 
    Go to the output files for this example
@@ -238,7 +238,7 @@ Output file [globins.showalign]:
 
 % showalign -order=a 
 Displays a multiple sequence alignment
-Input sequence set: globins.msf
+Input (aligned) sequence set: globins.msf
 Output file [globins.showalign]: 
 
    Go to the output files for this example
@@ -345,43 +345,45 @@ Command line arguments
                                   for it to give a consensus. Therefore, if
                                   this is set to 100% only columns of
                                   identities contribute to the consensus.
+   -[no]gaps           boolean    If this option is true then gap characters
+                                  can appear in the consensus. The alternative
+                                  is 'N' for nucleotide, or 'X' for protein
 
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1             integer    Start of each sequence to be used
-   -send1               integer    End of each sequence to be used
-   -sreverse1           boolean    Reverse (if DNA)
-   -sask1               boolean    Ask for begin/end/reverse
-   -snucleotide1        boolean    Sequence is nucleotide
-   -sprotein1           boolean    Sequence is protein
-   -slower1             boolean    Make lower case
-   -supper1             boolean    Make upper case
-   -sformat1            string     Input sequence format
-   -sdbname1            string     Database name
-   -sid1                string     Entryname
-   -ufo1                string     UFO features
-   -fformat1            string     Features format
-   -fopenfile1          string     Features file name
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
 
    "-outfile" associated qualifiers
-   -odirectory2         string     Output directory
+   -odirectory2        string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
@@ -471,6 +473,9 @@ Command line arguments
    identities at a position for it to give a consensus. Therefore, if
    this is set to 100% only columns of identities contribute to the
    consensus. Number from 0.000 to 100.000 0.0
+   -[no]gaps If this option is true then gap characters can appear in the
+   consensus. The alternative is 'N' for nucleotide, or 'X' for protein
+   Boolean value Yes/No Yes
 
 Input file format
 
@@ -613,7 +618,7 @@ Consensus  xDxMxGSxQVKxHGKKVLxALxDxVxHLDDLExxxAxLSDLHAxKLRxxVDPxNFKLLxH
 
                   130       140       150       160       170       180
            ----:----|----:----|----:----|----:----|----:----|----:----|
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 HBB_HUMAN  V.vC...H.FGKe...P.Q.aYQ.Vv.G..NA.AH..H------
 HBB_HORSE  V.vV...R.FGK.....lQ..YQ.Vv.G..NA.AH..H------
 HBA_HUMAN  C..VT..A.LPAe...A.H..lD.F..S.sTV.TS..R------
@@ -621,7 +626,7 @@ HBA_HORSE  C..ST..V.LPN....A.H..lD.F.sS.sTV.TS..R------
 MYG_PHYCA  AiiH..HSRHPG..GAdAQGa.N.A.ELFRKDiAA..KELGYQG
 GLB5_PETMA LAAViADTVAAG.AGF.KLM..ICI.LRS.Y-------------
 LGB2_LUPLU Ai.KTiKEVVGAKwsE.lNsaWTIAYDEl.IViKKeMNDAA---
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 
   Output files for usage example 2
 
@@ -653,7 +658,7 @@ Consensus  xDxMxGSxQVKxHGKKVLxALxDxVxHLDDLExxxAxLSDLHAxKLRxxVDPxNFKLLxH
 
                   130       140       150       160       170       180
            ----:----|----:----|----:----|----:----|----:----|----:----|
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 HBB_HUMAN  V.vC...H.FGKe...P.Q.aYQ.Vv.G..NA.AH..H------
 HBB_HORSE  V.vV...R.FGK.....lQ..YQ.Vv.G..NA.AH..H------
 HBA_HORSE  C..ST..V.LPN....A.H..lD.F.sS.sTV.TS..R------
@@ -661,7 +666,7 @@ HBA_HUMAN  C..VT..A.LPAe...A.H..lD.F..S.sTV.TS..R------
 GLB5_PETMA LAAViADTVAAG.AGF.KLM..ICI.LRS.Y-------------
 MYG_PHYCA  AiiH..HSRHPG..GAdAQGa.N.A.ELFRKDiAA..KELGYQG
 LGB2_LUPLU Ai.KTiKEVVGAKwsE.lNsaWTIAYDEl.IViKKeMNDAA---
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 
   Output files for usage example 3
 
@@ -703,7 +708,7 @@ Consensus  xDxMxGSxQVKxHGKKVLxALxDxVxHLDDLExxxAxLSDLHAxKLRxxVDPxNFKLLxH
 
                   130       140       150       160       170       180
            ----:----|----:----|----:----|----:----|----:----|----:----|
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 HBB_HUMAN  V.vC...H.FGKe...P.Q.aYQ.Vv.G..NA.AH..H------
 HBB_HORSE  V.vV...R.FGK.....lQ..YQ.Vv.G..NA.AH..H------
 HBA_HUMAN  C..VT..A.LPAe...A.H..lD.F..S.sTV.TS..R------
@@ -711,7 +716,7 @@ HBA_HORSE  C..ST..V.LPN....A.H..lD.F.sS.sTV.TS..R------
 MYG_PHYCA  AiiH..HSRHPG..GAdAQGa.N.A.ELFRKDiAA..KELGYQG
 GLB5_PETMA LAAViADTVAAG.AGF.KLM..ICI.LRS.Y-------------
 LGB2_LUPLU Ai.KTiKEVVGAKwsE.lNsaWTIAYDEl.IViKKeMNDAA---
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 
 </pre>
 
@@ -757,7 +762,7 @@ Consensus  xDxMxGSxQVKxHGKKVLxALxDxVxHLDDLExxxAxLSDLHAxKLRxxVDPxNFKLLxH
 
                   130       140       150       160       170       180
            ----:----|----:----|----:----|----:----|----:----|----:----|
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 HBB_HUMAN  vLVcVLAhHfgkEFTPpVqAAyqKvVAgVAnaLahKYh------
 HBB_HORSE  vLVvVLArHfgkDFTPELqASyqKvVAgVAnaLahKYh------
 HBA_HUMAN  cLLvtLAaHlpaEFTPaVhASLdKfLAsVStvLtsKYr------
@@ -765,7 +770,7 @@ HBA_HORSE  cLLstLAvHlpnDFTPaVhASLdKfLSsVStvLtsKYr------
 MYG_PHYCA  aIIhVLhsrhpgDFgaDaqgAMnKaLelfrkdIaaKYkelgyqg
 GLB5_PETMA laavIadtvaagDagfEklmSMiciLlrsAy-------------
 LGB2_LUPLU aILktIkevvgakWSeELnSAwtiaydeLAivIkkEmndaa---
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 
   Output files for usage example 7
 
@@ -797,7 +802,7 @@ Consensus  xDxMxGSxQVKxHGKKVLxALxDxVxHLDDLExxxAxLSDLHAxKLRxxVDPxNFKLLxH
 
                   130       140       150       160       170       180
            ----:----|----:----|----:----|----:----|----:----|----:----|
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 HBB_HUMAN  .L..VLA.H....FTP.V.A...K..A.VA..L..KY.------
 HBB_HORSE  .L..VLA.H...DFTPE..AS..K..A.VA..L..KY.------
 HBA_HUMAN  .LL..LA.H....FTP.V.AS..K.LA.V...L..KY.------
@@ -805,7 +810,7 @@ HBA_HORSE  .LL..LA.H...DFTP.V.AS..K.L..V...L..KY.------
 MYG_PHYCA  ....VL......DF.......M.K.L.........KY.......
 GLB5_PETMA ............D...E...SM...L...A.-------------
 LGB2_LUPLU ..L.............E............A...........---
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 
   Output files for usage example 8
 
@@ -837,7 +842,7 @@ Consensus  xDxMxGSxQVKxHGKKVLxALxDxVxHLDDLExxxAxLSDLHAxKLRxxVDPxNFKLLxH
 
                   130       140       150       160       170       180
            ----:----|----:----|----:----|----:----|----:----|----:----|
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 HBB_HUMAN  .Lv.VLA.H...eFTP.V.Aa..K.vA.VA..L..KY.------
 HBB_HORSE  .Lv.VLA.H...DFTPEl.AS..K.vA.VA..L..KY.------
 HBA_HUMAN  .LL..LA.H...eFTP.V.ASl.K.LA.Vs..L..KY.------
@@ -845,7 +850,7 @@ HBA_HORSE  .LL..LA.H...DFTP.V.ASl.K.Ls.Vs..L..KY.------
 MYG_PHYCA  .ii.VL......DF..d...aM.K.L......i..KY.......
 GLB5_PETMA ....i.......D...E...SM...L...A.-------------
 LGB2_LUPLU .iL..i.......ws.El.sa.......lA..i..e.....---
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 
   Output files for usage example 9
 
@@ -877,7 +882,7 @@ Consensus  xDxMxGSxQVKxHGKKVLxALxDxVxHLDDLExxxAxLSDLHAxKLRxxVDPxNFKLLxH
 
                   130       140       150       160       170       180
            ----:----|----:----|----:----|----:----|----:----|----:----|
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 HBB_HUMAN  V..C...H.FGK....P.Q..YQ.V..G..NA.AH..H------
 HBB_HORSE  V..V...R.FGK......Q..YQ.V..G..NA.AH..H------
 HBA_HUMAN  C..VT..A.LPA....A.H...D.F..S..TV.TS..R------
@@ -885,7 +890,7 @@ HBA_HORSE  C..ST..V.LPN....A.H...D.F..S..TV.TS..R------
 MYG_PHYCA  A..H..HSRHPG..GA.AQG..N.A.ELFRKD.AA..KELGYQG
 GLB5_PETMA LAAV.ADTVAAG.AGF.KLM..ICI.LRS.Y-------------
 LGB2_LUPLU A..KT.KEVVGAK..E..N..WTIAYDE..IV.KK.MNDAA---
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 
   Output files for usage example 10
 
@@ -925,7 +930,7 @@ MYG_PHYCA  AiiH..HSRHPGd.GADA.G.MN.AlELFRKDi.A..KELGYQG
 GLB5_PETMA lAAViADTVAAGdAGFEKLMsMICilLRS.Y-------------
 LGB2_LUPLU AilKTiKEVV.AkwsEElNs.wTIAYDEl.IViKKeMnDAA---
 HBB_HUMAN  VLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH------
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 
   Output files for usage example 11
 
@@ -994,7 +999,7 @@ Consensus  xDxMxGSxQVKxHGKKVLxALxDxVxHLDDLExxxAxLSDLHAxKLRxxVDPxNFKLLxH
 
                   130       140       150       160       170       180
            ----:----|----:----|----:----|----:----|----:----|----:----|
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 GLB5_PETMA LAAViADTVAAG.AGF.KLM..ICI.LRS.Y-------------
 HBA_HORSE  C..ST..V.LPN....A.H..lD.F.sS.sTV.TS..R------
 HBA_HUMAN  C..VT..A.LPAe...A.H..lD.F..S.sTV.TS..R------
@@ -1002,7 +1007,7 @@ HBB_HORSE  V.vV...R.FGK.....lQ..YQ.Vv.G..NA.AH..H------
 HBB_HUMAN  V.vC...H.FGKe...P.Q.aYQ.Vv.G..NA.AH..H------
 LGB2_LUPLU Ai.KTiKEVVGAKwsE.lNsaWTIAYDEl.IViKKeMNDAA---
 MYG_PHYCA  AiiH..HSRHPG..GAdAQGa.N.A.ELFRKDiAA..KELGYQG
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 
 Data files
 

@@ -126,9 +126,9 @@ NN   [4]
 XX
 IN   NRES 1 ; NGAP 1 ; WSIZ 0
 XX
-AA   F ; 2
+AA   T ; 2
 XX
-GA   16 ; 2
+GA   15 ; 2
 XX
 NN   [5]
 XX
@@ -143,7 +143,7 @@ NN   [10]
 XX
 IN   NRES 1 ; NGAP 1 ; WSIZ 0
 XX
-AA   D ; 2
+AA   I ; 2
 XX
 GA   2 ; 2
 XX
@@ -151,7 +151,7 @@ NN   [11]
 XX
 IN   NRES 1 ; NGAP 1 ; WSIZ 0
 XX
-AA   N ; 2
+AA   D ; 2
 XX
 GA   0 ; 2
 XX
@@ -159,7 +159,7 @@ NN   [12]
 XX
 IN   NRES 1 ; NGAP 1 ; WSIZ 0
 XX
-AA   Y ; 2
+AA   N ; 2
 XX
 GA   0 ; 2
 XX
@@ -167,7 +167,7 @@ NN   [13]
 XX
 IN   NRES 1 ; NGAP 1 ; WSIZ 0
 XX
-AA   G ; 2
+AA   V ; 2
 XX
 GA   3 ; 2
 XX
@@ -175,7 +175,7 @@ NN   [14]
 XX
 IN   NRES 1 ; NGAP 1 ; WSIZ 0
 XX
-AA   P ; 2
+AA   R ; 2
 XX
 GA   3 ; 2
 XX
@@ -183,7 +183,7 @@ NN   [15]
 XX
 IN   NRES 1 ; NGAP 1 ; WSIZ 0
 XX
-AA   P ; 2
+AA   L ; 2
 XX
 GA   2 ; 2
 //
@@ -208,81 +208,81 @@ NP   38
 XX
 NN   [1]
 XX
-IN   NRES 1 ; NGAP 1 ; WSIZ 0
+IN   NRES 2 ; NGAP 2 ; WSIZ 0
 XX
-AA   D ; 2
+AA   H ; 1
+AA   E ; 1
 XX
-GA   13 ; 2
+GA   10 ; 1
+GA   11 ; 1
 XX
 NN   [2]
 XX
-IN   NRES 1 ; NGAP 1 ; WSIZ 0
+IN   NRES 2 ; NGAP 1 ; WSIZ 0
 XX
-AA   V ; 2
+AA   D ; 1
+AA   T ; 1
 XX
 GA   1 ; 2
 XX
 NN   [3]
 XX
-IN   NRES 1 ; NGAP 1 ; WSIZ 0
+IN   NRES 2 ; NGAP 1 ; WSIZ 0
 XX
-AA   F ; 2
+AA   I ; 1
+AA   T ; 1
 XX
 GA   3 ; 2
 XX
 NN   [4]
 XX
-IN   NRES 1 ; NGAP 1 ; WSIZ 0
+IN   NRES 2 ; NGAP 1 ; WSIZ 0
 XX
-AA   D ; 2
-XX
-GA   1 ; 2
-XX
-NN   [5]
-XX
+AA   F ; 1
+AA   I ; 1
 
 
   [Part of this file has been deleted for brevity]
 
-XX
-IN   NRES 1 ; NGAP 1 ; WSIZ 0
-XX
-AA   L ; 2
+AA   N ; 1
 XX
 GA   4 ; 2
 XX
 NN   [34]
 XX
-IN   NRES 2 ; NGAP 1 ; WSIZ 0
+IN   NRES 2 ; NGAP 2 ; WSIZ 0
 XX
-AA   E ; 1
-AA   D ; 1
+AA   K ; 1
+AA   A ; 1
 XX
-GA   8 ; 2
+GA   4 ; 1
+GA   8 ; 1
 XX
 NN   [35]
 XX
-IN   NRES 1 ; NGAP 1 ; WSIZ 0
+IN   NRES 2 ; NGAP 1 ; WSIZ 0
 XX
-AA   V ; 2
+AA   W ; 1
+AA   A ; 1
 XX
 GA   0 ; 2
 XX
 NN   [36]
 XX
-IN   NRES 2 ; NGAP 1 ; WSIZ 0
+IN   NRES 2 ; NGAP 2 ; WSIZ 0
 XX
-AA   I ; 1
-AA   V ; 1
+AA   A ; 1
+AA   T ; 1
 XX
-GA   17 ; 2
+GA   14 ; 1
+GA   16 ; 1
 XX
 NN   [37]
 XX
 IN   NRES 2 ; NGAP 1 ; WSIZ 0
 XX
-AA   F ; 1
-AA   Y ; 1
+AA   K ; 1
+AA   X ; 1
 XX
 GA   2 ; 2
 XX
@@ -290,8 +290,8 @@ NN   [38]
 XX
 IN   NRES 2 ; NGAP 1 ; WSIZ 0
 XX
-AA   I ; 1
-AA   L ; 1
+AA   G ; 1
+AA   D ; 1
 XX
 GA   1 ; 2
 //
@@ -811,7 +811,6 @@ Location of signature files (output) [./]:
 See also
 
    Program name                       Description
-   contactcount Count specific versus non-specific contacts
    contacts     Generate intra-chain CON files from CCF files
    domainalign  Generate alignments (DAF file) for nodes in a DCF file
    domainrep    Reorder DCF file to identify representative structures
@@ -822,7 +821,6 @@ See also
    psiphi       Phi and psi torsion angles from protein coordinates
    rocon        Generates a hits file from comparing two DHF files
    rocplot      Performs ROC analysis on hits files
-   scorecmapdir Contact scores for cleaned protein chain contact files
    seqalign     Extend alignments (DAF file) with sequences (DHF file)
    seqfraggle   Removes fragment sequences from DHF files
    seqsearch    Generate PSI-BLAST hits (DHF file) from a DAF file

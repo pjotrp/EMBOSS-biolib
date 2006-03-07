@@ -96,14 +96,16 @@ Output sequence [eclac.fasta]:
 Command line arguments
 
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-sequence]          seqall     Sequence database USA
+  [-sequence]          seqall     Sequence(s) filename and optional format, or
+                                  reference (input USA)
    -count              integer    Number of times to perform the mutation
                                   operations
    -point              menu       Types of point mutations to perform
    -block              menu       Types of block mutations to perform
 *  -codon              menu       Types of codon mutations to perform. These
                                   are only done if the sequence is nucleic.
-  [-outseq]            seqoutall  Output sequence(s) USA
+  [-outseq]            seqoutall  Sequence set(s) filename and optional format
+                                  (output USA)
 
    Additional (Optional) qualifiers (* if not always prompted):
 *  -inframe            boolean    Do 'codon' and 'block' operations in frame
@@ -133,68 +135,68 @@ Command line arguments
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1             integer    Start of each sequence to be used
-   -send1               integer    End of each sequence to be used
-   -sreverse1           boolean    Reverse (if DNA)
-   -sask1               boolean    Ask for begin/end/reverse
-   -snucleotide1        boolean    Sequence is nucleotide
-   -sprotein1           boolean    Sequence is protein
-   -slower1             boolean    Make lower case
-   -supper1             boolean    Make upper case
-   -sformat1            string     Input sequence format
-   -sdbname1            string     Database name
-   -sid1                string     Entryname
-   -ufo1                string     UFO features
-   -fformat1            string     Features format
-   -fopenfile1          string     Features file name
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
 
    "-othersequence" associated qualifiers
-   -sbegin              integer    Start of each sequence to be used
-   -send                integer    End of each sequence to be used
-   -sreverse            boolean    Reverse (if DNA)
-   -sask                boolean    Ask for begin/end/reverse
-   -snucleotide         boolean    Sequence is nucleotide
-   -sprotein            boolean    Sequence is protein
-   -slower              boolean    Make lower case
-   -supper              boolean    Make upper case
-   -sformat             string     Input sequence format
-   -sdbname             string     Database name
-   -sid                 string     Entryname
-   -ufo                 string     UFO features
-   -fformat             string     Features format
-   -fopenfile           string     Features file name
+   -sbegin             integer    Start of each sequence to be used
+   -send               integer    End of each sequence to be used
+   -sreverse           boolean    Reverse (if DNA)
+   -sask               boolean    Ask for begin/end/reverse
+   -snucleotide        boolean    Sequence is nucleotide
+   -sprotein           boolean    Sequence is protein
+   -slower             boolean    Make lower case
+   -supper             boolean    Make upper case
+   -sformat            string     Input sequence format
+   -sdbname            string     Database name
+   -sid                string     Entryname
+   -ufo                string     UFO features
+   -fformat            string     Features format
+   -fopenfile          string     Features file name
 
    "-outseq" associated qualifiers
-   -osformat2           string     Output seq format
-   -osextension2        string     File name extension
-   -osname2             string     Base file name
-   -osdirectory2        string     Output directory
-   -osdbname2           string     Database name to add
-   -ossingle2           boolean    Separate file for each entry
-   -oufo2               string     UFO features
-   -offormat2           string     Features format
-   -ofname2             string     Features file name
-   -ofdirectory2        string     Output directory
+   -osformat2          string     Output seq format
+   -osextension2       string     File name extension
+   -osname2            string     Base file name
+   -osdirectory2       string     Output directory
+   -osdbname2          string     Database name to add
+   -ossingle2          boolean    Separate file for each entry
+   -oufo2              string     UFO features
+   -offormat2          string     Features format
+   -ofname2            string     Features file name
+   -ofdirectory2       string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   (Parameter 1) Sequence(s) filename and optional format, or reference
+   (input USA) Readable sequence(s) Required
    -count Number of times to perform the mutation operations Integer 0 or
    more 1
    -point Types of point mutations to perform
@@ -226,8 +228,8 @@ Command line arguments
    6 (Moves)
    0
    [-outseq]
-   (Parameter 2) Output sequence(s) USA Writeable sequence(s)
-   <sequence>.format
+   (Parameter 2) Sequence set(s) filename and optional format (output
+   USA) Writeable sequence(s) <sequence>.format
    Additional (Optional) qualifiers Allowed values Default
    -inframe Do 'codon' and 'block' operations in frame Boolean value
    Yes/No No

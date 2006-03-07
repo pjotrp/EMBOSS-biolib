@@ -52,7 +52,6 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
                  Standard (Mandatory) qualifiers     Allowed values Default
    [-prositedir]
    (Parameter 1) Name of prosite directory Directory

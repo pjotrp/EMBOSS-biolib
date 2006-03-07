@@ -88,9 +88,9 @@ NN   [4]
 XX
 IN   NRES 1 ; NGAP 1 ; WSIZ 0
 XX
-AA   F ; 2
+AA   T ; 2
 XX
-GA   16 ; 2
+GA   15 ; 2
 XX
 NN   [5]
 XX
@@ -105,7 +105,7 @@ NN   [10]
 XX
 IN   NRES 1 ; NGAP 1 ; WSIZ 0
 XX
-AA   D ; 2
+AA   I ; 2
 XX
 GA   2 ; 2
 XX
@@ -113,7 +113,7 @@ NN   [11]
 XX
 IN   NRES 1 ; NGAP 1 ; WSIZ 0
 XX
-AA   N ; 2
+AA   D ; 2
 XX
 GA   0 ; 2
 XX
@@ -121,7 +121,7 @@ NN   [12]
 XX
 IN   NRES 1 ; NGAP 1 ; WSIZ 0
 XX
-AA   Y ; 2
+AA   N ; 2
 XX
 GA   0 ; 2
 XX
@@ -129,7 +129,7 @@ NN   [13]
 XX
 IN   NRES 1 ; NGAP 1 ; WSIZ 0
 XX
-AA   G ; 2
+AA   V ; 2
 XX
 GA   3 ; 2
 XX
@@ -137,7 +137,7 @@ NN   [14]
 XX
 IN   NRES 1 ; NGAP 1 ; WSIZ 0
 XX
-AA   P ; 2
+AA   R ; 2
 XX
 GA   3 ; 2
 XX
@@ -145,7 +145,7 @@ NN   [15]
 XX
 IN   NRES 1 ; NGAP 1 ; WSIZ 0
 XX
-AA   P ; 2
+AA   L ; 2
 XX
 GA   2 ; 2
 //
@@ -323,334 +323,332 @@ SEVDQIALIAPRATINIVRDYKIVEKAKVRL
 
   File: SIGSCAN.dhf
 
-> P00478^.^10^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^4.67^0.000e+00
-^0.000e+00
-VEAIKRGTVIDHIPAQIGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLSEDQVDQLALYAPQATVNRID
-NYEVVGKSRPSLP
-> Q83IL8^.^10^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^4.40^0.000e+00
-^0.000e+00
-VEAIKRGTVIDHIPAQIGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLSEEQVDQLALYAPQATVNRID
-NYEVVGKSRPSLP
-> Q8Z130^.^10^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^4.07^0.000e+00
-^0.000e+00
-VEAIKCGTVIDHIPAQVGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLTDEQVNQLALYAPQATVNRID
-NYDVVGKSRPSLP
-> P08421^.^10^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^4.07^0.000e+00
-^0.000e+00
-VEAIKCGTVIDHIPAQVGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLTEEQVNQLALYAPQATVNRID
-NYDVVGKSRPSLP
-> Q8K9H8^.^10^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^3.67^0.000e+00
-^0.000e+00
-VEAIKSGSVIDHIPAHIGFKLLSLFRFTETEKRITIGLNLPSQKLDKKDIIKIENTFLSDDQINQLAIYAPCATVNYIE
-KYNLVGKIFPSLP
-> Q9HKM3^.^11^92^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+> P00478^.^10^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
 ^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
 carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^3.20^0.000e+00
 ^0.000e+00
-ISKIRDGTVIDHVPSGKGIRVIGVLGVHEDVNYTVSLAIHVPSNKMGFKDVIKIENRFLDRNELDMISLIAPNATISII
-KNYEISEKFQVELP
-> Q9HHN3^.^11^92^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+VEAIKRGTVIDHIPAQIGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLSEDQVDQLALYAPQATVNRID
+NYEVVGKSRPSLP
+> P08421^.^10^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
 ^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.87^0.000e+00
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^3.20^0.000e+00
 ^0.000e+00
-VSKIQAGTVIDHIPAGQALQVLQILGTNGASDDQITVGMNVTSERHHRKDIVKIEGRELSQDEVDVLSLIAPDATINIV
-RDYEVDEKRRVDRP
-> P57451^.^10^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+VEAIKCGTVIDHIPAQVGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLTEEQVNQLALYAPQATVNRID
+NYDVVGKSRPSLP
+> Q83IL8^.^10^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
 ^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.80^0.000e+00
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^3.20^0.000e+00
 ^0.000e+00
-VEAIKSGSVIDHIPEYIGFKLLSLFRFTETEKRITIGLNLPSKKLGRKDIIKIENTFLSDEQINQLAIYAPHATVNYIN
-EYNLVRKVFPTLP
-> Q8ZB38^.^10^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+VEAIKRGTVIDHIPAQIGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLSEEQVDQLALYAPQATVNRID
+NYEVVGKSRPSLP
+> Q8Z130^.^10^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
 ^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.73^0.000e+00
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^3.00^0.000e+00
 ^0.000e+00
-VEAIKCGTVIDHIPAQIGFKLLSLFKLTATDQRITIGLNLPSKRSGRKDLIKIENTFLTEQQANQLAMYAPDATVNRID
-NYEVVKKLTLSLP
-> P19936^.^10^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.73^0.000e+00
-^0.000e+00
-VEAIKCGTVIDHIPAQIGFKLLTLFKLTATDQRITIGLNLPSNELGRKDLIKIENTFLTEQQANQLAMYAPKATVNRID
-NYEVVRKLTLSLP
-> Q97B28^.^11^92^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.60^0.000e+00
-^0.000e+00
-ISKIKDGTVIDHIPSGKALRVLSILGIRDDVDYTVSVGMHVPSSKMEYKDVIKIENRSLDKNELDMISLTAPNATISII
-KNYEISEKFKVELP
-> Q87LF7^.^10^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+VEAIKCGTVIDHIPAQVGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLTDEQVNQLALYAPQATVNRID
+NYDVVGKSRPSLP
+> Q97B28^.^11^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
 ^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
 carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.53^0.000e+00
 ^0.000e+00
-VEAIKNGTVIDHIPAQIGIKVLKLFDMHNSSQRVTIGLNLPSSALGHKDLLKIENVFINEEQASKLALYAPHATVNQIE
-NYEVVKKLALELP
-> Q7MZ14^.^10^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+ISKIKDGTVIDHIPSGKALRVLSILGIRDDVDYTVSVGMHVPSSKMEYKDVIKIENRSLDKNELDMISLTAPNATISII
+KNYEISEKFKVELP
+> P19936^.^10^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
 ^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.47^0.000e+00
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.40^0.000e+00
 ^0.000e+00
-VEAIRCGTVIDHIPAQVGFKLLSLFKLTETDQRITIGLNLPSNRLGKKDLIKIENTFLTEQQANQLAMYAPNATVNCIE
-NYEVVKKLPINLP
-> Q8ZTG2^.^11^92^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+VEAIKCGTVIDHIPAQIGFKLLTLFKLTATDQRITIGLNLPSNELGRKDLIKIENTFLTEQQANQLAMYAPKATVNRID
+NYEVVRKLTLSLP
+> Q7P144^.^10^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
 ^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.33^0.000e+00
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.40^0.000e+00
+^0.000e+00
+VEALKQGTVIDHIPAGEGVKILRLFKLTETGERVTVGLNLVSRHMGSKDLIKVENVALTEEQANELALFAPKATVNVID
+NFEVVKKHKLTLP
+> Q8ZB38^.^10^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.40^0.000e+00
+^0.000e+00
+VEAIKCGTVIDHIPAQIGFKLLSLFKLTATDQRITIGLNLPSKRSGRKDLIKIENTFLTEQQANQLAMYAPDATVNRID
+NYEVVKKLTLSLP
+> Q9HKM3^.^11^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.40^0.000e+00
+^0.000e+00
+ISKIRDGTVIDHVPSGKGIRVIGVLGVHEDVNYTVSLAIHVPSNKMGFKDVIKIENRFLDRNELDMISLIAPNATISII
+KNYEISEKFQVELP
+> P74766^.^11^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.20^0.000e+00
+^0.000e+00
+VSKIKNGTVIDHIPAGRAFAVLNVLGIKGHEGFRIALVINVDSKKMGKKDIVKIEDKEISDTEANLITLIAPTATINIV
+REYEVVKKTKLEVP
+> Q8ZTG2^.^11^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.13^0.000e+00
 ^0.000e+00
 VSKIENGTVIDHIPAGRALTVLRILGISGKEGLRVALVMNVESKKLGKKDIVKIEGRELTPEEVNIISAVAPTATINII
 RNFAVVKKFKVTPP
-> Q9KP65^.^10^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+> Q9UX07^.^11^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
 ^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.33^0.000e+00
-^0.000e+00
-VEAIKNGTVIDHIPAKVGIKVLKLFDMHNSAQRVTIGLNLPSSALGSKDLLKIENVFISEAQANKLALYAPHATVNQIE
-NYEVVKKLALQLP
-> O30129^.^11^92^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.27^0.000e+00
-^0.000e+00
-VSKIKEGTVIDHINAGKALLVLKILKIQPGTDLTVSMAMNVPSSKMGKKDIVKVEGMFIRDEELNKIALISPNATINLI
-RDYEIERKFKVSPP
-> Q8D1W6^.^10^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.27^0.000e+00
-^0.000e+00
-VEAIFGGTVIDHIPAQVGLKLLSLFKWLHTKERITMGLNLPSNQQKKKDLIKLENVLLNEDQANQLSIYAPLATVNQIK
-NYIVIKKQKLKLP
-> Q7MHF0^.^10^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.20^0.000e+00
-^0.000e+00
-VEAIKNGTVIDHIPAQVGIKVLKLFDMHNSSQRVTIGLNLPSSALGNKDLLKIENVFINEEQASKLALYAPHATVNQIE
-DYQVVKKLALELP
-> Q8DCF7^.^10^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.20^0.000e+00
-^0.000e+00
-VEAIKNGTVIDHIPAQVGIKVLKLFDMHNSSQRVTIGLNLPSSALGNKDLLKIENVFINEEQASKLALYAPHATVNQIE
-DYQVVKKLALELP
-> Q9UX07^.^11^92^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.07^0.000e+00
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.13^0.000e+00
 ^0.000e+00
 VSKIRNGTVIDHIPAGRALAVLRILGIRGSEGYRVALVMNVESKKIGRKDIVKIEDRVIDEKEASLITLIAPSATINII
 RDYVVTEKRHLEVP
-> Q9K1K9^.^10^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+> Q7MZ14^.^10^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
 ^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^1.93^0.000e+00
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.07^0.000e+00
+^0.000e+00
+VEAIRCGTVIDHIPAQVGFKLLSLFKLTETDQRITIGLNLPSNRLGKKDLIKIENTFLTEQQANQLAMYAPNATVNCIE
+NYEVVKKLPINLP
+> Q9HHN3^.^11^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.07^0.000e+00
+^0.000e+00
+VSKIQAGTVIDHIPAGQALQVLQILGTNGASDDQITVGMNVTSERHHRKDIVKIEGRELSQDEVDVLSLIAPDATINIV
+RDYEVDEKRRVDRP
+> Q9K1K9^.^10^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^2.07^0.000e+00
 ^0.000e+00
 VEAIEKGTVIDHIPAGRGLTILRQFKLLHYGNAVTVGFNLPSKTQGSKDIIKIKGVCLDDKAADRLALFAPEAVVNTID
 NFKVVQKRHLNLP
-> O58452^.^12^93^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+> O58452^.^12^92^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
 ^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
 carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^1.93^0.000e+00
 ^0.000e+00
 VSAIKEGTVIDHIPAGKGLKVIEILGLSKLSNGGSVLLAMNVPSKKLGRKDIVKVEGKFLSEEEVNKIALVAPTATVNI
 IRNYKVVEKFKVEVP
-> P74766^.^11^92^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+> Q87LF7^.^10^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
 ^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
 carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^1.93^0.000e+00
 ^0.000e+00
-VSKIKNGTVIDHIPAGRAFAVLNVLGIKGHEGFRIALVINVDSKKMGKKDIVKIEDKEISDTEANLITLIAPTATINIV
-REYEVVKKTKLEVP
-> Q7P144^.^10^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+VEAIKNGTVIDHIPAQIGIKVLKLFDMHNSSQRVTIGLNLPSSALGHKDLLKIENVFINEEQASKLALYAPHATVNQIE
+NYEVVKKLALELP
+> Q9KP65^.^10^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
 ^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^1.80^0.000e+00
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^1.93^0.000e+00
 ^0.000e+00
-VEALKQGTVIDHIPAGEGVKILRLFKLTETGERVTVGLNLVSRHMGSKDLIKVENVALTEEQANELALFAPKATVNVID
-NFEVVKKHKLTLP
-> Q9JWY6^.^10^91^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+VEAIKNGTVIDHIPAKVGIKVLKLFDMHNSAQRVTIGLNLPSSALGSKDLLKIENVFISEAQANKLALYAPHATVNQIE
+NYEVVKKLALQLP
+> P96175^.^10^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
 ^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
-carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^1.60^0.000e+00
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^1.73^0.000e+00
+^0.000e+00
+VEAICNGYVIDHIPSGQGVKILRLFSLTDTKQRVTVGFNLPSHDGTTKDLIKVENTEITKSQANQLALLAPNATVNIIE
+NFKVTDKHSLALP
+> Q8D1W6^.^10^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^1.73^0.000e+00
+^0.000e+00
+VEAIFGGTVIDHIPAQVGLKLLSLFKWLHTKERITMGLNLPSNQQKKKDLIKLENVLLNEDQANQLSIYAPLATVNQIK
+NYIVIKKQKLKLP
+> Q9JWY6^.^10^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^1.73^0.000e+00
 ^0.000e+00
 VEAIEKGTVIDHIPAGRGLTILRQFKLLHYGNAVTVGFNLPSKTQGSKDIIKIKGVCLDDKAADRLALFAPEAVVNTID
 HFKVVQKRHLNLP
+> P77919^.^12^92^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^1.60^0.000e+00
+^0.000e+00
+VSAIKEGTVIDHIPAGKGLKVIEILKLGKLTNGGAVLLAMNVPSKKLGRKDIVKVEGRFLSEEEVNKIALVAPNATVNI
+IRDYKVVEKFKVEVP
+> Q7MHF0^.^10^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^1.60^0.000e+00
+^0.000e+00
+VEAIKNGTVIDHIPAQVGIKVLKLFDMHNSSQRVTIGLNLPSSALGNKDLLKIENVFINEEQASKLALYAPHATVNQIE
+DYQVVKKLALELP
+> Q8DCF7^.^10^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^1.60^0.000e+00
+^0.000e+00
+VEAIKNGTVIDHIPAQVGIKVLKLFDMHNSSQRVTIGLNLPSSALGNKDLLKIENVFINEEQASKLALYAPHATVNQIE
+DYQVVKKLALELP
+> Q8K9H8^.^10^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^1.60^0.000e+00
+^0.000e+00
+VEAIKSGSVIDHIPAHIGFKLLSLFRFTETEKRITIGLNLPSQKLDKKDIIKIENTFLSDDQINQLAIYAPCATVNYIE
+KYNLVGKIFPSLP
 
 
   [Part of this file has been deleted for brevity]
 
-VQAEAFDSVTIYFSDIVGFTALSAESTPMQVVTLLNDLYTCFDAVIDNFDVYKVETIGDAYMVVSGLPVRNGRLHACEV
-ARMALALLDAVRSFRIRHRPQEQLRLRIGIHTGPVCAGVVGLKMPRYCLFGDTVNTASRMESNGEALKIHLSSETKAVL
-EEFGGFELEL
-> Q891I9^.^9^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
-Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate c
-arbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.07^0.000e+00^
-0.000e+00
-ITSIKDGIVIDHIKSGYGIKIFNYLNLKNVEYSVALIMNVFSSKLGKKDIIKIANKEIDIDFTVLGLIDPTITINIIED
-EKIKEKLNLELP
-> P18293^.^38^119^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+FHSLYVKRHQNVSILYADIVGFTQLASDCSPKELVVVLNELFGKFDQIAKANECMRIKILGDCYYCVSGLPVSLPTHAR
+NCVKMGLDMCQAIKQVREATGVDINMRVGIHSGNVLCGVIGLRKWQYDVWSHDVSLANRMEAAGVPGRVHITEATLKHL
+DKAYEVEDGHGQQRDPYLKEMNIRTYLV
+> P51829^.^90^170^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
 e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.07^0.000e+0
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.53^0.000e+0
 0^0.000e+00
-VQAEAFDSVTIYFSDIVGFTALSAESTPMQVVTLLNDLYTCFDAVIDNFDVYKVETIGDAYMVVSGLPVRNGQLHAREV
-ARMALALLDAVRSFRIRHRPQEQLRLRIGIHTGPVCAGVVGLKMPRYCLFGDTVNTASRMESNGEALRIHLSSETKAVL
-EEFDGFELEL
-> O02740^.^32^113^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+FHSLYVKRHQNVSILYADIVGFTRLASDCSPKELVVVLNELFGKFDQIAKANECMRIKILGDCYYCVSGLPVSLPTHAR
+NCVKMGLDICEAIKQVREATGVDISMRVGIHSGNVLCGVIGLRKWQYDVWSHDVSLANRMEAAGVPGRVHITEATLNHL
+DKAYEVEDGHGEQRDPYLKEMNIRTYLV
+> Q03343^.^92^172^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
 e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.07^0.000e+0
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.53^0.000e+0
 0^0.000e+00
-DLVTLYFSDIVGFTTISAMSEPIEVVDLLNDLYTLFDAIIGSHDVYKVETIGDAYMVASGLPKRNGMRHAAEIANMSLD
-ILSSVGTFKMRHMPEVPVRIRIGLHSGPVVAGVVGLTMPRYCLFGDTVNTASRMESTGLPYRIHVSHSTVTILRTLGEG
-YEVE
-> P51841^.^32^113^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+MMFHKIYIQKHDNVSILFADIEGFTSLASQCTAQELVMTLNELFARFDKLAAENHCLRIKILGDCYYCVSGLPEARADH
+AHCCVEMGVDMIEAISLVREVTGVNVNMRVGIHSGRVHCGVLGLRKWQFDVWSNDVTLANHMEAGGRAGRIHITRATLQ
+YLNGDYEVEPGRGGERNGYLKEQCIETFLIL
+> Q07093^.^16^96^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
+^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.53^0.000e+00
+^0.000e+00
+VTILFSDIVGFTSICSRATPFMVISMLEGLYKDFDEFCDFFDVYKVETIGDAYCVASGLHRASIYDAHRCLDGLKMIDA
+CSKHITHDGEQIKMRIGLHTGTVLAGVVGRKMPRYCLFGHSVTIANKFESGSEALKINVSPTTKDWLTKHEGFEFELQP
+> Q08462^.^70^150^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
 e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.07^0.000e+0
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.53^0.000e+0
 0^0.000e+00
-DLVTLYFSDIVGFTTISAMSEPIEVVDLLNDLYTLFDAIIGSHDVYKVETIGDAYMVASGLPKRNGSRHAAEIANMSLD
-ILSSVGTFKMRHMPEVPVRIRIGLHSGPVVAGVVGLTMPRYCLFGDTVNTASRMESTGLPYRIHVSLSTVTILQNLSEG
-YEVE
-> Q8NFM4^.^49^130^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+DCVCVMFASIPDFKEFYTESDVNKEGLECLRLLNEIIADFDDLLSKPKFSGVEKIKTIGSTYMAATGLSAVPSQEHSQE
+PERQYMHIGTMVEFAFALVGKLDAINKHSFNDFKLRVGINHGPVIAGVIGAQKPQYDIWGNTVNVASRMDSTGVLDKIQ
+VTEETSLVL
+> Q26721^.^94^174^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
 e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.07^0.000e+0
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.53^0.000e+0
+0^0.000e+00
+PVTLIFTDIESSTALWAAHPEVMPDAVATHHRLIRTLISKYECYEVKTVGDSFMIASKSPFAAVQLAQELQLCFLHHDW
+GTNAIDESYQQFEQQRAEDDSDYTPPTARLDPKVYSRLWNGLRVRVGIHTGLCDIRRDEVTKGYDYYGRTSNMAARTES
+VANGGQVLMTHAAYMSLSAEERQQIDVTALGDVPLRGVPKPVEMYRLN
+> Q29450^.^90^170^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.53^0.000e+0
+0^0.000e+00
+FHNLYVKRHQNVSILYADIVGFTRLASDCSPKELVVVLNELFGKFDQIAKANECMRIKILGDCYYCVSGLPVSLPNHAR
+NCVKMGLDMCEAIKQVREATGVDISMRVGIHSGNVLCGVIGLRKWQYDVWSHDVSLANRMEAAGVPGRVHITEATLKHL
+DKAYEVEDGHGQQRDPYLKEMNIRTYLV
+> Q8NFM4^.^76^156^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.53^0.000e+0
+0^0.000e+00
+FHSLYVKRHQGVSVLYADIVGFTRLASECSPKELVLMLNELFGKFDQIAKEHECMRIKILGDCYYCVSGLPLSLPDHAI
+NCVRMGLDMCRAIRKLRAATGVDINMRVGVHSGSVLCGVIGLQKWQYDVWSHDVTLANHMEAGGVPGRVHITGATLALL
+> Q8NFM4^.^68^148^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.53^0.000e+0
 0^0.000e+00
 VCVLFASVPDFKEFYSESNINHEGLECLRLLNEIIADFDELLSKPKFSGVEKIKTIGSTYMAATGLNATSGQDAQQDAE
 RSCSHLGTMVEFAVALGSKLDVINKHSFNNFRLRVGLNHGPVVAGVIGAQKPQYDIWGNTVNVASRMESTGVLGKIQVT
 EET
-> P46197^.^38^119^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+> Q91WF3^.^76^156^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
 e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.07^0.000e+0
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.53^0.000e+0
 0^0.000e+00
-VQAEAFDSVTIYFSDIVGFTALSAESTPMQVVTLLNDLYTCFDAIIDNFDVYKVETIGDAYMVVSGLPGRNGQRHAPEI
-ARMALALLDAVSSFRIRHRPHDQLRLRIGVHTGPVCAGVVGLKMPRYCLFGDTVNTASRMESNGQALKIHVSSTTKDAL
-DELGCFQLEL
-> P19686^.^65^146^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+FHSLYVKRHQGVSVLYADIVGFTRLASECSPKELVLMLNELFGKFDQIAKEHECMRIKILGDCYYCVSGLPLSLPDHAI
+NCVRMGLDMCRAIRKLRVATGVDINMRVGVHSGSVLCGVIGLQKWQYDVWSHDVTLANHMEAGGVPGRVHITGATLALL
+> Q91WF3^.^68^148^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
 e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.00^0.000e+0
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.53^0.000e+0
 0^0.000e+00
-VQAKKFNEVTMLFSDIVGFTAICSQCSPLQVITMLNALYTRFDQQCGELDVYKVETIGDAYCVAGGLHRESDTHAVQIA
-LMALKMMELSNEVMSPHGEPIKMRIGLHSGSVFAGVVGVKMPRYCLFGNNVTLANKFESCSVPRKINVSPTTYRLLKDC
-PG
-> P19687^.^66^147^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+VCVLFASVPDFKEFYSESNINHEGLECLRLLNEIIADFDELLSKPKFSGVEKIKTIGSTYMAATGLNATSGQDTQQDSE
+RSCSHLGTMVEFAVALGSKLGVINKHSFNNFRLRVGLNHGPVVAGVIGAQKPQYDIWGNTVNVASRMESTGVLGKIQVT
+EETARAL
+> Q97FS4^.^8^88^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate c
+arbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.47^0.000e+00^
+0.000e+00
+INSIKNGIVIDHIKAGHGIKIYNYLKLGEAEFPTALIMNAISKKNKAKDIIKIENVMDLDLAVLGFLDPNITVNIIEDE
+KIRQKIQLKLP
+> O60503^.^50^130^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
 e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.00^0.000e+0
-0^0.000e+00
-AVQAKRFGNVTMLFSDIVGFTAICSQCSPLQVITMLNALYTRFDRQCGELDVYKVETIGDAYCVAGGLHKESDTHAVQI
-ALMALKMMELSHEVVSPHGEPIKMRIGLHSGSVFAGVVGVKMPRYCLFGNNVTLANKFESCSVPRKINVSPTTYRLLKD
-CPG
-> O60503^.^60^141^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
-e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.00^0.000e+0
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.47^0.000e+0
 0^0.000e+00
 VSILFADIVGFTKMSANKSAHALVGLLNDLFGRFDRLCEETKCEKISTLGDCYYCVAGCPEPRADHAYCCIEMGLGMIK
 AIEQFCQEKKEMVNMRVGVHTGTVLCGILGMRRFKFDVWSNDVNLANLMEQLGVAGKVHISEATAKYLDDRYEMEDGKV
 IERLGQSVVADQLKGLKTYLI
-> P97490^.^75^156^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+> P26769^.^1^81^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate c
+arbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.47^0.000e+00^
+0.000e+00
+FHNLYVKRHTNVSILYADIVGFTRLASDCSPGELVHMLNELFGKFDQIAKENECMRIKILGDCYYCVSGLPISLPNHAK
+NCVKMGLDMCEAIKKVRDATGVDINMRVGVHSGNVLCGVIGLQKWQYDVWSHDVTLANHMEAGGVPGRVHISSVTLEHL
+NGAYKVEEGDGEIRDPYLKQHLVKTYFV
+> P98999^.^52^132^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
 e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.00^0.000e+0
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.47^0.000e+0
 0^0.000e+00
-DAVGVMFASIPGFADFYSQTEMNNQGVECLRLLNEIIADFDELLGEDRFQDIEKIKTIGSTYMAVSGLSPEKQQCEDKW
-GHLCALADFSLALTESIQEINKHSFNNFELRIGISHGSVVAGVIGAKKPQYDIWGKTVNLASRMDSTGVSGRIQVPEET
-YLIL
-> P51830^.^60^141^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+EQVSILFADIVGFTKMSANKSAHALVGLLNDLFGRFDRLCEETKCEKISTLGDCYYCVAGCPEPRPDHAYCCIEMGLGM
+IEAIDQFCQEKKEMVNMRVGVHTGTVLCGILGMRRFKFDVWSNDVNLANLMEQLGVAGKVHISEKTARYLD
+> Q08462^.^1^81^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate c
+arbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.47^0.000e+00^
+0.000e+00
+FHNLYVKRHTNVSILYADIVGFTRLASDCSPGELVHMLNELFGKFDQIAKENECMRIKILGDCYYCVSGLPISLPNHAK
+NCVKMGLDMCEAIKKVRDATGVDINMRVGVHSGNVLCGVIGLQKWQYDVWSHDVTLANHMEAGGVPGRVHISSVTLEHL
+NGAYKVEEGDGDIRDPYLKQHLVKTYFV
+> Q99279^.^119^199^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-li
+ke^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartat
+e carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.47^0.000e+
+00^0.000e+00
+NNNRAPKEPTDPVTLIFTDIESSTALWAAHPDLMPDAVAAHHRMVRSLIGRYKCYEVKTVGDSFMIASKSPFAAVQLAQ
+ELQLCFLHHDWGTNALDDSYREFEEQRAEGECEYTPPTAHMDPEVYSRLWNGLRVRVGIHTGLCDIIRHDEVTKGYDYY
+GRTPNMAARTESVANGGQVLMTHAAYMSLSAEDRKQIDVTALGDVALRGVSDPVKMYQLN
+> Q9DGG6^.^52^132^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
 e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.00^0.000e+0
-0^0.000e+00
-VSILFADIVGFTKMSANKSAHALVGLLNDLFGRFDRLCEQTKCEKISTLGDCYYCVAGCPEPRADHAYCCIEMGLGMIK
-AIEQFCQEKKEMVNMRVGVHTGTVLCGILGMRRFKFDVWSNDVNLANLMEQLGVAGKVHISEATAKYLDDRYEMEDGRV
-IERLGQSVVADQLKGLKTYLI
-> Q02108^.^65^146^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
-e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.00^0.000e+0
-0^0.000e+00
-VQAKKFSNVTMLFSDIVGFTAICSQCSPLQVITMLNALYTRFDQQCGELDVYKVETIGDAYCVAGGLHKESDTHAVQIA
-LMALKMMELSDEVMSPHGEPIKMRIGLHSGSVFAGVVGVKMPRYCLFGNNVTLANKFESCSVPRKINVSPTTYRLLKDC
-PG
-> Q9DGG6^.^62^143^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
-e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.00^0.000e+0
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.47^0.000e+0
 0^0.000e+00
 EQVSILFADIVGFTKMSANKSAHALVGLLNDLFGRFDRLCEDTKCEKISTLGDCYYCVAGCPEPRADHAYCCIEMGLGM
 IKAIEQFCQEKKEMVNMRVGVHTGTVLCGILGMRRFKFDVWSNDVNLANLMEQLGVAGKVHISEATAKYLDDRYEMEDG
 KVTERVGQSAVADQLKGLKTYLI
-> Q9ERL9^.^57^138^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+> O02740^.^59^139^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
 e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.00^0.000e+0
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.40^0.000e+0
 0^0.000e+00
-VTMLFSDIVGFTAICSQCSPLQVITMLNALYTRFDQQCGELDVYKVETIGDAYCVAGGLHRESDTHAVQIALMALKMME
-LSNEVMSPHGEPIKMRIGLHSGSVFAGVVGVKMPRYCLFGNNVTLANKFESCSVPRKINVSPTTYRLLKDCPG
-> P30803^.^0^81^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
-Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate c
-arbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.00^0.000e+00^
-0.000e+00
-VAVMFASIANFSEFYVELEANNEGVECLRVLNEIIADFDEIISEDRFRQLEKIKTIGSTYMAASGLNDSTYDKVGKTHI
-KALADFAMKLMDQMKYINEHSFNNFQMKIGLNIGPVVAGVIGARKPQYDIWGNTVNVASRMDSTGVPDRIQVTTDMYQV
-L
-> P40145^.^75^156^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+DLVTLYFSDIVGFTTISAMSEPIEVVDLLNDLYTLFDAIIGSHDVYKVETIGDAYMVASGLPKRNGMRHAAEIANMSLD
+ILSSVGTFKMRHMPEVPVRIRIGLHSGPVVAGVVGLTMPRYCLFGDTVNTASRMESTGLPYRIHVSHSTVTILRTLGEG
+YEVE
+> O19179^.^57^137^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
 e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.00^0.000e+0
-0^0.000e+00
-DAVGVMFASIPGFADFYSQTEMNNQGVECLRLLNEIIADFDELLGEDRFQDIEKIKTIGSTYMAVSGLSPEKQQCEDKW
-GHLCALADFSLALTESIQEINKHSFNNFELRIGISHGSVVAGVIGAKKPQYDIWGKTVNLASRMDSTGVSGRIQVPEET
-YLIL
-> O19179^.^30^111^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
-e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.00^0.000e+0
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.40^0.000e+0
 0^0.000e+00
 VTLYFSDIVGFTTISAMSEPIEVVDLLNDLYTLFDAIIGSHDVYKVETIGDAYMVASGLPQRNGQRHAAEIANMALDIL
 SAVGSFRMRHMPEVPVRIRIGLHSGPCVAGVVGLTMPRYCLFGDTVNTASRMESTGLPYRIHVNMSTVRILHALDEGFQ
 TEV
-> P51840^.^30^111^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+> O95622^.^77^157^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
 e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.00^0.000e+0
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.40^0.000e+0
 0^0.000e+00
-VTLYFSDIVGFTTISAMSEPIEVVDLLNDLYTLFDAIIGSHDVYKVETIGDAYMVASGLPQRNGQRHAAEIANMSLDIL
-SAVGSFRMRHMPEVPVRIRIGLHSGPCVAGVVGLTMPRYCLFGDTVNTASRMESTGLPYRIHVNMSTVRIL
-> P40146^.^75^156^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
-e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.00^0.000e+0
-0^0.000e+00
-DAVGVMFASIPGFADFYSQTEMNNQGVECLRLLNEIIADFDELLGEDRFQDIEKIKTIGSTYMAVSGLSPEKQQCEDKW
-GHLCALADFSLALTESIQEINKHSFNNFELRIGISHGSVVAGVIGAKKPQYDIWGKTVNLASRMDSTGVSGRIQVPEET
-YLIL
-> P52785^.^30^111^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
-e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.00^0.000e+0
-0^0.000e+00
-VTLYFSDIVGFTTISAMSEPIEVVDLLNDLYTLFDAIIGAHDVYKVETIGDAYMVASGLPQRNGQRHAAEIANMSLDIL
-SAVGSFRMRHMPEVPVRIRIGLHSGPCVAGVVGLTMPRYCLFGDTVNTASRMESTGLPYRIHVNMSTVRILRSLDQGFQ
-ME
-> P98999^.^62^143^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
-e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
- carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.00^0.000e+0
-0^0.000e+00
-EQVSILFADIVGFTKMSANKSAHALVGLLNDLFGRFDRLCEETKCEKISTLGDCYYCVAGCPEPRPDHAYCCIEMGLGM
-IEAIDQFCQEKKEMVNMRVGVHTGTVLCGILGMRRFKFDVWSNDVNLANLMEQLGVAGKVHISEKTARYLD
-> P30804^.^0^81^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
-Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate c
-arbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^-0.07^0.000e+00
-^0.000e+00
-VAVMFASIANFSEFYVELEANNEGVECLRLLNEIIADFDEIISEERFRQLEKIKTIGSTYMAASGLNASTYDQAGRSHI
-TALADYAMRLMEQMKHINEHSFNNFQMKIGLNMGPVVAGVIGARKPQYDIWGNTVNVSSRMDSTGVPDRIQVTTDLYQV
-L
-> Q01341^.^0^81^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
-Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate c
-arbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^-0.07^0.000e+00
-^0.000e+00
-VAVMFASIANFSEFYVELEANNEGVECLRLLNEIIADFDEIISEERFRQLEKIKTIGSTYMAASGLNASTYDQVGRSHI
-TALADYAMRLMEQMKHINEHSFNNFQMKIGLNMGPVVAGVIGARKPQYDIWGNTVNVSSRMDSTGVPDRIQVTTDLYQV
-L
-> Q03343^.^0^81^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
-Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate c
-arbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^-0.07^0.000e+00
-^0.000e+00
-VAVMFASIANFSEFYVELEANNEGVECLRLLNEIIADFDEIISEERFRQLEKIKTIGSTYMAASGLNASTYDQVGRSHI
-TALADYAMRLMEQMKHINEHSFNNFQMKIGLNMGPVVAGVIGARKPQYDIWGNTVNVSSRMDSTGVPDRIQVTTDLYQV
-L
-> O95622^.^0^81^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
-Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate c
-arbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^-0.07^0.000e+00
-^0.000e+00
 VAVMFASIANFSEFYVELEANNEGVECLRLLNEIIADFDEIISEDRFRQLEKIKTIGSTYMAASGLNDSTYDKVGKTHI
 KALADFAMKLMDQMKYINEHSFNNFQMKIGLNIGPVVAGVIGARKPQYDIWGNTVNVASRMDSTGVPDRIQVTTDMYQV
 L
+> P19754^.^33^113^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.40^0.000e+0
+0^0.000e+00
+FHKIYIQRHDNVSILFADIVGFTGLASQCTAQELVKLLNELFGKFDELATENHCRRIKILGDCYYCVSGLTQPKTDHAH
+CCVEMGLDMIDTITSVAEATEVDLNMRVGLHTGRVLCGVLGLRKWQYDVWSNDVTLANVMEAAGLPGKVHITKTTLACL
+NGDYEVEPGHGHERNSFLKTHNIETFFI
+> P30803^.^77^157^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.40^0.000e+0
+0^0.000e+00
+VAVMFASIANFSEFYVELEANNEGVECLRVLNEIIADFDEIISEDRFRQLEKIKTIGSTYMAASGLNDSTYDKVGKTHI
+KALADFAMKLMDQMKYINEHSFNNFQMKIGLNIGPVVAGVIGARKPQYDIWGNTVNVASRMDSTGVPDRIQVTTDMYQV
+L
+> P40137^.^30^110^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.40^0.000e+0
+0^0.000e+00
+VTLLFADIRDFTSLSERLRPEQVVTLLNEYYGRMVEVVFRHGGTLDKFIGDALMVYFGAPIADPAHARRGVQCALDMVQ
+ELETVNALRSARGEPCLRIGVGVHTGPAVLGNIGSATRRLEYTAIGDTVNLASRIESLTK
+> P40144^.^77^157^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.40^0.000e+0
+0^0.000e+00
+VAVMFASIANFSEFYVELEANNEGVECLRLLNEIIADFDEIISEDRFRQLEKIKTIGSTYMAASGLNDSTYDKVGKTHI
+KALADFAMKLMDQMKYINEHSFNNFQMKIGLNIGPVVAGVIGARKPQYDIWGNTVNVASRMDSTGVPDRIQVTTDMYQV
+L
+> P51839^.^59^139^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-lik
+e^Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate
+ carbamoyltransferase, Regulatory-chain, N-terminal domain^SPARSE^0.40^0.000e+0
+0^0.000e+00
+DQVTIYFSDIVGFTTISALSEPIEVVGFLNDLYTMFDAVLDSHDVYKVETIGDAYMVASGLPRRNGNRHAAEIANMALE
+ILSYAGNFRMRHAPDVPIRVRAGLHSGPCVAGVVGLTMPRYCLFGDTVNTASRMESTGLPYRIHVSRNTVQALLSLDEG
+YKIDV
 
   File: SIGSCAN.aln
 
@@ -671,7 +669,7 @@ L
 P00478    1      VEAIKRGTVIDHIPAQIGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKI 53
 SIGNATURE -      ----------*-*--------------------------*-------------
 P00478    54     ENTFLSEDQVDQLALYAPQATVNRIDNYEVVGKSRPSLP               106
-SIGNATURE -      ---*---*--*----*-*----*--***---*---*--*
+SIGNATURE -      --*---*--*----*-*----*--***---*---*--*-
 P00478    107    .                                                     159
 SIGNATURE -      .
 P00478    160    .                                                     212
@@ -679,10 +677,21 @@ SIGNATURE -      .
 P00478    213    .                                                     265
 SIGNATURE -      .
 # XX
+P08421    1      VEAIKCGTVIDHIPAQVGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKI 53
+SIGNATURE -      ----------*-*--------------------------*-------------
+P08421    54     ENTFLTEEQVNQLALYAPQATVNRIDNYDVVGKSRPSLP               106
+SIGNATURE -      --*---*--*----*-*----*--***---*---*--*-
+P08421    107    .                                                     159
+SIGNATURE -      .
+P08421    160    .                                                     212
+SIGNATURE -      .
+P08421    213    .                                                     265
+SIGNATURE -      .
+# XX
 Q83IL8    1      VEAIKRGTVIDHIPAQIGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKI 53
 SIGNATURE -      ----------*-*--------------------------*-------------
 Q83IL8    54     ENTFLSEEQVDQLALYAPQATVNRIDNYEVVGKSRPSLP               106
-SIGNATURE -      ---*---*--*----*-*----*--***---*---*--*
+SIGNATURE -      --*---*--*----*-*----*--***---*---*--*-
 Q83IL8    107    .                                                     159
 SIGNATURE -      .
 Q83IL8    160    .                                                     212
@@ -693,71 +702,60 @@ SIGNATURE -      .
 Q8Z130    1      VEAIKCGTVIDHIPAQVGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKI 53
 SIGNATURE -      ----------*-*--------------------------*-------------
 Q8Z130    54     ENTFLTDEQVNQLALYAPQATVNRIDNYDVVGKSRPSLP               106
-SIGNATURE -      ---*---*--*----*-*----*--***---*---*--*
-Q8Z130    107    .                                                     159
-SIGNATURE -      .
-Q8Z130    160    .                                                     212
-SIGNATURE -      .
-Q8Z130    213    .                                                     265
-SIGNATURE -      .
-# XX
-P08421    1      VEAIKCGTVIDHIPAQVGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKI 53
-SIGNATURE -      ----------*-*--------------------------*-------------
-P08421    54     ENTFLTEEQVNQLALYAPQATVNRIDNYDVVGKSRPSLP               106
 
 
   [Part of this file has been deleted for brevity]
 
-SIGNATURE -      ---------*-*--------------------------*--------------
-P98999    107    CGILGMRRFKFDVWSNDVNLANLMEQLGVAGKVHISEKTARYLD          159
-SIGNATURE -      --*---*--*----*-*----*--***---*---*--*------
-P98999    160    .                                                     212
-SIGNATURE -      .
-P98999    213    .                                                     265
-SIGNATURE -      .
-# XX
-P30804    1      VAVMFASIANFSEFYVELEANNEGVECLRLLNEIIADFDEIISEERFRQLEKI 53
-SIGNATURE -      *-*--------------------------*----------------*---*--
-P30804    54     KTIGSTYMAASGLNASTYDQAGRSHITALADYAMRLMEQMKHINEHSFNNFQM 106
-SIGNATURE -      *----*-*----*--***---*---*--*------------------------
-P30804    107    KIGLNMGPVVAGVIGARKPQYDIWGNTVNVSSRMDSTGVPDRIQVTTDLYQVL 159
-SIGNATURE -      -----------------------------------------------------
-P30804    160    .                                                     212
-SIGNATURE -      .
-P30804    213    .                                                     265
+SIGNATURE -      ---------*---------------*---*--*----*-*----*--***---
+P19754    107    VGLHTGRVLCGVLGLRKWQYDVWSNDVTLANVMEAAGLPGKVHITKTTLACLN 159
+SIGNATURE -      *---*--*---------------------------------------------
+P19754    160    GDYEVEPGHGHERNSFLKTHNIETFFI                           212
+SIGNATURE -      ---------------------------
+P19754    213    .                                                     265
 SIGNATURE -      .
 # XX
-Q01341    1      VAVMFASIANFSEFYVELEANNEGVECLRLLNEIIADFDEIISEERFRQLEKI 53
-SIGNATURE -      *-*--------------------------*----------------*---*--
-Q01341    54     KTIGSTYMAASGLNASTYDQVGRSHITALADYAMRLMEQMKHINEHSFNNFQM 106
-SIGNATURE -      *----*-*----*--***---*---*--*------------------------
-Q01341    107    KIGLNMGPVVAGVIGARKPQYDIWGNTVNVSSRMDSTGVPDRIQVTTDLYQVL 159
+P30803    1      VAVMFASIANFSEFYVELEANNEGVECLRVLNEIIADFDEIISEDRFRQLEKI 53
 SIGNATURE -      -----------------------------------------------------
-Q01341    160    .                                                     212
+P30803    54     KTIGSTYMAASGLNDSTYDKVGKTHIKALADFAMKLMDQMKYINEHSFNNFQM 106
+SIGNATURE -      ------------------------*-*--------------------------
+P30803    107    KIGLNIGPVVAGVIGARKPQYDIWGNTVNVASRMDSTGVPDRIQVTTDMYQVL 159
+SIGNATURE -      *---------------*---*--*----*-*----*--***---*---*--*-
+P30803    160    .                                                     212
 SIGNATURE -      .
-Q01341    213    .                                                     265
+P30803    213    .                                                     265
 SIGNATURE -      .
 # XX
-Q03343    1      VAVMFASIANFSEFYVELEANNEGVECLRLLNEIIADFDEIISEERFRQLEKI 53
-SIGNATURE -      *-*--------------------------*----------------*---*--
-Q03343    54     KTIGSTYMAASGLNASTYDQVGRSHITALADYAMRLMEQMKHINEHSFNNFQM 106
-SIGNATURE -      *----*-*----*--***---*---*--*------------------------
-Q03343    107    KIGLNMGPVVAGVIGARKPQYDIWGNTVNVSSRMDSTGVPDRIQVTTDLYQVL 159
-SIGNATURE -      -----------------------------------------------------
-Q03343    160    .                                                     212
+P40137    1      VTLLFADIRDFTSLSERLRPEQVVTLLNEYYGRMVEVVFRHGGTLDKFIGDAL 53
+SIGNATURE -      ------------------------------*-*--------------------
+P40137    54     MVYFGAPIADPAHARRGVQCALDMVQELETVNALRSARGEPCLRIGVGVHTGP 106
+SIGNATURE -      ------*---------------*---*--*----*-*----*--***---*--
+P40137    107    AVLGNIGSATRRLEYTAIGDTVNLASRIESLTK                     159
+SIGNATURE -      -*--*----------------------------
+P40137    160    .                                                     212
 SIGNATURE -      .
-Q03343    213    .                                                     265
+P40137    213    .                                                     265
 SIGNATURE -      .
 # XX
-O95622    1      VAVMFASIANFSEFYVELEANNEGVECLRLLNEIIADFDEIISEDRFRQLEKI 53
-SIGNATURE -      *-*--------------------------*----------------*---*--
-O95622    54     KTIGSTYMAASGLNDSTYDKVGKTHIKALADFAMKLMDQMKYINEHSFNNFQM 106
-SIGNATURE -      *----*-*----*--***---*---*--*------------------------
-O95622    107    KIGLNIGPVVAGVIGARKPQYDIWGNTVNVASRMDSTGVPDRIQVTTDMYQVL 159
+P40144    1      VAVMFASIANFSEFYVELEANNEGVECLRLLNEIIADFDEIISEDRFRQLEKI 53
 SIGNATURE -      -----------------------------------------------------
-O95622    160    .                                                     212
+P40144    54     KTIGSTYMAASGLNDSTYDKVGKTHIKALADFAMKLMDQMKYINEHSFNNFQM 106
+SIGNATURE -      ------------------------*-*--------------------------
+P40144    107    KIGLNIGPVVAGVIGARKPQYDIWGNTVNVASRMDSTGVPDRIQVTTDMYQVL 159
+SIGNATURE -      *---------------*---*--*----*-*----*--***---*---*--*-
+P40144    160    .                                                     212
 SIGNATURE -      .
-O95622    213    .                                                     265
+P40144    213    .                                                     265
+SIGNATURE -      .
+# XX
+P51839    1      DQVTIYFSDIVGFTTISALSEPIEVVGFLNDLYTMFDAVLDSHDVYKVETIGD 53
+SIGNATURE -      -----------------------------------------------------
+P51839    54     AYMVASGLPRRNGNRHAAEIANMALEILSYAGNFRMRHAPDVPIRVRAGLHSG 106
+SIGNATURE -      ------*-*--------------------------*---------------*-
+P51839    107    PCVAGVVGLTMPRYCLFGDTVNTASRMESTGLPYRIHVSRNTVQALLSLDEGY 159
+SIGNATURE -      --*--*----*-*----*--***---*---*--*-------------------
+P51839    160    KIDV                                                  212
+SIGNATURE -      ----
+P51839    213    .                                                     265
 SIGNATURE -      .
 
 5.0 DATA FILES
@@ -812,13 +810,11 @@ SIGNATURE -      .
                                   PSIBLAST are generated by using SEQSEARCH or
                                   various types of HMM and profile by using
                                   LIBSCAN.
-  [-alignfile]         outfile    Name of SAF file (signature alignment file)
-                                  for signature-sequence alignments (output)
-                                  help: "This option specifies the name of the
-                                  SAF (signature alignment file) (output).A
+  [-alignfile]         outfile    This option specifies the name of the SAF
+                                  (signature alignment file) (output).A
                                   'signature alignment file' contains one or
-                                  more signnature-sequence alignments. The
-                                  file is in DAF format (CLUSTAL-like) and is
+                                  more signature-sequence alignments. The file
+                                  is in DAF format (CLUSTAL-like) and is
                                   annotated with bibliographic information,
                                   either the domain family classification (for
                                   SIGSCAN output) or ligand classification
@@ -917,18 +913,17 @@ SIGNATURE -      .
    or various types of HMM and profile by using LIBSCAN. Output file
    SIGSCAN.dhf
    [-alignfile]
-   (Parameter 4) Name of SAF file (signature alignment file) for
-   signature-sequence alignments (output) help: "This option specifies
-   the name of the SAF (signature alignment file) (output).A 'signature
-   alignment file' contains one or more signnature-sequence alignments.
-   The file is in DAF format (CLUSTAL-like) and is annotated with
-   bibliographic information, either the domain family classification
-   (for SIGSCAN output) or ligand classification (for SIGSCANLIG output).
-   The files generated by SIGSCAN will contain a signature-sequence
-   alignment for a single signature against a library of one or more
-   sequences. The files generated by using SIGSCANLIG will contain a
-   signature-sequence alignment for a single query sequence against a
-   library of one or more signatures. Output file SIGSCAN.aln
+   (Parameter 4) This option specifies the name of the SAF (signature
+   alignment file) (output).A 'signature alignment file' contains one or
+   more signature-sequence alignments. The file is in DAF format
+   (CLUSTAL-like) and is annotated with bibliographic information, either
+   the domain family classification (for SIGSCAN output) or ligand
+   classification (for SIGSCANLIG output). The files generated by SIGSCAN
+   will contain a signature-sequence alignment for a single signature
+   against a library of one or more sequences. The files generated by
+   using SIGSCANLIG will contain a signature-sequence alignment for a
+   single query sequence against a library of one or more signatures.
+   Output file SIGSCAN.aln
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default
@@ -955,17 +950,7 @@ Select number [1]:
 Max. number of hits to output [100]: 
 Name of DHF file (domain hits file) (output) [SIGSCAN.dhf]: 
 Name of SAF file (signature alignment file) for signature-sequence alignments (
-output) help: 
-"This option specifies the name of the SAF (signature alignment file) (output).
-A 'signature alignment file' contains one or more signnature-sequence alignment
-s. The file is in DAF format (CLUSTAL-like) and is annotated with bibliographic
- information, either the domain family classification (for SIGSCAN output) or l
-igand classification (for SIGSCANLIG output). The files generated by SIGSCAN wi
-ll contain a signature-sequence alignment for a single signature against a libr
-ary of one or more sequences. The files generated by using SIGSCANLIG will cont
-ain a signature-sequence alignment for a single query sequence against a librar
-y of one or more signatures. [SIGSCAN.aln]: 
-
+output) [SIGSCAN.aln]: 
 
 Signature file read ok
 Signature compiled ok
@@ -1040,7 +1025,6 @@ Alignments file written ok
 See also
 
    Program name                       Description
-   contactcount Count specific versus non-specific contacts
    contacts     Generate intra-chain CON files from CCF files
    domainalign  Generate alignments (DAF file) for nodes in a DCF file
    domainrep    Reorder DCF file to identify representative structures
@@ -1051,7 +1035,6 @@ See also
    psiphi       Phi and psi torsion angles from protein coordinates
    rocon        Generates a hits file from comparing two DHF files
    rocplot      Performs ROC analysis on hits files
-   scorecmapdir Contact scores for cleaned protein chain contact files
    seqalign     Extend alignments (DAF file) with sequences (DHF file)
    seqfraggle   Removes fragment sequences from DHF files
    seqsearch    Generate PSI-BLAST hits (DHF file) from a DAF file

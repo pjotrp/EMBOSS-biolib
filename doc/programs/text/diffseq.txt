@@ -52,8 +52,10 @@ Second output features [AF129756.diffgff]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-asequence]         sequence   Sequence USA
-  [-bsequence]         sequence   Sequence USA
+  [-asequence]         sequence   Sequence filename and optional format, or
+                                  reference (input USA)
+  [-bsequence]         sequence   Sequence filename and optional format, or
+                                  reference (input USA)
    -wordsize           integer    The similar regions between the two
                                   sequences are found by creating a hash table
                                   of 'wordsize'd subsequences. 10 is a
@@ -164,12 +166,13 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-asequence]
-   (Parameter 1) Sequence USA Readable sequence Required
+   (Parameter 1) Sequence filename and optional format, or reference
+   (input USA) Readable sequence Required
    [-bsequence]
-   (Parameter 2) Sequence USA Readable sequence Required
+   (Parameter 2) Sequence filename and optional format, or reference
+   (input USA) Readable sequence Required
    -wordsize The similar regions between the two sequences are found by
    creating a hash table of 'wordsize'd subsequences. 10 is a reasonable
    default. Making this value larger (20?) may speed up the program
@@ -551,6 +554,9 @@ Output file format
 ########################################
 # Program: diffseq
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: diffseq
+#    [-asequence] tembl:ap000504
+#    [-bsequence] tembl:af129756
 # Report_format: diffseq
 # Report_file: ap000504.diffseq
 # Additional_files: 2
@@ -595,9 +601,6 @@ AP000504 2466-2466 Length: 1
 Sequence: g
 Sequence: a
 Feature: repeat_region 8391-8686 rpt_family='AluSg'
-AF129756 8500-8500 Length: 1
-
-AP000504 2655-2658 Length: 4
 
 
   [Part of this file has been deleted for brevity]

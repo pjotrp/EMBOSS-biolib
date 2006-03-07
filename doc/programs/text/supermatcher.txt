@@ -35,8 +35,10 @@ Output alignment [eclac.supermatcher]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-asequence]         seqall     Sequence database USA
-  [-bsequence]         seqset     Sequence set USA
+  [-asequence]         seqall     Sequence(s) filename and optional format, or
+                                  reference (input USA)
+  [-bsequence]         seqset     Sequence set filename and optional format,
+                                  or reference (input USA)
    -gapopen            float      Gap opening penalty
    -gapextend          float      Gap extension penalty
   [-outfile]           align      Output alignment file name
@@ -56,72 +58,73 @@ Command line arguments
    Associated qualifiers:
 
    "-asequence" associated qualifiers
-   -sbegin1             integer    Start of each sequence to be used
-   -send1               integer    End of each sequence to be used
-   -sreverse1           boolean    Reverse (if DNA)
-   -sask1               boolean    Ask for begin/end/reverse
-   -snucleotide1        boolean    Sequence is nucleotide
-   -sprotein1           boolean    Sequence is protein
-   -slower1             boolean    Make lower case
-   -supper1             boolean    Make upper case
-   -sformat1            string     Input sequence format
-   -sdbname1            string     Database name
-   -sid1                string     Entryname
-   -ufo1                string     UFO features
-   -fformat1            string     Features format
-   -fopenfile1          string     Features file name
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
 
    "-bsequence" associated qualifiers
-   -sbegin2             integer    Start of each sequence to be used
-   -send2               integer    End of each sequence to be used
-   -sreverse2           boolean    Reverse (if DNA)
-   -sask2               boolean    Ask for begin/end/reverse
-   -snucleotide2        boolean    Sequence is nucleotide
-   -sprotein2           boolean    Sequence is protein
-   -slower2             boolean    Make lower case
-   -supper2             boolean    Make upper case
-   -sformat2            string     Input sequence format
-   -sdbname2            string     Database name
-   -sid2                string     Entryname
-   -ufo2                string     UFO features
-   -fformat2            string     Features format
-   -fopenfile2          string     Features file name
+   -sbegin2            integer    Start of each sequence to be used
+   -send2              integer    End of each sequence to be used
+   -sreverse2          boolean    Reverse (if DNA)
+   -sask2              boolean    Ask for begin/end/reverse
+   -snucleotide2       boolean    Sequence is nucleotide
+   -sprotein2          boolean    Sequence is protein
+   -slower2            boolean    Make lower case
+   -supper2            boolean    Make upper case
+   -sformat2           string     Input sequence format
+   -sdbname2           string     Database name
+   -sid2               string     Entryname
+   -ufo2               string     UFO features
+   -fformat2           string     Features format
+   -fopenfile2         string     Features file name
 
    "-outfile" associated qualifiers
-   -aformat3            string     Alignment format
-   -aextension3         string     File name extension
-   -adirectory3         string     Output directory
-   -aname3              string     Base file name
-   -awidth3             integer    Alignment width
-   -aaccshow3           boolean    Show accession number in the header
-   -adesshow3           boolean    Show description in the header
-   -ausashow3           boolean    Show the full USA in the alignment
-   -aglobal3            boolean    Show the full sequence in alignment
+   -aformat3           string     Alignment format
+   -aextension3        string     File name extension
+   -adirectory3        string     Output directory
+   -aname3             string     Base file name
+   -awidth3            integer    Alignment width
+   -aaccshow3          boolean    Show accession number in the header
+   -adesshow3          boolean    Show description in the header
+   -ausashow3          boolean    Show the full USA in the alignment
+   -aglobal3           boolean    Show the full sequence in alignment
 
    "-errorfile" associated qualifiers
-   -odirectory          string     Output directory
+   -odirectory         string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-asequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   (Parameter 1) Sequence(s) filename and optional format, or reference
+   (input USA) Readable sequence(s) Required
    [-bsequence]
-   (Parameter 2) Sequence set USA Readable set of sequences Required
+   (Parameter 2) Sequence set filename and optional format, or reference
+   (input USA) Readable set of sequences Required
    -gapopen Gap opening penalty Number from 0.000 to 100.000 10.0 for any
    sequence type
    -gapextend Gap extension penalty Number from 0.000 to 10.000 0.5 for
@@ -339,6 +342,11 @@ Output file format
 ########################################
 # Program: supermatcher
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: supermatcher
+#    [-asequence] tembl:ec*
+#    [-bsequence] tembl:eclac
+#    -wordlen 50
+#    -gapextend 3.0
 # Align_format: simple
 # Report_file: eclac.supermatcher
 ########################################
@@ -381,11 +389,6 @@ ECLAC            201 gatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgg    250
                      ||||||||||||||||||||||||||||||||||||||||||||||||||
 ECLAC            201 gatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgg    250
 
-ECLAC            251 gcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcac    300
-                     ||||||||||||||||||||||||||||||||||||||||||||||||||
-ECLAC            251 gcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcac    300
-
-ECLAC            301 gcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactggg    350
 
 
   [Part of this file has been deleted for brevity]

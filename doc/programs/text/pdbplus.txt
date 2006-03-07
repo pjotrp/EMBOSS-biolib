@@ -53,29 +53,29 @@ CONTENTS
 
   File: pdbplus.log
 
-stride output for: /ebi/services/idata/pmr/hgmp/test/data/structure/2hhb.ent
+stride output for: /homes/user/test/data/structure/1ii7.ent
 //
-stride data for: /ebi/services/idata/pmr/hgmp/test/data/structure/2hhb.ent
+stride data for: /homes/user/test/data/structure/1ii7.ent
 //
-naccess output for: /ebi/services/idata/pmr/hgmp/test/data/structure/2hhb.ent
+naccess output for: /homes/user/test/data/structure/1ii7.ent
 //
-naccess data for: /ebi/services/idata/pmr/hgmp/test/data/structure/2hhb.ent
+naccess data for: /homes/user/test/data/structure/1ii7.ent
 //
-stride output for: /ebi/services/idata/pmr/hgmp/test/data/structure/1cs4.ent
+stride output for: /homes/user/test/data/structure/1cs4.ent
 //
-stride data for: /ebi/services/idata/pmr/hgmp/test/data/structure/1cs4.ent
+stride data for: /homes/user/test/data/structure/1cs4.ent
 //
-naccess output for: /ebi/services/idata/pmr/hgmp/test/data/structure/1cs4.ent
+naccess output for: /homes/user/test/data/structure/1cs4.ent
 //
-naccess data for: /ebi/services/idata/pmr/hgmp/test/data/structure/1cs4.ent
+naccess data for: /homes/user/test/data/structure/1cs4.ent
 //
-stride output for: /ebi/services/idata/pmr/hgmp/test/data/structure/1ii7.ent
+stride output for: /homes/user/test/data/structure/2hhb.ent
 //
-stride data for: /ebi/services/idata/pmr/hgmp/test/data/structure/1ii7.ent
+stride data for: /homes/user/test/data/structure/2hhb.ent
 //
-naccess output for: /ebi/services/idata/pmr/hgmp/test/data/structure/1ii7.ent
+naccess output for: /homes/user/test/data/structure/2hhb.ent
 //
-naccess data for: /ebi/services/idata/pmr/hgmp/test/data/structure/1ii7.ent
+naccess data for: /homes/user/test/data/structure/2hhb.ent
 //
 
 
@@ -427,7 +427,7 @@ RE   1    1    36   36    A ALA   2    A    E    .    1    H      -61.30  -45.0
 1   19.20   19.50   18.10   19.22   27.70    0.27    0.70   19.22   26.90    0.
 27    0.70
 RE   1    1    37   37    V VAL   2    A    E    .    1    H      -64.92  -44.3
-0  109.50  111.45   73.60  102.58   89.80    8.87   23.90  102.58   88.80    8.
+0  109.50  111.44   73.60  102.58   89.80    8.87   23.90  102.58   88.80    8.
 87   24.70
 RE   1    1    38   38    Q GLN   2    A    E    .    1    H      -59.93  -32.7
 7  145.80  140.48   78.70  113.02   80.20   27.46   73.20   49.34   94.50   91.
@@ -867,21 +867,18 @@ Name of log file for PDBPLUS [pdbplus.log]:
 Name of log file for STRIDE [stride.log]: 
 Name of log file for NACCESS [naccess.log]: 
 
-Processing /ebi/services/idata/pmr/hgmp/test/qa/pdbparse-keep/2hhb.ccf
-stride /ebi/services/idata/pmr/hgmp/test/data/structure/2hhb.ent -f./pdbplus-11
-21267205.25929 >> stride.log 2>&1
-naccess /ebi/services/idata/pmr/hgmp/test/data/structure/2hhb.ent  >> naccess.l
-og 2>&1
-Processing /ebi/services/idata/pmr/hgmp/test/qa/pdbparse-keep/1cs4.ccf
-stride /ebi/services/idata/pmr/hgmp/test/data/structure/1cs4.ent -f./pdbplus-11
-21267205.25929 >> stride.log 2>&1
-naccess /ebi/services/idata/pmr/hgmp/test/data/structure/1cs4.ent  >> naccess.l
-og 2>&1
-Processing /ebi/services/idata/pmr/hgmp/test/qa/pdbparse-keep/1ii7.ccf
-stride /ebi/services/idata/pmr/hgmp/test/data/structure/1ii7.ent -f./pdbplus-11
-21267205.25929 >> stride.log 2>&1
-naccess /ebi/services/idata/pmr/hgmp/test/data/structure/1ii7.ent  >> naccess.l
-og 2>&1
+Processing /homes/user/test/qa/pdbparse-keep/1ii7.ccf
+stride /homes/user/test/data/structure/1ii7.ent -f./pdbplus-1234567890.1234 >>
+stride.log 2>&1
+naccess /homes/user/test/data/structure/1ii7.ent  >> naccess.log 2>&1
+Processing /homes/user/test/qa/pdbparse-keep/1cs4.ccf
+stride /homes/user/test/data/structure/1cs4.ent -f./pdbplus-1234567890.1234 >>
+stride.log 2>&1
+naccess /homes/user/test/data/structure/1cs4.ent  >> naccess.log 2>&1
+Processing /homes/user/test/qa/pdbparse-keep/2hhb.ccf
+stride /homes/user/test/data/structure/2hhb.ent -f./pdbplus-1234567890.1234 >>
+stride.log 2>&1
+naccess /homes/user/test/data/structure/2hhb.ent  >> naccess.log 2>&1
 STRIDE  failures: 0
 NACCESS failures: 0
 

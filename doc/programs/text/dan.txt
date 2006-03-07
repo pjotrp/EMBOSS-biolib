@@ -23,7 +23,7 @@ Usage
 
 % dan 
 Calculates DNA RNA/DNA melting temperature
-Input sequence(s): tembl:paamir
+Input nucleotide sequence(s): tembl:paamir
 Enter window size [20]: 
 Enter Shift Increment [1]: 
 Enter DNA concentration (nM) [50.]: 
@@ -40,7 +40,7 @@ Output report [paamir.dan]:
 
 % dan -plot -graph cps 
 Calculates DNA RNA/DNA melting temperature
-Input sequence(s): tembl:paamir
+Input nucleotide sequence(s): tembl:paamir
 Enter window size [20]: 
 Enter Shift Increment [1]: 
 Enter DNA concentration (nM) [50.]: 
@@ -54,7 +54,8 @@ Created dan.ps
 Command line arguments
 
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-sequence]          seqall     Sequence database USA
+  [-sequence]          seqall     Nucleotide sequence(s) filename and optional
+                                  format, or reference (input USA)
    -windowsize         integer    The values of melting point and other
                                   thermodynamic properties of the sequence are
                                   determined by taking a short length of
@@ -107,59 +108,59 @@ Command line arguments
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1             integer    Start of each sequence to be used
-   -send1               integer    End of each sequence to be used
-   -sreverse1           boolean    Reverse (if DNA)
-   -sask1               boolean    Ask for begin/end/reverse
-   -snucleotide1        boolean    Sequence is nucleotide
-   -sprotein1           boolean    Sequence is protein
-   -slower1             boolean    Make lower case
-   -supper1             boolean    Make upper case
-   -sformat1            string     Input sequence format
-   -sdbname1            string     Database name
-   -sid1                string     Entryname
-   -ufo1                string     UFO features
-   -fformat1            string     Features format
-   -fopenfile1          string     Features file name
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
 
    "-graph" associated qualifiers
-   -gprompt             boolean    Graph prompting
-   -gtitle              string     Graph title
-   -gsubtitle           string     Graph subtitle
-   -gxtitle             string     Graph x axis title
-   -gytitle             string     Graph y axis title
-   -goutfile            string     Output file for non interactive displays
-   -gdirectory          string     Output directory
+   -gprompt            boolean    Graph prompting
+   -gtitle             string     Graph title
+   -gsubtitle          string     Graph subtitle
+   -gxtitle            string     Graph x axis title
+   -gytitle            string     Graph y axis title
+   -goutfile           string     Output file for non interactive displays
+   -gdirectory         string     Output directory
 
    "-outfile" associated qualifiers
-   -rformat             string     Report format
-   -rname               string     Base file name
-   -rextension          string     File name extension
-   -rdirectory          string     Output directory
-   -raccshow            boolean    Show accession number in the report
-   -rdesshow            boolean    Show description in the report
-   -rscoreshow          boolean    Show the score in the report
-   -rusashow            boolean    Show the full USA in the report
+   -rformat            string     Report format
+   -rname              string     Base file name
+   -rextension         string     File name extension
+   -rdirectory         string     Output directory
+   -raccshow           boolean    Show accession number in the report
+   -rdesshow           boolean    Show description in the report
+   -rscoreshow         boolean    Show the score in the report
+   -rusashow           boolean    Show the full USA in the report
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
+   reference (input USA) Readable sequence(s) Required
    -windowsize The values of melting point and other thermodynamic
    properties of the sequence are determined by taking a short length of
    sequence known as a window and determining the properties of the
@@ -390,6 +391,8 @@ Output file format
 ########################################
 # Program: dan
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: dan
+#    -sequence tembl:paamir
 # Report_format: seqtable
 # Report_file: paamir.dan
 ########################################
@@ -435,8 +438,6 @@ Output file format
      32      51   68.6   75.0      .      .      .      . caccagccgggcgacgggaa
      33      52   68.6   75.0      .      .      .      . accagccgggcgacgggaac
      34      53   68.4   75.0      .      .      .      . ccagccgggcgacgggaact
-     35      54   67.4   75.0      .      .      .      . cagccgggcgacgggaactg
-     36      55   68.9   75.0      .      .      .      . agccgggcgacgggaactgc
 
 
   [Part of this file has been deleted for brevity]

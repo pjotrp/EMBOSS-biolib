@@ -30,7 +30,7 @@ Usage
 
 % restrict 
 Finds restriction enzyme cleavage sites
-Input sequence(s): tembl:hsfau
+Input nucleotide sequence(s): tembl:hsfau
 Minimum recognition site length [4]: 
 Comma separated enzyme list [all]: 
 Output report [hsfau.restrict]: 
@@ -46,7 +46,7 @@ Output report [hsfau.restrict]:
 
 % restrict -fragments 
 Finds restriction enzyme cleavage sites
-Input sequence(s): tembl:hsfau
+Input nucleotide sequence(s): tembl:hsfau
 Minimum recognition site length [4]: 
 Comma separated enzyme list [all]: 
 Output report [hsfau.restrict]: 
@@ -61,7 +61,7 @@ Output report [hsfau.restrict]:
 
 % restrict -solofragment 
 Finds restriction enzyme cleavage sites
-Input sequence(s): tembl:hsfau
+Input nucleotide sequence(s): tembl:hsfau
 Minimum recognition site length [4]: 
 Comma separated enzyme list [all]: 
 Output report [hsfau.restrict]: 
@@ -71,7 +71,8 @@ Output report [hsfau.restrict]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequence]          seqall     Sequence database USA
+  [-sequence]          seqall     Nucleotide sequence(s) filename and optional
+                                  format, or reference (input USA)
    -sitelen            integer    This sets the minimum length of the
                                   restriction enzyme recognition site. Any
                                   enzymes with sites shorter than this will be
@@ -212,10 +213,10 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
+   reference (input USA) Readable sequence(s) Required
    -sitelen This sets the minimum length of the restriction enzyme
    recognition site. Any enzymes with sites shorter than this will be
    ignored. Integer from 2 to 20 4
@@ -406,6 +407,8 @@ Output file format
 ########################################
 # Program: restrict
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: restrict
+#    -sequence tembl:hsfau
 # Report_format: table
 # Report_file: hsfau.restrict
 ########################################
@@ -491,6 +494,9 @@ Output file format
 ########################################
 # Program: restrict
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: restrict
+#    -fragments
+#    -sequence tembl:hsfau
 # Report_format: table
 # Report_file: hsfau.restrict
 ########################################
@@ -535,9 +541,6 @@ Output file format
     162     165 HpaII       CCGG                162    164         .         .
     182     186 EcoRII      CCWGG               181    186         .         .
     182     186 BssKI       CCNGG               181    186         .         .
-    190     193 Hin6I       GCGC                190    192         .         .
-    190     193 HhaI        GCGC                192    190         .         .
-    192     195 Hin6I       GCGC                192    194         .         .
 
 
   [Part of this file has been deleted for brevity]
@@ -601,6 +604,9 @@ Output file format
 ########################################
 # Program: restrict
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: restrict
+#    -solofragment
+#    -sequence tembl:hsfau
 # Report_format: table
 # Report_file: hsfau.restrict
 ########################################
@@ -645,9 +651,6 @@ Output file format
     162     165 HpaII       CCGG                162    164         .         .
     182     186 EcoRII      CCWGG               181    186         .         .
     182     186 BssKI       CCNGG               181    186         .         .
-    190     193 Hin6I       GCGC                190    192         .         .
-    190     193 HhaI        GCGC                192    190         .         .
-    192     195 Hin6I       GCGC                192    194         .         .
 
 
   [Part of this file has been deleted for brevity]

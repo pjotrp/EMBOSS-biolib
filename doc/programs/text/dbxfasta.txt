@@ -124,14 +124,13 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-dbname]
-   (Parameter 1) Basename for index files A string from 2 to 19
+   (Parameter 1) Basename for index files Any string from 2 to 19
    characters, matching regular expression /[A-z][A-z0-9_]+/ Required
    [-dbresource]
-   (Parameter 2) Resource name A string from 2 to 19 characters, matching
-   regular expression /[A-z][A-z0-9_]+/ Required
+   (Parameter 2) Resource name Any string from 2 to 19 characters,
+   matching regular expression /[A-z][A-z0-9_]+/ Required
    -idformat ID line format
    simple   (>ID)
    idacc    (>ID ACC)
@@ -142,7 +141,7 @@ Command line arguments
    idacc
    -directory Database directory Directory .
    -filenames Wildcard database filename Any string is accepted *.dat
-   -release Release number A string up to 9 characters 0.0
+   -release Release number Any string up to 9 characters 0.0
    -date Index date Date string dd/mm/yy 00/00/00
    Additional (Optional) qualifiers Allowed values Default
    (none)
@@ -162,6 +161,67 @@ Input file format
    dbxfasta reads any normal sequence USAs.
 
 Output file format
+
+   dbxfasta creates one summary file for the database and two files for
+   each field indexed.
+
+     * dbalias.ent is the master file containing the names of the files
+       that have been indexed. It is an ASCII file. This file also
+       contains the database release and date information.
+     * dbalias.xid is the B+tree index file for the ID names. It is a
+       binary file.
+     * dbalias.pxid is an ASCII file containing information regarding the
+       structure of the ID name index.
+
+  Output files for usage example
+
+  File: emrod.ent
+
+# Number of files: 1
+# Release: 0.0
+# Date:    00/00/00
+Single filename database
+emrod
+
+  File: emrod.pxac
+
+Order     71
+Fill      47
+Pagesize  2048
+Level     0
+Cachesize 200
+Order2    82
+Fill2     99
+Count     2
+Kwlimit   15
+
+  File: emrod.pxid
+
+Order     71
+Fill      47
+Pagesize  2048
+Level     0
+Cachesize 200
+Order2    82
+Fill2     99
+Count     2
+Kwlimit   15
+
+  File: emrod.xac
+
+   This file contains non-printing characters and so cannot be displayed
+   here.
+
+  File: emrod.xid
+
+   This file contains non-printing characters and so cannot be displayed
+   here.
+
+Data files
+
+   None.
+
+Notes
 
    The indexing system has been designed to allow on-the-fly updating of
    indexes. This feature is, however, not implemented in the current

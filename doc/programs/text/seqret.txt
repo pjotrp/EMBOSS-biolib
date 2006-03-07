@@ -409,7 +409,7 @@ Usage
 
 % seqret 
 Reads and writes (returns) sequences
-Input sequence(s): tembl:hsfau
+Input (gapped) sequence(s): tembl:hsfau
 Output sequence [hsfau.fasta]: 
 
    Go to the input files for this example
@@ -440,7 +440,7 @@ Reads and writes (returns) sequences
 
 % seqret -feature 
 Reads and writes (returns) sequences
-Input sequence(s): tembl:hsfau
+Input (gapped) sequence(s): tembl:hsfau
 Output sequence [hsfau.fasta]: embl::hsfau.embl
 
    Go to the output files for this example
@@ -452,7 +452,7 @@ Output sequence [hsfau.fasta]: embl::hsfau.embl
 
 % seqret 
 Reads and writes (returns) sequences
-Input sequence(s): tembl:hsfau
+Input (gapped) sequence(s): tembl:hsfau
 Output sequence [hsfau.fasta]: stdout
 
 >HSFAU X65923.1 H.sapiens fau mRNA
@@ -473,7 +473,7 @@ tctaataaaaaagccacttagttcagtcaaaaaaaaaa
 
 % seqret -osf gcg 
 Reads and writes (returns) sequences
-Input sequence(s): tembl:hsfau
+Input (gapped) sequence(s): tembl:hsfau
 Output sequence [hsfau.gcg]: 
 
    Go to the output files for this example
@@ -486,7 +486,7 @@ Output sequence [hsfau.gcg]:
 
 % seqret -outseq gcg::hsfau.gcg 
 Reads and writes (returns) sequences
-Input sequence(s): tembl:hsfau
+Input (gapped) sequence(s): tembl:hsfau
 
    Example 7
 
@@ -496,7 +496,7 @@ Input sequence(s): tembl:hsfau
 
 % seqret 
 Reads and writes (returns) sequences
-Input sequence(s): tembl:hsfau
+Input (gapped) sequence(s): tembl:hsfau
 Output sequence [hsfau.fasta]: gcg::hsfau.gcg
 
    Example 8
@@ -506,7 +506,7 @@ Output sequence [hsfau.fasta]: gcg::hsfau.gcg
 
 % seqret -srev 
 Reads and writes (returns) sequences
-Input sequence(s): tembl:hsfau
+Input (gapped) sequence(s): tembl:hsfau
 Output sequence [hsfau.fasta]: 
 
    Go to the output files for this example
@@ -519,7 +519,7 @@ Output sequence [hsfau.fasta]:
 
 % seqret -sbegin 5 -send 25 
 Reads and writes (returns) sequences
-Input sequence(s): tembl:hsfau
+Input (gapped) sequence(s): tembl:hsfau
 Output sequence [hsfau.fasta]: 
 
    Go to the output files for this example
@@ -532,7 +532,7 @@ Output sequence [hsfau.fasta]:
 
 % seqret -sbegin 5 -send -5 
 Reads and writes (returns) sequences
-Input sequence(s): tembl:hsfau
+Input (gapped) sequence(s): tembl:hsfau
 Output sequence [hsfau.fasta]: 
 
    Go to the output files for this example
@@ -545,14 +545,16 @@ Output sequence [hsfau.fasta]:
 
 % seqret 
 Reads and writes (returns) sequences
-Input sequence(s): tembl:hs*
+Input (gapped) sequence(s): tembl:hs*
 Output sequence [hs989235.fasta]: hsall.seq
 
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequence]          seqall     Sequence database USA
-  [-outseq]            seqoutall  Output sequence(s) USA
+  [-sequence]          seqall     (Gapped) sequence(s) filename and optional
+                                  format, or reference (input USA)
+  [-outseq]            seqoutall  Sequence set(s) filename and optional format
+                                  (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
@@ -562,55 +564,55 @@ Command line arguments
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1             integer    Start of each sequence to be used
-   -send1               integer    End of each sequence to be used
-   -sreverse1           boolean    Reverse (if DNA)
-   -sask1               boolean    Ask for begin/end/reverse
-   -snucleotide1        boolean    Sequence is nucleotide
-   -sprotein1           boolean    Sequence is protein
-   -slower1             boolean    Make lower case
-   -supper1             boolean    Make upper case
-   -sformat1            string     Input sequence format
-   -sdbname1            string     Database name
-   -sid1                string     Entryname
-   -ufo1                string     UFO features
-   -fformat1            string     Features format
-   -fopenfile1          string     Features file name
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
 
    "-outseq" associated qualifiers
-   -osformat2           string     Output seq format
-   -osextension2        string     File name extension
-   -osname2             string     Base file name
-   -osdirectory2        string     Output directory
-   -osdbname2           string     Database name to add
-   -ossingle2           boolean    Separate file for each entry
-   -oufo2               string     UFO features
-   -offormat2           string     Features format
-   -ofname2             string     Features file name
-   -ofdirectory2        string     Output directory
+   -osformat2          string     Output seq format
+   -osextension2       string     File name extension
+   -osname2            string     Base file name
+   -osdirectory2       string     Output directory
+   -osdbname2          string     Database name to add
+   -ossingle2          boolean    Separate file for each entry
+   -oufo2              string     UFO features
+   -offormat2          string     Features format
+   -ofname2            string     Features file name
+   -ofdirectory2       string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   (Parameter 1) (Gapped) sequence(s) filename and optional format, or
+   reference (input USA) Readable sequence(s) Required
    [-outseq]
-   (Parameter 2) Output sequence(s) USA Writeable sequence(s)
-   <sequence>.format
+   (Parameter 2) Sequence set(s) filename and optional format (output
+   USA) Writeable sequence(s) <sequence>.format
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default

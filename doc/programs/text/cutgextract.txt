@@ -99,7 +99,6 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-directory]
    (Parameter 1) CUTG directory Directory with files .

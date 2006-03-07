@@ -171,6 +171,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   Evdw.dat
   Edna.melt
   Eaa_properties.dat
+  Eamino.dat~
   EBLOSUMN
   Eangles.dat
   Etcode.dat
@@ -224,6 +225,9 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
 DIRECTORY: /homes/pmr/local/share/EMBOSS/data/REBASE
 
   dummyfile
+  embossre.enz
+  embossre.ref
+  embossre.sup
 
 
 DIRECTORY: /homes/pmr/local/share/EMBOSS/data/AAINDEX
@@ -573,7 +577,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
-
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-filename]

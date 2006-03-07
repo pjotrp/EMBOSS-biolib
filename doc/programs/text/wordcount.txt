@@ -27,7 +27,8 @@ Output file [rnu68037.wordcount]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequence]          sequence   Sequence USA
+  [-sequence]          sequence   Nucleotide sequence filename and optional
+                                  format, or reference (input USA)
    -wordsize           integer    Word size
   [-outfile]           outfile    Output file name
 
@@ -69,17 +70,17 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
-                 Standard (Mandatory) qualifiers   Allowed values      Default
+   Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) Sequence USA     Readable sequence Required
-                 -wordsize        Word size        Integer 2 or more   4
+   (Parameter 1) Nucleotide sequence filename and optional format, or
+   reference (input USA) Readable sequence Required
+   -wordsize Word size Integer 2 or more 4
    [-outfile]
-   (Parameter 2) Output file name Output file      <sequence>.wordcount
-                 Additional (Optional) qualifiers  Allowed values      Default
-                 (none)
-                 Advanced (Unprompted) qualifiers  Allowed values      Default
-                 (none)
+   (Parameter 2) Output file name Output file <sequence>.wordcount
+   Additional (Optional) qualifiers Allowed values Default
+   (none)
+   Advanced (Unprompted) qualifiers Allowed values Default
+   (none)
 
 Input file format
 

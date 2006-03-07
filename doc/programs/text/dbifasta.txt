@@ -100,11 +100,10 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-dbname]
-   (Parameter 1) Database name A string from 2 to 19 characters, matching
-   regular expression /[A-z][A-z0-9_]+/ Required
+   (Parameter 1) Database name Any string from 2 to 19 characters,
+   matching regular expression /[A-z][A-z0-9_]+/ Required
    -idformat ID line format
    simple   (>ID)
    idacc    (>ID ACC)
@@ -115,7 +114,7 @@ Command line arguments
    idacc
    -directory Database directory Directory .
    -filenames Wildcard database filename Any string is accepted *.dat
-   -release Release number A string up to 9 characters 0.0
+   -release Release number Any string up to 9 characters 0.0
    -date Index date Date string dd/mm/yy 00/00/00
    -outfile Output file name Output file <sequence>.dbifasta
    Additional (Optional) qualifiers Allowed values Default

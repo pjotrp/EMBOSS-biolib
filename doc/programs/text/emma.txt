@@ -499,7 +499,7 @@ Usage
 
 % emma 
 Multiple alignment program - interface to ClustalW program
-Input sequence(s): globins.fasta
+Input (gapped) sequence(s): globins.fasta
 Output sequence [hbb_human.aln]: 
 Dendogram output filename [hbb_human.dnd]: 
 
@@ -564,8 +564,10 @@ GCG-Alignment file created      [12345678A]
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequence]          seqall     Sequence database USA
-  [-outseq]            seqoutset  Output sequence set USA
+  [-sequence]          seqall     (Gapped) sequence(s) filename and optional
+                                  format, or reference (input USA)
+  [-outseq]            seqoutset  Sequence set filename and optional format
+                                  (output USA)
   [-dendoutfile]       outfile    Dendogram output filename
 
    Additional (Optional) qualifiers (* if not always prompted):
@@ -798,13 +800,13 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   (Parameter 1) (Gapped) sequence(s) filename and optional format, or
+   reference (input USA) Readable sequence(s) Required
    [-outseq]
-   (Parameter 2) Output sequence set USA Writeable sequences
-   <sequence>.format
+   (Parameter 2) Sequence set filename and optional format (output USA)
+   Writeable sequences <sequence>.format
    [-dendoutfile]
    (Parameter 3) Dendogram output filename Output file <sequence>.emma
    Additional (Optional) qualifiers Allowed values Default

@@ -56,7 +56,7 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-search]            string     Enter the name of an EMBOSS program
 
-   Additional (Optional) qualifiers (* if not always prompted):
+   Additional (Optional) qualifiers:
    -explode            boolean    The groups that EMBOSS applications belong
                                   to have two forms, exploded and not
                                   exploded. The exploded group names are more
@@ -79,29 +79,6 @@ Command line arguments
    -html               toggle     If you are sending the output to a file,
                                   this will format it for displaying as a
                                   table in a WWW document.
-*  -prelink            string     If you are outputting to a file in HTML
-                                  format, you can make the program names into
-                                  hyper-links by setting this to be the first
-                                  half of the URL.
-                                  For example, if you wish the program name to
-                                  be a hyperlink to the URL:
-                                  http://emboss.sourceforge.net/apps/
-                                  programname.html
-                                  then if you enter
-                                  http://emboss.sourceforge.net/apps/ here,
-                                  then the first half of the URL before the
-                                  program name will be set.
-*  -postlink           string     If you are outputting to a file in HTML
-                                  format, you can make the program names into
-                                  hyper-links by setting this to be the second
-                                  half of the URL.
-                                  For example, if you wish the program name to
-                                  be a hyperlink to the URL:
-                                  http://emboss.sourceforge.net/apps/
-                                  programname.html
-                                  then if you enter '.html' here, the second
-                                  half of the URL after the program name will
-                                  be set.
    -groups             boolean    If you use this option, then only the group
                                   names will output to the file
 
@@ -165,11 +142,10 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-search]
-   (Parameter 1) Enter the name of an EMBOSS program A string of at least
-   1 characters Required
+   (Parameter 1) Enter the name of an EMBOSS program Any string of at
+   least 1 characters Required
    Additional (Optional) qualifiers Allowed values Default
    -explode The groups that EMBOSS applications belong to have two forms,
    exploded and not exploded. The exploded group names are more numerous
@@ -186,20 +162,6 @@ Command line arguments
    -outfile Output file name Output file stdout
    -html If you are sending the output to a file, this will format it for
    displaying as a table in a WWW document. Toggle value Yes/No No
-   -prelink If you are outputting to a file in HTML format, you can make
-   the program names into hyper-links by setting this to be the first
-   half of the URL. For example, if you wish the program name to be a
-   hyperlink to the URL: http://emboss.sourceforge.net/apps/
-   programname.html then if you enter http://emboss.sourceforge.net/apps/
-   here, then the first half of the URL before the program name will be
-   set. Any string is accepted An empty string is accepted
-   -postlink If you are outputting to a file in HTML format, you can make
-   the program names into hyper-links by setting this to be the second
-   half of the URL. For example, if you wish the program name to be a
-   hyperlink to the URL: http://emboss.sourceforge.net/apps/
-   programname.html then if you enter '.html' here, the second half of
-   the URL after the program name will be set. Any string is accepted An
-   empty string is accepted
    -groups If you use this option, then only the group names will output
    to the file Boolean value Yes/No No
    Advanced (Unprompted) qualifiers Allowed values Default

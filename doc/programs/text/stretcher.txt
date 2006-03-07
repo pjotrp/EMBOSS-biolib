@@ -61,8 +61,10 @@ Output alignment [hba_human.stretcher]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-asequence]         sequence   Sequence USA
-  [-bsequence]         sequence   Sequence USA
+  [-asequence]         sequence   Sequence filename and optional format, or
+                                  reference (input USA)
+  [-bsequence]         sequence   Sequence filename and optional format, or
+                                  reference (input USA)
   [-outfile]           align      Output alignment file name
 
    Additional (Optional) qualifiers:
@@ -136,12 +138,13 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
    Standard (Mandatory) qualifiers Allowed values Default
    [-asequence]
-   (Parameter 1) Sequence USA Readable sequence Required
+   (Parameter 1) Sequence filename and optional format, or reference
+   (input USA) Readable sequence Required
    [-bsequence]
-   (Parameter 2) Sequence USA Readable sequence Required
+   (Parameter 2) Sequence filename and optional format, or reference
+   (input USA) Readable sequence Required
    [-outfile]
    (Parameter 3) Output alignment file name Alignment output file
    Additional (Optional) qualifiers Allowed values Default
@@ -410,6 +413,9 @@ Output file format
 ########################################
 # Program: stretcher
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: stretcher
+#    [-asequence] tsw:hba_human
+#    [-bsequence] tsw:hbb_human
 # Align_format: markx0
 # Report_file: hba_human.stretcher
 ########################################
